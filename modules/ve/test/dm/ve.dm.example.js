@@ -2288,7 +2288,7 @@ ve.dm.example.isolationData = [
 	{ 'type': '/tableSection' },
 	{ 'type': '/table' },
 	{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
-	'N', 'o', 't', ' ', 'a', 'l', 'l', 'o', 'w', 'e', 'd', ' ', 'b', 'y', ' ', 'd', 'm', ': ',
+	'N', 'o', 't', ' ', 'a', 'l', 'l', 'o', 'w', 'e', 'd', ' ', 'b', 'y', ' ', 'd', 'm', ':',
 	{ 'type': '/paragraph' },
 	{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
 	{ 'type': 'listItem' },

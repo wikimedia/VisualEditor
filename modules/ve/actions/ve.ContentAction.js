@@ -42,7 +42,7 @@ ve.ContentAction.static.methods = ['insert', 'remove', 'select'];
  * @param {boolean} annotate Content should be automatically annotated to match surrounding content
  */
 ve.ContentAction.prototype.insert = function ( content, annotate ) {
-	this.surface.getModel().getFragment().insertContent( content, annotate ).destroy();
+	this.surface.getModel().getFragment().insertContent( content, annotate );
 };
 
 /**
@@ -51,7 +51,7 @@ ve.ContentAction.prototype.insert = function ( content, annotate ) {
  * @method
  */
 ve.ContentAction.prototype.remove = function () {
-	this.surface.getModel().getFragment().removeContent().destroy();
+	this.surface.getModel().getFragment().removeContent();
 };
 
 /**

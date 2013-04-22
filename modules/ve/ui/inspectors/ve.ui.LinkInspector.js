@@ -81,18 +81,15 @@ ve.ui.LinkInspector.prototype.onSetup = function () {
 		if ( fragment.getRange().isCollapsed() ) {
 			// Expand to nearest word
 			expandedFragment = fragment.expandRange( 'word' );
-			fragment.destroy();
 			fragment = expandedFragment;
 		} else {
 			// Trim whitespace
 			trimmedFragment = fragment.trimRange();
-			fragment.destroy();
 			fragment = trimmedFragment;
 		}
 		if ( !fragment.getRange().isCollapsed() ) {
 			// Create annotation from selection
 			truncatedFragment = fragment.truncateRange( 255 );
-			fragment.destroy();
 			fragment = truncatedFragment;
 			annotation = this.getAnnotationFromTarget( fragment.getText() );
 			fragment.annotateContent( 'set', annotation );
@@ -101,12 +98,11 @@ ve.ui.LinkInspector.prototype.onSetup = function () {
 	} else {
 		// Expand range to cover annotation
 		expandedFragment = fragment.expandRange( 'annotation', annotation );
-		fragment.destroy();
 		fragment = expandedFragment;
 	}
 
 	// Update selection
-	fragment.select().destroy();
+	fragment.select();
 };
 
 /**
@@ -128,8 +124,6 @@ ve.ui.LinkInspector.prototype.onOpen = function () {
 		this.targetInput.setAnnotation( annotation );
 		this.targetInput.$input.focus().select();
 	}, this ), 200 );
-
-	fragment.destroy();
 };
 
 /**
@@ -174,7 +168,6 @@ ve.ui.LinkInspector.prototype.onClose = function ( action ) {
 		// Insert default text and select it
 		fragment.insertContent( target, false );
 		adjustedFragment = fragment.adjustRange( -target.length, 0 );
-		fragment.destroy();
 		fragment = adjustedFragment;
 
 		// Move cursor to the end of the inserted content
@@ -204,8 +197,6 @@ ve.ui.LinkInspector.prototype.onClose = function ( action ) {
 	);
 	// Reset state
 	this.isNewAnnotation = false;
-
-	fragment.destroy();
 };
 
 /**

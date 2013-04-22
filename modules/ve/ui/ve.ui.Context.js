@@ -238,8 +238,6 @@ ve.ui.Context.prototype.update = function () {
 	// Remember selection for next time
 	this.selection = selection.clone();
 
-	fragment.destroy();
-
 	return this;
 };
 

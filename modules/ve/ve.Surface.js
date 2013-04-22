@@ -170,7 +170,7 @@ ve.Surface.prototype.isEnabled = function () {
  * @method
  */
 ve.Surface.prototype.resetSelection = function () {
-	this.model.getFragment().select().destroy();
+	this.model.getFragment().select();
 	this.view.surfaceObserver.poll();
 };
 

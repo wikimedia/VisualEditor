@@ -65,10 +65,9 @@ ve.FormatAction.prototype.convert = function ( type, attributes ) {
 	}
 
 	for ( i = 0, length = fragments.length; i < length; i++ ) {
-		fragments[i].isolateAndUnwrap( type ).destroy();
+		fragments[i].isolateAndUnwrap( type );
 	}
 	selection = fragmentForSelection.getRange();
-	fragmentForSelection.destroy();
 
 	txs = ve.dm.Transaction.newFromContentBranchConversion( doc, selection, type, attributes );
 	surfaceModel.change( txs, selection );
