@@ -770,26 +770,27 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, wrapp
  */
 ve.dm.Converter.prototype.getDomFromData = function ( store, data ) {
 	var doc = ve.createDocumentFromHTML( '' );
-	this.getDomSubtreeFromData( store, data, doc.body );
+	this.store = store;
+	this.getDomSubtreeFromData( data, doc.body );
+	this.store = null;
 	return doc;
 };
 
 /**
  * Convert linear model data to an HTML DOM subtree and add it to a container element.
  *
- * @param {ve.dm.IndexValueStore} store Index-value store
  * @param {Array} data Linear model data
  * @param {HTMLElement} container DOM element to add the generated elements to. Should be empty.
  * @throws Unbalanced data: looking for closing /type
  */
-ve.dm.Converter.prototype.getDomSubtreeFromData = function ( store, data, container ) {
+ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container ) {
 	var text, i, j, k, annotations, annotationElement, dataElement, dataElementOrSlice,
 		childDomElements, pre, ours, theirs, parentDomElement, lastChild,
 		isContentNode, changed, parentChanged, sibling, previousSiblings, doUnwrap, textNode,
 		conv = this,
 		doc = container.ownerDocument,
 		domElement = container,
-		annotationStack = new ve.dm.AnnotationSet( store );
+		annotationStack = new ve.dm.AnnotationSet( this.store );
 
 	function openAnnotation( annotation ) {
 		// Add text if needed
@@ -873,7 +874,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( store, data, contai
 				)
 			) {
 				annotations = new ve.dm.AnnotationSet(
-					store, data[i].annotations || data[i][1]
+					this.store, data[i].annotations || data[i][1]
 				);
 				ve.dm.Converter.openAndCloseAnnotations( annotationStack, annotations,
 					openAnnotation, closeAnnotation
@@ -917,7 +918,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( store, data, contai
 				domElement = domElement.parentNode;
 			}
 			// Clear annotationStack
-			annotationStack = new ve.dm.AnnotationSet( store );
+			annotationStack = new ve.dm.AnnotationSet( this.store );
 		} else if ( data[i].type !== undefined ) {
 			dataElement = data[i];
 			// Element

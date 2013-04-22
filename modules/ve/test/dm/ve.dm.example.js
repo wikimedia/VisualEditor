@@ -715,11 +715,75 @@ ve.dm.example.conversions = {
 };
 
 ve.dm.example.MWImageHtml = '<a rel="mw:Image" href="./File:Wiki.png" data-parsoid="{&quot;tsr&quot;:[158,216],&quot;src&quot;:&quot;[[Image:Wiki.png|500px|thumb|center|Example wiki file]]&quot;,&quot;optNames&quot;:{&quot;width&quot;:&quot;$1px&quot;},&quot;dsr&quot;:[158,216,null,null]}"><img height="" width="500" src="/index.php?title=Special:FilePath/Wiki.png&amp;width=500" alt="Wiki.png"></a>';
-ve.dm.example.MWBlockTemplateSpan = '<span about="#mwt1" typeof="mw:Object/Template" data-mw="{&quot;id&quot;:&quot;mwt1&quot;,&quot;target&quot;:{&quot;wt&quot;:&quot;Test&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;Hello, world!&quot;}}}" data-parsoid="{&quot;tsr&quot;:[18,40],&quot;src&quot;:&quot;{{Test|Hello, world!}}&quot;,&quot;dsr&quot;:[18,40,null,null]}"></span>';
-ve.dm.example.MWBlockTemplateContent = '<p about="#mwt1" data-parsoid="{}">Hello, world!</p>';
-ve.dm.example.MWInlineTemplateOpen = '<span about="#mwt1" typeof="mw:Object/Template" data-mw="{&quot;id&quot;:&quot;mwt1&quot;,&quot;target&quot;:{&quot;wt&quot;:&quot;Inline&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;1,234&quot;}}}" data-parsoid="{&quot;tsr&quot;:[18,34],&quot;src&quot;:&quot;{{Inline|1,234}}&quot;,&quot;dsr&quot;:[18,34,null,null]}">';
-ve.dm.example.MWInlineTemplateContent = '$1,234.00';
-ve.dm.example.MWInlineTemplateClose = '</span>';
+ve.dm.example.MWTemplate = {
+	'blockSpan':         '<span about="#mwt1" typeof="mw:Object/Template" data-mw="{&quot;id&quot;:&quot;mwt1&quot;,&quot;target&quot;:{&quot;wt&quot;:&quot;Test&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;Hello, world!&quot;}}}" data-parsoid="{&quot;tsr&quot;:[18,40],&quot;src&quot;:&quot;{{Test|Hello, world!}}&quot;,&quot;dsr&quot;:[18,40,null,null]}"></span>',
+	'blockSpanModified': '<span about="#mwt1" typeof="mw:Object/Template" data-mw="{&quot;id&quot;:&quot;mwt1&quot;,&quot;target&quot;:{&quot;wt&quot;:&quot;Test&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;Hello, globe!&quot;}}}" data-parsoid="{&quot;tsr&quot;:[18,40],&quot;src&quot;:&quot;{{Test|Hello, world!}}&quot;,&quot;dsr&quot;:[18,40,null,null]}"></span>',
+	'blockContent': '<p about="#mwt1" data-parsoid="{}">Hello, world!</p>',
+	'blockData': {
+		'type': 'MWtemplateBlock',
+		'attributes': {
+			'mw': {
+				'id': 'mwt1',
+				'target': { 'wt' : 'Test' },
+				'params': {
+					'1': { 'wt': 'Hello, world!' }
+				}
+			},
+			'mwOriginal': {
+				'id': 'mwt1',
+				'target': { 'wt' : 'Test' },
+				'params': {
+					'1': { 'wt': 'Hello, world!' }
+				}
+			},
+			'html/0/about': '#mwt1',
+			'html/0/data-mw': '{\"id\":\"mwt1\",\"target\":{\"wt\":\"Test\"},\"params\":{\"1\":{\"wt\":\"Hello, world!\"}}}',
+			'html/0/data-parsoid': '{\"tsr\":[18,40],\"src\":\"{{Test|Hello, world!}}\",\"dsr\":[18,40,null,null]}',
+			'html/0/typeof': 'mw:Object/Template',
+			'html/1/about': '#mwt1',
+			'html/1/data-parsoid': '{}'
+		},
+	},
+	'inlineOpen':         '<span about="#mwt1" typeof="mw:Object/Template" data-mw="{&quot;id&quot;:&quot;mwt1&quot;,&quot;target&quot;:{&quot;wt&quot;:&quot;Inline&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;1,234&quot;}}}" data-parsoid="{&quot;tsr&quot;:[18,34],&quot;src&quot;:&quot;{{Inline|1,234}}&quot;,&quot;dsr&quot;:[18,34,null,null]}">',
+	'inlineOpenModified': '<span about="#mwt1" typeof="mw:Object/Template" data-mw="{&quot;id&quot;:&quot;mwt1&quot;,&quot;target&quot;:{&quot;wt&quot;:&quot;Inline&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;5,678&quot;}}}" data-parsoid="{&quot;tsr&quot;:[18,34],&quot;src&quot;:&quot;{{Inline|1,234}}&quot;,&quot;dsr&quot;:[18,34,null,null]}">',
+	'inlineContent': '$1,234.00',
+	'inlineClose': '</span>',
+	'inlineData': {
+		'type': 'MWtemplateInline',
+		'attributes': {
+			'mw': {
+				'id': 'mwt1',
+				'target': { 'wt' : 'Inline' },
+				'params': {
+					'1': { 'wt': '1,234' }
+				}
+			},
+			'mwOriginal': {
+				'id': 'mwt1',
+				'target': { 'wt' : 'Inline' },
+				'params': {
+					'1': { 'wt': '1,234' }
+				}
+			},
+			'html/0/about': '#mwt1',
+			'html/0/data-mw': '{\"id\":\"mwt1\",\"target\":{\"wt\":\"Inline\"},\"params\":{\"1\":{\"wt\":\"1,234\"}}}',
+			'html/0/data-parsoid': '{\"tsr\":[18,34],\"src\":\"{{Inline|1,234}}\",\"dsr\":[18,34,null,null]}',
+			'html/0/typeof': 'mw:Object/Template'
+		},
+	}
+};
+
+ve.dm.example.MWTemplate.blockParamsHash = ve.getHash( ve.dm.MWTemplateNode.static.getHashObject( ve.dm.example.MWTemplate.blockData ) );
+ve.dm.example.MWTemplate.blockStoreItems = {
+	'hash': ve.dm.example.MWTemplate.blockParamsHash,
+	'value': ve.dm.example.MWTemplate.blockSpan + ve.dm.example.MWTemplate.blockContent
+};
+
+ve.dm.example.MWTemplate.inlineParamsHash = ve.getHash( ve.dm.MWTemplateNode.static.getHashObject( ve.dm.example.MWTemplate.inlineData ) );
+ve.dm.example.MWTemplate.inlineStoreItems = {
+	'hash': ve.dm.example.MWTemplate.inlineParamsHash,
+	'value': ve.dm.example.MWTemplate.inlineOpen + ve.dm.example.MWTemplate.inlineContent + ve.dm.example.MWTemplate.inlineClose
+};
 
 ve.dm.example.domToDataCases = {
 	'paragraph with plain text': {
@@ -781,56 +845,58 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'mw:Template (block level)': {
-		'html': '<body>' + ve.dm.example.MWBlockTemplateSpan + ve.dm.example.MWBlockTemplateContent + '</body>',
+		'html': '<body>' + ve.dm.example.MWTemplate.blockSpan + ve.dm.example.MWTemplate.blockContent + '</body>',
 		'data': [
-			{
-				'type': 'MWtemplateBlock',
-				'mw': {
-					'id': 'mwt1',
-					'target': { 'wt' : 'Test' },
-					'params': {
-						'1': { 'wt': 'Hello, world!' }
-					}
-				},
-				'about': '#mwt1',
-				'attributes': {
-					'html/0/about': '#mwt1',
-					'html/0/data-mw': '{\"id\":\"mwt1\",\"target\":{\"wt\":\"Test\"},\"params\":{\"1\":{\"wt\":\"Hello, world!\"}}}',
-					'html/0/data-parsoid': '{\"tsr\":[18,40],\"src\":\"{{Test|Hello, world!}}\",\"dsr\":[18,40,null,null]}',
-					'html/0/typeof': 'mw:Object/Template',
-					'html/1/about': '#mwt1',
-					'html/1/data-parsoid': '{}'
-				},
-			},
+			ve.dm.example.MWTemplate.blockData,
 			{ 'type': '/MWtemplateBlock' },
 		],
-		'normalizedHtml': ve.dm.example.MWBlockTemplateSpan
+		'storeItems': [
+			ve.dm.example.MWTemplate.blockStoreItems
+		],
+		'normalizedHtml': ve.dm.example.MWTemplate.blockSpan + ve.dm.example.MWTemplate.blockContent
+	},
+	'mw:Template (block level - modified)': {
+		'html': '<body>' + ve.dm.example.MWTemplate.blockSpan + ve.dm.example.MWTemplate.blockContent + '</body>',
+		'data': [
+			ve.dm.example.MWTemplate.blockData,
+			{ 'type': '/MWtemplateBlock' },
+		],
+		'storeItems': [
+			ve.dm.example.MWTemplate.blockStoreItems
+		],
+		'modify': function( data ) {
+			data[0].attributes.mw.params['1'].wt = 'Hello, globe!';
+		},
+		'normalizedHtml': ve.dm.example.MWTemplate.blockSpanModified
 	},
 	'mw:Template (inline)': {
-		'html': '<body>' + ve.dm.example.MWInlineTemplateOpen + ve.dm.example.MWInlineTemplateContent + ve.dm.example.MWInlineTemplateClose + '</body>',
+		'html': '<body>' + ve.dm.example.MWTemplate.inlineOpen + ve.dm.example.MWTemplate.inlineContent + ve.dm.example.MWTemplate.inlineClose + '</body>',
 		'data': [
 			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
-			{
-				'type': 'MWtemplateInline',
-				'mw': {
-					'id': 'mwt1',
-					'target': { 'wt' : 'Inline' },
-					'params': {
-						'1': { 'wt': '1,234' }
-					}
-				},
-				'about': '#mwt1',
-				'attributes': {
-					'html/0/about': '#mwt1',
-					'html/0/data-mw': '{\"id\":\"mwt1\",\"target\":{\"wt\":\"Inline\"},\"params\":{\"1\":{\"wt\":\"1,234\"}}}',
-					'html/0/data-parsoid': '{\"tsr\":[18,34],\"src\":\"{{Inline|1,234}}\",\"dsr\":[18,34,null,null]}',
-					'html/0/typeof': 'mw:Object/Template'
-				},
-			},
+			ve.dm.example.MWTemplate.inlineData,
 			{ 'type': '/MWtemplateInline' },
 			{ 'type': '/paragraph' }
 		],
-		'normalizedHtml': ve.dm.example.MWInlineTemplateOpen + ve.dm.example.MWInlineTemplateClose
+		'storeItems': [
+			ve.dm.example.MWTemplate.inlineStoreItems
+		],
+		'normalizedHtml': ve.dm.example.MWTemplate.inlineOpen + ve.dm.example.MWTemplate.inlineContent + ve.dm.example.MWTemplate.inlineClose
+	},
+	'mw:Template (inline - modified)': {
+		'html': '<body>' + ve.dm.example.MWTemplate.inlineOpen + ve.dm.example.MWTemplate.inlineContent + ve.dm.example.MWTemplate.inlineClose + '</body>',
+		'data': [
+			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+			ve.dm.example.MWTemplate.inlineData,
+			{ 'type': '/MWtemplateInline' },
+			{ 'type': '/paragraph' }
+		],
+		'storeItems': [
+			ve.dm.example.MWTemplate.inlineStoreItems
+		],
+		'modify': function( data ) {
+			data[1].attributes.mw.params['1'].wt = '5,678';
+		},
+		'normalizedHtml': ve.dm.example.MWTemplate.inlineOpenModified + ve.dm.example.MWTemplate.inlineClose
 	},
 	'paragraph with alienInline inside': {
 		'html': '<body><p>a<tt class="foo">b</tt>c</p></body>',
