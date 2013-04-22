@@ -31,7 +31,7 @@ ve.init.mw.Target = function VeInitMwTarget( $container, pageName, revision ) {
 	this.submitUrl = ( new mw.Uri( mw.util.wikiGetlink( this.pageName ) ) )
 		.extend( { 'action': 'submit' } );
 	this.modules = [
-			mw.config.get( 'wgVisualEditor' ).enableExperimentalCode ?
+			mw.config.get( 'wgVisualEditorConfig' ).enableExperimentalCode ?
 				'ext.visualEditor.experimental' : 'ext.visualEditor.core',
 			'ext.visualEditor.specialMessages'
 		]
@@ -602,7 +602,7 @@ ve.init.mw.Target.prototype.reportProblem = function ( message ) {
 			'wiki': mw.config.get( 'wgDBname' )
 		};
 	$.post(
-		mw.config.get( 'wgVisualEditor' ).reportProblemURL,
+		mw.config.get( 'wgVisualEditorConfig' ).reportProblemURL,
 		{ 'data': JSON.stringify( report ) },
 		function () {
 			// This space intentionally left blank
