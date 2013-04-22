@@ -479,15 +479,14 @@
 		for ( i = 0; i < source.length; i++ ) {
 			sourceValue = source[i];
 			sourceType = typeof sourceValue;
-			if ( sourceType === 'string' || sourceType === 'number' || sourceType === 'boolean' ||
-					sourceType === 'undefined' || sourceValue === null ) {
-				destination.push( sourceValue );
-			} else if ( ve.isPlainObject( sourceValue ) ) {
+			if ( ve.isPlainObject( sourceValue ) ) {
 				destination.push( ve.copyObject( sourceValue ) );
 			} else if ( ve.isArray( sourceValue ) ) {
 				destination.push( ve.copyArray( sourceValue ) );
 			} else if ( sourceValue && typeof sourceValue.clone === 'function' ) {
 				destination.push( sourceValue.clone() );
+			} else {
+				destination.push( sourceValue );
 			}
 		}
 		return destination;
@@ -509,15 +508,14 @@
 		for ( key in source ) {
 			sourceValue = source[key];
 			sourceType = typeof sourceValue;
-			if ( sourceType === 'string' || sourceType === 'number' || sourceType === 'boolean' ||
-					sourceType === 'undefined' || sourceValue === null ) {
-				destination[key] = sourceValue;
-			} else if ( ve.isPlainObject( sourceValue ) ) {
+			if ( ve.isPlainObject( sourceValue ) ) {
 				destination[key] = ve.copyObject( sourceValue );
 			} else if ( ve.isArray( sourceValue ) ) {
 				destination[key] = ve.copyArray( sourceValue );
 			} else if ( sourceValue && typeof sourceValue.clone === 'function' ) {
 				destination[key] = sourceValue.clone();
+			} else {
+				destination[key] = sourceValue;
 			}
 		}
 		return destination;
