@@ -21,26 +21,23 @@ ve.dm.SurfaceFragment = function VeDmSurfaceFragment( surface, range, noAutoSele
 	}
 
 	// Properties
-	this.range = range && range instanceof ve.Range ? range : surface.getSelection();
+	this.surface = surface;
+	this.setRange( range && range instanceof ve.Range ? range : surface.getSelection() );
 	// Short-circuit for invalid range null fragment
 	if ( !this.range ) {
 		return this;
 	}
-	this.surface = surface;
 	this.document = surface.getDocument();
 	this.noAutoSelect = !!noAutoSelect;
-	this.onTransactHandler = ve.bind( this.onTransact, this );
 
-	// Events
-	surface.on( 'transact', this.onTransactHandler );
 
 	// Initialization
 	var length = this.document.data.getLength();
-	this.range = new ve.Range(
+	this.setRange( new ve.Range(
 		// Clamp range to valid document offsets
 		Math.min( Math.max( this.range.from, 0 ), length ),
 		Math.min( Math.max( this.range.to, 0 ), length )
-	);
+	) );
 };
 
 /* Static Properties */
@@ -55,16 +52,19 @@ ve.dm.SurfaceFragment.static = {};
 /* Methods */
 
 /**
- * Handle transactions being processed on the document.
- *
- * This keeps the range of the fragment valid, even while other transactions are being processed
+ * Update range based on un-applied transactions in the surface.
  *
  * @method
- * @param {ve.dm.Transaction[]} txs Transactions that have just been processed
  */
-ve.dm.SurfaceFragment.prototype.onTransact = function ( txs ) {
-	for ( var i = 0; i < txs.length; i++ ) {
-		this.range = txs[i].translateRange( this.range );
+ve.dm.SurfaceFragment.prototype.update = function () {
+	var i, length, txs;
+	// Small optimisation: check history pointer is in the past
+	if ( this.historyPointer < this.getSurface().getCompleteHistoryLength() ) {
+		txs = this.getSurface().getCompleteHistorySince( this.historyPointer );
+		for ( i = 0, length = txs.length; i < length; i++ ) {
+			this.range = txs[i].transaction.translateRange( this.range, txs[i].undo );
+			this.historyPointer++;
+		}
 	}
 };
 
@@ -91,11 +91,26 @@ ve.dm.SurfaceFragment.prototype.getDocument = function () {
 /**
  * Get the range of the fragment within the surface.
  *
+ * This method also calls update to make sure the range returned is current.
+ *
  * @method
+ * @param {boolean} noCopy Return the range by reference, not a copy
  * @returns {ve.Range} Surface range
  */
-ve.dm.SurfaceFragment.prototype.getRange = function () {
-	return this.range.clone();
+ve.dm.SurfaceFragment.prototype.getRange = function ( noCopy ) {
+	this.update();
+	return noCopy ? this.range : this.range.clone();
+};
+
+/**
+ * Update the range of the transaction and reset the history pointer.
+ *
+ * @method
+ * @param {ve.Range} range New range
+ */
+ve.dm.SurfaceFragment.prototype.setRange = function ( range ) {
+	this.historyPointer = this.getSurface().getCompleteHistoryLength();
+	this.range = range;
 };
 
 /**
@@ -106,21 +121,6 @@ ve.dm.SurfaceFragment.prototype.getRange = function () {
  */
 ve.dm.SurfaceFragment.prototype.isNull = function () {
 	return this.surface === undefined;
-};
-
-/**
- * Destroys fragment, removing event handlers and object references, leaving the fragment null.
- *
- * Call this whenever you are done using a fragment.
- *
- * @method
- */
-ve.dm.SurfaceFragment.prototype.destroy = function () {
-	if ( this.surface ) {
-		this.surface.removeListener( 'transact', this.onTransactHandler );
-		this.surface = null;
-		this.document = null;
-	}
 };
 
 /**
@@ -138,7 +138,7 @@ ve.dm.SurfaceFragment.prototype.adjustRange = function ( start, end ) {
 	}
 	return new ve.dm.SurfaceFragment(
 		this.surface,
-		new ve.Range( this.range.start + ( start || 0 ), this.range.end + ( end || 0 ) ),
+		new ve.Range( this.getRange( true ).start + ( start || 0 ), this.getRange( true ).end + ( end || 0 ) ),
 		this.noAutoSelect
 	);
 };
@@ -157,7 +157,7 @@ ve.dm.SurfaceFragment.prototype.truncateRange = function ( limit ) {
 	}
 	return new ve.dm.SurfaceFragment(
 		this.surface,
-		this.range.truncate( limit ),
+		this.getRange().truncate( limit ),
 		this.noAutoSelect
 	);
 };
@@ -174,7 +174,7 @@ ve.dm.SurfaceFragment.prototype.collapseRange = function () {
 		return this;
 	}
 	return new ve.dm.SurfaceFragment(
-		this.surface, new ve.Range( this.range.start ), this.noAutoSelect
+		this.surface, new ve.Range( this.getRange( true ).start ), this.noAutoSelect
 	);
 };
 
@@ -190,14 +190,14 @@ ve.dm.SurfaceFragment.prototype.trimRange = function () {
 		return this;
 	}
 	// If range is only whitespace
-	if ( this.document.getText( this.range ).trim().length === 0 ) {
+	if ( this.document.getText( this.getRange() ).trim().length === 0 ) {
 		// Collapse range
 		return new ve.dm.SurfaceFragment(
-			this.surface, new ve.Range( this.range.start ), this.noAutoSelect
+			this.surface, new ve.Range( this.getRange( true ).start ), this.noAutoSelect
 		);
 	}
 	return new ve.dm.SurfaceFragment(
-		this.surface, this.document.data.trimOuterSpaceFromRange( this.range ), this.noAutoSelect
+		this.surface, this.document.data.trimOuterSpaceFromRange( this.getRange() ), this.noAutoSelect
 	);
 };
 
@@ -223,30 +223,30 @@ ve.dm.SurfaceFragment.prototype.expandRange = function ( scope, type ) {
 	var range, node, nodes, parent;
 	switch ( scope || 'parent' ) {
 		case 'word':
-			if ( this.range.getLength() > 0 ) {
+			if ( this.getRange( true ).getLength() > 0 ) {
 				range = ve.Range.newCoveringRange( [
-					this.document.data.getNearestWordRange( this.range.start ),
-					this.document.data.getNearestWordRange( this.range.end )
+					this.document.data.getNearestWordRange( this.getRange( true ).start ),
+					this.document.data.getNearestWordRange( this.getRange( true ).end )
 				] );
-				if ( this.range.isBackwards() ) {
+				if ( this.getRange( true ).isBackwards() ) {
 					range = range.flip();
 				}
 			} else {
 				// optimisation for zero-length ranges
-				range = this.document.data.getNearestWordRange( this.range.start );
+				range = this.document.data.getNearestWordRange( this.getRange( true ).start );
 			}
 			break;
 		case 'annotation':
-			range = this.document.data.getAnnotatedRangeFromSelection( this.range, type );
+			range = this.document.data.getAnnotatedRangeFromSelection( this.getRange(), type );
 			// Adjust selection if it does not contain the annotated range
-			if ( this.range.start > range.start || this.range.end < range.end ) {
+			if ( this.getRange( true ).start > range.start || this.getRange( true ).end < range.end ) {
 				// Maintain range direction
-				if ( this.range.from > this.range.to ) {
+				if ( this.getRange( true ).from > this.getRange( true ).to ) {
 					range = range.flip();
 				}
 			} else {
 				// Otherwise just keep the range as is
-				range = this.range.clone();
+				range = this.getRange();
 			}
 			break;
 		case 'root':
@@ -254,7 +254,7 @@ ve.dm.SurfaceFragment.prototype.expandRange = function ( scope, type ) {
 			break;
 		case 'siblings':
 			// Grow range to cover all siblings
-			nodes = this.document.selectNodes( this.range, 'siblings' );
+			nodes = this.document.selectNodes( this.getRange(), 'siblings' );
 			if ( nodes.length === 1 ) {
 				range = nodes[0].node.getOuterRange();
 			} else {
@@ -266,7 +266,7 @@ ve.dm.SurfaceFragment.prototype.expandRange = function ( scope, type ) {
 			break;
 		case 'closest':
 			// Grow range to cover closest common ancestor node of given type
-			node = this.document.selectNodes( this.range, 'siblings' )[0].node;
+			node = this.document.selectNodes( this.getRange(), 'siblings' )[0].node;
 			parent = node.getParent();
 			while ( parent && parent.getType() !== type ) {
 				node = parent;
@@ -279,7 +279,7 @@ ve.dm.SurfaceFragment.prototype.expandRange = function ( scope, type ) {
 			break;
 		case 'parent':
 			// Grow range to cover the closest common parent node
-			node = this.document.selectNodes( this.range, 'siblings' )[0].node;
+			node = this.document.selectNodes( this.getRange(), 'siblings' )[0].node;
 			parent = node.getParent();
 			if ( !parent ) {
 				return new ve.dm.SurfaceFragment( null );
@@ -314,7 +314,7 @@ ve.dm.SurfaceFragment.prototype.getData = function ( deep ) {
 	if ( !this.surface ) {
 		return [];
 	}
-	return this.document.getData( this.range, deep );
+	return this.document.getData( this.getRange(), deep );
 };
 
 /**
@@ -330,7 +330,7 @@ ve.dm.SurfaceFragment.prototype.getText = function () {
 	}
 	var i, length,
 		text = '',
-		data = this.document.getData( this.range );
+		data = this.document.getData( this.getRange() );
 	for ( i = 0, length = data.length; i < length; i++ ) {
 		if ( data[i].type === undefined ) {
 			// Annotated characters have a string at index 0, plain characters are 1-char strings
@@ -355,8 +355,8 @@ ve.dm.SurfaceFragment.prototype.getAnnotations = function ( all ) {
 	if ( !this.surface ) {
 		return new ve.dm.AnnotationSet( this.getDocument().getStore() );
 	}
-	if ( this.range.getLength() ) {
-		return this.getDocument().data.getAnnotationsFromRange( this.range, all );
+	if ( this.getRange( true ).getLength() ) {
+		return this.getDocument().data.getAnnotationsFromRange( this.getRange(), all );
 	} else {
 		return this.surface.getInsertionAnnotations();
 	}
@@ -375,7 +375,7 @@ ve.dm.SurfaceFragment.prototype.getLeafNodes = function () {
 	if ( !this.surface ) {
 		return [];
 	}
-	return this.document.selectNodes( this.range, 'leaves' );
+	return this.document.selectNodes( this.getRange(), 'leaves' );
 };
 
 /**
@@ -395,7 +395,7 @@ ve.dm.SurfaceFragment.prototype.getCoveredNodes = function () {
 	if ( !this.surface ) {
 		return [];
 	}
-	return this.document.selectNodes( this.range, 'coveredNodes' );
+	return this.document.selectNodes( this.getRange(), 'coveredNodes' );
 };
 
 /**
@@ -413,7 +413,7 @@ ve.dm.SurfaceFragment.prototype.getSiblingNodes = function () {
 	if ( !this.surface ) {
 		return [];
 	}
-	return this.document.selectNodes( this.range, 'siblings' );
+	return this.document.selectNodes( this.getRange(), 'siblings' );
 };
 
 /**
@@ -439,7 +439,7 @@ ve.dm.SurfaceFragment.prototype.select = function () {
 	if ( !this.surface ) {
 		return this;
 	}
-	this.surface.change( null, this.range );
+	this.surface.change( null, this.getRange() );
 	return this;
 };
 
@@ -469,10 +469,10 @@ ve.dm.SurfaceFragment.prototype.annotateContent = function ( method, nameOrAnnot
 	} else {
 		annotation = ve.dm.annotationFactory.create( nameOrAnnotation, data );
 	}
-	if ( this.range.getLength() ) {
+	if ( this.getRange( true ).getLength() ) {
 		// Apply to selection
-		tx = ve.dm.Transaction.newFromAnnotation( this.document, this.range, method, annotation );
-		this.surface.change( tx, !this.noAutoSelect && tx.translateRange( this.range ) );
+		tx = ve.dm.Transaction.newFromAnnotation( this.document, this.getRange(), method, annotation );
+		this.surface.change( tx, !this.noAutoSelect && tx.translateRange( this.getRange() ) );
 	} else {
 		// Apply annotation to stack
 		if ( method === 'set' ) {
@@ -500,7 +500,7 @@ ve.dm.SurfaceFragment.prototype.insertContent = function ( content, annotate ) {
 		return this;
 	}
 	var tx, annotations;
-	if ( this.range.getLength() ) {
+	if ( this.getRange( true ).getLength() ) {
 		this.removeContent();
 	}
 	// Auto-convert content to array of plain text characters
@@ -509,13 +509,13 @@ ve.dm.SurfaceFragment.prototype.insertContent = function ( content, annotate ) {
 	}
 	if ( content.length ) {
 		if ( annotate ) {
-			annotations = this.document.data.getAnnotationsFromOffset( this.range.start - 1 );
+			annotations = this.document.data.getAnnotationsFromOffset( this.getRange( true ).start - 1 );
 			if ( annotations.getLength() > 0 ) {
 				ve.dm.Document.addAnnotationsToData( content, annotations );
 			}
 		}
-		tx = ve.dm.Transaction.newFromInsertion( this.document, this.range.start, content );
-		this.surface.change( tx, !this.noAutoSelect && tx.translateRange( this.range ) );
+		tx = ve.dm.Transaction.newFromInsertion( this.document, this.getRange( true ).start, content );
+		this.surface.change( tx, !this.noAutoSelect && tx.translateRange( this.getRange() ) );
 	}
 	return this;
 };
@@ -532,19 +532,18 @@ ve.dm.SurfaceFragment.prototype.removeContent = function () {
 		return this;
 	}
 	var tx;
-	if ( this.range.getLength() ) {
-		tx = ve.dm.Transaction.newFromRemoval( this.document, this.range );
-		// this.range will be translated via the onTransact event handler
-		this.surface.change( tx, !this.noAutoSelect && tx.translateRange( this.range ) );
+	if ( this.getRange( true ).getLength() ) {
+		tx = ve.dm.Transaction.newFromRemoval( this.document, this.getRange() );
+		this.surface.change( tx, !this.noAutoSelect && tx.translateRange( this.getRange() ) );
 		// Check if the range didn't get collapsed automatically - this will occur when removing
 		// content across un-mergable nodes because the delete only strips out content leaving
 		// structure at the beginning and end of the range in place
-		if ( this.range.getLength() ) {
+		if ( this.getRange( true ).getLength() ) {
 			// Collapse the range manually
-			this.range = new ve.Range( this.range.start );
+			this.range = new ve.Range( this.getRange( true ).start );
 			if ( !this.noAutoSelect ) {
 				// Update the surface selection
-				this.surface.change( null, this.range );
+				this.surface.change( null, this.getRange() );
 			}
 		}
 	}
@@ -565,8 +564,8 @@ ve.dm.SurfaceFragment.prototype.convertNodes = function ( type, attr ) {
 		return this;
 	}
 	var tx =
-		ve.dm.Transaction.newFromContentBranchConversion( this.document, this.range, type, attr );
-	this.surface.change( tx, !this.noAutoSelect && tx.translateRange( this.range ) );
+		ve.dm.Transaction.newFromContentBranchConversion( this.document, this.getRange(), type, attr );
+	this.surface.change( tx, !this.noAutoSelect && tx.translateRange( this.getRange() ) );
 	return this;
 };
 
@@ -597,10 +596,10 @@ ve.dm.SurfaceFragment.prototype.wrapNodes = function ( wrapper ) {
 	if ( !ve.isArray( wrapper ) ) {
 		wrapper = [wrapper];
 	}
-	var tx = ve.dm.Transaction.newFromWrap( this.document, this.range, [], [], [], wrapper ),
-		newRange = new ve.Range( this.range.start, this.range.end + tx.getLengthDifference() );
+	var tx = ve.dm.Transaction.newFromWrap( this.document, this.getRange(), [], [], [], wrapper ),
+		newRange = new ve.Range( this.getRange( true ).start, this.getRange( true ).end + tx.getLengthDifference() );
 	this.surface.change( tx, !this.noAutoSelect && newRange );
-	this.range = newRange;
+	this.setRange( newRange );
 	return this;
 };
 
@@ -624,22 +623,22 @@ ve.dm.SurfaceFragment.prototype.unwrapNodes = function ( outerDepth, innerDepth 
 	}
 	var i, tx, newRange, innerUnwrapper = [], outerUnwrapper = [];
 
-	if ( this.range.end - this.range.start < innerDepth * 2 ) {
+	if ( this.getRange( true ).end - this.getRange( true ).start < innerDepth * 2 ) {
 		throw new Error( 'cannot unwrap by greater depth than maximum theoretical depth of selection' );
 	}
 
 	for ( i = 0; i < innerDepth; i++ ) {
-		innerUnwrapper.push( this.surface.getDocument().data.getData( this.range.start + i ) );
+		innerUnwrapper.push( this.surface.getDocument().data.getData( this.getRange( true ).start + i ) );
 	}
 	for ( i = outerDepth; i > 0; i-- ) {
-		outerUnwrapper.push( this.surface.getDocument().data.getData( this.range.start - i ) );
+		outerUnwrapper.push( this.surface.getDocument().data.getData( this.getRange( true ).start - i ) );
 	}
 
-	tx = ve.dm.Transaction.newFromWrap( this.document, this.range, outerUnwrapper, [], innerUnwrapper, [] );
-	newRange = new ve.Range( this.range.start - outerDepth, this.range.end + outerDepth + tx.getLengthDifference() );
+	tx = ve.dm.Transaction.newFromWrap( this.document, this.getRange(), outerUnwrapper, [], innerUnwrapper, [] );
+	newRange = new ve.Range( this.getRange( true ).start - outerDepth, this.getRange( true ).end + outerDepth + tx.getLengthDifference() );
 	this.surface.change( tx, !this.noAutoSelect && newRange );
 
-	this.range = newRange;
+	this.setRange( newRange );
 
 	return this;
 };
@@ -676,19 +675,19 @@ ve.dm.SurfaceFragment.prototype.rewrapNodes = function ( depth, wrapper ) {
 		wrapper = [wrapper];
 	}
 
-	if ( this.range.end - this.range.start < depth * 2 ) {
+	if ( this.getRange( true ).end - this.getRange( true ).start < depth * 2 ) {
 		throw new Error( 'cannot unwrap by greater depth than maximum theoretical depth of selection' );
 	}
 
 	for ( i = 0; i < depth; i++ ) {
-		unwrapper.push( this.surface.getDocument().data.getData( this.range.start + i ) );
+		unwrapper.push( this.surface.getDocument().data.getData( this.getRange( true ).start + i ) );
 	}
 
-	tx = ve.dm.Transaction.newFromWrap( this.document, this.range, [], [], unwrapper, wrapper );
-	newRange = new ve.Range( this.range.start, this.range.end + tx.getLengthDifference() );
+	tx = ve.dm.Transaction.newFromWrap( this.document, this.getRange(), [], [], unwrapper, wrapper );
+	newRange = new ve.Range( this.getRange( true ).start, this.getRange( true ).end + tx.getLengthDifference() );
 	this.surface.change( tx, !this.noAutoSelect && newRange );
 
-	this.range = newRange;
+	this.setRange( newRange );
 
 	return this;
 };
@@ -724,11 +723,11 @@ ve.dm.SurfaceFragment.prototype.wrapAllNodes = function ( wrapper ) {
 		wrapper = [wrapper];
 	}
 
-	tx = ve.dm.Transaction.newFromWrap( this.document, this.range, [], wrapper, [], [] );
-	newRange = new ve.Range( this.range.start, this.range.end + tx.getLengthDifference() );
+	tx = ve.dm.Transaction.newFromWrap( this.document, this.getRange(), [], wrapper, [], [] );
+	newRange = new ve.Range( this.getRange( true ).start, this.getRange( true ).end + tx.getLengthDifference() );
 	this.surface.change( tx, !this.noAutoSelect && newRange );
 
-	this.range = newRange;
+	this.setRange( newRange );
 
 	return this;
 };
@@ -757,25 +756,25 @@ ve.dm.SurfaceFragment.prototype.rewrapAllNodes = function ( depth, wrapper ) {
 		return this;
 	}
 	var i, tx, newRange, unwrapper = [],
-		innerRange = new ve.Range( this.range.start + depth, this.range.end - depth );
+		innerRange = new ve.Range( this.getRange( true ).start + depth, this.getRange( true ).end - depth );
 
 	if ( !ve.isArray( wrapper ) ) {
 		wrapper = [wrapper];
 	}
 
-	if ( this.range.end - this.range.start < depth * 2 ) {
+	if ( this.getRange( true ).end - this.getRange( true ).start < depth * 2 ) {
 		throw new Error( 'cannot unwrap by greater depth than maximum theoretical depth of selection' );
 	}
 
 	for ( i = 0; i < depth; i++ ) {
-		unwrapper.push( this.surface.getDocument().data.getData( this.range.start + i ) );
+		unwrapper.push( this.surface.getDocument().data.getData( this.getRange( true ).start + i ) );
 	}
 
 	tx = ve.dm.Transaction.newFromWrap( this.document, innerRange, unwrapper, wrapper, [], [] );
-	newRange = new ve.Range( this.range.start, this.range.end + tx.getLengthDifference() );
+	newRange = new ve.Range( this.getRange( true ).start, this.getRange( true ).end + tx.getLengthDifference() );
 	this.surface.change( tx, !this.noAutoSelect && newRange );
 
-	this.range = newRange;
+	this.setRange( newRange );
 
 	return this;
 };
@@ -807,7 +806,7 @@ ve.dm.SurfaceFragment.prototype.isolateAndUnwrap = function ( isolateForType ) {
 		startSplitNodes = [],
 		endSplitNodes = [],
 		fragment = this,
-		newRange = new ve.Range( this.range.start, this.range.end );
+		newRange = new ve.Range( this.getRange( true ).start, this.getRange( true ).end );
 
 	function createSplits( splitNodes, insertBefore ) {
 		var i, length,
@@ -830,7 +829,7 @@ ve.dm.SurfaceFragment.prototype.isolateAndUnwrap = function ( isolateForType ) {
 		endOffset += endOffsetChange;
 	}
 
-	nodes = this.getDocument().selectNodes( this.range, 'siblings' );
+	nodes = this.getDocument().selectNodes( this.getRange(), 'siblings' );
 
 	// Find start split point, if required
 	startSplitNode = nodes[0].node;

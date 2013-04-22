@@ -94,7 +94,7 @@ ve.ce.ImageNode.prototype.onClick = function ( e ) {
 				[ selectionRange, nodeRange ], selectionRange.from > nodeRange.from
 			) :
 			nodeRange
-	).select().destroy();
+	).select();
 };
 
 /* Registration */

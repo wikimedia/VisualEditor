@@ -79,7 +79,6 @@ ve.ui.Toolbar.prototype.onContextChange = function () {
 		}
 	}
 	this.emit( 'updateState', nodes, fragment.getAnnotations(), fragment.getAnnotations( true ) );
-	fragment.destroy();
 };
 
 /**
