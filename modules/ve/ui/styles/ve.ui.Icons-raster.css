@@ -5,7 +5,12 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-.ve-ui-reference {
+.ve-ui-icon-menu {
+	/* @embed */
+	background-image: url(images/icons/menu.png);
+}
+
+.ve-ui-icon-reference {
 	/* @embed */
 	background-image: url(images/icons/reference.png);
 }
