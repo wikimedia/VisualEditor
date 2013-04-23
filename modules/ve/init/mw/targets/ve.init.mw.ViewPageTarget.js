@@ -721,8 +721,9 @@ ve.init.mw.ViewPageTarget.prototype.tearDownSurface = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.setupSkinTabs = function () {
-	var action, pTabsId, $caSource, $caEdit, caVeEdit, caVeEditSource, caVeEditNextnode, uriClone;
+	var action, pTabsId, $caSource, $caEdit, $caEditLink, caVeEdit, caVeEditSource, caVeEditNextnode, uriClone;
 	$caEdit = $( '#ca-edit' );
+	$caEditLink = $caEdit.find( 'a' );
 	$caSource = $( '#ca-viewsource' );
 	caVeEditNextnode = $caEdit.next().get( 0 );
 
@@ -735,9 +736,9 @@ ve.init.mw.ViewPageTarget.prototype.setupSkinTabs = function () {
 	action = this.pageExists ? 'edit' : 'create';
 	pTabsId = $( '#p-views' ).length ? 'p-views' : 'p-cactions';
 
-	// Add independent ve-edit tab.
+	// Add independent "VisualEditor"  tab (#ca-ve-edit).
 	if ( this.tabLayout === 'add' ) {
-		// Create "Edit" tab.
+
 		caVeEdit = mw.util.addPortletLink(
 			pTabsId,
 			// Use url instead of '#'.
@@ -754,18 +755,18 @@ ve.init.mw.ViewPageTarget.prototype.setupSkinTabs = function () {
 			caVeEditNextnode
 		);
 
-	// Replace edit with ve version, add editsource link.
+	// Replace "Edit" tab with a veEditUri version, add "Edit source" tab.
 	} else {
 		// Create "Edit source" link.
 		// Re-create instead of convert ca-edit since we don't want to copy over accesskey etc.
 		caVeEditSource = mw.util.addPortletLink(
 			pTabsId,
 			// Use original href to preserve oldid etc. (bug 38125)
-			$caEdit.find( 'a' ).attr( 'href' ),
+			$caEditLink.attr( 'href' ),
 			ve.msg( 'visualeditor-ca-editsource' ),
 			'ca-editsource',
-			null,
-			null,
+			ve.msg( 'tooltip-ca-editsource' ),
+			ve.msg( 'accesskey-ca-editsource' ),
 			caVeEditNextnode
 		);
 
@@ -779,10 +780,10 @@ ve.init.mw.ViewPageTarget.prototype.setupSkinTabs = function () {
 			// 2) when onEditTabClick is not bound (!isViewPage) it will
 			// just work.
 			this.veEditUri,
-			$caEdit.text(),
+			$caEditLink.text(),
 			$caEdit.attr( 'id' ),
-			$caEdit.attr( 'title' ),
-			$caEdit.attr( 'accesskey' ),
+			$caEditLink.attr( 'title' ),
+			$caEditLink.attr( 'accesskey' ),
 			caVeEditSource
 		);
 	}
