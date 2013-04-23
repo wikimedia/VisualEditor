@@ -433,10 +433,11 @@ ve.init.mw.ViewPageTarget.prototype.onShowChangesError = function ( jqXHR, statu
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.onEditConflict = function () {
+	var doc = this.surface.getDocumentModel();
 	if ( confirm( ve.msg( 'visualeditor-editconflict', status ) ) ) {
 		// Get Wikitext from the DOM, and setup a submit call when it's done
 		this.serialize(
-			ve.dm.converter.getDomFromData( this.surface.getDocumentModel().getStore(), this.surface.getDocumentModel().getFullData() ),
+			ve.dm.converter.getDomFromData( doc.getFullData(), doc.getStore(), doc.getInternalList() ),
 			ve.bind( function ( wikitext ) {
 				this.submit( wikitext, this.getSaveOptions() );
 			}, this )
@@ -569,10 +570,11 @@ ve.init.mw.ViewPageTarget.prototype.onSurfaceModelHistory = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.onSaveDialogSaveButtonClick = function () {
+	var doc = this.surface.getDocumentModel();
 	this.saveDialogSaveButton.setDisabled( true );
 	this.$saveDialogLoadingIcon.show();
 	this.save(
-		ve.dm.converter.getDomFromData( this.surface.getDocumentModel().getStore(), this.surface.getDocumentModel().getFullData() ),
+		ve.dm.converter.getDomFromData( doc.getFullData(), doc.getStore(), doc.getInternalList() ),
 		this.getSaveOptions()
 	);
 };
@@ -1206,7 +1208,7 @@ ve.init.mw.ViewPageTarget.prototype.resetSaveDialog = function () {
  * @throws {Error} Unknown saveDialog slide
  */
 ve.init.mw.ViewPageTarget.prototype.swapSaveDialog = function ( slide ) {
-	var $slide, $viewer;
+	var $slide, $viewer, doc = this.surface.getDocumentModel();
 	if ( ve.indexOf( slide, [ 'review', 'report', 'save'] ) === -1 ) {
 		throw new Error( 'Unknown saveDialog slide: ' + slide );
 	}
@@ -1239,11 +1241,11 @@ ve.init.mw.ViewPageTarget.prototype.swapSaveDialog = function ( slide ) {
 			if ( this.pageExists ) {
 				// Has no callback, handled via viewPage.onShowChanges
 				this.showChanges(
-					ve.dm.converter.getDomFromData( this.surface.getDocumentModel().getStore(), this.surface.getDocumentModel().getFullData() )
+					ve.dm.converter.getDomFromData( doc.getFullData(), doc.getStore(), doc.getInternalList() )
 				);
 			} else {
 				this.serialize(
-					ve.dm.converter.getDomFromData( this.surface.getDocumentModel().getStore(), this.surface.getDocumentModel().getFullData() ),
+					ve.dm.converter.getDomFromData( doc.getFullData(), doc.getStore(), doc.getInternalList() ),
 					function ( wikitext ) {
 						$viewer.empty().append( $( '<pre>' ).text( wikitext ) );
 

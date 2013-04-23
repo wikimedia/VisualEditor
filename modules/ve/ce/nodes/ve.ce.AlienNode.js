@@ -1,5 +1,5 @@
 /*!
- * VisualEditor ContentEditable AlienNode class.
+ * VisualEditor ContentEditable AlienNode, AlienBlockNode and AlienInlineNode classes.
  *
  * @copyright 2011-2013 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
@@ -119,7 +119,7 @@ ve.ce.AlienNode.prototype.onSurfaceMouseMove = function ( e ) {
  * @param {jQuery.Event} e
  */
 ve.ce.AlienNode.prototype.onSurfaceMouseOut = function ( e ) {
-	if ( e.toElement === null) {
+	if ( e.toElement === null ) {
 		this.clearPhantoms();
 	}
 };

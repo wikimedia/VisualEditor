@@ -41,6 +41,7 @@ ve.dm.Document = function VeDmDocument( documentOrData, parentDocument ) {
 		currentNode = this.documentNode;
 	this.documentNode.setDocument( doc );
 	this.documentNode.setRoot( root );
+	this.internalList = new ve.dm.InternalList( this );
 
 	// Properties
 	this.parentDocument = parentDocument;
@@ -48,7 +49,7 @@ ve.dm.Document = function VeDmDocument( documentOrData, parentDocument ) {
 	if ( documentOrData instanceof ve.dm.LinearData ) {
 		this.data = documentOrData;
 	} else if ( !ve.isArray( documentOrData ) && typeof documentOrData === 'object' ) {
-		this.data = ve.dm.converter.getDataFromDom( new ve.dm.IndexValueStore(), documentOrData );
+		this.data = ve.dm.converter.getDataFromDom( documentOrData, new ve.dm.IndexValueStore(), this.getInternalList() );
 	} else {
 		this.data = new ve.dm.ElementLinearData(
 			new ve.dm.IndexValueStore(),
@@ -272,6 +273,14 @@ ve.dm.Document.prototype.getMetadata = function ( range, deep ) {
  */
 ve.dm.Document.prototype.getStore = function () {
 	return this.store;
+};
+
+/**
+ * Get the document's internal list
+ * @returns {ve.dm.InternalList} The document's internal list
+ */
+ve.dm.Document.prototype.getInternalList = function () {
+	return this.internalList;
 };
 
 /**

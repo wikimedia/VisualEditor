@@ -582,8 +582,10 @@ ve.init.mw.Target.prototype.serialize = function ( doc, callback ) {
 ve.init.mw.Target.prototype.reportProblem = function ( message ) {
 	// Gather reporting information
 	var now = new Date(),
-		editedData = this.surface.getDocumentModel().getFullData(),
-		store = this.surface.getDocumentModel().getStore(),
+		doc = this.surface.getDocumentModel(),
+		editedData = doc.getFullData(),
+		store = doc.getStore(),
+		internalList = doc.getInternalList(),
 		report = {
 			'title': this.pageName,
 			'oldid': this.oldid,
@@ -594,11 +596,12 @@ ve.init.mw.Target.prototype.reportProblem = function ( message ) {
 			'originalData':
 				// originalHTML only has the body's HTML for now, see TODO comment in ve.init.mw.ViewPageTarget.prototype.setUpSurface
 				// FIXME: need to expand this data before sending it, see bug 47319
-				ve.dm.converter.getDataFromDom( store,
-					ve.createDocumentFromHTML( '<body>' + this.originalHtml  + '</body>' )
-			),
+				ve.dm.converter.getDataFromDom(
+					ve.createDocumentFromHTML( '<body>' + this.originalHtml  + '</body>' ),
+					store, internalList
+				),
 			'editedData': editedData,
-			'editedHtml': ve.properInnerHTML( ve.dm.converter.getDomFromData( store, editedData ).body ),
+			'editedHtml': ve.properInnerHTML( ve.dm.converter.getDomFromData( editedData, store, internalList ).body ),
 			'wiki': mw.config.get( 'wgDBname' )
 		};
 	$.post(

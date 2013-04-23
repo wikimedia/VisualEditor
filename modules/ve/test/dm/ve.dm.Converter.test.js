@@ -40,7 +40,7 @@ QUnit.test( 'getDomElementsFromDataElement', 20, function ( assert ) {
 } );
 
 QUnit.test( 'getDataFromDom', function ( assert ) {
-	var msg, store, i, length, hash, n = 0,
+	var msg, store, internalList, i, length, hash, n = 0,
 		cases = ve.copyObject( ve.dm.example.domToDataCases );
 
 	// TODO: this is a hack to make normal heading/preformatted
@@ -61,9 +61,10 @@ QUnit.test( 'getDataFromDom', function ( assert ) {
 	for ( msg in cases ) {
 		if ( cases[msg].html !== null ) {
 			store = new ve.dm.IndexValueStore();
+			internalList = new ve.dm.InternalList();
 			ve.dm.example.preprocessAnnotations( cases[msg].data, store );
 			assert.deepEqual(
-				ve.dm.converter.getDataFromDom( store, ve.createDocumentFromHTML( cases[msg].html ) ).getData(),
+				ve.dm.converter.getDataFromDom( ve.createDocumentFromHTML( cases[msg].html ), store, internalList ).getData(),
 				cases[msg].data,
 				msg
 			);
@@ -83,7 +84,7 @@ QUnit.test( 'getDataFromDom', function ( assert ) {
 } );
 
 QUnit.test( 'getDomFromData', function ( assert ) {
-	var msg, originalData, store, i, length, n = 0,
+	var msg, originalData, doc, store, i, length, n = 0,
 		cases = ve.copyObject( ve.dm.example.domToDataCases );
 
 	for ( msg in cases ) {
@@ -103,13 +104,13 @@ QUnit.test( 'getDomFromData', function ( assert ) {
 		if( ve.dm.example.domToDataCases[msg].modify ) {
 			ve.dm.example.domToDataCases[msg].modify( cases[msg].data );
 		}
-		ve.dm.example.preprocessAnnotations( cases[msg].data, store );
-		originalData = ve.copyArray( cases[msg].data );
+		doc = new ve.dm.Document( ve.dm.example.preprocessAnnotations( cases[msg].data, store ) );
+		originalData = ve.copyArray( doc.getFullData() );
 		assert.equalDomElement(
-			ve.dm.converter.getDomFromData( store, cases[msg].data ),
+			ve.dm.converter.getDomFromData( doc.getFullData(), doc.getStore(), doc.getInternalList() ),
 			ve.createDocumentFromHTML( cases[msg].normalizedHtml || cases[msg].html ),
 			msg
 		);
-		assert.deepEqual( cases[msg].data, originalData, msg + ' (data hasn\'t changed)' );
+		assert.deepEqual( doc.getFullData(), originalData, msg + ' (data hasn\'t changed)' );
 	}
 } );

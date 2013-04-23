@@ -6,7 +6,7 @@
  */
 
 /**
- * DataModel MW preformatted node.
+ * DataModel MediaWiki preformatted node.
  *
  * @class
  * @extends ve.dm.PreformattedNode

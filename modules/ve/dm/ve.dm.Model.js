@@ -130,7 +130,7 @@ ve.dm.Model.static.toDataElement = function ( /*domElements, converter*/ ) {
  * If this model is a node with .handlesOwnChildren set to true, dataElement will be an array of
  * the linear model data of this node and all of its children, rather than a single element.
  * In this case, this function way want to recursively convert linear model data to DOM, which can
- * be done with converter.getDomSubtreeFromData( store, data, containerElement );
+ * be done with converter#getDomSubtreeFromData.
  *
  * NOTE: If this function returns multiple DOM elements, the DOM elements produced by the children
  * of this model (if it's a node and has children) will be attached to the first DOM element in the array.

@@ -328,6 +328,27 @@ ve.dm.example.alienData = [
 	// 10 - End of document
 ];
 
+ve.dm.example.internalData = [
+	{ 'type': 'paragraph' },
+	'F', 'o', 'o',
+	{ 'type': '/paragraph' },
+	{ 'type': 'internalList' },
+	{ 'type': 'internalItem' },
+	{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+	'B', 'a', 'r',
+	{ 'type': '/paragraph' },
+	{ 'type': '/internalItem' },
+	{ 'type': 'internalItem' },
+	{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+	'B', 'a', 'z',
+	{ 'type': '/paragraph' },
+	{ 'type': '/internalItem' },
+	{ 'type': '/internalList' },
+	{ 'type': 'paragraph' },
+	'Q', 'u', 'u', 'x',
+	{ 'type': '/paragraph' }
+];
+
 ve.dm.example.withMeta = [
 	{
 		'type': 'alienMeta',
@@ -897,6 +918,144 @@ ve.dm.example.domToDataCases = {
 			data[1].attributes.mw.params['1'].wt = '5,678';
 		},
 		'normalizedHtml': ve.dm.example.MWTemplate.inlineOpenModified + ve.dm.example.MWTemplate.inlineClose
+	},
+	'mw:Reference': {
+		'html':
+			'<body>' +
+				'<p>Foo' +
+					'<span id="cite_ref-bar-1-0" class="reference" about="#mwt5" typeof="mw:Object/Ext/Ref" ' +
+						'data-parsoid="{&quot;src&quot:&quot;<ref name=\\&quot;bar\\&quot;>Bar</ref>&quot;}">'+
+						'<a href="#cite_note-bar-1" data-parsoid="{}">[1]</a>' +
+					'</span>' +
+					' Baz' +
+					'<span id="cite_ref-quux-2-0" class="reference" about="#mwt6" typeof="mw:Object/Ext/Ref" ' +
+						'data-parsoid="{&quot;src&quot;:&quot;<ref name=\\&quot;quux\\&quot;>Quux</ref>&quot;}">' +
+						'<a href="#cite_note-quux-2" data-parsoid="{}">[2]</a>' +
+					'</span>' +
+					' Whee' +
+					'<span id="cite_ref-bar-1-1" class="reference" about="#mwt7" typeof="mw:Object/Ext/Ref" ' +
+						'data-parsoid="{&quot;src&quot;:&quot;<ref name=\\&quot;bar\\&quot; />&quot;}">' +
+						'<a href="#cite_note-bar-1" data-parsoid="{}">[1]</a>' +
+					'</span>' +
+					' Yay' +
+					'<span id="cite_ref-3-0" class="reference" about="#mwt8" typeof="mw:Object/Ext/Ref" ' +
+						'data-parsoid="{&quot;src&quot;:&quot;<ref>No name</ref>&quot;}">' +
+						'<a href="#cite_note-3" data-parsoid="{}">[3]</a>' +
+					'</span>' +
+				'</p>' +
+				'<ol class="references" typeof="mw:Object/References">' +
+					'<li li="cite_note-quux-2"><a href="#cite_ref-quux-2-0">u2191</a>Quux</li>' +
+				'</ol>' +
+			'</body>',
+		'data': [
+			{ 'type': 'paragraph' },
+			'F', 'o', 'o',
+			{
+				'type': 'MWreference',
+				'attributes': {
+					'about': '#mwt5',
+					'listIndex': 0,
+					'mw': {},
+					'html/0/about': '#mwt5',
+					'html/0/class': 'reference',
+					'html/0/data-parsoid': '{"src":"<ref name=\\"bar\\">Bar</ref>"}',
+					'html/0/id': 'cite_ref-bar-1-0',
+					'html/0/typeof': 'mw:Object/Ext/Ref'
+				}
+			},
+			{ 'type': '/MWreference' },
+			' ', 'B', 'a', 'z',
+			{
+				'type': 'MWreference',
+				'attributes': {
+					'about': '#mwt6',
+					'listIndex': 1,
+					'mw': {},
+					'html/0/about': '#mwt6',
+					'html/0/class': 'reference',
+					'html/0/data-parsoid': '{"src":"<ref name=\\"quux\\">Quux</ref>"}',
+					'html/0/id': 'cite_ref-quux-2-0',
+					'html/0/typeof': 'mw:Object/Ext/Ref'
+				}
+			},
+			{ 'type': '/MWreference' },
+			' ', 'W', 'h', 'e', 'e',
+			{
+				'type': 'MWreference',
+				'attributes': {
+					'about': '#mwt7',
+					'listIndex': 0,
+					'mw': {},
+					'html/0/about': '#mwt7',
+					'html/0/class': 'reference',
+					'html/0/data-parsoid': '{"src":"<ref name=\\"bar\\" />"}',
+					'html/0/id': 'cite_ref-bar-1-1',
+					'html/0/typeof': 'mw:Object/Ext/Ref'
+				}
+			},
+			{ 'type': '/MWreference' },
+			' ', 'Y', 'a', 'y',
+			{
+				'type': 'MWreference',
+				'attributes': {
+					'about': '#mwt8',
+					'listIndex': 2,
+					'mw': {},
+					'html/0/about': '#mwt8',
+					'html/0/class': 'reference',
+					'html/0/data-parsoid': '{"src":"<ref>No name</ref>"}',
+					'html/0/id': 'cite_ref-3-0',
+					'html/0/typeof': 'mw:Object/Ext/Ref'
+				}
+			},
+			{ 'type': '/MWreference' },
+			{ 'type': '/paragraph' },
+			{
+				'type': 'MWreferenceList',
+				'attributes': {
+					'html': '<ol class="references" typeof="mw:Object/References"><li li="cite_note-quux-2"><a href="#cite_ref-quux-2-0">u2191</a>Quux</li></ol>',
+					'html/0/class': 'references',
+					'html/0/typeof': 'mw:Object/References'
+				}
+			},
+			{ 'type': '/MWreferenceList' },
+			{ 'type': 'internalList' },
+			{ 'type': 'internalItem' },
+			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+			'B', 'a', 'r',
+			{ 'type': '/paragraph' },
+			{ 'type': '/internalItem' },
+			{ 'type': 'internalItem' },
+			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+			'Q', 'u', 'u', 'x',
+			{ 'type': '/paragraph' },
+			{ 'type': '/internalItem' },
+			{ 'type': 'internalItem' },
+			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+			'N', 'o', ' ', 'n', 'a', 'm', 'e',
+			{ 'type': '/paragraph' },
+			{ 'type': '/internalItem' },
+			{ 'type': '/internalList' }
+		],
+		'normalizedHtml':
+			'<p>Foo' +
+				'<span id="cite_ref-bar-1-0" class="reference" about="#mwt5" typeof="mw:Object/Ext/Ref" ' +
+					'data-parsoid="{&quot;src&quot:&quot;<ref name=\\&quot;bar\\&quot;>Bar</ref>&quot;}">'+
+				'</span>' +
+				' Baz' +
+				'<span id="cite_ref-quux-2-0" class="reference" about="#mwt6" typeof="mw:Object/Ext/Ref" ' +
+					'data-parsoid="{&quot;src&quot;:&quot;<ref name=\\&quot;quux\\&quot;>Quux</ref>&quot;}">' +
+				'</span>' +
+				' Whee' +
+				'<span id="cite_ref-bar-1-1" class="reference" about="#mwt7" typeof="mw:Object/Ext/Ref" ' +
+					'data-parsoid="{&quot;src&quot;:&quot;<ref name=\\&quot;bar\\&quot; />&quot;}">' +
+				'</span>' +
+				' Yay' +
+				'<span id="cite_ref-3-0" class="reference" about="#mwt8" typeof="mw:Object/Ext/Ref" ' +
+					'data-parsoid="{&quot;src&quot;:&quot;<ref>No name</ref>&quot;}">' +
+				'</span>' +
+			'</p>' +
+			'<ol class="references" typeof="mw:Object/References"></ol>'
 	},
 	'paragraph with alienInline inside': {
 		'html': '<body><p>a<tt class="foo">b</tt>c</p></body>',

@@ -23,7 +23,9 @@ ve.dm.Converter = function VeDmConverter( modelRegistry, nodeFactory, annotation
 	this.annotationFactory = annotationFactory;
 	this.metaItemFactory = metaItemFactory;
 	this.doc = null;
+	this.documentData = null;
 	this.store = null;
+	this.internalList = null;
 	this.contextStack = null;
 };
 
@@ -205,6 +207,9 @@ ve.dm.Converter.prototype.getDomElementsFromDataElement = function ( dataElement
 	if ( !nodeClass ) {
 		throw new Error( 'Attempting to convert unknown data element type ' + dataElement.type );
 	}
+	if ( nodeClass.static.isInternal ) {
+		return false;
+	}
 	domElements = nodeClass.static.toDomElements( dataElements, doc, this );
 	if ( !domElements || !domElements.length ) {
 		throw new Error( 'toDomElements() failed to return an array when converting element of type ' + dataElement.type );
@@ -285,26 +290,33 @@ ve.dm.Converter.prototype.getDomElementFromDataAnnotation = function ( dataAnnot
 
 /**
  * Convert an HTML document to a linear model.
- * @param {ve.dm.IndexValueStore} store Index-value store
  * @param {HTMLDocument} doc HTML document to convert
+ * @param {ve.dm.IndexValueStore} store Index-value store
+ * @param {ve.dm.InternalList} internalList Internal list
  * @returns {ve.dm.ElementLinearData} Linear model data
  */
-ve.dm.Converter.prototype.getDataFromDom = function ( store, doc ) {
-	var result;
+ve.dm.Converter.prototype.getDataFromDom = function ( doc, store, internalList ) {
+	var linearData, refData;
 	// Set up the converter state
 	this.doc = doc;
 	this.store = store;
+	this.internalList = internalList;
 	this.contextStack = [];
 	// Possibly do things with doc and the head in the future
-	result = new ve.dm.ElementLinearData(
+
+	linearData = new ve.dm.ElementLinearData(
 		store,
 		this.getDataFromDomRecursion( doc.body )
 	);
+	refData = this.internalList.getDataFromDom( this );
+	linearData.batchSplice( linearData.getLength(), 0, refData );
+
 	// Clear the state
 	this.doc = null;
 	this.store = null;
+	this.internalList = null;
 	this.contextStack = null;
-	return result;
+	return linearData;
 };
 
 /**
@@ -764,15 +776,25 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, wrapp
  * Convert linear model data to an HTML DOM
  *
  * @method
+ * @param {Array} documentData Linear model data
  * @param {ve.dm.IndexValueStore} store Index-value store
- * @param {Array} data Linear model data
+ * @param {ve.dm.InternalList} internalList Internal list
  * @returns {HTMLDocument} Document containing the resulting HTML
  */
-ve.dm.Converter.prototype.getDomFromData = function ( store, data ) {
+ve.dm.Converter.prototype.getDomFromData = function ( documentData, store, internalList ) {
 	var doc = ve.createDocumentFromHTML( '' );
+	// Set up the converter state
+	this.documentData = documentData;
 	this.store = store;
-	this.getDomSubtreeFromData( data, doc.body );
+	this.internalList = internalList;
+
+	this.getDomSubtreeFromData( documentData, doc.body );
+
+	// Clear the state
+	this.documentData = null;
 	this.store = null;
+	this.internalList = null;
+
 	return doc;
 };
 
@@ -1072,60 +1094,62 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container ) {
 				// Create node from data
 				dataElementOrSlice = getDataElementOrSlice();
 				childDomElements = this.getDomElementsFromDataElement( dataElementOrSlice, doc );
-				// Add clone of internal data; we use a clone rather than a reference because
-				// we modify .veInternal.whitespace[1] in some cases
-				childDomElements[0].veInternal = ve.extendObject(
-					{ 'childDomElements': childDomElements },
-					ve.copyObject( dataElement.internal || {} )
-				);
-				// Add elements
-				for ( j = 0; j < childDomElements.length; j++ ) {
-					domElement.appendChild( childDomElements[j] );
-				}
-				// Descend into the first child node
-				parentDomElement = domElement;
-				domElement = childDomElements[0];
-
-				// Process outer whitespace
-				// Every piece of outer whitespace is duplicated somewhere:
-				// each node's outerPost is duplicated as the next node's
-				// outerPre, the first node's outerPre is the parent's
-				// innerPre, and the last node's outerPost is the parent's
-				// innerPost. For each piece of whitespace, we verify that
-				// the duplicate matches. If it doesn't, we take that to
-				// mean the user has messed with it and don't output any
-				// whitespace.
-				if ( domElement.veInternal && domElement.veInternal.whitespace ) {
-					// Process this node's outerPre
-					ours = domElement.veInternal.whitespace[0];
-					theirs = undefined;
-					if ( domElement.previousSibling ) {
-						// Get previous sibling's outerPost
-						theirs = parentDomElement.lastOuterPost;
-					} else if ( parentDomElement === container ) {
-						// outerPre of the very first node in the document, this one
-						// has no duplicate
-						theirs = ours;
-					} else {
-						// First child, get parent's innerPre
-						if (
-							parentDomElement.veInternal &&
-							parentDomElement.veInternal.whitespace
-						) {
-							theirs = parentDomElement.veInternal.whitespace[1];
-							// Clear after use so it's not used twice
-							parentDomElement.veInternal.whitespace[1] = undefined;
-						}
-						// else theirs=undefined
+				if ( childDomElements ) {
+					// Add clone of internal data; we use a clone rather than a reference because
+					// we modify .veInternal.whitespace[1] in some cases
+					childDomElements[0].veInternal = ve.extendObject(
+						{ 'childDomElements': childDomElements },
+						ve.copyObject( dataElement.internal || {} )
+					);
+					// Add elements
+					for ( j = 0; j < childDomElements.length; j++ ) {
+						domElement.appendChild( childDomElements[j] );
 					}
-					if ( ours && ours === theirs ) {
-						// Matches the duplicate, insert a TextNode
-						textNode = doc.createTextNode( ours );
-						textNode.veIsWhitespace = true;
-						parentDomElement.insertBefore(
-							textNode,
-							domElement
-						);
+					// Descend into the first child node
+					parentDomElement = domElement;
+					domElement = childDomElements[0];
+
+					// Process outer whitespace
+					// Every piece of outer whitespace is duplicated somewhere:
+					// each node's outerPost is duplicated as the next node's
+					// outerPre, the first node's outerPre is the parent's
+					// innerPre, and the last node's outerPost is the parent's
+					// innerPost. For each piece of whitespace, we verify that
+					// the duplicate matches. If it doesn't, we take that to
+					// mean the user has messed with it and don't output any
+					// whitespace.
+					if ( domElement.veInternal && domElement.veInternal.whitespace ) {
+						// Process this node's outerPre
+						ours = domElement.veInternal.whitespace[0];
+						theirs = undefined;
+						if ( domElement.previousSibling ) {
+							// Get previous sibling's outerPost
+							theirs = parentDomElement.lastOuterPost;
+						} else if ( parentDomElement === container ) {
+							// outerPre of the very first node in the document, this one
+							// has no duplicate
+							theirs = ours;
+						} else {
+							// First child, get parent's innerPre
+							if (
+								parentDomElement.veInternal &&
+								parentDomElement.veInternal.whitespace
+							) {
+								theirs = parentDomElement.veInternal.whitespace[1];
+								// Clear after use so it's not used twice
+								parentDomElement.veInternal.whitespace[1] = undefined;
+							}
+							// else theirs=undefined
+						}
+						if ( ours && ours === theirs ) {
+							// Matches the duplicate, insert a TextNode
+							textNode = doc.createTextNode( ours );
+							textNode.veIsWhitespace = true;
+							parentDomElement.insertBefore(
+								textNode,
+								domElement
+							);
+						}
 					}
 				}
 

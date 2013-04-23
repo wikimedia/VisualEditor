@@ -66,6 +66,10 @@
 				"classes": ["ve.dm.*MetaItem", "ve.dm.MetaList"]
 			},
 			{
+				"name": "Internal list",
+				"classes": ["ve.dm.InternalList"]
+			},
+			{
 				"name": "Nodes",
 				"classes": ["ve.dm.Document", "ve.dm.*Node"]
 			},

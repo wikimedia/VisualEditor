@@ -6,7 +6,7 @@
  */
 
 /**
- * DataModel MW heading node.
+ * DataModel MediaWiki heading node.
  *
  * @class
  * @extends ve.dm.HeadingNode
