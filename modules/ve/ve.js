@@ -951,7 +951,7 @@
 		// Attach it to the document. We have to do this to get a new document out of it
 		document.documentElement.appendChild( iframe );
 		// Write the HTML to it
-		newDocument = ( iframe.contentWindow || iframe.contentDocument ).document;
+		newDocument = ( iframe.contentWindow && iframe.contentWindow.document ) || iframe.contentDocument;
 		newDocument.open();
 		newDocument.write( html ); // Party like it's 1995!
 		newDocument.close();
