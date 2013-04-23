@@ -26,27 +26,48 @@ QUnit.test( 'constructor', 8, function ( assert ) {
 	assert.strictEqual( fragment.willAutoSelect(), false, 'noAutoSelect values are boolean' );
 } );
 
-QUnit.test( 'update', 2, function ( assert ) {
+QUnit.test( 'update', 3, function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument(),
 		surface = new ve.dm.Surface( doc ),
-		fragment1 = new ve.dm.SurfaceFragment( surface, new ve.Range( 1, 56 ) ),
-		fragment2 = new ve.dm.SurfaceFragment( surface, new ve.Range( 2, 4 ) ),
-		fragment3 = new ve.dm.SurfaceFragment( surface, new ve.Range( 2, 4 ) );
-	fragment1.removeContent();
+		fragment1 = new ve.dm.SurfaceFragment( surface, new ve.Range( 55, 61 ) ),
+		fragment2 = new ve.dm.SurfaceFragment( surface, new ve.Range( 55, 61 ) ),
+		fragment3 = new ve.dm.SurfaceFragment( surface, new ve.Range( 55, 61 ) );
+	fragment1.wrapNodes(
+		[{ 'type': 'list', 'attributes': { 'style': 'bullet' } }, { 'type': 'listItem' }]
+	);
 	assert.deepEqual(
 		fragment2.getRange(),
-		new ve.Range( 1, 1 ),
-		'fragment range collapses after removeContent'
+		new ve.Range( 55, 69 ),
+		'fragment range changes after wrapNodes'
 	);
 	surface.undo();
 	assert.deepEqual(
 		fragment3.getRange(),
-		new ve.Range( 4, 4 ),
-		'fragment range moved after undo'
+		new ve.Range( 55, 61 ),
+		'fragment range restored after undo'
 	);
+
+	fragment1 = new ve.dm.SurfaceFragment( surface, new ve.Range( 1, 1 ) );
+	surface.breakpoint();
+
+	fragment1.insertContent( '01' );
+	surface.breakpoint();
+
+	fragment1 = fragment1.collapseRangeToEnd();
+	fragment1.insertContent( '234' );
+	fragment2 = fragment1.adjustRange();
+
+	surface.undo();
+	fragment1.insertContent( '5678' );
+	assert.deepEqual(
+		fragment2.getRange(),
+		new ve.Range( 3, 7 ),
+		'Range created during truncated undo point still translates correctly'
+	);
+
 } );
 
-QUnit.test( 'adjustRange', 3, function ( assert ) {
+QUnit.test( 'adjustRange', 4, function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument(),
 		surface = new ve.dm.Surface( doc ),
 		fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 20, 21 ) ),
@@ -54,16 +75,24 @@ QUnit.test( 'adjustRange', 3, function ( assert ) {
 	assert.ok( fragment !== adjustedFragment, 'adjustRange produces a new fragment' );
 	assert.deepEqual( fragment.getRange(), new ve.Range( 20, 21 ), 'old fragment is not changed' );
 	assert.deepEqual( adjustedFragment.getRange(), new ve.Range( 1, 56 ), 'new range is used' );
+
+	adjustedFragment = fragment.adjustRange();
+	assert.deepEqual( adjustedFragment, fragment, 'fragment is clone if no parameters supplied' );
 } );
 
-QUnit.test( 'collapseRange', 3, function ( assert ) {
+QUnit.test( 'collapseRangeToStart/End', 6, function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument(),
 		surface = new ve.dm.Surface( doc ),
 		fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 20, 21 ) ),
-		collapsedFragment = fragment.collapseRange();
-	assert.ok( fragment !== collapsedFragment, 'collapseRange produces a new fragment' );
+		collapsedFragment = fragment.collapseRangeToStart();
+	assert.ok( fragment !== collapsedFragment, 'collapseRangeToStart produces a new fragment' );
 	assert.deepEqual( fragment.getRange(), new ve.Range( 20, 21 ), 'old fragment is not changed' );
 	assert.deepEqual( collapsedFragment.getRange(), new ve.Range( 20, 20 ), 'new range is used' );
+
+	collapsedFragment = fragment.collapseRangeToEnd();
+	assert.ok( fragment !== collapsedFragment, 'collapseRangeToEnd produces a new fragment' );
+	assert.deepEqual( fragment.getRange(), new ve.Range( 20, 21 ), 'old fragment is not changed' );
+	assert.deepEqual( collapsedFragment.getRange(), new ve.Range( 21, 21 ), 'range is at end when collapseToEnd is set' );
 } );
 
 QUnit.test( 'expandRange (closest)', 1, function ( assert ) {
@@ -112,13 +141,15 @@ QUnit.test( 'expandRange (word)', 1, function ( assert ) {
 	}
 } );
 
-QUnit.test( 'removeContent', 2, function ( assert ) {
+QUnit.test( 'removeContent', 6, function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument(),
+		originalDoc = ve.dm.example.createExampleDocument(),
+		expectedDoc = ve.dm.example.createExampleDocument(),
 		surface = new ve.dm.Surface( doc ),
 		fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 1, 56 ) ),
-		expectedData = ve.copyArray( ve.dm.example.data.slice( 0, 1 ) )
-			.concat( ve.copyArray( ve.dm.example.data.slice( 4, 5 ) ) )
-			.concat( ve.copyArray( ve.dm.example.data.slice( 55 ) ) );
+		expectedData = ve.copyArray( expectedDoc.data.slice( 0, 1 ) )
+			.concat( ve.copyArray( expectedDoc.data.slice( 4, 5 ) ) )
+			.concat( ve.copyArray( expectedDoc.data.slice( 55 ) ) );
 	ve.setProp( expectedData[0], 'internal', 'changed', 'content', 1 );
 	fragment.removeContent();
 	assert.deepEqual(
@@ -128,12 +159,39 @@ QUnit.test( 'removeContent', 2, function ( assert ) {
 	);
 	assert.deepEqual(
 		fragment.getRange(),
+		new ve.Range( 1, 3 ),
+		'removing content results in a fragment covering just remaining structure'
+	);
+	surface.undo();
+	assert.deepEqual(
+		doc.getData(),
+		originalDoc.getData(),
+		'content restored after undo'
+	);
+	assert.deepEqual(
+		fragment.getRange(),
+		new ve.Range( 1, 56 ),
+		'range restored after undo'
+	);
+
+	fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 1, 4 ) );
+	fragment.removeContent();
+	assert.deepEqual(
+		doc.getData( new ve.Range( 0, 2 ) ),
+		[
+			{ 'type': 'heading', 'attributes': { 'level': 1 }, 'internal': { 'changed': { 'content' : 1 } } },
+			{ 'type': '/heading'}
+		],
+		'removing content empties node'
+	);
+	assert.deepEqual(
+		fragment.getRange(),
 		new ve.Range( 1, 1 ),
-		'removing content results in a zero-length fragment'
+		'removing content collapses range'
 	);
 } );
 
-QUnit.test( 'insertContent', 3, function ( assert ) {
+QUnit.test( 'insertContent', 4, function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument(),
 		surface = new ve.dm.Surface( doc ),
 		fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 1, 4 ) );
@@ -145,14 +203,25 @@ QUnit.test( 'insertContent', 3, function ( assert ) {
 	);
 	assert.deepEqual(
 		fragment.getRange(),
-		new ve.Range( 4, 4 ),
-		'inserting content results in a zero-length fragment'
+		new ve.Range( 1, 4 ),
+		'inserting content results in range around content'
 	);
+
+	surface.breakpoint();
+	fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 4 ) );
 	fragment.insertContent( '321' );
 	assert.deepEqual(
 		doc.getData( new ve.Range( 4, 7 ) ),
 		['3', '2', '1'],
 		'strings get converted into data when inserting content'
+	);
+
+	surface.undo();
+	fragment.getRange();
+	assert.deepEqual(
+		fragment.getRange(),
+		new ve.Range( 4 ),
+		'range restored after undo'
 	);
 } );
 

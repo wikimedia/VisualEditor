@@ -136,7 +136,7 @@ ve.ui.LinkInspector.prototype.onClose = function ( action ) {
 	// Call parent method
 	ve.ui.Inspector.prototype.onClose.call( this, action );
 
-	var i, len, annotations, selection, adjustedFragment,
+	var i, len, annotations, selection,
 		insert = false,
 		undo = false,
 		clear = false,
@@ -165,13 +165,10 @@ ve.ui.LinkInspector.prototype.onClose = function ( action ) {
 		}
 	}
 	if ( insert ) {
-		// Insert default text and select it
 		fragment.insertContent( target, false );
-		adjustedFragment = fragment.adjustRange( -target.length, 0 );
-		fragment = adjustedFragment;
 
-		// Move cursor to the end of the inserted content
-		selection = new ve.Range( this.initialSelection.start + target.length );
+		// Move cursor to the end of the inserted content, even if back button is used
+		this.previousSelection = new ve.Range( this.initialSelection.start + target.length );
 	}
 	if ( undo ) {
 		// Go back to before we added an annotation

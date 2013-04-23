@@ -1006,8 +1006,8 @@ QUnit.test( 'translateRange', function ( assert ) {
 	cases = [
 		{
 			'before': new ve.Range( 55, 61 ),
-			'after': new ve.Range( 57, 65 ),
-			'msg': 'Wrapped range is translated to inner range'
+			'after': new ve.Range( 55, 67 ),
+			'msg': 'Wrapped range is translated to outer range'
 		},
 		{
 			'before': new ve.Range( 54, 62 ),
@@ -1016,12 +1016,12 @@ QUnit.test( 'translateRange', function ( assert ) {
 		},
 		{
 			'before': new ve.Range( 54, 61 ),
-			'after': new ve.Range( 54, 65 ),
+			'after': new ve.Range( 54, 67 ),
 			'msg': 'Wrapped range plus one on the left'
 		},
 		{
 			'before': new ve.Range( 55, 62 ),
-			'after': new ve.Range( 57, 68 ),
+			'after': new ve.Range( 55, 68 ),
 			'msg': 'wrapped range plus one on the right'
 		}
 	];

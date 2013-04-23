@@ -705,13 +705,7 @@ ve.dm.ElementLinearData.prototype.getNearestWordRange = function ( offset ) {
 		} else if ( !unicodeJS.wordbreak.isBreak( dataString, offset - 1 ) ) {
 			offset--;
 		} else {
-			// just return one character to the right, unless we are at the end
-			// of the text, in which case the character to the left
-			if ( dataString.read( offset ) !== null ) {
-				return new ve.Range( offset, offset + 1 );
-			} else {
-				return new ve.Range( offset - 1, offset );
-			}
+			return new ve.Range( offset );
 		}
 	}
 

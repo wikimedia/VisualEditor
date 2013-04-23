@@ -326,8 +326,7 @@ ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
 			originFragment.removeContent();
 
 			// Re-insert node at new location and re-select it
-			targetFragment.insertContent( nodeData );
-			targetFragment.adjustRange( -nodeData.length, 0 ).select();
+			targetFragment.insertContent( nodeData ).select();
 		}, this ) );
 	}
 

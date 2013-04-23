@@ -1312,13 +1312,13 @@ QUnit.test( 'getNearestWordRange', function ( assert ) {
 			'phrase': '维基百科',
 			'msg': 'Hanzi characters (cursor in middle)',
 			'offset': 2,
-			'expected': '百'
+			'expected': ''
 		},
 		{
 			'phrase': '维基百科',
 			'msg': 'Hanzi characters (cursor at end)',
 			'offset': 4,
-			'expected': '科'
+			'expected': ''
 		},
 		{
 			'phrase': 'Costs £1,234.00 each',
