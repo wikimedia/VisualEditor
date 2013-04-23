@@ -18,17 +18,29 @@ ve.ui = {
 /**
  * Gets a jQuery function within a specific document.
  *
- * @param {jQuery|HTMLDocument} context Context to bind the function to
+ * @param {jQuery|HTMLElement|HTMLDocument} context Context to bind the function to
  * @param {ve.ui.Frame} [frame] Frame of the document context
  * @returns {Function} Bound jQuery function
  */
 ve.ui.get$$ = function ( context, frame ) {
-	function $$( selector ) {
-		return $( selector, context instanceof jQuery ? context.context : context );
+	function wrapper( selector ) {
+		return $( selector, wrapper.context );
 	}
-	$$.context = context;
+	if ( context instanceof jQuery ) {
+		// jQuery - selections created "offscreen" won't have a context, so .context isn't reliable
+		wrapper.context = context[0].ownerDocument;
+	} else if ( context.ownerDocument ) {
+		// HTMLElement
+		wrapper.context = context.ownerDocument;
+	} else {
+		// HTMLDocument
+		wrapper.context = context;
+	}
+	if ( !wrapper.context ) {
+		throw new Error( 'Invalid context' );
+	}
 	if ( frame ) {
-		$$.frame = frame;
+		wrapper.frame = frame;
 	}
-	return $$;
+	return wrapper;
 };
