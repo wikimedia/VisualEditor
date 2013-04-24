@@ -60,7 +60,17 @@ ve.dm.ElementLinearData.prototype.isElementData = function ( offset ) {
 };
 
 /**
- * Checks if data at a given offset is a close elements.
+ * Checks if data at a given offset is an open element.
+ * @method
+ * @param {number} offset Document offset
+ * @returns {boolean} Data at offset is an open element
+ */
+ve.dm.ElementLinearData.prototype.isOpenElementData = function ( offset ) {
+	return this.isElementData( offset ) && this.getData( offset ).type.charAt( 0 ) !== '/';
+};
+
+/**
+ * Checks if data at a given offset is a close element.
  * @method
  * @param {number} offset Document offset
  * @returns {boolean} Data at offset is a close element
@@ -284,6 +294,36 @@ ve.dm.ElementLinearData.prototype.isContentData = function () {
 };
 
 /**
+ * Get annotations' store indexes covered by an offset.
+ *
+ * @method
+ * @param {number} offset Offset to get annotations for
+ * @returns {number[]} An array of annotation store indexes the offset is covered by
+ * @throws {Error} offset out of bounds
+ */
+ve.dm.ElementLinearData.prototype.getAnnotationIndexesFromOffset = function ( offset ) {
+	if ( offset < 0 || offset > this.getLength() ) {
+		throw new Error( 'offset ' + offset + ' out of bounds' );
+	}
+	var element = this.getData( offset );
+	// Since annotations are not stored on a closing leaf node,
+	// rewind offset by 1 to return annotations for that structure
+	if (
+		ve.isPlainObject( element ) && // structural offset
+		element.hasOwnProperty( 'type' ) && // just in case
+		element.type.charAt( 0 ) === '/' && // closing offset
+		ve.dm.nodeFactory.canNodeHaveChildren(
+			element.type.substr( 1 )
+		) === false // leaf node
+	) {
+		offset = this.getRelativeContentOffset( offset, -1 );
+		element = this.getData( offset );
+	}
+
+	return element.annotations || element[1] || [];
+};
+
+/**
  * Get annotations covered by an offset.
  *
  * The returned AnnotationSet is a clone of the one in the document data.
@@ -294,27 +334,7 @@ ve.dm.ElementLinearData.prototype.isContentData = function () {
  * @throws {Error} offset out of bounds
  */
 ve.dm.ElementLinearData.prototype.getAnnotationsFromOffset = function ( offset ) {
-	if ( offset < 0 || offset > this.getLength() ) {
-		throw new Error( 'offset ' + offset + ' out of bounds' );
-	}
-	// Since annotations are not stored on a closing leaf node,
-	// rewind offset by 1 to return annotations for that structure
-	var annotations;
-	if (
-		ve.isPlainObject( this.getData( offset ) ) && // structural offset
-		this.getData( offset ).hasOwnProperty( 'type' ) && // just in case
-		this.getData( offset ).type.charAt( 0 ) === '/' && // closing offset
-		ve.dm.nodeFactory.canNodeHaveChildren(
-			this.getData( offset ).type.substr( 1 )
-		) === false // leaf node
-	) {
-		offset = this.getRelativeContentOffset( offset, -1 );
-	}
-
-	annotations = this.getData( offset ).annotations || this.getData( offset )[1];
-	return annotations ?
-		new ve.dm.AnnotationSet( this.getStore(), annotations ) :
-		new ve.dm.AnnotationSet( this.getStore() );
+	return new ve.dm.AnnotationSet( this.getStore(), this.getAnnotationIndexesFromOffset( offset ) );
 };
 
 /**
@@ -390,7 +410,7 @@ ve.dm.ElementLinearData.prototype.getAnnotatedRangeFromOffset = function ( offse
  *
  * @method
  * @param {number} offset Offset to begin looking forward and backward from
- * @param {Object} annotation Annotation to test for coverage with
+ * @param {ve.dm.Annotation} annotation Annotation to test for coverage with
  * @returns {ve.Range|null} Range of content covered by annotation, or a copy of the range
  */
 ve.dm.ElementLinearData.prototype.getAnnotatedRangeFromSelection = function ( range, annotation ) {
@@ -699,4 +719,32 @@ ve.dm.ElementLinearData.prototype.getNearestWordRange = function ( offset ) {
 	offsetLeft = unicodeJS.wordbreak.prevBreakOffset( dataString, offset );
 
 	return new ve.Range( offsetLeft, offsetRight );
+};
+
+/**
+ * Finds all instances of items being stored in the index-value store for this data store
+ *
+ * Currently this is just all annotations still in use.
+ *
+ * @method
+ * @returns {Object} Object containing all store values, indexed by store index
+ */
+ve.dm.ElementLinearData.prototype.getUsedStoreValues = function () {
+	var i, indexes, j, valueStore = {};
+	i = this.getLength();
+	while ( i-- ) {
+		// Annotations
+		indexes = this.getAnnotationIndexesFromOffset( i );
+		j = indexes.length;
+		while ( j-- ) {
+			// Just flag item as in use for now - we will add its value
+			// in a separate loop to avoid multiple store lookups
+			valueStore[indexes[j]] = true;
+		}
+	}
+	for ( i in valueStore ) {
+		// Fill in actual store values
+		valueStore[i] = this.getStore().value( i );
+	}
+	return valueStore;
 };

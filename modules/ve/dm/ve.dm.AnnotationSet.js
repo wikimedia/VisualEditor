@@ -9,8 +9,8 @@
  * Annotation set.
  *
  * @constructor
- * @param {ve.dm.IndexValueStore} store Index value store
- * @param {Object[]} [indexes] Array of indexes into the store
+ * @param {ve.dm.IndexValueStore} store Index-value store
+ * @param {number[]} [indexes] Array of indexes into the store
  */
 ve.dm.AnnotationSet = function VeDmAnnotationSet( store, indexes ) {
 	// Parent constructor
@@ -63,14 +63,14 @@ ve.dm.AnnotationSet.prototype.hasAnnotationWithName = function ( name ) {
 };
 
 /**
- * Get a value or all values from the set.
+ * Get an annotation or all annotations from the set.
  *
- * set.get( 5 ) returns the object at index 5, set.get() returns an array with all objects in
+ * set.get( 5 ) returns the annotation at index 5, set.get() returns an array with all annotations in
  * the entire set.
  *
  * @method
- * @param {number} [index] If set, only get the element at the index
- * @returns {Array|Object|undefined} The object at index, or an array of all objects in the set
+ * @param {number} [index] If set, only get the annotation at the index
+ * @returns {Array|ve.dm.Annotation|undefined} The annotation at index, or an array of all annotation in the set
  */
 ve.dm.AnnotationSet.prototype.get = function ( index ) {
 	if ( index !== undefined ) {
@@ -81,17 +81,17 @@ ve.dm.AnnotationSet.prototype.get = function ( index ) {
 };
 
 /**
- * Get index-value store index from offset within annotation set.
+ * Get store index from offset within annotation set.
  * @param {number} offset Offset within annotation set
- * @returns {number} Index-value store index at specified offset
+ * @returns {number} Store index at specified offset
  */
 ve.dm.AnnotationSet.prototype.getIndex = function ( offset ) {
 	return this.storeIndexes[offset];
 };
 
 /**
- * Get all index-value store indexes.
- * @returns {Array} Index-value store indexes
+ * Get all store indexes.
+ * @returns {Array} Store indexes
  */
 ve.dm.AnnotationSet.prototype.getIndexes = function () {
 	return this.storeIndexes;
@@ -101,7 +101,7 @@ ve.dm.AnnotationSet.prototype.getIndexes = function () {
  * Get the length of the set.
  *
  * @method
- * @returns {number} The number of objects in the set
+ * @returns {number} The number of annotations in the set
  */
 ve.dm.AnnotationSet.prototype.getLength = function () {
 	return this.storeIndexes.length;
@@ -118,23 +118,24 @@ ve.dm.AnnotationSet.prototype.isEmpty = function () {
 };
 
 /**
- * Check whether a given value occurs in the set.
+ * Check whether a given annotation occurs in the set.
  *
- * Values are compared by IndexValueStore index.
+ * Annotations are compared by store index.
  *
  * @method
- * @returns {boolean} There is an object in the set with the same hash as value
+ * @param {ve.dm.Annotation} annotation Annotation
+ * @returns {boolean} There is an annotation in the set with the same hash as annotation
  */
-ve.dm.AnnotationSet.prototype.contains = function ( value ) {
-	return this.indexOf( value ) !== -1;
+ve.dm.AnnotationSet.prototype.contains = function ( annotation ) {
+	return this.indexOf( annotation ) !== -1;
 };
 
 /**
- * Check whether the set contains any of the values in another set.
+ * Check whether the set contains any of the annotations in another set.
  *
  * @method
  * @param {ve.dm.AnnotationSet} set Set to compare the set with
- * @returns {boolean} There is at least one value in set that is also in the set
+ * @returns {boolean} There is at least one annotation in set that is also in the set
  */
 ve.dm.AnnotationSet.prototype.containsAnyOf = function ( set ) {
 	var i, length, setIndexes = set.getIndexes(), thisIndexes = this.getIndexes();
@@ -147,11 +148,11 @@ ve.dm.AnnotationSet.prototype.containsAnyOf = function ( set ) {
 };
 
 /**
- * Check whether the set contains all of the values in another set.
+ * Check whether the set contains all of the annotations in another set.
  *
  * @method
  * @param {ve.dm.AnnotationSet} set Set to compare the set with
- * @returns {boolean} All values in set are also in the set
+ * @returns {boolean} All annotations in set are also in the set
  */
 ve.dm.AnnotationSet.prototype.containsAllOf = function ( set ) {
 	var i, length, setIndexes = set.getIndexes(), thisIndexes = this.getIndexes();
@@ -164,28 +165,28 @@ ve.dm.AnnotationSet.prototype.containsAllOf = function ( set ) {
 };
 
 /**
- * Get the index of a given value in the set.
+ * Get the index of a given annotation in the set.
  *
  * @method
- * @param {Object} value Value to search for
- * @returns {number} Index of value in the set, or -1 if value is not in the set.
+ * @param {ve.dm.Annotation} annotation Annotation to search for
+ * @returns {number} Index of annotation in the set, or -1 if annotation is not in the set.
  */
-ve.dm.AnnotationSet.prototype.indexOf = function ( value ) {
-	return ve.indexOf( this.store.indexOfHash( ve.getHash( value ) ), this.getIndexes() );
+ve.dm.AnnotationSet.prototype.indexOf = function ( annotation ) {
+	return ve.indexOf( this.store.indexOfHash( ve.getHash( annotation ) ), this.getIndexes() );
 };
 
 /**
  * Filter the set by an item property.
  *
- * This returns a new set with all values in the set for which the callback returned true for.
+ * This returns a new set with all annotations in the set for which the callback returned true for.
  *
  * @method
  * @param {Function} callback Function that takes an annotation and returns boolean true to include
  * @param {boolean} [returnBool] For internal use only
- * @returns {ve.dm.AnnotationSet} New set containing only the matching values
+ * @returns {ve.dm.AnnotationSet} New set containing only the matching annotations
  */
 ve.dm.AnnotationSet.prototype.filter = function ( callback, returnBool ) {
-	var i, length, result, storeIndex, value;
+	var i, length, result, storeIndex, annotation;
 
 	if ( !returnBool ) {
 		result = this.clone();
@@ -196,8 +197,8 @@ ve.dm.AnnotationSet.prototype.filter = function ( callback, returnBool ) {
 	}
 	for ( i = 0, length = this.getLength(); i < length; i++ ) {
 		storeIndex = this.getIndex( i );
-		value = this.getStore().value( storeIndex );
-		if ( callback( value ) ) {
+		annotation = this.getStore().value( storeIndex );
+		if ( callback( annotation ) ) {
 			if ( returnBool ) {
 				return true;
 			} else {
@@ -209,7 +210,7 @@ ve.dm.AnnotationSet.prototype.filter = function ( callback, returnBool ) {
 };
 
 /**
- * Check if the set contains at least one value where a given property matches a given filter.
+ * Check if the set contains at least one annotation where a given property matches a given filter.
  *
  * This is equivalent to (but more efficient than) `!this.filter( .. ).isEmpty()`.
  *
@@ -217,46 +218,46 @@ ve.dm.AnnotationSet.prototype.filter = function ( callback, returnBool ) {
  *
  * @method
  * @param {Function} callback Function that takes an annotation and returns boolean true to include
- * @returns {boolean} True if at least one value matches, false otherwise
+ * @returns {boolean} True if at least one annotation matches, false otherwise
  */
 ve.dm.AnnotationSet.prototype.containsMatching = function ( callback ) {
 	return this.filter( callback, true );
 };
 
 /**
- * Add a value to the set.
+ * Add an annotation to the set.
  *
- * If the value is already present in the set, nothing happens.
+ * If the annotation is already present in the set, nothing happens.
  *
- * The value will be inserted before the value that is currently at the given index. If index is
+ * The annotation will be inserted before the annotation that is currently at the given index. If index is
  * negative, it will be counted from the end (i.e. index -1 is the last item, -2 the second-to-last,
- * etc.). If index is out of bounds, the value will be added to the end of the set.
+ * etc.). If index is out of bounds, the annotation will be added to the end of the set.
  *
  * @method
- * @param {Object} value Value to add
- * @param {number} index Index to add the value at
+ * @param {ve.dm.Annotation} annotation Annotation to add
+ * @param {number} index Index to add the annotation at
  */
-ve.dm.AnnotationSet.prototype.add = function ( value, index ) {
-	var storeIndex = this.getStore().index( value );
+ve.dm.AnnotationSet.prototype.add = function ( annotation, index ) {
+	var storeIndex = this.getStore().index( annotation );
 	// negative offset
 	if ( index < 0 ) {
 		index = this.getLength() + index;
 	}
 	// greater than length, add to end
 	if ( index >= this.getLength() ) {
-		this.push( value );
+		this.push( annotation );
 		return;
 	}
 	// if not in set already, splice in place
-	if ( !this.contains( value ) ) {
+	if ( !this.contains( annotation ) ) {
 		this.storeIndexes.splice( index, 0, storeIndex );
 	}
 };
 
 /**
- * Add all values in the given set to the end of the set.
+ * Add all annotations in the given set to the end of the set.
  *
- * Values from the other set that are already in the set will not be added again.
+ * Annotations from the other set that are already in the set will not be added again.
  *
  * @method
  * @param {ve.dm.AnnotationSet} set Set to add to the set
@@ -266,22 +267,22 @@ ve.dm.AnnotationSet.prototype.addSet = function ( set ) {
 };
 
 /**
- * Add a value at the end of the set.
+ * Add an annotation at the end of the set.
  *
- * If the value is already present in the set, nothing happens.
+ * If the annotation is already present in the set, nothing happens.
  *
  * @method
- * @param {Object} value Value to add
+ * @param {ve.dm.Annotation} annotation Annotation to add
  */
-ve.dm.AnnotationSet.prototype.push = function ( value ) {
-	var storeIndex = this.getStore().index( value );
-	if ( !this.contains( value ) ) {
+ve.dm.AnnotationSet.prototype.push = function ( annotation ) {
+	var storeIndex = this.getStore().index( annotation );
+	if ( !this.contains( annotation ) ) {
 		this.storeIndexes.push( storeIndex );
 	}
 };
 
 /**
- * Remove the value at a given index.
+ * Remove the annotation at a given index.
  *
  * @method
  * @param {number} index Index to remove item at. If negative, the counts from the end, see add()
@@ -298,22 +299,22 @@ ve.dm.AnnotationSet.prototype.removeAt = function ( index ) {
 };
 
 /**
- * Remove a given value from the set.
+ * Remove a given annotation from the set.
  *
- * If the value isn't in the set, nothing happens.
+ * If the annotation isn't in the set, nothing happens.
  *
  * @method
- * @param {Object} value Value to remove
+ * @param {ve.dm.Annotation} annotation Annotation to remove
  */
-ve.dm.AnnotationSet.prototype.remove = function ( value ) {
-	var index = this.indexOf( value );
+ve.dm.AnnotationSet.prototype.remove = function ( annotation ) {
+	var index = this.indexOf( annotation );
 	if ( index !== -1 ) {
 		this.storeIndexes.splice( index, 1 );
 	}
 };
 
 /**
- * Remove all values.
+ * Remove all annotations.
  *
  * @method
  */
@@ -322,9 +323,9 @@ ve.dm.AnnotationSet.prototype.removeAll = function () {
 };
 
 /**
- * Remove all values in a given set from the set.
+ * Remove all annotations in a given set from the set.
  *
- * Values that aren't in the set are ignored.
+ * Annotations that aren't in the set are ignored.
  *
  * @method
  * @param {ve.dm.AnnotationSet} set Set to remove from the set
@@ -334,7 +335,7 @@ ve.dm.AnnotationSet.prototype.removeSet = function ( set ) {
 };
 
 /**
- * Remove all values that are not also in a given other set from the set.
+ * Remove all annotations that are not also in a given other set from the set.
  *
  * @method
  * @param {ve.dm.AnnotationSet} set Set to intersect with the set
@@ -364,7 +365,7 @@ ve.dm.AnnotationSet.prototype.reversed = function () {
  *
  * @method
  * @param {ve.dm.AnnotationSet} set Other set
- * @returns {ve.dm.AnnotationSet} Set containing all values in the set as well as all values in set
+ * @returns {ve.dm.AnnotationSet} Set containing all annotations in the set as well as all annotations in set
  */
 ve.dm.AnnotationSet.prototype.mergeWith = function ( set ) {
 	var newSet = this.clone();
@@ -377,7 +378,7 @@ ve.dm.AnnotationSet.prototype.mergeWith = function ( set ) {
  *
  * @method
  * @param {ve.dm.AnnotationSet} set Other set
- * @returns {ve.dm.AnnotationSet} New set containing all values that are in the set but not in set
+ * @returns {ve.dm.AnnotationSet} New set containing all annotations that are in the set but not in set
  */
 ve.dm.AnnotationSet.prototype.diffWith = function ( set ) {
 	var newSet = this.clone();
@@ -390,7 +391,7 @@ ve.dm.AnnotationSet.prototype.diffWith = function ( set ) {
  *
  * @method
  * @param {ve.dm.AnnotationSet} set Other set
- * @returns {ve.dm.AnnotationSet} New set containing all values that are both in the set and in set
+ * @returns {ve.dm.AnnotationSet} New set containing all annotations that are both in the set and in set
  */
 ve.dm.AnnotationSet.prototype.intersectWith = function ( set ) {
 	var newSet = this.clone();
