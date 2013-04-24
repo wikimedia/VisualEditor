@@ -92,11 +92,12 @@
 		// Restore constructor property of targetFn
 		targetFn.prototype.constructor = targetConstructor;
 
-		// Messing with static properties can be harmful, but we've agreed on one
-		// common property that will be inherited, and that one only. Use this for
-		// for making static values visible in child classes
-		originFn.static = originFn.static || {}; // Lazy-init
+		// Extend static properties
+		originFn.static = originFn.static || {};
 		targetFn.static = ve.createObject( originFn.static );
+
+		// Copy mixin tracking
+		targetFn.mixins = originFn.mixins ? originFn.mixins.slice( 0 ) : [];
 	};
 
 	/**
@@ -131,11 +132,42 @@
 	 * @param {Function} originFn
 	 */
 	ve.mixinClass = function ( targetFn, originFn ) {
-		for ( var key in originFn.prototype ) {
+		var key;
+
+		// Copy prototype properties
+		for ( key in originFn.prototype ) {
 			if ( key !== 'constructor' && hasOwn.call( originFn.prototype, key ) ) {
 				targetFn.prototype[key] = originFn.prototype[key];
 			}
 		}
+
+		// Copy static properties
+		if ( originFn.static ) {
+			targetFn.static = targetFn.static || {};
+			for ( key in originFn.static ) {
+				if ( hasOwn.call( originFn.static, key ) ) {
+					targetFn.static[key] = originFn.static[key];
+				}
+			}
+		}
+
+		// Track mixins
+		targetFn.mixins = targetFn.mixins || [];
+		targetFn.mixins.push( originFn );
+	};
+
+	/**
+	 * Check if a class or object uses a mixin.
+	 *
+	 * @param {Function|Object} a Class or object to check
+	 * @param {Function} mixin Mixin to check for
+	 * @return {Boolean} Class or object uses mixin
+	 */
+	ve.isMixedIn = function ( subject, mixin ) {
+		if ( subject.constructor ) {
+			subject = subject.constructor;
+		}
+		return subject.mixins && subject.mixins.indexOf( mixin ) !== -1;
 	};
 
 	/**

@@ -607,7 +607,7 @@ ve.ce.Surface.prototype.onChange = function ( transaction, selection ) {
 		// Detect when only a single inline element is selected
 		if ( !selection.isCollapsed() ) {
 			start = this.documentView.getDocumentNode().getNodeFromOffset( selection.start + 1 );
-			if ( typeof start.setFocused === 'function' ) {
+			if ( ve.isMixedIn( start, ve.ce.FocusableNode ) ) {
 				end = this.documentView.getDocumentNode().getNodeFromOffset( selection.end - 1 );
 				if ( start === end ) {
 					next = start;
