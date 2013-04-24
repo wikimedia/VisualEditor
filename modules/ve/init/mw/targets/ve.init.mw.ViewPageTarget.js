@@ -102,7 +102,8 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 		'saveError': 'onSaveError',
 		'editConflict': 'onEditConflict',
 		'showChanges': 'onShowChanges',
-		'showChangesError': 'onShowChangesError'
+		'showChangesError': 'onShowChangesError',
+		'serializeError': 'onSerializeError'
 	} );
 
 	// Initialization
@@ -420,6 +421,22 @@ ve.init.mw.ViewPageTarget.prototype.onShowChanges = function ( diffHtml ) {
 ve.init.mw.ViewPageTarget.prototype.onShowChangesError = function ( jqXHR, status ) {
 	alert( ve.msg( 'visualeditor-differror', status ) );
 	this.$saveDialogLoadingIcon.hide();
+	this.saveDialogReviewWrongButton.setDisabled( false );
+};
+
+
+/**
+ * Called if a call to target.serialize() failed.
+ *
+ * @method
+ * @param {jqXHR|null} jqXHR
+ * @param {string} status Text status message
+ * @param {Mixed|null} error HTTP status text
+ */
+ve.init.mw.ViewPageTarget.prototype.onSerializeError = function ( jqXHR, status ) {
+	alert( ve.msg( 'visualeditor-serializeerror', status ) );
+	this.$saveDialogLoadingIcon.hide();
+	this.saveDialogReviewGoodButton.setDisabled( false );
 	this.saveDialogReviewWrongButton.setDisabled( false );
 };
 

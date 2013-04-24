@@ -476,6 +476,7 @@ $wgResourceModules += array(
 			'visualeditor-inspector-remove-tooltip',
 			'visualeditor-viewpage-savewarning',
 			'visualeditor-differror',
+			'visualeditor-serializeerror',
 			'visualeditor-saveerror',
 			'visualeditor-editconflict',
 			'visualeditor-aliennode-tooltip',
