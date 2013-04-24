@@ -834,7 +834,7 @@ ve.ce.Surface.prototype.endRelocation = function () {
  * @method
  */
 ve.ce.Surface.prototype.handleLeftOrRightArrowKey = function ( e ) {
-	var selection, offset, range;
+	var selection, offset, range, offsetDelta, toNode, selectedNodes, i;
 	// On Mac OS pressing Command (metaKey) + Left/Right is same as pressing Home/End.
 	// As we are not able to handle it programmatically (because we don't know at which offsets
 	// lines starts and ends) let it happen natively.
@@ -846,15 +846,44 @@ ve.ce.Surface.prototype.handleLeftOrRightArrowKey = function ( e ) {
 	// Stop with final poll cycle so we have correct information in model
 	this.surfaceObserver.stop( true );
 	selection = this.model.getSelection();
-	offset = this.getDocument().getRelativeOffset(
-		selection.to,
-		e.keyCode === ve.Keys.DOM_VK_LEFT ? -1 : 1, // direction (left or right)
-		e.altKey === true || e.ctrlKey === true ? 'word' : 'character' // unit
-	);
-	if ( e.shiftKey === true  ) { // expanded range
-		range = new ve.Range( selection.from, offset );
-	} else { // collapsed range (just a cursor)
-		range = new ve.Range( offset );
+	offsetDelta = e.keyCode === ve.Keys.DOM_VK_LEFT ? -1 : 1;
+
+	// Check for selecting/deselecting inline images and aliens
+	if ( selection.isCollapsed() ) {
+		toNode = this.documentView.documentNode.getNodeFromOffset( selection.to + offsetDelta );
+		// TODO: Develop better method to test for generated content
+		if ( toNode.model.constructor.static.generatedContent === true ) {
+			range = new ve.Range(
+				selection.to,
+				selection.to + toNode.getOuterLength() * offsetDelta
+			);
+		}
+	} else if ( !e.shiftKey ) {
+		selectedNodes = this.model.documentModel.selectNodes( selection );
+		for ( i = 0; i < Math.min( selectedNodes.length, 2 ); i++ ) {
+			if (
+				// TODO: Develop better method to test for generated content
+				selectedNodes[i].node.constructor.static.generatedContent === true &&
+				selectedNodes[i].nodeOuterRange.equals( selection ) ||
+				selectedNodes[i].nodeOuterRange.equals( selection.flip() )
+			) {
+				range = new ve.Range( offsetDelta === 1 ? selection.end : selection.start );
+			}
+		}
+	}
+
+	// Normal cursor movement
+	if ( range === undefined ) {
+		offset = this.getDocument().getRelativeOffset(
+			selection.to,
+			offsetDelta,
+			e.altKey === true || e.ctrlKey === true ? 'word' : 'character' // unit
+		);
+		if ( e.shiftKey === true  ) { // expanded range
+			range = new ve.Range( selection.from, offset );
+		} else { // collapsed range (just a cursor)
+			range = new ve.Range( offset );
+		}
 	}
 	this.model.change( null, range );
 	this.surfaceObserver.start();

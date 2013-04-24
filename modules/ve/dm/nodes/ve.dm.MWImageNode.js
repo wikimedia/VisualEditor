@@ -28,6 +28,9 @@ ve.dm.MWImageNode.static.name = 'MWimage';
 
 ve.dm.MWImageNode.static.matchTagNames = null;
 
+// TODO: Develop better method to test for generated content
+ve.dm.MWImageNode.static.generatedContent = true;
+
 ve.dm.MWImageNode.static.matchRdfaTypes = [ 'mw:Image' ];
 
 ve.dm.MWImageNode.static.toDataElement = function ( domElements ) {
