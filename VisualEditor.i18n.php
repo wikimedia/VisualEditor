@@ -97,6 +97,12 @@ $messages['en'] = array(
  * @author Trevor Parscal
  */
 $messages['qqq'] = array(
+	'accesskey-ca-editsource' => '{{optional}}',
+	'accesskey-ca-ve-edit' => '{{Ignore}}',
+	'tag-visualeditor' => 'Short description of the visualeditor tag ({{msg-mw|Tag-visualeditor}}). Shown on lists of changes (history, recentchanges, etc.) for each edit made using VisualEditor.',
+	'tag-visualeditor-description' => 'Long description of the visualeditor tag ({{msg-mw|Tag-visualeditor}}). Shown on [[Special:Tags]]',
+	'tooltip-ca-editsource' => 'Tooltip of the wikitext "Edit Source" tab.',
+	'tooltip-ca-ve-edit' => 'Tooltip of the dedicated VisualEditor "Edit" tab.',
 	'visualeditor' => 'The name of the VisualEditor extension',
 	'visualeditor-desc' => '{{desc|name=Visual Editor|url=http://www.mediawiki.org/wiki/Extension:VisualEditor}}',
 	'visualeditor-preference-enable' => 'Label for the user preference to enable the VisualEditor.
@@ -144,8 +150,6 @@ See also:
 	'visualeditor-savedialog-label-restore' => 'Label text for save button when the user is editing a previous revision',
 	'visualeditor-editnotices-tool' => 'Text of tool in the toolbar that shows edit notices (such as [[MediaWiki:editnotice-0]] and [[MediaWiki:editnotice-8/en]]) as a pop-up',
 	'visualeditor-feedback-tool' => 'Text of tool in the toolbar that lets user provide feedback',
-	'tooltip-ca-ve-edit' => 'Tooltip of the dedicated VisualEditor Edit tab.',
-	'accesskey-ca-ve-edit' => '{{Ignore}}',
 	'visualeditor-window-title' => 'Title of an unnamed inspector',
 	'visualeditor-linkinspector-title' => 'Title of the link inspector dialog.
 {{Identical|Hyperlink}}',
@@ -187,8 +191,6 @@ See also:
 	'visualeditor-editsummary' => 'Label for edit summary box',
 	'visualeditor-problem' => 'Label for problem description box',
 	'visualeditor-aliennode-tooltip' => 'Tooltip for items that the VisualEditor cannot edit',
-	'tag-visualeditor' => 'Short description of the visualeditor tag ({{msg-mw|Tag-visualeditor}}). Shown on lists of changes (history, recentchanges, etc.) for each edit made using VisualEditor.',
-	'tag-visualeditor-description' => 'Long description of the visualeditor tag ({{msg-mw|Tag-visualeditor}}). Shown on [[Special:Tags]]',
 	'visualeditor-descriptionpagelink' => 'Name of a page describing the use of the VisualEditor in this project.
 {{doc-important|Do not translate "Project"; it is automatically converted to the wiki\'s project namespace.}}',
 	'visualeditor-alphawarning' => 'Edit notice shown when the VisualEditor loads, warning users that the software may have issues',
@@ -487,6 +489,8 @@ $messages['br'] = array(
  * @author Vriullop
  */
 $messages['ca'] = array(
+	'tag-visualeditor-description' => "Modificació feta amb l'[[{{MediaWiki:Visualeditor-descriptionpagelink}}|editor visual]]",
+	'tooltip-ca-ve-edit' => "Modifica aquesta pàgina amb l'editor visual",
 	'visualeditor-desc' => 'Editor visual per a MediaWiki',
 	'visualeditor-preference-enable' => "Habilita l'editor visual (només en els espais de noms [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|principal]] i d'[[{{MediaWiki:Visualeditor-usernamespacepagelink}}|usuari]])",
 	'visualeditor-mainnamespacepagelink' => 'Project:Espai principal',
@@ -507,7 +511,6 @@ $messages['ca'] = array(
 	'visualeditor-savedialog-label-save' => 'Desa la pàgina',
 	'visualeditor-editnotices-tool' => '$1 {{PLURAL:$1|avís|avisos}}',
 	'visualeditor-feedback-tool' => 'Comentaris',
-	'tooltip-ca-ve-edit' => "Modifica aquesta pàgina amb l'editor visual",
 	'visualeditor-formatdropdown-format-paragraph' => 'Paràgraf',
 	'visualeditor-formatdropdown-format-heading1' => 'Encapçalament 1',
 	'visualeditor-formatdropdown-format-heading2' => 'Encapçalament 2',
@@ -528,7 +531,6 @@ $messages['ca'] = array(
 	'visualeditor-viewpage-savewarning' => 'Esteu segurs que voleu tornar a la pàgina sense desar abans?',
 	'visualeditor-editsummary' => 'Descriviu el que heu canviat',
 	'visualeditor-aliennode-tooltip' => "Disculpeu, aquest element no es pot modificar amb l'editor visual",
-	'tag-visualeditor-description' => "Modificació feta amb l'[[{{MediaWiki:Visualeditor-descriptionpagelink}}|editor visual]]",
 	'visualeditor-alphawarning' => "Esteu utilitzant una versió alfa de l'[[{{MediaWiki:Visualeditor-descriptionpagelink}}|editor visual]]. Pot ser lent i fer canvis erronis - comproveu tots els canvis fets.",
 );
 
@@ -607,26 +609,32 @@ $messages['cs'] = array(
 
 /** German (Deutsch)
  * @author G.Hagedorn
+ * @author Jcornelius
+ * @author Jdforrester
  * @author Kghbln
  * @author Metalhead64
  */
 $messages['de'] = array(
-	'visualeditor' => 'WYSIWYG-Editor',
-	'visualeditor-desc' => 'Ermöglicht einen WYSIWYG-Editor',
-	'visualeditor-preference-enable' => 'VisualEditor (WYSIWYG) aktivieren (nur im [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|Artikel-]] und [[{{MediaWiki:Visualeditor-usernamespacepagelink}}|Benutzernamensraum]])',
+	'tag-visualeditor' => '[[Special:Tags|Markierungen]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
+	'tag-visualeditor-description' => 'Bearbeitet mit dem [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
+	'tooltip-ca-editsource' => 'Den Quelltext dieser Seite bearbeiten',
+	'tooltip-ca-ve-edit' => 'Diese Seite mit dem VisualEditor bearbeiten',
+	'visualeditor' => 'VisualEditor',
+	'visualeditor-desc' => 'Visueller Editor für MediaWiki',
+	'visualeditor-preference-enable' => 'Aktiviere den VisualEditor (nur im [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|Artikel-]] und [[{{MediaWiki:Visualeditor-usernamespacepagelink}}|Benutzernamensraum]])',
 	'visualeditor-mainnamespacepagelink' => 'Project:Artikelnamensraum',
 	'visualeditor-usernamespacepagelink' => 'Project:Benutzernamensraum',
 	'visualeditor-notification-saved' => 'Deine Änderungen an $1 wurden gespeichert.',
 	'visualeditor-notification-created' => '$1 wurde erstellt.',
-	'visualeditor-notification-restored' => '„$1“ wurde wiederhergestellt.',
-	'visualeditor-notification-reported' => 'Dein Problem wurde berichtet. Vielen Dank.',
+	'visualeditor-notification-restored' => '$1 wurde wiederhergestellt.',
+	'visualeditor-notification-reported' => 'Dein Problem wurde gemeldet. Vielen Dank.',
 	'visualeditor-ca-editsource' => 'Quelltext bearbeiten',
-	'visualeditor-ca-ve-edit' => 'WYSIWYG-Editor',
-	'visualeditor-ca-ve-create' => 'WYSIWYG-Editor',
+	'visualeditor-ca-ve-edit' => 'VisualEditor',
+	'visualeditor-ca-ve-create' => 'VisualEditor',
 	'visualeditor-dialog-meta-title' => 'Seiteneinstellungen',
 	'visualeditor-dialog-content-title' => 'Inhaltseinstellungen',
 	'visualeditor-dialog-media-title' => 'Medieneinstellungen',
-	'visualeditor-dialog-action-apply' => 'Änderungen anwenden',
+	'visualeditor-dialog-action-apply' => 'Änderungen speichern',
 	'visualeditor-dialog-action-cancel' => 'Abbrechen',
 	'visualeditor-dialog-action-close' => 'Schließen',
 	'visualeditor-toolbar-savedialog' => 'Überprüfen und speichern',
@@ -641,9 +649,8 @@ $messages['de'] = array(
 	'visualeditor-savedialog-label-restore' => 'Seite wiederherstellen',
 	'visualeditor-editnotices-tool' => '{{PLURAL:$1|Eine Notiz|$1 Notizen}}',
 	'visualeditor-feedback-tool' => 'Rückmeldungen hinterlassen',
-	'tooltip-ca-ve-edit' => 'Diese Seite mit dem WYSIWYG-Editor bearbeiten',
-	'visualeditor-window-title' => 'Inspizieren',
-	'visualeditor-linkinspector-title' => 'Hyperlink',
+	'visualeditor-window-title' => 'Überprüfen',
+	'visualeditor-linkinspector-title' => 'Link',
 	'visualeditor-linkinspector-suggest-existing-page' => 'Vorhandene Seite',
 	'visualeditor-linkinspector-suggest-new-page' => 'Neue Seite',
 	'visualeditor-linkinspector-suggest-external-link' => 'Weblink',
@@ -663,7 +670,7 @@ $messages['de'] = array(
 	'visualeditor-indentationbutton-indent-tooltip' => 'Einzug vergrößern',
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Einzug verkleinern',
 	'visualeditor-listbutton-number-tooltip' => 'Nummerierte Liste',
-	'visualeditor-listbutton-bullet-tooltip' => 'Aufgezählte Liste',
+	'visualeditor-listbutton-bullet-tooltip' => 'Aufzählungszeichen',
 	'visualeditor-clearbutton-tooltip' => 'Formatierungen entfernen',
 	'visualeditor-historybutton-undo-tooltip' => 'Rückgängig machen',
 	'visualeditor-historybutton-redo-tooltip' => 'Wiederholen',
@@ -672,15 +679,14 @@ $messages['de'] = array(
 	'visualeditor-viewpage-savewarning' => 'Bist du sicher, dass du zum Ansichtsmodus wechseln möchtest, ohne vorher zu speichern?',
 	'visualeditor-loadwarning' => 'Fehler beim Laden der Daten vom Server: $1. Soll der Vorgang erneut durchgeführt werden?',
 	'visualeditor-differror' => 'Fehler beim Laden der Daten vom Server: $1.',
+	'visualeditor-serializeerror' => 'Fehler beim Laden der Daten vom Server: $1.',
 	'visualeditor-saveerror' => 'Fehler beim Speichern der Daten auf dem Server: $1.',
 	'visualeditor-editconflict' => 'Deine Änderungen konnten aufgrund eines Bearbeitungskonflikts nicht gespeichert werden. Willst du den Konflikt manuell beheben?',
-	'visualeditor-editsummary' => 'Beschreibe, was du geändert hast.',
+	'visualeditor-editsummary' => 'Beschreibe, was du geändert hast',
 	'visualeditor-problem' => 'Beschreibe, was schief gelaufen ist',
-	'visualeditor-aliennode-tooltip' => 'Dieses Element kann leider nicht mit dem WYSIWYG-Editor bearbeitet werden.',
-	'tag-visualeditor' => '[[Special:Tags|Markierungen]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|WYSIWYG-Editor]]',
-	'tag-visualeditor-description' => 'Bearbeitet mit dem [[{{MediaWiki:Visualeditor-descriptionpagelink}}|WYSIWYG-Editor]]',
-	'visualeditor-descriptionpagelink' => 'Project:WYSIWYG-Editor',
-	'visualeditor-alphawarning' => 'Du benutzt eine Alpha-Version des [[{{MediaWiki:Visualeditor-descriptionpagelink}}|WYSIWYG-Editors]]. Er arbeitet teilweise noch langsam und kann fehlerhafte Änderungen erzeugen. Bitte überprüfe jede Bearbeitung, die du gemacht hast.',
+	'visualeditor-aliennode-tooltip' => 'Dieses Element kann leider nicht mit dem VisualEditor bearbeitet werden.',
+	'visualeditor-descriptionpagelink' => 'Project:VisualEditor',
+	'visualeditor-alphawarning' => 'Du benutzt eine Alpha-Version des [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditors]]. Er ist teilweise noch langsam und kann fehlerhafte Änderungen erzeugen. Bitte überprüfe jede Bearbeitung, die du gemacht hast.',
 	'visualeditor-report-notice' => 'Mit dem Klick auf „Problem berichten“ übermittle ich meine Änderungen und meine Rückmeldung, die zur Auswertung gespeichert wird. Ich stimme der Abgabe meiner Rückmeldung in Übereinstimmung mit den [[{{MediaWiki:Visualeditor-report-link}}|Nutzungsbedingungen]] zu.',
 	'visualeditor-report-link' => 'foundation:Terms of Use/de',
 );
@@ -708,6 +714,83 @@ $messages['diq'] = array(
 $messages['dsb'] = array(
 	'visualeditor' => 'VisualEditor',
 	'visualeditor-desc' => 'WYSIWYG-editor za MediaWiki',
+);
+
+/** Greek (Ελληνικά)
+ * @author Geraki
+ */
+$messages['el'] = array(
+	'tooltip-ca-editsource' => 'Επεξεργαστείτε τον πηγαίο κώδικα της σελίδας',
+	'tooltip-ca-ve-edit' => 'Επεξεργαστείτε αυτήν τη σελίδα με VisualEditor',
+	'visualeditor' => 'VisualEditor',
+	'visualeditor-desc' => 'Visual editor για το MediaWiki',
+	'visualeditor-preference-enable' => 'Ενεργοποίηση VisualEditor (μόνο για τους χώρους [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|κύριο]] και [[{{MediaWiki:Visualeditor-usernamespacepagelink}}|χρήστη]])',
+	'visualeditor-mainnamespacepagelink' => 'Project:Κύριος ονοματοχώρος',
+	'visualeditor-usernamespacepagelink' => 'Project:Σελίδα χρήστη',
+	'visualeditor-notification-saved' => 'Οι αλλαγές σας στη $1 έχουν αποθηκευτεί.',
+	'visualeditor-notification-created' => 'Η $1 έχει δημιουργηθεί.',
+	'visualeditor-notification-restored' => 'Η $1 έχει ανακτηθεί.',
+	'visualeditor-notification-reported' => 'Έχει αναφερθεί το πρόβλημά σας. Ευχαριστούμε.',
+	'visualeditor-ca-editsource' => 'Επεξεργασία κώδικα',
+	'visualeditor-ca-ve-edit' => 'VisualEditor',
+	'visualeditor-ca-ve-create' => 'VisualEditor',
+	'visualeditor-dialog-meta-title' => 'Ρυθμίσεις σελίδας',
+	'visualeditor-dialog-content-title' => 'Ρυθμίσεις περιεχομένου',
+	'visualeditor-dialog-media-title' => 'Ρυθμίσεις πολυμέσων',
+	'visualeditor-dialog-action-apply' => 'Εφαρμογή αλλαγών',
+	'visualeditor-dialog-action-cancel' => 'Ακύρωση',
+	'visualeditor-dialog-action-close' => 'Κλείσιμο',
+	'visualeditor-toolbar-savedialog' => 'Αναθεώρηση και να αποθήκευση',
+	'visualeditor-savedialog-title-review' => 'Επανεξετάστε τις αλλαγές σας',
+	'visualeditor-savedialog-title-report' => 'Αναφέρετε ένα πρόβλημα',
+	'visualeditor-savedialog-title-save' => 'Αποθήκευση των αλλαγών σας',
+	'visualeditor-savedialog-label-review-wrong' => 'Κάτι είναι λάθος',
+	'visualeditor-savedialog-label-review-good' => 'Φαίνεται καλό για μένα',
+	'visualeditor-savedialog-label-report' => 'Αναφορά προβλήματος',
+	'visualeditor-savedialog-label-create' => 'Δημιουργία σελίδας',
+	'visualeditor-savedialog-label-save' => 'Αποθήκευση σελίδας',
+	'visualeditor-savedialog-label-restore' => 'Επαναφορά σελίδας',
+	'visualeditor-editnotices-tool' => '$1 {{PLURAL:$1|ειδοποίηση|ειδοποιήσεις}}',
+	'visualeditor-feedback-tool' => 'Αφήστε σχόλια',
+	'visualeditor-window-title' => 'Επιθεωρήστε',
+	'visualeditor-linkinspector-title' => 'Υπερσύνδεσμος',
+	'visualeditor-linkinspector-suggest-existing-page' => 'Υπάρχουσα σελίδα',
+	'visualeditor-linkinspector-suggest-new-page' => 'Νέα σελίδα',
+	'visualeditor-linkinspector-suggest-external-link' => 'Ιστοσύνδεσμος',
+	'visualeditor-formatdropdown-title' => 'Αλλαγή μορφής',
+	'visualeditor-formatdropdown-format-paragraph' => 'Παράγραφος',
+	'visualeditor-formatdropdown-format-heading1' => 'Επικεφαλίδα 1',
+	'visualeditor-formatdropdown-format-heading2' => 'Επικεφαλίδα 2',
+	'visualeditor-formatdropdown-format-heading3' => 'Επικεφαλίδα 3',
+	'visualeditor-formatdropdown-format-heading4' => 'Επικεφαλίδα 4',
+	'visualeditor-formatdropdown-format-heading5' => 'Επικεφαλίδα 5',
+	'visualeditor-formatdropdown-format-heading6' => 'Επικεφαλίδα 7',
+	'visualeditor-formatdropdown-format-preformatted' => 'Προμορφοποιημένο',
+	'visualeditor-annotationbutton-bold-tooltip' => 'Έντονα',
+	'visualeditor-annotationbutton-italic-tooltip' => 'Πλάγια',
+	'visualeditor-annotationbutton-link-tooltip' => 'Σύνδεσμος',
+	'visualeditor-dialogbutton-media-tooltip' => 'Πολυμέσο',
+	'visualeditor-indentationbutton-indent-tooltip' => 'Αύξηση εσοχής',
+	'visualeditor-indentationbutton-outdent-tooltip' => 'Μείωση εσοχής',
+	'visualeditor-listbutton-number-tooltip' => 'Αριθμημένη λίστα',
+	'visualeditor-listbutton-bullet-tooltip' => 'Λίστα με κουκκίδες',
+	'visualeditor-clearbutton-tooltip' => 'Απαλοιφή μορφοποίησης',
+	'visualeditor-historybutton-undo-tooltip' => 'Αναίρεση',
+	'visualeditor-historybutton-redo-tooltip' => 'Ακύρωση αναίρεσης',
+	'visualeditor-inspector-close-tooltip' => 'Κλείσιμο',
+	'visualeditor-inspector-remove-tooltip' => 'Αφαίρεση',
+	'visualeditor-viewpage-savewarning' => 'Είστε βέβαιοι ότι θέλετε να πάτε πίσω στην κατάσταση προβολής χωρίς να αποθηκεύσετε πρώτα;',
+	'visualeditor-loadwarning' => 'Σφάλμα κατά τη φόρτωση των δεδομένων από το διακομιστή: $1. Θέλετε να προσπαθήσετε πάλι;',
+	'visualeditor-differror' => 'Σφάλμα κατά τη φόρτωση των δεδομένων από το διακομιστή: $1.',
+	'visualeditor-serializeerror' => 'Σφάλμα κατά τη φόρτωση των δεδομένων από το διακομιστή:  $1 .',
+	'visualeditor-saveerror' => 'Σφάλμα κατά την αποθήκευση δεδομένων σε διακομιστή: $1.',
+	'visualeditor-editconflict' => 'Οι αλλαγές σας δεν αποθηκεύτηκαν λόγω μια σύγκρουσης επεξεργασίας. Θα θέλατε να επιλύσετε την σύγκρουση χειροκίνητα;',
+	'visualeditor-editsummary' => 'Περιγράψτε τι αλλάξατε',
+	'visualeditor-problem' => 'Περιγράψτε τι πήγε στραβά',
+	'visualeditor-aliennode-tooltip' => 'Συγγνώμη, αυτό το στοιχείο δεν μπορεί να επεξεργαστεί χρησιμοποιώντας το VisualEditor',
+	'visualeditor-descriptionpagelink' => 'Project:VisualEditor',
+	'visualeditor-alphawarning' => 'Χρησιμοποιείτε μια έκδοση alpha του [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]. Μπορεί να είναι αργή και να γίνουν εσφαλμένες αλλαγές — ελέγξτε κάθε επεξεργασία που κάνετε.',
+	'visualeditor-report-notice' => 'Καταλαβαίνω ότι πατώντας στην "Αναφορά προβλήματος" θα μεταβιβάσω τις αλλαγές μου και τα σχόλιά μου, τα οποία θα αποθηκεύονται για ανάλυση. Συμφωνώ να παρέχω ανατροφοδότηση σύμφωνα με τους [[{{MediaWiki:Visualeditor-έκθεση-σύνδεση}}|Όρους Χρήσης]].', # Fuzzy
 );
 
 /** Esperanto (Esperanto)
@@ -746,8 +829,12 @@ $messages['eo'] = array(
  * @author Imre
  * @author Jdforrester
  * @author Ralgis
+ * @author Thehelpfulone
  */
 $messages['es'] = array(
+	'tag-visualeditor' => '[[Special:Tags|Etiqueta]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|Editor visual]]',
+	'tag-visualeditor-description' => 'Edición realizada con el [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
+	'tooltip-ca-ve-edit' => 'Editar esta página con el editor visual VisualEditor',
 	'visualeditor' => 'Editor visual',
 	'visualeditor-desc' => 'Editor visual para MediaWiki',
 	'visualeditor-preference-enable' => 'Activar el editor visual (sólo en los espacios de nombres [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|principal]]) y de [[{{MediaWiki:Visualeditor-usernamespacepagelink}}|usuario]]',
@@ -764,6 +851,7 @@ $messages['es'] = array(
 	'visualeditor-dialog-content-title' => 'Configuración del contenido',
 	'visualeditor-dialog-action-apply' => 'Aplicar los cambios',
 	'visualeditor-dialog-action-cancel' => 'Cancelar',
+	'visualeditor-dialog-action-close' => 'Cerrar',
 	'visualeditor-toolbar-savedialog' => 'Revisar y guardar',
 	'visualeditor-savedialog-title-review' => 'Revisa tus cambios',
 	'visualeditor-savedialog-title-report' => 'Informar sobre un problema',
@@ -776,7 +864,6 @@ $messages['es'] = array(
 	'visualeditor-savedialog-label-restore' => 'Restablecer página',
 	'visualeditor-editnotices-tool' => '$1 {{PLURAL:$1|aviso|avisos}}',
 	'visualeditor-feedback-tool' => 'Comentar',
-	'tooltip-ca-ve-edit' => 'Editar esta página con el editor visual VisualEditor',
 	'visualeditor-window-title' => 'Inspeccionar',
 	'visualeditor-linkinspector-title' => 'Hiperenlace',
 	'visualeditor-linkinspector-suggest-existing-page' => 'Página existente',
@@ -791,15 +878,15 @@ $messages['es'] = array(
 	'visualeditor-formatdropdown-format-heading5' => 'Encabezado 5',
 	'visualeditor-formatdropdown-format-heading6' => 'Encabezado 6',
 	'visualeditor-formatdropdown-format-preformatted' => 'Preformateado',
-	'visualeditor-annotationbutton-bold-tooltip' => 'Negrita', # Fuzzy
-	'visualeditor-annotationbutton-italic-tooltip' => 'Cursiva', # Fuzzy
-	'visualeditor-annotationbutton-link-tooltip' => 'Enlace', # Fuzzy
+	'visualeditor-annotationbutton-bold-tooltip' => 'Negrita',
+	'visualeditor-annotationbutton-italic-tooltip' => 'Cursiva',
+	'visualeditor-annotationbutton-link-tooltip' => 'Enlace',
 	'visualeditor-indentationbutton-indent-tooltip' => 'Aumentar sangría', # Fuzzy
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Disminuir sangría', # Fuzzy
 	'visualeditor-listbutton-number-tooltip' => 'Lista numerada',
 	'visualeditor-listbutton-bullet-tooltip' => 'Lista con viñetas',
 	'visualeditor-clearbutton-tooltip' => 'Borrar formato',
-	'visualeditor-historybutton-undo-tooltip' => 'Deshacer', # Fuzzy
+	'visualeditor-historybutton-undo-tooltip' => 'Deshacer',
 	'visualeditor-historybutton-redo-tooltip' => 'Rehacer', # Fuzzy
 	'visualeditor-inspector-close-tooltip' => 'Cerrar',
 	'visualeditor-inspector-remove-tooltip' => 'Eliminar',
@@ -811,11 +898,9 @@ $messages['es'] = array(
 	'visualeditor-editsummary' => 'Describe lo que has cambiado',
 	'visualeditor-problem' => 'Describe lo que salió mal',
 	'visualeditor-aliennode-tooltip' => 'Lo sentimos, este elemento no se puede editar mediante el editor visual',
-	'tag-visualeditor' => '[[Special:Tags|Etiqueta]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|Editor visual]]',
-	'tag-visualeditor-description' => 'Edición realizada con el [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
 	'visualeditor-descriptionpagelink' => 'Project:EditorVisual',
 	'visualeditor-alphawarning' => 'Estás utilizando una versión alfa del [[{{MediaWiki:Visualeditor-descriptionpagelink}}|Editor visual]]. Puede ser lenta y producir cambios erróneos; comprueba cada edición que realices.',
-	'visualeditor-report-notice' => 'Entiendo que haciendo clic en el botón Enviar transmito mis cambios y mis comentarios, que se almacenarán para su análisis. Estoy de acuerdo en proporcionar esta información, de conformidad con las [[{{MediaWiki:Visualeditor-report-link}}|Condiciones de uso]].',
+	'visualeditor-report-notice' => 'Entiendo que haciendo clic en el botón Enviar transmito mis cambios y mis comentarios, que se almacenarán para su análisis. Estoy de acuerdo en proporcionar esta información, de conformidad con las [[{{MediaWiki:Visualeditor-report-link}}|Condiciones de uso]].', # Fuzzy
 );
 
 /** Estonian (eesti)
@@ -993,21 +1078,26 @@ $messages['fi'] = array(
  * @author Nicolas NALLET
  * @author Npettiaux
  * @author Urhixidur
+ * @author Verdy p
  * @author Wyz
  */
 $messages['fr'] = array(
-	'visualeditor' => 'VisualEditor',
+	'tag-visualeditor' => '[[Special:Tags|Balise]] : [[{{MediaWiki:Visualeditor-descriptionpagelink}}|ÉditeurVisuel]]',
+	'tag-visualeditor-description' => 'Modification effectuée au moyen de l’[[{{MediaWiki:Visualeditor-descriptionpagelink}}|ÉditeurVisuel]]',
+	'tooltip-ca-editsource' => 'Modifier le code source de cette page',
+	'tooltip-ca-ve-edit' => 'Modifier cette page avec l’ÉditeurVisuel',
+	'visualeditor' => 'ÉditeurVisuel',
 	'visualeditor-desc' => 'Éditeur visuel pour MediaWiki',
-	'visualeditor-preference-enable' => 'Activer VisualEditor (seulement dans les espaces de noms [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|principal]] et [[{{MediaWiki:Visualeditor-usernamespacepagelink}}|utilisateur]])',
-	'visualeditor-mainnamespacepagelink' => 'Project:Main namespace',
-	'visualeditor-usernamespacepagelink' => 'Project:Espace de nom utilisateur',
-	'visualeditor-notification-saved' => 'Vos modifications à $1 ont été enregistrés.',
-	'visualeditor-notification-created' => '$1 a été créé!',
+	'visualeditor-preference-enable' => 'Activer l’ÉditeurVisuel (seulement dans les espaces de noms [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|principal]] et [[{{MediaWiki:Visualeditor-usernamespacepagelink}}|utilisateur]])',
+	'visualeditor-mainnamespacepagelink' => 'Project:Espace de noms principal',
+	'visualeditor-usernamespacepagelink' => 'Project:Espace de noms utilisateur',
+	'visualeditor-notification-saved' => 'Vos modifications à $1 ont été enregistrées.',
+	'visualeditor-notification-created' => '$1 a été créé !',
 	'visualeditor-notification-restored' => '$1 a été récupéré.',
 	'visualeditor-notification-reported' => 'Votre problème a été signalé. Merci.',
 	'visualeditor-ca-editsource' => 'Modifier la source',
-	'visualeditor-ca-ve-edit' => 'VisualEditor',
-	'visualeditor-ca-ve-create' => 'VisualEditor',
+	'visualeditor-ca-ve-edit' => 'ÉditeurVisuel',
+	'visualeditor-ca-ve-create' => 'ÉditeurVisuel',
 	'visualeditor-dialog-meta-title' => 'Paramètres de la page',
 	'visualeditor-dialog-content-title' => 'Paramètres du contenu',
 	'visualeditor-dialog-media-title' => 'Paramètres du média',
@@ -1019,14 +1109,13 @@ $messages['fr'] = array(
 	'visualeditor-savedialog-title-report' => 'Signaler un problème',
 	'visualeditor-savedialog-title-save' => 'Enregistrer vos modifications',
 	'visualeditor-savedialog-label-review-wrong' => 'Quelque chose ne va pas',
-	'visualeditor-savedialog-label-review-good' => 'Me paraît correct',
+	'visualeditor-savedialog-label-review-good' => 'Cela me semble correct',
 	'visualeditor-savedialog-label-report' => 'Signaler un problème',
 	'visualeditor-savedialog-label-create' => 'Créer la page',
 	'visualeditor-savedialog-label-save' => 'Enregistrer la page',
 	'visualeditor-savedialog-label-restore' => 'Restaurer la page',
-	'visualeditor-editnotices-tool' => '$1 {{PLURAL:$1|avertissement|avertissements}}',
+	'visualeditor-editnotices-tool' => '$1 avertissement{{PLURAL:$1||s}}',
 	'visualeditor-feedback-tool' => 'Laisser un avis',
-	'tooltip-ca-ve-edit' => 'Modifier cette page avec VisualEditor',
 	'visualeditor-window-title' => 'Inspecter',
 	'visualeditor-linkinspector-title' => 'Hyperlien',
 	'visualeditor-linkinspector-suggest-existing-page' => 'Page existante',
@@ -1050,23 +1139,23 @@ $messages['fr'] = array(
 	'visualeditor-listbutton-number-tooltip' => 'Liste numérotée',
 	'visualeditor-listbutton-bullet-tooltip' => 'Liste à puces',
 	'visualeditor-clearbutton-tooltip' => 'Effacer la mise en forme',
-	'visualeditor-historybutton-undo-tooltip' => 'Annuler',
+	'visualeditor-historybutton-undo-tooltip' => 'Rétablir',
 	'visualeditor-historybutton-redo-tooltip' => 'Refaire',
 	'visualeditor-inspector-close-tooltip' => 'Fermer',
 	'visualeditor-inspector-remove-tooltip' => 'Supprimer',
 	'visualeditor-viewpage-savewarning' => 'Êtes-vous sûr de vouloir retourner au mode lecture sans d’abord enregistrer ?',
-	'visualeditor-loadwarning' => 'Erreur lors du chargement des données du serveur: $1. Voulez-vous réessayer?',
-	'visualeditor-differror' => 'Erreur au chargement des données depuis le serveur: $1.',
-	'visualeditor-saveerror' => 'Erreur d’enregistrement des données sur le serveur : $1.',
-	'visualeditor-editconflict' => "Vos modifications n'ont pas pu être enregistrés à cause d'un conflit d'édition. Voulez-vous résoudre ce conflit manuellement?",
-	'visualeditor-editsummary' => 'Décrire ce que vous avez modifié',
-	'visualeditor-problem' => 'Décrire ce qui ne va pas',
-	'visualeditor-aliennode-tooltip' => 'Désolé, cet élément ne peut pas être modifié en utilisant VisualEditor',
-	'tag-visualeditor' => '[[Special:Tags|Balise]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
-	'tag-visualeditor-description' => 'Modification faite en utilisant [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
-	'visualeditor-descriptionpagelink' => 'Project:VisualEditor',
-	'visualeditor-alphawarning' => 'Vous utilisez une version alpha de [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]. Elle peut être lente et faire des modifications erronées — veuillez vérifier chaque modification que vous faites.',
-	'visualeditor-report-notice' => "Je comprends qu'en cliquant sur Soumettre, je transmettrai mes changements et mon avis, qui seront stockés pour analyse. J'accepte de fournir un avis en accord avec les [[{{MediaWiki:Visualeditor-report-link}}|Conditions d'utilisation]].", # Fuzzy
+	'visualeditor-loadwarning' => 'Erreur lors du chargement des données du serveur : $1. Voulez-vous réessayer ?',
+	'visualeditor-differror' => 'Erreur lors du chargement des données depuis le serveur : $1.',
+	'visualeditor-serializeerror' => 'Erreur au chargement des données depuis le serveur : $1.',
+	'visualeditor-saveerror' => 'Erreur lors de l’enregistrement des données sur le serveur : $1.',
+	'visualeditor-editconflict' => 'Vos modifications n’ont pas pu être enregistrées à cause d’un conflit d’édition. Voulez-vous résoudre ce conflit manuellement ?',
+	'visualeditor-editsummary' => 'Décrivez ce que vous avez modifié',
+	'visualeditor-problem' => 'Décrivez ce qui ne va pas',
+	'visualeditor-aliennode-tooltip' => 'Désolé, cet élément ne peut pas être modifié au moyen de l’ÉditeurVisuel',
+	'visualeditor-descriptionpagelink' => 'Project:ÉditeurVisuel',
+	'visualeditor-alphawarning' => 'Vous utilisez une version alpha de l’[[{{MediaWiki:Visualeditor-descriptionpagelink}}|ÉditeurVisuel]]. Elle peut être lente et effectuer des modifications erronées — veuillez vérifier chacune de vos modifications.',
+	'visualeditor-report-notice' => 'Je comprends qu’en cliquant sur « Signaler un problème », je transmettrai mes modifications et mes commentaires, qui seront stockés pour analyse. J’accepte de donner mon avis en accord avec les [[{{MediaWiki:Visualeditor-rapport-lien}}|Conditions d’utilisation]].', # Fuzzy
+	'visualeditor-report-link' => 'foundation:Terms of Use/fr',
 );
 
 /** Franco-Provençal (arpetan)
@@ -1127,6 +1216,9 @@ $messages['frp'] = array(
  * @author Toliño
  */
 $messages['gl'] = array(
+	'tag-visualeditor' => '[[Special:Tags|Etiqueta]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|Editor visual]]',
+	'tag-visualeditor-description' => 'Edición feita mediante o [[{{MediaWiki:Visualeditor-descriptionpagelink}}|editor visual]]',
+	'tooltip-ca-ve-edit' => 'Editar esta páxina co editor visual',
 	'visualeditor' => 'Editor visual',
 	'visualeditor-desc' => 'Editor visual para MediaWiki',
 	'visualeditor-preference-enable' => 'Activar o editor visual (só nos espazos de nomes [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|principal]] e de [[{{MediaWiki:Visualeditor-usernamespacepagelink}}|usuario]])',
@@ -1157,7 +1249,6 @@ $messages['gl'] = array(
 	'visualeditor-savedialog-label-restore' => 'Restaurar a páxina',
 	'visualeditor-editnotices-tool' => '$1 {{PLURAL:$1|aviso|avisos}}',
 	'visualeditor-feedback-tool' => 'Deixe un comentario',
-	'tooltip-ca-ve-edit' => 'Editar esta páxina co editor visual',
 	'visualeditor-window-title' => 'Inspeccionar',
 	'visualeditor-linkinspector-title' => 'Hiperligazón',
 	'visualeditor-linkinspector-suggest-existing-page' => 'Páxina existente',
@@ -1193,11 +1284,9 @@ $messages['gl'] = array(
 	'visualeditor-editsummary' => 'Describa os seus cambios',
 	'visualeditor-problem' => 'Describa o que foi mal',
 	'visualeditor-aliennode-tooltip' => 'Sentímolo, o editor visual non pode editar este elemento.',
-	'tag-visualeditor' => '[[Special:Tags|Etiqueta]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|Editor visual]]',
-	'tag-visualeditor-description' => 'Edición feita mediante o [[{{MediaWiki:Visualeditor-descriptionpagelink}}|editor visual]]',
 	'visualeditor-descriptionpagelink' => 'Project:Editor visual',
 	'visualeditor-alphawarning' => 'Está utilizando a versión alpha do [[{{MediaWiki:Visualeditor-descriptionpagelink}}|editor visual]]. Pode ser lenta e facer modificacións erróneas. Comprobe todas as edicións que faga.',
-	'visualeditor-report-notice' => 'Entendo que ao premer no botón "Enviar" hei transmitir as miñas modificacións e os meus comentarios, que quedarán rexistrados para a súa análise. Acepto achegar os comentarios de acordo cos [[{{MediaWiki:Visualeditor-report-link}}|termos de uso]].',
+	'visualeditor-report-notice' => 'Entendo que ao premer no botón "Informar sobre un problema" hei transmitir as miñas modificacións e os meus comentarios, que quedarán rexistrados para a súa análise. Acepto achegar os comentarios de acordo cos [[{{MediaWiki:Visualeditor-report-link}}|termos de uso]].',
 	'visualeditor-report-link' => 'foundation:Terms of Use/gl',
 );
 
@@ -1216,6 +1305,9 @@ $messages['gu'] = array(
  * @author חיים
  */
 $messages['he'] = array(
+	'tag-visualeditor' => '[[Special:Tags|תג]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|עורך חזותי]]',
+	'tag-visualeditor-description' => 'העריכה נעשתה באמצעות [[{{MediaWiki:Visualeditor-descriptionpagelink}}|העורך החזותי]]',
+	'tooltip-ca-ve-edit' => 'עריכת הדף באמצעות עורך חזותי',
 	'visualeditor' => 'עורך חזותי',
 	'visualeditor-desc' => 'עורך חזותי למדיה־ויקי',
 	'visualeditor-preference-enable' => 'להפעיל את העורך החזותי (רק ב[[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|מרחב השמות הראשי]] וב[[{{MediaWiki:Visualeditor-usernamespacepagelink}}|מרחב המשתמש]])',
@@ -1246,7 +1338,6 @@ $messages['he'] = array(
 	'visualeditor-savedialog-label-restore' => 'שחזור דף',
 	'visualeditor-editnotices-tool' => '{{PLURAL:$1|הודעה אחת|$1 הודעות}}',
 	'visualeditor-feedback-tool' => 'שליחת משוב',
-	'tooltip-ca-ve-edit' => 'עריכת הדף באמצעות עורך חזותי',
 	'visualeditor-window-title' => 'חקירה',
 	'visualeditor-linkinspector-title' => 'היפר־קישור',
 	'visualeditor-linkinspector-suggest-existing-page' => 'דף קיים',
@@ -1277,13 +1368,12 @@ $messages['he'] = array(
 	'visualeditor-viewpage-savewarning' => 'האם ברצונך לשוב למצב תצוגה ללא שמירה?',
 	'visualeditor-loadwarning' => 'שגיאה בטעינת מידע מהשרת: $1. האם לנסות שוב?',
 	'visualeditor-differror' => 'שגיאה בטעינת נתונים מהשרת: $1',
+	'visualeditor-serializeerror' => 'שגיאה בטעינת נתונים מהשרת: $1.',
 	'visualeditor-saveerror' => 'שגיאה בשמירת נתונים לשרת: $1.',
 	'visualeditor-editconflict' => 'השינויים שלך לא נשמרו בגלל התנגשות עריכה. האם ברצונך לפתור את ההתנגשות ידנית?',
 	'visualeditor-editsummary' => 'נא לתאר מה שינית',
 	'visualeditor-problem' => 'נא לתאר מה השתבש',
 	'visualeditor-aliennode-tooltip' => 'סליחה, אי־אפשר לערוך את המרכיב הזה באמצעות העורך החזותי',
-	'tag-visualeditor' => '[[Special:Tags|תג]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|עורך חזותי]]',
-	'tag-visualeditor-description' => 'העריכה נעשתה באמצעות [[{{MediaWiki:Visualeditor-descriptionpagelink}}|העורך החזותי]]',
 	'visualeditor-descriptionpagelink' => 'Project:VisualEditor',
 	'visualeditor-alphawarning' => 'זוהי גרסת אלפא של [[{{MediaWiki:Visualeditor-descriptionpagelink}}|העורך החזותי]]. היא עלולה להיות אטית ולעשות שינויים שגויים – נא לבדוק כל עריכה שנעשית באמצעותה.',
 	'visualeditor-report-notice' => 'ברור לי שלחיצה על "דיווח על בעיה" פירושה שליחה של השינויים שלי והן של המשוב שלי, שיישמר לצורך ניתוח וכן הסכמה לספק משוב בהתאם ל[[{{MediaWiki:Visualeditor-report-link}}|תנאי השימוש]].',
@@ -1487,6 +1577,10 @@ $messages['is'] = array(
  * @author Raoli
  */
 $messages['it'] = array(
+	'tag-visualeditor' => '[[Special:Tags|Etichetta]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
+	'tag-visualeditor-description' => 'Modifica eseguita usando [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
+	'tooltip-ca-editsource' => 'Modifica il codice sorgente di questa pagina',
+	'tooltip-ca-ve-edit' => 'Modifica questa pagina con VisualEditor',
 	'visualeditor' => 'VisualEditor',
 	'visualeditor-desc' => 'Editor visivo per MediaWiki',
 	'visualeditor-preference-enable' => 'Abilita VisualEditor (solo nei namespace [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|principale]] e [[{{MediaWiki:Visualeditor-usernamespacepagelink}}|Utente]])',
@@ -1517,7 +1611,6 @@ $messages['it'] = array(
 	'visualeditor-savedialog-label-restore' => 'Ripristina pagina',
 	'visualeditor-editnotices-tool' => '$1 {{PLURAL:$1|notifica|notifiche}}',
 	'visualeditor-feedback-tool' => 'Lascia un commento',
-	'tooltip-ca-ve-edit' => 'Modifica questa pagina con VisualEditor',
 	'visualeditor-window-title' => 'Ispeziona',
 	'visualeditor-linkinspector-title' => 'Collegamento ipertestuale',
 	'visualeditor-linkinspector-suggest-existing-page' => 'Pagina esistente',
@@ -1548,16 +1641,15 @@ $messages['it'] = array(
 	'visualeditor-viewpage-savewarning' => 'Tornare alla modalità in visualizzazione senza salvare prima?',
 	'visualeditor-loadwarning' => 'Errore durante il caricamento dei dati dal server: $1. Riprovare?',
 	'visualeditor-differror' => 'Errore durante il caricamento dei dati dal server: $1.',
+	'visualeditor-serializeerror' => 'Errore durante il caricamento dei dati dal server: $1.',
 	'visualeditor-saveerror' => 'Errore durante il salvataggio dei dati sul server: $1.',
 	'visualeditor-editconflict' => 'Le modifiche apportate non possono essere salvate a causa di un conflitto di edizione. Vuoi risolvere il conflitto manualmente?',
 	'visualeditor-editsummary' => 'Descrivere che cosa è cambiato',
 	'visualeditor-problem' => 'Descrivi cosa è andato storto',
 	'visualeditor-aliennode-tooltip' => 'Spiacenti, questo elemento non può essere modificato utilizzando VisualEditor',
-	'tag-visualeditor' => '[[Special:Tags|Etichetta]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
-	'tag-visualeditor-description' => 'Modifica eseguita usando [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
 	'visualeditor-descriptionpagelink' => 'Project:VisualEditor',
 	'visualeditor-alphawarning' => 'Stai utilizzando una versione alfa di [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]. Può essere lenta e fare modifiche sbagliate - controlla ogni modifica che fai.',
-	'visualeditor-report-notice' => "Capisco che cliccando su invia trasmetto le mie modifiche e il mio feedback che verranno conservati per l'analisi. Sono d'accordo a fornire i feedback in conformità alle [[{{MediaWiki:Visualeditor-report-link}}|Condizioni di Utilizzo]].", # Fuzzy
+	'visualeditor-report-notice' => "Capisco che cliccando su {{MediaWiki:Visualeditor-savedialog-label-report}} trasmetto le mie modifiche e il mio feedback che verranno conservati per l'analisi. Sono d'accordo a fornire i feedback in conformità alle [[{{MediaWiki:Visualeditor-report-link}}|condizioni d'uso]].",
 	'visualeditor-report-link' => 'foundation:Terms of Use/it',
 );
 
@@ -1566,6 +1658,10 @@ $messages['it'] = array(
  * @author Shirayuki
  */
 $messages['ja'] = array(
+	'tag-visualeditor' => '[[Special:Tags|タグ]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|ビジュアルエディター]]',
+	'tag-visualeditor-description' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|ビジュアルエディター]]を使用した編集',
+	'tooltip-ca-editsource' => 'このページのソースコードを編集する',
+	'tooltip-ca-ve-edit' => 'このページをビジュアルエディターで編集する',
 	'visualeditor' => 'ビジュアルエディター',
 	'visualeditor-desc' => 'MediaWiki 用のビジュアルエディター',
 	'visualeditor-preference-enable' => 'ビジュアルエディターを有効にする ([[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|標準名前空間]]および[[{{MediaWiki:Visualeditor-usernamespacepagelink}}|利用者名前空間]]のみ)',
@@ -1596,7 +1692,6 @@ $messages['ja'] = array(
 	'visualeditor-savedialog-label-restore' => 'ページを復元',
 	'visualeditor-editnotices-tool' => '$1 {{PLURAL:$1|件のお知らせ}}',
 	'visualeditor-feedback-tool' => 'フィードバックを送信',
-	'tooltip-ca-ve-edit' => 'このページをビジュアルエディターで編集する',
 	'visualeditor-window-title' => '調査',
 	'visualeditor-linkinspector-title' => 'ハイパーリンク',
 	'visualeditor-linkinspector-suggest-existing-page' => '既存のページ',
@@ -1627,13 +1722,12 @@ $messages['ja'] = array(
 	'visualeditor-viewpage-savewarning' => 'まだ保存していませんが、表示モードに本当に戻りますか?',
 	'visualeditor-loadwarning' => 'サーバーからデータを読み込む際にエラーが発生しました: $1。再試行してください。',
 	'visualeditor-differror' => 'サーバーからデータを読み込む際にエラーが発生しました: $1',
+	'visualeditor-serializeerror' => 'サーバーからデータを読み込む際にエラーが発生しました: $1',
 	'visualeditor-saveerror' => 'サーバーにデータを保存する際にエラーが発生しました: $1',
 	'visualeditor-editconflict' => '編集競合のため、編集内容を保存できませんでした。この競合を手動で解決しますか?',
 	'visualeditor-editsummary' => '編集内容を説明してください',
 	'visualeditor-problem' => '問題点の内容を説明してください',
 	'visualeditor-aliennode-tooltip' => '申し訳ありませんが、この要素はビジュアルエディターでは編集できません',
-	'tag-visualeditor' => '[[Special:Tags|タグ]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|ビジュアルエディター]]',
-	'tag-visualeditor-description' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|ビジュアルエディター]]を使用した編集',
 	'visualeditor-descriptionpagelink' => 'Project:ビジュアルエディター',
 	'visualeditor-alphawarning' => 'あなたは[[{{MediaWiki:Visualeditor-descriptionpagelink}}|ビジュアルエディター]]のアルファ版を使用しています。動作が遅い可能性があり、誤った内容を保存してしまうおそれがあります。保存した結果が正しいか毎回確認してください。',
 	'visualeditor-report-notice' => '私は「問題点を報告」ボタンを押すことで自身の変更とフィードバックを送信し、それが分析のために保管されることを理解します。[[{{MediaWiki:Visualeditor-report-link}}|利用規約]]に従ってフィードバックを提供することに同意します。',
@@ -1904,7 +1998,37 @@ $messages['lt'] = array(
  */
 $messages['lv'] = array(
 	'visualeditor-dialog-media-title' => 'Mediju iestatījumi',
+	'visualeditor-dialog-action-cancel' => 'Atcelt',
+	'visualeditor-dialog-action-close' => 'Aizvērt',
+	'visualeditor-savedialog-title-report' => 'Ziņot par problēmu',
+	'visualeditor-savedialog-title-save' => 'Saglabāt veiktās izmaiņas',
+	'visualeditor-savedialog-label-review-wrong' => 'Kaut kas nav kārtībā',
+	'visualeditor-savedialog-label-report' => 'Ziņot problēmu',
+	'visualeditor-savedialog-label-create' => 'Izveidot lapu',
+	'visualeditor-savedialog-label-save' => 'Saglabāt lapu',
+	'visualeditor-window-title' => 'Pārbaudīt',
+	'visualeditor-linkinspector-title' => 'Hipersaite',
+	'visualeditor-linkinspector-suggest-existing-page' => 'Esoša lapa',
+	'visualeditor-linkinspector-suggest-new-page' => 'Jauna lapa',
+	'visualeditor-linkinspector-suggest-external-link' => 'Web saiti',
+	'visualeditor-formatdropdown-format-heading1' => 'Virsraksts 1',
+	'visualeditor-formatdropdown-format-heading2' => 'Virsraksts 2',
+	'visualeditor-formatdropdown-format-heading3' => 'Virsraksts 3',
+	'visualeditor-formatdropdown-format-heading4' => 'Virsraksts 4',
+	'visualeditor-formatdropdown-format-heading5' => 'Virsraksts 4',
+	'visualeditor-formatdropdown-format-heading6' => 'Virsraksts 6',
+	'visualeditor-annotationbutton-bold-tooltip' => 'Pustrekns',
+	'visualeditor-annotationbutton-italic-tooltip' => 'Kursīvā',
+	'visualeditor-annotationbutton-link-tooltip' => 'Saite',
 	'visualeditor-dialogbutton-media-tooltip' => 'Medijs',
+	'visualeditor-indentationbutton-outdent-tooltip' => 'Samazinātu atkāpi',
+	'visualeditor-listbutton-number-tooltip' => 'Numurēts saraksts',
+	'visualeditor-listbutton-bullet-tooltip' => 'Nenumurēts saraksts',
+	'visualeditor-clearbutton-tooltip' => 'Notīrīt formatējumu',
+	'visualeditor-historybutton-undo-tooltip' => 'Atsaukt',
+	'visualeditor-historybutton-redo-tooltip' => 'Atcelt atsaukšanu',
+	'visualeditor-inspector-close-tooltip' => 'Aizvērt',
+	'visualeditor-inspector-remove-tooltip' => 'Noņemt',
 );
 
 /** Macedonian (македонски)
@@ -1912,6 +2036,10 @@ $messages['lv'] = array(
  * @author Brest
  */
 $messages['mk'] = array(
+	'tag-visualeditor' => '[[Special:Tags|Ознака]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|ВизуеленУредник]]',
+	'tag-visualeditor-description' => 'Уредувањето е извршено со [[{{MediaWiki:Visualeditor-descriptionpagelink}}|ВизуеленУредник]]',
+	'tooltip-ca-editsource' => 'Уредување на изворниот код на страницава',
+	'tooltip-ca-ve-edit' => 'Уреди ја страницава со ВизуеленУредник',
 	'visualeditor' => 'Визуелен уредник',
 	'visualeditor-desc' => 'Визуелен уредник за МедијаВики',
 	'visualeditor-preference-enable' => 'Овозможи ВизуеленУредник (само во [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|главниот]] и [[{{MediaWiki:Visualeditor-usernamespacepagelink}}|корисничкиот]] именски простор)',
@@ -1942,7 +2070,6 @@ $messages['mk'] = array(
 	'visualeditor-savedialog-label-restore' => 'Поврати страница',
 	'visualeditor-editnotices-tool' => '$1 {{PLURAL:$1|известување|известувања}}',
 	'visualeditor-feedback-tool' => 'Дајте мислење',
-	'tooltip-ca-ve-edit' => 'Уреди ја страницава со ВизуеленУредник',
 	'visualeditor-window-title' => 'Контр. преглед',
 	'visualeditor-linkinspector-title' => 'Хиперврска',
 	'visualeditor-linkinspector-suggest-existing-page' => 'Постоечка страница',
@@ -1978,8 +2105,6 @@ $messages['mk'] = array(
 	'visualeditor-editsummary' => 'Опишете ги направените измени',
 	'visualeditor-problem' => 'Опишете што не е во ред',
 	'visualeditor-aliennode-tooltip' => 'Нажалост, овој елемент не може да се уредува со ВизуеленУредник',
-	'tag-visualeditor' => '[[Special:Tags|Ознака]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|ВизуеленУредник]]',
-	'tag-visualeditor-description' => 'Уредувањето е извршено со [[{{MediaWiki:Visualeditor-descriptionpagelink}}|ВизуеленУредник]]',
 	'visualeditor-descriptionpagelink' => 'Project:ВизуеленУредник',
 	'visualeditor-alphawarning' => 'Користите алфа-верзија на [[{{MediaWiki:Visualeditor-descriptionpagelink}}|ВизуеленУредник]]. Имајте предвид дека може да биде бавен и да прави некои погрешни измени - затоа, проверувајте го секое извршено уредување.',
 	'visualeditor-report-notice' => 'Разбирам дека стискајќи на „Пријави проблем“ ќе ги пренесам моите промени и одѕивот на место кајшто ќе бидат складирани за анализа. Се согласувам да давам одѕив во склад со [[{{MediaWiki:Visualeditor-report-link}}|Условите на употреба]].',
@@ -1991,6 +2116,10 @@ $messages['mk'] = array(
  * @author Santhosh.thottingal
  */
 $messages['ml'] = array(
+	'tag-visualeditor' => '[[Special:Tags|ടാഗ്]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|കണ്ടുതിരുത്തൽസൗകര്യം]]',
+	'tag-visualeditor-description' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|കണ്ടുതിരുത്തൽ സൗകര്യമുപയോഗിച്ച്]] നടത്തിയ തിരുത്തൽ',
+	'tooltip-ca-editsource' => 'ഈ താളിന്റെ മൂലരൂപം തിരുത്തുക',
+	'tooltip-ca-ve-edit' => 'ഈ താൾ കണ്ടുതിരുത്തൽ സൗകര്യമുപയോഗിച്ച് തിരുത്തുക',
 	'visualeditor' => 'കണ്ടുതിരുത്തൽ സൗകര്യം',
 	'visualeditor-desc' => 'മീഡിയവിക്കിയ്ക്കായുള്ള കണ്ടുതിരുത്തൽ സൗകര്യം',
 	'visualeditor-preference-enable' => 'കണ്ടുതിരുത്തൽ സൗകര്യം സജ്ജമാക്കുക ([[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|പ്രധാന നാമമേഖലയിലും]] [[{{MediaWiki:Visualeditor-usernamespacepagelink}}|ഉപയോക്തൃനാമമേഖലയിലും]] മാത്രം)',
@@ -2005,8 +2134,10 @@ $messages['ml'] = array(
 	'visualeditor-ca-ve-create' => 'കണ്ടുതിരുത്തൽ സൗകര്യം',
 	'visualeditor-dialog-meta-title' => 'താളിന്റെ സജ്ജീകരണങ്ങൾ',
 	'visualeditor-dialog-content-title' => 'ഉള്ളടക്ക സജ്ജീകരണങ്ങൾ',
+	'visualeditor-dialog-media-title' => 'മീഡിയ സജ്ജീകരണങ്ങൾ',
 	'visualeditor-dialog-action-apply' => 'മാറ്റങ്ങൾ ബാധകമാക്കുക',
 	'visualeditor-dialog-action-cancel' => 'റദ്ദാക്കുക',
+	'visualeditor-dialog-action-close' => 'അടയ്ക്കുക',
 	'visualeditor-toolbar-savedialog' => 'സംശോധനം ചെയ്യുക, സേവ് ചെയ്യുക',
 	'visualeditor-savedialog-title-review' => 'താങ്കളുടെ മാറ്റങ്ങൾ സംശോധനം ചെയ്യുക',
 	'visualeditor-savedialog-title-report' => 'പ്രശ്നമറിയിക്കുക',
@@ -2019,10 +2150,8 @@ $messages['ml'] = array(
 	'visualeditor-savedialog-label-restore' => 'താൾ പുനഃസ്ഥാപിക്കുക',
 	'visualeditor-editnotices-tool' => '{{PLURAL:$1|ഒരു അറിയിപ്പ്|$1 അറിയിപ്പുകൾ}}',
 	'visualeditor-feedback-tool' => 'പ്രതികരണം ചേർക്കുക',
-	'tooltip-ca-ve-edit' => 'ഈ താൾ കണ്ടുതിരുത്തൽ സൗകര്യമുപയോഗിച്ച് തിരുത്തുക',
 	'visualeditor-window-title' => 'പരിശോധിക്കുക',
 	'visualeditor-linkinspector-title' => 'ഹൈപ്പർലിങ്ക്',
-	'visualeditor-linkinspector-label-pagetitle' => 'താളിന്റെ തലക്കെട്ട്',
 	'visualeditor-linkinspector-suggest-existing-page' => 'നിലവിലുള്ള താൾ',
 	'visualeditor-linkinspector-suggest-new-page' => 'പുതിയ താൾ',
 	'visualeditor-linkinspector-suggest-external-link' => 'വെബ് കണ്ണി',
@@ -2038,6 +2167,7 @@ $messages['ml'] = array(
 	'visualeditor-annotationbutton-bold-tooltip' => 'കടുപ്പിക്കുക',
 	'visualeditor-annotationbutton-italic-tooltip' => 'ചെരിച്ച്',
 	'visualeditor-annotationbutton-link-tooltip' => 'കണ്ണി',
+	'visualeditor-dialogbutton-media-tooltip' => 'മീഡിയ',
 	'visualeditor-indentationbutton-indent-tooltip' => 'അരികിലെ ഇട കൂട്ടുക',
 	'visualeditor-indentationbutton-outdent-tooltip' => 'അരികിലെ ഇട കുറയ്ക്കുക',
 	'visualeditor-listbutton-number-tooltip' => 'എണ്ണമിട്ട ലിസ്റ്റ്',
@@ -2055,11 +2185,9 @@ $messages['ml'] = array(
 	'visualeditor-editsummary' => 'താങ്കൾ എന്താണ് മാറ്റം വരുത്തിയതെന്ന് വിവരിക്കുക',
 	'visualeditor-problem' => 'എന്താണ് പിഴച്ചതെന്ന് വിവരിക്കുക',
 	'visualeditor-aliennode-tooltip' => 'ക്ഷമിക്കുക, ഈ ഘടകം കണ്ടുതിരുത്തൽ സൗകര്യമുപയോഗിച്ച് തിരുത്താനാവില്ല',
-	'tag-visualeditor' => '[[Special:Tags|ടാഗ്]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|കണ്ടുതിരുത്തൽസൗകര്യം]]',
-	'tag-visualeditor-description' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|കണ്ടുതിരുത്തൽ സൗകര്യമുപയോഗിച്ച്]] നടത്തിയ തിരുത്തൽ',
 	'visualeditor-descriptionpagelink' => 'Project:കണ്ടുതിരുത്തൽ സൗകര്യം',
 	'visualeditor-alphawarning' => 'താങ്കൾ [[{{MediaWiki:Visualeditor-descriptionpagelink}}|കണ്ടുതിരുത്തൽ സൗകര്യത്തിന്റെ]] ആൽഫാ പതിപ്പ് ആണ് ഉപയോഗിക്കുന്നത്. ഇത് താമസമേറിയതും തെറ്റായ മാറ്റങ്ങൾ ഉണ്ടാക്കുന്നതുമാവാം - ദയവായി താങ്കൾ വരുത്തുന്ന ഓരോ മാറ്റങ്ങളും പരിശോധിക്കുക.',
-	'visualeditor-report-notice' => 'ഞാൻ വരുത്തുന്ന മാറ്റങ്ങളും എന്റെ പ്രതികരണവും സമർപ്പിക്കുമ്പോൾ, അവ വിശകലനത്തിനായി സമാഹരിക്കപ്പെടുമെന്ന് ഞാൻ മനസ്സിലാക്കുന്നു. എന്റെ പ്രതികരണം [[{{MediaWiki:Visualeditor-report-link}}|ഉപയോഗനിബന്ധനകൾക്ക്]] അനുസൃതമായിരിക്കും എന്ന് ഞാൻ സമ്മതിക്കുന്നു.',
+	'visualeditor-report-notice' => '"പ്രശ്നമറിയിക്കുക" എന്ന ബട്ടൺ ഞെക്കുമ്പോൾ, ഞാൻ വരുത്തിയ മാറ്റങ്ങളും എന്റെ പ്രതികരണവും അയയ്ക്കപ്പെടുന്നതാണെന്നും, അവ വിശകലനത്തിനായി സമാഹരിക്കപ്പെടുമെന്നും ഞാൻ മനസ്സിലാക്കുന്നു. എന്റെ പ്രതികരണം [[{{MediaWiki:Visualeditor-report-link}}|ഉപയോഗനിബന്ധനകൾക്ക്]] അനുസൃതമായിരിക്കും എന്ന് ഞാൻ സമ്മതിക്കുന്നു.',
 	'visualeditor-report-link' => 'foundation:Terms of Use/ml',
 );
 
@@ -2078,6 +2206,9 @@ $messages['mr'] = array(
  * @author Anakmalaysia
  */
 $messages['ms'] = array(
+	'tag-visualeditor' => '[[Special:Tags|Teg]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
+	'tag-visualeditor-description' => 'Disunting dengan menggunakan [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
+	'tooltip-ca-ve-edit' => 'Sunting halaman ini dengan VisualEditor',
 	'visualeditor' => 'VisualEditor',
 	'visualeditor-desc' => 'Alat penyuntingan visual untuk MediaWiki',
 	'visualeditor-preference-enable' => 'Hidupkan VisualEditor (hanya di ruang nama [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|utama]] dan [[{{MediaWiki:Visualeditor-usernamespacepagelink}}|pengguna]])',
@@ -2090,6 +2221,12 @@ $messages['ms'] = array(
 	'visualeditor-ca-editsource' => 'Sunting sumber',
 	'visualeditor-ca-ve-edit' => 'VisualEditor',
 	'visualeditor-ca-ve-create' => 'VisualEditor',
+	'visualeditor-dialog-meta-title' => 'Tetapan halaman',
+	'visualeditor-dialog-content-title' => 'Tetapan kandungan',
+	'visualeditor-dialog-media-title' => 'Tetapan media',
+	'visualeditor-dialog-action-apply' => 'Gunakan perubahan',
+	'visualeditor-dialog-action-cancel' => 'Batalkan',
+	'visualeditor-dialog-action-close' => 'Tutup',
 	'visualeditor-toolbar-savedialog' => 'Semak dan simpan',
 	'visualeditor-savedialog-title-review' => 'Semak suntingan anda',
 	'visualeditor-savedialog-title-report' => 'Laporkan masalah',
@@ -2102,10 +2239,8 @@ $messages['ms'] = array(
 	'visualeditor-savedialog-label-restore' => 'Pulihkan halaman',
 	'visualeditor-editnotices-tool' => '$1 pemberitahuan',
 	'visualeditor-feedback-tool' => 'Tinggalkan maklum balas',
-	'tooltip-ca-ve-edit' => 'Sunting halaman ini dengan VisualEditor',
-	'visualeditor-inspector-title' => 'Periksa',
+	'visualeditor-window-title' => 'Periksa',
 	'visualeditor-linkinspector-title' => 'Hiperpautan',
-	'visualeditor-linkinspector-label-pagetitle' => 'Tajuk halaman',
 	'visualeditor-linkinspector-suggest-existing-page' => 'Halaman sedia ada',
 	'visualeditor-linkinspector-suggest-new-page' => 'Halaman baru',
 	'visualeditor-linkinspector-suggest-external-link' => 'Pautan sesawang',
@@ -2121,6 +2256,7 @@ $messages['ms'] = array(
 	'visualeditor-annotationbutton-bold-tooltip' => 'Tebal',
 	'visualeditor-annotationbutton-italic-tooltip' => 'Condong',
 	'visualeditor-annotationbutton-link-tooltip' => 'Pautan',
+	'visualeditor-dialogbutton-media-tooltip' => 'Media',
 	'visualeditor-indentationbutton-indent-tooltip' => 'Jarakkan inden',
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Rapatkan inden',
 	'visualeditor-listbutton-number-tooltip' => 'Senarai bernombor',
@@ -2138,11 +2274,9 @@ $messages['ms'] = array(
 	'visualeditor-editsummary' => 'Terangkan suntingan anda',
 	'visualeditor-problem' => 'Sila terangkan apa masalahnya',
 	'visualeditor-aliennode-tooltip' => 'Maaf, unsur ini tidak dapat disunting dengan VisualEditor',
-	'tag-visualeditor' => '[[Special:Tags|Teg]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
-	'tag-visualeditor-description' => 'Disunting dengan menggunakan [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
 	'visualeditor-descriptionpagelink' => 'Project:VisualEditor',
 	'visualeditor-alphawarning' => 'Anda sedang menggunakan versi alfa [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]. Ia mungkin perlahan dan tersilap membuat perubahan - sila semak setiap suntingan yang anda lakukan.',
-	'visualeditor-report-notice' => "Saya memahami bahawa dengan menekan 'hantar', saya akan memancarkan suntingan saya dan maklum balas saya yang akan disimpin untuk dianalisa. Saya bersetuju untuk memberikan maklum balas mengikut [[{{MediaWiki:Visualeditor-report-link}}|Syarat-syarat Penggunaan]].",
+	'visualeditor-report-notice' => 'Saya memahami bahawa dengan menekan "Laporkan masalah", saya akan memancarkan suntingan saya dan maklum balas saya yang akan disimpin untuk dianalisa. Saya bersetuju untuk memberikan maklum balas mengikut [[{{MediaWiki:Visualeditor-report-link}}|Syarat-syarat Penggunaan]].',
 	'visualeditor-report-link' => 'foundation:Terms of Use/ms',
 );
 
@@ -2202,6 +2336,9 @@ $messages['ne'] = array(
  * @author Siebrand
  */
 $messages['nl'] = array(
+	'tag-visualeditor' => '[[Special:Tags|Tag]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|Visuele tekstverwerker]]',
+	'tag-visualeditor-description' => 'Bewerking gemaakt met behulp van de [[{{MediaWiki:Visualeditor-descriptionpagelink}}|Visuele tekstverwerker]]',
+	'tooltip-ca-ve-edit' => 'Deze pagina visueel bewerken',
 	'visualeditor' => 'Vereenvoudigde tekstverwerker',
 	'visualeditor-desc' => 'Vereenvoudigde tekstverwerker voor MediaWiki',
 	'visualeditor-preference-enable' => 'Visuele tekstverwerker inschakelen (alleen voor de [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|hoofdnaamruimte]] en de [[{{MediaWiki:Visualeditor-usernamespacepagelink}}|gebruikersnaamruimte]])',
@@ -2232,7 +2369,6 @@ $messages['nl'] = array(
 	'visualeditor-savedialog-label-restore' => 'Pagina terugplaatsen',
 	'visualeditor-editnotices-tool' => '$1 {{PLURAL:$1|melding|meldingen}}',
 	'visualeditor-feedback-tool' => 'Terugkoppeling achterlaten',
-	'tooltip-ca-ve-edit' => 'Deze pagina visueel bewerken',
 	'visualeditor-window-title' => 'Inspecteren',
 	'visualeditor-linkinspector-title' => 'Hyperlink',
 	'visualeditor-linkinspector-suggest-existing-page' => 'Bestaande pagina',
@@ -2268,11 +2404,9 @@ $messages['nl'] = array(
 	'visualeditor-editsummary' => 'Beschrijf wat u hebt gewijzigd',
 	'visualeditor-problem' => 'Beschrijf wat er verkeerd is gegaan',
 	'visualeditor-aliennode-tooltip' => 'Dit element kan helaas niet bewerkt worden met de Visuele tekstverwerker',
-	'tag-visualeditor' => '[[Special:Tags|Tag]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|Visuele tekstverwerker]]',
-	'tag-visualeditor-description' => 'Bewerking gemaakt met behulp van de [[{{MediaWiki:Visualeditor-descriptionpagelink}}|Visuele tekstverwerker]]',
 	'visualeditor-descriptionpagelink' => 'Project:Visuele tekstverwerker',
 	'visualeditor-alphawarning' => 'U gebruikt een versie van de [[{{MediaWiki:Visualeditor-descriptionpagelink}}|Visuele tekstverwerker]] waar nog hard aan wordt gewerkt. Deze functie kan langzaam zijn en fouten bevatten. Controleer iedere bewerking die u maakt.',
-	'visualeditor-report-notice' => 'Ik begrijp dat door te klikken op "Opslaan" mijn wijzigingen en mijn terugkoppeling worden opgeslagen voor latere analyse. Ik ga akkoord met het geven van terugkoppelingen volgens de [[{{MediaWiki:Visualeditor-report-link}}|Gebruiksvoorwaarden]].', # Fuzzy
+	'visualeditor-report-notice' => 'Ik begrijp dat door te klikken op "Probleem melden" mijn wijzigingen en mijn terugkoppeling worden opgeslagen voor latere analyse. Ik ga akkoord met het geven van terugkoppelingen volgens de [[{{MediaWiki:Visualeditor-report-link}}|Gebruiksvoorwaarden]].',
 	'visualeditor-report-link' => 'foundation:Terms_of_Use/nl',
 );
 
@@ -2353,8 +2487,12 @@ $messages['os'] = array(
  * @author Odie2
  * @author Ty221
  * @author WTM
+ * @author Wpedzich
  */
 $messages['pl'] = array(
+	'tag-visualeditor' => '[[Special:Tags|Tag]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
+	'tag-visualeditor-description' => 'Edycja z wykorzystaniem [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditora]]',
+	'tooltip-ca-ve-edit' => 'Edytuj tę stronę wykorzystując VisualEditor',
 	'visualeditor' => 'VisualEditor',
 	'visualeditor-desc' => 'Edytor graficzny dla MediaWiki',
 	'visualeditor-preference-enable' => 'Uaktywnij VisualEditor (tylko w [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|przestrzeni głównej]] i w [[{{MediaWiki:Visualeditor-usernamespacepagelink}}|przestrzeni użytkownika]])',
@@ -2385,7 +2523,6 @@ $messages['pl'] = array(
 	'visualeditor-savedialog-label-restore' => 'Przywróć stronę',
 	'visualeditor-editnotices-tool' => '$1 {{PLURAL:$1|ogłoszenie|ogłoszenia}}',
 	'visualeditor-feedback-tool' => 'Prześlij opinię',
-	'tooltip-ca-ve-edit' => 'Edytuj tę stronę VisualEditorem',
 	'visualeditor-window-title' => 'Zbadaj',
 	'visualeditor-linkinspector-title' => 'Hiperłącze',
 	'visualeditor-linkinspector-suggest-existing-page' => 'Istniejąca strona',
@@ -2421,10 +2558,9 @@ $messages['pl'] = array(
 	'visualeditor-editsummary' => 'Opisz swoje zmiany',
 	'visualeditor-problem' => 'Opisz, co poszło nie tak',
 	'visualeditor-aliennode-tooltip' => 'Niestety, tego elementu nie da się modyfikować VisualEditorem',
-	'tag-visualeditor' => '[[Special:Tags|Tag]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
-	'tag-visualeditor-description' => 'Edycja z wykorzystaniem [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditora]]',
 	'visualeditor-descriptionpagelink' => 'Project:VisualEditor',
-	'visualeditor-alphawarning' => 'Używasz wersji alpha [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditora]]. Może być on powolny i wykonywać nieprawidłowe modyfikacje – sprawdź każdą zmianę, którą wprowadzasz.',
+	'visualeditor-alphawarning' => 'Używasz wersji alfa [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditora]]. Edytor może działać wolno i wykonywać nieprawidłowe modyfikacje – sprawdź każdą zmianę, którą wprowadzasz.',
+	'visualeditor-report-notice' => 'Rozumiem, że klikając "Zgłoś problem" prześlę zrobione przeze mnie zmiany oraz moją opinię, które będą przechowywane w celu analizy. Zgadzam się na przekazanie swojej opinii zgodnie z [[{{MediaWiki:Visualeditor-report-link}}|warunkami użytkowania]].',
 );
 
 /** Piedmontese (Piemontèis)
@@ -2640,18 +2776,45 @@ $messages['pt-br'] = array(
  * @author Stelistcristi
  */
 $messages['ro'] = array(
-	'visualeditor-ca-editsource' => 'Modificați sursa',
-	'visualeditor-savedialog-label-create' => 'Creare pagină',
-	'visualeditor-savedialog-label-save' => 'Salvare pagină',
-	'visualeditor-savedialog-label-restore' => 'Restaurare pagină',
+	'tag-visualeditor' => '[[Special:Tags|Etichetă]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|EditorVizual]]',
+	'tag-visualeditor-description' => 'Modificare efectuată cu [[{{MediaWiki:Visualeditor-descriptionpagelink}}|EditorulVizual]]',
+	'tooltip-ca-ve-edit' => 'Modificați această pagină cu EditorulVizual',
+	'visualeditor' => 'EditorVizual',
+	'visualeditor-desc' => 'Editor vizual pentru MediaWiki',
+	'visualeditor-preference-enable' => 'Activează EditorulVizual (doar în spațiile de nume [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|principal]] și [[{{MediaWiki:Visualeditor-usernamespacepagelink}}|utilizator]])',
+	'visualeditor-mainnamespacepagelink' => 'Project:Spațiul de nume principal',
+	'visualeditor-usernamespacepagelink' => 'Project:Spațiul de nume utilizator',
+	'visualeditor-notification-saved' => 'Modificările dumneavoastră la pagina $1 au fost salvate.',
+	'visualeditor-notification-created' => '$1 a fost creată.',
+	'visualeditor-notification-restored' => '$1 a fost restaurată.',
+	'visualeditor-notification-reported' => 'Problema dumneavoastră a fost raportată. Vă mulțumim!',
+	'visualeditor-ca-editsource' => 'Modificare sursă',
+	'visualeditor-ca-ve-edit' => 'EditorVizual',
+	'visualeditor-ca-ve-create' => 'EditorVizual',
+	'visualeditor-dialog-meta-title' => 'Setări pagină',
+	'visualeditor-dialog-content-title' => 'Setări conținut',
+	'visualeditor-dialog-media-title' => 'Setări elemente media',
+	'visualeditor-dialog-action-apply' => 'Aplică modificările',
+	'visualeditor-dialog-action-cancel' => 'Revocare',
+	'visualeditor-dialog-action-close' => 'Închidere',
+	'visualeditor-toolbar-savedialog' => 'Revizualizare și salvare',
+	'visualeditor-savedialog-title-review' => 'Revizualizați-vă modificările',
+	'visualeditor-savedialog-title-report' => 'Semnalați o problemă',
+	'visualeditor-savedialog-title-save' => 'Salvați-vă modificările',
+	'visualeditor-savedialog-label-review-wrong' => 'Ceva este în neregulă',
+	'visualeditor-savedialog-label-review-good' => 'Mi se pare în regulă',
+	'visualeditor-savedialog-label-report' => 'Semnalare problemă',
+	'visualeditor-savedialog-label-create' => 'Creează pagina',
+	'visualeditor-savedialog-label-save' => 'Salvează pagina',
+	'visualeditor-savedialog-label-restore' => 'Restaurează pagina',
+	'visualeditor-editnotices-tool' => '$1 {{PLURAL:$1|avertisment|avertismente|de avertismente}}',
 	'visualeditor-feedback-tool' => 'Lăsați o părere',
-	'visualeditor-inspector-title' => 'Inspectare',
-	'visualeditor-linkinspector-title' => 'Modificați legătura', # Fuzzy
-	'visualeditor-linkinspector-label-pagetitle' => 'Titlul paginii',
+	'visualeditor-window-title' => 'Inspectare',
+	'visualeditor-linkinspector-title' => 'Hiperlegătură',
 	'visualeditor-linkinspector-suggest-existing-page' => 'Pagină existentă',
 	'visualeditor-linkinspector-suggest-new-page' => 'Pagină nouă',
 	'visualeditor-linkinspector-suggest-external-link' => 'Legătură web',
-	'visualeditor-formatdropdown-title' => 'Modificați formatul',
+	'visualeditor-formatdropdown-title' => 'Modifică formatarea',
 	'visualeditor-formatdropdown-format-paragraph' => 'Paragraf',
 	'visualeditor-formatdropdown-format-heading1' => 'Titlu 1',
 	'visualeditor-formatdropdown-format-heading2' => 'Titlu 2',
@@ -2660,18 +2823,30 @@ $messages['ro'] = array(
 	'visualeditor-formatdropdown-format-heading5' => 'Titlu 5',
 	'visualeditor-formatdropdown-format-heading6' => 'Titlu 6',
 	'visualeditor-formatdropdown-format-preformatted' => 'Preformatat',
-	'visualeditor-annotationbutton-bold-tooltip' => 'Aldin', # Fuzzy
-	'visualeditor-annotationbutton-italic-tooltip' => 'Cursiv', # Fuzzy
-	'visualeditor-annotationbutton-link-tooltip' => 'Legătură', # Fuzzy
-	'visualeditor-indentationbutton-indent-tooltip' => 'Măriți indentarea', # Fuzzy
-	'visualeditor-indentationbutton-outdent-tooltip' => 'Diminuați indentarea', # Fuzzy
+	'visualeditor-annotationbutton-bold-tooltip' => 'Aldin',
+	'visualeditor-annotationbutton-italic-tooltip' => 'Cursiv',
+	'visualeditor-annotationbutton-link-tooltip' => 'Legătură',
+	'visualeditor-dialogbutton-media-tooltip' => 'Media',
+	'visualeditor-indentationbutton-indent-tooltip' => 'Crește indentarea',
+	'visualeditor-indentationbutton-outdent-tooltip' => 'Scade indentarea',
 	'visualeditor-listbutton-number-tooltip' => 'Listă numerotată',
 	'visualeditor-listbutton-bullet-tooltip' => 'Listă cu puncte',
-	'visualeditor-clearbutton-tooltip' => 'Curățați formatarea',
-	'visualeditor-historybutton-undo-tooltip' => 'Anulare', # Fuzzy
-	'visualeditor-historybutton-redo-tooltip' => 'Refacere', # Fuzzy
+	'visualeditor-clearbutton-tooltip' => 'Elimină formatarea',
+	'visualeditor-historybutton-undo-tooltip' => 'Anulează',
+	'visualeditor-historybutton-redo-tooltip' => 'Reface',
 	'visualeditor-inspector-close-tooltip' => 'Închidere',
-	'visualeditor-inspector-remove-tooltip' => 'Eliminare',
+	'visualeditor-inspector-remove-tooltip' => 'Elimină',
+	'visualeditor-viewpage-savewarning' => 'Sunteți sigur că doriți să vă întoarceți în modul lecturare fără ca mai întâi să salvați?',
+	'visualeditor-loadwarning' => 'Eroare la încărcarea datelor de pe server: $1. Doriți să reîncercați?',
+	'visualeditor-differror' => 'Eroare la încărcarea datelor de pe server: $1.',
+	'visualeditor-saveerror' => 'Eroare la salvarea datelor pe server: $1.',
+	'visualeditor-editconflict' => 'Modificările dumneavoastră nu au putut fi salvate din cauza unui conflict de editare. Doriți să rezolvați conflictul manual?',
+	'visualeditor-editsummary' => 'Descrieți modificările pe care le-ați adus',
+	'visualeditor-problem' => 'Descrieți ce nu a mers bine',
+	'visualeditor-aliennode-tooltip' => 'Ne pare rău, dar acest element nu poate fi modificat utilizând EditorulVizual',
+	'visualeditor-descriptionpagelink' => 'Project:EditorVizual',
+	'visualeditor-alphawarning' => 'Utilizați o versiune alfa a [[{{MediaWiki:Visualeditor-descriptionpagelink}}|EditoruluiVizual]]. Acesta poate fi lent și poate efectua modificări eronate — verificați fiecare modificare pe care o realizați.',
+	'visualeditor-report-notice' => 'Înțeleg că făcând clic pe „Semnalare problemă” voi trimite modificările și părerile mele, care vor fi stocate pentru analiză. Sunt de acord să-mi furnizez părerile în acord cu [[{{MediaWiki:Visualeditor-report-link}}|Termenii de utilizare]].',
 );
 
 /** tarandíne (tarandíne)
@@ -2695,10 +2870,14 @@ $messages['roa-tara'] = array(
 /** Russian (русский)
  * @author Amire80
  * @author Eugrus
+ * @author Iluvatar
  * @author Kalan
  * @author Ole Yves
  */
 $messages['ru'] = array(
+	'tag-visualeditor' => '[[Special:Tags|Тег]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|Визуальный редактор]]',
+	'tag-visualeditor-description' => 'Правка сделана с использованием [[{{MediaWiki:Visualeditor-descriptionpagelink}}|визуального редактора]]',
+	'tooltip-ca-ve-edit' => 'Редактировать данную страницу с визуальным редактором',
 	'visualeditor' => 'VisualEditor',
 	'visualeditor-desc' => 'Визуальный редактор для MediaWiki',
 	'visualeditor-preference-enable' => 'Включить VisualEditor (только в [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|основном]] и [[{{MediaWiki:Visualeditor-usernamespacepagelink}}|личном]] пространствах имён).',
@@ -2711,6 +2890,9 @@ $messages['ru'] = array(
 	'visualeditor-ca-editsource' => 'Править исходный текст',
 	'visualeditor-ca-ve-edit' => 'Визуальный редактор',
 	'visualeditor-ca-ve-create' => 'Визуальный редактор',
+	'visualeditor-dialog-action-apply' => 'Применить изменения',
+	'visualeditor-dialog-action-cancel' => 'Отмена',
+	'visualeditor-dialog-action-close' => 'Закрыть',
 	'visualeditor-toolbar-savedialog' => 'Проверить и сохранить',
 	'visualeditor-savedialog-title-review' => 'Проверьте ваши правки',
 	'visualeditor-savedialog-title-report' => 'Сообщить о проблеме',
@@ -2723,10 +2905,8 @@ $messages['ru'] = array(
 	'visualeditor-savedialog-label-restore' => 'Восстановить страницу',
 	'visualeditor-editnotices-tool' => '$1 {{PLURAL:$1|сообщение|сообщения|сообщений}}',
 	'visualeditor-feedback-tool' => 'Оставить отзыв',
-	'tooltip-ca-ve-edit' => 'Редактировать данную страницу с визуальным редактором',
-	'visualeditor-inspector-title' => 'Проверить',
+	'visualeditor-window-title' => 'Проверить',
 	'visualeditor-linkinspector-title' => 'Гиперссылка',
-	'visualeditor-linkinspector-label-pagetitle' => 'Название страницы',
 	'visualeditor-linkinspector-suggest-existing-page' => 'Существующая страница',
 	'visualeditor-linkinspector-suggest-new-page' => 'Новая страница',
 	'visualeditor-linkinspector-suggest-external-link' => 'Веб-ссылка',
@@ -2739,16 +2919,16 @@ $messages['ru'] = array(
 	'visualeditor-formatdropdown-format-heading5' => 'Заголовок 5',
 	'visualeditor-formatdropdown-format-heading6' => 'Заголовок 6',
 	'visualeditor-formatdropdown-format-preformatted' => 'Преформатированный',
-	'visualeditor-annotationbutton-bold-tooltip' => 'Жирный', # Fuzzy
-	'visualeditor-annotationbutton-italic-tooltip' => 'Курсив', # Fuzzy
-	'visualeditor-annotationbutton-link-tooltip' => 'Ссылка', # Fuzzy
-	'visualeditor-indentationbutton-indent-tooltip' => 'Увеличить отступ', # Fuzzy
-	'visualeditor-indentationbutton-outdent-tooltip' => 'Уменьшить отступ', # Fuzzy
+	'visualeditor-annotationbutton-bold-tooltip' => 'Жирный',
+	'visualeditor-annotationbutton-italic-tooltip' => 'Курсив',
+	'visualeditor-annotationbutton-link-tooltip' => 'Ссылка',
+	'visualeditor-indentationbutton-indent-tooltip' => 'Увеличить отступ',
+	'visualeditor-indentationbutton-outdent-tooltip' => 'Уменьшить отступ',
 	'visualeditor-listbutton-number-tooltip' => 'Нумерованный список',
 	'visualeditor-listbutton-bullet-tooltip' => 'Маркированный список',
 	'visualeditor-clearbutton-tooltip' => 'Очистить форматирование',
-	'visualeditor-historybutton-undo-tooltip' => 'Отменить', # Fuzzy
-	'visualeditor-historybutton-redo-tooltip' => 'Вернуть', # Fuzzy
+	'visualeditor-historybutton-undo-tooltip' => 'Отменить',
+	'visualeditor-historybutton-redo-tooltip' => 'Вернуть',
 	'visualeditor-inspector-close-tooltip' => 'Закрыть',
 	'visualeditor-inspector-remove-tooltip' => 'Убрать',
 	'visualeditor-viewpage-savewarning' => 'Вы точно хотите вернуться в режим просмотра, не сохранив изменения?',
@@ -2759,11 +2939,9 @@ $messages['ru'] = array(
 	'visualeditor-editsummary' => 'Опишите, что изменилось',
 	'visualeditor-problem' => 'Опишите, что пошло не так',
 	'visualeditor-aliennode-tooltip' => 'Извините, данный элемент не может редактироваться визуальным редактором',
-	'tag-visualeditor' => '[[Special:Tags|Тег]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|Визуальный редактор]]',
-	'tag-visualeditor-description' => 'Правка сделана с использованием [[{{MediaWiki:Visualeditor-descriptionpagelink}}|визуального редактора]]',
 	'visualeditor-descriptionpagelink' => 'Project:Визуальный редактор',
 	'visualeditor-alphawarning' => 'Вы используете альфа-версию [[{{MediaWiki:Visualeditor-descriptionpagelink}}|визуального редактора]]. Она может быть медленной и делать ошибочные изменения — пожалуйста, проверяйте каждую сделанную правку.',
-	'visualeditor-report-notice' => 'Я понимаю, что нажав кнопку отправки я передам свои изменения и свой отзыв, которых будет храниться для анализа. Я согласен с тем, чтобы обеспечить обратную связь в соответствии с [[{{MediaWiki:Visualeditor-report-link}}|условиями использования]].',
+	'visualeditor-report-notice' => 'Я понимаю, что нажав кнопку «Сообщить о проблеме» я передам свои изменения и свой отзыв, которых будет храниться для анализа. Я согласен с тем, чтобы обеспечить обратную связь в соответствии с [[{{MediaWiki:Visualeditor-report-link}}|условиями использования]].',
 );
 
 /** Rusyn (русиньскый)
@@ -2862,8 +3040,14 @@ $messages['sr-ec'] = array(
  * @author WikiPhoenix
  */
 $messages['sv'] = array(
+	'tag-visualeditor' => '[[Special:Tags|Taggar]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
+	'tag-visualeditor-description' => 'Redigering gjordes med hjälp av [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
+	'tooltip-ca-ve-edit' => 'Redigera den här sidan med VisualEditor',
 	'visualeditor' => 'VisualEditor',
 	'visualeditor-desc' => 'Visuell redigerare för MediaWiki',
+	'visualeditor-preference-enable' => 'Aktivera VisualEditor (endast i [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|huvud]]- and [[{{MediaWiki:Visualeditor-usernamespacepagelink}}|användar]]namnrymderna)',
+	'visualeditor-mainnamespacepagelink' => 'Project:Huvudnamnrymd',
+	'visualeditor-usernamespacepagelink' => 'Project:Användarnamnrymd',
 	'visualeditor-notification-saved' => 'Dina ändringar i $1 har sparats.',
 	'visualeditor-notification-created' => '$1 har skapats.',
 	'visualeditor-notification-restored' => '$1 har återställts.',
@@ -2871,6 +3055,11 @@ $messages['sv'] = array(
 	'visualeditor-ca-editsource' => 'Redigera källa',
 	'visualeditor-ca-ve-edit' => 'VisualEditor',
 	'visualeditor-ca-ve-create' => 'VisualEditor',
+	'visualeditor-dialog-meta-title' => 'Sidinställningar',
+	'visualeditor-dialog-content-title' => 'Innehållsinställningar',
+	'visualeditor-dialog-media-title' => 'Mediainställningar',
+	'visualeditor-dialog-action-apply' => 'Verkställ ändringar',
+	'visualeditor-dialog-action-cancel' => 'Avbryt',
 	'visualeditor-dialog-action-close' => 'Stäng',
 	'visualeditor-toolbar-savedialog' => 'Granska och spara',
 	'visualeditor-savedialog-title-review' => 'Spara dina ändringar',
@@ -2884,7 +3073,6 @@ $messages['sv'] = array(
 	'visualeditor-savedialog-label-restore' => 'Återställ sida',
 	'visualeditor-editnotices-tool' => '$1 {{PLURAL:$1|notis|notiser}}',
 	'visualeditor-feedback-tool' => 'Lämna feedback',
-	'tooltip-ca-ve-edit' => 'Redigera den här sidan med VisualEditor',
 	'visualeditor-window-title' => 'Inspektera',
 	'visualeditor-linkinspector-title' => 'Hyperlänk',
 	'visualeditor-linkinspector-suggest-existing-page' => 'Befintlig sida',
@@ -2902,6 +3090,7 @@ $messages['sv'] = array(
 	'visualeditor-annotationbutton-bold-tooltip' => 'Fet',
 	'visualeditor-annotationbutton-italic-tooltip' => 'Kursiv',
 	'visualeditor-annotationbutton-link-tooltip' => 'Länk',
+	'visualeditor-dialogbutton-media-tooltip' => 'Media',
 	'visualeditor-indentationbutton-indent-tooltip' => 'Öka indrag',
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Minska indrag',
 	'visualeditor-listbutton-number-tooltip' => 'Numrerad lista',
@@ -2919,8 +3108,9 @@ $messages['sv'] = array(
 	'visualeditor-editsummary' => 'Beskriv vad du har ändrat',
 	'visualeditor-problem' => 'Beskriv vad som gick fel',
 	'visualeditor-aliennode-tooltip' => 'Tyvärr, kan inte detta element redigeras med hjälp av VisualEditor',
-	'tag-visualeditor-description' => 'Redigering gjordes med hjälp av [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
-	'visualeditor-alphawarning' => 'Du använder en alfa-version av [[{{MediaWiki:Visualeditor-descriptionpagelink}} |VisualEditor]]. Den kan vara långsam och felaktiga ändringar kan ske - vänligen kontrollera varje redigering som du gör.', # Fuzzy
+	'visualeditor-descriptionpagelink' => 'Project:VisualEditor',
+	'visualeditor-alphawarning' => 'Du använder en alfaversion av [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]. Den kan vara långsam och kan orsaka felaktiga ändringar - var god kontrollera varje redigering du gör.',
+	'visualeditor-report-notice' => 'Jag förstår att genom att klicka på "Rapportera problem" kommer jag att skicka mina ändringar och min feedback, som kommer att lagras för analys. Jag går med på att ge feedback i enlighet med [[{{MediaWiki:Visualeditor-report-link}}|användarvillkoren]].',
 );
 
 /** Tamil (தமிழ்)
@@ -3197,12 +3387,16 @@ $messages['vi'] = array(
 
 /** Simplified Chinese (中文（简体）‎)
  * @author Anakmalaysia
+ * @author Bencmq
  * @author Liangent
  * @author Shirayuki
  * @author Shizhao
  * @author Yfdyh000
  */
 $messages['zh-hans'] = array(
+	'tag-visualeditor' => '[[Special:Tags|标签]]：[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
+	'tag-visualeditor-description' => '使用[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]进行的编辑',
+	'tooltip-ca-ve-edit' => '使用VisualEditor编辑本页',
 	'visualeditor' => 'VisualEditor',
 	'visualeditor-desc' => 'MediaWiki的可视化编辑器',
 	'visualeditor-preference-enable' => '启用可视化编辑器（仅在[[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|主]]和[[{{MediaWiki:Visualeditor-usernamespacepagelink}}|用户]]名字空间）',
@@ -3211,7 +3405,7 @@ $messages['zh-hans'] = array(
 	'visualeditor-notification-saved' => '您对$1的修改已保存。',
 	'visualeditor-notification-created' => '$1已创建。',
 	'visualeditor-notification-restored' => '$1已恢复。',
-	'visualeditor-notification-reported' => '已经报告您的问题。谢谢您。',
+	'visualeditor-notification-reported' => '已经报告您的问题。谢谢。',
 	'visualeditor-ca-editsource' => '编辑源代码',
 	'visualeditor-ca-ve-edit' => 'VisualEditor',
 	'visualeditor-ca-ve-create' => 'VisualEditor',
@@ -3233,7 +3427,6 @@ $messages['zh-hans'] = array(
 	'visualeditor-savedialog-label-restore' => '恢复页面',
 	'visualeditor-editnotices-tool' => '$1条通知',
 	'visualeditor-feedback-tool' => '留下反馈意见',
-	'tooltip-ca-ve-edit' => '使用VisualEditor编辑本页',
 	'visualeditor-window-title' => '检查',
 	'visualeditor-linkinspector-title' => '超链接',
 	'visualeditor-linkinspector-suggest-existing-page' => '现有页面',
@@ -3269,8 +3462,6 @@ $messages['zh-hans'] = array(
 	'visualeditor-editsummary' => '描述您的修改',
 	'visualeditor-problem' => '描述发生了什么问题',
 	'visualeditor-aliennode-tooltip' => '抱歉，此元素无法使用VisualEditor编辑',
-	'tag-visualeditor' => '[[Special:Tags|标签]]：[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
-	'tag-visualeditor-description' => '使用[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]进行的编辑',
 	'visualeditor-descriptionpagelink' => 'Project:VisualEditor',
 	'visualeditor-alphawarning' => '您正在使用alpha版本的[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]。它可能会很慢，并造成错误的修改 - 请检查每个您所做的编辑。',
 	'visualeditor-report-notice' => '我理解通过按下提交按钮，我将传送我的更改和我的反馈，它们将被储存以供分析。我同意按照[[{{MediaWiki:Visualeditor-report-link}}|使用条款]]提供反馈内容。', # Fuzzy
@@ -3278,10 +3469,14 @@ $messages['zh-hans'] = array(
 
 /** Traditional Chinese (中文（繁體）‎)
  * @author Anakmalaysia
+ * @author Hydra
  * @author Shirayuki
  * @author Simon Shek
  */
 $messages['zh-hant'] = array(
+	'tag-visualeditor' => '[[Special:Tags|標籤]]：[[{{MediaWiki:Visualeditor-descriptionpagelink}}|可視化編輯器]]',
+	'tag-visualeditor-description' => '使用[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]的編輯',
+	'tooltip-ca-ve-edit' => '使用VisualEditor編輯此頁',
 	'visualeditor' => '可視化編輯器',
 	'visualeditor-desc' => 'MediaWiki的可視化編輯器',
 	'visualeditor-preference-enable' => '啟用VisualEditor（僅在[[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|主]]和[[{{MediaWiki:Visualeditor-usernamespacepagelink}}|用戶]]名字空間）',
@@ -3299,6 +3494,7 @@ $messages['zh-hant'] = array(
 	'visualeditor-dialog-media-title' => '媒體設置',
 	'visualeditor-dialog-action-apply' => '套用',
 	'visualeditor-dialog-action-cancel' => '取消',
+	'visualeditor-dialog-action-close' => '關閉',
 	'visualeditor-toolbar-savedialog' => '複查並儲存',
 	'visualeditor-savedialog-title-review' => '複查您的更改',
 	'visualeditor-savedialog-title-report' => '報告問題',
@@ -3311,7 +3507,6 @@ $messages['zh-hant'] = array(
 	'visualeditor-savedialog-label-restore' => '恢復頁面',
 	'visualeditor-editnotices-tool' => '$1{{PLURAL:$1|條通知|條通知}}',
 	'visualeditor-feedback-tool' => '留下反饋',
-	'tooltip-ca-ve-edit' => '使用VisualEditor編輯此頁',
 	'visualeditor-window-title' => '檢查',
 	'visualeditor-linkinspector-title' => '超連結',
 	'visualeditor-linkinspector-suggest-existing-page' => '已存在的頁面',
@@ -3347,9 +3542,7 @@ $messages['zh-hant'] = array(
 	'visualeditor-editsummary' => '描述您的更改',
 	'visualeditor-problem' => '描述發生了什麼問題',
 	'visualeditor-aliennode-tooltip' => '抱歉，此部份無法使用編輯VisualEditor',
-	'tag-visualeditor' => '[[Special:Tags|標籤]]：[[{{MediaWiki:Visualeditor-descriptionpagelink}}|可視化編輯器]]',
-	'tag-visualeditor-description' => '使用[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]的編輯',
 	'visualeditor-descriptionpagelink' => 'Project:可視化編輯器',
 	'visualeditor-alphawarning' => '你正在使用Alpha版本的[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]。它可能會很慢，或製造錯誤更改 - 請檢查您所做的每次編輯。',
-	'visualeditor-report-notice' => '我明白按下提交按鈕，將傳送我的更改和反饋，它們將被儲存以供分析。我同意按照[[{{MediaWiki:Visualeditor-report-link}}|使用條款]]提供反饋內容。',
+	'visualeditor-report-notice' => '我明白按下「回報問題」後，將傳送我的更改和反饋，它們將被儲存以供分析。我同意按照[[{{MediaWiki:Visualeditor-report-link}}|使用條款]]提供反饋內容。',
 );
