@@ -14,26 +14,26 @@
  * @param {number} [length] Length of content data in document
  * @param {Object} [element] Reference to element in linear model
  */
-ve.dm.MWImageNode = function VeDmMWImageNode( length, element ) {
+ve.dm.MWInlineImageNode = function VeDmMWInlineImageNode( length, element ) {
 	ve.dm.ImageNode.call( this, 0, element );
 };
 
 /* Inheritance */
 
-ve.inheritClass( ve.dm.MWImageNode, ve.dm.ImageNode );
+ve.inheritClass( ve.dm.MWInlineImageNode, ve.dm.ImageNode );
 
 /* Static Properties */
 
-ve.dm.MWImageNode.static.name = 'MWimage';
+ve.dm.MWInlineImageNode.static.name = 'MWinlineimage';
 
-ve.dm.MWImageNode.static.matchTagNames = null;
+ve.dm.MWInlineImageNode.static.matchTagNames = null;
 
 // TODO: Develop better method to test for generated content
-ve.dm.MWImageNode.static.generatedContent = true;
+ve.dm.MWInlineImageNode.static.generatedContent = true;
 
-ve.dm.MWImageNode.static.matchRdfaTypes = [ 'mw:Image' ];
+ve.dm.MWInlineImageNode.static.matchRdfaTypes = [ 'mw:Image' ];
 
-ve.dm.MWImageNode.static.toDataElement = function ( domElements ) {
+ve.dm.MWInlineImageNode.static.toDataElement = function ( domElements ) {
 	var i, j, childNode, children = Array.prototype.slice.call( domElements[0].children, 0 ),
 		parentResult = ve.dm.ImageNode.static.toDataElement.apply(
 			this, [ children ].concat( Array.prototype.slice.call( arguments, 1 ) )
@@ -50,14 +50,14 @@ ve.dm.MWImageNode.static.toDataElement = function ( domElements ) {
 	}
 
 	return ve.extendObject( true, dataElement, {
-		'type': 'MWimage',
+		'type': 'MWinlineimage',
 		'attributes': {
 			'isLinked': domElements[0].nodeName.toLowerCase() === 'a'
 		}
 	} );
 };
 
-ve.dm.MWImageNode.static.toDomElements = function ( dataElement, doc ) {
+ve.dm.MWInlineImageNode.static.toDomElements = function ( dataElement, doc ) {
 	var k, wrapper = doc.createElement( dataElement.attributes.isLinked ? 'a' : 'span' ),
 		imageDomElement = ve.dm.ImageNode.static.toDomElements.apply( this, arguments )[0];
 
@@ -74,4 +74,4 @@ ve.dm.MWImageNode.static.toDomElements = function ( dataElement, doc ) {
 
 /* Registration */
 
-ve.dm.modelRegistry.register( ve.dm.MWImageNode );
+ve.dm.modelRegistry.register( ve.dm.MWInlineImageNode );

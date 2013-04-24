@@ -11,9 +11,9 @@
  * @class
  * @extends ve.ce.ImageNode
  * @constructor
- * @param {ve.dm.MWImageNode} model Model to observe
+ * @param {ve.dm.MWInlineImageNode} model Model to observe
  */
- ve.ce.MWImageNode = function VeCeMWImageNode( model ) {
+ ve.ce.MWInlineImageNode = function VeCeMWInlineImageNode( model ) {
 	// Parent constructor
 	ve.ce.ImageNode.call( this, model );
 
@@ -23,7 +23,7 @@
 	// Initialization
 	this.$
 		.attr( 'contenteditable', false )
-		.addClass( 've-ce-mwImageNode' )
+		.addClass( 've-ce-mwInlineImageNode' )
 		.append( this.$image )
 		.data( 'view', this.$image.data( 'view' ) );
 	this.onUpdate();
@@ -31,14 +31,14 @@
 
 /* Inheritance */
 
-ve.inheritClass( ve.ce.MWImageNode, ve.ce.ImageNode );
+ve.inheritClass( ve.ce.MWInlineImageNode, ve.ce.ImageNode );
 
 /* Static Properties */
 
-ve.ce.MWImageNode.static.name = 'MWimage';
+ve.ce.MWInlineImageNode.static.name = 'MWinlineimage';
 
 /* Methods */
 
 /* Registration */
 
-ve.ce.nodeFactory.register( ve.ce.MWImageNode );
+ve.ce.nodeFactory.register( ve.ce.MWInlineImageNode );

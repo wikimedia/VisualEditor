@@ -735,7 +735,7 @@ ve.dm.example.conversions = {
 	}
 };
 
-ve.dm.example.MWImageHtml = '<a rel="mw:Image" href="./File:Wiki.png" data-parsoid="{&quot;tsr&quot;:[158,216],&quot;src&quot;:&quot;[[Image:Wiki.png|500px|thumb|center|Example wiki file]]&quot;,&quot;optNames&quot;:{&quot;width&quot;:&quot;$1px&quot;},&quot;dsr&quot;:[158,216,null,null]}"><img height="" width="500" src="/index.php?title=Special:FilePath/Wiki.png&amp;width=500" alt="Wiki.png"></a>';
+ve.dm.example.MWInlineImageHtml = '<a rel="mw:Image" href="./File:Wiki.png" data-parsoid="{&quot;tsr&quot;:[158,216],&quot;src&quot;:&quot;[[Image:Wiki.png|500px|thumb|center|Example wiki file]]&quot;,&quot;optNames&quot;:{&quot;width&quot;:&quot;$1px&quot;},&quot;dsr&quot;:[158,216,null,null]}"><img height="" width="500" src="/index.php?title=Special:FilePath/Wiki.png&amp;width=500" alt="Wiki.png"></a>';
 ve.dm.example.MWTemplate = {
 	'blockSpan':         '<span about="#mwt1" typeof="mw:Object/Template" data-mw="{&quot;id&quot;:&quot;mwt1&quot;,&quot;target&quot;:{&quot;wt&quot;:&quot;Test&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;Hello, world!&quot;}}}" data-parsoid="{&quot;tsr&quot;:[18,40],&quot;src&quot;:&quot;{{Test|Hello, world!}}&quot;,&quot;dsr&quot;:[18,40,null,null]}"></span>',
 	'blockSpanModified': '<span about="#mwt1" typeof="mw:Object/Template" data-mw="{&quot;id&quot;:&quot;mwt1&quot;,&quot;target&quot;:{&quot;wt&quot;:&quot;Test&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;Hello, globe!&quot;}}}" data-parsoid="{&quot;tsr&quot;:[18,40],&quot;src&quot;:&quot;{{Test|Hello, world!}}&quot;,&quot;dsr&quot;:[18,40,null,null]}"></span>',
@@ -842,11 +842,11 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'mw:Image': {
-		'html': '<body><p>' + ve.dm.example.MWImageHtml + '</p></body>',
+		'html': '<body><p>' + ve.dm.example.MWInlineImageHtml + '</p></body>',
 		'data': [
 			{ 'type': 'paragraph' },
 			{
-				'type': 'MWimage',
+				'type': 'MWinlineimage',
 				'attributes': {
 					'html/0-0/alt': 'Wiki.png',
 					'html/0-0/height': '',
@@ -861,7 +861,7 @@ ve.dm.example.domToDataCases = {
 					'isLinked': true
 				}
 			},
-			{ 'type': '/MWimage' },
+			{ 'type': '/MWinlineimage' },
 			{ 'type': '/paragraph' }
 		]
 	},

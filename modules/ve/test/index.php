@@ -105,7 +105,7 @@
 		<script src="../../ve/dm/nodes/ve.dm.TextNode.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.MWEntityNode.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.MWHeadingNode.js"></script>
-		<script src="../../ve/dm/nodes/ve.dm.MWImageNode.js"></script>
+		<script src="../../ve/dm/nodes/ve.dm.MWInlineImageNode.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.MWPreformattedNode.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.MWReferenceListNode.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.MWReferenceNode.js"></script>
@@ -156,7 +156,7 @@
 		<script src="../../ve/ce/nodes/ve.ce.TextNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.MWEntityNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.MWHeadingNode.js"></script>
-		<script src="../../ve/ce/nodes/ve.ce.MWImageNode.js"></script>
+		<script src="../../ve/ce/nodes/ve.ce.MWInlineImageNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.MWPreformattedNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.MWReferenceListNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.MWReferenceNode.js"></script>
