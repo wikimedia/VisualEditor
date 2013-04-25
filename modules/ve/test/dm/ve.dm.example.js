@@ -570,6 +570,63 @@ ve.dm.example.withMetaMetaData = [
 	]
 ];
 
+ve.dm.example.complexTableHtml = '<table><caption>Foo</caption><thead><tr><th>Bar</th></tr></thead>' +
+	'<tfoot><tr><td>Baz</td></tr></tfoot><tbody><tr><td>Quux</td><td>Whee</td></tr></tbody></table>';
+
+ve.dm.example.complexTable = [
+	{ 'type': 'table' },
+	{ 'type': 'tableCaption' },
+	{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+	'F',
+	'o',
+	'o',
+	{ 'type': '/paragraph' },
+	{ 'type': '/tableCaption' },
+	{ 'type': 'tableSection', 'attributes': { 'style': 'header' } },
+	{ 'type': 'tableRow' },
+	{ 'type': 'tableCell', 'attributes': { 'style': 'header' } },
+	{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+	'B',
+	'a',
+	'r',
+	{ 'type': '/paragraph' },
+	{ 'type': '/tableCell' },
+	{ 'type': '/tableRow' },
+	{ 'type': '/tableSection' },
+	{ 'type': 'tableSection', 'attributes': { 'style': 'footer' } },
+	{ 'type': 'tableRow' },
+	{ 'type': 'tableCell', 'attributes': { 'style': 'data' } },
+	{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+	'B',
+	'a',
+	'z',
+	{ 'type': '/paragraph' },
+	{ 'type': '/tableCell' },
+	{ 'type': '/tableRow' },
+	{ 'type': '/tableSection' },
+	{ 'type': 'tableSection', 'attributes': { 'style': 'body' } },
+	{ 'type': 'tableRow' },
+	{ 'type': 'tableCell', 'attributes': { 'style': 'data' } },
+	{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+	'Q',
+	'u',
+	'u',
+	'x',
+	{ 'type': '/paragraph' },
+	{ 'type': '/tableCell' },
+	{ 'type': 'tableCell', 'attributes': { 'style': 'data' } },
+	{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+	'W',
+	'h',
+	'e',
+	'e',
+	{ 'type': '/paragraph' },
+	{ 'type': '/tableCell' },
+	{ 'type': '/tableRow' },
+	{ 'type': '/tableSection' },
+	{ 'type': '/table' }
+];
+
 /**
  * Sample content data index.
  *
@@ -2370,26 +2427,6 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/paragraph' }
 		]
 	},
-	'context-sensitive nodes are alienated correctly': {
-		'html': '<table><caption>Foo</caption><tbody><tr><td>Bar</td></tr></tbody></table>',
-		'data': [
-			{ 'type': 'table' },
-			{ 'type': 'alienBlock', 'attributes': { 'html': '<caption>Foo</caption>' } },
-			{ 'type': '/alienBlock' },
-			{ 'type': 'tableSection', 'attributes': { 'style': 'body' } },
-			{ 'type': 'tableRow' },
-			{ 'type': 'tableCell', 'attributes': { 'style': 'data' } },
-			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
-			'B',
-			'a',
-			'r',
-			{ 'type': '/paragraph' },
-			{ 'type': '/tableCell' },
-			{ 'type': '/tableRow' },
-			{ 'type': '/tableSection' },
-			{ 'type': '/table' }
-		]
-	},
 	'whitespace before meta node in wrapping mode': {
 		'html': '<body><table><tbody><tr><td>Foo\n<meta property="mw:foo" content="bar" /></td></tr></tbody></table></body>',
 		'data': [
@@ -2429,6 +2466,10 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/tableSection' },
 			{ 'type': '/table' }
 		]
+	},
+	'table with caption, head, foot and body': {
+		'html': ve.dm.example.complexTableHtml,
+		'data': ve.dm.example.complexTable
 	}
 };
 

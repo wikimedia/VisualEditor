@@ -98,6 +98,7 @@
 		<script src="../../ve/dm/nodes/ve.dm.ListNode.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.ParagraphNode.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.PreformattedNode.js"></script>
+		<script src="../../ve/dm/nodes/ve.dm.TableCaptionNode.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.TableCellNode.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.TableNode.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.TableRowNode.js"></script>
@@ -151,6 +152,7 @@
 		<script src="../../ve/ce/nodes/ve.ce.ListNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.ParagraphNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.PreformattedNode.js"></script>
+		<script src="../../ve/ce/nodes/ve.ce.TableCaptionNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.TableCellNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.TableNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.TableRowNode.js"></script>

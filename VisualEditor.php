@@ -271,6 +271,7 @@ $wgResourceModules += array(
 			've/dm/nodes/ve.dm.ListNode.js',
 			've/dm/nodes/ve.dm.ParagraphNode.js',
 			've/dm/nodes/ve.dm.PreformattedNode.js',
+			've/dm/nodes/ve.dm.TableCaptionNode.js',
 			've/dm/nodes/ve.dm.TableCellNode.js',
 			've/dm/nodes/ve.dm.TableNode.js',
 			've/dm/nodes/ve.dm.TableRowNode.js',
@@ -324,6 +325,7 @@ $wgResourceModules += array(
 			've/ce/nodes/ve.ce.ListNode.js',
 			've/ce/nodes/ve.ce.ParagraphNode.js',
 			've/ce/nodes/ve.ce.PreformattedNode.js',
+			've/ce/nodes/ve.ce.TableCaptionNode.js',
 			've/ce/nodes/ve.ce.TableCellNode.js',
 			've/ce/nodes/ve.ce.TableNode.js',
 			've/ce/nodes/ve.ce.TableRowNode.js',
@@ -516,7 +518,6 @@ $wgResourceModules += array(
 		),
 	),
 );
-
 // Parsoid Wrapper API
 $wgAutoloadClasses['ApiVisualEditor'] = $dir . 'ApiVisualEditor.php';
 $wgAPIModules['visualeditor'] = 'ApiVisualEditor';
