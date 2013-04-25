@@ -48,7 +48,19 @@ ve.dm.AlienNode.static.toDataElement = function ( domElements, converter ) {
 
 ve.dm.AlienNode.static.toDomElements = function ( dataElement, doc ) {
 	var wrapper = doc.createElement( 'div' );
-	$( wrapper ).html( dataElement.attributes.html );
+
+	// Filthy hack: Parsoid is currently sending us unescaped angle brackets
+	// inside data-parsoid. For some reason FF picks this up as html and tries
+	// to sanitise it, converting <ref/> to <ref></span> (!?).
+	// As a *very temporary* fix we can regex replace them here.
+	$( wrapper ).html(
+		dataElement.attributes.html.replace(
+			/data-parsoid="([^"]+)"/g,
+			function( r0, r1 ) {
+				return 'data-parsoid="' + r1.replace( /</g, '&lt;' ).replace( />/g, '&gt;' ) + '"';
+			}
+		)
+	);
 	// Convert wrapper.children to an array
 	return Array.prototype.slice.call( wrapper.childNodes, 0 );
 };

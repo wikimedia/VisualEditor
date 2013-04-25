@@ -279,8 +279,6 @@ $wgResourceModules += array(
 			've/dm/nodes/ve.dm.MWEntityNode.js',
 			've/dm/nodes/ve.dm.MWHeadingNode.js',
 			've/dm/nodes/ve.dm.MWPreformattedNode.js',
-			've/dm/nodes/ve.dm.MWReferenceListNode.js',
-			've/dm/nodes/ve.dm.MWReferenceNode.js',
 
 			've/dm/annotations/ve.dm.LinkAnnotation.js',
 			've/dm/annotations/ve.dm.MWExternalLinkAnnotation.js',
@@ -334,8 +332,6 @@ $wgResourceModules += array(
 			've/ce/nodes/ve.ce.MWEntityNode.js',
 			've/ce/nodes/ve.ce.MWHeadingNode.js',
 			've/ce/nodes/ve.ce.MWPreformattedNode.js',
-			've/ce/nodes/ve.ce.MWReferenceListNode.js',
-			've/ce/nodes/ve.ce.MWReferenceNode.js',
 
 			've/ce/annotations/ve.ce.LinkAnnotation.js',
 			've/ce/annotations/ve.ce.MWExternalLinkAnnotation.js',
@@ -492,9 +488,13 @@ $wgResourceModules += array(
 		'scripts' => array(
 			've/dm/nodes/ve.dm.MWInlineImageNode.js',
 			've/dm/nodes/ve.dm.MWTemplateNode.js',
+			've/dm/nodes/ve.dm.MWReferenceListNode.js',
+			've/dm/nodes/ve.dm.MWReferenceNode.js',
 
 			've/ce/nodes/ve.ce.MWInlineImageNode.js',
 			've/ce/nodes/ve.ce.MWTemplateNode.js',
+			've/ce/nodes/ve.ce.MWReferenceListNode.js',
+			've/ce/nodes/ve.ce.MWReferenceNode.js',
 		),
 		'dependencies' => array(
 			'ext.visualEditor.core',
