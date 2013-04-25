@@ -59,8 +59,7 @@ ve.ui.DialogButtonTool.prototype.onClick = function () {
 ve.ui.DialogButtonTool.prototype.onUpdateState = function ( nodes ) {
 	if ( nodes.length ) {
 		this.setActive(
-			ve.ui.viewRegistry.getViewsForNode( nodes[0] )
-				.indexOf( this.constructor.static.dialog ) !== -1
+			ve.ui.viewRegistry.getViewForNode( nodes[0] ) === this.constructor.static.dialog
 		);
 	}
 };

@@ -189,7 +189,7 @@ ve.ui.Context.prototype.destroy = function () {
  * @chainable
  */
 ve.ui.Context.prototype.update = function () {
-	var i, nodes, views,
+	var i, nodes, views, view,
 		fragment = this.surface.getModel().getFragment( null, false ),
 		selection = fragment.getRange(),
 		inspector = this.inspectors.getCurrent();
@@ -208,7 +208,10 @@ ve.ui.Context.prototype.update = function () {
 			}
 		}
 		if ( nodes.length === 1 ) {
-			views = views.concat( ve.ui.viewRegistry.getViewsForNode( nodes[0].node ) );
+			view = ve.ui.viewRegistry.getViewForNode( nodes[0].node );
+			if ( view ) {
+				views.push( view );
+			}
 		}
 		for ( i = 0; i < views.length; i++ ) {
 			if ( !ve.ui.toolFactory.lookup( views[i] ) ) {
