@@ -9,7 +9,7 @@ QUnit.module( 've.dm.AnnotationSet' );
 
 /* Tests */
 
-QUnit.test( 'Basic usage', 28, function ( assert ) {
+QUnit.test( 'Basic usage', 33, function ( assert ) {
 	var annotationSet3,
 		store = new ve.dm.IndexValueStore(),
 		bold = new ve.dm.TextStyleBoldAnnotation(),
@@ -24,6 +24,8 @@ QUnit.test( 'Basic usage', 28, function ( assert ) {
 	assert.deepEqual( annotationSet.get( 0 ), bold, 'get(0) is bold' );
 	assert.equal( annotationSet.contains( italic ), true, 'contains italic' );
 	assert.equal( annotationSet.contains( underline ), false, 'doesn\'t contain underline' );
+	assert.equal( annotationSet.containsIndex( 1 ), true, 'contains italic by index' );
+	assert.equal( annotationSet.containsIndex( 2 ), false, 'doesn\'t contain underline by index' );
 	assert.equal( annotationSet.containsAnyOf( annotationSet2 ), true, 'containsAnyOf set2 is true' );
 	assert.equal( annotationSet.containsAnyOf( emptySet ), false, 'containsAnyOf empty set is false' );
 	assert.equal( annotationSet.containsAllOf( annotationSet2 ), false, 'containsAllOf set2 set is false' );
@@ -43,6 +45,8 @@ QUnit.test( 'Basic usage', 28, function ( assert ) {
 	assert.equal( annotationSet2.contains( bold ), false, 'set2 doesn\'t contain bold after remove' );
 	annotationSet2.add( bold, 0 );
 	assert.equal( annotationSet2.indexOf( bold ), 0, 'set2 contains bold at 0 after add at 0' );
+	annotationSet2.add( bold, 0 );
+	assert.equal( annotationSet2.getLength(), 3, 'adding existing annotation doesn\'t change length' );
 	// set is now [ bold, italic, underline ]
 	annotationSet2.removeAt( 2 );
 	assert.equal( annotationSet2.contains( underline ), false, 'set2 doesn\'t contain underline after removeAt 2' );
@@ -52,6 +56,11 @@ QUnit.test( 'Basic usage', 28, function ( assert ) {
 	assert.equal( annotationSet.getLength(), 2, 'set2 has length 2 after addSet' );
 	annotationSet2.removeSet( annotationSet );
 	assert.equal( annotationSet2.isEmpty(), true, 'set2 is empty after removeSet' );
+	annotationSet2.push( bold );
+	annotationSet2.push( italic );
+	assert.deepEqual( annotationSet2.get(), [bold, italic], 'set2 contains bold then italic after two pushes' );
+	annotationSet2.push( italic );
+	assert.deepEqual( annotationSet2.getLength(), 2, 'pushing existing annotation doesn\'t change length' );
 
 	annotationSet2 = new ve.dm.AnnotationSet( store, store.indexes( [ italic, underline ] ) );
 	annotationSet2.removeNotInSet( annotationSet );

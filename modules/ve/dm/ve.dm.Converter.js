@@ -66,14 +66,14 @@ ve.dm.Converter.getDataContentFromText = function ( text, annotations ) {
  * @param {Function} close Callback called when an annotation is closed. Passed a ve.dm.Annotation.
  */
 ve.dm.Converter.openAndCloseAnnotations = function ( currentSet, targetSet, open, close ) {
-	var i, len, arr, annotation, startClosingAt;
+	var i, len, arr, annotation, annotationIndex, startClosingAt;
 	// Close annotations as needed
 	// Go through annotationStack from bottom to top (low to high),
 	// and find the first annotation that's not in annotations.
-	arr = currentSet.get();
+	arr = currentSet.getIndexes();
 	for ( i = 0, len = arr.length; i < len; i++ ) {
-		annotation = arr[i];
-		if ( !targetSet.contains( annotation ) ) {
+		annotationIndex = arr[i];
+		if ( !targetSet.containsIndex( annotationIndex ) ) {
 			startClosingAt = i;
 			break;
 		}
@@ -89,10 +89,11 @@ ve.dm.Converter.openAndCloseAnnotations = function ( currentSet, targetSet, open
 	}
 
 	// Open annotations as needed
-	arr = targetSet.get();
+	arr = targetSet.getIndexes();
 	for ( i = 0, len = arr.length; i < len; i++ ) {
-		annotation = arr[i];
-		if ( !currentSet.contains( annotation ) ) {
+		annotationIndex = arr[i];
+		if ( !currentSet.containsIndex( annotationIndex ) ) {
+			annotation = targetSet.getStore().value( annotationIndex );
 			open( annotation );
 			// Add to currentClone
 			currentSet.push( annotation );
