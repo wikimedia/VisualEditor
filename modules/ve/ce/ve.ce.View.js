@@ -26,11 +26,13 @@ ve.ce.View = function VeCeView( model, $element ) {
 
 	// Initialization
 	this.$.data( 'view', this );
-	ve.setDomAttributes(
-		this.$[0],
-		this.model.getAttributes( 'html/0/' ),
-		this.constructor.static.domAttributeWhitelist
-	);
+	if ( this.constructor.static.renderHtmlAttributes ) {
+		ve.setDomAttributes(
+			this.$[0],
+			this.model.getAttributes( 'html/0/' ),
+			this.constructor.static.domAttributeWhitelist
+		);
+	}
 };
 
 /* Inheritance */
@@ -70,6 +72,16 @@ ve.ce.View.static.domAttributeWhitelist = [
 	'resource', 'rev', 'rowspan', 'rules', 'scope', 'size', 'span', 'src', 'start', 'style',
 	'summary', 'title', 'type', 'typeof', 'valign', 'value', 'width'
 ];
+
+/**
+ * Whether or not HTML attributes listed in domAttributeWhitelist and present in HTMLDOM should be
+ * added to node anchor (this.$).
+ *
+ * @static
+ * @property static.renderHtmlAttributes
+ * @inheritable
+ */
+ve.ce.View.static.renderHtmlAttributes = true;
 
 /* Methods */
 
