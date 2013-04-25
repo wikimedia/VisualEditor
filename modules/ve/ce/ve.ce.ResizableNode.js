@@ -215,9 +215,15 @@ ve.ce.ResizableNode.prototype.onDocumentMouseUp = function () {
 	$( document ).off( '.ve-ce-resizableNode' );
 	this.resizing = false;
 
-	txs.push( ve.dm.Transaction.newFromAttributeChange( documentModel, offset, 'width', width ) );
-	txs.push( ve.dm.Transaction.newFromAttributeChange( documentModel, offset, 'height', height ) );
-	surfaceModel.change( txs, selection );
+	if ( this.model.getAttribute( 'width' ) !== width ) {
+		txs.push( ve.dm.Transaction.newFromAttributeChange( documentModel, offset, 'width', width ) );
+	}
+	if ( this.model.getAttribute( 'height' ) !== height ) {
+		txs.push( ve.dm.Transaction.newFromAttributeChange( documentModel, offset, 'height', height ) );
+	}
+	if ( txs.length > 0 ) {
+		surfaceModel.change( txs, selection );
+	}
 
 	// HACK: Update bounding box
 	this.onResizableFocus();
