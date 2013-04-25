@@ -488,11 +488,15 @@ $wgResourceModules += array(
 	'ext.visualEditor.experimental' => $wgVisualEditorResourceTemplate + array(
 		'scripts' => array(
 			've/dm/nodes/ve.dm.MWInlineImageNode.js',
+			've/dm/nodes/ve.dm.MWBlockImageNode.js',
+			've/dm/nodes/ve.dm.MWImageCaptionNode.js',
 			've/dm/nodes/ve.dm.MWTemplateNode.js',
 			've/dm/nodes/ve.dm.MWReferenceListNode.js',
 			've/dm/nodes/ve.dm.MWReferenceNode.js',
 
 			've/ce/nodes/ve.ce.MWInlineImageNode.js',
+			've/ce/nodes/ve.ce.MWBlockImageNode.js',
+			've/ce/nodes/ve.ce.MWImageCaptionNode.js',
 			've/ce/nodes/ve.ce.MWTemplateNode.js',
 			've/ce/nodes/ve.ce.MWReferenceListNode.js',
 			've/ce/nodes/ve.ce.MWReferenceNode.js',
