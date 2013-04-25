@@ -34,8 +34,13 @@ ve.ce.ImageNode = function VeCeImageNode( model ) {
 	this.$.on( 'click', ve.bind( this.onClick, this ) );
 
 	// Initialization
-	ve.setDomAttributes( this.$image[0], this.model.getAttributes(), ['src', 'width', 'height'] );
-	this.$image.addClass( 've-ce-imageNode' );
+	this.$image
+		.addClass( 've-ce-imageNode' )
+		.attr( 'src', this.model.getAttribute( 'src' ) )
+		.css( {
+			'width': this.model.getAttribute( 'width' ),
+			'height': this.model.getAttribute( 'height' )
+		} );
 };
 
 /* Inheritance */
@@ -64,8 +69,13 @@ ve.ce.ImageNode.static.name = 'image';
  * @param {string} to New value
  */
 ve.ce.ImageNode.prototype.onAttributeChange = function ( key, from, to ) {
-	if ( ( key === 'width' || key === 'height' ) && from !== to ) {
-		this.$image.attr( key, to );
+	if ( from !== to ) {
+		if ( key === 'src' ) {
+			this.$image.attr( 'src', to );
+		}
+		if ( key === 'width' || key === 'height' ) {
+			this.$image.css( key, to );
+		}
 	}
 };
 

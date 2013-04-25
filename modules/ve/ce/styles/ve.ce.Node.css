@@ -24,6 +24,18 @@
 	z-index: 0;
 }
 
+.ve-ce-resizableNode-transitioning {
+	-webkit-transition: width 100ms ease-in-out, height 100ms ease-in-out;
+	-moz-transition: width 100ms ease-in-out, height 100ms ease-in-out;
+	-ms-transition: width 100ms ease-in-out, height 100ms ease-in-out;
+	-o-transition: width 100ms ease-in-out, height 100ms ease-in-out;
+	transition: width 100ms ease-in-out, height 100ms ease-in-out;
+}
+
+.ve-ce-resizableNode-handles-resizing {
+	z-index: 10000;
+}
+
 /* Alien blocks and their contents are unselectable / unclickable */
 .ve-ce-alienBlockNode,
 .ve-ce-alienBlockNode * {
@@ -88,8 +100,7 @@ li.ve-ce-branchNode p.ve-ce-branchNode:first-child {
 
 .ve-ce-resizableNode-handles {
 	position: absolute;
-	border: solid 1px rgba(0,0,0,0.25);
-	z-index: 10000;
+	box-shadow: inset 0 0 0 1px rgba(0,0,0,.25);
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;

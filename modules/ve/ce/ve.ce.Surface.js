@@ -146,7 +146,6 @@ ve.ce.Surface.getSelectionRect = function () {
 	};
 };
 
-
 /* Methods */
 
 /*! Initialization */
@@ -1412,6 +1411,16 @@ ve.ce.Surface.prototype.getClickCount = function ( e ) {
 };
 
 /*! Getters */
+
+/**
+ * Get the top-level surface.
+ *
+ * @method
+ * @returns {ve.Surface} Surface
+ */
+ve.ce.Surface.prototype.getSurface = function () {
+	return this.surface;
+};
 
 /**
  * Get the surface model.
