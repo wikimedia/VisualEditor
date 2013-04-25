@@ -24,10 +24,7 @@ class VisualEditorHooks {
 		global $wgVisualEditorNamespaces;
 		if (
 			// User has the 'visualeditor-enable' preference set
-			// (bug 42936) ignoring hidden-ness so we can do dark launches
-			$skin->getUser()->getOption( 'visualeditor-enable',
-				/*default=*/ false, /*ignoreHidden=*/true
-			) &&
+			$skin->getUser()->getOption( 'visualeditor-enable' ) &&
 			in_array( $skin->getSkinName(), self::$supportedSkins ) &&
 			(
 				// Article in the VisualEditor namespace
