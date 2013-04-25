@@ -78,9 +78,18 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 		annotationStack = new ve.dm.AnnotationSet( store ),
 		annotatedHtml = [],
 		$wrapper = $( '<div>' ),
-		$current = $wrapper;
+		$current = $wrapper,
+		buffer = '';
+
+	function flushBuffer() {
+		if ( buffer !== '' ) {
+			$current.append( buffer );
+			buffer = '';
+		}
+	}
 
 	function openAnnotation( annotation ) {
+		flushBuffer();
 		// Create a new DOM node and descend into it
 		$ann = ve.ce.annotationFactory.create( annotation.getType(), annotation ).$;
 		$current.append( $ann );
@@ -88,6 +97,7 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 	}
 
 	function closeAnnotation() {
+		flushBuffer();
 		// Traverse up
 		$current = $current.parent();
 	}
@@ -111,10 +121,15 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 			openAnnotation, closeAnnotation
 		);
 
-		// Output the actual HTML
-		$current.append( itemHtml );
+		// Handle the actual HTML
+		if ( typeof itemHtml === 'string' ) {
+			buffer += itemHtml;
+		} else {
+			flushBuffer();
+			$current.append( itemHtml );
+		}
 	}
-
+	flushBuffer();
 	return $wrapper.contents();
 
 };
