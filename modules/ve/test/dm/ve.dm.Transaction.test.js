@@ -178,6 +178,42 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 					{ 'type': 'retain', 'length': 27 }
 				]
 			},
+			'insert two complete paragraphs into a paragraph': {
+				'args': [doc, 10, [{ 'type': 'paragraph' }, 'F', 'O', 'O', { 'type': '/paragraph' }, { 'type': 'paragraph' }, 'B', 'A', 'R', { 'type': '/paragraph' }]],
+				'ops': [
+					{ 'type': 'retain', 'length': 10 },
+					{
+						'type': 'replace',
+						'remove': [],
+						'insert': [{ 'type': '/paragraph' }, { 'type': 'paragraph' }, 'F', 'O', 'O', { 'type': '/paragraph' }, { 'type': 'paragraph' }, 'B', 'A', 'R', { 'type': '/paragraph' }, { 'type': 'paragraph' }]
+					},
+					{ 'type': 'retain', 'length': 51 }
+				]
+			},
+			'insert text, close paragraph and open heading into paragraph': {
+				'args': [doc, 57, ['F', 'O', 'O', { 'type': '/paragraph' }, { 'type': 'heading', 'attributes': { 'level': 1 } }, 'B', 'A', 'R']],
+				'ops': [
+					{ 'type': 'retain', 'length': 57 },
+					{
+						'type': 'replace',
+						'remove': [],
+						'insert': ['F', 'O', 'O', { 'type': '/paragraph' }, { 'type': 'heading', 'attributes': { 'level': 1 } }, 'B', 'A', 'R', { 'type': '/heading' }, { 'type': 'paragraph' }]
+					},
+					{ 'type': 'retain', 'length': 4 }
+				]
+			},
+			'insert paragraph and incomplete heading into paragraph': {
+				'args': [doc, 10, [{ 'type': 'paragraph' }, 'F', 'O', 'O', { 'type': '/paragraph' }, { 'type': 'heading', 'attributes': { 'level': 1 } }, 'B', 'A', 'R']],
+				'ops': [
+					{ 'type': 'retain', 'length': 10 },
+					{
+						'type': 'replace',
+						'remove': [],
+						'insert': [{ 'type': '/paragraph' }, { 'type': 'paragraph' }, 'F', 'O', 'O', { 'type': '/paragraph' }, { 'type': 'heading', 'attributes': { 'level': 1 } }, 'B', 'A', 'R', { 'type': '/heading' }, { 'type': 'paragraph' }]
+					},
+					{ 'type': 'retain', 'length': 51 }
+				]
+			},
 			'inserting two paragraphs into a document with just an empty paragraph': {
 				'args': [doc2, 1, ['F', 'O', 'O', { 'type': '/paragraph' }, { 'type': 'paragraph' }, 'B', 'A', 'R']],
 				'ops': [
