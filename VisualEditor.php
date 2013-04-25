@@ -160,6 +160,7 @@ $wgResourceModules += array(
 			'visualeditor-problem',
 			'visualeditor-editnotices-tool',
 			'visualeditor-feedback-tool',
+			'visualeditor-feedback-link',
 			'visualeditor-restore-page',
 			'visualeditor-create-page',
 			'visualeditor-save-title',
@@ -482,7 +483,6 @@ $wgResourceModules += array(
 			'visualeditor-dialog-action-apply',
 			'visualeditor-dialog-action-cancel',
 			'visualeditor-dialog-action-close',
-			'visualeditor-feedback-link',
 		),
 	),
 	'ext.visualEditor.experimental' => $wgVisualEditorResourceTemplate + array(
