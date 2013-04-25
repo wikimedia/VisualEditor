@@ -195,7 +195,7 @@ ve.ui.MWLinkTargetInputWidget.prototype.populateMenu = function () {
 		) );
 		for ( i = 0, len = matchingPages.length; i < len; i++ ) {
 			items.push( new ve.ui.MenuItemWidget(
-				new ve.dm.MWInternalLinkAnnotation( { 'title': matchingPages[i] } ),
+				this.getInternalLinkAnnotationFromTitle( matchingPages[i] ),
 				{ '$$': menu$$, 'rel': 'matchingPage', 'label': matchingPages[i] }
 			) );
 		}
