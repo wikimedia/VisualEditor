@@ -89,7 +89,7 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 	// * replace: Re-creates #ca-edit for VisualEditor and adds #ca-editsource.
 	this.tabLayout = 'replace';
 	this.feedback = new mw.Feedback( {
-		'title': new mw.Title( 'Project:VisualEditor/Feedback' ),
+		'title': new mw.Title( ve.msg( 'visualeditor-feedback-link' ) ),
 		'bugsLink': new mw.Uri( 'https://bugzilla.wikimedia.org/enter_bug.cgi?product=VisualEditor&component=General' ),
 		'bugsListLink': new mw.Uri( 'https://bugzilla.wikimedia.org/buglist.cgi?query_format=advanced&resolution=---&resolution=LATER&resolution=DUPLICATE&product=VisualEditor&list_id=166234' )
 	} );
