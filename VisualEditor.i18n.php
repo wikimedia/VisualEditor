@@ -81,6 +81,7 @@ $messages['en'] = array(
 	'visualeditor-alphawarning' => 'You are using an alpha version of the [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]. It may be slow and make erroneous changes—please check each edit that you make.',
 	'visualeditor-report-notice' => 'I understand that by clicking "Report problem" I will transmit my changes and my feedback, which will be stored for analysis. I agree to provide feedback in accordance with the [[{{MediaWiki:Visualeditor-report-link}}|Terms of Use]].',
 	'visualeditor-report-link' => 'foundation:Terms of Use',
+	'visualeditor-feedback-link' => 'Project:VisualEditor/Feedback',
 );
 
 /** Message documentation (Message documentation)
@@ -204,6 +205,14 @@ Interwiki link to the terms of use for this project: https://wikimediafoundation
 Do not translate. Only add a language code when a translations of above page exists for your language.
 
 Possible entry for German: "foundation:Terms of Use/de"',
+	'visualeditor-feedback-link' => 'Link to a page where users can leave feedback that is automatically posted using this tool. This should be a sub-page of {{msg-mw|visualeditor-descriptionpagelink}}',
+);
+
+/** Arabic (العربية)
+ * @author Jdforrester
+ */
+$messages['ar'] = array(
+	'visualeditor-feedback-link' => 'Project:محرر البصرية/ردود الفعل',
 );
 
 /** Assamese (অসমীয়া)
@@ -222,6 +231,7 @@ $messages['as'] = array(
 	'visualeditor-annotationbutton-link-tooltip' => 'সংযোগ', # Fuzzy
 	'visualeditor-historybutton-undo-tooltip' => 'পূৰ্ববত কৰক', # Fuzzy
 );
+
 
 /** Asturian (asturianu)
  * @author Xuacu
@@ -689,6 +699,7 @@ $messages['de'] = array(
 	'visualeditor-alphawarning' => 'Du benutzt eine Alpha-Version des [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditors]]. Er ist teilweise noch langsam und kann fehlerhafte Änderungen erzeugen. Bitte überprüfe jede Bearbeitung, die du gemacht hast.',
 	'visualeditor-report-notice' => 'Mit dem Klick auf „Problem berichten“ übermittle ich meine Änderungen und meine Rückmeldung, die zur Auswertung gespeichert wird. Ich stimme der Abgabe meiner Rückmeldung in Übereinstimmung mit den [[{{MediaWiki:Visualeditor-report-link}}|Nutzungsbedingungen]] zu.',
 	'visualeditor-report-link' => 'foundation:Terms of Use/de',
+	'visualeditor-feedback-link' => 'Project:VisualEditor/Feedback',
 );
 
 /** German (formal address) (Deutsch (Sie-Form)‎)
@@ -901,6 +912,7 @@ $messages['es'] = array(
 	'visualeditor-descriptionpagelink' => 'Project:EditorVisual',
 	'visualeditor-alphawarning' => 'Estás utilizando una versión alfa del [[{{MediaWiki:Visualeditor-descriptionpagelink}}|Editor visual]]. Puede ser lenta y producir cambios erróneos; comprueba cada edición que realices.',
 	'visualeditor-report-notice' => 'Entiendo que haciendo clic en el botón Enviar transmito mis cambios y mis comentarios, que se almacenarán para su análisis. Estoy de acuerdo en proporcionar esta información, de conformidad con las [[{{MediaWiki:Visualeditor-report-link}}|Condiciones de uso]].', # Fuzzy
+	'visualeditor-feedback-link' => 'Wikipedia:Editor visual/Comentar',
 );
 
 /** Estonian (eesti)
@@ -1156,6 +1168,7 @@ $messages['fr'] = array(
 	'visualeditor-alphawarning' => 'Vous utilisez une version alpha de l’[[{{MediaWiki:Visualeditor-descriptionpagelink}}|ÉditeurVisuel]]. Elle peut être lente et effectuer des modifications erronées — veuillez vérifier chacune de vos modifications.',
 	'visualeditor-report-notice' => 'Je comprends qu’en cliquant sur « Signaler un problème », je transmettrai mes modifications et mes commentaires, qui seront stockés pour analyse. J’accepte de donner mon avis en accord avec les [[{{MediaWiki:Visualeditor-rapport-lien}}|Conditions d’utilisation]].', # Fuzzy
 	'visualeditor-report-link' => 'foundation:Terms of Use/fr',
+	'visualeditor-feedback-link' => 'Project:ÉditeurVisuel/Avis',
 );
 
 /** Franco-Provençal (arpetan)
@@ -1377,6 +1390,7 @@ $messages['he'] = array(
 	'visualeditor-descriptionpagelink' => 'Project:VisualEditor',
 	'visualeditor-alphawarning' => 'זוהי גרסת אלפא של [[{{MediaWiki:Visualeditor-descriptionpagelink}}|העורך החזותי]]. היא עלולה להיות אטית ולעשות שינויים שגויים – נא לבדוק כל עריכה שנעשית באמצעותה.',
 	'visualeditor-report-notice' => 'ברור לי שלחיצה על "דיווח על בעיה" פירושה שליחה של השינויים שלי והן של המשוב שלי, שיישמר לצורך ניתוח וכן הסכמה לספק משוב בהתאם ל[[{{MediaWiki:Visualeditor-report-link}}|תנאי השימוש]].',
+	'visualeditor-feedback-link' => 'Project:עורך חזותי/משוב',
 );
 
 /** Hindi (हिन्दी)
@@ -1392,6 +1406,7 @@ $messages['hi'] = array(
 	'visualeditor-savedialog-title-review' => 'अपने बदलाव की समीक्षा करें',
 	'visualeditor-savedialog-title-report' => 'कोई समस्या रिपोर्ट करें',
 	'visualeditor-savedialog-title-save' => 'अपने बदलाव सँजोएँ',
+	'visualeditor-feedback-link' => 'Project:VisualEditor/प्रतिपुष्टि',
 );
 
 /** Upper Sorbian (hornjoserbsce)
@@ -1651,6 +1666,7 @@ $messages['it'] = array(
 	'visualeditor-alphawarning' => 'Stai utilizzando una versione alfa di [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]. Può essere lenta e fare modifiche sbagliate - controlla ogni modifica che fai.',
 	'visualeditor-report-notice' => "Capisco che cliccando su {{MediaWiki:Visualeditor-savedialog-label-report}} trasmetto le mie modifiche e il mio feedback che verranno conservati per l'analisi. Sono d'accordo a fornire i feedback in conformità alle [[{{MediaWiki:Visualeditor-report-link}}|condizioni d'uso]].",
 	'visualeditor-report-link' => 'foundation:Terms of Use/it',
+	'visualeditor-feedback-link' => 'Project:VisualEditor/Commenti',
 );
 
 /** Japanese (日本語)
@@ -1732,6 +1748,7 @@ $messages['ja'] = array(
 	'visualeditor-alphawarning' => 'あなたは[[{{MediaWiki:Visualeditor-descriptionpagelink}}|ビジュアルエディター]]のアルファ版を使用しています。動作が遅い可能性があり、誤った内容を保存してしまうおそれがあります。保存した結果が正しいか毎回確認してください。',
 	'visualeditor-report-notice' => '私は「問題点を報告」ボタンを押すことで自身の変更とフィードバックを送信し、それが分析のために保管されることを理解します。[[{{MediaWiki:Visualeditor-report-link}}|利用規約]]に従ってフィードバックを提供することに同意します。',
 	'visualeditor-report-link' => 'foundation:Terms of Use/ja',
+	'visualeditor-feedback-link' => 'Project:ビジュアルエディター/のフィードバック',
 );
 
 /** Javanese (Basa Jawa)
@@ -1901,6 +1918,7 @@ $messages['ko'] = array(
 	'visualeditor-alphawarning' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|시각적편집기]]의 알파 버전을 사용하고 있습니다. 속도가 느릴 수 있으며 잘못 바뀔 수 있으니 각 편집을 확인하시기 바랍니다.',
 	'visualeditor-report-notice' => '나는 제출을 클릭하면 분석에 저장될 바뀜과 피드백을 전달한다는 점을 알고 있습니다. 나는 [[{{MediaWiki:Visualeditor-report-link}}|이용 약관]]에 따라 피드백을 제공하는 데 동의합니다.',
 	'visualeditor-report-link' => 'foundation:Terms of Use/ko',
+	'visualeditor-feedback-link' => 'Project:시각적편집기/피드백',
 );
 
 /** Colognian (Ripoarisch)
@@ -2408,6 +2426,7 @@ $messages['nl'] = array(
 	'visualeditor-alphawarning' => 'U gebruikt een versie van de [[{{MediaWiki:Visualeditor-descriptionpagelink}}|Visuele tekstverwerker]] waar nog hard aan wordt gewerkt. Deze functie kan langzaam zijn en fouten bevatten. Controleer iedere bewerking die u maakt.',
 	'visualeditor-report-notice' => 'Ik begrijp dat door te klikken op "Probleem melden" mijn wijzigingen en mijn terugkoppeling worden opgeslagen voor latere analyse. Ik ga akkoord met het geven van terugkoppelingen volgens de [[{{MediaWiki:Visualeditor-report-link}}|Gebruiksvoorwaarden]].',
 	'visualeditor-report-link' => 'foundation:Terms_of_Use/nl',
+	'visualeditor-feedback-link' => 'Project:VisuaEditor/Terugkoppeling',
 );
 
 /** Occitan (occitan)
@@ -2561,6 +2580,7 @@ $messages['pl'] = array(
 	'visualeditor-descriptionpagelink' => 'Project:VisualEditor',
 	'visualeditor-alphawarning' => 'Używasz wersji alfa [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditora]]. Edytor może działać wolno i wykonywać nieprawidłowe modyfikacje – sprawdź każdą zmianę, którą wprowadzasz.',
 	'visualeditor-report-notice' => 'Rozumiem, że klikając "Zgłoś problem" prześlę zrobione przeze mnie zmiany oraz moją opinię, które będą przechowywane w celu analizy. Zgadzam się na przekazanie swojej opinii zgodnie z [[{{MediaWiki:Visualeditor-report-link}}|warunkami użytkowania]].',
+	'visualeditor-feedback-link' => 'Project:VisualEditor/Comentar',
 );
 
 /** Piedmontese (Piemontèis)
@@ -2942,6 +2962,7 @@ $messages['ru'] = array(
 	'visualeditor-descriptionpagelink' => 'Project:Визуальный редактор',
 	'visualeditor-alphawarning' => 'Вы используете альфа-версию [[{{MediaWiki:Visualeditor-descriptionpagelink}}|визуального редактора]]. Она может быть медленной и делать ошибочные изменения — пожалуйста, проверяйте каждую сделанную правку.',
 	'visualeditor-report-notice' => 'Я понимаю, что нажав кнопку «Сообщить о проблеме» я передам свои изменения и свой отзыв, которых будет храниться для анализа. Я согласен с тем, чтобы обеспечить обратную связь в соответствии с [[{{MediaWiki:Visualeditor-report-link}}|условиями использования]].',
+	'visualeditor-feedback-link' => 'Project:VisualEditor/Отзывы',
 );
 
 /** Rusyn (русиньскый)
@@ -3111,6 +3132,7 @@ $messages['sv'] = array(
 	'visualeditor-descriptionpagelink' => 'Project:VisualEditor',
 	'visualeditor-alphawarning' => 'Du använder en alfaversion av [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]. Den kan vara långsam och kan orsaka felaktiga ändringar - var god kontrollera varje redigering du gör.',
 	'visualeditor-report-notice' => 'Jag förstår att genom att klicka på "Rapportera problem" kommer jag att skicka mina ändringar och min feedback, som kommer att lagras för analys. Jag går med på att ge feedback i enlighet med [[{{MediaWiki:Visualeditor-report-link}}|användarvillkoren]].',
+	'visualeditor-feedback-link' => 'Project:VisualEditor/Feedback',
 );
 
 /** Tamil (தமிழ்)
@@ -3465,6 +3487,7 @@ $messages['zh-hans'] = array(
 	'visualeditor-descriptionpagelink' => 'Project:VisualEditor',
 	'visualeditor-alphawarning' => '您正在使用alpha版本的[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]。它可能会很慢，并造成错误的修改 - 请检查每个您所做的编辑。',
 	'visualeditor-report-notice' => '我理解通过按下提交按钮，我将传送我的更改和我的反馈，它们将被储存以供分析。我同意按照[[{{MediaWiki:Visualeditor-report-link}}|使用条款]]提供反馈内容。', # Fuzzy
+	'visualeditor-feedback-link' => 'Project:VisualEditor/反馈',
 );
 
 /** Traditional Chinese (中文（繁體）‎)
@@ -3545,4 +3568,5 @@ $messages['zh-hant'] = array(
 	'visualeditor-descriptionpagelink' => 'Project:可視化編輯器',
 	'visualeditor-alphawarning' => '你正在使用Alpha版本的[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]。它可能會很慢，或製造錯誤更改 - 請檢查您所做的每次編輯。',
 	'visualeditor-report-notice' => '我明白按下「回報問題」後，將傳送我的更改和反饋，它們將被儲存以供分析。我同意按照[[{{MediaWiki:Visualeditor-report-link}}|使用條款]]提供反饋內容。',
+	'visualeditor-feedback-link' => 'Project:VisualEditor/反馈'
 );
