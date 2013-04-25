@@ -486,12 +486,6 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 		// not opened in data (i.e. were already in the document) are pushed onto this stack
 		// and popped off when balanced out by an opening in data
 		closingStack = [],
-		// Array of objects describing wrappers that need to be fixed up when a given
-		// element is closed.
-		//     'expectedType': closing type that triggers this fixup. Includes initial '/'
-		//     'openings': array of opening elements that should be closed (in reverse order)
-		//     'reopenElements': array of opening elements to insert (in reverse order)
-		fixupStack = [],
 
 		// *** State persisting across iterations of the outer loop ***
 		// The node (from the document) we're currently in. When in a node that was opened
@@ -610,21 +604,6 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 	inTextNode = false;
 	for ( i = 0; i < data.length; i++ ) {
 		if ( inTextNode && data[i].type !== undefined ) {
-			// We're leaving a text node, process fixupStack if needed
-			// TODO duplicated code
-			if (
-				fixupStack.length > 0 &&
-				fixupStack[fixupStack.length - 1].expectedType === '/text'
-			) {
-				popped = fixupStack.pop();
-				// Go through these in reverse!
-				for ( j = popped.openings.length - 1; j >= 0; j-- ) {
-					writeElement( { 'type': '/' + popped.openings[j].type }, i );
-				}
-				for ( j = popped.reopenElements.length - 1; j >= 0; j-- ) {
-					writeElement( popped.reopenElements[j], i );
-				}
-			}
 			parentType = openingStack.length > 0 ?
 				openingStack[openingStack.length - 1].type : parentNode.getType();
 		}
@@ -718,61 +697,21 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 				if ( openings.length > 0 ) {
 					// We wrapped the text node, update parentType
 					parentType = childType;
-					fixupStack.push( {
-						'expectedType': '/text',
-						'openings': openings,
-						'reopenElements': reopenElements
-					} );
 				}
 				// If we didn't wrap the text node, then the node we're inserting into can have
 				// content, so we couldn't have closed anything
 			} else {
-				fixupStack.push( {
-					'expectedType': '/' + data[i].type,
-					'openings': openings,
-					'reopenElements': reopenElements
-				} );
 				parentType = data[i].type;
 			}
 		} else {
 			// Closing
 			writeElement( data[i], i );
-			// TODO don't close fixup stuff if the next thing immediately needs to be fixed up as
-			// well; instead, merge the two wrappers
-			if (
-				fixupStack.length > 0 &&
-				fixupStack[fixupStack.length - 1].expectedType === data[i].type
-			) {
-				popped = fixupStack.pop();
-				// Go through these in reverse!
-				for ( j = popped.openings.length - 1; j >= 0; j-- ) {
-					writeElement( { 'type': '/' + popped.openings[j].type }, i );
-				}
-				for ( j = popped.reopenElements.length - 1; j >= 0; j-- ) {
-					writeElement( popped.reopenElements[j], i );
-				}
-			}
 			parentType = openingStack.length > 0 ?
 				openingStack[openingStack.length - 1].type : parentNode.getType();
 		}
 	}
 
 	if ( inTextNode ) {
-		// We're leaving a text node, process fixupStack if needed
-		// TODO duplicated code
-		if (
-			fixupStack.length > 0 &&
-			fixupStack[fixupStack.length - 1].expectedType === '/text'
-		) {
-			popped = fixupStack.pop();
-			// Go through these in reverse!
-			for ( j = popped.openings.length - 1; j >= 0; j-- ) {
-				writeElement( { 'type': '/' + popped.openings[j].type }, i );
-			}
-			for ( j = popped.reopenElements.length - 1; j >= 0; j-- ) {
-				writeElement( popped.reopenElements[j], i );
-			}
-		}
 		parentType = openingStack.length > 0 ?
 			openingStack[openingStack.length - 1].type : parentNode.getType();
 	}
