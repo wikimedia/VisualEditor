@@ -20,6 +20,7 @@
  * @class
  * @constructor
  * @param {ve.dm.Document} doc Document to synchronize
+ * @param {ve.dm.Transaction} transaction The transaction being synchronized for
  */
 ve.dm.DocumentSynchronizer = function VeDmDocumentSynchronizer( doc, transaction ) {
 	// Properties
