@@ -21,7 +21,7 @@ ve.ce.ContentBranchNode = function VeCeContentBranchNode( model, $element ) {
 	ve.ce.BranchNode.call( this, model, $element );
 
 	// Properties
-	var lastTransaction;
+	var lastTransaction, lastTransactionApplied;
 
 	// Events
 	// Main purpose of code below is to increase performance by ensuring that renderContents() is
@@ -33,10 +33,14 @@ ve.ce.ContentBranchNode = function VeCeContentBranchNode( model, $element ) {
 	// a flag to figure out if renderContents should be executed or not.
 	this.on( 'childUpdate', ve.bind( function( transaction ) {
 		if ( transaction instanceof ve.dm.Transaction ) {
-			if ( lastTransaction === transaction ) {
+			if (
+				lastTransaction === transaction &&
+				lastTransaction.hasBeenApplied() === lastTransactionApplied
+			) {
 				return;
 			}
 			lastTransaction = transaction;
+			lastTransactionApplied = transaction.hasBeenApplied();
 		}
 		this.renderContents();
 	}, this ) );
