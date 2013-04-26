@@ -396,8 +396,8 @@ ve.dm.Transaction.newFromContentBranchConversion = function ( doc, range, type, 
 	// Replace the wrappings of each content branch in the range
 	for ( i = 0; i < selection.length; i++ ) {
 		selected = selection[i];
-		if ( selected.node.isContent() ) {
-			branch = selected.node.getParent();
+		branch = selected.node.isContent() ? selected.node.getParent() : selected.node;
+		if ( branch.canContainContent() ) {
 			// Skip branches that are already of the target type and have identical attributes
 			if ( branch.getType() === type && ve.compareObjects( branch.getAttributes(), attr ) ) {
 				continue;

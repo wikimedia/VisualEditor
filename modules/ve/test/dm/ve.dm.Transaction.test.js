@@ -800,6 +800,7 @@ QUnit.test( 'newFromAnnotation', function ( assert ) {
 QUnit.test( 'newFromContentBranchConversion', function ( assert ) {
 	var i, key, store,
 		doc = ve.dm.example.createExampleDocument(),
+		doc2 = ve.dm.example.createExampleDocument( 'inlineAtEdges' ),
 		cases = {
 			'range inside a heading, convert to paragraph': {
 				'args': [doc, new ve.Range( 1, 2 ), 'paragraph'],
@@ -846,6 +847,102 @@ QUnit.test( 'newFromContentBranchConversion', function ( assert ) {
 						'insert': [{ 'type': '/preformatted' }]
 					},
 					{ 'type': 'retain', 'length': 3 }
+				]
+			},
+			'zero-length range before inline node at the start': {
+				'args': [doc2, new ve.Range( 1, 1 ), 'heading', { 'level': 2 }],
+				'ops': [
+					{
+						'type': 'replace',
+						'remove': [{ 'type': 'paragraph' }],
+						'insert': [{ 'type': 'heading', 'attributes': { 'level': 2 } }]
+					},
+					{ 'type': 'retain', 'length': 7 },
+					{
+						'type': 'replace',
+						'remove': [{ 'type': '/paragraph' }],
+						'insert': [{ 'type': '/heading' }]
+					}
+				]
+			},
+			'zero-length range inside inline node at the start': {
+				'args': [doc2, new ve.Range( 2, 2 ), 'heading', { 'level': 2 }],
+				'ops': [
+					{
+						'type': 'replace',
+						'remove': [{ 'type': 'paragraph' }],
+						'insert': [{ 'type': 'heading', 'attributes': { 'level': 2 } }]
+					},
+					{ 'type': 'retain', 'length': 7 },
+					{
+						'type': 'replace',
+						'remove': [{ 'type': '/paragraph' }],
+						'insert': [{ 'type': '/heading' }]
+					}
+				]
+			},
+			'zero-length range after inline node at the start': {
+				'args': [doc2, new ve.Range( 3, 3 ), 'heading', { 'level': 2 }],
+				'ops': [
+					{
+						'type': 'replace',
+						'remove': [{ 'type': 'paragraph' }],
+						'insert': [{ 'type': 'heading', 'attributes': { 'level': 2 } }]
+					},
+					{ 'type': 'retain', 'length': 7 },
+					{
+						'type': 'replace',
+						'remove': [{ 'type': '/paragraph' }],
+						'insert': [{ 'type': '/heading' }]
+					}
+				]
+			},
+			'zero-length range before inline node at the end': {
+				'args': [doc2, new ve.Range( 6, 6 ), 'heading', { 'level': 2 }],
+				'ops': [
+					{
+						'type': 'replace',
+						'remove': [{ 'type': 'paragraph' }],
+						'insert': [{ 'type': 'heading', 'attributes': { 'level': 2 } }]
+					},
+					{ 'type': 'retain', 'length': 7 },
+					{
+						'type': 'replace',
+						'remove': [{ 'type': '/paragraph' }],
+						'insert': [{ 'type': '/heading' }]
+					}
+				]
+			},
+			'zero-length range inside inline node at the end': {
+				'args': [doc2, new ve.Range( 7, 7 ), 'heading', { 'level': 2 }],
+				'ops': [
+					{
+						'type': 'replace',
+						'remove': [{ 'type': 'paragraph' }],
+						'insert': [{ 'type': 'heading', 'attributes': { 'level': 2 } }]
+					},
+					{ 'type': 'retain', 'length': 7 },
+					{
+						'type': 'replace',
+						'remove': [{ 'type': '/paragraph' }],
+						'insert': [{ 'type': '/heading' }]
+					}
+				]
+			},
+			'zero-length range after inline node at the end': {
+				'args': [doc2, new ve.Range( 8, 8 ), 'heading', { 'level': 2 }],
+				'ops': [
+					{
+						'type': 'replace',
+						'remove': [{ 'type': 'paragraph' }],
+						'insert': [{ 'type': 'heading', 'attributes': { 'level': 2 } }]
+					},
+					{ 'type': 'retain', 'length': 7 },
+					{
+						'type': 'replace',
+						'remove': [{ 'type': '/paragraph' }],
+						'insert': [{ 'type': '/heading' }]
+					},
 				]
 			}
 		};
