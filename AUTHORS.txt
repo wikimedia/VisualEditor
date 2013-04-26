@@ -14,6 +14,7 @@ Aaron Schulz <aschulz@wikimedia.org>
 Adam Wight <spam@ludd.net>
 Antoine Musso <hashar@free.fr>
 Audrey Tang <audreyt@audreyt.org>
+Bartosz Dziewoński <matma.rex@gmail.com>
 Brion Vibber <brion@wikimedia.org>
 Erik Moeller <erik@wikimedia.org>
 Gabriel Wicke <gwicke@wikimedia.org>
