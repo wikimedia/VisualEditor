@@ -131,6 +131,17 @@ ve.dm.AnnotationSet.prototype.contains = function ( annotation ) {
 };
 
 /**
+ * Check whether a given store index occurs in the set.
+ *
+ * @method
+ * @param {number} annotation Index of annotation in the store
+ * @returns {boolean} There is an annotation in the set with this store index
+ */
+ve.dm.AnnotationSet.prototype.containsIndex = function ( index ) {
+	return ve.indexOf( index , this.getIndexes() ) !== -1;
+};
+
+/**
  * Check whether the set contains any of the annotations in another set.
  *
  * @method
@@ -249,7 +260,7 @@ ve.dm.AnnotationSet.prototype.add = function ( annotation, index ) {
 		return;
 	}
 	// if not in set already, splice in place
-	if ( !this.contains( annotation ) ) {
+	if ( !this.containsIndex( storeIndex ) ) {
 		this.storeIndexes.splice( index, 0, storeIndex );
 	}
 };
@@ -276,7 +287,7 @@ ve.dm.AnnotationSet.prototype.addSet = function ( set ) {
  */
 ve.dm.AnnotationSet.prototype.push = function ( annotation ) {
 	var storeIndex = this.getStore().index( annotation );
-	if ( !this.contains( annotation ) ) {
+	if ( !this.containsIndex( storeIndex ) ) {
 		this.storeIndexes.push( storeIndex );
 	}
 };

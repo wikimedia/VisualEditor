@@ -199,7 +199,7 @@ ve.dm.Transaction.newFromAttributeChange = function ( doc, offset, key, value ) 
  * @param {string} method Annotation mode
  *  - `set`: Adds annotation to all content in range
  *  - `clear`: Removes instances of annotation from content in range
- * @param {Object} annotation Annotation to set or clear
+ * @param {ve.dm.Annotation} annotation Annotation to set or clear
  * @returns {ve.dm.Transaction} Transaction that annotates content
  */
 ve.dm.Transaction.newFromAnnotation = function ( doc, range, method, annotation ) {
