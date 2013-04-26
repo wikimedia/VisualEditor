@@ -599,9 +599,10 @@ ve.init.mw.Target.prototype.reportProblem = function ( message ) {
 				ve.dm.converter.getDataFromDom(
 					ve.createDocumentFromHTML( '<body>' + this.originalHtml  + '</body>' ),
 					store, internalList
-				),
+				).getData(),
 			'editedData': editedData,
 			'editedHtml': ve.properInnerHTML( ve.dm.converter.getDomFromData( editedData, store, internalList ).body ),
+			'store': doc.data.getUsedStoreValues(),
 			'wiki': mw.config.get( 'wgDBname' )
 		};
 	$.post(
