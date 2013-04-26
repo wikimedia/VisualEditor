@@ -410,7 +410,9 @@ ve.ce.Surface.prototype.onDocumentKeyPress = function ( e ) {
 		}
 	}
 
-	if ( ve.ce.isShortcutKey( e ) ||
+	// FF fire keypress for arrow keys but we handle them in keydown so let's ignore
+	if ( ve.ce.isArrowKey( e.keyCode ) ||
+		ve.ce.isShortcutKey( e ) ||
 		e.which === ve.Keys.DOM_VK_RETURN ||
 		e.which === ve.Keys.DOM_VK_BACK_SPACE ||
 		e.which === ve.Keys.DOM_VK_UNDEFINED ) {
