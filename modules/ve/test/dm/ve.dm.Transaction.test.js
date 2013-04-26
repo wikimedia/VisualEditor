@@ -45,8 +45,13 @@ function runConstructorTests( assert, constructor, cases ) {
 QUnit.test( 'newFromInsertion', function ( assert ) {
 	var i, key,
 		doc = ve.dm.example.createExampleDocument(),
+		isolationDoc = ve.dm.example.createExampleDocument( 'isolationData' ),
+		complexTableDoc = ve.dm.example.createExampleDocument( 'complexTable' ),
 		doc2 = new ve.dm.Document(
 			ve.dm.example.preprocessAnnotations( [ { 'type': 'paragraph' }, { 'type': '/paragraph' } ] )
+		),
+		doc3 = new ve.dm.Document(
+			ve.dm.example.preprocessAnnotations( [ { 'type': 'paragraph' }, 'F', 'o', 'o', { 'type': '/paragraph' } ] )
 		),
 		cases = {
 			'paragraph before first element': {
@@ -95,16 +100,16 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 					{ 'type': 'retain', 'length': 59 }
 				]
 			},
-			'paragraph inside a list closes and reopens list': {
+			'paragraph inside a list moves in front of list': {
 				'args': [doc, 13, [{ 'type': 'paragraph' }, 'F', 'O', 'O', { 'type': '/paragraph' }]],
 				'ops': [
-					{ 'type': 'retain', 'length': 13 },
+					{ 'type': 'retain', 'length': 12 },
 					{
 						'type': 'replace',
 						'remove': [],
-						'insert': [{'type': '/list' }, { 'type': 'paragraph' } , 'F', 'O', 'O', { 'type': '/paragraph' }, { 'type': 'list', 'attributes': { 'style': 'bullet' } }]
+						'insert': [{ 'type': 'paragraph' } , 'F', 'O', 'O', { 'type': '/paragraph' }]
 					},
-					{ 'type': 'retain', 'length': 48 }
+					{ 'type': 'retain', 'length': 49 }
 				]
 			},
 			'tableCell inside the document is wrapped in a table, tableSection and tableRow': {
@@ -119,16 +124,16 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 					{ 'type': 'retain', 'length': 18 }
 				]
 			},
-			'tableCell inside a paragraph is wrapped in a table, tableSection and tableRow and closes and reopens the paragraph': {
+			'tableCell inside a paragraph is wrapped in a table, tableSection and tableRow and moves outside of paragraph': {
 				'args': [doc, 52, [{ 'type': 'tableCell', 'attributes': { 'style': 'data' } }, { 'type': 'paragraph' }, 'F', 'O', 'O', { 'type': '/paragraph' }, { 'type': '/tableCell' }]],
 				'ops': [
-					{ 'type': 'retain', 'length': 52 },
+					{ 'type': 'retain', 'length': 53 },
 					{
 						'type': 'replace',
 						'remove': [],
-						'insert': [{ 'type': '/paragraph' }, { 'type': 'table' }, { 'type': 'tableSection', 'attributes': { 'style': 'body' } }, { 'type': 'tableRow' }, { 'type': 'tableCell', 'attributes': { 'style': 'data' } }, { 'type': 'paragraph' }, 'F', 'O', 'O', { 'type': '/paragraph' }, { 'type': '/tableCell' }, { 'type': '/tableRow' }, { 'type': '/tableSection' }, { 'type': '/table' }, { 'type': 'paragraph' }]
+						'insert': [{ 'type': 'table' }, { 'type': 'tableSection', 'attributes': { 'style': 'body' } }, { 'type': 'tableRow' }, { 'type': 'tableCell', 'attributes': { 'style': 'data' } }, { 'type': 'paragraph' }, 'F', 'O', 'O', { 'type': '/paragraph' }, { 'type': '/tableCell' }, { 'type': '/tableRow' }, { 'type': '/tableSection' }, { 'type': '/table' }]
 					},
-					{ 'type': 'retain', 'length': 9 }
+					{ 'type': 'retain', 'length': 8 }
 				]
 			},
 			'text at a structural location in the document is wrapped in a paragraph': {
@@ -166,52 +171,56 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 					{ 'type': 'retain', 'length': 59 }
 				]
 			},
-			'text inside a tableSection is wrapped in a paragraph and closes and reopens the tableSection, tableRow and table': {
+			'text inside a tableSection moves all the way to the end of the table and is wrapped in a paragraph': {
 				'args': [doc, 34, ['F', 'O', 'O']],
 				'ops': [
-					{ 'type': 'retain', 'length': 34 },
+					{ 'type': 'retain', 'length': 37 },
 					{
 						'type': 'replace',
 						'remove': [],
-						'insert': [{ 'type': '/tableRow' }, { 'type': '/tableSection' }, { 'type': '/table' }, { 'type': 'paragraph' }, 'F', 'O', 'O', { 'type': '/paragraph' }, { 'type': 'table' }, { 'type': 'tableSection', 'attributes': { 'style': 'body' } }, { 'type': 'tableRow' } ]
+						'insert': [{ 'type': 'paragraph' }, 'F', 'O', 'O', { 'type': '/paragraph' }]
 					},
-					{ 'type': 'retain', 'length': 27 }
+					{ 'type': 'retain', 'length': 24 }
 				]
 			},
-			'insert two complete paragraphs into a paragraph': {
+			'insert two complete paragraphs into start of paragraph moves insertion point left': {
 				'args': [doc, 10, [{ 'type': 'paragraph' }, 'F', 'O', 'O', { 'type': '/paragraph' }, { 'type': 'paragraph' }, 'B', 'A', 'R', { 'type': '/paragraph' }]],
 				'ops': [
-					{ 'type': 'retain', 'length': 10 },
+					{ 'type': 'retain', 'length': 9 },
 					{
 						'type': 'replace',
 						'remove': [],
-						'insert': [{ 'type': '/paragraph' }, { 'type': 'paragraph' }, 'F', 'O', 'O', { 'type': '/paragraph' }, { 'type': 'paragraph' }, 'B', 'A', 'R', { 'type': '/paragraph' }, { 'type': 'paragraph' }]
+						'insert': [{ 'type': 'paragraph' }, 'F', 'O', 'O', { 'type': '/paragraph' }, { 'type': 'paragraph' }, 'B', 'A', 'R', { 'type': '/paragraph' }]
 					},
-					{ 'type': 'retain', 'length': 51 }
+					{ 'type': 'retain', 'length': 52 }
 				]
 			},
-			'insert text, close paragraph and open heading into paragraph': {
+			'insert text, close paragraph and open heading into end of paragraph moves insertion point right': {
 				'args': [doc, 57, ['F', 'O', 'O', { 'type': '/paragraph' }, { 'type': 'heading', 'attributes': { 'level': 1 } }, 'B', 'A', 'R']],
 				'ops': [
-					{ 'type': 'retain', 'length': 57 },
+					{ 'type': 'retain', 'length': 58 },
 					{
 						'type': 'replace',
 						'remove': [],
-						'insert': ['F', 'O', 'O', { 'type': '/paragraph' }, { 'type': 'heading', 'attributes': { 'level': 1 } }, 'B', 'A', 'R', { 'type': '/heading' }, { 'type': 'paragraph' }]
+						'insert': [{ 'type': 'paragraph' }, 'F', 'O', 'O', { 'type': '/paragraph' }, { 'type': 'heading', 'attributes': { 'level': 1 } }, 'B', 'A', 'R', { 'type': '/heading' }]
 					},
-					{ 'type': 'retain', 'length': 4 }
+					{ 'type': 'retain', 'length': 3 }
 				]
 			},
-			'insert paragraph and incomplete heading into paragraph': {
-				'args': [doc, 10, [{ 'type': 'paragraph' }, 'F', 'O', 'O', { 'type': '/paragraph' }, { 'type': 'heading', 'attributes': { 'level': 1 } }, 'B', 'A', 'R']],
+			'insert heading and incomplete paragraph into heading': {
+				'args': [doc, 2, [{ 'type': 'heading', 'attributes': { 'level': 1 } }, 'F', 'O', 'O', { 'type': '/heading' }, { 'type': 'paragraph' }, 'B', 'A', 'R']],
 				'ops': [
-					{ 'type': 'retain', 'length': 10 },
+					{ 'type': 'retain', 'length': 2 },
 					{
 						'type': 'replace',
 						'remove': [],
-						'insert': [{ 'type': '/paragraph' }, { 'type': 'paragraph' }, 'F', 'O', 'O', { 'type': '/paragraph' }, { 'type': 'heading', 'attributes': { 'level': 1 } }, 'B', 'A', 'R', { 'type': '/heading' }, { 'type': 'paragraph' }]
+						'insert': [
+							{ 'type': '/heading' }, { 'type': 'heading', 'attributes': { 'level': 1 } }, 'F', 'O', 'O', { 'type': '/heading' },
+							{ 'type': 'paragraph' }, 'B', 'A', 'R', { 'type': '/paragraph' },
+							{ 'type': 'heading', 'attributes': { 'level': 1 } }
+						]
 					},
-					{ 'type': 'retain', 'length': 51 }
+					{ 'type': 'retain', 'length': 59 }
 				]
 			},
 			'inserting two paragraphs into a document with just an empty paragraph': {
@@ -236,6 +245,68 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 						'insert': ['F', 'O', 'O', { 'type': '/paragraph' }, { 'type': 'paragraph' }, 'B', 'A', 'R', { 'type': '/paragraph' }, { 'type': 'paragraph' }, 'B', 'A', 'Z']
 					},
 					{ 'type': 'retain', 'length': 1 }
+				]
+			},
+			'inserting one paragraph into empty paragraph moves insertion before': {
+				'args': [doc2, 1, [{ 'type': 'paragraph' }, 'F', 'O', 'O', { 'type': '/paragraph' }]],
+				'ops': [
+					{
+						'type': 'replace',
+						'remove': [],
+						'insert': [{ 'type': 'paragraph' }, 'F', 'O', 'O', { 'type': '/paragraph' }]
+					},
+					{ 'type': 'retain', 'length': 2 }
+				]
+			},
+			'inserting paragraph at end of paragraph moves insertion point forward': {
+				'args': [doc3, 4, [{ 'type': 'paragraph' }, 'B', 'A', 'R', { 'type': '/paragraph' }]],
+				'ops': [
+					{ 'type': 'retain', 'length': 5 },
+					{
+						'type': 'replace',
+						'remove': [],
+						'insert': [{ 'type': 'paragraph' }, 'B', 'A', 'R', { 'type': '/paragraph' }]
+					}
+				]
+			},
+			'inserting paragraph into middle of paragraph splits paragraph': {
+				'args': [doc3, 2, [{ 'type': 'paragraph' }, 'B', 'A', 'R', { 'type': '/paragraph' }]],
+				'ops': [
+					{ 'type': 'retain', 'length': 2 },
+					{
+						'type': 'replace',
+						'remove': [],
+						'insert': [{ 'type': '/paragraph' }, { 'type': 'paragraph' }, 'B', 'A', 'R', { 'type': '/paragraph' }, { 'type': 'paragraph' }]
+					},
+					{ 'type': 'retain', 'length': 3 },
+				]
+			},
+			'inserting paragraph into middle of list splits list': {
+				'args': [isolationDoc, 11, [{ 'type': 'paragraph' }, 'B', 'A', 'R', { 'type': '/paragraph' }]],
+				'ops': [
+					{ 'type': 'retain', 'length': 11 },
+					{
+						'type': 'replace',
+						'remove': [],
+						'insert': [{ 'type': '/list' }, { 'type': 'paragraph' }, 'B', 'A', 'R', { 'type': '/paragraph' }, { 'type': 'list', 'attributes': { 'style': 'bullet' } }]
+					},
+					{ 'type': 'retain', 'length': 233 },
+				]
+			},
+			'inserting paragraph between table cells splits table, tableSection and tableRow': {
+				'args': [complexTableDoc, 40, [{ 'type': 'paragraph' }, 'B', 'A', 'R', { 'type': '/paragraph' }]],
+				'ops': [
+					{ 'type': 'retain', 'length': 40 },
+					{
+						'type': 'replace',
+						'remove': [],
+						'insert': [
+							{ 'type': '/tableRow' }, { 'type': '/tableSection' }, { 'type': '/table' },
+							{ 'type': 'paragraph' }, 'B', 'A', 'R', { 'type': '/paragraph' },
+							{ 'type': 'table' }, { 'type': 'tableSection', 'attributes' : { 'style': 'body' } }, { 'type': 'tableRow' },
+						]
+					},
+					{ 'type': 'retain', 'length': 11 },
 				]
 			}
 			// TODO test cases for unclosed openings

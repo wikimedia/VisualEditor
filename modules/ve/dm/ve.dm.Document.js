@@ -471,7 +471,7 @@ ve.dm.Document.prototype.rebuildNodes = function ( parent, index, numNodes, offs
  * @method
  * @param {Array} data Snippet of linear model data to insert
  * @param {number} offset Offset in the linear model where the caller wants to insert data
- * @returns {Array} A (possibly modified) copy of data
+ * @returns {Object} A (possibly modified) copy of data and a (possibly modified) offset
  */
 ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 	var
@@ -486,6 +486,14 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 		// not opened in data (i.e. were already in the document) are pushed onto this stack
 		// and popped off when balanced out by an opening in data
 		closingStack = [],
+
+		// Lazy evaluated first and last child stacks. Null means not yet evaluated.
+		// See get(First|Last)ChildStack private methods for details.
+		firstChildStack = null,
+		lastChildStack = null,
+
+		// Pointer to this document for private methods
+		doc = this,
 
 		// *** State persisting across iterations of the outer loop ***
 		// The node (from the document) we're currently in. When in a node that was opened
@@ -599,9 +607,54 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 		newData.push( element );
 	}
 
+	/**
+	 * Lazy evaluate the first child stack.
+	 *
+	 * The first child stack comprises all parent nodes for which the current
+	 * node is the first child.
+	 *
+	 * @private
+	 * @method
+	 * @returns {Array} Array of parent node data elements
+	 */
+	function getFirstChildStack() {
+		var i;
+		if ( firstChildStack === null ) {
+			firstChildStack = [];
+			i = offset;
+			while ( doc.data.isOpenElementData( --i ) ) {
+				firstChildStack.push( doc.data.getData( i ) );
+			}
+		}
+		return firstChildStack;
+	}
+
+	/**
+	 * Lazy evaluate the last child stack.
+	 *
+	 * The last child stack comprises all parent nodes for which the current
+	 * node is the last child.
+	 *
+	 * @private
+	 * @method
+	 * @returns {Array} Array of parent node data elements
+	 */
+	function getLastChildStack() {
+		var i;
+		if ( lastChildStack === null ) {
+			lastChildStack = [];
+			i = offset - 1;
+			while ( doc.data.isCloseElementData( ++i ) ) {
+				lastChildStack.push( doc.data.getData( i ) );
+			}
+		}
+		return lastChildStack;
+	}
+
 	parentNode = this.getNodeFromOffset( offset );
 	parentType = parentNode.getType();
 	inTextNode = false;
+
 	for ( i = 0; i < data.length; i++ ) {
 		if ( inTextNode && data[i].type !== undefined ) {
 			parentType = openingStack.length > 0 ?
@@ -657,6 +710,11 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 				);
 				if ( !childrenOK ) {
 					// We can't insert this into this parent
+					if ( getFirstChildStack().length ) {
+						// Abandon this fix up and try again one offset to the left
+						return this.fixupInsertion( data, offset - 1 );
+					}
+
 					// Close the parent and try one level up
 					closings.push( { 'type': '/' + parentType } );
 					if ( openingStack.length > 0 ) {
@@ -711,6 +769,11 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 		}
 	}
 
+	if ( closingStack.length > 0 && getLastChildStack().length > 0 ) {
+		// Abandon this fix up and try again one offset to the left
+		return this.fixupInsertion( data, offset + 1 );
+	}
+
 	if ( inTextNode ) {
 		parentType = openingStack.length > 0 ?
 			openingStack[openingStack.length - 1].type : parentNode.getType();
@@ -731,7 +794,10 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 		writeElement( popped.getClonedElement(), i );
 	}
 
-	return newData;
+	return {
+		offset: offset,
+		data: newData
+	};
 };
 
 /**
