@@ -23,8 +23,9 @@ ve.ui.PopupWidget = function VeUiPopupWidget( config ) {
 
 	// Properties
 	this.visible = false;
-	this.$callout = $( '<div>' );
-	this.$body = $( '<div>' );
+	this.$callout = this.$$( '<div>' );
+	// Tab index on body so that it may blur
+	this.$body = this.$$( '<div>' ).attr( 'tabindex', 1 );
 	this.transitionTimeout = null;
 	this.align = config.align || 'center';
 
@@ -35,11 +36,20 @@ ve.ui.PopupWidget = function VeUiPopupWidget( config ) {
 			this.$callout.addClass( 've-ui-popupWidget-callout' ),
 			this.$body.addClass( 've-ui-popupWidget-body' )
 		);
+
+	// Auto hide popup
+	this.$body.on( 'blur', ve.bind( this.onPopupBlur, this ) );
 };
 
 /* Inheritance */
 
 ve.inheritClass( ve.ui.PopupWidget, ve.ui.Widget );
+
+/* Events */
+
+/**
+ * @event hide
+ */
 
 /* Methods */
 
@@ -52,7 +62,8 @@ ve.inheritClass( ve.ui.PopupWidget, ve.ui.Widget );
 ve.ui.PopupWidget.prototype.show = function () {
 	this.$.show();
 	this.visible = true;
-
+	// Focus body so that it may blur.
+	this.$body.focus();
 	return this;
 };
 
@@ -65,8 +76,37 @@ ve.ui.PopupWidget.prototype.show = function () {
 ve.ui.PopupWidget.prototype.hide = function () {
 	this.$.hide();
 	this.visible = false;
-
+	this.emit( 'hide' );
 	return this;
+};
+
+ve.ui.PopupWidget.prototype.getFocusedChild = function () {
+	return this.$body.find( ':focus' );
+};
+
+ve.ui.PopupWidget.prototype.onPopupBlur = function () {
+	// Find out what is focused after blur
+	setTimeout( ve.bind( function () {
+		var $focused = this.getFocusedChild();
+		// Is there a focused child element?
+		if ( $focused.length > 0 ) {
+			// Bind a one off blur event to that focused child element
+			$focused.one( 'blur', ve.bind( function () {
+				setTimeout( ve.bind( function () {
+					if ( this.getFocusedChild().length === 0 ) {
+						// Be sure focus is not the popup itself.
+						if ( this.$.find( ':focus' ).is( this.$body ) ){
+							return;
+						}
+						// Not a child and not the popup itself, so hide.
+						this.hide();
+					}
+				}, this ), 0 );
+			}, this ) );
+		} else {
+			this.hide();
+		}
+	}, this ), 0 );
 };
 
 /**

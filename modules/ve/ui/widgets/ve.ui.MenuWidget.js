@@ -34,7 +34,7 @@ ve.ui.MenuWidget = function VeUiMenuWidget( config ) {
 
 	// Initialization
 	this.$.hide().addClass( 've-ui-menuWidget' );
-	if ( !config.$input ) {
+	if ( !config.input ) {
 		this.$.append( this.$input );
 	}
 };

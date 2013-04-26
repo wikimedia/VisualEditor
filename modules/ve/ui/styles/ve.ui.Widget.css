@@ -236,9 +236,8 @@
 
 .ve-ui-menuWidget {
 	position: absolute;
-	background: #FFFFFF;
+	background: #fff;
 	margin-top: -1px;
-	font-size: 0.8em;
 	z-index: 101;
 	border: solid 1px #ccc;
 	border-radius: 0 0 0.25em 0.25em;
@@ -268,9 +267,9 @@
 	cursor: default;
 }
 
-/* ve.ui.MWLinkTargetInputWidget */
+/* ve.ui.PendingInputWidget */
 
-.ve-ui-mwLinkTargetInputWidget-pending input {
+.ve-ui-pendingInputWidget input {
 	background-image: url(images/pending.gif);
 }
 
@@ -279,6 +278,7 @@
 .ve-ui-mwLinkTargetInputWidget-menu {
 	width: 20em;
 	margin-top: -7px;
+	font-size: 0.8em;
 }
 
 .ve-ui-mwLinkTargetInputWidget-menu .ve-ui-menuWidget-item {
@@ -331,3 +331,9 @@
 	-o-transition-timing-function: ease-in-out;
 	transition-timing-function: ease-in-out;
 }
+
+.ve-ui-popupWidget-body:focus {
+	/* No outline. The body has a tabindex and is focused on show */
+	outline: none;
+}
+

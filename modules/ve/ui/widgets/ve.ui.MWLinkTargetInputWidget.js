@@ -56,6 +56,8 @@ ve.ui.MWLinkTargetInputWidget = function VeUiMWLinkTargetInputWidget( config ) {
 
 ve.inheritClass( ve.ui.MWLinkTargetInputWidget, ve.ui.LinkTargetInputWidget );
 
+ve.mixinClass( ve.ui.MWLinkTargetInputWidget, ve.ui.PendingInputWidget );
+
 /* Methods */
 
 /**
@@ -138,7 +140,7 @@ ve.ui.MWLinkTargetInputWidget.prototype.openMenu = function () {
 	this.populateMenu();
 	this.queryPageExistence();
 	this.queryMatchingPages();
-	if ( this.value.length && !this.menu.isVisible() ) {
+	if ( this.value.length && $.trim( this.value ) !== '' && !this.menu.isVisible() ) {
 		this.menu.show();
 	}
 	return this;
@@ -169,7 +171,7 @@ ve.ui.MWLinkTargetInputWidget.prototype.populateMenu = function () {
 	// External link
 	if ( ve.init.platform.getExternalLinkUrlProtocolsRegExp().test( this.value ) ) {
 		items.push( new ve.ui.MenuSectionItemWidget(
-			'externalLink', { '$$': menu$$, 'label': 'External link' }
+			'externalLink', { '$$': menu$$, 'label': ve.msg( 'visualeditor-linkinspector-suggest-external-link' ) }
 		) );
 		items.push( new ve.ui.MenuItemWidget(
 			this.getExternalLinkAnnotationFromUrl( this.value ),
@@ -180,7 +182,7 @@ ve.ui.MWLinkTargetInputWidget.prototype.populateMenu = function () {
 	// Internal link
 	if ( !pageExists && ( !matchingPages || matchingPages.indexOf( this.value ) === -1 ) ) {
 		items.push( new ve.ui.MenuSectionItemWidget(
-			'newPage', { '$$': menu$$, 'label': 'New page' }
+			'newPage', { '$$': menu$$, 'label': ve.msg( 'visualeditor-linkinspector-suggest-new-page' ) }
 		) );
 		items.push( new ve.ui.MenuItemWidget(
 			this.getInternalLinkAnnotationFromTitle( this.value ),
@@ -191,7 +193,7 @@ ve.ui.MWLinkTargetInputWidget.prototype.populateMenu = function () {
 	// Matching pages
 	if ( matchingPages && matchingPages.length ) {
 		items.push( new ve.ui.MenuSectionItemWidget(
-			'matchingPages', { '$$': menu$$, 'label': 'Matching page' }
+			'matchingPages', { '$$': menu$$, 'label': ve.msg( 'visualeditor-linkinspector-suggest-matching-page' ) }
 		) );
 		for ( i = 0, len = matchingPages.length; i < len; i++ ) {
 			items.push( new ve.ui.MenuItemWidget(
@@ -212,30 +214,6 @@ ve.ui.MWLinkTargetInputWidget.prototype.populateMenu = function () {
 	}
 	this.menu.highlightItem( this.menu.getSelectedItem() );
 
-	return this;
-};
-
-/**
- * Signals that an response is pending.
- *
- * @method
- * @chainable
- */
-ve.ui.MWLinkTargetInputWidget.prototype.pushPending = function () {
-	this.pending++;
-	this.$.addClass( 've-ui-mwLinkTargetInputWidget-pending' );
-	return this;
-};
-
-/**
- * Signals that an response is complete.
- *
- * @method
- * @chainable
- */
-ve.ui.MWLinkTargetInputWidget.prototype.popPending = function () {
-	this.pending--;
-	this.$.removeClass( 've-ui-mwLinkTargetInputWidget-pending' );
 	return this;
 };
 

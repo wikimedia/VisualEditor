@@ -55,7 +55,7 @@ ve.ui.StackPanelLayout.prototype.addItems = function ( items ) {
 
 	for ( i = 0, len = items.length; i < len; i++ ) {
 		if ( !this.currentItem ) {
-			items[i].$.show();
+			this.showItem( items[i] );
 		} else {
 			items[i].$.hide();
 		}
@@ -113,6 +113,7 @@ ve.ui.StackPanelLayout.prototype.clearItems = function () {
 ve.ui.StackPanelLayout.prototype.showItem = function ( item ) {
 	this.$items.hide();
 	item.$.show();
+	this.currentItem = item;
 
 	return this;
 };
