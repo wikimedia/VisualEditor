@@ -156,7 +156,8 @@ See also:
 {{Identical|Hyperlink}}',
 	'visualeditor-linkinspector-suggest-matching-page' => 'Label for suggested matching local wiki pages in the link inspector',
 	'visualeditor-linkinspector-suggest-new-page' => 'Label for a new page in the link inspector',
-	'visualeditor-linkinspector-suggest-external-link' => 'Label for an external (Web) link in the link inspector',
+	'visualeditor-linkinspector-suggest-external-link' => 'Label for an external (Web) link in the link inspector.
+{{Identical|External link}}',
 	'visualeditor-formatdropdown-title' => 'This is a tooltip for the drop-down box for choosing the formatting style of the selected text, such as "Heading 1", "Heading 2" or "Plain text". (This is not related to "file format" or "data format", such as "Wikitext", "HTML", "PDF" etc.)',
 	'visualeditor-formatdropdown-format-paragraph' => 'Item in the formatting dropdown for paragraphs (normal text).
 {{Identical|Paragraph}}',
@@ -211,44 +212,49 @@ Possible entry for German: "foundation:Terms of Use/de"',
 /** Arabic (العربية)
  * @author Ciphers
  * @author Jdforrester
+ * @author OsamaK
  */
 $messages['ar'] = array(
-	'tooltip-ca-editsource' => 'تحرير الكود المصدر لهذه الصفحة',
-	'tooltip-ca-ve-edit' => 'تحرير هذه الصفحة بالمحرر المرئي',
+	'tag-visualeditor' => '[[Special:Tags|وسم]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|المحرر المرئي]]',
+	'tag-visualeditor-description' => 'أجري التعديل باستخدام [[{{MediaWiki:Visualeditor-descriptionpagelink}}|المحرر المرئي]]',
+	'tooltip-ca-editsource' => 'حرّر الكود المصدري لهذه الصفحة',
+	'tooltip-ca-ve-edit' => 'حرّر هذه الصفحة بالمحرر المرئي',
 	'visualeditor' => 'المحرر المرئي',
-	'visualeditor-desc' => 'المحرر المرئي للميدياويكي',
-	'visualeditor-mainnamespacepagelink' => 'ويكيبيديا:النطاق الرئيسي', # Fuzzy
-	'visualeditor-usernamespacepagelink' => 'ويكيبيديا:نطاق المستخدم', # Fuzzy
-	'visualeditor-notification-saved' => 'تغييراتك على $1 تم حفظها.',
-	'visualeditor-notification-created' => 'تم إنشاء $1.',
-	'visualeditor-notification-restored' => 'تم استعادة $1.',
-	'visualeditor-notification-reported' => 'تم الإبلاغ عن المشكلة الخاصة بك. شكرا.',
-	'visualeditor-ca-editsource' => 'تعديل المصدر',
+	'visualeditor-desc' => 'المحرر المرئي لميدياويكي',
+	'visualeditor-preference-enable' => 'مكّن المحرر المرئي (في النطاقين [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|الرئيس]] و[[{{MediaWiki:Visualeditor-usernamespacepagelink}}|المستخدم]] فقط)',
+	'visualeditor-mainnamespacepagelink' => 'Project:النطاق الرئيسي',
+	'visualeditor-usernamespacepagelink' => 'Project:نطاق المستخدم',
+	'visualeditor-notification-saved' => 'حُفِظت تغييراتك على $1.',
+	'visualeditor-notification-created' => 'أُنشِئت $1.',
+	'visualeditor-notification-restored' => 'استعيدت $1.',
+	'visualeditor-notification-reported' => 'بُلّغ عن مشكلتك. شكرا.',
+	'visualeditor-ca-editsource' => 'عدّل المصدر',
 	'visualeditor-ca-ve-edit' => 'المحرر المرئي',
 	'visualeditor-ca-ve-create' => 'المحرر المرئي',
 	'visualeditor-dialog-meta-title' => 'إعدادات الصفحة',
 	'visualeditor-dialog-content-title' => 'إعدادات المحتوى',
 	'visualeditor-dialog-media-title' => 'إعدادات الوسائط',
-	'visualeditor-dialog-action-apply' => 'تطبيق التغييرات',
-	'visualeditor-dialog-action-cancel' => 'إلغاء',
+	'visualeditor-dialog-action-apply' => 'طبّق التغييرات',
+	'visualeditor-dialog-action-cancel' => 'طبّق',
 	'visualeditor-dialog-action-close' => 'أغلق',
-	'visualeditor-toolbar-savedialog' => 'استعراض وحفظ',
-	'visualeditor-savedialog-title-review' => 'مراجعة تغييراتك',
-	'visualeditor-savedialog-title-report' => 'الإبلاغ عن مشكلة',
+	'visualeditor-toolbar-savedialog' => 'راجع واحفظ',
+	'visualeditor-savedialog-title-review' => 'راجع تغييراتك',
+	'visualeditor-savedialog-title-report' => 'بلّغ عن مشكلة',
 	'visualeditor-savedialog-title-save' => 'احفظ تغييراتك',
 	'visualeditor-savedialog-label-review-wrong' => 'هناك خطأ ما',
 	'visualeditor-savedialog-label-review-good' => 'تبدو جيدة بالنسبة لي',
-	'visualeditor-savedialog-label-report' => 'الإبلاغ عن مشكلة',
-	'visualeditor-savedialog-label-create' => 'إنشاء صفحة',
+	'visualeditor-savedialog-label-report' => 'بلّغ عن المشكلة',
+	'visualeditor-savedialog-label-create' => 'أنشئ صفحة',
 	'visualeditor-savedialog-label-save' => 'احفظ الصفحة',
-	'visualeditor-savedialog-label-restore' => 'استعادة الصفحة',
-	'visualeditor-editnotices-tool' => '$1 {{PLURAL:$1|ملاحظة|ملاحظات}}',
-	'visualeditor-feedback-tool' => 'ترك تقييم',
+	'visualeditor-savedialog-label-restore' => 'استعد الصفحة',
+	'visualeditor-editnotices-tool' => '{{PLURAL:$1|لا ملاحظات|ملاحظة واحدة|ملاحظتان|$1 ملاحظات|$1 ملاحظة}}',
+	'visualeditor-feedback-tool' => 'أرسل تقييمًا',
 	'visualeditor-window-title' => 'فحص',
 	'visualeditor-linkinspector-title' => 'الارتباط التشعبي',
+	'visualeditor-linkinspector-suggest-matching-page' => 'الصفحة المقابلة',
 	'visualeditor-linkinspector-suggest-new-page' => 'صفحة جديدة',
-	'visualeditor-linkinspector-suggest-external-link' => 'ارتباط ويب', # Fuzzy
-	'visualeditor-formatdropdown-title' => 'تغيير تنسيق',
+	'visualeditor-linkinspector-suggest-external-link' => 'وصلة خارجية',
+	'visualeditor-formatdropdown-title' => 'غيّر التنسيق',
 	'visualeditor-formatdropdown-format-paragraph' => 'فقرة',
 	'visualeditor-formatdropdown-format-heading1' => 'عنوان 1',
 	'visualeditor-formatdropdown-format-heading2' => 'عنوان 2',
@@ -262,25 +268,27 @@ $messages['ar'] = array(
 	'visualeditor-annotationbutton-link-tooltip' => 'وصلة',
 	'visualeditor-dialogbutton-media-tooltip' => 'الوسائط',
 	'visualeditor-indentationbutton-indent-tooltip' => 'زيادة المسافة البادئة',
-	'visualeditor-indentationbutton-outdent-tooltip' => 'إنقاص المسافة البادئة',
+	'visualeditor-indentationbutton-outdent-tooltip' => 'أنقص المسافة البادئة',
 	'visualeditor-listbutton-number-tooltip' => 'قائمة مرقمة',
 	'visualeditor-listbutton-bullet-tooltip' => 'قائمة منقّطة',
-	'visualeditor-clearbutton-tooltip' => 'مسح التنسيق',
-	'visualeditor-historybutton-undo-tooltip' => 'رجوع',
-	'visualeditor-historybutton-redo-tooltip' => 'إعادة',
+	'visualeditor-clearbutton-tooltip' => 'امسح التنسيق',
+	'visualeditor-historybutton-undo-tooltip' => 'تراجع',
+	'visualeditor-historybutton-redo-tooltip' => 'أعد',
 	'visualeditor-inspector-close-tooltip' => 'أغلق',
 	'visualeditor-inspector-remove-tooltip' => 'أزل',
 	'visualeditor-viewpage-savewarning' => 'هل أنت متأكد من أنك تريد العودة إلى وضع العرض دون الحفظ أولاً؟',
-	'visualeditor-loadwarning' => 'خطأ في تحميل البيانات من الخادم:  $1. هل ترغب في إعادة المحاولة؟',
-	'visualeditor-differror' => 'خطأ في تحميل البيانات من الخادم: $1.',
-	'visualeditor-serializeerror' => 'خطأ في تحميل البيانات من الخادم: $1.',
-	'visualeditor-saveerror' => 'حدث خطأ أثناء حفظ البيانات إلى الخادم: $1.',
-	'visualeditor-editconflict' => 'تعذر حفظ التغييرات الخاصة بك بسبب وجود تضارب في التحرير. هل ترغب في حل التضارب يدوياً؟',
+	'visualeditor-loadwarning' => 'خطأ في تحميل البيانات من الخادوم:  $1. هل ترغب في إعادة المحاولة؟',
+	'visualeditor-differror' => 'خطأ في تحميل البيانات من الخادوم: $1.',
+	'visualeditor-serializeerror' => 'خطأ في تحميل البيانات من الخادوم: $1.',
+	'visualeditor-saveerror' => 'حدث خطأ أثناء حفظ البيانات إلى الخادوم: $1.',
+	'visualeditor-editconflict' => 'تعذر حفظ تغييراتك بسبب تضارب في التحرير. هل ترغب في حل التضارب يدوياً؟',
 	'visualeditor-editsummary' => 'صف ما قمت بتغييره',
 	'visualeditor-problem' => 'صف ما حدث من خطأ',
 	'visualeditor-aliennode-tooltip' => 'عذراً، لا يمكن تحرير هذا العنصر باستخدام المحرر المرئي',
-	'visualeditor-descriptionpagelink' => 'ويكيبيديا:المحرر المرئي', # Fuzzy
-	'visualeditor-feedback-link' => 'Project:محرر البصرية/ردود الفعل',
+	'visualeditor-descriptionpagelink' => 'Project:المحرر المرئي',
+	'visualeditor-alphawarning' => 'أنت تستخدم النسخة ألفا من [[{{MediaWiki:Visualeditor-descriptionpagelink}}|المحرر المرئي]]. قد تكون بطيئة وقد تجري تغييرات خاطئة. المرجو التحقق من كل تغيير تجريه.',
+	'visualeditor-report-notice' => 'أعي أني إذا نقرت "بلّغ عن المشكلة" فسترسل تغييراتي مع ملاحظاتي وستحفظ بغرض التحليل. أوافق على تقديم الملاحظات وفقا ل[[{{MediaWiki:Visualeditor-report-link}}|شروط الاستخدام]].',
+	'visualeditor-feedback-link' => 'Project:محرر البصرية/ملاحظات',
 );
 
 /** Assamese (অসমীয়া)
@@ -750,8 +758,9 @@ $messages['de'] = array(
 	'visualeditor-feedback-tool' => 'Rückmeldungen hinterlassen',
 	'visualeditor-window-title' => 'Überprüfen',
 	'visualeditor-linkinspector-title' => 'Link',
+	'visualeditor-linkinspector-suggest-matching-page' => 'Übereinstimmende Seite',
 	'visualeditor-linkinspector-suggest-new-page' => 'Neue Seite',
-	'visualeditor-linkinspector-suggest-external-link' => 'Weblink', # Fuzzy
+	'visualeditor-linkinspector-suggest-external-link' => 'Weblink',
 	'visualeditor-formatdropdown-title' => 'Format ändern',
 	'visualeditor-formatdropdown-format-paragraph' => 'Absatz',
 	'visualeditor-formatdropdown-format-heading1' => 'Überschrift 1',
@@ -811,8 +820,80 @@ $messages['diq'] = array(
  * @author Michawiki
  */
 $messages['dsb'] = array(
+	'tag-visualeditor' => '[[Special:Tags|Woznamenjenja]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
+	'tag-visualeditor-description' => 'Z pomocu [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditora]] wobźěłany',
+	'tooltip-ca-editsource' => 'Žrědłowy kode toś togo boka wobźěłaś',
+	'tooltip-ca-ve-edit' => 'Toś ten bok z VisualEditor wobźěłaś',
 	'visualeditor' => 'VisualEditor',
 	'visualeditor-desc' => 'WYSIWYG-editor za MediaWiki',
+	'visualeditor-preference-enable' => 'VisualEditor zmóžniś (jeno w [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|głownem mjenjowem rumje]] a [[{{MediaWiki:Visualeditor-usernamespacepagelink}}|wužywarskem mjenjowem rumje]])',
+	'visualeditor-mainnamespacepagelink' => 'Project:Głowny mjenjowy rum',
+	'visualeditor-usernamespacepagelink' => 'Project:Wužywarski mjenjowy rum',
+	'visualeditor-notification-saved' => 'Twóje změny na $1 su se składowali.',
+	'visualeditor-notification-created' => '$1 jo se napórał.',
+	'visualeditor-notification-restored' => '$1 jo se wótnowił.',
+	'visualeditor-notification-reported' => 'Twój problem jo se k wěsći dał. Wjeliki źěk.',
+	'visualeditor-ca-editsource' => 'Žrědłowy tekst wobźěłaś',
+	'visualeditor-ca-ve-edit' => 'VisualEditor',
+	'visualeditor-ca-ve-create' => 'VisualEditor',
+	'visualeditor-dialog-meta-title' => 'Bokowe nastajenja',
+	'visualeditor-dialog-content-title' => 'Wopśimjeśowe nastajenja',
+	'visualeditor-dialog-media-title' => 'Medijowe nastajenja',
+	'visualeditor-dialog-action-apply' => 'Změny nałožyś',
+	'visualeditor-dialog-action-cancel' => 'Pśetergnuś',
+	'visualeditor-dialog-action-close' => 'Zacyniś',
+	'visualeditor-toolbar-savedialog' => 'Pśeglědaś a składowaś',
+	'visualeditor-savedialog-title-review' => 'Twóje změny pśeglědaś',
+	'visualeditor-savedialog-title-report' => 'Problem k wěsći daś',
+	'visualeditor-savedialog-title-save' => 'Twóje změny składowaś',
+	'visualeditor-savedialog-label-review-wrong' => 'Něco jo se neraźiło',
+	'visualeditor-savedialog-label-review-good' => 'Wuglěda derje',
+	'visualeditor-savedialog-label-report' => 'Problem k wěsći daś',
+	'visualeditor-savedialog-label-create' => 'Bok napóraś',
+	'visualeditor-savedialog-label-save' => 'Bok składowaś',
+	'visualeditor-savedialog-label-restore' => 'Bok wótnowiś',
+	'visualeditor-editnotices-tool' => '$1 {{PLURAL:$1|notica|noticy|noticy|noticow}}',
+	'visualeditor-feedback-tool' => 'Komentar zawóstajiś',
+	'visualeditor-window-title' => 'Pśespytaś',
+	'visualeditor-linkinspector-title' => 'Wótkaz',
+	'visualeditor-linkinspector-suggest-matching-page' => 'Wótpowědny bok',
+	'visualeditor-linkinspector-suggest-new-page' => 'Nowy bok',
+	'visualeditor-linkinspector-suggest-external-link' => 'Eksterny wótkaz',
+	'visualeditor-formatdropdown-title' => 'Format změniś',
+	'visualeditor-formatdropdown-format-paragraph' => 'Wótstawk',
+	'visualeditor-formatdropdown-format-heading1' => 'Nadpismo 1',
+	'visualeditor-formatdropdown-format-heading2' => 'Nadpismo 2',
+	'visualeditor-formatdropdown-format-heading3' => 'Nadpismo 3',
+	'visualeditor-formatdropdown-format-heading4' => 'Nadpismo 4',
+	'visualeditor-formatdropdown-format-heading5' => 'Nadpismo 5',
+	'visualeditor-formatdropdown-format-heading6' => 'Nadpismo 6',
+	'visualeditor-formatdropdown-format-preformatted' => 'Pśedformatěrowany',
+	'visualeditor-annotationbutton-bold-tooltip' => 'Tucny',
+	'visualeditor-annotationbutton-italic-tooltip' => 'Kursiwny',
+	'visualeditor-annotationbutton-link-tooltip' => 'Wótkaz',
+	'visualeditor-dialogbutton-media-tooltip' => 'Medije',
+	'visualeditor-indentationbutton-indent-tooltip' => 'Zasunjenje pówětšyś',
+	'visualeditor-indentationbutton-outdent-tooltip' => 'Zasunjenje pómjeńšyś',
+	'visualeditor-listbutton-number-tooltip' => 'Numerěrowana lisćina',
+	'visualeditor-listbutton-bullet-tooltip' => 'Naliceńska lisćina',
+	'visualeditor-clearbutton-tooltip' => 'Formatěrowanje wótpóraś',
+	'visualeditor-historybutton-undo-tooltip' => 'Anulěrowaś',
+	'visualeditor-historybutton-redo-tooltip' => 'Wóspjetowaś',
+	'visualeditor-inspector-close-tooltip' => 'Zacyniś',
+	'visualeditor-inspector-remove-tooltip' => 'Wótpóraś',
+	'visualeditor-viewpage-savewarning' => 'Coš se napšawdu k naglědowemu modusoju wrośiś, bźez togo až by do togo składował?',
+	'visualeditor-loadwarning' => 'Zmólka pśi zacytowanju datow ze serwera: $1. Coš znowego wopytaś?',
+	'visualeditor-differror' => 'Zmólka pśi zacytowanju datow ze serwera: $1.',
+	'visualeditor-serializeerror' => 'Zmólka pśi zacytowanju datow ze serwera: $1.',
+	'visualeditor-saveerror' => 'Zmólka pśi składowanju datow na serwerje: $1.',
+	'visualeditor-editconflict' => 'Twóje změny njedaju se wobźěłowańskego konflikta dla składowaś. Coš konflikt manuelnje wótpóraś?',
+	'visualeditor-editsummary' => 'Wopisaj, což sy změnił',
+	'visualeditor-problem' => 'Wopisaj, což jo se njeraźiło',
+	'visualeditor-aliennode-tooltip' => 'Bóžko njedajo se toś ten element z pomocu VisualEditora wobźěłaś',
+	'visualeditor-descriptionpagelink' => 'Project:VisualEditor',
+	'visualeditor-alphawarning' => 'Wužywaš alfa-wersiju [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditora]]. Móžo pómałe byś a zmólkate změny pśewjasć - pšosym pśeglědaj kuždu změnu, kótaruž pśewjedujoš.',
+	'visualeditor-report-notice' => 'Rozměju, až pósrědnjam swóje změny a swój komentar, kótarež budu se za analyzu składowaśu, gaž kliknjom na "Problem k wěsći daś". Som wobjadny, komentary wótpowědujucy [[{{MediaWiki:Visualeditor-report-link}}|wužywańskim wuměnjenjam]] pódaś.',
+	'visualeditor-feedback-link' => 'Project:VisualEditor/Komentary',
 );
 
 /** Greek (Ελληνικά)
@@ -1012,10 +1093,8 @@ $messages['et'] = array(
 	'visualeditor-notification-created' => 'Loodud on lehekülg $1.',
 	'visualeditor-ca-editsource' => 'Muuda allikat',
 	'visualeditor-linkinspector-title' => 'Hüperlink',
-	'visualeditor-linkinspector-label-pagetitle' => 'Lehekülg',
-	'visualeditor-linkinspector-suggest-existing-page' => 'Olemasolev lehekülg',
 	'visualeditor-linkinspector-suggest-new-page' => 'Uus lehekülg',
-	'visualeditor-linkinspector-suggest-external-link' => 'Võrgulink',
+	'visualeditor-linkinspector-suggest-external-link' => 'Välislink',
 	'visualeditor-formatdropdown-title' => 'Muuda vormingut',
 	'visualeditor-formatdropdown-format-paragraph' => 'Lõik',
 	'visualeditor-formatdropdown-format-heading1' => 'Pealkiri 1',
@@ -1025,16 +1104,16 @@ $messages['et'] = array(
 	'visualeditor-formatdropdown-format-heading5' => 'Pealkiri 5',
 	'visualeditor-formatdropdown-format-heading6' => 'Pealkiri 6',
 	'visualeditor-formatdropdown-format-preformatted' => 'Eelvormindatud',
-	'visualeditor-annotationbutton-bold-tooltip' => 'Rasvane kiri', # Fuzzy
-	'visualeditor-annotationbutton-italic-tooltip' => 'Kaldkiri', # Fuzzy
-	'visualeditor-annotationbutton-link-tooltip' => 'Link', # Fuzzy
-	'visualeditor-indentationbutton-indent-tooltip' => 'Suurenda taanet', # Fuzzy
-	'visualeditor-indentationbutton-outdent-tooltip' => 'Vähenda taanet', # Fuzzy
+	'visualeditor-annotationbutton-bold-tooltip' => 'Rasvane kiri',
+	'visualeditor-annotationbutton-italic-tooltip' => 'Kaldkiri',
+	'visualeditor-annotationbutton-link-tooltip' => 'Link',
+	'visualeditor-indentationbutton-indent-tooltip' => 'Suurenda taanet',
+	'visualeditor-indentationbutton-outdent-tooltip' => 'Vähenda taanet',
 	'visualeditor-listbutton-number-tooltip' => 'Numberloend',
 	'visualeditor-listbutton-bullet-tooltip' => 'Täpploend',
 	'visualeditor-clearbutton-tooltip' => 'Eemalda vorming',
-	'visualeditor-historybutton-undo-tooltip' => 'Võta tagasi', # Fuzzy
-	'visualeditor-historybutton-redo-tooltip' => 'Tee uuesti', # Fuzzy
+	'visualeditor-historybutton-undo-tooltip' => 'Võta tagasi',
+	'visualeditor-historybutton-redo-tooltip' => 'Tee uuesti',
 	'visualeditor-inspector-close-tooltip' => 'Sulge',
 	'visualeditor-inspector-remove-tooltip' => 'Eemalda',
 	'visualeditor-viewpage-savewarning' => 'Kas oled kindel, et tahad mina tagasi vaatamisrežiimi ilma kõigepealt salvestamata?',
@@ -1217,8 +1296,9 @@ $messages['fr'] = array(
 	'visualeditor-feedback-tool' => 'Laisser un avis',
 	'visualeditor-window-title' => 'Inspecter',
 	'visualeditor-linkinspector-title' => 'Hyperlien',
+	'visualeditor-linkinspector-suggest-matching-page' => 'Page correspondante',
 	'visualeditor-linkinspector-suggest-new-page' => 'Nouvelle page',
-	'visualeditor-linkinspector-suggest-external-link' => 'Lien Web', # Fuzzy
+	'visualeditor-linkinspector-suggest-external-link' => 'Lien externe',
 	'visualeditor-formatdropdown-title' => 'Modifier le format',
 	'visualeditor-formatdropdown-format-paragraph' => 'Paragraphe',
 	'visualeditor-formatdropdown-format-heading1' => 'Titre 1',
@@ -1443,8 +1523,9 @@ $messages['he'] = array(
 	'visualeditor-feedback-tool' => 'שליחת משוב',
 	'visualeditor-window-title' => 'חקירה',
 	'visualeditor-linkinspector-title' => 'היפר־קישור',
+	'visualeditor-linkinspector-suggest-matching-page' => 'דך מתאים',
 	'visualeditor-linkinspector-suggest-new-page' => 'דף חדש',
-	'visualeditor-linkinspector-suggest-external-link' => 'קישור חיצוני', # Fuzzy
+	'visualeditor-linkinspector-suggest-external-link' => 'קישור חיצוני',
 	'visualeditor-formatdropdown-title' => 'שינוי סגנון',
 	'visualeditor-formatdropdown-format-paragraph' => 'פסקה',
 	'visualeditor-formatdropdown-format-heading1' => 'כותרת רמה 1',
@@ -1502,6 +1583,10 @@ $messages['hi'] = array(
  * @author Michawiki
  */
 $messages['hsb'] = array(
+	'tag-visualeditor' => '[[Special:Tags|Tag]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
+	'tag-visualeditor-description' => 'Z pomocu [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditora]] wobdźěłany',
+	'tooltip-ca-editsource' => 'Žórłowy kod tuteje strony wobdźěłać',
+	'tooltip-ca-ve-edit' => 'Tutu stronu z VisualEditor wobdźěłać',
 	'visualeditor' => 'VisualEditor',
 	'visualeditor-desc' => 'WYSIWYG-editor za MediaWiki',
 	'visualeditor-preference-enable' => 'VisualEditor zmóžnić (jenož we [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|hłownym mjenowym rumje]] a [[{{MediaWiki:Visualeditor-usernamespacepagelink}}|wužiwarskim mjenowym rumje]])',
@@ -1516,8 +1601,10 @@ $messages['hsb'] = array(
 	'visualeditor-ca-ve-create' => 'VisualEditor',
 	'visualeditor-dialog-meta-title' => 'Nastajenja strony',
 	'visualeditor-dialog-content-title' => 'Nastajenja wobsaha',
+	'visualeditor-dialog-media-title' => 'Medijowe nastajenja',
 	'visualeditor-dialog-action-apply' => 'Změny nałožić',
 	'visualeditor-dialog-action-cancel' => 'Přetorhnyć',
+	'visualeditor-dialog-action-close' => 'Začinić',
 	'visualeditor-toolbar-savedialog' => 'Přepruwować a składować',
 	'visualeditor-savedialog-title-review' => 'Twoje změny přepruwować',
 	'visualeditor-savedialog-title-report' => 'Problem zdźělić',
@@ -1530,13 +1617,11 @@ $messages['hsb'] = array(
 	'visualeditor-savedialog-label-restore' => 'Stronu wobnowić',
 	'visualeditor-editnotices-tool' => '$1 {{PLURAL:$1|notica|noticy|noticy|noticow}}',
 	'visualeditor-feedback-tool' => 'Komentar zawostajić',
-	'tooltip-ca-ve-edit' => 'Tutu stronu z VisualEditor wobdźěłać',
 	'visualeditor-window-title' => 'Přepruwować',
 	'visualeditor-linkinspector-title' => 'Wotkaz',
-	'visualeditor-linkinspector-label-pagetitle' => 'Titul strony',
-	'visualeditor-linkinspector-suggest-existing-page' => 'Eksistowaca strona',
+	'visualeditor-linkinspector-suggest-matching-page' => 'Wotpowědna strona',
 	'visualeditor-linkinspector-suggest-new-page' => 'Nowa strona',
-	'visualeditor-linkinspector-suggest-external-link' => 'Webwotkaz',
+	'visualeditor-linkinspector-suggest-external-link' => 'Eksterny wotkaz',
 	'visualeditor-formatdropdown-title' => 'Format změnić',
 	'visualeditor-formatdropdown-format-paragraph' => 'Wotstawk',
 	'visualeditor-formatdropdown-format-heading1' => 'Nadpis 1',
@@ -1549,6 +1634,7 @@ $messages['hsb'] = array(
 	'visualeditor-annotationbutton-bold-tooltip' => 'Tučny',
 	'visualeditor-annotationbutton-italic-tooltip' => 'Kursiwny',
 	'visualeditor-annotationbutton-link-tooltip' => 'Wotkaz',
+	'visualeditor-dialogbutton-media-tooltip' => 'Medije',
 	'visualeditor-indentationbutton-indent-tooltip' => 'Zasunjenje powjetšić',
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Zasunjenje pomjeńšić',
 	'visualeditor-listbutton-number-tooltip' => 'Čisłowana lisćina',
@@ -1560,18 +1646,18 @@ $messages['hsb'] = array(
 	'visualeditor-inspector-remove-tooltip' => 'Wotstronić',
 	'visualeditor-viewpage-savewarning' => 'Chceš so woprawdźe k napohladowemu modusej wróćić, bjeztoho zo by prjedy składował?',
 	'visualeditor-loadwarning' => 'Zmylk při začitowanju datow ze serwera: $1. Chceš znowa spytać?',
-	'visualeditor-differror' => 'Zmylk při zacytowanju datow ze serwera: $1.',
+	'visualeditor-differror' => 'Zmylk při začitowanju datow ze serwera: $1.',
+	'visualeditor-serializeerror' => 'Zmylk při začitowanju datow ze serwera: $1.',
 	'visualeditor-saveerror' => 'Zmylk při składowanju datow na serwerje: $1.',
 	'visualeditor-editconflict' => 'Twoje změny njedadźa so wobdźěłowanskeho konflikta dla składować. Chceš konflikt manuelnje wotstronić?',
 	'visualeditor-editsummary' => 'Wopisaj, štož sy změnił',
 	'visualeditor-problem' => 'Wopisaj, štož je so nimokuliło',
 	'visualeditor-aliennode-tooltip' => 'Bohužel tutón element njeda so z pomocu VisualEditora wobdźěłać',
-	'tag-visualeditor' => '[[Special:Tags|Tag]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
-	'tag-visualeditor-description' => 'Z pomocu [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditora]] wobdźěłany',
 	'visualeditor-descriptionpagelink' => 'Project:VisualEditor',
 	'visualeditor-alphawarning' => 'Wužiwaš alfa-wersiju [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditora]]. Móže pomału być a zmylne změny přewjesć - prošu přepruwuj kóždu změnu, kotruž přewjedźeš.',
-	'visualeditor-report-notice' => 'Rozumju, zo swoje změny a swój komentar, kotrež budu so za analyzu składować,  sposrědkuju, hdyž na Wótpósłać kliknu. Sym přezjedny, komentary wotpowědujo [[{{MediaWiki:Visualeditor-report-link}}|wužiwanskim wuměnjenjam]] wotedać.',
+	'visualeditor-report-notice' => 'Rozumju, zo swoje změny a swój komentar, kotrež budu so za analyzu składować,  sposrědkuju, hdyž na "Problem zdźělić" kliknu. Sym přezjedny, komentary wotpowědujo [[{{MediaWiki:Visualeditor-report-link}}|wužiwanskim wuměnjenjam]] podać.',
 	'visualeditor-report-link' => 'foundation:Terms of Use/de',
+	'visualeditor-feedback-link' => 'Project:VisualEditor/Komentary',
 );
 
 /** Hungarian (magyar)
@@ -1798,8 +1884,9 @@ $messages['ja'] = array(
 	'visualeditor-feedback-tool' => 'フィードバックを送信',
 	'visualeditor-window-title' => '調査',
 	'visualeditor-linkinspector-title' => 'ハイパーリンク',
+	'visualeditor-linkinspector-suggest-matching-page' => '一致したページ',
 	'visualeditor-linkinspector-suggest-new-page' => '新規ページ',
-	'visualeditor-linkinspector-suggest-external-link' => 'ウェブ リンク', # Fuzzy
+	'visualeditor-linkinspector-suggest-external-link' => '外部リンク',
 	'visualeditor-formatdropdown-title' => '書式の変更',
 	'visualeditor-formatdropdown-format-paragraph' => '段落',
 	'visualeditor-formatdropdown-format-heading1' => '見出し 1',
@@ -2175,8 +2262,9 @@ $messages['mk'] = array(
 	'visualeditor-feedback-tool' => 'Дајте мислење',
 	'visualeditor-window-title' => 'Контр. преглед',
 	'visualeditor-linkinspector-title' => 'Хиперврска',
+	'visualeditor-linkinspector-suggest-matching-page' => 'Соодветна страница',
 	'visualeditor-linkinspector-suggest-new-page' => 'Нова страница',
-	'visualeditor-linkinspector-suggest-external-link' => 'Надворешна врска', # Fuzzy
+	'visualeditor-linkinspector-suggest-external-link' => 'Надворешна врска',
 	'visualeditor-formatdropdown-title' => 'Смени формат',
 	'visualeditor-formatdropdown-format-paragraph' => 'Пасус',
 	'visualeditor-formatdropdown-format-heading1' => 'Наслов 1',
@@ -2212,6 +2300,7 @@ $messages['mk'] = array(
 	'visualeditor-alphawarning' => 'Користите алфа-верзија на [[{{MediaWiki:Visualeditor-descriptionpagelink}}|ВизуеленУредник]]. Имајте предвид дека може да биде бавен и да прави некои погрешни измени - затоа, проверувајте го секое извршено уредување.',
 	'visualeditor-report-notice' => 'Разбирам дека стискајќи на „Пријави проблем“ ќе ги пренесам моите промени и одѕивот на место кајшто ќе бидат складирани за анализа. Се согласувам да давам одѕив во склад со [[{{MediaWiki:Visualeditor-report-link}}|Условите на употреба]].',
 	'visualeditor-report-link' => 'foundation:Terms of Use/mk',
+	'visualeditor-feedback-link' => 'Project:VisualEditor/Мислења',
 );
 
 /** Malayalam (മലയാളം)
@@ -2381,6 +2470,16 @@ $messages['ms'] = array(
 	'visualeditor-report-link' => 'foundation:Terms of Use/ms',
 );
 
+/** Neapolitan (Nnapulitano)
+ * @author PiRSquared17
+ */
+$messages['nap'] = array(
+	'visualeditor-notification-created' => "'A paggena $1 è stata criata.",
+	'visualeditor-dialog-action-close' => 'Chiure',
+	'visualeditor-savedialog-label-create' => 'Cria paggena',
+	'visualeditor-annotationbutton-link-tooltip' => 'Jonta',
+);
+
 /** Norwegian Bokmål (norsk (bokmål)‎)
  * @author Danmichaelo
  * @author Event
@@ -2432,6 +2531,7 @@ $messages['ne'] = array(
 
 /** Dutch (Nederlands)
  * @author Konovalov
+ * @author Romaine
  * @author SPQRobin
  * @author Saruman
  * @author Siebrand
@@ -2508,7 +2608,7 @@ $messages['nl'] = array(
 	'visualeditor-alphawarning' => 'U gebruikt een versie van de [[{{MediaWiki:Visualeditor-descriptionpagelink}}|Visuele tekstverwerker]] waar nog hard aan wordt gewerkt. Deze functie kan langzaam zijn en fouten bevatten. Controleer iedere bewerking die u maakt.',
 	'visualeditor-report-notice' => 'Ik begrijp dat door te klikken op "Probleem melden" mijn wijzigingen en mijn terugkoppeling worden opgeslagen voor latere analyse. Ik ga akkoord met het geven van terugkoppelingen volgens de [[{{MediaWiki:Visualeditor-report-link}}|Gebruiksvoorwaarden]].',
 	'visualeditor-report-link' => 'foundation:Terms_of_Use/nl',
-	'visualeditor-feedback-link' => 'Project:VisuaEditor/Terugkoppeling',
+	'visualeditor-feedback-link' => 'Project:Visuele tekstverwerker/Terugkoppeling',
 );
 
 /** Occitan (occitan)
@@ -3330,8 +3430,12 @@ $messages['ug-arab'] = array(
  * @author AS
  * @author Base
  * @author Steve.rusyn
+ * @author Ата
  */
 $messages['uk'] = array(
+	'tag-visualeditor' => '[[Special:Tags|Теґ]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
+	'tag-visualeditor-description' => 'Редагування зроблено використовуючи [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
+	'tooltip-ca-ve-edit' => 'Редагувати сторінку у візуальному редакторі',
 	'visualeditor' => 'VisualEditor',
 	'visualeditor-desc' => 'Візуальний редактор для MediaWiki',
 	'visualeditor-preference-enable' => 'Вмикає візуальний редактор (лише у [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|основному просторі назв]] та[[{{MediaWiki:Visualeditor-usernamespacepagelink}}|просторі назв користувача]])',
@@ -3356,13 +3460,10 @@ $messages['uk'] = array(
 	'visualeditor-savedialog-label-restore' => 'Відновити',
 	'visualeditor-editnotices-tool' => '$1 {{PLURAL:$1|сповіщення|сповіщення|сповіщень}}',
 	'visualeditor-feedback-tool' => 'Залишити відгук',
-	'tooltip-ca-ve-edit' => 'Редагувати сторінку у візуальному редакторі',
-	'visualeditor-inspector-title' => 'Перевірити',
+	'visualeditor-window-title' => 'Перевірити',
 	'visualeditor-linkinspector-title' => 'Гіперпосилання',
-	'visualeditor-linkinspector-label-pagetitle' => 'Назва сторінки',
-	'visualeditor-linkinspector-suggest-existing-page' => 'Існуюча сторінка',
 	'visualeditor-linkinspector-suggest-new-page' => 'Нова сторінка',
-	'visualeditor-linkinspector-suggest-external-link' => 'Веб-посилання',
+	'visualeditor-linkinspector-suggest-external-link' => 'Зовнішнє посилання',
 	'visualeditor-formatdropdown-title' => 'Змінити формат',
 	'visualeditor-formatdropdown-format-paragraph' => 'Абзац',
 	'visualeditor-formatdropdown-format-heading1' => 'Заголовок 1',
@@ -3372,16 +3473,16 @@ $messages['uk'] = array(
 	'visualeditor-formatdropdown-format-heading5' => 'Заголовок 5',
 	'visualeditor-formatdropdown-format-heading6' => 'Заголовок 6',
 	'visualeditor-formatdropdown-format-preformatted' => 'Переформатований',
-	'visualeditor-annotationbutton-bold-tooltip' => 'Жирний', # Fuzzy
-	'visualeditor-annotationbutton-italic-tooltip' => 'Курсив', # Fuzzy
-	'visualeditor-annotationbutton-link-tooltip' => 'Посилання', # Fuzzy
-	'visualeditor-indentationbutton-indent-tooltip' => 'Збільшити відступ', # Fuzzy
-	'visualeditor-indentationbutton-outdent-tooltip' => 'Зменшити відступ', # Fuzzy
+	'visualeditor-annotationbutton-bold-tooltip' => 'Жирний',
+	'visualeditor-annotationbutton-italic-tooltip' => 'Курсив',
+	'visualeditor-annotationbutton-link-tooltip' => 'Посилання',
+	'visualeditor-indentationbutton-indent-tooltip' => 'Збільшити відступ',
+	'visualeditor-indentationbutton-outdent-tooltip' => 'Зменшити відступ',
 	'visualeditor-listbutton-number-tooltip' => 'Нумерований список',
 	'visualeditor-listbutton-bullet-tooltip' => 'Маркований список',
 	'visualeditor-clearbutton-tooltip' => 'Очистити форматування',
-	'visualeditor-historybutton-undo-tooltip' => 'Скасувати', # Fuzzy
-	'visualeditor-historybutton-redo-tooltip' => 'Повернути', # Fuzzy
+	'visualeditor-historybutton-undo-tooltip' => 'Скасувати',
+	'visualeditor-historybutton-redo-tooltip' => 'Повернути',
 	'visualeditor-inspector-close-tooltip' => 'Закрити',
 	'visualeditor-inspector-remove-tooltip' => 'Вилучити',
 	'visualeditor-viewpage-savewarning' => 'Ви дійсно хочете повернутися до режиму перегляду без збереження спершу?',
@@ -3392,24 +3493,27 @@ $messages['uk'] = array(
 	'visualeditor-editsummary' => 'Опишіть Ваші зміни',
 	'visualeditor-problem' => 'Опишіть що пішло не так',
 	'visualeditor-aliennode-tooltip' => 'Вибачте, цей елемент не може бути редагованим через VisualEditor',
-	'tag-visualeditor' => '[[Special:Tags|Теґ]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
-	'tag-visualeditor-description' => 'Редагування зроблено використовуючи [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
 	'visualeditor-descriptionpagelink' => 'Project:VisualEditor',
 	'visualeditor-alphawarning' => 'Ви використовуєте альфа версію [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]. Вона може бути повільною і робити зміни із помилками — будь ласка, перевіряте кожне редагування, що Ви робите.',
-	'visualeditor-report-notice' => 'Я розумію, що натискаючи надіслати я передаю свої зміни і мій відгук, який буде збережено для аналізу. Я погоджуюсь надати відгук згідно з [[{{MediaWiki:Visualeditor-report-link}}|Умовами використання]].',
+	'visualeditor-report-notice' => 'Я розумію, що натискаючи надіслати я передаю свої зміни і мій відгук, який буде збережено для аналізу. Я погоджуюсь надати відгук згідно з [[{{MediaWiki:Visualeditor-report-link}}|Умовами використання]].', # Fuzzy
+	'visualeditor-feedback-link' => 'Project:VisualEditor/Відгуки',
 );
 
 /** Urdu (اردو)
+ * @author Noor2020
  * @author පසිඳු කාවින්ද
  */
 $messages['ur'] = array(
 	'visualeditor-ca-editsource' => 'ذریعہ میں ترمیم کریں',
 	'visualeditor-linkinspector-title' => 'لنک میں ترمیم کریں', # Fuzzy
-	'visualeditor-linkinspector-label-pagetitle' => 'صفحہ کا عنوان',
+	'visualeditor-linkinspector-suggest-matching-page' => 'صفحہ کے مشابہ',
+	'visualeditor-linkinspector-suggest-external-link' => 'بیرونی ربط',
 	'visualeditor-formatdropdown-title' => 'تبدیلی کی شکل',
 	'visualeditor-formatdropdown-format-paragraph' => 'پیرا',
 	'visualeditor-listbutton-number-tooltip' => 'نمبر والی فہرست',
 	'visualeditor-listbutton-bullet-tooltip' => 'شق کی فہرست',
+	'visualeditor-serializeerror' => 'نقص ہے ڈیٹا اثقال کرنے میں :  $1 ۔',
+	'visualeditor-feedback-link' => 'منصوبہ: بصری تدوین کار / آپ کی رائے',
 );
 
 /** Vietnamese (Tiếng Việt)
@@ -3580,49 +3684,52 @@ $messages['zh-hans'] = array(
 
 /** Traditional Chinese (中文（繁體）‎)
  * @author Anakmalaysia
+ * @author Ch.Andrew
  * @author Hydra
  * @author Shirayuki
  * @author Simon Shek
  */
 $messages['zh-hant'] = array(
-	'tag-visualeditor' => '[[Special:Tags|標籤]]：[[{{MediaWiki:Visualeditor-descriptionpagelink}}|可視化編輯器]]',
-	'tag-visualeditor-description' => '使用[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]的編輯',
-	'tooltip-ca-ve-edit' => '使用VisualEditor編輯此頁',
-	'visualeditor' => '可視化編輯器',
-	'visualeditor-desc' => 'MediaWiki的可視化編輯器',
-	'visualeditor-preference-enable' => '啟用VisualEditor（僅在[[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|主]]和[[{{MediaWiki:Visualeditor-usernamespacepagelink}}|用戶]]名字空間）',
+	'tag-visualeditor' => '[[Special:Tags|標籤]]：[[{{MediaWiki:Visualeditor-descriptionpagelink}}|視覺化編輯器]]',
+	'tag-visualeditor-description' => '使用 [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]] 所產生的編輯',
+	'tooltip-ca-editsource' => '編輯此頁的原始碼',
+	'tooltip-ca-ve-edit' => '使用 VisualEditor 編輯此頁',
+	'visualeditor' => '視覺化編輯器',
+	'visualeditor-desc' => 'MediaWiki 的視覺化編輯器',
+	'visualeditor-preference-enable' => '啟用 VisualEditor（僅在[[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|主]]名字空間和[[{{MediaWiki:Visualeditor-usernamespacepagelink}}|使用者]]名字空間）',
 	'visualeditor-mainnamespacepagelink' => 'Project:主名字空間',
-	'visualeditor-usernamespacepagelink' => 'Project:用戶名字空間',
-	'visualeditor-notification-saved' => '你對$1的更改經已儲存。',
+	'visualeditor-usernamespacepagelink' => 'Project:使用者名字空間',
+	'visualeditor-notification-saved' => '你對$1的變更已經儲存。',
 	'visualeditor-notification-created' => '$1已建立。',
-	'visualeditor-notification-restored' => '$1已恢復。',
-	'visualeditor-notification-reported' => '已經報告您的問題。謝謝。',
-	'visualeditor-ca-editsource' => '編輯源代碼',
-	'visualeditor-ca-ve-edit' => '可視化編輯器',
-	'visualeditor-ca-ve-create' => '可視化編輯器',
+	'visualeditor-notification-restored' => '$1已還原。',
+	'visualeditor-notification-reported' => '已經回報您的問題。感謝。',
+	'visualeditor-ca-editsource' => '編輯原始碼',
+	'visualeditor-ca-ve-edit' => '視覺化編輯器',
+	'visualeditor-ca-ve-create' => '視覺化編輯器',
 	'visualeditor-dialog-meta-title' => '頁面設定',
 	'visualeditor-dialog-content-title' => '內容設定',
-	'visualeditor-dialog-media-title' => '媒體設置',
-	'visualeditor-dialog-action-apply' => '套用',
+	'visualeditor-dialog-media-title' => '媒體設定',
+	'visualeditor-dialog-action-apply' => '套用變更',
 	'visualeditor-dialog-action-cancel' => '取消',
 	'visualeditor-dialog-action-close' => '關閉',
-	'visualeditor-toolbar-savedialog' => '複查並儲存',
-	'visualeditor-savedialog-title-review' => '複查您的更改',
-	'visualeditor-savedialog-title-report' => '報告問題',
-	'visualeditor-savedialog-title-save' => '保存您的修改',
-	'visualeditor-savedialog-label-review-wrong' => '有此問題',
+	'visualeditor-toolbar-savedialog' => '檢閱並儲存',
+	'visualeditor-savedialog-title-review' => '檢閱您的變更',
+	'visualeditor-savedialog-title-report' => '回報問題',
+	'visualeditor-savedialog-title-save' => '儲存您的變更',
+	'visualeditor-savedialog-label-review-wrong' => '有問題出現',
 	'visualeditor-savedialog-label-review-good' => '沒有問題',
-	'visualeditor-savedialog-label-report' => '報告問題',
-	'visualeditor-savedialog-label-create' => '建立文章',
-	'visualeditor-savedialog-label-save' => '儲存本頁',
+	'visualeditor-savedialog-label-report' => '回報問題',
+	'visualeditor-savedialog-label-create' => '建立頁面',
+	'visualeditor-savedialog-label-save' => '儲存頁面',
 	'visualeditor-savedialog-label-restore' => '恢復頁面',
-	'visualeditor-editnotices-tool' => '$1{{PLURAL:$1|條通知|條通知}}',
+	'visualeditor-editnotices-tool' => '$1{{PLURAL:$1|則通知|則通知}}',
 	'visualeditor-feedback-tool' => '留下反饋',
 	'visualeditor-window-title' => '檢查',
 	'visualeditor-linkinspector-title' => '超連結',
+	'visualeditor-linkinspector-suggest-matching-page' => '匹配的頁面',
 	'visualeditor-linkinspector-suggest-new-page' => '新頁面',
-	'visualeditor-linkinspector-suggest-external-link' => '網頁連結', # Fuzzy
-	'visualeditor-formatdropdown-title' => '更改格式',
+	'visualeditor-linkinspector-suggest-external-link' => '外部連結',
+	'visualeditor-formatdropdown-title' => '變更格式',
 	'visualeditor-formatdropdown-format-paragraph' => '段落',
 	'visualeditor-formatdropdown-format-heading1' => '標題 1',
 	'visualeditor-formatdropdown-format-heading2' => '標題 2',
@@ -3630,30 +3737,31 @@ $messages['zh-hant'] = array(
 	'visualeditor-formatdropdown-format-heading4' => '標題 4',
 	'visualeditor-formatdropdown-format-heading5' => '標題 5',
 	'visualeditor-formatdropdown-format-heading6' => '標題 6',
-	'visualeditor-formatdropdown-format-preformatted' => '預格式化文本',
+	'visualeditor-formatdropdown-format-preformatted' => '預先格式化',
 	'visualeditor-annotationbutton-bold-tooltip' => '粗體',
 	'visualeditor-annotationbutton-italic-tooltip' => '斜體',
 	'visualeditor-annotationbutton-link-tooltip' => '連結',
 	'visualeditor-dialogbutton-media-tooltip' => '媒體',
-	'visualeditor-indentationbutton-indent-tooltip' => '增加縮進',
-	'visualeditor-indentationbutton-outdent-tooltip' => '減少縮進',
+	'visualeditor-indentationbutton-indent-tooltip' => '增加縮排',
+	'visualeditor-indentationbutton-outdent-tooltip' => '減少縮排',
 	'visualeditor-listbutton-number-tooltip' => '有序列表',
 	'visualeditor-listbutton-bullet-tooltip' => '無序列表',
 	'visualeditor-clearbutton-tooltip' => '清除格式',
-	'visualeditor-historybutton-undo-tooltip' => '撤銷',
+	'visualeditor-historybutton-undo-tooltip' => '復原',
 	'visualeditor-historybutton-redo-tooltip' => '重做',
 	'visualeditor-inspector-close-tooltip' => '關閉',
 	'visualeditor-inspector-remove-tooltip' => '移除',
-	'visualeditor-viewpage-savewarning' => '您確實要不保存而回到查看模式嗎？',
-	'visualeditor-loadwarning' => '從服務器載入數據錯誤：$1。您想重試嗎？',
-	'visualeditor-differror' => '從伺服器載入資料時出現錯誤：$1 。',
-	'visualeditor-saveerror' => '向服務器保存數據錯誤：$1。',
-	'visualeditor-editconflict' => '由於編輯衝突，無法儲存您的更改。你想要手動解決衝突嗎？',
-	'visualeditor-editsummary' => '描述您的更改',
+	'visualeditor-viewpage-savewarning' => '您確定要放棄儲存而回到檢視模式嗎？',
+	'visualeditor-loadwarning' => '從伺服器載入資料時出現錯誤：$1。您想要重試嗎？',
+	'visualeditor-differror' => '從伺服器載入資料時發生錯誤：$1 。',
+	'visualeditor-serializeerror' => '從伺服器載入資料時發生錯誤：$1 。',
+	'visualeditor-saveerror' => '對伺服器儲存資料時發生錯誤：$1。',
+	'visualeditor-editconflict' => '由於編輯衝突，無法儲存您的變更。你想要手動解決衝突嗎？',
+	'visualeditor-editsummary' => '描述您的變更',
 	'visualeditor-problem' => '描述發生了什麼問題',
-	'visualeditor-aliennode-tooltip' => '抱歉，此部份無法使用編輯VisualEditor',
-	'visualeditor-descriptionpagelink' => 'Project:可視化編輯器',
-	'visualeditor-alphawarning' => '你正在使用Alpha版本的[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]。它可能會很慢，或製造錯誤更改 - 請檢查您所做的每次編輯。',
-	'visualeditor-report-notice' => '我明白按下「回報問題」後，將傳送我的更改和反饋，它們將被儲存以供分析。我同意按照[[{{MediaWiki:Visualeditor-report-link}}|使用條款]]提供反饋內容。',
-	'visualeditor-feedback-link' => 'Project:VisualEditor/反馈',
+	'visualeditor-aliennode-tooltip' => '抱歉，此部份無法使用 VisualEditor 進行編輯',
+	'visualeditor-descriptionpagelink' => 'Project:視覺化編輯器',
+	'visualeditor-alphawarning' => '你正在使用 Alpha 版本的 [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]。它可能會很慢，或是產生錯誤的變更——請檢查您所做的每一次編輯。',
+	'visualeditor-report-notice' => '本人明白，按下「回報問題」後，將傳送我的變更和反饋內容，這些反映的意見會儲存起來以作為分析之用。我同意依據[[{{MediaWiki:Visualeditor-report-link}}|使用條款]]提供意見反饋。',
+	'visualeditor-feedback-link' => 'Project:VisualEditor/反饋',
 );
