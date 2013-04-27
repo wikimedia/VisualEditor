@@ -1121,7 +1121,7 @@ ve.dm.example.domToDataCases = {
 			'a',
 			{
 				'type': 'alienInline',
-				'attributes': { 'html': '<tt class="foo">b</tt>' }
+				'attributes': { 'domElements': $.makeArray( $( '<tt class="foo">b</tt>' ) ) }
 			},
 			{ 'type': '/alienInline' },
 			'c',
@@ -1136,7 +1136,7 @@ ve.dm.example.domToDataCases = {
 			'b',
 			'c',
 			{ 'type': '/paragraph' },
-			{ 'type': 'alienBlock', 'attributes': { 'html': '<figure>abc</figure>' } },
+			{ 'type': 'alienBlock', 'attributes': { 'domElements': $.makeArray( $( '<figure>abc</figure>' ) ) } },
 			{ 'type': '/alienBlock' },
 			{ 'type': 'paragraph' },
 			'd',
@@ -1153,7 +1153,7 @@ ve.dm.example.domToDataCases = {
 			'a',
 			{
 				'type': 'alienInline',
-				'attributes': { 'html': '<tt class="foo">b</tt>' },
+				'attributes': { 'domElements': $.makeArray( $( '<tt class="foo">b</tt>' ) ) },
 				'annotations': [ ve.dm.example.bold ]
 			},
 			{ 'type': '/alienInline' },
@@ -1217,7 +1217,7 @@ ve.dm.example.domToDataCases = {
 			'1',
 			{
 				'type': 'alienInline',
-				'attributes': { 'html': '<tt class="bar">baz</tt>' }
+				'attributes': { 'domElements': $.makeArray( $( '<tt class="bar">baz</tt>' ) ) }
 			},
 			{ 'type': '/alienInline' },
 			'2',
@@ -1232,7 +1232,7 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/paragraph' },
 			{
 				'type': 'alienBlock',
-				'attributes': { 'html': '<figure class="bar">baz</figure>' }
+				'attributes': { 'domElements': $.makeArray( $( '<figure class="bar">baz</figure>' ) ) }
 			},
 			{ 'type': '/alienBlock' },
 			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
@@ -1247,7 +1247,7 @@ ve.dm.example.domToDataCases = {
 			'1',
 			{
 				'type': 'alienInline',
-				'attributes': { 'html': '<span typeof="mw:Placeholder">baz</span>' }
+				'attributes': { 'domElements': $.makeArray( $( '<span typeof="mw:Placeholder">baz</span>' ) ) }
 			},
 			{ 'type': '/alienInline' },
 			'2',
@@ -1262,7 +1262,7 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/paragraph' },
 			{
 				'type': 'alienBlock',
-				'attributes': { 'html': '<div typeof="mw:Placeholder">baz</div>' }
+				'attributes': { 'domElements': $.makeArray( $( '<div typeof="mw:Placeholder">baz</div>' ) ) }
 			},
 			{ 'type': '/alienBlock' },
 			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
@@ -1276,7 +1276,7 @@ ve.dm.example.domToDataCases = {
 			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
 			{
 				'type': 'alienInline',
-				'attributes': { 'html': '<span typeof="mw:Placeholder">Foo</span>' }
+				'attributes': { 'domElements': $.makeArray( $( '<span typeof="mw:Placeholder">Foo</span>' ) ) }
 			},
 			{ 'type': '/alienInline' },
 			'B',
@@ -1294,7 +1294,7 @@ ve.dm.example.domToDataCases = {
 			'o',
 			{
 				'type': 'alienInline',
-				'attributes': { 'html': '<span typeof="mw:Placeholder">Bar</span>' }
+				'attributes': { 'domElements': $.makeArray( $( '<span typeof="mw:Placeholder">Bar</span>' ) ) }
 			},
 			{ 'type': '/alienInline' },
 			{ 'type': '/paragraph' }
@@ -1307,7 +1307,7 @@ ve.dm.example.domToDataCases = {
 			'1',
 			{
 				'type': 'alienInline',
-				'attributes': { 'html': '<tt about="#mwt1">foo</tt><tt about="#mwt1">bar</tt>' }
+				'attributes': { 'domElements': $.makeArray( $( '<tt about="#mwt1">foo</tt><tt about="#mwt1">bar</tt>' ) ) }
 			},
 			{ 'type': '/alienInline' },
 			'2',
@@ -1860,7 +1860,7 @@ ve.dm.example.domToDataCases = {
 			{
 				'type': 'alienBlock',
 				'attributes': {
-					'html': '<p typeof="mw:Placeholder">  <br>   </p>'
+					'domElements': $.makeArray( $( '<p typeof="mw:Placeholder">  <br>   </p>' ) )
 				},
 				'internal': {
 					'whitespace': [ ' ', undefined, undefined, '    ' ]
@@ -1873,7 +1873,7 @@ ve.dm.example.domToDataCases = {
 			'o',
 			'\t',
 			'\t',
-			{ 'type': 'alienInline', 'attributes': { 'html': '<tt>\t\t\tBar\t\t\t\t</tt>' } },
+			{ 'type': 'alienInline', 'attributes': { 'domElements': $.makeArray( $( '<tt>\t\t\tBar\t\t\t\t</tt>' ) ) } },
 			{ 'type': '/alienInline' },
 			'\n',
 			'B',
@@ -1884,7 +1884,7 @@ ve.dm.example.domToDataCases = {
 			{
 				'type': 'alienInline',
 				'attributes': {
-					'html': '<span typeof="mw:Placeholder">\n\n\nQuux\n\n\n\n</span>'
+					'domElements': $.makeArray( $( '<span typeof="mw:Placeholder">\n\n\nQuux\n\n\n\n</span>' ) )
 				}
 			},
 			{ 'type': '/alienInline' },
@@ -1898,7 +1898,7 @@ ve.dm.example.domToDataCases = {
 			{
 				'type': 'alienBlock',
 				'attributes': {
-					'html': '<figure>\n\tYay \t </figure>'
+					'domElements': $.makeArray( $( '<figure>\n\tYay \t </figure>' ) )
 				},
 				'internal': {
 					'whitespace': [ '\t\n', undefined, undefined, ' \n ' ]
@@ -2259,16 +2259,16 @@ ve.dm.example.domToDataCases = {
 			{
 				'type': 'alienBlock',
 				'attributes': {
-					'html': '<div typeof="mw:Placeholder" about="#mwt1">Foo</div>' +
-						'<figure typeof="mw:Placeholder" about="#mwt1">Bar</figure>'
+					'domElements': $.makeArray( $( '<div typeof="mw:Placeholder" about="#mwt1">Foo</div>' +
+						'<figure typeof="mw:Placeholder" about="#mwt1">Bar</figure>' ) )
 				}
 			},
 			{ 'type': '/alienBlock' },
 			{
 				'type': 'alienBlock',
 				'attributes': {
-					'html': '<figure typeof="mw:Placeholder" about="#mwt2">Baz</figure>' +
-						'<span typeof="mw:Placeholder" about="#mwt2">Quux</span>'
+					'domElements': $.makeArray( $( '<figure typeof="mw:Placeholder" about="#mwt2">Baz</figure>' +
+						'<span typeof="mw:Placeholder" about="#mwt2">Quux</span>' ) )
 				}
 			},
 			{ 'type': '/alienBlock' },
@@ -2281,8 +2281,8 @@ ve.dm.example.domToDataCases = {
 			{
 				'type': 'alienBlock',
 				'attributes': {
-					'html': '<span typeof="mw:Placeholder" about="#mwt2">Yay</span>' +
-						'<div typeof="mw:Placeholder" about="#mwt2">Blah</div>'
+					'domElements': $.makeArray( $( '<span typeof="mw:Placeholder" about="#mwt2">Yay</span>' +
+						'<div typeof="mw:Placeholder" about="#mwt2">Blah</div>' ) )
 				}
 			},
 			{ 'type': '/alienBlock' },
@@ -2290,7 +2290,7 @@ ve.dm.example.domToDataCases = {
 			{
 				'type': 'alienInline',
 				'attributes': {
-					'html': '<span typeof="mw:Placeholder" about="#mwt3">Meh</span>'
+					'domElements': $.makeArray( $( '<span typeof="mw:Placeholder" about="#mwt3">Meh</span>' ) )
 				}
 			},
 			{ 'type': '/alienInline' },
@@ -2304,8 +2304,8 @@ ve.dm.example.domToDataCases = {
 			{
 				'type': 'alienBlock',
 				'attributes': {
-					'html': '<div typeof="mw:Placeholder" about="#mwt1">\tFoo\t\t</div>\t\t\t' +
-						'<div typeof="mw:Placeholder" about="#mwt1">  Bar   </div>'
+					'domElements': $.makeArray( $( '<div typeof="mw:Placeholder" about="#mwt1">\tFoo\t\t</div>\t\t\t' +
+						'<div typeof="mw:Placeholder" about="#mwt1">  Bar   </div>' ) )
 				},
 				'internal': {
 					'whitespace': [ ' ', undefined, undefined, '    ' ]
@@ -2377,7 +2377,7 @@ ve.dm.example.domToDataCases = {
 			{
 				'type': 'alienInline',
 				'attributes': {
-					'html': '<p>Bar</p>'
+					'domElements': $.makeArray( $( '<p>Bar</p>' ) )
 				},
 				'annotations': [ ve.dm.example.span ]
 			},
@@ -2395,7 +2395,7 @@ ve.dm.example.domToDataCases = {
 			{
 				'type': 'alienInline',
 				'attributes': {
-					'html': '<p>Bar</p>'
+					'domElements': $.makeArray( $( '<p>Bar</p>' ) )
 				},
 				'annotations': [ ve.dm.example.span ]
 			},
@@ -2416,7 +2416,7 @@ ve.dm.example.domToDataCases = {
 			{
 				'type': 'alienInline',
 				'attributes': {
-					'html': '<p>Bar</p>'
+					'domElements': $.makeArray( $( '<p>Bar</p>' ) )
 				},
 				'annotations': [ ve.dm.example.span ]
 			},
