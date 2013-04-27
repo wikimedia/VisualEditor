@@ -120,6 +120,20 @@ function getDomElementSummary( element ) {
 	return summary;
 }
 
+/**
+ * Callback for ve.copyArray/Object to convert nodes to a comparable summary
+ *
+ * @method
+ * @private
+ * @param {Object} value Value in the object/array
+ * @returns {Object} DOM element summary if value is a node, otherwise just the value
+ */
+function convertDomElements( value ) {
+	if ( value instanceof Node ) {
+		return getDomElementSummary( value );
+	}
+	return value;
+}
 
 /**
  * Assertion helpers for VisualEditor test suite.
@@ -176,6 +190,19 @@ QUnit.assert.equalDomElement = function ( actual, expected, message ) {
 	QUnit.push(
 		QUnit.equiv( actualSummary, expectedSummary ), actualSummary, expectedSummary, message
 	);
+};
+
+/**
+ * Assert that two objects which may contain dom elements are equal.
+ * @method
+ * @static
+ */
+QUnit.assert.deepEqualWithDomElements = function ( actual, expected, message ) {
+	// Recursively copy objects or arrays, converting any dom elements found to comparable summaries
+	actual = ve.isArray( actual ) ? ve.copyArray( actual, convertDomElements ) : ve.copyObject( actual, convertDomElements );
+	expected = ve.isArray( expected ) ? ve.copyArray( expected, convertDomElements ) : ve.copyObject( expected, convertDomElements );
+
+	QUnit.push( QUnit.equiv(actual, expected), actual, expected, message );
 };
 
 }( QUnit ) );

@@ -63,7 +63,7 @@ QUnit.test( 'getDataFromDom', function ( assert ) {
 			store = new ve.dm.IndexValueStore();
 			internalList = new ve.dm.InternalList();
 			ve.dm.example.preprocessAnnotations( cases[msg].data, store );
-			assert.deepEqual(
+			assert.deepEqualWithDomElements(
 				ve.dm.converter.getDataFromDom( ve.createDocumentFromHTML( cases[msg].html ), store, internalList ).getData(),
 				cases[msg].data,
 				msg
@@ -100,9 +100,8 @@ QUnit.test( 'getDomFromData', function ( assert ) {
 				store.index( cases[msg].storeItems[i].value, cases[msg].storeItems[i].hash );
 			}
 		}
-		// functions won't be copied by ve.copyObject
-		if( ve.dm.example.domToDataCases[msg].modify ) {
-			ve.dm.example.domToDataCases[msg].modify( cases[msg].data );
+		if( cases[msg].modify ) {
+			cases[msg].modify( cases[msg].data );
 		}
 		doc = new ve.dm.Document( ve.dm.example.preprocessAnnotations( cases[msg].data, store ) );
 		originalData = ve.copyArray( doc.getFullData() );
@@ -111,6 +110,6 @@ QUnit.test( 'getDomFromData', function ( assert ) {
 			ve.createDocumentFromHTML( cases[msg].normalizedHtml || cases[msg].html ),
 			msg
 		);
-		assert.deepEqual( doc.getFullData(), originalData, msg + ' (data hasn\'t changed)' );
+		assert.deepEqualWithDomElements( doc.getFullData(), originalData, msg + ' (data hasn\'t changed)' );
 	}
 } );

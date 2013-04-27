@@ -583,22 +583,25 @@
 	 *
 	 * @method
 	 * @param {Array} source Array to copy
+	 * @param {Function} [callback] Applied to leaf values before they added to the clone
 	 * @returns {Array} Copy of source array
 	 */
-	ve.copyArray = function ( source ) {
+	ve.copyArray = function ( source, callback ) {
 		var i, sourceValue, sourceType,
 			destination = [];
 		for ( i = 0; i < source.length; i++ ) {
 			sourceValue = source[i];
 			sourceType = typeof sourceValue;
 			if ( ve.isPlainObject( sourceValue ) ) {
-				destination.push( ve.copyObject( sourceValue ) );
+				destination.push( ve.copyObject( sourceValue, callback ) );
 			} else if ( ve.isArray( sourceValue ) ) {
-				destination.push( ve.copyArray( sourceValue ) );
+				destination.push( ve.copyArray( sourceValue, callback ) );
 			} else if ( sourceValue && typeof sourceValue.clone === 'function' ) {
-				destination.push( sourceValue.clone() );
+				destination.push( callback ? callback( sourceValue.clone() ) : sourceValue.clone() );
+			} else if ( sourceValue instanceof Node ) {
+				destination.push( callback ? callback( sourceValue.cloneNode( true ) ) : sourceValue.cloneNode( true ) );
 			} else {
-				destination.push( sourceValue );
+				destination.push( callback ? callback( sourceValue ) : sourceValue );
 			}
 		}
 		return destination;
@@ -609,9 +612,10 @@
 	 *
 	 * @method
 	 * @param {Object} source Object to copy
+	 * @param {Function} [callback] Applied to leaf values before they added to the clone
 	 * @returns {Object} Copy of source object
 	 */
-	ve.copyObject = function ( source ) {
+	ve.copyObject = function ( source, callback ) {
 		var key, sourceValue, sourceType,
 			destination = {};
 		if ( typeof source.clone === 'function' ) {
@@ -621,13 +625,15 @@
 			sourceValue = source[key];
 			sourceType = typeof sourceValue;
 			if ( ve.isPlainObject( sourceValue ) ) {
-				destination[key] = ve.copyObject( sourceValue );
+				destination[key] = ve.copyObject( sourceValue, callback );
 			} else if ( ve.isArray( sourceValue ) ) {
-				destination[key] = ve.copyArray( sourceValue );
+				destination[key] = ve.copyArray( sourceValue, callback );
 			} else if ( sourceValue && typeof sourceValue.clone === 'function' ) {
-				destination[key] = sourceValue.clone();
+				destination[key] = callback ? callback( sourceValue.clone() ) : sourceValue.clone();
+			} else if ( sourceValue instanceof Node ) {
+				destination[key] = callback ? callback( sourceValue.cloneNode( true ) ) : sourceValue.cloneNode( true );
 			} else {
-				destination[key] = sourceValue;
+				destination[key] = callback ? callback( sourceValue ) : sourceValue;
 			}
 		}
 		return destination;
