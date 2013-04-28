@@ -639,7 +639,7 @@ ve.dm.example.inlineAtEdges = [
 	'F',
 	'o',
 	'o',
-	{ 'type': 'alienInline', 'attributes': { 'html': '<foobar />' } },
+	{ 'type': 'alienInline', 'attributes': { 'domElements': $.makeArray( $( '<foobar />' ) ) } },
 	{ 'type': '/alienInline' },
 	{ 'type': '/paragraph' }
 ];
