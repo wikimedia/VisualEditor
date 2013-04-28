@@ -627,6 +627,23 @@ ve.dm.example.complexTable = [
 	{ 'type': '/table' }
 ];
 
+ve.dm.example.inlineAtEdges = [
+	{ 'type': 'paragraph' },
+	{ 'type': 'image', 'attributes': {
+		'html/0/src': ve.dm.example.imgSrc,
+		'src': ve.dm.example.imgSrc,
+		'width': null,
+		'height': null
+	} },
+	{ 'type': '/image' },
+	'F',
+	'o',
+	'o',
+	{ 'type': 'alienInline', 'attributes': { 'html': '<foobar />' } },
+	{ 'type': '/alienInline' },
+	{ 'type': '/paragraph' }
+];
+
 /**
  * Sample content data index.
  *
