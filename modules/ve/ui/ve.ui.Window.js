@@ -297,7 +297,7 @@ ve.ui.Window.prototype.open = function () {
  * loop.
  *
  * @method
- * @param {boolean} action Action that caused the window to be closed
+ * @param {string} action Action that caused the window to be closed
  * @emits close
  */
 ve.ui.Window.prototype.close = function ( action ) {
