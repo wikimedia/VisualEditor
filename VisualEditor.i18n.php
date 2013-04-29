@@ -23,6 +23,8 @@ $messages['en'] = array(
 	'visualeditor-ca-editsource' => 'Edit source',
 	'visualeditor-ca-ve-edit' => 'VisualEditor',
 	'visualeditor-ca-ve-create' => 'VisualEditor',
+	'visualeditor-category-input-placeholder' => 'Category name',
+	'visualeditor-category-settings-label' => 'Category settings',
 	'visualeditor-dialog-meta-title' => 'Page settings',
 	'visualeditor-dialog-content-title' => 'Content settings',
 	'visualeditor-dialog-media-title' => 'Media settings',
@@ -124,6 +126,8 @@ Links are in {{msg-mw|Visualeditor-mainnamespacepagelink}} and {{msg-mw|visualed
 	'visualeditor-ca-ve-create' => '
 	Link text of the dedicated VisualEditor Create tab.
 {{Identical|visualeditor}}',
+	'visualeditor-category-input-placeholder' => 'Placeholder text for category input',
+	'visualeditor-category-settings-label' => 'Title of category settings popup menu',
 	'visualeditor-dialog-meta-title' => 'MetaData dialog title text',
 	'visualeditor-dialog-content-title' => 'Content dialog title text',
 	'visualeditor-dialog-media-title' => 'Title for the editing dialog to set how a media item is displayed on the page',
