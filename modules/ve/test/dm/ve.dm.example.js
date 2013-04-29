@@ -2487,6 +2487,20 @@ ve.dm.example.domToDataCases = {
 	'table with caption, head, foot and body': {
 		'html': ve.dm.example.complexTableHtml,
 		'data': ve.dm.example.complexTable
+	},
+	'category default sort key': {
+		'html': '<body><meta property="mw:PageProp/categorydefaultsort" content="foo"></body>',
+		'data': [
+			{
+				'type': 'MWdefaultSort',
+				'attributes': {
+					'content': 'foo',
+					'html/0/content': 'foo',
+					'html/0/property': 'mw:PageProp/categorydefaultsort'
+				}
+			},
+			{ 'type': '/MWdefaultSort' }
+		]
 	}
 };
 

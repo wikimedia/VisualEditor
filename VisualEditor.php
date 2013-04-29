@@ -290,6 +290,7 @@ $wgResourceModules += array(
 			've/dm/metaitems/ve.dm.AlienMetaItem.js',
 			've/dm/metaitems/ve.dm.MWAlienMetaItem.js',
 			've/dm/metaitems/ve.dm.MWCategoryMetaItem.js',
+			've/dm/metaitems/ve.dm.MWDefaultSortMetaItem.js',
 			've/dm/metaitems/ve.dm.MWLanguageMetaItem.js',
 
 			// ce

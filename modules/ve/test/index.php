@@ -121,6 +121,7 @@
 		<script src="../../ve/dm/metaitems/ve.dm.AlienMetaItem.js"></script>
 		<script src="../../ve/dm/metaitems/ve.dm.MWAlienMetaItem.js"></script>
 		<script src="../../ve/dm/metaitems/ve.dm.MWCategoryMetaItem.js"></script>
+		<script src="../../ve/dm/metaitems/ve.dm.MWDefaultSortMetaItem.js"></script>
 		<script src="../../ve/dm/metaitems/ve.dm.MWLanguageMetaItem.js"></script>
 		<script src="../../ve/ce/ve.ce.js"></script>
 		<script src="../../ve/ce/ve.ce.DomRange.js"></script>
