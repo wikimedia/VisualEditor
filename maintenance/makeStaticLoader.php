@@ -95,6 +95,7 @@ class MakeStaticLoader extends Maintenance {
 			'Dependencies',
 			'ext.visualEditor.base#standalone-init',
 			'ext.visualEditor.core',
+			'ext.visualEditor.experimental',
 		);
 		foreach ( $modules as $module ) {
 			if ( !isset( $wgResourceModules[$module] ) ) {
