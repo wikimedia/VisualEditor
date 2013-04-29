@@ -1009,9 +1009,9 @@
 	/**
 	 * Get the actual inner HTML of a DOM node.
 	 *
-	 * In most browsers, .innerHTML is broken and eats newlines in <pre>s, see
+	 * In most browsers, .innerHTML is broken and eats newlines in `<pre>`s, see
 	 * https://bugzilla.mozilla.org/show_bug.cgi?id=838954 . This function detects this behavior
-	 * and works around it, to the extent possible. <pre>\nFoo</pre> will become <pre>Foo</pre>
+	 * and works around it, to the extent possible. `<pre>\nFoo</pre>` will become `<pre>Foo</pre>`
 	 * if the browser is broken, but newlines are preserved in all other cases.
 	 *
 	 * @param {HTMLElement} element HTML element to get inner HTML of
@@ -1020,7 +1020,7 @@
 	ve.properInnerHTML = function ( element ) {
 		var div, $element;
 		if ( ve.isPreInnerHTMLBroken === undefined ) {
-			// Test whether newlines in <pre> are serialized back correctly
+			// Test whether newlines in `<pre>` are serialized back correctly
 			div = document.createElement( 'div' );
 			div.innerHTML = '<pre>\n\n</pre>';
 			ve.isPreInnerHTMLBroken = div.innerHTML === '<pre>\n</pre>';
@@ -1030,11 +1030,11 @@
 			return element.innerHTML;
 		}
 
-		// Workaround for bug 42469: if a <pre> starts with a newline, that means .innerHTML will
+		// Workaround for bug 42469: if a `<pre>` starts with a newline, that means .innerHTML will
 		// screw up and stringify it with one fewer newline. Work around this by adding a newline.
 		// If we don't see a leading newline, we still don't know if the original HTML was
-		// <pre>Foo</pre> or <pre>\nFoo</pre> , but that's a syntactic difference, not a semantic
-		// one, and handling that is Parsoid's job.
+		// `<pre>Foo</pre>` or `<pre>\nFoo</pre>` , but that's a syntactic difference, not a
+		// semantic one, and handling that is Parsoid's job.
 		$element = $( element ).clone();
 		$element.find( 'pre, textarea, listing' ).each( function() {
 			var matches;
