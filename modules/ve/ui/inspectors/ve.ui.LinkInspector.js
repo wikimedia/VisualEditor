@@ -127,7 +127,7 @@ ve.ui.LinkInspector.prototype.onOpen = function () {
 };
 
 /**
- * Handle the inspector being opened.
+ * Handle the inspector being closed.
  *
  * @method
  * @param {string} action Action that caused the window to be closed
