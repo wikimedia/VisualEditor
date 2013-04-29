@@ -41,29 +41,20 @@ ve.ui.GroupElement.prototype.getItems = function () {
  * @chainable
  */
 ve.ui.GroupElement.prototype.addItems = function ( items ) {
-	var i, len;
-	for ( i = 0, len = items.length; i < len; i++ ) {
-		this.addItem( items[i] );
-	}
-	return this;
-};
+	var i, len, item;
 
-/**
- * Add item.
- *
- * @method
- * @param {ve.ui.Widget} item Item
- * @chainable
- */
-ve.ui.GroupElement.prototype.addItem = function ( item ) {
-	// Check if item exists then remove it first, effectively "moving" it
-	if ( this.items.indexOf( item ) !== -1 ) {
-		this.removeItems( [item] );
+	for ( i = 0, len = items.length; i < len; i++ ) {
+		item = items[i];
+
+		// Check if item exists then remove it first, effectively "moving" it
+		if ( this.items.indexOf( item ) !== -1 ) {
+			this.removeItems( [item] );
+		}
+		// Add the item
+		this.items.push( item );
+		this.$.append( item.$ );
+		this.$items = this.$items.add( item.$ );
 	}
-	// Add the item
-	this.items.push( item );
-	this.$.append( item.$ );
-	this.$items = this.$items.add( item.$ );
 
 	return this;
 };
