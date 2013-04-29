@@ -976,33 +976,24 @@
 	 * @returns {HTMLDocument} Document constructed from the HTML string
 	 */
 	ve.createDocumentFromHTML = function ( html ) {
-		// Create a new document.
-		// This isn't supported by IE<9, but thankfully we can ignore them.
-		// We could also be using DOMParser.prototype.parseFromString, but that only works in Firefox.
-		var newDocument = document.implementation.createHTMLDocument( '' );
+		// According to the spec we should be using DOMParser.prototype.parseFromString or
+		// document.implementation.createHTMLDocument, but the former only works in Firefox
+		// and the latter doesn't work in IE9 and below.
+		// So we're using the good old iframe trick.
 
-		// And write the HTML to it.
-
-		// Opera has an incredibly bizarre bug (reported as DSK-384486) where the calls below act as if
-		// fired on window.document - that is, they replace the entire contents of the web page with new
-		// HTML. It is, however, possible to access the DOM tree of the document just fine. We could use
-		// the iframe hack, but it also seems to fail spuriously; however, using .innerHTML works. (We
-		// can't use .outerHTML, as the spec disallows assigning to it for the root <html> element.)
-
-		// There is no way to detect that, so let's just ban Opera here.
-		if ( ! $.client.test( { ltr: { opera: false }, rtl: { opera: false } } ) ) {
-			// Carefully unwrap the HTML out of the root node (and doctype, if any).
-			// <html> might have some arguments here, but they're apparently not important.
-			html = html.replace(/^\s*(?:<!doctype[^>]*>)?\s*<html[^>]*>/i, '' );
-			html = html.replace(/<\/html>\s*$/i, '' );
-			newDocument.documentElement.innerHTML = html;
-		} else {
-			// Sane browsers
-			newDocument.open();
-			newDocument.write( html );
-			newDocument.close();
-		}
-
+		// Create an invisible iframe
+		var newDocument, $iframe = $( '<iframe frameborder="0" width="0" height="0" />'),
+			iframe = $iframe.get( 0 );
+		// Attach it to the document. We have to do this to get a new document out of it
+		document.documentElement.appendChild( iframe );
+		// Write the HTML to it
+		newDocument = ( iframe.contentWindow && iframe.contentWindow.document ) || iframe.contentDocument;
+		newDocument.open();
+		newDocument.write( html ); // Party like it's 1995!
+		newDocument.close();
+		// Detach the iframe
+		// FIXME detaching breaks access to newDocument in IE
+		iframe.parentNode.removeChild( iframe );
 		return newDocument;
 	};
 
