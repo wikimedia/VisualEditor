@@ -12,7 +12,7 @@ class MakeStaticLoader extends Maintenance {
 
 			$this->addOption( 'target', 'Which target to use ("demo" or "test"). Default: false', false, true );
 			$this->addOption( 'indent', 'Indentation prefix to use (number of tabs or a string)', false, true );
-			$this->addOption( 've-path', 'Override path to "/modules/". Default by --target', false, true );
+			$this->addOption( 've-path', 'Override path to "VisualEditor/modules" (no trailing slash). Default by --target', false, true );
 			$this->addOption( 'fixdir', 'Embed the absolute path in require() statements. Defaults to relative path. '
 				. '(use this if you evaluate the resulting script in php-STDIN instead of from a file)', false, true );
 			$this->addOption( 'section', 'head, body or both', false, true );
@@ -107,17 +107,17 @@ class MakeStaticLoader extends Maintenance {
 
 			if ( isset( $registry['styles'] ) && $target !== 'test' ){
 				foreach ($registry['styles'] as $style) {
-					$headAdd .= $indent . Html::element( 'link', array( 'rel' => 'stylesheet', 'href' => "$vePath$style" ) ) . "\n";
+					$headAdd .= $indent . Html::element( 'link', array( 'rel' => 'stylesheet', 'href' => "$vePath/$style" ) ) . "\n";
 				}
 			}
 			if ( isset( $registry['scripts'] ) ) {
 				foreach ($registry['scripts'] as $script) {
-					$bodyAdd .= $indent . Html::element( 'script', array( 'src' => "$vePath$script" ) ) . "\n";
+					$bodyAdd .= $indent . Html::element( 'script', array( 'src' => "$vePath/$script" ) ) . "\n";
 				}
 			}
 			if ( isset( $registry['debugScripts'] ) ) {
 				foreach ($registry['debugScripts'] as $script) {
-					$bodyAdd .= $indent . Html::element( 'script', array( 'src' => "$vePath$script" ) ) . "\n";
+					$bodyAdd .= $indent . Html::element( 'script', array( 'src' => "$vePath/$script" ) ) . "\n";
 				}
 			}
 			if ( isset( $registry['headAdd'] ) ) {
