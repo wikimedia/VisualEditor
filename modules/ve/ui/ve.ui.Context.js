@@ -54,9 +54,9 @@ ve.ui.Context = function VeUiContext( surface, config ) {
 		'open': 'onInspectorOpen',
 		'close': 'onInspectorClose'
 	} );
+
 	this.$$( this.getElementWindow() ).on( {
-		'resize': ve.bind( this.update, this ),
-		'focus': ve.bind( this.onWindowFocus, this )
+		'resize': ve.bind( this.update, this )
 	} );
 	this.$.add( this.$menu )
 		.on( 'mousedown', false );
@@ -123,15 +123,6 @@ ve.ui.Context.prototype.onRelocationStart = function () {
 ve.ui.Context.prototype.onRelocationEnd = function () {
 	this.relocating = false;
 	this.update();
-};
-
-/**
- * Handle window focus events on the view.
- *
- * @method
- */
-ve.ui.Context.prototype.onWindowFocus = function () {
-	this.hide();
 };
 
 /**
