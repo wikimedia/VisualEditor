@@ -192,6 +192,9 @@ $wgResourceModules += array(
 			've/init/mw/ve.init.mw.Platform.js',
 			've/init/mw/ve.init.mw.Target.js',
 		),
+		'dependencies' => array(
+			'jquery.client',
+		),
 		'debugScripts' => array(
 			've/ve.debug.js',
 		),

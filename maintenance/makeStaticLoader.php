@@ -42,6 +42,7 @@ class MakeStaticLoader extends Maintenance {
 		$wgResourceModules['Dependencies'] = array(
 			'scripts' => array(
 				'jquery/jquery.js',
+				'jquery/jquery.client.js',
 				'rangy/rangy-core.js',
 				'rangy/rangy-position.js',
 				'unicodejs/unicodejs.js',
