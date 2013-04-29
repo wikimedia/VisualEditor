@@ -1434,8 +1434,9 @@ $messages['gl'] = array(
 	'visualeditor-feedback-tool' => 'Deixe un comentario',
 	'visualeditor-window-title' => 'Inspeccionar',
 	'visualeditor-linkinspector-title' => 'Hiperligazón',
+	'visualeditor-linkinspector-suggest-matching-page' => 'Páxina coincidente',
 	'visualeditor-linkinspector-suggest-new-page' => 'Páxina nova',
-	'visualeditor-linkinspector-suggest-external-link' => 'Ligazón web', # Fuzzy
+	'visualeditor-linkinspector-suggest-external-link' => 'Ligazón externa',
 	'visualeditor-formatdropdown-title' => 'Cambiar o formato',
 	'visualeditor-formatdropdown-format-paragraph' => 'Parágrafo',
 	'visualeditor-formatdropdown-format-heading1' => 'Cabeceira 1',
@@ -1471,6 +1472,7 @@ $messages['gl'] = array(
 	'visualeditor-alphawarning' => 'Está utilizando a versión alpha do [[{{MediaWiki:Visualeditor-descriptionpagelink}}|editor visual]]. Pode ser lenta e facer modificacións erróneas. Comprobe todas as edicións que faga.',
 	'visualeditor-report-notice' => 'Entendo que ao premer no botón "Informar sobre un problema" hei transmitir as miñas modificacións e os meus comentarios, que quedarán rexistrados para a súa análise. Acepto achegar os comentarios de acordo cos [[{{MediaWiki:Visualeditor-report-link}}|termos de uso]].',
 	'visualeditor-report-link' => 'foundation:Terms of Use/gl',
+	'visualeditor-feedback-link' => 'Project:Editor visual/Comentarios',
 );
 
 /** Gujarati (ગુજરાતી)
