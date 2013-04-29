@@ -12,6 +12,8 @@
  *
  * @class
  * @extends ve.ui.LinkTargetInputWidget
+ * @mixins ve.ui.PendingInputWidget
+ * @mixins ve.ui.LookupInputWidget
  *
  * @constructor
  * @param {Object} [config] Config options
@@ -24,32 +26,16 @@ ve.ui.MWLinkTargetInputWidget = function VeUiMWLinkTargetInputWidget( config ) {
 	// Parent constructor
 	ve.ui.LinkTargetInputWidget.call( this, config );
 
-	// Properties
-	this.$overlay = config.$overlay || this.$$( 'body' );
-	this.menu = new ve.ui.TextInputMenuWidget(
-		this, { '$$': ve.ui.get$$( this.$overlay ), 'input': this }
-	);
-	this.annotation = null;
-	this.existingPages = {};
-	this.matchingPages = {};
-	this.existingPagesQuery = null;
-	this.existingPagesRequest = null;
-	this.matchingPagesQuery = null;
-	this.matchingPagesRequest = null;
-	this.previousMatches = null;
+	// Mixin constructors
+	ve.ui.PendingInputWidget.call( this );
+	ve.ui.LookupInputWidget.call( this, this, config );
 
 	// Events
-	this.$overlay.append( this.menu.$ );
-	this.$input.on( {
-		'click': ve.bind( this.onClick, this ),
-		'focus': ve.bind( this.onFocus, this ),
-		'blur': ve.bind( this.onBlur, this )
-	} );
-	this.menu.on( 'select', ve.bind( this.onMenuItemSelect, this ) );
-	this.addListenerMethods( this, {'change': 'onChange'} );
+	this.lookupMenu.addListenerMethod( this, 'select', 'onLookupMenuItemSelect' );
+
 	// Initialization
 	this.$.addClass( 've-ui-mwLinkTargetInputWidget' );
-	this.menu.$.addClass( 've-ui-mwLinkTargetInputWidget-menu' );
+	this.lookupMenu.$.addClass( 've-ui-mwLinkTargetInputWidget-menu' );
 };
 
 /* Inheritance */
@@ -57,64 +43,117 @@ ve.ui.MWLinkTargetInputWidget = function VeUiMWLinkTargetInputWidget( config ) {
 ve.inheritClass( ve.ui.MWLinkTargetInputWidget, ve.ui.LinkTargetInputWidget );
 
 ve.mixinClass( ve.ui.MWLinkTargetInputWidget, ve.ui.PendingInputWidget );
+ve.mixinClass( ve.ui.MWLinkTargetInputWidget, ve.ui.LookupInputWidget );
 
 /* Methods */
 
 /**
- * Handles click events.
+ * Handle menu item select event.
  *
  * @method
- * @param {jQuery.Event} e Mouse click event
+ * @param {ve.ui.MenuItemWidget} item Selected item
  */
-ve.ui.MWLinkTargetInputWidget.prototype.onClick = function () {
-	if ( !this.disabled ) {
-		this.openMenu();
-	}
-};
-
-/**
- * Handles focus events.
- *
- * @method
- * @param {jQuery.Event} e Input focus event
- */
-ve.ui.MWLinkTargetInputWidget.prototype.onFocus = function () {
-	if ( !this.disabled ) {
-		this.openMenu();
-	}
-};
-
-/**
- * Handles blur events.
- *
- * @method
- * @param {jQuery.Event} e Input blur
- */
-ve.ui.MWLinkTargetInputWidget.prototype.onBlur = function () {
-	this.menu.hide();
-};
-
-/**
- * Handles change events.
- *
- * @method
- * @param {ve.ui.MenuItemWidget} item Menu item
- */
-ve.ui.MWLinkTargetInputWidget.prototype.onMenuItemSelect = function ( item ) {
+ve.ui.MWLinkTargetInputWidget.prototype.onLookupMenuItemSelect = function ( item ) {
 	if ( item ) {
 		this.setAnnotation( item.getData() );
 	}
 };
 
 /**
- * Opens the suggestion menu on input change.
- *
+ * Gets a new request object of the current lookup query value.
  *
  * @method
- * @param {string} value New value
+ * @returns {jQuery.Deferred} Deferred object with success and fail handlers already attached
  */
-ve.ui.MWLinkTargetInputWidget.prototype.onChange = function () {
-	this.openMenu();
+ve.ui.MWLinkTargetInputWidget.prototype.getLookupRequest = function () {
+	return $.ajax( {
+		'url': mw.util.wikiScript( 'api' ),
+		'data': {
+			'format': 'json',
+			'action': 'opensearch',
+			'search': this.value,
+			'namespace': 0,
+			'suggest': ''
+		},
+		'dataType': 'json'
+	} );
+};
+
+/**
+ * Get lookup cache item from server response data.
+ *
+ * @method
+ * @param {Mixed} data Response from server
+ */
+ve.ui.MWLinkTargetInputWidget.prototype.getLookupCacheItemFromData = function ( data ) {
+	return ve.isArray( data ) && data.length ? data[1] : [];
+};
+
+/**
+ * Get list of menu items from a server response.
+ *
+ * @param {Object} data Query result
+ * @returns {ve.ui.MenuItemWidget[]} Menu items
+ */
+ve.ui.MWLinkTargetInputWidget.prototype.getLookupMenuItemsFromData = function ( data ) {
+	var i, len,
+		menu$$ = this.lookupMenu.$$,
+		items = [],
+		matchingPages = data,
+		pageExists = this.value in matchingPages;
+
+	// External link
+	if ( ve.init.platform.getExternalLinkUrlProtocolsRegExp().test( this.value ) ) {
+		items.push( new ve.ui.MenuSectionItemWidget(
+			'externalLink',
+			{ '$$': menu$$, 'label': ve.msg( 'visualeditor-linkinspector-suggest-external-link' ) }
+		) );
+		items.push( new ve.ui.MenuItemWidget(
+			this.getExternalLinkAnnotationFromUrl( this.value ),
+			{ '$$': menu$$, 'rel': 'externalLink', 'label': this.value }
+		) );
+	}
+
+	// Internal link
+	if ( !pageExists && ( !matchingPages || matchingPages.indexOf( this.value ) === -1 ) ) {
+		items.push( new ve.ui.MenuSectionItemWidget(
+			'newPage',
+			{ '$$': menu$$, 'label': ve.msg( 'visualeditor-linkinspector-suggest-new-page' ) }
+		) );
+		items.push( new ve.ui.MenuItemWidget(
+			this.getInternalLinkAnnotationFromTitle( this.value ),
+			{ '$$': menu$$, 'rel': 'newPage', 'label': this.value }
+		) );
+	}
+
+	// Matching pages
+	if ( matchingPages && matchingPages.length ) {
+		items.push( new ve.ui.MenuSectionItemWidget(
+			'matchingPages',
+			{ '$$': menu$$, 'label': ve.msg( 'visualeditor-linkinspector-suggest-matching-page' ) }
+		) );
+		for ( i = 0, len = matchingPages.length; i < len; i++ ) {
+			items.push( new ve.ui.MenuItemWidget(
+				this.getInternalLinkAnnotationFromTitle( matchingPages[i] ),
+				{ '$$': menu$$, 'rel': 'matchingPage', 'label': matchingPages[i] }
+			) );
+		}
+	}
+
+	return items;
+};
+
+/**
+ * Set selection in the lookup menu with current information.
+ *
+ * @method
+ * @chainable
+ */
+ve.ui.MWLinkTargetInputWidget.prototype.initializeLookupMenuSelection = function () {
+	// Attempt to maintain selection on current annotation
+	this.lookupMenu.selectItem( this.lookupMenu.getItemFromData( this.annotation ), true );
+	// Parent method
+	ve.ui.LookupInputWidget.prototype.initializeLookupMenuSelection.call( this );
 };
 
 /**
@@ -128,93 +167,6 @@ ve.ui.MWLinkTargetInputWidget.prototype.onChange = function () {
 ve.ui.MWLinkTargetInputWidget.prototype.setValue = function ( value ) {
 	// Keep annotation in sync with value, call parent method.
 	ve.ui.TextInputWidget.prototype.setValue.call( this, value );
-};
-
-/**
- * Opens the menu.
- *
- * @method
- * @chainable
- */
-ve.ui.MWLinkTargetInputWidget.prototype.openMenu = function () {
-	this.populateMenu();
-	this.queryPageExistence();
-	this.queryMatchingPages();
-	if ( this.value.length && $.trim( this.value ) !== '' && !this.menu.isVisible() ) {
-		this.menu.show();
-	}
-	return this;
-};
-
-/**
- * Populates the menu.
- *
- * @method
- * @chainable
- */
-ve.ui.MWLinkTargetInputWidget.prototype.populateMenu = function () {
-	var i, len,
-		menu$$ = this.menu.$$,
-		items = [],
-		pageExists = this.existingPages[this.value],
-		matchingPages = this.matchingPages[this.value];
-
-	// Reset
-	this.menu.clearItems();
-
-	// Hide on empty target
-	if ( !this.value.length ) {
-		this.menu.hide();
-		return this;
-	}
-
-	// External link
-	if ( ve.init.platform.getExternalLinkUrlProtocolsRegExp().test( this.value ) ) {
-		items.push( new ve.ui.MenuSectionItemWidget(
-			'externalLink', { '$$': menu$$, 'label': ve.msg( 'visualeditor-linkinspector-suggest-external-link' ) }
-		) );
-		items.push( new ve.ui.MenuItemWidget(
-			this.getExternalLinkAnnotationFromUrl( this.value ),
-			{ '$$': menu$$, 'rel': 'externalLink', 'label': this.value }
-		) );
-	}
-
-	// Internal link
-	if ( !pageExists && ( !matchingPages || matchingPages.indexOf( this.value ) === -1 ) ) {
-		items.push( new ve.ui.MenuSectionItemWidget(
-			'newPage', { '$$': menu$$, 'label': ve.msg( 'visualeditor-linkinspector-suggest-new-page' ) }
-		) );
-		items.push( new ve.ui.MenuItemWidget(
-			this.getInternalLinkAnnotationFromTitle( this.value ),
-			{ '$$': menu$$, 'rel': 'newPage', 'label': this.value }
-		) );
-	}
-
-	// Matching pages
-	if ( matchingPages && matchingPages.length ) {
-		items.push( new ve.ui.MenuSectionItemWidget(
-			'matchingPages', { '$$': menu$$, 'label': ve.msg( 'visualeditor-linkinspector-suggest-matching-page' ) }
-		) );
-		for ( i = 0, len = matchingPages.length; i < len; i++ ) {
-			items.push( new ve.ui.MenuItemWidget(
-				this.getInternalLinkAnnotationFromTitle( matchingPages[i] ),
-				{ '$$': menu$$, 'rel': 'matchingPage', 'label': matchingPages[i] }
-			) );
-		}
-		this.previousMatches = matchingPages;
-	}
-
-	// Add items
-	this.menu.addItems( items );
-
-	// Auto-select
-	this.menu.selectItem( this.menu.getItemFromData( this.annotation ), true );
-	if ( !this.menu.getSelectedItem() ) {
-		this.menu.selectItem( this.menu.getClosestSelectableItem( 0 ), true );
-	}
-	this.menu.highlightItem( this.menu.getSelectedItem() );
-
-	return this;
 };
 
 /**
@@ -273,115 +225,4 @@ ve.ui.MWLinkTargetInputWidget.prototype.getTargetFromAnnotation = function ( ann
 		return annotation.getAttribute( 'title' );
 	}
 	return '';
-};
-
-/**
- * Checks page existence for the current value.
- *
- * {ve.ui.MWLinkTargetInputWidget.populateMenu} will be called immediately if the page existence has
- * been cached, or as soon as the API returns a result.
- *
- * @method
- * @chainable
- */
-ve.ui.MWLinkTargetInputWidget.prototype.queryPageExistence = function () {
-	if ( this.existingPagesQuery === this.value ) {
-		// Ignore duplicate requests
-		return;
-	}
-	if ( this.existingPagesRequest ) {
-		this.existingPagesRequest.abort();
-		this.existingPagesQuery = null;
-		this.existingPagesRequest = null;
-	}
-	if ( this.value in this.existingPages ) {
-		this.populateMenu();
-	} else {
-		this.pushPending();
-		this.existingPagesQuery = this.value;
-		this.existingPagesRequest = $.ajax( {
-			'url': mw.util.wikiScript( 'api' ),
-			'data': {
-				'format': 'json',
-				'action': 'query',
-				'indexpageids': '',
-				'titles': this.value,
-				'converttitles': ''
-			},
-			'dataType': 'json',
-			'success': ve.bind( function ( data ) {
-				this.existingPagesQuery = null;
-				this.existingPagesRequest = null;
-				var page,
-					exists = false;
-				if ( data.query ) {
-					page = data.query.pages[data.query.pageids[0]];
-					exists = ( page.missing === undefined && page.invalid === undefined );
-					// Cache result for normalized title
-					this.existingPages[page.title] = exists;
-				}
-				// Cache result for original input
-				this.existingPages[this.value] = exists;
-				this.populateMenu();
-			}, this ),
-			'complete': ve.bind( function () {
-				this.popPending();
-			}, this )
-		} );
-	}
-	return this;
-};
-
-/**
- * Checks matching pages for the current value.
- *
- * {ve.ui.MWLinkTargetInputWidget.populateMenu} will be called immediately if matching pages have
- * been cached, or as soon as the API returns a result.
- *
- * @method
- * @chainable
- */
-ve.ui.MWLinkTargetInputWidget.prototype.queryMatchingPages = function () {
-	if ( this.matchingPagesQuery === this.value ) {
-		// Ignore duplicate requests
-		return;
-	}
-	if ( this.matchingPagesRequest ) {
-		this.matchingPagesRequest.abort();
-		this.matchingPagesQuery = null;
-		this.matchingPagesRequest = null;
-	}
-	if ( this.value in this.matchingPages ) {
-		this.populateMenu();
-	} else {
-		this.pushPending();
-		this.matchingPagesQuery = this.value;
-		this.matchingPagesRequest = $.ajax( {
-			'url': mw.util.wikiScript( 'api' ),
-			'data': {
-				'format': 'json',
-				'action': 'opensearch',
-				'search': this.value,
-				'namespace': 0,
-				'suggest': ''
-			},
-			'dataType': 'json',
-			'success': ve.bind( function ( data ) {
-				this.matchingPagesQuery = null;
-				this.matchingPagesRequest = null;
-				if ( ve.isArray( data ) && data.length ) {
-					// Cache the matches to the query
-					this.matchingPages[this.value] = data[1];
-					this.populateMenu();
-				} else {
-					// Don't repeat queries that resulted in invalid responses
-					this.matchingPages[this.value] = [];
-				}
-			}, this ),
-			'complete': ve.bind( function () {
-				this.popPending();
-			}, this )
-		} );
-	}
-	return this;
 };

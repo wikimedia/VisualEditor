@@ -24,7 +24,7 @@ ve.ui.MenuWidget = function VeUiMenuWidget( config ) {
 
 	// Properties
 	this.newItems = [];
-	this.$input = config.input ? config.input.$ : this.$$( '<input>' );
+	this.$input = config.input ? config.input.$input : this.$$( '<input>' );
 	this.$previousFocus = null;
 	this.isolated = !config.input;
 	this.visible = false;

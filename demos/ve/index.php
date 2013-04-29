@@ -262,6 +262,7 @@ $html = file_get_contents( $page );
 		<script src="../../modules/ve/ui/widgets/ve.ui.MenuSectionItemWidget.js"></script>
 		<script src="../../modules/ve/ui/widgets/ve.ui.MenuWidget.js"></script>
 		<script src="../../modules/ve/ui/widgets/ve.ui.PendingInputWidget.js"></script>
+		<script src="../../modules/ve/ui/widgets/ve.ui.LookupInputWidget.js"></script>
 		<script src="../../modules/ve/ui/widgets/ve.ui.TextInputMenuWidget.js"></script>
 		<script src="../../modules/ve/ui/widgets/ve.ui.LinkTargetInputWidget.js"></script>
 		<script src="../../modules/ve/ui/widgets/ve.ui.MWLinkTargetInputWidget.js"></script>
