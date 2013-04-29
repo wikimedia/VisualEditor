@@ -13,6 +13,8 @@ class MakeStaticLoader extends Maintenance {
 			$this->addOption( 'target', 'Which target to use ("demo" or "test"). Default: false', false, true );
 			$this->addOption( 'indent', 'Indentation prefix to use (number of tabs or a string)', false, true );
 			$this->addOption( 've-path', 'Override path to "/modules/". Default by --target', false, true );
+			$this->addOption( 'fixdir', 'Embed the absolute path in require() statements. Defaults to relative path. '
+				. '(use this if you evaluate the resulting script in php-STDIN instead of from a file)', false, true );
 			$this->addOption( 'section', 'head, body or both', false, true );
 	}
 
@@ -49,6 +51,12 @@ class MakeStaticLoader extends Maintenance {
 			),
 		);
 
+		// If we're running this script from STDIN,
+		// hardcode the full path
+		$i18nScript = $this->getOption( 'fixdir' ) ?
+			dirname( __DIR__ ) . '/VisualEditor.i18n.php' :
+			$vePath . '/../VisualEditor.i18n.php';
+
 		// Customized version to init standalone instead of mediawiki platform.
 		$wgResourceModules['ext.visualEditor.base#standalone-init'] = array(
 			'styles' => array(
@@ -63,7 +71,7 @@ class MakeStaticLoader extends Maintenance {
 </script>',
 			'bodyAdd' => '<script>
 	<?php
-		require( ' . var_export( dirname( __DIR__ ) . '/VisualEditor.i18n.php', true ) . ' );
+		require( ' . var_export( $i18nScript, true ) . ' );
 		echo \'ve.init.platform.addMessages( \' . json_encode( $messages[\'en\'] ) . \');\' . "\n";
 	?>
 	ve.init.platform.setModulesUrl( \'' . $vePath . '\' );
