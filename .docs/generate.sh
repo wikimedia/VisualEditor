@@ -16,26 +16,12 @@ cd $(cd $(dirname $0); pwd)
 	done
 ) < eg-iframe.tpl | php > eg-iframe.html
 
-# Disable parallel processing which seems to be causing
-# problems under Ruby 1.8
-warnings=`jsduck --config=config.json --processes=0 2>&1`
+# Disable parallel processing which seems to be causing problems under Ruby 1.8
+jsduck --config=config.json --processes=0 --color --warnings-exit-nonzero
 ec=$?
 
 rm eg-iframe.html
 cd - > /dev/null
-
-# Re-colorize
-NORMAL=$(tput sgr0); YELLOW=$(tput setaf 3); MEGANTA=$(tput setaf 5)
-echo "$warnings" | perl -pe "s|^([^ ]+) ([^ ]+) (.*)$|${YELLOW}\1 ${MEGANTA}\2${NORMAL} \3|"
-
-# JSDuck doesn't exit with an error code if there are warnings
-# (only when there are fatal errors). We fixed all warnings
-# in master so lets consider all warnings errors to ensure
-# we don't introduce any new invalid jsduck syntax.
-if [[ "$ec" == "0" && "$warnings" != "" ]]
-then
-	exit 1
-fi
 
 # Exit with exit code of jsduck command
 exit $ec
