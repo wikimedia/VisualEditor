@@ -252,6 +252,18 @@ ve.dm.Surface.prototype.getFragment = function ( range, noAutoSelect ) {
 };
 
 /**
+ * Prevent future states from being redone.
+ *
+ * @method
+ * @emits history
+ */
+ve.dm.Surface.prototype.truncateUndoStack = function() {
+	this.bigStack = this.bigStack.slice( 0, this.bigStack.length - this.undoIndex );
+	this.undoIndex = 0;
+	this.emit( 'history' );
+};
+
+/**
  * Apply a transactions and selection changes to the document.
  *
  * @method
@@ -284,8 +296,7 @@ ve.dm.Surface.prototype.change = function ( transactions, selection ) {
 		}
 		for ( i = 0, len = transactions.length; i < len; i++ ) {
 			if ( !transactions[i].isNoOp() ) {
-				this.bigStack = this.bigStack.slice( 0, this.bigStack.length - this.undoIndex );
-				this.undoIndex = 0;
+				this.truncateUndoStack();
 				this.smallStack.push( transactions[i] );
 				this.completeHistory.push( {
 					'undo': false,

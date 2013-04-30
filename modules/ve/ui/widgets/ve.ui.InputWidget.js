@@ -52,7 +52,6 @@ ve.inheritClass( ve.ui.InputWidget, ve.ui.Widget );
 /**
  * @event change
  * @param value
- * @param origin
  */
 
 /**

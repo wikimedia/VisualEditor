@@ -13,6 +13,7 @@
  *
  * @constructor
  * @param {Object} [config] Config options
+ * @cfg {string} [placeholder] Placeholder text
  */
 ve.ui.TextInputWidget = function VeUiTextInputWidget( config ) {
 	// Parent constructor
@@ -20,6 +21,9 @@ ve.ui.TextInputWidget = function VeUiTextInputWidget( config ) {
 
 	// Initialization
 	this.$.addClass( 've-ui-textInputWidget' );
+	if ( config.placeholder ) {
+		this.$input.attr( 'placeholder', config.placeholder );
+	}
 };
 
 /* Inheritance */

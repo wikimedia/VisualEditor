@@ -381,9 +381,14 @@ $wgResourceModules += array(
 			've/ui/widgets/ve.ui.MenuSectionItemWidget.js',
 			've/ui/widgets/ve.ui.MenuWidget.js',
 			've/ui/widgets/ve.ui.PendingInputWidget.js',
+			've/ui/widgets/ve.ui.LookupInputWidget.js',
 			've/ui/widgets/ve.ui.TextInputMenuWidget.js',
 			've/ui/widgets/ve.ui.LinkTargetInputWidget.js',
 			've/ui/widgets/ve.ui.MWLinkTargetInputWidget.js',
+			've/ui/widgets/ve.ui.MWCategoryInputWidget.js',
+			've/ui/widgets/ve.ui.MWCategoryPopupWidget.js',
+			've/ui/widgets/ve.ui.MWCategoryItemWidget.js',
+			've/ui/widgets/ve.ui.MWCategoryWidget.js',
 
 			've/ui/layouts/ve.ui.GridLayout.js',
 			've/ui/layouts/ve.ui.PanelLayout.js',
@@ -393,6 +398,7 @@ $wgResourceModules += array(
 			've/ui/dialogs/ve.ui.ContentDialog.js',
 			've/ui/dialogs/ve.ui.MediaDialog.js',
 			've/ui/dialogs/ve.ui.PagedDialog.js',
+			've/ui/dialogs/ve.ui.MWMetaDialog.js',
 
 			've/ui/tools/ve.ui.ButtonTool.js',
 			've/ui/tools/ve.ui.AnnotationButtonTool.js',
@@ -491,6 +497,8 @@ $wgResourceModules += array(
 			'visualeditor-dialog-action-apply',
 			'visualeditor-dialog-action-cancel',
 			'visualeditor-dialog-action-close',
+			'visualeditor-category-input-placeholder',
+			'visualeditor-category-settings-label'
 		),
 	),
 	'ext.visualEditor.experimental' => $wgVisualEditorResourceTemplate + array(
