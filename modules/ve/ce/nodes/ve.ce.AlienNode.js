@@ -21,6 +21,10 @@ ve.ce.AlienNode = function VeCeAlienNode( model ) {
 	// DOM Changes
 	this.$.addClass( 've-ce-alienNode' );
 
+	// Properties
+	this.$phantoms = $( [] );
+	this.onSurfaceModelChangeHandler = ve.bind( this.onSurfaceModelChange, this );
+
 	// Events
 	this.addListenerMethod( this, 'live', 'onLive' );
 	this.$.on( 'mouseenter', ve.bind( this.onMouseEnter, this ) );
@@ -37,46 +41,19 @@ ve.ce.AlienNode.static.name = 'alien';
 /* Methods */
 
 /**
- * Handle mouse enter events.
- *
- * @method
- * @param {jQuery.Event} e Mouse enter event
- */
-ve.ce.AlienNode.prototype.onMouseEnter = function () {
-	var $phantoms = $( [] ),
-		$phantomTemplate = ve.ce.Surface.static.$phantomTemplate,
-		surface = this.root.getSurface();
-	if ( surface.dragging ) {
-		return;
-	}
-	this.$.find( '.ve-ce-node-shield' ).each( function () {
-		var $shield = $( this ),
-			offset = $shield.offset();
-		$phantoms = $phantoms.add(
-			$phantomTemplate.clone().css( {
-				'top': offset.top,
-				'left': offset.left,
-				'height': $shield.height(),
-				'width': $shield.width(),
-				'background-position': -offset.left + 'px ' + -offset.top + 'px'
-			} )
-		);
-	} );
-	surface.replacePhantoms( $phantoms );
-	surface.$.on({
-		'mousemove.phantoms': ve.bind( this.onSurfaceMouseMove, this ),
-		'mouseout.phantoms': ve.bind( this.onSurfaceMouseOut, this )
-	});
-};
-
-/**
  * Handle live events.
  *
  * @method
  */
 ve.ce.AlienNode.prototype.onLive = function () {
+	var $shieldTemplate = this.constructor.static.$shieldTemplate,
+		surfaceModel = this.getRoot().getSurface().getModel();
+
 	if ( this.live === true ) {
-		var $shieldTemplate = this.constructor.static.$shieldTemplate;
+		// Events
+		surfaceModel.on( 'change', this.onSurfaceModelChangeHandler );
+
+		// Shields
 		this.$.add( this.$.find( '*' ) ).each( function () {
 			var $this = $( this );
 			if ( this.nodeType === Node.ELEMENT_NODE ) {
@@ -89,11 +66,29 @@ ve.ce.AlienNode.prototype.onLive = function () {
 				$this.append( $shieldTemplate.clone() );
 			}
 		} );
+	} else {
+		surfaceModel.removeListener( 'change', this.onSurfaceModelChangeHandler );
 	}
 };
 
+/**
+ * Handle update events.
+ *
+ * @method
+ */
 ve.ce.AlienNode.prototype.onUpdate = function () {
 	this.$.html( ve.copyArray( this.model.getAttribute( 'domElements' ) || [] ) );
+};
+
+/**
+ * Handle mouse enter events.
+ *
+ * @method
+ */
+ve.ce.AlienNode.prototype.onMouseEnter = function () {
+	if ( !this.root.getSurface().dragging ) {
+		this.createPhantoms();
+	}
 };
 
 /**
@@ -125,6 +120,61 @@ ve.ce.AlienNode.prototype.onSurfaceMouseOut = function ( e ) {
 };
 
 /**
+ * Handle surface model change events
+ *
+ * @method
+ */
+ve.ce.AlienNode.prototype.onSurfaceModelChange = function () {
+	if ( this.$phantoms.length ) {
+		this.positionPhantoms();
+	}
+};
+
+/**
+ * Creates phantoms
+ *
+ * @method
+ */
+ve.ce.AlienNode.prototype.createPhantoms = function () {
+	var $phantomTemplate = ve.ce.Surface.static.$phantomTemplate,
+		surface = this.root.getSurface();
+
+	this.$.find( '.ve-ce-node-shield' ).each(
+		ve.bind( function () {
+			this.$phantoms = this.$phantoms.add( $phantomTemplate.clone() );
+		}, this )
+	);
+	this.positionPhantoms();
+	surface.replacePhantoms( this.$phantoms );
+
+	surface.$.on({
+		'mousemove.phantoms': ve.bind( this.onSurfaceMouseMove, this ),
+		'mouseout.phantoms': ve.bind( this.onSurfaceMouseOut, this )
+	});
+};
+
+/**
+ * Positions phantoms
+ *
+ * @method
+ */
+ve.ce.AlienNode.prototype.positionPhantoms = function () {
+	this.$.find( '.ve-ce-node-shield' ).each(
+		ve.bind( function ( i, element ) {
+			var $shield = $( element ),
+				offset = $shield.offset();
+			this.$phantoms.eq( i ).css( {
+				'top': offset.top,
+				'left': offset.left,
+				'height': $shield.height(),
+				'width': $shield.width(),
+				'background-position': -offset.left + 'px ' + -offset.top + 'px'
+			} );
+		}, this )
+	);
+};
+
+/**
  * Clears all phantoms and unbinds .phantoms namespace event handlers
  *
  * @method
@@ -133,6 +183,7 @@ ve.ce.AlienNode.prototype.clearPhantoms = function() {
 	var surface = this.root.getSurface();
 	surface.replacePhantoms( null );
 	surface.$.unbind( '.phantoms' );
+	this.$phantoms = $( [] );
 };
 
 /* Concrete subclasses */
