@@ -976,10 +976,34 @@
 	 * @returns {HTMLDocument} Document constructed from the HTML string
 	 */
 	ve.createDocumentFromHTML = function ( html ) {
-		// According to the spec we should be using DOMParser.prototype.parseFromString or
-		// document.implementation.createHTMLDocument, but the former only works in Firefox
-		// and the latter doesn't work in IE9 and below.
-		// So we're using the good old iframe trick.
+		// Here's how this function should look:
+		//
+		//     var newDocument = document.implementation.createHTMLDocument( '' );
+		//     newDocument.open();
+		//     newDocument.write( html );
+		//     newDocument.close();
+		//     return newDocument;
+		//
+		// (Or possibly something involving DOMParser.prototype.parseFromString, but that's Firefox-only
+		// for now.)
+		//
+		// Sadly, it's impossible:
+		// * On IE 9, calling open()/write() on such a document throws an "Unspecified error" (sic).
+		// * On Firefox 20, calling open()/write() doesn't actually do anything, including writing.
+		//   This is reported as Firefox bug 867102.
+		// * On Opera 12, calling open()/write() behaves as if called on window.document, replacing the
+		//   entire contents of the page with new HTML. This is reported as Opera bug DSK-384486.
+		//
+		// Funnily, in all of those browsers it's apparently perfectly legal and possible to access the
+		// newly created document's DOM itself, including modifying documentElement's innerHTML, which
+		// would achieve our goal. But that requires some nasty magic to strip off the <html></html> tag
+		// itself, so we're not doing that. (We can't use .outerHTML, either, as the spec disallows
+		// assigning to it for the root element.)
+		//
+		// There is one more way - create an <iframe>, append it to current document, and access its
+		// contentDocument. The only browser having issues with that is Opera (sometimes the accessible
+		// value is not actually a Document, but something which behaves just like an empty regular
+		// object...), so we're detecting that and using the innerHTML hack described above.
 
 		// Create an invisible iframe
 		var newDocument, $iframe = $( '<iframe frameborder="0" width="0" height="0" />'),
@@ -994,6 +1018,18 @@
 		// Detach the iframe
 		// FIXME detaching breaks access to newDocument in IE
 		iframe.parentNode.removeChild( iframe );
+
+		if ( !newDocument.body ) {
+			// Surprise! The document is not a document!
+			// Fun fact: this never happens on Opera when debugging with Dragonfly.
+			newDocument = document.implementation.createHTMLDocument( '' );
+			// Carefully unwrap the HTML out of the root node (and doctype, if any).
+			// <html> might have some arguments here, but they're apparently not important.
+			html = html.replace(/^\s*(?:<!doctype[^>]*>)?\s*<html[^>]*>/i, '' );
+			html = html.replace(/<\/html>\s*$/i, '' );
+			newDocument.documentElement.innerHTML = html;
+		}
+
 		return newDocument;
 	};
 
