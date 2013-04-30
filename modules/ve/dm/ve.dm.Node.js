@@ -480,6 +480,16 @@ ve.dm.Node.prototype.getOffset = function () {
 ve.dm.Node.prototype.canBeMergedWith = function ( node ) {
 	var n1 = this,
 		n2 = node;
+
+	// Content node can be merged with node that can contain content, for instance: TextNode
+	// and ParagraphNode. When this method is called for such case (one node is a content node and
+	// the other one can contain content) make sure to start traversal from node that can contain
+	// content (insteaf of content node itself).
+	if ( n1.canContainContent() && n2.isContent() ) {
+		n2 = n2.getParent();
+	} else if ( n2.canContainContent() && n1.isContent() ) {
+		n1 = n1.getParent();
+	}
 	// Move up from n1 and n2 simultaneously until we find a common ancestor
 	while ( n1 !== n2 ) {
 		if (
