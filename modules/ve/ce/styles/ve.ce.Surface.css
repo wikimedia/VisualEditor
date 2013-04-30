@@ -34,6 +34,7 @@
 	display: none;
 }
 
+/* @noflip */
 .ve-ce-surface-phantoms {
 	cursor: not-allowed;
 	left: 0;
