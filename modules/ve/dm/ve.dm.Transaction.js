@@ -743,13 +743,8 @@ ve.dm.Transaction.prototype.translateOffset = function ( offset, reversed, exclu
  * @returns {ve.Range} Translated range, as it will be after processing transaction
  */
 ve.dm.Transaction.prototype.translateRange = function ( range, reversed ) {
-	var start = this.translateOffset( range.start, reversed, false ),
-		end = this.translateOffset( range.end, reversed, true );
-	if ( range.start <= range.end && start > end ) {
-		// translateOffset() has mapped end to jump over start
-		// Disable the excludeInsertion behavior in this case
+	var start = this.translateOffset( range.start, reversed, true ),
 		end = this.translateOffset( range.end, reversed, false );
-	}
 	return range.isBackwards() ? new ve.Range( end, start ) : new ve.Range( start, end );
 };
 

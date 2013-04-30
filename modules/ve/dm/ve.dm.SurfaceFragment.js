@@ -22,7 +22,7 @@ ve.dm.SurfaceFragment = function VeDmSurfaceFragment( surface, range, noAutoSele
 
 	// Properties
 	this.surface = surface;
-	this.setRange( range && range instanceof ve.Range ? range : surface.getSelection() );
+	this.range = range && range instanceof ve.Range ? range : surface.getSelection();
 	// Short-circuit for invalid range null fragment
 	if ( !this.range ) {
 		return this;
@@ -30,14 +30,14 @@ ve.dm.SurfaceFragment = function VeDmSurfaceFragment( surface, range, noAutoSele
 	this.document = surface.getDocument();
 	this.noAutoSelect = !!noAutoSelect;
 
-
 	// Initialization
 	var length = this.document.data.getLength();
-	this.setRange( new ve.Range(
+	this.range = new ve.Range(
 		// Clamp range to valid document offsets
 		Math.min( Math.max( this.range.from, 0 ), length ),
 		Math.min( Math.max( this.range.to, 0 ), length )
-	) );
+	);
+	this.historyPointer = this.getSurface().getCompleteHistoryLength();
 };
 
 /* Static Properties */
@@ -103,17 +103,6 @@ ve.dm.SurfaceFragment.prototype.getRange = function ( noCopy ) {
 };
 
 /**
- * Update the range of the transaction and reset the history pointer.
- *
- * @method
- * @param {ve.Range} range New range
- */
-ve.dm.SurfaceFragment.prototype.setRange = function ( range ) {
-	this.historyPointer = this.getSurface().getCompleteHistoryLength();
-	this.range = range;
-};
-
-/**
  * Check if the fragment is null.
  *
  * @method
@@ -168,13 +157,29 @@ ve.dm.SurfaceFragment.prototype.truncateRange = function ( limit ) {
  * @method
  * @returns {ve.dm.SurfaceFragment} Collapsed fragment
  */
-ve.dm.SurfaceFragment.prototype.collapseRange = function () {
+ve.dm.SurfaceFragment.prototype.collapseRangeToStart = function () {
 	// Handle null fragment
 	if ( !this.surface ) {
 		return this;
 	}
 	return new ve.dm.SurfaceFragment(
 		this.surface, new ve.Range( this.getRange( true ).start ), this.noAutoSelect
+	);
+};
+
+/**
+ * Get a new fragment with a zero-length selection at the end offset.
+ *
+ * @method
+ * @returns {ve.dm.SurfaceFragment} Collapsed fragment
+ */
+ve.dm.SurfaceFragment.prototype.collapseRangeToEnd = function () {
+	// Handle null fragment
+	if ( !this.surface ) {
+		return this;
+	}
+	return new ve.dm.SurfaceFragment(
+		this.surface, new ve.Range( this.getRange( true ).end ), this.noAutoSelect
 	);
 };
 
@@ -546,17 +551,6 @@ ve.dm.SurfaceFragment.prototype.removeContent = function () {
 	if ( this.getRange( true ).getLength() ) {
 		tx = ve.dm.Transaction.newFromRemoval( this.document, this.getRange() );
 		this.surface.change( tx, !this.noAutoSelect && tx.translateRange( this.getRange() ) );
-		// Check if the range didn't get collapsed automatically - this will occur when removing
-		// content across un-mergable nodes because the delete only strips out content leaving
-		// structure at the beginning and end of the range in place
-		if ( this.getRange( true ).getLength() ) {
-			// Collapse the range manually
-			this.range = new ve.Range( this.getRange( true ).start );
-			if ( !this.noAutoSelect ) {
-				// Update the surface selection
-				this.surface.change( null, this.getRange() );
-			}
-		}
 	}
 	return this;
 };
@@ -607,10 +601,8 @@ ve.dm.SurfaceFragment.prototype.wrapNodes = function ( wrapper ) {
 	if ( !ve.isArray( wrapper ) ) {
 		wrapper = [wrapper];
 	}
-	var tx = ve.dm.Transaction.newFromWrap( this.document, this.getRange(), [], [], [], wrapper ),
-		newRange = new ve.Range( this.getRange( true ).start, this.getRange( true ).end + tx.getLengthDifference() );
-	this.surface.change( tx, !this.noAutoSelect && newRange );
-	this.setRange( newRange );
+	var tx = ve.dm.Transaction.newFromWrap( this.document, this.getRange(), [], [], [], wrapper );
+	this.surface.change( tx, !this.noAutoSelect && tx.translateRange( this.getRange() ) );
 	return this;
 };
 
@@ -632,7 +624,7 @@ ve.dm.SurfaceFragment.prototype.unwrapNodes = function ( outerDepth, innerDepth 
 	if ( !this.surface ) {
 		return this;
 	}
-	var i, tx, newRange, innerUnwrapper = [], outerUnwrapper = [];
+	var i, tx, innerUnwrapper = [], outerUnwrapper = [];
 
 	if ( this.getRange( true ).end - this.getRange( true ).start < innerDepth * 2 ) {
 		throw new Error( 'cannot unwrap by greater depth than maximum theoretical depth of selection' );
@@ -646,10 +638,7 @@ ve.dm.SurfaceFragment.prototype.unwrapNodes = function ( outerDepth, innerDepth 
 	}
 
 	tx = ve.dm.Transaction.newFromWrap( this.document, this.getRange(), outerUnwrapper, [], innerUnwrapper, [] );
-	newRange = new ve.Range( this.getRange( true ).start - outerDepth, this.getRange( true ).end + outerDepth + tx.getLengthDifference() );
-	this.surface.change( tx, !this.noAutoSelect && newRange );
-
-	this.setRange( newRange );
+	this.surface.change( tx, !this.noAutoSelect && tx.translateRange( this.getRange() ) );
 
 	return this;
 };
@@ -680,7 +669,7 @@ ve.dm.SurfaceFragment.prototype.rewrapNodes = function ( depth, wrapper ) {
 	if ( !this.surface ) {
 		return this;
 	}
-	var i, tx, newRange, unwrapper = [];
+	var i, tx, unwrapper = [];
 
 	if ( !ve.isArray( wrapper ) ) {
 		wrapper = [wrapper];
@@ -695,10 +684,7 @@ ve.dm.SurfaceFragment.prototype.rewrapNodes = function ( depth, wrapper ) {
 	}
 
 	tx = ve.dm.Transaction.newFromWrap( this.document, this.getRange(), [], [], unwrapper, wrapper );
-	newRange = new ve.Range( this.getRange( true ).start, this.getRange( true ).end + tx.getLengthDifference() );
-	this.surface.change( tx, !this.noAutoSelect && newRange );
-
-	this.setRange( newRange );
+	this.surface.change( tx, !this.noAutoSelect && tx.translateRange( this.getRange() ) );
 
 	return this;
 };
@@ -728,17 +714,14 @@ ve.dm.SurfaceFragment.prototype.wrapAllNodes = function ( wrapper ) {
 		return this;
 	}
 
-	var tx, newRange;
+	var tx;
 
 	if ( !ve.isArray( wrapper ) ) {
 		wrapper = [wrapper];
 	}
 
 	tx = ve.dm.Transaction.newFromWrap( this.document, this.getRange(), [], wrapper, [], [] );
-	newRange = new ve.Range( this.getRange( true ).start, this.getRange( true ).end + tx.getLengthDifference() );
-	this.surface.change( tx, !this.noAutoSelect && newRange );
-
-	this.setRange( newRange );
+	this.surface.change( tx, !this.noAutoSelect && tx.translateRange( this.getRange() ) );
 
 	return this;
 };
@@ -766,7 +749,7 @@ ve.dm.SurfaceFragment.prototype.rewrapAllNodes = function ( depth, wrapper ) {
 	if ( !this.surface ) {
 		return this;
 	}
-	var i, tx, newRange, unwrapper = [],
+	var i, tx, unwrapper = [],
 		innerRange = new ve.Range( this.getRange( true ).start + depth, this.getRange( true ).end - depth );
 
 	if ( !ve.isArray( wrapper ) ) {
@@ -782,10 +765,7 @@ ve.dm.SurfaceFragment.prototype.rewrapAllNodes = function ( depth, wrapper ) {
 	}
 
 	tx = ve.dm.Transaction.newFromWrap( this.document, innerRange, unwrapper, wrapper, [], [] );
-	newRange = new ve.Range( this.getRange( true ).start, this.getRange( true ).end + tx.getLengthDifference() );
-	this.surface.change( tx, !this.noAutoSelect && newRange );
-
-	this.setRange( newRange );
+	this.surface.change( tx, !this.noAutoSelect && tx.translateRange( this.getRange() ) );
 
 	return this;
 };
@@ -816,8 +796,7 @@ ve.dm.SurfaceFragment.prototype.isolateAndUnwrap = function ( isolateForType ) {
 		endSplitRequired = false,
 		startSplitNodes = [],
 		endSplitNodes = [],
-		fragment = this,
-		newRange = new ve.Range( this.getRange( true ).start, this.getRange( true ).end );
+		fragment = this;
 
 	function createSplits( splitNodes, insertBefore ) {
 		var i, length,
@@ -833,8 +812,7 @@ ve.dm.SurfaceFragment.prototype.isolateAndUnwrap = function ( isolateForType ) {
 		}
 
 		tx = ve.dm.Transaction.newFromInsertion( fragment.getDocument(), insertBefore ? startOffset : endOffset, data );
-		newRange = new ve.Range( newRange.start, newRange.end + tx.getLengthDifference() );
-		fragment.surface.change( tx, !fragment.noAutoSelect && newRange );
+		fragment.surface.change( tx, !fragment.noAutoSelect && tx.translateRange( fragment.getRange() ) );
 
 		startOffset += startOffsetChange;
 		endOffset += endOffsetChange;
