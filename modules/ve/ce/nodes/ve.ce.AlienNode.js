@@ -93,7 +93,7 @@ ve.ce.AlienNode.prototype.onLive = function () {
 };
 
 ve.ce.AlienNode.prototype.onUpdate = function () {
-	this.$.html( this.model.getAttribute( 'html' ) );
+	this.$.html( ve.copyArray( this.model.getAttribute( 'domElements' ) || [] ) );
 };
 
 /**

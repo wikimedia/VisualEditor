@@ -237,7 +237,7 @@ QUnit.test( 'getRenderedContents', function ( assert ) {
 				['d', [ { 'type': 'textStyle/bold' } ]],
 				{
 					'type': 'alienInline',
-					'attributes': { 'html': '<tt>e</tt>' },
+					'attributes': { 'domElements': $.makeArray( $( '<tt>e</tt>' ) ) },
 					'annotations': [ { 'type': 'textStyle/bold' } ]
 				},
 				{ 'type': '/alienInline' },
