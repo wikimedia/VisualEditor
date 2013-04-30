@@ -254,19 +254,20 @@ ve.ui.Context.prototype.updateDimensions = function ( transition ) {
 	var position, $container,
 		inspector = this.inspectors.getCurrent();
 
-		// Get cursor position
-		position = ve.ce.Surface.getSelectionRect().end;
-		if ( position ) {
-			$container = inspector ? this.inspectors.$ : this.$menu;
-			this.$.css( { 'left': position.x, 'top': position.y } );
-			this.popup.display(
-				position.x,
-				position.y,
-				$container.outerWidth( true ),
-				$container.outerHeight( true ),
-				transition
-			);
-		}
+	// Get cursor position
+	position = ve.ce.Surface.getSelectionRect();
+	position = position && position.end;
+	if ( position ) {
+		$container = inspector ? this.inspectors.$ : this.$menu;
+		this.$.css( { 'left': position.x, 'top': position.y } );
+		this.popup.display(
+			position.x,
+			position.y,
+			$container.outerWidth( true ),
+			$container.outerHeight( true ),
+			transition
+		);
+	}
 
 	return this;
 };
