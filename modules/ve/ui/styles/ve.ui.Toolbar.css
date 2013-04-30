@@ -12,7 +12,6 @@
 	background-image: url(images/fade-up.png);
 	background-position: left bottom;
 	background-repeat: repeat-x;
-	z-index: 100;
 	padding-bottom: 1px;
 	line-height: 1em;
 }
