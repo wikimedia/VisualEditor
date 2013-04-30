@@ -598,7 +598,7 @@
 				destination.push( ve.copyArray( sourceValue, callback ) );
 			} else if ( sourceValue && typeof sourceValue.clone === 'function' ) {
 				destination.push( callback ? callback( sourceValue.clone() ) : sourceValue.clone() );
-			} else if ( sourceValue instanceof Node ) {
+			} else if ( sourceValue && typeof sourceValue.cloneNode === 'function' ) {
 				destination.push( callback ? callback( sourceValue.cloneNode( true ) ) : sourceValue.cloneNode( true ) );
 			} else {
 				destination.push( callback ? callback( sourceValue ) : sourceValue );
@@ -630,7 +630,7 @@
 				destination[key] = ve.copyArray( sourceValue, callback );
 			} else if ( sourceValue && typeof sourceValue.clone === 'function' ) {
 				destination[key] = callback ? callback( sourceValue.clone() ) : sourceValue.clone();
-			} else if ( sourceValue instanceof Node ) {
+			} else if ( sourceValue && typeof sourceValue.cloneNode === 'function' ) {
 				destination[key] = callback ? callback( sourceValue.cloneNode( true ) ) : sourceValue.cloneNode( true );
 			} else {
 				destination[key] = callback ? callback( sourceValue ) : sourceValue;
