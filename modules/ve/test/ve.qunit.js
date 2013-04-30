@@ -129,7 +129,8 @@ function getDomElementSummary( element ) {
  * @returns {Object} DOM element summary if value is a node, otherwise just the value
  */
 function convertDomElements( value ) {
-	if ( value instanceof Node ) {
+	// Use duck typing rather than instanceof Node; the latter doesn't always work correctly
+	if ( value && value.nodeType ) {
 		return getDomElementSummary( value );
 	}
 	return value;
