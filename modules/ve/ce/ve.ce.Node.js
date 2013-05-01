@@ -26,7 +26,7 @@ ve.ce.Node = function VeCeNode( model, $element ) {
 	this.parent = null;
 
 	// Events
-	this.model.on( 'attributeChange', ve.bind( this.onAttributeChange, this ) );
+	this.model.connect( this, { 'attributeChange': 'onAttributeChange' } );
 };
 
 /* Inheritance */

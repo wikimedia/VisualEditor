@@ -22,10 +22,7 @@ ve.ce.ResizableNode = function VeCeResizableNode( $resizable ) {
 	this.$resizeHandles = $( '<div>' );
 
 	// Events
-	this.addListenerMethods( this, {
-		'focus': 'onResizableFocus',
-		'blur': 'onResizableBlur'
-	} );
+	this.connect( this, { 'focus': 'onResizableFocus', 'blur': 'onResizableBlur' } );
 
 	// Initialization
 	this.$resizeHandles

@@ -9,14 +9,15 @@
  * UserInterface toolbar.
  *
  * @class
- * @extends ve.EventEmitter
+ * @mixins ve.EventEmitter
+ *
  * @constructor
  * @param {jQuery} $container
  * @param {ve.Surface} surface
  * @param {Array} config
  */
 ve.ui.Toolbar = function VeUiToolbar( $container, surface, config ) {
-	// Parent constructor
+	// Mixin constructors
 	ve.EventEmitter.call( this );
 
 	// Properties
@@ -24,10 +25,9 @@ ve.ui.Toolbar = function VeUiToolbar( $container, surface, config ) {
 	this.$ = $container;
 	this.$groups = $( '<div>' );
 	this.config = config || {};
-	this.onContextChangeHandler = ve.bind( this.onContextChange, this );
 
 	// Events
-	this.surface.getModel().on( 'contextChange', this.onContextChangeHandler );
+	this.surface.getModel().connect( this, { 'contextChange': 'onContextChange' } );
 
 	// Initialization
 	this.$groups.addClass( 've-ui-toolbarGroups' );
@@ -37,7 +37,7 @@ ve.ui.Toolbar = function VeUiToolbar( $container, surface, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.Toolbar, ve.EventEmitter );
+ve.mixinClass( ve.ui.Toolbar, ve.EventEmitter );
 
 /* Events */
 
@@ -117,6 +117,6 @@ ve.ui.Toolbar.prototype.setup = function () {
  * @method
  */
 ve.ui.Toolbar.prototype.destroy = function () {
-	this.surface.getModel().removeListener( 'contextChange', this.onContextChangeHandler );
+	this.surface.getModel().disconnect( this, { 'contextChange': 'onContextChange' } );
 	this.$.remove();
 };

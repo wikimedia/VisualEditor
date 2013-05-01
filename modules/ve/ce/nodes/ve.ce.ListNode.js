@@ -18,7 +18,7 @@ ve.ce.ListNode = function VeCeListNode( model ) {
 	ve.ce.BranchNode.call( this, model, ve.ce.BranchNode.getDomWrapper( model, 'style' ) );
 
 	// Events
-	this.model.addListenerMethod( this, 'update', 'onUpdate' );
+	this.model.connect( this, { 'update': 'onUpdate' } );
 };
 
 /* Inheritance */

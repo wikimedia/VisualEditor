@@ -33,7 +33,7 @@ ve.ui.DropdownTool = function VeUiDropdownTool( toolbar, config ) {
 		'mousedown': ve.bind( this.onMouseDown, this ),
 		'mouseup': ve.bind( this.onMouseUp, this )
 	} );
-	this.menu.on( 'select', ve.bind( this.onMenuItemSelect, this ) );
+	this.menu.connect( this, { 'select': 'onMenuItemSelect' } );
 
 	// Initialization
 	this.$

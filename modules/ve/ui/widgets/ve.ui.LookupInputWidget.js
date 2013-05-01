@@ -43,7 +43,7 @@ ve.ui.LookupInputWidget = function VeUiLookupInputWidget( input, config ) {
 		'blur': ve.bind( this.onLookupInputBlur, this ),
 		'mousedown': ve.bind( this.onLookupInputMouseDown, this )
 	} );
-	this.lookupInput.addListenerMethod( this, 'change', 'onLookupInputChange' );
+	this.lookupInput.connect( this, { 'change': 'onLookupInputChange' } );
 
 	// Initialization
 	this.$.addClass( 've-ui-lookupWidget' );

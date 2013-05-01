@@ -51,16 +51,24 @@ ve.ui.PagedDialog.prototype.initialize = function () {
 	this.outlineWidget = new ve.ui.OutlineWidget( { '$$': this.$$ } );
 
 	// Events
-	this.outlineWidget.on( 'select', ve.bind( function ( item ) {
-		if ( item ) {
-			this.pagesPanel.showItem( this.pages[item.getData()] );
-		}
-	}, this ) );
+	this.outlineWidget.connect( this, { 'select': 'onOutlineSelect' } );
 
 	// Initialization
 	this.outlinePanel.$.append( this.outlineWidget.$ ).addClass( 've-ui-pagedDialog-outlinePanel' );
 	this.pagesPanel.$.addClass( 've-ui-pagedDialog-pagesPanel' );
 	this.$body.append( this.layout.$ );
+};
+
+/**
+ * Handle outline select events.
+ *
+ * @method
+ * @param {ve.ui.OptionWidget} item Selected item
+ */
+ve.ui.PagedDialog.prototype.onOutlineSelect = function ( item ) {
+	if ( item ) {
+		this.pagesPanel.showItem( this.pages[item.getData()] );
+	}
 };
 
 /**

@@ -24,7 +24,7 @@ ve.ce.MWReferenceNode = function VeCeMWReferenceNode( model ) {
 		.append( this.$link );
 
 	// Events
-	this.model.addListenerMethod( this, 'update', 'onUpdate' );
+	this.model.connect( this, { 'update': 'onUpdate' } );
 	this.$link.click( ve.bind( this.onClick, this ) );
 
 	// Initialization

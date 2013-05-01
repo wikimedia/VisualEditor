@@ -19,7 +19,7 @@ ve.ui.RedoButtonTool = function VeUiRedoButtonTool( toolbar, config ) {
 	ve.ui.ButtonTool.call( this, toolbar, config );
 
 	// Events
-	this.toolbar.getSurface().getModel().addListenerMethod( this, 'history', 'onUpdateState' );
+	this.toolbar.getSurface().getModel().connect( this, { 'history': 'onUpdateState' } );
 
 	// Initialization
 	this.setDisabled( true );

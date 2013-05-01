@@ -10,14 +10,15 @@
  * ContentEditable surface.
  *
  * @class
- * @extends ve.EventEmitter
+ * @mixins ve.EventEmitter
+ *
  * @constructor
  * @param {jQuery} $container
  * @param {ve.dm.Surface} model Surface model to observe
  * @param {ve.Surface} surface Surface to view
  */
 ve.ce.Surface = function VeCeSurface( $container, model, surface ) {
-	// Parent constructor
+	// Mixin constructors
 	ve.EventEmitter.call( this );
 
 	// Properties
@@ -41,12 +42,10 @@ ve.ce.Surface = function VeCeSurface( $container, model, surface ) {
 	this.focusedNode = null;
 
 	// Events
-	this.surfaceObserver.addListenerMethods(
+	this.surfaceObserver.connect(
 		this, { 'contentChange': 'onContentChange', 'selectionChange': 'onSelectionChange' }
 	);
-	this.model.addListenerMethods(
-		this, { 'change': 'onChange', 'lock': 'onLock', 'unlock': 'onUnlock' }
-	);
+	this.model.connect( this, { 'change': 'onChange', 'lock': 'onLock', 'unlock': 'onUnlock' } );
 	this.documentView.getDocumentNode().$.on( {
 		'focus': ve.bind( this.documentOnFocus, this ),
 		'blur': ve.bind( this.documentOnBlur, this )
@@ -73,7 +72,7 @@ ve.ce.Surface = function VeCeSurface( $container, model, surface ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ce.Surface, ve.EventEmitter );
+ve.mixinClass( ve.ce.Surface, ve.EventEmitter );
 
 /* Events */
 

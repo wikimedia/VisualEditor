@@ -20,7 +20,7 @@ ve.ce.TableCellNode = function VeCeTableCellNode( model ) {
 	);
 
 	// Events
-	this.model.addListenerMethod( this, 'update', 'onUpdate' );
+	this.model.connect( this, { 'update': 'onUpdate' } );
 };
 
 /* Inheritance */

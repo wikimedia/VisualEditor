@@ -9,14 +9,14 @@
  * UserInterface iframe abstraction.
  *
  * @class
- * @extends ve.EventEmitter
+ * @mixins ve.EventEmitter
  *
  * @constructor
  * @param {Object} [config] Config options
  * @cfg {string[]} [stylesheets] List of stylesheet file names, each relative to ve/ui/styles
  */
 ve.ui.Frame = function VeUiFrame( config ) {
-	// Inheritance
+	// Mixin constructors
 	ve.EventEmitter.call( this );
 
 	// Properties
@@ -35,7 +35,7 @@ ve.ui.Frame = function VeUiFrame( config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.Frame, ve.EventEmitter );
+ve.mixinClass( ve.ui.Frame, ve.EventEmitter );
 
 /* Events */
 

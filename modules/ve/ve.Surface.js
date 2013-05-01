@@ -49,6 +49,9 @@ ve.Surface = function VeSurface( target, doc, options ) {
 	ve.instances.push( this );
 	this.model.startHistoryTracking();
 
+	// Events
+	ve.triggerRegistry.connect( this, { 'register': 'onTriggerRegistryRegister' } );
+
 	// Turn off native object editing. This must be tried after the surface has been added to DOM.
 	try {
 		document.execCommand( 'enableObjectResizing', false, false );
@@ -75,6 +78,17 @@ ve.Surface.defaultOptions = {
 };
 
 /* Methods */
+
+/**
+ * Handle trigger registry register events.
+ *
+ * @method
+ * @param {string} name Symbolic name of trigger
+ * @param {ve.Trigger} trigger Trigger
+ */
+ve.Surface.prototype.onTriggerRegistryRegister = function ( name, trigger ) {
+	this.addTriggers( [trigger], ve.commandRegistry.lookup( name ) );
+};
 
 /**
  * Get the surface model.
@@ -217,38 +231,36 @@ ve.Surface.prototype.execute = function ( action, method ) {
  */
 ve.Surface.prototype.setupCommands = function () {
 	var i, len, command,
-		commands = this.options.commands,
-		surface = this;
-
-	function loadTriggers( triggers, command ) {
-		var i, len, trigger;
-		if ( !ve.isArray( triggers ) ) {
-			triggers = [triggers];
-		}
-		for ( i = 0, len = triggers.length; i < len; i++ ) {
-			// Normalize
-			trigger = triggers[i].toString();
-			// Validate
-			if ( trigger.length === 0 ) {
-				throw new Error( 'Incomplete trigger: ' + triggers[i] );
-			}
-			surface.commands[trigger] = command.action;
-		}
-	}
+		commands = this.options.commands;
 
 	for ( i = 0, len = commands.length; i < len; i++ ) {
 		command = ve.commandRegistry.lookup( commands[i] );
 		if ( !command ) {
 			throw new Error( 'No command registered by that name: ' + commands[i] );
 		}
-		loadTriggers( ve.triggerRegistry.lookup( commands[i] ), command );
+		this.addTriggers( [ve.triggerRegistry.lookup( commands[i] )], command );
 	}
+};
 
-	// Bind register event to lazy load triggers
-	ve.triggerRegistry.on( 'register', function ( name, trigger ) {
-		loadTriggers( trigger, ve.commandRegistry.lookup( name ) );
-	} );
+/**
+ * Add triggers to surface.
+ *
+ * @method
+ * @param {ve.Trigger[]} triggers Triggers to associate with command
+ * @param {Object} command Command to trigger
+ */
+ve.Surface.prototype.addTriggers = function ( triggers, command ) {
+	var i, len, trigger;
 
+	for ( i = 0, len = triggers.length; i < len; i++ ) {
+		// Normalize
+		trigger = triggers[i].toString();
+		// Validate
+		if ( trigger.length === 0 ) {
+			throw new Error( 'Incomplete trigger: ' + triggers[i] );
+		}
+		this.commands[trigger] = command.action;
+	}
 };
 
 /**

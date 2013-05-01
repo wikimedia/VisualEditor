@@ -36,8 +36,8 @@ ve.ui.MWCategoryWidget = function VeUiMWCategoryWidget( config ) {
 
 	// Events
 	this.categoryInput.$input.on( 'keydown', ve.bind( this.onLookupInputKeyDown, this ) );
-	this.categoryInput.lookupMenu.addListenerMethod( this, 'select', 'onLookupMenuItemSelect' );
-	this.popup.addListenerMethods( this, {
+	this.categoryInput.lookupMenu.connect( this, { 'select': 'onLookupMenuItemSelect' } );
+	this.popup.connect( this, {
 		'removeCategory': 'onRemoveCategory',
 		'updateSortkey': 'onUpdateSortkey',
 		'hide': 'onPopupHide'
@@ -178,7 +178,7 @@ ve.ui.MWCategoryWidget.prototype.addItems = function ( items ) {
 		}
 		categoryGroupItem = new ve.ui.MWCategoryItemWidget( { '$$': this.$$, 'item': item } );
 		// Bind category item events.
-		categoryGroupItem.addListenerMethods( this, {
+		categoryGroupItem.connect( this, {
 			'savePopupState': 'onSavePopupState',
 			'togglePopupMenu': 'onTogglePoupupMenu'
 		} );

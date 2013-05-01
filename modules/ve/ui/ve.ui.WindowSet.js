@@ -9,13 +9,13 @@
  * UserInterface window set.
  *
  * @class
- * @extends ve.EventEmitter
+ * @mixins ve.EventEmitter
  *
  * @constructor
  * @param {ve.Surface} surface
  */
 ve.ui.WindowSet = function VeUiWindowSet( surface, factory ) {
-	// Inheritance
+	// Mixin constructors
 	ve.EventEmitter.call( this );
 
 	// Properties
@@ -31,7 +31,7 @@ ve.ui.WindowSet = function VeUiWindowSet( surface, factory ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.WindowSet, ve.EventEmitter );
+ve.mixinClass( ve.ui.WindowSet, ve.EventEmitter );
 
 /* Events */
 
@@ -119,9 +119,11 @@ ve.ui.WindowSet.prototype.open = function ( name ) {
 	}
 	if ( !( name in this.windows ) ) {
 		win = this.windows[name] = this.factory.create( name, this.surface );
-		win.on( 'setup', ve.bind( this.onWindowSetup, this, win ) );
-		win.on( 'open', ve.bind( this.onWindowOpen, this, win ) );
-		win.on( 'close', ve.bind( this.onWindowClose, this, win ) );
+		win.connect( this, {
+			'setup': ['onWindowSetup', win],
+			'open': ['onWindowOpen', win],
+			'close': ['onWindowClose', win]
+		} );
 		this.$.append( win.$ );
 	}
 

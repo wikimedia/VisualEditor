@@ -20,7 +20,7 @@ ve.ce.HeadingNode = function VeCeHeadingNode( model ) {
 	);
 
 	// Events
-	this.model.addListenerMethod( this, 'update', 'onUpdate' );
+	this.model.connect( this, { 'update': 'onUpdate' } );
 };
 
 /* Inheritance */

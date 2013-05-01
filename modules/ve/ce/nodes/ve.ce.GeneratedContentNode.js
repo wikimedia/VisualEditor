@@ -23,7 +23,7 @@ ve.ce.GeneratedContentNode = function VeCeGeneratedContentNode( model ) {
 	this.$.attr( 'contenteditable', false );
 
 	// Events
-	this.model.addListenerMethod( this, 'update', 'onUpdate' );
+	this.model.connect( this, { 'update': 'onUpdate' } );
 
 	// Initialization
 	this.onUpdate();

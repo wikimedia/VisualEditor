@@ -23,10 +23,9 @@ ve.ce.AlienNode = function VeCeAlienNode( model ) {
 
 	// Properties
 	this.$phantoms = $( [] );
-	this.onSurfaceModelChangeHandler = ve.bind( this.onSurfaceModelChange, this );
 
 	// Events
-	this.addListenerMethod( this, 'live', 'onLive' );
+	this.connect( this, { 'live': 'onLive' } );
 	this.$.on( 'mouseenter', ve.bind( this.onMouseEnter, this ) );
 };
 
@@ -51,7 +50,7 @@ ve.ce.AlienNode.prototype.onLive = function () {
 
 	if ( this.live === true ) {
 		// Events
-		surfaceModel.on( 'change', this.onSurfaceModelChangeHandler );
+		surfaceModel.connect( this, { 'change': 'onSurfaceModelChange' } );
 
 		// Shields
 		this.$.add( this.$.find( '*' ) ).each( function () {
@@ -67,7 +66,7 @@ ve.ce.AlienNode.prototype.onLive = function () {
 			}
 		} );
 	} else {
-		surfaceModel.removeListener( 'change', this.onSurfaceModelChangeHandler );
+		surfaceModel.disconnect( this, { 'change': 'onSurfaceModelChange' } );
 	}
 };
 

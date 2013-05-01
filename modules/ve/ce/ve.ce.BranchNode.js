@@ -27,13 +27,10 @@ ve.ce.BranchNode = function VeCeBranchNode( model, $element ) {
 
 	// Properties
 	this.domWrapperElementType = this.$.get( 0 ).nodeName.toLowerCase();
-	this.slugs = { };
-	this.emitChildUpdate = ve.bind( function ( transaction ) {
-		this.emit( 'childUpdate', transaction );
-	}, this );
+	this.slugs = {};
 
 	// Events
-	this.model.addListenerMethod( this, 'splice', 'onSplice' );
+	this.model.connect( this, { 'splice': 'onSplice' } );
 
 	// DOM Changes
 	this.$.addClass( 've-ce-branchNode' );
@@ -162,6 +159,15 @@ ve.ce.BranchNode.prototype.updateDomWrapper = function ( key ) {
 };
 
 /**
+ * Handles model update events.
+ *
+ * @param {ve.dm.Transaction} transaction
+ */
+ve.ce.BranchNode.prototype.onModelUpdate = function ( transaction ) {
+	this.emit( 'childUpdate', transaction );
+};
+
+/**
  * Handle splice events.
  *
  * ve.ce.Node objects are generated from the inserted ve.dm.Node objects, producing a view that's a
@@ -182,12 +188,12 @@ ve.ce.BranchNode.prototype.onSplice = function ( index ) {
 	if ( args.length >= 3 ) {
 		for ( i = 2, length = args.length; i < length; i++ ) {
 			args[i] = ve.ce.nodeFactory.create( args[i].getType(), args[i] );
-			args[i].model.addListener( 'update', this.emitChildUpdate );
+			args[i].model.connect( this, { 'update': 'onModelUpdate' } );
 		}
 	}
 	removals = this.children.splice.apply( this.children, args );
 	for ( i = 0, length = removals.length; i < length; i++ ) {
-		removals[i].model.removeListener( 'update', this.emitChildUpdate );
+		removals[i].model.disconnect( this, { 'update': 'onModelUpdate' } );
 		removals[i].detach();
 		// Update DOM
 		removals[i].$.detach();

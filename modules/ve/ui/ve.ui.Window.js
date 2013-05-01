@@ -10,14 +10,14 @@
  *
  * @class
  * @abstract
- * @extends ve.EventEmitter
+ * @mixins ve.EventEmitter
  *
  * @constructor
  * @param {ve.Surface} surface
  * @emits initialize
  */
 ve.ui.Window = function VeUiWindow( surface ) {
-	// Inheritance
+	// Mixin constructors
 	ve.EventEmitter.call( this );
 
 	// Properties
@@ -39,10 +39,7 @@ ve.ui.Window = function VeUiWindow( surface ) {
 		.append( this.frame.$ );
 
 	// Events
-	this.frame.on( 'initialize', ve.bind( function () {
-		this.initialize();
-		this.emit( 'initialize' );
-	}, this ) );
+	this.frame.connect( this, { 'initialize': 'onFrameInitialize' } );
 
 	this.$.load( ve.bind( function () {
 		this.frame.initialize();
@@ -51,7 +48,7 @@ ve.ui.Window = function VeUiWindow( surface ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.Window, ve.EventEmitter );
+ve.mixinClass( ve.ui.Window, ve.EventEmitter );
 
 /* Events */
 
@@ -107,6 +104,7 @@ ve.ui.Window.static.titleMessage = null;
 /**
  * Add a stylesheet to be loaded into the window's frame.
  *
+ * @method
  * @param {string[]} paths List of absolute stylesheet paths
  */
 ve.ui.Window.static.addStylesheetFiles = function ( paths ) {
@@ -119,6 +117,7 @@ ve.ui.Window.static.addStylesheetFiles = function ( paths ) {
 /**
  * Add a stylesheet from the /ve/ui/styles directory.
  *
+ * @method
  * @param {string[]} files Names of stylesheet files
  */
 ve.ui.Window.static.addLocalStylesheets = function ( files ) {
@@ -135,6 +134,16 @@ ve.ui.Window.static.addLocalStylesheets = function ( files ) {
 };
 
 /* Methods */
+
+/**
+ * Handle frame initialize event.
+ *
+ * @method
+ */
+ve.ui.Window.prototype.onFrameInitialize = function () {
+	this.initialize();
+	this.emit( 'initialize' );
+};
 
 /**
  * Handle the window being initialized.
@@ -226,6 +235,7 @@ ve.ui.Window.prototype.getFrame = function () {
 
 /**
  *
+ * @method
  */
 ve.ui.Window.prototype.setSize = function ( width, height ) {
 	if ( !this.frame.$content ) {
@@ -240,6 +250,7 @@ ve.ui.Window.prototype.setSize = function ( width, height ) {
 
 /**
  *
+ * @method
  */
 ve.ui.Window.prototype.fitHeightToContents = function ( min, max ) {
 	var height = this.frame.$content.outerHeight();
@@ -262,6 +273,7 @@ ve.ui.Window.prototype.fitWidthToContents = function ( min, max ) {
 
 /**
  *
+ * @method
  */
 ve.ui.Window.prototype.setPosition = function ( left, top ) {
 	this.$.css( { 'left': left, 'top': top } );

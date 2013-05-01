@@ -37,16 +37,14 @@ ve.ui.Context = function VeUiContext( surface ) {
 	);
 
 	// Events
-	this.surface.getModel().addListenerMethods( this, {
-		'change': 'onChange'
-	} );
-	this.surface.getView().addListenerMethods( this, {
+	this.surface.getModel().connect( this, { 'change': 'onChange' } );
+	this.surface.getView().connect( this, {
 		'selectionStart': 'onSelectionStart',
 		'selectionEnd': 'onSelectionEnd',
 		'relocationStart': 'onRelocationStart',
 		'relocationEnd': 'onRelocationEnd'
 	} );
-	this.inspectors.addListenerMethods( this, {
+	this.inspectors.connect( this, {
 		'setup': 'onInspectorSetup',
 		'open': 'onInspectorOpen',
 		'close': 'onInspectorClose'

@@ -22,7 +22,7 @@ ve.ui.MWMetaDialog = function VeUiMWMetaDialog( surface ) {
 	this.metaList = surface.getModel().metaList;
 
 	// Events
-	this.metaList.addListenerMethods( this, {
+	this.metaList.connect( this, {
 		'insert': 'onMetaListInsert',
 		'remove': 'onMetaListRemove'
 	} );
@@ -96,7 +96,7 @@ ve.ui.MWMetaDialog.prototype.initialize = function () {
 	} );
 
 	// Events
-	this.categoryWidget.addListenerMethods( this, {
+	this.categoryWidget.connect( this, {
 		'newCategory': 'onNewCategory',
 		'updateSortkey': 'onUpdateSortKey'
 	} );
