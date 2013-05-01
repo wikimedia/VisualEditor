@@ -167,7 +167,10 @@ ve.dm.Surface.prototype.setInsertionAnnotations = function ( annotations ) {
 	if ( !this.enabled ) {
 		return;
 	}
-	this.insertionAnnotations = annotations.clone();
+	this.insertionAnnotations = annotations !== null ?
+		annotations.clone() :
+		new ve.dm.AnnotationSet( this.documentModel.getStore() );
+
 	this.emit( 'contextChange' );
 };
 
@@ -175,14 +178,20 @@ ve.dm.Surface.prototype.setInsertionAnnotations = function ( annotations ) {
  * Add an annotation to be used upon insertion.
  *
  * @method
- * @param {ve.dm.AnnotationSet} Insertion anotation to add
+ * @param {ve.dm.Annotation|ve.dm.AnnotationSet} annotations Insertion annotation to add
  * @emits contextChange
  */
-ve.dm.Surface.prototype.addInsertionAnnotation = function ( annotation ) {
+ve.dm.Surface.prototype.addInsertionAnnotations = function ( annotations ) {
 	if ( !this.enabled ) {
 		return;
 	}
-	this.insertionAnnotations.push( annotation );
+	if ( annotations instanceof ve.dm.Annotation ) {
+		this.insertionAnnotations.push( annotations );
+	} else if ( annotations instanceof ve.dm.AnnotationSet ) {
+		this.insertionAnnotations.addSet( annotations );
+	} else {
+		throw new Error( 'Invalid annotations' );
+	}
 	this.emit( 'contextChange' );
 };
 
@@ -190,14 +199,20 @@ ve.dm.Surface.prototype.addInsertionAnnotation = function ( annotation ) {
  * Remove an annotation from those that will be used upon insertion.
  *
  * @method
- * @param {ve.dm.AnnotationSet} Insertion anotation to remove
+ * @param {ve.dm.Annotation|ve.dm.AnnotationSet} annotations Insertion annotation to remove
  * @emits contextChange
  */
-ve.dm.Surface.prototype.removeInsertionAnnotation = function ( annotation ) {
+ve.dm.Surface.prototype.removeInsertionAnnotations = function ( annotations ) {
 	if ( !this.enabled ) {
 		return;
 	}
-	this.insertionAnnotations.remove( annotation );
+	if ( annotations instanceof ve.dm.Annotation ) {
+		this.insertionAnnotations.remove( annotations );
+	} else if ( annotations instanceof ve.dm.AnnotationSet ) {
+		this.insertionAnnotations.removeSet( annotations );
+	} else {
+		throw new Error( 'Invalid annotations' );
+	}
 	this.emit( 'contextChange' );
 };
 
@@ -366,7 +381,7 @@ ve.dm.Surface.prototype.change = function ( transactions, selection ) {
 		!annotations.containsAllOf( this.insertionAnnotations ) ||
 		!this.insertionAnnotations.containsAllOf( annotations )
 	) {
-		this.insertionAnnotations = annotations;
+		this.setInsertionAnnotations( annotations );
 		contextChange = true;
 	}
 
