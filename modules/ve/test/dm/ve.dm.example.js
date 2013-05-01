@@ -2024,6 +2024,189 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/MWlanguage' }
 		]
 	},
+	'whitespace preservation with comments at end of wrapper paragraph': {
+		'html': '<body><ul><li> bar<!-- baz -->quux </li></ul></body>',
+		'data': [
+			{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
+			{
+				'type': 'listItem',
+				'internal': {
+					'whitespace': [
+						undefined,
+						' ',
+						' '
+					]
+				}
+			},
+			{
+				'type': 'paragraph',
+				'internal': {
+					'generated': 'wrapper',
+					'whitespace': [
+						' ',
+						undefined,
+						undefined,
+						' '
+					]
+				}
+			},
+			'b', 'a', 'r',
+			{
+				'type': 'alienMeta',
+				'attributes': {
+					'style': 'comment',
+					'text': ' baz '
+				}
+			},
+			{ 'type': '/alienMeta' },
+			'q', 'u', 'u', 'x',
+			{ 'type': '/paragraph' },
+			{ 'type': '/listItem' },
+			{ 'type': '/list' }
+		]
+	},
+	'whitespace preservation with comment at end of wrapper paragraph': {
+		'html': '<body><ul><li> bar<!-- baz --> </li></ul></body>',
+		'data': [
+			{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
+			{
+				'type': 'listItem',
+				'internal': {
+					'whitespace': [
+						undefined,
+						' ',
+						' '
+					]
+				}
+			},
+			{
+				'type': 'paragraph',
+				'internal': {
+					'generated': 'wrapper',
+					'whitespace': [
+						' '
+					]
+				}
+			},
+			'b', 'a', 'r',
+			{ 'type': '/paragraph' },
+			{
+				'type': 'alienMeta',
+				'attributes': {
+					'style': 'comment',
+					'text': ' baz '
+				},
+				'internal': {
+					'whitespace': [
+						undefined,
+						undefined,
+						undefined,
+						' '
+					]
+				}
+			},
+			{ 'type': '/alienMeta' },
+			{ 'type': '/listItem' },
+			{ 'type': '/list' }
+		]
+	},
+	'whitespace preservation with multiple comments at end of wrapper paragraph': {
+		'html': '<body><ul><li> foo <!-- bar --> <!-- baz --> </li></ul></body>',
+		'data': [
+			{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
+			{
+				'type': 'listItem',
+				'internal': {
+					'whitespace': [
+						undefined,
+						' ',
+						' '
+					]
+				}
+			},
+			{
+				'type': 'paragraph',
+				'internal': {
+					'generated': 'wrapper',
+					'whitespace': [
+						' ',
+						undefined,
+						undefined,
+						' '
+					]
+				}
+			},
+			'f', 'o', 'o',
+			{ 'type': '/paragraph' },
+			{
+				'type': 'alienMeta',
+				'attributes': {
+					'style': 'comment',
+					'text': ' bar '
+				},
+				'internal': {
+					'whitespace': [
+						' ',
+						undefined,
+						undefined,
+						' '
+					]
+				}
+			},
+			{ 'type': '/alienMeta' },
+			{
+				'type': 'alienMeta',
+				'attributes': {
+					'style': 'comment',
+					'text': ' baz '
+				},
+				'internal': {
+					'whitespace': [
+						' ',
+						undefined,
+						undefined,
+						' '
+					]
+				}
+			},
+			{ 'type': '/alienMeta' },
+			{ 'type': '/listItem' },
+			{ 'type': '/list' }
+		]
+	},
+	'whitespace preservation with comment at start or end of element': {
+		'html': '<body><p> <!-- foo -->bar<!-- baz --> </p></body>',
+		'data': [
+			{
+				'type': 'paragraph',
+				'internal': {
+					'whitespace': [
+						undefined,
+						' ',
+						' '
+					]
+				}
+			},
+			{
+				'type': 'alienMeta',
+				'attributes': {
+					'style': 'comment',
+					'text': ' foo '
+				}
+			},
+			{ 'type': '/alienMeta' },
+			'b', 'a', 'r',
+			{
+				'type': 'alienMeta',
+				'attributes': {
+					'style': 'comment',
+					'text': ' baz '
+				}
+			},
+			{ 'type': '/alienMeta' },
+			{ 'type': '/paragraph' }
+		]
+	},
 	'mismatching whitespace data is ignored': {
 		'html': null,
 		'data': [
