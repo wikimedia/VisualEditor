@@ -2465,6 +2465,20 @@ ve.dm.example.domToDataCases = {
 			},
 			{ 'type': '/MWdefaultSort' }
 		]
+	},
+	'div set to RTL with paragraph inside': {
+		'html': '<body><div style="direction: rtl;"><p>a<b>b</b>c<i>d</i>e</p></body>',
+		'data': [
+			{ 'type': 'div', 'attributes': { 'html/0/style': 'direction: rtl;' } },
+			{ 'type': 'paragraph' },
+			'a',
+			['b', [ ve.dm.example.bold ]],
+			'c',
+			['d', [ ve.dm.example.italic ]],
+			'e',
+			{ 'type': '/paragraph' },
+			{ 'type': '/div' }
+		]
 	}
 };
 
