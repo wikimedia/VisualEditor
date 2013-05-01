@@ -208,20 +208,30 @@ ve.dm.Transaction.newFromAnnotation = function ( doc, range, method, annotation 
 		data = doc.data,
 		i = range.start,
 		span = i,
-		on = false;
+		on = false,
+		insideContentNode = false;
 	// Iterate over all data in range, annotating where appropriate
 	while ( i < range.end ) {
 		type = data.getType( i );
-		if ( data.isElementData( i ) && !ve.dm.nodeFactory.isNodeContent( type ) ) {
-			// Structural element opening or closing
+		if (
+			( data.isElementData( i ) && !ve.dm.nodeFactory.isNodeContent( type ) ) ||
+			( insideContentNode && !data.isCloseElementData( i ) )
+		) {
+			// Structural element opening or closing, or entering a content node
 			if ( on ) {
 				tx.pushRetain( span );
 				tx.pushStopAnnotating( method, annotation );
 				span = 0;
 				on = false;
 			}
-		} else if ( !data.isElementData( i ) || !data.isCloseElementData( i ) ) {
+		} else if (
+			( !data.isElementData( i ) || !data.isCloseElementData( i ) ) &&
+			!insideContentNode
+		) {
 			// Character or content element opening
+			if ( data.isElementData( i ) ) {
+				insideContentNode = true;
+			}
 			covered = data.getAnnotationsFromOffset( i ).contains( annotation );
 			if ( ( covered && method === 'set' ) || ( !covered && method === 'clear' ) ) {
 				// Skip annotated content
@@ -240,7 +250,10 @@ ve.dm.Transaction.newFromAnnotation = function ( doc, range, method, annotation 
 					on = true;
 				}
 			}
-		} // otherwise it's a content closing, skip those
+		} else if ( data.isCloseElementData( i ) ) {
+			// Content closing, skip
+			insideContentNode = false;
+		}
 		span++;
 		i++;
 	}
