@@ -81,6 +81,7 @@ ve.ce.Node.static.$shieldTemplate = $( '<img>' )
 ve.ce.Node.prototype.onAttributeChange = function ( key, from, to ) {
 	var htmlKey = key.substr( 7 ).toLowerCase();
 	if (
+		this.constructor.static.renderHtmlAttributes &&
 		key.indexOf( 'html/0/' ) === 0 &&
 		htmlKey.length &&
 		this.constructor.static.domAttributeWhitelist.indexOf( htmlKey ) !== -1
