@@ -136,14 +136,64 @@ ve.ce.Surface.static.textPattern = new RegExp(
  * @static
  */
 ve.ce.Surface.getSelectionRect = function () {
+	var sel, rect, $span, startRange, startOffset, endRange, endOffset, scrollLeft, scrollTop;
+
 	if ( !rangy.initialized ) {
 		rangy.init();
 	}
-	var rangySel = rangy.getSelection();
-	return {
-		start: rangySel.getStartDocumentPos(),
-		end: rangySel.getEndDocumentPos()
-	};
+
+	sel = rangy.getSelection();
+
+	// We can't do anything if there's no selection
+	if ( sel.rangeCount === 0 ) {
+		return null;
+	}
+
+	rect = sel.getBoundingDocumentRect();
+
+	// Sometimes the selection will have invalid bounding rect information, which presents as all
+	// rectangle dimensions being 0 which causes #getStartDocumentPos and #getEndDocumentPos to
+	// throw exceptions
+	if ( rect.top === 0 || rect.bottom === 0 || rect.left === 0 || rect.right === 0 ) {
+		// Use dummy DOM elements into the selection and then using their position
+		$span = $( '<span>' );
+
+		// Calculate starting range position
+		startRange = sel.getRangeAt( 0 );
+		startRange.insertNode( $span[0] );
+		startOffset = $span.offset();
+		$span.detach();
+
+		// Calculate ending range position
+		endRange = startRange.cloneRange();
+		endRange.collapse( false );
+		endRange.insertNode( $span[0] );
+		endOffset = $span.offset();
+		$span.detach();
+
+		// Restore the selection
+		startRange.refresh();
+
+		// Return the selection bounding rectangle
+		scrollLeft = $( window ).scrollLeft();
+		scrollTop = $( window ).scrollTop();
+		return {
+			'start': {
+				x: startOffset.left - scrollLeft,
+				y: startOffset.top - scrollTop
+			},
+			'end': {
+				x: endOffset.left - scrollLeft,
+				// Adjust the vertical position by the line-height to get the bottom dimension
+				y: endOffset.top - scrollTop + parseInt( $span.css( 'line-height' ), 10 )
+			}
+		};
+	} else {
+		return {
+			start: sel.getStartDocumentPos(),
+			end: sel.getEndDocumentPos()
+		};
+	}
 };
 
 /* Methods */
