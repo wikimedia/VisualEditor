@@ -126,7 +126,8 @@ Links are in {{msg-mw|Visualeditor-mainnamespacepagelink}} and {{msg-mw|visualed
 	'visualeditor-ca-ve-create' => '
 	Link text of the dedicated VisualEditor Create tab.
 {{Identical|visualeditor}}',
-	'visualeditor-category-input-placeholder' => 'Placeholder text for category input',
+	'visualeditor-category-input-placeholder' => 'Placeholder text for category input
+{{Identical|Category name}}',
 	'visualeditor-category-settings-label' => 'Title of category settings popup menu',
 	'visualeditor-dialog-meta-title' => 'MetaData dialog title text',
 	'visualeditor-dialog-content-title' => 'Content dialog title text',
@@ -219,12 +220,13 @@ Possible entry for German: "foundation:Terms of Use/de"',
  * @author Ciphers
  * @author Jdforrester
  * @author OsamaK
+ * @author زكريا
  */
 $messages['ar'] = array(
 	'tag-visualeditor' => '[[Special:Tags|وسم]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|المحرر المرئي]]',
 	'tag-visualeditor-description' => 'أجري التعديل باستخدام [[{{MediaWiki:Visualeditor-descriptionpagelink}}|المحرر المرئي]]',
-	'tooltip-ca-editsource' => 'حرّر الكود المصدري لهذه الصفحة',
-	'tooltip-ca-ve-edit' => 'حرّر هذه الصفحة بالمحرر المرئي',
+	'tooltip-ca-editsource' => 'عدل الكود المصدري لهذه الصفحة',
+	'tooltip-ca-ve-edit' => 'عدل هذه الصفحة بالمحرر المرئي',
 	'visualeditor' => 'المحرر المرئي',
 	'visualeditor-desc' => 'المحرر المرئي لميدياويكي',
 	'visualeditor-preference-enable' => 'مكّن المحرر المرئي (في النطاقين [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|الرئيس]] و[[{{MediaWiki:Visualeditor-usernamespacepagelink}}|المستخدم]] فقط)',
@@ -237,24 +239,26 @@ $messages['ar'] = array(
 	'visualeditor-ca-editsource' => 'عدّل المصدر',
 	'visualeditor-ca-ve-edit' => 'المحرر المرئي',
 	'visualeditor-ca-ve-create' => 'المحرر المرئي',
+	'visualeditor-category-input-placeholder' => 'اسم التصنيف',
+	'visualeditor-category-settings-label' => 'إعدادات التصنيف',
 	'visualeditor-dialog-meta-title' => 'إعدادات الصفحة',
 	'visualeditor-dialog-content-title' => 'إعدادات المحتوى',
 	'visualeditor-dialog-media-title' => 'إعدادات الوسائط',
 	'visualeditor-dialog-action-apply' => 'طبّق التغييرات',
-	'visualeditor-dialog-action-cancel' => 'طبّق',
+	'visualeditor-dialog-action-cancel' => 'ألغ',
 	'visualeditor-dialog-action-close' => 'أغلق',
 	'visualeditor-toolbar-savedialog' => 'راجع واحفظ',
 	'visualeditor-savedialog-title-review' => 'راجع تغييراتك',
 	'visualeditor-savedialog-title-report' => 'بلّغ عن مشكلة',
 	'visualeditor-savedialog-title-save' => 'احفظ تغييراتك',
-	'visualeditor-savedialog-label-review-wrong' => 'هناك خطأ ما',
-	'visualeditor-savedialog-label-review-good' => 'تبدو جيدة بالنسبة لي',
+	'visualeditor-savedialog-label-review-wrong' => 'ثمة خطأ',
+	'visualeditor-savedialog-label-review-good' => 'تمام',
 	'visualeditor-savedialog-label-report' => 'بلّغ عن المشكلة',
 	'visualeditor-savedialog-label-create' => 'أنشئ صفحة',
 	'visualeditor-savedialog-label-save' => 'احفظ الصفحة',
 	'visualeditor-savedialog-label-restore' => 'استعد الصفحة',
 	'visualeditor-editnotices-tool' => '{{PLURAL:$1|لا ملاحظات|ملاحظة واحدة|ملاحظتان|$1 ملاحظات|$1 ملاحظة}}',
-	'visualeditor-feedback-tool' => 'أرسل تقييمًا',
+	'visualeditor-feedback-tool' => 'ضع تعليقا',
 	'visualeditor-window-title' => 'فحص',
 	'visualeditor-linkinspector-title' => 'الارتباط التشعبي',
 	'visualeditor-linkinspector-suggest-matching-page' => 'الصفحة المقابلة',
@@ -268,17 +272,17 @@ $messages['ar'] = array(
 	'visualeditor-formatdropdown-format-heading4' => 'عنوان 4',
 	'visualeditor-formatdropdown-format-heading5' => 'عنوان 5',
 	'visualeditor-formatdropdown-format-heading6' => 'عنوان 6',
-	'visualeditor-formatdropdown-format-preformatted' => 'منسق مسبقاً',
+	'visualeditor-formatdropdown-format-preformatted' => 'نص خام',
 	'visualeditor-annotationbutton-bold-tooltip' => 'غليظ',
 	'visualeditor-annotationbutton-italic-tooltip' => 'مائل',
 	'visualeditor-annotationbutton-link-tooltip' => 'وصلة',
 	'visualeditor-dialogbutton-media-tooltip' => 'الوسائط',
-	'visualeditor-indentationbutton-indent-tooltip' => 'زيادة المسافة البادئة',
-	'visualeditor-indentationbutton-outdent-tooltip' => 'أنقص المسافة البادئة',
+	'visualeditor-indentationbutton-indent-tooltip' => 'زيادة الإزاحة',
+	'visualeditor-indentationbutton-outdent-tooltip' => 'إنقاص الإزاحة',
 	'visualeditor-listbutton-number-tooltip' => 'قائمة مرقمة',
-	'visualeditor-listbutton-bullet-tooltip' => 'قائمة منقّطة',
-	'visualeditor-clearbutton-tooltip' => 'امسح التنسيق',
-	'visualeditor-historybutton-undo-tooltip' => 'تراجع',
+	'visualeditor-listbutton-bullet-tooltip' => 'قائمة منقطة',
+	'visualeditor-clearbutton-tooltip' => 'أزل التهيئة',
+	'visualeditor-historybutton-undo-tooltip' => 'ألغ',
 	'visualeditor-historybutton-redo-tooltip' => 'أعد',
 	'visualeditor-inspector-close-tooltip' => 'أغلق',
 	'visualeditor-inspector-remove-tooltip' => 'أزل',
@@ -294,7 +298,7 @@ $messages['ar'] = array(
 	'visualeditor-descriptionpagelink' => 'Project:المحرر المرئي',
 	'visualeditor-alphawarning' => 'أنت تستخدم النسخة ألفا من [[{{MediaWiki:Visualeditor-descriptionpagelink}}|المحرر المرئي]]. قد تكون بطيئة وقد تجري تغييرات خاطئة. المرجو التحقق من كل تغيير تجريه.',
 	'visualeditor-report-notice' => 'أعي أني إذا نقرت "بلّغ عن المشكلة" فسترسل تغييراتي مع ملاحظاتي وستحفظ بغرض التحليل. أوافق على تقديم الملاحظات وفقا ل[[{{MediaWiki:Visualeditor-report-link}}|شروط الاستخدام]].',
-	'visualeditor-feedback-link' => 'Project:محرر البصرية/ملاحظات',
+	'visualeditor-feedback-link' => 'Project:المحرر المرئي/تعليقات',
 );
 
 /** Assamese (অসমীয়া)
@@ -1257,6 +1261,7 @@ $messages['fi'] = array(
 );
 
 /** French (français)
+ * @author Boniface
  * @author Brunoperel
  * @author Crochet.david
  * @author Gomoko
@@ -1285,6 +1290,8 @@ $messages['fr'] = array(
 	'visualeditor-ca-editsource' => 'Modifier la source',
 	'visualeditor-ca-ve-edit' => 'ÉditeurVisuel',
 	'visualeditor-ca-ve-create' => 'ÉditeurVisuel',
+	'visualeditor-category-input-placeholder' => 'Nom de la catégorie',
+	'visualeditor-category-settings-label' => 'Détails de la catégorie',
 	'visualeditor-dialog-meta-title' => 'Paramètres de la page',
 	'visualeditor-dialog-content-title' => 'Paramètres du contenu',
 	'visualeditor-dialog-media-title' => 'Paramètres du média',
@@ -1876,6 +1883,8 @@ $messages['ja'] = array(
 	'visualeditor-ca-editsource' => 'ソースを編集',
 	'visualeditor-ca-ve-edit' => 'ビジュアルエディター',
 	'visualeditor-ca-ve-create' => 'ビジュアルエディター',
+	'visualeditor-category-input-placeholder' => 'カテゴリ名',
+	'visualeditor-category-settings-label' => 'カテゴリの設定',
 	'visualeditor-dialog-meta-title' => 'ページの設定',
 	'visualeditor-dialog-content-title' => 'コンテンツの設定',
 	'visualeditor-dialog-media-title' => 'メディアの設定',
@@ -2591,6 +2600,7 @@ $messages['ne'] = array(
 $messages['nl'] = array(
 	'tag-visualeditor' => '[[Special:Tags|Tag]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|Visuele tekstverwerker]]',
 	'tag-visualeditor-description' => 'Bewerking gemaakt met behulp van de [[{{MediaWiki:Visualeditor-descriptionpagelink}}|Visuele tekstverwerker]]',
+	'tooltip-ca-editsource' => 'Broncode van deze pagina bewerken',
 	'tooltip-ca-ve-edit' => 'Deze pagina visueel bewerken',
 	'visualeditor' => 'Vereenvoudigde tekstverwerker',
 	'visualeditor-desc' => 'Vereenvoudigde tekstverwerker voor MediaWiki',
@@ -2604,6 +2614,8 @@ $messages['nl'] = array(
 	'visualeditor-ca-editsource' => 'Bron bewerken',
 	'visualeditor-ca-ve-edit' => 'Visueel',
 	'visualeditor-ca-ve-create' => 'Visueel',
+	'visualeditor-category-input-placeholder' => 'Categorienaam',
+	'visualeditor-category-settings-label' => 'Categorie-instellingen',
 	'visualeditor-dialog-meta-title' => 'Pagina-instellingen',
 	'visualeditor-dialog-content-title' => 'Instellingen voor inhoud',
 	'visualeditor-dialog-media-title' => 'Mediainstellingen',
@@ -2624,6 +2636,7 @@ $messages['nl'] = array(
 	'visualeditor-feedback-tool' => 'Terugkoppeling achterlaten',
 	'visualeditor-window-title' => 'Inspecteren',
 	'visualeditor-linkinspector-title' => 'Hyperlink',
+	'visualeditor-linkinspector-suggest-matching-page' => 'Bijbehorende pagina',
 	'visualeditor-linkinspector-suggest-new-page' => 'Nieuwe pagina',
 	'visualeditor-linkinspector-suggest-external-link' => 'Externe koppeling',
 	'visualeditor-formatdropdown-title' => 'Opmaak wijzigen',
