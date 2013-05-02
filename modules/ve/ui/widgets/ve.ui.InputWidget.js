@@ -89,6 +89,21 @@ ve.ui.InputWidget.prototype.onEdit = function () {
 ve.ui.InputWidget.prototype.getValue = function () {
 	return this.value;
 };
+/**
+ * Sets the direction of the current input, either RTL or LTR
+ *
+ * @method
+ * @param {boolean} isRTL
+ */
+ve.ui.InputWidget.prototype.setRTL = function( isRTL ) {
+	if ( isRTL ) {
+		this.$input.removeClass( 've-ui-ltr' );
+		this.$input.addClass( 've-ui-rtl' );
+	} else {
+		this.$input.removeClass( 've-ui-rtl' );
+		this.$input.addClass( 've-ui-ltr' );
+	}
+};
 
 /**
  * Set the value of the input.

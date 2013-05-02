@@ -481,3 +481,14 @@
 .ve-ui-mwCategorySortkeyForm .ve-ui-inputLabelWidget {
 	padding: 0 0.125em 0.5em 0.125em;
 }
+
+/* RTL Definitions */
+
+/* @noflip */
+.ve-ui-rtl {
+	direction: rtl;
+}
+/* @noflip */
+.ve-ui-ltr {
+	direction: ltr;
+}
