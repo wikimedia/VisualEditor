@@ -39,10 +39,9 @@ ve.dm.GeneratedContentNode.static.enableAboutGrouping = true;
  * @param {ve.dm.IndexValueStore} store Index-value store
  * @returns {number} Index of stored data
  */
-ve.dm.GeneratedContentNode.static.storeHtml = function( dataElement, domElements, store ) {
-	var html = $( '<div>', domElements[0].ownerDocument ).append( $( domElements ).clone() ).html(),
-		hash = ve.getHash( this.getHashObject( dataElement ) );
-	return store.index( html, hash );
+ve.dm.GeneratedContentNode.static.storeDomElements = function( dataElement, domElements, store ) {
+	var hash = ve.getHash( this.getHashObject( dataElement ) );
+	return store.index( domElements, hash );
 };
 
 /* Registration */

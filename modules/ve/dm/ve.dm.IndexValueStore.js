@@ -26,7 +26,7 @@ ve.dm.IndexValueStore = function VeDmIndexValueStore() {
  * If the hash is not found the value is added to the store.
  *
  * @method
- * @param {Object|String} value Value to lookup or store
+ * @param {Object|String|Array} value Value to lookup or store
  * @param {String} [hash] Value hash. Uses ve.getHash( value ) if not provided.
  * @returns {number} The index of the value in the store
  */
@@ -37,7 +37,13 @@ ve.dm.IndexValueStore.prototype.index = function ( value, hash ) {
 	}
 	index = this.indexOfHash( hash );
 	if ( index === null ) {
-		index = this.valueStore.push( typeof value === 'object' ? ve.cloneObject( value ) : value ) - 1;
+		if ( ve.isArray( value ) ) {
+			index = this.valueStore.push( ve.copyArray( value ) ) - 1;
+		} else if ( typeof value === 'object' ) {
+			index = this.valueStore.push( ve.cloneObject( value ) ) - 1;
+		} else {
+			index = this.valueStore.push( value ) - 1;
+		}
 		this.hashStore[hash] = index;
 	}
 	return index;
@@ -49,7 +55,7 @@ ve.dm.IndexValueStore.prototype.index = function ( value, hash ) {
  * Returns null if the hash is not found.
  *
  * @method
- * @param {String} hash Value hash.
+ * @param {Object|String|Array} hash Value hash.
  * @returns {number|null} The index of the value in the store, or undefined if it is not found
  */
 ve.dm.IndexValueStore.prototype.indexOfHash = function ( hash ) {

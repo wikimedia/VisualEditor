@@ -72,7 +72,7 @@ QUnit.test( 'getDataFromDom', function ( assert ) {
 			if ( cases[msg].storeItems ) {
 				for ( i = 0, length = cases[msg].storeItems.length; i < length; i++ ) {
 					hash = cases[msg].storeItems[i].hash || ve.getHash( cases[msg].storeItems[i].value );
-					assert.deepEqual(
+					assert.deepEqualWithDomElements(
 						store.value( store.indexOfHash( hash ) ),
 						cases[msg].storeItems[i].value,
 						msg + ': store item ' + i + ' found'

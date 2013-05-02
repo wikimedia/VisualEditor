@@ -48,7 +48,7 @@ ve.ce.GeneratedContentNode.prototype.onUpdate = function () {
 	var store = this.model.doc.getStore(),
 		index = store.indexOfHash( ve.getHash( this.model ) );
 	if ( index !== null ) {
-		this.$.html( store.value( index ) );
+		this.$.empty().append( store.value( index ) );
 	} else {
 		this.startGenerating();
 		this.generateContents()
@@ -77,12 +77,12 @@ ve.ce.GeneratedContentNode.prototype.startGenerating = function () {
  * Called when the node successfully finishes generating new content.
  *
  * @method
- * @param {string} contents Generated content
+ * @param {HTMLElement[]} domElements Generated content
  */
-ve.ce.GeneratedContentNode.prototype.doneGenerating = function ( contents ) {
+ve.ce.GeneratedContentNode.prototype.doneGenerating = function ( domElements ) {
 	var store = this.model.doc.getStore(),
 		hash = ve.getHash( this.model );
-	store.index( contents, hash );
+	store.index( domElements, hash );
 	// TODO: remove 'generating' style
 	this.onUpdate();
 };

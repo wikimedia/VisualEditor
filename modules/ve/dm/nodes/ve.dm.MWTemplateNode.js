@@ -52,20 +52,16 @@ ve.dm.MWTemplateNode.static.toDataElement = function ( domElements, converter ) 
 			'mwOriginal': ve.copyObject( mw )
 		}
 	};
-	this.storeHtml( dataElement, domElements, converter.getStore() );
+	this.storeDomElements( dataElement, domElements, converter.getStore() );
 	return dataElement;
 };
 
 ve.dm.MWTemplateNode.static.toDomElements = function ( dataElement, doc, converter ) {
-	var wrapper, span, index, html;
+	var span, index;
 	if ( ve.compareObjects( dataElement.attributes.mw, dataElement.attributes.mwOriginal ) ) {
-		// If the template is unchanged just send back the original html so selser can skip over it
+		// If the template is unchanged just send back the original dom elements so selser can skip over it
 		index = converter.getStore().indexOfHash( ve.getHash( this.getHashObject( dataElement ) ) );
-		html = converter.getStore().value( index );
-		wrapper = doc.createElement( 'div' );
-		$( wrapper ).html( html );
-		// Convert wrapper.children to an array
-		return Array.prototype.slice.call( wrapper.childNodes, 0 );
+		return converter.getStore().value( index );
 	} else {
 		span = doc.createElement( 'span' );
 		// All we need to send back to Parsoid is the original template marker,
