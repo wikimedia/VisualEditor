@@ -33,7 +33,7 @@ ve.ui.MWCategoryPopupWidget = function VeUiMwCategoryPopupWidget ( config ) {
 		.append( this.sortKeyLabel.$, this.sortKeyInput.$ );
 
 	// Events
-	this.removeButton.on( 'click', ve.bind( this.onRemoveCategory, this ) );
+	this.removeButton.connect( this, { 'click': 'onRemoveCategory' } );
 	this.$sortKeyForm.on( 'submit', ve.bind( this.onSortKeySubmit, this ) );
 
 	// Initialization

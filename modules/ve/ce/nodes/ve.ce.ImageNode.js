@@ -30,7 +30,7 @@ ve.ce.ImageNode = function VeCeImageNode( model ) {
 	this.$image = this.$;
 
 	// Events
-	this.model.addListenerMethod( this, 'update', 'onUpdate' );
+	this.model.connect( this, { 'update': 'onUpdate' } );
 	this.$.on( 'click', ve.bind( this.onClick, this ) );
 
 	// Initialization

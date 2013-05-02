@@ -24,12 +24,8 @@ ve.ui.Tool = function VeUiTool( toolbar, config ) {
 	this.toolbar = toolbar;
 
 	// Events
-	this.toolbar.addListenerMethods(
-		this, { 'updateState': 'onUpdateState' }
-	);
-	ve.triggerRegistry.addListenerMethods(
-		this, { 'register': 'onTriggerRegistryRegister' }
-	);
+	this.toolbar.connect( this, { 'updateState': 'onUpdateState' } );
+	ve.triggerRegistry.connect( this, { 'register': 'onTriggerRegistryRegister' } );
 
 	// Initialization
 	this.setTitle();

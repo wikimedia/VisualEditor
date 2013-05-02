@@ -9,13 +9,15 @@
  * DataModel meta item.
  *
  * @class
- * @extends ve.EventEmitter
+ * @mixins ve.EventEmitter
+ *
  * @constructor
  * @param {ve.dm.Surface} surface Surface model
  */
 ve.dm.MetaList = function VeDmMetaList( surface ) {
 	var i, j, jlen, metadata, item, group;
-	// Parent constructor
+
+	// Mixin constructors
 	ve.EventEmitter.call( this );
 
 	// Properties
@@ -25,7 +27,7 @@ ve.dm.MetaList = function VeDmMetaList( surface ) {
 	this.items = [];
 
 	// Event handlers
-	this.document.on( 'transact', ve.bind( this.onTransact, this ) );
+	this.document.connect( this, { 'transact': 'onTransact' } );
 
 	// Populate from document
 	metadata = this.document.getMetadata();
@@ -47,7 +49,7 @@ ve.dm.MetaList = function VeDmMetaList( surface ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.dm.MetaList, ve.EventEmitter );
+ve.mixinClass( ve.dm.MetaList, ve.EventEmitter );
 
 /* Events */
 

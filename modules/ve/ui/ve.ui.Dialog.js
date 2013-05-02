@@ -99,8 +99,8 @@ ve.ui.Dialog.prototype.initialize = function () {
 	} );
 
 	// Events
-	this.closeButton.on( 'click', ve.bind( this.onCloseButtonClick, this ) );
-	this.applyButton.on( 'click', ve.bind( this.onApplyButtonClick, this ) );
+	this.closeButton.connect( this, { 'click': 'onCloseButtonClick' } );
+	this.applyButton.connect( this, { 'click': 'onApplyButtonClick' } );
 
 	// Initialization
 	this.closeButton.$.addClass( 've-ui-window-closeButton' );

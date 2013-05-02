@@ -10,21 +10,12 @@
  *
  * @class
  * @constructor
- * @property {Object} events
+ * @property {Object} bindings
  */
 ve.EventEmitter = function VeEventEmitter() {
 	// Properties
-	this.events = {};
+	this.bindings = {};
 };
-
-/* Events */
-
-/**
- * @event newListener
- * @see #addListener
- * @param {string} type Name of the event
- * @param {Function} listener Callback to invoke when event occurs
- */
 
 /* Methods */
 
@@ -32,175 +23,207 @@ ve.EventEmitter = function VeEventEmitter() {
  * Emit an event.
  *
  * @method
- * @param {string} type Type of event
+ * @param {string} event Type of event
  * @param {Mixed} args First in a list of variadic arguments passed to event handler (optional)
  * @returns {boolean} If event was handled by at least one listener
  */
-ve.EventEmitter.prototype.emit = function ( type ) {
-	if ( type === 'error' && !( 'error' in this.events ) ) {
-		throw new Error( 'Missing error handler error.' );
-	}
-	if ( !( type in this.events ) ) {
-		return false;
-	}
-	var i,
-		listeners = this.events[type].slice(),
-		length = listeners.length,
+ve.EventEmitter.prototype.emit = function ( event ) {
+	var i, len, binding, bindings, args;
+
+	if ( event in this.bindings ) {
+		// Slicing ensures that we don't get tripped up by event handlers that add/remove bindings
+		bindings = this.bindings[event].slice();
 		args = Array.prototype.slice.call( arguments, 1 );
-	for ( i = 0; i < length; i++ ) {
-		listeners[i].apply( this, args );
-	}
-	return true;
-};
-
-/**
- * Add a listener to events of a specific type.
- *
- * @method
- * @param {string} type Type of event to listen to
- * @param {Function} listener Listener to call when event occurs
- * @emits newListener
- * @chainable
- * @throws {Error} Listener argument is not a function
- */
-ve.EventEmitter.prototype.addListener = function ( type, listener ) {
-	if ( typeof listener !== 'function' ) {
-		throw new Error( 'Invalid listener error. Function expected.' );
-	}
-	this.emit( 'newListener', type, listener );
-	if ( type in this.events ) {
-		this.events[type].push( listener );
-	} else {
-		this.events[type] = [listener];
-	}
-	return this;
-};
-
-/**
- * Add multiple listeners at once.
- *
- * @method
- * @param {Object} listeners List of event/callback pairs
- * @chainable
- */
-ve.EventEmitter.prototype.addListeners = function ( listeners ) {
-	for ( var event in listeners ) {
-		this.addListener( event, listeners[event] );
-	}
-	return this;
-};
-
-/**
- * Add a listener, mapped to a method on a target object.
- *
- * @method
- * @param {Object} target Object to call methods on when events occur
- * @param {string} event Name of event to trigger on
- * @param {string} method Name of method to call
- * @chainable
- */
-ve.EventEmitter.prototype.addListenerMethod = function ( target, event, method ) {
-	return this.addListener( event, function () {
-		if ( typeof target[method] === 'function' ) {
-			target[method].apply( target, Array.prototype.slice.call( arguments, 0 ) );
-		} else {
-			throw new Error( 'Listener method error. Target has no such method: ' + method );
+		for ( i = 0, len = bindings.length; i < len; i++ ) {
+			binding = bindings[i];
+			binding.callback.apply(
+				binding.context,
+				binding.args ? binding.args.concat( args ) : args
+			);
 		}
-	} );
-};
-
-/**
- * Add multiple listeners, each mapped to a method on a target object.
- *
- * @method
- * @param {Object} target Object to call methods on when events occur
- * @param {Object} methods List of event/method name pairs
- * @chainable
- */
-ve.EventEmitter.prototype.addListenerMethods = function ( target, methods ) {
-	for ( var event in methods ) {
-		this.addListenerMethod( target, event, methods[event] );
+		return true;
 	}
-	return this;
+	return false;
 };
 
 /**
- * @method
- * @alias ve.EventEmitter#addListener
- * @chainable
- */
-ve.EventEmitter.prototype.on = ve.EventEmitter.prototype.addListener;
-
-/**
- * Adds a one-time listener to a specific event.
+ * Add a listener to events of a specific event.
  *
  * @method
- * @param {string} type Type of event to listen to
- * @param {Function} listener Listener to call when event occurs
+ * @param {string} event Type of event to listen to
+ * @param {Function} callback Function to call when event occurs
+ * @param {Array} [args] Arguments to pass to listener, will be prepended to emitted arguments
+ * @param {Object} [context=null] Object to use as context for callback function or call method on
+ * @throws {Error} Listener argument is not a function or method name
  * @chainable
  */
-ve.EventEmitter.prototype.once = function ( type, listener ) {
-	var eventEmitter = this;
-	return this.addListener( type, function listenerWrapper() {
-		eventEmitter.removeListener( type, listenerWrapper );
-		listener.apply( eventEmitter, Array.prototype.slice.call( arguments, 0 ) );
+ve.EventEmitter.prototype.on = function ( event, callback, args, context ) {
+	// Validate callback
+	if ( typeof callback !== 'function' ) {
+		throw new Error( 'Invalid callback. Function or method name expected.' );
+	}
+
+	// Auto-initialize binding
+	if ( !( event in this.bindings ) ) {
+		this.bindings[event] = [];
+	}
+
+	// Add binding
+	this.bindings[event].push( {
+		'callback': callback,
+		'args': args,
+		'context': context || null
 	} );
+	return this;
 };
 
 /**
  * Remove a specific listener from a specific event.
  *
  * @method
- * @param {string} type Type of event to remove listener from
- * @param {Function} listener Listener to remove
+ * @param {string} event Type of event to remove listener from
+ * @param {Function} [callback] Listener to remove, omit to remove all
  * @chainable
  * @throws {Error} Listener argument is not a function
  */
-ve.EventEmitter.prototype.removeListener = function ( type, listener ) {
-	if ( typeof listener !== 'function' ) {
-		throw new Error( 'Invalid listener error. Function expected.' );
-	}
-	if ( !( type in this.events ) || !this.events[type].length ) {
-		return this;
-	}
-	var i,
-		handlers = this.events[type];
-	if ( handlers.length === 1 && handlers[0] === listener ) {
-		delete this.events[type];
+ve.EventEmitter.prototype.off = function ( event, callback ) {
+	var i, bindings;
+
+	if ( arguments.length === 1 ) {
+		// Remove all bindings for event
+		if ( event in this.bindings ) {
+			delete this.bindings[event];
+		}
 	} else {
-		i = ve.indexOf( listener, handlers );
-		if ( i < 0 ) {
+		if ( typeof callback !== 'function' ) {
+			throw new Error( 'Invalid callback. Function expected.' );
+		}
+		if ( !( event in this.bindings ) || !this.bindings[event].length ) {
+			// No matching bindings
 			return this;
 		}
-		handlers.splice( i, 1 );
-		if ( handlers.length === 0 ) {
-			delete this.events[type];
+		// Remove matching handlers
+		bindings = this.bindings[event];
+		i = bindings.length;
+		while ( i-- ) {
+			if ( bindings[i].callback === callback ) {
+				bindings.splice( i, 1 );
+			}
+		}
+		// Cleanup if now empty
+		if ( bindings.length === 0 ) {
+			delete this.bindings[event];
 		}
 	}
 	return this;
 };
 
 /**
- * Remove all listeners from a specific event.
+ * Connect event handlers to an object.
  *
  * @method
- * @param {string} type Type of event to remove listeners from
+ * @param {Object} context Object to call methods on when events occur
+ * @param {Object.<string,string>|Object.<string,Function>|Object.<string,Array>} methods List of
+ * event bindings keyed by event name containing either method names, functions or arrays containing
+ * method name or function followed by a list of arguments to be passed to callback before emitted
+ * arguments
  * @chainable
  */
-ve.EventEmitter.prototype.removeAllListeners = function ( type ) {
-	if ( type in this.events ) {
-		delete this.events[type];
+ve.EventEmitter.prototype.connect = function ( context, methods ) {
+	var method, callback, args, event;
+
+	for ( event in methods ) {
+		method = methods[event];
+		// Allow providing additional args
+		if ( ve.isArray( method ) ) {
+			args = method.slice( 1 );
+			method = method[0];
+		} else {
+			args = [];
+		}
+		// Allow callback to be a method name
+		if ( typeof method === 'string' ) {
+			// Validate method
+			if ( !context[method] || typeof context[method] !== 'function' ) {
+				throw new Error( 'Method not found: ' + method );
+			}
+			// Resolve to function
+			callback = context[method];
+		} else {
+			callback = method;
+		}
+		// Add binding
+		this.on.apply( this, [ event, callback, args, context ] );
 	}
 	return this;
 };
 
 /**
- * Get a list of listeners attached to a specific event.
+ * Disconnect event handlers from an object.
  *
  * @method
- * @param {string} type Type of event to get listeners for
- * @returns {Array} List of listeners to an event
+ * @param {Object} context Object to disconnect methods from
+ * @param {Object.<string,string>|Object.<string,Function>|Object.<string,Array>} [methods] List of
+ * event bindings keyed by event name containing either method names or functions
+ * @chainable
  */
-ve.EventEmitter.prototype.listeners = function ( type ) {
-	return type in this.events ? this.events[type] : [];
+ve.EventEmitter.prototype.disconnect = function ( context, methods ) {
+	var i, method, callback, event, bindings;
+
+	if ( methods ) {
+		for ( event in methods ) {
+			method = methods[event];
+			if ( typeof method === 'string' ) {
+				// Validate method
+				if ( !context[method] || typeof context[method] !== 'function' ) {
+					throw new Error( 'Method not found: ' + method );
+				}
+				// Resolve to function
+				callback = context[method];
+			} else {
+				callback = method;
+			}
+			bindings = this.bindings[event];
+			i = bindings.length;
+			while ( i-- ) {
+				if ( bindings[i].context === context && bindings[i].callback === callback ) {
+					bindings.splice( i, 1 );
+				}
+			}
+			if ( bindings.length === 0 ) {
+				delete this.bindings[event];
+			}
+		}
+	} else {
+		for ( event in this.bindings ) {
+			bindings = this.bindings[event];
+			i = bindings.length;
+			while ( i-- ) {
+				if ( bindings[i].context === context ) {
+					bindings.splice( i, 1 );
+				}
+			}
+			if ( bindings.length === 0 ) {
+				delete this.bindings[event];
+			}
+		}
+	}
+
+	return this;
+};
+
+/**
+ * Adds a one-time listener to a specific event.
+ *
+ * @method
+ * @param {string} event Type of event to listen to
+ * @param {Function} listener Listener to call when event occurs
+ * @chainable
+ */
+ve.EventEmitter.prototype.once = function ( event, listener ) {
+	var eventEmitter = this;
+	return this.on( event, function listenerWrapper() {
+		eventEmitter.off( event, listenerWrapper );
+		listener.apply( eventEmitter, Array.prototype.slice.call( arguments, 0 ) );
+	} );
 };

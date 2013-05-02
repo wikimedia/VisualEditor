@@ -21,29 +21,10 @@ ve.ce.ContentBranchNode = function VeCeContentBranchNode( model, $element ) {
 	ve.ce.BranchNode.call( this, model, $element );
 
 	// Properties
-	var lastTransaction, lastTransactionApplied;
+	this.surfaceModelState = null;
 
 	// Events
-	// Main purpose of code below is to increase performance by ensuring that renderContents() is
-	// called exactly once after transaction is processed. Case when childUpdate event is received
-	// multiple times is for instance when entire paragraph with multiple nodes inside it
-	// (e.g. <p>123<alien></alien>456</p>) is being annotated.
-	// Keeping reference to transaction object in view may look like anti pattern - however please
-	// have in mind that this transaction here is not being used in any other way than just as
-	// a flag to figure out if renderContents should be executed or not.
-	this.on( 'childUpdate', ve.bind( function( transaction ) {
-		if ( transaction instanceof ve.dm.Transaction ) {
-			if (
-				lastTransaction === transaction &&
-				lastTransaction.hasBeenApplied() === lastTransactionApplied
-			) {
-				return;
-			}
-			lastTransaction = transaction;
-			lastTransactionApplied = transaction.hasBeenApplied();
-		}
-		this.renderContents();
-	}, this ) );
+	this.connect( this, { 'childUpdate': 'onChildUpdate' } );
 
 	// Initialization
 	this.renderContents();
@@ -54,6 +35,32 @@ ve.ce.ContentBranchNode = function VeCeContentBranchNode( model, $element ) {
 ve.inheritClass( ve.ce.ContentBranchNode, ve.ce.BranchNode );
 
 /* Methods */
+
+/**
+ * Handle splice events.
+ *
+ * Rendering is only done once per transaction. If a paragraph has multiple nodes in it then it's
+ * possible to receive multiple `childUpdate` events for a single transaction such as annotating
+ * across them. State is tracked by storing and comparing the length of the surface model's complete
+ * history.
+ *
+ * This is used to automatically render contents.
+ * @see ve.ce.BranchNode#onSplice
+ *
+ * @method
+ */
+ve.ce.ContentBranchNode.prototype.onChildUpdate = function ( transaction ) {
+	var surfaceModel = this.getRoot().getSurface().getModel(),
+		surfaceModelState = surfaceModel.getCompleteHistoryLength();
+
+	if ( transaction instanceof ve.dm.Transaction ) {
+		if ( surfaceModelState === this.surfaceModelState ) {
+			return;
+		}
+		this.surfaceModelState = surfaceModelState;
+	}
+	this.renderContents();
+};
 
 /**
  * Handle splice events.

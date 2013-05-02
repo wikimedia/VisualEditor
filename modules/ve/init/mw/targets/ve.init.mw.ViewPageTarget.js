@@ -44,15 +44,13 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 	);
 	this.$saveDialog = $( '<div>' ).addClass( 've-init-mw-viewPageTarget-saveDialog' );
 	this.onBeforeUnloadFallback = null;
-	this.proxiedOnBeforeUnload = null;
+	this.onBeforeUnloadHandler = null;
 	this.surface = null;
 	this.active = false;
 	this.edited = false;
 	this.activating = false;
 	this.deactivating = false;
 	this.scrollTop = null;
-	this.proxiedOnSurfaceModelTransact = ve.bind( this.onSurfaceModelTransact, this );
-	this.proxiedOnSurfaceModelHistory = ve.bind( this.onSurfaceModelHistory, this );
 	this.surfaceOptions = {
 		'toolbars': {
 			'top': {
@@ -95,7 +93,7 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 	} );
 
 	// Events
-	this.addListenerMethods( this, {
+	this.connect( this, {
 		'load': 'onLoad',
 		'save': 'onSave',
 		'loadError': 'onLoadError',
@@ -391,7 +389,7 @@ ve.init.mw.ViewPageTarget.prototype.onSaveError = function ( jqXHR, status ) {
  */
 ve.init.mw.ViewPageTarget.prototype.onShowChanges = function ( diffHtml ) {
 	// Invalidate the diff on next change
-	this.surface.getModel().on( 'transact', this.proxiedOnSurfaceModelTransact );
+	this.surface.getModel().connect( this, { 'transact': 'onSurfaceModelTransact' } );
 
 	// Store the diff for reporting purposes
 	this.diffHtml = diffHtml;
@@ -567,7 +565,7 @@ ve.init.mw.ViewPageTarget.prototype.onSurfaceModelTransact = function () {
 		.find( '.ve-init-mw-viewPageTarget-saveDialog-slide-review .ve-init-mw-viewPageTarget-saveDialog-viewer' )
 			.empty();
 
-	this.surface.getModel().removeListener( 'transact', this.proxiedOnSurfaceModelTransact );
+	this.surface.getModel().disconnect( this, { 'transact': 'onSurfaceModelTransact' } );
 };
 
 /**
@@ -691,8 +689,8 @@ ve.init.mw.ViewPageTarget.prototype.setUpSurface = function ( doc ) {
 	this.surface = new ve.Surface( this, doc, this.surfaceOptions );
 	this.surface.getContext().hide();
 	this.$document = this.surface.$.find( '.ve-ce-documentNode' );
-	this.surface.getModel().on( 'transact', this.proxiedOnSurfaceModelTransact );
-	this.surface.getModel().on( 'history', this.proxiedOnSurfaceModelHistory );
+	this.surface.getModel().connect( this, { 'transact': 'onSurfaceModelTransact' } );
+	this.surface.getModel().connect( this, { 'history': 'onSurfaceModelHistory' } );
 	// Transplant the toolbar
 	this.attachToolbar();
 	this.transformPageTitle();
@@ -864,8 +862,8 @@ ve.init.mw.ViewPageTarget.prototype.setupToolbarButtons = function () {
 		'disabled': !this.restoring
 	} );
 
-	this.toolbarCancelButton.on( 'click', ve.bind( this.onToolbarCancelButtonClick, this ) );
-	this.toolbarSaveButton.on( 'click', ve.bind( this.onToolbarSaveButtonClick, this ) );
+	this.toolbarCancelButton.connect( this, { 'click': 'onToolbarCancelButtonClick' } );
+	this.toolbarSaveButton.connect( this, { 'click': 'onToolbarSaveButtonClick' } );
 
 	if ( editNoticeCount ) {
 		this.$toolbarEditNoticesTool
@@ -895,8 +893,8 @@ ve.init.mw.ViewPageTarget.prototype.setupToolbarButtons = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.tearDownToolbarButtons = function () {
-	this.toolbarCancelButton.removeAllListeners( 'click' );
-	this.toolbarSaveButton.removeAllListeners( 'click' );
+	this.toolbarCancelButton.disconnect( this );
+	this.toolbarSaveButton.disconnect( this );
 	this.$toolbarEditNoticesTool.empty().off( 'click' );
 	this.$toolbarFeedbackTool.empty().off( 'click' );
 };
@@ -984,33 +982,29 @@ ve.init.mw.ViewPageTarget.prototype.setupSaveDialog = function () {
 		),
 		'flags': ['constructive']
 	} );
-	this.saveDialogSaveButton.on(
-		'click', ve.bind( this.onSaveDialogSaveButtonClick, this )
-	);
+	this.saveDialogSaveButton.connect( this, { 'click': 'onSaveDialogSaveButtonClick' } );
 
 	this.saveDialogReviewWrongButton = new ve.ui.ButtonWidget( {
 		'label': ve.msg( 'visualeditor-savedialog-label-review-wrong' ),
 		'flags': ['primary']
 	} );
-	this.saveDialogReviewWrongButton.on(
-		'click', ve.bind( this.onSaveDialogReviewWrongButtonClick, this )
+	this.saveDialogReviewWrongButton.connect(
+		this, { 'click': 'onSaveDialogReviewWrongButtonClick' }
 	);
 
 	this.saveDialogReviewGoodButton = new ve.ui.ButtonWidget( {
 		'label': ve.msg( 'visualeditor-savedialog-label-review-good' ),
 		'flags': ['constructive']
 	} );
-	this.saveDialogReviewGoodButton.on(
-		'click', ve.bind( this.onSaveDialogReviewGoodButtonClick, this )
+	this.saveDialogReviewGoodButton.connect(
+		this, { 'click': 'onSaveDialogReviewGoodButtonClick' }
 	);
 
 	this.saveDialogReportButton = new ve.ui.ButtonWidget( {
 		'label': ve.msg( 'visualeditor-savedialog-label-report' ),
 		'flags': ['constructive']
 	} );
-	this.saveDialogReportButton.on(
-		'click', ve.bind( this.onSaveDialogReportButtonClick, this )
-	);
+	this.saveDialogReportButton.connect( this, { 'click': 'onSaveDialogReportButtonClick' } );
 
 	this.getSaveDialogHtml( function ( $wrap ) {
 		viewPage.$saveDialog
@@ -1584,7 +1578,7 @@ ve.init.mw.ViewPageTarget.prototype.setupBeforeUnloadHandler = function () {
 	// Remember any already set on before unload handler
 	this.onBeforeUnloadFallback = window.onbeforeunload;
 	// Attach before unload handler
-	window.onbeforeunload = this.proxiedOnBeforeUnload = ve.bind( this.onBeforeUnload, this );
+	window.onbeforeunload = this.onBeforeUnloadHandler = ve.bind( this.onBeforeUnload, this );
 	// Attach page show handlers
 	if ( window.addEventListener ) {
 		window.addEventListener( 'pageshow', ve.bind( this.onPageShow, this ), false );
@@ -1610,7 +1604,7 @@ ve.init.mw.ViewPageTarget.prototype.tearDownBeforeUnloadHandler = function () {
  */
 ve.init.mw.ViewPageTarget.prototype.onPageShow = function () {
 	// Re-add onbeforeunload handler
-	window.onbeforeunload = this.proxiedOnBeforeUnload;
+	window.onbeforeunload = this.onBeforeUnloadHandler;
 };
 
 /**
@@ -1621,7 +1615,7 @@ ve.init.mw.ViewPageTarget.prototype.onPageShow = function () {
 ve.init.mw.ViewPageTarget.prototype.onBeforeUnload = function () {
 	var fallbackResult,
 		message,
-		proxiedOnBeforeUnload = this.proxiedOnBeforeUnload;
+		onBeforeUnloadHandler = this.onBeforeUnloadHandler;
 	// Check if someone already set on onbeforeunload hook
 	if ( this.onBeforeUnloadFallback ) {
 		// Get the result of their onbeforeunload hook
@@ -1647,7 +1641,7 @@ ve.init.mw.ViewPageTarget.prototype.onBeforeUnload = function () {
 	if ( message !== undefined ) {
 		// ...but if the user chooses not to leave the page, we need to rebind it
 		setTimeout( function () {
-			window.onbeforeunload = proxiedOnBeforeUnload;
+			window.onbeforeunload = onBeforeUnloadHandler;
 		} );
 		return message;
 	}

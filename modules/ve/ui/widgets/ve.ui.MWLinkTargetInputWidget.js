@@ -31,7 +31,7 @@ ve.ui.MWLinkTargetInputWidget = function VeUiMWLinkTargetInputWidget( config ) {
 	ve.ui.LookupInputWidget.call( this, this, config );
 
 	// Events
-	this.lookupMenu.addListenerMethod( this, 'select', 'onLookupMenuItemSelect' );
+	this.lookupMenu.connect( this, { 'select': 'onLookupMenuItemSelect' } );
 
 	// Initialization
 	this.$.addClass( 've-ui-mwLinkTargetInputWidget' );

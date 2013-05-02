@@ -19,7 +19,7 @@ ve.ui.UndoButtonTool = function VeUiUndoButtonTool( toolbar, config ) {
 	ve.ui.ButtonTool.call( this, toolbar, config );
 
 	// Events
-	this.toolbar.getSurface().getModel().addListenerMethod( this, 'history', 'onUpdateState' );
+	this.toolbar.getSurface().getModel().connect( this, { 'history': 'onUpdateState' } );
 
 	// Initialization
 	this.setDisabled( true );

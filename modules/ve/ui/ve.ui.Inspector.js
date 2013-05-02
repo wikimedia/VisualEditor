@@ -59,8 +59,8 @@ ve.ui.Inspector.prototype.initialize = function () {
 		'submit': ve.bind( this.onFormSubmit, this ),
 		'keydown': ve.bind( this.onFormKeyDown, this )
 	} );
-	this.closeButton.on( 'click', ve.bind( this.onCloseButtonClick, this ) );
-	this.removeButton.on( 'click', ve.bind( this.onRemoveButtonClick, this ) );
+	this.closeButton.connect( this, { 'click': 'onCloseButtonClick' } );
+	this.removeButton.connect( this, { 'click': 'onRemoveButtonClick' } );
 
 	// Initialization
 	this.closeButton.$.addClass( 've-ui-inspector-closeButton' );
