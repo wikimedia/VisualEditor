@@ -196,6 +196,9 @@ class ApiVisualEditor extends ApiBase {
 			global $wgTitle; // FIXME NOOOOOOOOES
 			$wgTitle = $page;
 			$notices = $page->getEditNotices();
+			if ( $user->isAnon() ) {
+				$wgVisualEditorEditNotices[] = 'anoneditwarning';
+			}
 			if ( count( $wgVisualEditorEditNotices ) ) {
 				foreach ( $wgVisualEditorEditNotices as $key ) {
 					$notices[] = wfMessage( $key )->parseAsBlock();
