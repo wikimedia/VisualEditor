@@ -2295,6 +2295,20 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/alienBlock' }
 		]
 	},
+	'about grouping is forced': {
+		'html': '<body><link rel="mw:WikiLink/Category" href="./Category:Foo" about="#mwt1" typeof="mw:Object/Template"><span about="#mwt1">Foo</span></body>',
+		'data': [
+			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+			{
+				'type': 'alienInline',
+				'attributes': {
+					'domElements': $( '<link rel="mw:WikiLink/Category" href="./Category:Foo" about="#mwt1" typeof="mw:Object/Template"><span about="#mwt1">Foo</span>' ).get()
+				}
+			},
+			{ 'type': '/alienInline' },
+			{ 'type': '/paragraph' }
+		]
+	},
 	'mw:Entity': {
 		'html': '<body><p>a<span typeof="mw:Entity">¢</span>b<span typeof="mw:Entity">¥</span><span typeof="mw:Entity">™</span></p></body>',
 		'data': [

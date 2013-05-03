@@ -175,9 +175,10 @@ ve.dm.ModelRegistry.prototype.isExtensionSpecificType = function ( type ) {
  * The highest-ranking model whose test function does not return false, wins.
  *
  * @param {HTMLElement} element Element to match
+ * @param {boolean} [forceAboutGrouping] If true, only match models with about grouping enabled
  * @returns {string|null} Model type, or null if none found
  */
-ve.dm.ModelRegistry.prototype.matchElement = function ( element ) {
+ve.dm.ModelRegistry.prototype.matchElement = function ( element, forceAboutGrouping ) {
 	var i, name, model, matches, winner, types, elementExtSpecificTypes, matchTypes,
 		hasExtSpecificTypes,
 		tag = element.nodeName.toLowerCase(),
@@ -243,15 +244,16 @@ ve.dm.ModelRegistry.prototype.matchElement = function ( element ) {
 			queue = ve.filterArray( queue, function ( name ) { return matchesAllTypes( types, name ); } );
 			queue2 = ve.filterArray( queue2, function ( name ) { return matchesAllTypes( types, name ); } );
 		}
+		if ( forceAboutGrouping ) {
+			// Filter out matches that don't support about grouping
+			queue = ve.filterArray( queue, function ( name ) { return reg.registry[name].static.enableAboutGrouping; } );
+			queue2 = ve.filterArray( queue2, function ( name ) { return reg.registry[name].static.enableAboutGrouping; } );
+		}
 		// Try string matches first, then regexp matches
 		queue.sort( byRegistrationOrderDesc );
 		queue2.sort( byRegistrationOrderDesc );
 		queue = queue.concat( queue2 );
 		for ( i = 0; i < queue.length; i++ ) {
-			if ( mustMatchAll && !matchesAllTypes( types, queue[i] ) ) {
-				// Skip matches that don't match all types if that's required
-				continue;
-			}
 			if ( reg.registry[queue[i]].static.matchFunction( element ) ) {
 				return queue[i];
 			}
@@ -271,13 +273,14 @@ ve.dm.ModelRegistry.prototype.matchElement = function ( element ) {
 			queue = ve.filterArray( queue, function ( name ) { return matchesAllTypes( types, name ); } );
 			queue2 = ve.filterArray( queue2, function ( name ) { return matchesAllTypes( types, name ); } );
 		}
+		if ( forceAboutGrouping ) {
+			// Filter out matches that don't support about grouping
+			queue = ve.filterArray( queue, function ( name ) { return reg.registry[name].static.enableAboutGrouping; } );
+			queue2 = ve.filterArray( queue2, function ( name ) { return reg.registry[name].static.enableAboutGrouping; } );
+		}
 		// Only try regexp matches if there are no string matches
 		queue = queue.length > 0 ? queue : queue2;
 		for ( i = 0; i < queue.length; i++ ) {
-			if ( mustMatchAll && !matchesAllTypes( types, queue[i] ) ) {
-				// Skip matches that don't match all types if that's required
-				continue;
-			}
 			if (
 				winningName === null ||
 				reg.registrationOrder[winningName] < reg.registrationOrder[queue[i]]
