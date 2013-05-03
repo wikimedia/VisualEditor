@@ -46,7 +46,8 @@ ve.ui.MWMetaDialog.static.icon = 'settings';
  * @method
  */
 ve.ui.MWMetaDialog.prototype.onOpen = function () {
-	var surfaceModel = this.surface.getModel();
+	var surfaceModel = this.surface.getModel(),
+		categoryWidget = this.categoryWidget;
 
 	// Force all previous transactions to be separate from this history state
 	surfaceModel.breakpoint();
@@ -54,6 +55,11 @@ ve.ui.MWMetaDialog.prototype.onOpen = function () {
 
 	// Parent method
 	ve.ui.PagedDialog.prototype.onOpen.call( this );
+
+	// Update input position once visible
+	setTimeout( function () {
+		categoryWidget.fitInput();
+	} );
 };
 
 /**
@@ -175,15 +181,11 @@ ve.ui.MWMetaDialog.prototype.onNewCategory = function ( item ) {
  * @param {Object} item
  */
 ve.ui.MWMetaDialog.prototype.onUpdateSortKey = function ( item ) {
-	// Store the offset and index before removing
-	var offset = item.metaItem.offset,
-		index = item.metaItem.index;
+	var offset = item.metaItem.getOffset(),
+		index = item.metaItem.getIndex();
 
+	// Replace meta item with updated one
 	item.metaItem.remove();
-	// It would seem as if insertItem happens before the onRemove event is sent to CategoryWidget,
-	// Remove the reference there so it doesn't try to get removed again onMetaListInsert
-	delete this.categoryWidget.categories[item.name];
-	// Insert updated meta item at same offset and index
 	this.metaList.insertMeta( this.getCategoryItemForInsertion( item ), offset, index );
 };
 
@@ -194,9 +196,12 @@ ve.ui.MWMetaDialog.prototype.onUpdateSortKey = function ( item ) {
  * @param {Object} ve.dm.MetaItem
  */
 ve.ui.MWMetaDialog.prototype.onMetaListInsert = function ( metaItem ) {
-	// Responsible for adding UI components.
+	// Responsible for adding UI components
 	if ( metaItem.element.type === 'MWcategory' ) {
-		this.categoryWidget.addItems( [ this.getCategoryItemFromMetaListItem( metaItem ) ] );
+		this.categoryWidget.addItems(
+			[ this.getCategoryItemFromMetaListItem( metaItem ) ],
+			this.metaList.findItem( metaItem.getOffset(), metaItem.getIndex(), 'MWcategory' )
+		);
 	}
 };
 

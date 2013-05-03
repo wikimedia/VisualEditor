@@ -31,7 +31,7 @@ ve.ui.PagePanelLayout = function VeUiPagePanelLayout( config ) {
 
 	// Initialization
 	this.$label.addClass( 've-ui-icon-' + config.icon + '-big' );
-	this.$.append( this.$label ).addClass( 've-ui-editorPanelLayout' );
+	this.$.append( this.$label ).addClass( 've-ui-pagedPanelLayout' );
 };
 
 /* Inheritance */

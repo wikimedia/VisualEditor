@@ -328,9 +328,10 @@ ve.ui.SelectWidget.prototype.getClosestSelectableItem = function ( index ) {
  *
  * @method
  * @param {ve.ui.OptionWidget[]} items Items to add
+ * @param {number} [index] Index to insert items after
  * @chainable
  */
-ve.ui.SelectWidget.prototype.addItems = function ( items ) {
+ve.ui.SelectWidget.prototype.addItems = function ( items, index ) {
 	var i, len, item, hash;
 
 	for ( i = 0, len = items.length; i < len; i++ ) {
@@ -344,7 +345,7 @@ ve.ui.SelectWidget.prototype.addItems = function ( items ) {
 			this.hashes[hash] = item;
 		}
 	}
-	ve.ui.GroupElement.prototype.addItems.call( this, items );
+	ve.ui.GroupElement.prototype.addItems.call( this, items, index );
 
 	return this;
 };

@@ -48,9 +48,10 @@ ve.mixinClass( ve.ui.StackPanelLayout, ve.ui.GroupElement );
  *
  * @method
  * @param {ve.ui.PanelLayout[]} items Items to add
+ * @param {number} [index] Index to insert items after
  * @chainable
  */
-ve.ui.StackPanelLayout.prototype.addItems = function ( items ) {
+ve.ui.StackPanelLayout.prototype.addItems = function ( items, index ) {
 	var i, len;
 
 	for ( i = 0, len = items.length; i < len; i++ ) {
@@ -60,7 +61,7 @@ ve.ui.StackPanelLayout.prototype.addItems = function ( items ) {
 			items[i].$.hide();
 		}
 	}
-	ve.ui.GroupElement.prototype.addItems.call( this, items );
+	ve.ui.GroupElement.prototype.addItems.call( this, items, index );
 
 	return this;
 };
