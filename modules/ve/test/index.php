@@ -213,10 +213,10 @@
 		<script src="../../ve/ui/widgets/ve.ui.TextInputMenuWidget.js"></script>
 		<script src="../../ve/ui/widgets/ve.ui.LinkTargetInputWidget.js"></script>
 		<script src="../../ve/ui/widgets/ve.ui.MWLinkTargetInputWidget.js"></script>
+		<script src="../../ve/ui/layouts/ve.ui.FieldsetLayout.js"></script>
 		<script src="../../ve/ui/layouts/ve.ui.GridLayout.js"></script>
 		<script src="../../ve/ui/layouts/ve.ui.PanelLayout.js"></script>
-		<script src="../../ve/ui/layouts/panels/ve.ui.StackPanelLayout.js"></script>
-		<script src="../../ve/ui/layouts/panels/ve.ui.PagePanelLayout.js"></script>
+		<script src="../../ve/ui/layouts/ve.ui.StackPanelLayout.js"></script>
 		<script src="../../ve/ui/dialogs/ve.ui.ContentDialog.js"></script>
 		<script src="../../ve/ui/dialogs/ve.ui.MediaDialog.js"></script>
 		<script src="../../ve/ui/dialogs/ve.ui.PagedDialog.js"></script>

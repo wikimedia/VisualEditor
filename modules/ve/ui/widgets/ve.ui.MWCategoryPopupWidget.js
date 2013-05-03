@@ -94,6 +94,10 @@ ve.ui.MWCategoryPopupWidget.prototype.closePopup = function () {
 	this.popupOpen = false;
 };
 
+ve.ui.MWCategoryPopupWidget.prototype.setDefaultSortKey = function ( value ) {
+	this.sortKeyInput.$input.attr( 'placeholder', value );
+};
+
 ve.ui.MWCategoryPopupWidget.prototype.setPopup = function ( item ) {
 	var left = item.$.offset().left + ( item.$.width() - 17 ),
 		top = item.$.offset().top + item.$.height(),

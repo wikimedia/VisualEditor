@@ -84,7 +84,7 @@ ve.ui.PagedDialog.prototype.addPage = function ( name, label, icon ) {
 	var config = { '$$': this.$$, 'icon': icon, 'label': label || name };
 
 	// Create and add page panel and outline item
-	this.pages[name] = new ve.ui.PagePanelLayout( config );
+	this.pages[name] = new ve.ui.PanelLayout( config );
 	this.pagesPanel.addItems( [this.pages[name]] );
 	this.outlineWidget.addItems( [ new ve.ui.OutlineItemWidget( name, config ) ] );
 
@@ -101,7 +101,7 @@ ve.ui.PagedDialog.prototype.addPage = function ( name, label, icon ) {
  *
  * @method
  * @param {string} name Symbolic name of page
- * @returns {ve.ui.PagePanelLayout|undefined} Page, if found
+ * @returns {ve.ui.PanelLayout|undefined} Page, if found
  */
 ve.ui.PagedDialog.prototype.getPage = function ( name ) {
 	return this.pages[name];

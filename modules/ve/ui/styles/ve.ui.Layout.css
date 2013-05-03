@@ -21,18 +21,15 @@
 	position: absolute;
 }
 
-/* ve.ui.EditorPanelLayout */
+/* ve.ui.FieldsetLayout */
 
-.ve-ui-pagedPanelLayout {
-	padding: 1.5em;
-	width: 100%;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-	overflow: hidden;
+.ve-ui-fieldsetLayout {
+	border: none;
+	margin: 0 0 2em 0;
+	padding: 0;
 }
 
-.ve-ui-pagedPanelLayout > .ve-ui-labeledElement-label {
+.ve-ui-fieldsetLayout > legend.ve-ui-labeledElement-label {
 	font-size: 1.5em;
 	padding-left: 1.75em;
 	margin-bottom: 1em;

@@ -60,6 +60,20 @@ ve.dm.MetaItem.prototype.remove = function () {
 };
 
 /**
+ * Replace item with another in-place.
+ *
+ * @param {ve.dm.MetaItem} item Item to replace this item with
+ */
+ve.dm.MetaItem.prototype.replaceWith = function ( item ) {
+	var offset = this.getOffset(),
+		index = this.getIndex(),
+		list = this.list;
+
+	list.removeMeta( this );
+	list.insertMeta( item, offset, index );
+};
+
+/**
  * Get the group this meta item belongs to.
  * @see ve.dm.MetaItem#static.group
  * @returns {string} Group
