@@ -788,6 +788,8 @@ ve.init.mw.ViewPageTarget.prototype.setupSkinTabs = function () {
 			ve.msg( 'accesskey-ca-editsource' ),
 			caVeEditNextnode
 		);
+		// Copy over classes (e.g. 'selected')
+		$( caVeEditSource ).addClass( $caEdit.attr( 'class' ) );
 
 		// Create "Edit" tab.
 		$caEdit.remove();
