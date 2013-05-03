@@ -252,7 +252,7 @@ ve.init.mw.Target.onSave = function ( response ) {
 			this, null, 'Invalid HTML content in response from server', null
 		);
 	} else {
-		this.emit( 'save', data.content );
+		this.emit( 'save', data.content, data.newrevid );
 	}
 };
 

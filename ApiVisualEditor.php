@@ -235,17 +235,20 @@ class ApiVisualEditor extends ApiBase {
 						'edit' => $editResult['edit']
 					);
 				} else {
-					if ( isset ( $editResult['edit']['newrevid'] ) && $wgVisualEditorUseChangeTagging ) {
+					if ( isset( $editResult['edit']['newrevid'] ) && $wgVisualEditorUseChangeTagging ) {
 						ChangeTags::addTags( 'visualeditor', null,
 							intval( $editResult['edit']['newrevid'] ),
 							null
 						);
 					}
-					$parsed = $this->parseWikitext( $page );
-					if ( $parsed === false ) {
+					$result = $this->parseWikitext( $page );
+					if ( $result === false ) {
 						$this->dieUsage( 'Error contacting the Parsoid server', 'parsoidserver' );
 					}
-					$result = array_merge( array( 'result' => 'success' ), $parsed );
+					$result['result'] = 'success';
+					if ( isset( $editResult['edit']['newrevid'] ) ) {
+						$result['newrevid'] = intval( $editResult['edit']['newrevid'] );
+					}
 				}
 			} else if ( $params['paction'] === 'diff' ) {
 				$diff = $this->diffWikitext( $page, $wikitext );

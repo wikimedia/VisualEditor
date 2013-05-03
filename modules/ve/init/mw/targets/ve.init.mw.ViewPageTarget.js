@@ -331,8 +331,9 @@ ve.init.mw.ViewPageTarget.prototype.onLoadError = function ( response, status ) 
  *
  * @method
  * @param {HTMLElement} html Rendered HTML from server
+ * @param {number} [newid] New revision id, undefined if unchanged
  */
-ve.init.mw.ViewPageTarget.prototype.onSave = function ( html ) {
+ve.init.mw.ViewPageTarget.prototype.onSave = function ( html, newid ) {
 	if ( !this.pageExists || this.restoring ) {
 		// This is a page creation or restoration, refresh the page
 		this.tearDownBeforeUnloadHandler();
@@ -352,6 +353,9 @@ ve.init.mw.ViewPageTarget.prototype.onSave = function ( html ) {
 				$( '#ca-watch a, #ca-unwatch a' ),
 				watchChecked ? 'unwatch': 'watch'
 			);
+		}
+		if ( newid !== undefined ) {
+			this.oldid = newid;
 		}
 		this.hideSaveDialog();
 		this.resetSaveDialog();
