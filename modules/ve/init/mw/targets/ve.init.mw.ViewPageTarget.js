@@ -840,7 +840,7 @@ ve.init.mw.ViewPageTarget.prototype.setupSkinTabs = function () {
  */
 ve.init.mw.ViewPageTarget.prototype.setupSectionEditLinks = function () {
 	var veEditUri = this.veEditUri,
-		$links = $( '#mw-content-text .editsection a' );
+		$links = $( '#mw-content-text .mw-editsection a, #mw-content-text .editsection a' );
 	if ( this.isViewPage ) {
 		$links.click( ve.bind( this.onEditSectionLinkClick, this ) );
 	} else {
