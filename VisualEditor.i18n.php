@@ -421,6 +421,83 @@ $messages['ba'] = array(
 	'visualeditor-annotationbutton-link-tooltip' => 'Һылтанма', # Fuzzy
 );
 
+/** Belarusian (беларуская)
+ * @author Чаховіч Уладзіслаў
+ */
+$messages['be'] = array(
+	'tag-visualeditor' => '[[Special:Tags|Тэг]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|Візуальны рэдактар]]',
+	'tag-visualeditor-description' => 'Праўка зроблена з выкарыстаннем [[{{MediaWiki:Visualeditor-descriptionpagelink}}|візуальнага рэдактара]]',
+	'tooltip-ca-editsource' => 'Правіць зыходны код гэтай старонкі',
+	'tooltip-ca-ve-edit' => 'Правіць гэту старонку з візуальным рэдактарам',
+	'visualeditor' => 'VisualEditor',
+	'visualeditor-desc' => 'Візуальны рэдактар для MediaWiki',
+	'visualeditor-preference-enable' => 'Уключыць VisualEditor (толькі ў [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|асноўнай]] і [[{{MediaWiki:Visualeditor-usernamespacepagelink}}|асабістай]] прасторах імёнаў).',
+	'visualeditor-mainnamespacepagelink' => 'Project:Асноўная прастора',
+	'visualeditor-usernamespacepagelink' => 'Project:Асабістая прастора',
+	'visualeditor-notification-saved' => 'Вашы змены ў $1 былі захаваны.',
+	'visualeditor-notification-created' => 'Старонка $1 была створана.',
+	'visualeditor-notification-restored' => 'Папярэдняя версія на старонцы $1 была адноўлена.',
+	'visualeditor-notification-reported' => 'Дзякуй, што паведамілі пра ўзніклую праблему.',
+	'visualeditor-ca-editsource' => 'Правіць зыходны тэкст',
+	'visualeditor-ca-ve-edit' => 'Візуальны рэдактар',
+	'visualeditor-ca-ve-create' => 'Візуальны рэдактар',
+	'visualeditor-category-input-placeholder' => 'Назва катэгорыі',
+	'visualeditor-dialog-action-apply' => 'Захаваць змены',
+	'visualeditor-dialog-action-cancel' => 'Адмена',
+	'visualeditor-dialog-action-close' => 'Закрыць',
+	'visualeditor-toolbar-savedialog' => 'Праверыць і захаваць',
+	'visualeditor-savedialog-title-review' => 'Праверце вашы праўкі',
+	'visualeditor-savedialog-title-report' => 'Паведаміць пра праблему',
+	'visualeditor-savedialog-title-save' => 'Захаваць змены',
+	'visualeditor-savedialog-label-review-wrong' => 'Штосьці пайшло не так',
+	'visualeditor-savedialog-label-review-good' => 'Нядрэнна выглядае для мяне',
+	'visualeditor-savedialog-label-report' => 'Паведаміць пра праблему',
+	'visualeditor-savedialog-label-create' => 'Стварыць старонку',
+	'visualeditor-savedialog-label-save' => 'Запісаць',
+	'visualeditor-savedialog-label-restore' => 'Аднавіць старонку',
+	'visualeditor-editnotices-tool' => '$1 {{PLURAL:$1|паведамленне|паведамленні|паведамленняў}}',
+	'visualeditor-feedback-tool' => 'Пакінуць водгук',
+	'visualeditor-window-title' => 'Праверыць',
+	'visualeditor-linkinspector-title' => 'Гіперспасылка',
+	'visualeditor-linkinspector-suggest-new-page' => 'Новая старонка',
+	'visualeditor-linkinspector-suggest-external-link' => 'Вонкавая спасылка',
+	'visualeditor-formatdropdown-title' => 'Фарматаванне',
+	'visualeditor-formatdropdown-format-paragraph' => 'Абзац',
+	'visualeditor-formatdropdown-format-heading1' => 'Загаловак 1',
+	'visualeditor-formatdropdown-format-heading2' => 'Загаловак 2',
+	'visualeditor-formatdropdown-format-heading3' => 'Загаловак 3',
+	'visualeditor-formatdropdown-format-heading4' => 'Загаловак 4',
+	'visualeditor-formatdropdown-format-heading5' => 'Загаловак 5',
+	'visualeditor-formatdropdown-format-heading6' => 'Загаловак 6',
+	'visualeditor-formatdropdown-format-preformatted' => 'Прэфарматаваны',
+	'visualeditor-annotationbutton-bold-tooltip' => 'Цёмны',
+	'visualeditor-annotationbutton-italic-tooltip' => 'Курсіў',
+	'visualeditor-annotationbutton-link-tooltip' => 'Спасылка',
+	'visualeditor-dialogbutton-media-tooltip' => 'Файл',
+	'visualeditor-indentationbutton-indent-tooltip' => 'Павялічыць водступ',
+	'visualeditor-indentationbutton-outdent-tooltip' => 'Паменшыць водступ',
+	'visualeditor-listbutton-number-tooltip' => 'Нумараваны спіс',
+	'visualeditor-listbutton-bullet-tooltip' => 'Маркіраваны спіс',
+	'visualeditor-clearbutton-tooltip' => 'Ачысціць фарматаванне',
+	'visualeditor-historybutton-undo-tooltip' => 'Адкаціць',
+	'visualeditor-historybutton-redo-tooltip' => 'Паўтарыць',
+	'visualeditor-inspector-close-tooltip' => 'Закрыць',
+	'visualeditor-inspector-remove-tooltip' => 'Выдаліць',
+	'visualeditor-viewpage-savewarning' => 'Вы сапраўды жадаеце вярнуцца ў рэжым прагляду, не захаваўшы змены?',
+	'visualeditor-loadwarning' => 'Памылка пры загрузцы дадзеных: $1. Паўтарыць спробу?',
+	'visualeditor-differror' => 'Памылка загрузкі дадзеных з сервера: $1.',
+	'visualeditor-serializeerror' => 'Памылка загрузкі дадзеных з сервера: $1.',
+	'visualeditor-saveerror' => 'Памылка захавання дадзеных на сервер: $1.',
+	'visualeditor-editconflict' => 'Вашы змены не атрымалася запісаць, таму што адбыўся канфлікт правак. Жадаеце вырашыць канфлікт уручную?',
+	'visualeditor-editsummary' => 'Апішыце, што вы змянілі',
+	'visualeditor-problem' => 'Апішыце, што пайшло не так',
+	'visualeditor-aliennode-tooltip' => 'Прабачце, гэты элемент не можа быць адрэдагаваны з дапамогай VisualEditor',
+	'visualeditor-descriptionpagelink' => 'Project:Візуальны рэдактар',
+	'visualeditor-alphawarning' => 'Вы выкарыстоўваеце альфа-версію [[{{MediaWiki:Visualeditor-descriptionpagelink}}|візуальнага рэдактара]]. Яна можа быць павольнай і рабіць памылковыя змены — калі ласка, правярайце кожную зробленую праўку.',
+	'visualeditor-report-notice' => 'Я разумею, што націснуўшы кнопку «Паведаміць пра праблему» я перадам свае змены і свой водгук, які будзе захоўвацца для аналізу. Я згодзен з тым, каб забяспечыць зваротную сувязь у адпаведнасці з [[{{MediaWiki:Visualeditor-report-link}}|умовамі выкарыстання]].',
+	'visualeditor-feedback-link' => 'Project:VisualEditor/Водгукі',
+);
+
 /** Belarusian (Taraškievica orthography) (беларуская (тарашкевіца)‎)
  * @author EugeneZelenko
  * @author Wizardist
@@ -1261,6 +1338,7 @@ $messages['fi'] = array(
 );
 
 /** French (français)
+ * @author Benoit Rochon
  * @author Boniface
  * @author Brunoperel
  * @author Crochet.david
@@ -1291,7 +1369,7 @@ $messages['fr'] = array(
 	'visualeditor-ca-ve-edit' => 'ÉditeurVisuel',
 	'visualeditor-ca-ve-create' => 'ÉditeurVisuel',
 	'visualeditor-category-input-placeholder' => 'Nom de la catégorie',
-	'visualeditor-category-settings-label' => 'Détails de la catégorie',
+	'visualeditor-category-settings-label' => 'Paramètres de la catégorie',
 	'visualeditor-dialog-meta-title' => 'Paramètres de la page',
 	'visualeditor-dialog-content-title' => 'Paramètres du contenu',
 	'visualeditor-dialog-media-title' => 'Paramètres du média',
@@ -1333,7 +1411,7 @@ $messages['fr'] = array(
 	'visualeditor-listbutton-number-tooltip' => 'Liste numérotée',
 	'visualeditor-listbutton-bullet-tooltip' => 'Liste à puces',
 	'visualeditor-clearbutton-tooltip' => 'Effacer la mise en forme',
-	'visualeditor-historybutton-undo-tooltip' => 'Annuler',
+	'visualeditor-historybutton-undo-tooltip' => 'Défaire',
 	'visualeditor-historybutton-redo-tooltip' => 'Refaire',
 	'visualeditor-inspector-close-tooltip' => 'Fermer',
 	'visualeditor-inspector-remove-tooltip' => 'Supprimer',
@@ -3336,6 +3414,8 @@ $messages['sv'] = array(
 	'visualeditor-ca-editsource' => 'Redigera källa',
 	'visualeditor-ca-ve-edit' => 'VisualEditor',
 	'visualeditor-ca-ve-create' => 'VisualEditor',
+	'visualeditor-category-input-placeholder' => 'Kategorinamn',
+	'visualeditor-category-settings-label' => 'Kategoriinställningar',
 	'visualeditor-dialog-meta-title' => 'Sidinställningar',
 	'visualeditor-dialog-content-title' => 'Innehållsinställningar',
 	'visualeditor-dialog-media-title' => 'Mediainställningar',
@@ -3356,8 +3436,9 @@ $messages['sv'] = array(
 	'visualeditor-feedback-tool' => 'Lämna feedback',
 	'visualeditor-window-title' => 'Inspektera',
 	'visualeditor-linkinspector-title' => 'Hyperlänk',
+	'visualeditor-linkinspector-suggest-matching-page' => 'Överensstämmande sida',
 	'visualeditor-linkinspector-suggest-new-page' => 'Ny sida',
-	'visualeditor-linkinspector-suggest-external-link' => 'Webblänk', # Fuzzy
+	'visualeditor-linkinspector-suggest-external-link' => 'Extern länk',
 	'visualeditor-formatdropdown-title' => 'Ändra format',
 	'visualeditor-formatdropdown-format-paragraph' => 'Paragraf',
 	'visualeditor-formatdropdown-format-heading1' => 'Rubrik 1',
@@ -3786,6 +3867,8 @@ $messages['zh-hant'] = array(
 	'visualeditor-ca-editsource' => '編輯原始碼',
 	'visualeditor-ca-ve-edit' => '視覺化編輯器',
 	'visualeditor-ca-ve-create' => '視覺化編輯器',
+	'visualeditor-category-input-placeholder' => '分類名稱',
+	'visualeditor-category-settings-label' => '分類設定',
 	'visualeditor-dialog-meta-title' => '頁面設定',
 	'visualeditor-dialog-content-title' => '內容設定',
 	'visualeditor-dialog-media-title' => '媒體設定',
