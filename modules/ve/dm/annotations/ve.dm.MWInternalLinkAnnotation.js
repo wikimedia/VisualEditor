@@ -67,6 +67,15 @@ ve.dm.MWInternalLinkAnnotation.static.toDomElements = function ( dataElement, do
 	return [ domElement ];
 };
 
+/* Methods */
+
+ve.dm.MWInternalLinkAnnotation.prototype.getComparableObject = function () {
+	return {
+		'type': this.getType(),
+		'title': this.getAttribute( 'title' )
+	};
+};
+
 /* Registration */
 
 ve.dm.modelRegistry.register( ve.dm.MWInternalLinkAnnotation );

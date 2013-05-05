@@ -15,6 +15,7 @@
  * only override static properties and functions.
  *
  * @class
+ * @extends {ve.dm.Model}
  * @constructor
  * @param {Object} element Linear model annotation
  */
@@ -50,4 +51,18 @@ ve.dm.Annotation.static.enableAboutGrouping = false;
  */
 ve.dm.Annotation.prototype.getDomElements = function ( doc ) {
 	return this.constructor.static.toDomElements( this.element, doc || document );
+};
+
+/**
+ * Get an object containing comparable annotation properties.
+ *
+ * This is used by the converter to merge adjacent annotations.
+ *
+ * @returns {Object} An object containing a subset of the annotation's properties
+ */
+ve.dm.Annotation.prototype.getComparableObject = function () {
+	return {
+		'type': this.getType(),
+		'attributes': this.getAttributes()
+	};
 };

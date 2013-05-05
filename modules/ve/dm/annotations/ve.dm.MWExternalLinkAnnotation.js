@@ -50,6 +50,16 @@ ve.dm.MWExternalLinkAnnotation.static.toDomElements = function ( dataElement ) {
 	return parentResult;
 };
 
+/* Methods */
+
+ve.dm.MWExternalLinkAnnotation.prototype.getComparableObject = function () {
+	return {
+		'type': this.getType(),
+		'href': this.getAttribute( 'href' ),
+		'rel': this.getAttribute( 'rel' ) || 'mw:ExtLink'
+	};
+};
+
 /* Registration */
 
 ve.dm.modelRegistry.register( ve.dm.MWExternalLinkAnnotation );
