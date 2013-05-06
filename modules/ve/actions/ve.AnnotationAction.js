@@ -77,7 +77,8 @@ ve.AnnotationAction.prototype.toggle = function ( name, data ) {
 			fragment.getAnnotations().containsComparable( annotation ) ? 'clear' : 'set', name, data
 		);
 	} else {
-		existingAnnotations = surfaceModel.getInsertionAnnotations().getComparableAnnotations( annotation );
+		existingAnnotations = surfaceModel
+			.getInsertionAnnotations().getComparableAnnotations( annotation );
 		if ( existingAnnotations.isEmpty() ) {
 			surfaceModel.addInsertionAnnotations( annotation );
 		} else {

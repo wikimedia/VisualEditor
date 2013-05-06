@@ -82,12 +82,13 @@ ve.dm.AnnotationSet.prototype.hasAnnotationWithName = function ( name ) {
 /**
  * Get an annotation or all annotations from the set.
  *
- * set.get( 5 ) returns the annotation at index 5, set.get() returns an array with all annotations in
- * the entire set.
+ * set.get( 5 ) returns the annotation at index 5, set.get() returns an array with all annotations
+ * in the entire set.
  *
  * @method
  * @param {number} [index] If set, only get the annotation at the index
- * @returns {Array|ve.dm.Annotation|undefined} The annotation at index, or an array of all annotation in the set
+ * @returns {Array|ve.dm.Annotation|undefined} The annotation at index, or an array of all
+ *   annotation in the set
  */
 ve.dm.AnnotationSet.prototype.get = function ( index ) {
 	if ( index !== undefined ) {

@@ -297,10 +297,11 @@ ve.dm.Surface.prototype.change = function ( transactions, selection ) {
 	if ( !this.enabled ) {
 		return;
 	}
-	var i, len, offset, annotations,
+	var i, len, left, right, leftAnnotations, rightAnnotations, insertionAnnotations,
 		selectedNodes = {},
 		selectionChange = false,
-		contextChange = false;
+		contextChange = false,
+		dataModelData = this.documentModel.data;
 
 	// Stop observation polling, things changing right now are known already
 	this.emit( 'lock' );
@@ -360,28 +361,36 @@ ve.dm.Surface.prototype.change = function ( transactions, selection ) {
 		}
 	}
 
-	// Figure out which offset which we should get insertion annotations from
+	// Figure out which annotations to use for insertions
 	if ( this.selection.isCollapsed() ) {
 		// Get annotations from the left of the cursor
-		offset = this.documentModel.data.getNearestContentOffset(
-			Math.max( 0, this.selection.start - 1 ), -1
-		);
+		left = dataModelData.getNearestContentOffset( Math.max( 0, this.selection.start - 1 ), -1 );
+		right = dataModelData.getNearestContentOffset( Math.max( 0, this.selection.start ) );
 	} else {
 		// Get annotations from the first character of the selection
-		offset = this.documentModel.data.getNearestContentOffset( this.selection.start );
+		left = dataModelData.getNearestContentOffset( this.selection.start );
+		right = dataModelData.getNearestContentOffset( this.selection.end );
 	}
-	if ( offset === -1 ) {
+	if ( left === -1 ) {
 		// Document is empty, use empty set
-		annotations = new ve.dm.AnnotationSet( this.documentModel.getStore() );
+		insertionAnnotations = new ve.dm.AnnotationSet( this.documentModel.getStore() );
 	} else {
-		annotations = this.documentModel.data.getAnnotationsFromOffset( offset );
+		// Include annotations on the left that should be added to appended content, or ones that
+		// are on both the left and the right that should not
+		leftAnnotations = dataModelData.getAnnotationsFromOffset( left );
+		rightAnnotations = dataModelData.getAnnotationsFromOffset( right );
+		insertionAnnotations = leftAnnotations.filter( function ( annotation ) {
+			return annotation.constructor.static.applyToAppendedContent ||
+				rightAnnotations.containsComparable( annotation );
+		} );
 	}
+
 	// Only emit an annotations change event if there's a meaningful difference
 	if (
-		!annotations.containsAllOf( this.insertionAnnotations ) ||
-		!this.insertionAnnotations.containsAllOf( annotations )
+		!insertionAnnotations.containsAllOf( this.insertionAnnotations ) ||
+		!this.insertionAnnotations.containsAllOf( insertionAnnotations )
 	) {
-		this.setInsertionAnnotations( annotations );
+		this.setInsertionAnnotations( insertionAnnotations );
 		contextChange = true;
 	}
 
