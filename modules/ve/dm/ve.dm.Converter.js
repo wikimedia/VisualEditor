@@ -449,13 +449,13 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, wrapp
 		childDomElement = domElement.childNodes[i];
 		switch ( childDomElement.nodeType ) {
 			case Node.ELEMENT_NODE:
-				modelName = this.modelRegistry.matchElement( childDomElement );
+				aboutGroup = getAboutGroup( childDomElement );
+				modelName = this.modelRegistry.matchElement( childDomElement, aboutGroup.length > 1 );
 				modelClass = this.modelRegistry.lookup( modelName ) || ve.dm.AlienNode;
 				if ( modelClass.prototype instanceof ve.dm.Annotation ) {
 					childDataElements = this.createDataElements( modelClass, [ childDomElement ] );
 				} else {
 					// Node or meta item
-					aboutGroup = getAboutGroup( childDomElement );
 					childDomElements = modelClass.static.enableAboutGrouping ?
 						aboutGroup : [ childDomElement ];
 					childDataElements = this.createDataElements( modelClass, childDomElements );
