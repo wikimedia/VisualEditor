@@ -167,7 +167,10 @@ ve.dm.Surface.prototype.setInsertionAnnotations = function ( annotations ) {
 	if ( !this.enabled ) {
 		return;
 	}
-	this.insertionAnnotations = annotations.clone();
+	this.insertionAnnotations = annotations !== null ?
+		annotations.clone() :
+		new ve.dm.AnnotationSet( this.documentModel.getStore() );
+
 	this.emit( 'contextChange' );
 };
 
@@ -175,14 +178,20 @@ ve.dm.Surface.prototype.setInsertionAnnotations = function ( annotations ) {
  * Add an annotation to be used upon insertion.
  *
  * @method
- * @param {ve.dm.AnnotationSet} Insertion anotation to add
+ * @param {ve.dm.Annotation|ve.dm.AnnotationSet} annotations Insertion annotation to add
  * @emits contextChange
  */
-ve.dm.Surface.prototype.addInsertionAnnotation = function ( annotation ) {
+ve.dm.Surface.prototype.addInsertionAnnotations = function ( annotations ) {
 	if ( !this.enabled ) {
 		return;
 	}
-	this.insertionAnnotations.push( annotation );
+	if ( annotations instanceof ve.dm.Annotation ) {
+		this.insertionAnnotations.push( annotations );
+	} else if ( annotations instanceof ve.dm.AnnotationSet ) {
+		this.insertionAnnotations.addSet( annotations );
+	} else {
+		throw new Error( 'Invalid annotations' );
+	}
 	this.emit( 'contextChange' );
 };
 
@@ -190,14 +199,20 @@ ve.dm.Surface.prototype.addInsertionAnnotation = function ( annotation ) {
  * Remove an annotation from those that will be used upon insertion.
  *
  * @method
- * @param {ve.dm.AnnotationSet} Insertion anotation to remove
+ * @param {ve.dm.Annotation|ve.dm.AnnotationSet} annotations Insertion annotation to remove
  * @emits contextChange
  */
-ve.dm.Surface.prototype.removeInsertionAnnotation = function ( annotation ) {
+ve.dm.Surface.prototype.removeInsertionAnnotations = function ( annotations ) {
 	if ( !this.enabled ) {
 		return;
 	}
-	this.insertionAnnotations.remove( annotation );
+	if ( annotations instanceof ve.dm.Annotation ) {
+		this.insertionAnnotations.remove( annotations );
+	} else if ( annotations instanceof ve.dm.AnnotationSet ) {
+		this.insertionAnnotations.removeSet( annotations );
+	} else {
+		throw new Error( 'Invalid annotations' );
+	}
 	this.emit( 'contextChange' );
 };
 
@@ -282,10 +297,11 @@ ve.dm.Surface.prototype.change = function ( transactions, selection ) {
 	if ( !this.enabled ) {
 		return;
 	}
-	var i, len, offset, annotations,
+	var i, len, left, right, leftAnnotations, rightAnnotations, insertionAnnotations,
 		selectedNodes = {},
 		selectionChange = false,
-		contextChange = false;
+		contextChange = false,
+		dataModelData = this.documentModel.data;
 
 	// Stop observation polling, things changing right now are known already
 	this.emit( 'lock' );
@@ -345,28 +361,36 @@ ve.dm.Surface.prototype.change = function ( transactions, selection ) {
 		}
 	}
 
-	// Figure out which offset which we should get insertion annotations from
+	// Figure out which annotations to use for insertions
 	if ( this.selection.isCollapsed() ) {
 		// Get annotations from the left of the cursor
-		offset = this.documentModel.data.getNearestContentOffset(
-			Math.max( 0, this.selection.start - 1 ), -1
-		);
+		left = dataModelData.getNearestContentOffset( Math.max( 0, this.selection.start - 1 ), -1 );
+		right = dataModelData.getNearestContentOffset( Math.max( 0, this.selection.start ) );
 	} else {
 		// Get annotations from the first character of the selection
-		offset = this.documentModel.data.getNearestContentOffset( this.selection.start );
+		left = dataModelData.getNearestContentOffset( this.selection.start );
+		right = dataModelData.getNearestContentOffset( this.selection.end );
 	}
-	if ( offset === -1 ) {
+	if ( left === -1 ) {
 		// Document is empty, use empty set
-		annotations = new ve.dm.AnnotationSet( this.documentModel.getStore() );
+		insertionAnnotations = new ve.dm.AnnotationSet( this.documentModel.getStore() );
 	} else {
-		annotations = this.documentModel.data.getAnnotationsFromOffset( offset );
+		// Include annotations on the left that should be added to appended content, or ones that
+		// are on both the left and the right that should not
+		leftAnnotations = dataModelData.getAnnotationsFromOffset( left );
+		rightAnnotations = dataModelData.getAnnotationsFromOffset( right );
+		insertionAnnotations = leftAnnotations.filter( function ( annotation ) {
+			return annotation.constructor.static.applyToAppendedContent ||
+				rightAnnotations.containsComparable( annotation );
+		} );
 	}
+
 	// Only emit an annotations change event if there's a meaningful difference
 	if (
-		!annotations.containsAllOf( this.insertionAnnotations ) ||
-		!this.insertionAnnotations.containsAllOf( annotations )
+		!insertionAnnotations.containsAllOf( this.insertionAnnotations ) ||
+		!this.insertionAnnotations.containsAllOf( insertionAnnotations )
 	) {
-		this.insertionAnnotations = annotations;
+		this.setInsertionAnnotations( insertionAnnotations );
 		contextChange = true;
 	}
 

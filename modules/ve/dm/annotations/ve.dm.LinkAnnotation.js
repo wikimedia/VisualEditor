@@ -30,6 +30,8 @@ ve.dm.LinkAnnotation.static.name = 'link';
 
 ve.dm.LinkAnnotation.static.matchTagNames = ['a'];
 
+ve.dm.LinkAnnotation.static.applyToAppendedContent = false;
+
 ve.dm.LinkAnnotation.static.toDataElement = function ( domElements ) {
 	return {
 		'type': 'link',

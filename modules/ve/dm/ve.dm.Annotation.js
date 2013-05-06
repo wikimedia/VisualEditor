@@ -41,6 +41,13 @@ ve.inheritClass( ve.dm.Annotation, ve.dm.Model );
  */
 ve.dm.Annotation.static.enableAboutGrouping = false;
 
+/**
+ * Automatically apply annotation to content inserted after it.
+ *
+ * @type {boolean}
+ */
+ve.dm.Annotation.static.applyToAppendedContent = true;
+
 /* Methods */
 
 /**

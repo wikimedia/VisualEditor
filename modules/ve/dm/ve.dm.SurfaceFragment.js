@@ -468,13 +468,17 @@ ve.dm.SurfaceFragment.prototype.annotateContent = function ( method, nameOrAnnot
 	if ( !this.surface ) {
 		return this;
 	}
-	var annotations, i, ilen, tx, txs = [], newRange = this.getRange();
+	var annotation, annotations, i, ilen, tx, txs = [], newRange = this.getRange();
 	if ( nameOrAnnotation instanceof ve.dm.Annotation ) {
 		annotations = [ nameOrAnnotation ];
-	} else if ( method === 'set' ) {
-		annotations = [ ve.dm.annotationFactory.create( nameOrAnnotation, data ) ];
 	} else {
-		annotations = this.document.data.getAnnotationsFromRange( this.getRange(), true ).get();
+		annotation = ve.dm.annotationFactory.create( nameOrAnnotation, data );
+		if ( method === 'set' ) {
+			annotations = [ annotation ];
+		} else {
+			annotations = this.document.data.getAnnotationsFromRange( this.getRange(), true )
+				.getComparableAnnotations( annotation ).get();
+		}
 	}
 	if ( this.getRange( true ).getLength() ) {
 		// Apply to selection
@@ -489,11 +493,11 @@ ve.dm.SurfaceFragment.prototype.annotateContent = function ( method, nameOrAnnot
 		// Apply annotation to stack
 		if ( method === 'set' ) {
 			for ( i = 0, ilen = annotations.length; i < ilen; i++ ) {
-				this.surface.addInsertionAnnotation( annotations[i] );
+				this.surface.addInsertionAnnotations( annotations[i] );
 			}
 		} else if ( method === 'clear' ) {
 			for ( i = 0, ilen = annotations.length; i < ilen; i++ ) {
-				this.surface.removeInsertionAnnotation( annotations[i] );
+				this.surface.removeInsertionAnnotations( annotations[i] );
 			}
 		}
 	}

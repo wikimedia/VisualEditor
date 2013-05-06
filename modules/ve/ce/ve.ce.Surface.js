@@ -1006,24 +1006,17 @@ ve.ce.Surface.prototype.handleInsertion = function () {
 		selection = this.model.getSelection();
 		this.model.setInsertionAnnotations( annotations );
 	}
+
 	insertionAnnotations = this.model.getInsertionAnnotations() ||
 		new ve.dm.AnnotationSet( documentModel.getStore() );
+
 	if ( selection.isCollapsed() ) {
 		slug = this.documentView.getSlugAtOffset( selection.start );
-		// Is this a slug or are the annotations to the left different than the insertion
-		// annotations?
-		if (
-			slug || (
-				selection.start > 0 &&
-				!ve.compareObjects(
-					documentModel.data.getAnnotationsFromOffset( selection.start - 1 ),
-					insertionAnnotations
-				)
-			)
-		) {
-			placeholder = '\u2659';
+		// Is this a slug or are the annotations incorrect?
+		if ( slug || !this.areAnnotationsCorrect( selection, insertionAnnotations ) ) {
+			placeholder = '♙';
 			if ( !insertionAnnotations.isEmpty() ) {
-				placeholder = [placeholder, insertionAnnotations];
+				placeholder = [placeholder, insertionAnnotations.getIndexes()];
 			}
 			// is this a slug and if so, is this a block slug?
 			if ( slug && documentModel.data.isStructuralOffset( selection.start ) ) {
@@ -1458,6 +1451,36 @@ ve.ce.Surface.prototype.getClickCount = function ( e ) {
 	}
 
 	return response;
+};
+
+/**
+ * Checks if related annotationSet matches insertionAnnotations.
+ *
+ * "Related" is typically to the left, unless at the beginning of a node.
+ *
+ * @method
+ * @param {ve.Range} selection
+ * @returns {ve.dm.AnnotationSet} insertionAnnotations
+ */
+ve.ce.Surface.prototype.areAnnotationsCorrect = function ( selection, insertionAnnotations ) {
+	var documentModel = this.model.documentModel;
+
+	// Take annotations from the left
+	if (
+		selection.start > 0 &&
+		!documentModel.data.getAnnotationsFromOffset( selection.start - 1 ).compareTo( insertionAnnotations )
+	) {
+		return false;
+	}
+	// At the beginning of a node, take from the right
+	if (
+		rangy.getSelection().anchorOffset === 0 &&
+		selection.start < this.model.getDocument().data.getLength() &&
+		!documentModel.data.getAnnotationsFromOffset( selection.start + 1 ).compareTo( insertionAnnotations )
+	) {
+		return false;
+	}
+	return true;
 };
 
 /*! Getters */

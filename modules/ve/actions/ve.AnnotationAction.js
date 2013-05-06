@@ -67,10 +67,24 @@ ve.AnnotationAction.prototype.clear = function ( name, data ) {
  * @param {Object} [data] Additional annotation data
  */
 ve.AnnotationAction.prototype.toggle = function ( name, data ) {
-	var fragment = this.surface.getModel().getFragment();
-	fragment.annotateContent(
-		fragment.getAnnotations().hasAnnotationWithName( name ) ? 'clear' : 'set', name, data
-	);
+	var existingAnnotations,
+		surfaceModel = this.surface.getModel(),
+		fragment = surfaceModel.getFragment(),
+		annotation = ve.dm.annotationFactory.create( name, data );
+
+	if ( !fragment.getRange().isCollapsed() ) {
+		fragment.annotateContent(
+			fragment.getAnnotations().containsComparable( annotation ) ? 'clear' : 'set', name, data
+		);
+	} else {
+		existingAnnotations = surfaceModel
+			.getInsertionAnnotations().getComparableAnnotations( annotation );
+		if ( existingAnnotations.isEmpty() ) {
+			surfaceModel.addInsertionAnnotations( annotation );
+		} else {
+			surfaceModel.removeInsertionAnnotations( existingAnnotations );
+		}
+	}
 };
 
 /**

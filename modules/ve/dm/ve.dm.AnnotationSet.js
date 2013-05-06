@@ -52,6 +52,23 @@ ve.dm.AnnotationSet.prototype.getAnnotationsByName = function ( name ) {
 };
 
 /**
+ * Get an annotation set containing only annotations within the set which are comparable
+ * to a specific annotation.
+ *
+ * @method
+ * @param {ve.dm.Annotation} annotation Annotation to compare to
+ * @returns {ve.dm.AnnotationSet} Copy of annotation set
+ */
+ve.dm.AnnotationSet.prototype.getComparableAnnotations = function ( annotation ) {
+	return this.filter( function ( a ) {
+		return ve.compareObjects(
+			annotation.getComparableObject(),
+			a.getComparableObject()
+		);
+	} );
+};
+
+/**
  * Check if any annotations in the set have a specific name.
  *
  * @method
@@ -65,12 +82,13 @@ ve.dm.AnnotationSet.prototype.hasAnnotationWithName = function ( name ) {
 /**
  * Get an annotation or all annotations from the set.
  *
- * set.get( 5 ) returns the annotation at index 5, set.get() returns an array with all annotations in
- * the entire set.
+ * set.get( 5 ) returns the annotation at index 5, set.get() returns an array with all annotations
+ * in the entire set.
  *
  * @method
  * @param {number} [index] If set, only get the annotation at the index
- * @returns {Array|ve.dm.Annotation|undefined} The annotation at index, or an array of all annotation in the set
+ * @returns {Array|ve.dm.Annotation|undefined} The annotation at index, or an array of all
+ *   annotation in the set
  */
 ve.dm.AnnotationSet.prototype.get = function ( index ) {
 	if ( index !== undefined ) {
@@ -251,6 +269,30 @@ ve.dm.AnnotationSet.prototype.containsComparable = function ( annotation ) {
  */
 ve.dm.AnnotationSet.prototype.containsMatching = function ( callback ) {
 	return this.filter( callback, true );
+};
+
+/**
+ * Check if the set contains the same annotations as another set.
+ *
+ * Compares annotations by their comparable object value.
+ *
+ * @method
+ * @param {ve.dm.AnnotationSet} annotationSet The annotationSet to compare this one to
+ * @returns {boolean} The annotations are the same
+ */
+ve.dm.AnnotationSet.prototype.compareTo = function ( annotationSet ) {
+	var i, indexes = this.getIndexes(), length = indexes.length;
+
+	if ( length === annotationSet.getLength() ) {
+		for ( i = 0; i < length; i++ ) {
+			if ( !annotationSet.containsComparable( this.get( i ) ) ) {
+				return false;
+			}
+		}
+	} else {
+		return false;
+	}
+	return true;
 };
 
 /**
