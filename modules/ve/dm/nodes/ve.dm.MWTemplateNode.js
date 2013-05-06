@@ -30,7 +30,16 @@ ve.dm.MWTemplateNode.static.name = 'MWtemplate';
 
 ve.dm.MWTemplateNode.static.matchTagNames = null;
 
-ve.dm.MWTemplateNode.static.matchRdfaTypes = [ 'mw:Object/Template' ];
+// We're interested in all nodes that have mw:Object/Template, even if they also have other mw:
+// types. So we match all mw: types, then use a matchFunction to assert that mw:Object/Template
+// is in there.
+ve.dm.MWTemplateNode.static.matchRdfaTypes = [ 'mw:Object/Template', /^mw:/ ];
+
+ve.dm.MWTemplateNode.static.matchFunction = function ( domElement ) {
+	return ve.indexOf( 'mw:Object/Template',
+		( domElement.getAttribute( 'typeof' ) || '' ).split( ' ' )
+	) !== -1;
+};
 
 ve.dm.MWTemplateNode.static.getHashObject = function ( dataElement ) {
 	return {

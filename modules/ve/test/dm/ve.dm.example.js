@@ -865,7 +865,33 @@ ve.dm.example.MWTemplate = {
 			'html/0/data-parsoid': '{\"tsr\":[18,34],\"src\":\"{{Inline|1,234}}\",\"dsr\":[18,34,null,null]}',
 			'html/0/typeof': 'mw:Object/Template'
 		},
-	}
+	},
+	'mixed': '<link about="#mwt1" rel="mw:WikiLink/Category" typeof="mw:Object/Template" data-mw="{&quot;id&quot;:&quot;mwt1&quot;,&quot;target&quot;:{&quot;wt&quot;:&quot;Inline&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;5,678&quot;}}}"><span about="#mwt1">Foo</span>',
+	'mixedDataOpen': {
+		'type': 'MWtemplateInline',
+		'attributes': {
+			'mw': {
+				'id': 'mwt1',
+				'target': { 'wt': 'Inline' },
+				'params': {
+					'1': { 'wt': '5,678' }
+				}
+			},
+			'mwOriginal': {
+				'id': 'mwt1',
+				'target': { 'wt': 'Inline' },
+				'params': {
+					'1': { 'wt': '5,678' }
+				}
+			},
+			'html/0/about': '#mwt1',
+			'html/0/rel': 'mw:WikiLink/Category',
+			'html/0/typeof': 'mw:Object/Template',
+			'html/0/data-mw': '{\"id\":\"mwt1\",\"target\":{\"wt\":\"Inline\"},\"params\":{\"1\":{\"wt\":\"5,678\"}}}',
+			'html/1/about': '#mwt1'
+		}
+	},
+	'mixedDataClose' : { 'type': '/MWtemplateInline' }
 };
 
 ve.dm.example.MWTemplate.blockParamsHash = ve.getHash( ve.dm.MWTemplateNode.static.getHashObject( ve.dm.example.MWTemplate.blockData ) );
@@ -878,6 +904,12 @@ ve.dm.example.MWTemplate.inlineParamsHash = ve.getHash( ve.dm.MWTemplateNode.sta
 ve.dm.example.MWTemplate.inlineStoreItems = {
 	'hash': ve.dm.example.MWTemplate.inlineParamsHash,
 	'value': $( ve.dm.example.MWTemplate.inlineOpen + ve.dm.example.MWTemplate.inlineContent + ve.dm.example.MWTemplate.inlineClose ).get()
+};
+
+ve.dm.example.MWTemplate.mixedParamsHash = ve.getHash( ve.dm.MWTemplateNode.static.getHashObject( ve.dm.example.MWTemplate.mixedDataOpen ) );
+ve.dm.example.MWTemplate.mixedStoreItems = {
+	'hash': ve.dm.example.MWTemplate.mixedParamsHash,
+	'value': $( ve.dm.example.MWTemplate.mixed ).get()
 };
 
 ve.dm.example.domToDataCases = {
@@ -2210,22 +2242,16 @@ ve.dm.example.domToDataCases = {
 			'<meta typeof="mw:Placeholder" data-parsoid="foobar" /></body>',
 		'data': ve.dm.example.withMeta
 	},
-	'RDFa types spread across two attributes': {
-		'html': '<body><link rel="mw:WikiLink/Category" href="./Category:Foo" about="#mwt1" typeof="mw:Object/Template"></body>',
+	'RDFa types spread across two attributes, about grouping is forced': {
+		'html': '<body>' + ve.dm.example.MWTemplate.mixed + '</body>',
 		'data': [
-			{
-				'type': 'alienMeta',
-				'attributes': {
-					'style': 'link',
-					'key': 'mw:WikiLink/Category',
-					'value': './Category:Foo',
-					'html/0/rel': 'mw:WikiLink/Category',
-					'html/0/href': './Category:Foo',
-					'html/0/about': '#mwt1',
-					'html/0/typeof': 'mw:Object/Template'
-				}
-			},
-			{ 'type': '/alienMeta' },
+			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+			ve.dm.example.MWTemplate.mixedDataOpen,
+			ve.dm.example.MWTemplate.mixedDataClose,
+			{ 'type': '/paragraph' }
+		],
+		'storeItems': [
+			ve.dm.example.MWTemplate.mixedStoreItems
 		]
 	},
 	'about grouping': {
@@ -2293,20 +2319,6 @@ ve.dm.example.domToDataCases = {
 				}
 			},
 			{ 'type': '/alienBlock' }
-		]
-	},
-	'about grouping is forced': {
-		'html': '<body><link rel="mw:WikiLink/Category" href="./Category:Foo" about="#mwt1" typeof="mw:Object/Template"><span about="#mwt1">Foo</span></body>',
-		'data': [
-			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
-			{
-				'type': 'alienInline',
-				'attributes': {
-					'domElements': $( '<link rel="mw:WikiLink/Category" href="./Category:Foo" about="#mwt1" typeof="mw:Object/Template"><span about="#mwt1">Foo</span>' ).get()
-				}
-			},
-			{ 'type': '/alienInline' },
-			{ 'type': '/paragraph' }
 		]
 	},
 	'mw:Entity': {
