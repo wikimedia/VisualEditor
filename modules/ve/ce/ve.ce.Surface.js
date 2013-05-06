@@ -135,7 +135,7 @@ ve.ce.Surface.static.textPattern = new RegExp(
  * @static
  */
 ve.ce.Surface.getSelectionRect = function () {
-	var sel, rect, $span, startRange, startOffset, endRange, endOffset, scrollLeft, scrollTop;
+	var sel, rect, $span, lineHeight, startRange, startOffset, endRange, endOffset;
 
 	if ( !rangy.initialized ) {
 		rangy.init();
@@ -168,23 +168,22 @@ ve.ce.Surface.getSelectionRect = function () {
 		endRange.collapse( false );
 		endRange.insertNode( $span[0] );
 		endOffset = $span.offset();
+		lineHeight = parseInt( $span.css( 'line-height' ), 10 );
 		$span.detach();
 
 		// Restore the selection
 		startRange.refresh();
 
 		// Return the selection bounding rectangle
-		scrollLeft = $( window ).scrollLeft();
-		scrollTop = $( window ).scrollTop();
 		return {
 			'start': {
-				x: startOffset.left - scrollLeft,
-				y: startOffset.top - scrollTop
+				'x': startOffset.left,
+				'y': startOffset.top
 			},
 			'end': {
-				x: endOffset.left - scrollLeft,
+				'x': endOffset.left,
 				// Adjust the vertical position by the line-height to get the bottom dimension
-				y: endOffset.top - scrollTop + parseInt( $span.css( 'line-height' ), 10 )
+				'y': endOffset.top + lineHeight
 			}
 		};
 	} else {
