@@ -316,7 +316,17 @@ ve.dm.Converter.prototype.getDataFromDom = function ( doc, store, internalList )
  * @returns {Array} Linear model data
  */
 ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, wrapperElement, annotationSet ) {
+	/**
+	 * Add whitespace to an element at a specific offset.
+	 *
+	 * @param {Array} element Data element
+	 * @param {number} index Whitespace index, 0-3
+	 * @param {string} whitespace Whitespace content
+	 */
 	function addWhitespace( element, index, whitespace ) {
+		if ( !whitespace ) {
+			return;
+		}
 		if ( !element.internal ) {
 			element.internal = {};
 		}
@@ -326,9 +336,6 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, wrapp
 		// outerPre     innerPre    innerPost      outerPost
 		if ( !element.internal.whitespace ) {
 			element.internal.whitespace = [];
-		}
-		if ( !element.internal.whitespace[index] ) {
-			element.internal.whitespace[index] = '';
 		}
 		element.internal.whitespace[index] = whitespace;
 	}
@@ -377,7 +384,8 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, wrapp
 		if ( wrappedWhitespace !== '' ) {
 			// Remove wrappedWhitespace from data
 			data.splice( wrappedWhitespaceIndex, wrappedWhitespace.length );
-			addWhitespace( wrappingParagraph, 3, wrappedWhitespace );
+			// Add whitespace to the last sibling: either the last meta item or the wrapper paragraph
+			addWhitespace( wrappedMetaItems.length > 0 ? wrappedMetaItems[wrappedMetaItems.length - 2] : wrappingParagraph, 3, wrappedWhitespace );
 			nextWhitespace = wrappedWhitespace;
 		}
 		data.push( { 'type': '/paragraph' } );
@@ -387,7 +395,6 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, wrapp
 		context.canCloseWrapper = false;
 		context.expectingContent = context.originallyExpectingContent;
 	}
-
 	function getAboutGroup( el ) {
 		var textNodes = [], aboutGroup = [ el ], elAbout, node;
 		if ( !el.getAttribute || el.getAttribute( 'about' ) === null ) {
@@ -794,7 +801,9 @@ ve.dm.Converter.prototype.getDomFromData = function ( documentData, store, inter
 ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container ) {
 	var text, i, j, annotations, annotationElement, dataElement, dataElementOrSlice,
 		childDomElements, pre, ours, theirs, parentDomElement, lastChild,
-		isContentNode, sibling, previousSiblings, doUnwrap, textNode,
+		isContentNode, sibling, previousSiblings, doUnwrap,
+		textNode, type,
+		canContainContentStack = [],
 		conv = this,
 		doc = container.ownerDocument,
 		domElement = container,
@@ -931,9 +940,15 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container ) {
 			dataElement = data[i];
 			// Element
 			if ( dataElement.type.charAt( 0 ) === '/' ) {
+				// Close element
 				parentDomElement = domElement.parentNode;
-				isContentNode = !this.metaItemFactory.lookup( data[i].type.substr( 1 ) ) &&
-					this.nodeFactory.isNodeContent( data[i].type.substr( 1 ) );
+				type = data[i].type.substr( 1 );
+				if ( this.metaItemFactory.lookup( type ) ) {
+					isContentNode = canContainContentStack[canContainContentStack.length - 1];
+				} else {
+					isContentNode = this.nodeFactory.isNodeContent( type );
+					canContainContentStack.pop();
+				}
 				// Process whitespace
 				// whitespace = [ outerPre, innerPre, innerPost, outerPost ]
 				if (
@@ -1057,6 +1072,14 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container ) {
 				domElement = parentDomElement;
 			} else {
 				// Create node from data
+				if ( !this.metaItemFactory.lookup( data[i].type ) ) {
+					canContainContentStack.push(
+						// if the last item was true then this item must inherit it
+						canContainContentStack[canContainContentStack.length - 1] ||
+						this.nodeFactory.canNodeContainContent( data[i].type )
+					);
+				}
+
 				dataElementOrSlice = getDataElementOrSlice();
 				childDomElements = this.getDomElementsFromDataElement( dataElementOrSlice, doc );
 				if ( childDomElements ) {
