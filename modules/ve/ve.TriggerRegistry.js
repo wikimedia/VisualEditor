@@ -42,7 +42,7 @@ ve.TriggerRegistry.prototype.register = function ( name, trigger ) {
 	if ( typeof name !== 'string' && !ve.isArray( name ) ) {
 		throw new Error( 'name must be a string or array, cannot be a ' + typeof name );
 	}
-	if  ( !( trigger instanceof ve.Trigger ) && !ve.isPlainObject( trigger ) ) {
+	if ( !( trigger instanceof ve.Trigger ) && !ve.isPlainObject( trigger ) ) {
 		throw new Error(
 			'trigger must be an instance of ve.Trigger or an object containing instances of ' +
 				've.Trigger, cannot be a ' + typeof trigger

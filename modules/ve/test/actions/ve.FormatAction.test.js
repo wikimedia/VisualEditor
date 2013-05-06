@@ -41,7 +41,7 @@ QUnit.test( 'convert', function ( assert ) {
 				'type': 'MWheading',
 				'attributes': { level: 2 },
 				'expectedSelection': new ve.Range( 14, 16 ),
-				'expectedData': function( data ) {
+				'expectedData': function ( data ) {
 					data.splice( 11, 2, { 'type': '/list' }, { 'type': 'MWheading', 'attributes': { 'level': 2 } } );
 					data.splice( 19, 2, { 'type': '/MWheading' }, { 'type': 'list', 'attributes': { 'style': 'bullet' } } );
 				},
@@ -52,7 +52,7 @@ QUnit.test( 'convert', function ( assert ) {
 				'type': 'MWheading',
 				'attributes': { level: 3 },
 				'expectedSelection': new ve.Range( 15, 44 ),
-				'expectedData': function( data ) {
+				'expectedData': function ( data ) {
 					data.splice( 11, 2, { 'type': '/list' }, { 'type': 'MWheading', 'attributes': { 'level': 3 } } );
 					data.splice( 19, 4, { 'type': '/MWheading' }, { 'type': 'MWheading', 'attributes': { 'level': 3 } } );
 					data.splice( 27, 4, { 'type': '/MWheading' }, { 'type': 'MWheading', 'attributes': { 'level': 3 } } );
@@ -66,7 +66,7 @@ QUnit.test( 'convert', function ( assert ) {
 				'type': 'MWheading',
 				'attributes': { level: 1 },
 				'expectedSelection': new ve.Range( 2, 22 ),
-				'expectedData': function( data ) {
+				'expectedData': function ( data ) {
 					data.splice( 0, 3, { 'type': 'MWheading', 'attributes': { 'level': 1 } } );
 					data.splice( 7, 4, { 'type': '/MWheading' }, { 'type': 'MWheading', 'attributes': { 'level': 1 } } );
 					data.splice( 15, 4, { 'type': '/MWheading' }, { 'type': 'MWheading', 'attributes': { 'level': 1 } } );
@@ -79,7 +79,7 @@ QUnit.test( 'convert', function ( assert ) {
 				'type': 'MWpreformatted',
 				'attributes': undefined,
 				'expectedSelection': new ve.Range( 3, 20 ),
-				'expectedData': function( data ) {
+				'expectedData': function ( data ) {
 					data.splice( 0, 3, { 'type': 'MWpreformatted' } );
 					data.splice( 7, 4, { 'type': '/MWpreformatted' }, { 'type': 'MWpreformatted' } );
 					data.splice( 15, 4, { 'type': '/MWpreformatted' }, { 'type': 'MWpreformatted' } );
@@ -92,7 +92,7 @@ QUnit.test( 'convert', function ( assert ) {
 				'type': 'paragraph',
 				'attributes': undefined,
 				'expectedSelection': new ve.Range( 146, 159 ),
-				'expectedData': function( data ) {
+				'expectedData': function ( data ) {
 					data.splice( 145, 1, { 'type': 'paragraph' } );
 					data.splice( 159, 1, { 'type': '/paragraph' } );
 				},
@@ -103,7 +103,7 @@ QUnit.test( 'convert', function ( assert ) {
 				'type': 'paragraph',
 				'attributes': undefined,
 				'expectedSelection': new ve.Range( 165, 180 ),
-				'expectedData': function( data ) {
+				'expectedData': function ( data ) {
 					data.splice( 162, 1, { 'type': 'paragraph' } );
 					data.splice( 183, 1, { 'type': '/paragraph' } );
 				},

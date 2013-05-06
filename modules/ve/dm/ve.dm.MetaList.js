@@ -288,7 +288,7 @@ ve.dm.MetaList.prototype.removeMeta = function ( item ) {
  * insertItem().
  *
  * @param {number} offset Offset in the linear model of the new item
- * @param {number} index  Index of the new item in the metadata array at offset
+ * @param {number} index Index of the new item in the metadata array at offset
  * @param {ve.dm.MetaItem} item Item object
  * @emits insert
  */

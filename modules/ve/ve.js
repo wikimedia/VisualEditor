@@ -1063,7 +1063,7 @@
 		// `<pre>Foo</pre>` or `<pre>\nFoo</pre>` , but that's a syntactic difference, not a
 		// semantic one, and handling that is Parsoid's job.
 		$element = $( element ).clone();
-		$element.find( 'pre, textarea, listing' ).each( function() {
+		$element.find( 'pre, textarea, listing' ).each( function () {
 			var matches;
 			if ( this.firstChild && this.firstChild.nodeType === Node.TEXT_NODE ) {
 				matches = this.firstChild.data.match( /^(\r\n|\r|\n)/ );

@@ -755,7 +755,7 @@ ve.init.mw.ViewPageTarget.prototype.setupSkinTabs = function () {
 	action = this.pageExists ? 'edit' : 'create';
 	pTabsId = $( '#p-views' ).length ? 'p-views' : 'p-cactions';
 
-	// Add independent "VisualEditor"  tab (#ca-ve-edit).
+	// Add independent "VisualEditor" tab (#ca-ve-edit).
 	if ( this.tabLayout === 'add' ) {
 
 		caVeEdit = mw.util.addPortletLink(
@@ -1421,7 +1421,7 @@ ve.init.mw.ViewPageTarget.prototype.attachToolbar = function () {
 	this.$toolbarWrapper = $( '.ve-ui-toolbar-wrapper' )
 		.insertBefore( $( '#firstHeading' ) )
 		.find( '.ve-ui-toolbar' )
-			.slideDown( 'fast', ve.bind( function() {
+			.slideDown( 'fast', ve.bind( function () {
 				this.surface.getContext().update();
 			}, this ) )
 			.end();

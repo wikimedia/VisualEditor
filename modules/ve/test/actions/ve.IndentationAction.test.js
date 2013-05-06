@@ -43,11 +43,11 @@ QUnit.test( 'decrease', 2, function ( assert ) {
 				'range': new ve.Range( 14, 16 ),
 				'method': 'decrease',
 				'expectedSelection': new ve.Range( 14, 16 ),
-				'expectedData': function( data ) {
+				'expectedData': function ( data ) {
 					data.splice( 11, 2, { 'type': '/list' }, { 'type': 'paragraph' } );
 					data.splice( 19, 2, { 'type': '/paragraph' }, { 'type': 'list', 'attributes': { 'style': 'bullet' } } );
 				},
-				'expectedOriginalData': function( data ) {
+				'expectedOriginalData': function ( data ) {
 					// generated: 'wrapper' is removed by the action and not restored by undo
 					delete data[12].internal;
 				},

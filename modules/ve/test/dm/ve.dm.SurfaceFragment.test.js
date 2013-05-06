@@ -417,7 +417,7 @@ QUnit.test( 'wrapAllNodes', 10, function ( assert ) {
 
 	fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 5, 37 ) );
 
-	assert.throws( function() {
+	assert.throws( function () {
 		fragment.unwrapNodes( 0, 20 );
 	}, /cannot unwrap by greater depth/, 'error thrown trying to unwrap more nodes that it is possible to contain' );
 
@@ -504,19 +504,19 @@ function runIsolateTest( assert, type, range, expected, label ) {
 }
 
 QUnit.test( 'isolateAndUnwrap', 4, function ( assert ) {
-	runIsolateTest( assert, 'MWheading', new ve.Range( 12, 20 ), function( data ) {
+	runIsolateTest( assert, 'MWheading', new ve.Range( 12, 20 ), function ( data ) {
 		data.splice( 11, 0, { 'type': '/list' } );
 		data.splice( 12, 1 );
 		data.splice( 20, 1, { 'type': 'list', 'attributes': { 'style': 'bullet' } });
 	}, 'isolating paragraph in list item "Item 2" for MWheading');
 
-	runIsolateTest( assert, 'heading', new ve.Range( 12, 20 ), function( data ) {
+	runIsolateTest( assert, 'heading', new ve.Range( 12, 20 ), function ( data ) {
 		data.splice( 11, 0, { 'type': 'listItem' } );
 		data.splice( 12, 1 );
 		data.splice( 20, 1, { 'type': '/listItem' });
 	}, 'isolating paragraph in list item "Item 2" for heading');
 
-	runIsolateTest( assert, 'MWheading', new ve.Range( 89, 97 ), function( data ) {
+	runIsolateTest( assert, 'MWheading', new ve.Range( 89, 97 ), function ( data ) {
 		data.splice( 88, 1,
 			{ 'type': '/tableRow' },
 			{ 'type': '/tableSection' },
@@ -529,7 +529,7 @@ QUnit.test( 'isolateAndUnwrap', 4, function ( assert ) {
 		);
 	}, 'isolating "Cell 2" for MWheading');
 
-	runIsolateTest( assert, 'MWheading', new ve.Range( 202, 212 ), function( data ) {
+	runIsolateTest( assert, 'MWheading', new ve.Range( 202, 212 ), function ( data ) {
 		data.splice( 201, 1,
 			{ 'type': '/list' }, { 'type': '/listItem' }, { 'type': '/list' }
 		);

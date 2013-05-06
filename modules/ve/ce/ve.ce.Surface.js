@@ -730,9 +730,9 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 			(
 				lengthDiff > 0 &&
 				previous.text.substring( 0, previousStart ) ===
-					next.text.substring( 0, previousStart  ) &&
+					next.text.substring( 0, previousStart ) &&
 				previous.text.substring( previousStart ) ===
-					next.text.substring( nextStart  )
+					next.text.substring( nextStart )
 			) ||
 			(
 				lengthDiff < 0 &&
@@ -928,7 +928,7 @@ ve.ce.Surface.prototype.handleLeftOrRightArrowKey = function ( e ) {
 			offsetDelta,
 			e.altKey === true || e.ctrlKey === true ? 'word' : 'character' // unit
 		);
-		if ( e.shiftKey === true  ) { // expanded range
+		if ( e.shiftKey === true ) { // expanded range
 			range = new ve.Range( selection.from, offset );
 		} else { // collapsed range (just a cursor)
 			range = new ve.Range( offset );
@@ -964,13 +964,13 @@ ve.ce.Surface.prototype.handleUpOrDownArrowKey = function ( e ) {
 		rangyRange = rangy.createRange();
 		rangyRange.selectNode( $element[0] );
 		rangySelection.setSingleRange( rangyRange );
-		setTimeout( ve.bind( function() {
+		setTimeout( ve.bind( function () {
 			if ( !$element.hasClass( 've-ce-slug' ) ) {
 				$element.remove();
 			}
 			this.surfaceObserver.start();
 			this.surfaceObserver.stop( false );
-			if ( e.shiftKey === true  ) { // expanded range
+			if ( e.shiftKey === true ) { // expanded range
 				range = new ve.Range( selection.from, this.model.getSelection().to );
 			} else { // collapsed range (just a cursor)
 				range = new ve.Range( this.model.getSelection().to );
@@ -1352,7 +1352,7 @@ ve.ce.Surface.prototype.showSelection = function ( range ) {
  * @method
  * @param {jQuery} $phantoms Phantoms to append
  */
-ve.ce.Surface.prototype.replacePhantoms = function( $phantoms ) {
+ve.ce.Surface.prototype.replacePhantoms = function ( $phantoms ) {
 	this.$phantoms.empty().append( $phantoms );
 };
 

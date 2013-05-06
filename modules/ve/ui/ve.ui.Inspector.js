@@ -83,7 +83,7 @@ ve.ui.Inspector.prototype.onCloseButtonClick = function () {
  *
  * @method
  */
-ve.ui.Inspector.prototype.onRemoveButtonClick = function() {
+ve.ui.Inspector.prototype.onRemoveButtonClick = function () {
 	this.close( 'remove' );
 };
 

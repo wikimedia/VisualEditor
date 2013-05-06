@@ -139,7 +139,7 @@ ve.dm.Converter.prototype.getHtmlDocument = function () {
  * @method
  * @returns {Object|null} Context object, or null if not converting
  */
-ve.dm.Converter.prototype.getCurrentContext = function ()  {
+ve.dm.Converter.prototype.getCurrentContext = function () {
 	return this.contextStack === null ? null : this.contextStack[this.contextStack.length - 1];
 };
 

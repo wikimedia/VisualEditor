@@ -207,7 +207,7 @@ ve.dm.Surface.prototype.removeInsertionAnnotation = function ( annotation ) {
  * @method
  * @returns {boolean} Has a future state
  */
-ve.dm.Surface.prototype.hasFutureState = function() {
+ve.dm.Surface.prototype.hasFutureState = function () {
 	return this.undoIndex > 0;
 };
 
@@ -217,7 +217,7 @@ ve.dm.Surface.prototype.hasFutureState = function() {
  * @method
  * @returns {boolean} Has a past state
  */
-ve.dm.Surface.prototype.hasPastState = function() {
+ve.dm.Surface.prototype.hasPastState = function () {
 	return this.bigStack.length - this.undoIndex > 0;
 };
 
@@ -258,7 +258,7 @@ ve.dm.Surface.prototype.getFragment = function ( range, noAutoSelect ) {
  * @method
  * @emits history
  */
-ve.dm.Surface.prototype.truncateUndoStack = function() {
+ve.dm.Surface.prototype.truncateUndoStack = function () {
 	this.bigStack = this.bigStack.slice( 0, this.bigStack.length - this.undoIndex );
 	this.undoIndex = 0;
 	this.emit( 'history' );
@@ -371,7 +371,7 @@ ve.dm.Surface.prototype.change = function ( transactions, selection ) {
 	}
 
 	// Only emit one context change event
-	if ( contextChange  ) {
+	if ( contextChange ) {
 		this.emit( 'contextChange' );
 	}
 

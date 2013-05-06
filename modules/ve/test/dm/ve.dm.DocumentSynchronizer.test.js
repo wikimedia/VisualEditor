@@ -47,11 +47,11 @@ QUnit.test( 'synchronize', 6, function ( assert ) {
 		firstTextNodeLengthChanges.push( diff );
 	} );
 	doc.getDocumentNode().getChildren()[1].getChildren()[0].getChildren()[0].getChildren()[0].getChildren()[0].getChildren()[0]
-		.on( 'update', function ()  {
+		.on( 'update', function () {
 			secondTextNodeUpdates++;
 		} );
 	doc.getDocumentNode().getChildren()[1].getChildren()[0].getChildren()[0].getChildren()[0].getChildren()[0].getChildren()[0]
-		.on( 'annotation', function ()  {
+		.on( 'annotation', function () {
 			secondTextNodeAnnotations++;
 		} );
 	doc.getDocumentNode().getChildren()[1].getChildren()[0].getChildren()[0].getChildren()[0].getChildren()[0].getChildren()[0]

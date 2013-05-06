@@ -94,7 +94,7 @@ ve.ui.MWCategoryWidget.prototype.onLookupInputKeyDown = function ( e ) {
  */
 ve.ui.MWCategoryWidget.prototype.onLookupMenuItemSelect = function ( item ) {
 	if ( item && item.getData() !== '' ) {
-		this.emit( 'newCategory',  this.categoryInput.getCategoryItemFromValue( item.getData() ) );
+		this.emit( 'newCategory', this.categoryInput.getCategoryItemFromValue( item.getData() ) );
 		this.categoryInput.setValue( '' );
 	}
 };
@@ -102,7 +102,7 @@ ve.ui.MWCategoryWidget.prototype.onLookupMenuItemSelect = function ( item ) {
 /**
  * Calls metaItem remove method
  *
- * @param {String} name category name
+ * @param {string} name category name
  */
 ve.ui.MWCategoryWidget.prototype.onRemoveCategory = function ( name ) {
 	this.categories[name].metaItem.remove();
@@ -111,8 +111,8 @@ ve.ui.MWCategoryWidget.prototype.onRemoveCategory = function ( name ) {
 /**
  * Update sortkey value, emit upsteSortkey event
  *
- * @param {String} name
- * @param {String} value
+ * @param {string} name
+ * @param {string} value
  */
 ve.ui.MWCategoryWidget.prototype.onUpdateSortkey = function ( name, value ) {
 	this.categories[name].sortKey = value;

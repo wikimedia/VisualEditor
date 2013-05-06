@@ -292,7 +292,7 @@ ve.dm.Document.prototype.getInternalList = function () {
  * @param {Array} insert Element data being inserted
  * @returns {Object} Metadata replace operation to keep data & metadata in sync
  */
-ve.dm.Document.prototype.getMetadataReplace = function( offset, remove, insert ) {
+ve.dm.Document.prototype.getMetadataReplace = function ( offset, remove, insert ) {
 	var removeMetadata, insertMetadata, replace = {};
 	if ( remove > insert.length ) {
 		// if we are removing more than we are inserting we need to collapse the excess metadata

@@ -95,7 +95,7 @@ ve.ui.InputWidget.prototype.getValue = function () {
  * @method
  * @param {boolean} isRTL
  */
-ve.ui.InputWidget.prototype.setRTL = function( isRTL ) {
+ve.ui.InputWidget.prototype.setRTL = function ( isRTL ) {
 	if ( isRTL ) {
 		this.$input.removeClass( 've-ui-ltr' );
 		this.$input.addClass( 've-ui-rtl' );

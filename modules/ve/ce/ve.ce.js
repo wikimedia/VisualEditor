@@ -246,7 +246,7 @@ ve.ce.getOffsetFromElementNode = function ( domNode, domOffset, addOuterLength )
  * @returns {number} Linear model offset
  * @throws {Error}
  */
-ve.ce.getOffsetOfSlug  = function ( $node ) {
+ve.ce.getOffsetOfSlug = function ( $node ) {
 	var model;
 	if ( $node.index() === 0 ) {
 		model = $node.parent().data( 'view' ).getModel();

@@ -178,7 +178,7 @@ ve.ce.AlienNode.prototype.positionPhantoms = function () {
  *
  * @method
  */
-ve.ce.AlienNode.prototype.clearPhantoms = function() {
+ve.ce.AlienNode.prototype.clearPhantoms = function () {
 	var surface = this.root.getSurface();
 	surface.replacePhantoms( null );
 	surface.$.unbind( '.phantoms' );

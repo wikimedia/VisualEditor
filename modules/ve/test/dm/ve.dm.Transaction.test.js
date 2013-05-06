@@ -1448,7 +1448,7 @@ QUnit.test( 'push*Annotating', function ( assert ) {
 	runBuilderTests( assert, cases );
 } );
 
-QUnit.test( 'newFromMetadataInsertion', function( assert ) {
+QUnit.test( 'newFromMetadataInsertion', function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument( 'withMeta' ),
 		element = {
 			'type': 'alienMeta',
@@ -1489,7 +1489,7 @@ QUnit.test( 'newFromMetadataInsertion', function( assert ) {
 	runConstructorTests( assert, ve.dm.Transaction.newFromMetadataInsertion, cases );
 } );
 
-QUnit.test( 'newFromMetadataRemoval', function( assert ) {
+QUnit.test( 'newFromMetadataRemoval', function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument( 'withMeta' ),
 		allElements = ve.dm.example.withMetaMetaData[11],
 		someElements = allElements.slice( 1, 3 ),
@@ -1533,7 +1533,7 @@ QUnit.test( 'newFromMetadataRemoval', function( assert ) {
 	runConstructorTests( assert, ve.dm.Transaction.newFromMetadataRemoval, cases );
 } );
 
-QUnit.test( 'newFromMetadataElementReplacement', function( assert ) {
+QUnit.test( 'newFromMetadataElementReplacement', function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument( 'withMeta' ),
 		newElement = {
 			'type': 'alienMeta',

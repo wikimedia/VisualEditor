@@ -82,7 +82,7 @@ ve.ui.MWCategoryInputWidget.prototype.getLookupRequest = function () {
 ve.ui.MWCategoryInputWidget.prototype.getLookupCacheItemFromData = function ( data ) {
 	return ve.isArray( data ) && data.length ?
 		data[1].map( ve.bind( function ( item ) {
-			return item.replace( new RegExp( this.categoryPrefix, 'gi' ),  '' );
+			return item.replace( new RegExp( this.categoryPrefix, 'gi' ), '' );
 		}, this ) ) :
 		[];
 };

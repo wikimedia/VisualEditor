@@ -96,7 +96,7 @@ ve.dm.example.span = { 'type': 'textStyle/span' };
  * @returns {ve.dm.Document} Document
  * @throws {Error} Example data not found
  */
-ve.dm.example.createExampleDocument = function( name, store ) {
+ve.dm.example.createExampleDocument = function ( name, store ) {
 	name = name || 'data';
 	store = store || new ve.dm.IndexValueStore();
 	if ( ve.dm.example[name] === undefined ) {
@@ -991,7 +991,7 @@ ve.dm.example.domToDataCases = {
 		'storeItems': [
 			ve.dm.example.MWTemplate.blockStoreItems
 		],
-		'modify': function( data ) {
+		'modify': function ( data ) {
 			data[0].attributes.mw.params['1'].wt = 'Hello, globe!';
 		},
 		'normalizedHtml': ve.dm.example.MWTemplate.blockSpanModified
@@ -1020,7 +1020,7 @@ ve.dm.example.domToDataCases = {
 		'storeItems': [
 			ve.dm.example.MWTemplate.inlineStoreItems
 		],
-		'modify': function( data ) {
+		'modify': function ( data ) {
 			data[1].attributes.mw.params['1'].wt = '5,678';
 		},
 		'normalizedHtml': ve.dm.example.MWTemplate.inlineOpenModified + ve.dm.example.MWTemplate.inlineClose
