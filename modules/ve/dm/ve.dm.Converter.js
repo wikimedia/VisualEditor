@@ -63,17 +63,15 @@ ve.dm.Converter.getDataContentFromText = function ( text, annotations ) {
  * @param {ve.dm.AnnotationSet} currentSet The set of annotations currently opened. Will be modified.
  * @param {ve.dm.AnnotationSet} targetSet The set of annotations we want to have.
  * @param {Function} open Callback called when an annotation is opened. Passed a ve.dm.Annotation.
- * @param {Function} close Callback called when an annotation is closed. Passed a ve.dm.Annotation.
+ * @param {Function} close Callback called when an annotation is closed.
  */
 ve.dm.Converter.openAndCloseAnnotations = function ( currentSet, targetSet, open, close ) {
-	var i, len, arr, annotation, annotationIndex, startClosingAt;
+	var i, len, annotation, startClosingAt;
 	// Close annotations as needed
 	// Go through annotationStack from bottom to top (low to high),
 	// and find the first annotation that's not in annotations.
-	arr = currentSet.getIndexes();
-	for ( i = 0, len = arr.length; i < len; i++ ) {
-		annotationIndex = arr[i];
-		if ( !targetSet.containsIndex( annotationIndex ) ) {
+	for ( i = 0, len = currentSet.getLength(); i < len; i++ ) {
+		if ( !targetSet.containsComparable( currentSet.get( i ) ) ) {
 			startClosingAt = i;
 			break;
 		}
@@ -82,18 +80,16 @@ ve.dm.Converter.openAndCloseAnnotations = function ( currentSet, targetSet, open
 		// Close all annotations from top to bottom (high to low)
 		// until we reach startClosingAt
 		for ( i = currentSet.getLength() - 1; i >= startClosingAt; i-- ) {
-			close( arr[i] );
+			close();
 			// Remove from currentClone
 			currentSet.removeAt( i );
 		}
 	}
 
 	// Open annotations as needed
-	arr = targetSet.getIndexes();
-	for ( i = 0, len = arr.length; i < len; i++ ) {
-		annotationIndex = arr[i];
-		if ( !currentSet.containsIndex( annotationIndex ) ) {
-			annotation = targetSet.getStore().value( annotationIndex );
+	for ( i = 0, len = targetSet.getLength(); i < len; i++ ) {
+		annotation = targetSet.get( i );
+		if ( !currentSet.containsComparable( annotation ) ) {
 			open( annotation );
 			// Add to currentClone
 			currentSet.push( annotation );

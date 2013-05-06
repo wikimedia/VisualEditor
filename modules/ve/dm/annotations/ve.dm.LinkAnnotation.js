@@ -45,6 +45,15 @@ ve.dm.LinkAnnotation.static.toDomElements = function ( dataElement, doc ) {
 	return [ domElement ];
 };
 
+/* Methods */
+
+ve.dm.LinkAnnotation.prototype.getComparableObject = function () {
+	return {
+		'type': this.getType(),
+		'href': this.getAttribute( 'href' )
+	};
+};
+
 /* Registration */
 
 ve.dm.modelRegistry.register( ve.dm.LinkAnnotation );

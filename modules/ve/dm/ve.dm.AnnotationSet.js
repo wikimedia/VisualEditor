@@ -111,7 +111,7 @@ ve.dm.AnnotationSet.prototype.getLength = function () {
  * Check if the set is empty.
  *
  * @method
- * @returns {boolean} True if the set is empty, false otherwise
+ * @returns {boolean} The set is empty
  */
 ve.dm.AnnotationSet.prototype.isEmpty = function () {
 	return this.getLength() === 0;
@@ -221,6 +221,24 @@ ve.dm.AnnotationSet.prototype.filter = function ( callback, returnBool ) {
 };
 
 /**
+ * Check if the set contains an annotation comparable to the specified one.
+ *
+ * getComparableObject is used to compare the annotations, and should return
+ * true if an annotation is found which is mergeable with the specified one.
+ *
+ * @param {ve.dm.Annotation} annotation Annotation to compare to
+ * @returns {boolean} At least one comprable annotation found
+ */
+ve.dm.AnnotationSet.prototype.containsComparable = function ( annotation ) {
+	return this.filter( function ( a ) {
+		return ve.compareObjects(
+			annotation.getComparableObject(),
+			a.getComparableObject()
+		);
+	}, true );
+};
+
+/**
  * Check if the set contains at least one annotation where a given property matches a given filter.
  *
  * This is equivalent to (but more efficient than) `!this.filter( .. ).isEmpty()`.
@@ -229,7 +247,7 @@ ve.dm.AnnotationSet.prototype.filter = function ( callback, returnBool ) {
  *
  * @method
  * @param {Function} callback Function that takes an annotation and returns boolean true to include
- * @returns {boolean} True if at least one annotation matches, false otherwise
+ * @returns {boolean} At least one matching annotation found
  */
 ve.dm.AnnotationSet.prototype.containsMatching = function ( callback ) {
 	return this.filter( callback, true );
