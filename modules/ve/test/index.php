@@ -256,6 +256,8 @@
 		<script src="../../ve/ce/nodes/ve.ce.MWTemplateNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.MWReferenceListNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.MWReferenceNode.js"></script>
+		<script src="../../ve/ui/tools/buttons/ve.ui.MWReferenceButtonTool.js"></script>
+		<script src="../../ve/ui/dialogs/ve.ui.MWReferenceDialog.js"></script>
 
 		<!-- Load plugins for test framework -->
 		<script src="ve.qunit.js"></script>
