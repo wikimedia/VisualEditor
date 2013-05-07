@@ -12,7 +12,6 @@
  * @abstract
  *
  * @constructor
- * @param {jQuery} [$resizable=this.$] Focusable DOM element
  */
 ve.ce.FocusableNode = function VeCeFocusableNode() {
 	// Properties
