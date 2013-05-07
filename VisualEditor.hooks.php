@@ -115,6 +115,7 @@ class VisualEditorHooks {
 				'dm/ve.dm.SurfaceFragment.test.js',
 				'dm/ve.dm.ModelRegistry.test.js',
 				'dm/ve.dm.MetaList.test.js',
+				'dm/ve.dm.Model.test.js',
 				'dm/lineardata/ve.dm.ElementLinearData.test.js',
 				'dm/lineardata/ve.dm.MetaLinearData.test.js',
 				// VisualEditor ContentEditable Tests

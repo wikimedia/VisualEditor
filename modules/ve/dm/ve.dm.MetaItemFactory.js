@@ -24,21 +24,6 @@ ve.inheritClass( ve.dm.MetaItemFactory, ve.NamedClassFactory );
 /* Methods */
 
 /**
- * Check if the item stores HTML attributes in the meta-linmod.
- *
- * @method
- * @param {string} type Meta item type
- * @returns {boolean} Whether the item stores HTML attributes
- * @throws {Error} Unknown item type
- */
-ve.dm.MetaItemFactory.prototype.doesItemStoreHtmlAttributes = function ( type ) {
-	if ( type in this.registry ) {
-		return this.registry[type].static.storeHtmlAttributes;
-	}
-	throw new Error( 'Unknown item type: ' + type );
-};
-
-/**
  * Get the group a given item type belongs to.
  *
  * @method

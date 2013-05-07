@@ -165,19 +165,72 @@ ve.dm.Model.static.toDomElements = function ( /*dataElement, doc, converter*/ ) 
 ve.dm.Model.static.enableAboutGrouping = false;
 
 /**
- * Whether HTML attributes should be preserved for this model type. If true, the HTML attributes
- * of the DOM elements will be stored as linear model attributes. The attribute names will be
- * html/i/attrName, where i is the index of the DOM element in the domElements array, and attrName
- * is the name of the attribute.
+ * Which HTML attributes should be preserved for this model type. HTML attributes on the DOM
+ * elements that match this specification will be stored as attributes in the linear model. The
+ * attribute names will be html/i/attrName, where i is the index of the DOM element in the
+ * domElements array, and attrName is the name of the attribute. When converting back to DOM, these
+ * HTML attributes will be restored except for attributes that were already set by toDomElements().
  *
- * This should generally be enabled, except for model types that store their entire HTML in an
- * attribute.
+ * The value of this attribute can be one of the following:
+ * - true, to preserve all attributes (default)
+ * - false, to preserve none
+ * - a string, to preserve only that attribute
+ * - a regular expression matching attributes that should be preserved
+ * - an array of strings or regular expressions
+ * - an object with the following keys:
+ *   - 'blacklist': specification of attributes not to preserve (boolean|string|RegExp|Array)
+ *   - 'whitelist': specification of attributes to preserve
+ *
+ * If only a blacklist is specified, all attributes will be preserved except the ones matching
+ * the blacklist. If only a whitelist is specified, only those attributes matching the whitelist
+ * will be preserved. If both are specified, only attributes that both match the whitelist and
+ * do not match the blacklist will be preserved.
  *
  * @static
- * @property {boolean} static.storeHtmlAttributes
+ * @property {boolean|string|RegExp|Array|Object} static.storeHtmlAttributes
  * @inheritable
  */
 ve.dm.Model.static.storeHtmlAttributes = true;
+
+/* Static methods */
+
+/**
+ * Determine whether an attribute name matches an attribute specification.
+ *
+ * @param {string} attribute Attribute name
+ * @param {boolean|string|RegExp|Array|Object} spec Attribute specification, see ve.dm.Model.static.storeHtmlAttributes
+ * @returns {boolean} Attribute matches spec
+ */
+ve.dm.Model.matchesAttributeSpec = function ( attribute, spec ) {
+	function matches( subspec ) {
+		if ( subspec instanceof RegExp ) {
+			return !!subspec.exec( attribute );
+		}
+		if ( typeof subspec === 'boolean' ) {
+			return subspec;
+		}
+		return attribute === subspec;
+	}
+
+	function matchesArray( specArray ) {
+		var i, len;
+		if ( !ve.isArray( specArray ) ) {
+			specArray = [ specArray ];
+		}
+		for ( i = 0, len = specArray.length; i < len; i++ ) {
+			if  ( matches( specArray[i] ) ) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	if ( spec.whitelist === undefined && spec.blacklist === undefined ) {
+		// Not an object, treat spec as a whitelist
+		return matchesArray( spec );
+	}
+	return matchesArray( spec.whitelist || true ) && !matchesArray( spec.blacklist || false );
+};
 
 /* Methods */
 
