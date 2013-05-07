@@ -243,16 +243,21 @@ ve.dm.Converter.prototype.createDataElements = function ( modelClass, domElement
 	if ( !ve.isArray( dataElements ) ) {
 		dataElements = [ dataElements ];
 	}
-	if ( dataElements[0] && modelClass.static.storeHtmlAttributes ) {
+	if ( dataElements[0] && modelClass.static.storeHtmlAttributes ) { // Optimization: skip if false
 		for ( i = 0; i < domElements.length; i++ ) {
 			domElementAttributes = domElements[i].attributes;
 			if ( domElementAttributes && domElementAttributes.length ) {
 				dataElementAttributes = dataElements[0].attributes = dataElements[0].attributes || {};
-				// Include all attributes and prepend 'html/i/' to each attribute name
+				// Store attributes and prepend 'html/i/' to each attribute name
 				for ( j = 0; j < domElementAttributes.length; j++ ) {
 					domElementAttribute = domElementAttributes[j];
-					dataElementAttributes['html/' + i + '/' + domElementAttribute.name] =
-						domElementAttribute.value;
+					if (
+						ve.dm.Model.matchesAttributeSpec( domElementAttribute.name,
+							modelClass.static.storeHtmlAttributes )
+					) {
+						dataElementAttributes['html/' + i + '/' + domElementAttribute.name] =
+							domElementAttribute.value;
+					}
 				}
 			}
 		}

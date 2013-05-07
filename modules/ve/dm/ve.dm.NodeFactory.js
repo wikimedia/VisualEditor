@@ -187,21 +187,6 @@ ve.dm.NodeFactory.prototype.doesNodeHaveSignificantWhitespace = function ( type 
 };
 
 /**
- * Check if the node stores HTML attributes in the linear model.
- *
- * @method
- * @param {string} type Node type
- * @returns {boolean} Whether the node stores HTML attributes
- * @throws {Error} Unknown node type
- */
-ve.dm.NodeFactory.prototype.doesNodeStoreHtmlAttributes = function ( type ) {
-	if ( type in this.registry ) {
-		return this.registry[type].static.storeHtmlAttributes;
-	}
-	throw new Error( 'Unknown node type: ' + type );
-};
-
-/**
  * Check if the node handles its own children.
  *
  * @method
