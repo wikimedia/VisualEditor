@@ -157,17 +157,18 @@
 	};
 
 	/**
-	 * Check if a class or object uses a mixin.
+	 * Check if a constructor or object contains a certain mixin.
 	 *
 	 * @param {Function|Object} a Class or object to check
 	 * @param {Function} mixin Mixin to check for
-	 * @return {Boolean} Class or object uses mixin
+	 * @return {boolean} Class or object uses mixin
 	 */
 	ve.isMixedIn = function ( subject, mixin ) {
-		if ( subject.constructor ) {
+		// Traverse from instances to the constructor
+		if ( $.type( subject ) !== 'function' ) {
 			subject = subject.constructor;
 		}
-		return subject.mixins && subject.mixins.indexOf( mixin ) !== -1;
+		return !!subject.mixins && subject.mixins.indexOf( mixin ) !== -1;
 	};
 
 	/**

@@ -118,6 +118,31 @@ QUnit.test( 'inheritClass', 18, function ( assert ) {
 
 // ve.mixinClass: Tested upstream (K-js)
 
+QUnit.test( 'isMixedIn', 11, function ( assert ) {
+	function Foo () {}
+	function Bar () {}
+	function Quux () {}
+
+	ve.inheritClass( Quux, Foo );
+	ve.mixinClass( Quux, Bar );
+
+	var b = new Bar(),
+		q = new Quux();
+
+	assert.strictEqual( ve.isMixedIn( Foo, Function ), false, 'Direct native inheritance is not considered' );
+	assert.strictEqual( ve.isMixedIn( Foo, Object ), false, 'Indirect native inheritance is not considered' );
+	assert.strictEqual( ve.isMixedIn( Quux, Foo ), false, 've.inheritClass does not affect mixin status' );
+	assert.strictEqual( ve.isMixedIn( Foo, Foo ), false, 'Foo does not mixin Foo' );
+	assert.strictEqual( ve.isMixedIn( Bar, Foo ), false, 'Bar does not mixin Foo' );
+	assert.strictEqual( ve.isMixedIn( Quux, Bar ), true, 'Quux has Bar mixed in' );
+	assert.strictEqual( ve.isMixedIn( Bar, Quux ), false, 'Bar does not mixin Quux' );
+
+	assert.strictEqual( ve.isMixedIn( q, Foo ), false, 've.inheritClass does not affect mixin status' );
+	assert.strictEqual( ve.isMixedIn( b, Foo ), false, 'b does not mixin Foo' );
+	assert.strictEqual( ve.isMixedIn( q, Bar ), true, 'q has Bar mixed in' );
+	assert.strictEqual( ve.isMixedIn( b, Quux ), false, 'b does not mixin Quux' );
+} );
+
 // ve.cloneObject: Tested upstream (K-js)
 
 // ve.isPlainObject: Tested upstream (jQuery)
