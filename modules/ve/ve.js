@@ -30,7 +30,6 @@
 	 *
 	 * @method
 	 * @until ES5: Object.create
-	 * @source <https://github.com/Krinkle/K-js>
 	 * @param {Object} origin Object to inherit from
 	 * @return {Object} Empty object that inherits from origin
 	 */
@@ -73,7 +72,6 @@
 	 *     fb instanceof Foo && fb instanceof FooBar && fb instanceof FooBarQuux;
 	 *
 	 * @method
-	 * @source <https://github.com/Krinkle/K-js>
 	 * @param {Function} targetFn
 	 * @param {Function} originFn
 	 * @throws {Error} If target already inherits from origin
@@ -127,7 +125,6 @@
 	 *     ve.mixinClass( FooBar, ContextLazyLoad );
 	 *
 	 * @method
-	 * @source <https://github.com/Krinkle/K-js>
 	 * @param {Function} targetFn
 	 * @param {Function} originFn
 	 */
@@ -191,7 +188,6 @@
 	 *     foo.getAge(); // 22
 	 *
 	 * @method
-	 * @source <https://github.com/Krinkle/K-js>
 	 * @param {Object} origin
 	 * @return {Object} Clone of origin
 	 */
