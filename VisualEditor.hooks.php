@@ -124,6 +124,7 @@ class VisualEditorHooks {
 				'ce/ve.ce.NodeFactory.test.js',
 				'ce/ve.ce.Node.test.js',
 				'ce/ve.ce.BranchNode.test.js',
+				'ce/ve.ce.ContentBranchNode.test.js',
 				'ce/ve.ce.LeafNode.test.js',
 				'ce/nodes/ve.ce.TextNode.test.js',
 				// VisualEditor initialization Tests
