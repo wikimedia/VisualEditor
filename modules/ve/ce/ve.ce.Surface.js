@@ -102,19 +102,6 @@ ve.mixinClass( ve.ce.Surface, ve.EventEmitter );
 ve.ce.Surface.static = {};
 
 /**
- * Phantom element template.
- *
- * @static
- * @property {jQuery}
- */
-ve.ce.Surface.static.$phantomTemplate = $( '<div>' )
-	.addClass( 've-ce-surface-phantom' )
-	.attr( {
-		'title': ve.msg( 'visualeditor-aliennode-tooltip' ),
-		'draggable': false
-	} );
-
-/**
  * Pattern matching "normal" characters which we can let the browser handle natively.
  *
  * @static
@@ -964,7 +951,7 @@ ve.ce.Surface.prototype.handleUpOrDownArrowKey = function ( e ) {
 		rangyRange.selectNode( $element[0] );
 		rangySelection.setSingleRange( rangyRange );
 		setTimeout( ve.bind( function () {
-			if ( !$element.hasClass( 've-ce-slug' ) ) {
+			if ( !$element.hasClass( 've-ce-branchNode-slug' ) ) {
 				$element.remove();
 			}
 			this.surfaceObserver.start();
@@ -1320,8 +1307,8 @@ ve.ce.Surface.prototype.showSelection = function ( range ) {
 	// Ensure the range we are asking to select is from and to correct offsets - failure to do so
 	// may cause getNodeAndOffset to throw an exception
 	range = new ve.Range(
-		this.getNearestCorrectOffset( range.from ),
-		this.getNearestCorrectOffset( range.to )
+		this.getNearestCorrectOffset( range.from, -1 ),
+		this.getNearestCorrectOffset( range.to, 1 )
 	);
 
 	if ( !range.isCollapsed() ) {

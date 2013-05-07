@@ -157,10 +157,10 @@ ve.ce.SurfaceObserver.prototype.poll = function ( async ) {
 	if ( !rangyRange.equals( this.rangyRange ) ){
 		this.rangyRange = rangyRange;
 		node = null;
-		$nodeOrSlug = $( rangyRange.anchorNode ).closest( '.ve-ce-branchNode, .ve-ce-slug' );
+		$nodeOrSlug = $( rangyRange.anchorNode ).closest( '.ve-ce-branchNode, .ve-ce-branchNode-slug' );
 		if ( $nodeOrSlug.length ) {
 			range = rangyRange.getRange();
-			if ( !$nodeOrSlug.hasClass( 've-ce-slug' ) ) {
+			if ( !$nodeOrSlug.hasClass( 've-ce-branchNode-slug' ) ) {
 				node = $nodeOrSlug.data( 'view' );
 			}
 		}
