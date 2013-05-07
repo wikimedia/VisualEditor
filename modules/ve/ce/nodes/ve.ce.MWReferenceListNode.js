@@ -10,12 +10,17 @@
  *
  * @class
  * @extends ve.ce.LeafNode
+ * @mixins ve.ce.ProtectedNode
+ *
  * @constructor
  * @param {ve.dm.MWReferenceListNode} model Model to observe
  */
 ve.ce.MWReferenceListNode = function VeCeMWReferenceListNode( model ) {
 	// Parent constructor
 	ve.ce.LeafNode.call( this, model, $( '<div>' ) );
+
+	// Mixin constructors
+	ve.ce.ProtectedNode.call( this );
 
 	// DOM Changes
 	this.$.addClass( 've-ce-MWreferenceListNode', 'reference' )
@@ -31,6 +36,8 @@ ve.ce.MWReferenceListNode = function VeCeMWReferenceListNode( model ) {
 /* Inheritance */
 
 ve.inheritClass( ve.ce.MWReferenceListNode, ve.ce.LeafNode );
+
+ve.mixinClass( ve.ce.MWReferenceListNode, ve.ce.ProtectedNode );
 
 /* Static Properties */
 

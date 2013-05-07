@@ -187,6 +187,7 @@ $html = file_get_contents( $page );
 		<script src="../../modules/ve/ce/ve.ce.ContentBranchNode.js"></script>
 		<script src="../../modules/ve/ce/ve.ce.LeafNode.js"></script>
 		<script src="../../modules/ve/ce/ve.ce.FocusableNode.js"></script>
+		<script src="../../modules/ve/ce/ve.ce.ProtectedNode.js"></script>
 		<script src="../../modules/ve/ce/ve.ce.RelocatableNode.js"></script>
 		<script src="../../modules/ve/ce/ve.ce.ResizableNode.js"></script>
 		<script src="../../modules/ve/ce/ve.ce.Surface.js"></script>

@@ -49,22 +49,6 @@ ve.mixinClass( ve.ce.Node, ve.Node );
  */
 ve.ce.Node.static.canBeSplit = false;
 
-/**
- * Template for shield elements.
- *
- * Uses data URI to inject a 1x1 transparent PNG image into the DOM.
- *
- * Using transparent png instead of gif because IE 10 renders gif as solid red when used as img src.
- *
- * @static
- * @property static.$shieldTemplate
- * @inheritable
- */
-ve.ce.Node.static.$shieldTemplate = $( '<img>' )
-	.addClass( 've-ce-node-shield' )
-	.attr( 'src', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAFElEQVR4' +
-		'XgXAAQ0AAABAMP1L30IDCPwC/o5WcS4AAAAASUVORK5CYII=' );
-
 /* Methods */
 
 /**

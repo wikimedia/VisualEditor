@@ -17,7 +17,7 @@
 ve.ce.RelocatableNode = function VeCeRelocatableNode( $draggable ) {
 	// Properties
 	this.$draggable = $draggable || this.$;
-	this.surface = null;
+	this.relocatingSurface = null;
 
 	// Events
 	this.$draggable.on( {
@@ -36,11 +36,11 @@ ve.ce.RelocatableNode = function VeCeRelocatableNode( $draggable ) {
  */
 ve.ce.RelocatableNode.prototype.onRelocatableDragStart = function () {
 	// Store a copy of the surface, when dragend occurs the node will be detached
-	this.surface = this.getRoot().getSurface();
+	this.relocatingSurface = this.getRoot().getSurface();
 
-	if ( this.surface ) {
+	if ( this.relocatingSurface ) {
 		// Allow dragging this node in the surface
-		this.surface.startRelocation( this );
+		this.relocatingSurface.startRelocation( this );
 	}
 };
 
@@ -51,8 +51,8 @@ ve.ce.RelocatableNode.prototype.onRelocatableDragStart = function () {
  * @param {jQuery.Event} e Drag end event
  */
 ve.ce.RelocatableNode.prototype.onRelocatableDragEnd = function () {
-	if ( this.surface ) {
-		this.surface.endRelocation();
-		this.surface = null;
+	if ( this.relocatingSurface ) {
+		this.relocatingSurface.endRelocation();
+		this.relocatingSurface = null;
 	}
 };

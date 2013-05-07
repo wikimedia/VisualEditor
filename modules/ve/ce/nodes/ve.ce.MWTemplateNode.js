@@ -11,12 +11,17 @@
  * @class
  * @abstract
  * @extends ve.ce.GeneratedContentNode
+ * @mixins ve.ce.ProtectedNode
+ *
  * @constructor
  * @param {ve.dm.MWTemplateNode} model Model to observe
  */
 ve.ce.MWTemplateNode = function VeCeMWTemplateNode( model ) {
 	// Parent constructor
 	ve.ce.GeneratedContentNode.call( this, model );
+
+	// Mixin constructors
+	ve.ce.ProtectedNode.call( this );
 
 	// DOM Changes
 	this.$.addClass( 've-ce-MWtemplateNode' );
@@ -25,6 +30,8 @@ ve.ce.MWTemplateNode = function VeCeMWTemplateNode( model ) {
 /* Inheritance */
 
 ve.inheritClass( ve.ce.MWTemplateNode, ve.ce.GeneratedContentNode );
+
+ve.mixinClass( ve.ce.MWTemplateNode, ve.ce.ProtectedNode );
 
 /* Static Properties */
 

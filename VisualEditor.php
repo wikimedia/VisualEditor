@@ -309,6 +309,7 @@ $wgResourceModules += array(
 			've/ce/ve.ce.BranchNode.js',
 			've/ce/ve.ce.ContentBranchNode.js',
 			've/ce/ve.ce.LeafNode.js',
+			've/ce/ve.ce.ProtectedNode.js',
 			've/ce/ve.ce.FocusableNode.js',
 			've/ce/ve.ce.RelocatableNode.js',
 			've/ce/ve.ce.ResizableNode.js',

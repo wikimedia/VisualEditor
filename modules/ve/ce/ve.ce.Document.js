@@ -155,7 +155,7 @@ ve.ce.Document.prototype.getNodeAndOffset = function ( offset ) {
 			}
 		} else if ( item.nodeType === Node.ELEMENT_NODE ) {
 			$item = current[0].eq( current[1] );
-			if ( $item.hasClass('ve-ce-slug') ) {
+			if ( $item.hasClass( 've-ce-branchNode-slug' ) ) {
 				if ( offset === startOffset ) {
 					return {
 						node: $item[0],

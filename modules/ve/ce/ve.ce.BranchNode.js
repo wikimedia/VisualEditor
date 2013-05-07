@@ -55,7 +55,6 @@ ve.mixinClass( ve.ce.BranchNode, ve.BranchNode );
 
 /* Static Properties */
 
-
 /**
  * Inline slug template.
  *
@@ -63,7 +62,7 @@ ve.mixinClass( ve.ce.BranchNode, ve.BranchNode );
  * @property {jQuery}
  */
 ve.ce.BranchNode.$inlineSlugTemplate = $( '<span>' )
-	.addClass( 've-ce-slug' )
+	.addClass( 've-ce-branchNode-slug ve-ce-branchNode-inlineSlug' )
 	.html( $.browser.msie ? '&nbsp;' : '&#xFEFF;' );
 
 /**
@@ -72,8 +71,9 @@ ve.ce.BranchNode.$inlineSlugTemplate = $( '<span>' )
  * @static
  * @property {jQuery}
  */
-ve.ce.BranchNode.$blockSlugTemplate =
-	ve.ce.BranchNode.$inlineSlugTemplate.clone().addClass( 've-ce-slugBlock' );
+ve.ce.BranchNode.$blockSlugTemplate = $( '<span>' )
+	.addClass( 've-ce-branchNode-slug ve-ce-branchNode-blockSlug' )
+	.html( $.browser.msie ? '&nbsp;' : '&#xFEFF;' );
 
 /* Static Methods */
 
@@ -194,10 +194,9 @@ ve.ce.BranchNode.prototype.onSplice = function ( index ) {
 	removals = this.children.splice.apply( this.children, args );
 	for ( i = 0, length = removals.length; i < length; i++ ) {
 		removals[i].model.disconnect( this, { 'update': 'onModelUpdate' } );
-		removals[i].detach();
-		// Update DOM
-		removals[i].$.detach();
 		removals[i].setLive( false );
+		removals[i].detach();
+		removals[i].$.detach();
 	}
 	if ( args.length >= 3 ) {
 		if ( index ) {

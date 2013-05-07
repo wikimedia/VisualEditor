@@ -47,7 +47,7 @@ ve.ce.getDomText = function ( element ) {
 			$element = $( element );
 
 		if ( nodeType === 1 || nodeType === 9 || nodeType === 11 ) {
-			if ( $element.hasClass( 've-ce-slug' ) ) {
+			if ( $element.hasClass( 've-ce-branchNode-slug' ) ) {
 				// Slugs are not represented in the model at all, but they do
 				// contain a single nbsp/FEFF character in the DOM, so make sure
 				// that character isn't counted
@@ -164,7 +164,7 @@ ve.ce.getOffsetFromTextNode = function ( domNode, domOffset ) {
 			}
 		} else if ( item.nodeType === Node.ELEMENT_NODE ) {
 			$item = current[0].eq( current[1] );
-			if ( $item.hasClass( 've-ce-slug' ) ) {
+			if ( $item.hasClass( 've-ce-branchNode-slug' ) ) {
 				if ( $item.contents()[0] === domNode ) {
 					break;
 				}
@@ -198,7 +198,7 @@ ve.ce.getOffsetFromElementNode = function ( domNode, domOffset, addOuterLength )
 		nodeModel,
 		node;
 
-	if ( $domNode.hasClass( 've-ce-slug' ) ) {
+	if ( $domNode.hasClass( 've-ce-branchNode-slug' ) ) {
 		if ( $domNode.prev().length ) {
 			nodeModel = $domNode.prev().data( 'view' ).getModel();
 			return nodeModel.getOffset() + nodeModel.getOuterLength();

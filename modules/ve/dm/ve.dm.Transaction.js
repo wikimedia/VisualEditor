@@ -821,7 +821,7 @@ ve.dm.Transaction.prototype.addSafeRemoveOps = function ( doc, removeStart, remo
 	var i, retainStart, internalStackDepth = 0;
 	// Iterate over removal range and use a stack counter to determine if
 	// we are inside an internal node
-	for ( i = removeStart; i <= removeEnd; i++ ) {
+	for ( i = removeStart; i < removeEnd; i++ ) {
 		if ( doc.data.isElementData( i ) && ve.dm.nodeFactory.isNodeInternal( doc.data.getType( i ) ) ) {
 			if ( !doc.data.isCloseElementData( i ) ) {
 				if ( internalStackDepth === 0 ) {

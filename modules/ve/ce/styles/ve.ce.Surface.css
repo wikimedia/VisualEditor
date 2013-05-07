@@ -36,21 +36,10 @@
 
 /* @noflip */
 .ve-ce-surface-phantoms {
-	cursor: not-allowed;
-	left: 0;
-	opacity: .85;
 	position: absolute;
 	top: 0;
-}
-
-.ve-ce-surface-phantom {
-	background-color: #C3E59A;
-	background-image: -ms-repeating-linear-gradient(-45deg, white 0px, white 5px, #C3E59A 5px, #C3E59A 10px );
-	background-image: -webkit-repeating-linear-gradient(-45deg, white 0px, white 5px, #C3E59A 5px, #C3E59A 10px );
-	background-image: -moz-repeating-linear-gradient(-45deg, white 0px, white 5px, #C3E59A 5px, #C3E59A 10px);
-	background-image: repeating-linear-gradient(-45deg, white 0px, white 5px, #C3E59A 5px, #C3E59A 10px );
-	background-size: 14px 14px;
-	position: absolute;
+	left: 0;
+	opacity: 0.75;
 }
 
 .ve-ce-surface-paste {
