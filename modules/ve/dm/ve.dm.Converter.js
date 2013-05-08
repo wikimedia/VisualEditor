@@ -100,6 +100,31 @@ ve.dm.Converter.openAndCloseAnnotations = function ( currentSet, targetSet, open
 	}
 };
 
+/**
+ * Parse a linear model attribute name of the form html/i-j-k/attrName.
+ *
+ * @param {string} attribute Name of a linear model attribute
+ * @param {HTMLElement[]|jQuery} domElements DOM elements array that the attribute indexes into
+ * @returns {Object|null} Object with domElement and attribute keys, or null
+ */
+ve.dm.Converter.parseHtmlAttribute = function ( attribute, domElements ) {
+	var i, ilen, indexes, child,
+		/*jshint regexp:false */
+		matches = attribute.match( /^html\/((?:\d+\-)*\d)\/(.*)$/ );
+	if ( !matches ) {
+		return null;
+	}
+	indexes = matches[1].split( '-' ); // matches[1] like '1-2-3'
+	child = domElements[indexes[0]];
+	for ( i = 1, ilen = indexes.length; i < ilen; i++ ) {
+		child = child && child.childNodes[indexes[i]];
+	}
+	if ( !child ) {
+		return null;
+	}
+	return { 'domElement': child, 'attribute': matches[2] };
+};
+
 /* Methods */
 
 /**
@@ -201,7 +226,7 @@ ve.dm.Converter.prototype.canCloseWrapper = function () {
  * @returns {HTMLElement|boolean} DOM element, or false if the element cannot be converted
  */
 ve.dm.Converter.prototype.getDomElementsFromDataElement = function ( dataElements, doc ) {
-	var domElements, dataElementAttributes, key, matches, indexes, i, ilen, child,
+	var domElements, dataElementAttributes, key, parsed,
 		dataElement = ve.isArray( dataElements ) ? dataElements[0] : dataElements,
 		nodeClass = this.modelRegistry.lookup( dataElement.type );
 
@@ -218,18 +243,9 @@ ve.dm.Converter.prototype.getDomElementsFromDataElement = function ( dataElement
 	dataElementAttributes = dataElement.attributes;
 	if ( dataElementAttributes ) {
 		for ( key in dataElementAttributes ) {
-			// Only include 'html/*' attributes and strip the prefix
-			/*jshint regexp:false */
-			matches = key.match( /^html\/((?:\d+\-)*\d)\/(.*)$/ );
-			if ( matches ) {
-				indexes = matches[1].split( '-' ); // matches[1] like '1-2-3'
-				child = domElements[indexes[0]];
-				for ( i = 1, ilen = indexes.length; i < ilen; i++ ) {
-					child = child && child.childNodes[indexes[i]];
-				}
-				if ( child && !child.hasAttribute( matches[2] ) ) {
-					child.setAttribute( matches[2], dataElementAttributes[key] );
-				}
+			parsed = ve.dm.Converter.parseHtmlAttribute( key, domElements );
+			if ( parsed && !parsed.domElement.hasAttribute( parsed.attribute ) ) {
+				parsed.domElement.setAttribute( parsed.attribute, dataElementAttributes[key] );
 			}
 		}
 	}
