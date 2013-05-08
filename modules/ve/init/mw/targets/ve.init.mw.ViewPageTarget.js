@@ -392,7 +392,7 @@ ve.init.mw.ViewPageTarget.prototype.onSaveError = function ( jqXHR, status ) {
  * @param {string} diffHtml
  */
 ve.init.mw.ViewPageTarget.prototype.onShowChanges = function ( diffHtml ) {
-	// Invalidate the diff on next change
+	// Invalidate the viewer diff on next change
 	this.surface.getModel().connect( this, { 'transact': 'onSurfaceModelTransact' } );
 
 	// Store the diff for reporting purposes
@@ -410,6 +410,25 @@ ve.init.mw.ViewPageTarget.prototype.onShowChanges = function ( diffHtml ) {
 	}, this ), ve.bind( function () {
 		this.onSaveError( null, 'Module load failed' );
 	}, this ) );
+};
+
+/**
+ * Handle Serialize event.
+ *
+ * @method
+ * @param {string} wikitext
+ */
+ve.init.mw.ViewPageTarget.prototype.onSerialize = function ( wikitext ) {
+	// Invalidate the viewer wikitext on next change
+	this.surface.getModel().connect( this, { 'transact': 'onSurfaceModelTransact' } );
+
+	this.$saveDialog
+		.find( '.ve-init-mw-viewPageTarget-saveDialog-viewer' )
+			.empty().append( $( '<pre>' ).text( wikitext ) );
+
+		this.$saveDialogLoadingIcon.hide();
+		this.saveDialogReviewGoodButton.setDisabled( false );
+		this.saveDialogReviewWrongButton.setDisabled( false );
 };
 
 /**
@@ -1257,20 +1276,14 @@ ve.init.mw.ViewPageTarget.prototype.swapSaveDialog = function ( slide ) {
 			this.saveDialogReviewWrongButton.setDisabled( true );
 			this.$saveDialogLoadingIcon.show();
 			if ( this.pageExists ) {
-				// Has no callback, handled via viewPage.onShowChanges
+				// Has no callback, handled via target.onShowChanges
 				this.showChanges(
 					ve.dm.converter.getDomFromData( doc.getFullData(), doc.getStore(), doc.getInternalList() )
 				);
 			} else {
 				this.serialize(
 					ve.dm.converter.getDomFromData( doc.getFullData(), doc.getStore(), doc.getInternalList() ),
-					function ( wikitext ) {
-						$viewer.empty().append( $( '<pre>' ).text( wikitext ) );
-
-						this.saveDialogReviewGoodButton.setDisabled( false );
-						this.saveDialogReviewWrongButton.setDisabled( false );
-						this.$saveDialogLoadingIcon.hide();
-					}
+					ve.bind( this.onSerialize, this )
 				);
 			}
 		}
