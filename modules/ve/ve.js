@@ -925,6 +925,60 @@
 	};
 
 	/**
+	 * Builds a summary of an HTML element.
+	 *
+	 * Summaries include node name, text, attributes and recursive summaries of children.
+	 * Used for serializing or comparing HTML elements.
+	 *
+	 * @method
+	 * @private
+	 * @param {HTMLElement} element Element to summarize
+	 * @returns {Object} Summary of element.
+	 */
+	ve.getDomElementSummary = function ( element ) {
+		var i,
+			$element = $( element ),
+			summary = {
+				'type': element.nodeName.toLowerCase(),
+				'text': $element.text(),
+				'attributes': {},
+				'children': []
+			};
+
+		// Gather attributes
+		if ( element.attributes ) {
+			for ( i = 0; i < element.attributes.length; i++ ) {
+				summary.attributes[element.attributes[i].name] = element.attributes[i].value;
+			}
+		}
+		// Summarize children
+		if ( element.childNodes ) {
+			for ( i = 0; i < element.childNodes.length; i++ ) {
+				if ( element.childNodes[i].nodeType !== Node.TEXT_NODE ) {
+					summary.children.push( ve.getDomElementSummary( element.childNodes[i] ) );
+				}
+			}
+		}
+		return summary;
+	};
+
+	/**
+	 * Callback for ve.copyArray/Object to convert nodes to a comparable summary
+	 *
+	 * @method
+	 * @private
+	 * @param {Object} value Value in the object/array
+	 * @returns {Object} DOM element summary if value is a node, otherwise just the value
+	 */
+	ve.convertDomElements = function ( value ) {
+		// Use duck typing rather than instanceof Node; the latter doesn't always work correctly
+		if ( value && value.nodeType ) {
+			return ve.getDomElementSummary( value );
+		}
+		return value;
+	};
+
+	/**
 	 * Check whether a given DOM element is of a block or inline type
 	 * @param {HTMLElement} element
 	 * @returns {boolean} True if element is block, false if it is inline

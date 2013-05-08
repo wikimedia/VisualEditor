@@ -84,59 +84,6 @@ function getNodeSelectionSummary( selection ) {
 }
 
 /**
- * Builds a summary of an HTML element.
- *
- * Summaries include node name, text, attributes and recursive summaries of children.
- *
- * @method
- * @private
- * @param {HTMLElement} element Element to summarize
- * @returns {Object} Summary of element.
- */
-function getDomElementSummary( element ) {
-	var i,
-		$element = $( element ),
-		summary = {
-			'type': element.nodeName.toLowerCase(),
-			'text': $element.text(),
-			'attributes': {},
-			'children': []
-		};
-
-	// Gather attributes
-	if ( element.attributes ) {
-		for ( i = 0; i < element.attributes.length; i++ ) {
-			summary.attributes[element.attributes[i].name] = element.attributes[i].value;
-		}
-	}
-	// Summarize children
-	if ( element.childNodes ) {
-		for ( i = 0; i < element.childNodes.length; i++ ) {
-			if ( element.childNodes[i].nodeType !== Node.TEXT_NODE ) {
-				summary.children.push( getDomElementSummary( element.childNodes[i] ) );
-			}
-		}
-	}
-	return summary;
-}
-
-/**
- * Callback for ve.copyArray/Object to convert nodes to a comparable summary
- *
- * @method
- * @private
- * @param {Object} value Value in the object/array
- * @returns {Object} DOM element summary if value is a node, otherwise just the value
- */
-function convertDomElements( value ) {
-	// Use duck typing rather than instanceof Node; the latter doesn't always work correctly
-	if ( value && value.nodeType ) {
-		return getDomElementSummary( value );
-	}
-	return value;
-}
-
-/**
  * Assertion helpers for VisualEditor test suite.
  * @class ve.QUnit.assert
  */
@@ -185,8 +132,8 @@ QUnit.assert.equalNodeSelection = function ( actual, expected, message ) {
  * @static
  */
 QUnit.assert.equalDomElement = function ( actual, expected, message ) {
-	var actualSummary = getDomElementSummary( actual ),
-		expectedSummary = getDomElementSummary( expected );
+	var actualSummary = ve.getDomElementSummary( actual ),
+		expectedSummary = ve.getDomElementSummary( expected );
 
 	QUnit.push(
 		QUnit.equiv( actualSummary, expectedSummary ), actualSummary, expectedSummary, message
@@ -200,8 +147,8 @@ QUnit.assert.equalDomElement = function ( actual, expected, message ) {
  */
 QUnit.assert.deepEqualWithDomElements = function ( actual, expected, message ) {
 	// Recursively copy objects or arrays, converting any dom elements found to comparable summaries
-	actual = ve.isArray( actual ) ? ve.copyArray( actual, convertDomElements ) : ve.copyObject( actual, convertDomElements );
-	expected = ve.isArray( expected ) ? ve.copyArray( expected, convertDomElements ) : ve.copyObject( expected, convertDomElements );
+	actual = ve.isArray( actual ) ? ve.copyArray( actual, ve.convertDomElements ) : ve.copyObject( actual, ve.convertDomElements );
+	expected = ve.isArray( expected ) ? ve.copyArray( expected, ve.convertDomElements ) : ve.copyObject( expected, ve.convertDomElements );
 
 	QUnit.push( QUnit.equiv(actual, expected), actual, expected, message );
 };

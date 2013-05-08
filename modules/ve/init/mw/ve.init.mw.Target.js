@@ -607,7 +607,7 @@ ve.init.mw.Target.prototype.reportProblem = function ( message ) {
 		};
 	$.post(
 		mw.config.get( 'wgVisualEditorConfig' ).reportProblemURL,
-		{ 'data': JSON.stringify( report ) },
+		{ 'data': JSON.stringify( ve.copyObject( report, ve.convertDomElements ) ) },
 		function () {
 			// This space intentionally left blank
 		},
