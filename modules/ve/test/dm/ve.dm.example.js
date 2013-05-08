@@ -1066,7 +1066,9 @@ ve.dm.example.domToDataCases = {
 					'html/0/class': 'reference',
 					'html/0/data-parsoid': '{"src":"<ref name=\\"bar\\">Bar</ref>"}',
 					'html/0/id': 'cite_ref-bar-1-0',
-					'html/0/typeof': 'mw:Object/Ext/Ref'
+					'html/0/typeof': 'mw:Object/Ext/Ref',
+					'html/0-0/href': '#cite_note-bar-1',
+					'html/0-0/data-parsoid': '{}'
 				}
 			},
 			{ 'type': '/MWreference' },
@@ -1081,7 +1083,9 @@ ve.dm.example.domToDataCases = {
 					'html/0/class': 'reference',
 					'html/0/data-parsoid': '{"src":"<ref name=\\"quux\\">Quux</ref>"}',
 					'html/0/id': 'cite_ref-quux-2-0',
-					'html/0/typeof': 'mw:Object/Ext/Ref'
+					'html/0/typeof': 'mw:Object/Ext/Ref',
+					'html/0-0/href': '#cite_note-quux-2',
+					'html/0-0/data-parsoid': '{}'
 				}
 			},
 			{ 'type': '/MWreference' },
@@ -1096,7 +1100,9 @@ ve.dm.example.domToDataCases = {
 					'html/0/class': 'reference',
 					'html/0/data-parsoid': '{"src":"<ref name=\\"bar\\" />"}',
 					'html/0/id': 'cite_ref-bar-1-1',
-					'html/0/typeof': 'mw:Object/Ext/Ref'
+					'html/0/typeof': 'mw:Object/Ext/Ref',
+					'html/0-0/href': '#cite_note-bar-1',
+					'html/0-0/data-parsoid': '{}'
 				}
 			},
 			{ 'type': '/MWreference' },
@@ -1111,7 +1117,9 @@ ve.dm.example.domToDataCases = {
 					'html/0/class': 'reference',
 					'html/0/data-parsoid': '{"src":"<ref>No name</ref>"}',
 					'html/0/id': 'cite_ref-3-0',
-					'html/0/typeof': 'mw:Object/Ext/Ref'
+					'html/0/typeof': 'mw:Object/Ext/Ref',
+					'html/0-0/href': '#cite_note-3',
+					'html/0-0/data-parsoid': '{}'
 				}
 			},
 			{ 'type': '/MWreference' },
