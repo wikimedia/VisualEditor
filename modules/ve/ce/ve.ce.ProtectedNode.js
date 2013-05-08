@@ -33,9 +33,7 @@ ve.ce.ProtectedNode.static = {};
 /**
  * Template for shield elements.
  *
- * Uses data URI to inject a 1x1 transparent PNG image into the DOM.
- *
- * Using transparent png instead of gif because IE 10 renders gif as solid red when used as img src.
+ * Uses data URI to inject a 1x1 transparent GIF image into the DOM.
  *
  * @property {jQuery}
  * @static
@@ -43,8 +41,7 @@ ve.ce.ProtectedNode.static = {};
  */
 ve.ce.ProtectedNode.static.$shieldTemplate = $( '<img>' )
 	.addClass( 've-ce-protectedNode-shield' )
-	.attr( 'src', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAFElEQVR4' +
-		'XgXAAQ0AAABAMP1L30IDCPwC/o5WcS4AAAAASUVORK5CYII=' );
+	.attr( 'src', 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==' );
 
 /**
  * Phantom element template.
@@ -86,7 +83,6 @@ ve.ce.ProtectedNode.prototype.onProtectedLive = function () {
 				}
 				$shield = $shieldTemplate.clone().appendTo( $this );
 				node.$shields = node.$shields.add( $shield );
-				$this.append( $shieldTemplate.clone() );
 			}
 		} );
 	} else {
