@@ -168,10 +168,15 @@ ve.dm.Model.static.enableAboutGrouping = false;
  * Which HTML attributes should be preserved for this model type. HTML attributes on the DOM
  * elements that match this specification will be stored as attributes in the linear model. The
  * attribute names will be html/i/attrName, where i is the index of the DOM element in the
- * domElements array, and attrName is the name of the attribute. When converting back to DOM, these
- * HTML attributes will be restored except for attributes that were already set by toDomElements().
+ * domElements array, and attrName is the name of the attribute. If the DOM elements have
+ * children and the converter does not descend into them, the children's attributes will be stored
+ * in html/i-j/attrName (for domElements[i].children[j]), the grandchildren's attributes in
+ * html/i-j-k/attrName, etc.
  *
- * The value of this attribute can be one of the following:
+ * When converting back to DOM, these HTML attributes will be restored except for attributes that
+ * were already set by toDomElements().
+ *
+ * The value of this property can be one of the following:
  * - true, to preserve all attributes (default)
  * - false, to preserve none
  * - a string, to preserve only that attribute
