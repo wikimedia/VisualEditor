@@ -26,13 +26,7 @@ ve.ce.View = function VeCeView( model, $element ) {
 
 	// Initialization
 	this.$.data( 'view', this );
-	if ( this.constructor.static.renderHtmlAttributes ) {
-		ve.setDomAttributes(
-			this.$[0],
-			this.model.getAttributes( 'html/0/' ),
-			this.constructor.static.domAttributeWhitelist
-		);
-	}
+	this.renderAttributes( this.model.getAttributes() );
 };
 
 /* Inheritance */
@@ -115,4 +109,22 @@ ve.ce.View.prototype.isLive = function () {
 ve.ce.View.prototype.setLive = function ( live ) {
 	this.live = live;
 	this.emit( 'live' );
+};
+
+ve.ce.View.prototype.renderAttributes = function ( attributes ) {
+	var key, parsed,
+		whitelist = this.constructor.static.domAttributeWhitelist;
+	if ( !this.constructor.static.renderHtmlAttributes ) {
+		return;
+	}
+	for ( key in attributes ) {
+		parsed = ve.dm.Converter.parseHtmlAttribute( key, this.$ );
+		if ( parsed && whitelist.indexOf( parsed.attribute ) !== -1 ) {
+			if ( attributes[key] === undefined ) {
+				parsed.domElement.removeAttribute( parsed.attribute );
+			} else {
+				parsed.domElement.setAttribute( parsed.attribute, attributes[key] );
+			}
+		}
+	}
 };
