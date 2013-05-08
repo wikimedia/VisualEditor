@@ -9,7 +9,74 @@ QUnit.module( 've' );
 
 /* Tests */
 
-// ve.createObject: Tested upstream (K-js)
+// ve.getObjectKeys: Untested (TODO)
+
+QUnit.test( 'createObject', 4, function ( assert ) {
+	var foo, bar, fooKeys, barKeys;
+
+	foo = {
+		a: 'a of foo',
+		b: 'b of foo'
+	};
+
+	bar = ve.createObject( foo );
+
+	// Add an own property, hiding the inherited one.
+	bar.b = 'b of bar';
+
+	// Add an own property, hiding an inherited property
+	// that will be added later
+	bar.c = 'c of bar';
+
+	// Add more properties to the origin object,
+	// should be visible in the inheriting object.
+	foo.c = 'c of foo';
+	foo.d = 'd of foo';
+
+	// Different property that only one of each has
+	foo.foo = true;
+	bar.bar = true;
+
+	assert.deepEqual(
+		foo,
+		{
+			a: 'a of foo',
+			b: 'b of foo',
+			c: 'c of foo',
+			d: 'd of foo',
+			foo: true
+		},
+		'Foo has expected properties'
+	);
+
+	assert.deepEqual(
+		bar,
+		{
+			a: 'a of foo',
+			b: 'b of bar',
+			c: 'c of bar',
+			d: 'd of foo',
+			foo: true,
+			bar: true
+		},
+		'Bar has expected properties'
+	);
+
+	fooKeys = ve.getObjectKeys( foo );
+	barKeys = ve.getObjectKeys( bar );
+
+	assert.deepEqual(
+		fooKeys,
+		['a', 'b', 'c', 'd', 'foo'],
+		'Own properties of foo'
+	);
+
+	assert.deepEqual(
+		barKeys,
+		['b', 'c', 'bar'],
+		'Own properties of bar'
+	);
+} );
 
 QUnit.test( 'inheritClass', 18, function ( assert ) {
 	var foo, bar;
@@ -114,9 +181,49 @@ QUnit.test( 'inheritClass', 18, function ( assert ) {
 
 	assert.equal( bar.dFn(), 'proto of Bar', 'inheritance is live (overwriting an inherited method)' );
 	assert.equal( bar.eFn(), 'proto of Foo', 'inheritance is live (adding a new method deeper in the chain)' );
-});
+} );
 
-// ve.mixinClass: Tested upstream (K-js)
+QUnit.test( 'mixinClass', 4, function ( assert ) {
+	var quux;
+
+	function Foo() {}
+	Foo.prototype.aFn = function () {
+		return 'proto of Foo';
+	};
+
+	function Bar() {}
+	// ve.inheritClass makes the 'constructor'
+	// property an own property when it restores it.
+	ve.inheritClass( Bar, Foo );
+	Bar.prototype.bFn = function () {
+		return 'mixin of Bar';
+	};
+
+	function Quux() {}
+	ve.mixinClass( Quux, Bar );
+
+	assert.strictEqual(
+		Quux.prototype.aFn,
+		undefined,
+		'mixin inheritance is not copied over'
+	);
+
+	assert.strictEqual(
+		Quux.prototype.constructor,
+		Quux,
+		'constructor property skipped'
+	);
+
+	assert.strictEqual(
+		Quux.prototype.hasOwnProperty( 'bFn' ),
+		true,
+		'mixin properties are now own properties, not inherited'
+	);
+
+	quux = new Quux();
+
+	assert.equal( quux.bFn(), 'mixin of Bar', 'mixin method works as expected' );
+} );
 
 QUnit.test( 'isMixedIn', 11, function ( assert ) {
 	function Foo () {}
@@ -143,7 +250,68 @@ QUnit.test( 'isMixedIn', 11, function ( assert ) {
 	assert.strictEqual( ve.isMixedIn( b, Quux ), false, 'b does not mixin Quux' );
 } );
 
-// ve.cloneObject: Tested upstream (K-js)
+QUnit.test( 'cloneObject', 4, function ( assert ) {
+	var myfoo, myfooClone, expected;
+
+	function Foo( x ) {
+		this.x = x;
+	}
+	Foo.prototype.x = 'default';
+	Foo.prototype.aFn = function () {
+		return 'proto of Foo';
+	};
+
+	myfoo = new Foo( 10 );
+	myfooClone = ve.cloneObject( myfoo );
+
+	assert.notStrictEqual( myfoo, myfooClone, 'clone is not equal when compared by reference' );
+	assert.deepEqual( myfoo, myfooClone, 'clone is equal when recursively compared by value' );
+
+	expected = {
+		x: 10,
+		aFn: 'proto of Foo',
+		constructor: Foo,
+		instanceOf: true,
+		own: {
+			x: true,
+			aFn: false,
+			constructor: false
+		}
+	};
+
+	assert.deepEqual(
+		{
+			x: myfoo.x,
+			aFn: myfoo.aFn(),
+			constructor: myfoo.constructor,
+			instanceOf: myfoo instanceof Foo,
+			own: {
+				x: myfoo.hasOwnProperty( 'x' ),
+				aFn: myfoo.hasOwnProperty( 'aFn' ),
+				constructor: myfoo.hasOwnProperty( 'constructor' )
+			}
+		},
+		expected,
+		'original looks as expected'
+	);
+
+	assert.deepEqual(
+		{
+			x: myfooClone.x,
+			aFn: myfooClone.aFn(),
+			constructor: myfooClone.constructor,
+			instanceOf: myfooClone instanceof Foo,
+			own: {
+				x: myfooClone.hasOwnProperty( 'x' ),
+				aFn: myfooClone.hasOwnProperty( 'aFn' ),
+				constructor: myfoo.hasOwnProperty( 'constructor' )
+			}
+		},
+		expected,
+		'clone looks as expected'
+	);
+
+} );
 
 // ve.isPlainObject: Tested upstream (jQuery)
 
@@ -229,7 +397,7 @@ QUnit.test( 'getHash: Basic usage', 7, function ( assert ) {
 			val.hash,
 			key + ': object has expected hash, regardless of "property order"'
 		);
-	});
+	} );
 
 	// .. and that something completely different is in face different
 	// (just incase getHash is broken and always returns the same)
