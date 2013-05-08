@@ -31,19 +31,19 @@ ve.dm.MWReferenceListNode.static.matchTagNames = null;
 
 ve.dm.MWReferenceListNode.static.matchRdfaTypes = [ 'mw:Object/References' ];
 
-ve.dm.MWReferenceListNode.static.toDataElement = function ( domElements ) {
-	var html = $( '<div>', domElements[0].ownerDocument ).append( $( domElements ).clone() ).html();
+ve.dm.MWReferenceListNode.static.storeHtmlAttributes = false;
 
+ve.dm.MWReferenceListNode.static.toDataElement = function ( domElements ) {
 	return {
 		'type': this.name,
 		'attributes': {
-			'html': html
+			'domElements': ve.copyArray( domElements )
 		}
 	};
 };
 
-ve.dm.MWReferenceListNode.static.toDomElements = function ( dataElement, doc ) {
-	return [ doc.createElement( 'ol' ) ];
+ve.dm.MWReferenceListNode.static.toDomElements = function ( dataElement ) {
+	return dataElement.attributes.domElements;
 };
 
 /* Registration */

@@ -1050,7 +1050,7 @@ ve.dm.example.domToDataCases = {
 					'</span>' +
 				'</p>' +
 				'<ol class="references" typeof="mw:Object/References">' +
-					'<li li="cite_note-quux-2"><a href="#cite_ref-quux-2-0">u2191</a>Quux</li>' +
+					'<li id="cite_note-quux-2"><a href="#cite_ref-quux-2-0">u2191</a>Quux</li>' +
 				'</ol>' +
 			'</body>',
 		'data': [
@@ -1119,9 +1119,7 @@ ve.dm.example.domToDataCases = {
 			{
 				'type': 'MWreferenceList',
 				'attributes': {
-					'html': '<ol class="references" typeof="mw:Object/References"><li li="cite_note-quux-2"><a href="#cite_ref-quux-2-0">u2191</a>Quux</li></ol>',
-					'html/0/class': 'references',
-					'html/0/typeof': 'mw:Object/References'
+					'domElements': $( '<ol class="references" typeof="mw:Object/References"><li id="cite_note-quux-2"><a href="#cite_ref-quux-2-0">u2191</a>Quux</li></ol>' ).get()
 				}
 			},
 			{ 'type': '/MWreferenceList' },
@@ -1161,7 +1159,7 @@ ve.dm.example.domToDataCases = {
 					'data-parsoid="{&quot;src&quot;:&quot;<ref>No name</ref>&quot;}">' +
 				'</span>' +
 			'</p>' +
-			'<ol class="references" typeof="mw:Object/References"></ol>'
+			'<ol class="references" typeof="mw:Object/References"><li id="cite_note-quux-2"><a href="#cite_ref-quux-2-0">u2191</a>Quux</li></ol>'
 	},
 	'paragraph with alienInline inside': {
 		'html': '<body><p>a<tt class="foo">b</tt>c</p></body>',
