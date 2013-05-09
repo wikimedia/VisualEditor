@@ -460,9 +460,28 @@ ve.dm.Node.prototype.adjustLength = function ( adjustment ) {
  *
  * @method
  * @returns {number} Offset of node
+ * @throws {Error} Node not found in parent's children array
  */
 ve.dm.Node.prototype.getOffset = function () {
-	return this.root === this ? 0 : this.root.getOffsetFromNode( this );
+	var i, len, siblings, offset;
+
+	if ( !this.parent ) {
+		return 0;
+	}
+
+	// Find our index in the parent and add up lengths while we do so
+	siblings = this.parent.children;
+	offset = this.parent.getOffset() + ( this.parent === this.root ? 0 : 1 );
+	for ( i = 0, len = siblings.length; i < len; i++ ) {
+		if ( siblings[i] === this ) {
+			break;
+		}
+		offset += siblings[i].getOuterLength();
+	}
+	if ( i === len ) {
+		throw new Error( 'Node not found in parent\'s children array' );
+	}
+	return offset;
 };
 
 /**

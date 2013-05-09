@@ -123,14 +123,3 @@ QUnit.test( 'splice', 9, function ( assert ) {
 	assert.deepEqual( node4.splice( 1, 1, node3 ), [node2] );
 	assert.deepEqual( node4.getChildren(), [node1, node3] );
 } );
-
-QUnit.test( 'getOffsetFromNode', 4, function ( assert ) {
-	var node1 = new ve.dm.BranchNodeStub(),
-		node2 = new ve.dm.BranchNodeStub(),
-		node3 = new ve.dm.BranchNodeStub( [node1, node2] ),
-		node4 = new ve.dm.BranchNodeStub( [node3] );
-	assert.strictEqual( node4.getOffsetFromNode( node1 ), 1 );
-	assert.strictEqual( node4.getOffsetFromNode( node2 ), 3 );
-	assert.strictEqual( node4.getOffsetFromNode( node3 ), 0 );
-	assert.strictEqual( node4.getOffsetFromNode( node4 ), 0 );
-} );

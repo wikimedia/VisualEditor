@@ -442,8 +442,7 @@ ve.dm.TransactionProcessor.processors.replace = function ( op ) {
 								// Lazy-initialize scope
 								scope = scope || this.document.getNodeFromOffset( prevCursor );
 								// Push the full range of the old scope as an affected range
-								scopeStart =
-									this.document.getDocumentNode().getOffsetFromNode( scope );
+								scopeStart = scope.getOffset();
 								scopeEnd = scopeStart + scope.getOuterLength();
 								affectedRanges.push( new ve.Range( scopeStart, scopeEnd ) );
 								// Update scope

@@ -396,7 +396,7 @@ ve.dm.Document.prototype.getNodeFromOffset = function ( offset ) {
  */
 ve.dm.Document.prototype.getDataFromNode = function ( node ) {
 	var length = node.getLength(),
-		offset = this.documentNode.getOffsetFromNode( node );
+		offset = node.getOffset();
 	if ( offset >= 0 ) {
 		// XXX: If the node is wrapped in an element than we should increment the offset by one so
 		// we only return the content inside the element.

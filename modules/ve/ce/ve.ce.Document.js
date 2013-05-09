@@ -133,7 +133,7 @@ ve.ce.Document.prototype.getNodeAndOffset = function ( offset ) {
 		return { node: $slug[0].childNodes[0], offset: 0 };
 	}
 	node = this.getNodeFromOffset( offset );
-	startOffset = this.getDocumentNode().getOffsetFromNode( node ) + ( ( node.isWrapped() ) ? 1 : 0 );
+	startOffset = node.getOffset() + ( ( node.isWrapped() ) ? 1 : 0 );
 	current = [node.$.contents(), 0];
 	stack = [current];
 	while ( stack.length > 0 ) {

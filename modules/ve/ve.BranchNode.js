@@ -138,36 +138,3 @@ ve.BranchNode.prototype.getNodeFromOffset = function ( offset, shallow ) {
 	}
 	return null;
 };
-
-/**
- * Get the content offset of a node.
- *
- * TODO: Rewrite this method to not use recursion, because the function call overhead is expensive
- *
- * @method
- * @param {ve.Node} node Node to get offset of
- * @returns {number} Offset of node or -1 of node was not found
- */
-ve.BranchNode.prototype.getOffsetFromNode = function ( node ) {
-	if ( node === this ) {
-		return 0;
-	}
-	if ( this.children.length ) {
-		var i, length, childOffset, childNode,
-			offset = 0;
-		for ( i = 0, length = this.children.length; i < length; i++ ) {
-			childNode = this.children[i];
-			if ( childNode === node ) {
-				return offset;
-			}
-			if ( childNode.canHaveChildren() && childNode.getChildren().length ) {
-				childOffset = this.getOffsetFromNode.call( childNode, node );
-				if ( childOffset !== -1 ) {
-					return offset + 1 + childOffset;
-				}
-			}
-			offset += childNode.getOuterLength();
-		}
-	}
-	return -1;
-};

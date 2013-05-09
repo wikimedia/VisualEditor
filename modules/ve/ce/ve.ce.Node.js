@@ -197,6 +197,16 @@ ve.ce.Node.prototype.getOuterLength = function () {
 };
 
 /**
+ * Get the offset of the node.
+ *
+ * @see ve.dm.Node#getOffset
+ * @returns {number} Offset
+ */
+ve.ce.Node.prototype.getOffset = function () {
+	return this.model.getOffset();
+};
+
+/**
  * Check if the node can be split.
  *
  * @method
