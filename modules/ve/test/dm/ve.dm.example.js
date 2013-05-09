@@ -1621,6 +1621,38 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/paragraph' }
 		]
 	},
+	'whitespace between unwrapped inline nodes': {
+		'html':
+			'<body>' +
+				'<span typeof="mw:Entity">c</span> <span typeof="mw:Entity">d</span>\n<span typeof="mw:Entity">e</span>' +
+			'</body>',
+		'data': [
+			{
+				'type': 'paragraph',
+				'internal': {
+					'generated': 'wrapper'
+				}
+			},
+			{
+				'type': 'MWentity',
+				'attributes': { 'character': 'c', 'html/0/typeof': 'mw:Entity' }
+			},
+			{ 'type': '/MWentity' },
+			' ',
+			{
+				'type': 'MWentity',
+				'attributes': { 'character': 'd', 'html/0/typeof': 'mw:Entity' }
+			},
+			{ 'type': '/MWentity' },
+			'\n',
+			{
+				'type': 'MWentity',
+				'attributes': { 'character': 'e', 'html/0/typeof': 'mw:Entity' }
+			},
+			{ 'type': '/MWentity' },
+			{ 'type': '/paragraph' },
+		]
+	},
 	'whitespace preservation in headings': {
 		'html': '<body><h2>Foo</h2><h2> Bar</h2><h2>Baz </h2><h2>  Quux   </h2></body>',
 		'data': [

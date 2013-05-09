@@ -590,6 +590,12 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, wrapp
 						}
 					}
 
+					// If we're inserting content into a wrapper, any wrappedWhitespace
+					// up to this point can be considered dealt with
+					if ( context.inWrapper && childIsContent ) {
+						wrappedWhitespace = '';
+					}
+
 					// Annotate child
 					if ( childIsContent && !context.annotations.isEmpty() ) {
 						childDataElements[0].annotations = context.annotations.getIndexes().slice();
