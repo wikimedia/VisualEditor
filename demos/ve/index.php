@@ -27,7 +27,7 @@ $html = file_get_contents( $page );
 		<!-- ext.visualEditor.base#standalone-init -->
 		<link rel=stylesheet href="../../modules/ve/init/sa/styles/ve.init.sa.css">
 		<script>
-			if ( window.devicePixelRatio > 1 ) {
+			if ( document.createElementNS && document.createElementNS( 'http://www.w3.org/2000/svg', 'svg' ).createSVGRect ) {
 				document.write( '<link rel="stylesheet" href="../../modules/ve/ui/styles/ve.ui.Icons-vector.css">' );
 			} else {
 				document.write( '<link rel="stylesheet" href="../../modules/ve/ui/styles/ve.ui.Icons-raster.css">' );

@@ -36,7 +36,7 @@ ve.init.mw.Target = function VeInitMwTarget( $container, pageName, revision ) {
 			'ext.visualEditor.specialMessages'
 		]
 		.concat(
-			window.devicePixelRatio > 1 ?
+			document.createElementNS && document.createElementNS( 'http://www.w3.org/2000/svg', 'svg' ).createSVGRect ?
 				['ext.visualEditor.viewPageTarget.icons-vector', 'ext.visualEditor.icons-vector'] :
 				['ext.visualEditor.viewPageTarget.icons-raster', 'ext.visualEditor.icons-raster']
 		);

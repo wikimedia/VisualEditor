@@ -333,5 +333,7 @@ ve.ui.Window.static.addLocalStylesheets( [
 	've.ui.Element.css',
 	've.ui.Layout.css',
 	've.ui.Widget.css',
-	( window.devicePixelRatio > 1 ? 've.ui.Icons-vector.css' : 've.ui.Icons-raster.css' )
+	( document.createElementNS && document.createElementNS( 'http://www.w3.org/2000/svg', 'svg' ).createSVGRect ?
+		've.ui.Icons-vector.css' :
+		've.ui.Icons-raster.css' )
 ] );
