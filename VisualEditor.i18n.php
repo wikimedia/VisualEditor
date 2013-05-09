@@ -1976,6 +1976,7 @@ $messages['it'] = array(
 );
 
 /** Japanese (日本語)
+ * @author Fryed-peach
  * @author Penn Station
  * @author Shirayuki
  */
@@ -2004,8 +2005,8 @@ $messages['ja'] = array(
 	'visualeditor-dialog-action-apply' => '変更内容を適用',
 	'visualeditor-dialog-action-cancel' => 'キャンセル',
 	'visualeditor-dialog-action-close' => '閉じる',
-	'visualeditor-toolbar-savedialog' => '査読して保存',
-	'visualeditor-savedialog-title-review' => '変更内容の査読',
+	'visualeditor-toolbar-savedialog' => '確認して保存',
+	'visualeditor-savedialog-title-review' => '変更内容の確認',
 	'visualeditor-savedialog-title-report' => '問題点の報告',
 	'visualeditor-savedialog-title-save' => '変更を保存',
 	'visualeditor-savedialog-label-review-wrong' => '問題点を報告',
@@ -3265,6 +3266,7 @@ $messages['roa-tara'] = array(
  * @author Iluvatar
  * @author Kalan
  * @author Ole Yves
+ * @author Yury Katkov
  */
 $messages['ru'] = array(
 	'tag-visualeditor' => '[[Special:Tags|Тег]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|Визуальный редактор]]',
@@ -3292,7 +3294,7 @@ $messages['ru'] = array(
 	'visualeditor-savedialog-title-report' => 'Сообщить о проблеме',
 	'visualeditor-savedialog-title-save' => 'Сохранить изменения',
 	'visualeditor-savedialog-label-review-wrong' => 'Что-то пошло не так',
-	'visualeditor-savedialog-label-review-good' => 'Неплохо выглядит для меня',
+	'visualeditor-savedialog-label-review-good' => 'Вроде, всё в порядке',
 	'visualeditor-savedialog-label-report' => 'Сообщить о проблеме',
 	'visualeditor-savedialog-label-create' => 'Создать страницу',
 	'visualeditor-savedialog-label-save' => 'Записать страницу',
@@ -3334,7 +3336,7 @@ $messages['ru'] = array(
 	'visualeditor-problem' => 'Опишите, что пошло не так',
 	'visualeditor-aliennode-tooltip' => 'Извините, данный элемент не может редактироваться визуальным редактором',
 	'visualeditor-descriptionpagelink' => 'Project:Визуальный редактор',
-	'visualeditor-alphawarning' => 'Вы используете альфа-версию [[{{MediaWiki:Visualeditor-descriptionpagelink}}|визуального редактора]]. Она может быть медленной и делать ошибочные изменения — пожалуйста, проверяйте каждую сделанную правку.',
+	'visualeditor-alphawarning' => 'Вы используете альфа-версию [[{{MediaWiki:Visualeditor-descriptionpagelink}}|визуального редактора]]: она может быть тормозить в вашем браузере. Пожалуйста, проверяйте каждую сделанную правку, чтобы убедиться, что внесенные изменения коректны.',
 	'visualeditor-report-notice' => 'Я понимаю, что нажав кнопку «Сообщить о проблеме» я передам свои изменения и свой отзыв, которых будет храниться для анализа. Я согласен с тем, чтобы обеспечить обратную связь в соответствии с [[{{MediaWiki:Visualeditor-report-link}}|условиями использования]].',
 	'visualeditor-feedback-link' => 'Project:VisualEditor/Отзывы',
 );
