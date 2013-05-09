@@ -37,7 +37,7 @@ ve.dm.SurfaceFragment = function VeDmSurfaceFragment( surface, range, noAutoSele
 		Math.min( Math.max( this.range.from, 0 ), length ),
 		Math.min( Math.max( this.range.to, 0 ), length )
 	);
-	this.historyPointer = this.getSurface().getCompleteHistoryLength();
+	this.historyPointer = this.document.getCompleteHistoryLength();
 };
 
 /* Static Properties */
@@ -59,8 +59,8 @@ ve.dm.SurfaceFragment.static = {};
 ve.dm.SurfaceFragment.prototype.update = function () {
 	var i, length, txs;
 	// Small optimisation: check history pointer is in the past
-	if ( this.historyPointer < this.getSurface().getCompleteHistoryLength() ) {
-		txs = this.getSurface().getCompleteHistorySince( this.historyPointer );
+	if ( this.historyPointer < this.document.getCompleteHistoryLength() ) {
+		txs = this.document.getCompleteHistorySince( this.historyPointer );
 		for ( i = 0, length = txs.length; i < length; i++ ) {
 			this.range = txs[i].transaction.translateRange( this.range, txs[i].undo );
 			this.historyPointer++;

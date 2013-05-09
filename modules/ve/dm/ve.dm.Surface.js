@@ -25,7 +25,6 @@ ve.dm.Surface = function VeDmSurface( doc ) {
 	this.selectedNodes = {};
 	this.smallStack = [];
 	this.bigStack = [];
-	this.completeHistory = [];
 	this.undoIndex = 0;
 	this.historyTrackingInterval = null;
 	this.insertionAnnotations = new ve.dm.AnnotationSet( this.documentModel.getStore() );
@@ -315,10 +314,6 @@ ve.dm.Surface.prototype.change = function ( transactions, selection ) {
 			if ( !transactions[i].isNoOp() ) {
 				this.truncateUndoStack();
 				this.smallStack.push( transactions[i] );
-				this.completeHistory.push( {
-					'undo': false,
-					'transaction': transactions[i]
-				} );
 				this.documentModel.commit( transactions[i] );
 			}
 		}
@@ -452,10 +447,6 @@ ve.dm.Surface.prototype.undo = function () {
 		for ( i = item.stack.length - 1; i >= 0; i-- ) {
 			transaction = item.stack[i];
 			selection = transaction.translateRange( selection, true );
-			this.completeHistory.push( {
-				'undo': true,
-				'transaction': transaction
-			} );
 			this.documentModel.rollback( transaction );
 		}
 		this.emit( 'unlock' );
@@ -463,23 +454,6 @@ ve.dm.Surface.prototype.undo = function () {
 		return selection;
 	}
 	return null;
-};
-
-/**
- * Get the length of the complete history stack. This is also the current pointer.
- * @returns {number} Length of the complete history stack
- */
-ve.dm.Surface.prototype.getCompleteHistoryLength = function () {
-	return this.completeHistory.length;
-};
-
-/**
- * Get all the items in the complete history stack since a specified pointer.
- * @param {number} pointer Pointer from where to start the slice
- * @returns {Array} Array of transaction objects with undo flag
- */
-ve.dm.Surface.prototype.getCompleteHistorySince = function ( pointer ) {
-	return this.completeHistory.slice( pointer );
 };
 
 /**
@@ -505,10 +479,6 @@ ve.dm.Surface.prototype.redo = function () {
 		selection = item.selection;
 		for ( i = 0; i < item.stack.length; i++ ) {
 			transaction = item.stack[i];
-			this.completeHistory.push( {
-				'undo': false,
-				'transaction': transaction
-			} );
 			this.documentModel.commit( transaction );
 		}
 		this.undoIndex--;

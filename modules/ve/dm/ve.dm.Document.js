@@ -45,6 +45,7 @@ ve.dm.Document = function VeDmDocument( documentOrData, parentDocument ) {
 
 	// Properties
 	this.parentDocument = parentDocument;
+	this.completeHistory = [];
 
 	if ( documentOrData instanceof ve.dm.LinearData ) {
 		this.data = documentOrData;
@@ -222,6 +223,10 @@ ve.dm.Document.prototype.rollback = function ( transaction ) {
 		throw new Error( 'Cannot roll back a transaction that has not been committed' );
 	}
 	new ve.dm.TransactionProcessor( this, transaction, true ).process();
+	this.completeHistory.push( {
+		'undo': true,
+		'transaction': transaction
+	} );
 	this.emit( 'transact', transaction, true );
 };
 
@@ -238,6 +243,10 @@ ve.dm.Document.prototype.commit = function ( transaction ) {
 		throw new Error( 'Cannot commit a transaction that has already been committed' );
 	}
 	new ve.dm.TransactionProcessor( this, transaction, false ).process();
+	this.completeHistory.push( {
+		'undo': false,
+		'transaction': transaction
+	} );
 	this.emit( 'transact', transaction, false );
 };
 
@@ -866,4 +875,21 @@ ve.dm.Document.prototype.getSlice = function ( range ) {
 			.concat( addClosings ),
 		new ve.Range( addOpenings.length, addOpenings.length + range.getLength() )
 	);
+};
+
+/**
+ * Get the length of the complete history stack. This is also the current pointer.
+ * @returns {number} Length of the complete history stack
+ */
+ve.dm.Document.prototype.getCompleteHistoryLength = function () {
+	return this.completeHistory.length;
+};
+
+/**
+ * Get all the items in the complete history stack since a specified pointer.
+ * @param {number} pointer Pointer from where to start the slice
+ * @returns {Array} Array of transaction objects with undo flag
+ */
+ve.dm.Document.prototype.getCompleteHistorySince = function ( pointer ) {
+	return this.completeHistory.slice( pointer );
 };
