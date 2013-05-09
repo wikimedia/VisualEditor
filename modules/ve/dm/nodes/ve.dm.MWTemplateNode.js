@@ -70,7 +70,8 @@ ve.dm.MWTemplateNode.static.toDomElements = function ( dataElement, doc, convert
 	if ( ve.compareObjects( dataElement.attributes.mw, dataElement.attributes.mwOriginal ) ) {
 		// If the template is unchanged just send back the original dom elements so selser can skip over it
 		index = converter.getStore().indexOfHash( ve.getHash( this.getHashObject( dataElement ) ) );
-		return converter.getStore().value( index );
+		// The object in the store is also used for rendering so return a copy
+		return ve.copyArray( converter.getStore().value( index ) );
 	} else {
 		span = doc.createElement( 'span' );
 		// All we need to send back to Parsoid is the original template marker,
