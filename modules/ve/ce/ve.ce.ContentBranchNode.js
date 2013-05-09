@@ -51,7 +51,7 @@ ve.inheritClass( ve.ce.ContentBranchNode, ve.ce.BranchNode );
  */
 ve.ce.ContentBranchNode.prototype.onChildUpdate = function ( transaction ) {
 	var surfaceModel = this.getRoot().getSurface().getModel(),
-		surfaceModelState = surfaceModel.getCompleteHistoryLength();
+		surfaceModelState = surfaceModel.getDocument().getCompleteHistoryLength();
 
 	if ( transaction instanceof ve.dm.Transaction ) {
 		if ( surfaceModelState === this.surfaceModelState ) {
