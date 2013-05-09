@@ -80,7 +80,7 @@ class MakeStaticLoader extends Maintenance {
 				've/init/sa/styles/ve.init.sa.css',
 			),
 			'headAdd' => '<script>
-	if ( window.devicePixelRatio > 1 ) {
+	if ( document.createElementNS && document.createElementNS( \'http://www.w3.org/2000/svg\', \'svg\' ).createSVGRect ) {
 		document.write( \'<link rel="stylesheet" href="' . $vePath . '/ve/ui/styles/ve.ui.Icons-vector.css">\' );
 	} else {
 		document.write( \'<link rel="stylesheet" href="' . $vePath . '/ve/ui/styles/ve.ui.Icons-raster.css">\' );
