@@ -46,7 +46,7 @@ ve.ce.MWReferenceListNode.static.name = 'MWreferenceList';
 /* Methods */
 
 ve.ce.MWReferenceListNode.prototype.onUpdate = function () {
-	this.$.html( this.model.getAttribute( 'html' ) );
+	this.$.html( ve.copyArray( this.model.getAttribute( 'domElements' ) || [] ) );
 };
 
 /* Registration */
