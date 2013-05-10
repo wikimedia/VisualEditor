@@ -121,7 +121,7 @@ ve.inheritClass( ve.init.mw.Target, ve.init.Target );
  * @emits loadError
  */
 ve.init.mw.Target.onLoad = function ( response ) {
-	var key, tmp, el, html,
+	var key, tmp, el,
 		data = response ? response.visualeditor : null;
 
 	if ( !data && !response.error ) {
@@ -139,14 +139,7 @@ ve.init.mw.Target.onLoad = function ( response ) {
 		);
 	} else {
 		this.originalHtml = data.content;
-		// HACK for backwards compatibility with older versions of Parsoid, detect whether
-		// data.content is a document fragment or a full HTML document
-		if ( data.content.match( /^<(!doctype|html|head|body)(>|\s)/i ) ) {
-			html = data.content;
-		} else {
-			html = '<!doctype html><html><head></head><body>' + data.content + '</body></html>';
-		}
-		this.doc = ve.createDocumentFromHTML( html );
+		this.doc = ve.createDocumentFromHTML( this.originalHtml );
 
 		/* Don't show notices with no visible html (bug 43013). */
 
