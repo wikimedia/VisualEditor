@@ -5,8 +5,8 @@ $messages = array();
  * @author Trevor Parscal
  */
 $messages['en'] = array(
-	'accesskey-ca-editsource' => '',
-	'accesskey-ca-ve-edit' => '',
+	'accesskey-ca-editsource' => 'e',
+	'accesskey-ca-ve-edit' => 'v',
 	'tag-visualeditor' => '[[Special:Tags|Tag]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
 	'tag-visualeditor-description' => 'Edit made using the [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
 	'tooltip-ca-editsource' => 'Edit the source code of this page',

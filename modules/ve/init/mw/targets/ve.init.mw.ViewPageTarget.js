@@ -821,7 +821,7 @@ ve.init.mw.ViewPageTarget.prototype.setupSkinTabs = function () {
 			$caEditLink.text(),
 			$caEdit.attr( 'id' ),
 			$caEditLink.attr( 'title' ),
-			$caEditLink.attr( 'accesskey' ),
+			ve.msg( 'accesskey-ca-ve-edit' ),
 			reverseTabOrder ? caVeEditSource.nextSibling : caVeEditSource
 		);
 	}
