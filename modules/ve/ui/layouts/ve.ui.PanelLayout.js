@@ -25,7 +25,7 @@ ve.ui.PanelLayout = function VeUiPanelLayout( config ) {
 	// Initialization
 	this.$.addClass( 've-ui-panelLayout' );
 	if ( config.scroll ) {
-		this.$.css( 'overflow-x', 'auto' );
+		this.$.css( 'overflow-y', 'auto' );
 	}
 };
 

@@ -11,7 +11,7 @@
  * Creates an ve.ui.MWCategoryInputWidget object.
  *
  * @class
- * @extends ve.ui.InputWidget
+ * @extends ve.ui.TextInputWidget
  * @mixins ve.ui.PendingInputWidget
  * @mixins ve.ui.LookupInputWidget
  *
@@ -25,7 +25,7 @@ ve.ui.MWCategoryInputWidget = function VeUiMWCategoryInputWidget( categoryWidget
 	}, config );
 
 	// Parent constructor
-	ve.ui.InputWidget.call( this, config );
+	ve.ui.TextInputWidget.call( this, config );
 
 	// Mixin constructors
 	ve.ui.PendingInputWidget.call( this );
@@ -43,14 +43,10 @@ ve.ui.MWCategoryInputWidget = function VeUiMWCategoryInputWidget( categoryWidget
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.MWCategoryInputWidget, ve.ui.InputWidget );
+ve.inheritClass( ve.ui.MWCategoryInputWidget, ve.ui.TextInputWidget );
 
 ve.mixinClass( ve.ui.MWCategoryInputWidget, ve.ui.PendingInputWidget );
 ve.mixinClass( ve.ui.MWCategoryInputWidget, ve.ui.LookupInputWidget );
-
-/* Static Properties */
-
-ve.ui.MWCategoryInputWidget.static.inputType = 'text';
 
 /* Methods */
 

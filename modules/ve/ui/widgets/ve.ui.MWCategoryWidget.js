@@ -11,6 +11,7 @@
  * @class
  * @abstract
  * @extends ve.ui.Widget
+ * @mixin ve.ui.GroupElement
  *
  * @constructor
  * @param {Object} [config] Config options
@@ -22,21 +23,23 @@ ve.ui.MWCategoryWidget = function VeUiMWCategoryWidget( config ) {
 	// Parent constructor
 	ve.ui.Widget.call( this, config );
 
+	// Mixin constructors
+	ve.ui.GroupElement.call( this, this.$$( '<div>' ), config );
+
 	// Properties
 	this.categories = {};
-	this.$categories = this.$$( '<div>' );
 	this.popupState = false;
 	this.savedPopupState = false;
 	this.popup = new ve.ui.MWCategoryPopupWidget( {
 		'$$': this.$$, 'align': 'right', '$overlay': config.$overlay
 	} );
-	this.categoryInput = new ve.ui.MWCategoryInputWidget( this, {
+	this.input = new ve.ui.MWCategoryInputWidget( this, {
 		'$$': this.$$, '$overlay': config.$overlay, '$container': this.$
 	} );
 
 	// Events
-	this.categoryInput.$input.on( 'keydown', ve.bind( this.onLookupInputKeyDown, this ) );
-	this.categoryInput.lookupMenu.connect( this, { 'select': 'onLookupMenuItemSelect' } );
+	this.input.$input.on( 'keydown', ve.bind( this.onLookupInputKeyDown, this ) );
+	this.input.lookupMenu.connect( this, { 'select': 'onLookupMenuItemSelect' } );
 	this.popup.connect( this, {
 		'removeCategory': 'onRemoveCategory',
 		'updateSortkey': 'onUpdateSortkey',
@@ -46,8 +49,8 @@ ve.ui.MWCategoryWidget = function VeUiMWCategoryWidget( config ) {
 	// Initialization
 	this.$.addClass( 've-ui-mwCategoryListWidget' )
 		.append(
-			this.$categories,
-			this.categoryInput.$,
+			this.$group,
+			this.input.$,
 			this.$$( '<div>' ).css( 'clear', 'both' )
 		);
 };
@@ -77,12 +80,12 @@ ve.inheritClass( ve.ui.MWCategoryWidget, ve.ui.Widget );
  * @param {jQuery.Event} e Input key down event
  */
 ve.ui.MWCategoryWidget.prototype.onLookupInputKeyDown = function ( e ) {
-	if ( this.categoryInput.getValue() !== '' && e.which === 13 ) {
+	if ( this.input.getValue() !== '' && e.which === 13 ) {
 		this.emit(
 			'newCategory',
-			this.categoryInput.getCategoryItemFromValue( this.categoryInput.getValue() )
+			this.input.getCategoryItemFromValue( this.input.getValue() )
 		);
-		this.categoryInput.setValue( '' );
+		this.input.setValue( '' );
 	}
 };
 
@@ -94,8 +97,8 @@ ve.ui.MWCategoryWidget.prototype.onLookupInputKeyDown = function ( e ) {
  */
 ve.ui.MWCategoryWidget.prototype.onLookupMenuItemSelect = function ( item ) {
 	if ( item && item.getData() !== '' ) {
-		this.emit( 'newCategory', this.categoryInput.getCategoryItemFromValue( item.getData() ) );
-		this.categoryInput.setValue( '' );
+		this.emit( 'newCategory',  this.input.getCategoryItemFromValue( item.getData() ) );
+		this.input.setValue( '' );
 	}
 };
 
@@ -161,37 +164,53 @@ ve.ui.MWCategoryWidget.prototype.getCategories = function () {
  * Adds category items.
  *
  * @method
- * @param {Object[]} items [description]
+ * @param {Object[]} items Items to add
+ * @param {number} [index] Index to insert items after
  * @chainable
  */
-ve.ui.MWCategoryWidget.prototype.addItems = function ( items ) {
-	var i, len, item, categoryGroupItem,
-		existingCategoryGroupItem = null;
+ve.ui.MWCategoryWidget.prototype.addItems = function ( items, index ) {
+	var i, len, item, categoryItem,
+		categoryItems = [],
+		existingCategoryItem = null;
 
 	for ( i = 0, len = items.length; i < len; i++ ) {
 		item = items[i];
 
-		// Filter out categories derived from aliens.
-		// TODO: Remove the block below once aliens no longer add items to metalist.
-		if( 'html/0/about' in item.metaItem.element.attributes ) {
-			return this;
+		// HACK: Filter out categories derived from aliens
+		// TODO: Remove this bit once aliens no longer add items to metalist
+		if ( 'html/0/about' in item.metaItem.element.attributes ) {
+			continue;
 		}
-		categoryGroupItem = new ve.ui.MWCategoryItemWidget( { '$$': this.$$, 'item': item } );
-		// Bind category item events.
-		categoryGroupItem.connect( this, {
+
+		// Create a widget using the item data
+		categoryItem = new ve.ui.MWCategoryItemWidget( { '$$': this.$$, 'item': item } );
+		categoryItem.connect( this, {
 			'savePopupState': 'onSavePopupState',
 			'togglePopupMenu': 'onTogglePoupupMenu'
 		} );
+		// Auto-remove existing items by value
 		if ( item.value in this.categories ) {
-			existingCategoryGroupItem = this.categories[item.value];
-			this.categories[item.value].metaItem.remove();
+			// Save reference to item
+			existingCategoryItem = this.categories[item.value];
+			// Removal in model will trigger #removeItems in widget
+			existingCategoryItem.metaItem.remove();
+			// Adjust index to compensate for removal
+			index = Math.max( index - 1, 0 );
 		}
-		this.categories[item.value] = categoryGroupItem;
-		if ( existingCategoryGroupItem ) {
-			categoryGroupItem.sortKey = existingCategoryGroupItem.sortKey;
+		// Index item by value
+		this.categories[item.value] = categoryItem;
+		// Copy sortKey from old item when "moving"
+		if ( existingCategoryItem ) {
+			categoryItem.sortKey = existingCategoryItem.sortKey;
 		}
-		this.$categories.append( categoryGroupItem.$ );
+
+		categoryItems.push( categoryItem );
 	}
+
+	ve.ui.GroupElement.prototype.addItems.call( this, categoryItems, index );
+
+	this.fitInput();
+
 	return this;
 };
 
@@ -202,10 +221,46 @@ ve.ui.MWCategoryWidget.prototype.addItems = function ( items ) {
  * @param {string[]} names Names of categories to remove
  */
 ve.ui.MWCategoryWidget.prototype.removeItems = function ( names ) {
-	var i, len;
+	var i, len, categoryItem,
+		items = [];
 
 	for ( i = 0, len = names.length; i < len; i++ ) {
-		this.categories[names[i]].$.remove();
+		categoryItem = this.categories[names[i]];
+		categoryItem.disconnect( this );
+		items.push( categoryItem );
 		delete this.categories[names[i]];
+	}
+
+	ve.ui.GroupElement.prototype.removeItems.call( this, items );
+
+	this.fitInput();
+};
+
+/**
+ * Auto-fit the input.
+ *
+ * @method
+ */
+ve.ui.MWCategoryWidget.prototype.fitInput = function () {
+	var gap, min, margin, $lastItem,
+		$input = this.input.$;
+
+	if ( !$input.is( ':visible') ) {
+		return;
+	}
+
+	$input.css( { 'width': 'inherit' } );
+	min = $input.outerWidth();
+
+	$input.css( { 'width': '100%' } );
+	$lastItem = this.$.find( '.ve-ui-mwCategoryListItemWidget:last' );
+	if ( $lastItem.length ) {
+		margin = $input.offset().left - this.$.offset().left;
+		// Try to fit to the right of the last item
+		gap = ( $input.offset().left + $input.outerWidth() ) -
+				( $lastItem.offset().left + $lastItem.outerWidth() );
+		if ( gap >= min ) {
+			$input.css( { 'width': Math.round( gap - ( ( margin ) * 2 ) ) + 'px' } );
+		}
 	}
 };

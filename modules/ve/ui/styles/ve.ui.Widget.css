@@ -194,6 +194,14 @@
 
 /* ve.ui.TextInputWidget */
 
+.ve-ui-textInputWidget {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	width: 20em;
+	position: relative;
+}
+
 .ve-ui-textInputWidget input,
 .ve-ui-textInputWidget input:focus[readonly],
 .ve-ui-widget-disabled.ve-ui-textInputWidget input:focus {
@@ -205,6 +213,10 @@
 	box-shadow: 0 0 0 white, inset 0 0.1em 0.2em #ddd;
 	padding: 0.5em;
 	border-radius: 0.25em;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	width: 100%;
 
 	/* Animation */
 	-webkit-transition: border-color 200ms, box-shadow 200ms, background-color 200ms;
@@ -354,7 +366,8 @@
 .ve-ui-mwCategoryListItemWidget {
 	position: relative;
 	float: left;
-	margin: .25em;
+	margin-right: 0.5em;
+	margin-top: 0.5em;
 }
 
 .ve-ui-mwCategoryListItemButton {
@@ -425,17 +438,17 @@
 
 .ve-ui-mwCategoryInputWidget {
 	float: left;
+	width: 15em;
+	margin-top: 0.5em;
 }
 
 .ve-ui-mwCategoryInputWidget input {
-	display: inline-block;
-	font-size: 1.1em;
-	font-family: sans-serif;
-	background: none;
-	/* HACK: to match the categoryListItem height */
-	border: 1px solid #fff;
-	outline: none;
-	padding: 0.5em;
+	border-radius: 2em;
+	font-size: 1.05em;
+	margin-top: 0;
+	padding-left: 0.75em;
+	padding-right: 0.75em;
+	background-color: #fff;
 }
 
 .ve-ui-mwCategoryPopupMenu {
@@ -445,7 +458,7 @@
 }
 
 .ve-ui-mwCategoryPopupMenu .ve-ui-iconButtonWidget {
-	display:block;
+	display: block;
 	float: left;
 }
 

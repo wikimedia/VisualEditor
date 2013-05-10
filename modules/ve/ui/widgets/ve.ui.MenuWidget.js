@@ -132,12 +132,13 @@ ve.ui.MenuWidget.prototype.selectItem = function ( item, silent ) {
  *
  * @method
  * @param {ve.ui.MenuItemWidget[]} items Items to add
+ * @param {number} [index] Index to insert items after
  * @chainable
  */
-ve.ui.MenuWidget.prototype.addItems = function ( items ) {
+ve.ui.MenuWidget.prototype.addItems = function ( items, index ) {
 	var i, len, item;
 
-	ve.ui.SelectWidget.prototype.addItems.call( this, items );
+	ve.ui.SelectWidget.prototype.addItems.call( this, items, index );
 
 	for ( i = 0, len = items.length; i < len; i++ ) {
 		item = items[i];
