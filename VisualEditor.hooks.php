@@ -58,6 +58,8 @@ class VisualEditorHooks {
 	public static function onMakeGlobalVariablesScript( array &$vars, OutputPage $out ) {
 		$vars['wgVisualEditor'] = array(
 			'isPageWatched' => $out->getUser()->isWatched( $out->getTitle() ),
+			'pageLanguageCode' => $out->getTitle()->getPageLanguage()->getHtmlCode(),
+			'pageLanguageDir' => $out->getTitle()->getPageLanguage()->getDir()
 		);
 
 		return true;
