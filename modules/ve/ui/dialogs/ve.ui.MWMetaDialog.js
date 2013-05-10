@@ -5,6 +5,8 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
+/*global mw*/
+
 /**
  * Document dialog.
  *
@@ -20,6 +22,9 @@ ve.ui.MWMetaDialog = function VeUiMWMetaDialog( surface ) {
 
 	// Properties
 	this.metaList = surface.getModel().metaList;
+	this.defaultSortKeyItem = this.getDefaultSortKeyItem();
+	this.defaultSortKeyChanged = false;
+	this.fallbackDefaultSortKey = mw.config.get( 'wgTitle' );
 
 	// Events
 	this.metaList.connect( this, {
@@ -69,10 +74,11 @@ ve.ui.MWMetaDialog.prototype.onOpen = function () {
  * @param {string} action Action that caused the window to be closed
  */
 ve.ui.MWMetaDialog.prototype.onClose = function ( action ) {
-	var surfaceModel = this.surface.getModel();
+	var surfaceModel = this.surface.getModel(),
+		defaultSortKeyItem;
 
 	// Parent method
-	ve.ui.PagedDialog.prototype.onOpen.call( this );
+	ve.ui.PagedDialog.prototype.onClose.call( this );
 
 	// Place transactions made while dialog was open in a common history state
 	surfaceModel.breakpoint();
@@ -81,6 +87,18 @@ ve.ui.MWMetaDialog.prototype.onClose = function ( action ) {
 	if ( action === 'cancel' ) {
 		surfaceModel.undo();
 		surfaceModel.truncateUndoStack();
+	}
+
+	if ( this.defaultSortKeyChanged ) {
+		defaultSortKeyItem = new ve.dm.MWDefaultSortMetaItem( {
+			'type': 'MWdefaultSort',
+			'attributes': { 'content': this.defaultSortInput.getValue() }
+		} );
+		if ( this.defaultSortKeyItem ) {
+			this.defaultSortKeyItem.replaceWith( defaultSortKeyItem );
+		} else {
+			this.metaList.insertMeta( defaultSortKeyItem );
+		}
 	}
 
 	// Return to normal tracking behavior
@@ -97,8 +115,22 @@ ve.ui.MWMetaDialog.prototype.initialize = function () {
 	ve.ui.PagedDialog.prototype.initialize.call( this );
 
 	// Properties
+	this.categoriesFieldset = new ve.ui.FieldsetLayout( {
+		'$$': this.$$, 'label': 'Categories', 'icon': 'tag'
+	} );
+	this.categorySettingsFieldset = new ve.ui.FieldsetLayout( {
+		'$$': this.$$, 'label': 'Category settings', 'icon': 'settings'
+	} );
 	this.categoryWidget = new ve.ui.MWCategoryWidget( {
 		'$$': this.$$, '$overlay': this.$overlay
+	} );
+	this.defaultSortInput = new ve.ui.TextInputWidget( {
+		'$$': this.$$, 'placeholder': this.fallbackDefaultSortKey
+	} );
+	this.defaultSortLabel = new ve.ui.InputLabelWidget( {
+		'$$': this.$$,
+		'input': this.defaultSortInput,
+		'label': 'Default page name on category page'
 	} );
 
 	// Events
@@ -106,16 +138,36 @@ ve.ui.MWMetaDialog.prototype.initialize = function () {
 		'newCategory': 'onNewCategory',
 		'updateSortkey': 'onUpdateSortKey'
 	} );
+	this.defaultSortInput.connect( this, {
+		'change': 'onDefaultSortChange'
+	} );
 
 	// Initialization
+	this.defaultSortInput.setValue(
+		this.defaultSortKeyItem ? this.defaultSortKeyItem.getAttribute( 'content' ) : ''
+	);
 	this.categoryWidget.addItems( this.getCategoryItems() );
 	this.addPage( 'categories', 'Categories', 'tag' )
 		.addPage( 'languages', 'Languages', 'language' );
-	this.pages.categories.$.append( this.categoryWidget.$ );
+	this.pages.categories.$.append( this.categoriesFieldset.$, this.categorySettingsFieldset.$ );
+	this.categoriesFieldset.$.append( this.categoryWidget.$ );
+	this.categorySettingsFieldset.$.append(
+		this.defaultSortLabel.$, this.defaultSortInput.$
+	);
 };
 
 /**
- * Gets array of category items from meta list
+ * Get default sort key item.
+ *
+ * @returns {string} Default sort key item
+ */
+ve.ui.MWMetaDialog.prototype.getDefaultSortKeyItem = function () {
+	var items = this.metaList.getItemsInGroup( 'MWdefaultSort' );
+	return items.length ? items[0] : null;
+};
+
+/**
+ * Get array of category items from meta list
  *
  * @method
  * @returns {Object[]} items
@@ -164,6 +216,16 @@ ve.ui.MWMetaDialog.prototype.getCategoryItemForInsertion = function ( item ) {
 };
 
 /**
+ * Handle category default sort change events.
+ *
+ * @param {string} value Default sort value
+ */
+ve.ui.MWMetaDialog.prototype.onDefaultSortChange = function ( value ) {
+	this.categoryWidget.setDefaultSortKey( value === '' ? this.fallbackDefaultSortKey : value );
+	this.defaultSortKeyChanged = true;
+};
+
+/**
  * Inserts new category into meta list
  *
  * @method
@@ -181,12 +243,8 @@ ve.ui.MWMetaDialog.prototype.onNewCategory = function ( item ) {
  * @param {Object} item
  */
 ve.ui.MWMetaDialog.prototype.onUpdateSortKey = function ( item ) {
-	var offset = item.metaItem.getOffset(),
-		index = item.metaItem.getIndex();
-
 	// Replace meta item with updated one
-	item.metaItem.remove();
-	this.metaList.insertMeta( this.getCategoryItemForInsertion( item ), offset, index );
+	item.metaItem.replaceWith( this.getCategoryItemForInsertion( item ) );
 };
 
 /**

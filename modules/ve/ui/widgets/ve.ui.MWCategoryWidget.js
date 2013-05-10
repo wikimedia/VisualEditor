@@ -150,6 +150,10 @@ ve.ui.MWCategoryWidget.prototype.onTogglePoupupMenu = function ( item ) {
 	}
 };
 
+ve.ui.MWCategoryWidget.prototype.setDefaultSortKey = function ( value ) {
+	this.popup.setDefaultSortKey( value );
+};
+
 /**
  * Get list of category names.
  *

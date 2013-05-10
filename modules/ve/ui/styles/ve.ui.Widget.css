@@ -192,6 +192,12 @@
 	text-shadow: 0 1px 1px rgba(255,255,255,0.5);
 }
 
+/* ve.ui.InputLabelWidget */
+
+.ve-ui-inputLabelWidget {
+	margin: 0.5em 0;
+}
+
 /* ve.ui.TextInputWidget */
 
 .ve-ui-textInputWidget {
@@ -448,7 +454,6 @@
 	margin-top: 0;
 	padding-left: 0.75em;
 	padding-right: 0.75em;
-	background-color: #fff;
 }
 
 .ve-ui-mwCategoryPopupMenu {
