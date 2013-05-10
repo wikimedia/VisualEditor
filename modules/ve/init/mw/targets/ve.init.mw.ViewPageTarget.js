@@ -763,7 +763,8 @@ ve.init.mw.ViewPageTarget.prototype.setupSkinTabs = function () {
 		$caSource = $( '#ca-viewsource' ),
 		$caEdit = $( '#ca-edit' ),
 		$caEditLink = $caEdit.find( 'a' ),
-		caVeEditNextnode = $caEdit.next().get( 0 );
+		reverseTabOrder = $( 'body' ).hasClass( 'rtl' ) && pTabsId === 'p-views',
+		caVeEditNextnode = reverseTabOrder ? $caEdit.get( 0 ) : $caEdit.next().get( 0 );
 
 	if ( !$caEdit.length || $caSource.length ) {
 		// If there is no edit tab or a view-source tab,
@@ -821,7 +822,7 @@ ve.init.mw.ViewPageTarget.prototype.setupSkinTabs = function () {
 			$caEdit.attr( 'id' ),
 			$caEditLink.attr( 'title' ),
 			$caEditLink.attr( 'accesskey' ),
-			caVeEditSource
+			reverseTabOrder ? caVeEditSource.nextSibling : caVeEditSource
 		);
 	}
 
