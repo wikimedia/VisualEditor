@@ -759,20 +759,19 @@ ve.init.mw.ViewPageTarget.prototype.tearDownSurface = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.setupSkinTabs = function () {
-	var action, pTabsId, $caSource, $caEdit, $caEditLink, caVeEdit, caVeEditSource, caVeEditNextnode, uriClone;
-	$caEdit = $( '#ca-edit' );
-	$caEditLink = $caEdit.find( 'a' );
-	$caSource = $( '#ca-viewsource' );
-	caVeEditNextnode = $caEdit.next().get( 0 );
+	var caVeEdit, caVeEditSource, uriClone,
+		action = this.pageExists ? 'edit' : 'create',
+		pTabsId = $( '#p-views' ).length ? 'p-views' : 'p-cactions',
+		$caSource = $( '#ca-viewsource' ),
+		$caEdit = $( '#ca-edit' ),
+		$caEditLink = $caEdit.find( 'a' ),
+		caVeEditNextnode = $caEdit.next().get( 0 );
 
 	if ( !$caEdit.length || $caSource.length ) {
 		// If there is no edit tab or a view-source tab,
 		// the user doesn't have permission to edit.
 		return;
 	}
-
-	action = this.pageExists ? 'edit' : 'create';
-	pTabsId = $( '#p-views' ).length ? 'p-views' : 'p-cactions';
 
 	// Add independent "VisualEditor" tab (#ca-ve-edit).
 	if ( this.tabLayout === 'add' ) {
