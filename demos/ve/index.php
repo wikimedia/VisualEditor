@@ -307,8 +307,8 @@ $html = file_get_contents( $page );
 		<!-- demo -->
 		<script>
 			$( document ).ready( function () {
-				new ve.Surface(
-					new ve.init.sa.Target( $( '.ve-demo-editor' ) ),
+				new ve.init.sa.Target(
+					$( '.ve-demo-editor' ),
 					ve.createDocumentFromHTML( <?php echo json_encode( $html ) ?> )
 				);
 				$( '.ve-ce-documentNode' ).focus();

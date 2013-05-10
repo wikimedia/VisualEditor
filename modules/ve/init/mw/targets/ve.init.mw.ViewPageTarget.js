@@ -45,7 +45,6 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 	this.$saveDialog = $( '<div>' ).addClass( 've-init-mw-viewPageTarget-saveDialog' );
 	this.onBeforeUnloadFallback = null;
 	this.onBeforeUnloadHandler = null;
-	this.surface = null;
 	this.active = false;
 	this.edited = false;
 	this.activating = false;
@@ -471,9 +470,9 @@ ve.init.mw.ViewPageTarget.prototype.onSerializeError = function ( jqXHR, status 
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.onEditConflict = function () {
-	var doc = this.surface.getDocumentModel();
+	var doc = this.surface.getModel().getDocument();
 	if ( confirm( ve.msg( 'visualeditor-editconflict', status ) ) ) {
-		// Get Wikitext from the DOM, and setup a submit call when it's done
+		// Get Wikitext from the DOM, and set up a submit call when it's done
 		this.serialize(
 			ve.dm.converter.getDomFromData( doc.getFullData(), doc.getStore(), doc.getInternalList() ),
 			ve.bind( function ( wikitext ) {
@@ -577,7 +576,7 @@ ve.init.mw.ViewPageTarget.prototype.onToolbarFeedbackToolClick = function () {
 /**
  * Handle the first transaction in the surface model.
  *
- * This handler is removed the first time it's used, but added each time the surface is setup.
+ * This handler is removed the first time it's used, but added each time the surface is set up.
  *
  * @method
  * @param {ve.dm.Transaction} tx Processed transaction
@@ -608,7 +607,7 @@ ve.init.mw.ViewPageTarget.prototype.onSurfaceModelHistory = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.onSaveDialogSaveButtonClick = function () {
-	var doc = this.surface.getDocumentModel();
+	var doc = this.surface.getModel().getDocument();
 	this.saveDialogSaveButton.setDisabled( true );
 	this.$saveDialogLoadingIcon.show();
 	this.save(
@@ -715,6 +714,7 @@ ve.init.mw.ViewPageTarget.prototype.setUpSurface = function ( doc ) {
 	// Transplant the toolbar
 	this.attachToolbar();
 	this.transformPageTitle();
+	this.setupToolbarFloating();
 	// Update UI
 	this.hidePageContent();
 	this.hideSpinner();
@@ -738,6 +738,7 @@ ve.init.mw.ViewPageTarget.prototype.tearDownSurface = function () {
 		this.$document.blur();
 		this.$document = null;
 	}
+	this.teardownToolbarFloating();
 	this.detachToolbar();
 	this.hideSpinner();
 	this.showPageContent();
@@ -1243,7 +1244,7 @@ ve.init.mw.ViewPageTarget.prototype.resetSaveDialog = function () {
  * @throws {Error} Unknown saveDialog slide
  */
 ve.init.mw.ViewPageTarget.prototype.swapSaveDialog = function ( slide ) {
-	var $slide, $viewer, doc = this.surface.getDocumentModel();
+	var $slide, $viewer, doc = this.surface.getModel().getDocument();
 	if ( ve.indexOf( slide, [ 'review', 'report', 'save'] ) === -1 ) {
 		throw new Error( 'Unknown saveDialog slide: ' + slide );
 	}
