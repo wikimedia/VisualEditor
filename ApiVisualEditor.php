@@ -164,14 +164,18 @@ class ApiVisualEditor extends ApiBase {
 		}
 		$diffRows = $result['query']['pages'][$title->getArticleID()]['revisions'][0]['diff']['*'];
 
-		$context = new DerivativeContext( $this->getContext() );
-		$context->setTitle( $title );
-		$engine = new DifferenceEngine( $context );
-		return $engine->addHeader(
-			$diffRows,
-			wfMessage( 'currentrev' )->parse(),
-			wfMessage( 'yourtext' )->parse()
-		);
+		if ( $diffRows !== '' ) {
+			$context = new DerivativeContext( $this->getContext() );
+			$context->setTitle( $title );
+			$engine = new DifferenceEngine( $context );
+			return $engine->addHeader(
+				$diffRows,
+				wfMessage( 'currentrev' )->parse(),
+				wfMessage( 'yourtext' )->parse()
+			);
+		} else {
+			return wfMessage( 'visualeditor-diff-nochanges' )->parse();
+		}
 	}
 
 	public function execute() {
