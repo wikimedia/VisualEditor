@@ -84,6 +84,7 @@ $messages['en'] = array(
 	'visualeditor-report-notice' => 'I understand that by clicking "Report problem" I will transmit my changes and my feedback, which will be stored for analysis. I agree to provide feedback in accordance with the [[{{MediaWiki:Visualeditor-report-link}}|Terms of Use]].',
 	'visualeditor-report-link' => 'foundation:Terms of Use',
 	'visualeditor-feedback-link' => 'Project:VisualEditor/Feedback',
+	'visualeditor-diff-nochanges' => 'Your edit will be ignored because you have made no changes to the text.',
 );
 
 /** Message documentation (Message documentation)
@@ -214,6 +215,7 @@ Do not translate. Only add a language code when a translations of above page exi
 
 Possible entry for German: "foundation:Terms of Use/de"',
 	'visualeditor-feedback-link' => 'Link to a page where users can leave feedback that is automatically posted using this tool. This should be a sub-page of {{msg-mw|visualeditor-descriptionpagelink}}',
+	'visualeditor-diff-nochanges' => 'Message displayed in the diff view when no changes were detected',
 );
 
 /** Arabic (العربية)
