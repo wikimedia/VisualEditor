@@ -1129,17 +1129,36 @@
 
 	// Based on the KeyEvent DOM Level 3 (add more as you need them)
 	// http://www.w3.org/TR/2001/WD-DOM-Level-3-Events-20010410/DOM3-Events.html#events-Events-KeyEvent
+	// http://www.w3.org/TR/2000/WD-DOM-Level-3-Events-20000901/events.html
 	ve.Keys = window.KeyEvent || {
-		'DOM_VK_UNDEFINED': 0,
-		'DOM_VK_BACK_SPACE': 8,
-		'DOM_VK_RETURN': 13,
-		'DOM_VK_LEFT': 37,
-		'DOM_VK_UP': 38,
-		'DOM_VK_RIGHT': 39,
-		'DOM_VK_DOWN': 40,
-		'DOM_VK_DELETE': 46
+		'DOM_VK_UNDEFINED': 0x0,
+		'DOM_VK_RIGHT_ALT': 0x12,
+		'DOM_VK_LEFT_ALT ': 0x12,
+		'DOM_VK_LEFT_CONTROL': 0x11,
+		'DOM_VK_RIGHT_CONTROL': 0x11,
+		'DOM_VK_LEFT_SHIFT': 0x10,
+		'DOM_VK_RIGHT_SHIFT': 0x10,
+		'DOM_VK_META': 0x9D,
+		'DOM_VK_BACK_SPACE': 0x08,
+		'DOM_VK_CAPS_LOCK': 0x14,
+		'DOM_VK_DELETE': 0x7F,
+		'DOM_VK_END': 0x23,
+		'DOM_VK_ENTER': 0x0D,
+		'DOM_VK_ESCAPE': 0x1B,
+		'DOM_VK_HOME': 0x24,
+		'DOM_VK_NUM_LOCK': 0x90,
+		'DOM_VK_PAUSE': 0x13,
+		'DOM_VK_PRINTSCREEN': 0x9A,
+		'DOM_VK_SCROLL_LOCK': 0x91,
+		'DOM_VK_SPACE': 0x20,
+		'DOM_VK_TAB': 0x09,
+		'DOM_VK_LEFT': 0x25,
+		'DOM_VK_RIGHT': 0x27,
+		'DOM_VK_UP': 0x26,
+		'DOM_VK_DOWN': 0x28,
+		'DOM_VK_PAGE_DOWN': 0x22,
+		'DOM_VK_PAGE_UP': 0x21
 	};
-
 	// Expose
 	window.ve = ve;
 }() );
