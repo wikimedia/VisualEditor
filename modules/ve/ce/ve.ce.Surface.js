@@ -1112,15 +1112,24 @@ ve.ce.Surface.prototype.handleEnter = function ( e ) {
 		) {
 			// Enter was pressed in an empty list item.
 			list = outermostNode.getModel().getParent();
-			// Remove the list item
-			tx = ve.dm.Transaction.newFromRemoval(
-				documentModel, outermostNode.getModel().getOuterRange()
-			);
-			this.model.change( tx );
-			// Insert a paragraph
-			tx = ve.dm.Transaction.newFromInsertion(
-				documentModel, list.getOuterRange().to, emptyParagraph
-			);
+			if ( list.getChildren().length === 1 ) {
+				// The list item we're about to remove is the only child of the list
+				// Remove the list
+				tx = ve.dm.Transaction.newFromRemoval(
+					documentModel, list.getOuterRange()
+				);
+			} else {
+				// Remove the list item
+				tx = ve.dm.Transaction.newFromRemoval(
+					documentModel, outermostNode.getModel().getOuterRange()
+				);
+				this.model.change( tx );
+				selection = tx.translateRange( selection );
+				// Insert a paragraph
+				tx = ve.dm.Transaction.newFromInsertion(
+					documentModel, list.getOuterRange().to, emptyParagraph
+				);
+			}
 			advanceCursor = false;
 		} else {
 			// We must process the transaction first because getRelativeContentOffset can't help us
@@ -1131,6 +1140,7 @@ ve.ce.Surface.prototype.handleEnter = function ( e ) {
 
 	// Commit the transaction
 	this.model.change( tx );
+	selection = tx.translateRange( selection );
 
 	// Now we can move the cursor forward
 	if ( advanceCursor ) {
