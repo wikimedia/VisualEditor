@@ -706,8 +706,6 @@ ve.init.mw.ViewPageTarget.prototype.setupToolbarEditNotices = function () {
  * @param {HTMLDocument} doc HTML DOM to edit
  */
 ve.init.mw.ViewPageTarget.prototype.setUpSurface = function ( doc ) {
-	var $contentText = $( '#mw-content-text' );
-
 	// Initialize surface
 	this.surface = new ve.Surface( this, doc, this.surfaceOptions );
 	this.surface.getContext().hide();
@@ -722,8 +720,8 @@ ve.init.mw.ViewPageTarget.prototype.setUpSurface = function ( doc ) {
 	this.hideSpinner();
 	this.active = true;
 	this.$document.attr( {
-		'lang': $contentText.attr( 'lang' ),
-		'dir': $contentText.attr( 'dir' )
+		'lang': mw.config.get( 'wgVisualEditor' ).pageLanguageCode,
+		'dir': mw.config.get( 'wgVisualEditor' ).pageLanguageDir
 	} );
 };
 
