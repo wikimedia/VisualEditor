@@ -444,12 +444,18 @@ ve.ce.Surface.prototype.onDocumentKeyPress = function ( e ) {
 		}
 	}
 
-	// FF fire keypress for arrow keys but we handle them in keydown so let's ignore
+	// FF fires keypress for bunch of function keys that we want to ignore
 	if ( ve.ce.isArrowKey( e.keyCode ) ||
 		ve.ce.isShortcutKey( e ) ||
-		e.which === ve.Keys.DOM_VK_RETURN ||
-		e.which === ve.Keys.DOM_VK_BACK_SPACE ||
-		e.which === ve.Keys.DOM_VK_UNDEFINED ) {
+		e.keyCode === 13 ||
+		e.which === ve.Keys.DOM_VK_UNDEFINED ||
+		e.keyCode === ve.Keys.DOM_VK_BACK_SPACE ||
+		e.keyCode === ve.Keys.DOM_VK_END ||
+		e.keyCode === ve.Keys.DOM_VK_ENTER ||
+		e.keyCode === ve.Keys.DOM_VK_HOME ||
+		e.keyCode === ve.Keys.DOM_VK_TAB ||
+		e.keyCode === ve.Keys.DOM_VK_PAGE_DOWN ||
+		e.keyCode === ve.Keys.DOM_VK_PAGE_UP ) {
 		return;
 	}
 	this.handleInsertion();
