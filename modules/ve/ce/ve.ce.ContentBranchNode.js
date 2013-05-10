@@ -25,9 +25,6 @@ ve.ce.ContentBranchNode = function VeCeContentBranchNode( model, $element ) {
 
 	// Events
 	this.connect( this, { 'childUpdate': 'onChildUpdate' } );
-
-	// Initialization
-	this.renderContents();
 };
 
 /* Inheritance */
