@@ -1095,7 +1095,33 @@
 	 * @param {HTMLElement} element HTML element to get inner HTML of
 	 * @returns {string} Inner HTML
 	 */
-	ve.properInnerHTML = function ( element ) {
+	ve.properInnerHtml = function ( element ) {
+		return ve.fixupPreBug( element ).innerHTML;
+	};
+
+	/**
+	 * Get the actual outer HTML of a DOM node.
+	 *
+	 * @see ve#properInnerHtml
+	 *
+	 * @param {HTMLElement} element HTML element to get outer HTML of
+	 * @returns {string} Outer HTML
+	 */
+	ve.properOuterHtml = function ( element ) {
+		return ve.fixupPreBug( element ).outerHTML;
+	};
+
+	/**
+	 * Helper function for ve#properInnerHtml and ve#properOuterHtml.
+	 *
+	 * Detect whether the browser has broken `<pre>` serialization, and if so return a clone
+	 * of the node with extra newlines added to make it serialize properly. If the browser is not
+	 * broken, just return the original node.
+	 *
+	 * @param {HTMLElement} element HTML element to fix up
+	 * @returns {HTMLElement} Either element, or a fixed-up clone of it
+	 */
+	ve.fixupPreBug = function ( element ) {
 		var div, $element;
 		if ( ve.isPreInnerHTMLBroken === undefined ) {
 			// Test whether newlines in `<pre>` are serialized back correctly
@@ -1105,7 +1131,7 @@
 		}
 
 		if ( !ve.isPreInnerHTMLBroken ) {
-			return element.innerHTML;
+			return element;
 		}
 
 		// Workaround for bug 42469: if a `<pre>` starts with a newline, that means .innerHTML will
@@ -1124,7 +1150,7 @@
 				}
 			}
 		} );
-		return $element.get( 0 ).innerHTML;
+		return $element.get( 0 );
 	};
 
 	// Based on the KeyEvent DOM Level 3 (add more as you need them)
