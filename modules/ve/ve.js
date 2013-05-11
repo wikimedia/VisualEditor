@@ -1123,14 +1123,14 @@
 	 */
 	ve.fixupPreBug = function ( element ) {
 		var div, $element;
-		if ( ve.isPreInnerHTMLBroken === undefined ) {
+		if ( ve.isPreInnerHtmlBroken === undefined ) {
 			// Test whether newlines in `<pre>` are serialized back correctly
 			div = document.createElement( 'div' );
 			div.innerHTML = '<pre>\n\n</pre>';
-			ve.isPreInnerHTMLBroken = div.innerHTML === '<pre>\n</pre>';
+			ve.isPreInnerHtmlBroken = div.innerHTML === '<pre>\n</pre>';
 		}
 
-		if ( !ve.isPreInnerHTMLBroken ) {
+		if ( !ve.isPreInnerHtmlBroken ) {
 			return element;
 		}
 
