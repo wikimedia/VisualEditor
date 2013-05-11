@@ -260,7 +260,7 @@ ve.dm.MetaList.prototype.insertMeta = function ( meta, offset, index ) {
 		meta = meta.getElement();
 	}
 	if ( offset === undefined ) {
-		offset = this.document.getLength();
+		offset = this.document.data.getLength();
 		index = 0;
 	} else  if ( index === undefined ) {
 		index = ( this.document.metadata.getData( offset ) || [] ).length;
