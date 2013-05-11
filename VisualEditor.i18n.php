@@ -128,7 +128,7 @@ Links are in {{msg-mw|Visualeditor-mainnamespacepagelink}} and {{msg-mw|visualed
 	Link text of the dedicated VisualEditor Create tab.
 {{Identical|visualeditor}}',
 	'visualeditor-category-input-placeholder' => 'Placeholder text for category input
-{{Identical|Category name}}',
+{{Identical|Add category}}',
 	'visualeditor-category-settings-label' => 'Title of category settings popup menu',
 	'visualeditor-dialog-meta-title' => 'MetaData dialog title text',
 	'visualeditor-dialog-content-title' => 'Content dialog title text',
@@ -190,7 +190,10 @@ See also:
 	'visualeditor-inspector-close-tooltip' => 'Tooltip for the button to close an inspector',
 	'visualeditor-inspector-remove-tooltip' => 'Tooltip for the button to remove an annotation in an inspector',
 	'visualeditor-viewpage-savewarning' => 'Text shown when the user tries to leave the editor without saving their changes',
-	'visualeditor-loadwarning' => 'Text shown when the editor fails to load properly. $1 is the error message from the server, in English.',
+	'visualeditor-loadwarning' => 'Text (JavaScript alert) shown when the editor fails to load properly.
+
+Parameters:
+* $1 - the error message from the server, in English. e.g. "parsoidserver-http-bad-status: 404"',
 	'visualeditor-differror' => 'Text shown when the editor fails to load the diff. Parameters:
 * $1 is an error message, in English.',
 	'visualeditor-serializeerror' => 'Text shown when the editor fails to load the wikitext for saving. Parameters:
@@ -850,7 +853,7 @@ $messages['de'] = array(
 	'visualeditor-ca-editsource' => 'Quelltext bearbeiten',
 	'visualeditor-ca-ve-edit' => 'VisualEditor',
 	'visualeditor-ca-ve-create' => 'VisualEditor',
-	'visualeditor-category-input-placeholder' => 'Kategoriename',
+	'visualeditor-category-input-placeholder' => 'Kategorie hinzufügen',
 	'visualeditor-category-settings-label' => 'Kategorieeinstellungen',
 	'visualeditor-dialog-meta-title' => 'Seiteneinstellungen',
 	'visualeditor-dialog-content-title' => 'Inhaltseinstellungen',
@@ -911,6 +914,7 @@ $messages['de'] = array(
 	'visualeditor-report-notice' => 'Mit dem Klick auf „Problem berichten“ übermittle ich meine Änderungen und meine Rückmeldung, die zur Auswertung gespeichert wird. Ich stimme der Abgabe meiner Rückmeldung in Übereinstimmung mit den [[{{MediaWiki:Visualeditor-report-link}}|Nutzungsbedingungen]] zu.',
 	'visualeditor-report-link' => 'foundation:Terms of Use/de',
 	'visualeditor-feedback-link' => 'Project:VisualEditor/Rückmeldungen',
+	'visualeditor-diff-nochanges' => 'Deine Bearbeitung wird ignoriert, da du keine Textänderungen durchgeführt hast.',
 );
 
 /** German (formal address) (Deutsch (Sie-Form)‎)
@@ -1401,7 +1405,7 @@ $messages['fr'] = array(
 	'visualeditor-ca-editsource' => 'Modifier la source',
 	'visualeditor-ca-ve-edit' => 'ÉditeurVisuel',
 	'visualeditor-ca-ve-create' => 'ÉditeurVisuel',
-	'visualeditor-category-input-placeholder' => 'Nom de la catégorie', # Fuzzy
+	'visualeditor-category-input-placeholder' => 'Ajouter une catégorie',
 	'visualeditor-category-settings-label' => 'Paramètres de la catégorie',
 	'visualeditor-dialog-meta-title' => 'Paramètres de la page',
 	'visualeditor-dialog-content-title' => 'Paramètres du contenu',
@@ -1914,7 +1918,7 @@ $messages['it'] = array(
 	'visualeditor-ca-editsource' => 'Modifica sorgente',
 	'visualeditor-ca-ve-edit' => 'VisualEditor',
 	'visualeditor-ca-ve-create' => 'VisualEditor',
-	'visualeditor-category-input-placeholder' => 'Nome della categoria', # Fuzzy
+	'visualeditor-category-input-placeholder' => 'Aggiungi categoria',
 	'visualeditor-category-settings-label' => 'Impostazioni categorie',
 	'visualeditor-dialog-meta-title' => 'Impostazioni pagina',
 	'visualeditor-dialog-content-title' => 'Impostazioni contenuto',
@@ -1999,7 +2003,7 @@ $messages['ja'] = array(
 	'visualeditor-ca-editsource' => 'ソースを編集',
 	'visualeditor-ca-ve-edit' => 'ビジュアルエディター',
 	'visualeditor-ca-ve-create' => 'ビジュアルエディター',
-	'visualeditor-category-input-placeholder' => 'カテゴリ名', # Fuzzy
+	'visualeditor-category-input-placeholder' => 'カテゴリを追加',
 	'visualeditor-category-settings-label' => 'カテゴリの設定',
 	'visualeditor-dialog-meta-title' => 'ページの設定',
 	'visualeditor-dialog-content-title' => 'コンテンツの設定',
@@ -2046,7 +2050,7 @@ $messages['ja'] = array(
 	'visualeditor-historybutton-redo-tooltip' => 'やり直し',
 	'visualeditor-inspector-close-tooltip' => '閉じる',
 	'visualeditor-inspector-remove-tooltip' => '除去',
-	'visualeditor-viewpage-savewarning' => 'まだ保存していませんが、表示モードに本当に戻りますか?',
+	'visualeditor-viewpage-savewarning' => 'まだ保存していませんが、閲覧モードに本当に戻りますか?',
 	'visualeditor-loadwarning' => 'サーバーからデータを読み込む際にエラーが発生しました: $1。再試行してください。',
 	'visualeditor-differror' => 'サーバーからデータを読み込む際にエラーが発生しました: $1',
 	'visualeditor-serializeerror' => 'サーバーからデータを読み込む際にエラーが発生しました: $1',
@@ -2060,6 +2064,7 @@ $messages['ja'] = array(
 	'visualeditor-report-notice' => '私は「問題点を報告」ボタンを押すことで自身の変更とフィードバックを送信し、それが分析のために保管されることを理解します。[[{{MediaWiki:Visualeditor-report-link}}|利用規約]]に従ってフィードバックを提供することに同意します。',
 	'visualeditor-report-link' => 'foundation:Terms of Use/ja',
 	'visualeditor-feedback-link' => 'Project:ビジュアルエディター/フィードバック',
+	'visualeditor-diff-nochanges' => '文章を何も変更していないため、編集内容は無視されます。',
 );
 
 /** Javanese (Basa Jawa)
@@ -2379,7 +2384,7 @@ $messages['mk'] = array(
 	'visualeditor-ca-editsource' => 'Уреди извор',
 	'visualeditor-ca-ve-edit' => 'ВизуеленУредник',
 	'visualeditor-ca-ve-create' => 'ВизуеленУредник',
-	'visualeditor-category-input-placeholder' => 'Име на категоријата',
+	'visualeditor-category-input-placeholder' => 'Додај категорија',
 	'visualeditor-category-settings-label' => 'Категориски поставки',
 	'visualeditor-dialog-meta-title' => 'Поставки за страниците',
 	'visualeditor-dialog-content-title' => 'Поставки за содржините',
@@ -2737,7 +2742,7 @@ $messages['nl'] = array(
 	'visualeditor-ca-editsource' => 'Bron bewerken',
 	'visualeditor-ca-ve-edit' => 'Visueel',
 	'visualeditor-ca-ve-create' => 'Visueel',
-	'visualeditor-category-input-placeholder' => 'Categorienaam',
+	'visualeditor-category-input-placeholder' => 'Categorie toevoegen',
 	'visualeditor-category-settings-label' => 'Categorie-instellingen',
 	'visualeditor-dialog-meta-title' => 'Pagina-instellingen',
 	'visualeditor-dialog-content-title' => 'Instellingen voor inhoud',
@@ -3111,9 +3116,13 @@ $messages['pt'] = array(
 
 /** Brazilian Portuguese (português do Brasil)
  * @author Jaideraf
+ * @author Luckas
  * @author 555
  */
 $messages['pt-br'] = array(
+	'tag-visualeditor' => '[[Special:Tags|Tag]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
+	'tag-visualeditor-description' => 'Edição realizada utilizando o [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
+	'tooltip-ca-ve-edit' => 'Editar esta página com o VisualEditor',
 	'visualeditor' => 'VisualEditor',
 	'visualeditor-desc' => 'Editor visual para o MediaWiki',
 	'visualeditor-preference-enable' => 'Ativar VisualEditor (apenas nos espaços nominais [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|principal]] e de [[{{MediaWiki:Visualeditor-usernamespacepagelink}}|usuário]])',
@@ -3126,13 +3135,10 @@ $messages['pt-br'] = array(
 	'visualeditor-savedialog-label-create' => 'Criar página',
 	'visualeditor-savedialog-label-restore' => 'Restaurar página',
 	'visualeditor-editnotices-tool' => '$1 {{PLURAL:$1|aviso|avisos}}',
-	'tooltip-ca-ve-edit' => 'Editar esta página com o VisualEditor',
-	'visualeditor-inspector-title' => 'Inspecionar',
+	'visualeditor-window-title' => 'Inspecionar',
 	'visualeditor-linkinspector-title' => 'Link',
-	'visualeditor-linkinspector-label-pagetitle' => 'Título da página',
-	'visualeditor-linkinspector-suggest-existing-page' => 'Página existente',
 	'visualeditor-linkinspector-suggest-new-page' => 'Página nova',
-	'visualeditor-linkinspector-suggest-external-link' => 'Link da Web',
+	'visualeditor-linkinspector-suggest-external-link' => 'Link externo',
 	'visualeditor-formatdropdown-title' => 'Alterar o formato',
 	'visualeditor-formatdropdown-format-paragraph' => 'Parágrafo',
 	'visualeditor-formatdropdown-format-heading1' => 'Nível 1',
@@ -3142,16 +3148,16 @@ $messages['pt-br'] = array(
 	'visualeditor-formatdropdown-format-heading5' => 'Nível 5',
 	'visualeditor-formatdropdown-format-heading6' => 'Nível 6',
 	'visualeditor-formatdropdown-format-preformatted' => 'Pré-formatado',
-	'visualeditor-annotationbutton-bold-tooltip' => 'Negrito', # Fuzzy
-	'visualeditor-annotationbutton-italic-tooltip' => 'Itálico', # Fuzzy
-	'visualeditor-annotationbutton-link-tooltip' => 'Link', # Fuzzy
+	'visualeditor-annotationbutton-bold-tooltip' => 'Negrito',
+	'visualeditor-annotationbutton-italic-tooltip' => 'Itálico',
+	'visualeditor-annotationbutton-link-tooltip' => 'Link',
 	'visualeditor-indentationbutton-indent-tooltip' => 'Aumentar recuo', # Fuzzy
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Diminuir recuo', # Fuzzy
 	'visualeditor-listbutton-number-tooltip' => 'Lista numerada',
 	'visualeditor-listbutton-bullet-tooltip' => 'Lista com marcadores',
 	'visualeditor-clearbutton-tooltip' => 'Limpar formatação',
-	'visualeditor-historybutton-undo-tooltip' => 'Desfazer', # Fuzzy
-	'visualeditor-historybutton-redo-tooltip' => 'Refazer', # Fuzzy
+	'visualeditor-historybutton-undo-tooltip' => 'Desfazer',
+	'visualeditor-historybutton-redo-tooltip' => 'Refazer',
 	'visualeditor-inspector-close-tooltip' => 'Fechar',
 	'visualeditor-inspector-remove-tooltip' => 'Remover',
 	'visualeditor-viewpage-savewarning' => 'Tem certeza que deseja voltar para a página sem querer salvar a edição?',
@@ -3160,8 +3166,6 @@ $messages['pt-br'] = array(
 	'visualeditor-editconflict' => 'Suas alterações não puderam ser salvas por causa de um conflito de edição. Você gostaria de resolver o conflito manualmente?',
 	'visualeditor-editsummary' => 'Por favor, descreva o que você mudou',
 	'visualeditor-aliennode-tooltip' => 'Desculpe, esse elemento não pode ser editado utilizando o VisualEditor',
-	'tag-visualeditor' => '[[Special:Tags|Tag]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
-	'tag-visualeditor-description' => 'Edição realizada utilizando o [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
 );
 
 /** Romanian (română)
