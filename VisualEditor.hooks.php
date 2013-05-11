@@ -31,7 +31,9 @@ class VisualEditorHooks {
 				in_array( $skin->getTitle()->getNamespace(), $wgVisualEditorNamespaces ) ||
 				// Special page action for an article in the VisualEditor namespace
 				in_array( $skin->getRelevantTitle()->getNamespace(), $wgVisualEditorNamespaces )
-			)
+			) &&
+			// Only use VisualEditor if the page is wikitext, not CSS/JS
+			$skin->getTitle()->getContentModel() === CONTENT_MODEL_WIKITEXT
 		) {
 			$output->addModules( array( 'ext.visualEditor.viewPageTarget' ) );
 		}
