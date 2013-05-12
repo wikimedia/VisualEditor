@@ -100,6 +100,7 @@ class VisualEditorHooks {
 				// VisualEditor Actions Tests
 				'actions/ve.FormatAction.test.js',
 				'actions/ve.IndentationAction.test.js',
+				'actions/ve.ListAction.test.js',
 				// VisualEditor DataModel Tests
 				'dm/ve.dm.example.js',
 				'dm/ve.dm.AnnotationSet.test.js',
