@@ -52,6 +52,24 @@ QUnit.test( 'decrease', 2, function ( assert ) {
 					delete data[12].internal;
 				},
 				'msg': 'decrease indentation on partial selection of list item "Item 2"'
+			},
+			{
+				'range': new ve.Range( 3, 19 ),
+				'method': 'decrease',
+				'expectedSelection': new ve.Range( 1, 15 ),
+				'expectedData': function ( data ) {
+					data.splice( 0, 2 );
+					data.splice( 8, 2 );
+					data.splice( 16, 1, { 'type': 'list', 'attributes': { 'style': 'bullet' } } );
+					delete data[0].internal;
+					delete data[8].internal;
+				},
+				'expectedOriginalData': function ( data ) {
+					// generated: 'wrapper' is removed by the action and not restored by undo
+					delete data[2].internal;
+					delete data[12].internal;
+				},
+				'msg': 'decrease indentation on Items 1 & 2'
 			}
 		];
 

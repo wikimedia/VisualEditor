@@ -93,7 +93,7 @@ ve.IndentationAction.prototype.decrease = function () {
 	for ( i = 0; i < groups.length; i++ ) {
 		group = groups[i];
 		if ( group.grandparent && group.grandparent.getType() === 'list' ) {
-			fragments.push( surfaceModel.getFragment( group.parent.getOuterRange(), true ) );
+			fragments.push( surfaceModel.getFragment( group.parent.getRange(), true ) );
 			decreased = true;
 		}
 	}
@@ -101,7 +101,7 @@ ve.IndentationAction.prototype.decrease = function () {
 	// Process each fragment (their ranges are automatically adjusted on change)
 	for ( i = 0; i < fragments.length; i++ ) {
 		this.unindentListItem(
-			documentModel.getNodeFromOffset( fragments[i].getRange().start + 1 )
+			documentModel.getNodeFromOffset( fragments[i].getRange().start )
 		);
 	}
 
@@ -117,8 +117,12 @@ ve.IndentationAction.prototype.decrease = function () {
  *
  * @method
  * @param {ve.dm.ListItemNode} listItem List item to indent
+ * @throws {Error} listItem must be a ve.dm.ListItemNode
  */
 ve.IndentationAction.prototype.indentListItem = function ( listItem ) {
+	if ( !( listItem instanceof ve.dm.ListItemNode ) ) {
+		throw new Error( 'listItem must be a ve.dm.ListItemNode' );
+	}
 	/*
 	 * Indenting a list item is done as follows:
 	 * 1. Wrap the listItem in a list and a listItem (<li> --> <li><ul><li>)
@@ -191,8 +195,12 @@ ve.IndentationAction.prototype.indentListItem = function ( listItem ) {
  *
  * @method
  * @param {ve.dm.ListItemNode} listItem List item to unindent
+ * @throws {Error} listItem must be a ve.dm.ListItemNode
  */
 ve.IndentationAction.prototype.unindentListItem = function ( listItem ) {
+	if ( !( listItem instanceof ve.dm.ListItemNode ) ) {
+		throw new Error( 'listItem must be a ve.dm.ListItemNode' );
+	}
 	/*
 	 * Outdenting a list item is done as follows:
 	 * 1. Split the parent list to isolate the listItem in its own list
