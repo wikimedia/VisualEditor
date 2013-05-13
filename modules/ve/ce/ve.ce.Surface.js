@@ -399,7 +399,7 @@ ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
 		} else {
 			this.handleUpOrDownArrowKey( e );
 		}
-	} else if ( e.keyCode === ve.Keys.DOM_VK_RETURN ) {
+	} else if ( e.keyCode === ve.Keys.DOM_VK_ENTER ) {
 		e.preventDefault();
 		this.handleEnter( e );
 	} else if ( e.keyCode === ve.Keys.DOM_VK_BACK_SPACE ) {
