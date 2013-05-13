@@ -32,9 +32,6 @@ ve.ce.BranchNode = function VeCeBranchNode( model, config ) {
 	// Events
 	this.model.connect( this, { 'splice': 'onSplice' } );
 
-	// DOM Changes
-	this.$.addClass( 've-ce-branchNode' );
-
 	// Initialization
 	this.onSplice.apply( this, [0, 0].concat( model.getChildren() ) );
 };
@@ -82,6 +79,26 @@ ve.ce.BranchNode.$blockSlugTemplate = $( '<span>' )
 /* Methods */
 
 /**
+ * Handle setup event.
+ *
+ * @method
+ */
+ve.ce.BranchNode.prototype.onSetup = function () {
+	ve.ce.Node.prototype.onSetup.call( this );
+	this.$.addClass( 've-ce-branchNode' );
+};
+
+/**
+ * Handle teardown event.
+ *
+ * @method
+ */
+ve.ce.BranchNode.prototype.onTeardown = function () {
+	ve.ce.Node.prototype.onTeardown.call( this );
+	this.$.removeClass( 've-ce-branchNode' );
+};
+
+/**
  * Update the DOM wrapper.
  *
  * WARNING: The contents, .data( 'view' ) and any classes the wrapper already has will be moved to
@@ -97,19 +114,15 @@ ve.ce.BranchNode.prototype.updateTagName = function () {
 		tagName = this.getTagName();
 
 	if ( tagName !== this.tagName ) {
+		this.emit( 'teardown' );
 		$element = this.$$( this.$$.context.createElement( tagName ) );
-		// Copy classes
-		$element.attr( 'class', this.$.attr( 'class' ) );
-		// Copy .data( 'view' )
-		$element.data( 'view', this.$.data( 'view' ) );
 		// Move contents
 		$element.append( this.$.contents() );
-		// Emit an event that can be handled to copy other things over if needed
-		this.emit( 'rewrap', this.$, $element );
 		// Swap elements
 		this.$.replaceWith( $element );
 		// Use new element from now on
 		this.$ = $element;
+		this.emit( 'setup' );
 		// Remember which tag name we are using now
 		this.tagName = tagName;
 	}
@@ -250,8 +263,7 @@ ve.ce.BranchNode.prototype.getSlugAtOffset = function ( offset ) {
  * @emits live
  */
 ve.ce.BranchNode.prototype.setLive = function ( live ) {
-	this.live = live;
-	this.emit( 'live' );
+	ve.ce.Node.prototype.setLive.call( this, live );
 	for ( var i = 0; i < this.children.length; i++ ) {
 		this.children[i].setLive( live );
 	}

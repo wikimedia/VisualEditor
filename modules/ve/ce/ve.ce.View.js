@@ -31,8 +31,13 @@ ve.ce.View = function VeCeView( model, config ) {
 	// Properties
 	this.live = false;
 
+	// Events
+	this.connect( this, {
+		'setup': 'onSetup',
+		'teardown': 'onTeardown'
+	} );
+
 	// Initialization
-	this.$.data( 'view', this );
 	this.renderAttributes( this.model.getAttributes() );
 };
 
@@ -87,6 +92,24 @@ ve.ce.View.static.renderHtmlAttributes = true;
 /* Methods */
 
 /**
+ * Handle setup event.
+ *
+ * @method
+ */
+ve.ce.View.prototype.onSetup = function () {
+	this.$.data( 'view', this );
+};
+
+/**
+ * Handle teardown event.
+ *
+ * @method
+ */
+ve.ce.View.prototype.onTeardown = function () {
+	this.$.removeData( 'view' );
+};
+
+/**
  * Get the model the view observes.
  *
  * @method
@@ -116,6 +139,11 @@ ve.ce.View.prototype.isLive = function () {
 ve.ce.View.prototype.setLive = function ( live ) {
 	this.live = live;
 	this.emit( 'live' );
+	if ( this.live ) {
+		this.emit( 'setup' );
+	} else {
+		this.emit( 'teardown' );
+	}
 };
 
 /**
