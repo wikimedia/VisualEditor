@@ -2740,40 +2740,52 @@ ve.dm.example.isolationHTML =
 	'<ul><li><p>P1</p><p>P2</p><p>P3</p></li></ul>';
 
 ve.dm.example.isolationData = [
+	// 0
 	{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
 	{ 'type': 'listItem' },
 	{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
 	'I', 't', 'e', 'm', ' ', '1',
 	{ 'type': '/paragraph' },
+	// 10
 	{ 'type': '/listItem' },
 	{ 'type': 'listItem' },
 	{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
 	'I', 't', 'e', 'm', ' ', '2',
 	{ 'type': '/paragraph' },
+	// 20
 	{ 'type': '/listItem' },
 	{ 'type': 'listItem' },
 	{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
 	'I', 't', 'e', 'm', ' ', '3',
 	{ 'type': '/paragraph' },
+	// 30
 	{ 'type': '/listItem' },
 	{ 'type': '/list' },
 	{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
-	'P', 'a', 'r', 'a', 'g', 'r', 'a', 'p', 'h',
+	'P', 'a', 'r', 'a', 'g', 'r', 'a',
+	// 40
+	'p', 'h',
 	{ 'type': '/paragraph' },
 	{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
 	{ 'type': 'listItem' },
 	{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
-	'I', 't', 'e', 'm', ' ', '4',
+	'I', 't', 'e', 'm',
+	// 50
+	' ', '4',
 	{ 'type': '/paragraph' },
 	{ 'type': '/listItem' },
 	{ 'type': 'listItem' },
 	{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
-	'I', 't', 'e', 'm', ' ', '5',
+	'I', 't', 'e', 'm',
+	// 60
+	' ', '5',
 	{ 'type': '/paragraph' },
 	{ 'type': '/listItem' },
 	{ 'type': 'listItem' },
 	{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
-	'I', 't', 'e', 'm', ' ', '6',
+	'I', 't', 'e', 'm',
+	// 70
+	' ', '6',
 	{ 'type': '/paragraph' },
 	{ 'type': '/listItem' },
 	{ 'type': '/list' },
@@ -2782,41 +2794,57 @@ ve.dm.example.isolationData = [
 	{ 'type': 'tableRow' },
 	{ 'type': 'tableCell', 'attributes': { 'style': 'data' } },
 	{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+	// 80
 	'C', 'e', 'l', 'l', ' ', '1',
 	{ 'type': '/paragraph' },
 	{ 'type': '/tableCell' },
 	{ 'type': 'tableCell', 'attributes': { 'style': 'data' } },
 	{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+	// 90
 	'C', 'e', 'l', 'l', ' ', '2',
 	{ 'type': '/paragraph' },
 	{ 'type': '/tableCell' },
 	{ 'type': 'tableCell', 'attributes': { 'style': 'data' } },
 	{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+	// 100
 	'C', 'e', 'l', 'l', ' ', '3',
 	{ 'type': '/paragraph' },
 	{ 'type': '/tableCell' },
 	{ 'type': '/tableRow' },
 	{ 'type': 'tableRow' },
+	// 110
 	{ 'type': 'tableCell', 'attributes': { 'style': 'data' } },
 	{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
 	'C', 'e', 'l', 'l', ' ', '4',
 	{ 'type': '/paragraph' },
 	{ 'type': '/tableCell' },
+	// 120
 	{ 'type': '/tableRow' },
 	{ 'type': '/tableSection' },
 	{ 'type': '/table' },
 	{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
-	'N', 'o', 't', ' ', 'a', 'l', 'l', 'o', 'w', 'e', 'd', ' ', 'b', 'y', ' ', 'd', 'm', ':',
+	'N', 'o', 't', ' ', 'a', 'l',
+	// 130
+	'l', 'o', 'w', 'e', 'd', ' ', 'b', 'y', ' ', 'd',
+	// 140
+	'm', ':',
 	{ 'type': '/paragraph' },
 	{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
 	{ 'type': 'listItem' },
 	{ 'type': 'heading', 'attributes': { 'level': 1 } },
-	'T', 'i', 't', 'l', 'e', ' ', 'i', 'n', ' ', 'l', 'i', 's', 't',
+	'T', 'i', 't', 'l',
+	// 150
+	'e', ' ', 'i', 'n', ' ', 'l', 'i', 's', 't',
 	{ 'type': '/heading' },
+	// 160
 	{ 'type': '/listItem' },
 	{ 'type': 'listItem' },
 	{ 'type': 'preformatted' },
-	'P', 'r', 'e', 'f', 'o', 'r', 'm', 'a', 't', 't', 'e', 'd', ' ', 'i', 'n', ' ', 'l', 'i', 's', 't',
+	'P', 'r', 'e', 'f', 'o', 'r', 'm',
+	// 170
+	'a', 't', 't', 'e', 'd', ' ', 'i', 'n', ' ', 'l',
+	// 180
+	'i', 's', 't',
 	{ 'type': '/preformatted' },
 	{ 'type': '/listItem' },
 	{ 'type': '/list' },
@@ -2824,18 +2852,24 @@ ve.dm.example.isolationData = [
 	{ 'type': 'listItem' },
 	{ 'type': 'list', 'attributes': { 'style': 'number' } },
 	{ 'type': 'listItem' },
+	// 190
 	{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
 	'N', 'e', 's', 't', 'e', 'd', ' ', '1',
 	{ 'type': '/paragraph' },
+	// 200
 	{ 'type': '/listItem' },
 	{ 'type': 'listItem' },
 	{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
-	'N', 'e', 's', 't', 'e', 'd', ' ', '2',
+	'N', 'e', 's', 't', 'e', 'd', ' ',
+	// 210
+	'2',
 	{ 'type': '/paragraph' },
 	{ 'type': '/listItem' },
 	{ 'type': 'listItem' },
 	{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
-	'N', 'e', 's', 't', 'e', 'd', ' ', '3',
+	'N', 'e', 's', 't', 'e',
+	// 220
+	'd', ' ', '3',
 	{ 'type': '/paragraph' },
 	{ 'type': '/listItem' },
 	{ 'type': '/list' },
@@ -2843,6 +2877,7 @@ ve.dm.example.isolationData = [
 	{ 'type': '/list' },
 	{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
 	{ 'type': 'listItem' },
+	// 230
 	{ 'type': 'paragraph' },
 	'P', '1',
 	{ 'type': '/paragraph' },
@@ -2850,8 +2885,11 @@ ve.dm.example.isolationData = [
 	'P', '2',
 	{ 'type': '/paragraph' },
 	{ 'type': 'paragraph' },
-	'P', '3',
+	'P',
+	// 240
+	'3',
 	{ 'type': '/paragraph' },
 	{ 'type': '/listItem' },
 	{ 'type': '/list' },
+	// 244
 ];

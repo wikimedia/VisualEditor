@@ -272,6 +272,7 @@
 		<script src="ve.Factory.test.js"></script>
 		<script src="actions/ve.FormatAction.test.js"></script>
 		<script src="actions/ve.IndentationAction.test.js"></script>
+		<script src="actions/ve.ListAction.test.js"></script>
 		<script src="dm/ve.dm.example.js"></script>
 		<script src="dm/ve.dm.AnnotationSet.test.js"></script>
 		<script src="dm/ve.dm.NodeFactory.test.js"></script>
