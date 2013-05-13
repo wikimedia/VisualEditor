@@ -50,6 +50,57 @@ ve.ui.MWMetaDialog.static.icon = 'settings';
  *
  * @method
  */
+ve.ui.MWMetaDialog.prototype.initialize = function () {
+	// Call parent method
+	ve.ui.PagedDialog.prototype.initialize.call( this );
+
+	// Properties
+	this.categoriesFieldset = new ve.ui.FieldsetLayout( {
+		'$$': this.$$, 'label': 'Categories', 'icon': 'tag'
+	} );
+	this.categorySettingsFieldset = new ve.ui.FieldsetLayout( {
+		'$$': this.$$, 'label': 'Category settings', 'icon': 'settings'
+	} );
+	this.categoryWidget = new ve.ui.MWCategoryWidget( {
+		'$$': this.$$, '$overlay': this.$overlay
+	} );
+	this.defaultSortInput = new ve.ui.TextInputWidget( {
+		'$$': this.$$, 'placeholder': this.fallbackDefaultSortKey
+	} );
+	this.defaultSortLabel = new ve.ui.InputLabelWidget( {
+		'$$': this.$$,
+		'input': this.defaultSortInput,
+		'label': 'Default page name on category page'
+	} );
+
+	// Events
+	this.categoryWidget.connect( this, {
+		'newCategory': 'onNewCategory',
+		'updateSortkey': 'onUpdateSortKey'
+	} );
+	this.defaultSortInput.connect( this, {
+		'change': 'onDefaultSortChange'
+	} );
+
+	// Initialization
+	this.defaultSortInput.setValue(
+		this.defaultSortKeyItem ? this.defaultSortKeyItem.getAttribute( 'content' ) : ''
+	);
+	this.categoryWidget.addItems( this.getCategoryItems() );
+	this.addPage( 'categories', 'Categories', 'tag' )
+		.addPage( 'languages', 'Languages', 'language' );
+	this.pages.categories.$.append( this.categoriesFieldset.$, this.categorySettingsFieldset.$ );
+	this.categoriesFieldset.$.append( this.categoryWidget.$ );
+	this.categorySettingsFieldset.$.append(
+		this.defaultSortLabel.$, this.defaultSortInput.$
+	);
+};
+
+/**
+ * Handle frame ready events.
+ *
+ * @method
+ */
 ve.ui.MWMetaDialog.prototype.onOpen = function () {
 	var surfaceModel = this.surface.getModel(),
 		categoryWidget = this.categoryWidget;
@@ -103,57 +154,6 @@ ve.ui.MWMetaDialog.prototype.onClose = function ( action ) {
 
 	// Return to normal tracking behavior
 	surfaceModel.startHistoryTracking();
-};
-
-/**
- * Handle frame ready events.
- *
- * @method
- */
-ve.ui.MWMetaDialog.prototype.initialize = function () {
-	// Call parent method
-	ve.ui.PagedDialog.prototype.initialize.call( this );
-
-	// Properties
-	this.categoriesFieldset = new ve.ui.FieldsetLayout( {
-		'$$': this.$$, 'label': 'Categories', 'icon': 'tag'
-	} );
-	this.categorySettingsFieldset = new ve.ui.FieldsetLayout( {
-		'$$': this.$$, 'label': 'Category settings', 'icon': 'settings'
-	} );
-	this.categoryWidget = new ve.ui.MWCategoryWidget( {
-		'$$': this.$$, '$overlay': this.$overlay
-	} );
-	this.defaultSortInput = new ve.ui.TextInputWidget( {
-		'$$': this.$$, 'placeholder': this.fallbackDefaultSortKey
-	} );
-	this.defaultSortLabel = new ve.ui.InputLabelWidget( {
-		'$$': this.$$,
-		'input': this.defaultSortInput,
-		'label': 'Default page name on category page'
-	} );
-
-	// Events
-	this.categoryWidget.connect( this, {
-		'newCategory': 'onNewCategory',
-		'updateSortkey': 'onUpdateSortKey'
-	} );
-	this.defaultSortInput.connect( this, {
-		'change': 'onDefaultSortChange'
-	} );
-
-	// Initialization
-	this.defaultSortInput.setValue(
-		this.defaultSortKeyItem ? this.defaultSortKeyItem.getAttribute( 'content' ) : ''
-	);
-	this.categoryWidget.addItems( this.getCategoryItems() );
-	this.addPage( 'categories', 'Categories', 'tag' )
-		.addPage( 'languages', 'Languages', 'language' );
-	this.pages.categories.$.append( this.categoriesFieldset.$, this.categorySettingsFieldset.$ );
-	this.categoriesFieldset.$.append( this.categoryWidget.$ );
-	this.categorySettingsFieldset.$.append(
-		this.defaultSortLabel.$, this.defaultSortInput.$
-	);
 };
 
 /**

@@ -6,7 +6,7 @@
  */
 
 /**
- * UserInterface content button tool.
+ * Media button tool.
  *
  * @class
  * @extends ve.ui.DialogButtonTool
@@ -29,8 +29,7 @@ ve.ui.MediaButtonTool.static.name = 'media';
 
 ve.ui.MediaButtonTool.static.icon = 'picture';
 
-ve.ui.MediaButtonTool.static.titleMessage =
-	'visualeditor-dialogbutton-media-tooltip';
+ve.ui.MediaButtonTool.static.titleMessage = 'visualeditor-dialogbutton-media-tooltip';
 
 ve.ui.MediaButtonTool.static.dialog = 'media';
 

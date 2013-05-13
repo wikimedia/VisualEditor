@@ -6,7 +6,7 @@
  */
 
 /**
- * UserInterface link inspector.
+ * Link inspector.
  *
  * @class
  * @extends ve.ui.Inspector

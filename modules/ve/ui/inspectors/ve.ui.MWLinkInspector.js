@@ -8,7 +8,7 @@
 /*global mw */
 
 /**
- * Creates an ve.ui.LinkInspector object.
+ * MediaWiki link inspector.
  *
  * @class
  * @extends ve.ui.LinkInspector
