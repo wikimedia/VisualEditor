@@ -36,7 +36,7 @@ function runIndentationChangeTest( assert, range, method, expectedSelection, exp
 	surface.destroy();
 }
 
-QUnit.test( 'decrease', 2, function ( assert ) {
+QUnit.test( 'increase/decrease', 2, function ( assert ) {
 	var i,
 		cases = [
 			{
@@ -70,6 +70,16 @@ QUnit.test( 'decrease', 2, function ( assert ) {
 					delete data[12].internal;
 				},
 				'msg': 'decrease indentation on Items 1 & 2'
+			},
+			{
+				'range': new ve.Range( 3, 19 ),
+				'method': 'increase',
+				'expectedSelection': new ve.Range( 5, 21 ),
+				'expectedData': function ( data ) {
+					data.splice( 0, 0, { 'type': 'list', 'attributes': { 'style': 'bullet' } }, { 'type': 'listItem' } );
+					data.splice( 23, 0, { 'type': '/list' }, { 'type': '/listItem' } );
+				},
+				'msg': 'increase indentation on Items 1 & 2'
 			}
 		];
 
