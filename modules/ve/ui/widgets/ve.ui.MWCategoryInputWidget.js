@@ -116,7 +116,7 @@ ve.ui.MWCategoryInputWidget.prototype.getLookupMenuItemsFromData = function ( da
 	for ( i = 0, len = matchingCategories.length; i < len; i++ ) {
 		item = matchingCategories[i];
 		if (
-			existingCategoryItems.indexOf( category.value ) === -1 &&
+			existingCategoryItems.indexOf( item ) === -1 &&
 			item.match( pattern )
 		) {
 			if ( item === category.value ) {
