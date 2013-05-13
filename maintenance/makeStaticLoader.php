@@ -59,8 +59,8 @@ class MakeStaticLoader extends Maintenance {
 			'scripts' => array(
 				'jquery/jquery.js',
 				'jquery/jquery.client.js',
-				'rangy/rangy-core.js',
-				'rangy/rangy-position.js',
+				'rangy/rangy-core-1.3.js',
+				'rangy/rangy-position-1.3.js',
 				'unicodejs/unicodejs.js',
 				'unicodejs/unicodejs.textstring.js',
 				'unicodejs/unicodejs.wordbreak.groups.js',
