@@ -55,7 +55,7 @@ ve.IndentationAction.prototype.increase = function () {
 	for ( i = 0; i < groups.length; i++ ) {
 		group = groups[i];
 		if ( group.grandparent && group.grandparent.getType() === 'list' ) {
-			fragments.push( surfaceModel.getFragment( group.parent.getOuterRange(), true ) );
+			fragments.push( surfaceModel.getFragment( group.parent.getRange(), true ) );
 			increased = true;
 		}
 	}
@@ -63,7 +63,7 @@ ve.IndentationAction.prototype.increase = function () {
 	// Process each fragment (their ranges are automatically adjusted on change)
 	for ( i = 0; i < fragments.length; i++ ) {
 		this.indentListItem(
-			documentModel.getNodeFromOffset( fragments[i].getRange().start + 1 )
+			documentModel.getNodeFromOffset( fragments[i].getRange().start )
 		);
 	}
 
