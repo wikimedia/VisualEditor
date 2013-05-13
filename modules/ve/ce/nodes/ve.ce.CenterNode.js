@@ -12,10 +12,11 @@
  * @extends ve.ce.BranchNode
  * @constructor
  * @param {ve.dm.CenterNode} model Model to observe
+ * @param {Object} [config] Config options
  */
-ve.ce.CenterNode = function VeCeCenterNode( model ) {
+ve.ce.CenterNode = function VeCeCenterNode( model, config ) {
 	// Parent constructor
-	ve.ce.BranchNode.call( this, model, $( '<center>') );
+	ve.ce.BranchNode.call( this, model, config );
 };
 
 /* Inheritance */
@@ -25,6 +26,8 @@ ve.inheritClass( ve.ce.CenterNode, ve.ce.BranchNode );
 /* Static Properties */
 
 ve.ce.CenterNode.static.name = 'center';
+
+ve.ce.CenterNode.static.tagName = 'center';
 
 /* Registration */
 

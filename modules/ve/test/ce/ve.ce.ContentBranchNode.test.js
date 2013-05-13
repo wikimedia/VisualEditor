@@ -244,10 +244,10 @@ QUnit.test( 'getRenderedContents', function ( assert ) {
 				{ 'type': '/paragraph' }
 			],
 			'html': 'a<b>b<span typeof="mw:Entity" class="ve-ce-leafNode ' +
-				've-ce-MWEntityNode" contenteditable="false">c</span>d<div ' +
+				've-ce-MWEntityNode" contenteditable="false">c</span>d<span ' +
 				'class="ve-ce-leafNode ve-ce-generatedContentNode ve-ce-protectedNode ' +
 				've-ce-alienNode ve-ce-alienInlineNode" ' +
-				'contenteditable="false"><tt>e</tt></div></b>'
+				'contenteditable="false"><tt>e</tt></span></b>'
 		}
 	];
 	QUnit.expect( cases.length );

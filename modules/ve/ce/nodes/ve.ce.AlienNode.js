@@ -15,10 +15,11 @@
  *
  * @constructor
  * @param {ve.dm.AlienNode} model Model to observe
+ * @param {Object} [config] Config options
  */
-ve.ce.AlienNode = function VeCeAlienNode( model ) {
+ve.ce.AlienNode = function VeCeAlienNode( model, config ) {
 	// Parent constructor
-	ve.ce.GeneratedContentNode.call( this, model );
+	ve.ce.GeneratedContentNode.call( this, model, config );
 
 	// Mixin constructors
 	ve.ce.ProtectedNode.call( this );

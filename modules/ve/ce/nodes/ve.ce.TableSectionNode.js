@@ -12,12 +12,11 @@
  * @extends ve.ce.BranchNode
  * @constructor
  * @param {ve.dm.TableSectionNode} model Model to observe
+ * @param {Object} [config] Config options
  */
-ve.ce.TableSectionNode = function VeCeTableSectionNode( model ) {
+ve.ce.TableSectionNode = function VeCeTableSectionNode( model, config ) {
 	// Parent constructor
-	ve.ce.BranchNode.call(
-		this, model, ve.ce.BranchNode.getDomWrapper( model, 'style' )
-	);
+	ve.ce.BranchNode.call( this, model, config );
 
 	// Events
 	this.model.connect( this, { 'update': 'onUpdate' } );
@@ -31,19 +30,25 @@ ve.inheritClass( ve.ce.TableSectionNode, ve.ce.BranchNode );
 
 ve.ce.TableSectionNode.static.name = 'tableSection';
 
-/**
- * Mapping of list item style values and DOM wrapper element types.
- *
- * @static
- * @property
- */
-ve.ce.TableSectionNode.domWrapperElementTypes = {
-	'header': 'thead',
-	'body': 'tbody',
-	'footer': 'tfoot'
-};
-
 /* Methods */
+
+/**
+ * Get the HTML tag name.
+ *
+ * Tag name is selected based on the model's style attribute.
+ *
+ * @return {string} HTML tag name
+ * @throws {Error} If style is invalid
+ */
+ve.ce.TableSectionNode.prototype.getTagName = function () {
+	var style = this.model.getAttribute( 'style' ),
+		types = { 'header': 'thead', 'body': 'tbody', 'footer': 'tfoot' };
+
+	if ( !( style in types ) ) {
+		throw new Error( 'Invalid style' );
+	}
+	return types[style];
+};
 
 /**
  * Handle model update events.
@@ -53,7 +58,7 @@ ve.ce.TableSectionNode.domWrapperElementTypes = {
  * @method
  */
 ve.ce.TableSectionNode.prototype.onUpdate = function () {
-	this.updateDomWrapper( 'style' );
+	this.updateTagName();
 };
 
 /* Registration */

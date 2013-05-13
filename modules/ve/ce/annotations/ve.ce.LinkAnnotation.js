@@ -12,10 +12,11 @@
  * @extends ve.ce.Annotation
  * @constructor
  * @param {ve.dm.LinkAnnotation} model Model to observe
+ * @param {Object} [config] Config options
  */
-ve.ce.LinkAnnotation = function VeCeLinkAnnotation( model ) {
+ve.ce.LinkAnnotation = function VeCeLinkAnnotation( model, config ) {
 	// Parent constructor
-	ve.ce.Annotation.call( this, model, $( '<a>' ) );
+	ve.ce.Annotation.call( this, model, config );
 
 	// DOM changes
 	this.$.addClass( 've-ce-LinkAnnotation' );
@@ -29,6 +30,8 @@ ve.inheritClass( ve.ce.LinkAnnotation, ve.ce.Annotation );
 /* Static Properties */
 
 ve.ce.LinkAnnotation.static.name = 'link';
+
+ve.ce.LinkAnnotation.static.tagName = 'a';
 
 /* Registration */
 

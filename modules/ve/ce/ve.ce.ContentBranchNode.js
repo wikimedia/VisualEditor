@@ -14,11 +14,11 @@
  * @extends ve.ce.BranchNode
  * @constructor
  * @param {ve.dm.BranchNode} model Model to observe
- * @param {jQuery} [$element] Element to use as a container
+ * @param {Object} [config] Config options
  */
-ve.ce.ContentBranchNode = function VeCeContentBranchNode( model, $element ) {
+ve.ce.ContentBranchNode = function VeCeContentBranchNode( model, config ) {
 	// Parent constructor
-	ve.ce.BranchNode.call( this, model, $element );
+	ve.ce.BranchNode.call( this, model, config );
 
 	// Properties
 	this.surfaceModelState = null;

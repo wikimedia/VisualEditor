@@ -12,12 +12,11 @@
  * @extends ve.ce.BranchNode
  * @constructor
  * @param {ve.dm.DivNode} model Model to observe
+ * @param {Object} [config] Config options
  */
-ve.ce.DivNode = function VeCeDivNode( model ) {
+ve.ce.DivNode = function VeCeDivNode( model, config ) {
 	// Parent constructor
-	ve.ce.BranchNode.call(
-		this, model, $( '<div>' )
-	);
+	ve.ce.BranchNode.call( this, model, config );
 };
 
 /* Inheritance */

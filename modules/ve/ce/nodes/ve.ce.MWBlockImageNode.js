@@ -12,14 +12,18 @@
  * @extends ve.ce.BranchNode
  * @constructor
  * @param {ve.dm.MWBlockImageNode} model Model to observe
+ * @param {Object} [config] Config options
  */
-ve.ce.MWBlockImageNode = function VeCeMWBlockImageNode( model ) {
+ve.ce.MWBlockImageNode = function VeCeMWBlockImageNode( model, config ) {
 	// Parent constructor
-	ve.ce.BranchNode.call( this, model, $( '<figure>' ) );
-	// At this moment this.$ have children added to it (thanks to ve.ce.BranchNode.onSplice).
-	// In this particular case there is only one child - <figcaption>
+	ve.ce.BranchNode.call( this, model, config );
 
+	// Properties
 	this.$image = $( '<img>' ).attr( 'src', this.model.getAttribute( 'src' ) );
+
+	// Initialization
+	// At this moment this.$ has children added to it (thanks to ve.ce.BranchNode.onSplice).
+	// In this particular case there is only one child - <figcaption>
 	this.$image.prependTo( this.$ );
 };
 
@@ -30,6 +34,8 @@ ve.inheritClass( ve.ce.MWBlockImageNode, ve.ce.BranchNode );
 /* Static Properties */
 
 ve.ce.MWBlockImageNode.static.name = 'MWblockimage';
+
+ve.ce.MWBlockImageNode.static.tagName = 'figure';
 
 /* Methods */
 

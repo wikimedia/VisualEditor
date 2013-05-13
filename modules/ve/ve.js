@@ -90,7 +90,7 @@
 		// Restore constructor property of targetFn
 		targetFn.prototype.constructor = targetConstructor;
 
-		// Extend static properties
+		// Extend static properties - always initialize both sides
 		originFn.static = originFn.static || {};
 		targetFn.static = ve.createObject( originFn.static );
 
@@ -138,14 +138,16 @@
 			}
 		}
 
-		// Copy static properties
+		// Copy static properties - always initialize both sides
+		targetFn.static = targetFn.static || {};
 		if ( originFn.static ) {
-			targetFn.static = targetFn.static || {};
 			for ( key in originFn.static ) {
 				if ( hasOwn.call( originFn.static, key ) ) {
 					targetFn.static[key] = originFn.static[key];
 				}
 			}
+		} else {
+			originFn.static = {};
 		}
 
 		// Track mixins

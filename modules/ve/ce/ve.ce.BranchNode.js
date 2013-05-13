@@ -16,17 +16,17 @@
  * @mixins ve.BranchNode
  * @constructor
  * @param {ve.dm.BranchNode} model Model to observe
- * @param {jQuery} [$element] Element to use as a container
+ * @param {Object} [config] Config options
  */
-ve.ce.BranchNode = function VeCeBranchNode( model, $element ) {
+ve.ce.BranchNode = function VeCeBranchNode( model, config ) {
 	// Mixin constructor
 	ve.BranchNode.call( this );
 
 	// Parent constructor
-	ve.ce.Node.call( this, model, $element );
+	ve.ce.Node.call( this, model, config );
 
 	// Properties
-	this.domWrapperElementType = this.$.get( 0 ).nodeName.toLowerCase();
+	this.tagName = this.$.get( 0 ).nodeName.toLowerCase();
 	this.slugs = {};
 
 	// Events
@@ -58,6 +58,8 @@ ve.mixinClass( ve.ce.BranchNode, ve.BranchNode );
 /**
  * Inline slug template.
  *
+ * TODO: Make iframe safe
+ *
  * @static
  * @property {jQuery}
  */
@@ -68,6 +70,8 @@ ve.ce.BranchNode.$inlineSlugTemplate = $( '<span>' )
 /**
  * Block slug template.
  *
+ * TODO: Make iframe safe
+ *
  * @static
  * @property {jQuery}
  */
@@ -75,56 +79,10 @@ ve.ce.BranchNode.$blockSlugTemplate = $( '<span>' )
 	.addClass( 've-ce-branchNode-slug ve-ce-branchNode-blockSlug' )
 	.html( $.browser.msie ? '&nbsp;' : '&#xFEFF;' );
 
-/* Static Methods */
-
-/**
- * Get the appropriate element type for the DOM wrapper of a node.
- *
- * This method reads the `key` attribute from a `model` and looks up a type in the node's statically
- * defined `domWrapperElementTypes` member, which is a mapping of possible values of that attribute
- * and DOM element types.
- *
- * @method
- * @param {ve.dm.BranchNode} model Model node is based on
- * @param {string} key Attribute name to read type value from
- * @returns {string} DOM element type for wrapper
- * @throws {Error} Attribute is not defined in the model
- * @throws {Error} Attribute value is not a key in `domWrapperElementTypes`
- */
-ve.ce.BranchNode.getDomWrapperType = function ( model, key ) {
-	var types,
-		value = model.getAttribute( key );
-	if ( value === undefined ) {
-		throw new Error( 'Undefined attribute: ' + key );
-	}
-	types = ve.ce.nodeFactory.lookup( model.getType() ).domWrapperElementTypes;
-	if ( types[value] === undefined ) {
-		throw new Error( 'Invalid attribute value: ' + value );
-	}
-	return types[value];
-};
-
-/**
- * Get a new DOM wrapper.
- *
- * This method uses #getDomWrapperType to determine the proper element type to use.
- *
- * @method
- * @param {ve.dm.BranchNode} model Model node is based on
- * @param {string} key Attribute name to read type value from
- * @returns {jQuery} Selection of DOM wrapper
- */
-ve.ce.BranchNode.getDomWrapper = function ( model, key ) {
-	var type = ve.ce.BranchNode.getDomWrapperType( model, key );
-	return $( document.createElement( type ) );
-};
-
 /* Methods */
 
 /**
  * Update the DOM wrapper.
- *
- * This method uses {getDomWrapperType} to determine the proper element type to use.
  *
  * WARNING: The contents, .data( 'view' ) and any classes the wrapper already has will be moved to
  * the new wrapper, but other attributes and any other information added using $.data() will be
@@ -132,15 +90,14 @@ ve.ce.BranchNode.getDomWrapper = function ( model, key ) {
  * 'rewrap' event and copy information from the {$old} wrapper the {$new} wrapper.
  *
  * @method
- * @param {string} key Attribute name to read type value from
  * @emits rewrap
  */
-ve.ce.BranchNode.prototype.updateDomWrapper = function ( key ) {
+ve.ce.BranchNode.prototype.updateTagName = function () {
 	var $element,
-		type = ve.ce.BranchNode.getDomWrapperType( this.model, key );
+		tagName = this.getTagName();
 
-	if ( type !== this.domWrapperElementType ) {
-		$element = $( document.createElement( type ) );
+	if ( tagName !== this.tagName ) {
+		$element = this.$$( this.$$.context.createElement( tagName ) );
 		// Copy classes
 		$element.attr( 'class', this.$.attr( 'class' ) );
 		// Copy .data( 'view' )
@@ -153,8 +110,8 @@ ve.ce.BranchNode.prototype.updateDomWrapper = function ( key ) {
 		this.$.replaceWith( $element );
 		// Use new element from now on
 		this.$ = $element;
-		// Remember which type we are using now
-		this.domWrapperElementType = type;
+		// Remember which tag name we are using now
+		this.tagName = tagName;
 	}
 };
 

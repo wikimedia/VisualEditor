@@ -14,11 +14,12 @@
  *
  * @constructor
  * @param {ve.dm.Node} model Model to observe
- * @param {jQuery} [$element] Element to use as a container
+ * @param {Object} [config] Config options
  */
-ve.ce.Node = function VeCeNode( model, $element ) {
+ve.ce.Node = function VeCeNode( model, config ) {
 	// Parent constructor
-	ve.ce.View.call( this, model, $element );
+	ve.ce.View.call( this, model, config );
+
 	// Mixin constructor
 	ve.Node.call( this );
 

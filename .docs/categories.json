@@ -106,7 +106,6 @@
 					"ve.ui.Context",
 					"ve.ui.Frame",
 					"ve.ui.Toolbar",
-					"ve.ui.Element",
 					"ve.ui.Window",
 					"ve.ui.WindowSet"
 				]
@@ -150,7 +149,7 @@
 		"groups": [
 			{
 				"name": "Utilities",
-				"classes": ["ve", "ve.EventEmitter", "ve.Registry", "ve.Factory", "ve.Range"]
+				"classes": ["ve", "ve.EventEmitter", "ve.Registry", "ve.Factory", "ve.Range", "ve.Element"]
 			},
 			{
 				"name": "Registries",

@@ -12,10 +12,11 @@
  * @extends ve.ce.HeadingNode
  * @constructor
  * @param {ve.dm.MWHeadingNode} model Model to observe
+ * @param {Object} [config] Config options
  */
-ve.ce.MWHeadingNode = function VeCeMWHeadingNode( model ) {
+ve.ce.MWHeadingNode = function VeCeMWHeadingNode( model, config ) {
 	// Parent constructor
-	ve.ce.HeadingNode.call( this, model );
+	ve.ce.HeadingNode.call( this, model, config );
 };
 
 /* Inheritance */
@@ -23,9 +24,6 @@ ve.ce.MWHeadingNode = function VeCeMWHeadingNode( model ) {
 ve.inheritClass( ve.ce.MWHeadingNode, ve.ce.HeadingNode );
 
 /* Static Properties */
-
-// TODO: Make this static
-ve.ce.MWHeadingNode.domWrapperElementTypes = ve.ce.HeadingNode.domWrapperElementTypes;
 
 ve.ce.MWHeadingNode.static.name = 'MWheading';
 

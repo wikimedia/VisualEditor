@@ -14,10 +14,11 @@
  *
  * @constructor
  * @param {ve.dm.MWReferenceListNode} model Model to observe
+ * @param {Object} [config] Config options
  */
-ve.ce.MWReferenceListNode = function VeCeMWReferenceListNode( model ) {
+ve.ce.MWReferenceListNode = function VeCeMWReferenceListNode( model, config ) {
 	// Parent constructor
-	ve.ce.LeafNode.call( this, model, $( '<div>' ) );
+	ve.ce.LeafNode.call( this, model, config );
 
 	// Mixin constructors
 	ve.ce.ProtectedNode.call( this );

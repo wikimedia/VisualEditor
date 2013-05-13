@@ -101,13 +101,6 @@ ve.mixinClass( ve.ce.Surface, ve.EventEmitter );
 /* Static Properties */
 
 /**
- * @static
- * @property
- * @inheritable
- */
-ve.ce.Surface.static = {};
-
-/**
  * Pattern matching "normal" characters which we can let the browser handle natively.
  *
  * @static

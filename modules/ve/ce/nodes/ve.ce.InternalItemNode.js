@@ -12,12 +12,11 @@
  * @extends ve.ce.BranchNode
  * @constructor
  * @param {ve.dm.InternalItemNode} model Model to observe
+ * @param {Object} [config] Config options
  */
-ve.ce.InternalItemNode = function VeCeInternalItemNode( model ) {
+ve.ce.InternalItemNode = function VeCeInternalItemNode( model, config ) {
 	// Parent constructor
-	ve.ce.BranchNode.call(
-		this, model, $( '<span>' )
-	);
+	ve.ce.BranchNode.call( this, model, config );
 
 	// TODO: render nothing
 	this.$.hide();
@@ -30,6 +29,8 @@ ve.inheritClass( ve.ce.InternalItemNode, ve.ce.BranchNode );
 /* Static Properties */
 
 ve.ce.InternalItemNode.static.name = 'internalItem';
+
+ve.ce.InternalItemNode.static.tagName = 'span';
 
 /* Registration */
 

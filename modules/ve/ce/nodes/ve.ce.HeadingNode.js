@@ -12,12 +12,11 @@
  * @extends ve.ce.BranchNode
  * @constructor
  * @param {ve.dm.HeadingNode} model Model to observe
+ * @param {Object} [config] Config options
  */
-ve.ce.HeadingNode = function VeCeHeadingNode( model ) {
+ve.ce.HeadingNode = function VeCeHeadingNode( model, config ) {
 	// Parent constructor
-	ve.ce.ContentBranchNode.call(
-		this, model, ve.ce.BranchNode.getDomWrapper( model, 'level' )
-	);
+	ve.ce.ContentBranchNode.call( this, model, config );
 
 	// Events
 	this.model.connect( this, { 'update': 'onUpdate' } );
@@ -35,22 +34,25 @@ ve.ce.HeadingNode.static.name = 'heading';
 
 ve.ce.HeadingNode.static.canBeSplit = true;
 
-/**
- * Mapping of heading level values and DOM wrapper element types.
- *
- * @static
- * @property
- */
-ve.ce.HeadingNode.domWrapperElementTypes = {
-	'1': 'h1',
-	'2': 'h2',
-	'3': 'h3',
-	'4': 'h4',
-	'5': 'h5',
-	'6': 'h6'
-};
-
 /* Methods */
+
+/**
+ * Get the HTML tag name.
+ *
+ * Tag name is selected based on the model's level attribute.
+ *
+ * @return {string} HTML tag name
+ * @throws {Error} If level is invalid
+ */
+ve.ce.HeadingNode.prototype.getTagName = function () {
+	var level = this.model.getAttribute( 'level' ),
+		types = { '1': 'h1', '2': 'h2', '3': 'h3', '4': 'h4', '5': 'h5', '6': 'h6' };
+
+	if ( !( level in types ) ) {
+		throw new Error( 'Invalid level' );
+	}
+	return types[level];
+};
 
 /**
  * Handle model update events.
@@ -60,7 +62,7 @@ ve.ce.HeadingNode.domWrapperElementTypes = {
  * @method
  */
 ve.ce.HeadingNode.prototype.onUpdate = function () {
-	this.updateDomWrapper( 'level' );
+	this.updateTagName();
 };
 
 /* Registration */

@@ -12,10 +12,11 @@
  * @extends ve.ce.LeafNode
  * @constructor
  * @param {ve.dm.BreakNode} model Model to observe
+ * @param {Object} [config] Config options
  */
-ve.ce.BreakNode = function VeCeBreakNode( model ) {
+ve.ce.BreakNode = function VeCeBreakNode( model, config ) {
 	// Parent constructor
-	ve.ce.LeafNode.call( this, model, $( '<br>' ) );
+	ve.ce.LeafNode.call( this, model, config );
 
 	// DOM Changes
 	this.$.addClass( 've-ce-BreakNode' );
@@ -28,6 +29,8 @@ ve.inheritClass( ve.ce.BreakNode, ve.ce.LeafNode );
 /* Static Properties */
 
 ve.ce.BreakNode.static.name = 'break';
+
+ve.ce.BreakNode.static.tagName = 'br';
 
 /* Registration */
 

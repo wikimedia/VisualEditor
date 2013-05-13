@@ -10,7 +10,7 @@
  *
  * @class
  * @abstract
- * @extends ve.ui.Element
+ * @extends ve.Element
  * @mixin ve.EventEmitter
  *
  * @constructor
@@ -21,7 +21,7 @@ ve.ui.Layout = function VeUiLayout( config ) {
 	config = config || {};
 
 	// Parent constructor
-	ve.ui.Element.call( this, config );
+	ve.Element.call( this, config );
 
 	// Mixin constructors
 	ve.EventEmitter.call( this );
@@ -32,6 +32,6 @@ ve.ui.Layout = function VeUiLayout( config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.Layout, ve.ui.Element );
+ve.inheritClass( ve.ui.Layout, ve.Element );
 
 ve.mixinClass( ve.ui.Layout, ve.EventEmitter );

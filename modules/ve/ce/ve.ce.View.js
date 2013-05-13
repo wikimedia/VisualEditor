@@ -9,19 +9,26 @@
  * Generic base class for CE views.
  *
  * @abstract
+ * @extends ve.Element
  * @mixins ve.EventEmitter
  *
  * @constructor
  * @param {ve.dm.Model} model Model to observe
- * @param {jQuery} [$element] Element to use as a container
+ * @param {Object} [config] Config options
  */
-ve.ce.View = function VeCeView( model, $element ) {
+ve.ce.View = function VeCeView( model, config ) {
+	// Setting this property before calling the parent constructor allows overriden #getTagName
+	// methods in view classes to have access to the model when they are called for the first time
+	// inside of ve.Element
+	this.model = model;
+
 	// Parent constructor
+	ve.Element.call( this, config );
+
+	// Mixin constructors
 	ve.EventEmitter.call( this );
 
 	// Properties
-	this.model = model;
-	this.$ = $element || $( '<div>' );
 	this.live = false;
 
 	// Initialization
@@ -30,6 +37,8 @@ ve.ce.View = function VeCeView( model, $element ) {
 };
 
 /* Inheritance */
+
+ve.inheritClass( ve.ce.View, ve.Element );
 
 ve.mixinClass( ve.ce.View, ve.EventEmitter );
 
@@ -40,8 +49,6 @@ ve.mixinClass( ve.ce.View, ve.EventEmitter );
  */
 
 /* Static Members */
-
-ve.ce.View.static = {};
 
 /**
  * Allowed attributes for DOM elements.
@@ -111,6 +118,14 @@ ve.ce.View.prototype.setLive = function ( live ) {
 	this.emit( 'live' );
 };
 
+/**
+ * Render HTML attributes.
+ *
+ * Attributes will be parsed using ve.dm.Converter#parseHtmlAttribute and filtered through the
+ * whitelist defined in #domAttributeWhitelist
+ *
+ * @param {Object} attributes List of attributes to render in the DOM
+ */
 ve.ce.View.prototype.renderAttributes = function ( attributes ) {
 	var key, parsed,
 		whitelist = this.constructor.static.domAttributeWhitelist;

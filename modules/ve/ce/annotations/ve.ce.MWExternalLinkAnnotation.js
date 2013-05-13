@@ -12,10 +12,11 @@
  * @extends ve.ce.LinkAnnotation
  * @constructor
  * @param {ve.dm.MWExternalLinkAnnotation} model Model to observe
+ * @param {Object} [config] Config options
  */
-ve.ce.MWExternalLinkAnnotation = function VeCeMWExternalLinkAnnotation( model ) {
+ve.ce.MWExternalLinkAnnotation = function VeCeMWExternalLinkAnnotation( model, config ) {
 	// Parent constructor
-	ve.ce.LinkAnnotation.call( this, model );
+	ve.ce.LinkAnnotation.call( this, model, config );
 
 	// DOM changes
 	this.$.addClass( 've-ce-MWExternalLinkAnnotation' );
