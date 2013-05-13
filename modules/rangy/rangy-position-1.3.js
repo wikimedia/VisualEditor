@@ -19,8 +19,9 @@ rangy.createModule("Position", function(api, module) {
 
     var NUMBER = "number", UNDEF = "undefined";
     var WrappedRange = api.WrappedRange;
+    var WrappedTextRange = api.WrappedTextRange;
     var dom = api.dom, util = api.util, DomPosition = dom.DomPosition;
-    
+
     // Feature detection
 
     //var caretPositionFromPointSupported = (typeof document.caretPositionFromPoint != UNDEF);
@@ -107,7 +108,7 @@ rangy.createModule("Position", function(api, module) {
             Math.min.apply(Math, lefts)
         );
     }
-    
+
     function getTextRangePosition(doc, x, y) {
         var textRange = dom.getBody(doc).createTextRange();
         textRange.moveToPoint(x, y);
@@ -137,7 +138,7 @@ rangy.createModule("Position", function(api, module) {
 
     function positionFromPoint(doc, x, y, favourPrecedingPosition) {
         var el = doc.elementFromPoint(x, y);
-        
+
         console.log("elementFromPoint is ", el);
 
         var range = api.createRange(doc);
@@ -207,7 +208,7 @@ rangy.createModule("Position", function(api, module) {
             throw module.createError("createCaretPositionFromPointGetter(): Browser does not provide a recognised method to create a selection from pixel coordinates");
         }
     }
-    
+
     function createRangeFromPoints(startX, startY, endX, endY, doc) {
         doc = dom.getContentDocument(doc, module, "createRangeFromPoints");
         var positionFinder = createCaretPositionFromPointGetter(doc);
@@ -242,7 +243,7 @@ rangy.createModule("Position", function(api, module) {
         sel.setSingleRange(range);
         return sel;
     }
-    
+
     // Test that <span> elements support getBoundingClientRect
     var span = document.createElement("span");
     var elementSupportsGetBoundingClientRect = util.isHostMethod(span, "getBoundingClientRect");
@@ -280,7 +281,7 @@ rangy.createModule("Position", function(api, module) {
     if (api.features.implementsTextRange && elementSupportsGetBoundingClientRect) {
         rangeProto.getBoundingClientRect = function() {
             // We need a TextRange
-            var textRange = WrappedRange.rangeToTextRange(this);
+            var textRange = WrappedTextRange.rangeToTextRange(this);
 
             // Work around table problems (table cell bounding rects seem not to count if TextRange spans cells)
             var cells = this.getNodes([1], function(el) {
@@ -303,7 +304,7 @@ rangy.createModule("Position", function(api, module) {
                             subRange.setStartAfter(lastTable);
                         }
                         subRange.setEndBefore(table);
-                        rects.push(WrappedRange.rangeToTextRange(subRange).getBoundingClientRect());
+                        rects.push(WrappedTextRange.rangeToTextRange(subRange).getBoundingClientRect());
                     }
 
                     if (this.containsNode(cell)) {
@@ -326,7 +327,7 @@ rangy.createModule("Position", function(api, module) {
                 if (!endTable && lastTable) {
                     subRange = this.cloneRange();
                     subRange.setStartAfter(lastTable);
-                    rects.push(WrappedRange.rangeToTextRange(subRange).getBoundingClientRect());
+                    rects.push(WrappedTextRange.rangeToTextRange(subRange).getBoundingClientRect());
                 }
                 rect = mergeRects(rects);
             } else {
@@ -528,12 +529,12 @@ rangy.createModule("Position", function(api, module) {
         getStartDocumentPos: createSelectionBoundaryPosGetter(true, true),
         getEndDocumentPos: createSelectionBoundaryPosGetter(false, true)
     });
-    
+
     api.positionFromPoint = function(x, y, doc) {
         doc = dom.getContentDocument(doc, module, "positionFromPoint");
         return createCaretPositionFromPointGetter(doc)(doc, x, y);
     };
-    
+
     api.createRangeFromPoints = createRangeFromPoints;
     api.moveSelectionToPoints = moveSelectionToPoints;
 });

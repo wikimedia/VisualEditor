@@ -69,8 +69,8 @@ $html = file_get_contents( $page );
 		<!-- Dependencies -->
 		<script src="../../modules/jquery/jquery.js"></script>
 		<script src="../../modules/jquery/jquery.client.js"></script>
-		<script src="../../modules/rangy/rangy-core.js"></script>
-		<script src="../../modules/rangy/rangy-position.js"></script>
+		<script src="../../modules/rangy/rangy-core-1.3.js"></script>
+		<script src="../../modules/rangy/rangy-position-1.3.js"></script>
 		<script src="../../modules/unicodejs/unicodejs.js"></script>
 		<script src="../../modules/unicodejs/unicodejs.textstring.js"></script>
 		<script src="../../modules/unicodejs/unicodejs.wordbreak.groups.js"></script>
