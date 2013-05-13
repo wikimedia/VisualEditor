@@ -496,11 +496,6 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 		// and popped off when balanced out by an opening in data
 		closingStack = [],
 
-		// Lazy evaluated first and last child stacks. Null means not yet evaluated.
-		// See get(First|Last)ChildStack private methods for details.
-		firstChildStack = null,
-		lastChildStack = null,
-
 		// Pointer to this document for private methods
 		doc = this,
 
@@ -512,6 +507,9 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 		parentType,
 		// Whether we are currently in a text node
 		inTextNode,
+		// Whether this is the first child of its parent
+		// The test for last child isn't a loop so we don't need to cache it
+		isFirstChild,
 
 		// *** Temporary variables that do not persist across iterations ***
 		// The type of the node we're currently inserting. When the to-be-inserted node
@@ -616,53 +614,10 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 		newData.push( element );
 	}
 
-	/**
-	 * Lazy evaluate the first child stack.
-	 *
-	 * The first child stack comprises all parent nodes for which the current
-	 * node is the first child.
-	 *
-	 * @private
-	 * @method
-	 * @returns {Array} Array of parent node data elements
-	 */
-	function getFirstChildStack() {
-		var i;
-		if ( firstChildStack === null ) {
-			firstChildStack = [];
-			i = offset;
-			while ( doc.data.isOpenElementData( --i ) ) {
-				firstChildStack.push( doc.data.getData( i ) );
-			}
-		}
-		return firstChildStack;
-	}
-
-	/**
-	 * Lazy evaluate the last child stack.
-	 *
-	 * The last child stack comprises all parent nodes for which the current
-	 * node is the last child.
-	 *
-	 * @private
-	 * @method
-	 * @returns {Array} Array of parent node data elements
-	 */
-	function getLastChildStack() {
-		var i;
-		if ( lastChildStack === null ) {
-			lastChildStack = [];
-			i = offset - 1;
-			while ( doc.data.isCloseElementData( ++i ) ) {
-				lastChildStack.push( doc.data.getData( i ) );
-			}
-		}
-		return lastChildStack;
-	}
-
 	parentNode = this.getNodeFromOffset( offset );
 	parentType = parentNode.getType();
 	inTextNode = false;
+	isFirstChild = doc.data.isOpenElementData( offset - 1 );
 
 	for ( i = 0; i < data.length; i++ ) {
 		if ( inTextNode && data[i].type !== undefined ) {
@@ -719,8 +674,9 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 				);
 				if ( !childrenOK ) {
 					// We can't insert this into this parent
-					if ( getFirstChildStack().length ) {
-						// Abandon this fix up and try again one offset to the left
+					if ( isFirstChild ) {
+						// This element is the first child of its parent, so
+						// abandon this fix up and try again one offset to the left
 						return this.fixupInsertion( data, offset - 1 );
 					}
 
@@ -778,8 +734,9 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 		}
 	}
 
-	if ( closingStack.length > 0 && getLastChildStack().length > 0 ) {
-		// Abandon this fix up and try again one offset to the left
+	if ( closingStack.length > 0 && doc.data.isCloseElementData( offset ) ) {
+		// This element is the last child of its parent, so
+		// abandon this fix up and try again one offset to the right
 		return this.fixupInsertion( data, offset + 1 );
 	}
 
