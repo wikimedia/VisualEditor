@@ -1320,6 +1320,7 @@ $messages['fi'] = array(
 	'visualeditor-ca-editsource' => 'Muokkaa lähdetekstiä',
 	'visualeditor-ca-ve-edit' => 'Visuaalinen muokkain',
 	'visualeditor-ca-ve-create' => 'Visuaalinen muokkain',
+	'visualeditor-category-input-placeholder' => 'Lisää luokka',
 	'visualeditor-dialog-meta-title' => 'Sivun asetukset',
 	'visualeditor-dialog-content-title' => 'Sisällön asetukset',
 	'visualeditor-dialog-action-cancel' => 'Peruuta',
@@ -1371,6 +1372,7 @@ $messages['fi'] = array(
 	'visualeditor-descriptionpagelink' => 'Project:Visuaalinen muokkain',
 	'visualeditor-alphawarning' => 'Käytät [[{{MediaWiki:Visualeditor-descriptionpagelink}}|visuaalisen muokkaimen]] alpha-versiota. Se saattaa olla hidas ja tehdä virheellisiä muutoksia – tarkista jokainen muokkaus, jonka teet.',
 	'visualeditor-report-notice' => 'Ymmärrän, että painamalla "Tallenna" lähetän muutokseni ja palautteeni, jotka säilötään analysointia varten. Suostun antamaan palautetta [[{{MediaWiki:Visualeditor-report-link}}|Käyttöehtojen]] mukaisesti.', # Fuzzy
+	'visualeditor-diff-nochanges' => 'Muokkaustasi ei tallenneta, koska et ole tehnyt muutoksia tekstiin.',
 );
 
 /** French (français)
@@ -1466,6 +1468,7 @@ $messages['fr'] = array(
 	'visualeditor-report-notice' => 'Je comprends qu’en cliquant sur «  Signaler un problème  », je transmettrai mes modifications et mes commentaires, qui seront stockés pour analyse. J’accepte de donner mon avis en accord avec les [[{{MediaWiki:Visualeditor-report-link}}|conditions d’utilisation]].',
 	'visualeditor-report-link' => 'foundation:Terms of Use/fr',
 	'visualeditor-feedback-link' => 'Project:Éditeur Visuel/Avis',
+	'visualeditor-diff-nochanges' => 'Votre modification sera ignorée parce que vous n’avez effectué aucun changement au texte.',
 );
 
 /** Franco-Provençal (arpetan)
@@ -1658,7 +1661,7 @@ $messages['he'] = array(
 	'visualeditor-feedback-tool' => 'שליחת משוב',
 	'visualeditor-window-title' => 'חקירה',
 	'visualeditor-linkinspector-title' => 'היפר־קישור',
-	'visualeditor-linkinspector-suggest-matching-page' => 'דך מתאים',
+	'visualeditor-linkinspector-suggest-matching-page' => 'דף מתאים',
 	'visualeditor-linkinspector-suggest-new-page' => 'דף חדש',
 	'visualeditor-linkinspector-suggest-external-link' => 'קישור חיצוני',
 	'visualeditor-formatdropdown-title' => 'שינוי סגנון',
@@ -2445,6 +2448,7 @@ $messages['mk'] = array(
 	'visualeditor-report-notice' => 'Разбирам дека стискајќи на „Пријави проблем“ ќе ги пренесам моите промени и одѕивот на место кајшто ќе бидат складирани за анализа. Се согласувам да давам одѕив во склад со [[{{MediaWiki:Visualeditor-report-link}}|Условите на употреба]].',
 	'visualeditor-report-link' => 'foundation:Terms of Use/mk',
 	'visualeditor-feedback-link' => 'Project:VisualEditor/Мислења',
+	'visualeditor-diff-nochanges' => 'Уредувањето ќе биде занемарено бидејќи не направивте никакви измени во текстот.',
 );
 
 /** Malayalam (മലയാളം)
@@ -2534,12 +2538,13 @@ $messages['ml'] = array(
 /** Marathi (मराठी)
  * @author Praju23
  * @author Ydyashad
+ * @author संतोष दहिवळ
  */
 $messages['mr'] = array(
-	'visualeditor' => 'माझे नाव प्राजक्ता आहे.मी फोरसाईट महाविद्दालयात शिकत आहे.मी बी.सी.ए.मध्ये दुसऱ्या शिकत आहे.',
+	'visualeditor' => 'VisualEditor',
 	'visualeditor-preference-enable' => 'hi', # Fuzzy
 	'visualeditor-mainnamespacepagelink' => 'सा', # Fuzzy
-	'visualeditor-inspector-title' => 'तपास',
+	'visualeditor-window-title' => 'तपास',
 );
 
 /** Malay (Bahasa Melayu)
@@ -3739,7 +3744,7 @@ $messages['vi'] = array(
 	'visualeditor-ca-editsource' => 'Sửa mã nguồn',
 	'visualeditor-ca-ve-edit' => 'Trình soạn thị giác',
 	'visualeditor-ca-ve-create' => 'Trình soạn thị giác',
-	'visualeditor-category-input-placeholder' => 'Tên thể loại', # Fuzzy
+	'visualeditor-category-input-placeholder' => 'Thêm thể loại',
 	'visualeditor-category-settings-label' => 'Thiết lập thể loại',
 	'visualeditor-dialog-meta-title' => 'Tùy chọn trang',
 	'visualeditor-dialog-content-title' => 'Tùy chọn nội dung',
@@ -3800,6 +3805,7 @@ $messages['vi'] = array(
 	'visualeditor-report-notice' => 'Tôi hiểu rằng, bằng cách bấm “Báo cáo vấn đề”, tôi sẽ truyền những thay đổi và thông tin phản hồi của tôi, thông tin này sẽ được lưu trữ để phân tích. Tôi đồng ý cho thông tin phản hồi theo các [[{{MediaWiki:Visualeditor-report-link}}|Điều khoản sử dụng]].',
 	'visualeditor-report-link' => 'Foundation:Terms of Use/vi',
 	'visualeditor-feedback-link' => 'Project:Trình soạn thị giác/Phản hồi',
+	'visualeditor-diff-nochanges' => 'Sửa đổi của bạn sẽ bị bỏ qua vì bạn không thay đổi văn bản một tí nào.',
 );
 
 /** Simplified Chinese (中文（简体）‎)
@@ -3912,7 +3918,7 @@ $messages['zh-hant'] = array(
 	'visualeditor-ca-editsource' => '編輯原始碼',
 	'visualeditor-ca-ve-edit' => '視覺化編輯器',
 	'visualeditor-ca-ve-create' => '視覺化編輯器',
-	'visualeditor-category-input-placeholder' => '分類名稱', # Fuzzy
+	'visualeditor-category-input-placeholder' => '添加分類',
 	'visualeditor-category-settings-label' => '分類設定',
 	'visualeditor-dialog-meta-title' => '頁面設定',
 	'visualeditor-dialog-content-title' => '內容設定',
