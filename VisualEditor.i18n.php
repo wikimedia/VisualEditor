@@ -135,6 +135,7 @@ Links are in {{msg-mw|Visualeditor-mainnamespacepagelink}} and {{msg-mw|visualed
 	'visualeditor-dialog-meta-title' => 'MetaData dialog title text',
 	'visualeditor-dialog-content-title' => 'Content dialog title text',
 	'visualeditor-dialog-media-title' => 'Title for the editing dialog to set how a media item is displayed on the page',
+	'visualeditor-dialog-reference-title' => '{{Identical|Reference}}',
 	'visualeditor-dialog-action-apply' => 'Label text for button to apply changes made in dialog.
 
 See also:
@@ -179,6 +180,7 @@ See also:
 	'visualeditor-annotationbutton-bold-tooltip' => 'Tooltip string for bold button',
 	'visualeditor-annotationbutton-italic-tooltip' => 'Tooltip string for italic button',
 	'visualeditor-annotationbutton-link-tooltip' => 'Tooltip string for link button',
+	'visualeditor-dialogbutton-reference-tooltip' => '{{Identical|Reference}}',
 	'visualeditor-dialogbutton-media-tooltip' => '{{Identical|Media}}',
 	'visualeditor-indentationbutton-indent-tooltip' => 'Tooltip string for list indent button',
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Tooltip string for list outdent button',
@@ -860,6 +862,7 @@ $messages['de'] = array(
 	'visualeditor-dialog-meta-title' => 'Seiteneinstellungen',
 	'visualeditor-dialog-content-title' => 'Inhaltseinstellungen',
 	'visualeditor-dialog-media-title' => 'Medieneinstellungen',
+	'visualeditor-dialog-reference-title' => 'Einzelnachweis',
 	'visualeditor-dialog-action-apply' => 'Änderungen speichern',
 	'visualeditor-dialog-action-cancel' => 'Abbrechen',
 	'visualeditor-dialog-action-close' => 'Schließen',
@@ -892,6 +895,7 @@ $messages['de'] = array(
 	'visualeditor-annotationbutton-bold-tooltip' => 'Fett',
 	'visualeditor-annotationbutton-italic-tooltip' => 'Kursiv',
 	'visualeditor-annotationbutton-link-tooltip' => 'Link',
+	'visualeditor-dialogbutton-reference-tooltip' => 'Einzelnachweis',
 	'visualeditor-dialogbutton-media-tooltip' => 'Medien',
 	'visualeditor-indentationbutton-indent-tooltip' => 'Einzug vergrößern',
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Einzug verkleinern',
@@ -1414,6 +1418,7 @@ $messages['fr'] = array(
 	'visualeditor-dialog-meta-title' => 'Paramètres de la page',
 	'visualeditor-dialog-content-title' => 'Paramètres du contenu',
 	'visualeditor-dialog-media-title' => 'Paramètres du média',
+	'visualeditor-dialog-reference-title' => 'Référence',
 	'visualeditor-dialog-action-apply' => 'Appliquer les modifications',
 	'visualeditor-dialog-action-cancel' => 'Annuler',
 	'visualeditor-dialog-action-close' => 'Fermer',
@@ -1446,6 +1451,7 @@ $messages['fr'] = array(
 	'visualeditor-annotationbutton-bold-tooltip' => 'Gras',
 	'visualeditor-annotationbutton-italic-tooltip' => 'Italique',
 	'visualeditor-annotationbutton-link-tooltip' => 'Lien',
+	'visualeditor-dialogbutton-reference-tooltip' => 'Référence',
 	'visualeditor-dialogbutton-media-tooltip' => 'Média',
 	'visualeditor-indentationbutton-indent-tooltip' => 'Augmenter l’indentation',
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Diminuer l’indentation',
@@ -1928,6 +1934,7 @@ $messages['it'] = array(
 	'visualeditor-dialog-meta-title' => 'Impostazioni pagina',
 	'visualeditor-dialog-content-title' => 'Impostazioni contenuto',
 	'visualeditor-dialog-media-title' => 'Impostazioni file multimediali',
+	'visualeditor-dialog-reference-title' => 'Riferimento',
 	'visualeditor-dialog-action-apply' => 'Applica modifiche',
 	'visualeditor-dialog-action-cancel' => 'Annulla',
 	'visualeditor-dialog-action-close' => 'Chiudi',
@@ -1960,6 +1967,7 @@ $messages['it'] = array(
 	'visualeditor-annotationbutton-bold-tooltip' => 'Grassetto',
 	'visualeditor-annotationbutton-italic-tooltip' => 'Corsivo',
 	'visualeditor-annotationbutton-link-tooltip' => 'Collegamento',
+	'visualeditor-dialogbutton-reference-tooltip' => 'Riferimento',
 	'visualeditor-dialogbutton-media-tooltip' => 'File multimediali',
 	'visualeditor-indentationbutton-indent-tooltip' => 'Aumenta indentazione',
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Riduci indentazione',
@@ -1984,6 +1992,7 @@ $messages['it'] = array(
 	'visualeditor-report-notice' => "Capisco che cliccando su {{MediaWiki:Visualeditor-savedialog-label-report}} trasmetto le mie modifiche e il mio feedback che verranno conservati per l'analisi. Sono d'accordo a fornire i feedback in conformità alle [[{{MediaWiki:Visualeditor-report-link}}|condizioni d'uso]].",
 	'visualeditor-report-link' => 'foundation:Terms of Use/it',
 	'visualeditor-feedback-link' => 'Project:VisualEditor/Commenti',
+	'visualeditor-diff-nochanges' => "L'azione verrà ignorata poiché non hai fatto nessuna modifica al testo.",
 );
 
 /** Japanese (日本語)
@@ -2657,9 +2666,12 @@ $messages['nb'] = array(
 	'visualeditor-ca-editsource' => 'Rediger kilde',
 	'visualeditor-ca-ve-edit' => 'VisualEditor',
 	'visualeditor-ca-ve-create' => 'VisualEditor',
+	'visualeditor-category-input-placeholder' => 'Legg til kategori',
+	'visualeditor-category-settings-label' => 'Kategoriinnstillinger',
 	'visualeditor-dialog-meta-title' => 'Sideinnstillinger',
 	'visualeditor-dialog-content-title' => 'Innholdsinnstillinger',
 	'visualeditor-dialog-media-title' => 'Mediainnstillinger',
+	'visualeditor-dialog-reference-title' => 'Referanse',
 	'visualeditor-dialog-action-apply' => 'Ta i bruk endringer',
 	'visualeditor-dialog-action-cancel' => 'Avbryt',
 	'visualeditor-dialog-action-close' => 'Lukk',
@@ -2692,6 +2704,7 @@ $messages['nb'] = array(
 	'visualeditor-annotationbutton-bold-tooltip' => 'Fet',
 	'visualeditor-annotationbutton-italic-tooltip' => 'Kursiv',
 	'visualeditor-annotationbutton-link-tooltip' => 'Lenke',
+	'visualeditor-dialogbutton-reference-tooltip' => 'Referanse',
 	'visualeditor-dialogbutton-media-tooltip' => 'Media',
 	'visualeditor-indentationbutton-indent-tooltip' => 'Øk innrykk',
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Reduser innrykk',
@@ -2715,6 +2728,7 @@ $messages['nb'] = array(
 	'visualeditor-alphawarning' => 'Du bruker en alfa-versjon av [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]. Den kan være treg og medføre feilaktige endringer – vennligst kontroller hver redigering du gjør.',
 	'visualeditor-report-notice' => 'Jeg forstår at ved å klikke på «Meld fra om problem» vil mine endringer og min tilbakemelding bli overført og lagret for analyse. Jeg godtar at tilbakemeldingen min blir gitt i overensstemmelse med [[{{MediaWiki:Visualeditor-report-link}}|bruksvilkårene]].',
 	'visualeditor-feedback-link' => 'Project:VisualEditor/Feedback',
+	'visualeditor-diff-nochanges' => 'Redigeringen din blir ignorert siden du ikke gjorde noen endringer i teksten.',
 );
 
 /** Nepali (नेपाली)
