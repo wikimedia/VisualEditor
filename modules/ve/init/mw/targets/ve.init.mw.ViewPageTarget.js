@@ -223,6 +223,14 @@ ve.init.mw.ViewPageTarget.saveDialogTemplate = '\
 				<p class="ve-init-mw-viewPageTarget-saveDialog-license"></p>\
 			</div>\
 		</div>\
+		<div class="ve-init-mw-viewPageTarget-saveDialog-slide ve-init-mw-viewPageTarget-saveDialog-slide-conflict">\
+			<div class="ve-init-mw-viewPageTarget-saveDialog-conflict">\
+			</div>\
+			<div class="ve-init-mw-viewPageTarget-saveDialog-actions">\
+				<div class="ve-init-mw-viewPageTarget-saveDialog-working"></div>\
+			</div>\
+			<div style="clear: both;"></div>\
+		</div>\
 	</div>';
 
 /* Methods */
@@ -463,27 +471,11 @@ ve.init.mw.ViewPageTarget.prototype.onSerializeError = function ( jqXHR, status 
 /**
  * Handle edit conflict event.
  *
- * TODO: Don't use an operating system confirm box. Parsing may take quite some time and we should
- * be showing the user some sort of progress indicator. Ideally this would be integrated into the
- * save dialog.
- *
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.onEditConflict = function () {
-	var doc = this.surface.getModel().getDocument();
-	if ( confirm( ve.msg( 'visualeditor-editconflict', status ) ) ) {
-		// Get Wikitext from the DOM, and set up a submit call when it's done
-		this.serialize(
-			ve.dm.converter.getDomFromData( doc.getFullData(), doc.getStore(), doc.getInternalList() ),
-			ve.bind( function ( wikitext ) {
-				this.submit( wikitext, this.getSaveOptions() );
-			}, this )
-		);
-	} else {
-		// Return to editing
-		this.hideSaveDialog();
-		this.resetSaveDialog();
-	}
+	this.$saveDialogLoadingIcon.hide();
+	this.swapSaveDialog( 'conflict' );
 };
 
 /**
@@ -644,6 +636,22 @@ ve.init.mw.ViewPageTarget.prototype.onSaveDialogReportButtonClick = function () 
 	this.resetSaveDialog();
 	this.hideSaveDialog();
 	mw.notify( ve.msg( 'visualeditor-notification-reported' ) );
+};
+
+/**
+ * Handle clicks on the resolve conflict button in the conflict dialog.
+ *
+ * @method
+ */
+ve.init.mw.ViewPageTarget.prototype.onSaveDialogResolveConflictButtonClick = function () {
+	var doc = this.surface.getDocument().getModel();
+	// Get Wikitext from the DOM, and set up a submit call when it's done
+	this.serialize(
+		ve.dm.converter.getDomFromData( doc.getFullData(), doc.getStore(), doc.getInternalList() ),
+		ve.bind( function ( wikitext ) {
+			this.submit( wikitext, this.getSaveOptions() );
+		}, this )
+	);
 };
 
 /**
@@ -1030,6 +1038,12 @@ ve.init.mw.ViewPageTarget.prototype.setupSaveDialog = function () {
 	} );
 	this.saveDialogReportButton.connect( this, { 'click': 'onSaveDialogReportButtonClick' } );
 
+	this.saveDialogResolveConflictButton = new ve.ui.ButtonWidget( {
+		'label': ve.msg( 'visualeditor-savedialog-label-resolve-conflict' ),
+		'flags': ['constructive']
+	} );
+	this.saveDialogResolveConflictButton.connect( this, { 'click': 'onSaveDialogResolveConflictButtonClick' } );
+
 	this.getSaveDialogHtml( function ( $wrap ) {
 		viewPage.$saveDialog
 			// Must not use replaceWith because that can't be used on fragement roots,
@@ -1054,12 +1068,18 @@ ve.init.mw.ViewPageTarget.prototype.setupSaveDialog = function () {
 					.prepend( viewPage.saveDialogReportButton.$ )
 					.end()
 			.end()
+			.find( '.ve-init-mw-viewPageTarget-saveDialog-slide-conflict' )
+				.find( '.ve-init-mw-viewPageTarget-saveDialog-actions' )
+					.prepend( viewPage.saveDialogResolveConflictButton.$ )
+					.end()
+			.end()
 			.find( '.ve-init-mw-viewPageTarget-saveDialog-closeButton' )
 				.click( ve.bind( viewPage.onSaveDialogCloseButtonClick, viewPage ) )
 				.end()
 			.find( '.ve-init-mw-viewPageTarget-saveDialog-prevButton' )
 				.click( ve.bind( viewPage.onSaveDialogPrevButtonClick, viewPage ) )
 				.end()
+			// Attach contents
 			.find( '#ve-init-mw-viewPageTarget-saveDialog-editSummary' )
 				.attr( {
 					'placeholder': ve.msg( 'visualeditor-editsummary' )
@@ -1127,7 +1147,11 @@ ve.init.mw.ViewPageTarget.prototype.setupSaveDialog = function () {
 				.html( ve.init.platform.getParsedMessage( 'visualeditor-report-notice' ) )
 				.end()
 			.find( '.ve-init-mw-viewPageTarget-saveDialog-license' )
-				.html( ve.init.platform.getParsedMessage( 'copyrightwarning' ) );
+				.html( ve.init.platform.getParsedMessage( 'copyrightwarning' ) )
+				.end()
+			.find( '.ve-init-mw-viewPageTarget-saveDialog-conflict' )
+				.html( ve.init.platform.getParsedMessage( 'visualeditor-editconflict' ) )
+		;
 		// Get reference to loading icon
 		viewPage.$saveDialogLoadingIcon = viewPage.$saveDialog
 			.find( '.ve-init-mw-viewPageTarget-saveDialog-working' );
@@ -1239,13 +1263,13 @@ ve.init.mw.ViewPageTarget.prototype.resetSaveDialog = function () {
  * Swap state in the save dialog (forwards or backwards).
  *
  * @method
- * @param {string} slide One of 'review', 'report' or 'save'
+ * @param {string} slide One of 'review', 'report', 'save' or 'conflict'
  * @return {jQuery} The now active slide.
  * @throws {Error} Unknown saveDialog slide
  */
 ve.init.mw.ViewPageTarget.prototype.swapSaveDialog = function ( slide ) {
 	var $slide, $viewer, doc = this.surface.getModel().getDocument();
-	if ( ve.indexOf( slide, [ 'review', 'report', 'save'] ) === -1 ) {
+	if ( ve.indexOf( slide, [ 'review', 'report', 'save', 'conflict' ] ) === -1 ) {
 		throw new Error( 'Unknown saveDialog slide: ' + slide );
 	}
 

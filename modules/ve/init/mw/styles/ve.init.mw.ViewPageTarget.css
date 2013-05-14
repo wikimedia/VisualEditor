@@ -222,6 +222,11 @@
 	border-color: #aaa;
 }
 
+.ve-init-mw-viewPageTarget-saveDialog-conflict {
+	font-size: 0.8em;
+	margin-bottom: 1em;
+}
+
 .ve-init-mw-viewPageTarget-saveDialog-options {
 	position: relative;
 	background-color: #f7f7f7;
