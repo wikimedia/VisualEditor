@@ -5,17 +5,17 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-.ve-surface {
+.ve-ui-surface {
 	margin-top: 0.8em;
 }
 
-.ve-ui-toolbar-wrapper {
+.ve-init-mw-viewPageTarget-toolbar {
 	margin: -0.6em -3em 0.8em -3em;
 	position: relative;
 	font-size: 1.3em;
 }
 
-.ve-ui-toolbar {
+.ve-init-mw-viewPageTarget-toolbar .ve-ui-toolbar-bar {
 	display: none;
 	line-height: 1.5em;
 }

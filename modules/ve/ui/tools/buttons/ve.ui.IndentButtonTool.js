@@ -37,6 +37,6 @@ ve.ui.IndentButtonTool.static.method = 'increase';
 
 ve.ui.toolFactory.register( 'indent', ve.ui.IndentButtonTool );
 
-ve.commandRegistry.register( 'indent', 'indentation', 'increase' );
+ve.ui.commandRegistry.register( 'indent', 'indentation', 'increase' );
 
-ve.triggerRegistry.register( 'indent', new ve.Trigger( 'tab' ) );
+ve.ui.triggerRegistry.register( 'indent', new ve.ui.Trigger( 'tab' ) );

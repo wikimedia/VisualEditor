@@ -10,14 +10,19 @@
  * ContentEditable surface.
  *
  * @class
+ * @extends ve.Element
  * @mixins ve.EventEmitter
  *
  * @constructor
  * @param {jQuery} $container
  * @param {ve.dm.Surface} model Surface model to observe
- * @param {ve.Surface} surface Surface to view
+ * @param {ve.ui.Surface} surface Surface user interface
+ * @param {Object} [config] Config options
  */
-ve.ce.Surface = function VeCeSurface( $container, model, surface ) {
+ve.ce.Surface = function VeCeSurface( model, surface, options ) {
+	// Parent constructor
+	ve.Element.call( this, options );
+
 	// Mixin constructors
 	ve.EventEmitter.call( this );
 
@@ -28,15 +33,14 @@ ve.ce.Surface = function VeCeSurface( $container, model, surface ) {
 	this.documentView = new ve.ce.Document( model.getDocument(), this );
 	this.surfaceObserver = new ve.ce.SurfaceObserver( this.documentView );
 	this.selectionTimeout = null;
-	this.$ = $container;
 	this.$document = $( document );
 	this.clipboard = {};
 	this.renderingEnabled = true;
 	this.dragging = false;
 	this.relocating = false;
 	this.selecting = false;
-	this.$phantoms = $( '<div>' );
-	this.$pasteTarget = $( '<div>' );
+	this.$phantoms = this.$$( '<div>' );
+	this.$pasteTarget = this.$$( '<div>' );
 	this.pasting = false;
 	this.clickHistory = [];
 	this.focusedNode = null;
@@ -62,21 +66,15 @@ ve.ce.Surface = function VeCeSurface( $container, model, surface ) {
 	}
 
 	// Initialization
-	if ( !rangy.initialized ) {
-		rangy.init();
-	}
+	this.$.addClass( 've-ce-surface' );
 	this.$phantoms.addClass( 've-ce-surface-phantoms' );
 	this.$pasteTarget.addClass( 've-ce-surface-paste' ).prop( 'contenteditable', true );
 	this.$.append( this.documentView.getDocumentNode().$, this.$phantoms, this.$pasteTarget );
-
-	// Turn off native object editing. This must be tried after the surface has been added to DOM.
-	try {
-		document.execCommand( 'enableObjectResizing', false, false );
-		document.execCommand( 'enableInlineTableEditing', false, false );
-	} catch ( e ) { /* Silently ignore */ }
 };
 
 /* Inheritance */
+
+ve.inheritClass( ve.ce.Surface, ve.Element );
 
 ve.mixinClass( ve.ce.Surface, ve.EventEmitter );
 
@@ -140,11 +138,9 @@ ve.ce.Surface.getSelectionRect = function () {
 	// rectangle dimensions being 0 which causes #getStartDocumentPos and #getEndDocumentPos to
 	// throw exceptions
 	if ( rect.top === 0 || rect.bottom === 0 || rect.left === 0 || rect.right === 0 ) {
-		// Use dummy DOM elements into the selection and then using their position
-		$span = $( '<span>' );
-
 		// Calculate starting range position
 		startRange = sel.getRangeAt( 0 );
+		$span = $( '<span>', startRange.startContainer.ownerDocument );
 		startRange.insertNode( $span[0] );
 		startOffset = $span.offset();
 		$span.detach();
@@ -183,6 +179,25 @@ ve.ce.Surface.getSelectionRect = function () {
 /* Methods */
 
 /*! Initialization */
+
+/**
+ * Initialize surface.
+ *
+ * This should be called after the surface has been attached to the DOM.
+ *
+ * @method
+ */
+ve.ce.Surface.prototype.initialize = function () {
+	if ( !rangy.initialized ) {
+		rangy.init();
+	}
+	this.documentView.getDocumentNode().setLive( true );
+	// Turn off native object editing. This must be tried after the surface has been added to DOM.
+	try {
+		document.execCommand( 'enableObjectResizing', false, false );
+		document.execCommand( 'enableInlineTableEditing', false, false );
+	} catch ( e ) { /* Silently ignore */ }
+};
 
 /**
  * Enable editing.
@@ -258,7 +273,7 @@ ve.ce.Surface.prototype.onDocumentMouseDown = function ( e ) {
 	this.dragging = true;
 
 	// Old code to figure out if user clicked inside the document or not - leave it here for now
-	// $( e.target ).closest( '.ve-ce-documentNode' ).length === 0
+	// this.$$( e.target ).closest( '.ve-ce-documentNode' ).length === 0
 
 	if ( e.which === 1 ) {
 		this.surfaceObserver.stop( true );
@@ -412,7 +427,7 @@ ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
 	} else {
 		// Execute key command if available
 		this.surfaceObserver.stop( true );
-		if ( this.surface.execute( new ve.Trigger( e ) ) ) {
+		if ( this.surface.execute( new ve.ui.Trigger( e ) ) ) {
 			e.preventDefault();
 		}
 		this.surfaceObserver.start();
@@ -511,7 +526,7 @@ ve.ce.Surface.prototype.onCut = function ( e ) {
  */
 ve.ce.Surface.prototype.onCopy = function () {
 	var sel = rangy.getSelection(),
-		$frag = $( sel.getRangeAt(0).cloneContents() ),
+		$frag = this.$$( sel.getRangeAt(0).cloneContents() ),
 		slice = this.documentView.model.getSlice( this.model.getSelection() ),
 		key = '';
 
@@ -539,7 +554,7 @@ ve.ce.Surface.prototype.onPaste = function () {
 	this.pasting = true;
 
 	var tx, scrollTop,
-		$window = $( window ),
+		$window = $( ve.getWindow( this.$$.context ) ),
 		view = this,
 		selection = this.model.getSelection();
 
@@ -945,7 +960,9 @@ ve.ce.Surface.prototype.handleUpOrDownArrowKey = function ( e ) {
 	if ( !selection.isCollapsed() && selection.isBackwards() && !rangySelection.isBackwards() ) {
 		$element = this.documentView.getSlugAtOffset( selection.to );
 		if ( !$element ) {
-			$element = $( '<span>' ).html( ' ' ).css( { 'width' : '0px', 'display' : 'none' } );
+			$element = this.$$( '<span>' )
+				.html( ' ' )
+				.css( { 'width' : '0px', 'display' : 'none' } );
 			rangySelection.anchorNode.splitText( rangySelection.anchorOffset );
 			rangySelection.anchorNode.parentNode.insertBefore(
 				$element[0],
@@ -1490,7 +1507,7 @@ ve.ce.Surface.prototype.areAnnotationsCorrect = function ( selection, insertionA
  * Get the top-level surface.
  *
  * @method
- * @returns {ve.Surface} Surface
+ * @returns {ve.ui.Surface} Surface
  */
 ve.ce.Surface.prototype.getSurface = function () {
 	return this.surface;

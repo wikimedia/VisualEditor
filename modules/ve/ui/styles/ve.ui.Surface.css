@@ -1,0 +1,21 @@
+/*!
+ * VisualEditor Surface styles.
+ *
+ * @copyright 2011-2013 VisualEditor Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+
+.ve-ui-surface:after {
+	content: ".";
+	display: block;
+	clear: both;
+	visibility: hidden;
+	line-height: 0;
+	height: 0;
+}
+
+.ve-ui-surface-overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+}

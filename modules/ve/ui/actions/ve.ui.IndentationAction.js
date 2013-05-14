@@ -1,5 +1,5 @@
 /*!
- * VisualEditor IndentationAction class.
+ * VisualEditor UserInterface IndentationAction class.
  *
  * @copyright 2011-2013 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
@@ -9,18 +9,18 @@
  * Indentation action.
  *
  * @class
- * @extends ve.Action
+ * @extends ve.ui.Action
  * @constructor
- * @param {ve.Surface} surface Surface to act on
+ * @param {ve.ui.Surface} surface Surface to act on
  */
-ve.IndentationAction = function VeIndentationAction( surface ) {
+ve.ui.IndentationAction = function VeUiIndentationAction( surface ) {
 	// Parent constructor
-	ve.Action.call( this, surface );
+	ve.ui.Action.call( this, surface );
 };
 
 /* Inheritance */
 
-ve.inheritClass( ve.IndentationAction, ve.Action );
+ve.inheritClass( ve.ui.IndentationAction, ve.ui.Action );
 
 /* Static Properties */
 
@@ -30,7 +30,7 @@ ve.inheritClass( ve.IndentationAction, ve.Action );
  * @static
  * @property
  */
-ve.IndentationAction.static.methods = ['increase', 'decrease'];
+ve.ui.IndentationAction.static.methods = ['increase', 'decrease'];
 
 /* Methods */
 
@@ -42,7 +42,7 @@ ve.IndentationAction.static.methods = ['increase', 'decrease'];
  * @method
  * @returns {boolean} Indentation increase occured
  */
-ve.IndentationAction.prototype.increase = function () {
+ve.ui.IndentationAction.prototype.increase = function () {
 	var i, group,
 		fragments = [],
 		increased = false,
@@ -80,7 +80,7 @@ ve.IndentationAction.prototype.increase = function () {
  * @method
  * @returns {boolean} Indentation decrease occured
  */
-ve.IndentationAction.prototype.decrease = function () {
+ve.ui.IndentationAction.prototype.decrease = function () {
 	var i, group,
 		fragments = [],
 		decreased = false,
@@ -119,7 +119,7 @@ ve.IndentationAction.prototype.decrease = function () {
  * @param {ve.dm.ListItemNode} listItem List item to indent
  * @throws {Error} listItem must be a ve.dm.ListItemNode
  */
-ve.IndentationAction.prototype.indentListItem = function ( listItem ) {
+ve.ui.IndentationAction.prototype.indentListItem = function ( listItem ) {
 	if ( !( listItem instanceof ve.dm.ListItemNode ) ) {
 		throw new Error( 'listItem must be a ve.dm.ListItemNode' );
 	}
@@ -197,7 +197,7 @@ ve.IndentationAction.prototype.indentListItem = function ( listItem ) {
  * @param {ve.dm.ListItemNode} listItem List item to unindent
  * @throws {Error} listItem must be a ve.dm.ListItemNode
  */
-ve.IndentationAction.prototype.unindentListItem = function ( listItem ) {
+ve.ui.IndentationAction.prototype.unindentListItem = function ( listItem ) {
 	if ( !( listItem instanceof ve.dm.ListItemNode ) ) {
 		throw new Error( 'listItem must be a ve.dm.ListItemNode' );
 	}
@@ -311,4 +311,4 @@ ve.IndentationAction.prototype.unindentListItem = function ( listItem ) {
 
 /* Registration */
 
-ve.actionFactory.register( 'indentation', ve.IndentationAction );
+ve.ui.actionFactory.register( 'indentation', ve.ui.IndentationAction );

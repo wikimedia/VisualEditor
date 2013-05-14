@@ -1,5 +1,5 @@
 /*!
- * VisualEditor FormatAction class.
+ * VisualEditor UserInterface FormatAction class.
  *
  * @copyright 2011-2013 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
@@ -9,18 +9,18 @@
  * Format action.
  *
  * @class
- * @extends ve.Action
+ * @extends ve.ui.Action
  * @constructor
- * @param {ve.Surface} surface Surface to act on
+ * @param {ve.ui.Surface} surface Surface to act on
  */
-ve.FormatAction = function VeFormatAction( surface ) {
+ve.ui.FormatAction = function VeUiFormatAction( surface ) {
 	// Parent constructor
-	ve.Action.call( this, surface );
+	ve.ui.Action.call( this, surface );
 };
 
 /* Inheritance */
 
-ve.inheritClass( ve.FormatAction, ve.Action );
+ve.inheritClass( ve.ui.FormatAction, ve.ui.Action );
 
 /* Static Properties */
 
@@ -30,7 +30,7 @@ ve.inheritClass( ve.FormatAction, ve.Action );
  * @static
  * @property
  */
-ve.FormatAction.static.methods = ['convert'];
+ve.ui.FormatAction.static.methods = ['convert'];
 
 /* Methods */
 
@@ -44,7 +44,7 @@ ve.FormatAction.static.methods = ['convert'];
  * @param {string} type
  * @param {Object} attributes
  */
-ve.FormatAction.prototype.convert = function ( type, attributes ) {
+ve.ui.FormatAction.prototype.convert = function ( type, attributes ) {
 	var selected, i, length, contentBranch, txs,
 		surfaceView = this.surface.getView(),
 		surfaceModel = this.surface.getModel(),
@@ -76,4 +76,4 @@ ve.FormatAction.prototype.convert = function ( type, attributes ) {
 
 /* Registration */
 
-ve.actionFactory.register( 'format', ve.FormatAction );
+ve.ui.actionFactory.register( 'format', ve.ui.FormatAction );

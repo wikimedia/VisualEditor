@@ -64,11 +64,11 @@ ve.ui.UndoButtonTool.prototype.onUpdateState = function () {
 
 ve.ui.toolFactory.register( 'undo', ve.ui.UndoButtonTool );
 
-ve.commandRegistry.register(
+ve.ui.commandRegistry.register(
 	'undo', 'history', 'undo'
 );
 
-ve.triggerRegistry.register(
-	'undo', { 'mac': new ve.Trigger( 'cmd+z' ), 'pc': new ve.Trigger( 'ctrl+z' ) }
+ve.ui.triggerRegistry.register(
+	'undo', { 'mac': new ve.ui.Trigger( 'cmd+z' ), 'pc': new ve.ui.Trigger( 'ctrl+z' ) }
 );
 

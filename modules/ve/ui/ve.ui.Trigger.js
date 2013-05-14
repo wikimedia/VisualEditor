@@ -1,5 +1,5 @@
 /*!
- * VisualEditor user interface Trigger class.
+ * VisualEditor UserInterface Trigger class.
  *
  * @copyright 2011-2013 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
@@ -12,7 +12,7 @@
  * @constructor
  * @param {jQuery.Event|string} [e] Event or string to create trigger from
  */
-ve.Trigger = function ( e ) {
+ve.ui.Trigger = function VeUiTrigger( e ) {
 	// Properties
 	this.modifiers = {
 		'meta': false,
@@ -24,9 +24,9 @@ ve.Trigger = function ( e ) {
 
 	// Initialiation
 	var i, len, key, parts,
-		keyAliases = ve.Trigger.static.keyAliases,
-		primaryKeys = ve.Trigger.static.primaryKeys,
-		primaryKeyMap = ve.Trigger.static.primaryKeyMap;
+		keyAliases = ve.ui.Trigger.static.keyAliases,
+		primaryKeys = ve.ui.Trigger.static.primaryKeys,
+		primaryKeyMap = ve.ui.Trigger.static.primaryKeyMap;
 	if ( e instanceof jQuery.Event ) {
 		this.modifiers.meta = e.metaKey || false;
 		this.modifiers.ctrl = e.ctrlKey || false;
@@ -61,7 +61,7 @@ ve.Trigger = function ( e ) {
  * @property
  * @inheritable
  */
-ve.Trigger.static = {};
+ve.ui.Trigger.static = {};
 
 /**
  * Symbolic modifier key names.
@@ -71,7 +71,7 @@ ve.Trigger.static = {};
  * @static
  * @property
  */
-ve.Trigger.static.modifierKeys = ['meta', 'ctrl', 'alt', 'shift'];
+ve.ui.Trigger.static.modifierKeys = ['meta', 'ctrl', 'alt', 'shift'];
 
 /**
  * Symbolic primary key names.
@@ -79,7 +79,7 @@ ve.Trigger.static.modifierKeys = ['meta', 'ctrl', 'alt', 'shift'];
  * @static
  * @property
  */
-ve.Trigger.static.primaryKeys = [
+ve.ui.Trigger.static.primaryKeys = [
 	// Special keys
 	'backspace', 'tab', 'enter', 'escape', 'page-up', 'page-down', 'end', 'home', 'left', 'up',
 	'right', 'down', 'delete',
@@ -102,7 +102,7 @@ ve.Trigger.static.primaryKeys = [
  * @static
  * @property
  */
-ve.Trigger.static.platformFilters = {
+ve.ui.Trigger.static.platformFilters = {
 	'mac': ( function () {
 		var names = {
 			'meta': '⌘',
@@ -128,7 +128,7 @@ ve.Trigger.static.platformFilters = {
  * @static
  * @property
  */
-ve.Trigger.static.keyAliases = {
+ve.ui.Trigger.static.keyAliases = {
 	// Platform differences
 	'command': 'meta', 'apple': 'meta', 'windows': 'meta', 'option': 'alt', 'return': 'enter',
 	// Shorthand
@@ -145,7 +145,7 @@ ve.Trigger.static.keyAliases = {
  * @static
  * @property
  */
-ve.Trigger.static.primaryKeyMap = {
+ve.ui.Trigger.static.primaryKeyMap = {
 	// Special keys
 	8: 'backspace', 9: 'tab', 13: 'enter', 27: 'escape', 33: 'page-up', 34: 'page-down', 35: 'end',
 	36: 'home', 37: 'left', 38: 'up', 39: 'right', 40: 'down', 46: 'delete',
@@ -179,8 +179,8 @@ ve.Trigger.static.primaryKeyMap = {
  * @method
  * @returns {boolean} Trigger is complete
  */
-ve.Trigger.prototype.isComplete = function () {
-	return this.primary in ve.Trigger.static.primaryKeyMap;
+ve.ui.Trigger.prototype.isComplete = function () {
+	return this.primary in ve.ui.Trigger.static.primaryKeyMap;
 };
 
 /**
@@ -196,9 +196,9 @@ ve.Trigger.prototype.isComplete = function () {
  * @method
  * @returns {string} Canonical trigger string
  */
-ve.Trigger.prototype.toString = function () {
+ve.ui.Trigger.prototype.toString = function () {
 	var i, len,
-		modifierKeys = ve.Trigger.static.modifierKeys,
+		modifierKeys = ve.ui.Trigger.static.modifierKeys,
 		keys = [];
 	// Add modifier keywords in the correct order
 	for ( i = 0, len = modifierKeys.length; i < len; i++ ) {
@@ -225,9 +225,9 @@ ve.Trigger.prototype.toString = function () {
  * @method
  * @returns {string} Message for trigger
  */
-ve.Trigger.prototype.getMessage = function () {
+ve.ui.Trigger.prototype.getMessage = function () {
 	var keys,
-		platformFilters = ve.Trigger.static.platformFilters,
+		platformFilters = ve.ui.Trigger.static.platformFilters,
 		platform = ve.init.platform.getSystemPlatform();
 
 	keys = this.toString().split( '+' );

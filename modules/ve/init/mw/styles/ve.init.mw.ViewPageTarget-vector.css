@@ -5,7 +5,7 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-.ve-surface {
+.ve-ui-surface {
 	margin-top: 0.8em;
 	margin-left: -1.5em;
 	margin-right: -1.5em;
@@ -17,7 +17,7 @@
 	padding-right: 1.875em; /* 1.5/0.8 */
 }
 
-.ve-ui-toolbar-wrapper {
+.ve-init-mw-viewPageTarget-toolbar {
 	margin: -1em -1em 1em -1em;
 	-webkit-transition: margin 200ms ease-out;
 	-moz-transition: margin 200ms ease-out;
@@ -26,6 +26,6 @@
 	position: relative;
 }
 
-.ve-ui-toolbar {
+.ve-init-mw-viewPageTarget-toolbar .ve-ui-toolbar-bar {
 	display: none;
 }

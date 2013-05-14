@@ -14,9 +14,8 @@
 	 * @singleton
 	 */
 	ve = {
-		// List of instances of ve.Surface
+		// List of instances of ve.ui.Surface
 		'instances': []
-		//'actionFactory' instantiated in ve.ActionFactory.js
 	};
 
 	/* Utility Functions */

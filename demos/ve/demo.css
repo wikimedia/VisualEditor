@@ -126,7 +126,7 @@ body {
 
 /* Editor */
 
-.ve-surface {
+.ve-ui-surface {
 	margin: 2em 2em 0 2em;
 	margin-top: 0;
 	box-shadow: 0 0.25em 1.5em 0 #ddd;
@@ -139,9 +139,12 @@ body {
 	padding: 0.75em 1.5em;
 }
 
-.ve-ui-toolbar {
+.ve-init-sa-target-toolbar {
+	margin: 0 2em;
+}
+
+.ve-init-sa-target-toolbar .ve-ui-toolbar-bar {
 	border: solid 1px #ccc;
-	position: relative;
 	border-radius: 0;
 	-webkit-border-top-right-radius: 0.25em;
 	-moz-border-top-right-radius: 0.25em;
@@ -151,17 +154,9 @@ body {
 	-moz-border-top-left-radius: 0.25em;
 	-o-border-top-left-radius: 0.25em;
 	border-top-left-radius: 0.25em;
-	/* @embed */
-	background-image: url(../../modules/ve/ui/styles/images/fade-up.png);
-	background-position: left bottom;
-	background-repeat: repeat-x;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	-o-user-select: none;
-	user-select: none;
 }
 
-.ve-ui-toolbar-wrapper {
-	margin: 0 2em;
+.ve-init-sa-target-toolbar.ve-ui-toolbar-floating .ve-ui-toolbar-bar {
+	border-top: none;
+	border-radius: 0;
 }

@@ -33,8 +33,8 @@ ve.ui.MWLinkButtonTool.static.inspector = 'mwLink';
 
 ve.ui.toolFactory.register( 'mwLink', ve.ui.MWLinkButtonTool );
 
-ve.commandRegistry.register( 'mwLink', 'inspector', 'open', 'mwLink' );
+ve.ui.commandRegistry.register( 'mwLink', 'inspector', 'open', 'mwLink' );
 
-ve.triggerRegistry.register(
-	'mwLink', { 'mac': new ve.Trigger( 'cmd+k' ), 'pc': new ve.Trigger( 'ctrl+k' ) }
+ve.ui.triggerRegistry.register(
+	'mwLink', { 'mac': new ve.ui.Trigger( 'cmd+k' ), 'pc': new ve.ui.Trigger( 'ctrl+k' ) }
 );

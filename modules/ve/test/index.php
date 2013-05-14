@@ -24,8 +24,8 @@
 		<!-- Dependencies -->
 		<script src="../../jquery/jquery.js"></script>
 		<script src="../../jquery/jquery.client.js"></script>
-		<script src="../../rangy/rangy-core.js"></script>
-		<script src="../../rangy/rangy-position.js"></script>
+		<script src="../../rangy/rangy-core-1.3.js"></script>
+		<script src="../../rangy/rangy-position-1.3.js"></script>
 		<script src="../../unicodejs/unicodejs.js"></script>
 		<script src="../../unicodejs/unicodejs.textstring.js"></script>
 		<script src="../../unicodejs/unicodejs.wordbreak.groups.js"></script>
@@ -45,31 +45,19 @@
 				require( '../../../VisualEditor.i18n.php' );
 				echo 've.init.platform.addMessages( ' . json_encode( $messages['en'] ) . ');' . "\n";
 			?>
-			ve.init.platform.setModulesUrl( '../..' );
+			ve.init.platform.setModulesUrl( '../../' );
 		</script>
 		<!-- ext.visualEditor.core -->
 		<script src="../../ve/ve.Registry.js"></script>
 		<script src="../../ve/ve.Factory.js"></script>
-		<script src="../../ve/ve.Trigger.js"></script>
-		<script src="../../ve/ve.CommandRegistry.js"></script>
-		<script src="../../ve/ve.TriggerRegistry.js"></script>
 		<script src="../../ve/ve.Range.js"></script>
 		<script src="../../ve/ve.Node.js"></script>
 		<script src="../../ve/ve.NamedClassFactory.js"></script>
 		<script src="../../ve/ve.BranchNode.js"></script>
 		<script src="../../ve/ve.LeafNode.js"></script>
 		<script src="../../ve/ve.Element.js"></script>
-		<script src="../../ve/ve.Surface.js"></script>
 		<script src="../../ve/ve.Document.js"></script>
-		<script src="../../ve/ve.Action.js"></script>
-		<script src="../../ve/ve.ActionFactory.js"></script>
-		<script src="../../ve/actions/ve.AnnotationAction.js"></script>
-		<script src="../../ve/actions/ve.ContentAction.js"></script>
-		<script src="../../ve/actions/ve.FormatAction.js"></script>
-		<script src="../../ve/actions/ve.HistoryAction.js"></script>
-		<script src="../../ve/actions/ve.IndentationAction.js"></script>
-		<script src="../../ve/actions/ve.InspectorAction.js"></script>
-		<script src="../../ve/actions/ve.ListAction.js"></script>
+		<script src="../../ve/ve.Editor.js"></script>
 		<script src="../../ve/dm/ve.dm.js"></script>
 		<script src="../../ve/dm/ve.dm.Model.js"></script>
 		<script src="../../ve/dm/ve.dm.ModelRegistry.js"></script>
@@ -178,6 +166,7 @@
 		<script src="../../ve/ce/annotations/ve.ce.MWInternalLinkAnnotation.js"></script>
 		<script src="../../ve/ce/annotations/ve.ce.TextStyleAnnotation.js"></script>
 		<script src="../../ve/ui/ve.ui.js"></script>
+		<script src="../../ve/ui/ve.ui.Surface.js"></script>
 		<script src="../../ve/ui/ve.ui.Context.js"></script>
 		<script src="../../ve/ui/ve.ui.Frame.js"></script>
 		<script src="../../ve/ui/ve.ui.Window.js"></script>
@@ -190,8 +179,20 @@
 		<script src="../../ve/ui/ve.ui.Layout.js"></script>
 		<script src="../../ve/ui/ve.ui.Widget.js"></script>
 		<script src="../../ve/ui/ve.ui.Tool.js"></script>
-		<script src="../../ve/ui/ve.ui.Toolbar.js"></script>
 		<script src="../../ve/ui/ve.ui.ToolFactory.js"></script>
+		<script src="../../ve/ui/ve.ui.Toolbar.js"></script>
+		<script src="../../ve/ui/ve.ui.CommandRegistry.js"></script>
+		<script src="../../ve/ui/ve.ui.Trigger.js"></script>
+		<script src="../../ve/ui/ve.ui.TriggerRegistry.js"></script>
+		<script src="../../ve/ui/ve.ui.Action.js"></script>
+		<script src="../../ve/ui/ve.ui.ActionFactory.js"></script>
+		<script src="../../ve/ui/actions/ve.ui.AnnotationAction.js"></script>
+		<script src="../../ve/ui/actions/ve.ui.ContentAction.js"></script>
+		<script src="../../ve/ui/actions/ve.ui.FormatAction.js"></script>
+		<script src="../../ve/ui/actions/ve.ui.HistoryAction.js"></script>
+		<script src="../../ve/ui/actions/ve.ui.IndentationAction.js"></script>
+		<script src="../../ve/ui/actions/ve.ui.InspectorAction.js"></script>
+		<script src="../../ve/ui/actions/ve.ui.ListAction.js"></script>
 		<script src="../../ve/ui/elements/ve.ui.LabeledElement.js"></script>
 		<script src="../../ve/ui/elements/ve.ui.GroupElement.js"></script>
 		<script src="../../ve/ui/elements/ve.ui.FlaggableElement.js"></script>
@@ -213,6 +214,10 @@
 		<script src="../../ve/ui/widgets/ve.ui.TextInputMenuWidget.js"></script>
 		<script src="../../ve/ui/widgets/ve.ui.LinkTargetInputWidget.js"></script>
 		<script src="../../ve/ui/widgets/ve.ui.MWLinkTargetInputWidget.js"></script>
+		<script src="../../ve/ui/widgets/ve.ui.MWCategoryInputWidget.js"></script>
+		<script src="../../ve/ui/widgets/ve.ui.MWCategoryPopupWidget.js"></script>
+		<script src="../../ve/ui/widgets/ve.ui.MWCategoryItemWidget.js"></script>
+		<script src="../../ve/ui/widgets/ve.ui.MWCategoryWidget.js"></script>
 		<script src="../../ve/ui/layouts/ve.ui.FieldsetLayout.js"></script>
 		<script src="../../ve/ui/layouts/ve.ui.GridLayout.js"></script>
 		<script src="../../ve/ui/layouts/ve.ui.PanelLayout.js"></script>
@@ -220,6 +225,7 @@
 		<script src="../../ve/ui/dialogs/ve.ui.ContentDialog.js"></script>
 		<script src="../../ve/ui/dialogs/ve.ui.MediaDialog.js"></script>
 		<script src="../../ve/ui/dialogs/ve.ui.PagedDialog.js"></script>
+		<script src="../../ve/ui/dialogs/ve.ui.MWMetaDialog.js"></script>
 		<script src="../../ve/ui/tools/ve.ui.ButtonTool.js"></script>
 		<script src="../../ve/ui/tools/ve.ui.AnnotationButtonTool.js"></script>
 		<script src="../../ve/ui/tools/ve.ui.DialogButtonTool.js"></script>
@@ -266,15 +272,11 @@
 		<script src="ve.test.js"></script>
 		<script src="ve.example.js"></script>
 		<script src="ve.Range.test.js"></script>
-		<script src="ve.Trigger.test.js"></script>
 		<script src="ve.Document.test.js"></script>
 		<script src="ve.Node.test.js"></script>
 		<script src="ve.BranchNode.test.js"></script>
 		<script src="ve.LeafNode.test.js"></script>
 		<script src="ve.Factory.test.js"></script>
-		<script src="actions/ve.FormatAction.test.js"></script>
-		<script src="actions/ve.IndentationAction.test.js"></script>
-		<script src="actions/ve.ListAction.test.js"></script>
 		<script src="dm/ve.dm.example.js"></script>
 		<script src="dm/ve.dm.AnnotationSet.test.js"></script>
 		<script src="dm/ve.dm.NodeFactory.test.js"></script>
@@ -305,6 +307,10 @@
 		<script src="ce/ve.ce.LeafNode.test.js"></script>
 		<script src="ce/nodes/ve.ce.TextNode.test.js"></script>
 		<script src="init/ve.init.Platform.test.js"></script>
+		<script src="ui/ve.ui.Trigger.test.js"></script>
+		<script src="ui/actions/ve.ui.FormatAction.test.js"></script>
+		<script src="ui/actions/ve.ui.IndentationAction.test.js"></script>
+		<script src="ui/actions/ve.ui.ListAction.test.js"></script>
 
 		<div id="qunit"></div>
 		<div id="qunit-fixture">test markup</div>

@@ -1,5 +1,5 @@
 /*!
- * VisualEditor TriggerRegistry class.
+ * VisualEditor UserInterface TriggerRegistry class.
  *
  * @copyright 2011-2013 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
@@ -12,14 +12,14 @@
  * @extends ve.Registry
  * @constructor
  */
-ve.TriggerRegistry = function VeTriggerRegistry() {
+ve.ui.TriggerRegistry = function VeUiTriggerRegistry() {
 	// Parent constructor
 	ve.Registry.call( this );
 };
 
 /* Inheritance */
 
-ve.inheritClass( ve.TriggerRegistry, ve.Registry );
+ve.inheritClass( ve.ui.TriggerRegistry, ve.Registry );
 
 /* Methods */
 
@@ -31,10 +31,10 @@ ve.inheritClass( ve.TriggerRegistry, ve.Registry );
  *
  * @method
  * @param {string|string[]} name Symbolic name or list of symbolic names
- * @param {ve.Trigger|Object} trigger Trigger object, or map of trigger objects keyed by
+ * @param {ve.ui.Trigger|Object} trigger Trigger object, or map of trigger objects keyed by
  * platform name e.g. 'mac' or 'pc'
  */
-ve.TriggerRegistry.prototype.register = function ( name, trigger ) {
+ve.ui.TriggerRegistry.prototype.register = function ( name, trigger ) {
 	var platform = ve.init.platform.getSystemPlatform(),
 		platformKey = platform === 'mac' ? 'mac' : 'pc';
 
@@ -42,10 +42,10 @@ ve.TriggerRegistry.prototype.register = function ( name, trigger ) {
 	if ( typeof name !== 'string' && !ve.isArray( name ) ) {
 		throw new Error( 'name must be a string or array, cannot be a ' + typeof name );
 	}
-	if ( !( trigger instanceof ve.Trigger ) && !ve.isPlainObject( trigger ) ) {
+	if ( !( trigger instanceof ve.ui.Trigger ) && !ve.isPlainObject( trigger ) ) {
 		throw new Error(
-			'trigger must be an instance of ve.Trigger or an object containing instances of ' +
-				've.Trigger, cannot be a ' + typeof trigger
+			'trigger must be an instance of ve.ui.Trigger or an object containing instances of ' +
+				've.ui.Trigger, cannot be a ' + typeof trigger
 		);
 	}
 
@@ -62,4 +62,4 @@ ve.TriggerRegistry.prototype.register = function ( name, trigger ) {
 
 /* Initialization */
 
-ve.triggerRegistry = new ve.TriggerRegistry();
+ve.ui.triggerRegistry = new ve.ui.TriggerRegistry();

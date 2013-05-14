@@ -1,5 +1,5 @@
 /*!
- * VisualEditor ContentAction class.
+ * VisualEditor UserInterface ContentAction class.
  *
  * @copyright 2011-2013 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
@@ -9,18 +9,18 @@
  * Content action.
  *
  * @class
- * @extends ve.Action
+ * @extends ve.ui.Action
  * @constructor
- * @param {ve.Surface} surface Surface to act on
+ * @param {ve.ui.Surface} surface Surface to act on
  */
-ve.ContentAction = function VeContentAction( surface ) {
+ve.ui.ContentAction = function VeUiContentAction( surface ) {
 	// Parent constructor
-	ve.Action.call( this, surface );
+	ve.ui.Action.call( this, surface );
 };
 
 /* Inheritance */
 
-ve.inheritClass( ve.ContentAction, ve.Action );
+ve.inheritClass( ve.ui.ContentAction, ve.ui.Action );
 
 /* Static Properties */
 
@@ -30,7 +30,7 @@ ve.inheritClass( ve.ContentAction, ve.Action );
  * @static
  * @property
  */
-ve.ContentAction.static.methods = ['insert', 'remove', 'select'];
+ve.ui.ContentAction.static.methods = ['insert', 'remove', 'select'];
 
 /* Methods */
 
@@ -41,7 +41,7 @@ ve.ContentAction.static.methods = ['insert', 'remove', 'select'];
  * @param {string|Array} content Content to insert, can be either a string or array of data
  * @param {boolean} annotate Content should be automatically annotated to match surrounding content
  */
-ve.ContentAction.prototype.insert = function ( content, annotate ) {
+ve.ui.ContentAction.prototype.insert = function ( content, annotate ) {
 	this.surface.getModel().getFragment().insertContent( content, annotate );
 };
 
@@ -50,7 +50,7 @@ ve.ContentAction.prototype.insert = function ( content, annotate ) {
  *
  * @method
  */
-ve.ContentAction.prototype.remove = function () {
+ve.ui.ContentAction.prototype.remove = function () {
 	this.surface.getModel().getFragment().removeContent();
 };
 
@@ -60,10 +60,10 @@ ve.ContentAction.prototype.remove = function () {
  * @method
  * @param {ve.Range} range Range to select
  */
-ve.ContentAction.prototype.select = function ( range ) {
+ve.ui.ContentAction.prototype.select = function ( range ) {
 	this.surface.getModel().change( null, range );
 };
 
 /* Registration */
 
-ve.actionFactory.register( 'content', ve.ContentAction );
+ve.ui.actionFactory.register( 'content', ve.ui.ContentAction );

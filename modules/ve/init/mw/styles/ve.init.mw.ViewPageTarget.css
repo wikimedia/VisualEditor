@@ -28,11 +28,7 @@
 
 /* Toolbar */
 
-.ve-ui-actions {
-	font-size: 0.8em;
-}
-
-.ve-ui-actions .ve-ui-buttonWidget {
+.ve-ui-toolbar-actions .ve-ui-buttonWidget {
 	margin-left: 0.25em;
 	margin-right: 0.25em;
 	margin-top: 0.2em;

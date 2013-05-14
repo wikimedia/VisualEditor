@@ -38,6 +38,6 @@ ve.ui.OutdentButtonTool.static.method = 'decrease';
 ve.ui.toolFactory.register( 'outdent', ve.ui.OutdentButtonTool );
 
 // TODO: Consistency between outdent and unindent.
-ve.commandRegistry.register( 'outdent', 'indentation', 'decrease' );
+ve.ui.commandRegistry.register( 'outdent', 'indentation', 'decrease' );
 
-ve.triggerRegistry.register( 'outdent', new ve.Trigger( 'shift+tab' ) );
+ve.ui.triggerRegistry.register( 'outdent', new ve.ui.Trigger( 'shift+tab' ) );

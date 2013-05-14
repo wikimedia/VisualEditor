@@ -1,11 +1,11 @@
 /*!
- * VisualEditor Trigger tests.
+ * VisualEditor UserInterface Trigger tests.
  *
  * @copyright 2011-2013 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-QUnit.module( 've.Trigger' );
+QUnit.module( 've.ui.Trigger' );
 
 /* Tests */
 
@@ -23,12 +23,12 @@ QUnit.test( 'constructor', function ( assert ) {
 	QUnit.expect( 2 * tests.length );
 	for ( i = 0, len = tests.length; i < len; i++ ) {
 		assert.equal(
-			new ve.Trigger( tests[i].trigger ).toString(),
+			new ve.ui.Trigger( tests[i].trigger ).toString(),
 			tests[i].trigger,
 			'trigger is parsed correctly'
 		);
 		assert.equal(
-			new ve.Trigger( tests[i].event ).toString(),
+			new ve.ui.Trigger( tests[i].event ).toString(),
 			tests[i].trigger,
 			'event is parsed correctly'
 		);

@@ -13,7 +13,7 @@
  * @mixins ve.EventEmitter
  *
  * @constructor
- * @param {ve.Surface} surface
+ * @param {ve.ui.Surface} surface
  * @emits initialize
  */
 ve.ui.Window = function VeUiWindow( surface ) {

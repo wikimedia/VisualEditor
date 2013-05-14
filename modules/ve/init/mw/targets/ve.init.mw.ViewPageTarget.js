@@ -50,15 +50,6 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 	this.activating = false;
 	this.deactivating = false;
 	this.scrollTop = null;
-	this.surfaceOptions = {
-		'toolbar': [
-			{ 'name': 'history', 'items' : ['undo', 'redo'] },
-			{ 'name': 'textStyle', 'items' : ['mwFormat'] },
-			{ 'name': 'textStyle', 'items' : ['bold', 'italic', 'mwLink', 'clear'] },
-			{ 'name': 'list', 'items' : ['number', 'bullet', 'outdent', 'indent'] }
-		],
-		'commands': ['bold', 'italic', 'mwLink', 'undo', 'redo', 'indent', 'outdent']
-	};
 	this.currentUri = currentUri;
 	this.restoring = this.oldid !== mw.config.get( 'wgCurRevisionId' );
 	this.section = currentUri.query.vesection || null;
@@ -162,6 +153,17 @@ ve.init.mw.ViewPageTarget.compatibility = {
 		blackberry: false
 	}
 };
+
+ve.init.mw.ViewPageTarget.static.toolbarTools = [
+		{ 'name': 'history', 'items' : ['undo', 'redo'] },
+		{ 'name': 'textStyle', 'items' : ['mwFormat'] },
+		{ 'name': 'textStyle', 'items' : ['bold', 'italic', 'mwLink', 'clear'] },
+		{ 'name': 'list', 'items' : ['number', 'bullet', 'outdent', 'indent'] }
+];
+
+ve.init.mw.ViewPageTarget.static.surfaceCommands = [
+	'bold', 'italic', 'mwLink', 'undo', 'redo', 'indent', 'outdent'
+];
 
 // TODO: Accessibility tooltips and logical tab order for prevButton and closeButton.
 ve.init.mw.ViewPageTarget.saveDialogTemplate = '\
@@ -718,15 +720,16 @@ ve.init.mw.ViewPageTarget.prototype.setupToolbarEditNotices = function () {
  */
 ve.init.mw.ViewPageTarget.prototype.setUpSurface = function ( doc ) {
 	// Initialize surface
-	this.surface = new ve.Surface( this, doc, this.surfaceOptions );
+	this.editor = new ve.Editor( this, doc );
+	this.surface = new ve.ui.Surface( this.editor, doc, this.surfaceOptions );
 	this.surface.getContext().hide();
 	this.$document = this.surface.$.find( '.ve-ce-documentNode' );
 	this.surface.getModel().connect( this, { 'transact': 'onSurfaceModelTransact' } );
 	this.surface.getModel().connect( this, { 'history': 'onSurfaceModelHistory' } );
-	// Transplant the toolbar
-	this.attachToolbar();
+	this.$.append( this.surface.$ );
+	this.surface.initialize();
+	this.setUpToolbar();
 	this.transformPageTitle();
-	this.setupToolbarFloating();
 	// Update UI
 	this.hidePageContent();
 	this.hideSpinner();
@@ -750,14 +753,15 @@ ve.init.mw.ViewPageTarget.prototype.tearDownSurface = function () {
 		this.$document.blur();
 		this.$document = null;
 	}
-	this.teardownToolbarFloating();
-	this.detachToolbar();
+	this.tearDownToolbar();
 	this.hideSpinner();
 	this.showPageContent();
 	this.restorePageTitle();
 	this.showTableOfContents();
 	// Destroy editor
 	if ( this.surface ) {
+		this.editor.destroy();
+		this.editor = null;
 		this.surface.destroy();
 		this.surface = null;
 	}
@@ -941,7 +945,7 @@ ve.init.mw.ViewPageTarget.prototype.tearDownToolbarButtons = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.attachToolbarButtons = function () {
-	var $target = $( '.ve-ui-toolbar .ve-ui-actions' );
+	var $target = this.toolbar.$actions;
 	$target.append( this.$toolbarFeedbackTool );
 	if ( !ve.isEmptyObject( this.editNotices ) ) {
 		$target.append( this.$toolbarEditNoticesTool );
@@ -1343,7 +1347,7 @@ ve.init.mw.ViewPageTarget.prototype.swapSaveDialog = function ( slide ) {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.attachSaveDialog = function () {
-	this.$toolbarWrapper.find( '.ve-ui-toolbar' ).append( this.$saveDialog );
+	this.toolbar.$bar.append( this.$saveDialog );
 };
 
 /**
@@ -1463,14 +1467,19 @@ ve.init.mw.ViewPageTarget.prototype.hideTableOfContents = function () {
  *
  * @method
  */
-ve.init.mw.ViewPageTarget.prototype.attachToolbar = function () {
-	this.$toolbarWrapper = $( '.ve-ui-toolbar-wrapper' )
-		.insertBefore( $( '#firstHeading' ) )
-		.find( '.ve-ui-toolbar' )
-			.slideDown( 'fast', ve.bind( function () {
-				this.surface.getContext().update();
-			}, this ) )
-			.end();
+ve.init.mw.ViewPageTarget.prototype.setUpToolbar = function () {
+	this.toolbar = new ve.ui.Toolbar( this.surface, { 'shadow': true, 'actions': true } );
+	this.editor.addCommands( this.constructor.static.surfaceCommands );
+	this.toolbar.addTools( this.constructor.static.toolbarTools );
+	if ( !this.isMobileDevice ) {
+		this.toolbar.enableFloating();
+	}
+	this.toolbar.$
+		.addClass( 've-init-mw-viewPageTarget-toolbar' )
+		.insertBefore( '#firstHeading' );
+	this.toolbar.$bar.slideDown( 'fast', ve.bind( function () {
+		this.surface.getContext().update();
+	}, this ) );
 };
 
 /**
@@ -1478,10 +1487,11 @@ ve.init.mw.ViewPageTarget.prototype.attachToolbar = function () {
  *
  * @method
  */
-ve.init.mw.ViewPageTarget.prototype.detachToolbar = function () {
-	$( '.ve-ui-toolbar' ).slideUp( 'fast', function () {
-		$(this).parent().remove();
-	} );
+ve.init.mw.ViewPageTarget.prototype.tearDownToolbar = function () {
+	this.toolbar.$bar.slideUp( 'fast', ve.bind( function () {
+		this.toolbar.destroy();
+		this.toolbar = null;
+	}, this ) );
 };
 
 /**

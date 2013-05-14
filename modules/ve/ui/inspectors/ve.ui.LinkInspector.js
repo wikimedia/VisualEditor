@@ -12,7 +12,7 @@
  * @extends ve.ui.Inspector
  *
  * @constructor
- * @param {ve.Surface} surface
+ * @param {ve.ui.Surface} surface
  */
 ve.ui.LinkInspector = function VeUiLinkInspector( surface ) {
 	// Parent constructor
@@ -50,7 +50,7 @@ ve.ui.LinkInspector.prototype.initialize = function () {
 
 	// Properties
 	this.targetInput = new this.constructor.static.linkTargetInputWidget( {
-		'$$': this.$$, '$overlay': this.surface.$overlay
+		'$$': this.$$, '$overlay': this.surface.getEditor().$overlay
 	} );
 
 	// Initialization

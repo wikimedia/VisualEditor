@@ -1,5 +1,5 @@
 /*!
- * VisualEditor InspectorAction class.
+ * VisualEditor UserInterface InspectorAction class.
  *
  * @copyright 2011-2013 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
@@ -9,18 +9,18 @@
  * Inspector action.
  *
  * @class
- * @extends ve.Action
+ * @extends ve.ui.Action
  * @constructor
- * @param {ve.Surface} surface Surface to act on
+ * @param {ve.ui.Surface} surface Surface to act on
  */
-ve.InspectorAction = function VeInspectorAction( surface ) {
+ve.ui.InspectorAction = function VeUiInspectorAction( surface ) {
 	// Parent constructor
-	ve.Action.call( this, surface );
+	ve.ui.Action.call( this, surface );
 };
 
 /* Inheritance */
 
-ve.inheritClass( ve.InspectorAction, ve.Action );
+ve.inheritClass( ve.ui.InspectorAction, ve.ui.Action );
 
 /* Static Properties */
 
@@ -30,7 +30,7 @@ ve.inheritClass( ve.InspectorAction, ve.Action );
  * @static
  * @property
  */
-ve.InspectorAction.static.methods = ['open', 'close'];
+ve.ui.InspectorAction.static.methods = ['open', 'close'];
 
 /* Methods */
 
@@ -40,10 +40,10 @@ ve.InspectorAction.static.methods = ['open', 'close'];
  * @method
  * @param {string} name Symbolic name of inspector to open
  */
-ve.InspectorAction.prototype.open = function ( name ) {
+ve.ui.InspectorAction.prototype.open = function ( name ) {
 	this.surface.getContext().openInspector( name );
 };
 
 /* Registration */
 
-ve.actionFactory.register( 'inspector', ve.InspectorAction );
+ve.ui.actionFactory.register( 'inspector', ve.ui.InspectorAction );

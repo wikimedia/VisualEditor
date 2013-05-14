@@ -12,7 +12,7 @@
  * @mixins ve.EventEmitter
  *
  * @constructor
- * @param {ve.Surface} surface
+ * @param {ve.ui.Surface} surface
  */
 ve.ui.WindowSet = function VeUiWindowSet( surface, factory ) {
 	// Mixin constructors

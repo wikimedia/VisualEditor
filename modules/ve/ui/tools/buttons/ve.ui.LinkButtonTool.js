@@ -37,8 +37,8 @@ ve.ui.LinkButtonTool.static.inspector = 'link';
 
 ve.ui.toolFactory.register( 'link', ve.ui.LinkButtonTool );
 
-ve.commandRegistry.register( 'link', 'inspector', 'open', 'link' );
+ve.ui.commandRegistry.register( 'link', 'inspector', 'open', 'link' );
 
-ve.triggerRegistry.register(
-	'link', { 'mac': new ve.Trigger( 'cmd+k' ), 'pc': new ve.Trigger( 'ctrl+k' ) }
+ve.ui.triggerRegistry.register(
+	'link', { 'mac': new ve.ui.Trigger( 'cmd+k' ), 'pc': new ve.ui.Trigger( 'ctrl+k' ) }
 );

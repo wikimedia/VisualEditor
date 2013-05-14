@@ -1,19 +1,20 @@
 /*!
- * VisualEditor Actions IndentationAction tests.
+ * VisualEditor UserInterface Actions IndentationAction tests.
  *
  * @copyright 2011-2013 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-QUnit.module( 've.IndentationAction' );
+QUnit.module( 've.ui.IndentationAction' );
 
 /* Tests */
 
 function runIndentationChangeTest( assert, range, method, expectedSelection, expectedData, expectedOriginalData, msg ) {
 	var selection,
 		dom = ve.createDocumentFromHTML( ve.dm.example.isolationHTML ),
-		surface = new ve.Surface( new ve.init.Target( $( '<div>' ) ), dom ),
-		indentationAction = new ve.IndentationAction( surface ),
+		target = new ve.init.sa.Target( $( '#qunit-fixture' ), dom ),
+		surface = target.surface,
+		indentationAction = new ve.ui.IndentationAction( surface ),
 		data = ve.copyArray( surface.getModel().getDocument().getFullData() ),
 		originalData = ve.copyArray( data );
 

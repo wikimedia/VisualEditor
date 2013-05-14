@@ -1,19 +1,20 @@
 /*!
- * VisualEditor Actions FormatAction tests.
+ * VisualEditor UserInterface Actions FormatAction tests.
  *
  * @copyright 2011-2013 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-QUnit.module( 've.FormatAction' );
+QUnit.module( 've.ui.FormatAction' );
 
 /* Tests */
 
 function runFormatConverterTest( assert, range, type, attributes, expectedSelection, expectedData, msg ) {
 	var selection,
 		dom = ve.createDocumentFromHTML( ve.dm.example.isolationHTML ),
-		surface = new ve.Surface( new ve.init.Target( $( '<div>' ) ), dom ),
-		formatAction = new ve.FormatAction( surface ),
+		target = new ve.init.sa.Target( $( '#qunit-fixture' ), dom ),
+		surface = target.surface,
+		formatAction = new ve.ui.FormatAction( surface ),
 		data = ve.copyArray( surface.getModel().getDocument().getFullData() ),
 		originalData = ve.copyArray( data );
 

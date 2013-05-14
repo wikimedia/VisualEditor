@@ -1,19 +1,20 @@
 /*!
- * VisualEditor Actions ListAction tests.
+ * VisualEditor UserInterface Actions ListAction tests.
  *
  * @copyright 2011-2013 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-QUnit.module( 've.ListAction' );
+QUnit.module( 've.ui.ListAction' );
 
 /* Tests */
 
 function runListConverterTest( assert, html, method, style, range, expectedSelection, expectedData, expectedOriginalData, msg ) {
 	var selection,
 		dom = ve.createDocumentFromHTML( html || ve.dm.example.html ),
-		surface = new ve.Surface( new ve.init.Target( $( '<div>' ) ), dom ),
-		listAction = new ve.ListAction( surface ),
+		target = new ve.init.sa.Target( $( '#qunit-fixture' ), dom ),
+		surface = target.surface,
+		listAction = new ve.ui.ListAction( surface ),
 		data = ve.copyArray( surface.getModel().getDocument().getFullData() ),
 		originalData = ve.copyArray( data );
 
@@ -21,7 +22,6 @@ function runListConverterTest( assert, html, method, style, range, expectedSelec
 	if ( expectedOriginalData ) {
 		expectedOriginalData( originalData );
 	}
-
 	surface.getModel().change( null, range );
 	listAction[method]( style );
 
@@ -40,10 +40,10 @@ QUnit.test( '(un)wrap', function ( assert ) {
 	var i,
 		cases = [
 			{
-				'range': new ve.Range( 55, 61 ),
+				'range': new ve.Range( 56, 60 ),
 				'method': 'wrap',
 				'style': 'bullet',
-				'expectedSelection': new ve.Range( 55, 67 ),
+				'expectedSelection': new ve.Range( 58, 64 ),
 				'expectedData': function ( data ) {
 					data.splice( 55, 0, { 'type': 'list', 'attributes': { 'style': 'bullet' } }, { 'type': 'listItem' } );
 					data.splice( 60, 0, { 'type': '/listItem' }, { 'type': 'listItem' } );

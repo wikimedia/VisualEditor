@@ -14,7 +14,7 @@
  * @extends ve.ui.LinkInspector
  *
  * @constructor
- * @param {ve.Surface} surface
+ * @param {ve.ui.Surface} surface
  */
 ve.ui.MWLinkInspector = function VeUiMWLinkInspector( surface ) {
 	// Parent constructor

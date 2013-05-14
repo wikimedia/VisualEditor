@@ -17,7 +17,7 @@
  * @extends ve.ui.Dialog
  *
  * @constructor
- * @param {ve.Surface} surface
+ * @param {ve.ui.Surface} surface
  */
 ve.ui.PagedDialog = function VeUiPagedDialog( surface ) {
 	// Parent constructor

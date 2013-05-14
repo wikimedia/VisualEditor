@@ -45,7 +45,7 @@ ve.ui.DialogButtonTool.static.dialog = '';
  * @method
  */
 ve.ui.DialogButtonTool.prototype.onClick = function () {
-	this.toolbar.getSurface().dialogs.open( this.constructor.static.dialog );
+	this.toolbar.getSurface().getDialogs().open( this.constructor.static.dialog );
 };
 
 /**

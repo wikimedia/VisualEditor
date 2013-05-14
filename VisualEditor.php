@@ -123,6 +123,7 @@ $wgResourceModules += array(
 		),
 		'dependencies' => array(
 			'ext.visualEditor.base',
+			'ext.visualEditor.mediawiki',
 			'jquery.byteLength',
 			'jquery.byteLimit',
 			'jquery.client',
@@ -192,15 +193,32 @@ $wgResourceModules += array(
 			've/init/ve.init.js',
 			've/init/ve.init.Platform.js',
 			've/init/ve.init.Target.js',
+		),
+		'debugScripts' => array(
+			've/ve.debug.js',
+		),
+	),
+	'ext.visualEditor.mediawiki' => $wgVisualEditorResourceTemplate + array(
+		'scripts' => array(
+			// init
 			've/init/mw/ve.init.mw.js',
 			've/init/mw/ve.init.mw.Platform.js',
 			've/init/mw/ve.init.mw.Target.js',
 		),
 		'dependencies' => array(
 			'jquery.client',
+			'ext.visualEditor.base',
 		),
-		'debugScripts' => array(
-			've/ve.debug.js',
+	),
+	'ext.visualEditor.standalone' => $wgVisualEditorResourceTemplate + array(
+		'scripts' => array(
+			// init
+			've/init/sa/ve.init.sa.js',
+			've/init/sa/ve.init.sa.Platform.js',
+			've/init/sa/ve.init.sa.Target.js',
+		),
+		'dependencies' => array(
+			'ext.visualEditor.base',
 		),
 	),
 	'ext.visualEditor.specialMessages' => $wgVisualEditorResourceTemplate + array(
@@ -211,28 +229,14 @@ $wgResourceModules += array(
 			// ve
 			've/ve.Registry.js',
 			've/ve.Factory.js',
-			've/ve.Trigger.js',
-			've/ve.CommandRegistry.js',
-			've/ve.TriggerRegistry.js',
 			've/ve.Range.js',
 			've/ve.Node.js',
 			've/ve.NamedClassFactory.js',
 			've/ve.BranchNode.js',
 			've/ve.LeafNode.js',
 			've/ve.Element.js',
-			've/ve.Surface.js',
 			've/ve.Document.js',
-			've/ve.Action.js',
-			've/ve.ActionFactory.js',
-
-			// actions
-			've/actions/ve.AnnotationAction.js',
-			've/actions/ve.ContentAction.js',
-			've/actions/ve.FormatAction.js',
-			've/actions/ve.HistoryAction.js',
-			've/actions/ve.IndentationAction.js',
-			've/actions/ve.InspectorAction.js',
-			've/actions/ve.ListAction.js',
+			've/ve.Editor.js',
 
 			// dm
 			've/dm/ve.dm.js',
@@ -355,6 +359,7 @@ $wgResourceModules += array(
 
 			// ui
 			've/ui/ve.ui.js',
+			've/ui/ve.ui.Surface.js',
 			've/ui/ve.ui.Context.js',
 			've/ui/ve.ui.Frame.js',
 			've/ui/ve.ui.Window.js',
@@ -367,8 +372,21 @@ $wgResourceModules += array(
 			've/ui/ve.ui.Layout.js',
 			've/ui/ve.ui.Widget.js',
 			've/ui/ve.ui.Tool.js',
-			've/ui/ve.ui.Toolbar.js',
 			've/ui/ve.ui.ToolFactory.js',
+			've/ui/ve.ui.Toolbar.js',
+			've/ui/ve.ui.CommandRegistry.js',
+			've/ui/ve.ui.Trigger.js',
+			've/ui/ve.ui.TriggerRegistry.js',
+			've/ui/ve.ui.Action.js',
+			've/ui/ve.ui.ActionFactory.js',
+
+			've/ui/actions/ve.ui.AnnotationAction.js',
+			've/ui/actions/ve.ui.ContentAction.js',
+			've/ui/actions/ve.ui.FormatAction.js',
+			've/ui/actions/ve.ui.HistoryAction.js',
+			've/ui/actions/ve.ui.IndentationAction.js',
+			've/ui/actions/ve.ui.InspectorAction.js',
+			've/ui/actions/ve.ui.ListAction.js',
 
 			've/ui/elements/ve.ui.LabeledElement.js',
 			've/ui/elements/ve.ui.GroupElement.js',
@@ -435,14 +453,13 @@ $wgResourceModules += array(
 			've/ui/inspectors/ve.ui.MWLinkInspector.js',
 		),
 		'styles' => array(
-			// ve
-			've/styles/ve.Surface.css',
 			// ce
 			've/ce/styles/ve.ce.DocumentNode.css',
 			've/ce/styles/ve.ce.Node.css',
 			've/ce/styles/ve.ce.Surface.css',
 			// ui
 			've/ui/styles/ve.ui.css',
+			've/ui/styles/ve.ui.Surface.css',
 			've/ui/styles/ve.ui.Context.css',
 			've/ui/styles/ve.ui.Frame.css',
 			've/ui/styles/ve.ui.Window.css',

@@ -14,7 +14,7 @@
  * @extends ve.ui.PagedDialog
  *
  * @constructor
- * @param {ve.Surface} surface
+ * @param {ve.ui.Surface} surface
  */
 ve.ui.MWMetaDialog = function VeUiMWMetaDialog( surface ) {
 	// Parent constructor

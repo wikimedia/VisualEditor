@@ -1,5 +1,5 @@
 /*!
- * VisualEditor ListAction class.
+ * VisualEditor UserInterface ListAction class.
  *
  * @copyright 2011-2013 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
@@ -9,18 +9,18 @@
  * List action.
  *
  * @class
- * @extends ve.Action
+ * @extends ve.ui.Action
  * @constructor
- * @param {ve.Surface} surface Surface to act on
+ * @param {ve.ui.Surface} surface Surface to act on
  */
-ve.ListAction = function VeListAction( surface ) {
+ve.ui.ListAction = function VeUiListAction( surface ) {
 	// Parent constructor
-	ve.Action.call( this, surface );
+	ve.ui.Action.call( this, surface );
 };
 
 /* Inheritance */
 
-ve.inheritClass( ve.ListAction, ve.Action );
+ve.inheritClass( ve.ui.ListAction, ve.ui.Action );
 
 /* Static Properties */
 
@@ -30,7 +30,7 @@ ve.inheritClass( ve.ListAction, ve.Action );
  * @static
  * @property
  */
-ve.ListAction.static.methods = ['wrap', 'unwrap'];
+ve.ui.ListAction.static.methods = ['wrap', 'unwrap'];
 
 /* Methods */
 
@@ -42,7 +42,7 @@ ve.ListAction.static.methods = ['wrap', 'unwrap'];
  * @method
  * @param {string} style List style, e.g. 'number' or 'bullet'
  */
-ve.ListAction.prototype.wrap = function ( style ) {
+ve.ui.ListAction.prototype.wrap = function ( style ) {
 	var tx, i, previousList, groupRange, group,
 		surfaceModel = this.surface.getModel(),
 		documentModel = surfaceModel.getDocument(),
@@ -99,7 +99,7 @@ ve.ListAction.prototype.wrap = function ( style ) {
  *
  * @method
  */
-ve.ListAction.prototype.unwrap = function () {
+ve.ui.ListAction.prototype.unwrap = function () {
 	var node,
 		surfaceModel = this.surface.getModel(),
 		documentModel = surfaceModel.getDocument();
@@ -117,4 +117,4 @@ ve.ListAction.prototype.unwrap = function () {
 
 /* Registration */
 
-ve.actionFactory.register( 'list', ve.ListAction );
+ve.ui.actionFactory.register( 'list', ve.ui.ListAction );

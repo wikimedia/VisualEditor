@@ -97,10 +97,6 @@ class VisualEditorHooks {
 				've.BranchNode.test.js',
 				've.LeafNode.test.js',
 				've.Factory.test.js',
-				// VisualEditor Actions Tests
-				'actions/ve.FormatAction.test.js',
-				'actions/ve.IndentationAction.test.js',
-				'actions/ve.ListAction.test.js',
 				// VisualEditor DataModel Tests
 				'dm/ve.dm.example.js',
 				'dm/ve.dm.AnnotationSet.test.js',
@@ -132,10 +128,15 @@ class VisualEditorHooks {
 				'ce/ve.ce.ContentBranchNode.test.js',
 				'ce/ve.ce.LeafNode.test.js',
 				'ce/nodes/ve.ce.TextNode.test.js',
+				// VisualEditor Actions Tests
+				'ui/actions/ve.ui.FormatAction.test.js',
+				'ui/actions/ve.ui.IndentationAction.test.js',
+				'ui/actions/ve.ui.ListAction.test.js',
 				// VisualEditor initialization Tests
 				'init/ve.init.Platform.test.js',
 			),
 			'dependencies' => array(
+				'ext.visualEditor.standalone',
 				'ext.visualEditor.core',
 				'ext.visualEditor.experimental',
 				'ext.visualEditor.viewPageTarget',

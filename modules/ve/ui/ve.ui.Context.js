@@ -11,7 +11,7 @@
  * @class
  *
  * @constructor
- * @param {ve.Surface} surface
+ * @param {ve.ui.Surface} surface
  */
 ve.ui.Context = function VeUiContext( surface ) {
 	// Properties
@@ -162,7 +162,7 @@ ve.ui.Context.prototype.onInspectorClose = function () {
  * Gets the surface the context is being used in.
  *
  * @method
- * @returns {ve.Surface} Surface of context
+ * @returns {ve.ui.Surface} Surface of context
  */
 ve.ui.Context.prototype.getSurface = function () {
 	return this.surface;
@@ -223,11 +223,8 @@ ve.ui.Context.prototype.update = function () {
 			if ( this.toolbar ) {
 				this.toolbar.destroy();
 			}
-			this.toolbar = new ve.ui.Toolbar(
-				$( '<div class="ve-ui-context-toolbar"></div>' ),
-				this.surface,
-				[{ 'name': 'inspectors', 'items' : views }]
-			);
+			this.toolbar = new ve.ui.Toolbar( this.surface );
+			this.toolbar.addTools( [{ 'name': 'inspectors', 'items' : views }] );
 			this.$menu.append( this.toolbar.$ );
 			this.show();
 		} else if ( this.visible ) {

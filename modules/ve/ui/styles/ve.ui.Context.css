@@ -15,22 +15,23 @@
 	z-index: 2;
 }
 
-.ve-ui-context-toolbar {
+.ve-ui-context-menu .ve-ui-toolbar-bar {
 	white-space: nowrap;
+	border: none;
+	background: none;
 }
 
-.ve-ui-context-toolbar .ve-ui-toolbarGroup {
+.ve-ui-context-menu .ve-ui-toolbar-group {
 	border: none;
 	padding: 0.1em;
 }
 
-.ve-ui-context-toolbar .ve-ui-buttonTool,
-.ve-ui-context-toolbar .ve-ui-buttonTool:hover {
-
+.ve-ui-context-menu .ve-ui-buttonTool,
+.ve-ui-context-menu .ve-ui-buttonTool:hover {
 	border: none;
 }
 
-.ve-ui-context-toolbar .ve-ui-buttonTool:active,
-.ve-ui-context-toolbar .ve-ui-buttonTool-active {
+.ve-ui-context-menu .ve-ui-buttonTool:active,
+.ve-ui-context-menu .ve-ui-buttonTool-active {
 	background-image: none;
 }

@@ -12,7 +12,7 @@
  * @extends ve.ui.Dialog
  *
  * @constructor
- * @param {ve.Surface} surface
+ * @param {ve.ui.Surface} surface
  */
 ve.ui.MWReferenceDialog = function VeUiMWReferenceDialog( surface ) {
 	// Parent constructor

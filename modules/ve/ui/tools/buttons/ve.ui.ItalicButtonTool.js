@@ -41,10 +41,10 @@ ve.ui.ItalicButtonTool.static.annotation = { 'name': 'textStyle/italic' };
 
 ve.ui.toolFactory.register( 'italic', ve.ui.ItalicButtonTool );
 
-ve.commandRegistry.register(
+ve.ui.commandRegistry.register(
 	'italic', 'annotation', 'toggle', 'textStyle/italic'
 );
 
-ve.triggerRegistry.register(
-	'italic', { 'mac': new ve.Trigger( 'cmd+i' ), 'pc': new ve.Trigger( 'ctrl+i' ) }
+ve.ui.triggerRegistry.register(
+	'italic', { 'mac': new ve.ui.Trigger( 'cmd+i' ), 'pc': new ve.ui.Trigger( 'ctrl+i' ) }
 );

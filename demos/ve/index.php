@@ -18,6 +18,7 @@ $html = file_get_contents( $page );
 
 ?>
 <!DOCTYPE html>
+
 <html>
 	<head>
 		<meta charset="UTF-8">
@@ -34,11 +35,11 @@ $html = file_get_contents( $page );
 			}
 		</script>
 		<!-- ext.visualEditor.core -->
-		<link rel=stylesheet href="../../modules/ve/styles/ve.Surface.css">
 		<link rel=stylesheet href="../../modules/ve/ce/styles/ve.ce.DocumentNode.css">
 		<link rel=stylesheet href="../../modules/ve/ce/styles/ve.ce.Node.css">
 		<link rel=stylesheet href="../../modules/ve/ce/styles/ve.ce.Surface.css">
 		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.css">
+		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.Surface.css">
 		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.Context.css">
 		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.Frame.css">
 		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.Window.css">
@@ -95,26 +96,14 @@ $html = file_get_contents( $page );
 		<!-- ext.visualEditor.core -->
 		<script src="../../modules/ve/ve.Registry.js"></script>
 		<script src="../../modules/ve/ve.Factory.js"></script>
-		<script src="../../modules/ve/ve.Trigger.js"></script>
-		<script src="../../modules/ve/ve.CommandRegistry.js"></script>
-		<script src="../../modules/ve/ve.TriggerRegistry.js"></script>
 		<script src="../../modules/ve/ve.Range.js"></script>
 		<script src="../../modules/ve/ve.Node.js"></script>
 		<script src="../../modules/ve/ve.NamedClassFactory.js"></script>
 		<script src="../../modules/ve/ve.BranchNode.js"></script>
 		<script src="../../modules/ve/ve.LeafNode.js"></script>
 		<script src="../../modules/ve/ve.Element.js"></script>
-		<script src="../../modules/ve/ve.Surface.js"></script>
 		<script src="../../modules/ve/ve.Document.js"></script>
-		<script src="../../modules/ve/ve.Action.js"></script>
-		<script src="../../modules/ve/ve.ActionFactory.js"></script>
-		<script src="../../modules/ve/actions/ve.AnnotationAction.js"></script>
-		<script src="../../modules/ve/actions/ve.ContentAction.js"></script>
-		<script src="../../modules/ve/actions/ve.FormatAction.js"></script>
-		<script src="../../modules/ve/actions/ve.HistoryAction.js"></script>
-		<script src="../../modules/ve/actions/ve.IndentationAction.js"></script>
-		<script src="../../modules/ve/actions/ve.InspectorAction.js"></script>
-		<script src="../../modules/ve/actions/ve.ListAction.js"></script>
+		<script src="../../modules/ve/ve.Editor.js"></script>
 		<script src="../../modules/ve/dm/ve.dm.js"></script>
 		<script src="../../modules/ve/dm/ve.dm.Model.js"></script>
 		<script src="../../modules/ve/dm/ve.dm.ModelRegistry.js"></script>
@@ -187,8 +176,8 @@ $html = file_get_contents( $page );
 		<script src="../../modules/ve/ce/ve.ce.BranchNode.js"></script>
 		<script src="../../modules/ve/ce/ve.ce.ContentBranchNode.js"></script>
 		<script src="../../modules/ve/ce/ve.ce.LeafNode.js"></script>
-		<script src="../../modules/ve/ce/ve.ce.FocusableNode.js"></script>
 		<script src="../../modules/ve/ce/ve.ce.ProtectedNode.js"></script>
+		<script src="../../modules/ve/ce/ve.ce.FocusableNode.js"></script>
 		<script src="../../modules/ve/ce/ve.ce.RelocatableNode.js"></script>
 		<script src="../../modules/ve/ce/ve.ce.ResizableNode.js"></script>
 		<script src="../../modules/ve/ce/ve.ce.Surface.js"></script>
@@ -223,6 +212,7 @@ $html = file_get_contents( $page );
 		<script src="../../modules/ve/ce/annotations/ve.ce.MWInternalLinkAnnotation.js"></script>
 		<script src="../../modules/ve/ce/annotations/ve.ce.TextStyleAnnotation.js"></script>
 		<script src="../../modules/ve/ui/ve.ui.js"></script>
+		<script src="../../modules/ve/ui/ve.ui.Surface.js"></script>
 		<script src="../../modules/ve/ui/ve.ui.Context.js"></script>
 		<script src="../../modules/ve/ui/ve.ui.Frame.js"></script>
 		<script src="../../modules/ve/ui/ve.ui.Window.js"></script>
@@ -235,8 +225,20 @@ $html = file_get_contents( $page );
 		<script src="../../modules/ve/ui/ve.ui.Layout.js"></script>
 		<script src="../../modules/ve/ui/ve.ui.Widget.js"></script>
 		<script src="../../modules/ve/ui/ve.ui.Tool.js"></script>
-		<script src="../../modules/ve/ui/ve.ui.Toolbar.js"></script>
 		<script src="../../modules/ve/ui/ve.ui.ToolFactory.js"></script>
+		<script src="../../modules/ve/ui/ve.ui.Toolbar.js"></script>
+		<script src="../../modules/ve/ui/ve.ui.CommandRegistry.js"></script>
+		<script src="../../modules/ve/ui/ve.ui.Trigger.js"></script>
+		<script src="../../modules/ve/ui/ve.ui.TriggerRegistry.js"></script>
+		<script src="../../modules/ve/ui/ve.ui.Action.js"></script>
+		<script src="../../modules/ve/ui/ve.ui.ActionFactory.js"></script>
+		<script src="../../modules/ve/ui/actions/ve.ui.AnnotationAction.js"></script>
+		<script src="../../modules/ve/ui/actions/ve.ui.ContentAction.js"></script>
+		<script src="../../modules/ve/ui/actions/ve.ui.FormatAction.js"></script>
+		<script src="../../modules/ve/ui/actions/ve.ui.HistoryAction.js"></script>
+		<script src="../../modules/ve/ui/actions/ve.ui.IndentationAction.js"></script>
+		<script src="../../modules/ve/ui/actions/ve.ui.InspectorAction.js"></script>
+		<script src="../../modules/ve/ui/actions/ve.ui.ListAction.js"></script>
 		<script src="../../modules/ve/ui/elements/ve.ui.LabeledElement.js"></script>
 		<script src="../../modules/ve/ui/elements/ve.ui.GroupElement.js"></script>
 		<script src="../../modules/ve/ui/elements/ve.ui.FlaggableElement.js"></script>
@@ -258,6 +260,10 @@ $html = file_get_contents( $page );
 		<script src="../../modules/ve/ui/widgets/ve.ui.TextInputMenuWidget.js"></script>
 		<script src="../../modules/ve/ui/widgets/ve.ui.LinkTargetInputWidget.js"></script>
 		<script src="../../modules/ve/ui/widgets/ve.ui.MWLinkTargetInputWidget.js"></script>
+		<script src="../../modules/ve/ui/widgets/ve.ui.MWCategoryInputWidget.js"></script>
+		<script src="../../modules/ve/ui/widgets/ve.ui.MWCategoryPopupWidget.js"></script>
+		<script src="../../modules/ve/ui/widgets/ve.ui.MWCategoryItemWidget.js"></script>
+		<script src="../../modules/ve/ui/widgets/ve.ui.MWCategoryWidget.js"></script>
 		<script src="../../modules/ve/ui/layouts/ve.ui.FieldsetLayout.js"></script>
 		<script src="../../modules/ve/ui/layouts/ve.ui.GridLayout.js"></script>
 		<script src="../../modules/ve/ui/layouts/ve.ui.PanelLayout.js"></script>
@@ -265,6 +271,7 @@ $html = file_get_contents( $page );
 		<script src="../../modules/ve/ui/dialogs/ve.ui.ContentDialog.js"></script>
 		<script src="../../modules/ve/ui/dialogs/ve.ui.MediaDialog.js"></script>
 		<script src="../../modules/ve/ui/dialogs/ve.ui.PagedDialog.js"></script>
+		<script src="../../modules/ve/ui/dialogs/ve.ui.MWMetaDialog.js"></script>
 		<script src="../../modules/ve/ui/tools/ve.ui.ButtonTool.js"></script>
 		<script src="../../modules/ve/ui/tools/ve.ui.AnnotationButtonTool.js"></script>
 		<script src="../../modules/ve/ui/tools/ve.ui.DialogButtonTool.js"></script>

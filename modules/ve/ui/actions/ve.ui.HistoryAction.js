@@ -1,5 +1,5 @@
 /*!
- * VisualEditor HistoryAction class.
+ * VisualEditor UserInterface HistoryAction class.
  *
  * @copyright 2011-2013 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
@@ -9,18 +9,18 @@
  * History action.
  *
  * @class
- * @extends ve.Action
+ * @extends ve.ui.Action
  * @constructor
- * @param {ve.Surface} surface Surface to act on
+ * @param {ve.ui.Surface} surface Surface to act on
  */
-ve.HistoryAction = function VeHistoryAction( surface ) {
+ve.ui.HistoryAction = function VeUiHistoryAction( surface ) {
 	// Parent constructor
-	ve.Action.call( this, surface );
+	ve.ui.Action.call( this, surface );
 };
 
 /* Inheritance */
 
-ve.inheritClass( ve.HistoryAction, ve.Action );
+ve.inheritClass( ve.ui.HistoryAction, ve.ui.Action );
 
 /* Static Properties */
 
@@ -30,7 +30,7 @@ ve.inheritClass( ve.HistoryAction, ve.Action );
  * @static
  * @property
  */
-ve.HistoryAction.static.methods = ['undo', 'redo'];
+ve.ui.HistoryAction.static.methods = ['undo', 'redo'];
 
 /* Methods */
 
@@ -39,7 +39,7 @@ ve.HistoryAction.static.methods = ['undo', 'redo'];
  *
  * @method
  */
-ve.HistoryAction.prototype.undo = function () {
+ve.ui.HistoryAction.prototype.undo = function () {
 	var range = this.surface.getModel().undo();
 	if ( range ) {
 		this.surface.getView().showSelection( range );
@@ -51,7 +51,7 @@ ve.HistoryAction.prototype.undo = function () {
  *
  * @method
  */
-ve.HistoryAction.prototype.redo = function () {
+ve.ui.HistoryAction.prototype.redo = function () {
 	var range = this.surface.getModel().redo();
 	if ( range ) {
 		this.surface.getView().showSelection( range );
@@ -60,4 +60,4 @@ ve.HistoryAction.prototype.redo = function () {
 
 /* Registration */
 
-ve.actionFactory.register( 'history', ve.HistoryAction );
+ve.ui.actionFactory.register( 'history', ve.ui.HistoryAction );

@@ -12,7 +12,7 @@
  * @extends ve.ce.BranchNode
  * @constructor
  * @param {ve.dm.DocumentNode} model Model to observe
- * @param {ve.Surface} surface Surface document is part of
+ * @param {ve.ui.Surface} surface Surface document is part of
  * @param {Object} [config] Config options
  */
 ve.ce.DocumentNode = function VeCeDocumentNode( model, surface, config ) {

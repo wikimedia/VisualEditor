@@ -1,5 +1,5 @@
 /*!
- * VisualEditor AnnotationAction class.
+ * VisualEditor UserInterface AnnotationAction class.
  *
  * @copyright 2011-2013 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
@@ -9,18 +9,18 @@
  * Annotation action.
  *
  * @class
- * @extends ve.Action
+ * @extends ve.ui.Action
  * @constructor
- * @param {ve.Surface} surface Surface to act on
+ * @param {ve.ui.Surface} surface Surface to act on
  */
-ve.AnnotationAction = function VeAnnotationAction( surface ) {
+ve.ui.AnnotationAction = function VeUiAnnotationAction( surface ) {
 	// Parent constructor
-	ve.Action.call( this, surface );
+	ve.ui.Action.call( this, surface );
 };
 
 /* Inheritance */
 
-ve.inheritClass( ve.AnnotationAction, ve.Action );
+ve.inheritClass( ve.ui.AnnotationAction, ve.ui.Action );
 
 /* Static Properties */
 
@@ -30,7 +30,7 @@ ve.inheritClass( ve.AnnotationAction, ve.Action );
  * @static
  * @property
  */
-ve.AnnotationAction.static.methods = ['set', 'clear', 'toggle', 'clearAll'];
+ve.ui.AnnotationAction.static.methods = ['set', 'clear', 'toggle', 'clearAll'];
 
 /* Methods */
 
@@ -41,7 +41,7 @@ ve.AnnotationAction.static.methods = ['set', 'clear', 'toggle', 'clearAll'];
  * @param {string} name Annotation name, for example: 'textStyle/bold'
  * @param {Object} [data] Additional annotation data
  */
-ve.AnnotationAction.prototype.set = function ( name, data ) {
+ve.ui.AnnotationAction.prototype.set = function ( name, data ) {
 	this.surface.getModel().getFragment().annotateContent( 'set', name, data );
 };
 
@@ -52,7 +52,7 @@ ve.AnnotationAction.prototype.set = function ( name, data ) {
  * @param {string} name Annotation name, for example: 'textStyle/bold'
  * @param {Object} [data] Additional annotation data
  */
-ve.AnnotationAction.prototype.clear = function ( name, data ) {
+ve.ui.AnnotationAction.prototype.clear = function ( name, data ) {
 	this.surface.getModel().getFragment().annotateContent( 'clear', name, data );
 };
 
@@ -66,7 +66,7 @@ ve.AnnotationAction.prototype.clear = function ( name, data ) {
  * @param {string} name Annotation name, for example: 'textStyle/bold'
  * @param {Object} [data] Additional annotation data
  */
-ve.AnnotationAction.prototype.toggle = function ( name, data ) {
+ve.ui.AnnotationAction.prototype.toggle = function ( name, data ) {
 	var existingAnnotations,
 		surfaceModel = this.surface.getModel(),
 		fragment = surfaceModel.getFragment(),
@@ -92,7 +92,7 @@ ve.AnnotationAction.prototype.toggle = function ( name, data ) {
  *
  * @method
  */
-ve.AnnotationAction.prototype.clearAll = function () {
+ve.ui.AnnotationAction.prototype.clearAll = function () {
 	var i, len, arr,
 		fragment = this.surface.getModel().getFragment(),
 		annotations = fragment.getAnnotations( true );
@@ -107,4 +107,4 @@ ve.AnnotationAction.prototype.clearAll = function () {
 
 /* Registration */
 
-ve.actionFactory.register( 'annotation', ve.AnnotationAction );
+ve.ui.actionFactory.register( 'annotation', ve.ui.AnnotationAction );

@@ -1,14 +1,5 @@
 [
 	{
-		"name": "Actions",
-		"groups": [
-			{
-				"name": "Actions",
-				"classes": ["ve.*Action"]
-			}
-		]
-	},
-	{
 		"name": "ContentEditable",
 		"groups": [
 			{
@@ -103,12 +94,19 @@
 				"name": "General",
 				"classes": [
 					"ve.ui",
+					"ve.ui.Surface",
 					"ve.ui.Context",
 					"ve.ui.Frame",
 					"ve.ui.Toolbar",
 					"ve.ui.Window",
-					"ve.ui.WindowSet"
+					"ve.ui.WindowSet",
+					"ve.ui.Action",
+					"ve.ui.Trigger"
 				]
+			},
+			{
+				"name": "Actions",
+				"classes": ["ve.ui.*Action"]
 			},
 			{
 				"name": "Factories",
@@ -148,24 +146,20 @@
 		"name": "General",
 		"groups": [
 			{
+				"name": "General",
+				"classes": ["ve.Editor"]
+			},
+			{
 				"name": "Utilities",
 				"classes": ["ve", "ve.EventEmitter", "ve.Registry", "ve.Factory", "ve.Range", "ve.Element"]
 			},
 			{
-				"name": "Registries",
-				"classes": ["ve.CommandRegistry", "ve.TriggerRegistry"]
-			},
-			{
 				"name": "Factories",
-				"classes": ["ve.ActionFactory", "ve.NamedClassFactory"]
+				"classes": ["ve.NamedClassFactory"]
 			},
 			{
 				"name": "Nodes",
 				"classes": ["ve.Node", "ve.BranchNode", "ve.LeafNode", "ve.Document"]
-			},
-			{
-				"name": "Misc",
-				"classes": ["ve.Trigger", "ve.Surface"]
 			},
 			{
 				"name": "Test",

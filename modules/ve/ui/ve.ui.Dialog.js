@@ -13,7 +13,7 @@
  * @extends ve.ui.Window
  *
  * @constructor
- * @param {ve.Surface} surface
+ * @param {ve.ui.Surface} surface
  */
 ve.ui.Dialog = function VeUiDialog( surface ) {
 	// Parent constructor

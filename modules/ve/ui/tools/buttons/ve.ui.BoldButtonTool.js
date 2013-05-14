@@ -41,8 +41,8 @@ ve.ui.BoldButtonTool.static.annotation = { 'name': 'textStyle/bold' };
 
 ve.ui.toolFactory.register( 'bold', ve.ui.BoldButtonTool );
 
-ve.commandRegistry.register( 'bold', 'annotation', 'toggle', 'textStyle/bold' );
+ve.ui.commandRegistry.register( 'bold', 'annotation', 'toggle', 'textStyle/bold' );
 
-ve.triggerRegistry.register(
-	'bold', { 'mac': new ve.Trigger( 'cmd+b' ), 'pc': new ve.Trigger( 'ctrl+b' ) }
+ve.ui.triggerRegistry.register(
+	'bold', { 'mac': new ve.ui.Trigger( 'cmd+b' ), 'pc': new ve.ui.Trigger( 'ctrl+b' ) }
 );

@@ -64,11 +64,11 @@ ve.ui.RedoButtonTool.prototype.onUpdateState = function () {
 
 ve.ui.toolFactory.register( 'redo', ve.ui.RedoButtonTool );
 
-ve.commandRegistry.register(
+ve.ui.commandRegistry.register(
 	'redo', 'history', 'redo'
 );
 
-ve.triggerRegistry.register(
-	'redo', { 'mac': new ve.Trigger( 'cmd+shift+z' ), 'pc': new ve.Trigger( 'ctrl+shift+z' ) }
+ve.ui.triggerRegistry.register(
+	'redo', { 'mac': new ve.ui.Trigger( 'cmd+shift+z' ), 'pc': new ve.ui.Trigger( 'ctrl+shift+z' ) }
 );
 

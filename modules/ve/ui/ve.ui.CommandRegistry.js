@@ -12,14 +12,14 @@
  * @extends ve.Registry
  * @constructor
  */
-ve.CommandRegistry = function VeCommandRegistry() {
+ve.ui.CommandRegistry = function VeCommandRegistry() {
 	// Parent constructor
 	ve.Registry.call( this );
 };
 
 /* Inheritance */
 
-ve.inheritClass( ve.CommandRegistry, ve.Registry );
+ve.inheritClass( ve.ui.CommandRegistry, ve.Registry );
 
 /* Methods */
 
@@ -34,7 +34,7 @@ ve.inheritClass( ve.CommandRegistry, ve.Registry );
  * @throws {Error} Action must be a string
  * @throws {Error} Method must be a string
  */
-ve.CommandRegistry.prototype.register = function ( name , action, method ) {
+ve.ui.CommandRegistry.prototype.register = function ( name , action, method ) {
 	if ( typeof name !== 'string' && !ve.isArray( name ) ) {
 		throw new Error( 'name must be a string or array, cannot be a ' + typeof name );
 	}
@@ -51,6 +51,4 @@ ve.CommandRegistry.prototype.register = function ( name , action, method ) {
 
 /* Initialization */
 
-ve.commandRegistry = new ve.CommandRegistry();
-
-
+ve.ui.commandRegistry = new ve.ui.CommandRegistry();
