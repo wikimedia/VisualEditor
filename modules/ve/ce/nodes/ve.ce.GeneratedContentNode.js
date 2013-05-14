@@ -13,10 +13,11 @@
  * @extends ve.ce.LeafNode
  * @constructor
  * @param {ve.dm.GeneratedContentNode} model Model to observe
+ * @param {Object} [config] Config options
  */
-ve.ce.GeneratedContentNode = function VeCeGeneratedContentNode( model ) {
+ve.ce.GeneratedContentNode = function VeCeGeneratedContentNode( model, config ) {
 	// Parent constructor
-	ve.ce.LeafNode.call( this, model );
+	ve.ce.LeafNode.call( this, model, config );
 
 	// DOM Changes
 	this.$.addClass( 've-ce-generatedContentNode' );

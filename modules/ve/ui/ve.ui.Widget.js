@@ -10,7 +10,7 @@
  *
  * @class
  * @abstract
- * @extends ve.ui.Element
+ * @extends ve.Element
  * @mixin ve.EventEmitter
  *
  * @constructor
@@ -22,10 +22,10 @@ ve.ui.Widget = function VeUiWidget( config ) {
 	config = ve.extendObject( { 'disabled': false }, config );
 
 	// Parent constructor
-	ve.EventEmitter.call( this );
+	ve.Element.call( this, config );
 
 	// Mixin constructors
-	ve.ui.Element.call( this, config );
+	ve.EventEmitter.call( this );
 
 	// Properties
 	this.disabled = config.disabled;
@@ -37,7 +37,7 @@ ve.ui.Widget = function VeUiWidget( config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.Widget, ve.ui.Element );
+ve.inheritClass( ve.ui.Widget, ve.Element );
 
 ve.mixinClass( ve.ui.Widget, ve.EventEmitter );
 

@@ -27,7 +27,7 @@ ve.ui.LookupInputWidget = function VeUiLookupInputWidget( input, config ) {
 	this.lookupInput = input;
 	this.$overlay = config.$overlay || this.$$( 'body' );
 	this.lookupMenu = new ve.ui.TextInputMenuWidget( this, {
-		'$$': ve.ui.get$$( this.$overlay ),
+		'$$': ve.Element.static.get$$( this.$overlay ),
 		'input': this.lookupInput,
 		'$container': config.$container
 	} );

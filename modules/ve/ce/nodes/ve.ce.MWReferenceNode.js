@@ -14,10 +14,11 @@
  *
  * @constructor
  * @param {ve.dm.MWReferenceNode} model Model to observe
+ * @param {Object} [config] Config options
  */
-ve.ce.MWReferenceNode = function VeCeMWReferenceNode( model ) {
+ve.ce.MWReferenceNode = function VeCeMWReferenceNode( model, config ) {
 	// Parent constructor
-	ve.ce.LeafNode.call( this, model, $( '<sup>' ) );
+	ve.ce.LeafNode.call( this, model, config );
 
 	// Mixin constructors
 	ve.ce.ProtectedNode.call( this );
@@ -45,6 +46,8 @@ ve.mixinClass( ve.ce.MWReferenceNode, ve.ce.ProtectedNode );
 /* Static Properties */
 
 ve.ce.MWReferenceNode.static.name = 'MWreference';
+
+ve.ce.MWReferenceNode.static.tagName = 'sup';
 
 /* Methods */
 

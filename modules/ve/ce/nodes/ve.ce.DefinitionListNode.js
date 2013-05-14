@@ -12,10 +12,11 @@
  * @extends ve.ce.BranchNode
  * @constructor
  * @param {ve.dm.DefinitionListNode} model Model to observe
+ * @param {Object} [config] Config options
  */
-ve.ce.DefinitionListNode = function VeCeDefinitionListNode( model ) {
+ve.ce.DefinitionListNode = function VeCeDefinitionListNode( model, config ) {
 	// Parent constructor
-	ve.ce.BranchNode.call( this, model, $( '<dl>' ) );
+	ve.ce.BranchNode.call( this, model, config );
 };
 
 /* Inheritance */
@@ -25,6 +26,8 @@ ve.inheritClass( ve.ce.DefinitionListNode, ve.ce.BranchNode );
 /* Static Properties */
 
 ve.ce.DefinitionListNode.static.name = 'definitionList';
+
+ve.ce.DefinitionListNode.static.tagName = 'dl';
 
 /* Registration */
 

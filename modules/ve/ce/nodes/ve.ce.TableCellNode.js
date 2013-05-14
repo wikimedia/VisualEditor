@@ -12,12 +12,11 @@
  * @extends ve.ce.BranchNode
  * @constructor
  * @param {ve.dm.TableCellNode} model Model to observe
+ * @param {Object} [config] Config options
  */
-ve.ce.TableCellNode = function VeCeTableCellNode( model ) {
+ve.ce.TableCellNode = function VeCeTableCellNode( model, config ) {
 	// Parent constructor
-	ve.ce.BranchNode.call(
-		this, model, ve.ce.BranchNode.getDomWrapper( model, 'style' )
-	);
+	ve.ce.BranchNode.call( this, model, config );
 
 	// Events
 	this.model.connect( this, { 'update': 'onUpdate' } );
@@ -31,18 +30,25 @@ ve.inheritClass( ve.ce.TableCellNode, ve.ce.BranchNode );
 
 ve.ce.TableCellNode.static.name = 'tableCell';
 
-/**
- * Mapping of list item style values and DOM wrapper element types.
- *
- * @static
- * @property
- */
-ve.ce.TableCellNode.domWrapperElementTypes = {
-	'data': 'td',
-	'header': 'th'
-};
-
 /* Methods */
+
+/**
+ * Get the HTML tag name.
+ *
+ * Tag name is selected based on the model's style attribute.
+ *
+ * @return {string} HTML tag name
+ * @throws {Error} If style is invalid
+ */
+ve.ce.TableCellNode.prototype.getTagName = function () {
+	var style = this.model.getAttribute( 'style' ),
+		types = { 'data': 'td', 'header': 'th' };
+
+	if ( !( style in types ) ) {
+		throw new Error( 'Invalid style' );
+	}
+	return types[style];
+};
 
 /**
  * Handle model update events.
@@ -52,7 +58,7 @@ ve.ce.TableCellNode.domWrapperElementTypes = {
  * @method
  */
 ve.ce.TableCellNode.prototype.onUpdate = function () {
-	this.updateDomWrapper( 'style' );
+	this.updateTagName();
 };
 
 /* Registration */

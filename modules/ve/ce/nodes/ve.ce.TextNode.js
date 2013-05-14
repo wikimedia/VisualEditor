@@ -12,10 +12,11 @@
  * @extends ve.ce.LeafNode
  * @constructor
  * @param {ve.dm.TextNode} model Model to observe
+ * @param {Object} [config] Config options
  */
-ve.ce.TextNode = function VeCeTextNode( model ) {
+ve.ce.TextNode = function VeCeTextNode( model, config ) {
 	// Parent constructor
-	ve.ce.LeafNode.call( this, model ); // not using this.$
+	ve.ce.LeafNode.call( this, model, config );
 };
 
 /* Inheritance */

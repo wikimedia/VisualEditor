@@ -12,10 +12,11 @@
  * @extends ve.ce.BranchNode
  * @constructor
  * @param {ve.dm.MWImageCaptionNode} model Model to observe
+ * @param {Object} [config] Config options
  */
-ve.ce.MWImageCaptionNode = function VeCeMWImageCaptionNode( model ) {
+ve.ce.MWImageCaptionNode = function VeCeMWImageCaptionNode( model, config ) {
 	// Parent constructor
-	ve.ce.BranchNode.call( this, model, $( '<figcaption>' ) );
+	ve.ce.BranchNode.call( this, model, config );
 };
 
 /* Inheritance */
@@ -25,6 +26,8 @@ ve.inheritClass( ve.ce.MWImageCaptionNode, ve.ce.BranchNode );
 /* Static Properties */
 
 ve.ce.MWImageCaptionNode.static.name = 'MWimagecaption';
+
+ve.ce.MWImageCaptionNode.static.tagName = 'figcaption';
 
 /* Registration */
 

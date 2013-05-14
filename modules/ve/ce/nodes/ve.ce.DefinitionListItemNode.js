@@ -12,12 +12,11 @@
  * @extends ve.ce.BranchNode
  * @constructor
  * @param {ve.dm.DefinitionListItemNode} model Model to observe
+ * @param {Object} [config] Config options
  */
-ve.ce.DefinitionListItemNode = function VeCeDefinitionListItemNode( model ) {
+ve.ce.DefinitionListItemNode = function VeCeDefinitionListItemNode( model, config ) {
 	// Parent constructor
-	ve.ce.BranchNode.call(
-		this, model, ve.ce.BranchNode.getDomWrapper( model, 'style' )
-	);
+	ve.ce.BranchNode.call( this, model, config );
 
 	// Events
 	this.model.connect( this, { 'update': 'onUpdate' } );
@@ -31,18 +30,25 @@ ve.inheritClass( ve.ce.DefinitionListItemNode, ve.ce.BranchNode );
 
 ve.ce.DefinitionListItemNode.static.name = 'definitionListItem';
 
-/**
- * Mapping of list item style values and DOM wrapper element types.
- *
- * @static
- * @property
- */
-ve.ce.DefinitionListItemNode.domWrapperElementTypes = {
-	'definition': 'dd',
-	'term': 'dt'
-};
-
 /* Methods */
+
+/**
+ * Get the HTML tag name.
+ *
+ * Tag name is selected based on the model's style attribute.
+ *
+ * @return {string} HTML tag name
+ * @throws {Error} If style is invalid
+ */
+ve.ce.DefinitionListItemNode.prototype.getTagName = function () {
+	var style = this.model.getAttribute( 'style' ),
+		types = { 'definition': 'dd', 'term': 'dt' };
+
+	if ( !( style in types ) ) {
+		throw new Error( 'Invalid style' );
+	}
+	return types[style];
+};
 
 /**
  * Handle model update events.
@@ -52,7 +58,7 @@ ve.ce.DefinitionListItemNode.domWrapperElementTypes = {
  * @method
  */
 ve.ce.DefinitionListItemNode.prototype.onUpdate = function () {
-	this.updateDomWrapper( 'style' );
+	this.updateTagName();
 };
 
 /* Registration */

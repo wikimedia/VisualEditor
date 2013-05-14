@@ -10,12 +10,14 @@
  *
  * @class
  * @extends ve.ce.ImageNode
+ *
  * @constructor
  * @param {ve.dm.MWInlineImageNode} model Model to observe
+ * @param {Object} [config] Config options
  */
- ve.ce.MWInlineImageNode = function VeCeMWInlineImageNode( model ) {
+ ve.ce.MWInlineImageNode = function VeCeMWInlineImageNode( model, config ) {
 	// Parent constructor
-	ve.ce.ImageNode.call( this, model );
+	ve.ce.ImageNode.call( this, model, config );
 
 	// Properties
 	this.$ = $( '<' + ( model.getAttribute( 'isLinked' ) ? 'a' : 'span' ) + '>' );
@@ -37,7 +39,7 @@ ve.inheritClass( ve.ce.MWInlineImageNode, ve.ce.ImageNode );
 
 ve.ce.MWInlineImageNode.static.name = 'MWinlineimage';
 
-/* Methods */
+ve.ce.MWInlineImageNode.static.tagName = 'span';
 
 /* Registration */
 

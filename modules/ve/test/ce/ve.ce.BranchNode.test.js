@@ -20,9 +20,11 @@ ve.ce.BranchNodeStub.static.name = 'branch-stub';
 
 ve.ce.BranchNodeStub.static.canBeSplit = true;
 
-ve.ce.BranchNodeStub.domWrapperElementTypes = {
-	'a': 'a',
-	'b': 'b'
+ve.ce.BranchNodeStub.prototype.getTagName = function () {
+	var style = this.model.getAttribute( 'style' ),
+		types = { 'a': 'a', 'b': 'b' };
+
+	return types[style];
 };
 
 ve.ce.nodeFactory.register( ve.ce.BranchNodeStub );
@@ -47,7 +49,7 @@ QUnit.test( 'canHaveChildrenNotContent', 1, function ( assert ) {
 	assert.equal( node.canHaveChildrenNotContent(), true );
 } );
 
-QUnit.test( 'updateDomWrapper', 3, function ( assert ) {
+QUnit.test( 'updateTagName', 3, function ( assert ) {
 	var attributes = { 'style': 'a' },
 		node = new ve.ce.BranchNodeStub( new ve.dm.BranchNodeStub( [], {
 		'type': 'branch-stub', 'attributes': attributes
@@ -58,7 +60,7 @@ QUnit.test( 'updateDomWrapper', 3, function ( assert ) {
 
 	// Modify attribute
 	attributes.style = 'b';
-	node.updateDomWrapper( 'style' );
+	node.updateTagName();
 
 	assert.equal( node.$.get( 0 ).nodeName.toLowerCase(), 'b', 'DOM element type gets converted' );
 	assert.equal( node.$.hasClass( 'test' ), true, 'old classes are added to new wrapper' );

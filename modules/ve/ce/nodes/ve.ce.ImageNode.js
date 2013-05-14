@@ -16,10 +16,11 @@
  *
  * @constructor
  * @param {ve.dm.ImageNode} model Model to observe
+ * @param {Object} [config] Config options
  */
-ve.ce.ImageNode = function VeCeImageNode( model ) {
+ve.ce.ImageNode = function VeCeImageNode( model, config ) {
 	// Parent constructor
-	ve.ce.LeafNode.call( this, model, $( '<img>' ) );
+	ve.ce.LeafNode.call( this, model, config );
 
 	// Mixin constructors
 	ve.ce.FocusableNode.call( this );
@@ -54,6 +55,8 @@ ve.mixinClass( ve.ce.ImageNode, ve.ce.ResizableNode );
 /* Static Properties */
 
 ve.ce.ImageNode.static.name = 'image';
+
+ve.ce.ImageNode.static.tagName = 'img';
 
 /* Methods */
 

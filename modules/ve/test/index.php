@@ -58,6 +58,7 @@
 		<script src="../../ve/ve.NamedClassFactory.js"></script>
 		<script src="../../ve/ve.BranchNode.js"></script>
 		<script src="../../ve/ve.LeafNode.js"></script>
+		<script src="../../ve/ve.Element.js"></script>
 		<script src="../../ve/ve.Surface.js"></script>
 		<script src="../../ve/ve.Document.js"></script>
 		<script src="../../ve/ve.Action.js"></script>
@@ -186,7 +187,6 @@
 		<script src="../../ve/ui/ve.ui.InspectorFactory.js"></script>
 		<script src="../../ve/ui/ve.ui.Dialog.js"></script>
 		<script src="../../ve/ui/ve.ui.DialogFactory.js"></script>
-		<script src="../../ve/ui/ve.ui.Element.js"></script>
 		<script src="../../ve/ui/ve.ui.Layout.js"></script>
 		<script src="../../ve/ui/ve.ui.Widget.js"></script>
 		<script src="../../ve/ui/ve.ui.Tool.js"></script>

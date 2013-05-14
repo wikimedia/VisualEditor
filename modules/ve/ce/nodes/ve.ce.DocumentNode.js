@@ -12,18 +12,19 @@
  * @extends ve.ce.BranchNode
  * @constructor
  * @param {ve.dm.DocumentNode} model Model to observe
+ * @param {ve.Surface} surface Surface document is part of
+ * @param {Object} [config] Config options
  */
-ve.ce.DocumentNode = function VeCeDocumentNode( model, surface ) {
+ve.ce.DocumentNode = function VeCeDocumentNode( model, surface, config ) {
 	// Parent constructor
-	ve.ce.BranchNode.call( this, model );
+	ve.ce.BranchNode.call( this, model, config );
 
 	// Properties
 	this.surface = surface;
 
 	// DOM Changes
 	this.$.addClass( 've-ce-documentNode' );
-	this.$.attr( 'contentEditable', 'true' );
-	this.$.attr( 'spellcheck', 'true' );
+	this.$.attr( { 'contentEditable': 'true', 'spellcheck': 'true' } );
 };
 
 /* Inheritance */

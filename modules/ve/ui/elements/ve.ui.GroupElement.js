@@ -27,7 +27,7 @@ ve.ui.GroupElement = function VeUiGroupElement( $group ) {
  * Get items.
  *
  * @method
- * @returns {ve.ui.Element[]} Items
+ * @returns {ve.Element[]} Items
  */
 ve.ui.GroupElement.prototype.getItems = function () {
 	return this.items.slice( 0 );
@@ -37,7 +37,7 @@ ve.ui.GroupElement.prototype.getItems = function () {
  * Add items.
  *
  * @method
- * @param {ve.ui.Element[]} items Item
+ * @param {ve.Element[]} items Item
  * @param {number} [index] Index to insert items after
  * @chainable
  */
@@ -78,7 +78,7 @@ ve.ui.GroupElement.prototype.addItems = function ( items, index ) {
  * Items will be detached, not removed, so they can be used later.
  *
  * @method
- * @param {ve.ui.Element[]} items Items to remove
+ * @param {ve.Element[]} items Items to remove
  * @chainable
  */
 ve.ui.GroupElement.prototype.removeItems = function ( items ) {

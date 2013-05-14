@@ -13,16 +13,17 @@
  * @abstract
  * @extends ve.ce.Node
  * @mixins ve.LeafNode
+ *
  * @constructor
  * @param {ve.dm.LeafNode} model Model to observe
- * @param {jQuery} [$element] Element to use as a container
+ * @param {Object} [config] Config options
  */
-ve.ce.LeafNode = function VeCeLeafNode( model, $element ) {
+ve.ce.LeafNode = function VeCeLeafNode( model, config ) {
 	// Mixin constructor
 	ve.LeafNode.call( this );
 
 	// Parent constructor
-	ve.ce.Node.call( this, model, $element );
+	ve.ce.Node.call( this, model, config );
 
 	// DOM Changes
 	if ( model.isWrapped() ) {
@@ -35,6 +36,10 @@ ve.ce.LeafNode = function VeCeLeafNode( model, $element ) {
 ve.inheritClass( ve.ce.LeafNode, ve.ce.Node );
 
 ve.mixinClass( ve.ce.LeafNode, ve.LeafNode );
+
+/* Static Properties */
+
+ve.ce.LeafNode.static.tagName = 'span';
 
 /* Methods */
 

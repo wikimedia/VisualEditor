@@ -18,13 +18,17 @@
  *
  * @constructor
  * @param {ve.dm.Annotation} model Model to observe
- * @param {jQuery} [$element] Element to use as a container
+ * @param {Object} [config] Config options
  */
-ve.ce.Annotation = function VeCeAnnotation( model, $element ) {
+ve.ce.Annotation = function VeCeAnnotation( model, config ) {
 	// Parent constructor
-	ve.ce.View.call( this, model, $element || $( '<span>' ) );
+	ve.ce.View.call( this, model, config );
 };
 
 /* Inheritance */
 
 ve.inheritClass( ve.ce.Annotation, ve.ce.View );
+
+/* Static Properties */
+
+ve.ce.Annotation.static.tagName = 'span';

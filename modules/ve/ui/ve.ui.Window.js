@@ -81,6 +81,12 @@ ve.mixinClass( ve.ui.Window, ve.EventEmitter );
  */
 ve.ui.Window.static = {};
 
+/**
+ * List of stylesheet URLs to load.
+ *
+ * @static
+ * @property {Array}
+ */
 ve.ui.Window.static.stylesheets = [];
 
 /**
