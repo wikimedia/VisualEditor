@@ -68,7 +68,7 @@ ve.dm.MWReferenceNode.static.toDomElements = function ( dataElement, doc, conver
 	span.setAttribute( 'typeof', 'mw:Object/Ext/Ref' );
 
 	converter.getDomSubtreeFromData(
-		converter.documentData.slice( itemNodeRange.start, itemNodeRange.end ),
+		itemNode.getDocument().getData().slice( itemNodeRange.start, itemNodeRange.end ),
 		itemNodeWrapper
 	),
 	itemNodeHtml = $( itemNodeWrapper ).html();
