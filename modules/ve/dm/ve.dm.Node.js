@@ -21,6 +21,7 @@ ve.dm.Node = function VeDmNode( length, element ) {
 	ve.dm.Model.call( this, element );
 	// Mixin constructor
 	ve.Node.call( this );
+	ve.EventEmitter.call( this );
 
 	// Properties
 	this.length = length || 0;
@@ -42,6 +43,8 @@ ve.dm.Node = function VeDmNode( length, element ) {
 ve.inheritClass( ve.dm.Node, ve.dm.Model );
 
 ve.mixinClass( ve.dm.Node, ve.Node );
+
+ve.mixinClass( ve.dm.Node, ve.EventEmitter );
 
 /* Static Properties */
 

@@ -49,21 +49,22 @@ QUnit.test( 'canHaveChildrenNotContent', 1, function ( assert ) {
 	assert.equal( node.canHaveChildrenNotContent(), true );
 } );
 
-QUnit.test( 'updateTagName', 3, function ( assert ) {
+QUnit.test( 'updateTagName', 4, function ( assert ) {
 	var attributes = { 'style': 'a' },
 		node = new ve.ce.BranchNodeStub( new ve.dm.BranchNodeStub( [], {
 		'type': 'branch-stub', 'attributes': attributes
 	} ) );
 
-	// Add classes and content to the node
-	node.$.addClass( 'test' ).text( 'hello' );
+	// Add content to the node
+	node.$.text( 'hello' );
 
 	// Modify attribute
 	attributes.style = 'b';
 	node.updateTagName();
 
 	assert.equal( node.$.get( 0 ).nodeName.toLowerCase(), 'b', 'DOM element type gets converted' );
-	assert.equal( node.$.hasClass( 'test' ), true, 'old classes are added to new wrapper' );
+	assert.equal( node.$.hasClass( 've-ce-branchNode' ), true, 'old classes are added to new wrapper' );
+	assert.equal( !!node.$.data( 'view' ), true, 'data added to new wrapper' );
 	assert.equal( node.$.text(), 'hello', 'contents are added to new wrapper' );
 } );
 

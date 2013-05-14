@@ -43,6 +43,16 @@ ve.ce.LeafNode.static.tagName = 'span';
 
 /* Methods */
 
+ve.ce.LeafNode.prototype.onSetup = function () {
+	ve.ce.Node.prototype.onSetup.call( this );
+	this.$.addClass( 've-ce-leafNode' );
+};
+
+ve.ce.LeafNode.prototype.onTeardown = function () {
+	ve.ce.Node.prototype.onTeardown.call( this );
+	this.$.removeClass( 've-ce-leafNode' );
+};
+
 /**
  * Get annotated HTML fragments.
  *

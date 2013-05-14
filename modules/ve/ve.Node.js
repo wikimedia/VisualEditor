@@ -14,9 +14,6 @@
  * @constructor
  */
 ve.Node = function VeNode() {
-	// Mixin constructor
-	ve.EventEmitter.call( this );
-
 	// Properties
 	this.type = this.constructor.static.name;
 	this.parent = null;
@@ -33,10 +30,6 @@ ve.Node = function VeNode() {
  * @event detach
  * @param {ve.Node} parent
  */
-
-/* Inheritance */
-
-ve.mixinClass( ve.Node, ve.EventEmitter );
 
 /* Abstract Methods */
 
