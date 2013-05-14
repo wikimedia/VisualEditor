@@ -68,6 +68,12 @@ ve.ce.Surface = function VeCeSurface( $container, model, surface ) {
 	this.$phantoms.addClass( 've-ce-surface-phantoms' );
 	this.$pasteTarget.addClass( 've-ce-surface-paste' ).prop( 'contenteditable', true );
 	this.$.append( this.documentView.getDocumentNode().$, this.$phantoms, this.$pasteTarget );
+
+	// Turn off native object editing. This must be tried after the surface has been added to DOM.
+	try {
+		document.execCommand( 'enableObjectResizing', false, false );
+		document.execCommand( 'enableInlineTableEditing', false, false );
+	} catch ( e ) { /* Silently ignore */ }
 };
 
 /* Inheritance */
@@ -1515,6 +1521,16 @@ ve.ce.Surface.prototype.getModel = function () {
  */
 ve.ce.Surface.prototype.getDocument = function () {
 	return this.documentView;
+};
+
+/**
+ * Get the currently focused node.
+ *
+ * @method
+ * @returns {ve.ce.Node|undefined} Focused node
+ */
+ve.ce.Surface.prototype.getFocusedNode = function () {
+	return this.focusedNode;
 };
 
 /**

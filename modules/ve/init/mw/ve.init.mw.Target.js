@@ -602,7 +602,7 @@ ve.init.mw.Target.prototype.serialize = function ( doc, callback ) {
 ve.init.mw.Target.prototype.reportProblem = function ( message ) {
 	// Gather reporting information
 	var now = new Date(),
-		doc = this.surface.getDocumentModel(),
+		doc = this.surface.getModel().getDocument(),
 		editedData = doc.getFullData(),
 		store = doc.getStore(),
 		internalList = doc.getInternalList(),
@@ -614,7 +614,7 @@ ve.init.mw.Target.prototype.reportProblem = function ( message ) {
 			'diff': this.diffHtml,
 			'originalHtml': this.originalHtml,
 			'originalData':
-				// originalHTML only has the body's HTML for now, see TODO comment in ve.init.mw.ViewPageTarget.prototype.setUpSurface
+				// originalHTML only has the body's HTML for now, see TODO comment in ve.init.mw.ViewPageTarget.prototype.setupSurface
 				// FIXME: need to expand this data before sending it, see bug 47319
 				ve.dm.converter.getDataFromDom(
 					ve.createDocumentFromHTML( '<body>' + this.originalHtml  + '</body>' ),
