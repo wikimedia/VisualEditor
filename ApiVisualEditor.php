@@ -160,7 +160,7 @@ class ApiVisualEditor extends ApiBase {
 		$api->execute();
 		$result = $api->getResultData();
 		if ( !isset( $result['query']['pages'][$title->getArticleID()]['revisions'][0]['diff']['*'] ) ) {
-			return false;
+			return array( 'result' => 'fail' );
 		}
 		$diffRows = $result['query']['pages'][$title->getArticleID()]['revisions'][0]['diff']['*'];
 
@@ -168,13 +168,16 @@ class ApiVisualEditor extends ApiBase {
 			$context = new DerivativeContext( $this->getContext() );
 			$context->setTitle( $title );
 			$engine = new DifferenceEngine( $context );
-			return $engine->addHeader(
-				$diffRows,
-				wfMessage( 'currentrev' )->parse(),
-				wfMessage( 'yourtext' )->parse()
+			return array(
+				'result' => 'success',
+				'diff' => $engine->addHeader(
+					$diffRows,
+					wfMessage( 'currentrev' )->parse(),
+					wfMessage( 'yourtext' )->parse()
+				)
 			);
 		} else {
-			return wfMessage( 'visualeditor-diff-nochanges' )->parse();
+			return array( 'result' => 'nochanges' );
 		}
 	}
 
@@ -259,13 +262,10 @@ class ApiVisualEditor extends ApiBase {
 				}
 			} else if ( $params['paction'] === 'diff' ) {
 				$diff = $this->diffWikitext( $page, $wikitext );
-				if ( $diff === false ) {
+				if ( $diff['result'] === 'fail' ) {
 					$this->dieUsage( 'Diff failed', 'difffailed' );
 				}
-				$result = array(
-					'result' => 'success',
-					'diff' => $diff
-				);
+				$result = $diff;
 			}
 		}
 

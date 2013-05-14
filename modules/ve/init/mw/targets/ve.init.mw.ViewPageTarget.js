@@ -100,6 +100,7 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 		'editConflict': 'onEditConflict',
 		'showChanges': 'onShowChanges',
 		'showChangesError': 'onShowChangesError',
+		'noChanges': 'onNoChanges',
 		'serializeError': 'onSerializeError'
 	} );
 
@@ -230,6 +231,10 @@ ve.init.mw.ViewPageTarget.saveDialogTemplate = '\
 				<div class="ve-init-mw-viewPageTarget-saveDialog-working"></div>\
 			</div>\
 			<div style="clear: both;"></div>\
+		</div>\
+		<div class="ve-init-mw-viewPageTarget-saveDialog-slide ve-init-mw-viewPageTarget-saveDialog-slide-nochanges">\
+			<div class="ve-init-mw-viewPageTarget-saveDialog-nochanges">\
+			</div>\
 		</div>\
 	</div>';
 
@@ -444,7 +449,6 @@ ve.init.mw.ViewPageTarget.prototype.onSerialize = function ( wikitext ) {
  * @method
  * @param {Object} jqXHR
  * @param {string} status Text status message
- * @param {Mixed} error Thrown exception or HTTP error string
  */
 ve.init.mw.ViewPageTarget.prototype.onShowChangesError = function ( jqXHR, status ) {
 	alert( ve.msg( 'visualeditor-differror', status ) );
@@ -452,14 +456,12 @@ ve.init.mw.ViewPageTarget.prototype.onShowChangesError = function ( jqXHR, statu
 	this.saveDialogReviewWrongButton.setDisabled( false );
 };
 
-
 /**
  * Called if a call to target.serialize() failed.
  *
  * @method
  * @param {jqXHR|null} jqXHR
  * @param {string} status Text status message
- * @param {Mixed|null} error HTTP status text
  */
 ve.init.mw.ViewPageTarget.prototype.onSerializeError = function ( jqXHR, status ) {
 	alert( ve.msg( 'visualeditor-serializeerror', status ) );
@@ -476,6 +478,16 @@ ve.init.mw.ViewPageTarget.prototype.onSerializeError = function ( jqXHR, status 
 ve.init.mw.ViewPageTarget.prototype.onEditConflict = function () {
 	this.$saveDialogLoadingIcon.hide();
 	this.swapSaveDialog( 'conflict' );
+};
+
+/**
+ * Handle failed show changes event.
+ *
+ * @method
+ */
+ve.init.mw.ViewPageTarget.prototype.onNoChanges = function () {
+	this.$saveDialogLoadingIcon.hide();
+	this.swapSaveDialog( 'nochanges' );
 };
 
 /**
@@ -644,7 +656,7 @@ ve.init.mw.ViewPageTarget.prototype.onSaveDialogReportButtonClick = function () 
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.onSaveDialogResolveConflictButtonClick = function () {
-	var doc = this.surface.getDocument().getModel();
+	var doc = this.surface.getModel().getDocument();
 	// Get Wikitext from the DOM, and set up a submit call when it's done
 	this.serialize(
 		ve.dm.converter.getDomFromData( doc.getFullData(), doc.getStore(), doc.getInternalList() ),
@@ -1151,6 +1163,9 @@ ve.init.mw.ViewPageTarget.prototype.setupSaveDialog = function () {
 				.end()
 			.find( '.ve-init-mw-viewPageTarget-saveDialog-conflict' )
 				.html( ve.init.platform.getParsedMessage( 'visualeditor-editconflict' ) )
+				.end()
+			.find( '.ve-init-mw-viewPageTarget-saveDialog-nochanges' )
+				.html( ve.init.platform.getParsedMessage( 'visualeditor-diff-nochanges' ) )
 		;
 		// Get reference to loading icon
 		viewPage.$saveDialogLoadingIcon = viewPage.$saveDialog
@@ -1263,22 +1278,22 @@ ve.init.mw.ViewPageTarget.prototype.resetSaveDialog = function () {
  * Swap state in the save dialog (forwards or backwards).
  *
  * @method
- * @param {string} slide One of 'review', 'report', 'save' or 'conflict'
+ * @param {string} slide One of 'review', 'report', 'save', 'conflict' or 'nochanges'
  * @return {jQuery} The now active slide.
  * @throws {Error} Unknown saveDialog slide
  */
 ve.init.mw.ViewPageTarget.prototype.swapSaveDialog = function ( slide ) {
 	var $slide, $viewer, doc = this.surface.getModel().getDocument();
-	if ( ve.indexOf( slide, [ 'review', 'report', 'save', 'conflict' ] ) === -1 ) {
+	if ( ve.indexOf( slide, [ 'review', 'report', 'save', 'conflict', 'nochanges' ] ) === -1 ) {
 		throw new Error( 'Unknown saveDialog slide: ' + slide );
 	}
 
 	$slide = this.$saveDialog.find( '.ve-init-mw-viewPageTarget-saveDialog-slide-' + slide );
 
 	this.$saveDialog
-		// Hide prev button on the first slide
+		// Hide prev button on first slides
 		.find( '.ve-init-mw-viewPageTarget-saveDialog-prevButton' )
-			.toggle( slide !== 'review' )
+			.toggle( ve.indexOf( slide, [ 'review', 'nochanges' ] ) === -1 )
 			.end()
 		// Update title
 		// Give grep a chance to find the usages:

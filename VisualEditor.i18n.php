@@ -34,6 +34,7 @@ $messages['en'] = array(
 	'visualeditor-dialog-action-close' => 'Close',
 	'visualeditor-toolbar-savedialog' => 'Review and save',
 	'visualeditor-savedialog-title-conflict' => 'Conflict',
+	'visualeditor-savedialog-title-nochanges' => 'No changes',
 	'visualeditor-savedialog-title-review' => 'Review your changes',
 	'visualeditor-savedialog-title-report' => 'Report a problem',
 	'visualeditor-savedialog-title-save' => 'Save your changes',
@@ -88,7 +89,7 @@ $messages['en'] = array(
 	'visualeditor-report-notice' => 'I understand that by clicking "Report problem" I will transmit my changes and my feedback, which will be stored for analysis. I agree to provide feedback in accordance with the [[{{MediaWiki:Visualeditor-report-link}}|Terms of Use]].',
 	'visualeditor-report-link' => 'foundation:Terms of Use',
 	'visualeditor-feedback-link' => 'Project:VisualEditor/Feedback',
-	'visualeditor-diff-nochanges' => 'Your edit will be ignored because you have made no changes to the text.',
+	'visualeditor-diff-nochanges' => 'Your edit has been ignored because you have made no changes to the text.',
 );
 
 /** Message documentation (Message documentation)
@@ -151,6 +152,7 @@ See also:
 {{Identical|Close}}',
 	'visualeditor-toolbar-savedialog' => 'Label text for button to trigger review and save interface',
 	'visualeditor-savedialog-title-conflict' => 'Title for edit conflict slide',
+	'visualeditor-savedialog-title-nochanges' => 'Title for no changes slide',
 	'visualeditor-savedialog-title-review' => 'Title for reviewing slide',
 	'visualeditor-savedialog-title-report' => 'Title for reporting slide',
 	'visualeditor-savedialog-title-save' => 'Title for saving slide',

@@ -74,6 +74,10 @@ ve.init.mw.Target = function VeInitMwTarget( $container, pageName, revision ) {
  */
 
 /**
+ * @event noChanges
+ */
+
+/**
  * @event loadError
  * @param {jqXHR|null} jqXHR
  * @param {string} status Text status message
@@ -271,6 +275,7 @@ ve.init.mw.Target.onSaveError = function ( jqXHR, status, error ) {
  * @param {Object} response API response data
  * @param {string} status Text status message
  * @emits showChanges
+ * @emits noChanges
  */
 ve.init.mw.Target.onShowChanges = function ( response ) {
 	var data = response.visualeditor;
@@ -280,6 +285,8 @@ ve.init.mw.Target.onShowChanges = function ( response ) {
 		ve.init.mw.Target.onShowChangesError.call(
 			this, null, 'Unsuccessful request: ' + response.error.info, null
 		);
+	} else if ( data.result === 'nochanges' ) {
+		this.emit( 'noChanges' );
 	} else if ( data.result !== 'success' ) {
 		ve.init.mw.Target.onShowChangesError.call( this, null, 'Failed request: ' + data.result, null );
 	} else if ( typeof data.diff !== 'string' ) {
