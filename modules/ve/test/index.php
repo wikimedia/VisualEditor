@@ -45,7 +45,7 @@
 				require( '../../../VisualEditor.i18n.php' );
 				echo 've.init.platform.addMessages( ' . json_encode( $messages['en'] ) . ');' . "\n";
 			?>
-			ve.init.platform.setModulesUrl( '../../' );
+			ve.init.platform.setModulesUrl( '../..' );
 		</script>
 		<!-- ext.visualEditor.core -->
 		<script src="../../ve/ve.Registry.js"></script>
@@ -263,7 +263,9 @@
 		<script src="../../ve/ce/nodes/ve.ce.MWReferenceListNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.MWReferenceNode.js"></script>
 		<script src="../../ve/ui/tools/buttons/ve.ui.MWReferenceButtonTool.js"></script>
+		<script src="../../ve/ui/tools/buttons/ve.ui.MWTemplateButtonTool.js"></script>
 		<script src="../../ve/ui/dialogs/ve.ui.MWReferenceDialog.js"></script>
+		<script src="../../ve/ui/dialogs/ve.ui.MWTemplateDialog.js"></script>
 
 		<!-- Load plugins for test framework -->
 		<script src="ve.qunit.js"></script>

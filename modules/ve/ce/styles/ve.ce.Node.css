@@ -146,7 +146,7 @@
 }
 
 .ve-ce-MWtemplateInlineNode {
-	display: inline;
+	display: inline-block;
 }
 
 /* ve.ce.BranchNode */

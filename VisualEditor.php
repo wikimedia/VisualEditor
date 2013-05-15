@@ -542,7 +542,9 @@ $wgResourceModules += array(
 			've/ce/nodes/ve.ce.MWReferenceNode.js',
 
 			've/ui/tools/buttons/ve.ui.MWReferenceButtonTool.js',
+			've/ui/tools/buttons/ve.ui.MWTemplateButtonTool.js',
 			've/ui/dialogs/ve.ui.MWReferenceDialog.js',
+			've/ui/dialogs/ve.ui.MWTemplateDialog.js',
 		),
 		'dependencies' => array(
 			'ext.visualEditor.core',
@@ -550,6 +552,8 @@ $wgResourceModules += array(
 		'messages' => array(
 			'visualeditor-dialog-reference-title',
 			'visualeditor-dialogbutton-reference-tooltip',
+			'visualeditor-dialog-template-title',
+			'visualeditor-dialogbutton-template-tooltip',
 		),
 	),
 	'ext.visualEditor.icons-raster' => $wgVisualEditorResourceTemplate + array(
