@@ -98,6 +98,20 @@ ve.ui.PagedDialog.prototype.addPage = function ( name, label, icon, level ) {
 };
 
 /**
+ * Clear all pages.
+ *
+ * @method
+ * @chainable
+ */
+ve.ui.PagedDialog.prototype.clearPages = function() {
+	this.pages = [];
+	this.pagesPanel.clearItems();
+	this.outlineWidget.clearItems();
+
+	return this;
+};
+
+/**
  * Get a page by name.
  *
  * @method
