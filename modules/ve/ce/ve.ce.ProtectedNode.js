@@ -19,8 +19,10 @@ ve.ce.ProtectedNode = function VeCeProtectedNode() {
 	this.$shields = $( [] );
 
 	// Events
-	this.connect( this, { 'live': 'onProtectedLive' } );
-	this.$.on( 'mouseenter', ve.bind( this.onProtectedMouseEnter, this ) );
+	this.connect( this, {
+		'setup': 'onProtectedSetup',
+		'teardown': 'onProtectedTeardown'
+	} );
 
 	// Initialization
 	this.$.addClass( 've-ce-protectedNode' );
@@ -57,39 +59,52 @@ ve.ce.ProtectedNode.static.$phantomTemplate = $( '<div>' )
 /* Methods */
 
 /**
- * Handle live events.
+ * Handle setup events.
  *
  * @method
  */
-ve.ce.ProtectedNode.prototype.onProtectedLive = function () {
+ve.ce.ProtectedNode.prototype.onProtectedSetup = function () {
 	var $shield,
 		node = this,
 		$shieldTemplate = this.constructor.static.$shieldTemplate,
 		surfaceModel = this.getRoot().getSurface().getModel();
 
-	if ( this.isLive() ) {
-		// Events
-		surfaceModel.connect( this, { 'change': 'onSurfaceModelChange' } );
+	// Events
+	this.$.on( 'mouseenter.ve-ce-protectedNode', ve.bind( this.onProtectedMouseEnter, this ) );
+	surfaceModel.connect( this, { 'change': 'onSurfaceModelChange' } );
 
-		// Shields
-		this.$.add( this.$.find( '*' ) ).each( function () {
-			var $this = $( this );
-			if ( this.nodeType === Node.ELEMENT_NODE ) {
-				if (
-					( $this.css( 'float' ) === 'none' || $this.css( 'float' ) === '' ) &&
-					!$this.hasClass( 've-ce-protectedNode' )
-				) {
-					return;
-				}
-				$shield = $shieldTemplate.clone().appendTo( $this );
-				node.$shields = node.$shields.add( $shield );
+	// Shields
+	this.$.add( this.$.find( '*' ) ).each( function () {
+		var $this = $( this );
+		if ( this.nodeType === Node.ELEMENT_NODE ) {
+			if (
+				( $this.css( 'float' ) === 'none' || $this.css( 'float' ) === '' ) &&
+				!$this.hasClass( 've-ce-protectedNode' )
+			) {
+				return;
 			}
-		} );
-	} else {
-		surfaceModel.disconnect( this, { 'change': 'onSurfaceModelChange' } );
-		this.$shields.remove();
-		this.$shields = $( [] );
-	}
+			$shield = $shieldTemplate.clone().appendTo( $this );
+			node.$shields = node.$shields.add( $shield );
+		}
+	} );
+
+};
+
+/**
+ * Handle teardown events.
+ *
+ * @method
+ */
+ve.ce.ProtectedNode.prototype.onProtectedTeardown = function () {
+	var surfaceModel = this.getRoot().getSurface().getModel();
+
+	// Events
+	this.$.off( '.ve-ce-protectedNode' );
+	surfaceModel.disconnect( this, { 'change': 'onSurfaceModelChange' } );
+
+	// Shields
+	this.$shields.remove();
+	this.$shields = $( [] );
 };
 
 /**
