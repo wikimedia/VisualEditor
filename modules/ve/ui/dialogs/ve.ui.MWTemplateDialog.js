@@ -17,6 +17,42 @@
 ve.ui.MWTemplateDialog = function VeUiMWTemplateDialog( surface ) {
 	// Parent constructor
 	ve.ui.PagedDialog.call( this, surface );
+
+	this.templateData = {
+		'title': 'Template:Unsigned',
+		'params': {
+			'user': {
+				'label': {
+					'en': 'User'
+				},
+				'description': {
+					'en': 'Name or IP of user who left the comment'
+				},
+				'required': true,
+				'type': 'string/wiki-user-name',
+				'aliases': [
+						'1'
+				],
+				'deprecated': false,
+				'default': ''
+			},
+			'timestamp': {
+				'label': {
+					'en': 'Time stamp'
+				},
+				'description': {
+					'en': 'datestamp from edit history (remember to label it UTC)'
+				},
+				'aliases': [
+						'2'
+				],
+				'required': false,
+				'deprecated': false,
+				'default': '',
+				'type': 'unknown'
+			}
+		}
+	};
 };
 
 /* Inheritance */
@@ -41,10 +77,6 @@ ve.ui.MWTemplateDialog.static.modelClasses = [ ve.dm.MWTemplateNode ];
 ve.ui.MWTemplateDialog.prototype.initialize = function () {
 	// Call parent method
 	ve.ui.PagedDialog.prototype.initialize.call( this );
-
-	this.addPage( 'param1', 'Parameter 1', 'template' )
-		.addPage( 'param2', 'Parameter 2', 'template' );
-
 };
 
 /**
@@ -53,8 +85,24 @@ ve.ui.MWTemplateDialog.prototype.initialize = function () {
  * @method
  */
 ve.ui.MWTemplateDialog.prototype.onOpen = function () {
+	var param;
+
 	// Parent method
-	ve.ui.Dialog.prototype.onOpen.call( this );
+	ve.ui.PagedDialog.prototype.onOpen.call( this );
+
+	// Add template page
+	this.addPage( 'template', this.templateData.title, 'template' );
+
+	// Add page for each parameter
+	for ( param in this.templateData.params ) {
+		this.addPage(
+			'parameter_' + param,
+			this.templateData.params[param].label.en, // TODO: use proper language instead of hardcoded 'en'
+			'parameter',
+			1
+		);
+	}
+
 };
 
 /**
@@ -65,7 +113,8 @@ ve.ui.MWTemplateDialog.prototype.onOpen = function () {
  */
 ve.ui.MWTemplateDialog.prototype.onClose = function () {
 	// Parent method
-	ve.ui.Dialog.prototype.onOpen.call( this );
+	ve.ui.PagedDialog.prototype.onOpen.call( this );
+	this.clearPages();
 };
 
 /* Registration */
