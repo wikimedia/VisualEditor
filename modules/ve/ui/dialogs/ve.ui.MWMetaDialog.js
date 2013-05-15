@@ -22,7 +22,6 @@ ve.ui.MWMetaDialog = function VeUiMWMetaDialog( surface ) {
 
 	// Properties
 	this.metaList = surface.getModel().metaList;
-	this.defaultSortKeyItem = this.getDefaultSortKeyItem();
 	this.defaultSortKeyChanged = false;
 	this.fallbackDefaultSortKey = mw.config.get( 'wgTitle' );
 
@@ -83,9 +82,6 @@ ve.ui.MWMetaDialog.prototype.initialize = function () {
 	} );
 
 	// Initialization
-	this.defaultSortInput.setValue(
-		this.defaultSortKeyItem ? this.defaultSortKeyItem.getAttribute( 'content' ) : ''
-	);
 	this.categoryWidget.addItems( this.getCategoryItems() );
 	this.addPage( 'categories', 'Categories', 'tag' )
 		.addPage( 'languages', 'Languages', 'language' );
@@ -103,7 +99,13 @@ ve.ui.MWMetaDialog.prototype.initialize = function () {
  */
 ve.ui.MWMetaDialog.prototype.onOpen = function () {
 	var surfaceModel = this.surface.getModel(),
-		categoryWidget = this.categoryWidget;
+		categoryWidget = this.categoryWidget,
+		defaultSortKeyItem = this.getDefaultSortKeyItem();
+
+	this.defaultSortInput.setValue(
+		defaultSortKeyItem ? defaultSortKeyItem.getAttribute( 'content' ) : ''
+	);
+	this.defaultSortKeyChanged = false;
 
 	// Force all previous transactions to be separate from this history state
 	surfaceModel.breakpoint();
@@ -125,8 +127,9 @@ ve.ui.MWMetaDialog.prototype.onOpen = function () {
  * @param {string} action Action that caused the window to be closed
  */
 ve.ui.MWMetaDialog.prototype.onClose = function ( action ) {
-	var surfaceModel = this.surface.getModel(),
-		defaultSortKeyItem;
+	var newDefaultSortKeyItem,
+		surfaceModel = this.surface.getModel(),
+		currentDefaultSortKeyItem = this.getDefaultSortKeyItem();
 
 	// Parent method
 	ve.ui.PagedDialog.prototype.onClose.call( this );
@@ -141,14 +144,14 @@ ve.ui.MWMetaDialog.prototype.onClose = function ( action ) {
 	}
 
 	if ( this.defaultSortKeyChanged ) {
-		defaultSortKeyItem = new ve.dm.MWDefaultSortMetaItem( {
+		newDefaultSortKeyItem = new ve.dm.MWDefaultSortMetaItem( {
 			'type': 'MWdefaultSort',
 			'attributes': { 'content': this.defaultSortInput.getValue() }
 		} );
-		if ( this.defaultSortKeyItem ) {
-			this.defaultSortKeyItem.replaceWith( defaultSortKeyItem );
+		if ( currentDefaultSortKeyItem ) {
+			currentDefaultSortKeyItem.replaceWith( newDefaultSortKeyItem );
 		} else {
-			this.metaList.insertMeta( defaultSortKeyItem );
+			this.metaList.insertMeta( newDefaultSortKeyItem );
 		}
 	}
 
