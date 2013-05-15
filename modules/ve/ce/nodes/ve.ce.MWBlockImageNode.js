@@ -10,6 +10,8 @@
  *
  * @class
  * @extends ve.ce.BranchNode
+ * @mixins ve.ce.ProtectedNode
+ *
  * @constructor
  * @param {ve.dm.MWBlockImageNode} model Model to observe
  * @param {Object} [config] Config options
@@ -17,6 +19,9 @@
 ve.ce.MWBlockImageNode = function VeCeMWBlockImageNode( model, config ) {
 	// Parent constructor
 	ve.ce.BranchNode.call( this, model, config );
+
+	// Mixin constructors
+	ve.ce.ProtectedNode.call( this );
 
 	if ( this.model.getAttribute( 'align' ) === 'center' ) {
 		this.$.addClass( 'center' );
@@ -47,6 +52,8 @@ ve.ce.MWBlockImageNode = function VeCeMWBlockImageNode( model, config ) {
 /* Inheritance */
 
 ve.inheritClass( ve.ce.MWBlockImageNode, ve.ce.BranchNode );
+
+ve.mixinClass( ve.ce.MWBlockImageNode, ve.ce.ProtectedNode );
 
 /* Static Properties */
 
