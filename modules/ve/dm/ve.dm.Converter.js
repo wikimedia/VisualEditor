@@ -354,6 +354,26 @@ ve.dm.Converter.prototype.getDataFromDom = function ( doc, store, internalList )
 };
 
 /**
+ * Wrapper for getDataFromDomRecursion which resets contextStack before the call
+ * and then set it back after the call.
+ *
+ * TODO: This is kind of a hack, better implementation would be more appropriate in near future.
+ *
+ * @method
+ * @param {HTMLElement} domElement HTML element to convert
+ * @param {Object} [wrapperElement] Data element to wrap the returned data in
+ * @param {ve.dm.AnnotationSet} [annotationSet] Override the set of annotations to use
+ * @returns {Array} Linear model data
+ */
+ve.dm.Converter.prototype.getDataFromDomRecursionClean  = function ( domElement, wrapperElement, annotationSet ) {
+	var result, contextStack = this.contextStack;
+	this.contextStack = [];
+	result = this.getDataFromDomRecursion( domElement, wrapperElement, annotationSet );
+	this.contextStack = contextStack;
+	return result;
+};
+
+/**
  * Recursive implementation of getDataFromDom(). For internal use, and for use in
  * ve.dm.Model.static.toDataElement() implementations.
  *
