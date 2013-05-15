@@ -140,8 +140,7 @@
 }
 
 /* ve.ce.MWTemplateNode */
-
-.ve-ce-MWtemplateBlockNode, {
+.ve-ce-MWtemplateBlockNode {
 	display: block;
 }
 
