@@ -142,6 +142,28 @@ class ApiVisualEditor extends ApiBase {
 		);
 	}
 
+	protected function parseWikitextFragment( $wikitext, $title = null ) {
+		$apiParams = array(
+			'action' => 'parse',
+			'title' => $title,
+			'prop' => 'text',
+			'disablepp' => true,
+			'text' => $wikitext
+		);
+		$api = new ApiMain(
+			new DerivativeRequest(
+				$this->getRequest(),
+				$apiParams,
+				false // was posted?
+			),
+			true // enable write?
+		);
+
+		$api->execute();
+		$result = $api->getResultData();
+		return isset( $result['parse']['text']['*'] ) ? $result['parse']['text']['*'] : false;
+	}
+
 	protected function diffWikitext( $title, $wikitext ) {
 		$apiParams = array(
 			'action' => 'query',
@@ -195,7 +217,10 @@ class ApiVisualEditor extends ApiBase {
 				$page->getNamespace(), 'novenamespace' );
 		}
 
-		$parserParams = array( 'oldid' => $params['oldid'] );
+		$parserParams = array();
+		if ( isset( $params['oldid'] ) ) {
+			$parserParams['oldid'] = $params['oldid'];
+		}
 
 		switch ( $params['paction'] ) {
 			case 'parse':
@@ -217,6 +242,17 @@ class ApiVisualEditor extends ApiBase {
 				} else {
 					$result = array_merge(
 						array( 'result' => 'success', 'notices' => $notices ), $parsed
+					);
+				}
+				break;
+			case 'parsefragment':
+				$content = $this->parseWikitextFragment( $params['wikitext'], $page->getText() );
+				if ( $content === false ) {
+					$this->dieUsage( 'Error contacting the Parsoid server', 'parsoidserver' );
+				} else {
+					$result = array(
+						'result' => 'success',
+						'content' => $content
 					);
 				}
 				break;
@@ -284,18 +320,15 @@ class ApiVisualEditor extends ApiBase {
 			),
 			'paction' => array(
 				ApiBase::PARAM_REQUIRED => true,
-				ApiBase::PARAM_TYPE => array( 'parse', 'serialize', 'save', 'diff' ),
+				ApiBase::PARAM_TYPE => array( 'parse', 'parsefragment', 'serialize', 'save', 'diff' ),
 			),
 			'token' => array(
 				ApiBase::PARAM_REQUIRED => true,
 			),
+			'wikitext' => null,
 			'basetimestamp' => null,
 			'starttimestamp' => null,
-			'oldid' => array(
-				ApiBase::PARAM_REQUIRED => true,
-				ApiBase::PARAM_TYPE => 'integer',
-				ApiBase::PARAM_DFLT => 0
-			),
+			'oldid' => null,
 			'minor' => null,
 			'watch' => null,
 			'html' => null,

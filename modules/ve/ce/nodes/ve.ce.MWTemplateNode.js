@@ -5,6 +5,8 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
+/*global mw */
+
 /**
  * ContentEditable MediaWiki template node.
  *
@@ -45,8 +47,47 @@ ve.ce.MWTemplateNode.static.name = 'MWtemplate';
 /* Methods */
 
 ve.ce.MWTemplateNode.prototype.generateContents = function () {
-	// TODO: return $.ajax( api call to get new contents )
-	return new $.Deferred();
+	var promise = $.Deferred();
+	$.ajax( {
+		'url': mw.util.wikiScript( 'api' ),
+		'data': {
+			'action': 'visualeditor',
+			'paction': 'parsefragment',
+			'page': mw.config.get( 'wgRelevantPageName' ),
+			'wikitext': this.model.getWikitext(),
+			'token': mw.user.tokens.get( 'editToken' ),
+			'format': 'json'
+		},
+		'dataType': 'json',
+		'type': 'POST',
+		// Wait up to 100 seconds before giving up
+		'timeout': 100000,
+		'cache': 'false',
+		'success': ve.bind( this.onParseSuccess, this, promise ),
+		'error': ve.bind( this.onParseError, this, promise )
+	} );
+	return promise;
+};
+
+/**
+ * Handle a successful response from the parser for the wikitext fragment.
+ *
+ * @param {jQuery.Promise} promise The promise object created by generateContents
+ * @param {Object} response Response data
+ */
+ve.ce.MWTemplateNode.prototype.onParseSuccess = function ( promise, response ) {
+	var data = response.visualeditor;
+	promise.resolve( $( data.content ).get() );
+};
+
+/**
+ * Handle an unsuccessful response from the parser for the wikitext fragment.
+ *
+ * @param {jQuery.Promise} promise The promise object created by generateContents
+ * @param {Object} response Response data
+ */
+ve.ce.MWTemplateNode.prototype.onParseError = function ( promise ) {
+	promise.reject();
 };
 
 /* Concrete subclasses */
