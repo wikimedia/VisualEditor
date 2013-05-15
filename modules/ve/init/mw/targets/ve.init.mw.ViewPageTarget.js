@@ -466,7 +466,6 @@ ve.init.mw.ViewPageTarget.prototype.onShowChangesError = function ( jqXHR, statu
 ve.init.mw.ViewPageTarget.prototype.onSerializeError = function ( jqXHR, status ) {
 	alert( ve.msg( 'visualeditor-serializeerror', status ) );
 	this.$saveDialogLoadingIcon.hide();
-	this.saveDialogReviewGoodButton.setDisabled( false );
 	this.saveDialogReviewWrongButton.setDisabled( false );
 };
 

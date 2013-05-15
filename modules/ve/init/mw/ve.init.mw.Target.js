@@ -329,7 +329,11 @@ ve.init.mw.Target.onSerialize = function ( response ) {
 	var data = response.visualeditor;
 	if ( !data && !response.error ) {
 		ve.init.mw.Target.onSerializeError.call( this, null, 'Invalid response from server', null );
-	} else if ( response.error || data.result === 'error' ) {
+	} else if ( response.error ) {
+		ve.init.mw.Target.onSerializeError.call(
+			this, null, 'Unsuccessful request: ' + response.error.info, null
+		);
+	} else if ( data.result === 'error' ) {
 		ve.init.mw.Target.onSerializeError.call( this, null, 'Server error', null );
 	} else if ( typeof data.content !== 'string' ) {
 		ve.init.mw.Target.onSerializeError.call(
