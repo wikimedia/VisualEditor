@@ -78,10 +78,11 @@ ve.ui.PagedDialog.prototype.onOutlineSelect = function ( item ) {
  * @param {string} name Symbolic name of page
  * @param {jQuery|string} [label] Page label
  * @param {string} [icon] Symbolic name of icon
+ * @param {number} [level=0] Indentation level
  * @chainable
  */
-ve.ui.PagedDialog.prototype.addPage = function ( name, label, icon ) {
-	var config = { '$$': this.$$, 'icon': icon, 'label': label || name };
+ve.ui.PagedDialog.prototype.addPage = function ( name, label, icon, level ) {
+	var config = { '$$': this.$$, 'icon': icon, 'label': label || name, 'level': level || 0 };
 
 	// Create and add page panel and outline item
 	this.pages[name] = new ve.ui.PanelLayout( config );
