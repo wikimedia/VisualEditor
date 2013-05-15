@@ -29,7 +29,6 @@ $messages['en'] = array(
 	'visualeditor-dialog-content-title' => 'Content settings',
 	'visualeditor-dialog-media-title' => 'Media settings',
 	'visualeditor-dialog-reference-title' => 'Reference',
-	'visualeditor-dialog-template-title' => 'Template',
 	'visualeditor-dialog-action-apply' => 'Apply changes',
 	'visualeditor-dialog-action-cancel' => 'Cancel',
 	'visualeditor-dialog-action-close' => 'Close',
@@ -66,7 +65,6 @@ $messages['en'] = array(
 	'visualeditor-annotationbutton-italic-tooltip' => 'Italic',
 	'visualeditor-annotationbutton-link-tooltip' => 'Link',
 	'visualeditor-dialogbutton-reference-tooltip' => 'Reference',
-	'visualeditor-dialogbutton-template-tooltip' => 'Template',
 	'visualeditor-dialogbutton-media-tooltip' => 'Media',
 	'visualeditor-indentationbutton-indent-tooltip' => 'Increase indentation',
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Decrease indentation',
@@ -875,12 +873,15 @@ $messages['de'] = array(
 	'visualeditor-dialog-action-cancel' => 'Abbrechen',
 	'visualeditor-dialog-action-close' => 'Schließen',
 	'visualeditor-toolbar-savedialog' => 'Überprüfen und speichern',
+	'visualeditor-savedialog-title-conflict' => 'Konflikt',
+	'visualeditor-savedialog-title-nochanges' => 'Keine Änderungen',
 	'visualeditor-savedialog-title-review' => 'Änderungen überprüfen',
 	'visualeditor-savedialog-title-report' => 'Ein Problem melden',
 	'visualeditor-savedialog-title-save' => 'Änderungen speichern',
 	'visualeditor-savedialog-label-review-wrong' => 'Etwas ist schief gelaufen',
 	'visualeditor-savedialog-label-review-good' => 'Sieht gut aus',
 	'visualeditor-savedialog-label-report' => 'Problem melden',
+	'visualeditor-savedialog-label-resolve-conflict' => 'Konflikt lösen',
 	'visualeditor-savedialog-label-create' => 'Seite erstellen',
 	'visualeditor-savedialog-label-save' => 'Seite speichern',
 	'visualeditor-savedialog-label-restore' => 'Seite wiederherstellen',
@@ -928,7 +929,7 @@ $messages['de'] = array(
 	'visualeditor-report-notice' => 'Mit dem Klick auf „Problem berichten“ übermittle ich meine Änderungen und meine Rückmeldung, die zur Auswertung gespeichert wird. Ich stimme der Abgabe meiner Rückmeldung in Übereinstimmung mit den [[{{MediaWiki:Visualeditor-report-link}}|Nutzungsbedingungen]] zu.',
 	'visualeditor-report-link' => 'foundation:Terms of Use/de',
 	'visualeditor-feedback-link' => 'Project:VisualEditor/Rückmeldungen',
-	'visualeditor-diff-nochanges' => 'Deine Bearbeitung wird ignoriert, da du keine Textänderungen durchgeführt hast.',
+	'visualeditor-diff-nochanges' => 'Deine Bearbeitung wurde ignoriert, da du keine Textänderungen durchgeführt hast.',
 );
 
 /** German (formal address) (Deutsch (Sie-Form)‎)
@@ -1386,7 +1387,7 @@ $messages['fi'] = array(
 	'visualeditor-descriptionpagelink' => 'Project:Visuaalinen muokkain',
 	'visualeditor-alphawarning' => 'Käytät [[{{MediaWiki:Visualeditor-descriptionpagelink}}|visuaalisen muokkaimen]] alpha-versiota. Se saattaa olla hidas ja tehdä virheellisiä muutoksia – tarkista jokainen muokkaus, jonka teet.',
 	'visualeditor-report-notice' => 'Ymmärrän, että painamalla "Tallenna" lähetän muutokseni ja palautteeni, jotka säilötään analysointia varten. Suostun antamaan palautetta [[{{MediaWiki:Visualeditor-report-link}}|Käyttöehtojen]] mukaisesti.', # Fuzzy
-	'visualeditor-diff-nochanges' => 'Muokkaustasi ei tallenneta, koska et ole tehnyt muutoksia tekstiin.',
+	'visualeditor-diff-nochanges' => 'Muokkaustasi ei tallenneta, koska et ole tehnyt muutoksia tekstiin.', # Fuzzy
 );
 
 /** French (français)
@@ -1431,12 +1432,15 @@ $messages['fr'] = array(
 	'visualeditor-dialog-action-cancel' => 'Annuler',
 	'visualeditor-dialog-action-close' => 'Fermer',
 	'visualeditor-toolbar-savedialog' => 'Relire et enregistrer',
+	'visualeditor-savedialog-title-conflict' => 'Conflit',
+	'visualeditor-savedialog-title-nochanges' => 'Aucun changement',
 	'visualeditor-savedialog-title-review' => 'Relire vos modifications',
 	'visualeditor-savedialog-title-report' => 'Signaler un problème',
 	'visualeditor-savedialog-title-save' => 'Enregistrer vos modifications',
 	'visualeditor-savedialog-label-review-wrong' => 'Quelque chose ne va pas',
 	'visualeditor-savedialog-label-review-good' => 'Cela me semble correct',
 	'visualeditor-savedialog-label-report' => 'Signaler un problème',
+	'visualeditor-savedialog-label-resolve-conflict' => 'Résoudre le conflit',
 	'visualeditor-savedialog-label-create' => 'Créer la page',
 	'visualeditor-savedialog-label-save' => 'Enregistrer la page',
 	'visualeditor-savedialog-label-restore' => 'Restaurer la page',
@@ -1484,7 +1488,7 @@ $messages['fr'] = array(
 	'visualeditor-report-notice' => 'Je comprends qu’en cliquant sur «  Signaler un problème  », je transmettrai mes modifications et mes commentaires, qui seront stockés pour analyse. J’accepte de donner mon avis en accord avec les [[{{MediaWiki:Visualeditor-report-link}}|conditions d’utilisation]].',
 	'visualeditor-report-link' => 'foundation:Terms of Use/fr',
 	'visualeditor-feedback-link' => 'Project:Éditeur Visuel/Avis',
-	'visualeditor-diff-nochanges' => 'Votre modification sera ignorée parce que vous n’avez effectué aucun changement au texte.',
+	'visualeditor-diff-nochanges' => 'Votre modification a été ignorée parce que vous n’avez apporté aucun changement au texte.',
 );
 
 /** Franco-Provençal (arpetan)
@@ -1947,12 +1951,15 @@ $messages['it'] = array(
 	'visualeditor-dialog-action-cancel' => 'Annulla',
 	'visualeditor-dialog-action-close' => 'Chiudi',
 	'visualeditor-toolbar-savedialog' => 'Rivedi e salva',
+	'visualeditor-savedialog-title-conflict' => 'Conflitto',
+	'visualeditor-savedialog-title-nochanges' => 'Nessuna modifica',
 	'visualeditor-savedialog-title-review' => 'Rivedi le modifiche',
 	'visualeditor-savedialog-title-report' => 'Segnala un problema',
 	'visualeditor-savedialog-title-save' => 'Salva le modifiche',
 	'visualeditor-savedialog-label-review-wrong' => 'Qualcosa è sbagliato',
 	'visualeditor-savedialog-label-review-good' => 'Mi pare corretto',
 	'visualeditor-savedialog-label-report' => 'Segnala un problema',
+	'visualeditor-savedialog-label-resolve-conflict' => 'Risolvi il conflitto',
 	'visualeditor-savedialog-label-create' => 'Crea pagina',
 	'visualeditor-savedialog-label-save' => 'Salva la pagina',
 	'visualeditor-savedialog-label-restore' => 'Ripristina pagina',
@@ -2000,7 +2007,7 @@ $messages['it'] = array(
 	'visualeditor-report-notice' => "Capisco che cliccando su {{MediaWiki:Visualeditor-savedialog-label-report}} trasmetto le mie modifiche e il mio feedback che verranno conservati per l'analisi. Sono d'accordo a fornire i feedback in conformità alle [[{{MediaWiki:Visualeditor-report-link}}|condizioni d'uso]].",
 	'visualeditor-report-link' => 'foundation:Terms of Use/it',
 	'visualeditor-feedback-link' => 'Project:VisualEditor/Commenti',
-	'visualeditor-diff-nochanges' => "L'azione verrà ignorata poiché non hai fatto nessuna modifica al testo.",
+	'visualeditor-diff-nochanges' => "L'azione è stata ignorata poiché non hai fatto nessuna modifica al testo.",
 );
 
 /** Japanese (日本語)
@@ -2030,16 +2037,20 @@ $messages['ja'] = array(
 	'visualeditor-dialog-meta-title' => 'ページの設定',
 	'visualeditor-dialog-content-title' => 'コンテンツの設定',
 	'visualeditor-dialog-media-title' => 'メディアの設定',
+	'visualeditor-dialog-reference-title' => '脚注',
 	'visualeditor-dialog-action-apply' => '変更内容を適用',
 	'visualeditor-dialog-action-cancel' => 'キャンセル',
 	'visualeditor-dialog-action-close' => '閉じる',
 	'visualeditor-toolbar-savedialog' => '確認して保存',
+	'visualeditor-savedialog-title-conflict' => '競合',
+	'visualeditor-savedialog-title-nochanges' => '変更点なし',
 	'visualeditor-savedialog-title-review' => '変更内容の確認',
 	'visualeditor-savedialog-title-report' => '問題点の報告',
 	'visualeditor-savedialog-title-save' => '変更を保存',
 	'visualeditor-savedialog-label-review-wrong' => '問題点を報告',
 	'visualeditor-savedialog-label-review-good' => 'この内容を保存',
 	'visualeditor-savedialog-label-report' => '問題点を報告',
+	'visualeditor-savedialog-label-resolve-conflict' => '競合を解決',
 	'visualeditor-savedialog-label-create' => 'ページを作成',
 	'visualeditor-savedialog-label-save' => 'ページを保存',
 	'visualeditor-savedialog-label-restore' => 'ページを復元',
@@ -2062,6 +2073,7 @@ $messages['ja'] = array(
 	'visualeditor-annotationbutton-bold-tooltip' => '太字',
 	'visualeditor-annotationbutton-italic-tooltip' => '斜体',
 	'visualeditor-annotationbutton-link-tooltip' => 'リンク',
+	'visualeditor-dialogbutton-reference-tooltip' => '脚注',
 	'visualeditor-dialogbutton-media-tooltip' => 'メディア',
 	'visualeditor-indentationbutton-indent-tooltip' => 'インデント',
 	'visualeditor-indentationbutton-outdent-tooltip' => 'インデント解除',
@@ -2086,7 +2098,7 @@ $messages['ja'] = array(
 	'visualeditor-report-notice' => '私は「問題点を報告」ボタンを押すことで自身の変更とフィードバックを送信し、それが分析のために保管されることを理解します。[[{{MediaWiki:Visualeditor-report-link}}|利用規約]]に従ってフィードバックを提供することに同意します。',
 	'visualeditor-report-link' => 'foundation:Terms of Use/ja',
 	'visualeditor-feedback-link' => 'Project:ビジュアルエディター/フィードバック',
-	'visualeditor-diff-nochanges' => '文章を何も変更していないため、編集内容は無視されます。',
+	'visualeditor-diff-nochanges' => '文章が何も変更されていないため、編集内容を破棄しました。',
 );
 
 /** Javanese (Basa Jawa)
@@ -2411,6 +2423,7 @@ $messages['mk'] = array(
 	'visualeditor-dialog-meta-title' => 'Поставки за страниците',
 	'visualeditor-dialog-content-title' => 'Поставки за содржините',
 	'visualeditor-dialog-media-title' => 'Поставки за слики и снимки',
+	'visualeditor-dialog-reference-title' => 'Навод',
 	'visualeditor-dialog-action-apply' => 'Спроведи измени',
 	'visualeditor-dialog-action-cancel' => 'Откажи',
 	'visualeditor-dialog-action-close' => 'Затвори',
@@ -2443,6 +2456,7 @@ $messages['mk'] = array(
 	'visualeditor-annotationbutton-bold-tooltip' => 'Задебелено',
 	'visualeditor-annotationbutton-italic-tooltip' => 'Косо',
 	'visualeditor-annotationbutton-link-tooltip' => 'Врска',
+	'visualeditor-dialogbutton-reference-tooltip' => 'Навод',
 	'visualeditor-dialogbutton-media-tooltip' => 'Слики и снимки',
 	'visualeditor-indentationbutton-indent-tooltip' => 'Зголеми вовлекување',
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Намали вовлекување',
@@ -2467,7 +2481,7 @@ $messages['mk'] = array(
 	'visualeditor-report-notice' => 'Разбирам дека стискајќи на „Пријави проблем“ ќе ги пренесам моите промени и одѕивот на место кајшто ќе бидат складирани за анализа. Се согласувам да давам одѕив во склад со [[{{MediaWiki:Visualeditor-report-link}}|Условите на употреба]].',
 	'visualeditor-report-link' => 'foundation:Terms of Use/mk',
 	'visualeditor-feedback-link' => 'Project:VisualEditor/Мислења',
-	'visualeditor-diff-nochanges' => 'Уредувањето ќе биде занемарено бидејќи не направивте никакви измени во текстот.',
+	'visualeditor-diff-nochanges' => 'Уредувањето ќе биде занемарено бидејќи не направивте никакви измени во текстот.', # Fuzzy
 );
 
 /** Malayalam (മലയാളം)
@@ -2736,7 +2750,7 @@ $messages['nb'] = array(
 	'visualeditor-alphawarning' => 'Du bruker en alfa-versjon av [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]. Den kan være treg og medføre feilaktige endringer – vennligst kontroller hver redigering du gjør.',
 	'visualeditor-report-notice' => 'Jeg forstår at ved å klikke på «Meld fra om problem» vil mine endringer og min tilbakemelding bli overført og lagret for analyse. Jeg godtar at tilbakemeldingen min blir gitt i overensstemmelse med [[{{MediaWiki:Visualeditor-report-link}}|bruksvilkårene]].',
 	'visualeditor-feedback-link' => 'Project:VisualEditor/Feedback',
-	'visualeditor-diff-nochanges' => 'Redigeringen din blir ignorert siden du ikke gjorde noen endringer i teksten.',
+	'visualeditor-diff-nochanges' => 'Redigeringen din blir ignorert siden du ikke gjorde noen endringer i teksten.', # Fuzzy
 );
 
 /** Nepali (नेपाली)
@@ -3320,17 +3334,21 @@ $messages['ru'] = array(
 	'visualeditor-ca-editsource' => 'Править исходный текст',
 	'visualeditor-ca-ve-edit' => 'Визуальный редактор',
 	'visualeditor-ca-ve-create' => 'Визуальный редактор',
-	'visualeditor-category-input-placeholder' => 'Название категории', # Fuzzy
+	'visualeditor-category-input-placeholder' => 'Добавить категорию',
+	'visualeditor-dialog-reference-title' => 'Примечания',
 	'visualeditor-dialog-action-apply' => 'Применить изменения',
 	'visualeditor-dialog-action-cancel' => 'Отмена',
 	'visualeditor-dialog-action-close' => 'Закрыть',
 	'visualeditor-toolbar-savedialog' => 'Проверить и сохранить',
+	'visualeditor-savedialog-title-conflict' => 'Конфликт',
+	'visualeditor-savedialog-title-nochanges' => 'Нет изменений',
 	'visualeditor-savedialog-title-review' => 'Проверьте ваши правки',
 	'visualeditor-savedialog-title-report' => 'Сообщить о проблеме',
 	'visualeditor-savedialog-title-save' => 'Сохранить изменения',
 	'visualeditor-savedialog-label-review-wrong' => 'Что-то пошло не так',
 	'visualeditor-savedialog-label-review-good' => 'Вроде, всё в порядке',
 	'visualeditor-savedialog-label-report' => 'Сообщить о проблеме',
+	'visualeditor-savedialog-label-resolve-conflict' => 'Разрешить конфликт',
 	'visualeditor-savedialog-label-create' => 'Создать страницу',
 	'visualeditor-savedialog-label-save' => 'Записать страницу',
 	'visualeditor-savedialog-label-restore' => 'Восстановить страницу',
@@ -3352,6 +3370,7 @@ $messages['ru'] = array(
 	'visualeditor-annotationbutton-bold-tooltip' => 'Жирный',
 	'visualeditor-annotationbutton-italic-tooltip' => 'Курсив',
 	'visualeditor-annotationbutton-link-tooltip' => 'Ссылка',
+	'visualeditor-dialogbutton-reference-tooltip' => 'Примечания',
 	'visualeditor-indentationbutton-indent-tooltip' => 'Увеличить отступ',
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Уменьшить отступ',
 	'visualeditor-listbutton-number-tooltip' => 'Нумерованный список',
@@ -3374,6 +3393,7 @@ $messages['ru'] = array(
 	'visualeditor-alphawarning' => 'Вы используете альфа-версию [[{{MediaWiki:Visualeditor-descriptionpagelink}}|визуального редактора]]: она может быть тормозить в вашем браузере. Пожалуйста, проверяйте каждую сделанную правку, чтобы убедиться, что внесенные изменения коректны.',
 	'visualeditor-report-notice' => 'Я понимаю, что нажав кнопку «Сообщить о проблеме» я передам свои изменения и свой отзыв, которых будет храниться для анализа. Я согласен с тем, чтобы обеспечить обратную связь в соответствии с [[{{MediaWiki:Visualeditor-report-link}}|условиями использования]].',
 	'visualeditor-feedback-link' => 'Project:VisualEditor/Отзывы',
+	'visualeditor-diff-nochanges' => 'Правки были проигнорированы, потому что вы не внесли никаких изменений в текст.',
 );
 
 /** Rusyn (русиньскый)
@@ -3773,16 +3793,20 @@ $messages['vi'] = array(
 	'visualeditor-dialog-meta-title' => 'Tùy chọn trang',
 	'visualeditor-dialog-content-title' => 'Tùy chọn nội dung',
 	'visualeditor-dialog-media-title' => 'Tùy chọn phương tiện',
+	'visualeditor-dialog-reference-title' => 'Chú thích tham khảo',
 	'visualeditor-dialog-action-apply' => 'Áp dụng các thay đổi',
 	'visualeditor-dialog-action-cancel' => 'Hủy bỏ',
 	'visualeditor-dialog-action-close' => 'Đóng',
 	'visualeditor-toolbar-savedialog' => 'Xem lại và lưu',
+	'visualeditor-savedialog-title-conflict' => 'Mâu thuẫn',
+	'visualeditor-savedialog-title-nochanges' => 'Không có thay đổi',
 	'visualeditor-savedialog-title-review' => 'Xem lại những thay đổi của bạn',
 	'visualeditor-savedialog-title-report' => 'Báo cáo một vấn đề',
 	'visualeditor-savedialog-title-save' => 'Lưu lại những thay đổi của bạn',
 	'visualeditor-savedialog-label-review-wrong' => 'Không ổn',
 	'visualeditor-savedialog-label-review-good' => 'Được',
 	'visualeditor-savedialog-label-report' => 'Báo cáo vấn đề',
+	'visualeditor-savedialog-label-resolve-conflict' => 'Giải quyết mâu thuẫn',
 	'visualeditor-savedialog-label-create' => 'Tạo trang',
 	'visualeditor-savedialog-label-save' => 'Lưu trang',
 	'visualeditor-savedialog-label-restore' => 'Phục hồi trang',
@@ -3805,6 +3829,7 @@ $messages['vi'] = array(
 	'visualeditor-annotationbutton-bold-tooltip' => 'Đậm',
 	'visualeditor-annotationbutton-italic-tooltip' => 'Xiên',
 	'visualeditor-annotationbutton-link-tooltip' => 'Liên kết',
+	'visualeditor-dialogbutton-reference-tooltip' => 'Chú thích tham khảo',
 	'visualeditor-dialogbutton-media-tooltip' => 'Phương tiện',
 	'visualeditor-indentationbutton-indent-tooltip' => 'Tăng lề',
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Giảm lề',
@@ -3829,7 +3854,7 @@ $messages['vi'] = array(
 	'visualeditor-report-notice' => 'Tôi hiểu rằng, bằng cách bấm “Báo cáo vấn đề”, tôi sẽ truyền những thay đổi và thông tin phản hồi của tôi, thông tin này sẽ được lưu trữ để phân tích. Tôi đồng ý cho thông tin phản hồi theo các [[{{MediaWiki:Visualeditor-report-link}}|Điều khoản sử dụng]].',
 	'visualeditor-report-link' => 'Foundation:Terms of Use/vi',
 	'visualeditor-feedback-link' => 'Project:Trình soạn thị giác/Phản hồi',
-	'visualeditor-diff-nochanges' => 'Sửa đổi của bạn sẽ bị bỏ qua vì bạn không thay đổi văn bản một tí nào.',
+	'visualeditor-diff-nochanges' => 'Sửa đổi của bạn đã bị bỏ qua vì bạn không thay đổi văn bản một tí nào.',
 );
 
 /** Simplified Chinese (中文（简体）‎)
@@ -3947,16 +3972,20 @@ $messages['zh-hant'] = array(
 	'visualeditor-dialog-meta-title' => '頁面設定',
 	'visualeditor-dialog-content-title' => '內容設定',
 	'visualeditor-dialog-media-title' => '媒體設定',
+	'visualeditor-dialog-reference-title' => '參考',
 	'visualeditor-dialog-action-apply' => '套用變更',
 	'visualeditor-dialog-action-cancel' => '取消',
 	'visualeditor-dialog-action-close' => '關閉',
 	'visualeditor-toolbar-savedialog' => '檢閱並儲存',
+	'visualeditor-savedialog-title-conflict' => '衝突',
+	'visualeditor-savedialog-title-nochanges' => '沒有更改',
 	'visualeditor-savedialog-title-review' => '檢閱您的變更',
 	'visualeditor-savedialog-title-report' => '回報問題',
 	'visualeditor-savedialog-title-save' => '儲存您的變更',
 	'visualeditor-savedialog-label-review-wrong' => '有問題出現',
 	'visualeditor-savedialog-label-review-good' => '沒有問題',
 	'visualeditor-savedialog-label-report' => '回報問題',
+	'visualeditor-savedialog-label-resolve-conflict' => '解決衝突',
 	'visualeditor-savedialog-label-create' => '建立頁面',
 	'visualeditor-savedialog-label-save' => '儲存頁面',
 	'visualeditor-savedialog-label-restore' => '恢復頁面',
@@ -3979,6 +4008,7 @@ $messages['zh-hant'] = array(
 	'visualeditor-annotationbutton-bold-tooltip' => '粗體',
 	'visualeditor-annotationbutton-italic-tooltip' => '斜體',
 	'visualeditor-annotationbutton-link-tooltip' => '連結',
+	'visualeditor-dialogbutton-reference-tooltip' => '參考',
 	'visualeditor-dialogbutton-media-tooltip' => '媒體',
 	'visualeditor-indentationbutton-indent-tooltip' => '增加縮排',
 	'visualeditor-indentationbutton-outdent-tooltip' => '減少縮排',
@@ -4002,4 +4032,5 @@ $messages['zh-hant'] = array(
 	'visualeditor-alphawarning' => '你正在使用 Alpha 版本的 [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]。它可能會很慢，或是產生錯誤的變更——請檢查您所做的每一次編輯。',
 	'visualeditor-report-notice' => '本人明白，按下「回報問題」後，將傳送我的變更和反饋內容，這些反映的意見會儲存起來以作為分析之用。我同意依據[[{{MediaWiki:Visualeditor-report-link}}|使用條款]]提供意見反饋。',
 	'visualeditor-feedback-link' => 'Project:VisualEditor/反饋',
+	'visualeditor-diff-nochanges' => '因為你沒有更改文本，你的編輯已被忽略。',
 );
