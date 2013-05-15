@@ -9,19 +9,19 @@
  * Document dialog.
  *
  * @class
- * @extends ve.ui.Dialog
+ * @extends ve.ui.PagedDialog
  *
  * @constructor
  * @param {ve.ui.Surface} surface
  */
 ve.ui.MWTemplateDialog = function VeUiMWTemplateDialog( surface ) {
 	// Parent constructor
-	ve.ui.Dialog.call( this, surface );
+	ve.ui.PagedDialog.call( this, surface );
 };
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.MWTemplateDialog, ve.ui.Dialog );
+ve.inheritClass( ve.ui.MWTemplateDialog, ve.ui.PagedDialog );
 
 /* Static Properties */
 
@@ -40,7 +40,11 @@ ve.ui.MWTemplateDialog.static.modelClasses = [ ve.dm.MWTemplateNode ];
  */
 ve.ui.MWTemplateDialog.prototype.initialize = function () {
 	// Call parent method
-	ve.ui.Dialog.prototype.initialize.call( this );
+	ve.ui.PagedDialog.prototype.initialize.call( this );
+
+	this.addPage( 'param1', 'Parameter 1', 'template' )
+		.addPage( 'param2', 'Parameter 2', 'template' );
+
 };
 
 /**
