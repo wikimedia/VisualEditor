@@ -85,7 +85,7 @@ ve.ui.MWTemplateDialog.prototype.initialize = function () {
  * @method
  */
 ve.ui.MWTemplateDialog.prototype.onOpen = function () {
-	var param;
+	var param, pageName, fieldset, textInput;
 
 	// Parent method
 	ve.ui.PagedDialog.prototype.onOpen.call( this );
@@ -93,14 +93,29 @@ ve.ui.MWTemplateDialog.prototype.onOpen = function () {
 	// Add template page
 	this.addPage( 'template', this.templateData.title, 'template' );
 
-	// Add page for each parameter
+	// Loop through parameters
 	for ( param in this.templateData.params ) {
+		pageName = 'parameter_' + param,
+
+		// Create pages
 		this.addPage(
-			'parameter_' + param,
+			pageName,
 			this.templateData.params[param].label.en, // TODO: use proper language instead of hardcoded 'en'
 			'parameter',
 			1
 		);
+
+		// Create content
+		fieldset = new ve.ui.FieldsetLayout( {
+			'$$': this.$$, 'label': 'Parameter', 'icon': 'template'
+		} );
+		textInput = new ve.ui.TextInputWidget( {
+			'$$': this.$$, 'multiline': true
+		} );
+		textInput.$input.css('height', 100);
+
+		fieldset.$.append( textInput.$ );
+		this.pages[pageName].$.append( fieldset.$ );
 	}
 
 };
