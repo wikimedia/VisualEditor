@@ -21,6 +21,7 @@ ve.ui.Context = function VeUiContext( surface ) {
 	this.showing = false;
 	this.selecting = false;
 	this.relocating = false;
+	this.embedded = false;
 	this.selection = null;
 	this.toolbar = null;
 	this.$ = $( '<div>' );
@@ -53,6 +54,8 @@ ve.ui.Context = function VeUiContext( surface ) {
 		'resize': ve.bind( this.update, this ),
 		'focus': ve.bind( this.onWindowFocus, this )
 	} );
+	this.$.add( this.$menu )
+		.on( 'mousedown', false );
 };
 
 /* Methods */
@@ -246,14 +249,25 @@ ve.ui.Context.prototype.update = function () {
  * @chainable
  */
 ve.ui.Context.prototype.updateDimensions = function ( transition ) {
-	var position, $container,
-		inspector = this.inspectors.getCurrent();
+	var position, $container, focusableOffset, focusableWidth,
+		inspector = this.inspectors.getCurrent(),
+		focusedNode = this.surface.getView().getFocusedNode();
 
 	// Get cursor position
 	position = ve.ce.Surface.getSelectionRect();
-	position = position && position.end;
+
 	if ( position ) {
-		$container = inspector ? this.inspectors.$ : this.$menu;
+		if ( this.embedded ) {
+			focusableOffset = focusedNode.$focusable.offset();
+			focusableWidth = focusedNode.$focusable.outerWidth();
+			$container = this.$menu;
+			position = { 'x': focusableOffset.left + focusableWidth, 'y': focusableOffset.top };
+			this.popup.align = 'right';
+		} else {
+			position = position && position.end;
+			$container = inspector ? this.inspectors.$ : this.$menu;
+			this.popup.align = 'center';
+		}
 		this.$.css( { 'left': position.x, 'top': position.y } );
 		this.popup.display(
 			position.x,
@@ -274,7 +288,8 @@ ve.ui.Context.prototype.updateDimensions = function ( transition ) {
  * @chainable
  */
 ve.ui.Context.prototype.show = function ( transition ) {
-	var inspector = this.inspectors.getCurrent();
+	var inspector = this.inspectors.getCurrent(),
+		focusedNode = this.surface.getView().getFocusedNode();
 
 	if ( !this.showing ) {
 		this.showing = true;
@@ -294,6 +309,16 @@ ve.ui.Context.prototype.show = function ( transition ) {
 			}, this ), 200 );
 		} else {
 			this.inspectors.$.hide();
+			if (
+				focusedNode &&
+				focusedNode.$focusable.outerHeight() > this.$menu.outerHeight() * 2
+			) {
+				this.$.addClass( 've-ui-context-embed' );
+				this.embedded = true;
+			} else {
+				this.$.removeClass( 've-ui-context-embed' );
+				this.embedded = false;
+			}
 			this.$menu.show();
 		}
 

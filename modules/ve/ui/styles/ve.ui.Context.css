@@ -35,3 +35,16 @@
 .ve-ui-context-menu .ve-ui-buttonTool-active {
 	background-image: none;
 }
+
+.ve-ui-context-embed .ve-ui-popupWidget-callout {
+	display: none;
+}
+
+.ve-ui-context-embed .ve-ui-popupWidget-body {
+	margin-top: 0.25em;
+	margin-left: -1.3em;
+}
+
+.ve-ui-context-embed .ve-ui-context-menu {
+	right: 0;
+}

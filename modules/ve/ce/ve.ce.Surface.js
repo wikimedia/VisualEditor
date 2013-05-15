@@ -177,8 +177,8 @@ ve.ce.Surface.getSelectionRect = function () {
 		};
 	} else {
 		return {
-			start: sel.getStartDocumentPos(),
-			end: sel.getEndDocumentPos()
+			'start': sel.getStartDocumentPos(),
+			'end': sel.getEndDocumentPos()
 		};
 	}
 };
