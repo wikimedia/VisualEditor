@@ -51,7 +51,7 @@ ve.ui.MWTemplateDialog.prototype.initialize = function () {
 ve.ui.MWTemplateDialog.prototype.onOpen = function () {
 	var mwAttr = this.surface.view.focusedNode.model.getAttribute( 'mw' ),
 		templateData = this.getTemplateData( mwAttr.target.wt ),
-		param, pageName, fieldset, textInput, inputLabel, label;
+		param;
 
 	// Parent method
 	ve.ui.PagedDialog.prototype.onOpen.call( this );
@@ -61,36 +61,41 @@ ve.ui.MWTemplateDialog.prototype.onOpen = function () {
 
 	// Loop through parameters
 	for ( param in mwAttr.params ) {
-		pageName = 'parameter_' + param;
-		label = templateData && templateData.params[param] ?
-			templateData.params[param].label.en :
-			param;
+		this.createPage(
+			param,
+			mwAttr.params[param],
+			templateData && templateData.params[param]
+		);
+	}
+};
 
-		this.addPage( pageName, label, 'parameter', 1 );
+/**
+ * Handle creating page for single parameter.
+ *
+ * @method
+ */
+ve.ui.MWTemplateDialog.prototype.createPage = function( key, value, singleTemplateData ) {
+	var pageName = 'parameter_' + key,
+		label = singleTemplateData ? singleTemplateData.label.en : key,
+		fieldset, textInput, inputLabel;
 
-		// Create content
-		fieldset = new ve.ui.FieldsetLayout( {
-			'$$': this.$$, 'label': label, 'icon': 'parameter'
+	fieldset = new ve.ui.FieldsetLayout( { '$$': this.$$, 'label': label, 'icon': 'parameter' } );
+	textInput = new ve.ui.TextInputWidget( { '$$': this.$$, 'multiline': true } );
+	textInput.$input.css('height', 100);
+
+	if ( singleTemplateData  ) {
+		inputLabel = new ve.ui.InputLabelWidget( {
+			'$$': this.$$,
+			'input': textInput,
+			'label': singleTemplateData.description.en
 		} );
-		textInput = new ve.ui.TextInputWidget( {
-			'$$': this.$$, 'multiline': true
-		} );
-		textInput.$input.css('height', 100);
-
-		if ( templateData && templateData.params[param] ) {
-			inputLabel = new ve.ui.InputLabelWidget( {
-				'$$': this.$$,
-				'input': textInput,
-				'label': templateData.params[param].description.en
-			} );
-			fieldset.$.append( inputLabel.$ );
-		}
-
-		fieldset.$.append( textInput.$ );
-		this.pages[pageName].$.append( fieldset.$ );
-		textInput.setValue( mwAttr.params[param].wt );
+		fieldset.$.append( inputLabel.$ );
 	}
 
+	fieldset.$.append( textInput.$ );
+	textInput.setValue( value.wt );
+	this.addPage( pageName, label, 'parameter', 1 );
+	this.pages[pageName].$.append( fieldset.$ );
 };
 
 ve.ui.MWTemplateDialog.prototype.getTemplateData = function ( /*templateName*/ ) {
