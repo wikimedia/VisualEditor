@@ -26,7 +26,7 @@ ve.ui.InputWidget = function VeUiInputWidget( config ) {
 	ve.ui.Widget.call( this, config );
 
 	// Properties
-	this.$input = this.$$( '<input>' );
+	this.$input = this.getInputElement( config );
 	this.value = '';
 	this.readonly = false;
 
@@ -34,11 +34,7 @@ ve.ui.InputWidget = function VeUiInputWidget( config ) {
 	this.$input.on( 'keydown mouseup cut paste change input select', ve.bind( this.onEdit, this ) );
 
 	// Initialization
-	this.$input.attr( {
-		'type': this.constructor.static.inputType,
-		'name': config.name,
-		'value': config.value
-	} );
+	this.$input.attr( 'name', config.name ).val( config.value );
 	this.setReadOnly( config.readOnly );
 	this.$.addClass( 've-ui-inputWidget' ).append( this.$input );
 };
@@ -54,16 +50,18 @@ ve.inheritClass( ve.ui.InputWidget, ve.ui.Widget );
  * @param value
  */
 
-/**
- * HTML input type.
- *
- * @static
- * @property {string}
- * @inheritable
- */
-ve.ui.InputWidget.static.inputType = '';
-
 /* Methods */
+
+/**
+ * Get input element.
+ *
+ * @method
+ * @param {Object} [config] Config options
+ * @return {jQuery} Input element
+ */
+ve.ui.InputWidget.prototype.getInputElement = function () {
+	return this.$$( '<input>' );
+};
 
 /**
  * Handle potentially value-changing events.
