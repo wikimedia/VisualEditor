@@ -39,7 +39,7 @@ ve.dm.MWBlockImageNode.static.toDataElement = function ( domElements, converter 
 		$img = $a.children( 'img' ).eq( 0 ),
 		$caption = $figure.children( 'figcaption' ).eq( 0 ),
 		typeofAttr = $figure.attr( 'typeof' ),
-		classes = $figure.attr( 'class' ).replace( /\s{2,}/g, ' ' ).split( ' ' ),
+		classes = $figure.attr( 'class' ),
 		attributes = {
 			href: $a.attr( 'href' ),
 			src: $img.attr( 'src' ),
@@ -47,6 +47,10 @@ ve.dm.MWBlockImageNode.static.toDataElement = function ( domElements, converter 
 			height: $img.attr( 'height' ),
 			resource: $img.attr( 'resource' )
 		};
+
+	// Extract individual classes
+	classes = typeof classes === 'string' ?
+		classes.replace( /\s{2,}/g, ' ' ).split( ' ' ) : [];
 
 	// Type
 	switch ( typeofAttr ) {
