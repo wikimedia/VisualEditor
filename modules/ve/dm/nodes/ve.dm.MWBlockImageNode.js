@@ -30,31 +30,59 @@ ve.dm.MWBlockImageNode.static.handlesOwnChildren = true;
 
 ve.dm.MWBlockImageNode.static.childNodeTypes = [ 'MWimagecaption' ];
 
-ve.dm.MWBlockImageNode.static.matchRdfaTypes = [ 'mw:Image/Thumb' ];
+// Match typeof="mw:Image/Thumb" and typeof="mw:Image/Frame"
+ve.dm.MWBlockImageNode.static.matchRdfaTypes = [ /mw:Image\/(Thumb|Frame)/ ];
 
 ve.dm.MWBlockImageNode.static.toDataElement = function ( domElements, converter ) {
 	var $figure = $( domElements[0] ),
 		$a = $figure.children( 'a' ).eq( 0 ),
 		$img = $a.children( 'img' ).eq( 0 ),
 		$caption = $figure.children( 'figcaption' ).eq( 0 ),
-		href = $a.attr( 'href' ),
-		src = $img.attr( 'src' ),
-		width = $img.attr( 'width' ),
-		height = $img.attr( 'height' ),
-		resource = $img.attr( 'resource' ),
-		captionData = converter.getDataFromDomRecursion( $caption[0], { 'type': 'MWimagecaption' } );
-	return [
-		{
-			'type': 'MWblockimage',
-			'attributes': {
-				'href': href,
-				'src': src,
-				'width': width,
-				'height': height,
-				'resource': resource
-			}
-		}
-	].concat( captionData ).concat( [ { 'type': '/MWblockimage' } ] );
+		typeofAttr = $figure.attr( 'typeof' ),
+		classes = $figure.attr( 'class' ).replace( /\s{2,}/g, ' ' ).split( ' ' ),
+		attributes = {
+			href: $a.attr( 'href' ),
+			src: $img.attr( 'src' ),
+			width: $img.attr( 'width' ),
+			height: $img.attr( 'height' ),
+			resource: $img.attr( 'resource' )
+		};
+
+	// Type
+	switch ( typeofAttr ) {
+		case 'mw:Image/Thumb':
+			attributes.type = 'thumb';
+			break;
+		case 'mw:Image/Frame':
+			attributes.type = 'frame';
+			break;
+	}
+
+	// Horizontal alignment
+	if ( classes.indexOf( 'mw-halign-left' ) !== -1 ) {
+		attributes.align = 'left';
+	} else if ( classes.indexOf( 'mw-halign-right' ) !== -1 ) {
+		attributes.align = 'right';
+	} else if ( classes.indexOf( 'mw-halign-center' ) !== -1 ) {
+		attributes.align = 'center';
+	} else if ( classes.indexOf( 'mw-halign-none' ) !== -1 ) {
+		attributes.align = 'none';
+	} else {
+		attributes.align = 'right';
+	}
+
+	// Default-size
+	if ( $figure.hasClass( 'mw-default-size' ) ) {
+		attributes.defaultSize = true;
+	}
+
+	if ( $caption.length === 0 ) {
+		return { 'type': 'MWblockimage', 'attributes': attributes };
+	} else {
+		return [ { 'type': 'MWblockimage', 'attributes': attributes } ].
+			concat( converter.getDataFromDomRecursionClean( $caption[0], { 'type': 'MWimagecaption' } ) ).
+			concat( [ { 'type': '/MWblockimage' } ] );
+	}
 };
 
 ve.dm.MWBlockImageNode.static.toDomElements = function ( data, doc, converter ) {
