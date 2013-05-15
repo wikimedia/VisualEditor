@@ -222,11 +222,11 @@ class ApiVisualEditor extends ApiBase {
 			if ( $params['html'] === null ) {
 				$this->dieUsageMsg( 'missingparam', 'html' );
 			}
-			$serialized = array( 'content' => $this->postHTML( $page, $params['html'], $parserParams ) );
-			if ( $serialized === false ) {
+			$content = $this->postHTML( $page, $params['html'], $parserParams );
+			if ( $content === false ) {
 				$this->dieUsage( 'Error contacting the Parsoid server', 'parsoidserver' );
 			} else {
-				$result = array_merge( array( 'result' => 'success' ), $serialized );
+				$result = array( 'result' => 'success', 'content' => $content );
 			}
 		} elseif ( $params['paction'] === 'save' || $params['paction'] === 'diff' ) {
 			$wikitext = $this->postHTML( $page, $params['html'], $parserParams );
