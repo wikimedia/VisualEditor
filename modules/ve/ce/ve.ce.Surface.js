@@ -69,7 +69,14 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 	this.$.addClass( 've-ce-surface' );
 	this.$phantoms.addClass( 've-ce-surface-phantoms' );
 	this.$pasteTarget.addClass( 've-ce-surface-paste' ).prop( 'contenteditable', true );
-	this.$.append( this.documentView.getDocumentNode().$, this.$phantoms, this.$pasteTarget );
+
+	// Add elements to the DOM
+	this.$.append( this.documentView.getDocumentNode().$, this.$pasteTarget );
+	// Append phantoms to $overlay instead of surface because it relies on being able to
+	// overlay the phantom over CE using absolute offsets against window. `this.$` can be
+	// deep inside a skin layout where any of the parentes could have position relative)
+	this.surface.getEditor().$overlay.append( this.$phantoms );
+
 };
 
 /* Inheritance */
