@@ -197,76 +197,81 @@ class ApiVisualEditor extends ApiBase {
 
 		$parserParams = array( 'oldid' => $params['oldid'] );
 
-		if ( $params['paction'] === 'parse' ) {
-			$parsed = $this->getHTML( $page, $parserParams );
-			// Dirty hack to provide the correct context for edit notices
-			global $wgTitle; // FIXME NOOOOOOOOES
-			$wgTitle = $page;
-			$notices = $page->getEditNotices();
-			if ( $user->isAnon() ) {
-				$wgVisualEditorEditNotices[] = 'anoneditwarning';
-			}
-			if ( count( $wgVisualEditorEditNotices ) ) {
-				foreach ( $wgVisualEditorEditNotices as $key ) {
-					$notices[] = wfMessage( $key )->parseAsBlock();
+		switch ( $params['paction'] ) {
+			case 'parse':
+				$parsed = $this->getHTML( $page, $parserParams );
+				// Dirty hack to provide the correct context for edit notices
+				global $wgTitle; // FIXME NOOOOOOOOES
+				$wgTitle = $page;
+				$notices = $page->getEditNotices();
+				if ( $user->isAnon() ) {
+					$wgVisualEditorEditNotices[] = 'anoneditwarning';
 				}
-			}
-			if ( $parsed === false ) {
-				$this->dieUsage( 'Error contacting the Parsoid server', 'parsoidserver' );
-			} else {
-				$result = array_merge(
-					array( 'result' => 'success', 'notices' => $notices ), $parsed
-				);
-			}
-		} else if ( $params['paction'] === 'serialize' ) {
-			if ( $params['html'] === null ) {
-				$this->dieUsageMsg( 'missingparam', 'html' );
-			}
-			$content = $this->postHTML( $page, $params['html'], $parserParams );
-			if ( $content === false ) {
-				$this->dieUsage( 'Error contacting the Parsoid server', 'parsoidserver' );
-			} else {
-				$result = array( 'result' => 'success', 'content' => $content );
-			}
-		} elseif ( $params['paction'] === 'save' || $params['paction'] === 'diff' ) {
-			$wikitext = $this->postHTML( $page, $params['html'], $parserParams );
-
-			if ( $wikitext === false ) {
-				$this->dieUsage( 'Error contacting the Parsoid server', 'parsoidserver' );
-			} else if ( $params['paction'] === 'save' ) {
-				// Save page
-				$editResult = $this->saveWikitext( $page, $wikitext, $params );
-				if (
-					!isset( $editResult['edit']['result'] ) ||
-					$editResult['edit']['result'] !== 'Success'
-				) {
-					$result = array(
-						'result' => 'error',
-						'edit' => $editResult['edit']
-					);
+				if ( count( $wgVisualEditorEditNotices ) ) {
+					foreach ( $wgVisualEditorEditNotices as $key ) {
+						$notices[] = wfMessage( $key )->parseAsBlock();
+					}
+				}
+				if ( $parsed === false ) {
+					$this->dieUsage( 'Error contacting the Parsoid server', 'parsoidserver' );
 				} else {
-					if ( isset( $editResult['edit']['newrevid'] ) && $wgVisualEditorUseChangeTagging ) {
-						ChangeTags::addTags( 'visualeditor', null,
-							intval( $editResult['edit']['newrevid'] ),
-							null
+					$result = array_merge(
+						array( 'result' => 'success', 'notices' => $notices ), $parsed
+					);
+				}
+				break;
+			case 'serialize':
+				if ( $params['html'] === null ) {
+					$this->dieUsageMsg( 'missingparam', 'html' );
+				}
+				$content = $this->postHTML( $page, $params['html'], $parserParams );
+				if ( $content === false ) {
+					$this->dieUsage( 'Error contacting the Parsoid server', 'parsoidserver' );
+				} else {
+					$result = array( 'result' => 'success', 'content' => $content );
+				}
+				break;
+			case 'save':
+			case 'diff':
+				$wikitext = $this->postHTML( $page, $params['html'], $parserParams );
+
+				if ( $wikitext === false ) {
+					$this->dieUsage( 'Error contacting the Parsoid server', 'parsoidserver' );
+				} else if ( $params['paction'] === 'save' ) {
+					// Save page
+					$editResult = $this->saveWikitext( $page, $wikitext, $params );
+					if (
+						!isset( $editResult['edit']['result'] ) ||
+						$editResult['edit']['result'] !== 'Success'
+					) {
+						$result = array(
+							'result' => 'error',
+							'edit' => $editResult['edit']
 						);
+					} else {
+						if ( isset( $editResult['edit']['newrevid'] ) && $wgVisualEditorUseChangeTagging ) {
+							ChangeTags::addTags( 'visualeditor', null,
+								intval( $editResult['edit']['newrevid'] ),
+								null
+							);
+						}
+						$result = $this->parseWikitext( $page );
+						if ( $result === false ) {
+							$this->dieUsage( 'Error contacting the Parsoid server', 'parsoidserver' );
+						}
+						$result['result'] = 'success';
+						if ( isset( $editResult['edit']['newrevid'] ) ) {
+							$result['newrevid'] = intval( $editResult['edit']['newrevid'] );
+						}
 					}
-					$result = $this->parseWikitext( $page );
-					if ( $result === false ) {
-						$this->dieUsage( 'Error contacting the Parsoid server', 'parsoidserver' );
+				} else if ( $params['paction'] === 'diff' ) {
+					$diff = $this->diffWikitext( $page, $wikitext );
+					if ( $diff['result'] === 'fail' ) {
+						$this->dieUsage( 'Diff failed', 'difffailed' );
 					}
-					$result['result'] = 'success';
-					if ( isset( $editResult['edit']['newrevid'] ) ) {
-						$result['newrevid'] = intval( $editResult['edit']['newrevid'] );
-					}
+					$result = $diff;
 				}
-			} else if ( $params['paction'] === 'diff' ) {
-				$diff = $this->diffWikitext( $page, $wikitext );
-				if ( $diff['result'] === 'fail' ) {
-					$this->dieUsage( 'Diff failed', 'difffailed' );
-				}
-				$result = $diff;
-			}
+				break;
 		}
 
 		$this->getResult()->addValue( null, $this->getModuleName(), $result );
