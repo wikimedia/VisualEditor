@@ -220,7 +220,10 @@
 
 .ve-ui-textInputWidget input,
 .ve-ui-textInputWidget input:focus[readonly],
-.ve-ui-widget-disabled.ve-ui-textInputWidget input:focus {
+.ve-ui-widget-disabled.ve-ui-textInputWidget input:focus,
+.ve-ui-textInputWidget textarea,
+.ve-ui-textInputWidget textarea:focus[readonly],
+.ve-ui-widget-disabled.ve-ui-textInputWidget textarea:focus {
 	display: inline-block;
 	font-size: 1em;
 	font-family: sans-serif;
@@ -242,20 +245,24 @@
 	transition: border-color 200ms, box-shadow 200ms, background-color 200ms;
 }
 
-.ve-ui-textInputWidget input:focus {
+.ve-ui-textInputWidget input:focus,
+.ve-ui-textInputWidget textarea:focus {
 	outline: none;
 	border-color: #a7dcff;
 	box-shadow: 0 0 0.3em #a7dcff, 0 0 0 white;
 	background-color: #fff;
 }
 
-.ve-ui-textInputWidget input[readonly] {
+.ve-ui-textInputWidget input[readonly],
+.ve-ui-textInputWidget textarea[readonly] {
 	color: #777;
 	text-shadow: 0 1px 1px #fff;
 }
 
 .ve-ui-widget-disabled.ve-ui-textInputWidget input,
-.ve-ui-widget-disabled.ve-ui-textInputWidget input:focus {
+.ve-ui-widget-disabled.ve-ui-textInputWidget input:focus,
+.ve-ui-widget-disabled.ve-ui-textInputWidget textarea,
+.ve-ui-widget-disabled.ve-ui-textInputWidget textarea:focus {
 	color: #ccc;
 	text-shadow: 0 1px 1px #fff;
 }
@@ -297,7 +304,8 @@
 
 /* ve.ui.PendingInputWidget */
 
-.ve-ui-pendingInputWidget input {
+.ve-ui-pendingInputWidget input,
+.ve-ui-pendingInputWidget textarea {
 	background-image: url(images/pending.gif);
 }
 

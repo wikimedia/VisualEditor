@@ -30,6 +30,15 @@ ve.ui.TextInputWidget = function VeUiTextInputWidget( config ) {
 
 ve.inheritClass( ve.ui.TextInputWidget, ve.ui.InputWidget );
 
-/* Static Properties */
+/* Methods */
 
-ve.ui.TextInputWidget.static.inputType = 'text';
+/**
+ * Get input element.
+ *
+ * @method
+ * @param {Object} [config] Config options
+ * @return {jQuery} Input element
+ */
+ve.ui.TextInputWidget.prototype.getInputElement = function ( config ) {
+	return config.multiline ? this.$$( '<textarea>' ) : this.$$( '<input>' ).attr( 'type', 'text' );
+};
