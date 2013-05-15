@@ -287,6 +287,7 @@
 		<script src="dm/ve.dm.BranchNode.test.js"></script>
 		<script src="dm/ve.dm.LeafNode.test.js"></script>
 		<script src="dm/nodes/ve.dm.TextNode.test.js"></script>
+		<script src="dm/nodes/ve.dm.MWTemplateNode.test.js"></script>
 		<script src="dm/ve.dm.Document.test.js"></script>
 		<script src="dm/ve.dm.DocumentSynchronizer.test.js"></script>
 		<script src="dm/ve.dm.IndexValueStore.test.js"></script>
