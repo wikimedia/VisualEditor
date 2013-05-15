@@ -51,19 +51,12 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 	this.deactivating = false;
 	this.scrollTop = null;
 	this.surfaceOptions = {
-		'toolbars': {
-			'top': {
-				'float': !this.isMobileDevice,
-				// HACK: The toolbar configuration isn't very extendable, so this is mostly
-				// copy-pasted from ve.Surface except using mwLink for the link tool
-				'tools': [
-					{ 'name': 'history', 'items' : ['undo', 'redo'] },
-					{ 'name': 'textStyle', 'items' : ['mwFormat'] },
-					{ 'name': 'textStyle', 'items' : ['bold', 'italic', 'mwLink', 'clear'] },
-					{ 'name': 'list', 'items' : ['number', 'bullet', 'outdent', 'indent'] }
-				]
-			}
-		},
+		'toolbar': [
+			{ 'name': 'history', 'items' : ['undo', 'redo'] },
+			{ 'name': 'textStyle', 'items' : ['mwFormat'] },
+			{ 'name': 'textStyle', 'items' : ['bold', 'italic', 'mwLink', 'clear'] },
+			{ 'name': 'list', 'items' : ['number', 'bullet', 'outdent', 'indent'] }
+		],
 		'commands': ['bold', 'italic', 'mwLink', 'undo', 'redo', 'indent', 'outdent']
 	};
 	this.currentUri = currentUri;
