@@ -187,6 +187,16 @@
 	font-size: 1.1em;
 }
 
+.ve-ui-outlineItemWidget-level-1 {
+	padding-left: 5.5em;
+	background-position: 3em center;
+}
+
+.ve-ui-outlineItemWidget-level-2 {
+	padding-left: 7.5em;
+	background-position: 5em center;
+}
+
 .ve-ui-outlineItemWidget.ve-ui-optionWidget-selected {
 	background-color: #a7dcff;
 	text-shadow: 0 1px 1px rgba(255,255,255,0.5);
