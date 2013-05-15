@@ -111,6 +111,7 @@ class VisualEditorHooks {
 				'dm/ve.dm.LeafNode.test.js',
 				'dm/ve.dm.LinearData.test.js',
 				'dm/nodes/ve.dm.TextNode.test.js',
+				'dm/nodes/ve.dm.MWTemplateNode.test.js',
 				'dm/ve.dm.Document.test.js',
 				'dm/ve.dm.DocumentSynchronizer.test.js',
 				'dm/ve.dm.IndexValueStore.test.js',
