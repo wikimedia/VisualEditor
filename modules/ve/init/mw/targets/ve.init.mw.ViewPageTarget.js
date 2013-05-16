@@ -852,7 +852,7 @@ ve.init.mw.ViewPageTarget.prototype.setupSkinTabs = function () {
 	}
 
 	// If there got here via veaction=edit, hide it from the URL.
-	if ( this.currentUri.query.veaction === 'edit' && window.history.replaceState ) {
+	if ( !ve.debug && ( this.currentUri.query.veaction === 'edit' && window.history.replaceState ) ) {
 		// Remove the veaction query parameter, but don't affect the original mw.Uri instance
 		uriClone = this.currentUri.clone();
 		delete uriClone.query.veaction;
