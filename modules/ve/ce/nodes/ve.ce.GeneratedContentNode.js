@@ -49,7 +49,9 @@ ve.ce.GeneratedContentNode.prototype.onUpdate = function () {
 	var store = this.model.doc.getStore(),
 		index = store.indexOfHash( ve.getHash( this.model ) );
 	if ( index !== null ) {
+		this.emit( 'teardown' );
 		this.$.empty().append( store.value( index ) );
+		this.emit( 'setup' );
 	} else {
 		this.startGenerating();
 		this.generateContents()
