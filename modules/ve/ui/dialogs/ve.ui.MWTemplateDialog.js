@@ -53,6 +53,9 @@ ve.ui.MWTemplateDialog.prototype.onOpen = function () {
 		templateData = this.getTemplateData( mwAttr.target.wt ),
 		param;
 
+	this.paramsKeys = [];
+	this.paramsToInputs = {};
+
 	// Parent method
 	ve.ui.PagedDialog.prototype.onOpen.call( this );
 
@@ -96,6 +99,9 @@ ve.ui.MWTemplateDialog.prototype.createPage = function( key, value, singleTempla
 	textInput.setValue( value.wt );
 	this.addPage( pageName, label, 'parameter', 1 );
 	this.pages[pageName].$.append( fieldset.$ );
+
+	this.paramsKeys.push( key );
+	this.paramsToInputs[key] = textInput;
 };
 
 ve.ui.MWTemplateDialog.prototype.getTemplateData = function ( /*templateName*/ ) {
@@ -143,9 +149,29 @@ ve.ui.MWTemplateDialog.prototype.getTemplateData = function ( /*templateName*/ )
  * @method
  * @param {string} action Action that caused the window to be closed
  */
-ve.ui.MWTemplateDialog.prototype.onClose = function () {
+ve.ui.MWTemplateDialog.prototype.onClose = function ( action ) {
+	var mwAttr, i;
 	// Parent method
 	ve.ui.PagedDialog.prototype.onOpen.call( this );
+
+	if ( action === 'apply' ) {
+		mwAttr = ve.cloneObject( this.surface.view.focusedNode.model.getAttribute( 'mw' ) );
+		mwAttr.params = {};
+		for ( i = 0; i < this.paramsKeys.length; i++ ) {
+			mwAttr.params[this.paramsKeys[i]] = {
+				'wt': this.paramsToInputs[this.paramsKeys[i]].getValue()
+			};
+		}
+		this.surface.model.change(
+			ve.dm.Transaction.newFromAttributeChange(
+				this.surface.model.documentModel,
+				this.surface.view.focusedNode.getOffset(),
+				'mw',
+				mwAttr
+			)
+		);
+	}
+
 	this.clearPages();
 };
 
