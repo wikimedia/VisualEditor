@@ -13,6 +13,7 @@
  *
  * @constructor
  * @param {Object} [config] Config options
+ * @cfg {boolean} [autoClose=false] Popup auto-closes when it loses focus
  */
 ve.ui.PopupWidget = function VeUiPopupWidget( config ) {
 	// Config intialization
@@ -24,24 +25,31 @@ ve.ui.PopupWidget = function VeUiPopupWidget( config ) {
 	// Properties
 	this.visible = false;
 	this.$callout = this.$$( '<div>' );
-	// Tab index on body so that it may blur
-	this.$body = this.$$( '<div>' ).attr( 'tabindex', 1 );
+	this.$body = this.$$( '<div>' );
 	this.transitionTimeout = null;
 	this.align = config.align || 'center';
+	this.autoClose = !!config.autoClose;
 
 	// Events
-	this.$body.on( 'blur', ve.bind( this.onPopupBlur, this ) );
 	this.$.add( this.$body ).add( this.$callout )
-		.on( 'mousedown', false );
+		.on( 'mousedown', function ( e ) {
+			// Cancel only local mousedown events
+			return e.target !== this;
+		} );
 
 	// Initialization
+	if ( this.autoClose ) {
+		// Tab index on body so that it may blur
+		this.$body.attr( 'tabindex', 1 );
+		// Listen for blur events
+		this.$body.on( 'blur', ve.bind( this.onPopupBlur, this ) );
+	}
 	this.$
 		.addClass( 've-ui-popupWidget' )
 		.append(
 			this.$callout.addClass( 've-ui-popupWidget-callout' ),
 			this.$body.addClass( 've-ui-popupWidget-body' )
 		);
-
 };
 
 /* Inheritance */
@@ -57,6 +65,38 @@ ve.inheritClass( ve.ui.PopupWidget, ve.ui.Widget );
 /* Methods */
 
 /**
+ * Handle blur events.
+ *
+ * @param {jQuery.Event} e Blur event
+ */
+ve.ui.PopupWidget.prototype.onPopupBlur = function () {
+	var $body = this.$body;
+
+	// Find out what is focused after blur
+	setTimeout( ve.bind( function () {
+		var $focused = $body.find( ':focus' );
+		// Is there a focused child element?
+		if ( $focused.length > 0 ) {
+			// Bind a one off blur event to that focused child element
+			$focused.one( 'blur', ve.bind( function () {
+				setTimeout( ve.bind( function () {
+					if ( $body.find( ':focus' ).length === 0 ) {
+						// Be sure focus is not the popup itself.
+						if ( $body.is( ':focus' ) ) {
+							return;
+						}
+						// Not a child and not the popup itself, so hide.
+						this.hide();
+					}
+				}, this ), 0 );
+			}, this ) );
+		} else {
+			this.hide();
+		}
+	}, this ), 0 );
+};
+
+/**
  * Show the context.
  *
  * @method
@@ -65,8 +105,10 @@ ve.inheritClass( ve.ui.PopupWidget, ve.ui.Widget );
 ve.ui.PopupWidget.prototype.show = function () {
 	this.$.show();
 	this.visible = true;
-	// Focus body so that it may blur.
-	this.$body.focus();
+	if ( this.autoClose ) {
+		// Focus body so that it may blur
+		this.$body.focus();
+	}
 	return this;
 };
 
@@ -83,34 +125,6 @@ ve.ui.PopupWidget.prototype.hide = function () {
 	return this;
 };
 
-ve.ui.PopupWidget.prototype.getFocusedChild = function () {
-	return this.$body.find( ':focus' );
-};
-
-ve.ui.PopupWidget.prototype.onPopupBlur = function () {
-	// Find out what is focused after blur
-	setTimeout( ve.bind( function () {
-		var $focused = this.getFocusedChild();
-		// Is there a focused child element?
-		if ( $focused.length > 0 ) {
-			// Bind a one off blur event to that focused child element
-			$focused.one( 'blur', ve.bind( function () {
-				setTimeout( ve.bind( function () {
-					if ( this.getFocusedChild().length === 0 ) {
-						// Be sure focus is not the popup itself.
-						if ( this.$.find( ':focus' ).is( this.$body ) ){
-							return;
-						}
-						// Not a child and not the popup itself, so hide.
-						this.hide();
-					}
-				}, this ), 0 );
-			}, this ) );
-		} else {
-			this.hide();
-		}
-	}, this ), 0 );
-};
 
 /**
  * Updates the position and size.

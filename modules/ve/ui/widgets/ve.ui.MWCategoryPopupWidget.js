@@ -15,6 +15,9 @@
  * @param {Object} [config] Config options
  */
 ve.ui.MWCategoryPopupWidget = function VeUiMwCategoryPopupWidget ( config ) {
+	// Configuration initialization
+	config = ve.extendObject( {}, config, { 'autoClose': true } );
+
 	// Parent constructor
 	ve.ui.PopupWidget.call( this, config );
 
@@ -49,6 +52,11 @@ ve.ui.MWCategoryPopupWidget = function VeUiMwCategoryPopupWidget ( config ) {
 	this.$body.append( this.$menu );
 	config.$overlay.append( this.$ );
 };
+
+/**
+ * @private
+ * @cfg {boolean} [autoClose=true] Overridden in this subclass
+ */
 
 /* Inheritance */
 
