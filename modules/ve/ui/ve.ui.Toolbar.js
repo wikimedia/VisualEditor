@@ -32,6 +32,7 @@ ve.ui.Toolbar = function VeUiToolbar( surface, options ) {
 	this.surface = surface;
 	this.$bar = this.$$( '<div>' );
 	this.$tools = this.$$( '<div>' );
+	this.$actions = this.$$( '<div>' );
 	this.floating = false;
 	this.$window = null;
 	this.windowEvents = {
@@ -39,11 +40,15 @@ ve.ui.Toolbar = function VeUiToolbar( surface, options ) {
 		'scroll': ve.bind( this.onWindowScroll, this )
 	};
 
+	// Events
+	this.$
+		.add( this.$bar ).add( this.$tools ).add( this.$actions )
+		.on( 'mousedown', false );
+
 	// Initialization
 	this.$tools.addClass( 've-ui-toolbar-tools' );
 	this.$bar.addClass( 've-ui-toolbar-bar' ).append( this.$tools );
 	if ( options.actions ) {
-		this.$actions = this.$$( '<div>' );
 		this.$actions.addClass( 've-ui-toolbar-actions' );
 		this.$bar.append( this.$actions );
 	}
@@ -160,6 +165,7 @@ ve.ui.Toolbar.prototype.addTools = function ( tools ) {
 		group = tools[i];
 		// Create group
 		$group = this.$$( '<div class="ve-ui-toolbar-group"></div>' )
+			.on( 'mousedown', false )
 			.addClass( 've-ui-toolbar-group-' + group.name );
 		if ( group.label ) {
 			$group.append(

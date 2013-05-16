@@ -24,7 +24,7 @@ ve.ui.Dialog = function VeUiDialog( surface ) {
 
 	// Initialization
 	this.$.addClass( 've-ui-dialog' );
-	this.$.on( 'mousedown', ve.bind( this.onMouseDown, this ) );
+	this.$.on( 'mousedown', false );
 };
 
 /* Inheritance */
@@ -32,16 +32,6 @@ ve.ui.Dialog = function VeUiDialog( surface ) {
 ve.inheritClass( ve.ui.Dialog, ve.ui.Window );
 
 /* Methods */
-
-/**
- * Handle mouse down events.
- *
- * @method
- * @param {jQuery.Event} e Mouse down event
- */
-ve.ui.Dialog.prototype.onMouseDown = function () {
-	return false;
-};
 
 /**
  * Handle close button click events.

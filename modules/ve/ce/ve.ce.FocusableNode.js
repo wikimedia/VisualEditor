@@ -8,14 +8,23 @@
 /**
  * ContentEditable resizable node.
  *
+ * Focusable elements have a special treatment by ve.ce.Surface. When the user selects only a single
+ * node, if it is focusable, the surface will set the focusable node's focused state. Other systems,
+ * such as the context, may also use a focusable node's $focusable property as a hint of where the
+ * primary element in the node is. Typically, and by default, the primary element is the root
+ * element, but in some cases it may need to be configured to be a specific child element within the
+ * node's DOM rendering.
+ *
  * @class
  * @abstract
  *
  * @constructor
+ * @param {jQuery} [$focusable] Primary element user is focusing on
  */
-ve.ce.FocusableNode = function VeCeFocusableNode() {
+ve.ce.FocusableNode = function VeCeFocusableNode( $focusable ) {
 	// Properties
 	this.focused = false;
+	this.$focusable = $focusable || this.$;
 };
 
 /* Events */

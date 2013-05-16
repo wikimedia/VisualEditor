@@ -30,7 +30,9 @@ ve.ui.MediaDialog.static.titleMessage = 'visualeditor-dialog-media-title';
 
 ve.ui.MediaDialog.static.icon = 'picture';
 
-ve.ui.MediaDialog.static.modelClasses = [ ve.dm.MWInlineImageNode ];
+ve.ui.MediaDialog.static.modelClasses = [ ve.dm.ImageNode ];
+
+/* Methods */
 
 /* Registration */
 

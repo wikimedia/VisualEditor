@@ -29,6 +29,11 @@ ve.ui.PopupWidget = function VeUiPopupWidget( config ) {
 	this.transitionTimeout = null;
 	this.align = config.align || 'center';
 
+	// Events
+	this.$body.on( 'blur', ve.bind( this.onPopupBlur, this ) );
+	this.$.add( this.$body ).add( this.$callout )
+		.on( 'mousedown', false );
+
 	// Initialization
 	this.$
 		.addClass( 've-ui-popupWidget' )
@@ -37,8 +42,6 @@ ve.ui.PopupWidget = function VeUiPopupWidget( config ) {
 			this.$body.addClass( 've-ui-popupWidget-body' )
 		);
 
-	// Auto hide popup
-	this.$body.on( 'blur', ve.bind( this.onPopupBlur, this ) );
 };
 
 /* Inheritance */
