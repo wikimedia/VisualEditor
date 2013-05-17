@@ -17,6 +17,8 @@
  * @param {Object} [config] Config options
  */
 ve.ce.MWBlockImageNode = function VeCeMWBlockImageNode( model, config ) {
+	var captionModel, captionView;
+
 	// Parent constructor
 	ve.ce.BranchNode.call( this, model, config );
 
@@ -52,6 +54,19 @@ ve.ce.MWBlockImageNode = function VeCeMWBlockImageNode( model, config ) {
 		.attr( 'width', this.model.getAttribute( 'width' ) )
 		.attr( 'height', this.model.getAttribute( 'height' ) )
 		.appendTo( this.$a );
+
+	// I smell a caption!
+	if ( this.model.children.length === 1 ) {
+		captionModel = this.model.children[0];
+		captionView = ve.ce.nodeFactory.create( captionModel.getType(), captionModel );
+		captionModel.connect( this, { 'update': 'onModelUpdate' } );
+		this.children.push( captionView );
+		captionView.attach( this );
+		captionView.$.appendTo( this.$thumbInner );
+		if ( this.live !== captionView.isLive() ) {
+			captionView.setLive( this.live );
+		}
+	}
 };
 
 /* Inheritance */
