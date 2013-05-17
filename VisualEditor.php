@@ -147,6 +147,8 @@ $wgResourceModules += array(
 			'copyrightpage',
 			'accesskey-ca-editsource',
 			'accesskey-ca-ve-edit',
+			'creating',
+			'editing',
 			'tooltip-ca-createsource',
 			'tooltip-ca-editsource',
 			'tooltip-ca-ve-edit',

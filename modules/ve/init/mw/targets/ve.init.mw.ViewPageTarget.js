@@ -64,6 +64,7 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 		$.client.test( ve.init.mw.ViewPageTarget.compatibility ) ||
 		'vewhitelist' in currentUri.query
 	);
+	this.originalDocumentTitle = document.title;
 	this.editSummaryByteLimit = 255;
 	// Tab layout.
 	// * add: Adds #ca-ve-edit.
@@ -740,6 +741,7 @@ ve.init.mw.ViewPageTarget.prototype.setUpSurface = function ( doc ) {
 	this.surface.initialize();
 	this.setUpToolbar();
 	this.transformPageTitle();
+	this.changeDocumentTitle();
 	// Update UI
 	this.hidePageContent();
 	this.hideSpinner();
@@ -767,6 +769,7 @@ ve.init.mw.ViewPageTarget.prototype.tearDownSurface = function () {
 	this.hideSpinner();
 	this.showPageContent();
 	this.restorePageTitle();
+	this.restoreDocumentTitle();
 	this.showTableOfContents();
 	// Destroy editor
 	if ( this.surface ) {
@@ -1537,6 +1540,27 @@ ve.init.mw.ViewPageTarget.prototype.restorePageTitle = function () {
 	setTimeout( function () {
 		$( '#firstHeading' ).removeClass( 've-init-mw-viewPageTarget-pageTitle' );
 	}, 1000 );
+};
+
+/**
+ * Change the document title to state that we are now editing.
+ *
+ * @method
+ */
+ve.init.mw.ViewPageTarget.prototype.changeDocumentTitle = function () {
+	document.title = ve.msg(
+		this.pageExists ? 'editing' : 'creating',
+		mw.config.get( 'wgTitle' )
+	) + ' - ' + mw.config.get( 'wgSiteName' );
+};
+
+/**
+ * Restore the original document title.
+ *
+ * @method
+ */
+ve.init.mw.ViewPageTarget.prototype.restoreDocumentTitle = function () {
+	document.title = this.originalDocumentTitle;
 };
 
 /**
