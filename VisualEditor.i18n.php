@@ -33,6 +33,7 @@ $messages['en'] = array(
 	'visualeditor-dialog-action-apply' => 'Apply changes',
 	'visualeditor-dialog-action-cancel' => 'Cancel',
 	'visualeditor-dialog-action-close' => 'Close',
+	'visualeditor-toolbar-cancel' => 'Cancel',
 	'visualeditor-toolbar-savedialog' => 'Review and save',
 	'visualeditor-savedialog-title-conflict' => 'Conflict',
 	'visualeditor-savedialog-title-nochanges' => 'No changes',
@@ -152,6 +153,8 @@ See also:
 
 See also:
 * {{msg-mw|Visualeditor-dialog-action-apply}}
+{{Identical|Close}}',
+	'visualeditor-toolbar-cancel' => 'Label text for button to cancel editing in the VisualEditor
 {{Identical|Close}}',
 	'visualeditor-toolbar-savedialog' => 'Label text for button to trigger review and save interface',
 	'visualeditor-savedialog-title-conflict' => 'Title for edit conflict slide',

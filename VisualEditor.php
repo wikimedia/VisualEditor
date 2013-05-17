@@ -140,7 +140,6 @@ $wgResourceModules += array(
 			'user.tokens',
 		),
 		'messages' => array(
-			'cancel',
 			'accesskey-ca-editsource',
 			'accesskey-ca-ve-edit',
 			'tooltip-ca-editsource',
@@ -162,6 +161,7 @@ $wgResourceModules += array(
 			'visualeditor-restore-page',
 			'visualeditor-create-page',
 			'visualeditor-save-title',
+			'visualeditor-toolbar-cancel',
 			'visualeditor-toolbar-savedialog',
 			'visualeditor-savedialog-title-conflict',
 			'visualeditor-savedialog-title-nochanges',
