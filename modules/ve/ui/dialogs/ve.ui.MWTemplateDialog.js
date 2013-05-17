@@ -49,27 +49,27 @@ ve.ui.MWTemplateDialog.prototype.initialize = function () {
  * @method
  */
 ve.ui.MWTemplateDialog.prototype.onOpen = function () {
-	var mwAttr = this.surface.view.focusedNode.model.getAttribute( 'mw' ),
-		templateData = this.getTemplateData( mwAttr.target.wt ),
-		param;
+	var mwAttr = this.surface.view.focusedNode.model.getAttribute( 'mw' );
+	this.getTemplateData( mwAttr.target.wt ).done( ve.bind( function( templateData ) {
+		var param;
+		this.paramsKeys = [];
+		this.paramsToInputs = {};
 
-	this.paramsKeys = [];
-	this.paramsToInputs = {};
+		// Parent method
+		ve.ui.PagedDialog.prototype.onOpen.call( this );
 
-	// Parent method
-	ve.ui.PagedDialog.prototype.onOpen.call( this );
+		// Add template page
+		this.addPage( 'template', mwAttr.target.wt, 'template' );
 
-	// Add template page
-	this.addPage( 'template', mwAttr.target.wt, 'template' );
-
-	// Loop through parameters
-	for ( param in mwAttr.params ) {
-		this.createPage(
-			param,
-			mwAttr.params[param],
-			templateData && templateData.params[param]
-		);
-	}
+		// Loop through parameters
+		for ( param in mwAttr.params ) {
+			this.createPage(
+				param,
+				mwAttr.params[param],
+				templateData && templateData.params[param]
+			);
+		}
+	}, this ) );
 };
 
 /**
@@ -105,42 +105,46 @@ ve.ui.MWTemplateDialog.prototype.createPage = function( key, value, singleTempla
 };
 
 ve.ui.MWTemplateDialog.prototype.getTemplateData = function ( /*templateName*/ ) {
-	var templateData = {
-		'title': 'Template:Unsigned',
-		'params': {
-			'user': {
-				'label': {
-					'en': 'User'
+	var promise = $.Deferred(),
+		templateData = {
+			'title': 'Template:Unsigned',
+			'params': {
+				'user': {
+					'label': {
+						'en': 'User'
+					},
+					'description': {
+						'en': 'Name or IP of user who left the comment'
+					},
+					'required': true,
+					'type': 'string/wiki-user-name',
+					'aliases': [
+							'1'
+					],
+					'deprecated': false,
+					'default': ''
 				},
-				'description': {
-					'en': 'Name or IP of user who left the comment'
-				},
-				'required': true,
-				'type': 'string/wiki-user-name',
-				'aliases': [
-						'1'
-				],
-				'deprecated': false,
-				'default': ''
-			},
-			'param1': {
-				'label': {
-					'en': 'Time stamp'
-				},
-				'description': {
-					'en': 'datestamp from edit history (remember to label it UTC)'
-				},
-				'aliases': [
-						'2'
-				],
-				'required': false,
-				'deprecated': false,
-				'default': '',
-				'type': 'unknown'
+				'param1': {
+					'label': {
+						'en': 'Time stamp'
+					},
+					'description': {
+						'en': 'datestamp from edit history (remember to label it UTC)'
+					},
+					'aliases': [
+							'2'
+					],
+					'required': false,
+					'deprecated': false,
+					'default': '',
+					'type': 'unknown'
+				}
 			}
-		}
-	};
-	return templateData;
+		};
+	setTimeout( function() {
+		promise.resolve( templateData );
+	}, 500 );
+	return promise;
 };
 
 /**
