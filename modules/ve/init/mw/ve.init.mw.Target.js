@@ -414,8 +414,7 @@ ve.init.mw.Target.prototype.load = function () {
 	// Start loading the module immediately
 	mw.loader.load( this.modules );
 	// Load DOM
-	this.loading = true;
-	$.ajax( {
+	this.loading = $.ajax( {
 		'url': this.apiUrl,
 		'data': {
 			'action': 'visualeditor',

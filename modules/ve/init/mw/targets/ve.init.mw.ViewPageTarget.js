@@ -284,7 +284,16 @@ ve.init.mw.ViewPageTarget.prototype.deactivate = function ( override ) {
 			this.resetSaveDialog();
 			this.hideSaveDialog();
 			this.detachSaveDialog();
-			this.tearDownSurface();
+			// Check we got as far as setting up the surface
+			if ( this.active ) {
+				this.tearDownSurface();
+			} else {
+				this.showPageContent();
+			}
+			// If there is a load in progress, abort it
+			if ( this.loading ) {
+				this.loading.abort();
+			}
 			this.showTableOfContents();
 			this.deactivating = false;
 		}
@@ -324,7 +333,8 @@ ve.init.mw.ViewPageTarget.prototype.onLoad = function ( doc ) {
  * @param {Mixed} error Thrown exception or HTTP error string
  */
 ve.init.mw.ViewPageTarget.prototype.onLoadError = function ( response, status ) {
-	if ( confirm( ve.msg( 'visualeditor-loadwarning', status ) ) ) {
+	// Don't show an error if the load was manually aborted
+	if ( status !== 'abort' && confirm( ve.msg( 'visualeditor-loadwarning', status ) ) ) {
 		this.load();
 	} else {
 		this.activating = false;
@@ -1478,7 +1488,10 @@ ve.init.mw.ViewPageTarget.prototype.setUpToolbar = function () {
 		.addClass( 've-init-mw-viewPageTarget-toolbar' )
 		.insertBefore( '#firstHeading' );
 	this.toolbar.$bar.slideDown( 'fast', ve.bind( function () {
-		this.surface.getContext().update();
+		// Check the surface wasn't torn down while the toolbar was animating
+		if ( this.surface ) {
+			this.surface.getContext().update();
+		}
 	}, this ) );
 };
 
