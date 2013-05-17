@@ -23,6 +23,8 @@ class VisualEditorHooks {
 	public static function onBeforePageDisplay( &$output, &$skin ) {
 		global $wgVisualEditorNamespaces;
 		if (
+			// Disable on redirect pages until redirects are editable
+			!$skin->getTitle()->isRedirect() &&
 			// User has the 'visualeditor-enable' preference set
 			$skin->getUser()->getOption( 'visualeditor-enable' ) &&
 			in_array( $skin->getSkinName(), self::$supportedSkins ) &&
