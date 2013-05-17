@@ -295,6 +295,7 @@ ve.ui.Context.prototype.show = function ( transition ) {
 		this.showing = true;
 
 		this.$.show();
+		this.popup.show();
 
 		// Show either inspector or menu
 		if ( inspector ) {
@@ -346,8 +347,7 @@ ve.ui.Context.prototype.hide = function () {
 		return this;
 	}
 
-	this.inspectors.$.hide();
-	this.$menu.hide();
+	this.popup.hide();
 	this.$.hide();
 	this.visible = false;
 
