@@ -596,7 +596,7 @@ ve.init.mw.ViewPageTarget.prototype.onSurfaceModelTransact = function () {
 ve.init.mw.ViewPageTarget.prototype.onSurfaceModelHistory = function () {
 	this.edited = this.surface.getModel().hasPastState();
 	// Disable the save button if we have no history
-	this.toolbarSaveButton.setDisabled( !this.edited );
+	this.toolbarSaveButton.setDisabled( !this.edited && !this.restoring );
 };
 
 /**
