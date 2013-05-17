@@ -1495,7 +1495,7 @@ ve.init.mw.ViewPageTarget.prototype.tearDownToolbar = function () {
 };
 
 /**
- * Enable the toolbar save button.
+ * Transform the page title into a VE-style title.
  *
  * @method
  */
@@ -1504,7 +1504,7 @@ ve.init.mw.ViewPageTarget.prototype.transformPageTitle = function () {
 };
 
 /**
- * Enable the toolbar save button.
+ * Fade the page title to indicate it is not editable.
  *
  * @method
  */
@@ -1513,7 +1513,7 @@ ve.init.mw.ViewPageTarget.prototype.mutePageTitle = function () {
 };
 
 /**
- * Disable the toolbar save button.
+ * Restore the page title to its original style.
  *
  * @method
  */
