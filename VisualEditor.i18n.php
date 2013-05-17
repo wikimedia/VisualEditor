@@ -9,6 +9,7 @@ $messages['en'] = array(
 	'accesskey-ca-ve-edit' => 'v',
 	'tag-visualeditor' => '[[Special:Tags|Tag]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
 	'tag-visualeditor-description' => 'Edit made using the [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
+	'tooltip-ca-createsource' => 'Create the source code of this page',
 	'tooltip-ca-editsource' => 'Edit the source code of this page',
 	'tooltip-ca-ve-edit' => 'Edit this page with VisualEditor',
 	'visualeditor' => 'VisualEditor',
@@ -21,6 +22,7 @@ $messages['en'] = array(
 	'visualeditor-notification-restored' => '$1 has been restored.',
 	'visualeditor-notification-reported' => 'Your problem has been reported. Thank you.',
 	'visualeditor-ca-editsource' => 'Edit source',
+	'visualeditor-ca-createsource' => 'Create source',
 	'visualeditor-ca-ve-edit' => 'VisualEditor',
 	'visualeditor-ca-ve-create' => 'VisualEditor',
 	'visualeditor-category-input-placeholder' => 'Add category',
@@ -112,7 +114,8 @@ $messages['qqq'] = array(
 	'accesskey-ca-ve-edit' => '{{Ignore}}',
 	'tag-visualeditor' => 'Short description of the visualeditor tag ({{msg-mw|Tag-visualeditor}}). Shown on lists of changes (history, recentchanges, etc.) for each edit made using VisualEditor.',
 	'tag-visualeditor-description' => 'Long description of the visualeditor tag ({{msg-mw|Tag-visualeditor}}). Shown on [[Special:Tags]]',
-	'tooltip-ca-editsource' => 'Tooltip of the wikitext "Edit Source" tab.',
+	'tooltip-ca-createsource' => 'Tooltip of the wikitext "Create source" tab.',
+	'tooltip-ca-editsource' => 'Tooltip of the wikitext "Edit source" tab.',
 	'tooltip-ca-ve-edit' => 'Tooltip of the dedicated VisualEditor "Edit" tab.',
 	'visualeditor' => 'The name of the VisualEditor extension',
 	'visualeditor-desc' => '{{desc|name=Visual Editor|url=http://www.mediawiki.org/wiki/Extension:VisualEditor}}',
@@ -127,8 +130,8 @@ Links are in {{msg-mw|Visualeditor-mainnamespacepagelink}} and {{msg-mw|visualed
 	'visualeditor-notification-restored' => 'Shown after a user restores a page to a previous revision. Parameters:
 * $1 is a page name.',
 	'visualeditor-notification-reported' => 'Thank you message shown after a user reports a problematic page edit.',
-	'visualeditor-ca-editsource' => 'Text for the edit source link in the tab dropdown
-{{Identical|visualeditor}}',
+	'visualeditor-ca-createsource' => 'Text for the create source link in the tab dropdown',
+	'visualeditor-ca-editsource' => 'Text for the edit source link in the tab dropdown',
 	'visualeditor-ca-ve-edit' => 'Link text of the dedicated VisualEditor Edit tab.
 {{Identical|visualeditor}}',
 	'visualeditor-ca-ve-create' => '
