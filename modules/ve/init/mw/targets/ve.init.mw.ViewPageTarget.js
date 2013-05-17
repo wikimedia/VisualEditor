@@ -1105,7 +1105,7 @@ ve.init.mw.ViewPageTarget.prototype.setupSaveDialog = function () {
 							've-init-mw-viewPageTarget-saveDialog-summary-focused'
 						);
 					},
-					'keydown mouseup cut paste change focus blur': function () {
+					'keyup keydown mouseup cut paste change focus blur': function () {
 						var $textarea = $(this),
 							$editSummaryCount = $textarea
 								.closest( '.ve-init-mw-viewPageTarget-saveDialog-slide-save' )
