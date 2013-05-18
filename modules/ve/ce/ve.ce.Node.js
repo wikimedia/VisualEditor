@@ -63,8 +63,7 @@ ve.ce.Node.static.canBeSplit = false;
  * @param {string} from Old value
  * @param {string} to New value
  */
-ve.ce.Node.prototype.onAttributeChange = function ( key, from, to ) {
-	this.renderAttributes( { key: to } );
+ve.ce.Node.prototype.onAttributeChange = function () {
 };
 
 /**

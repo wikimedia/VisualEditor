@@ -142,10 +142,17 @@ QUnit.test( 'getClonedElement', function ( assert ) {
 				'original': {
 					'type': 'foo',
 					'attributes': {
-						'bar': 'baz',
-						'html/0/typeof': 'Foo',
-						'html/0/href': 'Bar'
-					}
+						'bar': 'baz'
+					},
+					'htmlAttributes': [
+						{
+							'keys': [ 'typeof', 'href' ],
+							'values': {
+								'typeof': 'Foo',
+								'href': 'Bar'
+							}
+						}
+					]
 				},
 				'clone': {
 					'type': 'foo',
@@ -153,34 +160,7 @@ QUnit.test( 'getClonedElement', function ( assert ) {
 						'bar': 'baz'
 					}
 				},
-				'msg': 'html/* attributes are removed from clone'
-			},
-			{
-				'original': {
-					'type': 'foo',
-					'attributes': {
-						'html/0/typeof': 'Foo'
-					}
-				},
-				'clone': {
-					'type': 'foo'
-				},
-				'msg': 'attributes object containing only html/* attributes is removed from clone'
-			},
-			{
-				'original': {
-					'type': 'foo',
-					'attributes': {
-						'html': '<foo></foo>'
-					}
-				},
-				'clone': {
-					'type': 'foo',
-					'attributes': {
-						'html': '<foo></foo>'
-					}
-				},
-				'msg': 'html attribute (without slash) is not removed'
+				'msg': 'htmlAttributes is removed from clone'
 			},
 			{
 				'original': {
@@ -216,15 +196,20 @@ QUnit.test( 'getClonedElement', function ( assert ) {
 					'internal': {
 						'generated': 'wrapper'
 					},
-					'attributes': {
-						'html/0/typeof': 'Foo',
-						'html/1/href': 'Bar'
-					}
+					'htmlAttributes': [
+						{
+							'keys': [ 'typeof', 'href' ],
+							'values': {
+								'typeof': 'Foo',
+								'href': 'Bar'
+							}
+						}
+					]
 				},
 				'clone': {
 					'type': 'foo'
 				},
-				'msg': 'internal and attribute properties are both removed'
+				'msg': 'internal and htmlAttributes properties are both removed'
 			},
 			{
 				'original': {
@@ -234,9 +219,17 @@ QUnit.test( 'getClonedElement', function ( assert ) {
 						'whitespace': [ undefined, ' ' ],
 					},
 					'attributes': {
-						'html/0/typeof': 'Foo',
 						'bar': 'baz'
-					}
+					},
+					'htmlAttributes': [
+						{
+							'keys': [ 'typeof', 'href' ],
+							'values': {
+								'typeof': 'Foo',
+								'href': 'Bar'
+							}
+						}
+					]
 				},
 				'clone': {
 					'type': 'foo',
@@ -247,7 +240,7 @@ QUnit.test( 'getClonedElement', function ( assert ) {
 						'bar': 'baz'
 					}
 				},
-				'msg': 'internal.generated and attributes.html/* are both removed'
+				'msg': 'internal.generated and htmlAttributes are both removed'
 			}
 		];
 	QUnit.expect( cases.length );

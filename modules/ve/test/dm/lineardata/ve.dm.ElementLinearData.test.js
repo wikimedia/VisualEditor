@@ -360,7 +360,7 @@ QUnit.test( 'getAnnotatedRangeFromOffset', 1, function ( assert ) {
 				// 3
 				{
 					'type': 'image',
-					'attributes': { 'html/src': ve.dm.example.imgSrc },
+					'attributes': { 'src': ve.dm.example.imgSrc },
 					'annotations': [ { 'type': 'textStyle/bold' }]
 				},
 				// 4

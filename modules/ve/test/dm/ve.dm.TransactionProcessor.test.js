@@ -118,13 +118,13 @@ QUnit.test( 'commit/rollback', function ( assert ) {
 					['pushReplaceElementAttribute', 'style', 'bullet', 'number'],
 					['pushReplaceElementAttribute', 'test', undefined, 'abcd'],
 					['pushRetain', 27],
-					['pushReplaceElementAttribute', 'html/0/src', ve.dm.example.imgSrc, undefined]
+					['pushReplaceElementAttribute', 'src', ve.dm.example.imgSrc, undefined]
 				],
 				'expected': function ( data ) {
 					data[0].attributes.level = 2;
 					data[12].attributes.style = 'number';
 					data[12].attributes.test = 'abcd';
-					delete data[39].attributes['html/0/src'];
+					delete data[39].attributes.src;
 				}
 			},
 			'changing attributes on non-element data throws an exception': {
