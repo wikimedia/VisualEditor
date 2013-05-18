@@ -816,9 +816,11 @@ ve.init.mw.ViewPageTarget.prototype.setupSkinTabs = function () {
 			pTabsId,
 			// Use original href to preserve oldid etc. (bug 38125)
 			$caEditLink.attr( 'href' ),
-			ve.msg( 'visualeditor-ca-editsource' ),
+			// Message: 'visualeditor-ca-editsource' or 'visualeditor-ca-createsource'
+			ve.msg( 'visualeditor-ca-' + action + 'source' ),
 			'ca-editsource',
-			ve.msg( 'tooltip-ca-editsource' ),
+			// Message: 'tooltip-ca-editsource' or 'tooltip-ca-createsource'
+			ve.msg( 'tooltip-ca-' + action + 'source' ),
 			ve.msg( 'accesskey-ca-editsource' ),
 			caVeEditNextnode
 		);
