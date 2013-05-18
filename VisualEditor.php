@@ -166,7 +166,6 @@ $wgResourceModules += array(
 			'visualeditor-problem',
 			'visualeditor-editnotices-tool',
 			'visualeditor-feedback-tool',
-			'visualeditor-feedback-link',
 			'visualeditor-restore-page',
 			'visualeditor-create-page',
 			'visualeditor-save-title',
