@@ -199,3 +199,33 @@
 	/* @embed */
 	background-image: url(images/icons/outdent-list-ltr.svg);
 }
+
+.ve-ui-icon-strikethrough-s {
+	/* @embed */
+	background-image: url(images/icons/strikethrough-s.svg);
+}
+
+.ve-ui-icon-strikethrough-a {
+	/* @embed */
+	background-image: url(images/icons/strikethrough-a.svg);
+}
+
+.ve-ui-icon-underline-u {
+	/* @embed */
+	background-image: url(images/icons/underline-u.svg);
+}
+
+.ve-ui-icon-underline-a {
+	/* @embed */
+	background-image: url(images/icons/underline-a.svg);
+}
+
+.ve-ui-icon-subscript {
+	/* @embed */
+	background-image: url(images/icons/subscript.svg);
+}
+
+.ve-ui-icon-superscript {
+	/* @embed */
+	background-image: url(images/icons/superscript.svg);
+}
