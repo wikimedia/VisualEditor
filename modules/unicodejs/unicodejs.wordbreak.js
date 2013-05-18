@@ -23,6 +23,12 @@
 	}
 
 	function getGroup( chr ) {
+		// chr is always converted to a string by RegExp#test
+		// e.g. null -> 'null' and would match /[a-z]/
+		// so return null for any non-string value
+		if ( typeof chr !== 'string' ) {
+			return null;
+		}
 		var group;
 		for ( group in patterns ) {
 			if ( patterns[group].test( chr ) ) {

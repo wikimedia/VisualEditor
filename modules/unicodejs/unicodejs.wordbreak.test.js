@@ -22,7 +22,7 @@ QUnit.test( 'isBreak', function ( assert ) {
 			// 40 - 50
 			"汉字/漢字 c\u0300\u0327k" +
 			// 50 - 60
-			" c\u0300\u0327",
+			" c\u0300\u0327 a.",
 			/*jshint quotmark:single */
 		textString = new unicodeJS.TextString( text ),
 		breaks = [
@@ -31,7 +31,7 @@ QUnit.test( 'isBreak', function ( assert ) {
 			21, 25, 30,
 			31, 39, 40,
 			41, 42, 43, 44, 45, 46, 50,
-			51, 54
+			51, 54, 55, 56, 57
 		];
 
 	QUnit.expect( text.length + 1 );
