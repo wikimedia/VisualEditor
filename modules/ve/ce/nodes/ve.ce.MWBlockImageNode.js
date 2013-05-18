@@ -41,12 +41,17 @@ ve.ce.MWBlockImageNode = function VeCeMWBlockImageNode( model, config ) {
 		.css( 'width', parseInt( this.model.getAttribute( 'width' ), 10 ) + 2 )
 		.appendTo( this.$thumb );
 
+	this.$a = this.$$( '<a>' )
+		.addClass( 'image' )
+		.attr( 'src', this.model.getAttribute( 'href' ) )
+		.appendTo( this.$thumbInner );
+
 	this.$image = this.$$( '<img>' )
 		.addClass( 'thumbimage' )
 		.attr( 'src', this.model.getAttribute( 'src' ) )
 		.attr( 'width', this.model.getAttribute( 'width' ) )
 		.attr( 'height', this.model.getAttribute( 'height' ) )
-		.appendTo( this.$thumbInner );
+		.appendTo( this.$a );
 };
 
 /* Inheritance */
