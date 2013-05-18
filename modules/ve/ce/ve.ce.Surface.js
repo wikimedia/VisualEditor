@@ -561,7 +561,7 @@ ve.ce.Surface.prototype.onPaste = function () {
 	this.pasting = true;
 
 	var tx, scrollTop,
-		$window = $( ve.getWindow( this.$$.context ) ),
+		$window = $( ve.Element.static.getWindow( this.$$.context ) ),
 		view = this,
 		selection = this.model.getSelection();
 
