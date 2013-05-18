@@ -910,7 +910,7 @@ ve.init.mw.ViewPageTarget.prototype.setupSectionEditLinks = function () {
 ve.init.mw.ViewPageTarget.prototype.setupToolbarButtons = function () {
 	var editNoticeCount = ve.getObjectKeys( this.editNotices ).length;
 
-	this.toolbarCancelButton = new ve.ui.ButtonWidget( { 'label': ve.msg( 'cancel' ) } );
+	this.toolbarCancelButton = new ve.ui.ButtonWidget( { 'label': ve.msg( 'visualeditor-toolbar-cancel' ) } );
 	this.toolbarSaveButton = new ve.ui.ButtonWidget( {
 		'label': ve.msg( 'visualeditor-toolbar-savedialog' ),
 		'flags': ['constructive'],
