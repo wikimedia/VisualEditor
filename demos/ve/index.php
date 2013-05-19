@@ -89,7 +89,7 @@ $html = file_get_contents( $page );
 		<script>
 			<?php
 				require( '../../modules/../VisualEditor.i18n.php' );
-				echo 've.init.platform.addMessages( ' . json_encode( $messages['en'] ) . ');' . "\n";
+				echo 've.init.platform.addMessages( ' . json_encode( $messages['en'] ) . ' );' . "\n";
 			?>
 			ve.init.platform.setModulesUrl( '../../modules' );
 		</script>
@@ -392,16 +392,13 @@ $html = file_get_contents( $page );
 			} );
 			dumpModelButton.on( 'click', function () {
 				// linear model dump
-				var $ol = $('<ol start="0"></ol>'),
-					$li,
-					element,
-					html,
-					annotations;
+				var i, $li, element, html, annotations,
+					$ol = $( '<ol start="0"></ol>' );
 
-				for ( var i = 0; i < ve.instances[0].documentModel.data.length; i++ ) {
-					$li = $('<li>');
+				for ( i = 0; i < ve.instances[0].model.documentModel.data.getLength(); i++ ) {
+					$li = $( '<li>' );
 					$label = $( '<span>' );
-					element = ve.instances[0].documentModel.data[i];
+					element = ve.instances[0].model.documentModel.data.getData( i );
 					if ( element.type ) {
 						$label.addClass( 've-demo-dump-element' );
 						text = element.type;
@@ -421,7 +418,7 @@ $html = file_get_contents( $page );
 							$( '<span>' ).text(
 								'[' + annotations.get().map( function( ann ) {
 									return ann.name;
-								} ).join(', ') + ']'
+								} ).join( ', ' ) + ']'
 							)
 						);
 					}
@@ -429,14 +426,14 @@ $html = file_get_contents( $page );
 					$li.append( $label );
 					$ol.append( $li );
 				}
-				$('#ve-linear-model-dump').html($ol);
+				$( '#ve-linear-model-dump' ).html( $ol );
 
 				// tree dump
 				var getKids = function ( obj ) {
-					var $ol = $('<ol start="0"></ol>'),
+					var $ol = $( '<ol start="0"></ol>' ),
 						$li;
 					for( var i = 0; i < obj.children.length; i++ ) {
-						$li = $('<li>');
+						$li = $( '<li>' );
 						$label = $( '<span>' ).addClass( 've-demo-dump-element' );
 						if ( obj.children[i].length !== undefined ) {
 							$li.append(
@@ -451,21 +448,21 @@ $html = file_get_contents( $page );
 						}
 
 						if ( obj.children[i].children ) {
-							$li.append(getKids(obj.children[i]));
+							$li.append( getKids( obj.children[i] ) );
 						}
 
 
-						$ol.append($li);
+						$ol.append( $li );
 					}
 					return $ol;
 				}
-				$('#ve-model-tree-dump').html(getKids(ve.instances[0].documentModel.documentNode));
-				$('#ve-view-tree-dump').html(getKids(ve.instances[0].view.documentView.documentNode));
-				$('#ve-dump').show();
+				$( '#ve-model-tree-dump' ).html( getKids( ve.instances[0].model.documentModel.documentNode ) );
+				$( '#ve-view-tree-dump' ).html( getKids( ve.instances[0].view.documentView.documentNode ) );
+				$( '#ve-dump' ).show();
 			} );
 			validateButton.on( 'click', function () {
 				var failed = false;
-				$('.ve-ce-branchNode').each( function ( index, element ) {
+				$( '.ve-ce-branchNode' ).each( function ( index, element ) {
 					var $element = $( element ),
 						view = $element.data( 'view' );
 					if ( view.canContainContent() ) {
@@ -474,14 +471,14 @@ $html = file_get_contents( $page );
 						var textDom = ve.ce.getDomText( view.$[0] );
 						if ( textModel !== textDom ) {
 							failed = true;
-							console.log('Inconsistent data', {
-								'textModel' : textModel,
-								'textDom' : textDom,
-								'element' : element
+							console.log( 'Inconsistent data', {
+								'textModel': textModel,
+								'textDom': textDom,
+								'element': element
 							} );
 						}
 					}
-				});
+				} );
 				if ( failed ) {
 					alert( 'Not valid - check JS console for details' );
 				} else {
