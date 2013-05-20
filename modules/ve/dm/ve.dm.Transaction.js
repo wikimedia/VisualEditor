@@ -154,6 +154,31 @@ ve.dm.Transaction.newFromRemoval = function ( doc, range ) {
 };
 
 /**
+ * Generate a transaction that replaces the contents of a branch node.
+ *
+ * The node whose contents are being replaced should be an unrestricted branch node.
+ *
+ * @param {ve.dm.Document} doc Document to create transaction for
+ * @param {ve.dm.Node|ve.Range} nodeOrRange Branch node or inner range of such
+ * @param {Array} newData Linear model data to replace the contents of the node with
+ * @returns {ve.dm.Transaction} Transaction that replaces the contents of the node
+ * @throws {Error} nodeOrRange must be a ve.dm.Node or a ve.Range
+ */
+ve.dm.Transaction.newFromNodeReplacement = function ( doc, nodeOrRange, newData ) {
+	var tx = new ve.dm.Transaction(), range = nodeOrRange;
+	if ( range instanceof ve.dm.Node ) {
+		range = range.getRange();
+	}
+	if ( !( range instanceof ve.Range ) ) {
+		throw new Error( 'nodeOrRange must be a ve.dm.Node or a ve.Range' );
+	}
+	tx.pushRetain( range.start );
+	tx.pushReplace( doc, range.start, range.end - range.start, newData );
+	tx.pushRetain( doc.data.getLength() - range.end );
+	return tx;
+};
+
+/**
  * Generate a transaction that changes an attribute.
  *
  * @static
