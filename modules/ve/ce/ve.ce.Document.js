@@ -125,7 +125,7 @@ ve.ce.Document.prototype.getRelativeOffset = function ( offset, direction, unit 
  * @method
  * @param {number} offset Linear model offset
  * @returns {Object} Object containing a node and offset property where node is an HTML element and
- * offset is the position within the element
+ * offset is the byte position within the element
  * @throws {Error} Offset could not be translated to a DOM element and offset
  */
 ve.ce.Document.prototype.getNodeAndOffset = function ( offset ) {
@@ -150,7 +150,7 @@ ve.ce.Document.prototype.getNodeAndOffset = function ( offset ) {
 			if ( offset >= startOffset && offset <= startOffset + length ) {
 				return {
 					node: item,
-					offset: offset - startOffset
+					offset: ve.getByteOffset( item.textContent, offset - startOffset )
 				};
 			} else {
 				startOffset += length;

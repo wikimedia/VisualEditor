@@ -593,7 +593,7 @@ ve.ce.Surface.prototype.onPaste = function () {
 			pasteData = view.clipboard[key];
 		} else {
 			pasteText = view.$pasteTarget.text().replace( /\n/gm, '');
-			pasteData = new ve.dm.DocumentSlice( pasteText.split( '' ) );
+			pasteData = new ve.dm.DocumentSlice( ve.splitCharacters( pasteText ) );
 		}
 
 		// Transact
@@ -762,10 +762,10 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 
 		// Simple insertion
 		if ( lengthDiff > 0 && offsetDiff === lengthDiff /* && sameLeadingAndTrailing */) {
-			data = next.text.substring(
+			data = ve.splitCharacters( next.text.substring(
 				previous.range.start - nodeOffset - 1,
 				next.range.start - nodeOffset - 1
-			).split( '' );
+			) );
 			// Apply insertion annotations
 			annotations = this.model.getInsertionAnnotations();
 			if ( annotations instanceof ve.dm.AnnotationSet ) {
@@ -814,7 +814,7 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 	) {
 		++fromRight;
 	}
-	data = next.text.substring( fromLeft, next.text.length - fromRight ).split( '' );
+	data = ve.splitCharacters( next.text.substring( fromLeft, next.text.length - fromRight ) );
 	// Get annotations to the left of new content and apply
 	annotations =
 		this.model.getDocument().data.getAnnotationsFromOffset( nodeOffset + 1 + fromLeft );
@@ -1199,8 +1199,8 @@ ve.ce.Surface.prototype.handleEnter = function ( e ) {
  */
 ve.ce.Surface.prototype.handleDelete = function ( e, backspace ) {
 	var sourceOffset, targetOffset, sourceSplitableNode, targetSplitableNode, tx, cursorAt,
-		sourceNode, targetNode, sourceData, nodeToDelete, adjacentData, adjacentText,
-		adjacentTextAfterMatch, endOffset, i, containsInlineElements = false,
+		sourceNode, targetNode, sourceData, nodeToDelete, adjacentData, adjacentText, adjacentChar,
+		adjacentTextAfterMatch, endOffset, i, containsComplexElements = false,
 		selection = this.model.getSelection();
 
 	if ( selection.isCollapsed() ) {
@@ -1257,13 +1257,18 @@ ve.ce.Surface.prototype.handleDelete = function ( e, backspace ) {
 
 		for ( i = 0; i < adjacentData.length; i++ ) {
 			if ( adjacentData[i].type !== undefined ) {
-				containsInlineElements = true;
+				containsComplexElements = true;
 				break;
 			}
-			adjacentText += adjacentData[i][0];
+			adjacentChar = ve.isArray( adjacentData[i] ) ? adjacentData[i][0] : adjacentData[i];
+			if ( adjacentChar.length > 1 ) {
+				containsComplexElements = true;
+				break;
+			}
+			adjacentText += adjacentChar;
 		}
 
-		if ( !containsInlineElements ) {
+		if ( !containsComplexElements ) {
 			adjacentTextAfterMatch = adjacentText.match( this.constructor.static.textPattern );
 			// If there are "normal" characters in the adjacent text let the browser handle natively
 			if ( adjacentTextAfterMatch !== null && adjacentTextAfterMatch.length ) {

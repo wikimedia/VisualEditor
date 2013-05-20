@@ -100,7 +100,7 @@ QUnit.test( 'getDomFromData', function ( assert ) {
 				store.index( cases[msg].storeItems[i].value, cases[msg].storeItems[i].hash );
 			}
 		}
-		if( cases[msg].modify ) {
+		if ( cases[msg].modify ) {
 			cases[msg].modify( cases[msg].data );
 		}
 		doc = new ve.dm.Document( ve.dm.example.preprocessAnnotations( cases[msg].data, store ) );

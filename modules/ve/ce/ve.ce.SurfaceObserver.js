@@ -154,7 +154,7 @@ ve.ce.SurfaceObserver.prototype.poll = function ( async ) {
 	node = this.node;
 	rangyRange = ve.ce.DomRange.newFromDomSelection( rangy.getSelection() );
 
-	if ( !rangyRange.equals( this.rangyRange ) ){
+	if ( !rangyRange.equals( this.rangyRange ) ) {
 		this.rangyRange = rangyRange;
 		node = null;
 		$nodeOrSlug = $( rangyRange.anchorNode ).closest( '.ve-ce-branchNode, .ve-ce-branchNode-slug' );

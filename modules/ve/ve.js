@@ -815,6 +815,47 @@
 	};
 
 	/**
+	 * Split a string into individual characters, leaving multibyte characters as one item
+	 *
+	 * @param {string} text Text to split
+	 * @returns {string[]} Array of characters
+	 */
+	ve.splitCharacters = function ( text ) {
+		return text.split( /(?![\uDC00-\uDFFF\u0300-\u036F])/g ); // don't split UTF surrogate pairs
+	};
+
+	/**
+	 * Determine if the text consists of only unattached combining marks
+	 * @param {string} text Text to test
+	 * @returns {boolean} The text is unattached combining marks
+	 */
+	ve.isUnattachedCombiningMark = function ( text ) {
+		return ( /^[\u0300-\u036F]+$/ ).test( text );
+	};
+
+	/**
+	 * Convert a character offset to a byte offset
+	 *
+	 * @param {string} text Text in which to calculate offset
+	 * @param {number} characterOffset Character offset
+	 * @returns {number} Byte offset
+	 */
+	ve.getByteOffset = function ( text, characterOffset ) {
+		return ve.splitCharacters( text ).slice( 0, characterOffset ).join( '' ).length;
+	};
+
+	/**
+	 * Convert a byte offset to a character offset
+	 *
+	 * @param {string} text Text in which to calculate offset
+	 * @param {number} byteOffset Byte offset
+	 * @returns {number} Character offset
+	 */
+	ve.getCharacterOffset = function ( text, byteOffset ) {
+		return ve.splitCharacters( text.substring( 0, byteOffset ) ).length;
+	};
+
+	/**
 	 * Escapes non-word characters so they can be safely used as HTML attribute values.
 	 *
 	 * This method is basically a copy of mw.html.escape.
