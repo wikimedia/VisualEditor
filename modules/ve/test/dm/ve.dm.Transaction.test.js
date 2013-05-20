@@ -661,6 +661,40 @@ QUnit.test( 'newFromRemoval', function ( assert ) {
 	runConstructorTests( assert, ve.dm.Transaction.newFromRemoval, cases );
 } );
 
+QUnit.test( 'newFromNodeReplacement', function ( assert ) {
+	var doc = ve.dm.example.createExampleDocument( 'internalData' ),
+		paragraph = [ { 'type': 'paragraph' }, 'H', 'e', 'l', 'l', 'o', { 'type': '/paragraph' } ],
+		secondNode = doc.internalList.getItemNode( 1 ),
+		cases = {
+			'replacing first internal node with paragraph': {
+				'args': [doc, new ve.Range( 7, 12 ), paragraph],
+				'ops': [
+					{ 'type': 'retain', 'length': 7 },
+					{
+						'type': 'replace',
+						'remove': doc.data.slice( 7, 12 ),
+						'insert': paragraph
+					},
+					{ 'type': 'retain', 'length': 15 }
+				]
+			},
+			'replacing second internal node with two paragraphs': {
+				'args': [doc, secondNode, paragraph.concat( paragraph )],
+				'ops': [
+					{ 'type': 'retain', 'length': 14 },
+					{
+						'type': 'replace',
+						'remove': doc.data.getDataSlice( secondNode.getRange() ),
+						'insert': paragraph.concat( paragraph )
+					},
+					{ 'type': 'retain', 'length': 8 }
+				]
+			}
+		};
+	QUnit.expect( ve.getObjectKeys( cases ).length );
+	runConstructorTests( assert, ve.dm.Transaction.newFromNodeReplacement, cases );
+} );
+
 QUnit.test( 'newFromAttributeChange', function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument(),
 		cases = {
