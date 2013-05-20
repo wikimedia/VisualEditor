@@ -570,6 +570,7 @@ ve.ce.Surface.prototype.onPaste = function () {
 	// Pasting into a range? Remove first.
 	if ( !rangy.getSelection().isCollapsed ) {
 		tx = ve.dm.Transaction.newFromRemoval( view.documentView.model, selection );
+		selection = tx.translateRange( selection );
 		view.model.change( tx );
 	}
 
@@ -614,7 +615,10 @@ ve.ce.Surface.prototype.onPaste = function () {
 		view.documentView.documentNode.$.focus();
 		$window.scrollTop( scrollTop );
 
-		view.model.change( tx, tx.translateRange( selection ).truncate( 0 ) );
+		selection = tx.translateRange( selection );
+		view.model.change( tx, new ve.Range( selection.start ) );
+		// Move cursor to end of selection
+		view.model.change( null, new ve.Range( selection.end ) );
 
 		// Allow pasting again
 		view.pasting = false;
