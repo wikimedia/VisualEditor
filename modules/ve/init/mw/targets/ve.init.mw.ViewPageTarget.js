@@ -769,6 +769,8 @@ ve.init.mw.ViewPageTarget.prototype.setUpSurface = function ( doc ) {
 		'lang': mw.config.get( 'wgVisualEditor' ).pageLanguageCode,
 		'dir': mw.config.get( 'wgVisualEditor' ).pageLanguageDir
 	} );
+	// Add appropriately mw-content-ltr or mw-content-rtl class
+	this.surface.$.addClass( 'mw-content-' + mw.config.get( 'wgVisualEditor' ).pageLanguageDir );
 };
 
 /**
