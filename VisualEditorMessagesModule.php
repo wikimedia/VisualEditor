@@ -22,12 +22,19 @@ class VisualEditorMessagesModule extends ResourceLoaderModule {
 	public function getScript( ResourceLoaderContext $context ) {
 		$msgInfo = $this->getMessageInfo();
 		$parsedMesssages = array();
+		$messages = array();
 		foreach ( $msgInfo['args'] as $msgKey => $msgArgs ) {
 			$parsedMesssages[ $msgKey ] = call_user_func_array( 'wfMessage', $msgArgs )
 				->inLanguage( $context->getLanguage() )
 				->parse();
 		}
-		return 've.init.platform.addParsedMessages(' . FormatJson::encode( $parsedMesssages ) . ');';
+		foreach ( $msgInfo['vals'] as $msgKey => $msgVal ) {
+			$messages[ $msgKey ] = $msgVal;
+		}
+		return
+			've.init.platform.addParsedMessages(' . FormatJson::encode( $parsedMesssages ) . ');'.
+			've.init.platform.addMessages(' . FormatJson::encode( $messages ) . ');'
+		;
 	}
 
 	protected function getMessageInfo() {
@@ -38,6 +45,11 @@ class VisualEditorMessagesModule extends ResourceLoaderModule {
 			'minoredit' => array( 'minoredit' ),
 			'watchthis' => array( 'watchthis' ),
 			'visualeditor-report-notice' => array( 'visualeditor-report-notice' ),
+		);
+
+		// Override message value
+		$msgVals = array(
+			'visualeditor-feedback-link' => wfMessage( 'visualeditor-feedback-link' )->inContentLanguage()->text(),
 		);
 
 		// Copyright warning (based on EditPage::getCopyrightWarning)
@@ -61,11 +73,12 @@ class VisualEditorMessagesModule extends ResourceLoaderModule {
 		// Normalise to 'copyrightwarning' so we have a consistent key in the front-end.
 		$msgArgs[ 'copyrightwarning' ] = $copywarnMsg;
 
-		$msgKeys = array_values( array_unique( array_merge( $msgKeys, array_keys( $msgArgs ) ) ) );
+		$msgKeys = array_values( array_unique( array_merge( $msgKeys, array_keys( $msgArgs ), array_keys( $msgVals ) ) ) );
 
 		return array(
 			'keys' => $msgKeys,
 			'args' => $msgArgs,
+			'vals' => $msgVals,
 		);
 	}
 

@@ -70,11 +70,6 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 	// * add: Adds #ca-ve-edit.
 	// * replace: Re-creates #ca-edit for VisualEditor and adds #ca-editsource.
 	this.tabLayout = 'replace';
-	this.feedback = new mw.Feedback( {
-		'title': new mw.Title( ve.msg( 'visualeditor-feedback-link' ) ),
-		'bugsLink': new mw.Uri( 'https://bugzilla.wikimedia.org/enter_bug.cgi?product=VisualEditor&component=General' ),
-		'bugsListLink': new mw.Uri( 'https://bugzilla.wikimedia.org/buglist.cgi?query_format=advanced&resolution=---&resolution=LATER&resolution=DUPLICATE&product=VisualEditor&list_id=166234' )
-	} );
 
 	// Events
 	this.connect( this, {
@@ -598,6 +593,14 @@ ve.init.mw.ViewPageTarget.prototype.onToolbarEditNoticesToolClick = function () 
  */
 ve.init.mw.ViewPageTarget.prototype.onToolbarFeedbackToolClick = function () {
 	this.$toolbarEditNotices.fadeOut( 'fast' );
+	if ( !this.feedback ) {
+		// This can't be constructed until the editor has loaded as it uses special messages
+		this.feedback = new mw.Feedback( {
+			'title': new mw.Title( ve.msg( 'visualeditor-feedback-link' ) ),
+			'bugsLink': new mw.Uri( 'https://bugzilla.wikimedia.org/enter_bug.cgi?product=VisualEditor&component=General' ),
+			'bugsListLink': new mw.Uri( 'https://bugzilla.wikimedia.org/buglist.cgi?query_format=advanced&resolution=---&resolution=LATER&resolution=DUPLICATE&product=VisualEditor&list_id=166234' )
+		} );
+	}
 	this.feedback.launch();
 };
 
