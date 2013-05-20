@@ -180,12 +180,6 @@ ve.ui.MWCategoryWidget.prototype.addItems = function ( items, index ) {
 	for ( i = 0, len = items.length; i < len; i++ ) {
 		item = items[i];
 
-		// HACK: Filter out categories derived from aliens
-		// TODO: Remove this bit once aliens no longer add items to metalist
-		if ( 'html/0/about' in item.metaItem.element.attributes ) {
-			continue;
-		}
-
 		// Create a widget using the item data
 		categoryItem = new ve.ui.MWCategoryItemWidget( { '$$': this.$$, 'item': item } );
 		categoryItem.connect( this, {

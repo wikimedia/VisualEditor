@@ -386,12 +386,20 @@ QUnit.test( 'newFromRemoval', function ( assert ) {
 						'type': 'replace',
 						'remove': [
 							'h',
-							{ 'type': 'image', 'attributes': {
-								'html/0/src': ve.dm.example.imgSrc,
-								'src': ve.dm.example.imgSrc,
-								'width': null,
-								'height': null
-							} },
+							{
+								'type': 'image',
+								'attributes': {
+									'src': ve.dm.example.imgSrc,
+									'width': null,
+									'height': null
+								},
+								'htmlAttributes': [
+									{
+										'keys': [ 'src' ],
+										'values': { 'src': ve.dm.example.imgSrc }
+									}
+								]
+							},
 							{ 'type': '/image' },
 							'i'
 						],

@@ -38,7 +38,7 @@ ve.ce.View = function VeCeView( model, config ) {
 	} );
 
 	// Initialization
-	this.renderAttributes( this.model.getAttributes() );
+	this.renderAttributes();
 };
 
 /* Inheritance */
@@ -147,27 +147,16 @@ ve.ce.View.prototype.setLive = function ( live ) {
 };
 
 /**
- * Render HTML attributes.
+ * Render an HTML attribute list onto this.$
  *
- * Attributes will be parsed using ve.dm.Converter#parseHtmlAttribute and filtered through the
- * whitelist defined in #domAttributeWhitelist
+ * If no attributeList is given, the attribute list stored in the linear model will be used.
  *
- * @param {Object} attributes List of attributes to render in the DOM
+ * @param {Object[]} [attributeList] HTML attribute list, see ve.dm.Converter#buildHtmlAttributeList
  */
-ve.ce.View.prototype.renderAttributes = function ( attributes ) {
-	var key, parsed,
-		whitelist = this.constructor.static.domAttributeWhitelist;
-	if ( !this.constructor.static.renderHtmlAttributes ) {
-		return;
-	}
-	for ( key in attributes ) {
-		parsed = ve.dm.Converter.parseHtmlAttribute( key, this.$ );
-		if ( parsed && whitelist.indexOf( parsed.attribute ) !== -1 ) {
-			if ( attributes[key] === undefined ) {
-				parsed.domElement.removeAttribute( parsed.attribute );
-			} else {
-				parsed.domElement.setAttribute( parsed.attribute, attributes[key] );
-			}
-		}
-	}
+ve.ce.View.prototype.renderAttributes = function ( attributeList ) {
+	ve.dm.Converter.renderHtmlAttributeList(
+		attributeList || this.model.getHtmlAttributes(),
+		this.$,
+		this.constructor.static.renderHtmlAttributes
+	);
 };

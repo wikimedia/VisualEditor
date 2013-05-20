@@ -101,28 +101,88 @@ ve.dm.Converter.openAndCloseAnnotations = function ( currentSet, targetSet, open
 };
 
 /**
- * Parse a linear model attribute name of the form html/i-j-k/attrName.
+ * Build an HTML attribute list for attribute preservation.
  *
- * @param {string} attribute Name of a linear model attribute
- * @param {HTMLElement[]|jQuery} domElements DOM elements array that the attribute indexes into
- * @returns {Object|null} Object with domElement and attribute keys, or null
+ * The attribute list is an array of objects, one for each DOM element. Each object contains a
+ * map with attribute keys and values in .values, an (ordered) array of attribute keys in .keys,
+ * and an array of attribute lists for the child nodes in .children .
+ *
+ * @static
+ * @param {HTMLElement[]} domElements Array of DOM elements to build attribute list for
+ * @param {boolean|string|RegExp|Array|Object} spec Attribute specification, see ve.dm.Model
+ * @param {boolean} [deep=false] If true, recurse into children. If false, .children will be empty
+ * @param {Object[]} [attributeList] Existing attribute list to populate; used for recursion
+ * @returns {Object[]|undefined} Attribute list, or undefined if empty
  */
-ve.dm.Converter.parseHtmlAttribute = function ( attribute, domElements ) {
-	var i, ilen, indexes, child,
-		/*jshint regexp:false */
-		matches = attribute.match( /^html\/((?:\d+\-)*\d)\/(.*)$/ );
-	if ( !matches ) {
-		return null;
+ve.dm.Converter.buildHtmlAttributeList = function ( domElements, spec, deep, attributeList ) {
+	var i, ilen, j, jlen, domAttributes, childList, empty = true;
+	attributeList = attributeList || [];
+	for ( i = 0, ilen = domElements.length; i < ilen; i++ ) {
+		domAttributes = domElements[i].attributes || [];
+		attributeList[i] = { 'values': {}, 'keys': [] };
+		for ( j = 0, jlen = domAttributes.length; j < jlen; j++ ) {
+			if ( ve.dm.Model.matchesAttributeSpec( domAttributes[j].name, spec ) ) {
+				attributeList[i].keys.push( domAttributes[j].name );
+				attributeList[i].values[domAttributes[j].name] = domAttributes[j].value;
+				empty = false;
+			}
+		}
+		if ( deep ) {
+			attributeList[i].children = [];
+			childList = ve.dm.Converter.buildHtmlAttributeList(
+				domElements[i].childNodes, spec, deep, attributeList[i].children
+			);
+			if ( childList ) {
+				empty = false;
+			} else {
+				delete attributeList[i].children;
+			}
+		}
 	}
-	indexes = matches[1].split( '-' ); // matches[1] like '1-2-3'
-	child = domElements[indexes[0]];
-	for ( i = 1, ilen = indexes.length; i < ilen; i++ ) {
-		child = child && child.childNodes[indexes[i]];
+	return empty ? undefined : attributeList;
+};
+
+/**
+ * Render an attribute list onto a set of DOM elements.
+ *
+ * Attributes set to undefined will be removed. The attribute specification restricts which
+ * attributes are rendered.
+ *
+ * @static
+ * @param {Object[]} attributeList Attribute list, see buildHtmlAttributeList()
+ * @param {HTMLElement[]} domElements Array of DOM elements to render onto
+ * @param {boolean|string|RegExp|Array|Object} [spec=true] Attribute specification, see ve.dm.Model
+ * @param {boolean} [overwrite=false] If true, overwrite attributes that are already set
+ */
+ve.dm.Converter.renderHtmlAttributeList = function ( attributeList, domElements, spec, overwrite ) {
+	var i, ilen, j, jlen, keys, values;
+	if ( spec === undefined ) {
+		spec = true;
 	}
-	if ( !child ) {
-		return null;
+	if ( spec === false ) {
+		return;
 	}
-	return { 'domElement': child, 'attribute': matches[2] };
+	for ( i = 0, ilen = attributeList.length; i < ilen; i++ ) {
+		if ( !domElements[i] ) {
+			continue;
+		}
+		keys = attributeList[i].keys;
+		values = attributeList[i].values;
+		for ( j = 0, jlen = keys.length; j < jlen; j++ ) {
+			if ( ve.dm.Model.matchesAttributeSpec( keys[j], spec ) ) {
+				if ( values[keys[j]] === undefined ) {
+					domElements[i].removeAttribute( keys[j] );
+				} else if ( overwrite || !domElements[i].hasAttribute( keys[j] ) ) {
+					domElements[i].setAttribute( keys[j], values[keys[j]] );
+				}
+			}
+		}
+		if ( attributeList[i].children ) {
+			ve.dm.Converter.renderHtmlAttributeList(
+				attributeList[i].children, domElements[i].childNodes, spec
+			);
+		}
+	}
 };
 
 /* Methods */
@@ -226,7 +286,7 @@ ve.dm.Converter.prototype.canCloseWrapper = function () {
  * @returns {HTMLElement|boolean} DOM element, or false if the element cannot be converted
  */
 ve.dm.Converter.prototype.getDomElementsFromDataElement = function ( dataElements, doc ) {
-	var domElements, dataElementAttributes, key, parsed,
+	var domElements,
 		dataElement = ve.isArray( dataElements ) ? dataElements[0] : dataElements,
 		nodeClass = this.modelRegistry.lookup( dataElement.type );
 
@@ -240,14 +300,8 @@ ve.dm.Converter.prototype.getDomElementsFromDataElement = function ( dataElement
 	if ( !domElements || !domElements.length ) {
 		throw new Error( 'toDomElements() failed to return an array when converting element of type ' + dataElement.type );
 	}
-	dataElementAttributes = dataElement.attributes;
-	if ( dataElementAttributes ) {
-		for ( key in dataElementAttributes ) {
-			parsed = ve.dm.Converter.parseHtmlAttribute( key, domElements );
-			if ( parsed && !parsed.domElement.hasAttribute( parsed.attribute ) ) {
-				parsed.domElement.setAttribute( parsed.attribute, dataElementAttributes[key] );
-			}
-		}
+	if ( dataElement.htmlAttributes ) {
+		ve.dm.Converter.renderHtmlAttributeList( dataElement.htmlAttributes, domElements );
 	}
 	return domElements;
 };
@@ -268,42 +322,6 @@ ve.dm.Converter.prototype.createDataElements = function ( modelClass, domElement
 		dataElements = [ dataElements ];
 	}
 	return dataElements;
-};
-
-/**
- * Set the 'html/' attributes for HTML attribute preservation
- * @param {Object} dataElement Linear model element to set the attributes on
- * @param {HTMLElement[]} domElements DOM elements the linear model element was generated from
- * @param {boolean} [deep=false] If true, descend into children and store their attributes too
- */
-ve.dm.Converter.prototype.setHtmlAttributes = function ( dataElement, domElements, deep ) {
-	var i, len,
-		modelClass = this.modelRegistry.lookup( dataElement.type ),
-		spec = modelClass.static.storeHtmlAttributes;
-
-	function processChild( child, prefix ) {
-		var i, len,
-			// text nodes don't have attributes
-			childAttributes = child.attributes || [];
-
-		for ( i = 0, len = childAttributes.length; i < len; i++ ) {
-			if ( ve.dm.Model.matchesAttributeSpec( childAttributes[i].name, spec ) ) {
-				if ( !dataElement.attributes ) {
-					dataElement.attributes = {};
-				}
-				dataElement.attributes[prefix + '/' + childAttributes[i].name] = childAttributes[i].value;
-			}
-		}
-		if ( deep ) {
-			for ( i = 0, len = child.childNodes.length; i < len; i++ ) {
-				processChild( child.childNodes[i], prefix + '-' + i );
-			}
-		}
-	}
-
-	for ( i = 0, len = domElements.length; i < len; i++ ) {
-		processChild( domElements[i], 'html/' + i );
-	}
 };
 
 /**
@@ -494,7 +512,7 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, wrapp
 
 	var i, childDomElement, childDomElements, childDataElements, text, childTypes, matches,
 		wrappingParagraph, prevElement, childAnnotations, modelName, modelClass,
-		annotation, childIsContent, aboutGroup,
+		annotation, childIsContent, aboutGroup, htmlAttributes,
 		data = [],
 		nextWhitespace = '',
 		wrappedWhitespace = '',
@@ -551,7 +569,12 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, wrapp
 
 				// Now take the appropriate action based on that
 				if ( modelClass.prototype instanceof ve.dm.Annotation ) {
-					this.setHtmlAttributes( childDataElements[0], childDomElements, false );
+					htmlAttributes = ve.dm.Converter.buildHtmlAttributeList(
+						childDomElements, modelClass.static.storeHtmlAttributes
+					);
+					if ( htmlAttributes ) {
+						childDataElements[0].htmlAttributes = htmlAttributes;
+					}
 					annotation = this.annotationFactory.create( modelName, childDataElements[0] );
 					// Start wrapping if needed
 					if ( !context.inWrapper && !context.expectingContent ) {
@@ -569,7 +592,12 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, wrapp
 				} else {
 					// Node or meta item
 					if ( modelClass.prototype instanceof ve.dm.MetaItem ) {
-						this.setHtmlAttributes( childDataElements[0], childDomElements, true );
+						htmlAttributes = ve.dm.Converter.buildHtmlAttributeList(
+							childDomElements, modelClass.static.storeHtmlAttributes, true
+						);
+						if ( htmlAttributes ) {
+							childDataElements[0].htmlAttributes = htmlAttributes;
+						}
 						// No additional processing needed
 						// Write to data and continue
 						if ( childDataElements.length === 1 ) {
@@ -628,8 +656,13 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, wrapp
 						this.nodeFactory.canNodeHaveChildren( childDataElements[0].type ) &&
 						!this.nodeFactory.doesNodeHandleOwnChildren( childDataElements[0].type )
 					) {
+						htmlAttributes = ve.dm.Converter.buildHtmlAttributeList(
+							childDomElements, modelClass.static.storeHtmlAttributes
+						);
+						if ( htmlAttributes ) {
+							childDataElements[0].htmlAttributes = htmlAttributes;
+						}
 						// Recursion
-						this.setHtmlAttributes( childDataElements[0], childDomElements, false );
 						// Opening and closing elements are added by the recursion too
 						data = data.concat(
 							this.getDataFromDomRecursion( childDomElement, childDataElements[0],
@@ -640,7 +673,12 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, wrapp
 						if ( childDataElements.length === 1 ) {
 							childDataElements.push( { 'type': '/' + childDataElements[0].type } );
 						}
-						this.setHtmlAttributes( childDataElements[0], childDomElements, true );
+						htmlAttributes = ve.dm.Converter.buildHtmlAttributeList(
+							childDomElements, modelClass.static.storeHtmlAttributes, true
+						);
+						if ( htmlAttributes ) {
+							childDataElements[0].htmlAttributes = htmlAttributes;
+						}
 						// Write childDataElements directly
 						data = data.concat( childDataElements );
 					}
