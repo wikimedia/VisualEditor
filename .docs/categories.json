@@ -146,10 +146,6 @@
 		"name": "General",
 		"groups": [
 			{
-				"name": "General",
-				"classes": ["ve.Editor"]
-			},
-			{
 				"name": "Utilities",
 				"classes": ["ve", "ve.EventEmitter", "ve.Registry", "ve.Factory", "ve.Range", "ve.Element"]
 			},

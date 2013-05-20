@@ -10,6 +10,7 @@
  *
  * @class
  * @extends ve.ce.LeafNode
+ * @mixins ve.ce.FocusableNode
  * @mixins ve.ce.ProtectedNode
  *
  * @constructor
@@ -21,6 +22,7 @@ ve.ce.MWReferenceNode = function VeCeMWReferenceNode( model, config ) {
 	ve.ce.LeafNode.call( this, model, config );
 
 	// Mixin constructors
+	ve.ce.FocusableNode.call( this );
 	ve.ce.ProtectedNode.call( this );
 
 	// DOM Changes
@@ -41,6 +43,7 @@ ve.ce.MWReferenceNode = function VeCeMWReferenceNode( model, config ) {
 
 ve.inheritClass( ve.ce.MWReferenceNode, ve.ce.LeafNode );
 
+ve.mixinClass( ve.ce.MWReferenceNode, ve.ce.FocusableNode );
 ve.mixinClass( ve.ce.MWReferenceNode, ve.ce.ProtectedNode );
 
 /* Static Properties */

@@ -12,6 +12,7 @@
  * functionality of a surface. Actions are accessible via {ve.ui.Surface.prototype.execute}.
  *
  * @class
+ *
  * @constructor
  * @param {ve.ui.Surface} surface Surface to act on
  */

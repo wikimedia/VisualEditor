@@ -235,7 +235,6 @@ $wgResourceModules += array(
 			've/ve.LeafNode.js',
 			've/ve.Element.js',
 			've/ve.Document.js',
-			've/ve.Editor.js',
 
 			// dm
 			've/dm/ve.dm.js',
@@ -453,7 +452,6 @@ $wgResourceModules += array(
 		),
 		'styles' => array(
 			// ce
-			've/ce/styles/ve.ce.DocumentNode.css',
 			've/ce/styles/ve.ce.Node.css',
 			've/ce/styles/ve.ce.Surface.css',
 			// ui

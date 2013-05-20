@@ -9,6 +9,7 @@
  * DataModel surface fragment.
  *
  * @class
+ *
  * @constructor
  * @param {ve.dm.Surface} surface Target surface
  * @param {ve.Range} [range] Range within target document, current selection used by default
@@ -572,8 +573,9 @@ ve.dm.SurfaceFragment.prototype.convertNodes = function ( type, attr ) {
 	if ( !this.surface ) {
 		return this;
 	}
-	var tx =
-		ve.dm.Transaction.newFromContentBranchConversion( this.document, this.getRange(), type, attr );
+	var tx = ve.dm.Transaction.newFromContentBranchConversion(
+		this.document, this.getRange(), type, attr
+	);
 	this.surface.change( tx, !this.noAutoSelect && tx.translateRange( this.getRange() ) );
 	return this;
 };

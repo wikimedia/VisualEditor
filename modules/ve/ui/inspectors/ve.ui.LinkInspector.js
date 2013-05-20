@@ -13,10 +13,11 @@
  *
  * @constructor
  * @param {ve.ui.Surface} surface
+ * @param {Object} [config] Config options
  */
-ve.ui.LinkInspector = function VeUiLinkInspector( surface ) {
+ve.ui.LinkInspector = function VeUiLinkInspector( surface, config ) {
 	// Parent constructor
-	ve.ui.Inspector.call( this, surface );
+	ve.ui.Inspector.call( this, surface, config );
 
 	// Properties
 	this.initialAnnotationHash = null;
@@ -50,7 +51,7 @@ ve.ui.LinkInspector.prototype.initialize = function () {
 
 	// Properties
 	this.targetInput = new this.constructor.static.linkTargetInputWidget( {
-		'$$': this.$$, '$overlay': this.surface.getEditor().$overlay
+		'$$': this.frame.$$, '$overlay': this.surface.$localOverlay
 	} );
 
 	// Initialization

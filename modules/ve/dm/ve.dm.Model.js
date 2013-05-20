@@ -8,7 +8,9 @@
 /**
  * Base class for DM models.
  *
+ * @class
  * @abstract
+ *
  * @constructor
  * @param {Object} element Reference to plain object in linear model
  */

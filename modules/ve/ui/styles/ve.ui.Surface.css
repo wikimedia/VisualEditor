@@ -15,7 +15,11 @@
 }
 
 .ve-ui-surface-overlay {
+	font-family: sans-serif;
+	line-height: 1.5em;
+	font-size: 1em;
 	position: absolute;
 	top: 0;
 	left: 0;
+	z-index: 1000;
 }

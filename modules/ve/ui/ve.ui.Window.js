@@ -10,13 +10,18 @@
  *
  * @class
  * @abstract
+ * @extends ve.Element
  * @mixins ve.EventEmitter
  *
  * @constructor
  * @param {ve.ui.Surface} surface
+ * @param {Object} [config] Config options
  * @emits initialize
  */
-ve.ui.Window = function VeUiWindow( surface ) {
+ve.ui.Window = function VeUiWindow( surface, config ) {
+	// Parent constructor
+	ve.Element.call( this, config );
+
 	// Mixin constructors
 	ve.EventEmitter.call( this );
 
@@ -26,8 +31,7 @@ ve.ui.Window = function VeUiWindow( surface ) {
 	this.opening = false;
 	this.closing = false;
 	this.frame = null;
-	this.$ = $( '<div>' );
-	this.$frame = $( '<div>' );
+	this.$frame = this.$$( '<div>' );
 
 	// Initialization
 	this.$
@@ -47,6 +51,8 @@ ve.ui.Window = function VeUiWindow( surface ) {
 };
 
 /* Inheritance */
+
+ve.inheritClass( ve.ui.Window, ve.Element );
 
 ve.mixinClass( ve.ui.Window, ve.EventEmitter );
 
@@ -73,13 +79,6 @@ ve.mixinClass( ve.ui.Window, ve.EventEmitter );
  */
 
 /* Static Properties */
-
-/**
- * @static
- * @property
- * @inheritable
- */
-ve.ui.Window.static = {};
 
 /**
  * List of stylesheet URLs to load.
@@ -121,19 +120,24 @@ ve.ui.Window.static.addStylesheetFiles = function ( paths ) {
 };
 
 /**
- * Add a stylesheet from the /ve/ui/styles directory.
+ * Add a stylesheet from a local directory.
+ *
+ * The file path is derived from the module name, such that `ve.ui.Widget.css` is assumed to be
+ * located at `ve/ui/styles/ve.ui.Widget.css`.
  *
  * @method
  * @param {string[]} files Names of stylesheet files
  */
 ve.ui.Window.static.addLocalStylesheets = function ( files ) {
-	var i, len,
-		base = ve.init.platform.getModulesUrl() + '/ve/ui/styles/',
+	var i, len, module,
+		base = ve.init.platform.getModulesUrl(),
 		paths = [];
 
 	// Prepend base path to each file name
 	for ( i = 0, len = files.length; i < len; i++ ) {
-		paths[i] = base + files[i];
+		// Extract the module name and convert it to a path
+		module = files[i].match( /^([a-z\.]+)[A-Z]/ )[1].replace( /\./g, '/' );
+		paths[i] = base + '/' + module + 'styles/' + files[i];
 	}
 
 	this.addStylesheetFiles( paths );
@@ -158,7 +162,6 @@ ve.ui.Window.prototype.onFrameInitialize = function () {
  */
 ve.ui.Window.prototype.initialize = function () {
 	// Properties
-	this.$$ = this.frame.$$;
 	this.$title = this.$$( '<div class="ve-ui-window-title"></div>' );
 	if ( this.constructor.static.titleMessage ) {
 		this.$title.text( ve.msg( this.constructor.static.titleMessage ) );
@@ -168,14 +171,12 @@ ve.ui.Window.prototype.initialize = function () {
 	this.$head = this.$$( '<div class="ve-ui-window-head"></div>' );
 	this.$body = this.$$( '<div class="ve-ui-window-body"></div>' );
 	this.$foot = this.$$( '<div class="ve-ui-window-foot"></div>' );
-	this.$overlay = this.$$( '<div class="ve-ui-window-overlay"></div>' );
 
 	// Initialization
 	this.frame.$content.append(
 		this.$head.append( this.$icon, this.$title ),
 		this.$body,
-		this.$foot,
-		this.$overlay
+		this.$foot
 	);
 };
 

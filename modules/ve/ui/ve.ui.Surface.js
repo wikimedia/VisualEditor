@@ -12,26 +12,33 @@
  * @extends ve.Element
  *
  * @constructor
- * @param {ve.Editor} editor Editor
- * @param {ve.dm.Document} doc Document to edit
+ * @param {HTMLDocument|Array|ve.dm.LinearData} data Document data to edit
  * @param {Object} [config] Config options
  */
-ve.ui.Surface = function VeUiSurface( editor, doc, options ) {
+ve.ui.Surface = function VeUiSurface( data, config ) {
 	// Parent constructor
-	ve.Element.call( this, options );
+	ve.Element.call( this, config );
 
 	// Properties
-	this.editor = editor;
-	this.model = new ve.dm.Surface( new ve.dm.Document( doc ) );
-	this.view = new ve.ce.Surface( this.model, this );
-	this.context = new ve.ui.Context( this );
+	this.$globalOverlay = $( '<div>' );
+	this.$localOverlay = this.$$( '<div>' );
+	this.model = new ve.dm.Surface( new ve.dm.Document( data ) );
+	this.view = new ve.ce.Surface( this.model, this, { '$$': this.$$ } );
+	this.context = new ve.ui.Context( this, { '$$': this.$$ } );
 	this.dialogs = new ve.ui.WindowSet( this, ve.ui.dialogFactory );
+	this.commands = {};
 	this.enabled = true;
 
 	// Initialization
-	this.$.addClass( 've-ui-surface' );
-	this.$.append( this.view.$ );
-	this.editor.$overlay.append( this.dialogs.$, this.context.$ );
+	this.$
+		.addClass( 've-ui-surface' )
+		.append( this.view.$ );
+	this.$localOverlay
+		.addClass( 've-ui-surface-overlay ve-ui-surface-overlay-local' )
+		.append( this.context.$ );
+	this.$globalOverlay
+		.addClass( 've-ui-surface-overlay ve-ui-surface-overlay-global' )
+		.append( this.dialogs.$ );
 
 	// Make instance globally accessible for debugging
 	ve.instances.push( this );
@@ -44,6 +51,8 @@ ve.inheritClass( ve.ui.Surface, ve.Element );
 /* Methods */
 
 ve.ui.Surface.prototype.initialize = function () {
+	this.$$( 'body' ).append( this.$localOverlay );
+	$( 'body' ).append( this.$globalOverlay );
 	this.view.initialize();
 	// By re-asserting the current selection and forcing a poll we force selection to be something
 	// reasonable - otherwise in Firefox, the initial selection is (0,0), causing bug 42277
@@ -93,16 +102,6 @@ ve.ui.Surface.prototype.getContext = function () {
 };
 
 /**
- * Get the surface view.
- *
- * @method
- * @returns {ve.ce.Surface} Surface view
- */
-ve.ui.Surface.prototype.getEditor = function () {
-	return this.editor;
-};
-
-/**
  * Get dialogs window set.
  *
  * @method
@@ -110,6 +109,16 @@ ve.ui.Surface.prototype.getEditor = function () {
  */
 ve.ui.Surface.prototype.getDialogs = function () {
 	return this.dialogs;
+};
+
+/**
+ * Get the context menu.
+ *
+ * @method
+ * @returns {ve.ui.Context} Context user interface
+ */
+ve.ui.Surface.prototype.getCommands = function () {
+	return this.commands;
 };
 
 /**
@@ -121,6 +130,8 @@ ve.ui.Surface.prototype.getDialogs = function () {
 ve.ui.Surface.prototype.destroy = function () {
 	ve.instances.splice( ve.instances.indexOf( this ), 1 );
 	this.$.remove();
+	this.$globalOverlay.remove();
+	this.$localOverlay.remove();
 	this.view.destroy();
 };
 
@@ -156,17 +167,16 @@ ve.ui.Surface.prototype.enable = function () {
  * @returns {boolean} Action or command was executed
  */
 ve.ui.Surface.prototype.execute = function ( action, method ) {
+	var trigger, obj, ret;
+
 	if ( !this.enabled ) {
 		return;
 	}
 
-	var trigger, obj, ret,
-		commands = this.editor.getCommands();
-
 	if ( action instanceof ve.ui.Trigger ) {
 		trigger = action.toString();
-		if ( trigger in commands ) {
-			return this.execute.apply( this, commands[trigger] );
+		if ( trigger in this.commands ) {
+			return this.execute.apply( this, this.commands[trigger] );
 		}
 	} else if ( typeof action === 'string' && typeof method === 'string' ) {
 		// Validate method
@@ -178,4 +188,43 @@ ve.ui.Surface.prototype.execute = function ( action, method ) {
 		}
 	}
 	return false;
+};
+
+/**
+ * Add all commands from initialization options.
+ *
+ * @method
+ * @param {string[]|Object[]} commands List of symbolic names of commands in the command registry
+ */
+ve.ui.Surface.prototype.addCommands = function ( commands ) {
+	var i, len, command;
+
+	for ( i = 0, len = commands.length; i < len; i++ ) {
+		command = ve.ui.commandRegistry.lookup( commands[i] );
+		if ( !command ) {
+			throw new Error( 'No command registered by that name: ' + commands[i] );
+		}
+		this.addTriggers( [ve.ui.triggerRegistry.lookup( commands[i] )], command );
+	}
+};
+
+/**
+ * Add triggers to surface.
+ *
+ * @method
+ * @param {ve.ui.Trigger[]} triggers Triggers to associate with command
+ * @param {Object} command Command to trigger
+ */
+ve.ui.Surface.prototype.addTriggers = function ( triggers, command ) {
+	var i, len, trigger;
+
+	for ( i = 0, len = triggers.length; i < len; i++ ) {
+		// Normalize
+		trigger = triggers[i].toString();
+		// Validate
+		if ( trigger.length === 0 ) {
+			throw new Error( 'Incomplete trigger: ' + triggers[i] );
+		}
+		this.commands[trigger] = command.action;
+	}
 };

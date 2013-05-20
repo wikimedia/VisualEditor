@@ -26,7 +26,7 @@ ve.ui.DropdownTool = function VeUiDropdownTool( toolbar, config ) {
 	this.$labelText = this.$$( '<span>&nbsp;</span>' );
 
 	// Events
-	this.$$( document )
+	this.$$( this.getElementDocument() )
 		.add( this.toolbar.getSurface().getView().$ )
 		.mousedown( ve.bind( this.onBlur, this ) );
 	this.$.on( {

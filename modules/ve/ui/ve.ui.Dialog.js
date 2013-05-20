@@ -14,10 +14,11 @@
  *
  * @constructor
  * @param {ve.ui.Surface} surface
+ * @param {Object} [config] Config options
  */
-ve.ui.Dialog = function VeUiDialog( surface ) {
+ve.ui.Dialog = function VeUiDialog( surface, config ) {
 	// Parent constructor
-	ve.ui.Window.call( this, surface );
+	ve.ui.Window.call( this, surface, config );
 
 	// Properties
 	this.visible = false;

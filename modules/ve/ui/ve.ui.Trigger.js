@@ -9,6 +9,7 @@
  * Key trigger.
  *
  * @class
+ *
  * @constructor
  * @param {jQuery.Event|string} [e] Event or string to create trigger from
  */
@@ -180,7 +181,7 @@ ve.ui.Trigger.static.primaryKeyMap = {
  * @returns {boolean} Trigger is complete
  */
 ve.ui.Trigger.prototype.isComplete = function () {
-	return this.primary in ve.ui.Trigger.static.primaryKeyMap;
+	return this.primary !== false;
 };
 
 /**

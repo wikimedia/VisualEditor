@@ -17,7 +17,6 @@
  *
  * @constructor
  * @param {Object} [config] Config options
- * @cfg {jQuery} [$overlay=this.$$( 'body' )] Element to append menu to
  */
 ve.ui.MWLinkTargetInputWidget = function VeUiMWLinkTargetInputWidget( config ) {
 	// Config intialization

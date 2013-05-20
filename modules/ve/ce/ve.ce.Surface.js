@@ -33,7 +33,7 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 	this.documentView = new ve.ce.Document( model.getDocument(), this );
 	this.surfaceObserver = new ve.ce.SurfaceObserver( this.documentView );
 	this.selectionTimeout = null;
-	this.$document = $( document );
+	this.$document = $( this.getElementDocument() );
 	this.clipboard = {};
 	this.renderingEnabled = true;
 	this.dragging = false;
@@ -72,11 +72,7 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 
 	// Add elements to the DOM
 	this.$.append( this.documentView.getDocumentNode().$, this.$pasteTarget );
-	// Append phantoms to $overlay instead of surface because it relies on being able to
-	// overlay the phantom over CE using absolute offsets against window. `this.$` can be
-	// deep inside a skin layout where any of the parentes could have position relative)
-	this.surface.getEditor().$overlay.append( this.$phantoms );
-
+	this.surface.$localOverlay.append( this.$phantoms );
 };
 
 /* Inheritance */
@@ -119,20 +115,24 @@ ve.ce.Surface.static.textPattern = new RegExp(
 	'g'
 );
 
+/* Methods */
+
 /**
  * Get the coordinates of the selection anchor.
  *
  * @method
  * @static
+ * @param {HTMLDocument} domDocument Document of selection
  */
-ve.ce.Surface.getSelectionRect = function () {
-	var sel, rect, $span, lineHeight, startRange, startOffset, endRange, endOffset;
+ve.ce.Surface.prototype.getSelectionRect = function () {
+	var sel, rect, $span, lineHeight, startRange, startOffset, endRange, endOffset,
+		domDocument = this.getElementDocument();
 
 	if ( !rangy.initialized ) {
 		rangy.init();
 	}
 
-	sel = rangy.getSelection();
+	sel = rangy.getSelection( domDocument );
 
 	// We can't do anything if there's no selection
 	if ( sel.rangeCount === 0 ) {
@@ -147,7 +147,7 @@ ve.ce.Surface.getSelectionRect = function () {
 	if ( rect.top === 0 || rect.bottom === 0 || rect.left === 0 || rect.right === 0 ) {
 		// Calculate starting range position
 		startRange = sel.getRangeAt( 0 );
-		$span = $( '<span>', startRange.startContainer.ownerDocument );
+		$span = $( '<span>|</span>', startRange.startContainer.ownerDocument );
 		startRange.insertNode( $span[0] );
 		startOffset = $span.offset();
 		$span.detach();
@@ -157,7 +157,7 @@ ve.ce.Surface.getSelectionRect = function () {
 		endRange.collapse( false );
 		endRange.insertNode( $span[0] );
 		endOffset = $span.offset();
-		lineHeight = parseInt( $span.css( 'line-height' ), 10 );
+		lineHeight = $span.height();
 		$span.detach();
 
 		// Restore the selection
@@ -183,8 +183,6 @@ ve.ce.Surface.getSelectionRect = function () {
 	}
 };
 
-/* Methods */
-
 /*! Initialization */
 
 /**
@@ -201,8 +199,8 @@ ve.ce.Surface.prototype.initialize = function () {
 	this.documentView.getDocumentNode().setLive( true );
 	// Turn off native object editing. This must be tried after the surface has been added to DOM.
 	try {
-		document.execCommand( 'enableObjectResizing', false, false );
-		document.execCommand( 'enableInlineTableEditing', false, false );
+		this.$document[0].execCommand( 'enableObjectResizing', false, false );
+		this.$document[0].execCommand( 'enableInlineTableEditing', false, false );
 	} catch ( e ) { /* Silently ignore */ }
 };
 
@@ -232,6 +230,7 @@ ve.ce.Surface.prototype.disable = function () {
  */
 ve.ce.Surface.prototype.destroy = function () {
 	this.$.remove();
+	this.$phantoms.remove();
 };
 
 /*! Native Browser Events */
@@ -397,6 +396,8 @@ ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
  * @emits selectionStart
  */
 ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
+	var trigger;
+
 	// Ignore keydowns while in IME mode but do not preventDefault them.
 	if ( this.inIme === true ) {
 		return;
@@ -434,7 +435,8 @@ ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
 	} else {
 		// Execute key command if available
 		this.surfaceObserver.stop( true );
-		if ( this.surface.execute( new ve.ui.Trigger( e ) ) ) {
+		trigger = new ve.ui.Trigger( e );
+		if ( trigger.isComplete() && this.surface.execute( trigger ) ) {
 			e.preventDefault();
 		}
 		this.surfaceObserver.start();
@@ -513,7 +515,7 @@ ve.ce.Surface.prototype.onCut = function ( e ) {
 		var selection, tx;
 
 		// We don't like how browsers cut, so let's undo it and do it ourselves.
-		document.execCommand( 'undo', false, false );
+		this.$document[0].execCommand( 'undo', false, false );
 		selection = this.model.getSelection();
 
 		// Transact
@@ -532,7 +534,7 @@ ve.ce.Surface.prototype.onCut = function ( e ) {
  * @param {jQuery.Event} e Copy event
  */
 ve.ce.Surface.prototype.onCopy = function () {
-	var sel = rangy.getSelection(),
+	var sel = rangy.getSelection( this.$document[0] ),
 		$frag = this.$$( sel.getRangeAt(0).cloneContents() ),
 		slice = this.documentView.model.getSlice( this.model.getSelection() ),
 		key = '';
@@ -568,7 +570,7 @@ ve.ce.Surface.prototype.onPaste = function () {
 	this.surfaceObserver.stop();
 
 	// Pasting into a range? Remove first.
-	if ( !rangy.getSelection().isCollapsed ) {
+	if ( !rangy.getSelection( this.$document[0] ).isCollapsed ) {
 		tx = ve.dm.Transaction.newFromRemoval( view.documentView.model, selection );
 		selection = tx.translateRange( selection );
 		view.model.change( tx );
@@ -907,6 +909,7 @@ ve.ce.Surface.prototype.handleLeftOrRightArrowKey = function ( e ) {
 	if ( e.metaKey ) {
 		return;
 	}
+
 	// Selection is going to be displayed programmatically so prevent default browser behaviour
 	e.preventDefault();
 	// Stop with final poll cycle so we have correct information in model
@@ -965,7 +968,7 @@ ve.ce.Surface.prototype.handleUpOrDownArrowKey = function ( e ) {
 	}
 	this.surfaceObserver.stop( true );
 	selection = this.model.getSelection();
-	rangySelection = rangy.getSelection();
+	rangySelection = rangy.getSelection( this.$document[0] );
 	// Perform programatic handling only for selection that is expanded and backwards according to
 	// model data but not according to browser data.
 	if ( !selection.isCollapsed() && selection.isBackwards() && !rangySelection.isBackwards() ) {
@@ -980,7 +983,7 @@ ve.ce.Surface.prototype.handleUpOrDownArrowKey = function ( e ) {
 				rangySelection.anchorNode.nextSibling
 			);
 		}
-		rangyRange = rangy.createRange();
+		rangyRange = rangy.createRange( this.$document[0] );
 		rangyRange.selectNode( $element[0] );
 		rangySelection.setSingleRange( rangyRange );
 		setTimeout( ve.bind( function () {
@@ -1344,8 +1347,8 @@ ve.ce.Surface.prototype.handleDelete = function ( e, backspace ) {
  */
 ve.ce.Surface.prototype.showSelection = function ( range ) {
 	var start, end,
-		rangySel = rangy.getSelection(),
-		rangyRange = rangy.createRange();
+		rangySel = rangy.getSelection( this.$document[0] ),
+		rangyRange = rangy.createRange( this.$document[0] );
 
 	// Ensure the range we are asking to select is from and to correct offsets - failure to do so
 	// may cause getNodeAndOffset to throw an exception
@@ -1503,7 +1506,7 @@ ve.ce.Surface.prototype.areAnnotationsCorrect = function ( selection, insertionA
 	}
 	// At the beginning of a node, take from the right
 	if (
-		rangy.getSelection().anchorOffset === 0 &&
+		rangy.getSelection( this.$document[0] ).anchorOffset === 0 &&
 		selection.start < this.model.getDocument().data.getLength() &&
 		!documentModel.data.getAnnotationsFromOffset( selection.start + 1 ).compareTo( insertionAnnotations )
 	) {

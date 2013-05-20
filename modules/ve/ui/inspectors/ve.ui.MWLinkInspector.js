@@ -15,10 +15,11 @@
  *
  * @constructor
  * @param {ve.ui.Surface} surface
+ * @param {Object} [config] Config options
  */
-ve.ui.MWLinkInspector = function VeUiMWLinkInspector( surface ) {
+ve.ui.MWLinkInspector = function VeUiMWLinkInspector( surface, config ) {
 	// Parent constructor
-	ve.ui.LinkInspector.call( this, surface );
+	ve.ui.LinkInspector.call( this, surface, config );
 };
 
 /* Inheritance */

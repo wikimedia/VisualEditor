@@ -105,6 +105,52 @@ ve.Element.static.getWindow = function ( context ) {
 	return doc.parentWindow || doc.defaultView;
 };
 
+
+/**
+ * Get the offset between two frames.
+ *
+ * TODO: Make this function not use recursion.
+ *
+ * @method
+ * @param {Window} from Window of the child frame
+ * @param {Window} [to=window] Window of the parent frame
+ * @param {Object} [offset] Offset to start with, used internally
+ * @returns {Object} Offset object, containing left and top properties
+ */
+ve.Element.static.getFrameOffset = function ( from, to, offset ) {
+	var i, len, frames, frame, rect;
+
+	if ( !to ) {
+		to = window;
+	}
+	if ( !offset ) {
+		offset = { 'top': 0, 'left': 0 };
+	}
+	if ( from.parent === from ) {
+		return offset;
+	}
+
+	// Get iframe element
+	frames = from.parent.document.getElementsByTagName( 'iframe' );
+	for ( i = 0, len = frames.length; i < len; i++) {
+		if ( frames[i].contentWindow === from ) {
+			frame = frames[i];
+			break;
+		}
+	}
+
+	// Recursively accumulate offset values
+	if ( frame ) {
+		rect = frame.getBoundingClientRect();
+		offset.left += rect.left;
+		offset.top += rect.top;
+		if ( from !== to ) {
+			this.getFrameOffset( from.parent, offset );
+		}
+	}
+	return offset;
+};
+
 /* Methods */
 
 /**

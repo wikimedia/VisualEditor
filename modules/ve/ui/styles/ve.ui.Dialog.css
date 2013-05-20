@@ -15,7 +15,6 @@
 	line-height: 1em;
 	background-color: #fff;
 	background-color: rgba(255,255,255,0.5);
-	z-index: 200;
 	-webkit-animation: ve-ui-fade-in 250ms ease-in-out 0 1 normal;
 	-moz-animation: ve-ui-fade-in 250ms ease-in-out 0 1 normal;
 	-ms-animation: ve-ui-fade-in 250ms ease-in-out 0 1 normal;
@@ -128,4 +127,29 @@
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 	overflow: hidden;
+}
+
+/* ve.ui.MWReferenceDialog */
+
+.ve-ui-mwReferenceDialog-body {
+	padding: 2em;
+}
+
+.ve-ui-mwReferenceDialog-toolbar {
+	font-size: 1.25em;
+}
+
+.ve-ui-mwReferenceDialog-toolbar .ve-ui-toolbar-bar {
+	border: solid 1px #ddd;
+	border-radius: 0.25em;
+	border-bottom-right-radius: 0;
+	border-bottom-left-radius: 0;
+}
+
+.ve-ui-window-body .ve-ui-surface {
+	padding: 0.25em 1.25em;
+	border: solid 1px #ddd;
+	border-radius: 0.25em;
+	border-top-right-radius: 0;
+	border-top-left-radius: 0;
 }

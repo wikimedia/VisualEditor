@@ -12,7 +12,7 @@ $path = __DIR__ . '/pages';
 $pages = glob( $path . '/*.html' );
 $page = current( $pages );
 if ( isset( $_GET['page'] ) && in_array( $path . '/' . $_GET['page'] . '.html', $pages ) ) {
-	$page =  $path . '/' . $_GET['page'] . '.html';
+	$page = $path . '/' . $_GET['page'] . '.html';
 }
 $html = file_get_contents( $page );
 
@@ -28,14 +28,22 @@ $html = file_get_contents( $page );
 		<!-- ext.visualEditor.base#standalone-init -->
 		<link rel=stylesheet href="../../modules/ve/init/sa/styles/ve.init.sa.css">
 		<script>
-			if ( document.createElementNS && document.createElementNS( 'http://www.w3.org/2000/svg', 'svg' ).createSVGRect ) {
-				document.write( '<link rel="stylesheet" href="../../modules/ve/ui/styles/ve.ui.Icons-vector.css">' );
+			if (
+				document.createElementNS &&
+				document.createElementNS( 'http://www.w3.org/2000/svg', 'svg' ).createSVGRect
+			) {
+				document.write(
+					'<link rel="stylesheet" ' +
+						'href="../../modules/ve/ui/styles/ve.ui.Icons-vector.css">'
+				);
 			} else {
-				document.write( '<link rel="stylesheet" href="../../modules/ve/ui/styles/ve.ui.Icons-raster.css">' );
+				document.write(
+					'<link rel="stylesheet" ' +
+						'href="../../modules/ve/ui/styles/ve.ui.Icons-raster.css">'
+				);
 			}
 		</script>
 		<!-- ext.visualEditor.core -->
-		<link rel=stylesheet href="../../modules/ve/ce/styles/ve.ce.DocumentNode.css">
 		<link rel=stylesheet href="../../modules/ve/ce/styles/ve.ce.Node.css">
 		<link rel=stylesheet href="../../modules/ve/ce/styles/ve.ce.Surface.css">
 		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.css">
@@ -56,7 +64,8 @@ $html = file_get_contents( $page );
 	</head>
 	<body>
 		<ul class="ve-demo-docs">
-			<?php foreach( $pages as $page ): ?>
+			<?php
+				foreach ( $pages as $page ): ?>
 				<li>
 					<a href="./?page=<?php echo basename( $page, '.html' ); ?>">
 						<?php echo basename( $page, '.html' ); ?>
@@ -88,8 +97,8 @@ $html = file_get_contents( $page );
 		<script src="../../modules/ve/ve.debug.js"></script>
 		<script>
 			<?php
-				require( '../../modules/../VisualEditor.i18n.php' );
-				echo 've.init.platform.addMessages( ' . json_encode( $messages['en'] ) . ' );' . "\n";
+				require '../../modules/../VisualEditor.i18n.php';
+				echo 've.init.platform.addMessages( ' . json_encode( $messages['en'] ) . " );\n";
 			?>
 			ve.init.platform.setModulesUrl( '../../modules' );
 		</script>
@@ -103,7 +112,6 @@ $html = file_get_contents( $page );
 		<script src="../../modules/ve/ve.LeafNode.js"></script>
 		<script src="../../modules/ve/ve.Element.js"></script>
 		<script src="../../modules/ve/ve.Document.js"></script>
-		<script src="../../modules/ve/ve.Editor.js"></script>
 		<script src="../../modules/ve/dm/ve.dm.js"></script>
 		<script src="../../modules/ve/dm/ve.dm.Model.js"></script>
 		<script src="../../modules/ve/dm/ve.dm.ModelRegistry.js"></script>
@@ -456,8 +464,12 @@ $html = file_get_contents( $page );
 					}
 					return $ol;
 				}
-				$( '#ve-model-tree-dump' ).html( getKids( ve.instances[0].model.documentModel.documentNode ) );
-				$( '#ve-view-tree-dump' ).html( getKids( ve.instances[0].view.documentView.documentNode ) );
+				$( '#ve-model-tree-dump' ).html(
+					getKids( ve.instances[0].model.documentModel.documentNode )
+				);
+				$( '#ve-view-tree-dump' ).html(
+					getKids( ve.instances[0].view.documentView.documentNode )
+				);
 				$( '#ve-dump' ).show();
 			} );
 			validateButton.on( 'click', function () {
@@ -467,7 +479,8 @@ $html = file_get_contents( $page );
 						view = $element.data( 'view' );
 					if ( view.canContainContent() ) {
 						var nodeRange = view.model.getRange();
-						var textModel = ve.instances[0].view.model.getDocument().getText( nodeRange );
+						var textModel = ve.instances[0]
+							.view.model.getDocument().getText( nodeRange );
 						var textDom = ve.ce.getDomText( view.$[0] );
 						if ( textModel !== textDom ) {
 							failed = true;

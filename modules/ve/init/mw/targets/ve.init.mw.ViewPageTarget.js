@@ -764,8 +764,7 @@ ve.init.mw.ViewPageTarget.prototype.setupToolbarEditNotices = function () {
  */
 ve.init.mw.ViewPageTarget.prototype.setUpSurface = function ( doc ) {
 	// Initialize surface
-	this.editor = new ve.Editor( this, doc );
-	this.surface = new ve.ui.Surface( this.editor, doc, this.surfaceOptions );
+	this.surface = new ve.ui.Surface( doc, this.surfaceOptions );
 	this.surface.getContext().hide();
 	this.$document = this.surface.$.find( '.ve-ce-documentNode' );
 	this.surface.getModel().connect( this, { 'transact': 'onSurfaceModelTransact' } );
@@ -806,10 +805,8 @@ ve.init.mw.ViewPageTarget.prototype.tearDownSurface = function () {
 	this.restorePageTitle();
 	this.restoreDocumentTitle();
 	this.showTableOfContents();
-	// Destroy editor
+	// Destroy surface
 	if ( this.surface ) {
-		this.editor.destroy();
-		this.editor = null;
 		this.surface.destroy();
 		this.surface = null;
 	}
@@ -1522,8 +1519,8 @@ ve.init.mw.ViewPageTarget.prototype.hideTableOfContents = function () {
  */
 ve.init.mw.ViewPageTarget.prototype.setUpToolbar = function () {
 	this.toolbar = new ve.ui.Toolbar( this.surface, { 'shadow': true, 'actions': true } );
-	this.editor.addCommands( this.constructor.static.surfaceCommands );
 	this.toolbar.addTools( this.constructor.static.toolbarTools );
+	this.surface.addCommands( this.constructor.static.surfaceCommands );
 	if ( !this.isMobileDevice ) {
 		this.toolbar.enableFloating();
 	}

@@ -9,11 +9,16 @@
  * UserInterface context.
  *
  * @class
+ * @extends ve.Element
  *
  * @constructor
  * @param {ve.ui.Surface} surface
+ * @param {Object} [config] Config options
  */
-ve.ui.Context = function VeUiContext( surface ) {
+ve.ui.Context = function VeUiContext( surface, config ) {
+	// Parent constructor
+	ve.Element.call( this, config );
+
 	// Properties
 	this.surface = surface;
 	this.inspectors = {};
@@ -24,9 +29,8 @@ ve.ui.Context = function VeUiContext( surface ) {
 	this.embedded = false;
 	this.selection = null;
 	this.toolbar = null;
-	this.$ = $( '<div>' );
-	this.popup = new ve.ui.PopupWidget();
-	this.$menu = $( '<div>' );
+	this.popup = new ve.ui.PopupWidget( { '$$': this.$$ } );
+	this.$menu = this.$$( '<div>' );
 	this.inspectors = new ve.ui.WindowSet( surface, ve.ui.inspectorFactory );
 
 	// Initialization
@@ -50,13 +54,17 @@ ve.ui.Context = function VeUiContext( surface ) {
 		'open': 'onInspectorOpen',
 		'close': 'onInspectorClose'
 	} );
-	$( window ).on( {
+	this.$$( this.getElementWindow() ).on( {
 		'resize': ve.bind( this.update, this ),
 		'focus': ve.bind( this.onWindowFocus, this )
 	} );
 	this.$.add( this.$menu )
 		.on( 'mousedown', false );
 };
+
+/* Inheritance */
+
+ve.inheritClass( ve.ui.Context, ve.Element );
 
 /* Methods */
 
@@ -254,7 +262,7 @@ ve.ui.Context.prototype.updateDimensions = function ( transition ) {
 		focusedNode = this.surface.getView().getFocusedNode();
 
 	// Get cursor position
-	position = ve.ce.Surface.getSelectionRect();
+	position = this.surface.getView().getSelectionRect();
 
 	if ( position ) {
 		if ( this.embedded ) {

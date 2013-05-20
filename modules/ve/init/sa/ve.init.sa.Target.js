@@ -25,17 +25,16 @@ ve.init.sa.Target = function VeInitSaTarget( $container, doc ) {
 	ve.init.Target.call( this, $container );
 
 	// Properties
-	this.editor = new ve.Editor();
-	this.surface = new ve.ui.Surface( this.editor, doc );
+	this.surface = new ve.ui.Surface( doc );
 	this.toolbar = new ve.ui.Toolbar( this.surface, { 'shadow': true } );
 
 	// Initialization
 	this.toolbar.$.addClass( 've-init-sa-target-toolbar' );
-	this.$.append( this.toolbar.$, this.surface.$ );
-	this.editor.addCommands( this.constructor.static.surfaceCommands );
-	this.surface.initialize();
 	this.toolbar.addTools( this.constructor.static.toolbarTools );
 	this.toolbar.enableFloating();
+	this.$.append( this.toolbar.$, this.surface.$ );
+	this.surface.addCommands( this.constructor.static.surfaceCommands );
+	this.surface.initialize();
 };
 
 /* Inheritance */

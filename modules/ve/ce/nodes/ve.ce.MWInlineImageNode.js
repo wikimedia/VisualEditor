@@ -20,7 +20,7 @@
 	ve.ce.ImageNode.call( this, model, config );
 
 	// Properties
-	this.$ = $( '<' + ( model.getAttribute( 'isLinked' ) ? 'a' : 'span' ) + '>' );
+	this.$ = this.$$( '<' + ( model.getAttribute( 'isLinked' ) ? 'a' : 'span' ) + '>' );
 
 	// Initialization
 	this.$

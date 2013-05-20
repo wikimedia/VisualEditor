@@ -5,14 +5,11 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-.ve-ui-context {
+.ve-ui-context,
+.ve-ui-context-inspectors,
+.ve-ui-context-menu {
 	position: absolute;
-	z-index: 2;
-}
-
-.ve-ui-context-inspectors, .ve-ui-context-menu {
-	position: absolute;
-	z-index: 2;
+	display: none;
 }
 
 .ve-ui-context-menu .ve-ui-toolbar-bar {

@@ -113,7 +113,7 @@ ve.ce.ResizableNode.prototype.onResizeHandlesCornerMouseDown = function ( e ) {
 
 	// Bind resize events
 	this.resizing = true;
-	$( document ).on( {
+	$( this.getElementDocument() ).on( {
 		'mousemove.ve-ce-resizableNode': ve.bind( this.onDocumentMouseMove, this ),
 		'mouseup.ve-ce-resizableNode': ve.bind( this.onDocumentMouseUp, this )
 	} );
@@ -214,7 +214,7 @@ ve.ce.ResizableNode.prototype.onDocumentMouseUp = function () {
 		selection = surfaceModel.getSelection();
 
 	this.$resizeHandles.removeClass( 've-ce-resizableNode-handles-resizing' );
-	$( document ).off( '.ve-ce-resizableNode' );
+	$( this.getElementDocument() ).off( '.ve-ce-resizableNode' );
 	this.resizing = false;
 
 	// Transition image resize

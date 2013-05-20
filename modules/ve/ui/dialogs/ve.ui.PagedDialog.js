@@ -18,10 +18,11 @@
  *
  * @constructor
  * @param {ve.ui.Surface} surface
+ * @param {Object} [config] Config options
  */
-ve.ui.PagedDialog = function VeUiPagedDialog( surface ) {
+ve.ui.PagedDialog = function VeUiPagedDialog( surface, config ) {
 	// Parent constructor
-	ve.ui.Dialog.call( this, surface );
+	ve.ui.Dialog.call( this, surface, config );
 
 	// Properties
 	this.pages = {};
@@ -43,12 +44,12 @@ ve.ui.PagedDialog.prototype.initialize = function () {
 	ve.ui.Dialog.prototype.initialize.call( this );
 
 	// Properties
-	this.outlinePanel = new ve.ui.PanelLayout( { '$$': this.$$, 'scroll': true } );
-	this.pagesPanel = new ve.ui.StackPanelLayout( { '$$': this.$$ } );
+	this.outlinePanel = new ve.ui.PanelLayout( { '$$': this.frame.$$, 'scroll': true } );
+	this.pagesPanel = new ve.ui.StackPanelLayout( { '$$': this.frame.$$ } );
 	this.layout = new ve.ui.GridLayout(
-		[this.outlinePanel, this.pagesPanel], { '$$': this.$$, 'widths': [1, 2] }
+		[this.outlinePanel, this.pagesPanel], { '$$': this.frame.$$, 'widths': [1, 2] }
 	);
-	this.outlineWidget = new ve.ui.OutlineWidget( { '$$': this.$$ } );
+	this.outlineWidget = new ve.ui.OutlineWidget( { '$$': this.frame.$$ } );
 
 	// Events
 	this.outlineWidget.connect( this, { 'select': 'onOutlineSelect' } );
@@ -82,7 +83,7 @@ ve.ui.PagedDialog.prototype.onOutlineSelect = function ( item ) {
  * @chainable
  */
 ve.ui.PagedDialog.prototype.addPage = function ( name, label, icon, level ) {
-	var config = { '$$': this.$$, 'icon': icon, 'label': label || name, 'level': level || 0 };
+	var config = { '$$': this.frame.$$, 'icon': icon, 'label': label || name, 'level': level || 0 };
 
 	// Create and add page panel and outline item
 	this.pages[name] = new ve.ui.PanelLayout( config );

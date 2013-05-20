@@ -9,19 +9,24 @@
  * UserInterface window set.
  *
  * @class
+ * @extends ve.Element
  * @mixins ve.EventEmitter
  *
  * @constructor
  * @param {ve.ui.Surface} surface
+ * @param {ve.Factory} factory Window factory
+ * @param {Object} [config] Config options
  */
-ve.ui.WindowSet = function VeUiWindowSet( surface, factory ) {
+ve.ui.WindowSet = function VeUiWindowSet( surface, factory, config ) {
+	// Parent constructor
+	ve.Element.call( this, config );
+
 	// Mixin constructors
 	ve.EventEmitter.call( this );
 
 	// Properties
 	this.surface = surface;
 	this.factory = factory;
-	this.$ = $( '<div>' );
 	this.windows = {};
 	this.currentWindow = null;
 
@@ -30,6 +35,8 @@ ve.ui.WindowSet = function VeUiWindowSet( surface, factory ) {
 };
 
 /* Inheritance */
+
+ve.inheritClass( ve.ui.WindowSet, ve.Element );
 
 ve.mixinClass( ve.ui.WindowSet, ve.EventEmitter );
 

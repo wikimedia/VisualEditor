@@ -5,6 +5,18 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
+/* ve.ce.DocumentNode */
+
+.ve-ce-documentNode {
+	cursor: text;
+	overflow: hidden;
+}
+
+/* Prevent focus outline on editor */
+.ve-ce-documentNode[contenteditable="true"]:focus {
+	outline: none;
+}
+
 /* ve.ce.ProtectedNode */
 
 .ve-ce-protectedNode,

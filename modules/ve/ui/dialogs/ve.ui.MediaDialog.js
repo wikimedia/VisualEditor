@@ -14,10 +14,11 @@
  *
  * @constructor
  * @param {ve.ui.Surface} surface
+ * @param {Object} [config] Config options
  */
-ve.ui.MediaDialog = function VeUiMediaDialog( surface ) {
+ve.ui.MediaDialog = function VeUiMediaDialog( surface, config ) {
 	// Parent constructor
-	ve.ui.Dialog.call( this, surface );
+	ve.ui.Dialog.call( this, surface, config );
 };
 
 /* Inheritance */

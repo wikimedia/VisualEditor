@@ -15,10 +15,11 @@
  *
  * @constructor
  * @param {ve.ui.Surface} surface
+ * @param {Object} [config] Config options
  */
-ve.ui.MWMetaDialog = function VeUiMWMetaDialog( surface ) {
+ve.ui.MWMetaDialog = function VeUiMWMetaDialog( surface, config ) {
 	// Parent constructor
-	ve.ui.PagedDialog.call( this, surface );
+	ve.ui.PagedDialog.call( this, surface, config );
 
 	// Properties
 	this.metaList = surface.getModel().metaList;
@@ -55,19 +56,19 @@ ve.ui.MWMetaDialog.prototype.initialize = function () {
 
 	// Properties
 	this.categoriesFieldset = new ve.ui.FieldsetLayout( {
-		'$$': this.$$, 'label': 'Categories', 'icon': 'tag'
+		'$$': this.frame.$$, 'label': 'Categories', 'icon': 'tag'
 	} );
 	this.categorySettingsFieldset = new ve.ui.FieldsetLayout( {
-		'$$': this.$$, 'label': 'Category settings', 'icon': 'settings'
+		'$$': this.frame.$$, 'label': 'Category settings', 'icon': 'settings'
 	} );
 	this.categoryWidget = new ve.ui.MWCategoryWidget( {
-		'$$': this.$$, '$overlay': this.$overlay
+		'$$': this.frame.$$, '$overlay': this.surface.$globalOverlay
 	} );
 	this.defaultSortInput = new ve.ui.TextInputWidget( {
-		'$$': this.$$, 'placeholder': this.fallbackDefaultSortKey
+		'$$': this.frame.$$, 'placeholder': this.fallbackDefaultSortKey
 	} );
 	this.defaultSortLabel = new ve.ui.InputLabelWidget( {
-		'$$': this.$$,
+		'$$': this.frame.$$,
 		'input': this.defaultSortInput,
 		'label': 'Default page name on category page'
 	} );

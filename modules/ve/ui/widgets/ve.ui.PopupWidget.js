@@ -47,8 +47,8 @@ ve.ui.PopupWidget = function VeUiPopupWidget( config ) {
 	this.$
 		.addClass( 've-ui-popupWidget' )
 		.append(
-			this.$callout.addClass( 've-ui-popupWidget-callout' ),
-			this.$body.addClass( 've-ui-popupWidget-body' )
+			this.$body.addClass( 've-ui-popupWidget-body' ),
+			this.$callout.addClass( 've-ui-popupWidget-callout' )
 		);
 };
 

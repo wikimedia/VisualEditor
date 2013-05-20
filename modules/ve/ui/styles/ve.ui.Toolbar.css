@@ -9,6 +9,10 @@
 	clear: both;
 }
 
+.ve-ui-toolbar-bottom {
+	position: static;
+}
+
 .ve-ui-toolbar-bar {
 	border-bottom: solid 1px #ccc;
 	position: relative;
@@ -18,6 +22,18 @@
 	background-repeat: repeat-x;
 	padding-bottom: 1px;
 	line-height: 1em;
+}
+
+.ve-ui-toolbar-floating .ve-ui-toolbar-bar {
+	top: 0;
+	position: fixed;
+	border-radius: 0;
+	z-index: 100;
+	border-top: none;
+}
+
+.ve-ui-toolbar-bottom .ve-ui-toolbar-bar {
+	position: absolute;
 }
 
 .ve-ui-toolbar-actions {
@@ -62,25 +78,6 @@
 	font-size: 0.8em;
 	color: #555;
 	vertical-align: top;
-}
-
-.ve-ui-toolbar-floating .ve-ui-toolbar-bar {
-	top: 0;
-	position: fixed;
-	border-radius: 0;
-	z-index: 100;
-	border-top: none;
-}
-
-.ve-ui-toolbar-bottom {
-	position: static;
-}
-
-.ve-ui-toolbar-bottom .ve-ui-toolbar-bar {
-	position: absolute;
-	border-radius: 0;
-	z-index: 100;
-	border-top: none;
 }
 
 .ve-ui-toolbar-shadow {

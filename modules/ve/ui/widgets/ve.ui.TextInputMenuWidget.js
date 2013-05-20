@@ -56,7 +56,7 @@ ve.ui.TextInputMenuWidget.prototype.show = function () {
 	ve.ui.MenuWidget.prototype.show.call( this );
 
 	this.position();
-	$( window ).on( 'resize', this.onWindowResizeHandler );
+	$( this.getElementWindow() ).on( 'resize', this.onWindowResizeHandler );
 	return this;
 };
 
@@ -70,7 +70,7 @@ ve.ui.TextInputMenuWidget.prototype.hide = function () {
 	// Parent method
 	ve.ui.MenuWidget.prototype.hide.call( this );
 
-	$( window ).off( 'resize', this.onWindowResizeHandler );
+	$( this.getElementWindow() ).off( 'resize', this.onWindowResizeHandler );
 	return this;
 };
 

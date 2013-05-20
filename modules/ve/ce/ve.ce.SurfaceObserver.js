@@ -22,6 +22,7 @@ ve.ce.SurfaceObserver = function VeCeSurfaceObserver( documentView ) {
 
 	// Properties
 	this.documentView = documentView;
+	this.domDocument = null;
 	this.polling = false;
 	this.timeoutId = null;
 	this.frequency = 250; //ms
@@ -87,6 +88,7 @@ ve.ce.SurfaceObserver.prototype.clear = function ( range ) {
  * @param {boolean} async Poll the first time asynchronously
  */
 ve.ce.SurfaceObserver.prototype.start = function ( async ) {
+	this.domDocument = this.documentView.getDocumentNode().getElementDocument();
 	this.polling = true;
 	this.poll( async );
 };
@@ -152,7 +154,7 @@ ve.ce.SurfaceObserver.prototype.poll = function ( async ) {
 
 	range = this.range;
 	node = this.node;
-	rangyRange = ve.ce.DomRange.newFromDomSelection( rangy.getSelection() );
+	rangyRange = ve.ce.DomRange.newFromDomSelection( rangy.getSelection( this.domDocument ) );
 
 	if ( !rangyRange.equals( this.rangyRange ) ){
 		this.rangyRange = rangyRange;
