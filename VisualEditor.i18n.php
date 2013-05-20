@@ -82,6 +82,7 @@ $messages['en'] = array(
 	'visualeditor-inspector-remove-tooltip' => 'Remove',
 	'visualeditor-viewpage-savewarning' => 'Are you sure you want to go back to view mode without saving first?',
 	'visualeditor-loadwarning' => 'Error loading data from server: $1. Would you like to retry?',
+	'visualeditor-loadwarning-token' => 'Error loading edit token from server: $1. Would you like to retry?',
 	'visualeditor-differror' => 'Error loading data from server: $1.',
 	'visualeditor-serializeerror' => 'Error loading data from server: $1.',
 	'visualeditor-saveerror' => 'Error saving data to server: $1.',

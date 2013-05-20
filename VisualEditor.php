@@ -157,6 +157,7 @@ $wgResourceModules += array(
 			'visualeditor-notification-restored',
 			'visualeditor-notification-reported',
 			'visualeditor-loadwarning',
+			'visualeditor-loadwarning-token',
 			'visualeditor-editsummary',
 			'visualeditor-problem',
 			'visualeditor-editnotices-tool',

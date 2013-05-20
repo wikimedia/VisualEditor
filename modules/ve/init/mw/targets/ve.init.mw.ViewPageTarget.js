@@ -81,6 +81,7 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 		'load': 'onLoad',
 		'save': 'onSave',
 		'loadError': 'onLoadError',
+		'tokenError': 'onTokenError',
 		'saveError': 'onSaveError',
 		'editConflict': 'onEditConflict',
 		'showChanges': 'onShowChanges',
@@ -329,13 +330,31 @@ ve.init.mw.ViewPageTarget.prototype.onLoad = function ( doc ) {
  * Handle failed DOM load event.
  *
  * @method
- * @param {Object} data HTTP Response object
+ * @param {Object} response HTTP Response object
  * @param {string} status Text status message
  * @param {Mixed} error Thrown exception or HTTP error string
  */
 ve.init.mw.ViewPageTarget.prototype.onLoadError = function ( response, status ) {
 	// Don't show an error if the load was manually aborted
 	if ( status !== 'abort' && confirm( ve.msg( 'visualeditor-loadwarning', status ) ) ) {
+		this.load();
+	} else {
+		this.activating = false;
+		// User interface changes
+		this.deactivate( true );
+	}
+};
+
+/**
+ * Handle failed token refresh event.
+ *
+ * @method
+ * @param {Object} response Response object
+ * @param {string} status Text status message
+ * @param {Mixed} error Thrown exception or HTTP error string
+ */
+ve.init.mw.ViewPageTarget.prototype.onTokenError = function ( response, status ) {
+	if ( confirm( ve.msg( 'visualeditor-loadwarning-token', status ) ) ) {
 		this.load();
 	} else {
 		this.activating = false;
