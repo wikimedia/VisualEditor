@@ -5,7 +5,7 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-/*global mw*/
+/*global mw */
 
 /**
  * Creates an ve.ui.MWCategoryInputWidget object.
@@ -16,6 +16,7 @@
  * @mixins ve.ui.LookupInputWidget
  *
  * @constructor
+ * @param {ve.ui.MWCategoryWidget} categoryWidget
  * @param {Object} [config] Config options
  */
 ve.ui.MWCategoryInputWidget = function VeUiMWCategoryInputWidget( categoryWidget, config ) {
