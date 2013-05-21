@@ -40,11 +40,12 @@ class VisualEditorMessagesModule extends ResourceLoaderModule {
 	protected function getMessageInfo() {
 		$msgKeys = array();
 
-		// Simple ones
+		// Messages that just require simple parsing
 		$msgArgs = array(
 			'minoredit' => array( 'minoredit' ),
 			'watchthis' => array( 'watchthis' ),
 			'visualeditor-report-notice' => array( 'visualeditor-report-notice' ),
+			'missingsummary' => array( 'missingsummary' ),
 		);
 
 		// Override message value

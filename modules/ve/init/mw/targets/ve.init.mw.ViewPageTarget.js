@@ -51,6 +51,7 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 	this.deactivating = false;
 	this.scrollTop = null;
 	this.currentUri = currentUri;
+	this.warnings = {};
 	this.restoring = this.oldid !== mw.config.get( 'wgCurRevisionId' );
 	this.section = currentUri.query.vesection || null;
 	this.namespaceName = mw.config.get( 'wgCanonicalNamespace' );
@@ -208,6 +209,7 @@ ve.init.mw.ViewPageTarget.saveDialogTemplate = '\
 					for="ve-init-mw-viewPageTarget-saveDialog-watchList"></label>\
 				<label class="ve-init-mw-viewPageTarget-saveDialog-editSummaryCount"></label>\
 			</div>\
+			<div class="ve-init-mw-viewPageTarget-saveDialog-warnings"></div>\
 			<div class="ve-init-mw-viewPageTarget-saveDialog-actions">\
 				<div class="ve-init-mw-viewPageTarget-saveDialog-working"></div>\
 			</div>\
@@ -638,13 +640,22 @@ ve.init.mw.ViewPageTarget.prototype.onSurfaceModelHistory = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.onSaveDialogSaveButtonClick = function () {
-	var doc = this.surface.getModel().getDocument();
-	this.saveDialogSaveButton.setDisabled( true );
-	this.$saveDialogLoadingIcon.show();
-	this.save(
-		ve.dm.converter.getDomFromData( doc.getFullData(), doc.getStore(), doc.getInternalList() ),
-		this.getSaveOptions()
-	);
+	var doc = this.surface.getModel().getDocument(),
+		saveOptions = this.getSaveOptions();
+	if (
+		+mw.user.options.get( 'forceeditsummary' ) &&
+		saveOptions.summary === '' &&
+		!this.warnings.missingsummary
+	) {
+		this.showWarning( 'missingsummary', ve.init.platform.getParsedMessage( 'missingsummary' ) );
+	} else {
+		this.saveDialogSaveButton.setDisabled( true );
+		this.$saveDialogLoadingIcon.show();
+		this.save(
+			ve.dm.converter.getDomFromData( doc.getFullData(), doc.getStore(), doc.getInternalList() ),
+			saveOptions
+		);
+	}
 };
 
 /**
@@ -1368,6 +1379,9 @@ ve.init.mw.ViewPageTarget.prototype.swapSaveDialog = function ( slide ) {
 		this.$saveDialog.css( 'width', '' );
 	}
 
+	// Warnings should not persist after slide changes
+	this.clearAllWarnings();
+
 	// Show the target slide
 	$slide.show();
 
@@ -1692,6 +1706,44 @@ ve.init.mw.ViewPageTarget.prototype.restoreEditSection = function () {
 		} );
 		this.section = null;
 	}
+};
+
+/**
+ * Show an inline warning.
+ * @param {string} name Warning's unique name
+ * @param {string} messageHtml Warning message HTML
+ */
+ve.init.mw.ViewPageTarget.prototype.showWarning = function ( name, messageHtml ) {
+	if ( !this.warnings[name] ) {
+		var warning = $(
+			'<p class="ve-init-mw-viewPageTarget-saveDialog-warning">' + messageHtml + '</p>'
+		);
+		this.$saveDialog
+			.find( '.ve-init-mw-viewPageTarget-saveDialog-warnings' )
+				.append( warning );
+		this.warnings[name] = warning;
+	}
+};
+
+/**
+ * Remove an inline warning.
+ * @param {string} name Warning's unique name
+ */
+ve.init.mw.ViewPageTarget.prototype.clearWarning = function ( name ) {
+	if ( this.warnings[name] ) {
+		this.warnings[name].remove();
+		delete this.warnings[name];
+	}
+};
+
+/**
+ * Remove all inline warnings.
+ */
+ve.init.mw.ViewPageTarget.prototype.clearAllWarnings = function () {
+	this.$saveDialog
+		.find( '.ve-init-mw-viewPageTarget-saveDialog-warnings' )
+			.empty();
+	this.warnings = {};
 };
 
 /**
