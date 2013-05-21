@@ -362,6 +362,8 @@ ve.ui.Context.prototype.hide = function () {
  * @chainable
  */
 ve.ui.Context.prototype.openInspector = function ( name ) {
-	this.inspectors.open( name );
+	if ( !this.inspectors.currentWindow ) {
+		this.inspectors.open( name );
+	}
 	return this;
 };
