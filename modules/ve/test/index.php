@@ -275,6 +275,7 @@
 		<script src="ve.example.js"></script>
 		<script src="ve.Range.test.js"></script>
 		<script src="ve.Document.test.js"></script>
+		<script src="ve.Element.test.js"></script>
 		<script src="ve.Node.test.js"></script>
 		<script src="ve.BranchNode.test.js"></script>
 		<script src="ve.LeafNode.test.js"></script>

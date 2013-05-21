@@ -57,10 +57,13 @@ ve.Element.static.get$$ = function ( context, frame ) {
 	function wrapper( selector ) {
 		return $( selector, wrapper.context );
 	}
+
 	wrapper.context = this.getDocument( context );
+
 	if ( frame ) {
 		wrapper.frame = frame;
 	}
+
 	return wrapper;
 };
 
@@ -73,21 +76,21 @@ ve.Element.static.get$$ = function ( context, frame ) {
  * @throws {Error} If context is invalid
  */
 ve.Element.static.getDocument = function ( context ) {
-	if ( context instanceof jQuery ) {
+	var doc =
 		// jQuery - selections created "offscreen" won't have a context, so .context isn't reliable
-		return context[0].ownerDocument;
-	} else if ( context.ownerDocument ) {
+		( context[0] && context[0].ownerDocument ) ||
 		// HTMLElement
-		return context.ownerDocument;
-	} else if ( context.nodeType === 9 ) {
-		// HTMLDocument
-		return context;
-	} else if ( context.document ) {
+		context.ownerDocument ||
 		// Window
-		return context.document;
-	} else {
-		throw new Error( 'Invalid context' );
+		context.document ||
+		// HTMLDocument
+		( context.nodeType === 9 && context );
+
+	if ( doc ) {
+		return doc;
 	}
+
+	throw new Error( 'Invalid context' );
 };
 
 /**
