@@ -106,3 +106,21 @@ ve.dm.IndexValueStore.prototype.values = function ( indexes ) {
 	}
 	return values;
 };
+
+/**
+ * Clone a store.
+ *
+ * The returned clone is shallow: the valueStore array and the hashStore array are cloned, but
+ * the values inside them are copied by reference. These values are supposed to be immutable,
+ * though.
+ *
+ * @returns {ve.dm.IndexValueStore} New store with the same contents as this one
+ */
+ve.dm.IndexValueStore.prototype.clone = function () {
+	var key, clone = new this.constructor();
+	clone.valueStore = this.valueStore.slice();
+	for ( key in this.hashStore ) {
+		clone.hashStore[key] = this.hashStore[key];
+	}
+	return clone;
+};

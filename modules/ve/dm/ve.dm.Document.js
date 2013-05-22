@@ -18,8 +18,9 @@
  * @constructor
  * @param {HTMLDocument|Array|ve.dm.LinearData} documentOrData HTML document, raw linear model data or LinearData to start with
  * @param {ve.dm.Document} [parentDocument] Document to use as root for created nodes
+ * @param {ve.dm.InternalList} [internalList] Internal list to clone; passed when creating a document slice
  */
-ve.dm.Document = function VeDmDocument( documentOrData, parentDocument ) {
+ve.dm.Document = function VeDmDocument( documentOrData, parentDocument, internalList ) {
 	// Parent constructor
 	ve.Document.call( this, new ve.dm.DocumentNode() );
 
@@ -41,7 +42,7 @@ ve.dm.Document = function VeDmDocument( documentOrData, parentDocument ) {
 		currentNode = this.documentNode;
 	this.documentNode.setDocument( doc );
 	this.documentNode.setRoot( root );
-	this.internalList = new ve.dm.InternalList( this );
+	this.internalList = internalList ? internalList.clone( this ) : new ve.dm.InternalList( this );
 
 	// Properties
 	this.parentDocument = parentDocument;
@@ -293,6 +294,36 @@ ve.dm.Document.prototype.getInternalList = function () {
 };
 
 /**
+ * Get a document from a slice of this document. The new document's store and internal list will be
+ * clones of the ones in this document.
+ *
+ * @param {ve.Range|ve.dm.Node} rangeOrNode Range of data to clone, or node whose contents should be cloned
+ * @returns {ve.dm.Document} New document
+ * @throws {Error} rangeOrNode must be a ve.Range or a ve.dm.Node
+ */
+ve.dm.Document.prototype.getDocumentSlice = function ( rangeOrNode ) {
+	var data, range,
+		store = this.store.clone(),
+		listRange = this.internalList.getListNode().getOuterRange();
+	if ( rangeOrNode instanceof ve.dm.Node ) {
+		range = rangeOrNode.getRange();
+	} else if ( rangeOrNode instanceof ve.Range ) {
+		range = rangeOrNode;
+	} else {
+		throw new Error( 'rangeOrNode must be a ve.Range or a ve.dm.Node' );
+	}
+	data = ve.copyArray( this.getFullData( range, true ) );
+	if ( range.start > listRange.start || range.end < listRange.end ) {
+		// The range does not include the entire internal list, so add it
+		data = data.concat( this.getFullData( listRange ) );
+	}
+	return new this.constructor(
+		new ve.dm.ElementLinearData( store, data ),
+		undefined, this.internalList
+	);
+};
+
+/**
  * Get the metadata replace operation required to keep data & metadata in sync after a splice
  *
  * @method
@@ -349,14 +380,25 @@ ve.dm.Document.prototype.spliceMetadata = function ( offset, index, remove, inse
 /**
  * Get the full document data including metadata.
  *
- * Metadata will be into the document data to produce the "full data" result.
+ * Metadata will be into the document data to produce the "full data" result. If a range is passed,
+ * metadata at the edges of the range won't be included unless edgeMetadata is set to true. If
+ * no range is passed, the entire document's data is returned and metadata at the edges is
+ * included.
  *
+ * @param {ve.Range} [range] Range to get full data for. If omitted, all data will be returned
+ * @param {boolean} [edgeMetadata=false] Include metadata at the edges of the range
  * @returns {Array} Data with metadata interleaved
  */
-ve.dm.Document.prototype.getFullData = function () {
-	var result = [], i, j, jLen, iLen = this.data.getLength();
-	for ( i = 0; i <= iLen; i++ ) {
-		if ( this.metadata.getData( i ) ) {
+ve.dm.Document.prototype.getFullData = function ( range, edgeMetadata ) {
+	var j, jLen,
+		i = range ? range.start : 0,
+		iLen = range ? range.end : this.data.getLength(),
+		result = [];
+	if ( edgeMetadata === undefined ) {
+		edgeMetadata = !range;
+	}
+	while ( i <= iLen ) {
+		if ( this.metadata.getData( i ) && ( edgeMetadata || ( i !== range.start && i !== range.end ) ) ) {
 			for ( j = 0, jLen = this.metadata.getData( i ).length; j < jLen; j++ ) {
 				result.push( this.metadata.getData( i )[j] );
 				result.push( { 'type': '/' + this.metadata.getData( i )[j].type } );
@@ -365,6 +407,7 @@ ve.dm.Document.prototype.getFullData = function () {
 		if ( i < iLen ) {
 			result.push( this.data.getData( i ) );
 		}
+		i++;
 	}
 	return result;
 };
