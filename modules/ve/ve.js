@@ -1157,6 +1157,9 @@
 	// Based on the KeyEvent DOM Level 3 (add more as you need them)
 	// http://www.w3.org/TR/2001/WD-DOM-Level-3-Events-20010410/DOM3-Events.html#events-Events-KeyEvent
 	// http://www.w3.org/TR/2000/WD-DOM-Level-3-Events-20000901/events.html
+	// Some browsers provide global collection KeyEvent but using it is unreliable so we are using
+	// our own implementation. (For instance compare how inconsistent is constant for DOM_VK_RETURN
+	// and DOM_VK_ENTER in two links above.)
 	ve.Keys = {
 		'DOM_VK_UNDEFINED': 0x0,
 		'DOM_VK_RIGHT_ALT': 0x12,
