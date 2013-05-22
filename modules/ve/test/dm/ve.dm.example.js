@@ -3122,6 +3122,24 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/paragraph' },
 			{ 'type': '/div' }
 		]
+	},
+	'thumb image': {
+		'html': '<body><figure typeof="mw:Image/Thumb"><a rel="mw:thumb" href="Foo"><img src="Bar" width="1" height="2" resource="FooBar"></a></figure></body>',
+		'data': [
+			{
+				'type': 'MWblockimage',
+				'attributes': {
+					'type': 'thumb',
+					'align': 'right',
+					'href': 'Foo',
+					'src': 'Bar',
+					'width': '1',
+					'height': '2',
+					'resource': 'FooBar'
+				}
+			},
+			{ 'type': '/MWblockimage' }
+		]
 	}
 };
 

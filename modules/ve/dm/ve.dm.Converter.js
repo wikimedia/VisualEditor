@@ -969,7 +969,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container ) {
 				}
 				j++;
 			}
-			if ( j >= data.length ) {
+			if ( depth !== 0 ) {
 				throw new Error( 'Unbalanced data: looking for closing /' +
 					dataElement.type );
 			}
