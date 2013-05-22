@@ -307,7 +307,7 @@ ve.dm.Document.prototype.getInternalList = function () {
  * @throws {Error} rangeOrNode must be a ve.Range or a ve.dm.Node
  */
 ve.dm.Document.prototype.getDocumentSlice = function ( rangeOrNode ) {
-	var data, range,
+	var data, range, newDoc,
 		store = this.store.clone(),
 		listRange = this.internalList.getListNode().getOuterRange();
 	if ( rangeOrNode instanceof ve.dm.Node ) {
@@ -322,41 +322,62 @@ ve.dm.Document.prototype.getDocumentSlice = function ( rangeOrNode ) {
 		// The range does not include the entire internal list, so add it
 		data = data.concat( this.getFullData( listRange ) );
 	}
-	return new this.constructor(
+	newDoc = new this.constructor(
 		new ve.dm.ElementLinearData( store, data ),
 		undefined, this.internalList
 	);
+	// Record the length of the internal list at the time the slice was created so we can
+	// reconcile additions properly
+	newDoc.origDoc = this;
+	newDoc.origInternalListLength = this.internalList.getItemNodeCount();
+	return newDoc;
 };
 
 /**
  * Get the metadata replace operation required to keep data & metadata in sync after a splice
  *
+ * If no metadata replacement is required, this function returns null.
+ *
  * @method
  * @param {number} offset Data offset to start at
  * @param {number} remove Number of elements being removed
  * @param {Array} insert Element data being inserted
- * @returns {Object} Metadata replace operation to keep data & metadata in sync
+ * @param {Array} [insertMeta] Metadata being inserted
+ * @returns {Object|null} Metadata replace operation to keep data & metadata in sync
  */
-ve.dm.Document.prototype.getMetadataReplace = function ( offset, remove, insert ) {
-	var removeMetadata, insertMetadata, replace = {};
-	if ( remove > insert.length ) {
+ve.dm.Document.prototype.getMetadataReplace = function ( offset, remove, insert, insertMeta ) {
+	var i, len, removeMetadata, insertMetadata;
+	if ( insertMeta ) {
+		// Find the first non-empty metadata insertion
+		for ( i = 0, len = insertMeta.length; i < len; i++ ) {
+			if ( insertMeta[i] && insertMeta[i].length > 0 ) {
+				return {
+					'retain': i,
+					'remove': i < remove ?
+						this.getMetadata( new ve.Range( offset + i, offset + remove + 1 ) ) :
+						[],
+					'insert': insertMeta.slice( i )
+				};
+			}
+		}
+		// No metadata being inserted
+		return null;
+	} else if ( remove > insert.length ) {
 		// if we are removing more than we are inserting we need to collapse the excess metadata
 		removeMetadata = this.getMetadata( new ve.Range( offset + insert.length, offset + remove + 1 ) );
 		// check removeMetadata is non-empty
 		if ( !ve.compare( removeMetadata, new Array( removeMetadata.length ) ) ) {
 			insertMetadata = ve.dm.MetaLinearData.static.merge( removeMetadata );
-			replace.retain = insert.length;
-			replace.remove = removeMetadata;
-			replace.insert = insertMetadata;
+			return {
+				'retain': insert.length,
+				'remove': removeMetadata,
+				'insert': insertMetadata
+			};
 		}
 	}
 	// if insert.length === remove metadata can just stay where it is
-	if ( insert.length > remove ) {
-		// if we are inserting more than we are removing then we need to pad out with undefineds
-		replace.retain = remove;
-		replace.insert = new Array( insert.length - remove );
-	}
-	return replace;
+	// if insert.length > remove, then we need to pad out with undefineds, but that's the default
+	return null;
 };
 
 /**

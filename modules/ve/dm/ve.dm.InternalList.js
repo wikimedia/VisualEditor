@@ -370,3 +370,56 @@ ve.dm.InternalList.prototype.sortGroupIndexes = function ( group ) {
 ve.dm.InternalList.prototype.clone = function ( doc ) {
 	return new this.constructor( doc || this.getDocument() );
 };
+
+/**
+ * Merge another internal list into this one.
+ *
+ * This function updates the state of this list, and returns a mapping from indexes in list to
+ * indexes in this, as well as a set of ranges that should be copied from list's linear model
+ * into this list's linear model by the caller.
+ *
+ * @param {ve.dm.InternalList} list Internal list to merge into this list
+ * @param {number} commonLength The number of elements, counted from the beginning, that the lists have in common
+ * @returns {Object} 'mapping' is an object mapping indexes in list to indexes in this; newItemRanges is an array
+ *  of ranges of internal nodes in list's document that should be copied into our document
+ */
+ve.dm.InternalList.prototype.merge = function ( list, commonLength ) {
+	var i, k, key,
+		listLen = list.getItemNodeCount(),
+		nextIndex = this.getItemNodeCount(),
+		newItemRanges = [],
+		mapping = {};
+	for ( i = 0; i < commonLength; i++ ) {
+		mapping[i] = i;
+	}
+	for ( i = commonLength; i < listLen; i++ ) {
+		// Try to find i in list.keyIndexes
+		key = undefined;
+		for ( k in list.keyIndexes ) {
+			if ( list.keyIndexes[k] === i ) {
+				key = k;
+				break;
+			}
+		}
+
+		if ( this.keyIndexes[key] !== undefined ) {
+			// We already have this key in this internal list. Ignore the duplicate that the other
+			// list is trying to merge in.
+			// NOTE: This case cannot occur in VE currently, but may be possible in the future with
+			// collaborative editing, which is why this code needs to be rewritten before we do
+			// collaborative editing.
+			mapping[i] = this.keyIndexes[key];
+		} else {
+			mapping[i] = nextIndex;
+			if ( key !== undefined ) {
+				this.keyIndexes[key] = nextIndex;
+			}
+			nextIndex++;
+			newItemRanges.push( list.getItemNode( i ).getOuterRange() );
+		}
+	}
+	return {
+		'mapping': mapping,
+		'newItemRanges': newItemRanges
+	};
+};
