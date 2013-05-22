@@ -97,14 +97,25 @@ ve.dm.example.span = { 'type': 'textStyle/span' };
  * @throws {Error} Example data not found
  */
 ve.dm.example.createExampleDocument = function ( name, store ) {
+	var doc, i;
 	name = name || 'data';
 	store = store || new ve.dm.IndexValueStore();
 	if ( ve.dm.example[name] === undefined ) {
 		throw new Error( 'Example data \'' + name + '\' not found' );
 	}
-	return new ve.dm.Document(
+	doc = new ve.dm.Document(
 		ve.dm.example.preprocessAnnotations( ve.copyArray( ve.dm.example[name] ), store )
 	);
+	// HACK internalList isn't populated when creating a document from data
+	if ( ve.dm.example[name].internalItems ) {
+		for ( i = 0; i < ve.dm.example[name].internalItems.length; i++ ) {
+			doc.internalList.addItem(
+				ve.dm.example[name].internalItems[i].key,
+				ve.dm.example[name].internalItems[i].body
+			);
+		}
+	}
+	return doc;
 };
 
 ve.dm.example.testDir = window.mw ?
@@ -355,6 +366,11 @@ ve.dm.example.internalData = [
 	{ 'type': 'paragraph' },
 	'Q', 'u', 'u', 'x',
 	{ 'type': '/paragraph' }
+];
+
+ve.dm.example.internalData.internalItems = [
+	{ 'key': 'bar', 'body': 'Bar' },
+	{ 'key': 'baz', 'body': 'Baz' }
 ];
 
 ve.dm.example.withMeta = [
