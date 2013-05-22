@@ -80,6 +80,10 @@ ve.dm.MWReferenceNode.static.toDomElements = function ( dataElement, doc, conver
 	return [ span ];
 };
 
+ve.dm.MWReferenceNode.static.remapInternalListIndexes = function ( dataElement, mapping ) {
+	dataElement.attributes.listIndex = mapping[dataElement.attributes.listIndex];
+};
+
 /* Methods */
 
 /**

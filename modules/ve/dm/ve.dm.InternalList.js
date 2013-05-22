@@ -142,3 +142,24 @@ ve.dm.InternalList.prototype.clone = function ( doc ) {
 	clone.itemsHtml = this.itemsHtml.slice();
 	return clone;
 };
+
+/**
+ * Merge another document's internal list into this one.
+ *
+ * Objects that are in other but not in this are added to this, possibly with a different index.
+ *
+ * @param {ve.dm.InternalList} other List to merge into this one
+ * @returns {Object} Object in which the keys are indexes in other and the values are the corresponding keys in this
+ */
+ve.dm.InternalList.prototype.merge = function ( other ) {
+	var i, len, index, storeMapping = this.store.merge( other.store ), mapping = {};
+	for ( i = 0, len = other.itemsHtml.length; i < len; i++ ) {
+		other.itemsHtml[i] = storeMapping[other.itemsHtml[i]];
+		index = ve.indexOf( other.itemsHtml[i], this.itemsHtml );
+		if ( index === -1 ) {
+			index = this.itemsHtml.push( other.itemsHtml[i] ) - 1;
+		}
+		mapping[i] = index;
+	}
+	return mapping;
+};
