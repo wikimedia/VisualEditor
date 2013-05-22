@@ -229,6 +229,7 @@ ve.ce.Surface.prototype.disable = function () {
  * @returns {ve.ui.Context} Context user interface
  */
 ve.ce.Surface.prototype.destroy = function () {
+	this.documentView.getDocumentNode().setLive( false );
 	this.$.remove();
 	this.$phantoms.remove();
 };
