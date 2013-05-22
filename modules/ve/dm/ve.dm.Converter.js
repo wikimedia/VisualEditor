@@ -956,15 +956,11 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container ) {
 	}
 
 	function getDataElementOrSlice() {
-		var dataSlice, j, depth,
-			handlesOwn = false;
-
-		// TODO: Shouldn't be implemented with try..catch cause it makes debugging harder and sacrifice performance.
-		try {
-			handlesOwn = ve.dm.nodeFactory.doesNodeHandleOwnChildren( data[i].type );
-		} catch ( e ) {}
-
-		if ( handlesOwn ) {
+		var dataSlice, j, depth;
+		if (
+			ve.dm.nodeFactory.lookup( data[i].type ) &&
+			ve.dm.nodeFactory.doesNodeHandleOwnChildren( data[i].type )
+		) {
 			j = i + 1;
 			depth = 1;
 			while ( j < data.length && depth > 0 ) {
@@ -1269,12 +1265,12 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container ) {
 					// It looks like the solution would be to avoid descending first ( so ascending
 					// wouldn't be needed ) but note that then code above for handling white spaces
 					// wouldn't execute correctly.
-					// TODO: Shouldn't be implemented with try..catch cause it makes debugging harder and sacrifice performance.
-					try {
-						if ( ve.dm.nodeFactory.doesNodeHandleOwnChildren( data[i].type ) ) {
-							domElement = parentDomElement;
-						}
-					} catch ( e ) {}
+					if (
+						ve.dm.nodeFactory.lookup( data[i].type ) &&
+						ve.dm.nodeFactory.doesNodeHandleOwnChildren( data[i].type )
+					) {
+						domElement = parentDomElement;
+					}
 				}
 
 				if ( ve.isArray( dataElementOrSlice ) ) {
