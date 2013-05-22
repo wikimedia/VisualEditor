@@ -973,7 +973,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container ) {
 				throw new Error( 'Unbalanced data: looking for closing /' +
 					dataElement.type );
 			}
-			dataSlice = data.slice( i, j + 1 );
+			dataSlice = data.slice( i, j );
 		} else {
 			dataSlice = data[i];
 		}
@@ -1189,8 +1189,11 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container ) {
 
 				delete domElement.veInternal;
 				delete domElement.lastOuterPost;
-				// Ascend to parent node
-				domElement = parentDomElement;
+				// Ascend to parent node, except if this is an internal node
+				// TODO: It's not covered with unit tests.
+				if ( !ve.dm.nodeFactory.lookup( type ) || !ve.dm.nodeFactory.isNodeInternal( type ) ) {
+					domElement = parentDomElement;
+				}
 			} else {
 				// Create node from data
 				if ( !this.metaItemFactory.lookup( data[i].type ) ) {
