@@ -5,6 +5,10 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
+.ve-ui-toolbar {
+	clear: both;
+}
+
 .ve-ui-toolbar-bar {
 	border-bottom: solid 1px #ccc;
 	position: relative;
