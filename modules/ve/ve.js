@@ -1157,7 +1157,7 @@
 	// Based on the KeyEvent DOM Level 3 (add more as you need them)
 	// http://www.w3.org/TR/2001/WD-DOM-Level-3-Events-20010410/DOM3-Events.html#events-Events-KeyEvent
 	// http://www.w3.org/TR/2000/WD-DOM-Level-3-Events-20000901/events.html
-	ve.Keys = window.KeyEvent || {
+	ve.Keys = {
 		'DOM_VK_UNDEFINED': 0x0,
 		'DOM_VK_RIGHT_ALT': 0x12,
 		'DOM_VK_LEFT_ALT ': 0x12,
