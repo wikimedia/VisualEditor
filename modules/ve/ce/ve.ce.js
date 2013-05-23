@@ -260,11 +260,11 @@ ve.ce.getOffsetOfSlug = function ( $node ) {
 };
 
 ve.ce.isLeftOrRightArrowKey = function ( keyCode ) {
-	return keyCode === ve.Keys.DOM_VK_LEFT || keyCode === ve.Keys.DOM_VK_RIGHT;
+	return keyCode === ve.Keys.LEFT || keyCode === ve.Keys.RIGHT;
 };
 
 ve.ce.isUpOrDownArrowKey = function ( keyCode ) {
-	return keyCode === ve.Keys.DOM_VK_UP || keyCode === ve.Keys.DOM_VK_DOWN;
+	return keyCode === ve.Keys.UP || keyCode === ve.Keys.DOWN;
 };
 
 ve.ce.isArrowKey = function ( keyCode ) {
