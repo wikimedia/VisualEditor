@@ -60,10 +60,12 @@ class VisualEditorHooks {
 	 * Adds extra variables to the page config.
 	 */
 	public static function onMakeGlobalVariablesScript( array &$vars, OutputPage $out ) {
+		global $wgStylePath, $wgContLang;
 		$vars['wgVisualEditor'] = array(
 			'isPageWatched' => $out->getUser()->isWatched( $out->getTitle() ),
 			'pageLanguageCode' => $out->getTitle()->getPageLanguage()->getHtmlCode(),
-			'pageLanguageDir' => $out->getTitle()->getPageLanguage()->getDir()
+			'pageLanguageDir' => $out->getTitle()->getPageLanguage()->getDir(),
+			'magnifyClipIconURL' => $wgStylePath . '/common/images/magnify-clip' . ( $wgContLang->isRTL() ? '-rtl' : '' ) . '.png' // Same as in Linker.php
 		);
 
 		return true;

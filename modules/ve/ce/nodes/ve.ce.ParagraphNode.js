@@ -17,6 +17,14 @@
 ve.ce.ParagraphNode = function VeCeParagraphNode( model, config ) {
 	// Parent constructor
 	ve.ce.ContentBranchNode.call( this, model, config );
+
+	// DOM changes
+	if (
+		this.model.getElement().internal &&
+		this.model.getElement().internal.generated === 'wrapper'
+	) {
+		this.$.addClass( 've-ce-generated-wrapper' );
+	}
 };
 
 /* Inheritance */
