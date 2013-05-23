@@ -5,6 +5,8 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
+/*global mw */
+
 /**
  * ContentEditable image caption item node.
  *
@@ -17,6 +19,9 @@
 ve.ce.MWImageCaptionNode = function VeCeMWImageCaptionNode( model, config ) {
 	// Parent constructor
 	ve.ce.BranchNode.call( this, model, config );
+
+	// DOM changes
+	this.$.addClass( 'thumbcaption' );
 };
 
 /* Inheritance */
@@ -27,7 +32,42 @@ ve.inheritClass( ve.ce.MWImageCaptionNode, ve.ce.BranchNode );
 
 ve.ce.MWImageCaptionNode.static.name = 'MWimagecaption';
 
-ve.ce.MWImageCaptionNode.static.tagName = 'figcaption';
+ve.ce.MWImageCaptionNode.static.tagName = 'div';
+
+/* Methods */
+
+/**
+ * TODO: Magnify should not be built nor appended if this is a caption of frame (vs. thumb) image.
+ */
+ve.ce.MWImageCaptionNode.prototype.onSplice = function () {
+	if ( this.$magnify ) {
+		this.$magnify.detach();
+	} else {
+		this.buildMagnify();
+	}
+
+	// Call parent implementation
+	ve.ce.BranchNode.prototype.onSplice.apply( this, arguments );
+
+	this.$magnify.prependTo( this.$ );
+};
+
+ve.ce.MWImageCaptionNode.prototype.buildMagnify = function() {
+	this.$magnify = $( '<div>' )
+		.addClass( 'magnify' );
+	this.$a = $( '<a>' )
+		.addClass( 'internal' )
+		// It's inside a protected node, so user can't see href/title anyways.
+		//.attr( 'href', '/wiki/File:Wiki.png')
+		//.attr( 'title', 'Enlarge' )
+		.appendTo( this.$magnify );
+	this.$img = $( '<img>' )
+		.attr( 'src', mw.config.get( 'wgVisualEditor' ).magnifyClipIconURL )
+		.attr( 'width', 15 )
+		.attr( 'height', 11 )
+		//.attr( 'alt', '' )
+		.appendTo( this.$a );
+};
 
 /* Registration */
 

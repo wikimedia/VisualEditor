@@ -83,7 +83,12 @@ ve.dm.MWBlockImageNode.static.toDataElement = function ( domElements, converter 
 	}
 
 	if ( $caption.length === 0 ) {
-		return { 'type': 'MWblockimage', 'attributes': attributes };
+		return [
+			{ 'type': 'MWblockimage', 'attributes': attributes },
+			{ 'type': 'MWimagecaption' },
+			{ 'type': '/MWimagecaption' },
+			{ 'type': '/MWblockimage' }
+		];
 	} else {
 		return [ { 'type': 'MWblockimage', 'attributes': attributes } ].
 			concat( converter.getDataFromDomRecursionClean( $caption[0], { 'type': 'MWimagecaption' } ) ).

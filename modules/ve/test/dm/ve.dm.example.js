@@ -3138,6 +3138,8 @@ ve.dm.example.domToDataCases = {
 					'resource': 'FooBar'
 				}
 			},
+			{ 'type': 'MWimagecaption' },
+			{ 'type': '/MWimagecaption' },
 			{ 'type': '/MWblockimage' }
 		]
 	}
