@@ -153,10 +153,10 @@ ve.init.mw.ViewPageTarget.compatibility = {
 };
 
 ve.init.mw.ViewPageTarget.static.toolbarTools = [
-		{ 'name': 'history', 'items' : ['undo', 'redo'] },
-		{ 'name': 'textStyle', 'items' : ['mwFormat'] },
-		{ 'name': 'textStyle', 'items' : ['bold', 'italic', 'mwLink', 'clear'] },
-		{ 'name': 'list', 'items' : ['number', 'bullet', 'outdent', 'indent'] }
+	{ 'items': ['undo', 'redo'] },
+	{ 'items': ['mwFormat'] },
+	{ 'items': ['bold', 'italic', 'mwLink', 'clear'] },
+	{ 'items': ['number', 'bullet', 'outdent', 'indent'] }
 ];
 
 ve.init.mw.ViewPageTarget.static.surfaceCommands = [

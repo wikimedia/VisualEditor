@@ -30,10 +30,10 @@ ve.mixinClass( ve.init.Target, ve.EventEmitter );
 /* Static Properties */
 
 ve.init.Target.static.toolbarTools = [
-	{ 'name': 'history', 'items' : ['undo', 'redo'] },
-	{ 'name': 'textStyle', 'items' : ['format'] },
-	{ 'name': 'textStyle', 'items' : ['bold', 'italic', 'link', 'clear'] },
-	{ 'name': 'list', 'items' : ['number', 'bullet', 'outdent', 'indent'] }
+	{ 'items': ['undo', 'redo'] },
+	{ 'items': ['format'] },
+	{ 'items': ['bold', 'italic', 'link', 'clear'] },
+	{ 'items': ['number', 'bullet', 'outdent', 'indent'] }
 ];
 
 ve.init.Target.static.surfaceCommands = [

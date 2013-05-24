@@ -165,8 +165,7 @@ ve.ui.Toolbar.prototype.addTools = function ( tools ) {
 		group = tools[i];
 		// Create group
 		$group = this.$$( '<div class="ve-ui-toolbar-group"></div>' )
-			.on( 'mousedown', false )
-			.addClass( 've-ui-toolbar-group-' + group.name );
+			.on( 'mousedown', false );
 		if ( group.label ) {
 			$group.append(
 				this.$$( '<div class="ve-ui-toolbar-label"></div>' ).html( group.label )
