@@ -51,6 +51,15 @@ ve.mixinClass( ve.ce.View, ve.EventEmitter );
 
 /**
  * @event live
+ * @param {boolean} live The view is being set live
+ */
+
+/**
+ * @event setup
+ */
+
+/**
+ * @event teardown
  */
 
 /* Static Members */
@@ -135,6 +144,8 @@ ve.ce.View.prototype.isLive = function () {
  * @method
  * @param {boolean} live The view has been attached to the live DOM (use false on detach)
  * @emits live
+ * @emits setup
+ * @emits teardown
  */
 ve.ce.View.prototype.setLive = function ( live ) {
 	this.live = live;

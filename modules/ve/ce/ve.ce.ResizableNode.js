@@ -22,7 +22,11 @@ ve.ce.ResizableNode = function VeCeResizableNode( $resizable ) {
 	this.$resizeHandles = $( '<div>' );
 
 	// Events
-	this.connect( this, { 'focus': 'onResizableFocus', 'blur': 'onResizableBlur' } );
+	this.connect( this, {
+		'focus': 'onResizableFocus',
+		'blur': 'onResizableBlur',
+		'live': 'onResizableLive'
+	} );
 
 	// Initialization
 	this.$resizeHandles
@@ -54,7 +58,7 @@ ve.ce.ResizableNode.prototype.onResizableFocus = function () {
 			'top': offset.top,
 			'left': offset.left
 		} )
-		.appendTo( $( 'body' ) );
+		.appendTo( this.root.getSurface().getSurface().$localOverlay );
 
 	this.$resizeHandles
 		.find('.ve-ce-resizableNode-neHandle').css( {
@@ -76,6 +80,18 @@ ve.ce.ResizableNode.prototype.onResizableFocus = function () {
  */
 ve.ce.ResizableNode.prototype.onResizableBlur = function () {
 	this.$resizeHandles.detach();
+};
+
+/**
+ * Handle live event.
+ *
+ * @method
+ * @param {boolean} live
+ */
+ve.ce.ResizableNode.prototype.onResizableLive = function ( live ) {
+	if ( !live ) {
+		this.$resizeHandles.remove();
+	}
 };
 
 /**
