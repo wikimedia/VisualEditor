@@ -84,8 +84,9 @@ ve.ui.MWMetaDialog.prototype.initialize = function () {
 
 	// Initialization
 	this.categoryWidget.addItems( this.getCategoryItems() );
-	this.addPage( 'categories', 'Categories', 'tag' )
-		.addPage( 'languages', 'Languages', 'language' );
+	this.addPage( 'categories', 'Categories', 'tag' );
+	// TODO: Implement language editing. Load page with:
+	// .addPage( 'languages', 'Languages', 'language' );
 	this.pages.categories.$.append( this.categoriesFieldset.$, this.categorySettingsFieldset.$ );
 	this.categoriesFieldset.$.append( this.categoryWidget.$ );
 	this.categorySettingsFieldset.$.append(
