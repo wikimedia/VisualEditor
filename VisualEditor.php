@@ -538,6 +538,7 @@ $wgResourceModules += array(
 
 			've/ui/dialogs/ve.ui.MWMetaDialog.js',
 
+			've/ui/tools/buttons/ve.ui.MWMetaButtonTool.js',
 			've/ui/tools/buttons/ve.ui.MWReferenceButtonTool.js',
 			've/ui/tools/buttons/ve.ui.MWTemplateButtonTool.js',
 			've/ui/dialogs/ve.ui.MWReferenceDialog.js',
@@ -552,6 +553,7 @@ $wgResourceModules += array(
 			'visualeditor-dialog-template-title',
 			'visualeditor-dialogbutton-template-tooltip',
 			'visualeditor-dialog-meta-title',
+			'visualeditor-dialogbutton-meta-tooltip',
 		),
 	),
 	'ext.visualEditor.icons-raster' => $wgVisualEditorResourceTemplate + array(

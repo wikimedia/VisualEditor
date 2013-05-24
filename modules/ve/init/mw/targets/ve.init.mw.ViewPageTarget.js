@@ -156,7 +156,8 @@ ve.init.mw.ViewPageTarget.static.toolbarTools = [
 	{ 'items': ['undo', 'redo'] },
 	{ 'items': ['mwFormat'] },
 	{ 'items': ['bold', 'italic', 'mwLink', 'clear'] },
-	{ 'items': ['number', 'bullet', 'outdent', 'indent'] }
+	{ 'items': ['number', 'bullet', 'outdent', 'indent'] },
+	{ 'items': ['mwMeta'] }
 ];
 
 ve.init.mw.ViewPageTarget.static.surfaceCommands = [

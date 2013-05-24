@@ -68,6 +68,7 @@ $messages['en'] = array(
 	'visualeditor-annotationbutton-bold-tooltip' => 'Bold',
 	'visualeditor-annotationbutton-italic-tooltip' => 'Italic',
 	'visualeditor-annotationbutton-link-tooltip' => 'Link',
+	'visualeditor-dialogbutton-meta-tooltip' => 'Page settings',
 	'visualeditor-dialogbutton-reference-tooltip' => 'Reference',
 	'visualeditor-dialogbutton-template-tooltip' => 'Template',
 	'visualeditor-dialogbutton-media-tooltip' => 'Media',
