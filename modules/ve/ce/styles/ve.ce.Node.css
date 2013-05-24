@@ -152,6 +152,7 @@
 }
 
 /* ve.ce.MWTemplateNode */
+
 .ve-ce-MWtemplateBlockNode {
 	display: block;
 }
@@ -164,6 +165,12 @@
 
 .ve-ce-branchNode-blockSlug {
 	display: block;
+}
+
+/* ve.ce.MWPreformattedNode */
+
+pre.ve-ce-branchNode {
+	white-space: pre-wrap;
 }
 
 .ve-ce-branchNode h1:empty:before,
