@@ -420,14 +420,14 @@ ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
 		} else {
 			this.handleUpOrDownArrowKey( e );
 		}
-	} else if ( e.keyCode === ve.Keys.DOM_VK_ENTER ) {
+	} else if ( e.keyCode === ve.Keys.ENTER ) {
 		e.preventDefault();
 		this.handleEnter( e );
-	} else if ( e.keyCode === ve.Keys.DOM_VK_BACK_SPACE ) {
+	} else if ( e.keyCode === ve.Keys.BACKSPACE ) {
 		this.handleDelete( e, true );
 		this.surfaceObserver.stop( true );
 		this.surfaceObserver.start();
-	} else if ( e.keyCode === ve.Keys.DOM_VK_DELETE ) {
+	} else if ( e.keyCode === ve.Keys.DELETE ) {
 		this.handleDelete( e, false );
 		this.surfaceObserver.stop( true );
 		this.surfaceObserver.start();
@@ -469,14 +469,14 @@ ve.ce.Surface.prototype.onDocumentKeyPress = function ( e ) {
 	if ( ve.ce.isArrowKey( e.keyCode ) ||
 		ve.ce.isShortcutKey( e ) ||
 		e.keyCode === 13 ||
-		e.which === ve.Keys.DOM_VK_UNDEFINED ||
-		e.keyCode === ve.Keys.DOM_VK_BACK_SPACE ||
-		e.keyCode === ve.Keys.DOM_VK_END ||
-		e.keyCode === ve.Keys.DOM_VK_ENTER ||
-		e.keyCode === ve.Keys.DOM_VK_HOME ||
-		e.keyCode === ve.Keys.DOM_VK_TAB ||
-		e.keyCode === ve.Keys.DOM_VK_PAGE_DOWN ||
-		e.keyCode === ve.Keys.DOM_VK_PAGE_UP ) {
+		e.which === ve.Keys.UNDEFINED ||
+		e.keyCode === ve.Keys.BACKSPACE ||
+		e.keyCode === ve.Keys.END ||
+		e.keyCode === ve.Keys.ENTER ||
+		e.keyCode === ve.Keys.HOME ||
+		e.keyCode === ve.Keys.TAB ||
+		e.keyCode === ve.Keys.PAGEDOWN ||
+		e.keyCode === ve.Keys.PAGEUP ) {
 		return;
 	}
 	this.handleInsertion();
@@ -912,7 +912,7 @@ ve.ce.Surface.prototype.handleLeftOrRightArrowKey = function ( e ) {
 	// Stop with final poll cycle so we have correct information in model
 	this.surfaceObserver.stop( true );
 	selection = this.model.getSelection();
-	offsetDelta = e.keyCode === ve.Keys.DOM_VK_LEFT ? -1 : 1;
+	offsetDelta = e.keyCode === ve.Keys.LEFT ? -1 : 1;
 
 	// Check for selecting/deselecting inline images and aliens
 	if ( selection.isCollapsed() ) {
