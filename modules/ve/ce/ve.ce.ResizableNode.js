@@ -58,7 +58,7 @@ ve.ce.ResizableNode.prototype.onResizableFocus = function () {
 			'top': offset.top,
 			'left': offset.left
 		} )
-		.appendTo( $( 'body' ) );
+		.appendTo( this.root.getSurface().getSurface().$localOverlay );
 
 	this.$resizeHandles
 		.find('.ve-ce-resizableNode-neHandle').css( {
