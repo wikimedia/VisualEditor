@@ -12,6 +12,9 @@ class ApiVisualEditor extends ApiBase {
 	protected function getHTML( $title, $parserParams ) {
 		global $wgVisualEditorParsoidURL, $wgVisualEditorParsoidPrefix,
 			$wgVisualEditorParsoidTimeout;
+
+		$restoring = false;
+
 		if ( $title->exists() ) {
 			if ( $parserParams['oldid'] === 0 ) {
 				$parserParams['oldid'] = ''; // Parsoid wants empty string rather than zero
@@ -20,6 +23,8 @@ class ApiVisualEditor extends ApiBase {
 			if ( $revision === null ) {
 				return false;
 			}
+			$restoring = !$revision->isCurrent();
+
 			$parserParams['touched'] = $title->getTouched();
 			$parserParams['cache'] = 1;
 
@@ -59,9 +64,12 @@ class ApiVisualEditor extends ApiBase {
 			$timestamp = wfTimestampNow();
 		}
 		return array(
-			'content' => $content,
-			'basetimestamp' => $timestamp,
-			'starttimestamp' => wfTimestampNow()
+			'result' => array(
+				'content' => $content,
+				'basetimestamp' => $timestamp,
+				'starttimestamp' => wfTimestampNow(),
+			),
+			'restoring' => $restoring,
 		);
 	}
 
@@ -232,6 +240,9 @@ class ApiVisualEditor extends ApiBase {
 				if ( $user->isAnon() ) {
 					$wgVisualEditorEditNotices[] = 'anoneditwarning';
 				}
+				if ( $parsed && $parsed['restoring'] ) {
+					$wgVisualEditorEditNotices[] = 'editingold';
+				}
 				if ( count( $wgVisualEditorEditNotices ) ) {
 					foreach ( $wgVisualEditorEditNotices as $key ) {
 						$notices[] = wfMessage( $key )->parseAsBlock();
@@ -241,7 +252,7 @@ class ApiVisualEditor extends ApiBase {
 					$this->dieUsage( 'Error contacting the Parsoid server', 'parsoidserver' );
 				} else {
 					$result = array_merge(
-						array( 'result' => 'success', 'notices' => $notices ), $parsed
+						array( 'result' => 'success', 'notices' => $notices ), $parsed['result']
 					);
 				}
 				break;
