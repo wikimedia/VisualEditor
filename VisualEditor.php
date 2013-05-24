@@ -421,7 +421,6 @@ $wgResourceModules += array(
 			've/ui/dialogs/ve.ui.ContentDialog.js',
 			've/ui/dialogs/ve.ui.MediaDialog.js',
 			've/ui/dialogs/ve.ui.PagedDialog.js',
-			've/ui/dialogs/ve.ui.MWMetaDialog.js',
 
 			've/ui/tools/ve.ui.ButtonTool.js',
 			've/ui/tools/ve.ui.AnnotationButtonTool.js',
@@ -512,7 +511,6 @@ $wgResourceModules += array(
 			'visualeditor-saveerror',
 			'visualeditor-editconflict',
 			'visualeditor-aliennode-tooltip',
-			'visualeditor-dialog-meta-title',
 			'visualeditor-dialog-media-title',
 			'visualeditor-dialog-content-title',
 			'visualeditor-dialog-action-apply',
@@ -538,6 +536,8 @@ $wgResourceModules += array(
 			've/ce/nodes/ve.ce.MWReferenceListNode.js',
 			've/ce/nodes/ve.ce.MWReferenceNode.js',
 
+			've/ui/dialogs/ve.ui.MWMetaDialog.js',
+
 			've/ui/tools/buttons/ve.ui.MWReferenceButtonTool.js',
 			've/ui/tools/buttons/ve.ui.MWTemplateButtonTool.js',
 			've/ui/dialogs/ve.ui.MWReferenceDialog.js',
@@ -551,6 +551,7 @@ $wgResourceModules += array(
 			'visualeditor-dialogbutton-reference-tooltip',
 			'visualeditor-dialog-template-title',
 			'visualeditor-dialogbutton-template-tooltip',
+			'visualeditor-dialog-meta-title',
 		),
 	),
 	'ext.visualEditor.icons-raster' => $wgVisualEditorResourceTemplate + array(

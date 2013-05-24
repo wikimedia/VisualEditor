@@ -34,7 +34,7 @@ ve.inheritClass( ve.ui.CommandRegistry, ve.Registry );
  * @throws {Error} Action must be a string
  * @throws {Error} Method must be a string
  */
-ve.ui.CommandRegistry.prototype.register = function ( name , action, method ) {
+ve.ui.CommandRegistry.prototype.register = function ( name, action, method ) {
 	if ( typeof name !== 'string' && !ve.isArray( name ) ) {
 		throw new Error( 'name must be a string or array, cannot be a ' + typeof name );
 	}

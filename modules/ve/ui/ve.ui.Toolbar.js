@@ -173,11 +173,13 @@ ve.ui.Toolbar.prototype.addTools = function ( tools ) {
 		}
 		// Add tools
 		for ( j = 0; j < group.items.length; j++ ) {
-			tool = ve.ui.toolFactory.create( group.items[j], this );
-			if ( !tool ) {
-				throw new Error( 'Unknown tool: ' + group.items[j] );
+			tool = false;
+			try {
+				tool = ve.ui.toolFactory.create( group.items[j], this );
+			} catch(e) {}
+			if ( tool ) {
+				$group.append( tool.$ );
 			}
-			$group.append( tool.$ );
 		}
 		// Append group
 		this.$tools.append( $group );
