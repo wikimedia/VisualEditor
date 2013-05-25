@@ -129,3 +129,16 @@ ve.dm.InternalList.prototype.getDataFromDom = function ( converter ) {
 	}
 	return list;
 };
+
+/**
+ * Clone this internal list.
+ *
+ * @param {ve.dm.Document} [doc] The new list's document. Defaults to this list's document.
+ * @returns {ve.dm.InternalList} Clone of this internal
+ */
+ve.dm.InternalList.prototype.clone = function ( doc ) {
+	var clone = new this.constructor( doc || this.doc );
+	clone.store = this.store.clone();
+	clone.itemsHtml = this.itemsHtml.slice();
+	return clone;
+};

@@ -67,6 +67,58 @@ QUnit.test( 'getFullData', 1, function ( assert ) {
 	assert.deepEqual( doc.getFullData(), ve.dm.example.withMeta );
 } );
 
+QUnit.test( 'getDocumentSlice', function ( assert ) {
+	var i, doc2, doc = ve.dm.example.createExampleDocument( 'internalData' ),
+		cases = [
+			{
+				'msg': 'with range',
+				'doc': 'internalData',
+				'arg': new ve.Range( 7, 12 ),
+				'expectedData': doc.data.slice( 7, 12 ).concat( doc.data.slice( 5, 21 ) )
+			},
+			{
+				'msg': 'with node',
+				'doc': 'internalData',
+				'arg': doc.getInternalList().getItemNode( 1 ),
+				'expectedData': doc.data.slice( 14, 19 ).concat( doc.data.slice( 5, 21 ) )
+			},
+			{
+				'msg': 'paragraph at the start',
+				'doc': 'internalData',
+				'arg': new ve.Range( 0, 5 ),
+				'expectedData': doc.data.slice( 0, 21 )
+			},
+			{
+				'msg': 'paragraph at the end',
+				'doc': 'internalData',
+				'arg': new ve.Range( 21, 27 ),
+				'expectedData': doc.data.slice( 21, 27 ).concat( doc.data.slice( 5, 21 ) )
+			}
+		];
+	QUnit.expect( 8*cases.length );
+	for ( i = 0; i < cases.length; i++ ) {
+		doc = ve.dm.example.createExampleDocument( cases[i].doc );
+		doc2 = doc.getDocumentSlice( cases[i].arg );
+		assert.deepEqual( doc2.data.data, cases[i].expectedData,
+			cases[i].msg + ': sliced data' );
+		assert.notStrictEqual( doc2.data[0], cases[i].expectedData[0],
+			cases[i].msg + ': data is cloned, not the same' );
+		assert.deepEqual( doc2.store, doc.store,
+			cases[i].msg + ': store is copied' );
+		assert.notStrictEqual( doc2.store, doc.store,
+			cases[i].msg + ': store is a clone, not the same' );
+		assert.deepEqual( doc2.internalList.itemsHtml, doc.internalList.itemsHtml,
+			cases[i].msg + ': internal list items are copied' );
+		assert.notStrictEqual( doc2.internalList.itemsHtml, doc.internalList.itemsHtml,
+			cases[i].msg + ': internal list items array is cloned, not the same' );
+		assert.deepEqual( doc2.internalList.store, doc.internalList.store,
+			cases[i].msg + ': internal list store is copied' );
+		assert.notStrictEqual( doc2.internalList.store, doc.internalList.store,
+			cases[i].msg + ': internal list store is a clone, not the same' );
+	}
+
+} );
+
 QUnit.test( 'getMetadataReplace', 3, function ( assert ) {
 	var replace, expectedReplace,
 		doc = ve.dm.example.createExampleDocument( 'withMeta' );
