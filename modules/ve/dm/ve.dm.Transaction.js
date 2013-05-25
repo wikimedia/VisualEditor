@@ -37,7 +37,7 @@ ve.dm.Transaction.newFromInsertion = function ( doc, offset, insertion ) {
 	// Retain up to insertion point, if needed
 	tx.pushRetain( insertion.offset );
 	// Insert data
-	tx.pushReplace( doc, offset, 0, insertion.data );
+	tx.pushReplace( doc, insertion.offset, insertion.remove, insertion.data );
 	// Retain to end of document, if needed (for completeness)
 	tx.pushRetain( data.length - insertion.offset );
 	return tx;

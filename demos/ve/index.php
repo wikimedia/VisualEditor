@@ -412,7 +412,7 @@ $html = file_get_contents( $page );
 						$label.addClass( 've-demo-dump-element' );
 						text = element.type;
 						annotations = element.annotations;
-					} else if ( element.length > 1 ){
+					} else if ( ve.isArray( element ) ){
 						$label.addClass( 've-demo-dump-achar' );
 						text = element[0];
 						annotations = element[1];

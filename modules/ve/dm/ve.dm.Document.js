@@ -480,12 +480,19 @@ ve.dm.Document.prototype.rebuildNodes = function ( parent, index, numNodes, offs
  * @method
  * @param {Array} data Snippet of linear model data to insert
  * @param {number} offset Offset in the linear model where the caller wants to insert data
- * @returns {Object} A (possibly modified) copy of data and a (possibly modified) offset
+ * @returns {Object} A (possibly modified) copy of data, a (possibly modified) offset
+ * and a number of elements to remove
  */
 ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 	var
 		// Array where we build the return value
 		newData = [],
+
+		// Temporary variables for handling combining marks
+		insert, annotations,
+		// An unattached combining mark may require the insertion to remove a character,
+		// so we send this counter back in the result
+		remove = 0,
 
 		// *** Stacks ***
 		// Array of element openings (object). Openings in data are pushed onto this stack
@@ -705,6 +712,29 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 				}
 			} while ( !childrenOK );
 
+			if (
+				i === 0 &&
+				childType === 'text' &&
+				ve.isUnattachedCombiningMark( data[i] )
+			) {
+				// Note we only need to check data[0] as combining marks further
+				// along should already have been merged
+				if ( doc.data.isElementData( offset - 1 ) ) {
+					// Inserting a unattached combining mark is generally pretty badly
+					// supported (browser rendering bugs), so we'll just prevent it.
+					continue;
+				} else {
+					offset--;
+					remove++;
+					insert = doc.data.getCharacterData( offset ) + data[i];
+					annotations = doc.data.getAnnotationIndexesFromOffset( offset );
+					if ( annotations.length ) {
+						insert = [ insert, annotations ];
+					}
+					data[i] = insert;
+				}
+			}
+
 			for ( j = 0; j < closings.length; j++ ) {
 				// writeElement() would update openingStack/closingStack, but we've already done
 				// that for closings
@@ -762,7 +792,8 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 
 	return {
 		offset: offset,
-		data: newData
+		data: newData,
+		remove: remove
 	};
 };
 

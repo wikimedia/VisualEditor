@@ -157,10 +157,11 @@ ve.ce.getOffsetFromTextNode = function ( domNode, domOffset ) {
 		item = current[0][current[1]];
 		if ( item.nodeType === Node.TEXT_NODE ) {
 			if ( item === domNode ) {
-				offset += domOffset;
+				// domOffset is a byte offset, convert it to a character offset
+				offset += ve.getCharacterOffset( item.textContent, domOffset );
 				break;
 			} else {
-				offset += item.textContent.length;
+				offset += ve.getCharacterOffset( item.textContent, item.textContent.length );
 			}
 		} else if ( item.nodeType === Node.ELEMENT_NODE ) {
 			$item = current[0].eq( current[1] );
@@ -173,9 +174,9 @@ ve.ce.getOffsetFromTextNode = function ( domNode, domOffset ) {
 			} else if ( $item.hasClass( 've-ce-branchNode' ) ) {
 				offset += $item.data( 'view' ).getOuterLength();
 			} else {
-				stack.push( [$item.contents(), 0 ] );
+				stack.push( [ $item.contents(), 0 ] );
 				current[1]++;
-				current = stack[stack.length-1];
+				current = stack[ stack.length - 1 ];
 				continue;
 			}
 		}

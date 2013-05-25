@@ -526,7 +526,7 @@ ve.dm.SurfaceFragment.prototype.insertContent = function ( content, annotate ) {
 	}
 	// Auto-convert content to array of plain text characters
 	if ( typeof content === 'string' ) {
-		content = content.split( '' );
+		content = ve.splitCharacters( content );
 	}
 	if ( content.length ) {
 		if ( annotate ) {
