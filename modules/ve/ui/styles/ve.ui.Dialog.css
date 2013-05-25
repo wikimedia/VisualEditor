@@ -164,3 +164,25 @@
 .ve-ui-mwTemplateDialog-input textarea {
 	height: 10em;
 }
+
+.ve-ui-dialog-meta-languages-table {
+	margin: 2em 0 0 3em;
+	border: 1px solid silver;
+	border-collapse: collapse;
+}
+
+.ve-ui-dialog-meta-languages-table th {
+	background: #E8E8E8;
+}
+
+.ve-ui-dialog-meta-languages-table th, td {
+	padding: 0.5em 1em;
+}
+
+.ve-ui-dialog-meta-languages-table tr:nth-child(odd) td {
+	background: #F0F0F0;
+}
+
+.ve-ui-dialog-meta-languages-table tr:nth-child(even) td {
+	background: #F8F8F8;
+}

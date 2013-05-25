@@ -51,6 +51,8 @@ ve.ui.MWMetaDialog.static.icon = 'settings';
  * @method
  */
 ve.ui.MWMetaDialog.prototype.initialize = function () {
+	var languagePromise;
+
 	// Call parent method
 	ve.ui.PagedDialog.prototype.initialize.call( this );
 
@@ -72,6 +74,9 @@ ve.ui.MWMetaDialog.prototype.initialize = function () {
 		'input': this.defaultSortInput,
 		'label': ve.msg( 'visualeditor-dialog-meta-categories-defaultsort-label' )
 	} );
+	this.languagesFieldset = new ve.ui.FieldsetLayout( {
+		'$$': this.frame.$$, 'label': ve.msg( 'visualeditor-dialog-meta-languages-label' ), 'icon': 'language'
+	} );
 
 	// Events
 	this.categoryWidget.connect( this, {
@@ -87,16 +92,41 @@ ve.ui.MWMetaDialog.prototype.initialize = function () {
 	this.addPage( 'categories', {
 		'label': ve.msg( 'visualeditor-dialog-meta-categories-section' ),
 		'icon': 'tag'
+	} ).addPage( 'languages', {
+		'label': ve.msg( 'visualeditor-dialog-meta-languages-section' ),
+		'icon': 'language'
 	} );
-	// TODO: Implement language editing. Load page with:
-	// .addPage( 'languages', {
-	//	'label': ve.msg( 'visualeditor-dialog-meta-languages-section' ),
-	//	'icon': 'language'
-	//} );
 
 	this.pages.categories.$.append( this.categoriesFieldset.$, this.categorySettingsFieldset.$ );
 	this.categoriesFieldset.$.append( this.categoryWidget.$ );
 	this.categorySettingsFieldset.$.append( this.defaultSortLabel.$, this.defaultSortInput.$ );
+
+	this.pages.languages.$.append( this.languagesFieldset.$ );
+
+	this.languagesFieldset.$
+		.append( this.$$( '<span>' ).text( ve.msg( 'visualeditor-dialog-meta-languages-readonlynote' ) ) );
+
+	languagePromise = this.getAllLanguageItems();
+	languagePromise.done( ve.bind( function ( languages ) {
+		var i, $languagesTable = this.$$( '<table>' ), languageslength = languages.length;
+
+		$languagesTable
+			.addClass( 've-ui-dialog-meta-languages-table' )
+			.append( this.$$( '<tr>' )
+				.append( this.$$( '<th>' ).append( ve.msg( 'visualeditor-dialog-meta-languages-code-label' ) ) )
+				.append( this.$$( '<th>' ).append( ve.msg( 'visualeditor-dialog-meta-languages-link-label' ) ) )
+		);
+
+		for ( i = 0; i < languageslength; i++ ) {
+			$languagesTable
+				.append( $( '<tr>' )
+					.append( $( '<td>' ).append( languages[i].lang ) )
+					.append( $( '<td>' ).append( languages[i].title ) )
+				);
+		}
+
+		this.languagesFieldset.$.append( $languagesTable );
+	}, this ) );
 };
 
 /**
@@ -224,6 +254,89 @@ ve.ui.MWMetaDialog.prototype.getCategoryItemForInsertion = function ( item ) {
 		'type': 'mwCategory'
 	};
 };
+
+/**
+ * Gets language item from meta list item
+ *
+ * @method
+ * @param {Object} ve.dm.MWLanguageMetaItem
+ * @returns {Object} item
+ */
+ve.ui.MWMetaDialog.prototype.getLanguageItemFromMetaListItem = function ( metaItem ) {
+	// TODO: get real values from metaItem once Parsoid actually provides them - bug 48970
+	return {
+		'lang': 'lang',
+		'title': 'title',
+		'metaItem': metaItem
+	};
+};
+
+/**
+ * Get array of language items from meta list
+ *
+ * @method
+ * @returns {Object[]} items
+ */
+ve.ui.MWMetaDialog.prototype.getLocalLanguageItems = function () {
+	var i,
+		items = [],
+		languages = this.metaList.getItemsInGroup( 'mwLanguage' ),
+		languageslength = languages.length;
+
+	// Loop through MWLanguages and build out items
+
+	for ( i = 0; i < languageslength; i++ ) {
+		items.push( this.getLanguageItemFromMetaListItem( languages[i] ) );
+	}
+	return items;
+};
+
+/**
+ * Get array of language items from meta list
+ *
+ * @method
+ * @returns {Object[]} items
+ */
+ve.ui.MWMetaDialog.prototype.getAllLanguageItems = function () {
+	var promise = $.Deferred();
+	// TODO: Detect paging token if results exceed limit
+	$.ajax( {
+		'url': mw.util.wikiScript( 'api' ),
+		'data': {
+			'action': 'query',
+			'prop': 'langlinks',
+			'lllimit': 500,
+			'titles': mw.config.get( 'wgTitle' ),
+			'format': 'json'
+		},
+		'dataType': 'json',
+		'type': 'POST',
+		// Wait up to 100 seconds before giving up
+		'timeout': 100000,
+		'indexpageids': 1,
+		'cache': 'false',
+		'success': ve.bind( this.onAllLanuageItemsSuccess, this, promise ),
+		'error': ve.bind( this.onAllLanuageItemsError, this, promise )
+	} );
+	return promise;
+};
+
+ve.ui.MWMetaDialog.prototype.onAllLanuageItemsSuccess = function ( promise, response ) {
+	var i, iLen, languages = [], langlinks = response.query.pages[response.query.pageids[0]].langlinks;
+	if ( langlinks ) {
+		for ( i = 0, iLen = langlinks.length; i < iLen; i++ ) {
+			languages.push( {
+				'lang': langlinks[i].lang,
+				'title': langlinks[i]['*'],
+				'metaItem': null
+			} );
+		}
+	}
+	promise.resolve( languages );
+};
+
+// TODO: This error function should probably not be empty.
+ve.ui.MWMetaDialog.prototype.onAllLanuageItemsError = function () {};
 
 /**
  * Handle category default sort change events.
