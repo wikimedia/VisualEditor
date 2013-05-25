@@ -62,7 +62,7 @@ ve.ui.MWMetaDialog.prototype.initialize = function () {
 		'$$': this.frame.$$, 'label': ve.msg( 'visualeditor-dialog-meta-categories-settings-label' ), 'icon': 'settings'
 	} );
 	this.categoryWidget = new ve.ui.MWCategoryWidget( {
-		'$$': this.frame.$$, '$overlay': this.surface.$globalOverlay
+		'$$': this.frame.$$, '$overlay': this.$overlay
 	} );
 	this.defaultSortInput = new ve.ui.TextInputWidget( {
 		'$$': this.frame.$$, 'placeholder': this.fallbackDefaultSortKey
