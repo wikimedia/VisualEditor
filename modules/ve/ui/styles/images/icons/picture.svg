@@ -13,7 +13,7 @@
 		</g>
 		<polygon id="mountains" style="fill-rule:evenodd;clip-rule:evenodd;" points="6,13.5 9.5,10 11.828,12.312 10.516,13.406
 			11.391,14.438 15.5,11 18,13 18,16 6,16 		"/>
-		<polygon id="sky" style="fill-rule:evenodd;clip-rule:evenodd;" points="6,12 9.516,7.844 12.562,11.016 15.5,9 18,11 18,7 6,7 		
+		<polygon id="sky" style="fill-rule:evenodd;clip-rule:evenodd;" points="6,12 9.516,7.844 12.562,11.016 15.5,9 18,11 18,7 6,7
 			"/>
 	</g>
 </g>
