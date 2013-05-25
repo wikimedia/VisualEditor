@@ -746,3 +746,43 @@ ve.dm.ElementLinearData.prototype.getUsedStoreValues = function () {
 	}
 	return valueStore;
 };
+
+/**
+ * Remap the store indexes used in this linear data.
+ *
+ * Remaps annotations and calls remapStoreIndexes() on each node.
+ *
+ * @method
+ * @param {Object} mapping Mapping from store indexes to store indexes
+ */
+ve.dm.ElementLinearData.prototype.remapStoreIndexes = function ( mapping ) {
+	var i, ilen, j, jlen, indexes, nodeClass;
+	for ( i = 0, ilen = this.data.length; i < ilen; i++ ) {
+		indexes = this.getAnnotationIndexesFromOffset( i ); // returns by reference
+		for ( j = 0, jlen = indexes.length; j < jlen; j++ ) {
+			indexes[j] = mapping[indexes[j]];
+		}
+		if ( this.isOpenElementData( i ) ) {
+			nodeClass = ve.dm.nodeFactory.lookup( this.getType( i ) );
+			nodeClass.static.remapStoreIndexes( this.data[i], mapping );
+		}
+	}
+};
+
+/**
+ * Remap the internal list indexes used in this linear data.
+ *
+ * Calls remapInternalListIndexes() for each node.
+ *
+ * @method
+ * @param {Object} mapping Mapping from internal list indexes to internal list indexes
+ */
+ve.dm.ElementLinearData.prototype.remapInteralListIndexes = function ( mapping ) {
+	var i, ilen, nodeClass;
+	for ( i = 0, ilen = this.data.length; i < ilen; i++ ) {
+		if ( this.isOpenElementData( i ) ) {
+			nodeClass = ve.dm.nodeFactory.lookup( this.getType( i ) );
+			nodeClass.static.remapInternalListIndexes( this.data[i], mapping );
+		}
+	}
+};

@@ -173,6 +173,36 @@ ve.dm.Node.static.suggestedParentNodeTypes = null;
 ve.dm.Node.static.defaultAttributes = {};
 
 /**
+ * Remap the store indexes stored in a linear model data element.
+ *
+ * The default implementation is empty. Nodes should override this if they store store indexes in
+.* attributes. To remap, do something like
+ * dataElement.attributes.foo = mapping[dataElement.attributes.foo];
+ *
+ * @static
+ * @inheritable
+ * @param {Object} dataElement Data element (opening) to remap. Will be modified.
+ * @param {Object} mapping Object mapping old store indexes to new store indexes
+ */
+ve.dm.Node.static.remapStoreIndexes = function ( /*dataElement, mapping*/ ) {
+};
+
+/**
+ * Remap the internal list indexes stored in a linear model data element.
+ *
+ * The default implementation is empty. Nodes should override this if they store internal list
+ * indexes in attributes. To remap, do something like
+ * dataElement.attributes.foo = mapping[dataElement.attributes.foo];
+ *
+ * @static
+ * @inheritable
+ * @param {Object} dataElement Data element (opening) to remap. Will be modified.
+ * @param {Object} mapping Object mapping old internal list indexes to new internal list indexes
+ */
+ve.dm.Node.static.remapInternalListIndexes = function ( /*dataElement, mapping*/ ) {
+};
+
+/**
  * Get hash object of a linear model data element
  *
  * @static

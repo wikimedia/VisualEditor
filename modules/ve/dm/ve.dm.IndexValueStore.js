@@ -124,3 +124,27 @@ ve.dm.IndexValueStore.prototype.clone = function () {
 	}
 	return clone;
 };
+
+/**
+ * Merge another store into this store.
+ *
+ * Objects that are in other but not in this are added to this, possibly with a different index.
+ * Objects present in both stores may have different indexes in each store. An object is returned
+ * mapping each index in other to the corresponding index in this.
+ *
+ * Objects added to the store are added by reference, not cloned like in .index()
+ *
+ * @param {ve.dm.IndexValueStore} other Store to merge into this one
+ * @returns {Object} Object in which the keys are indexes in other and the values are the corresponding keys in this
+ */
+ve.dm.IndexValueStore.prototype.merge = function ( other ) {
+	var key, index, mapping = {};
+	for ( key in other.hashStore ) {
+		if ( !( key in this.hashStore ) ) {
+			index = this.valueStore.push( other.valueStore[other.hashStore[key]] ) - 1;
+			this.hashStore[key] = index;
+		}
+		mapping[other.hashStore[key]] = this.hashStore[key];
+	}
+	return mapping;
+};
