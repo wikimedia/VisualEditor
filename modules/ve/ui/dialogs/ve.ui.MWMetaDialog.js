@@ -86,7 +86,7 @@ ve.ui.MWMetaDialog.prototype.initialize = function () {
 	this.categoryWidget.addItems( this.getCategoryItems() );
 	this.addPage( 'categories', ve.msg( 'visualeditor-dialog-meta-categories-section' ), 'tag' );
 	// TODO: Implement language editing. Load page with:
-	// .addPage( 'languages', ve.msg( 'visualeditor-dialog-meta-langlinks-section' ), 'language' );
+	// .addPage( 'languages', ve.msg( 'visualeditor-dialog-meta-languages-section' ), 'language' );
 
 	this.pages.categories.$.append( this.categoriesFieldset.$, this.categorySettingsFieldset.$ );
 	this.categoriesFieldset.$.append( this.categoryWidget.$ );
