@@ -516,8 +516,16 @@ $wgResourceModules += array(
 			'visualeditor-dialog-action-apply',
 			'visualeditor-dialog-action-cancel',
 			'visualeditor-dialog-action-close',
-			'visualeditor-category-input-placeholder',
-			'visualeditor-category-settings-label'
+			'visualeditor-dialog-meta-categories-section',
+			'visualeditor-dialog-meta-categories-data-label',
+			'visualeditor-dialog-meta-categories-settings-label',
+			'visualeditor-dialog-meta-categories-input-placeholder',
+			'visualeditor-dialog-meta-categories-input-newcategorylabel',
+			'visualeditor-dialog-meta-categories-input-movecategorylabel',
+			'visualeditor-dialog-meta-categories-input-matchingcategorieslabel',
+			'visualeditor-dialog-meta-categories-sortkey-label',
+			'visualeditor-dialog-meta-categories-defaultsort-label',
+			'visualeditor-dialog-meta-langlinks-section',
 		),
 	),
 	'ext.visualEditor.experimental' => $wgVisualEditorResourceTemplate + array(

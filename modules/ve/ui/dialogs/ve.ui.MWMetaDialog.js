@@ -56,10 +56,10 @@ ve.ui.MWMetaDialog.prototype.initialize = function () {
 
 	// Properties
 	this.categoriesFieldset = new ve.ui.FieldsetLayout( {
-		'$$': this.frame.$$, 'label': 'Categories', 'icon': 'tag'
+		'$$': this.frame.$$, 'label': ve.msg( 'visualeditor-dialog-meta-categories-data-label' ), 'icon': 'tag'
 	} );
 	this.categorySettingsFieldset = new ve.ui.FieldsetLayout( {
-		'$$': this.frame.$$, 'label': 'Category settings', 'icon': 'settings'
+		'$$': this.frame.$$, 'label': ve.msg( 'visualeditor-dialog-meta-categories-settings-label' ), 'icon': 'settings'
 	} );
 	this.categoryWidget = new ve.ui.MWCategoryWidget( {
 		'$$': this.frame.$$, '$overlay': this.surface.$globalOverlay
@@ -70,7 +70,7 @@ ve.ui.MWMetaDialog.prototype.initialize = function () {
 	this.defaultSortLabel = new ve.ui.InputLabelWidget( {
 		'$$': this.frame.$$,
 		'input': this.defaultSortInput,
-		'label': 'Default page name on category page'
+		'label': ve.msg( 'visualeditor-dialog-meta-categories-defaultsort-label' )
 	} );
 
 	// Events
@@ -84,14 +84,13 @@ ve.ui.MWMetaDialog.prototype.initialize = function () {
 
 	// Initialization
 	this.categoryWidget.addItems( this.getCategoryItems() );
-	this.addPage( 'categories', 'Categories', 'tag' );
+	this.addPage( 'categories', ve.msg( 'visualeditor-dialog-meta-categories-section' ), 'tag' );
 	// TODO: Implement language editing. Load page with:
-	// .addPage( 'languages', 'Languages', 'language' );
+	// .addPage( 'languages', ve.msg( 'visualeditor-dialog-meta-langlinks-section' ), 'language' );
+
 	this.pages.categories.$.append( this.categoriesFieldset.$, this.categorySettingsFieldset.$ );
 	this.categoriesFieldset.$.append( this.categoryWidget.$ );
-	this.categorySettingsFieldset.$.append(
-		this.defaultSortLabel.$, this.defaultSortInput.$
-	);
+	this.categorySettingsFieldset.$.append( this.defaultSortLabel.$, this.defaultSortInput.$ );
 };
 
 /**

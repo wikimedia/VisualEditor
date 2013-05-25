@@ -30,7 +30,7 @@ ve.ui.MWCategoryPopupWidget = function VeUiMwCategoryPopupWidget ( config ) {
 	} );
 	this.sortKeyInput = new ve.ui.TextInputWidget( { '$$': this.$$ } );
 	this.sortKeyLabel = new ve.ui.InputLabelWidget(
-		{ '$$': this.$$, '$input': this.sortKeyInput, 'label': 'Page name in category' }
+		{ '$$': this.$$, '$input': this.sortKeyInput, 'label': ve.msg ( 'visualeditor-dialog-meta-categories-sortkey-label' ) }
 	);
 	this.$sortKeyForm = this.$$( '<form>' ).addClass( 've-ui-mwCategorySortkeyForm' )
 		.append( this.sortKeyLabel.$, this.sortKeyInput.$ );

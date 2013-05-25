@@ -22,7 +22,7 @@
 ve.ui.MWCategoryInputWidget = function VeUiMWCategoryInputWidget( categoryWidget, config ) {
 	// Config intialization
 	config = ve.extendObject( {
-		'placeholder': ve.msg( 'visualeditor-category-input-placeholder' )
+		'placeholder': ve.msg( 'visualeditor-dialog-meta-categories-input-placeholder' )
 	}, config );
 
 	// Parent constructor
@@ -134,7 +134,7 @@ ve.ui.MWCategoryInputWidget.prototype.getLookupMenuItemsFromData = function ( da
 	// Add sections for non-empty groups
 	if ( newCategoryItems.length ) {
 		items.push( new ve.ui.MenuSectionItemWidget(
-			'newCategory', { '$$': menu$$, 'label': 'New category' }
+			'newCategory', { '$$': menu$$, 'label': ve.msg( 'visualeditor-dialog-meta-categories-input-newcategorylabel' ) }
 		) );
 		for ( i = 0, len = newCategoryItems.length; i < len; i++ ) {
 			item = newCategoryItems[i];
@@ -143,7 +143,7 @@ ve.ui.MWCategoryInputWidget.prototype.getLookupMenuItemsFromData = function ( da
 	}
 	if ( existingCategoryItems.length ) {
 		items.push( new ve.ui.MenuSectionItemWidget(
-			'inArticle', { '$$': menu$$, 'label': 'Move this category here' }
+			'inArticle', { '$$': menu$$, 'label': ve.msg( 'visualeditor-dialog-meta-categories-input-movecategorylabel' ) }
 		) );
 		for ( i = 0, len = existingCategoryItems.length; i < len; i++ ) {
 			item = existingCategoryItems[i];
@@ -152,7 +152,7 @@ ve.ui.MWCategoryInputWidget.prototype.getLookupMenuItemsFromData = function ( da
 	}
 	if ( matchingCategoryItems.length ) {
 		items.push( new ve.ui.MenuSectionItemWidget(
-			'matchingCategories', { '$$': menu$$, 'label': 'Matching categories' }
+			'matchingCategories', { '$$': menu$$, 'label': ve.msg( 'visualeditor-dialog-meta-categories-input-matchingcategorieslabel' ) }
 		) );
 		for ( i = 0, len = matchingCategories.length; i < len; i++ ) {
 			item = matchingCategories[i];

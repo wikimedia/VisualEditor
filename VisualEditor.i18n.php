@@ -25,8 +25,6 @@ $messages['en'] = array(
 	'visualeditor-ca-createsource' => 'Create source',
 	'visualeditor-ca-ve-edit' => 'VisualEditor',
 	'visualeditor-ca-ve-create' => 'VisualEditor',
-	'visualeditor-category-input-placeholder' => 'Add category',
-	'visualeditor-category-settings-label' => 'Category settings',
 	'visualeditor-dialog-meta-title' => 'Page settings',
 	'visualeditor-dialog-content-title' => 'Content settings',
 	'visualeditor-dialog-media-title' => 'Media settings',
@@ -81,6 +79,16 @@ $messages['en'] = array(
 	'visualeditor-historybutton-redo-tooltip' => 'Redo',
 	'visualeditor-inspector-close-tooltip' => 'Close',
 	'visualeditor-inspector-remove-tooltip' => 'Remove',
+	'visualeditor-dialog-meta-categories-section' => 'Categories',
+	'visualeditor-dialog-meta-categories-data-label' => 'Categories',
+	'visualeditor-dialog-meta-categories-settings-label' => 'Category settings',
+	'visualeditor-dialog-meta-categories-input-placeholder' => 'Add category',
+	'visualeditor-dialog-meta-categories-input-newcategorylabel' => 'New category',
+	'visualeditor-dialog-meta-categories-input-movecategorylabel' => 'Move this category here',
+	'visualeditor-dialog-meta-categories-input-matchingcategorieslabel' => 'Matching categories',
+	'visualeditor-dialog-meta-categories-sortkey-label' => 'Page name in category',
+	'visualeditor-dialog-meta-categories-defaultsort-label' => 'Default page name on category page',
+	'visualeditor-dialog-meta-langlinks-section' => 'Languages',
 	'visualeditor-viewpage-savewarning' => 'Are you sure you want to go back to view mode without saving first?',
 	'visualeditor-loadwarning' => 'Error loading data from server: $1. Would you like to retry?',
 	'visualeditor-loadwarning-token' => 'Error loading edit token from server: $1. Would you like to retry?',
@@ -145,9 +153,6 @@ If the page exists, the following link text is used: {{msg-mw|Visualeditor-ca-ed
 	'visualeditor-ca-ve-create' => '
 	Link text of the dedicated VisualEditor Create tab.
 {{Identical|visualeditor}}',
-	'visualeditor-category-input-placeholder' => 'Placeholder text for category input
-{{Identical|Add category}}',
-	'visualeditor-category-settings-label' => 'Title of category settings popup menu',
 	'visualeditor-dialog-meta-title' => 'MetaData dialog title text',
 	'visualeditor-dialog-content-title' => 'Content dialog title text',
 	'visualeditor-dialog-media-title' => 'Title for the editing dialog to set how a media item is displayed on the page',
@@ -216,6 +221,17 @@ See also:
 {{Identical|Redo}}',
 	'visualeditor-inspector-close-tooltip' => 'Tooltip for the button to close an inspector',
 	'visualeditor-inspector-remove-tooltip' => 'Tooltip for the button to remove an annotation in an inspector',
+	'visualeditor-dialog-meta-categories-section' => 'Label for the categories dialog section',
+	'visualeditor-dialog-meta-categories-data-label' => 'Label for the categories sub-section',
+	'visualeditor-dialog-meta-categories-settings-label' => 'Label for the category settings sub-section',
+	'visualeditor-dialog-meta-categories-input-placeholder' => 'Placeholder text for category input
+{{Identical|Add category}}',
+	'visualeditor-dialog-meta-categories-input-newcategorylabel' => 'Label for suggested categories for an uncreated category',
+	'visualeditor-dialog-meta-categories-input-movecategorylabel' => 'Label for moving a given category to end of list',
+	'visualeditor-dialog-meta-categories-input-matchingcategorieslabel' => 'Label for matching suggested categories',
+	'visualeditor-dialog-meta-categories-sortkey-label' => 'Label for setting the page\'s sort key for a given category',
+	'visualeditor-dialog-meta-categories-defaultsort-label' => 'Label for field setting the category default sort',
+	'visualeditor-dialog-meta-langlinks-section' => 'Label for the language links dialog section',
 	'visualeditor-viewpage-savewarning' => 'Text shown when the user tries to leave the editor without saving their changes',
 	'visualeditor-loadwarning' => 'Text (JavaScript confirm()) shown when the editor fails to load properly.
 
