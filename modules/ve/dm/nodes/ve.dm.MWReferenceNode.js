@@ -36,12 +36,11 @@ ve.dm.MWReferenceNode.static.isContent = true;
 ve.dm.MWReferenceNode.static.toDataElement = function ( domElements, converter ) {
 	var dataElement, listIndex,
 		about = domElements[0].getAttribute( 'about' ),
-		// TODO: this is always-present in the new spec, so "|| '{}'" can be removed later
 		mw = JSON.parse( domElements[0].getAttribute( 'data-mw' ) || '{}' ),
-		// TODO: this will be stored in mw.body.html in the new spec
-		body = JSON.parse( domElements[0].getAttribute( 'data-parsoid' ) ).src,
-		// TODO: this will be stored in mw.name in the new spec
-		name = $( body ).attr( 'name' ),
+		body = mw.body.html,
+		// TODO: this should use mw.attrs.name once available from Parsoid
+		name = $( domElements[0] ).children( 'a' ).attr( 'href' ),
+		// TODO: should also store and use mw.attrs.group once available from Parsoid
 		key = name !== null ? name : ve.getHash( body );
 
 	listIndex = converter.internalList.addItem( key, body );
@@ -58,7 +57,7 @@ ve.dm.MWReferenceNode.static.toDataElement = function ( domElements, converter )
 };
 
 ve.dm.MWReferenceNode.static.toDomElements = function ( dataElement, doc, converter ) {
-	var itemNodeHtml,
+	var itemNodeHtml, mw,
 		span = doc.createElement( 'span' ),
 		itemNodeWrapper = doc.createElement( 'div' ),
 		itemNode = converter.internalList.getItemNode( dataElement.attributes.listIndex ),
@@ -73,9 +72,9 @@ ve.dm.MWReferenceNode.static.toDomElements = function ( dataElement, doc, conver
 	),
 	itemNodeHtml = $( itemNodeWrapper ).html();
 
-	// TODO: store internalNodeHtml in data.mw:
-	// dataElement.attributes.mw.body.html = itemNodeHtml;
-	// span.setAttribute( 'data-mw', JSON.stringify( dataElement.attributes.mw ) );
+	mw = ( dataElement.attributes && ve.copyObject( dataElement.attributes.mw ) ) || {};
+	ve.setProp( mw, 'body', 'html', itemNodeHtml );
+	span.setAttribute( 'data-mw', JSON.stringify( mw ) );
 
 	return [ span ];
 };
