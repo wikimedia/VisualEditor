@@ -155,6 +155,7 @@ ve.ui.GridLayout.prototype.update = function () {
  * @method
  * @param {number} x Horizontal position
  * @param {number} y Vertical position
+ * @returns {ve.ui.PanelLayout} The panel at the given postion
  */
 ve.ui.GridLayout.prototype.getPanel = function ( x, y ) {
 	return this.panels[( x * this.widths.length ) + y];
