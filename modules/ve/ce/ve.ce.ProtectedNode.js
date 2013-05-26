@@ -105,6 +105,9 @@ ve.ce.ProtectedNode.prototype.onProtectedTeardown = function () {
 	// Shields
 	this.$shields.remove();
 	this.$shields = $( [] );
+
+	// Phantoms
+	this.clearPhantoms();
 };
 
 /**
