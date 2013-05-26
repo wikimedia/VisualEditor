@@ -1180,22 +1180,26 @@ ve.dm.example.domToDataCases = {
 			'<body>' +
 				'<p>Foo' +
 					'<span id="cite_ref-bar-1-0" class="reference" about="#mwt5" typeof="mw:Object/Ext/Ref" ' +
-						'data-parsoid="{&quot;src&quot:&quot;<ref name=\\&quot;bar\\&quot;>Bar</ref>&quot;}">'+
+						'data-parsoid="{&quot;src&quot:&quot;<ref name=\\&quot;bar\\&quot;>Bar</ref>&quot;}"'+
+						'data-mw="{&quot;body&quot;:{&quot;html&quot;:&quot;Bar&quot;}}">' +
 						'<a href="#cite_note-bar-1" data-parsoid="{}">[1]</a>' +
 					'</span>' +
 					' Baz' +
 					'<span id="cite_ref-quux-2-0" class="reference" about="#mwt6" typeof="mw:Object/Ext/Ref" ' +
-						'data-parsoid="{&quot;src&quot;:&quot;<ref name=\\&quot;quux\\&quot;>Quux</ref>&quot;}">' +
+						'data-parsoid="{&quot;src&quot;:&quot;<ref name=\\&quot;quux\\&quot;>Quux</ref>&quot;}"' +
+						'data-mw="{&quot;body&quot;:{&quot;html&quot;:&quot;Quux&quot;}}">' +
 						'<a href="#cite_note-quux-2" data-parsoid="{}">[2]</a>' +
 					'</span>' +
 					' Whee' +
 					'<span id="cite_ref-bar-1-1" class="reference" about="#mwt7" typeof="mw:Object/Ext/Ref" ' +
-						'data-parsoid="{&quot;src&quot;:&quot;<ref name=\\&quot;bar\\&quot; />&quot;}">' +
+						'data-parsoid="{&quot;src&quot;:&quot;<ref name=\\&quot;bar\\&quot; />&quot;}"' +
+						'data-mw="{&quot;body&quot;:{&quot;html&quot;:&quot;&quot;}}">' +
 						'<a href="#cite_note-bar-1" data-parsoid="{}">[1]</a>' +
 					'</span>' +
 					' Yay' +
 					'<span id="cite_ref-3-0" class="reference" about="#mwt8" typeof="mw:Object/Ext/Ref" ' +
-						'data-parsoid="{&quot;src&quot;:&quot;<ref>No name</ref>&quot;}">' +
+						'data-parsoid="{&quot;src&quot;:&quot;<ref>No name</ref>&quot;}"' +
+						'data-mw="{&quot;body&quot;:{&quot;html&quot;:&quot;No name&quot;}}">' +
 						'<a href="#cite_note-3" data-parsoid="{}">[3]</a>' +
 					'</span>' +
 				'</p>' +
@@ -1211,17 +1215,18 @@ ve.dm.example.domToDataCases = {
 				'attributes': {
 					'about': '#mwt5',
 					'listIndex': 0,
-					'mw': {}
+					'mw': { 'body': { 'html': 'Bar' } }
 				},
 				'htmlAttributes': [
 					{
-						'keys': [ 'id', 'class', 'about', 'typeof', 'data-parsoid' ],
+						'keys': [ 'id', 'class', 'about', 'typeof', 'data-parsoid', 'data-mw' ],
 						'values': {
 							'about': '#mwt5',
 							'class': 'reference',
+							'data-mw': '{"body":{"html":"Bar"}}',
 							'data-parsoid': '{"src":"<ref name=\\"bar\\">Bar</ref>"}',
 							'id': 'cite_ref-bar-1-0',
-							'typeof': 'mw:Object/Ext/Ref'
+							'typeof': 'mw:Object/Ext/Ref',
 						},
 						'children': [
 							{
@@ -1242,14 +1247,15 @@ ve.dm.example.domToDataCases = {
 				'attributes': {
 					'about': '#mwt6',
 					'listIndex': 1,
-					'mw': {}
+					'mw': { 'body': { 'html': 'Quux' } }
 				},
 				'htmlAttributes': [
 					{
-						'keys': [ 'id', 'class', 'about', 'typeof', 'data-parsoid' ],
+						'keys': [ 'id', 'class', 'about', 'typeof', 'data-parsoid', 'data-mw' ],
 						'values': {
 							'about': '#mwt6',
 							'class': 'reference',
+							'data-mw': '{"body":{"html":"Quux"}}',
 							'data-parsoid': '{"src":"<ref name=\\"quux\\">Quux</ref>"}',
 							'id': 'cite_ref-quux-2-0',
 							'typeof': 'mw:Object/Ext/Ref'
@@ -1273,14 +1279,15 @@ ve.dm.example.domToDataCases = {
 				'attributes': {
 					'about': '#mwt7',
 					'listIndex': 0,
-					'mw': {}
+					'mw': { 'body': { 'html': '' } }
 				},
 				'htmlAttributes': [
 					{
-						'keys': [ 'id', 'class', 'about', 'typeof', 'data-parsoid' ],
+						'keys': [ 'id', 'class', 'about', 'typeof', 'data-parsoid', 'data-mw' ],
 						'values': {
 							'about': '#mwt7',
 							'class': 'reference',
+							'data-mw': '{"body":{"html":""}}',
 							'data-parsoid': '{"src":"<ref name=\\"bar\\" />"}',
 							'id': 'cite_ref-bar-1-1',
 							'typeof': 'mw:Object/Ext/Ref'
@@ -1304,14 +1311,15 @@ ve.dm.example.domToDataCases = {
 				'attributes': {
 					'about': '#mwt8',
 					'listIndex': 2,
-					'mw': {}
+					'mw': { 'body': { 'html': 'No name' } }
 				},
 				'htmlAttributes': [
 					{
-						'keys': [ 'id', 'class', 'about', 'typeof', 'data-parsoid' ],
+						'keys': [ 'id', 'class', 'about', 'typeof', 'data-parsoid', 'data-mw' ],
 						'values': {
 							'about': '#mwt8',
 							'class': 'reference',
+							'data-mw': '{"body":{"html":"No name"}}',
 							'data-parsoid': '{"src":"<ref>No name</ref>"}',
 							'id': 'cite_ref-3-0',
 							'typeof': 'mw:Object/Ext/Ref'
@@ -1358,19 +1366,23 @@ ve.dm.example.domToDataCases = {
 		'normalizedHtml':
 			'<p>Foo' +
 				'<span id="cite_ref-bar-1-0" class="reference" about="#mwt5" typeof="mw:Object/Ext/Ref" ' +
-					'data-parsoid="{&quot;src&quot:&quot;<ref name=\\&quot;bar\\&quot;>Bar</ref>&quot;}">'+
+					'data-parsoid="{&quot;src&quot:&quot;<ref name=\\&quot;bar\\&quot;>Bar</ref>&quot;}"' +
+					'data-mw="{&quot;body&quot;:{&quot;html&quot;:&quot;Bar&quot;}}">' +
 				'</span>' +
 				' Baz' +
 				'<span id="cite_ref-quux-2-0" class="reference" about="#mwt6" typeof="mw:Object/Ext/Ref" ' +
-					'data-parsoid="{&quot;src&quot;:&quot;<ref name=\\&quot;quux\\&quot;>Quux</ref>&quot;}">' +
+					'data-parsoid="{&quot;src&quot;:&quot;<ref name=\\&quot;quux\\&quot;>Quux</ref>&quot;}"' +
+					'data-mw="{&quot;body&quot;:{&quot;html&quot;:&quot;Quux&quot;}}">' +
 				'</span>' +
 				' Whee' +
 				'<span id="cite_ref-bar-1-1" class="reference" about="#mwt7" typeof="mw:Object/Ext/Ref" ' +
-					'data-parsoid="{&quot;src&quot;:&quot;<ref name=\\&quot;bar\\&quot; />&quot;}">' +
+					'data-parsoid="{&quot;src&quot;:&quot;<ref name=\\&quot;bar\\&quot; />&quot;}"' +
+					'data-mw="{&quot;body&quot;:{&quot;html&quot;:&quot;Bar&quot;}}">' +
 				'</span>' +
 				' Yay' +
 				'<span id="cite_ref-3-0" class="reference" about="#mwt8" typeof="mw:Object/Ext/Ref" ' +
-					'data-parsoid="{&quot;src&quot;:&quot;<ref>No name</ref>&quot;}">' +
+					'data-parsoid="{&quot;src&quot;:&quot;<ref>No name</ref>&quot;}"' +
+					'data-mw="{&quot;body&quot;:{&quot;html&quot;:&quot;No name&quot;}}">' +
 				'</span>' +
 			'</p>' +
 			'<ol class="references" typeof="mw:Object/References"><li id="cite_note-quux-2"><a href="#cite_ref-quux-2-0">u2191</a>Quux</li></ol>'
