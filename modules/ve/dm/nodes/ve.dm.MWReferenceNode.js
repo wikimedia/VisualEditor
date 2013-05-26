@@ -57,7 +57,7 @@ ve.dm.MWReferenceNode.static.toDataElement = function ( domElements, converter )
 };
 
 ve.dm.MWReferenceNode.static.toDomElements = function ( dataElement, doc, converter ) {
-	var itemNodeHtml, mw,
+	var itemNodeHtml, mwAttr,
 		span = doc.createElement( 'span' ),
 		itemNodeWrapper = doc.createElement( 'div' ),
 		itemNode = converter.internalList.getItemNode( dataElement.attributes.listIndex ),
@@ -72,9 +72,9 @@ ve.dm.MWReferenceNode.static.toDomElements = function ( dataElement, doc, conver
 	),
 	itemNodeHtml = $( itemNodeWrapper ).html();
 
-	mw = ( dataElement.attributes && ve.copyObject( dataElement.attributes.mw ) ) || {};
-	ve.setProp( mw, 'body', 'html', itemNodeHtml );
-	span.setAttribute( 'data-mw', JSON.stringify( mw ) );
+	mwAttr = ( dataElement.attributes && ve.copyObject( dataElement.attributes.mw ) ) || {};
+	ve.setProp( mwAttr, 'body', 'html', itemNodeHtml );
+	span.setAttribute( 'data-mw', JSON.stringify( mwAttr ) );
 
 	return [ span ];
 };
