@@ -113,9 +113,6 @@ ve.ui.MWTemplateDialog.prototype.createParamPage = function ( key, value, paramD
 	// TODO: Use paramData.deprecation
 	// TODO: Use paramData.default
 	// TODO: Use paramData.type
-	fieldset = new ve.ui.FieldsetLayout( { '$$': this.frame.$$, 'label': label, 'icon': 'parameter' } );
-	textInput = new ve.ui.TextInputWidget( { '$$': this.frame.$$, 'multiline': true } );
-	textInput.$input.css('height', 100);
 
 	if ( description  ) {
 		inputLabel = new ve.ui.InputLabelWidget( {
