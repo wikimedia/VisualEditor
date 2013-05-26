@@ -88,7 +88,7 @@ $messages['en'] = array(
 	'visualeditor-dialog-meta-categories-input-matchingcategorieslabel' => 'Matching categories',
 	'visualeditor-dialog-meta-categories-sortkey-label' => 'Page name in category',
 	'visualeditor-dialog-meta-categories-defaultsort-label' => 'Default page name on category page',
-	'visualeditor-dialog-meta-langlinks-section' => 'Languages',
+	'visualeditor-dialog-meta-languages-section' => 'Languages',
 	'visualeditor-viewpage-savewarning' => 'Are you sure you want to go back to view mode without saving first?',
 	'visualeditor-loadwarning' => 'Error loading data from server: $1. Would you like to retry?',
 	'visualeditor-loadwarning-token' => 'Error loading edit token from server: $1. Would you like to retry?',
@@ -233,7 +233,7 @@ See also:
 	'visualeditor-dialog-meta-categories-input-matchingcategorieslabel' => 'Label for matching suggested categories',
 	'visualeditor-dialog-meta-categories-sortkey-label' => "Label for setting the page's sort key for a given category",
 	'visualeditor-dialog-meta-categories-defaultsort-label' => 'Label for field setting the category default sort',
-	'visualeditor-dialog-meta-langlinks-section' => 'Label for the language links dialog section',
+	'visualeditor-dialog-meta-languages-section' => 'Label for the language links dialog section',
 	'visualeditor-viewpage-savewarning' => 'Text shown when the user tries to leave the editor without saving their changes',
 	'visualeditor-loadwarning' => 'Text (JavaScript confirm()) shown when the editor fails to load properly.
 

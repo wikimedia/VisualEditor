@@ -525,7 +525,7 @@ $wgResourceModules += array(
 			'visualeditor-dialog-meta-categories-input-matchingcategorieslabel',
 			'visualeditor-dialog-meta-categories-sortkey-label',
 			'visualeditor-dialog-meta-categories-defaultsort-label',
-			'visualeditor-dialog-meta-langlinks-section',
+			'visualeditor-dialog-meta-languages-section',
 		),
 	),
 	'ext.visualEditor.experimental' => $wgVisualEditorResourceTemplate + array(
