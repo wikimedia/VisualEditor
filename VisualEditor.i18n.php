@@ -101,6 +101,7 @@ $messages['en'] = array(
 	'visualeditor-aliennode-tooltip' => 'Sorry, this element cannot be edited using the VisualEditor',
 	'visualeditor-descriptionpagelink' => 'Project:VisualEditor',
 	'visualeditor-alphawarning' => 'You are using an alpha version of the [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]. It may be slow and make erroneous changes—please check each edit that you make.',
+	'visualeditor-browserwarning' => 'You are using a browser which is not officially supported by VisualEditor.',
 	'visualeditor-report-notice' => 'I understand that by clicking "Report problem" I will transmit my changes and my feedback, which will be stored for analysis. I agree to provide feedback in accordance with the [[{{MediaWiki:Visualeditor-report-link}}|Terms of Use]].',
 	'visualeditor-report-link' => 'foundation:Terms of Use',
 	'visualeditor-feedback-link' => 'Project:VisualEditor/Feedback',

@@ -16,7 +16,15 @@
  * @constructor
  */
 ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
-	var currentUri = new mw.Uri( window.location.toString() );
+	var browserWhitelisted,
+		browserBlacklisted,
+		currentUri = new mw.Uri( window.location.toString() ),
+		supportsStrictMode = ( function () {
+			'use strict';
+			return this === undefined;
+		}() ),
+		// TODO: MW test runner fires before document.body exists, so we just skip it here.
+		supportsContentEditable = document.body && 'contentEditable' in document.body;
 
 	// Parent constructor
 	ve.init.mw.Target.call(
@@ -61,16 +69,21 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 		mw.config.get( 'wgAction' ) === 'view' &&
 		currentUri.query.diff === undefined
 	);
-	this.canBeActivated = (
-		$.client.test( ve.init.mw.ViewPageTarget.compatibility ) ||
-		'vewhitelist' in currentUri.query
-	);
 	this.originalDocumentTitle = document.title;
 	this.editSummaryByteLimit = 255;
 	// Tab layout.
 	// * add: Adds #ca-ve-edit.
 	// * replace: Re-creates #ca-edit for VisualEditor and adds #ca-editsource.
 	this.tabLayout = 'replace';
+
+	browserWhitelisted = (
+		$.client.test( ve.init.mw.ViewPageTarget.compatibility, null, true ) ||
+		'vewhitelist' in currentUri.query
+	);
+	browserBlacklisted = (
+		$.client.test( ve.init.mw.ViewPageTarget.compatibility, null, true ) ||
+		'veblacklist' in currentUri.query
+	);
 
 	// Events
 	this.connect( this, {
@@ -87,7 +100,11 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 	} );
 
 	// Initialization
-	if ( this.canBeActivated ) {
+	if ( supportsStrictMode && supportsContentEditable && !this.browserBlacklisted ) {
+		if ( !this.browserWhitelisted || true ) {
+			// show warning
+			this.localNoticeMessages.push( 'visualeditor-browserwarning' );
+		}
 		if ( currentUri.query.venotify ) {
 			// The following messages can be used here:
 			// visualeditor-notification-saved
@@ -128,27 +145,22 @@ ve.inheritClass( ve.init.mw.ViewPageTarget, ve.init.mw.Target );
  * @property
  */
 ve.init.mw.ViewPageTarget.compatibility = {
-	// Left-to-right languages
-	ltr: {
-		msie: [['>=', 9]],
-		firefox: [['>=', 11]],
-		iceweasel: [['>=', 10]],
-		safari: [['>=', 5]],
-		chrome: [['>=', 19]],
-		opera: false,
-		netscape: false,
-		blackberry: false
+	// The key is the browser name returned by jQuery.client
+	// The value is either null (match all versions) or a list of tuples
+	// containing an inequality (<,>,<=,>=) and a version number
+	whitelist: {
+		'msie': [['>=', 9]],
+		'firefox': [['>=', 11]],
+		'iceweasel': [['>=', 10]],
+		'safari': [['>=', 5]],
+		'chrome': [['>=', 19]]
 	},
-	// Right-to-left languages
-	rtl: {
-		msie: [['>=', 9]],
-		firefox: [['>=', 11]],
-		iceweasel: [['>=', 10]],
-		safari: [['>=', 5]],
-		chrome: [['>=', 19]],
-		opera: false,
-		netscape: false,
-		blackberry: false
+	blacklist: {
+		'msie': [['<', 9]],
+		'android': [['<', 3]],
+		// Blacklist all versions:
+		'opera': null,
+		'blackberry': null
 	}
 };
 
