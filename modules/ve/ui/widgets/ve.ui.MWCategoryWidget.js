@@ -140,7 +140,7 @@ ve.ui.MWCategoryWidget.prototype.onSavePopupState = function () {
  * Toggles popup menu per category item
  * @param {Object} item
  */
-ve.ui.MWCategoryWidget.prototype.onTogglePoupupMenu = function ( item ) {
+ve.ui.MWCategoryWidget.prototype.onTogglePopupMenu = function ( item ) {
 	// Close open popup.
 	if ( this.savedPopupState === false || item.value !== this.popup.category ) {
 		this.popup.openPopup( item );
@@ -184,7 +184,7 @@ ve.ui.MWCategoryWidget.prototype.addItems = function ( items, index ) {
 		categoryItem = new ve.ui.MWCategoryItemWidget( { '$$': this.$$, 'item': item } );
 		categoryItem.connect( this, {
 			'savePopupState': 'onSavePopupState',
-			'togglePopupMenu': 'onTogglePoupupMenu'
+			'togglePopupMenu': 'onTogglePopupMenu'
 		} );
 		// Auto-remove existing items by value
 		if ( item.value in this.categories ) {
