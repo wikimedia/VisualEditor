@@ -916,7 +916,12 @@ ve.ce.Surface.prototype.handleLeftOrRightArrowKey = function ( e ) {
 	// Stop with final poll cycle so we have correct information in model
 	this.surfaceObserver.stop( true );
 	selection = this.model.getSelection();
-	offsetDelta = e.keyCode === ve.Keys.LEFT ? -1 : 1;
+	if ( this.$$( e.target ).css( 'direction' ) === 'rtl' ) {
+		// If the language direction is RTL, switch left/right directions:
+		offsetDelta = e.keyCode === ve.Keys.LEFT ? 1 : -1;
+	} else {
+		offsetDelta = e.keyCode === ve.Keys.LEFT ? -1 : 1;
+	}
 
 	// Check for selecting/deselecting inline images and aliens
 	if ( selection.isCollapsed() ) {
