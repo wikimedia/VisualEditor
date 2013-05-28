@@ -56,15 +56,11 @@ ve.ui.MWTemplateDialog.prototype.onOpen = function () {
 		ve.ui.PagedDialog.prototype.onOpen.call( self );
 
 		// Add template page
-		self.addPage( 'template', mwAttr.target.wt, 'template' );
+		self.addPage( 'template', { 'label': mwAttr.target.wt, 'icon': 'template' } );
 
 		// Loop through parameters
 		for ( param in mwAttr.params ) {
-			self.createParamPage(
-				param,
-				mwAttr.params[param],
-				paramsData && paramsData[param]
-			);
+			self.createParamPage( param, mwAttr.params[param], paramsData && paramsData[param] );
 		}
 
 		// TODO: Ability to remove parameters
@@ -125,7 +121,7 @@ ve.ui.MWTemplateDialog.prototype.createParamPage = function ( key, value, paramD
 
 	fieldset.$.append( textInput.$ );
 
-	this.addPage( pageName, label, 'parameter', 1 );
+	this.addPage( pageName, { 'label': label, 'icon': 'parameter', 'level': 1 } );
 	this.pages[pageName].$.append( fieldset.$ );
 
 	this.paramsKeys.push( key );

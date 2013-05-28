@@ -77,18 +77,28 @@ ve.ui.PagedDialog.prototype.onOutlineSelect = function ( item ) {
  *
  * @method
  * @param {string} name Symbolic name of page
- * @param {jQuery|string} [label] Page label
- * @param {string} [icon] Symbolic name of icon
- * @param {number} [level=0] Indentation level
+ * @param {Object} [config] Condifugration options
+ * @param {jQuery|string} [config.label] Page label
+ * @param {string} [config.icon] Symbolic name of icon
+ * @param {number} [config.level=0] Indentation level
+ * @param {number} [config.index] Specific index to insert page at
  * @chainable
  */
-ve.ui.PagedDialog.prototype.addPage = function ( name, label, icon, level ) {
-	var config = { '$$': this.frame.$$, 'icon': icon, 'label': label || name, 'level': level || 0 };
-
+ve.ui.PagedDialog.prototype.addPage = function ( name, config ) {
 	// Create and add page panel and outline item
-	this.pages[name] = new ve.ui.PanelLayout( config );
-	this.pagesPanel.addItems( [this.pages[name]] );
-	this.outlineWidget.addItems( [ new ve.ui.OutlineItemWidget( name, config ) ] );
+	this.pages[name] = new ve.ui.PanelLayout( { '$$': this.frame.$$, 'scroll': true } );
+	this.pagesPanel.addItems( [this.pages[name]], config.index );
+	this.outlineWidget.addItems(
+		[
+			new ve.ui.OutlineItemWidget( name, {
+				'$$': this.frame.$$,
+				'label': config.label || name,
+				'level': config.level || 0,
+				'icon': config.icon
+			} )
+		],
+		config.index
+	);
 
 	// Auto-select first item when nothing is selected yet
 	if ( !this.outlineWidget.getSelectedItem() ) {
