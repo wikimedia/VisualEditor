@@ -23,6 +23,11 @@
 ve.ui.MWTemplateDialog = function VeUiMWTemplateDialog( surface, config ) {
 	// Parent constructor
 	ve.ui.PagedDialog.call( this, surface, config );
+
+	// Properties
+	this.node = null;
+	this.content = null;
+	this.specs = {};
 };
 
 /* Inheritance */
@@ -40,75 +45,233 @@ ve.ui.MWTemplateDialog.static.modelClasses = [ ve.dm.MWTemplateNode ];
 /* Methods */
 
 /**
- * Handle frame ready events.
+ * Handle frame open events.
+ *
+ * @method
  */
 ve.ui.MWTemplateDialog.prototype.onOpen = function () {
-	var self = this,
-		mwAttr = this.surface.view.focusedNode.model.getAttribute( 'mw' );
+	var i, len, template, title,
+		templates = [];
 
-	function handle( templateData ) {
-		var param,
-			paramsData = templateData && templateData.params;
-		self.paramsKeys = [];
-		self.paramsToInputs = {};
-
-		// Parent method
-		ve.ui.PagedDialog.prototype.onOpen.call( self );
-
-		// Add template page
-		self.addPage( 'template', { 'label': mwAttr.target.wt, 'icon': 'template' } );
-
-		// Loop through parameters
-		for ( param in mwAttr.params ) {
-			self.createParamPage( param, mwAttr.params[param], paramsData && paramsData[param] );
-		}
-
-		// TODO: Ability to remove parameters
-		// TODO: Ability to add other parameters in paramsData
-		// Also account for paramsData#aliases
-		// TODO: Ability to add arbitrary parameters
-		// TODO: Use templateData.sets
+	this.node = this.surface.getView().getFocusedNode();
+	if ( !this.node ) {
+		throw new Error( 'No focused node to edit' );
 	}
 
-	this.getTemplateData( mwAttr.target )
-		.done( handle )
-		.fail( function ( errorCode, details ) {
-			mw.log( 'TemplateData unavailable: ' + errorCode, mwAttr.target, details );
-			handle();
-		} );
+	// Get content values
+	this.content = ve.copyObject( this.node.getModel().getAttribute( 'mw' ) );
+	// Convert single template format to multiple template format
+	if ( this.content.params ) {
+		this.content = { 'parts': [ { 'template': this.content } ] };
+	}
+	// Get all template data asynchronously
+	for ( i = 0, len = this.content.parts.length; i < len; i++ ) {
+		template = this.content.parts[i].template;
+		if ( template ) {
+			if ( template.target.url ) {
+				try {
+					title = new mw.Title( template.target.url );
+					templates.push( {
+						'title': title.toString(),
+						'params': template.params
+					} );
+				} catch ( e ) {}
+			}
+		} else {
+			// Wrap plain wikitext in object so editor has something to reference
+			this.content.parts[i] = { 'wt': this.content.parts[i] };
+		}
+	}
+	if ( templates.length ) {
+		this.getTemplateData( templates )
+			.done( ve.bind( function ( specs ) {
+				this.specs = specs;
+			}, this ) )
+			.always( ve.bind( this.setupPages, this ) );
+	} else {
+		this.setupPages();
+	}
 };
 
 /**
- * Handle creating page for single parameter.
+ * Handle window close events.
  *
- * @param {string} key Template parameter name
- * @param {Object} value Value container with `wt` property
- * @param {Object} paramData Param object from TemplateData
+ * @method
+ * @param {string} action Action that caused the window to be closed
  */
-ve.ui.MWTemplateDialog.prototype.createParamPage = function ( key, value, paramData ) {
-	var fieldset, textInput, inputLabel,
-		pageName = 'parameter_' + key,
-		label = paramData && paramData.label ? paramData.label.en : key,
-		description = paramData && paramData.description && paramData.description.en;
+ve.ui.MWTemplateDialog.prototype.onClose = function ( action ) {
+	var i, len, wt,
+		surfaceModel = this.surface.getModel();
 
-	// Label
+	// Save changes
+	if ( action === 'apply' ) {
+		// Expand wikitext content
+		for ( i = 0, len = this.content.parts.length; i < len; i++ ) {
+			wt = this.content.parts[i].wt;
+			if ( typeof wt === 'string' ) {
+				// Replace object wrapper with plain text
+				this.content.parts[i] = wt;
+			}
+		}
+		// Restore single template format
+		if ( this.content.parts.length === 1 ) {
+			this.content = this.content.parts[0].template;
+		}
+		// TODO: Wrap attribute changes in ve.dm.SurfaceFragment
+		surfaceModel.change(
+			ve.dm.Transaction.newFromAttributeChange(
+				surfaceModel.getDocument(), this.node.getOffset(), 'mw', this.content
+			)
+		);
+	}
+
+	this.clearPages();
+	this.node = null;
+	this.content = null;
+	this.specs = {};
+
+	// Parent method
+	ve.ui.PagedDialog.prototype.onClose.call( this );
+};
+
+/**
+ * Handle template data load events.
+ *
+ * @method
+ */
+ve.ui.MWTemplateDialog.prototype.setupPages = function () {
+	// Build pages from parts
+	var i, len, template, spec, param,
+		parts = this.content.parts,
+		specs = this.specs;
+
+	// Parent method
+	ve.ui.PagedDialog.prototype.onOpen.call( this );
+
+	// Populate pages
+	for ( i = 0, len = parts.length; i < len; i++ ) {
+		if ( parts[i].template ) {
+			template = parts[i].template;
+			spec = specs[template.target.url];
+			// Add template page
+			this.addPage( 'part_' + i, { 'label': template.target.url, 'icon': 'template' } );
+			// Add parameter pages
+			for ( param in template.params ) {
+				this.addParameterPage(
+					'part_' + i + '_param_' + param,
+					param,
+					template.params[param],
+					spec.params[param]
+				);
+			}
+		} else if ( parts[i].wt ) {
+			// Add wikitext page
+			this.addWikitextPage( 'part_' + i, parts[i] );
+		}
+	}
+};
+
+/**
+ * Get a promise for template data.
+ *
+ * TODO: Backfill template info from params objects
+ *
+ * @method
+ * @param {Object[]} templates Template information containing `title` and `params` properties
+ * @return {jQuery.Promise} Template data blob on success, or an error code on failure
+ */
+ve.ui.MWTemplateDialog.prototype.getTemplateData = function ( templates ) {
+	var i, len,
+		titles = [],
+		specs = {},
+		deferred = $.Deferred();
+
+	// Collect all titles
+	for ( i = 0, len = templates.length; i < len; i++ ) {
+		titles.push( templates[i].title );
+	}
+
+	// Request template data from server
+	$.ajax( {
+		'url': mw.util.wikiScript( 'api' ),
+		'dataType': 'json',
+		'data': {
+			'format': 'json',
+			'action': 'templatedata',
+			'titles': titles.join( '|' )
+		}
+	} )
+		.done( function ( data ) {
+			var id;
+			if ( data && data.pages ) {
+				// Add template data to spec
+				for ( id in data.pages ) {
+					specs[data.pages[id].title] = data.pages[id];
+				}
+				deferred.resolve( specs );
+			}
+			deferred.reject( 'unavailable', arguments );
+		} )
+		.fail( function () {
+			deferred.reject( 'http', arguments );
+		} );
+
+	return deferred.promise();
+};
+
+/**
+ * Add page for wikitext.
+ *
+ * @method
+ * @param {string} page Unique page name
+ * @param {Object} value Parameter value
+ */
+ve.ui.MWTemplateDialog.prototype.addWikitextPage = function ( page, value ) {
+	var fieldset, textInput;
+
 	fieldset = new ve.ui.FieldsetLayout( {
-		'$$': this.$$,
+		'$$': this.frame.$$,
+		'label': 'Content',
+		'icon': 'source'
+	} );
+
+	textInput = new ve.ui.TextInputWidget( { '$$': this.frame.$$, 'multiline': true } );
+	textInput.$input.css( { 'height': 100, 'width': '100%' } );
+	textInput.setValue( value.wt );
+	textInput.on( 'change', function () {
+		value.wt = textInput.getValue();
+	} );
+
+	this.addPage( page, { 'label': 'Content', 'icon': 'source' } );
+	this.pages[page].$.append( fieldset.$.append( textInput.$ ) );
+};
+
+/**
+ * Add page for a parameter.
+ *
+ * @method
+ * @param {string} page Unique page name
+ * @param {string} name Parameter name
+ * @param {Object} value Parameter value
+ * @param {Object} spec Parameter specification
+ */
+ve.ui.MWTemplateDialog.prototype.addParameterPage = function ( page, name, value, spec ) {
+	var fieldset, textInput, inputLabel,
+		label = spec && spec.label ? spec.label.en : name,
+		description = spec && spec.description && spec.description.en;
+
+	fieldset = new ve.ui.FieldsetLayout( {
+		'$$': this.frame.$$,
 		'label': label,
 		'icon': 'parameter'
 	} );
 
-	textInput = new ve.ui.TextInputWidget( {
-		'$$': this.$$,
-		'multiline': true
-	} );
-	textInput.$input.css( 'height', 100 );
+	textInput = new ve.ui.TextInputWidget( { '$$': this.frame.$$, 'multiline': true } );
+	textInput.$input.css( { 'height': 100, 'width': '100%' } );
 	textInput.setValue( value.wt );
-
-	// TODO: Use paramData.requred
-	// TODO: Use paramData.deprecation
-	// TODO: Use paramData.default
-	// TODO: Use paramData.type
+	textInput.on( 'change', function () {
+		value.wt = textInput.getValue();
+	} );
 
 	if ( description  ) {
 		inputLabel = new ve.ui.InputLabelWidget( {
@@ -119,93 +282,13 @@ ve.ui.MWTemplateDialog.prototype.createParamPage = function ( key, value, paramD
 		fieldset.$.append( inputLabel.$ );
 	}
 
-	fieldset.$.append( textInput.$ );
+	// TODO: Use spec.required
+	// TODO: Use spec.deprecation
+	// TODO: Use spec.default
+	// TODO: Use spec.type
 
-	this.addPage( pageName, { 'label': label, 'icon': 'parameter', 'level': 1 } );
-	this.pages[pageName].$.append( fieldset.$ );
-
-	this.paramsKeys.push( key );
-	this.paramsToInputs[key] = textInput;
-};
-
-/**
- * @param {Object} template Information about the template target from Parsoid.
- *  Contains a `wt` property containing the wikitext of the invocation target.
- *  This is unprocessed so it can start with : and/or lack the proper namespace
- *  prefix for templates in the Template namespace.
- * @return {jQuery.Promise} Template data blob on success, or an error code on failure.
- */
-ve.ui.MWTemplateDialog.prototype.getTemplateData = function ( template ) {
-	var title,
-		d = $.Deferred();
-	if ( !template.wt || template.wt.indexOf( '{' ) !== -1 ) {
-		// Name contains wikitext, need Parsoid to provide name (bug 48663)
-		d.reject( 'complicated' );
-	}
-	// In sample cases we'll handle the namespace fallback (should ultimately
-	// be done by Parsoid, bug 48663). If the title has no namespace prefix,
-	// assume NS_TEMPLATE namespace (like MediaWiki does)
-	title = new mw.Title( template.wt );
-	if ( title.getNamespaceId() === 0 && title.toString()[0] !== ':' ) {
-		title = new mw.Title( template.wt, mw.config.get( 'wgNamespaceIds' ).template );
-	}
-	title = title.toString();
-	$.ajax( {
-		'url': mw.util.wikiScript( 'api' ),
-		'dataType': 'json',
-		'data': {
-			'format': 'json',
-			'action': 'templatedata',
-			'titles': title
-		}
-	} ).done( function ( data ) {
-		var pageid, page;
-		if ( data && data.pages ) {
-			for ( pageid in data.pages ) {
-				page = data.pages[pageid];
-				if ( page.title === title ) {
-					d.resolve( page );
-					return;
-				}
-			}
-		}
-		d.reject( 'unavailable', arguments );
-	} ).fail( function () {
-		d.reject( 'http', arguments );
-	} );
-
-	return d.promise();
-};
-
-/**
- * Handle frame ready events.
- *
- * @param {string} action Action that caused the window to be closed
- */
-ve.ui.MWTemplateDialog.prototype.onClose = function ( action ) {
-	var mwAttr, i;
-	// Parent method
-	ve.ui.PagedDialog.prototype.onOpen.call( this );
-
-	if ( action === 'apply' ) {
-		mwAttr = ve.cloneObject( this.surface.view.focusedNode.model.getAttribute( 'mw' ) );
-		mwAttr.params = {};
-		for ( i = 0; i < this.paramsKeys.length; i++ ) {
-			mwAttr.params[this.paramsKeys[i]] = {
-				'wt': this.paramsToInputs[this.paramsKeys[i]].getValue()
-			};
-		}
-		this.surface.model.change(
-			ve.dm.Transaction.newFromAttributeChange(
-				this.surface.model.documentModel,
-				this.surface.view.focusedNode.getOffset(),
-				'mw',
-				mwAttr
-			)
-		);
-	}
-
-	this.clearPages();
+	this.addPage( page, { 'label': label, 'icon': 'parameter', 'level': 1 } );
+	this.pages[page].$.append( fieldset.$.append( textInput.$ ) );
 };
 
 /* Registration */

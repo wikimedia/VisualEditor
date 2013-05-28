@@ -125,16 +125,37 @@ ve.dm.MWTemplateNode.static.escapeParameter = function ( param ) {
 
 /**
  * Get the wikitext for this template invocation.
+ *
+ * @method
  * @returns {string} Wikitext like `{{foo|1=bar|baz=quux}}`
  */
 ve.dm.MWTemplateNode.prototype.getWikitext = function () {
-	var key, mw = this.element.attributes.mw,
-		result = '{{' + mw.target.wt;
-	for ( key in mw.params ) {
-		result += '|' + key + '=' + this.constructor.static.escapeParameter( mw.params[key].wt );
+	var i, len, part, template, param,
+		content = this.getAttribute( 'mw' ),
+		wikitext = '';
+
+	// Normalize to multi template format
+	if ( content.params ) {
+		content = { 'parts': [ { 'template': content } ] };
 	}
-	result += '}}';
-	return result;
+	// Build wikitext from content
+	for ( i = 0, len = content.parts.length; i < len; i++ ) {
+		part = content.parts[i];
+		if ( part.template ) {
+			// Template
+			template = part.template;
+			wikitext += '{{' + template.target.wt;
+			for ( param in template.params ) {
+				wikitext += '|' + param + '=' +
+					this.constructor.static.escapeParameter( template.params[param].wt );
+			}
+			wikitext += '}}';
+		} else {
+			// Plain wikitext
+			wikitext += part;
+		}
+	}
+	return wikitext;
 };
 
 /* Concrete subclasses */
