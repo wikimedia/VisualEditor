@@ -24,9 +24,9 @@ ve.inheritClass( ve.dm.MWDefaultSortMetaItem, ve.dm.MetaItem );
 
 /* Static Properties */
 
-ve.dm.MWDefaultSortMetaItem.static.name = 'MWdefaultSort';
+ve.dm.MWDefaultSortMetaItem.static.name = 'mwDefaultSort';
 
-ve.dm.MWDefaultSortMetaItem.static.group = 'MWdefaultSort';
+ve.dm.MWDefaultSortMetaItem.static.group = 'mwDefaultSort';
 
 ve.dm.MWDefaultSortMetaItem.static.matchTagNames = [ 'meta' ];
 

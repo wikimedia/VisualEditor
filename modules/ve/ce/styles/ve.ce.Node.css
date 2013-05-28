@@ -153,11 +153,11 @@
 
 /* ve.ce.MWTemplateNode */
 
-.ve-ce-MWtemplateBlockNode {
+.ve-ce-mwTemplateBlockNode {
 	display: block;
 }
 
-.ve-ce-MWtemplateInlineNode {
+.ve-ce-mwTemplateInlineNode {
 	display: inline-block;
 }
 

@@ -24,13 +24,13 @@ ve.inheritClass( ve.dm.MWBlockImageNode, ve.dm.BranchNode );
 
 /* Static Properties */
 
-ve.dm.MWBlockImageNode.static.name = 'MWblockimage';
+ve.dm.MWBlockImageNode.static.name = 'mwBlockImage';
 
 ve.dm.MWBlockImageNode.static.storeHtmlAttributes = [ 'data-parsoid' ];
 
 ve.dm.MWBlockImageNode.static.handlesOwnChildren = true;
 
-ve.dm.MWBlockImageNode.static.childNodeTypes = [ 'MWimagecaption' ];
+ve.dm.MWBlockImageNode.static.childNodeTypes = [ 'mwImageCaption' ];
 
 // Match typeof="mw:Image/Thumb" and typeof="mw:Image/Frame"
 ve.dm.MWBlockImageNode.static.matchRdfaTypes = [ /mw:Image\/(Thumb|Frame)/ ];
@@ -84,15 +84,15 @@ ve.dm.MWBlockImageNode.static.toDataElement = function ( domElements, converter 
 
 	if ( $caption.length === 0 ) {
 		return [
-			{ 'type': 'MWblockimage', 'attributes': attributes },
-			{ 'type': 'MWimagecaption' },
-			{ 'type': '/MWimagecaption' },
-			{ 'type': '/MWblockimage' }
+			{ 'type': 'mwBlockImage', 'attributes': attributes },
+			{ 'type': 'mwImageCaption' },
+			{ 'type': '/mwImageCaption' },
+			{ 'type': '/mwBlockImage' }
 		];
 	} else {
-		return [ { 'type': 'MWblockimage', 'attributes': attributes } ].
-			concat( converter.getDataFromDomRecursionClean( $caption[0], { 'type': 'MWimagecaption' } ) ).
-			concat( [ { 'type': '/MWblockimage' } ] );
+		return [ { 'type': 'mwBlockImage', 'attributes': attributes } ].
+			concat( converter.getDataFromDomRecursionClean( $caption[0], { 'type': 'mwImageCaption' } ) ).
+			concat( [ { 'type': '/mwBlockImage' } ] );
 	}
 };
 

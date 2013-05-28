@@ -19,7 +19,7 @@ ve.ce.MWExternalLinkAnnotation = function VeCeMWExternalLinkAnnotation( model, c
 	ve.ce.LinkAnnotation.call( this, model, config );
 
 	// DOM changes
-	this.$.addClass( 've-ce-MWExternalLinkAnnotation' );
+	this.$.addClass( 've-ce-mwExternalLinkAnnotation' );
 	this.$.attr( 'title', model.getAttribute( 'href' ) );
 };
 
@@ -29,7 +29,7 @@ ve.inheritClass( ve.ce.MWExternalLinkAnnotation, ve.ce.LinkAnnotation );
 
 /* Static Properties */
 
-ve.ce.MWExternalLinkAnnotation.static.name = 'link/MWexternal';
+ve.ce.MWExternalLinkAnnotation.static.name = 'link/mwExternal';
 
 /* Registration */
 

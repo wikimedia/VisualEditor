@@ -26,14 +26,17 @@ ve.inheritClass( ve.dm.MWTemplateNode, ve.dm.GeneratedContentNode );
 
 /* Static members */
 
-ve.dm.MWTemplateNode.static.name = 'MWtemplate';
+ve.dm.MWTemplateNode.static.name = 'mwTemplate';
 
 ve.dm.MWTemplateNode.static.matchTagNames = null;
 
-// We're interested in all nodes that have mw:Object/Template, even if they also have other mw:
-// types. So we match all mw: types, then use a matchFunction to assert that mw:Object/Template
-// is in there.
-ve.dm.MWTemplateNode.static.matchRdfaTypes = [ 'mw:Object/Template', /^mw:/ ];
+ve.dm.MWTemplateNode.static.matchRdfaTypes = [
+	'mw:Object/Template',
+	// We're interested in all nodes that have mw:Object/Template, even if they also have other mw:
+	// types. So we match all mw: types, then use a matchFunction to assert that mw:Object/Template
+	// is in there.
+	/^mw:/
+];
 
 ve.dm.MWTemplateNode.static.matchFunction = function ( domElement ) {
 	return ve.indexOf( 'mw:Object/Template',
@@ -52,7 +55,7 @@ ve.dm.MWTemplateNode.static.toDataElement = function ( domElements, converter ) 
 	var dataElement,
 		mw = JSON.parse( domElements[0].getAttribute( 'data-mw' ) ),
 		isInline = this.isHybridInline( domElements, converter ),
-		type = isInline ? 'MWtemplateInline' : 'MWtemplateBlock';
+		type = isInline ? 'mwTemplateInline' : 'mwTemplateBlock';
 
 	dataElement = {
 		'type': type,
@@ -154,7 +157,7 @@ ve.inheritClass( ve.dm.MWTemplateBlockNode, ve.dm.MWTemplateNode );
 
 ve.dm.MWTemplateBlockNode.static.matchTagNames = [];
 
-ve.dm.MWTemplateBlockNode.static.name = 'MWtemplateBlock';
+ve.dm.MWTemplateBlockNode.static.name = 'mwTemplateBlock';
 
 /**
  * DataModel MediaWiki template inline node.
@@ -174,7 +177,7 @@ ve.inheritClass( ve.dm.MWTemplateInlineNode, ve.dm.MWTemplateNode );
 
 ve.dm.MWTemplateInlineNode.static.matchTagNames = [];
 
-ve.dm.MWTemplateInlineNode.static.name = 'MWtemplateInline';
+ve.dm.MWTemplateInlineNode.static.name = 'mwTemplateInline';
 
 ve.dm.MWTemplateInlineNode.static.isContent = true;
 

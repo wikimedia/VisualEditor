@@ -37,7 +37,7 @@ ve.inheritClass( ve.ce.MWInlineImageNode, ve.ce.ImageNode );
 
 /* Static Properties */
 
-ve.ce.MWInlineImageNode.static.name = 'MWinlineimage';
+ve.ce.MWInlineImageNode.static.name = 'mwInlineImage';
 
 ve.ce.MWInlineImageNode.static.tagName = 'img';
 

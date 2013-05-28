@@ -20,7 +20,7 @@ ve.ce.MWInternalLinkAnnotation = function VeCeMWInternalLinkAnnotation( model, c
 	ve.ce.LinkAnnotation.call( this, model, config );
 
 	// DOM changes
-	this.$.addClass( 've-ce-MWInternalLinkAnnotation' );
+	this.$.addClass( 've-ce-mwInternalLinkAnnotation' );
 	this.$.attr( 'title', model.getAttribute( 'title' ) );
 	// Get href from DM rendering
 	dmRendering = model.getDomElements()[0];
@@ -33,7 +33,7 @@ ve.inheritClass( ve.ce.MWInternalLinkAnnotation, ve.ce.LinkAnnotation );
 
 /* Static Properties */
 
-ve.ce.MWInternalLinkAnnotation.static.name = 'link/MWinternal';
+ve.ce.MWInternalLinkAnnotation.static.name = 'link/mwInternal';
 
 /* Registration */
 

@@ -29,7 +29,7 @@ ve.ce.MWTemplateNode = function VeCeMWTemplateNode( model, config ) {
 	ve.ce.FocusableNode.call( this );
 
 	// DOM Changes
-	this.$.addClass( 've-ce-MWtemplateNode' );
+	this.$.addClass( 've-ce-mwTemplateNode' );
 };
 
 /* Inheritance */
@@ -42,7 +42,7 @@ ve.mixinClass( ve.ce.MWTemplateNode, ve.ce.FocusableNode );
 
 /* Static Properties */
 
-ve.ce.MWTemplateNode.static.name = 'MWtemplate';
+ve.ce.MWTemplateNode.static.name = 'mwTemplate';
 
 /* Methods */
 
@@ -105,7 +105,7 @@ ve.ce.MWTemplateBlockNode = function VeCeMWTemplateBlockNode( model ) {
 	ve.ce.MWTemplateNode.call( this, model );
 
 	// DOM Changes
-	this.$.addClass( 've-ce-MWtemplateBlockNode' );
+	this.$.addClass( 've-ce-mwTemplateBlockNode' );
 };
 
 /* Inheritance */
@@ -114,7 +114,7 @@ ve.inheritClass( ve.ce.MWTemplateBlockNode, ve.ce.MWTemplateNode );
 
 /* Static Properties */
 
-ve.ce.MWTemplateBlockNode.static.name = 'MWtemplateBlock';
+ve.ce.MWTemplateBlockNode.static.name = 'mwTemplateBlock';
 
 /**
  * ContentEditable MediaWiki template inline node.
@@ -129,7 +129,7 @@ ve.ce.MWTemplateInlineNode = function VeCeMWTemplateInlineNode( model ) {
 	ve.ce.MWTemplateNode.call( this, model );
 
 	// DOM Changes
-	this.$.addClass( 've-ce-MWtemplateInlineNode' );
+	this.$.addClass( 've-ce-mwTemplateInlineNode' );
 };
 
 /* Inheritance */
@@ -138,7 +138,7 @@ ve.inheritClass( ve.ce.MWTemplateInlineNode, ve.ce.MWTemplateNode );
 
 /* Static Properties */
 
-ve.ce.MWTemplateInlineNode.static.name = 'MWtemplateInline';
+ve.ce.MWTemplateInlineNode.static.name = 'mwTemplateInline';
 
 /* Registration */
 

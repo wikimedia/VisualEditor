@@ -77,7 +77,7 @@ ve.mixinClass( ve.ce.MWBlockImageNode, ve.ce.ProtectedNode );
 
 /* Static Properties */
 
-ve.ce.MWBlockImageNode.static.name = 'MWblockimage';
+ve.ce.MWBlockImageNode.static.name = 'mwBlockImage';
 
 ve.ce.MWBlockImageNode.static.tagName = 'div';
 

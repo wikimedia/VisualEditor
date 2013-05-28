@@ -25,7 +25,7 @@ ve.inheritClass( ve.ce.MWHeadingNode, ve.ce.HeadingNode );
 
 /* Static Properties */
 
-ve.ce.MWHeadingNode.static.name = 'MWheading';
+ve.ce.MWHeadingNode.static.name = 'mwHeading';
 
 /* Registration */
 

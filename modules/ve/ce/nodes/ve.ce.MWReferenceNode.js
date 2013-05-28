@@ -27,7 +27,7 @@ ve.ce.MWReferenceNode = function VeCeMWReferenceNode( model, config ) {
 
 	// DOM Changes
 	this.$link = $( '<a>' ).attr( 'href', '#' );
-	this.$.addClass( 've-ce-MWreferenceNode', 'reference' )
+	this.$.addClass( 've-ce-mwReferenceNode', 'reference' )
 		.attr( 'contenteditable', false )
 		.append( this.$link );
 
@@ -48,7 +48,7 @@ ve.mixinClass( ve.ce.MWReferenceNode, ve.ce.ProtectedNode );
 
 /* Static Properties */
 
-ve.ce.MWReferenceNode.static.name = 'MWreference';
+ve.ce.MWReferenceNode.static.name = 'mwReference';
 
 ve.ce.MWReferenceNode.static.tagName = 'sup';
 

@@ -30,7 +30,7 @@ ve.inheritClass( ve.ce.MWImageCaptionNode, ve.ce.BranchNode );
 
 /* Static Properties */
 
-ve.ce.MWImageCaptionNode.static.name = 'MWimagecaption';
+ve.ce.MWImageCaptionNode.static.name = 'mwImageCaption';
 
 ve.ce.MWImageCaptionNode.static.tagName = 'div';
 

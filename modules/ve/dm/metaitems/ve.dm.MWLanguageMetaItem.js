@@ -24,7 +24,7 @@ ve.inheritClass( ve.dm.MWLanguageMetaItem, ve.dm.MetaItem );
 
 /* Static Properties */
 
-ve.dm.MWLanguageMetaItem.static.name = 'MWlanguage';
+ve.dm.MWLanguageMetaItem.static.name = 'mwLanguage';
 
 ve.dm.MWLanguageMetaItem.static.matchTagNames = [ 'link' ];
 
@@ -34,7 +34,7 @@ ve.dm.MWLanguageMetaItem.static.toDataElement = function ( domElements ) {
 	var firstDomElement = domElements[0],
 		href = firstDomElement.getAttribute( 'href' );
 	return {
-		'type': 'MWlanguage',
+		'type': 'mwLanguage',
 		'attributes': {
 			'href': href
 		}

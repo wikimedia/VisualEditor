@@ -31,7 +31,7 @@ ve.inheritClass( ve.dm.MWExternalLinkAnnotation, ve.dm.LinkAnnotation );
 
 /* Static Properties */
 
-ve.dm.MWExternalLinkAnnotation.static.name = 'link/MWexternal';
+ve.dm.MWExternalLinkAnnotation.static.name = 'link/mwExternal';
 
 ve.dm.MWExternalLinkAnnotation.static.matchRdfaTypes = [
 	'mw:ExtLink', 'mw:ExtLink/Numbered', 'mw:ExtLink/URL'
@@ -39,7 +39,7 @@ ve.dm.MWExternalLinkAnnotation.static.matchRdfaTypes = [
 
 ve.dm.MWExternalLinkAnnotation.static.toDataElement = function ( domElements ) {
 	var parentResult = ve.dm.LinkAnnotation.static.toDataElement.apply( this, arguments );
-	parentResult.type = 'link/MWexternal';
+	parentResult.type = 'link/mwExternal';
 	parentResult.attributes.rel = domElements[0].getAttribute( 'rel' );
 	return parentResult;
 };

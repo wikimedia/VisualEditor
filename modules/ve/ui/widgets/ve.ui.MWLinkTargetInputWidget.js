@@ -191,7 +191,7 @@ ve.ui.MWLinkTargetInputWidget.prototype.getInternalLinkAnnotationFromTitle = fun
 		}
 	} catch ( e ) { }
 	return new ve.dm.MWInternalLinkAnnotation( {
-		'type': 'link/MWinternal',
+		'type': 'link/mwInternal',
 		'attributes': {
 			'title': target
 		}
@@ -207,7 +207,7 @@ ve.ui.MWLinkTargetInputWidget.prototype.getInternalLinkAnnotationFromTitle = fun
  */
 ve.ui.MWLinkTargetInputWidget.prototype.getExternalLinkAnnotationFromUrl = function ( target ) {
 	return new ve.dm.MWExternalLinkAnnotation( {
-		'type': 'link/MWexternal',
+		'type': 'link/mwExternal',
 		'attributes': {
 			'href': target
 		}

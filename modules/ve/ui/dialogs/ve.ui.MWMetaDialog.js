@@ -146,7 +146,7 @@ ve.ui.MWMetaDialog.prototype.onClose = function ( action ) {
 
 	if ( this.defaultSortKeyChanged ) {
 		newDefaultSortKeyItem = new ve.dm.MWDefaultSortMetaItem( {
-			'type': 'MWdefaultSort',
+			'type': 'mwDefaultSort',
 			'attributes': { 'content': this.defaultSortInput.getValue() }
 		} );
 		if ( currentDefaultSortKeyItem ) {
@@ -166,7 +166,7 @@ ve.ui.MWMetaDialog.prototype.onClose = function ( action ) {
  * @returns {string} Default sort key item
  */
 ve.ui.MWMetaDialog.prototype.getDefaultSortKeyItem = function () {
-	var items = this.metaList.getItemsInGroup( 'MWdefaultSort' );
+	var items = this.metaList.getItemsInGroup( 'mwDefaultSort' );
 	return items.length ? items[0] : null;
 };
 
@@ -179,7 +179,7 @@ ve.ui.MWMetaDialog.prototype.getDefaultSortKeyItem = function () {
 ve.ui.MWMetaDialog.prototype.getCategoryItems = function () {
 	var i,
 		items = [],
-		categories = this.metaList.getItemsInGroup( 'MWcategory' );
+		categories = this.metaList.getItemsInGroup( 'mwCategory' );
 
 	// Loop through MwCategories and build out items
 	for ( i = 0; i < categories.length; i++ ) {
@@ -215,7 +215,7 @@ ve.ui.MWMetaDialog.prototype.getCategoryItemFromMetaListItem = function ( metaIt
 ve.ui.MWMetaDialog.prototype.getCategoryItemForInsertion = function ( item ) {
 	return {
 		'attributes': { 'category': item.name, 'sortkey': item.sortKey || '' },
-		'type': 'MWcategory'
+		'type': 'mwCategory'
 	};
 };
 
@@ -259,10 +259,10 @@ ve.ui.MWMetaDialog.prototype.onUpdateSortKey = function ( item ) {
  */
 ve.ui.MWMetaDialog.prototype.onMetaListInsert = function ( metaItem ) {
 	// Responsible for adding UI components
-	if ( metaItem.element.type === 'MWcategory' ) {
+	if ( metaItem.element.type === 'mwCategory' ) {
 		this.categoryWidget.addItems(
 			[ this.getCategoryItemFromMetaListItem( metaItem ) ],
-			this.metaList.findItem( metaItem.getOffset(), metaItem.getIndex(), 'MWcategory' )
+			this.metaList.findItem( metaItem.getOffset(), metaItem.getIndex(), 'mwCategory' )
 		);
 	}
 };
@@ -276,7 +276,7 @@ ve.ui.MWMetaDialog.prototype.onMetaListInsert = function ( metaItem ) {
 ve.ui.MWMetaDialog.prototype.onMetaListRemove = function ( metaItem ) {
 	var item;
 
-	if ( metaItem.element.type === 'MWcategory' ) {
+	if ( metaItem.element.type === 'mwCategory' ) {
 		item = this.getCategoryItemFromMetaListItem( metaItem );
 		this.categoryWidget.removeItems( [item.value] );
 	}

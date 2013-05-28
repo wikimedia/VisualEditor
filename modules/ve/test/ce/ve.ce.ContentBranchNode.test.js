@@ -229,12 +229,12 @@ QUnit.test( 'getRenderedContents', function ( assert ) {
 				'a',
 				['b', [ { 'type': 'textStyle/bold' } ]],
 				{
-					'type': 'MWentity',
+					'type': 'mwEntity',
 					'attributes': { 'character': 'c' },
 					'htmlAttributes': [ { 'keys': [ 'typeof' ], 'values': { 'typeof': 'mw:Entity' } } ],
 					'annotations': [ { 'type': 'textStyle/bold' } ]
 				},
-				{ 'type': '/MWentity' },
+				{ 'type': '/mwEntity' },
 				['d', [ { 'type': 'textStyle/bold' } ]],
 				{
 					'type': 'alienInline',
@@ -245,7 +245,7 @@ QUnit.test( 'getRenderedContents', function ( assert ) {
 				{ 'type': '/paragraph' }
 			],
 			'html': 'a<b>b<span typeof="mw:Entity" class="ve-ce-leafNode ' +
-				've-ce-MWEntityNode" contenteditable="false">c</span>d<span ' +
+				've-ce-mwEntityNode" contenteditable="false">c</span>d<span ' +
 				'class="ve-ce-leafNode ve-ce-generatedContentNode ve-ce-protectedNode ' +
 				've-ce-alienNode ve-ce-alienInlineNode" ' +
 				'contenteditable="false"><tt>e</tt></span></b>'

@@ -66,7 +66,7 @@ QUnit.test( 'getWikitext', function ( assert ) {
 	QUnit.expect( cases.length );
 	for ( i = 0; i < cases.length; i++ ) {
 		node = new ve.dm.MWTemplateNode( 0,
-			{ 'type': 'MWtemplate', 'attributes': { 'mw': cases[i].mw } }
+			{ 'type': 'mwTemplate', 'attributes': { 'mw': cases[i].mw } }
 		);
 		assert.deepEqual( node.getWikitext(), cases[i].wikitext, cases[i].msg );
 	}

@@ -25,7 +25,7 @@ ve.inheritClass( ve.dm.MWEntityNode, ve.dm.LeafNode );
 
 /* Static Properties */
 
-ve.dm.MWEntityNode.static.name = 'MWentity';
+ve.dm.MWEntityNode.static.name = 'mwEntity';
 
 ve.dm.MWEntityNode.static.isContent = true;
 
@@ -34,7 +34,7 @@ ve.dm.MWEntityNode.static.matchTagNames = [ 'span' ];
 ve.dm.MWEntityNode.static.matchRdfaTypes = [ 'mw:Entity' ];
 
 ve.dm.MWEntityNode.static.toDataElement = function ( domElements ) {
-	return { 'type': 'MWentity', 'attributes': { 'character': domElements[0].textContent } };
+	return { 'type': 'mwEntity', 'attributes': { 'character': domElements[0].textContent } };
 };
 
 ve.dm.MWEntityNode.static.toDomElements = function ( dataElement, doc ) {

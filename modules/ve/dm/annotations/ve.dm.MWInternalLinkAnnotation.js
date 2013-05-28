@@ -27,7 +27,7 @@ ve.inheritClass( ve.dm.MWInternalLinkAnnotation, ve.dm.LinkAnnotation );
 
 /* Static Properties */
 
-ve.dm.MWInternalLinkAnnotation.static.name = 'link/MWinternal';
+ve.dm.MWInternalLinkAnnotation.static.name = 'link/mwInternal';
 
 ve.dm.MWInternalLinkAnnotation.static.matchRdfaTypes = ['mw:WikiLink'];
 
@@ -38,7 +38,7 @@ ve.dm.MWInternalLinkAnnotation.static.toDataElement = function ( domElements ) {
 	/*jshint regexp:false */
 	var matches = domElements[0].getAttribute( 'href' ).match( /^((?:\.\.?\/)*)(.*)$/ );
 	return {
-		'type': 'link/MWinternal',
+		'type': 'link/mwInternal',
 		'attributes': {
 			'hrefPrefix': matches[1],
 			'title': decodeURIComponent( matches[2] ).replace( /_/g, ' ' ),

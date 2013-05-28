@@ -24,7 +24,7 @@ ve.ce.MWReferenceListNode = function VeCeMWReferenceListNode( model, config ) {
 	ve.ce.ProtectedNode.call( this );
 
 	// DOM Changes
-	this.$.addClass( 've-ce-MWreferenceListNode', 'reference' )
+	this.$.addClass( 've-ce-mwReferenceListNode', 'reference' )
 		.attr( 'contenteditable', false );
 
 	// Events
@@ -42,7 +42,7 @@ ve.mixinClass( ve.ce.MWReferenceListNode, ve.ce.ProtectedNode );
 
 /* Static Properties */
 
-ve.ce.MWReferenceListNode.static.name = 'MWreferenceList';
+ve.ce.MWReferenceListNode.static.name = 'mwReferenceList';
 
 /* Methods */
 

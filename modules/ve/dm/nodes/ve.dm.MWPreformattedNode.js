@@ -25,12 +25,12 @@ ve.inheritClass( ve.dm.MWPreformattedNode, ve.dm.PreformattedNode );
 
 /* Static Properties */
 
-ve.dm.MWPreformattedNode.static.name = 'MWpreformatted';
+ve.dm.MWPreformattedNode.static.name = 'mwPreformatted';
 
 ve.dm.MWPreformattedNode.static.suggestedParentNodeTypes = [ 'document' ];
 
 ve.dm.MWPreformattedNode.static.toDataElement = function () {
-	return { 'type': 'MWpreformatted' };
+	return { 'type': 'mwPreformatted' };
 };
 
 /* Registration */

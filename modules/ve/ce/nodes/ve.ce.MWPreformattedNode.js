@@ -25,7 +25,7 @@ ve.inheritClass( ve.ce.MWPreformattedNode, ve.ce.PreformattedNode );
 
 /* Static Properties */
 
-ve.ce.MWPreformattedNode.static.name = 'MWpreformatted';
+ve.ce.MWPreformattedNode.static.name = 'mwPreformatted';
 
 /* Registration */
 

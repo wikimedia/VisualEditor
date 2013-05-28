@@ -24,9 +24,9 @@ ve.inheritClass( ve.dm.MWCategoryMetaItem, ve.dm.MetaItem );
 
 /* Static Properties */
 
-ve.dm.MWCategoryMetaItem.static.name = 'MWcategory';
+ve.dm.MWCategoryMetaItem.static.name = 'mwCategory';
 
-ve.dm.MWCategoryMetaItem.static.group = 'MWcategory';
+ve.dm.MWCategoryMetaItem.static.group = 'mwCategory';
 
 ve.dm.MWCategoryMetaItem.static.matchTagNames = [ 'link' ];
 
@@ -39,7 +39,7 @@ ve.dm.MWCategoryMetaItem.static.toDataElement = function ( domElements ) {
 		matches = href.match( /^((?:\.\.?\/)*)(.*?)(?:#(.*))?$/ ),
 		rawSortkey = matches[3] || '';
 	return {
-		'type': 'MWcategory',
+		'type': 'mwCategory',
 		'attributes': {
 			'hrefPrefix': matches[1],
 			'category': decodeURIComponent( matches[2] ).replace( /_/g, ' ' ),

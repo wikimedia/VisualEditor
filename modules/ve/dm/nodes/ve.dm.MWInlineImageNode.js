@@ -24,7 +24,7 @@ ve.inheritClass( ve.dm.MWInlineImageNode, ve.dm.ImageNode );
 
 /* Static Properties */
 
-ve.dm.MWInlineImageNode.static.name = 'MWinlineimage';
+ve.dm.MWInlineImageNode.static.name = 'mwInlineImage';
 
 ve.dm.MWInlineImageNode.static.matchTagNames = null;
 
@@ -39,7 +39,7 @@ ve.dm.MWInlineImageNode.static.toDataElement = function ( domElements ) {
 			this, [ children ].concat( Array.prototype.slice.call( arguments, 1 ) )
 		);
 	return ve.extendObject( true, parentResult, {
-		'type': 'MWinlineimage',
+		'type': 'mwInlineImage',
 		'attributes': {
 			'isLinked': domElements[0].nodeName.toLowerCase() === 'a'
 		}

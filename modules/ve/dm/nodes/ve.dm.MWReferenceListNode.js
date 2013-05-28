@@ -25,7 +25,7 @@ ve.inheritClass( ve.dm.MWReferenceListNode, ve.dm.LeafNode );
 
 /* Static members */
 
-ve.dm.MWReferenceListNode.static.name = 'MWreferenceList';
+ve.dm.MWReferenceListNode.static.name = 'mwReferenceList';
 
 ve.dm.MWReferenceListNode.static.matchTagNames = null;
 

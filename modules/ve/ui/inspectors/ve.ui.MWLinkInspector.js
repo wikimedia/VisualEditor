@@ -52,7 +52,7 @@ ve.ui.MWLinkInspector.prototype.getAnnotationFromTarget = function ( target ) {
 	if ( ve.init.platform.getExternalLinkUrlProtocolsRegExp().test( target ) ) {
 		// External link
 		return new ve.dm.MWExternalLinkAnnotation( {
-			'type': 'link/MWexternal',
+			'type': 'link/mwExternal',
 			'attributes': {
 				'href': target
 			}
@@ -71,7 +71,7 @@ ve.ui.MWLinkInspector.prototype.getAnnotationFromTarget = function ( target ) {
 			}
 		} catch ( e ) { }
 		return new ve.dm.MWInternalLinkAnnotation( {
-			'type': 'link/MWinternal',
+			'type': 'link/mwInternal',
 			'attributes': {
 				'title': target
 			}

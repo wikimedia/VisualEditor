@@ -28,13 +28,13 @@ ve.ui.MWFormatDropdownTool.static.name = 'mwFormat';
 
 ve.ui.MWFormatDropdownTool.static.cssName = 'format';
 
-ve.ui.MWFormatDropdownTool.static.items[1].data.type = 'MWheading';
-ve.ui.MWFormatDropdownTool.static.items[2].data.type = 'MWheading';
-ve.ui.MWFormatDropdownTool.static.items[3].data.type = 'MWheading';
-ve.ui.MWFormatDropdownTool.static.items[4].data.type = 'MWheading';
-ve.ui.MWFormatDropdownTool.static.items[5].data.type = 'MWheading';
-ve.ui.MWFormatDropdownTool.static.items[6].data.type = 'MWheading';
-ve.ui.MWFormatDropdownTool.static.items[7].data.type = 'MWpreformatted';
+ve.ui.MWFormatDropdownTool.static.items[1].data.type = 'mwHeading';
+ve.ui.MWFormatDropdownTool.static.items[2].data.type = 'mwHeading';
+ve.ui.MWFormatDropdownTool.static.items[3].data.type = 'mwHeading';
+ve.ui.MWFormatDropdownTool.static.items[4].data.type = 'mwHeading';
+ve.ui.MWFormatDropdownTool.static.items[5].data.type = 'mwHeading';
+ve.ui.MWFormatDropdownTool.static.items[6].data.type = 'mwHeading';
+ve.ui.MWFormatDropdownTool.static.items[7].data.type = 'mwPreformatted';
 
 /* Registration */
 

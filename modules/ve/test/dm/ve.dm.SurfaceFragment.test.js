@@ -504,7 +504,7 @@ function runIsolateTest( assert, type, range, expected, label ) {
 }
 
 QUnit.test( 'isolateAndUnwrap', 4, function ( assert ) {
-	runIsolateTest( assert, 'MWheading', new ve.Range( 12, 20 ), function ( data ) {
+	runIsolateTest( assert, 'mwHeading', new ve.Range( 12, 20 ), function ( data ) {
 		data.splice( 11, 0, { 'type': '/list' } );
 		data.splice( 12, 1 );
 		data.splice( 20, 1, { 'type': 'list', 'attributes': { 'style': 'bullet' } });
@@ -516,7 +516,7 @@ QUnit.test( 'isolateAndUnwrap', 4, function ( assert ) {
 		data.splice( 20, 1, { 'type': '/listItem' });
 	}, 'isolating paragraph in list item "Item 2" for heading');
 
-	runIsolateTest( assert, 'MWheading', new ve.Range( 89, 97 ), function ( data ) {
+	runIsolateTest( assert, 'mwHeading', new ve.Range( 89, 97 ), function ( data ) {
 		data.splice( 88, 1,
 			{ 'type': '/tableRow' },
 			{ 'type': '/tableSection' },
@@ -529,7 +529,7 @@ QUnit.test( 'isolateAndUnwrap', 4, function ( assert ) {
 		);
 	}, 'isolating "Cell 2" for MWheading');
 
-	runIsolateTest( assert, 'MWheading', new ve.Range( 202, 212 ), function ( data ) {
+	runIsolateTest( assert, 'mwHeading', new ve.Range( 202, 212 ), function ( data ) {
 		data.splice( 201, 1,
 			{ 'type': '/list' }, { 'type': '/listItem' }, { 'type': '/list' }
 		);

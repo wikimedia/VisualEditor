@@ -25,7 +25,7 @@ ve.inheritClass( ve.dm.MWAlienMetaItem, ve.dm.AlienMetaItem );
 
 /* Static Properties */
 
-ve.dm.MWAlienMetaItem.static.name = 'MWalienmeta';
+ve.dm.MWAlienMetaItem.static.name = 'mwAlienMeta';
 
 ve.dm.MWAlienMetaItem.static.matchRdfaTypes = [ /^mw:/ ];
 

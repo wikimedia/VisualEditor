@@ -21,15 +21,15 @@ ve.dm.MWImageCaptionNode = function VeDmMWImageCaptionNode( children, element ) 
 
 ve.inheritClass( ve.dm.MWImageCaptionNode, ve.dm.BranchNode );
 
-ve.dm.MWImageCaptionNode.static.name = 'MWimagecaption';
+ve.dm.MWImageCaptionNode.static.name = 'mwImageCaption';
 
 ve.dm.MWImageCaptionNode.static.matchTagNames = [];
 
-ve.dm.MWImageCaptionNode.static.parentNodeTypes = [ 'MWblockimage' ];
+ve.dm.MWImageCaptionNode.static.parentNodeTypes = [ 'mwBlockImage' ];
 
 ve.dm.MWImageCaptionNode.static.toDataElement = function () {
 	// Probably not needed
-	return { 'type': 'MWimagecaption' };
+	return { 'type': 'mwImageCaption' };
 };
 
 ve.dm.MWImageCaptionNode.static.toDomElements = function ( dataElement, doc ) {

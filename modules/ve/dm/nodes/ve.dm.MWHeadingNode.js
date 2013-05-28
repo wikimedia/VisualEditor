@@ -25,13 +25,13 @@ ve.inheritClass( ve.dm.MWHeadingNode, ve.dm.HeadingNode );
 
 /* Static Properties */
 
-ve.dm.MWHeadingNode.static.name = 'MWheading';
+ve.dm.MWHeadingNode.static.name = 'mwHeading';
 
 ve.dm.MWHeadingNode.static.suggestedParentNodeTypes = [ 'document' ];
 
 ve.dm.MWHeadingNode.static.toDataElement = function () {
 	var parentElement = ve.dm.HeadingNode.static.toDataElement.apply( this, arguments );
-	parentElement.type = 'MWheading';
+	parentElement.type = 'mwHeading';
 	return parentElement;
 };
 

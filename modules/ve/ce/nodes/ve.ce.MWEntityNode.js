@@ -19,7 +19,7 @@ ve.ce.MWEntityNode = function VeCeMWEntityNode( model, config ) {
 	ve.ce.LeafNode.call( this, model, config );
 
 	// DOM Changes
-	this.$.addClass( 've-ce-MWEntityNode' );
+	this.$.addClass( 've-ce-mwEntityNode' );
 	// Need CE=false to prevent selection issues
 	this.$.attr( 'contenteditable', false );
 
@@ -36,7 +36,7 @@ ve.inheritClass( ve.ce.MWEntityNode, ve.ce.LeafNode );
 
 /* Static Properties */
 
-ve.ce.MWEntityNode.static.name = 'MWentity';
+ve.ce.MWEntityNode.static.name = 'mwEntity';
 
 /* Methods */
 
