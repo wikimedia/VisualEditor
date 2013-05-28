@@ -123,6 +123,7 @@
 .ve-ui-dropdownTool .ve-ui-menuWidget {
 	left: -1px;
 	top: 2.5em;
+	z-index: 10000;
 }
 
 .ve-ui-dropdownTool .ve-ui-labeledElement-label {
