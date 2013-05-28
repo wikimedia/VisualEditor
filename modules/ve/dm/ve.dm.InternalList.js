@@ -45,9 +45,9 @@ ve.mixinClass( ve.dm.InternalList, ve.EventEmitter );
  * @returns {number} Index of the item in the index-value store, and also the list
  */
 ve.dm.InternalList.prototype.queueItemHtml = function ( key, html ) {
-	var index = this.store.indexOfHash( key );
+	var index = this.getStore().indexOfHash( key );
 	if ( index === null ) {
-		index = this.store.index( html, key );
+		index = this.getStore().index( html, key );
 		this.itemsHtml.push( index );
 	}
 	return index;
@@ -59,7 +59,7 @@ ve.dm.InternalList.prototype.queueItemHtml = function ( key, html ) {
  * @returns {Object} Name-indexed object containing HTMLElements
  */
 ve.dm.InternalList.prototype.getItemsHtml = function () {
-	return this.store.values( this.itemsHtml );
+	return this.getStore().values( this.itemsHtml );
 };
 
 /**
@@ -69,6 +69,15 @@ ve.dm.InternalList.prototype.getItemsHtml = function () {
  */
 ve.dm.InternalList.prototype.getDocument = function () {
 	return this.document;
+};
+
+/**
+ * Gets the internal list's index value store
+ * @method
+ * @returns {ve.dm.IndexValueStore} Index value store
+ */
+ve.dm.InternalList.prototype.getStore = function () {
+	return this.store;
 };
 
 /**
@@ -130,7 +139,7 @@ ve.dm.InternalList.prototype.convertToData = function ( converter ) {
 		list.push( { 'type': '/internalList' } );
 	}
 	// After conversion we no longer need the HTML
-	this.itemsHtml = null;
+	this.itemsHtml = [];
 	return list;
 };
 
@@ -141,8 +150,8 @@ ve.dm.InternalList.prototype.convertToData = function ( converter ) {
  * @returns {ve.dm.InternalList} Clone of this internal
  */
 ve.dm.InternalList.prototype.clone = function ( doc ) {
-	var clone = new this.constructor( doc || this.doc );
-	clone.store = this.store.clone();
+	var clone = new this.constructor( doc || this.getDocument() );
+	clone.store = this.getStore().clone();
 	return clone;
 };
 
@@ -155,7 +164,7 @@ ve.dm.InternalList.prototype.clone = function ( doc ) {
  * @returns {Object} Object in which the keys are indexes in other and the values are the corresponding keys in this
  */
 ve.dm.InternalList.prototype.merge = function ( other ) {
-	var i, len, index, storeMapping = this.store.merge( other.store ), mapping = {};
+	var i, len, index, storeMapping = this.getStore().merge( other.getStore() ), mapping = {};
 	for ( i = 0, len = other.itemsHtml.length; i < len; i++ ) {
 		other.itemsHtml[i] = storeMapping[other.itemsHtml[i]];
 		index = ve.indexOf( other.itemsHtml[i], this.itemsHtml );

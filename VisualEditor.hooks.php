@@ -116,6 +116,7 @@ class VisualEditorHooks {
 				'dm/ve.dm.Document.test.js',
 				'dm/ve.dm.DocumentSynchronizer.test.js',
 				'dm/ve.dm.IndexValueStore.test.js',
+				'dm/ve.dm.InternalList.test.js',
 				'dm/ve.dm.Transaction.test.js',
 				'dm/ve.dm.TransactionProcessor.test.js',
 				'dm/ve.dm.Surface.test.js',
