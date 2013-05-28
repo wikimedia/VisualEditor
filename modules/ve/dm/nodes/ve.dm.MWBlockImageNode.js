@@ -112,7 +112,7 @@ ve.dm.MWBlockImageNode.static.toDomElements = function ( data, doc, converter ) 
 	figure.appendChild( a );
 	a.appendChild( img );
 
-	converter.getDomSubtreeFromData( converter.getStore(), data.slice( 1, -1 ), wrapper );
+	converter.getDomSubtreeFromData( data.slice( 1, -1 ), wrapper );
 	while ( wrapper.firstChild ) {
 		figure.appendChild( wrapper.firstChild );
 	}
