@@ -503,11 +503,11 @@
 	};
 
 	/**
-	 * Recursively compares string and number property between two objects.
+	 * Recursively compares values between two objects or arrays.
 	 *
-	 * A false result may be caused by property inequality or by properties in one object missing from
-	 * the other. An asymmetrical test may also be performed, which checks only that properties in the
-	 * first object are present in the second object, but not the inverse.
+	 * A false result may be caused by property inequality or by properties in one object missing
+	 * from the other. An asymmetrical test may also be performed, which checks only that properties
+	 * in the first object are present in the second object, but not the inverse.
 	 *
 	 * @method
 	 * @param {Object} a First object to compare
@@ -515,7 +515,7 @@
 	 * @param {boolean} [asymmetrical] Whether to check only that b contains values from a
 	 * @returns {boolean} If the objects contain the same values as each other
 	 */
-	ve.compareObjects = function ( a, b, asymmetrical ) {
+	ve.compare = function ( a, b, asymmetrical ) {
 		var aValue, bValue, aType, bType, k;
 		for ( k in a ) {
 			aValue = a[k];
@@ -524,56 +524,12 @@
 			bType = typeof bValue;
 			if ( aType !== bType ||
 				( ( aType === 'string' || aType === 'number' ) && aValue !== bValue ) ||
-				( ve.isPlainObject( aValue ) && !ve.compareObjects( aValue, bValue ) ) ) {
+				( aValue === Object( aValue ) && !ve.compare( aValue, bValue ) ) ) {
 				return false;
 			}
 		}
 		// If the check is not asymmetrical, recursing with the arguments swapped will verify our result
-		return asymmetrical ? true : ve.compareObjects( b, a, true );
-	};
-
-	/**
-	 * Recursively compare two arrays.
-	 *
-	 * @method
-	 * @param {Array} a First array to compare
-	 * @param {Array} b Second array to compare
-	 * @param {boolean} [objectsByValue] Use ve.compareObjects() to compare objects instead of ===
-	 */
-	ve.compareArrays = function ( a, b, objectsByValue ) {
-		var i,
-			aValue,
-			bValue,
-			aType,
-			bType;
-		if ( a.length !== b.length ) {
-			return false;
-		}
-		for ( i = 0; i < a.length; i++ ) {
-			aValue = a[i];
-			bValue = b[i];
-			aType = typeof aValue;
-			bType = typeof bValue;
-			if (
-				aType !== bType ||
-				!(
-					(
-						ve.isArray( aValue ) &&
-						ve.isArray( bValue ) &&
-						ve.compareArrays( aValue, bValue )
-					) ||
-					(
-						objectsByValue &&
-						ve.isPlainObject( aValue ) &&
-						ve.compareObjects( aValue, bValue )
-					) ||
-					aValue === bValue
-				)
-			) {
-				return false;
-			}
-		}
-		return true;
+		return asymmetrical ? true : ve.compare( b, a, true );
 	};
 
 	/**

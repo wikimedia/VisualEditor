@@ -338,7 +338,7 @@ ve.dm.Document.prototype.getMetadataReplace = function ( offset, remove, insert 
 		// if we are removing more than we are inserting we need to collapse the excess metadata
 		removeMetadata = this.getMetadata( new ve.Range( offset + insert.length, offset + remove + 1 ) );
 		// check removeMetadata is non-empty
-		if ( !ve.compareArrays( removeMetadata, new Array( removeMetadata.length ) ) ) {
+		if ( !ve.compare( removeMetadata, new Array( removeMetadata.length ) ) ) {
 			insertMetadata = ve.dm.MetaLinearData.static.merge( removeMetadata );
 			replace.retain = insert.length;
 			replace.remove = removeMetadata;

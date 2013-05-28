@@ -70,7 +70,7 @@ ve.dm.MWTemplateNode.static.toDataElement = function ( domElements, converter ) 
 
 ve.dm.MWTemplateNode.static.toDomElements = function ( dataElement, doc, converter ) {
 	var span, index;
-	if ( ve.compareObjects( dataElement.attributes.mw, dataElement.attributes.mwOriginal ) ) {
+	if ( ve.compare( dataElement.attributes.mw, dataElement.attributes.mwOriginal ) ) {
 		// If the template is unchanged just send back the original dom elements so selser can skip over it
 		index = converter.getStore().indexOfHash( ve.getHash( this.getHashObject( dataElement ) ) );
 		// The object in the store is also used for rendering so return a copy

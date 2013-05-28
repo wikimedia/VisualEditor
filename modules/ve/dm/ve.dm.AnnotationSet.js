@@ -61,7 +61,7 @@ ve.dm.AnnotationSet.prototype.getAnnotationsByName = function ( name ) {
  */
 ve.dm.AnnotationSet.prototype.getComparableAnnotations = function ( annotation ) {
 	return this.filter( function ( a ) {
-		return ve.compareObjects(
+		return ve.compare(
 			annotation.getComparableObject(),
 			a.getComparableObject()
 		);
@@ -249,7 +249,7 @@ ve.dm.AnnotationSet.prototype.filter = function ( callback, returnBool ) {
  */
 ve.dm.AnnotationSet.prototype.containsComparable = function ( annotation ) {
 	return this.filter( function ( a ) {
-		return ve.compareObjects(
+		return ve.compare(
 			annotation.getComparableObject(),
 			a.getComparableObject()
 		);
