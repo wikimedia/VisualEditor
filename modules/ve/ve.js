@@ -1068,10 +1068,10 @@
 	 * @param {string} html HTML string
 	 * @returns {HTMLDocument} Document constructed from the HTML string
 	 */
-	ve.createDocumentFromHTML = function ( html ) {
+	ve.createDocumentFromHtml = function ( html ) {
 		// Here's how this function should look:
 		//
-		//     var newDocument = document.implementation.createHTMLDocument( '' );
+		//     var newDocument = document.implementation.createHtmlDocument( '' );
 		//     newDocument.open();
 		//     newDocument.write( html );
 		//     newDocument.close();

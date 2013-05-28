@@ -11,7 +11,7 @@ QUnit.module( 've.ui.FormatAction' );
 
 function runFormatConverterTest( assert, range, type, attributes, expectedSelection, expectedData, msg ) {
 	var selection,
-		dom = ve.createDocumentFromHTML( ve.dm.example.isolationHTML ),
+		dom = ve.createDocumentFromHtml( ve.dm.example.isolationHtml ),
 		target = new ve.init.sa.Target( $( '#qunit-fixture' ), dom ),
 		surface = target.surface,
 		formatAction = new ve.ui.FormatAction( surface ),

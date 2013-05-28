@@ -823,7 +823,7 @@ QUnit.test( 'batchSplice', 8, function ( assert ) {
 	assert.deepEqual( expected, actual, 'replacing 3 elements with 2100 elements (array)' );
 } );
 
-QUnit.test( 'createDocumentFromHTML', function ( assert ) {
+QUnit.test( 'createDocumentFromHtml', function ( assert ) {
 	var key, doc, expectedHead, expectedBody,
 		cases = [
 			{
@@ -853,7 +853,7 @@ QUnit.test( 'createDocumentFromHTML', function ( assert ) {
 		];
 	QUnit.expect( cases.length*2 );
 	for ( key in cases ) {
-		doc = ve.createDocumentFromHTML( cases[key].html );
+		doc = ve.createDocumentFromHtml( cases[key].html );
 		expectedHead = $( '<head>' ).html( cases[key].head ).get( 0 );
 		expectedBody = $( '<body>' ).html( cases[key].body ).get( 0 );
 		assert.equalDomElement( $( 'head', doc ).get( 0 ), expectedHead, cases[key].msg + ' (head)' );

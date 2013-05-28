@@ -64,7 +64,9 @@ QUnit.test( 'getDataFromDom', function ( assert ) {
 			internalList = new ve.dm.InternalList();
 			ve.dm.example.preprocessAnnotations( cases[msg].data, store );
 			assert.deepEqualWithDomElements(
-				ve.dm.converter.getDataFromDom( ve.createDocumentFromHTML( cases[msg].html ), store, internalList ).getData(),
+				ve.dm.converter.getDataFromDom(
+					ve.createDocumentFromHtml( cases[msg].html ), store, internalList
+				).getData(),
 				cases[msg].data,
 				msg
 			);
@@ -107,7 +109,7 @@ QUnit.test( 'getDomFromData', function ( assert ) {
 		originalData = ve.copyArray( doc.getFullData() );
 		assert.equalDomElement(
 			ve.dm.converter.getDomFromData( doc.getFullData(), doc.getStore(), doc.getInternalList() ),
-			ve.createDocumentFromHTML( cases[msg].normalizedHtml || cases[msg].html ),
+			ve.createDocumentFromHtml( cases[msg].normalizedHtml || cases[msg].html ),
 			msg
 		);
 		assert.deepEqualWithDomElements( doc.getFullData(), originalData, msg + ' (data hasn\'t changed)' );

@@ -332,7 +332,7 @@ ve.dm.Converter.prototype.createDataElements = function ( modelClass, domElement
  * @returns {HTMLElement} HTML DOM node
  */
 ve.dm.Converter.prototype.getDomElementFromDataAnnotation = function ( dataAnnotation, doc ) {
-	var htmlData = dataAnnotation.toHTML(),
+	var htmlData = dataAnnotation.toHtml(),
 		domElement = doc.createElement( htmlData.tag );
 
 	ve.setDomAttributes( domElement, htmlData.attributes );
@@ -897,7 +897,7 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, wrapp
  * @returns {HTMLDocument} Document containing the resulting HTML
  */
 ve.dm.Converter.prototype.getDomFromData = function ( documentData, store, internalList ) {
-	var doc = ve.createDocumentFromHTML( '' );
+	var doc = ve.createDocumentFromHtml( '' );
 
 	// Set up the converter state
 	this.documentData = documentData;

@@ -11,7 +11,7 @@ QUnit.module( 've.ui.ListAction' );
 
 function runListConverterTest( assert, html, method, style, range, expectedSelection, expectedData, expectedOriginalData, msg ) {
 	var selection,
-		dom = ve.createDocumentFromHTML( html || ve.dm.example.html ),
+		dom = ve.createDocumentFromHtml( html || ve.dm.example.html ),
 		target = new ve.init.sa.Target( $( '#qunit-fixture' ), dom ),
 		surface = target.surface,
 		listAction = new ve.ui.ListAction( surface ),
@@ -52,7 +52,7 @@ QUnit.test( '(un)wrap', function ( assert ) {
 				'msg': 'wrapping two paragraphs in a list'
 			},
 			{
-				'html': ve.dm.example.isolationHTML,
+				'html': ve.dm.example.isolationHtml,
 				'range': new ve.Range( 191, 211 ),
 				'method': 'unwrap',
 				'style': 'bullet',

@@ -157,7 +157,7 @@ ve.init.mw.Target.onLoad = function ( response ) {
 		);
 	} else {
 		this.originalHtml = data.content;
-		this.doc = ve.createDocumentFromHTML( this.originalHtml );
+		this.doc = ve.createDocumentFromHtml( this.originalHtml );
 
 		/* Don't show notices with no visible html (bug 43013). */
 
@@ -701,14 +701,17 @@ ve.init.mw.Target.prototype.reportProblem = function ( message ) {
 			'diff': this.diffHtml,
 			'originalHtml': this.originalHtml,
 			'originalData':
-				// originalHTML only has the body's HTML for now, see TODO comment in ve.init.mw.ViewPageTarget.prototype.setupSurface
+				// originalHtml only has the body's HTML for now, see TODO comment in
+				// ve.init.mw.ViewPageTarget.prototype.setupSurface
 				// FIXME: need to expand this data before sending it, see bug 47319
 				ve.dm.converter.getDataFromDom(
-					ve.createDocumentFromHTML( '<body>' + this.originalHtml  + '</body>' ),
+					ve.createDocumentFromHtml( '<body>' + this.originalHtml  + '</body>' ),
 					store, internalList
 				).getData(),
 			'editedData': editedData,
-			'editedHtml': this.getHtml( ve.dm.converter.getDomFromData( editedData, store, internalList ) ),
+			'editedHtml': this.getHtml(
+				ve.dm.converter.getDomFromData( editedData, store, internalList )
+			),
 			'store': doc.data.getUsedStoreValues(),
 			'wiki': mw.config.get( 'wgDBname' )
 		};

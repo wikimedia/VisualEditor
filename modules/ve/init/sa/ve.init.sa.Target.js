@@ -10,7 +10,7 @@
  *
  *     @example
  *     new ve.init.sa.Target(
- *         $( '<div>' ).appendTo( 'body' ), ve.createDocumentFromHTML( '<p>Hello world.</p>' )
+ *         $( '<div>' ).appendTo( 'body' ), ve.createDocumentFromHtml( '<p>Hello world.</p>' )
  *     );
  *
  * @class
