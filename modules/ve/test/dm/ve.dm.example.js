@@ -3152,7 +3152,7 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'thumb image': {
-		'html': '<body><figure typeof="mw:Image/Thumb"><a rel="mw:thumb" href="Foo"><img src="Bar" width="1" height="2" resource="FooBar"></a><figcaption>abc</figcaption></figure></body>',
+		'html': '<body><figure typeof="mw:Image/Thumb"><a rel="mw:thumb" href="Foo"><img src="Bar" width="1" height="2" resource="FooBar"></a><figcaption class="mw-figcaption">abc</figcaption></figure></body>',
 		'data': [
 			{
 				'type': 'mwBlockImage',
