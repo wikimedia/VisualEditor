@@ -327,7 +327,7 @@ $html = file_get_contents( $page );
 			$( document ).ready( function () {
 				new ve.init.sa.Target(
 					$( '.ve-demo-editor' ),
-					ve.createDocumentFromHTML( <?php echo json_encode( $html ) ?> )
+					ve.createDocumentFromHtml( <?php echo json_encode( $html ) ?> )
 				);
 				$( '.ve-ce-documentNode' ).focus();
 				//ve.instances[0].dialogs.open( 'meta' );
