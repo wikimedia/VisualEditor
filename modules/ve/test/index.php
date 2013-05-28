@@ -301,6 +301,7 @@
 		<script src="dm/ve.dm.Document.test.js"></script>
 		<script src="dm/ve.dm.DocumentSynchronizer.test.js"></script>
 		<script src="dm/ve.dm.IndexValueStore.test.js"></script>
+		<script src="dm/ve.dm.InternalList.test.js"></script>
 		<script src="dm/ve.dm.LinearData.test.js"></script>
 		<script src="dm/ve.dm.Transaction.test.js"></script>
 		<script src="dm/ve.dm.TransactionProcessor.test.js"></script>
