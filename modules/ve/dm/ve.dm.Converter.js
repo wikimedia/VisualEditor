@@ -360,7 +360,7 @@ ve.dm.Converter.prototype.getDataFromDom = function ( doc, store, internalList )
 		store,
 		this.getDataFromDomRecursion( doc.body )
 	);
-	refData = this.internalList.getDataFromDom( this );
+	refData = this.internalList.convertToData( this );
 	linearData.batchSplice( linearData.getLength(), 0, refData );
 
 	// Clear the state

@@ -35,19 +35,19 @@ ve.mixinClass( ve.dm.InternalList, ve.EventEmitter );
 /* Methods */
 
 /**
- * Add an item to the list.
+ * Queues up an item's html for parsing later.
  *
- * If an item with this key already exists it will be ignored.
+ * If an item with the specified key already exists it will be ignored.
  *
  * @method
  * @param {string} key Item key
- * @param {string} body Item contents
+ * @param {string} html Item contents
  * @returns {number} Index of the item in the index-value store, and also the list
  */
-ve.dm.InternalList.prototype.addItem = function ( key, body ) {
+ve.dm.InternalList.prototype.queueItemHtml = function ( key, html ) {
 	var index = this.store.indexOfHash( key );
 	if ( index === null ) {
-		index = this.store.index( body, key );
+		index = this.store.index( html, key );
 		this.itemsHtml.push( index );
 	}
 	return index;
@@ -102,16 +102,18 @@ ve.dm.InternalList.prototype.getItemNode = function ( index ) {
 };
 
 /**
- * Gets linear model data for all the stored item's HTML.
+ * Converts stored item HTML into linear data.
  *
  * Each item is an InternalItem, and they are wrapped in an InternalList.
  * If there are no items an empty array is returned.
+ *
+ * Stored HTML is deleted after conversion.
  *
  * @method
  * @param {ve.dm.Converter} converter Converter object
  * @returns {Array} Linear model data
  */
-ve.dm.InternalList.prototype.getDataFromDom = function ( converter ) {
+ve.dm.InternalList.prototype.convertToData = function ( converter ) {
 	var i, length, itemData,
 		itemsHtml = this.getItemsHtml(), list = [];
 
@@ -127,6 +129,8 @@ ve.dm.InternalList.prototype.getDataFromDom = function ( converter ) {
 		}
 		list.push( { 'type': '/internalList' } );
 	}
+	// After conversion we no longer need the HTML
+	this.itemsHtml = null;
 	return list;
 };
 
@@ -139,7 +143,6 @@ ve.dm.InternalList.prototype.getDataFromDom = function ( converter ) {
 ve.dm.InternalList.prototype.clone = function ( doc ) {
 	var clone = new this.constructor( doc || this.doc );
 	clone.store = this.store.clone();
-	clone.itemsHtml = this.itemsHtml.slice();
 	return clone;
 };
 

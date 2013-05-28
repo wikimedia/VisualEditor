@@ -43,7 +43,7 @@ ve.dm.MWReferenceNode.static.toDataElement = function ( domElements, converter )
 		// TODO: should also store and use mw.attrs.group once available from Parsoid
 		key = name !== null ? name : ve.getHash( body );
 
-	listIndex = converter.internalList.addItem( key, body );
+	listIndex = converter.internalList.queueItemHtml( key, body );
 
 	dataElement = {
 		'type': this.name,

@@ -109,7 +109,7 @@ ve.dm.example.createExampleDocument = function ( name, store ) {
 	// HACK internalList isn't populated when creating a document from data
 	if ( ve.dm.example[name].internalItems ) {
 		for ( i = 0; i < ve.dm.example[name].internalItems.length; i++ ) {
-			doc.internalList.addItem(
+			doc.internalList.queueItemHtml(
 				ve.dm.example[name].internalItems[i].key,
 				ve.dm.example[name].internalItems[i].body
 			);
