@@ -27,6 +27,9 @@ ve.debug = true;
  * @param {Mixed...} [data] Data to log
  */
 ve.log = function () {
+	// In IE9 console methods are not real functions and as such do not inherit
+	// from Function.prototype, thus console.log.apply does not exist.
+	// However it is function-like enough that passing it to Function#apply does work.
 	Function.prototype.apply.call( console.log, console, arguments );
 };
 
