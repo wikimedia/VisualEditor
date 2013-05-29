@@ -154,7 +154,7 @@ ve.ui.MWTemplateDialog.prototype.setupPages = function () {
 			template = parts[i].template;
 			spec = specs[template.target.url];
 			// Add template page
-			this.addPage( 'part_' + i, { 'label': template.target.url, 'icon': 'template' } );
+			this.addTemplatePage( 'part_' + i, template );
 			// Add parameter pages
 			for ( param in template.params ) {
 				this.addParameterPage(
@@ -236,14 +236,36 @@ ve.ui.MWTemplateDialog.prototype.addWikitextPage = function ( page, value ) {
 	} );
 
 	textInput = new ve.ui.TextInputWidget( { '$$': this.frame.$$, 'multiline': true } );
-	textInput.$input.css( { 'height': 100, 'width': '100%' } );
 	textInput.setValue( value.wt );
 	textInput.on( 'change', function () {
 		value.wt = textInput.getValue();
 	} );
+	textInput.$.addClass( 've-ui-mwTemplateDialog-input' );
+	fieldset.$.append( textInput.$ );
 
 	this.addPage( page, { 'label': 'Content', 'icon': 'source' } );
-	this.pages[page].$.append( fieldset.$.append( textInput.$ ) );
+	this.pages[page].$.append( fieldset.$ );
+};
+
+/**
+ * Add page for a template.
+ *
+ * @method
+ * @param {string} page Unique page name
+ * @param {Object} template Template info
+ */
+ve.ui.MWTemplateDialog.prototype.addTemplatePage = function ( page, template ) {
+	var fieldset,
+		label = template.target.url || template.target.wt;
+
+	fieldset = new ve.ui.FieldsetLayout( {
+		'$$': this.frame.$$,
+		'label': label,
+		'icon': 'template'
+	} );
+
+	this.addPage( page, { 'label': label, 'icon': 'template' } );
+	this.pages[page].$.append( fieldset.$ );
 };
 
 /**
@@ -267,11 +289,12 @@ ve.ui.MWTemplateDialog.prototype.addParameterPage = function ( page, name, value
 	} );
 
 	textInput = new ve.ui.TextInputWidget( { '$$': this.frame.$$, 'multiline': true } );
-	textInput.$input.css( { 'height': 100, 'width': '100%' } );
 	textInput.setValue( value.wt );
 	textInput.on( 'change', function () {
 		value.wt = textInput.getValue();
 	} );
+	textInput.$.addClass( 've-ui-mwTemplateDialog-input' );
+	fieldset.$.append( textInput.$ );
 
 	if ( description  ) {
 		inputLabel = new ve.ui.InputLabelWidget( {
@@ -288,7 +311,7 @@ ve.ui.MWTemplateDialog.prototype.addParameterPage = function ( page, name, value
 	// TODO: Use spec.type
 
 	this.addPage( page, { 'label': label, 'icon': 'parameter', 'level': 1 } );
-	this.pages[page].$.append( fieldset.$.append( textInput.$ ) );
+	this.pages[page].$.append( fieldset.$ );
 };
 
 /* Registration */

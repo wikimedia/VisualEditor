@@ -153,3 +153,13 @@
 	border-top-right-radius: 0;
 	border-top-left-radius: 0;
 }
+
+/* ve.ui.MWTemplateDialog */
+
+.ve-ui-mwTemplateDialog-input {
+	width: 100%;
+}
+
+.ve-ui-mwTemplateDialog-input textarea {
+	height: 10em;
+}
