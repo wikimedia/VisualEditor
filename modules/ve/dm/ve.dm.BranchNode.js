@@ -126,18 +126,18 @@ ve.dm.BranchNode.prototype.splice = function () {
 		args = Array.prototype.slice.call( arguments ),
 		diff = 0;
 
+	removals = this.children.splice.apply( this.children, args );
+	for ( i = 0, length = removals.length; i < length; i++ ) {
+		removals[i].detach();
+		diff -= removals[i].getOuterLength();
+	}
+
 	if ( args.length >= 3 ) {
 		length = args.length;
 		for ( i = 2; i < length; i++ ) {
 			args[i].attach( this );
 			diff += args[i].getOuterLength();
 		}
-	}
-
-	removals = this.children.splice.apply( this.children, args );
-	for ( i = 0, length = removals.length; i < length; i++ ) {
-		removals[i].detach();
-		diff -= removals[i].getOuterLength();
 	}
 
 	this.adjustLength( diff, true );

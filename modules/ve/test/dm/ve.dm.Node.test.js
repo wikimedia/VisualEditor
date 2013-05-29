@@ -86,7 +86,7 @@ QUnit.test( 'attach', 2, function ( assert ) {
 		node2 = new ve.dm.NodeStub();
 	node1.attach( node2 );
 	assert.strictEqual( node1.getParent(), node2 );
-	assert.strictEqual( node1.getRoot(), node2 );
+	assert.strictEqual( node1.getRoot(), null );
 } );
 
 QUnit.test( 'detach', 2, function ( assert ) {
@@ -95,7 +95,7 @@ QUnit.test( 'detach', 2, function ( assert ) {
 	node1.attach( node2 );
 	node1.detach();
 	assert.strictEqual( node1.getParent(), null );
-	assert.strictEqual( node1.getRoot(), node1 );
+	assert.strictEqual( node1.getRoot(), null );
 } );
 
 QUnit.test( 'canBeMergedWith', 4, function ( assert ) {

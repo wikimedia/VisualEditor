@@ -32,5 +32,5 @@ QUnit.test( 'getParent', 1, function ( assert ) {
 
 QUnit.test( 'getRoot', 1, function ( assert ) {
 	var node = new ve.NodeStub();
-	assert.strictEqual( node.getRoot(), node );
+	assert.strictEqual( node.getRoot(), null );
 } );

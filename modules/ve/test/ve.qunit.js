@@ -84,6 +84,20 @@ function getNodeSelectionSummary( selection ) {
 }
 
 /**
+ * Callback for ve.copyArray/Object to convert nodes to a comparable summary
+ *
+ * @method
+ * @private
+ * @param {ve.dm.Node|Object} value Value in the object/array
+ * @returns {Object} Node summary if value is a node, otherwise just the value
+ */
+function convertNodes( value ) {
+	return value instanceof ve.dm.Node || value instanceof ve.ce.Node ?
+		getNodeTreeSummary( value ) :
+		value;
+}
+
+/**
  * Assertion helpers for VisualEditor test suite.
  * @class ve.QUnit.assert
  */
@@ -149,6 +163,19 @@ QUnit.assert.deepEqualWithDomElements = function ( actual, expected, message ) {
 	// Recursively copy objects or arrays, converting any dom elements found to comparable summaries
 	actual = ve.isArray( actual ) ? ve.copyArray( actual, ve.convertDomElements ) : ve.copyObject( actual, ve.convertDomElements );
 	expected = ve.isArray( expected ) ? ve.copyArray( expected, ve.convertDomElements ) : ve.copyObject( expected, ve.convertDomElements );
+
+	QUnit.push( QUnit.equiv(actual, expected), actual, expected, message );
+};
+
+/**
+ * Assert that two objects which may contain dom elements are equal.
+ * @method
+ * @static
+ */
+QUnit.assert.deepEqualWithNodeTree = function ( actual, expected, message ) {
+	// Recursively copy objects or arrays, converting any dom elements found to comparable summaries
+	actual = ve.isArray( actual ) ? ve.copyArray( actual, convertNodes ) : ve.copyObject( actual, convertNodes );
+	expected = ve.isArray( expected ) ? ve.copyArray( expected, convertNodes ) : ve.copyObject( expected, convertNodes );
 
 	QUnit.push( QUnit.equiv(actual, expected), actual, expected, message );
 };
