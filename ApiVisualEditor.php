@@ -42,12 +42,12 @@ class ApiVisualEditor extends ApiBase {
 
 			if ( $status->isOK() ) {
 				$content = $req->getContent();
-			} else if ( $status->isGood() ) {
+			} elseif ( $status->isGood() ) {
 				$this->dieUsage( $req->getContent(), 'parsoidserver-http-'.$req->getStatus() );
-			} else if ( $errors = $status->getErrorsByType( 'error' ) ) {
+			} elseif ( $errors = $status->getErrorsByType( 'error' ) ) {
 				$error = $errors[0];
 				$code = $error['message'];
-				if( count( $error['params'] ) ) {
+				if ( count( $error['params'] ) ) {
 					$message = $error['params'][0];
 				} else {
 					$message = 'MWHttpRequest error';
@@ -284,7 +284,7 @@ class ApiVisualEditor extends ApiBase {
 
 				if ( $wikitext === false ) {
 					$this->dieUsage( 'Error contacting the Parsoid server', 'parsoidserver' );
-				} else if ( $params['paction'] === 'save' ) {
+				} elseif ( $params['paction'] === 'save' ) {
 					// Save page
 					$editResult = $this->saveWikitext( $page, $wikitext, $params );
 					if (
@@ -311,7 +311,7 @@ class ApiVisualEditor extends ApiBase {
 							$result['newrevid'] = intval( $editResult['edit']['newrevid'] );
 						}
 					}
-				} else if ( $params['paction'] === 'diff' ) {
+				} elseif ( $params['paction'] === 'diff' ) {
 					$diff = $this->diffWikitext( $page, $wikitext );
 					if ( $diff['result'] === 'fail' ) {
 						$this->dieUsage( 'Diff failed', 'difffailed' );
@@ -371,12 +371,15 @@ class ApiVisualEditor extends ApiBase {
 		return array(
 			'page' => 'The page to perform actions on.',
 			'paction' => 'Action to perform',
-			'oldid' => 'The revision number to use. If zero, the empty string is passed to Parsoid to indicate new page creation.',
+			'oldid' => 'The revision number to use. If zero, the empty string is passed to Parsoid'
+				.' to indicate new page creation.',
 			'minor' => 'Flag for minor edit.',
 			'html' => 'HTML to send to parsoid in exchange for wikitext',
 			'summary' => 'Edit summary',
-			'basetimestamp' => 'When saving, set this to the timestamp of the revision that was edited. Used to detect edit conflicts.',
-			'starttimestamp' => 'When saving, set this to the timestamp of when the page was loaded. Used to detect edit conflicts.',
+			'basetimestamp' => 'When saving, set this to the timestamp of the revision that was'
+				.' edited. Used to detect edit conflicts.',
+			'starttimestamp' => 'When saving, set this to the timestamp of when the page was loaded.'
+				.' Used to detect edit conflicts.',
 			'token' => 'Edit token',
 		);
 	}

@@ -71,7 +71,8 @@ $html = file_get_contents( $page );
 						<?php echo basename( $page, '.html' ); ?>
 					</a>
 				</li>
-			<?php endforeach; ?>
+			<?php
+				endforeach; ?>
 		</ul>
 		<div class="ve-demo-editor"></div>
 
@@ -441,7 +442,7 @@ $html = file_get_contents( $page );
 				var getKids = function ( obj ) {
 					var $ol = $( '<ol start="0"></ol>' ),
 						$li;
-					for( var i = 0; i < obj.children.length; i++ ) {
+					for ( var i = 0; i < obj.children.length; i++ ) {
 						$li = $( '<li>' );
 						$label = $( '<span>' ).addClass( 've-demo-dump-element' );
 						if ( obj.children[i].length !== undefined ) {

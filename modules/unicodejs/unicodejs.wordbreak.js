@@ -79,7 +79,7 @@
 				// Check previous character was alpha-numeric if required
 				if ( onlyAlphaNumeric ) {
 					lastGroup = getGroup( string.read( i - direction + readCharOffset ) );
-					if( lastGroup !== 'ALetter' && lastGroup !== 'Numeric' && lastGroup !== 'Katakana' ) {
+					if ( lastGroup !== 'ALetter' && lastGroup !== 'Numeric' && lastGroup !== 'Katakana' ) {
 						continue;
 					}
 				}
