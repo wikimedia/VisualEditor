@@ -14,6 +14,7 @@
  * @constructor
  * @param {Object} [config] Config options
  * @cfg {string} [placeholder] Placeholder text
+ * @cfg {string} [icon] Symbolic name of icon
  */
 ve.ui.TextInputWidget = function VeUiTextInputWidget( config ) {
 	// Parent constructor
@@ -21,6 +22,17 @@ ve.ui.TextInputWidget = function VeUiTextInputWidget( config ) {
 
 	// Initialization
 	this.$.addClass( 've-ui-textInputWidget' );
+	if ( config.icon ) {
+		this.$.addClass( 've-ui-textInputWidget-decorated' );
+		this.$.append(
+			$( '<span>' )
+				.addClass( 've-ui-textInputWidget-icon ve-ui-icon-' + config.icon )
+				.mousedown( ve.bind( function () {
+					this.$input.focus();
+					return false;
+				}, this ) )
+		);
+	}
 	if ( config.placeholder ) {
 		this.$input.attr( 'placeholder', config.placeholder );
 	}
