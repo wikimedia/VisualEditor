@@ -27,7 +27,9 @@ ve.ui.MWTemplateDialog = function VeUiMWTemplateDialog( surface, config ) {
 	// Properties
 	this.node = null;
 	this.content = null;
-	this.specs = {};
+	// Buffer for getTemplateSpecs
+	this.fetchQueue = [];
+	this.fetchCallbacks = $.Callbacks();
 };
 
 /* Inheritance */
@@ -50,77 +52,111 @@ ve.ui.MWTemplateDialog.static.modelClasses = [ ve.dm.MWTemplateNode ];
  * @method
  */
 ve.ui.MWTemplateDialog.prototype.onOpen = function () {
-	var i, len, template, title,
-		templates = [];
+	var i, progress, len, template,
+		dialog = this;
 
-	this.node = this.surface.getView().getFocusedNode();
-	if ( !this.node ) {
+	function increaseProgress() {
+		progress++;
+		if ( progress === len ) {
+			dialog.setupPages();
+		}
+	}
+
+	function makeStoreTemplateSpec( template ) {
+		return function ( specs ) {
+			template.spec = specs[template.specId];
+			increaseProgress();
+		};
+	}
+
+	dialog.node = dialog.surface.getView().getFocusedNode();
+	if ( !dialog.node ) {
 		throw new Error( 'No focused node to edit' );
 	}
 
-	// Get content values
-	this.content = ve.copyObject( this.node.getModel().getAttribute( 'mw' ) );
+	// Get content values and copy it so we can safely change it to our liking
+	dialog.content = ve.copyObject( dialog.node.getModel().getAttribute( 'mw' ) );
+
 	// Convert single template format to multiple template format
-	if ( this.content.params ) {
-		this.content = { 'parts': [ { 'template': this.content } ] };
+	if ( dialog.content.params ) {
+		dialog.content = {
+			'parts': [
+				{
+					'template': dialog.content
+				}
+			]
+		};
 	}
-	// Get all template data asynchronously
-	for ( i = 0, len = this.content.parts.length; i < len; i++ ) {
-		template = this.content.parts[i].template;
+
+	progress = -1;
+	len = dialog.content.parts.length;
+
+	// Get all template specs asynchronously
+	for ( i = 0; i < len; i++ ) {
+		template = dialog.content.parts[i].template;
 		if ( template ) {
-			if ( template.target.url ) {
-				try {
-					title = new mw.Title( template.target.url );
-					templates.push( {
-						'title': title.toString(),
-						'params': template.params
-					} );
-				} catch ( e ) {}
-			}
+			// Method #getTemplateSpecs will use the part id instead of `target.url`
+			// if the target has no url property (which Parsoid omits if the target is
+			// dynamically generated from wikitext). In that case we want each template
+			// invocation to have its own inferred template spec.
+			template.specId = template.target.url || ( '#!/part/' + i );
+			dialog.getTemplateSpecs( template, makeStoreTemplateSpec( template ) );
 		} else {
-			// Wrap plain wikitext in object so editor has something to reference
-			this.content.parts[i] = { 'wt': this.content.parts[i] };
+			// This is a raw wikitext part (between two associated template invocations),
+			// wrap in object so editor has something to reference
+			dialog.content.parts[i] = { 'wt': dialog.content.parts[i] };
+			increaseProgress();
 		}
 	}
-	if ( templates.length ) {
-		this.getTemplateData( templates )
-			.done( ve.bind( function ( specs ) {
-				this.specs = specs;
-			}, this ) )
-			.always( ve.bind( this.setupPages, this ) );
-	} else {
-		this.setupPages();
-	}
+
+	increaseProgress();
 };
 
 /**
  * Handle window close events.
  *
- * @method
  * @param {string} action Action that caused the window to be closed
  */
 ve.ui.MWTemplateDialog.prototype.onClose = function ( action ) {
-	var i, len, wt,
+	var i, len, parts,
 		surfaceModel = this.surface.getModel();
 
 	// Save changes
 	if ( action === 'apply' ) {
-		// Expand wikitext content
-		for ( i = 0, len = this.content.parts.length; i < len; i++ ) {
-			wt = this.content.parts[i].wt;
-			if ( typeof wt === 'string' ) {
-				// Replace object wrapper with plain text
-				this.content.parts[i] = wt;
+
+		// Undo non-standard changes we made to the content model in #onOpen
+		parts = this.content.parts;
+
+		for ( i = 0, len = parts.length; i < len; i++ ) {
+
+			// Convert object part with wt property back to string part
+			if ( typeof parts[i].wt === 'string' ) {
+				parts[i] = parts[i].wt;
+			}
+
+			// Remove the properties #onOpen put here
+			if ( parts[i].template ) {
+				if ( parts[i].template.spec ) {
+					delete parts[i].template.spec;
+				}
+				if ( parts[i].template.specId ) {
+					delete parts[i].template.specId;
+				}
 			}
 		}
+
 		// Restore single template format
 		if ( this.content.parts.length === 1 ) {
 			this.content = this.content.parts[0].template;
 		}
+
 		// TODO: Wrap attribute changes in ve.dm.SurfaceFragment
 		surfaceModel.change(
 			ve.dm.Transaction.newFromAttributeChange(
-				surfaceModel.getDocument(), this.node.getOffset(), 'mw', this.content
+				surfaceModel.getDocument(),
+				this.node.getOffset(),
+				'mw',
+				this.content
 			)
 		);
 	}
@@ -128,7 +164,6 @@ ve.ui.MWTemplateDialog.prototype.onClose = function ( action ) {
 	this.clearPages();
 	this.node = null;
 	this.content = null;
-	this.specs = {};
 
 	// Parent method
 	ve.ui.PagedDialog.prototype.onClose.call( this );
@@ -142,8 +177,7 @@ ve.ui.MWTemplateDialog.prototype.onClose = function ( action ) {
 ve.ui.MWTemplateDialog.prototype.setupPages = function () {
 	// Build pages from parts
 	var i, len, template, spec, param,
-		parts = this.content.parts,
-		specs = this.specs;
+		parts = this.content.parts;
 
 	// Parent method
 	ve.ui.PagedDialog.prototype.onOpen.call( this );
@@ -152,7 +186,7 @@ ve.ui.MWTemplateDialog.prototype.setupPages = function () {
 	for ( i = 0, len = parts.length; i < len; i++ ) {
 		if ( parts[i].template ) {
 			template = parts[i].template;
-			spec = specs[template.target.url];
+			spec = template.spec;
 			// Add template page
 			this.addTemplatePage( 'part_' + i, template );
 			// Add parameter pages
@@ -172,23 +206,111 @@ ve.ui.MWTemplateDialog.prototype.setupPages = function () {
 };
 
 /**
- * Get a promise for template data.
- *
- * TODO: Backfill template info from params objects
- *
- * @method
- * @param {Object[]} templates Template information containing `title` and `params` properties
- * @return {jQuery.Promise} Template data blob on success, or an error code on failure
+ * Backfill missing template data based on template invocation.
+ * @param {Object} template Template invocation description
+ * @return {Object} Template data blob
  */
-ve.ui.MWTemplateDialog.prototype.getTemplateData = function ( templates ) {
+ve.ui.MWTemplateDialog.static.makeTemplateSpec = function ( params ) {
+	var key, blob;
+
+	blob = {
+		description: null,
+		params: {},
+		sets: []
+	};
+	for ( key in params ) {
+		blob.params[key] = {
+			'label': {
+				en: key
+			},
+			'required': false,
+			'description': null,
+			'deprecated': false,
+			'aliases': [],
+			'default': '',
+			'type': 'string'
+
+		};
+	}
+	return blob;
+};
+
+/**
+ * Get template specs for one or more templates in the content model.
+ *
+ * @param {Object[]|undefined} templates List of template invocation descriptions. Contains `title` and
+ * `params` properties. Or undefined to handle the queue built so far.
+ * @param {Function} callback
+ * @param {Object} callback.blobs Object containing template data blobs keyed by page title.
+ */
+ve.ui.MWTemplateDialog.prototype.getTemplateSpecs = function ( templates, callback ) {
+	var fillTemplateSpecs,
+		dialog = this;
+
+	// Yield once with setTimeout before fetching to allow batching
+	if ( callback ) {
+		dialog.fetchCallbacks.add( callback );
+	}
+	if ( templates ) {
+		templates = ve.isArray( templates ) ? templates : [ templates ];
+		// Push into the queue
+		dialog.fetchQueue.push.apply( dialog.fetchQueue, templates );
+		setTimeout( function () {
+			dialog.getTemplateSpecs();
+		} );
+		return;
+	} else if ( dialog.fetchQueue.length ) {
+		// Handle batch queue
+		templates = dialog.fetchQueue.slice();
+		dialog.fetchQueue.length = 0;
+	} else {
+		// This a delayed call but a previous delayed call already
+		// cleared the queue for us. This call has become redundant.
+		return;
+	}
+
+	fillTemplateSpecs = function ( specs ) {
+		var i, len, template, specId;
+		for ( i = 0, len = templates.length; i < len; i++ ) {
+			template = templates[i];
+			specId = template.specId;
+			if ( !specs[specId] ) {
+				specs[specId] = dialog.constructor.static.makeTemplateSpec( template );
+			}
+		}
+		dialog.fetchCallbacks.fireWith( null, [ specs ] );
+	};
+
+	dialog.fetchTemplateSpecs( templates )
+		.done( fillTemplateSpecs )
+		.fail( function () {
+			fillTemplateSpecs( {} );
+		} );
+};
+
+/**
+ * Fetch template data from the TemplateData API.
+ *
+ * @param {Object[]} templates List of template invocation descriptions
+ * @return {jQuery.Promise}
+ */
+ve.ui.MWTemplateDialog.prototype.fetchTemplateSpecs = function ( templates ) {
 	var i, len,
+		d = $.Deferred(),
 		titles = [],
-		specs = {},
-		deferred = $.Deferred();
+		specs = {};
 
 	// Collect all titles
 	for ( i = 0, len = templates.length; i < len; i++ ) {
-		titles.push( templates[i].title );
+		if ( templates[i].target.url ) {
+			titles.push( templates[i].target.url );
+		}
+	}
+
+	// Optimise for empty lists
+	if ( !templates.length ) {
+		setTimeout( d.reject );
+		return d.promise();
 	}
 
 	// Request template data from server
@@ -202,27 +324,31 @@ ve.ui.MWTemplateDialog.prototype.getTemplateData = function ( templates ) {
 		}
 	} )
 		.done( function ( data ) {
-			var id;
+			var i, len, id;
 			if ( data && data.pages ) {
-				// Add template data to spec
 				for ( id in data.pages ) {
 					specs[data.pages[id].title] = data.pages[id];
 				}
-				deferred.resolve( specs );
+				if ( data.normalized ) {
+					for ( i = 0, len = data.normalized.length; i < len; i++ ) {
+						specs[ data.normalized[i].from ] = specs[ data.normalized[i].to ];
+					}
+				}
+				d.resolve( specs );
+			} else {
+				d.reject( 'unavailable', arguments );
 			}
-			deferred.reject( 'unavailable', arguments );
 		} )
 		.fail( function () {
-			deferred.reject( 'http', arguments );
+			d.reject( 'http', arguments );
 		} );
 
-	return deferred.promise();
+	return d.promise();
 };
 
 /**
  * Add page for wikitext.
  *
- * @method
  * @param {string} page Unique page name
  * @param {Object} value Parameter value
  */
@@ -250,7 +376,6 @@ ve.ui.MWTemplateDialog.prototype.addWikitextPage = function ( page, value ) {
 /**
  * Add page for a template.
  *
- * @method
  * @param {string} page Unique page name
  * @param {Object} template Template info
  */
@@ -271,7 +396,6 @@ ve.ui.MWTemplateDialog.prototype.addTemplatePage = function ( page, template ) {
 /**
  * Add page for a parameter.
  *
- * @method
  * @param {string} page Unique page name
  * @param {string} name Parameter name
  * @param {Object} value Parameter value
