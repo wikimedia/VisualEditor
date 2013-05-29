@@ -229,3 +229,13 @@
 	/* @embed */
 	background-image: url(images/icons/superscript.png);
 }
+
+.ve-ui-icon-search {
+	/* @embed */
+	background-image: url(images/icons/search.png);
+}
+
+.ve-ui-icon-search-big {
+	/* @embed */
+	background-image: url(images/icons/search-big.png);
+}
