@@ -16,21 +16,51 @@
  * @param {string} text Text
  */
 unicodeJS.TextString = function UnicodeJSTextString( text ) {
-	this.text = text;
+	this.clusters = unicodeJS.splitClusters( text );
 };
 
 /* Methods */
 
 /**
- * Read character at specified position
+ * Read grapheme cluster at specified position
  *
  * @method
  * @param {number} position Position to read from
- * @returns {string|null} Character, or null if out of bounds
+ * @returns {string|null} Grapheme cluster, or null if out of bounds
  */
 unicodeJS.TextString.prototype.read = function ( position ) {
-	if ( position < 0 || position >= this.text.length ) {
-		return null;
-	}
-	return this.text.charAt( position );
+	var clusterAt = this.clusters[position];
+	return clusterAt !== undefined ? clusterAt : null;
+};
+
+/**
+ * Return number of grapheme clusters in the text string
+ *
+ * @method
+ * @returns {number} Number of grapheme clusters
+ */
+unicodeJS.TextString.prototype.getLength = function () {
+	return this.clusters.length;
+};
+
+/**
+ * Return a sub-TextString
+ *
+ * @param {number} start Start offset
+ * @param {number} end End offset
+ * @returns {unicodeJS.TextString} New TextString object containing substring
+ */
+unicodeJS.TextString.prototype.substring = function ( start, end ) {
+	var textString = new unicodeJS.TextString( '' );
+	textString.clusters = this.clusters.slice( start, end );
+	return textString;
+};
+
+/**
+ * Get as a plain string
+ *
+ * @returns {string} Plain javascript string
+ */
+unicodeJS.TextString.prototype.getString = function () {
+	return this.clusters.join( '' );
 };
