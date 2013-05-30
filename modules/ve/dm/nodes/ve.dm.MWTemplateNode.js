@@ -10,19 +10,26 @@
  *
  * @class
  * @abstract
- * @extends ve.dm.GeneratedContentNode
+ * @extends ve.dm.LeafNode
+ * @mixins ve.dm.GeneratedContentNode
+ *
  * @constructor
  * @param {number} [length] Length of content data in document; ignored and overridden to 0
  * @param {Object} [element] Reference to element in linear model
  */
 ve.dm.MWTemplateNode = function VeDmMWTemplateNode( length, element ) {
 	// Parent constructor
-	ve.dm.GeneratedContentNode.call( this, 0, element );
+	ve.dm.LeafNode.call( this, 0, element );
+
+	// Mixin constructors
+	ve.dm.GeneratedContentNode.call( this );
 };
 
 /* Inheritance */
 
-ve.inheritClass( ve.dm.MWTemplateNode, ve.dm.GeneratedContentNode );
+ve.inheritClass( ve.dm.MWTemplateNode, ve.dm.LeafNode );
+
+ve.mixinClass( ve.dm.MWTemplateNode, ve.dm.GeneratedContentNode );
 
 /* Static members */
 

@@ -246,7 +246,7 @@ QUnit.test( 'getRenderedContents', function ( assert ) {
 			],
 			'html': 'a<b>b<span typeof="mw:Entity" class="ve-ce-leafNode ' +
 				've-ce-mwEntityNode" contenteditable="false">c</span>d<span ' +
-				'class="ve-ce-leafNode ve-ce-generatedContentNode ve-ce-protectedNode ' +
+				'class="ve-ce-leafNode ve-ce-protectedNode ve-ce-generatedContentNode ' +
 				've-ce-alienNode ve-ce-alienInlineNode" ' +
 				'contenteditable="false"><tt>e</tt></span></b>'
 		}

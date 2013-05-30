@@ -10,15 +10,10 @@
  *
  * @class
  * @abstract
- * @extends ve.ce.LeafNode
+ *
  * @constructor
- * @param {ve.dm.GeneratedContentNode} model Model to observe
- * @param {Object} [config] Config options
  */
-ve.ce.GeneratedContentNode = function VeCeGeneratedContentNode( model, config ) {
-	// Parent constructor
-	ve.ce.LeafNode.call( this, model, config );
-
+ve.ce.GeneratedContentNode = function VeCeGeneratedContentNode() {
 	// DOM Changes
 	this.$.addClass( 've-ce-generatedContentNode' );
 	this.$.attr( 'contenteditable', false );
@@ -29,14 +24,6 @@ ve.ce.GeneratedContentNode = function VeCeGeneratedContentNode( model, config ) 
 	// Initialization
 	this.onUpdate();
 };
-
-/* Inheritance */
-
-ve.inheritClass( ve.ce.GeneratedContentNode, ve.ce.LeafNode );
-
-/* Static Properties */
-
-ve.ce.GeneratedContentNode.static.name = 'generatedContent';
 
 /* Methods */
 
@@ -49,9 +36,13 @@ ve.ce.GeneratedContentNode.prototype.onUpdate = function () {
 	var store = this.model.doc.getStore(),
 		index = store.indexOfHash( ve.getHash( this.model ) );
 	if ( index !== null ) {
-		this.emit( 'teardown' );
+		if ( this.live ) {
+			this.emit( 'teardown' );
+		}
 		this.$.empty().append( store.value( index ) );
-		this.emit( 'setup' );
+		if ( this.live ) {
+			this.emit( 'setup' );
+		}
 	} else {
 		this.startGenerating();
 		this.generateContents()
@@ -97,7 +88,3 @@ ve.ce.GeneratedContentNode.prototype.doneGenerating = function ( domElements ) {
 ve.ce.GeneratedContentNode.prototype.failGenerating = function () {
 	// TODO: remove 'generating' style
 };
-
-/* Registration */
-
-ve.ce.nodeFactory.register( ve.ce.GeneratedContentNode );
