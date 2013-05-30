@@ -76,8 +76,14 @@ ve.ce.MWTemplateNode.prototype.generateContents = function () {
  * @param {Object} response Response data
  */
 ve.ce.MWTemplateNode.prototype.onParseSuccess = function ( promise, response ) {
-	var data = response.visualeditor;
-	promise.resolve( $( data.content ).get() );
+	var data = response.visualeditor, contentNodes = $( data.content ).get();
+	// HACK: if $content consists of a single paragraph, unwrap it.
+	// We have to do this because the PHP parser wraps everything in <p>s, and inline templates
+	// will render strangely when wrapped in <p>s.
+	if ( contentNodes.length === 1 && contentNodes[0].nodeName.toLowerCase() === 'p' ) {
+		contentNodes = contentNodes[0].childNodes;
+	}
+	promise.resolve( contentNodes );
 };
 
 /**
