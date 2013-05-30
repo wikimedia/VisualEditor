@@ -426,7 +426,7 @@ $html = file_get_contents( $page );
 					if ( annotations ) {
 						$label.append(
 							$( '<span>' ).text(
-								'[' + annotations.get().map( function( ann ) {
+								'[' + ve.instances[0].model.documentModel.store.values( annotations ).map( function( ann ) {
 									return ann.name;
 								} ).join( ', ' ) + ']'
 							)
