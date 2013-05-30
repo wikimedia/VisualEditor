@@ -33,8 +33,7 @@ class VisualEditorMessagesModule extends ResourceLoaderModule {
 		}
 		return
 			've.init.platform.addParsedMessages(' . FormatJson::encode( $parsedMesssages ) . ');'.
-			've.init.platform.addMessages(' . FormatJson::encode( $messages ) . ');'
-		;
+			've.init.platform.addMessages(' . FormatJson::encode( $messages ) . ');';
 	}
 
 	protected function getMessageInfo() {
@@ -50,7 +49,9 @@ class VisualEditorMessagesModule extends ResourceLoaderModule {
 
 		// Override message value
 		$msgVals = array(
-			'visualeditor-feedback-link' => wfMessage( 'visualeditor-feedback-link' )->inContentLanguage()->text(),
+			'visualeditor-feedback-link' => wfMessage( 'visualeditor-feedback-link' )
+				->inContentLanguage()
+				->text(),
 		);
 
 		// Copyright warning (based on EditPage::getCopyrightWarning)
@@ -74,7 +75,11 @@ class VisualEditorMessagesModule extends ResourceLoaderModule {
 		// Normalise to 'copyrightwarning' so we have a consistent key in the front-end.
 		$msgArgs[ 'copyrightwarning' ] = $copywarnMsg;
 
-		$msgKeys = array_values( array_unique( array_merge( $msgKeys, array_keys( $msgArgs ), array_keys( $msgVals ) ) ) );
+		$msgKeys = array_values( array_unique( array_merge(
+			$msgKeys,
+			array_keys( $msgArgs ),
+			array_keys( $msgVals )
+		) ) );
 
 		return array(
 			'keys' => $msgKeys,
@@ -100,8 +105,9 @@ class VisualEditorMessagesModule extends ResourceLoaderModule {
 		return max(
 			$this->getMsgBlobMtime( $context->getLanguage() ),
 			// Also invalidate this module if this file changes (i.e. when messages were
-			// added or removed, or when the javascript invocation in getScript is changes).
-			file_exists( __FILE__ )  ? filemtime( __FILE__ ) : 1 // use 1 because 0 = now, would invalidate continously
+			// added or removed, or when the Javascript invocation in getScript is changes).
+			// Use 1 because 0 = now, would invalidate continously
+			file_exists( __FILE__ ) ? filemtime( __FILE__ ) : 1
 		);
 	}
 }
