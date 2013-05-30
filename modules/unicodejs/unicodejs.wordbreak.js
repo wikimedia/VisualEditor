@@ -19,19 +19,39 @@
 
 	// build regexes
 	for ( group in groups ) {
-		patterns[group] = new RegExp( '[' + groups[group] + ']' );
+		patterns[group] = new RegExp( '[' + groups[group] + ']' ); // TODO: handle surrogates
 	}
 
-	function getGroup( chr ) {
-		// chr is always converted to a string by RegExp#test
+	/**
+	 * Return the wordbreak property value for the cluster
+	 *
+	 * This is a slight con, because Unicode wordbreak property values are defined
+	 * per character, not per cluster, whereas we're already working with a string
+	 * split into clusters.
+	 *
+	 * We are making a working assumption that we can implement the Unicode
+	 * word boundary specification by taking the property value of the *first*
+	 * character of the cluster. In particular, this implements WB4 for us, because
+	 * non-initial Extend or Format characters disapper.
+	 *
+	 * See http://www.unicode.org/reports/tr29/#Word_Boundaries
+	 *
+	 * @private
+	 * @param {string} cluster The grapheme cluster
+	 * @returns {string} The unicode wordbreak property value
+	 */
+	function getGroup( cluster ) {
+		var character;
+		// cluster is always converted to a string by RegExp#test
 		// e.g. null -> 'null' and would match /[a-z]/
 		// so return null for any non-string value
-		if ( typeof chr !== 'string' ) {
+		if ( typeof cluster !== 'string' ) {
 			return null;
 		}
+		character = unicodeJS.splitCharacters( cluster )[0];
 		var group;
 		for ( group in patterns ) {
-			if ( patterns[group].test( chr ) ) {
+			if ( patterns[group].test( character ) ) {
 				return group;
 			}
 		}

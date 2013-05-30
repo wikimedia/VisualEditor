@@ -770,15 +770,10 @@
 		return ve.init.platform.getMessage.apply( ve.init.platform, arguments );
 	};
 
-	/**
-	 * Split a string into individual characters, leaving multibyte characters as one item
-	 *
-	 * @param {string} text Text to split
-	 * @returns {string[]} Array of characters
-	 */
-	ve.splitCharacters = function ( text ) {
-		return text.split( /(?![\uDC00-\uDFFF\u0300-\u036F])/g ); // don't split UTF surrogate pairs
-	};
+    /**
+     * @see unicodeJS#splitClusters
+     */
+	ve.splitCharacters = unicodeJS.splitClusters; // TODO: rename to ve.splitClusters
 
 	/**
 	 * Determine if the text consists of only unattached combining marks

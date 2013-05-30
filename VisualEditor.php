@@ -196,6 +196,9 @@ $wgResourceModules += array(
 		'debugScripts' => array(
 			've/ve.debug.js',
 		),
+		'dependencies' => array(
+			'unicodejs.wordbreak',
+		),
 	),
 	'ext.visualEditor.mediawiki' => $wgVisualEditorResourceTemplate + array(
 		'scripts' => array(

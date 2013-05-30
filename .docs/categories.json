@@ -169,7 +169,7 @@
 			{
 				"name": "UnicodeJS",
 				"classes": [
-					"unicodeJS.TextString", "unicodeJS.wordbreak"
+					"unicodeJS", "unicodeJS.TextString", "unicodeJS.wordbreak"
 				]
 			}
 		]

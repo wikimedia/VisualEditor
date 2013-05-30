@@ -20,8 +20,15 @@ QUnit.test( 'isBreak', function ( assert ) {
 			// 30 - 40
 			" a_b_3_ナ_ " +
 			// 40 - 50
-			"汉字/漢字 c\u0300\u0327k" +
+			"汉字/漢字 c\u0300\u0327k  " +
 			// 50 - 60
+			"\ud800\udf08" + // U+10308 OLD ITALIC LETTER THE
+			"\ud800\udf08\u0302" + // U+10308 OLD ITALIC LETTER THE + combining circumflex
+			"\ud800\udf0a" + // U+1030A OLD ITALIC LETTER KA
+			" pad " +
+			"\ud800\udf0a" + // U+1030A OLD ITALIC LETTER KA
+			"\ud800\udf0a" + // U+1030A OLD ITALIC LETTER KA
+			// 60 - 65: "a." tests end of para
 			" c\u0300\u0327 a.",
 			/*jshint quotmark:single */
 		textString = new unicodeJS.TextString( text ),
@@ -30,18 +37,22 @@ QUnit.test( 'isBreak', function ( assert ) {
 			11, 12, 13, 14, 15, 16, 17, 19,
 			21, 25, 30,
 			31, 39, 40,
-			41, 42, 43, 44, 45, 46, 50,
-			51, 54, 55, 56, 57
+			41, 42, 43, 44, 45, 46, 48, 49, 50,
+			51, 52, // TODO: these should not be in the list
+			53, 54, 57, 58,
+			59, // TODO: this should not be in the list
+			60,
+			61, 62, 63, 64, 65
 		];
 
-	QUnit.expect( text.length + 1 );
+	QUnit.expect( textString.getLength() + 1 );
 
-	for ( i = 0; i <= text.length; i++ ) {
+	for ( i = 0; i <= textString.getLength(); i++ ) {
 		result = ( breaks.indexOf( i ) !== -1 );
 		context =
-			text.substring( Math.max( i - 4, 0 ), i ) +
+			textString.substring( Math.max( i - 4, 0 ), i ).getString() +
 			'│' +
-			text.substring( i, Math.min( i + 4, text.length ) )
+			textString.substring( i, Math.min( i + 4, text.length ) ).getString()
 		;
 		assert.equal(
 			unicodeJS.wordbreak.isBreak( textString, i ),
