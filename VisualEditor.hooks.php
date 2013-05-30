@@ -65,7 +65,10 @@ class VisualEditorHooks {
 			'isPageWatched' => $out->getUser()->isWatched( $out->getTitle() ),
 			'pageLanguageCode' => $out->getTitle()->getPageLanguage()->getHtmlCode(),
 			'pageLanguageDir' => $out->getTitle()->getPageLanguage()->getDir(),
-			'magnifyClipIconURL' => $wgStylePath . '/common/images/magnify-clip' . ( $wgContLang->isRTL() ? '-rtl' : '' ) . '.png' // Same as in Linker.php
+			// Same as in Linker.php
+			'magnifyClipIconURL' => $wgStylePath .
+				'/common/images/magnify-clip' .
+				( $wgContLang->isRTL() ? '-rtl' : '' ) . '.png'
 		);
 
 		return true;
@@ -88,7 +91,10 @@ class VisualEditorHooks {
 		return true;
 	}
 
-	public static function onResourceLoaderTestModules( array &$testModules, ResourceLoader &$resourceLoader ) {
+	public static function onResourceLoaderTestModules(
+		array &$testModules,
+		ResourceLoader &$resourceLoader
+	) {
 		$testModules['qunit']['ext.visualEditor.test'] = array(
 			'scripts' => array(
 				// QUnit plugin
