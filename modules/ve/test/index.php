@@ -51,8 +51,8 @@
 		<script src="../../ve/ve.debug.js"></script>
 		<script>
 			<?php
-				require ( '../../../VisualEditor.i18n.php' );
-				echo 've.init.platform.addMessages( ' . json_encode( $messages['en'] ) . ");\n";
+				require '../../../VisualEditor.i18n.php';
+				echo 've.init.platform.addMessages( ' . json_encode( $messages['en'] ) . " );\n";
 			?>
 			ve.init.platform.setModulesUrl( '../..' );
 		</script>
@@ -233,7 +233,6 @@
 		<script src="../../ve/ui/dialogs/ve.ui.ContentDialog.js"></script>
 		<script src="../../ve/ui/dialogs/ve.ui.MediaDialog.js"></script>
 		<script src="../../ve/ui/dialogs/ve.ui.PagedDialog.js"></script>
-		<script src="../../ve/ui/dialogs/ve.ui.MWMetaDialog.js"></script>
 		<script src="../../ve/ui/tools/ve.ui.ButtonTool.js"></script>
 		<script src="../../ve/ui/tools/ve.ui.AnnotationButtonTool.js"></script>
 		<script src="../../ve/ui/tools/ve.ui.DialogButtonTool.js"></script>
@@ -270,6 +269,7 @@
 		<script src="../../ve/ce/nodes/ve.ce.MWTemplateNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.MWReferenceListNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.MWReferenceNode.js"></script>
+		<script src="../../ve/ui/dialogs/ve.ui.MWMetaDialog.js"></script>
 		<script src="../../ve/ui/tools/buttons/ve.ui.MWMetaButtonTool.js"></script>
 		<script src="../../ve/ui/tools/buttons/ve.ui.MWReferenceButtonTool.js"></script>
 		<script src="../../ve/ui/tools/buttons/ve.ui.MWTemplateButtonTool.js"></script>
