@@ -31,7 +31,6 @@
  * @alternateClassName jqXHR
  */
 
-
 /**
  * @class QUnit
  * @source <http://api.qunitjs.com/>

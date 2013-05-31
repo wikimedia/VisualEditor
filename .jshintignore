@@ -1,8 +1,5 @@
-api
-docs/
-modules/jquery
-modules/qunit
-modules/rangy
-modules/unicodejs
-modules/parser
-tests/parser
+docs/**
+node_modules/**
+modules/jquery/**
+modules/qunit/**
+modules/rangy/**
