@@ -79,13 +79,16 @@ class VisualEditorHooks {
 	 */
 	public static function onResourceLoaderGetConfigVars( array &$vars ) {
 		global $wgVisualEditorEnableSectionEditLinks, $wgVisualEditorParsoidProblemReportURL,
-			$wgVisualEditorParsoidURL, $wgVisualEditorEnableExperimentalCode;
+			$wgVisualEditorParsoidURL, $wgVisualEditorEnableExperimentalCode,
+			$wgVisualEditorTabLayout;
+
 		$vars['wgVisualEditorConfig'] = array(
 			'enableSectionEditLinks' => $wgVisualEditorEnableSectionEditLinks,
 			'reportProblemURL' => $wgVisualEditorParsoidProblemReportURL !== null ?
 				$wgVisualEditorParsoidProblemReportURL :
 				"$wgVisualEditorParsoidURL/_bugs/",
 			'enableExperimentalCode' => $wgVisualEditorEnableExperimentalCode,
+			'tabLayout' => $wgVisualEditorTabLayout,
 		);
 
 		return true;

@@ -71,10 +71,7 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 	);
 	this.originalDocumentTitle = document.title;
 	this.editSummaryByteLimit = 255;
-	// Tab layout.
-	// * add: Adds #ca-ve-edit.
-	// * replace: Re-creates #ca-edit for VisualEditor and adds #ca-editsource.
-	this.tabLayout = 'replace';
+	this.tabLayout = mw.config.get( 'wgVisualEditorConfig' ).tabLayout;
 
 	browserWhitelisted = (
 		currentUri.query.vewhitelist !== undefined ?

@@ -27,6 +27,10 @@ $wgVisualEditorNamespaces = array( NS_MAIN );
 $wgVisualEditorUseChangeTagging = true;
 // Whether to enable incomplete experimental code
 $wgVisualEditorEnableExperimentalCode = false;
+// Whether to use the 'add' or 'replace' tabLayout
+// * add: Adds #ca-ve-edit.
+// * replace: Re-creates #ca-edit for VisualEditor and adds #ca-editsource.
+$wgVisualEditorTabLayout = 'replace';
 
 /* Setup */
 
