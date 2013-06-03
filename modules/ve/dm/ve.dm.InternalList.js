@@ -24,14 +24,22 @@ ve.dm.InternalList = function VeDmInternalList( doc ) {
 	this.itemHtmlQueue = [];
 	this.listNode = null;
 	this.nodes = {};
+	this.groupsChanged = [];
 
 	// Event handlers
-	// this.getDocument().connect( this, { 'transact': 'onTransact' } );
+	this.getDocument().connect( this, { 'transact': 'onTransact' } );
 };
 
 /* Inheritance */
 
 ve.mixinClass( ve.dm.InternalList, ve.EventEmitter );
+
+/* Events */
+
+/**
+ * @event update
+ * @param {string[]} groupsChanged List of groups changed since the last transaction
+ */
 
 /* Methods */
 
@@ -113,6 +121,15 @@ ve.dm.InternalList.prototype.getItemNode = function ( index ) {
 };
 
 /**
+ * Get the node group object for a specified group name.
+ * @param {string} groupName Name of the group
+ * @returns {Object} Node group object, containing nodes and key order array
+ */
+ve.dm.InternalList.prototype.getNodeGroup = function ( groupName ) {
+	return this.nodes[groupName];
+};
+
+/**
  * Converts stored item HTML into linear data.
  *
  * Each item is an InternalItem, and they are wrapped in an InternalList.
@@ -146,6 +163,16 @@ ve.dm.InternalList.prototype.convertToData = function ( converter ) {
 };
 
 /**
+ * Get position of a key within a group
+ * @param {string} groupName Name of the group
+ * @param {string} key Name of the key
+ * @returns {number} Position within the key ordering for that group
+ */
+ve.dm.InternalList.prototype.getKeyPosition = function ( groupName, key ) {
+	return ve.indexOf( key, this.nodes[groupName].keyOrder );
+};
+
+/**
  * Add a node.
  * @method
  * @param {string} groupName Item group
@@ -157,8 +184,8 @@ ve.dm.InternalList.prototype.addNode = function ( groupName, key, node ) {
 	// The group may not exist yet
 	if ( group === undefined ) {
 		group = this.nodes[groupName] = {
-			keyNodes: {},
-			keyOrder: []
+			'keyNodes': {},
+			'keyOrder': []
 		};
 	}
 	keyNodes = group.keyNodes[key];
@@ -185,8 +212,33 @@ ve.dm.InternalList.prototype.addNode = function ( groupName, key, node ) {
 		}
 		// 'i' is now the insertion point, so add the node here
 		keyNodes.splice( i, 0, node );
+	}
+	this.markGroupAsChanged( groupName );
+};
 
-		this.sortGroupKeys( group );
+/**
+ * Mark a node group as having been changed since the last transaction.
+ * @param {string} groupName Name of group which has changed
+ */
+ve.dm.InternalList.prototype.markGroupAsChanged = function ( groupName ) {
+	if ( ve.indexOf( groupName, this.groupsChanged ) === -1 ) {
+		this.groupsChanged.push( groupName );
+	}
+};
+
+/**
+ * Handle document transaction events
+ * @emits update
+ */
+ve.dm.InternalList.prototype.onTransact = function () {
+	var i;
+	if ( this.groupsChanged.length > 0 ) {
+		// length will almost always be 1, so probably better to not cache it
+		for ( i = 0; i < this.groupsChanged.length; i++ ) {
+			this.sortGroupKeys( this.nodes[this.groupsChanged[i]] );
+		}
+		this.emit( 'update', this.groupsChanged );
+		this.groupsChanged = [];
 	}
 };
 
@@ -208,16 +260,11 @@ ve.dm.InternalList.prototype.removeNode = function ( groupName, key, node ) {
 				delete group.keyNodes[key];
 				j = ve.indexOf( key, group.keyOrder );
 				group.keyOrder.splice( j, 1 );
-			} else {
-				// If the key has been emptied then removing it from the keyOrder
-				// array is sufficient to keep it ordered, otherwise we need to
-				// re-sort the keys, as we don't know the position of the new
-				// 0th item in the key
-				this.sortGroupKeys( group );
 			}
 			break;
 		}
 	}
+	this.markGroupAsChanged( groupName );
 };
 
 /**

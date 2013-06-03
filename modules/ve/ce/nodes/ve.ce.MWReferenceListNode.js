@@ -28,10 +28,11 @@ ve.ce.MWReferenceListNode = function VeCeMWReferenceListNode( model, config ) {
 		.attr( 'contenteditable', false );
 
 	// Events
-	this.model.connect( this, { 'update': 'onUpdate' } );
+	this.model.getDocument().internalList.connect( this, { 'update': 'onInternalListUpdate' } );
+	this.model.getDocument().internalList.getListNode().connect( this, { 'update': 'onListNodeUpdate' } );
 
 	// Initialization
-	this.onUpdate();
+	this.update();
 };
 
 /* Inheritance */
@@ -46,8 +47,72 @@ ve.ce.MWReferenceListNode.static.name = 'mwReferenceList';
 
 /* Methods */
 
-ve.ce.MWReferenceListNode.prototype.onUpdate = function () {
-	this.$.html( ve.copyArray( this.model.getAttribute( 'domElements' ) || [] ) );
+/**
+ * Handle the updating of the InternalList object.
+ *
+ * This will occur after a document transaction.
+ *
+ * @method
+ * @param {string[]} groupsChanged A list of groups which have changed in this transaction
+ */
+ve.ce.MWReferenceListNode.prototype.onInternalListUpdate = function ( groupsChanged ) {
+	// Only update if this group has been changed
+	if ( ve.indexOf( this.model.getAttribute( 'listGroup' ), groupsChanged ) !== -1 ) {
+		this.update();
+	}
+};
+
+/**
+ * Handle the updating of the InternalListNode.
+ *
+ * This will occur after changes to any InternalItemNode.
+ *
+ * @method
+ */
+ve.ce.MWReferenceListNode.prototype.onListNodeUpdate = function () {
+	// When the list node updates we're not sure which list group the item
+	// belonged to so we always update
+	// TODO: Only re-render the reference which has been edited
+	this.update();
+};
+
+/**
+ * Update the reference list.
+ */
+ve.ce.MWReferenceListNode.prototype.update = function () {
+	var i, j, iLen, jLen, key, keyNodes, $li, itemNode,
+		$ol = $( '<ol class="references">' ),
+		internalList = this.model.getDocument().internalList,
+		listGroup = this.model.getAttribute( 'listGroup' ),
+		nodes = internalList.getNodeGroup( listGroup );
+
+	if ( nodes && nodes.keyOrder.length ) {
+		for ( i = 0, iLen = nodes.keyOrder.length; i < iLen; i++ ) {
+			key = nodes.keyOrder[i];
+			keyNodes = nodes.keyNodes[key];
+
+			$li = $( '<li>' );
+
+			for ( j = 0, jLen = keyNodes.length; j < jLen; j++ ) {
+				if ( keyNodes.length > 1 ) {
+					$li.append(
+						$( '<sup>' ).append(
+							$( '<a>' ).text( ( i + 1 ) + '.' + j )
+						)
+					).append( ' ' );
+				}
+			}
+
+			// Generate reference HTML from first item in key
+			itemNode = new ve.ce.InternalItemNode(
+				internalList.getItemNode( keyNodes[0].getAttribute( 'listIndex' ) )
+			);
+			$li.append( $( '<span class="reference-text">' ).html( itemNode.$.show() ) );
+			$ol.append( $li );
+		}
+	} // TODO: Show a placeholder for an empty reference list in the 'else' section
+
+	this.$.html( $ol );
 };
 
 /* Registration */

@@ -29,15 +29,20 @@ ve.dm.MWReferenceListNode.static.name = 'mwReferenceList';
 
 ve.dm.MWReferenceListNode.static.matchTagNames = null;
 
-ve.dm.MWReferenceListNode.static.matchRdfaTypes = [ 'mw:Object/References' ];
+ve.dm.MWReferenceListNode.static.matchRdfaTypes = [ 'mw:Extension/references' ];
 
 ve.dm.MWReferenceListNode.static.storeHtmlAttributes = false;
 
 ve.dm.MWReferenceListNode.static.toDataElement = function ( domElements ) {
+	var mw = JSON.parse( domElements[0].getAttribute( 'data-mw' ) || '{}' ),
+		refGroup = mw.attrs.group || '',
+		listGroup = 'mwReference/' + refGroup;
+
 	return {
 		'type': this.name,
 		'attributes': {
-			'domElements': ve.copyArray( domElements )
+			'domElements': ve.copyArray( domElements ),
+			'listGroup': listGroup
 		}
 	};
 };

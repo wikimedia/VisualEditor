@@ -161,6 +161,12 @@
 	display: inline-block;
 }
 
+/* ve.ce.MWReferenceListNode */
+
+.ve-ce-mwReferenceListNode .ve-ce-generated-wrapper {
+	display: inline-block;
+}
+
 /* ve.ce.BranchNode */
 
 .ve-ce-branchNode-blockSlug {

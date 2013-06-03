@@ -31,12 +31,15 @@ ve.ce.MWReferenceNode = function VeCeMWReferenceNode( model, config ) {
 		.attr( 'contenteditable', false )
 		.append( this.$link );
 
+	this.index = '';
+	this.internalList = this.model.getDocument().internalList;
+
 	// Events
-	this.model.connect( this, { 'update': 'onUpdate' } );
+	this.connect( this, { 'live': 'onLive' } );
 	this.$link.click( ve.bind( this.onClick, this ) );
 
 	// Initialization
-	this.onUpdate();
+	this.update();
 };
 
 /* Inheritance */
@@ -55,13 +58,45 @@ ve.ce.MWReferenceNode.static.tagName = 'sup';
 /* Methods */
 
 /**
+ * Handle live events.
+ * @method
+ */
+ve.ce.MWReferenceNode.prototype.onLive = function () {
+	// As we are listening to the internal list, we need to make sure
+	// we remove the listeners when this object is removed from the document
+	if ( this.live ) {
+		this.internalList.connect( this, { 'update': 'onInternalListUpdate' } );
+	} else {
+		this.internalList.disconnect( this );
+	}
+};
+
+/**
+ * Handle the updating of the InternalList object.
+ *
+ * This will occur after a document transaction.
+ *
+ * @method
+ * @param {string[]} groupsChanged A list of groups which have changed in this transaction
+ */
+ve.ce.MWReferenceNode.prototype.onInternalListUpdate = function ( groupsChanged ) {
+	// Only update if this group has been changed
+	if ( ve.indexOf( this.model.getAttribute( 'listGroup' ), groupsChanged ) !== -1 ) {
+		this.update();
+	}
+};
+
+/**
  * Handle update events.
  *
  * @method
  */
-ve.ce.MWReferenceNode.prototype.onUpdate = function () {
-	// TODO: auto-generate this number properly
-	this.$link.text( '[' + ( this.model.getAttribute( 'listIndex' ) + 1 ) + ']' );
+ve.ce.MWReferenceNode.prototype.update = function () {
+	var listKey = this.model.getAttribute( 'listKey' ),
+		listGroup = this.model.getAttribute( 'listGroup' ),
+		refGroup = this.model.getAttribute( 'refGroup' ),
+		position = this.internalList.getKeyPosition( listGroup, listKey );
+	this.$link.text( '[' + ( refGroup ? refGroup + ' ' : '' ) + ( position + 1 ) + ']' );
 };
 
 /**
