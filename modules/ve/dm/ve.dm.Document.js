@@ -32,7 +32,7 @@ ve.dm.Document = function VeDmDocument( documentOrData, parentDocument, internal
 	 */
 	var i, node, children, meta,
 		doc = parentDocument || this,
-		root = doc.getDocumentNode(),
+		root = this.getDocumentNode(),
 		textLength = 0,
 		inTextNode = false,
 		// Stack of stacks, each containing a
@@ -40,8 +40,8 @@ ve.dm.Document = function VeDmDocument( documentOrData, parentDocument, internal
 		currentStack = stack[1],
 		parentStack = stack[0],
 		currentNode = this.documentNode;
-	this.documentNode.setDocument( doc );
 	this.documentNode.setRoot( root );
+	this.documentNode.setDocument( doc );
 	this.internalList = internalList ? internalList.clone( this ) : new ve.dm.InternalList( this );
 
 	// Properties
@@ -75,8 +75,7 @@ ve.dm.Document = function VeDmDocument( documentOrData, parentDocument, internal
 			if ( !inTextNode ) {
 				// Create a lengthless text node
 				node = new ve.dm.TextNode();
-				// Set the root pointer now, to prevent cascading updates
-				node.setRoot( root );
+				node.setDocument( doc );
 				// Put the node on the current inner stack
 				currentStack.push( node );
 				currentNode = node;
@@ -120,8 +119,7 @@ ve.dm.Document = function VeDmDocument( documentOrData, parentDocument, internal
 				node = ve.dm.nodeFactory.create(
 					this.data.getData( i ).type, [], this.data.getData( i )
 				);
-				// Set the root pointer now, to prevent cascading updates
-				node.setRoot( root );
+				node.setDocument( doc );
 				// Put the childless node on the current inner stack
 				currentStack.push( node );
 				if ( ve.dm.nodeFactory.canNodeHaveChildren( node.getType() ) ) {
@@ -162,9 +160,16 @@ ve.dm.Document = function VeDmDocument( documentOrData, parentDocument, internal
 		currentNode.setLength( textLength );
 		// Don't bother updating currentNode et al, we don't use them below
 	}
+
+	// State variable that allows nodes to know that they are being
+	// appended in order. Used by ve.dm.InternalList.
+	this.buildingNodeTree = true;
+
 	// The end state is stack = [ [this.documentNode] [ array, of, its, children ] ]
 	// so attach all nodes in stack[1] to the root node
 	ve.batchSplice( this.documentNode, 0, 0, stack[1] );
+
+	this.buildingNodeTree = false;
 };
 
 /* Inheritance */

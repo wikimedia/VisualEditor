@@ -21,11 +21,12 @@ ve.dm.InternalList = function VeDmInternalList( doc ) {
 	// Properties
 	this.document = doc;
 	this.store = new ve.dm.IndexValueStore();
-	this.itemsHtml = [];
+	this.itemHtmlQueue = [];
 	this.listNode = null;
+	this.nodes = {};
 
 	// Event handlers
-	//this.document.connect( this, { 'transact', 'onTransact' } );
+	// this.getDocument().connect( this, { 'transact': 'onTransact' } );
 };
 
 /* Inheritance */
@@ -37,18 +38,19 @@ ve.mixinClass( ve.dm.InternalList, ve.EventEmitter );
 /**
  * Queues up an item's html for parsing later.
  *
- * If an item with the specified key already exists it will be ignored.
+ * If an item with the specified group and key already exists it will be ignored.
  *
  * @method
+ * @param {string} groupName Item group
  * @param {string} key Item key
  * @param {string} html Item contents
  * @returns {number} Index of the item in the index-value store, and also the list
  */
-ve.dm.InternalList.prototype.queueItemHtml = function ( key, html ) {
-	var index = this.getStore().indexOfHash( key );
+ve.dm.InternalList.prototype.queueItemHtml = function ( groupName, key, html ) {
+	var index = this.getStore().indexOfHash( groupName + '/' + key );
 	if ( index === null ) {
-		index = this.getStore().index( html, key );
-		this.itemsHtml.push( index );
+		index = this.getStore().index( html, groupName + '/' + key );
+		this.itemHtmlQueue.push( index );
 	}
 	return index;
 };
@@ -58,8 +60,8 @@ ve.dm.InternalList.prototype.queueItemHtml = function ( key, html ) {
  * @method
  * @returns {Object} Name-indexed object containing HTMLElements
  */
-ve.dm.InternalList.prototype.getItemsHtml = function () {
-	return this.getStore().values( this.itemsHtml );
+ve.dm.InternalList.prototype.getItemHtmlQueue = function () {
+	return this.getStore().values( this.itemHtmlQueue );
 };
 
 /**
@@ -124,12 +126,12 @@ ve.dm.InternalList.prototype.getItemNode = function ( index ) {
  */
 ve.dm.InternalList.prototype.convertToData = function ( converter ) {
 	var i, length, itemData,
-		itemsHtml = this.getItemsHtml(), list = [];
+		itemHtmlQueue = this.getItemHtmlQueue(), list = [];
 
-	if ( itemsHtml.length ) {
+	if ( itemHtmlQueue.length ) {
 		list.push( { 'type': 'internalList' } );
-		for ( i = 0, length = itemsHtml.length; i < length; i++ ) {
-			itemData = converter.getDataFromDomRecursion( $( '<div>' ).html( itemsHtml[i] )[0] );
+		for ( i = 0, length = itemHtmlQueue.length; i < length; i++ ) {
+			itemData = converter.getDataFromDomRecursion( $( '<div>' ).html( itemHtmlQueue[i] )[0] );
 			list = list.concat(
 				[{ 'type': 'internalItem' }],
 				itemData,
@@ -139,8 +141,94 @@ ve.dm.InternalList.prototype.convertToData = function ( converter ) {
 		list.push( { 'type': '/internalList' } );
 	}
 	// After conversion we no longer need the HTML
-	this.itemsHtml = [];
+	this.itemHtmlQueue = [];
 	return list;
+};
+
+/**
+ * Add a node.
+ * @method
+ * @param {string} groupName Item group
+ * @param {string} key Item name
+ * @param {ve.dm.Node} node Item node
+ */
+ve.dm.InternalList.prototype.addNode = function ( groupName, key, node ) {
+	var i, len, start, keyNodes, group = this.nodes[groupName];
+	// The group may not exist yet
+	if ( group === undefined ) {
+		group = this.nodes[groupName] = {
+			keyNodes: {},
+			keyOrder: []
+		};
+	}
+	keyNodes = group.keyNodes[key];
+	// The key may not exist yet
+	if ( keyNodes === undefined ) {
+		keyNodes = group.keyNodes[key] = [];
+	}
+
+	if ( ve.indexOf( key, group.keyOrder ) === -1 ) {
+		group.keyOrder.push( key );
+	}
+	if ( node.getDocument().buildingNodeTree ) {
+		// If the document is building the original node tree
+		// then every item is being added in order, so we don't
+		// need to worry about sorting.
+		keyNodes.push( node );
+	} else {
+		// TODO: We could use binary search insertion sort
+		start = node.getRange().start;
+		for ( i = 0, len = keyNodes.length; i < len; i++ ) {
+			if ( start < keyNodes[i].getRange().start ) {
+				break;
+			}
+		}
+		// 'i' is now the insertion point, so add the node here
+		keyNodes.splice( i, 0, node );
+
+		this.sortGroupKeys( group );
+	}
+};
+
+/**
+ * Remove a node.
+ * @method
+ * @param {string} groupName Item group
+ * @param {string} key Item name
+ * @param {ve.dm.Node} node Item node
+ */
+ve.dm.InternalList.prototype.removeNode = function ( groupName, key, node ) {
+	var i, len, j,
+		group = this.nodes[groupName],
+		keyNodes = group.keyNodes[key];
+	for ( i = 0, len = keyNodes.length; i < len; i++ ) {
+		if ( keyNodes[i] === node ) {
+			keyNodes.splice( i, 1 );
+			if ( keyNodes.length === 0 ) {
+				delete group.keyNodes[key];
+				j = ve.indexOf( key, group.keyOrder );
+				group.keyOrder.splice( j, 1 );
+			} else {
+				// If the key has been emptied then removing it from the keyOrder
+				// array is sufficient to keep it ordered, otherwise we need to
+				// re-sort the keys, as we don't know the position of the new
+				// 0th item in the key
+				this.sortGroupKeys( group );
+			}
+			break;
+		}
+	}
+};
+
+/**
+ * Sort the keyOrder array within a group object.
+ * @param {Object} group Group object
+ */
+ve.dm.InternalList.prototype.sortGroupKeys = function ( group ) {
+	// Sort keyOrder
+	group.keyOrder.sort( function ( key1, key2 ) {
+		return group.keyNodes[key1][0].getRange().start - group.keyNodes[key2][0].getRange().start;
+	} );
 };
 
 /**
@@ -165,11 +253,11 @@ ve.dm.InternalList.prototype.clone = function ( doc ) {
  */
 ve.dm.InternalList.prototype.merge = function ( other ) {
 	var i, len, index, storeMapping = this.getStore().merge( other.getStore() ), mapping = {};
-	for ( i = 0, len = other.itemsHtml.length; i < len; i++ ) {
-		other.itemsHtml[i] = storeMapping[other.itemsHtml[i]];
-		index = ve.indexOf( other.itemsHtml[i], this.itemsHtml );
+	for ( i = 0, len = other.itemHtmlQueue.length; i < len; i++ ) {
+		other.itemHtmlQueue[i] = storeMapping[other.itemHtmlQueue[i]];
+		index = ve.indexOf( other.itemHtmlQueue[i], this.itemHtmlQueue );
 		if ( index === -1 ) {
-			index = this.itemsHtml.push( other.itemsHtml[i] ) - 1;
+			index = this.itemHtmlQueue.push( other.itemHtmlQueue[i] ) - 1;
 		}
 		mapping[i] = index;
 	}

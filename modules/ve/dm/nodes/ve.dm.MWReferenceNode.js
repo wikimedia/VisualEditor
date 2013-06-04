@@ -17,6 +17,12 @@
 ve.dm.MWReferenceNode = function VeDmMWReferenceNode( length, element ) {
 	// Parent constructor
 	ve.dm.LeafNode.call( this, 0, element );
+
+	// Event handlers
+	this.connect( this, {
+		'root': 'onRoot',
+		'unroot': 'onUnroot'
+	} );
 };
 
 /* Inheritance */
@@ -41,16 +47,19 @@ ve.dm.MWReferenceNode.static.toDataElement = function ( domElements, converter )
 		// TODO: this should use mw.attrs.name once available from Parsoid
 		name = $( domElements[0] ).children( 'a' ).attr( 'href' ),
 		// TODO: should also store and use mw.attrs.group once available from Parsoid
-		key = name !== null ? name : ve.getHash( body );
+		listGroup = this.name, // + '/' + mw.attrs.group
+		listKey = name !== null ? name : ve.getHash( body );
 
-	listIndex = converter.internalList.queueItemHtml( key, body );
+	listIndex = converter.internalList.queueItemHtml( listGroup, listKey, body );
 
 	dataElement = {
 		'type': this.name,
 		'attributes': {
 			'mw': mw,
 			'about': about,
-			'listIndex': listIndex
+			'listIndex': listIndex,
+			'listGroup': listGroup,
+			'listKey': listKey
 		}
 	};
 	return dataElement;
@@ -91,7 +100,29 @@ ve.dm.MWReferenceNode.static.remapInternalListIndexes = function ( dataElement, 
  * @returns {ve.dm.InternalItemNode} Item node
  */
 ve.dm.MWReferenceNode.prototype.getInternalItem = function () {
-	return this.doc.getInternalList().getItemNode( this.getAttribute( 'listIndex' ) );
+	return this.getDocument().getInternalList().getItemNode( this.getAttribute( 'listIndex' ) );
+};
+
+/**
+ * Handle the node being attached to the root
+ * @method
+ */
+ve.dm.MWReferenceNode.prototype.onRoot = function () {
+	if ( this.getRoot() === this.getDocument().getDocumentNode() ) {
+		this.getDocument().getInternalList().addNode(
+			this.element.attributes.listGroup, this.element.attributes.listKey, this
+		);
+	}
+};
+
+/**
+ * Handle the node being detatched from the root
+ * @method
+ */
+ve.dm.MWReferenceNode.prototype.onUnroot = function () {
+	this.getDocument().getInternalList().removeNode(
+		this.element.attributes.listGroup, this.element.attributes.listKey, this
+	);
 };
 
 /* Registration */

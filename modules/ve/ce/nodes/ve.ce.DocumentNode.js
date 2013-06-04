@@ -12,7 +12,7 @@
  * @extends ve.ce.BranchNode
  * @constructor
  * @param {ve.dm.DocumentNode} model Model to observe
- * @param {ve.ui.Surface} surface Surface document is part of
+ * @param {ve.ce.Surface} surface Surface document is part of
  * @param {Object} [config] Config options
  */
 ve.ce.DocumentNode = function VeCeDocumentNode( model, surface, config ) {
@@ -21,6 +21,9 @@ ve.ce.DocumentNode = function VeCeDocumentNode( model, surface, config ) {
 
 	// Properties
 	this.surface = surface;
+
+	// Set root
+	this.setRoot( this );
 
 	// DOM Changes
 	this.$.addClass( 've-ce-documentNode' );

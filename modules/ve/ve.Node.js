@@ -17,7 +17,7 @@ ve.Node = function VeNode() {
 	// Properties
 	this.type = this.constructor.static.name;
 	this.parent = null;
-	this.root = this;
+	this.root = null;
 	this.doc = null;
 };
 
@@ -29,6 +29,14 @@ ve.Node = function VeNode() {
 /**
  * @event detach
  * @param {ve.Node} parent
+ */
+
+/**
+ * @event root
+ */
+
+/**
+ * @event unroot
  */
 
 /* Abstract Methods */
@@ -132,9 +140,18 @@ ve.Node.prototype.getRoot = function () {
  *
  * @method
  * @param {ve.Node} root Node to use as root
+ * @emits root
+ * @emits unroot
  */
 ve.Node.prototype.setRoot = function ( root ) {
-	this.root = root;
+	if ( root !== this.root ) {
+		this.root = root;
+		if ( this.getRoot() ) {
+			this.emit( 'root' );
+		} else {
+			this.emit( 'unroot' );
+		}
+	}
 };
 
 /**
@@ -182,8 +199,8 @@ ve.Node.prototype.attach = function ( parent ) {
 ve.Node.prototype.detach = function () {
 	var parent = this.parent;
 	this.parent = null;
-	this.setRoot( this );
-	this.setDocument();
+	this.setRoot( null );
+	this.setDocument( null );
 	this.emit( 'detach', parent );
 };
 

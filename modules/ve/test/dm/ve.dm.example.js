@@ -1215,6 +1215,8 @@ ve.dm.example.domToDataCases = {
 				'attributes': {
 					'about': '#mwt5',
 					'listIndex': 0,
+					'listGroup': 'mwReference',
+					'listKey': '#cite_note-bar-1',
 					'mw': { 'body': { 'html': 'Bar' } }
 				},
 				'htmlAttributes': [
@@ -1247,6 +1249,8 @@ ve.dm.example.domToDataCases = {
 				'attributes': {
 					'about': '#mwt6',
 					'listIndex': 1,
+					'listGroup': 'mwReference',
+					'listKey': '#cite_note-quux-2',
 					'mw': { 'body': { 'html': 'Quux' } }
 				},
 				'htmlAttributes': [
@@ -1279,6 +1283,8 @@ ve.dm.example.domToDataCases = {
 				'attributes': {
 					'about': '#mwt7',
 					'listIndex': 0,
+					'listGroup': 'mwReference',
+					'listKey': '#cite_note-bar-1',
 					'mw': { 'body': { 'html': '' } }
 				},
 				'htmlAttributes': [
@@ -1311,6 +1317,8 @@ ve.dm.example.domToDataCases = {
 				'attributes': {
 					'about': '#mwt8',
 					'listIndex': 2,
+					'listGroup': 'mwReference',
+					'listKey': '#cite_note-3',
 					'mw': { 'body': { 'html': 'No name' } }
 				},
 				'htmlAttributes': [
