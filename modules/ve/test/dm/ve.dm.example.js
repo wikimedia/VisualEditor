@@ -910,8 +910,8 @@ ve.dm.example.conversions = {
 
 ve.dm.example.MWInlineImageHtml = '<a rel="mw:Image" href="./File:Wiki.png" data-parsoid="{&quot;tsr&quot;:[158,216],&quot;src&quot;:&quot;[[Image:Wiki.png|500px|thumb|center|Example wiki file]]&quot;,&quot;optNames&quot;:{&quot;width&quot;:&quot;$1px&quot;},&quot;dsr&quot;:[158,216,null,null]}"><img height="" width="500" src="/index.php?title=Special:FilePath/Wiki.png&amp;width=500" alt="Wiki.png"></a>';
 ve.dm.example.MWTemplate = {
-	'blockSpan':         '<span about="#mwt1" typeof="mw:Object/Template" data-mw="{&quot;id&quot;:&quot;mwt1&quot;,&quot;target&quot;:{&quot;wt&quot;:&quot;Test&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;Hello, world!&quot;}}}" data-parsoid="{&quot;tsr&quot;:[18,40],&quot;src&quot;:&quot;{{Test|Hello, world!}}&quot;,&quot;dsr&quot;:[18,40,null,null]}"></span>',
-	'blockSpanModified': '<span about="#mwt1" typeof="mw:Object/Template" data-mw="{&quot;id&quot;:&quot;mwt1&quot;,&quot;target&quot;:{&quot;wt&quot;:&quot;Test&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;Hello, globe!&quot;}}}" data-parsoid="{&quot;tsr&quot;:[18,40],&quot;src&quot;:&quot;{{Test|Hello, world!}}&quot;,&quot;dsr&quot;:[18,40,null,null]}"></span>',
+	'blockSpan':         '<span about="#mwt1" typeof="mw:Transclusion" data-mw="{&quot;id&quot;:&quot;mwt1&quot;,&quot;target&quot;:{&quot;wt&quot;:&quot;Test&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;Hello, world!&quot;}}}" data-parsoid="{&quot;tsr&quot;:[18,40],&quot;src&quot;:&quot;{{Test|Hello, world!}}&quot;,&quot;dsr&quot;:[18,40,null,null]}"></span>',
+	'blockSpanModified': '<span about="#mwt1" typeof="mw:Transclusion" data-mw="{&quot;id&quot;:&quot;mwt1&quot;,&quot;target&quot;:{&quot;wt&quot;:&quot;Test&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;Hello, globe!&quot;}}}" data-parsoid="{&quot;tsr&quot;:[18,40],&quot;src&quot;:&quot;{{Test|Hello, world!}}&quot;,&quot;dsr&quot;:[18,40,null,null]}"></span>',
 	'blockContent': '<p about="#mwt1" data-parsoid="{}">Hello, world!</p>',
 	'blockData': {
 		'type': 'mwTemplateBlock',
@@ -938,7 +938,7 @@ ve.dm.example.MWTemplate = {
 					'about': '#mwt1',
 					'data-mw': '{\"id\":\"mwt1\",\"target\":{\"wt\":\"Test\"},\"params\":{\"1\":{\"wt\":\"Hello, world!\"}}}',
 					'data-parsoid': '{\"tsr\":[18,40],\"src\":\"{{Test|Hello, world!}}\",\"dsr\":[18,40,null,null]}',
-					'typeof': 'mw:Object/Template'
+					'typeof': 'mw:Transclusion'
 				}
 			},
 			{
@@ -950,8 +950,8 @@ ve.dm.example.MWTemplate = {
 			}
 		]
 	},
-	'inlineOpen':         '<span about="#mwt1" typeof="mw:Object/Template" data-mw="{&quot;id&quot;:&quot;mwt1&quot;,&quot;target&quot;:{&quot;wt&quot;:&quot;Inline&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;1,234&quot;}}}" data-parsoid="{&quot;tsr&quot;:[18,34],&quot;src&quot;:&quot;{{Inline|1,234}}&quot;,&quot;dsr&quot;:[18,34,null,null]}">',
-	'inlineOpenModified': '<span about="#mwt1" typeof="mw:Object/Template" data-mw="{&quot;id&quot;:&quot;mwt1&quot;,&quot;target&quot;:{&quot;wt&quot;:&quot;Inline&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;5,678&quot;}}}" data-parsoid="{&quot;tsr&quot;:[18,34],&quot;src&quot;:&quot;{{Inline|1,234}}&quot;,&quot;dsr&quot;:[18,34,null,null]}">',
+	'inlineOpen':         '<span about="#mwt1" typeof="mw:Transclusion" data-mw="{&quot;id&quot;:&quot;mwt1&quot;,&quot;target&quot;:{&quot;wt&quot;:&quot;Inline&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;1,234&quot;}}}" data-parsoid="{&quot;tsr&quot;:[18,34],&quot;src&quot;:&quot;{{Inline|1,234}}&quot;,&quot;dsr&quot;:[18,34,null,null]}">',
+	'inlineOpenModified': '<span about="#mwt1" typeof="mw:Transclusion" data-mw="{&quot;id&quot;:&quot;mwt1&quot;,&quot;target&quot;:{&quot;wt&quot;:&quot;Inline&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;5,678&quot;}}}" data-parsoid="{&quot;tsr&quot;:[18,34],&quot;src&quot;:&quot;{{Inline|1,234}}&quot;,&quot;dsr&quot;:[18,34,null,null]}">',
 	'inlineContent': '$1,234.00',
 	'inlineClose': '</span>',
 	'inlineData': {
@@ -979,12 +979,12 @@ ve.dm.example.MWTemplate = {
 					'about': '#mwt1',
 					'data-mw': '{\"id\":\"mwt1\",\"target\":{\"wt\":\"Inline\"},\"params\":{\"1\":{\"wt\":\"1,234\"}}}',
 					'data-parsoid': '{\"tsr\":[18,34],\"src\":\"{{Inline|1,234}}\",\"dsr\":[18,34,null,null]}',
-					'typeof': 'mw:Object/Template'
+					'typeof': 'mw:Transclusion'
 				}
 			}
 		]
 	},
-	'mixed': '<link about="#mwt1" rel="mw:WikiLink/Category" typeof="mw:Object/Template" data-mw="{&quot;id&quot;:&quot;mwt1&quot;,&quot;target&quot;:{&quot;wt&quot;:&quot;Inline&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;5,678&quot;}}}"><span about="#mwt1">Foo</span>',
+	'mixed': '<link about="#mwt1" rel="mw:WikiLink/Category" typeof="mw:Transclusion" data-mw="{&quot;id&quot;:&quot;mwt1&quot;,&quot;target&quot;:{&quot;wt&quot;:&quot;Inline&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;5,678&quot;}}}"><span about="#mwt1">Foo</span>',
 	'mixedDataOpen': {
 		'type': 'mwTemplateInline',
 		'attributes': {
@@ -1009,7 +1009,7 @@ ve.dm.example.MWTemplate = {
 				'values': {
 					'about': '#mwt1',
 					'rel': 'mw:WikiLink/Category',
-					'typeof': 'mw:Object/Template',
+					'typeof': 'mw:Transclusion',
 					'data-mw': '{\"id\":\"mwt1\",\"target\":{\"wt\":\"Inline\"},\"params\":{\"1\":{\"wt\":\"5,678\"}}}'
 				}
 			},
