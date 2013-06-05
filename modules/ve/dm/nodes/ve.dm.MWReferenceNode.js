@@ -35,22 +35,19 @@ ve.dm.MWReferenceNode.static.name = 'mwReference';
 
 ve.dm.MWReferenceNode.static.matchTagNames = null;
 
-ve.dm.MWReferenceNode.static.matchRdfaTypes = [ 'mw:Object/Ext/Ref' ];
+ve.dm.MWReferenceNode.static.matchRdfaTypes = [ 'mw:Extension/ref' ];
 
 ve.dm.MWReferenceNode.static.isContent = true;
 
 ve.dm.MWReferenceNode.static.toDataElement = function ( domElements, converter ) {
-	var dataElement, listIndex,
+	var dataElement,
 		about = domElements[0].getAttribute( 'about' ),
 		mw = JSON.parse( domElements[0].getAttribute( 'data-mw' ) || '{}' ),
-		body = mw.body.html,
-		// TODO: this should use mw.attrs.name once available from Parsoid
-		name = $( domElements[0] ).children( 'a' ).attr( 'href' ),
-		// TODO: should also store and use mw.attrs.group once available from Parsoid
-		listGroup = this.name, // + '/' + mw.attrs.group
-		listKey = name !== null ? name : ve.getHash( body );
-
-	listIndex = converter.internalList.queueItemHtml( listGroup, listKey, body );
+		body = mw.body ? mw.body.html : '',
+		refGroup = mw.attrs.group || '',
+		listGroup = this.name + '/' + refGroup,
+		listKey = mw.attrs && mw.attrs.name !== undefined ? mw.attrs.name : ve.getHash( body ),
+		listIndex = converter.internalList.queueItemHtml( listGroup, listKey, body );
 
 	dataElement = {
 		'type': this.name,
@@ -59,7 +56,8 @@ ve.dm.MWReferenceNode.static.toDataElement = function ( domElements, converter )
 			'about': about,
 			'listIndex': listIndex,
 			'listGroup': listGroup,
-			'listKey': listKey
+			'listKey': listKey,
+			'refGroup': refGroup
 		}
 	};
 	return dataElement;
@@ -73,7 +71,7 @@ ve.dm.MWReferenceNode.static.toDomElements = function ( dataElement, doc, conver
 		itemNodeRange = itemNode.getRange();
 
 	span.setAttribute( 'about', dataElement.attributes.about );
-	span.setAttribute( 'typeof', 'mw:Object/Ext/Ref' );
+	span.setAttribute( 'typeof', 'mw:Extension/ref' );
 
 	converter.getDomSubtreeFromData(
 		itemNode.getDocument().getData().slice( itemNodeRange.start, itemNodeRange.end ),

@@ -86,6 +86,7 @@ QUnit.test( 'addNode/removeNode', 4, function ( assert ) {
 	internalList.addNode( 'ref', 'ref-2', doc.documentNode.children[1] );
 	internalList.addNode( 'ref', 'ref-1', doc.documentNode.children[2] );
 	internalList.addNode( 'ref', 'ref-3', doc.documentNode.children[3] );
+	internalList.onTransact();
 
 	assert.deepEqualWithNodeTree(
 		internalList.nodes,
@@ -100,6 +101,7 @@ QUnit.test( 'addNode/removeNode', 4, function ( assert ) {
 	internalList.addNode( 'ref', 'ref-1', doc.documentNode.children[2] );
 	internalList.addNode( 'ref', 'ref-2', doc.documentNode.children[1] );
 	internalList.addNode( 'ref', 'ref-1', doc.documentNode.children[0] );
+	internalList.onTransact();
 
 	assert.deepEqualWithNodeTree(
 		internalList.nodes,
@@ -108,6 +110,7 @@ QUnit.test( 'addNode/removeNode', 4, function ( assert ) {
 	);
 
 	internalList.removeNode( 'ref', 'ref-1', doc.documentNode.children[0] );
+	internalList.onTransact();
 
 	assert.deepEqualWithNodeTree(
 		internalList.nodes,
@@ -127,6 +130,7 @@ QUnit.test( 'addNode/removeNode', 4, function ( assert ) {
 	internalList.removeNode( 'ref', 'ref-3', doc.documentNode.children[3] );
 	internalList.removeNode( 'ref', 'ref-1', doc.documentNode.children[2] );
 	internalList.removeNode( 'ref', 'ref-2', doc.documentNode.children[1] );
+	internalList.onTransact();
 
 	assert.deepEqualWithNodeTree(
 		internalList.nodes,

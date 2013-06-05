@@ -40,7 +40,7 @@ QUnit.test( 'getDomElementsFromDataElement', 20, function ( assert ) {
 } );
 
 QUnit.test( 'getDataFromDom', function ( assert ) {
-	var msg, store, internalList, i, length, hash, n = 0,
+	var msg, doc, store, internalList, i, length, hash, n = 0,
 		cases = ve.copyObject( ve.dm.example.domToDataCases );
 
 	// TODO: this is a hack to make normal heading/preformatted
@@ -60,8 +60,9 @@ QUnit.test( 'getDataFromDom', function ( assert ) {
 
 	for ( msg in cases ) {
 		if ( cases[msg].html !== null ) {
-			store = new ve.dm.IndexValueStore();
-			internalList = new ve.dm.InternalList();
+			doc = new ve.dm.Document( [] );
+			store = doc.getStore();
+			internalList = doc.getInternalList();
 			ve.dm.example.preprocessAnnotations( cases[msg].data, store );
 			assert.deepEqualWithDomElements(
 				ve.dm.converter.getDataFromDom(
