@@ -90,7 +90,8 @@ ve.ce.MWBlockImageNode.static.alignToCssClass = {
 	'left': 'tleft',
 	'right': 'tright',
 	'center' : 'tnone',
-	'none' : 'tnone'
+	'none' : 'tnone',
+	'default': 'tright'
 };
 
 /* Methods */

@@ -3166,7 +3166,7 @@ ve.dm.example.domToDataCases = {
 				'type': 'mwBlockImage',
 				'attributes': {
 					'type': 'thumb',
-					'align': 'right',
+					'align': 'default',
 					'href': 'Foo',
 					'src': 'Bar',
 					'width': '1',

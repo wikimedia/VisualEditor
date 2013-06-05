@@ -74,7 +74,7 @@ ve.dm.MWBlockImageNode.static.toDataElement = function ( domElements, converter 
 	} else if ( classes.indexOf( 'mw-halign-none' ) !== -1 ) {
 		attributes.align = 'none';
 	} else {
-		attributes.align = 'right';
+		attributes.align = 'default';
 	}
 
 	// Default-size
@@ -96,13 +96,44 @@ ve.dm.MWBlockImageNode.static.toDataElement = function ( domElements, converter 
 	}
 };
 
+// TODO: Consider using jQuery instead of pure JS.
+// TODO: At this moment node is not resizable but when it will be then adding defaultSize class
+// should be more conditional.
 ve.dm.MWBlockImageNode.static.toDomElements = function ( data, doc, converter ) {
 	var dataElement = data[0],
 		figure = doc.createElement( 'figure' ),
 		a = doc.createElement( 'a' ),
 		img = doc.createElement( 'img' ),
 		wrapper = doc.createElement( 'div' );
-	figure.setAttribute( 'typeof', 'mw:Image/Thumb' );
+
+	// Type
+	if ( dataElement.attributes.type === 'thumb' ) {
+		figure.setAttribute( 'typeof', 'mw:Image/Thumb' );
+	} else {
+		figure.setAttribute( 'typeof', 'mw:Image/Frame' );
+	}
+
+	// Default-size
+	if ( dataElement.attributes.defaultSize === true ) {
+		figure.className += ' mw-default-size';
+	}
+
+	// Horizontal alignment
+	switch ( dataElement.attributes.align ) {
+		case 'left':
+			figure.className += ' mw-halign-left';
+			break;
+		case 'right':
+			figure.className += ' mw-halign-right';
+			break;
+		case 'center':
+			figure.className += ' mw-halign-center';
+			break;
+		case 'none':
+			figure.className += ' mw-halign-none';
+			break;
+	}
+
 	a.setAttribute( 'rel', 'mw:thumb' );
 	a.setAttribute( 'href', dataElement.attributes.href );
 	img.setAttribute( 'src', dataElement.attributes.src );
