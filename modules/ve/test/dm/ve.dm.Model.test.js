@@ -85,7 +85,7 @@ QUnit.test( 'matchesAttributeSpec', function ( assert ) {
 		{
 			'spec': {
 				'whitelist': /^foo/,
-				'blacklist':  [ 'foobar', 'foobaz' ],
+				'blacklist':  [ 'foobar', 'foobaz' ]
 			},
 			'attr': 'foobaz',
 			'result': false,
@@ -94,7 +94,7 @@ QUnit.test( 'matchesAttributeSpec', function ( assert ) {
 		{
 			'spec': {
 				'whitelist': /^foo/,
-				'blacklist': [ 'foobar', 'foobaz' ],
+				'blacklist': [ 'foobar', 'foobaz' ]
 			},
 			'attr': 'fooquux',
 			'result': true,
@@ -103,7 +103,7 @@ QUnit.test( 'matchesAttributeSpec', function ( assert ) {
 		{
 			'spec': {
 				'whitelist': /^foo/,
-				'blacklist': [ 'foobar', 'foobaz' ],
+				'blacklist': [ 'foobar', 'foobaz' ]
 			},
 			'attr': 'bar',
 			'result': false,

@@ -462,7 +462,7 @@ QUnit.test( 'rewrapAllNodes', 6, function ( assert ) {
 	fragment.rewrapAllNodes(
 		2,
 		[
-			{ 'type': 'table', },
+			{ 'type': 'table' },
 			{ 'type': 'tableSection', 'attributes': { 'style': 'body' } },
 			{ 'type': 'tableRow' },
 			{ 'type': 'tableCell', 'attributes': { 'style': 'data' } }

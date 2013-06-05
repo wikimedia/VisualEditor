@@ -39,7 +39,7 @@ QUnit.test( 'convertToData', 2, function ( assert ) {
 			'B', 'a', 'z',
 			{ 'type': '/paragraph' },
 			{ 'type': '/internalItem' },
-			{ 'type': '/internalList' },
+			{ 'type': '/internalList' }
 		];
 
 	// Mimic convert state setup (as done in ve.dm.Converter#getDataFromDom)

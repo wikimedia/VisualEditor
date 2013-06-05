@@ -94,7 +94,7 @@ QUnit.test( 'onTransact', function ( assert ) {
 				// delta: +11
 				'calls': [
 					[ 'pushRetain', 11 ],
-					[ 'pushReplace', doc, 11, 0, ve.dm.example.withMetaPlainData ],
+					[ 'pushReplace', doc, 11, 0, ve.dm.example.withMetaPlainData ]
 				],
 				'msg': 'Transaction adding second paragraph at the end'
 			},

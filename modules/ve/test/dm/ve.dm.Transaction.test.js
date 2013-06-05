@@ -278,7 +278,7 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 						'remove': [],
 						'insert': [{ 'type': '/paragraph' }, { 'type': 'paragraph' }, 'B', 'A', 'R', { 'type': '/paragraph' }, { 'type': 'paragraph' }]
 					},
-					{ 'type': 'retain', 'length': 3 },
+					{ 'type': 'retain', 'length': 3 }
 				]
 			},
 			'inserting paragraph into middle of list splits list': {
@@ -290,7 +290,7 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 						'remove': [],
 						'insert': [{ 'type': '/list' }, { 'type': 'paragraph' }, 'B', 'A', 'R', { 'type': '/paragraph' }, { 'type': 'list', 'attributes': { 'style': 'bullet' } }]
 					},
-					{ 'type': 'retain', 'length': 233 },
+					{ 'type': 'retain', 'length': 233 }
 				]
 			},
 			'inserting paragraph between table cells splits table, tableSection and tableRow': {
@@ -303,10 +303,10 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 						'insert': [
 							{ 'type': '/tableRow' }, { 'type': '/tableSection' }, { 'type': '/table' },
 							{ 'type': 'paragraph' }, 'B', 'A', 'R', { 'type': '/paragraph' },
-							{ 'type': 'table' }, { 'type': 'tableSection', 'attributes' : { 'style': 'body' } }, { 'type': 'tableRow' },
+							{ 'type': 'table' }, { 'type': 'tableSection', 'attributes' : { 'style': 'body' } }, { 'type': 'tableRow' }
 						]
 					},
-					{ 'type': 'retain', 'length': 11 },
+					{ 'type': 'retain', 'length': 11 }
 				]
 			}
 			// TODO test cases for unclosed openings
@@ -622,7 +622,7 @@ QUnit.test( 'newFromRemoval', function ( assert ) {
 						],
 						'insert': []
 					},
-					{ 'type': 'retain', 'length': 23 },
+					{ 'type': 'retain', 'length': 23 }
 				]
 			},
 			'selection starting with internal nodes': {
@@ -636,13 +636,13 @@ QUnit.test( 'newFromRemoval', function ( assert ) {
 						],
 						'insert': []
 					},
-					{ 'type': 'retain', 'length': 3 },
+					{ 'type': 'retain', 'length': 3 }
 				]
 			},
 			'selection of just internal nodes returns a no-op transaction': {
 				'args': [internalDoc, new ve.Range( 5, 21 )],
 				'ops': [
-					{ 'type': 'retain', 'length': 27 },
+					{ 'type': 'retain', 'length': 27 }
 				]
 			}
 		};
@@ -984,7 +984,7 @@ QUnit.test( 'newFromContentBranchConversion', function ( assert ) {
 						'type': 'replace',
 						'remove': [{ 'type': '/paragraph' }],
 						'insert': [{ 'type': '/heading' }]
-					},
+					}
 				]
 			}
 		};
@@ -1511,7 +1511,7 @@ QUnit.test( 'newFromMetadataInsertion', function ( assert ) {
 						'insert': [ element ]
 					},
 					{ 'type': 'retainMetadata', 'length': 2 },
-					{ 'type': 'retain', 'length': 1 },
+					{ 'type': 'retain', 'length': 1 }
 				]
 			},
 			'inserting metadata element into empty list': {
@@ -1523,7 +1523,7 @@ QUnit.test( 'newFromMetadataInsertion', function ( assert ) {
 						'remove': [],
 						'insert': [ element ]
 					},
-					{ 'type': 'retain', 'length': 9 },
+					{ 'type': 'retain', 'length': 9 }
 				]
 			}
 		};
@@ -1545,7 +1545,7 @@ QUnit.test( 'newFromMetadataRemoval', function ( assert ) {
 						'remove': allElements,
 						'insert': []
 					},
-					{ 'type': 'retain', 'length': 1 },
+					{ 'type': 'retain', 'length': 1 }
 				]
 			},
 			'removing some metadata elements from metadata list': {
@@ -1559,7 +1559,7 @@ QUnit.test( 'newFromMetadataRemoval', function ( assert ) {
 						'insert': []
 					},
 					{ 'type': 'retainMetadata', 'length': 1 },
-					{ 'type': 'retain', 'length': 1 },
+					{ 'type': 'retain', 'length': 1 }
 				]
 			},
 			'checks metadata at offset is non-empty': {
@@ -1596,7 +1596,7 @@ QUnit.test( 'newFromMetadataElementReplacement', function ( assert ) {
 						'remove': [ oldElement ],
 						'insert': [ newElement ]
 					},
-					{ 'type': 'retain', 'length': 1 },
+					{ 'type': 'retain', 'length': 1 }
 				]
 			},
 			'checks offset is in bounds': {

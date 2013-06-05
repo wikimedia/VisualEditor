@@ -216,7 +216,7 @@ QUnit.test( 'getClonedElement', function ( assert ) {
 					'type': 'foo',
 					'internal': {
 						'generated': 'wrapper',
-						'whitespace': [ undefined, ' ' ],
+						'whitespace': [ undefined, ' ' ]
 					},
 					'attributes': {
 						'bar': 'baz'
@@ -234,7 +234,7 @@ QUnit.test( 'getClonedElement', function ( assert ) {
 				'clone': {
 					'type': 'foo',
 					'internal': {
-						'whitespace': [ undefined, ' ' ],
+						'whitespace': [ undefined, ' ' ]
 					},
 					'attributes': {
 						'bar': 'baz'

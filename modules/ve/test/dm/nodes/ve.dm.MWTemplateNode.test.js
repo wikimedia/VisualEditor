@@ -61,7 +61,7 @@ QUnit.test( 'getWikitext', function ( assert ) {
 				}
 			},
 			'wikitext': '{{foo|bar=You should try using <nowiki>{{ping|foo=bar|2=1}}</nowiki> as a template!}}'
-		},
+		}
 	];
 	QUnit.expect( cases.length );
 	for ( i = 0; i < cases.length; i++ ) {

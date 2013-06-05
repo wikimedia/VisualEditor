@@ -27,7 +27,7 @@
 	"regexp": true,
 	"strict": false,
 	// Relaxing
-	"es5": true,
+	"es5": false,
 	"multistr": true,
 	"smarttabs": true,
 	// Environment

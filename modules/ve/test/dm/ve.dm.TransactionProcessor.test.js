@@ -252,7 +252,7 @@ QUnit.test( 'commit/rollback', function ( assert ) {
 					['pushRetainMetadata', 2 ],
 					['pushReplaceMetadata', [], [ metaElementInsert ] ],
 					['pushRetainMetadata', 2 ],
-					['pushRetain', 1 ],
+					['pushRetain', 1 ]
 				],
 				'expected': function ( data ) {
 					data.splice( 25, 0, metaElementInsert, metaElementInsertClose );
@@ -263,7 +263,7 @@ QUnit.test( 'commit/rollback', function ( assert ) {
 				'calls': [
 					['pushRetain', 3 ],
 					['pushReplaceMetadata', [], [ metaElementInsert ] ],
-					['pushRetain', 9 ],
+					['pushRetain', 9 ]
 				],
 				'expected': function ( data ) {
 					data.splice( 7, 0, metaElementInsert, metaElementInsertClose );
@@ -274,7 +274,7 @@ QUnit.test( 'commit/rollback', function ( assert ) {
 				'calls': [
 					['pushRetain', 11 ],
 					['pushReplaceMetadata', ve.dm.example.withMetaMetaData[11], [] ],
-					['pushRetain', 1 ],
+					['pushRetain', 1 ]
 				],
 				'expected': function ( data ) {
 					data.splice( 21, 8 );
@@ -287,7 +287,7 @@ QUnit.test( 'commit/rollback', function ( assert ) {
 					['pushRetainMetadata', 1 ],
 					['pushReplaceMetadata', ve.dm.example.withMetaMetaData[11].slice( 1, 3 ), [] ],
 					['pushRetainMetadata', 1 ],
-					['pushRetain', 1 ],
+					['pushRetain', 1 ]
 				],
 				'expected': function ( data ) {
 					data.splice( 23, 4 );
@@ -299,7 +299,7 @@ QUnit.test( 'commit/rollback', function ( assert ) {
 					['pushRetain', 11 ],
 					['pushRetainMetadata', 3 ],
 					['pushReplaceMetadata', [ ve.dm.example.withMetaMetaData[11][3] ], [ metaElementInsert ] ],
-					['pushRetain', 1 ],
+					['pushRetain', 1 ]
 				],
 				'expected': function ( data ) {
 					data.splice( 27, 2, metaElementInsert, metaElementInsertClose );
@@ -310,7 +310,7 @@ QUnit.test( 'commit/rollback', function ( assert ) {
 				'calls': [
 					['pushRetain', 7 ],
 					['pushReplace', 7, 2, []],
-					['pushRetain', 2 ],
+					['pushRetain', 2 ]
 				],
 				'expected': function ( data ) {
 					data.splice( 15, 2 );

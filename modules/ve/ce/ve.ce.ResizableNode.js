@@ -129,7 +129,7 @@ ve.ce.ResizableNode.prototype.onResizeHandlesCornerMouseDown = function ( e ) {
 		'left': this.$resizeHandles.position().left,
 		'height': this.$resizeHandles.height(),
 		'width': this.$resizeHandles.width(),
-		'handle': e.target.className,
+		'handle': e.target.className
 	};
 
 	// Bind resize events

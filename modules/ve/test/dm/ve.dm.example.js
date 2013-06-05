@@ -929,7 +929,7 @@ ve.dm.example.MWTemplate = {
 				'params': {
 					'1': { 'wt': 'Hello, world!' }
 				}
-			},
+			}
 		},
 		'htmlAttributes': [
 			{
@@ -1125,7 +1125,7 @@ ve.dm.example.domToDataCases = {
 		'html': '<body>' + ve.dm.example.MWTemplate.blockSpan + ve.dm.example.MWTemplate.blockContent + '</body>',
 		'data': [
 			ve.dm.example.MWTemplate.blockData,
-			{ 'type': '/mwTemplateBlock' },
+			{ 'type': '/mwTemplateBlock' }
 		],
 		'storeItems': [
 			ve.dm.example.MWTemplate.blockStoreItems
@@ -1136,7 +1136,7 @@ ve.dm.example.domToDataCases = {
 		'html': '<body>' + ve.dm.example.MWTemplate.blockSpan + ve.dm.example.MWTemplate.blockContent + '</body>',
 		'data': [
 			ve.dm.example.MWTemplate.blockData,
-			{ 'type': '/mwTemplateBlock' },
+			{ 'type': '/mwTemplateBlock' }
 		],
 		'storeItems': [
 			ve.dm.example.MWTemplate.blockStoreItems
@@ -1228,7 +1228,7 @@ ve.dm.example.domToDataCases = {
 							'data-mw': '{"body":{"html":"Bar"}}',
 							'data-parsoid': '{"src":"<ref name=\\"bar\\">Bar</ref>"}',
 							'id': 'cite_ref-bar-1-0',
-							'typeof': 'mw:Object/Ext/Ref',
+							'typeof': 'mw:Object/Ext/Ref'
 						},
 						'children': [
 							{
@@ -1905,7 +1905,7 @@ ve.dm.example.domToDataCases = {
 							'keys': [ 'rel', 'href' ],
 							'values': {
 								'rel': 'mw:ExtLink/URL',
-								'href': 'http://www.mediawiki.org/',
+								'href': 'http://www.mediawiki.org/'
 							}
 						}
 					]
@@ -1924,7 +1924,7 @@ ve.dm.example.domToDataCases = {
 							'keys': [ 'rel', 'href' ],
 							'values': {
 								'rel': 'mw:ExtLink/URL',
-								'href': 'http://www.mediawiki.org/',
+								'href': 'http://www.mediawiki.org/'
 							}
 						}
 					]
@@ -1965,7 +1965,7 @@ ve.dm.example.domToDataCases = {
 				'htmlAttributes': [ { 'keys': [ 'typeof' ], 'values': { 'typeof': 'mw:Entity' } } ]
 			},
 			{ 'type': '/mwEntity' },
-			{ 'type': '/paragraph' },
+			{ 'type': '/paragraph' }
 		]
 	},
 	'whitespace preservation in headings': {
@@ -3345,6 +3345,6 @@ ve.dm.example.isolationData = [
 	'3',
 	{ 'type': '/paragraph' },
 	{ 'type': '/listItem' },
-	{ 'type': '/list' },
+	{ 'type': '/list' }
 	// 244
 ];
