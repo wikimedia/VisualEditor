@@ -1045,7 +1045,7 @@ ve.init.mw.ViewPageTarget.prototype.attachToolbarButtons = function () {
 ve.init.mw.ViewPageTarget.prototype.detachToolbarButtons = function () {
 	this.toolbarCancelButton.$.detach();
 	this.toolbarSaveButton.$.detach();
-	this.$toolbarMwMetaButton.detatch();
+	this.$toolbarMwMetaButton.detach();
 	this.$toolbarEditNoticesTool.detach();
 	this.$toolbarFeedbackTool.detach();
 };
