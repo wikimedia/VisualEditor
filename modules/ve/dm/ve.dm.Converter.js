@@ -1263,17 +1263,6 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container ) {
 							);
 						}
 					}
-
-					// In case of nodes that handles own children ascend to parent node.
-					// It looks like the solution would be to avoid descending first ( so ascending
-					// wouldn't be needed ) but note that then code above for handling white spaces
-					// wouldn't execute correctly.
-					if (
-						ve.dm.nodeFactory.lookup( data[i].type ) &&
-						ve.dm.nodeFactory.doesNodeHandleOwnChildren( data[i].type )
-					) {
-						domElement = parentDomElement;
-					}
 				}
 
 				if ( ve.isArray( dataElementOrSlice ) ) {
