@@ -27,7 +27,9 @@ ve.inheritClass( ve.dm.MWAlienMetaItem, ve.dm.AlienMetaItem );
 
 ve.dm.MWAlienMetaItem.static.name = 'mwAlienMeta';
 
-ve.dm.MWAlienMetaItem.static.matchRdfaTypes = [ /^mw:/ ];
+ve.dm.MWAlienMetaItem.static.matchRdfaTypes = [
+	/^mw:/
+];
 
 // toDataElement inherited from AlienMetaItem, will return regular alienMeta elements but
 // that's fine. This class is only here so that <meta>/<link> tags with an mw: type are correctly

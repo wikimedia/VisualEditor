@@ -30,7 +30,7 @@ QUnit.test( 'constructor', 8, function ( assert ) {
 		new ve.dm.DocumentNode( [ new ve.dm.TextNode( 4 ) ] ),
 		'plain text input is handled correctly'
 	);
-	assert.deepEqual( doc.getMetadata(), new Array( 5 ),
+	assert.deepEqualWithDomElements( doc.getMetadata(), new Array( 5 ),
 		'sparse metadata array is created'
 	);
 
@@ -42,10 +42,10 @@ QUnit.test( 'constructor', 8, function ( assert ) {
 	);
 
 	doc = ve.dm.example.createExampleDocument( 'withMeta' );
-	assert.deepEqual( doc.getData(), ve.dm.example.withMetaPlainData,
+	assert.deepEqualWithDomElements( doc.getData(), ve.dm.example.withMetaPlainData,
 		'metadata is stripped out of the linear model'
 	);
-	assert.deepEqual( doc.getMetadata(), ve.dm.example.withMetaMetaData,
+	assert.deepEqualWithDomElements( doc.getMetadata(), ve.dm.example.withMetaMetaData,
 		'metadata is put in the meta-linmod'
 	);
 	assert.equalNodeTree(
@@ -59,12 +59,12 @@ QUnit.test( 'constructor', 8, function ( assert ) {
 QUnit.test( 'getData', 1, function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument(),
 		expectedData = ve.dm.example.preprocessAnnotations( ve.copyArray( ve.dm.example.data ) );
-	assert.deepEqual( doc.getData(), expectedData.getData() );
+	assert.deepEqualWithDomElements( doc.getData(), expectedData.getData() );
 } );
 
 QUnit.test( 'getFullData', 1, function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument( 'withMeta' );
-	assert.deepEqual( doc.getFullData(), ve.dm.example.withMeta );
+	assert.deepEqualWithDomElements( doc.getFullData(), ve.dm.example.withMeta );
 } );
 
 QUnit.test( 'getDocumentSlice', function ( assert ) {
