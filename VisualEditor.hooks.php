@@ -147,6 +147,7 @@ class VisualEditorHooks {
 				'ui/actions/ve.ui.ListAction.test.js',
 				// VisualEditor initialization Tests
 				'init/ve.init.Platform.test.js',
+				'init/mw/targets/ve.init.mw.ViewPageTarget.test.js',
 			),
 			'dependencies' => array(
 				'ext.visualEditor.standalone',
