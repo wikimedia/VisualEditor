@@ -24,6 +24,7 @@ ve.ce.MWBlockImageNode = function VeCeMWBlockImageNode( model, config ) {
 
 	// Mixin constructors
 	ve.ce.ProtectedNode.call( this );
+	ve.ce.FocusableNode.call( this );
 
 	if ( this.model.getAttribute( 'align' ) === 'center' ) {
 		this.$.addClass( 'center' );
@@ -74,6 +75,8 @@ ve.ce.MWBlockImageNode = function VeCeMWBlockImageNode( model, config ) {
 ve.inheritClass( ve.ce.MWBlockImageNode, ve.ce.BranchNode );
 
 ve.mixinClass( ve.ce.MWBlockImageNode, ve.ce.ProtectedNode );
+
+ve.mixinClass( ve.ce.MWBlockImageNode, ve.ce.FocusableNode );
 
 /* Static Properties */
 

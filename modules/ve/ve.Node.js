@@ -101,6 +101,22 @@ ve.Node.prototype.getOuterLength = function () {
 	throw new Error( 've.Node.getOuterLength must be overridden in subclass' );
 };
 
+/**
+ * Get the outer range of the node, which includes wrappers if present.
+ *
+ * @method
+ * @param {boolean} backwards Return a backwards range
+ * @returns {ve.Range} Node outer range
+ */
+ve.Node.prototype.getOuterRange = function ( backwards ) {
+	var range = new ve.Range( this.getOffset(), this.getOffset() + this.getOuterLength() );
+	if ( backwards ) {
+		return range.flip();
+	} else {
+		return range;
+	}
+};
+
 /* Methods */
 
 /**

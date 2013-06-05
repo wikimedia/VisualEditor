@@ -185,3 +185,84 @@ ve.ce.Document.prototype.getNodeAndOffset = function ( offset ) {
 	}
 	throw new Error( 'Offset could not be translated to a DOM element and offset: ' + offset );
 };
+
+/**
+ * Get the nearest focusable node.
+ *
+ * @method
+ * @param {number} offset Offset to start looking at
+ * @param {number} direction Direction to look in, +1 or -1
+ * @param {number} limit Stop looking after reaching certain offset
+ */
+ve.ce.Document.prototype.getNearestFocusableNode = function ( offset, direction, limit ) {
+	// It is never an offset of the node, but just an offset for which getNodeFromOffset should
+	// return that node. Usually it would be node offset + 1 or offset of node closing tag.
+	var coveredOffset;
+	this.model.data.getRelativeOffset(
+		offset,
+		direction === 1 ? 0 : -1,
+		function ( index, limit ) {
+			if ( ( index >= limit ? 1 : -1 ) === direction ) {
+				return true;
+			}
+			if (
+				this.isOpenElementData( index ) &&
+				ve.dm.nodeFactory.isNodeFocusable( this.getType( index ) )
+			) {
+				coveredOffset = index + 1;
+				return true;
+			}
+			if (
+				this.isCloseElementData( index ) &&
+				ve.dm.nodeFactory.isNodeFocusable( this.getType( index ) )
+			) {
+				coveredOffset = index;
+				return true;
+			}
+		},
+		limit
+	);
+	if ( coveredOffset ) {
+		return this.documentNode.getNodeFromOffset( coveredOffset );
+	} else {
+		return null;
+	}
+};
+
+/**
+ * Get the relative range.
+ *
+ * @method
+ * @param {ve.Range} range Input range
+ * @param {number} direction Direction to look in, +1 or -1
+ * @param {string} unit Unit [word|character]
+ * @param {boolean} expand Expanding range
+ * @returns {ve.Range} Relative range
+ */
+ve.ce.Document.prototype.getRelativeRange = function( range, direction, unit, expand ) {
+	var contentOrSlugOffset,
+		focusableNode,
+		node;
+
+	contentOrSlugOffset = this.getRelativeOffset( range.to, direction, unit );
+
+	if ( expand ) {
+		return new ve.Range( range.from, contentOrSlugOffset );
+	}
+
+	node = this.documentNode.getNodeFromOffset( range.start + 1 );
+	if ( node && ve.dm.nodeFactory.isNodeFocusable( node.type ) ) {
+		if ( node === this.documentNode.getNodeFromOffset( range.end - 1 ) ) {
+			if ( this.model.data.isContentOffset( range.to ) || !!this.getSlugAtOffset( range.to ) ) {
+				return new ve.Range( direction === 1 ? range.end : range.start );
+			}
+		}
+	}
+
+	focusableNode = this.getNearestFocusableNode( range.to, direction, contentOrSlugOffset );
+	if ( focusableNode ) {
+		return focusableNode.getOuterRange( direction === -1 /* backwards */ );
+	} else {
+		return new ve.Range( contentOrSlugOffset );
+	}
+};

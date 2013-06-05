@@ -180,4 +180,20 @@ QUnit.assert.deepEqualWithNodeTree = function ( actual, expected, message ) {
 	QUnit.push( QUnit.equiv(actual, expected), actual, expected, message );
 };
 
+QUnit.assert.equalRange = function ( actual, expected, message ) {
+	actual = {
+		start: actual.start,
+		end: actual.end,
+		from: actual.from,
+		to: actual.to
+	};
+	expected = {
+		start: expected.start,
+		end: expected.end,
+		from: expected.from,
+		to: expected.to
+	};
+	QUnit.push( QUnit.equiv(actual, expected), actual, expected, message );
+};
+
 }( QUnit ) );
