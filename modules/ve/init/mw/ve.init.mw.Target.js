@@ -160,7 +160,7 @@ ve.init.mw.Target.onLoad = function ( response ) {
 		this.originalHtml = data.content;
 		this.doc = ve.createDocumentFromHtml( this.originalHtml );
 
-		this.remoteNotices = data.notices;
+		this.remoteNotices = ve.getObjectValues( data.notices );
 
 		this.baseTimeStamp = data.basetimestamp;
 		this.startTimeStamp = data.starttimestamp;
@@ -195,7 +195,7 @@ ve.init.mw.Target.onNoticesReady = function () {
 	document.body.appendChild( tmp );
 
 	// Merge locally and remotely generated notices
-	noticeHtmls = Array.prototype.slice.call( this.remoteNotices );
+	noticeHtmls = this.remoteNotices.slice();
 	for ( i = 0, len = this.localNoticeMessages.length; i < len; i++ ) {
 		noticeHtmls.push(
 			'<p>' + ve.init.platform.getParsedMessage( this.localNoticeMessages[i] ) + '</p>'
