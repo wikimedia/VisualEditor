@@ -195,7 +195,7 @@ ve.init.mw.Target.onNoticesReady = function () {
 	document.body.appendChild( tmp );
 
 	// Merge locally and remotely generated notices
-	noticeHtmls = this.remoteNotices.slice( 0 );
+	noticeHtmls = Array.prototype.slice.call( this.remoteNotices );
 	for ( i = 0, len = this.localNoticeMessages.length; i < len; i++ ) {
 		noticeHtmls.push(
 			'<p>' + ve.init.platform.getParsedMessage( this.localNoticeMessages[i] ) + '</p>'
