@@ -162,6 +162,7 @@ $wgResourceModules += array(
 			'visualeditor-problem',
 			'visualeditor-editnotices-tool',
 			'visualeditor-feedback-tool',
+			'visualeditor-meta-tool',
 			'visualeditor-restore-page',
 			'visualeditor-create-page',
 			'visualeditor-save-title',
@@ -424,6 +425,7 @@ $wgResourceModules += array(
 			've/ui/dialogs/ve.ui.ContentDialog.js',
 			've/ui/dialogs/ve.ui.MediaDialog.js',
 			've/ui/dialogs/ve.ui.PagedDialog.js',
+			've/ui/dialogs/ve.ui.MWMetaDialog.js',
 
 			've/ui/tools/ve.ui.ButtonTool.js',
 			've/ui/tools/ve.ui.AnnotationButtonTool.js',
@@ -547,9 +549,6 @@ $wgResourceModules += array(
 			've/ce/nodes/ve.ce.MWReferenceListNode.js',
 			've/ce/nodes/ve.ce.MWReferenceNode.js',
 
-			've/ui/dialogs/ve.ui.MWMetaDialog.js',
-
-			've/ui/tools/buttons/ve.ui.MWMetaButtonTool.js',
 			've/ui/tools/buttons/ve.ui.MWReferenceButtonTool.js',
 			've/ui/tools/buttons/ve.ui.MWTemplateButtonTool.js',
 			've/ui/dialogs/ve.ui.MWReferenceDialog.js',

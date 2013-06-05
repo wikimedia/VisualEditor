@@ -49,6 +49,7 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 	this.$toolbarFeedbackTool = $( '<div>' ).addClass(
 		've-init-mw-viewPageTarget-tool'
 	);
+	this.$toolbarMwMetaButton = $( '<div>' ).addClass( 've-init-mw-viewPageTarget-tool' );
 	this.$saveDialog = $( '<div>' ).addClass( 've-init-mw-viewPageTarget-saveDialog' );
 	this.onBeforeUnloadFallback = null;
 	this.onBeforeUnloadHandler = null;
@@ -169,8 +170,7 @@ ve.init.mw.ViewPageTarget.static.toolbarTools = [
 	{ 'items': ['undo', 'redo'] },
 	{ 'items': ['mwFormat'] },
 	{ 'items': ['bold', 'italic', 'mwLink', 'clear'] },
-	{ 'items': ['number', 'bullet', 'outdent', 'indent'] },
-	{ 'items': ['mwMeta'] }
+	{ 'items': ['number', 'bullet', 'outdent', 'indent'] }
 ];
 
 ve.init.mw.ViewPageTarget.static.surfaceCommands = [
@@ -591,6 +591,17 @@ ve.init.mw.ViewPageTarget.prototype.onToolbarCancelButtonClick = function () {
 };
 
 /**
+ * Handle clicks on the MwMeta button in the toolbar.
+ *
+ * @method
+ * @param {jQuery.Event} e Mouse click event
+ */
+ve.init.mw.ViewPageTarget.prototype.onToolbarMwMetaButtonClick = function () {
+	this.surface.getDialogs().open( 'mwMeta' );
+};
+
+
+/**
  * Handle clicks on the edit notices tool in the toolbar.
  *
  * @method
@@ -966,6 +977,16 @@ ve.init.mw.ViewPageTarget.prototype.setupToolbarButtons = function () {
 	this.toolbarCancelButton.connect( this, { 'click': 'onToolbarCancelButtonClick' } );
 	this.toolbarSaveButton.connect( this, { 'click': 'onToolbarSaveButtonClick' } );
 
+	this.$toolbarMwMetaButton
+		.addClass( 've-ui-icon-settings' )
+		.append(
+			$( '<span>' )
+				.addClass( 've-init-mw-viewPageTarget-tool-label' )
+				.text( ve.msg( 'visualeditor-meta-tool' ) )
+		)
+		.click( ve.bind( this.onToolbarMwMetaButtonClick, this ) );
+
+
 	if ( editNoticeCount ) {
 		this.$toolbarEditNoticesTool
 			.addClass( 've-ui-icon-alert' )
@@ -996,6 +1017,7 @@ ve.init.mw.ViewPageTarget.prototype.setupToolbarButtons = function () {
 ve.init.mw.ViewPageTarget.prototype.tearDownToolbarButtons = function () {
 	this.toolbarCancelButton.disconnect( this );
 	this.toolbarSaveButton.disconnect( this );
+	this.$toolbarMwMetaButton.empty().off( 'click' );
 	this.$toolbarEditNoticesTool.empty().off( 'click' );
 	this.$toolbarFeedbackTool.empty().off( 'click' );
 };
@@ -1011,7 +1033,11 @@ ve.init.mw.ViewPageTarget.prototype.attachToolbarButtons = function () {
 	if ( !ve.isEmptyObject( this.editNotices ) ) {
 		$target.append( this.$toolbarEditNoticesTool );
 	}
-	$target.append( this.toolbarCancelButton.$, this.toolbarSaveButton.$ );
+	$target.append(
+		this.$toolbarMwMetaButton,
+		this.toolbarCancelButton.$,
+		this.toolbarSaveButton.$
+	);
 };
 
 /**
@@ -1022,6 +1048,7 @@ ve.init.mw.ViewPageTarget.prototype.attachToolbarButtons = function () {
 ve.init.mw.ViewPageTarget.prototype.detachToolbarButtons = function () {
 	this.toolbarCancelButton.$.detach();
 	this.toolbarSaveButton.$.detach();
+	this.$toolbarMwMetaButton.detatch();
 	this.$toolbarEditNoticesTool.detach();
 	this.$toolbarFeedbackTool.detach();
 };
