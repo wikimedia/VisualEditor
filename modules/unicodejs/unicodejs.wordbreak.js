@@ -41,7 +41,7 @@
 	 * @returns {string} The unicode wordbreak property value
 	 */
 	function getGroup( cluster ) {
-		var character;
+		var character, group;
 		// cluster is always converted to a string by RegExp#test
 		// e.g. null -> 'null' and would match /[a-z]/
 		// so return null for any non-string value
@@ -49,7 +49,6 @@
 			return null;
 		}
 		character = unicodeJS.splitCharacters( cluster )[0];
-		var group;
 		for ( group in patterns ) {
 			if ( patterns[group].test( character ) ) {
 				return group;

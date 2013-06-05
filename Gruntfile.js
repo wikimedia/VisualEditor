@@ -1,0 +1,60 @@
+/*!
+ * Grunt file
+ *
+ * @package VisualEditor
+ */
+
+/*jshint node:true */
+module.exports = function ( grunt ) {
+	var fs = require( 'fs' ),
+		exec = require( 'child_process' ).exec;
+
+	grunt.loadNpmTasks( 'grunt-contrib-jshint' );
+	grunt.loadNpmTasks( 'grunt-contrib-csslint' );
+	grunt.loadNpmTasks( 'grunt-contrib-qunit' );
+	grunt.loadNpmTasks( 'grunt-contrib-watch' );
+
+	grunt.initConfig( {
+		pkg: grunt.file.readJSON( 'package.json' ),
+		jshint: {
+			options: JSON.parse( grunt.file.read( '.jshintrc' )
+				.replace( /\/\*(?:(?!\*\/)[\s\S])*\*\//g, '' ).replace( /\/\/[^\n\r]*/g, '' ) ),
+			all: ['*.js', 'modules/**/*.js']
+		},
+		csslint: {
+			options: {
+				csslintrc: '.csslintrc'
+			},
+			all: ['modules/ve/**/*.css']
+		},
+		qunit: {
+			all: ['modules/ve/test/index-phantomjs-tmp.html']
+		},
+		watch: {
+			files: ['<%= jshint.all %>', '<%= csslint.all %>', '<%= qunit.all %>', '.{jshintrc,jshintignore,csslintrc}'],
+			tasks: ['test']
+		}
+	} );
+
+	grunt.registerTask( 'pre-qunit', function () {
+		var done = this.async();
+		grunt.file.setBase( __dirname + '/modules/ve/test' );
+		exec( 'php index.php > index-phantomjs-tmp.html', function ( err, stdout, stderr ) {
+			if ( err || stderr ) {
+				grunt.log.error( err || stderr );
+				done( false );
+			} else {
+				grunt.file.setBase( __dirname );
+				done( true );
+			}
+		} );
+	} );
+
+	grunt.registerTask( 'post-qunit', function () {
+		fs.unlinkSync( __dirname + '/modules/ve/test/index-phantomjs-tmp.html' );
+		return true;
+	} );
+
+	grunt.registerTask( 'test', ['jshint', 'csslint', 'pre-qunit', 'qunit', 'post-qunit'] );
+	grunt.registerTask( 'default', 'test' );
+};

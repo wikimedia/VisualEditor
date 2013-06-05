@@ -8,6 +8,7 @@ sublime-*
 
 # Install and build artifacts
 /docs
+node_modules
 
 # OS
 .DS_Store

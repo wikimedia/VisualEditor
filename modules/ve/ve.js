@@ -80,8 +80,6 @@
 			throw new Error( 'Target already inherits from origin' );
 		}
 
-		// Doesn't really require ES5 (jshint/jshint#74@github)
-		/*jshint es5: true */
 		var targetConstructor = targetFn.prototype.constructor;
 
 		targetFn.prototype = ve.createObject( originFn.prototype );
@@ -1080,7 +1078,7 @@
 	/**
 	 * Get the actual inner HTML of a DOM node.
 	 *
-	 * In most browsers, .innerHTML is broken and eats newlines in `<pre>`s, see
+	 * In most browsers, .innerHTML is broken and eats newlines in `<pre>` elements, see
 	 * https://bugzilla.mozilla.org/show_bug.cgi?id=838954 . This function detects this behavior
 	 * and works around it, to the extent possible. `<pre>\nFoo</pre>` will become `<pre>Foo</pre>`
 	 * if the browser is broken, but newlines are preserved in all other cases.
