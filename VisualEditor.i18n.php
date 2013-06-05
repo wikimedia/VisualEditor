@@ -49,6 +49,7 @@ $messages['en'] = array(
 	'visualeditor-savedialog-label-restore' => 'Restore page',
 	'visualeditor-editnotices-tool' => '$1 {{PLURAL:$1|notice|notices}}',
 	'visualeditor-feedback-tool' => 'Leave feedback',
+	'visualeditor-meta-tool' => 'Page settings',
 	'visualeditor-window-title' => 'Inspect',
 	'visualeditor-linkinspector-title' => 'Hyperlink',
 	'visualeditor-linkinspector-suggest-matching-page' => 'Matching page',
@@ -188,7 +189,8 @@ See also:
 {{Identical|Save page}}',
 	'visualeditor-savedialog-label-restore' => 'Label text for save button when the user is editing a previous revision',
 	'visualeditor-editnotices-tool' => 'Text of tool in the toolbar that shows edit notices (such as [[MediaWiki:editnotice-0]] and [[MediaWiki:editnotice-8/en]]) as a pop-up',
-	'visualeditor-feedback-tool' => 'Text of tool in the toolbar that lets user provide feedback',
+	'visualeditor-feedback-tool' => 'Text of tool in the toolbar that lets users provide feedback',
+	'visualeditor-meta-tool' => 'Text of tool in the toolbar the lets users set categories, language links and other page settings',
 	'visualeditor-window-title' => 'Title of an unnamed inspector',
 	'visualeditor-linkinspector-title' => 'Title of the link inspector dialog.
 {{Identical|Hyperlink}}',
