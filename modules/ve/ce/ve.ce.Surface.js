@@ -596,7 +596,7 @@ ve.ce.Surface.prototype.onPaste = function () {
 			pasteData = view.clipboard[key];
 		} else {
 			pasteText = view.$pasteTarget.text().replace( /\n/gm, '');
-			pasteData = new ve.dm.DocumentSlice( ve.splitCharacters( pasteText ) );
+			pasteData = new ve.dm.DocumentSlice( ve.splitClusters( pasteText ) );
 		}
 
 		// Transact
@@ -765,7 +765,7 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 
 		// Simple insertion
 		if ( lengthDiff > 0 && offsetDiff === lengthDiff /* && sameLeadingAndTrailing */) {
-			data = ve.splitCharacters( next.text.substring(
+			data = ve.splitClusters( next.text.substring(
 				previous.range.start - nodeOffset - 1,
 				next.range.start - nodeOffset - 1
 			) );
@@ -817,7 +817,7 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 	) {
 		++fromRight;
 	}
-	data = ve.splitCharacters( next.text.substring( fromLeft, next.text.length - fromRight ) );
+	data = ve.splitClusters( next.text.substring( fromLeft, next.text.length - fromRight ) );
 	// Get annotations to the left of new content and apply
 	annotations =
 		this.model.getDocument().data.getAnnotationsFromOffset( nodeOffset + 1 + fromLeft );
