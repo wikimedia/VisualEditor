@@ -18,7 +18,7 @@
 ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 	var browserWhitelisted,
 		browserBlacklisted,
-		currentUri = new mw.Uri( window.location.toString() ),
+		currentUri = new mw.Uri(),
 		supportsES5 = ( function () {
 			'use strict';
 			return this === undefined;
@@ -56,6 +56,10 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 	this.edited = false;
 	this.activating = false;
 	this.deactivating = false;
+	// If this is true then #transformPage / #restorePage will not call pushState
+	// This is to avoid adding a new history entry for the url we just got from onpopstate
+	// (which would mess up with the expected order of Back/Forwards browsing)
+	this.actFromPopState = false;
 	this.scrollTop = null;
 	this.currentUri = currentUri;
 	this.warnings = {};
@@ -136,6 +140,8 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 			this.activate();
 		}
 	}
+
+	window.addEventListener( 'popstate', ve.bind( this.onWindowPopState, this ) ) ;
 };
 
 /* Inheritance */
@@ -835,7 +841,7 @@ ve.init.mw.ViewPageTarget.prototype.tearDownSurface = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.setupSkinTabs = function () {
-	var caVeEdit, caVeEditSource, uriClone,
+	var caVeEdit, caVeEditSource,
 		action = this.pageExists ? 'edit' : 'create',
 		pTabsId = $( '#p-views' ).length ? 'p-views' : 'p-cactions',
 		$caSource = $( '#ca-viewsource' ),
@@ -912,21 +918,6 @@ ve.init.mw.ViewPageTarget.prototype.setupSkinTabs = function () {
 		// Allow instant switching back to view mode, without refresh
 		$( '#ca-view a, #ca-nstab-visualeditor a' )
 			.click( ve.bind( this.onViewTabClick, this ) );
-	}
-
-	// If there got here via veaction=edit, hide it from the URL.
-	if ( !ve.debug && ( this.currentUri.query.veaction === 'edit' && window.history.replaceState ) ) {
-		// Remove the veaction query parameter, but don't affect the original mw.Uri instance
-		uriClone = this.currentUri.clone();
-		delete uriClone.query.veaction;
-
-		// If there are other query parameters, set the url to the current one
-		// (with veaction removed). Otherwise use the canonical style view url (bug 42553).
-		if ( ve.getObjectValues( uriClone.query ).length ) {
-			window.history.replaceState( null, document.title, uriClone );
-		} else {
-			window.history.replaceState( null, document.title, this.viewUri );
-		}
 	}
 };
 
@@ -1620,6 +1611,7 @@ ve.init.mw.ViewPageTarget.prototype.restoreDocumentTitle = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.transformPage = function () {
+	var uri;
 
 	// Put skin tabs in "edit" mode
 	$( $( '#p-views' ).length ? '#p-views' : '#p-cactions' )
@@ -1631,6 +1623,17 @@ ve.init.mw.ViewPageTarget.prototype.transformPage = function () {
 	$( '#siteNotice:visible' )
 		.addClass( 've-hide' )
 		.slideUp( 'fast' );
+
+	// Push veaction=edit url in history (if not already. If we got here by a veaction=edit
+	// permalink then it will be there already and the constructor called #activate)
+	if ( !this.actFromPopState && window.history.pushState && this.currentUri.query.veaction !== 'edit' ) {
+		// Set the veaction query parameter
+		uri = this.currentUri;
+		uri.query.veaction = 'edit';
+
+		window.history.pushState( null, document.title, uri );
+	}
+	this.actFromPopState = false;
 };
 
 /**
@@ -1639,6 +1642,7 @@ ve.init.mw.ViewPageTarget.prototype.transformPage = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.restorePage = function () {
+	var uri;
 
 	// Put skin tabs back in "view" mode
 	$( $( '#p-views' ).length ? '#p-views' : '#p-cactions' )
@@ -1649,6 +1653,39 @@ ve.init.mw.ViewPageTarget.prototype.restorePage = function () {
 	// Make site notice visible again (if present)
 	$(' #siteNotice.ve-hide' )
 		.slideDown( 'fast' );
+
+	// Push non-veaction=edit url in history
+	if ( !this.actFromPopState && window.history.pushState ) {
+		// Remove the veaction query parameter
+		uri = this.currentUri;
+		if ( 'veaction' in uri.query ) {
+			delete uri.query.veaction;
+		}
+
+		// If there are other query parameters, set the url to the current url (with veaction removed).
+		// Otherwise use the canonical style view url (bug 42553).
+		if ( ve.getObjectValues( uri.query ).length ) {
+			window.history.pushState( null, document.title, uri );
+		} else {
+			window.history.pushState( null, document.title, this.viewUri );
+		}
+	}
+	this.actFromPopState = false;
+};
+
+/**
+ * @param {Event} e Native event object
+ */
+ve.init.mw.ViewPageTarget.prototype.onWindowPopState = function () {
+	var newUri = this.currentUri = new mw.Uri( document.location.href );
+	if ( !this.active && newUri.query.veaction === 'edit' ) {
+		this.actFromPopState = true;
+		this.activate();
+	}
+	if ( this.active && newUri.query.veaction !== 'edit' ) {
+		this.actFromPopState = true;
+		this.deactivate();
+	}
 };
 
 /**
