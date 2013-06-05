@@ -1673,7 +1673,6 @@ ve.init.mw.ViewPageTarget.prototype.restoreEditSection = function () {
 					headingNode.getModel().getOffset()
 				);
 				surfaceModel.change( null, new ve.Range( offset, offset ) );
-				surfaceView.showSelection( surfaceModel.getSelection() );
 			}
 		} );
 		this.section = null;

@@ -125,12 +125,12 @@ ve.ce.ProtectedNode.prototype.onProtectedTeardown = function () {
 };
 
 /**
- * Handle phantom click events.
+ * Handle phantom mouse down events.
  *
  * @method
- * @param {jQuery.Event} e Mouse click event
+ * @param {jQuery.Event} e Mouse down event
  */
-ve.ce.ProtectedNode.prototype.onPhantomClick = function ( e ) {
+ve.ce.ProtectedNode.prototype.onPhantomMouseDown = function ( e ) {
 	var surfaceModel = this.getRoot().getSurface().getModel(),
 		selectionRange = surfaceModel.getSelection(),
 		nodeRange = this.model.getOuterRange();
@@ -142,6 +142,8 @@ ve.ce.ProtectedNode.prototype.onPhantomClick = function ( e ) {
 			) :
 			nodeRange
 	).select();
+
+	e.preventDefault();
 };
 
 /**
@@ -206,7 +208,7 @@ ve.ce.ProtectedNode.prototype.createPhantoms = function () {
 	this.$.find( '.ve-ce-protectedNode-shield' ).each(
 		ve.bind( function () {
 			this.$phantoms = this.$phantoms.add(
-				$phantomTemplate.clone().on( 'click', ve.bind( this.onPhantomClick, this ) )
+				$phantomTemplate.clone().on( 'mousedown', ve.bind( this.onPhantomMouseDown, this ) )
 			);
 		}, this )
 	);

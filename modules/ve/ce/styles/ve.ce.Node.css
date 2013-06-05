@@ -61,6 +61,13 @@
 	cursor: default;
 }
 
+/* ve.ce.FocusableNode */
+
+.ve-ce-focusableNode-highlight {
+	background: #6da9f7;
+	position: absolute;
+}
+
 /* ve.ce.ResizableNode */
 
 .ve-ce-resizableNode-transitioning {

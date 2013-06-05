@@ -36,10 +36,19 @@
 
 /* @noflip */
 .ve-ce-surface-phantoms {
-	position: absolute;
-	top: 0;
 	left: 0;
 	opacity: 0.75;
+	position: absolute;
+	top: 0;
+}
+
+/* @noflip */
+.ve-ce-surface-highlights {
+	left: 0;
+	opacity: 0.5;
+	pointer-events: none;
+	position: absolute;
+	top: 0;
 }
 
 .ve-ce-surface-paste {

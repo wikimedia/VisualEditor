@@ -42,7 +42,7 @@ ve.ui.HistoryAction.static.methods = ['undo', 'redo'];
 ve.ui.HistoryAction.prototype.undo = function () {
 	var range = this.surface.getModel().undo();
 	if ( range ) {
-		this.surface.getView().showSelection( range );
+		this.surface.getModel().change( null, range );
 	}
 };
 
@@ -54,7 +54,7 @@ ve.ui.HistoryAction.prototype.undo = function () {
 ve.ui.HistoryAction.prototype.redo = function () {
 	var range = this.surface.getModel().redo();
 	if ( range ) {
-		this.surface.getView().showSelection( range );
+		this.surface.getModel().change( null, range );
 	}
 };
 

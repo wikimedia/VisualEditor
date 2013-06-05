@@ -27,7 +27,8 @@ ve.ce.ResizableNode = function VeCeResizableNode( $resizable ) {
 	this.connect( this, {
 		'focus': 'onResizableFocus',
 		'blur': 'onResizableBlur',
-		'live': 'onResizableLive'
+		'live': 'onResizableLive',
+		'resize': 'onResizableFocus'
 	} );
 
 	// Initialization
@@ -280,7 +281,7 @@ ve.ce.ResizableNode.prototype.onDocumentMouseUp = function () {
 			surfaceModel.change( txs, selection );
 		}
 
-		// HACK: Update bounding box
-		this.onResizableFocus();
+		this.emit( 'resize' );
+
 	}, this ), transition ? 200 : 0 );
 };

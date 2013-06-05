@@ -46,7 +46,6 @@ ve.ui.FormatAction.static.methods = ['convert'];
  */
 ve.ui.FormatAction.prototype.convert = function ( type, attributes ) {
 	var selected, i, length, contentBranch, txs,
-		surfaceView = this.surface.getView(),
 		surfaceModel = this.surface.getModel(),
 		selection = surfaceModel.getSelection(),
 		fragmentForSelection = surfaceModel.getFragment( selection, true ),
@@ -71,7 +70,6 @@ ve.ui.FormatAction.prototype.convert = function ( type, attributes ) {
 
 	txs = ve.dm.Transaction.newFromContentBranchConversion( doc, selection, type, attributes );
 	surfaceModel.change( txs, selection );
-	surfaceView.showSelection( selection );
 };
 
 /* Registration */

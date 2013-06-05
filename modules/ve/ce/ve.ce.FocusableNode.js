@@ -15,6 +15,9 @@
  * element, but in some cases it may need to be configured to be a specific child element within the
  * node's DOM rendering.
  *
+ * If your focusable node changes size and the highlight must be redrawn, call redrawHighlight().
+ * ResizableNode 'resize' event is already bound.
+ *
  * @class
  * @abstract
  *
@@ -25,6 +28,14 @@ ve.ce.FocusableNode = function VeCeFocusableNode( $focusable ) {
 	// Properties
 	this.focused = false;
 	this.$focusable = $focusable || this.$;
+	this.$highlights = $( [] );
+	this.surface = null;
+
+	// Events
+	this.connect( this, {
+		'setup': 'onFocusableSetup',
+		'resize': 'redrawHighlight'
+	} );
 };
 
 /* Events */
@@ -38,6 +49,25 @@ ve.ce.FocusableNode = function VeCeFocusableNode( $focusable ) {
  */
 
 /* Methods */
+
+/**
+ * Handle setup event.
+ *
+ * @method
+ */
+ve.ce.FocusableNode.prototype.onFocusableSetup = function () {
+	this.surface = this.root.getSurface();
+};
+
+/**
+ * Notification of dimension change
+ *
+ * @method
+ */
+ve.ce.FocusableNode.prototype.redrawHighlight = function () {
+	this.clearHighlight();
+	this.createHighlight();
+};
 
 /**
  * Check if node is focused.
@@ -64,9 +94,48 @@ ve.ce.FocusableNode.prototype.setFocused = function ( value ) {
 		if ( this.focused ) {
 			this.emit( 'focus' );
 			this.$.addClass( 've-ce-node-focused' );
+			this.createHighlight();
 		} else {
 			this.emit( 'blur' );
 			this.$.removeClass( 've-ce-node-focused' );
+			this.clearHighlight();
 		}
 	}
+};
+
+/**
+ * Creates highlight
+ *
+ * @method
+ */
+ve.ce.FocusableNode.prototype.createHighlight = function () {
+	var elementOffset;
+
+	this.$.find( '*' ).add( this.$ ).each(
+		ve.bind( function( i, element ) {
+			elementOffset = $(element).offset();
+			this.$highlights = this.$highlights.add(
+				$( '<div>' )
+					.css( {
+						height: $( element ).height(),
+						width: $( element ).width(),
+						top: elementOffset.top,
+						left: elementOffset.left
+					} )
+					.addClass( 've-ce-focusableNode-highlight' )
+			);
+		}, this )
+	);
+
+	this.surface.replaceHighlight( this.$highlights );
+};
+
+/**
+ * Clears highlight
+ *
+ * @method
+ */
+ve.ce.FocusableNode.prototype.clearHighlight = function () {
+	this.$highlights = $( [] );
+	this.surface.replaceHighlight( null );
 };

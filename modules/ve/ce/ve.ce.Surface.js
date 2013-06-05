@@ -40,6 +40,7 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 	this.relocating = false;
 	this.selecting = false;
 	this.$phantoms = this.$$( '<div>' );
+	this.$highlights = this.$$( '<div>' );
 	this.$pasteTarget = this.$$( '<div>' );
 	this.pasting = false;
 	this.clickHistory = [];
@@ -68,11 +69,12 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 	// Initialization
 	this.$.addClass( 've-ce-surface' );
 	this.$phantoms.addClass( 've-ce-surface-phantoms' );
+	this.$highlights.addClass( 've-ce-surface-highlights' );
 	this.$pasteTarget.addClass( 've-ce-surface-paste' ).prop( 'contenteditable', true );
 
 	// Add elements to the DOM
 	this.$.append( this.documentView.getDocumentNode().$, this.$pasteTarget );
-	this.surface.$localOverlay.append( this.$phantoms );
+	this.surface.$localOverlay.append( this.$phantoms, this.$highlights );
 };
 
 /* Inheritance */
@@ -121,18 +123,29 @@ ve.ce.Surface.static.textPattern = new RegExp(
  * Get the coordinates of the selection anchor.
  *
  * @method
- * @static
- * @param {HTMLDocument} domDocument Document of selection
  */
 ve.ce.Surface.prototype.getSelectionRect = function () {
-	var sel, rect, $span, lineHeight, startRange, startOffset, endRange, endOffset,
-		domDocument = this.getElementDocument();
+	var sel, rect, $span, lineHeight, startRange, startOffset, endRange, endOffset, focusedOffset;
+
+	if ( this.focusedNode ) {
+		focusedOffset = this.focusedNode.$.offset();
+		return {
+			'start': {
+				'x': focusedOffset.left,
+				'y': focusedOffset.top
+			},
+			'end': {
+				'x': focusedOffset.left + this.focusedNode.$.width(),
+				'y': focusedOffset.top + this.focusedNode.$.height()
+			}
+		};
+	}
 
 	if ( !rangy.initialized ) {
 		rangy.init();
 	}
 
-	sel = rangy.getSelection( domDocument );
+	sel = rangy.getSelection( this.getElementDocument() );
 
 	// We can't do anything if there's no selection
 	if ( sel.rangeCount === 0 ) {
@@ -670,9 +683,6 @@ ve.ce.Surface.prototype.onChange = function ( transaction, selection ) {
 		previous = this.focusedNode;
 
 	if ( selection ) {
-		if ( this.isRenderingEnabled() ) {
-			this.showSelection( selection );
-		}
 		// Detect when only a single inline element is selected
 		if ( !selection.isCollapsed() ) {
 			start = this.documentView.getDocumentNode().getNodeFromOffset( selection.start + 1 );
@@ -692,7 +702,12 @@ ve.ce.Surface.prototype.onChange = function ( transaction, selection ) {
 			if ( next ) {
 				next.setFocused( true );
 				this.focusedNode = start;
+				rangy.getSelection( this.getElementDocument() ).removeAllRanges();
 			}
+		}
+		// If there is no focused node, use native selection
+		if ( !this.focusedNode && this.isRenderingEnabled() ) {
+			this.showSelection( selection );
 		}
 	}
 };
@@ -1331,12 +1346,10 @@ ve.ce.Surface.prototype.showSelection = function ( range ) {
 		rangySel = rangy.getSelection( this.$document[0] ),
 		rangyRange = rangy.createRange( this.$document[0] );
 
-	// Ensure the range we are asking to select is from and to correct offsets - failure to do so
-	// may cause getNodeAndOffset to throw an exception
-	range = new ve.Range(
-		this.getNearestCorrectOffset( range.from, -1 ),
-		this.getNearestCorrectOffset( range.to, 1 )
-	);
+		range = new ve.Range(
+			this.getNearestCorrectOffset( range.from, -1 ),
+			this.getNearestCorrectOffset( range.to, 1 )
+		);
 
 	if ( !range.isCollapsed() ) {
 		start = this.documentView.getNodeAndOffset( range.start );
@@ -1360,6 +1373,16 @@ ve.ce.Surface.prototype.showSelection = function ( range ) {
  */
 ve.ce.Surface.prototype.replacePhantoms = function ( $phantoms ) {
 	this.$phantoms.empty().append( $phantoms );
+};
+
+/**
+ * Append passed highlights to highlight container after emptying it first.
+ *
+ * @method
+ * @param {jQuery} $highlights Highlights to append
+ */
+ve.ce.Surface.prototype.replaceHighlight = function ( $highlights ) {
+	this.$highlights.empty().append( $highlights );
 };
 
 /*! Helpers */
