@@ -48,6 +48,8 @@ ve.init.mw.Target = function VeInitMwTarget( $container, pageName, revision ) {
 	this.startTimeStamp = null;
 	this.doc = null;
 	this.editNotices = null;
+	this.remoteNotices = [];
+	this.localNoticeMessages = [];
 	this.isMobileDevice = (
 		'ontouchstart' in window ||
 			( window.DocumentTouch && document instanceof window.DocumentTouch )
@@ -132,8 +134,7 @@ ve.inheritClass( ve.init.mw.Target, ve.init.Target );
  * @emits loadError
  */
 ve.init.mw.Target.onLoad = function ( response ) {
-	var key, tmp, el,
-		data = response ? response.visualeditor : null;
+	var data = response ? response.visualeditor : null;
 
 	if ( !data && !response.error ) {
 		ve.init.mw.Target.onLoadError.call(
@@ -159,42 +160,61 @@ ve.init.mw.Target.onLoad = function ( response ) {
 		this.originalHtml = data.content;
 		this.doc = ve.createDocumentFromHtml( this.originalHtml );
 
-		/* Don't show notices with no visible html (bug 43013). */
-
-		// Since we're going to parse them, we might as well save these nodes
-		// so we don't have to parse them again later.
-		this.editNotices = {};
-
-		// This is a temporary container for parsed notices in the <body>.
-		// We need the elements to be in the DOM in order for stylesheets to apply
-		// and jquery.visibleText to determine whether a node is visible.
-		tmp = document.createElement( 'div' );
-
-		// The following is essentially display none, but we can't use that
-		// since then all descendants will be considered invisible too.
-		tmp.style.cssText = 'position: static; top: 0; width: 0; height: 0; border: 0; visibility: hidden';
-
-		document.body.appendChild( tmp );
-		for ( key in data.notices ) {
-			el = $( '<div>' )
-				.addClass( 've-init-mw-viewPageTarget-toolbar-editNotices-notice' )
-				.attr( 'rel', key )
-				.html( data.notices[key] )
-				.get( 0 );
-
-			tmp.appendChild( el );
-			if ( $.getVisibleText( el ).trim() !== '' ) {
-				this.editNotices[key] = el;
-			}
-			tmp.removeChild( el );
-		}
-		document.body.removeChild( tmp );
+		this.remoteNotices = data.notices;
 
 		this.baseTimeStamp = data.basetimestamp;
 		this.startTimeStamp = data.starttimestamp;
 		// Everything worked, the page was loaded, continue as soon as the module is ready
 		mw.loader.using( this.modules, ve.bind( ve.init.mw.Target.onReady, this ) );
 	}
+};
+
+/**
+ * Handle the edit notices being ready for rendering.
+ *
+ * @static
+ * @method
+ */
+ve.init.mw.Target.onNoticesReady = function() {
+	var i, len, noticeHtmls, tmp, el;
+
+	// Since we're going to parse them, we might as well save these nodes
+	// so we don't have to parse them again later.
+	this.editNotices = {};
+
+	/* Don't show notices without visible html (bug 43013). */
+
+	// This is a temporary container for parsed notices in the <body>.
+	// We need the elements to be in the DOM in order for stylesheets to apply
+	// and jquery.visibleText to determine whether a node is visible.
+	tmp = document.createElement( 'div' );
+
+	// The following is essentially display none, but we can't use that
+	// since then all descendants will be considered invisible too.
+	tmp.style.cssText = 'position: static; top: 0; width: 0; height: 0; border: 0; visibility: hidden;';
+	document.body.appendChild( tmp );
+
+	// Merge locally and remotely generated notices
+	noticeHtmls = this.remoteNotices;
+	for ( i = 0, len = this.localNoticeMessages.length; i < len; i++ ) {
+		noticeHtmls.push(
+			'<p>' + ve.init.platform.getParsedMessage( this.localNoticeMessages[i] ) + '</p>'
+		);
+	}
+
+	for ( i = 0, len = noticeHtmls.length; i < len; i++ ) {
+		el = $( '<div>' )
+			.addClass( 've-init-mw-viewPageTarget-toolbar-editNotices-notice' )
+			.html( noticeHtmls[i] )
+			.get( 0 );
+
+		tmp.appendChild( el );
+		if ( $.getVisibleText( el ).trim() !== '' ) {
+			this.editNotices[i] = el;
+		}
+		tmp.removeChild( el );
+	}
+	document.body.removeChild( tmp );
 };
 
 /**
@@ -238,6 +258,9 @@ ve.init.mw.Target.onToken = function ( response ) {
  * @emits load
  */
 ve.init.mw.Target.onReady = function () {
+	// We need to wait until onReady as local notices may require special messages
+	ve.init.mw.Target.onNoticesReady.call( this );
+
 	this.loading = false;
 	this.emit( 'load', this.doc );
 };

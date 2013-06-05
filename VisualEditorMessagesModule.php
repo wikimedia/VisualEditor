@@ -43,6 +43,7 @@ class VisualEditorMessagesModule extends ResourceLoaderModule {
 		$msgArgs = array(
 			'minoredit' => array( 'minoredit' ),
 			'watchthis' => array( 'watchthis' ),
+			'visualeditor-browserwarning' => array( 'visualeditor-browserwarning' ),
 			'visualeditor-report-notice' => array( 'visualeditor-report-notice' ),
 			'missingsummary' => array( 'missingsummary' ),
 		);
