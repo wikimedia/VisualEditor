@@ -149,14 +149,14 @@ ve.init.mw.ViewPageTarget.compatibility = {
 	// The key is the browser name returned by jQuery.client
 	// The value is either null (match all versions) or a list of tuples
 	// containing an inequality (<,>,<=,>=) and a version number
-	whitelist: {
+	'whitelist': {
 		'msie': [['>=', 9]],
 		'firefox': [['>=', 11]],
 		'iceweasel': [['>=', 10]],
 		'safari': [['>=', 5]],
 		'chrome': [['>=', 19]]
 	},
-	blacklist: {
+	'blacklist': {
 		'msie': [['<', 9]],
 		'android': [['<', 3]],
 		// Blacklist all versions:
