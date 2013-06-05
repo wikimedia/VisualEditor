@@ -38,7 +38,7 @@ ve.dm.MWTemplateNode.static.name = 'mwTemplate';
 ve.dm.MWTemplateNode.static.matchTagNames = null;
 
 ve.dm.MWTemplateNode.static.matchRdfaTypes = [
-	'mw:Object/Template',
+	'mw:Transclusion',
 	// We're interested in all nodes that have mw:Object/Template, even if they also have other mw:
 	// types. So we match all mw: types, then use a matchFunction to assert that mw:Object/Template
 	// is in there.
@@ -46,7 +46,7 @@ ve.dm.MWTemplateNode.static.matchRdfaTypes = [
 ];
 
 ve.dm.MWTemplateNode.static.matchFunction = function ( domElement ) {
-	return ve.indexOf( 'mw:Object/Template',
+	return ve.indexOf( 'mw:Transclusion',
 		( domElement.getAttribute( 'typeof' ) || '' ).split( ' ' )
 	) !== -1;
 };
@@ -86,7 +86,7 @@ ve.dm.MWTemplateNode.static.toDomElements = function ( dataElement, doc, convert
 		span = doc.createElement( 'span' );
 		// All we need to send back to Parsoid is the original template marker,
 		// with a reconstructed data-mw property.
-		span.setAttribute( 'typeof', 'mw:Object/Template' );
+		span.setAttribute( 'typeof', 'mw:Transclusion' );
 		span.setAttribute( 'data-mw', JSON.stringify( dataElement.attributes.mw ) );
 		return [ span ];
 	}
