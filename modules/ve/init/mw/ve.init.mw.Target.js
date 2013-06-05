@@ -175,7 +175,7 @@ ve.init.mw.Target.onLoad = function ( response ) {
  * @static
  * @method
  */
-ve.init.mw.Target.onNoticesReady = function() {
+ve.init.mw.Target.onNoticesReady = function () {
 	var i, len, noticeHtmls, tmp, el;
 
 	// Since we're going to parse them, we might as well save these nodes
@@ -195,7 +195,7 @@ ve.init.mw.Target.onNoticesReady = function() {
 	document.body.appendChild( tmp );
 
 	// Merge locally and remotely generated notices
-	noticeHtmls = this.remoteNotices;
+	noticeHtmls = this.remoteNotices.slice( 0 );
 	for ( i = 0, len = this.localNoticeMessages.length; i < len; i++ ) {
 		noticeHtmls.push(
 			'<p>' + ve.init.platform.getParsedMessage( this.localNoticeMessages[i] ) + '</p>'

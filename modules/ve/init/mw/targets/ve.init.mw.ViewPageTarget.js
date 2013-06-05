@@ -23,8 +23,7 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 			'use strict';
 			return this === undefined;
 		}() ),
-		// TODO: MW test runner fires before document.body exists, so we just skip it here.
-		supportsContentEditable = document.body && 'contentEditable' in document.body;
+		supportsContentEditable = 'contentEditable' in document.createElement( 'div' );
 
 	// Parent constructor
 	ve.init.mw.Target.call(
@@ -77,12 +76,14 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 	this.tabLayout = 'replace';
 
 	browserWhitelisted = (
-		$.client.test( ve.init.mw.ViewPageTarget.compatibility, null, true ) ||
-		'vewhitelist' in currentUri.query
+		currentUri.query.vewhitelist !== undefined ?
+			currentUri.query.vewhitelist === '1' :
+			$.client.test( ve.init.mw.ViewPageTarget.compatibility.whitelist, null, true )
 	);
 	browserBlacklisted = (
-		$.client.test( ve.init.mw.ViewPageTarget.compatibility, null, true ) ||
-		'veblacklist' in currentUri.query
+		currentUri.query.veblacklist !== undefined ?
+			currentUri.query.veblacklist === '1' :
+			$.client.test( ve.init.mw.ViewPageTarget.compatibility.blacklist, null, true )
 	);
 
 	// Events
@@ -100,8 +101,8 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 	} );
 
 	// Initialization
-	if ( supportsStrictMode && supportsContentEditable && !this.browserBlacklisted ) {
-		if ( !this.browserWhitelisted || true ) {
+	if ( supportsStrictMode && supportsContentEditable && !browserBlacklisted ) {
+		if ( !browserWhitelisted ) {
 			// show warning
 			this.localNoticeMessages.push( 'visualeditor-browserwarning' );
 		}
