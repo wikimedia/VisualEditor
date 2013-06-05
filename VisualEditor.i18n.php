@@ -260,6 +260,7 @@ Parameters:
 	'visualeditor-descriptionpagelink' => 'Name of a page describing the use of the VisualEditor in this project.
 {{doc-important|Do not translate "Project"; it is automatically converted to the wiki\'s project namespace.}}',
 	'visualeditor-alphawarning' => 'Edit notice shown when the VisualEditor loads, warning users that the software may have issues',
+	'visualeditor-browserwarning' => 'Edit notice shown when the VisualEditor loads, warning users that their browser is not officially supported',
 	'visualeditor-report-notice' => 'Notice to user that their data will be sent for analysis.
 Link is in {{msg-mw|Visualeditor-report-link}}.
 
