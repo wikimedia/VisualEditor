@@ -524,6 +524,7 @@ $wgResourceModules += array(
 			'visualeditor-dialog-action-apply',
 			'visualeditor-dialog-action-cancel',
 			'visualeditor-dialog-action-close',
+			'visualeditor-dialog-meta-title',
 			'visualeditor-dialog-meta-categories-section',
 			'visualeditor-dialog-meta-categories-data-label',
 			'visualeditor-dialog-meta-categories-settings-label',
@@ -538,6 +539,7 @@ $wgResourceModules += array(
 			'visualeditor-dialog-meta-languages-code-label',
 			'visualeditor-dialog-meta-languages-link-label',
 			'visualeditor-dialog-meta-languages-readonlynote',
+			'visualeditor-dialogbutton-meta-tooltip',
 		),
 	),
 	'ext.visualEditor.experimental' => $wgVisualEditorResourceTemplate + array(
@@ -569,8 +571,6 @@ $wgResourceModules += array(
 			'visualeditor-dialogbutton-reference-tooltip',
 			'visualeditor-dialog-template-title',
 			'visualeditor-dialogbutton-template-tooltip',
-			'visualeditor-dialog-meta-title',
-			'visualeditor-dialogbutton-meta-tooltip',
 		),
 	),
 	'ext.visualEditor.icons-raster' => $wgVisualEditorResourceTemplate + array(
