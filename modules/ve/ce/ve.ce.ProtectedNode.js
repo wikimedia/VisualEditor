@@ -17,6 +17,7 @@ ve.ce.ProtectedNode = function VeCeProtectedNode() {
 	// Properties
 	this.$phantoms = $( [] );
 	this.$shields = $( [] );
+	this.isSetup = false;
 
 	// Events
 	this.connect( this, {
@@ -64,10 +65,16 @@ ve.ce.ProtectedNode.static.$phantomTemplate = $( '<div>' )
  * @method
  */
 ve.ce.ProtectedNode.prototype.onProtectedSetup = function () {
-	var $shield,
+	var $shield, surfaceModel,
 		node = this,
-		$shieldTemplate = this.constructor.static.$shieldTemplate,
-		surfaceModel = this.getRoot().getSurface().getModel();
+		$shieldTemplate = this.constructor.static.$shieldTemplate;
+
+	if ( this.isSetup ) {
+		return;
+	}
+	this.isSetup = true;
+
+	surfaceModel = this.getRoot().getSurface().getModel();
 
 	// Events
 	this.$.on( 'mouseenter.ve-ce-protectedNode', ve.bind( this.onProtectedMouseEnter, this ) );
@@ -96,7 +103,14 @@ ve.ce.ProtectedNode.prototype.onProtectedSetup = function () {
  * @method
  */
 ve.ce.ProtectedNode.prototype.onProtectedTeardown = function () {
-	var surfaceModel = this.getRoot().getSurface().getModel();
+	var surfaceModel;
+
+	if ( !this.isSetup ) {
+		return;
+	}
+	this.isSetup = false;
+
+	surfaceModel = this.getRoot().getSurface().getModel();
 
 	// Events
 	this.$.off( '.ve-ce-protectedNode' );
