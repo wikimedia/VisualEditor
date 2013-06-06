@@ -37,6 +37,7 @@
 	"nomen": true,
 
 	"predef": [
+		"OO",
 		"ve",
 		"unicodeJS",
 		"QUnit"
