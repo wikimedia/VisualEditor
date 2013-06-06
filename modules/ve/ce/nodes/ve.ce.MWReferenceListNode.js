@@ -26,6 +26,8 @@ ve.ce.MWReferenceListNode = function VeCeMWReferenceListNode( model, config ) {
 	// DOM Changes
 	this.$.addClass( 've-ce-mwReferenceListNode', 'reference' )
 		.attr( 'contenteditable', false );
+	this.$reflist = $( '<ol class="references">' );
+	this.$.append( this.$reflist );
 
 	// Events
 	this.model.getDocument().internalList.connect( this, { 'update': 'onInternalListUpdate' } );
@@ -44,6 +46,8 @@ ve.mixinClass( ve.ce.MWReferenceListNode, ve.ce.ProtectedNode );
 /* Static Properties */
 
 ve.ce.MWReferenceListNode.static.name = 'mwReferenceList';
+
+ve.ce.MWReferenceListNode.static.tagName = 'div';
 
 /* Methods */
 
@@ -81,11 +85,11 @@ ve.ce.MWReferenceListNode.prototype.onListNodeUpdate = function () {
  */
 ve.ce.MWReferenceListNode.prototype.update = function () {
 	var i, j, iLen, jLen, key, keyNodes, $li, itemNode,
-		$ol = $( '<ol class="references">' ),
 		internalList = this.model.getDocument().internalList,
 		listGroup = this.model.getAttribute( 'listGroup' ),
 		nodes = internalList.getNodeGroup( listGroup );
 
+	this.$reflist.empty();
 	if ( nodes && nodes.keyOrder.length ) {
 		for ( i = 0, iLen = nodes.keyOrder.length; i < iLen; i++ ) {
 			key = nodes.keyOrder[i];
@@ -108,11 +112,9 @@ ve.ce.MWReferenceListNode.prototype.update = function () {
 				internalList.getItemNode( keyNodes[0].getAttribute( 'listIndex' ) )
 			);
 			$li.append( $( '<span class="reference-text">' ).html( itemNode.$.show() ) );
-			$ol.append( $li );
+			this.$reflist.append( $li );
 		}
 	} // TODO: Show a placeholder for an empty reference list in the 'else' section
-
-	this.$.html( $ol );
 };
 
 /* Registration */
