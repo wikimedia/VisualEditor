@@ -307,13 +307,13 @@ ve.ui.MWMetaDialog.prototype.getAllLanguageItems = function () {
 			'prop': 'langlinks',
 			'lllimit': 500,
 			'titles': mw.config.get( 'wgTitle' ),
+			'indexpageids': 1,
 			'format': 'json'
 		},
 		'dataType': 'json',
 		'type': 'POST',
 		// Wait up to 100 seconds before giving up
 		'timeout': 100000,
-		'indexpageids': 1,
 		'cache': 'false',
 		'success': ve.bind( this.onAllLanuageItemsSuccess, this, promise ),
 		'error': ve.bind( this.onAllLanuageItemsError, this, promise )
