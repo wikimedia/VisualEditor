@@ -95,11 +95,12 @@ ve.ui.MWTemplateDialog.prototype.onOpen = function () {
 	for ( i = 0; i < len; i++ ) {
 		template = dialog.content.parts[i].template;
 		if ( template ) {
-			// Method #getTemplateSpecs will use the part id instead of `target.url`
+			// Method #getTemplateSpecs will use the part id instead of `target.href`
 			// if the target has no url property (which Parsoid omits if the target is
 			// dynamically generated from wikitext). In that case we want each template
 			// invocation to have its own inferred template spec.
-			template.specId = template.target.url || ( '#!/part/' + i );
+			// FIXME centralize regex
+			template.specId = ( template.target.href && template.target.href.replace( /^(\.\.?\/)*/, '' ) ) || ( '#!/part/' + i );
 			dialog.getTemplateSpecs( template, makeStoreTemplateSpec( template ) );
 		} else {
 			// This is a raw wikitext part (between two associated template invocations),
@@ -302,8 +303,9 @@ ve.ui.MWTemplateDialog.prototype.fetchTemplateSpecs = function ( templates ) {
 
 	// Collect all titles
 	for ( i = 0, len = templates.length; i < len; i++ ) {
-		if ( templates[i].target.url ) {
-			titles.push( templates[i].target.url );
+		if ( templates[i].target.href ) {
+			// FIXME centralize regex
+			titles.push( templates[i].target.href.replace( /^(\.\.?\/)*/, '' ) );
 		}
 	}
 
@@ -381,7 +383,8 @@ ve.ui.MWTemplateDialog.prototype.addWikitextPage = function ( page, value ) {
  */
 ve.ui.MWTemplateDialog.prototype.addTemplatePage = function ( page, template ) {
 	var fieldset,
-		label = template.target.url || template.target.wt;
+		// FIXME centralize regex
+		label = ( template.target.href && template.target.href.replace( /^(\.\.?\/)*/, '' ) ) || template.target.wt;
 
 	fieldset = new ve.ui.FieldsetLayout( {
 		'$$': this.frame.$$,
