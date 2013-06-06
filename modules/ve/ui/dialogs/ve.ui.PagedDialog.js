@@ -114,7 +114,7 @@ ve.ui.PagedDialog.prototype.addPage = function ( name, config ) {
  * @method
  * @chainable
  */
-ve.ui.PagedDialog.prototype.clearPages = function() {
+ve.ui.PagedDialog.prototype.clearPages = function () {
 	this.pages = [];
 	this.pagesPanel.clearItems();
 	this.outlineWidget.clearItems();

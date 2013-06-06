@@ -59,7 +59,7 @@ ve.ce.MWImageCaptionNode.prototype.onSplice = function () {
 	}
 };
 
-ve.ce.MWImageCaptionNode.prototype.buildMagnify = function() {
+ve.ce.MWImageCaptionNode.prototype.buildMagnify = function () {
 	this.$magnify = $( '<div>' )
 		.addClass( 'magnify' );
 	this.$a = $( '<a>' )

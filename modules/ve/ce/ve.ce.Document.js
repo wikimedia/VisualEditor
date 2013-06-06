@@ -239,7 +239,7 @@ ve.ce.Document.prototype.getNearestFocusableNode = function ( offset, direction,
  * @param {boolean} expand Expanding range
  * @returns {ve.Range} Relative range
  */
-ve.ce.Document.prototype.getRelativeRange = function( range, direction, unit, expand ) {
+ve.ce.Document.prototype.getRelativeRange = function ( range, direction, unit, expand ) {
 	var contentOrSlugOffset,
 		focusableNode,
 		node;
