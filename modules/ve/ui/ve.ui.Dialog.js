@@ -22,6 +22,8 @@ ve.ui.Dialog = function VeUiDialog( surface, config ) {
 
 	// Properties
 	this.visible = false;
+	this.onWindowMouseWheelHandler = ve.bind( this.onWindowMouseWheel, this );
+	this.onDocumentKeyDownHandler = ve.bind( this.onDocumentKeyDown, this );
 
 	// Initialization
 	this.$.addClass( 've-ui-dialog' );
@@ -53,10 +55,57 @@ ve.ui.Dialog.prototype.onApplyButtonClick = function () {
 };
 
 /**
+ * Handle window mouse wheel events.
+ *
+ * @method
+ * @param {jQuery.Event} e Mouse wheel event
+ */
+ve.ui.Dialog.prototype.onWindowMouseWheel = function () {
+	return false;
+};
+
+/**
+ * Handle document key down events.
+ *
+ * @method
+ * @param {jQuery.Event} e Key down event
+ */
+ve.ui.Dialog.prototype.onDocumentKeyDown = function ( e ) {
+	switch ( e.which ) {
+		case ve.Keys.PAGEUP:
+		case ve.Keys.PAGEDOWN:
+		case ve.Keys.END:
+		case ve.Keys.HOME:
+		case ve.Keys.LEFT:
+		case ve.Keys.UP:
+		case ve.Keys.RIGHT:
+		case ve.Keys.DOWN:
+			// Prevent any key events that might cause scrolling
+			return false;
+	}
+};
+
+/**
+ * Open window.
+ *
+ * Wraps the parent open method. Disables native top-level window scrolling behavior.
+ *
+ * @method
+ * @emits setup
+ * @emits open
+ */
+ve.ui.Dialog.prototype.open = function () {
+	ve.ui.Window.prototype.open.call( this );
+	// Prevent scrolling in top-level window
+	$( window ).on( 'mousewheel', this.onWindowMouseWheelHandler );
+	$( document ).on( 'keydown', this.onDocumentKeyDownHandler );
+};
+
+/**
  * Close dialog.
  *
- * This method overrides the parent close method to allow animation, but still provides the same
- * recursion blocking and eventually calls the parent method.
+ * Wraps the parent close method. Allows animation by delaying parent close call, while still
+ * providing the same recursion blocking. Restores native top-level window scrolling behavior.
  *
  * @method
  * @param {boolean} action Action that caused the window to be closed
@@ -69,6 +118,9 @@ ve.ui.Dialog.prototype.close = function ( action ) {
 			ve.ui.Window.prototype.close.call( this, action );
 			this.$.removeClass( 've-ui-dialog-closing' );
 		}, this ), 250 );
+		// Allow scrolling in top-level window
+		$( window ).off( 'mousewheel', this.onWindowMouseWheelHandler );
+		$( document ).off( 'keydown', this.onDocumentKeyDownHandler );
 	}
 };
 
