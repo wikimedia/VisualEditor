@@ -23,6 +23,10 @@ ve.init.mw.Platform = function VeInitMwPlatform() {
 	this.externalLinkUrlProtocolsRegExp = new RegExp( '^' + mw.config.get( 'wgUrlProtocols' ) );
 	this.modulesUrl = mw.config.get( 'wgExtensionAssetsPath' ) + '/VisualEditor/modules';
 	this.parsedMessages = {};
+	this.mediaSources = [
+		{ 'url': mw.util.wikiScript( 'api' ) },
+		{ 'url': '//commons.wikimedia.org/w/api.php' }
+	];
 };
 
 /* Inheritance */
@@ -128,6 +132,16 @@ ve.init.mw.Platform.prototype.getSystemPlatform = function () {
  */
 ve.init.mw.Platform.prototype.getUserLanguage = function () {
 	return mw.config.get( 'wgUserLanguage' );
+};
+
+/**
+ * Get a list of URLs to MediaWiki API entry points where media can be found.
+ *
+ * @method
+ * @returns {string[]} API URLs
+ */
+ve.init.mw.Platform.prototype.getMediaSources = function () {
+	return this.mediaSources;
 };
 
 /* Initialization */

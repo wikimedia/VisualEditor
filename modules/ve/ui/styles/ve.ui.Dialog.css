@@ -186,3 +186,13 @@
 .ve-ui-dialog-meta-languages-table tr:nth-child(even) td {
 	background: #F8F8F8;
 }
+
+/* ve.ui.MWMediaInsertDialog */
+
+.ve-ui-mwMediaInsertDialog-select {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}

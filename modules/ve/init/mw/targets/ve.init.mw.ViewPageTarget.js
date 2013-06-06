@@ -169,7 +169,7 @@ ve.init.mw.ViewPageTarget.compatibility = {
 ve.init.mw.ViewPageTarget.static.toolbarTools = [
 	{ 'items': ['undo', 'redo'] },
 	{ 'items': ['mwFormat'] },
-	{ 'items': ['bold', 'italic', 'mwLink', 'clear'] },
+	{ 'items': ['bold', 'italic', 'mwLink', 'clear', 'mwMediaInsert'] },
 	{ 'items': ['number', 'bullet', 'outdent', 'indent'] }
 ];
 

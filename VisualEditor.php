@@ -142,7 +142,6 @@ $wgResourceModules += array(
 			'mediawiki.Title',
 			'mediawiki.Uri',
 			'mediawiki.user',
-			'mediawiki.util',
 			'mediawiki.notify',
 			'mediawiki.feedback',
 			'user.options',
@@ -209,6 +208,7 @@ $wgResourceModules += array(
 		'dependencies' => array(
 			'oojs',
 			'unicodejs.wordbreak',
+			'mediawiki.util',
 		),
 	),
 	'ext.visualEditor.mediawiki' => $wgVisualEditorResourceTemplate + array(
@@ -564,8 +564,12 @@ $wgResourceModules += array(
 			've/ce/nodes/ve.ce.MWReferenceListNode.js',
 			've/ce/nodes/ve.ce.MWReferenceNode.js',
 
+			've/ui/dialogs/ve.ui.MWMediaInsertDialog.js',
+			've/ui/widgets/ve.ui.MWMediaSelectWidget.js',
+			've/ui/widgets/ve.ui.MWMediaSelectItemWidget.js',
 			've/ui/tools/buttons/ve.ui.MWReferenceButtonTool.js',
 			've/ui/tools/buttons/ve.ui.MWTemplateButtonTool.js',
+			've/ui/tools/buttons/ve.ui.MWMediaInsertButtonTool.js',
 			've/ui/dialogs/ve.ui.MWReferenceDialog.js',
 			've/ui/dialogs/ve.ui.MWTemplateDialog.js',
 		),
@@ -577,6 +581,11 @@ $wgResourceModules += array(
 			'visualeditor-dialogbutton-reference-tooltip',
 			'visualeditor-dialog-template-title',
 			'visualeditor-dialogbutton-template-tooltip',
+			'visualeditor-dialog-meta-title',
+			'visualeditor-dialogbutton-meta-tooltip',
+			'visualeditor-dialog-media-insert-title',
+			'visualeditor-dialog-media-insert-button',
+			'visualeditor-media-input-placeholder',
 		),
 	),
 	'ext.visualEditor.icons-raster' => $wgVisualEditorResourceTemplate + array(

@@ -30,6 +30,9 @@ $messages['en'] = array(
 	'visualeditor-dialog-media-title' => 'Media settings',
 	'visualeditor-dialog-reference-title' => 'Reference',
 	'visualeditor-dialog-template-title' => 'Template',
+	'visualeditor-dialog-media-insert-title' => 'Insert media',
+	'visualeditor-dialog-media-insert-button' => 'Insert media',
+	'visualeditor-media-input-placeholder' => 'Search for media',
 	'visualeditor-dialog-action-apply' => 'Apply changes',
 	'visualeditor-dialog-action-cancel' => 'Cancel',
 	'visualeditor-dialog-action-close' => 'Close',
@@ -169,6 +172,8 @@ If the page exists, the following link text is used: {{msg-mw|Visualeditor-ca-ed
 
 See also:
 * {{msg-mw|Visualeditor-dialog-action-close}}',
+	'visualeditor-dialog-media-insert-title' => 'Media insert dialog title text',
+	'visualeditor-media-input-placeholder' => 'Place holder text for media search input',
 	'visualeditor-dialog-action-cancel' => 'Used as button text.
 {{Identical|Cancel}}',
 	'visualeditor-dialog-action-close' => 'Used as tooltip for the "Close" button.

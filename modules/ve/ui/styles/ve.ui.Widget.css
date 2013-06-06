@@ -525,6 +525,104 @@
 	padding: 0 0.125em 0.5em 0.125em;
 }
 
+/* ve.ui.MWMediaSelectWidget */
+
+.ve-ui-mwMediaSelectWidget-query {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 4em;
+	padding: 0 1em;
+	box-shadow: 0 0 0.5em rgba(0,0,0,0.2);
+}
+
+.ve-ui-mwMediaSelectWidget-query .ve-ui-textInputWidget {
+	width: 100%;
+	margin: 0.75em 0;
+}
+
+.ve-ui-mwMediaSelectWidget-results {
+	position: absolute;
+	top: 4em;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	padding: 1em;
+	overflow-x: hidden;
+	overflow-y: auto;
+	line-height: 0;
+}
+
+/* ve.ui.mwMediaSelectItemWidget */
+
+.ve-ui-mwMediaSelectItemWidget {
+	display: inline-block;
+	position: relative;
+	padding: 0;
+	margin: 2px;
+	overflow: hidden;
+}
+
+.ve-ui-mwMediaSelectItemWidget-error {
+	background-color: #f3f3f3;
+}
+
+.ve-ui-mwMediaSelectItemWidget-thumbnail {
+	position: absolute;
+	opacity: 0;
+	-webkit-transition: opacity 400ms;
+	-moz-transition: opacity 400ms;
+	-ms-transition: opacity 400ms;
+	-o-transition: opacity 400ms;
+	transition: opacity 400ms;
+}
+
+.ve-ui-mwMediaSelectItemWidget-done .ve-ui-mwMediaSelectItemWidget-thumbnail,
+.ve-ui-mwMediaSelectItemWidget-error .ve-ui-mwMediaSelectItemWidget-thumbnail {
+	opacity: 1;
+}
+
+.ve-ui-mwMediaSelectItemWidget-crop {
+	background-size: cover;
+	background-position: center center;
+}
+
+.ve-ui-mwMediaSelectItemWidget-overlay {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+
+.ve-ui-optionWidget-selected .ve-ui-mwMediaSelectItemWidget-overlay {
+	box-shadow: inset 0 0 0 1px rgba(0,0,0,0.5), inset 0 0 0 2px rgba(255,255,255,0.5);
+}
+
+.ve-ui-mwMediaSelectItemWidget-error .ve-ui-mwMediaSelectItemWidget-thumbnail {
+	/* @embed */
+	background-image: url(images/broken-image.png);
+	background-size: auto;
+	background-position: center center;
+	background-repeat: no-repeat;
+}
+
+.ve-ui-mwMediaSelectItemWidget .ve-ui-labeledElement-label {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	overflow: hidden;
+	padding: 0.5em;
+	color: #fff;
+	text-shadow: 1px 1px #000;
+	font-size: 0.8em;
+	line-height: 1.125em;
+	background-color: rgba(0,0,0,0.5);
+	text-overflow: ellipsis;
+}
+
 /* RTL Definitions */
 
 /* @noflip */

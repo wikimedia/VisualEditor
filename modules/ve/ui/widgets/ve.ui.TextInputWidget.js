@@ -61,6 +61,16 @@ ve.ui.TextInputWidget.prototype.getInputElement = function ( config ) {
 /* Methods */
 
 /**
+ * Checks if input is pending.
+ *
+ * @method
+ * @returns {boolean} Input is pending
+ */
+ve.ui.TextInputWidget.prototype.isPending = function () {
+	return !!this.pending;
+};
+
+/**
  * Increases the pending stack.
  *
  * @method
