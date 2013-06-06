@@ -136,7 +136,7 @@ ve.ui.Window.static.addLocalStylesheets = function ( files ) {
 	// Prepend base path to each file name
 	for ( i = 0, len = files.length; i < len; i++ ) {
 		// Extract the module name and convert it to a path
-		module = files[i].match( /^([a-z\.]+)[A-Z]/ )[1].replace( /\./g, '/' );
+		module = files[i].match( /^([a-z\.]+)(css|[A-Z])/ )[1].replace( /\./g, '/' );
 		paths[i] = base + '/' + module + 'styles/' + files[i];
 	}
 
@@ -337,6 +337,7 @@ ve.ui.Window.prototype.close = function ( action ) {
 /* Initialization */
 
 ve.ui.Window.static.addLocalStylesheets( [
+	've.ui.css',
 	've.ui.Frame.css',
 	've.ui.Window.css',
 	've.ui.Element.css',

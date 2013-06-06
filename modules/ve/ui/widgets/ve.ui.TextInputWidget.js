@@ -20,6 +20,9 @@ ve.ui.TextInputWidget = function VeUiTextInputWidget( config ) {
 	// Parent constructor
 	ve.ui.InputWidget.call( this, config );
 
+	// Properties
+	this.pending = 0;
+
 	// Initialization
 	this.$.addClass( 've-ui-textInputWidget' );
 	if ( config.icon ) {
@@ -53,4 +56,36 @@ ve.inheritClass( ve.ui.TextInputWidget, ve.ui.InputWidget );
  */
 ve.ui.TextInputWidget.prototype.getInputElement = function ( config ) {
 	return config.multiline ? this.$$( '<textarea>' ) : this.$$( '<input>' ).attr( 'type', 'text' );
+};
+
+/* Methods */
+
+/**
+ * Increases the pending stack.
+ *
+ * @method
+ * @chainable
+ */
+ve.ui.TextInputWidget.prototype.pushPending = function () {
+	this.pending++;
+	this.$.addClass( 've-ui-textInputWidget-pending' );
+	this.$input.addClass( 've-ui-texture-pending' );
+	return this;
+};
+
+/**
+ * Reduces the pending stack.
+ *
+ * Clamped at zero.
+ *
+ * @method
+ * @chainable
+ */
+ve.ui.TextInputWidget.prototype.popPending = function () {
+	this.pending = Math.max( 0, this.pending - 1 );
+	if ( !this.pending ) {
+		this.$.removeClass( 've-ui-textInputWidget-pending' );
+		this.$input.removeClass( 've-ui-texture-pending' );
+	}
+	return this;
 };

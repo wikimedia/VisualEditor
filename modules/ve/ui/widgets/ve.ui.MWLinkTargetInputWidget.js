@@ -12,7 +12,6 @@
  *
  * @class
  * @extends ve.ui.LinkTargetInputWidget
- * @mixins ve.ui.PendingInputWidget
  * @mixins ve.ui.LookupInputWidget
  *
  * @constructor
@@ -26,7 +25,6 @@ ve.ui.MWLinkTargetInputWidget = function VeUiMWLinkTargetInputWidget( config ) {
 	ve.ui.LinkTargetInputWidget.call( this, config );
 
 	// Mixin constructors
-	ve.ui.PendingInputWidget.call( this );
 	ve.ui.LookupInputWidget.call( this, this, config );
 
 	// Events
@@ -41,7 +39,6 @@ ve.ui.MWLinkTargetInputWidget = function VeUiMWLinkTargetInputWidget( config ) {
 
 ve.inheritClass( ve.ui.MWLinkTargetInputWidget, ve.ui.LinkTargetInputWidget );
 
-ve.mixinClass( ve.ui.MWLinkTargetInputWidget, ve.ui.PendingInputWidget );
 ve.mixinClass( ve.ui.MWLinkTargetInputWidget, ve.ui.LookupInputWidget );
 
 /* Methods */

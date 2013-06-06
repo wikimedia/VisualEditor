@@ -7,6 +7,20 @@
 
 /*csslint vendor-prefix:false */
 
+/* Textures */
+
+.ve-ui-texture-pending {
+	/* @embed */
+	background-image: url(images/textures/pending.gif);
+}
+
+.ve-ui-texture-transparency {
+	/* @embed */
+	background-image: url(images/textures/transparency.png);
+}
+
+/* Animtation */
+
 @-webkit-keyframes ve-ui-zoom-in {
 	from { -webkit-transform: scale(0.5); }
 	to { -webkit-transform: scale(1); }
