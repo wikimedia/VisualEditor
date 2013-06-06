@@ -182,6 +182,10 @@
 				"classes": ["jQuery", "jQuery.Event", "jQuery.Promise", "jQuery.Deferred", "jQuery.jqXHR", "QUnit"]
 			},
 			{
+				"name": "OOJS",
+				"classes": ["OO", "OO.*"]
+			},
+			{
 				"name": "JavaScript",
 				"classes": [
 					"Array", "Boolean", "Date", "Function", "Number", "Object", "RegExp", "String"

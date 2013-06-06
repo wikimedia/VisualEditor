@@ -33,6 +33,7 @@
 		<!-- Dependencies -->
 		<script src="../../jquery/jquery.js"></script>
 		<script src="../../jquery/jquery.client.js"></script>
+		<script src="../../oojs/oo.js"></script>
 		<script src="../../rangy/rangy-core-1.3.js"></script>
 		<script src="../../rangy/rangy-position-1.3.js"></script>
 		<script src="../../unicodejs/unicodejs.js"></script>

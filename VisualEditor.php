@@ -80,6 +80,11 @@ $wgResourceModules += array(
 			'jquery/jquery.visibleText.js',
 		),
 	),
+	'oojs' => $wgVisualEditorResourceTemplate + array(
+		'scripts' => array(
+			'oojs/oo.js',
+		),
+	),
 	'unicodejs.wordbreak' => $wgVisualEditorResourceTemplate + array(
 		'scripts' => array(
 			'unicodejs/unicodejs.js',
@@ -202,6 +207,7 @@ $wgResourceModules += array(
 			've/ve.debug.js',
 		),
 		'dependencies' => array(
+			'oojs',
 			'unicodejs.wordbreak',
 		),
 	),

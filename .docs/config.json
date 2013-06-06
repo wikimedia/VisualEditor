@@ -9,6 +9,7 @@
 	"--output": "../docs",
 	"--": [
 		"./external.js",
+		"../modules/oojs",
 		"../modules/unicodejs",
 		"../modules/ve"
 	]
