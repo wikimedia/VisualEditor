@@ -33,13 +33,18 @@ ve.ce.GeneratedContentNode = function VeCeGeneratedContentNode() {
  * @method
  */
 ve.ce.GeneratedContentNode.prototype.onUpdate = function () {
-	var store = this.model.doc.getStore(),
+	var doc = this.getElementDocument(),
+		store = this.model.doc.getStore(),
 		index = store.indexOfHash( ve.getHash( this.model ) );
 	if ( index !== null ) {
 		if ( this.live ) {
 			this.emit( 'teardown' );
 		}
-		this.$.empty().append( store.value( index ) );
+		this.$.empty().append(
+			this.$$( store.value( index ) ).map( function ( i, domElement ) {
+				return doc.importNode( domElement, true );
+			} )
+		);
 		if ( this.live ) {
 			this.emit( 'setup' );
 		}
