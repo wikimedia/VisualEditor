@@ -47,7 +47,9 @@ ve.dm.MWReferenceNode.static.toDataElement = function ( domElements, converter )
 		refGroup = mw.attrs.group || '',
 		listGroup = this.name + '/' + refGroup,
 		listKey = mw.attrs && mw.attrs.name !== undefined ? mw.attrs.name : ve.getHash( body ),
-		listIndex = converter.internalList.queueItemHtml( listGroup, listKey, body );
+		queueResult = converter.internalList.queueItemHtml( listGroup, listKey, body ),
+		listIndex = queueResult.index,
+		contentsUsed = ( body !== '' && queueResult.isNew );
 
 	dataElement = {
 		'type': this.name,
@@ -57,14 +59,15 @@ ve.dm.MWReferenceNode.static.toDataElement = function ( domElements, converter )
 			'listIndex': listIndex,
 			'listGroup': listGroup,
 			'listKey': listKey,
-			'refGroup': refGroup
+			'refGroup': refGroup,
+			'contentsUsed': contentsUsed
 		}
 	};
 	return dataElement;
 };
 
 ve.dm.MWReferenceNode.static.toDomElements = function ( dataElement, doc, converter ) {
-	var itemNodeHtml, mwAttr,
+	var itemNodeHtml, mwAttr, i, iLen, keyNodes, setContents,
 		span = doc.createElement( 'span' ),
 		itemNodeWrapper = doc.createElement( 'div' ),
 		itemNode = converter.internalList.getItemNode( dataElement.attributes.listIndex ),
@@ -73,14 +76,39 @@ ve.dm.MWReferenceNode.static.toDomElements = function ( dataElement, doc, conver
 	span.setAttribute( 'about', dataElement.attributes.about );
 	span.setAttribute( 'typeof', 'mw:Extension/ref' );
 
-	converter.getDomSubtreeFromData(
-		itemNode.getDocument().getData().slice( itemNodeRange.start, itemNodeRange.end ),
-		itemNodeWrapper
-	),
-	itemNodeHtml = $( itemNodeWrapper ).html();
+	mwAttr = ve.copyObject( dataElement.attributes.mw ) || {};
 
-	mwAttr = ( dataElement.attributes && ve.copyObject( dataElement.attributes.mw ) ) || {};
-	ve.setProp( mwAttr, 'body', 'html', itemNodeHtml );
+	setContents = dataElement.attributes.contentsUsed;
+
+	if ( !setContents ) {
+		// Check if any other nodes with this key provided content. If not
+		// then we attach the contents to the first reference with this key
+		keyNodes = converter.internalList
+			.getNodeGroup( dataElement.attributes.listGroup )
+				.keyNodes[dataElement.attributes.listKey];
+		// Check that this the first reference with its key
+		if ( dataElement === keyNodes[0].element ) {
+			setContents = true;
+			// Check no other reference originally defined the contents
+			// As this is keyNodes[0] we can start at 1
+			for ( i = 1, iLen = keyNodes.length; i < iLen; i++ ) {
+				if ( keyNodes[i].element.attributes.contentsUsed ) {
+					setContents = false;
+					break;
+				}
+			}
+		}
+	}
+
+	if ( setContents ) {
+		converter.getDomSubtreeFromData(
+			itemNode.getDocument().getData().slice( itemNodeRange.start, itemNodeRange.end ),
+			itemNodeWrapper
+		),
+		itemNodeHtml = $( itemNodeWrapper ).html();
+		ve.setProp( mwAttr, 'body', 'html', itemNodeHtml );
+	}
+
 	span.setAttribute( 'data-mw', JSON.stringify( mwAttr ) );
 
 	return [ span ];
@@ -121,6 +149,12 @@ ve.dm.MWReferenceNode.prototype.onUnroot = function () {
 	this.getDocument().getInternalList().removeNode(
 		this.element.attributes.listGroup, this.element.attributes.listKey, this
 	);
+};
+
+ve.dm.MWReferenceNode.prototype.getClonedElement = function () {
+	var clone = ve.dm.LeafNode.prototype.getClonedElement.call( this );
+	delete clone.element.attributes.contentsUsed;
+	return clone;
 };
 
 /* Registration */

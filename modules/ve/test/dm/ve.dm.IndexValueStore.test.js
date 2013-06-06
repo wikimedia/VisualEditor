@@ -9,7 +9,7 @@ QUnit.module( 've.dm.IndexValueStore' );
 
 /* Tests */
 
-QUnit.test( 'index(es)/indexOfHash', 11, function ( assert ) {
+QUnit.test( 'index(es)/indexOfHash', 12, function ( assert ) {
 	var index, indexes,
 		object1 = { 'a': 1, 'b': 2 },
 		object2 = { 'c': 3, 'd': 4 },
@@ -26,8 +26,11 @@ QUnit.test( 'index(es)/indexOfHash', 11, function ( assert ) {
 	index = store.index( object2, 'custom hash string' );
 	assert.equal( index, 2, 'Second object with custom hash stores in 2' );
 	index = store.index( object1, 'custom hash string' );
-	assert.equal( index, 2, 'Using the same custom hash stores in 2 again' );
-	assert.deepEqual( store.value( 0 ), object1, '2nd item is second object' );
+	assert.equal( index, 2, 'Using the same custom hash with a different object returns index 2 again' );
+	assert.deepEqual( store.value( 2 ), object2, 'Second object was not overwritten' );
+
+	index = store.index( object1, 'custom hash string', true );
+	assert.deepEqual( store.value( index ), object1, 'Second object is overwritten when overwrite flag is set' );
 
 	assert.equal( store.indexOfHash( 'custom hash string' ), 2, 'Index of custom hash is 2' );
 	assert.equal( store.indexOfHash( 'unused hash string' ), null, 'Index of unused hash is null' );

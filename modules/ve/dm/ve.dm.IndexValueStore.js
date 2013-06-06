@@ -28,21 +28,25 @@ ve.dm.IndexValueStore = function VeDmIndexValueStore() {
  * @method
  * @param {Object|string|Array} value Value to lookup or store
  * @param {string} [hash] Value hash. Uses ve.getHash( value ) if not provided.
+ * @param {boolean} [overwrite=false] Overwrite the value in the store if the hash is already in use
  * @returns {number} The index of the value in the store
  */
-ve.dm.IndexValueStore.prototype.index = function ( value, hash ) {
+ve.dm.IndexValueStore.prototype.index = function ( value, hash, overwrite ) {
 	var index;
 	if ( typeof hash !== 'string' ) {
 		hash = ve.getHash( value );
 	}
 	index = this.indexOfHash( hash );
-	if ( index === null ) {
+	if ( index === null || overwrite ) {
+		if ( index === null ) {
+			index = this.valueStore.length;
+		}
 		if ( ve.isArray( value ) ) {
-			index = this.valueStore.push( ve.copyArray( value ) ) - 1;
+			this.valueStore[index] = ve.copyArray( value );
 		} else if ( typeof value === 'object' ) {
-			index = this.valueStore.push( ve.cloneObject( value ) ) - 1;
+			this.valueStore[index] = ve.cloneObject( value );
 		} else {
-			index = this.valueStore.push( value ) - 1;
+			this.valueStore[index] = value;
 		}
 		this.hashStore[hash] = index;
 	}

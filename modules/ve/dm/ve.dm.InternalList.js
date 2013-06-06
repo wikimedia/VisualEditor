@@ -46,21 +46,31 @@ ve.mixinClass( ve.dm.InternalList, ve.EventEmitter );
 /**
  * Queues up an item's html for parsing later.
  *
- * If an item with the specified group and key already exists it will be ignored.
+ * If an item with the specified group and key already exists it will be ignored, unless
+ * the data already stored is an empty string.
  *
  * @method
  * @param {string} groupName Item group
  * @param {string} key Item key
  * @param {string} html Item contents
- * @returns {number} Index of the item in the index-value store, and also the list
+ * @returns {Object} Object containing index of the item in the index-value store
+ * (and also its index in the internal list node), and a flag indicating if it is a new item.
  */
 ve.dm.InternalList.prototype.queueItemHtml = function ( groupName, key, html ) {
-	var index = this.getStore().indexOfHash( groupName + '/' + key );
+	var isNew = false, index = this.getStore().indexOfHash( groupName + '/' + key );
 	if ( index === null ) {
 		index = this.getStore().index( html, groupName + '/' + key );
 		this.itemHtmlQueue.push( index );
+		isNew = true;
+	} else if ( this.getStore().value( index ) === '' ) {
+		// Previous value with this key was empty, overwrite value in store
+		this.getStore().index( html, groupName + '/' + key, true );
+		isNew = true;
 	}
-	return index;
+	return {
+		'index': index,
+		'isNew': isNew
+	};
 };
 
 /**
