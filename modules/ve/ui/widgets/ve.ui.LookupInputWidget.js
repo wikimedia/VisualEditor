@@ -174,13 +174,10 @@ ve.ui.LookupInputWidget.prototype.getLookupMenuItems = function () {
 					this.lookupCache[value] = this.getLookupCacheItemFromData( data );
 					this.openLookupMenu();
 				}, this ) );
-			// Support pending input widgets
-			if ( ve.isMixedIn( this.lookupInput, ve.ui.PendingInputWidget ) ) {
-				this.pushPending();
-				this.lookupRequest.always( ve.bind( function () {
-					this.popPending();
-				}, this ) );
-			}
+			this.pushPending();
+			this.lookupRequest.always( ve.bind( function () {
+				this.popPending();
+			}, this ) );
 		}
 	}
 	return [];

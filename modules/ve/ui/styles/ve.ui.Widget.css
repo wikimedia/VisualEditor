@@ -246,6 +246,11 @@
 	transition: border-color 200ms, box-shadow 200ms, background-color 200ms;
 }
 
+.ve-ui-textInputWidget-pending input,
+.ve-ui-textInputWidget-pending textarea {
+	background-color: transparent;
+}
+
 .ve-ui-textInputWidget input:focus,
 .ve-ui-textInputWidget textarea:focus {
 	outline: none;
@@ -315,13 +320,6 @@
 	padding: 0.33em 0.75em;
 	color: #888;
 	cursor: default;
-}
-
-/* ve.ui.PendingInputWidget */
-
-.ve-ui-pendingInputWidget input,
-.ve-ui-pendingInputWidget textarea {
-	background-image: url(images/pending.gif);
 }
 
 /* ve.ui.MWLinkTargetInputWidget */

@@ -27,14 +27,14 @@ ve.ui.InputWidget = function VeUiInputWidget( config ) {
 
 	// Properties
 	this.$input = this.getInputElement( config );
-	this.value = '';
+	this.value = config.value;
 	this.readonly = false;
 
 	// Events
 	this.$input.on( 'keydown mouseup cut paste change input select', ve.bind( this.onEdit, this ) );
 
 	// Initialization
-	this.$input.attr( 'name', config.name ).val( config.value );
+	this.$input.attr( 'name', config.name ).val( this.value );
 	this.setReadOnly( config.readOnly );
 	this.$.addClass( 've-ui-inputWidget' ).append( this.$input );
 };

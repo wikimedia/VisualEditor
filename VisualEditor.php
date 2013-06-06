@@ -411,7 +411,6 @@ $wgResourceModules += array(
 			've/ui/widgets/ve.ui.MenuItemWidget.js',
 			've/ui/widgets/ve.ui.MenuSectionItemWidget.js',
 			've/ui/widgets/ve.ui.MenuWidget.js',
-			've/ui/widgets/ve.ui.PendingInputWidget.js',
 			've/ui/widgets/ve.ui.LookupInputWidget.js',
 			've/ui/widgets/ve.ui.TextInputMenuWidget.js',
 			've/ui/widgets/ve.ui.LinkTargetInputWidget.js',

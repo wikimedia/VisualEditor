@@ -89,7 +89,7 @@ ve.ui.SelectWidget.prototype.onMouseDown = function ( e ) {
  *
  * @method
  * @private
- * @param {jQuery.Event} e Mouse down event
+ * @param {jQuery.Event} e Mouse up event
  */
 ve.ui.SelectWidget.prototype.onMouseUp = function ( e ) {
 	this.pressed = false;
@@ -101,11 +101,11 @@ ve.ui.SelectWidget.prototype.onMouseUp = function ( e ) {
 };
 
 /**
- * Handle mouse up events.
+ * Handle mouse move events.
  *
  * @method
  * @private
- * @param {jQuery.Event} e Mouse down event
+ * @param {jQuery.Event} e Mouse move event
  */
 ve.ui.SelectWidget.prototype.onMouseMove = function ( e ) {
 	var item;
