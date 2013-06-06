@@ -160,7 +160,10 @@ ve.ce.Node.prototype.isContent = function () {
  * @returns {boolean} Whether the node can have a slug before it
  */
 ve.ce.Node.prototype.canHaveSlugBefore = function () {
-	return !this.canContainContent() && this.getParentNodeTypes() === null && this.type !== 'text';
+	return !this.canContainContent() &&
+		this.getParentNodeTypes() === null &&
+		this.type !== 'text' &&
+		this.type !== 'list';
 };
 
 /**
