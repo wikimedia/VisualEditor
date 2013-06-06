@@ -74,14 +74,12 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 	this.tabLayout = mw.config.get( 'wgVisualEditorConfig' ).tabLayout;
 
 	browserWhitelisted = (
-		currentUri.query.vewhitelist !== undefined ?
-			currentUri.query.vewhitelist === '1' :
-			$.client.test( ve.init.mw.ViewPageTarget.compatibility.whitelist, null, true )
+		'vewhitelist' in currentUri.query ||
+		$.client.test( ve.init.mw.ViewPageTarget.compatibility.whitelist, null, true )
 	);
 	browserBlacklisted = (
-		currentUri.query.veblacklist !== undefined ?
-			currentUri.query.veblacklist === '1' :
-			$.client.test( ve.init.mw.ViewPageTarget.compatibility.blacklist, null, true )
+		!( 'vewhitelist' in currentUri.query ) &&
+		$.client.test( ve.init.mw.ViewPageTarget.compatibility.blacklist, null, true )
 	);
 
 	// Events
