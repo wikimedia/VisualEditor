@@ -78,7 +78,7 @@ ve.dm.MWBlockImageNode.static.toDataElement = function ( domElements, converter 
 	}
 
 	// Default-size
-	if ( $figure.hasClass( 'mw-default-size' ) ) {
+	if ( classes.indexOf( 'mw-default-size' ) !== -1 ) {
 		attributes.defaultSize = true;
 	}
 
