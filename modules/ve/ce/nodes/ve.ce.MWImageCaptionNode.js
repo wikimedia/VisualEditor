@@ -37,19 +37,26 @@ ve.ce.MWImageCaptionNode.static.tagName = 'div';
 /* Methods */
 
 /**
- * TODO: Magnify should not be built nor appended if this is a caption of frame (vs. thumb) image.
+ * TODO: Magnify should appear/disappear based on the changes/updates to the parent (switching to
+ * and from thumb or frame).
  */
 ve.ce.MWImageCaptionNode.prototype.onSplice = function () {
-	if ( this.$magnify ) {
-		this.$magnify.detach();
-	} else {
-		this.buildMagnify();
+	var parentType = this.model.getParent().getAttribute( 'type' );
+
+	if ( parentType === 'thumb' ) {
+		if ( this.$magnify ) {
+			this.$magnify.detach();
+		} else {
+			this.buildMagnify();
+		}
 	}
 
 	// Call parent implementation
 	ve.ce.BranchNode.prototype.onSplice.apply( this, arguments );
 
-	this.$magnify.prependTo( this.$ );
+	if ( parentType === 'thumb' ) {
+		this.$magnify.prependTo( this.$ );
+	}
 };
 
 ve.ce.MWImageCaptionNode.prototype.buildMagnify = function() {
