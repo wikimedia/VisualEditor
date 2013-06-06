@@ -157,11 +157,11 @@ ve.ce.getOffsetFromTextNode = function ( domNode, domOffset ) {
 		item = current[0][current[1]];
 		if ( item.nodeType === Node.TEXT_NODE ) {
 			if ( item === domNode ) {
-				// domOffset is a byte offset, convert it to a character offset
-				offset += ve.getCharacterOffset( item.textContent, domOffset );
+				// domOffset is a byte offset, convert it to a grapheme cluster offset
+				offset += ve.getClusterOffset( item.textContent, domOffset );
 				break;
 			} else {
-				offset += ve.getCharacterOffset( item.textContent, item.textContent.length );
+				offset += ve.getClusterOffset( item.textContent, item.textContent.length );
 			}
 		} else if ( item.nodeType === Node.ELEMENT_NODE ) {
 			$item = current[0].eq( current[1] );

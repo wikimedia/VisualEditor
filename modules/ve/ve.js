@@ -771,7 +771,7 @@
     /**
      * @see unicodeJS#splitClusters
      */
-	ve.splitCharacters = unicodeJS.splitClusters; // TODO: rename to ve.splitClusters
+	ve.splitClusters = unicodeJS.splitClusters;
 
 	/**
 	 * Determine if the text consists of only unattached combining marks
@@ -783,25 +783,25 @@
 	};
 
 	/**
-	 * Convert a character offset to a byte offset
+	 * Convert a grapheme cluster offset to a byte offset
 	 *
 	 * @param {string} text Text in which to calculate offset
-	 * @param {number} characterOffset Character offset
+	 * @param {number} clusterOffset Grapheme cluster offset
 	 * @returns {number} Byte offset
 	 */
-	ve.getByteOffset = function ( text, characterOffset ) {
-		return ve.splitCharacters( text ).slice( 0, characterOffset ).join( '' ).length;
+	ve.getByteOffset = function ( text, clusterOffset ) {
+		return ve.splitClusters( text ).slice( 0, clusterOffset ).join( '' ).length;
 	};
 
 	/**
-	 * Convert a byte offset to a character offset
+	 * Convert a byte offset to a grapheme cluster offset
 	 *
 	 * @param {string} text Text in which to calculate offset
 	 * @param {number} byteOffset Byte offset
-	 * @returns {number} Character offset
+	 * @returns {number} Grapheme cluster offset
 	 */
-	ve.getCharacterOffset = function ( text, byteOffset ) {
-		return ve.splitCharacters( text.substring( 0, byteOffset ) ).length;
+	ve.getClusterOffset = function ( text, byteOffset ) {
+		return ve.splitClusters( text.substring( 0, byteOffset ) ).length;
 	};
 
 	/**

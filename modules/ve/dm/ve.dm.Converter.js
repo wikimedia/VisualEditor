@@ -41,7 +41,7 @@ ve.dm.Converter = function VeDmConverter( modelRegistry, nodeFactory, annotation
  */
 ve.dm.Converter.getDataContentFromText = function ( text, annotations ) {
 	var i, len,
-		characters = ve.splitCharacters( text );
+		characters = ve.splitClusters( text );
 
 	if ( !annotations || annotations.isEmpty() ) {
 		return characters;
