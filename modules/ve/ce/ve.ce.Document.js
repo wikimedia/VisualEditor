@@ -146,7 +146,8 @@ ve.ce.Document.prototype.getNodeAndOffset = function ( offset ) {
 		}
 		item = current[0][current[1]];
 		if ( item.nodeType === Node.TEXT_NODE ) {
-			length = item.textContent.length;
+			// offset, startOffset and length are all data model lengths (not byte lengths)
+			length = ve.getClusterOffset( item.textContent, item.textContent.length );
 			if ( offset >= startOffset && offset <= startOffset + length ) {
 				return {
 					node: item,
