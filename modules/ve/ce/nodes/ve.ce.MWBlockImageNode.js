@@ -25,6 +25,7 @@ ve.ce.MWBlockImageNode = function VeCeMWBlockImageNode( model, config ) {
 	// Mixin constructors
 	ve.ce.ProtectedNode.call( this );
 	ve.ce.FocusableNode.call( this );
+	ve.ce.ResizableNode.call( this );
 
 	if ( this.model.getAttribute( 'align' ) === 'center' ) {
 		this.$.addClass( 'center' );
@@ -56,6 +57,8 @@ ve.ce.MWBlockImageNode = function VeCeMWBlockImageNode( model, config ) {
 		.attr( 'height', this.model.getAttribute( 'height' ) )
 		.appendTo( this.$a );
 
+	this.$resizable = this.$image;
+
 	// I smell a caption!
 	if ( this.model.children.length === 1 ) {
 		captionModel = this.model.children[0];
@@ -78,6 +81,8 @@ ve.mixinClass( ve.ce.MWBlockImageNode, ve.ce.ProtectedNode );
 
 ve.mixinClass( ve.ce.MWBlockImageNode, ve.ce.FocusableNode );
 
+ve.mixinClass( ve.ce.MWBlockImageNode, ve.ce.ResizableNode );
+
 /* Static Properties */
 
 ve.ce.MWBlockImageNode.static.name = 'mwBlockImage';
@@ -85,6 +90,8 @@ ve.ce.MWBlockImageNode.static.name = 'mwBlockImage';
 ve.ce.MWBlockImageNode.static.tagName = 'div';
 
 ve.ce.MWBlockImageNode.static.renderHtmlAttributes = false;
+
+ve.ce.MWBlockImageNode.static.transition = false;
 
 ve.ce.MWBlockImageNode.static.alignToCssClass = {
 	'left': 'tleft',
@@ -118,6 +125,21 @@ ve.ce.MWBlockImageNode.prototype.onAttributeChange = function ( key, from, to ) 
 		this.$thumb.addClass( ve.ce.MWBlockImageNode.static.alignToCssClass[ to ] );
 	}
 };
+
+ve.ce.MWBlockImageNode.prototype.onAttributeChange = function ( key, from, to ) {
+	if ( from !== to ) {
+		if ( key === 'src' ) {
+			this.$image.attr( 'src', to );
+		}
+		if ( key === 'width' || key === 'height' ) {
+			this.$image.css( key, to );
+		}
+		if ( key === 'width' ) {
+			this.$thumbInner.css( 'width', to + 2 );
+		}
+	}
+};
+
 
 ve.ce.MWBlockImageNode.prototype.setupSlugs = function () {
 	// Intentionally empty

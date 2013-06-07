@@ -39,6 +39,17 @@ ve.ce.ResizableNode = function VeCeResizableNode( $resizable ) {
 		.append( this.$$( '<div>' ).addClass( 've-ce-resizableNode-swHandle' ) );
 };
 
+/* Static Properties */
+
+ve.ce.ResizableNode.static = {};
+
+/**
+ * Animate between sizes.
+ *
+ * @type {boolean}
+ */
+ve.ce.ResizableNode.static.transition = true;
+
 /* Methods */
 
 /**
@@ -227,7 +238,8 @@ ve.ce.ResizableNode.prototype.onDocumentMouseMove = function ( e ) {
  * @method
  */
 ve.ce.ResizableNode.prototype.onDocumentMouseUp = function () {
-	var offset = this.model.getOffset(),
+	var transition = this.constructor.static.transition,
+		offset = this.model.getOffset(),
 		width = this.$resizeHandles.outerWidth(),
 		height = this.$resizeHandles.outerHeight(),
 		surfaceModel = this.getRoot().getSurface().getModel(),
@@ -239,16 +251,19 @@ ve.ce.ResizableNode.prototype.onDocumentMouseUp = function () {
 	this.resizing = false;
 
 	// Transition image resize
-	this.$resizable
-		.addClass( 've-ce-resizableNode-transitioning' )
-		.css( { 'width': width, 'height': height } );
+	if ( transition ) {
+		this.$resizable.addClass( 've-ce-resizableNode-transitioning' );
+	}
+	this.$resizable.css( { 'width': width, 'height': height } );
 
 	// Allow resize to occur before re-rendering
 	setTimeout( ve.bind( function () {
 		var txs = [];
 
-		// Prevent further transitioning
-		this.$resizable.removeClass( 've-ce-resizableNode-transitioning' );
+		if ( transition ) {
+			// Prevent further transitioning
+			this.$resizable.removeClass( 've-ce-resizableNode-transitioning' );
+		}
 
 		// Apply changes to the model
 		if ( this.model.getAttribute( 'width' ) !== width ) {
@@ -267,5 +282,5 @@ ve.ce.ResizableNode.prototype.onDocumentMouseUp = function () {
 
 		// HACK: Update bounding box
 		this.onResizableFocus();
-	}, this ), 200 );
+	}, this ), transition ? 200 : 0 );
 };
