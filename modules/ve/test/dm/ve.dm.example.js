@@ -908,7 +908,7 @@ ve.dm.example.conversions = {
 	}
 };
 
-ve.dm.example.MWInlineImageHtml = '<a rel="mw:Image" href="./File:Wiki.png" data-parsoid="{&quot;tsr&quot;:[158,216],&quot;src&quot;:&quot;[[Image:Wiki.png|500px|thumb|center|Example wiki file]]&quot;,&quot;optNames&quot;:{&quot;width&quot;:&quot;$1px&quot;},&quot;dsr&quot;:[158,216,null,null]}"><img height="" width="500" src="/index.php?title=Special:FilePath/Wiki.png&amp;width=500" alt="Wiki.png"></a>';
+ve.dm.example.MWInlineImageHtml = '<span typeof="mw:Image" data-parsoid="{&quot;tsr&quot;:[0,24],&quot;optList&quot;:[{&quot;ck&quot;:&quot;width&quot;,&quot;ak&quot;:&quot;500px&quot;}],&quot;cacheKey&quot;:&quot;[[Image:Wiki.png|500px]]&quot;,&quot;img&quot;:{&quot;h&quot;:155,&quot;w&quot;:135,&quot;wdset&quot;:true},&quot;dsr&quot;:[0,24,null,null]}"><a href="./File:Wiki.png" data-parsoid="{&quot;a&quot;:{&quot;href&quot;:&quot;./File:Wiki.png&quot;}}"><img resource="./File:Wiki.png" src="http://upload.wikimedia.org/wikipedia/en/b/bc/Wiki.png" height="155" width="135" data-parsoid="{&quot;a&quot;:{&quot;resource&quot;:&quot;./File:Wiki.png&quot;,&quot;width&quot;:&quot;135&quot;},&quot;sa&quot;:{&quot;resource&quot;:&quot;Image:Wiki.png&quot;,&quot;width&quot;:&quot;500&quot;}}"></a></span>';
 ve.dm.example.MWTemplate = {
 	'blockSpan':         '<span about="#mwt1" typeof="mw:Transclusion" data-mw="{&quot;id&quot;:&quot;mwt1&quot;,&quot;target&quot;:{&quot;wt&quot;:&quot;Test&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;Hello, world!&quot;}}}" data-parsoid="{&quot;tsr&quot;:[18,40],&quot;src&quot;:&quot;{{Test|Hello, world!}}&quot;,&quot;dsr&quot;:[18,40,null,null]}"></span>',
 	'blockSpanModified': '<span about="#mwt1" typeof="mw:Transclusion" data-mw="{&quot;id&quot;:&quot;mwt1&quot;,&quot;target&quot;:{&quot;wt&quot;:&quot;Test&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;Hello, globe!&quot;}}}" data-parsoid="{&quot;tsr&quot;:[18,40],&quot;src&quot;:&quot;{{Test|Hello, world!}}&quot;,&quot;dsr&quot;:[18,40,null,null]}"></span>',
@@ -1090,28 +1090,35 @@ ve.dm.example.domToDataCases = {
 			{
 				'type': 'mwInlineImage',
 				'attributes': {
-					'src': '/index.php?title=Special:FilePath/Wiki.png&width=500',
-					'width': 500,
-					'height': null,
-					'isLinked': true
+					'src': 'http://upload.wikimedia.org/wikipedia/en/b/bc/Wiki.png',
+					'href': './File:Wiki.png',
+					'width': 135,
+					'height': 155,
+					'isLinked': true,
+					'valign': 'default',
+					'resource': './File:Wiki.png',
+					'type': 'inline'
 				},
 				'htmlAttributes': [
 					{
-						'keys': [ 'rel', 'href', 'data-parsoid' ],
+						'keys': [ 'data-parsoid' ],
 						'values': {
-							'data-parsoid': '{"tsr":[158,216],"src":"[[Image:Wiki.png|500px|thumb|center|Example wiki file]]","optNames":{"width":"$1px"},"dsr":[158,216,null,null]}',
-							'href': './File:Wiki.png',
-							'rel': 'mw:Image'
+							'data-parsoid': '{\"tsr\":[0,24],\"optList\":[{\"ck\":\"width\",\"ak\":\"500px\"}],\"cacheKey\":\"[[Image:Wiki.png|500px]]\",\"img\":{\"h\":155,\"w\":135,\"wdset\":true},\"dsr\":[0,24,null,null]}'
 						},
 						'children': [
 							{
-								'keys': [ 'height', 'width', 'src', 'alt' ],
+								'keys': [ 'data-parsoid' ],
 								'values': {
-									'alt': 'Wiki.png',
-									'height': '',
-									'src': '/index.php?title=Special:FilePath/Wiki.png&width=500',
-									'width': '500'
-								}
+									'data-parsoid': '{\"a\":{\"href\":\"./File:Wiki.png\"}}'
+								},
+								'children': [
+									{
+										'keys': [ 'data-parsoid' ],
+										'values': {
+											'data-parsoid': '{\"a\":{\"resource\":\"./File:Wiki.png\",\"width\":\"135\"},\"sa\":{\"resource\":\"Image:Wiki.png\",\"width\":\"500\"}}'
+										}
+									}
+								]
 							}
 						]
 					}

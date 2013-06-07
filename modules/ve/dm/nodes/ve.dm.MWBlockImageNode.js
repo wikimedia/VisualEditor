@@ -33,7 +33,7 @@ ve.dm.MWBlockImageNode.static.handlesOwnChildren = true;
 ve.dm.MWBlockImageNode.static.childNodeTypes = [ 'mwImageCaption' ];
 
 // Match typeof="mw:Image/Thumb" and typeof="mw:Image/Frame"
-ve.dm.MWBlockImageNode.static.matchRdfaTypes = [ /mw:Image\/(Thumb|Frame)/ ];
+ve.dm.MWBlockImageNode.static.matchRdfaTypes = [ /^mw:Image\/(Thumb|Frame)$/ ];
 
 ve.dm.MWBlockImageNode.static.toDataElement = function ( domElements, converter ) {
 	var $figure = $( domElements[0] ),
