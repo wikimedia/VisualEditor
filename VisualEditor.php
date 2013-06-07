@@ -187,6 +187,7 @@ $wgResourceModules += array(
 			'visualeditor-savedialog-label-resolve-conflict',
 			'visualeditor-savedialog-label-create',
 			'visualeditor-savedialog-label-save',
+			'visualeditor-savedialog-label-review',
 			'visualeditor-savedialog-label-restore',
 			'visualeditor-savedialog-label-report',
 		),
