@@ -78,15 +78,12 @@ class VisualEditorHooks {
 	 * Adds extra variables to the global config
 	 */
 	public static function onResourceLoaderGetConfigVars( array &$vars ) {
-		global $wgVisualEditorEnableSectionEditLinks, $wgVisualEditorParsoidProblemReportURL,
+		global $wgVisualEditorEnableSectionEditLinks,
 			$wgVisualEditorParsoidURL, $wgVisualEditorEnableExperimentalCode,
 			$wgVisualEditorTabLayout;
 
 		$vars['wgVisualEditorConfig'] = array(
 			'enableSectionEditLinks' => $wgVisualEditorEnableSectionEditLinks,
-			'reportProblemURL' => $wgVisualEditorParsoidProblemReportURL !== null ?
-				$wgVisualEditorParsoidProblemReportURL :
-				"$wgVisualEditorParsoidURL/_bugs/",
 			'enableExperimentalCode' => $wgVisualEditorEnableExperimentalCode,
 			'tabLayout' => $wgVisualEditorTabLayout,
 		);
