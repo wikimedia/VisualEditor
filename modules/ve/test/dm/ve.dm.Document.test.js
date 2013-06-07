@@ -95,7 +95,7 @@ QUnit.test( 'getDocumentSlice', function ( assert ) {
 				'expectedData': doc.data.slice( 21, 27 ).concat( doc.data.slice( 5, 21 ) )
 			}
 		];
-	QUnit.expect( 6*cases.length );
+	QUnit.expect( 4*cases.length );
 	for ( i = 0; i < cases.length; i++ ) {
 		doc = ve.dm.example.createExampleDocument( cases[i].doc );
 		doc2 = doc.getDocumentSlice( cases[i].arg );
@@ -107,10 +107,6 @@ QUnit.test( 'getDocumentSlice', function ( assert ) {
 			cases[i].msg + ': store is copied' );
 		assert.notStrictEqual( doc2.store, doc.store,
 			cases[i].msg + ': store is a clone, not the same' );
-		assert.deepEqual( doc2.internalList.store, doc.internalList.store,
-			cases[i].msg + ': internal list store is copied' );
-		assert.notStrictEqual( doc2.internalList.store, doc.internalList.store,
-			cases[i].msg + ': internal list store is a clone, not the same' );
 	}
 } );
 

@@ -46,7 +46,7 @@ ve.dm.MWReferenceNode.static.toDataElement = function ( domElements, converter )
 		body = mw.body ? mw.body.html : '',
 		refGroup = mw.attrs.group || '',
 		listGroup = this.name + '/' + refGroup,
-		listKey = mw.attrs && mw.attrs.name !== undefined ? mw.attrs.name : ve.getHash( body ),
+		listKey = mw.attrs && mw.attrs.name !== undefined ? mw.attrs.name : null,
 		queueResult = converter.internalList.queueItemHtml( listGroup, listKey, body ),
 		listIndex = queueResult.index,
 		contentsUsed = ( body !== '' && queueResult.isNew );
@@ -67,7 +67,7 @@ ve.dm.MWReferenceNode.static.toDataElement = function ( domElements, converter )
 };
 
 ve.dm.MWReferenceNode.static.toDomElements = function ( dataElement, doc, converter ) {
-	var itemNodeHtml, mwAttr, i, iLen, keyNodes, setContents,
+	var itemNodeHtml, mwAttr, i, iLen, keyedNodes, setContents,
 		span = doc.createElement( 'span' ),
 		itemNodeWrapper = doc.createElement( 'div' ),
 		itemNode = converter.internalList.getItemNode( dataElement.attributes.listIndex ),
@@ -83,16 +83,16 @@ ve.dm.MWReferenceNode.static.toDomElements = function ( dataElement, doc, conver
 	if ( !setContents ) {
 		// Check if any other nodes with this key provided content. If not
 		// then we attach the contents to the first reference with this key
-		keyNodes = converter.internalList
+		keyedNodes = converter.internalList
 			.getNodeGroup( dataElement.attributes.listGroup )
-				.keyNodes[dataElement.attributes.listKey];
+				.keyedNodes[dataElement.attributes.listKey];
 		// Check that this the first reference with its key
-		if ( dataElement === keyNodes[0].element ) {
+		if ( dataElement === keyedNodes[0].element ) {
 			setContents = true;
 			// Check no other reference originally defined the contents
-			// As this is keyNodes[0] we can start at 1
-			for ( i = 1, iLen = keyNodes.length; i < iLen; i++ ) {
-				if ( keyNodes[i].element.attributes.contentsUsed ) {
+			// As this is keyedNodes[0] we can start at 1
+			for ( i = 1, iLen = keyedNodes.length; i < iLen; i++ ) {
+				if ( keyedNodes[i].element.attributes.contentsUsed ) {
 					setContents = false;
 					break;
 				}
@@ -136,7 +136,10 @@ ve.dm.MWReferenceNode.prototype.getInternalItem = function () {
 ve.dm.MWReferenceNode.prototype.onRoot = function () {
 	if ( this.getRoot() === this.getDocument().getDocumentNode() ) {
 		this.getDocument().getInternalList().addNode(
-			this.element.attributes.listGroup, this.element.attributes.listKey, this
+			this.element.attributes.listGroup,
+			this.element.attributes.listKey,
+			this.element.attributes.listIndex,
+			this
 		);
 	}
 };
@@ -147,7 +150,10 @@ ve.dm.MWReferenceNode.prototype.onRoot = function () {
  */
 ve.dm.MWReferenceNode.prototype.onUnroot = function () {
 	this.getDocument().getInternalList().removeNode(
-		this.element.attributes.listGroup, this.element.attributes.listKey, this
+		this.element.attributes.listGroup,
+		this.element.attributes.listKey,
+		this.element.attributes.listIndex,
+		this
 	);
 };
 

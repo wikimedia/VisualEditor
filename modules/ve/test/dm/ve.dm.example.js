@@ -1333,7 +1333,7 @@ ve.dm.example.domToDataCases = {
 					'about': '#mwt8',
 					'listIndex': 2,
 					'listGroup': 'mwReference/g1',
-					'listKey': '"No name"',
+					'listKey': null,
 					'refGroup': 'g1',
 					'mw': { 'body': { 'html': 'No name' }, 'attrs': { 'group': 'g1' } },
 					'contentsUsed': true
@@ -3374,4 +3374,275 @@ ve.dm.example.isolationData = [
 	{ 'type': '/listItem' },
 	{ 'type': '/list' }
 	// 244
+];
+
+ve.dm.example.references = [
+	{ 'type': 'paragraph' },
+	{
+		'type': 'mwReference',
+		 'attributes': {
+			'about': '#mwt2',
+			'contentsUsed': true,
+			'listGroup': 'mwReference/',
+			'listIndex': 0,
+			'listKey': '"No name 1"',
+			'mw': {
+				'attrs': {},
+				'body': { 'html': 'No name 1' },
+				'name': 'ref'
+			},
+			'refGroup': ''
+		},
+		'htmlAttributes': [ {
+			'keys': [
+				'about',
+				'class',
+				'data-mw',
+				'id',
+				'rel',
+				'typeof',
+				'data-parsoid'
+			],
+			'values': {
+				'about': '#mwt2',
+				'class': 'reference',
+				'data-mw': '{"name":"ref","body":{"html":"No name 1"},"attrs":{}}',
+				'data-parsoid': '{"src":"<ref>No name 1</ref>","dsr":[0,20,5,6]}',
+				'id': 'cite_ref-1-0',
+				'rel': 'dc:references',
+				'typeof': 'mw:Extension/ref'
+			}
+		} ]
+	},
+	{ 'type': '/mwReference' },
+	{ 'type': '/paragraph' },
+	{ 'htmlAttributes': [ { 'keys': [ 'data-parsoid' ],
+			'values': { 'data-parsoid': '{"dsr":[22,108,0,0]}' }
+		} ],
+	'type': 'paragraph'
+	},
+	'F', 'o', 'o',
+	{
+		'type': 'mwReference',
+		 'attributes': {
+			'about': '#mwt6',
+			'contentsUsed': true,
+			'listGroup': 'mwReference/',
+			'listIndex': 1,
+			'listKey': 'bar',
+			'mw': {
+				'attrs': { 'name': 'bar' },
+				'body': { 'html': 'Bar' },
+				'name': 'ref'
+			},
+			'refGroup': ''
+		},
+		'htmlAttributes': [ {
+			'keys': [ 'about',
+				'class',
+				'data-mw',
+				'id',
+				'rel',
+				'typeof',
+				'data-parsoid'
+			],
+			'values': {
+				'about': '#mwt6',
+				'class': 'reference',
+				'data-mw': '{"name":"ref","body":{"html":"Bar"},"attrs":{"name":"bar"}}',
+				'data-parsoid': '{"src":"<ref name=\\"bar\\">Bar</ref>","dsr":[25,50,16,6]}',
+				'id': 'cite_ref-bar-2-0',
+				'rel': 'dc:references',
+				'typeof': 'mw:Extension/ref'
+			}
+		} ]
+	},
+	{ 'type': '/mwReference' },
+	' ', 'B', 'a', 'z',
+	{
+		'type': 'mwReference',
+		 'attributes': {
+			'about': '#mwt7',
+			'contentsUsed': true,
+			'listGroup': 'mwReference/',
+			'listIndex': 2,
+			'listKey': 'quux',
+			'mw': {
+				'attrs': { 'name': 'quux' },
+				'body': { 'html': 'Quux' },
+				'name': 'ref'
+			},
+			'refGroup': ''
+		},
+		'htmlAttributes': [ {
+			'keys': [ 'about',
+				'class',
+				'data-mw',
+				'id',
+				'rel',
+				'typeof',
+				'data-parsoid'
+			],
+			'values': {
+				'about': '#mwt7',
+				'class': 'reference',
+				'data-mw': '{"name":"ref","body":{"html":"Quux"},"attrs":{"name":"quux"}}',
+				'data-parsoid': '{"src":"<ref name=\\"quux\\">Quux</ref>","dsr":[54,81,17,6]}',
+				'id': 'cite_ref-quux-3-0',
+				'rel': 'dc:references',
+				'typeof': 'mw:Extension/ref'
+			}
+		} ]
+	},
+	{ 'type': '/mwReference' },
+	' ', 'W', 'h', 'e', 'e',
+	{
+		'type': 'mwReference',
+		'attributes': {
+			'about': '#mwt8',
+			'contentsUsed': false,
+			'listGroup': 'mwReference/',
+			'listIndex': 1,
+			'listKey': 'bar',
+			'mw': {
+				'attrs': { 'name': 'bar' },
+				'name': 'ref'
+			},
+			'refGroup': ''
+		},
+		'htmlAttributes': [ {
+			'keys': [
+				'about',
+				'class',
+				'data-mw',
+				'id',
+				'rel',
+				'typeof',
+				'data-parsoid'
+			],
+			'values': {
+				'about': '#mwt8',
+				'class': 'reference',
+				'data-mw': '{"name":"ref","attrs":{"name":"bar"}}',
+				'data-parsoid': '{"src":"<ref name=\\"bar\\" />","dsr":[86,104,18,0]}',
+				'id': 'cite_ref-bar-2-1',
+				'rel': 'dc:references',
+				'typeof': 'mw:Extension/ref'
+			}
+		} ]
+	},
+	{ 'type': '/mwReference' },
+	' ', 'Y', 'a', 'y',
+	{ 'type': '/paragraph' },
+	{ 'type': 'paragraph' },
+	{
+		'type': 'mwReference',
+		 'attributes': {
+			'about': '#mwt11',
+			'contentsUsed': true,
+			'listGroup': 'mwReference/',
+			'listIndex': 3,
+			'listKey': '"No name 2"',
+			'mw': {
+				'attrs': {},
+				'body': { 'html': 'No name 2' },
+				'name': 'ref'
+			},
+			'refGroup': ''
+			},
+		'htmlAttributes': [ {
+			'keys': [
+				'about',
+				'class',
+				'data-mw',
+				'id',
+				'rel',
+				'typeof',
+				'data-parsoid'
+			],
+			'values': {
+				'about': '#mwt11',
+				'class': 'reference',
+				'data-mw': '{"name":"ref","body":{"html":"No name 2"},"attrs":{}}',
+				'data-parsoid': '{"src":"<ref>No name 2</ref>","dsr":[110,130,5,6]}',
+				'id': 'cite_ref-4-0',
+				'rel': 'dc:references',
+				'typeof': 'mw:Extension/ref'
+			}
+		} ]
+	},
+	{ 'type': '/mwReference' },
+	{
+		'type': 'mwReference',
+		 'attributes': {
+			'about': '#mwt12',
+			'contentsUsed': true,
+			'listGroup': 'mwReference/',
+			'listIndex': 4,
+			'listKey': '"No name 3"',
+			'mw': {
+				'attrs': {},
+				'body': { 'html': 'No name 3' },
+				'name': 'ref'
+			},
+			'refGroup': ''
+		},
+		'htmlAttributes': [ {
+			'keys': [
+				'about',
+				'class',
+				'data-mw',
+				'id',
+				'rel',
+				'typeof',
+				'data-parsoid'
+			],
+			'values': {
+				'about': '#mwt12',
+				'class': 'reference',
+				'data-mw': '{"name":"ref","body":{"html":"No name 3"},"attrs":{}}',
+				'data-parsoid': '{"src":"<ref>No name 3</ref>"',
+				'id': 'cite_ref-5-0',
+				'rel': 'dc:references',
+				'typeof': 'mw:Extension/ref'
+			}
+		} ]
+	},
+	{ 'type': '/mwReference' },
+	{ 'type': '/paragraph' },
+	{
+		'type': 'mwReferenceList',
+		'attributes': {
+			//'domElements': HTML,
+			'listGroup': 'mwReference/'
+		}
+	},
+	{ 'type': '/mwReferenceList' },
+	{ 'type': 'internalList' },
+	{ 'type': 'internalItem' },
+	{ 'type': 'paragraph' },
+	'N', 'o', ' ', 'n', 'a', 'm', 'e', ' ', '1',
+	{ 'type': '/paragraph' },
+	{ 'type': '/internalItem' },
+	{ 'type': 'internalItem' },
+	{ 'type': 'paragraph' },
+	'B', 'a', 'r',
+	{ 'type': '/paragraph' },
+	{ 'type': '/internalItem' },
+	{ 'type': 'internalItem' },
+	{ 'type' : 'paragraph' },
+	'Q', 'u', 'u', 'x',
+	{ 'type': '/paragraph' },
+	{ 'type': '/internalItem' },
+	{ 'type': 'internalItem' },
+	{ 'type' : 'paragraph' },
+	'N', 'o', ' ', 'n', 'a', 'm', 'e', ' ', '2',
+	{ 'type': '/paragraph' },
+	{ 'type': '/internalItem' },
+	{ 'type': 'internalItem' },
+	{ 'type' : 'paragraph' },
+	'N', 'o', ' ', 'n', 'a', 'm', 'e', ' ', '3',
+	{ 'type': '/paragraph' },
+	{ 'type': '/internalItem' },
+	{ 'type': '/internalList' }
 ];

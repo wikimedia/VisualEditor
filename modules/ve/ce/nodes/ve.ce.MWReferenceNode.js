@@ -92,10 +92,10 @@ ve.ce.MWReferenceNode.prototype.onInternalListUpdate = function ( groupsChanged 
  * @method
  */
 ve.ce.MWReferenceNode.prototype.update = function () {
-	var listKey = this.model.getAttribute( 'listKey' ),
+	var listIndex = this.model.getAttribute( 'listIndex' ),
 		listGroup = this.model.getAttribute( 'listGroup' ),
 		refGroup = this.model.getAttribute( 'refGroup' ),
-		position = this.internalList.getKeyPosition( listGroup, listKey );
+		position = this.internalList.getIndexPosition( listGroup, listIndex );
 	this.$link.text( '[' + ( refGroup ? refGroup + ' ' : '' ) + ( position + 1 ) + ']' );
 };
 

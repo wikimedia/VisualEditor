@@ -20,7 +20,6 @@ ve.ui.MWReferenceDialog = function VeUiMWReferenceDialog( surface, config ) {
 	ve.ui.Dialog.call( this, surface, config );
 
 	// Properties
-	this.referenceNode = null;
 	this.internalItem = null;
 };
 
@@ -57,32 +56,49 @@ ve.ui.MWReferenceDialog.prototype.initialize = function () {
  * @method
  */
 ve.ui.MWReferenceDialog.prototype.onOpen = function () {
-	var doc = this.surface.getModel().getDocument();
+	var focusedNode, doc, data,
+	// Remove mwReference tool as you can't have nested references
+		toolbarSubset = ve.init.mw.ViewPageTarget.static.getToolbarSubset( [
+			// Can't have nested references
+			'mwReference',
+			// Lists not properly supported by PHP parser
+			'number', 'bullet', 'outdent', 'indent'
+		] );
 
 	// Parent method
 	ve.ui.Dialog.prototype.onOpen.call( this );
 
-	this.referenceNode = this.surface.getView().getFocusedNode();
-	this.internalItem = this.referenceNode.getModel().getInternalItem();
+	// Get data from selection
+	focusedNode = this.surface.getView().getFocusedNode();
+	doc = this.surface.getModel().getDocument();
+	if ( focusedNode instanceof ve.ce.MWReferenceNode ) {
+		this.internalItem = focusedNode.getModel().getInternalItem();
+		data = doc.getData( this.internalItem.getRange(), true );
+	} else {
+		data = [
+			{
+				'type': 'paragraph',
+				'internal': {
+					'generated': 'wrapper'
+				}
+			},
+			{ 'type': '/paragraph' }
+		];
+	}
 
 	// Properties
 	this.referenceSurface = new ve.ui.Surface(
-		// TODO: Move these details into something like ve.dm.SurfaceFragment
-		new ve.dm.ElementLinearData(
-			doc.getStore(), doc.getData( this.internalItem.getRange(), true )
-		),
-		{ '$$': this.frame.$$ }
+		new ve.dm.ElementLinearData( doc.getStore(), data ), { '$$': this.frame.$$ }
 	);
-	this.referenceToolbar = new ve.ui.Toolbar(
-		this.referenceSurface, { '$$': this.frame.$$ }
-	);
+	this.referenceToolbar = new ve.ui.Toolbar( this.referenceSurface, { '$$': this.frame.$$ } );
 
 	// Initialization
 	this.referenceToolbar.$.addClass( 've-ui-mwReferenceDialog-toolbar' );
 	this.$body.append( this.referenceToolbar.$, this.referenceSurface.$ );
-	this.referenceToolbar.addTools( ve.init.mw.ViewPageTarget.static.toolbarTools );
+	this.referenceToolbar.addTools( toolbarSubset );
 	this.referenceSurface.addCommands( ve.init.mw.ViewPageTarget.static.surfaceCommands );
 	this.referenceSurface.initialize();
+	this.referenceSurface.view.documentView.documentNode.$.focus();
 };
 
 /**
@@ -92,23 +108,61 @@ ve.ui.MWReferenceDialog.prototype.onOpen = function () {
  * @param {string} action Action that caused the window to be closed
  */
 ve.ui.MWReferenceDialog.prototype.onClose = function ( action ) {
-	var tx,
-		doc = this.surface.getModel().getDocument();
+	var data, doc, groupName, key, newItem,
+		txs = [];
 
 	// Parent method
 	ve.ui.Dialog.prototype.onOpen.call( this );
 
-	// TODO: Make this actually work
+	// Save changes
 	if ( action === 'apply' ) {
-		tx = ve.dm.Transaction.newFromNodeReplacement(
-			doc,
-			this.internalItem.getRange(),
-			this.referenceSurface.getModel().getDocument().getData()
-		);
-		this.surface.getModel().change( tx );
+		data = this.referenceSurface.getModel().getDocument().getData();
+		doc = this.surface.getModel().getDocument();
+		if ( this.internalItem ) {
+			txs.push(
+				ve.dm.Transaction.newFromNodeReplacement(
+					doc, this.internalItem.getRange(), data
+				)
+			);
+			this.surface.getModel().change( txs );
+		} else {
+			// TODO: pass in group and key from UI if they exist
+			groupName = '';
+			key = null;
+			newItem = doc.getInternalList().getItemInsertion( groupName, key, data );
+			if ( newItem.transaction ) {
+				txs.push( newItem.transaction );
+			}
+			this.surface.getModel().change( txs );
+			this.surface.getModel().getFragment().collapseRangeToEnd().insertContent( [
+				{
+					'type': 'mwReference',
+					'attributes': {
+						'mw': {
+							'name': 'ref'
+						},
+						'listIndex': newItem.index,
+						'listGroup': 'mwReference/' + groupName,
+						'listKey': key,
+						'refGroup': groupName
+					},
+					//TODO: remove these htmlAttributes once fixed in Parsoid
+					'htmlAttributes': [
+						{
+							'keys': [ 'data-parsoid' ],
+							'values': {
+								'data-parsoid': '{"src":""}'
+							}
+						}
+					]
+				},
+				{ 'type': '/mwReference' }
+			] );
+		}
 	}
 
 	// Cleanup
+	this.internalItem = null;
 	this.referenceSurface.destroy();
 	this.referenceToolbar.destroy();
 };

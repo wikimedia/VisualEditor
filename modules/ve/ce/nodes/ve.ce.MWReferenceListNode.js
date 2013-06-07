@@ -84,7 +84,7 @@ ve.ce.MWReferenceListNode.prototype.onListNodeUpdate = function () {
  * Update the reference list.
  */
 ve.ce.MWReferenceListNode.prototype.update = function () {
-	var i, j, iLen, jLen, key, keyNodes, $li, itemNode,
+	var i, j, iLen, jLen, index, firstNode, key, keyedNodes, $li, itemNode,
 		internalList = this.model.getDocument().internalList,
 		listGroup = this.model.getAttribute( 'listGroup' ),
 		nodes = internalList.getNodeGroup( listGroup );
@@ -98,15 +98,17 @@ ve.ce.MWReferenceListNode.prototype.update = function () {
 	this.attachedItems = this.attachedItems || [];
 
 	this.$reflist.empty();
-	if ( nodes && nodes.keyOrder.length ) {
-		for ( i = 0, iLen = nodes.keyOrder.length; i < iLen; i++ ) {
-			key = nodes.keyOrder[i];
-			keyNodes = nodes.keyNodes[key];
+	if ( nodes && nodes.indexOrder.length ) {
+		for ( i = 0, iLen = nodes.indexOrder.length; i < iLen; i++ ) {
+			index = nodes.indexOrder[i];
+			firstNode = nodes.firstNodes[index];
 
 			$li = $( '<li>' );
 
-			for ( j = 0, jLen = keyNodes.length; j < jLen; j++ ) {
-				if ( keyNodes.length > 1 ) {
+			key = internalList.keys[index];
+			keyedNodes = nodes.keyedNodes[key] || [];
+			for ( j = 0, jLen = keyedNodes.length; j < jLen; j++ ) {
+				if ( keyedNodes.length > 1 ) {
 					$li.append(
 						$( '<sup>' ).append(
 							$( '<a>' ).text( ( i + 1 ) + '.' + j )
@@ -117,8 +119,13 @@ ve.ce.MWReferenceListNode.prototype.update = function () {
 
 			// Generate reference HTML from first item in key
 			itemNode = new ve.ce.InternalItemNode(
-				internalList.getItemNode( keyNodes[0].getAttribute( 'listIndex' ) )
+				internalList.getItemNode( firstNode.getAttribute( 'listIndex' ) )
 			);
+			// HACK: PHP parser doesn't wrap single lines in a paragraph
+			if ( itemNode.$.children().length === 1 && itemNode.$.children( 'p' ).length === 1 ) {
+				// unwrap inner
+				itemNode.$.children().replaceWith( itemNode.$.children().contents() );
+			}
 			// HACK: ProtectedNode crashes when dealing with an unattached node
 			this.attachedItems.push( itemNode );
 			itemNode.attach( this );
