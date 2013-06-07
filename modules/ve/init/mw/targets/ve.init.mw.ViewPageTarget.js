@@ -19,7 +19,7 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 	var browserWhitelisted,
 		browserBlacklisted,
 		currentUri = new mw.Uri( window.location.toString() ),
-		supportsStrictMode = ( function () {
+		supportsES5 = ( function () {
 			'use strict';
 			return this === undefined;
 		}() ),
@@ -96,35 +96,40 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 		'serializeError': 'onSerializeError'
 	} );
 
-	// Initialization
-	if ( supportsStrictMode && supportsContentEditable && !browserBlacklisted ) {
-		if ( !browserWhitelisted ) {
-			// show warning
-			this.localNoticeMessages.push( 'visualeditor-browserwarning' );
+	if ( !supportsES5 || !supportsContentEditable || browserBlacklisted ) {
+		// Don't initialise in browsers that are broken
+		return;
+	}
+
+	if ( !browserWhitelisted ) {
+		// Show warning in unknown browsers that pass the support test
+		// Continue at own risk.
+		this.localNoticeMessages.push( 'visualeditor-browserwarning' );
+	}
+
+	if ( currentUri.query.venotify ) {
+		// The following messages can be used here:
+		// visualeditor-notification-saved
+		// visualeditor-notification-created
+		// visualeditor-notification-restored
+		mw.notify(
+			ve.msg( 'visualeditor-notification-' + currentUri.query.venotify,
+				new mw.Title( this.pageName ).toText()
+			)
+		);
+		if ( window.history.replaceState ) {
+			delete currentUri.query.venotify;
+			window.history.replaceState( null, document.title, currentUri );
 		}
-		if ( currentUri.query.venotify ) {
-			// The following messages can be used here:
-			// visualeditor-notification-saved
-			// visualeditor-notification-created
-			// visualeditor-notification-restored
-			mw.notify(
-				ve.msg( 'visualeditor-notification-' + currentUri.query.venotify,
-					new mw.Title( this.pageName ).toText()
-				)
-			);
-			if ( window.history.replaceState ) {
-				delete currentUri.query.venotify;
-				window.history.replaceState( null, document.title, currentUri );
-			}
-		}
-		this.setupSkinTabs();
-		if ( mw.config.get( 'wgVisualEditorConfig' ).enableSectionEditLinks ) {
-			this.setupSectionEditLinks();
-		}
-		if ( this.isViewPage ) {
-			if ( currentUri.query.veaction === 'edit' ) {
-				this.activate();
-			}
+	}
+
+	this.setupSkinTabs();
+	if ( mw.config.get( 'wgVisualEditorConfig' ).enableSectionEditLinks ) {
+		this.setupSectionEditLinks();
+	}
+	if ( this.isViewPage ) {
+		if ( currentUri.query.veaction === 'edit' ) {
+			this.activate();
 		}
 	}
 };
@@ -251,9 +256,9 @@ ve.init.mw.ViewPageTarget.saveDialogTemplate = '\
 ve.init.mw.ViewPageTarget.prototype.activate = function () {
 	if ( !this.active && !this.activating ) {
 		this.activating = true;
+
 		// User interface changes
-		this.transformSkinTabs();
-		this.hideSiteNotice();
+		this.transformPage();
 		this.showSpinner();
 		this.hideTableOfContents();
 		this.mutePageContent();
@@ -277,8 +282,7 @@ ve.init.mw.ViewPageTarget.prototype.deactivate = function ( override ) {
 		) {
 			this.deactivating = true;
 			// User interface changes
-			this.restoreSkinTabs();
-			this.restoreSiteNotice();
+			this.restorePage();
 			this.hideSpinner();
 
 			if ( this.toolbarCancelButton ) {
@@ -812,8 +816,6 @@ ve.init.mw.ViewPageTarget.prototype.setUpSurface = function ( doc ) {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.tearDownSurface = function () {
-	// Reset tabs
-	this.restoreSkinTabs();
 	// Update UI
 	if ( this.$document ) {
 		this.$document.blur();
@@ -1635,45 +1637,38 @@ ve.init.mw.ViewPageTarget.prototype.restoreDocumentTitle = function () {
 };
 
 /**
- * Modify page tabs to show that editing is taking place.
+ * Page modifications for switching to edit mode.
  *
  * @method
  */
-ve.init.mw.ViewPageTarget.prototype.transformSkinTabs = function () {
+ve.init.mw.ViewPageTarget.prototype.transformPage = function () {
+
+	// Put skin tabs in "edit" mode
 	$( $( '#p-views' ).length ? '#p-views' : '#p-cactions' )
 		.find( 'li.selected' ).removeClass( 'selected' );
 	$( this.tabLayout === 'add' ? '#ca-ve-edit' : '#ca-edit' )
 		.addClass( 'selected' );
-};
 
-/**
- * Modify page tabs to show that viewing is taking place.
- *
- * @method
- */
-ve.init.mw.ViewPageTarget.prototype.restoreSkinTabs = function () {
-	$( $( '#p-views' ).length ? '#p-views' : '#p-cactions' )
-		.find( 'li.selected' ).removeClass( 'selected' );
-	$( '#ca-view' ).addClass( 'selected' );
-};
-
-/**
- * Hide site notice on page if present.
- *
- * @method
- */
-ve.init.mw.ViewPageTarget.prototype.hideSiteNotice = function () {
+	// Hide site notice (if present)
 	$( '#siteNotice:visible' )
 		.addClass( 've-hide' )
 		.slideUp( 'fast' );
 };
 
 /**
- * Show site notice on page if present.
+ * Page modifications for switching back to view mode.
  *
  * @method
  */
-ve.init.mw.ViewPageTarget.prototype.restoreSiteNotice = function () {
+ve.init.mw.ViewPageTarget.prototype.restorePage = function () {
+
+	// Put skin tabs back in "view" mode
+	$( $( '#p-views' ).length ? '#p-views' : '#p-cactions' )
+		.find( 'li.selected' ).removeClass( 'selected' );
+	$( '#ca-view' ).addClass( 'selected' );
+
+
+	// Make site notice visible again (if present)
 	$(' #siteNotice.ve-hide' )
 		.slideDown( 'fast' );
 };
