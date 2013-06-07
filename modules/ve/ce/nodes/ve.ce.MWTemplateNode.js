@@ -126,6 +126,8 @@ ve.inheritClass( ve.ce.MWTemplateBlockNode, ve.ce.MWTemplateNode );
 
 ve.ce.MWTemplateBlockNode.static.name = 'mwTemplateBlock';
 
+ve.ce.MWTemplateBlockNode.static.tagName = 'div';
+
 /**
  * ContentEditable MediaWiki template inline node.
  *
@@ -149,6 +151,8 @@ ve.inheritClass( ve.ce.MWTemplateInlineNode, ve.ce.MWTemplateNode );
 /* Static Properties */
 
 ve.ce.MWTemplateInlineNode.static.name = 'mwTemplateInline';
+
+ve.ce.MWTemplateInlineNode.static.tagName = 'span';
 
 /* Registration */
 

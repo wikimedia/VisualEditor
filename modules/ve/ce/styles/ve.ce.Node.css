@@ -155,10 +155,6 @@
 
 /* ve.ce.MWTemplateNode */
 
-.ve-ce-mwTemplateBlockNode {
-	display: block;
-}
-
 .ve-ce-mwTemplateInlineNode {
 	display: inline-block;
 }
