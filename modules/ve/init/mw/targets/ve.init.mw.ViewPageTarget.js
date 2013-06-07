@@ -35,6 +35,7 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 	this.$spinner = $( '<div class="ve-init-mw-viewPageTarget-loading"></div>' );
 	this.toolbarCancelButton = null;
 	this.toolbarSaveButton = null;
+	this.saveDialogSlideHistory = [];
 	this.saveDialogSaveButton = null;
 	this.saveDialogReviewWrongButton = null;
 	this.saveDialogReviewGoodButton = null;
@@ -185,27 +186,6 @@ ve.init.mw.ViewPageTarget.saveDialogTemplate = '\
 		<div class="ve-init-mw-viewPageTarget-saveDialog-title"></div>\
 	</div>\
 	<div class="ve-init-mw-viewPageTarget-saveDialog-body">\
-		<div class="ve-init-mw-viewPageTarget-saveDialog-slide ve-init-mw-viewPageTarget-saveDialog-slide-review">\
-			<div class="ve-init-mw-viewPageTarget-saveDialog-viewer"></div>\
-			<div class="ve-init-mw-viewPageTarget-saveDialog-actions">\
-				<div class="ve-init-mw-viewPageTarget-saveDialog-working"></div>\
-			</div>\
-			<div style="clear: both;"></div>\
-		</div>\
-		<div class="ve-init-mw-viewPageTarget-saveDialog-slide ve-init-mw-viewPageTarget-saveDialog-slide-report">\
-			<div class="ve-init-mw-viewPageTarget-saveDialog-report">\
-				<textarea name="problem" class="ve-init-mw-viewPageTarget-saveDialog-problem"\
-					id="ve-init-mw-viewPageTarget-saveDialog-problem" type="text"\
-					rows="4"></textarea>\
-			</div>\
-			<div class="ve-init-mw-viewPageTarget-saveDialog-actions">\
-				<div class="ve-init-mw-viewPageTarget-saveDialog-working"></div>\
-			</div>\
-			<div style="clear: both;"></div>\
-			<div class="ve-init-mw-viewPageTarget-saveDialog-foot">\
-				<p class="ve-init-mw-viewPageTarget-saveDialog-report-notice"></p>\
-			</div>\
-		</div>\
 		<div class="ve-init-mw-viewPageTarget-saveDialog-slide ve-init-mw-viewPageTarget-saveDialog-slide-save">\
 			<div class="ve-init-mw-viewPageTarget-saveDialog-summary">\
 				<textarea name="editSummary" class="ve-init-mw-viewPageTarget-saveDialog-editSummary"\
@@ -230,6 +210,27 @@ ve.init.mw.ViewPageTarget.saveDialogTemplate = '\
 			<div style="clear: both;"></div>\
 			<div class="ve-init-mw-viewPageTarget-saveDialog-foot">\
 				<p class="ve-init-mw-viewPageTarget-saveDialog-license"></p>\
+			</div>\
+		</div>\
+		<div class="ve-init-mw-viewPageTarget-saveDialog-slide ve-init-mw-viewPageTarget-saveDialog-slide-review">\
+			<div class="ve-init-mw-viewPageTarget-saveDialog-viewer"></div>\
+			<div class="ve-init-mw-viewPageTarget-saveDialog-actions">\
+				<div class="ve-init-mw-viewPageTarget-saveDialog-working"></div>\
+			</div>\
+			<div style="clear: both;"></div>\
+		</div>\
+		<div class="ve-init-mw-viewPageTarget-saveDialog-slide ve-init-mw-viewPageTarget-saveDialog-slide-report">\
+			<div class="ve-init-mw-viewPageTarget-saveDialog-report">\
+				<textarea name="problem" class="ve-init-mw-viewPageTarget-saveDialog-problem"\
+					id="ve-init-mw-viewPageTarget-saveDialog-problem" type="text"\
+					rows="4"></textarea>\
+			</div>\
+			<div class="ve-init-mw-viewPageTarget-saveDialog-actions">\
+				<div class="ve-init-mw-viewPageTarget-saveDialog-working"></div>\
+			</div>\
+			<div style="clear: both;"></div>\
+			<div class="ve-init-mw-viewPageTarget-saveDialog-foot">\
+				<p class="ve-init-mw-viewPageTarget-saveDialog-report-notice"></p>\
 			</div>\
 		</div>\
 		<div class="ve-init-mw-viewPageTarget-saveDialog-slide ve-init-mw-viewPageTarget-saveDialog-slide-conflict">\
@@ -659,6 +660,15 @@ ve.init.mw.ViewPageTarget.prototype.onSurfaceModelHistory = function () {
 };
 
 /**
+ * Handle clicks on the review button in the save dialog.
+ *
+ * @method
+ */
+ve.init.mw.ViewPageTarget.prototype.onSaveDialogReviewButtonClick = function () {
+	this.swapSaveDialog( 'review' );
+};
+
+/**
  * Handle clicks on the save button in the save dialog.
  *
  * @method
@@ -759,11 +769,14 @@ ve.init.mw.ViewPageTarget.prototype.onSaveDialogCloseButtonClick = function () {
  * @param {jQuery.Event} e Mouse click event
  */
 ve.init.mw.ViewPageTarget.prototype.onSaveDialogPrevButtonClick = function () {
-	// Hard code "review" for now.
-	// Although we have more than 2 slides, slide "report" and "save" are both
-	// branches of "review". Later this could terminate the path based on an
-	// array or object, or keep a .history array even...
-	this.swapSaveDialog( 'review' );
+	var history = this.saveDialogSlideHistory;
+	if ( history.length < 2  ) {
+		throw new Error( 'PrevButton was triggered without a history' );
+	}
+	// Pop off current slide
+	history.pop();
+	// Navigate to last slide
+	this.swapSaveDialog( history[ history.length -1 ], { fromHistory: true } );
 };
 
 /**
@@ -1101,17 +1114,26 @@ ve.init.mw.ViewPageTarget.prototype.getSaveDialogHtml = function ( callback ) {
 ve.init.mw.ViewPageTarget.prototype.setupSaveDialog = function () {
 	var viewPage = this;
 
+	// Save button on "save" slide
 	this.saveDialogSaveButton = new ve.ui.ButtonWidget( {
 		'label': ve.msg(
+			 // visualeditor-savedialog-label-restore, visualeditor-savedialog-label-save
 			'visualeditor-savedialog-label-' + ( viewPage.restoring ? 'restore' : 'save' )
 		),
 		'flags': ['constructive']
 	} );
 	this.saveDialogSaveButton.connect( this, { 'click': 'onSaveDialogSaveButtonClick' } );
 
+	// Review button on "save" slide
+	this.saveDialogReviewButton = new ve.ui.ButtonWidget( {
+		'label': ve.msg(
+			'visualeditor-savedialog-label-review'
+		)
+	} );
+	this.saveDialogReviewButton.connect( this, { 'click': 'onSaveDialogReviewButtonClick' } );
+
 	this.saveDialogReviewWrongButton = new ve.ui.ButtonWidget( {
-		'label': ve.msg( 'visualeditor-savedialog-label-review-wrong' ),
-		'flags': ['primary']
+		'label': ve.msg( 'visualeditor-savedialog-label-review-wrong' )
 	} );
 	this.saveDialogReviewWrongButton.connect(
 		this, { 'click': 'onSaveDialogReviewWrongButtonClick' }
@@ -1145,15 +1167,12 @@ ve.init.mw.ViewPageTarget.prototype.setupSaveDialog = function () {
 			// Attach buttons
 			.find( '.ve-init-mw-viewPageTarget-saveDialog-slide-save' )
 				.find( '.ve-init-mw-viewPageTarget-saveDialog-actions' )
-					.prepend( viewPage.saveDialogSaveButton.$ )
+					.prepend( viewPage.saveDialogSaveButton.$, viewPage.saveDialogReviewButton.$ )
 					.end()
 			.end()
 			.find( '.ve-init-mw-viewPageTarget-saveDialog-slide-review' )
 				.find( '.ve-init-mw-viewPageTarget-saveDialog-actions' )
-					.prepend(
-						viewPage.saveDialogReviewGoodButton.$,
-						viewPage.saveDialogReviewWrongButton.$
-					)
+					.prepend( viewPage.saveDialogReviewGoodButton.$ )
 					.end()
 			.end()
 			.find( '.ve-init-mw-viewPageTarget-saveDialog-slide-report' )
@@ -1280,7 +1299,7 @@ ve.init.mw.ViewPageTarget.prototype.showSaveDialog = function () {
 
 	viewPage.$toolbarEditNotices.fadeOut( 'fast' );
 
-	viewPage.swapSaveDialog( 'review' );
+	viewPage.swapSaveDialog( 'save' );
 
 	viewPage.$saveDialog.fadeIn( 'fast', function () {
 		// Initial size
@@ -1359,30 +1378,43 @@ ve.init.mw.ViewPageTarget.prototype.resetSaveDialog = function () {
 };
 
 /**
- * Swap state in the save dialog (forwards or backwards).
+ * Swap state in the save dialog.
  *
  * @method
- * @param {string} slide One of 'review', 'report', 'save', 'conflict' or 'nochanges'
+ * @param {string} slide One of 'save', 'review', 'report', 'conflict' or 'nochanges'
+ * @param {Object} [options]
+ * @param {boolean} [options.fromHistory] Whether this swap was triggered from interaction
+ *  with the slide history (e.g. surpresses pushing of target slide in the history again).
  * @return {jQuery} The now active slide.
  * @throws {Error} Unknown saveDialog slide
  */
-ve.init.mw.ViewPageTarget.prototype.swapSaveDialog = function ( slide ) {
-	var $slide, $viewer, doc = this.surface.getModel().getDocument();
-	if ( ve.indexOf( slide, [ 'review', 'report', 'save', 'conflict', 'nochanges' ] ) === -1 ) {
+ve.init.mw.ViewPageTarget.prototype.swapSaveDialog = function ( slide, options ) {
+	var $slide, $viewer,
+		doc = this.surface.getModel().getDocument();
+
+	if ( ve.indexOf( slide, [ 'save', 'review', 'report', 'conflict', 'nochanges' ] ) === -1 ) {
 		throw new Error( 'Unknown saveDialog slide: ' + slide );
+	}
+
+	options = options || {};
+
+	if ( !options.fromHistory ) {
+		this.saveDialogSlideHistory.push( slide );
 	}
 
 	$slide = this.$saveDialog.find( '.ve-init-mw-viewPageTarget-saveDialog-slide-' + slide );
 
 	this.$saveDialog
-		// Hide prev button on first slides
+		// Hide "prev" button when (back) on the first slide
 		.find( '.ve-init-mw-viewPageTarget-saveDialog-prevButton' )
-			.toggle( ve.indexOf( slide, [ 'review', 'nochanges' ] ) === -1 )
+			.toggle( this.saveDialogSlideHistory.length >= 2 )
 			.end()
-		// Update title
-		// Give grep a chance to find the usages:
-		// visualeditor-savedialog-title-review, visualeditor-savedialog-title-report,
-		// visualeditor-savedialog-title-save
+		// Update title to one of:
+		// - visualeditor-savedialog-title-save
+		// - visualeditor-savedialog-title-review
+		// - visualeditor-savedialog-title-report
+		// - visualeditor-savedialog-title-conflict
+		// - visualeditor-savedialog-title-nochanges
 		.find( '.ve-init-mw-viewPageTarget-saveDialog-title' )
 			.text( ve.msg( 'visualeditor-savedialog-title-' + slide ) )
 			.end()
