@@ -26,7 +26,9 @@ ve.inheritClass( ve.dm.MWBlockImageNode, ve.dm.BranchNode );
 
 ve.dm.MWBlockImageNode.static.name = 'mwBlockImage';
 
-ve.dm.MWBlockImageNode.static.storeHtmlAttributes = [ 'data-parsoid' ];
+ve.dm.MWBlockImageNode.static.storeHtmlAttributes = {
+	'blacklist': [ 'typeof', 'class', 'src', 'resource', 'width', 'height', 'href', 'rel' ]
+};
 
 ve.dm.MWBlockImageNode.static.handlesOwnChildren = true;
 
