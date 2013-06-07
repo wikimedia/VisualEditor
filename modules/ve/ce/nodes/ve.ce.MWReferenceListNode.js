@@ -89,6 +89,14 @@ ve.ce.MWReferenceListNode.prototype.update = function () {
 		listGroup = this.model.getAttribute( 'listGroup' ),
 		nodes = internalList.getNodeGroup( listGroup );
 
+	// HACK: detach the children attached in the previous run
+	while ( this.attachedItems && this.attachedItems.length > 0 ) {
+		itemNode = this.attachedItems.pop();
+		itemNode.setLive( false );
+		itemNode.detach( this );
+	}
+	this.attachedItems = this.attachedItems || [];
+
 	this.$reflist.empty();
 	if ( nodes && nodes.keyOrder.length ) {
 		for ( i = 0, iLen = nodes.keyOrder.length; i < iLen; i++ ) {
@@ -111,6 +119,9 @@ ve.ce.MWReferenceListNode.prototype.update = function () {
 			itemNode = new ve.ce.InternalItemNode(
 				internalList.getItemNode( keyNodes[0].getAttribute( 'listIndex' ) )
 			);
+			// HACK: ProtectedNode crashes when dealing with an unattached node
+			this.attachedItems.push( itemNode );
+			itemNode.attach( this );
 			$li.append( $( '<span class="reference-text">' ).html( itemNode.$.show() ) );
 			this.$reflist.append( $li );
 		}
