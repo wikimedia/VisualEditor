@@ -25,7 +25,9 @@ class ApiVisualEditor extends ApiBase {
 			}
 			$restoring = !$revision->isCurrent();
 
-			$parserParams['touched'] = $title->getTouched();
+			# Disable cache busting as the Parsoid extension keeps templates
+			# up to date.
+			#$parserParams['touched'] = $title->getTouched();
 			$parserParams['cache'] = 1;
 
 			$req = MWHttpRequest::factory( wfAppendQuery(
