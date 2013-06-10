@@ -78,7 +78,8 @@ ve.dm.MWReferenceNode.static.toDomElements = function ( dataElement, doc, conver
 
 	mwAttr = ve.copyObject( dataElement.attributes.mw ) || {};
 
-	setContents = dataElement.attributes.contentsUsed;
+	setContents = dataElement.attributes.contentsUsed ||
+		dataElement.attributes.listKey === null;
 
 	if ( !setContents ) {
 		// Check if any other nodes with this key provided content. If not

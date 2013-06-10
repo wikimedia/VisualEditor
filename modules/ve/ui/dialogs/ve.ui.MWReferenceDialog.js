@@ -145,16 +145,7 @@ ve.ui.MWReferenceDialog.prototype.onClose = function ( action ) {
 						'listGroup': 'mwReference/' + groupName,
 						'listKey': key,
 						'refGroup': groupName
-					},
-					//TODO: remove these htmlAttributes once fixed in Parsoid
-					'htmlAttributes': [
-						{
-							'keys': [ 'data-parsoid' ],
-							'values': {
-								'data-parsoid': '{"src":""}'
-							}
-						}
-					]
+					}
 				},
 				{ 'type': '/mwReference' }
 			] );
