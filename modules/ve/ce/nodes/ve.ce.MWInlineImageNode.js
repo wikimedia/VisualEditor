@@ -46,6 +46,9 @@ ve.ce.MWInlineImageNode = function VeCeMWInlineImageNode( model, config ) {
 	if ( valign !== 'default' ) {
 		this.$image.css( 'vertical-align', valign );
 	}
+
+	// DOM changes
+	this.$.addClass( 've-ce-mwInlineImageNode' );
 };
 
 /* Inheritance */

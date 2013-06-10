@@ -198,3 +198,9 @@ li.ve-ce-branchNode p.ve-ce-branchNode:first-child {
 	margin: 0;
 	padding: 0;
 }
+
+/* ve.ce.MWInlineImageNode */
+
+.ve-ce-mwInlineImageNode {
+	display: inline-block;
+}
