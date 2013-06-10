@@ -63,12 +63,18 @@ ve.inheritClass( ve.ui.MWCategoryWidget, ve.ui.Widget );
 
 /**
  * @event newCategory
- * @param {Object} item category group item
+ * @param {Object} item Category item
+ * @param {string} item.name Fully prefixed category name
+ * @param {string} item.value Category value (name without prefix)
+ * @param {Object} item.metaItem Category meta item
  */
 
 /**
  * @event updateSortkey
- * * @param {Object} item category group item
+ * @param {Object} item Category item
+ * @param {string} item.name Fully prefixed category name
+ * @param {string} item.value Category value (name without prefix)
+ * @param {Object} item.metaItem Category meta item
  */
 
 /* Methods */
@@ -103,8 +109,9 @@ ve.ui.MWCategoryWidget.prototype.onLookupMenuItemSelect = function ( item ) {
 };
 
 /**
- * Calls metaItem remove method
+ * Removes category from model.
  *
+ * @method
  * @param {string} name category name
  */
 ve.ui.MWCategoryWidget.prototype.onRemoveCategory = function ( name ) {
@@ -112,8 +119,9 @@ ve.ui.MWCategoryWidget.prototype.onRemoveCategory = function ( name ) {
 };
 
 /**
- * Update sortkey value, emit upsteSortkey event
+ * Update sortkey value, emit updateSortkey event
  *
+ * @method
  * @param {string} name
  * @param {string} value
  */
