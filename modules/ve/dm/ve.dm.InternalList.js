@@ -161,18 +161,16 @@ ve.dm.InternalList.prototype.convertToData = function ( converter ) {
 	var i, length, itemData,
 		itemHtmlQueue = this.getItemHtmlQueue(), list = [];
 
-	if ( itemHtmlQueue.length ) {
-		list.push( { 'type': 'internalList' } );
-		for ( i = 0, length = itemHtmlQueue.length; i < length; i++ ) {
-			itemData = converter.getDataFromDomRecursion( $( '<div>' ).html( itemHtmlQueue[i] )[0] );
-			list = list.concat(
-				[{ 'type': 'internalItem' }],
-				itemData,
-				[{ 'type': '/internalItem' }]
-			);
-		}
-		list.push( { 'type': '/internalList' } );
+	list.push( { 'type': 'internalList' } );
+	for ( i = 0, length = itemHtmlQueue.length; i < length; i++ ) {
+		itemData = converter.getDataFromDomRecursion( $( '<div>' ).html( itemHtmlQueue[i] )[0] );
+		list = list.concat(
+			[{ 'type': 'internalItem' }],
+			itemData,
+			[{ 'type': '/internalItem' }]
+		);
 	}
+	list.push( { 'type': '/internalList' } );
 	// After conversion we no longer need the HTML
 	this.itemHtmlQueue = [];
 	return list;

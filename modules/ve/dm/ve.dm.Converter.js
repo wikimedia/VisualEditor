@@ -920,6 +920,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container ) {
 	var text, i, j, annotations, annotationElement, dataElement, dataElementOrSlice,
 		childDomElements, pre, ours, theirs, parentDomElement, lastChild, isContentNode, sibling,
 		previousSiblings, doUnwrap, textNode, type,
+		dataLen = data.length,
 		canContainContentStack = [],
 		conv = this,
 		doc = container.ownerDocument,
@@ -950,32 +951,64 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container ) {
 		domElement = domElement.parentNode;
 	}
 
+	function findEndOfNode( i ) {
+		var j = i + 1, depth = 1;
+		while ( j < dataLen && depth > 0 ) {
+			if ( data[j].type ) {
+				depth += data[j].type.charAt( 0 ) === '/' ? -1 : 1;
+			}
+			j++;
+		}
+		if ( depth !== 0 ) {
+			throw new Error( 'Unbalanced data: looking for closing /' +
+				dataElement.type );
+		}
+		return j;
+	}
+
 	function getDataElementOrSlice() {
-		var dataSlice, j, depth;
+		var dataSlice;
 		if (
 			ve.dm.nodeFactory.lookup( data[i].type ) &&
 			ve.dm.nodeFactory.doesNodeHandleOwnChildren( data[i].type )
 		) {
-			j = i + 1;
-			depth = 1;
-			while ( j < data.length && depth > 0 ) {
-				if ( data[j].type ) {
-					depth += data[j].type.charAt( 0 ) === '/' ? -1 : 1;
-				}
-				j++;
-			}
-			if ( depth !== 0 ) {
-				throw new Error( 'Unbalanced data: looking for closing /' +
-					dataElement.type );
-			}
-			dataSlice = data.slice( i, j );
+			dataSlice = data.slice( i, findEndOfNode( i ) );
 		} else {
 			dataSlice = data[i];
 		}
 		return dataSlice;
 	}
 
-	for ( i = 0; i < data.length; i++ ) {
+	function removeInternalNodes() {
+		var dataCopy, endOffset;
+		// See if there is an internalList in the data, and if there is one, remove it
+		// Removing it here prevents unwanted interactions with whitespace preservation
+		for ( i = 0; i < dataLen; i++ ) {
+			if (
+				data[i].type && data[i].type.charAt( 0 ) !== '/' &&
+				ve.dm.nodeFactory.lookup( data[i].type ) &&
+				ve.dm.nodeFactory.isNodeInternal( data[i].type )
+			) {
+				// Copy data if we haven't already done so
+				if ( !dataCopy ) {
+					dataCopy = data.slice();
+				}
+				endOffset = findEndOfNode( i );
+				// Remove this node's data from dataCopy
+				dataCopy.splice( i - ( dataLen - dataCopy.length ),  endOffset - i );
+				// Move i such that it will be at endOffset in the next iteration
+				i = endOffset - 1;
+			}
+		}
+		if ( dataCopy ) {
+			data = dataCopy;
+			dataLen = data.length;
+		}
+	}
+
+	removeInternalNodes();
+
+	for ( i = 0; i < dataLen; i++ ) {
 		if ( typeof data[i] === 'string' ) {
 			// Text
 			text = '';

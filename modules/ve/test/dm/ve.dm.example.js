@@ -314,8 +314,12 @@ ve.dm.example.data = [
 	// 59 - Plain "m"
 	'm',
 	// 60 - End of paragraph
-	{ 'type': '/paragraph' }
-	// 61 - End of document
+	{ 'type': '/paragraph' },
+	// 61 - Beginning of internalList
+	{ 'type': 'internalList' },
+	// 62 - End of internalList
+	{ 'type': '/internalList' }
+	// 63 - End of document
 ];
 
 ve.dm.example.alienData = [
@@ -338,8 +342,12 @@ ve.dm.example.alienData = [
 	// 8 - Open alienBlock
 	{ 'type': 'alienBlock' },
 	// 9 - Close alienBlock
-	{ 'type': '/alienBlock' }
-	// 10 - End of document
+	{ 'type': '/alienBlock' },
+	// 10 - Beginning of internalList
+	{ 'type': 'internalList' },
+	// 11 - End of internalList
+	{ 'type': '/internalList' }
+	// 12 - End of document
 ];
 
 ve.dm.example.internalData = [
@@ -455,7 +463,9 @@ ve.dm.example.withMeta = [
 			'domElements': $( '<meta typeof="mw:Placeholder" data-parsoid="foobar" />' ).get()
 		}
 	},
-	{ 'type': '/mwAlienMeta' }
+	{ 'type': '/mwAlienMeta' },
+	{ 'type': 'internalList' },
+	{ 'type': '/internalList' }
 ];
 
 ve.dm.example.withMetaPlainData = [
@@ -469,7 +479,9 @@ ve.dm.example.withMetaPlainData = [
 	'B',
 	'a',
 	'z',
-	{ 'type': '/paragraph' }
+	{ 'type': '/paragraph' },
+	{ 'type': 'internalList' },
+	{ 'type': '/internalList' }
 ];
 
 ve.dm.example.withMetaMetaData = [
@@ -556,7 +568,9 @@ ve.dm.example.withMetaMetaData = [
 				'domElements': $( '<meta typeof="mw:Placeholder" data-parsoid="foobar" />' ).get()
 			}
 		}
-	]
+	],
+	undefined,
+	undefined
 ];
 
 ve.dm.example.complexTableHtml = '<table><caption>Foo</caption><thead><tr><th>Bar</th></tr></thead>' +
@@ -613,7 +627,9 @@ ve.dm.example.complexTable = [
 	{ 'type': '/tableCell' },
 	{ 'type': '/tableRow' },
 	{ 'type': '/tableSection' },
-	{ 'type': '/table' }
+	{ 'type': '/table' },
+	{ 'type': 'internalList' },
+	{ 'type': '/internalList' }
 ];
 
 ve.dm.example.inlineAtEdges = [
@@ -715,7 +731,8 @@ ve.dm.example.tree = new ve.dm.DocumentNode( [
 		], ve.dm.example.data[49] )
 	], ve.dm.example.data[43] ),
 	new ve.dm.ParagraphNode( [new ve.dm.TextNode( 1 )], ve.dm.example.data[55] ),
-	new ve.dm.ParagraphNode( [new ve.dm.TextNode( 1 )], ve.dm.example.data[58] )
+	new ve.dm.ParagraphNode( [new ve.dm.TextNode( 1 )], ve.dm.example.data[58] ),
+	new ve.dm.InternalListNode( [], ve.dm.example.data[61] )
 ] );
 
 ve.dm.example.conversions = {
@@ -930,7 +947,9 @@ ve.dm.example.domToDataCases = {
 			'a',
 			'b',
 			'c',
-			{ 'type': '/paragraph' }
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'annotated text with bold, italic, underline formatting': {
@@ -940,7 +959,9 @@ ve.dm.example.domToDataCases = {
 			['a', [ ve.dm.example.bold ]],
 			['b', [ ve.dm.example.italic ]],
 			['c', [ ve.dm.example.underline ]],
-			{ 'type': '/paragraph' }
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'image': {
@@ -957,7 +978,9 @@ ve.dm.example.domToDataCases = {
 				'htmlAttributes': [ { 'values': { 'src': ve.dm.example.imgSrc } } ]
 			},
 			{ 'type' : '/image' },
-			{ 'type': '/paragraph' }
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'mw:Image': {
@@ -999,14 +1022,18 @@ ve.dm.example.domToDataCases = {
 				]
 			},
 			{ 'type': '/mwInlineImage' },
-			{ 'type': '/paragraph' }
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'mw:Transclusion (block level)': {
 		'html': '<body>' + ve.dm.example.MWTransclusion.blockSpan + ve.dm.example.MWTransclusion.blockContent + '</body>',
 		'data': [
 			ve.dm.example.MWTransclusion.blockData,
-			{ 'type': '/mwTransclusionBlock' }
+			{ 'type': '/mwTransclusionBlock' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		],
 		'storeItems': [
 			ve.dm.example.MWTransclusion.blockStoreItems
@@ -1017,7 +1044,9 @@ ve.dm.example.domToDataCases = {
 		'html': '<body>' + ve.dm.example.MWTransclusion.blockSpan + ve.dm.example.MWTransclusion.blockContent + '</body>',
 		'data': [
 			ve.dm.example.MWTransclusion.blockData,
-			{ 'type': '/mwTransclusionBlock' }
+			{ 'type': '/mwTransclusionBlock' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		],
 		'storeItems': [
 			ve.dm.example.MWTransclusion.blockStoreItems
@@ -1033,7 +1062,9 @@ ve.dm.example.domToDataCases = {
 			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
 			ve.dm.example.MWTransclusion.inlineData,
 			{ 'type': '/mwTransclusionInline' },
-			{ 'type': '/paragraph' }
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		],
 		'storeItems': [
 			ve.dm.example.MWTransclusion.inlineStoreItems
@@ -1046,7 +1077,9 @@ ve.dm.example.domToDataCases = {
 			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
 			ve.dm.example.MWTransclusion.inlineData,
 			{ 'type': '/mwTransclusionInline' },
-			{ 'type': '/paragraph' }
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		],
 		'storeItems': [
 			ve.dm.example.MWTransclusion.inlineStoreItems
@@ -1299,7 +1332,9 @@ ve.dm.example.domToDataCases = {
 			},
 			{ 'type': '/alienInline' },
 			'c',
-			{ 'type': '/paragraph' }
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'paragraphs with an alienBlock between them': {
@@ -1316,7 +1351,9 @@ ve.dm.example.domToDataCases = {
 			'd',
 			'e',
 			'f',
-			{ 'type': '/paragraph' }
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'annotated inline nodes': {
@@ -1345,7 +1382,9 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/break' },
 			['d', [ ve.dm.example.italic ]],
 			'e',
-			{ 'type': '/paragraph' }
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'wrapping of bare content': {
@@ -1355,7 +1394,9 @@ ve.dm.example.domToDataCases = {
 			'a',
 			'b',
 			'c',
-			{ 'type': '/paragraph' }
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'wrapping of bare content with inline node': {
@@ -1366,7 +1407,9 @@ ve.dm.example.domToDataCases = {
 			{ 'type': 'break' },
 			{ 'type': '/break' },
 			'2',
-			{ 'type': '/paragraph' }
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'wrapping of bare content starting with inline node': {
@@ -1385,7 +1428,9 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/image' },
 			'1',
 			'2',
-			{ 'type': '/paragraph' }
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'wrapping of bare content with inline alien': {
@@ -1399,7 +1444,9 @@ ve.dm.example.domToDataCases = {
 			},
 			{ 'type': '/alienInline' },
 			'2',
-			{ 'type': '/paragraph' }
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'wrapping of bare content with block alien': {
@@ -1415,7 +1462,9 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/alienBlock' },
 			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
 			'2',
-			{ 'type': '/paragraph' }
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'wrapping of bare content with mw:unrecognized inline alien': {
@@ -1429,7 +1478,9 @@ ve.dm.example.domToDataCases = {
 			},
 			{ 'type': '/alienInline' },
 			'2',
-			{ 'type': '/paragraph' }
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'wrapping of bare content with mw:unrecognized block alien': {
@@ -1445,7 +1496,9 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/alienBlock' },
 			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
 			'2',
-			{ 'type': '/paragraph' }
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'wrapping of bare content starting with mw:unrecognized inline alien': {
@@ -1460,7 +1513,9 @@ ve.dm.example.domToDataCases = {
 			'B',
 			'a',
 			'r',
-			{ 'type': '/paragraph' }
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'wrapping of bare content ending with mw:unrecognized inline alien': {
@@ -1475,7 +1530,9 @@ ve.dm.example.domToDataCases = {
 				'attributes': { 'domElements': $( '<span typeof="mw:Placeholder">Bar</span>' ).get() }
 			},
 			{ 'type': '/alienInline' },
-			{ 'type': '/paragraph' }
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'wrapping of bare content with about group': {
@@ -1489,7 +1546,9 @@ ve.dm.example.domToDataCases = {
 			},
 			{ 'type': '/alienInline' },
 			'2',
-			{ 'type': '/paragraph' }
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'wrapping of bare content between structural nodes': {
@@ -1503,7 +1562,9 @@ ve.dm.example.domToDataCases = {
 			'c',
 			{ 'type': '/paragraph' },
 			{ 'type': 'table' },
-			{ 'type': '/table' }
+			{ 'type': '/table' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'wrapping of bare content between paragraphs': {
@@ -1520,7 +1581,9 @@ ve.dm.example.domToDataCases = {
 			'f',
 			{ 'type': '/paragraph' },
 			{ 'type': 'paragraph' },
-			{ 'type': '/paragraph' }
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'wrapping prevents empty list items': {
@@ -1531,14 +1594,18 @@ ve.dm.example.domToDataCases = {
 			{ 'type': 'paragraph', 'internal': { 'generated': 'empty' } },
 			{ 'type': '/paragraph' },
 			{ 'type': '/listItem' },
-			{ 'type': '/list' }
+			{ 'type': '/list' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'empty document': {
 		'html': '',
 		'data': [
 			{ 'type': 'paragraph', 'internal': { 'generated': 'empty' } },
-			{ 'type': '/paragraph' }
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'empty document with content added by the editor': {
@@ -1548,7 +1615,9 @@ ve.dm.example.domToDataCases = {
 			'F',
 			'o',
 			'o',
-			{ 'type': '/paragraph' }
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		],
 		'normalizedHtml': '<body><p>Foo</p></body>'
 	},
@@ -1563,7 +1632,9 @@ ve.dm.example.domToDataCases = {
 			'o',
 			{ 'type': '/paragraph' },
 			{ 'type': '/listItem' },
-			{ 'type': '/list' }
+			{ 'type': '/list' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		],
 		'normalizedHtml': '<body><ul><li><p>Foo</p></li></ul></body>'
 	},
@@ -1584,7 +1655,9 @@ ve.dm.example.domToDataCases = {
 			},
 			{ 'type': '/alienMeta' },
 			'B', 'a', 'r',
-			{ 'type': '/paragraph' }
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'empty annotation in wrapper paragraph': {
@@ -1600,7 +1673,9 @@ ve.dm.example.domToDataCases = {
 			},
 			{ 'type': '/alienMeta' },
 			'B', 'a', 'r',
-			{ 'type': '/paragraph' }
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'list item with space followed by link': {
@@ -1659,7 +1734,9 @@ ve.dm.example.domToDataCases = {
 			],
 			{ 'type': '/paragraph' },
 			{ 'type': '/listItem' },
-			{ 'type': '/list' }
+			{ 'type': '/list' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'internal link with ./ and ../': {
@@ -1711,7 +1788,9 @@ ve.dm.example.domToDataCases = {
 					} } ]
 				} ]
 			],
-			{ 'type': '/paragraph' }
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'numbered external link': {
@@ -1760,7 +1839,9 @@ ve.dm.example.domToDataCases = {
 					} } ]
 				} ]
 			],
-			{ 'type': '/paragraph' }
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'URL link': {
@@ -1795,7 +1876,9 @@ ve.dm.example.domToDataCases = {
 					} } ]
 				} ]
 			],
-			{ 'type': '/paragraph' }
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'whitespace between unwrapped inline nodes': {
@@ -1830,7 +1913,9 @@ ve.dm.example.domToDataCases = {
 				'htmlAttributes': [ { 'values': { 'typeof': 'mw:Entity' } } ]
 			},
 			{ 'type': '/mwEntity' },
-			{ 'type': '/paragraph' }
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'whitespace preservation in headings': {
@@ -1868,7 +1953,9 @@ ve.dm.example.domToDataCases = {
 			'u',
 			'u',
 			'x',
-			{ 'type': '/heading' }
+			{ 'type': '/heading' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'whitespace preservation in list items': {
@@ -1907,7 +1994,9 @@ ve.dm.example.domToDataCases = {
 			'x',
 			{ 'type': '/paragraph' },
 			{ 'type': '/listItem' },
-			{ 'type': '/list' }
+			{ 'type': '/list' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'whitespace preservation with annotations': {
@@ -1925,7 +2014,9 @@ ve.dm.example.domToDataCases = {
 			[ ' ', [ ve.dm.example.italic ] ],
 			[ ' ', [ ve.dm.example.italic ] ],
 			[ ' ', [ ve.dm.example.italic ] ],
-			{ 'type': '/paragraph' }
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'outer whitespace preservation in a list with bare text and a wrapper paragraph': {
@@ -1946,7 +2037,9 @@ ve.dm.example.domToDataCases = {
 			'P',
 			{ 'type': '/paragraph' },
 			{ 'type': '/listItem' },
-			{ 'type': '/list' }
+			{ 'type': '/list' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'outer whitespace preservation in a list with bare text and a sublist': {
@@ -1969,7 +2062,9 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/listItem' },
 			{ 'type': '/list' },
 			{ 'type': '/listItem' },
-			{ 'type': '/list' }
+			{ 'type': '/list' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'whitespace preservation leaves non-edge content whitespace alone': {
@@ -2010,7 +2105,9 @@ ve.dm.example.domToDataCases = {
 			' ',
 			' ',
 			'H',
-			{ 'type': '/paragraph' }
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'whitespace preservation with non-edge content whitespace with nested annotations': {
@@ -2045,7 +2142,9 @@ ve.dm.example.domToDataCases = {
 			'\n',
 			'\n',
 			'F',
-			{ 'type': '/paragraph' }
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'whitespace preservation with tightly nested annotations': {
@@ -2068,7 +2167,9 @@ ve.dm.example.domToDataCases = {
 			'\n',
 			'\n',
 			'D',
-			{ 'type': '/paragraph' }
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'whitespace preservation with nested annotations with whitespace on the left side': {
@@ -2093,7 +2194,9 @@ ve.dm.example.domToDataCases = {
 			'\n',
 			'\n',
 			'D',
-			{ 'type': '/paragraph' }
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'whitespace preservation with nested annotations with whitespace on the right side': {
@@ -2118,7 +2221,9 @@ ve.dm.example.domToDataCases = {
 			'\n',
 			'\n',
 			'D',
-			{ 'type': '/paragraph' }
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'whitespace preservation with aliens': {
@@ -2171,7 +2276,9 @@ ve.dm.example.domToDataCases = {
 					'whitespace': [ '\t\n', undefined, undefined, ' \n ' ]
 				}
 			},
-			{ 'type': '/alienBlock' }
+			{ 'type': '/alienBlock' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'whitespace preservation not triggered inside <pre>': {
@@ -2193,7 +2300,9 @@ ve.dm.example.domToDataCases = {
 			'\n',
 			'\n',
 			'\n',
-			{ 'type': '/preformatted' }
+			{ 'type': '/preformatted' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'whitespace preservation in table cell starting with text and ending with annotation': {
@@ -2215,7 +2324,9 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/tableCell' },
 			{ 'type': '/tableRow' },
 			{ 'type': '/tableSection' },
-			{ 'type': '/table' }
+			{ 'type': '/table' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'whitespace preservation with wrapped text, comments and language links': {
@@ -2273,7 +2384,9 @@ ve.dm.example.domToDataCases = {
 				} } ],
 				'internal': { 'whitespace': [ '\n' ] }
 			},
-			{ 'type': '/mwLanguage' }
+			{ 'type': '/mwLanguage' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'whitespace preservation with comments at end of wrapper paragraph': {
@@ -2313,7 +2426,9 @@ ve.dm.example.domToDataCases = {
 			'q', 'u', 'u', 'x',
 			{ 'type': '/paragraph' },
 			{ 'type': '/listItem' },
-			{ 'type': '/list' }
+			{ 'type': '/list' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'whitespace preservation with comment at end of wrapper paragraph': {
@@ -2357,7 +2472,9 @@ ve.dm.example.domToDataCases = {
 			},
 			{ 'type': '/alienMeta' },
 			{ 'type': '/listItem' },
-			{ 'type': '/list' }
+			{ 'type': '/list' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'whitespace preservation with multiple comments at end of wrapper paragraph': {
@@ -2419,7 +2536,9 @@ ve.dm.example.domToDataCases = {
 			},
 			{ 'type': '/alienMeta' },
 			{ 'type': '/listItem' },
-			{ 'type': '/list' }
+			{ 'type': '/list' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'whitespace preservation with comment at start or end of element': {
@@ -2450,7 +2569,9 @@ ve.dm.example.domToDataCases = {
 				}
 			},
 			{ 'type': '/alienMeta' },
-			{ 'type': '/paragraph' }
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'mismatching whitespace data is ignored': {
@@ -2465,7 +2586,9 @@ ve.dm.example.domToDataCases = {
 			'B',
 			{ 'type': '/paragraph' },
 			{ 'type': '/listItem' },
-			{ 'type': '/list' }
+			{ 'type': '/list' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		],
 		'normalizedHtml': '<body> <ul><li><p>\tA\n</p>  <p>B</p></li></ul>    </body>'
 	},
@@ -2530,7 +2653,9 @@ ve.dm.example.domToDataCases = {
 					ve.dm.example.italic
 				]
 			],
-			{ 'type': '/paragraph' }
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'nested annotations are closed and reopened in the correct order': {
@@ -2642,7 +2767,9 @@ ve.dm.example.domToDataCases = {
 					ve.dm.example.italic
 				]
 			],
-			{ 'type': '/paragraph' }
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'document with meta elements': {
@@ -2660,7 +2787,9 @@ ve.dm.example.domToDataCases = {
 			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
 			ve.dm.example.MWTransclusion.mixedDataOpen,
 			ve.dm.example.MWTransclusion.mixedDataClose,
-			{ 'type': '/paragraph' }
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		],
 		'storeItems': [
 			ve.dm.example.MWTransclusion.mixedStoreItems
@@ -2713,7 +2842,9 @@ ve.dm.example.domToDataCases = {
 				}
 			},
 			{ 'type': '/alienInline' },
-			{ 'type': '/paragraph' }
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'whitespace preservation with an about group': {
@@ -2730,7 +2861,9 @@ ve.dm.example.domToDataCases = {
 					'whitespace': [ ' ', undefined, undefined, '    ' ]
 				}
 			},
-			{ 'type': '/alienBlock' }
+			{ 'type': '/alienBlock' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'mw:Entity': {
@@ -2757,7 +2890,9 @@ ve.dm.example.domToDataCases = {
 				'htmlAttributes': [ { 'values': { 'typeof': 'mw:Entity' } } ]
 			},
 			{ 'type': '/mwEntity' },
-			{ 'type': '/paragraph' }
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'wrapping with mw:Entity': {
@@ -2784,7 +2919,9 @@ ve.dm.example.domToDataCases = {
 				'htmlAttributes': [ { 'values': { 'typeof': 'mw:Entity' } } ]
 			},
 			{ 'type': '/mwEntity' },
-			{ 'type': '/paragraph' }
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'whitespace preservation with mw:Entity': {
@@ -2821,7 +2958,9 @@ ve.dm.example.domToDataCases = {
 				'htmlAttributes': [ { 'values': { 'typeof': 'mw:Entity' } } ]
 			},
 			{ 'type': '/mwEntity' },
-			{ 'type': '/paragraph' }
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'block node inside annotation node is alienated': {
@@ -2837,7 +2976,9 @@ ve.dm.example.domToDataCases = {
 				'annotations': [ ve.dm.example.span ]
 			},
 			{ 'type': '/alienInline' },
-			{ 'type': '/paragraph' }
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'block node inside annotation node surrounded by tables': {
@@ -2857,7 +2998,9 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/alienInline' },
 			{ 'type': '/paragraph' },
 			{ 'type': 'table' },
-			{ 'type': '/table' }
+			{ 'type': '/table' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'block node inside annotation node is alienated and continues wrapping': {
@@ -2879,7 +3022,9 @@ ve.dm.example.domToDataCases = {
 			'B',
 			'a',
 			'z',
-			{ 'type': '/paragraph' }
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'whitespace before meta node in wrapping mode': {
@@ -2915,7 +3060,9 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/tableCell' },
 			{ 'type': '/tableRow' },
 			{ 'type': '/tableSection' },
-			{ 'type': '/table' }
+			{ 'type': '/table' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'table with caption, head, foot and body': {
@@ -2935,7 +3082,9 @@ ve.dm.example.domToDataCases = {
 					'property': 'mw:PageProp/categorydefaultsort'
 				} } ]
 			},
-			{ 'type': '/mwDefaultSort' }
+			{ 'type': '/mwDefaultSort' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'div set to RTL with paragraph inside': {
@@ -2952,7 +3101,9 @@ ve.dm.example.domToDataCases = {
 			['d', [ ve.dm.example.italic ]],
 			'e',
 			{ 'type': '/paragraph' },
-			{ 'type': '/div' }
+			{ 'type': '/div' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'thumb image': {
@@ -2975,7 +3126,9 @@ ve.dm.example.domToDataCases = {
 			'a', 'b', 'c',
 			{ 'type': '/paragraph' },
 			{ 'type': '/mwImageCaption' },
-			{ 'type': '/mwBlockImage' }
+			{ 'type': '/mwBlockImage' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	}
 };
@@ -3141,8 +3294,10 @@ ve.dm.example.isolationData = [
 	'3',
 	{ 'type': '/paragraph' },
 	{ 'type': '/listItem' },
-	{ 'type': '/list' }
-	// 244
+	{ 'type': '/list' },
+	{ 'type': 'internalList' },
+	{ 'type': '/internalList' }
+	// 246
 ];
 
 ve.dm.example.references = [

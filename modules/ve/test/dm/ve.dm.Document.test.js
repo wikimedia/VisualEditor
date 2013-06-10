@@ -50,8 +50,10 @@ QUnit.test( 'constructor', 8, function ( assert ) {
 	);
 	assert.equalNodeTree(
 		doc.getDocumentNode(),
-		new ve.dm.DocumentNode( [ new ve.dm.ParagraphNode(
-			[ new ve.dm.TextNode( 9 ) ], ve.dm.example.withMetaPlainData[0] ) ] ),
+		new ve.dm.DocumentNode( [
+			new ve.dm.ParagraphNode( [ new ve.dm.TextNode( 9 ) ], ve.dm.example.withMetaPlainData[0] ),
+			new ve.dm.InternalListNode( [], ve.dm.example.withMetaPlainData[11] )
+		] ),
 		'node tree does not contain metadata'
 	);
 } );
