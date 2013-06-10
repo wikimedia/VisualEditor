@@ -89,7 +89,7 @@ class MakeStaticLoader extends Maintenance {
 				'rangy/rangy-position-1.3.js',
 				'unicodejs/unicodejs.js',
 				'unicodejs/unicodejs.textstring.js',
-				'unicodejs/unicodejs.wordbreak.groups.js',
+				'unicodejs/unicodejs.wordbreakproperties.js',
 				'unicodejs/unicodejs.wordbreak.js',
 			),
 		);
