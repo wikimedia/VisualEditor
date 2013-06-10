@@ -25,8 +25,11 @@ ve.ce.MWInlineImageNode = function VeCeMWInlineImageNode( model, config ) {
 		this.$ = this.$$( '<a>' ).addClass( 'image' );
 		this.$image = this.$$( '<img>' ).appendTo( this.$ );
 	} else {
-		this.$ = this.$$( '<img>' );
-		this.$image = this.$;
+		// For inline images that are not linked (empty linkto=) we intentionally don't match output
+		// of MW Parser, instead we wrap those images in span so selection and hover (based on
+		// shields) can work well. It might change in the future when we improve our selection.
+		this.$ = this.$$( '<span>' );
+		this.$image = this.$$( '<img>' ).appendTo( this.$ );
 	}
 
 	// Mixin constructors
