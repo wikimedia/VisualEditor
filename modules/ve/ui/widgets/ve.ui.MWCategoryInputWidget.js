@@ -101,7 +101,8 @@ ve.ui.MWCategoryInputWidget.prototype.getLookupMenuItemsFromData = function ( da
 		pattern = new RegExp( '^' + category.value );
 
 	// Existing categories
-	for ( i = 0, len = existingCategories.length; i < len; i++ ) {
+	// bug 48556: Don't offer the very last category in the list here, so go up to .length - 1
+	for ( i = 0, len = existingCategories.length - 1; i < len; i++ ) {
 		item = existingCategories[i];
 		if ( item.match( pattern ) ) {
 			if ( item === category.value ) {
