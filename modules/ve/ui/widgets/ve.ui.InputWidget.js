@@ -27,7 +27,7 @@ ve.ui.InputWidget = function VeUiInputWidget( config ) {
 
 	// Properties
 	this.$input = this.getInputElement( config );
-	this.value = config.value;
+	this.value = config.value === undefined ? '' : config.value;
 	this.readonly = false;
 
 	// Events
