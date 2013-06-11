@@ -66,25 +66,47 @@ ve.inheritClass( ve.ui.MWCategoryPopupWidget, ve.ui.PopupWidget );
 
 /**
  * @event removeCategory
+ * @param {string} category Category name
  */
 
 /**
  * @event updateSortkey
+ * @param {string} category Category name
+ * @param {string} sortkey New sortkey
  */
 
 /* Methods */
 
+/**
+ * Handle category remove events.
+ *
+ * @method
+ * @emits removeCategory
+ */
 ve.ui.MWCategoryPopupWidget.prototype.onRemoveCategory = function () {
 	this.emit( 'removeCategory', this.category );
 	this.closePopup();
 };
 
+/**
+ * Handle sort key form submit events.
+ *
+ * @method
+ * @param {jQuery.Event} e Form submit event
+ * @emits updateSortkey
+ */
 ve.ui.MWCategoryPopupWidget.prototype.onSortKeySubmit = function () {
 	this.emit( 'updateSortkey', this.category, this.sortKeyInput.$input.val() );
 	this.closePopup();
 	return false;
 };
 
+/**
+ * Open a category item popup.
+ *
+ * @method
+ * @param {ve.ui.MWCategoryItemWidget} item Category item
+ */
 ve.ui.MWCategoryPopupWidget.prototype.openPopup = function ( item ) {
 	this.show();
 	this.popupOpen = true;
@@ -93,19 +115,42 @@ ve.ui.MWCategoryPopupWidget.prototype.openPopup = function ( item ) {
 	this.setPopup( item );
 };
 
+/**
+ * Load item information into the popup.
+ *
+ * @method
+ * @param {ve.ui.MWCategoryItemWidget} item Category item
+ */
 ve.ui.MWCategoryPopupWidget.prototype.loadCategoryIntoPopup = function ( item ) {
 	this.sortKeyInput.$input.val( item.sortKey );
 };
 
+/**
+ * Close the popup.
+ *
+ * @method
+ */
 ve.ui.MWCategoryPopupWidget.prototype.closePopup = function () {
 	this.hide();
 	this.popupOpen = false;
 };
 
+/**
+ * Set the default sort key.
+ *
+ * @method
+ * @param {string} value Default sort key value
+ */
 ve.ui.MWCategoryPopupWidget.prototype.setDefaultSortKey = function ( value ) {
 	this.sortKeyInput.$input.attr( 'placeholder', value );
 };
 
+/**
+ * Display the popup next to an item.
+ *
+ * @method
+ * @param {ve.ui.MWCategoryItemWidget} item Category item
+ */
 ve.ui.MWCategoryPopupWidget.prototype.setPopup = function ( item ) {
 	var left = item.$.offset().left + ( item.$.width() - 17 ),
 		top = item.$.offset().top + item.$.height(),

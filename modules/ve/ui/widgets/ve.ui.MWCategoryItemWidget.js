@@ -14,7 +14,7 @@
  *
  * @constructor
  * @param {Object} [config] Config options
- * @cfg {Object} [metaItem] Meta Item Reference
+ * @cfg {Object} [item] Category item
  */
 ve.ui.MWCategoryItemWidget = function VeUiMWCategoryItemWidget( config ) {
 	// Config intialization
@@ -68,14 +68,22 @@ ve.inheritClass( ve.ui.MWCategoryItemWidget, ve.ui.Widget );
 /* Methods */
 
 /**
- * Emits savePopupState on mousedown
+ * Handle mouse down events.
+ *
+ * @method
+ * @param {jQuery.Event} e Mouse down event
+ * @emits savePopupState on mousedown.
  */
 ve.ui.MWCategoryItemWidget.prototype.onMouseDown = function () {
 	this.emit( 'savePopupState' );
 };
 
 /**
- * Emits togglePopupMenu on click
+ * Handle mouse click events.
+ *
+ * @method
+ * @param {jQuery.Event} e Mouse click event
+ * @emits togglePopupMenu on mousedown.
  */
 ve.ui.MWCategoryItemWidget.prototype.onClick = function () {
 	this.emit( 'togglePopupMenu', this );
