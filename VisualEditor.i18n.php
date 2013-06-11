@@ -167,7 +167,10 @@ If the page exists, the following link text is used: {{msg-mw|Visualeditor-ca-ed
 	'visualeditor-dialog-media-title' => 'Title for the editing dialog to set how a media item is displayed on the page',
 	'visualeditor-dialog-reference-title' => '{{Identical|Reference}}',
 	'visualeditor-dialog-template-title' => '{{Identical|Template}}',
-	'visualeditor-dialog-media-insert-title' => 'Media insert dialog title text',
+	'visualeditor-dialog-media-insert-title' => 'Media insert dialog title text.
+{{Identical|Insert media}}',
+	'visualeditor-dialog-media-insert-button' => 'Used as label for the button.
+{{Identical|Insert media}}',
 	'visualeditor-media-input-placeholder' => 'Place holder text for media search input',
 	'visualeditor-dialog-action-apply' => 'Label text for button to apply changes made in dialog.
 
@@ -183,7 +186,7 @@ See also:
 	'visualeditor-toolbar-cancel' => 'Label text for button to cancel editing in the VisualEditor
 {{Identical|Close}}',
 	'visualeditor-toolbar-savedialog' => 'Label text for button to open save dialog
-{{Identical|Savearticle}}',
+{{Identical|Save page}}',
 	'visualeditor-savedialog-title-conflict' => 'Title for edit conflict slide',
 	'visualeditor-savedialog-title-nochanges' => 'Title for no changes slide',
 	'visualeditor-savedialog-title-review' => 'Title for reviewing slide',
@@ -198,7 +201,8 @@ See also:
 	'visualeditor-savedialog-label-restore' => 'Label text for save button when the user is editing a previous revision',
 	'visualeditor-editnotices-tool' => 'Text of tool in the toolbar that shows edit notices (such as [[MediaWiki:editnotice-0]] and [[MediaWiki:editnotice-8/en]]) as a pop-up',
 	'visualeditor-feedback-tool' => 'Text of tool in the toolbar that lets users provide feedback',
-	'visualeditor-meta-tool' => 'Text of tool in the toolbar the lets users set categories, language links and other page settings',
+	'visualeditor-meta-tool' => 'Text of tool in the toolbar the lets users set categories, language links and other page settings.
+{{Identical|Page settings}}',
 	'visualeditor-window-title' => 'Title of an unnamed inspector',
 	'visualeditor-linkinspector-title' => 'Title of the link inspector dialog.
 {{Identical|Hyperlink}}',
@@ -248,6 +252,8 @@ See also:
 	'visualeditor-dialog-meta-categories-defaultsort-label' => 'Label for field setting the category default sort',
 	'visualeditor-dialog-meta-languages-section' => 'Label for the language links dialog section.
 {{Identical|Language}}',
+	'visualeditor-dialog-meta-languages-label' => '{{Identical|Language}}',
+	'visualeditor-dialog-meta-languages-code-label' => '{{Identical|Language code}}',
 	'visualeditor-viewpage-savewarning' => 'Text shown when the user tries to leave the editor without saving their changes',
 	'visualeditor-loadwarning' => 'Text (JavaScript confirm()) shown when the editor fails to load properly.
 
@@ -960,6 +966,7 @@ $messages['cs'] = array(
  * @author Jdforrester
  * @author Kghbln
  * @author Metalhead64
+ * @author Se4598
  */
 $messages['de'] = array(
 	'tag-visualeditor' => '[[Special:Tags|Markierungen]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
@@ -985,23 +992,28 @@ $messages['de'] = array(
 	'visualeditor-dialog-media-title' => 'Medieneinstellungen',
 	'visualeditor-dialog-reference-title' => 'Einzelnachweis',
 	'visualeditor-dialog-template-title' => 'Vorlage',
+	'visualeditor-dialog-media-insert-title' => 'Medium einfügen',
+	'visualeditor-dialog-media-insert-button' => 'Medium einfügen',
+	'visualeditor-media-input-placeholder' => 'Nach Medien suchen',
 	'visualeditor-dialog-action-apply' => 'Änderungen speichern',
 	'visualeditor-dialog-action-cancel' => 'Abbrechen',
 	'visualeditor-dialog-action-close' => 'Schließen',
 	'visualeditor-toolbar-cancel' => 'Abbrechen',
-	'visualeditor-toolbar-savedialog' => 'Überprüfen und speichern', # Fuzzy
+	'visualeditor-toolbar-savedialog' => 'Seite speichern',
 	'visualeditor-savedialog-title-conflict' => 'Konflikt',
 	'visualeditor-savedialog-title-nochanges' => 'Keine Änderungen',
 	'visualeditor-savedialog-title-review' => 'Änderungen überprüfen',
 	'visualeditor-savedialog-title-save' => 'Änderungen speichern',
-	'visualeditor-savedialog-label-review-good' => 'Sieht gut aus', # Fuzzy
+	'visualeditor-savedialog-label-review-good' => 'Zurück zum Speicherformular',
 	'visualeditor-savedialog-label-report' => 'Problem melden',
 	'visualeditor-savedialog-label-resolve-conflict' => 'Konflikt lösen',
 	'visualeditor-savedialog-label-create' => 'Seite erstellen',
 	'visualeditor-savedialog-label-save' => 'Seite speichern',
+	'visualeditor-savedialog-label-review' => 'Überprüfe deine Änderungen',
 	'visualeditor-savedialog-label-restore' => 'Seite wiederherstellen',
 	'visualeditor-editnotices-tool' => '{{PLURAL:$1|Eine Notiz|$1 Notizen}}',
 	'visualeditor-feedback-tool' => 'Rückmeldungen hinterlassen',
+	'visualeditor-meta-tool' => 'Seiteneinstellungen',
 	'visualeditor-window-title' => 'Überprüfen',
 	'visualeditor-linkinspector-title' => 'Link',
 	'visualeditor-linkinspector-suggest-matching-page' => 'Übereinstimmende Seite',
@@ -1035,13 +1047,17 @@ $messages['de'] = array(
 	'visualeditor-dialog-meta-categories-section' => 'Kategorien',
 	'visualeditor-dialog-meta-categories-data-label' => 'Kategorien',
 	'visualeditor-dialog-meta-categories-settings-label' => 'Kategorieeinstellungen',
-	'visualeditor-dialog-meta-categories-input-placeholder' => 'Kategorie hinzufügen', # Fuzzy
+	'visualeditor-dialog-meta-categories-input-placeholder' => 'Eine Kategorie hinzufügen',
 	'visualeditor-dialog-meta-categories-input-newcategorylabel' => 'Neue Kategorie',
 	'visualeditor-dialog-meta-categories-input-movecategorylabel' => 'Diese Kategorie hierher verschieben',
 	'visualeditor-dialog-meta-categories-input-matchingcategorieslabel' => 'Passende Kategorien',
-	'visualeditor-dialog-meta-categories-sortkey-label' => 'Seitenname in der Kategorie', # Fuzzy
-	'visualeditor-dialog-meta-categories-defaultsort-label' => 'Standardseitenname auf der Kategorieseite', # Fuzzy
+	'visualeditor-dialog-meta-categories-sortkey-label' => 'Diese Seite sortieren als',
+	'visualeditor-dialog-meta-categories-defaultsort-label' => 'Diese Seite standardmäßig sortieren als',
 	'visualeditor-dialog-meta-languages-section' => 'Sprachen',
+	'visualeditor-dialog-meta-languages-label' => 'Sprachen',
+	'visualeditor-dialog-meta-languages-code-label' => 'Sprachcode',
+	'visualeditor-dialog-meta-languages-link-label' => 'Verlinkter Artikel',
+	'visualeditor-dialog-meta-languages-readonlynote' => 'Dies ist eine Liste der Artikel in anderen Sprachen, die auf diesen Artikel verlinkt sind. Sie können mit dem VisualEditor noch nicht bearbeitet werden.',
 	'visualeditor-viewpage-savewarning' => 'Bist du sicher, dass du zum Ansichtsmodus wechseln möchtest, ohne vorher zu speichern?',
 	'visualeditor-loadwarning' => 'Fehler beim Laden der Daten vom Server: $1. Soll der Vorgang erneut durchgeführt werden?',
 	'visualeditor-loadwarning-token' => 'Fehler beim Laden des Bearbeitungstokens vom Server: $1. Willst du es erneut versuchen?',
@@ -1050,23 +1066,26 @@ $messages['de'] = array(
 	'visualeditor-saveerror' => 'Fehler beim Speichern der Daten auf dem Server: $1.',
 	'visualeditor-editconflict' => 'Deine Änderungen konnten aufgrund eines Bearbeitungskonflikts nicht gespeichert werden. Willst du den Konflikt manuell beheben?',
 	'visualeditor-editsummary' => 'Beschreibe, was du geändert hast',
-	'visualeditor-problem' => 'Beschreibe, was schief gelaufen ist', # Fuzzy
+	'visualeditor-problem' => 'Beschreibe, was mit der Wikitextanordnung schief gelaufen ist',
 	'visualeditor-aliennode-tooltip' => 'Dieses Element kann leider nicht mit dem VisualEditor bearbeitet werden.',
 	'visualeditor-descriptionpagelink' => 'Project:VisualEditor',
 	'visualeditor-alphawarning' => 'Du benutzt eine Alpha-Version des [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditors]]. Er ist teilweise noch langsam und kann fehlerhafte Änderungen erzeugen. Bitte überprüfe jede Bearbeitung, die du gemacht hast.',
+	'visualeditor-browserwarning' => 'Du verwendest einen Browser, der vom VisualEditor nicht offiziell unterstützt wird.',
 	'visualeditor-report-notice' => 'Mit dem Klick auf „Problem berichten“ übermittle ich meine Änderungen und meine Rückmeldung, die zur Auswertung gespeichert wird. Ich stimme der Abgabe meiner Rückmeldung in Übereinstimmung mit den [[{{MediaWiki:Visualeditor-report-link}}|Nutzungsbedingungen]] zu.',
 	'visualeditor-report-link' => 'foundation:Terms of Use/de',
 	'visualeditor-feedback-link' => 'Project:VisualEditor/Rückmeldungen',
-	'visualeditor-diff-nochanges' => 'Deine Bearbeitung wurde ignoriert, da du keine Textänderungen durchgeführt hast.', # Fuzzy
+	'visualeditor-diff-nochanges' => 'Die Überprüfung konnte nicht gestartet werden, da deine Version der aktuellen Seitenversion entspricht.',
 );
 
 /** German (formal address) (Deutsch (Sie-Form)‎)
  * @author Kghbln
+ * @author Se4598
  */
 $messages['de-formal'] = array(
 	'visualeditor-notification-saved' => 'Ihre Änderungen an $1 wurden gespeichert.',
 	'visualeditor-viewpage-savewarning' => 'Sind Sie sicher, dass Sie zum Ansichtsmodus wechseln möchten, ohne vorher zu speichern?',
 	'visualeditor-editsummary' => 'Beschreiben Sie, was Sie geändert haben.',
+	'visualeditor-browserwarning' => 'Sie verwenden einen Browser, der vom VisualEditor nicht offiziell unterstützt wird.',
 );
 
 /** Zazaki (Zazaki)
@@ -1364,25 +1383,31 @@ $messages['et'] = array(
 	'visualeditor-ca-createsource' => 'Loo lähtetekst',
 	'visualeditor-dialog-meta-title' => 'Lehekülje sätted',
 	'visualeditor-dialog-content-title' => 'Sisu eelistused',
+	'visualeditor-dialog-media-title' => 'Meediafaili sätted',
 	'visualeditor-dialog-reference-title' => 'Viide',
 	'visualeditor-dialog-template-title' => 'Mall',
+	'visualeditor-dialog-media-insert-title' => 'Meediafaili lisamine',
+	'visualeditor-dialog-media-insert-button' => 'Lisa meediafail',
+	'visualeditor-media-input-placeholder' => 'Otsi meediafaile',
 	'visualeditor-dialog-action-apply' => 'Rakenda muudatused',
 	'visualeditor-dialog-action-cancel' => 'Loobu',
 	'visualeditor-dialog-action-close' => 'Sule',
 	'visualeditor-toolbar-cancel' => 'Loobu',
-	'visualeditor-toolbar-savedialog' => 'Vaata üle ja salvesta', # Fuzzy
+	'visualeditor-toolbar-savedialog' => 'Salvesta lehekülg',
 	'visualeditor-savedialog-title-conflict' => 'Konflikt',
 	'visualeditor-savedialog-title-nochanges' => 'Muudatused puuduvad',
 	'visualeditor-savedialog-title-review' => 'Muudatuste ülevaatamine',
 	'visualeditor-savedialog-title-save' => 'Sinu muudatuste salvestamine',
-	'visualeditor-savedialog-label-review-good' => 'Paistab hea', # Fuzzy
+	'visualeditor-savedialog-label-review-good' => 'Naase salvestusvormi juurde',
 	'visualeditor-savedialog-label-report' => 'Teata probleemist',
 	'visualeditor-savedialog-label-resolve-conflict' => 'Lahenda konflikt',
 	'visualeditor-savedialog-label-create' => 'Loo lehekülg',
 	'visualeditor-savedialog-label-save' => 'Salvesta lehekülg',
+	'visualeditor-savedialog-label-review' => 'Vaata oma muudatused üle',
 	'visualeditor-savedialog-label-restore' => 'Taasta lehekülg',
 	'visualeditor-editnotices-tool' => '$1 {{PLURAL:$1|teadaanne|teadaannet}}',
 	'visualeditor-feedback-tool' => 'Anna tagasisidet',
+	'visualeditor-meta-tool' => 'Lehekülje sätted',
 	'visualeditor-linkinspector-title' => 'Hüperlink',
 	'visualeditor-linkinspector-suggest-matching-page' => 'Vasteks sobiv lehekülg',
 	'visualeditor-linkinspector-suggest-new-page' => 'Uus lehekülg',
@@ -1402,6 +1427,7 @@ $messages['et'] = array(
 	'visualeditor-dialogbutton-meta-tooltip' => 'Lehekülje sätted',
 	'visualeditor-dialogbutton-reference-tooltip' => 'Viide',
 	'visualeditor-dialogbutton-template-tooltip' => 'Mall',
+	'visualeditor-dialogbutton-media-tooltip' => 'Meediafail',
 	'visualeditor-indentationbutton-indent-tooltip' => 'Suurenda taanet',
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Vähenda taanet',
 	'visualeditor-listbutton-number-tooltip' => 'Numberloend',
@@ -1414,19 +1440,28 @@ $messages['et'] = array(
 	'visualeditor-dialog-meta-categories-section' => 'Kategooriad',
 	'visualeditor-dialog-meta-categories-data-label' => 'Kategooriad',
 	'visualeditor-dialog-meta-categories-settings-label' => 'Kategooria sätted',
-	'visualeditor-dialog-meta-categories-input-placeholder' => 'Lisa kategooria', # Fuzzy
+	'visualeditor-dialog-meta-categories-input-placeholder' => 'Lisa kategooria',
 	'visualeditor-dialog-meta-categories-input-newcategorylabel' => 'Uus kategooria',
+	'visualeditor-dialog-meta-categories-input-movecategorylabel' => 'Liiguta see kategooria siia',
 	'visualeditor-dialog-meta-categories-input-matchingcategorieslabel' => 'Vasteks sobivad kategooriad',
-	'visualeditor-dialog-meta-categories-sortkey-label' => 'Lehekülje nimi kategoorias', # Fuzzy
+	'visualeditor-dialog-meta-categories-sortkey-label' => 'Järjesta see lehekülg kui',
+	'visualeditor-dialog-meta-categories-defaultsort-label' => 'Järjesta see lehekülg vaikimisi kui',
 	'visualeditor-dialog-meta-languages-section' => 'Keeled',
+	'visualeditor-dialog-meta-languages-label' => 'Keeled',
+	'visualeditor-dialog-meta-languages-code-label' => 'Keelekood',
+	'visualeditor-dialog-meta-languages-link-label' => 'Lingitud artikkel',
+	'visualeditor-dialog-meta-languages-readonlynote' => 'See on loend muukeelsetest artiklitest, mis viitavad siinsele. Neid ei saa veel VisualEditori abil redigeerida.',
 	'visualeditor-viewpage-savewarning' => 'Kas oled kindel, et tahad mina tagasi vaatamisrežiimi ilma kõigepealt salvestamata?',
 	'visualeditor-loadwarning' => 'Tõrge andmete laadimisel serverist: $1. Ehk proovid uuesti?',
+	'visualeditor-differror' => 'Tõrge serverist andmete laadimisel: $1.',
+	'visualeditor-serializeerror' => 'Tõrge serverist andmete laadimisel: $1.',
 	'visualeditor-saveerror' => 'Tõrge andmete salvestamisel serverisse: $1.',
 	'visualeditor-editconflict' => 'Sinu muudatust ei õnnestunud redigeerimiskonflikti tõttu salvestada. Kas soovid konflikti käsitsi lahendada?',
 	'visualeditor-editsummary' => 'Kirjelda, mida muutsid',
 	'visualeditor-problem' => 'Kirjelda, mis läks valesti', # Fuzzy
+	'visualeditor-aliennode-tooltip' => 'Seda elementi kahjuks ei saa VisualEditori abil redigeerida.',
 	'visualeditor-alphawarning' => 'Kasutad [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditori]] alfaversiooni. See võib olla aeglane ja teha vigaseid muudatusi. Palun kontrolli iga tehtud muudatust.',
-	'visualeditor-diff-nochanges' => 'Sinu muudatust eirati, sest sa ei muutnud teksti.', # Fuzzy
+	'visualeditor-diff-nochanges' => 'Ülevaatusega ei saa alustada, sest sinu redaktsioon kattub selle lehekülje viimase versiooniga.',
 );
 
 /** Basque (euskara)
@@ -1617,6 +1652,7 @@ $messages['fi'] = array(
 );
 
 /** French (français)
+ * @author Automatik
  * @author Benoit Rochon
  * @author Boniface
  * @author Brunoperel
@@ -1656,25 +1692,28 @@ $messages['fr'] = array(
 	'visualeditor-dialog-media-title' => 'Paramètres du média',
 	'visualeditor-dialog-reference-title' => 'Référence',
 	'visualeditor-dialog-template-title' => 'Modèle',
+	'visualeditor-dialog-media-insert-title' => 'Insérer le média',
+	'visualeditor-dialog-media-insert-button' => 'Insérer le média',
+	'visualeditor-media-input-placeholder' => 'Rechercher un média',
 	'visualeditor-dialog-action-apply' => 'Appliquer les modifications',
 	'visualeditor-dialog-action-cancel' => 'Annuler',
 	'visualeditor-dialog-action-close' => 'Fermer',
 	'visualeditor-toolbar-cancel' => 'Annuler',
-	'visualeditor-toolbar-savedialog' => 'Relire et enregistrer',
+	'visualeditor-toolbar-savedialog' => 'Enregistrer la page',
 	'visualeditor-savedialog-title-conflict' => 'Conflit',
 	'visualeditor-savedialog-title-nochanges' => 'Aucun changement',
 	'visualeditor-savedialog-title-review' => 'Relire vos modifications',
-	'visualeditor-savedialog-title-report' => 'Signaler un problème',
 	'visualeditor-savedialog-title-save' => 'Enregistrer vos modifications',
-	'visualeditor-savedialog-label-review-wrong' => 'Quelque chose ne va pas',
-	'visualeditor-savedialog-label-review-good' => 'Cela me semble correct',
+	'visualeditor-savedialog-label-review-good' => 'Revenir au formulaire d’enregistrement',
 	'visualeditor-savedialog-label-report' => 'Signaler un problème',
 	'visualeditor-savedialog-label-resolve-conflict' => 'Résoudre le conflit',
 	'visualeditor-savedialog-label-create' => 'Créer la page',
 	'visualeditor-savedialog-label-save' => 'Enregistrer la page',
+	'visualeditor-savedialog-label-review' => 'Relire vos modifications',
 	'visualeditor-savedialog-label-restore' => 'Restaurer la page',
 	'visualeditor-editnotices-tool' => '$1 avertissement{{PLURAL:$1||s}}',
 	'visualeditor-feedback-tool' => 'Laisser un avis',
+	'visualeditor-meta-tool' => 'Paramètres de la page',
 	'visualeditor-window-title' => 'Inspecter',
 	'visualeditor-linkinspector-title' => 'Hyperlien',
 	'visualeditor-linkinspector-suggest-matching-page' => 'Page correspondante',
@@ -1708,13 +1747,17 @@ $messages['fr'] = array(
 	'visualeditor-dialog-meta-categories-section' => 'Catégories',
 	'visualeditor-dialog-meta-categories-data-label' => 'Catégories',
 	'visualeditor-dialog-meta-categories-settings-label' => 'Paramètres de la catégorie',
-	'visualeditor-dialog-meta-categories-input-placeholder' => 'Ajouter des catégories',
+	'visualeditor-dialog-meta-categories-input-placeholder' => 'Ajouter une catégorie',
 	'visualeditor-dialog-meta-categories-input-newcategorylabel' => 'Ajouter une catégorie',
 	'visualeditor-dialog-meta-categories-input-movecategorylabel' => 'Déplacer cette catégorie ici',
 	'visualeditor-dialog-meta-categories-input-matchingcategorieslabel' => 'Catégories correspondantes',
-	'visualeditor-dialog-meta-categories-sortkey-label' => 'Nom de la page dans la catégorie',
-	'visualeditor-dialog-meta-categories-defaultsort-label' => 'Nom de page par défaut sur la page de catégorie',
+	'visualeditor-dialog-meta-categories-sortkey-label' => 'Trier cette page comme',
+	'visualeditor-dialog-meta-categories-defaultsort-label' => 'Trier cette page par défaut comme',
 	'visualeditor-dialog-meta-languages-section' => 'Langues',
+	'visualeditor-dialog-meta-languages-label' => 'Langues',
+	'visualeditor-dialog-meta-languages-code-label' => 'Code de langue',
+	'visualeditor-dialog-meta-languages-link-label' => 'Article lié',
+	'visualeditor-dialog-meta-languages-readonlynote' => 'Voici une liste d’articles dans d’autres langues qui sont liés à celui-ci ; ils ne peuvent pas encore être modifiés en utilisant VisualEditor',
 	'visualeditor-viewpage-savewarning' => 'Êtes-vous sûr de vouloir retourner au mode lecture sans enregistrer ?',
 	'visualeditor-loadwarning' => 'Erreur lors du chargement des données du serveur : $1. Voulez-vous réessayer ?',
 	'visualeditor-loadwarning-token' => 'Erreur lors du chargement des données du serveur : $1. Voulez-vous réessayer ?',
@@ -1723,14 +1766,15 @@ $messages['fr'] = array(
 	'visualeditor-saveerror' => 'Erreur lors de l’enregistrement des données sur le serveur : $1.',
 	'visualeditor-editconflict' => 'Vos modifications n’ont pas pu être enregistrées à cause d’un conflit d’édition. Voulez-vous résoudre ce conflit manuellement ?',
 	'visualeditor-editsummary' => 'Décrivez ce que vous avez modifié',
-	'visualeditor-problem' => 'Décrivez le problème rencontré',
+	'visualeditor-problem' => 'Décrivez ce qui se passe mal avec la sérialisation du wikitext',
 	'visualeditor-aliennode-tooltip' => 'Désolé, cet élément ne peut pas être modifié au moyen de l’Éditeur Visuel',
-	'visualeditor-descriptionpagelink' => 'Project:Éditeur Visuel',
+	'visualeditor-descriptionpagelink' => 'Project:ÉditeurVisuel',
 	'visualeditor-alphawarning' => 'Vous utilisez une version alpha de l’[[{{MediaWiki:Visualeditor-descriptionpagelink}}|Éditeur Visuel]]. Elle peut être lente et effectuer des modifications erronées — veuillez vérifier chacune de vos modifications.',
+	'visualeditor-browserwarning' => 'Vous utilisez un navigateur qui n’est pas supporté de façon officielle par VisualEditor.',
 	'visualeditor-report-notice' => 'Je comprends qu’en cliquant sur «  Signaler un problème  », je transmettrai mes modifications et mes commentaires, qui seront stockés pour analyse. J’accepte de donner mon avis en accord avec les [[{{MediaWiki:Visualeditor-report-link}}|conditions d’utilisation]].',
 	'visualeditor-report-link' => 'foundation:Terms of Use/fr',
-	'visualeditor-feedback-link' => 'Project:Éditeur Visuel/Avis',
-	'visualeditor-diff-nochanges' => 'Votre modification a été ignorée parce que vous n’avez apporté aucun changement au texte.',
+	'visualeditor-feedback-link' => 'Project:ÉditeurVisuel/Avis',
+	'visualeditor-diff-nochanges' => 'Impossible de commencer la relecture car votre révision correspond à la dernière version de cette page.',
 );
 
 /** Franco-Provençal (arpetan)
@@ -1816,19 +1860,21 @@ $messages['gl'] = array(
 	'visualeditor-dialog-action-cancel' => 'Cancelar',
 	'visualeditor-dialog-action-close' => 'Pechar',
 	'visualeditor-toolbar-cancel' => 'Cancelar',
-	'visualeditor-toolbar-savedialog' => 'Revisar e gardar', # Fuzzy
+	'visualeditor-toolbar-savedialog' => 'Gardar a páxina',
 	'visualeditor-savedialog-title-conflict' => 'Conflito',
 	'visualeditor-savedialog-title-nochanges' => 'Ningún cambio',
 	'visualeditor-savedialog-title-review' => 'Revisar os seus cambios',
 	'visualeditor-savedialog-title-save' => 'Gardar os seus cambios',
-	'visualeditor-savedialog-label-review-good' => 'Semella ben para min', # Fuzzy
+	'visualeditor-savedialog-label-review-good' => 'Volver ao formulario para gardar',
 	'visualeditor-savedialog-label-report' => 'Informar sobre un problema',
 	'visualeditor-savedialog-label-resolve-conflict' => 'Resolver o conflito',
 	'visualeditor-savedialog-label-create' => 'Crear a páxina',
 	'visualeditor-savedialog-label-save' => 'Gardar a páxina',
+	'visualeditor-savedialog-label-review' => 'Revisar os seus cambios',
 	'visualeditor-savedialog-label-restore' => 'Restaurar a páxina',
 	'visualeditor-editnotices-tool' => '$1 {{PLURAL:$1|aviso|avisos}}',
 	'visualeditor-feedback-tool' => 'Deixe un comentario',
+	'visualeditor-meta-tool' => 'Configuración da páxina',
 	'visualeditor-window-title' => 'Inspeccionar',
 	'visualeditor-linkinspector-title' => 'Hiperligazón',
 	'visualeditor-linkinspector-suggest-matching-page' => 'Páxina coincidente',
@@ -1862,13 +1908,16 @@ $messages['gl'] = array(
 	'visualeditor-dialog-meta-categories-section' => 'Categorías',
 	'visualeditor-dialog-meta-categories-data-label' => 'Categorías',
 	'visualeditor-dialog-meta-categories-settings-label' => 'Configuración da categoría',
-	'visualeditor-dialog-meta-categories-input-placeholder' => 'Engadir unha categoría', # Fuzzy
+	'visualeditor-dialog-meta-categories-input-placeholder' => 'Engada unha categoría',
 	'visualeditor-dialog-meta-categories-input-newcategorylabel' => 'Nova categoría',
 	'visualeditor-dialog-meta-categories-input-movecategorylabel' => 'Trasladar esta categoría aquí',
 	'visualeditor-dialog-meta-categories-input-matchingcategorieslabel' => 'Categorías coincidentes',
 	'visualeditor-dialog-meta-categories-sortkey-label' => 'Nome da páxina na categoría', # Fuzzy
 	'visualeditor-dialog-meta-categories-defaultsort-label' => 'Nome da páxina por defecto na páxina da categoría', # Fuzzy
 	'visualeditor-dialog-meta-languages-section' => 'Linguas',
+	'visualeditor-dialog-meta-languages-label' => 'Linguas',
+	'visualeditor-dialog-meta-languages-code-label' => 'Código da lingua',
+	'visualeditor-dialog-meta-languages-link-label' => 'Artigo ligado',
 	'visualeditor-viewpage-savewarning' => 'Está seguro de querer volver ao modo de lectura sen gardar primeiro?',
 	'visualeditor-loadwarning' => 'Erro ao cargar os datos desde o servidor: $1. Quéreo intentar de novo?',
 	'visualeditor-loadwarning-token' => 'Erro ao cargar o pase de edición desde o servidor: $1. Quéreo intentar de novo?',
@@ -2354,6 +2403,23 @@ $messages['ilo'] = array(
 	'visualeditor-dialog-meta-categories-input-movecategorylabel' => 'Iyalis ti kategoria ditoy',
 	'visualeditor-dialog-meta-categories-input-matchingcategorieslabel' => 'Agpadpada a katkategoria',
 	'visualeditor-dialog-meta-categories-sortkey-label' => 'Nagan ti panid iti kategoria',
+	'visualeditor-dialog-meta-categories-defaultsort-label' => 'Kasisigud a nagan ti panid iti panid ti kategoria',
+	'visualeditor-dialog-meta-languages-section' => 'Dagiti pagsasao',
+	'visualeditor-viewpage-savewarning' => 'Siguradoka kadi a kayatmo ti agsubli iti moda a panagkita a saan nga umuna nga agidulin?',
+	'visualeditor-loadwarning' => 'Biddut ti panagikarga manipud ti server: $1. Kayatmo a manen a padasen?',
+	'visualeditor-loadwarning-token' => 'Biddut ti panagikarga ti tandaan ti panagurnos manipud ti server: $1. Kayatmo manen a padasen?',
+	'visualeditor-differror' => 'Biddut ti panagikarga ti datos manipud ti server: $1.',
+	'visualeditor-serializeerror' => 'Biddut ti panagikarga ti datos manipud ti server:$1.',
+	'visualeditor-saveerror' => 'Biddut ti panagidulin ti datos iti server:$1.',
+	'visualeditor-editconflict' => 'Dagiti binaliwam ket saan a maidulin gapu ti suppiat ti panagurnos. Kayatmo kadi a manual nga ibanagan ti suppiat?',
+	'visualeditor-editsummary' => 'Ipalawag ti binaliwam',
+	'visualeditor-problem' => 'Ipalawag ti napamadi',
+	'visualeditor-aliennode-tooltip' => 'Pasensian, daytoy nga elemento ket saan a maurnos nga agusar ti VisualEditor',
+	'visualeditor-descriptionpagelink' => 'Project:VisualEditor',
+	'visualeditor-alphawarning' => 'Agus-usarka ti alpha a bersion ti [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]. Mabalin a daytoy ket nabuntog ket makaaramid kadagiti madi a panagbalbaliw-pangngaasi a kitaem ti tunggal maysa nga ur-urnosem.',
+	'visualeditor-report-notice' => 'Maawatak a babaen ti panapidut ti "Agireporta ti parikut" Ipatulodkonto dagiti binaliwak ken ti bukodko a feedback, a maipenpento tapno mausig. Umannurotak a mangited ti feedback babaen ti panagtunos kadagiti [[{{MediaWiki:Visualeditor-report-link}}|Termino ti Panag-usar]].',
+	'visualeditor-feedback-link' => 'Project:VisualEditor/Feedback',
+	'visualeditor-diff-nochanges' => 'Ti inurnosmo ket saan a naikaskaso gaputa saanka a nagbalbaliw iti testo.',
 );
 
 /** Icelandic (íslenska)
@@ -2483,19 +2549,21 @@ $messages['it'] = array(
 	'visualeditor-dialog-action-cancel' => 'Annulla',
 	'visualeditor-dialog-action-close' => 'Chiudi',
 	'visualeditor-toolbar-cancel' => 'Annulla',
-	'visualeditor-toolbar-savedialog' => 'Rivedi e salva', # Fuzzy
+	'visualeditor-toolbar-savedialog' => 'Salva la pagina',
 	'visualeditor-savedialog-title-conflict' => 'Conflitto',
 	'visualeditor-savedialog-title-nochanges' => 'Nessuna modifica',
 	'visualeditor-savedialog-title-review' => 'Rivedi le modifiche',
 	'visualeditor-savedialog-title-save' => 'Salva le modifiche',
-	'visualeditor-savedialog-label-review-good' => 'Mi sembra corretto', # Fuzzy
+	'visualeditor-savedialog-label-review-good' => 'Ritorna al modulo di salvataggio',
 	'visualeditor-savedialog-label-report' => 'Segnala un problema',
 	'visualeditor-savedialog-label-resolve-conflict' => 'Risolvi il conflitto',
 	'visualeditor-savedialog-label-create' => 'Crea pagina',
 	'visualeditor-savedialog-label-save' => 'Salva la pagina',
+	'visualeditor-savedialog-label-review' => 'Rivedi le modifiche',
 	'visualeditor-savedialog-label-restore' => 'Ripristina pagina',
 	'visualeditor-editnotices-tool' => '$1 {{PLURAL:$1|notifica|notifiche}}',
 	'visualeditor-feedback-tool' => 'Lascia un commento',
+	'visualeditor-meta-tool' => 'Impostazioni pagina',
 	'visualeditor-window-title' => 'Ispeziona',
 	'visualeditor-linkinspector-title' => 'Collegamento ipertestuale',
 	'visualeditor-linkinspector-suggest-matching-page' => 'Pagina trovata',
@@ -2529,13 +2597,17 @@ $messages['it'] = array(
 	'visualeditor-dialog-meta-categories-section' => 'Categorie',
 	'visualeditor-dialog-meta-categories-data-label' => 'Categorie',
 	'visualeditor-dialog-meta-categories-settings-label' => 'Impostazioni categorie',
-	'visualeditor-dialog-meta-categories-input-placeholder' => 'Aggiungi categoria', # Fuzzy
+	'visualeditor-dialog-meta-categories-input-placeholder' => 'Aggiungi una categoria',
 	'visualeditor-dialog-meta-categories-input-newcategorylabel' => 'Nuova categoria',
 	'visualeditor-dialog-meta-categories-input-movecategorylabel' => 'Sposta questa categoria qui',
 	'visualeditor-dialog-meta-categories-input-matchingcategorieslabel' => 'Categorie corrispondenti',
-	'visualeditor-dialog-meta-categories-sortkey-label' => 'Nome della pagina nella categoria', # Fuzzy
-	'visualeditor-dialog-meta-categories-defaultsort-label' => 'Nome della pagina predefinito nella categoria', # Fuzzy
+	'visualeditor-dialog-meta-categories-sortkey-label' => 'Ordina questa pagina come',
+	'visualeditor-dialog-meta-categories-defaultsort-label' => 'Ordina questa pagina, in modo predefinito, come',
 	'visualeditor-dialog-meta-languages-section' => 'Lingue',
+	'visualeditor-dialog-meta-languages-label' => 'Lingue',
+	'visualeditor-dialog-meta-languages-code-label' => 'Codice lingua',
+	'visualeditor-dialog-meta-languages-link-label' => 'Voce collegata',
+	'visualeditor-dialog-meta-languages-readonlynote' => 'Questo è un elenco di voci in altre lingue che sono collegate a questa; non possono ancora essere modificate utilizzando VisualEditor',
 	'visualeditor-viewpage-savewarning' => 'Tornare alla modalità in visualizzazione senza salvare prima?',
 	'visualeditor-loadwarning' => 'Errore durante il caricamento dei dati dal server: $1. Riprovare?',
 	'visualeditor-loadwarning-token' => 'Errore durante il caricamento del token di modifica server: $1. Riprovare?',
@@ -2544,14 +2616,15 @@ $messages['it'] = array(
 	'visualeditor-saveerror' => 'Errore durante il salvataggio dei dati sul server: $1.',
 	'visualeditor-editconflict' => 'Le modifiche apportate non possono essere salvate a causa di un conflitto di edizione. Vuoi risolvere il conflitto manualmente?',
 	'visualeditor-editsummary' => 'Descrivere che cosa è cambiato',
-	'visualeditor-problem' => 'Descrivi cosa è andato storto', # Fuzzy
+	'visualeditor-problem' => 'Descrivi cosa è andato storto con la serializzazione del wikitesto',
 	'visualeditor-aliennode-tooltip' => 'Spiacenti, questo elemento non può essere modificato utilizzando VisualEditor',
 	'visualeditor-descriptionpagelink' => 'Project:VisualEditor',
 	'visualeditor-alphawarning' => 'Stai utilizzando una versione alfa di [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]. Può essere lenta e fare modifiche sbagliate - controlla ogni modifica che fai.',
+	'visualeditor-browserwarning' => 'Stai usando un browser che non è supportato ufficialmente da VisualEditor.',
 	'visualeditor-report-notice' => "Capisco che cliccando su {{int:Visualeditor-savedialog-label-report}} trasmetto le mie modifiche e il mio commento che verranno conservati per l'analisi. Sono d'accordo a fornire i feedback in conformità alle [[{{MediaWiki:Visualeditor-report-link}}|condizioni d'uso]].",
 	'visualeditor-report-link' => 'foundation:Terms of Use/it',
 	'visualeditor-feedback-link' => 'Project:VisualEditor/Commenti',
-	'visualeditor-diff-nochanges' => "L'azione è stata ignorata poiché non hai fatto nessuna modifica al testo.", # Fuzzy
+	'visualeditor-diff-nochanges' => "Non può essere avviata la revisione poiché la tua versione corrisponde all'ultima della pagina.",
 );
 
 /** Japanese (日本語)
@@ -2583,25 +2656,28 @@ $messages['ja'] = array(
 	'visualeditor-dialog-media-title' => 'メディアの設定',
 	'visualeditor-dialog-reference-title' => '脚注',
 	'visualeditor-dialog-template-title' => 'テンプレート',
+	'visualeditor-dialog-media-insert-title' => 'メディアの挿入',
+	'visualeditor-dialog-media-insert-button' => 'メディアを挿入',
+	'visualeditor-media-input-placeholder' => '検索するメディア',
 	'visualeditor-dialog-action-apply' => '変更内容を適用',
 	'visualeditor-dialog-action-cancel' => 'キャンセル',
 	'visualeditor-dialog-action-close' => '閉じる',
 	'visualeditor-toolbar-cancel' => 'キャンセル',
-	'visualeditor-toolbar-savedialog' => '確認して保存',
+	'visualeditor-toolbar-savedialog' => 'ページを保存',
 	'visualeditor-savedialog-title-conflict' => '競合',
 	'visualeditor-savedialog-title-nochanges' => '変更点なし',
 	'visualeditor-savedialog-title-review' => '変更内容の確認',
-	'visualeditor-savedialog-title-report' => '問題点の報告',
-	'visualeditor-savedialog-title-save' => '変更を保存',
-	'visualeditor-savedialog-label-review-wrong' => '問題点を報告',
-	'visualeditor-savedialog-label-review-good' => 'この内容を保存',
+	'visualeditor-savedialog-title-save' => '変更内容の保存',
+	'visualeditor-savedialog-label-review-good' => '保存フォームに戻る',
 	'visualeditor-savedialog-label-report' => '問題点を報告',
 	'visualeditor-savedialog-label-resolve-conflict' => '競合を解決',
 	'visualeditor-savedialog-label-create' => 'ページを作成',
 	'visualeditor-savedialog-label-save' => 'ページを保存',
+	'visualeditor-savedialog-label-review' => '変更内容を確認',
 	'visualeditor-savedialog-label-restore' => 'ページを復元',
 	'visualeditor-editnotices-tool' => '$1 {{PLURAL:$1|件のお知らせ}}',
 	'visualeditor-feedback-tool' => 'フィードバックを送信',
+	'visualeditor-meta-tool' => 'ページの設定',
 	'visualeditor-window-title' => '調査',
 	'visualeditor-linkinspector-title' => 'ハイパーリンク',
 	'visualeditor-linkinspector-suggest-matching-page' => '一致したページ',
@@ -2639,9 +2715,13 @@ $messages['ja'] = array(
 	'visualeditor-dialog-meta-categories-input-newcategorylabel' => '新しいカテゴリ',
 	'visualeditor-dialog-meta-categories-input-movecategorylabel' => '指定したカテゴリをこの位置に移動',
 	'visualeditor-dialog-meta-categories-input-matchingcategorieslabel' => '一致するカテゴリ',
-	'visualeditor-dialog-meta-categories-sortkey-label' => 'カテゴリ内のページ名',
-	'visualeditor-dialog-meta-categories-defaultsort-label' => 'カテゴリページにおける既定のページ名（ソートキー）',
+	'visualeditor-dialog-meta-categories-sortkey-label' => 'このページのソートキー',
+	'visualeditor-dialog-meta-categories-defaultsort-label' => 'このページのデフォルトソートキー',
 	'visualeditor-dialog-meta-languages-section' => '言語',
+	'visualeditor-dialog-meta-languages-label' => '言語',
+	'visualeditor-dialog-meta-languages-code-label' => '言語コード',
+	'visualeditor-dialog-meta-languages-link-label' => 'リンクされている記事',
+	'visualeditor-dialog-meta-languages-readonlynote' => 'この記事にリンクしている他の言語の記事の一覧です。これらの記事はまだ VisualEditor では編集できません',
 	'visualeditor-viewpage-savewarning' => 'まだ保存していませんが、閲覧モードに本当に戻りますか?',
 	'visualeditor-loadwarning' => 'サーバーからデータを読み込む際にエラーが発生しました: $1。再試行しますか?',
 	'visualeditor-loadwarning-token' => 'サーバーから編集トークンを読み込む際にエラーが発生しました: $1。再試行しますか?',
@@ -2650,14 +2730,15 @@ $messages['ja'] = array(
 	'visualeditor-saveerror' => 'サーバーにデータを保存する際にエラーが発生しました: $1',
 	'visualeditor-editconflict' => '編集競合のため、編集内容を保存できませんでした。この競合を手動で解決しますか?',
 	'visualeditor-editsummary' => '編集内容を説明してください',
-	'visualeditor-problem' => '問題点の内容を説明してください',
+	'visualeditor-problem' => '問題点の内容を説明してください', # Fuzzy
 	'visualeditor-aliennode-tooltip' => '申し訳ありませんが、この要素はビジュアルエディターでは編集できません',
 	'visualeditor-descriptionpagelink' => 'Project:ビジュアルエディター',
 	'visualeditor-alphawarning' => 'あなたは[[{{MediaWiki:Visualeditor-descriptionpagelink}}|ビジュアルエディター]]のアルファ版を使用しています。動作が遅い可能性があり、誤った内容を保存してしまうおそれがあります。保存した結果が正しいか毎回確認してください。',
+	'visualeditor-browserwarning' => 'VisualEditor は、ご使用中のブラウザーに正式には対応していません。',
 	'visualeditor-report-notice' => '私は「問題点を報告」ボタンを押すことで自身の変更とフィードバックを送信し、それが分析のために保管されることを理解します。[[{{MediaWiki:Visualeditor-report-link}}|利用規約]]に従ってフィードバックを提供することに同意します。',
 	'visualeditor-report-link' => 'foundation:Terms of Use/ja',
 	'visualeditor-feedback-link' => 'Project:ビジュアルエディター/フィードバック',
-	'visualeditor-diff-nochanges' => '文章が何も変更されていないため、編集内容を破棄しました。',
+	'visualeditor-diff-nochanges' => 'あなたの編集内容がこのページの最新版と一致したため、確認を開始できませんでした。',
 );
 
 /** Javanese (Basa Jawa)
@@ -2711,12 +2792,10 @@ $messages['ka'] = array(
 	'visualeditor-ca-editsource' => 'წყაროს რედაქტირება',
 	'visualeditor-ca-ve-edit' => 'ვიზუალური რედაქტორი',
 	'visualeditor-ca-ve-create' => 'ვიზუალური რედაქტორი',
-	'visualeditor-toolbar-savedialog' => 'გადახედვა და შენახვა',
+	'visualeditor-toolbar-savedialog' => 'გვერდის შენახვა',
 	'visualeditor-savedialog-title-review' => 'თქვენი ცვლილებების გადახედვა',
-	'visualeditor-savedialog-title-report' => 'პრობლემის შეტყობინება',
 	'visualeditor-savedialog-title-save' => 'თქვენი ცვლილებების შენახვა',
-	'visualeditor-savedialog-label-review-wrong' => 'რაღაც არასწორადაა',
-	'visualeditor-savedialog-label-review-good' => 'ჩემთვის კარგად გამოიყურება',
+	'visualeditor-savedialog-label-review-good' => 'ჩემთვის კარგად გამოიყურება', # Fuzzy
 	'visualeditor-savedialog-label-report' => 'პრობლემის შეტყობინება',
 	'visualeditor-savedialog-label-create' => 'გვერდის შექმნა',
 	'visualeditor-savedialog-label-save' => 'გვერდის შენახვა',
@@ -2726,7 +2805,7 @@ $messages['ka'] = array(
 	'visualeditor-window-title' => 'შემოწმება',
 	'visualeditor-linkinspector-title' => 'ჰიპერბმული',
 	'visualeditor-linkinspector-suggest-new-page' => 'ახალი გვერდი',
-	'visualeditor-linkinspector-suggest-external-link' => 'ვებ-ბმული', # Fuzzy
+	'visualeditor-linkinspector-suggest-external-link' => 'გარე ბმული',
 	'visualeditor-formatdropdown-title' => 'ფორმატის ცვლილება',
 	'visualeditor-formatdropdown-format-paragraph' => 'პარაგრაფი',
 	'visualeditor-formatdropdown-format-heading1' => 'სათაური 1',
@@ -3164,25 +3243,28 @@ $messages['mk'] = array(
 	'visualeditor-dialog-media-title' => 'Поставки за слики и снимки',
 	'visualeditor-dialog-reference-title' => 'Навод',
 	'visualeditor-dialog-template-title' => 'Шаблон',
+	'visualeditor-dialog-media-insert-title' => 'Вметни медиумска содржина',
+	'visualeditor-dialog-media-insert-button' => 'Вметни медиумска содржина',
+	'visualeditor-media-input-placeholder' => 'Пребарајте медиумски содржини',
 	'visualeditor-dialog-action-apply' => 'Спроведи измени',
 	'visualeditor-dialog-action-cancel' => 'Откажи',
 	'visualeditor-dialog-action-close' => 'Затвори',
 	'visualeditor-toolbar-cancel' => 'Откажи',
-	'visualeditor-toolbar-savedialog' => 'Провери и зачувај',
+	'visualeditor-toolbar-savedialog' => 'Зачувај страница',
 	'visualeditor-savedialog-title-conflict' => 'Спротиставеност',
 	'visualeditor-savedialog-title-nochanges' => 'Нема измени',
 	'visualeditor-savedialog-title-review' => 'Проверете ги вашите промени',
-	'visualeditor-savedialog-title-report' => 'Пријави проблем',
 	'visualeditor-savedialog-title-save' => 'Зачувајте ги промените',
-	'visualeditor-savedialog-label-review-wrong' => 'Нешто не е во ред',
-	'visualeditor-savedialog-label-review-good' => 'Ми изгледа добро',
+	'visualeditor-savedialog-label-review-good' => 'Назад на формуларот за зачувување',
 	'visualeditor-savedialog-label-report' => 'Пријави проблем',
 	'visualeditor-savedialog-label-resolve-conflict' => 'Разреши ја спротиставеноста',
 	'visualeditor-savedialog-label-create' => 'Создај страница',
 	'visualeditor-savedialog-label-save' => 'Зачувај',
+	'visualeditor-savedialog-label-review' => 'Проверете ги вашите промени',
 	'visualeditor-savedialog-label-restore' => 'Поврати страница',
 	'visualeditor-editnotices-tool' => '$1 {{PLURAL:$1|известување|известувања}}',
 	'visualeditor-feedback-tool' => 'Дајте мислење',
+	'visualeditor-meta-tool' => 'Поставки за страниците',
 	'visualeditor-window-title' => 'Контр. преглед',
 	'visualeditor-linkinspector-title' => 'Хиперврска',
 	'visualeditor-linkinspector-suggest-matching-page' => 'Соодветна страница',
@@ -3220,9 +3302,13 @@ $messages['mk'] = array(
 	'visualeditor-dialog-meta-categories-input-newcategorylabel' => 'Нова категорија',
 	'visualeditor-dialog-meta-categories-input-movecategorylabel' => 'Премести ја категоријава тука',
 	'visualeditor-dialog-meta-categories-input-matchingcategorieslabel' => 'Совпаднати категории',
-	'visualeditor-dialog-meta-categories-sortkey-label' => 'Наслов во категоријата',
-	'visualeditor-dialog-meta-categories-defaultsort-label' => 'Стандарден наслов на категориската страница',
+	'visualeditor-dialog-meta-categories-sortkey-label' => 'Подреди ја страницава како',
+	'visualeditor-dialog-meta-categories-defaultsort-label' => 'Подреди ја страницава по основно како',
 	'visualeditor-dialog-meta-languages-section' => 'Јазици',
+	'visualeditor-dialog-meta-languages-label' => 'Јазици',
+	'visualeditor-dialog-meta-languages-code-label' => 'Јазичен код',
+	'visualeditor-dialog-meta-languages-link-label' => 'Сврзана статија',
+	'visualeditor-dialog-meta-languages-readonlynote' => 'Ова е список на статии на други јазици што се сврзани со статијава. Тие сè уште не можат да се уредуваат со ВизуеленУредник',
 	'visualeditor-viewpage-savewarning' => 'Дали сте сигурни дека сакате да се вратите на прегледниот режим без прво да ги ачувате измените?',
 	'visualeditor-loadwarning' => 'Грешка при вчитување на податоците од опслужувачот: $1. Дали сакате да пробате одново?',
 	'visualeditor-loadwarning-token' => 'Грешка при вчитувањето на жетонот на уредувањето од опслужувачот: $1. Дали би сакале да пробате пак?',
@@ -3231,14 +3317,15 @@ $messages['mk'] = array(
 	'visualeditor-saveerror' => 'Грешка при зачувување на податоците во опслужувачот: $1.',
 	'visualeditor-editconflict' => 'Не можев да ги зачувам вашите промени поради спротиставеност во уредувања. Дали би сакале да го решите ова рачно?',
 	'visualeditor-editsummary' => 'Опишете ги направените измени',
-	'visualeditor-problem' => 'Опишете што не е во ред',
+	'visualeditor-problem' => 'Опишете што не е во ред со нареденоста на викитекстот',
 	'visualeditor-aliennode-tooltip' => 'Нажалост, овој елемент не може да се уредува со ВизуеленУредник',
 	'visualeditor-descriptionpagelink' => 'Project:ВизуеленУредник',
 	'visualeditor-alphawarning' => 'Користите алфа-верзија на [[{{MediaWiki:Visualeditor-descriptionpagelink}}|ВизуеленУредник]]. Имајте предвид дека може да биде бавен и да прави некои погрешни измени - затоа, проверувајте го секое извршено уредување.',
+	'visualeditor-browserwarning' => 'Користите прелистувач што не е официјално поддржан од ВизуеленУредник.',
 	'visualeditor-report-notice' => 'Разбирам дека стискајќи на „Пријави проблем“ ќе ги пренесам моите промени и одѕивот на место кајшто ќе бидат складирани за анализа. Се согласувам да давам одѕив во склад со [[{{MediaWiki:Visualeditor-report-link}}|Условите на употреба]].',
 	'visualeditor-report-link' => 'foundation:Terms of Use/mk',
 	'visualeditor-feedback-link' => 'Project:VisualEditor/Мислења',
-	'visualeditor-diff-nochanges' => 'Уредувањето беше занемарено бидејќи не направивте никакви измени во текстот.',
+	'visualeditor-diff-nochanges' => 'Не можев да ја започнам проверката бидејќи вашата ревизија се совпаѓа со последната верзија на страницава.',
 );
 
 /** Malayalam (മലയാളം)
@@ -4835,7 +4922,7 @@ $messages['yi'] = array(
 	'visualeditor-savedialog-title-nochanges' => 'קיין ענדערונגען',
 	'visualeditor-savedialog-title-review' => 'רעצענזירן אייערע ענדערונגען',
 	'visualeditor-savedialog-title-save' => 'אויפֿהיטן אייערע ענדערונגען',
-	'visualeditor-savedialog-label-review-good' => 'זעט אויס גוט', # Fuzzy
+	'visualeditor-savedialog-label-review-good' => 'צוריק צו דער אויפהיטן פארעם',
 	'visualeditor-savedialog-label-report' => 'מעלדן פראבלעם',
 	'visualeditor-savedialog-label-create' => 'שאַפֿן בלאַט',
 	'visualeditor-savedialog-label-save' => 'אױפֿהיטן בלאַט',
@@ -4944,6 +5031,7 @@ $messages['zh-hans'] = array(
  * @author Anakmalaysia
  * @author Ch.Andrew
  * @author Hydra
+ * @author Radish10cm
  * @author Shirayuki
  * @author Simon Shek
  * @author Waihorace
@@ -5026,7 +5114,7 @@ $messages['zh-hant'] = array(
 	'visualeditor-dialog-meta-categories-input-newcategorylabel' => '新分類',
 	'visualeditor-dialog-meta-categories-input-movecategorylabel' => '移動該分類到這裡',
 	'visualeditor-dialog-meta-categories-input-matchingcategorieslabel' => '匹配的類別',
-	'visualeditor-dialog-meta-categories-sortkey-label' => '分類頁面中的頁面名稱', # Fuzzy
+	'visualeditor-dialog-meta-categories-sortkey-label' => '對此頁面進行排序',
 	'visualeditor-dialog-meta-categories-defaultsort-label' => '預設是以頁面名稱在分類頁面上排列', # Fuzzy
 	'visualeditor-dialog-meta-languages-section' => '語言',
 	'visualeditor-viewpage-savewarning' => '您確定要放棄儲存而回到檢視模式嗎？',
