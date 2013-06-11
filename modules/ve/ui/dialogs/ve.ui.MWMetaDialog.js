@@ -164,7 +164,7 @@ ve.ui.MWMetaDialog.prototype.onOpen = function () {
  * @param {string} action Action that caused the window to be closed
  */
 ve.ui.MWMetaDialog.prototype.onClose = function ( action ) {
-	var newDefaultSortKeyItem,
+	var newDefaultSortKeyItem, newDefaultSortKeyItemData,
 		surfaceModel = this.surface.getModel(),
 		currentDefaultSortKeyItem = this.getDefaultSortKeyItem();
 
@@ -181,13 +181,17 @@ ve.ui.MWMetaDialog.prototype.onClose = function ( action ) {
 	}
 
 	if ( this.defaultSortKeyChanged ) {
-		newDefaultSortKeyItem = new ve.dm.MWDefaultSortMetaItem( {
+		newDefaultSortKeyItemData = {
 			'type': 'mwDefaultSort',
 			'attributes': { 'content': this.defaultSortInput.getValue() }
-		} );
+		};
 		if ( currentDefaultSortKeyItem ) {
+			newDefaultSortKeyItem = new ve.dm.MWDefaultSortMetaItem(
+				ve.extendObject( {}, currentDefaultSortKeyItem.getElement(), newDefaultSortKeyItemData )
+			);
 			currentDefaultSortKeyItem.replaceWith( newDefaultSortKeyItem );
 		} else {
+			newDefaultSortKeyItem = new ve.dm.MWDefaultSortMetaItem( newDefaultSortKeyItemData );
 			this.metaList.insertMeta( newDefaultSortKeyItem );
 		}
 	}
@@ -246,13 +250,18 @@ ve.ui.MWMetaDialog.prototype.getCategoryItemFromMetaListItem = function ( metaIt
  *
  * @method
  * @param {Object} item category widget item
+ * @param {Object} [oldData] Metadata object that was previously associated with this item, if any
  * @returns {Object} metaBase
  */
-ve.ui.MWMetaDialog.prototype.getCategoryItemForInsertion = function ( item ) {
-	return {
+ve.ui.MWMetaDialog.prototype.getCategoryItemForInsertion = function ( item, oldData ) {
+	var newData = {
 		'attributes': { 'category': item.name, 'sortkey': item.sortKey || '' },
 		'type': 'mwCategory'
 	};
+	if ( oldData ) {
+		return ve.extendObject( {}, oldData, newData );
+	}
+	return newData;
 };
 
 /**
@@ -367,7 +376,7 @@ ve.ui.MWMetaDialog.prototype.onNewCategory = function ( item ) {
  */
 ve.ui.MWMetaDialog.prototype.onUpdateSortKey = function ( item ) {
 	// Replace meta item with updated one
-	item.metaItem.replaceWith( this.getCategoryItemForInsertion( item ) );
+	item.metaItem.replaceWith( this.getCategoryItemForInsertion( item, item.metaItem.getElement() ) );
 };
 
 /**
