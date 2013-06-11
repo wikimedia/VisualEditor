@@ -23,6 +23,8 @@ ve.ui.MWCategoryPopupWidget = function VeUiMwCategoryPopupWidget ( config ) {
 
 	// Properties
 	this.category = null;
+	this.origSortkey = null;
+	this.removed = false;
 	this.$title = this.$$( '<label>' );
 	this.$menu = this.$$( '<div>' );
 	this.removeButton = new ve.ui.IconButtonWidget( {
@@ -36,6 +38,7 @@ ve.ui.MWCategoryPopupWidget = function VeUiMwCategoryPopupWidget ( config ) {
 		.append( this.sortKeyLabel.$, this.sortKeyInput.$ );
 
 	// Events
+	this.connect( this, { 'hide': 'onHide' } );
 	this.removeButton.connect( this, { 'click': 'onRemoveCategory' } );
 	this.$sortKeyForm.on( 'submit', ve.bind( this.onSortKeySubmit, this ) );
 
@@ -84,6 +87,7 @@ ve.inheritClass( ve.ui.MWCategoryPopupWidget, ve.ui.PopupWidget );
  * @emits removeCategory
  */
 ve.ui.MWCategoryPopupWidget.prototype.onRemoveCategory = function () {
+	this.removed = true;
 	this.emit( 'removeCategory', this.category );
 	this.closePopup();
 };
@@ -96,7 +100,6 @@ ve.ui.MWCategoryPopupWidget.prototype.onRemoveCategory = function () {
  * @emits updateSortkey
  */
 ve.ui.MWCategoryPopupWidget.prototype.onSortKeySubmit = function () {
-	this.emit( 'updateSortkey', this.category, this.sortKeyInput.$input.val() );
 	this.closePopup();
 	return false;
 };
@@ -122,6 +125,7 @@ ve.ui.MWCategoryPopupWidget.prototype.openPopup = function ( item ) {
  * @param {ve.ui.MWCategoryItemWidget} item Category item
  */
 ve.ui.MWCategoryPopupWidget.prototype.loadCategoryIntoPopup = function ( item ) {
+	this.origSortkey = item.sortkey;
 	this.sortKeyInput.$input.val( item.sortKey );
 };
 
@@ -159,4 +163,11 @@ ve.ui.MWCategoryPopupWidget.prototype.setPopup = function ( item ) {
 
 	this.$.css( { 'left': left, 'top': top } );
 	this.display( left, top, width, height );
+};
+
+ve.ui.MWCategoryPopupWidget.prototype.onHide = function() {
+	var newSortkey = this.sortKeyInput.$input.val();
+	if ( !this.removed && newSortkey !== this.origSortkey ) {
+		this.emit( 'updateSortkey', this.category, this.sortKeyInput.$input.val() );
+	}
 };
