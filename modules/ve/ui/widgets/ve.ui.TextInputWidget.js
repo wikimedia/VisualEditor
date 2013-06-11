@@ -15,6 +15,7 @@
  * @param {Object} [config] Config options
  * @cfg {string} [placeholder] Placeholder text
  * @cfg {string} [icon] Symbolic name of icon
+ * @cfg {boolean} [multiline=false] Allow multiple lines of text
  */
 ve.ui.TextInputWidget = function VeUiTextInputWidget( config ) {
 	// Parent constructor
@@ -22,6 +23,10 @@ ve.ui.TextInputWidget = function VeUiTextInputWidget( config ) {
 
 	// Properties
 	this.pending = 0;
+	this.multiline = !!config.multiline;
+
+	// Events
+	this.$input.on( 'keypress', ve.bind( this.onKeyPress, this ) );
 
 	// Initialization
 	this.$.addClass( 've-ui-textInputWidget' );
@@ -45,7 +50,29 @@ ve.ui.TextInputWidget = function VeUiTextInputWidget( config ) {
 
 ve.inheritClass( ve.ui.TextInputWidget, ve.ui.InputWidget );
 
+/* Events */
+
+/**
+ * User presses enter inside the text box.
+ *
+ * Not called if input is multiline.
+ *
+ * @event enter
+ */
+
 /* Methods */
+
+/**
+ * Handles key press events.
+ *
+ * @param {jQuery.Event} e Key press event
+ * @emits enter If enter key is pressed and input is not multiline
+ */
+ve.ui.TextInputWidget.prototype.onKeyPress = function ( e ) {
+	if ( e.which === ve.Keys.ENTER && !this.multiline ) {
+		this.emit( 'enter' );
+	}
+};
 
 /**
  * Get input element.
