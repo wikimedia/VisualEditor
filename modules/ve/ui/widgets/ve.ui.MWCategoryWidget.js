@@ -49,7 +49,7 @@ ve.ui.MWCategoryWidget = function VeUiMWCategoryWidget( config ) {
 	// Initialization
 	this.$.addClass( 've-ui-mwCategoryListWidget' )
 		.append(
-			this.$group,
+			this.$group.addClass( 've-ui-mwCategoryListWidget-items' ),
 			this.input.$,
 			this.$$( '<div>' ).css( 'clear', 'both' )
 		);
@@ -58,6 +58,8 @@ ve.ui.MWCategoryWidget = function VeUiMWCategoryWidget( config ) {
 /* Inheritance */
 
 ve.inheritClass( ve.ui.MWCategoryWidget, ve.ui.Widget );
+
+ve.mixinClass( ve.ui.MWCategoryWidget, ve.ui.GroupElement );
 
 /* Events */
 

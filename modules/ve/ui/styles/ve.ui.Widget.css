@@ -385,7 +385,7 @@
 	outline: none;
 }
 
-/* ve.ui.CategoryListWidget */
+/* ve.ui.MWCategoryWidget */
 
 .ve-ui-mwCategoryListWidget {
 	border: 1px solid #CCC;
@@ -393,11 +393,22 @@
 	padding: .75em;
 }
 
+.ve-ui-mwCategoryListWidget-items {
+	/* MDN claims we need to use word-wrap: break-word; and that it's been renamed to
+	 * overflow-wrap: break-word; , but the only thing that actually works in practice is
+	 * word-break: break-word; (which is not documented in any standard at all). So we just use
+	 * all three.
+	 */
+	word-break: break-word;
+	word-wrap: break-word;
+	overflow-wrap: break-word;
+}
+
 .ve-ui-mwCategoryInputWidget {
 	float: left;
 }
 
-/* ve.ui.CategoryListItemWidget */
+/* ve.ui.MWCategoryListItemWidget */
 
 .ve-ui-mwCategoryListItemWidget {
 	position: relative;
