@@ -84,7 +84,7 @@ $messages['en'] = array(
 	'visualeditor-inspector-remove-tooltip' => 'Remove',
 	'visualeditor-dialog-meta-categories-section' => 'Categories',
 	'visualeditor-dialog-meta-categories-data-label' => 'Categories',
-	'visualeditor-dialog-meta-categories-settings-label' => 'Category settings',
+	'visualeditor-dialog-meta-categories-options' => 'Options',
 	'visualeditor-dialog-meta-categories-input-placeholder' => 'Add a category',
 	'visualeditor-dialog-meta-categories-input-newcategorylabel' => 'New category',
 	'visualeditor-dialog-meta-categories-input-movecategorylabel' => 'Move this category here',
@@ -238,7 +238,7 @@ See also:
 {{Identical|Category}}',
 	'visualeditor-dialog-meta-categories-data-label' => 'Label for the categories sub-section.
 {{Identical|Category}}',
-	'visualeditor-dialog-meta-categories-settings-label' => 'Label for the category settings sub-section',
+	'visualeditor-dialog-meta-categories-options' => 'Label for the category options sub-section',
 	'visualeditor-dialog-meta-categories-input-placeholder' => 'Placeholder text for category input
 {{Identical|Add category}}',
 	'visualeditor-dialog-meta-categories-input-newcategorylabel' => 'Label for suggested categories for an uncreated category',
