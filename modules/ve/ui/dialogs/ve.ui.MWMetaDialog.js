@@ -104,24 +104,24 @@ ve.ui.MWMetaDialog.prototype.initialize = function () {
 	this.pages.languages.$.append( this.languagesFieldset.$ );
 
 	this.languagesFieldset.$
-		.append( this.$$( '<span>' ).text( ve.msg( 'visualeditor-dialog-meta-languages-readonlynote' ) ) );
+		.append( this.frame.$$( '<span>' ).text( ve.msg( 'visualeditor-dialog-meta-languages-readonlynote' ) ) );
 
 	languagePromise = this.getAllLanguageItems();
 	languagePromise.done( ve.bind( function ( languages ) {
-		var i, $languagesTable = this.$$( '<table>' ), languageslength = languages.length;
+		var i, $languagesTable = this.frame.$$( '<table>' ), languageslength = languages.length;
 
 		$languagesTable
 			.addClass( 've-ui-dialog-meta-languages-table' )
-			.append( this.$$( '<tr>' )
-				.append( this.$$( '<th>' ).append( ve.msg( 'visualeditor-dialog-meta-languages-code-label' ) ) )
-				.append( this.$$( '<th>' ).append( ve.msg( 'visualeditor-dialog-meta-languages-link-label' ) ) )
+			.append( this.frame.$$( '<tr>' )
+				.append( this.frame.$$( '<th>' ).append( ve.msg( 'visualeditor-dialog-meta-languages-code-label' ) ) )
+				.append( this.frame.$$( '<th>' ).append( ve.msg( 'visualeditor-dialog-meta-languages-link-label' ) ) )
 		);
 
 		for ( i = 0; i < languageslength; i++ ) {
 			$languagesTable
-				.append( $( '<tr>' )
-					.append( $( '<td>' ).append( languages[i].lang ) )
-					.append( $( '<td>' ).append( languages[i].title ) )
+				.append( this.frame.$$( '<tr>' )
+					.append( this.frame.$$( '<td>' ).append( languages[i].lang ) )
+					.append( this.frame.$$( '<td>' ).append( languages[i].title ) )
 				);
 		}
 
