@@ -81,6 +81,12 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 		$.client.test( ve.init.mw.ViewPageTarget.compatibility.blacklist, null, true )
 	);
 
+	if ( mw.config.get( 'wgVisualEditorConfig' ).enableEventLogging ) {
+		this.setUpEventLogging();
+	} else {
+		this.logEvent = $.noop;
+	}
+
 	// Events
 	this.connect( this, {
 		'load': 'onLoad',
@@ -305,6 +311,7 @@ ve.init.mw.ViewPageTarget.prototype.deactivate = function ( override ) {
  */
 ve.init.mw.ViewPageTarget.prototype.onLoad = function ( doc ) {
 	if ( this.activating ) {
+		this.logEvent( 'Edit', { action: 'page-edit-impression' } );
 		this.edited = false;
 		this.doc = doc;
 		this.setUpSurface( doc );
@@ -366,6 +373,12 @@ ve.init.mw.ViewPageTarget.prototype.onTokenError = function ( response, status )
  * @param {number} [newid] New revision id, undefined if unchanged
  */
 ve.init.mw.ViewPageTarget.prototype.onSave = function ( html, newid ) {
+	this.logEvent( 'Edit', {
+		action: 'page-save-success',
+		latency: this.saveStart ? new Date() - this.saveStart : 0
+	} );
+	delete this.saveStart;
+
 	if ( !this.pageExists || this.restoring ) {
 		// This is a page creation or restoration, refresh the page
 		this.tearDownBeforeUnloadHandler();
@@ -509,6 +522,7 @@ ve.init.mw.ViewPageTarget.prototype.onNoChanges = function () {
  * @param {jQuery.Event} e Mouse click event
  */
 ve.init.mw.ViewPageTarget.prototype.onEditTabClick = function ( e ) {
+	this.logEvent( 'Edit', { action: 'edit-link-click' } );
 	this.activate();
 	// Prevent the edit tab's normal behavior
 	e.preventDefault();
@@ -521,6 +535,7 @@ ve.init.mw.ViewPageTarget.prototype.onEditTabClick = function ( e ) {
  * @param {jQuery.Event} e Mouse click event
  */
 ve.init.mw.ViewPageTarget.prototype.onEditSectionLinkClick = function ( e ) {
+	this.logEvent( 'Edit', { action: 'section-edit-link-click' } );
 	this.saveEditSection( $( e.target ).closest( 'h1, h2, h3, h4, h5, h6' ).get( 0 ) );
 	this.activate();
 	// Prevent the edit tab's normal behavior
@@ -552,6 +567,7 @@ ve.init.mw.ViewPageTarget.prototype.onViewTabClick = function ( e ) {
  * @param {jQuery.Event} e Mouse click event
  */
 ve.init.mw.ViewPageTarget.prototype.onToolbarSaveButtonClick = function () {
+	this.logEvent( 'Edit', { action: 'page-save-attempt' } );
 	if ( this.edited || this.restoring ) {
 		this.showSaveDialog();
 	}
@@ -653,6 +669,7 @@ ve.init.mw.ViewPageTarget.prototype.onSaveDialogReviewButtonClick = function () 
 ve.init.mw.ViewPageTarget.prototype.onSaveDialogSaveButtonClick = function () {
 	var doc = this.surface.getModel().getDocument(),
 		saveOptions = this.getSaveOptions();
+	this.saveStart = +new Date();
 	if (
 		+mw.user.options.get( 'forceeditsummary' ) &&
 		saveOptions.summary === '' &&
@@ -777,6 +794,37 @@ ve.init.mw.ViewPageTarget.prototype.setUpSurface = function ( doc ) {
 	} );
 	// Add appropriately mw-content-ltr or mw-content-rtl class
 	this.surface.$.addClass( 'mw-content-' + mw.config.get( 'wgVisualEditor' ).pageLanguageDir );
+};
+
+/**
+ * Set up the logging of analytic edit events using EventLogging.
+ *
+ * @method
+ */
+ve.init.mw.ViewPageTarget.prototype.setUpEventLogging = function () {
+	mw.loader.using( 'schema.Edit', function () {
+		mw.eventLog.setDefaults( 'Edit', {
+			version: 0,
+			editor: 'visualeditor',
+			pageId: +mw.config.get( 'wgArticleId' ),
+			pageNs: mw.config.get( 'wgNamespaceNumber' ),
+			pageName: mw.config.get( 'wgPageName' ),
+			pageViewSessionId: +new Date(),
+			revId: +mw.config.get( 'wgCurRevisionId' )
+		} );
+	} );
+};
+
+/**
+ * Thin wrapper around EventLogging's 'logEvent' method which ensures the
+ * relevant schema module has been loaded.
+ *
+ * @method
+ */
+ve.init.mw.ViewPageTarget.prototype.logEvent = function ( schemaName, event ) {
+	mw.loader.using( 'schema.' + schemaName, function () {
+		mw.eventLog.logEvent( schemaName, event );
+	} );
 };
 
 /**

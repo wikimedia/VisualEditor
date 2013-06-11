@@ -12,6 +12,26 @@ class VisualEditorHooks {
 	/** List of skins VisualEditor integration supports */
 	protected static $supportedSkins = array( 'vector', 'apex', 'monobook' );
 
+	public static function onSetup() {
+		global $wgVisualEditorEnableEventLogging, $wgResourceModules;
+
+		if ( $wgVisualEditorEnableEventLogging ) {
+			if ( class_exists( 'ResourceLoaderSchemaModule' ) ) {
+				// EventLogging schema module for logging edit events.
+				// See <http://meta.wikimedia.org/wiki/Schema:Edit>
+				$wgResourceModules['schema.Edit'] = array(
+					'class'  => 'ResourceLoaderSchemaModule',
+					'schema' => 'Edit',
+					'revision' => 5563071,
+				);
+			} else {
+				wfWarn( 'VisualEditor is configured to use EventLogging, but the extension is ' .
+						' not available. Disabling wgVisualEditorEnableEventLogging.' );
+				$wgVisualEditorEnableEventLogging = false;
+			}
+		}
+	}
+
 	/**
 	 * Adds VisualEditor JS to the output if in the correct namespace.
 	 *
@@ -21,7 +41,7 @@ class VisualEditorHooks {
 	 * @param $skin Skin
 	 */
 	public static function onBeforePageDisplay( &$output, &$skin ) {
-		global $wgVisualEditorNamespaces;
+		global $wgVisualEditorNamespaces, $wgVisualEditorEnableEventLogging;
 		if (
 			// Disable on redirect pages until redirects are editable
 			!$skin->getTitle()->isRedirect() &&
@@ -37,6 +57,9 @@ class VisualEditorHooks {
 			// Only use VisualEditor if the page is wikitext, not CSS/JS
 			$skin->getTitle()->getContentModel() === CONTENT_MODEL_WIKITEXT
 		) {
+			if ( $wgVisualEditorEnableEventLogging ) {
+				$output->addModules( array( 'schema.Edit' ) );
+			}
 			$output->addModules( array( 'ext.visualEditor.viewPageTarget' ) );
 		}
 		return true;
@@ -79,12 +102,13 @@ class VisualEditorHooks {
 	 */
 	public static function onResourceLoaderGetConfigVars( array &$vars ) {
 		global $wgVisualEditorEnableSectionEditLinks,
-			$wgVisualEditorParsoidURL, $wgVisualEditorEnableExperimentalCode,
-			$wgVisualEditorTabLayout;
+			$wgVisualEditorParsoidURL, $wgVisualEditorEnableEventLogging,
+			$wgVisualEditorEnableExperimentalCode, $wgVisualEditorTabLayout;
 
 		$vars['wgVisualEditorConfig'] = array(
 			'enableSectionEditLinks' => $wgVisualEditorEnableSectionEditLinks,
 			'enableExperimentalCode' => $wgVisualEditorEnableExperimentalCode,
+			'enableEventLogging' => $wgVisualEditorEnableEventLogging,
 			'tabLayout' => $wgVisualEditorTabLayout,
 		);
 
