@@ -1,11 +1,11 @@
 /*!
- * VisualEditor DataModel MWTemplateNode tests.
+ * VisualEditor DataModel MWTransclusionNode tests.
  *
  * @copyright 2011-2013 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-QUnit.module( 've.dm.MWTemplateNode' );
+QUnit.module( 've.dm.MWTransclusionNode' );
 
 /* Tests */
 
@@ -53,20 +53,20 @@ QUnit.test( 'getWikitext', function ( assert ) {
 			'wikitext': '{{foo|bar=You should use <nowiki>\'\'\'</nowiki> to make things bold.}}'
 		},
 		{
-			'msg': 'parameter with spanning-nowiki and nested template',
+			'msg': 'parameter with spanning-nowiki and nested transclusion',
 			'mw': {
 				'target': { 'wt': 'foo' },
 				'params': {
-					'bar': { 'wt': 'You should try using <nowiki>{{ping|foo=bar|2=1}}</nowiki> as a template!' }
+					'bar': { 'wt': 'You should try using <nowiki>{{ping|foo=bar|2=1}}</nowiki> as a transclusion!' }
 				}
 			},
-			'wikitext': '{{foo|bar=You should try using <nowiki>{{ping|foo=bar|2=1}}</nowiki> as a template!}}'
+			'wikitext': '{{foo|bar=You should try using <nowiki>{{ping|foo=bar|2=1}}</nowiki> as a transclusion!}}'
 		}
 	];
 	QUnit.expect( cases.length );
 	for ( i = 0; i < cases.length; i++ ) {
-		node = new ve.dm.MWTemplateNode( 0,
-			{ 'type': 'mwTemplate', 'attributes': { 'mw': cases[i].mw } }
+		node = new ve.dm.MWTransclusionNode( 0,
+			{ 'type': 'mwTransclusion', 'attributes': { 'mw': cases[i].mw } }
 		);
 		assert.deepEqual( node.getWikitext(), cases[i].wikitext, cases[i].msg );
 	}

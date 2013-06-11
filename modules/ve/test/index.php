@@ -261,16 +261,16 @@
 		<script src="../../ve/ui/inspectors/ve.ui.LinkInspector.js"></script>
 		<script src="../../ve/ui/inspectors/ve.ui.MWLinkInspector.js"></script>
 		<!-- ext.visualEditor.experimental -->
-		<script src="../../ve/dm/nodes/ve.dm.MWTemplateNode.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.MWReferenceListNode.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.MWReferenceNode.js"></script>
-		<script src="../../ve/ce/nodes/ve.ce.MWTemplateNode.js"></script>
+		<script src="../../ve/dm/nodes/ve.dm.MWTransclusionNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.MWReferenceListNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.MWReferenceNode.js"></script>
+		<script src="../../ve/ce/nodes/ve.ce.MWTransclusionNode.js"></script>
 		<script src="../../ve/ui/tools/buttons/ve.ui.MWReferenceButtonTool.js"></script>
-		<script src="../../ve/ui/tools/buttons/ve.ui.MWTemplateButtonTool.js"></script>
+		<script src="../../ve/ui/tools/buttons/ve.ui.MWTransclusionButtonTool.js"></script>
 		<script src="../../ve/ui/dialogs/ve.ui.MWReferenceDialog.js"></script>
-		<script src="../../ve/ui/dialogs/ve.ui.MWTemplateDialog.js"></script>
+		<script src="../../ve/ui/dialogs/ve.ui.MWTransclusionDialog.js"></script>
 
 		<!-- Load plugins for test framework -->
 		<script src="ve.qunit.js"></script>
@@ -293,7 +293,7 @@
 		<script src="dm/ve.dm.BranchNode.test.js"></script>
 		<script src="dm/ve.dm.LeafNode.test.js"></script>
 		<script src="dm/nodes/ve.dm.TextNode.test.js"></script>
-		<script src="dm/nodes/ve.dm.MWTemplateNode.test.js"></script>
+		<script src="dm/nodes/ve.dm.MWTransclusionNode.test.js"></script>
 		<script src="dm/ve.dm.Document.test.js"></script>
 		<script src="dm/ve.dm.DocumentSynchronizer.test.js"></script>
 		<script src="dm/ve.dm.IndexValueStore.test.js"></script>

@@ -155,17 +155,17 @@
 	border-top-left-radius: 0;
 }
 
-/* ve.ui.MWTemplateDialog */
+/* ve.ui.MWTransclusionDialog */
 
-.ve-ui-mwTemplateDialog-input {
+.ve-ui-mwTransclusionDialog-input {
 	width: 100%;
 }
 
-.ve-ui-mwTemplateDialog-input textarea {
+.ve-ui-mwTransclusionDialog-input textarea {
 	height: 10em;
 }
 
-.ve-ui-mwTemplateDialog-addParameterFieldset .ve-ui-widget {
+.ve-ui-mwTransclusionDialog-addParameterFieldset .ve-ui-widget {
 	display: inline-block;
 	margin-right: 0.5em;
 }

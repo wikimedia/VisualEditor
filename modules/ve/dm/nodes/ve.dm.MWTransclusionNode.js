@@ -1,12 +1,12 @@
 /*!
- * VisualEditor DataModel MWTemplateNode class.
+ * VisualEditor DataModel MWTransclusionNode class.
  *
  * @copyright 2011-2013 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * DataModel MediaWiki template node.
+ * DataModel MediaWiki transclusion node.
  *
  * @class
  * @abstract
@@ -17,7 +17,7 @@
  * @param {number} [length] Length of content data in document; ignored and overridden to 0
  * @param {Object} [element] Reference to element in linear model
  */
-ve.dm.MWTemplateNode = function VeDmMWTemplateNode( length, element ) {
+ve.dm.MWTransclusionNode = function VeDmMWTransclusionNode( length, element ) {
 	// Parent constructor
 	ve.dm.LeafNode.call( this, 0, element );
 
@@ -27,42 +27,42 @@ ve.dm.MWTemplateNode = function VeDmMWTemplateNode( length, element ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.dm.MWTemplateNode, ve.dm.LeafNode );
+ve.inheritClass( ve.dm.MWTransclusionNode, ve.dm.LeafNode );
 
-ve.mixinClass( ve.dm.MWTemplateNode, ve.dm.GeneratedContentNode );
+ve.mixinClass( ve.dm.MWTransclusionNode, ve.dm.GeneratedContentNode );
 
 /* Static members */
 
-ve.dm.MWTemplateNode.static.name = 'mwTemplate';
+ve.dm.MWTransclusionNode.static.name = 'mwTransclusion';
 
-ve.dm.MWTemplateNode.static.matchTagNames = null;
+ve.dm.MWTransclusionNode.static.matchTagNames = null;
 
-ve.dm.MWTemplateNode.static.matchRdfaTypes = [
+ve.dm.MWTransclusionNode.static.matchRdfaTypes = [
 	'mw:Transclusion',
-	// We're interested in all nodes that have mw:Object/Template, even if they also have other mw:
-	// types. So we match all mw: types, then use a matchFunction to assert that mw:Object/Template
+	// We're interested in all nodes that have mw:Transclusion, even if they also have other mw:
+	// types. So we match all mw: types, then use a matchFunction to assert that mw:Transclusion
 	// is in there.
 	/^mw:/
 ];
 
-ve.dm.MWTemplateNode.static.matchFunction = function ( domElement ) {
+ve.dm.MWTransclusionNode.static.matchFunction = function ( domElement ) {
 	return ve.indexOf( 'mw:Transclusion',
 		( domElement.getAttribute( 'typeof' ) || '' ).split( ' ' )
 	) !== -1;
 };
 
-ve.dm.MWTemplateNode.static.getHashObject = function ( dataElement ) {
+ve.dm.MWTransclusionNode.static.getHashObject = function ( dataElement ) {
 	return {
 		type: dataElement.type,
 		mw: dataElement.attributes.mw
 	};
 };
 
-ve.dm.MWTemplateNode.static.toDataElement = function ( domElements, converter ) {
+ve.dm.MWTransclusionNode.static.toDataElement = function ( domElements, converter ) {
 	var dataElement,
 		mw = JSON.parse( domElements[0].getAttribute( 'data-mw' ) ),
 		isInline = this.isHybridInline( domElements, converter ),
-		type = isInline ? 'mwTemplateInline' : 'mwTemplateBlock';
+		type = isInline ? 'mwTransclusionInline' : 'mwTransclusionBlock';
 
 	dataElement = {
 		'type': type,
@@ -75,17 +75,18 @@ ve.dm.MWTemplateNode.static.toDataElement = function ( domElements, converter ) 
 	return dataElement;
 };
 
-ve.dm.MWTemplateNode.static.toDomElements = function ( dataElement, doc, converter ) {
+ve.dm.MWTransclusionNode.static.toDomElements = function ( dataElement, doc, converter ) {
 	var span, index;
 	if ( ve.compare( dataElement.attributes.mw, dataElement.attributes.mwOriginal ) ) {
-		// If the template is unchanged just send back the original dom elements so selser can skip over it
+		// If the transclusion is unchanged just send back the original dom elements so selser can
+		// skip over it
 		index = converter.getStore().indexOfHash( ve.getHash( this.getHashObject( dataElement ) ) );
 		// The object in the store is also used for rendering so return a copy
 		return ve.copyArray( converter.getStore().value( index ) );
 	} else {
 		span = doc.createElement( 'span' );
-		// All we need to send back to Parsoid is the original template marker,
-		// with a reconstructed data-mw property.
+		// All we need to send back to Parsoid is the original transclusion marker, with a
+		// reconstructed data-mw property.
 		span.setAttribute( 'typeof', 'mw:Transclusion' );
 		span.setAttribute( 'data-mw', JSON.stringify( dataElement.attributes.mw ) );
 		return [ span ];
@@ -97,7 +98,7 @@ ve.dm.MWTemplateNode.static.toDomElements = function ( dataElement, doc, convert
  * @param {string} param Parameter value
  * @returns {string} Escaped parameter value
  */
-ve.dm.MWTemplateNode.static.escapeParameter = function ( param ) {
+ve.dm.MWTransclusionNode.static.escapeParameter = function ( param ) {
 	var match, input = param, output = '', inNowiki = false;
 	while ( input.length > 0 ) {
 		match = input.match( /(?:\}\})+|\|+|<\/?nowiki>|<nowiki\s*\/>/ );
@@ -131,12 +132,12 @@ ve.dm.MWTemplateNode.static.escapeParameter = function ( param ) {
 /* Methods */
 
 /**
- * Get the wikitext for this template invocation.
+ * Get the wikitext for this transclusion.
  *
  * @method
  * @returns {string} Wikitext like `{{foo|1=bar|baz=quux}}`
  */
-ve.dm.MWTemplateNode.prototype.getWikitext = function () {
+ve.dm.MWTransclusionNode.prototype.getWikitext = function () {
 	var i, len, part, template, param,
 		content = this.getAttribute( 'mw' ),
 		wikitext = '';
@@ -168,49 +169,49 @@ ve.dm.MWTemplateNode.prototype.getWikitext = function () {
 /* Concrete subclasses */
 
 /**
- * DataModel MediaWiki template block node.
+ * DataModel MediaWiki transclusion block node.
  *
  * @class
- * @extends ve.dm.MWTemplateNode
+ * @extends ve.dm.MWTransclusionNode
  * @constructor
  * @param {number} [length] Length of content data in document; ignored and overridden to 0
  * @param {Object} [element] Reference to element in linear model
  */
-ve.dm.MWTemplateBlockNode = function VeDmMWTemplateBlockNode( length, element ) {
+ve.dm.MWTransclusionBlockNode = function VeDmMWTransclusionBlockNode( length, element ) {
 	// Parent constructor
-	ve.dm.MWTemplateNode.call( this, length, element );
+	ve.dm.MWTransclusionNode.call( this, length, element );
 };
 
-ve.inheritClass( ve.dm.MWTemplateBlockNode, ve.dm.MWTemplateNode );
+ve.inheritClass( ve.dm.MWTransclusionBlockNode, ve.dm.MWTransclusionNode );
 
-ve.dm.MWTemplateBlockNode.static.matchTagNames = [];
+ve.dm.MWTransclusionBlockNode.static.matchTagNames = [];
 
-ve.dm.MWTemplateBlockNode.static.name = 'mwTemplateBlock';
+ve.dm.MWTransclusionBlockNode.static.name = 'mwTransclusionBlock';
 
 /**
- * DataModel MediaWiki template inline node.
+ * DataModel MediaWiki transclusion inline node.
  *
  * @class
- * @extends ve.dm.MWTemplateNode
+ * @extends ve.dm.MWTransclusionNode
  * @constructor
  * @param {number} [length] Length of content data in document; ignored and overridden to 0
  * @param {Object} [element] Reference to element in linear model
  */
-ve.dm.MWTemplateInlineNode = function VeDmMWTemplateInlineNode( length, element ) {
+ve.dm.MWTransclusionInlineNode = function VeDmMWTransclusionInlineNode( length, element ) {
 	// Parent constructor
-	ve.dm.MWTemplateNode.call( this, length, element );
+	ve.dm.MWTransclusionNode.call( this, length, element );
 };
 
-ve.inheritClass( ve.dm.MWTemplateInlineNode, ve.dm.MWTemplateNode );
+ve.inheritClass( ve.dm.MWTransclusionInlineNode, ve.dm.MWTransclusionNode );
 
-ve.dm.MWTemplateInlineNode.static.matchTagNames = [];
+ve.dm.MWTransclusionInlineNode.static.matchTagNames = [];
 
-ve.dm.MWTemplateInlineNode.static.name = 'mwTemplateInline';
+ve.dm.MWTransclusionInlineNode.static.name = 'mwTransclusionInline';
 
-ve.dm.MWTemplateInlineNode.static.isContent = true;
+ve.dm.MWTransclusionInlineNode.static.isContent = true;
 
 /* Registration */
 
-ve.dm.modelRegistry.register( ve.dm.MWTemplateNode );
-ve.dm.modelRegistry.register( ve.dm.MWTemplateBlockNode );
-ve.dm.modelRegistry.register( ve.dm.MWTemplateInlineNode );
+ve.dm.modelRegistry.register( ve.dm.MWTransclusionNode );
+ve.dm.modelRegistry.register( ve.dm.MWTransclusionBlockNode );
+ve.dm.modelRegistry.register( ve.dm.MWTransclusionInlineNode );

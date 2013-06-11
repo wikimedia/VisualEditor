@@ -160,9 +160,9 @@
 	cursor: not-allowed;
 }
 
-/* ve.ce.MWTemplateNode */
+/* ve.ce.MWTransclusionNode */
 
-.ve-ce-mwTemplateInlineNode {
+.ve-ce-mwTransclusionInlineNode {
 	display: inline-block;
 }
 

@@ -1,5 +1,5 @@
 /*!
- * VisualEditor ContentEditable MWTemplateNode class.
+ * VisualEditor ContentEditable MWTransclusionNode class.
  *
  * @copyright 2011-2013 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
@@ -8,7 +8,7 @@
 /*global mw */
 
 /**
- * ContentEditable MediaWiki template node.
+ * ContentEditable MediaWiki transclusion node.
  *
  * @class
  * @abstract
@@ -18,10 +18,10 @@
  * @mixins ve.ce.GeneratedContentNode
  *
  * @constructor
- * @param {ve.dm.MWTemplateNode} model Model to observe
+ * @param {ve.dm.MWTransclusionNode} model Model to observe
  * @param {Object} [config] Config options
  */
-ve.ce.MWTemplateNode = function VeCeMWTemplateNode( model, config ) {
+ve.ce.MWTransclusionNode = function VeCeMWTransclusionNode( model, config ) {
 	// Parent constructor
 	ve.ce.LeafNode.call( this, model, config );
 
@@ -31,26 +31,26 @@ ve.ce.MWTemplateNode = function VeCeMWTemplateNode( model, config ) {
 	ve.ce.GeneratedContentNode.call( this );
 
 	// DOM Changes
-	this.$.addClass( 've-ce-mwTemplateNode' );
+	this.$.addClass( 've-ce-mwTransclusionNode' );
 };
 
 /* Inheritance */
 
-ve.inheritClass( ve.ce.MWTemplateNode, ve.ce.LeafNode );
+ve.inheritClass( ve.ce.MWTransclusionNode, ve.ce.LeafNode );
 
-ve.mixinClass( ve.ce.MWTemplateNode, ve.ce.ProtectedNode );
+ve.mixinClass( ve.ce.MWTransclusionNode, ve.ce.ProtectedNode );
 
-ve.mixinClass( ve.ce.MWTemplateNode, ve.ce.FocusableNode );
+ve.mixinClass( ve.ce.MWTransclusionNode, ve.ce.FocusableNode );
 
-ve.mixinClass( ve.ce.MWTemplateNode, ve.ce.GeneratedContentNode );
+ve.mixinClass( ve.ce.MWTransclusionNode, ve.ce.GeneratedContentNode );
 
 /* Static Properties */
 
-ve.ce.MWTemplateNode.static.name = 'mwTemplate';
+ve.ce.MWTransclusionNode.static.name = 'mwTransclusion';
 
 /* Methods */
 
-ve.ce.MWTemplateNode.prototype.generateContents = function () {
+ve.ce.MWTransclusionNode.prototype.generateContents = function () {
 	var promise = $.Deferred();
 	$.ajax( {
 		'url': mw.util.wikiScript( 'api' ),
@@ -79,7 +79,7 @@ ve.ce.MWTemplateNode.prototype.generateContents = function () {
  * @param {jQuery.Promise} promise The promise object created by generateContents
  * @param {Object} response Response data
  */
-ve.ce.MWTemplateNode.prototype.onParseSuccess = function ( promise, response ) {
+ve.ce.MWTransclusionNode.prototype.onParseSuccess = function ( promise, response ) {
 	var data = response.visualeditor, contentNodes = $( data.content ).get();
 	// HACK: if $content consists of a single paragraph, unwrap it.
 	// We have to do this because the PHP parser wraps everything in <p>s, and inline templates
@@ -96,66 +96,66 @@ ve.ce.MWTemplateNode.prototype.onParseSuccess = function ( promise, response ) {
  * @param {jQuery.Promise} promise The promise object created by generateContents
  * @param {Object} response Response data
  */
-ve.ce.MWTemplateNode.prototype.onParseError = function ( promise ) {
+ve.ce.MWTransclusionNode.prototype.onParseError = function ( promise ) {
 	promise.reject();
 };
 
 /* Concrete subclasses */
 
 /**
- * ContentEditable MediaWiki template block node.
+ * ContentEditable MediaWiki transclusion block node.
  *
  * @class
- * @extends ve.ce.MWTemplateNode
+ * @extends ve.ce.MWTransclusionNode
  * @constructor
- * @param {ve.dm.MWTemplateBlockNode} model Model to observe
+ * @param {ve.dm.MWTransclusionBlockNode} model Model to observe
  */
-ve.ce.MWTemplateBlockNode = function VeCeMWTemplateBlockNode( model ) {
+ve.ce.MWTransclusionBlockNode = function VeCeMWTransclusionBlockNode( model ) {
 	// Parent constructor
-	ve.ce.MWTemplateNode.call( this, model );
+	ve.ce.MWTransclusionNode.call( this, model );
 
 	// DOM Changes
-	this.$.addClass( 've-ce-mwTemplateBlockNode' );
+	this.$.addClass( 've-ce-mwTransclusionBlockNode' );
 };
 
 /* Inheritance */
 
-ve.inheritClass( ve.ce.MWTemplateBlockNode, ve.ce.MWTemplateNode );
+ve.inheritClass( ve.ce.MWTransclusionBlockNode, ve.ce.MWTransclusionNode );
 
 /* Static Properties */
 
-ve.ce.MWTemplateBlockNode.static.name = 'mwTemplateBlock';
+ve.ce.MWTransclusionBlockNode.static.name = 'mwTransclusionBlock';
 
-ve.ce.MWTemplateBlockNode.static.tagName = 'div';
+ve.ce.MWTransclusionBlockNode.static.tagName = 'div';
 
 /**
- * ContentEditable MediaWiki template inline node.
+ * ContentEditable MediaWiki transclusion inline node.
  *
  * @class
- * @extends ve.ce.MWTemplateNode
+ * @extends ve.ce.MWTransclusionNode
  * @constructor
- * @param {ve.dm.MWTemplateInlineNode} model Model to observe
+ * @param {ve.dm.MWTransclusionInlineNode} model Model to observe
  */
-ve.ce.MWTemplateInlineNode = function VeCeMWTemplateInlineNode( model ) {
+ve.ce.MWTransclusionInlineNode = function VeCeMWTransclusionInlineNode( model ) {
 	// Parent constructor
-	ve.ce.MWTemplateNode.call( this, model );
+	ve.ce.MWTransclusionNode.call( this, model );
 
 	// DOM Changes
-	this.$.addClass( 've-ce-mwTemplateInlineNode' );
+	this.$.addClass( 've-ce-mwTransclusionInlineNode' );
 };
 
 /* Inheritance */
 
-ve.inheritClass( ve.ce.MWTemplateInlineNode, ve.ce.MWTemplateNode );
+ve.inheritClass( ve.ce.MWTransclusionInlineNode, ve.ce.MWTransclusionNode );
 
 /* Static Properties */
 
-ve.ce.MWTemplateInlineNode.static.name = 'mwTemplateInline';
+ve.ce.MWTransclusionInlineNode.static.name = 'mwTransclusionInline';
 
-ve.ce.MWTemplateInlineNode.static.tagName = 'span';
+ve.ce.MWTransclusionInlineNode.static.tagName = 'span';
 
 /* Registration */
 
-ve.ce.nodeFactory.register( ve.ce.MWTemplateNode );
-ve.ce.nodeFactory.register( ve.ce.MWTemplateBlockNode );
-ve.ce.nodeFactory.register( ve.ce.MWTemplateInlineNode );
+ve.ce.nodeFactory.register( ve.ce.MWTransclusionNode );
+ve.ce.nodeFactory.register( ve.ce.MWTransclusionBlockNode );
+ve.ce.nodeFactory.register( ve.ce.MWTransclusionInlineNode );
