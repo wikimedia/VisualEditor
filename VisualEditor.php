@@ -529,7 +529,7 @@ $wgResourceModules += array(
 			'visualeditor-dialog-meta-title',
 			'visualeditor-dialog-meta-categories-section',
 			'visualeditor-dialog-meta-categories-data-label',
-			'visualeditor-dialog-meta-categories-settings-label',
+			'visualeditor-dialog-meta-categories-options',
 			'visualeditor-dialog-meta-categories-input-placeholder',
 			'visualeditor-dialog-meta-categories-input-newcategorylabel',
 			'visualeditor-dialog-meta-categories-input-movecategorylabel',

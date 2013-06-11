@@ -58,10 +58,14 @@ ve.ui.MWMetaDialog.prototype.initialize = function () {
 
 	// Properties
 	this.categoriesFieldset = new ve.ui.FieldsetLayout( {
-		'$$': this.frame.$$, 'label': ve.msg( 'visualeditor-dialog-meta-categories-data-label' ), 'icon': 'tag'
+		'$$': this.frame.$$,
+		'label': ve.msg( 'visualeditor-dialog-meta-categories-data-label' ),
+		'icon': 'tag'
 	} );
-	this.categorySettingsFieldset = new ve.ui.FieldsetLayout( {
-		'$$': this.frame.$$, 'label': ve.msg( 'visualeditor-dialog-meta-categories-settings-label' ), 'icon': 'settings'
+	this.categoryOptionsFieldset = new ve.ui.FieldsetLayout( {
+		'$$': this.frame.$$,
+		'label': ve.msg( 'visualeditor-dialog-meta-categories-options' ),
+		'icon': 'settings'
 	} );
 	this.categoryWidget = new ve.ui.MWCategoryWidget( {
 		'$$': this.frame.$$, '$overlay': this.$overlay
@@ -75,7 +79,9 @@ ve.ui.MWMetaDialog.prototype.initialize = function () {
 		'label': ve.msg( 'visualeditor-dialog-meta-categories-defaultsort-label' )
 	} );
 	this.languagesFieldset = new ve.ui.FieldsetLayout( {
-		'$$': this.frame.$$, 'label': ve.msg( 'visualeditor-dialog-meta-languages-label' ), 'icon': 'language'
+		'$$': this.frame.$$,
+		'label': ve.msg( 'visualeditor-dialog-meta-languages-label' ),
+		'icon': 'language'
 	} );
 
 	// Events
@@ -97,25 +103,33 @@ ve.ui.MWMetaDialog.prototype.initialize = function () {
 		'icon': 'language'
 	} );
 
-	this.pages.categories.$.append( this.categoriesFieldset.$, this.categorySettingsFieldset.$ );
+	this.pages.categories.$.append( this.categoriesFieldset.$, this.categoryOptionsFieldset.$ );
 	this.categoriesFieldset.$.append( this.categoryWidget.$ );
-	this.categorySettingsFieldset.$.append( this.defaultSortLabel.$, this.defaultSortInput.$ );
+	this.categoryOptionsFieldset.$.append( this.defaultSortLabel.$, this.defaultSortInput.$ );
 
 	this.pages.languages.$.append( this.languagesFieldset.$ );
 
-	this.languagesFieldset.$
-		.append( this.frame.$$( '<span>' ).text( ve.msg( 'visualeditor-dialog-meta-languages-readonlynote' ) ) );
+	this.languagesFieldset.$.append(
+		this.frame.$$( '<span>' )
+			.text( ve.msg( 'visualeditor-dialog-meta-languages-readonlynote' ) )
+	);
 
 	languagePromise = this.getAllLanguageItems();
 	languagePromise.done( ve.bind( function ( languages ) {
 		var i, $languagesTable = this.frame.$$( '<table>' ), languageslength = languages.length;
 
 		$languagesTable
-			.addClass( 've-ui-dialog-meta-languages-table' )
+			.addClass( 've-ui-mwMetaDialog-languages-table' )
 			.append( this.frame.$$( '<tr>' )
-				.append( this.frame.$$( '<th>' ).append( ve.msg( 'visualeditor-dialog-meta-languages-code-label' ) ) )
-				.append( this.frame.$$( '<th>' ).append( ve.msg( 'visualeditor-dialog-meta-languages-link-label' ) ) )
-		);
+				.append(
+					this.frame.$$( '<th>' )
+						.append( ve.msg( 'visualeditor-dialog-meta-languages-code-label' ) )
+				)
+				.append(
+					this.frame.$$( '<th>' )
+						.append( ve.msg( 'visualeditor-dialog-meta-languages-link-label' ) )
+				)
+			);
 
 		for ( i = 0; i < languageslength; i++ ) {
 			$languagesTable

@@ -165,25 +165,40 @@
 	height: 10em;
 }
 
-.ve-ui-dialog-meta-languages-table {
-	margin: 2em 0 0 3em;
-	border: 1px solid silver;
+.ve-ui-mwTemplateDialog-addParameterFieldset .ve-ui-widget {
+	display: inline-block;
+	margin-right: 0.5em;
+}
+
+/* ve.ui.MWMetaDialog */
+
+.ve-ui-mwMetaDialog-languages-table {
+	margin: 2em 0 0 0;
+	padding: 0;
+	width: 100%;
+	border: none;
 	border-collapse: collapse;
 }
 
-.ve-ui-dialog-meta-languages-table th {
-	background: #E8E8E8;
+.ve-ui-mwMetaDialog-languages-table th {
+	border-bottom: solid 1px #ddd;
+	text-align: left;
 }
 
-.ve-ui-dialog-meta-languages-table th, td {
-	padding: 0.5em 1em;
+.ve-ui-mwMetaDialog-languages-table th, td {
+	padding: 0.75em 1em;
+	border-bottom: solid 1px white;
 }
 
-.ve-ui-dialog-meta-languages-table tr:nth-child(odd) td {
+.ve-ui-mwMetaDialog-languages-table tr td:first-child {
+	width: 30%;
+}
+
+.ve-ui-mwMetaDialog-languages-table tr:nth-child(odd) td {
 	background: #F0F0F0;
 }
 
-.ve-ui-dialog-meta-languages-table tr:nth-child(even) td {
+.ve-ui-mwMetaDialog-languages-table tr:nth-child(even) td {
 	background: #F8F8F8;
 }
 
