@@ -27,16 +27,17 @@ ve.ui.InputWidget = function VeUiInputWidget( config ) {
 
 	// Properties
 	this.$input = this.getInputElement( config );
-	this.value = config.value === undefined ? '' : config.value;
+	this.value = '';
 	this.readonly = false;
 
 	// Events
 	this.$input.on( 'keydown mouseup cut paste change input select', ve.bind( this.onEdit, this ) );
 
 	// Initialization
-	this.$input.attr( 'name', config.name ).val( this.value );
+	this.$input.attr( 'name', config.name );
 	this.setReadOnly( config.readOnly );
 	this.$.addClass( 've-ui-inputWidget' ).append( this.$input );
+	this.setValue( config.value );
 };
 
 /* Inheritance */
@@ -118,7 +119,7 @@ ve.ui.InputWidget.prototype.setValue = function ( value ) {
 		this.value = value;
 		// Only update the DOM if we must
 		if ( domValue !== this.value ) {
-			this.$input.val( this.value );
+			this.$input.val( value );
 		}
 		this.emit( 'change', this.value );
 	}
@@ -128,12 +129,14 @@ ve.ui.InputWidget.prototype.setValue = function ( value ) {
 /**
  * Sanitize incoming value.
  *
+ * Ensures value is a string, and converts undefined and null to empty strings.
+ *
  * @method
  * @param {string} value Original value
  * @returns {string} Sanitized value
  */
 ve.ui.InputWidget.prototype.sanitizeValue = function ( value ) {
-	return String( value );
+	return value === undefined || value === null ? '' : String( value );
 };
 
 /**
