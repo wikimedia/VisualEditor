@@ -26,6 +26,7 @@ ve.ui.PagedDialog = function VeUiPagedDialog( surface, config ) {
 
 	// Properties
 	this.pages = {};
+	this.currentPageName = null;
 };
 
 /* Inheritance */
@@ -68,7 +69,7 @@ ve.ui.PagedDialog.prototype.initialize = function () {
  */
 ve.ui.PagedDialog.prototype.onOutlineSelect = function ( item ) {
 	if ( item ) {
-		this.pagesPanel.showItem( this.pages[item.getData()] );
+		this.setPage( item.getData() );
 	}
 };
 
@@ -82,11 +83,15 @@ ve.ui.PagedDialog.prototype.onOutlineSelect = function ( item ) {
  * @param {string} [config.icon] Symbolic name of icon
  * @param {number} [config.level=0] Indentation level
  * @param {number} [config.index] Specific index to insert page at
+ * @param {jQuery} [config.$content] Page content
  * @chainable
  */
 ve.ui.PagedDialog.prototype.addPage = function ( name, config ) {
 	// Create and add page panel and outline item
 	this.pages[name] = new ve.ui.PanelLayout( { '$$': this.frame.$$, 'scroll': true } );
+	if ( config.$content ) {
+		this.pages[name].$.append( config.$content );
+	}
 	this.pagesPanel.addItems( [this.pages[name]], config.index );
 	this.outlineWidget.addItems(
 		[
@@ -109,6 +114,29 @@ ve.ui.PagedDialog.prototype.addPage = function ( name, config ) {
 };
 
 /**
+ * Remove a page.
+ *
+ * @method
+ * @chainable
+ */
+ve.ui.PagedDialog.prototype.removePage = function ( name ) {
+	var page = this.pages[name];
+
+	if ( page ) {
+		delete this.pages[name];
+		this.pagesPanel.removeItems( [ page ] );
+		this.outlineWidget.removeItems( [ this.outlineWidget.getItemFromData( name ) ] );
+	}
+
+	// Auto-select first item when nothing is selected anymore
+	if ( !this.outlineWidget.getSelectedItem() ) {
+		this.outlineWidget.selectItem( this.outlineWidget.getClosestSelectableItem( 0 ) );
+	}
+
+	return this;
+};
+
+/**
  * Clear all pages.
  *
  * @method
@@ -118,6 +146,7 @@ ve.ui.PagedDialog.prototype.clearPages = function () {
 	this.pages = [];
 	this.pagesPanel.clearItems();
 	this.outlineWidget.clearItems();
+	this.currentPageName = null;
 
 	return this;
 };
@@ -131,4 +160,28 @@ ve.ui.PagedDialog.prototype.clearPages = function () {
  */
 ve.ui.PagedDialog.prototype.getPage = function ( name ) {
 	return this.pages[name];
+};
+
+/**
+ * Set the page by name.
+ *
+ * @method
+ * @param {string} name Symbolic name of page
+ */
+ve.ui.PagedDialog.prototype.setPage = function ( name ) {
+	if ( name in this.pages ) {
+		this.currentPageName = name;
+		this.pagesPanel.showItem( this.pages[name] );
+		this.pages[name].$.find( ':input:first' ).focus();
+	}
+};
+
+/**
+ * Get current page name.
+ *
+ * @method
+ * @returns {string|null} Current page name
+ */
+ve.ui.PagedDialog.prototype.getPageName = function () {
+	return this.currentPageName;
 };
