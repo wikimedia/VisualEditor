@@ -33,7 +33,7 @@ ve.ui.MWCategoryInputWidget = function VeUiMWCategoryInputWidget( categoryWidget
 	// Properties
 	this.categoryWidget = categoryWidget;
 	this.forceCapitalization = mw.config.get( 'wgCaseSensitiveNamespaces' ).indexOf( 14 ) === -1;
-	this.categoryPrefix = 'Category:';
+	this.categoryPrefix = mw.config.get( 'wgFormattedNamespaces' )['14'] + ':';
 
 	// Initialization
 	this.$.addClass( 've-ui-mwCategoryInputWidget' );
@@ -74,11 +74,17 @@ ve.ui.MWCategoryInputWidget.prototype.getLookupRequest = function () {
  * @param {Mixed} data Response from server
  */
 ve.ui.MWCategoryInputWidget.prototype.getLookupCacheItemFromData = function ( data ) {
-	return ve.isArray( data ) && data.length ?
-		data[1].map( ve.bind( function ( item ) {
-			return item.replace( new RegExp( this.categoryPrefix, 'gi' ), '' );
-		}, this ) ) :
-		[];
+	var i, len, title, result = [];
+	if ( ve.isArray( data ) && data.length ) {
+		for ( i = 0, len = data[1].length; i < len; i++ ) {
+			try {
+				title = new mw.Title( data[1][i] );
+				result.push( title.getNameText() );
+			} catch ( e ) { }
+			// If the received title isn't valid, just ignore it
+		}
+	}
+	return result;
 };
 
 /**
@@ -97,13 +103,13 @@ ve.ui.MWCategoryInputWidget.prototype.getLookupMenuItemsFromData = function ( da
 		menu$$ = this.lookupMenu.$$,
 		category = this.getCategoryItemFromValue( this.value ),
 		existingCategories = this.categoryWidget.getCategories(),
-		matchingCategories = data || [],
-		pattern = new RegExp( '^' + category.value );
+		matchingCategories = data || [];
 
 	// Existing categories
 	for ( i = 0, len = existingCategories.length; i < len; i++ ) {
 		item = existingCategories[i];
-		if ( item.match( pattern ) ) {
+		// Verify that item starts with category.value
+		if ( item.lastIndexOf( category.value, 0 ) === 0 ) {
 			if ( item === category.value ) {
 				exactMatch = true;
 			}
@@ -115,7 +121,7 @@ ve.ui.MWCategoryInputWidget.prototype.getLookupMenuItemsFromData = function ( da
 		item = matchingCategories[i];
 		if (
 			existingCategoryItems.indexOf( item ) === -1 &&
-			item.match( pattern )
+			item.lastIndexOf( category.value, 0 ) === 0
 		) {
 			if ( item === category.value ) {
 				exactMatch = true;
