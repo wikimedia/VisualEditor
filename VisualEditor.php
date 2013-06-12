@@ -276,6 +276,9 @@ $wgResourceModules += array(
 			've/dm/nodes/ve.dm.MWEntityNode.js',
 			've/dm/nodes/ve.dm.MWHeadingNode.js',
 			've/dm/nodes/ve.dm.MWPreformattedNode.js',
+			've/dm/nodes/ve.dm.MWInlineImageNode.js',
+			've/dm/nodes/ve.dm.MWBlockImageNode.js',
+			've/dm/nodes/ve.dm.MWImageCaptionNode.js',
 
 			've/dm/annotations/ve.dm.LinkAnnotation.js',
 			've/dm/annotations/ve.dm.MWExternalLinkAnnotation.js',
@@ -333,6 +336,9 @@ $wgResourceModules += array(
 			've/ce/nodes/ve.ce.MWEntityNode.js',
 			've/ce/nodes/ve.ce.MWHeadingNode.js',
 			've/ce/nodes/ve.ce.MWPreformattedNode.js',
+			've/ce/nodes/ve.ce.MWInlineImageNode.js',
+			've/ce/nodes/ve.ce.MWBlockImageNode.js',
+			've/ce/nodes/ve.ce.MWImageCaptionNode.js',
 
 			've/ce/annotations/ve.ce.LinkAnnotation.js',
 			've/ce/annotations/ve.ce.MWExternalLinkAnnotation.js',
@@ -395,6 +401,8 @@ $wgResourceModules += array(
 			've/ui/widgets/ve.ui.MWCategoryPopupWidget.js',
 			've/ui/widgets/ve.ui.MWCategoryItemWidget.js',
 			've/ui/widgets/ve.ui.MWCategoryWidget.js',
+			've/ui/widgets/ve.ui.MWMediaSelectWidget.js',
+			've/ui/widgets/ve.ui.MWMediaSelectItemWidget.js',
 
 			've/ui/layouts/ve.ui.FieldsetLayout.js',
 			've/ui/layouts/ve.ui.GridLayout.js',
@@ -403,6 +411,7 @@ $wgResourceModules += array(
 
 			've/ui/dialogs/ve.ui.PagedDialog.js',
 			've/ui/dialogs/ve.ui.MWMetaDialog.js',
+			've/ui/dialogs/ve.ui.MWMediaInsertDialog.js',
 
 			've/ui/tools/ve.ui.ButtonTool.js',
 			've/ui/tools/ve.ui.AnnotationButtonTool.js',
@@ -417,6 +426,7 @@ $wgResourceModules += array(
 			've/ui/tools/buttons/ve.ui.ClearButtonTool.js',
 			've/ui/tools/buttons/ve.ui.LinkButtonTool.js',
 			've/ui/tools/buttons/ve.ui.MWLinkButtonTool.js',
+			've/ui/tools/buttons/ve.ui.MWMediaInsertButtonTool.js',
 			've/ui/tools/buttons/ve.ui.BulletButtonTool.js',
 			've/ui/tools/buttons/ve.ui.NumberButtonTool.js',
 			've/ui/tools/buttons/ve.ui.IndentButtonTool.js',
@@ -470,6 +480,9 @@ $wgResourceModules += array(
 			'visualeditor-dialog-action-apply',
 			'visualeditor-dialog-action-cancel',
 			'visualeditor-dialog-action-close',
+			'visualeditor-dialog-media-insert-button',
+			'visualeditor-dialog-media-insert-title',
+			'visualeditor-dialog-media-title',
 			'visualeditor-dialog-meta-categories-data-label',
 			'visualeditor-dialog-meta-categories-defaultsort-label',
 			'visualeditor-dialog-meta-categories-input-matchingcategorieslabel',
@@ -485,6 +498,7 @@ $wgResourceModules += array(
 			'visualeditor-dialog-meta-languages-readonlynote',
 			'visualeditor-dialog-meta-languages-section',
 			'visualeditor-dialog-meta-title',
+			'visualeditor-dialogbutton-media-tooltip',
 			'visualeditor-dialogbutton-meta-tooltip',
 			'visualeditor-diff-nochanges',
 			'visualeditor-differror',
@@ -514,6 +528,7 @@ $wgResourceModules += array(
 			'visualeditor-linkinspector-title',
 			'visualeditor-listbutton-bullet-tooltip',
 			'visualeditor-listbutton-number-tooltip',
+			'visualeditor-media-input-placeholder',
 			'visualeditor-meta-tool',
 			'visualeditor-notification-created',
 			'visualeditor-notification-restored',
@@ -539,26 +554,16 @@ $wgResourceModules += array(
 	),
 	'ext.visualEditor.experimental' => $wgVisualEditorResourceTemplate + array(
 		'scripts' => array(
-			've/dm/nodes/ve.dm.MWInlineImageNode.js',
-			've/dm/nodes/ve.dm.MWBlockImageNode.js',
-			've/dm/nodes/ve.dm.MWImageCaptionNode.js',
 			've/dm/nodes/ve.dm.MWTemplateNode.js',
 			've/dm/nodes/ve.dm.MWReferenceListNode.js',
 			've/dm/nodes/ve.dm.MWReferenceNode.js',
 
-			've/ce/nodes/ve.ce.MWInlineImageNode.js',
-			've/ce/nodes/ve.ce.MWBlockImageNode.js',
-			've/ce/nodes/ve.ce.MWImageCaptionNode.js',
 			've/ce/nodes/ve.ce.MWTemplateNode.js',
 			've/ce/nodes/ve.ce.MWReferenceListNode.js',
 			've/ce/nodes/ve.ce.MWReferenceNode.js',
 
-			've/ui/dialogs/ve.ui.MWMediaInsertDialog.js',
-			've/ui/widgets/ve.ui.MWMediaSelectWidget.js',
-			've/ui/widgets/ve.ui.MWMediaSelectItemWidget.js',
 			've/ui/tools/buttons/ve.ui.MWReferenceButtonTool.js',
 			've/ui/tools/buttons/ve.ui.MWTemplateButtonTool.js',
-			've/ui/tools/buttons/ve.ui.MWMediaInsertButtonTool.js',
 			've/ui/dialogs/ve.ui.MWReferenceDialog.js',
 			've/ui/dialogs/ve.ui.MWTemplateDialog.js',
 		),
@@ -567,15 +572,10 @@ $wgResourceModules += array(
 		),
 		'messages' => array(
 			// VE messages needed by code that is only in experimental mode
-			'visualeditor-dialog-media-insert-button',
-			'visualeditor-dialog-media-insert-title',
-			'visualeditor-dialog-media-title',
 			'visualeditor-dialog-reference-title',
 			'visualeditor-dialog-template-title',
-			'visualeditor-dialogbutton-media-tooltip',
 			'visualeditor-dialogbutton-reference-tooltip',
 			'visualeditor-dialogbutton-template-tooltip',
-			'visualeditor-media-input-placeholder',
 		),
 	),
 	'ext.visualEditor.icons-raster' => $wgVisualEditorResourceTemplate + array(

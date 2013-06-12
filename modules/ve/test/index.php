@@ -119,6 +119,9 @@
 		<script src="../../ve/dm/nodes/ve.dm.MWEntityNode.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.MWHeadingNode.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.MWPreformattedNode.js"></script>
+		<script src="../../ve/dm/nodes/ve.dm.MWInlineImageNode.js"></script>
+		<script src="../../ve/dm/nodes/ve.dm.MWBlockImageNode.js"></script>
+		<script src="../../ve/dm/nodes/ve.dm.MWImageCaptionNode.js"></script>
 		<script src="../../ve/dm/annotations/ve.dm.LinkAnnotation.js"></script>
 		<script src="../../ve/dm/annotations/ve.dm.MWExternalLinkAnnotation.js"></script>
 		<script src="../../ve/dm/annotations/ve.dm.MWInternalLinkAnnotation.js"></script>
@@ -170,6 +173,9 @@
 		<script src="../../ve/ce/nodes/ve.ce.MWEntityNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.MWHeadingNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.MWPreformattedNode.js"></script>
+		<script src="../../ve/ce/nodes/ve.ce.MWInlineImageNode.js"></script>
+		<script src="../../ve/ce/nodes/ve.ce.MWBlockImageNode.js"></script>
+		<script src="../../ve/ce/nodes/ve.ce.MWImageCaptionNode.js"></script>
 		<script src="../../ve/ce/annotations/ve.ce.LinkAnnotation.js"></script>
 		<script src="../../ve/ce/annotations/ve.ce.MWExternalLinkAnnotation.js"></script>
 		<script src="../../ve/ce/annotations/ve.ce.MWInternalLinkAnnotation.js"></script>
@@ -255,15 +261,9 @@
 		<script src="../../ve/ui/inspectors/ve.ui.LinkInspector.js"></script>
 		<script src="../../ve/ui/inspectors/ve.ui.MWLinkInspector.js"></script>
 		<!-- ext.visualEditor.experimental -->
-		<script src="../../ve/dm/nodes/ve.dm.MWInlineImageNode.js"></script>
-		<script src="../../ve/dm/nodes/ve.dm.MWBlockImageNode.js"></script>
-		<script src="../../ve/dm/nodes/ve.dm.MWImageCaptionNode.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.MWTemplateNode.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.MWReferenceListNode.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.MWReferenceNode.js"></script>
-		<script src="../../ve/ce/nodes/ve.ce.MWInlineImageNode.js"></script>
-		<script src="../../ve/ce/nodes/ve.ce.MWBlockImageNode.js"></script>
-		<script src="../../ve/ce/nodes/ve.ce.MWImageCaptionNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.MWTemplateNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.MWReferenceListNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.MWReferenceNode.js"></script>
