@@ -467,6 +467,7 @@ ve.ce.Surface.prototype.onDocumentKeyPress = function ( e ) {
 	var selection, prevNode, documentModel = this.model.getDocument();
 
 	// Prevent IE from editing Aliens/Entities
+	// TODO: Better comment about what's going on here is needed.
 	if ( $.browser.msie === true ) {
 		selection = this.model.getSelection();
 		if ( selection.start !== 0 && selection.isCollapsed() ) {
@@ -481,20 +482,14 @@ ve.ce.Surface.prototype.onDocumentKeyPress = function ( e ) {
 		}
 	}
 
-	// FF fires keypress for bunch of function keys that we want to ignore
-	if ( ve.ce.isArrowKey( e.keyCode ) ||
-		ve.ce.isShortcutKey( e ) ||
-		e.keyCode === 13 ||
-		e.which === ve.Keys.UNDEFINED ||
-		e.keyCode === ve.Keys.BACKSPACE ||
-		e.keyCode === ve.Keys.END ||
-		e.keyCode === ve.Keys.ENTER ||
-		e.keyCode === ve.Keys.HOME ||
-		e.keyCode === ve.Keys.TAB ||
-		e.keyCode === ve.Keys.PAGEDOWN ||
-		e.keyCode === ve.Keys.PAGEUP ) {
+	// Filter out non-character keys. If those keys wouldn't be filtered out unexpected content
+	// deletion would occur in case when selection is not collapsed and user press home key for
+	// instance (Firefox fires keypress for home key).
+	// TODO: Should be covered with Selenium tests.
+	if ( e.which === 0 || e.charCode === 0 ) {
 		return;
 	}
+
 	this.handleInsertion();
 	setTimeout( ve.bind( function () {
 		this.surfaceObserver.start();
