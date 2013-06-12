@@ -14,11 +14,11 @@
  *
  * @constructor
  * @param {Object} [config] Config options
- * @cfg {string} [icon=''] Symbolic icon name
+ * @cfg {string} [icon] Symbolic icon name
  */
 ve.ui.FieldsetLayout = function VeUiFieldsetLayout( config ) {
 	// Config initialization
-	config = ve.extendObject( { 'icon': 'window' }, config );
+	config = config || {};
 
 	// Parent constructor
 	ve.ui.Layout.call( this, config );
@@ -27,8 +27,13 @@ ve.ui.FieldsetLayout = function VeUiFieldsetLayout( config ) {
 	ve.ui.LabeledElement.call( this, this.$$( '<legend>' ), config );
 
 	// Initialization
-	this.$label.addClass( 've-ui-icon-' + config.icon );
-	this.$.append( this.$label ).addClass( 've-ui-fieldsetLayout' );
+	if ( config.icon ) {
+		this.$.addClass( 've-ui-fieldsetLayout-decorated' );
+		this.$label.addClass( 've-ui-icon-' + config.icon );
+	}
+	this.$
+		.addClass( 've-ui-fieldsetLayout' )
+		.append( this.$label );
 };
 
 /* Inheritance */

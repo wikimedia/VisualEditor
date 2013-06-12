@@ -31,8 +31,11 @@
 
 .ve-ui-fieldsetLayout > legend.ve-ui-labeledElement-label {
 	font-size: 1.5em;
-	padding-left: 1.75em;
 	margin-bottom: 1em;
+}
+
+.ve-ui-fieldsetLayout-decorated > legend.ve-ui-labeledElement-label {
+	padding-left: 1.75em;
 	background-position: left center;
 	background-repeat: no-repeat;
 }
