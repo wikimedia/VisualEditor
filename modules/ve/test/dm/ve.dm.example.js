@@ -1649,6 +1649,38 @@ ve.dm.example.domToDataCases = {
 		'html': ve.dm.example.html,
 		'data': ve.dm.example.data
 	},
+	'empty annotation': {
+		'html': '<body><p>Foo<span id="anchorTarget"></span>Bar</p></body>',
+		'data': [
+			{ 'type': 'paragraph' },
+			'F', 'o', 'o',
+			{
+				'type': 'alienMeta',
+				'attributes': {
+					'domElements': $( '<span id="anchorTarget"></span>' ).get()
+				}
+			},
+			{ 'type': '/alienMeta' },
+			'B', 'a', 'r',
+			{ 'type': '/paragraph' }
+		]
+	},
+	'empty annotation in wrapper paragraph': {
+		'html': '<body>Foo<span id="anchorTarget"></span>Bar</body>',
+		'data': [
+			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+			'F', 'o', 'o',
+			{
+				'type': 'alienMeta',
+				'attributes': {
+					'domElements': $( '<span id="anchorTarget"></span>' ).get()
+				}
+			},
+			{ 'type': '/alienMeta' },
+			'B', 'a', 'r',
+			{ 'type': '/paragraph' }
+		]
+	},
 	'list item with space followed by link': {
 		'html': '<body><ul><li><p> <a rel="mw:WikiLink" href="Foo_bar" data-rt="{&quot;sHref&quot;:&quot;foo bar&quot;}">bar</a></p></li></ul></body>',
 		'data': [

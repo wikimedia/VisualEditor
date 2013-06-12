@@ -584,9 +584,14 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, wrapp
 					// Append child element data
 					childAnnotations = context.annotations.clone();
 					childAnnotations.push( annotation );
-					data = data.concat(
-						this.getDataFromDomRecursion( childDomElement, undefined, childAnnotations )
-					);
+
+					childDataElements = this.getDataFromDomRecursion( childDomElement, undefined, childAnnotations );
+					if ( !childDataElements.length ) {
+						// Empty annotation, create a meta item
+						childDataElements = this.createDataElements( ve.dm.AlienMetaItem, childDomElements );
+						childDataElements.push( { 'type': '/' + childDataElements[0].type } );
+					}
+					data = data.concat( childDataElements );
 					// Clear wrapped whitespace
 					wrappedWhitespace = '';
 				} else {
@@ -868,7 +873,7 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, wrapp
 		}
 	}
 	// Don't return an empty document
-	if ( context.branchType === 'document' && data.length === 0 ) {
+	if ( context.branchType === 'document' && data.length === 0 && !annotationSet ) {
 		return [
 			{ 'type': 'paragraph', 'internal': { 'generated': 'empty' } },
 			{ 'type': '/paragraph' }
