@@ -35,6 +35,27 @@ ve.ui.MWReferenceDialog.static.icon = 'reference';
 
 ve.ui.MWReferenceDialog.static.modelClasses = [ ve.dm.MWReferenceNode ];
 
+ve.ui.MWReferenceDialog.static.toolbarTools = [
+	{ 'items': ['undo', 'redo'] },
+	{ 'items': ['mwFormat'] },
+	{ 'items': ['bold', 'italic', 'mwLink', 'clear', 'mwMediaInsert'] }
+];
+
+ve.ui.MWReferenceDialog.static.surfaceCommands = [
+	'bold', 'italic', 'mwLink', 'undo', 'redo'
+];
+
+/* Static Initialization */
+
+ve.ui.MWReferenceDialog.static.addLocalStylesheets( [
+	've.ce.Node.css',
+	've.ce.Surface.css',
+	've.ui.Surface.css',
+	've.ui.Context.css',
+	've.ui.Tool.css',
+	've.ui.Toolbar.css'
+] );
+
 /* Methods */
 
 /**
@@ -46,8 +67,27 @@ ve.ui.MWReferenceDialog.prototype.initialize = function () {
 	// Call parent method
 	ve.ui.Dialog.prototype.initialize.call( this );
 
+	// Properties
+	this.contentFieldset = new ve.ui.FieldsetLayout( {
+		// TODO: use message string
+		'$$': this.frame.$$, 'label': 'Content', 'icon': 'parameter'
+	} );
+	this.nameFieldset = new ve.ui.FieldsetLayout( {
+		// TODO: use message string
+		'$$': this.frame.$$, 'label': 'Name', 'icon': 'parameter'
+	} );
+	this.nameInput = new ve.ui.TextInputWidget( { '$$': this.frame.$$ } );
+	this.nameLabel = new ve.ui.InputLabelWidget( {
+		'$$': this.frame.$$,
+		'input': this.nameInput,
+		// TODO: use message string
+		'label': 'Reuse this reference by this name'
+	} );
+
 	// Initialization
 	this.$body.addClass( 've-ui-mwReferenceDialog-body' );
+	this.$body.append( this.contentFieldset.$, this.nameFieldset.$ );
+	this.nameFieldset.$.append( this.nameLabel.$, this.nameInput.$ );
 };
 
 /**
@@ -56,32 +96,20 @@ ve.ui.MWReferenceDialog.prototype.initialize = function () {
  * @method
  */
 ve.ui.MWReferenceDialog.prototype.onOpen = function () {
-	var focusedNode, doc, data,
-	// Remove mwReference tool as you can't have nested references
-		toolbarSubset = ve.init.mw.ViewPageTarget.static.getToolbarSubset( [
-			// Can't have nested references
-			'mwReference',
-			// Lists not properly supported by PHP parser
-			'number', 'bullet', 'outdent', 'indent'
-		] );
+	var focusedNode, data,
+		doc = this.surface.getModel().getDocument();
 
 	// Parent method
 	ve.ui.Dialog.prototype.onOpen.call( this );
 
-	// Get data from selection
+	// Get reference content
 	focusedNode = this.surface.getView().getFocusedNode();
-	doc = this.surface.getModel().getDocument();
 	if ( focusedNode instanceof ve.ce.MWReferenceNode ) {
 		this.internalItem = focusedNode.getModel().getInternalItem();
 		data = doc.getData( this.internalItem.getRange(), true );
 	} else {
 		data = [
-			{
-				'type': 'paragraph',
-				'internal': {
-					'generated': 'wrapper'
-				}
-			},
+			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
 			{ 'type': '/paragraph' }
 		];
 	}
@@ -94,9 +122,9 @@ ve.ui.MWReferenceDialog.prototype.onOpen = function () {
 
 	// Initialization
 	this.referenceToolbar.$.addClass( 've-ui-mwReferenceDialog-toolbar' );
-	this.$body.append( this.referenceToolbar.$, this.referenceSurface.$ );
-	this.referenceToolbar.addTools( toolbarSubset );
-	this.referenceSurface.addCommands( ve.init.mw.ViewPageTarget.static.surfaceCommands );
+	this.contentFieldset.$.append( this.referenceToolbar.$, this.referenceSurface.$ );
+	this.referenceToolbar.addTools( this.constructor.static.toolbarTools );
+	this.referenceSurface.addCommands( this.constructor.static.surfaceCommands );
 	this.referenceSurface.initialize();
 	this.referenceSurface.view.documentView.documentNode.$.focus();
 };
@@ -138,9 +166,7 @@ ve.ui.MWReferenceDialog.prototype.onClose = function ( action ) {
 				{
 					'type': 'mwReference',
 					'attributes': {
-						'mw': {
-							'name': 'ref'
-						},
+						'mw': { 'name': 'ref' },
 						'listIndex': newItem.index,
 						'listGroup': 'mwReference/' + groupName,
 						'listKey': key,
@@ -157,17 +183,6 @@ ve.ui.MWReferenceDialog.prototype.onClose = function ( action ) {
 	this.referenceSurface.destroy();
 	this.referenceToolbar.destroy();
 };
-
-/* Initialization */
-
-ve.ui.MWReferenceDialog.static.addLocalStylesheets( [
-	've.ce.Node.css',
-	've.ce.Surface.css',
-	've.ui.Surface.css',
-	've.ui.Context.css',
-	've.ui.Tool.css',
-	've.ui.Toolbar.css'
-] );
 
 /* Registration */
 
