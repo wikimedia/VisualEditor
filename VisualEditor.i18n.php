@@ -13,106 +13,103 @@ $messages['en'] = array(
 	'tooltip-ca-editsource' => 'Edit the source code of this page',
 	'tooltip-ca-ve-edit' => 'Edit this page with VisualEditor',
 	'visualeditor' => 'VisualEditor',
-	'visualeditor-desc' => 'Visual editor for MediaWiki',
-	'visualeditor-preference-enable' => 'Enable VisualEditor (only in the [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|main]] and [[{{MediaWiki:Visualeditor-usernamespacepagelink}}|user]] namespaces)',
-	'visualeditor-mainnamespacepagelink' => 'Project:Main namespace',
-	'visualeditor-usernamespacepagelink' => 'Project:User namespace',
-	'visualeditor-notification-saved' => 'Your changes to $1 have been saved.',
-	'visualeditor-notification-created' => '$1 has been created.',
-	'visualeditor-notification-restored' => '$1 has been restored.',
-	'visualeditor-notification-reported' => 'Your problem has been reported. Thank you.',
-	'visualeditor-ca-editsource' => 'Edit source',
+	'visualeditor-aliennode-tooltip' => 'Sorry, this element cannot be edited using the VisualEditor',
+	'visualeditor-annotationbutton-bold-tooltip' => 'Bold',
+	'visualeditor-annotationbutton-italic-tooltip' => 'Italic',
+	'visualeditor-annotationbutton-link-tooltip' => 'Link',
+	'visualeditor-beta-label' => 'beta',
+	'visualeditor-beta-warning' => 'VisualEditor is in \'beta\' and so may not let you edit everything yet.',
+	'visualeditor-browserwarning' => 'You are using a browser which is not officially supported by VisualEditor.',
 	'visualeditor-ca-createsource' => 'Create source',
-	'visualeditor-ca-ve-edit' => 'VisualEditor',
+	'visualeditor-ca-editsource' => 'Edit source',
 	'visualeditor-ca-ve-create' => 'VisualEditor',
+	'visualeditor-ca-ve-edit' => 'VisualEditor',
+	'visualeditor-clearbutton-tooltip' => 'Clear formatting',
+	'visualeditor-desc' => 'Visual editor for MediaWiki',
+	'visualeditor-descriptionpagelink' => 'Project:VisualEditor',
+	'visualeditor-dialog-action-apply' => 'Apply changes',
+	'visualeditor-dialog-action-cancel' => 'Cancel',
+	'visualeditor-dialog-action-close' => 'Close',
+	'visualeditor-dialog-media-insert-button' => 'Insert media',
+	'visualeditor-dialog-media-insert-title' => 'Insert media',
+	'visualeditor-dialog-media-title' => 'Media settings',
+	'visualeditor-dialog-meta-categories-data-label' => 'Categories',
+	'visualeditor-dialog-meta-categories-defaultsort-label' => 'Sort this page by default as',
+	'visualeditor-dialog-meta-categories-input-matchingcategorieslabel' => 'Matching categories',
+	'visualeditor-dialog-meta-categories-input-movecategorylabel' => 'Move this category here',
+	'visualeditor-dialog-meta-categories-input-newcategorylabel' => 'New category',
+	'visualeditor-dialog-meta-categories-input-placeholder' => 'Add a category',
+	'visualeditor-dialog-meta-categories-options' => 'Options',
+	'visualeditor-dialog-meta-categories-section' => 'Categories',
+	'visualeditor-dialog-meta-categories-sortkey-label' => 'Sort this page as',
+	'visualeditor-dialog-meta-languages-code-label' => 'Language code',
+	'visualeditor-dialog-meta-languages-label' => 'Languages',
+	'visualeditor-dialog-meta-languages-link-label' => 'Linked article',
+	'visualeditor-dialog-meta-languages-readonlynote' => 'This is a list of articles in other languages that are linked to this one; they cannot yet be edited using the VisualEditor',
+	'visualeditor-dialog-meta-languages-section' => 'Languages',
 	'visualeditor-dialog-meta-title' => 'Page settings',
 	'visualeditor-dialog-reference-title' => 'Reference',
 	'visualeditor-dialog-media-title' => 'Media settings',
 	'visualeditor-dialog-template-title' => 'Template',
-	'visualeditor-dialog-media-insert-title' => 'Insert media',
-	'visualeditor-dialog-media-insert-button' => 'Insert media',
-	'visualeditor-media-input-placeholder' => 'Search for media',
-	'visualeditor-dialog-action-apply' => 'Apply changes',
-	'visualeditor-dialog-action-cancel' => 'Cancel',
-	'visualeditor-dialog-action-close' => 'Close',
-	'visualeditor-toolbar-cancel' => 'Cancel',
-	'visualeditor-toolbar-savedialog' => 'Save page',
-	'visualeditor-savedialog-title-conflict' => 'Conflict',
-	'visualeditor-savedialog-title-nochanges' => 'No changes',
-	'visualeditor-savedialog-title-review' => 'Review your changes',
-	'visualeditor-savedialog-title-save' => 'Save your changes',
-	'visualeditor-savedialog-label-review-good' => 'Return to save form',
-	'visualeditor-savedialog-label-report' => 'Report problem',
-	'visualeditor-savedialog-label-resolve-conflict' => 'Resolve conflict',
-	'visualeditor-savedialog-label-create' => 'Create page',
-	'visualeditor-savedialog-label-save' => 'Save page',
-	'visualeditor-savedialog-label-review' => 'Review your changes',
-	'visualeditor-savedialog-label-restore' => 'Restore page',
+	'visualeditor-dialogbutton-media-tooltip' => 'Media',
+	'visualeditor-dialogbutton-meta-tooltip' => 'Page settings',
+	'visualeditor-dialogbutton-reference-tooltip' => 'Reference',
+	'visualeditor-dialogbutton-template-tooltip' => 'Template',
+	'visualeditor-diff-nochanges' => 'Could not start the review because your revision matches the latest version of this page.',
+	'visualeditor-differror' => 'Error loading data from server: $1.',
+	'visualeditor-editconflict' => 'Your changes could not be saved because of an edit conflict. Would you like to resolve the conflict manually?',
 	'visualeditor-editnotices-tool' => '$1 {{PLURAL:$1|notice|notices}}',
+	'visualeditor-editsummary' => 'Describe what you changed',
+	'visualeditor-feedback-link' => 'Project:VisualEditor/Feedback',
 	'visualeditor-feedback-tool' => 'Leave feedback',
-	'visualeditor-beta-label' => 'beta',
-	'visualeditor-beta-warning' => 'VisualEditor is in \'beta\' and so may not let you edit everything yet.',
-	'visualeditor-meta-tool' => 'Page settings',
-	'visualeditor-window-title' => 'Inspect',
-	'visualeditor-linkinspector-title' => 'Hyperlink',
-	'visualeditor-linkinspector-suggest-matching-page' => 'Matching page',
-	'visualeditor-linkinspector-suggest-new-page' => 'New page',
-	'visualeditor-linkinspector-suggest-external-link' => 'External link',
-	'visualeditor-formatdropdown-title' => 'Change format',
-	'visualeditor-formatdropdown-format-paragraph' => 'Paragraph',
 	'visualeditor-formatdropdown-format-heading1' => 'Heading 1',
 	'visualeditor-formatdropdown-format-heading2' => 'Heading 2',
 	'visualeditor-formatdropdown-format-heading3' => 'Heading 3',
 	'visualeditor-formatdropdown-format-heading4' => 'Heading 4',
 	'visualeditor-formatdropdown-format-heading5' => 'Heading 5',
 	'visualeditor-formatdropdown-format-heading6' => 'Heading 6',
+	'visualeditor-formatdropdown-format-paragraph' => 'Paragraph',
 	'visualeditor-formatdropdown-format-preformatted' => 'Preformatted',
-	'visualeditor-annotationbutton-bold-tooltip' => 'Bold',
-	'visualeditor-annotationbutton-italic-tooltip' => 'Italic',
-	'visualeditor-annotationbutton-link-tooltip' => 'Link',
-	'visualeditor-dialogbutton-meta-tooltip' => 'Page settings',
-	'visualeditor-dialogbutton-reference-tooltip' => 'Reference',
-	'visualeditor-dialogbutton-template-tooltip' => 'Template',
-	'visualeditor-dialogbutton-media-tooltip' => 'Media',
+	'visualeditor-formatdropdown-title' => 'Change format',
+	'visualeditor-historybutton-redo-tooltip' => 'Redo',
+	'visualeditor-historybutton-undo-tooltip' => 'Undo',
 	'visualeditor-indentationbutton-indent-tooltip' => 'Increase indentation',
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Decrease indentation',
-	'visualeditor-listbutton-number-tooltip' => 'Numbered list',
-	'visualeditor-listbutton-bullet-tooltip' => 'Bullet list',
-	'visualeditor-clearbutton-tooltip' => 'Clear formatting',
-	'visualeditor-historybutton-undo-tooltip' => 'Undo',
-	'visualeditor-historybutton-redo-tooltip' => 'Redo',
 	'visualeditor-inspector-close-tooltip' => 'Close',
 	'visualeditor-inspector-remove-tooltip' => 'Remove',
-	'visualeditor-dialog-meta-categories-section' => 'Categories',
-	'visualeditor-dialog-meta-categories-data-label' => 'Categories',
-	'visualeditor-dialog-meta-categories-options' => 'Options',
-	'visualeditor-dialog-meta-categories-input-placeholder' => 'Add a category',
-	'visualeditor-dialog-meta-categories-input-newcategorylabel' => 'New category',
-	'visualeditor-dialog-meta-categories-input-movecategorylabel' => 'Move this category here',
-	'visualeditor-dialog-meta-categories-input-matchingcategorieslabel' => 'Matching categories',
-	'visualeditor-dialog-meta-categories-sortkey-label' => 'Sort this page as',
-	'visualeditor-dialog-meta-categories-defaultsort-label' => 'Sort this page by default as',
-	'visualeditor-dialog-meta-languages-section' => 'Languages',
-	'visualeditor-dialog-meta-languages-label' => 'Languages',
-	'visualeditor-dialog-meta-languages-code-label' => 'Language code',
-	'visualeditor-dialog-meta-languages-link-label' => 'Linked article',
-	'visualeditor-dialog-meta-languages-readonlynote' => 'This is a list of articles in other languages that are linked to this one; they cannot yet be edited using the VisualEditor',
-	'visualeditor-viewpage-savewarning' => 'Are you sure you want to go back to view mode without saving first?',
+	'visualeditor-linkinspector-suggest-external-link' => 'External link',
+	'visualeditor-linkinspector-suggest-matching-page' => 'Matching page',
+	'visualeditor-linkinspector-suggest-new-page' => 'New page',
+	'visualeditor-linkinspector-title' => 'Hyperlink',
+	'visualeditor-listbutton-bullet-tooltip' => 'Bullet list',
+	'visualeditor-listbutton-number-tooltip' => 'Numbered list',
 	'visualeditor-loadwarning' => 'Error loading data from server: $1. Would you like to retry?',
 	'visualeditor-loadwarning-token' => 'Error loading edit token from server: $1. Would you like to retry?',
-	'visualeditor-differror' => 'Error loading data from server: $1.',
-	'visualeditor-serializeerror' => 'Error loading data from server: $1.',
+	'visualeditor-mainnamespacepagelink' => 'Project:Main namespace',
+	'visualeditor-media-input-placeholder' => 'Search for media',
+	'visualeditor-meta-tool' => 'Page settings',
+	'visualeditor-notification-created' => '$1 has been created.',
+	'visualeditor-notification-restored' => '$1 has been restored.',
+	'visualeditor-notification-saved' => 'Your changes to $1 have been saved.',
+	'visualeditor-preference-enable' => 'Enable VisualEditor (only in the [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|main]] and [[{{MediaWiki:Visualeditor-usernamespacepagelink}}|user]] namespaces)',
+	'visualeditor-savedialog-label-create' => 'Create page',
+	'visualeditor-savedialog-label-report' => 'Report problem',
+	'visualeditor-savedialog-label-resolve-conflict' => 'Resolve conflict',
+	'visualeditor-savedialog-label-restore' => 'Restore page',
+	'visualeditor-savedialog-label-review' => 'Review your changes',
+	'visualeditor-savedialog-label-review-good' => 'Return to save form',
+	'visualeditor-savedialog-label-save' => 'Save page',
+	'visualeditor-savedialog-title-conflict' => 'Conflict',
+	'visualeditor-savedialog-title-nochanges' => 'No changes',
+	'visualeditor-savedialog-title-review' => 'Review your changes',
+	'visualeditor-savedialog-title-save' => 'Save your changes',
 	'visualeditor-saveerror' => 'Error saving data to server: $1.',
-	'visualeditor-editconflict' => 'Your changes could not be saved because of an edit conflict. Would you like to resolve the conflict manually?',
-	'visualeditor-editsummary' => 'Describe what you changed',
-	'visualeditor-problem' => 'Describe what went wrong with the wikitext serialization',
-	'visualeditor-aliennode-tooltip' => 'Sorry, this element cannot be edited using the VisualEditor',
-	'visualeditor-descriptionpagelink' => 'Project:VisualEditor',
-	'visualeditor-browserwarning' => 'You are using a browser which is not officially supported by VisualEditor.',
-	'visualeditor-report-notice' => 'I understand that by clicking "Report problem" I will transmit my changes and my feedback, which will be stored for analysis. I agree to provide feedback in accordance with the [[{{MediaWiki:Visualeditor-report-link}}|Terms of Use]].',
-	'visualeditor-report-link' => 'foundation:Terms of Use',
-	'visualeditor-feedback-link' => 'Project:VisualEditor/Feedback',
-	'visualeditor-diff-nochanges' => 'Could not start the review because your revision matches the latest version of this page.',
+	'visualeditor-serializeerror' => 'Error loading data from server: $1.',
+	'visualeditor-toolbar-cancel' => 'Cancel',
+	'visualeditor-toolbar-savedialog' => 'Save page',
+	'visualeditor-usernamespacepagelink' => 'Project:User namespace',
+	'visualeditor-viewpage-savewarning' => 'Are you sure you want to go back to view mode without saving first?',
+	'visualeditor-window-title' => 'Inspect',
 );
 
 /** Message documentation (Message documentation)
@@ -137,126 +134,115 @@ $messages['qqq'] = array(
 
 See also:
 * {{msg-mw|Tooltip-ca-editsource}} - used if the page exists',
-	'tooltip-ca-editsource' => 'Tooltip of the wikitext "Edit source" tab.',
+	'tooltip-ca-editsource' => 'Tooltip of the wikitext "Edit source" tab, if the page exists.
+
+See also:
+* {{msg-mw|Tooltip-ca-createsource}} - used if the page doesn\'t exist',
 	'tooltip-ca-ve-edit' => 'Tooltip of the dedicated VisualEditor "Edit" tab.',
 	'visualeditor' => 'The name of the VisualEditor extension',
-	'visualeditor-desc' => '{{desc|name=Visual Editor|url=http://www.mediawiki.org/wiki/Extension:VisualEditor}}',
-	'visualeditor-preference-enable' => 'Label for the user preference to enable the VisualEditor.
-Links are in {{msg-mw|Visualeditor-mainnamespacepagelink}} and {{msg-mw|visualeditor-usernamespacepagelink}}.',
-	'visualeditor-mainnamespacepagelink' => 'Name of a page describing the main namespace (NS0) in this project.
-{{doc-important|Do not translate "Project"; it is automatically converted to the wiki\'s project namespace.}}',
-	'visualeditor-usernamespacepagelink' => 'Name of a page describing the user namespace (NS2) in this project.
-{{doc-important|Do not translate "Project"; it is automatically converted to the wiki\'s project namespace.}}',
-	'visualeditor-notification-saved' => 'Shown after a user saves a page, $1 is a page name.',
-	'visualeditor-notification-created' => 'Shown after a user creates a page, $1 is a page name.',
-	'visualeditor-notification-restored' => 'Shown after a user restores a page to a previous revision. Parameters:
-* $1 is a page name.',
-	'visualeditor-notification-reported' => 'Thank you message shown after a user reports a problematic page edit.',
-	'visualeditor-ca-editsource' => 'Text for the edit source link in the tab dropdown',
-	'visualeditor-ca-createsource' => "Text for the create source link in the tab dropdown, if the page doesn't exist.
+	'visualeditor-aliennode-tooltip' => 'Tooltip for items that the VisualEditor cannot edit',
+	'visualeditor-annotationbutton-bold-tooltip' => 'Tooltip text for bold button',
+	'visualeditor-annotationbutton-italic-tooltip' => 'Tooltip text for italic button',
+	'visualeditor-annotationbutton-link-tooltip' => 'Tooltip text for link button',
+	'visualeditor-beta-label' => 'Text of tool in the toolbar that highlights that VisualEditor is still in beta',
+	'visualeditor-beta-warning' => 'Note shown when user clicks on \'beta\' label in VisualEditor, warning users that the software may have issues',
+	'visualeditor-browserwarning' => 'Edit notice shown when the VisualEditor loads, warning users that their browser is not officially supported',
+	'visualeditor-ca-createsource' => 'Text for the create source link in the tab dropdown, if the page doesn\'t exist.
 
-If the page exists, the following link text is used: {{msg-mw|Visualeditor-ca-editsource}}",
-	'visualeditor-ca-ve-edit' => 'Link text of the dedicated VisualEditor Edit tab.
-{{Identical|visualeditor}}',
-	'visualeditor-ca-ve-create' => '
-	Link text of the dedicated VisualEditor Create tab.
-{{Identical|visualeditor}}',
-	'visualeditor-dialog-meta-title' => 'MetaData dialog title text.
-{{Identical|Page settings}}',
-	'visualeditor-dialog-content-title' => 'Content dialog title text',
-	'visualeditor-dialog-media-title' => 'Title for the editing dialog to set how a media item is displayed on the page',
-	'visualeditor-dialog-reference-title' => '{{Identical|Reference}}',
-	'visualeditor-dialog-template-title' => '{{Identical|Template}}',
-	'visualeditor-dialog-media-insert-title' => 'Media insert dialog title text.
-{{Identical|Insert media}}',
-	'visualeditor-dialog-media-insert-button' => 'Used as label for the button.
-{{Identical|Insert media}}',
-	'visualeditor-media-input-placeholder' => 'Place holder text for media search input',
+If the page exists, the following link text is used: {{msg-mw|Visualeditor-ca-editsource}}',
+	'visualeditor-ca-editsource' => 'Text for the "Edit source" tab, if the page exists.
+
+If the page doesn\'t exist, the following link text is used: {{msg-mw|Visualeditor-ca-createsource}}',
+	'visualeditor-ca-ve-create' => 'Link text of the dedicated VisualEditor "Create" tab.',
+	'visualeditor-ca-ve-edit' => 'Link text of the dedicated VisualEditor "Edit" tab.',
+	'visualeditor-clearbutton-tooltip' => 'Tooltip text for the clear formatting button',
+	'visualeditor-desc' => '{{desc|name=VisualEditor|url=http://www.mediawiki.org/wiki/Extension:VisualEditor}}',
+	'visualeditor-descriptionpagelink' => 'Name of a page describing the use of the VisualEditor in this project.
+{{doc-important|Do not translate "Project"; it is automatically converted to the wiki\'s project namespace.}}',
 	'visualeditor-dialog-action-apply' => 'Label text for button to apply changes made in dialog.
 
 See also:
+* {{msg-mw|Visualeditor-dialog-action-cancel}}
 * {{msg-mw|Visualeditor-dialog-action-close}}',
-	'visualeditor-dialog-action-cancel' => 'Used as button text.
-{{Identical|Cancel}}',
-	'visualeditor-dialog-action-close' => 'Used as tooltip for the "Close" button.
+	'visualeditor-dialog-action-cancel' => 'Label text for button to exit from dialog without making changes.
 
 See also:
 * {{msg-mw|Visualeditor-dialog-action-apply}}
+* {{msg-mw|Visualeditor-dialog-action-close}}',
+	'visualeditor-dialog-action-close' => 'Label text for button to exit from dialog.
+
+See also:
+* {{msg-mw|Visualeditor-dialog-action-apply}}
+* {{msg-mw|Visualeditor-dialog-action-cancel}}
 {{Identical|Close}}',
-	'visualeditor-toolbar-cancel' => 'Label text for button to cancel editing in the VisualEditor
-{{Identical|Close}}',
-	'visualeditor-toolbar-savedialog' => 'Label text for button to open save dialog
-{{Identical|Save page}}',
-	'visualeditor-savedialog-title-conflict' => 'Title for edit conflict slide',
-	'visualeditor-savedialog-title-nochanges' => 'Title for no changes slide',
-	'visualeditor-savedialog-title-review' => 'Title for reviewing slide',
-	'visualeditor-savedialog-title-save' => 'Title for saving slide',
-	'visualeditor-savedialog-label-review-good' => 'Label for button to go back to the save form',
-	'visualeditor-savedialog-label-report' => 'Label for button to trigger report',
-	'visualeditor-savedialog-label-resolve-conflict' => 'Label for button to start resoliving an edit conflict',
-	'visualeditor-savedialog-label-create' => 'Label text for save button when the user is creating a new page',
-	'visualeditor-savedialog-label-save' => 'Label text for save button when the user is editing a current revision of an extant page.
-{{Identical|Save page}}',
-	'visualeditor-savedialog-label-review' => 'Label for button to go to the review dialog to review the diff',
-	'visualeditor-savedialog-label-restore' => 'Label text for save button when the user is editing a previous revision',
-	'visualeditor-editnotices-tool' => 'Text of tool in the toolbar that shows edit notices (such as [[MediaWiki:editnotice-0]] and [[MediaWiki:editnotice-8/en]]) as a pop-up',
-	'visualeditor-feedback-tool' => 'Text of tool in the toolbar that lets users provide feedback',
-	'visualeditor-beta-label' => 'Text of tool in the toolbar that highlights that VisualEditor is still in beta',
-	'visualeditor-beta-warning' => 'Note shown when user clicks on \'beta\' label in VisualEditor, warning users that the software may have issues',
-	'visualeditor-meta-tool' => 'Text of tool in the toolbar the lets users set categories, language links and other page settings.
+	'visualeditor-dialog-media-insert-button' => 'Used as label for the button.
+{{Identical|Insert media}}',
+	'visualeditor-dialog-media-insert-title' => 'Media insert dialog title text.
+{{Identical|Insert media}}',
+	'visualeditor-dialog-media-title' => 'Title for the editing dialog to set how a media item is displayed on the page',
+	'visualeditor-dialog-meta-categories-data-label' => 'Label for the categories sub-section.
+{{Identical|Category}}',
+	'visualeditor-dialog-meta-categories-defaultsort-label' => 'Label for field setting the category default sort',
+	'visualeditor-dialog-meta-categories-input-matchingcategorieslabel' => 'Label for matching suggested category or categories',
+	'visualeditor-dialog-meta-categories-input-movecategorylabel' => 'Label for moving a given category or categories to end of list',
+	'visualeditor-dialog-meta-categories-input-newcategorylabel' => 'Label for a suggested uncreated category',
+	'visualeditor-dialog-meta-categories-input-placeholder' => 'Placeholder text for category input
+{{Identical|Add a category}}',
+	'visualeditor-dialog-meta-categories-options' => 'Label for the category options sub-section',
+	'visualeditor-dialog-meta-categories-section' => 'Label for the categories dialog section.
+{{Identical|Category}}',
+	'visualeditor-dialog-meta-categories-sortkey-label' => 'Label for setting the page\'s sort key for a given category',
+	'visualeditor-dialog-meta-languages-code-label' => 'Column header for the language links table, giving the language code of the remote wiki
+	{{Identical|Language code}}',
+	'visualeditor-dialog-meta-languages-label' => '{{Identical|Language}}',
+	'visualeditor-dialog-meta-languages-link-label' => 'Column header for the language links table, giving the name of the remote page',
+	'visualeditor-dialog-meta-languages-readonlynote' => 'Text of a note informing users that the language links cannot yet be edited',
+	'visualeditor-dialog-meta-languages-section' => 'Label for the language links dialog section.
+{{Identical|Language}}',
+	'visualeditor-dialog-meta-title' => 'MetaData dialog title text.
 {{Identical|Page settings}}',
-	'visualeditor-window-title' => 'Title of an unnamed inspector',
-	'visualeditor-linkinspector-title' => 'Title of the link inspector dialog.
-{{Identical|Hyperlink}}',
-	'visualeditor-linkinspector-suggest-matching-page' => 'Label for suggested matching local wiki pages in the link inspector',
-	'visualeditor-linkinspector-suggest-new-page' => 'Label for a new page in the link inspector',
-	'visualeditor-linkinspector-suggest-external-link' => 'Label for an external (Web) link in the link inspector.
-{{Identical|External link}}',
-	'visualeditor-formatdropdown-title' => 'This is a tooltip for the drop-down box for choosing the formatting style of the selected text, such as "Heading 1", "Heading 2" or "Plain text". (This is not related to "file format" or "data format", such as "Wikitext", "HTML", "PDF" etc.)',
-	'visualeditor-formatdropdown-format-paragraph' => 'Item in the formatting dropdown for paragraphs (normal text).
-{{Identical|Paragraph}}',
+	'visualeditor-dialog-reference-title' => '{{Identical|Reference}}',
+	'visualeditor-dialog-template-title' => '{{Identical|Template}}',
+	'visualeditor-dialogbutton-media-tooltip' => '{{Identical|Media}}',
+	'visualeditor-dialogbutton-meta-tooltip' => '{{Identical|Page Settings}}',
+	'visualeditor-dialogbutton-reference-tooltip' => '{{Identical|Reference}}',
+	'visualeditor-dialogbutton-template-tooltip' => '{{Identical|Template}}',
+	'visualeditor-diff-nochanges' => 'Message displayed in the diff view when no changes were detected',
+	'visualeditor-differror' => 'Text shown when the editor fails to load the diff.
+
+Parameters:
+* $1 is an error message, in English.',
+	'visualeditor-editconflict' => 'Alert message when saving a page causes an edit conflict',
+	'visualeditor-editnotices-tool' => 'Text of tool in the toolbar that shows edit notices (such as [[MediaWiki:editnotice-0]] and [[MediaWiki:editnotice-8/en]]) as a pop-up',
+	'visualeditor-editsummary' => 'Label for the edit summary box',
+	'visualeditor-feedback-link' => 'Link to a page where users can leave feedback that is automatically posted using this tool. This should be a sub-page of {{msg-mw|visualeditor-descriptionpagelink}}',
+	'visualeditor-feedback-tool' => 'Text of tool in the toolbar that lets users provide feedback',
 	'visualeditor-formatdropdown-format-heading1' => 'Item in the formatting dropdown for a level 1 heading',
 	'visualeditor-formatdropdown-format-heading2' => 'Item in the formatting dropdown for a level 2 heading',
 	'visualeditor-formatdropdown-format-heading3' => 'Item in the formatting dropdown for a level 3 heading',
 	'visualeditor-formatdropdown-format-heading4' => 'Item in the formatting dropdown for a level 4 heading',
 	'visualeditor-formatdropdown-format-heading5' => 'Item in the formatting dropdown for a level 5 heading',
 	'visualeditor-formatdropdown-format-heading6' => 'Item in the formatting dropdown for a level 6 heading',
+	'visualeditor-formatdropdown-format-paragraph' => 'Item in the formatting dropdown for paragraphs (normal text).
+{{Identical|Paragraph}}',
 	'visualeditor-formatdropdown-format-preformatted' => 'Item in the formatting dropdown for preformatted text',
-	'visualeditor-annotationbutton-bold-tooltip' => 'Tooltip string for bold button',
-	'visualeditor-annotationbutton-italic-tooltip' => 'Tooltip string for italic button',
-	'visualeditor-annotationbutton-link-tooltip' => 'Tooltip string for link button',
-	'visualeditor-dialogbutton-meta-tooltip' => '{{Identical|Page settings}}',
-	'visualeditor-dialogbutton-reference-tooltip' => '{{Identical|Reference}}',
-	'visualeditor-dialogbutton-template-tooltip' => '{{Identical|Template}}',
-	'visualeditor-dialogbutton-media-tooltip' => '{{Identical|Media}}',
-	'visualeditor-indentationbutton-indent-tooltip' => 'Tooltip string for list indent button',
-	'visualeditor-indentationbutton-outdent-tooltip' => 'Tooltip string for list outdent button',
-	'visualeditor-listbutton-number-tooltip' => 'Tooltip for the numbered list button',
-	'visualeditor-listbutton-bullet-tooltip' => 'Tooltip for the bullet list button',
-	'visualeditor-clearbutton-tooltip' => 'Tooltip for the clear formatting button',
-	'visualeditor-historybutton-undo-tooltip' => 'Tooltip string for the undo button.
-{{Identical|Undo}}',
-	'visualeditor-historybutton-redo-tooltip' => 'Tooltip string for the redo button.
+	'visualeditor-formatdropdown-title' => 'Tooltip text for the drop-down box for choosing the formatting style of the selected text, such as "Heading 1", "Heading 2" or "Plain text". (This is not related to "file format" or "data format", such as "Wikitext", "HTML", "PDF" etc.)',
+	'visualeditor-historybutton-redo-tooltip' => 'Tooltip text for the redo button.
 {{Identical|Redo}}',
-	'visualeditor-inspector-close-tooltip' => 'Tooltip for the button to close an inspector',
-	'visualeditor-inspector-remove-tooltip' => 'Tooltip for the button to remove an annotation in an inspector',
-	'visualeditor-dialog-meta-categories-section' => 'Label for the categories dialog section.
-{{Identical|Category}}',
-	'visualeditor-dialog-meta-categories-data-label' => 'Label for the categories sub-section.
-{{Identical|Category}}',
-	'visualeditor-dialog-meta-categories-options' => 'Label for the category options sub-section',
-	'visualeditor-dialog-meta-categories-input-placeholder' => 'Placeholder text for category input
-{{Identical|Add category}}',
-	'visualeditor-dialog-meta-categories-input-newcategorylabel' => 'Label for suggested categories for an uncreated category',
-	'visualeditor-dialog-meta-categories-input-movecategorylabel' => 'Label for moving a given category to end of list',
-	'visualeditor-dialog-meta-categories-input-matchingcategorieslabel' => 'Label for matching suggested categories',
-	'visualeditor-dialog-meta-categories-sortkey-label' => "Label for setting the page's sort key for a given category",
-	'visualeditor-dialog-meta-categories-defaultsort-label' => 'Label for field setting the category default sort',
-	'visualeditor-dialog-meta-languages-section' => 'Label for the language links dialog section.
-{{Identical|Language}}',
-	'visualeditor-dialog-meta-languages-label' => '{{Identical|Language}}',
-	'visualeditor-dialog-meta-languages-code-label' => '{{Identical|Language code}}',
-	'visualeditor-viewpage-savewarning' => 'Text shown when the user tries to leave the editor without saving their changes',
+	'visualeditor-historybutton-undo-tooltip' => 'Tooltip text for the undo button.
+{{Identical|Undo}}',
+	'visualeditor-indentationbutton-indent-tooltip' => 'Tooltip text for list indent button',
+	'visualeditor-indentationbutton-outdent-tooltip' => 'Tooltip text for list outdent button',
+	'visualeditor-inspector-close-tooltip' => 'Tooltip text for the button to close an inspector',
+	'visualeditor-inspector-remove-tooltip' => 'Tooltip text for the button to remove an annotation in an inspector',
+	'visualeditor-linkinspector-suggest-external-link' => 'Label for an external (Web) link in the link inspector.
+{{Identical|External link}}',
+	'visualeditor-linkinspector-suggest-matching-page' => 'Label for suggested matching local wiki page or pages in the link inspector',
+	'visualeditor-linkinspector-suggest-new-page' => 'Label for a new page in the link inspector',
+	'visualeditor-linkinspector-title' => 'Title of the link inspector dialog.
+{{Identical|Hyperlink}}',
+	'visualeditor-listbutton-bullet-tooltip' => 'Tooltip text for the bullet list button',
+	'visualeditor-listbutton-number-tooltip' => 'Tooltip text for the numbered list button',
 	'visualeditor-loadwarning' => 'Text (JavaScript confirm()) shown when the editor fails to load properly.
 
 Parameters:
@@ -265,31 +251,45 @@ Parameters:
 
 Parameters:
 * $1 - the error message from the server.',
-	'visualeditor-differror' => 'Text shown when the editor fails to load the diff. Parameters:
-* $1 is an error message, in English.',
-	'visualeditor-serializeerror' => 'Text shown when the editor fails to load the wikitext for saving. Parameters:
-* $1 is an error message, in English.',
-	'visualeditor-saveerror' => 'Text shown when the editor fails to save properly. Parameters:
-* $1 is an error message, in English.',
-	'visualeditor-editconflict' => 'Alert message when saving a page causes an edit conflict',
-	'visualeditor-editsummary' => 'Label for edit summary box',
-	'visualeditor-problem' => 'Label for problem description box',
-	'visualeditor-aliennode-tooltip' => 'Tooltip for items that the VisualEditor cannot edit',
-	'visualeditor-descriptionpagelink' => 'Name of a page describing the use of the VisualEditor in this project.
+	'visualeditor-mainnamespacepagelink' => 'Name of a page describing the main namespace (NS0) in this project.
 {{doc-important|Do not translate "Project"; it is automatically converted to the wiki\'s project namespace.}}',
-	'visualeditor-browserwarning' => 'Edit notice shown when the VisualEditor loads, warning users that their browser is not officially supported',
-	'visualeditor-report-notice' => 'Notice to user that their data will be sent for analysis.
-Link is in {{msg-mw|Visualeditor-report-link}}.
+	'visualeditor-media-input-placeholder' => 'Place holder text for media search input',
+	'visualeditor-meta-tool' => 'Text of tool in the toolbar the lets users set categories, language links and other page settings.
+{{Identical|Page settings}}',
+	'visualeditor-notification-created' => 'Shown after a user creates a new page, $1 is a page name.',
+	'visualeditor-notification-restored' => 'Shown after a user restores a page to a previous revision. Parameters:
+* $1 is a page name.',
+	'visualeditor-notification-saved' => 'Shown after a user saves a page, $1 is a page name.',
+	'visualeditor-preference-enable' => 'Label for the user preference to enable the VisualEditor.
+Links are in {{msg-mw|Visualeditor-mainnamespacepagelink}} and {{msg-mw|visualeditor-usernamespacepagelink}}.',
+	'visualeditor-problem' => 'Label for problem description box',
+	'visualeditor-savedialog-label-create' => 'Label text for save button when the user is creating a new page',
+	'visualeditor-savedialog-label-report' => 'Label for button to trigger report',
+	'visualeditor-savedialog-label-resolve-conflict' => 'Label for button to start resoliving an edit conflict',
+	'visualeditor-savedialog-label-restore' => 'Label text for save button when the user is editing a previous revision',
+	'visualeditor-savedialog-label-review' => 'Label for button to go to the review dialog to review the diff',
+	'visualeditor-savedialog-label-review-good' => 'Label for button to go back to the save form',
+	'visualeditor-savedialog-label-save' => 'Label text for save button when the user is editing a current revision of an extant page.
+{{Identical|Save page}}',
+	'visualeditor-savedialog-title-conflict' => 'Title for save dialog slide if there is an edit conflict',
+	'visualeditor-savedialog-title-nochanges' => 'Title for save dialog slide for the wikitext diff if there are no changes',
+	'visualeditor-savedialog-title-review' => 'Title for save dialog slide for the wikitext diff',
+	'visualeditor-savedialog-title-save' => 'Title for save dialog slide for the final save step',
+	'visualeditor-saveerror' => 'Text shown when the editor fails to save properly.
 
-The name of the button that the user is expected to click is {{msg-mw|visualeditor-savedialog-label-report}}.',
-	'visualeditor-report-link' => '{{optional}}
-Interwiki link to the terms of use for this project: https://wikimediafoundation.org/wiki/Terms_of_Use
+Parameters:
+* $1 is an error message, in English.',
+	'visualeditor-serializeerror' => 'Text shown when the editor fails to load the wikitext for saving.
 
-Do not translate. Only add a language code when a translations of above page exists for your language.
-
-Possible entry for German: "foundation:Terms of Use/de"',
-	'visualeditor-feedback-link' => 'Link to a page where users can leave feedback that is automatically posted using this tool. This should be a sub-page of {{msg-mw|visualeditor-descriptionpagelink}}',
-	'visualeditor-diff-nochanges' => 'Message displayed in the diff view when no changes were detected',
+Parameters:
+* $1 is an error message, in English.',
+	'visualeditor-toolbar-cancel' => 'Label text for button to exit from VisualEditor',
+	'visualeditor-toolbar-savedialog' => 'Label text for button to open save dialog
+{{Identical|Save page}}',
+	'visualeditor-usernamespacepagelink' => 'Name of a page describing the user namespace (NS2) in this project.
+{{doc-important|Do not translate "Project"; it is automatically converted to the wiki\'s project namespace.}}',
+	'visualeditor-viewpage-savewarning' => 'Text shown when the user tries to leave the editor without saving their changes',
+	'visualeditor-window-title' => 'Title of an unnamed inspector',
 );
 
 /** Arabic (العربية)
