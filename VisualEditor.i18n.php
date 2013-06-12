@@ -51,6 +51,8 @@ $messages['en'] = array(
 	'visualeditor-savedialog-label-restore' => 'Restore page',
 	'visualeditor-editnotices-tool' => '$1 {{PLURAL:$1|notice|notices}}',
 	'visualeditor-feedback-tool' => 'Leave feedback',
+	'visualeditor-beta-label' => 'beta',
+	'visualeditor-beta-warning' => 'VisualEditor is in \'beta\' and so may not let you edit everything yet.',
 	'visualeditor-meta-tool' => 'Page settings',
 	'visualeditor-window-title' => 'Inspect',
 	'visualeditor-linkinspector-title' => 'Hyperlink',
@@ -107,7 +109,6 @@ $messages['en'] = array(
 	'visualeditor-problem' => 'Describe what went wrong with the wikitext serialization',
 	'visualeditor-aliennode-tooltip' => 'Sorry, this element cannot be edited using the VisualEditor',
 	'visualeditor-descriptionpagelink' => 'Project:VisualEditor',
-	'visualeditor-alphawarning' => 'You are using an alpha version of the [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]. It may be slow and make erroneous changes—please check each edit that you make.',
 	'visualeditor-browserwarning' => 'You are using a browser which is not officially supported by VisualEditor.',
 	'visualeditor-report-notice' => 'I understand that by clicking "Report problem" I will transmit my changes and my feedback, which will be stored for analysis. I agree to provide feedback in accordance with the [[{{MediaWiki:Visualeditor-report-link}}|Terms of Use]].',
 	'visualeditor-report-link' => 'foundation:Terms of Use',
@@ -201,6 +202,8 @@ See also:
 	'visualeditor-savedialog-label-restore' => 'Label text for save button when the user is editing a previous revision',
 	'visualeditor-editnotices-tool' => 'Text of tool in the toolbar that shows edit notices (such as [[MediaWiki:editnotice-0]] and [[MediaWiki:editnotice-8/en]]) as a pop-up',
 	'visualeditor-feedback-tool' => 'Text of tool in the toolbar that lets users provide feedback',
+	'visualeditor-beta-label' => 'Text of tool in the toolbar that highlights that VisualEditor is still in beta',
+	'visualeditor-beta-warning' => 'Note shown when user clicks on \'beta\' label in VisualEditor, warning users that the software may have issues',
 	'visualeditor-meta-tool' => 'Text of tool in the toolbar the lets users set categories, language links and other page settings.
 {{Identical|Page settings}}',
 	'visualeditor-window-title' => 'Title of an unnamed inspector',
@@ -275,7 +278,6 @@ Parameters:
 	'visualeditor-aliennode-tooltip' => 'Tooltip for items that the VisualEditor cannot edit',
 	'visualeditor-descriptionpagelink' => 'Name of a page describing the use of the VisualEditor in this project.
 {{doc-important|Do not translate "Project"; it is automatically converted to the wiki\'s project namespace.}}',
-	'visualeditor-alphawarning' => 'Edit notice shown when the VisualEditor loads, warning users that the software may have issues',
 	'visualeditor-browserwarning' => 'Edit notice shown when the VisualEditor loads, warning users that their browser is not officially supported',
 	'visualeditor-report-notice' => 'Notice to user that their data will be sent for analysis.
 Link is in {{msg-mw|Visualeditor-report-link}}.

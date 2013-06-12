@@ -34,6 +34,24 @@
 	margin-top: 0.2em;
 }
 
+/* Beta notices */
+
+.ve-init-mw-viewPageTarget-toolbar-betaNotice {
+	display: none;
+	position: absolute;
+	right: -0.5em;
+	top: 30px;
+	width: 11em;
+	font-family: sans-serif;
+	border: solid 1px #ccc;
+	padding: 0.5em 1.25em 0 1.25em;
+	border-radius: 0.25em;
+	background-color: #fff;
+	box-shadow: 0 0.15em 0.5em 0 rgba(0, 0, 0, 0.2);
+	z-index: 3;
+	line-height: 1.5em;
+}
+
 /* Edit notices */
 
 .ve-init-mw-viewPageTarget-toolbar-editNotices {
@@ -44,7 +62,7 @@
 	width: 29em;
 	font-family: sans-serif;
 	border: solid 1px #ccc;
-	padding: 0 0.75em 0 0.75em;
+	padding: 0 1.75em 0 0.75em;
 	border-radius: 0.25em;
 	background-color: #fff;
 	box-shadow: 0 0.15em 0.5em 0 rgba(0, 0, 0, 0.2);
@@ -74,6 +92,12 @@
 
 .ve-init-mw-viewPageTarget-tool-label {
 	color: #555555;
+}
+
+.ve-init-mw-viewPageTarget-tool-beta-label {
+	color: #aaaaaa;
+	font-size: 120%;
+	font-variant: small-caps;
 }
 
 .ve-init-mw-viewPageTarget-tool:hover .ve-init-mw-viewPageTarget-tool-label {
