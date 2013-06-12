@@ -60,8 +60,6 @@ $wgVisualEditorResourceTemplate = array(
 	'group' => 'ext.visualEditor',
 );
 
-$wgVisualEditorEditNotices = array( 'visualeditor-alphawarning' );
-
 $wgVisualEditorEnableSectionEditLinks = false;
 
 $wgResourceModules += array(
@@ -167,6 +165,8 @@ $wgResourceModules += array(
 			'visualeditor-problem',
 			'visualeditor-editnotices-tool',
 			'visualeditor-feedback-tool',
+			'visualeditor-beta-label',
+			'visualeditor-beta-warning',
 			'visualeditor-meta-tool',
 			'visualeditor-restore-page',
 			'visualeditor-create-page',

@@ -39,17 +39,24 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 	this.saveDialogSaveButton = null;
 	this.saveDialogReviewGoodButton = null;
 
-	this.$toolbarEditNotices = $( '<div>' ).addClass(
-		've-init-mw-viewPageTarget-toolbar-editNotices'
-	);
-	this.$toolbarEditNoticesTool = $( '<div>' ).addClass(
-		've-init-mw-viewPageTarget-tool'
-	);
-	this.$toolbarFeedbackTool = $( '<div>' ).addClass(
-		've-init-mw-viewPageTarget-tool'
-	);
-	this.$toolbarMwMetaButton = $( '<div>' ).addClass( 've-init-mw-viewPageTarget-tool' );
-	this.$saveDialog = $( '<div>' ).addClass( 've-init-mw-viewPageTarget-saveDialog' );
+	this.$toolbarEditNotices = $( '<div>' )
+		.addClass( 've-init-mw-viewPageTarget-toolbar-editNotices' );
+	this.$toolbarEditNoticesTool = $( '<div>' )
+		.addClass( 've-init-mw-viewPageTarget-tool' );
+
+	this.$toolbarFeedbackTool = $( '<div>' )
+		.addClass( 've-init-mw-viewPageTarget-tool' );
+
+	this.$toolbarBetaNotice = $( '<div>' )
+		.addClass( 've-init-mw-viewPageTarget-toolbar-betaNotice' );
+	this.$toolbarBetaNoticeTool = $( '<div>' )
+		.addClass( 've-init-mw-viewPageTarget-tool' );
+
+	this.$toolbarMwMetaButton = $( '<div>' )
+		.addClass( 've-init-mw-viewPageTarget-tool' );
+	this.$saveDialog = $( '<div>' )
+		.addClass( 've-init-mw-viewPageTarget-saveDialog' );
+
 	this.onBeforeUnloadFallback = null;
 	this.onBeforeUnloadHandler = null;
 	this.active = false;
@@ -309,6 +316,7 @@ ve.init.mw.ViewPageTarget.prototype.onLoad = function ( doc ) {
 		this.doc = doc;
 		this.setUpSurface( doc );
 		this.setupToolbarEditNotices();
+		this.setupToolbarBetaNotice();
 		this.setupToolbarButtons();
 		this.setupSaveDialog();
 		this.attachToolbarButtons();
@@ -586,6 +594,19 @@ ve.init.mw.ViewPageTarget.prototype.onToolbarMwMetaButtonClick = function () {
  */
 ve.init.mw.ViewPageTarget.prototype.onToolbarEditNoticesToolClick = function () {
 	this.$toolbarEditNotices.fadeToggle( 'fast' );
+	this.$toolbarBetaNotice.fadeOut( 'fast' );
+	this.$document.focus();
+};
+
+/**
+ * Handle clicks on the beta notices tool in the toolbar.
+ *
+ * @method
+ * @param {jQuery.Event} e Mouse click event
+ */
+ve.init.mw.ViewPageTarget.prototype.onToolbarBetaNoticeToolClick = function () {
+	this.$toolbarBetaNotice.fadeToggle( 'fast' );
+	this.$toolbarEditNotices.fadeOut( 'fast' );
 	this.$document.focus();
 };
 
@@ -736,10 +757,9 @@ ve.init.mw.ViewPageTarget.prototype.onSaveDialogPrevButtonClick = function () {
 };
 
 /**
- * Get a list of edit notices.
+ * Set up the list of edit notices.
  *
  * @method
- * @returns {string[]} HTML strings for each edit notice
  */
 ve.init.mw.ViewPageTarget.prototype.setupToolbarEditNotices = function () {
 	var key;
@@ -747,6 +767,18 @@ ve.init.mw.ViewPageTarget.prototype.setupToolbarEditNotices = function () {
 	for ( key in this.editNotices ) {
 		this.$toolbarEditNotices.append( this.editNotices[key] );
 	}
+};
+
+/**
+ * Set up the beta notices panel.
+ *
+ * @method
+ * @returns {string[]} HTML strings for each edit notice
+ */
+ve.init.mw.ViewPageTarget.prototype.setupToolbarBetaNotice = function () {
+	this.$toolbarBetaNotice.empty();
+	this.$toolbarBetaNotice
+		.append( $( '<span>' ).text( ve.msg( 'visualeditor-beta-warning' ) ) );
 };
 
 /**
@@ -965,6 +997,16 @@ ve.init.mw.ViewPageTarget.prototype.setupToolbarButtons = function () {
 			.click( ve.bind( this.onToolbarEditNoticesToolClick, this ) );
 		this.$toolbarEditNotices.fadeIn( 'fast' );
 	}
+
+	this.$toolbarBetaNoticeTool
+		.append(
+			$( '<span>' )
+				.addClass( 've-init-mw-viewPageTarget-tool-label ve-init-mw-viewPageTarget-tool-beta-label' )
+				.text( ve.msg( 'visualeditor-beta-label' ) )
+		)
+		.append( this.$toolbarBetaNotice )
+		.click( ve.bind( this.onToolbarBetaNoticeToolClick, this ) );
+
 	this.$toolbarFeedbackTool
 		.addClass( 've-ui-icon-comment' )
 		.append(
@@ -985,6 +1027,7 @@ ve.init.mw.ViewPageTarget.prototype.tearDownToolbarButtons = function () {
 	this.toolbarSaveButton.disconnect( this );
 	this.$toolbarMwMetaButton.empty().off( 'click' );
 	this.$toolbarEditNoticesTool.empty().off( 'click' );
+	this.$toolbarBetaNoticeTool.empty().off( 'click' );
 	this.$toolbarFeedbackTool.empty().off( 'click' );
 };
 
@@ -995,7 +1038,9 @@ ve.init.mw.ViewPageTarget.prototype.tearDownToolbarButtons = function () {
  */
 ve.init.mw.ViewPageTarget.prototype.attachToolbarButtons = function () {
 	var $target = this.toolbar.$actions;
-	$target.append( this.$toolbarFeedbackTool );
+	$target.append( this.$toolbarBetaNoticeTool );
+	this.$toolbarBetaNotice.append( this.$toolbarFeedbackTool );
+
 	if ( !ve.isEmptyObject( this.editNotices ) ) {
 		$target.append( this.$toolbarEditNoticesTool );
 	}
@@ -1017,6 +1062,7 @@ ve.init.mw.ViewPageTarget.prototype.detachToolbarButtons = function () {
 	this.$toolbarMwMetaButton.detach();
 	this.$toolbarEditNoticesTool.detach();
 	this.$toolbarFeedbackTool.detach();
+	this.$toolbarBetaNoticeTool.detach();
 };
 
 /**
@@ -1214,6 +1260,7 @@ ve.init.mw.ViewPageTarget.prototype.showSaveDialog = function () {
 
 	viewPage.surface.disable();
 
+	viewPage.$toolbarBetaNotice.fadeOut( 'fast' );
 	viewPage.$toolbarEditNotices.fadeOut( 'fast' );
 
 	viewPage.swapSaveDialog( 'save' );
