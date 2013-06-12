@@ -511,8 +511,8 @@
 .ve-ui-mwCategoryPopupTitle {
 	background-position: left center;
 	background-repeat: no-repeat;
-	padding: 0.125em 0.5em 0.5em 2.25em;
-	margin: 0 0 1em 0.125em;
+	padding: 0.5em 0.5em 0.5em 2.25em;
+	margin: -0.4em 0 1em 0.125em;
 }
 
 .ve-ui-mwCategoryPopupMenu .ve-ui-removeButtonLabel:hover {

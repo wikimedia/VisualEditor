@@ -34,6 +34,7 @@ $messages['en'] = array(
 	'visualeditor-dialog-media-insert-title' => 'Insert media',
 	'visualeditor-dialog-media-title' => 'Media settings',
 	'visualeditor-dialog-meta-categories-data-label' => 'Categories',
+	'visualeditor-dialog-meta-categories-category' => 'Category',
 	'visualeditor-dialog-meta-categories-defaultsort-label' => 'Sort this page by default as',
 	'visualeditor-dialog-meta-categories-input-matchingcategorieslabel' => 'Matching categories',
 	'visualeditor-dialog-meta-categories-input-movecategorylabel' => 'Move this category here',
@@ -182,6 +183,7 @@ See also:
 	'visualeditor-dialog-media-title' => 'Title for the editing dialog to set how a media item is displayed on the page',
 	'visualeditor-dialog-meta-categories-data-label' => 'Label for the categories sub-section.
 {{Identical|Category}}',
+	'visualeditor-dialog-meta-categories-category' => 'Title of popup for editing category options',
 	'visualeditor-dialog-meta-categories-defaultsort-label' => 'Label for field setting the category default sort',
 	'visualeditor-dialog-meta-categories-input-matchingcategorieslabel' => 'Label for matching suggested category or categories',
 	'visualeditor-dialog-meta-categories-input-movecategorylabel' => 'Label for moving a given category or categories to end of list',
