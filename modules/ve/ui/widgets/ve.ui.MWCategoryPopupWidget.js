@@ -119,6 +119,18 @@ ve.ui.MWCategoryPopupWidget.prototype.openPopup = function ( item ) {
 };
 
 /**
+ * Handle popup hide events.
+ *
+ * @method
+ */
+ve.ui.MWCategoryPopupWidget.prototype.onHide = function() {
+	var newSortkey = this.sortKeyInput.$input.val();
+	if ( !this.removed && newSortkey !== this.origSortkey ) {
+		this.emit( 'updateSortkey', this.category, this.sortKeyInput.$input.val() );
+	}
+};
+
+/**
  * Load item information into the popup.
  *
  * @method
@@ -156,18 +168,11 @@ ve.ui.MWCategoryPopupWidget.prototype.setDefaultSortKey = function ( value ) {
  * @param {ve.ui.MWCategoryItemWidget} item Category item
  */
 ve.ui.MWCategoryPopupWidget.prototype.setPopup = function ( item ) {
-	var left = item.$.offset().left + ( item.$.width() - 17 ),
-		top = item.$.offset().top + item.$.height(),
+	var left = item.$arrow.offset().left + ( item.$arrow.width() / 2 ),
+		top = item.$arrow.offset().top + item.$arrow.height(),
 		width = this.$menu.outerWidth( true ),
 		height = this.$menu.outerHeight( true );
 
 	this.$.css( { 'left': left, 'top': top } );
 	this.display( left, top, width, height );
-};
-
-ve.ui.MWCategoryPopupWidget.prototype.onHide = function() {
-	var newSortkey = this.sortKeyInput.$input.val();
-	if ( !this.removed && newSortkey !== this.origSortkey ) {
-		this.emit( 'updateSortkey', this.category, this.sortKeyInput.$input.val() );
-	}
 };
