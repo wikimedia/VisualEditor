@@ -16,7 +16,7 @@ function runBuilderTests( assert, cases ) {
 		for ( i = 0; i < cases[msg].calls.length; i++ ) {
 			tx[cases[msg].calls[i][0]].apply( tx, cases[msg].calls[i].slice( 1 ) );
 		}
-		assert.deepEqual( tx.getOperations(), cases[msg].ops, msg + ': operations match' );
+		assert.deepEqualWithDomElements( tx.getOperations(), cases[msg].ops, msg + ': operations match' );
 		assert.deepEqual( tx.getLengthDifference(), cases[msg].diff, msg + ': length differences match' );
 	}
 }
@@ -28,7 +28,7 @@ function runConstructorTests( assert, constructor, cases ) {
 			tx = constructor.apply(
 				ve.dm.Transaction, cases[msg].args
 			);
-			assert.deepEqual( tx.getOperations(), cases[msg].ops, msg + ': operations match' );
+			assert.deepEqualWithDomElements( tx.getOperations(), cases[msg].ops, msg + ': operations match' );
 		} else if ( cases[msg].exception ) {
 			/*jshint loopfunc:true */
 			assert.throws( function () {

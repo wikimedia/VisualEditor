@@ -821,16 +821,8 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, wrapp
 				break;
 			case Node.COMMENT_NODE:
 				// TODO treat this as a node with nodeName #comment, removes code duplication
-				childDataElements = [
-					{
-						'type': 'alienMeta',
-						'attributes': {
-							'style': 'comment',
-							'text': childDomElement.data
-						}
-					},
-					{ 'type': '/alienMeta' }
-				];
+				childDataElements = this.createDataElements( ve.dm.AlienMetaItem, [ childDomElement ] );
+				childDataElements.push( { 'type': '/' + childDataElements[0].type } );
 				if ( context.inWrapper ) {
 					wrappedMetaItems = wrappedMetaItems.concat( childDataElements );
 					if ( wrappedWhitespace !== '' ) {

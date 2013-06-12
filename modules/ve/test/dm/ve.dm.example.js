@@ -377,25 +377,17 @@ ve.dm.example.withMeta = [
 	{
 		'type': 'alienMeta',
 		'attributes': {
-			'style': 'comment',
-			'text': ' No content conversion '
+			'domElements': $( '<!-- No content conversion -->' ).get()
 		}
 	},
 	{ 'type': '/alienMeta' },
 	{
-		'type': 'alienMeta',
+		'type': 'mwAlienMeta',
 		'attributes': {
-			'style': 'meta',
-			'key': 'mw:PageProp/nocc'
-		},
-		'htmlAttributes': [
-			{
-				'keys': [ 'property' ],
-				'values': { 'property': 'mw:PageProp/nocc' }
-			}
-		]
+			'domElements': $( '<meta property="mw:PageProp/nocc" />' ).get()
+		}
 	},
-	{ 'type': '/alienMeta' },
+	{ 'type': '/mwAlienMeta' },
 	{ 'type': 'paragraph' },
 	'F',
 	'o',
@@ -421,52 +413,34 @@ ve.dm.example.withMeta = [
 	'a',
 	'r',
 	{
-		'type': 'alienMeta',
+		'type': 'mwAlienMeta',
 		'attributes': {
-			'style': 'meta',
-			'key': 'mw:foo',
-			'value': 'bar'
-		},
-		'htmlAttributes': [
-			{
-				'keys': [ 'property', 'content' ],
-				'values': { 'property': 'mw:foo', 'content': 'bar' }
-			}
-		]
+			'domElements': $( '<meta property="mw:foo" content="bar" />' ).get()
+		}
 	},
-	{ 'type': '/alienMeta' },
+	{ 'type': '/mwAlienMeta' },
 	'B',
 	'a',
 	{
 		'type': 'alienMeta',
 		'attributes': {
-			'style': 'comment',
-			'text': ' inline '
+			'domElements': $( '<!-- inline -->' ).get()
 		}
 	},
 	{ 'type': '/alienMeta' },
 	'z',
 	{ 'type': '/paragraph' },
 	{
-		'type': 'alienMeta',
+		'type': 'mwAlienMeta',
 		'attributes': {
-			'style': 'meta',
-			'key': 'mw:bar',
-			'value': 'baz'
-		},
-		'htmlAttributes': [
-			{
-				'keys': [ 'property', 'content' ],
-				'values': { 'property': 'mw:bar', 'content': 'baz' }
-			}
-		]
+			'domElements': $( '<meta property="mw:bar" content="baz" />' ).get()
+		}
 	},
-	{ 'type': '/alienMeta' },
+	{ 'type': '/mwAlienMeta' },
 	{
 		'type': 'alienMeta',
 		'attributes': {
-			'style': 'comment',
-			'text': 'barbaz'
+			'domElements': $( '<!--barbaz-->' ).get()
 		}
 	},
 	{ 'type': '/alienMeta' },
@@ -491,19 +465,12 @@ ve.dm.example.withMeta = [
 	},
 	{ 'type': '/mwCategory' },
 	{
-		'type': 'alienMeta',
+		'type': 'mwAlienMeta',
 		'attributes': {
-			'style': 'meta',
-			'key': null
-		},
-		'htmlAttributes': [
-			{
-				'keys': [ 'typeof', 'data-parsoid' ],
-				'values': { 'typeof': 'mw:Placeholder', 'data-parsoid': 'foobar' }
-			}
-		]
+			'domElements': $( '<meta typeof="mw:Placeholder" data-parsoid="foobar" />' ).get()
+		}
 	},
-	{ 'type': '/alienMeta' }
+	{ 'type': '/mwAlienMeta' }
 ];
 
 ve.dm.example.withMetaPlainData = [
@@ -525,17 +492,14 @@ ve.dm.example.withMetaMetaData = [
 		{
 			'type': 'alienMeta',
 			'attributes': {
-				'style': 'comment',
-				'text': ' No content conversion '
+				'domElements': $( '<!-- No content conversion -->' ).get()
 			}
 		},
 		{
-			'type': 'alienMeta',
+			'type': 'mwAlienMeta',
 			'attributes': {
-				'style': 'meta',
-				'key': 'mw:PageProp/nocc'
-			},
-			'htmlAttributes': [ { 'keys': [ 'property' ], 'values': { 'property': 'mw:PageProp/nocc' } } ]
+				'domElements': $( '<meta property="mw:PageProp/nocc" />' ).get()
+			}
 		}
 	],
 	undefined,
@@ -563,27 +527,9 @@ ve.dm.example.withMetaMetaData = [
 	undefined,
 	[
 		{
-			'type': 'alienMeta',
+			'type': 'mwAlienMeta',
 			'attributes': {
-				'style': 'meta',
-				'key': 'mw:foo',
-				'value': 'bar'
-			},
-			'htmlAttributes': [
-				{
-					'keys': [ 'property', 'content' ],
-					'values': { 'property': 'mw:foo', 'content': 'bar' }
-				}
-			]
-		}
-	],
-	undefined,
-	[
-		{
-			'type': 'alienMeta',
-			'attributes': {
-				'style': 'comment',
-				'text': ' inline '
+				'domElements': $( '<meta property="mw:foo" content="bar" />' ).get()
 			}
 		}
 	],
@@ -592,22 +538,22 @@ ve.dm.example.withMetaMetaData = [
 		{
 			'type': 'alienMeta',
 			'attributes': {
-				'style': 'meta',
-				'key': 'mw:bar',
-				'value': 'baz'
-			},
-			'htmlAttributes': [
-				{
-					'keys': [ 'property', 'content' ],
-					'values': { 'property': 'mw:bar', 'content': 'baz' }
-				}
-			]
+				'domElements': $( '<!-- inline -->' ).get()
+			}
+		}
+	],
+	undefined,
+	[
+		{
+			'type': 'mwAlienMeta',
+			'attributes': {
+				'domElements': $( '<meta property="mw:bar" content="baz" />' ).get()
+			}
 		},
 		{
 			'type': 'alienMeta',
 			'attributes': {
-				'style': 'comment',
-				'text': 'barbaz'
+				'domElements': $( '<!--barbaz-->' ).get()
 			}
 		},
 		{
@@ -630,17 +576,10 @@ ve.dm.example.withMetaMetaData = [
 			]
 		},
 		{
-			'type': 'alienMeta',
+			'type': 'mwAlienMeta',
 			'attributes': {
-				'style': 'meta',
-				'key': null
-			},
-			'htmlAttributes': [
-				{
-					'keys': [ 'typeof', 'data-parsoid' ],
-					'values': { 'typeof': 'mw:Placeholder', 'data-parsoid': 'foobar' }
-				}
-			]
+				'domElements': $( '<meta typeof="mw:Placeholder" data-parsoid="foobar" />' ).get()
+			}
 		}
 	]
 ];
@@ -2389,8 +2328,7 @@ ve.dm.example.domToDataCases = {
 				'type': 'alienMeta',
 				'internal': { 'whitespace': [ undefined, undefined, undefined, ' ' ] },
 				'attributes': {
-					'style': 'comment',
-					'text': ' Foo '
+					'domElements': $( '<!-- Foo -->' ).get()
 				}
 			},
 			{ 'type': '/alienMeta' },
@@ -2398,8 +2336,7 @@ ve.dm.example.domToDataCases = {
 				'type': 'alienMeta',
 				'internal': { 'whitespace': [ ' ', undefined, undefined, '\n' ] },
 				'attributes': {
-					'style': 'comment',
-					'text': ' Bar '
+					'domElements': $( '<!-- Bar -->' ).get()
 				}
 			},
 			{ 'type': '/alienMeta' },
@@ -2480,8 +2417,7 @@ ve.dm.example.domToDataCases = {
 			{
 				'type': 'alienMeta',
 				'attributes': {
-					'style': 'comment',
-					'text': ' baz '
+					'domElements': $( '<!-- baz -->' ).get()
 				}
 			},
 			{ 'type': '/alienMeta' },
@@ -2519,8 +2455,7 @@ ve.dm.example.domToDataCases = {
 			{
 				'type': 'alienMeta',
 				'attributes': {
-					'style': 'comment',
-					'text': ' baz '
+					'domElements': $( '<!-- baz -->' ).get()
 				},
 				'internal': {
 					'whitespace': [
@@ -2567,8 +2502,7 @@ ve.dm.example.domToDataCases = {
 			{
 				'type': 'alienMeta',
 				'attributes': {
-					'style': 'comment',
-					'text': ' bar '
+					'domElements': $( '<!-- bar -->' ).get()
 				},
 				'internal': {
 					'whitespace': [
@@ -2583,8 +2517,7 @@ ve.dm.example.domToDataCases = {
 			{
 				'type': 'alienMeta',
 				'attributes': {
-					'style': 'comment',
-					'text': ' baz '
+					'domElements': $( '<!-- baz -->' ).get()
 				},
 				'internal': {
 					'whitespace': [
@@ -2616,8 +2549,7 @@ ve.dm.example.domToDataCases = {
 			{
 				'type': 'alienMeta',
 				'attributes': {
-					'style': 'comment',
-					'text': ' foo '
+					'domElements': $( '<!-- foo -->' ).get()
 				}
 			},
 			{ 'type': '/alienMeta' },
@@ -2625,8 +2557,7 @@ ve.dm.example.domToDataCases = {
 			{
 				'type': 'alienMeta',
 				'attributes': {
-					'style': 'comment',
-					'text': ' baz '
+					'domElements': $( '<!-- baz -->' ).get()
 				}
 			},
 			{ 'type': '/alienMeta' },
@@ -3120,24 +3051,13 @@ ve.dm.example.domToDataCases = {
 			'o',
 			{ 'type': '/paragraph' },
 			{
-				'type': 'alienMeta',
+				'type': 'mwAlienMeta',
 				'internal': { 'whitespace': [ '\n' ] },
 				'attributes': {
-					'style': 'meta',
-					'key': 'mw:foo',
-					'value': 'bar'
-				},
-				'htmlAttributes': [
-					{
-						'keys': [ 'property', 'content' ],
-						'values': {
-							'content': 'bar',
-							'property': 'mw:foo'
-						}
-					}
-				]
+					'domElements': $( '<meta property="mw:foo" content="bar" />' ).get()
+				}
 			},
-			{ 'type': '/alienMeta' },
+			{ 'type': '/mwAlienMeta' },
 			{ 'type': '/tableCell' },
 			{ 'type': '/tableRow' },
 			{ 'type': '/tableSection' },

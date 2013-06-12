@@ -352,7 +352,7 @@ QUnit.test( 'commit/rollback', function ( assert ) {
 			);
 			// Commit
 			testDoc.commit( tx );
-			assert.deepEqual( testDoc.getFullData(), expectedDoc.getFullData(), 'commit (data): ' + msg );
+			assert.deepEqualWithDomElements( testDoc.getFullData(), expectedDoc.getFullData(), 'commit (data): ' + msg );
 			assert.equalNodeTree(
 				testDoc.getDocumentNode(),
 				expectedDoc.getDocumentNode(),
@@ -360,7 +360,7 @@ QUnit.test( 'commit/rollback', function ( assert ) {
 			);
 			// Rollback
 			testDoc.rollback( tx );
-			assert.deepEqual( testDoc.getFullData(), originalDoc.getFullData(), 'rollback (data): ' + msg );
+			assert.deepEqualWithDomElements( testDoc.getFullData(), originalDoc.getFullData(), 'rollback (data): ' + msg );
 			assert.equalNodeTree(
 				testDoc.getDocumentNode(),
 				originalDoc.getDocumentNode(),

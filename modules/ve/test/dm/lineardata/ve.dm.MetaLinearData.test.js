@@ -14,11 +14,11 @@ QUnit.test( 'basic usage', 6, function ( assert ) {
 		data = new ve.dm.MetaLinearData( store, ve.copyArray( ve.dm.example.withMetaMetaData ) );
 
 	assert.equal( data.getData(), data.data, 'getData: with no arguments returns data by reference' );
-	assert.deepEqual( data.getData(), ve.dm.example.withMetaMetaData, 'getData: full array matches source data' );
-	assert.deepEqual( data.getData( 0 ), data.data[0],
+	assert.deepEqualWithDomElements( data.getData(), ve.dm.example.withMetaMetaData, 'getData: full array matches source data' );
+	assert.deepEqualWithDomElements( data.getData( 0 ), data.data[0],
 		'getData: get with one index returns array of meta elements at specified offset'
 	);
-	assert.deepEqual( data.getData( 11, 3 ), data.data[11][3],
+	assert.deepEqualWithDomElements( data.getData( 11, 3 ), data.data[11][3],
 		'getData: get with two indexes returns data at specified offset'
 	);
 
