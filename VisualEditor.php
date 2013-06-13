@@ -22,6 +22,8 @@ $wgVisualEditorParsoidTimeout = 100;
 $wgVisualEditorNamespaces = array( NS_MAIN );
 // Whether to use change tagging for VisualEditor edits
 $wgVisualEditorUseChangeTagging = true;
+// Whether to log analytic events using EventLogging
+$wgVisualEditorEnableEventLogging = false;
 // Whether to enable incomplete experimental code
 $wgVisualEditorEnableExperimentalCode = false;
 // Whether to use the 'add' or 'replace' tabLayout
@@ -63,6 +65,7 @@ $wgVisualEditorResourceTemplate = array(
 $wgVisualEditorEnableSectionEditLinks = false;
 
 $wgResourceModules += array(
+
 	'rangy' => $wgVisualEditorResourceTemplate + array(
 		'scripts' => array(
 			'rangy/rangy-core-1.3.js',
@@ -616,5 +619,6 @@ $wgHooks['ListDefinedTags'][] = 'VisualEditorHooks::onListDefinedTags';
 $wgHooks['MakeGlobalVariablesScript'][] = 'VisualEditorHooks::onMakeGlobalVariablesScript';
 $wgHooks['ResourceLoaderGetConfigVars'][] = 'VisualEditorHooks::onResourceLoaderGetConfigVars';
 $wgHooks['ResourceLoaderTestModules'][] = 'VisualEditorHooks::onResourceLoaderTestModules';
+$wgExtensionFunctions[] = 'VisualEditorHooks::onSetup';
 
 $wgAutoloadClasses['VisualEditorMessagesModule'] = $dir . 'VisualEditorMessagesModule.php';
