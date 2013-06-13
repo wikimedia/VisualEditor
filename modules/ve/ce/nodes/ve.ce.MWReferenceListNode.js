@@ -102,7 +102,7 @@ ve.ce.MWReferenceListNode.prototype.onListNodeUpdate = function () {
  * Update the reference list.
  */
 ve.ce.MWReferenceListNode.prototype.update = function () {
-	var i, j, iLen, jLen, index, firstNode, key, keyedNodes, $li, itemNode,
+	var i, j, iLen, jLen, index, firstNode, key, keyedNodes, $li, modelNode, viewNode,
 		internalList = this.model.getDocument().internalList,
 		refGroup = this.model.getAttribute( 'refGroup' ),
 		listGroup = this.model.getAttribute( 'listGroup' ),
@@ -134,21 +134,29 @@ ve.ce.MWReferenceListNode.prototype.update = function () {
 			}
 
 			// Generate reference HTML from first item in key
-			itemNode = new ve.ce.InternalItemNode(
-				internalList.getItemNode( firstNode.getAttribute( 'listIndex' ) )
-			);
-			// HACK: PHP parser doesn't wrap single lines in a paragraph
-			if ( itemNode.$.children().length === 1 && itemNode.$.children( 'p' ).length === 1 ) {
-				// unwrap inner
-				itemNode.$.children().replaceWith( itemNode.$.children().contents() );
+			modelNode = internalList.getItemNode( firstNode.getAttribute( 'listIndex' ) );
+			if ( modelNode.length ) {
+				viewNode = new ve.ce.InternalItemNode( modelNode );
+				// HACK: PHP parser doesn't wrap single lines in a paragraph
+				if ( viewNode.$.children().length === 1 && viewNode.$.children( 'p' ).length === 1 ) {
+					// unwrap inner
+					viewNode.$.children().replaceWith( viewNode.$.children().contents() );
+				}
+				$li.append(
+					$( '<span>' )
+						.addClass( 'reference-text' )
+						.append( viewNode.$.clone().show() )
+				);
+				viewNode.destroy();
+			} else {
+				$li.append(
+					$( '<span>' )
+						.addClass( 've-ce-mwReferenceListNode-muted' )
+						.text( ve.msg( 'visualeditor-referencelist-missingref' ) )
+				);
 			}
-			$li.append(
-				$( '<span>' )
-					.addClass( 'reference-text' )
-					.append( itemNode.$.clone().show() )
-			);
+
 			this.$reflist.append( $li );
-			itemNode.destroy();
 		}
 		this.$.append( this.$reflist );
 	}

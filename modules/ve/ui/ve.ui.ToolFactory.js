@@ -82,6 +82,10 @@ ve.ui.ToolFactory.prototype.getToolsForAnnotations = function ( annotations ) {
 ve.ui.ToolFactory.prototype.getToolForNode = function ( node ) {
 	var name, tool, candidateTool, candidateToolName;
 
+	if ( !node.isInspectable() ) {
+		return undefined;
+	}
+
 	for ( name in this.registry ) {
 		tool = this.registry[name];
 		if ( tool.static.canEditModel( node ) ) {

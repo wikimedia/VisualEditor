@@ -36,7 +36,6 @@ ve.ce.MWReferenceNode = function VeCeMWReferenceNode( model, config ) {
 
 	// Events
 	this.connect( this, { 'live': 'onLive' } );
-	this.$link.click( ve.bind( this.onClick, this ) );
 
 	// Initialization
 	this.update();
@@ -96,18 +95,23 @@ ve.ce.MWReferenceNode.prototype.update = function () {
 		listGroup = this.model.getAttribute( 'listGroup' ),
 		refGroup = this.model.getAttribute( 'refGroup' ),
 		position = this.internalList.getIndexPosition( listGroup, listIndex );
+
 	this.$link.text( '[' + ( refGroup ? refGroup + ' ' : '' ) + ( position + 1 ) + ']' );
 };
 
-/**
- * Handle the reference being clicked.
- *
- * @method
- */
-ve.ce.MWReferenceNode.prototype.onClick = function ( e ) {
-	// TODO: Start editing. Internal item dm node can be accessed using:
-	// var itemNode = this.model.getInternalItem();
-	e.preventDefault();
+ve.ce.MWReferenceNode.prototype.createPhantoms = function () {
+	// Parent method
+	ve.ce.ProtectedNode.prototype.createPhantoms.call( this );
+
+	if ( !this.getModel().isInspectable() ) {
+		// TODO: Move this into one of the classes mixin or inherit from
+		// as any focusable node that isn't inspectable should have this
+		// as it would be bad UX to have a focusable nodes where one of the
+		// same type doesn't show an inspector.
+		this.$phantoms
+			.addClass( 've-ce-mwReferenceNode-missingref' )
+			.attr( 'title', ve.msg( 'visualeditor-referencelist-missingref' ) );
+	}
 };
 
 /* Registration */

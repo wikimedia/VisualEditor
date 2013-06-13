@@ -172,6 +172,12 @@
 	color: #777;
 }
 
+/* ve-ce-mwReferenceNode */
+
+.ve-ce-mwReferenceNode-missingref {
+	cursor: not-allowed;
+}
+
 /* ve.ce.BranchNode */
 
 .ve-ce-branchNode-blockSlug {
