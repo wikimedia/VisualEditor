@@ -848,12 +848,12 @@ ve.dm.example.conversions = {
 };
 
 ve.dm.example.MWInlineImageHtml = '<span typeof="mw:Image" data-parsoid="{&quot;tsr&quot;:[0,24],&quot;optList&quot;:[{&quot;ck&quot;:&quot;width&quot;,&quot;ak&quot;:&quot;500px&quot;}],&quot;cacheKey&quot;:&quot;[[Image:Wiki.png|500px]]&quot;,&quot;img&quot;:{&quot;h&quot;:155,&quot;w&quot;:135,&quot;wdset&quot;:true},&quot;dsr&quot;:[0,24,null,null]}"><a href="./File:Wiki.png" data-parsoid="{&quot;a&quot;:{&quot;href&quot;:&quot;./File:Wiki.png&quot;}}"><img resource="./File:Wiki.png" src="http://upload.wikimedia.org/wikipedia/en/b/bc/Wiki.png" height="155" width="135" data-parsoid="{&quot;a&quot;:{&quot;resource&quot;:&quot;./File:Wiki.png&quot;,&quot;width&quot;:&quot;135&quot;},&quot;sa&quot;:{&quot;resource&quot;:&quot;Image:Wiki.png&quot;,&quot;width&quot;:&quot;500&quot;}}"></a></span>';
-ve.dm.example.MWTemplate = {
+ve.dm.example.MWTransclusion = {
 	'blockSpan':         '<span about="#mwt1" typeof="mw:Transclusion" data-mw="{&quot;id&quot;:&quot;mwt1&quot;,&quot;target&quot;:{&quot;wt&quot;:&quot;Test&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;Hello, world!&quot;}}}" data-parsoid="{&quot;tsr&quot;:[18,40],&quot;src&quot;:&quot;{{Test|Hello, world!}}&quot;,&quot;dsr&quot;:[18,40,null,null]}"></span>',
 	'blockSpanModified': '<span about="#mwt1" typeof="mw:Transclusion" data-mw="{&quot;id&quot;:&quot;mwt1&quot;,&quot;target&quot;:{&quot;wt&quot;:&quot;Test&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;Hello, globe!&quot;}}}" data-parsoid="{&quot;tsr&quot;:[18,40],&quot;src&quot;:&quot;{{Test|Hello, world!}}&quot;,&quot;dsr&quot;:[18,40,null,null]}"></span>',
 	'blockContent': '<p about="#mwt1" data-parsoid="{}">Hello, world!</p>',
 	'blockData': {
-		'type': 'mwTemplateBlock',
+		'type': 'mwTransclusionBlock',
 		'attributes': {
 			'mw': {
 				'id': 'mwt1',
@@ -894,7 +894,7 @@ ve.dm.example.MWTemplate = {
 	'inlineContent': '$1,234.00',
 	'inlineClose': '</span>',
 	'inlineData': {
-		'type': 'mwTemplateInline',
+		'type': 'mwTransclusionInline',
 		'attributes': {
 			'mw': {
 				'id': 'mwt1',
@@ -925,7 +925,7 @@ ve.dm.example.MWTemplate = {
 	},
 	'mixed': '<link about="#mwt1" rel="mw:WikiLink/Category" typeof="mw:Transclusion" data-mw="{&quot;id&quot;:&quot;mwt1&quot;,&quot;target&quot;:{&quot;wt&quot;:&quot;Inline&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;5,678&quot;}}}"><span about="#mwt1">Foo</span>',
 	'mixedDataOpen': {
-		'type': 'mwTemplateInline',
+		'type': 'mwTransclusionInline',
 		'attributes': {
 			'mw': {
 				'id': 'mwt1',
@@ -958,25 +958,25 @@ ve.dm.example.MWTemplate = {
 			}
 		]
 	},
-	'mixedDataClose' : { 'type': '/mwTemplateInline' }
+	'mixedDataClose' : { 'type': '/mwTransclusionInline' }
 };
 
-ve.dm.example.MWTemplate.blockParamsHash = ve.getHash( ve.dm.MWTemplateNode.static.getHashObject( ve.dm.example.MWTemplate.blockData ) );
-ve.dm.example.MWTemplate.blockStoreItems = {
-	'hash': ve.dm.example.MWTemplate.blockParamsHash,
-	'value': $( ve.dm.example.MWTemplate.blockSpan + ve.dm.example.MWTemplate.blockContent ).get()
+ve.dm.example.MWTransclusion.blockParamsHash = ve.getHash( ve.dm.MWTransclusionNode.static.getHashObject( ve.dm.example.MWTransclusion.blockData ) );
+ve.dm.example.MWTransclusion.blockStoreItems = {
+	'hash': ve.dm.example.MWTransclusion.blockParamsHash,
+	'value': $( ve.dm.example.MWTransclusion.blockSpan + ve.dm.example.MWTransclusion.blockContent ).get()
 };
 
-ve.dm.example.MWTemplate.inlineParamsHash = ve.getHash( ve.dm.MWTemplateNode.static.getHashObject( ve.dm.example.MWTemplate.inlineData ) );
-ve.dm.example.MWTemplate.inlineStoreItems = {
-	'hash': ve.dm.example.MWTemplate.inlineParamsHash,
-	'value': $( ve.dm.example.MWTemplate.inlineOpen + ve.dm.example.MWTemplate.inlineContent + ve.dm.example.MWTemplate.inlineClose ).get()
+ve.dm.example.MWTransclusion.inlineParamsHash = ve.getHash( ve.dm.MWTransclusionNode.static.getHashObject( ve.dm.example.MWTransclusion.inlineData ) );
+ve.dm.example.MWTransclusion.inlineStoreItems = {
+	'hash': ve.dm.example.MWTransclusion.inlineParamsHash,
+	'value': $( ve.dm.example.MWTransclusion.inlineOpen + ve.dm.example.MWTransclusion.inlineContent + ve.dm.example.MWTransclusion.inlineClose ).get()
 };
 
-ve.dm.example.MWTemplate.mixedParamsHash = ve.getHash( ve.dm.MWTemplateNode.static.getHashObject( ve.dm.example.MWTemplate.mixedDataOpen ) );
-ve.dm.example.MWTemplate.mixedStoreItems = {
-	'hash': ve.dm.example.MWTemplate.mixedParamsHash,
-	'value': $( ve.dm.example.MWTemplate.mixed ).get()
+ve.dm.example.MWTransclusion.mixedParamsHash = ve.getHash( ve.dm.MWTransclusionNode.static.getHashObject( ve.dm.example.MWTransclusion.mixedDataOpen ) );
+ve.dm.example.MWTransclusion.mixedStoreItems = {
+	'hash': ve.dm.example.MWTransclusion.mixedParamsHash,
+	'value': $( ve.dm.example.MWTransclusion.mixed ).get()
 };
 
 ve.dm.example.domToDataCases = {
@@ -1067,59 +1067,59 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/paragraph' }
 		]
 	},
-	'mw:Template (block level)': {
-		'html': '<body>' + ve.dm.example.MWTemplate.blockSpan + ve.dm.example.MWTemplate.blockContent + '</body>',
+	'mw:Transclusion (block level)': {
+		'html': '<body>' + ve.dm.example.MWTransclusion.blockSpan + ve.dm.example.MWTransclusion.blockContent + '</body>',
 		'data': [
-			ve.dm.example.MWTemplate.blockData,
-			{ 'type': '/mwTemplateBlock' }
+			ve.dm.example.MWTransclusion.blockData,
+			{ 'type': '/mwTransclusionBlock' }
 		],
 		'storeItems': [
-			ve.dm.example.MWTemplate.blockStoreItems
+			ve.dm.example.MWTransclusion.blockStoreItems
 		],
-		'normalizedHtml': ve.dm.example.MWTemplate.blockSpan + ve.dm.example.MWTemplate.blockContent
+		'normalizedHtml': ve.dm.example.MWTransclusion.blockSpan + ve.dm.example.MWTransclusion.blockContent
 	},
-	'mw:Template (block level - modified)': {
-		'html': '<body>' + ve.dm.example.MWTemplate.blockSpan + ve.dm.example.MWTemplate.blockContent + '</body>',
+	'mw:Transclusion (block level - modified)': {
+		'html': '<body>' + ve.dm.example.MWTransclusion.blockSpan + ve.dm.example.MWTransclusion.blockContent + '</body>',
 		'data': [
-			ve.dm.example.MWTemplate.blockData,
-			{ 'type': '/mwTemplateBlock' }
+			ve.dm.example.MWTransclusion.blockData,
+			{ 'type': '/mwTransclusionBlock' }
 		],
 		'storeItems': [
-			ve.dm.example.MWTemplate.blockStoreItems
+			ve.dm.example.MWTransclusion.blockStoreItems
 		],
 		'modify': function ( data ) {
 			data[0].attributes.mw.params['1'].wt = 'Hello, globe!';
 		},
-		'normalizedHtml': ve.dm.example.MWTemplate.blockSpanModified
+		'normalizedHtml': ve.dm.example.MWTransclusion.blockSpanModified
 	},
-	'mw:Template (inline)': {
-		'html': '<body>' + ve.dm.example.MWTemplate.inlineOpen + ve.dm.example.MWTemplate.inlineContent + ve.dm.example.MWTemplate.inlineClose + '</body>',
+	'mw:Transclusion (inline)': {
+		'html': '<body>' + ve.dm.example.MWTransclusion.inlineOpen + ve.dm.example.MWTransclusion.inlineContent + ve.dm.example.MWTransclusion.inlineClose + '</body>',
 		'data': [
 			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
-			ve.dm.example.MWTemplate.inlineData,
-			{ 'type': '/mwTemplateInline' },
+			ve.dm.example.MWTransclusion.inlineData,
+			{ 'type': '/mwTransclusionInline' },
 			{ 'type': '/paragraph' }
 		],
 		'storeItems': [
-			ve.dm.example.MWTemplate.inlineStoreItems
+			ve.dm.example.MWTransclusion.inlineStoreItems
 		],
-		'normalizedHtml': ve.dm.example.MWTemplate.inlineOpen + ve.dm.example.MWTemplate.inlineContent + ve.dm.example.MWTemplate.inlineClose
+		'normalizedHtml': ve.dm.example.MWTransclusion.inlineOpen + ve.dm.example.MWTransclusion.inlineContent + ve.dm.example.MWTransclusion.inlineClose
 	},
-	'mw:Template (inline - modified)': {
-		'html': '<body>' + ve.dm.example.MWTemplate.inlineOpen + ve.dm.example.MWTemplate.inlineContent + ve.dm.example.MWTemplate.inlineClose + '</body>',
+	'mw:Transclusion (inline - modified)': {
+		'html': '<body>' + ve.dm.example.MWTransclusion.inlineOpen + ve.dm.example.MWTransclusion.inlineContent + ve.dm.example.MWTransclusion.inlineClose + '</body>',
 		'data': [
 			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
-			ve.dm.example.MWTemplate.inlineData,
-			{ 'type': '/mwTemplateInline' },
+			ve.dm.example.MWTransclusion.inlineData,
+			{ 'type': '/mwTransclusionInline' },
 			{ 'type': '/paragraph' }
 		],
 		'storeItems': [
-			ve.dm.example.MWTemplate.inlineStoreItems
+			ve.dm.example.MWTransclusion.inlineStoreItems
 		],
 		'modify': function ( data ) {
 			data[1].attributes.mw.params['1'].wt = '5,678';
 		},
-		'normalizedHtml': ve.dm.example.MWTemplate.inlineOpenModified + ve.dm.example.MWTemplate.inlineClose
+		'normalizedHtml': ve.dm.example.MWTransclusion.inlineOpenModified + ve.dm.example.MWTransclusion.inlineClose
 	},
 	'mw:Reference': {
 		'html':
@@ -2833,15 +2833,15 @@ ve.dm.example.domToDataCases = {
 		'data': ve.dm.example.withMeta
 	},
 	'RDFa types spread across two attributes, about grouping is forced': {
-		'html': '<body>' + ve.dm.example.MWTemplate.mixed + '</body>',
+		'html': '<body>' + ve.dm.example.MWTransclusion.mixed + '</body>',
 		'data': [
 			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
-			ve.dm.example.MWTemplate.mixedDataOpen,
-			ve.dm.example.MWTemplate.mixedDataClose,
+			ve.dm.example.MWTransclusion.mixedDataOpen,
+			ve.dm.example.MWTransclusion.mixedDataClose,
 			{ 'type': '/paragraph' }
 		],
 		'storeItems': [
-			ve.dm.example.MWTemplate.mixedStoreItems
+			ve.dm.example.MWTransclusion.mixedStoreItems
 		]
 	},
 	'about grouping': {

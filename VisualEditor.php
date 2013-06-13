@@ -554,18 +554,25 @@ $wgResourceModules += array(
 	),
 	'ext.visualEditor.experimental' => $wgVisualEditorResourceTemplate + array(
 		'scripts' => array(
-			've/dm/nodes/ve.dm.MWTemplateNode.js',
+			've/dm/nodes/ve.dm.MWTransclusionNode.js',
 			've/dm/nodes/ve.dm.MWReferenceListNode.js',
 			've/dm/nodes/ve.dm.MWReferenceNode.js',
 
-			've/ce/nodes/ve.ce.MWTemplateNode.js',
+			've/dm/models/ve.dm.MWTransclusionModel.js',
+			've/dm/models/ve.dm.MWTransclusionPartModel.js',
+			've/dm/models/ve.dm.MWTransclusionContentModel.js',
+			've/dm/models/ve.dm.MWTemplateSpecModel.js',
+			've/dm/models/ve.dm.MWTemplateModel.js',
+			've/dm/models/ve.dm.MWTemplateParameterModel.js',
+
+			've/ce/nodes/ve.ce.MWTransclusionNode.js',
 			've/ce/nodes/ve.ce.MWReferenceListNode.js',
 			've/ce/nodes/ve.ce.MWReferenceNode.js',
 
 			've/ui/tools/buttons/ve.ui.MWReferenceButtonTool.js',
-			've/ui/tools/buttons/ve.ui.MWTemplateButtonTool.js',
+			've/ui/tools/buttons/ve.ui.MWTransclusionButtonTool.js',
 			've/ui/dialogs/ve.ui.MWReferenceDialog.js',
-			've/ui/dialogs/ve.ui.MWTemplateDialog.js',
+			've/ui/dialogs/ve.ui.MWTransclusionDialog.js',
 		),
 		'dependencies' => array(
 			'ext.visualEditor.core',
@@ -573,9 +580,16 @@ $wgResourceModules += array(
 		'messages' => array(
 			// VE messages needed by code that is only in experimental mode
 			'visualeditor-dialog-reference-title',
-			'visualeditor-dialog-template-title',
+			'visualeditor-dialog-transclusion-title',
 			'visualeditor-dialogbutton-reference-tooltip',
-			'visualeditor-dialogbutton-template-tooltip',
+			'visualeditor-dialogbutton-transclusion-tooltip',
+			'visualeditor-dialog-transclusion-content',
+			'visualeditor-dialog-transclusion-options',
+			'visualeditor-dialog-transclusion-remove-content',
+			'visualeditor-dialog-transclusion-remove-template',
+			'visualeditor-dialog-transclusion-remove-param',
+			'visualeditor-dialog-transclusion-add-param',
+			'visualeditor-dialog-transclusion-param-name',
 		),
 	),
 	'ext.visualEditor.icons-raster' => $wgVisualEditorResourceTemplate + array(
