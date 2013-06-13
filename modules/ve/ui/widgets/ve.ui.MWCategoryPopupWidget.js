@@ -46,7 +46,7 @@ ve.ui.MWCategoryPopupWidget = function VeUiMwCategoryPopupWidget ( config ) {
 	this.$.addClass( 've-ui-mwCategoryPopupMenu' ).hide();
 	this.$title
 		.addClass( 've-ui-mwCategoryPopupTitle ve-ui-icon-tag' )
-		.text( ve.msg( 'visualeditor-dialog-meta-categories-settings-label' ) );
+		.text( ve.msg( 'visualeditor-dialog-meta-categories-category' ) );
 	this.$menu.append(
 		this.$title,
 		this.removeButton.$.addClass( 've-ui-mwCategoryRemoveButton' ),

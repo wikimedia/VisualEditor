@@ -484,6 +484,7 @@ $wgResourceModules += array(
 			'visualeditor-dialog-media-insert-title',
 			'visualeditor-dialog-media-title',
 			'visualeditor-dialog-meta-categories-data-label',
+			'visualeditor-dialog-meta-categories-category',
 			'visualeditor-dialog-meta-categories-defaultsort-label',
 			'visualeditor-dialog-meta-categories-input-matchingcategorieslabel',
 			'visualeditor-dialog-meta-categories-input-movecategorylabel',
