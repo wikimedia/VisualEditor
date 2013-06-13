@@ -449,9 +449,11 @@ ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
 			this.handleEnter( e );
 			break;
 		case ve.Keys.BACKSPACE:
+			e.preventDefault();
 			this.handleDelete( e, true );
 			break;
 		case ve.Keys.DELETE:
+			e.preventDefault();
 			this.handleDelete( e, false );
 			break;
 		default:
@@ -1195,147 +1197,56 @@ ve.ce.Surface.prototype.handleEnter = function ( e ) {
  * @param {boolean} backspace Key was a backspace
  */
 ve.ce.Surface.prototype.handleDelete = function ( e, backspace ) {
-	var sourceOffset, targetOffset, sourceSplitableNode, targetSplitableNode, tx, cursorAt,
-		sourceNode, targetNode, sourceData, nodeToDelete, adjacentData, adjacentText, adjacentChar,
-		adjacentTextAfterMatch, endOffset, i, containsComplexElements = false,
-		selection = this.model.getSelection();
+	var rangeToRemove = this.model.getSelection(),
+		tx, endNode, endNodeData, nodeToDelete;
 
-	if ( selection.isCollapsed() ) {
-		// Set source and target linmod offsets
-		if ( backspace ) {
-			sourceOffset = selection.to;
-			targetOffset = this.getNearestCorrectOffset( sourceOffset - 1, -1 );
-
-			// At the beginning of the document - don't do anything and preventDefault
-			if ( sourceOffset === targetOffset ) {
-				e.preventDefault();
-				return;
+	if ( rangeToRemove.isCollapsed() ) {
+		// In case when the range is collapsed use the same logic that is used for cursor left and
+		// right movement in order to figure out range to remove.
+		rangeToRemove = this.getDocument().getRelativeRange(
+			rangeToRemove,
+			backspace ? -1 : 1,
+			( e.altKey === true || e.ctrlKey === true ) ? 'word' : 'character',
+			true
+		);
+		if ( rangeToRemove.isCollapsed() ) {
+			// For instance beginning or end of the document.
+			return;
+		}
+	}
+	tx = ve.dm.Transaction.newFromRemoval( this.documentView.model, rangeToRemove );
+	this.model.change( tx );
+	rangeToRemove = tx.translateRange( rangeToRemove );
+	if ( !rangeToRemove.isCollapsed() ) {
+		// If after processing removal transaction range is not collapsed it means that not
+		// everything got merged nicely (at this moment transaction processor is capable of merging
+		// nodes of the same type and at the same depth level only), so we process with another 
+		// merging that takes remaing data from "endNode" and inserts it at the end of "startNode",
+		// "endNode" or recrusivly its parent (if have only one child) gets removed.
+		endNode = this.documentView.getNodeFromOffset( rangeToRemove.end, false );
+		endNodeData = this.documentView.model.getData( endNode.model.getRange() );
+		nodeToDelete = endNode;
+		nodeToDelete.traverseUpstream( function ( node ) {
+			if ( node.getParent().children.length === 1 ) {
+				nodeToDelete = node.getParent();
+				return true;
+			} else {
+				return false;
 			}
-
-		} else {
-			sourceOffset = this.model.getDocument().data.getRelativeContentOffset( selection.to, 1 );
-			targetOffset = selection.to;
-
-			// At the end of the document - don't do anything and preventDefault
-			if ( sourceOffset <= targetOffset ) {
-				e.preventDefault();
-				return;
-			}
-		}
-
-		// Set source and target nodes
-		sourceNode = this.documentView.getNodeFromOffset( sourceOffset, false ),
-		targetNode = this.documentView.getNodeFromOffset( targetOffset, false );
-
-		if ( sourceNode.type === targetNode.type ) {
-			sourceSplitableNode = ve.ce.Node.getSplitableNode( sourceNode );
-			targetSplitableNode = ve.ce.Node.getSplitableNode( targetNode );
-		}
-		//ve.log(sourceSplitableNode, targetSplitableNode);
-
-		// Save target location of cursor
-		cursorAt = targetOffset;
-
-		// Get text from cursor location to end of node in the proper direction
-		adjacentData = null;
-		adjacentText = '';
-
-		if ( backspace ) {
-			adjacentData = sourceNode.model.doc.data.slice(
-				sourceNode.model.getOffset() + ( sourceNode.model.isWrapped() ? 1 : 0 ) ,
-				sourceOffset
-			);
-		} else {
-			endOffset = targetNode.model.getOffset() +
-				targetNode.model.getLength() +
-				( targetNode.model.isWrapped() ? 1 : 0 );
-			adjacentData = targetNode.model.doc.data.slice( targetOffset, endOffset );
-		}
-
-		for ( i = 0; i < adjacentData.length; i++ ) {
-			if ( adjacentData[i].type !== undefined ) {
-				containsComplexElements = true;
-				break;
-			}
-			adjacentChar = ve.isArray( adjacentData[i] ) ? adjacentData[i][0] : adjacentData[i];
-			if ( adjacentChar.length > 1 ) {
-				containsComplexElements = true;
-				break;
-			}
-			adjacentText += adjacentChar;
-		}
-
-		if ( !containsComplexElements ) {
-			adjacentTextAfterMatch = adjacentText.match( this.constructor.static.textPattern );
-			// If there are "normal" characters in the adjacent text let the browser handle natively
-			if ( adjacentTextAfterMatch !== null && adjacentTextAfterMatch.length ) {
-				return;
-			}
-		}
-
-		ve.log('handleDelete programatically');
-		e.preventDefault();
-		this.surfaceObserver.stop();
-
-		if (
-			// Source and target are the same node
-			sourceNode === targetNode ||
-			(
-				// Source and target have the same parent (list items)
-				sourceSplitableNode !== undefined &&
-				sourceSplitableNode.getParent() === targetSplitableNode.getParent()
-			)
-		) {
-			// Simple removal
-			tx = ve.dm.Transaction.newFromRemoval(
-				this.documentView.model, new ve.Range( targetOffset, sourceOffset )
-			);
-			this.model.change( tx, new ve.Range( cursorAt ) );
-		} else if ( sourceNode.getType() === 'document' ) {
-			// Source is a slug - move the cursor somewhere useful
-			this.model.change( null, new ve.Range( cursorAt ) );
-		} else {
-			// Source and target are different nodes or do not share a parent, perform tricky merge
-			// Get the data for the source node
-			sourceData = this.documentView.model.getData( sourceNode.model.getRange() );
-
-			// Find the node that should be completely removed
-			nodeToDelete = sourceNode;
-			nodeToDelete.traverseUpstream( function ( node ) {
-				if ( node.getParent().children.length === 1 ) {
-					nodeToDelete = node.getParent();
-					return true;
-				} else {
-					return false;
-				}
-			} );
-
-			this.model.change(
-				[
-					// Remove source node or source node ancestor
-					ve.dm.Transaction.newFromRemoval(
-						this.documentView.model, nodeToDelete.getModel().getOuterRange()
-					),
-					// Append source data to target
-					ve.dm.Transaction.newFromInsertion(
-						this.documentView.model, targetOffset, sourceData
-					)
-				],
-				new ve.Range( cursorAt )
-			);
-		}
-	} else {
-		// Selection removal
-		ve.log('selection removal - handle programatically');
-		e.preventDefault();
+		} );
 		this.model.change(
-			ve.dm.Transaction.newFromRemoval( this.documentView.model, selection ),
-			new ve.Range( selection.start )
+			[
+				ve.dm.Transaction.newFromRemoval(
+					this.documentView.model, nodeToDelete.getModel().getOuterRange()
+				),
+				ve.dm.Transaction.newFromInsertion(
+					this.documentView.model, rangeToRemove.start, endNodeData
+				)
+			]
 		);
 	}
-
+	this.model.change( null, new ve.Range( rangeToRemove.start ) );
 	this.surfaceObserver.clear();
-	this.surfaceObserver.start();
 };
 
 /**

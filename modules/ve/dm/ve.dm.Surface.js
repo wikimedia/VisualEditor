@@ -315,6 +315,11 @@ ve.dm.Surface.prototype.change = function ( transactions, selection ) {
 				this.truncateUndoStack();
 				this.smallStack.push( transactions[i] );
 				this.documentModel.commit( transactions[i] );
+				if ( !selection ) {
+					// translateRange only if selection is not provided because otherwise we are
+					// going to overwrite it
+					this.selection = transactions[i].translateRange( this.selection );
+				}
 			}
 		}
 	}
