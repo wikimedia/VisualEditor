@@ -133,6 +133,7 @@
 
 .ve-ui-mwReferenceDialog-body {
 	padding: 2em;
+	overflow-y: auto;
 }
 
 .ve-ui-mwReferenceDialog-toolbar {
