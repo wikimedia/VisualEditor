@@ -329,6 +329,7 @@ ve.init.mw.Target.onSave = function ( response ) {
 			this, null, 'Invalid HTML content in response from server', null
 		);
 	} else {
+		mw.config.set( 'wgCurRevisionId', data.newrevid );
 		this.emit( 'save', data.content, data.newrevid );
 	}
 };

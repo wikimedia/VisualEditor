@@ -844,11 +844,13 @@ ve.init.mw.ViewPageTarget.prototype.setUpEventLogging = function () {
 		mw.eventLog.setDefaults( 'Edit', {
 			version: 0,
 			editor: 'visualeditor',
-			pageId: +mw.config.get( 'wgArticleId' ),
+			pageId: mw.config.get( 'wgArticleId' ),
 			pageNs: mw.config.get( 'wgNamespaceNumber' ),
 			pageName: mw.config.get( 'wgPageName' ),
 			pageViewSessionId: +new Date(),
-			revId: +mw.config.get( 'wgCurRevisionId' )
+			revId: function () {
+				return mw.config.get( 'wgCurRevisionId' );
+			}
 		} );
 	} );
 };
