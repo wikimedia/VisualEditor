@@ -250,7 +250,7 @@ ve.ui.MWCategoryWidget.prototype.removeItems = function ( names ) {
  * @method
  */
 ve.ui.MWCategoryWidget.prototype.fitInput = function () {
-	var gap, min, margin, $lastItem,
+	var gap, min, $lastItem,
 		$input = this.input.$;
 
 	if ( !$input.is( ':visible') ) {
@@ -263,12 +263,11 @@ ve.ui.MWCategoryWidget.prototype.fitInput = function () {
 	$input.css( { 'width': '100%' } );
 	$lastItem = this.$.find( '.ve-ui-mwCategoryListItemWidget:last' );
 	if ( $lastItem.length ) {
-		margin = $input.offset().left - this.$.offset().left;
 		// Try to fit to the right of the last item
 		gap = ( $input.offset().left + $input.outerWidth() ) -
 				( $lastItem.offset().left + $lastItem.outerWidth() );
 		if ( gap >= min ) {
-			$input.css( { 'width': Math.round( gap - ( ( margin ) * 2 ) ) + 'px' } );
+			$input.css( { 'width': gap } );
 		}
 	}
 };
