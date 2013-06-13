@@ -71,6 +71,11 @@ class VisualEditorHooks {
 			'label-message' => 'visualeditor-preference-enable',
 			'section' => 'editing/beta'
 		);
+		$preferences['visualeditor-nosectionedit'] = array(
+			'type' => 'toggle',
+			'label-message' => 'visualeditor-preference-nosectionedit',
+			'section' => 'editing/beta'
+		);
 		return true;
 	}
 
@@ -101,12 +106,10 @@ class VisualEditorHooks {
 	 * Adds extra variables to the global config
 	 */
 	public static function onResourceLoaderGetConfigVars( array &$vars ) {
-		global $wgVisualEditorEnableSectionEditLinks,
-			$wgVisualEditorParsoidURL, $wgVisualEditorEnableEventLogging,
+		global $wgVisualEditorEnableEventLogging,
 			$wgVisualEditorEnableExperimentalCode, $wgVisualEditorTabLayout;
 
 		$vars['wgVisualEditorConfig'] = array(
-			'enableSectionEditLinks' => $wgVisualEditorEnableSectionEditLinks,
 			'enableExperimentalCode' => $wgVisualEditorEnableExperimentalCode,
 			'enableEventLogging' => $wgVisualEditorEnableEventLogging,
 			'tabLayout' => $wgVisualEditorTabLayout,

@@ -140,7 +140,7 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 	}
 
 	this.setupSkinTabs();
-	if ( mw.config.get( 'wgVisualEditorConfig' ).enableSectionEditLinks ) {
+	if ( !mw.user.options.get( 'visualeditor-nosectionedit' ) ) {
 		this.setupSectionEditLinks();
 	}
 	if ( this.isViewPage ) {

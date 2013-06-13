@@ -62,8 +62,6 @@ $wgVisualEditorResourceTemplate = array(
 	'group' => 'ext.visualEditor',
 );
 
-$wgVisualEditorEnableSectionEditLinks = false;
-
 $wgResourceModules += array(
 
 	'rangy' => $wgVisualEditorResourceTemplate + array(
