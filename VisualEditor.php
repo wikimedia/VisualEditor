@@ -584,6 +584,10 @@ $wgResourceModules += array(
 		),
 		'messages' => array(
 			// VE messages needed by code that is only in experimental mode
+			'visualeditor-dialog-reference-content-section',
+			'visualeditor-dialog-reference-options-section',
+			'visualeditor-dialog-reference-options-name-label',
+			'visualeditor-dialog-reference-options-group-label',
 			'visualeditor-dialog-reference-title',
 			'visualeditor-dialog-transclusion-title',
 			'visualeditor-dialogbutton-reference-tooltip',

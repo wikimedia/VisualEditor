@@ -69,25 +69,35 @@ ve.ui.MWReferenceDialog.prototype.initialize = function () {
 
 	// Properties
 	this.contentFieldset = new ve.ui.FieldsetLayout( {
-		// TODO: use message string
-		'$$': this.frame.$$, 'label': 'Content', 'icon': 'parameter'
+		'$$': this.frame.$$,
+		'label': ve.msg( 'visualeditor-dialog-reference-content-section' ),
+		'icon': 'reference'
 	} );
-	this.nameFieldset = new ve.ui.FieldsetLayout( {
-		// TODO: use message string
-		'$$': this.frame.$$, 'label': 'Name', 'icon': 'parameter'
+	this.optionsFieldset = new ve.ui.FieldsetLayout( {
+		'$$': this.frame.$$,
+		'label': ve.msg( 'visualeditor-dialog-reference-options-section' ),
+		'icon': 'settings'
 	} );
 	this.nameInput = new ve.ui.TextInputWidget( { '$$': this.frame.$$ } );
 	this.nameLabel = new ve.ui.InputLabelWidget( {
 		'$$': this.frame.$$,
 		'input': this.nameInput,
-		// TODO: use message string
-		'label': 'Reuse this reference by this name'
+		'label': ve.msg( 'visualeditor-dialog-reference-options-name-label' )
+	} );
+
+	this.groupInput = new ve.ui.TextInputWidget( { '$$': this.frame.$$ } );
+	this.groupLabel = new ve.ui.InputLabelWidget( {
+		'$$': this.frame.$$,
+		'input': this.groupInput,
+		'label': ve.msg( 'visualeditor-dialog-reference-options-group-label' )
 	} );
 
 	// Initialization
 	this.$body.addClass( 've-ui-mwReferenceDialog-body' );
-	this.$body.append( this.contentFieldset.$, this.nameFieldset.$ );
-	this.nameFieldset.$.append( this.nameLabel.$, this.nameInput.$ );
+	this.$body.append( this.contentFieldset.$, this.optionsFieldset.$ );
+	this.optionsFieldset.$.append(
+		this.nameLabel.$, this.nameInput.$, this.groupLabel.$, this.groupInput.$
+	);
 };
 
 /**
