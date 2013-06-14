@@ -55,14 +55,14 @@ $messages['en'] = array(
 	'visualeditor-dialog-reference-options-group-label' => 'Use this group',
 	'visualeditor-dialog-reference-title' => 'Reference',
 	'visualeditor-dialog-media-title' => 'Media settings',
-	'visualeditor-dialog-transclusion-title' => 'Transclusion',
+	'visualeditor-dialog-transclusion-add-param' => 'Add parameter',
 	'visualeditor-dialog-transclusion-content' => 'Content',
 	'visualeditor-dialog-transclusion-options' => 'Options',
-	'visualeditor-dialog-transclusion-remove-content' => 'Remove content',
-	'visualeditor-dialog-transclusion-remove-template' => 'Remove template',
-	'visualeditor-dialog-transclusion-remove-param' => 'Remove parameter',
-	'visualeditor-dialog-transclusion-add-param' => 'Add parameter',
 	'visualeditor-dialog-transclusion-param-name' => 'Parameter name',
+	'visualeditor-dialog-transclusion-remove-content' => 'Remove content',
+	'visualeditor-dialog-transclusion-remove-param' => 'Remove parameter',
+	'visualeditor-dialog-transclusion-remove-template' => 'Remove template',
+	'visualeditor-dialog-transclusion-title' => 'Transclusion',
 	'visualeditor-dialogbutton-media-tooltip' => 'Media',
 	'visualeditor-dialogbutton-meta-tooltip' => 'Page settings',
 	'visualeditor-dialogbutton-reference-tooltip' => 'Reference',
@@ -220,20 +220,24 @@ See also:
 {{Identical|Language}}',
 	'visualeditor-dialog-meta-title' => 'MetaData dialog title text.
 {{Identical|Page settings}}',
+	'visualeditor-dialog-reference-content-section' => 'Label for the reference content sub-section',
+	'visualeditor-dialog-reference-options-section' => 'Label for the reference options sub-section',
+	'visualeditor-dialog-reference-options-name-label' => 'Label for the reference name input',
+	'visualeditor-dialog-reference-options-group-label' => 'Label for the reference group input',
 	'visualeditor-dialog-reference-title' => '{{Identical|Reference}}',
-	'visualeditor-dialog-transclusion-title' => '{{Identical|Transclusion}}',
+	'visualeditor-dialog-transclusion-add-param' => 'Label for button that adds parameter a parameter to a template.
+{{Identical|Add parameter}}',
 	'visualeditor-dialog-transclusion-content' => 'Label for editor of content between transclusion parts.
 {{Identical|Content}}',
 	'visualeditor-dialog-transclusion-options' => 'Label for section with options for templates, content or parameters.
 {{Identical|Options}}',
-	'visualeditor-dialog-transclusion-remove-content' => 'Label for button that removes content between transclusion parts',
-	'visualeditor-dialog-transclusion-remove-template' => 'Label for button that removes a template from a transclusion.
-{{Identical|Remove template}}',
-	'visualeditor-dialog-transclusion-remove-param' => 'Label for button that removes a parameter from a template',
-	'visualeditor-dialog-transclusion-add-param' => 'Label for button that adds parameter a parameter to a template.
-{{Identical|Add parameter}}',
 	'visualeditor-dialog-transclusion-param-name' => 'Placeholder text label for an input for adding a parameter to a template.
 {{Identical|Parameter name}}',
+	'visualeditor-dialog-transclusion-remove-content' => 'Label for button that removes content between transclusion parts',
+	'visualeditor-dialog-transclusion-remove-param' => 'Label for button that removes a parameter from a template',
+	'visualeditor-dialog-transclusion-remove-template' => 'Label for button that removes a template from a transclusion.
+{{Identical|Remove template}}',
+	'visualeditor-dialog-transclusion-title' => '{{Identical|Transclusion}}',
 	'visualeditor-dialogbutton-media-tooltip' => '{{Identical|Media}}',
 	'visualeditor-dialogbutton-meta-tooltip' => '{{Identical|Page Settings}}',
 	'visualeditor-dialogbutton-reference-tooltip' => '{{Identical|Reference}}',

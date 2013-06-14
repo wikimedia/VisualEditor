@@ -129,7 +129,7 @@ ve.ce.MWReferenceListNode.prototype.update = function () {
 			// HACK: ProtectedNode crashes when dealing with an unattached node
 			this.attachedItems.push( itemNode );
 			itemNode.attach( this );
-			$li.append( $( '<span class="reference-text">' ).html( itemNode.$.show() ) );
+			$li.append( $( '<span class="reference-text">' ).html( itemNode.$.clone().show() ) );
 			this.$reflist.append( $li );
 		}
 	} // TODO: Show a placeholder for an empty reference list in the 'else' section

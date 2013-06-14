@@ -689,12 +689,11 @@ QUnit.test( 'newFromNodeReplacement', function ( assert ) {
 	QUnit.expect( ve.getObjectKeys( cases ).length );
 	runConstructorTests( assert, ve.dm.Transaction.newFromNodeReplacement, cases );
 } );
-
-QUnit.test( 'newFromAttributeChange', function ( assert ) {
+QUnit.test( 'newFromAttributeChanges', function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument(),
 		cases = {
 			'first element': {
-				'args': [doc, 0, 'level', 2],
+				'args': [doc, 0, { 'level': 2 }],
 				'ops': [
 					{
 						'type': 'attribute',
@@ -706,7 +705,7 @@ QUnit.test( 'newFromAttributeChange', function ( assert ) {
 				]
 			},
 			'middle element': {
-				'args': [doc, 17, 'style', 'number'],
+				'args': [doc, 17, { 'style': 'number'} ],
 				'ops': [
 					{ 'type': 'retain', 'length': 17 },
 					{
@@ -718,17 +717,36 @@ QUnit.test( 'newFromAttributeChange', function ( assert ) {
 					{ 'type': 'retain', 'length': 44 }
 				]
 			},
+			'multiple attributes': {
+				'args': [doc, 17, { 'style': 'number', 'level': 1 } ],
+				'ops': [
+					{ 'type': 'retain', 'length': 17 },
+					{
+						'type': 'attribute',
+						'key': 'style',
+						'from': 'bullet',
+						'to': 'number'
+					},
+					{
+						'type': 'attribute',
+						'key': 'level',
+						'from': undefined,
+						'to': 1
+					},
+					{ 'type': 'retain', 'length': 44 }
+				]
+			},
 			'non-element': {
-				'args': [doc, 1, 'level', 2],
+				'args': [doc, 1, { 'level': 2 }],
 				'exception': Error
 			},
 			'closing element': {
-				'args': [doc, 4, 'level', 2],
+				'args': [doc, 4, { 'level': 2 }],
 				'exception': Error
 			}
 		};
 	QUnit.expect( ve.getObjectKeys( cases ).length );
-	runConstructorTests( assert, ve.dm.Transaction.newFromAttributeChange, cases );
+	runConstructorTests( assert, ve.dm.Transaction.newFromAttributeChanges, cases );
 } );
 
 QUnit.test( 'newFromAnnotation', function ( assert ) {

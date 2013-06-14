@@ -110,6 +110,19 @@ ve.dm.MWReferenceNode.static.toDomElements = function ( dataElement, doc, conver
 		ve.setProp( mwAttr, 'body', 'html', itemNodeHtml );
 	}
 
+	// Set or clear key
+	if ( dataElement.attributes.listKey !== null ) {
+		ve.setProp( mwAttr, 'attrs', 'name', dataElement.attributes.listKey );
+	} else if ( mwAttr.attrs ) {
+		delete mwAttr.attrs.listKey;
+	}
+	// Set or clear group
+	if ( dataElement.attributes.refGroup !== '' ) {
+		ve.setProp( mwAttr, 'attrs', 'group', dataElement.attributes.refGroup );
+	} else if ( mwAttr.attrs ) {
+		delete mwAttr.attrs.refGroup;
+	}
+
 	span.setAttribute( 'data-mw', JSON.stringify( mwAttr ) );
 
 	return [ span ];
@@ -135,6 +148,22 @@ ve.dm.MWReferenceNode.prototype.getInternalItem = function () {
  * @method
  */
 ve.dm.MWReferenceNode.prototype.onRoot = function () {
+	this.addToInternalList();
+};
+
+/**
+ * Handle the node being detatched from the root
+ * @method
+ */
+ve.dm.MWReferenceNode.prototype.onUnroot = function () {
+	this.removeFromInternalList();
+};
+
+/**
+ * Register the node with the internal list
+ * @method
+ */
+ve.dm.MWReferenceNode.prototype.addToInternalList = function () {
 	if ( this.getRoot() === this.getDocument().getDocumentNode() ) {
 		this.getDocument().getInternalList().addNode(
 			this.element.attributes.listGroup,
@@ -146,10 +175,10 @@ ve.dm.MWReferenceNode.prototype.onRoot = function () {
 };
 
 /**
- * Handle the node being detatched from the root
+ * Unregister the node from the internal list
  * @method
  */
-ve.dm.MWReferenceNode.prototype.onUnroot = function () {
+ve.dm.MWReferenceNode.prototype.removeFromInternalList = function () {
 	this.getDocument().getInternalList().removeNode(
 		this.element.attributes.listGroup,
 		this.element.attributes.listKey,

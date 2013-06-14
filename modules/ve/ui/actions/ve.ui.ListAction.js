@@ -56,8 +56,8 @@ ve.ui.ListAction.prototype.wrap = function ( style ) {
 			if ( group.grandparent !== previousList ) {
 				// Change the list style
 				surfaceModel.change(
-					ve.dm.Transaction.newFromAttributeChange(
-						documentModel, group.grandparent.getOffset(), 'style', style
+					ve.dm.Transaction.newFromAttributeChanges(
+						documentModel, group.grandparent.getOffset(), { 'style': style }
 					),
 					selection
 				);

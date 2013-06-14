@@ -179,20 +179,21 @@ ve.dm.Transaction.newFromNodeReplacement = function ( doc, nodeOrRange, newData 
 };
 
 /**
- * Generate a transaction that changes an attribute.
+ * Generate a transaction that changes one or more attributes.
  *
  * @static
  * @method
  * @param {ve.dm.Document} doc Document to create transaction for
  * @param {number} offset Offset of element
- * @param {string} key Attribute name
- * @param {Mixed} value New value, or undefined to remove the attribute
+ * @param {Object.<string,Mixed>} attr List of attribute key and value pairs, use undefined value
+ *   to remove an attribute
  * @returns {ve.dm.Transaction} Transaction that changes an element
  * @throws {Error} Cannot set attributes to non-element data
  * @throws {Error} Cannot set attributes on closing element
  */
-ve.dm.Transaction.newFromAttributeChange = function ( doc, offset, key, value ) {
-	var tx = new ve.dm.Transaction(),
+ve.dm.Transaction.newFromAttributeChanges = function ( doc, offset, attr ) {
+	var key,
+		tx = new ve.dm.Transaction(),
 		data = doc.getData();
 	// Verify element exists at offset
 	if ( data[offset].type === undefined ) {
@@ -205,9 +206,11 @@ ve.dm.Transaction.newFromAttributeChange = function ( doc, offset, key, value ) 
 	// Retain up to element
 	tx.pushRetain( offset );
 	// Change attribute
-	tx.pushReplaceElementAttribute(
-		key, 'attributes' in data[offset] ? data[offset].attributes[key] : undefined, value
-	);
+	for ( key in attr ) {
+		tx.pushReplaceElementAttribute(
+			key, 'attributes' in data[offset] ? data[offset].attributes[key] : undefined, attr[key]
+		);
+	}
 	// Retain to end of document
 	tx.pushRetain( data.length - offset );
 	return tx;

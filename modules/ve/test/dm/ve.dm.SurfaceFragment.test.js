@@ -224,6 +224,18 @@ QUnit.test( 'insertContent', 4, function ( assert ) {
 	);
 } );
 
+QUnit.test( 'changeAttributes', 1, function ( assert ) {
+	var doc = ve.dm.example.createExampleDocument(),
+		surface = new ve.dm.Surface( doc ),
+		fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 0, 5 ) );
+	fragment.changeAttributes( { 'level': 3 } );
+	assert.deepEqual(
+		doc.getData( new ve.Range( 0, 1 ) ),
+		[ { 'type': 'heading', 'attributes': { 'level': 3 } } ],
+		'changing attributes affects covered nodes'
+	);
+} );
+
 QUnit.test( 'wrapNodes/unwrapNodes', 10, function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument(),
 		originalDoc = ve.dm.example.createExampleDocument(),

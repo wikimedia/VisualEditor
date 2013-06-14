@@ -245,7 +245,8 @@ ve.ce.ResizableNode.prototype.onDocumentMouseUp = function () {
 		height = this.$resizeHandles.outerHeight(),
 		surfaceModel = this.getRoot().getSurface().getModel(),
 		documentModel = surfaceModel.getDocument(),
-		selection = surfaceModel.getSelection();
+		selection = surfaceModel.getSelection(),
+		attrChanges = {};
 
 	this.$resizeHandles.removeClass( 've-ce-resizableNode-handles-resizing' );
 	$( this.getElementDocument() ).off( '.ve-ce-resizableNode' );
@@ -259,8 +260,6 @@ ve.ce.ResizableNode.prototype.onDocumentMouseUp = function () {
 
 	// Allow resize to occur before re-rendering
 	setTimeout( ve.bind( function () {
-		var txs = [];
-
 		if ( transition ) {
 			// Prevent further transitioning
 			this.$resizable.removeClass( 've-ce-resizableNode-transitioning' );
@@ -268,17 +267,16 @@ ve.ce.ResizableNode.prototype.onDocumentMouseUp = function () {
 
 		// Apply changes to the model
 		if ( this.model.getAttribute( 'width' ) !== width ) {
-			txs.push( ve.dm.Transaction.newFromAttributeChange(
-				documentModel, offset, 'width', width
-			) );
+			attrChanges.width = width;
 		}
 		if ( this.model.getAttribute( 'height' ) !== height ) {
-			txs.push( ve.dm.Transaction.newFromAttributeChange(
-				documentModel, offset, 'height', height
-			) );
+			attrChanges.height = height;
 		}
-		if ( txs.length > 0 ) {
-			surfaceModel.change( txs, selection );
+		if ( !ve.isEmptyObject( attrChanges ) ) {
+			surfaceModel.change(
+				ve.dm.Transaction.newFromAttributeChanges( documentModel, offset, attrChanges ),
+				selection
+			);
 		}
 
 		this.emit( 'resize' );

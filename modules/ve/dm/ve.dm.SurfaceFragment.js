@@ -401,7 +401,7 @@ ve.dm.SurfaceFragment.prototype.getCoveredNodes = function () {
 	if ( !this.surface ) {
 		return [];
 	}
-	return this.document.selectNodes( this.getRange(), 'coveredNodes' );
+	return this.document.selectNodes( this.getRange(), 'covered' );
 };
 
 /**
@@ -446,6 +446,48 @@ ve.dm.SurfaceFragment.prototype.select = function () {
 		return this;
 	}
 	this.surface.change( null, this.getRange() );
+	return this;
+};
+
+/**
+ * Change one or more attributes on covered nodes.
+ *
+ * @method
+ * @param {Object} attr List of attributes to change, use undefined to remove an attribute
+ * @param {string} [type] Node type to restrict changes to
+ * @chainable
+ */
+ve.dm.SurfaceFragment.prototype.changeAttributes = function ( attr, type ) {
+	// Handle null fragment
+	if ( !this.surface ) {
+		return this;
+	}
+
+	var i, len, result,
+		txs = [],
+		covered = this.getCoveredNodes();
+
+	for ( i = 0, len = covered.length; i < len; i++ ) {
+		result = covered[i];
+		if (
+			// Non-wrapped nodes have no attributes
+			!result.node.isWrapped() ||
+			// Filtering by node type
+			( type && result.node.getType() !== type ) ||
+			// Ignore zero-length results
+			( result.range && result.range.isCollapsed() )
+		) {
+			continue;
+		}
+		txs.push(
+			ve.dm.Transaction.newFromAttributeChanges(
+				this.document, result.nodeOuterRange.start, attr
+			)
+		);
+	}
+	if ( txs.length ) {
+		this.surface.change( txs );
+	}
 	return this;
 };
 

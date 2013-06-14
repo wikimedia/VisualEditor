@@ -106,7 +106,7 @@ ve.ui.MWReferenceDialog.prototype.initialize = function () {
  * @method
  */
 ve.ui.MWReferenceDialog.prototype.onOpen = function () {
-	var focusedNode, data,
+	var focusedNode, data, refGroup, listKey,
 		doc = this.surface.getModel().getDocument();
 
 	// Parent method
@@ -117,6 +117,8 @@ ve.ui.MWReferenceDialog.prototype.onOpen = function () {
 	if ( focusedNode instanceof ve.ce.MWReferenceNode ) {
 		this.internalItem = focusedNode.getModel().getInternalItem();
 		data = doc.getData( this.internalItem.getRange(), true );
+		listKey = focusedNode.getModel().getAttribute( 'listKey' );
+		refGroup = focusedNode.getModel().getAttribute( 'refGroup' );
 	} else {
 		data = [
 			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
@@ -124,13 +126,14 @@ ve.ui.MWReferenceDialog.prototype.onOpen = function () {
 		];
 	}
 
-	// Properties
 	this.referenceSurface = new ve.ui.Surface(
 		new ve.dm.ElementLinearData( doc.getStore(), data ), { '$$': this.frame.$$ }
 	);
 	this.referenceToolbar = new ve.ui.Toolbar( this.referenceSurface, { '$$': this.frame.$$ } );
 
 	// Initialization
+	this.nameInput.setValue( listKey );
+	this.groupInput.setValue( refGroup );
 	this.referenceToolbar.$.addClass( 've-ui-mwReferenceDialog-toolbar' );
 	this.contentFieldset.$.append( this.referenceToolbar.$, this.referenceSurface.$ );
 	this.referenceToolbar.addTools( this.constructor.static.toolbarTools );
@@ -146,8 +149,9 @@ ve.ui.MWReferenceDialog.prototype.onOpen = function () {
  * @param {string} action Action that caused the window to be closed
  */
 ve.ui.MWReferenceDialog.prototype.onClose = function ( action ) {
-	var data, doc, groupName, key, newItem,
-		txs = [];
+	var data, doc, listIndex, listGroup, listKey, refGroup, newItem, refNode, oldListGroup,
+		oldListKey, oldNodes, internalList, attrChanges,
+		surfaceModel = this.surface.getModel();
 
 	// Parent method
 	ve.ui.Dialog.prototype.onOpen.call( this );
@@ -155,32 +159,63 @@ ve.ui.MWReferenceDialog.prototype.onClose = function ( action ) {
 	// Save changes
 	if ( action === 'apply' ) {
 		data = this.referenceSurface.getModel().getDocument().getData();
-		doc = this.surface.getModel().getDocument();
+		doc = surfaceModel.getDocument();
+		listKey = this.nameInput.getValue() !== '' ? this.nameInput.getValue() : null;
+		refGroup = this.groupInput.getValue();
+		listGroup = 'mwReference/' + refGroup;
 		if ( this.internalItem ) {
-			txs.push(
-				ve.dm.Transaction.newFromNodeReplacement(
-					doc, this.internalItem.getRange(), data
-				)
-			);
-			this.surface.getModel().change( txs );
-		} else {
-			// TODO: pass in group and key from UI if they exist
-			groupName = '';
-			key = null;
-			newItem = doc.getInternalList().getItemInsertion( groupName, key, data );
-			if ( newItem.transaction ) {
-				txs.push( newItem.transaction );
+			// Edit reference: handle various replacement cases
+			refNode = this.surface.getView().getFocusedNode().getModel();
+			oldListGroup = refNode.getAttribute( 'listGroup' );
+			oldListKey = refNode.getAttribute( 'listKey' );
+			// Group/key has changed
+			if ( listGroup !== oldListGroup || listKey !== oldListKey ) {
+				internalList = doc.getInternalList();
+				oldNodes = internalList.getNodeGroup( oldListGroup ).keyedNodes[oldListKey] || [];
+				listIndex = internalList.getKeyIndex( listGroup, listKey );
+				attrChanges = {};
+				if ( listIndex !== undefined ) {
+					// If the new key exists, reuse its internal node
+					attrChanges.listIndex = listIndex;
+				} else if ( oldNodes.length > 1 ) {
+					// If the old internal node was being shared, create a new one
+					newItem = internalList.getItemInsertion( listGroup, listKey, data );
+					attrChanges.listIndex = newItem.index;
+				}
+				attrChanges.listGroup = listGroup;
+				attrChanges.listKey = listKey;
+				attrChanges.refGroup = refGroup;
+
+				// Manually re-register the node before and after change
+				refNode.removeFromInternalList();
+				surfaceModel.change(
+					ve.dm.Transaction.newFromAttributeChanges(
+						doc, refNode.getOuterRange().start, attrChanges
+					)
+				);
+				refNode.addToInternalList();
 			}
-			this.surface.getModel().change( txs );
-			this.surface.getModel().getFragment().collapseRangeToEnd().insertContent( [
+			// Process the internal node create/edit transaction
+			if ( !newItem ) {
+				surfaceModel.change(
+					ve.dm.Transaction.newFromNodeReplacement( doc, this.internalItem, data )
+				);
+			} else {
+				surfaceModel.change( newItem.transaction );
+			}
+		} else {
+			// Create reference: just create new nodes
+			newItem = doc.getInternalList().getItemInsertion( listGroup, listKey, data );
+			surfaceModel.change( newItem.transaction );
+			surfaceModel.getFragment().collapseRangeToEnd().insertContent( [
 				{
 					'type': 'mwReference',
 					'attributes': {
 						'mw': { 'name': 'ref' },
 						'listIndex': newItem.index,
-						'listGroup': 'mwReference/' + groupName,
-						'listKey': key,
-						'refGroup': groupName
+						'listGroup': listGroup,
+						'listKey': listKey,
+						'refGroup': refGroup
 					}
 				},
 				{ 'type': '/mwReference' }
