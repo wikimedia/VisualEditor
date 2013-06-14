@@ -16,6 +16,7 @@
  * @param {Object} [config] Config options
  * @cfg {string} [icon] Symbolic name of icon
  * @cfg {number} [level] Indentation level
+ * @cfg {boolean} [moveable] Allow modification from outline controls
  */
 ve.ui.OutlineItemWidget = function VeUiOutlineItemWidget( data, config ) {
 	// Config intialization
@@ -26,6 +27,7 @@ ve.ui.OutlineItemWidget = function VeUiOutlineItemWidget( data, config ) {
 
 	// Properties
 	this.level = 0;
+	this.moveable = !!config.moveable;
 
 	// Initialization
 	this.$.addClass( 've-ui-outlineItemWidget' );
@@ -48,6 +50,17 @@ ve.ui.OutlineItemWidget.static.levelClass = 've-ui-outlineItemWidget-level-';
 ve.ui.OutlineItemWidget.static.levels = 3;
 
 /* Methods */
+
+/**
+ * Check if item is moveable.
+ *
+ * Moveablilty is used by outline controls.
+ *
+ * @returns {boolean} Item is moveable
+ */
+ve.ui.OutlineItemWidget.prototype.isMoveable = function () {
+	return this.moveable;
+};
 
 /**
  * Get indentation level.

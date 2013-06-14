@@ -19,6 +19,9 @@
  * @param {Object} [config] Config options
  */
 ve.ui.MWTransclusionDialog = function VeUiMWTransclusionDialog( surface, config ) {
+	// Configuration initialization
+	config = ve.extendObject( {}, config, { 'editable': true } );
+
 	// Parent constructor
 	ve.ui.PagedDialog.call( this, surface, config );
 
@@ -40,6 +43,18 @@ ve.ui.MWTransclusionDialog.static.icon = 'template';
 ve.ui.MWTransclusionDialog.static.modelClasses = [ ve.dm.MWTransclusionNode ];
 
 /* Methods */
+
+/**
+ * Handle frame ready events.
+ *
+ * @method
+ */
+ve.ui.MWTransclusionDialog.prototype.initialize = function () {
+	// Call parent method
+	ve.ui.PagedDialog.prototype.initialize.call( this );
+
+	this.outlineControlsWidget.connect( this, { 'move': 'onOutlineControlsMove' } );
+};
 
 /**
  * Handle frame open events.
@@ -106,17 +121,27 @@ ve.ui.MWTransclusionDialog.prototype.onClose = function ( action ) {
  * @param {ve.dm.MWTransclusionPartModel} part Added part
  */
 ve.ui.MWTransclusionDialog.prototype.onAddPart = function ( part ) {
-	var page;
+	var i, len, page, params, param, names;
 
 	if ( part instanceof ve.dm.MWTemplateModel ) {
 		page = this.getTemplatePage( part );
-		part.connect( this, { 'add': 'onAddParameter', 'remove': 'onRemoveParameter' } );
 	} else if ( part instanceof ve.dm.MWTransclusionContentModel ) {
 		page = this.getContentPage( part );
 	}
-	page.index = this.getPageIndex( part ) + 1;
+	page.index = this.getPageIndex( part );
 	if ( page ) {
 		this.addPage( part.getId(), page );
+		if ( part instanceof ve.dm.MWTemplateModel ) {
+			names = part.getParameterNames();
+			params = part.getParameters();
+			for ( i = 0, len = names.length; i < len; i++ ) {
+				param = params[names[i]];
+				page = this.getParameterPage( param );
+				page.index = this.getPageIndex( param );
+				this.addPage( param.getId(), page );
+			}
+			part.connect( this, { 'add': 'onAddParameter', 'remove': 'onRemoveParameter' } );
+		}
 	}
 };
 
@@ -147,7 +172,7 @@ ve.ui.MWTransclusionDialog.prototype.onRemovePart = function ( part ) {
  */
 ve.ui.MWTransclusionDialog.prototype.onAddParameter = function ( param ) {
 	var page = this.getParameterPage( param );
-	page.index = this.getPageIndex( param ) + 1;
+	page.index = this.getPageIndex( param );
 	this.addPage( param.getId(), page );
 };
 
@@ -161,6 +186,27 @@ ve.ui.MWTransclusionDialog.prototype.onRemoveParameter = function ( param ) {
 	this.removePage( param.getId() );
 	// Return to template page
 	this.setPageByName( param.getTemplate().getId() );
+};
+
+/**
+ * Handle outline controls move events.
+ *
+ * @method
+ * @param {number} places Number of places to move the selected item.
+ */
+ve.ui.MWTransclusionDialog.prototype.onOutlineControlsMove = function ( places ) {
+	var part, index, name,
+		parts = this.transclusion.getParts(),
+		item = this.outlineWidget.getSelectedItem();
+
+	if ( item ) {
+		name = item.getData();
+		part = this.transclusion.getPartFromId( name );
+		index = ve.indexOf( part, parts );
+		this.transclusion.removePart( part );
+		this.transclusion.addPart( part, index + places );
+		this.setPageByName( name );
+	}
 };
 
 /**
@@ -194,6 +240,7 @@ ve.ui.MWTransclusionDialog.prototype.getPageIndex = function ( item ) {
 		if ( part === item ) {
 			return index;
 		}
+		index++;
 		if ( part instanceof ve.dm.MWTemplateModel ) {
 			names = part.getParameterNames();
 			for ( j = 0, jLen = names.length; j < jLen; j++ ) {
@@ -203,7 +250,6 @@ ve.ui.MWTransclusionDialog.prototype.getPageIndex = function ( item ) {
 				index++;
 			}
 		}
-		index++;
 	}
 	return -1;
 };
@@ -284,7 +330,8 @@ ve.ui.MWTransclusionDialog.prototype.getContentPage = function ( content ) {
 	return {
 		'label': ve.msg( 'visualeditor-dialog-transclusion-content' ),
 		'icon': 'source',
-		'$content': valueFieldset.$.add( optionsFieldset.$ )
+		'$content': valueFieldset.$.add( optionsFieldset.$ ),
+		'moveable': true
 	};
 };
 
@@ -360,7 +407,8 @@ ve.ui.MWTransclusionDialog.prototype.getTemplatePage = function ( template ) {
 	return {
 		'label': label,
 		'icon': 'template',
-		'$content': infoFieldset.$.add( addParameterFieldset.$ ).add( optionsFieldset.$ )
+		'$content': infoFieldset.$.add( addParameterFieldset.$ ).add( optionsFieldset.$ ),
+		'moveable': true
 	};
 };
 

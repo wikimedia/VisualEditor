@@ -205,8 +205,7 @@ ve.dm.MWTransclusionModel.prototype.getUniquePartId = function () {
  */
 ve.dm.MWTransclusionModel.prototype.addContent = function ( value, index ) {
 	var part = new ve.dm.MWTransclusionContentModel( this, value );
-	this.parts.splice( index === undefined ? this.parts.length : index, 0, part );
-	this.emit( 'add', part );
+	this.addPart( part, index );
 	return part;
 };
 
@@ -224,16 +223,28 @@ ve.dm.MWTransclusionModel.prototype.addTemplate = function ( title, index ) {
 	if ( this.specs.hasOwnProperty( title ) ) {
 		part.getSpec().extend( this.specs[title] );
 	}
+	this.addPart( part, index );
+	return part;
+};
+
+/**
+ * Add part.
+ *
+ * @method
+ * @param {ve.dm.MWTransclusionPartModel} part Part to add
+ * @param {number} [index] Specific index to add content at
+ * @emits add
+ */
+ve.dm.MWTransclusionModel.prototype.addPart = function ( part, index ) {
 	this.parts.splice( index === undefined ? this.parts.length : index, 0, part );
 	this.emit( 'add', part );
-	return part;
 };
 
 /**
  * Remove a part.
  *
  * @method
- * @param {ve.dm.MWTransclusionPartModel} part Template part
+ * @param {ve.dm.MWTransclusionPartModel} part Part to remove
  * @emits remove
  */
 ve.dm.MWTransclusionModel.prototype.removePart = function ( part ) {
@@ -252,6 +263,24 @@ ve.dm.MWTransclusionModel.prototype.removePart = function ( part ) {
  */
 ve.dm.MWTransclusionModel.prototype.getParts = function () {
 	return this.parts;
+};
+
+/**
+ * Get part by its ID.
+ *
+ * @method
+ * @param {string} id Part ID
+ * @returns {ve.dm.MWTransclusionPartModel|null} Part with matching ID, if found
+ */
+ve.dm.MWTransclusionModel.prototype.getPartFromId = function ( id ) {
+	var i, len;
+
+	for ( i = 0, len = this.parts.length; i < len; i++ ) {
+		if ( this.parts[i].getId() === id ) {
+			return this.parts[i];
+		}
+	}
+	return null;
 };
 
 /**

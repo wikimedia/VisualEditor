@@ -56,6 +56,17 @@ ve.mixinClass( ve.ui.SelectWidget, ve.ui.GroupElement );
  * @param {ve.ui.OptionWidget|null} item Selected item or null if no item is selected
  */
 
+/**
+ * @event add
+ * @param {ve.ui.OptionWidget[]} items Added items
+ * @param {number} index Index items were added at
+ */
+
+/**
+ * @event remove
+ * @param {ve.ui.OptionWidget[]} items Removed items
+ */
+
 /* Static Properties */
 
 ve.ui.SelectWidget.static.tagName = 'ul';
@@ -347,6 +358,9 @@ ve.ui.SelectWidget.prototype.addItems = function ( items, index ) {
 	}
 	ve.ui.GroupElement.prototype.addItems.call( this, items, index );
 
+	// Always provide an index, even if it was omitted
+	this.emit( 'add', items, index === undefined ? this.items.length - items.length - 1 : index );
+
 	return this;
 };
 
@@ -372,6 +386,8 @@ ve.ui.SelectWidget.prototype.removeItems = function ( items ) {
 	}
 	ve.ui.GroupElement.prototype.removeItems.call( this, items );
 
+	this.emit( 'remove', items );
+
 	return this;
 };
 
@@ -384,9 +400,13 @@ ve.ui.SelectWidget.prototype.removeItems = function ( items ) {
  * @chainable
  */
 ve.ui.SelectWidget.prototype.clearItems = function () {
+	var items = this.items.slice();
+
 	// Clear all items
 	this.hashes = {};
 	ve.ui.GroupElement.prototype.clearItems.call( this );
+
+	this.emit( 'remove', items );
 
 	return this;
 };

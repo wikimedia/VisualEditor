@@ -239,3 +239,13 @@
 	/* @embed */
 	background-image: url(images/icons/search-big.svg);
 }
+
+.ve-ui-icon-expand {
+	/* @embed */
+	background-image: url(images/icons/expand.svg);
+}
+
+.ve-ui-icon-collapse {
+	/* @embed */
+	background-image: url(images/icons/collapse.svg);
+}

@@ -25,6 +25,10 @@
 	opacity: 1;
 }
 
+.ve-ui-iconButtonWidget.ve-ui-widget-disabled {
+	opacity: 0.2;
+}
+
 /* ve.ui.ButtonWidget */
 
 .ve-ui-buttonWidget {
@@ -200,6 +204,26 @@
 .ve-ui-outlineItemWidget.ve-ui-optionWidget-selected {
 	background-color: #a7dcff;
 	text-shadow: 0 1px 1px rgba(255,255,255,0.5);
+}
+
+/* ve.ui.OutlineControlsWidget */
+
+.ve-ui-outlineControlsWidget {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	height: 3em;
+	padding: 0.5em;
+	background-color: #fff;
+}
+
+.ve-ui-outlineControlsWidget-addButton {
+	float: left;
+}
+
+.ve-ui-outlineControlsWidget-upButton,
+.ve-ui-outlineControlsWidget-downButton {
+	float: right;
 }
 
 /* ve.ui.InputLabelWidget */

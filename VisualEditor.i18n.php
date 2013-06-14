@@ -99,6 +99,8 @@ $messages['en'] = array(
 	'visualeditor-notification-created' => '$1 has been created.',
 	'visualeditor-notification-restored' => '$1 has been restored.',
 	'visualeditor-notification-saved' => 'Your changes to $1 have been saved.',
+	'visualeditor-outline-control-move-up' => 'Move item up',
+	'visualeditor-outline-control-move-down' => 'Move item down',
 	'visualeditor-preference-enable' => 'Enable VisualEditor (only in the [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|main]] and [[{{MediaWiki:Visualeditor-usernamespacepagelink}}|user]] namespaces)',
 	'visualeditor-savedialog-label-create' => 'Create page',
 	'visualeditor-savedialog-label-report' => 'Report problem',
@@ -278,6 +280,8 @@ Parameters:
 	'visualeditor-notification-restored' => 'Shown after a user restores a page to a previous revision. Parameters:
 * $1 is a page name.',
 	'visualeditor-notification-saved' => 'Shown after a user saves a page, $1 is a page name.',
+	'visualeditor-outline-control-move-up' => 'Tool tip for a button that moves items in a list up one place',
+	'visualeditor-outline-control-move-down' => 'Tool tip for a button that moves items in a list down one place',
 	'visualeditor-preference-enable' => 'Label for the user preference to enable the VisualEditor.
 Links are in {{msg-mw|Visualeditor-mainnamespacepagelink}} and {{msg-mw|visualeditor-usernamespacepagelink}}.',
 	'visualeditor-savedialog-label-create' => 'Label text for save button when the user is creating a new page',
