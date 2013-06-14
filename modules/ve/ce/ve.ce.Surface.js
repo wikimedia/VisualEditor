@@ -589,7 +589,7 @@ ve.ce.Surface.prototype.onPaste = function () {
 	if ( !rangy.getSelection( this.$document[0] ).isCollapsed ) {
 		tx = ve.dm.Transaction.newFromRemoval( view.documentView.model, selection );
 		selection = tx.translateRange( selection );
-		view.model.change( tx );
+		view.model.change( tx, selection );
 	}
 
 	// Save scroll position and change focus to "offscreen" paste target
