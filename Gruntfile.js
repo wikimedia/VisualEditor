@@ -50,11 +50,12 @@ module.exports = function ( grunt ) {
 		} );
 	} );
 
-	grunt.registerTask( 'post-qunit', function () {
+	grunt.event.on( 'qunit.done', function () {
 		fs.unlinkSync( __dirname + '/modules/ve/test/index-phantomjs-tmp.html' );
-		return true;
 	} );
 
-	grunt.registerTask( 'test', ['jshint', 'csslint', 'pre-qunit', 'qunit', 'post-qunit'] );
+	grunt.registerTask( 'lint', ['jshint', 'csslint'] );
+	grunt.registerTask( 'unit', ['pre-qunit', 'qunit'] );
+	grunt.registerTask( 'test', ['lint', 'unit'] );
 	grunt.registerTask( 'default', 'test' );
 };
