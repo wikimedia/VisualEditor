@@ -60,7 +60,8 @@ ve.Document.prototype.getDocumentNode = function () {
  * - `indexInNode`: If range is a zero-length range between two children of node,
  *   this is set to the index of the child following range (or to
  *   `node.children.length + 1` if range is between the last child and
- *   the end). Missing in all other cases.
+ *   the end). If range is a zero-length range inside an empty non-content branch node, this is 0.
+ *   Missing in all other cases.
  * - `nodeRange`: Range covering the inside of the entire node, not including wrapper
  * - `nodeOuterRange`: Range covering the entire node, including wrapper
  * - `parentOuterRange`: Outer range of node's parent. Missing if there is no parent
@@ -99,7 +100,8 @@ ve.Document.prototype.selectNodes = function ( range, mode ) {
 		parentRange,
 		isWrapped,
 		isPrevUnwrapped,
-		isNextUnwrapped;
+		isNextUnwrapped,
+		isEmptyBranch;
 
 	mode = mode || 'leaves';
 	if ( mode !== 'leaves' && mode !== 'branches' && mode !== 'covered' && mode !== 'siblings' ) {
@@ -141,6 +143,8 @@ ve.Document.prototype.selectNodes = function ( range, mode ) {
 		isPrevUnwrapped = prevNode ? !prevNode.isWrapped() : false;
 		// Is there an unwrapped node right after this node?
 		isNextUnwrapped = nextNode ? !nextNode.isWrapped() : false;
+		// Is this node an empty non-content branch node?
+		isEmptyBranch = node.getLength() === 0 && !node.isContent() && !node.canContainContent();
 		// Is the start between prevNode's closing and node or between the parent's opening and node?
 		startBetween = ( isWrapped ? start === left - 1 : start === left ) && !isPrevUnwrapped;
 		// Is the end between node and nextNode's opening or between node and the parent's closing?
@@ -258,7 +262,7 @@ ve.Document.prototype.selectNodes = function ( range, mode ) {
 				continue;
 			} else {
 				// node is a leaf node and the range is entirely inside it
-				return [ {
+				retval = [ {
 					'node': node,
 					'range': new ve.Range( start, end ),
 					'index': currentFrame.index,
@@ -269,6 +273,10 @@ ve.Document.prototype.selectNodes = function ( range, mode ) {
 						parentRange.end + currentFrame.node.isWrapped()
 					)
 				} ];
+				if ( isEmptyBranch ) {
+					retval[0].indexInNode = 0;
+				}
+				return retval;
 			}
 		} else if ( startInside ) {
 			if ( ( mode === 'leaves' ||

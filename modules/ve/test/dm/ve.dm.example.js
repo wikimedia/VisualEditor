@@ -678,6 +678,11 @@ ve.dm.example.inlineAtEdges = [
 	{ 'type': '/paragraph' }
 ];
 
+ve.dm.example.emptyBranch = [
+	{ 'type': 'table' },
+	{ 'type': '/table' }
+];
+
 /**
  * Sample content data index.
  *
@@ -4006,5 +4011,23 @@ ve.dm.example.selectNodesCases = [
 			}
 		],
 		'msg': 'zero-length range in text node after inline node'
+	},
+	{
+		'doc': 'emptyBranch',
+		'range': new ve.Range( 1 ),
+		'mode': 'leaves',
+		'expected': [
+			// table
+			{
+				'node': [ 0 ],
+				'range': new ve.Range( 1, 1 ),
+				'index': 0,
+				'indexInNode': 0,
+				'nodeRange': new ve.Range( 1, 1 ),
+				'nodeOuterRange': new ve.Range( 0, 2 ),
+				'parentOuterRange': new ve.Range( 0, 2 )
+			}
+		],
+		'msg': 'Zero-length range in empty branch node'
 	}
 ];
