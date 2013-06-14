@@ -412,49 +412,56 @@ ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
 ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
 	var trigger;
 
-	// Ignore keydowns while in IME mode but do not preventDefault them.
+	// Ignore keydowns while in IME mode but do not preventDefault them (so text actually appear on
+	// the screen).
 	if ( this.inIme === true ) {
 		return;
 	}
 
-	// IME
+	// When entering IME mode IE first keydown (e.which = 229) before it fires compositionstart, so
+	// IME detection have to happen here instead of onDocumentCompositionStart.
+	// TODO: This code and code in onDocumentCompositionStart are very similar, consider moving them
+	// to one method.
 	if ( $.browser.msie === true && e.which === 229 ) {
 		this.inIme = true;
 		this.handleInsertion();
 		return;
 	}
 
-	if ( ve.ce.isArrowKey( e.keyCode ) ) {
-		// Detect start of selecting using shift+arrow keys.
-		if ( !this.dragging && !this.selecting && e.shiftKey ) {
-			this.selecting = true;
-			this.emit( 'selectionStart' );
-		}
-		if ( ve.ce.isLeftOrRightArrowKey( e.keyCode ) ) {
-			this.handleLeftOrRightArrowKey( e );
-		} else {
-			this.handleUpOrDownArrowKey( e );
-		}
-	} else if ( e.keyCode === ve.Keys.ENTER ) {
-		e.preventDefault();
-		this.handleEnter( e );
-	} else if ( e.keyCode === ve.Keys.BACKSPACE ) {
-		this.handleDelete( e, true );
-		this.surfaceObserver.stop( true );
-		this.surfaceObserver.start();
-	} else if ( e.keyCode === ve.Keys.DELETE ) {
-		this.handleDelete( e, false );
-		this.surfaceObserver.stop( true );
-		this.surfaceObserver.start();
-	} else {
-		// Execute key command if available
-		this.surfaceObserver.stop( true );
-		trigger = new ve.ui.Trigger( e );
-		if ( trigger.isComplete() && this.surface.execute( trigger ) ) {
+	this.surfaceObserver.stop( true );
+	switch ( e.keyCode ) {
+		case ve.Keys.LEFT:
+		case ve.Keys.RIGHT:
+		case ve.Keys.UP:
+		case ve.Keys.DOWN:
+			if ( !this.dragging && !this.selecting && e.shiftKey ) {
+				this.selecting = true;
+				this.emit( 'selectionStart' );
+			}
+			if ( ve.ce.isLeftOrRightArrowKey( e.keyCode ) ) {
+				this.handleLeftOrRightArrowKey( e );
+			} else {
+				this.handleUpOrDownArrowKey( e );
+			}
+			break;
+		case ve.Keys.ENTER:
 			e.preventDefault();
-		}
-		this.surfaceObserver.start();
+			this.handleEnter( e );
+			break;
+		case ve.Keys.BACKSPACE:
+			this.handleDelete( e, true );
+			break;
+		case ve.Keys.DELETE:
+			this.handleDelete( e, false );
+			break;
+		default:
+			trigger = new ve.ui.Trigger( e );
+			if ( trigger.isComplete() && this.surface.execute( trigger ) ) {
+				e.preventDefault();
+			}
+			break;
 	}
+	this.surfaceObserver.start();
 };
 
 /**
@@ -1072,9 +1079,6 @@ ve.ce.Surface.prototype.handleEnter = function ( e ) {
 		stack = [],
 		outermostNode = null;
 
-	// Stop polling while we work
-	this.surfaceObserver.stop();
-
 	// Handle removal first
 	if ( selection.from !== selection.to ) {
 		tx = ve.dm.Transaction.newFromRemoval( documentModel, selection );
@@ -1181,7 +1185,6 @@ ve.ce.Surface.prototype.handleEnter = function ( e ) {
 	}
 	// Reset and resume polling
 	this.surfaceObserver.clear();
-	this.surfaceObserver.start();
 };
 
 /**
