@@ -119,10 +119,9 @@ ve.dm.Converter.buildHtmlAttributeList = function ( domElements, spec, deep, att
 	attributeList = attributeList || [];
 	for ( i = 0, ilen = domElements.length; i < ilen; i++ ) {
 		domAttributes = domElements[i].attributes || [];
-		attributeList[i] = { 'values': {}, 'keys': [] };
+		attributeList[i] = { 'values': {} };
 		for ( j = 0, jlen = domAttributes.length; j < jlen; j++ ) {
 			if ( ve.dm.Model.matchesAttributeSpec( domAttributes[j].name, spec ) ) {
-				attributeList[i].keys.push( domAttributes[j].name );
 				attributeList[i].values[domAttributes[j].name] = domAttributes[j].value;
 				empty = false;
 			}
@@ -155,7 +154,7 @@ ve.dm.Converter.buildHtmlAttributeList = function ( domElements, spec, deep, att
  * @param {boolean} [overwrite=false] If true, overwrite attributes that are already set
  */
 ve.dm.Converter.renderHtmlAttributeList = function ( attributeList, domElements, spec, overwrite ) {
-	var i, ilen, j, jlen, keys, values;
+	var i, ilen, key, values;
 	if ( spec === undefined ) {
 		spec = true;
 	}
@@ -166,14 +165,13 @@ ve.dm.Converter.renderHtmlAttributeList = function ( attributeList, domElements,
 		if ( !domElements[i] ) {
 			continue;
 		}
-		keys = attributeList[i].keys;
 		values = attributeList[i].values;
-		for ( j = 0, jlen = keys.length; j < jlen; j++ ) {
-			if ( ve.dm.Model.matchesAttributeSpec( keys[j], spec ) ) {
-				if ( values[keys[j]] === undefined ) {
-					domElements[i].removeAttribute( keys[j] );
-				} else if ( overwrite || !domElements[i].hasAttribute( keys[j] ) ) {
-					domElements[i].setAttribute( keys[j], values[keys[j]] );
+		for ( key in values ) {
+			if ( ve.dm.Model.matchesAttributeSpec( key, spec ) ) {
+				if ( values[key] === undefined ) {
+					domElements[i].removeAttribute( key );
+				} else if ( overwrite || !domElements[i].hasAttribute( key ) ) {
+					domElements[i].setAttribute( key, values[key] );
 				}
 			}
 		}
