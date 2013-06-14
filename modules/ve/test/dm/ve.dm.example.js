@@ -118,6 +118,32 @@ ve.dm.example.createExampleDocument = function ( name, store ) {
 	return doc;
 };
 
+/**
+ * Looks up a value in a node tree.
+ *
+ * @method
+ * @param {ve.Node} root Root node to lookup from
+ * @param {number...} [paths] Index path
+ * @returns {ve.Node} Node at given path
+ */
+ve.dm.example.lookupNode = function ( root ) {
+	var i,
+		node = root;
+	for ( i = 1; i < arguments.length; i++ ) {
+		node = node.children[arguments[i]];
+	}
+	return node;
+};
+
+ve.dm.example.createDomElement = function ( type, attributes ) {
+	var key,
+		element = document.createElement( type );
+	for ( key in attributes ) {
+		element.setAttribute( key, attributes[key] );
+	}
+	return element;
+};
+
 ve.dm.example.testDir = window.mw ?
 	( window.mw.config.get( 'wgExtensionAssetsPath' ) + '/VisualEditor/modules/ve/test' ) :
 	'.';
@@ -737,86 +763,86 @@ ve.dm.example.tree = new ve.dm.DocumentNode( [
 
 ve.dm.example.conversions = {
 	'definitionListItem term': {
-		'domElement': ve.example.createDomElement( 'dt' ),
+		'domElement': ve.dm.example.createDomElement( 'dt' ),
 		'dataElement': { 'type': 'definitionListItem', 'attributes': { 'style': 'term' } }
 	},
 	'definitionListItem definition': {
-		'domElement': ve.example.createDomElement( 'dd' ),
+		'domElement': ve.dm.example.createDomElement( 'dd' ),
 		'dataElement': { 'type': 'definitionListItem', 'attributes': { 'style': 'definition' } }
 	},
 	'definitionList definition': {
-		'domElement': ve.example.createDomElement( 'dl' ),
+		'domElement': ve.dm.example.createDomElement( 'dl' ),
 		'dataElement': { 'type': 'definitionList' }
 	},
 	'heading level 1': {
-		'domElement': ve.example.createDomElement( 'h1' ),
+		'domElement': ve.dm.example.createDomElement( 'h1' ),
 		'dataElement': { 'type': 'heading', 'attributes': { 'level': 1 } }
 	},
 	'heading level 2': {
-		'domElement': ve.example.createDomElement( 'h2' ),
+		'domElement': ve.dm.example.createDomElement( 'h2' ),
 		'dataElement': { 'type': 'heading', 'attributes': { 'level': 2 } }
 	},
 	'heading level 3': {
-		'domElement': ve.example.createDomElement( 'h3' ),
+		'domElement': ve.dm.example.createDomElement( 'h3' ),
 		'dataElement': { 'type': 'heading', 'attributes': { 'level': 3 } }
 	},
 	'heading level 4': {
-		'domElement': ve.example.createDomElement( 'h4' ),
+		'domElement': ve.dm.example.createDomElement( 'h4' ),
 		'dataElement': { 'type': 'heading', 'attributes': { 'level': 4 } }
 	},
 	'heading level 5': {
-		'domElement': ve.example.createDomElement( 'h5' ),
+		'domElement': ve.dm.example.createDomElement( 'h5' ),
 		'dataElement': { 'type': 'heading', 'attributes': { 'level': 5 } }
 	},
 	'heading level 6': {
-		'domElement': ve.example.createDomElement( 'h6' ),
+		'domElement': ve.dm.example.createDomElement( 'h6' ),
 		'dataElement': { 'type': 'heading', 'attributes': { 'level': 6 } }
 	},
 	'image': {
-		'domElement': ve.example.createDomElement( 'img' ),
+		'domElement': ve.dm.example.createDomElement( 'img' ),
 		'dataElement': { 'type': 'image' }
 	},
 	'listItem': {
-		'domElement': ve.example.createDomElement( 'li' ),
+		'domElement': ve.dm.example.createDomElement( 'li' ),
 		'dataElement': { 'type': 'listItem' }
 	},
 	'list bullet': {
-		'domElement': ve.example.createDomElement( 'ul' ),
+		'domElement': ve.dm.example.createDomElement( 'ul' ),
 		'dataElement': { 'type': 'list', 'attributes': { 'style': 'bullet' } }
 	},
 	'list number': {
-		'domElement': ve.example.createDomElement( 'ol' ),
+		'domElement': ve.dm.example.createDomElement( 'ol' ),
 		'dataElement': { 'type': 'list', 'attributes': { 'style': 'number' } }
 	},
 	'paragraph': {
-		'domElement': ve.example.createDomElement( 'p' ),
+		'domElement': ve.dm.example.createDomElement( 'p' ),
 		'dataElement': { 'type': 'paragraph' }
 	},
 	'preformatted': {
-		'domElement': ve.example.createDomElement( 'pre' ),
+		'domElement': ve.dm.example.createDomElement( 'pre' ),
 		'dataElement': { 'type': 'preformatted' }
 	},
 	'tableCell': {
-		'domElement': ve.example.createDomElement( 'td' ),
+		'domElement': ve.dm.example.createDomElement( 'td' ),
 		'dataElement': { 'type': 'tableCell', 'attributes': { 'style': 'data' } }
 	},
 	'table': {
-		'domElement': ve.example.createDomElement( 'table' ),
+		'domElement': ve.dm.example.createDomElement( 'table' ),
 		'dataElement': { 'type': 'table' }
 	},
 	'tableRow': {
-		'domElement': ve.example.createDomElement( 'tr' ),
+		'domElement': ve.dm.example.createDomElement( 'tr' ),
 		'dataElement': { 'type': 'tableRow' }
 	},
 	'paragraph with data-mw attribute': {
-		'domElement': ve.example.createDomElement( 'p', { 'data-mw': '{"test":1234}' } ),
+		'domElement': ve.dm.example.createDomElement( 'p', { 'data-mw': '{"test":1234}' } ),
 		'dataElement': {
 			'type': 'paragraph',
 			'htmlAttributes': [ { 'values': { 'data-mw': '{"test":1234}' } } ]
 		}
 	},
 	'paragraph with style attribute': {
-		'domElement': ve.example.createDomElement( 'p', { 'style': 'color:blue' } ),
+		'domElement': ve.dm.example.createDomElement( 'p', { 'style': 'color:blue' } ),
 		'dataElement': {
 			'type': 'paragraph',
 			'htmlAttributes': [ { 'values': { 'style': 'color:blue' } } ]
@@ -3501,4 +3527,484 @@ ve.dm.example.references = [
 	{ 'type': '/paragraph' },
 	{ 'type': '/internalItem' },
 	{ 'type': '/internalList' }
+];
+
+ve.dm.example.selectNodesCases = [
+	{
+		'range': new ve.Range( 1 ),
+		'mode': 'branches',
+		'expected': [
+			// heading
+			{
+				'node': [ 0 ],
+				'range': new ve.Range( 1 ),
+				'index': 0,
+				'nodeRange': new ve.Range( 1, 4 ),
+				'nodeOuterRange': new ve.Range( 0, 5 ),
+				'parentOuterRange': new ve.Range( 0, 63 )
+			}
+		]
+	},
+	{
+		'range': new ve.Range( 10 ),
+		'mode': 'branches',
+		'expected': [
+			// table/tableSection/tableRow/tableCell/paragraph
+			{
+				'node': [ 1, 0, 0, 0, 0 ],
+				'range': new ve.Range( 10 ),
+				'index': 0,
+				'nodeRange': new ve.Range( 10, 11 ),
+				'nodeOuterRange': new ve.Range( 9, 12 ),
+				'parentOuterRange': new ve.Range( 8, 34 )
+			}
+		]
+	},
+	{
+		'range': new ve.Range( 20 ),
+		'mode': 'branches',
+		'expected': [
+			// table/tableSection/tableRow/tableCell/list/listItem/list/listItem/paragraph
+			{
+				'node': [ 1, 0, 0, 0, 1, 0, 1, 0, 0 ],
+				'range': new ve.Range( 20 ),
+				'index': 0,
+				'nodeRange': new ve.Range( 20, 21 ),
+				'nodeOuterRange': new ve.Range( 19, 22 ),
+				'parentOuterRange': new ve.Range( 18, 23 )
+			}
+		]
+	},
+	{
+		'range': new ve.Range( 1, 20 ),
+		'mode': 'branches',
+		'expected': [
+			// heading
+			{
+				'node': [ 0 ],
+				'range': new ve.Range( 1, 4 ),
+				'index': 0,
+				'nodeRange': new ve.Range( 1, 4 ),
+				'nodeOuterRange': new ve.Range( 0, 5 ),
+				'parentOuterRange': new ve.Range( 0, 63 )
+			},
+
+			// table/tableSection/tableRow/tableCell/paragraph
+			{
+				'node': [ 1, 0, 0, 0, 0 ],
+				'index': 0,
+				'nodeRange': new ve.Range( 10, 11 ),
+				'nodeOuterRange': new ve.Range( 9, 12 ),
+				'parentOuterRange': new ve.Range( 8, 34 )
+			},
+
+			// table/tableSection/tableRow/tableCell/list/listItem/paragraph
+			{
+				'node': [ 1, 0, 0, 0, 1, 0, 0 ],
+				'index': 0,
+				'nodeRange': new ve.Range( 15, 16 ),
+				'nodeOuterRange': new ve.Range( 14, 17 ),
+				'parentOuterRange': new ve.Range( 13, 25 )
+			},
+
+			// table/tableSection/tableRow/tableCell/list/listItem/list/listItem/paragraph
+			{
+				'node': [ 1, 0, 0, 0, 1, 0, 1, 0, 0 ],
+				'range': new ve.Range( 20 ),
+				'index': 0,
+				'nodeRange': new ve.Range( 20, 21 ),
+				'nodeOuterRange': new ve.Range( 19, 22 ),
+				'parentOuterRange': new ve.Range( 18, 23 )
+			}
+		]
+	},
+	{
+		'range': new ve.Range( 1 ),
+		'mode': 'branches',
+		'expected': [
+			// heading
+			{
+				'node': [ 0 ],
+				'range': new ve.Range( 1 ),
+				'index': 0,
+				'nodeRange': new ve.Range( 1, 4 ),
+				'nodeOuterRange': new ve.Range( 0, 5 ),
+				'parentOuterRange': new ve.Range( 0, 63 )
+			}
+		]
+	},
+	{
+		'range': new ve.Range( 0, 3 ),
+		'mode': 'leaves',
+		'expected': [
+			// heading/text
+			{
+				'node': [ 0, 0 ],
+				'range': new ve.Range( 1, 3 ),
+				'index': 0,
+				'nodeRange': new ve.Range( 1, 4 ),
+				'nodeOuterRange': new ve.Range( 1, 4 ),
+				'parentOuterRange': new ve.Range( 0, 5 )
+			}
+		],
+		'msg': 'partial leaf results have ranges with global offsets'
+	},
+	{
+		'range': new ve.Range( 0, 11 ),
+		'mode': 'leaves',
+		'expected': [
+			// heading/text
+			{
+				'node': [ 0, 0 ],
+				'index': 0,
+				'nodeRange': new ve.Range( 1, 4 ),
+				'nodeOuterRange': new ve.Range( 1, 4 ),
+				'parentOuterRange': new ve.Range( 0, 5 )
+			},
+			// table/tableSection/tableRow/tableCell/paragraph/text
+			{
+				'node': [ 1, 0, 0, 0, 0, 0 ],
+				'index': 0,
+				'nodeRange': new ve.Range( 10, 11 ),
+				'nodeOuterRange': new ve.Range( 10, 11 ),
+				'parentOuterRange': new ve.Range( 9, 12 )
+			}
+		],
+		'msg': 'leaf nodes do not have ranges, leaf nodes from different levels'
+	},
+	{
+		'range': new ve.Range( 29, 43 ),
+		'mode': 'leaves',
+		'expected': [
+			// table/tableSection/tableRow/tableCell/list/listItem/paragraph/text
+			{
+				'node': [ 1, 0, 0, 0, 2, 0, 0, 0 ],
+				'index': 0,
+				'nodeRange': new ve.Range( 29, 30 ),
+				'nodeOuterRange': new ve.Range( 29, 30 ),
+				'parentOuterRange': new ve.Range( 28, 31 )
+			},
+			// preformatted/text
+			{
+				'node': [ 2, 0 ],
+				'index': 0,
+				'nodeRange': new ve.Range( 38, 39 ),
+				'nodeOuterRange': new ve.Range( 38, 39 ),
+				'parentOuterRange': new ve.Range( 37, 43 )
+			},
+			// preformatted/image
+			{
+				'node': [ 2, 1 ],
+				'index': 1,
+				'nodeRange': new ve.Range( 40, 40 ),
+				'nodeOuterRange': new ve.Range( 39, 41 ),
+				'parentOuterRange': new ve.Range( 37, 43 )
+			},
+			// preformatted/text
+			{
+				'node': [ 2, 2 ],
+				'index': 2,
+				'nodeRange': new ve.Range( 41, 42 ),
+				'nodeOuterRange': new ve.Range( 41, 42 ),
+				'parentOuterRange': new ve.Range( 37, 43 )
+			}
+		],
+		'msg': 'leaf nodes that are not text nodes'
+	},
+	{
+		'range': new ve.Range( 2, 16 ),
+		'mode': 'siblings',
+		'expected': [
+			// heading
+			{
+				'node': [ 0 ],
+				'range': new ve.Range( 2, 4 ),
+				'index': 0,
+				'nodeRange': new ve.Range( 1, 4 ),
+				'nodeOuterRange': new ve.Range( 0, 5 ),
+				'parentOuterRange': new ve.Range( 0, 63 )
+			},
+			// table
+			{
+				'node': [ 1 ],
+				'range': new ve.Range( 6, 16 ),
+				'index': 1,
+				'nodeRange': new ve.Range( 6, 36 ),
+				'nodeOuterRange': new ve.Range( 5, 37 ),
+				'parentOuterRange': new ve.Range( 0, 63 )
+			}
+		],
+		'msg': 'siblings at the document level'
+	},
+	{
+		'range': new ve.Range( 2, 51 ),
+		'mode': 'siblings',
+		'expected': [
+			// heading
+			{
+				'node': [ 0 ],
+				'range': new ve.Range( 2, 4 ),
+				'index': 0,
+				'nodeRange': new ve.Range( 1, 4 ),
+				'nodeOuterRange': new ve.Range( 0, 5 ),
+				'parentOuterRange': new ve.Range( 0, 63 )
+			},
+			// table
+			{
+				'node': [ 1 ],
+				'index': 1,
+				'nodeRange': new ve.Range( 6, 36 ),
+				'nodeOuterRange': new ve.Range( 5, 37 ),
+				'parentOuterRange': new ve.Range( 0, 63 )
+			},
+			// preformatted
+			{
+				'node': [ 2 ],
+				'index': 2,
+				'nodeRange': new ve.Range( 38, 42 ),
+				'nodeOuterRange': new ve.Range( 37, 43 ),
+				'parentOuterRange': new ve.Range( 0, 63 )
+			},
+			// definitionList
+			{
+				'node': [ 3 ],
+				'range': new ve.Range( 44, 51 ),
+				'index': 3,
+				'nodeRange': new ve.Range( 44, 54 ),
+				'nodeOuterRange': new ve.Range( 43, 55 ),
+				'parentOuterRange': new ve.Range( 0, 63 )
+			}
+		],
+		'msg': 'more than 2 siblings at the document level'
+	},
+	{
+		'range': new ve.Range( 1, 1 ),
+		'mode': 'leaves',
+		'expected': [
+			// heading/text
+			{
+				'node': [ 0, 0 ],
+				'range': new ve.Range( 1, 1 ),
+				'index': 0,
+				'nodeRange': new ve.Range( 1, 4 ),
+				'nodeOuterRange': new ve.Range( 1, 4 ),
+				'parentOuterRange': new ve.Range( 0, 5 )
+			}
+		],
+		'msg': 'zero-length range at the start of a text node returns text node rather than parent'
+	},
+	{
+		'range': new ve.Range( 4, 4 ),
+		'mode': 'leaves',
+		'expected': [
+			// heading/text
+			{
+				'node': [ 0, 0 ],
+				'range': new ve.Range( 4, 4 ),
+				'index': 0,
+				'nodeRange': new ve.Range( 1, 4 ),
+				'nodeOuterRange': new ve.Range( 1, 4 ),
+				'parentOuterRange': new ve.Range( 0, 5 )
+			}
+		],
+		'msg': 'zero-length range at the end of a text node returns text node rather than parent'
+	},
+	{
+		'range': new ve.Range( 2, 3 ),
+		'mode': 'leaves',
+		'expected': [
+			// heading/text
+			{
+				'node': [ 0, 0 ],
+				'range': new ve.Range( 2, 3 ),
+				'index': 0,
+				'nodeRange': new ve.Range( 1, 4 ),
+				'nodeOuterRange': new ve.Range( 1, 4 ),
+				'parentOuterRange': new ve.Range( 0, 5 )
+			}
+		],
+		'msg': 'range entirely within one leaf node'
+	},
+	{
+		'range': new ve.Range( 5, 5 ),
+		'mode': 'leaves',
+		'expected': [
+			// document
+			{
+				'node': [],
+				'range': new ve.Range( 5, 5 ),
+				// no 'index' because documentNode has no parent
+				'indexInNode': 1,
+				'nodeRange': new ve.Range( 0, 63 ),
+				'nodeOuterRange': new ve.Range( 0, 63 )
+			}
+		],
+		'msg': 'zero-length range between two children of the document'
+	},
+	{
+		'range': new ve.Range( 0, 0 ),
+		'mode': 'leaves',
+		'expected': [
+			// document
+			{
+				'node': [],
+				'range': new ve.Range( 0, 0 ),
+				// no 'index' because documentNode has no parent
+				'indexInNode': 0,
+				'nodeRange': new ve.Range( 0, 63 ),
+				'nodeOuterRange': new ve.Range( 0, 63 )
+			}
+		],
+		'msg': 'zero-length range at the start of the document'
+	},
+	{
+		'range': new ve.Range( 32, 39 ),
+		'mode': 'leaves',
+		'expected': [
+			// table/tableSection/tableRow/tableCell/list
+			{
+				'node': [ 1, 0, 0, 0, 2 ],
+				'range': new ve.Range( 32, 32 ),
+				'index': 2,
+				'indexInNode': 1,
+				'nodeRange': new ve.Range( 27, 32 ),
+				'nodeOuterRange': new ve.Range( 26, 33 )
+			},
+			// preformatted/text
+			{
+				'node': [ 2, 0 ],
+				// no 'range' because the text node is covered completely
+				'index': 0,
+				'nodeRange': new ve.Range( 38, 39 ),
+				'nodeOuterRange': new ve.Range( 38, 39 ),
+				'parentOuterRange': new ve.Range( 37, 43 )
+			}
+		],
+		'msg': 'range with 5 closings and a text node'
+	},
+	{
+		'range': new ve.Range( 2, 57 ),
+		'mode': 'covered',
+		'expected': [
+			// heading/text
+			{
+				'node': [ 0, 0 ],
+				'range': new ve.Range( 2, 4 ),
+				'index': 0,
+				'nodeRange': new ve.Range( 1, 4 ),
+				'nodeOuterRange': new ve.Range( 1, 4 ),
+				'parentOuterRange': new ve.Range( 0, 5 )
+			},
+			// table
+			{
+				'node': [ 1 ],
+				// no 'range' because the table is covered completely
+				'index': 1,
+				'nodeRange': new ve.Range( 6, 36 ),
+				'nodeOuterRange': new ve.Range( 5, 37 ),
+				'parentOuterRange': new ve.Range( 0, 63 )
+			},
+			// preformatted
+			{
+				'node': [ 2 ],
+				// no 'range' because the node is covered completely
+				'index': 2,
+				'nodeRange': new ve.Range( 38, 42 ),
+				'nodeOuterRange': new ve.Range( 37, 43 ),
+				'parentOuterRange': new ve.Range( 0, 63 )
+			},
+			// definitionList
+			{
+				'node': [ 3 ],
+				// no 'range' because the node is covered completely
+				'index': 3,
+				'nodeRange': new ve.Range( 44, 54 ),
+				'nodeOuterRange': new ve.Range( 43, 55 ),
+				'parentOuterRange': new ve.Range( 0, 63 )
+			},
+			// paragraph/text
+			{
+				'node': [ 4, 0 ],
+				// no 'range' because the text node is covered completely
+				'index': 0,
+				'nodeRange': new ve.Range( 56, 57 ),
+				'nodeOuterRange': new ve.Range( 56, 57 ),
+				'parentOuterRange': new ve.Range( 55, 58 )
+			}
+		],
+		'msg': 'range from the first heading into the second-to-last paragraph, in covered mode'
+	},
+	{
+		'range': new ve.Range( 14, 14 ),
+		'mode': 'siblings',
+		'expected': [
+			// table/tableSection/tableRow/tableCell/list/listItem
+			{
+				'node': [ 1, 0, 0, 0, 1, 0 ],
+				'range': new ve.Range( 14, 14 ),
+				'index': 0,
+				'indexInNode': 0,
+				'nodeRange': new ve.Range( 14, 24 ),
+				'nodeOuterRange': new ve.Range( 13, 25 )
+			}
+		],
+		'msg': 'zero-length range at the beginning of a listItem, in siblings mode'
+	},
+	{
+		'range': new ve.Range( 25, 27 ),
+		'mode': 'covered',
+		'expected': [
+			// table/tableSection/tableRow/tableCell/list
+			{
+				'node': [ 1, 0, 0, 0, 1 ],
+				'range': new ve.Range( 25, 25 ),
+				'index': 1,
+				'indexInNode': 1,
+				'nodeRange': new ve.Range( 13, 25 ),
+				'nodeOuterRange': new ve.Range( 12, 26 )
+			},
+			// table/tableSection/tableRow/tableCell/list
+			{
+				'node': [ 1, 0, 0, 0, 2 ],
+				'range': new ve.Range( 27, 27 ),
+				'index': 2,
+				'indexInNode': 0,
+				'nodeRange': new ve.Range( 27, 32 ),
+				'nodeOuterRange': new ve.Range( 26, 33 )
+			}
+		],
+		'msg': 'range covering a list closing and a list opening'
+	},
+	{
+		'range': new ve.Range( 39, 39 ),
+		'mode': 'leaves',
+		'expected': [
+			// preformatted/text
+			{
+				'node': [ 2, 0 ],
+				'range': new ve.Range( 39, 39 ),
+				'index': 0,
+				'nodeRange': new ve.Range( 38, 39 ),
+				'nodeOuterRange': new ve.Range( 38, 39 ),
+				'parentOuterRange': new ve.Range( 37, 43 )
+			}
+		],
+		'msg': 'zero-length range in text node before inline node'
+	},
+	{
+		'range': new ve.Range( 41, 41 ),
+		'mode': 'leaves',
+		'expected': [
+			// preformatted/text
+			{
+				'node': [ 2, 2 ],
+				'range': new ve.Range( 41, 41 ),
+				'index': 2,
+				'nodeRange': new ve.Range( 41, 42 ),
+				'nodeOuterRange': new ve.Range( 41, 42 ),
+				'parentOuterRange': new ve.Range( 37, 43 )
+			}
+		],
+		'msg': 'zero-length range in text node after inline node'
+	}
 ];

@@ -276,13 +276,26 @@ QUnit.test( 'rebuildNodes', 2, function ( assert ) {
 	);
 } );
 
-QUnit.test( 'selectNodes', 21, function ( assert ) {
-	var i,
-		doc = ve.dm.example.createExampleDocument(),
-		cases = ve.example.getSelectNodesCases( doc );
+QUnit.test( 'selectNodes', function ( assert ) {
+	var i, doc, expectedSelection,
+		mainDoc = ve.dm.example.createExampleDocument(),
+		cases = ve.dm.example.selectNodesCases;
 
+	function resolveNode( item ) {
+		var newItem = ve.extendObject( {}, item );
+		newItem.node = ve.dm.example.lookupNode.apply(
+			ve.dm.example, [ doc.getDocumentNode() ].concat( item.node )
+		);
+		return newItem;
+	}
+
+	QUnit.expect( cases.length );
 	for ( i = 0; i < cases.length; i++ ) {
-		assert.equalNodeSelection( cases[i].actual, cases[i].expected, cases[i].msg );
+		doc = cases[i].doc ? ve.dm.example.createExampleDocument( cases[i].doc ) : mainDoc;
+		expectedSelection = cases[i].expected.map( resolveNode );
+		assert.equalNodeSelection(
+			doc.selectNodes( cases[i].range, cases[i].mode ), expectedSelection, cases[i].msg
+		);
 	}
 } );
 

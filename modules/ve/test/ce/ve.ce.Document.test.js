@@ -9,15 +9,6 @@ QUnit.module( 've.ce.Document' );
 
 /* Tests */
 
-QUnit.test( 'selectNodes', 21, function ( assert ) {
-	var i, len,
-		doc = ve.dm.example.createExampleDocument(),
-		cases = ve.example.getSelectNodesCases( doc );
-	for ( i = 0, len = cases.length; i < len; i++ ) {
-		assert.equalNodeSelection( cases[i].actual, cases[i].expected, cases[i].msg );
-	}
-} );
-
 QUnit.test( 'getRelativeOffset', function ( assert ) {
 	var documentModel = ve.dm.example.createExampleDocument( 'alienData' ),
 		documentView = new ve.ce.Document( documentModel ),
