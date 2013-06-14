@@ -22,7 +22,7 @@ class VisualEditorHooks {
 				$wgResourceModules['schema.Edit'] = array(
 					'class'  => 'ResourceLoaderSchemaModule',
 					'schema' => 'Edit',
-					'revision' => 5563071,
+					'revision' => 5570274,
 				);
 			} else {
 				wfWarn( 'VisualEditor is configured to use EventLogging, but the extension is ' .

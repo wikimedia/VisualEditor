@@ -847,10 +847,11 @@ ve.init.mw.ViewPageTarget.prototype.setUpEventLogging = function () {
 			pageId: mw.config.get( 'wgArticleId' ),
 			pageNs: mw.config.get( 'wgNamespaceNumber' ),
 			pageName: mw.config.get( 'wgPageName' ),
-			pageViewSessionId: +new Date(),
+			pageViewSessionId: mw.user.generateRandomSessionId(),
 			revId: function () {
 				return mw.config.get( 'wgCurRevisionId' );
-			}
+			},
+			userId: +mw.config.get( 'wgUserId' )
 		} );
 	} );
 };
