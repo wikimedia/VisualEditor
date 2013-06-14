@@ -19,12 +19,17 @@
  * @constructor
  * @param {ve.ui.Surface} surface
  * @param {Object} [config] Config options
+ * @cfg {boolean} [editable] Show controls for adding, removing and reordering items in the outline
  */
 ve.ui.PagedDialog = function VeUiPagedDialog( surface, config ) {
+	// Configuration initialization
+	config = config || {};
+
 	// Parent constructor
 	ve.ui.Dialog.call( this, surface, config );
 
 	// Properties
+	this.editable = !!config.editable;
 	this.pages = {};
 	this.currentPageName = null;
 };
@@ -51,12 +56,24 @@ ve.ui.PagedDialog.prototype.initialize = function () {
 		[this.outlinePanel, this.pagesPanel], { '$$': this.frame.$$, 'widths': [1, 2] }
 	);
 	this.outlineWidget = new ve.ui.OutlineWidget( { '$$': this.frame.$$ } );
+	if ( this.editable ) {
+		this.outlineControlsWidget = new ve.ui.OutlineControlsWidget(
+			this.outlineWidget, { '$$': this.frame.$$ }
+		);
+	}
 
 	// Events
 	this.outlineWidget.connect( this, { 'select': 'onOutlineSelect' } );
 
 	// Initialization
-	this.outlinePanel.$.append( this.outlineWidget.$ ).addClass( 've-ui-pagedDialog-outlinePanel' );
+	this.outlinePanel.$
+		.addClass( 've-ui-pagedDialog-outlinePanel' )
+		.append( this.outlineWidget.$ );
+	if ( this.editable ) {
+		this.outlinePanel.$
+			.addClass( 've-ui-pagedDialog-outlinePanel-editable' )
+			.append( this.outlineControlsWidget.$ );
+	}
 	this.pagesPanel.$.addClass( 've-ui-pagedDialog-pagesPanel' );
 	this.$body.append( this.layout.$ );
 };
@@ -84,6 +101,7 @@ ve.ui.PagedDialog.prototype.onOutlineSelect = function ( item ) {
  * @param {number} [config.level=0] Indentation level
  * @param {number} [config.index] Specific index to insert page at
  * @param {jQuery} [config.$content] Page content
+ * @param {jQuery} [config.moveable] Allow page to be moved in the outline
  * @chainable
  */
 ve.ui.PagedDialog.prototype.addPage = function ( name, config ) {
@@ -99,7 +117,8 @@ ve.ui.PagedDialog.prototype.addPage = function ( name, config ) {
 				'$$': this.frame.$$,
 				'label': config.label || name,
 				'level': config.level || 0,
-				'icon': config.icon
+				'icon': config.icon,
+				'moveable': config.moveable
 			} )
 		],
 		config.index
@@ -169,7 +188,7 @@ ve.ui.PagedDialog.prototype.getPage = function ( name ) {
  * @param {string} name Symbolic name of page
  */
 ve.ui.PagedDialog.prototype.setPage = function ( name ) {
-	if ( name in this.pages ) {
+	if ( this.pages[name] ) {
 		this.currentPageName = name;
 		this.pagesPanel.showItem( this.pages[name] );
 		this.pages[name].$.find( ':input:first' ).focus();

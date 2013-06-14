@@ -221,6 +221,7 @@
 		<script src="../../ve/ui/widgets/ve.ui.TextInputWidget.js"></script>
 		<script src="../../ve/ui/widgets/ve.ui.OutlineItemWidget.js"></script>
 		<script src="../../ve/ui/widgets/ve.ui.OutlineWidget.js"></script>
+		<script src="../../ve/ui/widgets/ve.ui.OutlineControlsWidget.js"></script>
 		<script src="../../ve/ui/widgets/ve.ui.MenuItemWidget.js"></script>
 		<script src="../../ve/ui/widgets/ve.ui.MenuSectionItemWidget.js"></script>
 		<script src="../../ve/ui/widgets/ve.ui.MenuWidget.js"></script>

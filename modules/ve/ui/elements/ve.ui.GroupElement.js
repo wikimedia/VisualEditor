@@ -42,15 +42,20 @@ ve.ui.GroupElement.prototype.getItems = function () {
  * @chainable
  */
 ve.ui.GroupElement.prototype.addItems = function ( items, index ) {
-	var i, len, item,
+	var i, len, item, currentIndex,
 		$items = $( [] );
 
 	for ( i = 0, len = items.length; i < len; i++ ) {
 		item = items[i];
 
 		// Check if item exists then remove it first, effectively "moving" it
-		if ( this.items.indexOf( item ) !== -1 ) {
+		currentIndex = this.items.indexOf( item );
+		if ( currentIndex >= 0 ) {
 			this.removeItems( [ item ] );
+			// Adjust index to compensate for removal
+			if ( currentIndex < index ) {
+				index--;
+			}
 		}
 		// Add the item
 		$items = $items.add( item.$ );
