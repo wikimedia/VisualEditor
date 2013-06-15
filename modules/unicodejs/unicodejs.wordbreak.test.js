@@ -7,6 +7,32 @@
 
 QUnit.module( 'unicodeJS.wordbreak' );
 
+QUnit.test( 'splitClusters', 1, function ( assert ) {
+	var expected = [
+		'a',
+		' ',
+		' ',
+		'b',
+		'カ',
+		'タ',
+		'カ',
+		'ナ',
+		'c\u0300\u0327', // c with two combining chars
+		'\ud800\udf08', // U+10308 OLD ITALIC LETTER THE
+		'\ud800\udf08\u0302', // U+10308 + combining circumflex
+		'\r\n',
+		'\n',
+		'\u1104\u1173', // jamo L+V
+		'\u1105\u1161\u11a8', // jamo L+V+T
+		'\ud83c\udded\ud83c\uddf0' // 2*regional indicator characters
+	];
+	assert.deepEqual(
+		unicodeJS.graphemebreak.splitClusters( expected.join( '' ) ),
+		expected,
+		'Split clusters'
+	);
+});
+
 QUnit.test( 'charRangeArrayRegexp', function ( assert ) {
 	var i, test, doTestFunc, equalityTests, throwTests;
 
@@ -114,7 +140,7 @@ QUnit.test( 'charRangeArrayRegexp', function ( assert ) {
 		);
 	}
 	for ( i = 0; i < throwTests.length; i++ ) {
-		/* jshint loopfunc: true */
+		/*jshint loopfunc:true */
 		test = throwTests[i];
 		doTestFunc = function () {
 			unicodeJS.charRangeArrayRegexp( test[0] );
@@ -128,59 +154,52 @@ QUnit.test( 'charRangeArrayRegexp', function ( assert ) {
 });
 
 QUnit.test( 'isBreak', function ( assert ) {
-	var i, result, context,
-		text =
-			/*jshint quotmark:double */
-			// 0 - 9
-			"\u0300xyz'd a' " +
-			// 10 - 19
-			"'a a-b 1a\r" +
-			// 20 - 29
-			"\nカタカナ3,1.2" +
-			// 30 - 39
-			" a_b_3_ナ_ " +
-			// 40 - 49
-			"汉字/漢字 c\u0300\u0327k  " +
-			// 50 - 59
-			"\ud800\udf08" + // U+10308 OLD ITALIC LETTER THE
-			"\ud800\udf08\u0302" + // U+10308 OLD ITALIC LETTER THE + combining circumflex
-			"\ud800\udf0a" + // U+1030A OLD ITALIC LETTER KA
-			" pad " +
-			"\ud800\udf0a" + // U+1030A OLD ITALIC LETTER KA
-			"\ud800\udf0a" + // U+1030A OLD ITALIC LETTER KA
-			// 60 - 69
-			" 뜨락또르 트랙터 " + // hangul (not decomposed into jamo)
-			//// TODO: test the equivalent text in jamo when graphemebreak rules work
-			//// "\u1104\u1173\u1105\u1161\u11a8\u1104\u1169\u1105\u1173 " +
-			//// "\u1110\u1173\u1105\u1162\u11a8\u1110\u1165" +
-			// 70 - 75: "a." tests end of para
-			" c\u0300\u0327 a.",
-			/*jshint quotmark:single */
-		textString = new unicodeJS.TextString( text ),
-		breaks = [
-			0, 1, 6, 7, 8, 9, 10,
-			11, 12, 13, 14, 15, 16, 17, 19,
-			21, 25, 30,
-			31, 39, 40,
-			41, 42, 43, 44, 45, 46, 48, 49, 50,
-			53, 54, 57, 58, 60,
-			61, 65, 66, 69, 70,
-			71, 72, 73, 74, 75
+	var i, pos, result, context, breakOffsets, textString,
+		broken = [
+			'\u0300', 'xyz\'d', ' ', 'a', '\'', ' ',
+			'\'', 'a', ' ', 'a', '-', 'b', ' ', '1a', '\r\n',
+			'カタカナ', '3,1.2', ' ',
+			'a_b_3_ナ_', ' ',
+			'汉', '字', '/', '漢', '字', ' ',
+			'c\u0300\u0327k', ' ',
+			// Test ALetter characters above U+FFFF.
+			// ALetter+ should be a single word
+			// (ALetter Extend*)+ should be a single word
+			//
+			// We'll use:
+			// U+10308 OLD ITALIC LETTER THE \ud800\udf08
+			// U+1030A OLD ITALIC LETTER KA \ud800\udf0a
+			// U+0302 COMBINING CIRCUMFLEX \u0302
+			'\ud800\udf08' + '\ud800\udf08\u0302' + '\ud800\udf0a',
+			' ',
+			'\ud800\udf0a' + '\ud800\udf0a',
+			' ', '뜨락또르', ' ', '트랙터', ' ', // hangul (composed)
+			//// TODO: test the equivalent hangul decomposed into jamo
+			//// '\u1104\u1173\u1105\u1161\u11a8\u1104\u1169\u1105\u1173 ' +
+			//// '\u1110\u1173\u1105\u1162\u11a8\u1110\u1165' +
+			' ', 'c\u0300\u0327', ' ', 'a', '.'
 		];
+	breakOffsets = [0];
+	pos = 0;
+	for ( i = 0; i < broken.length; i++ ) {
+		pos += unicodeJS.graphemebreak.splitClusters( broken[i] ).length;
+		breakOffsets.push( pos );
+	}
+	textString = new unicodeJS.TextString( broken.join( '' ) ),
 
 	QUnit.expect( textString.getLength() + 1 );
 
 	for ( i = 0; i <= textString.getLength(); i++ ) {
-		result = ( breaks.indexOf( i ) !== -1 );
+		result = ( breakOffsets.indexOf( i ) !== -1 );
 		context =
 			textString.substring( Math.max( i - 4, 0 ), i ).getString() +
 			'│' +
-			textString.substring( i, Math.min( i + 4, text.length ) ).getString()
+			textString.substring( i, Math.min( i + 4, textString.getLength() ) ).getString()
 		;
 		assert.equal(
 			unicodeJS.wordbreak.isBreak( textString, i ),
 			result,
-			'Break at position ' + i + ': ' + context
+			'Break at position ' + i + ' (expect ' + result + '): ' + context
 		);
 	}
 });

@@ -38,6 +38,8 @@
 		<script src="../../rangy/rangy-position-1.3.js"></script>
 		<script src="../../unicodejs/unicodejs.js"></script>
 		<script src="../../unicodejs/unicodejs.textstring.js"></script>
+		<script src="../../unicodejs/unicodejs.graphemebreakproperties.js"></script>
+		<script src="../../unicodejs/unicodejs.graphemebreak.js"></script>
 		<script src="../../unicodejs/unicodejs.wordbreakproperties.js"></script>
 		<script src="../../unicodejs/unicodejs.wordbreak.js"></script>
 		<!-- ext.visualEditor.base#standalone-init -->

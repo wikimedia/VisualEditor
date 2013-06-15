@@ -16,19 +16,9 @@
 	unicodeJS = {};
 
 	/**
-	 * Split a string into grapheme clusters.
-	 *
-	 * @param {string} text Text to split
-	 * @returns {string[]} Array of clusters
-	 */
-	unicodeJS.splitClusters = function ( text ) {
-		return text.split( /(?![\uDC00-\uDFFF\u0300-\u036F])/g );
-		// kludge: for now, just don't split UTF surrogate pairs or combining accents
-		// TODO: implement Grapheme boundary rules
-	};
-
-	/**
 	 * Split a string into Unicode characters, keeping surrogates paired.
+	 *
+	 * You probably want to call unicodeJS.graphemebreak.splitClusters instead.
 	 *
 	 * @param {string} text Text to split
 	 * @returns {string[]} Array of characters
@@ -78,7 +68,7 @@
 	 *
 	 * Suppose ch1 and ch2 have surrogate pairs (hi1, lo1) and (hi2, lo2).
 	 * Then the range of chars from ch1 to ch2 can be represented as the
-	 * conjunction of three code unit ranges:
+	 * disjunction of three code unit ranges:
 	 *
 	 *     [hi1 - hi1][lo1 - 0xDFFF]
 	 *      |
@@ -148,7 +138,7 @@
 	unicodeJS.charRangeArrayRegexp = function( ranges ) {
 		var i, j, min, max, hi, lo, range, box, boxes,
 			characterClass = [], // list of (\uXXXX code unit or interval), for BMP
-			conjunction = []; // list of regex strings, to be joined with '|'
+			disjunction = []; // list of regex strings, to be joined with '|'
 
 		for ( i = 0; i < ranges.length; i++ ) {
 			range = ranges[i];
@@ -171,7 +161,7 @@
 				hi = 0xD800 + ( ( range - 0x10000 ) >> 10 );
 				lo = 0xDC00 + ( ( range - 0x10000 ) & 0x3FF );
 				/* jslint bitwise: false */
-				conjunction.push( uEsc( hi ) + uEsc( lo ) );
+				disjunction.push( uEsc( hi ) + uEsc( lo ) );
 				continue;
 			}
 
@@ -208,17 +198,17 @@
 				box = boxes[j];
 				hi = codeUnitRange( box.hi[0], box.hi[1], true );
 				lo = codeUnitRange( box.lo[0], box.lo[1], true );
-				conjunction.push( hi + lo );
+				disjunction.push( hi + lo );
 			}
 		}
 
-		// prepend BMP character class to the conjunction
+		// prepend BMP character class to the disjunction
 		if ( characterClass.length === 1 && ! characterClass[0].match(/-/) ) {
-			conjunction.unshift( characterClass[0] ); // single character
+			disjunction.unshift( characterClass[0] ); // single character
 		} else if ( characterClass.length > 0 ) {
-			conjunction.unshift( '[' + characterClass.join( '' ) + ']' );
+			disjunction.unshift( '[' + characterClass.join( '' ) + ']' );
 		}
-		return conjunction.join( '|' );
+		return disjunction.join( '|' );
 	};
 
 	// Expose

@@ -85,6 +85,8 @@ $html = file_get_contents( $page );
 		<script src="../../modules/rangy/rangy-position-1.3.js"></script>
 		<script src="../../modules/unicodejs/unicodejs.js"></script>
 		<script src="../../modules/unicodejs/unicodejs.textstring.js"></script>
+		<script src="../../modules/unicodejs/unicodejs.graphemebreakproperties.js"></script>
+		<script src="../../modules/unicodejs/unicodejs.graphemebreak.js"></script>
 		<script src="../../modules/unicodejs/unicodejs.wordbreakproperties.js"></script>
 		<script src="../../modules/unicodejs/unicodejs.wordbreak.js"></script>
 		<!-- ext.visualEditor.base#standalone-init -->

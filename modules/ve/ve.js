@@ -527,9 +527,9 @@
 	};
 
     /**
-     * @see unicodeJS#splitClusters
+     * @see unicodeJS.graphemebreak#splitClusters
      */
-	ve.splitClusters = unicodeJS.splitClusters;
+	ve.splitClusters = unicodeJS.graphemebreak.splitClusters;
 
 	/**
 	 * Determine if the text consists of only unattached combining marks
