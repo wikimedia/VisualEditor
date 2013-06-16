@@ -85,6 +85,8 @@ $wgResourceModules += array(
 		'scripts' => array(
 			'unicodejs/unicodejs.js',
 			'unicodejs/unicodejs.textstring.js',
+			'unicodejs/unicodejs.graphemebreakproperties.js',
+			'unicodejs/unicodejs.graphemebreak.js',
 			'unicodejs/unicodejs.wordbreakproperties.js',
 			'unicodejs/unicodejs.wordbreak.js',
 		),

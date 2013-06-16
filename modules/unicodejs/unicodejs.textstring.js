@@ -16,7 +16,7 @@
  * @param {string} text Text
  */
 unicodeJS.TextString = function UnicodeJSTextString( text ) {
-	this.clusters = unicodeJS.splitClusters( text );
+	this.clusters = unicodeJS.graphemebreak.splitClusters( text );
 };
 
 /* Methods */
