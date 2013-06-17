@@ -421,6 +421,7 @@
 	 * word-break: break-word; (which is not documented in any standard at all). So we just use
 	 * all three.
 	 */
+	/*csslint known-properties:false */
 	word-break: break-word;
 	word-wrap: break-word;
 	overflow-wrap: break-word;
