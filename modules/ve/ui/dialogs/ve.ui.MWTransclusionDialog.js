@@ -97,11 +97,10 @@ ve.ui.MWTransclusionDialog.prototype.onClose = function ( action ) {
 
 		// TODO: Wrap attribute changes in ve.dm.SurfaceFragment
 		surfaceModel.change(
-			ve.dm.Transaction.newFromAttributeChange(
+			ve.dm.Transaction.newFromAttributeChanges(
 				surfaceModel.getDocument(),
 				this.node.getOffset(),
-				'mw',
-				this.transclusion.getPlainObject()
+				{ 'mw': this.transclusion.getPlainObject() }
 			)
 		);
 	}
