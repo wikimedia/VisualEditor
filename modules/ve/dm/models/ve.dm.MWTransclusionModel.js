@@ -176,7 +176,7 @@ ve.dm.MWTransclusionModel.prototype.getPlainObject = function () {
 
 	// Use single-part format when possible
 	if ( obj.parts.length === 1 ) {
-		obj = this.content.parts[0].template;
+		obj = obj.parts[0].template;
 	}
 
 	return obj;
