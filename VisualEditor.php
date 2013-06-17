@@ -627,6 +627,10 @@ $wgHooks['ListDefinedTags'][] = 'VisualEditorHooks::onListDefinedTags';
 $wgHooks['MakeGlobalVariablesScript'][] = 'VisualEditorHooks::onMakeGlobalVariablesScript';
 $wgHooks['ResourceLoaderGetConfigVars'][] = 'VisualEditorHooks::onResourceLoaderGetConfigVars';
 $wgHooks['ResourceLoaderTestModules'][] = 'VisualEditorHooks::onResourceLoaderTestModules';
+
+// Bug 49604: Running split test in production if $wgVisualEditorEnableSplitTest is true.
+$wgHooks['AddNewAccount'][] = 'VisualEditorHooks::onAddNewAccount';
+
 $wgExtensionFunctions[] = 'VisualEditorHooks::onSetup';
 
 $wgAutoloadClasses['VisualEditorMessagesModule'] = $dir . 'VisualEditorMessagesModule.php';

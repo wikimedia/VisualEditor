@@ -188,4 +188,22 @@ class VisualEditorHooks {
 
 		return true;
 	}
+
+
+	/**
+	 * Sets user preference to enable the VisualEditor account if their new
+	 * account's userID is even, if $wgVisualEditorEnableSplitTest is true.
+	 *
+	 * Added per bug 49604; to be removed once no longer needed.
+	 */
+	public static function onAddNewAccount( $user, $byEmail ) {
+		global $wgVisualEditorEnableSplitTest;
+
+		if ( $wgVisualEditorEnableSplitTest &&
+			$user->isLoggedin() &&
+			( ( $user->getId() % 2 ) === 0 ) ) {
+			$user->setOption( 'visualeditor-enable', 1 );
+			$user->saveSettings();
+		}
+	}
 }
