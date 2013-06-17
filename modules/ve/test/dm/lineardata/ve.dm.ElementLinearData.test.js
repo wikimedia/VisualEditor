@@ -1015,9 +1015,9 @@ QUnit.test( 'getRelativeStructuralOffset', function ( assert ) {
 		},
 		{
 			'msg': 'last structural offset is farthest right',
-			'offset': 58,
+			'offset': 62,
 			'distance': 2,
-			'expected': 61
+			'expected': 63
 		},
 		{
 			'msg': '1 right',

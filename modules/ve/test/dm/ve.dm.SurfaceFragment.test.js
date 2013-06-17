@@ -22,7 +22,7 @@ QUnit.test( 'constructor', 8, function ( assert ) {
 	// Invalid range and autoSelect
 	fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( -100, 100 ), 'truthy' );
 	assert.equal( fragment.getRange().from, 0, 'range is clamped between 0 and document length' );
-	assert.equal( fragment.getRange().to, 61, 'range is clamped between 0 and document length' );
+	assert.equal( fragment.getRange().to, doc.data.getLength(), 'range is clamped between 0 and document length' );
 	assert.strictEqual( fragment.willAutoSelect(), false, 'noAutoSelect values are boolean' );
 } );
 
