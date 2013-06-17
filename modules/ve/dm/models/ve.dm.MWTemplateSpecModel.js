@@ -34,7 +34,7 @@ ve.dm.MWTemplateSpecModel = function VeDmMWTemplateSpecModel( template ) {
  * @param {string|Object|undefined} val Messsage or object with messages keyed by language
  * @param {Mixed} [fallback=null] Value to use if message is not available
  * @param {string} [lang] Language to prefer, user interface language will be used by default
- * @return {string} Message text or fallback if not available
+ * @returns {string} Message text or fallback if not available
  */
 ve.dm.MWTemplateSpecModel.getMessage = function ( val, fallback, lang ) {
 	if ( lang === undefined ) {

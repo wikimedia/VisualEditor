@@ -37,7 +37,7 @@ ve.ce.ListNode.static.name = 'list';
  *
  * Tag name is selected based on the model's style attribute.
  *
- * @return {string} HTML tag name
+ * @returns {string} HTML tag name
  * @throws {Error} If style is invalid
  */
 ve.ce.ListNode.prototype.getTagName = function () {

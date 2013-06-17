@@ -226,7 +226,7 @@ ve.ui.MWTransclusionDialog.prototype.setPageByName = function ( name ) {
  *
  * @method
  * @param {ve.dm.MWTransclusionPartModel|ve.dm.MWTemplateParameterModel} item Part or parameter
- * @return {number} Page index of item
+ * @returns {number} Page index of item
  */
 ve.ui.MWTransclusionDialog.prototype.getPageIndex = function ( item ) {
 	// Build pages from parts

@@ -56,7 +56,7 @@ ve.dm.example.preprocessAnnotations = function ( data, store ) {
  * Create an annotation object from shorthand notation.
  * @method
  * @param {Object} annotation Plain object with type and attributes properties
- * @return {ve.dm.Annotation} Instance of the right ve.dm.Annotation subclass
+ * @returns {ve.dm.Annotation} Instance of the right ve.dm.Annotation subclass
  */
 ve.dm.example.createAnnotation = function ( annotation ) {
 	return ve.dm.annotationFactory.create( annotation.type, annotation );
@@ -70,7 +70,7 @@ ve.dm.example.createAnnotation = function ( annotation ) {
  *
  * @method
  * @param {Array} annotations Array of annotations in shorthand format
- * @return {ve.dm.AnnotationSet}
+ * @returns {ve.dm.AnnotationSet}
  */
 ve.dm.example.createAnnotationSet = function ( store, annotations ) {
 	var i;

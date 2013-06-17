@@ -72,7 +72,7 @@ ve.Element.static.get$$ = function ( context, frame ) {
  *
  * @method
  * @param {jQuery|HTMLElement|HTMLDocument|Window} context Context to bind the function to
- * @return {HTMLDocument} Document object
+ * @returns {HTMLDocument} Document object
  * @throws {Error} If context is invalid
  */
 ve.Element.static.getDocument = function ( context ) {
@@ -98,7 +98,7 @@ ve.Element.static.getDocument = function ( context ) {
  *
  * @method
  * @param {jQuery|HTMLElement|HTMLDocument|Window} context Context to bind the function to
- * @return {Window} Window object
+ * @returns {Window} Window object
  */
 ve.Element.static.getWindow = function ( context ) {
 	var doc = this.getDocument( context );
@@ -159,7 +159,7 @@ ve.Element.static.getFrameOffset = function ( from, to, offset ) {
  * Override this method to base the result on instance information.
  *
  * @method
- * @return {string} HTML tag name
+ * @returns {string} HTML tag name
  */
 ve.Element.prototype.getTagName = function () {
 	return this.constructor.static.tagName;
@@ -169,7 +169,7 @@ ve.Element.prototype.getTagName = function () {
  * Get the DOM document.
  *
  * @method
- * @return {HTMLDocument} Document object
+ * @returns {HTMLDocument} Document object
  */
 ve.Element.prototype.getElementDocument = function () {
 	return ve.Element.static.getDocument( this.$ );
@@ -179,7 +179,7 @@ ve.Element.prototype.getElementDocument = function () {
  * Get the DOM window.
  *
  * @method
- * @return {Window} Window object
+ * @returns {Window} Window object
  */
 ve.Element.prototype.getElementWindow = function () {
 	return ve.Element.static.getWindow( this.$ );

@@ -484,7 +484,7 @@ ve.Document.prototype.selectNodes = function ( range, mode ) {
  * Get groups of sibling nodes covered by the given range.
  *
  * @param {ve.Range} selection Range
- * @return {Array} Array of objects. Each object has the following keys:
+ * @returns {Array} Array of objects. Each object has the following keys:
  *     nodes: Array of sibling nodes covered by a part of range
  *     parent: Parent of all of these nodes
  *     grandparent: parent's parent

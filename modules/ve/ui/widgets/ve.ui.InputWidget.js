@@ -58,7 +58,7 @@ ve.inheritClass( ve.ui.InputWidget, ve.ui.Widget );
  *
  * @method
  * @param {Object} [config] Config options
- * @return {jQuery} Input element
+ * @returns {jQuery} Input element
  */
 ve.ui.InputWidget.prototype.getInputElement = function () {
 	return this.$$( '<input>' );

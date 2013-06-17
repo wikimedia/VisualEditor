@@ -483,7 +483,7 @@ ve.example.getSelectNodesCases = function ( doc ) {
  * @method
  * @param {ve.Node} root Root node to lookup from
  * @param {number...} [paths] Index path
- * @return {ve.Node} Node at given path
+ * @returns {ve.Node} Node at given path
  */
 ve.example.lookupNode = function ( root ) {
 	var i,
