@@ -288,7 +288,7 @@ ve.dm.MWTransclusionModel.prototype.getPartFromId = function ( id ) {
  *
  * @method
  * @param {string} name Template name
- * @return {ve.dm.MWTemplateSpecModel} Template spec
+ * @returns {ve.dm.MWTemplateSpecModel} Template spec
  */
 ve.dm.MWTransclusionModel.prototype.getTemplateSpec = function ( name ) {
 	return this.specs[name];

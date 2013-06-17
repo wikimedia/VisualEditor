@@ -42,7 +42,7 @@ ve.dm.MWTransclusionPartModel.prototype.getTransclusion = function () {
 /**
  * Get a unique part ID within the transclusion.
  *
- * @return {string} Unique ID.
+ * @returns {string} Unique ID.
  */
 ve.dm.MWTransclusionPartModel.prototype.getId = function () {
 	return this.id;

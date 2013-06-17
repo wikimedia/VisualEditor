@@ -83,7 +83,7 @@ ve.mixinClass( ve.ui.Toolbar, ve.EventEmitter );
 /**
  * Handle window resize events while toolbar floating is enabled.
  *
- * @return {jQuery.Event} e Window resize event
+ * @returns {jQuery.Event} e Window resize event
  */
 ve.ui.Toolbar.prototype.onWindowScroll = function () {
 	var scrollTop = this.$window.scrollTop(),
@@ -110,7 +110,7 @@ ve.ui.Toolbar.prototype.onWindowScroll = function () {
  * Toolbar will stick to the top of the screen unless it would be over or under the last visible
  * branch node in the root of the document being edited, at which point it will stop just above it.
  *
- * @return {jQuery.Event} e Window scroll event
+ * @returns {jQuery.Event} e Window scroll event
  */
 ve.ui.Toolbar.prototype.onWindowResize = function () {
 	var offset = this.$.offset();

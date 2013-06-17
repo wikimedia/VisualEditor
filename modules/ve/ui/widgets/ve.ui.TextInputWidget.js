@@ -79,7 +79,7 @@ ve.ui.TextInputWidget.prototype.onKeyPress = function ( e ) {
  *
  * @method
  * @param {Object} [config] Config options
- * @return {jQuery} Input element
+ * @returns {jQuery} Input element
  */
 ve.ui.TextInputWidget.prototype.getInputElement = function ( config ) {
 	return config.multiline ? this.$$( '<textarea>' ) : this.$$( '<input>' ).attr( 'type', 'text' );

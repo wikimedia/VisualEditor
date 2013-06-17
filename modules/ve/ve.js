@@ -29,7 +29,7 @@
 	 *
 	 * @method
 	 * @param {Object} origin Object to inherit from
-	 * @return {Object} Empty object that inherits from origin
+	 * @returns {Object} Empty object that inherits from origin
 	 */
 	ve.createObject = Object.create;
 
@@ -56,7 +56,7 @@
 	 *
 	 * @param {Function|Object} a Class or object to check
 	 * @param {Function} mixin Mixin to check for
-	 * @return {boolean} Class or object uses mixin
+	 * @returns {boolean} Class or object uses mixin
 	 */
 	ve.isMixedIn = function ( subject, mixin ) {
 		// Traverse from instances to the constructor
@@ -111,7 +111,7 @@
 	 * @method
 	 * @source <http://api.jquery.com/jQuery.isPlainObject/>
 	 * @param {Object} obj The object that will be checked to see if it's a plain object
-	 * @return {boolean}
+	 * @returns {boolean}
 	 */
 	ve.isPlainObject = $.isPlainObject;
 
@@ -121,7 +121,7 @@
 	 * @method
 	 * @source <http://api.jquery.com/jQuery.isEmptyObject/>
 	 * @param {Object} obj The object that will be checked to see if it's empty
-	 * @return {boolean}
+	 * @returns {boolean}
 	 */
 	ve.isEmptyObject = $.isEmptyObject;
 
@@ -134,7 +134,7 @@
 	 * @source <http://api.jquery.com/jQuery.isArray/>
 	 * @until ES5: Array.isArray
 	 * @param {Mixed} x
-	 * @return {boolean}
+	 * @returns {boolean}
 	 */
 	ve.isArray = $.isArray;
 
@@ -151,7 +151,7 @@
 	 * @param {Object} context Context for the function
 	 * @param {Mixed...} [args] Variadic list of arguments to prepend to arguments
 	 *   to the bound function
-	 * @return {Function} The bound
+	 * @returns {Function} The bound
 	 */
 	ve.bind = $.proxy;
 
@@ -165,7 +165,7 @@
 	 * @param {Mixed} value Element to search for
 	 * @param {Array} array Array to search in
 	 * @param {number} [fromIndex=0] Index to being searching from
-	 * @return {number} Index of value in array, or -1 if not found
+	 * @returns {number} Index of value in array, or -1 if not found
 	 */
 	ve.indexOf = $.inArray;
 
@@ -290,7 +290,7 @@
 	 * @param {Mixed} [target] Object that will receive the new properties
 	 * @param {Mixed...} [sources] Variadic list of objects containing properties
 	 * to be merged into the targe.
-	 * @return {Mixed} Modified version of first or second argument
+	 * @returns {Mixed} Modified version of first or second argument
 	 */
 	ve.extendObject = $.extend;
 
@@ -615,7 +615,7 @@
 	 *
 	 * @param {string} tag HTML tag name
 	 * @param {Object} attributes Key-value map of attributes for the tag
-	 * @return {string} Opening HTML tag
+	 * @returns {string} Opening HTML tag
 	 */
 	ve.getOpeningHtmlTag = function ( tagName, attributes ) {
 		var html, attrName, attrValue;

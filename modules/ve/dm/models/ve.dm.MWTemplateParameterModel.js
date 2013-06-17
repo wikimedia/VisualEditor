@@ -38,7 +38,7 @@ ve.dm.MWTemplateParameterModel.prototype.getTemplate = function () {
 /**
  * Get unique parameter ID within the transclusion.
  *
- * @return {string} Unique ID
+ * @returns {string} Unique ID
  */
 ve.dm.MWTemplateParameterModel.prototype.getId = function () {
 	return this.id;

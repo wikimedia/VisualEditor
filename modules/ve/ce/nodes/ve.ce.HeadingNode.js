@@ -41,7 +41,7 @@ ve.ce.HeadingNode.static.canBeSplit = true;
  *
  * Tag name is selected based on the model's level attribute.
  *
- * @return {string} HTML tag name
+ * @returns {string} HTML tag name
  * @throws {Error} If level is invalid
  */
 ve.ce.HeadingNode.prototype.getTagName = function () {

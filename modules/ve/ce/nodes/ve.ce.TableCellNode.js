@@ -37,7 +37,7 @@ ve.ce.TableCellNode.static.name = 'tableCell';
  *
  * Tag name is selected based on the model's style attribute.
  *
- * @return {string} HTML tag name
+ * @returns {string} HTML tag name
  * @throws {Error} If style is invalid
  */
 ve.ce.TableCellNode.prototype.getTagName = function () {

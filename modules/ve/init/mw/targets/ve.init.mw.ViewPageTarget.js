@@ -1388,7 +1388,7 @@ ve.init.mw.ViewPageTarget.prototype.resetSaveDialog = function () {
  * @param {Object} [options]
  * @param {boolean} [options.fromHistory] Whether this swap was triggered from interaction
  *  with the slide history (e.g. surpresses pushing of target slide in the history again).
- * @return {jQuery} The now active slide.
+ * @returns {jQuery} The now active slide.
  * @throws {Error} Unknown saveDialog slide
  */
 ve.init.mw.ViewPageTarget.prototype.swapSaveDialog = function ( slide, options ) {
