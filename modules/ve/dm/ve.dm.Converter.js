@@ -129,7 +129,10 @@ ve.dm.Converter.buildHtmlAttributeList = function ( domElements, spec, deep, att
 		if ( deep ) {
 			attributeList[i].children = [];
 			childList = ve.dm.Converter.buildHtmlAttributeList(
-				domElements[i].childNodes, spec, deep, attributeList[i].children
+				// Use .children rather than .childNodes so we don't mess around with things that
+				// can't have attributes anyway. Unfortunately, non-element nodes have .children
+				// set to undefined so we have to coerce it to an array in that case.
+				domElements[i].children || [], spec, deep, attributeList[i].children
 			);
 			if ( childList ) {
 				empty = false;
@@ -177,7 +180,7 @@ ve.dm.Converter.renderHtmlAttributeList = function ( attributeList, domElements,
 		}
 		if ( attributeList[i].children ) {
 			ve.dm.Converter.renderHtmlAttributeList(
-				attributeList[i].children, domElements[i].childNodes, spec
+				attributeList[i].children, domElements[i].children, spec
 			);
 		}
 	}
