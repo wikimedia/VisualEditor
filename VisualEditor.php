@@ -91,6 +91,13 @@ $wgResourceModules += array(
 			'unicodejs/unicodejs.wordbreak.js',
 		),
 	),
+
+	// Added for 18-Jun-2013 split test; safe to remove after
+	'ext.visualEditor.splitTest' => $wgVisualEditorResourceTemplate + array(
+		'scripts' => array(
+			've/init/mw/ve.init.mw.splitTest.js',
+		)
+	),
 	// Alias for backwards compat, safe to remove after
 	'ext.visualEditor.editPageInit' => $wgVisualEditorResourceTemplate + array(
 		'dependencies' => array(

@@ -61,6 +61,10 @@ class VisualEditorHooks {
 				$output->addModules( array( 'schema.Edit' ) );
 			}
 			$output->addModules( array( 'ext.visualEditor.viewPageTarget' ) );
+		} else {
+			if ( $wgVisualEditorEnableEventLogging ) {
+				$output->addModules( array( 'schema.Edit', 'ext.visualEditor.splitTest' ) );
+			}
 		}
 		return true;
 	}
