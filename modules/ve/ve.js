@@ -106,6 +106,19 @@
 	ve.copyObject = oo.copy;
 
 	/**
+	 * Copy an array of DOM elements, optionally into a different document.
+	 *
+	 * @param {HTMLElement[]} domElements DOM elements to copy
+	 * @param {HTMLDocument} [doc] Document to create the copies in; if unset, simply clone each element
+	 * @return {HTMLElement[]} Copy of domElements with copies of each element
+	 */
+	ve.copyDomElements = function ( domElements, doc ) {
+		return domElements.map( function ( domElement ) {
+			return doc ? doc.importNode( domElement, true ) : domElement.cloneNode( true );
+		} );
+	};
+
+	/**
 	 * Check to see if an object is a plain object (created using "{}" or "new Object").
 	 *
 	 * @method

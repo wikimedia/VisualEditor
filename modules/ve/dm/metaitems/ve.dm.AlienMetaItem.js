@@ -39,8 +39,8 @@ ve.dm.AlienMetaItem.static.toDataElement = function ( domElements ) {
 	};
 };
 
-ve.dm.AlienMetaItem.static.toDomElements = function ( dataElement ) {
-	return dataElement.attributes.domElements;
+ve.dm.AlienMetaItem.static.toDomElements = function ( dataElement, doc ) {
+	return ve.copyDomElements( dataElement.attributes.domElements, doc );
 };
 
 /* Registration */
