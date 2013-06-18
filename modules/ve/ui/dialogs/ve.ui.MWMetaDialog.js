@@ -178,7 +178,7 @@ ve.ui.MWMetaDialog.prototype.onOpen = function () {
  * @param {string} action Action that caused the window to be closed
  */
 ve.ui.MWMetaDialog.prototype.onClose = function ( action ) {
-	var newDefaultSortKeyItem, newDefaultSortKeyItemData,
+	var hasTransactions, newDefaultSortKeyItem, newDefaultSortKeyItemData,
 		surfaceModel = this.surface.getModel(),
 		currentDefaultSortKeyItem = this.getDefaultSortKeyItem();
 
@@ -186,10 +186,10 @@ ve.ui.MWMetaDialog.prototype.onClose = function ( action ) {
 	ve.ui.PagedDialog.prototype.onClose.call( this );
 
 	// Place transactions made while dialog was open in a common history state
-	surfaceModel.breakpoint();
+	hasTransactions = surfaceModel.breakpoint();
 
 	// Undo everything done in the dialog and prevent redoing those changes
-	if ( action === 'cancel' ) {
+	if ( action === 'cancel' && hasTransactions ) {
 		surfaceModel.undo();
 		surfaceModel.truncateUndoStack();
 	}

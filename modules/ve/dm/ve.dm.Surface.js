@@ -411,10 +411,11 @@ ve.dm.Surface.prototype.change = function ( transactions, selection ) {
  * @method
  * @param {ve.Range} selection New selection range
  * @emits history
+ * @returns {boolean} A breakpoint was added
  */
 ve.dm.Surface.prototype.breakpoint = function ( selection ) {
 	if ( !this.enabled ) {
-		return;
+		return false;
 	}
 	if ( this.smallStack.length > 0 ) {
 		this.bigStack.push( {
@@ -423,7 +424,9 @@ ve.dm.Surface.prototype.breakpoint = function ( selection ) {
 		} );
 		this.smallStack = [];
 		this.emit( 'history' );
+		return true;
 	}
+	return false;
 };
 
 /**
