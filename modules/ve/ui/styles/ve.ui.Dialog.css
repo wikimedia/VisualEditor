@@ -182,9 +182,18 @@
 	height: 10em;
 }
 
-.ve-ui-mwTransclusionDialog-addParameterFieldset .ve-ui-widget {
+.ve-ui-mwTransclusionDialog-addParameterFieldset .ve-ui-widget,
+.ve-ui-mwTransclusionDialog-addTemplateFieldset .ve-ui-widget {
 	display: inline-block;
-	margin-right: 0.5em;
+}
+
+.ve-ui-mwTransclusionDialog-addParameterFieldset .ve-ui-buttonWidget,
+.ve-ui-mwTransclusionDialog-addTemplateFieldset .ve-ui-buttonWidget {
+	margin-left: 0.5em;
+}
+
+.ve-ui-mwTransclusionDialog-placeholder-label {
+	font-style: italic;
 }
 
 /* ve.ui.MWMetaDialog */

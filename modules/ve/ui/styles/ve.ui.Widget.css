@@ -209,21 +209,42 @@
 /* ve.ui.OutlineControlsWidget */
 
 .ve-ui-outlineControlsWidget {
+	height: 3em;
+	background-color: #fff;
+}
+
+.ve-ui-outlineControlsWidget-adders,
+.ve-ui-outlineControlsWidget-movers {
+	float: left;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 	height: 3em;
 	padding: 0.5em;
-	background-color: #fff;
 }
 
-.ve-ui-outlineControlsWidget-addButton {
+.ve-ui-outlineControlsWidget-adders {
+	float: left;
+}
+.ve-ui-outlineControlsWidget-movers {
+	float: right;
+}
+
+.ve-ui-outlineControlsWidget-adders .ve-ui-iconButtonWidget {
 	float: left;
 }
 
-.ve-ui-outlineControlsWidget-upButton,
-.ve-ui-outlineControlsWidget-downButton {
+.ve-ui-outlineControlsWidget-movers .ve-ui-iconButtonWidget {
 	float: right;
+}
+
+.ve-ui-outlineControlsWidget-adders:not(:hover) .ve-ui-iconButtonWidget:not(:first-child) {
+	opacity: 0;
+}
+
+.ve-ui-outlineControlsWidget-adders:hover .ve-ui-iconButtonWidget:first-child {
+	opacity: 0.25;
+	cursor: default;
 }
 
 /* ve.ui.InputLabelWidget */

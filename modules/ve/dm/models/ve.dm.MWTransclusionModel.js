@@ -232,6 +232,21 @@ ve.dm.MWTransclusionModel.prototype.addTemplate = function ( target, index ) {
 };
 
 /**
+ * Add template placeholder part.
+ *
+ * @method
+ * @param {number} [index] Specific index to add placeholder at
+ * @returns {ve.dm.MWTransclusionModel} Added template part
+ * @emits add
+ */
+ve.dm.MWTransclusionModel.prototype.addPlaceholder = function ( index ) {
+	var part = new ve.dm.MWTemplatePlaceholderModel( this );
+
+	this.addPart( part, index );
+	return part;
+};
+
+/**
  * Add part.
  *
  * @method

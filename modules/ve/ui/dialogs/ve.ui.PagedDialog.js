@@ -20,6 +20,8 @@
  * @param {ve.ui.Surface} surface
  * @param {Object} [config] Config options
  * @cfg {boolean} [editable] Show controls for adding, removing and reordering items in the outline
+ * @cfg {Object[]} [adders] List of adders for controls, each an object with name, icon and title
+ *  properties
  */
 ve.ui.PagedDialog = function VeUiPagedDialog( surface, config ) {
 	// Configuration initialization
@@ -30,6 +32,7 @@ ve.ui.PagedDialog = function VeUiPagedDialog( surface, config ) {
 
 	// Properties
 	this.editable = !!config.editable;
+	this.adders = config.adders || null;
 	this.pages = {};
 	this.currentPageName = null;
 };
@@ -58,7 +61,7 @@ ve.ui.PagedDialog.prototype.initialize = function () {
 	this.outlineWidget = new ve.ui.OutlineWidget( { '$$': this.frame.$$ } );
 	if ( this.editable ) {
 		this.outlineControlsWidget = new ve.ui.OutlineControlsWidget(
-			this.outlineWidget, { '$$': this.frame.$$ }
+			this.outlineWidget, { '$$': this.frame.$$, 'adders': this.adders }
 		);
 	}
 

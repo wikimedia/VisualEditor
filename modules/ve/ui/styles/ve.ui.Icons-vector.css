@@ -249,3 +249,8 @@
 	/* @embed */
 	background-image: url(images/icons/collapse.svg);
 }
+
+.ve-ui-icon-add-item {
+	/* @embed */
+	background-image: url(images/icons/add-item.svg);
+}

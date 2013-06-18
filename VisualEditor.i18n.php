@@ -56,9 +56,12 @@ $messages['en'] = array(
 	'visualeditor-dialog-reference-title' => 'Reference',
 	'visualeditor-dialog-media-title' => 'Media settings',
 	'visualeditor-dialog-transclusion-add-param' => 'Add parameter',
+	'visualeditor-dialog-transclusion-add-template' => 'Add template',
+	'visualeditor-dialog-transclusion-add-content' => 'Add content',
 	'visualeditor-dialog-transclusion-content' => 'Content',
 	'visualeditor-dialog-transclusion-options' => 'Options',
 	'visualeditor-dialog-transclusion-param-name' => 'Parameter name',
+	'visualeditor-dialog-transclusion-placeholder' => 'New template',
 	'visualeditor-dialog-transclusion-remove-content' => 'Remove content',
 	'visualeditor-dialog-transclusion-remove-param' => 'Remove parameter',
 	'visualeditor-dialog-transclusion-remove-template' => 'Remove template',
@@ -228,12 +231,15 @@ See also:
 	'visualeditor-dialog-reference-title' => '{{Identical|Reference}}',
 	'visualeditor-dialog-transclusion-add-param' => 'Label for button that adds parameter a parameter to a template.
 {{Identical|Add parameter}}',
+	'visualeditor-dialog-transclusion-add-template' => 'Label for button that adds parameter a template to a transclusion.',
+	'visualeditor-dialog-transclusion-add-content' => 'Label for button that adds parameter content to a transclusion.',
 	'visualeditor-dialog-transclusion-content' => 'Label for editor of content between transclusion parts.
 {{Identical|Content}}',
 	'visualeditor-dialog-transclusion-options' => 'Label for section with options for templates, content or parameters.
 {{Identical|Options}}',
 	'visualeditor-dialog-transclusion-param-name' => 'Placeholder text label for an input for adding a parameter to a template.
 {{Identical|Parameter name}}',
+	'visualeditor-dialog-transclusion-placeholder' => 'Label for section with options for adding a new template to a multi part transclusion',
 	'visualeditor-dialog-transclusion-remove-content' => 'Label for button that removes content between transclusion parts',
 	'visualeditor-dialog-transclusion-remove-param' => 'Label for button that removes a parameter from a template',
 	'visualeditor-dialog-transclusion-remove-template' => 'Label for button that removes a template from a transclusion.

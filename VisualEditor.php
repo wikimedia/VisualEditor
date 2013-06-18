@@ -417,6 +417,7 @@ $wgResourceModules += array(
 			've/ui/widgets/ve.ui.MWCategoryWidget.js',
 			've/ui/widgets/ve.ui.MWMediaSelectWidget.js',
 			've/ui/widgets/ve.ui.MWMediaSelectItemWidget.js',
+			've/ui/widgets/ve.ui.MWTitleInputWidget.js',
 
 			've/ui/layouts/ve.ui.FieldsetLayout.js',
 			've/ui/layouts/ve.ui.GridLayout.js',
@@ -577,6 +578,7 @@ $wgResourceModules += array(
 			've/dm/models/ve.dm.MWTransclusionContentModel.js',
 			've/dm/models/ve.dm.MWTemplateSpecModel.js',
 			've/dm/models/ve.dm.MWTemplateModel.js',
+			've/dm/models/ve.dm.MWTemplatePlaceholderModel.js',
 			've/dm/models/ve.dm.MWTemplateParameterModel.js',
 
 			've/ce/nodes/ve.ce.MWTransclusionNode.js',
@@ -599,9 +601,12 @@ $wgResourceModules += array(
 			'visualeditor-dialog-reference-options-section',
 			'visualeditor-dialog-reference-title',
 			'visualeditor-dialog-transclusion-add-param',
+			'visualeditor-dialog-transclusion-add-template',
+			'visualeditor-dialog-transclusion-add-content',
 			'visualeditor-dialog-transclusion-content',
 			'visualeditor-dialog-transclusion-options',
 			'visualeditor-dialog-transclusion-param-name',
+			'visualeditor-dialog-transclusion-placeholder',
 			'visualeditor-dialog-transclusion-remove-content',
 			'visualeditor-dialog-transclusion-remove-param',
 			'visualeditor-dialog-transclusion-remove-template',

@@ -13,13 +13,22 @@
  * @constructor
  * @param {ve.ui.OutlineWidget} outline Outline to control
  * @param {Object} [config] Config options
+ * @cfg {Object[]} [adders] List of icons to show as addable item types, each an object with
+ *   name, title and icon properties
  */
 ve.ui.OutlineControlsWidget = function VeUiOutlineControlsWidget( outline, config ) {
+	// Configuration initialization
+	config = config || {};
+
 	// Parent constructor
 	ve.ui.Widget.call( this, config );
 
 	// Properties
 	this.outline = outline;
+	this.adders = {};
+	this.$adders = this.$$( '<div>' );
+	this.$movers = this.$$( '<div>' );
+	this.addButton = new ve.ui.IconButtonWidget( { '$$': this.$$, 'icon': 'add-item' } );
 	this.upButton = new ve.ui.IconButtonWidget( {
 		'$$': this.$$, 'icon': 'collapse', 'title': ve.msg( 'visualeditor-outline-control-move-up' )
 	} );
@@ -38,9 +47,14 @@ ve.ui.OutlineControlsWidget = function VeUiOutlineControlsWidget( outline, confi
 
 	// Initialization
 	this.$.addClass( 've-ui-outlineControlsWidget' );
-	this.upButton.$.addClass( 've-ui-outlineControlsWidget-upButton' );
-	this.downButton.$.addClass( 've-ui-outlineControlsWidget-downButton' );
-	this.$.append( this.upButton.$, this.downButton.$ );
+	this.$adders.addClass( 've-ui-outlineControlsWidget-adders' );
+	this.$movers
+		.addClass( 've-ui-outlineControlsWidget-movers' )
+		.append( this.upButton.$, this.downButton.$ );
+	this.$.append( this.$adders, this.$movers );
+	if ( config.adders && config.adders.length ) {
+		this.setupAdders( config.adders );
+	}
 };
 
 /* Inheritance */
@@ -56,6 +70,11 @@ ve.inheritClass( ve.ui.OutlineControlsWidget, ve.ui.Widget );
 
 /* Methods */
 
+/**
+ * Handle outline change events.
+ *
+ * @method
+ */
 ve.ui.OutlineControlsWidget.prototype.onOutlineChange = function () {
 	var i, len, firstMoveable, lastMoveable,
 		moveable = false,
@@ -82,4 +101,28 @@ ve.ui.OutlineControlsWidget.prototype.onOutlineChange = function () {
 	}
 	this.upButton.setDisabled( !moveable || selectedItem === firstMoveable );
 	this.downButton.setDisabled( !moveable || selectedItem === lastMoveable );
+};
+
+/**
+ * Setup adders icons.
+ *
+ * @method
+ * @param {Object[]} adders List of configuations for adder buttons, each containing a name, title
+ *   and icon property
+ */
+ve.ui.OutlineControlsWidget.prototype.setupAdders = function ( adders ) {
+	var i, len, addition, button,
+		$buttons = this.$$( [] );
+
+	this.$adders.append( this.addButton.$ );
+	for ( i = 0, len = adders.length; i < len; i++ ) {
+		addition = adders[i];
+		button = new ve.ui.IconButtonWidget( {
+			'$$': this.$$, 'icon': addition.icon, 'title': addition.title
+		} );
+		button.connect( this, { 'click': ['emit', 'add', addition.name] } );
+		this.adders[addition.name] = button;
+		this.$adders.append( button.$ );
+		$buttons = $buttons.add( button.$ );
+	}
 };
