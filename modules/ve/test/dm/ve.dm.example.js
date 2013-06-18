@@ -870,13 +870,7 @@ ve.dm.example.MWTransclusion = {
 					'1': { 'wt': 'Hello, world!' }
 				}
 			},
-			'mwOriginal': {
-				'id': 'mwt1',
-				'target': { 'wt' : 'Test' },
-				'params': {
-					'1': { 'wt': 'Hello, world!' }
-				}
-			}
+			'originalIndex': 0
 		},
 		'htmlAttributes': [
 			{ 'values': {
@@ -905,13 +899,7 @@ ve.dm.example.MWTransclusion = {
 					'1': { 'wt': '1,234' }
 				}
 			},
-			'mwOriginal': {
-				'id': 'mwt1',
-				'target': { 'wt' : 'Inline' },
-				'params': {
-					'1': { 'wt': '1,234' }
-				}
-			}
+			'originalIndex': 0
 		},
 		'htmlAttributes': [ { 'values': {
 			'about': '#mwt1',
@@ -931,13 +919,7 @@ ve.dm.example.MWTransclusion = {
 					'1': { 'wt': '5,678' }
 				}
 			},
-			'mwOriginal': {
-				'id': 'mwt1',
-				'target': { 'wt': 'Inline' },
-				'params': {
-					'1': { 'wt': '5,678' }
-				}
-			}
+			'originalIndex': 0
 		},
 		'htmlAttributes': [
 			{ 'values': {
