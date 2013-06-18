@@ -5,6 +5,8 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
+/*global mw */
+
 /**
  * MediaWiki template specification.
  *
@@ -127,8 +129,16 @@ ve.dm.MWTemplateSpecModel.prototype.getDefaultParameterSpec = function ( name ) 
  * @returns {string} Template label
  */
 ve.dm.MWTemplateSpecModel.prototype.getLabel = function () {
-	var target = this.template.getTarget(),
-		title = this.template.getTitle();
+	var title = this.template.getTitle(),
+		target = this.template.getTarget();
+
+	if ( title ) {
+		try {
+			// Normalize and remove namespace prefix
+			title = new mw.Title( this.template.getTitle() ).getNameText();
+		} catch ( e ) { }
+	}
+
 	return title || target.wt;
 };
 
