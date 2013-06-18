@@ -2,10 +2,6 @@
 ( function ( mw, $ ) {
 	'use strict';
 
-	if ( !mw.config.get( 'wgVisualEditorConfig', {} ).enableEventLogging ) {
-		return;
-	}
-
 	function log( action ) {
 		var dfd = $.Deferred();
 		setTimeout( dfd.reject, 1000 );
@@ -25,29 +21,34 @@
 		return dfd;
 	}
 
+	if ( !mw.config.get( 'wgVisualEditorConfig', {} ).enableEventLogging ) {
+		return;
+	}
+
 	mw.hook( 'postEdit' ).add( function () {
 		log( 'page-save-success' );
 	} );
 
-	if ( mw.config.get('wgAction') === 'edit' ) {
+	if ( mw.config.get( 'wgAction' ) === 'edit' ) {
 		log( 'page-edit-impression' );
 	}
 
 	// Log clicks on page edit and section edit links
 	$( '#ca-edit a, .mw-editsection a' ).on( 'click', function ( e ) {
-		var href = this.href,
-			action = /section=/.test( href ) ? 'section-edit-link-click' : 'edit-link-click';
+		var el = this,
+			action = /section=/.test( el.href ) ? 'section-edit-link-click' : 'edit-link-click';
+
 		log( action ).always( function () {
-			window.location = href;
+			window.location = el.href;
 		} );
 		e.preventDefault();
 	} );
 
 	// Log edit submit
 	$( '#wpSave' ).one( 'click', function ( e ) {
-		var $save = $( this );
+		var el = this;
 		log( 'page-save-attempt' ).always( function () {
-			$save.trigger( 'click' );
+			$( el ).trigger( 'click' );
 		} );
 		e.preventDefault();
 	} );
