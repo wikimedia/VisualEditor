@@ -31,6 +31,7 @@ ve.ui.Frame = function VeUiFrame( config ) {
 	this.$
 		.addClass( 've-ui-frame' )
 		.attr( { 'frameborder': 0, 'scrolling': 'no' } );
+
 };
 
 /* Inheritance */
@@ -83,13 +84,16 @@ ve.ui.Frame.prototype.load = function () {
 			this.emit( 'initialize' );
 		}, this );
 
+	// Figure out directionality:
+	this.dir = this.$.closest( '[dir]' ).prop( 'dir' ) || 'ltr';
+
 	// Initialize contents
 	doc.open();
 	doc.write(
 		'<!doctype html>' +
 		'<html>' +
-			'<body style="padding:0;margin:0;">' +
-				'<div class="ve-ui-frame-content"></div>' +
+			'<body style="padding:0;margin:0;direction:' + this.dir + ';" dir="' + this.dir + '">' +
+				'<div class="ve-ui-frame-content ve-' + this.dir + '"></div>' +
 			'</body>' +
 		'</html>'
 	);
@@ -97,6 +101,7 @@ ve.ui.Frame.prototype.load = function () {
 
 	// Import all stylesheets
 	style.textContent = '@import "' + this.config.stylesheets.join( '";\n@import "' ) + '";';
+
 	doc.body.appendChild( style );
 
 	// Poll for access to stylesheet content

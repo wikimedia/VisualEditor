@@ -35,3 +35,9 @@
 	background-position: left center;
 	background-repeat: no-repeat;
 }
+
+/* @noflip */
+.ve-rtl .ve-ui-fieldsetLayout-decorated > legend.ve-ui-labeledElement-label {
+	padding-right: 1.75em;
+	background-position: right center;
+}

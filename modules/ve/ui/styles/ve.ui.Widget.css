@@ -196,6 +196,13 @@
 	font-size: 1.1em;
 }
 
+/* @noflip */
+.ve-rtl ul li.ve-ui-outlineItemWidget {
+	padding: 1.25em 3.5em 1.25em 3.5em;
+	background-position: 1em right center;
+	margin-right: 1.25em;
+}
+
 .ve-ui-outlineItemWidget-level-1 {
 	padding-left: 5.5em;
 	background-position: 3em center;

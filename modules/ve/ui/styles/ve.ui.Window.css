@@ -31,12 +31,22 @@
 	background-repeat: no-repeat;
 }
 
+/* @noflip */
+.ve-rtl .ve-ui-window-icon {
+	float: right;
+}
+
 .ve-ui-window-title {
 	float: left;
 	line-height: 2em;
 	color: #333;
 	white-space: nowrap;
 	cursor: default;
+}
+
+/* @noflip */
+.ve-rtl .ve-ui-window-title {
+	float: right;
 }
 
 .ve-ui-window-overlay {

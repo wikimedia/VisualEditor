@@ -110,6 +110,11 @@
 	margin: 0.125em 0.25em;
 }
 
+/* @noflip */
+.ve-rtl .ve-ui-window-foot .ve-ui-buttonWidget {
+	float: left;
+}
+
 .ve-ui-window-closeButton {
 	float: right;
 	margin: 0.25em 0.25em;
@@ -123,8 +128,19 @@
 	border-top-left-radius: 0;
 }
 
+/* @noflip */
+.ve-rtl .ve-ui-window-closeButton {
+	float: left;
+}
+
 .ve-ui-pagedDialog-outlinePanel {
 	border-right: solid 1px #ddd;
+}
+
+/* @noflip */
+.ve-ui-pagedDialog-outlinePanel.ve-rtl {
+	border-right: 0px;
+	border-left: solid 1px #ddd;
 }
 
 .ve-ui-pagedDialog-outlinePanel-editable .ve-ui-outlineWidget {
