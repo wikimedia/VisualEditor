@@ -3161,6 +3161,85 @@ ve.dm.example.domToDataCases = {
 			{ 'type': 'internalList' },
 			{ 'type': '/internalList' }
 		]
+	},
+	'attribute preservation does not crash due to text node split': {
+		'html': '<body><figure typeof="mw:Image/Thumb" data-parsoid="{}"><a rel="mw:thumb" href="Foo" data-parsoid="{}"><img src="Bar" width="1" height="2" resource="FooBar" data-parsoid="{}"></a><figcaption class="mw-figcaption" data-parsoid="{}"> foo <a rel="mw:WikiLink" href="./Bar" data-parsoid="{}">bar</a> baz</figcaption></figure></body>',
+		'data': [
+			{
+				'type': 'mwBlockImage',
+				'attributes': {
+					'type': 'thumb',
+					'align': 'default',
+					'href': 'Foo',
+					'src': 'Bar',
+					'width': '1',
+					'height': '2',
+					'resource': 'FooBar'
+				},
+				'htmlAttributes': [ {
+					'values': { 'data-parsoid': '{}' },
+					'children': [
+						{
+							'values': { 'data-parsoid': '{}' },
+							'children': [ {
+								'values': { 'data-parsoid': '{}' }
+							} ]
+						},
+						{
+							'values': { 'data-parsoid': '{}' },
+							'children': [
+								{ 'values': { 'data-parsoid': '{}' } }
+							]
+						}
+					 ]
+				} ]
+			},
+			{ 'type': 'mwImageCaption', 'internal': { 'whitespace': [ undefined, ' ' ] } },
+			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper', 'whitespace': [ ' ' ] } },
+			'f', 'o', 'o', ' ',
+			[
+				'b',
+				[ {
+					'type': 'link/mwInternal',
+					'attributes': {
+						'title': 'Bar',
+						'origTitle': 'Bar',
+						'hrefPrefix': './'
+					},
+					'htmlAttributes': [ { 'values': { 'href': './Bar', 'rel': 'mw:WikiLink', 'data-parsoid': '{}' } } ]
+				} ]
+			],
+			[
+				'a',
+				[ {
+					'type': 'link/mwInternal',
+					'attributes': {
+						'title': 'Bar',
+						'origTitle': 'Bar',
+						'hrefPrefix': './'
+					},
+					'htmlAttributes': [ { 'values': { 'href': './Bar', 'rel': 'mw:WikiLink', 'data-parsoid': '{}' } } ]
+				} ]
+			],
+			[
+				'r',
+				[ {
+					'type': 'link/mwInternal',
+					'attributes': {
+						'title': 'Bar',
+						'origTitle': 'Bar',
+						'hrefPrefix': './'
+					},
+					'htmlAttributes': [ { 'values': { 'href': './Bar', 'rel': 'mw:WikiLink', 'data-parsoid': '{}' } } ]
+				} ]
+			],
+			' ', 'b', 'a', 'z',
+			{ 'type': '/paragraph' },
+			{ 'type': '/mwImageCaption' },
+			{ 'type': '/mwBlockImage' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
+		]
 	}
 };
 
