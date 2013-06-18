@@ -437,6 +437,7 @@ $wgResourceModules += array(
 			've/ui/dialogs/ve.ui.PagedDialog.js',
 			've/ui/dialogs/ve.ui.MWMetaDialog.js',
 			've/ui/dialogs/ve.ui.MWMediaInsertDialog.js',
+			've/ui/dialogs/ve.ui.MWMediaEditDialog.js',
 			've/ui/dialogs/ve.ui.MWTransclusionDialog.js',
 
 			've/ui/tools/ve.ui.ButtonTool.js',
@@ -453,6 +454,7 @@ $wgResourceModules += array(
 			've/ui/tools/buttons/ve.ui.LinkButtonTool.js',
 			've/ui/tools/buttons/ve.ui.MWLinkButtonTool.js',
 			've/ui/tools/buttons/ve.ui.MWMediaInsertButtonTool.js',
+			've/ui/tools/buttons/ve.ui.MWMediaEditButtonTool.js',
 			've/ui/tools/buttons/ve.ui.BulletButtonTool.js',
 			've/ui/tools/buttons/ve.ui.NumberButtonTool.js',
 			've/ui/tools/buttons/ve.ui.IndentButtonTool.js',
@@ -618,6 +620,7 @@ $wgResourceModules += array(
 			'visualeditor-dialog-reference-options-section',
 			'visualeditor-dialog-reference-title',
 			'visualeditor-dialogbutton-reference-tooltip',
+			'visualeditor-dialog-media-content-section'
 		),
 	),
 	'ext.visualEditor.icons-raster' => $wgVisualEditorResourceTemplate + array(

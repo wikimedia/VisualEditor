@@ -152,6 +152,19 @@ ve.dm.MWBlockImageNode.static.toDomElements = function ( data, doc, converter ) 
 	return [ figure ];
 };
 
+/* Methods */
+
+/**
+ * Get the caption node of the image.
+ *
+ * @method
+ * @return {ve.dm.MWImageCaptionNode|null} Caption node, if present
+ */
+ve.dm.MWBlockImageNode.prototype.getCaptionNode = function() {
+	var node = this.children[0];
+	return node instanceof ve.dm.MWImageCaptionNode ? node : null;
+};
+
 /* Registration */
 
 ve.dm.modelRegistry.register( ve.dm.MWBlockImageNode );

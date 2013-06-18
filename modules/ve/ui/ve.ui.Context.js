@@ -209,7 +209,7 @@ ve.ui.Context.prototype.update = function () {
 	} else {
 		// No inspector is open, or the selection has changed, show a menu of available inspectors
 		views = ve.ui.viewRegistry.getViewsForAnnotations( fragment.getAnnotations() );
-		nodes = fragment.getLeafNodes();
+		nodes = fragment.getCoveredNodes();
 		for ( i = 0; i < nodes.length; i++ ) {
 			if ( nodes[i].range && nodes[i].range.isCollapsed() ) {
 				nodes.splice( i, 1 );

@@ -237,3 +237,22 @@
 	left: 0;
 	right: 0;
 }
+
+/* ve.ui.MWMediaEditDialog */
+
+.ve-ui-mwMediaEditDialog-body {
+	padding: 2em;
+	overflow-y: auto;
+}
+
+.ve-ui-mwMediaEditDialog-toolbar {
+	font-size: 1.25em;
+}
+
+.ve-ui-mwMediaEditDialog-toolbar .ve-ui-toolbar-bar {
+	border: solid 1px #ddd;
+	border-radius: 0.25em;
+	border-bottom-right-radius: 0;
+	border-bottom-left-radius: 0;
+	border-bottom-width: 0;
+}

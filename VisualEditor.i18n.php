@@ -33,6 +33,7 @@ $messages['en'] = array(
 	'visualeditor-dialog-media-insert-button' => 'Insert media',
 	'visualeditor-dialog-media-insert-title' => 'Insert media',
 	'visualeditor-dialog-media-title' => 'Media settings',
+	'visualeditor-dialog-media-content-section' => 'Caption content',
 	'visualeditor-dialog-meta-categories-data-label' => 'Categories',
 	'visualeditor-dialog-meta-categories-category' => 'Category',
 	'visualeditor-dialog-meta-categories-defaultsort-label' => 'Sort this page by default as',
@@ -198,6 +199,7 @@ See also:
 {{Identical|Insert media}}',
 	'visualeditor-dialog-media-insert-title' => 'Media insert dialog title text.
 {{Identical|Insert media}}',
+	'visualeditor-dialog-media-content-section' => 'Label for the image content sub-section',
 	'visualeditor-dialog-media-title' => 'Title for the editing dialog to set how a media item is displayed on the page',
 	'visualeditor-dialog-meta-categories-data-label' => 'Label for the categories sub-section.
 {{Identical|Category}}',
