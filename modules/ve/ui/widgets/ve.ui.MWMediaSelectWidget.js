@@ -80,8 +80,8 @@ ve.inheritClass( ve.ui.MWMediaSelectWidget, ve.ui.Widget );
 ve.ui.MWMediaSelectWidget.prototype.onInputChange = function () {
 	var i, len;
 
-	if ( this.loading || this.input.getValue() === '' ) {
-		return;
+	if ( this.loading ) {
+		this.request.abort();
 	}
 
 	// Reset
@@ -124,7 +124,12 @@ ve.ui.MWMediaSelectWidget.prototype.onResultsScroll = function () {
  * @method
  */
 ve.ui.MWMediaSelectWidget.prototype.queryMediaSources = function () {
-	var i, len, source;
+	var i, len, source,
+		value = this.input.getValue();
+
+	if ( value === '' ) {
+		return;
+	}
 
 	for ( i = 0, len = this.sources.length; i < len; i++ ) {
 		source = this.sources[i];
@@ -141,7 +146,7 @@ ve.ui.MWMediaSelectWidget.prototype.queryMediaSources = function () {
 				'format': 'json',
 				'action': 'query',
 				'generator': 'search',
-				'gsrsearch': this.input.getValue(),
+				'gsrsearch': value,
 				'gsrnamespace': 6,
 				'gsrlimit': 15,
 				'gsroffset': source.gsroffset,
@@ -181,7 +186,12 @@ ve.ui.MWMediaSelectWidget.prototype.onMediaQueryDone = function ( source, data )
 
 	var	page, title,
 		items = [],
-		pages = data.query.pages;
+		pages = data.query.pages,
+		value = this.input.getValue();
+
+	if ( value === '' ) {
+		return;
+	}
 
 	if ( data['query-continue'] && data['query-continue'].search ) {
 		source.gsroffset = data['query-continue'].search.gsroffset;
