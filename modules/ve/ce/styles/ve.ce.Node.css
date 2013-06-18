@@ -70,24 +70,17 @@
 
 /* ve.ce.ResizableNode */
 
-.ve-ce-resizableNode-transitioning {
-	-webkit-transition: width 100ms ease-in-out, height 100ms ease-in-out;
-	-moz-transition: width 100ms ease-in-out, height 100ms ease-in-out;
-	-ms-transition: width 100ms ease-in-out, height 100ms ease-in-out;
-	-o-transition: width 100ms ease-in-out, height 100ms ease-in-out;
-	transition: width 100ms ease-in-out, height 100ms ease-in-out;
-}
-
-.ve-ce-resizableNode-handles-resizing {
-	z-index: 10000;
-}
-
 .ve-ce-resizableNode-handles {
 	position: absolute;
 	box-shadow: inset 0 0 0 1px rgba(0,0,0,.25);
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
+	z-index: 1; /* Position above RelocatableNode's relocatableMarker */
+}
+
+.ve-ce-resizableNode-handles-resizing {
+	z-index: 10000;
 }
 
 .ve-ce-resizableNode-handles div {
@@ -125,6 +118,17 @@
 	cursor: se-resize;
 	bottom: -0.33em;
 	right: -0.33em;
+}
+
+/* ve.ce.RelocatableNode */
+
+.ve-ce-relocatableNode-marker {
+	cursor: move;
+	position: absolute;
+}
+
+.ve-ce-relocatableNode-marker.relocating {
+	background: rgba(0,0,0,1);
 }
 
 /* ve.ce.ImageNode */

@@ -378,7 +378,10 @@ ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
 				nodeRange = node.getModel().getOuterRange();
 
 			// Get a fragment from the drop point
-			dropPoint = rangy.positionFromPoint( e.originalEvent.pageX, e.originalEvent.pageY );
+			dropPoint = rangy.positionFromPoint(
+				e.originalEvent.pageX - this.$document.scrollLeft(),
+				e.originalEvent.pageY - this.$document.scrollTop()
+			);
 			if ( !dropPoint ) {
 				// Getting position from point supported
 				return false;

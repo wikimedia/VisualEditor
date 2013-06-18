@@ -35,6 +35,7 @@ ve.ce.MWInlineImageNode = function VeCeMWInlineImageNode( model, config ) {
 	// Mixin constructors
 	ve.ce.ProtectedNode.call( this );
 	ve.ce.FocusableNode.call( this );
+	ve.ce.RelocatableNode.call( this );
 
 	this.$image
 		.attr( 'src', this.model.getAttribute( 'src' ) )
@@ -61,6 +62,8 @@ ve.inheritClass( ve.ce.MWInlineImageNode, ve.ce.LeafNode );
 ve.mixinClass( ve.ce.MWInlineImageNode, ve.ce.ProtectedNode );
 
 ve.mixinClass( ve.ce.MWInlineImageNode, ve.ce.FocusableNode );
+
+ve.mixinClass( ve.ce.MWInlineImageNode, ve.ce.RelocatableNode );
 
 /* Static Properties */
 

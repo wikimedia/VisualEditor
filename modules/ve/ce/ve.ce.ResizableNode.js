@@ -125,7 +125,7 @@ ve.ce.ResizableNode.prototype.onResizeHandlesCornerMouseDown = function ( e ) {
 
 	// Set bounding box width and undo the handle margins
 	this.$resizeHandles
-		.addClass( 've-ce-resizableNode-handles-resizing' )
+		.addClass( 've-ui-resizableNode-handles-resizing' )
 		.css( {
 			'width': this.$resizable.width(),
 			'height': this.$resizable.height()
@@ -248,7 +248,7 @@ ve.ce.ResizableNode.prototype.onDocumentMouseUp = function () {
 		selection = surfaceModel.getSelection(),
 		attrChanges = {};
 
-	this.$resizeHandles.removeClass( 've-ce-resizableNode-handles-resizing' );
+	this.$resizeHandles.removeClass( 've-ui-resizableNode-handles-resizing' );
 	$( this.getElementDocument() ).off( '.ve-ce-resizableNode' );
 	this.resizing = false;
 
