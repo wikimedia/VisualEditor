@@ -125,8 +125,11 @@ ve.ui.LookupInputWidget.prototype.populateLookupMenu = function () {
 	this.lookupMenu.clearItems();
 
 	if ( items.length ) {
+		this.lookupMenu.show();
 		this.lookupMenu.addItems( items );
 		this.initializeLookupMenuSelection();
+	} else {
+		this.lookupMenu.hide();
 	}
 
 	return this;
