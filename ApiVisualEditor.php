@@ -20,7 +20,8 @@ class ApiVisualEditor extends ApiBase {
 				$parserParams['oldid'] = ''; // Parsoid wants empty string rather than zero
 			}
 			$revision = Revision::newFromId( $parserParams['oldid'] );
-			if ( $revision === null ) {
+			$latestRevision = Revision::newFromTitle( $title );
+			if ( $revision === null || $latestRevision === null ) {
 				return false;
 			}
 			$restoring = !$revision->isCurrent();
@@ -60,7 +61,7 @@ class ApiVisualEditor extends ApiBase {
 			if ( $content === false ) {
 				return false;
 			}
-			$timestamp = $revision->getTimestamp();
+			$timestamp = $latestRevision->getTimestamp();
 		} else {
 			$content = '';
 			$timestamp = wfTimestampNow();
