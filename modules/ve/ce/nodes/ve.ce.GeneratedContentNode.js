@@ -41,9 +41,7 @@ ve.ce.GeneratedContentNode.prototype.onUpdate = function () {
 			this.emit( 'teardown' );
 		}
 		this.$.empty().append(
-			this.$$( store.value( index ) ).map( function ( i, domElement ) {
-				return doc.importNode( domElement, true );
-			} )
+			ve.copyDomElements( store.value( index ), doc )
 		);
 		if ( this.live ) {
 			this.emit( 'setup' );

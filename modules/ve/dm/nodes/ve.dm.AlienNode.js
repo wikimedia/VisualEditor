@@ -52,8 +52,8 @@ ve.dm.AlienNode.static.toDataElement = function ( domElements, converter ) {
 	};
 };
 
-ve.dm.AlienNode.static.toDomElements = function ( dataElement ) {
-	return dataElement.attributes.domElements;
+ve.dm.AlienNode.static.toDomElements = function ( dataElement, doc ) {
+	return ve.copyDomElements( dataElement.attributes.domElements, doc );
 };
 
 /* Concrete subclasses */
