@@ -59,7 +59,7 @@ ve.dm.MWTransclusionNode.static.getHashObject = function ( dataElement ) {
 };
 
 ve.dm.MWTransclusionNode.static.toDataElement = function ( domElements, converter ) {
-	var dataElement,
+	var dataElement, index,
 		mw = JSON.parse( domElements[0].getAttribute( 'data-mw' ) ),
 		isInline = this.isHybridInline( domElements, converter ),
 		type = isInline ? 'mwTransclusionInline' : 'mwTransclusionBlock';
@@ -67,21 +67,24 @@ ve.dm.MWTransclusionNode.static.toDataElement = function ( domElements, converte
 	dataElement = {
 		'type': type,
 		'attributes': {
-			'mw': mw,
-			'mwOriginal': ve.copyObject( mw )
+			'mw': mw
 		}
 	};
-	this.storeDomElements( dataElement, domElements, converter.getStore() );
+
+	index = this.storeDomElements( dataElement, domElements, converter.getStore() );
+	dataElement.attributes.originalIndex = index;
+
 	return dataElement;
 };
 
 ve.dm.MWTransclusionNode.static.toDomElements = function ( dataElement, doc, converter ) {
-	var span, index;
-	if ( ve.compare( dataElement.attributes.mw, dataElement.attributes.mwOriginal ) ) {
-		// If the transclusion is unchanged just send back the original dom elements so selser can
-		// skip over it
+	var span,
 		index = converter.getStore().indexOfHash( ve.getHash( this.getHashObject( dataElement ) ) );
-		// The object in the store is also used for rendering so return a copy
+
+	// If the transclusion is unchanged just send back the
+	// original DOM elements so selser can skip over it
+	if ( index === dataElement.attributes.originalIndex ) {
+		// The object in the store is also used for CE rendering so return a copy
 		return ve.copyArray( converter.getStore().value( index ) );
 	} else {
 		span = doc.createElement( 'span' );
