@@ -241,13 +241,21 @@ ve.dm.ModelRegistry.prototype.matchElement = function ( element, forceAboutGroup
 		}
 		if ( mustMatchAll ) {
 			// Filter out matches that don't match all types
-			queue = ve.filterArray( queue, function ( name ) { return matchesAllTypes( types, name ); } );
-			queue2 = ve.filterArray( queue2, function ( name ) { return matchesAllTypes( types, name ); } );
+			queue = queue.filter( function ( name ) {
+				return matchesAllTypes( types, name );
+			} );
+			queue2 = queue2.filter( function ( name ) {
+				return matchesAllTypes( types, name );
+			} );
 		}
 		if ( forceAboutGrouping ) {
 			// Filter out matches that don't support about grouping
-			queue = ve.filterArray( queue, function ( name ) { return reg.registry[name].static.enableAboutGrouping; } );
-			queue2 = ve.filterArray( queue2, function ( name ) { return reg.registry[name].static.enableAboutGrouping; } );
+			queue = queue.filter( function ( name ) {
+				return reg.registry[name].static.enableAboutGrouping;
+			} );
+			queue2 = queue2.filter( function ( name ) {
+				return reg.registry[name].static.enableAboutGrouping;
+			} );
 		}
 		// Try string matches first, then regexp matches
 		queue.sort( byRegistrationOrderDesc );
@@ -270,13 +278,21 @@ ve.dm.ModelRegistry.prototype.matchElement = function ( element, forceAboutGroup
 		}
 		if ( mustMatchAll ) {
 			// Filter out matches that don't match all types
-			queue = ve.filterArray( queue, function ( name ) { return matchesAllTypes( types, name ); } );
-			queue2 = ve.filterArray( queue2, function ( name ) { return matchesAllTypes( types, name ); } );
+			queue = queue.filter( function ( name ) {
+				return matchesAllTypes( types, name );
+			} );
+			queue2 = queue2.filter( function ( name ) {
+				return matchesAllTypes( types, name );
+			} );
 		}
 		if ( forceAboutGrouping ) {
 			// Filter out matches that don't support about grouping
-			queue = ve.filterArray( queue, function ( name ) { return reg.registry[name].static.enableAboutGrouping; } );
-			queue2 = ve.filterArray( queue2, function ( name ) { return reg.registry[name].static.enableAboutGrouping; } );
+			queue = queue.filter( function ( name ) {
+				return reg.registry[name].static.enableAboutGrouping;
+			} );
+			queue2 = queue2.filter( function ( name ) {
+				return reg.registry[name].static.enableAboutGrouping;
+			} );
 		}
 		// Only try regexp matches if there are no string matches
 		queue = queue.length > 0 ? queue : queue2;
@@ -301,7 +317,7 @@ ve.dm.ModelRegistry.prototype.matchElement = function ( element, forceAboutGroup
 	if ( element.getAttribute( 'property' ) ) {
 		types = types.concat( element.getAttribute( 'property' ).split( ' ' ) );
 	}
-	elementExtSpecificTypes = ve.filterArray( types, ve.bind( this.isExtensionSpecificType, this ) );
+	elementExtSpecificTypes = types.filter( ve.bind( this.isExtensionSpecificType, this ) );
 	hasExtSpecificTypes = elementExtSpecificTypes.length !== 0;
 	// If the element has extension-specific types, only use those for matching and ignore its
 	// other types. If it has no extension-specific types, use all of its types.

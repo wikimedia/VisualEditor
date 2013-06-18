@@ -28,8 +28,8 @@
 	 * Create an object that inherits from another object.
 	 *
 	 * @method
-	 * @param {Object} origin Object to inherit from
-	 * @returns {Object} Empty object that inherits from origin
+	 * @until ES5: Object#create
+	 * @inheritdoc Object#create
 	 */
 	ve.createObject = Object.create;
 
@@ -79,11 +79,9 @@
 	ve.getObjectValues = oo.getObjectValues;
 
 	/**
-	 * Gets an array of all property names in an object.
-	 *
 	 * @method
-	 * @param {Object} Object to get properties from
-	 * @returns {string[]} List of object keys
+	 * @until ES5: Object#keys
+	 * @inheritdoc Object#keys
 	 */
 	ve.getObjectKeys = Object.keys;
 
@@ -139,27 +137,25 @@
 	ve.isEmptyObject = $.isEmptyObject;
 
 	/**
-	 * Check whether given variable is an array. Should not use `instanceof` or
-	 * `constructor` due to the inability to detect arrays from a different
-	 * scope.
-	 *
 	 * @method
-	 * @source <http://api.jquery.com/jQuery.isArray/>
-	 * @until ES5: Array.isArray
-	 * @param {Mixed} x
-	 * @returns {boolean}
+	 * @until ES5: Array#isArray
+	 * @inheritdoc Array#isArray
 	 */
-	ve.isArray = $.isArray;
+	ve.isArray = Array.isArray;
 
 	/**
+	 * Wrapper for Function#bind.
+	 *
 	 * Create a function that calls the given function in a certain context.
 	 * If a function does not have an explicit context, it is determined at
 	 * execution time based on how it is invoked (e.g. object member, call/apply,
 	 * global scope, etc.).
-	 * Performance optimization: http://jsperf.com/function-bind-shim-perf
+	 *
+	 * Performance optimization: <http://jsperf.com/function-bind-shim-perf>
 	 *
 	 * @method
-	 * @until ES5: Function.prototype.bind
+	 * @source <http://api.jquery.com/jQuery.proxy/>
+	 * @until ES5: Function#bind
 	 * @param {Function} func Function to bind
 	 * @param {Object} context Context for the function
 	 * @param {Mixed...} [args] Variadic list of arguments to prepend to arguments
@@ -169,45 +165,19 @@
 	ve.bind = $.proxy;
 
 	/**
-	 * Wrapper for Array.prototype.indexOf.
+	 * Wrapper for Array#indexOf.
 	 *
 	 * Values are compared without type coercion.
 	 *
 	 * @method
-	 * @until ES5
+	 * @source <http://api.jquery.com/jQuery.inArray/>
+	 * @until ES5: Array#indexOf
 	 * @param {Mixed} value Element to search for
 	 * @param {Array} array Array to search in
 	 * @param {number} [fromIndex=0] Index to being searching from
 	 * @returns {number} Index of value in array, or -1 if not found
 	 */
 	ve.indexOf = $.inArray;
-
-	/**
-	 * Array.prototype.filter
-	 *
-	 * @method
-	 * @until ES5
-	 * @param {Array} array Array to filter
-	 * @param {Function} callback Callback to call on each element of array
-	 * @param {Mixed} [context] Context (this object) for callback
-	 * @returns {Array} Array of elements in array for which callback returned true
-	 */
-	ve.filterArray = function ( array, callback, context ) {
-		var i, len, value, result = [];
-		if ( array.filter ) {
-			return array.filter( callback, context );
-		} else {
-			for ( i = 0, len = array.length; i < len; i++ ) {
-				if ( i in array ) {
-					value = array[i];
-					if ( callback.call( context, value, i, array ) ) {
-						result.push( value );
-					}
-				}
-			}
-			return result;
-		}
-	};
 
 	/**
 	 * Compute the union (duplicate-free merge) of a set of arrays.
@@ -299,6 +269,7 @@
 	 * ve.extendObject( { a: 1 } ); sets ve.a = 1;
 	 *
 	 * @method
+	 * @source <http://api.jquery.com/jQuery.extend/>
 	 * @param {boolean} [recursive=false]
 	 * @param {Mixed} [target] Object that will receive the new properties
 	 * @param {Mixed...} [sources] Variadic list of objects containing properties
@@ -319,7 +290,6 @@
 	 * function, we call that function and use its return value rather than hashing the object
 	 * ourselves. This allows classes to define custom hashing.
 	 *
-	 * @method
 	 * @param {Object} val Object to generate hash for
 	 * @returns {string} Hash of object
 	 */
@@ -332,7 +302,6 @@
 	 *
 	 * This is a callback passed into JSON.stringify.
 	 *
-	 * @method
 	 * @param {string} key Property name of value being replaced
 	 * @param {Mixed} val Property value to replace
 	 * @returns {Mixed} Replacement value
@@ -372,10 +341,9 @@
 	 * performance tests should be conducted on each use of this method to verify this is true for the
 	 * particular use. Also, browsers change fast, never assume anything, always test everything.
 	 *
-	 * @method
 	 * @param {Array} arr Array to remove from and insert into. Will be modified
 	 * @param {number} offset Offset in arr to splice at. This may NOT be negative, unlike the
-	 *                         'index' parameter in Array.prototype.splice
+	 *  'index' parameter in Array#splice
 	 * @param {number} remove Number of elements to remove at the offset. May be zero
 	 * @param {Array} data Array of items to insert at the offset. May not be empty if remove=0
 	 * @returns {Array} Array of items removed
@@ -405,9 +373,10 @@
 	};
 
 	/**
-	 * Insert one array into another. This just calls `ve.batchSplice( dst, offset, 0, src )`.
+	 * Insert one array into another.
 	 *
-	 * @method
+	 * This just a shortcut for `ve.batchSplice( dst, offset, 0, src )`.
+	 *
 	 * @see #batchSplice
 	 */
 	ve.insertIntoArray = function ( dst, offset, src ) {
@@ -471,11 +440,10 @@
 	};
 
 	/**
-	 * Logs data to the console.
+	 * Log data to the console.
 	 *
 	 * This implementation does nothing, to add a real implmementation ve.debug needs to be loaded.
 	 *
-	 * @method
 	 * @param {Mixed...} [args] Data to log
 	 */
 	ve.log = function () {
@@ -483,11 +451,10 @@
 	};
 
 	/**
-	 * Logs an object to the console.
+	 * Log an object to the console.
 	 *
 	 * This implementation does nothing, to add a real implmementation ve.debug needs to be loaded.
 	 *
-	 * @method
 	 * @param {Object} obj
 	 */
 	ve.dir = function () {
@@ -495,17 +462,17 @@
 	};
 
 	/**
-	 * Ported from: http://underscorejs.org/underscore.js
-	 *
-	 * Returns a function, that, as long as it continues to be invoked, will not
+	 * Return a function, that, as long as it continues to be invoked, will not
 	 * be triggered. The function will be called after it stops being called for
 	 * N milliseconds. If `immediate` is passed, trigger the function on the
 	 * leading edge, instead of the trailing.
 	 *
-	 * @method
-	 * @param func
-	 * @param wait
-	 * @param immediate
+	 * Ported from: http://underscorejs.org/underscore.js
+	 *
+	 * @param {Function} func
+	 * @param {number} wait
+	 * @param {boolean} immediate
+	 * @returns {Function}
 	 */
 	ve.debounce = function ( func, wait, immediate ) {
 		var timeout;
@@ -527,9 +494,8 @@
 	};
 
 	/**
-	 * Gets a localized message.
+	 * Get a localized message.
 	 *
-	 * @method
 	 * @param {string} key Message key
 	 * @param {Mixed...} [params] Message parameters
 	 */
@@ -540,12 +506,15 @@
 	};
 
     /**
+     * @method
+     * @inheritdoc unicodeJS.graphemebreak#splitClusters
      * @see unicodeJS.graphemebreak#splitClusters
      */
 	ve.splitClusters = unicodeJS.graphemebreak.splitClusters;
 
 	/**
-	 * Determine if the text consists of only unattached combining marks
+	 * Determine if the text consists of only unattached combining marks.
+	 *
 	 * @param {string} text Text to test
 	 * @returns {boolean} The text is unattached combining marks
 	 */
@@ -554,7 +523,7 @@
 	};
 
 	/**
-	 * Convert a grapheme cluster offset to a byte offset
+	 * Convert a grapheme cluster offset to a byte offset.
 	 *
 	 * @param {string} text Text in which to calculate offset
 	 * @param {number} clusterOffset Grapheme cluster offset
@@ -565,7 +534,7 @@
 	};
 
 	/**
-	 * Convert a byte offset to a grapheme cluster offset
+	 * Convert a byte offset to a grapheme cluster offset.
 	 *
 	 * @param {string} text Text in which to calculate offset
 	 * @param {number} byteOffset Byte offset
@@ -576,12 +545,11 @@
 	};
 
 	/**
-	 * Escapes non-word characters so they can be safely used as HTML attribute values.
+	 * Escape non-word characters so they can be safely used as HTML attribute values.
 	 *
-	 * This method is basically a copy of mw.html.escape.
+	 * This method is basically a copy of `mw.html.escape`.
 	 *
 	 * @see #escapeHtml_escapeHtmlCharacter
-	 * @method
 	 * @param {string} value Attribute value to escape
 	 * @returns {string} Escaped attribute value
 	 */
@@ -590,9 +558,9 @@
 	};
 
 	/**
-	 * Helper function for ve.escapeHtml which escapes a character for use in HTML.
+	 * Helper function for #escapeHtml to escape a character for use in HTML.
 	 *
-	 * This is a callback passed into String.prototype.replace.
+	 * This is a callback intended to be passed to String#replace.
 	 *
 	 * @method escapeHtml_escapeHtmlCharacter
 	 * @private
@@ -619,7 +587,7 @@
 	/**
 	 * Generate an opening HTML tag.
 	 *
-	 * This method copies part of mw.html.element() in MediaWiki.
+	 * This method copies part of `mw.html.element` from MediaWiki.
 	 *
 	 * NOTE: While the values of attributes are escaped, the tag name and the names of
 	 * attributes (i.e. the keys in the attributes objects) are NOT ESCAPED. The caller is
@@ -649,7 +617,8 @@
 	};
 
 	/**
-	 * Get the attributes of a DOM element as an object with key/value pairs
+	 * Get the attributes of a DOM element as an object with key/value pairs.
+	 *
 	 * @param {HTMLElement} element
 	 * @returns {Object}
 	 */
@@ -662,7 +631,7 @@
 	};
 
 	/**
-	 * Set the attributes of a DOM element as an object with key/value pairs
+	 * Set the attributes of a DOM element as an object with key/value pairs.
 	 *
 	 * @param {HTMLElement} element DOM element to apply attributes to
 	 * @param {Object} attributes Attributes to apply
@@ -687,12 +656,11 @@
 	};
 
 	/**
-	 * Builds a summary of an HTML element.
+	 * Build a summary of an HTML element.
 	 *
 	 * Summaries include node name, text, attributes and recursive summaries of children.
 	 * Used for serializing or comparing HTML elements.
 	 *
-	 * @method
 	 * @private
 	 * @param {HTMLElement} element Element to summarize
 	 * @returns {Object} Summary of element.
@@ -725,9 +693,8 @@
 	};
 
 	/**
-	 * Callback for ve.copyArray/Object to convert nodes to a comparable summary
+	 * Callback for #copyArray and #copyObject to convert nodes to a comparable summary.
 	 *
-	 * @method
 	 * @private
 	 * @param {Object} value Value in the object/array
 	 * @returns {Object} DOM element summary if value is a node, otherwise just the value
@@ -741,7 +708,8 @@
 	};
 
 	/**
-	 * Check whether a given DOM element is of a block or inline type
+	 * Check whether a given DOM element is of a block or inline type.
+	 *
 	 * @param {HTMLElement} element
 	 * @returns {boolean} True if element is block, false if it is inline
 	 */
@@ -750,7 +718,8 @@
 	};
 
 	/**
-	 * Check whether a given tag name is a block or inline tag
+	 * Check whether a given tag name is a block or inline tag.
+	 *
 	 * @param {string} nodeName All-lowercase HTML tag name
 	 * @returns {boolean} True if block, false if inline
 	 */
@@ -759,7 +728,8 @@
 	};
 
 	/**
-	 * Private data for ve.isBlockElementType()
+	 * Private data for #isBlockElementType.
+	 *
 	 */
 	ve.isBlockElementType.blockTypes = [
 		'div', 'p',
@@ -778,7 +748,7 @@
 	];
 
 	/**
-	 * Create an HTMLDocument from an HTML string
+	 * Create an HTMLDocument from an HTML string.
 	 *
 	 * The html parameter is supposed to be a full HTML document with a doctype and an `<html>` tag.
 	 * If you pass a document fragment, it may or may not work, this is at the mercy of the browser.
@@ -865,7 +835,6 @@
 	 * Get the actual outer HTML of a DOM node.
 	 *
 	 * @see ve#properInnerHtml
-	 *
 	 * @param {HTMLElement} element HTML element to get outer HTML of
 	 * @returns {string} Outer HTML
 	 */
@@ -874,7 +843,7 @@
 	};
 
 	/**
-	 * Helper function for ve#properInnerHtml and ve#properOuterHtml.
+	 * Helper function for ve#properInnerHtml and #properOuterHtml.
 	 *
 	 * Detect whether the browser has broken `<pre>` serialization, and if so return a clone
 	 * of the node with extra newlines added to make it serialize properly. If the browser is not
