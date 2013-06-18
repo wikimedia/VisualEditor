@@ -510,6 +510,15 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, wrapp
 		}
 		return aboutGroup;
 	}
+	function isAllAlienMeta( data ) {
+		var i;
+		for ( i = data.length - 1; i >= 0; i-- ) {
+			if ( !data[i].type || ( data[i].type !== 'alienMeta' && data[i].type !== '/alienMeta' ) ) {
+				return false;
+			}
+		}
+		return true;
+	}
 
 	var i, childDomElement, childDomElements, childDataElements, text, childTypes, matches,
 		wrappingParagraph, prevElement, childAnnotations, modelName, modelClass,
@@ -587,7 +596,7 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, wrapp
 					childAnnotations.push( annotation );
 
 					childDataElements = this.getDataFromDomRecursion( childDomElement, undefined, childAnnotations );
-					if ( !childDataElements.length ) {
+					if ( !childDataElements.length || isAllAlienMeta( childDataElements ) ) {
 						// Empty annotation, create a meta item
 						childDataElements = this.createDataElements( ve.dm.AlienMetaItem, childDomElements );
 						childDataElements.push( { 'type': '/' + childDataElements[0].type } );

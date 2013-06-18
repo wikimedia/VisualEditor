@@ -1691,6 +1691,42 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/internalList' }
 		]
 	},
+	'nested empty annotation': {
+		'html': '<body><p>Foo<i><b></b></i>Bar</p></body>',
+		'data': [
+			{ 'type': 'paragraph' },
+			'F', 'o', 'o',
+			{
+				'type': 'alienMeta',
+				'attributes': {
+					'domElements': $( '<i><b></b></i>' ).get()
+				}
+			},
+			{ 'type': '/alienMeta' },
+			'B', 'a', 'r',
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
+		]
+	},
+	'annotated comment': {
+		'html': '<body><p>Foo<b><!-- Bar --></b>Baz</p></body>',
+		'data': [
+			{ 'type': 'paragraph' },
+			'F', 'o', 'o',
+			{
+				'type': 'alienMeta',
+				'attributes': {
+					'domElements': $( '<b><!-- Bar --></b>' ).get()
+				}
+			},
+			{ 'type': '/alienMeta' },
+			'B', 'a', 'z',
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
+		]
+	},
 	'list item with space followed by link': {
 		'html': '<body><ul><li><p> <a rel="mw:WikiLink" href="Foo_bar" data-rt="{&quot;sHref&quot;:&quot;foo bar&quot;}">bar</a></p></li></ul></body>',
 		'data': [
