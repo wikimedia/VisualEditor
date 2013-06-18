@@ -208,5 +208,7 @@ class VisualEditorHooks {
 			$user->setOption( 'visualeditor-enable', 1 );
 			$user->saveSettings();
 		}
+
+		return true;
 	}
 }
