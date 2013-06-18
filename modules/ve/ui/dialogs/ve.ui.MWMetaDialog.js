@@ -318,10 +318,10 @@ ve.ui.MWMetaDialog.prototype.getLocalLanguageItems = function () {
  * Get array of language items from meta list
  *
  * @method
- * @returns {Object[]} items
+ * @returns {jQuery.Promise}
  */
 ve.ui.MWMetaDialog.prototype.getAllLanguageItems = function () {
-	var promise = $.Deferred();
+	var deferred = $.Deferred();
 	// TODO: Detect paging token if results exceed limit
 	$.ajax( {
 		'url': mw.util.wikiScript( 'api' ),
@@ -338,13 +338,13 @@ ve.ui.MWMetaDialog.prototype.getAllLanguageItems = function () {
 		// Wait up to 100 seconds before giving up
 		'timeout': 100000,
 		'cache': 'false',
-		'success': ve.bind( this.onAllLanuageItemsSuccess, this, promise ),
-		'error': ve.bind( this.onAllLanuageItemsError, this, promise )
+		'success': ve.bind( this.onAllLanuageItemsSuccess, this, deferred ),
+		'error': ve.bind( this.onAllLanuageItemsError, this, deferred )
 	} );
-	return promise;
+	return deferred.promise();
 };
 
-ve.ui.MWMetaDialog.prototype.onAllLanuageItemsSuccess = function ( promise, response ) {
+ve.ui.MWMetaDialog.prototype.onAllLanuageItemsSuccess = function ( deferred, response ) {
 	var i, iLen, languages = [], langlinks = response.query.pages[response.query.pageids[0]].langlinks;
 	if ( langlinks ) {
 		for ( i = 0, iLen = langlinks.length; i < iLen; i++ ) {
@@ -355,7 +355,7 @@ ve.ui.MWMetaDialog.prototype.onAllLanuageItemsSuccess = function ( promise, resp
 			} );
 		}
 	}
-	promise.resolve( languages );
+	deferred.resolve( languages );
 };
 
 // TODO: This error function should probably not be empty.
