@@ -54,7 +54,8 @@ ve.ce.AlienNode.static.$phantomTemplate = ve.ce.AlienNode.static.$phantomTemplat
  * @method
  */
 ve.ce.AlienNode.prototype.onUpdate = function () {
-	this.$.html( ve.copyArray( this.model.getAttribute( 'domElements' ) || [] ) );
+	// TODO use GeneratedContentNode the way it was meant to be used
+	this.$.html( ve.copyDomElements( this.model.getAttribute( 'domElements' ) || [], this.getElementDocument() ) );
 };
 
 /* Concrete subclasses */

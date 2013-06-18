@@ -85,7 +85,7 @@ ve.ce.MWTransclusionNode.prototype.onParseSuccess = function ( deferred, respons
 	// We have to do this because the PHP parser wraps everything in <p>s, and inline templates
 	// will render strangely when wrapped in <p>s.
 	if ( contentNodes.length === 1 && contentNodes[0].nodeName.toLowerCase() === 'p' ) {
-		contentNodes = contentNodes[0].childNodes;
+		contentNodes = Array.prototype.slice.apply( contentNodes[0].childNodes );
 	}
 	deferred.resolve( contentNodes );
 };
