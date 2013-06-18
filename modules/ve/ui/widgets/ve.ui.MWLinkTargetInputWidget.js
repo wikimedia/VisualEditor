@@ -111,11 +111,15 @@ ve.ui.MWLinkTargetInputWidget.prototype.getLookupMenuItemsFromData = function ( 
 	}
 
 	// Internal link
-	if ( !pageExists && ( !matchingPages ||
-		// Run value through mw.Title to avoid treating a match as a mismatch where
-		// normalisation would make them matching (bug 48476)
-		matchingPages.indexOf( new mw.Title( this.value ).toString() ) === -1
-	) ) {
+	if (
+		!pageExists &&
+		(
+			!matchingPages ||
+			// Run value through mw.Title to avoid treating a match as a mismatch where
+			// normalisation would make them matching (bug 48476)
+			matchingPages.indexOf( new mw.Title( this.value ).getPrefixedText() ) === -1
+		)
+	) {
 		items.push( new ve.ui.MenuSectionItemWidget(
 			'newPage',
 			{ '$$': menu$$, 'label': ve.msg( 'visualeditor-linkinspector-suggest-new-page' ) }
