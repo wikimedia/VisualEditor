@@ -59,7 +59,7 @@ ve.ui.MWLinkTargetInputWidget.prototype.onLookupMenuItemSelect = function ( item
  * Gets a new request object of the current lookup query value.
  *
  * @method
- * @returns {jQuery.Deferred} Deferred object with success and fail handlers already attached
+ * @returns {jqXHR} AJAX object without success or fail handlers attached
  */
 ve.ui.MWLinkTargetInputWidget.prototype.getLookupRequest = function () {
 	return $.ajax( {

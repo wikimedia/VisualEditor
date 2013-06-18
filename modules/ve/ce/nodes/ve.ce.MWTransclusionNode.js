@@ -51,7 +51,7 @@ ve.ce.MWTransclusionNode.static.name = 'mwTransclusion';
 /* Methods */
 
 ve.ce.MWTransclusionNode.prototype.generateContents = function () {
-	var promise = $.Deferred();
+	var deferred = $.Deferred();
 	$.ajax( {
 		'url': mw.util.wikiScript( 'api' ),
 		'data': {
@@ -67,19 +67,19 @@ ve.ce.MWTransclusionNode.prototype.generateContents = function () {
 		// Wait up to 100 seconds before giving up
 		'timeout': 100000,
 		'cache': 'false',
-		'success': ve.bind( this.onParseSuccess, this, promise ),
-		'error': ve.bind( this.onParseError, this, promise )
+		'success': ve.bind( this.onParseSuccess, this, deferred ),
+		'error': ve.bind( this.onParseError, this, deferred )
 	} );
-	return promise;
+	return deferred.promise();
 };
 
 /**
  * Handle a successful response from the parser for the wikitext fragment.
  *
- * @param {jQuery.Promise} promise The promise object created by generateContents
+ * @param {jQuery.Deferred} deferred The Deferred object created by generateContents
  * @param {Object} response Response data
  */
-ve.ce.MWTransclusionNode.prototype.onParseSuccess = function ( promise, response ) {
+ve.ce.MWTransclusionNode.prototype.onParseSuccess = function ( deferred, response ) {
 	var data = response.visualeditor, contentNodes = $( data.content ).get();
 	// HACK: if $content consists of a single paragraph, unwrap it.
 	// We have to do this because the PHP parser wraps everything in <p>s, and inline templates
@@ -87,17 +87,17 @@ ve.ce.MWTransclusionNode.prototype.onParseSuccess = function ( promise, response
 	if ( contentNodes.length === 1 && contentNodes[0].nodeName.toLowerCase() === 'p' ) {
 		contentNodes = contentNodes[0].childNodes;
 	}
-	promise.resolve( contentNodes );
+	deferred.resolve( contentNodes );
 };
 
 /**
  * Handle an unsuccessful response from the parser for the wikitext fragment.
  *
- * @param {jQuery.Promise} promise The promise object created by generateContents
+ * @param {jQuery.Deferred} deferred The promise object created by generateContents
  * @param {Object} response Response data
  */
-ve.ce.MWTransclusionNode.prototype.onParseError = function ( promise ) {
-	promise.reject();
+ve.ce.MWTransclusionNode.prototype.onParseError = function ( deferred ) {
+	deferred.reject();
 };
 
 /* Concrete subclasses */

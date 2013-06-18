@@ -188,7 +188,7 @@ ve.ui.LookupInputWidget.prototype.getLookupMenuItems = function () {
  *
  * @method
  * @abstract
- * @returns {jQuery.Deferred} Deferred object
+ * @returns {jqXHR} jQuery AJAX object, or promise object with an .abort() method
  */
 ve.ui.LookupInputWidget.prototype.getLookupRequest = function () {
 	// Stub, implemented in subclass
