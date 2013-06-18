@@ -268,15 +268,20 @@ ve.dm.MWTransclusionModel.prototype.getParts = function () {
 /**
  * Get part by its ID.
  *
+ * Matching is performed against the first section of the `id`, delimited by a '/'.
+ *
  * @method
  * @param {string} id Part ID
  * @returns {ve.dm.MWTransclusionPartModel|null} Part with matching ID, if found
  */
 ve.dm.MWTransclusionModel.prototype.getPartFromId = function ( id ) {
-	var i, len;
+	var i, len,
+		// For ids from ve.dm.MWTemplateParameterModel, compare against the part id
+		// of the parameter instead of the entire model id (e.g. "part_1" instead of "part_1/foo").
+		partId = id.split( '/' )[0];
 
 	for ( i = 0, len = this.parts.length; i < len; i++ ) {
-		if ( this.parts[i].getId() === id ) {
+		if ( this.parts[i].getId() === partId ) {
 			return this.parts[i];
 		}
 	}
