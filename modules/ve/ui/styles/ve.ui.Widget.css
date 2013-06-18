@@ -14,11 +14,11 @@
 	background-repeat: no-repeat;
 	cursor: pointer;
 	opacity: 0.8;
-	-webkit-transition: opacity 100ms;
-	-moz-transition: opacity 100ms;
-	-ms-transition: opacity 100ms;
-	-o-transition: opacity 100ms;
-	transition: opacity 100ms;
+	-webkit-transition: opacity 200ms;
+	-moz-transition: opacity 200ms;
+	-ms-transition: opacity 200ms;
+	-o-transition: opacity 200ms;
+	transition: opacity 200ms;
 }
 
 .ve-ui-iconButtonWidget:hover {
