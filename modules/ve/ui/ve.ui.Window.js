@@ -84,6 +84,7 @@ ve.mixinClass( ve.ui.Window, ve.EventEmitter );
  * List of stylesheet URLs to load.
  *
  * @static
+ * @inheritable
  * @property {Array}
  */
 ve.ui.Window.static.stylesheets = [];
@@ -92,6 +93,7 @@ ve.ui.Window.static.stylesheets = [];
  * Symbolic name of icon.
  *
  * @static
+ * @inheritable
  * @property {string}
  */
 ve.ui.Window.static.icon = 'window';
@@ -100,6 +102,7 @@ ve.ui.Window.static.icon = 'window';
  * Localized message for title.
  *
  * @static
+ * @inheritable
  * @property {string}
  */
 ve.ui.Window.static.titleMessage = null;
