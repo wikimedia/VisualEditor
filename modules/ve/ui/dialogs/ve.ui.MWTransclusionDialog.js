@@ -78,8 +78,6 @@ ve.ui.MWTransclusionDialog.prototype.initialize = function () {
  * Handle frame open events.
  *
  * @method
- * @throws {Error} If the surface doesn't have a focused node
- * @throws {Error} If the focused node is not a transclusion
  */
 ve.ui.MWTransclusionDialog.prototype.onOpen = function () {
 	// Parent method
@@ -87,19 +85,18 @@ ve.ui.MWTransclusionDialog.prototype.onOpen = function () {
 
 	// Sanity check
 	this.node = this.surface.getView().getFocusedNode();
-	if ( !this.node ) {
-		throw new Error( 'Surface does not have a focused node' );
-	}
-	if ( !( this.node instanceof ve.ce.MWTransclusionNode ) ) {
-		throw new Error( 'Focused node is not a transclusion' );
-	}
 
 	// Properties
 	this.transclusion = new ve.dm.MWTransclusionModel();
 
 	// Initialization
-	this.transclusion.load( ve.copyObject( this.node.getModel().getAttribute( 'mw' ) ) )
-		.always( ve.bind( this.setupPages, this ) );
+	if ( this.node instanceof ve.ce.MWTransclusionNode ) {
+		this.transclusion.load( ve.copyObject( this.node.getModel().getAttribute( 'mw' ) ) )
+			.always( ve.bind( this.setupPages, this ) );
+	} else {
+		this.transclusion.addPlaceholder();
+		this.setupPages();
+	}
 };
 
 /**
@@ -108,19 +105,25 @@ ve.ui.MWTransclusionDialog.prototype.onOpen = function () {
  * @param {string} action Action that caused the window to be closed
  */
 ve.ui.MWTransclusionDialog.prototype.onClose = function ( action ) {
-	var surfaceModel = this.surface.getModel();
+	var surfaceModel = this.surface.getModel(),
+		obj = this.transclusion.getPlainObject();
 
 	// Save changes
 	if ( action === 'apply' ) {
 
-		// TODO: Wrap attribute changes in ve.dm.SurfaceFragment
-		surfaceModel.change(
-			ve.dm.Transaction.newFromAttributeChanges(
-				surfaceModel.getDocument(),
-				this.node.getOffset(),
-				{ 'mw': this.transclusion.getPlainObject() }
-			)
-		);
+		if ( this.node instanceof ve.ce.MWTransclusionNode ) {
+			surfaceModel.getFragment().changeAttributes( { 'mw': obj } );
+		} else {
+			surfaceModel.getFragment().collapseRangeToEnd().insertContent( [
+				{
+					'type': 'mwTransclusionInline',
+					'attributes': {
+						'mw': obj
+					}
+				},
+				{ 'type': '/mwTransclusionInline' }
+			] );
+		}
 	}
 
 	this.clearPages();
@@ -337,6 +340,9 @@ ve.ui.MWTransclusionDialog.prototype.setupPages = function () {
 		} else if ( part instanceof ve.dm.MWTransclusionContentModel ) {
 			// Add wikitext page
 			this.addPage( part.getId(), this.getContentPage( part ) );
+		} else if ( part instanceof ve.dm.MWTemplatePlaceholderModel ) {
+			// Add template placeholder page
+			this.addPage( part.getId(), this.getPlaceholderPage( part ) );
 		}
 	}
 
