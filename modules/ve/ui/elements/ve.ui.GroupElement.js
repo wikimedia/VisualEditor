@@ -113,6 +113,7 @@ ve.ui.GroupElement.prototype.removeItems = function ( items ) {
 ve.ui.GroupElement.prototype.clearItems = function () {
 	this.items = [];
 	this.$items.detach();
+	this.$items = $( [] );
 
 	return this;
 };

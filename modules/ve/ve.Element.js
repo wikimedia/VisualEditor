@@ -79,6 +79,8 @@ ve.Element.static.getDocument = function ( context ) {
 	var doc =
 		// jQuery - selections created "offscreen" won't have a context, so .context isn't reliable
 		( context[0] && context[0].ownerDocument ) ||
+		// Empty jQuery selections might have a context
+		context.context ||
 		// HTMLElement
 		context.ownerDocument ||
 		// Window
