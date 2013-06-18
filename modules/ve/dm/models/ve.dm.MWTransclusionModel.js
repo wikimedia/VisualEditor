@@ -213,13 +213,17 @@ ve.dm.MWTransclusionModel.prototype.addContent = function ( value, index ) {
  * Add template part.
  *
  * @method
- * @param {string} title Template title
- * @param {number} [index] Specific index to add content at
+ * @param {Object} target Template target
+ * @param {string} target.wt Original wikitext of target
+ * @param {string} [target.href] Hypertext reference to target
+ * @param {number} [index] Specific index to add template at
  * @returns {ve.dm.MWTransclusionModel} Added template part
  * @emits add
  */
-ve.dm.MWTransclusionModel.prototype.addTemplate = function ( title, index ) {
-	var part = new ve.dm.MWTemplateModel( this, title );
+ve.dm.MWTransclusionModel.prototype.addTemplate = function ( target, index ) {
+	var part = new ve.dm.MWTemplateModel( this, target ),
+		title = part.getTitle();
+
 	if ( this.specs.hasOwnProperty( title ) ) {
 		part.getSpec().extend( this.specs[title] );
 	}
