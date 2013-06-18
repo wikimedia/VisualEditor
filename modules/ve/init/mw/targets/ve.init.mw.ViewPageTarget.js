@@ -19,15 +19,30 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 	var browserWhitelisted,
 		browserBlacklisted,
 		currentUri = new mw.Uri(),
-		supportsES5 = ( function () {
-			'use strict';
-			return this === undefined;
-		}() ),
+		supportsES5subset = (
+			// It would be much easier to do a quick inline function that asserts "use strict"
+			// works, but since IE9 doesn't support strict mode (and we don't use strict mode) we
+			// have to instead list all the ES5 features we use.
+			Array.isArray &&
+			Array.prototype.filter &&
+			Array.prototype.indexOf &&
+			Array.prototype.map &&
+			Date.prototype.toJSON &&
+			Function.prototype.bind &&
+			Object.create &&
+			Object.keys &&
+			String.prototype.trim &&
+			window.JSON &&
+			JSON.parse &&
+			JSON.stringify
+		),
 		supportsContentEditable = 'contentEditable' in document.createElement( 'div' );
 
 	// Parent constructor
 	ve.init.mw.Target.call(
-		this, $( '#content' ), mw.config.get( 'wgRelevantPageName' ), currentUri.query.oldid
+		this, $( '#content' ),
+		mw.config.get( 'wgRelevantPageName' ),
+		currentUri.query.oldid
 	);
 
 	// Properties
@@ -112,7 +127,7 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 		'serializeError': 'onSerializeError'
 	} );
 
-	if ( !supportsES5 || !supportsContentEditable || browserBlacklisted ) {
+	if ( !supportsES5subset || !supportsContentEditable || browserBlacklisted ) {
 		// Don't initialise in browsers that are broken
 		return;
 	}
