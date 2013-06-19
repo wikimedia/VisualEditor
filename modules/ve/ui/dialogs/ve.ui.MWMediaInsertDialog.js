@@ -38,48 +38,35 @@ ve.ui.MWMediaInsertDialog.static.icon = 'picture';
 
 /* Methods */
 
-/**
- * Handle media select events.
- *
- * @method
- * @param {string} item Selected item
- */
 ve.ui.MWMediaInsertDialog.prototype.onSelect = function ( item ) {
 	this.item = item;
 	this.applyButton.setDisabled( item === null );
 };
 
-/**
- * Handle apply button click events.
- *
- * @method
- */
-ve.ui.MWMediaInsertDialog.prototype.onApplyButtonClick = function () {
-	var info = this.item.imageinfo[0];
-
-	this.surface.getModel().getFragment().insertContent( [
-		{
-			'type': 'mwBlockImage',
-			'attributes': {
-				'align': 'right',
-				'href': info.descriptionurl,
-				'src': info.thumburl,
-				'width': info.thumbwidth,
-				'height': info.thumbheight
-			}
-		},
-		{ 'type': '/mwBlockImage' }
-	] );
+ve.ui.MWMediaInsertDialog.prototype.onClose = function ( action ) {
+	var info;
 
 	// Parent method
-	ve.ui.Dialog.prototype.onApplyButtonClick.call( this );
+	ve.ui.Dialog.prototype.onClose.call( this );
+
+	if ( action === 'apply' ) {
+		info = this.item.imageinfo[0];
+		this.surface.getModel().getFragment().insertContent( [
+			{
+				'type': 'mwBlockImage',
+				'attributes': {
+					'align': 'right',
+					'href': info.descriptionurl,
+					'src': info.thumburl,
+					'width': info.thumbwidth,
+					'height': info.thumbheight
+				}
+			},
+			{ 'type': '/mwBlockImage' }
+		] );
+	}
 };
 
-/**
- * Initialize frame contents.
- *
- * @method
- */
 ve.ui.MWMediaInsertDialog.prototype.initialize = function () {
 	// Parent method
 	ve.ui.Dialog.prototype.initialize.call( this );

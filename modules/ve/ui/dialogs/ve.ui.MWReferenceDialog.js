@@ -58,11 +58,6 @@ ve.ui.MWReferenceDialog.static.addLocalStylesheets( [
 
 /* Methods */
 
-/**
- * Handle frame ready events.
- *
- * @method
- */
 ve.ui.MWReferenceDialog.prototype.initialize = function () {
 	// Call parent method
 	ve.ui.Dialog.prototype.initialize.call( this );
@@ -100,11 +95,6 @@ ve.ui.MWReferenceDialog.prototype.initialize = function () {
 	);
 };
 
-/**
- * Handle frame ready events.
- *
- * @method
- */
 ve.ui.MWReferenceDialog.prototype.onOpen = function () {
 	var focusedNode, data, refGroup, listKey,
 		doc = this.surface.getModel().getDocument();
@@ -142,19 +132,13 @@ ve.ui.MWReferenceDialog.prototype.onOpen = function () {
 	this.referenceSurface.view.documentView.documentNode.$.focus();
 };
 
-/**
- * Handle frame ready events.
- *
- * @method
- * @param {string} action Action that caused the window to be closed
- */
 ve.ui.MWReferenceDialog.prototype.onClose = function ( action ) {
 	var data, doc, listIndex, listGroup, listKey, refGroup, newItem, refNode, oldListGroup,
 		oldListKey, oldNodes, internalList, attrChanges,
 		surfaceModel = this.surface.getModel();
 
 	// Parent method
-	ve.ui.Dialog.prototype.onOpen.call( this );
+	ve.ui.Dialog.prototype.onClose.call( this );
 
 	// Save changes
 	if ( action === 'apply' ) {
