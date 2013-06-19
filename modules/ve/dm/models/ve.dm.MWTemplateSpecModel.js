@@ -129,13 +129,25 @@ ve.dm.MWTemplateSpecModel.prototype.getDefaultParameterSpec = function ( name ) 
  * @returns {string} Template label
  */
 ve.dm.MWTemplateSpecModel.prototype.getLabel = function () {
-	var title = this.template.getTitle(),
+	var titleObj, title = this.template.getTitle(),
 		target = this.template.getTarget();
 
 	if ( title ) {
 		try {
-			// Normalize and remove namespace prefix
-			title = new mw.Title( this.template.getTitle() ).getNameText();
+			// Normalize and remove namespace prefix if in the Template: namespace
+			titleObj = new mw.Title( title );
+			switch ( titleObj.getNamespaceId() ) {
+				case 10:
+					// Template namespace, remove namespace prefix
+					title = titleObj.getNameText();
+					break;
+				case 0:
+					// Main namespace, prepend a colon
+					title = ':' + titleObj.getPrefixedText();
+					break;
+				default:
+					title = titleObj.getPrefixedText();
+			}
 		} catch ( e ) { }
 	}
 
