@@ -45,11 +45,6 @@ ve.ui.MWMetaDialog.static.icon = 'settings';
 
 /* Methods */
 
-/**
- * Handle frame ready events.
- *
- * @method
- */
 ve.ui.MWMetaDialog.prototype.initialize = function () {
 	var languagePromise;
 
@@ -143,15 +138,13 @@ ve.ui.MWMetaDialog.prototype.initialize = function () {
 	}, this ) );
 };
 
-/**
- * Handle frame ready events.
- *
- * @method
- */
 ve.ui.MWMetaDialog.prototype.onOpen = function () {
 	var surfaceModel = this.surface.getModel(),
 		categoryWidget = this.categoryWidget,
 		defaultSortKeyItem = this.getDefaultSortKeyItem();
+
+	// Parent method
+	ve.ui.PagedDialog.prototype.onOpen.call( this );
 
 	this.defaultSortInput.setValue(
 		defaultSortKeyItem ? defaultSortKeyItem.getAttribute( 'content' ) : ''
@@ -162,21 +155,12 @@ ve.ui.MWMetaDialog.prototype.onOpen = function () {
 	surfaceModel.breakpoint();
 	surfaceModel.stopHistoryTracking();
 
-	// Parent method
-	ve.ui.PagedDialog.prototype.onOpen.call( this );
-
 	// Update input position once visible
 	setTimeout( function () {
 		categoryWidget.fitInput();
 	} );
 };
 
-/**
- * Handle frame ready events.
- *
- * @method
- * @param {string} action Action that caused the window to be closed
- */
 ve.ui.MWMetaDialog.prototype.onClose = function ( action ) {
 	var hasTransactions, newDefaultSortKeyItem, newDefaultSortKeyItemData,
 		surfaceModel = this.surface.getModel(),

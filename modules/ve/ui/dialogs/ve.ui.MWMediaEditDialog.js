@@ -57,11 +57,6 @@ ve.ui.MWMediaEditDialog.static.addLocalStylesheets( [
 
 /* Methods */
 
-/**
- * Handle frame ready events.
- *
- * @method
- */
 ve.ui.MWMediaEditDialog.prototype.initialize = function () {
 	// Call parent method
 	ve.ui.Dialog.prototype.initialize.call( this );
@@ -78,11 +73,6 @@ ve.ui.MWMediaEditDialog.prototype.initialize = function () {
 	this.$body.append( this.contentFieldset.$ );
 };
 
-/**
- * Handle frame ready events.
- *
- * @method
- */
 ve.ui.MWMediaEditDialog.prototype.onOpen = function () {
 	var data, doc = this.surface.getModel().getDocument();
 
@@ -113,12 +103,6 @@ ve.ui.MWMediaEditDialog.prototype.onOpen = function () {
 	this.captionSurface.view.documentView.documentNode.$.focus();
 };
 
-/**
- * Handle frame ready events.
- *
- * @method
- * @param {string} action Action that caused the window to be closed
- */
 ve.ui.MWMediaEditDialog.prototype.onClose = function ( action ) {
 	var data, doc, surfaceModel = this.surface.getModel();
 

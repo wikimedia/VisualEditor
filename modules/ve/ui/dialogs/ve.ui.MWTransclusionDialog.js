@@ -60,11 +60,6 @@ ve.ui.MWTransclusionDialog.static.modelClasses = [ ve.dm.MWTransclusionNode ];
 
 /* Methods */
 
-/**
- * Handle frame ready events.
- *
- * @method
- */
 ve.ui.MWTransclusionDialog.prototype.initialize = function () {
 	// Call parent method
 	ve.ui.PagedDialog.prototype.initialize.call( this );
@@ -76,11 +71,6 @@ ve.ui.MWTransclusionDialog.prototype.initialize = function () {
 	} );
 };
 
-/**
- * Handle frame open events.
- *
- * @method
- */
 ve.ui.MWTransclusionDialog.prototype.onOpen = function () {
 	// Parent method
 	ve.ui.PagedDialog.prototype.onOpen.call( this );
@@ -101,18 +91,15 @@ ve.ui.MWTransclusionDialog.prototype.onOpen = function () {
 	}
 };
 
-/**
- * Handle window close events.
- *
- * @param {string} action Action that caused the window to be closed
- */
 ve.ui.MWTransclusionDialog.prototype.onClose = function ( action ) {
 	var surfaceModel = this.surface.getModel(),
 		obj = this.transclusion.getPlainObject();
 
+	// Parent method
+	ve.ui.PagedDialog.prototype.onClose.call( this );
+
 	// Save changes
 	if ( action === 'apply' ) {
-
 		if ( this.node instanceof ve.ce.MWTransclusionNode ) {
 			surfaceModel.getFragment().changeAttributes( { 'mw': obj } );
 		} else {
@@ -131,9 +118,6 @@ ve.ui.MWTransclusionDialog.prototype.onClose = function ( action ) {
 	this.clearPages();
 	this.node = null;
 	this.content = null;
-
-	// Parent method
-	ve.ui.PagedDialog.prototype.onClose.call( this );
 };
 
 /**

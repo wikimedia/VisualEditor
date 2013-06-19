@@ -43,11 +43,6 @@ ve.inheritClass( ve.ui.PagedDialog, ve.ui.Dialog );
 
 /* Methods */
 
-/**
- * Handle frame ready events.
- *
- * @method
- */
 ve.ui.PagedDialog.prototype.initialize = function () {
 	// Call parent method
 	ve.ui.Dialog.prototype.initialize.call( this );

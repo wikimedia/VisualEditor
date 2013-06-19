@@ -124,11 +124,6 @@ ve.ui.Dialog.prototype.close = function ( action ) {
 	}
 };
 
-/**
- * Initialize frame contents.
- *
- * @method
- */
 ve.ui.Dialog.prototype.initialize = function () {
 	// Call parent method
 	ve.ui.Window.prototype.initialize.call( this );
