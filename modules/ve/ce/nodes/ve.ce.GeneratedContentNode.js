@@ -25,12 +25,29 @@ ve.ce.GeneratedContentNode = function VeCeGeneratedContentNode() {
 	this.onUpdate();
 };
 
+/* Events */
+
+/**
+ * @event setup
+ */
+
+/**
+ * @event teardown
+ */
+
+/**
+ * @event rerender
+ */
+
 /* Methods */
 
 /**
  * Handle update events.
  *
  * @method
+ * @emits setup
+ * @emits teardown
+ * @emits rerender
  */
 ve.ce.GeneratedContentNode.prototype.onUpdate = function () {
 	var doc = this.getElementDocument(),
@@ -45,6 +62,7 @@ ve.ce.GeneratedContentNode.prototype.onUpdate = function () {
 		);
 		if ( this.live ) {
 			this.emit( 'setup' );
+			this.emit( 'rerender' );
 		}
 	} else {
 		this.startGenerating();
