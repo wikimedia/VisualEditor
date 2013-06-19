@@ -495,7 +495,7 @@ ve.ce.Surface.prototype.onDocumentKeyPress = function ( e ) {
 	// deletion would occur in case when selection is not collapsed and user press home key for
 	// instance (Firefox fires keypress for home key).
 	// TODO: Should be covered with Selenium tests.
-	if ( e.which === 0 || e.charCode === 0 ) {
+	if ( e.which === 0 || e.charCode === 0 || ve.ce.isShortcutKey( e ) ) {
 		return;
 	}
 
