@@ -80,12 +80,9 @@ ve.inheritClass( ve.ui.MWMediaSelectWidget, ve.ui.Widget );
 ve.ui.MWMediaSelectWidget.prototype.onInputChange = function () {
 	var i, len;
 
-	if ( this.loading ) {
-		this.request.abort();
-	}
-
 	// Reset
 	this.select.clearItems();
+	this.titles = {};
 	for ( i = 0, len = this.sources.length; i < len; i++ ) {
 		delete this.sources[i].gsroffset;
 	}
@@ -154,10 +151,18 @@ ve.ui.MWMediaSelectWidget.prototype.queryMediaSources = function () {
 				'iiprop': 'dimensions|url',
 				'iiurlheight': this.size
 			},
+			// This request won't be cached since the JSON-P callback is unique. However make sure
+			// to allow jQuery to cache otherwise so it won't e.g. add "&_=(random)" which will
+			// trigger a MediaWiki API error for invalid parameter "_".
+			'cache': true,
+			// TODO: Only use JSON-P for cross-domain.
+			// jQuery has this logic built-in (if url is not same-origin ..)
+			// but isn't working for some reason.
 			'dataType': 'jsonp'
 		} )
-			.always( ve.bind( this.onMediaQueryAlways, this, source ) )
-			.done( ve.bind( this.onMediaQueryDone, this, source ) );
+			.done( ve.bind( this.onMediaQueryDone, this, source ) )
+			.always( ve.bind( this.onMediaQueryAlways, this, source ) );
+		source.value = value;
 	}
 };
 
@@ -189,7 +194,7 @@ ve.ui.MWMediaSelectWidget.prototype.onMediaQueryDone = function ( source, data )
 		pages = data.query.pages,
 		value = this.input.getValue();
 
-	if ( value === '' ) {
+	if ( value === '' || value !== source.value ) {
 		return;
 	}
 
