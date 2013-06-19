@@ -22,6 +22,7 @@ ve.ce.MWReferenceListNode = function VeCeMWReferenceListNode( model, config ) {
 
 	// Mixin constructors
 	ve.ce.ProtectedNode.call( this );
+	ve.ce.FocusableNode.call( this );
 
 	// DOM Changes
 	this.$.addClass( 've-ce-mwReferenceListNode', 'reference' )
@@ -42,6 +43,8 @@ ve.ce.MWReferenceListNode = function VeCeMWReferenceListNode( model, config ) {
 ve.inheritClass( ve.ce.MWReferenceListNode, ve.ce.LeafNode );
 
 ve.mixinClass( ve.ce.MWReferenceListNode, ve.ce.ProtectedNode );
+
+ve.mixinClass( ve.ce.MWReferenceListNode, ve.ce.FocusableNode );
 
 /* Static Properties */
 
