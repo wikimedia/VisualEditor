@@ -59,7 +59,8 @@ ve.ui.MWMediaInsertDialog.prototype.onClose = function ( action ) {
 					'href': info.descriptionurl,
 					'src': info.thumburl,
 					'width': info.thumbwidth,
-					'height': info.thumbheight
+					'height': info.thumbheight,
+					'resource': './' + this.item.title
 				}
 			},
 			{ 'type': '/mwBlockImage' }
