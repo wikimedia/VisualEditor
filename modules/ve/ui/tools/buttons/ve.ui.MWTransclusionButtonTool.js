@@ -29,7 +29,7 @@ ve.ui.MWTransclusionButtonTool.static.name = 'mwTransclusion';
 
 ve.ui.MWTransclusionButtonTool.static.icon = 'template';
 
-ve.ui.MWTransclusionButtonTool.static.titleMessage = 'visualeditor-dialogbutton-template-tooltip';
+ve.ui.MWTransclusionButtonTool.static.titleMessage = 'visualeditor-dialogbutton-transclusion-tooltip';
 
 ve.ui.MWTransclusionButtonTool.static.dialog = 'mwTransclusion';
 
