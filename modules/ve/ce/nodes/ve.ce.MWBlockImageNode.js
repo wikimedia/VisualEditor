@@ -105,41 +105,39 @@ ve.ce.MWBlockImageNode.static.alignToCssClass = {
 
 ve.ce.MWBlockImageNode.prototype.onAttributeChange = function ( key, from, to ) {
 	var $element;
-
-	if ( key === 'align' && from !== to ) {
-		if ( to === 'center' || from === 'center' ) {
-			this.emit( 'teardown' );
-			if ( to === 'center' ) {
-				$element = this.$$( '<div>' ).addClass( 'center' );
-				this.$thumb = this.$;
-				this.$.replaceWith( $element );
-				this.$ = $element;
-				this.$.append( this.$thumb );
-			} else {
-				this.$.replaceWith( this.$thumb );
-				this.$ = this.$thumb;
-			}
-			this.emit( 'setup' );
-		}
-		this.$thumb.removeClass( ve.ce.MWBlockImageNode.static.alignToCssClass[ from ] );
-		this.$thumb.addClass( ve.ce.MWBlockImageNode.static.alignToCssClass[ to ] );
-	}
-};
-
-ve.ce.MWBlockImageNode.prototype.onAttributeChange = function ( key, from, to ) {
 	if ( from !== to ) {
-		if ( key === 'src' ) {
-			this.$image.attr( 'src', to );
-		}
-		if ( key === 'width' || key === 'height' ) {
-			this.$image.css( key, to );
-		}
-		if ( key === 'width' ) {
-			this.$thumbInner.css( 'width', to + 2 );
+		switch ( key ) {
+			case 'align':
+				if ( to === 'center' || from === 'center' ) {
+					this.emit( 'teardown' );
+					if ( to === 'center' ) {
+						$element = this.$$( '<div>' ).addClass( 'center' );
+						this.$thumb = this.$;
+						this.$.replaceWith( $element );
+						this.$ = $element;
+						this.$.append( this.$thumb );
+					} else {
+						this.$.replaceWith( this.$thumb );
+						this.$ = this.$thumb;
+					}
+					this.emit( 'setup' );
+				}
+				this.$thumb.removeClass( ve.ce.MWBlockImageNode.static.alignToCssClass[ from ] );
+				this.$thumb.addClass( ve.ce.MWBlockImageNode.static.alignToCssClass[ to ] );
+				break;
+			case 'src':
+				this.$image.attr( 'src', to );
+				break;
+			case 'width':
+				this.$image.css( 'width', to );
+				this.$thumbInner.css( 'width', to + 2 );
+				break;
+			case 'height':
+				this.$image.css( 'height', to );
+				break;
 		}
 	}
 };
-
 
 ve.ce.MWBlockImageNode.prototype.setupSlugs = function () {
 	// Intentionally empty
