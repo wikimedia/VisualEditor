@@ -509,6 +509,7 @@ $wgResourceModules += array(
 			'visualeditor-dialog-action-apply',
 			'visualeditor-dialog-action-cancel',
 			'visualeditor-dialog-action-close',
+			'visualeditor-dialog-media-content-section',
 			'visualeditor-dialog-media-insert-button',
 			'visualeditor-dialog-media-insert-title',
 			'visualeditor-dialog-media-title',
@@ -620,7 +621,6 @@ $wgResourceModules += array(
 			'visualeditor-dialog-reference-options-section',
 			'visualeditor-dialog-reference-title',
 			'visualeditor-dialogbutton-reference-tooltip',
-			'visualeditor-dialog-media-content-section'
 		),
 	),
 	'ext.visualEditor.icons-raster' => $wgVisualEditorResourceTemplate + array(
