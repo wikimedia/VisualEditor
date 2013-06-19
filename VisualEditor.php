@@ -203,6 +203,7 @@ $wgResourceModules += array(
 		),
 		'dependencies' => array(
 			'jquery.client',
+			'mediawiki.Uri',
 			'ext.visualEditor.base',
 		),
 	),
