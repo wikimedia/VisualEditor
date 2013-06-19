@@ -5,6 +5,8 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
+/*global mw */
+
 /**
  * Document dialog.
  *
@@ -553,9 +555,14 @@ ve.ui.MWTransclusionDialog.prototype.getPlaceholderPage = function ( placeholder
 	function addTemplate() {
 		var target, part,
 			parts = placeholder.getTransclusion().getParts(),
-			title = addTemplateInput.getValue();
+			value = addTemplateInput.getValue(),
+			href = value;
 
-		target = { 'href': title, 'wt': title.replace( /^[^:]+:/, '' ) };
+		if ( href.charAt( 0 ) !== ':' ) {
+			href = mw.config.get( 'wgFormattedNamespaces' )[10] + ':' + href;
+		}
+
+		target = { 'href': new mw.Title( href ).getPrefixedText(), 'wt': value };
 		part = this.transclusion.addTemplate( target, ve.indexOf( placeholder, parts ) );
 		this.setPageByName( part.getId() );
 		placeholder.remove();
