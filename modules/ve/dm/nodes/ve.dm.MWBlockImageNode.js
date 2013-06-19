@@ -34,8 +34,13 @@ ve.dm.MWBlockImageNode.static.handlesOwnChildren = true;
 
 ve.dm.MWBlockImageNode.static.childNodeTypes = [ 'mwImageCaption' ];
 
-// Match typeof="mw:Image/Thumb" and typeof="mw:Image/Frame"
-ve.dm.MWBlockImageNode.static.matchRdfaTypes = [ /^mw:Image\/(Thumb|Frame)$/ ];
+ve.dm.MWBlockImageNode.static.matchTagNames = [ 'figure' ];
+
+ve.dm.MWBlockImageNode.static.matchRdfaTypes = [
+	'mw:Image',
+	'mw:Image/Thumb',
+	'mw:Image/Frame'
+];
 
 ve.dm.MWBlockImageNode.static.toDataElement = function ( domElements, converter ) {
 	var $figure = $( domElements[0] ),
@@ -63,6 +68,9 @@ ve.dm.MWBlockImageNode.static.toDataElement = function ( domElements, converter 
 			break;
 		case 'mw:Image/Frame':
 			attributes.type = 'frame';
+			break;
+		case 'mw:Image':
+			attributes.type = 'none';
 			break;
 	}
 
@@ -109,10 +117,16 @@ ve.dm.MWBlockImageNode.static.toDomElements = function ( data, doc, converter ) 
 		wrapper = doc.createElement( 'div' );
 
 	// Type
-	if ( dataElement.attributes.type === 'thumb' ) {
-		figure.setAttribute( 'typeof', 'mw:Image/Thumb' );
-	} else {
-		figure.setAttribute( 'typeof', 'mw:Image/Frame' );
+	switch ( dataElement.attributes.type ) {
+		case 'thumb':
+			figure.setAttribute( 'typeof', 'mw:Image/Thumb' );
+			break;
+		case 'frame':
+			figure.setAttribute( 'typeof', 'mw:Image/Frame' );
+			break;
+		case 'none':
+			figure.setAttribute( 'typeof', 'mw:Image' );
+			break;
 	}
 
 	// Default-size
