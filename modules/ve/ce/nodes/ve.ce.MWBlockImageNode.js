@@ -17,7 +17,7 @@
  * @param {Object} [config] Config options
  */
 ve.ce.MWBlockImageNode = function VeCeMWBlockImageNode( model, config ) {
-	var captionModel, captionView;
+	var captionModel, captionView, type;
 
 	// Parent constructor
 	ve.ce.BranchNode.call( this, model, config );
@@ -27,6 +27,8 @@ ve.ce.MWBlockImageNode = function VeCeMWBlockImageNode( model, config ) {
 	ve.ce.FocusableNode.call( this );
 	ve.ce.ResizableNode.call( this );
 
+	type = this.model.getAttribute( 'type' );
+
 	if ( this.model.getAttribute( 'align' ) === 'center' ) {
 		this.$.addClass( 'center' );
 		this.$thumb = this.$$( '<div>' ).appendTo( this.$ );
@@ -34,28 +36,35 @@ ve.ce.MWBlockImageNode = function VeCeMWBlockImageNode( model, config ) {
 		this.$thumb = this.$;
 	}
 
-	this.$thumb
-		.addClass( 'thumb' )
-		.addClass(
-			ve.ce.MWBlockImageNode.static.alignToCssClass[ this.model.getAttribute( 'align' ) ]
-		);
-
 	this.$thumbInner = this.$$( '<div>' )
 		.addClass( 'thumbinner' )
-		.css( 'width', parseInt( this.model.getAttribute( 'width' ), 10 ) + 2 )
-		.appendTo( this.$thumb );
+		.css( 'width', parseInt( this.model.getAttribute( 'width' ), 10 ) + 2 );
 
 	this.$a = this.$$( '<a>' )
 		.addClass( 'image' )
-		.attr( 'src', this.model.getAttribute( 'href' ) )
-		.appendTo( this.$thumbInner );
+		.attr( 'src', this.model.getAttribute( 'href' ) );
 
 	this.$image = this.$$( '<img>' )
-		.addClass( 'thumbimage' )
 		.attr( 'src', this.model.getAttribute( 'src' ) )
 		.attr( 'width', this.model.getAttribute( 'width' ) )
 		.attr( 'height', this.model.getAttribute( 'height' ) )
 		.appendTo( this.$a );
+
+	if ( type === 'none' ) {
+		this.$thumb.addClass(
+			ve.ce.MWBlockImageNode.static.cssClasses.none[ this.model.getAttribute( 'align' ) ]
+		);
+		this.$a.appendTo( this.$thumb );
+	} else {
+		// Type "frame", "thumb" and the default
+		this.$image.addClass( 'thumbimage' );
+		this.$thumb
+			.addClass(
+				ve.ce.MWBlockImageNode.static.cssClasses[ 'default' ][ this.model.getAttribute( 'align' ) ]
+			)
+			.addClass( 'thumb' );
+		this.$a.appendTo( this.$thumbInner );
+	}
 
 	this.$resizable = this.$image;
 
@@ -93,12 +102,20 @@ ve.ce.MWBlockImageNode.static.renderHtmlAttributes = false;
 
 ve.ce.MWBlockImageNode.static.transition = false;
 
-ve.ce.MWBlockImageNode.static.alignToCssClass = {
-	'left': 'tleft',
-	'right': 'tright',
-	'center' : 'tnone',
-	'none' : 'tnone',
-	'default': 'tright'
+ve.ce.MWBlockImageNode.static.cssClasses = {
+	'default': {
+		'left': 'tleft',
+		'right': 'tright',
+		'center' : 'tnone',
+		'none' : 'tnone',
+		'default': 'tright'
+	},
+	'none': {
+		'left': 'floatleft',
+		'right': 'floatright',
+		'center' : 'floatnone',
+		'none' : 'floatnone'
+	}
 };
 
 /* Methods */
@@ -122,8 +139,13 @@ ve.ce.MWBlockImageNode.prototype.onAttributeChange = function ( key, from, to ) 
 					}
 					this.emit( 'setup' );
 				}
-				this.$thumb.removeClass( ve.ce.MWBlockImageNode.static.alignToCssClass[ from ] );
-				this.$thumb.addClass( ve.ce.MWBlockImageNode.static.alignToCssClass[ to ] );
+				if ( this.model.getAttribute( 'type' ) === 'none' ) {
+					this.$thumb.removeClass( ve.ce.MWBlockImageNode.static.cssClasses.none[ from ] );
+					this.$thumb.addClass( ve.ce.MWBlockImageNode.static.cssClasses.none[ to ] );
+				} else {
+					this.$thumb.removeClass( ve.ce.MWBlockImageNode.static.cssClasses[ 'default' ][ from ] );
+					this.$thumb.addClass( ve.ce.MWBlockImageNode.static.cssClasses[ 'default' ][ to ] );
+				}
 				break;
 			case 'src':
 				this.$image.attr( 'src', to );
