@@ -8,7 +8,7 @@
 /*global mw */
 
 /**
- * Dialog for a MediaWiki content transclusion.
+ * Dialog for editing a MediaWiki transclusion.
  *
  * See https://raw.github.com/wikimedia/mediawiki-extensions-TemplateData/master/spec.templatedata.json
  * for the latest version of the TemplateData specification.
