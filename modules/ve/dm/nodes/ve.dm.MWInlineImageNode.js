@@ -32,7 +32,7 @@ ve.dm.MWInlineImageNode.static.storeHtmlAttributes = {
 	'blacklist': [ 'typeof', 'class', 'src', 'resource', 'width', 'height', 'href' ]
 };
 
-ve.dm.MWInlineImageNode.static.matchTagNames = null;
+ve.dm.MWInlineImageNode.static.matchTagNames = [ 'span' ];
 
 ve.dm.MWInlineImageNode.static.matchRdfaTypes = [
 	'mw:Image',
