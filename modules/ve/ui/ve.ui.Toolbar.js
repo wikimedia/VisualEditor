@@ -87,15 +87,11 @@ ve.mixinClass( ve.ui.Toolbar, ve.EventEmitter );
  */
 ve.ui.Toolbar.prototype.onWindowScroll = function () {
 	var scrollTop = this.$window.scrollTop(),
-		toolbarOffset = this.$.offset(),
-		$lastBranch = this.surface.$.find( '.ve-ce-documentNode > .ve-ce-branchNode:visible:last' ),
-		lastBranchOffset = $lastBranch.offset(),
-		belowLastBranch = $lastBranch.length &&
-			scrollTop + this.$bar.height() >= lastBranchOffset.top;
+		toolbarOffset = this.$.offset();
 
 	if ( scrollTop > toolbarOffset.top ) {
 		this.setPosition(
-			belowLastBranch ? lastBranchOffset.top - this.$.outerHeight() : 0,
+			0,
 			toolbarOffset.left,
 			this.$window.width() - this.$.outerWidth() - toolbarOffset.left
 		);
