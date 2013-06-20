@@ -7,6 +7,9 @@
 
 /*global mw */
 
+( function () {
+var hasOwn = Object.hasOwnProperty;
+
 /**
  * MediaWiki transclusion model.
  *
@@ -128,13 +131,17 @@ ve.dm.MWTransclusionModel.prototype.fetchSpecs = function ( templates ) {
 				// Cross-reference under normalized titles
 				if ( data.normalized ) {
 					for ( i = 0, len = data.normalized.length; i < len; i++ ) {
-						specs[data.normalized[i].from] = specs[data.normalized[i].to];
+						// Only define the alias if the target exists, otherwise
+						// we create a new property with an invalid "undefined" value.
+						if ( hasOwn.call( specs, data.normalized[i].to ) ) {
+							specs[data.normalized[i].from] = specs[data.normalized[i].to];
+						}
 					}
 				}
 				// Load into existing templates
 				for ( i = 0, len = templates.length; i < len; i++ ) {
 					title = templates[i].getTitle();
-					if ( specs.hasOwnProperty( title ) ) {
+					if ( hasOwn.call( specs, title ) ) {
 						templates[i].getSpec().extend( specs[title] );
 					}
 				}
@@ -228,7 +235,7 @@ ve.dm.MWTransclusionModel.prototype.addTemplate = function ( target, index ) {
 	var part = new ve.dm.MWTemplateModel( this, target ),
 		title = part.getTitle();
 
-	if ( this.specs.hasOwnProperty( title ) ) {
+	if ( hasOwn.call( this.specs, title ) ) {
 		part.getSpec().extend( this.specs[title] );
 	}
 	this.addPart( part, index );
@@ -321,3 +328,5 @@ ve.dm.MWTransclusionModel.prototype.getPartFromId = function ( id ) {
 ve.dm.MWTransclusionModel.prototype.getTemplateSpec = function ( name ) {
 	return this.specs[name];
 };
+
+}() );
