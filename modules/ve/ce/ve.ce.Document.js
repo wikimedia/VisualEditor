@@ -49,7 +49,7 @@ ve.ce.Document.prototype.getNodeFromOffset = function ( offset ) {
  *
  * @method
  * @param {number} offset Offset to get slug at
- * @returns {jQuery} Slug at offset
+ * @returns {HTMLElement} Slug at offset
  */
 ve.ce.Document.prototype.getSlugAtOffset = function ( offset ) {
 	var node = this.getNodeFromOffset( offset );
@@ -130,9 +130,9 @@ ve.ce.Document.prototype.getRelativeOffset = function ( offset, direction, unit 
  */
 ve.ce.Document.prototype.getNodeAndOffset = function ( offset ) {
 	var node, startOffset, current, stack, item, $item, length,
-		$slug = this.getSlugAtOffset( offset );
-	if ( $slug ) {
-		return { node: $slug[0].childNodes[0], offset: 0 };
+		slug = this.getSlugAtOffset( offset );
+	if ( slug ) {
+		return { node: slug, offset: 0 };
 	}
 	node = this.getNodeFromOffset( offset );
 	startOffset = node.getOffset() + ( ( node.isWrapped() ) ? 1 : 0 );

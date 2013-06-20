@@ -967,7 +967,7 @@ ve.ce.Surface.prototype.handleUpOrDownArrowKey = function ( e ) {
 	// Perform programatic handling only for selection that is expanded and backwards according to
 	// model data but not according to browser data.
 	if ( !selection.isCollapsed() && selection.isBackwards() && !rangySelection.isBackwards() ) {
-		$element = this.documentView.getSlugAtOffset( selection.to );
+		$element = $( this.documentView.getSlugAtOffset( selection.to ) );
 		if ( !$element ) {
 			$element = this.$$( '<span>' )
 				.html( ' ' )

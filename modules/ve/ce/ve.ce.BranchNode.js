@@ -197,28 +197,33 @@ ve.ce.BranchNode.prototype.onSplice = function ( index ) {
  * @method
  */
 ve.ce.BranchNode.prototype.setupSlugs = function () {
-	var key, $slug, i;
+	var key, slug, i, len, first, last, doc = this.getElementDocument();
 
 	// Remove all slugs in this branch
 	for ( key in this.slugs ) {
-		this.slugs[key].remove();
+		if ( this.slugs[key].parentNode ) {
+			this.slugs[key].parentNode.removeChild( this.slugs[key] );
+		}
 		delete this.slugs[key];
 	}
 
 	if ( this.canHaveChildrenNotContent() ) {
-		$slug = ve.ce.BranchNode.$blockSlugTemplate.clone();
+		slug = ve.ce.BranchNode.$blockSlugTemplate[0];
 	} else {
-		$slug = ve.ce.BranchNode.$inlineSlugTemplate.clone();
+		slug = ve.ce.BranchNode.$inlineSlugTemplate[0];
 	}
 
 	if ( this.getLength() === 0 ) {
-		this.slugs[0] = $slug.clone().appendTo( this.$ );
+		this.slugs[0] = doc.importNode( slug, true );
+		this.$[0].appendChild( this.slugs[0] );
 	} else {
 		// Iterate over all children of this branch and add slugs in appropriate places
-		for ( i = 0; i < this.children.length; i++ ) {
+		for ( i = 0, len = this.children.length; i < len; i++ ) {
 			// First sluggable child (left side)
 			if ( i === 0 && this.children[i].canHaveSlugBefore() ) {
-				this.slugs[i] = $slug.clone().insertBefore( this.children[i].$.first() );
+				this.slugs[i] = doc.importNode( slug, true );
+				first = this.children[i].$[0];
+				first.parentNode.insertBefore( this.slugs[i], first );
 			}
 			if ( this.children[i].canHaveSlugAfter() ) {
 				if (
@@ -227,7 +232,9 @@ ve.ce.BranchNode.prototype.setupSlugs = function () {
 					// Sluggable child followed by another sluggable child (in between)
 					( this.children[i + 1] && this.children[i + 1].canHaveSlugBefore() )
 				) {
-					this.slugs[i + 1] = $slug.clone().insertAfter( this.children[i].$.last() );
+					this.slugs[i + 1] = doc.importNode( slug, true );
+					last = this.children[i].$[this.children[i].$.length - 1];
+					last.parentNode.insertBefore( this.slugs[i + 1], last.nextSibling );
 				}
 			}
 		}
@@ -239,6 +246,7 @@ ve.ce.BranchNode.prototype.setupSlugs = function () {
  *
  * @method
  * @param {number} offset Offset to get slug at
+ * @returns {HTMLElement}
  */
 ve.ce.BranchNode.prototype.getSlugAtOffset = function ( offset ) {
 	var i,
