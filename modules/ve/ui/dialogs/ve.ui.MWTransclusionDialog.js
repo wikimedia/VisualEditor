@@ -101,8 +101,12 @@ ve.ui.MWTransclusionDialog.prototype.onClose = function ( action ) {
 	// Save changes
 	if ( action === 'apply' ) {
 		if ( this.node instanceof ve.ce.MWTransclusionNode ) {
-			surfaceModel.getFragment().changeAttributes( { 'mw': obj } );
-		} else {
+			if ( obj !== null ) {
+				surfaceModel.getFragment().changeAttributes( { 'mw': obj } );
+			} else {
+				surfaceModel.getFragment().removeContent();
+			}
+		} else if ( obj !== null ) {
 			surfaceModel.getFragment().collapseRangeToEnd().insertContent( [
 				{
 					'type': 'mwTransclusionInline',

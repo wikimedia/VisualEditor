@@ -154,7 +154,7 @@ ve.dm.MWTransclusionModel.prototype.fetchSpecs = function ( templates ) {
  * Get plain object representation of template transclusion.
  *
  * @method
- * @returns {Object} Plain object representation
+ * @returns {Object|null} Plain object representation, or null if empty
  */
 ve.dm.MWTransclusionModel.prototype.getPlainObject = function () {
 	var i, len, part, template, name, params,
@@ -172,6 +172,10 @@ ve.dm.MWTransclusionModel.prototype.getPlainObject = function () {
 		} else if ( part instanceof ve.dm.MWTransclusionContentModel ) {
 			obj.parts.push( part.getValue() );
 		}
+	}
+
+	if ( obj.parts.length === 0 ) {
+		return null;
 	}
 
 	// Use single-part format when possible
