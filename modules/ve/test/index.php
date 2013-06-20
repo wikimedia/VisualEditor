@@ -124,6 +124,7 @@
 		<script src="../../ve/dm/nodes/ve.dm.MWInlineImageNode.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.MWBlockImageNode.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.MWImageCaptionNode.js"></script>
+		<script src="../../ve/dm/nodes/ve.dm.MWTransclusionNode.js"></script>
 		<script src="../../ve/dm/annotations/ve.dm.LinkAnnotation.js"></script>
 		<script src="../../ve/dm/annotations/ve.dm.MWExternalLinkAnnotation.js"></script>
 		<script src="../../ve/dm/annotations/ve.dm.MWInternalLinkAnnotation.js"></script>
@@ -133,6 +134,13 @@
 		<script src="../../ve/dm/metaitems/ve.dm.MWCategoryMetaItem.js"></script>
 		<script src="../../ve/dm/metaitems/ve.dm.MWDefaultSortMetaItem.js"></script>
 		<script src="../../ve/dm/metaitems/ve.dm.MWLanguageMetaItem.js"></script>
+		<script src="../../ve/dm/models/ve.dm.MWTransclusionModel.js"></script>
+		<script src="../../ve/dm/models/ve.dm.MWTransclusionPartModel.js"></script>
+		<script src="../../ve/dm/models/ve.dm.MWTransclusionContentModel.js"></script>
+		<script src="../../ve/dm/models/ve.dm.MWTemplateSpecModel.js"></script>
+		<script src="../../ve/dm/models/ve.dm.MWTemplateModel.js"></script>
+		<script src="../../ve/dm/models/ve.dm.MWTemplatePlaceholderModel.js"></script>
+		<script src="../../ve/dm/models/ve.dm.MWTemplateParameterModel.js"></script>
 		<script src="../../ve/ce/ve.ce.js"></script>
 		<script src="../../ve/ce/ve.ce.DomRange.js"></script>
 		<script src="../../ve/ce/ve.ce.AnnotationFactory.js"></script>
@@ -178,6 +186,7 @@
 		<script src="../../ve/ce/nodes/ve.ce.MWInlineImageNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.MWBlockImageNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.MWImageCaptionNode.js"></script>
+		<script src="../../ve/ce/nodes/ve.ce.MWTransclusionNode.js"></script>
 		<script src="../../ve/ce/annotations/ve.ce.LinkAnnotation.js"></script>
 		<script src="../../ve/ce/annotations/ve.ce.MWExternalLinkAnnotation.js"></script>
 		<script src="../../ve/ce/annotations/ve.ce.MWInternalLinkAnnotation.js"></script>
@@ -235,12 +244,18 @@
 		<script src="../../ve/ui/widgets/ve.ui.MWCategoryPopupWidget.js"></script>
 		<script src="../../ve/ui/widgets/ve.ui.MWCategoryItemWidget.js"></script>
 		<script src="../../ve/ui/widgets/ve.ui.MWCategoryWidget.js"></script>
+		<script src="../../ve/ui/widgets/ve.ui.MWMediaSelectWidget.js"></script>
+		<script src="../../ve/ui/widgets/ve.ui.MWMediaSelectItemWidget.js"></script>
+		<script src="../../ve/ui/widgets/ve.ui.MWTitleInputWidget.js"></script>
 		<script src="../../ve/ui/layouts/ve.ui.FieldsetLayout.js"></script>
 		<script src="../../ve/ui/layouts/ve.ui.GridLayout.js"></script>
 		<script src="../../ve/ui/layouts/ve.ui.PanelLayout.js"></script>
 		<script src="../../ve/ui/layouts/ve.ui.StackPanelLayout.js"></script>
 		<script src="../../ve/ui/dialogs/ve.ui.PagedDialog.js"></script>
 		<script src="../../ve/ui/dialogs/ve.ui.MWMetaDialog.js"></script>
+		<script src="../../ve/ui/dialogs/ve.ui.MWMediaInsertDialog.js"></script>
+		<script src="../../ve/ui/dialogs/ve.ui.MWMediaEditDialog.js"></script>
+		<script src="../../ve/ui/dialogs/ve.ui.MWTransclusionDialog.js"></script>
 		<script src="../../ve/ui/tools/ve.ui.ButtonTool.js"></script>
 		<script src="../../ve/ui/tools/ve.ui.AnnotationButtonTool.js"></script>
 		<script src="../../ve/ui/tools/ve.ui.DialogButtonTool.js"></script>
@@ -253,12 +268,15 @@
 		<script src="../../ve/ui/tools/buttons/ve.ui.ClearButtonTool.js"></script>
 		<script src="../../ve/ui/tools/buttons/ve.ui.LinkButtonTool.js"></script>
 		<script src="../../ve/ui/tools/buttons/ve.ui.MWLinkButtonTool.js"></script>
+		<script src="../../ve/ui/tools/buttons/ve.ui.MWMediaInsertButtonTool.js"></script>
+		<script src="../../ve/ui/tools/buttons/ve.ui.MWMediaEditButtonTool.js"></script>
 		<script src="../../ve/ui/tools/buttons/ve.ui.BulletButtonTool.js"></script>
 		<script src="../../ve/ui/tools/buttons/ve.ui.NumberButtonTool.js"></script>
 		<script src="../../ve/ui/tools/buttons/ve.ui.IndentButtonTool.js"></script>
 		<script src="../../ve/ui/tools/buttons/ve.ui.OutdentButtonTool.js"></script>
 		<script src="../../ve/ui/tools/buttons/ve.ui.RedoButtonTool.js"></script>
 		<script src="../../ve/ui/tools/buttons/ve.ui.UndoButtonTool.js"></script>
+		<script src="../../ve/ui/tools/buttons/ve.ui.MWTransclusionButtonTool.js"></script>
 		<script src="../../ve/ui/tools/dropdowns/ve.ui.FormatDropdownTool.js"></script>
 		<script src="../../ve/ui/tools/dropdowns/ve.ui.MWFormatDropdownTool.js"></script>
 		<script src="../../ve/ui/inspectors/ve.ui.LinkInspector.js"></script>
@@ -266,14 +284,10 @@
 		<!-- ext.visualEditor.experimental -->
 		<script src="../../ve/dm/nodes/ve.dm.MWReferenceListNode.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.MWReferenceNode.js"></script>
-		<script src="../../ve/dm/nodes/ve.dm.MWTransclusionNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.MWReferenceListNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.MWReferenceNode.js"></script>
-		<script src="../../ve/ce/nodes/ve.ce.MWTransclusionNode.js"></script>
 		<script src="../../ve/ui/tools/buttons/ve.ui.MWReferenceButtonTool.js"></script>
-		<script src="../../ve/ui/tools/buttons/ve.ui.MWTransclusionButtonTool.js"></script>
 		<script src="../../ve/ui/dialogs/ve.ui.MWReferenceDialog.js"></script>
-		<script src="../../ve/ui/dialogs/ve.ui.MWTransclusionDialog.js"></script>
 
 		<!-- Load plugins for test framework -->
 		<script src="ve.qunit.js"></script>
