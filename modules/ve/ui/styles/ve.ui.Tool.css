@@ -129,6 +129,10 @@
 	width: 8em;
 }
 
+.ve-ui-dropdownTool-mwFormat ul {
+	font-size: 80%;
+}
+
 .ve-ui-dropdownTool-format .ve-ui-optionWidget[rel="paragraph"] .ve-ui-labeledElement-label {
 	font-weight: normal;
 }
