@@ -29,23 +29,9 @@ ve.ce.TextNode.static.name = 'text';
 
 ve.ce.TextNode.static.canBeSplit = true;
 
-/**
- * Mapping of character and HTML entities or renderings.
- *
- * @static
- * @property
- */
-ve.ce.TextNode.htmlCharacters = {
-	'&': '&amp;',
-	'<': '&lt;',
-	'>': '&gt;',
-	'\'': '&#039;',
-	'"': '&quot;'
-};
-
 ve.ce.TextNode.whitespaceHtmlCharacters = {
-	'\n': '&crarr;',
-	'\t': '&#10142;'
+	'\n': '\u21b5', // &crarr; / ↵
+	'\t': '\u279e' // &#10142; / ➞
 };
 
 /* Methods */
@@ -59,7 +45,6 @@ ve.ce.TextNode.whitespaceHtmlCharacters = {
 ve.ce.TextNode.prototype.getAnnotatedHtml = function () {
 	var i, chr, character, nextCharacter,
 		data = this.model.getDocument().getDataFromNode( this.model ),
-		htmlChars = ve.ce.TextNode.htmlCharacters,
 		whitespaceHtmlChars = ve.ce.TextNode.whitespaceHtmlCharacters,
 		significantWhitespace = this.getModel().getParent().hasSignificantWhitespace();
 
@@ -79,14 +64,15 @@ ve.ce.TextNode.prototype.getAnnotatedHtml = function () {
 			// Leading space
 			character = data[0];
 			if ( ve.isArray( character ) ? character[0] === ' ' : character === ' ' ) {
-				setChar( '&nbsp;', 0, data );
+				// \u00a0 == &#160; == &nbsp;
+				setChar( '\u00a0', 0, data );
 			}
 		}
 		if ( data.length > 1 ) {
 			// Trailing space
 			character = data[data.length - 1];
 			if ( ve.isArray( character ) ? character[0] === ' ' : character === ' ' ) {
-				setChar( '&nbsp;', data.length - 1, data );
+				setChar( '\u00a0', data.length - 1, data );
 			}
 		}
 	}
@@ -99,16 +85,12 @@ ve.ce.TextNode.prototype.getAnnotatedHtml = function () {
 			// (space-nbsp-space-nbsp-...)
 			nextCharacter = typeof data[i + 1] === 'string' ? data[i + 1] : data[i + 1][0];
 			if ( nextCharacter === ' ' ) {
-				setChar( '&nbsp;', i + 1, data );
+				setChar( '\u00a0', i + 1, data );
 			}
 		}
 		if ( !significantWhitespace && chr in whitespaceHtmlChars ) {
-			chr = whitespaceHtmlChars[chr];
+			setChar( whitespaceHtmlChars[chr], i, data );
 		}
-		if ( chr in htmlChars ) {
-			chr = htmlChars[chr];
-		}
-		setChar( chr, i, data );
 	}
 	return data;
 };
