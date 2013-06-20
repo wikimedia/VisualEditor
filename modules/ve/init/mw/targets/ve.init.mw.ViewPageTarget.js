@@ -48,6 +48,7 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 	// Properties
 	this.$document = null;
 	this.$spinner = $( '<div class="ve-init-mw-viewPageTarget-loading"></div>' );
+	this.$toolbarTracker = $( '<div class="ve-init-mw-viewPageTarget-toolbarTracker"></div>' );
 	this.toolbarCancelButton = null;
 	this.toolbarSaveButton = null;
 	this.saveDialogSlideHistory = [];
@@ -830,6 +831,7 @@ ve.init.mw.ViewPageTarget.prototype.setupToolbarBetaNotice = function () {
 ve.init.mw.ViewPageTarget.prototype.setUpSurface = function ( doc ) {
 	// Initialize surface
 	this.surface = new ve.ui.Surface( doc, this.surfaceOptions );
+	this.surface.connect( this, { 'toolbarPosition': 'onSurfaceToolbarPosition' } );
 	this.surface.getContext().hide();
 	this.$document = this.surface.$.find( '.ve-ce-documentNode' );
 	this.surface.getModel().connect( this, { 'transact': 'onSurfaceModelTransact' } );
@@ -839,6 +841,7 @@ ve.init.mw.ViewPageTarget.prototype.setUpSurface = function ( doc ) {
 	this.setUpToolbar();
 	this.transformPageTitle();
 	this.changeDocumentTitle();
+
 	// Update UI
 	this.hidePageContent();
 	this.hideSpinner();
@@ -847,8 +850,55 @@ ve.init.mw.ViewPageTarget.prototype.setUpSurface = function ( doc ) {
 		'lang': mw.config.get( 'wgVisualEditor' ).pageLanguageCode,
 		'dir': mw.config.get( 'wgVisualEditor' ).pageLanguageDir
 	} );
+
 	// Add appropriately mw-content-ltr or mw-content-rtl class
 	this.surface.$.addClass( 'mw-content-' + mw.config.get( 'wgVisualEditor' ).pageLanguageDir );
+};
+
+/**
+ * The toolbar has updated its position.
+ * @param {jQuery} $bar
+ */
+ve.init.mw.ViewPageTarget.prototype.onSurfaceToolbarPosition = function ( $bar ) {
+	var css, offset, startProp, startOffset,
+		dir = mw.config.get( 'wgVisualEditor' ).pageLanguageDir,
+		type = $bar.css( 'position' );
+
+	// It's important that the toolbar tracker has 0 height. Else it will block events on the
+	// toolbar (e.g. clicking "Save page") as it would overlap that space. The save dialog
+	// will remain visible for the same reason elsewhere: As long as we don't have overflow:hidden,
+	// the save dialog will stick out of the tracker in the right place without the tracker itself
+	// blocking the toolbar.
+
+	if ( type === 'relative' ) {
+		offset = $bar.offset();
+
+		css = {
+			'position': 'absolute',
+			'top': offset.top
+		};
+
+		if ( dir === 'ltr' ) {
+			startProp = 'left';
+			startOffset = offset.left;
+		} else {
+			startProp = 'right';
+			startOffset = $( window ).width() - ( offset.left + $bar.outerWidth() );
+
+		}
+
+		css[ startProp ] = startOffset;
+
+	} else if ( type === 'absolute' || type === 'fixed' ) {
+		css = {
+			'position': type,
+			'top': $bar.css( 'top' ),
+			'left': $bar.css( 'left' )
+		};
+	} else {
+		return;
+	}
+	this.$toolbarTracker.css( css );
 };
 
 /**
@@ -1485,7 +1535,11 @@ ve.init.mw.ViewPageTarget.prototype.swapSaveDialog = function ( slide, options )
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.attachSaveDialog = function () {
-	this.toolbar.$bar.append( this.$saveDialog );
+	this.surface.$globalOverlay.append(
+		this.$toolbarTracker.append(
+			this.$saveDialog
+		)
+	);
 };
 
 /**
@@ -1619,6 +1673,11 @@ ve.init.mw.ViewPageTarget.prototype.setUpToolbar = function () {
 		// Check the surface wasn't torn down while the toolbar was animating
 		if ( this.surface ) {
 			this.surface.getContext().update();
+
+			// Emit event for initial position. Must be done here after the
+			// slide down instead of in ve.ui.Toolbar#constructor because
+			// back there it'll still be out of view.
+			this.surface.emit( 'toolbarPosition', this.toolbar.$bar );
 		}
 	}, this ) );
 };

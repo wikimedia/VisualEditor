@@ -19,6 +19,9 @@ ve.ui.Surface = function VeUiSurface( data, config ) {
 	// Parent constructor
 	ve.Element.call( this, config );
 
+	// Mixin constructor
+	ve.EventEmitter.call( this, config );
+
 	// Properties
 	this.$globalOverlay = $( '<div>' );
 	this.$localOverlay = this.$$( '<div>' );
@@ -47,6 +50,15 @@ ve.ui.Surface = function VeUiSurface( data, config ) {
 /* Inheritance */
 
 ve.inheritClass( ve.ui.Surface, ve.Element );
+
+ve.mixinClass( ve.ui.Surface, ve.EventEmitter );
+
+/* Events */
+
+/**
+ * @event toolbarPosition
+ * @param {jQuery} $bar Toolbar bar
+ */
 
 /* Methods */
 
