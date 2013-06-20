@@ -354,7 +354,7 @@ ve.init.mw.ViewPageTarget.prototype.onLoad = function ( doc ) {
 		this.restoreScrollPosition();
 		this.restoreEditSection();
 		this.setupBeforeUnloadHandler();
-		this.$document.focus();
+		this.$document[0].focus();
 		this.activating = false;
 	}
 };
@@ -634,7 +634,7 @@ ve.init.mw.ViewPageTarget.prototype.onToolbarMwMetaButtonClick = function () {
 ve.init.mw.ViewPageTarget.prototype.onToolbarEditNoticesToolClick = function () {
 	this.$toolbarEditNotices.fadeToggle( 'fast' );
 	this.$toolbarBetaNotice.fadeOut( 'fast' );
-	this.$document.focus();
+	this.$document[0].focus();
 };
 
 /**
@@ -646,7 +646,7 @@ ve.init.mw.ViewPageTarget.prototype.onToolbarEditNoticesToolClick = function () 
 ve.init.mw.ViewPageTarget.prototype.onToolbarBetaNoticeToolClick = function () {
 	this.$toolbarBetaNotice.fadeToggle( 'fast' );
 	this.$toolbarEditNotices.fadeOut( 'fast' );
-	this.$document.focus();
+	this.$document[0].focus();
 };
 
 /**
