@@ -106,6 +106,7 @@ ve.ui.Toolbar.prototype.onWindowScroll = function () {
  * Toolbar will stick to the top of the screen unless it would be over or under the last visible
  * branch node in the root of the document being edited, at which point it will stop just above it.
  *
+ * @see ve.ui.Surface#event-toolbarPosition
  * @returns {jQuery.Event} e Window scroll event
  */
 ve.ui.Toolbar.prototype.onWindowResize = function () {
@@ -116,6 +117,7 @@ ve.ui.Toolbar.prototype.onWindowResize = function () {
 			'left': offset.left,
 			'right': this.$window.width() - this.$.outerWidth() - offset.left
 		} );
+		this.surface.emit( 'toolbarPosition', this.$bar );
 	}
 };
 
@@ -198,7 +200,7 @@ ve.ui.Toolbar.prototype.destroy = function () {
 /**
  * Float the toolbar.
  *
- * @method
+ * @see ve.ui.Surface#event-toolbarPosition
  * @param {number} top Top position, in pixels
  * @param {number} left Left position, in pixels
  * @param {number} right Right position, in pixels
@@ -217,12 +219,13 @@ ve.ui.Toolbar.prototype.setPosition = function ( top, left, right ) {
 	} else {
 		this.$.removeClass( 've-ui-toolbar-bottom' );
 	}
+	this.surface.emit( 'toolbarPosition', this.$bar );
 };
 
 /**
  * Reset the toolbar to it's default position.
  *
- * @method
+ * @see ve.ui.Surface#event-toolbarPosition
  */
 ve.ui.Toolbar.prototype.resetPosition = function () {
 	this.$
@@ -230,6 +233,7 @@ ve.ui.Toolbar.prototype.resetPosition = function () {
 		.removeClass( 've-ui-toolbar-floating ve-ui-toolbar-bottom' );
 	this.$bar.css( { 'top': 0, 'left': 0, 'right': 0 } );
 	this.floating = false;
+	this.surface.emit( 'toolbarPosition', this.$bar  );
 };
 
 /**
@@ -240,8 +244,7 @@ ve.ui.Toolbar.prototype.resetPosition = function () {
  * @method
  */
 ve.ui.Toolbar.prototype.enableFloating = function () {
-	this.$window = $( this.getElementWindow() );
-	this.$window.on( this.windowEvents );
+	this.$window = $( this.getElementWindow() ).on( this.windowEvents );
 };
 
 /**

@@ -106,6 +106,14 @@
 
 /* Save dialog styles */
 
+.ve-init-mw-viewPageTarget-toolbarTracker {
+	position: absolute;
+	top: 0;
+	right: 0;
+	height: 0;
+	overflow: visible;
+}
+
 .ve-init-mw-viewPageTarget-saveDialog .ve-ui-buttonWidget {
 	float: right;
 	margin-left: 0.5em;
