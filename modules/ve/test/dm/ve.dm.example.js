@@ -1692,14 +1692,14 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'nested empty annotation': {
-		'html': '<body><p>Foo<i><b></b></i>Bar</p></body>',
+		'html': '<body><p>Foo<i><b><u></u></b></i>Bar</p></body>',
 		'data': [
 			{ 'type': 'paragraph' },
 			'F', 'o', 'o',
 			{
 				'type': 'alienMeta',
 				'attributes': {
-					'domElements': $( '<i><b></b></i>' ).get()
+					'domElements': $( '<i><b><u></u></b></i>' ).get()
 				}
 			},
 			{ 'type': '/alienMeta' },
