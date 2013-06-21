@@ -52,7 +52,8 @@ ve.dm.LinkAnnotation.static.toDomElements = function ( dataElement, doc ) {
 ve.dm.LinkAnnotation.prototype.getComparableObject = function () {
 	return {
 		'type': this.getType(),
-		'href': this.getAttribute( 'href' )
+		'href': this.getAttribute( 'href' ),
+		'htmlAttributes': this.getComparableHtmlAttributes()
 	};
 };
 

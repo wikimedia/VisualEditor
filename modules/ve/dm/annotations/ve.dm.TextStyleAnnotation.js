@@ -68,7 +68,10 @@ ve.dm.TextStyleAnnotation.static.toDomElements = function ( dataElement, doc ) {
 /* Methods */
 
 ve.dm.TextStyleAnnotation.prototype.getComparableObject = function () {
-	return { 'type': this.getType() };
+	return {
+		'type': this.getType(),
+		'htmlAttributes': this.getComparableHtmlAttributes()
+	};
 };
 
 /* Registration */
