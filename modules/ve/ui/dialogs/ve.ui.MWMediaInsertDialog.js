@@ -55,6 +55,7 @@ ve.ui.MWMediaInsertDialog.prototype.onClose = function ( action ) {
 			{
 				'type': 'mwBlockImage',
 				'attributes': {
+					'type': 'thumb',
 					'align': 'right',
 					'href': info.descriptionurl,
 					'src': info.thumburl,
@@ -63,6 +64,8 @@ ve.ui.MWMediaInsertDialog.prototype.onClose = function ( action ) {
 					'resource': './' + this.item.title
 				}
 			},
+			{ 'type': 'mwImageCaption' },
+			{ 'type': '/mwImageCaption' },
 			{ 'type': '/mwBlockImage' }
 		] );
 	}
