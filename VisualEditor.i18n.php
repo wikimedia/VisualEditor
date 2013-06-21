@@ -761,6 +761,7 @@ $messages['be-tarask'] = array(
 	'visualeditor-listbutton-bullet-tooltip' => 'Маркіраваны сьпіс',
 	'visualeditor-listbutton-number-tooltip' => 'Нумараваны сьпіс',
 	'visualeditor-loadwarning' => 'Памылка ў час загрузкі зьвестак з сэрвэру: $1. Жадаеце паўтарыць?',
+	'visualeditor-loadwarning-token' => 'Памылка ў час загрузкі токена рэдагаваньня з сэрвэра: $1. Жадаеце паўтарыць?',
 	'visualeditor-mainnamespacepagelink' => 'Project:Асноўная прастора',
 	'visualeditor-media-input-placeholder' => 'Пошук мэдыяў',
 	'visualeditor-meta-tool' => 'Налады старонкі',
@@ -1119,6 +1120,46 @@ $messages['cs'] = array(
 	'visualeditor-alphawarning' => 'Používáte alfa verzi [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditoru]]. Může být pomalý a mohou vznikat chybné změny – zkontrolujte prosím každou editaci, kterou uděláte.',
 	'visualeditor-report-notice' => 'Je mi zřejmé, že kliknutím na „Nahlásit problém“ se odešlou mé změny a můj komentář a budou uloženy k analýze. Souhlasím s poskytnutím zpětné vazby v souladu s [[{{MediaWiki:Visualeditor-report-link}}|Podmínkami užití]].',
 	'visualeditor-feedback-link' => 'Project:VisualEditor/Názory',
+);
+
+/** Welsh (Cymraeg)
+ * @author Lloffiwr
+ */
+$messages['cy'] = array(
+	'tooltip-ca-createsource' => "Gosod cod yn sail i'r dudalen newydd hon",
+	'tooltip-ca-editsource' => "Golygu'r cod sy'n sail i'r dudalen hon",
+	'tooltip-ca-ve-edit' => "Golygu'r dudalen hon gyda'r Golygydd Gweledol",
+	'visualeditor' => 'Y Golygydd Gweledol',
+	'visualeditor-aliennode-tooltip' => "Yn anffodus, ni ellir olygu'r elfen hon gyda'r Golygydd Gweledol",
+	'visualeditor-annotationbutton-bold-tooltip' => 'Praff',
+	'visualeditor-annotationbutton-italic-tooltip' => 'Italig',
+	'visualeditor-annotationbutton-link-tooltip' => 'Cyswllt',
+	'visualeditor-beta-label' => 'beta',
+	'visualeditor-beta-warning' => "Fersiwn 'beta' o VisualEditor yw hwn a chan hynny efallai na fyddwch yn gallu golygu popeth eto.",
+	'visualeditor-browserwarning' => 'Rydych yn defnyddio porwr nad yw VisualEditor yn ei gynnal, yn swyddogol.',
+	'visualeditor-ca-createsource' => 'Dechrau arni',
+	'visualeditor-ca-editsource' => "Golygu'r cynnwys",
+	'visualeditor-ca-ve-create' => 'Golygydd Gweledol',
+	'visualeditor-ca-ve-edit' => 'Golygydd Gweledol',
+	'visualeditor-dialog-action-apply' => 'Gweithreder y newidiadau',
+	'visualeditor-dialog-action-cancel' => 'Rhodder heibio',
+	'visualeditor-dialog-action-close' => 'Caeer',
+	'visualeditor-dialog-meta-categories-data-label' => 'Categorïau',
+	'visualeditor-dialog-meta-categories-category' => 'Categori',
+	'visualeditor-dialog-meta-categories-input-newcategorylabel' => 'Categori newydd',
+	'visualeditor-dialog-meta-categories-input-placeholder' => 'Ychwanegwch gategori',
+	'visualeditor-dialog-meta-categories-options' => 'Dewisiadau',
+	'visualeditor-dialog-meta-categories-section' => 'Categorïau',
+	'visualeditor-dialog-meta-languages-code-label' => 'Cod iaith',
+	'visualeditor-dialog-meta-languages-label' => 'Ieithoedd',
+	'visualeditor-dialog-meta-languages-section' => 'Ieithoedd',
+	'visualeditor-dialog-meta-title' => "Gosodiadau'r dudalen",
+	'visualeditor-dialog-reference-content-section' => 'Cynnwys y cyfeiriad',
+	'visualeditor-dialog-reference-options-section' => 'Dewisiadau',
+	'visualeditor-dialog-reference-title' => 'Cyfeiriad',
+	'visualeditor-dialog-transclusion-options' => 'Dewisiadau',
+	'visualeditor-toolbar-cancel' => 'Rhodder heibio',
+	'visualeditor-toolbar-savedialog' => "Cadw'r dudalen",
 );
 
 /** German (Deutsch)
@@ -1841,7 +1882,7 @@ $messages['fi'] = array(
 	'visualeditor-dialog-meta-languages-code-label' => 'Kielikoodi',
 	'visualeditor-dialog-meta-languages-label' => 'Kielet',
 	'visualeditor-dialog-meta-languages-link-label' => 'Linkitetty sivu',
-	'visualeditor-dialog-meta-languages-readonlynote' => 'Tämä on luettelo tälle sivulle viittaavista artikkeleista muilla kielillä; listaa ei voi vielä muokata visuaalisella muokkaimella.',
+	'visualeditor-dialog-meta-languages-readonlynote' => 'Tämä on luettelo tälle sivulle viittaavista artikkeleista muilla kielillä; sitä ei voi vielä muokata visuaalisella muokkaimella.',
 	'visualeditor-dialog-meta-languages-section' => 'Kielet',
 	'visualeditor-dialog-meta-title' => 'Sivun asetukset',
 	'visualeditor-dialog-reference-content-section' => 'Viitteen sisältö',
