@@ -201,12 +201,11 @@ ve.init.mw.ViewPageTarget.compatibility = {
 };
 
 ve.init.mw.ViewPageTarget.static.toolbarTools = [
-	{ 'items': ['undo', 'redo'] },
-	{ 'items': ['mwFormat'] },
-	{ 'items': [
-		'bold', 'italic', 'mwLink', 'clear', 'mwMediaInsert', 'mwReference', 'mwTransclusion'
-	] },
-	{ 'items': ['number', 'bullet', 'outdent', 'indent'] }
+	{ 'items': [ 'undo', 'redo' ] },
+	{ 'items': [ 'mwFormat' ] },
+	{ 'items': [ 'bold', 'italic', 'mwLink', 'clear' ] },
+	{ 'items': [ 'number', 'bullet', 'outdent', 'indent' ] },
+	{ 'items': [ 'mwMediaInsert', 'mwReference', 'mwTransclusion' ] }
 ];
 
 ve.init.mw.ViewPageTarget.static.surfaceCommands = [
