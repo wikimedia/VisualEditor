@@ -151,11 +151,12 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 		// visualeditor-notification-saved
 		// visualeditor-notification-created
 		// visualeditor-notification-restored
-		mw.notify(
-			ve.msg( 'visualeditor-notification-' + currentUri.query.venotify,
-				new mw.Title( this.pageName ).toText()
-			)
-		);
+		mw.hook( 'postEdit' ).fire( {
+			'message':
+				ve.msg( 'visualeditor-notification-' + currentUri.query.venotify,
+					new mw.Title( this.pageName ).toText()
+				)
+		} );
 		if ( window.history.replaceState ) {
 			delete currentUri.query.venotify;
 			window.history.replaceState( null, document.title, currentUri );
@@ -453,11 +454,12 @@ ve.init.mw.ViewPageTarget.prototype.onSave = function ( html, newid ) {
 		this.setupSectionEditLinks();
 		this.tearDownBeforeUnloadHandler();
 		this.deactivate( true );
-		mw.util.jsMessage(
-			ve.msg( 'visualeditor-notification-saved',
-				new mw.Title( this.pageName ).toText()
-			)
-		);
+		mw.hook( 'postEdit' ).fire( {
+			'message':
+				ve.msg( 'visualeditor-notification-saved',
+					new mw.Title( this.pageName ).toText()
+				)
+		} );
 	}
 };
 
