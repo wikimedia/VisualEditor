@@ -15,6 +15,11 @@
 	background-image: url(images/icons/reference.svg);
 }
 
+.ve-ui-icon-references {
+	/* @embed */
+	background-image: url(images/icons/references.svg);
+}
+
 .ve-ui-icon-picture {
 	/* @embed */
 	background-image: url(images/icons/picture.svg);
