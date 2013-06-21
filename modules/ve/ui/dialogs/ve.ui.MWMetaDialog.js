@@ -179,18 +179,22 @@ ve.ui.MWMetaDialog.prototype.onClose = function ( action ) {
 	}
 
 	if ( this.defaultSortKeyChanged ) {
-		newDefaultSortKeyItemData = {
-			'type': 'mwDefaultSort',
-			'attributes': { 'content': this.defaultSortInput.getValue() }
-		};
-		if ( currentDefaultSortKeyItem ) {
-			newDefaultSortKeyItem = new ve.dm.MWDefaultSortMetaItem(
-				ve.extendObject( {}, currentDefaultSortKeyItem.getElement(), newDefaultSortKeyItemData )
-			);
-			currentDefaultSortKeyItem.replaceWith( newDefaultSortKeyItem );
-		} else {
-			newDefaultSortKeyItem = new ve.dm.MWDefaultSortMetaItem( newDefaultSortKeyItemData );
-			this.metaList.insertMeta( newDefaultSortKeyItem );
+		if ( this.defaultSortInput.getValue() !== '' ) {
+			newDefaultSortKeyItemData = {
+				'type': 'mwDefaultSort',
+				'attributes': { 'content': this.defaultSortInput.getValue() }
+			};
+			if ( currentDefaultSortKeyItem ) {
+				newDefaultSortKeyItem = new ve.dm.MWDefaultSortMetaItem(
+					ve.extendObject( {}, currentDefaultSortKeyItem.getElement(), newDefaultSortKeyItemData )
+				);
+				currentDefaultSortKeyItem.replaceWith( newDefaultSortKeyItem );
+			} else {
+				newDefaultSortKeyItem = new ve.dm.MWDefaultSortMetaItem( newDefaultSortKeyItemData );
+				this.metaList.insertMeta( newDefaultSortKeyItem );
+			}
+		} else if ( currentDefaultSortKeyItem ) {
+			currentDefaultSortKeyItem.remove();
 		}
 	}
 
