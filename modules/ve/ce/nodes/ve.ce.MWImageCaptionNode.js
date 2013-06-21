@@ -51,7 +51,7 @@ ve.ce.MWImageCaptionNode.prototype.onSplice = function () {
 		}
 	}
 
-	// Call parent implementation
+	// Parent method
 	ve.ce.BranchNode.prototype.onSplice.apply( this, arguments );
 
 	if ( parentType === 'thumb' ) {

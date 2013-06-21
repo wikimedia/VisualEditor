@@ -43,7 +43,7 @@ ve.ui.Inspector.static.titleMessage = 've-ui-inspector-title';
  * @method
  */
 ve.ui.Inspector.prototype.initialize = function () {
-	// Call parent method
+	// Parent method
 	ve.ui.Window.prototype.initialize.call( this );
 
 	// Initialization

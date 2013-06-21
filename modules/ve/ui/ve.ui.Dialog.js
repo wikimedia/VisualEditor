@@ -125,13 +125,13 @@ ve.ui.Dialog.prototype.close = function ( action ) {
 };
 
 ve.ui.Dialog.prototype.initialize = function () {
-	// Call parent method
+	// Parent method
 	ve.ui.Window.prototype.initialize.call( this );
 
+	// Properties
 	this.applyButton = new ve.ui.ButtonWidget( {
 		'$$': this.$$, 'label': ve.msg( 'visualeditor-dialog-action-apply' ), 'flags': ['primary']
 	} );
-	// Properties
 	this.closeButton = new ve.ui.IconButtonWidget( {
 		'$$': this.$$, 'title': ve.msg( 'visualeditor-dialog-action-close' ), 'icon': 'close'
 	} );

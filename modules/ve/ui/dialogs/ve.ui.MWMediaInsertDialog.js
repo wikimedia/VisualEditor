@@ -8,8 +8,6 @@
 /*global mw */
 
 /**
- * Document dialog.
- *
  * @class
  * @abstract
  * @extends ve.ui.Dialog

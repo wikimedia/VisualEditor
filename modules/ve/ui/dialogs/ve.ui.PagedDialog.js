@@ -6,11 +6,9 @@
  */
 
 /**
- * Paged dialog.
- *
- * A paged dialog has an outline in the left third, and a series of pages in the right two-thirds.
- * Pages can be added using the #addPage method, and later accessed using `this.pages[name]` or
- * through the #getPage method.
+ * Abstract implementation for a dialog having an outline in the left third, and a series of pages
+ * in the right two-thirds. Pages can be added using the #addPage method, and later accessed using
+ * `this.pages[name]` or through the #getPage method.
  *
  * @class
  * @abstract
@@ -44,7 +42,7 @@ ve.inheritClass( ve.ui.PagedDialog, ve.ui.Dialog );
 /* Methods */
 
 ve.ui.PagedDialog.prototype.initialize = function () {
-	// Call parent method
+	// Parent method
 	ve.ui.Dialog.prototype.initialize.call( this );
 
 	// Properties
