@@ -6,7 +6,7 @@
  */
 
 /**
- * Document dialog.
+ * Dialog for a MediaWiki reference.
  *
  * @class
  * @extends ve.ui.Dialog
@@ -59,7 +59,7 @@ ve.ui.MWReferenceDialog.static.addLocalStylesheets( [
 /* Methods */
 
 ve.ui.MWReferenceDialog.prototype.initialize = function () {
-	// Call parent method
+	// Parent method
 	ve.ui.Dialog.prototype.initialize.call( this );
 
 	// Properties
@@ -88,11 +88,15 @@ ve.ui.MWReferenceDialog.prototype.initialize = function () {
 	} );
 
 	// Initialization
-	this.$body.addClass( 've-ui-mwReferenceDialog-body' );
-	this.$body.append( this.contentFieldset.$, this.optionsFieldset.$ );
 	this.optionsFieldset.$.append(
-		this.nameLabel.$, this.nameInput.$, this.groupLabel.$, this.groupInput.$
+		this.nameLabel.$,
+		this.nameInput.$,
+		this.groupLabel.$,
+		this.groupInput.$
 	);
+	this.$body
+		.append( this.contentFieldset.$, this.optionsFieldset.$ )
+		.addClass( 've-ui-mwReferenceDialog-body' );
 };
 
 ve.ui.MWReferenceDialog.prototype.onOpen = function () {
