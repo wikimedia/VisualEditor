@@ -78,9 +78,6 @@ ve.inheritClass( ve.ui.Context, ve.Element );
  * @param {ve.Range} selection Change selection
  */
 ve.ui.Context.prototype.onChange = function ( transactions, selection ) {
-	if ( selection && selection.start === 0 ) {
-		return;
-	}
 	if ( selection && !this.selecting && !this.draggingAndDropping ) {
 		this.update();
 	}
