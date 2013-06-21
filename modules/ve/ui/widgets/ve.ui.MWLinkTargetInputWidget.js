@@ -96,7 +96,11 @@ ve.ui.MWLinkTargetInputWidget.prototype.getLookupMenuItemsFromData = function ( 
 		menu$$ = this.lookupMenu.$$,
 		items = [],
 		matchingPages = data,
-		pageExists = this.value in matchingPages;
+		// If not found, run value through mw.Title to avoid treating a match as a
+		// mismatch where normalisation would make them matching (bug 48476)
+		pageExists =
+			ve.indexOf( this.value, matchingPages ) !== -1 ||
+			ve.indexOf( new mw.Title( this.value ).getPrefixedText(), matchingPages ) !== -1;
 
 	// External link
 	if ( ve.init.platform.getExternalLinkUrlProtocolsRegExp().test( this.value ) ) {
@@ -111,15 +115,7 @@ ve.ui.MWLinkTargetInputWidget.prototype.getLookupMenuItemsFromData = function ( 
 	}
 
 	// Internal link
-	if (
-		!pageExists &&
-		(
-			!matchingPages ||
-			// Run value through mw.Title to avoid treating a match as a mismatch where
-			// normalisation would make them matching (bug 48476)
-			matchingPages.indexOf( new mw.Title( this.value ).getPrefixedText() ) === -1
-		)
-	) {
+	if ( !pageExists ) {
 		items.push( new ve.ui.MenuSectionItemWidget(
 			'newPage',
 			{ '$$': menu$$, 'label': ve.msg( 'visualeditor-linkinspector-suggest-new-page' ) }
