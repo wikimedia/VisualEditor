@@ -64,6 +64,7 @@ ve.ce.MWBlockImageNode = function VeCeMWBlockImageNode( model, config ) {
 			)
 			.addClass( 'thumb' );
 		this.$a.appendTo( this.$thumbInner );
+		this.$thumbInner.appendTo( this.$thumb );
 	}
 
 	this.$resizable = this.$image;
