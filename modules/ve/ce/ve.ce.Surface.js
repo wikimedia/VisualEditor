@@ -247,6 +247,17 @@ ve.ce.Surface.prototype.destroy = function () {
 	this.$phantoms.remove();
 };
 
+/**
+ * Give focus to the surface, preserving the previous selection.
+ *
+ * This is used when switching between surfaces, e.g. when closing a dialog window.
+ */
+ve.ce.Surface.prototype.focus = function () {
+	this.documentView.getDocumentNode().$[0].focus();
+	this.focusedNode = null;
+	this.onChange( null, this.surface.getModel().selection );
+};
+
 /*! Native Browser Events */
 
 /**

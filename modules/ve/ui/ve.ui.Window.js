@@ -332,7 +332,7 @@ ve.ui.Window.prototype.close = function ( action ) {
 		this.onClose( action );
 		this.closing = false;
 		this.frame.$content.find( ':focus' ).blur();
-		this.surface.getView().getDocument().getDocumentNode().$.focus();
+		this.surface.getView().focus();
 		this.emit( 'close', action );
 	}
 };
