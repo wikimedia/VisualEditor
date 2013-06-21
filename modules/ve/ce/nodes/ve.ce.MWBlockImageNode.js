@@ -26,6 +26,7 @@ ve.ce.MWBlockImageNode = function VeCeMWBlockImageNode( model, config ) {
 	ve.ce.ProtectedNode.call( this );
 	ve.ce.FocusableNode.call( this );
 	ve.ce.ResizableNode.call( this );
+	ve.ce.RelocatableNode.call( this );
 
 	type = this.model.getAttribute( 'type' );
 
@@ -92,6 +93,8 @@ ve.mixinClass( ve.ce.MWBlockImageNode, ve.ce.ProtectedNode );
 ve.mixinClass( ve.ce.MWBlockImageNode, ve.ce.FocusableNode );
 
 ve.mixinClass( ve.ce.MWBlockImageNode, ve.ce.ResizableNode );
+
+ve.mixinClass( ve.ce.MWBlockImageNode, ve.ce.RelocatableNode );
 
 /* Static Properties */
 
