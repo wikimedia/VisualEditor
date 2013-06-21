@@ -46,7 +46,7 @@ ve.ui.LinkInspector.static.linkTargetInputWidget = ve.ui.LinkTargetInputWidget;
  * @method
  */
 ve.ui.LinkInspector.prototype.initialize = function () {
-	// Call parent method
+	// Parent method
 	ve.ui.Inspector.prototype.initialize.call( this );
 
 	// Properties
@@ -74,7 +74,7 @@ ve.ui.LinkInspector.prototype.onSetup = function () {
 		fragment = this.surface.getModel().getFragment( null, true ),
 		annotation = this.getMatchingAnnotations( fragment ).get( 0 );
 
-	// Call parent method
+	// Parent method
 	ve.ui.Inspector.prototype.onSetup.call( this );
 
 	// Initialize range
@@ -108,14 +108,12 @@ ve.ui.LinkInspector.prototype.onSetup = function () {
 
 /**
  * Handle the inspector being opened.
- *
- * @method
  */
 ve.ui.LinkInspector.prototype.onOpen = function () {
 	var fragment = this.surface.getModel().getFragment( null, true ),
 		annotation = this.getMatchingAnnotations( fragment ).get( 0 );
 
-	// Call parent method
+	// Parent method
 	ve.ui.Inspector.prototype.onOpen.call( this );
 
 	// Wait for animation to complete
@@ -130,11 +128,10 @@ ve.ui.LinkInspector.prototype.onOpen = function () {
 /**
  * Handle the inspector being closed.
  *
- * @method
  * @param {string} action Action that caused the window to be closed
  */
 ve.ui.LinkInspector.prototype.onClose = function ( action ) {
-	// Call parent method
+	// Parent method
 	ve.ui.Inspector.prototype.onClose.call( this, action );
 
 	var i, len, annotations, selection,

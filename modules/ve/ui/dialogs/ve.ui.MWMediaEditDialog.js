@@ -58,7 +58,7 @@ ve.ui.MWMediaEditDialog.static.addLocalStylesheets( [
 /* Methods */
 
 ve.ui.MWMediaEditDialog.prototype.initialize = function () {
-	// Call parent method
+	// Parent method
 	ve.ui.Dialog.prototype.initialize.call( this );
 
 	// Properties

@@ -8,7 +8,7 @@
 /*global mw */
 
 /**
- * Document dialog.
+ * Dialog for a MediaWiki content transclusion.
  *
  * See https://raw.github.com/wikimedia/mediawiki-extensions-TemplateData/master/spec.templatedata.json
  * for the latest version of the TemplateData specification.
@@ -61,7 +61,7 @@ ve.ui.MWTransclusionDialog.static.modelClasses = [ ve.dm.MWTransclusionNode ];
 /* Methods */
 
 ve.ui.MWTransclusionDialog.prototype.initialize = function () {
-	// Call parent method
+	// Parent method
 	ve.ui.PagedDialog.prototype.initialize.call( this );
 
 	// Events

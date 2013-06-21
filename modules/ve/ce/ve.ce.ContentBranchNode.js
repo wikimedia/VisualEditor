@@ -68,8 +68,9 @@ ve.ce.ContentBranchNode.prototype.onChildUpdate = function ( transaction ) {
  * @method
  */
 ve.ce.ContentBranchNode.prototype.onSplice = function () {
-	// Call parent implementation
+	// Parent method
 	ve.ce.BranchNode.prototype.onSplice.apply( this, arguments );
+
 	// Rerender to make sure annotations are applied correctly
 	this.renderContents();
 };

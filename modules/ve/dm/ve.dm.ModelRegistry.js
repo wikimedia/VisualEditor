@@ -93,7 +93,7 @@ ve.dm.ModelRegistry.prototype.register = function ( constructor ) {
 	} else {
 		throw new Error( 'No factory associated with this ve.dm.Model subclass' );
 	}
-	// Call parent implementation
+	// Parent method
 	ve.Registry.prototype.register.call( this, name, constructor );
 
 	tags = constructor.static.matchTagNames === null ?

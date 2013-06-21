@@ -8,8 +8,6 @@
 /*global mw*/
 
 /**
- * Document dialog.
- *
  * @class
  * @extends ve.ui.PagedDialog
  *
@@ -48,7 +46,7 @@ ve.ui.MWMetaDialog.static.icon = 'settings';
 ve.ui.MWMetaDialog.prototype.initialize = function () {
 	var languagePromise;
 
-	// Call parent method
+	// Parent method
 	ve.ui.PagedDialog.prototype.initialize.call( this );
 
 	// Properties

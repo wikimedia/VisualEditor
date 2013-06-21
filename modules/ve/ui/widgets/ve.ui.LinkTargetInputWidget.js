@@ -82,7 +82,7 @@ ve.ui.LinkTargetInputWidget.prototype.setValue = function ( value ) {
 		} ) );
 	}
 
-	// Call parent method
+	// Parent method
 	ve.ui.TextInputWidget.prototype.setValue.call( this, value );
 };
 
@@ -98,9 +98,10 @@ ve.ui.LinkTargetInputWidget.prototype.setValue = function ( value ) {
 ve.ui.LinkTargetInputWidget.prototype.setAnnotation = function ( annotation ) {
 	this.annotation = annotation;
 
-	// Call parent method
+	// Parent method
 	ve.ui.TextInputWidget.prototype.setValue.call(
-		this, this.getTargetFromAnnotation( annotation )
+		this,
+		this.getTargetFromAnnotation( annotation )
 	);
 
 	return this;

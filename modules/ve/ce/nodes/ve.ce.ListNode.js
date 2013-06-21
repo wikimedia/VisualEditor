@@ -70,8 +70,8 @@ ve.ce.ListNode.prototype.onUpdate = function () {
  * @method
  */
 ve.ce.ListNode.prototype.onSplice = function () {
-	// Call parent implementation
-	ve.ce.BranchNode.prototype.onSplice.apply( this, Array.prototype.slice.call( arguments, 0 ) );
+	// Parent method
+	ve.ce.BranchNode.prototype.onSplice.apply( this, arguments );
 
 	// There's a bug in Firefox where numbered lists aren't renumbered after in/outdenting
 	// list items. Force renumbering by requesting the height, which causes a reflow
@@ -89,7 +89,7 @@ ve.ce.ListNode.prototype.canHaveSlugAfter = function () {
 		// Nested lists should not have slugs after them
 		return false;
 	} else {
-		// Call the parent's implementation
+		// Parent method
 		return ve.ce.BranchNode.prototype.canHaveSlugAfter.call( this );
 	}
 };
