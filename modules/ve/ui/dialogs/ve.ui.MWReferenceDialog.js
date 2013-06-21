@@ -37,7 +37,6 @@ ve.ui.MWReferenceDialog.static.modelClasses = [ ve.dm.MWReferenceNode ];
 
 ve.ui.MWReferenceDialog.static.toolbarTools = [
 	{ 'items': ['undo', 'redo'] },
-	{ 'items': ['mwFormat'] },
 	{ 'items': ['bold', 'italic', 'mwLink', 'clear', 'mwMediaInsert', 'mwTransclusion'] }
 ];
 
