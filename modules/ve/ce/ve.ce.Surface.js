@@ -784,10 +784,10 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 
 		// Simple insertion
 		if ( lengthDiff > 0 && offsetDiff === lengthDiff /* && sameLeadingAndTrailing */) {
-			data = ve.splitClusters( next.text.substring(
+			data = ve.splitClusters( next.text ).slice(
 				previous.range.start - nodeOffset - 1,
 				next.range.start - nodeOffset - 1
-			) );
+			);
 			// Apply insertion annotations
 			annotations = this.model.getInsertionAnnotations();
 			if ( annotations instanceof ve.dm.AnnotationSet ) {
@@ -836,7 +836,7 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 	) {
 		++fromRight;
 	}
-	data = ve.splitClusters( next.text.substring( fromLeft, next.text.length - fromRight ) );
+	data = ve.splitClusters( next.text ).slice( fromLeft, next.text.length - fromRight );
 	// Get annotations to the left of new content and apply
 	annotations =
 		this.model.getDocument().data.getAnnotationsFromOffset( nodeOffset + 1 + fromLeft );
