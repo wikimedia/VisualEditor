@@ -73,3 +73,19 @@ ve.dm.Annotation.prototype.getComparableObject = function () {
 		'attributes': this.getAttributes()
 	};
 };
+
+/**
+ * HACK: This method strips data-parsoid from HTML attributes for comparisons.
+ *
+ * This should be removed once similar annotation merging is handled correctly
+ * by Parsoid.
+ */
+ve.dm.Annotation.prototype.getComparableHtmlAttributes = function () {
+	var i, length, attributes = ve.copyArray( this.getHtmlAttributes() );
+	for ( i = 0, length = attributes.length; i < length; i++ ) {
+		if ( attributes[i].values ) {
+			delete attributes[i].values['data-parsoid'];
+		}
+	}
+	return attributes;
+};
