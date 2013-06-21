@@ -211,7 +211,8 @@
 	text-align: left;
 }
 
-.ve-ui-mwMetaDialog-languages-table th, td {
+.ve-ui-mwMetaDialog-languages-table th,
+.ve-ui-mwMetaDialog-languages-table td {
 	padding: 0.75em 1em;
 	border-bottom: solid 1px white;
 }
