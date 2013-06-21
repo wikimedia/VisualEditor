@@ -34,21 +34,53 @@ ve.dm.MWReferenceListNode.static.matchRdfaTypes = [ 'mw:Extension/references' ];
 ve.dm.MWReferenceListNode.static.storeHtmlAttributes = false;
 
 ve.dm.MWReferenceListNode.static.toDataElement = function ( domElements ) {
-	var mw = JSON.parse( domElements[0].getAttribute( 'data-mw' ) || '{}' ),
-		refGroup = mw.attrs.group || '',
+	var mwDataJSON = domElements[0].getAttribute( 'data-mw' ),
+		mwData = mwDataJSON ? JSON.parse( mwDataJSON ) : {},
+		refGroup = mwData.attrs && mwData.attrs.group || '',
 		listGroup = 'mwReference/' + refGroup;
 
 	return {
 		'type': this.name,
 		'attributes': {
+			'mw': mwData,
+			'about': domElements[0].getAttribute( 'about' ),
 			'domElements': ve.copyArray( domElements ),
+			'refGroup': refGroup,
 			'listGroup': listGroup
 		}
 	};
 };
 
 ve.dm.MWReferenceListNode.static.toDomElements = function ( dataElement, doc ) {
-	return ve.copyDomElements( dataElement.attributes.domElements, doc );
+	var el, els, mwData,
+		attribs = dataElement.attributes;
+
+	if ( attribs.domElements ) {
+		// If there's more than 1 element, preserve entire array, not just first element
+		els = ve.copyDomElements( attribs.domElements, doc );
+		el = els[0];
+	} else {
+		el = doc.createElement( 'div' );
+		els = [ el ];
+	}
+
+	mwData = attribs.mw ? ve.copyObject( attribs.mw ) : {};
+
+	mwData.name = 'references';
+
+	if ( attribs.refGroup ) {
+		ve.setProp( mwData, 'attrs', 'group', attribs.refGroup );
+	} else if ( mwData.attrs ) {
+		delete mwData.attrs.refGroup;
+	}
+
+	if ( attribs.about ) {
+		el.setAttribute( 'about', attribs.about );
+	}
+	el.setAttribute( 'typeof', 'mw:Extension/references' );
+	el.setAttribute( 'data-mw', JSON.stringify( mwData ) );
+
+	return els;
 };
 
 /* Registration */

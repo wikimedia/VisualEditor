@@ -145,9 +145,10 @@
 	overflow: hidden;
 }
 
-/* ve.ui.MWReferenceDialog */
+/* ve.ui.MWReferenceDialog & ve.ui.MWReferenceListDialog */
 
-.ve-ui-mwReferenceDialog-body {
+.ve-ui-mwReferenceDialog-body,
+.ve-ui-mwReferenceListDialog-body {
 	padding: 2em;
 	overflow-y: auto;
 }

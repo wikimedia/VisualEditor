@@ -42,11 +42,12 @@ ve.dm.MWReferenceNode.static.isContent = true;
 ve.dm.MWReferenceNode.static.toDataElement = function ( domElements, converter ) {
 	var dataElement,
 		about = domElements[0].getAttribute( 'about' ),
-		mw = JSON.parse( domElements[0].getAttribute( 'data-mw' ) || '{}' ),
-		body = mw.body ? mw.body.html : '',
-		refGroup = mw.attrs.group || '',
+		mwDataJSON = domElements[0].getAttribute( 'data-mw' ),
+		mwData = mwDataJSON ? JSON.parse( mwDataJSON ) : {},
+		body = mwData.body ? mwData.body.html : '',
+		refGroup = mwData.attrs && mwData.attrs.group || '',
 		listGroup = this.name + '/' + refGroup,
-		listKey = mw.attrs && mw.attrs.name !== undefined ? mw.attrs.name : null,
+		listKey = mwData.attrs && mwData.attrs.name !== undefined ? mwData.attrs.name : null,
 		queueResult = converter.internalList.queueItemHtml( listGroup, listKey, body ),
 		listIndex = queueResult.index,
 		contentsUsed = ( body !== '' && queueResult.isNew );
@@ -54,7 +55,7 @@ ve.dm.MWReferenceNode.static.toDataElement = function ( domElements, converter )
 	dataElement = {
 		'type': this.name,
 		'attributes': {
-			'mw': mw,
+			'mw': mwData,
 			'about': about,
 			'listIndex': listIndex,
 			'listGroup': listGroup,
