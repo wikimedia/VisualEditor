@@ -1406,6 +1406,34 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/internalList' }
 		]
 	},
+	'annotated metadata': {
+		'html': '<body><p><b><!--foo-->bar<!--baz--></b></p></body>',
+		'data': [
+			{ 'type': 'paragraph' },
+			{
+				'type': 'alienMeta',
+				'annotations': [ ve.dm.example.bold ],
+				'attributes': {
+					'domElements': $( '<!--foo-->' ).toArray()
+				}
+			},
+			{ 'type': '/alienMeta' },
+			[ 'b', [ ve.dm.example.bold ] ],
+			[ 'a', [ ve.dm.example.bold ] ],
+			[ 'r', [ ve.dm.example.bold ] ],
+			{
+				'type': 'alienMeta',
+				'annotations': [ ve.dm.example.bold ],
+				'attributes': {
+					'domElements': $( '<!--baz-->' ).toArray()
+				}
+			},
+			{ 'type': '/alienMeta' },
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
+		]
+	},
 	'wrapping of bare content': {
 		'html': '<body>abc</body>',
 		'data': [
@@ -1715,7 +1743,7 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/internalList' }
 		]
 	},
-	'annotated comment': {
+	'empty annotation with comment': {
 		'html': '<body><p>Foo<b><!-- Bar --></b>Baz</p></body>',
 		'data': [
 			{ 'type': 'paragraph' },

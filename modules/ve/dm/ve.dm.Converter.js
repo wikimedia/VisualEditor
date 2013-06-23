@@ -838,6 +838,12 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, wrapp
 				// TODO treat this as a node with nodeName #comment, removes code duplication
 				childDataElements = this.createDataElements( ve.dm.AlienMetaItem, [ childDomElement ] );
 				childDataElements.push( { 'type': '/' + childDataElements[0].type } );
+
+				// Annotate
+				if ( !context.annotations.isEmpty() ) {
+					childDataElements[0].annotations = context.annotations.getIndexes().slice();
+				}
+
 				if ( context.inWrapper ) {
 					wrappedMetaItems = wrappedMetaItems.concat( childDataElements );
 					if ( wrappedWhitespace !== '' ) {
@@ -1042,13 +1048,15 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container ) {
 				)
 			)
 		) {
-			// Annotated text or annotated nodes
+			// Annotated text, nodes or meta
 			text = '';
 			while (
 				ve.isArray( data[i] ) ||
 				(
-					data[i].annotations !== undefined &&
-					this.nodeFactory.isNodeContent( data[i].type )
+					data[i].annotations !== undefined && (
+						this.metaItemFactory.lookup( data[i].type ) ||
+						this.nodeFactory.isNodeContent( data[i].type )
+					)
 				)
 			) {
 				annotations = new ve.dm.AnnotationSet(
