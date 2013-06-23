@@ -16,7 +16,7 @@
  * node's DOM rendering.
  *
  * If your focusable node changes size and the highlight must be redrawn, call redrawHighlight().
- * ResizableNode 'resize' event is already bound.
+ * 'resize' and 'rerender' are already bound to call this.
  *
  * @class
  * @abstract
@@ -34,7 +34,8 @@ ve.ce.FocusableNode = function VeCeFocusableNode( $focusable ) {
 	// Events
 	this.connect( this, {
 		'setup': 'onFocusableSetup',
-		'resize': 'redrawHighlight'
+		'resize': 'onFocusableResize',
+		'rerender': 'onFocusableRerender'
 	} );
 };
 
@@ -60,13 +61,25 @@ ve.ce.FocusableNode.prototype.onFocusableSetup = function () {
 };
 
 /**
- * Notification of dimension change
+ * Handle resize event.
  *
  * @method
  */
-ve.ce.FocusableNode.prototype.redrawHighlight = function () {
-	this.clearHighlight();
-	this.createHighlight();
+ve.ce.FocusableNode.prototype.onFocusableResize = function () {
+	if ( this.isFocused() ) {
+		this.redrawHighlight();
+	}
+};
+
+/**
+ * Handle rerender event.
+ *
+ * @method
+ */
+ve.ce.FocusableNode.prototype.onFocusableRerender = function () {
+	if ( this.isFocused() ) {
+		this.redrawHighlight();
+	}
 };
 
 /**
@@ -104,7 +117,7 @@ ve.ce.FocusableNode.prototype.setFocused = function ( value ) {
 };
 
 /**
- * Creates highlight
+ * Creates highlight.
  *
  * @method
  */
@@ -113,7 +126,7 @@ ve.ce.FocusableNode.prototype.createHighlight = function () {
 
 	this.$.find( '*' ).add( this.$ ).each(
 		ve.bind( function( i, element ) {
-			elementOffset = $(element).offset();
+			elementOffset = $( element ).offset();
 			this.$highlights = this.$highlights.add(
 				$( '<div>' )
 					.css( {
@@ -131,11 +144,21 @@ ve.ce.FocusableNode.prototype.createHighlight = function () {
 };
 
 /**
- * Clears highlight
+ * Clears highlight.
  *
  * @method
  */
 ve.ce.FocusableNode.prototype.clearHighlight = function () {
 	this.$highlights = $( [] );
 	this.surface.replaceHighlight( null );
+};
+
+/**
+ * Redraws highlight.
+ *
+ * @method
+ */
+ve.ce.FocusableNode.prototype.redrawHighlight = function () {
+	this.clearHighlight();
+	this.createHighlight();
 };
