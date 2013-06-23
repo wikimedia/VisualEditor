@@ -25,10 +25,12 @@ ve.ce.MWReferenceListNode = function VeCeMWReferenceListNode( model, config ) {
 	ve.ce.FocusableNode.call( this );
 
 	// DOM Changes
-	this.$.addClass( 've-ce-mwReferenceListNode', 'reference' )
-		.attr( 'contenteditable', false );
-	this.$reflist = $( '<ol class="references">' );
-	this.$.append( this.$reflist );
+	this.$
+		.addClass( 've-ce-mwReferenceListNode', 'reference' )
+		.prop( 'contenteditable', false );
+	this.$reflist = $( '<ol class="references"></ol>' );
+	this.$refmsg = $( '<p>' )
+		.addClass( 've-ce-mwReferenceListNode-muted' );
 
 	// Events
 	this.model.getDocument().internalList.connect( this, { 'update': 'onInternalListUpdate' } );
@@ -70,6 +72,19 @@ ve.ce.MWReferenceListNode.prototype.onInternalListUpdate = function ( groupsChan
 };
 
 /**
+ * Handle attribute change events.
+ *
+ * @param {string} key Attribute key
+ * @param {string} from Old value
+ * @param {string} to New value
+ */
+ve.ce.MWReferenceListNode.prototype.onAttributeChange = function ( key ) {
+	if ( key === 'listGroup' ) {
+		this.update();
+	}
+};
+
+/**
  * Handle the updating of the InternalListNode.
  *
  * This will occur after changes to any InternalItemNode.
@@ -89,6 +104,7 @@ ve.ce.MWReferenceListNode.prototype.onListNodeUpdate = function () {
 ve.ce.MWReferenceListNode.prototype.update = function () {
 	var i, j, iLen, jLen, index, firstNode, key, keyedNodes, $li, itemNode,
 		internalList = this.model.getDocument().internalList,
+		refGroup = this.model.getAttribute( 'refGroup' ),
 		listGroup = this.model.getAttribute( 'listGroup' ),
 		nodes = internalList.getNodeGroup( listGroup );
 
@@ -100,8 +116,13 @@ ve.ce.MWReferenceListNode.prototype.update = function () {
 	}
 	this.attachedItems = this.attachedItems || [];
 
-	this.$reflist.empty();
-	if ( nodes && nodes.indexOrder.length ) {
+	this.$reflist.detach().empty();
+	this.$refmsg.detach();
+
+	if ( !nodes || !nodes.indexOrder.length ) {
+		this.$refmsg.text( ve.msg( 'visualeditor-referencelist-isempty', refGroup ) );
+		this.$.append( this.$refmsg );
+	} else {
 		for ( i = 0, iLen = nodes.indexOrder.length; i < iLen; i++ ) {
 			index = nodes.indexOrder[i];
 			firstNode = nodes.firstNodes[index];
@@ -132,10 +153,11 @@ ve.ce.MWReferenceListNode.prototype.update = function () {
 			// HACK: ProtectedNode crashes when dealing with an unattached node
 			this.attachedItems.push( itemNode );
 			itemNode.attach( this );
-			$li.append( $( '<span class="reference-text">' ).html( itemNode.$.clone().show() ) );
+			$li.append( $( '<span class="reference-text"></span>' ).append( itemNode.$.clone().show() ) );
 			this.$reflist.append( $li );
 		}
-	} // TODO: Show a placeholder for an empty reference list in the 'else' section
+		this.$.append( this.$reflist );
+	}
 };
 
 /* Registration */

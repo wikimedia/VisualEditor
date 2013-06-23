@@ -176,6 +176,11 @@
 	display: inline-block;
 }
 
+.ve-ce-mwReferenceListNode-muted {
+	font-style: italic;
+	color: #777;
+}
+
 /* ve.ce.BranchNode */
 
 .ve-ce-branchNode-blockSlug {

@@ -604,12 +604,12 @@ $wgResourceModules += array(
 		'scripts' => array(
 			've/dm/nodes/ve.dm.MWReferenceListNode.js',
 			've/dm/nodes/ve.dm.MWReferenceNode.js',
-
 			've/ce/nodes/ve.ce.MWReferenceListNode.js',
 			've/ce/nodes/ve.ce.MWReferenceNode.js',
-
+			've/ui/tools/buttons/ve.ui.MWReferenceListButtonTool.js',
 			've/ui/tools/buttons/ve.ui.MWReferenceButtonTool.js',
 			've/ui/dialogs/ve.ui.MWReferenceDialog.js',
+			've/ui/dialogs/ve.ui.MWReferenceListDialog.js',
 		),
 		'dependencies' => array(
 			'ext.visualEditor.core',
@@ -621,7 +621,10 @@ $wgResourceModules += array(
 			'visualeditor-dialog-reference-options-name-label',
 			'visualeditor-dialog-reference-options-section',
 			'visualeditor-dialog-reference-title',
+			'visualeditor-dialog-referencelist-title',
 			'visualeditor-dialogbutton-reference-tooltip',
+			'visualeditor-dialogbutton-referencelist-tooltip',
+			'visualeditor-referencelist-isempty',
 		),
 	),
 	'ext.visualEditor.icons-raster' => $wgVisualEditorResourceTemplate + array(

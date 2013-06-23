@@ -1130,7 +1130,7 @@ ve.dm.example.domToDataCases = {
 						'<a href="#cite_note-3" data-parsoid="{}">[3]</a>' +
 					'</span>' +
 				'</p>' +
-				'<ol class="references" typeof="mw:Extension/references" ' +
+				'<ol class="references" about="#mwt12" typeof="mw:Extension/references" ' +
 					'data-mw="{&quot;name&quot;:&quot;references&quot;,&quot;attrs&quot;:{}}" ' +
 					'data-parsoid="{}">' +
 					'<li id="cite_note-quux-2"><a href="#cite_ref-quux-2-0">u2191</a>Quux</li>' +
@@ -1278,13 +1278,19 @@ ve.dm.example.domToDataCases = {
 			{
 				'type': 'mwReferenceList',
 				'attributes': {
+					'about': '#mwt12',
+					'mw': {
+						'name': 'references',
+						'attrs': {}
+					},
 					'domElements': $(
-						'<ol class="references" typeof="mw:Extension/references" '+
+						'<ol class="references" about="#mwt12" typeof="mw:Extension/references" '+
 							'data-mw="{&quot;name&quot;:&quot;references&quot;,&quot;attrs&quot;:{}}" ' +
 							'data-parsoid="{}">'+
 							'<li id="cite_note-quux-2"><a href="#cite_ref-quux-2-0">u2191</a>Quux</li>' +
 						'</ol>' ).toArray(),
-					'listGroup': 'mwReference/'
+					'listGroup': 'mwReference/',
+					'refGroup': ''
 				}
 			},
 			{ 'type': '/mwReferenceList' },
@@ -1328,7 +1334,7 @@ ve.dm.example.domToDataCases = {
 					'data-mw="{&quot;body&quot;:{&quot;html&quot;:&quot;No name&quot;},&quot;attrs&quot;:{&quot;group&quot;:&quot;g1&quot;}}">' +
 				'</span>' +
 			'</p>' +
-			'<ol class="references" typeof="mw:Extension/references" ' +
+			'<ol class="references" about="#mwt12" typeof="mw:Extension/references" ' +
 				'data-mw="{&quot;name&quot;:&quot;references&quot;,&quot;attrs&quot;:{}}" ' +
 				'data-parsoid="{}">' +
 				'<li id="cite_note-quux-2"><a href="#cite_ref-quux-2-0">u2191</a>Quux</li>' +
@@ -3597,8 +3603,14 @@ ve.dm.example.references = [
 	{
 		'type': 'mwReferenceList',
 		'attributes': {
+			'about': '#mwt12',
+			'mw': {
+				'name': 'references',
+				'attrs': {}
+			},
 			//'domElements': HTML,
-			'listGroup': 'mwReference/'
+			'listGroup': 'mwReference/',
+			'refGroup': ''
 		}
 	},
 	{ 'type': '/mwReferenceList' },
