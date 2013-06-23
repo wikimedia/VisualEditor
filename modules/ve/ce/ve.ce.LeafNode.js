@@ -59,10 +59,10 @@ ve.ce.LeafNode.prototype.onTeardown = function () {
  * @see ve.ce.ContentBranchNode
  *
  * An HTML fragment can be:
- * - an HTML string
+ * - a plain text string
  * - a jQuery object
- * - an array with an HTML string or jQuery object at index 0 and a ve.dm.AnnotationSet at index 1,
- *   i.e. ['htmlstring', ve.dm.AnnotationSet] or [$jQueryObj, ve.dm.AnnotationSet]
+ * - an array with a plain text string or jQuery object at index 0 and a ve.dm.AnnotationSet at index 1,
+ *   i.e. ['textstring', ve.dm.AnnotationSet] or [$jQueryObj, ve.dm.AnnotationSet]
  *
  * The default implementation should be fine in most cases. A subclass only needs to override this
  * if the annotations aren't necessarily the same across the entire node (like in ve.ce.TextNode).
