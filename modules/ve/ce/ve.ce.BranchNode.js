@@ -149,10 +149,14 @@ ve.ce.BranchNode.prototype.onModelUpdate = function ( transaction ) {
  * @param {ve.dm.BranchNode...} [nodes] Variadic list of nodes to insert
  */
 ve.ce.BranchNode.prototype.onSplice = function ( index ) {
-	var i,
+	var i, j,
 		length,
 		args = Array.prototype.slice.call( arguments ),
 		$anchor,
+		afterAnchor,
+		node,
+		parentNode,
+		firstChild,
 		removals;
 	// Convert models to views and attach them to this node
 	if ( args.length >= 3 ) {
@@ -176,9 +180,19 @@ ve.ce.BranchNode.prototype.onSplice = function ( index ) {
 		for ( i = args.length - 1; i >= 2; i-- ) {
 			args[i].attach( this );
 			if ( index ) {
-				$anchor.after( args[i].$ );
+				// DOM equivalent of $anchor.after( args[i].$ );
+				afterAnchor = $anchor[0].nextSibling;
+				parentNode = $anchor[0].parentNode;
+				for ( j = 0, length = args[i].$.length; j < length; j++ ) {
+					parentNode.insertBefore( args[i].$[j], afterAnchor );
+				}
 			} else {
-				this.$.prepend( args[i].$ );
+				// DOM equivalent of this.$.prepend( args[j].$ );
+				node = this.$[0];
+				firstChild = node.firstChild;
+				for ( j = args[i].$.length - 1; j >= 0; j-- ) {
+					node.insertBefore( args[i].$[j], firstChild );
+				}
 			}
 			if ( this.live !== args[i].isLive() ) {
 				args[i].setLive( this.live );
