@@ -77,6 +77,8 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 	this.onBeforeUnloadHandler = null;
 	this.active = false;
 	this.edited = false;
+	this.sanityCheckFinished = false;
+	this.sanityCheckVerified = false;
 	this.activating = false;
 	this.deactivating = false;
 	// If this is true then #transformPage / #restorePage will not call pushState
@@ -98,6 +100,11 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 	this.originalDocumentTitle = document.title;
 	this.editSummaryByteLimit = 255;
 	this.tabLayout = mw.config.get( 'wgVisualEditorConfig' ).tabLayout;
+
+	/**
+	 * @property {jQuery.Promise|null}
+	 */
+	this.sanityCheckPromise = null;
 
 	browserWhitelisted = (
 		'vewhitelist' in currentUri.query ||
@@ -240,6 +247,7 @@ ve.init.mw.ViewPageTarget.saveDialogTemplate = '\
 			</div>\
 			<div class="ve-init-mw-viewPageTarget-saveDialog-warnings"></div>\
 			<div class="ve-init-mw-viewPageTarget-saveDialog-actions">\
+				<div class="ve-init-mw-viewPageTarget-saveDialog-dirtymsg"></div>\
 				<div class="ve-init-mw-viewPageTarget-saveDialog-working"></div>\
 			</div>\
 			<div style="clear: both;"></div>\
@@ -346,6 +354,7 @@ ve.init.mw.ViewPageTarget.prototype.onLoad = function ( doc ) {
 		this.edited = false;
 		this.doc = doc;
 		this.setUpSurface( doc );
+		this.startSanityCheck();
 		this.setupToolbarEditNotices();
 		this.setupToolbarBetaNotice();
 		this.setupToolbarButtons();
@@ -701,14 +710,13 @@ ve.init.mw.ViewPageTarget.prototype.onSurfaceModelTransact = function () {
 };
 
 /**
- * Handle history events in the surface model.
- *
- * @method
+ * Re-evaluate whether the toolbar save button should be disabled or not.
  */
-ve.init.mw.ViewPageTarget.prototype.onSurfaceModelHistory = function () {
+ve.init.mw.ViewPageTarget.prototype.updateToolbarSaveButtonState = function () {
 	this.edited = this.surface.getModel().hasPastState();
-	// Disable the save button if we have no history
-	this.toolbarSaveButton.setDisabled( !this.edited && !this.restoring );
+	// Disable the save button if we have no history or if the sanity check is not finished
+	this.toolbarSaveButton.setDisabled( ( !this.edited && !this.restoring ) || !this.sanityCheckFinished );
+	this.toolbarSaveButton.$.toggleClass( 've-init-mw-viewPageTarget-waiting', !this.sanityCheckFinished );
 };
 
 /**
@@ -780,7 +788,8 @@ ve.init.mw.ViewPageTarget.prototype.getSaveOptions = function () {
 	return {
 		'summary': $( '#ve-init-mw-viewPageTarget-saveDialog-editSummary' ).val(),
 		'minor': $( '#ve-init-mw-viewPageTarget-saveDialog-minorEdit' ).prop( 'checked' ),
-		'watch': $( '#ve-init-mw-viewPageTarget-saveDialog-watchList' ).prop( 'checked' )
+		'watch': $( '#ve-init-mw-viewPageTarget-saveDialog-watchList' ).prop( 'checked' ),
+		'needcheck': this.sanityCheckPromise.state() === 'rejected'
 	};
 };
 
@@ -849,7 +858,7 @@ ve.init.mw.ViewPageTarget.prototype.setUpSurface = function ( doc ) {
 	this.surface.getContext().hide();
 	this.$document = this.surface.$.find( '.ve-ce-documentNode' );
 	this.surface.getModel().connect( this, { 'transact': 'onSurfaceModelTransact' } );
-	this.surface.getModel().connect( this, { 'history': 'onSurfaceModelHistory' } );
+	this.surface.getModel().connect( this, { 'history': 'updateToolbarSaveButtonState' } );
 	this.$.append( this.surface.$ );
 	this.setUpToolbar();
 	this.transformPageTitle();
@@ -867,6 +876,56 @@ ve.init.mw.ViewPageTarget.prototype.setUpSurface = function ( doc ) {
 	// Add appropriately mw-content-ltr or mw-content-rtl class
 	this.surface.$.addClass( 'mw-content-' + mw.config.get( 'wgVisualEditor' ).pageLanguageDir );
 	this.surface.initialize();
+};
+
+/**
+ * Fire off the sanity check. Must be called before the surface is activated.
+ *
+ * To access the result, check whether #sanityCheckPromise has been resolved or rejected
+ * (it's asynchronous, so it may still be pending when you check).
+ */
+ve.init.mw.ViewPageTarget.prototype.startSanityCheck = function () {
+	// We have to get the converted DOM now, before we unlock the surface and let the user edit,
+	// but we can defer the actual comparison
+	var viewPage = this,
+		doc = viewPage.surface.getModel().getDocument(),
+		newDom = ve.dm.converter.getDomFromData( doc.getFullData(), doc.getStore(), doc.getInternalList() ),
+		oldDom = viewPage.doc,
+		d = $.Deferred();
+
+	// Reset
+	viewPage.sanityCheckFinished = false;
+	viewPage.sanityCheckVerified = false;
+
+	setTimeout( function () {
+		// We can't compare oldDom.body and newDom.body directly, because the attributes on the
+		// <body> were ignored in the conversion. So compare each child separately.
+		var i,
+			len = oldDom.body.childNodes.length;
+		if ( len !== newDom.body.childNodes.length ) {
+			// Different number of children, so they're definitely different
+			d.reject();
+			return;
+		}
+		for ( i = 0; i < len; i++ ) {
+			if ( !oldDom.body.childNodes[i].isEqualNode( newDom.body.childNodes[i] ) ) {
+				d.reject();
+				return;
+			}
+		}
+		d.resolve();
+	} );
+
+	viewPage.sanityCheckPromise = d.promise()
+		.done( function () {
+			// If we detect no roundtrip errors,
+			// don't emphasize "review changes" to the user.
+			viewPage.sanityCheckVerified = true;
+		})
+		.always( function () {
+			viewPage.sanityCheckFinished = true;
+			viewPage.updateToolbarSaveButtonState();
+		} );
 };
 
 /**
@@ -1172,6 +1231,7 @@ ve.init.mw.ViewPageTarget.prototype.setupToolbarButtons = function () {
 		'flags': ['constructive'],
 		'disabled': !this.restoring
 	} );
+	this.updateToolbarSaveButtonState();
 
 	this.toolbarCancelButton.connect( this, { 'click': 'onToolbarCancelButtonClick' } );
 	this.toolbarSaveButton.connect( this, { 'click': 'onToolbarSaveButtonClick' } );
@@ -1434,6 +1494,7 @@ ve.init.mw.ViewPageTarget.prototype.setupSaveDialog = function () {
 			.find( '.ve-init-mw-viewPageTarget-saveDialog-nochanges' )
 				.html( ve.init.platform.getParsedMessage( 'visualeditor-diff-nochanges' ) )
 		;
+
 		// Get reference to loading icon
 		viewPage.$saveDialogLoadingIcon = viewPage.$saveDialog
 			.find( '.ve-init-mw-viewPageTarget-saveDialog-working' );
@@ -1584,7 +1645,17 @@ ve.init.mw.ViewPageTarget.prototype.swapSaveDialog = function ( slide, options )
 			.not( $slide )
 				.hide();
 
+	// Old warnings should not persist after slide changes
+	this.clearAllWarnings();
+
+	if ( slide === 'save' ) {
+		if ( !this.sanityCheckVerified ) {
+			this.showWarning( 'dirtywarning', ve.init.platform.getParsedMessage( 'visualeditor-savedialog-dirtywarning' ) );
+		}
+	}
+
 	if ( slide === 'review' ) {
+		this.sanityCheckVerified = true;
 		$viewer = $slide.find( '.ve-init-mw-viewPageTarget-saveDialog-viewer' );
 		if ( !$viewer.find( 'table, pre' ).length ) {
 			this.saveDialogReviewGoodButton.setDisabled( true );
@@ -1605,9 +1676,6 @@ ve.init.mw.ViewPageTarget.prototype.swapSaveDialog = function ( slide, options )
 	} else {
 		this.$saveDialog.css( 'width', '' );
 	}
-
-	// Warnings should not persist after slide changes
-	this.clearAllWarnings();
 
 	// Show the target slide
 	$slide.show();

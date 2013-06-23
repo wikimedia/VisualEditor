@@ -34,6 +34,12 @@
 	margin-top: 0.2em;
 }
 
+/* Needs to override .ve-ui.widget.ve-ui-widget-disabled */
+.ve-ui-toolbar-actions .ve-init-mw-viewPageTarget-waiting.ve-ui-widget.ve-ui-widget-disabled {
+	cursor: progress;
+}
+
+
 /* Beta notices */
 
 .ve-init-mw-viewPageTarget-toolbar-betaNotice {
@@ -225,6 +231,7 @@
 	padding-top: 1em;
 }
 
+.ve-init-mw-viewPageTarget-saveDialog-dirtymsg,
 .ve-init-mw-viewPageTarget-saveDialog-license,
 .ve-init-mw-viewPageTarget-saveDialog-report-notice {
 	font-size: 0.7em;
@@ -232,6 +239,11 @@
 	padding: 0;
 	margin: 0;
 	color: #999;
+}
+
+
+.ve-init-mw-viewPageTarget-saveDialog-dirtymsg {
+	float: right;
 }
 
 .ve-init-mw-viewPageTarget-saveDialog-summary,

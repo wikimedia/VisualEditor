@@ -46,6 +46,7 @@ class VisualEditorMessagesModule extends ResourceLoaderModule {
 			'visualeditor-browserwarning' => array( 'visualeditor-browserwarning' ),
 			'visualeditor-report-notice' => array( 'visualeditor-report-notice' ),
 			'missingsummary' => array( 'missingsummary' ),
+			'visualeditor-savedialog-dirtywarning' => array( 'visualeditor-savedialog-dirtywarning' ),
 		);
 
 		// Override message value

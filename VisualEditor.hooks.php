@@ -90,6 +90,7 @@ class VisualEditorHooks {
 
 	public static function onListDefinedTags( &$tags ) {
 		$tags[] = 'visualeditor';
+		$tags[] = 'visualeditor-needcheck';
 		return true;
 	}
 

@@ -556,24 +556,35 @@ ve.init.mw.Target.prototype.save = function ( doc, options ) {
 	if ( this.saving ) {
 		return false;
 	}
+
+	var data = {
+		'format': 'json',
+		'action': 'visualeditor',
+		'paction': 'save',
+		'page': this.pageName,
+		'oldid': this.oldid,
+		'basetimestamp': this.baseTimeStamp,
+		'starttimestamp': this.startTimeStamp,
+		'html': this.getHtml( doc ),
+		'token': this.editToken,
+		'summary': options.summary
+	};
+
+	if ( options.minor ) {
+		data.minor = 1;
+	}
+	if ( options.watch ) {
+		data.watch = 1;
+	}
+	if ( options.needcheck ) {
+		data.needcheck = 1;
+	}
+
 	// Save DOM
 	this.saving = true;
 	$.ajax( {
 		'url': this.apiUrl,
-		'data': {
-			'format': 'json',
-			'action': 'visualeditor',
-			'paction': 'save',
-			'page': this.pageName,
-			'oldid': this.oldid,
-			'basetimestamp': this.baseTimeStamp,
-			'starttimestamp': this.startTimeStamp,
-			'html': this.getHtml( doc ),
-			'token': this.editToken,
-			'summary': options.summary,
-			'minor': Number( options.minor ),
-			'watch': Number( options.watch )
-		},
+		'data': data,
 		'dataType': 'json',
 		'type': 'POST',
 		// Wait up to 100 seconds before giving up

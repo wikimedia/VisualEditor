@@ -304,6 +304,12 @@ class ApiVisualEditor extends ApiBase {
 								intval( $editResult['edit']['newrevid'] ),
 								null
 							);
+							if ( $params['needcheck'] ) {
+								ChangeTags::addTags( 'visualeditor-needcheck', null,
+									intval( $editResult['edit']['newrevid'] ),
+									null
+								);
+							}
 						}
 						$result = $this->parseWikitext( $page );
 						if ( $result === false ) {
@@ -342,6 +348,9 @@ class ApiVisualEditor extends ApiBase {
 			'wikitext' => null,
 			'basetimestamp' => null,
 			'starttimestamp' => null,
+			'needcheck' => array(
+				ApiBase::PARAM_TYPE => 'boolean'
+			),
 			'oldid' => null,
 			'minor' => null,
 			'watch' => null,
@@ -384,6 +393,8 @@ class ApiVisualEditor extends ApiBase {
 			'starttimestamp' => 'When saving, set this to the timestamp of when the page was loaded.'
 				.' Used to detect edit conflicts.',
 			'token' => 'Edit token',
+			'needcheck' => 'When saving, set this parameter if the revision might have roundtrip'
+				. 'problems. This will result in the edit being tagged.',
 		);
 	}
 
