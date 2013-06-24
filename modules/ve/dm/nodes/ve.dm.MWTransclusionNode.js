@@ -60,14 +60,16 @@ ve.dm.MWTransclusionNode.static.getHashObject = function ( dataElement ) {
 
 ve.dm.MWTransclusionNode.static.toDataElement = function ( domElements, converter ) {
 	var dataElement, index,
-		mw = JSON.parse( domElements[0].getAttribute( 'data-mw' ) ),
+		mwDataJSON = domElements[0].getAttribute( 'data-mw' ),
+		mwData = mwDataJSON ? JSON.parse( mwDataJSON ) : {},
 		isInline = this.isHybridInline( domElements, converter ),
 		type = isInline ? 'mwTransclusionInline' : 'mwTransclusionBlock';
 
 	dataElement = {
 		'type': type,
 		'attributes': {
-			'mw': mw
+			'mw': mwData,
+			'origMw': mwDataJSON
 		}
 	};
 
@@ -79,13 +81,17 @@ ve.dm.MWTransclusionNode.static.toDataElement = function ( domElements, converte
 
 ve.dm.MWTransclusionNode.static.toDomElements = function ( dataElement, doc, converter ) {
 	var span,
-		index = converter.getStore().indexOfHash( ve.getHash( this.getHashObject( dataElement ) ) );
+		index = converter.getStore().indexOfHash( ve.getHash( this.getHashObject( dataElement ) ) ),
+		origMw = dataElement.attributes.origMw;
 
 	// If the transclusion is unchanged just send back the
 	// original DOM elements so selser can skip over it
-	if ( index === dataElement.attributes.originalIndex ) {
+	if (
+		index === dataElement.attributes.originalIndex ||
+		( origMw && ve.compare( dataElement.attributes.mw, JSON.parse( origMw ) ) )
+	) {
 		// The object in the store is also used for CE rendering so return a copy
-		return ve.copyArray( converter.getStore().value( index ) );
+		return ve.copyDomElements( converter.getStore().value( index ), doc );
 	} else {
 		span = doc.createElement( 'span' );
 		// All we need to send back to Parsoid is the original transclusion marker, with a

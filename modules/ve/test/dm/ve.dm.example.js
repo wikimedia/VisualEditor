@@ -857,7 +857,7 @@ ve.dm.example.conversions = {
 
 ve.dm.example.MWInlineImageHtml = '<span typeof="mw:Image" data-parsoid="{&quot;tsr&quot;:[0,24],&quot;optList&quot;:[{&quot;ck&quot;:&quot;width&quot;,&quot;ak&quot;:&quot;500px&quot;}],&quot;cacheKey&quot;:&quot;[[Image:Wiki.png|500px]]&quot;,&quot;img&quot;:{&quot;h&quot;:155,&quot;w&quot;:135,&quot;wdset&quot;:true},&quot;dsr&quot;:[0,24,null,null]}"><a href="./File:Wiki.png" data-parsoid="{&quot;a&quot;:{&quot;href&quot;:&quot;./File:Wiki.png&quot;}}"><img resource="./File:Wiki.png" src="http://upload.wikimedia.org/wikipedia/en/b/bc/Wiki.png" height="155" width="135" data-parsoid="{&quot;a&quot;:{&quot;resource&quot;:&quot;./File:Wiki.png&quot;,&quot;width&quot;:&quot;135&quot;},&quot;sa&quot;:{&quot;resource&quot;:&quot;Image:Wiki.png&quot;,&quot;width&quot;:&quot;500&quot;}}"></a></span>';
 ve.dm.example.MWTransclusion = {
-	'blockSpan':         '<span about="#mwt1" typeof="mw:Transclusion" data-mw="{&quot;id&quot;:&quot;mwt1&quot;,&quot;target&quot;:{&quot;wt&quot;:&quot;Test&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;Hello, world!&quot;}}}" data-parsoid="{&quot;tsr&quot;:[18,40],&quot;src&quot;:&quot;{{Test|Hello, world!}}&quot;,&quot;dsr&quot;:[18,40,null,null]}"></span>',
+	'blockSpan':         '<span about="#mwt1" typeof="mw:Transclusion" data-mw="{&quot;target&quot;:{&quot;wt&quot;:&quot;Test&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;Hello, world!&quot;}},&quot;id&quot;:&quot;mwt1&quot;}" data-parsoid="{&quot;tsr&quot;:[18,40],&quot;src&quot;:&quot;{{Test|Hello, world!}}&quot;,&quot;dsr&quot;:[18,40,null,null]}"></span>',
 	'blockSpanModified': '<span about="#mwt1" typeof="mw:Transclusion" data-mw="{&quot;id&quot;:&quot;mwt1&quot;,&quot;target&quot;:{&quot;wt&quot;:&quot;Test&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;Hello, globe!&quot;}}}" data-parsoid="{&quot;tsr&quot;:[18,40],&quot;src&quot;:&quot;{{Test|Hello, world!}}&quot;,&quot;dsr&quot;:[18,40,null,null]}"></span>',
 	'blockContent': '<p about="#mwt1" data-parsoid="{}">Hello, world!</p>',
 	'blockData': {
@@ -870,12 +870,13 @@ ve.dm.example.MWTransclusion = {
 					'1': { 'wt': 'Hello, world!' }
 				}
 			},
+			'origMw': '{\"target\":{\"wt\":\"Test\"},\"params\":{\"1\":{\"wt\":\"Hello, world!\"}},\"id\":\"mwt1\"}',
 			'originalIndex': 0
 		},
 		'htmlAttributes': [
 			{ 'values': {
 				'about': '#mwt1',
-				'data-mw': '{\"id\":\"mwt1\",\"target\":{\"wt\":\"Test\"},\"params\":{\"1\":{\"wt\":\"Hello, world!\"}}}',
+				'data-mw': '{\"target\":{\"wt\":\"Test\"},\"params\":{\"1\":{\"wt\":\"Hello, world!\"}},\"id\":\"mwt1\"}',
 				'data-parsoid': '{\"tsr\":[18,40],\"src\":\"{{Test|Hello, world!}}\",\"dsr\":[18,40,null,null]}',
 				'typeof': 'mw:Transclusion'
 			} },
@@ -899,6 +900,7 @@ ve.dm.example.MWTransclusion = {
 					'1': { 'wt': '1,234' }
 				}
 			},
+			'origMw': '{\"id\":\"mwt1\",\"target\":{\"wt\":\"Inline\"},\"params\":{\"1\":{\"wt\":\"1,234\"}}}',
 			'originalIndex': 0
 		},
 		'htmlAttributes': [ { 'values': {
@@ -919,6 +921,7 @@ ve.dm.example.MWTransclusion = {
 					'1': { 'wt': '5,678' }
 				}
 			},
+			'origMw': '{\"id\":\"mwt1\",\"target\":{\"wt\":\"Inline\"},\"params\":{\"1\":{\"wt\":\"5,678\"}}}',
 			'originalIndex': 0
 		},
 		'htmlAttributes': [
@@ -1148,6 +1151,7 @@ ve.dm.example.domToDataCases = {
 					'listKey': 'bar',
 					'refGroup': '',
 					'mw': { 'body': { 'html': '' }, 'attrs': { 'name': 'bar' } },
+					'origMw': '{"body":{"html":""},"attrs":{"name":"bar"}}',
 					'contentsUsed': false
 				},
 				'htmlAttributes': [
@@ -1182,6 +1186,7 @@ ve.dm.example.domToDataCases = {
 					'listKey': 'quux',
 					'refGroup': '',
 					'mw': { 'body': { 'html': 'Quux' }, 'attrs': { 'name': 'quux' } },
+					'origMw': '{"body":{"html":"Quux"},"attrs":{"name":"quux"}}',
 					'contentsUsed': true
 				},
 				'htmlAttributes': [
@@ -1216,6 +1221,7 @@ ve.dm.example.domToDataCases = {
 					'listKey': 'bar',
 					'refGroup': '',
 					'mw': { 'body': { 'html': 'Bar' }, 'attrs': { 'name': 'bar' } },
+					'origMw': '{"body":{"html":"Bar"},"attrs":{"name":"bar"}}',
 					'contentsUsed': true
 				},
 				'htmlAttributes': [
@@ -1250,6 +1256,7 @@ ve.dm.example.domToDataCases = {
 					'listKey': null,
 					'refGroup': 'g1',
 					'mw': { 'body': { 'html': 'No name' }, 'attrs': { 'group': 'g1' } },
+					'origMw': '{"body":{"html":"No name"},"attrs":{"group":"g1"}}',
 					'contentsUsed': true
 				},
 				'htmlAttributes': [
@@ -1283,6 +1290,7 @@ ve.dm.example.domToDataCases = {
 						'name': 'references',
 						'attrs': {}
 					},
+					'origMw': '{"name":"references","attrs":{}}',
 					'domElements': $(
 						'<ol class="references" about="#mwt12" typeof="mw:Extension/references" '+
 							'data-mw="{&quot;name&quot;:&quot;references&quot;,&quot;attrs&quot;:{}}" ' +
@@ -3477,6 +3485,7 @@ ve.dm.example.references = [
 				'body': { 'html': 'No name 1' },
 				'name': 'ref'
 			},
+			'origMw': '{"name":"ref","body":{"html":"No name 1"},"attrs":{}}',
 			'refGroup': ''
 		},
 		'htmlAttributes': [ { 'values': {
@@ -3506,6 +3515,7 @@ ve.dm.example.references = [
 				'body': { 'html': 'Bar' },
 				'name': 'ref'
 			},
+			'origMw': '{"body":{"html":""},"attrs":{"name":"bar"}}',
 			'refGroup': ''
 		},
 		'htmlAttributes': [ { 'values': {
@@ -3533,6 +3543,7 @@ ve.dm.example.references = [
 				'body': { 'html': 'Quux' },
 				'name': 'ref'
 			},
+			'origMw': '{"name":"ref","body":{"html":"Quux"},"attrs":{"name":"quux"}}',
 			'refGroup': ''
 		},
 		'htmlAttributes': [ { 'values': {
@@ -3559,6 +3570,7 @@ ve.dm.example.references = [
 				'attrs': { 'name': 'bar' },
 				'name': 'ref'
 			},
+			'origMw': '{"body":{"html":""},"attrs":{"name":"bar"}}',
 			'refGroup': ''
 		},
 		'htmlAttributes': [ { 'values': {
@@ -3588,6 +3600,7 @@ ve.dm.example.references = [
 				'body': { 'html': 'No name 2' },
 				'name': 'ref'
 			},
+			'origMw': '{"name":"ref","body":{"html":"No name 2"},"attrs":{}}',
 			'refGroup': ''
 			},
 		'htmlAttributes': [ { 'values': {
@@ -3614,6 +3627,7 @@ ve.dm.example.references = [
 				'body': { 'html': 'No name 3' },
 				'name': 'ref'
 			},
+			'origMw': '{"name":"ref","body":{"html":"No name 3"},"attrs":{}}',
 			'refGroup': ''
 		},
 		'htmlAttributes': [ { 'values': {
@@ -3636,6 +3650,7 @@ ve.dm.example.references = [
 				'name': 'references',
 				'attrs': {}
 			},
+			'origMw': '{"name":"references","attrs":{}"}',
 			//'domElements': HTML,
 			'listGroup': 'mwReference/',
 			'refGroup': ''
