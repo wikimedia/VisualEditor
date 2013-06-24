@@ -54,7 +54,8 @@ ve.dm.MWBlockImageNode.static.toDataElement = function ( domElements, converter 
 			src: $img.attr( 'src' ),
 			width: $img.attr( 'width' ),
 			height: $img.attr( 'height' ),
-			resource: $img.attr( 'resource' )
+			resource: $img.attr( 'resource' ),
+			originalClasses: classes
 		};
 
 	// Extract individual classes
@@ -114,7 +115,9 @@ ve.dm.MWBlockImageNode.static.toDomElements = function ( data, doc, converter ) 
 		figure = doc.createElement( 'figure' ),
 		a = doc.createElement( 'a' ),
 		img = doc.createElement( 'img' ),
-		wrapper = doc.createElement( 'div' );
+		wrapper = doc.createElement( 'div' ),
+		classes = [],
+		originalClasses = dataElement.attributes.originalClasses;
 
 	// Type
 	switch ( dataElement.attributes.type ) {
@@ -131,25 +134,30 @@ ve.dm.MWBlockImageNode.static.toDomElements = function ( data, doc, converter ) 
 
 	// Default-size
 	if ( dataElement.attributes.defaultSize === true ) {
-		figure.className += ' mw-default-size';
+		classes.push( 'mw-default-size' );
 	}
 
 	// Horizontal alignment
 	switch ( dataElement.attributes.align ) {
 		case 'left':
-			figure.className += ' mw-halign-left';
+			classes.push( 'mw-halign-left' );
 			break;
 		case 'right':
-			figure.className += ' mw-halign-right';
+			classes.push( 'mw-halign-right' );
 			break;
 		case 'center':
-			figure.className += ' mw-halign-center';
+			classes.push( 'mw-halign-center' );
 			break;
 		case 'none':
-			figure.className += ' mw-halign-none';
+			classes.push( 'mw-halign-none' );
 			break;
 	}
 
+	if ( originalClasses && ve.compare( originalClasses.split( ' ' ).sort(), classes.sort() ) ) {
+		figure.className = originalClasses;
+	} else if ( classes.length > 0 ) {
+		figure.className = classes.join( ' ' );
+	}
 	a.setAttribute( 'rel', 'mw:thumb' );
 	a.setAttribute( 'href', dataElement.attributes.href );
 	img.setAttribute( 'src', dataElement.attributes.src );

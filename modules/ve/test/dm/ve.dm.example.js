@@ -3367,18 +3367,19 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'thumb image': {
-		'html': '<body><figure typeof="mw:Image/Thumb"><a rel="mw:thumb" href="Foo"><img src="Bar" width="1" height="2" resource="FooBar"></a><figcaption class="mw-figcaption">abc</figcaption></figure></body>',
+		'html': '<body><figure typeof="mw:Image/Thumb" class="mw-halign-right"><a rel="mw:thumb" href="Foo"><img src="Bar" width="1" height="2" resource="FooBar"></a><figcaption class="mw-figcaption">abc</figcaption></figure></body>',
 		'data': [
 			{
 				'type': 'mwBlockImage',
 				'attributes': {
 					'type': 'thumb',
-					'align': 'default',
+					'align': 'right',
 					'href': 'Foo',
 					'src': 'Bar',
 					'width': '1',
 					'height': '2',
-					'resource': 'FooBar'
+					'resource': 'FooBar',
+					'originalClasses': 'mw-halign-right'
 				}
 			},
 			{ 'type': 'mwImageCaption' },
@@ -3403,7 +3404,8 @@ ve.dm.example.domToDataCases = {
 					'src': 'Bar',
 					'width': '1',
 					'height': '2',
-					'resource': 'FooBar'
+					'resource': 'FooBar',
+					'originalClasses': undefined
 				},
 				'htmlAttributes': [ {
 					'values': { 'data-parsoid': '{}' },
