@@ -71,7 +71,7 @@ ve.ce.MWBlockImageNode = function VeCeMWBlockImageNode( model, config ) {
 	this.$resizable = this.$image;
 
 	// I smell a caption!
-	if ( this.model.children.length === 1 ) {
+	if ( type !== 'none' && this.model.children.length === 1 ) {
 		captionModel = this.model.children[0];
 		captionView = ve.ce.nodeFactory.create( captionModel.getType(), captionModel );
 		captionModel.connect( this, { 'update': 'onModelUpdate' } );
