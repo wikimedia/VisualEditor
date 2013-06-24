@@ -1877,15 +1877,23 @@ ve.init.mw.ViewPageTarget.prototype.saveEditSection = function ( heading ) {
 ve.init.mw.ViewPageTarget.prototype.restoreEditSection = function () {
 	if ( this.section !== null ) {
 		var offset,
+			target = this,
 			surfaceView = this.surface.getView(),
 			surfaceModel = surfaceView.getModel();
 		this.$document.find( 'h1, h2, h3, h4, h5, h6' ).eq( this.section - 1 ).each( function () {
 			var headingNode = $( this ).data( 'view' );
+
 			if ( headingNode ) {
 				offset = surfaceModel.getDocument().data.getNearestContentOffset(
 					headingNode.getModel().getOffset()
 				);
 				surfaceModel.change( null, new ve.Range( offset, offset ) );
+				// Scroll to heading:
+				// Wait for toolbar to animate in so we can account for its height
+				setTimeout( function () {
+					var $window = $( ve.Element.static.getWindow( target.$ ) );
+					$window.scrollTop( headingNode.$.offset().top - target.toolbar.$.height() );
+				}, 200 );
 			}
 		} );
 		this.section = null;
