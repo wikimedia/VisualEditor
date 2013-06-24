@@ -1348,6 +1348,69 @@ ve.dm.example.domToDataCases = {
 				'<li id="cite_note-quux-2"><a href="#cite_ref-quux-2-0">u2191</a>Quux</li>' +
 			'</ol>'
 	},
+	'mw:Reference with metadata': {
+		'html': '<p><span about="#mwt2" class="reference" ' +
+			'data-mw="{&quot;name&quot;:&quot;ref&quot;,&quot;body&quot;:' +
+			'{&quot;html&quot;:&quot;Foo<!-- bar -->&quot;},&quot;attrs&quot;:{}}" ' +
+			'id="cite_ref-1-0" rel="dc:references" typeof="mw:Extension/ref" data-parsoid="{}">' +
+			'</span></p>',
+		'data': [
+			{ 'type': 'paragraph' },
+			{
+				'type': 'mwReference',
+				'attributes': {
+					'about': '#mwt2',
+					'contentsUsed': true,
+					'listGroup': 'mwReference/',
+					'listIndex': 0,
+					'listKey': null,
+					'mw': {
+						'attrs': {},
+						'body': {
+							'html': 'Foo<!-- bar -->'
+						},
+						'name': 'ref'
+					},
+					'origMw': '{"name":"ref","body":{"html":"Foo<!-- bar -->"},"attrs":{}}',
+					'refGroup': ''
+				},
+				'htmlAttributes': [
+					{
+						'values': {
+							'about': '#mwt2',
+							'class': 'reference',
+							'data-mw': '{"name":"ref","body":{"html":"Foo<!-- bar -->"},"attrs":{}}',
+							'data-parsoid': '{}',
+							'id': 'cite_ref-1-0',
+							'rel': 'dc:references',
+							'typeof': 'mw:Extension/ref'
+						}
+					}
+				]
+			},
+			{ 'type': '/mwReference' },
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': 'internalItem' },
+			{
+				'internal': {
+					'generated': 'wrapper'
+				},
+				'type': 'paragraph'
+			},
+			'F', 'o', 'o',
+			{ 'type': '/paragraph' },
+			{
+				'type': 'alienMeta',
+				'attributes': {
+					'domElements': $( '<!-- bar -->' ).toArray()
+				}
+			},
+			{ 'type': '/alienMeta' },
+			{ 'type': '/internalItem' },
+			{ 'type': '/internalList' }
+		]
+	},
 	'paragraph with alienInline inside': {
 		'html': '<body><p>a<tt class="foo">b</tt>c</p></body>',
 		'data': [
