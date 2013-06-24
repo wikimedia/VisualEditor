@@ -56,7 +56,7 @@ ve.dm.MWReferenceNode.static.toDataElement = function ( domElements, converter )
 		'type': this.name,
 		'attributes': {
 			'mw': mwData,
-			'origMw': mwDataJSON,
+			'originalMw': mwDataJSON,
 			'about': about,
 			'listIndex': listIndex,
 			'listGroup': listGroup,
@@ -69,7 +69,7 @@ ve.dm.MWReferenceNode.static.toDataElement = function ( domElements, converter )
 };
 
 ve.dm.MWReferenceNode.static.toDomElements = function ( dataElement, doc, converter ) {
-	var itemNodeHtml, mwData, i, iLen, keyedNodes, setContents, origMw,
+	var itemNodeHtml, mwData, i, iLen, keyedNodes, setContents, originalMw,
 		el = doc.createElement( 'span' ),
 		itemNodeWrapper = doc.createElement( 'div' ),
 		itemNode = converter.internalList.getItemNode( dataElement.attributes.listIndex ),
@@ -125,11 +125,11 @@ ve.dm.MWReferenceNode.static.toDomElements = function ( dataElement, doc, conver
 		delete mwData.attrs.refGroup;
 	}
 
-	// If mwAttr and origMw are the same, use origMw to prevent reserialization.
+	// If mwAttr and originalMw are the same, use originalMw to prevent reserialization.
 	// Reserialization has the potential to reorder keys and so change the DOM unnecessarily
-	origMw = dataElement.attributes.origMw;
-	if ( origMw && ve.compare( mwData, JSON.parse( origMw ) ) ) {
-		el.setAttribute( 'data-mw', origMw );
+	originalMw = dataElement.attributes.originalMw;
+	if ( originalMw && ve.compare( mwData, JSON.parse( originalMw ) ) ) {
+		el.setAttribute( 'data-mw', originalMw );
 	} else {
 		el.setAttribute( 'data-mw', JSON.stringify( mwData ) );
 	}

@@ -43,7 +43,7 @@ ve.dm.MWReferenceListNode.static.toDataElement = function ( domElements ) {
 		'type': this.name,
 		'attributes': {
 			'mw': mwData,
-			'origMw': mwDataJSON,
+			'originalMw': mwDataJSON,
 			'about': domElements[0].getAttribute( 'about' ),
 			'domElements': ve.copyArray( domElements ),
 			'refGroup': refGroup,
@@ -53,7 +53,7 @@ ve.dm.MWReferenceListNode.static.toDataElement = function ( domElements ) {
 };
 
 ve.dm.MWReferenceListNode.static.toDomElements = function ( dataElement, doc ) {
-	var el, els, mwData, origMw,
+	var el, els, mwData, originalMw,
 		attribs = dataElement.attributes;
 
 	if ( attribs.domElements ) {
@@ -80,11 +80,11 @@ ve.dm.MWReferenceListNode.static.toDomElements = function ( dataElement, doc ) {
 	}
 	el.setAttribute( 'typeof', 'mw:Extension/references' );
 
-	// If mwData and origMw are the same, use origMw to prevent reserialization.
+	// If mwData and originalMw are the same, use originalMw to prevent reserialization.
 	// Reserialization has the potential to reorder keys and so change the DOM unnecessarily
-	origMw = attribs.origMw;
-	if ( origMw && ve.compare( mwData, JSON.parse( origMw ) ) ) {
-		el.setAttribute( 'data-mw', origMw );
+	originalMw = attribs.originalMw;
+	if ( originalMw && ve.compare( mwData, JSON.parse( originalMw ) ) ) {
+		el.setAttribute( 'data-mw', originalMw );
 	} else {
 		el.setAttribute( 'data-mw', JSON.stringify( mwData ) );
 	}

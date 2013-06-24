@@ -860,82 +860,87 @@ ve.dm.example.MWTransclusion = {
 	'blockSpan':         '<span about="#mwt1" typeof="mw:Transclusion" data-mw="{&quot;target&quot;:{&quot;wt&quot;:&quot;Test&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;Hello, world!&quot;}},&quot;id&quot;:&quot;mwt1&quot;}" data-parsoid="{&quot;tsr&quot;:[18,40],&quot;src&quot;:&quot;{{Test|Hello, world!}}&quot;,&quot;dsr&quot;:[18,40,null,null]}"></span>',
 	'blockSpanModified': '<span about="#mwt1" typeof="mw:Transclusion" data-mw="{&quot;id&quot;:&quot;mwt1&quot;,&quot;target&quot;:{&quot;wt&quot;:&quot;Test&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;Hello, globe!&quot;}}}" data-parsoid="{&quot;tsr&quot;:[18,40],&quot;src&quot;:&quot;{{Test|Hello, world!}}&quot;,&quot;dsr&quot;:[18,40,null,null]}"></span>',
 	'blockContent': '<p about="#mwt1" data-parsoid="{}">Hello, world!</p>',
-	'blockData': {
-		'type': 'mwTransclusionBlock',
-		'attributes': {
-			'mw': {
-				'id': 'mwt1',
-				'target': { 'wt' : 'Test' },
-				'params': {
-					'1': { 'wt': 'Hello, world!' }
-				}
-			},
-			'origMw': '{\"target\":{\"wt\":\"Test\"},\"params\":{\"1\":{\"wt\":\"Hello, world!\"}},\"id\":\"mwt1\"}',
-			'originalIndex': 0
-		},
-		'htmlAttributes': [
-			{ 'values': {
-				'about': '#mwt1',
-				'data-mw': '{\"target\":{\"wt\":\"Test\"},\"params\":{\"1\":{\"wt\":\"Hello, world!\"}},\"id\":\"mwt1\"}',
-				'data-parsoid': '{\"tsr\":[18,40],\"src\":\"{{Test|Hello, world!}}\",\"dsr\":[18,40,null,null]}',
-				'typeof': 'mw:Transclusion'
-			} },
-			{ 'values': {
-				'about': '#mwt1',
-				'data-parsoid': '{}'
-			} }
-		]
-	},
 	'inlineOpen':         '<span about="#mwt1" typeof="mw:Transclusion" data-mw="{&quot;id&quot;:&quot;mwt1&quot;,&quot;target&quot;:{&quot;wt&quot;:&quot;Inline&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;1,234&quot;}}}" data-parsoid="{&quot;tsr&quot;:[18,34],&quot;src&quot;:&quot;{{Inline|1,234}}&quot;,&quot;dsr&quot;:[18,34,null,null]}">',
 	'inlineOpenModified': '<span about="#mwt1" typeof="mw:Transclusion" data-mw="{&quot;id&quot;:&quot;mwt1&quot;,&quot;target&quot;:{&quot;wt&quot;:&quot;Inline&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;5,678&quot;}}}" data-parsoid="{&quot;tsr&quot;:[18,34],&quot;src&quot;:&quot;{{Inline|1,234}}&quot;,&quot;dsr&quot;:[18,34,null,null]}">',
 	'inlineContent': '$1,234.00',
 	'inlineClose': '</span>',
-	'inlineData': {
-		'type': 'mwTransclusionInline',
-		'attributes': {
-			'mw': {
-				'id': 'mwt1',
-				'target': { 'wt' : 'Inline' },
-				'params': {
-					'1': { 'wt': '1,234' }
-				}
-			},
-			'origMw': '{\"id\":\"mwt1\",\"target\":{\"wt\":\"Inline\"},\"params\":{\"1\":{\"wt\":\"1,234\"}}}',
-			'originalIndex': 0
-		},
-		'htmlAttributes': [ { 'values': {
-			'about': '#mwt1',
-			'data-mw': '{\"id\":\"mwt1\",\"target\":{\"wt\":\"Inline\"},\"params\":{\"1\":{\"wt\":\"1,234\"}}}',
-			'data-parsoid': '{\"tsr\":[18,34],\"src\":\"{{Inline|1,234}}\",\"dsr\":[18,34,null,null]}',
-			'typeof': 'mw:Transclusion'
-		} } ]
-	},
 	'mixed': '<link about="#mwt1" rel="mw:WikiLink/Category" typeof="mw:Transclusion" data-mw="{&quot;id&quot;:&quot;mwt1&quot;,&quot;target&quot;:{&quot;wt&quot;:&quot;Inline&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;5,678&quot;}}}"><span about="#mwt1">Foo</span>',
-	'mixedDataOpen': {
-		'type': 'mwTransclusionInline',
-		'attributes': {
-			'mw': {
-				'id': 'mwt1',
-				'target': { 'wt': 'Inline' },
-				'params': {
-					'1': { 'wt': '5,678' }
-				}
-			},
-			'origMw': '{\"id\":\"mwt1\",\"target\":{\"wt\":\"Inline\"},\"params\":{\"1\":{\"wt\":\"5,678\"}}}',
-			'originalIndex': 0
-		},
-		'htmlAttributes': [
-			{ 'values': {
-				'about': '#mwt1',
-				'rel': 'mw:WikiLink/Category',
-				'typeof': 'mw:Transclusion',
-				'data-mw': '{\"id\":\"mwt1\",\"target\":{\"wt\":\"Inline\"},\"params\":{\"1\":{\"wt\":\"5,678\"}}}'
-			} },
-			{ 'values': { 'about': '#mwt1' } }
-		]
-	},
-	'mixedDataClose' : { 'type': '/mwTransclusionInline' }
+	'pairOne': '<p about="#mwt1" typeof="mw:Transclusion" data-mw="{&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;foo&quot;}}}" data-parsoid="1">foo</p>',
+	'pairTwo': '<p about="#mwt2" typeof="mw:Transclusion" data-mw="{&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;foo&quot;}}}" data-parsoid="2">foo</p>'
 };
+ve.dm.example.MWTransclusion.blockData = {
+	'type': 'mwTransclusionBlock',
+	'attributes': {
+		'mw': {
+			'id': 'mwt1',
+			'target': { 'wt' : 'Test' },
+			'params': {
+				'1': { 'wt': 'Hello, world!' }
+			}
+		},
+		'originalDomElements': $( ve.dm.example.MWTransclusion.blockSpan + ve.dm.example.MWTransclusion.blockContent ).toArray(),
+		'originalMw': '{\"target\":{\"wt\":\"Test\"},\"params\":{\"1\":{\"wt\":\"Hello, world!\"}},\"id\":\"mwt1\"}',
+		'originalIndex': 0
+	},
+	'htmlAttributes': [
+		{ 'values': {
+			'about': '#mwt1',
+			'data-mw': '{\"target\":{\"wt\":\"Test\"},\"params\":{\"1\":{\"wt\":\"Hello, world!\"}},\"id\":\"mwt1\"}',
+			'data-parsoid': '{\"tsr\":[18,40],\"src\":\"{{Test|Hello, world!}}\",\"dsr\":[18,40,null,null]}',
+			'typeof': 'mw:Transclusion'
+		} },
+		{ 'values': {
+			'about': '#mwt1',
+			'data-parsoid': '{}'
+		} }
+	]
+};
+ve.dm.example.MWTransclusion.inlineData = {
+	'type': 'mwTransclusionInline',
+	'attributes': {
+		'mw': {
+			'id': 'mwt1',
+			'target': { 'wt' : 'Inline' },
+			'params': {
+				'1': { 'wt': '1,234' }
+			}
+		},
+		'originalDomElements': $( ve.dm.example.MWTransclusion.inlineOpen + ve.dm.example.MWTransclusion.inlineContent + ve.dm.example.MWTransclusion.inlineClose ).toArray(),
+		'originalMw': '{\"id\":\"mwt1\",\"target\":{\"wt\":\"Inline\"},\"params\":{\"1\":{\"wt\":\"1,234\"}}}',
+		'originalIndex': 0
+	},
+	'htmlAttributes': [ { 'values': {
+		'about': '#mwt1',
+		'data-mw': '{\"id\":\"mwt1\",\"target\":{\"wt\":\"Inline\"},\"params\":{\"1\":{\"wt\":\"1,234\"}}}',
+		'data-parsoid': '{\"tsr\":[18,34],\"src\":\"{{Inline|1,234}}\",\"dsr\":[18,34,null,null]}',
+		'typeof': 'mw:Transclusion'
+	} } ]
+};
+ve.dm.example.MWTransclusion.mixedDataOpen = {
+	'type': 'mwTransclusionInline',
+	'attributes': {
+		'mw': {
+			'id': 'mwt1',
+			'target': { 'wt': 'Inline' },
+			'params': {
+				'1': { 'wt': '5,678' }
+			}
+		},
+		'originalDomElements': $( ve.dm.example.MWTransclusion.mixed ).toArray(),
+		'originalMw': '{\"id\":\"mwt1\",\"target\":{\"wt\":\"Inline\"},\"params\":{\"1\":{\"wt\":\"5,678\"}}}',
+		'originalIndex': 0
+	},
+	'htmlAttributes': [
+		{ 'values': {
+			'about': '#mwt1',
+			'rel': 'mw:WikiLink/Category',
+			'typeof': 'mw:Transclusion',
+			'data-mw': '{\"id\":\"mwt1\",\"target\":{\"wt\":\"Inline\"},\"params\":{\"1\":{\"wt\":\"5,678\"}}}'
+		} },
+		{ 'values': { 'about': '#mwt1' } }
+	]
+};
+ve.dm.example.MWTransclusion.mixedDataClose = { 'type': '/mwTransclusionInline' };
 
 ve.dm.example.MWTransclusion.blockParamsHash = ve.getHash( ve.dm.MWTransclusionNode.static.getHashObject( ve.dm.example.MWTransclusion.blockData ) );
 ve.dm.example.MWTransclusion.blockStoreItems = {
@@ -1105,6 +1110,66 @@ ve.dm.example.domToDataCases = {
 		},
 		'normalizedHtml': ve.dm.example.MWTransclusion.inlineOpenModified + ve.dm.example.MWTransclusion.inlineClose
 	},
+	'two mw:Transclusion nodes with identical params but different htmlAttributes': {
+		'html': '<body>' +
+			ve.dm.example.MWTransclusion.pairOne +
+			ve.dm.example.MWTransclusion.pairTwo +
+		'</body>',
+		'data': [
+			{
+				'type': 'mwTransclusionBlock',
+				'attributes': {
+					'mw': {
+						'params': { '1': { 'wt': 'foo' } }
+					},
+					'originalMw': '{"params":{"1":{"wt":"foo"}}}',
+					'originalDomElements': $( ve.dm.example.MWTransclusion.pairOne ).toArray(),
+					'originalIndex': 0
+				},
+				'htmlAttributes': [
+					{
+						'values': {
+							'about': '#mwt1',
+							'data-mw': '{"params":{"1":{"wt":"foo"}}}',
+							'data-parsoid': '1',
+							'typeof': 'mw:Transclusion'
+						}
+					}
+				]
+			},
+			{ 'type': '/mwTransclusionBlock' },
+			{
+				'type': 'mwTransclusionBlock',
+				'attributes': {
+					'mw': {
+						'params': { '1': { 'wt': 'foo' } }
+					},
+					'originalMw': '{"params":{"1":{"wt":"foo"}}}',
+					'originalDomElements': $( ve.dm.example.MWTransclusion.pairTwo ).toArray(),
+					'originalIndex': 0
+				},
+				'htmlAttributes': [
+					{
+						'values': {
+							'about': '#mwt2',
+							'data-mw': '{"params":{"1":{"wt":"foo"}}}',
+							'data-parsoid': '2',
+							'typeof': 'mw:Transclusion'
+						}
+					}
+				]
+			},
+			{ 'type': '/mwTransclusionBlock' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
+		],
+		'storeItems': [
+			{
+				'hash': '{"mw":{"params":{"1":{"wt":"foo"}}},"type":"mwTransclusionBlock"}',
+				'value': $( '<p about="#mwt1" typeof="mw:Transclusion" data-mw="{&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;foo&quot;}}}" data-parsoid="1">foo</p>' ).toArray()
+			}
+		]
+	},
 	'mw:Reference': {
 		'html':
 			'<body>' +
@@ -1151,7 +1216,7 @@ ve.dm.example.domToDataCases = {
 					'listKey': 'bar',
 					'refGroup': '',
 					'mw': { 'body': { 'html': '' }, 'attrs': { 'name': 'bar' } },
-					'origMw': '{"body":{"html":""},"attrs":{"name":"bar"}}',
+					'originalMw': '{"body":{"html":""},"attrs":{"name":"bar"}}',
 					'contentsUsed': false
 				},
 				'htmlAttributes': [
@@ -1186,7 +1251,7 @@ ve.dm.example.domToDataCases = {
 					'listKey': 'quux',
 					'refGroup': '',
 					'mw': { 'body': { 'html': 'Quux' }, 'attrs': { 'name': 'quux' } },
-					'origMw': '{"body":{"html":"Quux"},"attrs":{"name":"quux"}}',
+					'originalMw': '{"body":{"html":"Quux"},"attrs":{"name":"quux"}}',
 					'contentsUsed': true
 				},
 				'htmlAttributes': [
@@ -1221,7 +1286,7 @@ ve.dm.example.domToDataCases = {
 					'listKey': 'bar',
 					'refGroup': '',
 					'mw': { 'body': { 'html': 'Bar' }, 'attrs': { 'name': 'bar' } },
-					'origMw': '{"body":{"html":"Bar"},"attrs":{"name":"bar"}}',
+					'originalMw': '{"body":{"html":"Bar"},"attrs":{"name":"bar"}}',
 					'contentsUsed': true
 				},
 				'htmlAttributes': [
@@ -1256,7 +1321,7 @@ ve.dm.example.domToDataCases = {
 					'listKey': null,
 					'refGroup': 'g1',
 					'mw': { 'body': { 'html': 'No name' }, 'attrs': { 'group': 'g1' } },
-					'origMw': '{"body":{"html":"No name"},"attrs":{"group":"g1"}}',
+					'originalMw': '{"body":{"html":"No name"},"attrs":{"group":"g1"}}',
 					'contentsUsed': true
 				},
 				'htmlAttributes': [
@@ -1290,7 +1355,7 @@ ve.dm.example.domToDataCases = {
 						'name': 'references',
 						'attrs': {}
 					},
-					'origMw': '{"name":"references","attrs":{}}',
+					'originalMw': '{"name":"references","attrs":{}}',
 					'domElements': $(
 						'<ol class="references" about="#mwt12" typeof="mw:Extension/references" '+
 							'data-mw="{&quot;name&quot;:&quot;references&quot;,&quot;attrs&quot;:{}}" ' +
@@ -1371,7 +1436,7 @@ ve.dm.example.domToDataCases = {
 						},
 						'name': 'ref'
 					},
-					'origMw': '{"name":"ref","body":{"html":"Foo<!-- bar -->"},"attrs":{}}',
+					'originalMw': '{"name":"ref","body":{"html":"Foo<!-- bar -->"},"attrs":{}}',
 					'refGroup': ''
 				},
 				'htmlAttributes': [
@@ -3548,7 +3613,7 @@ ve.dm.example.references = [
 				'body': { 'html': 'No name 1' },
 				'name': 'ref'
 			},
-			'origMw': '{"name":"ref","body":{"html":"No name 1"},"attrs":{}}',
+			'originalMw': '{"name":"ref","body":{"html":"No name 1"},"attrs":{}}',
 			'refGroup': ''
 		},
 		'htmlAttributes': [ { 'values': {
@@ -3578,7 +3643,7 @@ ve.dm.example.references = [
 				'body': { 'html': 'Bar' },
 				'name': 'ref'
 			},
-			'origMw': '{"body":{"html":""},"attrs":{"name":"bar"}}',
+			'originalMw': '{"body":{"html":""},"attrs":{"name":"bar"}}',
 			'refGroup': ''
 		},
 		'htmlAttributes': [ { 'values': {
@@ -3606,7 +3671,7 @@ ve.dm.example.references = [
 				'body': { 'html': 'Quux' },
 				'name': 'ref'
 			},
-			'origMw': '{"name":"ref","body":{"html":"Quux"},"attrs":{"name":"quux"}}',
+			'originalMw': '{"name":"ref","body":{"html":"Quux"},"attrs":{"name":"quux"}}',
 			'refGroup': ''
 		},
 		'htmlAttributes': [ { 'values': {
@@ -3633,7 +3698,7 @@ ve.dm.example.references = [
 				'attrs': { 'name': 'bar' },
 				'name': 'ref'
 			},
-			'origMw': '{"body":{"html":""},"attrs":{"name":"bar"}}',
+			'originalMw': '{"body":{"html":""},"attrs":{"name":"bar"}}',
 			'refGroup': ''
 		},
 		'htmlAttributes': [ { 'values': {
@@ -3663,7 +3728,7 @@ ve.dm.example.references = [
 				'body': { 'html': 'No name 2' },
 				'name': 'ref'
 			},
-			'origMw': '{"name":"ref","body":{"html":"No name 2"},"attrs":{}}',
+			'originalMw': '{"name":"ref","body":{"html":"No name 2"},"attrs":{}}',
 			'refGroup': ''
 			},
 		'htmlAttributes': [ { 'values': {
@@ -3690,7 +3755,7 @@ ve.dm.example.references = [
 				'body': { 'html': 'No name 3' },
 				'name': 'ref'
 			},
-			'origMw': '{"name":"ref","body":{"html":"No name 3"},"attrs":{}}',
+			'originalMw': '{"name":"ref","body":{"html":"No name 3"},"attrs":{}}',
 			'refGroup': ''
 		},
 		'htmlAttributes': [ { 'values': {
@@ -3713,7 +3778,7 @@ ve.dm.example.references = [
 				'name': 'references',
 				'attrs': {}
 			},
-			'origMw': '{"name":"references","attrs":{}"}',
+			'originalMw': '{"name":"references","attrs":{}"}',
 			//'domElements': HTML,
 			'listGroup': 'mwReference/',
 			'refGroup': ''
