@@ -51,6 +51,8 @@ ve.dm.MWTransclusionNode.static.matchFunction = function ( domElement ) {
 	) !== -1;
 };
 
+ve.dm.MWTransclusionNode.static.enableAboutGrouping = true;
+
 ve.dm.MWTransclusionNode.static.getHashObject = function ( dataElement ) {
 	return {
 		type: dataElement.type,
