@@ -1279,6 +1279,7 @@ ve.dm.example.domToDataCases = {
 					'refGroup': '',
 					'mw': { 'body': { 'html': '' }, 'attrs': { 'name': 'bar' } },
 					'originalMw': '{"body":{"html":""},"attrs":{"name":"bar"}}',
+					'childDomElements': $( '<a href="#cite_note-bar-1" data-parsoid="{}">[1]</a>' ).toArray(),
 					'contentsUsed': false
 				},
 				'htmlAttributes': [
@@ -1314,6 +1315,7 @@ ve.dm.example.domToDataCases = {
 					'refGroup': '',
 					'mw': { 'body': { 'html': 'Quux' }, 'attrs': { 'name': 'quux' } },
 					'originalMw': '{"body":{"html":"Quux"},"attrs":{"name":"quux"}}',
+					'childDomElements': $( '<a href="#cite_note-quux-2" data-parsoid="{}">[2]</a>' ).toArray(),
 					'contentsUsed': true
 				},
 				'htmlAttributes': [
@@ -1349,6 +1351,7 @@ ve.dm.example.domToDataCases = {
 					'refGroup': '',
 					'mw': { 'body': { 'html': 'Bar' }, 'attrs': { 'name': 'bar' } },
 					'originalMw': '{"body":{"html":"Bar"},"attrs":{"name":"bar"}}',
+					'childDomElements': $( '<a href="#cite_note-bar-1" data-parsoid="{}">[1]</a>' ).toArray(),
 					'contentsUsed': true
 				},
 				'htmlAttributes': [
@@ -1384,6 +1387,7 @@ ve.dm.example.domToDataCases = {
 					'refGroup': 'g1',
 					'mw': { 'body': { 'html': 'No name' }, 'attrs': { 'group': 'g1' } },
 					'originalMw': '{"body":{"html":"No name"},"attrs":{"group":"g1"}}',
+					'childDomElements': $( '<a href="#cite_note-3" data-parsoid="{}">[3]</a>' ).toArray(),
 					'contentsUsed': true
 				},
 				'htmlAttributes': [
@@ -1446,41 +1450,14 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/paragraph' },
 			{ 'type': '/internalItem' },
 			{ 'type': '/internalList' }
-		],
-		'normalizedHtml':
-			'<p>Foo' +
-				'<span id="cite_ref-bar-1-0" class="reference" about="#mwt5" typeof="mw:Extension/ref" ' +
-					'data-parsoid="{}" ' +
-					'data-mw="{&quot;body&quot;:{&quot;html&quot;:&quot;&quot;},&quot;attrs&quot;:{&quot;name&quot;:&quot;bar&quot;}}">' +
-				'</span>' +
-				' Baz' +
-				'<span id="cite_ref-quux-2-0" class="reference" about="#mwt6" typeof="mw:Extension/ref" ' +
-					'data-parsoid="{}" ' +
-					'data-mw="{&quot;body&quot;:{&quot;html&quot;:&quot;Quux&quot;},&quot;attrs&quot;:{&quot;name&quot;:&quot;quux&quot;}}">' +
-				'</span>' +
-				' Whee' +
-				'<span id="cite_ref-bar-1-1" class="reference" about="#mwt7" typeof="mw:Extension/ref" ' +
-					'data-parsoid="{}" ' +
-					'data-mw="{&quot;body&quot;:{&quot;html&quot;:&quot;Bar&quot;},&quot;attrs&quot;:{&quot;name&quot;:&quot;bar&quot;}}">' +
-				'</span>' +
-				' Yay' +
-				'<span id="cite_ref-3-0" class="reference" about="#mwt8" typeof="mw:Extension/ref" ' +
-					'data-parsoid="{}" ' +
-					'data-mw="{&quot;body&quot;:{&quot;html&quot;:&quot;No name&quot;},&quot;attrs&quot;:{&quot;group&quot;:&quot;g1&quot;}}">' +
-				'</span>' +
-			'</p>' +
-			'<ol class="references" about="#mwt12" typeof="mw:Extension/references" ' +
-				'data-mw="{&quot;name&quot;:&quot;references&quot;,&quot;attrs&quot;:{}}" ' +
-				'data-parsoid="{}">' +
-				'<li id="cite_note-quux-2"><a href="#cite_ref-quux-2-0">u2191</a>Quux</li>' +
-			'</ol>'
+		]
 	},
 	'mw:Reference with metadata': {
 		'html': '<p><span about="#mwt2" class="reference" ' +
 			'data-mw="{&quot;name&quot;:&quot;ref&quot;,&quot;body&quot;:' +
 			'{&quot;html&quot;:&quot;Foo<!-- bar -->&quot;},&quot;attrs&quot;:{}}" ' +
 			'id="cite_ref-1-0" rel="dc:references" typeof="mw:Extension/ref" data-parsoid="{}">' +
-			'</span></p>',
+			'<a href="#cite_note-bar-1" data-parsoid="{}">[1]</a></span></p>',
 		'data': [
 			{ 'type': 'paragraph' },
 			{
@@ -1499,6 +1476,7 @@ ve.dm.example.domToDataCases = {
 						'name': 'ref'
 					},
 					'originalMw': '{"name":"ref","body":{"html":"Foo<!-- bar -->"},"attrs":{}}',
+					'childDomElements': $( '<a href="#cite_note-bar-1" data-parsoid="{}">[1]</a>' ).toArray(),
 					'refGroup': ''
 				},
 				'htmlAttributes': [
@@ -1511,7 +1489,8 @@ ve.dm.example.domToDataCases = {
 							'id': 'cite_ref-1-0',
 							'rel': 'dc:references',
 							'typeof': 'mw:Extension/ref'
-						}
+						},
+						'children': [ { 'values': { 'data-parsoid': '{}', 'href': '#cite_note-bar-1' } } ]
 					}
 				]
 			},
