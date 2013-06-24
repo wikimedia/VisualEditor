@@ -69,7 +69,8 @@ ve.dm.MWTransclusionNode.static.toDataElement = function ( domElements, converte
 		'type': type,
 		'attributes': {
 			'mw': mwData,
-			'origMw': mwDataJSON
+			'originalDomElements': ve.copyArray( domElements ),
+			'originalMw': mwDataJSON
 		}
 	};
 
@@ -82,16 +83,16 @@ ve.dm.MWTransclusionNode.static.toDataElement = function ( domElements, converte
 ve.dm.MWTransclusionNode.static.toDomElements = function ( dataElement, doc, converter ) {
 	var el,
 		index = converter.getStore().indexOfHash( ve.getHash( this.getHashObject( dataElement ) ) ),
-		origMw = dataElement.attributes.origMw;
+		originalMw = dataElement.attributes.originalMw;
 
 	// If the transclusion is unchanged just send back the
 	// original DOM elements so selser can skip over it
 	if (
 		index === dataElement.attributes.originalIndex ||
-		( origMw && ve.compare( dataElement.attributes.mw, JSON.parse( origMw ) ) )
+		( originalMw && ve.compare( dataElement.attributes.mw, JSON.parse( originalMw ) ) )
 	) {
 		// The object in the store is also used for CE rendering so return a copy
-		return ve.copyDomElements( converter.getStore().value( index ), doc );
+		return ve.copyDomElements( dataElement.attributes.originalDomElements, doc );
 	} else {
 		el = doc.createElement( 'span' );
 		// All we need to send back to Parsoid is the original transclusion marker, with a
