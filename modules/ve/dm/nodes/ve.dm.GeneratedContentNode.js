@@ -17,13 +17,9 @@
 ve.dm.GeneratedContentNode = function VeDmGeneratedContentNode() {
 };
 
-/* Static members */
+/* Static methods */
 
 ve.dm.GeneratedContentNode.static = {};
-
-ve.dm.GeneratedContentNode.static.matchTagNames = [];
-
-ve.dm.GeneratedContentNode.static.enableAboutGrouping = true;
 
 /**
  * Store HTML of DOM elements, hashed on data element
