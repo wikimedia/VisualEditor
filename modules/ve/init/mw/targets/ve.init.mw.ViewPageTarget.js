@@ -156,9 +156,7 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 	}
 
 	this.setupSkinTabs();
-	if ( !mw.user.options.get( 'visualeditor-nosectionedit' ) ) {
-		this.setupSectionEditLinks();
-	}
+	this.setupSectionEditLinks();
 	if ( this.isViewPage ) {
 		if ( currentUri.query.veaction === 'edit' ) {
 			this.activate();
@@ -439,6 +437,7 @@ ve.init.mw.ViewPageTarget.prototype.onSave = function ( html, newid ) {
 		this.hideSaveDialog();
 		this.resetSaveDialog();
 		this.replacePageContent( html );
+		this.setupSectionEditLinks();
 		this.tearDownBeforeUnloadHandler();
 		this.deactivate( true );
 		mw.util.jsMessage(
@@ -1054,6 +1053,9 @@ ve.init.mw.ViewPageTarget.prototype.setupSkinTabs = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.setupSectionEditLinks = function () {
+	if ( mw.user.options.get( 'visualeditor-nosectionedit' ) ) {
+		return;
+	}
 	var veEditUri = this.veEditUri,
 		$links = $( '#mw-content-text .mw-editsection a' );
 	if ( this.isViewPage ) {
