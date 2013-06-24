@@ -1409,10 +1409,10 @@ ve.init.mw.ViewPageTarget.prototype.onResizeSaveDialog = function () {
 
 /**
  * Hide the save dialog
- *
- * @method
  */
 ve.init.mw.ViewPageTarget.prototype.hideSaveDialog = function () {
+	// Reset history on close (bug 49481)
+	this.saveDialogSlideHistory.length = 0;
 	this.$saveDialog.fadeOut( 'fast' );
 	if ( this.$document ) {
 		this.$document.focus();
