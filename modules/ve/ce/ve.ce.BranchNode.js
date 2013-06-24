@@ -233,6 +233,10 @@ ve.ce.BranchNode.prototype.setupSlugs = function () {
 	} else {
 		// Iterate over all children of this branch and add slugs in appropriate places
 		for ( i = 0, len = this.children.length; i < len; i++ ) {
+			// Don't put slugs after internal nodes.
+			if ( ve.dm.nodeFactory.isNodeInternal( this.children[i].model.type ) ) {
+				continue;
+			}
 			// First sluggable child (left side)
 			if ( i === 0 && this.children[i].canHaveSlugBefore() ) {
 				this.slugs[i] = doc.importNode( slug, true );
