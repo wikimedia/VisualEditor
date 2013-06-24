@@ -9,7 +9,6 @@
 .ve-ui-context-inspectors,
 .ve-ui-context-menu {
 	position: absolute;
-	display: none;
 }
 
 .ve-ui-context-menu .ve-ui-toolbar-bar {
