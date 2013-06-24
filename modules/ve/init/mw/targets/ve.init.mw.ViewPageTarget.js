@@ -1881,13 +1881,26 @@ ve.init.mw.ViewPageTarget.prototype.restoreEditSection = function () {
 			surfaceView = this.surface.getView(),
 			surfaceModel = surfaceView.getModel();
 		this.$document.find( 'h1, h2, h3, h4, h5, h6' ).eq( this.section - 1 ).each( function () {
-			var headingNode = $( this ).data( 'view' );
+			var offsetNode, nextNode,
+				headingNode = $( this ).data( 'view' ),
+				lastHeadingLevel = -1;
 
 			if ( headingNode ) {
+				// Find next sibling which isn't a heading
+				offsetNode = headingNode;
+				while ( offsetNode instanceof ve.ce.HeadingNode && offsetNode.getModel().getAttribute( 'level' ) > lastHeadingLevel ) {
+					lastHeadingLevel = offsetNode.getModel().getAttribute( 'level' );
+					// Next sibling
+					nextNode = offsetNode.parent.children[ve.indexOf( offsetNode, offsetNode.parent.children ) + 1];
+					if ( !nextNode ) {
+						break;
+					}
+					offsetNode = nextNode;
+				}
 				offset = surfaceModel.getDocument().data.getNearestContentOffset(
-					headingNode.getModel().getOffset()
+					offsetNode.getModel().getOffset(), 1
 				);
-				surfaceModel.change( null, new ve.Range( offset, offset ) );
+				surfaceModel.change( null, new ve.Range( offset ) );
 				// Scroll to heading:
 				// Wait for toolbar to animate in so we can account for its height
 				setTimeout( function () {
