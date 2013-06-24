@@ -300,6 +300,8 @@ ve.ce.Surface.prototype.documentOnBlur = function () {
  * @param {jQuery.Event} e Mouse down event
  */
 ve.ce.Surface.prototype.onDocumentMouseDown = function ( e ) {
+	var selection, node;
+
 	// Remember the mouse is down
 	this.dragging = true;
 
@@ -310,9 +312,18 @@ ve.ce.Surface.prototype.onDocumentMouseDown = function ( e ) {
 		this.surfaceObserver.stop( true );
 	}
 
-	// Block / prevent triple click
-	if ( this.getClickCount( e.originalEvent ) > 2 ) {
+	// Handle triple click
+	if ( this.getClickCount( e.originalEvent ) >= 3 ) {
+		// Browser default behaviour for triple click won't behave as we want
 		e.preventDefault();
+
+		selection = this.model.getSelection();
+		node = this.documentView.getDocumentNode().getNodeFromOffset( selection.start );
+		// Find the nearest non-content node
+		while ( node.parent !== null && node.model.isContent() ) {
+			node = node.parent;
+		}
+		this.model.change( null, node.model.getRange() );
 	}
 };
 
@@ -1405,7 +1416,7 @@ ve.ce.Surface.prototype.getClickCount = function ( e ) {
 	}
 
 	// Trim old history if necessary
-	if ( this.clickHistory.length > 2 ) {
+	if ( this.clickHistory.length > 3 ) {
 		this.clickHistory.pop();
 	}
 
