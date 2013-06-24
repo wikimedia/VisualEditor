@@ -185,14 +185,17 @@ ve.init.mw.ViewPageTarget.compatibility = {
 	// The value is either null (match all versions) or a list of tuples
 	// containing an inequality (<,>,<=,>=) and a version number
 	'whitelist': {
-		'msie': [['>=', 9]],
 		'firefox': [['>=', 11]],
 		'iceweasel': [['>=', 10]],
 		'safari': [['>=', 5]],
 		'chrome': [['>=', 19]]
 	},
 	'blacklist': {
-		'msie': [['<', 9]],
+		// IE <= 8 has various incompatibilities in layout and feature support
+		// IE9 and IE10 generally work but fail in ajax handling when making POST
+		// requests to the VisualEditor/Parsoid API which is causing silent failures
+		// when trying to save a page (bug 49187)
+		'msie': [['<=', 10]],
 		'android': [['<', 3]],
 		// Blacklist all versions:
 		'opera': null,
