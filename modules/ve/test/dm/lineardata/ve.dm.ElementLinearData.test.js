@@ -1335,7 +1335,7 @@ QUnit.test( 'getNearestWordRange', function ( assert ) {
 	];
 	QUnit.expect( cases.length );
 	for ( i = 0; i < cases.length; i++ ) {
-		data = new ve.dm.ElementLinearData( store, cases[i].phrase.split('') );
+		data = new ve.dm.ElementLinearData( store, cases[i].phrase.split( '' ) );
 		range = data.getNearestWordRange( cases[i].offset );
 		word = cases[i].phrase.substring( range.start, range.end );
 		assert.strictEqual( word, cases[i].expected,

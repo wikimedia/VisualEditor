@@ -134,7 +134,7 @@ ve.Element.static.getFrameOffset = function ( from, to, offset ) {
 
 	// Get iframe element
 	frames = from.parent.document.getElementsByTagName( 'iframe' );
-	for ( i = 0, len = frames.length; i < len; i++) {
+	for ( i = 0, len = frames.length; i < len; i++ ) {
 		if ( frames[i].contentWindow === from ) {
 			frame = frames[i];
 			break;

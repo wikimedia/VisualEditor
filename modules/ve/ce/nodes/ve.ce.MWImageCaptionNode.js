@@ -65,7 +65,7 @@ ve.ce.MWImageCaptionNode.prototype.buildMagnify = function () {
 	this.$a = $( '<a>' )
 		.addClass( 'internal' )
 		// It's inside a protected node, so user can't see href/title anyways.
-		//.attr( 'href', '/wiki/File:Wiki.png')
+		//.attr( 'href', '/wiki/File:Wiki.png' )
 		//.attr( 'title', 'Enlarge' )
 		.appendTo( this.$magnify );
 	this.$img = $( '<img>' )

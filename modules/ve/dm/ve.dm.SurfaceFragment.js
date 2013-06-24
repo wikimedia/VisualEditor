@@ -877,7 +877,7 @@ ve.dm.SurfaceFragment.prototype.isolateAndUnwrap = function ( isolateForType ) {
 		}
 		startSplitNode = startSplitNode.getParent();
 		if ( startSplitRequired ) {
-			startSplitNodes.unshift(startSplitNode);
+			startSplitNodes.unshift( startSplitNode );
 		} else {
 			startOffset = startSplitNode.getOuterRange().start;
 		}
@@ -893,7 +893,7 @@ ve.dm.SurfaceFragment.prototype.isolateAndUnwrap = function ( isolateForType ) {
 		}
 		endSplitNode = endSplitNode.getParent();
 		if ( endSplitRequired ) {
-			endSplitNodes.unshift(endSplitNode);
+			endSplitNodes.unshift( endSplitNode );
 		} else {
 			endOffset = endSplitNode.getOuterRange().end;
 		}

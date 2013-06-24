@@ -637,7 +637,7 @@ ve.ce.Surface.prototype.onPaste = function () {
 		if ( view.clipboard[key] ) {
 			pasteData = view.clipboard[key];
 		} else {
-			pasteText = view.$pasteTarget.text().replace( /\n/gm, '');
+			pasteText = view.$pasteTarget.text().replace( /\n/gm, '' );
 			pasteData = new ve.dm.DocumentSlice( ve.splitClusters( pasteText ) );
 		}
 
@@ -802,7 +802,7 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 				lengthDiff < 0 &&
 				previous.text.substring( 0, nextStart ) ===
 					next.text.substring( 0, nextStart ) &&
-				previous.text.substring( previousStart - lengthDiff + offsetDiff) ===
+				previous.text.substring( previousStart - lengthDiff + offsetDiff ) ===
 					next.text.substring( nextStart )
 			)
 		);

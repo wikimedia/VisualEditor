@@ -401,4 +401,4 @@ QUnit.test( 'getRelativeRange', function ( assert ) {
 		}
 	}
 	QUnit.expect( expectCount );
-});
+} );

@@ -18,7 +18,7 @@
 ve.ce.RelocatableNode = function VeCeRelocatableNode() {
 	// Properties
 	this.relocatingSurface = null;
-	this.$relocatableMarker = $('<img>');
+	this.$relocatableMarker = $( '<img>' );
 
 	// Events
 	this.connect( this, {

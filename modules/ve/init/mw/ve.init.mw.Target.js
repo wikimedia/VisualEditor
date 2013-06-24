@@ -315,7 +315,7 @@ ve.init.mw.Target.onSave = function ( response ) {
 	if ( !data && !response.error ) {
 		ve.init.mw.Target.onSaveError.call( this, null, 'Invalid response from server', null );
 	} else if ( response.error ) {
-		if (response.error.code === 'editconflict' ) {
+		if ( response.error.code === 'editconflict' ) {
 			this.emit( 'editConflict' );
 		} else {
 			ve.init.mw.Target.onSaveError.call(

@@ -71,13 +71,13 @@ ve.ce.ResizableNode.prototype.onResizableFocus = function () {
 		.appendTo( this.root.getSurface().getSurface().$localOverlay );
 
 	this.$resizeHandles
-		.find('.ve-ce-resizableNode-neHandle')
+		.find( '.ve-ce-resizableNode-neHandle' )
 			.css( { 'margin-right': -this.$resizable.width() } )
 			.end()
-		.find('.ve-ce-resizableNode-swHandle')
+		.find( '.ve-ce-resizableNode-swHandle' )
 			.css( { 'margin-bottom': -this.$resizable.height() } )
 			.end()
-		.find('.ve-ce-resizableNode-seHandle')
+		.find( '.ve-ce-resizableNode-seHandle' )
 			.css( {
 				'margin-right': -this.$resizable.width(),
 				'margin-bottom': -this.$resizable.height()

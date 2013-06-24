@@ -95,7 +95,7 @@ ve.ce.getDomHash = function ( element ) {
 	} else if ( nodeType === 1 || nodeType === 9 ) {
 		hash += '<' + nodeName + '>';
 		// Traverse its children
-		for ( element = element.firstChild; element; element = element.nextSibling) {
+		for ( element = element.firstChild; element; element = element.nextSibling ) {
 			hash += ve.ce.getDomHash( element );
 		}
 		hash += '</' + nodeName + '>';
@@ -223,7 +223,7 @@ ve.ce.getOffsetFromElementNode = function ( domNode, domOffset, addOuterLength )
 			if ( addOuterLength === true ) {
 				return nodeModel.getOffset() + nodeModel.getOuterLength();
 			} else {
-				return nodeModel.getOffset() + (nodeModel.isWrapped() ? 1 : 0);
+				return nodeModel.getOffset() + ( nodeModel.isWrapped() ? 1 : 0 );
 			}
 		} else {
 			node = $domNode.contents().last()[0];

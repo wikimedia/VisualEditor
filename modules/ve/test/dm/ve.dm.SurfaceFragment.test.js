@@ -130,7 +130,7 @@ QUnit.test( 'expandRange (word)', 1, function ( assert ) {
 	];
 	QUnit.expect( cases.length*2 );
 	for ( i = 0; i < cases.length; i++ ) {
-		doc = new ve.dm.Document( cases[i].phrase.split('') );
+		doc = new ve.dm.Document( cases[i].phrase.split( '' ) );
 		surface = new ve.dm.Surface( doc );
 		fragment = new ve.dm.SurfaceFragment( surface, cases[i].range );
 		newFragment = fragment.expandRange( 'word' );
@@ -519,14 +519,14 @@ QUnit.test( 'isolateAndUnwrap', 4, function ( assert ) {
 	runIsolateTest( assert, 'mwHeading', new ve.Range( 12, 20 ), function ( data ) {
 		data.splice( 11, 0, { 'type': '/list' } );
 		data.splice( 12, 1 );
-		data.splice( 20, 1, { 'type': 'list', 'attributes': { 'style': 'bullet' } });
-	}, 'isolating paragraph in list item "Item 2" for MWheading');
+		data.splice( 20, 1, { 'type': 'list', 'attributes': { 'style': 'bullet' } } );
+	}, 'isolating paragraph in list item "Item 2" for MWheading' );
 
 	runIsolateTest( assert, 'heading', new ve.Range( 12, 20 ), function ( data ) {
 		data.splice( 11, 0, { 'type': 'listItem' } );
 		data.splice( 12, 1 );
-		data.splice( 20, 1, { 'type': '/listItem' });
-	}, 'isolating paragraph in list item "Item 2" for heading');
+		data.splice( 20, 1, { 'type': '/listItem' } );
+	}, 'isolating paragraph in list item "Item 2" for heading' );
 
 	runIsolateTest( assert, 'mwHeading', new ve.Range( 89, 97 ), function ( data ) {
 		data.splice( 88, 1,
@@ -539,7 +539,7 @@ QUnit.test( 'isolateAndUnwrap', 4, function ( assert ) {
 			{ 'type': 'tableSection', 'attributes': { 'style': 'body' } },
 			{ 'type': 'tableRow' }
 		);
-	}, 'isolating "Cell 2" for MWheading');
+	}, 'isolating "Cell 2" for MWheading' );
 
 	runIsolateTest( assert, 'mwHeading', new ve.Range( 202, 212 ), function ( data ) {
 		data.splice( 201, 1,
@@ -550,5 +550,5 @@ QUnit.test( 'isolateAndUnwrap', 4, function ( assert ) {
 			{ 'type': 'listItem' },
 			{ 'type': 'list', 'attributes': { 'style': 'number' } }
 		);
-	}, 'isolating paragraph in list item "Nested 2" for MWheading');
+	}, 'isolating paragraph in list item "Nested 2" for MWheading' );
 } );

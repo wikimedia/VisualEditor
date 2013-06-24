@@ -174,7 +174,7 @@ ve.ui.Toolbar.prototype.addTools = function ( tools ) {
 			tool = false;
 			try {
 				tool = ve.ui.toolFactory.create( group.items[j], this );
-			} catch(e) {}
+			} catch( e ) {}
 			if ( tool ) {
 				$group.append( tool.$ );
 			}

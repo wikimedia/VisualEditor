@@ -220,7 +220,7 @@ QUnit.test( 'getHash: Complex usage', 3, function ( assert ) {
 
 QUnit.test( 'getDomAttributes', 1, function ( assert ) {
 	assert.deepEqual(
-		ve.getDomAttributes( $( '<div foo="bar" baz quux=3></div>').get( 0 ) ),
+		ve.getDomAttributes( $( '<div foo="bar" baz quux=3></div>' ).get( 0 ) ),
 		{ 'foo': 'bar', 'baz': '', 'quux': '3' },
 		'getDomAttributes() returns object with correct attributes'
 	);

@@ -1353,7 +1353,7 @@ QUnit.test( 'newFromWrap', function ( assert ) {
 
 QUnit.test( 'translateOffset', function ( assert ) {
 	var mapping, offset, expected,
-		doc = new ve.dm.Document( '-----defg---h--'.split('') ),
+		doc = new ve.dm.Document( '-----defg---h--'.split( '' ) ),
 		tx = new ve.dm.Transaction();
 
 	tx.pushReplace( doc, 0, 0, ['a','b','c'] );
@@ -1385,7 +1385,7 @@ QUnit.test( 'translateOffset', function ( assert ) {
 		15: [18, 21],
 		16: 22
 	};
-	QUnit.expect( 2*ve.getObjectKeys(mapping).length );
+	QUnit.expect( 2*ve.getObjectKeys( mapping ).length );
 	for ( offset in mapping ) {
 		expected = ve.isArray( mapping[offset] ) ? mapping[offset] : [ mapping[offset], mapping[offset] ];
 		assert.strictEqual( tx.translateOffset( Number( offset ) ), expected[1], offset );
@@ -1395,7 +1395,7 @@ QUnit.test( 'translateOffset', function ( assert ) {
 
 QUnit.test( 'translateOffsetReversed', function ( assert ) {
 	var mapping, offset, expected,
-		doc = new ve.dm.Document( '-----defg---h--'.split('') ),
+		doc = new ve.dm.Document( '-----defg---h--'.split( '' ) ),
 		tx = new ve.dm.Transaction();
 
 	tx.pushReplace( doc, 0, 0, ['a','b','c'] );
@@ -1433,7 +1433,7 @@ QUnit.test( 'translateOffsetReversed', function ( assert ) {
 		21: 15,
 		22: 16
 	};
-	QUnit.expect( 2*ve.getObjectKeys(mapping).length );
+	QUnit.expect( 2*ve.getObjectKeys( mapping ).length );
 	for ( offset in mapping ) {
 		expected = ve.isArray( mapping[offset] ) ? mapping[offset] : [ mapping[offset], mapping[offset] ];
 		assert.strictEqual( tx.translateOffset( Number( offset ), true ), expected[1], offset );

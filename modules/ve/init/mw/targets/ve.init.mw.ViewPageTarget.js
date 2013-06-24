@@ -1061,9 +1061,9 @@ ve.init.mw.ViewPageTarget.prototype.setupSectionEditLinks = function () {
 	} else {
 		$links.each( function () {
 			var veSectionEditUri = new mw.Uri( veEditUri.toString() ),
-				sectionEditUri = new mw.Uri( $(this).attr( 'href' ) );
+				sectionEditUri = new mw.Uri( $( this ).attr( 'href' ) );
 			veSectionEditUri.extend( { 'vesection': sectionEditUri.query.section } );
-			$(this).attr( 'href', veSectionEditUri );
+			$( this ).attr( 'href', veSectionEditUri );
 		} );
 	}
 };
@@ -1295,17 +1295,17 @@ ve.init.mw.ViewPageTarget.prototype.setupSaveDialog = function () {
 				.byteLimit( viewPage.editSummaryByteLimit )
 				.on( {
 					'focus': function () {
-						$(this).parent().addClass(
+						$( this ).parent().addClass(
 							've-init-mw-viewPageTarget-saveDialog-summary-focused'
 						);
 					},
 					'blur': function () {
-						$(this).parent().removeClass(
+						$( this ).parent().removeClass(
 							've-init-mw-viewPageTarget-saveDialog-summary-focused'
 						);
 					},
 					'keyup keydown mouseup cut paste change focus blur': function () {
-						var $textarea = $(this),
+						var $textarea = $( this ),
 							$editSummaryCount = $textarea
 								.closest( '.ve-init-mw-viewPageTarget-saveDialog-slide-save' )
 									.find( '.ve-init-mw-viewPageTarget-saveDialog-editSummaryCount' );
@@ -1379,14 +1379,14 @@ ve.init.mw.ViewPageTarget.prototype.showSaveDialog = function () {
 	viewPage.$saveDialog.fadeIn( 'fast', function () {
 		// Initial size
 		viewPage.onResizeSaveDialog();
-	});
+	} );
 
 	$( document ).on( 'keydown.ve-savedialog', function ( e ) {
 		// Escape
 		if ( e.which === 27 ) {
 			viewPage.onSaveDialogCloseButtonClick();
 		}
-	});
+	} );
 
 	$( window ).on( 'resize.ve-savedialog', ve.bind( viewPage.onResizeSaveDialog, viewPage ) );
 };
@@ -1635,9 +1635,9 @@ ve.init.mw.ViewPageTarget.prototype.showTableOfContents = function () {
 	var $toc = $( '#toc' ),
 		$wrap = $toc.parent();
 	if ( $wrap.data( 've.hideTableOfContents' ) ) {
-		$wrap.slideDown(function () {
+		$wrap.slideDown( function () {
 			$toc.unwrap();
-		});
+		} );
 	}
 };
 
@@ -1793,7 +1793,7 @@ ve.init.mw.ViewPageTarget.prototype.restorePage = function () {
 
 
 	// Make site notice visible again (if present)
-	$(' #siteNotice.ve-hide' )
+	$( '#siteNotice.ve-hide' )
 		.slideDown( 'fast' );
 
 	// Push non-veaction=edit url in history
@@ -1880,7 +1880,7 @@ ve.init.mw.ViewPageTarget.prototype.restoreEditSection = function () {
 			surfaceView = this.surface.getView(),
 			surfaceModel = surfaceView.getModel();
 		this.$document.find( 'h1, h2, h3, h4, h5, h6' ).eq( this.section - 1 ).each( function () {
-			var headingNode = $(this).data( 'view' );
+			var headingNode = $( this ).data( 'view' );
 			if ( headingNode ) {
 				offset = surfaceModel.getDocument().data.getNearestContentOffset(
 					headingNode.getModel().getOffset()

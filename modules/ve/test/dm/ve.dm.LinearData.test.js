@@ -39,7 +39,7 @@ QUnit.test( 'slice(Object)/splice(Object)/batchSplice', 12, function ( assert ) 
 	);
 	dataSlice = data.sliceObject( 10, 12 );
 	expectedDataSlice = new ve.dm.LinearData( store,
-		expectedData.slice( 10, 12)
+		expectedData.slice( 10, 12 )
 	);
 	assert.deepEqual( dataSlice.getData(), expectedDataSlice.getData(),
 		'slice: matches data built with Array.slice'

@@ -1195,7 +1195,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container ) {
 									// then check that we are the last child
 									// before unwrapping (and therefore destroying)
 									i === data.length - 1 ||
-									data[i + 1].type.charAt(0) === '/'
+									data[i + 1].type.charAt( 0 ) === '/'
 								)
 							) {
 								doUnwrap = true;
