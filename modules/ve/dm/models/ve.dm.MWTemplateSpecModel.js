@@ -67,16 +67,25 @@ ve.dm.MWTemplateSpecModel.getMessage = function ( val, fallback, lang ) {
  * @param {string[][]} [data.sets] Lists of param sets
  */
 ve.dm.MWTemplateSpecModel.prototype.extend = function ( data ) {
-	var key;
+	var key, paramObj, i, len;
 
 	if ( data.description !== null ) {
 		this.description = data.description;
 	}
 	if ( ve.isPlainObject( data.params ) ) {
 		for ( key in data.params ) {
+			paramObj = data.params[key];
 			this.params[key] = ve.extendObject(
-				true, this.getDefaultParameterSpec( key ), data.params[key]
+				true,
+				this.getDefaultParameterSpec( key ),
+				paramObj
 			);
+			if ( paramObj.aliases.length ) {
+				for ( i = 0, len = paramObj.aliases.length; i < len; i++ ) {
+					this.params[ paramObj.aliases[i] ] = paramObj;
+				}
+			}
+			delete paramObj.aliases;
 		}
 	}
 	if ( data.sets ) {

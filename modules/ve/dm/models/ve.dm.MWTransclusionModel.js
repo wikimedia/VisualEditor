@@ -79,10 +79,10 @@ ve.dm.MWTransclusionModel.prototype.load = function ( data ) {
 			}
 		}
 	}
-	// Promise is resolved passing the specs object as the first argument - binding #specs
-	// to precede that argument and passing them both to extendObject will cause #specs to be added
-	// to when the promise is resolved
-	return this.fetchSpecs( templates ).done( ve.bind( ve.extendObject, null, this.specs ) );
+	// Add fetched specs to #specs store when the promise is resolved
+	return this.fetchSpecs( templates ).done( function ( specs ) {
+		ve.extendObject( this.specs, specs );
+	} );
 };
 
 /**
@@ -92,7 +92,8 @@ ve.dm.MWTransclusionModel.prototype.load = function ( data ) {
  * @returns {jQuery.Promise} Promise, resolved when spec is loaded
  */
 ve.dm.MWTransclusionModel.prototype.fetchSpecs = function ( templates ) {
-	var i, len, title, deferred = $.Deferred(),
+	var i, len, title,
+		deferred = $.Deferred(),
 		specs = {},
 		titles = [];
 
