@@ -688,6 +688,8 @@ $wgResourceModules += array(
 	),
 	'ext.visualEditor.experimental' => $wgVisualEditorResourceTemplate + array(
 		'scripts' => array(
+			've-mw/ce/nodes/ve.ce.MWMathNode.js',
+			've-mw/dm/nodes/ve.dm.MWMathNode.js',
 		),
 		'dependencies' => array(
 			'ext.visualEditor.core',
