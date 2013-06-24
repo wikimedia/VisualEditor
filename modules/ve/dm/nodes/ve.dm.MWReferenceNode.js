@@ -69,16 +69,16 @@ ve.dm.MWReferenceNode.static.toDataElement = function ( domElements, converter )
 };
 
 ve.dm.MWReferenceNode.static.toDomElements = function ( dataElement, doc, converter ) {
-	var itemNodeHtml, mwAttr, i, iLen, keyedNodes, setContents, origMw,
-		span = doc.createElement( 'span' ),
+	var itemNodeHtml, mwData, i, iLen, keyedNodes, setContents, origMw,
+		el = doc.createElement( 'span' ),
 		itemNodeWrapper = doc.createElement( 'div' ),
 		itemNode = converter.internalList.getItemNode( dataElement.attributes.listIndex ),
 		itemNodeRange = itemNode.getRange();
 
-	span.setAttribute( 'about', dataElement.attributes.about );
-	span.setAttribute( 'typeof', 'mw:Extension/ref' );
+	el.setAttribute( 'about', dataElement.attributes.about );
+	el.setAttribute( 'typeof', 'mw:Extension/ref' );
 
-	mwAttr = ve.copyObject( dataElement.attributes.mw ) || {};
+	mwData = ve.copyObject( dataElement.attributes.mw ) || {};
 
 	setContents = dataElement.attributes.contentsUsed ||
 		dataElement.attributes.listKey === null;
@@ -109,32 +109,32 @@ ve.dm.MWReferenceNode.static.toDomElements = function ( dataElement, doc, conver
 			itemNodeWrapper
 		),
 		itemNodeHtml = $( itemNodeWrapper ).html();
-		ve.setProp( mwAttr, 'body', 'html', itemNodeHtml );
+		ve.setProp( mwData, 'body', 'html', itemNodeHtml );
 	}
 
 	// Set or clear key
 	if ( dataElement.attributes.listKey !== null ) {
-		ve.setProp( mwAttr, 'attrs', 'name', dataElement.attributes.listKey );
-	} else if ( mwAttr.attrs ) {
-		delete mwAttr.attrs.listKey;
+		ve.setProp( mwData, 'attrs', 'name', dataElement.attributes.listKey );
+	} else if ( mwData.attrs ) {
+		delete mwData.attrs.listKey;
 	}
 	// Set or clear group
 	if ( dataElement.attributes.refGroup !== '' ) {
-		ve.setProp( mwAttr, 'attrs', 'group', dataElement.attributes.refGroup );
-	} else if ( mwAttr.attrs ) {
-		delete mwAttr.attrs.refGroup;
+		ve.setProp( mwData, 'attrs', 'group', dataElement.attributes.refGroup );
+	} else if ( mwData.attrs ) {
+		delete mwData.attrs.refGroup;
 	}
 
 	// If mwAttr and origMw are the same, use origMw to prevent reserialization.
 	// Reserialization has the potential to reorder keys and so change the DOM unnecessarily
 	origMw = dataElement.attributes.origMw;
-	if ( origMw && ve.compare( mwAttr, JSON.parse( origMw ) ) ) {
-		span.setAttribute( 'data-mw', origMw );
+	if ( origMw && ve.compare( mwData, JSON.parse( origMw ) ) ) {
+		el.setAttribute( 'data-mw', origMw );
 	} else {
-		span.setAttribute( 'data-mw', JSON.stringify( mwAttr ) );
+		el.setAttribute( 'data-mw', JSON.stringify( mwData ) );
 	}
 
-	return [ span ];
+	return [ el ];
 };
 
 ve.dm.MWReferenceNode.static.remapInternalListIndexes = function ( dataElement, mapping ) {
