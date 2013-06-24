@@ -3367,7 +3367,7 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'thumb image': {
-		'html': '<body><figure typeof="mw:Image/Thumb" class="mw-halign-right"><a rel="mw:thumb" href="Foo"><img src="Bar" width="1" height="2" resource="FooBar"></a><figcaption class="mw-figcaption">abc</figcaption></figure></body>',
+		'html': '<body><figure typeof="mw:Image/Thumb" class="mw-halign-right"><a href="Foo"><img src="Bar" width="1" height="2" resource="FooBar"></a><figcaption class="mw-figcaption">abc</figcaption></figure></body>',
 		'data': [
 			{
 				'type': 'mwBlockImage',
@@ -3393,7 +3393,7 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'attribute preservation does not crash due to text node split': {
-		'html': '<body><figure typeof="mw:Image/Thumb" data-parsoid="{}"><a rel="mw:thumb" href="Foo" data-parsoid="{}"><img src="Bar" width="1" height="2" resource="FooBar" data-parsoid="{}"></a><figcaption class="mw-figcaption" data-parsoid="{}"> foo <a rel="mw:WikiLink" href="./Bar" data-parsoid="{}">bar</a> baz</figcaption></figure></body>',
+		'html': '<body><figure typeof="mw:Image/Thumb" data-parsoid="{}"><a href="Foo" data-parsoid="{}"><img src="Bar" width="1" height="2" resource="FooBar" data-parsoid="{}"></a><figcaption class="mw-figcaption" data-parsoid="{}"> foo <a rel="mw:WikiLink" href="./Bar" data-parsoid="{}">bar</a> baz</figcaption></figure></body>',
 		'data': [
 			{
 				'type': 'mwBlockImage',
