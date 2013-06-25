@@ -158,7 +158,6 @@ ve.dm.MWBlockImageNode.static.toDomElements = function ( data, doc, converter ) 
 	} else if ( classes.length > 0 ) {
 		figure.className = classes.join( ' ' );
 	}
-	a.setAttribute( 'rel', 'mw:thumb' );
 	a.setAttribute( 'href', dataElement.attributes.href );
 	img.setAttribute( 'src', dataElement.attributes.src );
 	img.setAttribute( 'width', dataElement.attributes.width );
