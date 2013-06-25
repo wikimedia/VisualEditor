@@ -55,7 +55,8 @@ ve.ui.MWMediaInsertDialog.prototype.onClose = function ( action ) {
 				'attributes': {
 					'type': 'thumb',
 					'align': 'right',
-					'href': info.descriptionurl,
+					//'href': info.descriptionurl,
+					'href': './' + this.item.title,
 					'src': info.thumburl,
 					'width': info.thumbwidth,
 					'height': info.thumbheight,
