@@ -69,10 +69,10 @@ ve.ce.ProtectedNode.prototype.onProtectedSetup = function () {
 		node = this,
 		$shieldTemplate = this.constructor.static.$shieldTemplate;
 
-	if ( this.isSetup ) {
+	// Exit if already setup or not unattached
+	if ( this.isSetup || !this.root ) {
 		return;
 	}
-	this.isSetup = true;
 
 	surfaceModel = this.getRoot().getSurface().getModel();
 	surface = this.getRoot().getSurface().getSurface();
@@ -97,6 +97,7 @@ ve.ce.ProtectedNode.prototype.onProtectedSetup = function () {
 		}
 	} );
 
+	this.isSetup = true;
 };
 
 /**
@@ -105,18 +106,14 @@ ve.ce.ProtectedNode.prototype.onProtectedSetup = function () {
  * @method
  */
 ve.ce.ProtectedNode.prototype.onProtectedTeardown = function () {
-	var surfaceModel;
-
-	if ( !this.isSetup ) {
+	// Exit if not setup or not attached
+	if ( !this.isSetup || !this.root ) {
 		return;
 	}
-	this.isSetup = false;
-
-	surfaceModel = this.getRoot().getSurface().getModel();
 
 	// Events
 	this.$.off( '.ve-ce-protectedNode' );
-	surfaceModel.disconnect( this, { 'change': 'onSurfaceModelChange' } );
+	this.root.getSurface().getModel().disconnect( this, { 'change': 'onSurfaceModelChange' } );
 
 	// Shields
 	this.$shields.remove();
@@ -124,6 +121,8 @@ ve.ce.ProtectedNode.prototype.onProtectedTeardown = function () {
 
 	// Phantoms
 	this.clearPhantoms();
+
+	this.isSetup = false;
 };
 
 /**
