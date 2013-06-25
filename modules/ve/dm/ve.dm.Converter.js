@@ -74,7 +74,7 @@ ve.dm.Converter.openAndCloseAnnotations = function ( currentSet, targetSet, open
 	// Go through annotationStack from bottom to top (low to high),
 	// and find the first annotation that's not in annotations.
 	for ( i = 0, len = currentSet.getLength(); i < len; i++ ) {
-		if ( !targetSet.containsComparable( currentSet.get( i ) ) ) {
+		if ( !targetSet.containsComparableForSerialization( currentSet.get( i ) ) ) {
 			startClosingAt = i;
 			break;
 		}
@@ -92,7 +92,7 @@ ve.dm.Converter.openAndCloseAnnotations = function ( currentSet, targetSet, open
 	// Open annotations as needed
 	for ( i = 0, len = targetSet.getLength(); i < len; i++ ) {
 		annotation = targetSet.get( i );
-		if ( !currentSet.containsComparable( annotation ) ) {
+		if ( !currentSet.containsComparableForSerialization( annotation ) ) {
 			open( annotation );
 			// Add to currentClone
 			currentSet.push( annotation );

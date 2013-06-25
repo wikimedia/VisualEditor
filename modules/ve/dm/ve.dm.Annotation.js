@@ -79,13 +79,36 @@ ve.dm.Annotation.prototype.getComparableObject = function () {
  *
  * This should be removed once similar annotation merging is handled correctly
  * by Parsoid.
+ *
+ * @returns {Object} An object all HTML attributes except data-parsoid
  */
 ve.dm.Annotation.prototype.getComparableHtmlAttributes = function () {
-	var i, length, attributes = ve.copyArray( this.getHtmlAttributes() );
-	for ( i = 0, length = attributes.length; i < length; i++ ) {
-		if ( attributes[i].values ) {
-			delete attributes[i].values['data-parsoid'];
-		}
+	var comparableAttributes, attributes = this.getHtmlAttributes();
+
+	if ( attributes[0] ) {
+		comparableAttributes = ve.copyObject( attributes[0].values );
+		delete comparableAttributes['data-parsoid'];
+		return comparableAttributes;
+	} else {
+		return {};
 	}
-	return attributes;
+};
+
+/**
+ * HACK: This method adds in HTML attributes so comparable objects aren't serialized
+ * together if they have different HTML attributes.
+ *
+ * This method needs to be different from getComparableObject which is
+ * still used for editing annotations.
+ *
+ * @returns {Object} An object containing a subset of the annotation's properties and HTML attributes
+ */
+ve.dm.Annotation.prototype.getComparableObjectForSerialization = function () {
+	var object = this.getComparableObject(),
+		htmlAttributes = this.getComparableHtmlAttributes();
+
+	if ( !ve.isEmptyObject( htmlAttributes ) ) {
+		object.htmlAttributes = htmlAttributes;
+	}
+	return object;
 };

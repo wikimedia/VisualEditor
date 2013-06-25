@@ -257,6 +257,25 @@ ve.dm.AnnotationSet.prototype.containsComparable = function ( annotation ) {
 };
 
 /**
+ * HACK: Check if the set contains an annotation comparable to the specified one
+ * for the purposes of serialization.
+ *
+ * This method uses getComparableObjectForSerialization which also includes
+ * HTML attributes.
+ *
+ * @param {ve.dm.Annotation} annotation Annotation to compare to
+ * @returns {boolean} At least one comprable annotation found
+ */
+ve.dm.AnnotationSet.prototype.containsComparableForSerialization = function ( annotation ) {
+	return this.filter( function ( a ) {
+		return ve.compare(
+			annotation.getComparableObjectForSerialization(),
+			a.getComparableObjectForSerialization()
+		);
+	}, true );
+};
+
+/**
  * Check if the set contains at least one annotation where a given property matches a given filter.
  *
  * This is equivalent to (but more efficient than) `!this.filter( .. ).isEmpty()`.
