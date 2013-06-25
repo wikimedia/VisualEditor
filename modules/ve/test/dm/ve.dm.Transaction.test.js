@@ -658,263 +658,38 @@ QUnit.test( 'newFromRemoval', function ( assert ) {
 	runConstructorTests( assert, ve.dm.Transaction.newFromRemoval, cases );
 } );
 
-QUnit.test( 'newFromDocumentInsertion', function ( assert ) {
-	var i, j, doc2, tx, actualStoreItems, expectedStoreItems,
-		doc = ve.dm.example.createExampleDocument( 'internalData' ),
-		complexDoc = ve.dm.example.createExampleDocument( 'complexInternalData' ),
-		nextIndex = doc.store.valueStore.length,
-		whee = [ { 'type': 'paragraph' }, 'W', 'h', 'e', 'e', { 'type': '/paragraph' } ],
-		wheeItem = [ { 'type': 'internalItem' } ].concat( whee ).concat( [ { 'type': '/internalItem' } ] ),
-		comment = { 'type': 'alienMeta', 'attributes': { 'domElements': $( '<!-- hello -->' ).get() } },
-		withReference = [
-			{ 'type': 'paragraph' },
-			'B', 'a', 'r',
-			{ 'type': 'mwReference', 'attributes': {
-				'mw': {},
-				'about': '#mwt4',
-				'listIndex': 0,
-				'listGroup': 'mwReference/',
-				'listKey': null,
-				'refGroup': '',
-				'contentsUsed': true
-			} },
-			{ 'type': '/mwReference' },
-			{ 'type': '/paragraph' },
-			{ 'type': 'internalList' },
-			{ 'type': 'internalItem' },
-			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
-			'B',
-			'a',
-			'z',
-			{ 'type': '/paragraph' },
-			{ 'type': '/internalItem' },
-			{ 'type': '/internalList' }
-		],
-		cases = [
-			{
-				'msg': 'simple insertion',
-				'doc': 'internalData',
-				'range': new ve.Range( 7, 12 ),
-				'modify': function ( newDoc ) {
-					// Change "Bar" to "Bazaar"
-					newDoc.commit( ve.dm.Transaction.newFromInsertion(
-						newDoc, 3, [ 'z', 'a', 'a' ]
-					) );
-				},
-				'expectedOps': [
-					{ 'type': 'retain', 'length': 6 },
-					{
-						'type': 'replace',
-						'remove': doc.getData( new ve.Range( 6, 20 ) ),
-						'insert': doc.getData( new ve.Range( 6, 10 ) )
-							.concat( [ 'z', 'a', 'a' ] )
-							.concat( doc.getData( new ve.Range( 10, 20 ) ) )
-					},
-					{ 'type': 'retain', 'length': 7 }
-				]
-			},
-			{
-				'msg': 'simple annotation',
-				'doc': 'internalData',
-				'range': doc.getInternalList().getItemNode( 1 ),
-				'modify': function ( newDoc ) {
-					// Bold the first two characters
-					newDoc.commit( ve.dm.Transaction.newFromAnnotation(
-						newDoc, new ve.Range( 1, 3 ), 'set', ve.dm.example.bold
-					) );
-				},
-				'expectedOps': [
-					{ 'type': 'retain', 'length': 6 },
-					{
-						'type': 'replace',
-						'remove': doc.getData( new ve.Range( 6, 20 ) ),
-						'insert': doc.getData( new ve.Range( 6, 15 ) )
-							.concat( [ [ doc.data.getData( 15 ), [ nextIndex ] ] ] )
-							.concat( [ [ doc.data.getData( 16 ), [ nextIndex ] ] ] )
-							.concat( doc.getData( new ve.Range( 17, 20 ) ) )
-					},
-					{ 'type': 'retain', 'length': 7 }
-				],
-				'expectedStoreItems': [
-					ve.dm.example.bold
-				]
-			},
-			{
-				'msg': 'insertion into internal list',
-				'doc': 'internalData',
-				'range': new ve.Range( 21, 27 ),
-				'modify': function ( newDoc ) {
-					var insertion = newDoc.internalList.getItemInsertion( 'test', 'whee', whee );
-					newDoc.commit( insertion.transaction );
-				},
-				'expectedOps': [
-					{ 'type': 'retain', 'length': 6 },
-					{
-						'type': 'replace',
-						'remove': doc.getData( new ve.Range( 6, 20 ) ),
-						'insert': doc.getData( new ve.Range( 6, 20 ) ).concat( wheeItem )
-					},
-					{ 'type': 'retain', 'length': 1 },
-					{
-						'type': 'replace',
-						'remove': doc.getData( new ve.Range( 21, 27 ) ),
-						'insert': doc.getData( new ve.Range( 21, 27 ) )
-					}
-				]
-			},
-			{
-				'msg': 'change in internal list',
-				'doc': 'internalData',
-				'range': new ve.Range( 21, 27 ),
-				'modify': function ( newDoc ) {
-					newDoc.commit( ve.dm.Transaction.newFromInsertion(
-						newDoc, 12, [ '!', '!', '!' ]
-					) );
-				},
-				'expectedOps': [
-					{ 'type': 'retain', 'length': 6 },
-					{
-						'type': 'replace',
-						'remove': doc.getData( new ve.Range( 6, 20 ) ),
-						'insert': doc.getData( new ve.Range( 6, 11 ) )
-							.concat( [ '!', '!', '!' ] )
-							.concat( doc.getData( new ve.Range( 11, 20 ) ) )
-					},
-					{ 'type': 'retain', 'length': 1 },
-					{
-						'type': 'replace',
-						'remove': doc.getData( new ve.Range( 21, 27 ) ),
-						'insert': doc.getData( new ve.Range( 21, 27 ) )
-					}
-				]
-			},
-			{
-				'msg': 'insertion into internal list from slice within internal list',
-				'doc': 'internalData',
-				'range': new ve.Range( 7, 12 ),
-				'modify': function ( newDoc ) {
-					var insertion = newDoc.internalList.getItemInsertion( 'test', 'whee', whee );
-					newDoc.commit( insertion.transaction );
-				},
-				'expectedOps': [
-					{ 'type': 'retain', 'length': 6 },
-					{
-						'type': 'replace',
-						'remove': doc.getData( new ve.Range( 6, 20 ) ),
-						'insert': doc.getData( new ve.Range( 6, 20 ) ).concat( wheeItem )
-					},
-					{ 'type': 'retain', 'length': 7 }
-				]
-			},
-			{
-				'msg': 'metadata insertion',
-				'doc': 'complexInternalData',
-				'range': new ve.Range( 0, 7 ),
-				'modify': function ( newDoc ) {
-					newDoc.commit( ve.dm.Transaction.newFromMetadataInsertion(
-						newDoc, 5, 0, [ comment ]
-					) );
-				},
-				'expectedOps': [
-					{
-						'type': 'replace',
-						'remove': complexDoc.getData( new ve.Range( 0, 7 ) ),
-						'insert': complexDoc.getData( new ve.Range( 0, 7 ) ),
-						'retainMetadata': 0,
-						'removeMetadata': complexDoc.getMetadata( new ve.Range( 0, 8 ) ),
-						'insertMetadata': complexDoc.getMetadata( new ve.Range( 0, 5 ) )
-							.concat( [ [ comment ] ] )
-							.concat( complexDoc.getMetadata( new ve.Range( 6, 8 ) ) )
-					},
-					{ 'type': 'retain', 'length': 1 },
-					{
-						'type': 'replace',
-						'remove': complexDoc.getData( new ve.Range( 8, 32 ) ),
-						'insert': complexDoc.getData( new ve.Range( 8, 32 ) ),
-						'retainMetadata': 5,
-						'removeMetadata': complexDoc.getMetadata( new ve.Range( 13, 33 ) ),
-						'insertMetadata': complexDoc.getMetadata( new ve.Range( 13, 33 ) )
-					},
-					{ 'type': 'retain', 'length': 1 }
-				]
-			},
-			{
-				'msg': 'metadata removal',
-				'doc': 'complexInternalData',
-				'range': new ve.Range( 24, 31 ),
-				'modify': function ( newDoc ) {
-					newDoc.commit( ve.dm.Transaction.newFromMetadataRemoval(
-						newDoc, 6, new ve.Range( 0, 1 )
-					) );
-				},
-				'expectedOps': [
-					{ 'type': 'retain', 'length': 8 },
-					{
-						'type': 'replace',
-						'remove': complexDoc.getData( new ve.Range( 8, 32 ) ),
-						'insert': complexDoc.getData( new ve.Range( 8, 32 ) ),
-						'retainMetadata': 5,
-						'removeMetadata': complexDoc.getMetadata( new ve.Range( 13, 33 ) ),
-						'insertMetadata': complexDoc.getMetadata( new ve.Range( 13, 30 ) )
-							.concat( [ [] ] )
-							.concat( complexDoc.getMetadata( new ve.Range( 31, 33 ) ) )
-					},
-					{ 'type': 'retain', 'length': 1 }
-				]
-			},
-			{
-				'msg': 'inserting a brand new document; internal lists are merged and items renumbered',
-				'doc': 'complexInternalData',
-				'range': new ve.Range( 7, 7 ),
-				'newDocData': withReference,
-				'expectedOps': [
+QUnit.test( 'newFromNodeReplacement', function ( assert ) {
+	var doc = ve.dm.example.createExampleDocument( 'internalData' ),
+		paragraph = [ { 'type': 'paragraph' }, 'H', 'e', 'l', 'l', 'o', { 'type': '/paragraph' } ],
+		secondNode = doc.internalList.getItemNode( 1 ),
+		cases = {
+			'replacing first internal node with paragraph': {
+				'args': [doc, new ve.Range( 7, 12 ), paragraph],
+				'ops': [
 					{ 'type': 'retain', 'length': 7 },
 					{
 						'type': 'replace',
-						'remove': [],
-						'insert': withReference.slice( 0, 4 )
-							// Renumber listIndex from 0 to 2
-							.concat( [ ve.extendObject( true, {}, withReference[4],
-								{ 'attributes': { 'listIndex': 2 } } ) ] )
-							.concat( withReference.slice( 5, 7 ) )
+						'remove': doc.data.slice( 7, 12 ),
+						'insert': paragraph
 					},
-					{ 'type': 'retain', 'length': 1 },
+					{ 'type': 'retain', 'length': 15 }
+				]
+			},
+			'replacing second internal node with two paragraphs': {
+				'args': [doc, secondNode, paragraph.concat( paragraph )],
+				'ops': [
+					{ 'type': 'retain', 'length': 14 },
 					{
 						'type': 'replace',
-						'remove': complexDoc.getData( new ve.Range( 8, 32 ) ),
-						'insert': complexDoc.getData( new ve.Range( 8, 32 ) )
-							.concat( withReference.slice( 8, 15 ) ),
-						'retainMetadata': 5,
-						'removeMetadata': complexDoc.getMetadata( new ve.Range( 13, 33 ) ),
-						'insertMetadata': complexDoc.getMetadata( new ve.Range( 13, 32 ) )
-							.concat( new Array( 7 ) )
-							.concat( complexDoc.getMetadata( new ve.Range( 32, 33 ) ) )
+						'remove': doc.data.getDataSlice( secondNode.getRange() ),
+						'insert': paragraph.concat( paragraph )
 					},
-					{ 'type': 'retain', 'length': 1 }
+					{ 'type': 'retain', 'length': 8 }
 				]
 			}
-		];
-	QUnit.expect( 2 * cases.length );
-	for ( i = 0; i < cases.length; i++ ) {
-		doc = ve.dm.example.createExampleDocument( cases[i].doc );
-		if ( cases[i].newDocData ) {
-			doc2 = new ve.dm.Document( cases[i].newDocData );
-		} else {
-			doc2 = doc.getDocumentSlice( cases[i].range );
-			cases[i].modify( doc2 );
-		}
-		tx = ve.dm.Transaction.newFromDocumentInsertion( doc, cases[i].range, doc2 );
-		assert.deepEqualWithDomElements( tx.getOperations(), cases[i].expectedOps, cases[i].msg + ': transaction' );
-
-		actualStoreItems = [];
-		expectedStoreItems = cases[i].expectedStoreItems || [];
-		for ( j = 0; j < expectedStoreItems.length; j++ ) {
-			actualStoreItems[j] = doc.store.value( doc.store.indexOfHash(
-				ve.getHash( expectedStoreItems[j] )
-			) );
-		}
-		assert.deepEqual( actualStoreItems, expectedStoreItems, cases[i].msg + ': store items' );
-	}
+		};
+	QUnit.expect( ve.getObjectKeys( cases ).length );
+	runConstructorTests( assert, ve.dm.Transaction.newFromNodeReplacement, cases );
 } );
 QUnit.test( 'newFromAttributeChanges', function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument(),
