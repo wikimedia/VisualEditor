@@ -51,7 +51,7 @@ ve.ce.MWBlockImageNode = function VeCeMWBlockImageNode( model, config ) {
 		.attr( 'height', this.model.getAttribute( 'height' ) )
 		.appendTo( this.$a );
 
-	if ( type === 'none' ) {
+	if ( type === 'none' || type ==='frameless' ) {
 		this.$thumb.addClass(
 			ve.ce.MWBlockImageNode.static.cssClasses.none[ this.model.getAttribute( 'align' ) ]
 		);
@@ -71,7 +71,7 @@ ve.ce.MWBlockImageNode = function VeCeMWBlockImageNode( model, config ) {
 	this.$resizable = this.$image;
 
 	// I smell a caption!
-	if ( type !== 'none' && this.model.children.length === 1 ) {
+	if ( type !== 'none' && type !== 'frameless' && this.model.children.length === 1 ) {
 		captionModel = this.model.children[0];
 		captionView = ve.ce.nodeFactory.create( captionModel.getType(), captionModel );
 		captionModel.connect( this, { 'update': 'onModelUpdate' } );
@@ -125,7 +125,7 @@ ve.ce.MWBlockImageNode.static.cssClasses = {
 /* Methods */
 
 ve.ce.MWBlockImageNode.prototype.onAttributeChange = function ( key, from, to ) {
-	var $element;
+	var $element, type;
 	if ( from !== to ) {
 		switch ( key ) {
 			case 'align':
@@ -143,7 +143,8 @@ ve.ce.MWBlockImageNode.prototype.onAttributeChange = function ( key, from, to ) 
 					}
 					this.emit( 'setup' );
 				}
-				if ( this.model.getAttribute( 'type' ) === 'none' ) {
+				type = this.model.getAttribute( 'type' );
+				if ( type === 'none' || type === 'frameless' ) {
 					this.$thumb.removeClass( ve.ce.MWBlockImageNode.static.cssClasses.none[ from ] );
 					this.$thumb.addClass( ve.ce.MWBlockImageNode.static.cssClasses.none[ to ] );
 				} else {

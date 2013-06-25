@@ -39,7 +39,8 @@ ve.dm.MWBlockImageNode.static.matchTagNames = [ 'figure' ];
 ve.dm.MWBlockImageNode.static.matchRdfaTypes = [
 	'mw:Image',
 	'mw:Image/Thumb',
-	'mw:Image/Frame'
+	'mw:Image/Frame',
+	'mw:Image/Frameless'
 ];
 
 ve.dm.MWBlockImageNode.static.toDataElement = function ( domElements, converter ) {
@@ -69,6 +70,9 @@ ve.dm.MWBlockImageNode.static.toDataElement = function ( domElements, converter 
 			break;
 		case 'mw:Image/Frame':
 			attributes.type = 'frame';
+			break;
+		case 'mw:Image/Frameless':
+			attributes.type = 'frameless';
 			break;
 		case 'mw:Image':
 			attributes.type = 'none';
@@ -127,6 +131,9 @@ ve.dm.MWBlockImageNode.static.toDomElements = function ( data, doc, converter ) 
 			break;
 		case 'frame':
 			figure.setAttribute( 'typeof', 'mw:Image/Frame' );
+			break;
+		case 'frameless':
+			figure.setAttribute( 'typeof', 'mw:Image/Frameless' );
 			break;
 		case 'none':
 			figure.setAttribute( 'typeof', 'mw:Image' );
