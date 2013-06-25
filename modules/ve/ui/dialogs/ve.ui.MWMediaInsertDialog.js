@@ -41,6 +41,14 @@ ve.ui.MWMediaInsertDialog.prototype.onSelect = function ( item ) {
 	this.applyButton.setDisabled( item === null );
 };
 
+ve.ui.MWMediaInsertDialog.prototype.onOpen = function () {
+	// Parent method
+	ve.ui.Dialog.prototype.onOpen.call( this );
+
+	// Initialization
+	this.search.getQuery().$input.focus().select();
+};
+
 ve.ui.MWMediaInsertDialog.prototype.onClose = function ( action ) {
 	var info;
 
@@ -75,17 +83,17 @@ ve.ui.MWMediaInsertDialog.prototype.initialize = function () {
 	ve.ui.Dialog.prototype.initialize.call( this );
 
 	// Properties
-	this.media = new ve.ui.MWMediaSearchWidget( { '$$': this.frame.$$ } );
+	this.search = new ve.ui.MWMediaSearchWidget( { '$$': this.frame.$$ } );
 
 	// Events
-	this.media.connect( this, { 'select': 'onSelect' } );
+	this.search.connect( this, { 'select': 'onSelect' } );
 
 	// Initialization
 	this.applyButton.setDisabled( true ).setLabel(
 		mw.msg( 'visualeditor-dialog-media-insert-button' )
 	);
-	this.media.$.addClass( 've-ui-mwMediaInsertDialog-select' );
-	this.$body.append( this.media.$ );
+	this.search.$.addClass( 've-ui-mwMediaInsertDialog-select' );
+	this.$body.append( this.search.$ );
 };
 
 /* Registration */
