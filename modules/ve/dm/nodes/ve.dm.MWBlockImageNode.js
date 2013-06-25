@@ -117,7 +117,8 @@ ve.dm.MWBlockImageNode.static.toDomElements = function ( data, doc, converter ) 
 		img = doc.createElement( 'img' ),
 		wrapper = doc.createElement( 'div' ),
 		classes = [],
-		originalClasses = dataElement.attributes.originalClasses;
+		originalClasses = dataElement.attributes.originalClasses,
+		captionData = data.slice( 1, -1 );
 
 	// Type
 	switch ( dataElement.attributes.type ) {
@@ -166,9 +167,13 @@ ve.dm.MWBlockImageNode.static.toDomElements = function ( data, doc, converter ) 
 	figure.appendChild( a );
 	a.appendChild( img );
 
-	converter.getDomSubtreeFromData( data.slice( 1, -1 ), wrapper );
-	while ( wrapper.firstChild ) {
-		figure.appendChild( wrapper.firstChild );
+	// If length of captionData is smaller or equal to 2 it means that there is no caption or that
+	// it is empty - in both cases we are going to skip appending <figcaption>.
+	if ( captionData.length > 2 ) {
+		converter.getDomSubtreeFromData( data.slice( 1, -1 ), wrapper );
+		while ( wrapper.firstChild ) {
+			figure.appendChild( wrapper.firstChild );
+		}
 	}
 	return [ figure ];
 };
