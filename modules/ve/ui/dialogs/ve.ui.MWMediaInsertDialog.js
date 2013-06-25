@@ -75,7 +75,7 @@ ve.ui.MWMediaInsertDialog.prototype.initialize = function () {
 	ve.ui.Dialog.prototype.initialize.call( this );
 
 	// Properties
-	this.media = new ve.ui.MWMediaSelectWidget( { '$$': this.frame.$$ } );
+	this.media = new ve.ui.MWMediaSearchWidget( { '$$': this.frame.$$ } );
 
 	// Events
 	this.media.connect( this, { 'select': 'onSelect' } );

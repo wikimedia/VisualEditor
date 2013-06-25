@@ -1,5 +1,5 @@
 /*!
- * VisualEditor UserInterface MWMediaSelectItemWidget class.
+ * VisualEditor UserInterface MWMediaResultWidget class.
  *
  * @copyright 2011-2013 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
@@ -8,7 +8,7 @@
 /*global mw */
 
 /**
- * Creates an ve.ui.MWMediaSelectItemWidget object.
+ * Creates an ve.ui.MWMediaResultWidget object.
  *
  * @class
  * @extends ve.ui.OptionWidget
@@ -18,7 +18,7 @@
  * @param {Object} [config] Config options
  * @cfg {number} [size] Media thumbnail size
  */
-ve.ui.MWMediaSelectItemWidget = function VeUiMWMediaSelectItemWidget( data, config ) {
+ve.ui.MWMediaResultWidget = function VeUiMWMediaResultWidget( data, config ) {
 	// Configuration intialization
 	config = config || {};
 
@@ -32,36 +32,36 @@ ve.ui.MWMediaSelectItemWidget = function VeUiMWMediaSelectItemWidget( data, conf
 
 	// Initialization
 	this.setLabel( new mw.Title( this.data.title ).getNameText() );
-	this.$overlay.addClass( 've-ui-mwMediaSelectItemWidget-overlay' );
+	this.$overlay.addClass( 've-ui-mwMediaResultWidget-overlay' );
 	this.$
-		.addClass( 've-ui-mwMediaSelectItemWidget ve-ui-texture-pending' )
+		.addClass( 've-ui-mwMediaResultWidget ve-ui-texture-pending' )
 		.css( { 'width': this.size, 'height': this.size } )
 		.prepend( this.$thumb, this.$overlay );
 };
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.MWMediaSelectItemWidget, ve.ui.OptionWidget );
+ve.inheritClass( ve.ui.MWMediaResultWidget, ve.ui.OptionWidget );
 
 /* Static Properties */
 
-ve.ui.MWMediaSelectItemWidget.static.highlightable = false;
+ve.ui.MWMediaResultWidget.static.highlightable = false;
 
 /* Methods */
 
-ve.ui.MWMediaSelectItemWidget.prototype.onThumbnailLoad = function () {
+ve.ui.MWMediaResultWidget.prototype.onThumbnailLoad = function () {
 	this.$thumb.first().addClass( 've-ui-texture-transparency' );
 	this.$
-		.addClass( 've-ui-mwMediaSelectItemWidget-done' )
+		.addClass( 've-ui-mwMediaResultWidget-done' )
 		.removeClass( 've-ui-texture-pending' );
 };
 
-ve.ui.MWMediaSelectItemWidget.prototype.onThumbnailError = function () {
+ve.ui.MWMediaResultWidget.prototype.onThumbnailError = function () {
 	this.$thumb.last()
 		.css( 'background-image', '' )
 		.addClass( 've-ui-texture-alert' );
 	this.$
-		.addClass( 've-ui-mwMediaSelectItemWidget-error' )
+		.addClass( 've-ui-mwMediaResultWidget-error' )
 		.removeClass( 've-ui-texture-pending' );
 };
 
@@ -71,7 +71,7 @@ ve.ui.MWMediaSelectItemWidget.prototype.onThumbnailError = function () {
  * @method
  * @returns {jQuery} Thumbnail element
  */
-ve.ui.MWMediaSelectItemWidget.prototype.buildThumbnail = function () {
+ve.ui.MWMediaResultWidget.prototype.buildThumbnail = function () {
 	var info = this.data.imageinfo[0],
 		image = new Image(),
 		$image = this.$$( image ),
@@ -85,10 +85,10 @@ ve.ui.MWMediaSelectItemWidget.prototype.buildThumbnail = function () {
 		.error( ve.bind( this.onThumbnailError, this ) );
 	image.src = info.thumburl;
 
-	$thumb.addClass( 've-ui-mwMediaSelectItemWidget-thumbnail' );
+	$thumb.addClass( 've-ui-mwMediaResultWidget-thumbnail' );
 	$thumb.last().css( 'background-image', 'url(' + info.thumburl + ')' );
 	if ( info.width >= this.size && info.height >= this.size ) {
-		$front.addClass( 've-ui-mwMediaSelectItemWidget-crop' );
+		$front.addClass( 've-ui-mwMediaResultWidget-crop' );
 		$thumb.css( { 'width': '100%', 'height': '100%' } );
 	} else {
 		$thumb.css( {

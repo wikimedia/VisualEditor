@@ -1,5 +1,5 @@
 /*!
- * VisualEditor UserInterface MWMediaSelectWidget class.
+ * VisualEditor UserInterface MWMediaSearchWidget class.
  *
  * @copyright 2011-2013 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
@@ -8,67 +8,43 @@
 /*global mw*/
 
 /**
- * Creates an ve.ui.MWMediaSelectWidget object.
+ * Creates an ve.ui.MWMediaSearchWidget object.
  *
  * @class
- * @extends ve.ui.Widget
+ * @extends ve.ui.SearchWidget
  *
  * @constructor
  * @param {Object} [config] Config options
  * @param {number} [size] Vertical size of thumbnails
  */
-ve.ui.MWMediaSelectWidget = function VeUiMWMediaSelectWidget( config ) {
+ve.ui.MWMediaSearchWidget = function VeUiMWMediaSearchWidget( config ) {
 	// Configuration intialization
-	config = config || {};
+	config = ve.extendObject( {}, config, {
+		'placeholder': ve.msg( 'visualeditor-media-input-placeholder' ),
+		'value': mw.config.get( 'wgTitle' )
+	} );
 
 	// Parent constructor
-	ve.ui.Widget.call( this, config );
+	ve.ui.SearchWidget.call( this, config );
 
 	// Properties
-	this.input = new ve.ui.TextInputWidget( {
-		'$$': this.$$,
-		'placeholder': ve.msg( 'visualeditor-media-input-placeholder' ),
-		'value': mw.config.get( 'wgTitle' ),
-		'icon': 'search'
-	} );
-	this.select = new ve.ui.SelectWidget( { '$$': this.$$ } );
-	this.$query = this.$$( '<div>' );
-	this.$results = this.$$( '<div>' );
-
 	this.sources = ve.copyArray( ve.init.platform.getMediaSources() );
 	this.size = config.size || 150;
-	this.inputTimeout = null;
+	this.queryTimeout = null;
 	this.titles = {};
 	this.queryMediaSourcesCallback = ve.bind( this.queryMediaSources, this );
 
 	// Events
-	this.input.connect( this, { 'change': 'onInputChange' } );
-	this.select.connect( this, { 'select': 'onSelectSelect' } );
 	this.$results.on( 'scroll', ve.bind( this.onResultsScroll, this ) );
 
 	// Initialization
-	this.$query
-		.addClass( 've-ui-mwMediaSelectWidget-query' )
-		.append( this.input.$ );
-	this.$results
-		.addClass( 've-ui-mwMediaSelectWidget-results' )
-		.append( this.select.$ );
-	this.$
-		.addClass( 've-ui-mwMediaSelectWidget' )
-		.append( this.$results, this.$query );
+	this.$.addClass( 've-ui-mwMediaSearchWidget' );
 	this.queryMediaSources();
 };
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.MWMediaSelectWidget, ve.ui.Widget );
-
-/* Events */
-
-/**
- * @event select
- * @param {Object} item Media item info
- */
+ve.inheritClass( ve.ui.MWMediaSearchWidget, ve.ui.SearchWidget );
 
 /* Methods */
 
@@ -77,29 +53,21 @@ ve.inheritClass( ve.ui.MWMediaSelectWidget, ve.ui.Widget );
  *
  * @param {string} value New value
  */
-ve.ui.MWMediaSelectWidget.prototype.onInputChange = function () {
+ve.ui.MWMediaSearchWidget.prototype.onQueryChange = function () {
 	var i, len;
 
+	// Parent method
+	ve.ui.SearchWidget.prototype.onQueryChange.call( this );
+
 	// Reset
-	this.select.clearItems();
 	this.titles = {};
 	for ( i = 0, len = this.sources.length; i < len; i++ ) {
 		delete this.sources[i].gsroffset;
 	}
 
 	// Queue
-	clearTimeout( this.inputTimeout );
-	this.inputTimeout = setTimeout( this.queryMediaSourcesCallback, 100 );
-};
-
-/**
- * Handle select widget select events.
- *
- * @param {ve.ui.MWMediaSelectItemWidget} item Selected item
- * @emits select
- */
-ve.ui.MWMediaSelectWidget.prototype.onSelectSelect = function ( item ) {
-	this.emit( 'select', item ? item.getData() : null );
+	clearTimeout( this.queryTimeout );
+	this.queryTimeout = setTimeout( this.queryMediaSourcesCallback, 100 );
 };
 
 /**
@@ -107,10 +75,10 @@ ve.ui.MWMediaSelectWidget.prototype.onSelectSelect = function ( item ) {
  *
  * @param {jQuery.Event} e Scroll event
  */
-ve.ui.MWMediaSelectWidget.prototype.onResultsScroll = function () {
+ve.ui.MWMediaSearchWidget.prototype.onResultsScroll = function () {
 	var position = this.$results.scrollTop() + this.$results.outerHeight(),
-		threshold = this.select.$.outerHeight() - this.size;
-	if ( !this.input.isPending() && position > threshold ) {
+		threshold = this.results.$.outerHeight() - this.size;
+	if ( !this.query.isPending() && position > threshold ) {
 		this.queryMediaSources();
 	}
 };
@@ -120,9 +88,9 @@ ve.ui.MWMediaSelectWidget.prototype.onResultsScroll = function () {
  *
  * @method
  */
-ve.ui.MWMediaSelectWidget.prototype.queryMediaSources = function () {
+ve.ui.MWMediaSearchWidget.prototype.queryMediaSources = function () {
 	var i, len, source,
-		value = this.input.getValue();
+		value = this.query.getValue();
 
 	if ( value === '' ) {
 		return;
@@ -136,7 +104,7 @@ ve.ui.MWMediaSelectWidget.prototype.queryMediaSources = function () {
 		if ( !source.gsroffset ) {
 			source.gsroffset = 0;
 		}
-		this.input.pushPending();
+		this.query.pushPending();
 		source.request = $.ajax( {
 			'url': source.url,
 			'data': {
@@ -172,9 +140,9 @@ ve.ui.MWMediaSelectWidget.prototype.queryMediaSources = function () {
  * @method
  * @param {Object} source Media query source
  */
-ve.ui.MWMediaSelectWidget.prototype.onMediaQueryAlways = function ( source ) {
+ve.ui.MWMediaSearchWidget.prototype.onMediaQueryAlways = function ( source ) {
 	source.request = null;
-	this.input.popPending();
+	this.query.popPending();
 };
 
 /**
@@ -184,7 +152,7 @@ ve.ui.MWMediaSelectWidget.prototype.onMediaQueryAlways = function ( source ) {
  * @param {Object} source Media query source
  * @param {Object} data Media query response
  */
-ve.ui.MWMediaSelectWidget.prototype.onMediaQueryDone = function ( source, data ) {
+ve.ui.MWMediaSearchWidget.prototype.onMediaQueryDone = function ( source, data ) {
 	if ( !data.query || !data.query.pages ) {
 		return;
 	}
@@ -192,7 +160,7 @@ ve.ui.MWMediaSelectWidget.prototype.onMediaQueryDone = function ( source, data )
 	var	page, title,
 		items = [],
 		pages = data.query.pages,
-		value = this.input.getValue();
+		value = this.query.getValue();
 
 	if ( value === '' || value !== source.value ) {
 		return;
@@ -207,7 +175,7 @@ ve.ui.MWMediaSelectWidget.prototype.onMediaQueryDone = function ( source, data )
 		if ( !( title in this.titles ) ) {
 			this.titles[title] = true;
 			items.push(
-				new ve.ui.MWMediaSelectItemWidget(
+				new ve.ui.MWMediaResultWidget(
 					pages[page],
 					{ '$$': this.$$, 'size': this.size }
 				)
@@ -215,5 +183,5 @@ ve.ui.MWMediaSelectWidget.prototype.onMediaQueryDone = function ( source, data )
 		}
 	}
 
-	this.select.addItems( items );
+	this.results.addItems( items );
 };

@@ -412,6 +412,7 @@ $wgResourceModules += array(
 			've/ui/widgets/ve.ui.PopupWidget.js',
 			've/ui/widgets/ve.ui.SelectWidget.js',
 			've/ui/widgets/ve.ui.OptionWidget.js',
+			've/ui/widgets/ve.ui.SearchWidget.js',
 			've/ui/widgets/ve.ui.ButtonWidget.js',
 			've/ui/widgets/ve.ui.IconButtonWidget.js',
 			've/ui/widgets/ve.ui.InputWidget.js',
@@ -431,8 +432,8 @@ $wgResourceModules += array(
 			've/ui/widgets/ve.ui.MWCategoryPopupWidget.js',
 			've/ui/widgets/ve.ui.MWCategoryItemWidget.js',
 			've/ui/widgets/ve.ui.MWCategoryWidget.js',
-			've/ui/widgets/ve.ui.MWMediaSelectWidget.js',
-			've/ui/widgets/ve.ui.MWMediaSelectItemWidget.js',
+			've/ui/widgets/ve.ui.MWMediaSearchWidget.js',
+			've/ui/widgets/ve.ui.MWMediaResultWidget.js',
 			've/ui/widgets/ve.ui.MWTitleInputWidget.js',
 
 			've/ui/layouts/ve.ui.FieldsetLayout.js',
