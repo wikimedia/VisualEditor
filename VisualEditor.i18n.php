@@ -22,6 +22,7 @@ $messages['en'] = array(
 	'visualeditor-browserwarning' => 'You are using a browser which is not officially supported by VisualEditor.',
 	'visualeditor-ca-createsource' => 'Create source',
 	'visualeditor-ca-editsource' => 'Edit source',
+	'visualeditor-ca-editsource-section' => 'edit source',
 	'visualeditor-ca-ve-create' => 'VisualEditor',
 	'visualeditor-ca-ve-edit' => 'VisualEditor',
 	'visualeditor-clearbutton-tooltip' => 'Clear formatting',
@@ -176,6 +177,8 @@ If the page exists, the following link text is used: {{msg-mw|Visualeditor-ca-ed
 	'visualeditor-ca-editsource' => 'Text for the "Edit source" tab, if the page exists.
 
 If the page doesn\'t exist, the following link text is used: {{msg-mw|Visualeditor-ca-createsource}}',
+	'visualeditor-ca-editsource-section' => 'Text for "edit source" mode of section edit links.
+Corresponds to the {{msg-mw|editsection}} message for default mode.',
 	'visualeditor-ca-ve-create' => 'Link text of the dedicated VisualEditor "Create" tab.',
 	'visualeditor-ca-ve-edit' => 'Link text of the dedicated VisualEditor "Edit" tab.',
 	'visualeditor-clearbutton-tooltip' => 'Tooltip text for the clear formatting button',
