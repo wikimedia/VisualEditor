@@ -1611,6 +1611,46 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/internalList' }
 		]
 	},
+	'annotated metadata in a wrapper': {
+		'html': '<body><b><!--foo-->bar<!--baz-->quux<!--whee--></b></body>',
+		'data': [
+			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+			{
+				'type': 'alienMeta',
+				'annotations': [ ve.dm.example.bold ],
+				'attributes': {
+					'domElements': $( '<!--foo-->' ).toArray()
+				}
+			},
+			{ 'type': '/alienMeta' },
+			[ 'b', [ ve.dm.example.bold ] ],
+			[ 'a', [ ve.dm.example.bold ] ],
+			[ 'r', [ ve.dm.example.bold ] ],
+			{
+				'type': 'alienMeta',
+				'annotations': [ ve.dm.example.bold ],
+				'attributes': {
+					'domElements': $( '<!--baz-->' ).toArray()
+				}
+			},
+			{ 'type': '/alienMeta' },
+			[ 'q', [ ve.dm.example.bold ] ],
+			[ 'u', [ ve.dm.example.bold ] ],
+			[ 'u', [ ve.dm.example.bold ] ],
+			[ 'x', [ ve.dm.example.bold ] ],
+			{
+				'type': 'alienMeta',
+				'annotations': [ ve.dm.example.bold ],
+				'attributes': {
+					'domElements': $( '<!--whee-->' ).toArray()
+				}
+			},
+			{ 'type': '/alienMeta' },
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
+		]
+	},
 	'wrapping of bare content': {
 		'html': '<body>abc</body>',
 		'data': [
