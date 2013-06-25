@@ -85,7 +85,6 @@
 
 .ve-ui-widget-disabled.ve-ui-buttonWidget,
 .ve-ui-widget-disabled.ve-ui-buttonWidget:active {
-	filter: alpha(opacity=25);
 	opacity: 0.5;
 	cursor: default;
 	box-shadow: none;

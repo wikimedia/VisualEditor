@@ -174,7 +174,6 @@
 	width: 1.5em;
 	height: 1.5em;
 	cursor: pointer;
-	filter: alpha(opacity=8);
 	opacity: 0.8;
 	/* @see ve.init.mw.Icons */
 	background-position: left top;
@@ -191,7 +190,6 @@
 	width: 1.5em;
 	height: 1.5em;
 	cursor: pointer;
-	filter: alpha(opacity=8);
 	opacity: 0.8;
 	/* @see ve.init.mw.Icons */
 	background-position: right top;

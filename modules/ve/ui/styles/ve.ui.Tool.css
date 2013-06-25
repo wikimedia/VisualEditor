@@ -46,7 +46,6 @@
 }
 
 .ve-ui-widget-disabled.ve-ui-buttonTool {
-	filter: alpha(opacity=25);
 	opacity: 0.25;
 }
 
@@ -60,17 +59,14 @@
 	width: 1.5em;
 	background-position: center center;
 	background-repeat: no-repeat;
-	filter: alpha(opacity=80);
 	opacity: 0.8;
 }
 
 .ve-ui-buttonTool:hover .ve-ui-buttonTool-icon {
-	filter: alpha(opacity=100);
 	opacity: 1;
 }
 
 .ve-ui-widget-disabled .ve-ui-buttonTool-icon {
-	filter: alpha(opacity=80);
 	opacity: 0.8;
 }
 
@@ -111,12 +107,10 @@
 	/* @see ve.ui.Icons */
 	background-position: 50% 50%;
 	background-repeat: no-repeat;
-	filter: alpha(opacity=80);
 	opacity: 0.8;
 }
 
 .ve-ui-dropdownTool:hover .ve-ui-dropdownTool-icon {
-	filter: alpha(opacity=100);
 	opacity: 1;
 }
 
