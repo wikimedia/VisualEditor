@@ -39,14 +39,13 @@ ve.inheritClass( ve.dm.MetaLinearData, ve.dm.LinearData );
  * @returns {Array} Merged data
  */
 ve.dm.MetaLinearData.static.merge = function ( data ) {
-	var i, merged = [], allUndefined = true;
+	var i, merged = [];
 	for ( i = 0; i < data.length; i++ ) {
 		if ( data[i] !== undefined ) {
-			allUndefined = false;
 			merged = merged.concat( data[i] );
 		}
 	}
-	return allUndefined ? [ undefined ] : [ merged ];
+	return [ merged ];
 };
 
 /* Methods */
