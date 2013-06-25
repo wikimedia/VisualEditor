@@ -50,7 +50,7 @@
 }
 
 .ve-ui-buttonTool.ve-ui-widget-disabled {
-	cursor: auto;
+	cursor: default;
 }
 
 .ve-ui-buttonTool-icon {

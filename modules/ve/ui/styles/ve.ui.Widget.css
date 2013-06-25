@@ -170,10 +170,16 @@
 
 .ve-ui-optionWidget .ve-ui-labeledElement-label {
 	white-space: nowrap;
+	line-height: 1.5em;
 }
 
-.ve-ui-optionWidget-highlighted {
+.ve-ui-optionWidget-highlighted,
+.ve-ui-optionWidget-selected {
 	background-color: #b3d6f6;
+}
+
+.ve-ui-optionWidget.ve-ui-widget-disabled {
+	cursor: default;
 }
 
 /* ve.ui.OutlineItemWidget */
