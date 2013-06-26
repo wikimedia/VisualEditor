@@ -65,7 +65,7 @@ ve.ce.ProtectedNode.static.$phantomTemplate = $( '<div>' )
  * @method
  */
 ve.ce.ProtectedNode.prototype.onProtectedSetup = function () {
-	var $shield, surfaceModel,
+	var $shield, surfaceModel, surface,
 		node = this,
 		$shieldTemplate = this.constructor.static.$shieldTemplate;
 
@@ -75,10 +75,12 @@ ve.ce.ProtectedNode.prototype.onProtectedSetup = function () {
 	this.isSetup = true;
 
 	surfaceModel = this.getRoot().getSurface().getModel();
+	surface = this.getRoot().getSurface().getSurface();
 
 	// Events
 	this.$.on( 'mouseenter.ve-ce-protectedNode', ve.bind( this.onProtectedMouseEnter, this ) );
 	surfaceModel.connect( this, { 'change': 'onSurfaceModelChange' } );
+	surface.connect( this, { 'toolbarPosition': 'positionPhantoms' } );
 
 	// Shields
 	this.$.add( this.$.find( '*' ) ).each( function () {
