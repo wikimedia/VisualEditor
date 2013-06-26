@@ -40,18 +40,17 @@
 	box-shadow: inset 0 0.07em 0.07em 0 rgba(0, 0, 0, 0.07);
 }
 
-.ve-ui-widget-disabled.ve-ui-buttonTool:active {
+.ve-ui-buttonTool.ve-ui-widget-disabled:active {
 	background-image: none;
 	box-shadow: none;
 }
 
-.ve-ui-widget-disabled.ve-ui-buttonTool {
-	filter: alpha(opacity=25);
-	opacity: 0.25;
+.ve-ui-buttonTool.ve-ui-widget-disabled:hover {
+	border-color: transparent;
 }
 
-.ve-ui-widget-disabled.ve-ui-buttonTool:hover {
-	border-color: transparent;
+.ve-ui-buttonTool.ve-ui-widget-disabled {
+	cursor: auto;
 }
 
 .ve-ui-buttonTool-icon {
@@ -60,18 +59,15 @@
 	width: 1.5em;
 	background-position: center center;
 	background-repeat: no-repeat;
-	filter: alpha(opacity=80);
 	opacity: 0.8;
 }
 
-.ve-ui-buttonTool:hover .ve-ui-buttonTool-icon {
-	filter: alpha(opacity=100);
+.ve-ui-buttonTool:not(.ve-ui-widget-disabled):hover .ve-ui-buttonTool-icon {
 	opacity: 1;
 }
 
 .ve-ui-widget-disabled .ve-ui-buttonTool-icon {
-	filter: alpha(opacity=80);
-	opacity: 0.8;
+	opacity: 0.2;
 }
 
 /* ve.ui.DropdownTool */
@@ -111,12 +107,10 @@
 	/* @see ve.ui.Icons */
 	background-position: 50% 50%;
 	background-repeat: no-repeat;
-	filter: alpha(opacity=80);
 	opacity: 0.8;
 }
 
 .ve-ui-dropdownTool:hover .ve-ui-dropdownTool-icon {
-	filter: alpha(opacity=100);
 	opacity: 1;
 }
 

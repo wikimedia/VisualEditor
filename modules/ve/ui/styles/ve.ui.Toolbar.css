@@ -95,11 +95,9 @@
 	-ms-transition: opacity 500ms ease-in-out;
 	-o-transition: opacity 500ms ease-in-out;
 	transition: opacity 500ms ease-in-out;
-	filter: alpha(opacity=12);
 	opacity: 0.125;
 }
 
 .ve-ui-toolbar-floating .ve-ui-toolbar-shadow {
-	filter: alpha(opacity=50);
 	opacity: 0.5;
 }
