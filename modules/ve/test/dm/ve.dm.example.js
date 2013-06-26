@@ -1176,7 +1176,7 @@ ve.dm.example.domToDataCases = {
 				'<p>Foo' +
 					'<span id="cite_ref-bar-1-0" class="reference" about="#mwt5" typeof="mw:Extension/ref" ' +
 						'data-parsoid="{}" ' +
-						'data-mw="{&quot;body&quot;:{&quot;html&quot;:&quot;&quot;},&quot;attrs&quot;:{&quot;name&quot;:&quot;bar&quot;}}">' +
+						'data-mw="{&quot;attrs&quot;:{&quot;name&quot;:&quot;bar&quot;}}">' +
 						'<a href="#cite_note-bar-1" data-parsoid="{}">[1]</a>' +
 					'</span>' +
 					' Baz' +
@@ -1188,7 +1188,8 @@ ve.dm.example.domToDataCases = {
 					' Whee' +
 					'<span id="cite_ref-bar-1-1" class="reference" about="#mwt7" typeof="mw:Extension/ref" ' +
 						'data-parsoid="{}" ' +
-						'data-mw="{&quot;body&quot;:{&quot;html&quot;:&quot;Bar&quot;},&quot;attrs&quot;:{&quot;name&quot;:&quot;bar&quot;}}">' +
+						'data-mw="{&quot;body&quot;:{&quot;html&quot;:&quot;<a rel=\\&quot;mw:WikiLink\\&quot; ' +
+						'href=\\&quot;./Bar\\&quot;>Bar</a>&quot;},&quot;attrs&quot;:{&quot;name&quot;:&quot;bar&quot;}}">' +
 						'<a href="#cite_note-bar-1" data-parsoid="{}">[1]</a>' +
 					'</span>' +
 					' Yay' +
@@ -1215,8 +1216,8 @@ ve.dm.example.domToDataCases = {
 					'listGroup': 'mwReference/',
 					'listKey': 'bar',
 					'refGroup': '',
-					'mw': { 'body': { 'html': '' }, 'attrs': { 'name': 'bar' } },
-					'originalMw': '{"body":{"html":""},"attrs":{"name":"bar"}}',
+					'mw': { 'attrs': { 'name': 'bar' } },
+					'originalMw': '{"attrs":{"name":"bar"}}',
 					'childDomElements': $( '<a href="#cite_note-bar-1" data-parsoid="{}">[1]</a>' ).toArray(),
 					'contentsUsed': false
 				},
@@ -1225,7 +1226,7 @@ ve.dm.example.domToDataCases = {
 						'values': {
 							'about': '#mwt5',
 							'class': 'reference',
-							'data-mw': '{"body":{"html":""},"attrs":{"name":"bar"}}',
+							'data-mw': '{"attrs":{"name":"bar"}}',
 							'data-parsoid': '{}',
 							'id': 'cite_ref-bar-1-0',
 							'typeof': 'mw:Extension/ref'
@@ -1287,8 +1288,8 @@ ve.dm.example.domToDataCases = {
 					'listGroup': 'mwReference/',
 					'listKey': 'bar',
 					'refGroup': '',
-					'mw': { 'body': { 'html': 'Bar' }, 'attrs': { 'name': 'bar' } },
-					'originalMw': '{"body":{"html":"Bar"},"attrs":{"name":"bar"}}',
+					'mw': { 'body': { 'html': '<a rel="mw:WikiLink" href="./Bar">Bar</a>' }, 'attrs': { 'name': 'bar' } },
+					'originalMw': '{"body":{"html":"<a rel=\\"mw:WikiLink\\" href=\\"./Bar\\">Bar</a>"},"attrs":{"name":"bar"}}',
 					'childDomElements': $( '<a href="#cite_note-bar-1" data-parsoid="{}">[1]</a>' ).toArray(),
 					'contentsUsed': true
 				},
@@ -1297,7 +1298,7 @@ ve.dm.example.domToDataCases = {
 						'values': {
 							'about': '#mwt7',
 							'class': 'reference',
-							'data-mw': '{"body":{"html":"Bar"},"attrs":{"name":"bar"}}',
+							'data-mw': '{"body":{"html":"<a rel=\\"mw:WikiLink\\" href=\\"./Bar\\">Bar</a>"},"attrs":{"name":"bar"}}',
 							'data-parsoid': '{}',
 							'id': 'cite_ref-bar-1-1',
 							'typeof': 'mw:Extension/ref'
@@ -1374,7 +1375,51 @@ ve.dm.example.domToDataCases = {
 			{ 'type': 'internalList' },
 			{ 'type': 'internalItem' },
 			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
-			'B', 'a', 'r',
+			[
+				'B',
+				[ {
+					'type': 'link/mwInternal',
+					'attributes': {
+						'title': 'Bar',
+						'origTitle': 'Bar',
+						'hrefPrefix': './'
+					},
+					'htmlAttributes': [ { 'values': {
+						'href': './Bar',
+						'rel': 'mw:WikiLink'
+					} } ]
+				} ]
+			],
+			[
+				'a',
+				[ {
+					'type': 'link/mwInternal',
+					'attributes': {
+						'title': 'Bar',
+						'origTitle': 'Bar',
+						'hrefPrefix': './'
+					},
+					'htmlAttributes': [ { 'values': {
+						'href': './Bar',
+						'rel': 'mw:WikiLink'
+					} } ]
+				} ]
+			],
+			[
+				'r',
+				[ {
+					'type': 'link/mwInternal',
+					'attributes': {
+						'title': 'Bar',
+						'origTitle': 'Bar',
+						'hrefPrefix': './'
+					},
+					'htmlAttributes': [ { 'values': {
+						'href': './Bar',
+						'rel': 'mw:WikiLink'
+					} } ]
+				} ]
+			],
 			{ 'type': '/paragraph' },
 			{ 'type': '/internalItem' },
 			{ 'type': 'internalItem' },

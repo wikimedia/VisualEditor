@@ -70,7 +70,7 @@ ve.dm.MWReferenceNode.static.toDataElement = function ( domElements, converter )
 };
 
 ve.dm.MWReferenceNode.static.toDomElements = function ( dataElement, doc, converter ) {
-	var itemNodeHtml, mwData, i, iLen, keyedNodes, setContents, originalMw, childDomElements,
+	var itemNodeHtml, originalHtml, mwData, i, iLen, keyedNodes, setContents, originalMw, childDomElements,
 		el = doc.createElement( 'span' ),
 		itemNodeWrapper = doc.createElement( 'div' ),
 		itemNode = converter.internalList.getItemNode( dataElement.attributes.listIndex ),
@@ -108,9 +108,13 @@ ve.dm.MWReferenceNode.static.toDomElements = function ( dataElement, doc, conver
 		converter.getDomSubtreeFromData(
 			itemNode.getDocument().getFullData( new ve.Range( itemNodeRange.start, itemNodeRange.end ), true ),
 			itemNodeWrapper
-		),
-		itemNodeHtml = $( itemNodeWrapper ).html();
-		ve.setProp( mwData, 'body', 'html', itemNodeHtml );
+		);
+		itemNodeHtml = $( itemNodeWrapper ).html(); // Returns '' if itemNodeWrapper is empty
+		originalHtml = ve.getProp( mwData, 'body', 'html' ) || '';
+		// Only set body.html if itemNodeHtml and originalHtml are actually different
+		if ( !$( '<div>' ).html( originalHtml ).get( 0 ).isEqualNode( itemNodeWrapper ) ) {
+			ve.setProp( mwData, 'body', 'html', itemNodeHtml );
+		}
 	}
 
 	// Set or clear key
