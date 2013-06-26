@@ -1056,18 +1056,82 @@ ve.init.mw.ViewPageTarget.prototype.setupSectionEditLinks = function () {
 	if ( mw.user.options.get( 'visualeditor-nosectionedit' ) ) {
 		return;
 	}
+
 	var veEditUri = this.veEditUri,
-		$links = $( '#mw-content-text .mw-editsection a' );
-	if ( this.isViewPage ) {
-		$links.click( ve.bind( this.onEditSectionLinkClick, this ) );
-	} else {
-		$links.each( function () {
-			var veSectionEditUri = new mw.Uri( veEditUri.toString() ),
-				sectionEditUri = new mw.Uri( $( this ).attr( 'href' ) );
-			veSectionEditUri.extend( { 'vesection': sectionEditUri.query.section } );
-			$( this ).attr( 'href', veSectionEditUri );
-		} );
-	}
+		$editsections = $( '#mw-content-text .mw-editsection' ),
+		handler = ve.bind( this.onEditSectionLinkClick, this );
+
+	$editsections.each( function () {
+		var $brackets, $expandedOnly, $middleBracket, $hiddenBracket, closingBracketSymbol,
+			expandTimeout, contractTimeout,
+			$this = $( this ),
+			$heading = $this.closest( 'h1,h2,h3,h4,h5,h6' ),
+			$edit = $this.find( 'a' ).eq( 0 ),
+			$editSource = $edit.clone(),
+			$links = $edit.add( $editSource ),
+			$divider = $( '<span>' ),
+			dividerSymbol = $.trim( ve.msg( 'pipe-separator' ) ),
+			veSectionEditUri = new mw.Uri( veEditUri.toString() ),
+			sectionEditUri = new mw.Uri( $edit.attr( 'href' ) );
+
+		function expandSoon() {
+			clearTimeout( contractTimeout );
+			expandTimeout = setTimeout( expand, 100 );
+		}
+
+		function contractSoon() {
+			clearTimeout( expandTimeout );
+			contractTimeout = setTimeout( contract, 100 );
+		}
+
+		function expand() {
+			clearTimeout( contractTimeout );
+			$middleBracket.css( 'visibility', 'hidden' );
+			$expandedOnly.css( 'visibility', 'visible' );
+			$heading.addClass( 'mw-editsection-expanded' );
+		}
+
+		function contract() {
+			clearTimeout( expandTimeout );
+			if ( !$links.is( ':focus' ) ) {
+				$middleBracket.css( 'visibility', 'visible' );
+				$expandedOnly.css( 'visibility', 'hidden' );
+				$heading.removeClass( 'mw-editsection-expanded' );
+			}
+		}
+
+		$brackets = $( [ this.firstChild, this.lastChild ] );
+		// @until Id27555c6 - essentially does this for us
+		if ( !$brackets.hasClass( 'mw-editsection-bracket' ) ) {
+			$brackets = $brackets
+				.wrap( $( '<span>' ).addClass( 'mw-editsection-bracket' ) )
+				.parent();
+		}
+		closingBracketSymbol = $brackets.eq( 1 ).text();
+		$expandedOnly = $divider.add( $editSource ).add( $brackets.last() );
+		$middleBracket = $brackets.last().clone();
+		$hiddenBracket = $brackets.last().clone().css( 'visibility', 'hidden' );
+
+		// Events
+		$heading.on( { 'mouseenter': expandSoon, 'mouseleave': contractSoon } );
+		$links.on( { 'focus': expand, 'blur': contract } );
+		$edit.attr( 'href', veSectionEditUri.extend( {
+			'vesection': sectionEditUri.query.section
+		} ) );
+		$edit.click( handler );
+
+		// Initialization
+		$expandedOnly.css( 'visibility', 'hidden' );
+		$editSource
+			.addClass( 'mw-editsection-link-secondary' )
+			.text( mw.msg( 'visualeditor-ca-editsource-section' ) );
+		$divider
+			.addClass( 'mw-editsection-divider' )
+			.text( dividerSymbol );
+		$edit
+			.addClass( 'mw-editsection-link-primary' )
+			.after( $middleBracket, $divider, $hiddenBracket, $editSource );
+	} );
 };
 
 /**
