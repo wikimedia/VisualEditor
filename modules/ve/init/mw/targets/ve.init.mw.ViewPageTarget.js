@@ -555,6 +555,13 @@ ve.init.mw.ViewPageTarget.prototype.onNoChanges = function () {
  * @param {jQuery.Event} e Mouse click event
  */
 ve.init.mw.ViewPageTarget.prototype.onEditTabClick = function ( e ) {
+	// Default mouse button is normalised by jQuery to key code 1.
+	// Only do our handling if no keys are pressed, mouse button is 1
+	// (e.g. not middle click or right click) and no modifier keys
+	// (e.g. cmd-click to open in new tab).
+	if ( ( e.which && e.which !== 1 ) || e.shiftKey || e.altKey || e.metaKey ) {
+		return;
+	}
 	this.logEvent( 'Edit', { action: 'edit-link-click' } );
 	this.activate();
 	// Prevent the edit tab's normal behavior
@@ -568,6 +575,9 @@ ve.init.mw.ViewPageTarget.prototype.onEditTabClick = function ( e ) {
  * @param {jQuery.Event} e Mouse click event
  */
 ve.init.mw.ViewPageTarget.prototype.onEditSectionLinkClick = function ( e ) {
+	if ( ( e.which && e.which !== 1 ) || e.shiftKey || e.altKey || e.metaKey ) {
+		return;
+	}
 	this.logEvent( 'Edit', { action: 'section-edit-link-click' } );
 	this.saveEditSection( $( e.target ).closest( 'h1, h2, h3, h4, h5, h6' ).get( 0 ) );
 	this.activate();
@@ -582,6 +592,9 @@ ve.init.mw.ViewPageTarget.prototype.onEditSectionLinkClick = function ( e ) {
  * @param {jQuery.Event} e Mouse click event
  */
 ve.init.mw.ViewPageTarget.prototype.onViewTabClick = function ( e ) {
+	if ( ( e.which && e.which !== 1 ) || e.shiftKey || e.altKey || e.metaKey ) {
+		return;
+	}
 	if ( this.active ) {
 		this.deactivate();
 		// Prevent the edit tab's normal behavior
