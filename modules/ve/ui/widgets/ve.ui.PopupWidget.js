@@ -134,7 +134,7 @@ ve.ui.PopupWidget.prototype.hide = function () {
  */
 ve.ui.PopupWidget.prototype.display = function ( x, y, width, height, transition ) {
 	var left, overlapLeft, overlapRight,
-		padding = 15;
+		overlapOffset = 0, padding = 7;
 
 	switch ( this.align ) {
 		case 'left':
@@ -155,9 +155,9 @@ ve.ui.PopupWidget.prototype.display = function ( x, y, width, height, transition
 	overlapRight = this.$$( 'body' ).width() - ( x + ( width + left + ( padding * 2 ) ) );
 	overlapLeft = x + ( left - ( padding * 2 ) );
 	if ( overlapRight < 0 ) {
-		left += overlapRight;
+		overlapOffset = overlapRight;
 	} else if ( overlapLeft < 0 ) {
-		left -= overlapLeft;
+		overlapOffset -= overlapLeft;
 	}
 
 	// Prevent transition from being interrupted
@@ -176,7 +176,7 @@ ve.ui.PopupWidget.prototype.display = function ( x, y, width, height, transition
 
 	// Position body relative to anchor and adjust size
 	this.$body.css( {
-		'left': left, 'width': width, 'height': height === undefined ? 'auto' : height
+		'left': left + overlapOffset, 'width': width, 'height': height === undefined ? 'auto' : height
 	} );
 
 	return this;
