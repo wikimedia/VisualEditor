@@ -353,7 +353,7 @@ ve.dm.SurfaceFragment.prototype.getText = function () {
  * argument to get all annotations that occur within the fragment.
  *
  * @method
- * @param {boolean} [all] Get annotations cover some of the fragment
+ * @param {boolean} [all] Get annotations which only cover some of the fragment
  * @returns {ve.dm.AnnotationSet} All annotation objects range is covered by
  */
 ve.dm.SurfaceFragment.prototype.getAnnotations = function ( all ) {

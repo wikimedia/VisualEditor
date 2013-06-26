@@ -136,12 +136,13 @@ ve.ui.Inspector.prototype.onOpen = function () {
  *
  * @method
  * @param {ve.dm.SurfaceFragment} fragment Fragment to get matching annotations within
+ * @param {boolean} [all] Get annotations which only cover some of the fragment
  * @returns {ve.dm.AnnotationSet} Matching annotations
  */
-ve.ui.Inspector.prototype.getMatchingAnnotations = function ( fragment ) {
+ve.ui.Inspector.prototype.getMatchingAnnotations = function ( fragment, all ) {
 	var constructor = this.constructor;
 
-	return fragment.getAnnotations().filter( function ( annnotation ) {
+	return fragment.getAnnotations( all ).filter( function ( annnotation ) {
 		return ve.ui.viewRegistry.isViewRelatedToModel( constructor, annnotation );
 	} );
 };

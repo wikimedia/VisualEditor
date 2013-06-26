@@ -72,7 +72,7 @@ ve.ui.LinkInspector.prototype.initialize = function () {
 ve.ui.LinkInspector.prototype.onSetup = function () {
 	var expandedFragment, trimmedFragment, truncatedFragment,
 		fragment = this.surface.getModel().getFragment( null, true ),
-		annotation = this.getMatchingAnnotations( fragment ).get( 0 );
+		annotation = this.getMatchingAnnotations( fragment, true ).get( 0 );
 
 	// Parent method
 	ve.ui.Inspector.prototype.onSetup.call( this );
@@ -111,7 +111,11 @@ ve.ui.LinkInspector.prototype.onSetup = function () {
  */
 ve.ui.LinkInspector.prototype.onOpen = function () {
 	var fragment = this.surface.getModel().getFragment( null, true ),
-		annotation = this.getMatchingAnnotations( fragment ).get( 0 );
+		annotation = this.getMatchingAnnotations( fragment, true ).get( 0 ),
+		// Note that we don't set the 'all' flag here so that any
+		// non-annotated content is annotated on close
+		initialAnnotation = this.getMatchingAnnotations( fragment ).get( 0 );
+
 
 	// Parent method
 	ve.ui.Inspector.prototype.onOpen.call( this );
@@ -119,7 +123,7 @@ ve.ui.LinkInspector.prototype.onOpen = function () {
 	// Wait for animation to complete
 	setTimeout( ve.bind( function () {
 		// Setup annotation
-		this.initialAnnotationHash = annotation && ve.getHash( annotation );
+		this.initialAnnotationHash = initialAnnotation && ve.getHash( initialAnnotation );
 		this.targetInput.setAnnotation( annotation );
 		this.targetInput.$input.focus().select();
 	}, this ), 200 );
@@ -174,7 +178,7 @@ ve.ui.LinkInspector.prototype.onClose = function ( action ) {
 	}
 	if ( clear ) {
 		// Clear all existing annotations
-		annotations = this.getMatchingAnnotations( fragment ).get();
+		annotations = this.getMatchingAnnotations( fragment, true ).get();
 		for ( i = 0, len = annotations.length; i < len; i++ ) {
 			fragment.annotateContent( 'clear', annotations[i] );
 		}
