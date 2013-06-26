@@ -44,10 +44,6 @@ ve.ui.Window = function VeUiWindow( surface, config ) {
 
 	// Events
 	this.frame.connect( this, { 'initialize': 'onFrameInitialize' } );
-
-	this.$.load( ve.bind( function () {
-		this.frame.initialize();
-	}, this ) );
 };
 
 /* Inheritance */

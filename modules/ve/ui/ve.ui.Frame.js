@@ -27,9 +27,6 @@ ve.ui.Frame = function VeUiFrame( config ) {
 	this.initialized = false;
 	this.config = config;
 
-	// Events
-	this.$.load( ve.bind( this.onLoad, this ) );
-
 	// Initialize
 	this.$
 		.addClass( 've-ui-frame' )
@@ -55,7 +52,7 @@ ve.ui.Frame.static.tagName = 'iframe';
 /* Methods */
 
 /**
- * Handle frame load events.
+ * Load the frame contents.
  *
  * Once the iframe's stylesheets are loaded, the `initialize` event will be emitted.
  *
@@ -76,7 +73,7 @@ ve.ui.Frame.static.tagName = 'iframe';
  *
  * @emits initialize
  */
-ve.ui.Frame.prototype.onLoad = function () {
+ve.ui.Frame.prototype.load = function () {
 	var interval, rules,
 		win = this.$.prop( 'contentWindow' ),
 		doc = win.document,

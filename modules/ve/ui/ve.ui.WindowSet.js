@@ -132,6 +132,7 @@ ve.ui.WindowSet.prototype.open = function ( name ) {
 			'close': ['onWindowClose', win]
 		} );
 		this.$.append( win.$ );
+		win.getFrame().load();
 	}
 
 	this.windows[name].open();
