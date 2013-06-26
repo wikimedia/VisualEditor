@@ -326,10 +326,12 @@ ve.ui.Window.prototype.close = function ( action ) {
 		this.$.hide();
 		this.visible = false;
 		this.onClose( action );
-		this.closing = false;
 		this.frame.$content.find( ':focus' ).blur();
 		this.surface.getView().focus();
 		this.emit( 'close', action );
+		// Note that focussing the surface view calls an on focus event, which in turn will
+		// try to close the window again, hence we put this.closing = false right at the bottom
+		this.closing = false;
 	}
 };
 
