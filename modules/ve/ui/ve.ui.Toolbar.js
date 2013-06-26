@@ -245,6 +245,11 @@ ve.ui.Toolbar.prototype.resetPosition = function () {
  */
 ve.ui.Toolbar.prototype.enableFloating = function () {
 	this.$window = $( this.getElementWindow() ).on( this.windowEvents );
+	// TODO: Place this is a DOM attach event for this.$
+	setTimeout( ve.bind( function () {
+		// The page may load with a non-zero scroll without trigger the scroll event
+		this.onWindowScroll();
+	}, this ), 0 );
 };
 
 /**
