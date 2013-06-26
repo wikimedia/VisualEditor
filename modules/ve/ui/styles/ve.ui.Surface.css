@@ -23,3 +23,7 @@
 	right: 0;
 	left: 0;
 }
+
+.skin-monobook .ve-ui-surface-overlay {
+	z-index: 2;
+}
