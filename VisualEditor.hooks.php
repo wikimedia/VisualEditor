@@ -43,17 +43,27 @@ class VisualEditorHooks {
 	public static function onBeforePageDisplay( &$output, &$skin ) {
 		global $wgVisualEditorNamespaces, $wgVisualEditorEnableEventLogging;
 		if (
-			// Disable on redirect pages until redirects are editable
+			// BUG 47328: Disable on redirect pages until redirects are editable
 			!$skin->getTitle()->isRedirect() &&
+
 			// User has the 'visualeditor-enable' preference set
-			$skin->getUser()->getOption( 'visualeditor-enable' ) &&
+			$skin->getUser()->getOption(
+				'visualeditor-enable',
+				/*default=*/ false,
+				// HACK: Allows us to suppress the option in preferences when it's on for all.
+				/*ignoreHidden=*/ true
+			) &&
+
+			// The user's current skin is supported
 			in_array( $skin->getSkinName(), self::$supportedSkins ) &&
+
 			(
 				// Article in the VisualEditor namespace
 				in_array( $skin->getTitle()->getNamespace(), $wgVisualEditorNamespaces ) ||
 				// Special page action for an article in the VisualEditor namespace
 				in_array( $skin->getRelevantTitle()->getNamespace(), $wgVisualEditorNamespaces )
 			) &&
+
 			// Only use VisualEditor if the page is wikitext, not CSS/JS
 			$skin->getTitle()->getContentModel() === CONTENT_MODEL_WIKITEXT
 		) {
