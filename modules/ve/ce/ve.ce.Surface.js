@@ -253,7 +253,13 @@ ve.ce.Surface.prototype.destroy = function () {
  * This is used when switching between surfaces, e.g. when closing a dialog window.
  */
 ve.ce.Surface.prototype.focus = function () {
-	this.documentView.getDocumentNode().$[0].focus();
+	var $document = this.documentView.getDocumentNode().$,
+		$window = $( ve.Element.static.getWindow( $document ) ),
+		scrollTop = $window.scrollTop();
+
+	$document[0].focus();
+	// Calling focus sets the cursor to zero offset, so we need to restore scrollTop
+	$window.scrollTop( scrollTop );
 	this.focusedNode = null;
 	this.onChange( null, this.surface.getModel().selection );
 };
