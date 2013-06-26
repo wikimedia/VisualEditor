@@ -167,6 +167,8 @@ class VisualEditorHooks {
 				'dm/ve.dm.Model.test.js',
 				'dm/lineardata/ve.dm.ElementLinearData.test.js',
 				'dm/lineardata/ve.dm.MetaLinearData.test.js',
+				'dm/ve.dm.mwExample.js',
+				'dm/ve.dm.MWConverter.test.js',
 				// VisualEditor ContentEditable Tests
 				'ce/ve.ce.test.js',
 				'ce/ve.ce.Document.test.js',

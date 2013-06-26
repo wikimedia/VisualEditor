@@ -9,39 +9,8 @@ QUnit.module( 've.dm.Converter' );
 
 /* Tests */
 
-// TODO rewrite to test getDataElementOrAnnotationFromDomElement
-/*
-QUnit.test( 'getDataElementFromDomElement', 20, function ( assert ) {
-	var msg, conversion;
-
-	for ( msg in ve.dm.example.conversions ) {
-		conversion = ve.dm.example.conversions[msg];
-		assert.deepEqual(
-			ve.dm.converter.getDataElementFromDomElement( conversion.domElement ),
-			conversion.dataElement,
-			msg
-		);
-	}
-} );
-*/
-
-QUnit.test( 'getDomElementsFromDataElement', 20, function ( assert ) {
-	var msg, conversion, doc;
-
-	for ( msg in ve.dm.example.conversions ) {
-		conversion = ve.dm.example.conversions[msg];
-		doc = conversion.domElement.ownerDocument;
-		assert.equalDomElement(
-			ve.dm.converter.getDomElementsFromDataElement( conversion.dataElement, doc )[0],
-			conversion.domElement,
-			msg
-		);
-	}
-} );
-
-QUnit.test( 'getDataFromDom', function ( assert ) {
-	var msg, doc, store, internalList, i, length, hash, n = 0,
-		cases = ve.copyObject( ve.dm.example.domToDataCases );
+ve.test.runGetDataFromDomTests = function( assert, cases ) {
+	var msg, doc, store, internalList, i, length, hash, n = 0;
 
 	// TODO: this is a hack to make normal heading/preformatted
 	// nodes the most recently registered, instead of the MW versions
@@ -84,11 +53,10 @@ QUnit.test( 'getDataFromDom', function ( assert ) {
 			}
 		}
 	}
-} );
+};
 
-QUnit.test( 'getDomFromData', function ( assert ) {
-	var msg, originalData, doc, store, i, length, n = 0,
-		cases = ve.copyObject( ve.dm.example.domToDataCases );
+ve.test.runGetDomFromDataTests = function( assert, cases ) {
+	var msg, originalData, doc, store, i, length, n = 0;
 
 	for ( msg in cases ) {
 		n++;
@@ -115,4 +83,42 @@ QUnit.test( 'getDomFromData', function ( assert ) {
 		);
 		assert.deepEqualWithDomElements( doc.getFullData(), originalData, msg + ' (data hasn\'t changed)' );
 	}
+};
+
+// TODO rewrite to test getDataElementOrAnnotationFromDomElement
+/*
+QUnit.test( 'getDataElementFromDomElement', 20, function ( assert ) {
+	var msg, conversion;
+
+	for ( msg in ve.dm.example.conversions ) {
+		conversion = ve.dm.example.conversions[msg];
+		assert.deepEqual(
+			ve.dm.converter.getDataElementFromDomElement( conversion.domElement ),
+			conversion.dataElement,
+			msg
+		);
+	}
+} );
+*/
+
+QUnit.test( 'getDomElementsFromDataElement', 20, function ( assert ) {
+	var msg, conversion, doc;
+
+	for ( msg in ve.dm.example.conversions ) {
+		conversion = ve.dm.example.conversions[msg];
+		doc = conversion.domElement.ownerDocument;
+		assert.equalDomElement(
+			ve.dm.converter.getDomElementsFromDataElement( conversion.dataElement, doc )[0],
+			conversion.domElement,
+			msg
+		);
+	}
+} );
+
+QUnit.test( 'getDataFromDom', function ( assert ) {
+	ve.test.runGetDataFromDomTests( assert, ve.copyObject( ve.dm.example.domToDataCases ) );
+} );
+
+QUnit.test( 'getDomFromData', function ( assert ) {
+	ve.test.runGetDomFromDataTests( assert, ve.copyObject( ve.dm.example.domToDataCases ) );
 } );
