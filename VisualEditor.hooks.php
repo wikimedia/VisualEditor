@@ -75,11 +75,6 @@ class VisualEditorHooks {
 			'label-message' => 'visualeditor-preference-enable',
 			'section' => 'editing/beta'
 		);
-		$preferences['visualeditor-nosectionedit'] = array(
-			'type' => 'toggle',
-			'label-message' => 'visualeditor-preference-nosectionedit',
-			'section' => 'editing/beta'
-		);
 		return true;
 	}
 

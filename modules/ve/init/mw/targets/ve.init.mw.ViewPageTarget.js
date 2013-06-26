@@ -1053,10 +1053,6 @@ ve.init.mw.ViewPageTarget.prototype.setupSkinTabs = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.setupSectionEditLinks = function () {
-	if ( mw.user.options.get( 'visualeditor-nosectionedit' ) ) {
-		return;
-	}
-
 	var veEditUri = this.veEditUri,
 		$editsections = $( '#mw-content-text .mw-editsection' ),
 		handler = ve.bind( this.onEditSectionLinkClick, this );

@@ -113,7 +113,6 @@ $messages['en'] = array(
 	'visualeditor-outline-control-move-up' => 'Move item up',
 	'visualeditor-outline-control-move-down' => 'Move item down',
 	'visualeditor-preference-enable' => 'Enable VisualEditor (only in the [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|main]] and [[{{MediaWiki:Visualeditor-usernamespacepagelink}}|user]] namespaces)',
-	'visualeditor-preference-nosectionedit' => 'Use the wikitext editor for editing sections while VisualEditor is in beta',
 	'visualeditor-referencelist-isempty' => 'There are no references with the group "$1" on this page.',
 	'visualeditor-savedialog-label-create' => 'Create page',
 	'visualeditor-savedialog-label-report' => 'Report problem',
