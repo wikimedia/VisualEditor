@@ -30,8 +30,6 @@ ve.ui.MWReferenceListDialog.static.titleMessage = 'visualeditor-dialog-reference
 
 ve.ui.MWReferenceListDialog.static.icon = 'references';
 
-ve.ui.MWReferenceListDialog.static.modelClasses = [ ve.dm.MWReferenceListNode ];
-
 /* Methods */
 
 ve.ui.MWReferenceListDialog.prototype.initialize = function () {
@@ -139,5 +137,3 @@ ve.ui.MWReferenceListDialog.prototype.onClose = function ( action ) {
 /* Registration */
 
 ve.ui.dialogFactory.register( 'mwReferenceList', ve.ui.MWReferenceListDialog );
-
-ve.ui.viewRegistry.register( 'mwReferenceList', ve.ui.MWReferenceListDialog );

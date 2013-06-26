@@ -33,6 +33,8 @@ ve.ui.MWReferenceListButtonTool.static.titleMessage = 'visualeditor-dialogbutton
 
 ve.ui.MWReferenceListButtonTool.static.dialog = 'mwReferenceList';
 
+ve.ui.MWReferenceListButtonTool.static.modelClasses = [ ve.dm.MWReferenceListNode ];
+
 /* Registration */
 
 ve.ui.toolFactory.register( 'mwReferenceList', ve.ui.MWReferenceListButtonTool );

@@ -195,7 +195,7 @@ ve.ui.Context.prototype.destroy = function () {
  * @chainable
  */
 ve.ui.Context.prototype.update = function () {
-	var i, nodes, views, view,
+	var i, nodes, tools, tool,
 		fragment = this.surface.getModel().getFragment( null, false ),
 		selection = fragment.getRange(),
 		inspector = this.inspectors.getCurrent();
@@ -205,7 +205,7 @@ ve.ui.Context.prototype.update = function () {
 		this.show();
 	} else {
 		// No inspector is open, or the selection has changed, show a menu of available inspectors
-		views = ve.ui.viewRegistry.getViewsForAnnotations( fragment.getAnnotations() );
+		tools = ve.ui.toolFactory.getToolsForAnnotations( fragment.getAnnotations() );
 		nodes = fragment.getCoveredNodes();
 		for ( i = 0; i < nodes.length; i++ ) {
 			if ( nodes[i].range && nodes[i].range.isCollapsed() ) {
@@ -214,25 +214,19 @@ ve.ui.Context.prototype.update = function () {
 			}
 		}
 		if ( nodes.length === 1 ) {
-			view = ve.ui.viewRegistry.getViewForNode( nodes[0].node );
-			if ( view ) {
-				views.push( view );
+			tool = ve.ui.toolFactory.getToolForNode( nodes[0].node );
+			if ( tool ) {
+				tools.push( tool );
 			}
 		}
-		for ( i = 0; i < views.length; i++ ) {
-			if ( !ve.ui.toolFactory.lookup( views[i] ) ) {
-				views.splice( i, 1 );
-				i--;
-			}
-		}
-		if ( views.length ) {
+		if ( tools.length ) {
 			// There's at least one inspectable annotation, build a menu and show it
 			this.$menu.empty();
 			if ( this.toolbar ) {
 				this.toolbar.destroy();
 			}
 			this.toolbar = new ve.ui.Toolbar( this.surface );
-			this.toolbar.addTools( [{ 'name': 'inspectors', 'items' : views }] );
+			this.toolbar.addTools( [{ 'name': 'inspectors', 'items' : tools }] );
 			this.$menu.append( this.toolbar.$ );
 			this.show();
 		} else if ( this.visible ) {

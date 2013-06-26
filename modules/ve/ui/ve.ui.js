@@ -18,5 +18,4 @@ ve.ui = {
 	//'inspectorFactory': Initialized in ve.ui.InspectorFactory.js
 	//'toolFactory': Initialized in ve.ui.ToolFactory.js
 	//'triggerRegistry' instantiated in ve.ui.TriggerRegistry.js
-	//'viewRegistry' instantiated in ve.ui.ViewRegistry.js
 };

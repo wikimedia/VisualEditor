@@ -33,8 +33,6 @@ ve.ui.MWReferenceDialog.static.titleMessage = 'visualeditor-dialog-reference-tit
 
 ve.ui.MWReferenceDialog.static.icon = 'reference';
 
-ve.ui.MWReferenceDialog.static.modelClasses = [ ve.dm.MWReferenceNode ];
-
 ve.ui.MWReferenceDialog.static.toolbarTools = [
 	{ 'items': ['undo', 'redo'] },
 	{ 'items': ['bold', 'italic', 'mwLink', 'clear', 'mwMediaInsert', 'mwTransclusion'] }
@@ -219,5 +217,3 @@ ve.ui.MWReferenceDialog.prototype.onClose = function ( action ) {
 /* Registration */
 
 ve.ui.dialogFactory.register( 'mwReference', ve.ui.MWReferenceDialog );
-
-ve.ui.viewRegistry.register( 'mwReference', ve.ui.MWReferenceDialog );

@@ -29,6 +29,10 @@ ve.ui.MWLinkButtonTool.static.name = 'mwLink';
 
 ve.ui.MWLinkButtonTool.static.inspector = 'mwLink';
 
+ve.ui.MWLinkButtonTool.static.modelClasses = [
+	ve.dm.MWExternalLinkAnnotation, ve.dm.MWInternalLinkAnnotation
+];
+
 /* Registration */
 
 ve.ui.toolFactory.register( 'mwLink', ve.ui.MWLinkButtonTool );

@@ -33,6 +33,8 @@ ve.ui.MWMediaEditButtonTool.static.titleMessage = 'visualeditor-dialogbutton-med
 
 ve.ui.MWMediaEditButtonTool.static.dialog = 'mwMediaEdit';
 
+ve.ui.MWMediaEditButtonTool.static.modelClasses = [ ve.dm.MWBlockImageNode ];
+
 /* Registration */
 
 ve.ui.toolFactory.register( 'mwMediaEdit', ve.ui.MWMediaEditButtonTool );

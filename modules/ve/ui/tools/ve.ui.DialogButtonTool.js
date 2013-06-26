@@ -37,6 +37,23 @@ ve.inheritClass( ve.ui.DialogButtonTool, ve.ui.ButtonTool );
  */
 ve.ui.DialogButtonTool.static.dialog = '';
 
+/**
+ * Annotation or node models this tool is related to.
+ *
+ * Used by #canEditModel.
+ *
+ * @static
+ * @property {Function[]}
+ */
+ve.ui.DialogButtonTool.static.modelClasses = [];
+
+/**
+ * @inheritdoc
+ */
+ve.ui.DialogButtonTool.static.canEditModel = function ( model ) {
+	return ve.isInstanceOfAny( model, this.modelClasses );
+};
+
 /* Methods */
 
 /**
@@ -58,8 +75,6 @@ ve.ui.DialogButtonTool.prototype.onClick = function () {
  */
 ve.ui.DialogButtonTool.prototype.onUpdateState = function ( nodes ) {
 	if ( nodes.length ) {
-		this.setActive(
-			ve.ui.viewRegistry.getViewForNode( nodes[0] ) === this.constructor.static.dialog
-		);
+		this.setActive( ve.ui.toolFactory.getToolForNode( nodes[0] ) === this.constructor );
 	}
 };

@@ -33,6 +33,8 @@ ve.ui.MWReferenceButtonTool.static.titleMessage = 'visualeditor-dialogbutton-ref
 
 ve.ui.MWReferenceButtonTool.static.dialog = 'mwReference';
 
+ve.ui.MWReferenceButtonTool.static.modelClasses = [ ve.dm.MWReferenceNode ];
+
 /* Registration */
 
 ve.ui.toolFactory.register( 'mwReference', ve.ui.MWReferenceButtonTool );
