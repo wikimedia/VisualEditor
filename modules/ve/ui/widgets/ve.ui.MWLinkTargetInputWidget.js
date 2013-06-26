@@ -190,7 +190,8 @@ ve.ui.MWLinkTargetInputWidget.prototype.getInternalLinkAnnotationFromTitle = fun
 	return new ve.dm.MWInternalLinkAnnotation( {
 		'type': 'link/mwInternal',
 		'attributes': {
-			'title': target
+			'title': target,
+			'normalizedTitle': ve.dm.MWInternalLinkAnnotation.static.normalizeTitle( target )
 		}
 	} );
 };

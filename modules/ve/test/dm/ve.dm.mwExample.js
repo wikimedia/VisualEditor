@@ -497,6 +497,7 @@ ve.dm.mwExample.domToDataCases = {
 					'attributes': {
 						'title': 'Bar',
 						'origTitle': 'Bar',
+						'normalizedTitle': 'Bar',
 						'hrefPrefix': './'
 					},
 					'htmlAttributes': [ { 'values': {
@@ -512,6 +513,7 @@ ve.dm.mwExample.domToDataCases = {
 					'attributes': {
 						'title': 'Bar',
 						'origTitle': 'Bar',
+						'normalizedTitle': 'Bar',
 						'hrefPrefix': './'
 					},
 					'htmlAttributes': [ { 'values': {
@@ -527,6 +529,7 @@ ve.dm.mwExample.domToDataCases = {
 					'attributes': {
 						'title': 'Bar',
 						'origTitle': 'Bar',
+						'normalizedTitle': 'Bar',
 						'hrefPrefix': './'
 					},
 					'htmlAttributes': [ { 'values': {
@@ -626,6 +629,7 @@ ve.dm.mwExample.domToDataCases = {
 					'attributes': {
 						'title': 'Foo/Bar',
 						'origTitle': 'Foo/Bar',
+						'normalizedTitle': 'Foo/Bar',
 						'hrefPrefix': './../../../'
 					},
 					'htmlAttributes': [ { 'values': {
@@ -641,6 +645,7 @@ ve.dm.mwExample.domToDataCases = {
 					'attributes': {
 						'title': 'Foo/Bar',
 						'origTitle': 'Foo/Bar',
+						'normalizedTitle': 'Foo/Bar',
 						'hrefPrefix': './../../../'
 					},
 					'htmlAttributes': [ { 'values': {
@@ -656,6 +661,7 @@ ve.dm.mwExample.domToDataCases = {
 					'attributes': {
 						'title': 'Foo/Bar',
 						'origTitle': 'Foo/Bar',
+						'normalizedTitle': 'Foo/Bar',
 						'hrefPrefix': './../../../'
 					},
 					'htmlAttributes': [ { 'values': {
@@ -1008,6 +1014,7 @@ ve.dm.mwExample.domToDataCases = {
 					'attributes': {
 						'title': 'Bar',
 						'origTitle': 'Bar',
+						'normalizedTitle': 'Bar',
 						'hrefPrefix': './'
 					},
 					'htmlAttributes': [ { 'values': { 'href': './Bar', 'rel': 'mw:WikiLink', 'data-parsoid': '{}' } } ]
@@ -1020,6 +1027,7 @@ ve.dm.mwExample.domToDataCases = {
 					'attributes': {
 						'title': 'Bar',
 						'origTitle': 'Bar',
+						'normalizedTitle': 'Bar',
 						'hrefPrefix': './'
 					},
 					'htmlAttributes': [ { 'values': { 'href': './Bar', 'rel': 'mw:WikiLink', 'data-parsoid': '{}' } } ]
@@ -1032,6 +1040,7 @@ ve.dm.mwExample.domToDataCases = {
 					'attributes': {
 						'title': 'Bar',
 						'origTitle': 'Bar',
+						'normalizedTitle': 'Bar',
 						'hrefPrefix': './'
 					},
 					'htmlAttributes': [ { 'values': { 'href': './Bar', 'rel': 'mw:WikiLink', 'data-parsoid': '{}' } } ]
