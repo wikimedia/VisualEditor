@@ -40,6 +40,25 @@
 	ve.inheritClass = oo.inheritClass;
 
 	/**
+	 * Checks if an object is an instance of one or more classes.
+	 *
+	 * @method
+	 * @param {Object} subject Object to check
+	 * @param {Function[]} classes Classes to compare with
+	 * @return {boolean} Object inherits from one or more of the classes
+	 */
+	ve.isInstanceOfAny = function ( subject, classes ) {
+		var i = classes.length;
+
+		while ( classes[--i] ) {
+			if ( subject instanceof classes[i] ) {
+				return true;
+			}
+		}
+		return false;
+	};
+
+	/**
 	 * @method
 	 * @inheritdoc OO#mixinClass
 	 */
