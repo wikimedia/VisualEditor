@@ -559,7 +559,7 @@ ve.init.mw.ViewPageTarget.prototype.onEditTabClick = function ( e ) {
 	// Only do our handling if no keys are pressed, mouse button is 1
 	// (e.g. not middle click or right click) and no modifier keys
 	// (e.g. cmd-click to open in new tab).
-	if ( ( e.which && e.which !== 1 ) || e.shiftKey || e.altKey || e.metaKey ) {
+	if ( ( e.which && e.which !== 1 ) || e.shiftKey || e.altKey || e.ctrlKey || e.metaKey ) {
 		return;
 	}
 	this.logEvent( 'Edit', { action: 'edit-link-click' } );
@@ -575,7 +575,7 @@ ve.init.mw.ViewPageTarget.prototype.onEditTabClick = function ( e ) {
  * @param {jQuery.Event} e Mouse click event
  */
 ve.init.mw.ViewPageTarget.prototype.onEditSectionLinkClick = function ( e ) {
-	if ( ( e.which && e.which !== 1 ) || e.shiftKey || e.altKey || e.metaKey ) {
+	if ( ( e.which && e.which !== 1 ) || e.shiftKey || e.altKey || e.ctrlKey || e.metaKey ) {
 		return;
 	}
 	this.logEvent( 'Edit', { action: 'section-edit-link-click' } );
@@ -592,7 +592,7 @@ ve.init.mw.ViewPageTarget.prototype.onEditSectionLinkClick = function ( e ) {
  * @param {jQuery.Event} e Mouse click event
  */
 ve.init.mw.ViewPageTarget.prototype.onViewTabClick = function ( e ) {
-	if ( ( e.which && e.which !== 1 ) || e.shiftKey || e.altKey || e.metaKey ) {
+	if ( ( e.which && e.which !== 1 ) || e.shiftKey || e.altKey || e.ctrlKey || e.metaKey ) {
 		return;
 	}
 	if ( this.active ) {
