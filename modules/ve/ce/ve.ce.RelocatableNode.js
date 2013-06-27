@@ -48,7 +48,7 @@ ve.ce.RelocatableNode = function VeCeRelocatableNode() {
  */
 ve.ce.RelocatableNode.prototype.onRelocatableFocus = function () {
 	this.setRelocatableMarkerSizeAndPosition();
-	this.$relocatableMarker.appendTo( this.root.getSurface().getSurface().$localOverlay );
+	this.$relocatableMarker.appendTo( this.root.getSurface().getSurface().$localOverlayControls );
 };
 
 /**

@@ -25,6 +25,9 @@ ve.ui.Surface = function VeUiSurface( data, config ) {
 	// Properties
 	this.$globalOverlay = $( '<div>' );
 	this.$localOverlay = this.$$( '<div>' );
+	this.$localOverlayBlockers = this.$$( '<div>' );
+	this.$localOverlayControls = this.$$( '<div>' );
+	this.$localOverlayMenus = this.$$( '<div>' );
 	this.model = new ve.dm.Surface( new ve.dm.Document( data ) );
 	this.view = new ve.ce.Surface( this.model, this, { '$$': this.$$ } );
 	this.context = new ve.ui.Context( this, { '$$': this.$$ } );
@@ -38,6 +41,10 @@ ve.ui.Surface = function VeUiSurface( data, config ) {
 		.append( this.view.$ );
 	this.$localOverlay
 		.addClass( 've-ui-surface-overlay ve-ui-surface-overlay-local' )
+		.append( this.$localOverlayBlockers )
+		.append( this.$localOverlayControls )
+		.append( this.$localOverlayMenus );
+	this.$localOverlayMenus
 		.append( this.context.$ );
 	this.$globalOverlay
 		.addClass( 've-ui-surface-overlay ve-ui-surface-overlay-global' )

@@ -74,7 +74,7 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 
 	// Add elements to the DOM
 	this.$.append( this.documentView.getDocumentNode().$, this.$pasteTarget );
-	this.surface.$localOverlay.append( this.$phantoms, this.$highlights );
+	this.surface.$localOverlayBlockers.append( this.$phantoms, this.$highlights );
 };
 
 /* Inheritance */
@@ -1250,7 +1250,7 @@ ve.ce.Surface.prototype.handleDelete = function ( e, backspace ) {
 	if ( !rangeToRemove.isCollapsed() ) {
 		// If after processing removal transaction range is not collapsed it means that not
 		// everything got merged nicely (at this moment transaction processor is capable of merging
-		// nodes of the same type and at the same depth level only), so we process with another 
+		// nodes of the same type and at the same depth level only), so we process with another
 		// merging that takes remaing data from "endNode" and inserts it at the end of "startNode",
 		// "endNode" or recrusivly its parent (if have only one child) gets removed.
 		endNode = this.documentView.getNodeFromOffset( rangeToRemove.end, false );

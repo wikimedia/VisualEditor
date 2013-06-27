@@ -37,10 +37,6 @@
 	background: transparent;
 }
 
-.ve-ce-protectedNode {
-	z-index: 0;
-}
-
 .ve-ce-protectedNode-shield {
 	position: absolute !important;
 	top: 0;
@@ -76,11 +72,6 @@
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
-	z-index: 1; /* Position above RelocatableNode's relocatableMarker */
-}
-
-.ve-ce-resizableNode-handles-resizing {
-	z-index: 10000;
 }
 
 .ve-ce-resizableNode-handles div {
