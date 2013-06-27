@@ -115,6 +115,8 @@ ve.dm.MWReferenceNode.static.toDomElements = function ( dataElement, doc, conver
 		if ( !$( '<div>' ).html( originalHtml ).get( 0 ).isEqualNode( itemNodeWrapper ) ) {
 			ve.setProp( mwData, 'body', 'html', itemNodeHtml );
 		}
+	} else {
+		delete mwData.body;
 	}
 
 	// Set or clear key
@@ -210,6 +212,7 @@ ve.dm.MWReferenceNode.prototype.removeFromInternalList = function () {
 ve.dm.MWReferenceNode.prototype.getClonedElement = function () {
 	var clone = ve.dm.LeafNode.prototype.getClonedElement.call( this );
 	delete clone.attributes.contentsUsed;
+	delete clone.attributes.originalMw;
 	return clone;
 };
 
