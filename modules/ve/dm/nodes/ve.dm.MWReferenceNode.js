@@ -209,7 +209,7 @@ ve.dm.MWReferenceNode.prototype.removeFromInternalList = function () {
 
 ve.dm.MWReferenceNode.prototype.getClonedElement = function () {
 	var clone = ve.dm.LeafNode.prototype.getClonedElement.call( this );
-	delete clone.element.attributes.contentsUsed;
+	delete clone.attributes.contentsUsed;
 	return clone;
 };
 
