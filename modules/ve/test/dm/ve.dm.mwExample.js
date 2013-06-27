@@ -293,26 +293,26 @@ ve.dm.mwExample.domToDataCases = {
 				'<p>Foo' +
 					'<span id="cite_ref-bar-1-0" class="reference" about="#mwt5" typeof="mw:Extension/ref" ' +
 						'data-parsoid="{}" ' +
-						'data-mw="{&quot;attrs&quot;:{&quot;name&quot;:&quot;bar&quot;}}">' +
+						'data-mw="{&quot;name&quot;:&quot;ref&quot;,&quot;attrs&quot;:{&quot;name&quot;:&quot;bar&quot;}}">' +
 						'<a href="#cite_note-bar-1" data-parsoid="{}">[1]</a>' +
 					'</span>' +
 					' Baz' +
 					'<span id="cite_ref-quux-2-0" class="reference" about="#mwt6" typeof="mw:Extension/ref" ' +
 						'data-parsoid="{}" ' +
-						'data-mw="{&quot;body&quot;:{&quot;html&quot;:&quot;Quux&quot;},&quot;attrs&quot;:{&quot;name&quot;:&quot;quux&quot;}}">' +
+						'data-mw="{&quot;name&quot;:&quot;ref&quot;,&quot;body&quot;:{&quot;html&quot;:&quot;Quux&quot;},&quot;attrs&quot;:{&quot;name&quot;:&quot;quux&quot;}}">' +
 						'<a href="#cite_note-quux-2" data-parsoid="{}">[2]</a>' +
 					'</span>' +
 					' Whee' +
 					'<span id="cite_ref-bar-1-1" class="reference" about="#mwt7" typeof="mw:Extension/ref" ' +
 						'data-parsoid="{}" ' +
-						'data-mw="{&quot;body&quot;:{&quot;html&quot;:&quot;<a rel=\\&quot;mw:WikiLink\\&quot; ' +
+						'data-mw="{&quot;name&quot;:&quot;ref&quot;,&quot;body&quot;:{&quot;html&quot;:&quot;<a rel=\\&quot;mw:WikiLink\\&quot; ' +
 						'href=\\&quot;./Bar\\&quot;>Bar</a>&quot;},&quot;attrs&quot;:{&quot;name&quot;:&quot;bar&quot;}}">' +
 						'<a href="#cite_note-bar-1" data-parsoid="{}">[1]</a>' +
 					'</span>' +
 					' Yay' +
 					'<span id="cite_ref-3-0" class="reference" about="#mwt8" typeof="mw:Extension/ref" ' +
 						'data-parsoid="{}" ' +
-						'data-mw="{&quot;body&quot;:{&quot;html&quot;:&quot;No name&quot;},&quot;attrs&quot;:{&quot;group&quot;:&quot;g1&quot;}}">' +
+						'data-mw="{&quot;name&quot;:&quot;ref&quot;,&quot;body&quot;:{&quot;html&quot;:&quot;No name&quot;},&quot;attrs&quot;:{&quot;group&quot;:&quot;g1&quot;}}">' +
 						'<a href="#cite_note-3" data-parsoid="{}">[3]</a>' +
 					'</span>' +
 				'</p>' +
@@ -333,8 +333,8 @@ ve.dm.mwExample.domToDataCases = {
 					'listGroup': 'mwReference/',
 					'listKey': 'bar',
 					'refGroup': '',
-					'mw': { 'attrs': { 'name': 'bar' } },
-					'originalMw': '{"attrs":{"name":"bar"}}',
+					'mw': { 'name': 'ref', 'attrs': { 'name': 'bar' } },
+					'originalMw': '{"name":"ref","attrs":{"name":"bar"}}',
 					'childDomElements': $( '<a href="#cite_note-bar-1" data-parsoid="{}">[1]</a>' ).toArray(),
 					'contentsUsed': false
 				},
@@ -343,7 +343,7 @@ ve.dm.mwExample.domToDataCases = {
 						'values': {
 							'about': '#mwt5',
 							'class': 'reference',
-							'data-mw': '{"attrs":{"name":"bar"}}',
+							'data-mw': '{"name":"ref","attrs":{"name":"bar"}}',
 							'data-parsoid': '{}',
 							'id': 'cite_ref-bar-1-0',
 							'typeof': 'mw:Extension/ref'
@@ -369,8 +369,8 @@ ve.dm.mwExample.domToDataCases = {
 					'listGroup': 'mwReference/',
 					'listKey': 'quux',
 					'refGroup': '',
-					'mw': { 'body': { 'html': 'Quux' }, 'attrs': { 'name': 'quux' } },
-					'originalMw': '{"body":{"html":"Quux"},"attrs":{"name":"quux"}}',
+					'mw': { 'name': 'ref', 'body': { 'html': 'Quux' }, 'attrs': { 'name': 'quux' } },
+					'originalMw': '{"name":"ref","body":{"html":"Quux"},"attrs":{"name":"quux"}}',
 					'childDomElements': $( '<a href="#cite_note-quux-2" data-parsoid="{}">[2]</a>' ).toArray(),
 					'contentsUsed': true
 				},
@@ -379,7 +379,7 @@ ve.dm.mwExample.domToDataCases = {
 						'values': {
 							'about': '#mwt6',
 							'class': 'reference',
-							'data-mw': '{"body":{"html":"Quux"},"attrs":{"name":"quux"}}',
+							'data-mw': '{"name":"ref","body":{"html":"Quux"},"attrs":{"name":"quux"}}',
 							'data-parsoid': '{}',
 							'id': 'cite_ref-quux-2-0',
 							'typeof': 'mw:Extension/ref'
@@ -405,8 +405,8 @@ ve.dm.mwExample.domToDataCases = {
 					'listGroup': 'mwReference/',
 					'listKey': 'bar',
 					'refGroup': '',
-					'mw': { 'body': { 'html': '<a rel="mw:WikiLink" href="./Bar">Bar</a>' }, 'attrs': { 'name': 'bar' } },
-					'originalMw': '{"body":{"html":"<a rel=\\"mw:WikiLink\\" href=\\"./Bar\\">Bar</a>"},"attrs":{"name":"bar"}}',
+					'mw': { 'name': 'ref', 'body': { 'html': '<a rel="mw:WikiLink" href="./Bar">Bar</a>' }, 'attrs': { 'name': 'bar' } },
+					'originalMw': '{"name":"ref","body":{"html":"<a rel=\\"mw:WikiLink\\" href=\\"./Bar\\">Bar</a>"},"attrs":{"name":"bar"}}',
 					'childDomElements': $( '<a href="#cite_note-bar-1" data-parsoid="{}">[1]</a>' ).toArray(),
 					'contentsUsed': true
 				},
@@ -415,7 +415,7 @@ ve.dm.mwExample.domToDataCases = {
 						'values': {
 							'about': '#mwt7',
 							'class': 'reference',
-							'data-mw': '{"body":{"html":"<a rel=\\"mw:WikiLink\\" href=\\"./Bar\\">Bar</a>"},"attrs":{"name":"bar"}}',
+							'data-mw': '{"name":"ref","body":{"html":"<a rel=\\"mw:WikiLink\\" href=\\"./Bar\\">Bar</a>"},"attrs":{"name":"bar"}}',
 							'data-parsoid': '{}',
 							'id': 'cite_ref-bar-1-1',
 							'typeof': 'mw:Extension/ref'
@@ -441,8 +441,8 @@ ve.dm.mwExample.domToDataCases = {
 					'listGroup': 'mwReference/g1',
 					'listKey': null,
 					'refGroup': 'g1',
-					'mw': { 'body': { 'html': 'No name' }, 'attrs': { 'group': 'g1' } },
-					'originalMw': '{"body":{"html":"No name"},"attrs":{"group":"g1"}}',
+					'mw': { 'name': 'ref', 'body': { 'html': 'No name' }, 'attrs': { 'group': 'g1' } },
+					'originalMw': '{"name":"ref","body":{"html":"No name"},"attrs":{"group":"g1"}}',
 					'childDomElements': $( '<a href="#cite_note-3" data-parsoid="{}">[3]</a>' ).toArray(),
 					'contentsUsed': true
 				},
@@ -451,7 +451,7 @@ ve.dm.mwExample.domToDataCases = {
 						'values': {
 							'about': '#mwt8',
 							'class': 'reference',
-							'data-mw': '{"body":{"html":"No name"},"attrs":{"group":"g1"}}',
+							'data-mw': '{"name":"ref","body":{"html":"No name"},"attrs":{"group":"g1"}}',
 							'data-parsoid': '{}',
 							'id': 'cite_ref-3-0',
 							'typeof': 'mw:Extension/ref'

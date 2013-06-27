@@ -86,3 +86,13 @@ ve.ui.SearchWidget.prototype.onQueryChange = function () {
 ve.ui.SearchWidget.prototype.onResultsSelect = function ( item ) {
 	this.emit( 'select', item ? item.getData() : null );
 };
+
+/**
+ * Get the query input.
+ *
+ * @method
+ * @returns {ve.ui.TextInputWidget} Query input
+ */
+ve.ui.SearchWidget.prototype.getQuery = function () {
+	return this.query;
+};

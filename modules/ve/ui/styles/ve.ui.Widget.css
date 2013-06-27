@@ -687,6 +687,44 @@
 	text-overflow: ellipsis;
 }
 
+/* ve.ui.MWReferenceSearchWidget */
+
+.ve-ui-mwReferenceSearchWidget-citation {
+	float: left;
+	margin-right: 0.75em;
+}
+
+.ve-ui-mwReferenceSearchWidget-name {
+	float: right;
+	margin-left: 0.75em;
+	margin-bottom: 0.75em;
+	color: #777;
+}
+
+/* ve.ui.MWReferenceResultWidget */
+
+.ve-ui-mwReferenceResultWidget {
+	position: relative;
+	padding: 1em;
+	border-bottom: solid 1px #eee;
+}
+
+.ve-ui-mwReferenceResultWidget .ve-ui-labeledElement-label {
+	white-space: normal;
+}
+
+.ve-ui-mwReferenceResultWidget-shield {
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+}
+
+.ve-ui-mwReferenceResultWidget-divider {
+	font-weight: bold;
+}
+
 /* RTL Definitions */
 
 /* @noflip */

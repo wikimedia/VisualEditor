@@ -118,7 +118,8 @@ ve.dm.InternalList.prototype.getListNode = function () {
 };
 
 /**
- * Get the number it internal items in the internal list
+ * Get the number it internal items in the internal list.
+ *
  * @method
  * @returns {number}
  */
@@ -127,7 +128,8 @@ ve.dm.InternalList.prototype.getItemNodeCount = function () {
 };
 
 /**
- * Get the item node from a specific index
+ * Get the item node from a specific index.
+ *
  * @method
  * @param {number} index Item index
  * @returns {ve.dm.InternalItemNode} Item node
@@ -137,12 +139,43 @@ ve.dm.InternalList.prototype.getItemNode = function ( index ) {
 };
 
 /**
+ * Get all node groups.
+ *
+ * @method
+ * @returns {Object} Node groups, keyed by group name
+ */
+ve.dm.InternalList.prototype.getNodeGroups = function () {
+	return this.nodes;
+};
+
+/**
  * Get the node group object for a specified group name.
+ *
+ * @method
  * @param {string} groupName Name of the group
  * @returns {Object} Node group object, containing nodes and key order array
  */
 ve.dm.InternalList.prototype.getNodeGroup = function ( groupName ) {
 	return this.nodes[groupName];
+};
+
+/**
+ * Get a unique list key for a given group.
+ *
+ * Generated list keys begin with ":", so that they are obviously different from hand-coded ones.
+ *
+ * @method
+ * @param {string} groupName Name of the group
+ * @returns {string} Unique list key
+ */
+ve.dm.InternalList.prototype.getUniqueListKey = function ( groupName ) {
+	var group = this.getNodeGroup( groupName ),
+		num = 0;
+
+	while ( group.keyedNodes[':' + num ] ) {
+		num++;
+	}
+	return ':' + num;
 };
 
 /**

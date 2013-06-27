@@ -52,6 +52,8 @@ $messages['en'] = array(
 	'visualeditor-dialog-meta-languages-section' => 'Languages',
 	'visualeditor-dialog-meta-title' => 'Page settings',
 	'visualeditor-dialog-reference-content-section' => 'Reference content',
+	'visualeditor-dialog-reference-insert-button' => 'Insert reference',
+	'visualeditor-dialog-reference-insert-title' => 'Insert reference',
 	'visualeditor-dialog-reference-options-group-label' => 'Use this group',
 	'visualeditor-dialog-reference-options-name-label' => 'Re-use by this name',
 	'visualeditor-dialog-reference-options-section' => 'Options',
@@ -70,6 +72,7 @@ $messages['en'] = array(
 	'visualeditor-dialog-transclusion-title' => 'Transclusion',
 	'visualeditor-dialogbutton-media-tooltip' => 'Media',
 	'visualeditor-dialogbutton-meta-tooltip' => 'Page settings',
+	'visualeditor-dialogbutton-reference-insert-tooltip' => 'Insert reference',
 	'visualeditor-dialogbutton-reference-tooltip' => 'Reference',
 	'visualeditor-dialogbutton-referencelist-tooltip' => 'References list',
 	'visualeditor-dialogbutton-transclusion-tooltip' => 'Transclusion',
@@ -119,6 +122,9 @@ $messages['en'] = array(
 	'visualeditor-outline-control-move-up' => 'Move item up',
 	'visualeditor-preference-enable' => 'Enable VisualEditor (only in the [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|main]] and [[{{MediaWiki:Visualeditor-usernamespacepagelink}}|user]] namespaces)',
 	'visualeditor-referencelist-isempty' => 'There are no references with the group "$1" on this page.',
+	'visualeditor-reference-input-placeholder' => 'What do you want to reference?',
+	'visualeditor-reference-search-create' => 'Create new source',
+	'visualeditor-reference-search-reuse' => 'Use an existing source',
 	'visualeditor-savedialog-label-create' => 'Create page',
 	'visualeditor-savedialog-label-report' => 'Report problem',
 	'visualeditor-savedialog-label-resolve-conflict' => 'Resolve conflict',
@@ -236,6 +242,10 @@ See also:
 	'visualeditor-dialog-meta-title' => 'MetaData dialog title text.
 {{Identical|Page settings}}',
 	'visualeditor-dialog-reference-content-section' => 'Label for the reference content sub-section',
+	'visualeditor-dialog-reference-insert-button' => 'Used as label for the button.
+{{Identical|Insert reference}}',
+	'visualeditor-dialog-reference-insert-title' => 'Reference insert dialog title text.
+{{Identical|Insert reference}}',
 	'visualeditor-dialog-reference-options-group-label' => 'Label for the reference group input',
 	'visualeditor-dialog-reference-options-name-label' => 'Label for the reference name input',
 	'visualeditor-dialog-reference-options-section' => 'Label for the reference options sub-section.
@@ -261,6 +271,7 @@ See also:
 	'visualeditor-dialog-transclusion-title' => '{{Identical|Transclusion}}',
 	'visualeditor-dialogbutton-media-tooltip' => '{{Identical|Media}}',
 	'visualeditor-dialogbutton-meta-tooltip' => '{{Identical|Page Settings}}',
+	'visualeditor-dialogbutton-reference-insert-tooltip' => '{{Identical|Insert reference}}',
 	'visualeditor-dialogbutton-reference-tooltip' => '{{Identical|Reference}}',
 	'visualeditor-dialogbutton-referencelist-tooltip' => 'Tooltip for button for dialog that inserts the references list object (<code><nowiki>Reference list</nowiki></code>).
 {{Identical|References list}}',
@@ -336,6 +347,10 @@ Parameters:
 	'visualeditor-outline-control-move-up' => 'Tool tip for a button that moves items in a list up one place',
 	'visualeditor-preference-enable' => 'Label for the user preference to enable the VisualEditor.
 Links are in {{msg-mw|Visualeditor-mainnamespacepagelink}} and {{msg-mw|visualeditor-usernamespacepagelink}}.',
+	'visualeditor-preference-nosectionedit' => 'Label for the user preference to make section edit links go to the old editor instead of VisualEditor.',
+	'visualeditor-reference-input-placeholder' => 'Placeholder text for reference search field.',
+	'visualeditor-reference-search-create' => 'Label for option in results list for creating a new reference.',
+	'visualeditor-reference-search-reuse' => 'Label for section heading in results list for using an existing reference.',
 	'visualeditor-savedialog-label-create' => 'Label text for save button when the user is creating a new page',
 	'visualeditor-savedialog-label-report' => 'Label for button to trigger report',
 	'visualeditor-savedialog-label-resolve-conflict' => 'Label for button to start resoliving an edit conflict',

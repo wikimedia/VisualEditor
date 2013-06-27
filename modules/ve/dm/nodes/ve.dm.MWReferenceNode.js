@@ -70,7 +70,8 @@ ve.dm.MWReferenceNode.static.toDataElement = function ( domElements, converter )
 };
 
 ve.dm.MWReferenceNode.static.toDomElements = function ( dataElement, doc, converter ) {
-	var itemNodeHtml, originalHtml, mwData, i, iLen, keyedNodes, setContents, originalMw, childDomElements,
+	var itemNodeHtml, originalHtml, mwData, i, iLen, keyedNodes, setContents, originalMw,
+		childDomElements,
 		el = doc.createElement( 'span' ),
 		itemNodeWrapper = doc.createElement( 'div' ),
 		itemNode = converter.internalList.getItemNode( dataElement.attributes.listIndex ),
@@ -79,10 +80,10 @@ ve.dm.MWReferenceNode.static.toDomElements = function ( dataElement, doc, conver
 	el.setAttribute( 'about', dataElement.attributes.about );
 	el.setAttribute( 'typeof', 'mw:Extension/ref' );
 
-	mwData = ve.copyObject( dataElement.attributes.mw ) || {};
+	mwData = dataElement.attributes.mw ? ve.copyObject( dataElement.attributes.mw ) : {};
+	mwData.name = 'ref';
 
-	setContents = dataElement.attributes.contentsUsed ||
-		dataElement.attributes.listKey === null;
+	setContents = dataElement.attributes.contentsUsed || dataElement.attributes.listKey === null;
 
 	if ( !setContents ) {
 		// Check if any other nodes with this key provided content. If not

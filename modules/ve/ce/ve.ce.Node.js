@@ -239,3 +239,13 @@ ve.ce.Node.getSplitableNode = function ( node ) {
 
 	return splitableNode;
 };
+
+/**
+ * Release all memory.
+ *
+ * @method
+ */
+ve.ce.Node.prototype.destroy = function () {
+	this.parent = null;
+	this.model.disconnect( this );
+};
