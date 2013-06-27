@@ -1070,76 +1070,84 @@ ve.init.mw.ViewPageTarget.prototype.setupSectionEditLinks = function () {
 		$editsections = $( '#mw-content-text .mw-editsection' ),
 		handler = ve.bind( this.onEditSectionLinkClick, this );
 
+	// The "visibility" css construct ensures we always occupy the same space in the layout.
+	// This prevents the heading from changing its wrap when the user toggles editSourceLink.
 	$editsections.each( function () {
-		var $brackets, $expandedOnly, $middleBracket, $hiddenBracket, closingBracketSymbol,
-			expandTimeout, contractTimeout,
-			$this = $( this ),
-			$heading = $this.closest( 'h1,h2,h3,h4,h5,h6' ),
-			$edit = $this.find( 'a' ).eq( 0 ),
-			$editSource = $edit.clone(),
-			$links = $edit.add( $editSource ),
+		var $closingBracket, $expandedOnly, $hiddenBracket, $outerClosingBracket,
+			expandTimeout, shrinkTimeout,
+			$editsection = $( this ),
+			$heading = $editsection.closest( 'h1, h2, h3, h4, h5, h6' ),
+			$editLink = $editsection.find( 'a' ).eq( 0 ),
+			$editSourceLink = $editLink.clone(),
+			$links = $editLink.add( $editSourceLink ),
 			$divider = $( '<span>' ),
-			dividerSymbol = $.trim( ve.msg( 'pipe-separator' ) ),
-			veSectionEditUri = new mw.Uri( veEditUri.toString() ),
-			sectionEditUri = new mw.Uri( $edit.attr( 'href' ) );
+			dividerText = $.trim( ve.msg( 'pipe-separator' ) ),
+			$brackets = $( [ this.firstChild, this.lastChild ] );
 
 		function expandSoon() {
-			clearTimeout( contractTimeout );
+			// Cancel pending shrink, schedule expansion instead
+			clearTimeout( shrinkTimeout );
 			expandTimeout = setTimeout( expand, 100 );
 		}
 
-		function contractSoon() {
-			clearTimeout( expandTimeout );
-			contractTimeout = setTimeout( contract, 100 );
-		}
-
 		function expand() {
-			clearTimeout( contractTimeout );
-			$middleBracket.css( 'visibility', 'hidden' );
+			clearTimeout( shrinkTimeout );
+			$closingBracket.css( 'visibility', 'hidden' );
 			$expandedOnly.css( 'visibility', 'visible' );
 			$heading.addClass( 'mw-editsection-expanded' );
 		}
 
-		function contract() {
+		function shrinkSoon() {
+			// Cancel pending expansion, schedule shrink instead
+			clearTimeout( expandTimeout );
+			shrinkTimeout = setTimeout( shrink, 100 );
+		}
+
+		function shrink() {
 			clearTimeout( expandTimeout );
 			if ( !$links.is( ':focus' ) ) {
-				$middleBracket.css( 'visibility', 'visible' );
+				$closingBracket.css( 'visibility', 'visible' );
 				$expandedOnly.css( 'visibility', 'hidden' );
 				$heading.removeClass( 'mw-editsection-expanded' );
 			}
 		}
 
-		$brackets = $( [ this.firstChild, this.lastChild ] );
-		// @until Id27555c6 - essentially does this for us
+		// TODO: Remove this (see Id27555c6 in mediawiki/core)
 		if ( !$brackets.hasClass( 'mw-editsection-bracket' ) ) {
 			$brackets = $brackets
 				.wrap( $( '<span>' ).addClass( 'mw-editsection-bracket' ) )
 				.parent();
 		}
-		closingBracketSymbol = $brackets.eq( 1 ).text();
-		$expandedOnly = $divider.add( $editSource ).add( $brackets.last() );
-		$middleBracket = $brackets.last().clone();
-		$hiddenBracket = $brackets.last().clone().css( 'visibility', 'hidden' );
+
+		$closingBracket = $brackets.last();
+		$outerClosingBracket = $closingBracket.clone();
+		$expandedOnly = $divider.add( $editSourceLink ).add( $outerClosingBracket )
+			.css( 'visibility', 'hidden' );
+		// The hidden bracket after the devider ensures we have balanced space before and after
+		// divider. The space before the devider is provided by the original closing bracket.
+		$hiddenBracket = $closingBracket.clone().css( 'visibility', 'hidden' );
 
 		// Events
-		$heading.on( { 'mouseenter': expandSoon, 'mouseleave': contractSoon } );
-		$links.on( { 'focus': expand, 'blur': contract } );
-		$edit.attr( 'href', veSectionEditUri.extend( {
-			'vesection': sectionEditUri.query.section
-		} ) );
-		$edit.click( handler );
+		$heading.on( { 'mouseenter': expandSoon, 'mouseleave': shrinkSoon } );
+		$links.on( { 'focus': expand, 'blur': shrink } );
+		$editLink.click( handler );
 
 		// Initialization
-		$expandedOnly.css( 'visibility', 'hidden' );
-		$editSource
+		$editSourceLink
 			.addClass( 'mw-editsection-link-secondary' )
 			.text( mw.msg( 'visualeditor-ca-editsource-section' ) );
 		$divider
 			.addClass( 'mw-editsection-divider' )
-			.text( dividerSymbol );
-		$edit
-			.addClass( 'mw-editsection-link-primary' )
-			.after( $middleBracket, $divider, $hiddenBracket, $editSource );
+			.text( dividerText );
+		$editLink
+			.attr( 'href', function ( i, val ) {
+				return new mw.Uri( veEditUri ).extend( {
+					'vesection': new mw.Uri( val ).query.section
+				} );
+			} )
+			.addClass( 'mw-editsection-link-primary' );
+		$closingBracket
+			.after( $divider, $hiddenBracket, $editSourceLink, $outerClosingBracket );
 	} );
 };
 
