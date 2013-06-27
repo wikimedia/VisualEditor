@@ -382,7 +382,6 @@ $wgResourceModules += array(
 			've/ui/ve.ui.Frame.js',
 			've/ui/ve.ui.Window.js',
 			've/ui/ve.ui.WindowSet.js',
-			've/ui/ve.ui.ViewRegistry.js',
 			've/ui/ve.ui.Inspector.js',
 			've/ui/ve.ui.InspectorFactory.js',
 			've/ui/ve.ui.Dialog.js',

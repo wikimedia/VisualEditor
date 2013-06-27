@@ -56,8 +56,6 @@ ve.ui.MWTransclusionDialog.static.titleMessage = 'visualeditor-dialog-transclusi
 
 ve.ui.MWTransclusionDialog.static.icon = 'template';
 
-ve.ui.MWTransclusionDialog.static.modelClasses = [ ve.dm.MWTransclusionNode ];
-
 /* Methods */
 
 ve.ui.MWTransclusionDialog.prototype.initialize = function () {
@@ -609,5 +607,3 @@ ve.ui.MWTransclusionDialog.prototype.getPlaceholderPage = function ( placeholder
 /* Registration */
 
 ve.ui.dialogFactory.register( 'mwTransclusion', ve.ui.MWTransclusionDialog );
-
-ve.ui.viewRegistry.register( 'mwTransclusion', ve.ui.MWTransclusionDialog );

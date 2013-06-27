@@ -67,6 +67,19 @@ ve.ui.Tool.static.cssName = null;
  */
 ve.ui.Tool.static.titleMessage = null;
 
+/**
+ * Check if this tool can be used on a model.
+ *
+ * @method
+ * @static
+ * @inheritable
+ * @param {ve.dm.Model} model Model to check
+ * @return {boolean} Tool can be used to edit model
+ */
+ve.ui.Tool.static.canEditModel = function () {
+	return false;
+};
+
 /* Methods */
 
 /**

@@ -36,6 +36,23 @@ ve.inheritClass( ve.ui.InspectorButtonTool, ve.ui.ButtonTool );
  */
 ve.ui.InspectorButtonTool.static.inspector = '';
 
+/**
+ * Annotation or node models this tool is related to.
+ *
+ * Used by #canEditModel.
+ *
+ * @static
+ * @property {Function[]}
+ */
+ve.ui.InspectorButtonTool.static.modelClasses = [];
+
+/**
+ * @inheritdoc
+ */
+ve.ui.InspectorButtonTool.static.canEditModel = function ( model ) {
+	return ve.isInstanceOfAny( model, this.modelClasses );
+};
+
 /* Methods */
 
 /**
@@ -57,7 +74,6 @@ ve.ui.InspectorButtonTool.prototype.onClick = function () {
  */
 ve.ui.InspectorButtonTool.prototype.onUpdateState = function ( nodes, full ) {
 	this.setActive(
-		ve.ui.viewRegistry.getViewsForAnnotations( full )
-			.indexOf( this.constructor.static.inspector ) !== -1
+		ve.ui.toolFactory.getToolsForAnnotations( full ).indexOf( this.constructor ) !== -1
 	);
 };

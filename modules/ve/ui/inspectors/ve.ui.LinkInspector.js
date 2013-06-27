@@ -34,9 +34,15 @@ ve.ui.LinkInspector.static.icon = 'link';
 
 ve.ui.LinkInspector.static.titleMessage = 'visualeditor-linkinspector-title';
 
-ve.ui.LinkInspector.static.modelClasses = [ ve.dm.LinkAnnotation ];
-
 ve.ui.LinkInspector.static.linkTargetInputWidget = ve.ui.LinkTargetInputWidget;
+
+/**
+ * Annotation models this inspector can edit.
+ *
+ * @static
+ * @property {Function[]}
+ */
+ve.ui.LinkInspector.static.modelClasses = [ ve.dm.LinkAnnotation ];
 
 /* Methods */
 
@@ -214,8 +220,22 @@ ve.ui.LinkInspector.prototype.getAnnotationFromTarget = function ( target ) {
 	 } );
 };
 
+/**
+ * Get matching annotations within a fragment.
+ *
+ * @method
+ * @param {ve.dm.SurfaceFragment} fragment Fragment to get matching annotations within
+ * @param {boolean} [all] Get annotations which only cover some of the fragment
+ * @returns {ve.dm.AnnotationSet} Matching annotations
+ */
+ve.ui.LinkInspector.prototype.getMatchingAnnotations = function ( fragment, all ) {
+	var modelClasses = this.constructor.static.modelClasses;
+
+	return fragment.getAnnotations( all ).filter( function ( annnotation ) {
+		return ve.isInstanceOfAny( annnotation, modelClasses );
+	} );
+};
+
 /* Registration */
 
 ve.ui.inspectorFactory.register( 'link', ve.ui.LinkInspector );
-
-ve.ui.viewRegistry.register( 'link', ve.ui.LinkInspector );

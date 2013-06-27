@@ -33,8 +33,6 @@ ve.ui.MWMediaEditDialog.static.titleMessage = 'visualeditor-dialog-media-title';
 
 ve.ui.MWMediaEditDialog.static.icon = 'picture';
 
-ve.ui.MWMediaEditDialog.static.modelClasses = [ ve.dm.MWBlockImageNode ];
-
 ve.ui.MWMediaEditDialog.static.toolbarTools = [
 	{ 'items': ['undo', 'redo'] },
 	{ 'items': ['bold', 'italic', 'mwLink', 'clear'] }
@@ -137,5 +135,3 @@ ve.ui.MWMediaEditDialog.prototype.onClose = function ( action ) {
 /* Registration */
 
 ve.ui.dialogFactory.register( 'mwMediaEdit', ve.ui.MWMediaEditDialog );
-
-ve.ui.viewRegistry.register( 'mwMediaEdit', ve.ui.MWMediaEditDialog );

@@ -33,6 +33,8 @@ ve.ui.LinkButtonTool.static.titleMessage = 'visualeditor-annotationbutton-link-t
 
 ve.ui.LinkButtonTool.static.inspector = 'link';
 
+ve.ui.LinkButtonTool.static.modelClasses = [ ve.dm.LinkAnnotation ];
+
 /* Registration */
 
 ve.ui.toolFactory.register( 'link', ve.ui.LinkButtonTool );

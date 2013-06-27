@@ -82,5 +82,3 @@ ve.ui.MWLinkInspector.prototype.getAnnotationFromTarget = function ( target ) {
 /* Registration */
 
 ve.ui.inspectorFactory.register( 'mwLink', ve.ui.MWLinkInspector );
-
-ve.ui.viewRegistry.register( 'mwLink', ve.ui.MWLinkInspector );

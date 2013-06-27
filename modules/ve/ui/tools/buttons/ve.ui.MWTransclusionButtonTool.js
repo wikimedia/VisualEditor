@@ -33,6 +33,8 @@ ve.ui.MWTransclusionButtonTool.static.titleMessage = 'visualeditor-dialogbutton-
 
 ve.ui.MWTransclusionButtonTool.static.dialog = 'mwTransclusion';
 
+ve.ui.MWTransclusionButtonTool.static.modelClasses = [ ve.dm.MWTransclusionNode ];
+
 /* Registration */
 
 ve.ui.toolFactory.register( 'mwTransclusion', ve.ui.MWTransclusionButtonTool );
