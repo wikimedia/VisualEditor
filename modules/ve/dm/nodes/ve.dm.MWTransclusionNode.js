@@ -111,9 +111,10 @@ ve.dm.MWTransclusionNode.static.toDomElements = function ( dataElement, doc, con
  * @returns {string} Escaped parameter value
  */
 ve.dm.MWTransclusionNode.static.escapeParameter = function ( param ) {
-	var match, input = param, output = '', inNowiki = false;
+	var match, needsNowiki, input = param, output = '',
+		inNowiki = false, bracketStack = 0;
 	while ( input.length > 0 ) {
-		match = input.match( /(?:\}\})+|\|+|<\/?nowiki>|<nowiki\s*\/>/ );
+		match = input.match( /(?:\{\{)+|(?:\}\})+|\|+|<\/?nowiki>|<nowiki\s*\/>/ );
 		if ( !match ) {
 			output += input;
 			break;
@@ -128,13 +129,30 @@ ve.dm.MWTransclusionNode.static.escapeParameter = function ( param ) {
 				output += match[0];
 			}
 		} else {
+			needsNowiki = true;
 			if ( match[0] === '<nowiki>' ) {
 				inNowiki = true;
-				output += match[0];
+				needsNowiki = false;
 			} else if ( match[0] === '</nowiki>' || match[0].match( /<nowiki\s*\/>/ ) ) {
-				output += match[0];
-			} else {
+				needsNowiki = false;
+			} else if ( match[0].match( /(?:\{\{)+/ ) ) {
+				bracketStack++;
+				needsNowiki = false;
+			} else if ( match[0].match( /(?:\}\})+/ ) ) {
+				if ( bracketStack > 0 ) {
+					bracketStack--;
+					needsNowiki = false;
+				}
+			} else if ( match[0].match( /\|+/ ) ) {
+				if ( bracketStack > 0 ) {
+					needsNowiki = false;
+				}
+			}
+
+			if ( needsNowiki ) {
 				output += '<nowiki>' + match[0] + '</nowiki>';
+			} else {
+				output += match[0];
 			}
 		}
 	}
