@@ -878,6 +878,13 @@ ve.init.mw.ViewPageTarget.prototype.onSurfaceToolbarPosition = function ( $bar )
 		dir = mw.config.get( 'wgVisualEditor' ).pageLanguageDir,
 		type = $bar.css( 'position' );
 
+	// HACK: If the toolbar is floating, also apply a floating class to the toolbar tracker
+	if ( $bar.parent().hasClass( 've-ui-toolbar-floating' ) ) {
+		this.$toolbarTracker.addClass( 've-init-mw-viewPageTarget-toolbarTracker-floating' );
+	} else {
+		this.$toolbarTracker.removeClass( 've-init-mw-viewPageTarget-toolbarTracker-floating' );
+	}
+
 	// It's important that the toolbar tracker has 0 height. Else it will block events on the
 	// toolbar (e.g. clicking "Save page") as it would overlap that space. The save dialog
 	// will remain visible for the same reason elsewhere: As long as we don't have overflow:hidden,
