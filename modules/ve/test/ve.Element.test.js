@@ -25,18 +25,18 @@ QUnit.test( 'getDocument', 10, function ( assert ) {
 	frameDoc.documentElement.appendChild( frameEl );
 	frameDiv = frameDoc.createElement( 'div' );
 
-	assert.strictEqual( ve.Element.static.getDocument( $el ), doc, 'jQuery' );
-	assert.strictEqual( ve.Element.static.getDocument( $div ), doc, 'jQuery (detached)' );
-	assert.strictEqual( ve.Element.static.getDocument( el ), doc, 'HTMLElement' );
-	assert.strictEqual( ve.Element.static.getDocument( div ), doc, 'HTMLElement (detached)' );
-	assert.strictEqual( ve.Element.static.getDocument( win ), doc, 'Window' );
-	assert.strictEqual( ve.Element.static.getDocument( doc ), doc, 'HTMLDocument' );
+	assert.strictEqual( ve.Element.getDocument( $el ), doc, 'jQuery' );
+	assert.strictEqual( ve.Element.getDocument( $div ), doc, 'jQuery (detached)' );
+	assert.strictEqual( ve.Element.getDocument( el ), doc, 'HTMLElement' );
+	assert.strictEqual( ve.Element.getDocument( div ), doc, 'HTMLElement (detached)' );
+	assert.strictEqual( ve.Element.getDocument( win ), doc, 'Window' );
+	assert.strictEqual( ve.Element.getDocument( doc ), doc, 'HTMLDocument' );
 
-	assert.strictEqual( ve.Element.static.getDocument( frameEl ), frameDoc, 'HTMLElement (framed)' );
-	assert.strictEqual( ve.Element.static.getDocument( frameDiv ), frameDoc, 'HTMLElement (framed, detached)' );
-	assert.strictEqual( ve.Element.static.getDocument( frameDoc ), frameDoc, 'HTMLDocument (framed)' );
+	assert.strictEqual( ve.Element.getDocument( frameEl ), frameDoc, 'HTMLElement (framed)' );
+	assert.strictEqual( ve.Element.getDocument( frameDiv ), frameDoc, 'HTMLElement (framed, detached)' );
+	assert.strictEqual( ve.Element.getDocument( frameDoc ), frameDoc, 'HTMLDocument (framed)' );
 
 	assert.throws( function () {
-		ve.Element.static.getDocument( {} );
+		ve.Element.getDocument( {} );
 	}, 'Invalid' );
 } );

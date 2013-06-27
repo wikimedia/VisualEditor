@@ -19,3 +19,7 @@
 	font-size: 1.25em;
 	line-height: 1.5em;
 }
+
+.ve-ui-surface-overlay-global {
+	z-index: 4;
+}

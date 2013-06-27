@@ -72,8 +72,9 @@ ve.mixinClass( ve.ui.Surface, ve.EventEmitter );
 /* Methods */
 
 ve.ui.Surface.prototype.initialize = function () {
-	this.$$( 'body' ).append( this.$localOverlay );
+	this.view.$.after( this.$localOverlay );
 	$( 'body' ).append( this.$globalOverlay );
+
 	this.view.initialize();
 	// By re-asserting the current selection and forcing a poll we force selection to be something
 	// reasonable - otherwise in Firefox, the initial selection is (0,0), causing bug 42277

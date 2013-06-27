@@ -27,7 +27,7 @@ ve.ui.LookupInputWidget = function VeUiLookupInputWidget( input, config ) {
 	this.lookupInput = input;
 	this.$overlay = config.$overlay || this.$$( '.ve-surface-overlay-local:last' );
 	this.lookupMenu = new ve.ui.TextInputMenuWidget( this, {
-		'$$': ve.Element.static.get$$( this.$overlay ),
+		'$$': ve.Element.get$$( this.$overlay ),
 		'input': this.lookupInput,
 		'$container': config.$container
 	} );

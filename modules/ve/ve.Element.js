@@ -19,7 +19,7 @@ ve.Element = function VeElement( config ) {
 	// Initialize config
 	config = config || {};
 	// Properties
-	this.$$ = config.$$ || ve.Element.static.get$$( document );
+	this.$$ = config.$$ || ve.Element.get$$( document );
 	this.$ = this.$$( this.$$.context.createElement( this.getTagName() ) );
 };
 
@@ -53,7 +53,7 @@ ve.Element.static.tagName = 'div';
  * @param {ve.ui.Frame} [frame] Frame of the document context
  * @returns {Function} Bound jQuery function
  */
-ve.Element.static.get$$ = function ( context, frame ) {
+ve.Element.get$$ = function ( context, frame ) {
 	function wrapper( selector ) {
 		return $( selector, wrapper.context );
 	}
@@ -75,7 +75,7 @@ ve.Element.static.get$$ = function ( context, frame ) {
  * @returns {HTMLDocument} Document object
  * @throws {Error} If context is invalid
  */
-ve.Element.static.getDocument = function ( context ) {
+ve.Element.getDocument = function ( context ) {
 	var doc =
 		// jQuery - selections created "offscreen" won't have a context, so .context isn't reliable
 		( context[0] && context[0].ownerDocument ) ||
@@ -102,7 +102,7 @@ ve.Element.static.getDocument = function ( context ) {
  * @param {jQuery|HTMLElement|HTMLDocument|Window} context Context to bind the function to
  * @returns {Window} Window object
  */
-ve.Element.static.getWindow = function ( context ) {
+ve.Element.getWindow = function ( context ) {
 	var doc = this.getDocument( context );
 	return doc.parentWindow || doc.defaultView;
 };
@@ -119,7 +119,7 @@ ve.Element.static.getWindow = function ( context ) {
  * @param {Object} [offset] Offset to start with, used internally
  * @returns {Object} Offset object, containing left and top properties
  */
-ve.Element.static.getFrameOffset = function ( from, to, offset ) {
+ve.Element.getFrameOffset = function ( from, to, offset ) {
 	var i, len, frames, frame, rect;
 
 	if ( !to ) {
@@ -153,6 +153,19 @@ ve.Element.static.getFrameOffset = function ( from, to, offset ) {
 	return offset;
 };
 
+/**
+ * Get the offset between two elements.
+ *
+ * @param {jQuery} $from 
+ * @param {jQuery} $to
+ * @returns {Object} Translated position coordinates, containing top and left properties
+ */
+ve.Element.getRelativePosition = function ( $from, $to ) {
+	var from = $from.offset(),
+		to = $to.offset();
+	return { 'top': from.top - to.top, 'left': from.left - to.left };
+};
+
 /* Methods */
 
 /**
@@ -174,7 +187,7 @@ ve.Element.prototype.getTagName = function () {
  * @returns {HTMLDocument} Document object
  */
 ve.Element.prototype.getElementDocument = function () {
-	return ve.Element.static.getDocument( this.$ );
+	return ve.Element.getDocument( this.$ );
 };
 
 /**
@@ -184,5 +197,5 @@ ve.Element.prototype.getElementDocument = function () {
  * @returns {Window} Window object
  */
 ve.Element.prototype.getElementWindow = function () {
-	return ve.Element.static.getWindow( this.$ );
+	return ve.Element.getWindow( this.$ );
 };

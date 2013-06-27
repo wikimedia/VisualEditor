@@ -124,10 +124,14 @@ ve.ce.RelocatableNode.prototype.onRelocatableDragEnd = function () {
  * @method
  */
 ve.ce.RelocatableNode.prototype.setRelocatableMarkerSizeAndPosition = function () {
+	var offset = ve.Element.getRelativePosition(
+		this.$, this.getRoot().getSurface().getSurface().$
+	);
+
 	this.$relocatableMarker.css( {
 		'height': this.$.height(),
 		'width': this.$.width(),
-		'top': this.$.offset().top,
-		'left': this.$.offset().left
+		'top': offset.top,
+		'left': offset.left
 	} );
 };

@@ -6,19 +6,16 @@
  */
 
 .ve-ui-surface {
-	margin-top: 0.8em;
-	margin-left: -1.5em;
-	margin-right: -1.5em;
+	margin: 0.8em -1.5em 0 -1.5em;
 }
 
 .ve-ce-documentNode {
 	font-size: 0.8em;
-	padding-left: 1.875em; /* 1.5/0.8 */
-	padding-right: 1.875em; /* 1.5/0.8 */
+	padding: 0 1.875em; /* 1.5/0.8 */
 }
 
 .ve-init-mw-viewPageTarget-toolbar {
-	margin: -1em -1em 1em -1em;
+	margin: -1em;
 	-webkit-transition: margin 200ms ease-out;
 	-moz-transition: margin 200ms ease-out;
 	-o-transition: margin 200ms ease-out;
@@ -28,4 +25,8 @@
 
 .ve-init-mw-viewPageTarget-toolbar .ve-ui-toolbar-bar {
 	display: none;
+}
+
+.ve-ui-surface-overlay-global {
+	z-index: 101; /* #p-personal is z-index 100 in vector :( */
 }
