@@ -629,8 +629,8 @@ ve.ce.Surface.prototype.onPaste = function () {
 	scrollTop = $window.scrollTop();
 	this.$pasteTarget.html( '' ).show().focus();
 
-	setTimeout( function () {
-		var pasteText, pasteData, tx,
+	setTimeout( ve.bind( function () {
+		var pasteData, slice, tx,
 			key = '';
 
 		// Create key from text and element names
@@ -641,26 +641,25 @@ ve.ce.Surface.prototype.onPaste = function () {
 
 		// Get linear model from clipboard or create array from unknown pasted content
 		if ( view.clipboard[key] ) {
-			pasteData = view.clipboard[key];
+			slice = view.clipboard[key];
 		} else {
-			pasteText = view.$pasteTarget.text().replace( /\n/gm, '' );
-			pasteData = new ve.dm.DocumentSlice( ve.splitClusters( pasteText ) );
+			slice = new ve.dm.DocumentSlice(
+				ve.splitClusters(
+					view.$pasteTarget.text().replace( /\n/gm, '' )
+				)
+			);
 		}
+		pasteData = slice.getBalancedData();
 
-		// Transact
-		try {
-			tx = ve.dm.Transaction.newFromInsertion(
-				view.documentView.model,
-				selection.start,
-				pasteData.getData()
-			);
-		} catch ( e ) {
-			tx = ve.dm.Transaction.newFromInsertion(
-				view.documentView.model,
-				selection.start,
-				pasteData.getBalancedData()
-			);
-		}
+		// Annotate
+		ve.dm.Document.addAnnotationsToData( pasteData, this.model.getInsertionAnnotations() );
+
+		// Transaction
+		tx = ve.dm.Transaction.newFromInsertion(
+			view.documentView.model,
+			selection.start,
+			pasteData
+		);
 
 		// Restore focus and scroll position
 		view.documentView.documentNode.$.focus();
@@ -673,7 +672,7 @@ ve.ce.Surface.prototype.onPaste = function () {
 
 		// Allow pasting again
 		view.pasting = false;
-	} );
+	}, this ) );
 };
 
 /**
@@ -1247,7 +1246,7 @@ ve.ce.Surface.prototype.handleDelete = function ( e, backspace ) {
 	if ( !rangeToRemove.isCollapsed() ) {
 		// If after processing removal transaction range is not collapsed it means that not
 		// everything got merged nicely (at this moment transaction processor is capable of merging
-		// nodes of the same type and at the same depth level only), so we process with another 
+		// nodes of the same type and at the same depth level only), so we process with another
 		// merging that takes remaing data from "endNode" and inserts it at the end of "startNode",
 		// "endNode" or recrusivly its parent (if have only one child) gets removed.
 		endNode = this.documentView.getNodeFromOffset( rangeToRemove.end, false );
