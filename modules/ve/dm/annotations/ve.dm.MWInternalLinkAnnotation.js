@@ -5,6 +5,8 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
+/*global mw */
+
 /**
  * DataModel MediaWiki internal link annotation.
  *
@@ -36,12 +38,15 @@ ve.dm.MWInternalLinkAnnotation.static.toDataElement = function ( domElements ) {
 	// The href is simply the title, unless we're dealing with a page that has slashes in its name
 	// in which case it's preceded by one or more instances of "./" or "../", so strip those
 	/*jshint regexp:false */
-	var matches = domElements[0].getAttribute( 'href' ).match( /^((?:\.\.?\/)*)(.*)$/ );
+	var matches = domElements[0].getAttribute( 'href' ).match( /^((?:\.\.?\/)*)(.*)$/ ),
+		// Normalize capitalisation and underscores
+		normalizedTitle = ve.dm.MWInternalLinkAnnotation.static.normalizeTitle( matches[2] );
 	return {
 		'type': 'link/mwInternal',
 		'attributes': {
 			'hrefPrefix': matches[1],
 			'title': decodeURIComponent( matches[2] ).replace( /_/g, ' ' ),
+			'normalizedTitle': normalizedTitle,
 			'origTitle': matches[2]
 		}
 	};
@@ -67,13 +72,33 @@ ve.dm.MWInternalLinkAnnotation.static.toDomElements = function ( dataElement, do
 	return [ domElement ];
 };
 
+/**
+ * Normalize title for comparison purposes
+ * @param {string} title Original title
+ * @returns {string} Normalized title
+ */
+ve.dm.MWInternalLinkAnnotation.static.normalizeTitle = function ( title ) {
+	var normalizedTitle = title;
+	try {
+		normalizedTitle = new mw.Title( title ).getPrefixedText();
+	} catch ( e ) {}
+	return normalizedTitle;
+};
+
 /* Methods */
 
 ve.dm.MWInternalLinkAnnotation.prototype.getComparableObject = function () {
 	return {
 		'type': this.getType(),
-		'title': this.getAttribute( 'title' )
+		'normalizedTitle': this.getAttribute( 'normalizedTitle' )
 	};
+};
+
+ve.dm.MWInternalLinkAnnotation.prototype.getComparableHtmlAttributes = function () {
+	var attributes = ve.dm.Annotation.prototype.getComparableHtmlAttributes.call( this );
+	delete attributes.href;
+	delete attributes.rel;
+	return attributes;
 };
 
 /* Registration */

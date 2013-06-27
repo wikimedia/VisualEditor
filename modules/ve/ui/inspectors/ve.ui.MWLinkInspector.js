@@ -73,7 +73,8 @@ ve.ui.MWLinkInspector.prototype.getAnnotationFromTarget = function ( target ) {
 		return new ve.dm.MWInternalLinkAnnotation( {
 			'type': 'link/mwInternal',
 			'attributes': {
-				'title': target
+				'title': target,
+				'normalizedTitle': ve.dm.MWInternalLinkAnnotation.static.normalizeTitle( target )
 			}
 		} );
 	}
