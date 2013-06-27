@@ -33,12 +33,7 @@ ve.dm.MWImageCaptionNode.static.toDataElement = function () {
 };
 
 ve.dm.MWImageCaptionNode.static.toDomElements = function ( dataElement, doc ) {
-	// TODO: Parsoid requires figcaption tag to have class mw-figcaption set in order to be
-	// serialized correctly, however this is going to change in the future and then this code can
-	// be simplified.
-	var figcaption = doc.createElement( 'figcaption' );
-	figcaption.setAttribute( 'class', 'mw-figcaption' );
-	return [ figcaption ];
+	return [ doc.createElement( 'figcaption' ) ];
 };
 
 /* Registration */
