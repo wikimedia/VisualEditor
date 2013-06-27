@@ -1128,6 +1128,7 @@ ve.ce.Surface.prototype.handleEnter = function ( e ) {
 			tx = ve.dm.Transaction.newFromInsertion(
 				documentModel, contentBranchModel.getOuterRange().from, emptyParagraph
 			);
+			advanceCursor = false;
 		} else if ( cursor === contentBranchModelRange.to ) {
 			tx = ve.dm.Transaction.newFromInsertion(
 				documentModel, contentBranchModel.getOuterRange().to, emptyParagraph
