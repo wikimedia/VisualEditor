@@ -851,7 +851,6 @@ ve.init.mw.ViewPageTarget.prototype.setUpSurface = function ( doc ) {
 	this.surface.getModel().connect( this, { 'transact': 'onSurfaceModelTransact' } );
 	this.surface.getModel().connect( this, { 'history': 'onSurfaceModelHistory' } );
 	this.$.append( this.surface.$ );
-	this.surface.initialize();
 	this.setUpToolbar();
 	this.transformPageTitle();
 	this.changeDocumentTitle();
@@ -867,6 +866,7 @@ ve.init.mw.ViewPageTarget.prototype.setUpSurface = function ( doc ) {
 
 	// Add appropriately mw-content-ltr or mw-content-rtl class
 	this.surface.$.addClass( 'mw-content-' + mw.config.get( 'wgVisualEditor' ).pageLanguageDir );
+	this.surface.initialize();
 };
 
 /**
