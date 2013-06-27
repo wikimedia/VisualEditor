@@ -856,6 +856,7 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
  * Data will be fixed up so that unopened closings and unclosed openings in the document data slice
  * are balanced.
  *
+ * @param {ve.Range} range Range to get contents of
  * @returns {ve.dm.DocumentSlice} Balanced slice of linear model data
  */
 ve.dm.Document.prototype.getSlice = function ( range ) {

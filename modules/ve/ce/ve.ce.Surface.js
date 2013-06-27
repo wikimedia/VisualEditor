@@ -588,6 +588,9 @@ ve.ce.Surface.prototype.onCopy = function () {
 		slice = this.documentView.model.getSlice( this.model.getSelection() ),
 		key = '';
 
+	// CLone the elements in the slice
+	slice.cloneElements();
+
 	// Create key from text and element names
 	$frag.contents().each( function () {
 		key += this.textContent || this.nodeName;
