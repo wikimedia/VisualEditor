@@ -37,7 +37,8 @@ ve.ui.Toolbar = function VeUiToolbar( surface, options ) {
 	this.$window = null;
 	this.windowEvents = {
 		'resize': ve.bind( this.onWindowResize, this ),
-		'scroll': ve.bind( this.onWindowScroll, this )
+		'scroll': ve.bind( this.onWindowScroll, this ),
+		'keypress': ve.bind( this.onWindowKeypress, this )
 	};
 
 	// Events
@@ -101,7 +102,7 @@ ve.ui.Toolbar.prototype.onWindowScroll = function () {
 };
 
 /**
- * Handle window scroll events while toolbar floating is enabled.
+ * Handle window resize events while toolbar floating is enabled.
  *
  * Toolbar will stick to the top of the screen unless it would be over or under the last visible
  * branch node in the root of the document being edited, at which point it will stop just above it.
@@ -118,6 +119,22 @@ ve.ui.Toolbar.prototype.onWindowResize = function () {
 			'right': this.$window.width() - this.$.outerWidth() - offset.left
 		} );
 		this.surface.emit( 'toolbarPosition', this.$bar );
+	}
+};
+
+/**
+ * Method to scroll to the cursor position while toolbar is floating on keypress only if
+ * the cursor is obscured by the toolbar.
+ *
+ */
+ve.ui.Toolbar.prototype.onWindowKeypress = function () {
+	var cursorPos = this.surface.view.getSelectionRect(),
+		scrollTo = cursorPos.end.y - this.surface.view.$.offset().top,
+		obscured = cursorPos.end.y - this.$window.scrollTop() < this.$.height() + this.$.offset().top;
+
+	// If toolbar is floating and cursor is obscured, scroll cursor into view
+	if ( obscured && this.floating ) {
+		$( 'html,body' ).animate( { scrollTop: scrollTo }, 0 );
 	}
 };
 
