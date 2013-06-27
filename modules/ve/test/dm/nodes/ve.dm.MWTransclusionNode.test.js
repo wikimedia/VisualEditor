@@ -61,6 +61,36 @@ QUnit.test( 'getWikitext', function ( assert ) {
 				}
 			},
 			'wikitext': '{{foo|bar=You should try using <nowiki>{{ping|foo=bar|2=1}}</nowiki> as a transclusion!}}'
+		},
+		{
+			'msg': 'parameter containing another template invocation',
+			'mw': {
+				'target': { 'wt': 'foo' },
+				'params': {
+					'bar': { 'wt': '{{ping|foo=bar|2=1}}' }
+				}
+			},
+			'wikitext': '{{foo|bar={{ping|foo=bar|2=1}}}}'
+		},
+		{
+			'msg': 'parameter containing another parameter',
+			'mw': {
+				'target': { 'wt': 'foo' },
+				'params': {
+					'bar': { 'wt': '{{{1}}}' }
+				}
+			},
+			'wikitext': '{{foo|bar={{{1}}}}}'
+		},
+		{
+			'msg': 'parameter containing unmatched close brackets and floating pipes',
+			'mw': {
+				'target': { 'wt': 'foo' },
+				'params': {
+					'bar': { 'wt': '}} |' }
+				}
+			},
+			'wikitext': '{{foo|bar=<nowiki>}}</nowiki> <nowiki>|</nowiki>}}'
 		}
 	];
 	QUnit.expect( cases.length );
