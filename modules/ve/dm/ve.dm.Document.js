@@ -203,10 +203,15 @@ ve.dm.Document.addAnnotationsToData = function ( data, annotationSet ) {
 	}
 	// Apply annotations to data
 	for ( i = 0, length = data.length; i < length; i++ ) {
-		if ( !ve.isArray( data[i] ) ) {
+		if ( data[i].type ) {
+			// Element
+			continue;
+		} else if ( !ve.isArray( data[i] ) ) {
+			// Wrap in array
 			data[i] = [data[i]];
 			newAnnotationSet = annotationSet.clone();
 		} else {
+			// Add to existing array
 			newAnnotationSet = new ve.dm.AnnotationSet( store, data[i][1] );
 			newAnnotationSet.addSet( annotationSet.clone() );
 		}
