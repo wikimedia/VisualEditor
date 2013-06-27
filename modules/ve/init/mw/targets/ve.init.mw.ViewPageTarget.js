@@ -1136,7 +1136,7 @@ ve.init.mw.ViewPageTarget.prototype.setupSectionEditLinks = function () {
 
 		// Events
 		$heading.on( { 'mouseenter': expandSoon, 'mouseleave': shrinkSoon } );
-		$links.on( { 'focus': expand, 'blur': shrink } );
+		$links.on( { 'focus': expand, 'blur': shrinkSoon } );
 		$editLink.click( handler );
 
 		// Initialization
