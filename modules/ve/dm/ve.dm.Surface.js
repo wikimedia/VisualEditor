@@ -149,7 +149,7 @@ ve.dm.Surface.prototype.getHistory = function () {
  * Get annotations that will be used upon insertion.
  *
  * @method
- * @returns {ve.dm.AnnotationSet|null} Insertion anotations or null if not being used
+ * @returns {ve.dm.AnnotationSet} Insertion anotations
  */
 ve.dm.Surface.prototype.getInsertionAnnotations = function () {
 	return this.insertionAnnotations.clone();

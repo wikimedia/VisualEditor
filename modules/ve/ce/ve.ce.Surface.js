@@ -632,8 +632,8 @@ ve.ce.Surface.prototype.onPaste = function () {
 	scrollTop = $window.scrollTop();
 	this.$pasteTarget.html( '' ).show().focus();
 
-	setTimeout( function () {
-		var pasteText, pasteData, tx,
+	setTimeout( ve.bind( function () {
+		var pasteData, slice, tx,
 			key = '';
 
 		// Create key from text and element names
@@ -644,26 +644,25 @@ ve.ce.Surface.prototype.onPaste = function () {
 
 		// Get linear model from clipboard or create array from unknown pasted content
 		if ( view.clipboard[key] ) {
-			pasteData = view.clipboard[key];
+			slice = view.clipboard[key];
 		} else {
-			pasteText = view.$pasteTarget.text().replace( /\n/gm, '' );
-			pasteData = new ve.dm.DocumentSlice( ve.splitClusters( pasteText ) );
+			slice = new ve.dm.DocumentSlice(
+				ve.splitClusters(
+					view.$pasteTarget.text().replace( /\n/gm, '' )
+				)
+			);
 		}
+		pasteData = slice.getBalancedData();
 
-		// Transact
-		try {
-			tx = ve.dm.Transaction.newFromInsertion(
-				view.documentView.model,
-				selection.start,
-				pasteData.getData()
-			);
-		} catch ( e ) {
-			tx = ve.dm.Transaction.newFromInsertion(
-				view.documentView.model,
-				selection.start,
-				pasteData.getBalancedData()
-			);
-		}
+		// Annotate
+		ve.dm.Document.addAnnotationsToData( pasteData, this.model.getInsertionAnnotations() );
+
+		// Transaction
+		tx = ve.dm.Transaction.newFromInsertion(
+			view.documentView.model,
+			selection.start,
+			pasteData
+		);
 
 		// Restore focus and scroll position
 		view.documentView.documentNode.$.focus();
@@ -676,7 +675,7 @@ ve.ce.Surface.prototype.onPaste = function () {
 
 		// Allow pasting again
 		view.pasting = false;
-	} );
+	}, this ) );
 };
 
 /**
