@@ -57,23 +57,19 @@ ve.ui.MenuWidget.prototype.onKeyDown = function ( e ) {
 
 	if ( !this.disabled && this.visible ) {
 		switch ( e.keyCode ) {
-			// Enter
-			case 13:
+			case ve.Keys.ENTER:
 				this.selectItem( highlightItem );
 				handled = true;
 				break;
-			// Up arrow
-			case 38:
+			case ve.Keys.UP:
 				this.highlightItem( this.getRelativeSelectableItem( highlightItem, -1 ) );
 				handled = true;
 				break;
-			// Down arrow
-			case 40:
+			case ve.Keys.DOWN:
 				this.highlightItem( this.getRelativeSelectableItem( highlightItem, 1 ) );
 				handled = true;
 				break;
-			// Escape
-			case 27:
+			case ve.Keys.ESCAPE:
 				if ( highlightItem ) {
 					highlightItem.setHighlighted( false );
 				}

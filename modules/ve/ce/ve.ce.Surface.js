@@ -545,7 +545,7 @@ ve.ce.Surface.prototype.onDocumentKeyPress = function ( e ) {
  */
 ve.ce.Surface.prototype.onDocumentKeyUp = function ( e ) {
 	// Detect end of selecting by letting go of shift
-	if ( !this.dragging && this.selecting && e.keyCode === 16 ) {
+	if ( !this.dragging && this.selecting && e.keyCode === ve.Keys.SHIFT ) {
 		this.selecting = false;
 		this.emit( 'selectionEnd' );
 	}

@@ -107,7 +107,7 @@ ve.ui.Inspector.prototype.onFormSubmit = function () {
  */
 ve.ui.Inspector.prototype.onFormKeyDown = function ( e ) {
 	// Escape
-	if ( e.which === 27 ) {
+	if ( e.which === ve.Keys.ESCAPE ) {
 		this.close( 'back' );
 		return false;
 	}

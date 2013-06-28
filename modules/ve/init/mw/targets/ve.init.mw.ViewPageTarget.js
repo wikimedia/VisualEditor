@@ -1466,7 +1466,7 @@ ve.init.mw.ViewPageTarget.prototype.showSaveDialog = function () {
 
 	$( document ).on( 'keydown.ve-savedialog', function ( e ) {
 		// Escape
-		if ( e.which === 27 ) {
+		if ( e.which === ve.Keys.ESCAPE ) {
 			viewPage.onSaveDialogCloseButtonClick();
 		}
 	} );

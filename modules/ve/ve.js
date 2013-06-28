@@ -917,7 +917,9 @@
 		'HOME': 36,
 		'TAB': 9,
 		'PAGEUP': 33,
-		'PAGEDOWN': 34
+		'PAGEDOWN': 34,
+		'ESCAPE': 27,
+		'SHIFT': 16
 	};
 
 	// Expose

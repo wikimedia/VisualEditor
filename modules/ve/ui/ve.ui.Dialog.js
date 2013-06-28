@@ -86,6 +86,19 @@ ve.ui.Dialog.prototype.onDocumentKeyDown = function ( e ) {
 };
 
 /**
+ * Handle frame document key down events.
+ *
+ * @method
+ * @param {jQuery.Event} e Key down event
+ */
+ve.ui.Dialog.prototype.onFrameDocumentKeyDown = function ( e ) {
+	if ( e.which === ve.Keys.ESCAPE ) {
+		this.close( 'cancel' );
+		return false;
+	}
+};
+
+/**
  * Open window.
  *
  * Wraps the parent open method. Disables native top-level window scrolling behavior.
@@ -139,6 +152,7 @@ ve.ui.Dialog.prototype.initialize = function () {
 	// Events
 	this.closeButton.connect( this, { 'click': 'onCloseButtonClick' } );
 	this.applyButton.connect( this, { 'click': 'onApplyButtonClick' } );
+	this.frame.$document.on( 'keydown', ve.bind( this.onFrameDocumentKeyDown, this ) );
 
 	// Initialization
 	this.closeButton.$.addClass( 've-ui-window-closeButton' );
