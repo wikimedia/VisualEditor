@@ -73,7 +73,7 @@ ve.ui.OptionWidget.static.highlightable = true;
  * @returns {boolean} Item is selectable
  */
 ve.ui.OptionWidget.prototype.isSelectable = function () {
-	return this.constructor.static.selectable;
+	return this.constructor.static.selectable && !this.disabled;
 };
 
 /**
@@ -83,7 +83,7 @@ ve.ui.OptionWidget.prototype.isSelectable = function () {
  * @returns {boolean} Item is highlightable
  */
 ve.ui.OptionWidget.prototype.isHighlightable = function () {
-	return this.constructor.static.highlightable;
+	return this.constructor.static.highlightable && !this.disabled;
 };
 
 /**
