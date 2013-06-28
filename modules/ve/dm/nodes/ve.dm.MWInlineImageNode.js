@@ -45,9 +45,11 @@ ve.dm.MWInlineImageNode.static.toDataElement = function ( domElements ) {
 		$img = $firstChild.children().first(),
 		typeofAttr = $span.attr( 'typeof' ),
 		classes = $span.attr( 'class' ),
+		recognizedClasses = [],
 		attributes = {
 			src: $img.attr( 'src' ),
-			resource: $img.attr( 'resource' )
+			resource: $img.attr( 'resource' ),
+			originalClasses: classes
 		},
 		width = $img.attr( 'width' ),
 		height = $img.attr( 'height' );
@@ -61,8 +63,7 @@ ve.dm.MWInlineImageNode.static.toDataElement = function ( domElements ) {
 	}
 
 	// Extract individual classes
-	classes = typeof classes === 'string' ?
-		classes.replace( /\s{2,}/g, ' ' ).split( ' ' ) : [];
+	classes = typeof classes === 'string' ? classes.trim().split( /\s+/ ) : [];
 
 	// Type
 	switch ( typeofAttr ) {
@@ -77,20 +78,28 @@ ve.dm.MWInlineImageNode.static.toDataElement = function ( domElements ) {
 	// Vertical alignment
 	if ( classes.indexOf( 'mw-valign-middle' ) !== -1 ) {
 		attributes.valign = 'middle';
+		recognizedClasses.push( 'mw-valign-middle' );
 	} else if ( classes.indexOf( 'mw-valign-baseline' ) !== -1 ) {
 		attributes.valign = 'baseline';
+		recognizedClasses.push( 'mw-valign-baseline' );
 	} else if ( classes.indexOf( 'mw-valign-sub' ) !== -1 ) {
 		attributes.valign = 'sub';
+		recognizedClasses.push( 'mw-valign-sub' );
 	} else if ( classes.indexOf( 'mw-valign-super' ) !== -1 ) {
 		attributes.valign = 'super';
+		recognizedClasses.push( 'mw-valign-super' );
 	} else if ( classes.indexOf( 'mw-valign-top' ) !== -1 ) {
 		attributes.valign = 'top';
+		recognizedClasses.push( 'mw-valign-top' );
 	} else if ( classes.indexOf( 'mw-valign-text-top' ) !== -1 ) {
 		attributes.valign = 'text-top';
+		recognizedClasses.push( 'mw-valign-text-top' );
 	} else if ( classes.indexOf( 'mw-valign-bottom' ) !== -1 ) {
 		attributes.valign = 'bottom';
+		recognizedClasses.push( 'mw-valign-bottom' );
 	} else if ( classes.indexOf( 'mw-valign-text-bottom' ) !== -1 ) {
 		attributes.valign = 'text-bottom';
+		recognizedClasses.push( 'mw-valign-text-bottom' );
 	} else {
 		attributes.valign = 'default';
 	}
@@ -98,19 +107,27 @@ ve.dm.MWInlineImageNode.static.toDataElement = function ( domElements ) {
 	// Border
 	if ( classes.indexOf( 'mw-image-border' ) !== -1 ) {
 		attributes.border = true;
+		recognizedClasses.push( 'mw-image-border' );
 	}
 
 	// Default-size
 	if ( classes.indexOf( 'mw-default-size' ) !== -1 ) {
 		attributes.defaultSize = true;
+		recognizedClasses.push( 'mw-default-size' );
 	}
+
+	// Store unrecognized classes so we can restore them on the way out
+	attributes.unrecognizedClasses = ve.simpleArrayDifference( classes, recognizedClasses );
+
 	return { 'type': 'mwInlineImage', 'attributes': attributes };
 };
 
 ve.dm.MWInlineImageNode.static.toDomElements = function ( data, doc ) {
-	var span = doc.createElement( 'span' ),
+	var firstChild,
+		span = doc.createElement( 'span' ),
 		img = doc.createElement( 'img' ),
-		firstChild;
+		classes = [],
+		originalClasses = data.attributes.originalClasses;
 
 	ve.setDomAttributes( img, data.attributes, [ 'src', 'width', 'height', 'resource' ] );
 
@@ -124,15 +141,28 @@ ve.dm.MWInlineImageNode.static.toDomElements = function ( data, doc ) {
 	}
 
 	if ( data.attributes.defaultSize ) {
-		span.className += ' mw-default-size';
+		classes.push( 'mw-default-size' );
 	}
 
 	if ( data.attributes.border ) {
-		span.className += ' mw-image-border';
+		classes.push( 'mw-image-border' );
 	}
 
 	if ( data.attributes.valign && data.attributes.valign !== 'default' ) {
-		span.className += ' mw-image-' + data.attributes.valign;
+		classes.push( 'mw-valign-' + data.attributes.valign );
+	}
+
+	if ( data.attributes.unrecognizedClasses ) {
+		classes = ve.simpleArrayUnion( classes, data.attributes.unrecognizedClasses );
+	}
+
+	if (
+		originalClasses &&
+		ve.compare( originalClasses.trim().split( /\s+/ ).sort(), classes.sort() )
+	) {
+		span.className = originalClasses;
+	} else if ( classes.length > 0 ) {
+		span.className = classes.join( ' ' );
 	}
 
 	if ( data.attributes.isLinked ) {
