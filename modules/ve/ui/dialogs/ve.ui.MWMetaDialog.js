@@ -416,8 +416,7 @@ ve.ui.MWMetaDialog.prototype.onMetaListRemove = function ( metaItem ) {
  * @param {Object} metaBase meta list insert object
  */
 ve.ui.MWMetaDialog.prototype.insertMetaListItem = function ( metaBase ) {
-	var offset = this.surface.getModel().getDocument().getData().length;
-	this.metaList.insertMeta( metaBase, offset );
+	this.metaList.insertMeta( metaBase );
 };
 
 /* Registration */
