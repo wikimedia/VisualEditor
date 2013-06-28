@@ -57,7 +57,7 @@ ve.ui.LinkInspector.prototype.initialize = function () {
 
 	// Properties
 	this.targetInput = new this.constructor.static.linkTargetInputWidget( {
-		'$$': this.frame.$$, '$overlay': this.surface.$localOverlay
+		'$$': this.frame.$$, '$overlay': this.surface.$localOverlayMenus
 	} );
 
 	// Initialization
