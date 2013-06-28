@@ -44,6 +44,7 @@ ve.ui.MWTransclusionDialog = function VeUiMWTransclusionDialog( surface, config 
 	// Properties
 	this.node = null;
 	this.transclusion = null;
+	this.pending = [];
 };
 
 /* Inheritance */
@@ -117,6 +118,9 @@ ve.ui.MWTransclusionDialog.prototype.onClose = function ( action ) {
 		}
 	}
 
+	this.transclusion.disconnect( this );
+	this.transclusion.abortRequests();
+	this.transclusion = null;
 	this.clearPages();
 	this.node = null;
 	this.content = null;
@@ -129,7 +133,7 @@ ve.ui.MWTransclusionDialog.prototype.onClose = function ( action ) {
  * @param {ve.dm.MWTransclusionPartModel} part Added part
  */
 ve.ui.MWTransclusionDialog.prototype.onAddPart = function ( part ) {
-	var i, len, page, params, param, names;
+	var i, len, page, params, param, names, pending, item;
 
 	if ( part instanceof ve.dm.MWTemplateModel ) {
 		page = this.getTemplatePage( part );
@@ -151,6 +155,21 @@ ve.ui.MWTransclusionDialog.prototype.onAddPart = function ( part ) {
 				this.addPage( param.getId(), page );
 			}
 			part.connect( this, { 'add': 'onAddParameter', 'remove': 'onRemoveParameter' } );
+		}
+	}
+	// Resolve pending placeholder
+	for ( i = 0, len = this.pending.length; i < len; i++ ) {
+		pending = this.pending[i];
+		if ( pending.part === part ) {
+			// Auto-select new part if placeholder is still selected
+			item = this.outlineWidget.getSelectedItem();
+			if ( item.getData() === pending.placeholder.getId() ) {
+				this.setPageByName( part.getId() );
+			}
+			// Cleanup
+			pending.placeholder.remove();
+			this.pending.splice( i, 1 );
+			break;
 		}
 	}
 };
@@ -550,8 +569,10 @@ ve.ui.MWTransclusionDialog.prototype.getPlaceholderPage = function ( placeholder
 
 		target = { 'href': new mw.Title( href ).getPrefixedText(), 'wt': value };
 		part = this.transclusion.addTemplate( target, ve.indexOf( placeholder, parts ) );
-		this.setPageByName( part.getId() );
-		placeholder.remove();
+		this.pending.push( { 'part': part, 'placeholder': placeholder } );
+		addTemplateInput.pushPending();
+		addTemplateButton.setDisabled( true );
+		removeButton.setDisabled( true );
 	}
 
 	addTemplateFieldset = new ve.ui.FieldsetLayout( {

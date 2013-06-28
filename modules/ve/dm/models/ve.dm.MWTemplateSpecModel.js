@@ -80,17 +80,15 @@ ve.dm.MWTemplateSpecModel.prototype.extend = function ( data ) {
 				this.getDefaultParameterSpec( key ),
 				paramObj
 			);
+			// Add aliased references
 			if ( paramObj.aliases.length ) {
 				for ( i = 0, len = paramObj.aliases.length; i < len; i++ ) {
 					this.params[ paramObj.aliases[i] ] = paramObj;
 				}
 			}
-			delete paramObj.aliases;
 		}
 	}
-	if ( data.sets ) {
-		this.sets = data.sets;
-	}
+	this.sets = data.sets;
 };
 
 /**

@@ -8,7 +8,8 @@
 /*global mw */
 
 ( function () {
-var hasOwn = Object.hasOwnProperty;
+var hasOwn = Object.hasOwnProperty,
+	specCache = {};
 
 /**
  * MediaWiki transclusion model.
@@ -24,8 +25,8 @@ ve.dm.MWTransclusionModel = function VeDmMWTransclusionModel() {
 
 	// Properties
 	this.parts = [];
-	this.specs = {};
 	this.uid = 0;
+	this.requests = [];
 };
 
 /* Inheritance */
@@ -81,7 +82,7 @@ ve.dm.MWTransclusionModel.prototype.load = function ( data ) {
 	}
 	// Add fetched specs to #specs store when the promise is resolved
 	return this.fetchSpecs( templates ).done( function ( specs ) {
-		ve.extendObject( this.specs, specs );
+		ve.extendObject( specCache, specs );
 	} );
 };
 
@@ -92,15 +93,16 @@ ve.dm.MWTransclusionModel.prototype.load = function ( data ) {
  * @returns {jQuery.Promise} Promise, resolved when spec is loaded
  */
 ve.dm.MWTransclusionModel.prototype.fetchSpecs = function ( templates ) {
-	var i, len, title,
+	var i, len, title, request,
+		requests = this.requests,
 		deferred = $.Deferred(),
 		specs = {},
 		titles = [];
 
-	// Get unique list of titles
+	// Get unique list of titles that aren't already loaded
 	for ( i = 0, len = templates.length; i < len; i++ ) {
 		title = templates[i].getTitle();
-		if ( ve.indexOf( title, titles ) === -1 ) {
+		if ( !specCache[title] && ve.indexOf( title, titles ) === -1 ) {
 			titles.push( title );
 		}
 	}
@@ -112,7 +114,7 @@ ve.dm.MWTransclusionModel.prototype.fetchSpecs = function ( templates ) {
 	}
 
 	// Request template specs from server
-	$.ajax( {
+	request = $.ajax( {
 		'url': mw.util.wikiScript( 'api' ),
 		'dataType': 'json',
 		'data': {
@@ -153,9 +155,31 @@ ve.dm.MWTransclusionModel.prototype.fetchSpecs = function ( templates ) {
 		} )
 		.fail( function () {
 			deferred.reject( 'http', arguments );
+		} )
+		.always( function () {
+			// Prune requests when complete
+			var index = requests.indexOf( request );
+			if ( index !== -1 ) {
+				requests.splice( index, 1 );
+			}
 		} );
+	requests.push( request );
 
 	return deferred.promise();
+};
+
+/**
+ * Abort any pending requests.
+ *
+ * @method
+ */
+ve.dm.MWTransclusionModel.prototype.abortRequests = function () {
+	var i, len;
+
+	for ( i = 0, len = this.requests.length; i < len; i++ ) {
+		this.requests[i].abort();
+	}
+	this.requests.length = 0;
 };
 
 /**
@@ -224,22 +248,32 @@ ve.dm.MWTransclusionModel.prototype.addContent = function ( value, index ) {
 /**
  * Add template part.
  *
+ * Templates are added asynchronously.
+ *
  * @method
  * @param {Object} target Template target
  * @param {string} target.wt Original wikitext of target
  * @param {string} [target.href] Hypertext reference to target
  * @param {number} [index] Specific index to add template at
- * @returns {ve.dm.MWTransclusionModel} Added template part
+ * @returns {ve.dm.MWTemplateModel} Added template part
  * @emits add
  */
 ve.dm.MWTransclusionModel.prototype.addTemplate = function ( target, index ) {
 	var part = new ve.dm.MWTemplateModel( this, target ),
-		title = part.getTitle();
+		title = part.getTitle(),
+		finish = ve.bind( this.addPart, this, part, index );
 
-	if ( hasOwn.call( this.specs, title ) ) {
-		part.getSpec().extend( this.specs[title] );
+	if ( hasOwn.call( specCache, title ) ) {
+		part.getSpec().extend( specCache[title] );
+		setTimeout( finish );
+	} else {
+		// Add fetched specs to #specs store when the promise is resolved
+		this.fetchSpecs( [ part ] )
+			.done( function ( specs ) {
+				ve.extendObject( specCache, specs );
+			} )
+			.always( finish );
 	}
-	this.addPart( part, index );
 	return part;
 };
 
@@ -317,17 +351,6 @@ ve.dm.MWTransclusionModel.prototype.getPartFromId = function ( id ) {
 		}
 	}
 	return null;
-};
-
-/**
- * Get a template specification.
- *
- * @method
- * @param {string} name Template name
- * @returns {ve.dm.MWTemplateSpecModel} Template spec
- */
-ve.dm.MWTransclusionModel.prototype.getTemplateSpec = function ( name ) {
-	return this.specs[name];
 };
 
 }() );
