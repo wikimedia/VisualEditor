@@ -114,6 +114,10 @@
 	overflow: visible;
 }
 
+.ve-init-mw-viewPageTarget-toolbarTracker-floating {
+	z-index: 100;
+}
+
 .ve-init-mw-viewPageTarget-saveDialog .ve-ui-buttonWidget {
 	float: right;
 	margin-left: 0.5em;
