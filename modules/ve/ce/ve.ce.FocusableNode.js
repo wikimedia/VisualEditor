@@ -126,6 +126,9 @@ ve.ce.FocusableNode.prototype.createHighlight = function () {
 
 	this.$.find( '*' ).add( this.$ ).each(
 		ve.bind( function( i, element ) {
+			if ( !$( element ).is( ':visible' ) ) {
+				return true;
+			}
 			elementOffset = $( element ).offset();
 			this.$highlights = this.$highlights.add(
 				$( '<div>' )
