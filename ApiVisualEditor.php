@@ -282,51 +282,57 @@ class ApiVisualEditor extends ApiBase {
 				}
 				break;
 			case 'save':
+				$wikitext = $this->postHTML( $page, $params['html'], $parserParams );
+
+				if ( $wikitext === false ) {
+					$this->dieUsage( 'Error contacting the Parsoid server', 'parsoidserver' );
+				}
+
+				$editResult = $this->saveWikitext( $page, $wikitext, $params );
+				if (
+					!isset( $editResult['edit']['result'] ) ||
+					$editResult['edit']['result'] !== 'Success'
+				) {
+					$result = array(
+						'result' => 'error',
+						'edit' => $editResult['edit']
+					);
+				} else {
+					if ( isset( $editResult['edit']['newrevid'] ) && $wgVisualEditorUseChangeTagging ) {
+						ChangeTags::addTags( 'visualeditor', null,
+							intval( $editResult['edit']['newrevid'] ),
+							null
+						);
+						if ( $params['needcheck'] ) {
+							ChangeTags::addTags( 'visualeditor-needcheck', null,
+								intval( $editResult['edit']['newrevid'] ),
+								null
+							);
+						}
+					}
+					$result = $this->parseWikitext( $page );
+					if ( $result === false ) {
+						$this->dieUsage( 'Error contacting the Parsoid server', 'parsoidserver' );
+					}
+					$result['result'] = 'success';
+					if ( isset( $editResult['edit']['newrevid'] ) ) {
+						$result['newrevid'] = intval( $editResult['edit']['newrevid'] );
+					}
+				}
+				break;
 			case 'diff':
 				$wikitext = $this->postHTML( $page, $params['html'], $parserParams );
 
 				if ( $wikitext === false ) {
 					$this->dieUsage( 'Error contacting the Parsoid server', 'parsoidserver' );
-				} elseif ( $params['paction'] === 'save' ) {
-					// Save page
-					$editResult = $this->saveWikitext( $page, $wikitext, $params );
-					if (
-						!isset( $editResult['edit']['result'] ) ||
-						$editResult['edit']['result'] !== 'Success'
-					) {
-						$result = array(
-							'result' => 'error',
-							'edit' => $editResult['edit']
-						);
-					} else {
-						if ( isset( $editResult['edit']['newrevid'] ) && $wgVisualEditorUseChangeTagging ) {
-							ChangeTags::addTags( 'visualeditor', null,
-								intval( $editResult['edit']['newrevid'] ),
-								null
-							);
-							if ( $params['needcheck'] ) {
-								ChangeTags::addTags( 'visualeditor-needcheck', null,
-									intval( $editResult['edit']['newrevid'] ),
-									null
-								);
-							}
-						}
-						$result = $this->parseWikitext( $page );
-						if ( $result === false ) {
-							$this->dieUsage( 'Error contacting the Parsoid server', 'parsoidserver' );
-						}
-						$result['result'] = 'success';
-						if ( isset( $editResult['edit']['newrevid'] ) ) {
-							$result['newrevid'] = intval( $editResult['edit']['newrevid'] );
-						}
-					}
-				} elseif ( $params['paction'] === 'diff' ) {
-					$diff = $this->diffWikitext( $page, $wikitext );
-					if ( $diff['result'] === 'fail' ) {
-						$this->dieUsage( 'Diff failed', 'difffailed' );
-					}
-					$result = $diff;
 				}
+
+				$diff = $this->diffWikitext( $page, $wikitext );
+				if ( $diff['result'] === 'fail' ) {
+					$this->dieUsage( 'Diff failed', 'difffailed' );
+				}
+				$result = $diff;
+
 				break;
 		}
 
