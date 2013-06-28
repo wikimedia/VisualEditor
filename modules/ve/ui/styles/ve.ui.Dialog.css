@@ -115,6 +115,14 @@
 	margin: 0.25em 0.25em;
 }
 
+.ve-ui-window-body .ve-ui-surface {
+	padding: 0.25em 1.25em;
+	border: solid 1px #ddd;
+	border-radius: 0.25em;
+	border-top-right-radius: 0;
+	border-top-left-radius: 0;
+}
+
 .ve-ui-pagedDialog-outlinePanel {
 	border-right: solid 1px #ddd;
 }
@@ -145,32 +153,24 @@
 	overflow: hidden;
 }
 
-/* ve.ui.MWReferenceDialog & ve.ui.MWReferenceListDialog */
+/* ve.ui.MWReferenceEditDialog & ve.ui.MWReferenceListDialog */
 
-.ve-ui-mwReferenceDialog-body,
+.ve-ui-mwReferenceEditDialog-body,
 .ve-ui-mwReferenceListDialog-body {
 	padding: 2em;
 	overflow-y: auto;
 }
 
-.ve-ui-mwReferenceDialog-toolbar {
+.ve-ui-mwReferenceEditDialog-toolbar {
 	font-size: 1.25em;
 }
 
-.ve-ui-mwReferenceDialog-toolbar .ve-ui-toolbar-bar {
+.ve-ui-mwReferenceEditDialog-toolbar .ve-ui-toolbar-bar {
 	border: solid 1px #ddd;
 	border-radius: 0.25em;
 	border-bottom-right-radius: 0;
 	border-bottom-left-radius: 0;
 	border-bottom-width: 0;
-}
-
-.ve-ui-window-body .ve-ui-surface {
-	padding: 0.25em 1.25em;
-	border: solid 1px #ddd;
-	border-radius: 0.25em;
-	border-top-right-radius: 0;
-	border-top-left-radius: 0;
 }
 
 /* ve.ui.MWTransclusionDialog */

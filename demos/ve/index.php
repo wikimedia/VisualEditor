@@ -333,8 +333,8 @@ $html = file_get_contents( $page );
 		<script src="../../modules/ve/dm/nodes/ve.dm.MWReferenceNode.js"></script>
 		<script src="../../modules/ve/ce/nodes/ve.ce.MWReferenceListNode.js"></script>
 		<script src="../../modules/ve/ce/nodes/ve.ce.MWReferenceNode.js"></script>
-		<script src="../../modules/ve/ui/tools/buttons/ve.ui.MWReferenceButtonTool.js"></script>
-		<script src="../../modules/ve/ui/dialogs/ve.ui.MWReferenceDialog.js"></script>
+		<script src="../../modules/ve/ui/tools/buttons/ve.ui.MWReferenceEditButtonTool.js"></script>
+		<script src="../../modules/ve/ui/dialogs/ve.ui.MWReferenceEditDialog.js"></script>
 
 		<!-- demo -->
 		<script>

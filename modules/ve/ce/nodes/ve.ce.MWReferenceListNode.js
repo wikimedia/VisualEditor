@@ -148,6 +148,7 @@ ve.ce.MWReferenceListNode.prototype.update = function () {
 					.append( itemNode.$.clone().show() )
 			);
 			this.$reflist.append( $li );
+			itemNode.destroy();
 		}
 		this.$.append( this.$reflist );
 	}
