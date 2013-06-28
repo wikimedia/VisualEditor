@@ -15,7 +15,7 @@ $messages['en'] = array(
 	'tooltip-ca-editsource' => 'Edit the source code of this page',
 	'tooltip-ca-ve-edit' => 'Edit this page with VisualEditor',
 	'visualeditor' => 'VisualEditor',
-	'visualeditor-aliennode-tooltip' => 'Sorry, this element cannot be edited using the VisualEditor',
+	'visualeditor-aliennode-tooltip' => 'Sorry, this element cannot yet be edited using VisualEditor',
 	'visualeditor-annotationbutton-bold-tooltip' => 'Bold',
 	'visualeditor-annotationbutton-italic-tooltip' => 'Italic',
 	'visualeditor-annotationbutton-link-tooltip' => 'Link',
@@ -50,7 +50,7 @@ $messages['en'] = array(
 	'visualeditor-dialog-meta-languages-code-label' => 'Language code',
 	'visualeditor-dialog-meta-languages-label' => 'Languages',
 	'visualeditor-dialog-meta-languages-link-label' => 'Linked page',
-	'visualeditor-dialog-meta-languages-readonlynote' => 'This is a list of pages in other languages that are linked to this one; it cannot yet be edited using the VisualEditor',
+	'visualeditor-dialog-meta-languages-readonlynote' => 'This is a list of pages in other languages that are linked to this one; it cannot yet be edited using VisualEditor',
 	'visualeditor-dialog-meta-languages-section' => 'Languages',
 	'visualeditor-dialog-meta-title' => 'Page settings',
 	'visualeditor-dialog-reference-content-section' => 'Reference content',
@@ -124,6 +124,7 @@ $messages['en'] = array(
 	'visualeditor-outline-control-move-up' => 'Move item up',
 	'visualeditor-preference-enable' => 'Enable VisualEditor (only in the [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|main]] and [[{{MediaWiki:Visualeditor-usernamespacepagelink}}|user]] namespaces)',
 	'visualeditor-referencelist-isempty' => 'There are no references with the group "$1" on this page.',
+	'visualeditor-referencelist-missingref' => 'This reference is defined in a template or other generated block, and cannot yet be edited with VisualEditor.',
 	'visualeditor-reference-input-placeholder' => 'What do you want to reference?',
 	'visualeditor-reference-search-create' => 'Create new source',
 	'visualeditor-reference-search-reuse' => 'Use an existing source',
@@ -176,14 +177,14 @@ See also:
 * {{msg-mw|Tooltip-ca-createsource}} - used if the page doesn\'t exist',
 	'tooltip-ca-ve-edit' => 'Tooltip of the dedicated VisualEditor "Edit" tab.',
 	'visualeditor' => 'The name of the VisualEditor extension',
-	'visualeditor-aliennode-tooltip' => 'Tooltip for items that the VisualEditor cannot edit',
+	'visualeditor-aliennode-tooltip' => 'Tooltip for items that VisualEditor cannot edit',
 	'visualeditor-annotationbutton-bold-tooltip' => 'Tooltip text for bold button',
 	'visualeditor-annotationbutton-italic-tooltip' => 'Tooltip text for italic button',
 	'visualeditor-annotationbutton-link-tooltip' => 'Tooltip text for link button',
 	'visualeditor-beta-label' => 'Text of tool in the toolbar that highlights that VisualEditor is still in beta.
 {{Identical|Beta}}',
 	'visualeditor-beta-warning' => "Note shown when user clicks on 'beta' label in VisualEditor, warning users that the software may have issues",
-	'visualeditor-browserwarning' => 'Edit notice shown when the VisualEditor loads, warning users that their browser is not officially supported',
+	'visualeditor-browserwarning' => 'Edit notice shown when VisualEditor loads, warning users that their browser is not officially supported',
 	'visualeditor-ca-createsource' => "Text for the create source link in the tab dropdown, if the page doesn't exist.
 
 If the page exists, the following link text is used: {{msg-mw|Visualeditor-ca-editsource}}",
@@ -196,7 +197,7 @@ Corresponds to the {{msg-mw|editsection}} message for default mode.',
 	'visualeditor-ca-ve-edit' => 'Link text of the dedicated VisualEditor "Edit" tab.',
 	'visualeditor-clearbutton-tooltip' => 'Tooltip text for the clear formatting button',
 	'visualeditor-desc' => '{{desc|name=VisualEditor|url=http://www.mediawiki.org/wiki/Extension:VisualEditor}}',
-	'visualeditor-descriptionpagelink' => 'Name of a page describing the use of the VisualEditor in this project.
+	'visualeditor-descriptionpagelink' => 'Name of a page describing the use of VisualEditor in this project.
 {{doc-important|Do not translate "Project"; it is automatically converted to the wiki\'s project namespace.}}',
 	'visualeditor-dialog-action-apply' => 'Label text for button to apply changes made in dialog.
 
@@ -348,7 +349,7 @@ Parameters:
 	'visualeditor-notification-saved' => 'Shown after a user saves a page, $1 is a page name.',
 	'visualeditor-outline-control-move-down' => 'Tool tip for a button that moves items in a list down one place',
 	'visualeditor-outline-control-move-up' => 'Tool tip for a button that moves items in a list up one place',
-	'visualeditor-preference-enable' => 'Label for the user preference to enable the VisualEditor.
+	'visualeditor-preference-enable' => 'Label for the user preference to enable VisualEditor.
 Links are in {{msg-mw|Visualeditor-mainnamespacepagelink}} and {{msg-mw|visualeditor-usernamespacepagelink}}.',
 	'visualeditor-preference-nosectionedit' => 'Label for the user preference to make section edit links go to the old editor instead of VisualEditor.',
 	'visualeditor-reference-input-placeholder' => 'Placeholder text for reference search field.',

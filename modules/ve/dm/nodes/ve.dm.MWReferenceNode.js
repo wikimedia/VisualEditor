@@ -158,6 +158,16 @@ ve.dm.MWReferenceNode.static.remapInternalListIndexes = function ( dataElement, 
 /* Methods */
 
 /**
+ * Don't allow reference nodes to be inspected if we can't find their contents.
+ *
+ * @inheritdoc
+ */
+ve.dm.MWReferenceNode.prototype.isInspectable = function () {
+	var internalItem = this.getInternalItem();
+	return internalItem && internalItem.getLength() > 0;
+};
+
+/**
  * Gets the internal item node associated with this node
  * @method
  * @returns {ve.dm.InternalItemNode} Item node

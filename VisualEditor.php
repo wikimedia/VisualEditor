@@ -605,6 +605,7 @@ $wgResourceModules += array(
 			'visualeditor-outline-control-move-up',
 			'visualeditor-outline-control-move-up',
 			'visualeditor-referencelist-isempty',
+			'visualeditor-referencelist-missingref',
 			'visualeditor-reference-input-placeholder',
 			'visualeditor-reference-search-create',
 			'visualeditor-reference-search-reuse',

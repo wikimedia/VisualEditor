@@ -248,6 +248,18 @@ ve.dm.Node.static.isHybridInline = function ( domElements, converter ) {
 /* Methods */
 
 /**
+ * Check whether this node can be inspected by a tool.
+ *
+ * The default implementation always returns true. If your node type is uninspectable in certain
+ * cases, you should override this function.
+ *
+ * @returns {boolean} Whether this node is inspectable
+ */
+ve.dm.Node.prototype.isInspectable = function () {
+	return true;
+};
+
+/**
  * Get a clone of the node's document data element.
  *
  * The attributes object will be deep-copied, and the .htmlAttributes and .internal.generated
