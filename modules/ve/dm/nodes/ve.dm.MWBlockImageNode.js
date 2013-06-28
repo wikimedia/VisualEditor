@@ -50,6 +50,7 @@ ve.dm.MWBlockImageNode.static.toDataElement = function ( domElements, converter 
 		$caption = $figure.children( 'figcaption' ).eq( 0 ),
 		typeofAttr = $figure.attr( 'typeof' ),
 		classes = $figure.attr( 'class' ),
+		recognizedClasses = [],
 		attributes = {
 			href: $a.attr( 'href' ),
 			src: $img.attr( 'src' ),
@@ -60,8 +61,7 @@ ve.dm.MWBlockImageNode.static.toDataElement = function ( domElements, converter 
 		};
 
 	// Extract individual classes
-	classes = typeof classes === 'string' ?
-		classes.replace( /\s{2,}/g, ' ' ).split( ' ' ) : [];
+	classes = typeof classes === 'string' ? classes.trim().split( /\s+/ ) : [];
 
 	// Type
 	switch ( typeofAttr ) {
@@ -82,12 +82,16 @@ ve.dm.MWBlockImageNode.static.toDataElement = function ( domElements, converter 
 	// Horizontal alignment
 	if ( classes.indexOf( 'mw-halign-left' ) !== -1 ) {
 		attributes.align = 'left';
+		recognizedClasses.push( 'mw-halign-left' );
 	} else if ( classes.indexOf( 'mw-halign-right' ) !== -1 ) {
 		attributes.align = 'right';
+		recognizedClasses.push( 'mw-halign-right' );
 	} else if ( classes.indexOf( 'mw-halign-center' ) !== -1 ) {
 		attributes.align = 'center';
+		recognizedClasses.push( 'mw-halign-center' );
 	} else if ( classes.indexOf( 'mw-halign-none' ) !== -1 ) {
 		attributes.align = 'none';
+		recognizedClasses.push( 'mw-halign-none' );
 	} else {
 		attributes.align = 'default';
 	}
@@ -95,7 +99,11 @@ ve.dm.MWBlockImageNode.static.toDataElement = function ( domElements, converter 
 	// Default-size
 	if ( classes.indexOf( 'mw-default-size' ) !== -1 ) {
 		attributes.defaultSize = true;
+		recognizedClasses.push( 'mw-default-size' );
 	}
+
+	// Store unrecognized classes so we can restore them on the way out
+	attributes.unrecognizedClasses = ve.simpleArrayDifference( classes, recognizedClasses );
 
 	if ( $caption.length === 0 ) {
 		return [
@@ -161,7 +169,14 @@ ve.dm.MWBlockImageNode.static.toDomElements = function ( data, doc, converter ) 
 			break;
 	}
 
-	if ( originalClasses && ve.compare( originalClasses.split( ' ' ).sort(), classes.sort() ) ) {
+	if ( dataElement.attributes.unrecognizedClasses ) {
+		classes = ve.simpleArrayUnion( classes, dataElement.attributes.unrecognizedClasses );
+	}
+
+	if (
+		originalClasses &&
+		ve.compare( originalClasses.trim().split( /\s+/ ).sort(), classes.sort() )
+	) {
 		figure.className = originalClasses;
 	} else if ( classes.length > 0 ) {
 		figure.className = classes.join( ' ' );

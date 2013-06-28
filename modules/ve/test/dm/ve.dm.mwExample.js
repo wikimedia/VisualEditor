@@ -12,7 +12,7 @@
  */
 ve.dm.mwExample = {};
 
-ve.dm.mwExample.MWInlineImageHtml = '<span typeof="mw:Image" data-parsoid="{&quot;tsr&quot;:[0,24],&quot;optList&quot;:[{&quot;ck&quot;:&quot;width&quot;,&quot;ak&quot;:&quot;500px&quot;}],&quot;cacheKey&quot;:&quot;[[Image:Wiki.png|500px]]&quot;,&quot;img&quot;:{&quot;h&quot;:155,&quot;w&quot;:135,&quot;wdset&quot;:true},&quot;dsr&quot;:[0,24,null,null]}"><a href="./File:Wiki.png" data-parsoid="{&quot;a&quot;:{&quot;href&quot;:&quot;./File:Wiki.png&quot;}}"><img resource="./File:Wiki.png" src="http://upload.wikimedia.org/wikipedia/en/b/bc/Wiki.png" height="155" width="135" data-parsoid="{&quot;a&quot;:{&quot;resource&quot;:&quot;./File:Wiki.png&quot;,&quot;width&quot;:&quot;135&quot;},&quot;sa&quot;:{&quot;resource&quot;:&quot;Image:Wiki.png&quot;,&quot;width&quot;:&quot;500&quot;}}"></a></span>';
+ve.dm.mwExample.MWInlineImageHtml = '<span typeof="mw:Image" class="foo mw-valign-text-top" data-parsoid="{&quot;tsr&quot;:[0,24],&quot;optList&quot;:[{&quot;ck&quot;:&quot;width&quot;,&quot;ak&quot;:&quot;500px&quot;}],&quot;cacheKey&quot;:&quot;[[Image:Wiki.png|500px]]&quot;,&quot;img&quot;:{&quot;h&quot;:155,&quot;w&quot;:135,&quot;wdset&quot;:true},&quot;dsr&quot;:[0,24,null,null]}"><a href="./File:Wiki.png" data-parsoid="{&quot;a&quot;:{&quot;href&quot;:&quot;./File:Wiki.png&quot;}}"><img resource="./File:Wiki.png" src="http://upload.wikimedia.org/wikipedia/en/b/bc/Wiki.png" height="155" width="135" data-parsoid="{&quot;a&quot;:{&quot;resource&quot;:&quot;./File:Wiki.png&quot;,&quot;width&quot;:&quot;135&quot;},&quot;sa&quot;:{&quot;resource&quot;:&quot;Image:Wiki.png&quot;,&quot;width&quot;:&quot;500&quot;}}"></a></span>';
 ve.dm.mwExample.MWTransclusion = {
 	'blockSpan':         '<span about="#mwt1" typeof="mw:Transclusion" data-mw="{&quot;target&quot;:{&quot;wt&quot;:&quot;Test&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;Hello, world!&quot;}},&quot;id&quot;:&quot;mwt1&quot;}" data-parsoid="{&quot;tsr&quot;:[18,40],&quot;src&quot;:&quot;{{Test|Hello, world!}}&quot;,&quot;dsr&quot;:[18,40,null,null]}"></span>',
 	'blockSpanModified': '<span about="#mwt1" typeof="mw:Transclusion" data-mw="{&quot;id&quot;:&quot;mwt1&quot;,&quot;target&quot;:{&quot;wt&quot;:&quot;Test&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;Hello, globe!&quot;}}}" data-parsoid="{&quot;tsr&quot;:[18,40],&quot;src&quot;:&quot;{{Test|Hello, world!}}&quot;,&quot;dsr&quot;:[18,40,null,null]}"></span>',
@@ -131,9 +131,11 @@ ve.dm.mwExample.domToDataCases = {
 					'width': 135,
 					'height': 155,
 					'isLinked': true,
-					'valign': 'default',
+					'valign': 'text-top',
 					'resource': './File:Wiki.png',
-					'type': 'inline'
+					'type': 'inline',
+					'originalClasses': 'foo mw-valign-text-top',
+					'unrecognizedClasses': ['foo']
 				},
 				'htmlAttributes': [
 					{
@@ -946,7 +948,7 @@ ve.dm.mwExample.domToDataCases = {
 		]
 	},
 	'thumb image': {
-		'html': '<body><figure typeof="mw:Image/Thumb" class="mw-halign-right"><a href="Foo"><img src="Bar" width="1" height="2" resource="FooBar"></a><figcaption>abc</figcaption></figure></body>',
+		'html': '<body><figure typeof="mw:Image/Thumb" class="mw-halign-right foobar"><a href="Foo"><img src="Bar" width="1" height="2" resource="FooBar"></a><figcaption>abc</figcaption></figure></body>',
 		'data': [
 			{
 				'type': 'mwBlockImage',
@@ -958,7 +960,8 @@ ve.dm.mwExample.domToDataCases = {
 					'width': '1',
 					'height': '2',
 					'resource': 'FooBar',
-					'originalClasses': 'mw-halign-right'
+					'originalClasses': 'mw-halign-right foobar',
+					'unrecognizedClasses': ['foobar']
 				}
 			},
 			{ 'type': 'mwImageCaption' },
@@ -984,7 +987,8 @@ ve.dm.mwExample.domToDataCases = {
 					'width': '1',
 					'height': '2',
 					'resource': 'FooBar',
-					'originalClasses': undefined
+					'originalClasses': undefined,
+					'unrecognizedClasses': []
 				},
 				'htmlAttributes': [ {
 					'values': { 'data-parsoid': '{}' },
