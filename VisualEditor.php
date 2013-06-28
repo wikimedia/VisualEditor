@@ -30,7 +30,10 @@ $wgVisualEditorEnableExperimentalCode = false;
 // * add: Adds #ca-ve-edit.
 // * replace: Re-creates #ca-edit for VisualEditor and adds #ca-editsource.
 $wgVisualEditorTabLayout = 'replace';
-
+// Conduct an optional survey (the user can decline to answer) on the user's gender
+// upon signup.
+// Depends on GuidedTour and EventLogging extensions.
+$wgVisualEditorEnableGenderSurvey = false;
 /* Setup */
 
 $wgExtensionCredits['other'][] = array(
@@ -98,6 +101,37 @@ $wgResourceModules += array(
 			've/init/mw/ve.init.mw.splitTest.js',
 		)
 	),
+
+	'ext.guidedTour.tour.vegendersurvey' => $wgVisualEditorResourceTemplate + array(
+		'scripts' => array(
+			've/init/mw/tours/vegendersurvey.js',
+		),
+		'dependencies' => array(
+			'ext.guidedTour.lib',
+		),
+		'messages' => array(
+			'guidedtour-tour-vegendersurvey-title',
+			'guidedtour-tour-vegendersurvey-description',
+			'guidedtour-tour-vegendersurvey-male',
+			'guidedtour-tour-vegendersurvey-female',
+			'guidedtour-tour-vegendersurvey-optout'
+		),
+	),
+
+	'ext.visualEditor.genderSurvey' => $wgVisualEditorResourceTemplate + array(
+		'scripts' => array(
+			've/init/mw/ve.init.mw.genderSurvey.js',
+		),
+		'styles' => array(
+			've/init/mw/ve.init.mw.genderSurvey.css',
+		),
+		'dependencies' => array(
+			'ext.guidedTour.lib',
+			'ext.guidedTour.tour.vegendersurvey',
+			'ext.visualEditor.mediawiki',
+		),
+	),
+
 	// Alias for backwards compat, safe to remove after
 	'ext.visualEditor.editPageInit' => $wgVisualEditorResourceTemplate + array(
 		'dependencies' => array(
@@ -663,7 +697,9 @@ $wgHooks['ResourceLoaderGetConfigVars'][] = 'VisualEditorHooks::onResourceLoader
 $wgHooks['ResourceLoaderTestModules'][] = 'VisualEditorHooks::onResourceLoaderTestModules';
 
 // Bug 49604: Running split test in production if $wgVisualEditorEnableSplitTest is true.
+// This requires that GuidedTour and EventLogging are also enabled on the wiki.
 $wgHooks['AddNewAccount'][] = 'VisualEditorHooks::onAddNewAccount';
+$wgHooks['BeforeWelcomeCreation'][] = 'VisualEditorHooks::onBeforeWelcomeCreation';
 
 $wgExtensionFunctions[] = 'VisualEditorHooks::onSetup';
 
