@@ -301,6 +301,7 @@ ve.ui.Window.prototype.open = function () {
 		this.emit( 'setup' );
 		this.$.show();
 		this.visible = true;
+		this.frame.$.focus();
 		this.frame.run( ve.bind( function () {
 			this.onOpen();
 			this.opening = false;
