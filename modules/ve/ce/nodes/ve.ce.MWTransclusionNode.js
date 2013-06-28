@@ -48,6 +48,8 @@ ve.mixinClass( ve.ce.MWTransclusionNode, ve.ce.GeneratedContentNode );
 
 ve.ce.MWTransclusionNode.static.name = 'mwTransclusion';
 
+ve.ce.MWTransclusionNode.static.renderHtmlAttributes = false;
+
 /* Methods */
 
 ve.ce.MWTransclusionNode.prototype.generateContents = function () {
