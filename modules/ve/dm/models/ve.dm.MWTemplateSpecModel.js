@@ -126,6 +126,7 @@ ve.dm.MWTemplateSpecModel.prototype.getDefaultParameterSpec = function ( name ) 
 		'default': '',
 		'type': 'string',
 		'aliases': [],
+		'origin': name,
 		'required': false,
 		'deprecated': false
 	};
@@ -222,6 +223,19 @@ ve.dm.MWTemplateSpecModel.prototype.getParameterType = function ( name ) {
  */
 ve.dm.MWTemplateSpecModel.prototype.getParameterAliases = function ( name ) {
 	return this.params[name].aliases;
+};
+
+/**
+ * Get the parameter origin, which is the parameter this is an alias of.
+ *
+ * If a parameter is not an alias of another, its origin and name will be the same.
+ *
+ * @method
+ * @param {string} name Parameter name
+ * @returns {string} Origin parameter name
+ */
+ve.dm.MWTemplateSpecModel.prototype.getParameterOrigin = function ( name ) {
+	return this.params[name].origin;
 };
 
 /**
