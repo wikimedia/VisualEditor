@@ -821,9 +821,10 @@
 		// FIXME detaching breaks access to newDocument in IE
 		iframe.parentNode.removeChild( iframe );
 
-		if ( !newDocument.body ) {
-			// Surprise! The document is not a document!
-			// Fun fact: this never happens on Opera when debugging with Dragonfly.
+		if ( !newDocument.documentElement || newDocument.documentElement.cloneNode() === undefined ) {
+			// Surprise! The document is not a document! Only happens on Opera.
+			// (Or its nodes are not actually nodes, while the document
+			// *is* a document. This only happens when debugging with Dragonfly.)
 			newDocument = document.implementation.createHTMLDocument( '' );
 			// Carefully unwrap the HTML out of the root node (and doctype, if any).
 			// <html> might have some arguments here, but they're apparently not important.
