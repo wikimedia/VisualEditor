@@ -2074,17 +2074,24 @@ ve.init.mw.ViewPageTarget.prototype.restoreEditSection = function () {
 /**
  * Show an inline warning.
  * @param {string} name Warning's unique name
- * @param {string} messageHtml Warning message HTML
+ * @param {string|jQuery} message Warning message (string of HTML, not text, or jQuery object)
+ * @param {Object} [options]
+ * @param {boolean} [options.wrap=true] Wrap the message in a paragraph.
  */
-ve.init.mw.ViewPageTarget.prototype.showWarning = function ( name, messageHtml ) {
+ve.init.mw.ViewPageTarget.prototype.showWarning = function ( name, message, options ) {
+	var $warning;
 	if ( !this.warnings[name] ) {
-		var warning = $(
-			'<p class="ve-init-mw-viewPageTarget-saveDialog-warning">' + messageHtml + '</p>'
-		);
-		this.$saveDialog
-			.find( '.ve-init-mw-viewPageTarget-saveDialog-warnings' )
-				.append( warning );
-		this.warnings[name] = warning;
+		options = options || {};
+		$warning = $( '<div class="ve-init-mw-viewPageTarget-saveDialog-warning"></div>' );
+		if ( options.wrap !== false ) {
+			$warning.append( $( '<p>').append( message ) );
+		} else {
+			$warning.append( message );
+		}
+		this.$saveDialog.find( '.ve-init-mw-viewPageTarget-saveDialog-warnings' )
+			.append( $warning );
+
+		this.warnings[name] = $warning;
 	}
 };
 
