@@ -27,6 +27,7 @@ ve.dm.MWTransclusionModel = function VeDmMWTransclusionModel() {
 	this.parts = [];
 	this.uid = 0;
 	this.requests = [];
+	this.queue = [];
 };
 
 /* Inheritance */
@@ -55,8 +56,7 @@ ve.mixinClass( ve.dm.MWTransclusionModel, ve.EventEmitter );
  * @returns {jQuery.Promise} Promise, resolved when spec is loaded
  */
 ve.dm.MWTransclusionModel.prototype.load = function ( data ) {
-	var i, len, key, part, template,
-		templates = [];
+	var i, len, key, part, template;
 
 	// Convert single part format to multi-part format
 	if ( data.params && data.target ) {
@@ -67,50 +67,85 @@ ve.dm.MWTransclusionModel.prototype.load = function ( data ) {
 		for ( i = 0, len = data.parts.length; i < len; i++ ) {
 			part = data.parts[i];
 			if ( part.template ) {
-				template = this.addTemplate( part.template.target );
+				template = new ve.dm.MWTemplateModel( this, part.template.target );
 				for ( key in part.template.params ) {
-					template.addParameter( key, part.template.params[key].wt );
+					template.addParameter(
+						new ve.dm.MWTemplateParameterModel(
+							template, key, part.template.params[key].wt
+						)
+					);
 				}
-				// Don't load specs for templates that don't have a resolvable target
-				if ( part.template.target.href ) {
-					templates.push( template );
-				}
+				this.queue.push( { 'part': template } );
 			} else if ( typeof part === 'string' ) {
-				this.addContent( part );
+				this.queue.push( { 'part': new ve.dm.MWTransclusionContentModel( this, part ) } );
 			}
 		}
+		setTimeout( ve.bind( this.fetch, this ) );
 	}
-	// Add fetched specs to #specs store when the promise is resolved
-	return this.fetchSpecs( templates ).done( function ( specs ) {
-		ve.extendObject( specCache, specs );
-	} );
 };
 
 /**
- * Fetch template specifications from server.
+ * Process one or more queue items.
  *
- * @param {ve.dm.MWTransclusionModel[]} templates List of templates to load data for
- * @returns {jQuery.Promise} Promise, resolved when spec is loaded
+ * @method
+ * @param {Object[]} queue List of objects containing parts to add and optionally indexes to add
+ *   them at, if no index is given parts will be added at the end
+ * @emits add For each item added
  */
-ve.dm.MWTransclusionModel.prototype.fetchSpecs = function ( templates ) {
-	var i, len, title, request,
-		requests = this.requests,
-		deferred = $.Deferred(),
-		specs = {},
-		titles = [];
+ve.dm.MWTransclusionModel.prototype.process = function ( queue ) {
+	var i, len, item, title, index;
 
-	// Get unique list of titles that aren't already loaded
-	for ( i = 0, len = templates.length; i < len; i++ ) {
-		title = templates[i].getTitle();
-		if ( !specCache[title] && ve.indexOf( title, titles ) === -1 ) {
-			titles.push( title );
+	for ( i = 0, len = queue.length; i < len; i++ ) {
+		item = queue[i];
+		if ( item.part instanceof ve.dm.MWTemplateModel ) {
+			title = item.part.getTitle();
+			if ( hasOwn.call( specCache, title ) && specCache[title] ) {
+				item.part.getSpec().extend( specCache[title] );
+			}
+		}
+		index = item.index === undefined ? this.parts.length : item.index;
+		this.parts.splice( index, 0, item.part );
+		this.emit( 'add', item.part );
+	}
+};
+
+ve.dm.MWTransclusionModel.prototype.fetch = function () {
+	if ( !this.queue.length ) {
+		return;
+	}
+
+	var i, len, item, title, request,
+		titles = [],
+		specs = {},
+		queue = this.queue.slice();
+
+	// Clear shared queue for future calls
+	this.queue.length = 0;
+
+	// Get unique list of template titles that aren't already loaded
+	for ( i = 0, len = queue.length; i < len; i++ ) {
+		item = queue[i];
+		if ( item.part instanceof ve.dm.MWTemplateModel ) {
+			title = item.part.getTitle();
+			if (
+				// Skip titles that don't have a resolvable href
+				title &&
+				// Skip titles outside the template namespace
+				title.charAt( 0 ) !== ':' &&
+				// Skip already cached data
+				!hasOwn.call( specCache, title ) &&
+				// Skip duplicate titles in the same batch
+				ve.indexOf( title, titles ) === -1
+			) {
+				titles.push( title );
+			}
 		}
 	}
 
 	// Bypass server for empty lists
 	if ( !titles.length ) {
-		setTimeout( deferred.reject );
-		return deferred.promise();
+		setTimeout( ve.bind( this.process, this, queue ) );
+		return;
 	}
 
 	// Request template specs from server
@@ -124,7 +159,7 @@ ve.dm.MWTransclusionModel.prototype.fetchSpecs = function ( templates ) {
 		}
 	} )
 		.done( function ( data ) {
-			var i, len, id, title;
+			var i, len, id;
 
 			if ( data && data.pages ) {
 				// Keep spec data on hand for future use
@@ -141,31 +176,28 @@ ve.dm.MWTransclusionModel.prototype.fetchSpecs = function ( templates ) {
 						}
 					}
 				}
-				// Load into existing templates
-				for ( i = 0, len = templates.length; i < len; i++ ) {
-					title = templates[i].getTitle();
-					if ( hasOwn.call( specs, title ) ) {
-						templates[i].getSpec().extend( specs[title] );
+				// Prevent asking again for templates that have no specs
+				for ( i = 0, len = titles.length; i < len; i++ ) {
+					title = titles[i];
+					if ( !specs[title] ) {
+						specs[title] = null;
 					}
 				}
-				deferred.resolve( specs );
-			} else {
-				deferred.reject( 'unavailable', arguments );
-			}
-		} )
-		.fail( function () {
-			deferred.reject( 'http', arguments );
-		} )
-		.always( function () {
-			// Prune requests when complete
-			var index = requests.indexOf( request );
-			if ( index !== -1 ) {
-				requests.splice( index, 1 );
-			}
-		} );
-	requests.push( request );
 
-	return deferred.promise();
+				ve.extendObject( specCache, specs );
+			}
+		} )
+		.always( ve.bind( function () {
+			// Prune completed request
+			var index = ve.indexOf( request, this.requests );
+			if ( index !== -1 ) {
+				this.requests.splice( index, 1 );
+			}
+			// Actually add queued items
+			this.process( queue );
+		}, this ) );
+
+	this.requests.push( request );
 };
 
 /**
@@ -231,78 +263,23 @@ ve.dm.MWTransclusionModel.prototype.getUniquePartId = function () {
 };
 
 /**
- * Add content part.
- *
- * @method
- * @param {string} value Content value
- * @param {number} [index] Specific index to add content at
- * @returns {ve.dm.MWTransclusionContentModel} Added content part
- * @emits add
- */
-ve.dm.MWTransclusionModel.prototype.addContent = function ( value, index ) {
-	var part = new ve.dm.MWTransclusionContentModel( this, value );
-	this.addPart( part, index );
-	return part;
-};
-
-/**
- * Add template part.
- *
- * Templates are added asynchronously.
- *
- * @method
- * @param {Object} target Template target
- * @param {string} target.wt Original wikitext of target
- * @param {string} [target.href] Hypertext reference to target
- * @param {number} [index] Specific index to add template at
- * @returns {ve.dm.MWTemplateModel} Added template part
- * @emits add
- */
-ve.dm.MWTransclusionModel.prototype.addTemplate = function ( target, index ) {
-	var part = new ve.dm.MWTemplateModel( this, target ),
-		title = part.getTitle(),
-		finish = ve.bind( this.addPart, this, part, index );
-
-	if ( hasOwn.call( specCache, title ) ) {
-		part.getSpec().extend( specCache[title] );
-		setTimeout( finish );
-	} else {
-		// Add fetched specs to #specs store when the promise is resolved
-		this.fetchSpecs( [ part ] )
-			.done( function ( specs ) {
-				ve.extendObject( specCache, specs );
-			} )
-			.always( finish );
-	}
-	return part;
-};
-
-/**
- * Add template placeholder part.
- *
- * @method
- * @param {number} [index] Specific index to add placeholder at
- * @returns {ve.dm.MWTransclusionModel} Added template part
- * @emits add
- */
-ve.dm.MWTransclusionModel.prototype.addPlaceholder = function ( index ) {
-	var part = new ve.dm.MWTemplatePlaceholderModel( this );
-
-	this.addPart( part, index );
-	return part;
-};
-
-/**
  * Add part.
+ *
+ * Added asynchronously, but order is preserved.
  *
  * @method
  * @param {ve.dm.MWTransclusionPartModel} part Part to add
- * @param {number} [index] Specific index to add content at
- * @emits add
+ * @param {number} [index] Specific index to add content at, defaults to the end
+ * @throws {Error} If part is not valid
  */
 ve.dm.MWTransclusionModel.prototype.addPart = function ( part, index ) {
-	this.parts.splice( index === undefined ? this.parts.length : index, 0, part );
-	this.emit( 'add', part );
+	if ( !( part instanceof ve.dm.MWTransclusionPartModel ) ) {
+		throw new Error( 'Invalid transclusion part' );
+	}
+	this.queue.push( { 'part': part, 'index': index } );
+	// Fetch on next yield to process items in the queue together, subsequent calls to fetch will
+	// have no effect because the queue will be clear
+	setTimeout( ve.bind( this.fetch, this ) );
 };
 
 /**

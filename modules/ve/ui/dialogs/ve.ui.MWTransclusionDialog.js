@@ -80,13 +80,14 @@ ve.ui.MWTransclusionDialog.prototype.onOpen = function () {
 	// Properties
 	this.transclusion = new ve.dm.MWTransclusionModel();
 
+	// Events
+	this.transclusion.connect( this, { 'add': 'onAddPart', 'remove': 'onRemovePart' } );
+
 	// Initialization
 	if ( this.node instanceof ve.ce.MWTransclusionNode ) {
-		this.transclusion.load( ve.copyObject( this.node.getModel().getAttribute( 'mw' ) ) )
-			.always( ve.bind( this.setupPages, this ) );
+		this.transclusion.load( ve.copyObject( this.node.getModel().getAttribute( 'mw' ) ) );
 	} else {
-		this.transclusion.addPlaceholder();
-		this.setupPages();
+		this.transclusion.addPart( new ve.dm.MWTemplatePlaceholderModel( this.transclusion ) );
 	}
 };
 
@@ -249,11 +250,13 @@ ve.ui.MWTransclusionDialog.prototype.onOutlineControlsAdd = function ( type ) {
 
 	switch ( type ) {
 		case 'content':
-			part = this.transclusion.addContent( '', this.getPartInsertionIndex() );
+			part = new ve.dm.MWTransclusionContentModel( this.transclusion, '' );
+			this.transclusion.addPart( part, this.getPartInsertionIndex() );
 			this.setPageByName( part.getId() );
 			break;
 		case 'template':
-			part = this.transclusion.addPlaceholder( this.getPartInsertionIndex() );
+			part = new ve.dm.MWTemplatePlaceholderModel( this.transclusion );
+			this.transclusion.addPart( part, this.getPartInsertionIndex() );
 			this.setPageByName( part.getId() );
 			break;
 	}
@@ -321,43 +324,6 @@ ve.ui.MWTransclusionDialog.prototype.getPageIndex = function ( item ) {
 };
 
 /**
- * Synchronize pages with transclusion.
- *
- * @method
- */
-ve.ui.MWTransclusionDialog.prototype.setupPages = function () {
-	// Build pages from parts
-	var i, iLen, j, jLen, part, param, names,
-		parts = this.transclusion.getParts();
-
-	// Populate pages
-	for ( i = 0, iLen = parts.length; i < iLen; i++ ) {
-		part = parts[i];
-		if ( part instanceof ve.dm.MWTemplateModel ) {
-			// Add template page
-			this.addPage( part.getId(), this.getTemplatePage( part ) );
-			// Listen for changes to parameters
-			part.connect( this, { 'add': 'onAddParameter', 'remove': 'onRemoveParameter' } );
-			// Add parameter pages
-			names = part.getParameterNames();
-			for ( j = 0, jLen = names.length; j < jLen; j++ ) {
-				param = part.getParameter( names[j] );
-				this.addPage( param.getId(), this.getParameterPage( param ) );
-			}
-		} else if ( part instanceof ve.dm.MWTransclusionContentModel ) {
-			// Add wikitext page
-			this.addPage( part.getId(), this.getContentPage( part ) );
-		} else if ( part instanceof ve.dm.MWTemplatePlaceholderModel ) {
-			// Add template placeholder page
-			this.addPage( part.getId(), this.getPlaceholderPage( part ) );
-		}
-	}
-
-	// Listen for changes to parts
-	this.transclusion.connect( this, { 'add': 'onAddPart', 'remove': 'onRemovePart' } );
-};
-
-/**
  * Get page for transclusion content.
  *
  * @method
@@ -418,7 +384,8 @@ ve.ui.MWTransclusionDialog.prototype.getTemplatePage = function ( template ) {
 		description = spec.getDescription();
 
 	function addParameter() {
-		var param = template.addParameter( addParameterInput.getValue() );
+		var param = new ve.dm.MWTemplateParameterModel( template, addParameterInput.getValue() );
+		template.addParameter( param );
 		addParameterInput.setValue();
 		this.setPageByName( param.getId() );
 	}
@@ -568,7 +535,8 @@ ve.ui.MWTransclusionDialog.prototype.getPlaceholderPage = function ( placeholder
 		}
 
 		target = { 'href': new mw.Title( href ).getPrefixedText(), 'wt': value };
-		part = this.transclusion.addTemplate( target, ve.indexOf( placeholder, parts ) );
+		part = new ve.dm.MWTemplateModel( this.transclusion, target );
+		this.transclusion.addPart( part, ve.indexOf( placeholder, parts ) );
 		this.pending.push( { 'part': part, 'placeholder': placeholder } );
 		addTemplateInput.pushPending();
 		addTemplateButton.setDisabled( true );

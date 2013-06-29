@@ -135,32 +135,28 @@ ve.dm.MWTemplateModel.prototype.getParameterNames = function () {
  * Add a parameter to template.
  *
  * @method
- * @param {string} name Parameter name
- * @param {string} value Parameter value
- * @returns {ve.dm.MWTemplateParameterModel} Added param
+ * @param {ve.dm.MWTemplateParameterModel} param Parameter to add
  * @emits add
  */
-ve.dm.MWTemplateModel.prototype.addParameter = function ( name, value ) {
-	var param = new ve.dm.MWTemplateParameterModel( this, name, value );
+ve.dm.MWTemplateModel.prototype.addParameter = function ( param ) {
+	var name = param.getName();
 	this.sequence = null;
 	this.params[name] = param;
 	this.spec.fill();
 	this.emit( 'add', param );
-	return param;
 };
 
 /**
  * Remove parameter from template.
  *
  * @method
- * @param {string} name Parameter name
+ * @param {ve.dm.MWTemplateParameterModel} param Parameter to remove
  * @emits remove
  */
-ve.dm.MWTemplateModel.prototype.removeParameter = function ( name ) {
-	var param = this.params[name];
+ve.dm.MWTemplateModel.prototype.removeParameter = function ( param ) {
 	if ( param ) {
 		this.sequence = null;
-		delete this.params[name];
+		delete this.params[param.getName()];
 		this.emit( 'remove', param );
 	}
 };

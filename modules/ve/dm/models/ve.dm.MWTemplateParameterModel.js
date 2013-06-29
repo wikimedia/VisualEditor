@@ -80,5 +80,5 @@ ve.dm.MWTemplateParameterModel.prototype.setValue = function ( value ) {
  * @method
  */
 ve.dm.MWTemplateParameterModel.prototype.remove = function () {
-	this.template.removeParameter( this.name );
+	this.template.removeParameter( this );
 };
