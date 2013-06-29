@@ -97,7 +97,7 @@ ve.init.mw.Target = function VeInitMwTarget( $container, pageName, revision ) {
  * @event saveError
  * @param {jqXHR|null} jqXHR
  * @param {string} status Text status message
- * @param {Mixed|null} error HTTP status text
+ * @param {Object|null} data API response data
  */
 
 /**
@@ -323,7 +323,8 @@ ve.init.mw.Target.onSave = function ( response ) {
 			);
 		}
 	} else if ( data.result !== 'success' ) {
-		ve.init.mw.Target.onSaveError.call( this, null, 'Failed request: ' + data.result, null );
+		// Note, this could be any of db failure, hookabort, badtoken or even a captcha
+		ve.init.mw.Target.onSaveError.call( this, null, 'Save failure', data );
 	} else if ( typeof data.content !== 'string' ) {
 		ve.init.mw.Target.onSaveError.call(
 			this, null, 'Invalid HTML content in response from server', null
@@ -342,12 +343,12 @@ ve.init.mw.Target.onSave = function ( response ) {
  * @this ve.init.mw.Target
  * @param {Object} jqXHR
  * @param {string} status Text status message
- * @param {Mixed} error HTTP status text
+ * @param {Object|null} data API response data
  * @emits saveError
  */
-ve.init.mw.Target.onSaveError = function ( jqXHR, status, error ) {
+ve.init.mw.Target.onSaveError = function ( jqXHR, status, data ) {
 	this.saving = false;
-	this.emit( 'saveError', jqXHR, status, error );
+	this.emit( 'saveError', jqXHR, status, data );
 };
 
 
