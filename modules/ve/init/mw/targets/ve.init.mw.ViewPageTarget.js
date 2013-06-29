@@ -463,13 +463,48 @@ ve.init.mw.ViewPageTarget.prototype.onSave = function ( html, newid ) {
  * @method
  * @param {Object} jqXHR
  * @param {string} status Text status message
- * @param {Mixed} error Thrown exception or HTTP error string
- */
-ve.init.mw.ViewPageTarget.prototype.onSaveError = function ( jqXHR, status ) {
-	// TODO: Don't use alert.
-	alert( ve.msg( 'visualeditor-saveerror', status ) );
+ * @param {Object|null} data API response data
+  */
+ve.init.mw.ViewPageTarget.prototype.onSaveError = function ( jqXHR, status, data ) {
 	this.saveDialogSaveButton.setDisabled( false );
 	this.$saveDialogLoadingIcon.hide();
+
+	this.clearWarning( 'captcha' );
+
+	// Captcha "errors" usually aren't errors. We simply don't know about them ahead
+	// of time, so we save once, then (if required) we get a captcha back and try again
+	// with captcha.
+	// TODO: ConfirmEdit API is horrible, there is no reliable way to know whether
+	// it is a "math", "question" or "fancy" type of captcha. They all expose differently
+	// named properties in the API for different things. At this point we only support
+	// the FancyCaptha which we very intuitively detect by the presence of a "url" property.
+	if ( data.edit && data.edit.captcha && data.edit.captcha.url ) {
+		this.captcha = {
+			input: new ve.ui.TextInputWidget(),
+			id: data.edit.captcha.id
+		};
+		this.showWarning(
+			'captcha',
+			$( '<div>').append(
+				// msg: simplecaptcha-edit, fancycaptcha-edit, ..
+				$( '<p>' ).append(
+					$( '<strong>' ).text( mw.msg( 'captcha-label' ) ),
+					document.createTextNode( mw.msg( 'colon-separator' ) ),
+					$( $.parseHTML( mw.message( 'fancycaptcha-edit' ).parse() ) )
+						.filter( 'a' ).attr( 'target', '_blank ' ).end()
+				),
+				$( '<img>' ).attr( 'src', data.edit.captcha.url ),
+				this.captcha.input.$
+			),
+			{
+				wrap: false
+			}
+		);
+		return;
+	}
+
+	// TODO: Don't use alert.
+	alert( ve.msg( 'visualeditor-saveerror', status ) );
 };
 
 /**
@@ -736,7 +771,15 @@ ve.init.mw.ViewPageTarget.prototype.onSaveDialogReviewButtonClick = function () 
 ve.init.mw.ViewPageTarget.prototype.onSaveDialogSaveButtonClick = function () {
 	var doc = this.surface.getModel().getDocument(),
 		saveOptions = this.getSaveOptions();
+
+	// Once we've retrieved the save options,
+	// reset save start and any old captcha data
 	this.saveStart = +new Date();
+	if ( this.captcha ) {
+		this.clearWarning( 'captcha' );
+		delete this.captcha;
+	}
+
 	if (
 		+mw.user.options.get( 'forceeditsummary' ) &&
 		saveOptions.summary === '' &&
@@ -789,7 +832,9 @@ ve.init.mw.ViewPageTarget.prototype.getSaveOptions = function () {
 		'summary': $( '#ve-init-mw-viewPageTarget-saveDialog-editSummary' ).val(),
 		'minor': $( '#ve-init-mw-viewPageTarget-saveDialog-minorEdit' ).prop( 'checked' ),
 		'watch': $( '#ve-init-mw-viewPageTarget-saveDialog-watchList' ).prop( 'checked' ),
-		'needcheck': this.sanityCheckPromise.state() === 'rejected'
+		'needcheck': this.sanityCheckPromise.state() === 'rejected',
+		'captchaid': this.captcha && this.captcha.id,
+		'captchaword': this.captcha && this.captcha.input.getValue()
 	};
 };
 
