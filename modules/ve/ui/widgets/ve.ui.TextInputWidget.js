@@ -18,6 +18,8 @@
  * @cfg {boolean} [multiline=false] Allow multiple lines of text
  */
 ve.ui.TextInputWidget = function VeUiTextInputWidget( config ) {
+	config = config || {};
+
 	// Parent constructor
 	ve.ui.InputWidget.call( this, config );
 
