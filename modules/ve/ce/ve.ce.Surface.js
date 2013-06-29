@@ -990,8 +990,14 @@ ve.ce.Surface.prototype.handleLeftOrRightArrowKey = function ( e ) {
  * @method
  */
 ve.ce.Surface.prototype.handleUpOrDownArrowKey = function ( e ) {
-	var selection, rangySelection, rangyRange, range, $element;
+	var selection, rangySelection, rangyRange, range, $element, nativeSel;
 	if ( !$.browser.msie ) {
+		// Firefox doesn't update its internal reference of the appropriate cursor position
+		// on the next or previous lines when the cursor is moved programmatically.
+		// By wiggling the selection, Firefox scraps its internal reference.
+		nativeSel = window.getSelection();
+		nativeSel.modify( 'extend', 'right', 'character' );
+		nativeSel.modify( 'extend', 'left', 'character' );
 		return;
 	}
 	this.surfaceObserver.stop( true );
