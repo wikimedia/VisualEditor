@@ -288,24 +288,25 @@ class ApiVisualEditor extends ApiBase {
 					$this->dieUsage( 'Error contacting the Parsoid server', 'parsoidserver' );
 				}
 
-				$editResult = $this->saveWikitext( $page, $wikitext, $params );
+				$result = $this->saveWikitext( $page, $wikitext, $params );
+				$editStatus = $result['edit']['result'];
 				if (
-					!isset( $editResult['edit']['result'] ) ||
-					$editResult['edit']['result'] !== 'Success'
+					!isset( $result['edit']['result'] ) ||
+					$editStatus !== 'Success'
 				) {
 					$result = array(
 						'result' => 'error',
-						'edit' => $editResult['edit']
+						'edit' => $result['edit']
 					);
 				} else {
-					if ( isset( $editResult['edit']['newrevid'] ) && $wgVisualEditorUseChangeTagging ) {
+					if ( isset( $result['edit']['newrevid'] ) && $wgVisualEditorUseChangeTagging ) {
 						ChangeTags::addTags( 'visualeditor', null,
-							intval( $editResult['edit']['newrevid'] ),
+							intval( $result['edit']['newrevid'] ),
 							null
 						);
 						if ( $params['needcheck'] ) {
 							ChangeTags::addTags( 'visualeditor-needcheck', null,
-								intval( $editResult['edit']['newrevid'] ),
+								intval( $result['edit']['newrevid'] ),
 								null
 							);
 						}
@@ -315,8 +316,8 @@ class ApiVisualEditor extends ApiBase {
 						$this->dieUsage( 'Error contacting the Parsoid server', 'parsoidserver' );
 					}
 					$result['result'] = 'success';
-					if ( isset( $editResult['edit']['newrevid'] ) ) {
-						$result['newrevid'] = intval( $editResult['edit']['newrevid'] );
+					if ( isset( $result['edit']['newrevid'] ) ) {
+						$result['newrevid'] = intval( $result['edit']['newrevid'] );
 					}
 				}
 				break;
