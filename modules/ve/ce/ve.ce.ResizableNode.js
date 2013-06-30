@@ -44,13 +44,6 @@ ve.ce.ResizableNode = function VeCeResizableNode( $resizable ) {
 
 ve.ce.ResizableNode.static = {};
 
-/**
- * Animate between sizes.
- *
- * @type {boolean}
- */
-ve.ce.ResizableNode.static.transition = true;
-
 /* Methods */
 
 /**
@@ -239,8 +232,7 @@ ve.ce.ResizableNode.prototype.onDocumentMouseMove = function ( e ) {
  * @method
  */
 ve.ce.ResizableNode.prototype.onDocumentMouseUp = function () {
-	var transition = this.constructor.static.transition,
-		offset = this.model.getOffset(),
+	var offset = this.model.getOffset(),
 		width = this.$resizeHandles.outerWidth(),
 		height = this.$resizeHandles.outerHeight(),
 		surfaceModel = this.getRoot().getSurface().getModel(),
@@ -251,35 +243,21 @@ ve.ce.ResizableNode.prototype.onDocumentMouseUp = function () {
 	this.$resizeHandles.removeClass( 've-ui-resizableNode-handles-resizing' );
 	$( this.getElementDocument() ).off( '.ve-ce-resizableNode' );
 	this.resizing = false;
-
-	// Transition image resize
-	if ( transition ) {
-		this.$resizable.addClass( 've-ce-resizableNode-transitioning' );
-	}
 	this.$resizable.css( { 'width': width, 'height': height } );
 
-	// Allow resize to occur before re-rendering
-	setTimeout( ve.bind( function () {
-		if ( transition ) {
-			// Prevent further transitioning
-			this.$resizable.removeClass( 've-ce-resizableNode-transitioning' );
-		}
+	// Apply changes to the model
+	if ( this.model.getAttribute( 'width' ) !== width ) {
+		attrChanges.width = width;
+	}
+	if ( this.model.getAttribute( 'height' ) !== height ) {
+		attrChanges.height = height;
+	}
+	if ( !ve.isEmptyObject( attrChanges ) ) {
+		surfaceModel.change(
+			ve.dm.Transaction.newFromAttributeChanges( documentModel, offset, attrChanges ),
+			selection
+		);
+	}
 
-		// Apply changes to the model
-		if ( this.model.getAttribute( 'width' ) !== width ) {
-			attrChanges.width = width;
-		}
-		if ( this.model.getAttribute( 'height' ) !== height ) {
-			attrChanges.height = height;
-		}
-		if ( !ve.isEmptyObject( attrChanges ) ) {
-			surfaceModel.change(
-				ve.dm.Transaction.newFromAttributeChanges( documentModel, offset, attrChanges ),
-				selection
-			);
-		}
-
-		this.emit( 'resize' );
-
-	}, this ), transition ? 200 : 0 );
+	this.emit( 'resize' );
 };
