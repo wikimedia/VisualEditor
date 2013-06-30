@@ -1307,6 +1307,26 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/internalList' }
 		]
 	},
+	'empty annotation inside nonempty annotation': {
+		'html': '<body><p><i>Foo<b></b></i></p></body>',
+		'data': [
+			{ 'type': 'paragraph' },
+			[ 'F', [ ve.dm.example.italic ] ],
+			[ 'o', [ ve.dm.example.italic ] ],
+			[ 'o', [ ve.dm.example.italic ] ],
+			{
+				'type': 'alienMeta',
+				'attributes': {
+					'domElements': $( '<b></b>' ).toArray()
+				},
+				'annotations': [ ve.dm.example.italic ]
+			},
+			{ 'type': '/alienMeta' },
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
+		]
+	},
 	'empty annotation with comment': {
 		'html': '<body><p>Foo<b><!-- Bar --></b>Baz</p></body>',
 		'data': [

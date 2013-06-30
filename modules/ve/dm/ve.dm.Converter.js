@@ -600,6 +600,10 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, wrapp
 						// Empty annotation, create a meta item
 						childDataElements = this.createDataElements( ve.dm.AlienMetaItem, childDomElements );
 						childDataElements.push( { 'type': '/' + childDataElements[0].type } );
+						// Annotate meta item
+						if ( !context.annotations.isEmpty() ) {
+							childDataElements[0].annotations = context.annotations.getIndexes().slice();
+						}
 					}
 					data = data.concat( childDataElements );
 					// Clear wrapped whitespace
