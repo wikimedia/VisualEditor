@@ -41,9 +41,15 @@ class VisualEditorHooks {
 	 * @param $skin Skin
 	 */
 	public static function onBeforePageDisplay( &$output, &$skin ) {
-		global $wgVisualEditorNamespaces, $wgVisualEditorEnableEventLogging;
+		global $wgVisualEditorNamespaces, $wgVisualEditorEnableEventLogging,
+			$wgVisualEditorDisableForAnons;
+
 		if (
-			// BUG 47328: Disable on redirect pages until redirects are editable
+			// Bug 50000: Allow disabling for anonymous users separately from changing
+			// the default preference
+			!( $wgVisualEditorDisableForAnons && $skin->getUser()->isAnon() ) &&
+
+			// Bug 47328: Disable on redirect pages until redirects are editable
 			!$skin->getTitle()->isRedirect() &&
 
 			// User has the 'visualeditor-enable' preference set
