@@ -626,6 +626,11 @@ $wgResourceModules += array(
 			'visualeditor-toolbar-savedialog',
 			'visualeditor-viewpage-savewarning',
 			'visualeditor-window-title',
+
+			// Only used if FancyCaptcha is installed and triggered on save
+			'captcha-label',
+			'fancycaptcha-edit',
+			'colon-separator',
 		),
 	),
 	'ext.visualEditor.experimental' => $wgVisualEditorResourceTemplate + array(

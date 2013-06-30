@@ -580,6 +580,12 @@ ve.init.mw.Target.prototype.save = function ( doc, options ) {
 	if ( options.needcheck ) {
 		data.needcheck = 1;
 	}
+	if ( options.captchaid ) {
+		data.captchaid = options.captchaid;
+	}
+	if ( options.captchaword ) {
+		data.captchaword = options.captchaword;
+	}
 
 	// Save DOM
 	this.saving = true;

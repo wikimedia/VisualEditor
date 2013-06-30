@@ -105,11 +105,22 @@ class ApiVisualEditor extends ApiBase {
 			'starttimestamp' => $params['starttimestamp'],
 			'token' => $params['token'],
 		);
+
 		if ( $params['minor'] ) {
 			$apiParams['minor'] = true;
 		}
+
 		// FIXME add some way that the user's preferences can be respected
 		$apiParams['watchlist'] = $params['watch'] ? 'watch' : 'unwatch';
+
+		if ( $params['captchaid'] ) {
+			$apiParams['captchaid'] = $params['captchaid'];
+		}
+
+		if ( $params['captchaword'] ) {
+			$apiParams['captchaword'] = $params['captchaword'];
+		}
+
 		$api = new ApiMain(
 			new DerivativeRequest(
 				$this->getRequest(),
@@ -118,7 +129,9 @@ class ApiVisualEditor extends ApiBase {
 			),
 			true // enable write
 		);
+
 		$api->execute();
+
 		return $api->getResultData();
 	}
 
@@ -255,7 +268,11 @@ class ApiVisualEditor extends ApiBase {
 					$this->dieUsage( 'Error contacting the Parsoid server', 'parsoidserver' );
 				} else {
 					$result = array_merge(
-						array( 'result' => 'success', 'notices' => $notices ), $parsed['result']
+						array(
+							'result' => 'success',
+							'notices' => $notices
+						),
+						$parsed['result']
 					);
 				}
 				break;
@@ -290,14 +307,15 @@ class ApiVisualEditor extends ApiBase {
 
 				$result = $this->saveWikitext( $page, $wikitext, $params );
 				$editStatus = $result['edit']['result'];
-				if (
-					!isset( $result['edit']['result'] ) ||
-					$editStatus !== 'Success'
-				) {
+
+				// Error
+				if ( !isset( $result['edit']['result'] ) || $editStatus !== 'Success' ) {
 					$result = array(
 						'result' => 'error',
 						'edit' => $result['edit']
 					);
+
+				// Success
 				} else {
 					if ( isset( $result['edit']['newrevid'] ) && $wgVisualEditorUseChangeTagging ) {
 						ChangeTags::addTags( 'visualeditor', null,
@@ -362,7 +380,9 @@ class ApiVisualEditor extends ApiBase {
 			'minor' => null,
 			'watch' => null,
 			'html' => null,
-			'summary' => null
+			'summary' => null,
+			'captchaid' => null,
+			'captchaword' => null,
 		);
 	}
 
@@ -402,6 +422,8 @@ class ApiVisualEditor extends ApiBase {
 			'token' => 'Edit token',
 			'needcheck' => 'When saving, set this parameter if the revision might have roundtrip'
 				. 'problems. This will result in the edit being tagged.',
+			'captchaid' => 'Captcha id (when saving with a captcha response).',
+			'captchaword' => 'Answer to the captcha (when saving with a captcha response).',
 		);
 	}
 
