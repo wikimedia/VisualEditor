@@ -313,21 +313,22 @@ ve.init.mw.Target.onSave = function ( response ) {
 	this.saving = false;
 	var data = response.visualeditor;
 	if ( !data && !response.error ) {
-		ve.init.mw.Target.onSaveError.call( this, null, 'Invalid response from server', null );
+		ve.init.mw.Target.onSaveError.call( this, null, 'Invalid response from server', response );
 	} else if ( response.error ) {
 		if ( response.error.code === 'editconflict' ) {
 			this.emit( 'editConflict' );
 		} else {
-			ve.init.mw.Target.onSaveError.call(
-				this, null, 'Unsuccessful request: ' + response.error.info, null
-			);
+			ve.init.mw.Target.onSaveError.call( this, null, 'Save failure', response );
 		}
 	} else if ( data.result !== 'success' ) {
 		// Note, this could be any of db failure, hookabort, badtoken or even a captcha
-		ve.init.mw.Target.onSaveError.call( this, null, 'Save failure', data );
+		ve.init.mw.Target.onSaveError.call( this, null, 'Save failure', response );
 	} else if ( typeof data.content !== 'string' ) {
 		ve.init.mw.Target.onSaveError.call(
-			this, null, 'Invalid HTML content in response from server', null
+			this,
+			null,
+			'Invalid HTML content in response from server',
+			response
 		);
 	} else {
 		mw.config.set( 'wgCurRevisionId', data.newrevid );
