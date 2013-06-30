@@ -17,6 +17,7 @@
 	border-bottom: solid 1px #ccc;
 	position: relative;
 	/* @embed */
+	background-color: white;
 	background-image: url(images/fade-up.png);
 	background-position: left bottom;
 	background-repeat: repeat-x;
