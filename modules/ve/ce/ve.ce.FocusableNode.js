@@ -122,19 +122,19 @@ ve.ce.FocusableNode.prototype.setFocused = function ( value ) {
  * @method
  */
 ve.ce.FocusableNode.prototype.createHighlight = function () {
-	var elementOffset;
-
 	this.$.find( '*' ).add( this.$ ).each(
 		ve.bind( function( i, element ) {
-			if ( !$( element ).is( ':visible' ) ) {
+			var $element = $( element ),
+				elementOffset;
+			if ( !$element.is( ':visible' ) ) {
 				return true;
 			}
-			elementOffset = $( element ).offset();
+			elementOffset = $element.offset();
 			this.$highlights = this.$highlights.add(
 				$( '<div>' )
 					.css( {
-						height: $( element ).height(),
-						width: $( element ).width(),
+						height: $element.height(),
+						width: $element.width(),
 						top: elementOffset.top,
 						left: elementOffset.left
 					} )
