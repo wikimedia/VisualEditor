@@ -157,6 +157,10 @@ ve.ce.MWBlockImageNode.prototype.onAttributeChange = function ( key, from, to ) 
 				break;
 			case 'width':
 				this.$thumbInner.css( 'width', to + 2 );
+				this.$image.css( 'width', to );
+				break;
+			case 'height':
+				this.$image.css( 'height', to );
 				break;
 		}
 	}

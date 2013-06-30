@@ -243,7 +243,6 @@ ve.ce.ResizableNode.prototype.onDocumentMouseUp = function () {
 	this.$resizeHandles.removeClass( 've-ui-resizableNode-handles-resizing' );
 	$( this.getElementDocument() ).off( '.ve-ce-resizableNode' );
 	this.resizing = false;
-	this.$resizable.css( { 'width': width, 'height': height } );
 
 	// Apply changes to the model
 	if ( this.model.getAttribute( 'width' ) !== width ) {
