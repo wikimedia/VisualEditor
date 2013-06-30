@@ -88,6 +88,7 @@ ve.ui.InputWidget.prototype.onEdit = function () {
 ve.ui.InputWidget.prototype.getValue = function () {
 	return this.value;
 };
+
 /**
  * Sets the direction of the current input, either RTL or LTR
  *
