@@ -24,6 +24,10 @@ $wgVisualEditorNamespaces = array( NS_MAIN );
 $wgVisualEditorUseChangeTagging = true;
 // Whether to log analytic events using EventLogging
 $wgVisualEditorEnableEventLogging = false;
+// Whether to disable for logged-in users
+// This allows you to enable the 'visualeditor-enable' preference by default
+// but still disable VE for logged-out users (by setting this to false).
+$wgVisualEditorDisableForAnons = false;
 // Whether to enable incomplete experimental code
 $wgVisualEditorEnableExperimentalCode = false;
 // Whether to use the 'add' or 'replace' tabLayout
