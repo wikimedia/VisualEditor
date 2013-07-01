@@ -12,10 +12,10 @@
  * @extends ve.Element
  *
  * @constructor
- * @param {HTMLDocument|Array|ve.dm.LinearData} data Document data to edit
+ * @param {HTMLDocument|Array|ve.dm.LinearData|ve.dm.Document} data Document data to edit
  * @param {Object} [config] Config options
  */
-ve.ui.Surface = function VeUiSurface( data, config ) {
+ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 	// Parent constructor
 	ve.Element.call( this, config );
 
@@ -28,7 +28,9 @@ ve.ui.Surface = function VeUiSurface( data, config ) {
 	this.$localOverlayBlockers = this.$$( '<div>' );
 	this.$localOverlayControls = this.$$( '<div>' );
 	this.$localOverlayMenus = this.$$( '<div>' );
-	this.model = new ve.dm.Surface( new ve.dm.Document( data ) );
+	this.model = new ve.dm.Surface(
+		dataOrDoc instanceof ve.dm.Document ? dataOrDoc : new ve.dm.Document( dataOrDoc )
+	);
 	this.view = new ve.ce.Surface( this.model, this, { '$$': this.$$ } );
 	this.context = new ve.ui.Context( this, { '$$': this.$$ } );
 	this.dialogs = new ve.ui.WindowSet( this, ve.ui.dialogFactory );

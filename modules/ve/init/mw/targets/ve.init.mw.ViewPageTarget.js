@@ -353,19 +353,20 @@ ve.init.mw.ViewPageTarget.prototype.onLoad = function ( doc ) {
 		this.logEvent( 'Edit', { action: 'page-edit-impression' } );
 		this.edited = false;
 		this.doc = doc;
-		this.setUpSurface( doc );
-		this.startSanityCheck();
-		this.setupToolbarEditNotices();
-		this.setupToolbarBetaNotice();
-		this.setupToolbarButtons();
-		this.setupSaveDialog();
-		this.attachToolbarButtons();
-		this.attachSaveDialog();
-		this.restoreScrollPosition();
-		this.restoreEditSection();
-		this.setupBeforeUnloadHandler();
-		this.$document[0].focus();
-		this.activating = false;
+		this.setUpSurface( doc, ve.bind( function() {
+			this.startSanityCheck();
+			this.setupToolbarEditNotices();
+			this.setupToolbarBetaNotice();
+			this.setupToolbarButtons();
+			this.setupSaveDialog();
+			this.attachToolbarButtons();
+			this.attachSaveDialog();
+			this.restoreScrollPosition();
+			this.restoreEditSection();
+			this.setupBeforeUnloadHandler();
+			this.$document[0].focus();
+			this.activating = false;
+		}, this ) );
 	}
 };
 
@@ -934,32 +935,50 @@ ve.init.mw.ViewPageTarget.prototype.setupToolbarBetaNotice = function () {
  *
  * @method
  * @param {HTMLDocument} doc HTML DOM to edit
+ * @param {Function} [callback] Callback to call when done
  */
-ve.init.mw.ViewPageTarget.prototype.setUpSurface = function ( doc ) {
-	// Initialize surface
-	this.surface = new ve.ui.Surface( doc, this.surfaceOptions );
-	this.surface.connect( this, { 'toolbarPosition': 'onSurfaceToolbarPosition' } );
-	this.surface.getContext().hide();
-	this.$document = this.surface.$.find( '.ve-ce-documentNode' );
-	this.surface.getModel().connect( this, { 'transact': 'onSurfaceModelTransact' } );
-	this.surface.getModel().connect( this, { 'history': 'updateToolbarSaveButtonState' } );
-	this.$.append( this.surface.$ );
-	this.setUpToolbar();
-	this.transformPageTitle();
-	this.changeDocumentTitle();
+ve.init.mw.ViewPageTarget.prototype.setUpSurface = function ( doc, callback ) {
+	setTimeout( ve.bind( function () {
+		// Build linmod
+		var store = new ve.dm.IndexValueStore(),
+			internalList = new ve.dm.InternalList(),
+			data = ve.dm.converter.getDataFromDom( doc, store, internalList );
+		setTimeout( ve.bind( function () {
+			// Build DM tree
+			var dmDoc = new ve.dm.Document( data, undefined, internalList );
+			setTimeout( ve.bind( function () {
+				// Create ui.Surface (also creates ce.Surface and dm.Surface and builds CE tree)
+				this.surface = new ve.ui.Surface( dmDoc, this.surfaceOptions );
+				setTimeout( ve.bind( function () {
+					// Initialize surface
+					this.surface.connect( this, { 'toolbarPosition': 'onSurfaceToolbarPosition' } );
+					this.surface.getContext().hide();
+					this.$document = this.surface.$.find( '.ve-ce-documentNode' );
+					this.surface.getModel().connect( this, { 'transact': 'onSurfaceModelTransact' } );
+					this.surface.getModel().connect( this, { 'history': 'updateToolbarSaveButtonState' } );
+					this.$.append( this.surface.$ );
+					this.setUpToolbar();
+					this.transformPageTitle();
+					this.changeDocumentTitle();
 
-	// Update UI
-	this.hidePageContent();
-	this.hideSpinner();
-	this.active = true;
-	this.$document.attr( {
-		'lang': mw.config.get( 'wgVisualEditor' ).pageLanguageCode,
-		'dir': mw.config.get( 'wgVisualEditor' ).pageLanguageDir
-	} );
+					// Update UI
+					this.hidePageContent();
+					this.hideSpinner();
+					this.active = true;
+					this.$document.attr( {
+						'lang': mw.config.get( 'wgVisualEditor' ).pageLanguageCode,
+						'dir': mw.config.get( 'wgVisualEditor' ).pageLanguageDir
+					} );
 
-	// Add appropriately mw-content-ltr or mw-content-rtl class
-	this.surface.$.addClass( 'mw-content-' + mw.config.get( 'wgVisualEditor' ).pageLanguageDir );
-	this.surface.initialize();
+					// Add appropriately mw-content-ltr or mw-content-rtl class
+					this.surface.$.addClass( 'mw-content-' + mw.config.get( 'wgVisualEditor' ).pageLanguageDir );
+					this.surface.initialize();
+
+					setTimeout( callback );
+				}, this ) );
+			}, this ) );
+		}, this ) );
+	}, this ) );
 };
 
 /**
