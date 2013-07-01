@@ -2190,6 +2190,9 @@ ve.init.mw.ViewPageTarget.prototype.showMessage = function ( name, message, opti
 	var $message;
 	if ( !this.messages[name] ) {
 		options = options || {};
+		if ( options.wrap === undefined ) {
+			options.wrap = 'warning';
+		}
 		$message = $( '<div class="ve-init-mw-viewPageTarget-saveDialog-message"></div>' );
 		if ( options.wrap !== false ) {
 			$message.append( $( '<p>').append(
