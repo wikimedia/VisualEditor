@@ -282,53 +282,47 @@ ve.ui.SelectWidget.prototype.selectItem = function ( item, silent ) {
  * @returns {ve.ui.OptionWidget|null} Item at position, `null` if there are no items in the menu
  */
 ve.ui.SelectWidget.prototype.getRelativeSelectableItem = function ( item, direction ) {
-	var index = this.items.indexOf( item ),
-		i = direction > 0 ?
-			// Default to 0 instead of -1, if nothing is selected let's start at the beginning
-			Math.max( 0, index + direction ) :
-			// Default to n-1 instead of -1, if nothing is selected let's start at the end
-			Math.min( index + direction, this.items.length - 1 ),
+	var inc = direction > 0 ? 1 : -1,
 		len = this.items.length,
-		inc = direction > 0 ? 1 : -1,
-		stopAt = i;
-	// Iterate to the next item in the sequence
-	while ( i <= len ) {
+		index = item instanceof ve.ui.OptionWidget ?
+			ve.indexOf( item, this.items ) : ( inc > 0 ? -1 : 0 ),
+		stopAt = Math.max( Math.min( index, len - 1 ), 0 ),
+		i = inc > 0 ?
+			// Default to 0 instead of -1, if nothing is selected let's start at the beginning
+			Math.max( index, -1 ) :
+			// Default to n-1 instead of -1, if nothing is selected let's start at the end
+			Math.min( index, len );
+
+	while ( true ) {
+		i = ( i + inc + len ) % len;
 		item = this.items[i];
 		if ( item instanceof ve.ui.OptionWidget && item.isSelectable() ) {
 			return item;
 		}
-		// Wrap around
-		i = ( i + inc + len ) % len;
+		// Stop iterating when we've looped all the way around
 		if ( i === stopAt ) {
-			// We've looped around, I guess we're all alone
-			return item;
+			break;
 		}
 	}
 	return null;
 };
 
 /**
- * Selects the next item in the menu.
+ * Get the next selectable item.
  *
  * @method
- * @param {number} index Item index
- * @returns {ve.ui.OptionWidget|null} Item, `null` if there's not an item at the `index`
+ * @returns {ve.ui.OptionWidget|null} Item, `null` if ther aren't any selectable items
  */
-ve.ui.SelectWidget.prototype.getClosestSelectableItem = function ( index ) {
-	var item,
-		i = 0,
-		len = this.items.length,
-		at = 0;
-	while ( i < len ) {
+ve.ui.SelectWidget.prototype.getFirstSelectableItem = function () {
+	var i, len, item;
+
+	for ( i = 0, len = this.items.length; i < len; i++ ) {
 		item = this.items[i];
 		if ( item instanceof ve.ui.OptionWidget && item.isSelectable() ) {
-			if ( at === index ) {
-				return item;
-			}
-			at++;
+			return item;
 		}
-		i++;
 	}
+
 	return null;
 };
 

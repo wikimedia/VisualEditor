@@ -122,7 +122,7 @@ ve.ui.PagedDialog.prototype.addPage = function ( name, config ) {
 
 	// Auto-select first item when nothing is selected yet
 	if ( !this.outlineWidget.getSelectedItem() ) {
-		this.outlineWidget.selectItem( this.outlineWidget.getClosestSelectableItem( 0 ) );
+		this.outlineWidget.selectItem( this.outlineWidget.getFirstSelectableItem() );
 	}
 
 	return this;
@@ -145,7 +145,7 @@ ve.ui.PagedDialog.prototype.removePage = function ( name ) {
 
 	// Auto-select first item when nothing is selected anymore
 	if ( !this.outlineWidget.getSelectedItem() ) {
-		this.outlineWidget.selectItem( this.outlineWidget.getClosestSelectableItem( 0 ) );
+		this.outlineWidget.selectItem( this.outlineWidget.getFirstSelectableItem() );
 	}
 
 	return this;
