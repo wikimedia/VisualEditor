@@ -152,6 +152,11 @@ $messages['en'] = array(
 	'visualeditor-usernamespacepagelink' => 'Project:User namespace',
 	'visualeditor-viewpage-savewarning' => 'Are you sure you want to go back to view mode without saving first?',
 	'visualeditor-window-title' => 'Inspect',
+	'guidedtour-tour-vegendersurvey-title' => 'Please select your gender',
+	'guidedtour-tour-vegendersurvey-description' => 'By participating in this survey, you consent to the transfer of the information you submit to the Wikimedia Foundation in the United States and elsewhere.  The information collected is for internal research purposes only and will not be publicly associated with your account.  However, we may share the results of this survey with the public in anonymized or aggregated forms.',
+	'guidedtour-tour-vegendersurvey-male' => 'Male',
+	'guidedtour-tour-vegendersurvey-female' => 'Female',
+	'guidedtour-tour-vegendersurvey-optout' => 'Prefer not to say',
 );
 
 /** Message documentation (Message documentation)
@@ -420,6 +425,11 @@ Parameters:
 {{doc-important|Do not translate "Project"; it is automatically converted to the wiki\'s project namespace.}}',
 	'visualeditor-viewpage-savewarning' => 'Text shown when the user tries to leave the editor without saving their changes',
 	'visualeditor-window-title' => 'Title of an unnamed inspector',
+	'guidedtour-tour-vegendersurvey-title' => 'Title of gender survey guider',
+	'guidedtour-tour-vegendersurvey-description' => 'Description of gender survey guider',
+	'guidedtour-tour-vegendersurvey-male' => 'Button on gender survey for choosing \'male\'',
+	'guidedtour-tour-vegendersurvey-female' => 'Button on gender survey for choosing \'female\'',
+	'guidedtour-tour-vegendersurvey-optout' => 'Button on gender survey for those who prefer not to answer',
 );
 
 /** Arabic (العربية)
