@@ -30,7 +30,7 @@ class VisualEditorHooks {
 					$wgResourceModules['schema.GenderSurvey'] = array(
 						'class' => 'ResourceLoaderSchemaModule',
 						'schema' => 'GenderSurvey',
-						'revision' => '5607845',
+						'revision' => 5607845,
 					);
 				}
 			} else {
