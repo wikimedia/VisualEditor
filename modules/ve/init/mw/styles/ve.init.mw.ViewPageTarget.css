@@ -267,7 +267,7 @@
 	margin-bottom: 1em;
 }
 
-.ve-init-mw-viewPageTarget-saveDialog-warnings,
+.ve-init-mw-viewPageTarget-saveDialog-messages,
 .ve-init-mw-viewPageTarget-saveDialog-conflict,
 .ve-init-mw-viewPageTarget-saveDialog-nochanges {
 	font-size: 0.8em;

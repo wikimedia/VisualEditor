@@ -87,7 +87,7 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 	this.actFromPopState = false;
 	this.scrollTop = null;
 	this.currentUri = currentUri;
-	this.warnings = {};
+	this.messages = {};
 	this.restoring = this.oldid !== mw.config.get( 'wgCurRevisionId' );
 	this.section = currentUri.query.vesection || null;
 	this.namespaceName = mw.config.get( 'wgCanonicalNamespace' );
@@ -245,7 +245,7 @@ ve.init.mw.ViewPageTarget.saveDialogTemplate = '\
 					for="ve-init-mw-viewPageTarget-saveDialog-watchList"></label>\
 				<label class="ve-init-mw-viewPageTarget-saveDialog-editSummaryCount"></label>\
 			</div>\
-			<div class="ve-init-mw-viewPageTarget-saveDialog-warnings"></div>\
+			<div class="ve-init-mw-viewPageTarget-saveDialog-messages"></div>\
 			<div class="ve-init-mw-viewPageTarget-saveDialog-actions">\
 				<div class="ve-init-mw-viewPageTarget-saveDialog-dirtymsg"></div>\
 				<div class="ve-init-mw-viewPageTarget-saveDialog-working"></div>\
@@ -466,25 +466,41 @@ ve.init.mw.ViewPageTarget.prototype.onSave = function ( html, newid ) {
  * @param {Object|null} data API response data
   */
 ve.init.mw.ViewPageTarget.prototype.onSaveError = function ( jqXHR, status, data ) {
+	var editApi;
 	this.saveDialogSaveButton.setDisabled( false );
 	this.$saveDialogLoadingIcon.hide();
 
-	this.clearWarning( 'captcha' );
+	this.clearMessage( 'api-save-error' );
 
-	// Captcha "errors" usually aren't errors. We simply don't know about them ahead
-	// of time, so we save once, then (if required) we get a captcha back and try again
-	// with captcha.
-	// TODO: ConfirmEdit API is horrible, there is no reliable way to know whether
-	// it is a "math", "question" or "fancy" type of captcha. They all expose differently
-	// named properties in the API for different things. At this point we only support
-	// the FancyCaptha which we very intuitively detect by the presence of a "url" property.
-	if ( data.edit && data.edit.captcha && data.edit.captcha.url ) {
+	// Handle empty response
+	if ( !data ) {
+		this.showMessage(
+			'api-save-error',
+			ve.msg( 'visualeditor-saveerror', 'Empty server response' ),
+			{
+				wrap: 'error'
+			}
+		);
+		this.saveDialogSaveButton.setDisabled( true );
+		return;
+	}
+
+	// Handle captcha
+	// Captcha "errors" usually aren't errors. We simply don't know about them ahead of time,
+	// so we save once, then (if required) we get an error with a captcha back and try again after
+	// the user solved the captcha.
+	// TODO: ConfirmEdit API is horrible, there is no reliable way to know whether it is a "math",
+	// "question" or "fancy" type of captcha. They all expose differently named properties in the
+	// API for different things in the UI. At this point we only support the FancyCaptha which we
+	// very intuitively detect by the presence of a "url" property.
+	editApi = data && data.visualeditor && data.visualeditor.edit;
+	if ( editApi && editApi.captcha && editApi.captcha.url ) {
 		this.captcha = {
 			input: new ve.ui.TextInputWidget(),
-			id: data.edit.captcha.id
+			id: editApi.captcha.id
 		};
-		this.showWarning(
-			'captcha',
+		this.showMessage(
+			'api-save-error',
 			$( '<div>').append(
 				// msg: simplecaptcha-edit, fancycaptcha-edit, ..
 				$( '<p>' ).append(
@@ -493,7 +509,7 @@ ve.init.mw.ViewPageTarget.prototype.onSaveError = function ( jqXHR, status, data
 					$( $.parseHTML( mw.message( 'fancycaptcha-edit' ).parse() ) )
 						.filter( 'a' ).attr( 'target', '_blank ' ).end()
 				),
-				$( '<img>' ).attr( 'src', data.edit.captcha.url ),
+				$( '<img>' ).attr( 'src', editApi.captcha.url ),
 				this.captcha.input.$
 			),
 			{
@@ -503,8 +519,15 @@ ve.init.mw.ViewPageTarget.prototype.onSaveError = function ( jqXHR, status, data
 		return;
 	}
 
-	// TODO: Don't use alert.
-	alert( ve.msg( 'visualeditor-saveerror', status ) );
+	// Handle (other) unknown and/or unrecoverable errors
+	this.showMessage(
+		'api-save-error',
+		document.createTextNode( data.error && ( data.error.info || data.error.code ) || 'Invalid error code' ),
+		{
+			wrap: 'error'
+		}
+	);
+	this.saveDialogSaveButton.setDisabled( true );
 };
 
 /**
@@ -776,16 +799,21 @@ ve.init.mw.ViewPageTarget.prototype.onSaveDialogSaveButtonClick = function () {
 	// reset save start and any old captcha data
 	this.saveStart = +new Date();
 	if ( this.captcha ) {
-		this.clearWarning( 'captcha' );
+		this.clearMessage( 'captcha' );
 		delete this.captcha;
 	}
 
 	if (
 		+mw.user.options.get( 'forceeditsummary' ) &&
 		saveOptions.summary === '' &&
-		!this.warnings.missingsummary
+		!this.messages.missingsummary
 	) {
-		this.showWarning( 'missingsummary', ve.init.platform.getParsedMessage( 'missingsummary' ) );
+		this.showMessage(
+			'missingsummary',
+			// Wrap manually since this core message already includes a bold "Warning:" label
+			$( '<p>' ).append( ve.init.platform.getParsedMessage( 'missingsummary' ) ),
+			{ wrap: false }
+		);
 	} else {
 		this.saveDialogSaveButton.setDisabled( true );
 		this.$saveDialogLoadingIcon.show();
@@ -1702,12 +1730,14 @@ ve.init.mw.ViewPageTarget.prototype.swapSaveDialog = function ( slide, options )
 			.not( $slide )
 				.hide();
 
-	// Old warnings should not persist after slide changes
-	this.clearAllWarnings();
+	// Old messages should not persist after slide changes
+	this.clearAllMessages();
+	// Reset save button if we disabled it for e.g. unrecoverable spam error
+	this.saveDialogSaveButton.setDisabled( false );
 
 	if ( slide === 'save' ) {
 		if ( !this.sanityCheckVerified ) {
-			this.showWarning( 'dirtywarning', ve.init.platform.getParsedMessage( 'visualeditor-savedialog-dirtywarning' ) );
+			this.showMessage( 'dirtywarning', mw.msg( 'visualeditor-savedialog-warning-dirty' ) );
 		}
 	}
 
@@ -2129,48 +2159,56 @@ ve.init.mw.ViewPageTarget.prototype.restoreEditSection = function () {
 };
 
 /**
- * Show an inline warning.
- * @param {string} name Warning's unique name
- * @param {string|jQuery} message Warning message (string of HTML, not text, or jQuery object)
+ * Show a message in the save dialog.
+ *
+ * @param {string} name Message's unique name
+ * @param {string|jQuery} message Message content (string of HTML or jQuery object)
  * @param {Object} [options]
- * @param {boolean} [options.wrap=true] Wrap the message in a paragraph.
+ * @param {boolean} [options.wrap="warning"] Whether to wrap the message in a paragraph and if
+ *  so, how. One of "warning", "error" or false.
  */
-ve.init.mw.ViewPageTarget.prototype.showWarning = function ( name, message, options ) {
-	var $warning;
-	if ( !this.warnings[name] ) {
+ve.init.mw.ViewPageTarget.prototype.showMessage = function ( name, message, options ) {
+	var $message;
+	if ( !this.messages[name] ) {
 		options = options || {};
-		$warning = $( '<div class="ve-init-mw-viewPageTarget-saveDialog-warning"></div>' );
+		$message = $( '<div class="ve-init-mw-viewPageTarget-saveDialog-message"></div>' );
 		if ( options.wrap !== false ) {
-			$warning.append( $( '<p>').append( message ) );
+			$message.append( $( '<p>').append(
+				 // visualeditor-savedialog-label-error
+				 // visualeditor-savedialog-label-warning
+				$( '<strong>' ).text( mw.msg( 'visualeditor-savedialog-label-' + options.wrap ) ),
+				document.createTextNode( mw.msg( 'colon-separator' ) ),
+				message
+			) );
 		} else {
-			$warning.append( message );
+			$message.append( message );
 		}
-		this.$saveDialog.find( '.ve-init-mw-viewPageTarget-saveDialog-warnings' )
-			.append( $warning );
+		this.$saveDialog.find( '.ve-init-mw-viewPageTarget-saveDialog-messages' )
+			.append( $message );
 
-		this.warnings[name] = $warning;
+		this.messages[name] = $message;
 	}
 };
 
 /**
- * Remove an inline warning.
- * @param {string} name Warning's unique name
+ * Remove a message from the save dialog.
+ * @param {string} name Message's unique name
  */
-ve.init.mw.ViewPageTarget.prototype.clearWarning = function ( name ) {
-	if ( this.warnings[name] ) {
-		this.warnings[name].remove();
-		delete this.warnings[name];
+ve.init.mw.ViewPageTarget.prototype.clearMessage = function ( name ) {
+	if ( this.messages[name] ) {
+		this.messages[name].remove();
+		delete this.messages[name];
 	}
 };
 
 /**
- * Remove all inline warnings.
+ * Remove all messages from the save dialog.
  */
-ve.init.mw.ViewPageTarget.prototype.clearAllWarnings = function () {
+ve.init.mw.ViewPageTarget.prototype.clearAllMessages = function () {
 	this.$saveDialog
-		.find( '.ve-init-mw-viewPageTarget-saveDialog-warnings' )
+		.find( '.ve-init-mw-viewPageTarget-saveDialog-messages' )
 			.empty();
-	this.warnings = {};
+	this.messages = {};
 };
 
 /**
