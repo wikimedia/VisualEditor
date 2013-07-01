@@ -377,6 +377,9 @@ ve.ui.SelectWidget.prototype.removeItems = function ( items ) {
 			// Remove existing item
 			delete this.hashes[hash];
 		}
+		if ( item.isSelected() ) {
+			this.selectItem( null );
+		}
 	}
 	ve.ui.GroupElement.prototype.removeItems.call( this, items );
 
@@ -399,6 +402,7 @@ ve.ui.SelectWidget.prototype.clearItems = function () {
 	// Clear all items
 	this.hashes = {};
 	ve.ui.GroupElement.prototype.clearItems.call( this );
+	this.selectItem( null );
 
 	this.emit( 'remove', items );
 
