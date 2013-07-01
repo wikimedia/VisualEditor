@@ -28,7 +28,9 @@ ve.dm.InternalList = function VeDmInternalList( doc ) {
 	this.keys = [];
 
 	// Event handlers
-	this.getDocument().connect( this, { 'transact': 'onTransact' } );
+	if ( doc ) {
+		doc.connect( this, { 'transact': 'onTransact' } );
+	}
 };
 
 /* Inheritance */
