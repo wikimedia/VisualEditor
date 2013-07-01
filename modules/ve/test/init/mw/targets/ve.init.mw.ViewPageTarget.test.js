@@ -38,7 +38,7 @@ QUnit.test( 'compatibility', function ( assert ) {
 			{
 				'msg': 'Firefox 10',
 				'userAgent': 'Mozilla/5.0 (X11; Mageia; Linux x86_64; rv:10.0.9) Gecko/20100101 Firefox/10.0.9',
-				'matches': []
+				'matches': [ 'blacklist' ]
 			},
 			{
 				'msg': 'Firefox 11',
