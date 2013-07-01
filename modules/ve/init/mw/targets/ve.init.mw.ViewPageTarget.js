@@ -201,7 +201,10 @@ ve.init.mw.ViewPageTarget.compatibility = {
 		// requests to the VisualEditor/Parsoid API which is causing silent failures
 		// when trying to save a page (bug 49187)
 		'msie': [['<=', 10]],
+		// Android 2.x and below "support" CE but don't trigger keyboard input
 		'android': [['<', 3]],
+		// Bug 50534 - apparently Firefox is broken in versions 10 and below
+		'firefox': [['<=', 10]],
 		// Blacklist all versions:
 		'opera': null,
 		'blackberry': null
