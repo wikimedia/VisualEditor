@@ -887,7 +887,18 @@ ve.init.mw.ViewPageTarget.prototype.setupToolbarEditNotices = function () {
 ve.init.mw.ViewPageTarget.prototype.setupToolbarBetaNotice = function () {
 	this.$toolbarBetaNotice.empty();
 	this.$toolbarBetaNotice
-		.append( $( '<span>' ).text( ve.msg( 'visualeditor-beta-warning' ) ) );
+		.append( $( '<span>' )
+			.text( ve.msg( 'visualeditor-beta-warning' ) )
+		)
+		.append( $( '<div>' )
+			.addClass( 've-init-mw-viewPageTarget-tool' )
+			.append( $( '<span>' )
+				.addClass( 've-init-mw-viewPageTarget-tool-label' )
+				.append( $( '<a>' )
+					.attr( 'title', ve.msg( 'visualeditor-help-title' ) )
+					.attr( 'href', new mw.Title( ve.msg( 'visualeditor-help-link' ) ).getUrl() )
+					.text( ve.msg( 'visualeditor-help-label' ) )
+		) ) );
 };
 
 /**
@@ -1305,6 +1316,7 @@ ve.init.mw.ViewPageTarget.prototype.setupToolbarButtons = function () {
 	}
 
 	this.$toolbarBetaNoticeTool
+		.addClass( 've-ui-icon-help' )
 		.append(
 			$( '<span>' )
 				.addClass( 've-init-mw-viewPageTarget-tool-label ve-init-mw-viewPageTarget-tool-beta-label' )
