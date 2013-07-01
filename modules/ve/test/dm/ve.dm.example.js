@@ -2086,6 +2086,15 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/internalList' }
 		]
 	},
+	'whitespace preservation in empty branch node': {
+		'html': '<body><table>\n\n</table></body>',
+		'data': [
+			{ 'type': 'table', 'internal': { 'whitespace': [ undefined, '\n\n' ] } },
+			{ 'type': '/table' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
+		]
+	},
 	'mismatching whitespace data is ignored': {
 		'html': null,
 		'data': [

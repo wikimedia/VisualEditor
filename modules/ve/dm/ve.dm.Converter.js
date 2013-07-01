@@ -891,12 +891,14 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, wrapp
 
 	// Close element
 	if ( wrapperElement ) {
-		data.push( { 'type': '/' + wrapperElement.type } );
 		// Add the whitespace after the last child to the parent as innerPost
-		if ( nextWhitespace !== '' ) {
+		// But don't do this if the parent is empty, because in that case we've already put that
+		// whitespace in innerPre
+		if ( nextWhitespace !== '' && data[data.length - 1] !== wrapperElement ) {
 			addWhitespace( wrapperElement, 2, nextWhitespace );
 			nextWhitespace = '';
 		}
+		data.push( { 'type': '/' + wrapperElement.type } );
 	}
 	// Don't return an empty document
 	if ( context.branchType === 'document' && data.length === 0 && !annotationSet ) {
