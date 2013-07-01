@@ -100,6 +100,9 @@ $messages['en'] = array(
 	'visualeditor-formatdropdown-format-paragraph' => 'Paragraph',
 	'visualeditor-formatdropdown-format-preformatted' => 'Preformatted',
 	'visualeditor-formatdropdown-title' => 'Change format',
+	'visualeditor-help-link' => 'mw:Special:MyLanguage/Help:VisualEditor/User guide',
+	'visualeditor-help-label' => 'User guide',
+	'visualeditor-help-title' => 'User guide for how to use the editor',
 	'visualeditor-historybutton-redo-tooltip' => 'Redo',
 	'visualeditor-historybutton-undo-tooltip' => 'Undo',
 	'visualeditor-indentationbutton-indent-tooltip' => 'Increase indentation',
@@ -332,6 +335,9 @@ Parameters:
 {{Identical|Paragraph}}',
 	'visualeditor-formatdropdown-format-preformatted' => 'Item in the formatting dropdown for preformatted text',
 	'visualeditor-formatdropdown-title' => 'Tooltip text for the drop-down box for choosing the formatting style of the selected text, such as "Heading 1", "Heading 2" or "Plain text". (This is not related to "file format" or "data format", such as "Wikitext", "HTML", "PDF" etc.)',
+	'visualeditor-help-link' => '{{notranslate}} Link to the user guide for how to use VisualEditor',
+	'visualeditor-help-label' => 'Display text for the link to the user guide',
+	'visualeditor-help-title' => 'Title (hover) text for the link to the user guide',
 	'visualeditor-historybutton-redo-tooltip' => 'Tooltip text for the redo button.
 {{Identical|Redo}}',
 	'visualeditor-historybutton-undo-tooltip' => 'Tooltip text for the undo button.

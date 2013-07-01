@@ -75,6 +75,11 @@
 	background-image: url(images/icons/window.png);
 }
 
+.ve-ui-icon-help {
+	/* @embed */
+	background-image: url(images/icons/help.png);
+}
+
 .ve-ui-icon-alert {
 	/* @embed */
 	background-image: url(images/icons/alert.png);
