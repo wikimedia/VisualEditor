@@ -70,8 +70,8 @@ ve.dm.MWReferenceNode.static.toDataElement = function ( domElements, converter )
 };
 
 ve.dm.MWReferenceNode.static.toDomElements = function ( dataElement, doc, converter ) {
-	var itemNodeHtml, originalHtml, mwData, i, iLen, keyedNodes, setContents, originalMw,
-		childDomElements,
+	var itemNodeHtml, originalHtml, mwData, i, iLen, keyedNodes, setContents, contentsAlreadySet,
+		originalMw, childDomElements,
 		el = doc.createElement( 'span' ),
 		itemNodeWrapper = doc.createElement( 'div' ),
 		itemNode = converter.internalList.getItemNode( dataElement.attributes.listIndex ),
@@ -85,14 +85,30 @@ ve.dm.MWReferenceNode.static.toDomElements = function ( dataElement, doc, conver
 
 	setContents = dataElement.attributes.contentsUsed || dataElement.attributes.listKey === null;
 
-	if ( !setContents ) {
+	keyedNodes = converter.internalList
+		.getNodeGroup( dataElement.attributes.listGroup )
+		.keyedNodes[dataElement.attributes.listKey];
+	if ( setContents ) {
+		// Check if a previous node has already set the content. If so, we don't overwrite this
+		// node's contents.
+		contentsAlreadySet = false;
+		if ( keyedNodes ) {
+			for ( i = 0, iLen = keyedNodes.length; i < iLen; i++ ) {
+				if ( keyedNodes[i].element === dataElement ) {
+					break;
+				}
+				if ( keyedNodes[i].element.attributes.contentsUsed ) {
+					contentsAlreadySet = true;
+					break;
+				}
+			}
+		}
+	} else {
 		// Check if any other nodes with this key provided content. If not
 		// then we attach the contents to the first reference with this key
-		keyedNodes = converter.internalList
-			.getNodeGroup( dataElement.attributes.listGroup )
-				.keyedNodes[dataElement.attributes.listKey];
+
 		// Check that this the first reference with its key
-		if ( dataElement === keyedNodes[0].element ) {
+		if ( keyedNodes && dataElement === keyedNodes[0].element ) {
 			setContents = true;
 			// Check no other reference originally defined the contents
 			// As this is keyedNodes[0] we can start at 1
@@ -105,7 +121,7 @@ ve.dm.MWReferenceNode.static.toDomElements = function ( dataElement, doc, conver
 		}
 	}
 
-	if ( setContents ) {
+	if ( setContents && !contentsAlreadySet ) {
 		converter.getDomSubtreeFromData(
 			itemNode.getDocument().getFullData( new ve.Range( itemNodeRange.start, itemNodeRange.end ), true ),
 			itemNodeWrapper
@@ -116,8 +132,6 @@ ve.dm.MWReferenceNode.static.toDomElements = function ( dataElement, doc, conver
 		if ( !$( '<div>' ).html( originalHtml ).get( 0 ).isEqualNode( itemNodeWrapper ) ) {
 			ve.setProp( mwData, 'body', 'html', itemNodeHtml );
 		}
-	} else {
-		delete mwData.body;
 	}
 
 	// Set or clear key

@@ -315,6 +315,12 @@ ve.dm.mwExample.domToDataCases = {
 						'data-mw="{&quot;name&quot;:&quot;ref&quot;,&quot;body&quot;:{&quot;html&quot;:&quot;No name&quot;},&quot;attrs&quot;:{&quot;group&quot;:&quot;g1&quot;}}">' +
 						'<a href="#cite_note-3" data-parsoid="{}">[3]</a>' +
 					'</span>' +
+					' Quux' +
+					'<span id="cite_ref-bar-1-2" class="reference" about="#mwt9" typeof="mw:Extension/ref" ' +
+						'data-parsoid="{}" ' +
+						'data-mw="{&quot;name&quot;:&quot;ref&quot;,&quot;body&quot;:{&quot;html&quot;:&quot;Different content&quot;},&quot;attrs&quot;:{&quot;name&quot;:&quot;bar&quot;}}">' +
+						'<a href="#cite_note-bar-1" data-parsoid="{}">[1]</a>'+
+					'</span>' +
 				'</p>' +
 				'<ol class="references" about="#mwt12" typeof="mw:Extension/references" ' +
 					'data-mw="{&quot;name&quot;:&quot;references&quot;,&quot;attrs&quot;:{}}" ' +
@@ -460,6 +466,42 @@ ve.dm.mwExample.domToDataCases = {
 							{
 								'values': {
 									'href': '#cite_note-3',
+									'data-parsoid': '{}'
+								}
+							}
+						]
+					}
+				]
+			},
+			{ 'type': '/mwReference' },
+			' ', 'Q', 'u', 'u', 'x',
+			{
+				'type': 'mwReference',
+				'attributes': {
+					'about': '#mwt9',
+					'listIndex': 0,
+					'listGroup': 'mwReference/',
+					'listKey': 'bar',
+					'refGroup': '',
+					'mw': { 'name': 'ref', 'body': { 'html': 'Different content' }, 'attrs': { 'name': 'bar' } },
+					'originalMw': '{"name":"ref","body":{"html":"Different content"},"attrs":{"name":"bar"}}',
+					'childDomElements': $( '<a href="#cite_note-bar-1" data-parsoid="{}">[1]</a>' ).toArray(),
+					'contentsUsed': false
+				},
+				'htmlAttributes': [
+					{
+						'values': {
+							'about': '#mwt9',
+							'class': 'reference',
+							'data-mw': '{"name":"ref","body":{"html":"Different content"},"attrs":{"name":"bar"}}',
+							'data-parsoid': '{}',
+							'id': 'cite_ref-bar-1-2',
+							'typeof': 'mw:Extension/ref'
+						},
+						'children': [
+							{
+								'values': {
+									'href': '#cite_note-bar-1',
 									'data-parsoid': '{}'
 								}
 							}
