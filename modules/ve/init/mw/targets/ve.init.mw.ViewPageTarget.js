@@ -893,7 +893,7 @@ ve.init.mw.ViewPageTarget.prototype.setupToolbarBetaNotice = function () {
 		.append( $( '<div>' )
 			.addClass( 've-init-mw-viewPageTarget-tool' )
 			.append( $( '<span>' )
-				.addClass( 've-init-mw-viewPageTarget-tool-label' )
+				.addClass( 've-init-mw-viewPageTarget-subtool-label' )
 				.append( $( '<a>' )
 					.attr( 'title', ve.msg( 'visualeditor-help-title' ) )
 					.attr( 'href', new mw.Title( ve.msg( 'visualeditor-help-link' ) ).getUrl() )
