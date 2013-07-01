@@ -105,7 +105,8 @@
 	font-variant: small-caps;
 }
 
-.ve-init-mw-viewPageTarget-tool:hover .ve-init-mw-viewPageTarget-tool-label {
+.ve-init-mw-viewPageTarget-tool:hover .ve-init-mw-viewPageTarget-tool-label,
+.ve-init-mw-viewPageTarget-subtool-label:hover {
 	text-decoration: underline;
 }
 
