@@ -605,6 +605,7 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, wrapp
 							childDataElements[0].annotations = context.annotations.getIndexes().slice();
 						}
 					}
+					outputWrappedMetaItems( 'restore' );
 					data = data.concat( childDataElements );
 					// Clear wrapped whitespace
 					wrappedWhitespace = '';
@@ -631,6 +632,7 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, wrapp
 								wrappedWhitespace = '';
 							}
 						} else {
+							outputWrappedMetaItems( 'restore' );
 							data = data.concat( childDataElements );
 							processNextWhitespace( childDataElements[0] );
 							prevElement = childDataElements[0];
@@ -683,6 +685,7 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, wrapp
 						}
 						// Recursion
 						// Opening and closing elements are added by the recursion too
+						outputWrappedMetaItems( 'restore' );
 						data = data.concat(
 							this.getDataFromDomRecursion( childDomElement, childDataElements[0],
 								new ve.dm.AnnotationSet( this.store )
@@ -699,6 +702,7 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, wrapp
 							childDataElements[0].htmlAttributes = htmlAttributes;
 						}
 						// Write childDataElements directly
+						outputWrappedMetaItems( 'restore' );
 						data = data.concat( childDataElements );
 					}
 					processNextWhitespace( childDataElements[0] );

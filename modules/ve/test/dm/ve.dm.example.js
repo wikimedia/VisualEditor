@@ -1032,6 +1032,28 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/internalList' }
 		]
 	},
+	'metadata in a wrapper followed by annotated text': {
+		'html': '<body>Foo<!--bar--><b>Baz</b></body>',
+		'data': [
+			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+			'F',
+			'o',
+			'o',
+			{
+				'type': 'alienMeta',
+				'attributes': {
+					'domElements': $( '<!--bar-->' ).toArray()
+				}
+			},
+			{ 'type': '/alienMeta' },
+			[ 'B', [ ve.dm.example.bold ] ],
+			[ 'a', [ ve.dm.example.bold ] ],
+			[ 'z', [ ve.dm.example.bold ] ],
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
+		]
+	},
 	'wrapping of bare content': {
 		'html': '<body>abc</body>',
 		'data': [
