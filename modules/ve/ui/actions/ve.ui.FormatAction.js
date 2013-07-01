@@ -68,6 +68,10 @@ ve.ui.FormatAction.prototype.convert = function ( type, attributes ) {
 	}
 	selection = fragmentForSelection.getRange();
 
+	// Since format dropdown tool is a focusable menu, documentNode has lost focus.
+	// Restore focus to documentNode so that firefox will display the cursor after conversion.
+	this.surface.view.documentView.documentNode.$[0].focus();
+
 	txs = ve.dm.Transaction.newFromContentBranchConversion( doc, selection, type, attributes );
 	surfaceModel.change( txs, selection );
 };
