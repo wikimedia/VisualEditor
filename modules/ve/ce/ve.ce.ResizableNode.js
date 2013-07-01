@@ -52,32 +52,14 @@ ve.ce.ResizableNode.static = {};
  * @method
  */
 ve.ce.ResizableNode.prototype.onResizableFocus = function () {
-	var offset = this.$resizable.offset();
+	this.$resizeHandles.appendTo( this.root.getSurface().getSurface().$localOverlayControls );
 
-	this.$resizeHandles
-		.css( {
-			'width': 0,
-			'height': 0,
-			'top': offset.top,
-			'left': offset.left
-		} )
-		.appendTo( this.root.getSurface().getSurface().$localOverlayControls );
+	this.setResizableHandlesSizeAndPosition();
 
-	this.$resizeHandles
-		.find( '.ve-ce-resizableNode-neHandle' )
-			.css( { 'margin-right': -this.$resizable.width() } )
-			.end()
-		.find( '.ve-ce-resizableNode-swHandle' )
-			.css( { 'margin-bottom': -this.$resizable.height() } )
-			.end()
-		.find( '.ve-ce-resizableNode-seHandle' )
-			.css( {
-				'margin-right': -this.$resizable.width(),
-				'margin-bottom': -this.$resizable.height()
-			} )
-			.end()
-		.children()
-			.on( 'mousedown', this.onResizeHandlesCornerMouseDownHandler );
+	this.$resizeHandles.children().on(
+		'mousedown',
+		this.onResizeHandlesCornerMouseDownHandler
+	);
 };
 
 /**
@@ -96,11 +78,15 @@ ve.ce.ResizableNode.prototype.onResizableBlur = function () {
  * Handle live event.
  *
  * @method
- * @param {boolean} live
  */
-ve.ce.ResizableNode.prototype.onResizableLive = function ( live ) {
-	if ( !live ) {
-		this.$resizeHandles.remove();
+ve.ce.ResizableNode.prototype.onResizableLive = function () {
+	var surfaceModel = this.getRoot().getSurface().getModel();
+
+	if ( this.live ) {
+		surfaceModel.connect( this, { 'history': 'setResizableHandlesSizeAndPosition' } );
+	} else {
+		surfaceModel.disconnect( this, { 'history': 'setResizableHandlesSizeAndPosition' } );
+		this.onResizableBlur();
 	}
 };
 
@@ -145,6 +131,34 @@ ve.ce.ResizableNode.prototype.onResizeHandlesCornerMouseDown = function ( e ) {
 	} );
 
 	return false;
+};
+
+/**
+ * Set the proper size and position for resize handles
+ *
+ * @method
+ */
+ve.ce.ResizableNode.prototype.setResizableHandlesSizeAndPosition = function () {
+	var offset = this.$resizable.offset();
+
+	this.$resizeHandles
+		.css( {
+			'width': 0,
+			'height': 0,
+			'top': offset.top,
+			'left': offset.left
+		} )
+		.find( '.ve-ce-resizableNode-neHandle' )
+			.css( { 'margin-right': -this.$resizable.width() } )
+			.end()
+		.find( '.ve-ce-resizableNode-swHandle' )
+			.css( { 'margin-bottom': -this.$resizable.height() } )
+			.end()
+		.find( '.ve-ce-resizableNode-seHandle' )
+			.css( {
+				'margin-right': -this.$resizable.width(),
+				'margin-bottom': -this.$resizable.height()
+			} );
 };
 
 /**

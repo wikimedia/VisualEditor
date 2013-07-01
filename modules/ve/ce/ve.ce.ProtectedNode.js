@@ -65,7 +65,7 @@ ve.ce.ProtectedNode.static.$phantomTemplate = $( '<div>' )
  * @method
  */
 ve.ce.ProtectedNode.prototype.onProtectedSetup = function () {
-	var $shield, surfaceModel, surface,
+	var $shield,
 		node = this,
 		$shieldTemplate = this.constructor.static.$shieldTemplate;
 
@@ -74,13 +74,12 @@ ve.ce.ProtectedNode.prototype.onProtectedSetup = function () {
 		return;
 	}
 
-	surfaceModel = this.getRoot().getSurface().getModel();
-	surface = this.getRoot().getSurface().getSurface();
-
 	// Events
 	this.$.on( 'mouseenter.ve-ce-protectedNode', ve.bind( this.onProtectedMouseEnter, this ) );
-	surfaceModel.connect( this, { 'change': 'onSurfaceModelChange' } );
-	surface.connect( this, { 'toolbarPosition': 'positionPhantoms' } );
+	this.getRoot().getSurface().getModel()
+		.connect( this, { 'change': 'onSurfaceModelChange' } );
+	this.getRoot().getSurface().getSurface()
+		.connect( this, { 'toolbarPosition': 'positionPhantoms' } );
 
 	// Shields
 	this.$.add( this.$.find( '*' ) ).each( function () {
@@ -113,7 +112,10 @@ ve.ce.ProtectedNode.prototype.onProtectedTeardown = function () {
 
 	// Events
 	this.$.off( '.ve-ce-protectedNode' );
-	this.root.getSurface().getModel().disconnect( this, { 'change': 'onSurfaceModelChange' } );
+	this.root.getSurface().getModel()
+		.disconnect( this, { 'change': 'onSurfaceModelChange' } );
+	this.getRoot().getSurface().getSurface()
+		.disconnect( this, { 'toolbarPosition': 'positionPhantoms' } );
 
 	// Shields
 	this.$shields.remove();

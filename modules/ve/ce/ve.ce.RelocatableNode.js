@@ -24,7 +24,8 @@ ve.ce.RelocatableNode = function VeCeRelocatableNode() {
 	this.connect( this, {
 		'focus': 'onRelocatableFocus',
 		'blur': 'onRelocatableBlur',
-		'resize': 'onRelocatableResize'
+		'resize': 'onRelocatableResize',
+		'live': 'onRelocatableLive'
 	} );
 
 	// Initialization
@@ -40,6 +41,21 @@ ve.ce.RelocatableNode = function VeCeRelocatableNode() {
 /* Static Properties */
 
 /* Methods */
+
+/**
+ * Handle node live.
+ *
+ * @method
+ */
+ve.ce.RelocatableNode.prototype.onRelocatableLive = function () {
+	var surfaceModel = this.root.getSurface().getModel();
+
+	if ( this.live ) {
+		surfaceModel.connect( this, { 'history': 'setRelocatableMarkerSizeAndPosition' } );
+	} else {
+		surfaceModel.disconnect( this, { 'history': 'setRelocatableMarkerSizeAndPosition' } );
+	}
+};
 
 /**
  * Handle node focus.
@@ -76,7 +92,7 @@ ve.ce.RelocatableNode.prototype.onRelocatableResize = function () {
  */
 ve.ce.RelocatableNode.prototype.onRelocatableDragStart = function () {
 	// Store a copy of the surface, when dragend occurs the node will be detached
-	this.relocatingSurface = this.getRoot().getSurface();
+	this.relocatingSurface = this.root.getSurface();
 
 	if ( this.relocatingSurface ) {
 		// Allow dragging this node in the surface

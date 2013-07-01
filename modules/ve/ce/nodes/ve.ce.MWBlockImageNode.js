@@ -126,6 +126,11 @@ ve.ce.MWBlockImageNode.static.cssClasses = {
 
 ve.ce.MWBlockImageNode.prototype.onAttributeChange = function ( key, from, to ) {
 	var $element, type;
+
+	if ( key === 'height' || key === 'width' ) {
+		to = parseInt( to, 10 );
+	}
+
 	if ( from !== to ) {
 		switch ( key ) {
 			case 'align':

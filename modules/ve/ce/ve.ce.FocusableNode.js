@@ -35,7 +35,8 @@ ve.ce.FocusableNode = function VeCeFocusableNode( $focusable ) {
 	this.connect( this, {
 		'setup': 'onFocusableSetup',
 		'resize': 'onFocusableResize',
-		'rerender': 'onFocusableRerender'
+		'rerender': 'onFocusableRerender',
+		'live': 'onFocusableLive'
 	} );
 };
 
@@ -61,12 +62,38 @@ ve.ce.FocusableNode.prototype.onFocusableSetup = function () {
 };
 
 /**
+ * Handle node live.
+ *
+ * @method
+ */
+ve.ce.FocusableNode.prototype.onFocusableLive = function () {
+	var surfaceModel = this.root.getSurface().getModel();
+
+	if ( this.live ) {
+		surfaceModel.connect( this, { 'history': 'onFocusableHistory' } );
+	} else {
+		surfaceModel.disconnect( this, { 'history': 'onFocusableHistory' } );
+	}
+};
+
+/**
+ * Handle history event.
+ *
+ * @method
+ */
+ve.ce.FocusableNode.prototype.onFocusableHistory = function () {
+	if ( this.focused ) {
+		this.redrawHighlight();
+	}
+};
+
+/**
  * Handle resize event.
  *
  * @method
  */
 ve.ce.FocusableNode.prototype.onFocusableResize = function () {
-	if ( this.isFocused() ) {
+	if ( this.focused ) {
 		this.redrawHighlight();
 	}
 };
@@ -77,7 +104,7 @@ ve.ce.FocusableNode.prototype.onFocusableResize = function () {
  * @method
  */
 ve.ce.FocusableNode.prototype.onFocusableRerender = function () {
-	if ( this.isFocused() ) {
+	if ( this.focused ) {
 		this.redrawHighlight();
 	}
 };
