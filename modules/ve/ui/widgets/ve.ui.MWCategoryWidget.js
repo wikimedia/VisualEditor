@@ -104,8 +104,16 @@ ve.ui.MWCategoryWidget.prototype.onLookupInputKeyDown = function ( e ) {
  * @param {ve.ui.MenuItemWidget} item Selected item
  */
 ve.ui.MWCategoryWidget.prototype.onLookupMenuItemSelect = function ( item ) {
-	if ( item && item.getData() !== '' ) {
-		this.emit( 'newCategory',  this.input.getCategoryItemFromValue( item.getData() ) );
+	var value = item && item.getData();
+
+	if ( value && value !== '' ) {
+		// Remove existing items by value
+		if ( value in this.categories ) {
+			this.categories[value].metaItem.remove();
+		}
+		// Add new item
+		this.emit( 'newCategory',  this.input.getCategoryItemFromValue( value ) );
+		// Reset input
 		this.input.setValue( '' );
 	}
 };
@@ -196,15 +204,7 @@ ve.ui.MWCategoryWidget.prototype.addItems = function ( items, index ) {
 			'savePopupState': 'onSavePopupState',
 			'togglePopupMenu': 'onTogglePopupMenu'
 		} );
-		// Auto-remove existing items by value
-		if ( item.value in this.categories ) {
-			// Save reference to item
-			existingCategoryItem = this.categories[item.value];
-			// Removal in model will trigger #removeItems in widget
-			existingCategoryItem.metaItem.remove();
-			// Adjust index to compensate for removal
-			index = Math.max( index - 1, 0 );
-		}
+
 		// Index item by value
 		this.categories[item.value] = categoryItem;
 		// Copy sortKey from old item when "moving"

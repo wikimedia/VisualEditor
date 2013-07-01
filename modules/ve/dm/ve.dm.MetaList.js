@@ -251,8 +251,8 @@ ve.dm.MetaList.prototype.getAllItems = function () {
  * Insert new metadata into the document. This builds and processes a transaction that inserts
  * metadata into the document.
  * @param {Object|ve.dm.MetaItem} meta Metadata element (or MetaItem) to insert
- * @param {Number} [offset] Offset at which to insert the new metadata
- * @param {Number} [index] Index at which to insert the new metadata, or undefined to add to the end
+ * @param {Number} [offset] Offset to insert the new metadata, or undefined to add to the end
+ * @param {Number} [index] Index to insert the new metadata, or undefined to add to the end
  */
 ve.dm.MetaList.prototype.insertMeta = function ( meta, offset, index ) {
 	var tx;
@@ -261,8 +261,8 @@ ve.dm.MetaList.prototype.insertMeta = function ( meta, offset, index ) {
 	}
 	if ( offset === undefined ) {
 		offset = this.document.data.getLength();
-		index = 0;
-	} else  if ( index === undefined ) {
+	}
+	if ( index === undefined ) {
 		index = ( this.document.metadata.getData( offset ) || [] ).length;
 	}
 	tx = ve.dm.Transaction.newFromMetadataInsertion( this.document, offset, index, [ meta ] );
