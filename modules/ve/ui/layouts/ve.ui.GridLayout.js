@@ -122,6 +122,7 @@ ve.ui.GridLayout.prototype.update = function () {
 		i = 0,
 		left = 0,
 		top = 0,
+		dimensions,
 		width = 0,
 		height = 0,
 		cols = this.widths.length,
@@ -132,18 +133,25 @@ ve.ui.GridLayout.prototype.update = function () {
 			panel = this.panels[i];
 			width = this.widths[x];
 			height = this.heights[y];
-			panel.$.css( {
+			dimensions = {
 				'width': Math.round( width * 100 ) + '%',
 				'height': Math.round( height * 100 ) + '%',
-				'left': Math.round( left * 100 ) + '%',
 				'top': Math.round( top * 100 ) + '%'
-			} );
+			};
+			// If RTL, reverse:
+			if ( this.$$.frame.dir === 'rtl' ) {
+				dimensions.right = Math.round( left * 100 ) + '%';
+			} else {
+				dimensions.left = Math.round( left * 100 ) + '%';
+			}
+			panel.$.css( dimensions );
 			i++;
 			left += width;
 		}
 		top += height;
 		left = 0;
 	}
+
 	this.emit( 'update' );
 };
 

@@ -27,6 +27,9 @@ ve.ui.PanelLayout = function VeUiPanelLayout( config ) {
 	if ( config.scroll ) {
 		this.$.css( 'overflow-y', 'auto' );
 	}
+
+	// Add directionality class:
+	this.$.addClass( 've-' + this.$$.frame.dir );
 };
 
 /* Inheritance */
