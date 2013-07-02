@@ -20,8 +20,6 @@ ve.ce.ResizableNode = function VeCeResizableNode( $resizable ) {
 	this.ratio = this.model.getAttribute( 'width' ) / this.model.getAttribute( 'height' );
 	this.resizing = false;
 	this.$resizeHandles = this.$$( '<div>' );
-	this.onResizeHandlesCornerMouseDownHandler =
-		ve.bind( this.onResizeHandlesCornerMouseDown, this );
 
 	// Events
 	this.connect( this, {
@@ -56,10 +54,25 @@ ve.ce.ResizableNode.prototype.onResizableFocus = function () {
 
 	this.setResizableHandlesSizeAndPosition();
 
-	this.$resizeHandles.children().on(
-		'mousedown',
-		this.onResizeHandlesCornerMouseDownHandler
-	);
+	this.$resizeHandles
+		.find( '.ve-ce-resizableNode-neHandle' )
+			.css( { 'margin-right': -this.$resizable.width() } )
+			.end()
+		.find( '.ve-ce-resizableNode-swHandle' )
+			.css( { 'margin-bottom': -this.$resizable.height() } )
+			.end()
+		.find( '.ve-ce-resizableNode-seHandle' )
+			.css( {
+				'margin-right': -this.$resizable.width(),
+				'margin-bottom': -this.$resizable.height()
+			} );
+
+	this.$resizeHandles.children()
+		.off( '.ve-ui-resizableNode' )
+		.on(
+			'mousedown.ve-ui-resizableNode',
+			ve.bind( this.onResizeHandlesCornerMouseDown, this )
+		);
 };
 
 /**
@@ -68,10 +81,7 @@ ve.ce.ResizableNode.prototype.onResizableFocus = function () {
  * @method
  */
 ve.ce.ResizableNode.prototype.onResizableBlur = function () {
-	this.$resizeHandles
-		.detach()
-		.children()
-			.off( 'mousedown', this.onResizeHandlesCornerMouseDownHandler );
+	this.$resizeHandles.detach();
 };
 
 /**
