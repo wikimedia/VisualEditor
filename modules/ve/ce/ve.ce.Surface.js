@@ -254,7 +254,7 @@ ve.ce.Surface.prototype.destroy = function () {
  */
 ve.ce.Surface.prototype.focus = function () {
 	var $document = this.documentView.getDocumentNode().$,
-		$window = $( ve.Element.static.getWindow( $document ) ),
+		$window = $( ve.Element.getWindow( $document ) ),
 		scrollTop = $window.scrollTop();
 
 	$document[0].focus();
@@ -615,7 +615,7 @@ ve.ce.Surface.prototype.onPaste = function () {
 	this.pasting = true;
 
 	var tx, scrollTop,
-		$window = $( ve.Element.static.getWindow( this.$$.context ) ),
+		$window = $( ve.Element.getWindow( this.$$.context ) ),
 		view = this,
 		selection = this.model.getSelection();
 

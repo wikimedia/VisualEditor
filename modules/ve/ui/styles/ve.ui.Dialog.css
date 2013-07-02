@@ -116,7 +116,6 @@
 }
 
 .ve-ui-window-body .ve-ui-surface {
-	padding: 0.25em 1.25em;
 	border: solid 1px #ddd;
 	border-radius: 0.25em;
 	border-top-right-radius: 0;
@@ -171,6 +170,10 @@
 	border-bottom-right-radius: 0;
 	border-bottom-left-radius: 0;
 	border-bottom-width: 0;
+}
+
+.ve-ui-window-body .ve-ce-documentNode {
+	padding: 0 1.875em; /* 1.5/0.8 */
 }
 
 /* ve.ui.MWTransclusionDialog */

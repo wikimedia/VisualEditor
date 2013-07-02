@@ -26,6 +26,7 @@ ve.ui.PopupWidget = function VeUiPopupWidget( config ) {
 	this.visible = false;
 	this.$callout = this.$$( '<div>' );
 	this.$body = this.$$( '<div>' );
+	this.surface = config.surface;
 	this.transitionTimeout = null;
 	this.align = config.align || 'center';
 	this.autoClose = !!config.autoClose;
@@ -44,7 +45,7 @@ ve.ui.PopupWidget = function VeUiPopupWidget( config ) {
 		// Listen for blur events
 		this.$body.on( 'blur', ve.bind( this.onPopupBlur, this ) );
 	}
-	this.$
+	this.$.hide()
 		.addClass( 've-ui-popupWidget' )
 		.append(
 			this.$body.addClass( 've-ui-popupWidget-body' ),
@@ -152,7 +153,7 @@ ve.ui.PopupWidget.prototype.display = function ( x, y, width, height, transition
 	}
 
 	// Prevent viewport clipping, using padding between body and popup edges
-	overlapRight = this.$$( 'body' ).width() - ( x + ( width + left + ( padding * 2 ) ) );
+	overlapRight = this.surface.view.$.outerWidth( true ) - ( x + ( width + left + ( padding * 2 ) ) );
 	overlapLeft = x + ( left - ( padding * 2 ) );
 	if ( overlapRight < 0 ) {
 		overlapOffset = overlapRight;

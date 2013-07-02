@@ -5,6 +5,10 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
+.ve-ui-surface {
+	position: relative;
+}
+
 .ve-ui-surface:after {
 	content: ".";
 	display: block;
@@ -24,6 +28,6 @@
 	left: 0;
 }
 
-.skin-monobook .ve-ui-surface-overlay {
-	z-index: 2;
+.ve-ui-surface-overlay-local {
+	z-index: 1;
 }

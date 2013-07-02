@@ -117,7 +117,7 @@ ve.ui.Frame.prototype.load = function () {
 	}, this ), 10 );
 
 	// Properties
-	this.$$ = ve.Element.static.get$$( doc, this );
+	this.$$ = ve.Element.get$$( doc, this );
 	this.$content = this.$$( '.ve-ui-frame-content' );
 	this.$document = this.$$( doc );
 };

@@ -151,19 +151,20 @@ ve.ce.FocusableNode.prototype.setFocused = function ( value ) {
 ve.ce.FocusableNode.prototype.createHighlight = function () {
 	this.$.find( '*' ).add( this.$ ).each(
 		ve.bind( function( i, element ) {
-			var $element = $( element ),
-				elementOffset;
-			if ( !$element.is( ':visible' ) ) {
+			var offset, $element = $( element );
+			if ( $element.not( ':visible' ) ) {
 				return true;
 			}
-			elementOffset = $element.offset();
+			offset = ve.Element.getRelativePosition(
+				$element, this.getRoot().getSurface().getSurface().$
+			);
 			this.$highlights = this.$highlights.add(
 				$( '<div>' )
 					.css( {
 						height: $element.height(),
 						width: $element.width(),
-						top: elementOffset.top,
-						left: elementOffset.left
+						top: offset.top,
+						left: offset.left
 					} )
 					.addClass( 've-ce-focusableNode-highlight' )
 			);

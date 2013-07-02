@@ -974,7 +974,9 @@ ve.init.mw.ViewPageTarget.prototype.setUpSurface = function ( doc, callback ) {
 					} );
 
 					// Add appropriately mw-content-ltr or mw-content-rtl class
-					this.surface.$.addClass( 'mw-content-' + mw.config.get( 'wgVisualEditor' ).pageLanguageDir );
+					this.surface.view.$.addClass(
+						'mw-content-' + mw.config.get( 'wgVisualEditor' ).pageLanguageDir
+					);
 					this.surface.initialize();
 
 					setTimeout( callback );
@@ -2173,7 +2175,7 @@ ve.init.mw.ViewPageTarget.prototype.restoreEditSection = function () {
 				// Scroll to heading:
 				// Wait for toolbar to animate in so we can account for its height
 				setTimeout( function () {
-					var $window = $( ve.Element.static.getWindow( target.$ ) );
+					var $window = $( ve.Element.getWindow( target.$ ) );
 					$window.scrollTop( headingNode.$.offset().top - target.toolbar.$.height() );
 				}, 200 );
 			}

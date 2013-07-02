@@ -149,7 +149,9 @@ ve.ce.ResizableNode.prototype.onResizeHandlesCornerMouseDown = function ( e ) {
  * @method
  */
 ve.ce.ResizableNode.prototype.setResizableHandlesSizeAndPosition = function () {
-	var offset = this.$resizable.offset();
+	var offset = ve.Element.getRelativePosition(
+		this.$resizable, this.getRoot().getSurface().getSurface().$
+	);
 
 	this.$resizeHandles
 		.css( {

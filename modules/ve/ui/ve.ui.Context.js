@@ -29,7 +29,7 @@ ve.ui.Context = function VeUiContext( surface, config ) {
 	this.embedded = false;
 	this.selection = null;
 	this.toolbar = null;
-	this.popup = new ve.ui.PopupWidget( { '$$': this.$$ } );
+	this.popup = new ve.ui.PopupWidget( { '$$': this.$$, surface: this.surface } );
 	this.$menu = this.$$( '<div>' );
 	this.inspectors = new ve.ui.WindowSet( surface, ve.ui.inspectorFactory );
 
@@ -248,22 +248,30 @@ ve.ui.Context.prototype.update = function () {
  * @chainable
  */
 ve.ui.Context.prototype.updateDimensions = function ( transition ) {
-	var position, $container, focusableOffset, focusableWidth,
+	var $container, focusableOffset, focusableWidth,
+		surface = this.surface.getView(),
 		inspector = this.inspectors.getCurrent(),
-		focusedNode = this.surface.getView().getFocusedNode();
+		focusedNode = surface.getFocusedNode(),
+		// Get cursor position
+		position = surface.getSelectionRect(),
+		surfaceOffset = surface.$.offset();
 
-	// Get cursor position
-	position = this.surface.getView().getSelectionRect();
+	// translate from ce surface
+	position = {
+		y: position.end.y - surfaceOffset.top,
+		x: position.end.x - surfaceOffset.left
+	};
 
 	if ( position ) {
 		if ( this.embedded ) {
-			focusableOffset = focusedNode.$focusable.offset();
+			focusableOffset = ve.Element.getRelativePosition(
+				focusedNode.$focusable, this.surface.$
+			);
 			focusableWidth = focusedNode.$focusable.outerWidth();
 			$container = this.$menu;
 			position = { 'x': focusableOffset.left + focusableWidth, 'y': focusableOffset.top };
 			this.popup.align = 'right';
 		} else {
-			position = position && position.end;
 			$container = inspector ? this.inspectors.$ : this.$menu;
 			this.popup.align = 'center';
 		}
