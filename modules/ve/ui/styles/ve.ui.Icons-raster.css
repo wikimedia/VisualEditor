@@ -30,19 +30,9 @@
 	background-image: url(images/icons/close.png);
 }
 
-.ve-ui-icon-language-big {
-	/* @embed */
-	background-image: url(images/icons/language-big.png);
-}
-
 .ve-ui-icon-language {
 	/* @embed */
 	background-image: url(images/icons/language.png);
-}
-
-.ve-ui-icon-tag-big {
-	/* @embed */
-	background-image: url(images/icons/tag-big.png);
 }
 
 .ve-ui-icon-tag {
@@ -100,19 +90,9 @@
 	background-image: url(images/icons/template.png);
 }
 
-.ve-ui-icon-template-big {
-	/* @embed */
-	background-image: url(images/icons/template-big.png);
-}
-
 .ve-ui-icon-parameter {
 	/* @embed */
 	background-image: url(images/icons/parameter.png);
-}
-
-.ve-ui-icon-parameter-big {
-	/* @embed */
-	background-image: url(images/icons/parameter-big.png);
 }
 
 .ve-ui-icon-parameter-set {
@@ -123,11 +103,6 @@
 .ve-ui-icon-source {
 	/* @embed */
 	background-image: url(images/icons/source.png);
-}
-
-.ve-ui-icon-source-big {
-	/* @embed */
-	background-image: url(images/icons/source-big.png);
 }
 
 .ve-ui-icon-up {
@@ -243,11 +218,6 @@
 .ve-ui-icon-search {
 	/* @embed */
 	background-image: url(images/icons/search.png);
-}
-
-.ve-ui-icon-search-big {
-	/* @embed */
-	background-image: url(images/icons/search-big.png);
 }
 
 .ve-ui-icon-expand {
