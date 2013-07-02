@@ -157,6 +157,7 @@ ve.dm.TextStyleSmallAnnotation = function VeDmTextStyleSmallAnnotation( element 
 ve.inheritClass( ve.dm.TextStyleSmallAnnotation, ve.dm.TextStyleAnnotation );
 ve.dm.TextStyleSmallAnnotation.static.name = 'textStyle/small';
 ve.dm.TextStyleSmallAnnotation.static.matchTagNames = ['small'];
+ve.dm.TextStyleSmallAnnotation.static.isAdditive = true;
 ve.dm.modelRegistry.register( ve.dm.TextStyleSmallAnnotation );
 
 /**
@@ -173,6 +174,7 @@ ve.dm.TextStyleBigAnnotation = function VeDmTextStyleBigAnnotation( element ) {
 ve.inheritClass( ve.dm.TextStyleBigAnnotation, ve.dm.TextStyleAnnotation );
 ve.dm.TextStyleBigAnnotation.static.name = 'textStyle/big';
 ve.dm.TextStyleBigAnnotation.static.matchTagNames = ['big'];
+ve.dm.TextStyleBigAnnotation.static.isAdditive = true;
 ve.dm.modelRegistry.register( ve.dm.TextStyleBigAnnotation );
 
 /**
@@ -237,6 +239,7 @@ ve.dm.TextStyleSuperScriptAnnotation = function VeDmTextStyleSuperScriptAnnotati
 ve.inheritClass( ve.dm.TextStyleSuperScriptAnnotation, ve.dm.TextStyleAnnotation );
 ve.dm.TextStyleSuperScriptAnnotation.static.name = 'textStyle/superScript';
 ve.dm.TextStyleSuperScriptAnnotation.static.matchTagNames = ['sup'];
+ve.dm.TextStyleSuperScriptAnnotation.static.isAdditive = true;
 ve.dm.modelRegistry.register( ve.dm.TextStyleSuperScriptAnnotation );
 
 /**
@@ -253,4 +256,5 @@ ve.dm.TextStyleSubScriptAnnotation = function VeDmTextStyleSubScriptAnnotation( 
 ve.inheritClass( ve.dm.TextStyleSubScriptAnnotation, ve.dm.TextStyleAnnotation );
 ve.dm.TextStyleSubScriptAnnotation.static.name = 'textStyle/subScript';
 ve.dm.TextStyleSubScriptAnnotation.static.matchTagNames = ['sub'];
+ve.dm.TextStyleSubScriptAnnotation.static.isAdditive = true;
 ve.dm.modelRegistry.register( ve.dm.TextStyleSubScriptAnnotation );

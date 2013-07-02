@@ -68,15 +68,19 @@ ve.dm.Converter.getDataContentFromText = function ( text, annotations ) {
  * @param {Function} close Callback called when an annotation is closed.
  */
 ve.dm.Converter.openAndCloseAnnotations = function ( currentSet, targetSet, open, close ) {
-	var i, len, annotation, startClosingAt;
+	var i, len, annotation, startClosingAt, currentSetOpen, targetSetOpen;
 
 	// Close annotations as needed
 	// Go through annotationStack from bottom to top (low to high),
 	// and find the first annotation that's not in annotations.
+	targetSetOpen = targetSet.clone();
 	for ( i = 0, len = currentSet.getLength(); i < len; i++ ) {
-		if ( !targetSet.containsComparableForSerialization( currentSet.get( i ) ) ) {
+		annotation = currentSet.get( i );
+		if ( !targetSetOpen.containsComparableForSerialization( annotation ) ) {
 			startClosingAt = i;
 			break;
+		} else {
+			targetSetOpen.remove( annotation );
 		}
 	}
 	if ( startClosingAt !== undefined ) {
@@ -89,13 +93,19 @@ ve.dm.Converter.openAndCloseAnnotations = function ( currentSet, targetSet, open
 		}
 	}
 
+	currentSetOpen = currentSet.clone();
 	// Open annotations as needed
 	for ( i = 0, len = targetSet.getLength(); i < len; i++ ) {
 		annotation = targetSet.get( i );
-		if ( !currentSet.containsComparableForSerialization( annotation ) ) {
+		if ( !currentSetOpen.containsComparableForSerialization( annotation ) ) {
 			open( annotation );
 			// Add to currentClone
 			currentSet.push( annotation );
+		} else {
+			// If an annotation is already open remove it from the currentSetOpen list
+			// as it may exist multiple times in the targetSet, and so may need to be
+			// opened again
+			currentSetOpen.remove( annotation );
 		}
 	}
 };
@@ -384,7 +394,7 @@ ve.dm.Converter.prototype.getDataFromDom = function ( doc, store, internalList )
  * @param {ve.dm.AnnotationSet} [annotationSet] Override the set of annotations to use
  * @returns {Array} Linear model data
  */
-ve.dm.Converter.prototype.getDataFromDomRecursionClean  = function ( domElement, wrapperElement, annotationSet ) {
+ve.dm.Converter.prototype.getDataFromDomRecursionClean = function ( domElement, wrapperElement, annotationSet ) {
 	var result, contextStack = this.contextStack;
 	this.contextStack = [];
 	result = this.getDataFromDomRecursion( domElement, wrapperElement, annotationSet );

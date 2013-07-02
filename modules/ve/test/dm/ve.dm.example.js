@@ -85,6 +85,7 @@ ve.dm.example.bold = { 'type': 'textStyle/bold' };
 ve.dm.example.italic = { 'type': 'textStyle/italic' };
 ve.dm.example.underline = { 'type': 'textStyle/underline' };
 ve.dm.example.span = { 'type': 'textStyle/span' };
+ve.dm.example.big = { 'type': 'textStyle/big' };
 
 /**
  * Creates a document from example data.
@@ -875,6 +876,30 @@ ve.dm.example.domToDataCases = {
 			['a', [ ve.dm.example.bold ]],
 			['b', [ ve.dm.example.italic ]],
 			['c', [ ve.dm.example.underline ]],
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
+		]
+	},
+	'additive annotations': {
+		'html': '<body><p><big>a<big>b</big>c</big></p></body>',
+		'data': [
+			{ 'type': 'paragraph' },
+			['a', [ ve.dm.example.big ]],
+			['b', [ ve.dm.example.big, ve.dm.example.big ]],
+			['c', [ ve.dm.example.big ]],
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
+		]
+	},
+	'additive annotations overlapping basic annotations': {
+		'html': '<body><p><i><big>a<big><b>b</b></big><b>c</b></big></i></p></body>',
+		'data': [
+			{ 'type': 'paragraph' },
+			['a', [ ve.dm.example.italic, ve.dm.example.big ]],
+			['b', [ ve.dm.example.italic, ve.dm.example.big, ve.dm.example.big, ve.dm.example.bold ]],
+			['c', [ ve.dm.example.italic, ve.dm.example.big, ve.dm.example.bold ]],
 			{ 'type': '/paragraph' },
 			{ 'type': 'internalList' },
 			{ 'type': '/internalList' }
