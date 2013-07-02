@@ -10,6 +10,9 @@
 /**
  * MediaWiki template specification.
  *
+ * See https://raw.github.com/wikimedia/mediawiki-extensions-TemplateData/master/spec.templatedata.json
+ * for the latest version of the TemplateData specification.
+ *
  * @class
  *
  * @constructor
@@ -33,7 +36,7 @@ ve.dm.MWTemplateSpecModel = function VeDmMWTemplateSpecModel( template ) {
  *
  * @method
  * @static
- * @param {string|Object|undefined} val Messsage or object with messages keyed by language
+ * @param {string|Object|null} val Messsage or object with messages keyed by language
  * @param {Mixed} [fallback=null] Value to use if message is not available
  * @param {string} [lang] Language to prefer, user interface language will be used by default
  * @returns {string} Message text or fallback if not available
@@ -184,10 +187,10 @@ ve.dm.MWTemplateSpecModel.prototype.getParameterLabel = function ( name ) {
  *
  * @method
  * @param {string} name Parameter name
- * @returns {string} Parameter description
+ * @returns {string|null} Parameter description
  */
 ve.dm.MWTemplateSpecModel.prototype.getParameterDescription = function ( name ) {
-	return this.constructor.getMessage( this.params[name].description, null );
+	return this.constructor.getMessage( this.params[name].description );
 };
 
 /**
@@ -255,7 +258,18 @@ ve.dm.MWTemplateSpecModel.prototype.isParameterRequired = function ( name ) {
  * @returns {boolean} Parameter is deprecated
  */
 ve.dm.MWTemplateSpecModel.prototype.isParameterDeprecated = function ( name ) {
-	return this.params[name].deprecated;
+	return this.params[name].deprecated !== false;
+};
+
+/**
+ * Get parameter deprecation description.
+ *
+ * @method
+ * @param {string} name Parameter name
+ * @returns {string} Explaining of why parameter is deprecated, empty if parameter is not deprecated
+ */
+ve.dm.MWTemplateSpecModel.prototype.getParameterDeprecationDescription = function ( name ) {
+	return this.params[name].deprecated || '';
 };
 
 /**
@@ -272,7 +286,7 @@ ve.dm.MWTemplateSpecModel.prototype.getParameterNames = function () {
  * Get parameter sets.
  *
  * @method
- * @returns {string[][]} Lists of parameter sets
+ * @returns {Object[]} Lists of parameter set descriptors
  */
 ve.dm.MWTemplateSpecModel.prototype.getParameterSets = function () {
 	return this.sets;
