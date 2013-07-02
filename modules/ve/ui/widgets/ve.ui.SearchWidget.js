@@ -35,8 +35,9 @@ ve.ui.SearchWidget = function VeUiSearchWidget( config ) {
 	this.$results = this.$$( '<div>' );
 
 	// Events
-	this.query.connect( this, { 'change': 'onQueryChange' } );
+	this.query.connect( this, { 'change': 'onQueryChange', 'enter': [ 'emit', 'enter' ] } );
 	this.results.connect( this, { 'select': 'onResultsSelect' } );
+	this.query.$.on( 'keydown', ve.bind( this.onQueryKeydown, this ) );
 
 	// Initialization
 	this.$query
@@ -61,7 +62,27 @@ ve.inheritClass( ve.ui.SearchWidget, ve.ui.Widget );
  * @param {Object|null} item Item data or null if no item is selected
  */
 
+/**
+ * @event enter
+ */
+
 /* Methods */
+
+/**
+ * Handle query key down events.
+ *
+ * @method
+ * @param {jQuery.Event} e Key down event
+ */
+ve.ui.SearchWidget.prototype.onQueryKeydown = function ( e ) {
+	var selectedItem,
+		dir = e.which === ve.Keys.DOWN ? 1 : ( e.which === ve.Keys.UP ? -1 : 0 );
+
+	if ( dir ) {
+		selectedItem = this.results.getSelectedItem();
+		this.results.selectItem( this.results.getRelativeSelectableItem( selectedItem, dir ) );
+	}
+};
 
 /**
  * Handle select widget select events.
