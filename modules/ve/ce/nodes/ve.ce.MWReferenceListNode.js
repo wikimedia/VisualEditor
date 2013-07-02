@@ -24,19 +24,17 @@ ve.ce.MWReferenceListNode = function VeCeMWReferenceListNode( model, config ) {
 	ve.ce.ProtectedNode.call( this );
 	ve.ce.FocusableNode.call( this );
 
-	// DOM Changes
+	// Properties
+	this.internalList = null;
+	this.listNode = null;
+
+	// Initialization
 	this.$
 		.addClass( 've-ce-mwReferenceListNode', 'reference' )
 		.prop( 'contenteditable', false );
 	this.$reflist = $( '<ol class="references"></ol>' );
 	this.$refmsg = $( '<p>' )
 		.addClass( 've-ce-mwReferenceListNode-muted' );
-
-	// Events
-	this.model.getDocument().internalList.connect( this, { 'update': 'onInternalListUpdate' } );
-	this.model.getDocument().internalList.getListNode().connect( this, { 'update': 'onListNodeUpdate' } );
-
-	// Initialization
 	this.update();
 };
 
@@ -55,6 +53,38 @@ ve.ce.MWReferenceListNode.static.name = 'mwReferenceList';
 ve.ce.MWReferenceListNode.static.tagName = 'div';
 
 /* Methods */
+
+/**
+ * Handle setup events.
+ *
+ * @method
+ */
+ve.ce.MWReferenceListNode.prototype.onSetup = function () {
+	this.internalList = this.model.getDocument().getInternalList();
+	this.listNode = this.internalList.getListNode();
+
+	this.internalList.connect( this, { 'update': 'onInternalListUpdate' } );
+	this.listNode.connect( this, { 'update': 'onListNodeUpdate' } );
+
+	// Parent method
+	ve.ce.LeafNode.prototype.onSetup.call( this );
+};
+
+/**
+ * Handle teardown events.
+ *
+ * @method
+ */
+ve.ce.MWReferenceListNode.prototype.onTeardown = function () {
+	this.internalList.disconnect( this, { 'update': 'onInternalListUpdate' } );
+	this.listNode.disconnect( this, { 'update': 'onListNodeUpdate' } );
+
+	this.internalList = null;
+	this.listNode = null;
+
+	// Parent method
+	ve.ce.LeafNode.prototype.onTeardown.call( this );
+};
 
 /**
  * Handle the updating of the InternalList object.
