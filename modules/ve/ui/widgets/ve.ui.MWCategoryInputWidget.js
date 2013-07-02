@@ -106,7 +106,7 @@ ve.ui.MWCategoryInputWidget.prototype.getLookupMenuItemsFromData = function ( da
 		matchingCategories = data || [];
 
 	// Existing categories
-	for ( i = 0, len = existingCategories.length; i < len; i++ ) {
+	for ( i = 0, len = existingCategories.length - 1; i < len; i++ ) {
 		item = existingCategories[i];
 		// Verify that item starts with category.value
 		if ( item.lastIndexOf( category.value, 0 ) === 0 ) {
@@ -120,7 +120,7 @@ ve.ui.MWCategoryInputWidget.prototype.getLookupMenuItemsFromData = function ( da
 	for ( i = 0, len = matchingCategories.length; i < len; i++ ) {
 		item = matchingCategories[i];
 		if (
-			ve.indexOf( item, existingCategoryItems ) === -1 &&
+			ve.indexOf( item, existingCategories ) === -1 &&
 			item.lastIndexOf( category.value, 0 ) === 0
 		) {
 			if ( item === category.value ) {
@@ -132,15 +132,6 @@ ve.ui.MWCategoryInputWidget.prototype.getLookupMenuItemsFromData = function ( da
 	// New category
 	if ( !exactMatch ) {
 		newCategoryItems.push( category.value );
-	}
-
-	// bug 48556: Don't actually offer to move the very last category in the list - we kept it in
-	// the list thus far so that other lists would not grab it for themselves, but now it's time to
-	// say goodbye
-	if (
-		existingCategoryItems[existingCategoryItems.length - 1] ===
-			existingCategories[existingCategories.length - 1] ) {
-		existingCategoryItems.pop();
 	}
 
 	// Add sections for non-empty groups
