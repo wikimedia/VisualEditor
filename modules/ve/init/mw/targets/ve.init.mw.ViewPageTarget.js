@@ -1242,6 +1242,8 @@ ve.init.mw.ViewPageTarget.prototype.setupSectionEditLinks = function () {
 		$editsections = $( '#mw-content-text .mw-editsection' ),
 		handler = ve.bind( this.onEditSectionLinkClick, this );
 
+	// match direction to the user interface
+	$editsections.css( 'direction', $( 'body' ).css( 'direction' ) );
 	// The "visibility" css construct ensures we always occupy the same space in the layout.
 	// This prevents the heading from changing its wrap when the user toggles editSourceLink.
 	$editsections.each( function () {

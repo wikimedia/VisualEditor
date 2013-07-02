@@ -327,6 +327,10 @@
 .mw-editsection {
 	white-space: nowrap;
 	padding-right: 0.25em;
+	/* bidi isolation: */
+	unicode-bidi: -moz-isolate;
+	unicode-bidi: -webkit-isolate;
+	unicode-bidi: isolate;
 }
 
 .mw-editsection-divider {
