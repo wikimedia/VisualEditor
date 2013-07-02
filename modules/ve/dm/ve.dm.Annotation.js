@@ -33,6 +33,15 @@ ve.inheritClass( ve.dm.Annotation, ve.dm.Model );
 /* Static properties */
 
 /**
+ * Allow annotation to be applied additively, e.g. <big><big>Foo</big></big>
+ *
+ * @static
+ * @type {boolean}
+ * @inheritable
+ */
+ve.dm.Annotation.static.isAdditive = false;
+
+/**
  * About grouping is not supported for annotations; setting this to true has no effect.
  *
  * @static

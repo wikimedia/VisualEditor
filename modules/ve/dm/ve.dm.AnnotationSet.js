@@ -366,7 +366,7 @@ ve.dm.AnnotationSet.prototype.addSet = function ( set ) {
  */
 ve.dm.AnnotationSet.prototype.push = function ( annotation ) {
 	var storeIndex = this.getStore().index( annotation );
-	if ( !this.containsIndex( storeIndex ) ) {
+	if ( annotation.constructor.static.isAdditive || !this.containsIndex( storeIndex ) ) {
 		this.storeIndexes.push( storeIndex );
 	}
 };
