@@ -202,18 +202,28 @@
 	height: 10em;
 }
 
-.ve-ui-mwTransclusionDialog-addParameterFieldset .ve-ui-widget,
 .ve-ui-mwTransclusionDialog-addTemplateFieldset .ve-ui-widget {
 	display: inline-block;
 }
 
-.ve-ui-mwTransclusionDialog-addParameterFieldset .ve-ui-buttonWidget,
 .ve-ui-mwTransclusionDialog-addTemplateFieldset .ve-ui-buttonWidget {
 	margin-left: 0.5em;
 }
 
 .ve-ui-mwTransclusionDialog-placeholder-label {
 	font-style: italic;
+}
+
+.ve-ui-mwTransclusionDialog-addParameterFieldset .ve-ui-mwParameterSearchWidget {
+	position: relative;
+	overflow: hidden;
+	box-shadow: 0 0 0.5em rgba(0,0,0,0.2);
+	margin-bottom: 1em;
+}
+
+.ve-ui-mwTransclusionDialog-addParameterFieldset .ve-ui-searchWidget-results {
+	position: relative;
+	padding-bottom: 5em;
 }
 
 /* ve.ui.MWMetaDialog */

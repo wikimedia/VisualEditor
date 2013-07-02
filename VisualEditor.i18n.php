@@ -66,7 +66,6 @@ $messages['en'] = array(
 	'visualeditor-dialog-transclusion-add-template' => 'Add template',
 	'visualeditor-dialog-transclusion-content' => 'Content',
 	'visualeditor-dialog-transclusion-options' => 'Options',
-	'visualeditor-dialog-transclusion-param-name' => 'Parameter name',
 	'visualeditor-dialog-transclusion-placeholder' => 'New template',
 	'visualeditor-dialog-transclusion-remove-content' => 'Remove content',
 	'visualeditor-dialog-transclusion-remove-param' => 'Remove parameter',
@@ -125,6 +124,9 @@ $messages['en'] = array(
 	'visualeditor-notification-saved' => 'Your changes to $1 have been saved.',
 	'visualeditor-outline-control-move-down' => 'Move item down',
 	'visualeditor-outline-control-move-up' => 'Move item up',
+	'visualeditor-parameter-input-placeholder' => 'Parameter name',
+	'visualeditor-parameter-search-no-unused' => 'No unused parameters',
+	'visualeditor-parameter-search-unknown' => 'Unknown parameter',
 	'visualeditor-preference-enable' => 'Enable VisualEditor (only in the [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|main]] and [[{{MediaWiki:Visualeditor-usernamespacepagelink}}|user]] namespaces)',
 	'visualeditor-reference-input-placeholder' => 'What do you want to reference?',
 	'visualeditor-reference-search-create' => 'Create new source',
@@ -293,8 +295,6 @@ See also:
 {{Identical|Content}}',
 	'visualeditor-dialog-transclusion-options' => 'Label for section with options for templates, content or parameters.
 {{Identical|Options}}',
-	'visualeditor-dialog-transclusion-param-name' => 'Placeholder text label for an input for adding a parameter to a template.
-{{Identical|Parameter name}}',
 	'visualeditor-dialog-transclusion-placeholder' => 'Label for section with options for adding a new template to a multi part transclusion',
 	'visualeditor-dialog-transclusion-remove-content' => 'Label for button that removes content between transclusion parts',
 	'visualeditor-dialog-transclusion-remove-param' => 'Label for button that removes a parameter from a template',
@@ -384,6 +384,8 @@ Parameters:
 	'visualeditor-notification-saved' => 'Shown after a user saves a page, $1 is a page name.',
 	'visualeditor-outline-control-move-down' => 'Tool tip for a button that moves items in a list down one place',
 	'visualeditor-outline-control-move-up' => 'Tool tip for a button that moves items in a list up one place',
+	'visualeditor-parameter-input-placeholder' => 'Placeholder text label for an input for adding a parameter to a template.
+{{Identical|Parameter name}}',
 	'visualeditor-preference-enable' => 'Label for the user preference to enable VisualEditor.
 Links are in {{msg-mw|Visualeditor-mainnamespacepagelink}} and {{msg-mw|visualeditor-usernamespacepagelink}}.',
 	'visualeditor-reference-input-placeholder' => 'Placeholder text for reference search field.',

@@ -730,6 +730,45 @@
 	font-weight: bold;
 }
 
+/* ve.ui.MWParameterResultWidget */
+
+.ve-ui-mwParameterResultWidget {
+	padding-right: 0.25em;
+	background-position: 0.5em 0.25em;
+	background-repeat: no-repeat;
+}
+
+.ve-ui-mwParameterResultWidget.ve-ui-widget-disabled {
+	opacity: 0.5;
+}
+
+.ve-ui-mwParameterResultWidget-label {
+	font-weight: bold;
+	float: left;
+}
+
+.ve-ui-mwParameterResultWidget-names {
+	float: right;
+	font-size: 0.9em;
+}
+
+.ve-ui-mwParameterResultWidget-name {
+	border-radius: 0.3em;
+	padding: 0.125em 0.25em;
+	margin-left: 0.5em;
+	color: #999;
+	background-color: #fff;
+	border: solid 1px #ddd;
+}
+
+.ve-ui-mwParameterResultWidget-names span:not(:first-child) {
+	background-color: #eee;
+}
+
+.ve-ui-mwParameterResultWidget-description {
+	clear: both;
+}
+
 /* RTL Definitions */
 
 /* @noflip */

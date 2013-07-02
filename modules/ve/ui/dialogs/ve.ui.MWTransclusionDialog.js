@@ -377,17 +377,24 @@ ve.ui.MWTransclusionDialog.prototype.getContentPage = function ( content ) {
  * @param {ve.dm.MWTemplateModel} template Template model
  */
 ve.ui.MWTransclusionDialog.prototype.getTemplatePage = function ( template ) {
-	var infoFieldset, addParameterFieldset, addParameterInput, addParameterButton, optionsFieldset,
+	var infoFieldset, addParameterFieldset, addParameterSearch, addParameterButton, optionsFieldset,
 		removeButton,
 		spec = template.getSpec(),
 		label = spec.getLabel(),
 		description = spec.getDescription();
 
 	function addParameter() {
-		var param = new ve.dm.MWTemplateParameterModel( template, addParameterInput.getValue() );
-		template.addParameter( param );
-		addParameterInput.setValue();
-		this.setPageByName( param.getId() );
+		var data, name, param,
+			item = addParameterSearch.results.getSelectedItem();
+
+		data = item && item.getData();
+		name = data && data.name;
+		if ( name ) {
+			param = new ve.dm.MWTemplateParameterModel( template, name );
+			template.addParameter( param );
+			addParameterSearch.query.setValue();
+			this.setPageByName( param.getId() );
+		}
 	}
 
 	infoFieldset = new ve.ui.FieldsetLayout( {
@@ -397,7 +404,7 @@ ve.ui.MWTransclusionDialog.prototype.getTemplatePage = function ( template ) {
 	} );
 
 	if ( description ) {
-		infoFieldset.$.append( $( '<div>' ).text( description ) );
+		infoFieldset.$.append( this.frame.$$( '<div>' ).text( description ) );
 	}
 
 	addParameterFieldset = new ve.ui.FieldsetLayout( {
@@ -406,24 +413,21 @@ ve.ui.MWTransclusionDialog.prototype.getTemplatePage = function ( template ) {
 		'icon': 'parameter'
 	} );
 	addParameterFieldset.$.addClass( 've-ui-mwTransclusionDialog-addParameterFieldset' );
-	addParameterInput = new ve.ui.TextInputWidget( {
-		'$$': this.frame.$$,
-		'placeholder': ve.msg( 'visualeditor-dialog-transclusion-param-name' )
-	} );
+	addParameterSearch = new ve.ui.MWParameterSearchWidget( template, { '$$': this.frame.$$ } );
 	addParameterButton = new ve.ui.ButtonWidget( {
 		'$$': this.frame.$$,
 		'label': ve.msg( 'visualeditor-dialog-transclusion-add-param' ),
 		'disabled': true
 	} );
 	addParameterButton.connect( this, { 'click': addParameter } );
-	addParameterInput.connect( this, {
+	addParameterSearch.connect( this, {
 		'enter': addParameter,
-		'change': function ( value ) {
+		'select': function ( name ) {
 			var names = template.getParameterNames();
-			addParameterButton.setDisabled( value === '' || names.indexOf( value ) !== -1 );
+			addParameterButton.setDisabled( !name || names.indexOf( name ) !== -1 );
 		}
 	} );
-	addParameterFieldset.$.append( addParameterInput.$, addParameterButton.$ );
+	addParameterFieldset.$.append( addParameterSearch.$, addParameterButton.$ );
 
 	optionsFieldset = new ve.ui.FieldsetLayout( {
 		'$$': this.frame.$$,
@@ -585,7 +589,7 @@ ve.ui.MWTransclusionDialog.prototype.getPlaceholderPage = function ( placeholder
 	optionsFieldset.$.append( removeButton.$ );
 
 	return {
-		'label': $( '<span>' )
+		'label': this.frame.$$( '<span>' )
 			.addClass( 've-ui-mwTransclusionDialog-placeholder-label' )
 			.text( label ),
 		'icon': 'template',
