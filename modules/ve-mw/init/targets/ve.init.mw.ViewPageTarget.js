@@ -17,26 +17,7 @@
  */
 ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 	var browserWhitelisted,
-		browserBlacklisted,
-		currentUri = new mw.Uri(),
-		supportsES5subset = (
-			// It would be much easier to do a quick inline function that asserts "use strict"
-			// works, but since IE9 doesn't support strict mode (and we don't use strict mode) we
-			// have to instead list all the ES5 features we use.
-			Array.isArray &&
-			Array.prototype.filter &&
-			Array.prototype.indexOf &&
-			Array.prototype.map &&
-			Date.prototype.toJSON &&
-			Function.prototype.bind &&
-			Object.create &&
-			Object.keys &&
-			String.prototype.trim &&
-			window.JSON &&
-			JSON.parse &&
-			JSON.stringify
-		),
-		supportsContentEditable = 'contentEditable' in document.createElement( 'div' );
+		currentUri = new mw.Uri();
 
 	// Parent constructor
 	ve.init.mw.Target.call(
@@ -110,10 +91,6 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 		'vewhitelist' in currentUri.query ||
 		$.client.test( ve.init.mw.ViewPageTarget.compatibility.whitelist, null, true )
 	);
-	browserBlacklisted = (
-		!( 'vewhitelist' in currentUri.query ) &&
-		$.client.test( ve.init.mw.ViewPageTarget.compatibility.blacklist, null, true )
-	);
 
 	if ( mw.config.get( 'wgVisualEditorConfig' ).enableEventLogging ) {
 		this.setUpEventLogging();
@@ -134,11 +111,6 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 		'noChanges': 'onNoChanges',
 		'serializeError': 'onSerializeError'
 	} );
-
-	if ( !supportsES5subset || !supportsContentEditable || browserBlacklisted ) {
-		// Don't initialise in browsers that are broken
-		return;
-	}
 
 	if ( !browserWhitelisted ) {
 		// Show warning in unknown browsers that pass the support test
@@ -164,11 +136,6 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 
 	this.setupSkinTabs();
 	this.setupSectionEditLinks();
-	if ( this.isViewPage ) {
-		if ( currentUri.query.veaction === 'edit' ) {
-			this.activate();
-		}
-	}
 
 	window.addEventListener( 'popstate', ve.bind( this.onWindowPopState, this ) ) ;
 };
@@ -194,20 +161,6 @@ ve.init.mw.ViewPageTarget.compatibility = {
 		'iceweasel': [['>=', 10]],
 		'safari': [['>=', 5]],
 		'chrome': [['>=', 19]]
-	},
-	'blacklist': {
-		// IE <= 8 has various incompatibilities in layout and feature support
-		// IE9 and IE10 generally work but fail in ajax handling when making POST
-		// requests to the VisualEditor/Parsoid API which is causing silent failures
-		// when trying to save a page (bug 49187)
-		'msie': [['<=', 10]],
-		// Android 2.x and below "support" CE but don't trigger keyboard input
-		'android': [['<', 3]],
-		// Bug 50534 - apparently Firefox is broken in versions 10 and below
-		'firefox': [['<=', 10]],
-		// Blacklist all versions:
-		'opera': null,
-		'blackberry': null
 	}
 };
 
@@ -617,26 +570,6 @@ ve.init.mw.ViewPageTarget.prototype.onEditConflict = function () {
 ve.init.mw.ViewPageTarget.prototype.onNoChanges = function () {
 	this.$saveDialogLoadingIcon.hide();
 	this.swapSaveDialog( 'nochanges' );
-};
-
-/**
- * Handle clicks on the edit tab.
- *
- * @method
- * @param {jQuery.Event} e Mouse click event
- */
-ve.init.mw.ViewPageTarget.prototype.onEditTabClick = function ( e ) {
-	// Default mouse button is normalised by jQuery to key code 1.
-	// Only do our handling if no keys are pressed, mouse button is 1
-	// (e.g. not middle click or right click) and no modifier keys
-	// (e.g. cmd-click to open in new tab).
-	if ( ( e.which && e.which !== 1 ) || e.shiftKey || e.altKey || e.ctrlKey || e.metaKey ) {
-		return;
-	}
-	this.logEvent( 'Edit', { action: 'edit-link-click' } );
-	this.activate();
-	// Prevent the edit tab's normal behavior
-	e.preventDefault();
 };
 
 /**
@@ -1150,84 +1083,12 @@ ve.init.mw.ViewPageTarget.prototype.tearDownSurface = function () {
 
 /**
  * Modify tabs in the skin to support in-place editing.
+ * Edit tab is bound outside the module in mw.ViewPageTarget.init.
  *
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.setupSkinTabs = function () {
-	var caVeEdit, caVeEditSource,
-		action = this.pageExists ? 'edit' : 'create',
-		pTabsId = $( '#p-views' ).length ? 'p-views' : 'p-cactions',
-		$caSource = $( '#ca-viewsource' ),
-		$caEdit = $( '#ca-edit' ),
-		$caEditLink = $caEdit.find( 'a' ),
-		reverseTabOrder = $( 'body' ).hasClass( 'rtl' ) && pTabsId === 'p-views',
-		caVeEditNextnode = reverseTabOrder ? $caEdit.get( 0 ) : $caEdit.next().get( 0 );
-
-	if ( !$caEdit.length || $caSource.length ) {
-		// If there is no edit tab or a view-source tab,
-		// the user doesn't have permission to edit.
-		return;
-	}
-
-	// Add independent "VisualEditor" tab (#ca-ve-edit).
-	if ( this.tabLayout === 'add' ) {
-
-		caVeEdit = mw.util.addPortletLink(
-			pTabsId,
-			// Use url instead of '#'.
-			// So that 1) one can always open it in a new tab, even when
-			// onEditTabClick is bound.
-			// 2) when onEditTabClick is not bound (!isViewPage) it will
-			// just work.
-			this.veEditUri,
-			// Message: 'visualeditor-ca-ve-edit' or 'visualeditor-ca-ve-create'
-			ve.msg( 'visualeditor-ca-ve-' + action ),
-			'ca-ve-edit',
-			ve.msg( 'tooltip-ca-ve-edit' ),
-			ve.msg( 'accesskey-ca-ve-edit' ),
-			caVeEditNextnode
-		);
-
-	// Replace "Edit" tab with a veEditUri version, add "Edit source" tab.
-	} else {
-		// Create "Edit source" link.
-		// Re-create instead of convert ca-edit since we don't want to copy over accesskey etc.
-		caVeEditSource = mw.util.addPortletLink(
-			pTabsId,
-			// Use original href to preserve oldid etc. (bug 38125)
-			$caEditLink.attr( 'href' ),
-			// Message: 'visualeditor-ca-editsource' or 'visualeditor-ca-createsource'
-			ve.msg( 'visualeditor-ca-' + action + 'source' ),
-			'ca-editsource',
-			// Message: 'tooltip-ca-editsource' or 'tooltip-ca-createsource'
-			ve.msg( 'tooltip-ca-' + action + 'source' ),
-			ve.msg( 'accesskey-ca-editsource' ),
-			caVeEditNextnode
-		);
-		// Copy over classes (e.g. 'selected')
-		$( caVeEditSource ).addClass( $caEdit.attr( 'class' ) );
-
-		// Create "Edit" tab.
-		$caEdit.remove();
-		caVeEdit = mw.util.addPortletLink(
-			pTabsId,
-			// Use url instead of '#'.
-			// So that 1) one can always open it in a new tab, even when
-			// onEditTabClick is bound.
-			// 2) when onEditTabClick is not bound (!isViewPage) it will
-			// just work.
-			this.veEditUri,
-			$caEditLink.text(),
-			$caEdit.attr( 'id' ),
-			$caEditLink.attr( 'title' ),
-			ve.msg( 'accesskey-ca-ve-edit' ),
-			reverseTabOrder ? caVeEditSource.nextSibling : caVeEditSource
-		);
-	}
-
 	if ( this.isViewPage ) {
-		// Allow instant switching to edit mode, without refresh
-		$( caVeEdit ).click( ve.bind( this.onEditTabClick, this ) );
 		// Allow instant switching back to view mode, without refresh
 		$( '#ca-view a, #ca-nstab-visualeditor a' )
 			.click( ve.bind( this.onViewTabClick, this ) );
@@ -2317,7 +2178,3 @@ ve.init.mw.ViewPageTarget.prototype.onBeforeUnload = function () {
 		return message;
 	}
 };
-
-/* Initialization */
-
-ve.init.mw.targets.push( new ve.init.mw.ViewPageTarget() );

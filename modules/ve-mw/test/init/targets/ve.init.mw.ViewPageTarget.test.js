@@ -5,10 +5,11 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
+/*global mw */
 QUnit.module( 've.init.mw.ViewPageTarget' );
 
 QUnit.test( 'compatibility', function ( assert ) {
-	var i, profile, list, matches,
+	var i, profile, list, matches, compatibility,
 		cases = [
 			{
 				'msg': 'Unidentified browser',
@@ -122,12 +123,18 @@ QUnit.test( 'compatibility', function ( assert ) {
 			}
 		];
 
+	compatibility = {
+		'whitelist': ve.init.mw.ViewPageTarget.compatibility.whitelist,
+		// TODO: Fix this mess when we split ve.init from ve.platform
+		'blacklist': mw.libs.ve.blacklist
+	};
+
 	QUnit.expect( cases.length );
 	for ( i = 0; i < cases.length; i++ ) {
 		profile = $.client.profile( { 'userAgent': cases[i].userAgent, 'platform': '' } );
 		matches = [];
-		for ( list in ve.init.mw.ViewPageTarget.compatibility ) {
-			if ( $.client.test( ve.init.mw.ViewPageTarget.compatibility[list], profile, true ) ) {
+		for ( list in compatibility ) {
+			if ( $.client.test( compatibility[list], profile, true ) ) {
 				matches.push( list );
 			}
 		}
