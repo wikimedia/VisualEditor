@@ -690,12 +690,15 @@ $wgResourceModules += array(
 		'scripts' => array(
 			've-mw/ce/nodes/ve.ce.MWMathNode.js',
 			've-mw/dm/nodes/ve.dm.MWMathNode.js',
+			've-mw/ui/inspectors/ve.ui.MWMathInspector.js',
+			've-mw/ui/tools/buttons/ve.ui.MWMathButtonTool.js',
 		),
 		'dependencies' => array(
 			'ext.visualEditor.core',
 		),
 		'messages' => array(
 			// VE messages needed by code that is only in experimental mode
+			'visualeditor-mwmathinspector-title',
 		),
 	),
 	'ext.visualEditor.icons-raster' => $wgVisualEditorResourceTemplate + array(

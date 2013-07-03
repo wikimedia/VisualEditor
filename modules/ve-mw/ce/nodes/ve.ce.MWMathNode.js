@@ -5,6 +5,8 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
+/*global mw*/
+
 /**
  * ContentEditable MediaWiki math node.
  *
@@ -24,6 +26,7 @@ ve.ce.MWMathNode = function VeCeMWMathNode( model, config ) {
 	// Mixin constructors
 	ve.ce.FocusableNode.call( this );
 	ve.ce.ProtectedNode.call( this );
+	ve.ce.GeneratedContentNode.call( this );
 
 	// Events
 	this.model.connect( this, { 'update': 'onUpdate' } );
@@ -32,6 +35,7 @@ ve.ce.MWMathNode = function VeCeMWMathNode( model, config ) {
 	// DOM Changes
 	this.$.addClass( 've-ce-mwMathNode' );
 	this.$.attr( 'src', model.getAttribute( 'src' ) );
+	this.$.attr( 'alt', model.getAttribute( 'alt' ) );
 };
 
 /* Inheritance */
@@ -40,6 +44,7 @@ ve.inheritClass( ve.ce.MWMathNode, ve.ce.LeafNode );
 
 ve.mixinClass( ve.ce.MWMathNode, ve.ce.FocusableNode );
 ve.mixinClass( ve.ce.MWMathNode, ve.ce.ProtectedNode );
+ve.mixinClass( ve.ce.MWMathNode, ve.ce.GeneratedContentNode );
 
 /* Static Properties */
 
@@ -49,31 +54,50 @@ ve.ce.MWMathNode.static.tagName = 'img';
 
 /* Methods */
 
-/**
- * Handle attribute change events.
- *
- * Whitelisted attributes will be added or removed in sync with the DOM. They are initially set in
- * the constructor.
- *
- * @method
- * @param {string} key Attribute key
- * @param {string} from Old value
- * @param {string} to New value
- */
-ve.ce.MWMathNode.prototype.onAttributeChange = function ( key, from, to ) {
-	if ( from !== to ) {
-		if ( key === 'src' ) {
-			this.$image.attr( 'src', to );
-		}
-	}
+ve.ce.MWMathNode.prototype.generateContents = function () {
+	var deferred = $.Deferred();
+	$.ajax( {
+		'url': mw.util.wikiScript( 'api' ),
+		'data': {
+			'action': 'visualeditor',
+			'paction': 'parsefragment',
+			'page': mw.config.get( 'wgRelevantPageName' ),
+			'wikitext': '<math>' + this.model.getAttribute( 'extsrc' ) + '</math>',
+			'token': mw.user.tokens.get( 'editToken' ),
+			'format': 'json'
+		},
+		'dataType': 'json',
+		'type': 'POST',
+		// Wait up to 100 seconds before giving up
+		'timeout': 100000,
+		'cache': 'false',
+		'success': ve.bind( this.onParseSuccess, this, deferred ),
+		'error': ve.bind( this.onParseError, this, deferred )
+	} );
+	return deferred.promise();
 };
 
 /**
- * Update method
+ * Handle a successful response from the parser for the wikitext fragment.
  *
- * @method
+ * @param {jQuery.Deferred} deferred The Deferred object created by generateContents
+ * @param {Object} response Response data
  */
-ve.ce.MWMathNode.prototype.onUpdate = function () {
+ve.ce.MWMathNode.prototype.onParseSuccess = function ( deferred, response ) {
+	var data = response.visualeditor, contentNodes = $( data.content ).get();
+	this.$.attr( 'alt', contentNodes[0].childNodes[0].getAttribute( 'alt' ) );
+	this.$.attr( 'src', contentNodes[0].childNodes[0].getAttribute( 'src' ) );
+	deferred.resolve( contentNodes );
+};
+
+/**
+ * Handle an unsuccessful response from the parser for the wikitext fragment.
+ *
+ * @param {jQuery.Deferred} deferred The promise object created by generateContents
+ * @param {Object} response Response data
+ */
+ve.ce.MWMathNode.prototype.onParseError = function ( deferred ) {
+	deferred.reject();
 };
 
 /**

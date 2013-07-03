@@ -37,6 +37,7 @@ ve.dm.MWMathNode.static.toDataElement = function ( domElements ) {
 	var dataElement,
 		mwDataJSON = domElements[0].getAttribute( 'data-mw' ),
 		mwData = mwDataJSON ? JSON.parse( mwDataJSON ) : {},
+		extsrc = mwData.body.extsrc,
 		alt = domElements[0].getAttribute( 'alt' ),
 		src = domElements[0].getAttribute( 'src' );
 
@@ -45,6 +46,7 @@ ve.dm.MWMathNode.static.toDataElement = function ( domElements ) {
 		'attributes': {
 			'mw': mwData,
 			'originalMw': mwDataJSON,
+			'extsrc': extsrc,
 			'alt': alt,
 			'src': src
 		}
@@ -53,8 +55,16 @@ ve.dm.MWMathNode.static.toDataElement = function ( domElements ) {
 };
 
 ve.dm.MWMathNode.static.toDomElements = function ( dataElement, doc ) {
-	var el = doc.createElement( 'img' );
-	el.setAttribute( 'data-mw', JSON.stringify( dataElement.attributes.mw ) );
+	var el = doc.createElement( 'img' ),
+		mwData = ve.copyObject( dataElement.attributes.mw ),
+		originalMw = dataElement.attributes.originalMw;
+
+	mwData.body.extsrc = dataElement.attributes.extsrc;
+	if ( originalMw && ve.compare( mwData, JSON.parse( originalMw ) ) ) {
+		el.setAttribute( 'data-mw', originalMw );
+	} else {
+		el.setAttribute( 'data-mw', JSON.stringify( mwData ) );
+	}
 	el.setAttribute( 'alt', dataElement.attributes.alt );
 	el.setAttribute( 'src', dataElement.attributes.src );
 	return [ el ];
