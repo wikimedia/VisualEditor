@@ -37,8 +37,10 @@ ve.ui.Toolbar = function VeUiToolbar( surface, options ) {
 	this.$window = null;
 	this.windowEvents = {
 		'resize': ve.bind( this.onWindowResize, this ),
-		'scroll': ve.bind( this.onWindowScroll, this ),
-		'keypress': ve.bind( this.onWindowKeypress, this )
+		'scroll': ve.bind( this.onWindowScroll, this )
+	};
+	this.surfaceViewEvents = {
+		'keypress': ve.bind( this.onSurfaceViewKeyPress, this )
 	};
 
 	// Events
@@ -127,7 +129,7 @@ ve.ui.Toolbar.prototype.onWindowResize = function () {
  * the cursor is obscured by the toolbar.
  *
  */
-ve.ui.Toolbar.prototype.onWindowKeypress = function () {
+ve.ui.Toolbar.prototype.onSurfaceViewKeyPress = function () {
 	var cursorPos = this.surface.view.getSelectionRect(),
 		scrollTo = cursorPos.end.y - this.surface.view.$.offset().top,
 		obscured = cursorPos.end.y - this.$window.scrollTop() < this.$.height() + this.$.offset().top;
@@ -262,6 +264,8 @@ ve.ui.Toolbar.prototype.resetPosition = function () {
  */
 ve.ui.Toolbar.prototype.enableFloating = function () {
 	this.$window = $( this.getElementWindow() ).on( this.windowEvents );
+	this.$surfaceView = this.surface.getView().$.on( this.surfaceViewEvents );
+
 	// TODO: Place this is a DOM attach event for this.$
 	setTimeout( ve.bind( function () {
 		// The page may load with a non-zero scroll without trigger the scroll event
@@ -279,6 +283,11 @@ ve.ui.Toolbar.prototype.disableFloating = function () {
 		this.$window.off( this.windowEvents );
 		this.$window = null;
 	}
+	if ( this.$surfaceView ) {
+		this.$surfaceView.off( this.surfaceViewEvents );
+		this.$surfaceView = null;
+	}
+
 	if ( this.floating ) {
 		this.resetPosition();
 	}
