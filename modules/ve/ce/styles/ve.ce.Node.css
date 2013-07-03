@@ -155,40 +155,19 @@
 	cursor: not-allowed;
 }
 
-/* ve.ce.MWTransclusionNode */
-
-.ve-ce-mwTransclusionInlineNode {
-	display: inline-block;
-}
-
-/* ve.ce.MWReferenceListNode */
-
-.ve-ce-mwReferenceListNode .ve-ce-generated-wrapper {
-	display: inline-block;
-}
-
-.ve-ce-mwReferenceListNode-muted {
-	font-style: italic;
-	color: #777;
-}
-
-/* ve-ce-mwReferenceNode */
-
-.ve-ce-mwReferenceNode-missingref {
-	cursor: not-allowed;
-}
-
 /* ve.ce.BranchNode */
 
 .ve-ce-branchNode-blockSlug {
 	display: block;
 }
 
-/* ve.ce.MWPreformattedNode */
+/* ve.ce.PreformattedNode */
 
 pre.ve-ce-branchNode {
 	white-space: pre-wrap;
 }
+
+/* Hack for empty headings and paragraphs; can't use min-height because of IE */
 
 .ve-ce-branchNode h1:empty:before,
 .ve-ce-branchNode h2:empty:before,
@@ -200,13 +179,10 @@ pre.ve-ce-branchNode {
 	content: url('data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==');
 }
 
+/* Emulate the first paragraph in each list item being unwrapped */
+
+/* TODO use CSS class for wrapper paragraph */
 li.ve-ce-branchNode p.ve-ce-branchNode:first-child {
 	margin: 0;
 	padding: 0;
-}
-
-/* ve.ce.MWInlineImageNode */
-
-.ve-ce-mwInlineImageNode {
-	display: inline-block;
 }

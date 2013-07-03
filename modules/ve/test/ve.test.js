@@ -5,8 +5,6 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-ve.test = {};
-
 QUnit.module( 've' );
 
 /* Tests */

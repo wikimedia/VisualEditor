@@ -9,7 +9,7 @@
  * Dialog for a MediaWiki references list.
  *
  * @class
- * @extends ve.ui.Dialog
+ * @extends ve.ui.MWDialog
  *
  * @constructor
  * @param {ve.ui.Surface} surface
@@ -17,12 +17,12 @@
  */
 ve.ui.MWReferenceListDialog = function VeUiMWReferenceListDialog( surface, config ) {
 	// Parent constructor
-	ve.ui.Dialog.call( this, surface, config );
+	ve.ui.MWDialog.call( this, surface, config );
 };
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.MWReferenceListDialog, ve.ui.Dialog );
+ve.inheritClass( ve.ui.MWReferenceListDialog, ve.ui.MWDialog );
 
 /* Static Properties */
 
@@ -34,7 +34,7 @@ ve.ui.MWReferenceListDialog.static.icon = 'references';
 
 ve.ui.MWReferenceListDialog.prototype.initialize = function () {
 	// Parent method
-	ve.ui.Dialog.prototype.initialize.call( this );
+	ve.ui.MWDialog.prototype.initialize.call( this );
 
 	// Properties
 	this.optionsFieldset = new ve.ui.FieldsetLayout( {
@@ -61,7 +61,7 @@ ve.ui.MWReferenceListDialog.prototype.onOpen = function () {
 	var node, refGroup;
 
 	// Parent method
-	ve.ui.Dialog.prototype.onOpen.call( this );
+	ve.ui.MWDialog.prototype.onOpen.call( this );
 
 	// Prepopulate from existing node if we're editing a node
 	// instead of inserting a new one
@@ -131,7 +131,7 @@ ve.ui.MWReferenceListDialog.prototype.onClose = function ( action ) {
 	}
 
 	// Parent method
-	ve.ui.Dialog.prototype.onClose.call( this );
+	ve.ui.MWDialog.prototype.onClose.call( this );
 };
 
 /* Registration */

@@ -10,7 +10,7 @@
 /**
  * @class
  * @abstract
- * @extends ve.ui.Dialog
+ * @extends ve.ui.MWDialog
  *
  * @constructor
  * @param {ve.ui.Surface} surface
@@ -18,7 +18,7 @@
  */
 ve.ui.MWReferenceInsertDialog = function VeUiMWReferenceInsertDialog( surface, config ) {
 	// Parent constructor
-	ve.ui.Dialog.call( this, surface, config );
+	ve.ui.MWDialog.call( this, surface, config );
 
 	// Properties
 	this.result = null;
@@ -26,7 +26,7 @@ ve.ui.MWReferenceInsertDialog = function VeUiMWReferenceInsertDialog( surface, c
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.MWReferenceInsertDialog, ve.ui.Dialog );
+ve.inheritClass( ve.ui.MWReferenceInsertDialog, ve.ui.MWDialog );
 
 /* Static Properties */
 
@@ -50,7 +50,7 @@ ve.ui.MWReferenceInsertDialog.prototype.onSelect = function ( result ) {
 
 ve.ui.MWReferenceInsertDialog.prototype.onOpen = function () {
 	// Parent method
-	ve.ui.Dialog.prototype.onOpen.call( this );
+	ve.ui.MWDialog.prototype.onOpen.call( this );
 
 	// Initialization
 	this.search.buildIndex();
@@ -64,7 +64,7 @@ ve.ui.MWReferenceInsertDialog.prototype.onClose = function ( action ) {
 		surfaceModel = surface.getModel();
 
 	// Parent method
-	ve.ui.Dialog.prototype.onClose.call( this );
+	ve.ui.MWDialog.prototype.onClose.call( this );
 
 	if ( action === 'apply' ) {
 		doc = surfaceModel.getDocument(),
@@ -126,7 +126,7 @@ ve.ui.MWReferenceInsertDialog.prototype.onClose = function ( action ) {
 
 ve.ui.MWReferenceInsertDialog.prototype.initialize = function () {
 	// Parent method
-	ve.ui.Dialog.prototype.initialize.call( this );
+	ve.ui.MWDialog.prototype.initialize.call( this );
 
 	// Properties
 	this.search = new ve.ui.MWReferenceSearchWidget( this.surface, { '$$': this.frame.$$ } );

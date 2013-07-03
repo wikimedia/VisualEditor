@@ -9,7 +9,8 @@
 
 /**
  * @class
- * @extends ve.ui.PagedDialog
+ * @extends ve.ui.MWDialog
+ * @mixins ve.ui.PagedDialog
  *
  * @constructor
  * @param {ve.ui.Surface} surface
@@ -17,6 +18,9 @@
  */
 ve.ui.MWMetaDialog = function VeUiMWMetaDialog( surface, config ) {
 	// Parent constructor
+	ve.ui.MWDialog.call( this, surface, config );
+
+	// Mixin constructors
 	ve.ui.PagedDialog.call( this, surface, config );
 
 	// Properties
@@ -33,7 +37,9 @@ ve.ui.MWMetaDialog = function VeUiMWMetaDialog( surface, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.MWMetaDialog, ve.ui.PagedDialog );
+ve.inheritClass( ve.ui.MWMetaDialog, ve.ui.MWDialog );
+
+ve.mixinClass( ve.ui.MWMetaDialog, ve.ui.PagedDialog );
 
 /* Static Properties */
 
@@ -47,7 +53,10 @@ ve.ui.MWMetaDialog.prototype.initialize = function () {
 	var languagePromise;
 
 	// Parent method
-	ve.ui.PagedDialog.prototype.initialize.call( this );
+	ve.ui.MWDialog.prototype.initialize.call( this );
+
+	// Initialization for PagedDialog
+	this.initializePages();
 
 	// Properties
 	this.categoriesFieldset = new ve.ui.FieldsetLayout( {
@@ -142,7 +151,7 @@ ve.ui.MWMetaDialog.prototype.onOpen = function () {
 		defaultSortKeyItem = this.getDefaultSortKeyItem();
 
 	// Parent method
-	ve.ui.PagedDialog.prototype.onOpen.call( this );
+	ve.ui.MWDialog.prototype.onOpen.call( this );
 
 	this.defaultSortInput.setValue(
 		defaultSortKeyItem ? defaultSortKeyItem.getAttribute( 'content' ) : ''
@@ -165,7 +174,7 @@ ve.ui.MWMetaDialog.prototype.onClose = function ( action ) {
 		currentDefaultSortKeyItem = this.getDefaultSortKeyItem();
 
 	// Parent method
-	ve.ui.PagedDialog.prototype.onClose.call( this );
+	ve.ui.MWDialog.prototype.onClose.call( this );
 
 	// Place transactions made while dialog was open in a common history state
 	hasTransactions = surfaceModel.breakpoint();

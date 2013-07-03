@@ -121,22 +121,18 @@ ve.ui.Window.static.addStylesheetFiles = function ( paths ) {
 /**
  * Add a stylesheet from a local directory.
  *
- * The file path is derived from the module name, such that `ve.ui.Widget.css` is assumed to be
- * located at `ve/ui/styles/ve.ui.Widget.css`.
- *
  * @method
  * @param {string[]} files Names of stylesheet files
  */
 ve.ui.Window.static.addLocalStylesheets = function ( files ) {
-	var i, len, module,
+	var i, len,
 		base = ve.init.platform.getModulesUrl(),
 		paths = [];
 
 	// Prepend base path to each file name
 	for ( i = 0, len = files.length; i < len; i++ ) {
 		// Extract the module name and convert it to a path
-		module = files[i].match( /^([a-z\.]+)(css|[A-Z])/ )[1].replace( /\./g, '/' );
-		paths[i] = base + '/' + module + 'styles/' + files[i];
+		paths[i] = base + '/' + files[i];
 	}
 
 	this.addStylesheetFiles( paths );
@@ -339,13 +335,13 @@ ve.ui.Window.prototype.close = function ( action ) {
 /* Initialization */
 
 ve.ui.Window.static.addLocalStylesheets( [
-	've.ui.css',
-	've.ui.Frame.css',
-	've.ui.Window.css',
-	've.ui.Element.css',
-	've.ui.Layout.css',
-	've.ui.Widget.css',
+	've/ui/styles/ve.ui.css',
+	've/ui/styles/ve.ui.Frame.css',
+	've/ui/styles/ve.ui.Window.css',
+	've/ui/styles/ve.ui.Element.css',
+	've/ui/styles/ve.ui.Layout.css',
+	've/ui/styles/ve.ui.Widget.css',
 	( document.createElementNS && document.createElementNS( 'http://www.w3.org/2000/svg', 'svg' ).createSVGRect ?
-		've.ui.Icons-vector.css' :
-		've.ui.Icons-raster.css' )
+		've/ui/styles/ve.ui.Icons-vector.css' :
+		've/ui/styles/ve.ui.Icons-raster.css' )
 ] );

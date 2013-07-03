@@ -133,4 +133,4 @@ ve.ui.Inspector.prototype.onOpen = function () {
 
 /* Initialization */
 
-ve.ui.Inspector.static.addLocalStylesheets( [ 've.ui.Inspector.css' ] );
+ve.ui.Inspector.static.addLocalStylesheets( [ 've/ui/styles/ve.ui.Inspector.css' ] );

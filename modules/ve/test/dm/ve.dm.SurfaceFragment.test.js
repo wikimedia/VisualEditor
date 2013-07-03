@@ -502,53 +502,10 @@ QUnit.test( 'rewrapAllNodes', 6, function ( assert ) {
 	assert.deepEqual( fragment.getRange(), new ve.Range( 0, 5 ), 'new range contains rewrapping elements' );
 } );
 
-function runIsolateTest( assert, type, range, expected, label ) {
-	var doc = ve.dm.example.createExampleDocument( 'isolationData' ),
-		surface = new ve.dm.Surface( doc ),
-		fragment = new ve.dm.SurfaceFragment( surface, range ),
-		data;
-
-	data = ve.copyArray( doc.getFullData() );
-	fragment.isolateAndUnwrap( type );
-	expected( data );
-
-	assert.deepEqual( doc.getFullData(), data, label );
-}
-
-QUnit.test( 'isolateAndUnwrap', 4, function ( assert ) {
-	runIsolateTest( assert, 'mwHeading', new ve.Range( 12, 20 ), function ( data ) {
-		data.splice( 11, 0, { 'type': '/list' } );
-		data.splice( 12, 1 );
-		data.splice( 20, 1, { 'type': 'list', 'attributes': { 'style': 'bullet' } } );
-	}, 'isolating paragraph in list item "Item 2" for MWheading' );
-
-	runIsolateTest( assert, 'heading', new ve.Range( 12, 20 ), function ( data ) {
+QUnit.test( 'isolateAndUnwrap', 1, function ( assert ) {
+	ve.test.utils.runIsolateTest( assert, 'heading', new ve.Range( 12, 20 ), function ( data ) {
 		data.splice( 11, 0, { 'type': 'listItem' } );
 		data.splice( 12, 1 );
 		data.splice( 20, 1, { 'type': '/listItem' } );
 	}, 'isolating paragraph in list item "Item 2" for heading' );
-
-	runIsolateTest( assert, 'mwHeading', new ve.Range( 89, 97 ), function ( data ) {
-		data.splice( 88, 1,
-			{ 'type': '/tableRow' },
-			{ 'type': '/tableSection' },
-			{ 'type': '/table' }
-		);
-		data.splice( 99, 1,
-			{ 'type': 'table' },
-			{ 'type': 'tableSection', 'attributes': { 'style': 'body' } },
-			{ 'type': 'tableRow' }
-		);
-	}, 'isolating "Cell 2" for MWheading' );
-
-	runIsolateTest( assert, 'mwHeading', new ve.Range( 202, 212 ), function ( data ) {
-		data.splice( 201, 1,
-			{ 'type': '/list' }, { 'type': '/listItem' }, { 'type': '/list' }
-		);
-		data.splice( 214, 1,
-			{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
-			{ 'type': 'listItem' },
-			{ 'type': 'list', 'attributes': { 'style': 'number' } }
-		);
-	}, 'isolating paragraph in list item "Nested 2" for MWheading' );
 } );

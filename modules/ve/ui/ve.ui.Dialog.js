@@ -163,4 +163,4 @@ ve.ui.Dialog.prototype.initialize = function () {
 
 /* Initialization */
 
-ve.ui.Dialog.static.addLocalStylesheets( [ 've.ui.Dialog.css' ] );
+ve.ui.Dialog.static.addLocalStylesheets( [ 've/ui/styles/ve.ui.Dialog.css' ] );

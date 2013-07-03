@@ -10,16 +10,6 @@
 	background-image: url(images/icons/menu.png);
 }
 
-.ve-ui-icon-reference {
-	/* @embed */
-	background-image: url(images/icons/reference.png);
-}
-
-.ve-ui-icon-references {
-	/* @embed */
-	background-image: url(images/icons/references.png);
-}
-
 .ve-ui-icon-picture {
 	/* @embed */
 	background-image: url(images/icons/picture.png);
@@ -28,11 +18,6 @@
 .ve-ui-icon-close {
 	/* @embed */
 	background-image: url(images/icons/close.png);
-}
-
-.ve-ui-icon-language {
-	/* @embed */
-	background-image: url(images/icons/language.png);
 }
 
 .ve-ui-icon-tag {
@@ -83,26 +68,6 @@
 .ve-ui-icon-comment {
 	/* @embed */
 	background-image: url(images/icons/comment.png);
-}
-
-.ve-ui-icon-template {
-	/* @embed */
-	background-image: url(images/icons/template.png);
-}
-
-.ve-ui-icon-parameter {
-	/* @embed */
-	background-image: url(images/icons/parameter.png);
-}
-
-.ve-ui-icon-parameter-set {
-	/* @embed */
-	background-image: url(images/icons/parameter-set.png);
-}
-
-.ve-ui-icon-source {
-	/* @embed */
-	background-image: url(images/icons/source.png);
 }
 
 .ve-ui-icon-up {

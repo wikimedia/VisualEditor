@@ -9,84 +9,66 @@ QUnit.module( 've.ui.FormatAction' );
 
 /* Tests */
 
-function runFormatConverterTest( assert, range, type, attributes, expectedSelection, expectedData, msg ) {
-	var selection,
-		dom = ve.createDocumentFromHtml( ve.dm.example.isolationHtml ),
-		target = new ve.init.sa.Target( $( '#qunit-fixture' ), dom ),
-		surface = target.surface,
-		formatAction = new ve.ui.FormatAction( surface ),
-		data = ve.copyArray( surface.getModel().getDocument().getFullData() ),
-		originalData = ve.copyArray( data );
-
-	expectedData( data );
-
-	surface.getModel().change( null, range );
-	formatAction.convert( type, attributes );
-
-	assert.deepEqual( surface.getModel().getDocument().getFullData(), data, msg + ': data models match' );
-	assert.deepEqual( surface.getModel().getSelection(), expectedSelection, msg + ': selections match' );
-
-	selection = surface.getModel().undo();
-
-	assert.deepEqual( surface.getModel().getDocument().getFullData(), originalData, msg + ' (undo): data models match' );
-	assert.deepEqual( selection, range, msg + ' (undo): selections match' );
-
-	surface.destroy();
-}
-
 QUnit.test( 'convert', function ( assert ) {
 	var i,
 		cases = [
 			{
 				'range': new ve.Range( 14, 16 ),
-				'type': 'mwHeading',
+				'type': 'heading',
 				'attributes': { level: 2 },
 				'expectedSelection': new ve.Range( 14, 16 ),
 				'expectedData': function ( data ) {
-					data.splice( 11, 2, { 'type': '/list' }, { 'type': 'mwHeading', 'attributes': { 'level': 2 } } );
-					data.splice( 19, 2, { 'type': '/mwHeading' }, { 'type': 'list', 'attributes': { 'style': 'bullet' } } );
+					data.splice( 12, 1, { 'type': 'heading', 'attributes': { 'level': 2 } } );
+					data.splice( 19, 1, { 'type': '/heading' } );
 				},
-				'msg': 'converting partial selection of list item "Item 2" to level 2 mwHeading'
+				'msg': 'converting partial selection of list item "Item 2" to level 2 heading'
 			},
 			{
 				'range': new ve.Range( 15, 50 ),
-				'type': 'mwHeading',
+				'type': 'heading',
 				'attributes': { level: 3 },
-				'expectedSelection': new ve.Range( 15, 44 ),
+				'expectedSelection': new ve.Range( 15, 50 ),
 				'expectedData': function ( data ) {
-					data.splice( 11, 2, { 'type': '/list' }, { 'type': 'mwHeading', 'attributes': { 'level': 3 } } );
-					data.splice( 19, 4, { 'type': '/mwHeading' }, { 'type': 'mwHeading', 'attributes': { 'level': 3 } } );
-					data.splice( 27, 4, { 'type': '/mwHeading' }, { 'type': 'mwHeading', 'attributes': { 'level': 3 } } );
-					data.splice( 38, 4, { 'type': '/mwHeading' }, { 'type': 'mwHeading', 'attributes': { 'level': 3 } } );
-					data.splice( 46, 2, { 'type': '/mwHeading' }, { 'type': 'list', 'attributes': { 'style': 'bullet' } } );
+					data.splice( 12, 1, { 'type': 'heading', 'attributes': { 'level': 3 } } );
+					data.splice( 19, 1, { 'type': '/heading' } );
+					data.splice( 22, 1, { 'type': 'heading', 'attributes': { 'level': 3 } } );
+					data.splice( 29, 1, { 'type': '/heading' } );
+					data.splice( 32, 1, { 'type': 'heading', 'attributes': { 'level': 3 } } );
+					data.splice( 42, 1, { 'type': '/heading' } );
+					data.splice( 45, 1, { 'type': 'heading', 'attributes': { 'level': 3 } } );
+					data.splice( 52, 1, { 'type': '/heading' } );
 				},
 				'msg': 'converting partial selection across two lists surrounding a paragraph'
 			},
 			{
 				'range': new ve.Range( 4, 28 ),
-				'type': 'mwHeading',
+				'type': 'heading',
 				'attributes': { level: 1 },
-				'expectedSelection': new ve.Range( 2, 22 ),
+				'expectedSelection': new ve.Range( 4, 28 ),
 				'expectedData': function ( data ) {
-					data.splice( 0, 3, { 'type': 'mwHeading', 'attributes': { 'level': 1 } } );
-					data.splice( 7, 4, { 'type': '/mwHeading' }, { 'type': 'mwHeading', 'attributes': { 'level': 1 } } );
-					data.splice( 15, 4, { 'type': '/mwHeading' }, { 'type': 'mwHeading', 'attributes': { 'level': 1 } } );
-					data.splice( 23, 3, { 'type': '/mwHeading' } );
+					data.splice( 2, 1, { 'type': 'heading', 'attributes': { 'level': 1 } } );
+					data.splice( 9, 1, { 'type': '/heading' } );
+					data.splice( 12, 1, { 'type': 'heading', 'attributes': { 'level': 1 } } );
+					data.splice( 19, 1, { 'type': '/heading' } );
+					data.splice( 22, 1, { 'type': 'heading', 'attributes': { 'level': 1 } } );
+					data.splice( 29, 1, { 'type': '/heading' } );
 				},
-				'msg': 'converting partial selection of all list items to level 1 MWheadings'
+				'msg': 'converting partial selection of all list items to level 1 headings'
 			},
 			{
 				'range': new ve.Range( 5, 26 ),
-				'type': 'mwPreformatted',
+				'type': 'preformatted',
 				'attributes': undefined,
-				'expectedSelection': new ve.Range( 3, 20 ),
+				'expectedSelection': new ve.Range( 5, 26 ),
 				'expectedData': function ( data ) {
-					data.splice( 0, 3, { 'type': 'mwPreformatted' } );
-					data.splice( 7, 4, { 'type': '/mwPreformatted' }, { 'type': 'mwPreformatted' } );
-					data.splice( 15, 4, { 'type': '/mwPreformatted' }, { 'type': 'mwPreformatted' } );
-					data.splice( 23, 3, { 'type': '/mwPreformatted' } );
+					data.splice( 2, 1, { 'type': 'preformatted' } );
+					data.splice( 9, 1, { 'type': '/preformatted' } );
+					data.splice( 12, 1, { 'type': 'preformatted' } );
+					data.splice( 19, 1, { 'type': '/preformatted' } );
+					data.splice( 22, 1, { 'type': 'preformatted' } );
+					data.splice( 29, 1, { 'type': '/preformatted' } );
 				},
-				'msg': 'converting partial selection of some list items to mwPreformatted text'
+				'msg': 'converting partial selection of some list items to preformatted text'
 			},
 			{
 				'range': new ve.Range( 146, 159 ),
@@ -108,12 +90,12 @@ QUnit.test( 'convert', function ( assert ) {
 					data.splice( 162, 1, { 'type': 'paragraph' } );
 					data.splice( 183, 1, { 'type': '/paragraph' } );
 				},
-				'msg': 'converting MWpreformatted in list item to paragraph'
+				'msg': 'converting preformatted in list item to paragraph'
 			}
 		];
 
 	QUnit.expect( cases.length * 4 );
 	for ( i = 0; i < cases.length; i++ ) {
-		runFormatConverterTest( assert, cases[i].range, cases[i].type, cases[i].attributes, cases[i].expectedSelection, cases[i].expectedData, cases[i].msg );
+		ve.test.utils.runFormatConverterTest( assert, cases[i].range, cases[i].type, cases[i].attributes, cases[i].expectedSelection, cases[i].expectedData, cases[i].msg );
 	}
 } );

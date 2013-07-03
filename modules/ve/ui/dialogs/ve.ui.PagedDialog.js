@@ -12,7 +12,6 @@
  *
  * @class
  * @abstract
- * @extends ve.ui.Dialog
  *
  * @constructor
  * @param {ve.ui.Surface} surface
@@ -25,9 +24,6 @@ ve.ui.PagedDialog = function VeUiPagedDialog( surface, config ) {
 	// Configuration initialization
 	config = config || {};
 
-	// Parent constructor
-	ve.ui.Dialog.call( this, surface, config );
-
 	// Properties
 	this.editable = !!config.editable;
 	this.adders = config.adders || null;
@@ -35,16 +31,14 @@ ve.ui.PagedDialog = function VeUiPagedDialog( surface, config ) {
 	this.currentPageName = null;
 };
 
-/* Inheritance */
-
-ve.inheritClass( ve.ui.PagedDialog, ve.ui.Dialog );
-
 /* Methods */
 
-ve.ui.PagedDialog.prototype.initialize = function () {
-	// Parent method
-	ve.ui.Dialog.prototype.initialize.call( this );
-
+/**
+ * Initialization.
+ *
+ * If you mix this class in, you must call this from your initialize method.
+ */
+ve.ui.PagedDialog.prototype.initializePages = function () {
 	// Properties
 	this.outlinePanel = new ve.ui.PanelLayout( { '$$': this.frame.$$, 'scroll': true } );
 	this.pagesPanel = new ve.ui.StackPanelLayout( { '$$': this.frame.$$ } );
@@ -59,7 +53,7 @@ ve.ui.PagedDialog.prototype.initialize = function () {
 	}
 
 	// Events
-	this.outlineWidget.connect( this, { 'select': 'onOutlineSelect' } );
+	this.outlineWidget.connect( this, { 'select': 'onPageOutlineSelect' } );
 
 	// Initialization
 	this.outlinePanel.$
@@ -80,7 +74,7 @@ ve.ui.PagedDialog.prototype.initialize = function () {
  * @method
  * @param {ve.ui.OptionWidget} item Selected item
  */
-ve.ui.PagedDialog.prototype.onOutlineSelect = function ( item ) {
+ve.ui.PagedDialog.prototype.onPageOutlineSelect = function ( item ) {
 	if ( item ) {
 		this.setPage( item.getData() );
 	}

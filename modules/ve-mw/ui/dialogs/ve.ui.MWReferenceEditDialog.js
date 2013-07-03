@@ -9,7 +9,7 @@
  * Dialog for a MediaWiki reference.
  *
  * @class
- * @extends ve.ui.Dialog
+ * @extends ve.ui.MWDialog
  *
  * @constructor
  * @param {ve.ui.Surface} surface
@@ -17,7 +17,7 @@
  */
 ve.ui.MWReferenceEditDialog = function VeUiMWReferenceEditDialog( surface, config ) {
 	// Parent constructor
-	ve.ui.Dialog.call( this, surface, config );
+	ve.ui.MWDialog.call( this, surface, config );
 
 	// Properties
 	this.internalItem = null;
@@ -25,7 +25,7 @@ ve.ui.MWReferenceEditDialog = function VeUiMWReferenceEditDialog( surface, confi
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.MWReferenceEditDialog, ve.ui.Dialog );
+ve.inheritClass( ve.ui.MWReferenceEditDialog, ve.ui.MWDialog );
 
 /* Static Properties */
 
@@ -45,19 +45,21 @@ ve.ui.MWReferenceEditDialog.static.surfaceCommands = [
 /* Static Initialization */
 
 ve.ui.MWReferenceEditDialog.static.addLocalStylesheets( [
-	've.ce.Node.css',
-	've.ce.Surface.css',
-	've.ui.Surface.css',
-	've.ui.Context.css',
-	've.ui.Tool.css',
-	've.ui.Toolbar.css'
+	've/ce/styles/ve.ce.Node.css',
+	've-mw/ce/styles/ve.ce.Node.css',
+	've/ce/styles/ve.ce.Surface.css',
+	've/ui/styles/ve.ui.Surface.css',
+	've/ui/styles/ve.ui.Context.css',
+	've/ui/styles/ve.ui.Tool.css',
+	've-mw/ui/styles/ve.ui.Tool.css',
+	've/ui/styles/ve.ui.Toolbar.css'
 ] );
 
 /* Methods */
 
 ve.ui.MWReferenceEditDialog.prototype.initialize = function () {
 	// Parent method
-	ve.ui.Dialog.prototype.initialize.call( this );
+	ve.ui.MWDialog.prototype.initialize.call( this );
 
 	// Properties
 	this.contentFieldset = new ve.ui.FieldsetLayout( {
@@ -94,7 +96,7 @@ ve.ui.MWReferenceEditDialog.prototype.onOpen = function () {
 		doc = this.surface.getModel().getDocument();
 
 	// Parent method
-	ve.ui.Dialog.prototype.onOpen.call( this );
+	ve.ui.MWDialog.prototype.onOpen.call( this );
 
 	// Get reference content
 	focusedNode = this.surface.getView().getFocusedNode();
@@ -124,7 +126,7 @@ ve.ui.MWReferenceEditDialog.prototype.onClose = function ( action ) {
 		surfaceModel = this.surface.getModel();
 
 	// Parent method
-	ve.ui.Dialog.prototype.onClose.call( this );
+	ve.ui.MWDialog.prototype.onClose.call( this );
 
 	// Save changes
 	if ( action === 'apply' ) {

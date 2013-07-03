@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>VisualEditor Tests</title>
+		<title>MediaWiki VisualEditor Tests</title>
 
 		<!-- Load test framework -->
 		<link rel="stylesheet" href="../../qunit/qunit.css">
@@ -118,9 +118,29 @@
 		<script src="../../ve/dm/nodes/ve.dm.TableRowNode.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.TableSectionNode.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.TextNode.js"></script>
+		<script src="../../ve-mw/dm/nodes/ve.dm.MWEntityNode.js"></script>
+		<script src="../../ve-mw/dm/nodes/ve.dm.MWHeadingNode.js"></script>
+		<script src="../../ve-mw/dm/nodes/ve.dm.MWPreformattedNode.js"></script>
+		<script src="../../ve-mw/dm/nodes/ve.dm.MWInlineImageNode.js"></script>
+		<script src="../../ve-mw/dm/nodes/ve.dm.MWBlockImageNode.js"></script>
+		<script src="../../ve-mw/dm/nodes/ve.dm.MWImageCaptionNode.js"></script>
+		<script src="../../ve-mw/dm/nodes/ve.dm.MWTransclusionNode.js"></script>
 		<script src="../../ve/dm/annotations/ve.dm.LinkAnnotation.js"></script>
+		<script src="../../ve-mw/dm/annotations/ve.dm.MWExternalLinkAnnotation.js"></script>
+		<script src="../../ve-mw/dm/annotations/ve.dm.MWInternalLinkAnnotation.js"></script>
 		<script src="../../ve/dm/annotations/ve.dm.TextStyleAnnotation.js"></script>
 		<script src="../../ve/dm/metaitems/ve.dm.AlienMetaItem.js"></script>
+		<script src="../../ve-mw/dm/metaitems/ve.dm.MWAlienMetaItem.js"></script>
+		<script src="../../ve-mw/dm/metaitems/ve.dm.MWCategoryMetaItem.js"></script>
+		<script src="../../ve-mw/dm/metaitems/ve.dm.MWDefaultSortMetaItem.js"></script>
+		<script src="../../ve-mw/dm/metaitems/ve.dm.MWLanguageMetaItem.js"></script>
+		<script src="../../ve-mw/dm/models/ve.dm.MWTransclusionModel.js"></script>
+		<script src="../../ve-mw/dm/models/ve.dm.MWTransclusionPartModel.js"></script>
+		<script src="../../ve-mw/dm/models/ve.dm.MWTransclusionContentModel.js"></script>
+		<script src="../../ve-mw/dm/models/ve.dm.MWTemplateSpecModel.js"></script>
+		<script src="../../ve-mw/dm/models/ve.dm.MWTemplateModel.js"></script>
+		<script src="../../ve-mw/dm/models/ve.dm.MWTemplatePlaceholderModel.js"></script>
+		<script src="../../ve-mw/dm/models/ve.dm.MWTemplateParameterModel.js"></script>
 		<script src="../../ve/ce/ve.ce.js"></script>
 		<script src="../../ve/ce/ve.ce.DomRange.js"></script>
 		<script src="../../ve/ce/ve.ce.AnnotationFactory.js"></script>
@@ -160,7 +180,16 @@
 		<script src="../../ve/ce/nodes/ve.ce.TableRowNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.TableSectionNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.TextNode.js"></script>
+		<script src="../../ve-mw/ce/nodes/ve.ce.MWEntityNode.js"></script>
+		<script src="../../ve-mw/ce/nodes/ve.ce.MWHeadingNode.js"></script>
+		<script src="../../ve-mw/ce/nodes/ve.ce.MWPreformattedNode.js"></script>
+		<script src="../../ve-mw/ce/nodes/ve.ce.MWInlineImageNode.js"></script>
+		<script src="../../ve-mw/ce/nodes/ve.ce.MWBlockImageNode.js"></script>
+		<script src="../../ve-mw/ce/nodes/ve.ce.MWImageCaptionNode.js"></script>
+		<script src="../../ve-mw/ce/nodes/ve.ce.MWTransclusionNode.js"></script>
 		<script src="../../ve/ce/annotations/ve.ce.LinkAnnotation.js"></script>
+		<script src="../../ve-mw/ce/annotations/ve.ce.MWExternalLinkAnnotation.js"></script>
+		<script src="../../ve-mw/ce/annotations/ve.ce.MWInternalLinkAnnotation.js"></script>
 		<script src="../../ve/ce/annotations/ve.ce.TextStyleAnnotation.js"></script>
 		<script src="../../ve/ui/ve.ui.js"></script>
 		<script src="../../ve/ui/ve.ui.Surface.js"></script>
@@ -171,6 +200,7 @@
 		<script src="../../ve/ui/ve.ui.Inspector.js"></script>
 		<script src="../../ve/ui/ve.ui.InspectorFactory.js"></script>
 		<script src="../../ve/ui/ve.ui.Dialog.js"></script>
+		<script src="../../ve-mw/ui/ve.ui.MWDialog.js"></script>
 		<script src="../../ve/ui/ve.ui.DialogFactory.js"></script>
 		<script src="../../ve/ui/ve.ui.Layout.js"></script>
 		<script src="../../ve/ui/ve.ui.Widget.js"></script>
@@ -210,11 +240,23 @@
 		<script src="../../ve/ui/widgets/ve.ui.LookupInputWidget.js"></script>
 		<script src="../../ve/ui/widgets/ve.ui.TextInputMenuWidget.js"></script>
 		<script src="../../ve/ui/widgets/ve.ui.LinkTargetInputWidget.js"></script>
+		<script src="../../ve-mw/ui/widgets/ve.ui.MWLinkTargetInputWidget.js"></script>
+		<script src="../../ve-mw/ui/widgets/ve.ui.MWCategoryInputWidget.js"></script>
+		<script src="../../ve-mw/ui/widgets/ve.ui.MWCategoryPopupWidget.js"></script>
+		<script src="../../ve-mw/ui/widgets/ve.ui.MWCategoryItemWidget.js"></script>
+		<script src="../../ve-mw/ui/widgets/ve.ui.MWCategoryWidget.js"></script>
+		<script src="../../ve-mw/ui/widgets/ve.ui.MWMediaSearchWidget.js"></script>
+		<script src="../../ve-mw/ui/widgets/ve.ui.MWMediaResultWidget.js"></script>
+		<script src="../../ve-mw/ui/widgets/ve.ui.MWTitleInputWidget.js"></script>
 		<script src="../../ve/ui/layouts/ve.ui.FieldsetLayout.js"></script>
 		<script src="../../ve/ui/layouts/ve.ui.GridLayout.js"></script>
 		<script src="../../ve/ui/layouts/ve.ui.PanelLayout.js"></script>
 		<script src="../../ve/ui/layouts/ve.ui.StackPanelLayout.js"></script>
 		<script src="../../ve/ui/dialogs/ve.ui.PagedDialog.js"></script>
+		<script src="../../ve-mw/ui/dialogs/ve.ui.MWMetaDialog.js"></script>
+		<script src="../../ve-mw/ui/dialogs/ve.ui.MWMediaInsertDialog.js"></script>
+		<script src="../../ve-mw/ui/dialogs/ve.ui.MWMediaEditDialog.js"></script>
+		<script src="../../ve-mw/ui/dialogs/ve.ui.MWTransclusionDialog.js"></script>
 		<script src="../../ve/ui/tools/ve.ui.ButtonTool.js"></script>
 		<script src="../../ve/ui/tools/ve.ui.AnnotationButtonTool.js"></script>
 		<script src="../../ve/ui/tools/ve.ui.DialogButtonTool.js"></script>
@@ -226,63 +268,37 @@
 		<script src="../../ve/ui/tools/buttons/ve.ui.ItalicButtonTool.js"></script>
 		<script src="../../ve/ui/tools/buttons/ve.ui.ClearButtonTool.js"></script>
 		<script src="../../ve/ui/tools/buttons/ve.ui.LinkButtonTool.js"></script>
+		<script src="../../ve-mw/ui/tools/buttons/ve.ui.MWLinkButtonTool.js"></script>
+		<script src="../../ve-mw/ui/tools/buttons/ve.ui.MWMediaInsertButtonTool.js"></script>
+		<script src="../../ve-mw/ui/tools/buttons/ve.ui.MWMediaEditButtonTool.js"></script>
 		<script src="../../ve/ui/tools/buttons/ve.ui.BulletButtonTool.js"></script>
 		<script src="../../ve/ui/tools/buttons/ve.ui.NumberButtonTool.js"></script>
 		<script src="../../ve/ui/tools/buttons/ve.ui.IndentButtonTool.js"></script>
 		<script src="../../ve/ui/tools/buttons/ve.ui.OutdentButtonTool.js"></script>
 		<script src="../../ve/ui/tools/buttons/ve.ui.RedoButtonTool.js"></script>
 		<script src="../../ve/ui/tools/buttons/ve.ui.UndoButtonTool.js"></script>
+		<script src="../../ve-mw/ui/tools/buttons/ve.ui.MWTransclusionButtonTool.js"></script>
 		<script src="../../ve/ui/tools/dropdowns/ve.ui.FormatDropdownTool.js"></script>
+		<script src="../../ve-mw/ui/tools/dropdowns/ve.ui.MWFormatDropdownTool.js"></script>
 		<script src="../../ve/ui/inspectors/ve.ui.LinkInspector.js"></script>
+		<script src="../../ve-mw/ui/inspectors/ve.ui.MWLinkInspector.js"></script>
+		<!-- ext.visualEditor.experimental -->
+		<script src="../../ve-mw/dm/nodes/ve.dm.MWReferenceListNode.js"></script>
+		<script src="../../ve-mw/dm/nodes/ve.dm.MWReferenceNode.js"></script>
+		<script src="../../ve-mw/ce/nodes/ve.ce.MWReferenceListNode.js"></script>
+		<script src="../../ve-mw/ce/nodes/ve.ce.MWReferenceNode.js"></script>
+		<script src="../../ve-mw/ui/tools/buttons/ve.ui.MWReferenceEditButtonTool.js"></script>
+		<script src="../../ve-mw/ui/dialogs/ve.ui.MWReferenceEditDialog.js"></script>
 
 		<!-- Load plugins for test framework -->
-		<script src="ve.qunit.js"></script>
+		<script src="../../ve/test/ve.qunit.js"></script>
 
 		<!-- Load test suites -->
-		<script src="ve.test.utils.js"></script>
-		<script src="ve.test.js"></script>
-		<script src="ve.Range.test.js"></script>
-		<script src="ve.Document.test.js"></script>
-		<script src="ve.Element.test.js"></script>
-		<script src="ve.Node.test.js"></script>
-		<script src="ve.BranchNode.test.js"></script>
-		<script src="ve.LeafNode.test.js"></script>
-		<script src="ve.Factory.test.js"></script>
-		<script src="dm/ve.dm.example.js"></script>
-		<script src="dm/ve.dm.AnnotationSet.test.js"></script>
-		<script src="dm/ve.dm.NodeFactory.test.js"></script>
-		<script src="dm/ve.dm.Node.test.js"></script>
-		<script src="dm/ve.dm.Converter.test.js"></script>
-		<script src="dm/ve.dm.BranchNode.test.js"></script>
-		<script src="dm/ve.dm.LeafNode.test.js"></script>
-		<script src="dm/nodes/ve.dm.TextNode.test.js"></script>
-		<script src="dm/ve.dm.Document.test.js"></script>
-		<script src="dm/ve.dm.DocumentSynchronizer.test.js"></script>
-		<script src="dm/ve.dm.IndexValueStore.test.js"></script>
-		<script src="dm/ve.dm.InternalList.test.js"></script>
-		<script src="dm/ve.dm.LinearData.test.js"></script>
-		<script src="dm/ve.dm.Transaction.test.js"></script>
-		<script src="dm/ve.dm.TransactionProcessor.test.js"></script>
-		<script src="dm/ve.dm.Surface.test.js"></script>
-		<script src="dm/ve.dm.SurfaceFragment.test.js"></script>
-		<script src="dm/ve.dm.ModelRegistry.test.js"></script>
-		<script src="dm/ve.dm.MetaList.test.js"></script>
-		<script src="dm/ve.dm.Model.test.js"></script>
-		<script src="dm/lineardata/ve.dm.ElementLinearData.test.js"></script>
-		<script src="dm/lineardata/ve.dm.MetaLinearData.test.js"></script>
-		<script src="ce/ve.ce.test.js"></script>
-		<script src="ce/ve.ce.Document.test.js"></script>
-		<script src="ce/ve.ce.NodeFactory.test.js"></script>
-		<script src="ce/ve.ce.Node.test.js"></script>
-		<script src="ce/ve.ce.BranchNode.test.js"></script>
-		<script src="ce/ve.ce.ContentBranchNode.test.js"></script>
-		<script src="ce/ve.ce.LeafNode.test.js"></script>
-		<script src="ce/nodes/ve.ce.TextNode.test.js"></script>
-		<script src="init/ve.init.Platform.test.js"></script>
-		<script src="ui/ve.ui.Trigger.test.js"></script>
-		<script src="ui/actions/ve.ui.FormatAction.test.js"></script>
-		<script src="ui/actions/ve.ui.IndentationAction.test.js"></script>
-		<script src="ui/actions/ve.ui.ListAction.test.js"></script>
+		<script src="../../ve/test/ve.test.utils.js"></script>
+		<script src="../../ve/test/dm/ve.dm.example.js"></script>
+		<script src="dm/ve.dm.mwExample.js"></script>
+		<script src="dm/ve.dm.MWConverter.test.js"></script>
+		<script src="dm/nodes/ve.dm.MWTransclusionNode.test.js"></script>
 
 		<div id="qunit"></div>
 		<div id="qunit-fixture">test markup</div>

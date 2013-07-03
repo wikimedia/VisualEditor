@@ -14,7 +14,8 @@
  * for the latest version of the TemplateData specification.
  *
  * @class
- * @extends ve.ui.PagedDialog
+ * @extends ve.ui.MWDialog
+ * @mixins ve.ui.PagedDialog
  *
  * @constructor
  * @param {ve.ui.Surface} surface
@@ -39,6 +40,9 @@ ve.ui.MWTransclusionDialog = function VeUiMWTransclusionDialog( surface, config 
 	} );
 
 	// Parent constructor
+	ve.ui.MWDialog.call( this, surface, config );
+
+	// Mixin constructors
 	ve.ui.PagedDialog.call( this, surface, config );
 
 	// Properties
@@ -49,7 +53,9 @@ ve.ui.MWTransclusionDialog = function VeUiMWTransclusionDialog( surface, config 
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.MWTransclusionDialog, ve.ui.PagedDialog );
+ve.inheritClass( ve.ui.MWTransclusionDialog, ve.ui.MWDialog );
+
+ve.mixinClass( ve.ui.MWTransclusionDialog, ve.ui.PagedDialog );
 
 /* Static Properties */
 
@@ -61,7 +67,10 @@ ve.ui.MWTransclusionDialog.static.icon = 'template';
 
 ve.ui.MWTransclusionDialog.prototype.initialize = function () {
 	// Parent method
-	ve.ui.PagedDialog.prototype.initialize.call( this );
+	ve.ui.MWDialog.prototype.initialize.call( this );
+
+	// Setup for PagedDialog
+	this.initializePages();
 
 	// Events
 	this.outlineControlsWidget.connect( this, {
@@ -72,7 +81,7 @@ ve.ui.MWTransclusionDialog.prototype.initialize = function () {
 
 ve.ui.MWTransclusionDialog.prototype.onOpen = function () {
 	// Parent method
-	ve.ui.PagedDialog.prototype.onOpen.call( this );
+	ve.ui.MWDialog.prototype.onOpen.call( this );
 
 	// Sanity check
 	this.node = this.surface.getView().getFocusedNode();
@@ -96,7 +105,7 @@ ve.ui.MWTransclusionDialog.prototype.onClose = function ( action ) {
 		obj = this.transclusion.getPlainObject();
 
 	// Parent method
-	ve.ui.PagedDialog.prototype.onClose.call( this );
+	ve.ui.MWDialog.prototype.onClose.call( this );
 
 	// Save changes
 	if ( action === 'apply' ) {

@@ -9,7 +9,7 @@
  * Document dialog.
  *
  * @class
- * @extends ve.ui.Dialog
+ * @extends ve.ui.MWDialog
  *
  * @constructor
  * @param {ve.ui.Surface} surface
@@ -17,7 +17,7 @@
  */
 ve.ui.MWMediaEditDialog = function VeUiMWMediaEditDialog( surface, config ) {
 	// Parent constructor
-	ve.ui.Dialog.call( this, surface, config );
+	ve.ui.MWDialog.call( this, surface, config );
 
 	// Properties
 	this.captionNode = null;
@@ -25,7 +25,7 @@ ve.ui.MWMediaEditDialog = function VeUiMWMediaEditDialog( surface, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.MWMediaEditDialog, ve.ui.Dialog );
+ve.inheritClass( ve.ui.MWMediaEditDialog, ve.ui.MWDialog );
 
 /* Static Properties */
 
@@ -45,19 +45,21 @@ ve.ui.MWMediaEditDialog.static.surfaceCommands = [
 /* Static Initialization */
 
 ve.ui.MWMediaEditDialog.static.addLocalStylesheets( [
-	've.ce.Node.css',
-	've.ce.Surface.css',
-	've.ui.Surface.css',
-	've.ui.Context.css',
-	've.ui.Tool.css',
-	've.ui.Toolbar.css'
+	've/ce/styles/ve.ce.Node.css',
+	've-mw/ce/styles/ve.ce.Node.css',
+	've/ce/styles/ve.ce.Surface.css',
+	've/ui/styles/ve.ui.Surface.css',
+	've/ui/styles/ve.ui.Context.css',
+	've/ui/styles/ve.ui.Tool.css',
+	've-mw/ui/styles/ve.ui.Tool.css',
+	've/ui/styles/ve.ui.Toolbar.css'
 ] );
 
 /* Methods */
 
 ve.ui.MWMediaEditDialog.prototype.initialize = function () {
 	// Parent method
-	ve.ui.Dialog.prototype.initialize.call( this );
+	ve.ui.MWDialog.prototype.initialize.call( this );
 
 	// Properties
 	this.contentFieldset = new ve.ui.FieldsetLayout( {
@@ -75,7 +77,7 @@ ve.ui.MWMediaEditDialog.prototype.onOpen = function () {
 	var data, doc = this.surface.getModel().getDocument();
 
 	// Parent method
-	ve.ui.Dialog.prototype.onOpen.call( this );
+	ve.ui.MWDialog.prototype.onOpen.call( this );
 
 	// Get caption content
 	this.captionNode = this.surface.getView().getFocusedNode().getModel().getCaptionNode();
@@ -105,7 +107,7 @@ ve.ui.MWMediaEditDialog.prototype.onClose = function ( action ) {
 	var data, doc, surfaceModel = this.surface.getModel();
 
 	// Parent method
-	ve.ui.Dialog.prototype.onClose.call( this );
+	ve.ui.MWDialog.prototype.onClose.call( this );
 
 	if ( action === 'apply' ) {
 		data = this.captionSurface.getModel().getDocument().getData();

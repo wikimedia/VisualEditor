@@ -10,7 +10,7 @@
 /**
  * @class
  * @abstract
- * @extends ve.ui.Dialog
+ * @extends ve.ui.MWDialog
  *
  * @constructor
  * @param {ve.ui.Surface} surface
@@ -18,7 +18,7 @@
  */
 ve.ui.MWMediaInsertDialog = function VeUiMWMediaInsertDialog( surface, config ) {
 	// Parent constructor
-	ve.ui.Dialog.call( this, surface, config );
+	ve.ui.MWDialog.call( this, surface, config );
 
 	// Properties
 	this.item = null;
@@ -26,7 +26,7 @@ ve.ui.MWMediaInsertDialog = function VeUiMWMediaInsertDialog( surface, config ) 
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.MWMediaInsertDialog, ve.ui.Dialog );
+ve.inheritClass( ve.ui.MWMediaInsertDialog, ve.ui.MWDialog );
 
 /* Static Properties */
 
@@ -43,7 +43,7 @@ ve.ui.MWMediaInsertDialog.prototype.onSelect = function ( item ) {
 
 ve.ui.MWMediaInsertDialog.prototype.onOpen = function () {
 	// Parent method
-	ve.ui.Dialog.prototype.onOpen.call( this );
+	ve.ui.MWDialog.prototype.onOpen.call( this );
 
 	// Initialization
 	this.search.getQuery().$input.focus().select();
@@ -53,7 +53,7 @@ ve.ui.MWMediaInsertDialog.prototype.onClose = function ( action ) {
 	var info;
 
 	// Parent method
-	ve.ui.Dialog.prototype.onClose.call( this );
+	ve.ui.MWDialog.prototype.onClose.call( this );
 
 	if ( action === 'apply' ) {
 		info = this.item.imageinfo[0];
@@ -80,7 +80,7 @@ ve.ui.MWMediaInsertDialog.prototype.onClose = function ( action ) {
 
 ve.ui.MWMediaInsertDialog.prototype.initialize = function () {
 	// Parent method
-	ve.ui.Dialog.prototype.initialize.call( this );
+	ve.ui.MWDialog.prototype.initialize.call( this );
 
 	// Properties
 	this.search = new ve.ui.MWMediaSearchWidget( { '$$': this.frame.$$ } );

@@ -98,21 +98,34 @@ ve.dm.example.big = { 'type': 'textStyle/big' };
  * @throws {Error} Example data not found
  */
 ve.dm.example.createExampleDocument = function ( name, store ) {
+	return ve.dm.example.createExampleDocumentFromObject( name, store, ve.dm.example );
+};
+
+/**
+ * Helper function for ve.dm.createExampleDocument.
+ *
+ * @param {string} [name='data'] Named element of ve.dm.example
+ * @param {ve.dm.IndexValueStore} [store] A specific index-value store to use, optionally.
+ * @param {Object} [object] Collection of test documents, keyed by name
+ * @returns {ve.dm.Document} Document
+ * @throws {Error} Example data not found
+ */
+ve.dm.example.createExampleDocumentFromObject = function ( name, store, object ) {
 	var doc, i;
 	name = name || 'data';
 	store = store || new ve.dm.IndexValueStore();
-	if ( ve.dm.example[name] === undefined ) {
+	if ( object[name] === undefined ) {
 		throw new Error( 'Example data \'' + name + '\' not found' );
 	}
 	doc = new ve.dm.Document(
-		ve.dm.example.preprocessAnnotations( ve.copyArray( ve.dm.example[name] ), store )
+		ve.dm.example.preprocessAnnotations( ve.copyArray( object[name] ), store )
 	);
 	// HACK internalList isn't populated when creating a document from data
-	if ( ve.dm.example[name].internalItems ) {
-		for ( i = 0; i < ve.dm.example[name].internalItems.length; i++ ) {
+	if ( object[name].internalItems ) {
+		for ( i = 0; i < object[name].internalItems.length; i++ ) {
 			doc.internalList.queueItemHtml(
-				ve.dm.example[name].internalItems[i].key,
-				ve.dm.example[name].internalItems[i].body
+				object[name].internalItems[i].key,
+				object[name].internalItems[i].body
 			);
 		}
 	}
@@ -145,9 +158,7 @@ ve.dm.example.createDomElement = function ( type, attributes ) {
 	return element;
 };
 
-ve.dm.example.testDir = window.mw ?
-	( window.mw.config.get( 'wgExtensionAssetsPath' ) + '/VisualEditor/modules/ve/test' ) :
-	'.';
+ve.dm.example.testDir = window.VE_TESTDIR || '.';
 
 ve.dm.example.imgSrc = ve.dm.example.testDir + '/example.png';
 
@@ -412,38 +423,33 @@ ve.dm.example.withMeta = [
 	},
 	{ 'type': '/alienMeta' },
 	{
-		'type': 'mwAlienMeta',
+		'type': 'alienMeta',
 		'attributes': {
-			'domElements': $( '<meta property="mw:PageProp/nocc" />' ).toArray()
+			'domElements': $( '<meta property="foo" />' ).toArray()
 		}
 	},
-	{ 'type': '/mwAlienMeta' },
+	{ 'type': '/alienMeta' },
 	{ 'type': 'paragraph' },
 	'F',
 	'o',
 	'o',
 	{
-		'type': 'mwCategory',
+		'type': 'alienMeta',
 		'attributes': {
-			'hrefPrefix': './',
-			'category': 'Category:Bar',
-			'origCategory': 'Category:Bar',
-			'sortkey': '',
-			'origSortkey': ''
-		},
-		'htmlAttributes': [ { 'values': { 'rel': 'mw:WikiLink/Category', 'href': './Category:Bar' } } ]
+			'domElements': $( '<link rel="bar" href="baz" />' ).toArray()
+		}
 	},
-	{ 'type': '/mwCategory' },
+	{ 'type': '/alienMeta' },
 	'B',
 	'a',
 	'r',
 	{
-		'type': 'mwAlienMeta',
+		'type': 'alienMeta',
 		'attributes': {
-			'domElements': $( '<meta property="mw:foo" content="bar" />' ).toArray()
+			'domElements': $( '<meta property="foo" content="bar" />' ).toArray()
 		}
 	},
-	{ 'type': '/mwAlienMeta' },
+	{ 'type': '/alienMeta' },
 	'B',
 	'a',
 	{
@@ -456,12 +462,12 @@ ve.dm.example.withMeta = [
 	'z',
 	{ 'type': '/paragraph' },
 	{
-		'type': 'mwAlienMeta',
+		'type': 'alienMeta',
 		'attributes': {
-			'domElements': $( '<meta property="mw:bar" content="baz" />' ).toArray()
+			'domElements': $( '<meta property="bar" content="baz" />' ).toArray()
 		}
 	},
-	{ 'type': '/mwAlienMeta' },
+	{ 'type': '/alienMeta' },
 	{
 		'type': 'alienMeta',
 		'attributes': {
@@ -470,27 +476,19 @@ ve.dm.example.withMeta = [
 	},
 	{ 'type': '/alienMeta' },
 	{
-		'type': 'mwCategory',
+		'type': 'alienMeta',
 		'attributes': {
-			'hrefPrefix': './',
-			'category': 'Category:Foo foo',
-			'origCategory': 'Category:Foo_foo',
-			'sortkey': 'Bar baz#quux',
-			'origSortkey': 'Bar baz%23quux'
-		},
-		'htmlAttributes': [ { 'values':  {
-			'rel': 'mw:WikiLink/Category',
-			'href': './Category:Foo_foo#Bar baz%23quux'
-		} } ]
-	},
-	{ 'type': '/mwCategory' },
-	{
-		'type': 'mwAlienMeta',
-		'attributes': {
-			'domElements': $( '<meta typeof="mw:Placeholder" data-parsoid="foobar" />' ).toArray()
+			'domElements': $( '<link rel="foofoo" href="barbar" />' ).toArray()
 		}
 	},
-	{ 'type': '/mwAlienMeta' },
+	{ 'type': '/alienMeta' },
+	{
+		'type': 'alienMeta',
+		'attributes': {
+			'domElements': $( '<meta typeof=bazquux" data-foo="foobar" />' ).toArray()
+		}
+	},
+	{ 'type': '/alienMeta' },
 	{ 'type': 'internalList' },
 	{ 'type': '/internalList' }
 ];
@@ -520,9 +518,9 @@ ve.dm.example.withMetaMetaData = [
 			}
 		},
 		{
-			'type': 'mwAlienMeta',
+			'type': 'alienMeta',
 			'attributes': {
-				'domElements': $( '<meta property="mw:PageProp/nocc" />' ).toArray()
+				'domElements': $( '<meta property="foo" />' ).toArray()
 			}
 		}
 	],
@@ -531,24 +529,19 @@ ve.dm.example.withMetaMetaData = [
 	undefined,
 	[
 		{
-			'type': 'mwCategory',
+			'type': 'alienMeta',
 			'attributes': {
-				'hrefPrefix': './',
-				'category': 'Category:Bar',
-				'origCategory': 'Category:Bar',
-				'sortkey': '',
-				'origSortkey': ''
-			},
-			'htmlAttributes': [ { 'values': { 'rel': 'mw:WikiLink/Category', 'href': './Category:Bar' } } ]
+				'domElements': $( '<link rel="bar" href="baz" />' ).toArray()
+			}
 		}
 	],
 	undefined,
 	undefined,
 	[
 		{
-			'type': 'mwAlienMeta',
+			'type': 'alienMeta',
 			'attributes': {
-				'domElements': $( '<meta property="mw:foo" content="bar" />' ).toArray()
+				'domElements': $( '<meta property="foo" content="bar" />' ).toArray()
 			}
 		}
 	],
@@ -564,9 +557,9 @@ ve.dm.example.withMetaMetaData = [
 	undefined,
 	[
 		{
-			'type': 'mwAlienMeta',
+			'type': 'alienMeta',
 			'attributes': {
-				'domElements': $( '<meta property="mw:bar" content="baz" />' ).toArray()
+				'domElements': $( '<meta property="bar" content="baz" />' ).toArray()
 			}
 		},
 		{
@@ -576,29 +569,22 @@ ve.dm.example.withMetaMetaData = [
 			}
 		},
 		{
-			'type': 'mwCategory',
+		'type': 'alienMeta',
 			'attributes': {
-				'hrefPrefix': './',
-				'category': 'Category:Foo foo',
-				'origCategory': 'Category:Foo_foo',
-				'sortkey': 'Bar baz#quux',
-				'origSortkey': 'Bar baz%23quux'
-			},
-			'htmlAttributes': [ { 'values': {
-				'rel': 'mw:WikiLink/Category',
-				'href': './Category:Foo_foo#Bar baz%23quux'
-			} } ]
+				'domElements': $( '<link rel="foofoo" href="barbar" />' ).toArray()
+			}
 		},
 		{
-			'type': 'mwAlienMeta',
+			'type': 'alienMeta',
 			'attributes': {
-				'domElements': $( '<meta typeof="mw:Placeholder" data-parsoid="foobar" />' ).toArray()
+				'domElements': $( '<meta typeof=bazquux" data-foo="foobar" />' ).toArray()
 			}
 		}
 	],
 	undefined,
 	undefined
 ];
+
 
 ve.dm.example.complexTableHtml = '<table><caption>Foo</caption><thead><tr><th>Bar</th></tr></thead>' +
 	'<tfoot><tr><td>Baz</td></tr></tfoot><tbody><tr><td>Quux</td><td>Whee</td></tr></tbody></table>';
@@ -2638,222 +2624,6 @@ ve.dm.example.isolationData = [
 	{ 'type': 'internalList' },
 	{ 'type': '/internalList' }
 	// 246
-];
-
-ve.dm.example.references = [
-	{ 'type': 'paragraph' },
-	{
-		'type': 'mwReference',
-		 'attributes': {
-			'about': '#mwt2',
-			'contentsUsed': true,
-			'listGroup': 'mwReference/',
-			'listIndex': 0,
-			'listKey': '"No name 1"',
-			'mw': {
-				'attrs': {},
-				'body': { 'html': 'No name 1' },
-				'name': 'ref'
-			},
-			'originalMw': '{"name":"ref","body":{"html":"No name 1"},"attrs":{}}',
-			'refGroup': ''
-		},
-		'htmlAttributes': [ { 'values': {
-			'about': '#mwt2',
-			'class': 'reference',
-			'data-mw': '{"name":"ref","body":{"html":"No name 1"},"attrs":{}}',
-			'data-parsoid': '{"src":"<ref>No name 1</ref>","dsr":[0,20,5,6]}',
-			'id': 'cite_ref-1-0',
-			'rel': 'dc:references',
-			'typeof': 'mw:Extension/ref'
-		} } ]
-	},
-	{ 'type': '/mwReference' },
-	{ 'type': '/paragraph' },
-	{ 'type': 'paragraph', 'htmlAttributes': [ { 'values': { 'data-parsoid': '{"dsr":[22,108,0,0]}' } } ] },
-	'F', 'o', 'o',
-	{
-		'type': 'mwReference',
-		 'attributes': {
-			'about': '#mwt6',
-			'contentsUsed': true,
-			'listGroup': 'mwReference/',
-			'listIndex': 1,
-			'listKey': 'bar',
-			'mw': {
-				'attrs': { 'name': 'bar' },
-				'body': { 'html': 'Bar' },
-				'name': 'ref'
-			},
-			'originalMw': '{"body":{"html":""},"attrs":{"name":"bar"}}',
-			'refGroup': ''
-		},
-		'htmlAttributes': [ { 'values': {
-			'about': '#mwt6',
-			'class': 'reference',
-			'data-mw': '{"name":"ref","body":{"html":"Bar"},"attrs":{"name":"bar"}}',
-			'data-parsoid': '{"src":"<ref name=\\"bar\\">Bar</ref>","dsr":[25,50,16,6]}',
-			'id': 'cite_ref-bar-2-0',
-			'rel': 'dc:references',
-			'typeof': 'mw:Extension/ref'
-		} } ]
-	},
-	{ 'type': '/mwReference' },
-	' ', 'B', 'a', 'z',
-	{
-		'type': 'mwReference',
-		 'attributes': {
-			'about': '#mwt7',
-			'contentsUsed': true,
-			'listGroup': 'mwReference/',
-			'listIndex': 2,
-			'listKey': 'quux',
-			'mw': {
-				'attrs': { 'name': 'quux' },
-				'body': { 'html': 'Quux' },
-				'name': 'ref'
-			},
-			'originalMw': '{"name":"ref","body":{"html":"Quux"},"attrs":{"name":"quux"}}',
-			'refGroup': ''
-		},
-		'htmlAttributes': [ { 'values': {
-			'about': '#mwt7',
-			'class': 'reference',
-			'data-mw': '{"name":"ref","body":{"html":"Quux"},"attrs":{"name":"quux"}}',
-			'data-parsoid': '{"src":"<ref name=\\"quux\\">Quux</ref>","dsr":[54,81,17,6]}',
-			'id': 'cite_ref-quux-3-0',
-			'rel': 'dc:references',
-			'typeof': 'mw:Extension/ref'
-		} } ]
-	},
-	{ 'type': '/mwReference' },
-	' ', 'W', 'h', 'e', 'e',
-	{
-		'type': 'mwReference',
-		'attributes': {
-			'about': '#mwt8',
-			'contentsUsed': false,
-			'listGroup': 'mwReference/',
-			'listIndex': 1,
-			'listKey': 'bar',
-			'mw': {
-				'attrs': { 'name': 'bar' },
-				'name': 'ref'
-			},
-			'originalMw': '{"body":{"html":""},"attrs":{"name":"bar"}}',
-			'refGroup': ''
-		},
-		'htmlAttributes': [ { 'values': {
-			'about': '#mwt8',
-			'class': 'reference',
-			'data-mw': '{"name":"ref","attrs":{"name":"bar"}}',
-			'data-parsoid': '{"src":"<ref name=\\"bar\\" />","dsr":[86,104,18,0]}',
-			'id': 'cite_ref-bar-2-1',
-			'rel': 'dc:references',
-			'typeof': 'mw:Extension/ref'
-		} } ]
-	},
-	{ 'type': '/mwReference' },
-	' ', 'Y', 'a', 'y',
-	{ 'type': '/paragraph' },
-	{ 'type': 'paragraph' },
-	{
-		'type': 'mwReference',
-		 'attributes': {
-			'about': '#mwt11',
-			'contentsUsed': true,
-			'listGroup': 'mwReference/',
-			'listIndex': 3,
-			'listKey': '"No name 2"',
-			'mw': {
-				'attrs': {},
-				'body': { 'html': 'No name 2' },
-				'name': 'ref'
-			},
-			'originalMw': '{"name":"ref","body":{"html":"No name 2"},"attrs":{}}',
-			'refGroup': ''
-			},
-		'htmlAttributes': [ { 'values': {
-			'about': '#mwt11',
-			'class': 'reference',
-			'data-mw': '{"name":"ref","body":{"html":"No name 2"},"attrs":{}}',
-			'data-parsoid': '{"src":"<ref>No name 2</ref>","dsr":[110,130,5,6]}',
-			'id': 'cite_ref-4-0',
-			'rel': 'dc:references',
-			'typeof': 'mw:Extension/ref'
-		} } ]
-	},
-	{ 'type': '/mwReference' },
-	{
-		'type': 'mwReference',
-		 'attributes': {
-			'about': '#mwt12',
-			'contentsUsed': true,
-			'listGroup': 'mwReference/',
-			'listIndex': 4,
-			'listKey': '"No name 3"',
-			'mw': {
-				'attrs': {},
-				'body': { 'html': 'No name 3' },
-				'name': 'ref'
-			},
-			'originalMw': '{"name":"ref","body":{"html":"No name 3"},"attrs":{}}',
-			'refGroup': ''
-		},
-		'htmlAttributes': [ { 'values': {
-			'about': '#mwt12',
-			'class': 'reference',
-			'data-mw': '{"name":"ref","body":{"html":"No name 3"},"attrs":{}}',
-			'data-parsoid': '{"src":"<ref>No name 3</ref>"',
-			'id': 'cite_ref-5-0',
-			'rel': 'dc:references',
-			'typeof': 'mw:Extension/ref'
-		} } ]
-	},
-	{ 'type': '/mwReference' },
-	{ 'type': '/paragraph' },
-	{
-		'type': 'mwReferenceList',
-		'attributes': {
-			'about': '#mwt12',
-			'mw': {
-				'name': 'references',
-				'attrs': {}
-			},
-			'originalMw': '{"name":"references","attrs":{}"}',
-			//'domElements': HTML,
-			'listGroup': 'mwReference/',
-			'refGroup': ''
-		}
-	},
-	{ 'type': '/mwReferenceList' },
-	{ 'type': 'internalList' },
-	{ 'type': 'internalItem' },
-	{ 'type': 'paragraph' },
-	'N', 'o', ' ', 'n', 'a', 'm', 'e', ' ', '1',
-	{ 'type': '/paragraph' },
-	{ 'type': '/internalItem' },
-	{ 'type': 'internalItem' },
-	{ 'type': 'paragraph' },
-	'B', 'a', 'r',
-	{ 'type': '/paragraph' },
-	{ 'type': '/internalItem' },
-	{ 'type': 'internalItem' },
-	{ 'type' : 'paragraph' },
-	'Q', 'u', 'u', 'x',
-	{ 'type': '/paragraph' },
-	{ 'type': '/internalItem' },
-	{ 'type': 'internalItem' },
-	{ 'type' : 'paragraph' },
-	'N', 'o', ' ', 'n', 'a', 'm', 'e', ' ', '2',
-	{ 'type': '/paragraph' },
-	{ 'type': '/internalItem' },
-	{ 'type': 'internalItem' },
-	{ 'type' : 'paragraph' },
-	'N', 'o', ' ', 'n', 'a', 'm', 'e', ' ', '3',
-	{ 'type': '/paragraph' },
-	{ 'type': '/internalItem' },
-	{ 'type': '/internalList' }
 ];
 
 ve.dm.example.selectNodesCases = [
