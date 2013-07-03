@@ -152,7 +152,7 @@ ve.ce.FocusableNode.prototype.createHighlight = function () {
 	this.$.find( '*' ).add( this.$ ).each(
 		ve.bind( function( i, element ) {
 			var offset, $element = $( element );
-			if ( $element.not( ':visible' ) ) {
+			if ( !$element.is( ':visible' ) ) {
 				return true;
 			}
 			offset = ve.Element.getRelativePosition(
