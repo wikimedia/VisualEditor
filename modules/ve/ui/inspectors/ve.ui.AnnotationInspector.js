@@ -34,6 +34,7 @@ ve.inheritClass( ve.ui.AnnotationInspector, ve.ui.Inspector );
  * Annotation models this inspector can edit.
  *
  * @static
+ * @inheritable
  * @property {Function[]}
  */
 ve.ui.AnnotationInspector.static.modelClasses = [];
