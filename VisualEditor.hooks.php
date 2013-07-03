@@ -85,7 +85,7 @@ class VisualEditorHooks {
 			if ( $wgVisualEditorEnableEventLogging ) {
 				$output->addModules( array( 'schema.Edit' ) );
 			}
-			$output->addModules( array( 'ext.visualEditor.viewPageTarget' ) );
+			$output->addModules( array( 'ext.visualEditor.viewPageTarget.init' ) );
 		} else {
 			if ( $wgVisualEditorEnableEventLogging ) {
 				$output->addModules( array( 'schema.Edit', 'ext.visualEditor.splitTest' ) );
@@ -226,6 +226,7 @@ class VisualEditorHooks {
 				'ext.visualEditor.standalone',
 				'ext.visualEditor.core',
 				'ext.visualEditor.experimental',
+				'ext.visualEditor.viewPageTarget.init',
 				'ext.visualEditor.viewPageTarget',
 			),
 			'localBasePath' => dirname( __FILE__ ) . '/modules',
