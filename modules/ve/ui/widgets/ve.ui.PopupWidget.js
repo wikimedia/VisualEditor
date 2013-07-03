@@ -13,6 +13,7 @@
  *
  * @constructor
  * @param {Object} [config] Config options
+ * @cfg {jQuery} [$container] Container to make popup positioned relative to
  * @cfg {boolean} [autoClose=false] Popup auto-closes when it loses focus
  */
 ve.ui.PopupWidget = function VeUiPopupWidget( config ) {
@@ -25,8 +26,8 @@ ve.ui.PopupWidget = function VeUiPopupWidget( config ) {
 	// Properties
 	this.visible = false;
 	this.$callout = this.$$( '<div>' );
+	this.$container = config.$container || this.$$( 'body' );
 	this.$body = this.$$( '<div>' );
-	this.surface = config.surface;
 	this.transitionTimeout = null;
 	this.align = config.align || 'center';
 	this.autoClose = !!config.autoClose;
@@ -153,7 +154,7 @@ ve.ui.PopupWidget.prototype.display = function ( x, y, width, height, transition
 	}
 
 	// Prevent viewport clipping, using padding between body and popup edges
-	overlapRight = this.surface.view.$.outerWidth( true ) - ( x + ( width + left + ( padding * 2 ) ) );
+	overlapRight = this.$container.outerWidth( true ) - ( x + ( width + left + ( padding * 2 ) ) );
 	overlapLeft = x + ( left - ( padding * 2 ) );
 	if ( overlapRight < 0 ) {
 		overlapOffset = overlapRight;
