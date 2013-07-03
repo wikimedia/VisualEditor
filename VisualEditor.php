@@ -522,6 +522,7 @@ $wgResourceModules += array(
 			've/ui/tools/dropdowns/ve.ui.FormatDropdownTool.js',
 			've-mw/ui/tools/dropdowns/ve.ui.MWFormatDropdownTool.js',
 
+			've/ui/inspectors/ve.ui.AnnotationInspector.js',
 			've/ui/inspectors/ve.ui.LinkInspector.js',
 			've-mw/ui/inspectors/ve.ui.MWLinkInspector.js',
 		),
