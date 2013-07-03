@@ -719,6 +719,7 @@ $wgResourceModules += array(
 		'dependencies' => array(
 			'ext.visualEditor.core',
 			'jquery.uls',
+			'ext.visualEditor.syntaxHighlight',
 		),
 		'messages' => array(
 			// VE messages needed by code that is only in experimental mode
@@ -748,6 +749,28 @@ $wgResourceModules += array(
 		'styles' => array(
 			've/ui/styles/ve.ui.Icons-vector.css',
 			've-mw/ui/styles/ve.ui.Icons-vector.css',
+		),
+	),
+	'ext.visualEditor.syntaxHighlight' => $wgVisualEditorResourceTemplate + array(
+		'scripts' => array(
+			'syntaxhighlight/ve.dm.MWSyntaxHighlightNode.js',
+			'syntaxhighlight/ve.ce.MWSyntaxHighlightNode.js',
+			'syntaxhighlight/ve.ui.MWSyntaxHighlightTool.js',
+			'syntaxhighlight/ve.ui.MWSyntaxHighlightDialog.js',
+			'syntaxhighlight/ve.ui.MWSyntaxHighlightSimpleSurface.js',
+			'syntaxhighlight/helpers/ve.ce.MWSyntaxHighlightHighlighter.js',
+			'syntaxhighlight/helpers/ve.dm.MWSyntaxHighlightTokenizer.js',
+			'syntaxhighlight/helpers/ve.ce.MWSyntaxHighlightValidator.js',
+		),
+		'dependencies' => array(
+			'ext.visualEditor.core',
+		),
+		'messages' => array(
+			'visualeditor-dialog-syntaxhighlight-title',
+			'visualeditor-dialogbutton-syntaxhighlight-tooltip',
+		),
+		'styles' => array(
+			'syntaxhighlight/styles/ve.ui.MWSyntaxHighlight.css',
 		),
 	),
 );
