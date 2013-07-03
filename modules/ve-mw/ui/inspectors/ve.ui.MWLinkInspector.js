@@ -45,7 +45,7 @@ ve.ui.MWLinkInspector.static.linkTargetInputWidget = ve.ui.MWLinkTargetInputWidg
  * @param {string} target Link target
  * @returns {ve.dm.MWInternalLinkAnnotation|ve.dm.MWExternalLinkAnnotation}
  */
-ve.ui.MWLinkInspector.prototype.getAnnotationFromTarget = function ( target ) {
+ve.ui.MWLinkInspector.prototype.getAnnotationFromText = function ( target ) {
 	var title;
 
 	// Figure out if this is an internal or external link
