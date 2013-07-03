@@ -29,7 +29,7 @@ ve.ui.Context = function VeUiContext( surface, config ) {
 	this.embedded = false;
 	this.selection = null;
 	this.toolbar = null;
-	this.popup = new ve.ui.PopupWidget( { '$$': this.$$, surface: this.surface } );
+	this.popup = new ve.ui.PopupWidget( { '$$': this.$$, '$container': this.surface.getView().$ } );
 	this.$menu = this.$$( '<div>' );
 	this.inspectors = new ve.ui.WindowSet( surface, ve.ui.inspectorFactory );
 
