@@ -47,6 +47,7 @@ ve.ui.Inspector.prototype.initialize = function () {
 	ve.ui.Window.prototype.initialize.call( this );
 
 	// Initialization
+	this.frame.$content.addClass( 've-ui-inspector-content' );
 	this.$form = this.$$( '<form>' );
 	this.closeButton = new ve.ui.IconButtonWidget( {
 		'$$': this.$$, 'icon': 'previous', 'title': ve.msg( 'visualeditor-inspector-close-tooltip' )
@@ -130,7 +131,3 @@ ve.ui.Inspector.prototype.onSetup = function () {
 ve.ui.Inspector.prototype.onOpen = function () {
 	this.initialSelection = this.surface.getModel().getSelection();
 };
-
-/* Initialization */
-
-ve.ui.Inspector.static.addLocalStylesheets( [ 've/ui/styles/ve.ui.Inspector.css' ] );

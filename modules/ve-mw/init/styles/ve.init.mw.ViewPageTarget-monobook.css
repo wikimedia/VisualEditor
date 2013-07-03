@@ -5,8 +5,8 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-.ve-ui-toolbar {
-	margin: 0 -0.8em;
+.ve-init-mw-viewPageTarget-toolbar {
+	margin: -0.6em -0.8em 1em -0.8em;
 }
 
 .ve-ui-context-frame-overlay {
@@ -14,10 +14,14 @@
 }
 
 .ve-ui-context,
-.ve-ui-toolbar,
-.ve-ui-context-menu .ve-ui-toolbar-bar {
+.ve-ui-toolbar {
 	font-size: 1.25em;
 	line-height: 1.5em;
+}
+
+/* Monobook sets font-size: x-small; on the body. Undo this in frames */
+.ve-ui-frame-body {
+	font-size: medium;
 }
 
 .ve-ui-surface-overlay-global {

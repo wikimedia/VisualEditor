@@ -24,14 +24,3 @@ ve.ui.MWDialog = function VeUiMWDialog( surface, config ) {
 /* Inheritance */
 
 ve.inheritClass( ve.ui.MWDialog, ve.ui.Dialog );
-
-
-/* Initialization */
-
-ve.ui.MWDialog.static.addLocalStylesheets( [
-	've-mw/ui/styles/ve.ui.MWDialog.css',
-	've-mw/ui/styles/ve.ui.Widget.css',
-	( document.createElementNS && document.createElementNS( 'http://www.w3.org/2000/svg', 'svg' ).createSVGRect ?
-		've-mw/ui/styles/ve.ui.Icons-vector.css' :
-		've-mw/ui/styles/ve.ui.Icons-raster.css' )
-] );

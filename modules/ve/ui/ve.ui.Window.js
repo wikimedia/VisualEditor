@@ -37,7 +37,7 @@ ve.ui.Window = function VeUiWindow( surface, config ) {
 	this.$
 		.addClass( 've-ui-window' )
 		.append( this.$frame );
-	this.frame = new ve.ui.Frame( { 'stylesheets': this.constructor.static.stylesheets } );
+	this.frame = new ve.ui.Frame();
 	this.$frame
 		.addClass( 've-ui-window-frame' )
 		.append( this.frame.$ );
@@ -77,15 +77,6 @@ ve.mixinClass( ve.ui.Window, ve.EventEmitter );
 /* Static Properties */
 
 /**
- * List of stylesheet URLs to load.
- *
- * @static
- * @inheritable
- * @property {Array}
- */
-ve.ui.Window.static.stylesheets = [];
-
-/**
  * Symbolic name of icon.
  *
  * @static
@@ -102,41 +93,6 @@ ve.ui.Window.static.icon = 'window';
  * @property {string}
  */
 ve.ui.Window.static.titleMessage = null;
-
-/* Static Methods */
-
-/**
- * Add a stylesheet to be loaded into the window's frame.
- *
- * @method
- * @param {string[]} paths List of absolute stylesheet paths
- */
-ve.ui.Window.static.addStylesheetFiles = function ( paths ) {
-	if ( !this.hasOwnProperty( 'stylesheets' ) ) {
-		this.stylesheets = this.stylesheets.slice( 0 );
-	}
-	this.stylesheets.push.apply( this.stylesheets, paths );
-};
-
-/**
- * Add a stylesheet from a local directory.
- *
- * @method
- * @param {string[]} files Names of stylesheet files
- */
-ve.ui.Window.static.addLocalStylesheets = function ( files ) {
-	var i, len,
-		base = ve.init.platform.getModulesUrl(),
-		paths = [];
-
-	// Prepend base path to each file name
-	for ( i = 0, len = files.length; i < len; i++ ) {
-		// Extract the module name and convert it to a path
-		paths[i] = base + '/' + files[i];
-	}
-
-	this.addStylesheetFiles( paths );
-};
 
 /* Methods */
 
@@ -331,17 +287,3 @@ ve.ui.Window.prototype.close = function ( action ) {
 		this.closing = false;
 	}
 };
-
-/* Initialization */
-
-ve.ui.Window.static.addLocalStylesheets( [
-	've/ui/styles/ve.ui.css',
-	've/ui/styles/ve.ui.Frame.css',
-	've/ui/styles/ve.ui.Window.css',
-	've/ui/styles/ve.ui.Element.css',
-	've/ui/styles/ve.ui.Layout.css',
-	've/ui/styles/ve.ui.Widget.css',
-	( document.createElementNS && document.createElementNS( 'http://www.w3.org/2000/svg', 'svg' ).createSVGRect ?
-		've/ui/styles/ve.ui.Icons-vector.css' :
-		've/ui/styles/ve.ui.Icons-raster.css' )
-] );

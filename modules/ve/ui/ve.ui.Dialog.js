@@ -155,12 +155,9 @@ ve.ui.Dialog.prototype.initialize = function () {
 	this.frame.$document.on( 'keydown', ve.bind( this.onFrameDocumentKeyDown, this ) );
 
 	// Initialization
+	this.frame.$content.addClass( 've-ui-dialog-content' );
 	this.closeButton.$.addClass( 've-ui-window-closeButton' );
 	this.applyButton.$.addClass( 've-ui-window-applyButton' );
 	this.$head.append( this.closeButton.$ );
 	this.$foot.append( this.applyButton.$ );
 };
-
-/* Initialization */
-
-ve.ui.Dialog.static.addLocalStylesheets( [ 've/ui/styles/ve.ui.Dialog.css' ] );

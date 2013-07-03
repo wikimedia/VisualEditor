@@ -65,9 +65,9 @@
 	height: 100%;
 }
 
-.ve-ui-window-head,
-.ve-ui-window-body,
-.ve-ui-window-foot {
+.ve-ui-dialog-content .ve-ui-window-head,
+.ve-ui-dialog-content .ve-ui-window-body,
+.ve-ui-dialog-content .ve-ui-window-foot {
 	position: absolute;
 	left: 0;
 	right: 0;
@@ -77,69 +77,53 @@
 	overflow: hidden;
 }
 
-.ve-ui-window-head {
+.ve-ui-dialog-content .ve-ui-window-head {
 	top: 0;
 	height: 3.8em;
 	padding: 0.5em;
 }
 
-.ve-ui-window-foot {
+.ve-ui-dialog-content .ve-ui-window-foot {
 	bottom: 0;
 	height: 4.8em;
 	padding: 1em;
 }
 
-.ve-ui-window-body {
+.ve-ui-dialog-content .ve-ui-window-body {
 	box-shadow: 0 0 0.66em rgba(0,0,0,0.25);
 	top: 3.8em;
 	bottom: 4.8em;
 }
 
-.ve-ui-window-icon {
+.ve-ui-dialog-content .ve-ui-window-icon {
 	width: 2.4em;
 	height: 2.8em;
 	line-height: 2.8em;
 }
 
-.ve-ui-window-title {
+.ve-ui-dialog-content .ve-ui-window-title {
 	line-height: 2.8em;
 }
 
-.ve-ui-window-foot .ve-ui-buttonWidget {
+.ve-ui-dialog-content .ve-ui-window-foot .ve-ui-buttonWidget {
 	float: right;
 	margin: 0.125em 0.25em;
 }
 
-/* @noflip */
-.ve-rtl .ve-ui-window-foot .ve-ui-buttonWidget {
-	float: left;
-}
-
-.ve-ui-window-closeButton {
+.ve-ui-dialog-content .ve-ui-window-closeButton {
 	float: right;
 	margin: 0.25em 0.25em;
 }
 
-.ve-ui-window-body .ve-ui-surface {
+.ve-ui-dialog-content .ve-ui-window-body .ve-ui-surface {
 	border: solid 1px #ddd;
 	border-radius: 0.25em;
 	border-top-right-radius: 0;
 	border-top-left-radius: 0;
 }
 
-/* @noflip */
-.ve-rtl .ve-ui-window-closeButton {
-	float: left;
-}
-
 .ve-ui-pagedDialog-outlinePanel {
 	border-right: solid 1px #ddd;
-}
-
-/* @noflip */
-.ve-ui-pagedDialog-outlinePanel.ve-rtl {
-	border-right: 0;
-	border-left: solid 1px #ddd;
 }
 
 .ve-ui-pagedDialog-outlinePanel-editable .ve-ui-outlineWidget {

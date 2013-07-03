@@ -875,6 +875,7 @@ ve.init.mw.ViewPageTarget.prototype.setUpSurface = function ( doc, callback ) {
 			setTimeout( ve.bind( function () {
 				// Create ui.Surface (also creates ce.Surface and dm.Surface and builds CE tree)
 				this.surface = new ve.ui.Surface( dmDoc, this.surfaceOptions );
+				this.surface.$.addClass( 've-init-mw-viewPageTarget-surface' );
 				setTimeout( ve.bind( function () {
 					// Initialize surface
 					this.surface.connect( this, { 'toolbarPosition': 'onSurfaceToolbarPosition' } );

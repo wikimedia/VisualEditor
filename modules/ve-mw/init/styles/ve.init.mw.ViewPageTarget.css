@@ -7,10 +7,6 @@
 
 /* VisualEditor */
 
-.ve-ui-menuWidget {
-	font-size: 0.8em;
-}
-
 .ve-init-mw-viewPageTarget-pageTitle {
 	-webkit-transition: opacity 200ms ease-out;
 	-moz-transition: opacity 200ms ease-out;
@@ -38,7 +34,6 @@
 .ve-ui-toolbar-actions .ve-init-mw-viewPageTarget-waiting.ve-ui-widget.ve-ui-widget-disabled {
 	cursor: progress;
 }
-
 
 /* Beta notices */
 

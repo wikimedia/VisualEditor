@@ -14,7 +14,6 @@
  *
  * @constructor
  * @param {Object} [config] Config options
- * @cfg {string[]} [stylesheets] List of stylesheet file names, each relative to ve/ui/styles
  */
 ve.ui.Frame = function VeUiFrame( config ) {
 	// Parent constructor
@@ -75,14 +74,8 @@ ve.ui.Frame.static.tagName = 'iframe';
  * @emits initialize
  */
 ve.ui.Frame.prototype.load = function () {
-	var interval, rules,
-		win = this.$.prop( 'contentWindow' ),
-		doc = win.document,
-		style = doc.createElement( 'style' ),
-		initialize = ve.bind( function () {
-			this.initialized = true;
-			this.emit( 'initialize' );
-		}, this );
+	var win = this.$.prop( 'contentWindow' ),
+		doc = win.document;
 
 	// Figure out directionality:
 	this.dir = this.$.closest( '[dir]' ).prop( 'dir' ) || 'ltr';
@@ -92,42 +85,61 @@ ve.ui.Frame.prototype.load = function () {
 	doc.write(
 		'<!doctype html>' +
 		'<html>' +
-			'<body style="padding:0;margin:0;direction:' + this.dir + ';" dir="' + this.dir + '">' +
-				'<div class="ve-ui-frame-content ve-' + this.dir + '"></div>' +
+			'<body class="ve-ui-frame-body ve-' + this.dir + '" style="direction:' + this.dir + ';" dir="' + this.dir + '">' +
+				'<div class="ve-ui-frame-content"></div>' +
 			'</body>' +
 		'</html>'
 	);
 	doc.close();
 
-	// Import all stylesheets
-	style.textContent = '@import "' + this.config.stylesheets.join( '";\n@import "' ) + '";';
-
-	doc.body.appendChild( style );
-
-	// Poll for access to stylesheet content
-	interval = setInterval( ve.bind( function () {
-		try {
-			// MAGIC: only accessible when the stylesheet is loaded
-			rules = style.sheet.cssRules;
-		} catch ( e ) {
-			// Try again in 10ms
-			return;
-		}
-		// If that didn't throw an exception, we're done loading
-		clearInterval( interval );
-		// Protect against IE running interval one extra time after clearing
-		if ( !this.initialized ) {
-			initialize();
-		}
-	}, this ), 10 );
-
 	// Properties
 	this.$$ = ve.Element.get$$( doc, this );
 	this.$content = this.$$( '.ve-ui-frame-content' );
 	this.$document = this.$$( doc );
+
+	this.transplantStyles();
+	this.initialized = true;
+	this.emit( 'initialize' );
 };
 
 /**
+ * Transplant the CSS styles from the frame's parent document to the frame's document.
+ *
+ * This loops over the style sheets in the parent document, and copies their tags to the
+ * frame's document. `<link>` tags pointing to same-origin style sheets are inlined as `<style>` tags;
+ * `<link>` tags pointing to foreign URLs and `<style>` tags are copied verbatim.
+ */
+ve.ui.Frame.prototype.transplantStyles = function () {
+	var i, ilen, j, jlen, sheet, rules, cssText, styleNode,
+		newDoc = this.$document[0],
+		parentDoc = this.getElementDocument();
+	for ( i = 0, ilen = parentDoc.styleSheets.length; i < ilen; i++ ) {
+		sheet = parentDoc.styleSheets[i];
+		try {
+			rules = sheet.cssRules;
+		} catch ( e ) { }
+		if ( sheet.ownerNode.nodeName.toLowerCase() === 'link' && rules ) {
+			// This is a <link> tag pointing to a same-origin style sheet. Rebuild it as a
+			// <style> tag
+			cssText = '';
+			for ( j = 0, jlen = sheet.cssRules.length; j < jlen; j++ ) {
+				cssText += sheet.cssRules[j].cssText + '\n';
+			}
+			cssText += '/* Transplanted styles from ' + sheet.href + ' */\n';
+			styleNode = newDoc.createElement( 'style' );
+			styleNode.textContent = cssText;
+		} else {
+			// It's either a <style> tag or a <link> tag pointing to a foreign URL; just copy
+			// it to the new document
+			styleNode = newDoc.importNode( sheet.ownerNode, true );
+		}
+		newDoc.body.appendChild( styleNode );
+	}
+};
+
+/**
+ * Run a callback as soon as the frame has been initialized.
+ *
  * @param {Function} callback
  */
 ve.ui.Frame.prototype.run = function ( callback ) {

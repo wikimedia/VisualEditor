@@ -18,36 +18,36 @@
 	height: 3em;
 }
 
-.ve-ui-window-head {
+.ve-ui-inspector-content .ve-ui-window-head {
 	height: 2em;
 	padding: 0.5em;
 }
 
-.ve-ui-window-icon {
+.ve-ui-inspector-content .ve-ui-window-icon {
 	padding-left: 0.5em;
 	margin-left: 0.25em;
 	border-left: solid 1px #eee;
 }
 
-.ve-ui-inspector-closeButton {
+.ve-ui-inspector-content .ve-ui-inspector-closeButton {
 	float: left;
 }
 
-.ve-ui-inspector-removeButton {
+.ve-ui-inspector-content .ve-ui-inspector-removeButton {
 	float: right;
 }
 
-.ve-ui-window-body form {
+.ve-ui-inspector-content .ve-ui-window-body form {
 	margin: 0.25em 0 0 0;
 	padding: 0;
 	white-space: nowrap;
 }
 
-.ve-ui-window-body .ve-ui-textInputWidget {
+.ve-ui-inspector-content .ve-ui-window-body .ve-ui-textInputWidget {
 	width: 100%;
 }
 
-.ve-ui-window-body form input.ve-ui-linkInspector-location {
+.ve-ui-inspector-content .ve-ui-window-body form input.ve-ui-linkInspector-location {
 	/* @see ve.ui.Icons */
 	background-position: 18.75em center;
 	background-repeat: no-repeat;

@@ -42,19 +42,6 @@ ve.ui.MWReferenceEditDialog.static.surfaceCommands = [
 	'bold', 'italic', 'mwLink', 'undo', 'redo'
 ];
 
-/* Static Initialization */
-
-ve.ui.MWReferenceEditDialog.static.addLocalStylesheets( [
-	've/ce/styles/ve.ce.Node.css',
-	've-mw/ce/styles/ve.ce.Node.css',
-	've/ce/styles/ve.ce.Surface.css',
-	've/ui/styles/ve.ui.Surface.css',
-	've/ui/styles/ve.ui.Context.css',
-	've/ui/styles/ve.ui.Tool.css',
-	've-mw/ui/styles/ve.ui.Tool.css',
-	've/ui/styles/ve.ui.Toolbar.css'
-] );
-
 /* Methods */
 
 ve.ui.MWReferenceEditDialog.prototype.initialize = function () {
