@@ -163,6 +163,7 @@ $wgResourceModules += array(
 		),
 		'messages' => array(
 			'accesskey-ca-ve-edit',
+			'accesskey-ca-ve-editsource',
 			'tooltip-ca-createsource',
 			'tooltip-ca-editsource',
 			'tooltip-ca-ve-edit',
