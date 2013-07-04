@@ -233,7 +233,6 @@
 		<script src="../../ve/ui/tools/buttons/ve.ui.RedoButtonTool.js"></script>
 		<script src="../../ve/ui/tools/buttons/ve.ui.UndoButtonTool.js"></script>
 		<script src="../../ve/ui/tools/dropdowns/ve.ui.FormatDropdownTool.js"></script>
-		<script src="../../ve/ui/inspectors/ve.ui.AnnotationInspector.js"></script>
 		<script src="../../ve/ui/inspectors/ve.ui.LinkInspector.js"></script>
 
 		<!-- Load plugins for test framework -->

@@ -280,7 +280,6 @@
 		<script src="../../ve-mw/ui/tools/buttons/ve.ui.MWTransclusionButtonTool.js"></script>
 		<script src="../../ve/ui/tools/dropdowns/ve.ui.FormatDropdownTool.js"></script>
 		<script src="../../ve-mw/ui/tools/dropdowns/ve.ui.MWFormatDropdownTool.js"></script>
-		<script src="../../ve/ui/inspectors/ve.ui.AnnotationInspector.js"></script>
 		<script src="../../ve/ui/inspectors/ve.ui.LinkInspector.js"></script>
 		<script src="../../ve-mw/ui/inspectors/ve.ui.MWLinkInspector.js"></script>
 		<!-- ext.visualEditor.experimental -->
