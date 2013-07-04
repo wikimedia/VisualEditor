@@ -1187,7 +1187,7 @@ ve.dm.mwExample.domToDataCases = {
 		]
 	},
 	'URL link': {
-		'html': '<body><p><a rel="mw:ExtLink/URL" href="http://www.mediawiki.org/">mw</a></p></body>',
+		'html': '<body><p><a rel="mw:ExtLink" href="http://www.mediawiki.org/">mw</a></p></body>',
 		'data': [
 			{ 'type': 'paragraph' },
 			[
@@ -1196,10 +1196,10 @@ ve.dm.mwExample.domToDataCases = {
 					'type': 'link/mwExternal',
 					'attributes': {
 						'href': 'http://www.mediawiki.org/',
-						'rel': 'mw:ExtLink/URL'
+						'rel': 'mw:ExtLink'
 					},
 					'htmlAttributes': [ { 'values': {
-						'rel': 'mw:ExtLink/URL',
+						'rel': 'mw:ExtLink',
 						'href': 'http://www.mediawiki.org/'
 					} } ]
 				} ]
@@ -1210,10 +1210,10 @@ ve.dm.mwExample.domToDataCases = {
 					'type': 'link/mwExternal',
 					'attributes': {
 						'href': 'http://www.mediawiki.org/',
-						'rel': 'mw:ExtLink/URL'
+						'rel': 'mw:ExtLink'
 					},
 					'htmlAttributes': [ { 'values': {
-						'rel': 'mw:ExtLink/URL',
+						'rel': 'mw:ExtLink',
 						'href': 'http://www.mediawiki.org/'
 					} } ]
 				} ]
