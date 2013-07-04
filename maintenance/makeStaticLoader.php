@@ -162,21 +162,30 @@ class MakeStaticLoader extends Maintenance {
 			$headAdd = $bodyAdd = '';
 
 			if ( isset( $registry['styles'] ) && $target !== 'test' ){
-				foreach ($registry['styles'] as $style) {
+				foreach ( $registry['styles'] as $path ) {
+					if ( strpos( $path, 've-mw/' ) === 0 ) {
+						continue;
+					}
 					$headAdd .= $indent . Html::element( 'link', array(
 						'rel' => 'stylesheet',
-						'href' => "$vePath/$style",
+						'href' => "$vePath/$path",
 					) ) . "\n";
 				}
 			}
 			if ( isset( $registry['scripts'] ) ) {
-				foreach ($registry['scripts'] as $script) {
-					$bodyAdd .= $indent . Html::element( 'script', array( 'src' => "$vePath/$script" ) ) . "\n";
+				foreach ( $registry['scripts'] as $path ) {
+					if ( strpos( $path, 've-mw/' ) === 0 ) {
+						continue;
+					}
+					$bodyAdd .= $indent . Html::element( 'script', array( 'src' => "$vePath/$path" ) ) . "\n";
 				}
 			}
 			if ( isset( $registry['debugScripts'] ) ) {
-				foreach ($registry['debugScripts'] as $script) {
-					$bodyAdd .= $indent . Html::element( 'script', array( 'src' => "$vePath/$script" ) ) . "\n";
+				foreach ( $registry['debugScripts'] as $path ) {
+					if ( strpos( $path, 've-mw/' ) === 0 ) {
+						continue;
+					}
+					$bodyAdd .= $indent . Html::element( 'script', array( 'src' => "$vePath/$path" ) ) . "\n";
 				}
 			}
 			if ( isset( $registry['headAdd'] ) ) {
