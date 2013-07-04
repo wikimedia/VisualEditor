@@ -191,9 +191,6 @@
 
 	// Expose
 	mw.libs.ve = init;
-	if ( window.console ) {
-		window.console.log( 'Support ES5: ' + String(!!init.support.es5) + '; UA: ' + navigator.userAgent );
-	}
 
 	isBlacklisted = !( 'vewhitelist' in uri.query ) && $.client.test( init.blacklist, null, true );
 
