@@ -541,7 +541,7 @@ $wgResourceModules += array(
 		'styles' => array(
 			// ce
 			've/ce/styles/ve.ce.Node.css',
-			've/ce/styles/ve.ce.Node.css',
+			've-mw/ce/styles/ve.ce.Node.css',
 			've/ce/styles/ve.ce.Surface.css',
 			// ui
 			've/ui/styles/ve.ui.css',
