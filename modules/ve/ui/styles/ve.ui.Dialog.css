@@ -138,7 +138,7 @@
 
 /* @noflip */
 .ve-ui-pagedDialog-outlinePanel.ve-rtl {
-	border-right: 0px;
+	border-right: 0;
 	border-left: solid 1px #ddd;
 }
 
