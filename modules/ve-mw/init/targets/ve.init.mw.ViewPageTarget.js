@@ -157,7 +157,7 @@ ve.init.mw.ViewPageTarget.compatibility = {
 	// The value is either null (match all versions) or a list of tuples
 	// containing an inequality (<,>,<=,>=) and a version number
 	'whitelist': {
-		'firefox': [['>=', 11]],
+		'firefox': [['>=', 13]],
 		'iceweasel': [['>=', 10]],
 		'safari': [['>=', 5]],
 		'chrome': [['>=', 19]]
