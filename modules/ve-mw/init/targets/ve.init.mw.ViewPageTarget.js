@@ -135,7 +135,6 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 	}
 
 	this.setupSkinTabs();
-	this.setupSectionEditLinks();
 
 	window.addEventListener( 'popstate', ve.bind( this.onWindowPopState, this ) ) ;
 };
@@ -570,23 +569,6 @@ ve.init.mw.ViewPageTarget.prototype.onEditConflict = function () {
 ve.init.mw.ViewPageTarget.prototype.onNoChanges = function () {
 	this.$saveDialogLoadingIcon.hide();
 	this.swapSaveDialog( 'nochanges' );
-};
-
-/**
- * Handle clicks on a section edit link.
- *
- * @method
- * @param {jQuery.Event} e Mouse click event
- */
-ve.init.mw.ViewPageTarget.prototype.onEditSectionLinkClick = function ( e ) {
-	if ( ( e.which && e.which !== 1 ) || e.shiftKey || e.altKey || e.ctrlKey || e.metaKey ) {
-		return;
-	}
-	this.logEvent( 'Edit', { action: 'section-edit-link-click' } );
-	this.saveEditSection( $( e.target ).closest( 'h1, h2, h3, h4, h5, h6' ).get( 0 ) );
-	this.activate();
-	// Prevent the edit tab's normal behavior
-	e.preventDefault();
 };
 
 /**
@@ -1097,96 +1079,10 @@ ve.init.mw.ViewPageTarget.prototype.setupSkinTabs = function () {
 
 /**
  * Modify page content to make section edit links activate the editor.
- *
- * @method
+ * Dummy replaced by init.js so that we can call it again from #onSave after
+ * replacing the page contents with the new html.
  */
-ve.init.mw.ViewPageTarget.prototype.setupSectionEditLinks = function () {
-	var veEditUri = this.veEditUri,
-		$editsections = $( '#mw-content-text .mw-editsection' ),
-		handler = ve.bind( this.onEditSectionLinkClick, this );
-
-	// match direction to the user interface
-	$editsections.css( 'direction', $( 'body' ).css( 'direction' ) );
-	// The "visibility" css construct ensures we always occupy the same space in the layout.
-	// This prevents the heading from changing its wrap when the user toggles editSourceLink.
-	$editsections.each( function () {
-		var $closingBracket, $expandedOnly, $hiddenBracket, $outerClosingBracket,
-			expandTimeout, shrinkTimeout,
-			$editsection = $( this ),
-			$heading = $editsection.closest( 'h1, h2, h3, h4, h5, h6' ),
-			$editLink = $editsection.find( 'a' ).eq( 0 ),
-			$editSourceLink = $editLink.clone(),
-			$links = $editLink.add( $editSourceLink ),
-			$divider = $( '<span>' ),
-			dividerText = $.trim( ve.msg( 'pipe-separator' ) ),
-			$brackets = $( [ this.firstChild, this.lastChild ] );
-
-		function expandSoon() {
-			// Cancel pending shrink, schedule expansion instead
-			clearTimeout( shrinkTimeout );
-			expandTimeout = setTimeout( expand, 100 );
-		}
-
-		function expand() {
-			clearTimeout( shrinkTimeout );
-			$closingBracket.css( 'visibility', 'hidden' );
-			$expandedOnly.css( 'visibility', 'visible' );
-			$heading.addClass( 'mw-editsection-expanded' );
-		}
-
-		function shrinkSoon() {
-			// Cancel pending expansion, schedule shrink instead
-			clearTimeout( expandTimeout );
-			shrinkTimeout = setTimeout( shrink, 100 );
-		}
-
-		function shrink() {
-			clearTimeout( expandTimeout );
-			if ( !$links.is( ':focus' ) ) {
-				$closingBracket.css( 'visibility', 'visible' );
-				$expandedOnly.css( 'visibility', 'hidden' );
-				$heading.removeClass( 'mw-editsection-expanded' );
-			}
-		}
-
-		// TODO: Remove this (see Id27555c6 in mediawiki/core)
-		if ( !$brackets.hasClass( 'mw-editsection-bracket' ) ) {
-			$brackets = $brackets
-				.wrap( $( '<span>' ).addClass( 'mw-editsection-bracket' ) )
-				.parent();
-		}
-
-		$closingBracket = $brackets.last();
-		$outerClosingBracket = $closingBracket.clone();
-		$expandedOnly = $divider.add( $editSourceLink ).add( $outerClosingBracket )
-			.css( 'visibility', 'hidden' );
-		// The hidden bracket after the devider ensures we have balanced space before and after
-		// divider. The space before the devider is provided by the original closing bracket.
-		$hiddenBracket = $closingBracket.clone().css( 'visibility', 'hidden' );
-
-		// Events
-		$heading.on( { 'mouseenter': expandSoon, 'mouseleave': shrinkSoon } );
-		$links.on( { 'focus': expand, 'blur': shrinkSoon } );
-		$editLink.click( handler );
-
-		// Initialization
-		$editSourceLink
-			.addClass( 'mw-editsection-link-secondary' )
-			.text( mw.msg( 'visualeditor-ca-editsource-section' ) );
-		$divider
-			.addClass( 'mw-editsection-divider' )
-			.text( dividerText );
-		$editLink
-			.attr( 'href', function ( i, val ) {
-				return new mw.Uri( veEditUri ).extend( {
-					'vesection': new mw.Uri( val ).query.section
-				} );
-			} )
-			.addClass( 'mw-editsection-link-primary' );
-		$closingBracket
-			.after( $divider, $hiddenBracket, $editSourceLink, $outerClosingBracket );
-	} );
-};
+ve.init.mw.ViewPageTarget.prototype.setupSectionEditLinks = null;
 
 /**
  * Add content and event bindings to toolbar buttons.
