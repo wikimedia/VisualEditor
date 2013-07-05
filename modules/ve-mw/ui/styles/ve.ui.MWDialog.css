@@ -75,6 +75,11 @@
 	text-align: left;
 }
 
+/*@noflip*/
+.ve-rtl fieldset .ve-ui-mwMetaDialog-languages-table th {
+	text-align: right;
+}
+
 .ve-ui-mwMetaDialog-languages-table th,
 .ve-ui-mwMetaDialog-languages-table td {
 	padding: 0.75em 1em;
