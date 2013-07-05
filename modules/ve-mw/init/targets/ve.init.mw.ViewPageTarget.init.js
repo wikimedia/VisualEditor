@@ -85,8 +85,8 @@
 			'msie': [['<=', 10]],
 			// Android 2.x and below "support" CE but don't trigger keyboard input
 			'android': [['<', 3]],
-			// Bug 50534 - apparently Firefox is broken in versions 10 and below
-			'firefox': [['<=', 10]],
+			// Bug 50780 - apparently Firefox is broken in versions 12 and below
+			'firefox': [['<=', 12]],
 			// Blacklist all versions:
 			'opera': null,
 			'blackberry': null
