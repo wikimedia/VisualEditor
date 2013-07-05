@@ -9,6 +9,7 @@
  */
 
 class ApiVisualEditor extends ApiBase {
+
 	protected function getHTML( $title, $parserParams ) {
 		global $wgVisualEditorParsoidURL, $wgVisualEditorParsoidPrefix,
 			$wgVisualEditorParsoidTimeout;
@@ -16,20 +17,23 @@ class ApiVisualEditor extends ApiBase {
 		$restoring = false;
 
 		if ( $title->exists() ) {
-			if ( $parserParams['oldid'] === 0 ) {
-				$parserParams['oldid'] = ''; // Parsoid wants empty string rather than zero
-			}
-			$revision = Revision::newFromId( $parserParams['oldid'] );
 			$latestRevision = Revision::newFromTitle( $title );
-			if ( $revision === null || $latestRevision === null ) {
+			if ( $latestRevision === null ) {
 				return false;
 			}
-			$restoring = !$revision->isCurrent();
+			$revision = null;
+			if ( !isset( $parserParams['oldid'] ) || $parserParams['oldid'] === 0 ) {
+				$parserParams['oldid'] = $latestRevision->getId();
+				$revision = $latestRevision;
+			} else {
+				$revision = Revision::newFromId( $parserParams['oldid'] );
+				if ( $revision === null ) {
+					return false;
+				}
+			}
 
-			# Disable cache busting as the Parsoid extension keeps templates
-			# up to date.
-			#$parserParams['touched'] = $title->getTouched();
-			#$parserParams['cache'] = 1;
+			$restoring = $revision && !$revision->isCurrent();
+			$oldid = $parserParams['oldid'];
 
 			$req = MWHttpRequest::factory( wfAppendQuery(
 					$wgVisualEditorParsoidURL . '/' . $wgVisualEditorParsoidPrefix .
@@ -65,12 +69,14 @@ class ApiVisualEditor extends ApiBase {
 		} else {
 			$content = '';
 			$timestamp = wfTimestampNow();
+			$oldid = 0;
 		}
 		return array(
 			'result' => array(
 				'content' => $content,
 				'basetimestamp' => $timestamp,
 				'starttimestamp' => wfTimestampNow(),
+				'oldid' => $oldid,
 			),
 			'restoring' => $restoring,
 		);
@@ -305,38 +311,43 @@ class ApiVisualEditor extends ApiBase {
 					$this->dieUsage( 'Error contacting the Parsoid server', 'parsoidserver' );
 				}
 
-				$result = $this->saveWikitext( $page, $wikitext, $params );
-				$editStatus = $result['edit']['result'];
+				$saveresult = $this->saveWikitext( $page, $wikitext, $params );
+				$editStatus = $saveresult['edit']['result'];
 
 				// Error
-				if ( !isset( $result['edit']['result'] ) || $editStatus !== 'Success' ) {
+				if ( !isset( $saveresult['edit']['result'] ) || $editStatus !== 'Success' ) {
 					$result = array(
 						'result' => 'error',
-						'edit' => $result['edit']
+						'edit' => $saveresult['edit']
 					);
 
 				// Success
 				} else {
-					if ( isset( $result['edit']['newrevid'] ) && $wgVisualEditorUseChangeTagging ) {
+					if ( isset( $saveresult['edit']['newrevid'] ) && $wgVisualEditorUseChangeTagging ) {
 						ChangeTags::addTags( 'visualeditor', null,
-							intval( $result['edit']['newrevid'] ),
+							intval( $saveresult['edit']['newrevid'] ),
 							null
 						);
 						if ( $params['needcheck'] ) {
 							ChangeTags::addTags( 'visualeditor-needcheck', null,
-								intval( $result['edit']['newrevid'] ),
+								intval( $saveresult['edit']['newrevid'] ),
 								null
 							);
 						}
 					}
+
+					// Return result of parseWikitext instead of saveWikitext so that the
+					// frontend can update the page rendering without a refresh.
 					$result = $this->parseWikitext( $page );
 					if ( $result === false ) {
 						$this->dieUsage( 'Error contacting the Parsoid server', 'parsoidserver' );
 					}
-					$result['result'] = 'success';
-					if ( isset( $result['edit']['newrevid'] ) ) {
-						$result['newrevid'] = intval( $result['edit']['newrevid'] );
+
+					if ( isset( $saveresult['edit']['newrevid'] ) ) {
+						$result['newrevid'] = intval( $saveresult['edit']['newrevid'] );
 					}
+
+					$result['result'] = 'success';
 				}
 				break;
 			case 'diff':
@@ -410,8 +421,8 @@ class ApiVisualEditor extends ApiBase {
 		return array(
 			'page' => 'The page to perform actions on.',
 			'paction' => 'Action to perform',
-			'oldid' => 'The revision number to use. If zero, the empty string is passed to Parsoid'
-				.' to indicate new page creation.',
+			'oldid' => 'The revision number to use. For paction=save, defauls to latest revision.' +
+				' Required for other actions. Use 0 for new page.',
 			'minor' => 'Flag for minor edit.',
 			'html' => 'HTML to send to parsoid in exchange for wikitext',
 			'summary' => 'Edit summary',

@@ -69,7 +69,6 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 	this.scrollTop = null;
 	this.currentUri = currentUri;
 	this.messages = {};
-	this.restoring = this.oldid !== mw.config.get( 'wgCurRevisionId' );
 	this.section = currentUri.query.vesection || null;
 	this.namespaceName = mw.config.get( 'wgCanonicalNamespace' );
 	this.viewUri = new mw.Uri( mw.util.wikiGetlink( this.pageName ) );
@@ -396,9 +395,18 @@ ve.init.mw.ViewPageTarget.prototype.onSave = function ( html, newid ) {
 				watchChecked ? 'unwatch': 'watch'
 			);
 		}
+
+		// If we were explicitly editing an older version, make sure we won't
+		// load the same old version again, now that we've saved the next edit
+		// will be against the latest version.
+		// TODO: What about oldid in the url?
+		this.restoring = false;
+
 		if ( newid !== undefined ) {
-			this.oldid = newid;
+			mw.config.set( 'wgCurRevisionId', newid );
+			this.revid = newid;
 		}
+
 		this.hideSaveDialog();
 		this.resetSaveDialog();
 		this.replacePageContent( html );

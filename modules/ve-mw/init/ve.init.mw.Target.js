@@ -16,16 +16,18 @@
  * @constructor
  * @param {jQuery} $container Conainter to render target into
  * @param {string} pageName Name of target page
- * @param {number} [revision] Revision ID
+ * @param {number} [revisionId] If the editor should load a revision of the page, pass the
+ *  revision id here. Defaults to loading the latest version (see #load).
  */
-ve.init.mw.Target = function VeInitMwTarget( $container, pageName, revision ) {
+ve.init.mw.Target = function VeInitMwTarget( $container, pageName, revisionId ) {
 	// Parent constructor
 	ve.init.Target.call( this, $container );
 
 	// Properties
 	this.pageName = pageName;
 	this.pageExists = mw.config.get( 'wgArticleId', 0 ) !== 0;
-	this.oldid = revision || mw.config.get( 'wgCurRevisionId' );
+	this.revid = revisionId || mw.config.get( 'wgCurRevisionId' );
+	this.restoring = !!revisionId;
 	this.editToken = mw.user.tokens.get( 'editToken' );
 	this.apiUrl = mw.util.wikiScript( 'api' );
 	this.submitUrl = ( new mw.Uri( mw.util.wikiGetlink( this.pageName ) ) )
@@ -164,6 +166,7 @@ ve.init.mw.Target.onLoad = function ( response ) {
 
 		this.baseTimeStamp = data.basetimestamp;
 		this.startTimeStamp = data.starttimestamp;
+		this.revid = data.oldid;
 		// Everything worked, the page was loaded, continue as soon as the module is ready
 		mw.loader.using( this.modules, ve.bind( ve.init.mw.Target.onReady, this ) );
 	}
@@ -331,7 +334,6 @@ ve.init.mw.Target.onSave = function ( response ) {
 			response
 		);
 	} else {
-		mw.config.set( 'wgCurRevisionId', data.newrevid );
 		this.emit( 'save', data.content, data.newrevid );
 	}
 };
@@ -492,23 +494,34 @@ ve.init.mw.Target.prototype.getHtml = function ( newDoc ) {
  * @returns {boolean} Loading has been started
 */
 ve.init.mw.Target.prototype.load = function () {
+	var data;
 	// Prevent duplicate requests
 	if ( this.loading ) {
 		return false;
 	}
 	// Start loading the module immediately
 	mw.loader.load( this.modules );
+
+	data = {
+		'action': 'visualeditor',
+		'paction': 'parse',
+		'page': this.pageName,
+		'token': this.editToken,
+		'format': 'json'
+	};
+
+	// Only request the API to explicitly load the currently visible revision if we're restoring
+	// from oldid. Otherwise we should load the latest version. This prevents us from editing an
+	// old version if an edit was made while the user was viewing the page and/or the user is
+	// seeing (slightly) stale cache.
+	if ( this.restoring ) {
+		data.oldid = this.revid;
+	}
+
 	// Load DOM
 	this.loading = $.ajax( {
 		'url': this.apiUrl,
-		'data': {
-			'action': 'visualeditor',
-			'paction': 'parse',
-			'page': this.pageName,
-			'oldid': this.oldid,
-			'token': this.editToken,
-			'format': 'json'
-		},
+		'data': data,
 		'dataType': 'json',
 		'type': 'POST',
 		// Wait up to 100 seconds before giving up
@@ -564,7 +577,7 @@ ve.init.mw.Target.prototype.save = function ( doc, options ) {
 		'action': 'visualeditor',
 		'paction': 'save',
 		'page': this.pageName,
-		'oldid': this.oldid,
+		'oldid': this.revid,
 		'basetimestamp': this.baseTimeStamp,
 		'starttimestamp': this.startTimeStamp,
 		'html': this.getHtml( doc ),
@@ -617,7 +630,7 @@ ve.init.mw.Target.prototype.showChanges = function ( doc ) {
 			'action': 'visualeditor',
 			'paction': 'diff',
 			'page': this.pageName,
-			'oldid': this.oldid,
+			'oldid': this.revid,
 			'html': this.getHtml( doc ),
 			// TODO: API required editToken, though not relevant for diff
 			'token': this.editToken
@@ -657,7 +670,7 @@ ve.init.mw.Target.prototype.submit = function ( wikitext, options ) {
 		$form = $( '<form method="post" enctype="multipart/form-data"></form>' ),
 		params = {
 			'format': 'text/x-wiki',
-			'oldid': this.oldid,
+			'oldid': this.revid,
 			'wpStarttime': this.baseTimeStamp,
 			'wpEdittime': this.startTimeStamp,
 			'wpTextbox1': wikitext,
@@ -708,7 +721,7 @@ ve.init.mw.Target.prototype.serialize = function ( doc, callback ) {
 			'paction': 'serialize',
 			'html': this.getHtml( doc ),
 			'page': this.pageName,
-			'oldid': this.oldid,
+			'oldid': this.revid,
 			'token': this.editToken,
 			'format': 'json'
 		},
