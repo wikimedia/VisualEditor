@@ -34,6 +34,10 @@
 				.done( function () {
 					var target = new ve.init.mw.ViewPageTarget();
 					ve.init.mw.targets.push( target );
+
+					// Transfer methods
+					ve.init.mw.ViewPageTarget.prototype.setupSectionEditLinks = init.setupSectionEditLinks;
+
 					getTargetDeferred.resolve( target );
 				} )
 				.fail( getTargetDeferred.reject );
@@ -93,6 +97,11 @@
 		},
 
 		skinSetup: function () {
+			init.setupTabLayout();
+			init.setupSectionEditLinks();
+		},
+
+		setupTabLayout: function () {
 			var caVeEdit, caVeEditSource,
 				action = pageExists ? 'edit' : 'create',
 				pTabsId = $( '#p-views' ).length ? 'p-views' : 'p-cactions',
@@ -119,8 +128,8 @@
 					// 2) when onEditTabClick is not bound (!isViewPage) it will
 					// just work.
 					veEditUri,
-					// visualeditor-ca-ve-edit
 					// visualeditor-ca-ve-create
+					// visualeditor-ca-ve-edit
 					mw.msg( 'visualeditor-ca-ve-' + action ),
 					'ca-ve-edit',
 					mw.msg( 'tooltip-ca-ve-edit' ),
@@ -136,8 +145,8 @@
 					pTabsId,
 					// Use original href to preserve oldid etc. (bug 38125)
 					$caEditLink.attr( 'href' ),
-					// visualeditor-ca-editsource
 					// visualeditor-ca-createsource
+					// visualeditor-ca-editsource
 					mw.msg( 'visualeditor-ca-' + action + 'source' ),
 					'ca-editsource',
 					// tooltip-ca-editsource
@@ -169,23 +178,125 @@
 
 			if ( isViewPage ) {
 				// Allow instant switching to edit mode, without refresh
-				$( caVeEdit ).click( function ( e ) {
-					// Default mouse button is normalised by jQuery to key code 1.
-					// Only do our handling if no keys are pressed, mouse button is 1
-					// (e.g. not middle click or right click) and no modifier keys
-					// (e.g. cmd-click to open in new tab).
-					if ( ( e.which && e.which !== 1 ) || e.shiftKey || e.altKey || e.ctrlKey || e.metaKey ) {
-						return;
-					}
-					// Prevent the edit tab's normal behavior
-					e.preventDefault();
-
-					getTarget().done( function ( target ) {
-						target.logEvent( 'Edit', { action: 'edit-link-click' } );
-						target.activate();
-					} );
-				} );
+				$( caVeEdit ).click( init.onEditTabClick );
 			}
+		},
+
+		setupSectionEditLinks: function () {
+			var $editsections = $( '#mw-content-text .mw-editsection' );
+
+			// match direction to the user interface
+			$editsections.css( 'direction', $( 'body' ).css( 'direction' ) );
+			// The "visibility" css construct ensures we always occupy the same space in the layout.
+			// This prevents the heading from changing its wrap when the user toggles editSourceLink.
+			$editsections.each( function () {
+				var $closingBracket, $expandedOnly, $hiddenBracket, $outerClosingBracket,
+					expandTimeout, shrinkTimeout,
+					$editsection = $( this ),
+					$heading = $editsection.closest( 'h1, h2, h3, h4, h5, h6' ),
+					$editLink = $editsection.find( 'a' ).eq( 0 ),
+					$editSourceLink = $editLink.clone(),
+					$links = $editLink.add( $editSourceLink ),
+					$divider = $( '<span>' ),
+					dividerText = $.trim( mw.msg( 'pipe-separator' ) ),
+					$brackets = $( [ this.firstChild, this.lastChild ] );
+
+				function expandSoon() {
+					// Cancel pending shrink, schedule expansion instead
+					clearTimeout( shrinkTimeout );
+					expandTimeout = setTimeout( expand, 100 );
+				}
+
+				function expand() {
+					clearTimeout( shrinkTimeout );
+					$closingBracket.css( 'visibility', 'hidden' );
+					$expandedOnly.css( 'visibility', 'visible' );
+					$heading.addClass( 'mw-editsection-expanded' );
+				}
+
+				function shrinkSoon() {
+					// Cancel pending expansion, schedule shrink instead
+					clearTimeout( expandTimeout );
+					shrinkTimeout = setTimeout( shrink, 100 );
+				}
+
+				function shrink() {
+					clearTimeout( expandTimeout );
+					if ( !$links.is( ':focus' ) ) {
+						$closingBracket.css( 'visibility', 'visible' );
+						$expandedOnly.css( 'visibility', 'hidden' );
+						$heading.removeClass( 'mw-editsection-expanded' );
+					}
+				}
+
+				// TODO: Remove this (see Id27555c6 in mediawiki/core)
+				if ( !$brackets.hasClass( 'mw-editsection-bracket' ) ) {
+					$brackets = $brackets
+						.wrap( $( '<span>' ).addClass( 'mw-editsection-bracket' ) )
+						.parent();
+				}
+
+				$closingBracket = $brackets.last();
+				$outerClosingBracket = $closingBracket.clone();
+				$expandedOnly = $divider.add( $editSourceLink ).add( $outerClosingBracket )
+					.css( 'visibility', 'hidden' );
+				// The hidden bracket after the devider ensures we have balanced space before and after
+				// divider. The space before the devider is provided by the original closing bracket.
+				$hiddenBracket = $closingBracket.clone().css( 'visibility', 'hidden' );
+
+				// Events
+				$heading.on( { 'mouseenter': expandSoon, 'mouseleave': shrinkSoon } );
+				$links.on( { 'focus': expand, 'blur': shrinkSoon } );
+				$editLink.click( init.onEditSectionLinkClick );
+
+				// Initialization
+				$editSourceLink
+					.addClass( 'mw-editsection-link-secondary' )
+					.text( mw.msg( 'visualeditor-ca-editsource-section' ) );
+				$divider
+					.addClass( 'mw-editsection-divider' )
+					.text( dividerText );
+				$editLink
+					.attr( 'href', function ( i, val ) {
+						return new mw.Uri( veEditUri ).extend( {
+							'vesection': new mw.Uri( val ).query.section
+						} );
+					} )
+					.addClass( 'mw-editsection-link-primary' );
+				$closingBracket
+					.after( $divider, $hiddenBracket, $editSourceLink, $outerClosingBracket );
+			} );
+		},
+
+		onEditTabClick: function ( e ) {
+			// Default mouse button is normalised by jQuery to key code 1.
+			// Only do our handling if no keys are pressed, mouse button is 1
+			// (e.g. not middle click or right click) and no modifier keys
+			// (e.g. cmd-click to open in new tab).
+			if ( ( e.which && e.which !== 1 ) || e.shiftKey || e.altKey || e.ctrlKey || e.metaKey ) {
+				return;
+			}
+
+			e.preventDefault();
+
+			getTarget().done( function ( target ) {
+				target.logEvent( 'Edit', { action: 'edit-link-click' } );
+				target.activate();
+			} );
+		},
+
+		onEditSectionLinkClick: function ( e ) {
+			if ( ( e.which && e.which !== 1 ) || e.shiftKey || e.altKey || e.ctrlKey || e.metaKey ) {
+				return;
+			}
+
+			e.preventDefault();
+
+			getTarget().done( function ( target ) {
+				target.logEvent( 'Edit', { action: 'section-edit-link-click' } );
+				target.saveEditSection( $( e.target ).closest( 'h1, h2, h3, h4, h5, h6' ).get( 0 ) );
+				target.activate();
+			} );
 		}
 	};
 

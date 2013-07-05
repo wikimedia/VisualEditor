@@ -153,22 +153,23 @@ $wgResourceModules += array(
 		),
 	),
 	'ext.visualEditor.viewPageTarget.init' => $wgVisualEditorResourceTemplate + array(
-		'scripts' => array(
-			've-mw/init/targets/ve.init.mw.ViewPageTarget.init.js',
-		),
+		'scripts' => 've-mw/init/targets/ve.init.mw.ViewPageTarget.init.js',
+		'styles' => 've-mw/init/styles/ve.init.mw.ViewPageTarget.init.css',
 		'dependencies' => array(
 			'jquery.client',
 			'mediawiki.Uri',
 			'mediawiki.util',
 		),
 		'messages' => array(
-			'accesskey-ca-ve-edit',
 			'accesskey-ca-editsource',
+			'accesskey-ca-ve-edit',
+			'pipe-separator',
 			'tooltip-ca-createsource',
 			'tooltip-ca-editsource',
 			'tooltip-ca-ve-edit',
 			'visualeditor-ca-createsource',
 			'visualeditor-ca-editsource',
+			'visualeditor-ca-editsource-section',
 			'visualeditor-ca-ve-create',
 			'visualeditor-ca-ve-edit',
 		),
@@ -218,8 +219,6 @@ $wgResourceModules += array(
 			'editing',
 
 			// Messages needed by VE in init phase only (rest go below)
-			'pipe-separator',
-			'visualeditor-ca-editsource-section',
 			'visualeditor-loadwarning',
 			'visualeditor-loadwarning-token',
 			'visualeditor-notification-created',
