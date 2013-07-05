@@ -360,36 +360,80 @@
 	 * performance tests should be conducted on each use of this method to verify this is true for the
 	 * particular use. Also, browsers change fast, never assume anything, always test everything.
 	 *
-	 * @param {Array} arr Array to remove from and insert into. Will be modified
+	 * Includes a replacement for broken implementation of Array.prototype.splice() found in Opera 12.
+	 *
+	 * @param {Array|ve.dm.BranchNode} arr Object supporting .splice() to remove from and insert into. Will be modified
 	 * @param {number} offset Offset in arr to splice at. This may NOT be negative, unlike the
 	 *  'index' parameter in Array#splice
 	 * @param {number} remove Number of elements to remove at the offset. May be zero
 	 * @param {Array} data Array of items to insert at the offset. May not be empty if remove=0
 	 * @returns {Array} Array of items removed
 	 */
-	ve.batchSplice = function ( arr, offset, remove, data ) {
-		// We need to splice insertion in in batches, because of parameter list length limits which vary
-		// cross-browser - 1024 seems to be a safe batch size on all browsers
-		var index = 0, batchSize = 1024, toRemove = remove, spliced, removed = [];
-		if ( data.length === 0 ) {
-			// Special case: data is empty, so we're just doing a removal
-			// The code below won't handle that properly, so we do it here
-			return arr.splice( offset, remove );
+	ve.batchSplice = ( function () {
+		var arraySplice;
+
+		// This yields 'true' on Opera 12.15.
+		function isSpliceBroken() {
+			var n = 256, a = [];
+			a[n] = 'a';
+
+			a.splice( n + 1, 0, 'b' );
+
+			return a[n] !== 'a';
 		}
-		while ( index < data.length ) {
-			// Call arr.splice( offset, remove, i0, i1, i2, ..., i1023 );
-			// Only set remove on the first call, and set it to zero on subsequent calls
-			spliced = arr.splice.apply(
-				arr, [index + offset, toRemove].concat( data.slice( index, index + batchSize ) )
-			);
-			if ( toRemove > 0 ) {
-				removed = spliced;
+
+		if ( !isSpliceBroken() ) {
+			arraySplice = Array.prototype.splice;
+		} else {
+			// Standard Array.prototype.splice() function implemented using .slice() and .push().
+			arraySplice = function ( offset, remove/*, data... */ ) {
+				var data, begin, removed, end;
+
+				data = Array.prototype.slice.call( arguments, 2 );
+
+				begin = this.slice( 0, offset );
+				removed = this.slice( offset, remove );
+				end = this.slice( offset + remove );
+
+				this.length = 0;
+				// This polyfill only been discovered to be necessary on Opera
+				// and it seems to handle up to 1048575 function parameters.
+				this.push.apply( this, begin );
+				this.push.apply( this, data );
+				this.push.apply( this, end );
+
+				return removed;
+			};
+		}
+
+		return function ( arr, offset, remove, data ) {
+			// We need to splice insertion in in batches, because of parameter list length limits which vary
+			// cross-browser - 1024 seems to be a safe batch size on all browsers
+			var splice, index = 0, batchSize = 1024, toRemove = remove, spliced, removed = [];
+
+			splice = ve.isArray( arr ) ? arraySplice : arr.splice;
+
+			if ( data.length === 0 ) {
+				// Special case: data is empty, so we're just doing a removal
+				// The code below won't handle that properly, so we do it here
+				return splice.call( arr, offset, remove );
 			}
-			index += batchSize;
-			toRemove = 0;
-		}
-		return removed;
-	};
+
+			while ( index < data.length ) {
+				// Call arr.splice( offset, remove, i0, i1, i2, ..., i1023 );
+				// Only set remove on the first call, and set it to zero on subsequent calls
+				spliced = splice.apply(
+					arr, [index + offset, toRemove].concat( data.slice( index, index + batchSize ) )
+				);
+				if ( toRemove > 0 ) {
+					removed = spliced;
+				}
+				index += batchSize;
+				toRemove = 0;
+			}
+			return removed;
+		};
+	}() );
 
 	/**
 	 * Insert one array into another.
