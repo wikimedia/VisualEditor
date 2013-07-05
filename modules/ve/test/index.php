@@ -17,12 +17,12 @@
 			) {
 				document.write(
 					'<link rel="stylesheet" ' +
-						'href="../ui/styles/ve.ui.Icons-vector.css">'
+						'href="../../ve/ui/styles/ve.ui.Icons-vector.css">'
 				);
 			} else {
 				document.write(
 					'<link rel="stylesheet" ' +
-						'href="../ui/styles/ve.ui.Icons-raster.css">'
+						'href="../../ve/ui/styles/ve.ui.Icons-raster.css">'
 				);
 			}
 		</script>
