@@ -359,16 +359,12 @@ ve.dm.AnnotationSet.prototype.addSet = function ( set ) {
 /**
  * Add an annotation at the end of the set.
  *
- * If the annotation is already present in the set, nothing happens.
- *
  * @method
  * @param {ve.dm.Annotation} annotation Annotation to add
  */
 ve.dm.AnnotationSet.prototype.push = function ( annotation ) {
 	var storeIndex = this.getStore().index( annotation );
-	if ( annotation.constructor.static.isAdditive || !this.containsIndex( storeIndex ) ) {
-		this.storeIndexes.push( storeIndex );
-	}
+	this.storeIndexes.push( storeIndex );
 };
 
 /**

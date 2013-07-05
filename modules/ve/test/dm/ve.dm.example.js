@@ -868,18 +868,21 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'additive annotations': {
-		'html': '<body><p><big>a<big>b</big>c</big></p></body>',
+		'html': '<body><p><big>a<big>b</big>c</big><b>d<b>e</b>f</b></p></body>',
 		'data': [
 			{ 'type': 'paragraph' },
 			['a', [ ve.dm.example.big ]],
 			['b', [ ve.dm.example.big, ve.dm.example.big ]],
 			['c', [ ve.dm.example.big ]],
+			['d', [ ve.dm.example.bold ]],
+			['e', [ ve.dm.example.bold, ve.dm.example.bold ]],
+			['f', [ ve.dm.example.bold ]],
 			{ 'type': '/paragraph' },
 			{ 'type': 'internalList' },
 			{ 'type': '/internalList' }
 		]
 	},
-	'additive annotations overlapping basic annotations': {
+	'additive annotations overlapping other annotations': {
 		'html': '<body><p><i><big>a<big><b>b</b></big><b>c</b></big></i></p></body>',
 		'data': [
 			{ 'type': 'paragraph' },
