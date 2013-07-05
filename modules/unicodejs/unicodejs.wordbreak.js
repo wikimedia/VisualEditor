@@ -1,5 +1,5 @@
 /*!
- * Wordbreak module
+ * UnicodeJS Word Break module
  *
  * Implementation of Unicode's Default Word Boundaries
  * http://www.unicode.org/reports/tr29/#Default_Word_Boundaries
