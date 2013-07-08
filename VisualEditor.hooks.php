@@ -14,7 +14,7 @@ class VisualEditorHooks {
 
 	public static function onSetup() {
 		global $wgVisualEditorEnableEventLogging, $wgResourceModules,
-			$wgVisualEditorEnableGenderSurvey;
+			$wgVisualEditorEnableGenderSurvey, $wgVisualEditorResourceTemplate;
 
 		if ( $wgVisualEditorEnableEventLogging ) {
 			if ( class_exists( 'ResourceLoaderSchemaModule' ) ) {
@@ -38,6 +38,41 @@ class VisualEditorHooks {
 						' not available. Disabling wgVisualEditorEnableEventLogging.' );
 				$wgVisualEditorEnableEventLogging = false;
 			}
+		}
+		// Only load jquery.ULS if ULS Extension isn't already installed:
+		if ( !class_exists( 'UniversalLanguageSelectorHooks' ) ) {
+			$wgResourceModules['jquery.uls'] = $wgVisualEditorResourceTemplate + array(
+				'scripts' => array(
+					'jquery.uls/src/jquery.uls.core.js',
+					'jquery.uls/src/jquery.uls.lcd.js',
+					'jquery.uls/src/jquery.uls.languagefilter.js',
+					'jquery.uls/src/jquery.uls.regionfilter.js',
+				),
+				'styles' => array(
+					'jquery.uls/css/jquery.uls.css',
+					'jquery.uls/css/jquery.uls.lcd.css',
+				),
+				'dependencies' => array(
+					'jquery.uls.grid',
+					'jquery.uls.data',
+					'jquery.uls.compact',
+				),
+			);
+			$wgResourceModules['jquery.uls.data'] = $wgVisualEditorResourceTemplate + array(
+				'scripts' => array(
+					'jquery.uls/src/jquery.uls.data.js',
+					'jquery.uls/src/jquery.uls.data.utils.js',
+				),
+				'position' => 'top',
+			);
+			$wgResourceModules['jquery.uls.grid'] = $wgVisualEditorResourceTemplate + array(
+				'styles' => 'jquery.uls/css/jquery.uls.grid.css',
+				'position' => 'top',
+			);
+			$wgResourceModules['jquery.uls.compact'] = $wgVisualEditorResourceTemplate + array(
+				'styles' => 'jquery.uls/css/jquery.uls.compact.css',
+				'position' => 'top',
+			);
 		}
 	}
 

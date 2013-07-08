@@ -597,6 +597,13 @@ $wgResourceModules += array(
 			'visualeditor-annotationbutton-code-tooltip',
 			'visualeditor-annotationbutton-italic-tooltip',
 			'visualeditor-annotationbutton-link-tooltip',
+			'visualeditor-languageinspector-title',
+			'visualeditor-languageinspector-block-tooltip',
+			'visualeditor-languageinspector-block-tooltip-rtldirection',
+			'visualeditor-languageinspector-widget-changelang',
+			'visualeditor-languageinspector-widget-label-language',
+			'visualeditor-languageinspector-widget-label-langcode',
+			'visualeditor-languageinspector-widget-label-direction',
 			'visualeditor-beta-label',
 			'visualeditor-beta-warning',
 			'visualeditor-browserwarning',
@@ -732,14 +739,19 @@ $wgResourceModules += array(
 			've-mw/ui/tools/buttons/ve.ui.MWMathButtonTool.js',
 			've/dm/annotations/ve.dm.LanguageAnnotation.js',
 			've/ce/annotations/ve.ce.LanguageAnnotation.js',
+			've/ui/inspectors/ve.ui.LanguageInspector.js',
+			've/ui/tools/buttons/ve.ui.LanguageButtonTool.js',
+			've/ui/widgets/ve.ui.LanguageInputWidget.js',
 			've/ui/tools/buttons/ve.ui.CodeButtonTool.js',
 		),
 		'dependencies' => array(
 			'ext.visualEditor.core',
+			'jquery.uls',
 		),
 		'messages' => array(
 			// VE messages needed by code that is only in experimental mode
 			'visualeditor-mwmathinspector-title',
+			'visualeditor-annotationbutton-language-tooltip',
 		),
 	),
 

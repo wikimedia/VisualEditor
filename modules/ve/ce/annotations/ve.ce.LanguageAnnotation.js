@@ -15,7 +15,6 @@
  * @param {Object} [config] Config options
  */
 ve.ce.LanguageAnnotation = function VeCeLanguageAnnotation( model, config ) {
-	var msgDir = '';
 	// Parent constructor
 	ve.ce.Annotation.call( this, model, config );
 
@@ -25,16 +24,11 @@ ve.ce.LanguageAnnotation = function VeCeLanguageAnnotation( model, config ) {
 	this.$.attr( 'lang', model.getAttribute( 'lang' ) );
 	this.$.attr( 'dir', model.getAttribute( 'dir' ) );
 
-	// If the language is "RTL", make a mention in the tooltip
-	if ( model.getAttribute( 'dir' ) !== 'ltr' ) {
-		msgDir = ve.msg( 'visualeditor-languageinspector-block-tooltip-rtldirection' );
-	}
-
 	// TODO:
 	// When ULS is active, use $.uls.getAutonym(lang) to get the full
 	// language name in the tooltip
 	// (eg 'he' will be 'Hebrew' and 'en' will be 'English')
-	this.$.attr( 'title' , ve.msg( 'visualeditor-languageinspector-block-tooltip', model.getAttribute( 'lang' ), msgDir ) );
+	this.$.attr( 'title' , ve.msg( 'visualeditor-languageinspector-block-tooltip', model.getAttribute( 'lang' ) ) );
 };
 
 /* Inheritance */

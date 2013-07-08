@@ -118,6 +118,7 @@
 		<script src="../../ve/dm/nodes/ve.dm.TableRowNode.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.TableSectionNode.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.TextNode.js"></script>
+		<script src="../../ve/dm/annotations/ve.dm.LanguageAnnotation.js"></script>
 		<script src="../../ve/dm/annotations/ve.dm.LinkAnnotation.js"></script>
 		<script src="../../ve/dm/annotations/ve.dm.TextStyleAnnotation.js"></script>
 		<script src="../../ve/dm/metaitems/ve.dm.AlienMetaItem.js"></script>
@@ -160,6 +161,7 @@
 		<script src="../../ve/ce/nodes/ve.ce.TableRowNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.TableSectionNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.TextNode.js"></script>
+		<script src="../../ve/ce/annotations/ve.ce.LanguageAnnotation.js"></script>
 		<script src="../../ve/ce/annotations/ve.ce.LinkAnnotation.js"></script>
 		<script src="../../ve/ce/annotations/ve.ce.TextStyleAnnotation.js"></script>
 		<script src="../../ve/ui/ve.ui.js"></script>
@@ -210,6 +212,7 @@
 		<script src="../../ve/ui/widgets/ve.ui.MenuWidget.js"></script>
 		<script src="../../ve/ui/widgets/ve.ui.LookupInputWidget.js"></script>
 		<script src="../../ve/ui/widgets/ve.ui.TextInputMenuWidget.js"></script>
+		<script src="../../ve/ui/widgets/ve.ui.LanguageInputWidget.js"></script>
 		<script src="../../ve/ui/widgets/ve.ui.LinkTargetInputWidget.js"></script>
 		<script src="../../ve/ui/layouts/ve.ui.FieldsetLayout.js"></script>
 		<script src="../../ve/ui/layouts/ve.ui.GridLayout.js"></script>
@@ -226,6 +229,7 @@
 		<script src="../../ve/ui/tools/buttons/ve.ui.BoldButtonTool.js"></script>
 		<script src="../../ve/ui/tools/buttons/ve.ui.ItalicButtonTool.js"></script>
 		<script src="../../ve/ui/tools/buttons/ve.ui.ClearButtonTool.js"></script>
+		<script src="../../ve/ui/tools/buttons/ve.ui.LanguageButtonTool.js"></script>
 		<script src="../../ve/ui/tools/buttons/ve.ui.LinkButtonTool.js"></script>
 		<script src="../../ve/ui/tools/buttons/ve.ui.CodeButtonTool.js"></script>
 		<script src="../../ve/ui/tools/buttons/ve.ui.BulletButtonTool.js"></script>
@@ -236,6 +240,7 @@
 		<script src="../../ve/ui/tools/buttons/ve.ui.UndoButtonTool.js"></script>
 		<script src="../../ve/ui/tools/dropdowns/ve.ui.FormatDropdownTool.js"></script>
 		<script src="../../ve/ui/inspectors/ve.ui.AnnotationInspector.js"></script>
+		<script src="../../ve/ui/inspectors/ve.ui.LanguageInspector.js"></script>
 		<script src="../../ve/ui/inspectors/ve.ui.LinkInspector.js"></script>
 		<!-- ext.visualEditor.experimental -->
 		<script src="../../ve/dm/annotations/ve.dm.LanguageAnnotation.js"></script>
