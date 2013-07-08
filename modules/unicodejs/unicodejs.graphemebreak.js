@@ -1,5 +1,5 @@
 /*!
- * Graphemebreak module
+ * UnicodeJS Graphemebreak module
  *
  * Implementation of grapheme cluster boundary detection, based on
  * Unicode UAX #29 Default Grapheme Cluster Boundary Specification; see
@@ -72,13 +72,13 @@
 	];
 	graphemeBreakRegexp = new RegExp( '(' + disjunction.join( '|' ) + ')' );
 
-        /**
-         * Split a string into grapheme clusters.
-         *
-         * @param {string} text Text to split
-         * @returns {string[]} Array of clusters
-         */
-        graphemebreak.splitClusters = function ( text ) {
+	/**
+	 * Split a string into grapheme clusters.
+	 *
+	 * @param {string} text Text to split
+	 * @returns {string[]} Array of clusters
+	 */
+	graphemebreak.splitClusters = function ( text ) {
 		var i, parts, length, clusters = [];
 		parts = text.split( graphemeBreakRegexp );
 		for ( i = 0, length = parts.length; i < length; i++ ) {
@@ -87,5 +87,5 @@
 			}
 		}
 		return clusters;
-        };
+	};
 }() );
