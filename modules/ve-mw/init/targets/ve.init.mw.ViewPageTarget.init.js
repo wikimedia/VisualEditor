@@ -247,7 +247,14 @@
 				// Events
 				$heading.on( { 'mouseenter': expandSoon, 'mouseleave': shrinkSoon } );
 				$links.on( { 'focus': expand, 'blur': shrinkSoon } );
-				$editLink.click( init.onEditSectionLinkClick );
+				if ( isViewPage ) {
+					// Only init without refresh if we're on a view page. Though section edit links
+					// are rarely shown on non-view pages, they appear in one other case, namely
+					// when on a diff against the latest version of a page. In that case we mustn't
+					// init without refresh as that'd initialise for the wrong rev id (bug 50925)
+					// and would preserve the wrong DOM with a diff on top.
+					$editLink.click( init.onEditSectionLinkClick );
+				}
 
 				// Initialization
 				$editSourceLink
