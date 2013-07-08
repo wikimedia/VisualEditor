@@ -11,7 +11,6 @@
  * Example HTML sources:
  *     <a rel="mw:ExtLink">
  *     <a rel="mw:ExtLink/Numbered">
- *     <a rel="mw:ExtLink/URL">
  *
  * Each example is semantically slightly different, but they don't need special treatment (yet).
  *
@@ -34,7 +33,8 @@ ve.inheritClass( ve.dm.MWExternalLinkAnnotation, ve.dm.LinkAnnotation );
 ve.dm.MWExternalLinkAnnotation.static.name = 'link/mwExternal';
 
 ve.dm.MWExternalLinkAnnotation.static.matchRdfaTypes = [
-	'mw:ExtLink', 'mw:ExtLink/Numbered', 'mw:ExtLink/URL'
+	'mw:ExtLink',
+	'mw:ExtLink/Numbered'
 ];
 
 ve.dm.MWExternalLinkAnnotation.static.toDataElement = function ( domElements ) {
