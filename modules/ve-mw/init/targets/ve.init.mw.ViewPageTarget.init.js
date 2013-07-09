@@ -89,7 +89,8 @@
 			'msie': [['<=', 10]],
 			// Android 2.x and below "support" CE but don't trigger keyboard input
 			'android': [['<', 3]],
-			// Bug 50720 - apparently Firefox is broken in versions 14 and below
+			// Firefox issues in versions 12 and below (bug 50780)
+			// Wikilink [[./]] bug in Firefox 14 and below (bug 50720)
 			'firefox': [['<=', 14]],
 			// Blacklist all versions:
 			'opera': null,
