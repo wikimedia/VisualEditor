@@ -101,7 +101,7 @@ ve.ui.LookupInputWidget.prototype.onLookupInputChange = function () {
 ve.ui.LookupInputWidget.prototype.openLookupMenu = function () {
 	var value = this.lookupInput.getValue();
 
-	if ( value.length && $.trim( value ) !== '' ) {
+	if ( this.lookupMenu.$input.is( ':focus' ) && $.trim( value ) !== '' ) {
 		this.populateLookupMenu();
 		if ( !this.lookupMenu.isVisible() ) {
 			this.lookupMenu.show();
