@@ -292,6 +292,7 @@ ve.init.mw.ViewPageTarget.prototype.deactivate = function ( override ) {
 			}
 			this.showTableOfContents();
 			this.deactivating = false;
+			mw.hook( 've.deactivationComplete' ).fire();
 		}
 	}
 };
@@ -320,6 +321,7 @@ ve.init.mw.ViewPageTarget.prototype.onLoad = function ( doc ) {
 			this.setupBeforeUnloadHandler();
 			this.$document[0].focus();
 			this.activating = false;
+			mw.hook( 've.activationComplete' ).fire();
 		}, this ) );
 	}
 };
@@ -1083,6 +1085,8 @@ ve.init.mw.ViewPageTarget.prototype.setupSkinTabs = function () {
 		$( '#ca-view a, #ca-nstab-visualeditor a' )
 			.click( ve.bind( this.onViewTabClick, this ) );
 	}
+
+	mw.hook( 've.skinTabSetupComplete' ).fire();
 };
 
 /**
@@ -1101,11 +1105,15 @@ ve.init.mw.ViewPageTarget.prototype.setupToolbarButtons = function () {
 	var editNoticeCount = ve.getObjectKeys( this.editNotices ).length;
 
 	this.toolbarCancelButton = new ve.ui.ButtonWidget( { 'label': ve.msg( 'visualeditor-toolbar-cancel' ) } );
+	this.toolbarCancelButton.$.addClass( 've-ui-toolbar-cancelButton' );
 	this.toolbarSaveButton = new ve.ui.ButtonWidget( {
 		'label': ve.msg( 'visualeditor-toolbar-savedialog' ),
 		'flags': ['constructive'],
 		'disabled': !this.restoring
 	} );
+	// TODO (mattflaschen, 2013-06-27): it would be useful to do this in a more general way, such
+	// as in the ButtonWidget constructor.
+	this.toolbarSaveButton.$.addClass( 've-ui-toolbar-saveButton' );
 	this.updateToolbarSaveButtonState();
 
 	this.toolbarCancelButton.connect( this, { 'click': 'onToolbarCancelButtonClick' } );
@@ -1557,6 +1565,8 @@ ve.init.mw.ViewPageTarget.prototype.swapSaveDialog = function ( slide, options )
 
 	// Show the target slide
 	$slide.show();
+
+	mw.hook( 've.saveDialog.stateChanged' ).fire();
 
 	if ( slide === 'save' ) {
 		setTimeout( function () {
