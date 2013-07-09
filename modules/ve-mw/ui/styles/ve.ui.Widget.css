@@ -287,6 +287,14 @@
 	font-weight: bold;
 }
 
+/* ve.ui.MWParameterSearchWidget */
+
+.ve-ui-mwParameterSearchWidget .ve-ui-selectWidget {
+	position: relative;
+	width: 100%;
+	overflow: hidden;
+}
+
 /* ve.ui.MWParameterResultWidget */
 
 .ve-ui-mwParameterResultWidget {
@@ -300,6 +308,16 @@
 
 .ve-ui-mwParameterResultWidget.ve-ui-widget-disabled {
 	opacity: 0.5;
+}
+
+.ve-ui-mwParameterResultWidget-label,
+.ve-ui-mwParameterResultWidget-names,
+.ve-ui-mwParameterResultWidget-description {
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	/* HACK: Based on the expected width of this widget, using % produces unreliable results*/
+	max-width: 33em;
 }
 
 .ve-ui-mwParameterResultWidget-label {
