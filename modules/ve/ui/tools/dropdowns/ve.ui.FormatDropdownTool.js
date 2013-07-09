@@ -109,6 +109,13 @@ ve.ui.FormatDropdownTool.static.items = [
 		'data': {
 			'type' : 'preformatted'
 		}
+	},
+	{
+		'label': 'visualeditor-formatdropdown-format-blockquote',
+		'rel': 'blockquote',
+		'data': {
+			'type' : 'blockquote'
+		}
 	}
 ];
 
