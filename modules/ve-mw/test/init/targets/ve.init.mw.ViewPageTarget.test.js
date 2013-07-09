@@ -54,6 +54,16 @@ QUnit.test( 'compatibility', function ( assert ) {
 			{
 				'msg': 'Firefox 13',
 				'userAgent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:13.0) Gecko/20100101 Firefox/13.0',
+				'matches': [ 'blacklist' ]
+			},
+			{
+				'msg': 'Firefox 14',
+				'userAgent': 'Mozilla/5.0 (Windows NT 6.1; rv:12.0) Gecko/20120403211507 Firefox/14.0.1',
+				'matches': [ 'blacklist' ]
+			},
+			{
+				'msg': 'Firefox 15',
+				'userAgent': 'Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:15.0) Gecko/20100101 Firefox/15.0.1',
 				'matches': [ 'whitelist' ]
 			},
 			{
