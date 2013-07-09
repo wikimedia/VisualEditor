@@ -42,8 +42,8 @@ ve.ui.MWFormatDropdownTool.static.items[6].data.type = 'mwHeading';
 ve.ui.MWFormatDropdownTool.static.items[6].label = 'visualeditor-formatdropdown-format-mw-heading6';
 ve.ui.MWFormatDropdownTool.static.items[7].data.type = 'mwPreformatted';
 
-// Move the H1 (item 1 in the list) to the end (8) so as to make it less prominent and tempting to users
-ve.ui.MWFormatDropdownTool.static.items.splice( 8, 0, ve.ui.MWFormatDropdownTool.static.items.splice( 1, 1 )[0] );
+// Move the H1 (item 1 in the list) to the end (7) so as to make it less prominent and tempting to users
+ve.ui.MWFormatDropdownTool.static.items.splice( 7, 0, ve.ui.MWFormatDropdownTool.static.items.splice( 1, 1 )[0] );
 
 /* Registration */
 

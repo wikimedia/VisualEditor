@@ -163,10 +163,6 @@
 	font-weight: bold;
 }
 
-.ve-ui-dropdownTool-format .ve-ui-optionWidget[rel="blockquote"] .ve-ui-labeledElement-label {
-	margin-left: 2em;
-}
-
 .ve-ui-dropdownTool-format .ve-ui-optionWidget[rel="preformatted"] .ve-ui-labeledElement-label {
 	font-family: monospace, "Courier New";
 }
