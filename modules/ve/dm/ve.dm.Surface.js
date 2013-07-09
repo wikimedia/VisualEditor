@@ -239,7 +239,7 @@ ve.dm.Surface.prototype.hasPastState = function () {
  * Get the document model.
  *
  * @method
- * @returns {ve.dm.DocumentNode} Document model of the surface
+ * @returns {ve.dm.Document} Document model of the surface
  */
 ve.dm.Surface.prototype.getDocument = function () {
 	return this.documentModel;
