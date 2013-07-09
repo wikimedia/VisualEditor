@@ -921,7 +921,7 @@ ve.init.mw.ViewPageTarget.prototype.startSanityCheck = function () {
 	// but we can defer the actual comparison
 	var viewPage = this,
 		doc = viewPage.surface.getModel().getDocument(),
-		newDom = ve.dm.converter.getDomFromData( doc.getFullData(), doc.getStore(), doc.getInternalList() ),
+		data = ve.copyArray( doc.getFullData() ),
 		oldDom = viewPage.doc,
 		d = $.Deferred();
 
@@ -933,7 +933,9 @@ ve.init.mw.ViewPageTarget.prototype.startSanityCheck = function () {
 		// We can't compare oldDom.body and newDom.body directly, because the attributes on the
 		// <body> were ignored in the conversion. So compare each child separately.
 		var i,
-			len = oldDom.body.childNodes.length;
+			len = oldDom.body.childNodes.length,
+			newDom = ve.dm.converter.getDomFromData( data, doc.getStore(), doc.getInternalList() );
+
 		if ( len !== newDom.body.childNodes.length ) {
 			// Different number of children, so they're definitely different
 			d.reject();
