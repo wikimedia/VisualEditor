@@ -14,7 +14,6 @@
  * @constructor
  * @param {Mixed} data Item data
  * @param {Object} [config] Config options
- * @cfg {string} [icon] Symbolic name of icon
  * @cfg {number} [level] Indentation level
  * @cfg {boolean} [moveable] Allow modification from outline controls
  */
@@ -31,9 +30,6 @@ ve.ui.OutlineItemWidget = function VeUiOutlineItemWidget( data, config ) {
 
 	// Initialization
 	this.$.addClass( 've-ui-outlineItemWidget' );
-	if ( config.icon ) {
-		this.$.addClass( 've-ui-icon-' + config.icon );
-	}
 	this.setLevel( config.level );
 };
 

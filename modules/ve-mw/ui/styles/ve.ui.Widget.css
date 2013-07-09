@@ -291,8 +291,11 @@
 
 .ve-ui-mwParameterResultWidget {
 	padding-right: 0.25em;
-	background-position: 0.5em 0.25em;
-	background-repeat: no-repeat;
+}
+
+.ve-ui-mwParameterResultWidget .ve-ui-optionWidget-icon {
+	top: 0.25em;
+	margin-top: 0;
 }
 
 .ve-ui-mwParameterResultWidget.ve-ui-widget-disabled {

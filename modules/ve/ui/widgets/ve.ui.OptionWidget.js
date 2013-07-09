@@ -17,6 +17,7 @@
  * @param {Mixed} data Option data
  * @param {Object} [config] Config options
  * @cfg {jQuery|string} [label] Option label
+ * @cfg {string} [icon] Symbolic name of icon
  * @cfg {boolean} [selected=false] Select option
  * @cfg {boolean} [highlighted=false] Highlight option
  * @cfg {string} [rel] Value for `rel` attribute in DOM, allowing per-option styling
@@ -44,6 +45,13 @@ ve.ui.OptionWidget = function VeUiOptionWidget( data, config ) {
 		.append( this.$label );
 	this.setSelected( config.selected );
 	this.setHighlighted( config.highlighted );
+
+	// Options
+	if ( config.icon ) {
+		this.$icon = this.$$( '<div>' )
+			.addClass( 've-ui-optionWidget-icon ve-ui-icon-' + config.icon )
+			.appendTo( this.$ );
+	}
 };
 
 /* Inheritance */
@@ -56,11 +64,7 @@ ve.mixinClass( ve.ui.OptionWidget, ve.ui.LabeledElement );
 
 ve.ui.OptionWidget.static.tagName = 'li';
 
-ve.ui.OptionWidget.static.selectedClass = 've-ui-optionWidget-selected';
-
 ve.ui.OptionWidget.static.selectable = true;
-
-ve.ui.OptionWidget.static.highlightedClass = 've-ui-optionWidget-highlighted';
 
 ve.ui.OptionWidget.static.highlightable = true;
 
@@ -117,9 +121,9 @@ ve.ui.OptionWidget.prototype.setSelected = function ( state ) {
 	if ( !this.disabled && this.constructor.static.selectable ) {
 		this.selected = !!state;
 		if ( this.selected ) {
-			this.$.addClass( this.constructor.static.selectedClass );
+			this.$.addClass( 've-ui-optionWidget-selected' );
 		} else {
-			this.$.removeClass( this.constructor.static.selectedClass );
+			this.$.removeClass( 've-ui-optionWidget-selected' );
 		}
 	}
 	return this;
@@ -136,9 +140,9 @@ ve.ui.OptionWidget.prototype.setHighlighted = function ( state ) {
 	if ( !this.disabled && this.constructor.static.highlightable ) {
 		this.highlighted = !!state;
 		if ( this.highlighted ) {
-			this.$.addClass( this.constructor.static.highlightedClass );
+			this.$.addClass( 've-ui-optionWidget-highlighted' );
 		} else {
-			this.$.removeClass( this.constructor.static.highlightedClass );
+			this.$.removeClass( 've-ui-optionWidget-highlighted' );
 		}
 	}
 	return this;
@@ -154,9 +158,9 @@ ve.ui.OptionWidget.prototype.flash = function ( done ) {
 	var $this = this.$;
 
 	if ( !this.disabled && this.constructor.static.highlightable ) {
-		$this.removeClass( this.constructor.static.highlightedClass );
+		$this.removeClass( 've-ui-optionWidget-highlighted' );
 		setTimeout( ve.bind( function () {
-			$this.addClass( this.constructor.static.highlightedClass );
+			$this.addClass( 've-ui-optionWidget-highlighted' );
 			if ( done ) {
 				setTimeout( done, 100 );
 			}

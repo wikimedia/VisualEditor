@@ -260,8 +260,15 @@ ve.ui.Context.prototype.updateDimensions = function ( transition ) {
 			);
 			focusableWidth = focusedNode.$focusable.outerWidth();
 			$container = this.$menu;
-			position = { 'x': focusableOffset.left + focusableWidth, 'y': focusableOffset.top };
-			this.popup.align = 'right';
+			position = { 'y': focusableOffset.top };
+			// HACK: Proper RTL detection plz!
+			if ( $( 'body' ).is( '.rtl,.ve-rtl' ) ) {
+				position.x = focusableOffset.left;
+				this.popup.align = 'left';
+			} else {
+				position.x = focusableOffset.left + focusableWidth;
+				this.popup.align = 'right';
+			}
 		} else {
 			$container = inspector ? this.inspectors.$ : this.$menu;
 			this.popup.align = 'center';
