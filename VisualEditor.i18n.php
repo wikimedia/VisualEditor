@@ -84,7 +84,6 @@ $messages['en'] = array(
 	'visualeditor-editsummary' => 'Describe what you changed',
 	'visualeditor-feedback-link' => 'Project:VisualEditor/Feedback',
 	'visualeditor-feedback-tool' => 'Leave feedback',
-	'visualeditor-formatdropdown-format-blockquote' => 'Blockquote',
 	'visualeditor-formatdropdown-format-heading1' => 'Heading 1',
 	'visualeditor-formatdropdown-format-heading2' => 'Heading 2',
 	'visualeditor-formatdropdown-format-heading3' => 'Heading 3',
@@ -327,7 +326,6 @@ Parameters:
 	'visualeditor-editsummary' => 'Label for the edit summary box',
 	'visualeditor-feedback-link' => 'Link to a page where users can leave feedback that is automatically posted using this tool. This should be a sub-page of {{msg-mw|visualeditor-descriptionpagelink}}',
 	'visualeditor-feedback-tool' => 'Text of tool in the toolbar that lets users provide feedback',
-	'visualeditor-formatdropdown-format-blockquote' => 'Item in the formatting dropdown for blockquoted text.',
 	'visualeditor-formatdropdown-format-heading1' => 'Item in the generic formatting dropdown for a level 1 heading.
 {{Identical|Heading}}',
 	'visualeditor-formatdropdown-format-heading2' => 'Item in the generic formatting dropdown for a level 2 heading.
