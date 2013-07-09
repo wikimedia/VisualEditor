@@ -132,9 +132,14 @@ QUnit.test( 'compatibility', function ( assert ) {
 				'matches': []
 			},
 			{
-				'msg': 'Opera',
-				'userAgent': 'Opera/12.80 (Windows NT 5.1; U; en) Presto/2.10.289 Version/12.02',
+				'msg': 'Opera 11',
+				'userAgent': 'Opera/9.80 (Windows NT 5.1) Presto/2.10.229 Version/11.64',
 				'matches': [ 'blacklist' ]
+			},
+			{
+				'msg': 'Opera 12',
+				'userAgent': 'Opera/9.80 (Windows NT 5.1) Presto/2.12.388 Version/12.16',
+				'matches': []
 			},
 			{
 				'msg': 'BlackBerry',

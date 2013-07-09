@@ -97,8 +97,9 @@
 			// Firefox issues in versions 12 and below (bug 50780)
 			// Wikilink [[./]] bug in Firefox 14 and below (bug 50720)
 			'firefox': [['<=', 14]],
+			// Opera < 12 was not tested and it's userbase is almost nonexistent anyway
+			'opera': [['<', 12]],
 			// Blacklist all versions:
-			'opera': null,
 			'blackberry': null
 		},
 
