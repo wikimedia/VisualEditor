@@ -16,6 +16,9 @@
  * @param {Object} [config] Config options
  */
 ve.ui.MenuItemWidget = function VeUiMenuItemWidget( data, config ) {
+	// Configuration initialization
+	config = ve.extendObject( {}, config, { 'icon': 'check' } );
+
 	// Parent constructor
 	ve.ui.OptionWidget.call( this, data, config );
 
@@ -23,10 +26,11 @@ ve.ui.MenuItemWidget = function VeUiMenuItemWidget( data, config ) {
 	this.$.addClass( 've-ui-menuItemWidget' );
 };
 
+/**
+ * @private
+ * @cfg {string} icon
+ */
+
 /* Inheritance */
 
 ve.inheritClass( ve.ui.MenuItemWidget, ve.ui.OptionWidget );
-
-/* Static Properties */
-
-ve.ui.MenuItemWidget.static.selectedClass = 've-ui-icon-check';
