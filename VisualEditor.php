@@ -656,6 +656,8 @@ $wgResourceModules += array(
 			'visualeditor-linkinspector-suggest-matching-page',
 			'visualeditor-linkinspector-suggest-new-page',
 			'visualeditor-linkinspector-title',
+			'visualeditor-languageinspector-block-tooltip',
+			'visualeditor-languageinspector-block-tooltip-rtldirection',
 			'visualeditor-listbutton-bullet-tooltip',
 			'visualeditor-listbutton-number-tooltip',
 			'visualeditor-media-input-placeholder',
@@ -704,6 +706,8 @@ $wgResourceModules += array(
 			've-mw/dm/nodes/ve.dm.MWMathNode.js',
 			've-mw/ui/inspectors/ve.ui.MWMathInspector.js',
 			've-mw/ui/tools/buttons/ve.ui.MWMathButtonTool.js',
+			've/dm/annotations/ve.dm.LanguageAnnotation.js',
+			've/ce/annotations/ve.ce.LanguageAnnotation.js',
 		),
 		'dependencies' => array(
 			'ext.visualEditor.core',

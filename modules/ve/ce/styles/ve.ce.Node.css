@@ -186,3 +186,9 @@ li.ve-ce-branchNode p.ve-ce-branchNode:first-child {
 	margin: 0;
 	padding: 0;
 }
+
+/* Language Annotation */
+.ve-ce-LanguageAnnotation {
+	border-bottom: dashed #ccc 1px;
+	background-color: #ebf3f5;
+}
