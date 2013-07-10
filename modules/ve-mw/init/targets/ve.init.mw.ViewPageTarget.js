@@ -1397,6 +1397,7 @@ ve.init.mw.ViewPageTarget.prototype.showSaveDialog = function () {
 	var viewPage = this;
 
 	viewPage.surface.disable();
+	viewPage.$document.css( 'opacity', 0.5 );
 
 	viewPage.$toolbarBetaNotice.fadeOut( 'fast' );
 	viewPage.$toolbarEditNotices.fadeOut( 'fast' );
@@ -1452,6 +1453,7 @@ ve.init.mw.ViewPageTarget.prototype.hideSaveDialog = function () {
 
 	if ( this.surface ) {
 		this.surface.enable();
+		this.$document.css( 'opacity', '' );
 	}
 };
 
