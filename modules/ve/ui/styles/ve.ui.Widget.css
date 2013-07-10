@@ -169,8 +169,10 @@
 }
 
 .ve-ui-optionWidget .ve-ui-labeledElement-label {
-	white-space: nowrap;
 	line-height: 1.5em;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
 }
 
 .ve-ui-optionWidget-highlighted,
