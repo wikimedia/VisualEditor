@@ -308,7 +308,13 @@
 		}
 	};
 
-	// Expose
+	// Note: Though VisualEditor itself only needs this exposure for a very small reason
+	// (namely to access init.blacklist from the unit tests...) this has become one of the nicest
+	// ways to easily detect whether VisualEditor is present on this page. The VE global was once
+	// available always, but now that platform integration initialisation is propertly separated,
+	// it doesn't exist until the platform loads VisualEditor core. Though mw.libs.ve shouldn't be
+	// considered an API (the methods are subject to change and considered private), the presence
+	// of this property should be reliable.
 	mw.libs.ve = init;
 
 	isBlacklisted = !( 'vewhitelist' in uri.query ) && $.client.test( init.blacklist, null, true );
