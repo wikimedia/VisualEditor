@@ -129,10 +129,12 @@ ve.ui.LinkInspector.prototype.onOpen = function () {
 	// Wait for animation to complete
 	this.surface.disable();
 	setTimeout( ve.bind( function () {
+		// Note: Focus input prior to setting target annotation
+		this.targetInput.$input.focus();
 		// Setup annotation
 		this.initialAnnotationHash = initialAnnotation && ve.getHash( initialAnnotation );
 		this.targetInput.setAnnotation( annotation );
-		this.targetInput.$input.focus().select();
+		this.targetInput.$input.select();
 		this.surface.enable();
 	}, this ), 200 );
 };
