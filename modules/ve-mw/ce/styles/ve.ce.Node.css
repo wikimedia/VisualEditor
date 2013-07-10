@@ -11,6 +11,14 @@
 	display: inline-block;
 }
 
+/* HACK: Hide Ref errors in templates */
+.ve-ce-mwTransclusionNode strong.error,
+.ve-ce-mwTransclusionNode span.error,
+.ve-ce-mwTransclusionNode p.error,
+.ve-ce-mwTransclusionNode div.error {
+	display: none;
+}
+
 /* ve.ce.MWReferenceListNode */
 
 .ve-ce-mwReferenceListNode .ve-ce-generated-wrapper {
