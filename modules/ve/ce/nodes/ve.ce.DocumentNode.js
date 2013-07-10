@@ -68,7 +68,7 @@ ve.ce.DocumentNode.prototype.getSurface = function () {
  * @method
  */
 ve.ce.DocumentNode.prototype.disable = function () {
-	this.$.css( 'opacity', 0.5 ).attr( 'contentEditable', 'false' );
+	this.$.attr( 'contentEditable', 'false' );
 };
 
 /**
@@ -77,7 +77,7 @@ ve.ce.DocumentNode.prototype.disable = function () {
  * @method
  */
 ve.ce.DocumentNode.prototype.enable = function () {
-	this.$.css( 'opacity', 1 ).attr( 'contentEditable', 'true' );
+	this.$.attr( 'contentEditable', 'true' );
 };
 
 /* Registration */
