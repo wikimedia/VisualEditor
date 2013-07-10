@@ -230,7 +230,7 @@ ve.dm.MWTransclusionModel.prototype.getPlainObject = function () {
 			template = { 'target': part.getTarget(), 'params': {} };
 			params = part.getParameters();
 			for ( name in params ) {
-				template.params[name] = { 'wt': params[name].getValue() };
+				template.params[params[name].getOriginalName()] = { 'wt': params[name].getValue() };
 			}
 			obj.parts.push( { 'template': template } );
 		} else if ( part instanceof ve.dm.MWTransclusionContentModel ) {

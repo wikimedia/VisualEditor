@@ -82,7 +82,6 @@ ve.ui.MWParameterSearchWidget.prototype.onResultsSelect = function ( item ) {
 ve.ui.MWParameterSearchWidget.prototype.buildIndex = function () {
 	var i, len, name, label, aliases, description,
 		spec = this.template.getSpec(),
-		usedParams = this.template.getParameterNames(),
 		knownParams = spec.getParameterNames();
 
 	this.index.length = 0;
@@ -92,7 +91,7 @@ ve.ui.MWParameterSearchWidget.prototype.buildIndex = function () {
 			// Skip aliases
 			spec.getParameterOrigin( name ) !== name ||
 			// Skip parameters already in use
-			ve.indexOf( name, usedParams ) !== -1
+			this.template.hasParameter( name )
 		) {
 			continue;
 		}
@@ -121,22 +120,21 @@ ve.ui.MWParameterSearchWidget.prototype.buildIndex = function () {
 ve.ui.MWParameterSearchWidget.prototype.addResults = function () {
 	var i, len, item,
 		exactMatch = false,
-		value = this.query.getValue(),
+		value = this.query.getValue().trim(),
 		query = value.toLowerCase(),
-		usedParams = this.template.getParameterNames(),
 		items = [];
 
 	for ( i = 0, len = this.index.length; i < len; i++ ) {
 		item = this.index[i];
 		if ( item.text.indexOf( query ) >= 0 ) {
 			items.push( new ve.ui.MWParameterResultWidget( item, { '$$': this.$$ } ) );
-			if ( item.name === value ) {
+			if ( item.name === value || ve.indexOf( value, item.aliases ) !== -1 ) {
 				exactMatch = true;
 			}
 		}
 	}
 
-	if ( !exactMatch && value.length && ve.indexOf( value, usedParams ) === -1 ) {
+	if ( !exactMatch && value.length && !this.template.hasParameter( value ) ) {
 		items.unshift( new ve.ui.MWParameterResultWidget( {
 			'name': value,
 			'label': value,

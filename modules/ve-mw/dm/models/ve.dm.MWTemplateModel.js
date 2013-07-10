@@ -99,6 +99,40 @@ ve.dm.MWTemplateModel.prototype.getParameter = function ( name ) {
 };
 
 /**
+ * Check if a parameter exists.
+ *
+ * @method
+ * @param {string} name Parameter name
+ * @returns {boolean} Parameter exists
+ */
+ve.dm.MWTemplateModel.prototype.hasParameter = function ( name ) {
+	var i, len, origin, names;
+
+	// Check if name (which may be an alias) is present in the template
+	if ( this.params[name] ) {
+		return true;
+	}
+
+	// Check if the name is known at all
+	if ( this.spec.isParameterKnown( name ) ) {
+		origin = this.spec.getParameterOrigin( name );
+		// Check for origin name (may be the same as name)
+		if ( this.params[origin] ) {
+			return true;
+		}
+		// Check for other aliases (may include name)
+		names = this.spec.getParameterAliases( origin );
+		for ( i = 0, len = names.length; i < len; i++ ) {
+			if ( this.params[names[i]] ) {
+				return true;
+			}
+		}
+	}
+
+	return false;
+};
+
+/**
  * Get ordered list of parameter names.
  *
  * Numeric names, whether strings or real numbers, are placed at the begining, followed by

@@ -18,7 +18,8 @@
 ve.dm.MWTemplateParameterModel = function VeDmMWTemplateParameterModel( template, name, value ) {
 	// Properties
 	this.template = template;
-	this.name = name;
+	this.originalName = name;
+	this.name = name.trim();
 	this.value = value || '';
 	this.id = this.template.getId() + '/' + name;
 };
@@ -52,6 +53,16 @@ ve.dm.MWTemplateParameterModel.prototype.getId = function () {
  */
 ve.dm.MWTemplateParameterModel.prototype.getName = function () {
 	return this.name;
+};
+
+/**
+ * Get parameter name.
+ *
+ * @method
+ * @returns {string} Parameter name
+ */
+ve.dm.MWTemplateParameterModel.prototype.getOriginalName = function () {
+	return this.originalName;
 };
 
 /**
