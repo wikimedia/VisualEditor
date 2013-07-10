@@ -70,23 +70,24 @@ ve.dm.MWTemplateSpecModel.getMessage = function ( val, fallback, lang ) {
  * @param {string[][]} [data.sets] Lists of param sets
  */
 ve.dm.MWTemplateSpecModel.prototype.extend = function ( data ) {
-	var key, paramObj, i, len;
+	var key, param, i, len;
 
 	if ( data.description !== null ) {
 		this.description = data.description;
 	}
 	if ( ve.isPlainObject( data.params ) ) {
 		for ( key in data.params ) {
-			paramObj = data.params[key];
-			this.params[key] = ve.extendObject(
-				true,
-				this.getDefaultParameterSpec( key ),
-				paramObj
-			);
+			// Pre-fill spec
+			if ( !this.params[key] ) {
+				this.params[key] = this.getDefaultParameterSpec( key );
+			}
+			param = this.params[key];
+			// Extend existing spec
+			ve.extendObject( true, this.params[key], data.params[key] );
 			// Add aliased references
-			if ( paramObj.aliases.length ) {
-				for ( i = 0, len = paramObj.aliases.length; i < len; i++ ) {
-					this.params[ paramObj.aliases[i] ] = paramObj;
+			if ( param.aliases.length ) {
+				for ( i = 0, len = param.aliases.length; i < len; i++ ) {
+					this.params[ param.aliases[i] ] = param;
 				}
 			}
 		}
@@ -169,6 +170,17 @@ ve.dm.MWTemplateSpecModel.prototype.getLabel = function () {
  */
 ve.dm.MWTemplateSpecModel.prototype.getDescription = function () {
 	return this.constructor.getMessage( this.description, null );
+};
+
+/**
+ * Check if a parameter is known.
+ *
+ * @method
+ * @param {string} name Parameter name
+ * @returns {boolean} Parameter is known
+ */
+ve.dm.MWTemplateSpecModel.prototype.isParameterKnown = function ( name ) {
+	return this.params[name] !== undefined;
 };
 
 /**
