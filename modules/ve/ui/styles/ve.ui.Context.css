@@ -19,7 +19,7 @@
 
 .ve-ui-context-menu .ve-ui-toolbar-group {
 	border: none;
-	padding: 0.1em;
+	margin: 0;
 }
 
 .ve-ui-context-menu .ve-ui-buttonTool,
@@ -38,9 +38,23 @@
 
 .ve-ui-context-embed .ve-ui-popupWidget-body {
 	margin-top: 0.25em;
-	margin-left: -1.3em;
+}
+
+/* @noflip */
+.ltr .ve-ui-context-embed .ve-ui-popupWidget-body {
+	margin-left: -0.75em;
+}
+
+/* @noflip */
+.rtl .ve-ui-context-embed .ve-ui-popupWidget-body {
+	margin-left: 0.75em;
 }
 
 .ve-ui-context-embed .ve-ui-context-menu {
 	right: 0;
+}
+
+/* HACK: Compensate for ve-ui-frame-content setting the font size to 0.8em */
+.ve-ui-frame-content .ve-ui-context {
+	font-size: 1.25em;
 }

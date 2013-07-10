@@ -19,7 +19,6 @@
 	padding: 0.25em;
 	height: 1.5em;
 	width: 1.5em;
-	margin: 0.05em;
 }
 
 .ve-ui-buttonTool:hover {
@@ -105,7 +104,7 @@
 	width: 2em;
 	height: 2em;
 	/* @see ve.ui.Icons */
-	background-position: 50% 50%;
+	background-position: center center;
 	background-repeat: no-repeat;
 	opacity: 0.8;
 }

@@ -59,8 +59,7 @@
 
 .ve-ui-toolbar-group {
 	display: inline-block;
-	padding: 0.25em;
-	border-right: solid 1px #f0f3f5;
+	margin: 0.2em 0.3em;
 	vertical-align: middle;
 }
 
