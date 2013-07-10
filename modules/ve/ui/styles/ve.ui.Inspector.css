@@ -46,10 +46,3 @@
 .ve-ui-inspector-content .ve-ui-window-body .ve-ui-textInputWidget {
 	width: 100%;
 }
-
-.ve-ui-inspector-content .ve-ui-window-body form input.ve-ui-linkInspector-location {
-	/* @see ve.ui.Icons */
-	background-position: 18.75em center;
-	background-repeat: no-repeat;
-	padding-right: 1.5em;
-}
