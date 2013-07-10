@@ -79,7 +79,7 @@ ve.ui.MWCategoryInputWidget.prototype.getLookupCacheItemFromData = function ( da
 		for ( i = 0, len = data[1].length; i < len; i++ ) {
 			try {
 				title = new mw.Title( data[1][i] );
-				result.push( title.getNameText() );
+				result.push( title.getMainText() );
 			} catch ( e ) { }
 			// If the received title isn't valid, just ignore it
 		}
@@ -181,7 +181,7 @@ ve.ui.MWCategoryInputWidget.prototype.getCategoryItemFromValue = function ( valu
 		title = new mw.Title( this.categoryPrefix + value );
 		return {
 			'name': title.getPrefixedText(),
-			'value': title.getNameText(),
+			'value': title.getMainText(),
 			'metaItem': {}
 		};
 	} catch ( e ) { }
