@@ -113,6 +113,8 @@ $messages['en'] = array(
 	'visualeditor-linkinspector-suggest-new-page' => 'New page',
 	'visualeditor-linkinspector-title' => 'Hyperlink',
 	'visualeditor-mwmathinspector-title' => 'LaTeX',
+	'visualeditor-languageinspector-block-tooltip' => 'Language Block: $1$2',
+	'visualeditor-languageinspector-block-tooltip-rtldirection' => ': Right to Left',
 	'visualeditor-listbutton-bullet-tooltip' => 'Bullet list',
 	'visualeditor-listbutton-number-tooltip' => 'Numbered list',
 	'visualeditor-loadwarning' => 'Error loading data from server: $1. Would you like to retry?',
@@ -372,6 +374,8 @@ Parameters:
 	'visualeditor-mwmathinspector-title' => 'Used as title for MathInspector.
 
 See [[w:LaTeX]].',
+	'visualeditor-languageinspector-block-tooltip' => 'Tooltip identifying language block properties inside VisualEditor. $1 is the language code (for example "en"); $2 the rtl label {{msg-mw|visualeditor-languageinspector-block-tooltip-rtldirection}}',
+	'visualeditor-languageinspector-block-tooltip-rtldirection' => 'The label "Right To Left" at the end of the tooltip if the language is RTL.',
 	'visualeditor-listbutton-bullet-tooltip' => 'Tooltip text for the bullet list button',
 	'visualeditor-listbutton-number-tooltip' => 'Tooltip text for the numbered list button',
 	'visualeditor-loadwarning' => 'Text (JavaScript confirm()) shown when the editor fails to load properly.
