@@ -40,7 +40,7 @@ ve.ui.Toolbar = function VeUiToolbar( surface, options ) {
 		'scroll': ve.bind( this.onWindowScroll, this )
 	};
 	this.surfaceViewEvents = {
-		'keypress': ve.bind( this.onSurfaceViewKeyPress, this )
+		'keyup': ve.bind( this.onSurfaceViewKeyUp, this )
 	};
 
 	// Events
@@ -125,14 +125,15 @@ ve.ui.Toolbar.prototype.onWindowResize = function () {
 };
 
 /**
- * Method to scroll to the cursor position while toolbar is floating on keypress only if
+ * Method to scroll to the cursor position while toolbar is floating on keyup only if
  * the cursor is obscured by the toolbar.
  *
  */
-ve.ui.Toolbar.prototype.onSurfaceViewKeyPress = function () {
+ve.ui.Toolbar.prototype.onSurfaceViewKeyUp = function () {
 	var cursorPos = this.surface.view.getSelectionRect(),
-		scrollTo = cursorPos.end.y - this.surface.view.$.offset().top,
-		obscured = cursorPos.end.y - this.$window.scrollTop() < this.$.height() + this.$.offset().top;
+		barHeight = this.$bar.height(),
+		scrollTo = this.$bar.offset().top - barHeight + ( cursorPos.end.y - cursorPos.start.y ),
+		obscured = cursorPos.start.y - this.$window.scrollTop() < barHeight;
 
 	// If toolbar is floating and cursor is obscured, scroll cursor into view
 	if ( obscured && this.floating ) {
