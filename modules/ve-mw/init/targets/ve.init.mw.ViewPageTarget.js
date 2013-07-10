@@ -936,6 +936,9 @@ ve.init.mw.ViewPageTarget.prototype.startSanityCheck = function () {
 			len = oldDom.body.childNodes.length,
 			newDom = ve.dm.converter.getDomFromData( data, doc.getStore(), doc.getInternalList() );
 
+		// Explicitly unlink our full copy of the original version of the document data
+		data = undefined;
+
 		if ( len !== newDom.body.childNodes.length ) {
 			// Different number of children, so they're definitely different
 			d.reject();
