@@ -265,6 +265,16 @@ class ApiVisualEditor extends ApiBase {
 				if ( $parsed && $parsed['restoring'] ) {
 					$wgVisualEditorEditNotices[] = 'editingold';
 				}
+				// Protected page
+				if ( $page->getNamespace() != NS_MEDIAWIKI && $page->isProtected( 'edit' ) ) {
+					# Is the title semi-protected?
+					if ( $page->isSemiProtected() ) {
+						$wgVisualEditorEditNotices[] = 'semiprotectedpagewarning';
+					} else {
+						# Then it must be protected based on static groups (regular)
+						$wgVisualEditorEditNotices[] = 'protectedpagewarning';
+					}
+				}
 				if ( count( $wgVisualEditorEditNotices ) ) {
 					foreach ( $wgVisualEditorEditNotices as $key ) {
 						$notices[] = wfMessage( $key )->parseAsBlock();
