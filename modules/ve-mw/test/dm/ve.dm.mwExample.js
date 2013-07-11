@@ -18,8 +18,8 @@ ve.dm.mwExample.createExampleDocument = function ( name, store ) {
 
 ve.dm.mwExample.MWInlineImageHtml = '<span typeof="mw:Image" class="foo mw-valign-text-top" data-parsoid="{&quot;tsr&quot;:[0,24],&quot;optList&quot;:[{&quot;ck&quot;:&quot;width&quot;,&quot;ak&quot;:&quot;500px&quot;}],&quot;cacheKey&quot;:&quot;[[Image:Wiki.png|500px]]&quot;,&quot;img&quot;:{&quot;h&quot;:155,&quot;w&quot;:135,&quot;wdset&quot;:true},&quot;dsr&quot;:[0,24,null,null]}"><a href="./File:Wiki.png" data-parsoid="{&quot;a&quot;:{&quot;href&quot;:&quot;./File:Wiki.png&quot;}}"><img resource="./File:Wiki.png" src="http://upload.wikimedia.org/wikipedia/en/b/bc/Wiki.png" height="155" width="135" data-parsoid="{&quot;a&quot;:{&quot;resource&quot;:&quot;./File:Wiki.png&quot;,&quot;width&quot;:&quot;135&quot;},&quot;sa&quot;:{&quot;resource&quot;:&quot;Image:Wiki.png&quot;,&quot;width&quot;:&quot;500&quot;}}"></a></span>';
 ve.dm.mwExample.MWTransclusion = {
-	'blockSpan':         '<span about="#mwt1" typeof="mw:Transclusion" data-mw="{&quot;target&quot;:{&quot;wt&quot;:&quot;Test&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;Hello, world!&quot;}},&quot;id&quot;:&quot;mwt1&quot;}" data-parsoid="{&quot;tsr&quot;:[18,40],&quot;src&quot;:&quot;{{Test|Hello, world!}}&quot;,&quot;dsr&quot;:[18,40,null,null]}"></span>',
-	'blockSpanModified': '<span about="#mwt1" typeof="mw:Transclusion" data-mw="{&quot;id&quot;:&quot;mwt1&quot;,&quot;target&quot;:{&quot;wt&quot;:&quot;Test&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;Hello, globe!&quot;}}}" data-parsoid="{&quot;tsr&quot;:[18,40],&quot;src&quot;:&quot;{{Test|Hello, world!}}&quot;,&quot;dsr&quot;:[18,40,null,null]}"></span>',
+	'blockOpen':         '<div about="#mwt1" typeof="mw:Transclusion" data-mw="{&quot;target&quot;:{&quot;wt&quot;:&quot;Test&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;Hello, world!&quot;}},&quot;id&quot;:&quot;mwt1&quot;}" data-parsoid="{&quot;tsr&quot;:[18,40],&quot;src&quot;:&quot;{{Test|Hello, world!}}&quot;,&quot;dsr&quot;:[18,40,null,null]}"></div>',
+	'blockOpenModified': '<div about="#mwt1" typeof="mw:Transclusion" data-mw="{&quot;id&quot;:&quot;mwt1&quot;,&quot;target&quot;:{&quot;wt&quot;:&quot;Test&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;Hello, globe!&quot;}}}" data-parsoid="{&quot;tsr&quot;:[18,40],&quot;src&quot;:&quot;{{Test|Hello, world!}}&quot;,&quot;dsr&quot;:[18,40,null,null]}"></div>',
 	'blockContent': '<p about="#mwt1" data-parsoid="{}">Hello, world!</p>',
 	'inlineOpen':         '<span about="#mwt1" typeof="mw:Transclusion" data-mw="{&quot;id&quot;:&quot;mwt1&quot;,&quot;target&quot;:{&quot;wt&quot;:&quot;Inline&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;1,234&quot;}}}" data-parsoid="{&quot;tsr&quot;:[18,34],&quot;src&quot;:&quot;{{Inline|1,234}}&quot;,&quot;dsr&quot;:[18,34,null,null]}">',
 	'inlineOpenModified': '<span about="#mwt1" typeof="mw:Transclusion" data-mw="{&quot;id&quot;:&quot;mwt1&quot;,&quot;target&quot;:{&quot;wt&quot;:&quot;Inline&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;5,678&quot;}}}" data-parsoid="{&quot;tsr&quot;:[18,34],&quot;src&quot;:&quot;{{Inline|1,234}}&quot;,&quot;dsr&quot;:[18,34,null,null]}">',
@@ -39,7 +39,7 @@ ve.dm.mwExample.MWTransclusion.blockData = {
 				'1': { 'wt': 'Hello, world!' }
 			}
 		},
-		'originalDomElements': $( ve.dm.mwExample.MWTransclusion.blockSpan + ve.dm.mwExample.MWTransclusion.blockContent ).toArray(),
+		'originalDomElements': $( ve.dm.mwExample.MWTransclusion.blockOpen + ve.dm.mwExample.MWTransclusion.blockContent ).toArray(),
 		'originalMw': '{\"target\":{\"wt\":\"Test\"},\"params\":{\"1\":{\"wt\":\"Hello, world!\"}},\"id\":\"mwt1\"}',
 		'originalIndex': 0
 	},
@@ -106,7 +106,7 @@ ve.dm.mwExample.MWTransclusion.mixedDataClose = { 'type': '/mwTransclusionInline
 ve.dm.mwExample.MWTransclusion.blockParamsHash = ve.getHash( ve.dm.MWTransclusionNode.static.getHashObject( ve.dm.mwExample.MWTransclusion.blockData ) );
 ve.dm.mwExample.MWTransclusion.blockStoreItems = {
 	'hash': ve.dm.mwExample.MWTransclusion.blockParamsHash,
-	'value': $( ve.dm.mwExample.MWTransclusion.blockSpan + ve.dm.mwExample.MWTransclusion.blockContent ).toArray()
+	'value': $( ve.dm.mwExample.MWTransclusion.blockOpen + ve.dm.mwExample.MWTransclusion.blockContent ).toArray()
 };
 
 ve.dm.mwExample.MWTransclusion.inlineParamsHash = ve.getHash( ve.dm.MWTransclusionNode.static.getHashObject( ve.dm.mwExample.MWTransclusion.inlineData ) );
@@ -582,7 +582,7 @@ ve.dm.mwExample.domToDataCases = {
 		]
 	},
 	'mw:Transclusion (block level)': {
-		'html': '<body>' + ve.dm.mwExample.MWTransclusion.blockSpan + ve.dm.mwExample.MWTransclusion.blockContent + '</body>',
+		'html': '<body>' + ve.dm.mwExample.MWTransclusion.blockOpen + ve.dm.mwExample.MWTransclusion.blockContent + '</body>',
 		'data': [
 			ve.dm.mwExample.MWTransclusion.blockData,
 			{ 'type': '/mwTransclusionBlock' },
@@ -592,10 +592,10 @@ ve.dm.mwExample.domToDataCases = {
 		'storeItems': [
 			ve.dm.mwExample.MWTransclusion.blockStoreItems
 		],
-		'normalizedHtml': ve.dm.mwExample.MWTransclusion.blockSpan + ve.dm.mwExample.MWTransclusion.blockContent
+		'normalizedHtml': ve.dm.mwExample.MWTransclusion.blockOpen + ve.dm.mwExample.MWTransclusion.blockContent
 	},
 	'mw:Transclusion (block level - modified)': {
-		'html': '<body>' + ve.dm.mwExample.MWTransclusion.blockSpan + ve.dm.mwExample.MWTransclusion.blockContent + '</body>',
+		'html': '<body>' + ve.dm.mwExample.MWTransclusion.blockOpen + ve.dm.mwExample.MWTransclusion.blockContent + '</body>',
 		'data': [
 			ve.dm.mwExample.MWTransclusion.blockData,
 			{ 'type': '/mwTransclusionBlock' },
@@ -608,7 +608,7 @@ ve.dm.mwExample.domToDataCases = {
 		'modify': function ( data ) {
 			data[0].attributes.mw.params['1'].wt = 'Hello, globe!';
 		},
-		'normalizedHtml': ve.dm.mwExample.MWTransclusion.blockSpanModified
+		'normalizedHtml': ve.dm.mwExample.MWTransclusion.blockOpenModified
 	},
 	'mw:Transclusion (inline)': {
 		'html': '<body>' + ve.dm.mwExample.MWTransclusion.inlineOpen + ve.dm.mwExample.MWTransclusion.inlineContent + ve.dm.mwExample.MWTransclusion.inlineClose + '</body>',
