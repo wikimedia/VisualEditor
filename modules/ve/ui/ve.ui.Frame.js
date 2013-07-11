@@ -115,20 +115,30 @@ ve.ui.Frame.prototype.transplantStyles = function () {
 		parentDoc = this.getElementDocument();
 	for ( i = 0, ilen = parentDoc.styleSheets.length; i < ilen; i++ ) {
 		sheet = parentDoc.styleSheets[i];
+		styleNode = undefined;
 		try {
 			rules = sheet.cssRules;
 		} catch ( e ) { }
 		if ( sheet.ownerNode.nodeName.toLowerCase() === 'link' && rules ) {
 			// This is a <link> tag pointing to a same-origin style sheet. Rebuild it as a
-			// <style> tag
-			cssText = '';
-			for ( j = 0, jlen = sheet.cssRules.length; j < jlen; j++ ) {
-				cssText += sheet.cssRules[j].cssText + '\n';
+			// <style> tag. This needs to be in a try-catch because it sometimes fails in Firefox.
+			try {
+				cssText = '';
+				for ( j = 0, jlen = rules.length; j < jlen; j++ ) {
+					if ( typeof sheet.cssRules[j].cssText !== 'string' ) {
+						// WTF; abort and fall back to cloning the node
+						throw new Error( 'sheet.cssRules[' + j + '].cssText is not a string' );
+					}
+					cssText += sheet.cssRules[j].cssText + '\n';
+				}
+				cssText += '/* Transplanted styles from ' + sheet.href + ' */\n';
+				styleNode = newDoc.createElement( 'style' );
+				styleNode.textContent = cssText;
+			} catch ( e ) {
+				styleNode = undefined;
 			}
-			cssText += '/* Transplanted styles from ' + sheet.href + ' */\n';
-			styleNode = newDoc.createElement( 'style' );
-			styleNode.textContent = cssText;
-		} else {
+		}
+		if ( !styleNode ) {
 			// It's either a <style> tag or a <link> tag pointing to a foreign URL; just copy
 			// it to the new document
 			styleNode = newDoc.importNode( sheet.ownerNode, true );
