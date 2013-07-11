@@ -96,7 +96,9 @@ ve.ui.MWTransclusionDialog.prototype.onOpen = function () {
 	if ( this.node instanceof ve.ce.MWTransclusionNode ) {
 		this.transclusion.load( ve.copyObject( this.node.getModel().getAttribute( 'mw' ) ) );
 	} else {
-		this.transclusion.addPart( new ve.dm.MWTemplatePlaceholderModel( this.transclusion ) );
+		this.transclusion.addPart(
+			new ve.dm.MWTemplatePlaceholderModel( this.transclusion, 'user' )
+		);
 	}
 };
 
@@ -143,7 +145,7 @@ ve.ui.MWTransclusionDialog.prototype.onClose = function ( action ) {
  * @param {ve.dm.MWTransclusionPartModel} part Added part
  */
 ve.ui.MWTransclusionDialog.prototype.onAddPart = function ( part ) {
-	var i, len, page, params, param, names, pending, item;
+	var i, len, page, params, names, pending, item, spec;
 
 	if ( part instanceof ve.dm.MWTemplateModel ) {
 		page = this.getTemplatePage( part );
@@ -155,18 +157,29 @@ ve.ui.MWTransclusionDialog.prototype.onAddPart = function ( part ) {
 	if ( page ) {
 		page.index = this.getPageIndex( part );
 		this.addPage( part.getId(), page );
+		// Add existing params to templates
 		if ( part instanceof ve.dm.MWTemplateModel ) {
 			names = part.getParameterNames();
 			params = part.getParameters();
 			for ( i = 0, len = names.length; i < len; i++ ) {
-				param = params[names[i]];
-				page = this.getParameterPage( param );
-				page.index = this.getPageIndex( param );
-				this.addPage( param.getId(), page );
+				this.onAddParameter( params[names[i]] );
 			}
 			part.connect( this, { 'add': 'onAddParameter', 'remove': 'onRemoveParameter' } );
 		}
 	}
+
+	// Add required params to user created templates
+	if ( part instanceof ve.dm.MWTemplateModel && part.getOrigin() === 'user' ) {
+		spec = part.getSpec();
+		names = spec.getParameterNames();
+		for ( i = 0, len = names.length; i < len; i++ ) {
+			// Only add required params
+			if ( spec.isParameterRequired( names[i] ) ) {
+				part.addParameter( new ve.dm.MWTemplateParameterModel( part, names[i] ) );
+			}
+		}
+	}
+
 	// Resolve pending placeholder
 	for ( i = 0, len = this.pending.length; i < len; i++ ) {
 		pending = this.pending[i];
@@ -259,12 +272,12 @@ ve.ui.MWTransclusionDialog.prototype.onOutlineControlsAdd = function ( type ) {
 
 	switch ( type ) {
 		case 'content':
-			part = new ve.dm.MWTransclusionContentModel( this.transclusion, '' );
+			part = new ve.dm.MWTransclusionContentModel( this.transclusion, '', 'user' );
 			this.transclusion.addPart( part, this.getPartInsertionIndex() );
 			this.setPageByName( part.getId() );
 			break;
 		case 'template':
-			part = new ve.dm.MWTemplatePlaceholderModel( this.transclusion );
+			part = new ve.dm.MWTemplatePlaceholderModel( this.transclusion, 'user' );
 			this.transclusion.addPart( part, this.getPartInsertionIndex() );
 			this.setPageByName( part.getId() );
 			break;
@@ -548,7 +561,7 @@ ve.ui.MWTransclusionDialog.prototype.getPlaceholderPage = function ( placeholder
 		}
 
 		target = { 'href': new mw.Title( href ).getPrefixedText(), 'wt': value };
-		part = new ve.dm.MWTemplateModel( this.transclusion, target );
+		part = new ve.dm.MWTemplateModel( this.transclusion, target, 'user' );
 		this.transclusion.addPart( part, ve.indexOf( placeholder, parts ) );
 		this.pending.push( { 'part': part, 'placeholder': placeholder } );
 		addTemplateInput.pushPending();

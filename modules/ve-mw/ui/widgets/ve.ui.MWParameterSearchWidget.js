@@ -87,12 +87,8 @@ ve.ui.MWParameterSearchWidget.prototype.buildIndex = function () {
 	this.index.length = 0;
 	for ( i = 0, len = knownParams.length; i < len; i++ ) {
 		name = knownParams[i];
-		if (
-			// Skip aliases
-			spec.getParameterOrigin( name ) !== name ||
-			// Skip parameters already in use
-			this.template.hasParameter( name )
-		) {
+		// Skip parameters already in use
+		if ( this.template.hasParameter( name ) ) {
 			continue;
 		}
 		label = spec.getParameterLabel( name );

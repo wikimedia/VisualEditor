@@ -128,7 +128,7 @@ ve.dm.MWTemplateSpecModel.prototype.getDefaultParameterSpec = function ( name ) 
 		'default': '',
 		'type': 'string',
 		'aliases': [],
-		'origin': name,
+		'name': name,
 		'required': false,
 		'deprecated': false
 	};
@@ -173,14 +173,27 @@ ve.dm.MWTemplateSpecModel.prototype.getDescription = function () {
 };
 
 /**
- * Check if a parameter is known.
+ * Check if a parameter name is known.
+ *
+ * Could be a primary name or alias.
  *
  * @method
  * @param {string} name Parameter name
- * @returns {boolean} Parameter is known
+ * @returns {boolean} Parameter name is known
  */
 ve.dm.MWTemplateSpecModel.prototype.isParameterKnown = function ( name ) {
 	return this.params[name] !== undefined;
+};
+
+/**
+ * Check if a parameter name is an alias.
+ *
+ * @method
+ * @param {string} name Parameter name
+ * @returns {boolean} Parameter name is an alias
+ */
+ve.dm.MWTemplateSpecModel.prototype.isParameterAlias = function ( name ) {
+	return this.params[name] !== undefined && this.params[name].name !== name;
 };
 
 /**
@@ -239,16 +252,16 @@ ve.dm.MWTemplateSpecModel.prototype.getParameterAliases = function ( name ) {
 };
 
 /**
- * Get the parameter origin, which is the parameter this is an alias of.
+ * Get the parameter name, resolving an alias.
  *
- * If a parameter is not an alias of another, its origin and name will be the same.
+ * If a parameter is not an alias of another, the output will be the same as the input.
  *
  * @method
- * @param {string} name Parameter name
- * @returns {string} Origin parameter name
+ * @param {string} name Parameter alias
+ * @returns {string} Parameter name
  */
-ve.dm.MWTemplateSpecModel.prototype.getParameterOrigin = function ( name ) {
-	return this.params[name].origin;
+ve.dm.MWTemplateSpecModel.prototype.getParameterName = function ( name ) {
+	return this.params[name].name;
 };
 
 /**
@@ -285,13 +298,22 @@ ve.dm.MWTemplateSpecModel.prototype.getParameterDeprecationDescription = functio
 };
 
 /**
- * Get all parameter specifications.
+ * Get all primary parameter names.
  *
  * @method
  * @returns {string[]} Parameter names
  */
 ve.dm.MWTemplateSpecModel.prototype.getParameterNames = function () {
-	return ve.getObjectKeys( this.params );
+	var name,
+		names = [];
+
+	for ( name in this.params ) {
+		if ( this.params[name].name === name ) {
+			names.push( name );
+		}
+	}
+
+	return names;
 };
 
 /**
