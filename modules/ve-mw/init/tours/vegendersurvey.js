@@ -10,6 +10,7 @@
 			descriptionmsg: 'guidedtour-tour-vegendersurvey-description',
 			allowAutomaticOkay: false,
 			overlay: true,
+			width: 475,
 			buttons: [ {
 				namemsg: 'guidedtour-tour-vegendersurvey-male',
 				onclick: function () {
