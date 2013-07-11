@@ -298,8 +298,14 @@
 		<script src="../../ve/test/dm/ve.dm.example.js"></script>
 		<script src="dm/ve.dm.mwExample.js"></script>
 		<script src="dm/ve.dm.MWConverter.test.js"></script>
+		<script src="dm/ve.dm.InternalList.test.js"></script>
+		<script src="dm/ve.dm.SurfaceFragment.test.js"></script>
 		<script src="dm/nodes/ve.dm.MWTransclusionNode.test.js"></script>
-
+		<script src="ce/ve.ce.ContentBranchNode.test.js"></script>
+		<script src="ce/ve.ce.Document.test.js"></script>
+		<script src="ui/actions/ve.ui.FormatAction.test.js"></script>
+		<!-- ve.init.mw.ViewPageTarget can't be tested here because it depends on window.mw
+		<script src="init/targets/ve.init.mw.ViewPageTarget.test.js"> -->
 		<div id="qunit"></div>
 		<div id="qunit-fixture">test markup</div>
 	</body>
