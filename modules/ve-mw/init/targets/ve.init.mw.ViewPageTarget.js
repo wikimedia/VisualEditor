@@ -459,7 +459,7 @@ ve.init.mw.ViewPageTarget.prototype.onSaveError = function ( jqXHR, status, data
 	// "question" or "fancy" type of captcha. They all expose differently named properties in the
 	// API for different things in the UI. At this point we only support the FancyCaptha which we
 	// very intuitively detect by the presence of a "url" property.
-	editApi = data && data.visualeditor && data.visualeditor.edit;
+	editApi = data && data.visualeditoredit && data.visualeditoredit.edit;
 	if ( editApi && editApi.captcha && editApi.captcha.url ) {
 		this.captcha = {
 			input: new ve.ui.TextInputWidget(),
