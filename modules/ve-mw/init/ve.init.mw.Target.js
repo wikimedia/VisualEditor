@@ -314,7 +314,7 @@ ve.init.mw.Target.onTokenError = function ( jqXHR, status, error ) {
  */
 ve.init.mw.Target.onSave = function ( response ) {
 	this.saving = false;
-	var data = response.visualeditor;
+	var data = response.visualeditoredit;
 	if ( !data && !response.error ) {
 		ve.init.mw.Target.onSaveError.call( this, null, 'Invalid response from server', response );
 	} else if ( response.error ) {
@@ -506,7 +506,6 @@ ve.init.mw.Target.prototype.load = function () {
 		'action': 'visualeditor',
 		'paction': 'parse',
 		'page': this.pageName,
-		'token': this.editToken,
 		'format': 'json'
 	};
 
@@ -574,8 +573,7 @@ ve.init.mw.Target.prototype.save = function ( doc, options ) {
 
 	var data = {
 		'format': 'json',
-		'action': 'visualeditor',
-		'paction': 'save',
+		'action': 'visualeditoredit',
 		'page': this.pageName,
 		'oldid': this.revid,
 		'basetimestamp': this.baseTimeStamp,
@@ -631,9 +629,7 @@ ve.init.mw.Target.prototype.showChanges = function ( doc ) {
 			'paction': 'diff',
 			'page': this.pageName,
 			'oldid': this.revid,
-			'html': this.getHtml( doc ),
-			// TODO: API required editToken, though not relevant for diff
-			'token': this.editToken
+			'html': this.getHtml( doc )
 		},
 		'dataType': 'json',
 		'type': 'POST',
@@ -722,7 +718,6 @@ ve.init.mw.Target.prototype.serialize = function ( doc, callback ) {
 			'html': this.getHtml( doc ),
 			'page': this.pageName,
 			'oldid': this.revid,
-			'token': this.editToken,
 			'format': 'json'
 		},
 		'dataType': 'json',
