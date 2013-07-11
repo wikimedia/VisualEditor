@@ -160,6 +160,7 @@
 /* ve.ui.OptionWidget */
 
 .ve-ui-optionWidget {
+	position: relative;
 	display: block;
 	border: none;
 	list-style: none;
@@ -199,9 +200,7 @@
 
 .ve-ui-outlineItemWidget {
 	position: relative;
-	padding: 1.25em 1.25em 1.25em 3.5em;
-	background-position: 1em center;
-	background-repeat: no-repeat;
+	padding: 0.75em 0.75em 0.75em 3.5em;
 	-webkit-user-select: none;
 	-moz-user-select: none;
 	-ms-user-select: none;
@@ -211,13 +210,11 @@
 }
 
 .ve-ui-outlineItemWidget-level-1 {
-	padding-left: 5.5em;
-	background-position: 3em center;
+	padding-left: 5em;
 }
 
 .ve-ui-outlineItemWidget-level-2 {
-	padding-left: 7.5em;
-	background-position: 5em center;
+	padding-left: 6.5em;
 }
 
 .ve-ui-outlineItemWidget.ve-ui-optionWidget-selected {
@@ -230,11 +227,11 @@
 }
 
 .ve-ui-outlineItemWidget-level-1 .ve-ui-optionWidget-icon {
-	left: 3em;
+	left: 2.5em;
 }
 
 .ve-ui-outlineItemWidget-level-2 .ve-ui-optionWidget-icon {
-	left: 5em;
+	left: 4em;
 }
 
 /* ve.ui.OutlineControlsWidget */
