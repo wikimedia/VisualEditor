@@ -7,6 +7,11 @@ $messages = array();
 $messages['en'] = array(
 	'accesskey-ca-editsource' => 'e',
 	'accesskey-ca-ve-edit' => 'v',
+	'guidedtour-tour-vegendersurvey-description' => 'By participating in this survey, you consent to the transfer of the information you submit to the Wikimedia Foundation in the United States and elsewhere.  The information collected is for internal research purposes only and will not be publicly associated with your account.  However, we may share the results of this survey with the public in anonymized or aggregated forms.',
+	'guidedtour-tour-vegendersurvey-female' => 'Female',
+	'guidedtour-tour-vegendersurvey-male' => 'Male',
+	'guidedtour-tour-vegendersurvey-optout' => 'Prefer not to say',
+	'guidedtour-tour-vegendersurvey-title' => 'Please select your gender',
 	'tag-visualeditor' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
 	'tag-visualeditor-description' => 'Edit made using the [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
 	'tag-visualeditor-needcheck' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor: Check]]',
@@ -99,8 +104,8 @@ $messages['en'] = array(
 	'visualeditor-formatdropdown-format-paragraph' => 'Paragraph',
 	'visualeditor-formatdropdown-format-preformatted' => 'Preformatted',
 	'visualeditor-formatdropdown-title' => 'Change format',
-	'visualeditor-help-link' => 'mw:Special:MyLanguage/Help:VisualEditor/User guide',
 	'visualeditor-help-label' => 'User guide',
+	'visualeditor-help-link' => 'mw:Special:MyLanguage/Help:VisualEditor/User guide',
 	'visualeditor-help-title' => 'User guide for how to use the editor',
 	'visualeditor-historybutton-redo-tooltip' => 'Redo',
 	'visualeditor-historybutton-undo-tooltip' => 'Undo',
@@ -108,13 +113,12 @@ $messages['en'] = array(
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Decrease indentation',
 	'visualeditor-inspector-close-tooltip' => 'Close',
 	'visualeditor-inspector-remove-tooltip' => 'Remove',
+	'visualeditor-languageinspector-block-tooltip' => 'Language Block: $1$2',
+	'visualeditor-languageinspector-block-tooltip-rtldirection' => ': Right to Left',
 	'visualeditor-linkinspector-suggest-external-link' => 'External link',
 	'visualeditor-linkinspector-suggest-matching-page' => 'Matching page',
 	'visualeditor-linkinspector-suggest-new-page' => 'New page',
 	'visualeditor-linkinspector-title' => 'Hyperlink',
-	'visualeditor-mwmathinspector-title' => 'LaTeX',
-	'visualeditor-languageinspector-block-tooltip' => 'Language Block: $1$2',
-	'visualeditor-languageinspector-block-tooltip-rtldirection' => ': Right to Left',
 	'visualeditor-listbutton-bullet-tooltip' => 'Bullet list',
 	'visualeditor-listbutton-number-tooltip' => 'Numbered list',
 	'visualeditor-loadwarning' => 'Error loading data from server: $1. Would you like to retry?',
@@ -122,6 +126,7 @@ $messages['en'] = array(
 	'visualeditor-mainnamespacepagelink' => 'Project:Main namespace',
 	'visualeditor-media-input-placeholder' => 'Search for media',
 	'visualeditor-meta-tool' => 'Page settings',
+	'visualeditor-mwmathinspector-title' => 'LaTeX',
 	'visualeditor-notification-created' => '$1 has been created.',
 	'visualeditor-notification-restored' => '$1 has been restored.',
 	'visualeditor-notification-saved' => 'Your changes to $1 have been saved.',
@@ -158,11 +163,6 @@ $messages['en'] = array(
 	'visualeditor-usernamespacepagelink' => 'Project:User namespace',
 	'visualeditor-viewpage-savewarning' => 'Are you sure you want to go back to view mode without saving first?',
 	'visualeditor-window-title' => 'Inspect',
-	'guidedtour-tour-vegendersurvey-title' => 'Please select your gender',
-	'guidedtour-tour-vegendersurvey-description' => 'By participating in this survey, you consent to the transfer of the information you submit to the Wikimedia Foundation in the United States and elsewhere.  The information collected is for internal research purposes only and will not be publicly associated with your account.  However, we may share the results of this survey with the public in anonymized or aggregated forms.',
-	'guidedtour-tour-vegendersurvey-male' => 'Male',
-	'guidedtour-tour-vegendersurvey-female' => 'Female',
-	'guidedtour-tour-vegendersurvey-optout' => 'Prefer not to say',
 );
 
 /** Message documentation (Message documentation)
@@ -182,6 +182,13 @@ $messages['en'] = array(
 $messages['qqq'] = array(
 	'accesskey-ca-editsource' => '{{optional}}',
 	'accesskey-ca-ve-edit' => '{{Ignore}}',
+	'guidedtour-tour-vegendersurvey-description' => 'Description of gender survey guider',
+	'guidedtour-tour-vegendersurvey-female' => 'Button on gender survey for choosing "female".
+{{Identical|Female}}',
+	'guidedtour-tour-vegendersurvey-male' => 'Button on gender survey for choosing "male".
+{{Identical|Male}}',
+	'guidedtour-tour-vegendersurvey-optout' => 'Button on gender survey for those who prefer not to answer',
+	'guidedtour-tour-vegendersurvey-title' => 'Title of gender survey guider',
 	'tag-visualeditor' => 'Short description of the visualeditor tag ({{msg-mw|Tag-visualeditor}}). Shown on lists of changes (history, recentchanges, etc.) for each edit made using VisualEditor.
 
 See also:
@@ -353,9 +360,9 @@ Parameters:
 {{Identical|Paragraph}}',
 	'visualeditor-formatdropdown-format-preformatted' => 'Item in the formatting dropdown for preformatted text',
 	'visualeditor-formatdropdown-title' => 'Tooltip text for the drop-down box for choosing the formatting style of the selected text, such as "Heading 1", "Heading 2" or "Plain text". (This is not related to "file format" or "data format", such as "Wikitext", "HTML", "PDF" etc.)',
-	'visualeditor-help-link' => '{{notranslate}} Link to the user guide for how to use VisualEditor',
 	'visualeditor-help-label' => 'Display text for the link to the user guide.
 {{Identical|User guide}}',
+	'visualeditor-help-link' => '{{notranslate}} Link to the user guide for how to use VisualEditor',
 	'visualeditor-help-title' => 'Title (hover) text for the link to the user guide',
 	'visualeditor-historybutton-redo-tooltip' => 'Tooltip text for the redo button.
 {{Identical|Redo}}',
@@ -365,6 +372,10 @@ Parameters:
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Tooltip text for list outdent button',
 	'visualeditor-inspector-close-tooltip' => '{{Identical|Close}}',
 	'visualeditor-inspector-remove-tooltip' => 'Tooltip text for the button to remove an annotation in an inspector',
+	'visualeditor-languageinspector-block-tooltip' => 'Tooltip identifying language block properties inside VisualEditor. Parameters:
+* $1 - the language code (for example "en")
+* $2 - the rtl label {{msg-mw|visualeditor-languageinspector-block-tooltip-rtldirection}}',
+	'visualeditor-languageinspector-block-tooltip-rtldirection' => 'The label "Right To Left" at the end of the tooltip if the language is RTL.',
 	'visualeditor-linkinspector-suggest-external-link' => 'Label for an external (Web) link in the link inspector.
 {{Identical|External link}}',
 	'visualeditor-linkinspector-suggest-matching-page' => 'Label for suggested matching local wiki page or pages in the link inspector',
@@ -372,13 +383,6 @@ Parameters:
 {{Identical|New page}}',
 	'visualeditor-linkinspector-title' => 'Title of the link inspector dialog.
 {{Identical|Hyperlink}}',
-	'visualeditor-mwmathinspector-title' => 'Used as title for MathInspector.
-
-See [[w:LaTeX]].',
-	'visualeditor-languageinspector-block-tooltip' => 'Tooltip identifying language block properties inside VisualEditor. Parameters:
-* $1 - the language code (for example "en")
-* $2 - the rtl label {{msg-mw|visualeditor-languageinspector-block-tooltip-rtldirection}}',
-	'visualeditor-languageinspector-block-tooltip-rtldirection' => 'The label "Right To Left" at the end of the tooltip if the language is RTL.',
 	'visualeditor-listbutton-bullet-tooltip' => 'Tooltip text for the bullet list button',
 	'visualeditor-listbutton-number-tooltip' => 'Tooltip text for the numbered list button',
 	'visualeditor-loadwarning' => 'Text (JavaScript confirm()) shown when the editor fails to load properly.
@@ -394,6 +398,9 @@ Parameters:
 	'visualeditor-media-input-placeholder' => 'Place holder text for media search input',
 	'visualeditor-meta-tool' => 'Text of tool in the toolbar the lets users set categories, language links and other page settings.
 {{Identical|Page settings}}',
+	'visualeditor-mwmathinspector-title' => 'Used as title for MathInspector.
+
+See [[w:LaTeX]].',
 	'visualeditor-notification-created' => 'Shown after a user creates a new page. Parameters:
 * $1 - a page name',
 	'visualeditor-notification-restored' => 'Shown after a user restores a page to a previous revision. Parameters:
@@ -456,13 +463,6 @@ Parameters:
 {{doc-important|Do not translate "Project"; it is automatically converted to the wiki\'s project namespace.}}',
 	'visualeditor-viewpage-savewarning' => 'Text shown when the user tries to leave the editor without saving their changes',
 	'visualeditor-window-title' => 'Title of an unnamed inspector',
-	'guidedtour-tour-vegendersurvey-title' => 'Title of gender survey guider',
-	'guidedtour-tour-vegendersurvey-description' => 'Description of gender survey guider',
-	'guidedtour-tour-vegendersurvey-male' => 'Button on gender survey for choosing "male".
-{{Identical|Male}}',
-	'guidedtour-tour-vegendersurvey-female' => 'Button on gender survey for choosing "female".
-{{Identical|Female}}',
-	'guidedtour-tour-vegendersurvey-optout' => 'Button on gender survey for those who prefer not to answer',
 );
 
 /** Arabic (العربية)
