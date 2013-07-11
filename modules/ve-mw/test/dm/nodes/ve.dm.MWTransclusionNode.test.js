@@ -87,10 +87,20 @@ QUnit.test( 'getWikitext', function ( assert ) {
 			'mw': {
 				'target': { 'wt': 'foo' },
 				'params': {
-					'bar': { 'wt': '}} |' }
+					'bar': { 'wt': '}} | {{a|{{b}}}} |' }
 				}
 			},
-			'wikitext': '{{foo|bar=<nowiki>}}</nowiki> <nowiki>|</nowiki>}}'
+			'wikitext': '{{foo|bar=<nowiki>}}</nowiki> <nowiki>|</nowiki> {{a|{{b}}}} <nowiki>|</nowiki>}}'
+		},
+		{
+			'msg': 'parameter containing piped link',
+			'mw': {
+				'target': { 'wt': 'foo' },
+				'params': {
+					'bar': { 'wt': '[[baz|quux]]' }
+				}
+			},
+			'wikitext': '{{foo|bar=[[baz|quux]]}}'
 		}
 	];
 	QUnit.expect( cases.length );

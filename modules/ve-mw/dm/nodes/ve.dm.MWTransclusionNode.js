@@ -112,9 +112,9 @@ ve.dm.MWTransclusionNode.static.toDomElements = function ( dataElement, doc, con
  */
 ve.dm.MWTransclusionNode.static.escapeParameter = function ( param ) {
 	var match, needsNowiki, input = param, output = '',
-		inNowiki = false, bracketStack = 0;
+		inNowiki = false, bracketStack = 0, linkStack = 0;
 	while ( input.length > 0 ) {
-		match = input.match( /(?:\{\{)+|(?:\}\})+|\|+|<\/?nowiki>|<nowiki\s*\/>/ );
+		match = input.match( /(?:\[\[)|(?:\]\])|(?:\{\{)|(?:\}\})|\|+|<\/?nowiki>|<nowiki\s*\/>/ );
 		if ( !match ) {
 			output += input;
 			break;
@@ -135,16 +135,24 @@ ve.dm.MWTransclusionNode.static.escapeParameter = function ( param ) {
 				needsNowiki = false;
 			} else if ( match[0] === '</nowiki>' || match[0].match( /<nowiki\s*\/>/ ) ) {
 				needsNowiki = false;
-			} else if ( match[0].match( /(?:\{\{)+/ ) ) {
+			} else if ( match[0].match( /(?:\[\[)/ ) ) {
+				linkStack++;
+				needsNowiki = false;
+			} else if ( match[0].match( /(?:\]\])/ ) ) {
+				if ( linkStack > 0 ) {
+					linkStack--;
+					needsNowiki = false;
+				}
+			} else if ( match[0].match( /(?:\{\{)/ ) ) {
 				bracketStack++;
 				needsNowiki = false;
-			} else if ( match[0].match( /(?:\}\})+/ ) ) {
+			} else if ( match[0].match( /(?:\}\})/ ) ) {
 				if ( bracketStack > 0 ) {
 					bracketStack--;
 					needsNowiki = false;
 				}
 			} else if ( match[0].match( /\|+/ ) ) {
-				if ( bracketStack > 0 ) {
+				if ( bracketStack > 0 || linkStack > 0 ) {
 					needsNowiki = false;
 				}
 			}
