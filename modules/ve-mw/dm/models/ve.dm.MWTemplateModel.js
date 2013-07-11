@@ -16,10 +16,11 @@
  * @param {Object} target Template target
  * @param {string} target.wt Original wikitext of target
  * @param {string} [target.href] Hypertext reference to target
+ * @param {string} [origin] Origin of part, e.g. 'data' or 'user'
  */
-ve.dm.MWTemplateModel = function VeDmMWTemplateModel( transclusion, target ) {
+ve.dm.MWTemplateModel = function VeDmMWTemplateModel( transclusion, target, origin ) {
 	// Parent constructor
-	ve.dm.MWTransclusionPartModel.call( this, transclusion );
+	ve.dm.MWTransclusionPartModel.call( this, transclusion, origin );
 
 	// Properties
 	this.target = target;
@@ -106,7 +107,7 @@ ve.dm.MWTemplateModel.prototype.getParameter = function ( name ) {
  * @returns {boolean} Parameter exists
  */
 ve.dm.MWTemplateModel.prototype.hasParameter = function ( name ) {
-	var i, len, origin, names;
+	var i, len, primaryName, names;
 
 	// Check if name (which may be an alias) is present in the template
 	if ( this.params[name] ) {
@@ -115,13 +116,13 @@ ve.dm.MWTemplateModel.prototype.hasParameter = function ( name ) {
 
 	// Check if the name is known at all
 	if ( this.spec.isParameterKnown( name ) ) {
-		origin = this.spec.getParameterOrigin( name );
-		// Check for origin name (may be the same as name)
-		if ( this.params[origin] ) {
+		primaryName = this.spec.getParameterName( name );
+		// Check for primary name (may be the same as name)
+		if ( this.params[primaryName] ) {
 			return true;
 		}
 		// Check for other aliases (may include name)
-		names = this.spec.getParameterAliases( origin );
+		names = this.spec.getParameterAliases( primaryName );
 		for ( i = 0, len = names.length; i < len; i++ ) {
 			if ( this.params[names[i]] ) {
 				return true;

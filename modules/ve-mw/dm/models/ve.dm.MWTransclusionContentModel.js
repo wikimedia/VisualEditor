@@ -14,10 +14,12 @@
  * @constructor
  * @param {ve.dm.MWTransclusionModel} transclusion Transclusion
  * @param {string} [value] Content value
+ * @param {string} [origin] Origin of part, e.g. 'data' or 'user'
  */
-ve.dm.MWTransclusionContentModel = function VeDmMWTransclusionContentModel( transclusion, value ) {
+ve.dm.MWTransclusionContentModel =
+	function VeDmMWTransclusionContentModel( transclusion, value, origin ) {
 	// Parent constructor
-	ve.dm.MWTransclusionPartModel.call( this, transclusion );
+	ve.dm.MWTransclusionPartModel.call( this, transclusion, origin );
 
 	// Properties
 	this.value = value || '';

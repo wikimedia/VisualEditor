@@ -67,17 +67,19 @@ ve.dm.MWTransclusionModel.prototype.load = function ( data ) {
 		for ( i = 0, len = data.parts.length; i < len; i++ ) {
 			part = data.parts[i];
 			if ( part.template ) {
-				template = new ve.dm.MWTemplateModel( this, part.template.target );
+				template = new ve.dm.MWTemplateModel( this, part.template.target, 'data' );
 				for ( key in part.template.params ) {
 					template.addParameter(
 						new ve.dm.MWTemplateParameterModel(
-							template, key, part.template.params[key].wt
+							template, key, part.template.params[key].wt, 'data'
 						)
 					);
 				}
 				this.queue.push( { 'part': template } );
 			} else if ( typeof part === 'string' ) {
-				this.queue.push( { 'part': new ve.dm.MWTransclusionContentModel( this, part ) } );
+				this.queue.push( {
+					'part': new ve.dm.MWTransclusionContentModel( this, part, 'data' )
+				} );
 			}
 		}
 		setTimeout( ve.bind( this.fetch, this ) );
