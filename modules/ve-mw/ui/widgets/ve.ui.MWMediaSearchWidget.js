@@ -171,7 +171,7 @@ ve.ui.MWMediaSearchWidget.prototype.onMediaQueryDone = function ( source, data )
 	}
 
 	for ( page in pages ) {
-		title = pages[page].title;
+		title = new mw.Title( pages[page].title ).getMainText();
 		if ( !( title in this.titles ) ) {
 			this.titles[title] = true;
 			items.push(
