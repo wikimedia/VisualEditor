@@ -96,7 +96,11 @@ ve.dm.MWTransclusionNode.static.toDomElements = function ( dataElement, doc, con
 		// The object in the store is also used for CE rendering so return a copy
 		return ve.copyDomElements( dataElement.attributes.originalDomElements, doc );
 	} else {
-		el = doc.createElement( 'span' );
+		if ( dataElement.attributes.originalDomElements ) {
+			el = doc.createElement( dataElement.attributes.originalDomElements[0].nodeName );
+		} else {
+			el = doc.createElement( 'span' );
+		}
 		// All we need to send back to Parsoid is the original transclusion marker, with a
 		// reconstructed data-mw property.
 		el.setAttribute( 'typeof', 'mw:Transclusion' );
