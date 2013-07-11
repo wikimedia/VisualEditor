@@ -136,6 +136,7 @@ $messages['en'] = array(
 	'visualeditor-reference-search-reuse' => 'Use an existing source',
 	'visualeditor-referencelist-isempty' => 'There are no references with the group "$1" on this page.',
 	'visualeditor-referencelist-missingref' => 'This reference is defined in a template or other generated block, and for now can only be edited in source mode.',
+	'visualeditor-savedialog-error-badtoken' => 'We could not process your edit because your session has expired.',
 	'visualeditor-savedialog-label-create' => 'Create page',
 	'visualeditor-savedialog-label-error' => 'Error',
 	'visualeditor-savedialog-label-report' => 'Report problem',
@@ -421,6 +422,7 @@ See also:
 
 See also:
 * {{msg-mw|Visualeditor-dialog-meta-languages-readonlynote}}',
+	'visualeditor-savedialog-error-badtoken' => 'Error displayed in the save dialog if saving the edit failed due to an invalid edit token (likely due to the user having logged out in a separate window, or logged in again)',
 	'visualeditor-savedialog-label-create' => 'Label text for save button when the user is creating a new page',
 	'visualeditor-savedialog-label-error' => 'Label in front of a save dialog error sentence, separated by {{msg-mw|colon-separator}}.
 {{Identical|Error}}',

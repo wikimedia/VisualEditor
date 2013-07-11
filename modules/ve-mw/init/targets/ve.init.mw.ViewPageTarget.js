@@ -485,6 +485,20 @@ ve.init.mw.ViewPageTarget.prototype.onSaveError = function ( jqXHR, status, data
 		return;
 	}
 
+	// Handle token errors
+	if ( data.error && data.error.code === 'badtoken' ) {
+		this.showMessage(
+			'api-save-error',
+			document.createTextNode( mw.msg( 'visualeditor-savedialog-error-badtoken' ) ),
+			{
+				wrap: 'error'
+			}
+		);
+		this.saveDialogSaveButton.setDisabled( true );
+		return;
+	}
+
+
 	// Handle (other) unknown and/or unrecoverable errors
 	this.showMessage(
 		'api-save-error',

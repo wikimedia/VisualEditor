@@ -673,6 +673,7 @@ $wgResourceModules += array(
 			'visualeditor-reference-search-reuse',
 			'visualeditor-referencelist-isempty',
 			'visualeditor-referencelist-missingref',
+			'visualeditor-savedialog-error-badtoken',
 			'visualeditor-savedialog-label-create',
 			'visualeditor-savedialog-label-error',
 			'visualeditor-savedialog-label-report',
