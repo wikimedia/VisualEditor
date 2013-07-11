@@ -125,11 +125,11 @@ ve.ui.Frame.prototype.transplantStyles = function () {
 			try {
 				cssText = '';
 				for ( j = 0, jlen = rules.length; j < jlen; j++ ) {
-					if ( typeof sheet.cssRules[j].cssText !== 'string' ) {
+					if ( typeof rules[j].cssText !== 'string' ) {
 						// WTF; abort and fall back to cloning the node
 						throw new Error( 'sheet.cssRules[' + j + '].cssText is not a string' );
 					}
-					cssText += sheet.cssRules[j].cssText + '\n';
+					cssText += rules[j].cssText + '\n';
 				}
 				cssText += '/* Transplanted styles from ' + sheet.href + ' */\n';
 				styleNode = newDoc.createElement( 'style' );
