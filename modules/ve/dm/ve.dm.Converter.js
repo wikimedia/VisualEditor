@@ -633,7 +633,13 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, wrapp
 						if ( childDataElements.length === 1 ) {
 							childDataElements.push( { 'type': '/' + childDataElements[0].type } );
 						}
-						if ( context.inWrapper ) {
+						// Annotate meta item
+						if ( !context.annotations.isEmpty() ) {
+							childDataElements[0].annotations = context.annotations.getIndexes().slice();
+						}
+						// Queue wrapped meta items only if it's actually possible for us to move them out
+						// of the wrapper
+						if ( context.inWrapper && context.canCloseWrapper ) {
 							wrappedMetaItems = wrappedMetaItems.concat( childDataElements );
 							if ( wrappedWhitespace !== '' ) {
 								data.splice( wrappedWhitespaceIndex, wrappedWhitespace.length );
