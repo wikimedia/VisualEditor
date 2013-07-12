@@ -432,7 +432,9 @@ ve.init.mw.ViewPageTarget.prototype.onSave = function ( html, newid ) {
  * @param {Object|null} data API response data
   */
 ve.init.mw.ViewPageTarget.prototype.onSaveError = function ( jqXHR, status, data ) {
-	var editApi;
+	var api, editApi,
+		viewPage = this;
+
 	this.saveDialogSaveButton.setDisabled( false );
 	this.$saveDialogLoadingIcon.hide();
 
@@ -487,14 +489,91 @@ ve.init.mw.ViewPageTarget.prototype.onSaveError = function ( jqXHR, status, data
 
 	// Handle token errors
 	if ( data.error && data.error.code === 'badtoken' ) {
-		this.showMessage(
-			'api-save-error',
-			document.createTextNode( mw.msg( 'visualeditor-savedialog-error-badtoken' ) ),
-			{
-				wrap: 'error'
-			}
-		);
-		this.saveDialogSaveButton.setDisabled( true );
+		api = new mw.Api();
+		viewPage.saveDialogSaveButton.setDisabled( true );
+		viewPage.$saveDialogLoadingIcon.show();
+		api.get( {
+			// action=query&meta=userinfo and action=tokens&type=edit can't be combined
+			// but action=query&meta=userinfo and action=query&prop=info can, however
+			// that means we have to give it titles and deal with page ids.
+			'action': 'query',
+			'meta': 'userinfo',
+			'prop': 'info',
+			// Try to send the normalised form so that it is less likely we get extra data like
+			// data.normalised back that we don't need.
+			'titles': new mw.Title( viewPage.pageName ).toText(),
+			'indexpageids': '',
+			'intoken': 'edit'
+		} )
+			.always( function () {
+				viewPage.$saveDialogLoadingIcon.hide();
+			} )
+			.done( function ( data ) {
+				var badTokenText, userMsg,
+					userInfo = data.query && data.query.userinfo,
+					pageInfo = data.query && data.query.pages && data.query.pageids &&
+						data.query.pageids[0] && data.query.pages[ data.query.pageids[0] ],
+					editToken = pageInfo && pageInfo.edittoken;
+
+				if ( userInfo && editToken ) {
+					viewPage.editToken = editToken;
+
+					if (
+						( mw.user.isAnon() && userInfo.anon !== undefined ) ||
+							// Comparing id instead of name to pretect against possible
+							// normalisation and against case where the user got renamed.
+							mw.config.get( 'wgUserId' ) === userInfo.id
+					) {
+						// New session is the same user still
+						viewPage.saveDocument();
+					} else {
+						// The now current session is a different user
+						viewPage.saveDialogSaveButton.setDisabled( false );
+
+						// Trailing space is to separate from the other message.
+						badTokenText = document.createTextNode( mw.msg( 'visualeditor-savedialog-error-badtoken' ) + ' ' );
+
+						if ( userInfo.anon !== undefined ) {
+							// New session is an anonymous user
+							mw.config.set( {
+								// wgUserId is unset for anonymous users, not set to null
+								'wgUserId': undefined,
+								// wgUserName is explicitly set to null for anonymous users,
+								// functions like mw.user.isAnon rely on this.
+								'wgUserName': null
+							} );
+
+							viewPage.showMessage(
+								'api-save-error',
+								$( badTokenText ).add(
+									$.parseHTML( mw.message( 'visualeditor-savedialog-identify-anon' ).parse() )
+								),
+								{ wrap: 'warning' }
+							);
+						} else {
+							// New session is a different user
+							mw.config.set( { 'wgUserId': userInfo.id, 'wgUserName': userInfo.name } );
+
+							// mediawiki.jqueryMsg has a bug with [[User:$1|$1]] (bug 51388)
+							userMsg = 'visualeditor-savedialog-identify-user---' + userInfo.name;
+							mw.messages.set(
+								userMsg,
+								mw.messages.get( 'visualeditor-savedialog-identify-user' )
+									.replace( /\$1/g, userInfo.name )
+							);
+
+							viewPage.showMessage(
+								'api-save-error',
+								$( badTokenText ).add(
+									$.parseHTML( mw.message( userMsg ).parse() )
+								),
+								{ wrap: 'warning' }
+							);
+						}
+					}
+
+				}
+			} );
 		return;
 	}
 
@@ -767,6 +846,13 @@ ve.init.mw.ViewPageTarget.prototype.onSaveDialogReviewButtonClick = function () 
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.onSaveDialogSaveButtonClick = function () {
+	this.saveDocument();
+};
+
+/**
+ * Try to save the current document.
+ */
+ve.init.mw.ViewPageTarget.prototype.saveDocument = function () {
 	var doc = this.surface.getModel().getDocument(),
 		saveOptions = this.getSaveOptions();
 

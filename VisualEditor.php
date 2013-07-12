@@ -204,6 +204,7 @@ $wgResourceModules += array(
 			'jquery.client',
 			'jquery.placeholder',
 			'jquery.visibleText',
+			'mediawiki.api',
 			'mediawiki.feedback',
 			'mediawiki.jqueryMsg',
 			'mediawiki.notify',
@@ -224,6 +225,8 @@ $wgResourceModules += array(
 			'visualeditor-notification-created',
 			'visualeditor-notification-restored',
 			'visualeditor-notification-saved',
+			'visualeditor-savedialog-identify-anon',
+			'visualeditor-savedialog-identify-user',
 		),
 	),
 	'ext.visualEditor.base' => $wgVisualEditorResourceTemplate + array(
