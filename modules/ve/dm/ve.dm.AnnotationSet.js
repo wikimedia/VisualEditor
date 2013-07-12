@@ -268,10 +268,7 @@ ve.dm.AnnotationSet.prototype.containsComparable = function ( annotation ) {
  */
 ve.dm.AnnotationSet.prototype.containsComparableForSerialization = function ( annotation ) {
 	return this.filter( function ( a ) {
-		return ve.compare(
-			annotation.getComparableObjectForSerialization(),
-			a.getComparableObjectForSerialization()
-		);
+		return annotation.compareToForSerialization( a );
 	}, true );
 };
 
