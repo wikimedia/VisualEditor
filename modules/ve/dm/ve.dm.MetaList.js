@@ -96,7 +96,7 @@ ve.dm.MetaList.prototype.onTransact = function ( tx, reversed ) {
 				index = 0;
 				break;
 			case 'replace':
-				// if we have metadata replace info we can calulcate the new
+				// if we have metadata replace info we can calculate the new
 				// offset and index directly
 				ins = reversed ? ops[i].removeMetadata : ops[i].insertMetadata;
 				rm = reversed ? ops[i].insertMetadata : ops[i].removeMetadata;

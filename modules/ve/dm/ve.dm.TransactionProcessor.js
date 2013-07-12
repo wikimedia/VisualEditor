@@ -387,7 +387,7 @@ ve.dm.TransactionProcessor.processors.replace = function ( op ) {
 				this.document.data.batchSplice( this.cursor, opRemove.length, opInsert );
 				// Keep the meta linear model in sync
 				if ( opRemoveMetadata !== undefined ) {
-					this.document.metadata.batchSplice( this.cursor, opRemoveMetadata.length, opInsertMetadata );
+					this.document.metadata.batchSplice( this.cursor + op.retainMetadata, opRemoveMetadata.length, opInsertMetadata );
 				} else if ( opInsert.length > opRemove.length ) {
 					this.document.metadata.batchSplice( this.cursor + opRemove.length, 0, new Array( opInsert.length - opRemove.length ) );
 				} else if ( opInsert.length < opRemove.length ) {
