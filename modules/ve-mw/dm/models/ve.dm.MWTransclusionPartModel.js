@@ -13,15 +13,13 @@
  *
  * @constructor
  * @param {ve.dm.MWTransclusionModel} transclusion Transclusion
- * @param {string} [origin] Origin of part, e.g. 'data' or 'user'
  */
-ve.dm.MWTransclusionPartModel = function VeDmMWTransclusionPartModel( transclusion, origin ) {
+ve.dm.MWTransclusionPartModel = function VeDmMWTransclusionPartModel( transclusion ) {
 	// Mixin constructors
 	ve.EventEmitter.call( this );
 
 	// Properties
 	this.transclusion = transclusion;
-	this.origin = origin;
 	this.id = 'part_' + this.transclusion.getUniquePartId();
 };
 
@@ -42,15 +40,6 @@ ve.dm.MWTransclusionPartModel.prototype.getTransclusion = function () {
 };
 
 /**
- * Get part origin.
- *
- * @returns {string} Origin
- */
-ve.dm.MWTransclusionPartModel.prototype.getOrigin = function () {
-	return this.origin;
-};
-
-/**
  * Get a unique part ID within the transclusion.
  *
  * @returns {string} Unique ID
@@ -66,4 +55,14 @@ ve.dm.MWTransclusionPartModel.prototype.getId = function () {
  */
 ve.dm.MWTransclusionPartModel.prototype.remove = function () {
 	this.transclusion.removePart( this );
+};
+
+/**
+ * Get serialized representation of transclusion part.
+ *
+ * @method
+ * @returns {Mixed} Serialized representation, or undefined if empty
+ */
+ve.dm.MWTransclusionPartModel.prototype.serialize = function () {
+	return undefined;
 };

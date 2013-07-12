@@ -56,7 +56,7 @@ ve.mixinClass( ve.dm.MWTransclusionModel, ve.EventEmitter );
  * @returns {jQuery.Promise} Promise, resolved when spec is loaded
  */
 ve.dm.MWTransclusionModel.prototype.load = function ( data ) {
-	var i, len, key, part, template;
+	var i, len, part;
 
 	// Convert single part format to multi-part format
 	if ( data.params && data.target ) {
@@ -67,19 +67,13 @@ ve.dm.MWTransclusionModel.prototype.load = function ( data ) {
 		for ( i = 0, len = data.parts.length; i < len; i++ ) {
 			part = data.parts[i];
 			if ( part.template ) {
-				template = new ve.dm.MWTemplateModel( this, part.template.target, 'data' );
-				for ( key in part.template.params ) {
-					template.addParameter(
-						new ve.dm.MWTemplateParameterModel(
-							template, key, part.template.params[key].wt, 'data'
-						)
-					);
-				}
-				this.queue.push( { 'part': template } );
+				this.queue.push(
+					{ 'part': ve.dm.MWTemplateModel.newFromData( this, part.template ) }
+				);
 			} else if ( typeof part === 'string' ) {
-				this.queue.push( {
-					'part': new ve.dm.MWTransclusionContentModel( this, part, 'data' )
-				} );
+				this.queue.push(
+					{ 'part': new ve.dm.MWTransclusionContentModel( this, part, 'data' ) }
+				);
 			}
 		}
 		setTimeout( ve.bind( this.fetch, this ) );
@@ -223,20 +217,14 @@ ve.dm.MWTransclusionModel.prototype.abortRequests = function () {
  * @returns {Object|null} Plain object representation, or null if empty
  */
 ve.dm.MWTransclusionModel.prototype.getPlainObject = function () {
-	var i, len, part, template, name, params,
+	var i, len, part, serialization,
 		obj = { 'parts': [] };
 
 	for ( i = 0, len = this.parts.length; i < len; i++ ) {
 		part = this.parts[i];
-		if ( part instanceof ve.dm.MWTemplateModel ) {
-			template = { 'target': part.getTarget(), 'params': {} };
-			params = part.getParameters();
-			for ( name in params ) {
-				template.params[params[name].getOriginalName()] = { 'wt': params[name].getValue() };
-			}
-			obj.parts.push( { 'template': template } );
-		} else if ( part instanceof ve.dm.MWTransclusionContentModel ) {
-			obj.parts.push( part.getValue() );
+		serialization = part.serialize();
+		if ( serialization !== undefined ) {
+			obj.parts.push( serialization );
 		}
 	}
 

@@ -14,12 +14,10 @@
  * @constructor
  * @param {ve.dm.MWTransclusionModel} transclusion Transclusion
  * @param {string} [value] Content value
- * @param {string} [origin] Origin of part, e.g. 'data' or 'user'
  */
-ve.dm.MWTransclusionContentModel =
-	function VeDmMWTransclusionContentModel( transclusion, value, origin ) {
+ve.dm.MWTransclusionContentModel = function VeDmMWTransclusionContentModel( transclusion, value ) {
 	// Parent constructor
-	ve.dm.MWTransclusionPartModel.call( this, transclusion, origin );
+	ve.dm.MWTransclusionPartModel.call( this, transclusion );
 
 	// Properties
 	this.value = value || '';
@@ -49,4 +47,11 @@ ve.dm.MWTransclusionContentModel.prototype.getValue = function () {
  */
 ve.dm.MWTransclusionContentModel.prototype.setValue = function ( value ) {
 	this.value = value;
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.MWTransclusionContentModel.prototype.serialize = function () {
+	return this.getValue();
 };

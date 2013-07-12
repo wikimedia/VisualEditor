@@ -5,8 +5,6 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-/*global mw */
-
 /**
  * Dialog for editing a MediaWiki transclusion.
  *
@@ -551,17 +549,11 @@ ve.ui.MWTransclusionDialog.prototype.getPlaceholderPage = function ( placeholder
 		label = ve.msg( 'visualeditor-dialog-transclusion-placeholder' );
 
 	function addTemplate() {
-		var target, part,
-			parts = placeholder.getTransclusion().getParts(),
-			value = addTemplateInput.getValue(),
-			href = value;
+		var parts = placeholder.getTransclusion().getParts(),
+			part = ve.dm.MWTemplateModel.newFromName(
+				this.transclusion, addTemplateInput.getValue()
+			);
 
-		if ( href.charAt( 0 ) !== ':' ) {
-			href = mw.config.get( 'wgFormattedNamespaces' )[10] + ':' + href;
-		}
-
-		target = { 'href': new mw.Title( href ).getPrefixedText(), 'wt': value };
-		part = new ve.dm.MWTemplateModel( this.transclusion, target, 'user' );
 		this.transclusion.addPart( part, ve.indexOf( placeholder, parts ) );
 		this.pending.push( { 'part': part, 'placeholder': placeholder } );
 		addTemplateInput.pushPending();

@@ -5,6 +5,8 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
+/*global mw*/
+
 /**
  * MediaWiki template model.
  *
@@ -20,14 +22,16 @@
  */
 ve.dm.MWTemplateModel = function VeDmMWTemplateModel( transclusion, target, origin ) {
 	// Parent constructor
-	ve.dm.MWTransclusionPartModel.call( this, transclusion, origin );
+	ve.dm.MWTransclusionPartModel.call( this, transclusion );
 
 	// Properties
 	this.target = target;
+	this.origin = origin;
 	this.title = ( target.href && target.href.replace( /^(\.\.?\/)*/, '' ) ) || null;
 	this.sequence = null;
 	this.params = {};
 	this.spec = new ve.dm.MWTemplateSpecModel( this );
+	this.originalData = null;
 };
 
 /* Inheritance */
@@ -46,6 +50,53 @@ ve.inheritClass( ve.dm.MWTemplateModel, ve.dm.MWTransclusionPartModel );
  * @param {ve.dm.MWTemplateParameterModel} param Removed param
  */
 
+/* Static Methods */
+
+/**
+ * Create from data.
+ *
+ * Data is in the format provided by Parsoid.
+ *
+ * @param {ve.dm.MWTransclusionModel} transclusion Transclusion template is in
+ * @param {Object} data Template data
+ * @returns {ve.dm.MWTemplateModel} New template model
+ */
+ve.dm.MWTemplateModel.newFromData = function ( transclusion, data ) {
+	var key,
+		template = new ve.dm.MWTemplateModel( transclusion, data.target, 'data' );
+
+	for ( key in data.params ) {
+		template.addParameter(
+			new ve.dm.MWTemplateParameterModel( template, key, data.params[key].wt, 'data' )
+		);
+	}
+
+	template.setOriginalData( data );
+
+	return template;
+};
+
+/**
+ * Create from name.
+ *
+ * Name is equivalent to what would be entered between double brackets, defaulting to the Template
+ * namespace, using a leading colon to access other namespaces.
+ *
+ * @param {ve.dm.MWTransclusionModel} transclusion Transclusion template is in
+ * @param {string} name Template name
+ * @returns {ve.dm.MWTemplateModel} New template model
+ */
+ve.dm.MWTemplateModel.newFromName = function ( transclusion, name ) {
+	var href = name;
+
+	if ( href.charAt( 0 ) !== ':' ) {
+		href = mw.config.get( 'wgFormattedNamespaces' )[10] + ':' + href;
+	}
+	href = new mw.Title( href ).getPrefixedText();
+
+	return new ve.dm.MWTemplateModel( transclusion, { 'href': href, 'wt': name }, 'user' );
+};
+
 /* Methods */
 
 /**
@@ -56,6 +107,15 @@ ve.inheritClass( ve.dm.MWTemplateModel, ve.dm.MWTransclusionPartModel );
  */
 ve.dm.MWTemplateModel.prototype.getTarget = function () {
 	return this.target;
+};
+
+/**
+ * Get template origin, e.g. 'user' or 'data'.
+ *
+ * @returns {string} Origin
+ */
+ve.dm.MWTemplateModel.prototype.getOrigin = function () {
+	return this.origin;
 };
 
 /**
@@ -194,4 +254,31 @@ ve.dm.MWTemplateModel.prototype.removeParameter = function ( param ) {
 		delete this.params[param.getName()];
 		this.emit( 'remove', param );
 	}
+};
+
+/**
+ * Set original data, to be used as a base for serialization.
+ *
+ * @method
+ * @returns {Object} Template data
+ */
+ve.dm.MWTemplateModel.prototype.setOriginalData = function ( data ) {
+	this.originalData = data;
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.MWTemplateModel.prototype.serialize = function () {
+	var name,
+		template = ve.extendObject(
+			this.originalData || {}, { 'target': this.getTarget(), 'params': {} }
+		),
+		params = this.getParameters();
+
+	for ( name in params ) {
+		template.params[params[name].getOriginalName()] = { 'wt': params[name].getValue() };
+	}
+
+	return { 'template': template };
 };

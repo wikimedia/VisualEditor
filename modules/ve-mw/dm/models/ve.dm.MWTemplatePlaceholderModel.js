@@ -13,11 +13,10 @@
  *
  * @constructor
  * @param {ve.dm.MWTransclusionModel} transclusion Transclusion
- * @param {string} [origin] Origin of part, e.g. 'data' or 'user'
  */
-ve.dm.MWTemplatePlaceholderModel = function VeDmMWTemplatePlaceholderModel( transclusion, origin ) {
+ve.dm.MWTemplatePlaceholderModel = function VeDmMWTemplatePlaceholderModel( transclusion ) {
 	// Parent constructor
-	ve.dm.MWTransclusionPartModel.call( this, transclusion, origin );
+	ve.dm.MWTransclusionPartModel.call( this, transclusion );
 };
 
 /* Inheritance */
