@@ -253,9 +253,9 @@ ve.ui.MWTransclusionDialog.prototype.onOutlineControlsMove = function ( places )
 		name = item.getData();
 		part = this.transclusion.getPartFromId( name );
 		index = ve.indexOf( part, parts );
-		this.transclusion.removePart( part );
-		this.transclusion.addPart( part, index + places );
-		this.setPageByName( name );
+		// Auto-removes part from old location
+		this.transclusion.addPart( part, index + places )
+			.done( ve.bind( this.setPageByName, this, part.getId() ) );
 	}
 };
 
@@ -268,17 +268,14 @@ ve.ui.MWTransclusionDialog.prototype.onOutlineControlsMove = function ( places )
 ve.ui.MWTransclusionDialog.prototype.onOutlineControlsAdd = function ( type ) {
 	var part;
 
-	switch ( type ) {
-		case 'content':
-			part = new ve.dm.MWTransclusionContentModel( this.transclusion, '', 'user' );
-			this.transclusion.addPart( part, this.getPartInsertionIndex() );
-			this.setPageByName( part.getId() );
-			break;
-		case 'template':
-			part = new ve.dm.MWTemplatePlaceholderModel( this.transclusion, 'user' );
-			this.transclusion.addPart( part, this.getPartInsertionIndex() );
-			this.setPageByName( part.getId() );
-			break;
+	if ( type === 'content' ) {
+		part = new ve.dm.MWTransclusionContentModel( this.transclusion, '', 'user' );
+	} else if ( type === 'template' ) {
+		part = new ve.dm.MWTemplatePlaceholderModel( this.transclusion, 'user' );
+	}
+	if ( part ) {
+		this.transclusion.addPart( part, this.getPartInsertionIndex() )
+			.done( ve.bind( this.setPageByName, this, part.getId() ) );
 	}
 };
 

@@ -99,9 +99,20 @@ ve.dm.MWTransclusionModel.prototype.process = function ( queue ) {
 				item.part.getSpec().extend( specCache[title] );
 			}
 		}
+		// Auto-remove if already existing
+		index = ve.indexOf( item.part, this.parts );
+		if ( index !== -1 ) {
+			this.parts.splice( index, 1 );
+			this.emit( 'remove', item.part );
+		}
+		// Add at index, or end if none was given
 		index = item.index === undefined ? this.parts.length : item.index;
 		this.parts.splice( index, 0, item.part );
 		this.emit( 'add', item.part );
+		// Resolve promises
+		if ( item.deferred ) {
+			item.deferred.resolve();
+		}
 	}
 };
 
@@ -261,15 +272,20 @@ ve.dm.MWTransclusionModel.prototype.getUniquePartId = function () {
  * @param {ve.dm.MWTransclusionPartModel} part Part to add
  * @param {number} [index] Specific index to add content at, defaults to the end
  * @throws {Error} If part is not valid
+ * @returns {jQuery.Promise} Promise, resolved when part is added
  */
 ve.dm.MWTransclusionModel.prototype.addPart = function ( part, index ) {
+	var deferred = $.Deferred();
 	if ( !( part instanceof ve.dm.MWTransclusionPartModel ) ) {
 		throw new Error( 'Invalid transclusion part' );
 	}
-	this.queue.push( { 'part': part, 'index': index } );
+	this.queue.push( { 'part': part, 'index': index, 'deferred': deferred } );
+
 	// Fetch on next yield to process items in the queue together, subsequent calls to fetch will
 	// have no effect because the queue will be clear
 	setTimeout( ve.bind( this.fetch, this ) );
+
+	return deferred.promise();
 };
 
 /**
