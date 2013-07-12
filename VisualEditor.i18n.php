@@ -430,7 +430,8 @@ See also:
 See also:
 * {{msg-mw|Visualeditor-dialog-meta-languages-readonlynote}}',
 	'visualeditor-savedialog-error-badtoken' => 'Error displayed in the save dialog if saving the edit failed due to an invalid edit token (likely due to the user having logged out in a separate window, or logged in again)',
-	'visualeditor-savedialog-label-create' => 'Label text for save button when the user is creating a new page',
+	'visualeditor-savedialog-label-create' => 'Label text for save button when the user is creating a new page.
+{{Identical|Create page}}',
 	'visualeditor-savedialog-label-error' => 'Label in front of a save dialog error sentence, separated by {{msg-mw|colon-separator}}.
 {{Identical|Error}}',
 	'visualeditor-savedialog-label-report' => 'Label for button to trigger report',
@@ -473,7 +474,7 @@ Parameters:
  * @author زكريا
  */
 $messages['ar'] = array(
-	'tag-visualeditor' => '[[Special:Tags|وسم]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|المحرر المرئي]]',
+	'tag-visualeditor' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|المحرر المرئي]]',
 	'tag-visualeditor-description' => 'أجري التعديل باستخدام [[{{MediaWiki:Visualeditor-descriptionpagelink}}|المحرر المرئي]]',
 	'tooltip-ca-createsource' => 'إنشاء الكود المصدري لهذه الصفحة',
 	'tooltip-ca-editsource' => 'عدل الكود المصدري لهذه الصفحة',
@@ -633,9 +634,14 @@ $messages['as'] = array(
  * @author Xuacu
  */
 $messages['ast'] = array(
-	'tag-visualeditor' => '[[Special:Tags|Etiqueta]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
+	'guidedtour-tour-vegendersurvey-description' => "Al participar nesta encuesta, da'l so consentimientu a la tresferencia de la información qu'unvie a la Fundación Wikimedia nos Estaos Xuníos y otros llugares. La información recoyida ye namái col envís de facer investigación interna y nun s'asociará publicamente cola so cuenta. Sicasí, podemos compartir os resultaos de la encuesta col públicu de mou anónimu o agregáu.",
+	'guidedtour-tour-vegendersurvey-female' => 'Muyer',
+	'guidedtour-tour-vegendersurvey-male' => 'Home',
+	'guidedtour-tour-vegendersurvey-optout' => 'Prefiero nun dicilo',
+	'guidedtour-tour-vegendersurvey-title' => "Por favor, seleicione'l so xéneru",
+	'tag-visualeditor' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
 	'tag-visualeditor-description' => 'Edición fecha usando [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
-	'tag-visualeditor-needcheck' => '[[Special:Tags|Etiqueta]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor: Check]]',
+	'tag-visualeditor-needcheck' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor: Check]]',
 	'tag-visualeditor-needcheck-description' => "Edición fecha usando [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]] na que'l sistema detectó que'l testu wiki pue tener cambeos non deseaos.",
 	'tooltip-ca-createsource' => "Crear el códigu fonte d'esta páxina",
 	'tooltip-ca-editsource' => "Editar el códigu fonte d'esta páxina",
@@ -733,13 +739,12 @@ $messages['ast'] = array(
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Disminuir la sangría',
 	'visualeditor-inspector-close-tooltip' => 'Zarrar',
 	'visualeditor-inspector-remove-tooltip' => 'Desaniciar',
+	'visualeditor-languageinspector-block-tooltip' => 'Bloque de llingua: $1$2',
+	'visualeditor-languageinspector-block-tooltip-rtldirection' => ': Drecha a izquierda',
 	'visualeditor-linkinspector-suggest-external-link' => 'Enllaz esternu',
 	'visualeditor-linkinspector-suggest-matching-page' => 'Páxina que coincide',
 	'visualeditor-linkinspector-suggest-new-page' => 'Páxina nueva',
 	'visualeditor-linkinspector-title' => 'Hiperenllaz',
-	'visualeditor-mwmathinspector-title' => 'LaTeX',
-	'visualeditor-languageinspector-block-tooltip' => 'Bloque de llingua: $1$2',
-	'visualeditor-languageinspector-block-tooltip-rtldirection' => ': Drecha a izquierda',
 	'visualeditor-listbutton-bullet-tooltip' => 'Llista con viñetes',
 	'visualeditor-listbutton-number-tooltip' => 'Llista numberada',
 	'visualeditor-loadwarning' => "Error al cargar los datos dende'l sirvidor: $1. ¿Quies volver a intentalo?",
@@ -747,6 +752,7 @@ $messages['ast'] = array(
 	'visualeditor-mainnamespacepagelink' => 'Project:Espaciu principal',
 	'visualeditor-media-input-placeholder' => 'Buscar multimedia',
 	'visualeditor-meta-tool' => 'Configuración de páxina',
+	'visualeditor-mwmathinspector-title' => 'LaTeX',
 	'visualeditor-notification-created' => 'Creóse "$1".',
 	'visualeditor-notification-restored' => 'Restauróse $1.',
 	'visualeditor-notification-saved' => 'Se guardaron los cambeos fechos en "$1".',
@@ -782,11 +788,6 @@ $messages['ast'] = array(
 	'visualeditor-usernamespacepagelink' => "Project:Espaciu de nomes d'usuariu",
 	'visualeditor-viewpage-savewarning' => '¿Seguro que quies volver al mou de visualización ensin guardar primero?',
 	'visualeditor-window-title' => 'Inspeicionar',
-	'guidedtour-tour-vegendersurvey-title' => "Por favor, seleicione'l so xéneru",
-	'guidedtour-tour-vegendersurvey-description' => "Al participar nesta encuesta, da'l so consentimientu a la tresferencia de la información qu'unvie a la Fundación Wikimedia nos Estaos Xuníos y otros llugares. La información recoyida ye namái col envís de facer investigación interna y nun s'asociará publicamente cola so cuenta. Sicasí, podemos compartir os resultaos de la encuesta col públicu de mou anónimu o agregáu.",
-	'guidedtour-tour-vegendersurvey-male' => 'Home',
-	'guidedtour-tour-vegendersurvey-female' => 'Muyer',
-	'guidedtour-tour-vegendersurvey-optout' => 'Prefiero nun dicilo',
 );
 
 /** Bashkir (башҡортса)
@@ -815,76 +816,70 @@ $messages['ba'] = array(
  * @author Чаховіч Уладзіслаў
  */
 $messages['be'] = array(
-	'tag-visualeditor' => '[[Special:Tags|Тэг]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|Візуальны рэдактар]]',
+	'tag-visualeditor' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|Візуальны рэдактар]]',
 	'tag-visualeditor-description' => 'Праўка зроблена з выкарыстаннем [[{{MediaWiki:Visualeditor-descriptionpagelink}}|візуальнага рэдактара]]',
 	'tooltip-ca-editsource' => 'Правіць зыходны код гэтай старонкі',
 	'tooltip-ca-ve-edit' => 'Правіць гэту старонку з візуальным рэдактарам',
 	'visualeditor' => 'VisualEditor',
-	'visualeditor-desc' => 'Візуальны рэдактар для MediaWiki',
-	'visualeditor-preference-enable' => 'Уключыць VisualEditor (толькі ў [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|асноўнай]] і [[{{MediaWiki:Visualeditor-usernamespacepagelink}}|асабістай]] прасторах імёнаў).',
-	'visualeditor-mainnamespacepagelink' => 'Project:Асноўная прастора',
-	'visualeditor-usernamespacepagelink' => 'Project:Асабістая прастора',
-	'visualeditor-notification-saved' => 'Вашы змены ў $1 былі захаваны.',
-	'visualeditor-notification-created' => 'Старонка $1 была створана.',
-	'visualeditor-notification-restored' => 'Папярэдняя версія на старонцы $1 была адноўлена.',
-	'visualeditor-notification-reported' => 'Дзякуй, што паведамілі пра ўзніклую праблему.',
+	'visualeditor-aliennode-tooltip' => 'Прабачце, гэты элемент не можа быць адрэдагаваны з дапамогай VisualEditor', # Fuzzy
+	'visualeditor-annotationbutton-bold-tooltip' => 'Цёмны',
+	'visualeditor-annotationbutton-italic-tooltip' => 'Курсіў',
+	'visualeditor-annotationbutton-link-tooltip' => 'Спасылка',
 	'visualeditor-ca-editsource' => 'Правіць зыходны тэкст',
-	'visualeditor-ca-ve-edit' => 'Візуальны рэдактар',
 	'visualeditor-ca-ve-create' => 'Візуальны рэдактар',
+	'visualeditor-ca-ve-edit' => 'Візуальны рэдактар',
+	'visualeditor-clearbutton-tooltip' => 'Ачысціць фарматаванне',
+	'visualeditor-desc' => 'Візуальны рэдактар для MediaWiki',
+	'visualeditor-descriptionpagelink' => 'Project:Візуальны рэдактар',
 	'visualeditor-dialog-action-apply' => 'Захаваць змены',
 	'visualeditor-dialog-action-cancel' => 'Адмена',
 	'visualeditor-dialog-action-close' => 'Закрыць',
-	'visualeditor-toolbar-savedialog' => 'Праверыць і захаваць',
-	'visualeditor-savedialog-title-review' => 'Праверце вашы праўкі',
-	'visualeditor-savedialog-title-report' => 'Паведаміць пра праблему',
-	'visualeditor-savedialog-title-save' => 'Захаваць змены',
-	'visualeditor-savedialog-label-review-wrong' => 'Штосьці пайшло не так',
-	'visualeditor-savedialog-label-review-good' => 'Нядрэнна выглядае для мяне',
-	'visualeditor-savedialog-label-report' => 'Паведаміць пра праблему',
-	'visualeditor-savedialog-label-create' => 'Стварыць старонку',
-	'visualeditor-savedialog-label-save' => 'Запісаць',
-	'visualeditor-savedialog-label-restore' => 'Аднавіць старонку',
+	'visualeditor-dialogbutton-media-tooltip' => 'Файл',
+	'visualeditor-differror' => 'Памылка загрузкі дадзеных з сервера: $1.',
+	'visualeditor-editconflict' => 'Вашы змены не атрымалася запісаць, таму што адбыўся канфлікт правак. Жадаеце вырашыць канфлікт уручную?',
 	'visualeditor-editnotices-tool' => '$1 {{PLURAL:$1|паведамленне|паведамленні|паведамленняў}}',
+	'visualeditor-editsummary' => 'Апішыце, што вы змянілі',
+	'visualeditor-feedback-link' => 'Project:VisualEditor/Водгукі',
 	'visualeditor-feedback-tool' => 'Пакінуць водгук',
-	'visualeditor-window-title' => 'Праверыць',
-	'visualeditor-linkinspector-title' => 'Гіперспасылка',
-	'visualeditor-linkinspector-suggest-new-page' => 'Новая старонка',
-	'visualeditor-linkinspector-suggest-external-link' => 'Вонкавая спасылка',
-	'visualeditor-formatdropdown-title' => 'Фарматаванне',
-	'visualeditor-formatdropdown-format-paragraph' => 'Абзац',
 	'visualeditor-formatdropdown-format-heading1' => 'Загаловак 1',
 	'visualeditor-formatdropdown-format-heading2' => 'Загаловак 2',
 	'visualeditor-formatdropdown-format-heading3' => 'Загаловак 3',
 	'visualeditor-formatdropdown-format-heading4' => 'Загаловак 4',
 	'visualeditor-formatdropdown-format-heading5' => 'Загаловак 5',
 	'visualeditor-formatdropdown-format-heading6' => 'Загаловак 6',
+	'visualeditor-formatdropdown-format-paragraph' => 'Абзац',
 	'visualeditor-formatdropdown-format-preformatted' => 'Прэфарматаваны',
-	'visualeditor-annotationbutton-bold-tooltip' => 'Цёмны',
-	'visualeditor-annotationbutton-italic-tooltip' => 'Курсіў',
-	'visualeditor-annotationbutton-link-tooltip' => 'Спасылка',
-	'visualeditor-dialogbutton-media-tooltip' => 'Файл',
+	'visualeditor-formatdropdown-title' => 'Фарматаванне',
+	'visualeditor-historybutton-redo-tooltip' => 'Паўтарыць',
+	'visualeditor-historybutton-undo-tooltip' => 'Адкаціць',
 	'visualeditor-indentationbutton-indent-tooltip' => 'Павялічыць водступ',
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Паменшыць водступ',
-	'visualeditor-listbutton-number-tooltip' => 'Нумараваны спіс',
-	'visualeditor-listbutton-bullet-tooltip' => 'Маркіраваны спіс',
-	'visualeditor-clearbutton-tooltip' => 'Ачысціць фарматаванне',
-	'visualeditor-historybutton-undo-tooltip' => 'Адкаціць',
-	'visualeditor-historybutton-redo-tooltip' => 'Паўтарыць',
 	'visualeditor-inspector-close-tooltip' => 'Закрыць',
 	'visualeditor-inspector-remove-tooltip' => 'Выдаліць',
-	'visualeditor-viewpage-savewarning' => 'Вы сапраўды жадаеце вярнуцца ў рэжым прагляду, не захаваўшы змены?',
+	'visualeditor-linkinspector-suggest-external-link' => 'Вонкавая спасылка',
+	'visualeditor-linkinspector-suggest-new-page' => 'Новая старонка',
+	'visualeditor-linkinspector-title' => 'Гіперспасылка',
+	'visualeditor-listbutton-bullet-tooltip' => 'Маркіраваны спіс',
+	'visualeditor-listbutton-number-tooltip' => 'Нумараваны спіс',
 	'visualeditor-loadwarning' => 'Памылка пры загрузцы дадзеных: $1. Паўтарыць спробу?',
-	'visualeditor-differror' => 'Памылка загрузкі дадзеных з сервера: $1.',
-	'visualeditor-serializeerror' => 'Памылка загрузкі дадзеных з сервера: $1.',
+	'visualeditor-mainnamespacepagelink' => 'Project:Асноўная прастора',
+	'visualeditor-notification-created' => 'Старонка $1 была створана.',
+	'visualeditor-notification-restored' => 'Папярэдняя версія на старонцы $1 была адноўлена.',
+	'visualeditor-notification-saved' => 'Вашы змены ў $1 былі захаваны.',
+	'visualeditor-preference-enable' => 'Уключыць VisualEditor (толькі ў [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|асноўнай]] і [[{{MediaWiki:Visualeditor-usernamespacepagelink}}|асабістай]] прасторах імёнаў).',
+	'visualeditor-savedialog-label-create' => 'Стварыць старонку',
+	'visualeditor-savedialog-label-report' => 'Паведаміць пра праблему',
+	'visualeditor-savedialog-label-restore' => 'Аднавіць старонку',
+	'visualeditor-savedialog-label-review-good' => 'Нядрэнна выглядае для мяне', # Fuzzy
+	'visualeditor-savedialog-label-save' => 'Запісаць',
+	'visualeditor-savedialog-title-review' => 'Праверце вашы праўкі',
+	'visualeditor-savedialog-title-save' => 'Захаваць змены',
 	'visualeditor-saveerror' => 'Памылка захавання дадзеных на сервер: $1.',
-	'visualeditor-editconflict' => 'Вашы змены не атрымалася запісаць, таму што адбыўся канфлікт правак. Жадаеце вырашыць канфлікт уручную?',
-	'visualeditor-editsummary' => 'Апішыце, што вы змянілі',
-	'visualeditor-problem' => 'Апішыце, што пайшло не так',
-	'visualeditor-aliennode-tooltip' => 'Прабачце, гэты элемент не можа быць адрэдагаваны з дапамогай VisualEditor',
-	'visualeditor-descriptionpagelink' => 'Project:Візуальны рэдактар',
-	'visualeditor-alphawarning' => 'Вы выкарыстоўваеце альфа-версію [[{{MediaWiki:Visualeditor-descriptionpagelink}}|візуальнага рэдактара]]. Яна можа быць павольнай і рабіць памылковыя змены — калі ласка, правярайце кожную зробленую праўку.',
-	'visualeditor-report-notice' => 'Я разумею, што націснуўшы кнопку «Паведаміць пра праблему» я перадам свае змены і свой водгук, які будзе захоўвацца для аналізу. Я згодзен з тым, каб забяспечыць зваротную сувязь у адпаведнасці з [[{{MediaWiki:Visualeditor-report-link}}|умовамі выкарыстання]].',
-	'visualeditor-feedback-link' => 'Project:VisualEditor/Водгукі',
+	'visualeditor-serializeerror' => 'Памылка загрузкі дадзеных з сервера: $1.',
+	'visualeditor-toolbar-savedialog' => 'Праверыць і захаваць', # Fuzzy
+	'visualeditor-usernamespacepagelink' => 'Project:Асабістая прастора',
+	'visualeditor-viewpage-savewarning' => 'Вы сапраўды жадаеце вярнуцца ў рэжым прагляду, не захаваўшы змены?',
+	'visualeditor-window-title' => 'Праверыць',
 );
 
 /** Belarusian (Taraškievica orthography) (беларуская (тарашкевіца)‎)
@@ -892,9 +887,14 @@ $messages['be'] = array(
  * @author Wizardist
  */
 $messages['be-tarask'] = array(
-	'tag-visualeditor' => '[[Special:Tags|Тэг]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
+	'guidedtour-tour-vegendersurvey-description' => 'Удзельнічаючы ў гэтым апытаньні, вы пагаджаецеся на перадачу пададзеных вамі зьвестак у Фундацыі «Вікімэдыя» ў ЗША. Сабраная інфармацыя будзе скарыстаная толькі ў дасьледніцкіх мэтах і ня будзе публічна асацыяваная з вашым рахункам. Аднак мы можам апублікаваць вынікі гэтага апытаньня ў ананімізаванам ці згрупаванам выглядзе.',
+	'guidedtour-tour-vegendersurvey-female' => 'жаночы',
+	'guidedtour-tour-vegendersurvey-male' => 'мужчынскі',
+	'guidedtour-tour-vegendersurvey-optout' => 'не пазначаны',
+	'guidedtour-tour-vegendersurvey-title' => 'Калі ласка, пазначце ваш пол',
+	'tag-visualeditor' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
 	'tag-visualeditor-description' => 'Праўка зробленая празь [[{{MediaWiki:Visualeditor-descriptionpagelink}}|візуальны рэдактар]]',
-	'tag-visualeditor-needcheck' => '[[Special:Tags|Тэг]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor: Праверыць]]',
+	'tag-visualeditor-needcheck' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor: Праверыць]]',
 	'tag-visualeditor-needcheck-description' => 'Праўка была зроблена [[{{MediaWiki:Visualeditor-descriptionpagelink}}|візуальным рэдактарам]], і сыстэма заўважыла патэнцыйна непажаданыя зьмены ў вікітэксьце.',
 	'tooltip-ca-createsource' => 'Стварыць крынічны код гэтай старонкі',
 	'tooltip-ca-editsource' => 'Рэдагаваць крынічны тэкст гэтай старонкі',
@@ -1038,11 +1038,6 @@ $messages['be-tarask'] = array(
 	'visualeditor-usernamespacepagelink' => 'Project:Старонка ўдзельніка',
 	'visualeditor-viewpage-savewarning' => 'Вы ўпэўненыя, што жадаеце перайсьці ў рэжым прагляду без папярэдняга захаваньня?',
 	'visualeditor-window-title' => 'Дасьледваць',
-	'guidedtour-tour-vegendersurvey-title' => 'Калі ласка, пазначце ваш пол',
-	'guidedtour-tour-vegendersurvey-description' => 'Удзельнічаючы ў гэтым апытаньні, вы пагаджаецеся на перадачу пададзеных вамі зьвестак у Фундацыі «Вікімэдыя» ў ЗША. Сабраная інфармацыя будзе скарыстаная толькі ў дасьледніцкіх мэтах і ня будзе публічна асацыяваная з вашым рахункам. Аднак мы можам апублікаваць вынікі гэтага апытаньня ў ананімізаванам ці згрупаванам выглядзе.',
-	'guidedtour-tour-vegendersurvey-male' => 'мужчынскі',
-	'guidedtour-tour-vegendersurvey-female' => 'жаночы',
-	'guidedtour-tour-vegendersurvey-optout' => 'не пазначаны',
 );
 
 /** Bulgarian (български)
@@ -1087,9 +1082,14 @@ $messages['bg'] = array(
  * @author Runab
  */
 $messages['bn'] = array(
-	'tag-visualeditor' => '[[Special:Tags|ট্যাগ]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|ভিজ্যুয়ালএডিটর]]',
+	'guidedtour-tour-vegendersurvey-description' => 'এই জরিপে অংশগ্রহণের দ্বারা, আপনি উইকিমিডিয়া ফাউন্ডেশনে আপনার এই জমাকৃত তথ্য মার্কিন যুক্তরাষ্ট্র এবং অন্যত্র স্থানান্তর করতে সম্মত হচ্ছেন। সংগৃহীত তথ্য কেবলমাত্র অভ্যন্তরীণ গবেষণার উদ্দেশ্যে এবং সর্বজনীনভাবে আপনার অ্যাকাউন্টের সঙ্গে সংযুক্ত করা নয়। কিন্তু, আমরা এই সমীক্ষার ফলাফল অনামী বা সার্বজনীন সমষ্টিভূত ফর্মের সঙ্গে ভাগ করে নিতে পারি।',
+	'guidedtour-tour-vegendersurvey-female' => 'মহিলা',
+	'guidedtour-tour-vegendersurvey-male' => 'পুরুষ',
+	'guidedtour-tour-vegendersurvey-optout' => 'বলতে পছন্দ করি না',
+	'guidedtour-tour-vegendersurvey-title' => 'দয়া করে আপনার লিঙ্গ নির্বাচন করুন',
+	'tag-visualeditor' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|ভিজ্যুয়ালএডিটর]]',
 	'tag-visualeditor-description' => 'সম্পাদনাটি [[{{MediaWiki:Visualeditor-descriptionpagelink}}|ভিজ্যুয়ালএডিটর]] ব্যবহার করে করা হয়েছে',
-	'tag-visualeditor-needcheck' => '[[Special:Tags|ট্যাগ]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|ভিজ্যুয়ালএডিটর: পরীক্ষা করুন]]',
+	'tag-visualeditor-needcheck' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|ভিজ্যুয়ালএডিটর: পরীক্ষা করুন]]',
 	'tag-visualeditor-needcheck-description' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|ভিজ্যুয়ালএডিটর]] ব্যবহার করে সম্পাদনা যেখানে সিস্টেম সনাক্ত করেছে উইকিটেক্সটে সম্ভাব্য অনিচ্ছাকৃত পরিবর্তন হচ্ছে।',
 	'tooltip-ca-createsource' => 'এই পাতার উৎস কোড তৈরি করুন',
 	'tooltip-ca-editsource' => 'এই পাতার উৎস কোড সম্পাদনা করুন',
@@ -1191,7 +1191,6 @@ $messages['bn'] = array(
 	'visualeditor-linkinspector-suggest-matching-page' => 'মিলে যাওয়া পাতা',
 	'visualeditor-linkinspector-suggest-new-page' => 'নতুন পাতা',
 	'visualeditor-linkinspector-title' => 'হাইপারলিঙ্ক',
-	'visualeditor-mwmathinspector-title' => 'ল্যাটেক',
 	'visualeditor-listbutton-bullet-tooltip' => 'বুলেটকৃত তালিকা',
 	'visualeditor-listbutton-number-tooltip' => 'সংখ্যায়িত তালিকা',
 	'visualeditor-loadwarning' => 'সার্ভার থেকে ডাটা লোডে ত্রুটি: $1। আপনি কি পুনরায় চেষ্টা করতে ইচ্ছুক?',
@@ -1199,6 +1198,7 @@ $messages['bn'] = array(
 	'visualeditor-mainnamespacepagelink' => 'Project:প্রধান নামস্থান',
 	'visualeditor-media-input-placeholder' => 'মিডিয়ার জন্য অনুসন্ধান',
 	'visualeditor-meta-tool' => 'পাতা সেটিং',
+	'visualeditor-mwmathinspector-title' => 'ল্যাটেক',
 	'visualeditor-notification-created' => '$1 তৈরি করা হয়েছে।',
 	'visualeditor-notification-restored' => '$1 পুনঃস্থাপন করা হয়েছে।',
 	'visualeditor-notification-saved' => '$1 পাতায় আপনার পরিবর্তনগুলো সংরক্ষিত হয়েছে।',
@@ -1234,11 +1234,6 @@ $messages['bn'] = array(
 	'visualeditor-usernamespacepagelink' => 'Project:ব্যবহারকারী নামস্থান',
 	'visualeditor-viewpage-savewarning' => 'আপনি কি নিশ্চিত যে আপনি সংরক্ষণ ছাড়াই প্রদর্শন মোডে ফিরে যেতে ইচ্ছুক?',
 	'visualeditor-window-title' => 'পরিদর্শন',
-	'guidedtour-tour-vegendersurvey-title' => 'দয়া করে আপনার লিঙ্গ নির্বাচন করুন',
-	'guidedtour-tour-vegendersurvey-description' => 'এই জরিপে অংশগ্রহণের দ্বারা, আপনি উইকিমিডিয়া ফাউন্ডেশনে আপনার এই জমাকৃত তথ্য মার্কিন যুক্তরাষ্ট্র এবং অন্যত্র স্থানান্তর করতে সম্মত হচ্ছেন। সংগৃহীত তথ্য কেবলমাত্র অভ্যন্তরীণ গবেষণার উদ্দেশ্যে এবং সর্বজনীনভাবে আপনার অ্যাকাউন্টের সঙ্গে সংযুক্ত করা নয়। কিন্তু, আমরা এই সমীক্ষার ফলাফল অনামী বা সার্বজনীন সমষ্টিভূত ফর্মের সঙ্গে ভাগ করে নিতে পারি।',
-	'guidedtour-tour-vegendersurvey-male' => 'পুরুষ',
-	'guidedtour-tour-vegendersurvey-female' => 'মহিলা',
-	'guidedtour-tour-vegendersurvey-optout' => 'বলতে পছন্দ করি না',
 );
 
 /** Breton (brezhoneg)
@@ -1520,9 +1515,14 @@ $messages['ce'] = array(
  * @author Mormegil
  */
 $messages['cs'] = array(
-	'tag-visualeditor' => '[[Special:Tags|Značka]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
+	'guidedtour-tour-vegendersurvey-description' => 'Účastí v tomto průzkumu souhlasíte s předáním informací, které uvedete, nadaci Wikimedia Foundation do Spojených států amerických a jinam. Získané informace slouží pouze k interním výzkumným účelům a nebudou veřejně propojeny s vaším účtem. Výsledky tohoto průzkumu však můžeme zveřejnit v anonymizované nebo souhrnné formě.',
+	'guidedtour-tour-vegendersurvey-female' => 'Žena',
+	'guidedtour-tour-vegendersurvey-male' => 'Muž',
+	'guidedtour-tour-vegendersurvey-optout' => 'Nechci sdělit',
+	'guidedtour-tour-vegendersurvey-title' => 'Vyberte prosím své pohlaví',
+	'tag-visualeditor' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
 	'tag-visualeditor-description' => 'Editace provedená za použití [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditoru]]',
-	'tag-visualeditor-needcheck' => '[[Special:Tags|Značka]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor: Zkontrolovat]]',
+	'tag-visualeditor-needcheck' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor: Zkontrolovat]]',
 	'tag-visualeditor-needcheck-description' => 'Editace provedená za použití [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditoru]], u které systém detekoval možné nezamýšlené změny wikitextu.',
 	'tooltip-ca-createsource' => 'Založit zdrojový kód této stránky',
 	'tooltip-ca-editsource' => 'Editovat zdrojový kód této stránky',
@@ -1620,11 +1620,12 @@ $messages['cs'] = array(
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Zmenšit odsazení',
 	'visualeditor-inspector-close-tooltip' => 'Zavřít',
 	'visualeditor-inspector-remove-tooltip' => 'Odebrat',
+	'visualeditor-languageinspector-block-tooltip' => 'Jazykový blok: $1$2',
+	'visualeditor-languageinspector-block-tooltip-rtldirection' => ': zprava doleva',
 	'visualeditor-linkinspector-suggest-external-link' => 'Externí odkaz',
 	'visualeditor-linkinspector-suggest-matching-page' => 'Odpovídající stránka',
 	'visualeditor-linkinspector-suggest-new-page' => 'Nová stránka',
 	'visualeditor-linkinspector-title' => 'Hypertextový odkaz',
-	'visualeditor-mwmathinspector-title' => 'LaTeX',
 	'visualeditor-listbutton-bullet-tooltip' => 'Seznam s odrážkami',
 	'visualeditor-listbutton-number-tooltip' => 'Číslovaný seznam',
 	'visualeditor-loadwarning' => 'Chyba při načítání dat ze serveru: $1. Chcete operaci opakovat?',
@@ -1632,6 +1633,7 @@ $messages['cs'] = array(
 	'visualeditor-mainnamespacepagelink' => 'Project:Hlavní jmenný prostor',
 	'visualeditor-media-input-placeholder' => 'Hledat média',
 	'visualeditor-meta-tool' => 'Nastavení stránky',
+	'visualeditor-mwmathinspector-title' => 'LaTeX',
 	'visualeditor-notification-created' => 'Strana $1 byla založena.',
 	'visualeditor-notification-restored' => 'Stránka $1 byla obnovena.',
 	'visualeditor-notification-saved' => 'Vaše změny do $1 byly uloženy.',
@@ -1646,6 +1648,7 @@ $messages['cs'] = array(
 	'visualeditor-reference-search-reuse' => 'Použít existující zdroj',
 	'visualeditor-referencelist-isempty' => 'Na této stránce neexistuje žádná reference ve skupině „$1“.',
 	'visualeditor-referencelist-missingref' => 'Tato reference je definována v šabloně nebo jiné generované části textu a zatím ji lze editovat jen v režimu zdrojového textu.',
+	'visualeditor-savedialog-error-badtoken' => 'Vaši editaci jsme nemohli zpracovat, protože vypršela vaše relace.',
 	'visualeditor-savedialog-label-create' => 'Vytvořit stránku',
 	'visualeditor-savedialog-label-error' => 'Chyba',
 	'visualeditor-savedialog-label-report' => 'Nahlásit problém',
@@ -1667,20 +1670,20 @@ $messages['cs'] = array(
 	'visualeditor-usernamespacepagelink' => 'Project:Jmenný prostor Uživatel',
 	'visualeditor-viewpage-savewarning' => 'Opravdu se chcete vrátit k režimu zobrazení bez uložení?',
 	'visualeditor-window-title' => 'Zkontrolovat',
-	'guidedtour-tour-vegendersurvey-title' => 'Vyberte prosím své pohlaví',
-	'guidedtour-tour-vegendersurvey-description' => 'Účastí v tomto průzkumu souhlasíte s předáním informací, které uvedete, nadaci Wikimedia Foundation do Spojených států amerických a jinam. Získané informace slouží pouze k interním výzkumným účelům a nebudou veřejně propojeny s vaším účtem. Výsledky tohoto průzkumu však můžeme zveřejnit v anonymizované nebo souhrnné formě.',
-	'guidedtour-tour-vegendersurvey-male' => 'Muž',
-	'guidedtour-tour-vegendersurvey-female' => 'Žena',
-	'guidedtour-tour-vegendersurvey-optout' => 'Nechci sdělit',
 );
 
 /** Welsh (Cymraeg)
  * @author Lloffiwr
  */
 $messages['cy'] = array(
-	'tag-visualeditor' => '[[Special:Tags|Tag]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|y Golygydd Gweledol]]',
+	'guidedtour-tour-vegendersurvey-description' => "Wrth fod yn rhan o'r arolwg hwn, rydych yn cytuno y bydd eich atebion yn cael eu trosglwyddo i Sefydliad Wikimedia yn Unol Daleithiau America a mannau eraill. At ddiben ymchwil mewnol yn unig y cesglir y wybodaeth hon ac ni chaiff ei glymu'n gyhoeddus wrth eich cyfrif. Ond, efallai y byddwn yn datgelu canlyniadau'r arolwg hwn i'r cyhoedd ar ffurf gwybodaeth dienw neu wedi ei chydgrynhoi.",
+	'guidedtour-tour-vegendersurvey-female' => 'Benyw',
+	'guidedtour-tour-vegendersurvey-male' => 'Gwryw',
+	'guidedtour-tour-vegendersurvey-optout' => "Mae'n well gennyf beidio a'i nodi",
+	'guidedtour-tour-vegendersurvey-title' => 'Nodwch eich rhywedd',
+	'tag-visualeditor' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|y Golygydd Gweledol]]',
 	'tag-visualeditor-description' => "Golygwyd gyda'r [[{{MediaWiki:Visualeditor-descriptionpagelink}}|Golygydd Gweledol]]",
-	'tag-visualeditor-needcheck' => '[[Special:Tags|Tag]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|y Golygydd Gweledol:Angen gwirio]]',
+	'tag-visualeditor-needcheck' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|y Golygydd Gweledol:Angen gwirio]]',
 	'tag-visualeditor-needcheck-description' => "Golygwyd gyda'r [[{{MediaWiki:Visualeditor-descriptionpagelink}}|Golygydd Gweledol]] pan adnabu'r sustem y gallai'r gystrawen wici arwain at newidiadau anfwriadol.",
 	'tooltip-ca-createsource' => "Gosod cod yn sail i'r dudalen newydd hon",
 	'tooltip-ca-editsource' => "Golygu'r cod sy'n sail i'r dudalen hon",
@@ -1824,11 +1827,27 @@ $messages['cy'] = array(
 	'visualeditor-usernamespacepagelink' => 'Project:Parth y defnyddwyr',
 	'visualeditor-viewpage-savewarning' => "Ydych chi wir am gamu'n ôl i edrych ar y dudalen heb roi eich newidiadau ar gadw?",
 	'visualeditor-window-title' => 'Archwilio',
-	'guidedtour-tour-vegendersurvey-title' => 'Nodwch eich rhywedd',
-	'guidedtour-tour-vegendersurvey-description' => "Wrth fod yn rhan o'r arolwg hwn, rydych yn cytuno y bydd eich atebion yn cael eu trosglwyddo i Sefydliad Wikimedia yn Unol Daleithiau America a mannau eraill. At ddiben ymchwil mewnol yn unig y cesglir y wybodaeth hon ac ni chaiff ei glymu'n gyhoeddus wrth eich cyfrif. Ond, efallai y byddwn yn datgelu canlyniadau'r arolwg hwn i'r cyhoedd ar ffurf gwybodaeth dienw neu wedi ei chydgrynhoi.",
-	'guidedtour-tour-vegendersurvey-male' => 'Gwryw',
-	'guidedtour-tour-vegendersurvey-female' => 'Benyw',
-	'guidedtour-tour-vegendersurvey-optout' => "Mae'n well gennyf beidio a'i nodi",
+);
+
+/** Danish (dansk)
+ * @author Cgtdk
+ */
+$messages['da'] = array(
+	'visualeditor-annotationbutton-bold-tooltip' => 'Fed',
+	'visualeditor-annotationbutton-italic-tooltip' => 'Kursiv',
+	'visualeditor-annotationbutton-link-tooltip' => 'Link',
+	'visualeditor-beta-label' => 'beta',
+	'visualeditor-ca-editsource' => 'Rediger kilde',
+	'visualeditor-ca-editsource-section' => 'rediger kilde',
+	'visualeditor-dialog-action-close' => 'Luk',
+	'visualeditor-dialog-meta-categories-category' => 'Kategori',
+	'visualeditor-dialog-meta-categories-data-label' => 'Kategorier',
+	'visualeditor-dialog-meta-categories-input-newcategorylabel' => 'Ny kategori',
+	'visualeditor-dialog-meta-categories-input-placeholder' => 'Tilføj en kategori',
+	'visualeditor-dialog-meta-categories-section' => 'Kategorier',
+	'visualeditor-dialog-meta-categories-sortkey-label' => 'Sorter denne side som',
+	'visualeditor-dialog-meta-languages-label' => 'Sprog',
+	'visualeditor-dialog-meta-languages-section' => 'Sprog',
 );
 
 /** German (Deutsch)
@@ -1843,9 +1862,14 @@ $messages['cy'] = array(
  * @author Tomabrafix
  */
 $messages['de'] = array(
-	'tag-visualeditor' => '[[Special:Tags|Markierungen]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
+	'guidedtour-tour-vegendersurvey-description' => 'Durch die Teilnahme an dieser Umfrage stimmst du der Übertragung der eingegebenen Informationen an die Wikimedia Foundation in den Vereinigten Staaten und anderswo zu. Die gesammelten Informationen dienen der internen Forschung und werden nicht öffentlich mit deinem Benutzerkonto verknüpft. Jedoch können wir die Ergebnisse dieser Umfrage mit der Öffentlichkeit in anonymisierter oder zusammengefasster Form teilen.',
+	'guidedtour-tour-vegendersurvey-female' => 'Weiblich',
+	'guidedtour-tour-vegendersurvey-male' => 'Männlich',
+	'guidedtour-tour-vegendersurvey-optout' => 'Ich will es nicht preisgeben',
+	'guidedtour-tour-vegendersurvey-title' => 'Bitte Geschlecht auswählen',
+	'tag-visualeditor' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
 	'tag-visualeditor-description' => 'Bearbeitet mit dem [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
-	'tag-visualeditor-needcheck' => '[[Special:Tags|Markierungen]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor: Überprüfung]]',
+	'tag-visualeditor-needcheck' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor: Überprüfung]]',
 	'tag-visualeditor-needcheck-description' => 'Mit dem [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]] vorgenommene Bearbeitung, bei der das System möglicherweise ungewollte Änderungen im Wikitext entdeckt hat.',
 	'tooltip-ca-createsource' => 'Den Quelltext dieser Seite erstellen',
 	'tooltip-ca-editsource' => 'Den Quelltext dieser Seite bearbeiten',
@@ -1943,13 +1967,12 @@ $messages['de'] = array(
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Einzug verkleinern',
 	'visualeditor-inspector-close-tooltip' => 'Schließen',
 	'visualeditor-inspector-remove-tooltip' => 'Entfernen',
+	'visualeditor-languageinspector-block-tooltip' => 'Sprachblock: $1$2',
+	'visualeditor-languageinspector-block-tooltip-rtldirection' => ': Rechts nach links',
 	'visualeditor-linkinspector-suggest-external-link' => 'Weblink',
 	'visualeditor-linkinspector-suggest-matching-page' => 'Übereinstimmende Seite',
 	'visualeditor-linkinspector-suggest-new-page' => 'Neue Seite',
 	'visualeditor-linkinspector-title' => 'Link',
-	'visualeditor-mwmathinspector-title' => 'LaTeX',
-	'visualeditor-languageinspector-block-tooltip' => 'Sprachblock: $1$2',
-	'visualeditor-languageinspector-block-tooltip-rtldirection' => ': Rechts nach links',
 	'visualeditor-listbutton-bullet-tooltip' => 'Aufzählungszeichen',
 	'visualeditor-listbutton-number-tooltip' => 'Nummerierte Liste',
 	'visualeditor-loadwarning' => 'Fehler beim Laden der Daten vom Server: $1. Soll der Vorgang erneut durchgeführt werden?',
@@ -1957,6 +1980,7 @@ $messages['de'] = array(
 	'visualeditor-mainnamespacepagelink' => 'Project:Artikelnamensraum',
 	'visualeditor-media-input-placeholder' => 'Nach Medien suchen',
 	'visualeditor-meta-tool' => 'Seiteneinstellungen',
+	'visualeditor-mwmathinspector-title' => 'LaTeX',
 	'visualeditor-notification-created' => '$1 wurde erstellt.',
 	'visualeditor-notification-restored' => '$1 wurde wiederhergestellt.',
 	'visualeditor-notification-saved' => 'Deine Änderungen an $1 wurden gespeichert.',
@@ -1971,6 +1995,7 @@ $messages['de'] = array(
 	'visualeditor-reference-search-reuse' => 'Eine vorhandene Quelle verwenden',
 	'visualeditor-referencelist-isempty' => 'Auf dieser Seite gibt es keine Einzelnachweise mit der Gruppe „$1“.',
 	'visualeditor-referencelist-missingref' => 'Dieser Einzelnachweis ist in einer Vorlage oder einem anderen erzeugten Block definiert und kann derzeit nur im Quelltextmodus bearbeitet werden.',
+	'visualeditor-savedialog-error-badtoken' => 'Deine Bearbeitung konnte nicht verarbeitet werden, da deine Sitzung abgelaufen ist.',
 	'visualeditor-savedialog-label-create' => 'Seite erstellen',
 	'visualeditor-savedialog-label-error' => 'Fehler',
 	'visualeditor-savedialog-label-report' => 'Problem melden',
@@ -1992,11 +2017,6 @@ $messages['de'] = array(
 	'visualeditor-usernamespacepagelink' => 'Project:Benutzernamensraum',
 	'visualeditor-viewpage-savewarning' => 'Bist du sicher, dass du zum Ansichtsmodus wechseln möchtest, ohne vorher zu speichern?',
 	'visualeditor-window-title' => 'Überprüfen',
-	'guidedtour-tour-vegendersurvey-title' => 'Bitte Geschlecht auswählen',
-	'guidedtour-tour-vegendersurvey-description' => 'Durch die Teilnahme an dieser Umfrage stimmst du der Übertragung der eingegebenen Informationen an die Wikimedia Foundation in den Vereinigten Staaten und anderswo zu. Die gesammelten Informationen dienen der internen Forschung und werden nicht öffentlich mit deinem Benutzerkonto verknüpft. Jedoch können wir die Ergebnisse dieser Umfrage mit der Öffentlichkeit in anonymisierter oder zusammengefasster Form teilen.',
-	'guidedtour-tour-vegendersurvey-male' => 'Männlich',
-	'guidedtour-tour-vegendersurvey-female' => 'Weiblich',
-	'guidedtour-tour-vegendersurvey-optout' => 'Ich will es nicht preisgeben',
 );
 
 /** German (formal address) (Deutsch (Sie-Form)‎)
@@ -2022,80 +2042,73 @@ $messages['diq'] = array(
  * @author Michawiki
  */
 $messages['dsb'] = array(
-	'tag-visualeditor' => '[[Special:Tags|Woznamenjenja]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
+	'tag-visualeditor' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
 	'tag-visualeditor-description' => 'Z pomocu [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditora]] wobźěłany',
 	'tooltip-ca-editsource' => 'Žrědłowy kode toś togo boka wobźěłaś',
 	'tooltip-ca-ve-edit' => 'Toś ten bok z VisualEditor wobźěłaś',
 	'visualeditor' => 'VisualEditor',
-	'visualeditor-desc' => 'WYSIWYG-editor za MediaWiki',
-	'visualeditor-preference-enable' => 'VisualEditor zmóžniś (jeno w [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|głownem mjenjowem rumje]] a [[{{MediaWiki:Visualeditor-usernamespacepagelink}}|wužywarskem mjenjowem rumje]])',
-	'visualeditor-mainnamespacepagelink' => 'Project:Głowny mjenjowy rum',
-	'visualeditor-usernamespacepagelink' => 'Project:Wužywarski mjenjowy rum',
-	'visualeditor-notification-saved' => 'Twóje změny na $1 su se składowali.',
-	'visualeditor-notification-created' => '$1 jo se napórał.',
-	'visualeditor-notification-restored' => '$1 jo se wótnowił.',
-	'visualeditor-notification-reported' => 'Twój problem jo se k wěsći dał. Wjeliki źěk.',
+	'visualeditor-aliennode-tooltip' => 'Bóžko njedajo se toś ten element z pomocu VisualEditora wobźěłaś', # Fuzzy
+	'visualeditor-annotationbutton-bold-tooltip' => 'Tucny',
+	'visualeditor-annotationbutton-italic-tooltip' => 'Kursiwny',
+	'visualeditor-annotationbutton-link-tooltip' => 'Wótkaz',
 	'visualeditor-ca-editsource' => 'Žrědłowy tekst wobźěłaś',
-	'visualeditor-ca-ve-edit' => 'VisualEditor',
 	'visualeditor-ca-ve-create' => 'VisualEditor',
-	'visualeditor-dialog-meta-title' => 'Bokowe nastajenja',
-	'visualeditor-dialog-content-title' => 'Wopśimjeśowe nastajenja',
-	'visualeditor-dialog-media-title' => 'Medijowe nastajenja',
+	'visualeditor-ca-ve-edit' => 'VisualEditor',
+	'visualeditor-clearbutton-tooltip' => 'Formatěrowanje wótpóraś',
+	'visualeditor-desc' => 'WYSIWYG-editor za MediaWiki',
+	'visualeditor-descriptionpagelink' => 'Project:VisualEditor',
 	'visualeditor-dialog-action-apply' => 'Změny nałožyś',
 	'visualeditor-dialog-action-cancel' => 'Pśetergnuś',
 	'visualeditor-dialog-action-close' => 'Zacyniś',
-	'visualeditor-toolbar-savedialog' => 'Pśeglědaś a składowaś',
-	'visualeditor-savedialog-title-review' => 'Twóje změny pśeglědaś',
-	'visualeditor-savedialog-title-report' => 'Problem k wěsći daś',
-	'visualeditor-savedialog-title-save' => 'Twóje změny składowaś',
-	'visualeditor-savedialog-label-review-wrong' => 'Něco jo se neraźiło',
-	'visualeditor-savedialog-label-review-good' => 'Wuglěda derje',
-	'visualeditor-savedialog-label-report' => 'Problem k wěsći daś',
-	'visualeditor-savedialog-label-create' => 'Bok napóraś',
-	'visualeditor-savedialog-label-save' => 'Bok składowaś',
-	'visualeditor-savedialog-label-restore' => 'Bok wótnowiś',
+	'visualeditor-dialog-media-title' => 'Medijowe nastajenja',
+	'visualeditor-dialog-meta-title' => 'Bokowe nastajenja',
+	'visualeditor-dialogbutton-media-tooltip' => 'Medije',
+	'visualeditor-differror' => 'Zmólka pśi zacytowanju datow ze serwera: $1.',
+	'visualeditor-editconflict' => 'Twóje změny njedaju se wobźěłowańskego konflikta dla składowaś. Coš konflikt manuelnje wótpóraś?',
 	'visualeditor-editnotices-tool' => '$1 {{PLURAL:$1|notica|noticy|noticy|noticow}}',
+	'visualeditor-editsummary' => 'Wopisaj, což sy změnił',
+	'visualeditor-feedback-link' => 'Project:VisualEditor/Komentary',
 	'visualeditor-feedback-tool' => 'Komentar zawóstajiś',
-	'visualeditor-window-title' => 'Pśespytaś',
-	'visualeditor-linkinspector-title' => 'Wótkaz',
-	'visualeditor-linkinspector-suggest-matching-page' => 'Wótpowědny bok',
-	'visualeditor-linkinspector-suggest-new-page' => 'Nowy bok',
-	'visualeditor-linkinspector-suggest-external-link' => 'Eksterny wótkaz',
-	'visualeditor-formatdropdown-title' => 'Format změniś',
-	'visualeditor-formatdropdown-format-paragraph' => 'Wótstawk',
 	'visualeditor-formatdropdown-format-heading1' => 'Nadpismo 1',
 	'visualeditor-formatdropdown-format-heading2' => 'Nadpismo 2',
 	'visualeditor-formatdropdown-format-heading3' => 'Nadpismo 3',
 	'visualeditor-formatdropdown-format-heading4' => 'Nadpismo 4',
 	'visualeditor-formatdropdown-format-heading5' => 'Nadpismo 5',
 	'visualeditor-formatdropdown-format-heading6' => 'Nadpismo 6',
+	'visualeditor-formatdropdown-format-paragraph' => 'Wótstawk',
 	'visualeditor-formatdropdown-format-preformatted' => 'Pśedformatěrowany',
-	'visualeditor-annotationbutton-bold-tooltip' => 'Tucny',
-	'visualeditor-annotationbutton-italic-tooltip' => 'Kursiwny',
-	'visualeditor-annotationbutton-link-tooltip' => 'Wótkaz',
-	'visualeditor-dialogbutton-media-tooltip' => 'Medije',
+	'visualeditor-formatdropdown-title' => 'Format změniś',
+	'visualeditor-historybutton-redo-tooltip' => 'Wóspjetowaś',
+	'visualeditor-historybutton-undo-tooltip' => 'Anulěrowaś',
 	'visualeditor-indentationbutton-indent-tooltip' => 'Zasunjenje pówětšyś',
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Zasunjenje pómjeńšyś',
-	'visualeditor-listbutton-number-tooltip' => 'Numerěrowana lisćina',
-	'visualeditor-listbutton-bullet-tooltip' => 'Naliceńska lisćina',
-	'visualeditor-clearbutton-tooltip' => 'Formatěrowanje wótpóraś',
-	'visualeditor-historybutton-undo-tooltip' => 'Anulěrowaś',
-	'visualeditor-historybutton-redo-tooltip' => 'Wóspjetowaś',
 	'visualeditor-inspector-close-tooltip' => 'Zacyniś',
 	'visualeditor-inspector-remove-tooltip' => 'Wótpóraś',
-	'visualeditor-viewpage-savewarning' => 'Coš se napšawdu k naglědowemu modusoju wrośiś, bźez togo až by do togo składował?',
+	'visualeditor-linkinspector-suggest-external-link' => 'Eksterny wótkaz',
+	'visualeditor-linkinspector-suggest-matching-page' => 'Wótpowědny bok',
+	'visualeditor-linkinspector-suggest-new-page' => 'Nowy bok',
+	'visualeditor-linkinspector-title' => 'Wótkaz',
+	'visualeditor-listbutton-bullet-tooltip' => 'Naliceńska lisćina',
+	'visualeditor-listbutton-number-tooltip' => 'Numerěrowana lisćina',
 	'visualeditor-loadwarning' => 'Zmólka pśi zacytowanju datow ze serwera: $1. Coš znowego wopytaś?',
-	'visualeditor-differror' => 'Zmólka pśi zacytowanju datow ze serwera: $1.',
-	'visualeditor-serializeerror' => 'Zmólka pśi zacytowanju datow ze serwera: $1.',
+	'visualeditor-mainnamespacepagelink' => 'Project:Głowny mjenjowy rum',
+	'visualeditor-notification-created' => '$1 jo se napórał.',
+	'visualeditor-notification-restored' => '$1 jo se wótnowił.',
+	'visualeditor-notification-saved' => 'Twóje změny na $1 su se składowali.',
+	'visualeditor-preference-enable' => 'VisualEditor zmóžniś (jeno w [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|głownem mjenjowem rumje]] a [[{{MediaWiki:Visualeditor-usernamespacepagelink}}|wužywarskem mjenjowem rumje]])',
+	'visualeditor-savedialog-label-create' => 'Bok napóraś',
+	'visualeditor-savedialog-label-report' => 'Problem k wěsći daś',
+	'visualeditor-savedialog-label-restore' => 'Bok wótnowiś',
+	'visualeditor-savedialog-label-review-good' => 'Wuglěda derje', # Fuzzy
+	'visualeditor-savedialog-label-save' => 'Bok składowaś',
+	'visualeditor-savedialog-title-review' => 'Twóje změny pśeglědaś',
+	'visualeditor-savedialog-title-save' => 'Twóje změny składowaś',
 	'visualeditor-saveerror' => 'Zmólka pśi składowanju datow na serwerje: $1.',
-	'visualeditor-editconflict' => 'Twóje změny njedaju se wobźěłowańskego konflikta dla składowaś. Coš konflikt manuelnje wótpóraś?',
-	'visualeditor-editsummary' => 'Wopisaj, což sy změnił',
-	'visualeditor-problem' => 'Wopisaj, což jo se njeraźiło',
-	'visualeditor-aliennode-tooltip' => 'Bóžko njedajo se toś ten element z pomocu VisualEditora wobźěłaś',
-	'visualeditor-descriptionpagelink' => 'Project:VisualEditor',
-	'visualeditor-alphawarning' => 'Wužywaš alfa-wersiju [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditora]]. Móžo pómałe byś a zmólkate změny pśewjasć - pšosym pśeglědaj kuždu změnu, kótaruž pśewjedujoš.',
-	'visualeditor-report-notice' => 'Rozměju, až pósrědnjam swóje změny a swój komentar, kótarež budu se za analyzu składowaśu, gaž kliknjom na "Problem k wěsći daś". Som wobjadny, komentary wótpowědujucy [[{{MediaWiki:Visualeditor-report-link}}|wužywańskim wuměnjenjam]] pódaś.',
-	'visualeditor-feedback-link' => 'Project:VisualEditor/Komentary',
+	'visualeditor-serializeerror' => 'Zmólka pśi zacytowanju datow ze serwera: $1.',
+	'visualeditor-toolbar-savedialog' => 'Pśeglědaś a składowaś', # Fuzzy
+	'visualeditor-usernamespacepagelink' => 'Project:Wužywarski mjenjowy rum',
+	'visualeditor-viewpage-savewarning' => 'Coš se napšawdu k naglědowemu modusoju wrośiś, bźez togo až by do togo składował?',
+	'visualeditor-window-title' => 'Pśespytaś',
 );
 
 /** Greek (Ελληνικά)
@@ -2104,7 +2117,7 @@ $messages['dsb'] = array(
  * @author Nikosguard
  */
 $messages['el'] = array(
-	'tag-visualeditor' => '[[Special:Tags|Tag]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
+	'tag-visualeditor' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
 	'tag-visualeditor-description' => 'Επεξεργασία που έγινε με τη χρήση του [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
 	'tooltip-ca-createsource' => 'Δημιουργήστε τον πηγαίο κώδικα αυτής της σελίδας',
 	'tooltip-ca-editsource' => 'Επεξεργαστείτε τον πηγαίο κώδικα της σελίδας',
@@ -2269,7 +2282,7 @@ $messages['eo'] = array(
  * @author Thehelpfulone
  */
 $messages['es'] = array(
-	'tag-visualeditor' => '[[Special:Tags|Etiqueta]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|Editor visual]]',
+	'tag-visualeditor' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|Editor visual]]',
 	'tag-visualeditor-description' => 'Edición realizada con el [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
 	'tooltip-ca-ve-edit' => 'Editar esta página con el editor visual VisualEditor',
 	'visualeditor' => 'Editor visual',
@@ -2340,9 +2353,9 @@ $messages['es'] = array(
  * @author Pikne
  */
 $messages['et'] = array(
-	'tag-visualeditor' => '[[Special:Tags|Märgis]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
+	'tag-visualeditor' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
 	'tag-visualeditor-description' => 'Muudatus tehtud [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditoriga]]',
-	'tag-visualeditor-needcheck' => '[[Special:Tags|Märgis]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor: Kontrollida]]',
+	'tag-visualeditor-needcheck' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor: Kontrollida]]',
 	'tag-visualeditor-needcheck-description' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditoriga]] tehtud muudatus, mille tõttu võis vikitekst muutuda ettekavatsemata viisil.',
 	'tooltip-ca-createsource' => 'Loo selle lehekülje lähtetekst',
 	'tooltip-ca-editsource' => 'Redigeeri selle lehekülje lähteteksti',
@@ -2501,9 +2514,14 @@ $messages['eu'] = array(
  * @author Reza1615
  */
 $messages['fa'] = array(
-	'tag-visualeditor' => '[[Special:Tags|برچسب]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|ویرایشگر دیداری]]',
+	'guidedtour-tour-vegendersurvey-description' => 'با شرکت در این نظرسنجی، شما با انتقال اطلاعاتی که ثبت می‌کنید به بنیاد ویکی‌مدیا در ایالات متحده یا جاهای دیگر موافقت می‌نمایید. اطلاعات جمع‌آوری‌شده تنها برای مقاصد پژوهشی است و به صورت عمومی به حساب کاربری‌تان وابسته نخواهد بود. با این وجود ممکن است ما نتایج این نظرسنجی را به صورت جمع‌بندی‌شده یا ناشناس برای عموم منتشر کنیم.',
+	'guidedtour-tour-vegendersurvey-female' => 'زن',
+	'guidedtour-tour-vegendersurvey-male' => 'مرد',
+	'guidedtour-tour-vegendersurvey-optout' => 'ترجیح می دهم نگویم',
+	'guidedtour-tour-vegendersurvey-title' => 'لطفا جنسیت خود را برگزینید',
+	'tag-visualeditor' => ' [[{{MediaWiki:Visualeditor-descriptionpagelink}}|ویرایشگر دیداری]]',
 	'tag-visualeditor-description' => 'ویرایش انجام‌شده با [[{{MediaWiki:Visualeditor-descriptionpagelink}}|ویرایشگر دیداری]]',
-	'tag-visualeditor-needcheck' => '[[Special:Tags|برچسب]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|ویرایشگر دیداری: وارسی]]',
+	'tag-visualeditor-needcheck' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|ویرایشگر دیداری: وارسی]]',
 	'tag-visualeditor-needcheck-description' => 'ویرایش انجام‌شده با [[{{MediaWiki:Visualeditor-descriptionpagelink}}|ویرایشگر دیداری]] که در آن سامانه احتمال وقوع تغییرات ناخواسته در ویکی‌متن را شناسایی کرد.',
 	'tooltip-ca-createsource' => 'ساخت کد متن این صفحه.',
 	'tooltip-ca-editsource' => 'ویرایش کد متن این صفحه.',
@@ -2601,13 +2619,12 @@ $messages['fa'] = array(
 	'visualeditor-indentationbutton-outdent-tooltip' => 'کاهش تورفتگی',
 	'visualeditor-inspector-close-tooltip' => 'بستن',
 	'visualeditor-inspector-remove-tooltip' => 'حذف',
+	'visualeditor-languageinspector-block-tooltip' => 'قطعهٔ زبانی: $1$2',
+	'visualeditor-languageinspector-block-tooltip-rtldirection' => ': راست به چپ',
 	'visualeditor-linkinspector-suggest-external-link' => 'پیوند بیرونی',
 	'visualeditor-linkinspector-suggest-matching-page' => 'صفحه منطبق',
 	'visualeditor-linkinspector-suggest-new-page' => 'صفحهٔ جدید',
 	'visualeditor-linkinspector-title' => 'اَبَرپیوند',
-	'visualeditor-mwmathinspector-title' => 'لاتک',
-	'visualeditor-languageinspector-block-tooltip' => 'قطعهٔ زبانی: $1$2',
-	'visualeditor-languageinspector-block-tooltip-rtldirection' => ': راست به چپ',
 	'visualeditor-listbutton-bullet-tooltip' => 'فهرست گلوله‌ای',
 	'visualeditor-listbutton-number-tooltip' => 'فهرست شماره‌دار',
 	'visualeditor-loadwarning' => 'خطای بارگیری داده‌ها از کارساز:  $1. دوباره تلاش می‌کنید؟',
@@ -2615,6 +2632,7 @@ $messages['fa'] = array(
 	'visualeditor-mainnamespacepagelink' => 'Project:فضای نام اصلی',
 	'visualeditor-media-input-placeholder' => 'جستجو برای رسانه‌ها',
 	'visualeditor-meta-tool' => 'تنظیمات صفحه',
+	'visualeditor-mwmathinspector-title' => 'لاتک',
 	'visualeditor-notification-created' => '$1 ایجاد شد.',
 	'visualeditor-notification-restored' => '$1 بازگردانده شد.',
 	'visualeditor-notification-saved' => 'تغییرات شما در $1 ذخیره شده است.',
@@ -2650,11 +2668,6 @@ $messages['fa'] = array(
 	'visualeditor-usernamespacepagelink' => 'Project:صفحه‌های کاربری',
 	'visualeditor-viewpage-savewarning' => 'مطمئنید که می‌خواهید بدون ذخیره‌سازی به حالت نمایش بازگردید؟',
 	'visualeditor-window-title' => 'بازرسی',
-	'guidedtour-tour-vegendersurvey-title' => 'لطفا جنسیت خود را برگزینید',
-	'guidedtour-tour-vegendersurvey-description' => 'با شرکت در این نظرسنجی، شما با انتقال اطلاعاتی که ثبت می‌کنید به بنیاد ویکی‌مدیا در ایالات متحده یا جاهای دیگر موافقت می‌نمایید. اطلاعات جمع‌آوری‌شده تنها برای مقاصد پژوهشی است و به صورت عمومی به حساب کاربری‌تان وابسته نخواهد بود. با این وجود ممکن است ما نتایج این نظرسنجی را به صورت جمع‌بندی‌شده یا ناشناس برای عموم منتشر کنیم.',
-	'guidedtour-tour-vegendersurvey-male' => 'مرد',
-	'guidedtour-tour-vegendersurvey-female' => 'زن',
-	'guidedtour-tour-vegendersurvey-optout' => 'ترجیح می دهم نگویم',
 );
 
 /** Finnish (suomi)
@@ -2669,9 +2682,14 @@ $messages['fa'] = array(
  * @author VezonThunder
  */
 $messages['fi'] = array(
-	'tag-visualeditor' => '[[Special:Tags|Merkintä]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|Visuaalinen muokkain]]',
+	'guidedtour-tour-vegendersurvey-description' => 'Osallistumalla tähän kyselyyn, suostut syöttämiesi tietojen siirtoon Wikimedia-säätiölle Yhdysvaltoihin ja muualle. Kerätyt tiedot on tarkoitettu vain sisäiseen tutkimukseen ja niitä ei tulla julkisesti liittämään tiliisi. Kuitenkin voimme jakaa tämän tutkimuksen tuloksia yleisölle nimettöminä tai yhdistettyinä lomakkeina.',
+	'guidedtour-tour-vegendersurvey-female' => 'Nainen',
+	'guidedtour-tour-vegendersurvey-male' => 'Mies',
+	'guidedtour-tour-vegendersurvey-optout' => 'En halua sanoa',
+	'guidedtour-tour-vegendersurvey-title' => 'Valitse sukupuolesi',
+	'tag-visualeditor' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|Visuaalinen muokkain]]',
 	'tag-visualeditor-description' => 'Muutos tehtiin [[{{MediaWiki:Visualeditor-descriptionpagelink}}|visuaalisella muokkaimella]]',
-	'tag-visualeditor-needcheck' => '[[Special:Tags|Merkintä]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|Visuaalinen muokkain: Tarkista]]',
+	'tag-visualeditor-needcheck' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|Visuaalinen muokkain: Tarkista]]',
 	'tag-visualeditor-needcheck-description' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|Visuaalisella muokkaimella]] tehty muokkaus, jossa järjestelmä havaitsi wikitekstissä mahdollisesti olevan tahattomia muutoksia.',
 	'tooltip-ca-createsource' => 'Luo sivun lähdekoodi',
 	'tooltip-ca-editsource' => 'Muokkaa tämän sivun lähdekoodia',
@@ -2773,7 +2791,6 @@ $messages['fi'] = array(
 	'visualeditor-linkinspector-suggest-matching-page' => 'Vastaava sivu',
 	'visualeditor-linkinspector-suggest-new-page' => 'Uusi sivu',
 	'visualeditor-linkinspector-title' => 'Hyperlinkki',
-	'visualeditor-mwmathinspector-title' => 'LaTeX',
 	'visualeditor-listbutton-bullet-tooltip' => 'Luettelo',
 	'visualeditor-listbutton-number-tooltip' => 'Numeroitu luettelo',
 	'visualeditor-loadwarning' => 'Virhe ladattaessa tietoja palvelimelta: $1. Haluatko yrittää uudelleen?',
@@ -2781,6 +2798,7 @@ $messages['fi'] = array(
 	'visualeditor-mainnamespacepagelink' => 'Project:Päänimiavaruus',
 	'visualeditor-media-input-placeholder' => 'Etsi sisältöä',
 	'visualeditor-meta-tool' => 'Sivun asetukset',
+	'visualeditor-mwmathinspector-title' => 'LaTeX',
 	'visualeditor-notification-created' => '$1 on luotu.',
 	'visualeditor-notification-restored' => '$1 on palautettu.',
 	'visualeditor-notification-saved' => 'Muutoksesi sivuun $1 on tallennettu.',
@@ -2815,11 +2833,6 @@ $messages['fi'] = array(
 	'visualeditor-usernamespacepagelink' => 'Project:Käyttäjänimiavaruus',
 	'visualeditor-viewpage-savewarning' => 'Oletko varma, että haluat palata katselutilaan tallentamatta ensin?',
 	'visualeditor-window-title' => 'Tarkasta',
-	'guidedtour-tour-vegendersurvey-title' => 'Valitse sukupuolesi',
-	'guidedtour-tour-vegendersurvey-description' => 'Osallistumalla tähän kyselyyn, suostut syöttämiesi tietojen siirtoon Wikimedia-säätiölle Yhdysvaltoihin ja muualle. Kerätyt tiedot on tarkoitettu vain sisäiseen tutkimukseen ja niitä ei tulla julkisesti liittämään tiliisi. Kuitenkin voimme jakaa tämän tutkimuksen tuloksia yleisölle nimettöminä tai yhdistettyinä lomakkeina.',
-	'guidedtour-tour-vegendersurvey-male' => 'Mies',
-	'guidedtour-tour-vegendersurvey-female' => 'Nainen',
-	'guidedtour-tour-vegendersurvey-optout' => 'En halua sanoa',
 );
 
 /** French (français)
@@ -2843,9 +2856,14 @@ $messages['fi'] = array(
  * @author Wyz
  */
 $messages['fr'] = array(
-	'tag-visualeditor' => '[[Special:Tags|Balise]] : [[{{MediaWiki:Visualeditor-descriptionpagelink}}|ÉditeurVisuel]]',
+	'guidedtour-tour-vegendersurvey-description' => 'En participant à ce sondage, vous acceptez de transférer les informations que vous fournirez à la Fondation Wikipédia aux États-Unis et ailleurs. Les informations collectées le sont uniquement dans un but de recherche interne et ne seront pas associées de façon publique à votre compte. Toutefois, nous pourrons partager les résultats de ce sondage de façon publique sous une forme anonyme ou agrégée.',
+	'guidedtour-tour-vegendersurvey-female' => 'Féminin',
+	'guidedtour-tour-vegendersurvey-male' => 'Masculin',
+	'guidedtour-tour-vegendersurvey-optout' => 'Ne se prononce pas',
+	'guidedtour-tour-vegendersurvey-title' => 'Veuillez sélectionner votre genre',
+	'tag-visualeditor' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|ÉditeurVisuel]]',
 	'tag-visualeditor-description' => 'Modification effectuée au moyen de l’[[{{MediaWiki:Visualeditor-descriptionpagelink}}|ÉditeurVisuel]]',
-	'tag-visualeditor-needcheck' => '[[Special:Tags|Balise]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|ÉditeurVisuel: Vérification]]',
+	'tag-visualeditor-needcheck' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|ÉditeurVisuel: Vérification]]',
 	'tag-visualeditor-needcheck-description' => "Modification faite en utilisant l'[[{{MediaWiki:Visualeditor-descriptionpagelink}}|ÉditeurVisuel]], où le système a détecté que le wikitexte contient peut-être des modifications accidentelles.",
 	'tooltip-ca-createsource' => 'Créer le code source de cette page',
 	'tooltip-ca-editsource' => 'Modifier le code source de cette page',
@@ -2943,13 +2961,12 @@ $messages['fr'] = array(
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Diminuer l’indentation',
 	'visualeditor-inspector-close-tooltip' => 'Fermer',
 	'visualeditor-inspector-remove-tooltip' => 'Supprimer',
+	'visualeditor-languageinspector-block-tooltip' => 'Bloc de langues : $1$2',
+	'visualeditor-languageinspector-block-tooltip-rtldirection' => ': De la droite vers la gauche',
 	'visualeditor-linkinspector-suggest-external-link' => 'Lien externe',
 	'visualeditor-linkinspector-suggest-matching-page' => 'Page correspondante',
 	'visualeditor-linkinspector-suggest-new-page' => 'Nouvelle page',
 	'visualeditor-linkinspector-title' => 'Hyperlien',
-	'visualeditor-mwmathinspector-title' => 'LaTeX',
-	'visualeditor-languageinspector-block-tooltip' => 'Bloc de langues : $1$2',
-	'visualeditor-languageinspector-block-tooltip-rtldirection' => ': De la droite vers la gauche',
 	'visualeditor-listbutton-bullet-tooltip' => 'Liste à puces',
 	'visualeditor-listbutton-number-tooltip' => 'Liste numérotée',
 	'visualeditor-loadwarning' => 'Erreur lors du chargement des données du serveur : $1. Voulez-vous réessayer ?',
@@ -2957,6 +2974,7 @@ $messages['fr'] = array(
 	'visualeditor-mainnamespacepagelink' => 'Project:Espace de noms principal',
 	'visualeditor-media-input-placeholder' => 'Rechercher un média',
 	'visualeditor-meta-tool' => 'Paramètres de la page',
+	'visualeditor-mwmathinspector-title' => 'LaTeX',
 	'visualeditor-notification-created' => '$1 a été créé.',
 	'visualeditor-notification-restored' => '$1 a été restaurée.',
 	'visualeditor-notification-saved' => 'Vos modifications sur $1 ont été enregistrées.',
@@ -2971,6 +2989,7 @@ $messages['fr'] = array(
 	'visualeditor-reference-search-reuse' => 'Utiliser une source existante',
 	'visualeditor-referencelist-isempty' => 'Il n’y a aucune référence avec le groupe « $1 » sur cette page.',
 	'visualeditor-referencelist-missingref' => 'Cette référence est définie dans un modèle ou un autre bloc généré, et ne peut pour l’instant être modifiée qu’en mode source.',
+	'visualeditor-savedialog-error-badtoken' => 'Nous ne pouvons pas effectuer votre modification car votre session a expiré.',
 	'visualeditor-savedialog-label-create' => 'Créer la page',
 	'visualeditor-savedialog-label-error' => 'Erreur',
 	'visualeditor-savedialog-label-report' => 'Signaler un problème',
@@ -2992,11 +3011,6 @@ $messages['fr'] = array(
 	'visualeditor-usernamespacepagelink' => 'Project:Espace de noms utilisateur',
 	'visualeditor-viewpage-savewarning' => 'Êtes-vous sûr de vouloir retourner au mode lecture sans enregistrer ?',
 	'visualeditor-window-title' => 'Inspecter',
-	'guidedtour-tour-vegendersurvey-title' => 'Veuillez sélectionner votre genre',
-	'guidedtour-tour-vegendersurvey-description' => 'En participant à ce sondage, vous acceptez de transférer les informations que vous fournirez à la Fondation Wikipédia aux États-Unis et ailleurs. Les informations collectées le sont uniquement dans un but de recherche interne et ne seront pas associées de façon publique à votre compte. Toutefois, nous pourrons partager les résultats de ce sondage de façon publique sous une forme anonyme ou agrégée.',
-	'guidedtour-tour-vegendersurvey-male' => 'Masculin',
-	'guidedtour-tour-vegendersurvey-female' => 'Féminin',
-	'guidedtour-tour-vegendersurvey-optout' => 'Ne se prononce pas',
 );
 
 /** Franco-Provençal (arpetan)
@@ -3055,9 +3069,14 @@ $messages['frp'] = array(
  * @author Toliño
  */
 $messages['gl'] = array(
-	'tag-visualeditor' => '[[Special:Tags|Etiqueta]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|Editor visual]]',
+	'guidedtour-tour-vegendersurvey-description' => 'Ao participar nesta enquisa, acepta transferir a información que envíe á Fundación Wikimedia nos EUA e outros lugares. A información recollida é unicamente para propósitos internos de investigación e non será asociada publicamente á súa conta. Porén, podemos compartir os resultados da enquisa co público de forma anónima ou agregada.',
+	'guidedtour-tour-vegendersurvey-female' => 'Muller',
+	'guidedtour-tour-vegendersurvey-male' => 'Home',
+	'guidedtour-tour-vegendersurvey-optout' => 'Prefiro non dicilo',
+	'guidedtour-tour-vegendersurvey-title' => 'Seleccione o seu sexo',
+	'tag-visualeditor' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|Editor visual]]',
 	'tag-visualeditor-description' => 'Edición feita mediante o [[{{MediaWiki:Visualeditor-descriptionpagelink}}|editor visual]]',
-	'tag-visualeditor-needcheck' => '[[Special:Tags|Etiqueta]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|Editor visual: Comprobar]]',
+	'tag-visualeditor-needcheck' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|Editor visual: Comprobar]]',
 	'tag-visualeditor-needcheck-description' => 'Edición feita mediante o [[{{MediaWiki:Visualeditor-descriptionpagelink}}|editor visual]] na que o sistema detectou que o texto wiki posiblemente teña modificacións non intencionadas.',
 	'tooltip-ca-createsource' => 'Crear o código fonte desta páxina',
 	'tooltip-ca-editsource' => 'Editar o código fonte desta páxina',
@@ -3155,13 +3174,12 @@ $messages['gl'] = array(
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Diminuír a sangría',
 	'visualeditor-inspector-close-tooltip' => 'Pechar',
 	'visualeditor-inspector-remove-tooltip' => 'Eliminar',
+	'visualeditor-languageinspector-block-tooltip' => 'Bloque de lingua: $1$2',
+	'visualeditor-languageinspector-block-tooltip-rtldirection' => ': De dereita a esquerda',
 	'visualeditor-linkinspector-suggest-external-link' => 'Ligazón externa',
 	'visualeditor-linkinspector-suggest-matching-page' => 'Páxina coincidente',
 	'visualeditor-linkinspector-suggest-new-page' => 'Páxina nova',
 	'visualeditor-linkinspector-title' => 'Hiperligazón',
-	'visualeditor-mwmathinspector-title' => 'LaTeX',
-	'visualeditor-languageinspector-block-tooltip' => 'Bloque de lingua: $1$2',
-	'visualeditor-languageinspector-block-tooltip-rtldirection' => ': De dereita a esquerda',
 	'visualeditor-listbutton-bullet-tooltip' => 'Lista con asteriscos',
 	'visualeditor-listbutton-number-tooltip' => 'Lista numerada',
 	'visualeditor-loadwarning' => 'Erro ao cargar os datos desde o servidor: $1. Quéreo intentar de novo?',
@@ -3169,6 +3187,7 @@ $messages['gl'] = array(
 	'visualeditor-mainnamespacepagelink' => 'Project:Espazo de nomes principal',
 	'visualeditor-media-input-placeholder' => 'Procurar ficheiros multimedia',
 	'visualeditor-meta-tool' => 'Configuración da páxina',
+	'visualeditor-mwmathinspector-title' => 'LaTeX',
 	'visualeditor-notification-created' => 'Creouse "$1".',
 	'visualeditor-notification-restored' => 'Restaurouse "$1".',
 	'visualeditor-notification-saved' => 'Gardáronse os cambios feitos en "$1".',
@@ -3183,6 +3202,7 @@ $messages['gl'] = array(
 	'visualeditor-reference-search-reuse' => 'Utilizar unha fonte existente',
 	'visualeditor-referencelist-isempty' => 'Non hai referencias co grupo "$1" nesta páxina.',
 	'visualeditor-referencelist-missingref' => 'Esta referencia está definida nun modelo ou noutro bloque xerado; polo de agora, só se pode editar no modo fonte.',
+	'visualeditor-savedialog-error-badtoken' => 'Non puidemos procesar a edición porque caducou a súa sesión.',
 	'visualeditor-savedialog-label-create' => 'Crear a páxina',
 	'visualeditor-savedialog-label-error' => 'Erro',
 	'visualeditor-savedialog-label-report' => 'Informar sobre un problema',
@@ -3204,11 +3224,6 @@ $messages['gl'] = array(
 	'visualeditor-usernamespacepagelink' => 'Project:Espazo de nomes de usuario',
 	'visualeditor-viewpage-savewarning' => 'Está seguro de querer volver ao modo de lectura sen gardar primeiro?',
 	'visualeditor-window-title' => 'Inspeccionar',
-	'guidedtour-tour-vegendersurvey-title' => 'Seleccione o seu sexo',
-	'guidedtour-tour-vegendersurvey-description' => 'Ao participar nesta enquisa, acepta transferir a información que envíe á Fundación Wikimedia nos EUA e outros lugares. A información recollida é unicamente para propósitos internos de investigación e non será asociada publicamente á súa conta. Porén, podemos compartir os resultados da enquisa co público de forma anónima ou agregada.',
-	'guidedtour-tour-vegendersurvey-male' => 'Home',
-	'guidedtour-tour-vegendersurvey-female' => 'Muller',
-	'guidedtour-tour-vegendersurvey-optout' => 'Prefiro non dicilo',
 );
 
 /** Gujarati (ગુજરાતી)
@@ -3243,9 +3258,14 @@ $messages['gu'] = array(
  * @author ערן
  */
 $messages['he'] = array(
-	'tag-visualeditor' => '[[Special:Tags|תג]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|עורך חזותי]]',
+	'guidedtour-tour-vegendersurvey-description' => 'השתתפות בסקר הזה מהווה את הסכמתך להעביר את המידע שיישלח ממך אל קרן ויקימדיה בארצות הברית ובמקומות אחרים. המידע שנאסף מיועד למטרות מחקר פנימיות ולא ישויך בפומבי אל החשבון שלך. עם זאת, ייתכן שנשתף את תוצאות הסקר הזה עם הציבור באופן שמציג את המידע באלמוניות.',
+	'guidedtour-tour-vegendersurvey-female' => 'אישה',
+	'guidedtour-tour-vegendersurvey-male' => 'גבר',
+	'guidedtour-tour-vegendersurvey-optout' => 'אינני רוצה לומר',
+	'guidedtour-tour-vegendersurvey-title' => 'נא לבחור את מגדרך',
+	'tag-visualeditor' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|עורך חזותי]]',
 	'tag-visualeditor-description' => 'העריכה נעשתה באמצעות [[{{MediaWiki:Visualeditor-descriptionpagelink}}|העורך החזותי]]',
-	'tag-visualeditor-needcheck' => '[[Special:Tags|תג]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|עורך חזותי: נא לבדוק]]',
+	'tag-visualeditor-needcheck' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|עורך חזותי: נא לבדוק]]',
 	'tag-visualeditor-needcheck-description' => 'העריכה נעשתה באמצעות [[{{MediaWiki:Visualeditor-descriptionpagelink}}|העורך החזותי]] והמערכת זיהתה שבקוד אולי יש שינויים שלא היו אמורים להיעשות.',
 	'tooltip-ca-createsource' => 'יצירת קוד המקור של הדף הזה',
 	'tooltip-ca-editsource' => 'עריכת קוד המקור של הדף הזה',
@@ -3347,7 +3367,6 @@ $messages['he'] = array(
 	'visualeditor-linkinspector-suggest-matching-page' => 'דף מתאים',
 	'visualeditor-linkinspector-suggest-new-page' => 'דף חדש',
 	'visualeditor-linkinspector-title' => 'היפר־קישור',
-	'visualeditor-mwmathinspector-title' => 'LaTeX',
 	'visualeditor-listbutton-bullet-tooltip' => 'רשימת תבליטים',
 	'visualeditor-listbutton-number-tooltip' => 'רשימה ממוספרת',
 	'visualeditor-loadwarning' => 'שגיאה בטעינת מידע מהשרת: $1. האם לנסות שוב?',
@@ -3355,6 +3374,7 @@ $messages['he'] = array(
 	'visualeditor-mainnamespacepagelink' => 'Project:Main namespace',
 	'visualeditor-media-input-placeholder' => 'חיפוש מדיה',
 	'visualeditor-meta-tool' => 'הגדרות עמוד',
+	'visualeditor-mwmathinspector-title' => 'LaTeX',
 	'visualeditor-notification-created' => 'הדף $1 נוצר.',
 	'visualeditor-notification-restored' => 'הדף $1 שוחזר.',
 	'visualeditor-notification-saved' => 'השינויים שלך לדף $1 נשמרו.',
@@ -3390,11 +3410,6 @@ $messages['he'] = array(
 	'visualeditor-usernamespacepagelink' => 'Project:User namespace',
 	'visualeditor-viewpage-savewarning' => 'האם ברצונך לשוב למצב תצוגה ללא שמירה?',
 	'visualeditor-window-title' => 'חקירה',
-	'guidedtour-tour-vegendersurvey-title' => 'נא לבחור את מגדרך',
-	'guidedtour-tour-vegendersurvey-description' => 'השתתפות בסקר הזה מהווה את הסכמתך להעביר את המידע שיישלח ממך אל קרן ויקימדיה בארצות הברית ובמקומות אחרים. המידע שנאסף מיועד למטרות מחקר פנימיות ולא ישויך בפומבי אל החשבון שלך. עם זאת, ייתכן שנשתף את תוצאות הסקר הזה עם הציבור באופן שמציג את המידע באלמוניות.',
-	'guidedtour-tour-vegendersurvey-male' => 'גבר',
-	'guidedtour-tour-vegendersurvey-female' => 'אישה',
-	'guidedtour-tour-vegendersurvey-optout' => 'אינני רוצה לומר',
 );
 
 /** Hindi (हिन्दी)
@@ -3467,7 +3482,10 @@ $messages['hr'] = array(
  * @author Michawiki
  */
 $messages['hsb'] = array(
-	'tag-visualeditor' => '[[Special:Tags|Tag]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
+	'guidedtour-tour-vegendersurvey-female' => 'Žónski',
+	'guidedtour-tour-vegendersurvey-male' => 'Muski',
+	'guidedtour-tour-vegendersurvey-title' => 'Prošu wubjer swój splah',
+	'tag-visualeditor' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
 	'tag-visualeditor-description' => 'Z pomocu [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditora]] wobdźěłany',
 	'tooltip-ca-editsource' => 'Žórłowy kod tuteje strony wobdźěłać',
 	'tooltip-ca-ve-edit' => 'Tutu stronu z VisualEditor wobdźěłać',
@@ -3556,13 +3574,13 @@ $messages['hsb'] = array(
 	'visualeditor-linkinspector-suggest-matching-page' => 'Wotpowědna strona',
 	'visualeditor-linkinspector-suggest-new-page' => 'Nowa strona',
 	'visualeditor-linkinspector-title' => 'Wotkaz',
-	'visualeditor-mwmathinspector-title' => 'LaTeX',
 	'visualeditor-listbutton-bullet-tooltip' => 'Nalicenje',
 	'visualeditor-listbutton-number-tooltip' => 'Čisłowana lisćina',
 	'visualeditor-loadwarning' => 'Zmylk při začitowanju datow ze serwera: $1. Chceš znowa spytać?',
 	'visualeditor-mainnamespacepagelink' => 'Project:Hłowny mjenowy rum',
 	'visualeditor-media-input-placeholder' => 'Medije pytać',
 	'visualeditor-meta-tool' => 'Nastajenja strony',
+	'visualeditor-mwmathinspector-title' => 'LaTeX',
 	'visualeditor-notification-created' => '$1 je so wutworił.',
 	'visualeditor-notification-restored' => '$1 je so wobnowił.',
 	'visualeditor-notification-saved' => 'Twoje změny na $1 su so składowali.',
@@ -3591,17 +3609,38 @@ $messages['hsb'] = array(
 	'visualeditor-usernamespacepagelink' => 'Project:Wužiwarski mjenowy rum',
 	'visualeditor-viewpage-savewarning' => 'Chceš so woprawdźe k napohladowemu modusej wróćić, bjeztoho zo by prjedy składował?',
 	'visualeditor-window-title' => 'Přepruwować',
-	'guidedtour-tour-vegendersurvey-title' => 'Prošu wubjer swój splah',
-	'guidedtour-tour-vegendersurvey-male' => 'Muski',
-	'guidedtour-tour-vegendersurvey-female' => 'Žónski',
 );
 
 /** Hungarian (magyar)
  * @author Dj
+ * @author Misibacsi
  */
 $messages['hu'] = array(
+	'guidedtour-tour-vegendersurvey-female' => 'Nő',
+	'guidedtour-tour-vegendersurvey-male' => 'Férfi',
+	'guidedtour-tour-vegendersurvey-optout' => 'Nem közlöm',
+	'guidedtour-tour-vegendersurvey-title' => 'Az Ön biológiai neme',
 	'visualeditor' => 'VisualEditor',
+	'visualeditor-annotationbutton-bold-tooltip' => 'Félkövér',
+	'visualeditor-annotationbutton-italic-tooltip' => 'Dőlt',
+	'visualeditor-annotationbutton-link-tooltip' => 'Hivatkozás',
+	'visualeditor-beta-warning' => "A VisualEditor 'béta' állapotban van, még nem lehet vele mindent szerkeszteni.",
+	'visualeditor-browserwarning' => 'Ezt a böngészőt a VisualEditor hivatalosan nem támogatja.',
+	'visualeditor-ca-editsource' => 'Forrásszöveg szerkesztése',
+	'visualeditor-ca-editsource-section' => 'forrás szerkesztése',
+	'visualeditor-ca-ve-create' => 'VisualEditor',
+	'visualeditor-ca-ve-edit' => 'VisualEditor',
+	'visualeditor-clearbutton-tooltip' => 'Formázás törlése',
 	'visualeditor-desc' => 'Vizuális szerkesztő a MediaWikihez',
+	'visualeditor-dialog-action-apply' => 'Mentés',
+	'visualeditor-dialog-action-cancel' => 'Mégse',
+	'visualeditor-dialog-action-close' => 'Bezár',
+	'visualeditor-dialog-meta-categories-category' => 'Kategória',
+	'visualeditor-dialog-meta-categories-input-newcategorylabel' => 'Új kategória',
+	'visualeditor-dialog-meta-categories-input-placeholder' => 'Kategória hozzáadása',
+	'visualeditor-dialog-meta-categories-options' => 'Opciók',
+	'visualeditor-dialog-meta-languages-code-label' => 'Nyelvi kód',
+	'visualeditor-editsummary' => 'Szerkesztési összefoglaló.',
 	'visualeditor-formatdropdown-format-heading1' => 'Címsor 1',
 	'visualeditor-formatdropdown-format-heading2' => 'Címsor 2',
 	'visualeditor-formatdropdown-format-heading3' => 'Címsor 3',
@@ -3609,15 +3648,24 @@ $messages['hu'] = array(
 	'visualeditor-formatdropdown-format-heading5' => 'Címsor 5',
 	'visualeditor-formatdropdown-format-heading6' => 'Címsor 6',
 	'visualeditor-formatdropdown-format-preformatted' => 'Előre formázott',
-	'visualeditor-annotationbutton-bold-tooltip' => 'Félkövér', # Fuzzy
-	'visualeditor-annotationbutton-italic-tooltip' => 'Dőlt', # Fuzzy
-	'visualeditor-annotationbutton-link-tooltip' => 'Hivatkozás', # Fuzzy
-	'visualeditor-indentationbutton-indent-tooltip' => 'Behúzás növelése', # Fuzzy
-	'visualeditor-indentationbutton-outdent-tooltip' => 'Behúzás csökkentése', # Fuzzy
+	'visualeditor-historybutton-redo-tooltip' => 'Újra',
+	'visualeditor-historybutton-undo-tooltip' => 'Visszavon',
+	'visualeditor-indentationbutton-indent-tooltip' => 'Behúzás növelése',
+	'visualeditor-indentationbutton-outdent-tooltip' => 'Behúzás csökkentése',
+	'visualeditor-inspector-close-tooltip' => 'Bezár',
 	'visualeditor-listbutton-number-tooltip' => 'Számozott lista',
-	'visualeditor-clearbutton-tooltip' => 'Formázás törlése',
-	'visualeditor-historybutton-undo-tooltip' => 'Visszavonás', # Fuzzy
-	'visualeditor-historybutton-redo-tooltip' => 'Újra', # Fuzzy
+	'visualeditor-mwmathinspector-title' => 'LaTeX',
+	'visualeditor-savedialog-label-review' => 'Változtatások megtekintése.',
+	'visualeditor-savedialog-label-save' => 'Oldal mentése',
+	'visualeditor-savedialog-label-warning' => 'Figyelem',
+	'visualeditor-savedialog-title-conflict' => 'Ütközés',
+	'visualeditor-savedialog-title-nochanges' => 'Nincs változás',
+	'visualeditor-savedialog-title-review' => 'Változtatások megtekintése',
+	'visualeditor-savedialog-title-save' => 'Változtatások mentése',
+	'visualeditor-savedialog-warning-dirty' => 'A változások megsérülhettek, kérem ellenőrizze.',
+	'visualeditor-toolbar-cancel' => 'Mégse',
+	'visualeditor-toolbar-savedialog' => 'Oldal mentése',
+	'visualeditor-viewpage-savewarning' => 'A nézet módhoz való visszalépéskor a változtatások nincsenek mentve.',
 );
 
 /** Armenian (Հայերեն)
@@ -3625,6 +3673,10 @@ $messages['hu'] = array(
  * @author Xelgen
  */
 $messages['hy'] = array(
+	'guidedtour-tour-vegendersurvey-female' => 'Իգական',
+	'guidedtour-tour-vegendersurvey-male' => 'Արական',
+	'guidedtour-tour-vegendersurvey-optout' => 'Նախընտրում եմ չասել',
+	'guidedtour-tour-vegendersurvey-title' => 'Խնդրում եմ նշեք ձեր սեռը',
 	'tooltip-ca-createsource' => 'Ստեղծել այս էջի ելատեքստը',
 	'tooltip-ca-editsource' => 'Խմբագրել այս էջի ելատեքստը',
 	'tooltip-ca-ve-edit' => 'Խմբագրել այս էջը ՎիզուալԽմբագրիչով',
@@ -3740,10 +3792,6 @@ $messages['hy'] = array(
 	'visualeditor-toolbar-savedialog' => 'Հիշել էջը',
 	'visualeditor-usernamespacepagelink' => 'Նախագիծ:Մասնակցային անվանատարածք', # Fuzzy
 	'visualeditor-window-title' => 'Ստուգել',
-	'guidedtour-tour-vegendersurvey-title' => 'Խնդրում եմ նշեք ձեր սեռը',
-	'guidedtour-tour-vegendersurvey-male' => 'Արական',
-	'guidedtour-tour-vegendersurvey-female' => 'Իգական',
-	'guidedtour-tour-vegendersurvey-optout' => 'Նախընտրում եմ չասել',
 );
 
 /** Interlingua (interlingua)
@@ -3784,9 +3832,14 @@ $messages['ia'] = array(
  * @author Kenrick95
  */
 $messages['id'] = array(
-	'tag-visualeditor' => '[[Special:Tags|Tag]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
+	'guidedtour-tour-vegendersurvey-description' => 'Dengan berpartisipasi dalam survai ini, Anda setuju memindahkan informasi yang Anda kirimkan ke Yayasan Wikimedia di Amerika Serikat atau tempat lainnya. Informasi yang dikumpulkan hanya untuk tujuan penelitian internal dan tidak akan dipublikasikan yang berkaitan dengan akun Anda. Namun, kita dapat berbagi hasil survei ini dengan masyarakat dalam bentuk anonim atau gabungan.',
+	'guidedtour-tour-vegendersurvey-female' => 'Perempuan',
+	'guidedtour-tour-vegendersurvey-male' => 'Laki-laki',
+	'guidedtour-tour-vegendersurvey-optout' => 'Memilih untuk tidak disebutkan',
+	'guidedtour-tour-vegendersurvey-title' => 'Silakan pilih jenis kelamin Anda',
+	'tag-visualeditor' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
 	'tag-visualeditor-description' => 'Suntingan menggunakan [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
-	'tag-visualeditor-needcheck' => '[[Special:Tags|Tag]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor: Periksa]]',
+	'tag-visualeditor-needcheck' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor: Periksa]]',
 	'tag-visualeditor-needcheck-description' => 'Suntingan menggunakan [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]] dimana sistem mendeteksi wikitext mungkin mengalami perubahan yang tidak diinginkan.',
 	'tooltip-ca-createsource' => 'Buat kode sumber halaman ini',
 	'tooltip-ca-editsource' => 'Sunting kode sumber halaman ini',
@@ -3888,7 +3941,6 @@ $messages['id'] = array(
 	'visualeditor-linkinspector-suggest-matching-page' => 'Pencocokan halaman',
 	'visualeditor-linkinspector-suggest-new-page' => 'Halaman baru',
 	'visualeditor-linkinspector-title' => 'Pranala',
-	'visualeditor-mwmathinspector-title' => 'LaTeX',
 	'visualeditor-listbutton-bullet-tooltip' => 'Daftar berpoin',
 	'visualeditor-listbutton-number-tooltip' => 'Daftar bernomor',
 	'visualeditor-loadwarning' => 'Kesalahan pemuatan data dari server: $1. Apa Anda ingin coba lagi?',
@@ -3896,6 +3948,7 @@ $messages['id'] = array(
 	'visualeditor-mainnamespacepagelink' => 'Project:Ruang nama utama',
 	'visualeditor-media-input-placeholder' => 'Cari media',
 	'visualeditor-meta-tool' => 'Pengaturan halaman',
+	'visualeditor-mwmathinspector-title' => 'LaTeX',
 	'visualeditor-notification-created' => '$1 telah dibuat.',
 	'visualeditor-notification-restored' => '$1 telah dikembalikan.',
 	'visualeditor-notification-saved' => 'Perubahan $1 sudah disimpan.',
@@ -3931,24 +3984,19 @@ $messages['id'] = array(
 	'visualeditor-usernamespacepagelink' => 'Project:Ruang nama pengguna',
 	'visualeditor-viewpage-savewarning' => 'Apakah Anda yakin ingin kembali ke mode baca tanpa menyimpan?',
 	'visualeditor-window-title' => 'Periksa',
-	'guidedtour-tour-vegendersurvey-title' => 'Silakan pilih jenis kelamin Anda',
-	'guidedtour-tour-vegendersurvey-description' => 'Dengan berpartisipasi dalam survai ini, Anda setuju memindahkan informasi yang Anda kirimkan ke Yayasan Wikimedia di Amerika Serikat atau tempat lainnya. Informasi yang dikumpulkan hanya untuk tujuan penelitian internal dan tidak akan dipublikasikan yang berkaitan dengan akun Anda. Namun, kita dapat berbagi hasil survei ini dengan masyarakat dalam bentuk anonim atau gabungan.',
-	'guidedtour-tour-vegendersurvey-male' => 'Laki-laki',
-	'guidedtour-tour-vegendersurvey-female' => 'Perempuan',
-	'guidedtour-tour-vegendersurvey-optout' => 'Memilih untuk tidak disebutkan',
 );
 
 /** Iloko (Ilokano)
  * @author Lam-ang
  */
 $messages['ilo'] = array(
-	'tag-visualeditor' => '[[Special:Tags|Etiketa]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
+	'tag-visualeditor' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
 	'tag-visualeditor-description' => 'Inurnos nga inusar ti [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
 	'tooltip-ca-createsource' => 'Partuaten ti taudan a kodigo iti daytoy a panid',
 	'tooltip-ca-editsource' => 'Urnosen ti taudan a kodigo iti daytoy a panid',
 	'tooltip-ca-ve-edit' => 'Urnosen daytoy a panid iti VisualEditor',
 	'visualeditor' => 'VisualEditor',
-	'visualeditor-aliennode-tooltip' => 'Pasensian, daytoy nga elemento ket saan a maurnos nga agusar ti VisualEditor',
+	'visualeditor-aliennode-tooltip' => 'Pasensian, daytoy nga elemento ket saan a maurnos nga agusar ti VisualEditor', # Fuzzy
 	'visualeditor-annotationbutton-bold-tooltip' => 'Napuskol',
 	'visualeditor-annotationbutton-italic-tooltip' => 'Italiko',
 	'visualeditor-annotationbutton-link-tooltip' => 'Silpo',
@@ -4035,7 +4083,7 @@ $messages['ilo'] = array(
  * @author Snævar
  */
 $messages['is'] = array(
-	'tag-visualeditor' => '[[Special:Tags|Tög]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
+	'tag-visualeditor' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
 	'tag-visualeditor-description' => 'Breyting gerð með hjálp [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
 	'tooltip-ca-createsource' => 'Búa til frumkóða síðunnar',
 	'tooltip-ca-editsource' => 'Breyta frumkóða síðunnar',
@@ -4170,9 +4218,14 @@ $messages['is'] = array(
  * @author Una giornata uggiosa '94
  */
 $messages['it'] = array(
-	'tag-visualeditor' => '[[Special:Tags|Etichetta]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
+	'guidedtour-tour-vegendersurvey-description' => 'Partecipando a questo studio, acconsenti al trasferimento delle informazioni che inserisci alla Wikimedia Foundation negli Stati Uniti ed altrove. Le informazioni raccolte sono usate solo per scopi di ricerca interna e non saranno associate pubblicamente al tuo profilo. Tuttavia, potremmo condividere i risultati di questo studio con il pubblico in forma anonima od aggregata.',
+	'guidedtour-tour-vegendersurvey-female' => 'Femminile',
+	'guidedtour-tour-vegendersurvey-male' => 'Maschile',
+	'guidedtour-tour-vegendersurvey-optout' => 'Preferisco non dirlo',
+	'guidedtour-tour-vegendersurvey-title' => 'Seleziona il tuo sesso',
+	'tag-visualeditor' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
 	'tag-visualeditor-description' => 'Modifica eseguita usando [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
-	'tag-visualeditor-needcheck' => '[[Special:Tags|Etichetta]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor: controllare]]',
+	'tag-visualeditor-needcheck' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor: controllare]]',
 	'tag-visualeditor-needcheck-description' => 'Modifica eseguita utilizzando [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]] dove il sistema ha rilevato possibili modifiche non volute nel wikitesto.',
 	'tooltip-ca-createsource' => 'Crea il codice sorgente di questa pagina',
 	'tooltip-ca-editsource' => 'Modifica il codice sorgente di questa pagina',
@@ -4270,11 +4323,12 @@ $messages['it'] = array(
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Riduci indentazione',
 	'visualeditor-inspector-close-tooltip' => 'Chiudi',
 	'visualeditor-inspector-remove-tooltip' => 'Rimuovi',
+	'visualeditor-languageinspector-block-tooltip' => 'Blocco di lingua: $1$2',
+	'visualeditor-languageinspector-block-tooltip-rtldirection' => ': da destra a sinistra',
 	'visualeditor-linkinspector-suggest-external-link' => 'Collegamento esterno',
 	'visualeditor-linkinspector-suggest-matching-page' => 'Pagina trovata',
 	'visualeditor-linkinspector-suggest-new-page' => 'Nuova pagina',
 	'visualeditor-linkinspector-title' => 'Collegamento ipertestuale',
-	'visualeditor-mwmathinspector-title' => 'LaTeX',
 	'visualeditor-listbutton-bullet-tooltip' => 'Elenco puntato',
 	'visualeditor-listbutton-number-tooltip' => 'Elenco numerato',
 	'visualeditor-loadwarning' => 'Errore durante il caricamento dei dati dal server: $1. Riprovare?',
@@ -4282,6 +4336,7 @@ $messages['it'] = array(
 	'visualeditor-mainnamespacepagelink' => 'Project:Namespace principale',
 	'visualeditor-media-input-placeholder' => 'Ricerca file multimediali',
 	'visualeditor-meta-tool' => 'Impostazioni pagina',
+	'visualeditor-mwmathinspector-title' => 'LaTeX',
 	'visualeditor-notification-created' => 'La pagina $1 è stata creata.',
 	'visualeditor-notification-restored' => '$1 è stata ripristinata.',
 	'visualeditor-notification-saved' => 'Le modifiche apportate a $1 sono state salvate.',
@@ -4317,11 +4372,6 @@ $messages['it'] = array(
 	'visualeditor-usernamespacepagelink' => 'Project:Namespace utente',
 	'visualeditor-viewpage-savewarning' => 'Tornare alla modalità in visualizzazione senza salvare prima?',
 	'visualeditor-window-title' => 'Ispeziona',
-	'guidedtour-tour-vegendersurvey-title' => 'Seleziona il tuo sesso',
-	'guidedtour-tour-vegendersurvey-description' => 'Partecipando a questo studio, acconsenti al trasferimento delle informazioni che inserisci alla Wikimedia Foundation negli Stati Uniti ed altrove. Le informazioni raccolte sono usate solo per scopi di ricerca interna e non saranno associate pubblicamente al tuo profilo. Tuttavia, potremmo condividere i risultati di questo studio con il pubblico in forma anonima od aggregata.',
-	'guidedtour-tour-vegendersurvey-male' => 'Maschile',
-	'guidedtour-tour-vegendersurvey-female' => 'Femminile',
-	'guidedtour-tour-vegendersurvey-optout' => 'Preferisco non dirlo',
 );
 
 /** Japanese (日本語)
@@ -4330,9 +4380,14 @@ $messages['it'] = array(
  * @author Shirayuki
  */
 $messages['ja'] = array(
-	'tag-visualeditor' => '[[Special:Tags|タグ]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|ビジュアルエディター]]',
+	'guidedtour-tour-vegendersurvey-description' => 'この調査に参加することで、アメリカ合衆国や他の場所にあるウィキメディア財団にあなたが送信した情報が転送されることに同意したと見なします。収集した情報は内部的な調査の目的のみに使用し、情報があなたのアカウントと公の場で関連付けられることはありません。しかし、私たちはこの調査の結果を匿名化や集計をした上で公開する場合があります。',
+	'guidedtour-tour-vegendersurvey-female' => '女',
+	'guidedtour-tour-vegendersurvey-male' => '男',
+	'guidedtour-tour-vegendersurvey-optout' => '答えたくありません',
+	'guidedtour-tour-vegendersurvey-title' => '性別を選択してください',
+	'tag-visualeditor' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|ビジュアルエディター]]',
 	'tag-visualeditor-description' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|ビジュアルエディター]]を使用した編集',
-	'tag-visualeditor-needcheck' => '[[Special:Tags|タグ]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|ビジュアルエディター: 要確認]]',
+	'tag-visualeditor-needcheck' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|ビジュアルエディター: 要確認]]',
 	'tag-visualeditor-needcheck-description' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|ビジュアルエディタ―]]を使用した編集のうち、意図しない変更点を含むおそれがあるとシステムが判断したもの',
 	'tooltip-ca-createsource' => 'このページのソースコードを作成する',
 	'tooltip-ca-editsource' => 'このページのソースコードを編集する',
@@ -4430,13 +4485,12 @@ $messages['ja'] = array(
 	'visualeditor-indentationbutton-outdent-tooltip' => 'インデント解除',
 	'visualeditor-inspector-close-tooltip' => '閉じる',
 	'visualeditor-inspector-remove-tooltip' => '除去',
+	'visualeditor-languageinspector-block-tooltip' => '言語ブロック: $1$2',
+	'visualeditor-languageinspector-block-tooltip-rtldirection' => ': 右横書き',
 	'visualeditor-linkinspector-suggest-external-link' => '外部リンク',
 	'visualeditor-linkinspector-suggest-matching-page' => '一致したページ',
 	'visualeditor-linkinspector-suggest-new-page' => '新規ページ',
 	'visualeditor-linkinspector-title' => 'ハイパーリンク',
-	'visualeditor-mwmathinspector-title' => 'LaTeX',
-	'visualeditor-languageinspector-block-tooltip' => '言語ブロック: $1$2',
-	'visualeditor-languageinspector-block-tooltip-rtldirection' => ': 右横書き',
 	'visualeditor-listbutton-bullet-tooltip' => '番号なし箇条書き',
 	'visualeditor-listbutton-number-tooltip' => '番号付き箇条書き',
 	'visualeditor-loadwarning' => 'サーバーからデータを読み込む際にエラーが発生しました: $1。再試行しますか?',
@@ -4444,6 +4498,7 @@ $messages['ja'] = array(
 	'visualeditor-mainnamespacepagelink' => 'Project:標準名前空間',
 	'visualeditor-media-input-placeholder' => '検索するメディア',
 	'visualeditor-meta-tool' => 'ページの設定',
+	'visualeditor-mwmathinspector-title' => 'LaTeX',
 	'visualeditor-notification-created' => '$1を作成しました。',
 	'visualeditor-notification-restored' => '$1を復元しました。',
 	'visualeditor-notification-saved' => '$1への変更を保存しました。',
@@ -4479,11 +4534,6 @@ $messages['ja'] = array(
 	'visualeditor-usernamespacepagelink' => 'Project:利用者名前空間',
 	'visualeditor-viewpage-savewarning' => 'まだ保存していませんが、閲覧モードに本当に戻りますか?',
 	'visualeditor-window-title' => '調査',
-	'guidedtour-tour-vegendersurvey-title' => '性別を選択してください',
-	'guidedtour-tour-vegendersurvey-description' => 'この調査に参加することで、アメリカ合衆国や他の場所にあるウィキメディア財団にあなたが送信した情報が転送されることに同意したと見なします。収集した情報は内部的な調査の目的のみに使用し、情報があなたのアカウントと公の場で関連付けられることはありません。しかし、私たちはこの調査の結果を匿名化や集計をした上で公開する場合があります。',
-	'guidedtour-tour-vegendersurvey-male' => '男',
-	'guidedtour-tour-vegendersurvey-female' => '女',
-	'guidedtour-tour-vegendersurvey-optout' => '答えたくありません',
 );
 
 /** Javanese (Basa Jawa)
@@ -4524,9 +4574,9 @@ $messages['jv'] = array(
  * @author ITshnik
  */
 $messages['ka'] = array(
-	'tag-visualeditor' => '[[Special:Tags|ტეგი]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|ვიზუალური რედაქტორი]]',
+	'tag-visualeditor' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|ვიზუალური რედაქტორი]]',
 	'tag-visualeditor-description' => 'რედაქტირება შესრულებულია [[{{MediaWiki:Visualeditor-descriptionpagelink}}|ვიზუალური რედაქტორის]] საშუალებით',
-	'tag-visualeditor-needcheck' => '[[Special:Tags|ტეგი]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|ვიზუალური რედაქტორი: შემოწმება]]',
+	'tag-visualeditor-needcheck' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|ვიზუალური რედაქტორი: შემოწმება]]',
 	'tag-visualeditor-needcheck-description' => 'რედაქტირება შესრულებულია [[{{MediaWiki:Visualeditor-descriptionpagelink}}|ვიზუალური რედაქტორის]] საშუალებით, რომელშიც სისტემამ აღმოაჩინა, შესაძლოა, უნებლიედ შეცვლილი ვიკი-ტექსტი.',
 	'tooltip-ca-ve-edit' => 'გვერდის რედაქტირება ვიზუალური რედაქტორის საშუალებით',
 	'visualeditor' => 'ვიზუალური რედაქტორი',
@@ -4579,9 +4629,12 @@ $messages['ka'] = array(
  * @author Arystanbek
  */
 $messages['kk-cyrl'] = array(
-	'tag-visualeditor' => '[[Special:Tags|Тег]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
+	'guidedtour-tour-vegendersurvey-female' => 'Әйел',
+	'guidedtour-tour-vegendersurvey-male' => 'Ер',
+	'guidedtour-tour-vegendersurvey-title' => 'Өтініш, өзіңіздің жынысыңызды таңдаңыз',
+	'tag-visualeditor' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
 	'tag-visualeditor-description' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]] қолданылып жасаған өңдеме.',
-	'tag-visualeditor-needcheck' => '[[Special:Tags|Тег]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor: Тексеру]]',
+	'tag-visualeditor-needcheck' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor: Тексеру]]',
 	'tooltip-ca-createsource' => 'Бұл беттің қайнар мәтінін бастау',
 	'tooltip-ca-editsource' => 'Бұл беттің қайнар мәтінін өңдеу',
 	'tooltip-ca-ve-edit' => 'Бұл бетті VisualEditor арқылы өңдеу',
@@ -4678,11 +4731,12 @@ $messages['kk-cyrl'] = array(
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Шегіністі кеміту',
 	'visualeditor-inspector-close-tooltip' => 'Жабу',
 	'visualeditor-inspector-remove-tooltip' => 'Жою',
+	'visualeditor-languageinspector-block-tooltip' => 'Тіл бұғаттауы : $1$2',
+	'visualeditor-languageinspector-block-tooltip-rtldirection' => ':Оңнан солға',
 	'visualeditor-linkinspector-suggest-external-link' => 'Сыртқы сілтеме',
 	'visualeditor-linkinspector-suggest-matching-page' => 'Сәйкес бет',
 	'visualeditor-linkinspector-suggest-new-page' => 'Жаңа бет',
 	'visualeditor-linkinspector-title' => 'Еренсілтеме',
-	'visualeditor-mwmathinspector-title' => 'LaTeX',
 	'visualeditor-listbutton-bullet-tooltip' => 'Оқталған тізім',
 	'visualeditor-listbutton-number-tooltip' => 'Нөмірленген тізім',
 	'visualeditor-loadwarning' => 'Серверден деректер жүктелмеді: $1. Қайталап көргіңіз келе ме?',
@@ -4690,6 +4744,7 @@ $messages['kk-cyrl'] = array(
 	'visualeditor-mainnamespacepagelink' => 'Project:Негізгі есім кеңістігі',
 	'visualeditor-media-input-placeholder' => 'Медиа іздеу',
 	'visualeditor-meta-tool' => 'Бет баптаулары',
+	'visualeditor-mwmathinspector-title' => 'LaTeX',
 	'visualeditor-notification-created' => '$1 құрылды.',
 	'visualeditor-notification-restored' => '$1 қалпына келтірілді.',
 	'visualeditor-notification-saved' => 'Сіздің өзгертулеріңіз $1 сақталды.',
@@ -4725,9 +4780,6 @@ $messages['kk-cyrl'] = array(
 	'visualeditor-usernamespacepagelink' => 'Project:Қатысушы есім кеңістігі',
 	'visualeditor-viewpage-savewarning' => 'Бірінші сақтамай қарап шығу режимінен қайтқаныңызға сенімдісіз бе?',
 	'visualeditor-window-title' => 'Аралап қарап шығу',
-	'guidedtour-tour-vegendersurvey-title' => 'Өтініш, өзіңіздің жынысыңызды таңдаңыз',
-	'guidedtour-tour-vegendersurvey-male' => 'Ер',
-	'guidedtour-tour-vegendersurvey-female' => 'Әйел',
 );
 
 /** Korean (한국어)
@@ -4737,9 +4789,14 @@ $messages['kk-cyrl'] = array(
  * @author 아라
  */
 $messages['ko'] = array(
-	'tag-visualeditor' => '[[Special:Tags|태그]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|시각편집기]]',
+	'guidedtour-tour-vegendersurvey-description' => '이 설문 조사에 참여함으로써, 미국과 기타 장소에 있는 위키미디어 재단에 당신이 보낸 정보가 전송되는 것에 동의한 것으로 간주합니다. 수집된 정보는 내부 연구 목적으로만 사용하고 정보를 당신의 계정과 공개정으로 연관되는 것은 아닙니다. 그러나 우리는 이 조사 결과를 익명화하고 집계를 하고 나서 공개하는 경우가 있습니다.',
+	'guidedtour-tour-vegendersurvey-female' => '여성',
+	'guidedtour-tour-vegendersurvey-male' => '남성',
+	'guidedtour-tour-vegendersurvey-optout' => '대답하지 않음',
+	'guidedtour-tour-vegendersurvey-title' => '성별을 선택하세요',
+	'tag-visualeditor' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|시각편집기]]',
 	'tag-visualeditor-description' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|시각편집기]]를 사용한 편집',
-	'tag-visualeditor-needcheck' => '[[Special:Tags|태그]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|시각편집기: 확인 필요]]',
+	'tag-visualeditor-needcheck' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|시각편집기: 확인 필요]]',
 	'tag-visualeditor-needcheck-description' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|시각편집기]]를 사용해 편집하는 동안 의도하지 않은 바뀜을 갖는 위키텍스트를 시스템이 발견했습니다.',
 	'tooltip-ca-createsource' => '이 문서의 원본 코드를 만들기',
 	'tooltip-ca-editsource' => '이 문서의 원본 코드를 편집',
@@ -4883,20 +4940,15 @@ $messages['ko'] = array(
 	'visualeditor-usernamespacepagelink' => 'Project:사용자 이름공간',
 	'visualeditor-viewpage-savewarning' => '먼저 저장하지 않고 보기 모드로 돌아가겠습니까?',
 	'visualeditor-window-title' => '검사',
-	'guidedtour-tour-vegendersurvey-title' => '성별을 선택하세요',
-	'guidedtour-tour-vegendersurvey-description' => '이 설문 조사에 참여함으로써, 미국과 기타 장소에 있는 위키미디어 재단에 당신이 보낸 정보가 전송되는 것에 동의한 것으로 간주합니다. 수집된 정보는 내부 연구 목적으로만 사용하고 정보를 당신의 계정과 공개정으로 연관되는 것은 아닙니다. 그러나 우리는 이 조사 결과를 익명화하고 집계를 하고 나서 공개하는 경우가 있습니다.',
-	'guidedtour-tour-vegendersurvey-male' => '남성',
-	'guidedtour-tour-vegendersurvey-female' => '여성',
-	'guidedtour-tour-vegendersurvey-optout' => '대답하지 않음',
 );
 
 /** Karachay-Balkar (къарачай-малкъар)
  * @author Iltever
  */
 $messages['krc'] = array(
-	'tag-visualeditor' => '[[Special:Tags|Тег]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|Визуал редактор]]',
+	'tag-visualeditor' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|Визуал редактор]]',
 	'tag-visualeditor-description' => 'Тюрлендириу, [[{{MediaWiki:Visualeditor-descriptionpagelink}}|визуал редактор]] бла этилгенди',
-	'tag-visualeditor-needcheck' => '[[Special:Tags|Тег]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|Визуал редактор]]: тинт', # Fuzzy
+	'tag-visualeditor-needcheck' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|Визуал редактор]]: тинт',
 	'tag-visualeditor-needcheck-description' => 'Система, иш этиб тюрлендирилмеген вики-текст табхан, [[{{MediaWiki:Visualeditor-descriptionpagelink}}|визуал редакторну]] болушлугъу бла этилген тюрлендириу.',
 	'tooltip-ca-createsource' => 'Бетни чыкъгъан кодун къура',
 	'tooltip-ca-editsource' => 'Бетни чыкъгъан кодун тюрлендир',
@@ -5092,7 +5144,11 @@ $messages['ku-latn'] = array(
  * @author Robby
  */
 $messages['lb'] = array(
-	'tag-visualeditor' => '[[Special:Tags|Tag]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
+	'guidedtour-tour-vegendersurvey-female' => 'Weiblech',
+	'guidedtour-tour-vegendersurvey-male' => 'Männlech',
+	'guidedtour-tour-vegendersurvey-optout' => 'Ech well dat net soen',
+	'guidedtour-tour-vegendersurvey-title' => 'Sicht Ärt Geschlecht eraus',
+	'tag-visualeditor' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
 	'tag-visualeditor-description' => 'Ännerung mam [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]] gemaach',
 	'tooltip-ca-createsource' => "De 'Source-Code' vun dëser Säit uleeën",
 	'tooltip-ca-editsource' => "De 'Source-Code' vun dëser Säit änneren",
@@ -5213,10 +5269,6 @@ $messages['lb'] = array(
 	'visualeditor-toolbar-savedialog' => 'Säit späicheren',
 	'visualeditor-usernamespacepagelink' => 'Project:Benotzernummraum',
 	'visualeditor-window-title' => 'Inspizéieren',
-	'guidedtour-tour-vegendersurvey-title' => 'Sicht Ärt Geschlecht eraus',
-	'guidedtour-tour-vegendersurvey-male' => 'Männlech',
-	'guidedtour-tour-vegendersurvey-female' => 'Weiblech',
-	'guidedtour-tour-vegendersurvey-optout' => 'Ech well dat net soen',
 );
 
 /** Lithuanian (lietuvių)
@@ -5267,7 +5319,7 @@ $messages['lv'] = array(
  * @author Iwan Novirion
  */
 $messages['min'] = array(
-	'tag-visualeditor' => '[[Special:Tags|Tag]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
+	'tag-visualeditor' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
 	'tag-visualeditor-description' => 'Suntiangan manggunoan [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
 	'tooltip-ca-createsource' => 'Buek kode sumber laman ko',
 	'tooltip-ca-editsource' => 'Suntiang kode sumber laman ko',
@@ -5361,9 +5413,14 @@ $messages['min'] = array(
  * @author Brest
  */
 $messages['mk'] = array(
-	'tag-visualeditor' => '[[Special:Tags|Ознака]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|ВизуеленУредник]]',
+	'guidedtour-tour-vegendersurvey-description' => 'Учествувајќи во анкетава, давате согласност поднесените информации да се достават на Фондацијата Викимедија во САД и на други места. Собраните информации служат само за внатрешно испитување и нема да бидат јавно поврзани со вашата сметка.  Исходот од анкетата може да го споделиме со јавноста, но исклучиво во анонимизиран или збирен облик (т.е. без лично препознатливи информации за личностите што учествувале).',
+	'guidedtour-tour-vegendersurvey-female' => 'Женски',
+	'guidedtour-tour-vegendersurvey-male' => 'Машки',
+	'guidedtour-tour-vegendersurvey-optout' => 'Не сакам да кажам',
+	'guidedtour-tour-vegendersurvey-title' => 'Укажете го вашиот пол',
+	'tag-visualeditor' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|ВизуеленУредник]]',
 	'tag-visualeditor-description' => 'Уредувањето е извршено со [[{{MediaWiki:Visualeditor-descriptionpagelink}}|ВизуеленУредник]]',
-	'tag-visualeditor-needcheck' => '[[Special:Tags|Ознака]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|ВизуеленУредник: Проверка]]',
+	'tag-visualeditor-needcheck' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|ВизуеленУредник: Проверка]]',
 	'tag-visualeditor-needcheck-description' => 'Уредување направено со [[{{MediaWiki:Visualeditor-descriptionpagelink}}|ВизуеленУредник]] при кое системот утврдил дека викитекстот може да има ненамерни измени.',
 	'tooltip-ca-createsource' => 'Создајте го изворниот код на страницава',
 	'tooltip-ca-editsource' => 'Уредување на изворниот код на страницава',
@@ -5461,13 +5518,12 @@ $messages['mk'] = array(
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Намали вовлекување',
 	'visualeditor-inspector-close-tooltip' => 'Затвори',
 	'visualeditor-inspector-remove-tooltip' => 'Отстрани',
+	'visualeditor-languageinspector-block-tooltip' => 'Јазичен блок: $1$2',
+	'visualeditor-languageinspector-block-tooltip-rtldirection' => ': Од десно налево',
 	'visualeditor-linkinspector-suggest-external-link' => 'Надворешна врска',
 	'visualeditor-linkinspector-suggest-matching-page' => 'Соодветна страница',
 	'visualeditor-linkinspector-suggest-new-page' => 'Нова страница',
 	'visualeditor-linkinspector-title' => 'Врска',
-	'visualeditor-mwmathinspector-title' => 'LaTeX',
-	'visualeditor-languageinspector-block-tooltip' => 'Јазичен блок: $1$2',
-	'visualeditor-languageinspector-block-tooltip-rtldirection' => ': Од десно налево',
 	'visualeditor-listbutton-bullet-tooltip' => 'Список со потточки',
 	'visualeditor-listbutton-number-tooltip' => 'Список со редни броеви',
 	'visualeditor-loadwarning' => 'Грешка при вчитување на податоците од опслужувачот: $1. Дали сакате да пробате одново?',
@@ -5475,6 +5531,7 @@ $messages['mk'] = array(
 	'visualeditor-mainnamespacepagelink' => 'Project:Главен именски простор',
 	'visualeditor-media-input-placeholder' => 'Пребарајте медиумски содржини',
 	'visualeditor-meta-tool' => 'Поставки за страниците',
+	'visualeditor-mwmathinspector-title' => 'LaTeX',
 	'visualeditor-notification-created' => 'Создавањето на $1 заврши успешно!',
 	'visualeditor-notification-restored' => '$1 е повратена.',
 	'visualeditor-notification-saved' => 'Измените во $1 се зачувани',
@@ -5510,11 +5567,6 @@ $messages['mk'] = array(
 	'visualeditor-usernamespacepagelink' => 'Project:Главен именски простор',
 	'visualeditor-viewpage-savewarning' => 'Дали сте сигурни дека сакате да се вратите на прегледниот режим без прво да ги ачувате измените?',
 	'visualeditor-window-title' => 'Контр. преглед',
-	'guidedtour-tour-vegendersurvey-title' => 'Укажете го вашиот пол',
-	'guidedtour-tour-vegendersurvey-description' => 'Учествувајќи во анкетава, давате согласност поднесените информации да се достават на Фондацијата Викимедија во САД и на други места. Собраните информации служат само за внатрешно испитување и нема да бидат јавно поврзани со вашата сметка.  Исходот од анкетата може да го споделиме со јавноста, но исклучиво во анонимизиран или збирен облик (т.е. без лично препознатливи информации за личностите што учествувале).',
-	'guidedtour-tour-vegendersurvey-male' => 'Машки',
-	'guidedtour-tour-vegendersurvey-female' => 'Женски',
-	'guidedtour-tour-vegendersurvey-optout' => 'Не сакам да кажам',
 );
 
 /** Malayalam (മലയാളം)
@@ -5522,9 +5574,14 @@ $messages['mk'] = array(
  * @author Santhosh.thottingal
  */
 $messages['ml'] = array(
-	'tag-visualeditor' => '[[Special:Tags|ടാഗ്]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|കണ്ടുതിരുത്തൽസൗകര്യം]]',
+	'guidedtour-tour-vegendersurvey-description' => 'ഈ സർവേയിൽ പങ്കെടുക്കുമ്പോൾ, താങ്കൾ സമർപ്പിക്കുന്ന വിവരങ്ങൾ അമേരിക്കൻ ഐക്യനാടുകളിൽ, ഇതരപ്രദേശങ്ങളിൽ ഉള്ള വിക്കിമീഡിയ ഫൗണ്ടേഷനിലേയ്ക്ക് നൽകുന്നതായി താങ്കൾ സമ്മതം നൽകുന്നുണ്ട്. ശേഖരിക്കുന്ന വിവരങ്ങൾ അഭ്യന്തരഗവേഷണത്തിനു മാത്രമുപയോഗിക്കുന്നതും ഒരിക്കലും പരസ്യമായി താങ്കളുടെ അംഗത്വവുമായി ചേർത്ത് ലഭ്യമല്ലാത്തതും ആയിരിക്കും. എന്നിരുന്നാലും ഈ സർവേയുടെ ഫലങ്ങൾ ഞങ്ങൾ ആൾക്കാരുടെ പേരുവിവരങ്ങൾ ഉൾപ്പെടുത്താതെ അല്ലെങ്കിൽ സംഗ്രഹിച്ച രൂപത്തിൽ പരസ്യപ്പെടുത്തിയേക്കാം.',
+	'guidedtour-tour-vegendersurvey-female' => 'സ്ത്രീ',
+	'guidedtour-tour-vegendersurvey-male' => 'പുരുഷൻ',
+	'guidedtour-tour-vegendersurvey-optout' => 'വെളിപ്പെടുത്താനാഗ്രഹിക്കുന്നില്ല',
+	'guidedtour-tour-vegendersurvey-title' => 'പുരുഷനാണോ സ്ത്രീയാണോയെന്ന് തിരഞ്ഞെടുക്കുക',
+	'tag-visualeditor' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|കണ്ടുതിരുത്തൽസൗകര്യം]]',
 	'tag-visualeditor-description' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|കണ്ടുതിരുത്തൽ സൗകര്യമുപയോഗിച്ച്]] നടത്തിയ തിരുത്തൽ',
-	'tag-visualeditor-needcheck' => '[[Special:Tags|ടാഗ്]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|കണ്ടുതിരുത്തൽസൗകര്യം: പരിശോധിക്കുക]]',
+	'tag-visualeditor-needcheck' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|കണ്ടുതിരുത്തൽസൗകര്യം: പരിശോധിക്കുക]]',
 	'tag-visualeditor-needcheck-description' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|കണ്ടുതിരുത്തൽ സൗകര്യം]] ഉപയോഗിച്ച് തിരുത്തുമ്പോൾ വിക്കി എഴുത്ത് ഉൾപ്പെട്ടാൽ അപ്രതീക്ഷിത മാറ്റങ്ങൾ ഉണ്ടായേക്കാനിടയുണ്ട്.',
 	'tooltip-ca-createsource' => 'ഈ താളിന്റെ സ്രോതസ്സ് രൂപം സൃഷ്ടിക്കുക',
 	'tooltip-ca-editsource' => 'ഈ താളിന്റെ മൂലരൂപം തിരുത്തുക',
@@ -5626,7 +5683,6 @@ $messages['ml'] = array(
 	'visualeditor-linkinspector-suggest-matching-page' => 'ചേർച്ചയുള്ള താൾ',
 	'visualeditor-linkinspector-suggest-new-page' => 'പുതിയ താൾ',
 	'visualeditor-linkinspector-title' => 'ഹൈപ്പർലിങ്ക്',
-	'visualeditor-mwmathinspector-title' => 'ലാറ്റെക്സ്',
 	'visualeditor-listbutton-bullet-tooltip' => 'എണ്ണമിടാത്ത ലിസ്റ്റ്',
 	'visualeditor-listbutton-number-tooltip' => 'എണ്ണമിട്ട ലിസ്റ്റ്',
 	'visualeditor-loadwarning' => 'സെർവറിൽ നിന്നും വിവരങ്ങൾ ശേഖരിക്കുന്നതിൽ പിഴവുണ്ടായി: $1. വീണ്ടും ശ്രമിക്കണോ?',
@@ -5634,6 +5690,7 @@ $messages['ml'] = array(
 	'visualeditor-mainnamespacepagelink' => 'Project:പ്രധാന നാമമേഖല',
 	'visualeditor-media-input-placeholder' => 'മീഡിയയ്ക്കായി തിരയുക',
 	'visualeditor-meta-tool' => 'താളിന്റെ സജ്ജീകരണങ്ങൾ',
+	'visualeditor-mwmathinspector-title' => 'ലാറ്റെക്സ്',
 	'visualeditor-notification-created' => '$1 എന്ന താൾ സൃഷ്ടിച്ചിരിക്കുന്നു.',
 	'visualeditor-notification-restored' => '$1 പുനഃസ്ഥാപിച്ചിരിക്കുന്നു.',
 	'visualeditor-notification-saved' => 'താങ്കൾ $1 എന്ന താളിൽ വരുത്തിയ മാറ്റങ്ങൾ സേവ് ചെയ്തിരിക്കുന്നു.',
@@ -5669,11 +5726,6 @@ $messages['ml'] = array(
 	'visualeditor-usernamespacepagelink' => 'Project:ഉപയോക്തൃനാമമേഖല',
 	'visualeditor-viewpage-savewarning' => 'സേവ് ചെയ്യാതെ തന്നെ കണ്ടുനോക്കൽ തലത്തിലേയ്ക്ക് തിരിച്ചു പോകണം എന്ന് താങ്കൾക്കുറപ്പാണോ?',
 	'visualeditor-window-title' => 'പരിശോധിക്കുക',
-	'guidedtour-tour-vegendersurvey-title' => 'പുരുഷനാണോ സ്ത്രീയാണോയെന്ന് തിരഞ്ഞെടുക്കുക',
-	'guidedtour-tour-vegendersurvey-description' => 'ഈ സർവേയിൽ പങ്കെടുക്കുമ്പോൾ, താങ്കൾ സമർപ്പിക്കുന്ന വിവരങ്ങൾ അമേരിക്കൻ ഐക്യനാടുകളിൽ, ഇതരപ്രദേശങ്ങളിൽ ഉള്ള വിക്കിമീഡിയ ഫൗണ്ടേഷനിലേയ്ക്ക് നൽകുന്നതായി താങ്കൾ സമ്മതം നൽകുന്നുണ്ട്. ശേഖരിക്കുന്ന വിവരങ്ങൾ അഭ്യന്തരഗവേഷണത്തിനു മാത്രമുപയോഗിക്കുന്നതും ഒരിക്കലും പരസ്യമായി താങ്കളുടെ അംഗത്വവുമായി ചേർത്ത് ലഭ്യമല്ലാത്തതും ആയിരിക്കും. എന്നിരുന്നാലും ഈ സർവേയുടെ ഫലങ്ങൾ ഞങ്ങൾ ആൾക്കാരുടെ പേരുവിവരങ്ങൾ ഉൾപ്പെടുത്താതെ അല്ലെങ്കിൽ സംഗ്രഹിച്ച രൂപത്തിൽ പരസ്യപ്പെടുത്തിയേക്കാം.',
-	'guidedtour-tour-vegendersurvey-male' => 'പുരുഷൻ',
-	'guidedtour-tour-vegendersurvey-female' => 'സ്ത്രീ',
-	'guidedtour-tour-vegendersurvey-optout' => 'വെളിപ്പെടുത്താനാഗ്രഹിക്കുന്നില്ല',
 );
 
 /** Marathi (मराठी)
@@ -5684,9 +5736,13 @@ $messages['ml'] = array(
  * @author संतोष दहिवळ
  */
 $messages['mr'] = array(
-	'tag-visualeditor' => '[[Special:Tags|खूण]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|यथादृश्यसंपादक]]',
+	'guidedtour-tour-vegendersurvey-female' => 'स्त्री',
+	'guidedtour-tour-vegendersurvey-male' => 'पुरूष',
+	'guidedtour-tour-vegendersurvey-optout' => 'सांगणे पसंत नाही',
+	'guidedtour-tour-vegendersurvey-title' => 'कृपया आपले लिंग निवडा',
+	'tag-visualeditor' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|यथादृश्यसंपादक]]',
 	'tag-visualeditor-description' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|यथादृश्यसंपादक]] वापरून केलेले संपादन',
-	'tag-visualeditor-needcheck' => '[[Special:Tags|खूणा]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|यथादृश्यसंपादक: तपासा]]',
+	'tag-visualeditor-needcheck' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|यथादृश्यसंपादक: तपासा]]',
 	'tag-visualeditor-needcheck-description' => 'आपण [[{{MediaWiki:Visualeditor- descriptionpagelink}}|यथादृश्यसंपादक]] वापरून केलेल्या संपादनात, अभिप्रेत नसलेला विकिटेक्स्ट शोधल्याचे, सिस्टीमने सूचीत केले आहे.', # Fuzzy
 	'tooltip-ca-createsource' => 'या पानाचा स्रोत संकेत (कोड) तयार करा',
 	'tooltip-ca-editsource' => 'या पानाचा स्रोत संकेत (कोड) संपादीत करा',
@@ -5830,19 +5886,20 @@ $messages['mr'] = array(
 	'visualeditor-usernamespacepagelink' => 'Project:सदस्य नामविश्व',
 	'visualeditor-viewpage-savewarning' => "संपादन प्रथम जतन न करता, 'वाचा' कडेच जाण्याबद्दल आपला हा निर्णय नक्की आहे ना ?",
 	'visualeditor-window-title' => 'तपासा',
-	'guidedtour-tour-vegendersurvey-title' => 'कृपया आपले लिंग निवडा',
-	'guidedtour-tour-vegendersurvey-male' => 'पुरूष',
-	'guidedtour-tour-vegendersurvey-female' => 'स्त्री',
-	'guidedtour-tour-vegendersurvey-optout' => 'सांगणे पसंत नाही',
 );
 
 /** Malay (Bahasa Melayu)
  * @author Anakmalaysia
  */
 $messages['ms'] = array(
-	'tag-visualeditor' => '[[Special:Tags|Teg]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
+	'guidedtour-tour-vegendersurvey-description' => 'Dengan mengambil bahagian dalam kaji selidik ini, anda bersetuju terhadap pemindahan maklumat yang anda hantar kepada Yayasan Wikimedia di Amerika Syarikat dan di tempat-tempat lain.  Maklumat yang dikumpul adalah untuk tujuan penyelidikan dalaman sahaja dan tidak akan dikaitan dengan akaun anda secara umum. Walau bagaimanapun, kami mungkin berkongsi hasil kajian ini dengan orang awam dalam bentuk yang awanama atau agregat.',
+	'guidedtour-tour-vegendersurvey-female' => 'Perempuan',
+	'guidedtour-tour-vegendersurvey-male' => 'Lelaki',
+	'guidedtour-tour-vegendersurvey-optout' => 'Rahsia',
+	'guidedtour-tour-vegendersurvey-title' => 'Sila pilih jantina anda',
+	'tag-visualeditor' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
 	'tag-visualeditor-description' => 'Disunting dengan menggunakan [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
-	'tag-visualeditor-needcheck' => '[[Special:Tags|Teg]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor:Semak]]',
+	'tag-visualeditor-needcheck' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor:Semak]]',
 	'tag-visualeditor-needcheck-description' => 'Suntingan dilakukan dengan menggunakan [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]] di mana sistem telah mengesan wikiteks yang mungkin mengalami perubahan yang tidak diingini.',
 	'tooltip-ca-createsource' => 'Wujudkan kod sumber untuk halaman ini',
 	'tooltip-ca-editsource' => 'Sunting kod sumber untuk halaman ini',
@@ -5940,13 +5997,12 @@ $messages['ms'] = array(
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Rapatkan inden',
 	'visualeditor-inspector-close-tooltip' => 'Tutup',
 	'visualeditor-inspector-remove-tooltip' => 'Buang',
+	'visualeditor-languageinspector-block-tooltip' => 'Blok Bahasa: $1$2',
+	'visualeditor-languageinspector-block-tooltip-rtldirection' => ': Kanan ke Kiri',
 	'visualeditor-linkinspector-suggest-external-link' => 'Pautan luar',
 	'visualeditor-linkinspector-suggest-matching-page' => 'Halaman yang sepadan',
 	'visualeditor-linkinspector-suggest-new-page' => 'Halaman baru',
 	'visualeditor-linkinspector-title' => 'Hiperpautan',
-	'visualeditor-mwmathinspector-title' => 'LaTeX',
-	'visualeditor-languageinspector-block-tooltip' => 'Blok Bahasa: $1$2',
-	'visualeditor-languageinspector-block-tooltip-rtldirection' => ': Kanan ke Kiri',
 	'visualeditor-listbutton-bullet-tooltip' => 'Senarai berbulet',
 	'visualeditor-listbutton-number-tooltip' => 'Senarai bernombor',
 	'visualeditor-loadwarning' => 'Ralat ketika memuatkan data dari pelayan: $1. Adakah anda hendak mencuba lagi?',
@@ -5954,6 +6010,7 @@ $messages['ms'] = array(
 	'visualeditor-mainnamespacepagelink' => 'Project:Ruang nama utama',
 	'visualeditor-media-input-placeholder' => 'Cari media',
 	'visualeditor-meta-tool' => 'Tetapan halaman',
+	'visualeditor-mwmathinspector-title' => 'LaTeX',
 	'visualeditor-notification-created' => '$1 telah diwujudkan.',
 	'visualeditor-notification-restored' => '$1 telah dipulihkan.',
 	'visualeditor-notification-saved' => 'Perubahan yang anda lakukan pada $1 telah disimpan.',
@@ -5968,6 +6025,7 @@ $messages['ms'] = array(
 	'visualeditor-reference-search-reuse' => 'Gunakan sumber sedia ada',
 	'visualeditor-referencelist-isempty' => 'Tiada rujukan dengan kumpulan "$1" pada halaman ini.',
 	'visualeditor-referencelist-missingref' => 'Rujukan ini ditakrifkan dalam templat atau seumpamanya, maka buat masa sekarang, ia boleh disunting dalam mod sumber sahaja.',
+	'visualeditor-savedialog-error-badtoken' => 'Suntingan anda tidak dapat diproses kerana sesi anda sudah tamat tempoh.',
 	'visualeditor-savedialog-label-create' => 'Wujudkan halaman baru',
 	'visualeditor-savedialog-label-error' => 'Ralat',
 	'visualeditor-savedialog-label-report' => 'Laporkan masalah',
@@ -5989,11 +6047,6 @@ $messages['ms'] = array(
 	'visualeditor-usernamespacepagelink' => 'Project:Ruang nama pengguna',
 	'visualeditor-viewpage-savewarning' => 'Adakah anda benar-benar ingin kembali ke ragam paparan tanpa menyimpan terlebih dahulu?',
 	'visualeditor-window-title' => 'Periksa',
-	'guidedtour-tour-vegendersurvey-title' => 'Sila pilih jantina anda',
-	'guidedtour-tour-vegendersurvey-description' => 'Dengan mengambil bahagian dalam kaji selidik ini, anda bersetuju terhadap pemindahan maklumat yang anda hantar kepada Yayasan Wikimedia di Amerika Syarikat dan di tempat-tempat lain.  Maklumat yang dikumpul adalah untuk tujuan penyelidikan dalaman sahaja dan tidak akan dikaitan dengan akaun anda secara umum. Walau bagaimanapun, kami mungkin berkongsi hasil kajian ini dengan orang awam dalam bentuk yang awanama atau agregat.',
-	'guidedtour-tour-vegendersurvey-male' => 'Lelaki',
-	'guidedtour-tour-vegendersurvey-female' => 'Perempuan',
-	'guidedtour-tour-vegendersurvey-optout' => 'Rahsia',
 );
 
 /** Neapolitan (Nnapulitano)
@@ -6011,9 +6064,14 @@ $messages['nap'] = array(
  * @author Event
  */
 $messages['nb'] = array(
-	'tag-visualeditor' => '[[Special:Tags|Tagger]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
+	'guidedtour-tour-vegendersurvey-description' => 'Ved å delta i denne undersøkelsen samtykker du til at informasjonen du gir overføres til Wikimedia Foundation i USA og andre steder. Informasjonen samles kun inn for internt forskningsformål og vil ikke knyttes mot din konto. Vi forbeholder oss imidlertid retten til å dele resultatene av undersøkelsen med offentligheten i anonymisert eller sammenfattet form.',
+	'guidedtour-tour-vegendersurvey-female' => 'Kvinne',
+	'guidedtour-tour-vegendersurvey-male' => 'Mann',
+	'guidedtour-tour-vegendersurvey-optout' => 'Ønsker ikke å oppgi',
+	'guidedtour-tour-vegendersurvey-title' => 'Vennligst velg kjønn',
+	'tag-visualeditor' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
 	'tag-visualeditor-description' => 'Redigering gjort ved hjelp av [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
-	'tag-visualeditor-needcheck' => '[[Special:Tags|Tag]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor: Sjekk]]',
+	'tag-visualeditor-needcheck' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor: Sjekk]]',
 	'tag-visualeditor-needcheck-description' => 'Redigering gjort med [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]] med mulige utilsiktede endringer i wikiteksten.',
 	'tooltip-ca-createsource' => 'Opprett kildekoden for denne siden',
 	'tooltip-ca-editsource' => 'Rediger kildekoden for denne siden',
@@ -6115,7 +6173,6 @@ $messages['nb'] = array(
 	'visualeditor-linkinspector-suggest-matching-page' => 'Artikkeltreff',
 	'visualeditor-linkinspector-suggest-new-page' => 'Ny side',
 	'visualeditor-linkinspector-title' => 'Hyperlenke',
-	'visualeditor-mwmathinspector-title' => 'LaTeX',
 	'visualeditor-listbutton-bullet-tooltip' => 'Punktliste',
 	'visualeditor-listbutton-number-tooltip' => 'Nummerert liste',
 	'visualeditor-loadwarning' => 'Det oppsto en feil ved henting av data fra serveren: $1. Vil du prøve på nytt?',
@@ -6123,6 +6180,7 @@ $messages['nb'] = array(
 	'visualeditor-mainnamespacepagelink' => 'Project:Navnerom',
 	'visualeditor-media-input-placeholder' => 'Søk etter mediefiler',
 	'visualeditor-meta-tool' => 'Sideinnstillinger',
+	'visualeditor-mwmathinspector-title' => 'LaTeX',
 	'visualeditor-notification-created' => '$1 er blitt opprettet.',
 	'visualeditor-notification-restored' => '$1 har blitt gjenopprettet.',
 	'visualeditor-notification-saved' => 'Dine endringer i $1 er blitt lagret.',
@@ -6158,18 +6216,16 @@ $messages['nb'] = array(
 	'visualeditor-usernamespacepagelink' => 'Project:Brukersider',
 	'visualeditor-viewpage-savewarning' => 'Er du sikker på at du vil gå tilbake til visningsmodus uten å lagre først?',
 	'visualeditor-window-title' => 'Inspiser',
-	'guidedtour-tour-vegendersurvey-title' => 'Vennligst velg kjønn',
-	'guidedtour-tour-vegendersurvey-description' => 'Ved å delta i denne undersøkelsen samtykker du til at informasjonen du gir overføres til Wikimedia Foundation i USA og andre steder. Informasjonen samles kun inn for internt forskningsformål og vil ikke knyttes mot din konto. Vi forbeholder oss imidlertid retten til å dele resultatene av undersøkelsen med offentligheten i anonymisert eller sammenfattet form.',
-	'guidedtour-tour-vegendersurvey-male' => 'Mann',
-	'guidedtour-tour-vegendersurvey-female' => 'Kvinne',
-	'guidedtour-tour-vegendersurvey-optout' => 'Ønsker ikke å oppgi',
 );
 
 /** Low Saxon (Netherlands) (Nedersaksies)
  * @author Servien
  */
 $messages['nds-nl'] = array(
-	'tag-visualeditor' => '[[Special:Tags|Etiket]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|Visuele tekstverwarker]]',
+	'guidedtour-tour-vegendersurvey-female' => 'Deerne',
+	'guidedtour-tour-vegendersurvey-male' => 'Keerl',
+	'guidedtour-tour-vegendersurvey-optout' => 'Geet joe niks an',
+	'tag-visualeditor' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|Visuele tekstverwarker]]',
 	'tag-visualeditor-description' => 'Bewarking emaakt mit behulp van de [[{{MediaWiki:Visualeditor-descriptionpagelink}}|Visuele tekstverwarker]]',
 	'tooltip-ca-createsource' => 'Bronkode veur disse zied anmaken',
 	'tooltip-ca-editsource' => 'Bronkode van disse zied bewarken',
@@ -6257,9 +6313,6 @@ $messages['nds-nl'] = array(
 	'visualeditor-savedialog-title-nochanges' => 'Gien wiezigingen',
 	'visualeditor-toolbar-cancel' => 'Aofbreken',
 	'visualeditor-toolbar-savedialog' => 'Zied opslaon',
-	'guidedtour-tour-vegendersurvey-male' => 'Keerl',
-	'guidedtour-tour-vegendersurvey-female' => 'Deerne',
-	'guidedtour-tour-vegendersurvey-optout' => 'Geet joe niks an',
 );
 
 /** Nepali (नेपाली)
@@ -6279,7 +6332,10 @@ $messages['ne'] = array(
  * @author Siebrand
  */
 $messages['nl'] = array(
-	'tag-visualeditor' => '[[Special:Tags|Tag]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|Visuele tekstverwerker]]',
+	'guidedtour-tour-vegendersurvey-female' => 'Vrouw',
+	'guidedtour-tour-vegendersurvey-male' => 'Man',
+	'guidedtour-tour-vegendersurvey-title' => 'Selecteer uw geslacht',
+	'tag-visualeditor' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|Visuele tekstverwerker]]',
 	'tag-visualeditor-description' => 'Bewerking gemaakt met behulp van de [[{{MediaWiki:Visualeditor-descriptionpagelink}}|Visuele tekstverwerker]]',
 	'tooltip-ca-createsource' => 'Broncode voor deze pagina aanmaken',
 	'tooltip-ca-editsource' => 'Broncode van deze pagina bewerken',
@@ -6303,7 +6359,7 @@ $messages['nl'] = array(
 	'visualeditor-dialog-action-apply' => 'Wijzigingen toepassen',
 	'visualeditor-dialog-action-cancel' => 'Annuleren',
 	'visualeditor-dialog-action-close' => 'Sluiten',
-	'visualeditor-dialog-media-content-section' => 'Bijschrift', # Fuzzy
+	'visualeditor-dialog-media-content-section' => 'Bijschrift',
 	'visualeditor-dialog-media-insert-button' => 'Media toevoegen',
 	'visualeditor-dialog-media-insert-title' => 'Media toevoegen',
 	'visualeditor-dialog-media-title' => 'Mediainstellingen',
@@ -6369,12 +6425,16 @@ $messages['nl'] = array(
 	'visualeditor-formatdropdown-format-paragraph' => 'Paragraaf',
 	'visualeditor-formatdropdown-format-preformatted' => 'Vooraf opgemaakt',
 	'visualeditor-formatdropdown-title' => 'Opmaak wijzigen',
+	'visualeditor-help-label' => 'Gebruikershandleiding',
+	'visualeditor-help-title' => 'Gebruikershandleiding voor de tekstverwerker',
 	'visualeditor-historybutton-redo-tooltip' => 'Opnieuw uitvoeren',
 	'visualeditor-historybutton-undo-tooltip' => 'Ongedaan maken',
 	'visualeditor-indentationbutton-indent-tooltip' => 'Inspringing vergroten',
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Inspringing verkleinen',
 	'visualeditor-inspector-close-tooltip' => 'Sluiten',
 	'visualeditor-inspector-remove-tooltip' => 'Verwijderen',
+	'visualeditor-languageinspector-block-tooltip' => 'Taalblok: $1$2',
+	'visualeditor-languageinspector-block-tooltip-rtldirection' => ': rechts naar links',
 	'visualeditor-linkinspector-suggest-external-link' => 'Externe koppeling',
 	'visualeditor-linkinspector-suggest-matching-page' => 'Bijbehorende pagina',
 	'visualeditor-linkinspector-suggest-new-page' => 'Nieuwe pagina',
@@ -6386,6 +6446,7 @@ $messages['nl'] = array(
 	'visualeditor-mainnamespacepagelink' => 'Project:Hoofdnaamruimte',
 	'visualeditor-media-input-placeholder' => 'Media zoeken',
 	'visualeditor-meta-tool' => 'Pagina-instellingen',
+	'visualeditor-mwmathinspector-title' => 'LaTeX',
 	'visualeditor-notification-created' => '"$1" is aangemaakt.',
 	'visualeditor-notification-restored' => '$1 is teruggeplaatst.',
 	'visualeditor-notification-saved' => 'Uw wijzigingen aan "$1" zijn opgeslagen',
@@ -6398,16 +6459,19 @@ $messages['nl'] = array(
 	'visualeditor-reference-search-reuse' => 'Bestaande bron gebruiken',
 	'visualeditor-referencelist-isempty' => 'Er zijn geen referenties met de groep "$1" op deze pagina.',
 	'visualeditor-savedialog-label-create' => 'Pagina aanmaken',
+	'visualeditor-savedialog-label-error' => 'Fout',
 	'visualeditor-savedialog-label-report' => 'Probleem melden',
 	'visualeditor-savedialog-label-resolve-conflict' => 'Conflict oplossen',
 	'visualeditor-savedialog-label-restore' => 'Pagina terugplaatsen',
 	'visualeditor-savedialog-label-review' => 'Wijzigingen controleren',
 	'visualeditor-savedialog-label-review-good' => 'Terug naar opslaan',
 	'visualeditor-savedialog-label-save' => 'Pagina opslaan',
+	'visualeditor-savedialog-label-warning' => 'Waarschuwing',
 	'visualeditor-savedialog-title-conflict' => 'Conflict',
 	'visualeditor-savedialog-title-nochanges' => 'Geen wijzigingen',
 	'visualeditor-savedialog-title-review' => 'Wijzigingen controleren',
 	'visualeditor-savedialog-title-save' => 'Wijzigingen opslaan',
+	'visualeditor-savedialog-warning-dirty' => 'Uw bewerking is mogelijk beschadigd. Controleer deze voordat u opslaat.',
 	'visualeditor-saveerror' => 'Fout tijdens het opslaan van gegevens naar de server: $1.',
 	'visualeditor-serializeerror' => 'Fout tijdens het laden van gegevens van de server: $1',
 	'visualeditor-toolbar-cancel' => 'Annuleren',
@@ -6551,9 +6615,13 @@ $messages['os'] = array(
  * @author Wpedzich
  */
 $messages['pl'] = array(
-	'tag-visualeditor' => '[[Special:Tags|Znacznik]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
+	'guidedtour-tour-vegendersurvey-female' => 'kobieta',
+	'guidedtour-tour-vegendersurvey-male' => 'mężczyzna',
+	'guidedtour-tour-vegendersurvey-optout' => 'wolę nie ujawniać',
+	'guidedtour-tour-vegendersurvey-title' => 'Proszę podaj swoją płeć',
+	'tag-visualeditor' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
 	'tag-visualeditor-description' => 'Edycja z wykorzystaniem [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditora]]',
-	'tag-visualeditor-needcheck' => '[[Special:Tags|Znacznik]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor: do sprawdzenia]]',
+	'tag-visualeditor-needcheck' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor: do sprawdzenia]]',
 	'tag-visualeditor-needcheck-description' => 'Edycja z wykorzystaniem [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditora]], w której system wykrył możliwe niezamierzone zmiany wikitekstu.',
 	'tooltip-ca-createsource' => 'Tworzenie kodu źródłowego strony',
 	'tooltip-ca-editsource' => 'Edycja kodu źródłowego strony',
@@ -6655,7 +6723,6 @@ $messages['pl'] = array(
 	'visualeditor-linkinspector-suggest-matching-page' => 'Pasująca strona',
 	'visualeditor-linkinspector-suggest-new-page' => 'Nowa strona',
 	'visualeditor-linkinspector-title' => 'Hiperłącze',
-	'visualeditor-mwmathinspector-title' => 'LaTeX',
 	'visualeditor-listbutton-bullet-tooltip' => 'Lista wypunktowana',
 	'visualeditor-listbutton-number-tooltip' => 'Lista numerowana',
 	'visualeditor-loadwarning' => 'Błąd podczas ładowania danych z serwera: $1. Ponowić próbę?',
@@ -6663,6 +6730,7 @@ $messages['pl'] = array(
 	'visualeditor-mainnamespacepagelink' => 'Project:Przestrzeń główna',
 	'visualeditor-media-input-placeholder' => 'Szukaj multimediów',
 	'visualeditor-meta-tool' => 'Ustawienia strony',
+	'visualeditor-mwmathinspector-title' => 'LaTeX',
 	'visualeditor-notification-created' => 'Strona „$1” została utworzona.',
 	'visualeditor-notification-restored' => '$1 przywrócone.',
 	'visualeditor-notification-saved' => 'Twoje zmiany na stronie „$1” zostały zapisane.',
@@ -6694,10 +6762,6 @@ $messages['pl'] = array(
 	'visualeditor-usernamespacepagelink' => 'Project:Strona użytkownika',
 	'visualeditor-viewpage-savewarning' => 'Czy na pewno chcesz powrócić do trybu czytania bez zapisania zmian?',
 	'visualeditor-window-title' => 'Zbadaj',
-	'guidedtour-tour-vegendersurvey-title' => 'Proszę podaj swoją płeć',
-	'guidedtour-tour-vegendersurvey-male' => 'mężczyzna',
-	'guidedtour-tour-vegendersurvey-female' => 'kobieta',
-	'guidedtour-tour-vegendersurvey-optout' => 'wolę nie ujawniać',
 );
 
 /** Piedmontese (Piemontèis)
@@ -6706,69 +6770,63 @@ $messages['pl'] = array(
  * @author පසිඳු කාවින්ද
  */
 $messages['pms'] = array(
-	'tag-visualeditor' => '[[Special:Tags|Tichëtta]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
+	'tag-visualeditor' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
 	'tag-visualeditor-description' => 'Modificà dovrand ël [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
 	'tooltip-ca-ve-edit' => 'Modifiché sta pàgina con VisualEditor',
 	'visualeditor' => 'Editor Visual',
-	'visualeditor-desc' => 'Editor visual për MediaWiki',
-	'visualeditor-preference-enable' => 'Abìlita VisualEditor (mach ant lë spassi nominal [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|prinsipal]] e [[{{MediaWiki:Visualeditor-usernamespacepagelink}}|utent]])',
-	'visualeditor-mainnamespacepagelink' => 'Project:Spassi nominal prinsipal',
-	'visualeditor-usernamespacepagelink' => 'Project:Spassi nominal utent',
-	'visualeditor-notification-saved' => 'Soe modìfiche a $1 a son ëstàite salvà.',
-	'visualeditor-notification-created' => "$1 a l'é stàit creà.",
-	'visualeditor-notification-restored' => "$1 a l'é stàit ripristinà.",
-	'visualeditor-notification-reported' => "Sò problema a l'é stàit signalà. Mersì.",
+	'visualeditor-aliennode-tooltip' => "An dëspias, st'element a peul pa esse modificà an dovrand ël VisualEditor", # Fuzzy
+	'visualeditor-annotationbutton-bold-tooltip' => 'Grassèt', # Fuzzy
+	'visualeditor-annotationbutton-italic-tooltip' => 'Corsiv', # Fuzzy
+	'visualeditor-annotationbutton-link-tooltip' => 'Anliura', # Fuzzy
 	'visualeditor-ca-editsource' => 'Modifiché la sorgiss',
-	'visualeditor-ca-ve-edit' => 'Editor Visual',
 	'visualeditor-ca-ve-create' => 'Editor Visual',
-	'visualeditor-toolbar-savedialog' => 'Revision-a e salva',
-	'visualeditor-savedialog-title-review' => 'Revision-a toe modìfiche',
-	'visualeditor-savedialog-title-report' => 'Signalé un problema',
-	'visualeditor-savedialog-title-save' => 'Salvé le modìfiche',
-	'visualeditor-savedialog-label-review-wrong' => "Quaicòs a l'é falì",
-	'visualeditor-savedialog-label-review-good' => 'A mi a më smija bon',
-	'visualeditor-savedialog-label-report' => 'Signalé un problema',
-	'visualeditor-savedialog-label-create' => 'Creé la pàgina',
-	'visualeditor-savedialog-label-save' => 'Salva la pàgina',
-	'visualeditor-savedialog-label-restore' => 'Ripristiné la pàgina',
+	'visualeditor-ca-ve-edit' => 'Editor Visual',
+	'visualeditor-clearbutton-tooltip' => 'Scancelé la predefinission',
+	'visualeditor-desc' => 'Editor visual për MediaWiki',
+	'visualeditor-descriptionpagelink' => 'Project:VisualEditor',
+	'visualeditor-differror' => 'Eror an cariand ij dat dal servent: $1.',
+	'visualeditor-editconflict' => "Soe modìfiche a l'han nen podù esse salvà për via d'un conflit ëd modìfiche. Veul-lo arzòlve ël conflit a man?",
 	'visualeditor-editnotices-tool' => '$1 {{PLURAL:$1|neuva|neuve}}',
+	'visualeditor-editsummary' => "Descrive lòn ch'a l'ha modificà",
 	'visualeditor-feedback-tool' => "Lassé n'opinion",
-	'visualeditor-window-title' => 'Ispession-a',
-	'visualeditor-linkinspector-title' => 'Liura ipertestual',
-	'visualeditor-linkinspector-suggest-new-page' => 'Pàgina neuva',
-	'visualeditor-linkinspector-suggest-external-link' => 'Liura an sla Ragnà', # Fuzzy
-	'visualeditor-formatdropdown-title' => 'Modifiché ël formà',
-	'visualeditor-formatdropdown-format-paragraph' => 'Paràgraf',
 	'visualeditor-formatdropdown-format-heading1' => 'Antestassion 1',
 	'visualeditor-formatdropdown-format-heading2' => 'Antestassion 2',
 	'visualeditor-formatdropdown-format-heading3' => 'Antestassion 3',
 	'visualeditor-formatdropdown-format-heading4' => 'Antestassion 4',
 	'visualeditor-formatdropdown-format-heading5' => 'Antestassion 5',
 	'visualeditor-formatdropdown-format-heading6' => 'Antestassion 6',
+	'visualeditor-formatdropdown-format-paragraph' => 'Paràgraf',
 	'visualeditor-formatdropdown-format-preformatted' => 'Predefinì',
-	'visualeditor-annotationbutton-bold-tooltip' => 'Grassèt', # Fuzzy
-	'visualeditor-annotationbutton-italic-tooltip' => 'Corsiv', # Fuzzy
-	'visualeditor-annotationbutton-link-tooltip' => 'Anliura', # Fuzzy
+	'visualeditor-formatdropdown-title' => 'Modifiché ël formà',
+	'visualeditor-historybutton-redo-tooltip' => 'Arfé',
+	'visualeditor-historybutton-undo-tooltip' => "Buta 'me ch'a l'era", # Fuzzy
 	'visualeditor-indentationbutton-indent-tooltip' => "Aumenté l'andentassion",
 	'visualeditor-indentationbutton-outdent-tooltip' => "Diminuì l'andentassion",
-	'visualeditor-listbutton-number-tooltip' => 'Lista numerà',
-	'visualeditor-listbutton-bullet-tooltip' => 'Lista pontà',
-	'visualeditor-clearbutton-tooltip' => 'Scancelé la predefinission',
-	'visualeditor-historybutton-undo-tooltip' => "Buta 'me ch'a l'era", # Fuzzy
-	'visualeditor-historybutton-redo-tooltip' => 'Arfé',
 	'visualeditor-inspector-close-tooltip' => 'Sara',
 	'visualeditor-inspector-remove-tooltip' => 'Gava',
-	'visualeditor-viewpage-savewarning' => 'É-lo sigur ëd vorèj andé andré a la manera preuva sensa salvé prima?',
+	'visualeditor-linkinspector-suggest-external-link' => 'Liura an sla Ragnà', # Fuzzy
+	'visualeditor-linkinspector-suggest-new-page' => 'Pàgina neuva',
+	'visualeditor-linkinspector-title' => 'Liura ipertestual',
+	'visualeditor-listbutton-bullet-tooltip' => 'Lista pontà',
+	'visualeditor-listbutton-number-tooltip' => 'Lista numerà',
 	'visualeditor-loadwarning' => 'Eror durant ël cariament dij dat dal servent: $1. Veul-lo prové torna?',
-	'visualeditor-differror' => 'Eror an cariand ij dat dal servent: $1.',
+	'visualeditor-mainnamespacepagelink' => 'Project:Spassi nominal prinsipal',
+	'visualeditor-notification-created' => "$1 a l'é stàit creà.",
+	'visualeditor-notification-restored' => "$1 a l'é stàit ripristinà.",
+	'visualeditor-notification-saved' => 'Soe modìfiche a $1 a son ëstàite salvà.',
+	'visualeditor-preference-enable' => 'Abìlita VisualEditor (mach ant lë spassi nominal [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|prinsipal]] e [[{{MediaWiki:Visualeditor-usernamespacepagelink}}|utent]])',
+	'visualeditor-savedialog-label-create' => 'Creé la pàgina',
+	'visualeditor-savedialog-label-report' => 'Signalé un problema',
+	'visualeditor-savedialog-label-restore' => 'Ripristiné la pàgina',
+	'visualeditor-savedialog-label-review-good' => 'A mi a më smija bon', # Fuzzy
+	'visualeditor-savedialog-label-save' => 'Salva la pàgina',
+	'visualeditor-savedialog-title-review' => 'Revision-a toe modìfiche',
+	'visualeditor-savedialog-title-save' => 'Salvé le modìfiche',
 	'visualeditor-saveerror' => "Eror d'argistrassion dij dat an sël servent: $1.",
-	'visualeditor-editconflict' => "Soe modìfiche a l'han nen podù esse salvà për via d'un conflit ëd modìfiche. Veul-lo arzòlve ël conflit a man?",
-	'visualeditor-editsummary' => "Descrive lòn ch'a l'ha modificà",
-	'visualeditor-problem' => "Descriv lòn ch'a l'é andàit mal",
-	'visualeditor-aliennode-tooltip' => "An dëspias, st'element a peul pa esse modificà an dovrand ël VisualEditor",
-	'visualeditor-descriptionpagelink' => 'Project:VisualEditor',
-	'visualeditor-alphawarning' => "Chiel a deuvra na version alfa dël [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]. A peul andé pian e fé dle modìfiche sbalià - për piasì, ch'a contròla minca modìfica ch'a fà.",
-	'visualeditor-report-notice' => "I seu che an sgnacand për ëspedì i trasmëttreu mie modìfiche e mè coment che a saran memorisà për anàlisi. I son d'acòrd ëd fornì n'opinion conforma a le [[{{MediaWiki:Visualeditor-report-link}}|Condission d'utilisassion]].", # Fuzzy
+	'visualeditor-toolbar-savedialog' => 'Revision-a e salva', # Fuzzy
+	'visualeditor-usernamespacepagelink' => 'Project:Spassi nominal utent',
+	'visualeditor-viewpage-savewarning' => 'É-lo sigur ëd vorèj andé andré a la manera preuva sensa salvé prima?',
+	'visualeditor-window-title' => 'Ispession-a',
 );
 
 /** Pashto (پښتو)
@@ -6800,9 +6858,9 @@ $messages['ps'] = array(
  * @author Jdforrester
  */
 $messages['pt'] = array(
-	'tag-visualeditor' => '[[Special:Tags|Tag]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|Editor Visual]]',
+	'tag-visualeditor' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|Editor Visual]]',
 	'tag-visualeditor-description' => 'Edição realizada utilizando o [[{{MediaWiki:Visualeditor-descriptionpagelink}}|Editor Visual]]',
-	'tag-visualeditor-needcheck' => '[[Special:Tags|Etiqueta]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|Editor Visual: Verificar]]',
+	'tag-visualeditor-needcheck' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|Editor Visual: Verificar]]',
 	'tag-visualeditor-needcheck-description' => 'Edição feita com o [[{{MediaWiki:Visualeditor-descriptionpagelink}}|Editor Visual]] em que o sistema detectou que o código wiki possivelmente teve alterações não intencionais.',
 	'tooltip-ca-createsource' => 'Criar o código fonte desta página',
 	'tooltip-ca-editsource' => 'Editar o código fonte desta página',
@@ -6929,9 +6987,14 @@ $messages['pt'] = array(
  * @author 555
  */
 $messages['pt-br'] = array(
-	'tag-visualeditor' => '[[Special:Tags|Tag]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
+	'guidedtour-tour-vegendersurvey-description' => 'Ao participar desta pesquisa, você concorda em transferir as informações que enviar para a Wikimedia Foundation nos Estados Unidos e outros lugares. A informação coletada destina-se apenas à pesquisa interna e não serão associados publicamente com a sua conta. No entanto, podemos compartilhar os resultados da pesquisa com o público de forma anônima ou agregada.',
+	'guidedtour-tour-vegendersurvey-female' => 'Feminino',
+	'guidedtour-tour-vegendersurvey-male' => 'Masculino',
+	'guidedtour-tour-vegendersurvey-optout' => 'Prefiro não informar',
+	'guidedtour-tour-vegendersurvey-title' => 'Por favor selecione o seu sexo',
+	'tag-visualeditor' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
 	'tag-visualeditor-description' => 'Edição realizada utilizando o [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
-	'tag-visualeditor-needcheck' => '[[Special:Tags|Etiqueta]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|Editor Visual: Verificar]]',
+	'tag-visualeditor-needcheck' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|Editor Visual: Verificar]]',
 	'tag-visualeditor-needcheck-description' => 'Edição realizada com o [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]] na qual o sistema detectou que o wikitexto possivelmente possui mudanças não planejadas.',
 	'tooltip-ca-createsource' => 'Criar o código fonte desta página',
 	'tooltip-ca-editsource' => 'Editar o código fonte desta página',
@@ -7033,7 +7096,6 @@ $messages['pt-br'] = array(
 	'visualeditor-linkinspector-suggest-matching-page' => 'Página correspondente',
 	'visualeditor-linkinspector-suggest-new-page' => 'Página nova',
 	'visualeditor-linkinspector-title' => 'Link',
-	'visualeditor-mwmathinspector-title' => 'LaTeX',
 	'visualeditor-listbutton-bullet-tooltip' => 'Lista com marcadores',
 	'visualeditor-listbutton-number-tooltip' => 'Lista numerada',
 	'visualeditor-loadwarning' => 'Erro ao carregar dados do servidor:  $1. Gostaria de tentar novamente?',
@@ -7041,6 +7103,7 @@ $messages['pt-br'] = array(
 	'visualeditor-mainnamespacepagelink' => 'Project:Domínio principal',
 	'visualeditor-media-input-placeholder' => 'Procurar por mídia',
 	'visualeditor-meta-tool' => 'Configurações de página',
+	'visualeditor-mwmathinspector-title' => 'LaTeX',
 	'visualeditor-notification-created' => 'A página $1 foi criada.',
 	'visualeditor-notification-restored' => '$1 foi restaurado.',
 	'visualeditor-notification-saved' => 'Suas alterações para $1 foram salvas.',
@@ -7076,11 +7139,6 @@ $messages['pt-br'] = array(
 	'visualeditor-usernamespacepagelink' => 'Project:Página de usuário',
 	'visualeditor-viewpage-savewarning' => 'Tem certeza que deseja voltar para a página sem querer salvar a edição?',
 	'visualeditor-window-title' => 'Inspecionar',
-	'guidedtour-tour-vegendersurvey-title' => 'Por favor selecione o seu sexo',
-	'guidedtour-tour-vegendersurvey-description' => 'Ao participar desta pesquisa, você concorda em transferir as informações que enviar para a Wikimedia Foundation nos Estados Unidos e outros lugares. A informação coletada destina-se apenas à pesquisa interna e não serão associados publicamente com a sua conta. No entanto, podemos compartilhar os resultados da pesquisa com o público de forma anônima ou agregada.',
-	'guidedtour-tour-vegendersurvey-male' => 'Masculino',
-	'guidedtour-tour-vegendersurvey-female' => 'Feminino',
-	'guidedtour-tour-vegendersurvey-optout' => 'Prefiro não informar',
 );
 
 /** Romanian (română)
@@ -7089,9 +7147,14 @@ $messages['pt-br'] = array(
  * @author Stelistcristi
  */
 $messages['ro'] = array(
-	'tag-visualeditor' => '[[Special:Tags|Etichetă]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|EditorVizual]]',
+	'guidedtour-tour-vegendersurvey-description' => 'Participând la acest sondaj sunteți de acord cu transferul către Fundația Wikimedia, în Statele Unite și alte părți, a informațiilor pe care le trimiteți. Informațiile sunt colectate doar în scopuri de cercetare internă și nu vor fi asociate, în mod public, contului dumneavoastră. Totuși, este posibil să distribuim publicului, sub formă anonimă sau agregată, rezultatele acestui sondaj.',
+	'guidedtour-tour-vegendersurvey-female' => 'Feminin',
+	'guidedtour-tour-vegendersurvey-male' => 'Masculin',
+	'guidedtour-tour-vegendersurvey-optout' => 'Prefer să nu spun',
+	'guidedtour-tour-vegendersurvey-title' => 'Vă rugăm să alegeți genul',
+	'tag-visualeditor' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|EditorVizual]]',
 	'tag-visualeditor-description' => 'Modificare efectuată cu [[{{MediaWiki:Visualeditor-descriptionpagelink}}|EditorulVizual]]',
-	'tag-visualeditor-needcheck' => '[[Special:Tags|Etichetă]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|EditorVizual: Verificare]]',
+	'tag-visualeditor-needcheck' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|EditorVizual: Verificare]]',
 	'tag-visualeditor-needcheck-description' => 'Modificare efectuată cu [[{{MediaWiki:Visualeditor-descriptionpagelink}}|EditorulVizual]], unde sistemul a detectat că textul wiki a suferit eventuale modificări nedorite.',
 	'tooltip-ca-createsource' => 'Creați codul sursă al acestei pagini',
 	'tooltip-ca-editsource' => 'Modificați codul sursă al acestei pagini',
@@ -7189,13 +7252,12 @@ $messages['ro'] = array(
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Scade indentarea',
 	'visualeditor-inspector-close-tooltip' => 'Închide',
 	'visualeditor-inspector-remove-tooltip' => 'Elimină',
+	'visualeditor-languageinspector-block-tooltip' => 'Bloc de limbi: $1$2',
+	'visualeditor-languageinspector-block-tooltip-rtldirection' => ': De la dreapta la stânga',
 	'visualeditor-linkinspector-suggest-external-link' => 'Legătură externă',
 	'visualeditor-linkinspector-suggest-matching-page' => 'Pagină relevantă',
 	'visualeditor-linkinspector-suggest-new-page' => 'Pagină nouă',
 	'visualeditor-linkinspector-title' => 'Hiperlegătură',
-	'visualeditor-mwmathinspector-title' => 'LaTeX',
-	'visualeditor-languageinspector-block-tooltip' => 'Bloc de limbi: $1$2',
-	'visualeditor-languageinspector-block-tooltip-rtldirection' => ': De la dreapta la stânga',
 	'visualeditor-listbutton-bullet-tooltip' => 'Listă cu puncte',
 	'visualeditor-listbutton-number-tooltip' => 'Listă numerotată',
 	'visualeditor-loadwarning' => 'Eroare la încărcarea datelor de pe server: $1. Doriți să reîncercați?',
@@ -7203,6 +7265,7 @@ $messages['ro'] = array(
 	'visualeditor-mainnamespacepagelink' => 'Project:Spațiul de nume principal',
 	'visualeditor-media-input-placeholder' => 'Căutare de multimedia',
 	'visualeditor-meta-tool' => 'Setări pagină',
+	'visualeditor-mwmathinspector-title' => 'LaTeX',
 	'visualeditor-notification-created' => '$1 a fost creată.',
 	'visualeditor-notification-restored' => '$1 a fost restaurată.',
 	'visualeditor-notification-saved' => 'Modificările dumneavoastră la pagina $1 au fost salvate.',
@@ -7238,11 +7301,6 @@ $messages['ro'] = array(
 	'visualeditor-usernamespacepagelink' => 'Project:Spațiul de nume utilizator',
 	'visualeditor-viewpage-savewarning' => 'Sunteți sigur că doriți să vă întoarceți în modul lecturare fără ca mai întâi să salvați?',
 	'visualeditor-window-title' => 'Inspectare',
-	'guidedtour-tour-vegendersurvey-title' => 'Vă rugăm să alegeți genul',
-	'guidedtour-tour-vegendersurvey-description' => 'Participând la acest sondaj sunteți de acord cu transferul către Fundația Wikimedia, în Statele Unite și alte părți, a informațiilor pe care le trimiteți. Informațiile sunt colectate doar în scopuri de cercetare internă și nu vor fi asociate, în mod public, contului dumneavoastră. Totuși, este posibil să distribuim publicului, sub formă anonimă sau agregată, rezultatele acestui sondaj.',
-	'guidedtour-tour-vegendersurvey-male' => 'Masculin',
-	'guidedtour-tour-vegendersurvey-female' => 'Feminin',
-	'guidedtour-tour-vegendersurvey-optout' => 'Prefer să nu spun',
 );
 
 /** tarandíne (tarandíne)
@@ -7300,9 +7358,9 @@ $messages['roa-tara'] = array(
  * @author Yury Katkov
  */
 $messages['ru'] = array(
-	'tag-visualeditor' => '[[Special:Tags|Тег]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|Визуальный редактор]]',
+	'tag-visualeditor' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|Визуальный редактор]]',
 	'tag-visualeditor-description' => 'Правка сделана с использованием [[{{MediaWiki:Visualeditor-descriptionpagelink}}|визуального редактора]]',
-	'tag-visualeditor-needcheck' => '[[Special:Tags|Тег]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|Визуальный редактор]]: проверить', # Fuzzy
+	'tag-visualeditor-needcheck' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|Визуальный редактор]]: проверить',
 	'tag-visualeditor-needcheck-description' => 'Правка с помощью [[{{MediaWiki:Visualeditor-descriptionpagelink}}|визуального редактора]], в которой система обнаружила, возможно, непреднамеренно изменённый вики-текст.',
 	'tooltip-ca-createsource' => 'Создать страницу в редакторе исходного кода',
 	'tooltip-ca-editsource' => 'Править исходный код страницы',
@@ -7462,7 +7520,7 @@ $messages['rue'] = array(
  * @author පසිඳු කාවින්ද
  */
 $messages['si'] = array(
-	'tag-visualeditor' => '[[Special:Tags|ටැගය]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|දෘශ්‍යසංස්කාරක]]',
+	'tag-visualeditor' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|දෘශ්‍යසංස්කාරක]]',
 	'tag-visualeditor-description' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|දෘශ්‍යසංස්කාරක]] භාවිතා කොට සංස්කරණය සිදු කරන ලදී',
 	'tooltip-ca-ve-edit' => 'දෘශ්‍යසංස්කාරක සමඟ මෙම පිටුව සංස්කරණය කරන්න',
 	'visualeditor' => 'දෘශ්‍යසංස්කාරක',
@@ -7521,6 +7579,9 @@ $messages['si'] = array(
  * @author Yerpo
  */
 $messages['sl'] = array(
+	'guidedtour-tour-vegendersurvey-female' => 'Ženski',
+	'guidedtour-tour-vegendersurvey-male' => 'Moški',
+	'guidedtour-tour-vegendersurvey-optout' => 'Ne želim povedati',
 	'tooltip-ca-editsource' => 'Uredi izvorno kodo te strani',
 	'visualeditor-annotationbutton-bold-tooltip' => 'Krepko',
 	'visualeditor-annotationbutton-italic-tooltip' => 'Poševno',
@@ -7591,16 +7652,16 @@ $messages['sl'] = array(
 	'visualeditor-historybutton-undo-tooltip' => 'Razveljavi',
 	'visualeditor-inspector-close-tooltip' => 'Zapri',
 	'visualeditor-inspector-remove-tooltip' => 'Odstrani',
+	'visualeditor-languageinspector-block-tooltip-rtldirection' => ': Od desne proti levi',
 	'visualeditor-linkinspector-suggest-external-link' => 'Zunanja povezava',
 	'visualeditor-linkinspector-suggest-new-page' => 'Nova stran',
 	'visualeditor-linkinspector-title' => 'Hiperpovezava',
-	'visualeditor-mwmathinspector-title' => 'LaTeX',
-	'visualeditor-languageinspector-block-tooltip-rtldirection' => ': Od desne proti levi',
 	'visualeditor-listbutton-bullet-tooltip' => 'Seznam s točkami',
 	'visualeditor-listbutton-number-tooltip' => 'Oštevilčen seznam',
 	'visualeditor-loadwarning' => 'Napaka pri nalaganju podatkov: $1. Bi želeli poskusiti znova?',
 	'visualeditor-mainnamespacepagelink' => 'Project:Glavni imenski prostor',
 	'visualeditor-meta-tool' => 'Nastavitve strani',
+	'visualeditor-mwmathinspector-title' => 'LaTeX',
 	'visualeditor-notification-created' => 'Stran $1 je bila ustvarjena',
 	'visualeditor-notification-saved' => 'Vaše spremembe v $1 so bile shranjene.',
 	'visualeditor-outline-control-move-down' => 'Prestavi objekt nižje',
@@ -7626,9 +7687,6 @@ $messages['sl'] = array(
 	'visualeditor-toolbar-savedialog' => 'Shrani stran',
 	'visualeditor-usernamespacepagelink' => 'Project:Uporabniški imenski prostor',
 	'visualeditor-window-title' => 'Preglej',
-	'guidedtour-tour-vegendersurvey-male' => 'Moški',
-	'guidedtour-tour-vegendersurvey-female' => 'Ženski',
-	'guidedtour-tour-vegendersurvey-optout' => 'Ne želim povedati',
 );
 
 /** Serbian (Cyrillic script) (српски (ћирилица)‎)
@@ -7636,6 +7694,11 @@ $messages['sl'] = array(
  * @author Милан Јелисавчић
  */
 $messages['sr-ec'] = array(
+	'guidedtour-tour-vegendersurvey-description' => 'Учешћем у овом истраживању, пристајете на пренос информација које оставите Задужбини Викимедија у Сједињеним Државама и другим земљама. Прикупљене информације служе искључиво за интерне истраживачке сврхе и неће бити јавно повезане са вашим налогом. Међутим, ми можемо поделити резултате овог истраживања са јавношћу у анонимном или збирном облику.',
+	'guidedtour-tour-vegendersurvey-female' => 'Женско',
+	'guidedtour-tour-vegendersurvey-male' => 'Мушко',
+	'guidedtour-tour-vegendersurvey-optout' => 'Радије не бих да кажем',
+	'guidedtour-tour-vegendersurvey-title' => 'Молимо изаберите свој пол',
 	'visualeditor-annotationbutton-bold-tooltip' => 'Подебљано',
 	'visualeditor-annotationbutton-italic-tooltip' => 'Искошено',
 	'visualeditor-annotationbutton-link-tooltip' => 'Веза',
@@ -7749,11 +7812,6 @@ $messages['sr-ec'] = array(
 	'visualeditor-toolbar-savedialog' => 'Сачувај страницу',
 	'visualeditor-viewpage-savewarning' => 'Да ли сте сигурни да желите да се вратите на приказ без претходног чувања?',
 	'visualeditor-window-title' => 'Провера',
-	'guidedtour-tour-vegendersurvey-title' => 'Молимо изаберите свој пол',
-	'guidedtour-tour-vegendersurvey-description' => 'Учешћем у овом истраживању, пристајете на пренос информација које оставите Задужбини Викимедија у Сједињеним Државама и другим земљама. Прикупљене информације служе искључиво за интерне истраживачке сврхе и неће бити јавно повезане са вашим налогом. Међутим, ми можемо поделити резултате овог истраживања са јавношћу у анонимном или збирном облику.',
-	'guidedtour-tour-vegendersurvey-male' => 'Мушко',
-	'guidedtour-tour-vegendersurvey-female' => 'Женско',
-	'guidedtour-tour-vegendersurvey-optout' => 'Радије не бих да кажем',
 );
 
 /** Swedish (svenska)
@@ -7764,9 +7822,9 @@ $messages['sr-ec'] = array(
  * @author WikiPhoenix
  */
 $messages['sv'] = array(
-	'tag-visualeditor' => '[[Special:Tags|Taggar]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
+	'tag-visualeditor' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
 	'tag-visualeditor-description' => 'Redigering gjordes med hjälp av [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
-	'tag-visualeditor-needcheck' => '[[Special:Tags|Tagg]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]: Check', # Fuzzy
+	'tag-visualeditor-needcheck' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]: Check',
 	'tag-visualeditor-needcheck-description' => 'Redigering gjord med [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]] där systemet upptäckte möjligen ofrivilliga ändringar i wikitexten.',
 	'tooltip-ca-createsource' => 'Skapa sidans wikitext',
 	'tooltip-ca-editsource' => 'Redigera wikitexten för denna sida',
@@ -7910,9 +7968,9 @@ $messages['sv'] = array(
  * @author Muddyb Blast Producer
  */
 $messages['sw'] = array(
-	'tag-visualeditor' => '[[Special:Tags|Kiambatanisho]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
+	'tag-visualeditor' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
 	'tag-visualeditor-description' => 'Kulihaririwa na [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
-	'tag-visualeditor-needcheck' => '[[Special:Tags|Kiambatanisho]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]: Pitia', # Fuzzy
+	'tag-visualeditor-needcheck' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]: Pitia',
 	'visualeditor' => 'VisualEditor',
 	'visualeditor-annotationbutton-bold-tooltip' => 'Koze',
 	'visualeditor-annotationbutton-italic-tooltip' => 'Mlazo',
@@ -8101,9 +8159,9 @@ $messages['tl'] = array(
  * @author Emperyan
  */
 $messages['tr'] = array(
-	'tag-visualeditor' => '[[Special:Tags|Etiket]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
+	'tag-visualeditor' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
 	'tag-visualeditor-description' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]] kullanılarak yapılan düzenleme',
-	'tag-visualeditor-needcheck' => '[[Special:Tags|Etiket]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor: İnceleme]]',
+	'tag-visualeditor-needcheck' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor: İnceleme]]',
 	'visualeditor' => 'VisualEditor',
 	'visualeditor-annotationbutton-bold-tooltip' => 'Kalın',
 	'visualeditor-annotationbutton-italic-tooltip' => 'Eğik',
@@ -8208,12 +8266,18 @@ $messages['ug-arab'] = array(
  * @author Perohanych
  * @author RLuts
  * @author Steve.rusyn
+ * @author SteveR
  * @author Ата
  */
 $messages['uk'] = array(
-	'tag-visualeditor' => '[[Special:Tags|Мітка]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
+	'guidedtour-tour-vegendersurvey-description' => "Беручи участь у цьому опитуванні, ви даєте згоду на передачу інформації, наданої Фонду Вікімедіа в Сполучених Штатах та інших країнах. Інформація збирається тільки для цілей внутрішнього дослідження і не буде публічно пов'язана з вашим обліковим записом. Однак ми можемо надавати громадськості результати цього дослідження в анонімних або агрегованих формах.",
+	'guidedtour-tour-vegendersurvey-female' => 'Жіноча',
+	'guidedtour-tour-vegendersurvey-male' => 'Чоловіча',
+	'guidedtour-tour-vegendersurvey-optout' => 'Не бажаю вказувати',
+	'guidedtour-tour-vegendersurvey-title' => 'Будь ласка, вкажіть вашу стать',
+	'tag-visualeditor' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
 	'tag-visualeditor-description' => 'Редагування зроблено з використанням [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
-	'tag-visualeditor-needcheck' => '[[Special:Tags|Мітка]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor: перевірити]]',
+	'tag-visualeditor-needcheck' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor: перевірити]]',
 	'tag-visualeditor-needcheck-description' => 'Редагування з допомогою [[{{MediaWiki:Visualeditor-descriptionpagelink}}|візуального редактора]], у якому система виявила вікітекст з, можливо, ненавмисними змінами.',
 	'tooltip-ca-createsource' => 'Створити вихідний код сторінки',
 	'tooltip-ca-editsource' => 'Редагувати вихідний код сторінки',
@@ -8310,12 +8374,11 @@ $messages['uk'] = array(
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Зменшити відступ',
 	'visualeditor-inspector-close-tooltip' => 'Закрити',
 	'visualeditor-inspector-remove-tooltip' => 'Вилучити',
+	'visualeditor-languageinspector-block-tooltip' => 'Мовний блок: $1$2',
+	'visualeditor-languageinspector-block-tooltip-rtldirection' => ': Справа наліво',
 	'visualeditor-linkinspector-suggest-external-link' => 'Зовнішнє посилання',
 	'visualeditor-linkinspector-suggest-new-page' => 'Нова сторінка',
 	'visualeditor-linkinspector-title' => 'Гіперпосилання',
-	'visualeditor-mwmathinspector-title' => 'LaTeX',
-	'visualeditor-languageinspector-block-tooltip' => 'Мовний блок: $1$2',
-	'visualeditor-languageinspector-block-tooltip-rtldirection' => ': Справа наліво',
 	'visualeditor-listbutton-bullet-tooltip' => 'Маркований список',
 	'visualeditor-listbutton-number-tooltip' => 'Нумерований список',
 	'visualeditor-loadwarning' => 'Помилка при завантаженні даних із серверу: $1. Спробувати знову?',
@@ -8323,6 +8386,7 @@ $messages['uk'] = array(
 	'visualeditor-mainnamespacepagelink' => 'Project:Основний простір назв',
 	'visualeditor-media-input-placeholder' => 'Пошук мультимедіа',
 	'visualeditor-meta-tool' => 'Налаштування сторінки',
+	'visualeditor-mwmathinspector-title' => 'LaTeX',
 	'visualeditor-notification-created' => '$1 було створено.',
 	'visualeditor-notification-restored' => '«$1» відновлено.',
 	'visualeditor-notification-saved' => 'Ваші зміни до $1 було збережено.',
@@ -8358,11 +8422,6 @@ $messages['uk'] = array(
 	'visualeditor-usernamespacepagelink' => 'Project:Простір назв користувача',
 	'visualeditor-viewpage-savewarning' => 'Ви дійсно хочете повернутися до режиму перегляду без збереження змін?',
 	'visualeditor-window-title' => 'Перевірити',
-	'guidedtour-tour-vegendersurvey-title' => 'Будь ласка, вкажіть вашу стать',
-	'guidedtour-tour-vegendersurvey-description' => "Беручи участь у цьому опитуванні, ви даєте згоду на передачу інформації, наданої Фонду Вікімедіа в Сполучених Штатах та інших країнах. Інформація збирається тільки для цілей внутрішнього дослідження і не буде публічно пов'язана з вашим обліковим записом. Однак ми можемо надавати громадськості результати цього дослідження в анонімних або агрегованих формах.",
-	'guidedtour-tour-vegendersurvey-male' => 'Чоловіча',
-	'guidedtour-tour-vegendersurvey-female' => 'Жіноча',
-	'guidedtour-tour-vegendersurvey-optout' => 'Не бажаю вказувати',
 );
 
 /** Urdu (اردو)
@@ -8386,6 +8445,9 @@ $messages['ur'] = array(
  * @author Sociologist
  */
 $messages['uz'] = array(
+	'tooltip-ca-editsource' => 'Sahifa manba kodini tahrirlash',
+	'visualeditor-ca-editsource' => 'Manbasini tahrirlash',
+	'visualeditor-ca-editsource-section' => 'manbasini tahrirlash',
 	'visualeditor-editconflict' => 'Tahrirlash toʻqnashuvi yuz bergani uchun Sizning tahrirlaringiz saqlanmadi. Toʻqnashuvni qoʻlda bartaraf etmoqchmisiz?',
 	'visualeditor-preference-enable' => 'VisualEditorni yoqish (faqat [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|asosiy]] va [[{{MediaWiki:Visualeditor-usernamespacepagelink}}|foydalanuvchi]] nomfazolari uchun)',
 );
@@ -8396,9 +8458,14 @@ $messages['uz'] = array(
  * @author Minh Nguyen
  */
 $messages['vi'] = array(
-	'tag-visualeditor' => '[[Special:Tags|Thẻ]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|Trình soạn thị giác]]',
+	'guidedtour-tour-vegendersurvey-description' => 'Với việc tham gia cuộc khảo sát này, bạn đồng ý gửi thông tin cho Wikimedia Foundation tại Hoa Kỳ và các nơi khác. Những thông tin chỉ được thu thập với mục đích nghiên cứu và sẽ không được liên kết công khai với tài khoản của bạn. Tuy nhiên, chúng tôi có thể xuất bản kết quả cuộc khảo sát cho công chúng đọc ở dạng ẩn danh hoặc tổng hợp.',
+	'guidedtour-tour-vegendersurvey-female' => 'Nữ',
+	'guidedtour-tour-vegendersurvey-male' => 'Nam',
+	'guidedtour-tour-vegendersurvey-optout' => 'Không chỉ rõ',
+	'guidedtour-tour-vegendersurvey-title' => 'Hãy chọn giới tính của bạn',
+	'tag-visualeditor' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|Trình soạn thị giác]]',
 	'tag-visualeditor-description' => 'Đã sửa đổi dùng [[{{MediaWiki:Visualeditor-descriptionpagelink}}|Trình soạn thị giác]]',
-	'tag-visualeditor-needcheck' => '[[Special:Tags|Tag]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|Trình soạn thị giác: Cần kiểm tra]]',
+	'tag-visualeditor-needcheck' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|Trình soạn thị giác: Cần kiểm tra]]',
 	'tag-visualeditor-needcheck-description' => 'Sửa đổi được thực hiện dùng [[{{MediaWiki:Visualeditor-descriptionpagelink}}|Trình soạn thị giác]] (VisualEditor) và phần mềm nhận ra những thay đổi có thể bất ngờ trong văn bản wiki.',
 	'tooltip-ca-createsource' => 'Tạo trang này theo mã nguồn',
 	'tooltip-ca-editsource' => 'Sửa đổi mã nguồn của trang này',
@@ -8496,11 +8563,12 @@ $messages['vi'] = array(
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Giảm lề',
 	'visualeditor-inspector-close-tooltip' => 'Đóng',
 	'visualeditor-inspector-remove-tooltip' => 'Dời',
+	'visualeditor-languageinspector-block-tooltip' => 'Đoạn ngôn ngữ: $1$2',
+	'visualeditor-languageinspector-block-tooltip-rtldirection' => ': từ phải sang trái',
 	'visualeditor-linkinspector-suggest-external-link' => 'Liên kết ngoài',
 	'visualeditor-linkinspector-suggest-matching-page' => 'Trang khớp',
 	'visualeditor-linkinspector-suggest-new-page' => 'Trang mới',
 	'visualeditor-linkinspector-title' => 'Liên kết',
-	'visualeditor-mwmathinspector-title' => 'LaTeX',
 	'visualeditor-listbutton-bullet-tooltip' => 'Danh sách không đánh số',
 	'visualeditor-listbutton-number-tooltip' => 'Danh sách đánh số',
 	'visualeditor-loadwarning' => 'Lỗi tải dữ liệu từ máy chủ: $1. Bạn có muốn thử lại không?',
@@ -8508,6 +8576,7 @@ $messages['vi'] = array(
 	'visualeditor-mainnamespacepagelink' => 'Project:Không gian tên chính',
 	'visualeditor-media-input-placeholder' => 'Tìm phương tiện',
 	'visualeditor-meta-tool' => 'Tùy chọn trang',
+	'visualeditor-mwmathinspector-title' => 'LaTeX',
 	'visualeditor-notification-created' => 'Đã tạo ra $1.',
 	'visualeditor-notification-restored' => '$1 đã được phục hồi.',
 	'visualeditor-notification-saved' => 'Đã lưu các thay đổi của bạn tại $1.',
@@ -8522,6 +8591,7 @@ $messages['vi'] = array(
 	'visualeditor-reference-search-reuse' => 'Sử dụng một nguồn có sẵn',
 	'visualeditor-referencelist-isempty' => 'Không có chú thích thuộc nhóm “$1” trên trang này.',
 	'visualeditor-referencelist-missingref' => 'Chú thích này được định rõ trong một bản mẫu hoặc phần nội dung tự động khác. Hiện nay chỉ có thể sửa đổi chú thích này trong chế độ sửa mã nguồn.',
+	'visualeditor-savedialog-error-badtoken' => 'Chúng tôi không nhận được sửa đổi của bạn vì phiên của bạn đã hết hạn.',
 	'visualeditor-savedialog-label-create' => 'Tạo trang',
 	'visualeditor-savedialog-label-error' => 'Lỗi',
 	'visualeditor-savedialog-label-report' => 'Báo cáo vấn đề',
@@ -8543,11 +8613,6 @@ $messages['vi'] = array(
 	'visualeditor-usernamespacepagelink' => 'Project:Trang cá nhân',
 	'visualeditor-viewpage-savewarning' => 'Bạn có chắc chắn muốn quay trở về chế độ xem mà không lưu giữ trước tiên?',
 	'visualeditor-window-title' => 'Kiểm tra',
-	'guidedtour-tour-vegendersurvey-title' => 'Hãy chọn giới tính của bạn',
-	'guidedtour-tour-vegendersurvey-description' => 'Với việc tham gia cuộc khảo sát này, bạn đồng ý gửi thông tin cho Wikimedia Foundation tại Hoa Kỳ và các nơi khác. Những thông tin chỉ được thu thập với mục đích nghiên cứu và sẽ không được liên kết công khai với tài khoản của bạn. Tuy nhiên, chúng tôi có thể xuất bản kết quả cuộc khảo sát cho công chúng đọc ở dạng ẩn danh hoặc tổng hợp.',
-	'guidedtour-tour-vegendersurvey-male' => 'Nam',
-	'guidedtour-tour-vegendersurvey-female' => 'Nữ',
-	'guidedtour-tour-vegendersurvey-optout' => 'Không chỉ rõ',
 );
 
 /** Yiddish (ייִדיש)
@@ -8587,9 +8652,14 @@ $messages['yi'] = array(
  * @author 乌拉跨氪
  */
 $messages['zh-hans'] = array(
-	'tag-visualeditor' => '[[Special:Tags|标签]]：[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
+	'guidedtour-tour-vegendersurvey-description' => '通过参加这次调查，您同意向维基媒体基金会在美国和其他地方转让您提交的信息。所收集的信息仅用于内部研究，并不会公开地与您的帐户相关联。然而，我们可能会匿名或以聚合的形式与他人共享这项调查的结果。',
+	'guidedtour-tour-vegendersurvey-female' => '女',
+	'guidedtour-tour-vegendersurvey-male' => '男',
+	'guidedtour-tour-vegendersurvey-optout' => '不指明',
+	'guidedtour-tour-vegendersurvey-title' => '请选择您的性别',
+	'tag-visualeditor' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
 	'tag-visualeditor-description' => '使用[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]进行的编辑',
-	'tag-visualeditor-needcheck' => '[[Special:Tags|Tag]]： [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor：检查]]',
+	'tag-visualeditor-needcheck' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor：检查]]',
 	'tag-visualeditor-needcheck-description' => '系统检测到使用[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]进行编辑时可能发生有问题的更改。',
 	'tooltip-ca-createsource' => '创建此页面的源代码',
 	'tooltip-ca-editsource' => '编辑此页的源代码',
@@ -8687,13 +8757,12 @@ $messages['zh-hans'] = array(
 	'visualeditor-indentationbutton-outdent-tooltip' => '减少缩进',
 	'visualeditor-inspector-close-tooltip' => '关闭',
 	'visualeditor-inspector-remove-tooltip' => '移除',
+	'visualeditor-languageinspector-block-tooltip' => '语言块：$1$2',
+	'visualeditor-languageinspector-block-tooltip-rtldirection' => ': 从右到左',
 	'visualeditor-linkinspector-suggest-external-link' => '外部链接',
 	'visualeditor-linkinspector-suggest-matching-page' => '匹配页面',
 	'visualeditor-linkinspector-suggest-new-page' => '新页面',
 	'visualeditor-linkinspector-title' => '超链接',
-	'visualeditor-mwmathinspector-title' => 'LaTeX',
-	'visualeditor-languageinspector-block-tooltip' => '语言块：$1$2',
-	'visualeditor-languageinspector-block-tooltip-rtldirection' => ': 从右到左',
 	'visualeditor-listbutton-bullet-tooltip' => '无序列表',
 	'visualeditor-listbutton-number-tooltip' => '有序列表',
 	'visualeditor-loadwarning' => '从服务器加载数据时出现错误：$1。您想要重试吗？',
@@ -8701,6 +8770,7 @@ $messages['zh-hans'] = array(
 	'visualeditor-mainnamespacepagelink' => 'Project:主名字空间',
 	'visualeditor-media-input-placeholder' => '搜索媒体',
 	'visualeditor-meta-tool' => '页面设置',
+	'visualeditor-mwmathinspector-title' => 'LaTeX',
 	'visualeditor-notification-created' => '$1已创建。',
 	'visualeditor-notification-restored' => '$1已恢复。',
 	'visualeditor-notification-saved' => '您对$1的修改已保存。',
@@ -8736,11 +8806,6 @@ $messages['zh-hans'] = array(
 	'visualeditor-usernamespacepagelink' => 'Project:用户名字空间',
 	'visualeditor-viewpage-savewarning' => '您确实要不保存而回到查看模式吗？',
 	'visualeditor-window-title' => '检查',
-	'guidedtour-tour-vegendersurvey-title' => '请选择您的性别',
-	'guidedtour-tour-vegendersurvey-description' => '通过参加这次调查，您同意向维基媒体基金会在美国和其他地方转让您提交的信息。所收集的信息仅用于内部研究，并不会公开地与您的帐户相关联。然而，我们可能会匿名或以聚合的形式与他人共享这项调查的结果。',
-	'guidedtour-tour-vegendersurvey-male' => '男',
-	'guidedtour-tour-vegendersurvey-female' => '女',
-	'guidedtour-tour-vegendersurvey-optout' => '不指明',
 );
 
 /** Traditional Chinese (中文（繁體）‎)
@@ -8756,9 +8821,14 @@ $messages['zh-hans'] = array(
  * @author Waihorace
  */
 $messages['zh-hant'] = array(
-	'tag-visualeditor' => '[[Special:Tags|標籤]]：[[{{MediaWiki:Visualeditor-descriptionpagelink}}|視覺化編輯器]]',
+	'guidedtour-tour-vegendersurvey-description' => '通過參與是次調查，你同意向維基媒體基金會在美國和其他地方轉移你所提交的信息。所收集到的資料僅會被用於內部研究，並不會公開地與你的賬戶相關聯。然而，我們可能會以匿名或經整理的形式對外發佈這些資訊。',
+	'guidedtour-tour-vegendersurvey-female' => '女性',
+	'guidedtour-tour-vegendersurvey-male' => '男性',
+	'guidedtour-tour-vegendersurvey-optout' => '不透露',
+	'guidedtour-tour-vegendersurvey-title' => '請選擇您的性別',
+	'tag-visualeditor' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|視覺化編輯器]]',
 	'tag-visualeditor-description' => '使用 [[{{MediaWiki:Visualeditor-descriptionpagelink}}|視覺化編輯器]] 所產生的編輯',
-	'tag-visualeditor-needcheck' => '[[Special:Tags|標籤]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|可視化編輯器: 需要檢查]]',
+	'tag-visualeditor-needcheck' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|可視化編輯器: 需要檢查]]',
 	'tag-visualeditor-needcheck-description' => '系統檢測到通過[[{{MediaWiki:Visualeditor-descriptionpagelink}}|可視化編輯器]]所作出的編輯可能對維基文本作出未曾預料的更改。',
 	'tooltip-ca-createsource' => '建立此頁面的原始碼',
 	'tooltip-ca-editsource' => '編輯此頁的原始碼',
@@ -8902,9 +8972,4 @@ $messages['zh-hant'] = array(
 	'visualeditor-usernamespacepagelink' => 'Project:使用者名字空間',
 	'visualeditor-viewpage-savewarning' => '您確定要放棄儲存而回到檢視模式嗎？',
 	'visualeditor-window-title' => '檢查',
-	'guidedtour-tour-vegendersurvey-title' => '請選擇您的性別',
-	'guidedtour-tour-vegendersurvey-description' => '通過參與是次調查，你同意向維基媒體基金會在美國和其他地方轉移你所提交的信息。所收集到的資料僅會被用於內部研究，並不會公開地與你的賬戶相關聯。然而，我們可能會以匿名或經整理的形式對外發佈這些資訊。',
-	'guidedtour-tour-vegendersurvey-male' => '男性',
-	'guidedtour-tour-vegendersurvey-female' => '女性',
-	'guidedtour-tour-vegendersurvey-optout' => '不透露',
 );
