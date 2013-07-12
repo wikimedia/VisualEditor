@@ -1006,7 +1006,7 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/internalList' }
 		]
 	},
-	'annotated metadata in a wrapper': {
+	'annotated comment metadata in a wrapper': {
 		'html': '<body><b><!--foo-->bar<!--baz-->quux<!--whee--></b></body>',
 		'data': [
 			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
@@ -1046,7 +1046,35 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/internalList' }
 		]
 	},
-	'metadata in a wrapper followed by annotated text': {
+	'annotated element metadata in a wrapper with content': {
+		'html': '<body><b><link />foo<link /></b></body>',
+		'data': [
+			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+			{
+				'type': 'alienMeta',
+				'annotations': [ ve.dm.example.bold ],
+				'attributes': {
+					'domElements': $( '<link />' ).toArray()
+				}
+			},
+			{ 'type': '/alienMeta' },
+			[ 'f', [ ve.dm.example.bold ] ],
+			[ 'o', [ ve.dm.example.bold ] ],
+			[ 'o', [ ve.dm.example.bold ] ],
+			{
+				'type': 'alienMeta',
+				'annotations': [ ve.dm.example.bold ],
+				'attributes': {
+					'domElements': $( '<link />' ).toArray()
+				}
+			},
+			{ 'type': '/alienMeta' },
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
+		]
+	},
+	'comment metadata in a wrapper followed by annotated text': {
 		'html': '<body>Foo<!--bar--><b>Baz</b></body>',
 		'data': [
 			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
