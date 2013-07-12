@@ -194,8 +194,8 @@ class ApiVisualEditor extends ApiBase {
 	}
 
 	public function execute() {
-		global $wgVisualEditorNamespaces, $wgVisualEditorUseChangeTagging,
-			$wgVisualEditorEditNotices;
+		global $wgVisualEditorNamespaces, $wgVisualEditorEditNotices;
+
 		$user = $this->getUser();
 		$params = $this->extractRequestParams();
 		$page = Title::newFromText( $params['page'] );
