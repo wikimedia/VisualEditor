@@ -694,6 +694,7 @@ $wgResourceModules += array(
 			'visualeditor-toolbar-cancel',
 			'visualeditor-toolbar-savedialog',
 			'visualeditor-viewpage-savewarning',
+			'visualeditor-wikitext-warning-title',
 			'visualeditor-window-title',
 
 			// Only used if FancyCaptcha is installed and triggered on save

@@ -42,10 +42,11 @@ class VisualEditorMessagesModule extends ResourceLoaderModule {
 		// Messages that just require simple parsing
 		$msgArgs = array(
 			'minoredit' => array( 'minoredit' ),
+			'missingsummary' => array( 'missingsummary' ),
 			'watchthis' => array( 'watchthis' ),
 			'visualeditor-browserwarning' => array( 'visualeditor-browserwarning' ),
 			'visualeditor-report-notice' => array( 'visualeditor-report-notice' ),
-			'missingsummary' => array( 'missingsummary' ),
+			'visualeditor-wikitext-warning' => array( 'visualeditor-wikitext-warning' ),
 		);
 
 		// Override message value

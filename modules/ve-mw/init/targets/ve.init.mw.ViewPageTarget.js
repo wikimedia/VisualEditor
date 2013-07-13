@@ -711,6 +711,38 @@ ve.init.mw.ViewPageTarget.prototype.onSurfaceModelTransact = function () {
 };
 
 /**
+ * Handle changes to the surface model.
+ *
+ * This is used to trigger notifications when the user starts entering wikitext
+ *
+ * @param {ve.dm.Transaction} tx
+ * @param {ve.Range} range
+ */
+ve.init.mw.ViewPageTarget.prototype.onSurfaceModelChange = function ( tx, range ) {
+	if ( !range ) {
+		return;
+	}
+	var text, doc = this.surface.getView().getDocument(),
+		node = doc.getNodeFromOffset( range.start );
+	if ( !( node instanceof ve.ce.ContentBranchNode ) ) {
+		return;
+	}
+	text = ve.ce.getDomText( node.$[0] );
+
+	if ( text.match( /\[\[|\{\{|''|<nowiki|~~~|^==|^\*|^\#/ ) ) {
+		mw.notify(
+			$.parseHTML( ve.init.platform.getParsedMessage( 'visualeditor-wikitext-warning' ) ),
+			{
+				'title': ve.msg( 'visualeditor-wikitext-warning-title' ),
+				'tag': 'visualeditor-wikitext-warning',
+				'autoHide': false
+			}
+		);
+		this.surface.getModel().disconnect( this, { 'change': 'onSurfaceModelChange' } );
+	}
+};
+
+/**
  * Re-evaluate whether the toolbar save button should be disabled or not.
  */
 ve.init.mw.ViewPageTarget.prototype.updateToolbarSaveButtonState = function () {
@@ -898,6 +930,7 @@ ve.init.mw.ViewPageTarget.prototype.setUpSurface = function ( doc, callback ) {
 					this.surface.getContext().hide();
 					this.$document = this.surface.$.find( '.ve-ce-documentNode' );
 					this.surface.getModel().connect( this, { 'transact': 'onSurfaceModelTransact' } );
+					this.surface.getModel().connect( this, { 'change': 'onSurfaceModelChange' } );
 					this.surface.getModel().connect( this, { 'history': 'updateToolbarSaveButtonState' } );
 					this.$.append( this.surface.$ );
 					this.setUpToolbar();
