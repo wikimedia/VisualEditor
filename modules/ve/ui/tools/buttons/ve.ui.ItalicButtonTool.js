@@ -30,7 +30,15 @@ ve.ui.ItalicButtonTool.static.name = 'italic';
 ve.ui.ItalicButtonTool.static.icon = {
 	'default': 'italic-a',
 	'en': 'italic-i',
-	'de': 'italic-k'
+	'cs': 'italic-i',
+	'da': 'italic-k',
+	'de': 'italic-k',
+	'he': 'italic-i',
+	'nn': 'italic-k',
+	'no': 'italic-k',
+	'pl': 'italic-i',
+	'sv': 'italic-k'
+
 };
 
 ve.ui.ItalicButtonTool.static.titleMessage = 'visualeditor-annotationbutton-italic-tooltip';
