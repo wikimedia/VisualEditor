@@ -520,10 +520,16 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, wrapp
 		}
 		return aboutGroup;
 	}
-	function isAllAlienMeta( data ) {
-		var i;
+	function isAllInstanceOf( data, targetClass ) {
+		var i, type, itemClass;
 		for ( i = data.length - 1; i >= 0; i-- ) {
-			if ( !data[i].type || ( data[i].type !== 'alienMeta' && data[i].type !== '/alienMeta' ) ) {
+			type = ve.dm.LinearData.static.getType( data[i] );
+			if ( type ) {
+				itemClass = modelRegistry.lookup( type ) || ve.dm.AlienNode;
+				if ( !( itemClass.prototype === targetClass.prototype || itemClass.prototype instanceof targetClass ) ) {
+					return false;
+				}
+			} else {
 				return false;
 			}
 		}
@@ -533,6 +539,7 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, wrapp
 	var i, childDomElement, childDomElements, childDataElements, text, childTypes, matches,
 		wrappingParagraph, prevElement, childAnnotations, modelName, modelClass,
 		annotation, childIsContent, aboutGroup, htmlAttributes,
+		modelRegistry = this.modelRegistry,
 		data = [],
 		nextWhitespace = '',
 		wrappedWhitespace = '',
@@ -606,7 +613,7 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, wrapp
 					childAnnotations.push( annotation );
 
 					childDataElements = this.getDataFromDomRecursion( childDomElement, undefined, childAnnotations );
-					if ( !childDataElements.length || isAllAlienMeta( childDataElements ) ) {
+					if ( !childDataElements.length || isAllInstanceOf( childDataElements, ve.dm.AlienMetaItem ) ) {
 						// Empty annotation, create a meta item
 						childDataElements = this.createDataElements( ve.dm.AlienMetaItem, childDomElements );
 						childDataElements.push( { 'type': '/' + childDataElements[0].type } );
@@ -917,11 +924,11 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, wrapp
 		data.push( { 'type': '/' + wrapperElement.type } );
 	}
 	// Don't return an empty document
-	if ( context.branchType === 'document' && data.length === 0 && !annotationSet ) {
-		return [
+	if ( context.branchType === 'document' && isAllInstanceOf( data, ve.dm.MetaItem ) && !annotationSet ) {
+		return data.concat( [
 			{ 'type': 'paragraph', 'internal': { 'generated': 'empty' } },
 			{ 'type': '/paragraph' }
-		];
+		] );
 	}
 
 	this.contextStack.pop();
