@@ -162,6 +162,9 @@ $messages['en'] = array(
 	'visualeditor-toolbar-savedialog' => 'Save page',
 	'visualeditor-usernamespacepagelink' => 'Project:User namespace',
 	'visualeditor-viewpage-savewarning' => 'Are you sure you want to go back to view mode without saving first?',
+	'visualeditor-wikitext-warning' => 'You are using VisualEditor; please do not to enter [[{{MediaWiki:Visualeditor-wikitext-warning-link}}|wikitext]] as it will not work.',
+	'visualeditor-wikitext-warning-link' => 'Help:Wiki markup',
+	'visualeditor-wikitext-warning-title' => 'Wikitext markup detected',
 	'visualeditor-window-title' => 'Inspect',
 );
 
@@ -463,6 +466,9 @@ Parameters:
 	'visualeditor-usernamespacepagelink' => 'Name of a page describing the user namespace (NS2) in this project.
 {{doc-important|Do not translate "Project"; it is automatically converted to the wiki\'s project namespace.}}',
 	'visualeditor-viewpage-savewarning' => 'Text shown when the user tries to leave the editor without saving their changes',
+	'visualeditor-wikitext-warning' => 'Contents of notification displayed when Wikitext has been detected',
+	'visualeditor-wikitext-warning-link' => 'Link to page describing what Wikitext is',
+	'visualeditor-wikitext-warning-title' => 'Title of notification displayed when Wikitext has been detected',
 	'visualeditor-window-title' => 'Title of an unnamed inspector',
 );
 
