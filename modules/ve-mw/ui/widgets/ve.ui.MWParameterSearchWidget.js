@@ -153,6 +153,6 @@ ve.ui.MWParameterSearchWidget.prototype.addResults = function () {
 
 	this.results.addItems( items );
 	if ( query.length ) {
-		this.results.selectItem( this.results.getFirstSelectableItem() );
+		this.results.highlightItem( this.results.getFirstSelectableItem() );
 	}
 };

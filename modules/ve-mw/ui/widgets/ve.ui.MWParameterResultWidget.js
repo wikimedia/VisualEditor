@@ -36,10 +36,6 @@ ve.ui.MWParameterResultWidget = function VeUiMWParameterResultWidget( data, conf
 
 ve.inheritClass( ve.ui.MWParameterResultWidget, ve.ui.OptionWidget );
 
-/* Static Properties */
-
-ve.ui.MWParameterResultWidget.static.highlightable = false;
-
 /* Methods */
 
 ve.ui.MWParameterResultWidget.prototype.buildLabel = function () {

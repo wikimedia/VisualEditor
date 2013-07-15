@@ -6,7 +6,7 @@
  */
 
 /**
- * Dialog for a MediaWiki reference.
+ * Dialog for editing MediaWiki references.
  *
  * @class
  * @extends ve.ui.MWDialog
@@ -68,6 +68,13 @@ ve.ui.MWReferenceEditDialog.prototype.initialize = function () {
 		'label': ve.msg( 'visualeditor-dialog-reference-options-group-label' )
 	} );
 
+	this.applyButton = new ve.ui.ButtonWidget( {
+		'$$': this.$$, 'label': ve.msg( 'visualeditor-dialog-action-apply' ), 'flags': ['primary']
+	} );
+
+	// Events
+	this.applyButton.connect( this, { 'click': [ 'close', 'apply' ] } );
+
 	// Initialization
 	this.optionsFieldset.$.append(
 		this.groupLabel.$,
@@ -76,6 +83,7 @@ ve.ui.MWReferenceEditDialog.prototype.initialize = function () {
 	this.$body
 		.append( this.contentFieldset.$, this.optionsFieldset.$ )
 		.addClass( 've-ui-mwReferenceEditDialog-body' );
+	this.$foot.append( this.applyButton.$ );
 };
 
 ve.ui.MWReferenceEditDialog.prototype.onOpen = function () {

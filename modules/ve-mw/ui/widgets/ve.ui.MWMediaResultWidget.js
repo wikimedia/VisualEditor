@@ -43,10 +43,6 @@ ve.ui.MWMediaResultWidget = function VeUiMWMediaResultWidget( data, config ) {
 
 ve.inheritClass( ve.ui.MWMediaResultWidget, ve.ui.OptionWidget );
 
-/* Static Properties */
-
-ve.ui.MWMediaResultWidget.static.highlightable = false;
-
 /* Methods */
 
 ve.ui.MWMediaResultWidget.prototype.onThumbnailLoad = function () {

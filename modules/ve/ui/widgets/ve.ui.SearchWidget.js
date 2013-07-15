@@ -35,9 +35,15 @@ ve.ui.SearchWidget = function VeUiSearchWidget( config ) {
 	this.$results = this.$$( '<div>' );
 
 	// Events
-	this.query.connect( this, { 'change': 'onQueryChange', 'enter': [ 'emit', 'enter' ] } );
-	this.results.connect( this, { 'select': 'onResultsSelect' } );
-	this.query.$.on( 'keydown', ve.bind( this.onQueryKeydown, this ) );
+	this.query.connect( this, {
+		'change': 'onQueryChange',
+		'enter': 'onQueryEnter'
+	} );
+	this.results.connect( this, {
+		'highlight': 'onResultsHighlight',
+		'select': 'onResultsSelect'
+	} );
+	this.query.$input.on( 'keydown', ve.bind( this.onQueryKeydown, this ) );
 
 	// Initialization
 	this.$query
@@ -58,12 +64,13 @@ ve.inheritClass( ve.ui.SearchWidget, ve.ui.Widget );
 /* Events */
 
 /**
- * @event select
- * @param {Object|null} item Item data or null if no item is selected
+ * @event highlight
+ * @param {Object|null} item Item data or null if no item is highlighted
  */
 
 /**
- * @event enter
+ * @event select
+ * @param {Object|null} item Item data or null if no item is selected
  */
 
 /* Methods */
@@ -75,12 +82,15 @@ ve.inheritClass( ve.ui.SearchWidget, ve.ui.Widget );
  * @param {jQuery.Event} e Key down event
  */
 ve.ui.SearchWidget.prototype.onQueryKeydown = function ( e ) {
-	var selectedItem,
+	var highlightedItem,
 		dir = e.which === ve.Keys.DOWN ? 1 : ( e.which === ve.Keys.UP ? -1 : 0 );
 
 	if ( dir ) {
-		selectedItem = this.results.getSelectedItem();
-		this.results.selectItem( this.results.getRelativeSelectableItem( selectedItem, dir ) );
+		highlightedItem = this.results.getHighlightedItem();
+		if ( !highlightedItem ) {
+			highlightedItem = this.results.getSelectedItem();
+		}
+		this.results.highlightItem( this.results.getRelativeSelectableItem( highlightedItem, dir ) );
 	}
 };
 
@@ -95,6 +105,30 @@ ve.ui.SearchWidget.prototype.onQueryKeydown = function ( e ) {
 ve.ui.SearchWidget.prototype.onQueryChange = function () {
 	// Reset
 	this.results.clearItems();
+};
+
+/**
+ * Handle select widget enter key events.
+ *
+ * Selects highlighted item.
+ *
+ * @method
+ * @param {string} value New value
+ */
+ve.ui.SearchWidget.prototype.onQueryEnter = function () {
+	// Reset
+	this.results.selectItem( this.results.getHighlightedItem() );
+};
+
+/**
+ * Handle select widget highlight events.
+ *
+ * @method
+ * @param {ve.ui.OptionWidget} item Highlighted item
+ * @emits highlight
+ */
+ve.ui.SearchWidget.prototype.onResultsHighlight = function ( item ) {
+	this.emit( 'highlight', item ? item.getData() : null );
 };
 
 /**
@@ -116,4 +150,14 @@ ve.ui.SearchWidget.prototype.onResultsSelect = function ( item ) {
  */
 ve.ui.SearchWidget.prototype.getQuery = function () {
 	return this.query;
+};
+
+/**
+ * Get the results list.
+ *
+ * @method
+ * @returns {ve.ui.SelectWidget} Select list
+ */
+ve.ui.SearchWidget.prototype.getResults = function () {
+	return this.results;
 };

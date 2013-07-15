@@ -5,11 +5,10 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-/*global mw */
-
 /**
+ * Dialog for inserting MediaWiki media objects.
+ *
  * @class
- * @abstract
  * @extends ve.ui.MWDialog
  *
  * @constructor
@@ -17,6 +16,9 @@
  * @param {Object} [config] Config options
  */
 ve.ui.MWMediaInsertDialog = function VeUiMWMediaInsertDialog( surface, config ) {
+	// Configuration initialization
+	config = ve.extendObject( {}, config, { 'footless': true } );
+
 	// Parent constructor
 	ve.ui.MWDialog.call( this, surface, config );
 
@@ -36,9 +38,11 @@ ve.ui.MWMediaInsertDialog.static.icon = 'picture';
 
 /* Methods */
 
-ve.ui.MWMediaInsertDialog.prototype.onSelect = function ( item ) {
+ve.ui.MWMediaInsertDialog.prototype.onSearchSelect = function ( item ) {
 	this.item = item;
-	this.applyButton.setDisabled( item === null );
+	if ( item ) {
+		this.close( 'insert' );
+	}
 };
 
 ve.ui.MWMediaInsertDialog.prototype.onOpen = function () {
@@ -47,6 +51,8 @@ ve.ui.MWMediaInsertDialog.prototype.onOpen = function () {
 
 	// Initialization
 	this.search.getQuery().$input.focus().select();
+	this.search.getResults().selectItem();
+	this.search.getResults().highlightItem();
 };
 
 ve.ui.MWMediaInsertDialog.prototype.onClose = function ( action ) {
@@ -55,7 +61,7 @@ ve.ui.MWMediaInsertDialog.prototype.onClose = function ( action ) {
 	// Parent method
 	ve.ui.MWDialog.prototype.onClose.call( this );
 
-	if ( action === 'apply' ) {
+	if ( action === 'insert' ) {
 		info = this.item.imageinfo[0];
 		this.surface.getModel().getFragment().insertContent( [
 			{
@@ -86,12 +92,9 @@ ve.ui.MWMediaInsertDialog.prototype.initialize = function () {
 	this.search = new ve.ui.MWMediaSearchWidget( { '$$': this.frame.$$ } );
 
 	// Events
-	this.search.connect( this, { 'select': 'onSelect' } );
+	this.search.connect( this, { 'select': 'onSearchSelect' } );
 
 	// Initialization
-	this.applyButton.setDisabled( true ).setLabel(
-		mw.msg( 'visualeditor-dialog-media-insert-button' )
-	);
 	this.search.$.addClass( 've-ui-mwMediaInsertDialog-select' );
 	this.$body.append( this.search.$ );
 };

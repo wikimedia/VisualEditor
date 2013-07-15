@@ -6,7 +6,7 @@
  */
 
 /**
- * Dialog for a MediaWiki references list.
+ * Dialog for inserting and editing MediaWiki reference lists.
  *
  * @class
  * @extends ve.ui.MWDialog
@@ -50,11 +50,19 @@ ve.ui.MWReferenceListDialog.prototype.initialize = function () {
 		'label': ve.msg( 'visualeditor-dialog-reference-options-group-label' )
 	} );
 
+	this.applyButton = new ve.ui.ButtonWidget( {
+		'$$': this.$$, 'label': ve.msg( 'visualeditor-dialog-action-apply' ), 'flags': ['primary']
+	} );
+
+	// Events
+	this.applyButton.connect( this, { 'click': [ 'close', 'apply' ] } );
+
 	// Initialization
 	this.optionsFieldset.$.append( this.groupLabel.$, this.groupInput.$ );
 	this.$body
 		.append( this.optionsFieldset.$ )
 		.addClass( 've-ui-mwReferenceListDialog-body' );
+	this.$foot.append( this.applyButton.$ );
 };
 
 ve.ui.MWReferenceListDialog.prototype.onOpen = function () {

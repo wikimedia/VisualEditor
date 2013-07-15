@@ -6,7 +6,7 @@
  */
 
 /**
- * Document dialog.
+ * Dialog for editing MediaWiki media objects.
  *
  * @class
  * @extends ve.ui.MWDialog
@@ -54,10 +54,17 @@ ve.ui.MWMediaEditDialog.prototype.initialize = function () {
 		'label': ve.msg( 'visualeditor-dialog-media-content-section' ),
 		'icon': 'parameter'
 	} );
+	this.applyButton = new ve.ui.ButtonWidget( {
+		'$$': this.$$, 'label': ve.msg( 'visualeditor-dialog-action-apply' ), 'flags': ['primary']
+	} );
+
+	// Events
+	this.applyButton.connect( this, { 'click': [ 'close', 'apply' ] } );
 
 	// Initialization
 	this.$body.addClass( 've-ui-mwMediaEditDialog-body' );
 	this.$body.append( this.contentFieldset.$ );
+	this.$foot.append( this.applyButton.$ );
 };
 
 ve.ui.MWMediaEditDialog.prototype.onOpen = function () {

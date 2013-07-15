@@ -221,10 +221,20 @@
 	bottom: 0;
 	left: 0;
 	right: 0;
+	box-shadow: inset 0 0 0 1px #ccc;
 }
 
+.ve-ui-optionWidget-highlighted .ve-ui-mwMediaResultWidget-overlay,
 .ve-ui-optionWidget-selected .ve-ui-mwMediaResultWidget-overlay {
-	box-shadow: inset 0 0 0 1px rgba(0,0,0,0.5), inset 0 0 0 2px rgba(255,255,255,0.5);
+	box-shadow: inset 0 0 0 1px #a7dcff;
+}
+
+.ve-ui-mwMediaResultWidget.ve-ui-optionWidget-highlighted {
+	box-shadow: 0 0 0.3em #a7dcff, 0 0 0 white;
+}
+
+.ve-ui-mwMediaResultWidget.ve-ui-optionWidget-selected {
+	box-shadow: 0 0 0.3em #a7dcff, 0 0 0 white;
 }
 
 .ve-ui-mwMediaResultWidget-error .ve-ui-mwMediaResultWidget-thumbnail {
@@ -247,6 +257,14 @@
 	line-height: 1.125em;
 	background-color: rgba(0,0,0,0.5);
 	text-overflow: ellipsis;
+}
+
+.ve-ui-mwMediaResultWidget.ve-ui-optionWidget-highlighted .ve-ui-labeledElement-label {
+	background-color: rgba(0,0,0,0.75);
+}
+
+.ve-ui-mwMediaResultWidget.ve-ui-optionWidget-selected .ve-ui-labeledElement-label {
+	background-color: #000;
 }
 
 /* ve.ui.MWReferenceSearchWidget */

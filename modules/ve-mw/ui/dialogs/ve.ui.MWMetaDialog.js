@@ -8,6 +8,8 @@
 /*global mw*/
 
 /**
+ * Dialog for editing MediaWiki page meta information.
+ *
  * @class
  * @extends ve.ui.MWDialog
  * @mixins ve.ui.PagedDialog
@@ -85,6 +87,9 @@ ve.ui.MWMetaDialog.prototype.initialize = function () {
 		'label': ve.msg( 'visualeditor-dialog-meta-languages-label' ),
 		'icon': 'language'
 	} );
+	this.applyButton = new ve.ui.ButtonWidget( {
+		'$$': this.$$, 'label': ve.msg( 'visualeditor-dialog-action-apply' ), 'flags': ['primary']
+	} );
 
 	// Events
 	this.categoryWidget.connect( this, {
@@ -94,6 +99,7 @@ ve.ui.MWMetaDialog.prototype.initialize = function () {
 	this.defaultSortInput.connect( this, {
 		'change': 'onDefaultSortChange'
 	} );
+	this.applyButton.connect( this, { 'click': [ 'close', 'apply' ] } );
 
 	// Initialization
 	this.categoryWidget.addItems( this.getCategoryItems() );
@@ -108,6 +114,7 @@ ve.ui.MWMetaDialog.prototype.initialize = function () {
 	this.pages.categories.$.append( this.categoriesFieldset.$, this.categoryOptionsFieldset.$ );
 	this.categoriesFieldset.$.append( this.categoryWidget.$ );
 	this.categoryOptionsFieldset.$.append( this.defaultSortLabel.$, this.defaultSortInput.$ );
+	this.$foot.append( this.applyButton.$ );
 
 	this.pages.languages.$.append( this.languagesFieldset.$ );
 

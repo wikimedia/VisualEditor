@@ -95,6 +95,14 @@
 	bottom: 4.8em;
 }
 
+.ve-ui-dialog-content-footless .ve-ui-window-body {
+	bottom: 0;
+}
+
+.ve-ui-dialog-content-footless .ve-ui-window-foot {
+	display: none;
+}
+
 .ve-ui-dialog-content .ve-ui-window-icon {
 	width: 2.4em;
 	height: 2.8em;

@@ -176,9 +176,12 @@
 	overflow: hidden;
 }
 
-.ve-ui-optionWidget-highlighted,
+.ve-ui-optionWidget-highlighted {
+	background-color: #e1f3ff;
+}
+
 .ve-ui-optionWidget-selected {
-	background-color: #b3d6f6;
+	background-color: #a7dcff;
 }
 
 .ve-ui-optionWidget.ve-ui-widget-disabled {
@@ -384,10 +387,6 @@
 
 .ve-ui-menuItemWidget {
 	position: relative;
-}
-
-.ve-ui-menuItemWidget.ve-ui-optionWidget-selected:not(.ve-ui-optionWidget-highlighted) {
-	background-color: transparent;
 }
 
 .ve-ui-menuItemWidget .ve-ui-optionWidget-icon {

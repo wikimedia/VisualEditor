@@ -51,6 +51,9 @@ ve.ui.MenuWidget.prototype.onKeyDown = function ( e ) {
 		highlightItem = this.getHighlightedItem();
 
 	if ( !this.disabled && this.visible ) {
+		if ( !highlightItem ) {
+			highlightItem = this.getSelectedItem();
+		}
 		switch ( e.keyCode ) {
 			case ve.Keys.ENTER:
 				this.selectItem( highlightItem );

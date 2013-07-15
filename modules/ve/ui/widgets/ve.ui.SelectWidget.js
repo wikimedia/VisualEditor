@@ -36,7 +36,8 @@ ve.ui.SelectWidget = function VeUiSelectWidget( config ) {
 		'mousedown': ve.bind( this.onMouseDown, this ),
 		'mouseup': ve.bind( this.onMouseUp, this ),
 		'mousemove': ve.bind( this.onMouseMove, this ),
-		'mouseover': ve.bind( this.onMouseOver, this )
+		'mouseover': ve.bind( this.onMouseOver, this ),
+		'mouseleave': ve.bind( this.onMouseLeave, this )
 	} );
 
 	// Initialization
@@ -50,6 +51,11 @@ ve.inheritClass( ve.ui.SelectWidget, ve.ui.Widget );
 ve.mixinClass( ve.ui.SelectWidget, ve.ui.GroupElement );
 
 /* Events */
+
+/**
+ * @event highlight
+ * @param {ve.ui.OptionWidget|null} item Highlighted item or null if no item is highlighted
+ */
 
 /**
  * @event select
@@ -151,6 +157,20 @@ ve.ui.SelectWidget.prototype.onMouseOver = function ( e ) {
 };
 
 /**
+ * Handle mouse leave events.
+ *
+ * @method
+ * @private
+ * @param {jQuery.Event} e Mouse over event
+ */
+ve.ui.SelectWidget.prototype.onMouseLeave = function () {
+	if ( !this.disabled ) {
+		this.highlightItem();
+	}
+	return false;
+};
+
+/**
  * Get the closest item to a jQuery.Event.
  *
  * @method
@@ -225,6 +245,7 @@ ve.ui.SelectWidget.prototype.getItemFromData = function ( data ) {
  * @method
  * @param {ve.ui.OptionWidget} [item] Item to highlight, omit to deselect all
  * @param {boolean} [silent=false] Update UI only, do not emit `highlight` event
+ * @emits highlight
  * @chainable
  */
 ve.ui.SelectWidget.prototype.highlightItem = function ( item, silent ) {
@@ -252,6 +273,7 @@ ve.ui.SelectWidget.prototype.highlightItem = function ( item, silent ) {
  * @method
  * @param {ve.ui.OptionWidget} [item] Item to select, omit to deselect all
  * @param {boolean} [silent=false] Update UI only, do not emit `select` event
+ * @emits select
  * @chainable
  */
 ve.ui.SelectWidget.prototype.selectItem = function ( item, silent ) {
@@ -334,6 +356,7 @@ ve.ui.SelectWidget.prototype.getFirstSelectableItem = function () {
  * @method
  * @param {ve.ui.OptionWidget[]} items Items to add
  * @param {number} [index] Index to insert items after
+ * @emits add
  * @chainable
  */
 ve.ui.SelectWidget.prototype.addItems = function ( items, index ) {
@@ -365,6 +388,7 @@ ve.ui.SelectWidget.prototype.addItems = function ( items, index ) {
  *
  * @method
  * @param {ve.ui.OptionWidget[]} items Items to remove
+ * @emits remove
  * @chainable
  */
 ve.ui.SelectWidget.prototype.removeItems = function ( items ) {
@@ -394,6 +418,7 @@ ve.ui.SelectWidget.prototype.removeItems = function ( items ) {
  * Items will be detached, not removed, so they can be used later.
  *
  * @method
+ * @emits remove
  * @chainable
  */
 ve.ui.SelectWidget.prototype.clearItems = function () {

@@ -15,19 +15,26 @@
  * @constructor
  * @param {ve.ui.Surface} surface
  * @param {Object} [config] Config options
+ * @cfg {boolean} [footless] Hide foot
  */
 ve.ui.Dialog = function VeUiDialog( surface, config ) {
+	// Configuration initialization
+	config = config || {};
+
 	// Parent constructor
 	ve.ui.Window.call( this, surface, config );
 
 	// Properties
 	this.visible = false;
+	this.footless = !!config.footless;
 	this.onWindowMouseWheelHandler = ve.bind( this.onWindowMouseWheel, this );
 	this.onDocumentKeyDownHandler = ve.bind( this.onDocumentKeyDown, this );
 
+	// Events
+	this.$.on( 'mousedown', false );
+
 	// Initialization
 	this.$.addClass( 've-ui-dialog' );
-	this.$.on( 'mousedown', false );
 };
 
 /* Inheritance */
@@ -43,15 +50,6 @@ ve.inheritClass( ve.ui.Dialog, ve.ui.Window );
  */
 ve.ui.Dialog.prototype.onCloseButtonClick = function () {
 	this.close( 'cancel' );
-};
-
-/**
- * Handle apply button click events.
- *
- * @method
- */
-ve.ui.Dialog.prototype.onApplyButtonClick = function () {
-	this.close( 'apply' );
 };
 
 /**
@@ -142,22 +140,19 @@ ve.ui.Dialog.prototype.initialize = function () {
 	ve.ui.Window.prototype.initialize.call( this );
 
 	// Properties
-	this.applyButton = new ve.ui.ButtonWidget( {
-		'$$': this.$$, 'label': ve.msg( 'visualeditor-dialog-action-apply' ), 'flags': ['primary']
-	} );
 	this.closeButton = new ve.ui.IconButtonWidget( {
 		'$$': this.$$, 'title': ve.msg( 'visualeditor-dialog-action-close' ), 'icon': 'close'
 	} );
 
 	// Events
 	this.closeButton.connect( this, { 'click': 'onCloseButtonClick' } );
-	this.applyButton.connect( this, { 'click': 'onApplyButtonClick' } );
 	this.frame.$document.on( 'keydown', ve.bind( this.onFrameDocumentKeyDown, this ) );
 
 	// Initialization
 	this.frame.$content.addClass( 've-ui-dialog-content' );
+	if ( this.footless ) {
+		this.frame.$content.addClass( 've-ui-dialog-content-footless' );
+	}
 	this.closeButton.$.addClass( 've-ui-window-closeButton' );
-	this.applyButton.$.addClass( 've-ui-window-applyButton' );
 	this.$head.append( this.closeButton.$ );
-	this.$foot.append( this.applyButton.$ );
 };

@@ -6,7 +6,7 @@
  */
 
 /**
- * Dialog for editing a MediaWiki transclusion.
+ * Dialog for inserting and editing MediaWiki transclusions.
  *
  * See https://raw.github.com/wikimedia/mediawiki-extensions-TemplateData/master/spec.templatedata.json
  * for the latest version of the TemplateData specification.
@@ -70,11 +70,20 @@ ve.ui.MWTransclusionDialog.prototype.initialize = function () {
 	// Setup for PagedDialog
 	this.initializePages();
 
+	// Properties
+	this.applyButton = new ve.ui.ButtonWidget( {
+		'$$': this.$$, 'label': ve.msg( 'visualeditor-dialog-action-apply' ), 'flags': ['primary']
+	} );
+
 	// Events
 	this.outlineControlsWidget.connect( this, {
 		'move': 'onOutlineControlsMove',
 		'add': 'onOutlineControlsAdd'
 	} );
+	this.applyButton.connect( this, { 'click': [ 'close', 'apply' ] } );
+
+	// Initialization
+	this.$foot.append( this.applyButton.$ );
 };
 
 ve.ui.MWTransclusionDialog.prototype.onOpen = function () {
@@ -394,18 +403,15 @@ ve.ui.MWTransclusionDialog.prototype.getContentPage = function ( content ) {
  * @param {ve.dm.MWTemplateModel} template Template model
  */
 ve.ui.MWTransclusionDialog.prototype.getTemplatePage = function ( template ) {
-	var infoFieldset, addParameterFieldset, addParameterSearch, addParameterButton, optionsFieldset,
+	var infoFieldset, addParameterFieldset, addParameterSearch, optionsFieldset,
 		removeButton,
 		spec = template.getSpec(),
 		label = spec.getLabel(),
 		description = spec.getDescription();
 
-	function addParameter() {
-		var data, name, param,
-			item = addParameterSearch.results.getSelectedItem();
+	function addParameter( name ) {
+		var param;
 
-		data = item && item.getData();
-		name = data && data.name;
 		if ( name ) {
 			param = new ve.dm.MWTemplateParameterModel( template, name );
 			template.addParameter( param );
@@ -431,20 +437,8 @@ ve.ui.MWTransclusionDialog.prototype.getTemplatePage = function ( template ) {
 	} );
 	addParameterFieldset.$.addClass( 've-ui-mwTransclusionDialog-addParameterFieldset' );
 	addParameterSearch = new ve.ui.MWParameterSearchWidget( template, { '$$': this.frame.$$ } );
-	addParameterButton = new ve.ui.ButtonWidget( {
-		'$$': this.frame.$$,
-		'label': ve.msg( 'visualeditor-dialog-transclusion-add-param' ),
-		'disabled': true
-	} );
-	addParameterButton.connect( this, { 'click': addParameter } );
-	addParameterSearch.connect( this, {
-		'enter': addParameter,
-		'select': function ( name ) {
-			var names = template.getParameterNames();
-			addParameterButton.setDisabled( !name || names.indexOf( name ) !== -1 );
-		}
-	} );
-	addParameterFieldset.$.append( addParameterSearch.$, addParameterButton.$ );
+	addParameterSearch.connect( this, { 'select': addParameter } );
+	addParameterFieldset.$.append( addParameterSearch.$ );
 
 	optionsFieldset = new ve.ui.FieldsetLayout( {
 		'$$': this.frame.$$,

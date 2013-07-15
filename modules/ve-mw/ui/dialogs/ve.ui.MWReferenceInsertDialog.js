@@ -5,11 +5,10 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-/*global mw */
-
 /**
+ * Dialog for inserting MediaWiki references.
+ *
  * @class
- * @abstract
  * @extends ve.ui.MWDialog
  *
  * @constructor
@@ -17,6 +16,9 @@
  * @param {Object} [config] Config options
  */
 ve.ui.MWReferenceInsertDialog = function VeUiMWReferenceInsertDialog( surface, config ) {
+	// Configuration initialization
+	config = ve.extendObject( {}, config, { 'footless': true } );
+
 	// Parent constructor
 	ve.ui.MWDialog.call( this, surface, config );
 
@@ -43,9 +45,11 @@ ve.ui.MWReferenceInsertDialog.static.icon = 'reference';
  * @param {string|Object|null} result Command string, reference attributes object, or null if
  *   nothing is selected
  */
-ve.ui.MWReferenceInsertDialog.prototype.onSelect = function ( result ) {
+ve.ui.MWReferenceInsertDialog.prototype.onSearchSelect = function ( result ) {
 	this.result = result;
-	this.applyButton.setDisabled( result === null );
+	if ( result ) {
+		this.close( 'insert' );
+	}
 };
 
 ve.ui.MWReferenceInsertDialog.prototype.onOpen = function () {
@@ -66,7 +70,7 @@ ve.ui.MWReferenceInsertDialog.prototype.onClose = function ( action ) {
 	// Parent method
 	ve.ui.MWDialog.prototype.onClose.call( this );
 
-	if ( action === 'apply' ) {
+	if ( action === 'insert' ) {
 		doc = surfaceModel.getDocument(),
 		internalList = doc.getInternalList();
 		if ( create ) {
@@ -132,12 +136,9 @@ ve.ui.MWReferenceInsertDialog.prototype.initialize = function () {
 	this.search = new ve.ui.MWReferenceSearchWidget( this.surface, { '$$': this.frame.$$ } );
 
 	// Events
-	this.search.connect( this, { 'select': 'onSelect' } );
+	this.search.connect( this, { 'select': 'onSearchSelect' } );
 
 	// Initialization
-	this.applyButton.setDisabled( true ).setLabel(
-		mw.msg( 'visualeditor-dialog-reference-insert-button' )
-	);
 	this.search.$.addClass( 've-ui-mwReferenceInsertDialog-select' );
 	this.$body.append( this.search.$ );
 };
