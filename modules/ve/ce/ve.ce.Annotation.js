@@ -32,3 +32,15 @@ ve.inheritClass( ve.ce.Annotation, ve.ce.View );
 /* Static Properties */
 
 ve.ce.Annotation.static.tagName = 'span';
+
+/**
+ * Whether this annotation's continuation (or lack thereof) needs to be forced.
+ *
+ * This should be set to true only for annotations that aren't continued by browsers but are in DM,
+ * or the other way around, or those where behavior is inconsistent between browsers.
+ *
+ * @property static.forceContinuation
+ * @static
+ * @inheritable
+ */
+ve.ce.Annotation.static.forceContinuation = false;

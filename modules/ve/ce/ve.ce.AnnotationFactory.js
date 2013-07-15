@@ -21,6 +21,20 @@ ve.ce.AnnotationFactory = function VeCeAnnotationFactory() {
 
 ve.inheritClass( ve.ce.AnnotationFactory, ve.NamedClassFactory );
 
+/* Methods */
+
+/**
+ * Check if an annotation needs to force continuation
+ * @param {string} type Annotation type
+ * @returns {boolean} Whether the annotation needs to force continuation
+ */
+ve.ce.AnnotationFactory.prototype.isAnnotationContinuationForced = function ( type ) {
+	if ( type in this.registry ) {
+		return this.registry[type].static.forceContinuation;
+	}
+	return false;
+};
+
 /* Initialization */
 
 // TODO: Move instantiation to a different file

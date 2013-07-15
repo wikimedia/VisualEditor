@@ -33,6 +33,8 @@ ve.ce.LinkAnnotation.static.name = 'link';
 
 ve.ce.LinkAnnotation.static.tagName = 'a';
 
+ve.ce.LinkAnnotation.static.forceContinuation = true;
+
 /* Registration */
 
 ve.ce.annotationFactory.register( ve.ce.LinkAnnotation );

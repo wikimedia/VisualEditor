@@ -1071,8 +1071,8 @@ ve.ce.Surface.prototype.handleInsertion = function () {
 
 	if ( selection.isCollapsed() ) {
 		slug = this.documentView.getSlugAtOffset( selection.start );
-		// Is this a slug or are the annotations incorrect?
-		if ( slug || !this.areAnnotationsCorrect( selection, insertionAnnotations ) ) {
+		// Always pawn in a slug
+		if ( slug || this.needsPawn( selection, insertionAnnotations ) ) {
 			placeholder = '♙';
 			if ( !insertionAnnotations.isEmpty() ) {
 				placeholder = [placeholder, insertionAnnotations.getIndexes()];
@@ -1442,33 +1442,55 @@ ve.ce.Surface.prototype.getClickCount = function ( e ) {
 };
 
 /**
- * Checks if related annotationSet matches insertionAnnotations.
+ * Checks if we need to pawn for insertionAnnotations based on the related annotationSet.
  *
  * "Related" is typically to the left, unless at the beginning of a node.
  *
+ * We choose to pawn if the related annotationSet doesn't match insertionAnnotations, or if
+ * we are at the edge of an annotation that requires pawning (i.e. an annotation requiring pawning
+ * is present on the left but not on the right, or vice versa).
+ *
  * @method
  * @param {ve.Range} selection
- * @returns {ve.dm.AnnotationSet} insertionAnnotations
+ * @param {ve.dm.AnnotationSet} insertionAnnotations
+ * @returns {boolean} Whether we need to pawn
  */
-ve.ce.Surface.prototype.areAnnotationsCorrect = function ( selection, insertionAnnotations ) {
-	var documentModel = this.model.documentModel;
+ve.ce.Surface.prototype.needsPawn = function ( selection, insertionAnnotations ) {
+	var leftAnnotations, rightAnnotations, documentModel = this.model.documentModel;
+
+	function isForced( annotation ) {
+		return ve.ce.annotationFactory.isAnnotationContinuationForced( annotation.constructor.static.name );
+	}
+
+	if ( selection.start > 0 ) {
+		leftAnnotations = documentModel.data.getAnnotationsFromOffset( selection.start - 1 );
+	}
+	if ( selection.start < documentModel.data.getLength() ) {
+		rightAnnotations = documentModel.data.getAnnotationsFromOffset( selection.start + 1 );
+	}
 
 	// Take annotations from the left
-	if (
-		selection.start > 0 &&
-		!documentModel.data.getAnnotationsFromOffset( selection.start - 1 ).compareTo( insertionAnnotations )
-	) {
-		return false;
+	// TODO reorganize the logic in this function
+	if ( leftAnnotations && !leftAnnotations.compareTo( insertionAnnotations ) ) {
+			return true;
 	}
 	// At the beginning of a node, take from the right
 	if (
 		rangy.getSelection( this.$document[0] ).anchorOffset === 0 &&
-		selection.start < this.model.getDocument().data.getLength() &&
-		!documentModel.data.getAnnotationsFromOffset( selection.start + 1 ).compareTo( insertionAnnotations )
+		rightAnnotations &&
+		!rightAnnotations.compareTo( insertionAnnotations )
 	) {
-		return false;
+		return true;
 	}
-	return true;
+
+	if (
+		leftAnnotations && rightAnnotations &&
+		!leftAnnotations.filter( isForced ).compareTo( rightAnnotations.filter( isForced ) )
+	) {
+		return true;
+	}
+
+	return false;
 };
 
 /*! Getters */
