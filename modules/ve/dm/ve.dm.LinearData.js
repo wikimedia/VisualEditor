@@ -20,6 +20,61 @@ ve.dm.LinearData = function VeDmLinearData( store, data ) {
 	this.data = data || [];
 };
 
+/* Static Methods */
+
+ve.dm.LinearData.static = {};
+
+/**
+ * Get the type of an element
+ *
+ * This will return the same string for close and open elements.
+ *
+ * @method
+ * @param {Object} item Element item
+ * @returns {string} Type of the element
+ */
+ve.dm.LinearData.static.getType = function ( item ) {
+	return this.isCloseElementData( item ) ? item.type.substr( 1 ) : item.type;
+};
+
+/**
+ * Check if data item is an element.
+ *
+ * This method assumes that any value that has a type property that's a string is an element object.
+ *
+ * Element data:
+ *      <heading> a </heading> <paragraph> b c <img></img> </paragraph>
+ *     ^         . ^          ^           . . ^     ^     ^            .
+ *
+ * @method
+ * @param {Object|Array|string} item Linear data item
+ * @returns {boolean} Item is an element
+ */
+ve.dm.LinearData.static.isElementData = function ( item ) {
+	// Data exists and appears to be an element
+	return item !== undefined && typeof item.type === 'string';
+};
+
+/**
+ * Checks if data item is an open element.
+ * @method
+ * @param {Object} item Element item
+ * @returns {boolean} Item is an open element
+ */
+ve.dm.LinearData.static.isOpenElementData = function ( item ) {
+	return this.isElementData( item ) && item.type.charAt( 0 ) !== '/';
+};
+
+/**
+ * Checks if data item is a close element.
+ * @method
+ * @param {Object} item Element item
+ * @returns {boolean} Item is a close element
+ */
+ve.dm.LinearData.static.isCloseElementData = function ( item ) {
+	return this.isElementData( item ) && item.type.charAt( 0 ) === '/';
+};
+
 /* Methods */
 
 /**
