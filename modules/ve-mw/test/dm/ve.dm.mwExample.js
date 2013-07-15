@@ -535,6 +535,77 @@ ve.dm.mwExample.references = [
 ];
 
 ve.dm.mwExample.domToDataCases = {
+	'adjacent annotations': {
+		'html':
+			'<body>' +
+				'<b>a</b><b data-parsoid="1">b</b><b>c</b><b data-parsoid="2">d</b> ' +
+				'<b>a</b><b>b</b> ' +
+				'<b data-parsoid="3">ab</b><b data-parsoid="4">c</b>' +
+			'</body>',
+		'data': [
+			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+			[ 'a', [ ve.dm.example.bold ] ],
+			[
+				'b',
+				[ {
+					'type': 'textStyle/bold',
+					'htmlAttributes': [ { 'values': {
+						'data-parsoid': '1'
+					} } ]
+				} ]
+			],
+			[ 'c', [ ve.dm.example.bold ] ],
+			[
+				'd',
+				[ {
+					'type': 'textStyle/bold',
+					'htmlAttributes': [ { 'values': {
+						'data-parsoid': '2'
+					} } ]
+				} ]
+			],
+			' ',
+			[ 'a', [ ve.dm.example.bold ] ],
+			[ 'b', [ ve.dm.example.bold ] ],
+			' ',
+			[
+				'a',
+				[ {
+					'type': 'textStyle/bold',
+					'htmlAttributes': [ { 'values': {
+						'data-parsoid': '3'
+					} } ]
+				} ]
+			],
+			[
+				'b',
+				[ {
+					'type': 'textStyle/bold',
+					'htmlAttributes': [ { 'values': {
+						'data-parsoid': '3'
+					} } ]
+				} ]
+			],
+			[
+				'c',
+				[ {
+					'type': 'textStyle/bold',
+					'htmlAttributes': [ { 'values': {
+						'data-parsoid': '4'
+					} } ]
+				} ]
+			],
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
+		],
+		'normalizedHtml':
+			'<body>' +
+				'<b>abcd</b> ' +
+				'<b>ab</b> ' +
+				'<b data-parsoid="3">ab</b><b data-parsoid="4">c</b>' +
+			'</body>'
+	},
 	'mw:Image': {
 		'html': '<body><p>' + ve.dm.mwExample.MWInlineImageHtml + '</p></body>',
 		'data': [
@@ -1433,7 +1504,17 @@ ve.dm.mwExample.domToDataCases = {
 		]
 	},
 	'attribute preservation does not crash due to text node split': {
-		'html': '<body><figure typeof="mw:Image/Thumb" data-parsoid="{}"><a href="Foo" data-parsoid="{}"><img src="Bar" width="1" height="2" resource="FooBar" data-parsoid="{}"></a><figcaption data-parsoid="{}"> foo <a rel="mw:WikiLink" href="./Bar" data-parsoid="{}">bar</a> baz</figcaption></figure></body>',
+		'html':
+			'<body>' +
+				'<figure typeof="mw:Image/Thumb" data-parsoid="{}">' +
+					'<a href="Foo" data-parsoid="{}">' +
+						'<img src="Bar" width="1" height="2" resource="FooBar" data-parsoid="{}">' +
+					'</a>' +
+					'<figcaption data-parsoid="{}">' +
+					' foo <a rel="mw:WikiLink" href="./Bar" data-parsoid="{}">bar</a> baz' +
+					'</figcaption>' +
+				'</figure>' +
+			'</body>',
 		'data': [
 			{
 				'type': 'mwBlockImage',
