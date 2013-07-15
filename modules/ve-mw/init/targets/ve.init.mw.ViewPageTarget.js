@@ -581,7 +581,13 @@ ve.init.mw.ViewPageTarget.prototype.onSaveError = function ( jqXHR, status, data
 	// Handle (other) unknown and/or unrecoverable errors
 	this.showMessage(
 		'api-save-error',
-		document.createTextNode( data.error && ( data.error.info || data.error.code ) || 'Invalid error code' ),
+		document.createTextNode(
+			editApi.info ||
+				( data.error && data.error.info ) ||
+				editApi.code ||
+				( data.error && data.error.code ) ||
+				'Unknown error'
+		),
 		{
 			wrap: 'error'
 		}
