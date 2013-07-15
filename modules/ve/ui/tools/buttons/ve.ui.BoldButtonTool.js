@@ -30,7 +30,14 @@ ve.ui.BoldButtonTool.static.name = 'bold';
 ve.ui.BoldButtonTool.static.icon = {
 	'default': 'bold-a',
 	'en': 'bold-b',
-	'de': 'bold-f'
+	'cs': 'bold-b',
+	'da': 'bold-f',
+	'de': 'bold-f',
+	'he': 'bold-b',
+	'nn': 'bold-f',
+	'no': 'bold-f',
+	'pl': 'bold-b',
+	'sv': 'bold-f'
 };
 
 ve.ui.BoldButtonTool.static.titleMessage = 'visualeditor-annotationbutton-bold-tooltip';
