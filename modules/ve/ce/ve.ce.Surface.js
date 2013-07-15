@@ -787,6 +787,7 @@ ve.ce.Surface.prototype.onSelectionChange = function ( oldRange, newRange ) {
 ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 	var data, range, len, annotations, offsetDiff, lengthDiff, sameLeadingAndTrailing,
 		previousStart, nextStart, newRange,
+		previousData, nextData,
 		fromLeft = 0,
 		fromRight = 0,
 		nodeOffset = node.getModel().getOffset();
@@ -856,20 +857,22 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 
 	// Complex change
 
-	len = Math.min( previous.text.length, next.text.length );
+	previousData = ve.splitClusters( previous.text );
+	nextData = ve.splitClusters( next.text );
+	len = Math.min( previousData.length, nextData.length );
 	// Count same characters from left
-	while ( fromLeft < len && previous.text[fromLeft] === next.text[fromLeft] ) {
+	while ( fromLeft < len && previousData[fromLeft] === nextData[fromLeft] ) {
 		++fromLeft;
 	}
 	// Count same characters from right
 	while (
 		fromRight < len - fromLeft &&
-		previous.text[previous.text.length - 1 - fromRight] ===
-		next.text[next.text.length - 1 - fromRight]
+		previousData[previousData.length - 1 - fromRight] ===
+		nextData[nextData.length - 1 - fromRight]
 	) {
 		++fromRight;
 	}
-	data = ve.splitClusters( next.text ).slice( fromLeft, next.text.length - fromRight );
+	data = nextData.slice( fromLeft, nextData.length - fromRight );
 	// Get annotations to the left of new content and apply
 	annotations =
 		this.model.getDocument().data.getAnnotationsFromOffset( nodeOffset + 1 + fromLeft );
@@ -888,13 +891,13 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 			newRange
 		);
 	}
-	if ( fromLeft + fromRight < previous.text.length ) {
+	if ( fromLeft + fromRight < previousData.length ) {
 		this.model.change(
 			ve.dm.Transaction.newFromRemoval(
 				this.documentView.model,
 				new ve.Range(
 					data.length + nodeOffset + 1 + fromLeft,
-					data.length + nodeOffset + 1 + previous.text.length - fromRight
+					data.length + nodeOffset + 1 + previousData.length - fromRight
 				)
 			),
 			newRange
