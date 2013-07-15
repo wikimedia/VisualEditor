@@ -28,35 +28,22 @@ ve.inheritClass( ve.dm.ElementLinearData, ve.dm.LinearData );
 
 /**
  * Get the type of the element at a specified offset
- *
- * This will return the same string for close and open elements.
- *
  * @method
  * @param {number} offset Document offset
  * @returns {string} Type of the element
  */
 ve.dm.ElementLinearData.prototype.getType = function ( offset ) {
-	var item = this.getData( offset );
-	return this.isCloseElementData( offset ) ? item.type.substr( 1 ) : item.type;
+	return ve.dm.LinearData.static.getType( this.getData( offset ) );
 };
 
 /**
  * Check if data at a given offset is an element.
- *
- * This method assumes that any value that has a type property that's a string is an element object.
- *
- * Element data:
- *      <heading> a </heading> <paragraph> b c <img></img> </paragraph>
- *     ^         . ^          ^           . . ^     ^     ^            .
- *
  * @method
  * @param {number} offset Document offset
  * @returns {boolean} Data at offset is an element
  */
 ve.dm.ElementLinearData.prototype.isElementData = function ( offset ) {
-	var item = this.getData( offset );
-	// Data exists at offset and appears to be an element
-	return item !== undefined && typeof item.type === 'string';
+	return ve.dm.LinearData.static.isElementData( this.getData( offset ) );
 };
 
 /**
@@ -66,7 +53,7 @@ ve.dm.ElementLinearData.prototype.isElementData = function ( offset ) {
  * @returns {boolean} Data at offset is an open element
  */
 ve.dm.ElementLinearData.prototype.isOpenElementData = function ( offset ) {
-	return this.isElementData( offset ) && this.getData( offset ).type.charAt( 0 ) !== '/';
+	return ve.dm.LinearData.static.isOpenElementData( this.getData( offset ) );
 };
 
 /**
@@ -76,7 +63,7 @@ ve.dm.ElementLinearData.prototype.isOpenElementData = function ( offset ) {
  * @returns {boolean} Data at offset is a close element
  */
 ve.dm.ElementLinearData.prototype.isCloseElementData = function ( offset ) {
-	return this.isElementData( offset ) && this.getData( offset ).type.charAt( 0 ) === '/';
+	return ve.dm.LinearData.static.isCloseElementData( this.getData( offset ) );
 };
 
 /**
