@@ -315,6 +315,28 @@ QUnit.test( 'commit/rollback', function ( assert ) {
 				'expected': function ( data ) {
 					data.splice( 15, 2 );
 				}
+			},
+			'structural replacement starting at an offset without metadata': {
+				'data': [
+					{ 'type': 'paragraph' },
+					'F',
+					{
+						'type': 'alienMeta',
+						'attributes': {
+							'domElements': $( '<!-- foo -->' ).toArray()
+						}
+					},
+					{ 'type': '/alienMeta' },
+					'o', 'o',
+					{ 'type': '/paragraph' }
+				],
+				'calls': [
+					['pushReplace', 0, 5, [ { 'type': 'table' }, { 'type': '/table' } ]]
+				],
+				'expected': function ( data ) {
+					data.splice( 0, 2, { 'type': 'table' }, { 'type': '/table' } );
+					data.splice( 4, 3 );
+				}
 			}
 		};
 
