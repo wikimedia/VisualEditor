@@ -78,7 +78,7 @@ ve.ui.AnnotationAction.prototype.toggle = function ( name, data ) {
 		);
 	} else {
 		existingAnnotations = surfaceModel
-			.getInsertionAnnotations().getComparableAnnotations( annotation );
+			.getInsertionAnnotations().getAnnotationsByName( annotation.name );
 		if ( existingAnnotations.isEmpty() ) {
 			surfaceModel.addInsertionAnnotations( annotation );
 		} else {

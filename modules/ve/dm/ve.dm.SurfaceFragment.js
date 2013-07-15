@@ -520,7 +520,7 @@ ve.dm.SurfaceFragment.prototype.annotateContent = function ( method, nameOrAnnot
 			annotations = [ annotation ];
 		} else {
 			annotations = this.document.data.getAnnotationsFromRange( this.getRange(), true )
-				.getComparableAnnotations( annotation ).get();
+				.getAnnotationsByName( annotation.name ).get();
 		}
 	}
 	if ( this.getRange( true ).getLength() ) {
