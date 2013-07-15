@@ -561,7 +561,7 @@ ve.ui.MWTransclusionDialog.prototype.getPlaceholderPage = function ( placeholder
 	addTemplateFieldset = new ve.ui.FieldsetLayout( {
 		'$$': this.frame.$$,
 		'label': label,
-		'icon': 'parameter'
+		'icon': 'template'
 	} );
 	addTemplateFieldset.$.addClass( 've-ui-mwTransclusionDialog-addTemplateFieldset' );
 
