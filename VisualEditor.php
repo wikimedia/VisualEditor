@@ -605,7 +605,6 @@ $wgResourceModules += array(
 			'visualeditor-dialog-meta-languages-readonlynote',
 			'visualeditor-dialog-meta-languages-section',
 			'visualeditor-dialog-meta-title',
-			'visualeditor-dialog-reference-content-section',
 			'visualeditor-dialog-reference-insert-button',
 			'visualeditor-dialog-reference-insert-title',
 			'visualeditor-dialog-reference-options-group-label',
