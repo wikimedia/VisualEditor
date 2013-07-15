@@ -50,9 +50,7 @@ ve.ui.MWReferenceEditDialog.prototype.initialize = function () {
 
 	// Properties
 	this.contentFieldset = new ve.ui.FieldsetLayout( {
-		'$$': this.frame.$$,
-		'label': ve.msg( 'visualeditor-dialog-reference-content-section' ),
-		'icon': 'reference'
+		'$$': this.frame.$$
 	} );
 	this.optionsFieldset = new ve.ui.FieldsetLayout( {
 		'$$': this.frame.$$,

@@ -21,8 +21,12 @@
 
 .ve-ui-fieldsetLayout {
 	border: none;
-	margin: -0.75em 0 1.75em 0;
+	margin: 0 0 1.75em 0;
 	padding: 0;
+}
+
+.ve-ui-fieldsetLayout-labeled {
+	margin-top: -0.75em;
 }
 
 .ve-ui-fieldsetLayout > legend.ve-ui-labeledElement-label {

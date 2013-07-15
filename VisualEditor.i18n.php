@@ -58,7 +58,6 @@ $messages['en'] = array(
 	'visualeditor-dialog-meta-languages-readonlynote' => 'This is a list of pages in other languages that are linked to this one; for now, it can only be edited in source mode.',
 	'visualeditor-dialog-meta-languages-section' => 'Languages',
 	'visualeditor-dialog-meta-title' => 'Page settings',
-	'visualeditor-dialog-reference-content-section' => 'Reference content',
 	'visualeditor-dialog-reference-insert-button' => 'Insert reference',
 	'visualeditor-dialog-reference-insert-title' => 'Insert reference',
 	'visualeditor-dialog-reference-options-group-label' => 'Use this group',
@@ -296,7 +295,6 @@ See also:
 {{Identical|Language}}',
 	'visualeditor-dialog-meta-title' => 'MetaData dialog title text.
 {{Identical|Page settings}}',
-	'visualeditor-dialog-reference-content-section' => 'Label for the reference content sub-section',
 	'visualeditor-dialog-reference-insert-button' => 'Used as label for the button.
 {{Identical|Insert reference}}',
 	'visualeditor-dialog-reference-insert-title' => 'Reference insert dialog title text.

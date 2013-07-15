@@ -31,9 +31,12 @@ ve.ui.FieldsetLayout = function VeUiFieldsetLayout( config ) {
 		this.$.addClass( 've-ui-fieldsetLayout-decorated' );
 		this.$label.addClass( 've-ui-icon-' + config.icon );
 	}
-	this.$
-		.addClass( 've-ui-fieldsetLayout' )
-		.append( this.$label );
+	this.$.addClass( 've-ui-fieldsetLayout' );
+	if ( config.icon || config.label ) {
+		this.$
+			.addClass( 've-ui-fieldsetLayout-labeled' )
+			.append( this.$label );
+	}
 };
 
 /* Inheritance */
