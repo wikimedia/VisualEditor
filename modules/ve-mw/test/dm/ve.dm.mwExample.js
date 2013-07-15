@@ -1472,6 +1472,8 @@ ve.dm.mwExample.domToDataCases = {
 				} } ]
 			},
 			{ 'type': '/mwDefaultSort' },
+			{ 'type': 'paragraph', 'internal': { 'generated': 'empty' } },
+			{ 'type': '/paragraph' },
 			{ 'type': 'internalList' },
 			{ 'type': '/internalList' }
 		]

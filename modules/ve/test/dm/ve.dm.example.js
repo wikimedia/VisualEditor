@@ -1283,6 +1283,22 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/internalList' }
 		]
 	},
+	'empty document with meta': {
+		'html': '<body><!-- comment --></body>',
+		'data': [
+			{
+				'type': 'alienMeta',
+				'attributes': {
+					'domElements': $( '<!-- comment -->' ).toArray()
+				}
+			},
+			{ 'type': '/alienMeta' },
+			{ 'type': 'paragraph', 'internal': { 'generated': 'empty' } },
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
+		]
+	},
 	'empty document with content added by the editor': {
 		'html': null,
 		'data': [
