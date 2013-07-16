@@ -453,6 +453,22 @@ ve.init.mw.ViewPageTarget.prototype.onSaveError = function ( jqXHR, status, data
 		return;
 	}
 
+	editApi = data && data.visualeditoredit && data.visualeditoredit.edit;
+
+	// Handle spam blacklist error (either from core or from Extension:SpamBlacklist)
+	if ( editApi && editApi.spamblacklist ) {
+		this.showMessage(
+			'api-save-error',
+			// TODO: Use mediawiki.language equivalant of Language.php::listToText once it exists
+			ve.msg( 'spamprotectiontext' ) + ' ' + ve.msg( 'spamprotectionmatch', editApi.spamblacklist.split( '|' ).join( ', ' ) ),
+			{
+				wrap: 'error'
+			}
+		);
+		this.saveDialogSaveButton.setDisabled( true );
+		return;
+	}
+
 	// Handle token errors
 	if ( data.error && data.error.code === 'badtoken' ) {
 		api = new mw.Api();
@@ -551,7 +567,6 @@ ve.init.mw.ViewPageTarget.prototype.onSaveError = function ( jqXHR, status, data
 	// "question" or "fancy" type of captcha. They all expose differently named properties in the
 	// API for different things in the UI. At this point we only support the FancyCaptha which we
 	// very intuitively detect by the presence of a "url" property.
-	editApi = data && data.visualeditoredit && data.visualeditoredit.edit;
 	if ( editApi && editApi.captcha && editApi.captcha.url ) {
 		this.captcha = {
 			input: new ve.ui.TextInputWidget(),
