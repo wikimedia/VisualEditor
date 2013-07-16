@@ -19,6 +19,12 @@
 	display: none;
 }
 
+/* HACK: Fake superscript style for references generated as spans in templates */
+.ve-ce-mwTransclusionNode span.reference {
+	vertical-align: super;
+	font-size: smaller;
+}
+
 /* ve.ce.MWReferenceListNode */
 
 .ve-ce-mwReferenceListNode .ve-ce-generated-wrapper {
