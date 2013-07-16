@@ -1261,26 +1261,31 @@ ve.ce.Surface.prototype.handleDelete = function ( e, backspace ) {
 		// merging that takes remaing data from "endNode" and inserts it at the end of "startNode",
 		// "endNode" or recrusivly its parent (if have only one child) gets removed.
 		endNode = this.documentView.getNodeFromOffset( rangeToRemove.end, false );
-		endNodeData = this.documentView.model.getData( endNode.model.getRange() );
-		nodeToDelete = endNode;
-		nodeToDelete.traverseUpstream( function ( node ) {
-			if ( node.getParent().children.length === 1 ) {
-				nodeToDelete = node.getParent();
-				return true;
-			} else {
-				return false;
-			}
-		} );
-		this.model.change(
-			[
-				ve.dm.Transaction.newFromRemoval(
-					this.documentView.model, nodeToDelete.getModel().getOuterRange()
-				),
-				ve.dm.Transaction.newFromInsertion(
-					this.documentView.model, rangeToRemove.start, endNodeData
-				)
-			]
-		);
+
+		// If "endNode" is within our rangeToRemove, then we shouldn't delete it
+		if ( endNode.getModel().getRange().start >= rangeToRemove.end ) {
+			endNodeData = this.documentView.model.getData( endNode.getModel().getRange() );
+			nodeToDelete = endNode;
+			nodeToDelete.traverseUpstream( function ( node ) {
+				var parent = node.getParent();
+				if ( parent.children.length === 1 ) {
+					nodeToDelete = parent;
+					return true;
+				} else {
+					return false;
+				}
+			} );
+			this.model.change(
+				[
+					ve.dm.Transaction.newFromRemoval(
+						this.documentView.model, nodeToDelete.getModel().getOuterRange()
+					),
+					ve.dm.Transaction.newFromInsertion(
+						this.documentView.model, rangeToRemove.start, endNodeData
+					)
+				]
+			);
+		}
 	}
 	this.model.change( null, new ve.Range( rangeToRemove.start ) );
 	this.surfaceObserver.clear();
