@@ -99,6 +99,16 @@ ve.ui.PopupWidget.prototype.onPopupBlur = function () {
 };
 
 /**
+ * Check if the popup is visible.
+ *
+ * @method
+ * @returns {boolean} Popup is visible
+ */
+ve.ui.PopupWidget.prototype.isVisible = function () {
+	return this.visible;
+};
+
+/**
  * Show the context.
  *
  * @method

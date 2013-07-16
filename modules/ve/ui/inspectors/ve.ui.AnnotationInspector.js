@@ -123,7 +123,9 @@ ve.ui.AnnotationInspector.prototype.onClose = function ( action ) {
 		target = this.targetInput.getValue(),
 		annotation = this.targetInput.getAnnotation(),
 		remove = action === 'remove' && !!annotation,
-		fragment = this.surface.getModel().getFragment( this.initialSelection, false );
+		surfaceModel = this.surface.getModel(),
+		fragment = surfaceModel.getFragment( this.initialSelection, false ),
+		currentSelection = surfaceModel.getSelection();
 
 	if ( remove ) {
 		clear = true;
@@ -164,10 +166,12 @@ ve.ui.AnnotationInspector.prototype.onClose = function ( action ) {
 	if ( action === 'back' ) {
 		selection = this.previousSelection;
 	}
-	// Selection changes may have occured in the insertion and annotation hullabaloo - restore it
-	this.surface.execute(
-		'content', 'select', selection || new ve.Range( fragment.getRange().end )
-	);
+	// Update selection unless it's been changed since opening inspector
+	if ( currentSelection.equals( this.initialSelection ) ) {
+		this.surface.execute(
+			'content', 'select', selection || new ve.Range( fragment.getRange().end )
+		);
+	}
 	// Reset state
 	this.isNewAnnotation = false;
 };
