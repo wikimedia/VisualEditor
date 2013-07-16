@@ -258,25 +258,20 @@ ve.ce.ResizableNode.prototype.onDocumentMouseMove = function ( e ) {
  * @method
  */
 ve.ce.ResizableNode.prototype.onDocumentMouseUp = function () {
-	var offset = this.model.getOffset(),
+	var attrChanges,
+		offset = this.model.getOffset(),
 		width = this.$resizeHandles.outerWidth(),
 		height = this.$resizeHandles.outerHeight(),
 		surfaceModel = this.getRoot().getSurface().getModel(),
 		documentModel = surfaceModel.getDocument(),
-		selection = surfaceModel.getSelection(),
-		attrChanges = {};
+		selection = surfaceModel.getSelection();
 
 	this.$resizeHandles.removeClass( 've-ui-resizableNode-handles-resizing' );
 	$( this.getElementDocument() ).off( '.ve-ce-resizableNode' );
 	this.resizing = false;
 
 	// Apply changes to the model
-	if ( this.model.getAttribute( 'width' ) !== width ) {
-		attrChanges.width = width;
-	}
-	if ( this.model.getAttribute( 'height' ) !== height ) {
-		attrChanges.height = height;
-	}
+	attrChanges = this.getAttributeChanges( width, height );
 	if ( !ve.isEmptyObject( attrChanges ) ) {
 		surfaceModel.change(
 			ve.dm.Transaction.newFromAttributeChanges( documentModel, offset, attrChanges ),
@@ -285,4 +280,22 @@ ve.ce.ResizableNode.prototype.onDocumentMouseUp = function () {
 	}
 
 	this.emit( 'resize' );
+};
+
+/**
+ * Generate an object of attributes changes from the new width and height.
+ *
+ * @param {number} width New image width
+ * @param {number} height New image height
+ * @returns {Object} Attribute changes
+ */
+ve.ce.ResizableNode.prototype.getAttributeChanges = function ( width, height ) {
+	var attrChanges = {};
+	if ( this.model.getAttribute( 'width' ) !== width ) {
+		attrChanges.width = width;
+	}
+	if ( this.model.getAttribute( 'height' ) !== height ) {
+		attrChanges.height = height;
+	}
+	return attrChanges;
 };

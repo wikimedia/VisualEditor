@@ -413,6 +413,8 @@ $wgResourceModules += array(
 			've/ce/nodes/ve.ce.TableSectionNode.js',
 			've/ce/nodes/ve.ce.TextNode.js',
 
+			've-mw/ce/ve.ce.MWResizableNode.js',
+
 			've-mw/ce/nodes/ve.ce.MWEntityNode.js',
 			've-mw/ce/nodes/ve.ce.MWHeadingNode.js',
 			've-mw/ce/nodes/ve.ce.MWPreformattedNode.js',
