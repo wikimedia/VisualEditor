@@ -453,37 +453,19 @@ ve.init.mw.ViewPageTarget.prototype.onSaveError = function ( jqXHR, status, data
 		return;
 	}
 
-	// Handle captcha
-	// Captcha "errors" usually aren't errors. We simply don't know about them ahead of time,
-	// so we save once, then (if required) we get an error with a captcha back and try again after
-	// the user solved the captcha.
-	// TODO: ConfirmEdit API is horrible, there is no reliable way to know whether it is a "math",
-	// "question" or "fancy" type of captcha. They all expose differently named properties in the
-	// API for different things in the UI. At this point we only support the FancyCaptha which we
-	// very intuitively detect by the presence of a "url" property.
 	editApi = data && data.visualeditoredit && data.visualeditoredit.edit;
-	if ( editApi && editApi.captcha && editApi.captcha.url ) {
-		this.captcha = {
-			input: new ve.ui.TextInputWidget(),
-			id: editApi.captcha.id
-		};
+
+	// Handle spam blacklist error (either from core or from Extension:SpamBlacklist)
+	if ( editApi && editApi.spamblacklist ) {
 		this.showMessage(
 			'api-save-error',
-			$( '<div>').append(
-				// msg: simplecaptcha-edit, fancycaptcha-edit, ..
-				$( '<p>' ).append(
-					$( '<strong>' ).text( mw.msg( 'captcha-label' ) ),
-					document.createTextNode( mw.msg( 'colon-separator' ) ),
-					$( $.parseHTML( mw.message( 'fancycaptcha-edit' ).parse() ) )
-						.filter( 'a' ).attr( 'target', '_blank ' ).end()
-				),
-				$( '<img>' ).attr( 'src', editApi.captcha.url ),
-				this.captcha.input.$
-			),
+			// TODO: Use mediawiki.language equivalant of Language.php::listToText once it exists
+			ve.msg( 'spamprotectiontext' ) + ' ' + ve.msg( 'spamprotectionmatch', editApi.spamblacklist.split( '|' ).join( ', ' ) ),
 			{
-				wrap: false
+				wrap: 'error'
 			}
 		);
+		this.saveDialogSaveButton.setDisabled( true );
 		return;
 	}
 
@@ -577,6 +559,38 @@ ve.init.mw.ViewPageTarget.prototype.onSaveError = function ( jqXHR, status, data
 		return;
 	}
 
+	// Handle captcha
+	// Captcha "errors" usually aren't errors. We simply don't know about them ahead of time,
+	// so we save once, then (if required) we get an error with a captcha back and try again after
+	// the user solved the captcha.
+	// TODO: ConfirmEdit API is horrible, there is no reliable way to know whether it is a "math",
+	// "question" or "fancy" type of captcha. They all expose differently named properties in the
+	// API for different things in the UI. At this point we only support the FancyCaptha which we
+	// very intuitively detect by the presence of a "url" property.
+	if ( editApi && editApi.captcha && editApi.captcha.url ) {
+		this.captcha = {
+			input: new ve.ui.TextInputWidget(),
+			id: editApi.captcha.id
+		};
+		this.showMessage(
+			'api-save-error',
+			$( '<div>').append(
+				// msg: simplecaptcha-edit, fancycaptcha-edit, ..
+				$( '<p>' ).append(
+					$( '<strong>' ).text( mw.msg( 'captcha-label' ) ),
+					document.createTextNode( mw.msg( 'colon-separator' ) ),
+					$( $.parseHTML( mw.message( 'fancycaptcha-edit' ).parse() ) )
+						.filter( 'a' ).attr( 'target', '_blank ' ).end()
+				),
+				$( '<img>' ).attr( 'src', editApi.captcha.url ),
+				this.captcha.input.$
+			),
+			{
+				wrap: false
+			}
+		);
+		return;
+	}
 
 	// Handle (other) unknown and/or unrecoverable errors
 	this.showMessage(

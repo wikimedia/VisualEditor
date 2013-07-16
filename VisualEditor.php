@@ -218,6 +218,8 @@ $wgResourceModules += array(
 			// MW core messages
 			'creating',
 			'editing',
+			'spamprotectionmatch',
+			'spamprotectiontext',
 
 			// Messages needed by VE in init phase only (rest go below)
 			'visualeditor-loadwarning',
