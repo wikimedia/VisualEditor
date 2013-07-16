@@ -170,6 +170,10 @@ class VisualEditorHooks {
 				've-mw/test/mw-preload.js',
 				// QUnit plugin
 				've/test/ve.qunit.js',
+				// UnicodeJS Tests
+				'unicodejs/test/unicodejs.test.js',
+				'unicodejs/test/unicodejs.graphemebreak.test.js',
+				'unicodejs/test/unicodejs.wordbreak.test.js',
 				// VisualEditor Tests
 				've/test/ve.test.utils.js',
 				've/test/ve.test.js',
@@ -228,6 +232,7 @@ class VisualEditorHooks {
 				've-mw/test/init/targets/ve.init.mw.ViewPageTarget.test.js',
 			),
 			'dependencies' => array(
+				'unicodejs.wordbreak',
 				'ext.visualEditor.standalone',
 				'ext.visualEditor.core',
 				'ext.visualEditor.experimental',
