@@ -48,6 +48,26 @@ ve.dm.Annotation.static.enableAboutGrouping = false;
  */
 ve.dm.Annotation.static.applyToAppendedContent = true;
 
+/**
+ * Static function to convert a linear model data element for this annotation type back to
+ * a DOM element.
+ *
+ * As a special facility for annotations, the annotated content that the returned element will
+ * wrap around is passed in as childDomElements.
+ *
+ * @static
+ * @inheritable
+ * @method
+ * @param {Object|Array} dataElement Linear model element or array of linear model data
+ * @param {HTMLDocument} doc HTML document for creating elements
+ * @param {ve.dm.Converter} converter Converter object to optionally call .getDomSubtreeFromData() on
+ * @param {HTMLElement[]} childDomElements Children that will be appended to the returned element
+ * @returns {HTMLElement[]} DOM elements; only the first element is used
+ */
+ve.dm.Annotation.static.toDomElements = function ( /*dataElement, doc, converter, childDomElements*/ ) {
+	throw new Error( 've.dm.Annotation subclass must implement toDomElements' );
+};
+
 /* Methods */
 
 /**

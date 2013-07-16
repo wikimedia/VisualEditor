@@ -294,9 +294,10 @@ ve.dm.Converter.prototype.canCloseWrapper = function () {
  * @method
  * @param {Object|Array} dataElement Linear model element or data slice
  * @param {HTMLDocument} doc Document to create DOM elements in
+ * @param {HTMLElement[]} [childDomElements] Array of child DOM elements to pass in (annotations only)
  * @returns {HTMLElement|boolean} DOM element, or false if the element cannot be converted
  */
-ve.dm.Converter.prototype.getDomElementsFromDataElement = function ( dataElements, doc ) {
+ve.dm.Converter.prototype.getDomElementsFromDataElement = function ( dataElements, doc, childDomElements ) {
 	var domElements,
 		dataElement = ve.isArray( dataElements ) ? dataElements[0] : dataElements,
 		nodeClass = this.modelRegistry.lookup( dataElement.type );
@@ -307,7 +308,7 @@ ve.dm.Converter.prototype.getDomElementsFromDataElement = function ( dataElement
 	if ( nodeClass.static.isInternal ) {
 		return false;
 	}
-	domElements = nodeClass.static.toDomElements( dataElements, doc, this );
+	domElements = nodeClass.static.toDomElements( dataElements, doc, this, childDomElements );
 	if ( !domElements || !domElements.length ) {
 		throw new Error( 'toDomElements() failed to return an array when converting element of type ' + dataElement.type );
 	}
@@ -1005,7 +1006,9 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container ) {
 
 		annotatedChildDomElements = annotatedDomElementStack.pop();
 		annotatedDomElements = annotatedDomElementStack[annotatedDomElementStack.length - 1];
-		annotationElement = conv.getDomElementsFromDataElement( annotation.getElement(), doc )[0];
+		annotationElement = conv.getDomElementsFromDataElement(
+			annotation.getElement(), doc, annotatedChildDomElements
+		)[0];
 		for ( i = 0, len = annotatedChildDomElements.length; i < len; i++ ) {
 			annotationElement.appendChild( annotatedChildDomElements[i] );
 		}
