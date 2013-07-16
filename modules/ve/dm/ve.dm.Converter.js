@@ -65,7 +65,7 @@ ve.dm.Converter.getDataContentFromText = function ( text, annotations ) {
  * @param {ve.dm.AnnotationSet} currentSet The set of annotations currently opened. Will be modified.
  * @param {ve.dm.AnnotationSet} targetSet The set of annotations we want to have.
  * @param {Function} open Callback called when an annotation is opened. Passed a ve.dm.Annotation.
- * @param {Function} close Callback called when an annotation is closed.
+ * @param {Function} close Callback called when an annotation is closed. Passed a ve.dm.Annotation.
  */
 ve.dm.Converter.openAndCloseAnnotations = function ( currentSet, targetSet, open, close ) {
 	var i, len, annotation, startClosingAt, currentSetOpen, targetSetOpen;
@@ -87,7 +87,7 @@ ve.dm.Converter.openAndCloseAnnotations = function ( currentSet, targetSet, open
 		// Close all annotations from top to bottom (high to low)
 		// until we reach startClosingAt
 		for ( i = currentSet.getLength() - 1; i >= startClosingAt; i-- ) {
-			close();
+			close( currentSet.get( i ) );
 			// Remove from currentClone
 			currentSet.removeAt( i );
 		}
@@ -970,9 +970,9 @@ ve.dm.Converter.prototype.getDomFromData = function ( documentData, store, inter
  * @throws Unbalanced data: looking for closing /type
  */
 ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container ) {
-	var text, i, j, annotations, annotationElement, dataElement, dataElementOrSlice,
+	var text, i, j, annotations, dataElement, dataElementOrSlice,
 		childDomElements, pre, ours, theirs, parentDomElement, lastChild, isContentNode, sibling,
-		previousSiblings, doUnwrap, textNode, type,
+		previousSiblings, doUnwrap, textNode, type, annotatedDomElementStack, annotatedDomElements,
 		dataLen = data.length,
 		canContainContentStack = [],
 		conv = this,
@@ -980,28 +980,36 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container ) {
 		domElement = container,
 		annotationStack = new ve.dm.AnnotationSet( this.store );
 
-	function openAnnotation( annotation ) {
+	// TODO this whole function should be rewritten with a domElementStack and ascend() and
+	// descend() functions, to build the whole DOM bottom-up rather than top-down. That would make
+	// unwrapping easier and will hopefully result in fewer DOM operations.
+
+	function openAnnotation() {
 		// Add text if needed
 		if ( text.length > 0 ) {
-			domElement.appendChild( doc.createTextNode( text ) );
+			annotatedDomElements.push( doc.createTextNode( text ) );
 			text = '';
 		}
-		// Create new node and descend into it
-		annotationElement = conv.getDomElementsFromDataElement(
-			annotation.getElement(), doc
-		)[0];
-		domElement.appendChild( annotationElement );
-		domElement = annotationElement;
+		annotatedDomElements = [];
+		annotatedDomElementStack.push( annotatedDomElements );
 	}
 
-	function closeAnnotation() {
+	function closeAnnotation( annotation ) {
+		var i, len, annotationElement, annotatedChildDomElements;
+
 		// Add text if needed
 		if ( text.length > 0 ) {
-			domElement.appendChild( doc.createTextNode( text ) );
+			annotatedDomElements.push( doc.createTextNode( text ) );
 			text = '';
 		}
-		// Traverse up
-		domElement = domElement.parentNode;
+
+		annotatedChildDomElements = annotatedDomElementStack.pop();
+		annotatedDomElements = annotatedDomElementStack[annotatedDomElementStack.length - 1];
+		annotationElement = conv.getDomElementsFromDataElement( annotation.getElement(), doc )[0];
+		for ( i = 0, len = annotatedChildDomElements.length; i < len; i++ ) {
+			annotationElement.appendChild( annotatedChildDomElements[i] );
+		}
+		annotatedDomElements.push( annotationElement );
 	}
 
 	function findEndOfNode( i ) {
@@ -1085,6 +1093,8 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container ) {
 		) {
 			// Annotated text, nodes or meta
 			text = '';
+			annotatedDomElements = [];
+			annotatedDomElementStack = [ annotatedDomElements ];
 			while (
 				ve.isArray( data[i] ) ||
 				(
@@ -1108,14 +1118,14 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container ) {
 					// Annotated node
 					// Add text if needed
 					if ( text.length > 0 ) {
-						domElement.appendChild( doc.createTextNode( text ) );
+						annotatedDomElements.push( doc.createTextNode( text ) );
 						text = '';
 					}
 					// Insert the elements
 					dataElementOrSlice = getDataElementOrSlice();
 					childDomElements = this.getDomElementsFromDataElement( dataElementOrSlice, doc );
 					for ( j = 0; j < childDomElements.length; j++ ) {
-						domElement.appendChild( childDomElements[j] );
+						annotatedDomElements.push( childDomElements[j] );
 					}
 					if ( ve.isArray( dataElementOrSlice ) ) {
 						i += dataElementOrSlice.length - 1;
@@ -1130,16 +1140,17 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container ) {
 
 			// Add any gathered text
 			if ( text.length > 0 ) {
-				domElement.appendChild( doc.createTextNode( text ) );
+				annotatedDomElements.push( doc.createTextNode( text ) );
 				text = '';
 			}
-			// Close any remaining annotation nodes
-			for ( j = annotationStack.getLength() - 1; j >= 0; j-- ) {
-				// Traverse up
-				domElement = domElement.parentNode;
+			// Close any remaining annotations
+			ve.dm.Converter.openAndCloseAnnotations( annotationStack, new ve.dm.AnnotationSet(),
+				openAnnotation, closeAnnotation
+			);
+			// Put the annotated nodes in the DOM
+			for ( j = 0; j < annotatedDomElements.length; j++ ) {
+				domElement.appendChild( annotatedDomElements[j] );
 			}
-			// Clear annotationStack
-			annotationStack = new ve.dm.AnnotationSet( this.store );
 		} else if ( data[i].type !== undefined ) {
 			dataElement = data[i];
 			// Element
