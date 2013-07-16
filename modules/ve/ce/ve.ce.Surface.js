@@ -1091,7 +1091,6 @@ ve.ce.Surface.prototype.handleInsertion = function () {
 				),
 				range
 			);
-			this.surfaceObserver.clear();
 		}
 	}
 
