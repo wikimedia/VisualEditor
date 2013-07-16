@@ -52,8 +52,10 @@ ve.dm.Annotation.static.applyToAppendedContent = true;
  * Static function to convert a linear model data element for this annotation type back to
  * a DOM element.
  *
- * As a special facility for annotations, the annotated content that the returned element will
- * wrap around is passed in as childDomElements.
+ * As special facilities for annotations, the annotated content that the returned element will
+ * wrap around is passed in as childDomElements, and this function may return an empty array to
+ * indicate that the annotation should produce no output. In that case, the child DOM elements will
+ * not be wrapped in anything and will be inserted directly into this annotation's parent.
  *
  * @static
  * @inheritable
@@ -62,7 +64,7 @@ ve.dm.Annotation.static.applyToAppendedContent = true;
  * @param {HTMLDocument} doc HTML document for creating elements
  * @param {ve.dm.Converter} converter Converter object to optionally call .getDomSubtreeFromData() on
  * @param {HTMLElement[]} childDomElements Children that will be appended to the returned element
- * @returns {HTMLElement[]} DOM elements; only the first element is used
+ * @returns {HTMLElement[]} Array of DOM elements; only the first element is used; may be empty
  */
 ve.dm.Annotation.static.toDomElements = function ( /*dataElement, doc, converter, childDomElements*/ ) {
 	throw new Error( 've.dm.Annotation subclass must implement toDomElements' );

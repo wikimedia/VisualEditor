@@ -309,7 +309,7 @@ ve.dm.Converter.prototype.getDomElementsFromDataElement = function ( dataElement
 		return false;
 	}
 	domElements = nodeClass.static.toDomElements( dataElements, doc, this, childDomElements );
-	if ( !domElements || !domElements.length ) {
+	if ( ( !domElements || !domElements.length ) && !( nodeClass.prototype instanceof ve.dm.Annotation ) ) {
 		throw new Error( 'toDomElements() failed to return an array when converting element of type ' + dataElement.type );
 	}
 	if ( dataElement.htmlAttributes ) {
@@ -1009,10 +1009,16 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container ) {
 		annotationElement = conv.getDomElementsFromDataElement(
 			annotation.getElement(), doc, annotatedChildDomElements
 		)[0];
-		for ( i = 0, len = annotatedChildDomElements.length; i < len; i++ ) {
-			annotationElement.appendChild( annotatedChildDomElements[i] );
+		if ( annotationElement ) {
+			for ( i = 0, len = annotatedChildDomElements.length; i < len; i++ ) {
+				annotationElement.appendChild( annotatedChildDomElements[i] );
+			}
+			annotatedDomElements.push( annotationElement );
+		} else {
+			for ( i = 0, len = annotatedChildDomElements.length; i < len; i++ ) {
+				annotatedDomElements.push( annotatedChildDomElements[i] );
+			}
 		}
-		annotatedDomElements.push( annotationElement );
 	}
 
 	function findEndOfNode( i ) {
