@@ -180,6 +180,7 @@
 		<script src="../../ve/ce/nodes/ve.ce.TableRowNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.TableSectionNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.TextNode.js"></script>
+		<script src="../../ve-mw/ce/ve.ce.MWResizableNode.js"></script>
 		<script src="../../ve-mw/ce/nodes/ve.ce.MWEntityNode.js"></script>
 		<script src="../../ve-mw/ce/nodes/ve.ce.MWHeadingNode.js"></script>
 		<script src="../../ve-mw/ce/nodes/ve.ce.MWPreformattedNode.js"></script>

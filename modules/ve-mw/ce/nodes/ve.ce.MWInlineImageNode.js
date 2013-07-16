@@ -1,5 +1,5 @@
 /*!
- * VisualEditor ContentEditable MWEntityNode class.
+ * VisualEditor ContentEditable MWInlineImageNode class.
  *
  * @copyright 2011-2013 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
@@ -10,6 +10,9 @@
  *
  * @class
  * @extends ve.ce.LeafNode
+ * @mixins ve.ce.ProtectedNode
+ * @mixins ve.ce.FocusableNode
+ * @mixins ve.ce.RelocatableNode
  *
  * @constructor
  * @param {ve.dm.MWInlineImageNode} model Model to observe
