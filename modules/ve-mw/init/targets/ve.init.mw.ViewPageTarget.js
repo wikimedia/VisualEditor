@@ -469,6 +469,20 @@ ve.init.mw.ViewPageTarget.prototype.onSaveError = function ( jqXHR, status, data
 		return;
 	}
 
+	// Handle warnings/errors from Extension:AbuseFilter
+	// TODO: Move this to a plugin
+	if ( editApi.info && editApi.info.indexOf( 'Hit AbuseFilter:' ) === 0 && editApi.warning ) {
+		this.showMessage(
+			'api-save-error',
+			$.parseHTML( editApi.warning ),
+			{ wrap:  false }
+		);
+		// Don't disable the save button. If the action is not disallowed the user may save the
+		// edit by pressing Save again. The AbuseFilter API currently has no way to distinguish
+		// between filter triggers that are and aren't disallowing the action.
+		return;
+	}
+
 	// Handle token errors
 	if ( data.error && data.error.code === 'badtoken' ) {
 		api = new mw.Api();
@@ -2124,7 +2138,8 @@ ve.init.mw.ViewPageTarget.prototype.restoreEditSection = function () {
  * Show a message in the save dialog.
  *
  * @param {string} name Message's unique name
- * @param {string|jQuery} message Message content (string of HTML or jQuery object)
+ * @param {string|jQuery|Array} message Message content (string of HTML, jQuery object or array of
+ *  Node objects)
  * @param {Object} [options]
  * @param {boolean} [options.wrap="warning"] Whether to wrap the message in a paragraph and if
  *  so, how. One of "warning", "error" or false.
