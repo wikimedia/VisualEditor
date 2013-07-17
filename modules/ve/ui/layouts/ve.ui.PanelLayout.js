@@ -13,7 +13,8 @@
  *
  * @constructor
  * @param {Object} [config] Config options
- * @cfg {boolean} [scroll] Allow vertical scrolling
+ * @cfg {boolean} [scrollable] Allow vertical scrolling
+ * @cfg {boolean} [padded] Pad the content from the edges
  */
 ve.ui.PanelLayout = function VeUiPanelLayout( config ) {
 	// Config initialization
@@ -25,7 +26,11 @@ ve.ui.PanelLayout = function VeUiPanelLayout( config ) {
 	// Initialization
 	this.$.addClass( 've-ui-panelLayout' );
 	if ( config.scroll ) {
-		this.$.css( 'overflow-y', 'auto' );
+		this.$.addClass( 've-ui-panelLayout-scrollable' );
+	}
+
+	if ( config.padded ) {
+		this.$.addClass( 've-ui-panelLayout-padded' );
 	}
 
 	// Add directionality class:

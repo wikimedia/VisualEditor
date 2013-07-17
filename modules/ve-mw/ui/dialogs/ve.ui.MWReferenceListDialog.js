@@ -37,6 +37,9 @@ ve.ui.MWReferenceListDialog.prototype.initialize = function () {
 	ve.ui.MWDialog.prototype.initialize.call( this );
 
 	// Properties
+	this.editPanel = new ve.ui.PanelLayout( {
+		'$$': this.frame.$$, 'scrollable': true, 'padded': true
+	} );
 	this.optionsFieldset = new ve.ui.FieldsetLayout( {
 		'$$': this.frame.$$,
 		'label': ve.msg( 'visualeditor-dialog-reference-options-section' ),
@@ -59,9 +62,8 @@ ve.ui.MWReferenceListDialog.prototype.initialize = function () {
 
 	// Initialization
 	this.optionsFieldset.$.append( this.groupLabel.$, this.groupInput.$ );
-	this.$body
-		.append( this.optionsFieldset.$ )
-		.addClass( 've-ui-mwReferenceListDialog-body' );
+	this.editPanel.$.append( this.optionsFieldset.$ );
+	this.$body.append( this.editPanel.$ );
 	this.$foot.append( this.applyButton.$ );
 };
 

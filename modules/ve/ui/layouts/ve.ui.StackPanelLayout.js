@@ -18,7 +18,7 @@
  */
 ve.ui.StackPanelLayout = function VeUiStackPanelLayout( config ) {
 	// Config initialization
-	config = ve.extendObject( config, { 'scroll': true } );
+	config = ve.extendObject( config, { 'scrollable': true } );
 
 	// Parent constructor
 	ve.ui.PanelLayout.call( this, config );

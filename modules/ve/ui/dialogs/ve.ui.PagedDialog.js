@@ -40,7 +40,7 @@ ve.ui.PagedDialog = function VeUiPagedDialog( surface, config ) {
  */
 ve.ui.PagedDialog.prototype.initializePages = function () {
 	// Properties
-	this.outlinePanel = new ve.ui.PanelLayout( { '$$': this.frame.$$, 'scroll': true } );
+	this.outlinePanel = new ve.ui.PanelLayout( { '$$': this.frame.$$, 'scrollable': true } );
 	this.pagesPanel = new ve.ui.StackPanelLayout( { '$$': this.frame.$$ } );
 	this.layout = new ve.ui.GridLayout(
 		[this.outlinePanel, this.pagesPanel], { '$$': this.frame.$$, 'widths': [1, 2] }
@@ -96,7 +96,7 @@ ve.ui.PagedDialog.prototype.onPageOutlineSelect = function ( item ) {
  */
 ve.ui.PagedDialog.prototype.addPage = function ( name, config ) {
 	// Create and add page panel and outline item
-	this.pages[name] = new ve.ui.PanelLayout( { '$$': this.frame.$$, 'scroll': true } );
+	this.pages[name] = new ve.ui.PanelLayout( { '$$': this.frame.$$, 'scrollable': true } );
 	if ( config.$content ) {
 		this.pages[name].$.append( config.$content );
 	}

@@ -17,6 +17,14 @@
 	bottom: 0;
 }
 
+.ve-ui-panelLayout-scrollable {
+	overflow-y: auto;
+}
+
+.ve-ui-panelLayout-padded {
+	padding: 2em;
+}
+
 /* ve.ui.FieldsetLayout */
 
 .ve-ui-fieldsetLayout {
