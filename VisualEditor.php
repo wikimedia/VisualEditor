@@ -19,7 +19,7 @@ $wgVisualEditorParsoidPrefix = 'localhost';
 // Timeout for HTTP requests to Parsoid in seconds
 $wgVisualEditorParsoidTimeout = 100;
 // Namespaces to enable VisualEditor in
-$wgVisualEditorNamespaces = array( NS_MAIN );
+$wgVisualEditorNamespaces = $wgContentNamespaces;
 // Whether to use change tagging for VisualEditor edits
 $wgVisualEditorUseChangeTagging = true;
 // Whether to log analytic events using EventLogging
