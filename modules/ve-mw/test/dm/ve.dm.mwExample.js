@@ -121,6 +121,32 @@ ve.dm.mwExample.MWTransclusion.mixedStoreItems = {
 	'value': $( ve.dm.mwExample.MWTransclusion.mixed ).toArray()
 };
 
+ve.dm.mwExample.mwNowikiAnnotation = {
+	'type': 'mwNowiki',
+	'attributes': {
+		'originalDomElements': $( '<span typeof="mw:Nowiki">[[Bar]]</span>' ).toArray()
+	},
+	'htmlAttributes': [ { 'values': { 'typeof': 'mw:Nowiki' } } ]
+};
+
+ve.dm.mwExample.mwNowiki = [
+	{ 'type': 'paragraph' },
+	'F', 'o', 'o',
+	[ '[', [ ve.dm.mwExample.mwNowikiAnnotation ] ],
+	[ '[', [ ve.dm.mwExample.mwNowikiAnnotation ] ],
+	[ 'B', [ ve.dm.mwExample.mwNowikiAnnotation ] ],
+	[ 'a', [ ve.dm.mwExample.mwNowikiAnnotation ] ],
+	[ 'r', [ ve.dm.mwExample.mwNowikiAnnotation ] ],
+	[ ']', [ ve.dm.mwExample.mwNowikiAnnotation ] ],
+	[ ']', [ ve.dm.mwExample.mwNowikiAnnotation ] ],
+	'B', 'a', 'z',
+	{ 'type': '/paragraph' },
+	{ 'type': 'internalList' },
+	{ 'type': '/internalList' }
+];
+
+ve.dm.mwExample.mwNowikiHtml = '<body><p>Foo<span typeof="mw:Nowiki">[[Bar]]</span>Baz</p></body>';
+
 ve.dm.mwExample.withMeta = [
 	{
 		'type': 'alienMeta',
@@ -1598,5 +1624,25 @@ ve.dm.mwExample.domToDataCases = {
 			{ 'type': 'internalList' },
 			{ 'type': '/internalList' }
 		]
+	},
+	'mw:Nowiki': {
+		'html': ve.dm.mwExample.mwNowikiHtml,
+		'data': ve.dm.mwExample.mwNowiki
+	},
+	'mw:Nowiki unwraps when text modified': {
+		'html': null,
+		'data': ve.dm.mwExample.mwNowiki,
+		'modify': function ( data ) {
+			data[7][0] = 'z';
+		},
+		'normalizedHtml': '<body><p>Foo[[Bzr]]Baz</p></body>'
+	},
+	'mw:Nowiki unwraps when annotations modified': {
+		'html': null,
+		'data': ve.dm.mwExample.mwNowiki,
+		'modify': function ( data ) {
+			data[7][1].push( ve.dm.example.bold );
+		},
+		'normalizedHtml': '<body><p>Foo[[B<b>a</b>r]]Baz</p></body>'
 	}
 };
