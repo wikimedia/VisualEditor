@@ -5,27 +5,6 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-
-/* ve.ui.MWReferenceEditDialog & ve.ui.MWReferenceListDialog */
-
-.ve-ui-mwReferenceEditDialog-body,
-.ve-ui-mwReferenceListDialog-body {
-	padding: 2em;
-	overflow-y: auto;
-}
-
-.ve-ui-mwReferenceEditDialog-toolbar {
-	font-size: 1.25em;
-}
-
-.ve-ui-mwReferenceEditDialog-toolbar .ve-ui-toolbar-bar {
-	border: solid 1px #ddd;
-	border-radius: 0.25em;
-	border-bottom-right-radius: 0;
-	border-bottom-left-radius: 0;
-	border-bottom-width: 0;
-}
-
 /* ve.ui.MWTransclusionDialog */
 
 .ve-ui-mwTransclusionDialog-input {

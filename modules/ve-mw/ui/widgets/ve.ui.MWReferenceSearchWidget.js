@@ -47,7 +47,7 @@ ve.inheritClass( ve.ui.MWReferenceSearchWidget, ve.ui.SearchWidget );
 /* Methods */
 
 /**
- * Handle select widget select events.
+ * Handle query change events.
  *
  * @method
  * @param {string} value New value
@@ -152,14 +152,6 @@ ve.ui.MWReferenceSearchWidget.prototype.addResults = function () {
 		value = this.query.getValue(),
 		query = value.toLowerCase(),
 		items = [];
-
-	items.push( new ve.ui.MWReferenceResultWidget( 'create', {
-		'$$': this.$$, 'label': ve.msg( 'visualeditor-reference-search-create' )
-	} ) );
-
-	items.push( new ve.ui.MWReferenceResultWidget( 'existing', {
-		'$$': this.$$, 'divider': true, 'label': ve.msg( 'visualeditor-reference-search-reuse' )
-	} ) );
 
 	for ( i = 0, len = this.index.length; i < len; i++ ) {
 		item = this.index[i];

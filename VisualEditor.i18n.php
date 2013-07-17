@@ -38,6 +38,7 @@ $messages['en'] = array(
 	'visualeditor-dialog-action-apply' => 'Apply changes',
 	'visualeditor-dialog-action-cancel' => 'Cancel',
 	'visualeditor-dialog-action-close' => 'Close',
+	'visualeditor-dialog-action-goback' => 'Go back',
 	'visualeditor-dialog-media-content-section' => 'Caption',
 	'visualeditor-dialog-media-insert-button' => 'Insert media',
 	'visualeditor-dialog-media-insert-title' => 'Insert media',
@@ -64,6 +65,7 @@ $messages['en'] = array(
 	'visualeditor-dialog-reference-options-name-label' => 'Re-use by this name',
 	'visualeditor-dialog-reference-options-section' => 'Options',
 	'visualeditor-dialog-reference-title' => 'Reference',
+	'visualeditor-dialog-reference-useexisting-label' => 'Use an existing reference',
 	'visualeditor-dialog-referencelist-title' => 'References list',
 	'visualeditor-dialog-transclusion-add-content' => 'Add content',
 	'visualeditor-dialog-transclusion-add-param' => 'Add parameter',
@@ -77,7 +79,6 @@ $messages['en'] = array(
 	'visualeditor-dialog-transclusion-title' => 'Transclusion',
 	'visualeditor-dialogbutton-media-tooltip' => 'Media',
 	'visualeditor-dialogbutton-meta-tooltip' => 'Page settings',
-	'visualeditor-dialogbutton-reference-insert-tooltip' => 'Insert reference',
 	'visualeditor-dialogbutton-reference-tooltip' => 'Reference',
 	'visualeditor-dialogbutton-referencelist-tooltip' => 'References list',
 	'visualeditor-dialogbutton-transclusion-tooltip' => 'Transclusion',
@@ -136,8 +137,6 @@ $messages['en'] = array(
 	'visualeditor-parameter-search-unknown' => 'Unknown parameter',
 	'visualeditor-preference-enable' => 'Enable VisualEditor (only in the [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|main]] and [[{{MediaWiki:Visualeditor-usernamespacepagelink}}|user]] namespaces)',
 	'visualeditor-reference-input-placeholder' => 'What do you want to reference?',
-	'visualeditor-reference-search-create' => 'Create new source',
-	'visualeditor-reference-search-reuse' => 'Use an existing source',
 	'visualeditor-referencelist-isempty' => 'There are no references with the group "$1" on this page.',
 	'visualeditor-referencelist-missingref' => 'This reference is defined in a template or other generated block, and for now can only be edited in source mode.',
 	'visualeditor-savedialog-error-badtoken' => 'We could not process your edit because the session was no longer valid.',
@@ -248,19 +247,28 @@ Corresponds to the {{msg-mw|editsection}} message for default mode.
 
 See also:
 * {{msg-mw|Visualeditor-dialog-action-cancel}}
-* {{msg-mw|Visualeditor-dialog-action-close}}',
+* {{msg-mw|Visualeditor-dialog-action-close}}
+* {{msg-mw|Visualeditor-dialog-action-goback}}',
 	'visualeditor-dialog-action-cancel' => 'Label text for button to exit from dialog without making changes.
 
 See also:
 * {{msg-mw|Visualeditor-dialog-action-apply}}
 * {{msg-mw|Visualeditor-dialog-action-close}}
+* {{msg-mw|Visualeditor-dialog-action-goback}}
 {{Identical|Cancel}}',
 	'visualeditor-dialog-action-close' => 'Label text for button to exit from dialog.
 
 See also:
 * {{msg-mw|Visualeditor-dialog-action-apply}}
 * {{msg-mw|Visualeditor-dialog-action-cancel}}
+* {{msg-mw|Visualeditor-dialog-action-goback}}
 {{Identical|Close}}',
+	'visualeditor-dialog-action-goback' => 'Label text for button to go back in a dialog.
+
+See also:
+* {{msg-mw|Visualeditor-dialog-action-apply}}
+* {{msg-mw|Visualeditor-dialog-action-cancel}}
+* {{msg-mw|Visualeditor-dialog-action-close}}',
 	'visualeditor-dialog-media-content-section' => 'Label for the image content sub-section.
 {{Identical|Caption}}',
 	'visualeditor-dialog-media-insert-button' => 'Used as label for the button.
@@ -304,6 +312,7 @@ See also:
 	'visualeditor-dialog-reference-options-section' => 'Label for the reference options sub-section.
 {{Identical|Options}}',
 	'visualeditor-dialog-reference-title' => '{{Identical|Reference}}',
+	'visualeditor-dialog-reference-useexisting-label' => 'Label for button in reference dialog to insert a re-use of an existing reference',
 	'visualeditor-dialog-referencelist-title' => '{{Identical|References list}}',
 	'visualeditor-dialog-transclusion-add-content' => 'Label for button that adds parameter content to a transclusion.',
 	'visualeditor-dialog-transclusion-add-param' => 'Label for button that adds parameter a parameter to a template.
@@ -322,8 +331,6 @@ See also:
 	'visualeditor-dialog-transclusion-title' => '{{Identical|Transclusion}}',
 	'visualeditor-dialogbutton-media-tooltip' => '{{Identical|Media}}',
 	'visualeditor-dialogbutton-meta-tooltip' => '{{Identical|Page Settings}}',
-	'visualeditor-dialogbutton-reference-insert-tooltip' => 'Used as tooltip for Insert button.
-{{Identical|Insert reference}}',
 	'visualeditor-dialogbutton-reference-tooltip' => '{{Identical|Reference}}',
 	'visualeditor-dialogbutton-referencelist-tooltip' => 'Tooltip for button for dialog that inserts the references list object (<code><nowiki>Reference list</nowiki></code>).
 {{Identical|References list}}',
@@ -419,14 +426,6 @@ See [[w:LaTeX]].',
 	'visualeditor-preference-enable' => 'Label for the user preference to enable VisualEditor.
 Links are in {{msg-mw|Visualeditor-mainnamespacepagelink}} and {{msg-mw|visualeditor-usernamespacepagelink}}.',
 	'visualeditor-reference-input-placeholder' => 'Placeholder text for reference search field: searches existing on-page references.',
-	'visualeditor-reference-search-create' => 'Label for option in results list for creating a new reference.
-
-See also:
-* {{msg-mw|visualeditor-reference-search-reuse}}',
-	'visualeditor-reference-search-reuse' => 'Label for section heading in results list for using an existing reference.
-
-See also:
-* {{msg-mw|visualeditor-reference-search-create}}',
 	'visualeditor-referencelist-isempty' => 'Message that appears in the references list when there are no references on the page of that group.',
 	'visualeditor-referencelist-missingref' => 'Message that appears in the references list, and as a tooltip on the reference itself, for references that are generated by a template or are otherwise uneditable.
 

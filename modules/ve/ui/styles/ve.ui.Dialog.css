@@ -114,8 +114,14 @@
 }
 
 .ve-ui-dialog-content .ve-ui-window-foot .ve-ui-buttonWidget {
-	float: right;
+	float: left;
 	margin: 0.125em 0.25em;
+}
+
+.ve-ui-dialog-content .ve-ui-window-foot .ve-ui-buttonWidget.ve-ui-flaggableElement-primary,
+.ve-ui-dialog-content .ve-ui-window-foot .ve-ui-buttonWidget.ve-ui-flaggableElement-constructive,
+.ve-ui-dialog-content .ve-ui-window-foot .ve-ui-buttonWidget.ve-ui-flaggableElement-destructive {
+	float: right;
 }
 
 .ve-ui-dialog-content .ve-ui-window-closeButton {
