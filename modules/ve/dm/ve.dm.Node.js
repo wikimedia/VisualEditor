@@ -203,20 +203,6 @@ ve.dm.Node.static.remapInternalListIndexes = function ( /*dataElement, mapping*/
 };
 
 /**
- * Get hash object of a linear model data element
- *
- * @static
- * @param {Object} dataElement Data element
- * @returns {Object} Hash object
- */
-ve.dm.Node.static.getHashObject = function ( dataElement ) {
-	return {
-		type: dataElement.type,
-		attributes: dataElement.attributes
-	};
-};
-
-/**
  * Determine if a hybrid element is inline and allowed to be inline in this context
  *
  * We generate block elements for block tags and inline elements for inline
@@ -560,19 +546,4 @@ ve.dm.Node.prototype.canBeMergedWith = function ( node ) {
 		n2 = n2.getParent();
 	}
 	return true;
-};
-
-/**
- * Get the hash object of the node.
- *
- * The actual logic is in a static function as this needs
- * to be accessible from ve.dm.Converter
- *
- * This is a custom hash function for ve#getHash.
- *
- * @method
- * @returns {Object} Hash object
- */
-ve.dm.Node.prototype.getHashObject = function () {
-	return this.constructor.static.getHashObject( this.element );
 };

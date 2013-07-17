@@ -90,10 +90,9 @@ ve.dm.Annotation.prototype.getDomElements = function ( doc ) {
  * @returns {Object} An object containing a subset of the annotation's properties
  */
 ve.dm.Annotation.prototype.getComparableObject = function () {
-	return {
-		'type': this.getType(),
-		'attributes': this.getAttributes()
-	};
+	var hashObject = this.getHashObject();
+	delete hashObject.htmlAttributes;
+	return hashObject;
 };
 
 /**
