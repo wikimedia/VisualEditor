@@ -307,7 +307,7 @@ ve.dm.ElementLinearData.prototype.getAnnotationIndexesFromOffset = function ( of
 		element = this.getData( offset );
 	}
 
-	if ( typeof element === 'string' ) {
+	if ( element === undefined || typeof element === 'string' ) {
 		return [];
 	} else {
 		return element.annotations || element[1] || [];
