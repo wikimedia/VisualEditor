@@ -227,6 +227,7 @@
 		<script src="../../ve/ui/widgets/ve.ui.SelectWidget.js"></script>
 		<script src="../../ve/ui/widgets/ve.ui.OptionWidget.js"></script>
 		<script src="../../ve/ui/widgets/ve.ui.SearchWidget.js"></script>
+		<script src="../../ve/ui/widgets/ve.ui.SurfaceWidget.js"></script>
 		<script src="../../ve/ui/widgets/ve.ui.ButtonWidget.js"></script>
 		<script src="../../ve/ui/widgets/ve.ui.IconButtonWidget.js"></script>
 		<script src="../../ve/ui/widgets/ve.ui.InputWidget.js"></script>
@@ -289,8 +290,8 @@
 		<script src="../../ve-mw/dm/nodes/ve.dm.MWReferenceNode.js"></script>
 		<script src="../../ve-mw/ce/nodes/ve.ce.MWReferenceListNode.js"></script>
 		<script src="../../ve-mw/ce/nodes/ve.ce.MWReferenceNode.js"></script>
-		<script src="../../ve-mw/ui/tools/buttons/ve.ui.MWReferenceEditButtonTool.js"></script>
-		<script src="../../ve-mw/ui/dialogs/ve.ui.MWReferenceEditDialog.js"></script>
+		<script src="../../ve-mw/ui/tools/buttons/ve.ui.MWReferenceButtonTool.js"></script>
+		<script src="../../ve-mw/ui/dialogs/ve.ui.MWReferenceDialog.js"></script>
 
 		<!-- Load plugins for test framework -->
 		<script src="../../ve/test/ve.qunit.js"></script>

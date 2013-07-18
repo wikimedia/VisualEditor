@@ -473,3 +473,17 @@
 	overflow-y: auto;
 	line-height: 0;
 }
+
+/* ve.ui.SurfaceWidget.js */
+
+.ve-ui-surfaceWidget .ve-ui-toolbar {
+	font-size: 1.25em;
+}
+
+.ve-ui-surfaceWidget .ve-ui-toolbar-bar {
+	border: solid 1px #ddd;
+	border-radius: 0.25em;
+	border-bottom-right-radius: 0;
+	border-bottom-left-radius: 0;
+	border-bottom-width: 0;
+}
