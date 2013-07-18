@@ -46,7 +46,7 @@ ve.test.utils.runFormatConverterTest = function ( assert, range, type, attribute
 };
 
 ve.test.utils.runGetDataFromDomTests = function( assert, cases ) {
-	var msg, doc, store, internalList, i, length, hash, n = 0;
+	var msg, doc, store, internalList, i, length, hash, data, n = 0;
 
 	// TODO: this is a hack to make normal heading/preformatted
 	// nodes the most recently registered, instead of the MW versions
@@ -68,14 +68,11 @@ ve.test.utils.runGetDataFromDomTests = function( assert, cases ) {
 			doc = new ve.dm.Document( [] );
 			store = doc.getStore();
 			internalList = doc.getInternalList();
+			data = ve.dm.converter.getDataFromDom(
+				ve.createDocumentFromHtml( cases[msg].html ), store, internalList
+			).getData();
 			ve.dm.example.preprocessAnnotations( cases[msg].data, store );
-			assert.deepEqualWithDomElements(
-				ve.dm.converter.getDataFromDom(
-					ve.createDocumentFromHtml( cases[msg].html ), store, internalList
-				).getData(),
-				cases[msg].data,
-				msg
-			);
+			assert.deepEqualWithDomElements( data, cases[msg].data, msg );
 			// check storeItems have been added to store
 			if ( cases[msg].storeItems ) {
 				for ( i = 0, length = cases[msg].storeItems.length; i < length; i++ ) {
@@ -101,7 +98,7 @@ ve.test.utils.runGetDomFromDataTests = function( assert, cases ) {
 
 	for ( msg in cases ) {
 		store = new ve.dm.IndexValueStore();
-		// load storeItems into store
+		// Load storeItems into store
 		if ( cases[msg].storeItems ) {
 			for ( i = 0, length = cases[msg].storeItems.length; i < length; i++ ) {
 				store.index( cases[msg].storeItems[i].value, cases[msg].storeItems[i].hash );
