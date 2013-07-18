@@ -20,6 +20,11 @@
 	background-image: url(images/icons/language.png);
 }
 
+.ve-ui-icon-math {
+	/* @embed */
+	background-image: url(images/icons/math.png);
+}
+
 .ve-ui-icon-template {
 	/* @embed */
 	background-image: url(images/icons/template.png);
