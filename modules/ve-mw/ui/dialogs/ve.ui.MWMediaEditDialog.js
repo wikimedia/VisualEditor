@@ -49,21 +49,28 @@ ve.ui.MWMediaEditDialog.prototype.initialize = function () {
 	ve.ui.MWDialog.prototype.initialize.call( this );
 
 	// Properties
-	this.contentFieldset = new ve.ui.FieldsetLayout( {
+	this.editPanel = new ve.ui.PanelLayout( {
+		'$$': this.frame.$$,
+		'padded': true,
+		'scrollable': true
+	} );
+	this.captionFieldset = new ve.ui.FieldsetLayout( {
 		'$$': this.frame.$$,
 		'label': ve.msg( 'visualeditor-dialog-media-content-section' ),
 		'icon': 'parameter'
 	} );
 	this.applyButton = new ve.ui.ButtonWidget( {
-		'$$': this.$$, 'label': ve.msg( 'visualeditor-dialog-action-apply' ), 'flags': ['primary']
+		'$$': this.$$,
+		'label': ve.msg( 'visualeditor-dialog-action-apply' ),
+		'flags': ['primary']
 	} );
 
 	// Events
 	this.applyButton.connect( this, { 'click': [ 'close', 'apply' ] } );
 
 	// Initialization
-	this.$body.addClass( 've-ui-mwMediaEditDialog-body' );
-	this.$body.append( this.contentFieldset.$ );
+	this.editPanel.$.append( this.captionFieldset.$ );
+	this.$body.append( this.editPanel.$ );
 	this.$foot.append( this.applyButton.$ );
 };
 
@@ -73,7 +80,7 @@ ve.ui.MWMediaEditDialog.prototype.onOpen = function () {
 	// Parent method
 	ve.ui.MWDialog.prototype.onOpen.call( this );
 
-	// Get caption content
+	// Properties
 	this.captionNode = this.surface.getView().getFocusedNode().getModel().getCaptionNode();
 	if ( this.captionNode && this.captionNode.getLength() > 0 ) {
 		data = doc.getData( this.captionNode.getRange(), true );
@@ -84,17 +91,18 @@ ve.ui.MWMediaEditDialog.prototype.onOpen = function () {
 		];
 	}
 
-	this.captionSurface = new ve.ui.Surface(
-		new ve.dm.ElementLinearData( doc.getStore(), data ), { '$$': this.frame.$$ }
+	this.captionSurface = new ve.ui.SurfaceWidget(
+		new ve.dm.ElementLinearData( doc.getStore(), data ),
+		{
+			'$$': this.frame.$$,
+			'tools': this.constructor.static.toolbarTools,
+			'commands': this.constructor.static.surfaceCommands
+		}
 	);
-	this.captionToolbar = new ve.ui.Toolbar( this.captionSurface, { '$$': this.frame.$$ } );
 
-	this.captionToolbar.$.addClass( 've-ui-mwMediaEditDialog-toolbar' );
-	this.contentFieldset.$.append( this.captionToolbar.$, this.captionSurface.$ );
-	this.captionToolbar.addTools( this.constructor.static.toolbarTools );
-	this.captionSurface.addCommands( this.constructor.static.surfaceCommands );
+	// Initialization
+	this.captionFieldset.$.append( this.captionSurface.$ );
 	this.captionSurface.initialize();
-	this.captionSurface.view.documentView.documentNode.$.focus();
 };
 
 ve.ui.MWMediaEditDialog.prototype.onClose = function ( action ) {
@@ -104,7 +112,7 @@ ve.ui.MWMediaEditDialog.prototype.onClose = function ( action ) {
 	ve.ui.MWDialog.prototype.onClose.call( this );
 
 	if ( action === 'apply' ) {
-		data = this.captionSurface.getModel().getDocument().getData();
+		data = this.captionSurface.getContent();
 		doc = surfaceModel.getDocument();
 		if ( this.captionNode ) {
 			// Replace the contents of the caption
@@ -123,9 +131,9 @@ ve.ui.MWMediaEditDialog.prototype.onClose = function ( action ) {
 	}
 
 	// Cleanup
-	this.captionNode = null;
 	this.captionSurface.destroy();
-	this.captionToolbar.destroy();
+	this.captionSurface = null;
+	this.captionNode = null;
 };
 
 /* Registration */
