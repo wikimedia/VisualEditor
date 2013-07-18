@@ -235,6 +235,9 @@
 		<script src="../../ve/ui/tools/dropdowns/ve.ui.FormatDropdownTool.js"></script>
 		<script src="../../ve/ui/inspectors/ve.ui.AnnotationInspector.js"></script>
 		<script src="../../ve/ui/inspectors/ve.ui.LinkInspector.js"></script>
+		<!-- ext.visualEditor.experimental -->
+		<script src="../../ve/dm/annotations/ve.dm.LanguageAnnotation.js"></script>
+		<script src="../../ve/ce/annotations/ve.ce.LanguageAnnotation.js"></script>
 
 		<!-- Load plugins for test framework -->
 		<script src="ve.qunit.js"></script>
