@@ -557,6 +557,22 @@
 	};
 
 	/**
+	 * Move the selection to the end of an input.
+	 *
+	 * @param {HTMLElement} element Input element
+	 */
+	ve.selectEnd = function ( element ) {
+		element.focus();
+		if ( element.selectionStart !== undefined ) {
+			element.selectionStart = element.selectionEnd = element.value.length;
+		} else if ( element.createTextRange ) {
+			var textRange = element.createTextRange();
+			textRange.collapse( false );
+			textRange.select();
+		}
+	};
+
+	/**
 	 * Get a localized message.
 	 *
 	 * @param {string} key Message key

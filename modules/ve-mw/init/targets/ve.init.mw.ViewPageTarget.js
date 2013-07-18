@@ -70,6 +70,8 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 	this.currentUri = currentUri;
 	this.messages = {};
 	this.section = currentUri.query.vesection || null;
+	this.sectionPositionRestored = false;
+	this.sectionTitleRestored = false;
 	this.namespaceName = mw.config.get( 'wgCanonicalNamespace' );
 	this.viewUri = new mw.Uri( mw.util.wikiGetlink( this.pageName ) );
 	this.veEditUri = this.viewUri.clone().extend( { 'veaction': 'edit' } );
@@ -183,6 +185,9 @@ ve.init.mw.ViewPageTarget.saveDialogTemplate = '\
 	</div>\
 	<div class="ve-init-mw-viewPageTarget-saveDialog-body">\
 		<div class="ve-init-mw-viewPageTarget-saveDialog-slide ve-init-mw-viewPageTarget-saveDialog-slide-save">\
+			<label class="ve-init-mw-viewPageTarget-saveDialog-editSummary-label"\
+				for="ve-init-mw-viewPageTarget-saveDialog-editSummary"\
+				id="ve-init-mw-viewPageTarget-saveDialog-editSummary-label"></label>\
 			<div class="ve-init-mw-viewPageTarget-saveDialog-summary">\
 				<textarea name="editSummary" class="ve-init-mw-viewPageTarget-saveDialog-editSummary"\
 					id="ve-init-mw-viewPageTarget-saveDialog-editSummary" type="text"\
@@ -1467,6 +1472,15 @@ ve.init.mw.ViewPageTarget.prototype.setupSaveDialog = function () {
 	this.saveDialogResolveConflictButton.connect( this, { 'click': 'onSaveDialogResolveConflictButtonClick' } );
 
 	this.getSaveDialogHtml( function ( $wrap ) {
+		var sectionTitle = '';
+		if ( viewPage.section ) {
+			sectionTitle = viewPage.$document.find( 'h1, h2, h3, h4, h5, h6' ).eq( viewPage.section - 1 ).text();
+			sectionTitle = '/* ' + ve.graphemeSafeSubstring( sectionTitle, 0, 244 ) + ' */ ';
+			viewPage.sectionTitleRestored = true;
+			if ( viewPage.sectionPositionRestored ) {
+				viewPage.onSectionRestored();
+			}
+		}
 		viewPage.$saveDialog
 			// Must not use replaceWith because that can't be used on fragement roots,
 			// plus, we want to preserve the reference and class names of the wrapper.
@@ -1494,10 +1508,14 @@ ve.init.mw.ViewPageTarget.prototype.setupSaveDialog = function () {
 				.click( ve.bind( viewPage.onSaveDialogPrevButtonClick, viewPage ) )
 				.end()
 			// Attach contents
+			.find( '#ve-init-mw-viewPageTarget-saveDialog-editSummary-label' )
+				.html( ve.init.platform.getParsedMessage( 'summary' ) )
+				.end()
 			.find( '#ve-init-mw-viewPageTarget-saveDialog-editSummary' )
 				.attr( {
 					'placeholder': ve.msg( 'visualeditor-editsummary' )
 				} )
+				.val( sectionTitle )
 				.placeholder()
 				.byteLimit( viewPage.editSummaryByteLimit )
 				.on( {
@@ -1745,7 +1763,12 @@ ve.init.mw.ViewPageTarget.prototype.swapSaveDialog = function ( slide, options )
 
 	if ( slide === 'save' ) {
 		setTimeout( function () {
-			$slide.find( 'textarea' ).eq( 0 ).focus();
+			var $textarea = $slide.find( '#ve-init-mw-viewPageTarget-saveDialog-editSummary' );
+			$textarea.focus();
+			// If message has be pre-filled (e.g. section edit), move cursor to end
+			if ( $textarea.val() !== '' ) {
+				ve.selectEnd( $textarea[0] );
+			}
 		} );
 	}
 
@@ -2080,7 +2103,7 @@ ve.init.mw.ViewPageTarget.prototype.getEditSection = function ( heading ) {
 };
 
 /**
- * Get the numeric index of a section in the page.
+ * Store the section for which the edit link has been triggered.
  *
  * @method
  * @param {HTMLElement} heading Heading element of section
@@ -2130,8 +2153,20 @@ ve.init.mw.ViewPageTarget.prototype.restoreEditSection = function () {
 				}, 200 );
 			}
 		} );
-		this.section = null;
+		this.sectionPositionRestored = true;
+		if ( this.sectionTitleRestored ) {
+			this.onSectionRestored();
+		}
 	}
+};
+
+/**
+ * Handle restoration of section editing position and title
+ */
+ve.init.mw.ViewPageTarget.prototype.onSectionRestored = function () {
+	this.section = null;
+	this.sectionPositionRestored = false;
+	this.sectionTitleRestored = false;
 };
 
 /**
