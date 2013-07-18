@@ -26,7 +26,7 @@ ve.inheritClass( ve.ui.MWMathInspector, ve.ui.Inspector );
 
 /* Static properties */
 
-ve.ui.MWMathInspector.static.icon = 'link';
+ve.ui.MWMathInspector.static.icon = 'math';
 
 ve.ui.MWMathInspector.static.titleMessage = 'visualeditor-mwmathinspector-title';
 
