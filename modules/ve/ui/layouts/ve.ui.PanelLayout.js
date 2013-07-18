@@ -25,7 +25,7 @@ ve.ui.PanelLayout = function VeUiPanelLayout( config ) {
 
 	// Initialization
 	this.$.addClass( 've-ui-panelLayout' );
-	if ( config.scroll ) {
+	if ( config.scrollable ) {
 		this.$.addClass( 've-ui-panelLayout-scrollable' );
 	}
 
