@@ -51,13 +51,13 @@ $html = file_get_contents( $page );
 		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.Context.css">
 		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.Frame.css">
 		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.Window.css">
-		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.Dialog.css">
-		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.Inspector.css">
 		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.Toolbar.css">
 		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.Tool.css">
 		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.Element.css">
 		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.Layout.css">
 		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.Widget.css">
+		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.Inspector.css">
+		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.Dialog.css">
 
 		<!-- demo -->
 		<link rel="stylesheet" href="demo.css">
@@ -282,6 +282,9 @@ $html = file_get_contents( $page );
 		<script src="../../modules/ve/ui/tools/dropdowns/ve.ui.FormatDropdownTool.js"></script>
 		<script src="../../modules/ve/ui/inspectors/ve.ui.AnnotationInspector.js"></script>
 		<script src="../../modules/ve/ui/inspectors/ve.ui.LinkInspector.js"></script>
+		<!-- ext.visualEditor.experimental -->
+		<script src="../../modules/ve/dm/annotations/ve.dm.LanguageAnnotation.js"></script>
+		<script src="../../modules/ve/ce/annotations/ve.ce.LanguageAnnotation.js"></script>
 
 		<!-- demo -->
 		<script>
