@@ -446,3 +446,53 @@ QUnit.test( 'createDocumentFromHtml', function ( assert ) {
 		assert.equalDomElement( $( 'body', doc ).get( 0 ), expectedBody, cases[key].msg + ' (body)' );
 	}
 } );
+
+// ve.splitClusters: Tested upstream (UnicodeJS)
+
+// TODO: ve.isUnattachedCombiningMark
+
+// TODO: ve.getByteOffset
+
+// TODO: ve.getCharacterOffset
+
+QUnit.test( 'graphemeSafeSubstring', function ( assert ) {
+	var i, text = '12𨋢45𨋢789𨋢bc', cases = [
+			{
+				'msg': 'start and end inside multibyte',
+				'start': 3,
+				'end': 12,
+				'expected': [ '𨋢45𨋢789𨋢', '45𨋢789' ]
+			},
+			{
+				'msg': 'start and end next to multibyte',
+				'start': 4,
+				'end': 11,
+				'expected': [ '45𨋢789', '45𨋢789' ]
+			},
+			{
+				'msg': 'complete string',
+				'start': 0,
+				'end': text.length,
+				'expected': [ text, text ]
+			},
+			{
+				'msg': 'collapsed selection inside multibyte',
+				'start': 3,
+				'end': 3,
+				'expected': [ '𨋢', '' ]
+			}
+		];
+	QUnit.expect( cases.length * 2 );
+	for ( i = 0; i < cases.length; i++ ) {
+		assert.equal(
+			ve.graphemeSafeSubstring( text, cases[i].start, cases[i].end, true ),
+			cases[i].expected[0],
+			cases[i].msg + ' (outer)'
+		);
+		assert.equal(
+			ve.graphemeSafeSubstring( text, cases[i].start, cases[i].end, false ),
+			cases[i].expected[1],
+			cases[i].msg + ' (inner)'
+		);
+	}
+} );

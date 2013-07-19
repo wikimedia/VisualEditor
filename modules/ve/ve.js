@@ -564,6 +564,37 @@
 	};
 
 	/**
+	 * Get a text substring, taking care not to split grapheme clusters.
+	 *
+	 * @param {string} text Text to take the substring from
+	 * @param {number} start Start offset
+	 * @param {number} end End offset
+	 * @param {boolean} [outer=false] Include graphemes if the offset splits them
+	 * @returns {string} Substring of text
+	 */
+	ve.graphemeSafeSubstring = function ( text, start, end, outer ) {
+		// TODO: improve performance by incrementally inspecting characters around the offsets
+		var unicodeStart = ve.getByteOffset( text, ve.getClusterOffset( text, start ) ),
+			unicodeEnd = ve.getByteOffset( text, ve.getClusterOffset( text, end ) );
+
+		// If the selection collapses and we want an inner, then just return empty
+		// otherwise we'll end up crossing over start and end
+		if ( unicodeStart === unicodeEnd && !outer ) {
+			return '';
+		}
+
+		// The above calculations always move to the right of a multibyte grapheme.
+		// Depending on the outer flag, we may want to move to the left:
+		if ( unicodeStart > start && outer ) {
+			unicodeStart = ve.getByteOffset( text, ve.getClusterOffset( text, start ) - 1 );
+		}
+		if ( unicodeEnd > end && !outer ) {
+			unicodeEnd = ve.getByteOffset( text, ve.getClusterOffset( text, end ) - 1 );
+		}
+		return text.substring( unicodeStart, unicodeEnd );
+	};
+
+	/**
 	 * Escape non-word characters so they can be safely used as HTML attribute values.
 	 *
 	 * This method is basically a copy of `mw.html.escape`.
