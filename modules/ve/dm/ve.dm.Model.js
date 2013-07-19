@@ -242,6 +242,21 @@ ve.dm.Model.matchesAttributeSpec = function ( attribute, spec ) {
 	return matchesArray( spec.whitelist || true ) && !matchesArray( spec.blacklist || false );
 };
 
+/**
+ * Get hash object of a linear model data element
+ *
+ * @static
+ * @param {Object} dataElement Data element
+ * @returns {Object} Hash object
+ */
+ve.dm.Model.static.getHashObject = function ( dataElement ) {
+	return {
+		type: dataElement.type,
+		attributes: dataElement.attributes,
+		htmlAttributes: dataElement.htmlAttributes
+	};
+};
+
 /* Methods */
 
 /**
@@ -356,4 +371,19 @@ ve.dm.Model.prototype.hasAttributes = function ( attributes, strict ) {
  */
 ve.dm.Model.prototype.getClonedElement = function () {
 	return ve.copyObject( this.element );
+};
+
+/**
+ * Get the hash object of the linear model element.
+ *
+ * The actual logic is in a static function as this needs
+ * to be accessible from ve.dm.Converter
+ *
+ * This is a custom hash function for ve#getHash.
+ *
+ * @method
+ * @returns {Object} Hash object
+ */
+ve.dm.Model.prototype.getHashObject = function () {
+	return this.constructor.static.getHashObject( this.element );
 };

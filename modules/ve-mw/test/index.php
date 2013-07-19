@@ -129,6 +129,7 @@
 		<script src="../../ve-mw/dm/annotations/ve.dm.MWExternalLinkAnnotation.js"></script>
 		<script src="../../ve-mw/dm/annotations/ve.dm.MWInternalLinkAnnotation.js"></script>
 		<script src="../../ve/dm/annotations/ve.dm.TextStyleAnnotation.js"></script>
+		<script src="../../ve-mw/dm/annotations/ve.dm.MWNowikiAnnotation.js"></script>
 		<script src="../../ve/dm/metaitems/ve.dm.AlienMetaItem.js"></script>
 		<script src="../../ve-mw/dm/metaitems/ve.dm.MWAlienMetaItem.js"></script>
 		<script src="../../ve-mw/dm/metaitems/ve.dm.MWCategoryMetaItem.js"></script>
@@ -192,6 +193,7 @@
 		<script src="../../ve-mw/ce/annotations/ve.ce.MWExternalLinkAnnotation.js"></script>
 		<script src="../../ve-mw/ce/annotations/ve.ce.MWInternalLinkAnnotation.js"></script>
 		<script src="../../ve/ce/annotations/ve.ce.TextStyleAnnotation.js"></script>
+		<script src="../../ve-mw/ce/annotations/ve.ce.MWNowikiAnnotation.js"></script>
 		<script src="../../ve/ui/ve.ui.js"></script>
 		<script src="../../ve/ui/ve.ui.Surface.js"></script>
 		<script src="../../ve/ui/ve.ui.Context.js"></script>
