@@ -20,7 +20,7 @@
  */
 ( function () {
 	var conf, uri, pageExists, viewUri, veEditUri, isViewPage,
-		init, isBlacklisted, getTargetDeferred;
+		init, support, getTargetDeferred;
 
 	/**
 	 * Use deferreds to avoid loading and instantiating Target multiple times.
@@ -57,29 +57,30 @@
 		!( 'diff' in uri.query )
 	);
 
+	support = {
+		es5: (
+			// It would be much easier to do a quick inline function that asserts "use strict"
+			// works, but since IE9 doesn't support strict mode (and we don't use strict mode) we
+			// have to instead list all the ES5 features we do use.
+			Array.isArray &&
+			Array.prototype.filter &&
+			Array.prototype.indexOf &&
+			Array.prototype.map &&
+			Date.prototype.toJSON &&
+			Function.prototype.bind &&
+			Object.create &&
+			Object.keys &&
+			String.prototype.trim &&
+			window.JSON &&
+			JSON.parse &&
+			JSON.stringify
+		),
+		contentEditable: 'contentEditable' in document.createElement( 'div' )
+	};
 
 	init = {
 
-		support: {
-			es5: (
-				// It would be much easier to do a quick inline function that asserts "use strict"
-				// works, but since IE9 doesn't support strict mode (and we don't use strict mode) we
-				// have to instead list all the ES5 features we do use.
-				Array.isArray &&
-				Array.prototype.filter &&
-				Array.prototype.indexOf &&
-				Array.prototype.map &&
-				Date.prototype.toJSON &&
-				Function.prototype.bind &&
-				Object.create &&
-				Object.keys &&
-				String.prototype.trim &&
-				window.JSON &&
-				JSON.parse &&
-				JSON.stringify
-			),
-			contentEditable: 'contentEditable' in document.createElement( 'div' )
-		},
+		support: support,
 
 		blacklist: {
 			// IE <= 8 has various incompatibilities in layout and feature support
@@ -308,6 +309,10 @@
 		}
 	};
 
+	support.visualEditor = support.es5 &&
+		support.contentEditable &&
+		( ( 'vewhitelist' in uri.query ) || !$.client.test( init.blacklist, null, true ) );
+
 	// Note: Though VisualEditor itself only needs this exposure for a very small reason
 	// (namely to access init.blacklist from the unit tests...) this has become one of the nicest
 	// ways to easily detect whether VisualEditor is present on this page. The VE global was once
@@ -317,9 +322,7 @@
 	// of this property should be reliable.
 	mw.libs.ve = init;
 
-	isBlacklisted = !( 'vewhitelist' in uri.query ) && $.client.test( init.blacklist, null, true );
-
-	if ( !init.support.es5 || !init.support.contentEditable || isBlacklisted ) {
+	if ( !support.visualEditor ) {
 		mw.log( 'Browser does not support VisualEditor' );
 		return;
 	}
