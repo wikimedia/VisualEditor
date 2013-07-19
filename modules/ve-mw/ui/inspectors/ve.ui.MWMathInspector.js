@@ -57,10 +57,12 @@ ve.ui.MWMathInspector.prototype.initialize = function () {
  */
 ve.ui.MWMathInspector.prototype.onOpen = function () {
 
-	var src = this.surface.getView().getFocusedNode().getModel().getAttribute( 'extsrc' );
-
 	// Parent method
 	ve.ui.Inspector.prototype.onOpen.call( this );
+
+	this.mathNode = this.surface.getView().getFocusedNode();
+
+	var src = this.mathNode.getModel().getAttribute( 'extsrc' );
 
 	// Wait for animation to complete
 	setTimeout( ve.bind( function () {
@@ -76,16 +78,16 @@ ve.ui.MWMathInspector.prototype.onOpen = function () {
  * @param {string} action Action that caused the window to be closed
  */
 ve.ui.MWMathInspector.prototype.onClose = function ( action ) {
+
+	var newsrc = this.input.getValue(),
+		surfaceModel = this.surface.getModel();
+
 	// Parent method
 	ve.ui.Inspector.prototype.onClose.call( this, action );
 
-	var newsrc = this.input.getValue(),
-		surfaceModel = this.surface.getModel(),
-		mathNode = this.surface.getView().getFocusedNode().getModel();
-
 	surfaceModel.change(
 		ve.dm.Transaction.newFromAttributeChanges(
-			surfaceModel.getDocument(), mathNode.getOuterRange().start, { 'extsrc': newsrc }
+			surfaceModel.getDocument(), this.mathNode.getOuterRange().start, { 'extsrc': newsrc }
 		)
 	);
 };
