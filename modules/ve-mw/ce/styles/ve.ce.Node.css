@@ -47,3 +47,9 @@
 .ve-ce-mwInlineImageNode {
 	display: inline-block;
 }
+
+/* ve.ce.MWMathNode */
+
+.ve-ce-mwMathNode {
+	display: inline-block;
+}

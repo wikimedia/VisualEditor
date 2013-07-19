@@ -580,6 +580,7 @@ $wgResourceModules += array(
 			've/ui/styles/ve.ui.Widget.css',
 			've-mw/ui/styles/ve.ui.Widget.css',
 			've/ui/styles/ve.ui.Inspector.css',
+			've-mw/ui/styles/ve.ui.MWInspector.css',
 			've/ui/styles/ve.ui.Dialog.css',
 			've-mw/ui/styles/ve.ui.MWDialog.css',
 		),

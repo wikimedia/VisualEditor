@@ -10,16 +10,23 @@
  *
  * @class
  * @extends ve.dm.LeafNode
+ * @mixins ve.dm.GeneratedContentNode
+ *
  * @constructor
  */
 ve.dm.MWMathNode = function VeDmMWMathNode( length, element ) {
 	// Parent constructor
 	ve.dm.LeafNode.call( this, 0, element );
+
+	// Mixin constructors
+	ve.dm.GeneratedContentNode.call( this );
 };
 
 /* Inheritance */
 
 ve.inheritClass( ve.dm.MWMathNode, ve.dm.LeafNode );
+
+ve.mixinClass( ve.dm.MWMathNode, ve.dm.GeneratedContentNode );
 
 /* Static members */
 
@@ -33,41 +40,52 @@ ve.dm.MWMathNode.static.matchRdfaTypes = [ 'mw:Extension/math' ];
 
 ve.dm.MWMathNode.static.isContent = true;
 
-ve.dm.MWMathNode.static.toDataElement = function ( domElements ) {
-	var dataElement,
+ve.dm.MWMathNode.static.toDataElement = function ( domElements, converter ) {
+	var dataElement, index,
 		mwDataJSON = domElements[0].getAttribute( 'data-mw' ),
-		mwData = mwDataJSON ? JSON.parse( mwDataJSON ) : {},
-		extsrc = mwData.body.extsrc,
-		alt = domElements[0].getAttribute( 'alt' ),
-		src = domElements[0].getAttribute( 'src' );
+		mwData = mwDataJSON ? JSON.parse( mwDataJSON ) : {};
 
 	dataElement = {
 		'type': 'mwMath',
 		'attributes': {
 			'mw': mwData,
-			'originalMw': mwDataJSON,
-			'extsrc': extsrc,
-			'alt': alt,
-			'src': src
+			'originalDomElements': ve.copyArray( domElements ),
+			'originalMw': mwDataJSON
 		}
 	};
+
+	index = this.storeDomElements( dataElement, domElements, converter.getStore() );
+	dataElement.attributes.originalIndex = index;
+
 	return dataElement;
 };
 
-ve.dm.MWMathNode.static.toDomElements = function ( dataElement, doc ) {
-	var el = doc.createElement( 'img' ),
-		mwData = ve.copy( dataElement.attributes.mw ),
+ve.dm.MWMathNode.static.toDomElements = function ( dataElement, doc, converter ) {
+	var el,
+		index = converter.getStore().indexOfHash( ve.getHash( this.getHashObject( dataElement ) ) ),
 		originalMw = dataElement.attributes.originalMw;
 
-	mwData.body.extsrc = dataElement.attributes.extsrc;
-	if ( originalMw && ve.compare( mwData, JSON.parse( originalMw ) ) ) {
-		el.setAttribute( 'data-mw', originalMw );
+	// If the transclusion is unchanged just send back the
+	// original DOM elements so selser can skip over it
+	if (
+		index === dataElement.attributes.originalIndex ||
+		( originalMw && ve.compare( dataElement.attributes.mw, JSON.parse( originalMw ) ) )
+	) {
+		// The object in the store is also used for CE rendering so return a copy
+		return ve.copyDomElements( dataElement.attributes.originalDomElements, doc );
 	} else {
-		el.setAttribute( 'data-mw', JSON.stringify( mwData ) );
+		el = doc.createElement( 'img' );
+		el.setAttribute( 'typeof', 'mw:Extension/Math' );
+		el.setAttribute( 'data-mw', JSON.stringify( dataElement.attributes.mw ) );
+		return [ el ];
 	}
-	el.setAttribute( 'alt', dataElement.attributes.alt );
-	el.setAttribute( 'src', dataElement.attributes.src );
-	return [ el ];
+};
+
+ve.dm.MWMathNode.static.getHashObject = function ( dataElement ) {
+	return {
+		type: dataElement.type,
+		mw: dataElement.attributes.mw
+	};
 };
 
 /* Registration */

@@ -30,8 +30,6 @@ ve.ui.MWMathInspector.static.icon = 'math';
 
 ve.ui.MWMathInspector.static.titleMessage = 'visualeditor-mwmathinspector-title';
 
-ve.ui.MWMathInspector.static.InputWidget = ve.ui.InputWidget;
-
 /* Methods */
 
 /**
@@ -43,9 +41,12 @@ ve.ui.MWMathInspector.prototype.initialize = function () {
 	// Parent method
 	ve.ui.Inspector.prototype.initialize.call( this );
 
-	this.input = new this.constructor.static.InputWidget( {
-		'$$': this.frame.$$, 'overlay': this.surface.$localOverlay
+	this.input = new ve.ui.TextInputWidget( {
+		'$$': this.frame.$$,
+		'overlay': this.surface.$localOverlay,
+		'multiline': true
 	} );
+	this.input.$.addClass( 've-ui-mwMathInspector-input' );
 
 	// Initialization
 	this.$form.append( this.input.$ );
@@ -56,18 +57,21 @@ ve.ui.MWMathInspector.prototype.initialize = function () {
  * Handle the inspector being opened.
  */
 ve.ui.MWMathInspector.prototype.onOpen = function () {
+	var extsrc = '';
 
 	// Parent method
 	ve.ui.Inspector.prototype.onOpen.call( this );
 
-	this.mathNode = this.surface.getView().getFocusedNode();
+	this.node = this.surface.getView().getFocusedNode();
 
-	var src = this.mathNode.getModel().getAttribute( 'extsrc' );
+	if ( this.node ) {
+		extsrc = this.node.getModel().getAttribute( 'mw' ).body.extsrc;
+	}
 
 	// Wait for animation to complete
 	setTimeout( ve.bind( function () {
 		// Setup input text
-		this.input.setValue( src );
+		this.input.setValue( extsrc );
 		this.input.$input.focus().select();
 	}, this ), 200 );
 };
@@ -78,18 +82,38 @@ ve.ui.MWMathInspector.prototype.onOpen = function () {
  * @param {string} action Action that caused the window to be closed
  */
 ve.ui.MWMathInspector.prototype.onClose = function ( action ) {
-
-	var newsrc = this.input.getValue(),
+	var mw,
 		surfaceModel = this.surface.getModel();
 
 	// Parent method
 	ve.ui.Inspector.prototype.onClose.call( this, action );
 
-	surfaceModel.change(
-		ve.dm.Transaction.newFromAttributeChanges(
-			surfaceModel.getDocument(), this.mathNode.getOuterRange().start, { 'extsrc': newsrc }
-		)
-	);
+	if ( this.node instanceof ve.ce.MWMathNode ) {
+		mw = this.node.getModel().getAttribute( 'mw' );
+		mw.body.extsrc = this.input.getValue();
+		surfaceModel.change(
+			ve.dm.Transaction.newFromAttributeChanges(
+				surfaceModel.getDocument(), this.node.getOuterRange().start, { 'mw': mw }
+			)
+		);
+	} else {
+		mw = {
+			'name': 'math',
+			'attrs': {},
+			'body': {
+				'extsrc': this.input.getValue()
+			}
+		};
+		surfaceModel.getFragment().collapseRangeToEnd().insertContent( [
+			{
+				'type': 'mwMath',
+				'attributes': {
+					'mw': mw
+				}
+			},
+			{ 'type': '/mwMath' }
+		] );
+	}
 };
 
 /* Registration */

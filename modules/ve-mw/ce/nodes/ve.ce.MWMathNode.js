@@ -5,7 +5,7 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-/*global mw*/
+/*global mw, MathJax */
 
 /**
  * ContentEditable MediaWiki math node.
@@ -14,14 +14,23 @@
  * @extends ve.ce.LeafNode
  * @mixins ve.ce.FocusableNode
  * @mixins ve.ce.ProtectedNode
+ * @mixins ve.ce.GeneratedContentNode
  *
  * @constructor
  * @param {ve.dm.MWMathNode} model Model to observe
  * @param {Object} [config] Config options
  */
 ve.ce.MWMathNode = function VeCeMWMathNode( model, config ) {
+	var $wrapper;
+
 	// Parent constructor
 	ve.ce.LeafNode.call( this, model, config );
+
+	// Wrap image
+	this.$image = this.$;
+	$wrapper = $( '<span> ');
+	this.$.wrap( $wrapper );
+	this.$ = $wrapper;
 
 	// Mixin constructors
 	ve.ce.FocusableNode.call( this );
@@ -34,8 +43,6 @@ ve.ce.MWMathNode = function VeCeMWMathNode( model, config ) {
 
 	// DOM Changes
 	this.$.addClass( 've-ce-mwMathNode' );
-	this.$.attr( 'src', model.getAttribute( 'src' ) );
-	this.$.attr( 'alt', model.getAttribute( 'alt' ) );
 };
 
 /* Inheritance */
@@ -62,7 +69,7 @@ ve.ce.MWMathNode.prototype.generateContents = function () {
 			'action': 'visualeditor',
 			'paction': 'parsefragment',
 			'page': mw.config.get( 'wgRelevantPageName' ),
-			'wikitext': '<math>' + this.model.getAttribute( 'extsrc' ) + '</math>',
+			'wikitext': '<math>' + this.getModel().getAttribute( 'mw' ).body.extsrc + '</math>',
 			'token': mw.user.tokens.get( 'editToken' ),
 			'format': 'json'
 		},
@@ -85,9 +92,18 @@ ve.ce.MWMathNode.prototype.generateContents = function () {
  */
 ve.ce.MWMathNode.prototype.onParseSuccess = function ( deferred, response ) {
 	var data = response.visualeditor, contentNodes = $( data.content ).get();
-	this.$.attr( 'alt', contentNodes[0].childNodes[0].getAttribute( 'alt' ) );
-	this.$.attr( 'src', contentNodes[0].childNodes[0].getAttribute( 'src' ) );
+	// HACK: unwrap paragraph from PHP parser
+	contentNodes = Array.prototype.slice.apply( contentNodes[0].childNodes );
 	deferred.resolve( contentNodes );
+	if ( $( contentNodes ).is( 'span.tex' ) ) {
+		// MathJax
+		MathJax.Hub.Queue( [ 'Typeset', MathJax.Hub ] );
+	} else {
+		// Rerender after image load
+		this.$.find( 'img' ).on( 'load', ve.bind( function () {
+			this.emit( 'rerender' );
+		}, this ) );
+	}
 };
 
 /**
