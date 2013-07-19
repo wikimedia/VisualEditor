@@ -53,35 +53,12 @@ class VisualEditorHooks {
 		global $wgVisualEditorNamespaces, $wgVisualEditorEnableEventLogging,
 			$wgVisualEditorDisableForAnons;
 
-		if (
-			// Bug 50000: Allow disabling for anonymous users separately from changing
-			// the default preference
-			!( $wgVisualEditorDisableForAnons && $skin->getUser()->isAnon() ) &&
-
-			// Bug 47328: Disable on redirect pages until redirects are editable
-			!$skin->getTitle()->isRedirect() &&
-
-			// User has the 'visualeditor-enable' preference set
-			$skin->getUser()->getOption( 'visualeditor-enable' ) &&
-
-			// The user's current skin is supported
-			in_array( $skin->getSkinName(), self::$supportedSkins ) &&
-
-			// The current page is in a VisualEditor-enabled namespace
-			in_array( $skin->getRelevantTitle()->getNamespace(), $wgVisualEditorNamespaces ) &&
-
-			// Only use VisualEditor if the page is wikitext, not CSS/JS
-			$skin->getTitle()->getContentModel() === CONTENT_MODEL_WIKITEXT
-		) {
-			if ( $wgVisualEditorEnableEventLogging ) {
-				$output->addModules( array( 'schema.Edit' ) );
-			}
-			$output->addModules( array( 'ext.visualEditor.viewPageTarget.init' ) );
-		} else {
-			if ( $wgVisualEditorEnableEventLogging ) {
-				$output->addModules( array( 'schema.Edit', 'ext.visualEditor.splitTest' ) );
-			}
+		if ( $wgVisualEditorEnableEventLogging ) {
+			$output->addModules( array( 'schema.Edit' ) );
 		}
+
+		$output->addModules( array( 'ext.visualEditor.viewPageTarget.init' ) );
+
 		return true;
 	}
 
@@ -139,13 +116,16 @@ class VisualEditorHooks {
 	 * Adds extra variables to the global config
 	 */
 	public static function onResourceLoaderGetConfigVars( array &$vars ) {
-		global $wgVisualEditorEnableEventLogging,
-			$wgVisualEditorEnableExperimentalCode, $wgVisualEditorTabLayout;
+		global $wgVisualEditorEnableExperimentalCode, $wgVisualEditorEnableEventLogging,
+			$wgVisualEditorTabLayout, $wgVisualEditorDisableForAnons, $wgVisualEditorNamespaces;
 
 		$vars['wgVisualEditorConfig'] = array(
 			'enableExperimentalCode' => $wgVisualEditorEnableExperimentalCode,
 			'enableEventLogging' => $wgVisualEditorEnableEventLogging,
 			'tabLayout' => $wgVisualEditorTabLayout,
+			'disableForAnons' => $wgVisualEditorDisableForAnons,
+			'namespaces' => $wgVisualEditorNamespaces,
+			'skins' => self::$supportedSkins,
 		);
 
 		return true;

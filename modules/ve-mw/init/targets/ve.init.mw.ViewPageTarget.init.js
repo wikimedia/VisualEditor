@@ -313,6 +313,39 @@
 		support.contentEditable &&
 		( ( 'vewhitelist' in uri.query ) || !$.client.test( init.blacklist, null, true ) );
 
+	// Whether VisualEditor should be available for the current user, page, wiki, mediawiki skin,
+	// browser etc.
+	init.isAvailable = (
+		support.visualEditor &&
+
+		// Allow disabling for anonymous users separately from changing the
+		// default preference (bug 50000)
+		!( conf.disableForAnons && mw.user.isAnon() ) &&
+
+		// Disable on redirect pages until redirects are editable (bug 47328)
+		// Property wgIsRedirect is relatively new in core, many cached pages
+		// don't have it yet. We do a best-effort approach using the url query
+		// which will cover all working redirect (the only case where one can
+		// read a redirect page without ?redirect=no is in case of broken or
+		// double redirects).
+		!mw.config.get( 'wgIsRedirect', !!uri.query.redirect ) &&
+
+		// User has 'visualeditor-enable' preference enabled
+		mw.user.options.get( 'visualeditor-enable' ) &&
+
+		// Only in supported skins
+		$.inArray( mw.config.get( 'skin' ),  conf.skins ) !== -1 &&
+
+		// Only in enabled namespaces
+		$.inArray(
+			new mw.Title( mw.config.get( 'wgRelevantPageName' ) ).getNamespaceId(),
+			conf.namespaces
+		) !== -1 &&
+
+		// Only for pages with a wikitext content model
+		mw.config.get( 'wgPageContentModel' ) === 'wikitext'
+	);
+
 	// Note: Though VisualEditor itself only needs this exposure for a very small reason
 	// (namely to access init.blacklist from the unit tests...) this has become one of the nicest
 	// ways to easily detect whether VisualEditor is present on this page. The VE global was once
@@ -322,8 +355,7 @@
 	// of this property should be reliable.
 	mw.libs.ve = init;
 
-	if ( !support.visualEditor ) {
-		mw.log( 'Browser does not support VisualEditor' );
+	if ( !init.isAvailable ) {
 		return;
 	}
 
