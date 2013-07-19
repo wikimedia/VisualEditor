@@ -26,7 +26,7 @@ ve.inheritClass( ve.ui.MWMathButtonTool, ve.ui.InspectorButtonTool );
 /* Static Properties */
 
 ve.ui.MWMathButtonTool.static.name = 'mwMath';
-ve.ui.MWMathButtonTool.static.icon = 'link';
+ve.ui.MWMathButtonTool.static.icon = 'math';
 ve.ui.MWMathButtonTool.static.titleMessage = 'visualeditor-mwmathinspector-title';
 ve.ui.MWMathButtonTool.static.inspector = 'mwMathInspector';
 ve.ui.MWMathButtonTool.static.modelClasses = [ ve.dm.MWMathNode ];
