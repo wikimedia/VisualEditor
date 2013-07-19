@@ -35,6 +35,116 @@ QUnit.test( 'getRenderedContents', function ( assert ) {
 			'html': '<b>abc</b>'
 		},
 		{
+			'msg': 'Italic text',
+			'data': [
+				{ 'type': 'paragraph' },
+				['a', [ { 'type': 'textStyle/italic' } ]],
+				['b', [ { 'type': 'textStyle/italic' } ]],
+				['c', [ { 'type': 'textStyle/italic' } ]],
+				{ 'type': '/paragraph' }
+			],
+			'html': '<i>abc</i>'
+		},
+		{
+			'msg': 'Underline text',
+			'data': [
+				{ 'type': 'paragraph' },
+				['a', [ { 'type': 'textStyle/underline' } ]],
+				['b', [ { 'type': 'textStyle/underline' } ]],
+				['c', [ { 'type': 'textStyle/underline' } ]],
+				{ 'type': '/paragraph' }
+			],
+			'html': '<u>abc</u>'
+		},
+		{
+			'msg': 'Strikethrough text',
+			'data': [
+				{ 'type': 'paragraph' },
+				['a', [ { 'type': 'textStyle/strike' } ]],
+				['b', [ { 'type': 'textStyle/strike' } ]],
+				['c', [ { 'type': 'textStyle/strike' } ]],
+				{ 'type': '/paragraph' }
+			],
+			'html': '<s>abc</s>'
+		},
+		{
+			'msg': 'Small text',
+			'data': [
+				{ 'type': 'paragraph' },
+				['a', [ { 'type': 'textStyle/small' } ]],
+				['b', [ { 'type': 'textStyle/small' } ]],
+				['c', [ { 'type': 'textStyle/small' } ]],
+				{ 'type': '/paragraph' }
+			],
+			'html': '<small>abc</small>'
+		},
+		{
+			'msg': 'Big text',
+			'data': [
+				{ 'type': 'paragraph' },
+				['a', [ { 'type': 'textStyle/big' } ]],
+				['b', [ { 'type': 'textStyle/big' } ]],
+				['c', [ { 'type': 'textStyle/big' } ]],
+				{ 'type': '/paragraph' }
+			],
+			'html': '<big>abc</big>'
+		},
+		{
+			'msg': 'Strong text',
+			'data': [
+				{ 'type': 'paragraph' },
+				['a', [ { 'type': 'textStyle/strong' } ]],
+				['b', [ { 'type': 'textStyle/strong' } ]],
+				['c', [ { 'type': 'textStyle/strong' } ]],
+				{ 'type': '/paragraph' }
+			],
+			'html': '<strong>abc</strong>'
+		},
+		{
+			'msg': 'Emphasized text',
+			'data': [
+				{ 'type': 'paragraph' },
+				['a', [ { 'type': 'textStyle/emphasize' } ]],
+				['b', [ { 'type': 'textStyle/emphasize' } ]],
+				['c', [ { 'type': 'textStyle/emphasize' } ]],
+				{ 'type': '/paragraph' }
+			],
+			'html': '<em>abc</em>'
+		},
+		{
+			'msg': 'Superscript text',
+			'data': [
+				{ 'type': 'paragraph' },
+				['a', [ { 'type': 'textStyle/superScript' } ]],
+				['b', [ { 'type': 'textStyle/superScript' } ]],
+				['c', [ { 'type': 'textStyle/superScript' } ]],
+				{ 'type': '/paragraph' }
+			],
+			'html': '<sup>abc</sup>'
+		},
+		{
+			'msg': 'Subscript text',
+			'data': [
+				{ 'type': 'paragraph' },
+				['a', [ { 'type': 'textStyle/subScript' } ]],
+				['b', [ { 'type': 'textStyle/subScript' } ]],
+				['c', [ { 'type': 'textStyle/subScript' } ]],
+				{ 'type': '/paragraph' }
+			],
+			'html': '<sub>abc</sub>'
+		},
+		{
+			'msg': 'Code text',
+			'data': [
+				{ 'type': 'paragraph' },
+				['a', [ { 'type': 'textStyle/code' } ]],
+				['b', [ { 'type': 'textStyle/code' } ]],
+				['c', [ { 'type': 'textStyle/code' } ]],
+				{ 'type': '/paragraph' }
+			],
+			'html': '<code>abc</code>'
+		},
+		{
 			'msg': 'Bold character, plain character, italic character',
 			'data': [
 				{ 'type': 'paragraph' },

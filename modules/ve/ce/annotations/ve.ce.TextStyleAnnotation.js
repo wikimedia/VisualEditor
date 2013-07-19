@@ -222,3 +222,20 @@ ve.inheritClass( ve.ce.TextStyleSubScriptAnnotation, ve.ce.TextStyleAnnotation )
 ve.ce.TextStyleSubScriptAnnotation.static.name = 'textStyle/subScript';
 ve.ce.TextStyleSubScriptAnnotation.static.tagName = 'sub';
 ve.ce.annotationFactory.register( ve.ce.TextStyleSubScriptAnnotation );
+
+/**
+ * ContentEditable code annotation.
+ *
+ * @class
+ * @extends ve.ce.TextStyleAnnotation
+ * @constructor
+ * @param {ve.dm.TextStyleCodeScriptAnnotation} model
+ */
+ve.ce.TextStyleCodeScriptAnnotation = function VeCeTextStyleCodeScriptAnnotation( model, config ) {
+	ve.ce.TextStyleAnnotation.call( this, model, config );
+	this.$.addClass( 've-ce-TextStyleCodeScriptAnnotation' );
+};
+ve.inheritClass( ve.ce.TextStyleCodeScriptAnnotation, ve.ce.TextStyleAnnotation );
+ve.ce.TextStyleCodeScriptAnnotation.static.name = 'textStyle/code';
+ve.ce.TextStyleCodeScriptAnnotation.static.tagName = 'code';
+ve.ce.annotationFactory.register( ve.ce.TextStyleCodeScriptAnnotation );
