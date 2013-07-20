@@ -62,12 +62,7 @@ class VisualEditorHooks {
 			!$skin->getTitle()->isRedirect() &&
 
 			// User has the 'visualeditor-enable' preference set
-			$skin->getUser()->getOption(
-				'visualeditor-enable',
-				/*default=*/ false,
-				// HACK: Allows us to suppress the option in preferences when it's on for all.
-				/*ignoreHidden=*/ true
-			) &&
+			$skin->getUser()->getOption( 'visualeditor-enable' ) &&
 
 			// The user's current skin is supported
 			in_array( $skin->getSkinName(), self::$supportedSkins ) &&
