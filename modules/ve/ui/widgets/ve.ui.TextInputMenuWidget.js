@@ -96,6 +96,13 @@ ve.ui.TextInputMenuWidget.prototype.position = function () {
 		);
 		dimensions.left += frameOffset.left;
 		dimensions.top += frameOffset.top;
+	} else {
+		// Fix for RTL (for some reason, no need to fix if the frameoffset is set)
+		if ( this.$.css( 'direction' ) === 'rtl' ) {
+			dimensions.right = this.$.parent().position().left - dimensions.width - dimensions.left;
+			// Erase the value for 'left':
+			delete dimensions.left;
+		}
 	}
 
 	this.$.css( dimensions );
