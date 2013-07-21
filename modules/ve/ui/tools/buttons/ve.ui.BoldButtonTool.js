@@ -33,11 +33,20 @@ ve.ui.BoldButtonTool.static.icon = {
 	'cs': 'bold-b',
 	'da': 'bold-f',
 	'de': 'bold-f',
+	'es': 'bold-n',
+	'eu': 'bold-l',
+	'fr': 'bold-g',
+	'gl': 'bold-n',
 	'he': 'bold-b',
+	'hu': 'bold-f',
+	'it': 'bold-g',
 	'ml': 'bold-b',
+	'nl': 'bold-v',
 	'nn': 'bold-f',
 	'no': 'bold-f',
 	'pl': 'bold-b',
+	'pt': 'bold-n',
+	'pt-br': 'bold-n',
 	'sv': 'bold-f'
 };
 
