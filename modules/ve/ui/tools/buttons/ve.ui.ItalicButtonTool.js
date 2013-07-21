@@ -40,13 +40,17 @@ ve.ui.ItalicButtonTool.static.icon = {
 	'he': 'italic-i',
 	'hu': 'italic-d',
 	'it': 'italic-c',
+	'ka': 'italic-geor-kan',
+	'ky': 'italic-cyrl-ka',
 	'ml': 'italic-i',
 	'nl': 'italic-c',
 	'nn': 'italic-k',
 	'no': 'italic-k',
+	'os': 'italic-cyrl-ka',
 	'pl': 'italic-i',
 	'pt': 'italic-i',
 	'pt-br': 'italic-i',
+	'ru': 'italic-cyrl-ka',
 	'sv': 'italic-k'
 };
 
