@@ -266,8 +266,8 @@ ve.ui.Context.prototype.updateDimensions = function ( transition ) {
 			focusableWidth = focusedNode.$focusable.outerWidth();
 			$container = this.$menu;
 			position = { 'y': focusableOffset.top };
-			// HACK: Proper RTL detection plz!
-			if ( $( 'body' ).is( '.rtl,.ve-rtl' ) ) {
+			// RTL check for Page-level (CE)
+			if ( this.surface.view.getDir() === 'rtl' ) {
 				position.x = focusableOffset.left;
 				this.popup.align = 'left';
 			} else {
@@ -278,7 +278,12 @@ ve.ui.Context.prototype.updateDimensions = function ( transition ) {
 			$container = inspector ? this.inspectors.$ : this.$menu;
 			this.popup.align = 'center';
 		}
-		this.$.css( { 'left': position.x, 'top': position.y } );
+		// Flip left with right if CE is RTL
+		if ( this.surface.view.getDir() === 'rtl' ) {
+			this.$.css( { 'right': position.x, 'top': position.y } );
+		} else {
+			this.$.css( { 'left': position.x, 'top': position.y } );
+		}
 		this.popup.display(
 			position.x,
 			position.y,
