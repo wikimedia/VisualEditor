@@ -121,8 +121,9 @@ class VisualEditorHooks {
 	 * Adds extra variables to the global config
 	 */
 	public static function onResourceLoaderGetConfigVars( array &$vars ) {
-		global $wgVisualEditorEnableExperimentalCode, $wgVisualEditorEnableEventLogging,
-			$wgVisualEditorTabLayout, $wgVisualEditorDisableForAnons, $wgVisualEditorNamespaces;
+		global $wgVisualEditorEnableEventLogging, $wgVisualEditorPluginModules,
+			$wgVisualEditorEnableExperimentalCode, $wgVisualEditorTabLayout,
+			$wgVisualEditorDisableForAnons, $wgVisualEditorNamespaces;
 
 		$vars['wgVisualEditorConfig'] = array(
 			'enableExperimentalCode' => $wgVisualEditorEnableExperimentalCode,
@@ -131,6 +132,7 @@ class VisualEditorHooks {
 			'disableForAnons' => $wgVisualEditorDisableForAnons,
 			'namespaces' => $wgVisualEditorNamespaces,
 			'skins' => self::$supportedSkins,
+			'pluginModules' => $wgVisualEditorPluginModules,
 		);
 
 		return true;
