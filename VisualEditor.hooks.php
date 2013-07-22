@@ -67,12 +67,8 @@ class VisualEditorHooks {
 			// The user's current skin is supported
 			in_array( $skin->getSkinName(), self::$supportedSkins ) &&
 
-			(
-				// Article in the VisualEditor namespace
-				in_array( $skin->getTitle()->getNamespace(), $wgVisualEditorNamespaces ) ||
-				// Special page action for an article in the VisualEditor namespace
-				in_array( $skin->getRelevantTitle()->getNamespace(), $wgVisualEditorNamespaces )
-			) &&
+			// The current page is in a VisualEditor-enabled namespace
+			in_array( $skin->getRelevantTitle()->getNamespace(), $wgVisualEditorNamespaces ) &&
 
 			// Only use VisualEditor if the page is wikitext, not CSS/JS
 			$skin->getTitle()->getContentModel() === CONTENT_MODEL_WIKITEXT
