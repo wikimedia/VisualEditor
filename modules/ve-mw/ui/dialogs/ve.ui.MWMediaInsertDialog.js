@@ -68,7 +68,7 @@ ve.ui.MWMediaInsertDialog.prototype.onClose = function ( action ) {
 				'type': 'mwBlockImage',
 				'attributes': {
 					'type': 'thumb',
-					'align': 'right',
+					'align': 'default',
 					//'href': info.descriptionurl,
 					'href': './' + this.item.title,
 					'src': info.thumburl,
