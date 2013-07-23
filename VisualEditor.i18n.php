@@ -175,6 +175,7 @@ $messages['en'] = array(
  * @author Jdforrester
  * @author Lloffiwr
  * @author Mooeypoo
+ * @author Mormegil
  * @author Nike
  * @author Purodha
  * @author Raymond
@@ -221,7 +222,8 @@ See also:
 	'visualeditor-aliennode-tooltip' => 'Tooltip for items that VisualEditor cannot edit',
 	'visualeditor-annotationbutton-bold-tooltip' => 'Tooltip text for bold button',
 	'visualeditor-annotationbutton-italic-tooltip' => 'Tooltip text for italic button',
-	'visualeditor-annotationbutton-link-tooltip' => 'Tooltip text for link button',
+	'visualeditor-annotationbutton-link-tooltip' => 'Tooltip text for link button.
+{{Identical|Link}}',
 	'visualeditor-beta-label' => 'Text of tool in the toolbar that highlights that VisualEditor is still in beta.
 {{Identical|Beta}}',
 	'visualeditor-beta-warning' => "Note shown when user clicks on 'beta' label in VisualEditor, warning users that the software may have issues",
@@ -433,7 +435,7 @@ Links are in {{msg-mw|Visualeditor-mainnamespacepagelink}} and {{msg-mw|visualed
 See also:
 * {{msg-mw|visualeditor-dialog-meta-languages-readonlynote}}',
 	'visualeditor-savedialog-error-badtoken' => 'Error displayed in the save dialog if saving the edit failed due to an invalid edit token (likely due to the user having logged out in a separate window, or logged in again)',
-	'visualeditor-savedialog-identify-anon' => 'Displayed in the save dialog if saving failed because the session expired and the session is now an anonymous user. Warning about IP address being recorded is based on {{mw-msg|anoneditwarning}}
+	'visualeditor-savedialog-identify-anon' => 'Displayed in the save dialog if saving failed because the session expired and the session is now an anonymous user. Warning about IP address being recorded is based on {{msg-mw|anoneditwarning}}.
 
 {{format|jquerymsg}}',
 	'visualeditor-savedialog-identify-user' => 'Displayed in the save dialog if saving failed because the session expired and the session is now for a different user account.
@@ -951,12 +953,13 @@ $messages['ay'] = array(
 
 /** Bashkir (башҡортса)
  * @author AiseluRB
+ * @author Amire80
  * @author Haqmar
  * @author Рустам Нурыев
  */
 $messages['ba'] = array(
-	'guidedtour-tour-vegendersurvey-description' => 'Тикшеренеүҙә ҡатнашып Һеҙ был мәғлүмәтте Викимедиа Фондына  АҠШта һәм башҡа урында ҡулланырға ризалыҡ бирәһегеҙ. 
-Мәғлүмәт тик эске тикшеренеү мәнфәғәтендә йыйыла һәм Һеҙҙең аккаунт тураһындағы шәхси мәғлүмәт асылмаясаҡ. 
+	'guidedtour-tour-vegendersurvey-description' => 'Тикшеренеүҙә ҡатнашып Һеҙ был мәғлүмәтте Викимедиа Фондына  АҠШта һәм башҡа урында ҡулланырға ризалыҡ бирәһегеҙ.
+Мәғлүмәт тик эске тикшеренеү мәнфәғәтендә йыйыла һәм Һеҙҙең аккаунт тураһындағы шәхси мәғлүмәт асылмаясаҡ.
 Шуға ҡарамаҫтан, был тикшеренеү һөҙөмтәләрен аноним һәм дөйөмләштерелгән рәүештә тарата алабыҙ.',
 	'guidedtour-tour-vegendersurvey-female' => 'Ҡатын-ҡыҙ',
 	'guidedtour-tour-vegendersurvey-male' => 'Ир-егет',
@@ -1803,7 +1806,14 @@ $messages['ca'] = array(
  * @author Умар
  */
 $messages['ce'] = array(
+	'tag-visualeditor' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|Визуальни тадарш дерг]]',
+	'tag-visualeditor-description' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|Визуальни тадарш]] дечунна гӀонца дина нисдарш',
+	'tag-visualeditor-needcheck' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|Визуальни тадарш дерг]]: хьажа',
+	'tag-visualeditor-needcheck-description' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|Визуальни тадарш дечун]] гӀонца дина нисдар, цунна чохь ситемин карина нийса боцу вики-йозан хийцамаш.',
 	'visualeditor-ca-createsource' => 'Кхолла хьост',
+	'visualeditor-ca-ve-create' => 'Визуальни тадарш дерг',
+	'visualeditor-ca-ve-edit' => 'Визуальни тадарш дерг',
+	'visualeditor-descriptionpagelink' => 'Project:Визуальни тадарш дерг',
 	'visualeditor-dialog-action-cancel' => 'Цаоьшу',
 	'visualeditor-dialog-meta-languages-label' => 'Меттанаш',
 	'visualeditor-dialog-meta-languages-section' => 'Меттанаш',
@@ -1957,7 +1967,7 @@ $messages['cs'] = array(
 	'visualeditor-annotationbutton-italic-tooltip' => 'Kurzíva',
 	'visualeditor-annotationbutton-link-tooltip' => 'Odkaz',
 	'visualeditor-beta-label' => 'beta',
-	'visualeditor-beta-warning' => 'VisualEditor je zatím v „betaverzi“ a nemusí vás zatím nechat editovat všechno.', # Fuzzy
+	'visualeditor-beta-warning' => 'VisualEditor je v „betaverzi“. Můžete narazit na softwarové problémy a nemusíte být schopni některé části stránky editovat. Kliknutím na „Editovat zdroj“ můžete přepnout na režim zdrojového wikitextu – neuložené změny budou ztraceny.',
 	'visualeditor-browserwarning' => 'Používáte prohlížeč, který není VisualEditorem oficiálně podporován.',
 	'visualeditor-ca-createsource' => 'Založit zdroj',
 	'visualeditor-ca-editsource' => 'Editovat zdroj',
@@ -1970,6 +1980,7 @@ $messages['cs'] = array(
 	'visualeditor-dialog-action-apply' => 'Použít změny',
 	'visualeditor-dialog-action-cancel' => 'Storno',
 	'visualeditor-dialog-action-close' => 'Zavřít',
+	'visualeditor-dialog-action-goback' => 'Zpět',
 	'visualeditor-dialog-media-content-section' => 'Titulek',
 	'visualeditor-dialog-media-insert-button' => 'Vložit média',
 	'visualeditor-dialog-media-insert-title' => 'Vložit média',
@@ -1996,6 +2007,7 @@ $messages['cs'] = array(
 	'visualeditor-dialog-reference-options-name-label' => 'Znovupoužívat pod tímto názvem',
 	'visualeditor-dialog-reference-options-section' => 'Možnosti',
 	'visualeditor-dialog-reference-title' => 'Reference',
+	'visualeditor-dialog-reference-useexisting-label' => 'Použít existující referenci',
 	'visualeditor-dialog-referencelist-title' => 'Seznam referencí',
 	'visualeditor-dialog-transclusion-add-content' => 'Přidat obsah',
 	'visualeditor-dialog-transclusion-add-param' => 'Přidat parametr',
@@ -2034,7 +2046,7 @@ $messages['cs'] = array(
 	'visualeditor-formatdropdown-format-paragraph' => 'Odstavec',
 	'visualeditor-formatdropdown-format-preformatted' => 'Předformátovaný',
 	'visualeditor-formatdropdown-title' => 'Změnit formát',
-	'visualeditor-help-label' => 'Uživatelská příručka', # Fuzzy
+	'visualeditor-help-label' => 'Přečtěte si uživatelskou příručku',
 	'visualeditor-help-title' => 'Uživatelská příručka k používání editoru',
 	'visualeditor-historybutton-redo-tooltip' => 'Znovu',
 	'visualeditor-historybutton-undo-tooltip' => 'Zpět',
@@ -2068,7 +2080,9 @@ $messages['cs'] = array(
 	'visualeditor-reference-input-placeholder' => 'Jakou chcete vložit referenci?',
 	'visualeditor-referencelist-isempty' => 'Na této stránce neexistuje žádná reference ve skupině „$1“.',
 	'visualeditor-referencelist-missingref' => 'Tato reference je definována v šabloně nebo jiné generované části textu a zatím ji lze editovat jen v režimu zdrojového textu.',
-	'visualeditor-savedialog-error-badtoken' => 'Vaši editaci jsme nemohli zpracovat, protože vypršela vaše relace.', # Fuzzy
+	'visualeditor-savedialog-error-badtoken' => 'Vaši editaci jsme nemohli zpracovat, protože vypršela vaše relace.',
+	'visualeditor-savedialog-identify-anon' => 'Chcete stránku uložit jako anonymní uživatel? Vaše IP adresa bude zveřejněna v historii této stránky.',
+	'visualeditor-savedialog-identify-user' => 'Nyní jste {{GENDER:|přihlášen|přihlášena}} jako [[User:$1|$1]]. Pokud tuto editaci uložíte, bude přiřazena tomuto účtu.',
 	'visualeditor-savedialog-label-create' => 'Vytvořit stránku',
 	'visualeditor-savedialog-label-error' => 'Chyba',
 	'visualeditor-savedialog-label-report' => 'Nahlásit problém',
@@ -2089,6 +2103,9 @@ $messages['cs'] = array(
 	'visualeditor-toolbar-savedialog' => 'Uložit stránku',
 	'visualeditor-usernamespacepagelink' => 'Project:Jmenný prostor Uživatel',
 	'visualeditor-viewpage-savewarning' => 'Opravdu se chcete vrátit k režimu zobrazení bez uložení?',
+	'visualeditor-wikitext-warning' => 'Používáte VisualEditor – [[{{MediaWiki:Visualeditor-wikitext-warning-link}}|wikitext]] zde nefunguje. Kliknutím na „{{MediaWiki:Visualeditor-ca-editsource}}“ můžete stránku editovat v režimu wikitextu – neuložené změny budou ztraceny.',
+	'visualeditor-wikitext-warning-link' => 'Help:Wikitext',
+	'visualeditor-wikitext-warning-title' => 'Detekována syntaxe wikitextu',
 	'visualeditor-window-title' => 'Zkontrolovat',
 );
 
@@ -2096,9 +2113,48 @@ $messages['cs'] = array(
  * @author ОйЛ
  */
 $messages['cu'] = array(
+	'guidedtour-tour-vegendersurvey-female' => 'жєна',
+	'guidedtour-tour-vegendersurvey-male' => 'мѫжъ',
+	'guidedtour-tour-vegendersurvey-optout' => 'сѥ каꙁати нє бѫдѫ',
+	'guidedtour-tour-vegendersurvey-title' => 'твои полъ с҄ьдє оукажи',
+	'tooltip-ca-createsource' => 'си страницѧ источьна обраꙁа сътворѥниѥ',
+	'tooltip-ca-editsource' => 'си страницѧ источьна обраꙁа исправлѥниѥ',
+	'visualeditor-annotationbutton-link-tooltip' => 'съвѧꙁь',
+	'visualeditor-beta-label' => 'вита',
+	'visualeditor-ca-editsource' => 'исправи источьнъ обраꙁъ',
+	'visualeditor-ca-editsource-section' => 'исправи источьнъ обраꙁъ',
+	'visualeditor-dialog-action-close' => 'ꙁакрꙑи',
+	'visualeditor-dialog-media-title' => 'срѣдьствъ строи',
+	'visualeditor-dialog-meta-categories-category' => 'катигорїꙗ',
+	'visualeditor-dialog-meta-categories-data-label' => 'катигорїѩ',
+	'visualeditor-dialog-meta-categories-input-newcategorylabel' => 'нова катигорїꙗ',
+	'visualeditor-dialog-meta-categories-input-placeholder' => 'катигорїѩ доложєниѥ',
+	'visualeditor-dialog-meta-categories-section' => 'катигорїѩ',
+	'visualeditor-dialog-meta-languages-code-label' => 'ѩꙁꙑчьнъ кодъ',
 	'visualeditor-dialog-meta-languages-label' => 'ѩꙁꙑци',
 	'visualeditor-dialog-meta-languages-section' => 'ѩꙁꙑци',
+	'visualeditor-dialog-meta-title' => 'страницѧ строи',
+	'visualeditor-dialog-transclusion-placeholder' => 'новъ обраꙁьць',
+	'visualeditor-dialogbutton-media-tooltip' => 'срѣдьства',
+	'visualeditor-dialogbutton-meta-tooltip' => 'страницѧ строи',
+	'visualeditor-editsummary' => 'чьто жє иꙁмѣнєно бѣ с҄ьдє напьши',
+	'visualeditor-formatdropdown-format-mw-heading1' => 'страницѧ имѧ',
+	'visualeditor-formatdropdown-format-paragraph' => 'параграфъ',
+	'visualeditor-inspector-close-tooltip' => 'ꙁакрꙑи',
+	'visualeditor-linkinspector-suggest-external-link' => 'вънѣщьнꙗ съвѧꙁь',
+	'visualeditor-linkinspector-suggest-new-page' => 'нова страница',
+	'visualeditor-linkinspector-title' => 'ѷпєрсъвѧꙁь',
+	'visualeditor-mainnamespacepagelink' => 'Project:Главьнъ имєнъ просторъ',
+	'visualeditor-meta-tool' => 'страницѧ строи',
+	'visualeditor-mwmathinspector-title' => 'LaTeX',
+	'visualeditor-notification-saved' => 'твоꙗ мѣнꙑ страницѧ ⁖ $1 ⁖ съхранѥнꙑ сѫтъ',
+	'visualeditor-savedialog-identify-user' => 'Твоѥ польꙃєватєльско имѧ [[User:$1|$1]] ѥстъ ⁙ Ащє мѣноу съхраниши · онажє въ твоꙗ польꙃєватєльскꙑ дѣꙗниꙗ вънєсєна бѫдєтъ',
+	'visualeditor-savedialog-label-create' => 'cъꙁижди страницѧ',
 	'visualeditor-savedialog-label-error' => 'блаꙁна',
+	'visualeditor-savedialog-label-save' => 'съхранѥниѥ',
+	'visualeditor-savedialog-title-save' => 'твоѩ мѣнъ съхранѥниѥ',
+	'visualeditor-toolbar-savedialog' => 'съхранѥниѥ',
+	'visualeditor-usernamespacepagelink' => 'Project:Польꙃєватєльскъ имєнъ просторъ',
 );
 
 /** Welsh (Cymraeg)
@@ -2365,6 +2421,8 @@ $messages['da'] = array(
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Formindsk indrykningen',
 	'visualeditor-inspector-close-tooltip' => 'Luk',
 	'visualeditor-inspector-remove-tooltip' => 'Fjern',
+	'visualeditor-languageinspector-block-tooltip' => 'Sprogblokering: $1$2',
+	'visualeditor-languageinspector-block-tooltip-rtldirection' => ': Højre mod venstre',
 	'visualeditor-linkinspector-suggest-external-link' => 'Ekstern henvisning',
 	'visualeditor-linkinspector-suggest-matching-page' => 'Matchende side',
 	'visualeditor-linkinspector-suggest-new-page' => 'Ny side',
@@ -2372,8 +2430,33 @@ $messages['da'] = array(
 	'visualeditor-listbutton-bullet-tooltip' => 'Punktliste',
 	'visualeditor-listbutton-number-tooltip' => 'Nummereret liste',
 	'visualeditor-loadwarning' => 'Fejl under indlæsning af data fra serveren: $1. Vil du gerne prøve igen?',
+	'visualeditor-loadwarning-token' => 'Fejl under indlæsning af data fra serveren: $1. Vil du gerne prøve igen?',
+	'visualeditor-mainnamespacepagelink' => 'Project:Artikelnavnerummet',
+	'visualeditor-media-input-placeholder' => 'Søg efter medier',
 	'visualeditor-meta-tool' => 'Sideindstillinger',
+	'visualeditor-mwmathinspector-title' => 'LaTeX',
+	'visualeditor-notification-created' => '$1 er blevet oprettet.',
+	'visualeditor-notification-restored' => '$1 er blevet gendannet.',
+	'visualeditor-notification-saved' => 'Dine ændringer i $1 er blevet gemt.',
+	'visualeditor-outline-control-move-down' => 'Flyt ned',
+	'visualeditor-outline-control-move-up' => 'Flyt op',
+	'visualeditor-parameter-input-placeholder' => 'Parameternavn',
+	'visualeditor-parameter-search-no-unused' => 'Ingen ubrugte parametre',
+	'visualeditor-parameter-search-unknown' => 'Ukendt parameter',
+	'visualeditor-preference-enable' => 'Aktiverer VisualEditor (kun i [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|artikel]] og [[{{MediaWiki:Visualeditor-usernamespacepagelink}}|bruger]] navneområderne)',
 	'visualeditor-reference-input-placeholder' => 'Hvad vil du henvise til?',
+	'visualeditor-referencelist-isempty' => 'Der er ingen referencer med gruppen "$1" på denne side.',
+	'visualeditor-referencelist-missingref' => 'Denne reference er defineret i en skabelon eller en anden genereret blok, og kan foreløbig kun redigeres i kildekode tilstand.',
+	'visualeditor-savedialog-error-badtoken' => 'Vi kunne ikke behandle din redigering, fordi sessionen ikke længere er gyldig.',
+	'visualeditor-savedialog-identify-anon' => 'Vil du gemme siden som en anonym bruger i stedet? Din IP adresse vil blive registreret i denne sides versionshistorik.',
+	'visualeditor-savedialog-identify-user' => 'Du er nu logget på som [[User:$1|$1]]. Din redigering vil blive forbundet med denne konto, hvis du gemmer denne redigering.',
+	'visualeditor-savedialog-label-create' => 'Opret side',
+	'visualeditor-savedialog-label-error' => 'Fejl',
+	'visualeditor-savedialog-label-report' => 'Rapporter problem',
+	'visualeditor-savedialog-label-resolve-conflict' => 'Løs redigeringskonflikt',
+	'visualeditor-savedialog-label-restore' => 'Gendan side',
+	'visualeditor-savedialog-label-review' => 'Gennemse dine ændringer',
+	'visualeditor-savedialog-label-review-good' => 'Tilbage til gemmeformularen',
 	'visualeditor-savedialog-label-save' => 'Gem side',
 	'visualeditor-savedialog-label-warning' => 'Advarsel',
 	'visualeditor-savedialog-title-conflict' => 'Konflikt',
@@ -2385,6 +2468,10 @@ $messages['da'] = array(
 	'visualeditor-serializeerror' => 'Fejl ved indlæsning af data fra server: $1.',
 	'visualeditor-toolbar-cancel' => 'Annuller',
 	'visualeditor-toolbar-savedialog' => 'Gem side',
+	'visualeditor-usernamespacepagelink' => 'Project:Brugernavnerummet',
+	'visualeditor-viewpage-savewarning' => 'Er du sikker på du ønsker at gå forlade editoren uden at gemme først?',
+	'visualeditor-wikitext-warning' => 'Du bruger VisualEditor - [[{{MediaWiki:Visualeditor-wikitext-warning-link}}|wikitext]] virker ikke her. Klik på "{{MediaWiki:Visualeditor-ca-editsource}}"  for at redigere siden i wikitext tilstand – ændringer der ikke er gemt vil gå tabt.',
+	'visualeditor-wikitext-warning-link' => 'Help:Wikitext',
 	'visualeditor-wikitext-warning-title' => 'Wikitext markup opdaget',
 	'visualeditor-window-title' => 'Inspicer',
 );
@@ -6501,7 +6588,7 @@ $messages['ml'] = array(
 	'visualeditor-annotationbutton-italic-tooltip' => 'ചെരിച്ച്',
 	'visualeditor-annotationbutton-link-tooltip' => 'കണ്ണി',
 	'visualeditor-beta-label' => 'ബീറ്റ',
-	'visualeditor-beta-warning' => "കണ്ടുതിരുത്തൽ സൗകര്യം 'ബീറ്റ' ആണ്, അതിനാൽ എല്ലാം തിരുത്താൻ കഴിഞ്ഞെന്ന് വരില്ല.", # Fuzzy
+	'visualeditor-beta-warning' => 'കണ്ടുതിരുത്തൽ സൗകര്യം \'ബീറ്റ\' ആണ്. താങ്കൾക്ക് സോഫ്റ്റ്‌വേർ പ്രശ്നങ്ങൾ നേരിട്ടേക്കാം ഒപ്പം താളിലെ എല്ലാം തിരുത്താൻ കഴിഞ്ഞെന്ന് വരികയുമില്ല. "അടിസ്ഥാനരൂപം തിരുത്തുക" എന്നത് ഞെക്കി വിക്കിഎഴുത്ത് തിരുത്തൽ സൗകര്യം തിരിച്ച് കൊണ്ടുവരാവുന്നതാണ് - സേവ് ചെയ്യാത്ത മാറ്റങ്ങൾ അപ്പോൾ നഷ്ടപ്പെടുന്നതാണ്.',
 	'visualeditor-browserwarning' => 'കണ്ടുതിരുത്തൽ സൗകര്യം ഔദ്യോഗികമായി പിന്തുണയ്ക്കാത്ത ബ്രൗസർ ആണ് താങ്കൾ ഉപയോഗിച്ചുകൊണ്ടിരിക്കുന്നത്.',
 	'visualeditor-ca-createsource' => 'സ്രോതസ്സ് സൃഷ്ടിക്കുക',
 	'visualeditor-ca-editsource' => 'അടിസ്ഥാനരൂപം തിരുത്തുക',
@@ -6514,6 +6601,7 @@ $messages['ml'] = array(
 	'visualeditor-dialog-action-apply' => 'മാറ്റങ്ങൾ ബാധകമാക്കുക',
 	'visualeditor-dialog-action-cancel' => 'റദ്ദാക്കുക',
 	'visualeditor-dialog-action-close' => 'അടയ്ക്കുക',
+	'visualeditor-dialog-action-goback' => 'പഴയ താളിലേയ്ക്ക് മടങ്ങുക',
 	'visualeditor-dialog-media-content-section' => 'തലവാചകം',
 	'visualeditor-dialog-media-insert-button' => 'മീഡിയ ചേർക്കുക',
 	'visualeditor-dialog-media-insert-title' => 'മീഡിയ ചേർക്കുക',
@@ -6540,6 +6628,7 @@ $messages['ml'] = array(
 	'visualeditor-dialog-reference-options-name-label' => 'ഈ പേര് പുനരുപയോഗിക്കുക',
 	'visualeditor-dialog-reference-options-section' => 'ഐച്ഛികങ്ങൾ',
 	'visualeditor-dialog-reference-title' => 'അവലംബം',
+	'visualeditor-dialog-reference-useexisting-label' => 'നിലവിൽ ഉപയോഗിക്കുന്ന അവലംബം ഉപയോഗിക്കുക',
 	'visualeditor-dialog-referencelist-title' => 'അവലംബങ്ങളുടെ പട്ടിക',
 	'visualeditor-dialog-transclusion-add-content' => 'ഉള്ളടക്കം ചേർക്കുക',
 	'visualeditor-dialog-transclusion-add-param' => 'ചരം ചേർക്കുക',
@@ -6578,7 +6667,7 @@ $messages['ml'] = array(
 	'visualeditor-formatdropdown-format-paragraph' => 'ഖണ്ഡിക',
 	'visualeditor-formatdropdown-format-preformatted' => 'മുൻപേ ഘടന നിർണ്ണയിച്ചവ',
 	'visualeditor-formatdropdown-title' => 'തരം മാറ്റുക',
-	'visualeditor-help-label' => 'ഉപയോക്തൃമാർഗ്ഗദർശി', # Fuzzy
+	'visualeditor-help-label' => 'ഉപയോക്തൃ മാർഗ്ഗദർശി വായിക്കുക',
 	'visualeditor-help-title' => 'തിരുത്തലുപാധി എങ്ങനെ ഉപയോഗിക്കണം എന്നതിനു ഉപയോക്താക്കൾക്കുള്ള മാർഗ്ഗനിർദ്ദേശകക്കുറിപ്പ്',
 	'visualeditor-historybutton-redo-tooltip' => 'വീണ്ടും ചെയ്യുക',
 	'visualeditor-historybutton-undo-tooltip' => 'തിരസ്കരിക്കുക',
@@ -6612,7 +6701,9 @@ $messages['ml'] = array(
 	'visualeditor-reference-input-placeholder' => 'എന്താണ് താങ്കൾക്ക് അവലംബമായി ചേർക്കേണ്ടത്?',
 	'visualeditor-referencelist-isempty' => 'ഈ താളിൽ, "$1" എന്ന ഗണത്തിൽ അവലംബങ്ങൾ ഒന്നുമില്ല.',
 	'visualeditor-referencelist-missingref' => 'ഈ അവലംബം ഫലകം ഉപയോഗിച്ചോ മറ്റേതെങ്കിലും ഘടകമുപയോഗിച്ചോ ആണ് ചേർത്തിരിക്കുന്നത്, അതിനാലിത് ഇപ്പോൾ അടിസ്ഥാനരൂപത്തിൽ മാത്രമേ തിരുത്താനാവൂ.',
-	'visualeditor-savedialog-error-badtoken' => 'താങ്കളുടെ സെഷൻ കാലഹരണപ്പെട്ടതിനാൽ, തിരുത്തൽ സംസ്കരിച്ചെടുക്കാൻ കഴിഞ്ഞില്ല.', # Fuzzy
+	'visualeditor-savedialog-error-badtoken' => 'താങ്കളുടെ സെഷൻ സാധുവല്ലാതായതിനാൽ, തിരുത്തൽ സംസ്കരിച്ചെടുക്കാൻ ഞങ്ങൾക്ക് കഴിഞ്ഞില്ല.',
+	'visualeditor-savedialog-identify-anon' => 'ഈ താൾ ഒരു അജ്ഞാത ഉപയോക്താവായി സേവ് ചെയ്യണമെന്നാണോ താങ്കൾ ആഗ്രഹിക്കുന്നത്? താങ്കളുടെ ഐ.പി. വിലാസം ഈ താളിന്റെ തിരുത്തൽ നാൾവഴിയിൽ ശേഖരിക്കപ്പെടുന്നതാണ്.',
+	'visualeditor-savedialog-identify-user' => 'താങ്കൾ ഇപ്പോൾ [[User:$1|$1]] എന്ന പേരിൽ ലോഗിൻ ചെയ്തിരിക്കുന്നു. താങ്കളുടെ തിരുത്തലുകൾ സേവ് ചെയ്യുകയാണെങ്കിൽ ഈ അംഗത്വവുമായി ചേർക്കപ്പെടും.',
 	'visualeditor-savedialog-label-create' => 'താൾ സൃഷ്ടിക്കുക',
 	'visualeditor-savedialog-label-error' => 'പിഴവ്',
 	'visualeditor-savedialog-label-report' => 'പ്രശ്നമറിയിക്കുക',
@@ -7905,12 +7996,16 @@ $messages['pms'] = array(
 	'tag-visualeditor-needcheck' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor: Da verifiché]]',
 	'tag-visualeditor-needcheck-description' => "Modìfica fàita an dovrand [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]] andoa ël sistema a l'ha trovà che miraco ël wikitest a conten dle modìfiche nen vorsùe.",
 	'tooltip-ca-createsource' => 'Creé ël còdes sorgiss ëd costa pàgina',
+	'tooltip-ca-editsource' => 'Modifiché ël còdes sorgiss ëd sa pàgina',
 	'tooltip-ca-ve-edit' => 'Modifiché sta pàgina con VisualEditor',
 	'visualeditor' => 'Editor Visual',
-	'visualeditor-aliennode-tooltip' => "An dëspias, st'element a peul pa esse modificà an dovrand ël VisualEditor", # Fuzzy
-	'visualeditor-annotationbutton-bold-tooltip' => 'Grassèt', # Fuzzy
-	'visualeditor-annotationbutton-italic-tooltip' => 'Corsiv', # Fuzzy
-	'visualeditor-annotationbutton-link-tooltip' => 'Anliura', # Fuzzy
+	'visualeditor-aliennode-tooltip' => "An dëspias, st'element a peul mach esse modificà an manera sorgiss, për ël moment",
+	'visualeditor-annotationbutton-bold-tooltip' => 'Grassèt',
+	'visualeditor-annotationbutton-italic-tooltip' => 'Corsiv',
+	'visualeditor-annotationbutton-link-tooltip' => 'Anliura',
+	'visualeditor-beta-label' => 'beta',
+	'visualeditor-beta-warning' => "L'Editor visual a l'é an në stadi 'beta'. A podrìa avèj dij problema con ël programa e a podrìa podèj pa modifiché dle part ëd la pàgina. Ch'a sgnaca su «Modifiché la sorgiss» për passé a la manera wikitest - le modìfiche nen salvà a saran përdùe.",
+	'visualeditor-browserwarning' => "Chiel a deuvra un navigador ch'a l'é nen mantnù ëd fasson ofissial da l'Editor visual.",
 	'visualeditor-ca-editsource' => 'Modifiché la sorgiss',
 	'visualeditor-ca-ve-create' => 'Editor Visual',
 	'visualeditor-ca-ve-edit' => 'Editor Visual',
@@ -8490,6 +8585,7 @@ $messages['roa-tara'] = array(
  * @author Niklem
  * @author Ole Yves
  * @author Putnik
+ * @author Sunpriat
  * @author Yury Katkov
  */
 $messages['ru'] = array(
@@ -8507,7 +8603,7 @@ $messages['ru'] = array(
 	'tooltip-ca-ve-edit' => 'Редактировать данную страницу с помощью визуального редактора',
 	'visualeditor' => 'VisualEditor',
 	'visualeditor-aliennode-tooltip' => 'К сожалению, теперь этот элемент можно изменять только в режиме редактирования исходного кода.',
-	'visualeditor-annotationbutton-bold-tooltip' => 'Жирный',
+	'visualeditor-annotationbutton-bold-tooltip' => 'Полужирный',
 	'visualeditor-annotationbutton-italic-tooltip' => 'Курсив',
 	'visualeditor-annotationbutton-link-tooltip' => 'Ссылка',
 	'visualeditor-beta-label' => 'бета-версия',
@@ -8526,12 +8622,12 @@ $messages['ru'] = array(
 	'visualeditor-dialog-action-close' => 'Закрыть',
 	'visualeditor-dialog-action-goback' => 'Назад',
 	'visualeditor-dialog-media-content-section' => 'Подпись',
-	'visualeditor-dialog-media-insert-button' => 'Вставить мультимедиа-объект',
-	'visualeditor-dialog-media-insert-title' => 'Вставка мультимедиа-объекта',
-	'visualeditor-dialog-media-title' => 'Параметры мультимедиа',
+	'visualeditor-dialog-media-insert-button' => 'Вставить медиа-файл',
+	'visualeditor-dialog-media-insert-title' => 'Вставка медиа-файла',
+	'visualeditor-dialog-media-title' => 'Параметры медиа-файла',
 	'visualeditor-dialog-meta-categories-category' => 'Категория',
 	'visualeditor-dialog-meta-categories-data-label' => 'Категории',
-	'visualeditor-dialog-meta-categories-defaultsort-label' => 'Сортировать этой страницы по умолчанию как',
+	'visualeditor-dialog-meta-categories-defaultsort-label' => 'Сортировать эту страницу по умолчанию как',
 	'visualeditor-dialog-meta-categories-input-matchingcategorieslabel' => 'Соответствующие категории',
 	'visualeditor-dialog-meta-categories-input-movecategorylabel' => 'Переместить эту категорию сюда',
 	'visualeditor-dialog-meta-categories-input-newcategorylabel' => 'Новая категория',
@@ -8550,9 +8646,9 @@ $messages['ru'] = array(
 	'visualeditor-dialog-reference-options-group-label' => 'Использовать эту группу',
 	'visualeditor-dialog-reference-options-name-label' => 'Повторно использовать под данным именем',
 	'visualeditor-dialog-reference-options-section' => 'Параметры',
-	'visualeditor-dialog-reference-title' => 'Примечания',
+	'visualeditor-dialog-reference-title' => 'Примечание',
 	'visualeditor-dialog-reference-useexisting-label' => 'Использовать существующую сноску',
-	'visualeditor-dialog-referencelist-title' => 'Примечания',
+	'visualeditor-dialog-referencelist-title' => 'Список примечаний',
 	'visualeditor-dialog-transclusion-add-content' => 'Добавить содержание',
 	'visualeditor-dialog-transclusion-add-param' => 'Добавить параметр',
 	'visualeditor-dialog-transclusion-add-template' => 'Добавить шаблон',
@@ -8563,10 +8659,10 @@ $messages['ru'] = array(
 	'visualeditor-dialog-transclusion-remove-param' => 'Удалить параметр',
 	'visualeditor-dialog-transclusion-remove-template' => 'Удалить шаблон',
 	'visualeditor-dialog-transclusion-title' => 'Включение',
-	'visualeditor-dialogbutton-media-tooltip' => 'Мультимедиа',
+	'visualeditor-dialogbutton-media-tooltip' => 'Медиа-файл',
 	'visualeditor-dialogbutton-meta-tooltip' => 'Параметры страницы',
-	'visualeditor-dialogbutton-reference-tooltip' => 'Примечания',
-	'visualeditor-dialogbutton-referencelist-tooltip' => 'Примечания',
+	'visualeditor-dialogbutton-reference-tooltip' => 'Примечание',
+	'visualeditor-dialogbutton-referencelist-tooltip' => 'Список примечаний',
 	'visualeditor-dialogbutton-transclusion-tooltip' => 'Включение',
 	'visualeditor-diff-nochanges' => 'Правки были проигнорированы, потому что вы не внесли никаких изменений в текст.',
 	'visualeditor-differror' => 'Ошибка при загрузке данных с сервера: $1',
@@ -8589,7 +8685,7 @@ $messages['ru'] = array(
 	'visualeditor-formatdropdown-format-mw-heading6' => 'Подзаголовок 4',
 	'visualeditor-formatdropdown-format-paragraph' => 'Абзац',
 	'visualeditor-formatdropdown-format-preformatted' => 'Преформатированный',
-	'visualeditor-formatdropdown-title' => 'Форматирование',
+	'visualeditor-formatdropdown-title' => 'Изменить формат',
 	'visualeditor-help-label' => 'Прочтите руководство',
 	'visualeditor-help-title' => 'Руководство пользователя по использованию редактора',
 	'visualeditor-historybutton-redo-tooltip' => 'Вернуть',
@@ -8618,7 +8714,7 @@ $messages['ru'] = array(
 	'visualeditor-outline-control-move-down' => 'Переместить элемент вниз',
 	'visualeditor-outline-control-move-up' => 'Переместить элемент вверх',
 	'visualeditor-parameter-input-placeholder' => 'Имя параметра',
-	'visualeditor-parameter-search-no-unused' => 'Нет неиспользуемых параметров',
+	'visualeditor-parameter-search-no-unused' => 'Нет неиспользованных параметров',
 	'visualeditor-parameter-search-unknown' => 'Неизвестный параметр',
 	'visualeditor-preference-enable' => 'Включить VisualEditor (только в [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|основном]] и [[{{MediaWiki:Visualeditor-usernamespacepagelink}}|личном]] пространствах имён).',
 	'visualeditor-reference-input-placeholder' => 'На что вы хотите сослаться?',
