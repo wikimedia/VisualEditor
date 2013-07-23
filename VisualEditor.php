@@ -157,6 +157,7 @@ $wgResourceModules += array(
 		'styles' => 've-mw/init/styles/ve.init.mw.ViewPageTarget.init.css',
 		'dependencies' => array(
 			'jquery.client',
+			'mediawiki.Title',
 			'mediawiki.Uri',
 			'mediawiki.util',
 		),
