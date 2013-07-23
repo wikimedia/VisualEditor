@@ -176,9 +176,10 @@ ve.dm.ModelRegistry.prototype.isExtensionSpecificType = function ( type ) {
  *
  * @param {HTMLElement} element Element to match
  * @param {boolean} [forceAboutGrouping] If true, only match models with about grouping enabled
+ * @param {string[]} [excludeTypes] Model names to exclude when matching
  * @returns {string|null} Model type, or null if none found
  */
-ve.dm.ModelRegistry.prototype.matchElement = function ( element, forceAboutGrouping ) {
+ve.dm.ModelRegistry.prototype.matchElement = function ( element, forceAboutGrouping, excludeTypes ) {
 	var i, name, model, matches, winner, types, elementExtSpecificTypes, matchTypes,
 		hasExtSpecificTypes,
 		tag = element.nodeName.toLowerCase(),
@@ -191,6 +192,9 @@ ve.dm.ModelRegistry.prototype.matchElement = function ( element, forceAboutGroup
 	function matchTypeRegExps( type, tag, withFunc ) {
 		var i, j, types, matches = [], models = reg.modelsWithTypeRegExps[+!!withFunc];
 		for ( i = 0; i < models.length; i++ ) {
+			if ( excludeTypes && ve.indexOf( models[i], excludeTypes ) !== -1 ) {
+				continue;
+			}
 			types = reg.registry[models[i]].static.matchRdfaTypes;
 			for ( j = 0; j < types.length; j++ ) {
 				if (
@@ -237,6 +241,9 @@ ve.dm.ModelRegistry.prototype.matchElement = function ( element, forceAboutGroup
 		for ( i = 0; i < types.length; i++ ) {
 			// Queue string matches and regexp matches separately
 			queue = queue.concat( ve.getProp( reg.modelsByTypeAndTag, 1, types[i], tag ) || [] );
+			if ( excludeTypes ) {
+				queue = ve.simpleArrayDifference( queue, excludeTypes );
+			}
 			queue2 = queue2.concat( matchTypeRegExps( types[i], tag, true ) );
 		}
 		if ( mustMatchAll ) {
@@ -274,6 +281,9 @@ ve.dm.ModelRegistry.prototype.matchElement = function ( element, forceAboutGroup
 		for ( i = 0; i < types.length; i++ ) {
 			// Queue string and regexp matches separately
 			queue = queue.concat( ve.getProp( reg.modelsByTypeAndTag, 0, types[i], tag ) || [] );
+			if ( excludeTypes ) {
+				queue = ve.simpleArrayDifference( queue, excludeTypes );
+			}
 			queue2 = queue2.concat( matchTypeRegExps( types[i], tag, false ) );
 		}
 		if ( mustMatchAll ) {

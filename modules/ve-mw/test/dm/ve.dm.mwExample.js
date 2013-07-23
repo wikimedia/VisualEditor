@@ -27,7 +27,12 @@ ve.dm.mwExample.MWTransclusion = {
 	'inlineClose': '</span>',
 	'mixed': '<link about="#mwt1" rel="mw:WikiLink/Category" typeof="mw:Transclusion" data-mw="{&quot;id&quot;:&quot;mwt1&quot;,&quot;target&quot;:{&quot;wt&quot;:&quot;Inline&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;5,678&quot;}}}"><span about="#mwt1">Foo</span>',
 	'pairOne': '<p about="#mwt1" typeof="mw:Transclusion" data-mw="{&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;foo&quot;}}}" data-parsoid="1">foo</p>',
-	'pairTwo': '<p about="#mwt2" typeof="mw:Transclusion" data-mw="{&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;foo&quot;}}}" data-parsoid="2">foo</p>'
+	'pairTwo': '<p about="#mwt2" typeof="mw:Transclusion" data-mw="{&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;foo&quot;}}}" data-parsoid="2">foo</p>',
+	'meta':
+		'<link rel="mw:WikiLink/Category" href="./Category:Page" about="#mwt1" typeof="mw:Transclusion" ' +
+			'data-mw="{&quot;target&quot;:{&quot;wt&quot;:&quot;Template:Echo&quot;,&quot;href&quot;:&quot;./Template:Echo&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;[[Category:Page]]\\n[[Category:Book]]&quot;}},&quot;i&quot;:0}">' +
+		'<span about="#mwt1" data-parsoid="{}">\n</span>' +
+		'<link rel="mw:WikiLink/Category" href="./Category:Book" about="#mwt1">'
 };
 ve.dm.mwExample.MWTransclusion.blockData = {
 	'type': 'mwTransclusionBlock',
@@ -798,6 +803,23 @@ ve.dm.mwExample.domToDataCases = {
 				'hash': '{"mw":{"params":{"1":{"wt":"foo"}}},"type":"mwTransclusionBlock"}',
 				'value': $( '<p about="#mwt1" typeof="mw:Transclusion" data-mw="{&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;foo&quot;}}}" data-parsoid="1">foo</p>' ).toArray()
 			}
+		]
+	},
+	'mw:Transclusion containing only meta data': {
+		'html':
+			'<body>' + ve.dm.mwExample.MWTransclusion.meta + '</body>',
+		'data': [
+			{
+				'type': 'mwTransclusionMeta',
+				'attributes': {
+					'domElements': $( ve.dm.mwExample.MWTransclusion.meta ).toArray()
+				}
+			},
+			{ 'type': '/mwTransclusionMeta' },
+			{ 'type': 'paragraph', 'internal': { 'generated': 'empty' } },
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
 		]
 	},
 	'mw:Reference': {
