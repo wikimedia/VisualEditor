@@ -289,6 +289,10 @@
 	line-height: 3em;
 }
 
+.ve-init-mw-viewPageTarget-saveDialog-body .ve-init-mw-viewPageTarget-saveDialog-editSummary-label {
+	line-height: 2em;
+}
+
 .ve-init-mw-viewPageTarget-saveDialog-editSummaryCount {
 	position: absolute;
 	right: 0;
