@@ -173,6 +173,16 @@ ve.ui.MWCategoryPopupWidget.prototype.setPopup = function ( item ) {
 		width = this.$menu.outerWidth( true ),
 		height = this.$menu.outerHeight( true );
 
-	this.$.css( { 'left': left, 'top': top } );
+	// Flip for RTL:
+	if ( this.$container.attr( 'dir' ) === 'rtl' ) {
+		// flip me, I'm a mirror:
+		this.$.css( {
+			'right': this.$container.outerWidth( true ) - left,
+			'top': top
+		} );
+	} else {
+		this.$.css( { 'left': left, 'top': top } );
+	}
+
 	this.display( left, top, width, height );
 };
