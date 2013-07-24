@@ -235,9 +235,13 @@ class ApiVisualEditor extends ApiBase {
 						$wgVisualEditorEditNotices[] = 'protectedpagewarning';
 					}
 				}
-				// Page protected from creation
-				if ( !$page->exists() && $page->getRestrictions( 'create' ) ) {
-					$wgVisualEditorEditNotices[] = 'titleprotectedwarning';
+				// Creating new page
+				if ( !$page->exists() ) {
+					$wgVisualEditorEditNotices[] = $user->isLoggedIn() ? 'newarticletext' : 'newarticletextanon';
+					// Page protected from creation
+					if ( $page->getRestrictions( 'create' ) ) {
+						$wgVisualEditorEditNotices[] = 'titleprotectedwarning';
+					}
 				}
 				if ( count( $wgVisualEditorEditNotices ) ) {
 					foreach ( $wgVisualEditorEditNotices as $key ) {
