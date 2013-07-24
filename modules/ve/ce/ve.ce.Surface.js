@@ -1566,3 +1566,11 @@ ve.ce.Surface.prototype.enableRendering = function () {
 ve.ce.Surface.prototype.disableRendering = function () {
 	this.renderingEnabled = false;
 };
+
+/**
+ * Surface 'dir' property (Content-Level Direction)
+ * @returns {string} 'ltr' or 'rtl'
+ */
+ve.ce.Surface.prototype.getDir = function () {
+	return this.$.css( 'direction' );
+};

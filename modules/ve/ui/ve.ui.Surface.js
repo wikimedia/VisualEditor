@@ -250,3 +250,11 @@ ve.ui.Surface.prototype.addTriggers = function ( triggers, command ) {
 		this.commands[trigger] = command.action;
 	}
 };
+
+/**
+ * Surface 'dir' property (GUI/User-Level Direction)
+ * @returns {string} 'ltr' or 'rtl'
+ */
+ve.ui.Surface.prototype.getDir = function () {
+	return this.$.css( 'direction' );
+};
