@@ -105,9 +105,44 @@
 	background-image: url(images/icons/bold-f.svg);
 }
 
+.ve-ui-icon-bold-g {
+	/* @embed */
+	background-image: url(images/icons/bold-g.svg);
+}
+
+.ve-ui-icon-bold-l {
+	/* @embed */
+	background-image: url(images/icons/bold-l.svg);
+}
+
+.ve-ui-icon-bold-n {
+	/* @embed */
+	background-image: url(images/icons/bold-n.svg);
+}
+
+.ve-ui-icon-bold-v {
+	/* @embed */
+	background-image: url(images/icons/bold-v.svg);
+}
+
 .ve-ui-icon-italic-a {
 	/* @embed */
 	background-image: url(images/icons/italic-a.svg);
+}
+
+.ve-ui-icon-italic-c {
+	/* @embed */
+	background-image: url(images/icons/italic-c.svg);
+}
+
+.ve-ui-icon-italic-d {
+	/* @embed */
+	background-image: url(images/icons/italic-d.svg);
+}
+
+.ve-ui-icon-italic-e {
+	/* @embed */
+	background-image: url(images/icons/italic-e.svg);
 }
 
 .ve-ui-icon-italic-i {
