@@ -23,6 +23,8 @@ class ApiVisualEditorEdit extends ApiVisualEditor {
 
 		if ( $params['minor'] ) {
 			$apiParams['minor'] = true;
+		} else {
+			$apiParams['notminor'] = true;
 		}
 
 		// FIXME add some way that the user's preferences can be respected
