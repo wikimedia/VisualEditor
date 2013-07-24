@@ -56,7 +56,7 @@ ve.ce.MWBlockImageNode = function VeCeMWBlockImageNode( model, config ) {
 
 	if ( type === 'none' || type ==='frameless' ) {
 		this.$thumb.addClass(
-			ve.ce.MWBlockImageNode.static.cssClasses.none[ this.model.getAttribute( 'align' ) ]
+			this.constructor.static.cssClasses.none[ this.model.getAttribute( 'align' ) ]
 		);
 		this.$a.appendTo( this.$thumb );
 	} else {
@@ -145,7 +145,7 @@ ve.ce.MWBlockImageNode.prototype.onSetup = function ( ) {
 		isRTL = ( this.$.css( 'direction' ) === 'rtl' ) ? 1 : 0;
 		this.$thumb
 			.addClass(
-				ve.ce.MWBlockImageNode.static.cssClasses[ 'default' ][ this.model.getAttribute( 'align' ) ][ isRTL ]
+				this.constructor.static.cssClasses[ 'default' ][ this.model.getAttribute( 'align' ) ][ isRTL ]
 			);
 	}
 
@@ -177,11 +177,11 @@ ve.ce.MWBlockImageNode.prototype.onAttributeChange = function ( key, from, to ) 
 				}
 				type = this.model.getAttribute( 'type' );
 				if ( type === 'none' || type === 'frameless' ) {
-					this.$thumb.removeClass( ve.ce.MWBlockImageNode.static.cssClasses.none[ from ] );
-					this.$thumb.addClass( ve.ce.MWBlockImageNode.static.cssClasses.none[ to ] );
+					this.$thumb.removeClass( this.constructor.static.cssClasses.none[ from ] );
+					this.$thumb.addClass( this.constructor.static.cssClasses.none[ to ] );
 				} else {
-					this.$thumb.removeClass( ve.ce.MWBlockImageNode.static.cssClasses[ 'default' ][ from ] );
-					this.$thumb.addClass( ve.ce.MWBlockImageNode.static.cssClasses[ 'default' ][ to ] );
+					this.$thumb.removeClass( this.constructor.static.cssClasses[ 'default' ][ from ] );
+					this.$thumb.addClass( this.constructor.static.cssClasses[ 'default' ][ to ] );
 				}
 				break;
 			case 'src':
