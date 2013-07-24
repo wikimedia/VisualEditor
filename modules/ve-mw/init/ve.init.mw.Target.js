@@ -50,6 +50,7 @@ ve.init.mw.Target = function VeInitMwTarget( $container, pageName, revisionId ) 
 	this.startTimeStamp = null;
 	this.doc = null;
 	this.editNotices = null;
+	this.checkboxes = null;
 	this.remoteNotices = [];
 	this.localNoticeMessages = [];
 	this.isMobileDevice = (
@@ -163,6 +164,7 @@ ve.init.mw.Target.onLoad = function ( response ) {
 		this.doc = ve.createDocumentFromHtml( this.originalHtml );
 
 		this.remoteNotices = ve.getObjectValues( data.notices );
+		this.checkboxes = data.checkboxes;
 
 		this.baseTimeStamp = data.basetimestamp;
 		this.startTimeStamp = data.starttimestamp;
@@ -559,7 +561,7 @@ ve.init.mw.Target.prototype.retryToken = function () {
  *
  * @method
  * @param {HTMLDocument} doc Document to save
- * @param {Object} options Saving options
+ * @param {Object} options Saving options. All keys are passed through, including unrecognized ones.
  *  - {string} summary Edit summary
  *  - {boolean} minor Edit is a minor edit
  *  - {boolean} watch Watch the page
@@ -571,7 +573,7 @@ ve.init.mw.Target.prototype.save = function ( doc, options ) {
 		return false;
 	}
 
-	var data = {
+	var data = $.extend( {}, options, {
 		'format': 'json',
 		'action': 'visualeditoredit',
 		'page': this.pageName,
@@ -579,25 +581,8 @@ ve.init.mw.Target.prototype.save = function ( doc, options ) {
 		'basetimestamp': this.baseTimeStamp,
 		'starttimestamp': this.startTimeStamp,
 		'html': this.getHtml( doc ),
-		'token': this.editToken,
-		'summary': options.summary
-	};
-
-	if ( options.minor ) {
-		data.minor = 1;
-	}
-	if ( options.watch ) {
-		data.watch = 1;
-	}
-	if ( options.needcheck ) {
-		data.needcheck = 1;
-	}
-	if ( options.captchaid ) {
-		data.captchaid = options.captchaid;
-	}
-	if ( options.captchaword ) {
-		data.captchaword = options.captchaword;
-	}
+		'token': this.editToken
+	} );
 
 	// Save DOM
 	this.saving = true;

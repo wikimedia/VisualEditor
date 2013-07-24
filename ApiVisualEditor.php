@@ -244,13 +244,23 @@ class ApiVisualEditor extends ApiBase {
 						$notices[] = wfMessage( $key )->parseAsBlock();
 					}
 				}
+
+				// HACK: Build a fake EditPage so we can get checkboxes from it
+				$article = new Article( $page ); // Deliberately omitting ,0 so oldid comes from request
+				$ep = new EditPage( $article );
+				$ep->importFormData( $this->getRequest() );
+				$tabindex = 0;
+				$states = array( 'minor' => false, 'watch' => false );
+				$checkboxes = $ep->getCheckboxes( $tabindex, $states );
+
 				if ( $parsed === false ) {
 					$this->dieUsage( 'Error contacting the Parsoid server', 'parsoidserver' );
 				} else {
 					$result = array_merge(
 						array(
 							'result' => 'success',
-							'notices' => $notices
+							'notices' => $notices,
+							'checkboxes' => $checkboxes,
 						),
 						$parsed['result']
 					);

@@ -39,7 +39,7 @@ class ApiVisualEditorEdit extends ApiVisualEditor {
 		$api = new ApiMain(
 			new DerivativeRequest(
 				$this->getRequest(),
-				$apiParams,
+				$apiParams + $this->getRequest()->getValues(),
 				true // was posted
 			),
 			true // enable write

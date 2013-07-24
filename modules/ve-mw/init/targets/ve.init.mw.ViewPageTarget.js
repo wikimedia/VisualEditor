@@ -194,14 +194,8 @@ ve.init.mw.ViewPageTarget.saveDialogTemplate = '\
 					rows="4"></textarea>\
 			</div>\
 			<div class="ve-init-mw-viewPageTarget-saveDialog-options">\
-				<input type="checkbox" name="minorEdit" \
-					id="ve-init-mw-viewPageTarget-saveDialog-minorEdit">\
-				<label class="ve-init-mw-viewPageTarget-saveDialog-minorEdit-label"\
-					for="ve-init-mw-viewPageTarget-saveDialog-minorEdit"></label>\
-				<input type="checkbox" name="watchList"\
-					id="ve-init-mw-viewPageTarget-saveDialog-watchList">\
-				<label class="ve-init-mw-viewPageTarget-saveDialog-watchList-label"\
-					for="ve-init-mw-viewPageTarget-saveDialog-watchList"></label>\
+				<div class="ve-init-mw-viewPageTarget-saveDialog-checkboxes">\
+				</div>\
 				<label class="ve-init-mw-viewPageTarget-saveDialog-editSummaryCount"></label>\
 			</div>\
 			<div class="ve-init-mw-viewPageTarget-saveDialog-messages"></div>\
@@ -395,7 +389,7 @@ ve.init.mw.ViewPageTarget.prototype.onSave = function ( html, newid ) {
 		// there is Object.prototype.watch...
 		if ( mw.page.watch && mw.page.watch.updateWatchLink ) {
 			var watchChecked = this.$saveDialog
-				.find( '#ve-init-mw-viewPageTarget-saveDialog-watchList')
+				.find( '#wpWatchthis' )
 				.prop( 'checked' );
 			mw.page.watch.updateWatchLink(
 				$( '#ca-watch a, #ca-unwatch a' ),
@@ -956,14 +950,32 @@ ve.init.mw.ViewPageTarget.prototype.onSaveDialogResolveConflictButtonClick = fun
  * @returns {Object} Save options, including summary, minor and watch properties
  */
 ve.init.mw.ViewPageTarget.prototype.getSaveOptions = function () {
-	return {
-		'summary': $( '#ve-init-mw-viewPageTarget-saveDialog-editSummary' ).val(),
-		'minor': $( '#ve-init-mw-viewPageTarget-saveDialog-minorEdit' ).prop( 'checked' ),
-		'watch': $( '#ve-init-mw-viewPageTarget-saveDialog-watchList' ).prop( 'checked' ),
-		'needcheck': this.sanityCheckPromise.state() === 'rejected',
+	var options = {
+		'summary': this.$saveDialog.find( '#ve-init-mw-viewPageTarget-saveDialog-editSummary' ).val(),
 		'captchaid': this.captcha && this.captcha.id,
 		'captchaword': this.captcha && this.captcha.input.getValue()
 	};
+	if ( this.sanityCheckPromise.state() === 'rejected' ) {
+		options.needcheck = 1;
+	}
+	if ( this.$saveDialog.find( '#wpMinoredit' ).prop( 'checked' ) ) {
+		options.minor = 1;
+	}
+	if ( this.$saveDialog.find( '#wpWatchthis' ).prop( 'checked' ) ) {
+		options.watch = 1;
+	}
+	this.$saveDialog
+		.find( '.ve-init-mw-viewPageTarget-saveDialog-checkboxes' )
+		.find( 'input:not(#wpMinoredit, #wpWatchthis)' )
+		.each( function () {
+			var $this = $( this );
+			// We can't just use $this.val() because .val() always returns the value attribute of
+			// a checkbox even when it's unchecked
+			if ( $this.prop( 'type') !== 'checkbox' || $this.prop( 'checked' ) ) {
+				options[$this.prop( 'name' )] = $this.val();
+			}
+		} );
+	return options;
 };
 
 /**
@@ -1390,55 +1402,12 @@ ve.init.mw.ViewPageTarget.prototype.detachToolbarButtons = function () {
 };
 
 /**
- * Get a template for the save dialog.
- *
- * The result of this function depends on an API call, so the result it provided asynchronously.
- * The template will be wrapped in a plain `<div>` jQuery collection.
- *
- * @method
- * @param {Function} callback
- */
-ve.init.mw.ViewPageTarget.prototype.getSaveDialogHtml = function ( callback ) {
-	var viewPage = this,
-		$wrap = $( '<div>' ).html( this.constructor.saveDialogTemplate );
-
-	// Based on EditPage::getCheckboxes and EditPage::initialiseForm
-
-	mw.user.getRights( function ( rights ) {
-		// MediaWiki only allows usage of minor flag when editing an existing page
-		// and the user has the right to use the feature.
-		// If either is not the case, remove it from the form.
-		if ( !viewPage.pageExists || ve.indexOf( 'minoredit', rights ) === -1 ) {
-			$wrap
-				.find( '.ve-init-mw-viewPageTarget-saveDialog-minorEdit-label, #ve-init-mw-viewPageTarget-saveDialog-minorEdit' )
-				.remove();
-		}
-
-		if ( mw.user.isAnon() ) {
-			$wrap
-				.find( '.ve-init-mw-viewPageTarget-saveDialog-watchList-label, #ve-init-mw-viewPageTarget-saveDialog-watchList' )
-				.remove();
-		} else if (
-			mw.user.options.get( 'watchdefault' ) ||
-			( mw.user.options.get( 'watchcreations' ) && !viewPage.pageExists ) ||
-			mw.config.get( 'wgVisualEditor' ).isPageWatched
-		) {
-			$wrap
-				.find( '#ve-init-mw-viewPageTarget-saveDialog-watchList' )
-				.prop( 'checked', true );
-		}
-
-		callback( $wrap );
-	} );
-};
-
-/**
  * Add content and event bindings to the save dialog.
  *
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.setupSaveDialog = function () {
-	var viewPage = this;
+	var sectionTitle = '', viewPage = this;
 
 	// Save button on "save" slide
 	this.saveDialogSaveButton = new ve.ui.ButtonWidget( {
@@ -1472,109 +1441,111 @@ ve.init.mw.ViewPageTarget.prototype.setupSaveDialog = function () {
 	} );
 	this.saveDialogResolveConflictButton.connect( this, { 'click': 'onSaveDialogResolveConflictButtonClick' } );
 
-	this.getSaveDialogHtml( function ( $wrap ) {
-		var sectionTitle = '';
-		if ( viewPage.section ) {
-			sectionTitle = viewPage.$document.find( 'h1, h2, h3, h4, h5, h6' ).eq( viewPage.section - 1 ).text();
-			sectionTitle = '/* ' + ve.graphemeSafeSubstring( sectionTitle, 0, 244 ) + ' */ ';
-			viewPage.sectionTitleRestored = true;
-			if ( viewPage.sectionPositionRestored ) {
-				viewPage.onSectionRestored();
-			}
+
+	if ( viewPage.section ) {
+		sectionTitle = viewPage.$document.find( 'h1, h2, h3, h4, h5, h6' ).eq( viewPage.section - 1 ).text();
+		sectionTitle = '/* ' + ve.graphemeSafeSubstring( sectionTitle, 0, 244 ) + ' */ ';
+		viewPage.sectionTitleRestored = true;
+		if ( viewPage.sectionPositionRestored ) {
+			viewPage.onSectionRestored();
 		}
-		viewPage.$saveDialog
-			// Must not use replaceWith because that can't be used on fragement roots,
-			// plus, we want to preserve the reference and class names of the wrapper.
-			.empty().append( $wrap.contents() )
-			// Attach buttons
-			.find( '.ve-init-mw-viewPageTarget-saveDialog-slide-save' )
-				.find( '.ve-init-mw-viewPageTarget-saveDialog-actions' )
-					.prepend( viewPage.saveDialogSaveButton.$, viewPage.saveDialogReviewButton.$ )
-					.end()
-			.end()
-			.find( '.ve-init-mw-viewPageTarget-saveDialog-slide-review' )
-				.find( '.ve-init-mw-viewPageTarget-saveDialog-actions' )
-					.prepend( viewPage.saveDialogReviewGoodButton.$ )
-					.end()
-			.end()
-			.find( '.ve-init-mw-viewPageTarget-saveDialog-slide-conflict' )
-				.find( '.ve-init-mw-viewPageTarget-saveDialog-actions' )
-					.prepend( viewPage.saveDialogResolveConflictButton.$ )
-					.end()
-			.end()
-			.find( '.ve-init-mw-viewPageTarget-saveDialog-closeButton' )
-				.click( ve.bind( viewPage.onSaveDialogCloseButtonClick, viewPage ) )
+	}
+	viewPage.$saveDialog
+		// Must not use replaceWith because that can't be used on fragement roots,
+		// plus, we want to preserve the reference and class names of the wrapper.
+		.empty().append( this.constructor.saveDialogTemplate )
+		// Attach buttons
+		.find( '.ve-init-mw-viewPageTarget-saveDialog-slide-save' )
+			.find( '.ve-init-mw-viewPageTarget-saveDialog-actions' )
+				.prepend( viewPage.saveDialogSaveButton.$, viewPage.saveDialogReviewButton.$ )
 				.end()
-			.find( '.ve-init-mw-viewPageTarget-saveDialog-prevButton' )
-				.click( ve.bind( viewPage.onSaveDialogPrevButtonClick, viewPage ) )
+		.end()
+		.find( '.ve-init-mw-viewPageTarget-saveDialog-slide-review' )
+			.find( '.ve-init-mw-viewPageTarget-saveDialog-actions' )
+				.prepend( viewPage.saveDialogReviewGoodButton.$ )
 				.end()
-			// Attach contents
-			.find( '#ve-init-mw-viewPageTarget-saveDialog-editSummary-label' )
-				.html( ve.init.platform.getParsedMessage( 'summary' ) )
+		.end()
+		.find( '.ve-init-mw-viewPageTarget-saveDialog-slide-conflict' )
+			.find( '.ve-init-mw-viewPageTarget-saveDialog-actions' )
+				.prepend( viewPage.saveDialogResolveConflictButton.$ )
 				.end()
-			.find( '#ve-init-mw-viewPageTarget-saveDialog-editSummary' )
-				.attr( {
-					'placeholder': ve.msg( 'visualeditor-editsummary' )
-				} )
-				.val( sectionTitle )
-				.placeholder()
-				.byteLimit( viewPage.editSummaryByteLimit )
-				.on( {
-					'focus': function () {
-						$( this ).parent().addClass(
-							've-init-mw-viewPageTarget-saveDialog-summary-focused'
+		.end()
+		.find( '.ve-init-mw-viewPageTarget-saveDialog-closeButton' )
+			.click( ve.bind( viewPage.onSaveDialogCloseButtonClick, viewPage ) )
+			.end()
+		.find( '.ve-init-mw-viewPageTarget-saveDialog-prevButton' )
+			.click( ve.bind( viewPage.onSaveDialogPrevButtonClick, viewPage ) )
+			.end()
+		// Attach contents
+		.find( '#ve-init-mw-viewPageTarget-saveDialog-editSummary-label' )
+			.html( ve.init.platform.getParsedMessage( 'summary' ) )
+			.end()
+		.find( '#ve-init-mw-viewPageTarget-saveDialog-editSummary' )
+			.attr( {
+				'placeholder': ve.msg( 'visualeditor-editsummary' )
+			} )
+			.val( sectionTitle )
+			.placeholder()
+			.byteLimit( viewPage.editSummaryByteLimit )
+			.on( {
+				'focus': function () {
+					$( this ).parent().addClass(
+						've-init-mw-viewPageTarget-saveDialog-summary-focused'
+					);
+				},
+				'blur': function () {
+					$( this ).parent().removeClass(
+						've-init-mw-viewPageTarget-saveDialog-summary-focused'
+					);
+				},
+				'keyup keydown mouseup cut paste change focus blur': function () {
+					var $textarea = $( this ),
+						$editSummaryCount = $textarea
+							.closest( '.ve-init-mw-viewPageTarget-saveDialog-slide-save' )
+								.find( '.ve-init-mw-viewPageTarget-saveDialog-editSummaryCount' );
+					// TODO: This looks a bit weird, there is no unit in the UI, just numbers
+					// Users likely assume characters but then it seems to count down quicker
+					// than expected. Facing users with the word "byte" is bad? (bug 40035)
+					setTimeout( function () {
+						$editSummaryCount.text(
+							viewPage.editSummaryByteLimit - $.byteLength( $textarea.val() )
 						);
-					},
-					'blur': function () {
-						$( this ).parent().removeClass(
-							've-init-mw-viewPageTarget-saveDialog-summary-focused'
-						);
-					},
-					'keyup keydown mouseup cut paste change focus blur': function () {
-						var $textarea = $( this ),
-							$editSummaryCount = $textarea
-								.closest( '.ve-init-mw-viewPageTarget-saveDialog-slide-save' )
-									.find( '.ve-init-mw-viewPageTarget-saveDialog-editSummaryCount' );
-						// TODO: This looks a bit weird, there is no unit in the UI, just numbers
-						// Users likely assume characters but then it seems to count down quicker
-						// than expected. Facing users with the word "byte" is bad? (bug 40035)
-						setTimeout( function () {
-							$editSummaryCount.text(
-								viewPage.editSummaryByteLimit - $.byteLength( $textarea.val() )
-							);
-						} );
-					}
-				} )
+					} );
+				}
+			} )
+			.end()
+		.find( '.ve-init-mw-viewPageTarget-saveDialog-editSummaryCount' )
+			.text( viewPage.editSummaryByteLimit )
+			.end()
+		.find( '.ve-init-mw-viewPageTarget-saveDialog-checkboxes' )
+			.html( ve.getObjectValues( viewPage.checkboxes ).join( '\n' ) )
+			.find( 'a' )
+				.attr( 'target', '_blank' )
 				.end()
-			.find( '.ve-init-mw-viewPageTarget-saveDialog-editSummaryCount' )
-				.text( viewPage.editSummaryByteLimit )
-				.end()
-			.find( '.ve-init-mw-viewPageTarget-saveDialog-minorEdit-label' )
-				.html( ve.init.platform.getParsedMessage( 'minoredit' ) )
-				.find( 'a' )
-					.attr( 'target', '_blank' )
-					.end()
-				.end()
-			.find( '#ve-init-mw-viewPageTarget-saveDialog-minorEdit' )
+			.find( '#wpMinoredit' )
 				.prop( 'checked', +mw.user.options.get( 'minordefault' ) )
 				.end()
-			.find( '.ve-init-mw-viewPageTarget-saveDialog-watchList-label' )
-				.html( ve.init.platform.getParsedMessage( 'watchthis' ) )
-				.end()
-			.find( '.ve-init-mw-viewPageTarget-saveDialog-license' )
-				.html( ve.init.platform.getParsedMessage( 'copyrightwarning' ) )
-				.end()
-			.find( '.ve-init-mw-viewPageTarget-saveDialog-conflict' )
-				.html( ve.init.platform.getParsedMessage( 'visualeditor-editconflict' ) )
-				.end()
-			.find( '.ve-init-mw-viewPageTarget-saveDialog-nochanges' )
-				.html( ve.init.platform.getParsedMessage( 'visualeditor-diff-nochanges' ) )
-		;
+			.find( '#wpWatchthis' )
+				.prop( 'checked',
+					mw.user.options.get( 'watchdefault' ) ||
+					( mw.user.options.get( 'watchcreations' ) && !viewPage.pageExists ) ||
+					mw.config.get( 'wgVisualEditor' ).isPageWatched
+				)
+			.end()
+		.find( '.ve-init-mw-viewPageTarget-saveDialog-license' )
+			.html( ve.init.platform.getParsedMessage( 'copyrightwarning' ) )
+			.end()
+		.find( '.ve-init-mw-viewPageTarget-saveDialog-conflict' )
+			.html( ve.init.platform.getParsedMessage( 'visualeditor-editconflict' ) )
+			.end()
+		.find( '.ve-init-mw-viewPageTarget-saveDialog-nochanges' )
+			.html( ve.init.platform.getParsedMessage( 'visualeditor-diff-nochanges' ) )
+	;
 
-		// Get reference to loading icon
-		viewPage.$saveDialogLoadingIcon = viewPage.$saveDialog
-			.find( '.ve-init-mw-viewPageTarget-saveDialog-working' );
-	} );
+	// Get reference to loading icon
+	viewPage.$saveDialogLoadingIcon = viewPage.$saveDialog
+		.find( '.ve-init-mw-viewPageTarget-saveDialog-working' );
+
 	// Hook onto the 'watch' event on by mediawiki.page.watch.ajax.js
 	// Triggered when mw.page.watch.updateWatchLink(link, action) is called
 	$( '#ca-watch, #ca-unwatch' )
@@ -1582,7 +1553,7 @@ ve.init.mw.ViewPageTarget.prototype.setupSaveDialog = function () {
 			'watchpage.mw',
 			function ( e, action ) {
 				viewPage.$saveDialog
-					.find( '#ve-init-mw-viewPageTarget-saveDialog-watchList' )
+					.find( '#wpWatchthis' )
 					.prop( 'checked', ( action === 'watch' ) );
 			}
 		);
@@ -1670,7 +1641,7 @@ ve.init.mw.ViewPageTarget.prototype.resetSaveDialog = function () {
 		.find( '#ve-init-mw-viewPageTarget-saveDialog-editSummary' )
 			.val( '' )
 			.end()
-		.find( '#ve-init-mw-viewPageTarget-saveDialog-minorEdit' )
+		.find( '#wpMinoredit' )
 			.prop( 'checked', false )
 			.end()
 		// Clear the diff
