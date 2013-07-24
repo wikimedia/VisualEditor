@@ -135,6 +135,7 @@ $messages['en'] = array(
 	'visualeditor-parameter-input-placeholder' => 'Parameter name',
 	'visualeditor-parameter-search-no-unused' => 'No unused parameters',
 	'visualeditor-parameter-search-unknown' => 'Unknown parameter',
+	'visualeditor-preference-betatempdisable' => 'Temporarily disable VisualEditor while it is in beta',
 	'visualeditor-preference-enable' => 'Enable VisualEditor (only in the [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|main]] and [[{{MediaWiki:Visualeditor-usernamespacepagelink}}|user]] namespaces)',
 	'visualeditor-reference-input-placeholder' => 'What do you want to reference?',
 	'visualeditor-referencelist-isempty' => 'There are no references with the group "$1" on this page.',
@@ -426,7 +427,8 @@ See [[w:LaTeX]].',
 {{Identical|Parameter name}}',
 	'visualeditor-parameter-search-no-unused' => 'Message displayed in the transclusion dialog when no known parameters are unused by this template.',
 	'visualeditor-parameter-search-unknown' => '{{Identical|Unknown parameter}}',
-	'visualeditor-preference-enable' => 'Label for the user preference to enable VisualEditor.
+	'visualeditor-preference-betatempdisable' => 'Label for the temporary user preference to disable VisualEditor while it is in beta.',
+	'visualeditor-preference-enable' => 'Label for the user preference to enable VisualEditor while it is in alpha (opt-in) mode.
 Links are in {{msg-mw|Visualeditor-mainnamespacepagelink}} and {{msg-mw|visualeditor-usernamespacepagelink}}.',
 	'visualeditor-reference-input-placeholder' => 'Placeholder text for reference search field: searches existing on-page references.',
 	'visualeditor-referencelist-isempty' => 'Message that appears in the references list when there are no references on the page of that group.',

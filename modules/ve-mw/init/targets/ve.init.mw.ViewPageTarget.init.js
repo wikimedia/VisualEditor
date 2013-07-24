@@ -330,11 +330,14 @@
 		// double redirects).
 		!mw.config.get( 'wgIsRedirect', !!uri.query.redirect ) &&
 
-		// User has 'visualeditor-enable' preference enabled
+		// User has 'visualeditor-enable' preference enabled (for alpha opt-in)
 		mw.user.options.get( 'visualeditor-enable' ) &&
 
+		// User has 'visualeditor-betatempdisable' preference disabled
+		!mw.user.options.get( 'visualeditor-betatempdisable' ) &&
+
 		// Only in supported skins
-		$.inArray( mw.config.get( 'skin' ),  conf.skins ) !== -1 &&
+		$.inArray( mw.config.get( 'skin' ), conf.skins ) !== -1 &&
 
 		// Only in enabled namespaces
 		$.inArray(
