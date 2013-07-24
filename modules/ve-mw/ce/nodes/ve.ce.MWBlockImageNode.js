@@ -63,9 +63,6 @@ ve.ce.MWBlockImageNode = function VeCeMWBlockImageNode( model, config ) {
 		// Type "frame", "thumb" and the default
 		this.$image.addClass( 'thumbimage' );
 		this.$thumb
-			.addClass(
-				ve.ce.MWBlockImageNode.static.cssClasses[ 'default' ][ this.model.getAttribute( 'align' ) ]
-			)
 			.addClass( 'thumb' );
 		this.$a.appendTo( this.$thumbInner );
 		this.$thumbInner.appendTo( this.$thumb );
@@ -118,7 +115,8 @@ ve.ce.MWBlockImageNode.static.cssClasses = {
 		'right': 'tright',
 		'center' : 'tnone',
 		'none' : 'tnone',
-		'default': 'tright'
+		// Default is different between RTL and LTR wikis:
+		'default': ['tright', 'tleft']
 	},
 	'none': {
 		'left': 'floatleft',
@@ -129,6 +127,27 @@ ve.ce.MWBlockImageNode.static.cssClasses = {
 };
 
 /* Methods */
+
+/**
+ * Override the default onSetup to add direction-dependent
+ * classes to the image thumbnail.
+ *
+ * @method
+ */
+ve.ce.MWBlockImageNode.prototype.onSetup = function ( ) {
+	var type = this.model.getAttribute( 'type' ),
+		isRTL;
+
+	if ( type !== 'none' && type !=='frameless' ) {
+		// get the proper alignment for the image inside the editor
+		isRTL = ( this.$.css( 'direction' ) === 'rtl' ) ? 1 : 0;
+		this.$thumb
+			.addClass(
+				ve.ce.MWBlockImageNode.static.cssClasses[ 'default' ][ this.model.getAttribute( 'align' ) ][ isRTL ]
+			);
+	}
+
+};
 
 ve.ce.MWBlockImageNode.prototype.onAttributeChange = function ( key, from, to ) {
 	var $element, type;
