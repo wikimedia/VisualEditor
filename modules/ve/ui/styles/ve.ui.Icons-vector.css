@@ -130,6 +130,11 @@
 	background-image: url(images/icons/bold-cyrl-be.svg);
 }
 
+.ve-ui-icon-bold-cyrl-te-el {
+	/* @embed */
+	background-image: url(images/icons/bold-cyrl-te-el.svg);
+}
+
 .ve-ui-icon-bold-cyrl-zhe {
 	/* @embed */
 	background-image: url(images/icons/bold-cyrl-zhe.svg);
