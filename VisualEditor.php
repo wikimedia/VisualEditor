@@ -366,6 +366,7 @@ $wgResourceModules += array(
 			've-mw/dm/metaitems/ve.dm.MWCategoryMetaItem.js',
 			've-mw/dm/metaitems/ve.dm.MWDefaultSortMetaItem.js',
 			've-mw/dm/metaitems/ve.dm.MWLanguageMetaItem.js',
+			've-mw/dm/metaitems/ve.dm.MWTransclusionMetaItem.js',
 
 			've-mw/dm/models/ve.dm.MWTransclusionModel.js',
 			've-mw/dm/models/ve.dm.MWTransclusionPartModel.js',

@@ -61,6 +61,10 @@ ve.dm.MWTransclusionNode.static.getHashObject = function ( dataElement ) {
 };
 
 ve.dm.MWTransclusionNode.static.toDataElement = function ( domElements, converter ) {
+	if ( converter.isDomAllMetaOrWhitespace( domElements, ['mwTransclusion', 'mwTransclusionInline', 'mwTransclusionBlock'] ) ) {
+		return ve.dm.MWTransclusionMetaItem.static.toDataElement( domElements, converter );
+	}
+
 	var dataElement, index,
 		mwDataJSON = domElements[0].getAttribute( 'data-mw' ),
 		mwData = mwDataJSON ? JSON.parse( mwDataJSON ) : {},

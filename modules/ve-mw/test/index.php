@@ -135,6 +135,7 @@
 		<script src="../../ve-mw/dm/metaitems/ve.dm.MWCategoryMetaItem.js"></script>
 		<script src="../../ve-mw/dm/metaitems/ve.dm.MWDefaultSortMetaItem.js"></script>
 		<script src="../../ve-mw/dm/metaitems/ve.dm.MWLanguageMetaItem.js"></script>
+		<script src="../../ve-mw/dm/metaitems/ve.dm.MWTransclusionMetaItem.js"></script>
 		<script src="../../ve-mw/dm/models/ve.dm.MWTransclusionModel.js"></script>
 		<script src="../../ve-mw/dm/models/ve.dm.MWTransclusionPartModel.js"></script>
 		<script src="../../ve-mw/dm/models/ve.dm.MWTransclusionContentModel.js"></script>
