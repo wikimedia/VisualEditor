@@ -788,6 +788,8 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 	var data, range, len, annotations, offsetDiff, lengthDiff, sameLeadingAndTrailing,
 		previousStart, nextStart, newRange,
 		previousData, nextData,
+		i, length, annotation, dataString,
+		annotationsLeft, annotationsRight,
 		fromLeft = 0,
 		fromRight = 0,
 		nodeOffset = node.getModel().getOffset();
@@ -874,9 +876,30 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 	}
 	data = nextData.slice( fromLeft, nextData.length - fromRight );
 	// Get annotations to the left of new content and apply
-	annotations =
-		this.model.getDocument().data.getAnnotationsFromOffset( nodeOffset + 1 + fromLeft );
+	annotations = this.model.getDocument().data.getAnnotationsFromOffset( nodeOffset + 1 + fromLeft );
 	if ( annotations.getLength() ) {
+		annotationsLeft = this.model.getDocument().data.getAnnotationsFromOffset( nodeOffset + fromLeft );
+		annotationsRight = this.model.getDocument().data.getAnnotationsFromOffset( nodeOffset + 1 + previousData.length - fromRight );
+		for ( i = 0, length = annotations.getLength(); i < length; i++ ) {
+			annotation = annotations.get( i );
+			if ( annotation.constructor.static.splitOnWordbreak ) {
+				dataString = new ve.dm.DataString( nextData );
+				if (
+					// if no annotation to the right, check for wordbreak
+					(
+						!annotationsRight.containsIndex( i ) &&
+						unicodeJS.wordbreak.isBreak( dataString, fromLeft )
+					) ||
+					// if no annotation to the left, check for wordbreak
+					(
+						!annotationsLeft.containsIndex( i ) &&
+						unicodeJS.wordbreak.isBreak( dataString, nextData.length - fromRight )
+					)
+				) {
+					annotations.removeAt( i );
+				}
+			}
+		}
 		ve.dm.Document.addAnnotationsToData( data, annotations );
 	}
 	newRange = next.range;

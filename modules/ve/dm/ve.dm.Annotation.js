@@ -49,6 +49,13 @@ ve.dm.Annotation.static.enableAboutGrouping = false;
 ve.dm.Annotation.static.applyToAppendedContent = true;
 
 /**
+ * Abandon continuation when a wordbreak is generated
+ *
+ * @type {boolean}
+ */
+ve.dm.Annotation.static.splitOnWordbreak = false;
+
+/**
  * Static function to convert a linear model data element for this annotation type back to
  * a DOM element.
  *
