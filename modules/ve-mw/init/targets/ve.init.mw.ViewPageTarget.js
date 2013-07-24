@@ -1955,7 +1955,8 @@ ve.init.mw.ViewPageTarget.prototype.transformPageTitle = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.mutePageTitle = function () {
-	$( '#firstHeading, #siteSub:visible, #contentSub:visible' ).fadeTo( 'fast', 0.6 );
+	$( '#firstHeading, #siteSub:visible' ).fadeTo( 'fast', 0.6 );
+	$( '#contentSub:visible' ).fadeTo( 'fast', 0 );
 };
 
 /**
