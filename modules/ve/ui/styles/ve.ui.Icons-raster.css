@@ -125,6 +125,21 @@
 	background-image: url(images/icons/bold-v.png);
 }
 
+.ve-ui-icon-bold-cyrl-be {
+	/* @embed */
+	background-image: url(images/icons/bold-cyrl-be.png);
+}
+
+.ve-ui-icon-bold-cyrl-zhe {
+	/* @embed */
+	background-image: url(images/icons/bold-cyrl-zhe.png);
+}
+
+.ve-ui-icon-bold-geor-man {
+	/* @embed */
+	background-image: url(images/icons/bold-geor-man.png);
+}
+
 .ve-ui-icon-italic-a {
 	/* @embed */
 	background-image: url(images/icons/italic-a.png);
@@ -153,6 +168,17 @@
 .ve-ui-icon-italic-k {
 	/* @embed */
 	background-image: url(images/icons/italic-k.png);
+}
+
+.ve-ui-icon-italic-cyrl-ka {
+	/* Using same glyph as Latin K */
+	/* @embed */
+	background-image: url(images/icons/italic-k.png);
+}
+
+.ve-ui-icon-italic-geor-kan {
+	/* @embed */
+	background-image: url(images/icons/italic-geor-kan.png);
 }
 
 .ve-ui-icon-link {
