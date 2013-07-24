@@ -19,8 +19,8 @@
 	line-height: 1.5em;
 }
 
-/* Monobook sets font-size: x-small; on the body. Undo this in frames */
-.ve-ui-frame-body {
+/* Monobook sets font-size: x-small; on the body. Undo this in frames and overlays */
+.ve-ui-frame-body, body .ve-ui-surface-overlay {
 	font-size: medium;
 }
 
