@@ -1538,6 +1538,7 @@ ve.init.mw.ViewPageTarget.prototype.setupSaveDialog = function () {
 					( mw.user.options.get( 'watchcreations' ) && !viewPage.pageExists ) ||
 					mw.config.get( 'wgVisualEditor' ).isPageWatched
 				)
+				.end()
 			.end()
 		.find( '.ve-init-mw-viewPageTarget-saveDialog-license' )
 			.html( ve.init.platform.getParsedMessage( 'copyrightwarning' ) )
