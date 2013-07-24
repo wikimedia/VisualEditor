@@ -15,6 +15,7 @@
  *
  * @constructor
  * @param {Object} [config] Config options
+ * @cfg {number} [tabIndex] Button's tab index
  */
 ve.ui.ButtonWidget = function VeUiButtonWidget( config ) {
 	// Parent constructor
@@ -26,8 +27,13 @@ ve.ui.ButtonWidget = function VeUiButtonWidget( config ) {
 
 	// Events
 	this.$.on( 'click', ve.bind( this.onClick, this ) );
+	this.$.on( 'keypress', ve.bind( this.onKeyPress, this ) );
 
 	// Initialization
+	this.$.attr( {
+		'role': 'button',
+		'tabIndex': config.tabIndex || 0
+	} );
 	this.$.addClass( 've-ui-buttonWidget' ).append( this.$label );
 };
 
@@ -56,6 +62,20 @@ ve.mixinClass( ve.ui.ButtonWidget, ve.ui.LabeledElement );
  */
 ve.ui.ButtonWidget.prototype.onClick = function () {
 	if ( !this.disabled ) {
+		this.emit( 'click' );
+	}
+	return false;
+};
+
+/**
+ * Handles keypress events.
+ *
+ * @method
+ * @param {jQuery.Event} e Keypress event
+ * @emits click
+ */
+ve.ui.ButtonWidget.prototype.onKeyPress = function ( e ) {
+	if ( !this.disabled && e.which === ve.Keys.SPACE ) {
 		this.emit( 'click' );
 	}
 	return false;

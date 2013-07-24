@@ -1011,7 +1011,8 @@
 		'PAGEUP': 33,
 		'PAGEDOWN': 34,
 		'ESCAPE': 27,
-		'SHIFT': 16
+		'SHIFT': 16,
+		'SPACE': 32
 	};
 
 	// Expose
