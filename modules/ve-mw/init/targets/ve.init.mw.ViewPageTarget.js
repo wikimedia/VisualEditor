@@ -1004,6 +1004,7 @@ ve.init.mw.ViewPageTarget.prototype.setupToolbarEditNotices = function () {
 	for ( key in this.editNotices ) {
 		this.$toolbarEditNotices.append( this.editNotices[key] );
 	}
+	this.$toolbarEditNotices.find( 'a' ).attr( 'target', '_blank' );
 };
 
 /**
