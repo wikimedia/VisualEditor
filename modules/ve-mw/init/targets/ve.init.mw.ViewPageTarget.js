@@ -452,6 +452,13 @@ ve.init.mw.ViewPageTarget.prototype.onSaveError = function ( jqXHR, status, data
 		return;
 	}
 
+	if ( data.error ) {
+		ve.init.mw.Target.onSerializeError.call(
+			this, null, 'Unsuccessful request: ' + data.error.info, null
+		);
+		return;
+	}
+
 	editApi = data && data.visualeditoredit && data.visualeditoredit.edit;
 
 	// Handle spam blacklist error (either from core or from Extension:SpamBlacklist)
