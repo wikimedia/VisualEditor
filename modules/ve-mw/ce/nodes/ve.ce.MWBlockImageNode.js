@@ -138,6 +138,8 @@ ve.ce.MWBlockImageNode.prototype.onSetup = function ( ) {
 	var type = this.model.getAttribute( 'type' ),
 		isRTL;
 
+	ve.ce.BranchNode.prototype.onSetup.call( this );
+
 	if ( type !== 'none' && type !=='frameless' ) {
 		// get the proper alignment for the image inside the editor
 		isRTL = ( this.$.css( 'direction' ) === 'rtl' ) ? 1 : 0;
