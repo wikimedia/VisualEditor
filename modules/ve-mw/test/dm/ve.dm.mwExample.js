@@ -126,6 +126,18 @@ ve.dm.mwExample.MWTransclusion.mixedStoreItems = {
 	'value': $( ve.dm.mwExample.MWTransclusion.mixed ).toArray()
 };
 
+ve.dm.mwExample.MWReference = {
+	'referenceList':
+		'<ol class="references" typeof="mw:Extension/references" about="#mwt7" data-parsoid="{}"' +
+			'data-mw="{&quot;name&quot;:&quot;references&quot;,&quot;body&quot;:{' +
+			'&quot;extsrc&quot;:&quot;<ref name=\\&quot;foo\\&quot;>Ref in refs</ref>' +
+			'&quot;,&quot;html&quot;:&quot;<span about=\\&quot;#mwt8\\&quot; class=\\&quot;reference\\&quot; ' +
+			'data-mw=\\&quot;{&amp;quot;name&amp;quot;:&amp;quot;ref&amp;quot;,&amp;quot;body&amp;quot;:{&amp;quot;html&amp;quot;:&amp;quot;Ref in refs&amp;quot;},' +
+			'&amp;quot;attrs&amp;quot;:{&amp;quot;name&amp;quot;:&amp;quot;foo&amp;quot;}}\\&quot; ' +
+			'rel=\\&quot;dc:references\\&quot; typeof=\\&quot;mw:Extension/ref\\&quot;>' +
+			'<a href=\\&quot;#cite_note-foo-3\\&quot;>[3]</a></span>&quot;},&quot;attrs&quot;:{}}"></ol>'
+};
+
 ve.dm.mwExample.mwNowikiAnnotation = {
 	'type': 'mwNowiki',
 	'attributes': {
@@ -823,45 +835,35 @@ ve.dm.mwExample.domToDataCases = {
 		]
 	},
 	'mw:Reference': {
+		// Wikitext:
+		// Foo<ref name="bar" /> Baz<ref name="quux">Quux</ref> Whee<ref name="bar">[[Bar]]</ref> Yay<ref group="g1">No name</ref> Quux<ref name="bar">Different content</ref> Foo<ref group="g1">No name</ref> Bar<ref name="foo" />
+		// <references><ref name="foo">Ref in refs</ref></references>
 		'html':
 			'<body>' +
 				'<p>Foo' +
-					'<span id="cite_ref-bar-1-0" class="reference" about="#mwt5" typeof="mw:Extension/ref" ' +
-						'data-parsoid="{}" ' +
-						'data-mw="{&quot;name&quot;:&quot;ref&quot;,&quot;attrs&quot;:{&quot;name&quot;:&quot;bar&quot;}}">' +
-						'<a href="#cite_note-bar-1" data-parsoid="{}">[1]</a>' +
+					'<span about="#mwt1" class="reference" data-mw="{&quot;name&quot;:&quot;ref&quot;,&quot;attrs&quot;:{&quot;name&quot;:&quot;bar&quot;}}" id="cite_ref-bar-1-0" rel="dc:references" typeof="mw:Extension/ref" data-parsoid="{}">' +
+						'<a href="#cite_note-bar-1">[1]</a>' +
 					'</span>' +
 					' Baz' +
-					'<span id="cite_ref-quux-2-0" class="reference" about="#mwt6" typeof="mw:Extension/ref" ' +
-						'data-parsoid="{}" ' +
-						'data-mw="{&quot;name&quot;:&quot;ref&quot;,&quot;body&quot;:{&quot;html&quot;:&quot;Quux&quot;},&quot;attrs&quot;:{&quot;name&quot;:&quot;quux&quot;}}">' +
-						'<a href="#cite_note-quux-2" data-parsoid="{}">[2]</a>' +
+					'<span about="#mwt2" class="reference" data-mw="{&quot;name&quot;:&quot;ref&quot;,&quot;body&quot;:{&quot;html&quot;:&quot;Quux&quot;},&quot;attrs&quot;:{&quot;name&quot;:&quot;quux&quot;}}" id="cite_ref-quux-2-0" rel="dc:references" typeof="mw:Extension/ref" data-parsoid="{}">' +
 					'</span>' +
 					' Whee' +
-					'<span id="cite_ref-bar-1-1" class="reference" about="#mwt7" typeof="mw:Extension/ref" ' +
-						'data-parsoid="{}" ' +
-						'data-mw="{&quot;name&quot;:&quot;ref&quot;,&quot;body&quot;:{&quot;html&quot;:&quot;<a rel=\\&quot;mw:WikiLink\\&quot; ' +
-						'href=\\&quot;./Bar\\&quot;>Bar</a>&quot;},&quot;attrs&quot;:{&quot;name&quot;:&quot;bar&quot;}}">' +
-						'<a href="#cite_note-bar-1" data-parsoid="{}">[1]</a>' +
+					'<span about="#mwt3" class="reference" data-mw="{&quot;name&quot;:&quot;ref&quot;,&quot;body&quot;:{&quot;html&quot;:&quot;' +
+					'<a rel=\\&quot;mw:WikiLink\\&quot; href=\\&quot;./Bar\\&quot;>Bar' +
+					'</a>&quot;},&quot;attrs&quot;:{&quot;name&quot;:&quot;bar&quot;}}" id="cite_ref-bar-1-1" rel="dc:references" typeof="mw:Extension/ref" data-parsoid="{}">' +
 					'</span>' +
 					' Yay' +
-					'<span id="cite_ref-3-0" class="reference" about="#mwt8" typeof="mw:Extension/ref" ' +
-						'data-parsoid="{}" ' +
-						'data-mw="{&quot;name&quot;:&quot;ref&quot;,&quot;body&quot;:{&quot;html&quot;:&quot;No name&quot;},&quot;attrs&quot;:{&quot;group&quot;:&quot;g1&quot;}}">' +
-						'<a href="#cite_note-3" data-parsoid="{}">[3]</a>' +
+					'<span about="#mwt4" class="reference" data-mw="{&quot;name&quot;:&quot;ref&quot;,&quot;body&quot;:{&quot;html&quot;:&quot;No name&quot;},&quot;attrs&quot;:{&quot;group&quot;:&quot;g1&quot;}}" id="cite_ref-1-0" rel="dc:references" typeof="mw:Extension/ref" data-parsoid="{}">' +
 					'</span>' +
 					' Quux' +
-					'<span id="cite_ref-bar-1-2" class="reference" about="#mwt9" typeof="mw:Extension/ref" ' +
-						'data-parsoid="{}" ' +
-						'data-mw="{&quot;name&quot;:&quot;ref&quot;,&quot;body&quot;:{&quot;html&quot;:&quot;Different content&quot;},&quot;attrs&quot;:{&quot;name&quot;:&quot;bar&quot;}}">' +
-						'<a href="#cite_note-bar-1" data-parsoid="{}">[1]</a>'+
+					'<span about="#mwt5" class="reference" data-mw="{&quot;name&quot;:&quot;ref&quot;,&quot;body&quot;:{&quot;html&quot;:&quot;Different content&quot;},&quot;attrs&quot;:{&quot;name&quot;:&quot;bar&quot;}}" id="cite_ref-bar-1-2" rel="dc:references" typeof="mw:Extension/ref" data-parsoid="{}">' +
+					'</span>' +
+					' Foo' +
+					'<span about="#mwt6" class="reference" data-mw="{&quot;name&quot;:&quot;ref&quot;,&quot;attrs&quot;:{&quot;name&quot;:&quot;foo&quot;}}" ' +
+						'id="cite_ref-foo-3-0" rel="dc:references" typeof="mw:Extension/ref" data-parsoid="{}">' +
 					'</span>' +
 				'</p>' +
-				'<ol class="references" about="#mwt12" typeof="mw:Extension/references" ' +
-					'data-mw="{&quot;name&quot;:&quot;references&quot;,&quot;attrs&quot;:{}}" ' +
-					'data-parsoid="{}">' +
-					'<li id="cite_note-quux-2"><a href="#cite_ref-quux-2-0">u2191</a>Quux</li>' +
-				'</ol>' +
+				ve.dm.mwExample.MWReference.referenceList +
 			'</body>',
 		'data': [
 			{ 'type': 'paragraph' },
@@ -869,31 +871,31 @@ ve.dm.mwExample.domToDataCases = {
 			{
 				'type': 'mwReference',
 				'attributes': {
-					'about': '#mwt5',
+					'about': '#mwt1',
 					'listIndex': 0,
 					'listGroup': 'mwReference/',
 					'listKey': 'bar',
 					'refGroup': '',
 					'mw': { 'name': 'ref', 'attrs': { 'name': 'bar' } },
 					'originalMw': '{"name":"ref","attrs":{"name":"bar"}}',
-					'childDomElements': $( '<a href="#cite_note-bar-1" data-parsoid="{}">[1]</a>' ).toArray(),
+					'childDomElements': $( '<a href="#cite_note-bar-1">[1]</a>' ).toArray(),
 					'contentsUsed': false
 				},
 				'htmlAttributes': [
 					{
 						'values': {
-							'about': '#mwt5',
+							'about': '#mwt1',
 							'class': 'reference',
 							'data-mw': '{"name":"ref","attrs":{"name":"bar"}}',
 							'data-parsoid': '{}',
 							'id': 'cite_ref-bar-1-0',
+							'rel': 'dc:references',
 							'typeof': 'mw:Extension/ref'
 						},
 						'children': [
 							{
 								'values': {
-									'href': '#cite_note-bar-1',
-									'data-parsoid': '{}'
+									'href': '#cite_note-bar-1'
 								}
 							}
 						]
@@ -905,34 +907,27 @@ ve.dm.mwExample.domToDataCases = {
 			{
 				'type': 'mwReference',
 				'attributes': {
-					'about': '#mwt6',
+					'about': '#mwt2',
 					'listIndex': 1,
 					'listGroup': 'mwReference/',
 					'listKey': 'quux',
 					'refGroup': '',
 					'mw': { 'name': 'ref', 'body': { 'html': 'Quux' }, 'attrs': { 'name': 'quux' } },
 					'originalMw': '{"name":"ref","body":{"html":"Quux"},"attrs":{"name":"quux"}}',
-					'childDomElements': $( '<a href="#cite_note-quux-2" data-parsoid="{}">[2]</a>' ).toArray(),
+					'childDomElements': [],
 					'contentsUsed': true
 				},
 				'htmlAttributes': [
 					{
 						'values': {
-							'about': '#mwt6',
+							'about': '#mwt2',
 							'class': 'reference',
 							'data-mw': '{"name":"ref","body":{"html":"Quux"},"attrs":{"name":"quux"}}',
 							'data-parsoid': '{}',
 							'id': 'cite_ref-quux-2-0',
+							'rel': 'dc:references',
 							'typeof': 'mw:Extension/ref'
-						},
-						'children': [
-							{
-								'values': {
-									'href': '#cite_note-quux-2',
-									'data-parsoid': '{}'
-								}
-							}
-						]
+						}
 					}
 				]
 			},
@@ -941,34 +936,27 @@ ve.dm.mwExample.domToDataCases = {
 			{
 				'type': 'mwReference',
 				'attributes': {
-					'about': '#mwt7',
+					'about': '#mwt3',
 					'listIndex': 0,
 					'listGroup': 'mwReference/',
 					'listKey': 'bar',
 					'refGroup': '',
 					'mw': { 'name': 'ref', 'body': { 'html': '<a rel="mw:WikiLink" href="./Bar">Bar</a>' }, 'attrs': { 'name': 'bar' } },
 					'originalMw': '{"name":"ref","body":{"html":"<a rel=\\"mw:WikiLink\\" href=\\"./Bar\\">Bar</a>"},"attrs":{"name":"bar"}}',
-					'childDomElements': $( '<a href="#cite_note-bar-1" data-parsoid="{}">[1]</a>' ).toArray(),
+					'childDomElements': [],
 					'contentsUsed': true
 				},
 				'htmlAttributes': [
 					{
 						'values': {
-							'about': '#mwt7',
+							'about': '#mwt3',
 							'class': 'reference',
 							'data-mw': '{"name":"ref","body":{"html":"<a rel=\\"mw:WikiLink\\" href=\\"./Bar\\">Bar</a>"},"attrs":{"name":"bar"}}',
 							'data-parsoid': '{}',
 							'id': 'cite_ref-bar-1-1',
+							'rel': 'dc:references',
 							'typeof': 'mw:Extension/ref'
-						},
-						'children': [
-							{
-								'values': {
-									'href': '#cite_note-bar-1',
-									'data-parsoid': '{}'
-								}
-							}
-						]
+						}
 					}
 				]
 			},
@@ -977,34 +965,27 @@ ve.dm.mwExample.domToDataCases = {
 			{
 				'type': 'mwReference',
 				'attributes': {
-					'about': '#mwt8',
+					'about': '#mwt4',
 					'listIndex': 2,
 					'listGroup': 'mwReference/g1',
 					'listKey': null,
 					'refGroup': 'g1',
 					'mw': { 'name': 'ref', 'body': { 'html': 'No name' }, 'attrs': { 'group': 'g1' } },
 					'originalMw': '{"name":"ref","body":{"html":"No name"},"attrs":{"group":"g1"}}',
-					'childDomElements': $( '<a href="#cite_note-3" data-parsoid="{}">[3]</a>' ).toArray(),
+					'childDomElements': [],
 					'contentsUsed': true
 				},
 				'htmlAttributes': [
 					{
 						'values': {
-							'about': '#mwt8',
+							'about': '#mwt4',
 							'class': 'reference',
 							'data-mw': '{"name":"ref","body":{"html":"No name"},"attrs":{"group":"g1"}}',
 							'data-parsoid': '{}',
-							'id': 'cite_ref-3-0',
+							'id': 'cite_ref-1-0',
+							'rel': 'dc:references',
 							'typeof': 'mw:Extension/ref'
-						},
-						'children': [
-							{
-								'values': {
-									'href': '#cite_note-3',
-									'data-parsoid': '{}'
-								}
-							}
-						]
+						}
 					}
 				]
 			},
@@ -1013,34 +994,56 @@ ve.dm.mwExample.domToDataCases = {
 			{
 				'type': 'mwReference',
 				'attributes': {
-					'about': '#mwt9',
+					'about': '#mwt5',
 					'listIndex': 0,
 					'listGroup': 'mwReference/',
 					'listKey': 'bar',
 					'refGroup': '',
 					'mw': { 'name': 'ref', 'body': { 'html': 'Different content' }, 'attrs': { 'name': 'bar' } },
 					'originalMw': '{"name":"ref","body":{"html":"Different content"},"attrs":{"name":"bar"}}',
-					'childDomElements': $( '<a href="#cite_note-bar-1" data-parsoid="{}">[1]</a>' ).toArray(),
+					'childDomElements': [],
 					'contentsUsed': false
 				},
 				'htmlAttributes': [
 					{
 						'values': {
-							'about': '#mwt9',
+							'about': '#mwt5',
 							'class': 'reference',
 							'data-mw': '{"name":"ref","body":{"html":"Different content"},"attrs":{"name":"bar"}}',
 							'data-parsoid': '{}',
 							'id': 'cite_ref-bar-1-2',
+							'rel': 'dc:references',
 							'typeof': 'mw:Extension/ref'
-						},
-						'children': [
-							{
-								'values': {
-									'href': '#cite_note-bar-1',
-									'data-parsoid': '{}'
-								}
-							}
-						]
+						}
+					}
+				]
+			},
+			{ 'type': '/mwReference' },
+			' ', 'F', 'o', 'o',
+			{
+				'type': 'mwReference',
+				'attributes': {
+					'about': '#mwt6',
+					'listGroup': 'mwReference/',
+					'listIndex': 3,
+					'listKey': 'foo',
+					'refGroup': '',
+					'mw': { 'name': 'ref', 'attrs': { 'name': 'foo' } },
+					'originalMw': '{"name":"ref","attrs":{"name":"foo"}}',
+					'childDomElements': [],
+					'contentsUsed': false
+				},
+				'htmlAttributes': [
+					{
+						'values': {
+							'about': '#mwt6',
+							'class': 'reference',
+							'data-mw': '{"name":"ref","attrs":{"name":"foo"}}',
+							'data-parsoid': '{}',
+							'id': 'cite_ref-foo-3-0',
+							'rel': 'dc:references',
+							'typeof': 'mw:Extension/ref'
+						}
 					}
 				]
 			},
@@ -1049,22 +1052,50 @@ ve.dm.mwExample.domToDataCases = {
 			{
 				'type': 'mwReferenceList',
 				'attributes': {
-					'about': '#mwt12',
+					'about': '#mwt7',
 					'mw': {
 						'name': 'references',
-						'attrs': {}
+						'attrs': {},
+						'body': {
+							'extsrc': '<ref name="foo">Ref in refs</ref>',
+							'html': '<span about="#mwt8" class="reference" data-mw="{&quot;name&quot;:&quot;ref&quot;,&quot;body&quot;:{&quot;html&quot;:&quot;Ref in refs&quot;},&quot;attrs&quot;:{&quot;name&quot;:&quot;foo&quot;}}" rel="dc:references" typeof="mw:Extension/ref"><a href="#cite_note-foo-3">[3]</a></span>'
+						}
 					},
-					'originalMw': '{"name":"references","attrs":{}}',
-					'domElements': $(
-						'<ol class="references" about="#mwt12" typeof="mw:Extension/references" '+
-							'data-mw="{&quot;name&quot;:&quot;references&quot;,&quot;attrs&quot;:{}}" ' +
-							'data-parsoid="{}">'+
-							'<li id="cite_note-quux-2"><a href="#cite_ref-quux-2-0">u2191</a>Quux</li>' +
-						'</ol>' ).toArray(),
+					'originalMw': '{"name":"references","body":{"extsrc":"<ref name=\\"foo\\">Ref in refs</ref>","html":"<span about=\\"#mwt8\\" class=\\"reference\\" data-mw=\\"{&quot;name&quot;:&quot;ref&quot;,&quot;body&quot;:{&quot;html&quot;:&quot;Ref in refs&quot;},&quot;attrs&quot;:{&quot;name&quot;:&quot;foo&quot;}}\\" rel=\\"dc:references\\" typeof=\\"mw:Extension/ref\\"><a href=\\"#cite_note-foo-3\\">[3]</a></span>"},"attrs":{}}',
+					'domElements': $( ve.dm.mwExample.MWReference.referenceList ).toArray(),
 					'listGroup': 'mwReference/',
 					'refGroup': ''
 				}
 			},
+			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+			{
+				'type': 'mwReference',
+				'attributes': {
+					'about': '#mwt8',
+					'childDomElements': $( '<a href="#cite_note-foo-3">[3]</a>' ).toArray(),
+					'contentsUsed': true,
+					'listGroup': 'mwReference/',
+					'listIndex': 3,
+					'listKey': 'foo',
+					'mw': { 'name': 'ref', 'attrs': { 'name': 'foo' }, 'body': { 'html': 'Ref in refs' } },
+					'originalMw': '{"name":"ref","body":{"html":"Ref in refs"},"attrs":{"name":"foo"}}',
+					'refGroup': ''
+				},
+				'htmlAttributes': [ {
+					'children': [ { 'values': {
+						'href': '#cite_note-foo-3'
+					} } ],
+					'values': {
+						'about': '#mwt8',
+						'class': 'reference',
+						'data-mw': '{"name":"ref","body":{"html":"Ref in refs"},"attrs":{"name":"foo"}}',
+						'rel': 'dc:references',
+						'typeof': 'mw:Extension/ref'
+					}
+				} ]
+			},
+			{ 'type': '/mwReference' },
+			{ 'type': '/paragraph' },
 			{ 'type': '/mwReferenceList' },
 			{ 'type': 'internalList' },
 			{ 'type': 'internalItem' },
@@ -1127,6 +1158,11 @@ ve.dm.mwExample.domToDataCases = {
 			{ 'type': 'internalItem' },
 			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
 			'N', 'o', ' ', 'n', 'a', 'm', 'e',
+			{ 'type': '/paragraph' },
+			{ 'type': '/internalItem' },
+			{ 'type': 'internalItem' },
+			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+			'R', 'e', 'f', ' ', 'i', 'n', ' ', 'r', 'e', 'f', 's',
 			{ 'type': '/paragraph' },
 			{ 'type': '/internalItem' },
 			{ 'type': '/internalList' }
