@@ -165,13 +165,9 @@
 	background-image: url(images/icons/italic-i.svg);
 }
 
-.ve-ui-icon-italic-k {
-	/* @embed */
-	background-image: url(images/icons/italic-k.svg);
-}
-
+.ve-ui-icon-italic-k,
 .ve-ui-icon-italic-cyrl-ka {
-	/* Using same glyph as Latin K */
+	/* Latin K and Cyrillic Ka use same glyph */
 	/* @embed */
 	background-image: url(images/icons/italic-k.svg);
 }
