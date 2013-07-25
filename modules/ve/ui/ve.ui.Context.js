@@ -278,12 +278,8 @@ ve.ui.Context.prototype.updateDimensions = function ( transition ) {
 			$container = inspector ? this.inspectors.$ : this.$menu;
 			this.popup.align = 'center';
 		}
-		// Flip left with right if CE is RTL
-		if ( this.surface.view.getDir() === 'rtl' ) {
-			this.$.css( { 'right': position.x, 'top': position.y } );
-		} else {
-			this.$.css( { 'left': position.x, 'top': position.y } );
-		}
+		this.$.css( { 'left': position.x, 'top': position.y } );
+
 		this.popup.display(
 			position.x,
 			position.y,
