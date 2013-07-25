@@ -252,9 +252,14 @@ ve.ui.MWMetaDialog.prototype.getCategoryItems = function () {
  * @returns {Object} item
  */
 ve.ui.MWMetaDialog.prototype.getCategoryItemFromMetaListItem = function ( metaItem ) {
+	var title, value = '';
+	try {
+		title = new mw.Title( metaItem.element.attributes.category );
+		value = title.getMainText();
+	} catch ( e ) { }
 	return {
 		'name': metaItem.element.attributes.category,
-		'value': metaItem.element.attributes.category.split( ':' )[1],
+		'value': value,
 		// TODO: sortkey is lcase, make consistent throughout CategoryWidget
 		'sortKey': metaItem.element.attributes.sortkey,
 		'metaItem': metaItem
