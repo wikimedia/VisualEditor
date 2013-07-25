@@ -29,10 +29,11 @@ ve.ui.ItalicButtonTool.static.name = 'italic';
 
 ve.ui.ItalicButtonTool.static.icon = {
 	'default': 'italic-a',
-	'en': 'italic-i',
+	'be-tarask': 'italic-cyrl-ka',
 	'cs': 'italic-i',
 	'da': 'italic-k',
 	'de': 'italic-k',
+	'en': 'italic-i',
 	'es': 'italic-c',
 	'eu': 'italic-e',
 	'fr': 'italic-i',
