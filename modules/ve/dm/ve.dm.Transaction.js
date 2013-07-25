@@ -186,7 +186,7 @@ ve.dm.Transaction.newFromNodeReplacement = function ( doc, nodeOrRange, newData 
  * @param {ve.dm.Document} doc Document to create transaction for
  * @param {number} offset Offset of element
  * @param {Object.<string,Mixed>} attr List of attribute key and value pairs, use undefined value
- *   to remove an attribute
+ *  to remove an attribute
  * @returns {ve.dm.Transaction} Transaction that changes an element
  * @throws {Error} Cannot set attributes to non-element data
  * @throws {Error} Cannot set attributes on closing element

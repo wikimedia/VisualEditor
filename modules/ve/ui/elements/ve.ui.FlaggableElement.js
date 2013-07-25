@@ -54,7 +54,7 @@ ve.ui.FlaggableElement.prototype.getFlags = function () {
  *
  * @method
  * @param {string[]|Object.<string, boolean>} flags List of flags to add, or list of set/remove
- *   values, keyed by flag name
+ *  values, keyed by flag name
  * @chainable
  */
 ve.ui.FlaggableElement.prototype.setFlags = function ( flags ) {

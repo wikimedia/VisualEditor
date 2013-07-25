@@ -490,20 +490,24 @@ ve.dm.Document.prototype.getText = function ( range ) {
  * top level. The tree is updated during this operation.
  *
  * Process:
+ *
  *  1. Nodes between {index} and {index} + {numNodes} in {parent} will be removed
  *  2. Data will be retrieved from this.data using {offset} and {newLength}
  *  3. A document fragment will be generated from the retrieved data
  *  4. The document fragment's nodes will be inserted into {parent} at {index}
  *
  * Use cases:
+ *
  *  1. Rebuild old nodes and offset data after a change to the linear model.
  *  2. Insert new nodes and offset data after a insertion in the linear model.
  *
  * @param {ve.dm.Node} parent Parent of the node(s) being rebuilt
  * @param {number} index Index within parent to rebuild or insert nodes
+ *
  *  - If {numNodes} == 0: Index to insert nodes at
  *  - If {numNodes} >= 1: Index of first node to rebuild
  * @param {number} numNodes Total number of nodes to rebuild
+ *
  *  - If {numNodes} == 0: Nothing will be rebuilt, but the node(s) built from data will be
  *    inserted before {index}. To insert nodes at the end, use number of children in 'parent'
  *  - If {numNodes} == 1: Only the node at {index} will be rebuilt

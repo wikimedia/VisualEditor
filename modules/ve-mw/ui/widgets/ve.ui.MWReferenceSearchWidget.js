@@ -41,7 +41,7 @@ ve.inheritClass( ve.ui.MWReferenceSearchWidget, ve.ui.SearchWidget );
 /**
  * @event select
  * @param {Object|string|null} data Reference node attributes, command string (e.g. 'create') or
- *   null if no item is selected
+ *  null if no item is selected
  */
 
 /* Methods */

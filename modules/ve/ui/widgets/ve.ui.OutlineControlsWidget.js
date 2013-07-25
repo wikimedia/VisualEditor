@@ -14,7 +14,7 @@
  * @param {ve.ui.OutlineWidget} outline Outline to control
  * @param {Object} [config] Config options
  * @cfg {Object[]} [adders] List of icons to show as addable item types, each an object with
- *   name, title and icon properties
+ *  name, title and icon properties
  */
 ve.ui.OutlineControlsWidget = function VeUiOutlineControlsWidget( outline, config ) {
 	// Configuration initialization
@@ -108,7 +108,7 @@ ve.ui.OutlineControlsWidget.prototype.onOutlineChange = function () {
  *
  * @method
  * @param {Object[]} adders List of configuations for adder buttons, each containing a name, title
- *   and icon property
+ *  and icon property
  */
 ve.ui.OutlineControlsWidget.prototype.setupAdders = function ( adders ) {
 	var i, len, addition, button,

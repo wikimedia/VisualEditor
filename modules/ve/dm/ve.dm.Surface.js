@@ -285,7 +285,7 @@ ve.dm.Surface.prototype.truncateUndoStack = function () {
  *
  * @method
  * @param {ve.dm.Transaction|ve.dm.Transaction[]|null} transactions One or more transactions to
- *     process, or null to process none
+ *  process, or null to process none
  * @param {ve.Range|undefined} selection
  * @emits lock
  * @emits select

@@ -125,6 +125,7 @@ ve.ui.IndentationAction.prototype.indentListItem = function ( listItem ) {
 	}
 	/*
 	 * Indenting a list item is done as follows:
+	 *
 	 * 1. Wrap the listItem in a list and a listItem (<li> --> <li><ul><li>)
 	 * 2. Merge this wrapped listItem into the previous listItem if present
 	 *    (<li>Previous</li><li><ul><li>This --> <li>Previous<ul><li>This)
