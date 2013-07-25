@@ -273,9 +273,11 @@ ve.dm.Surface.prototype.getFragment = function ( range, noAutoSelect ) {
  * @emits history
  */
 ve.dm.Surface.prototype.truncateUndoStack = function () {
-	this.bigStack = this.bigStack.slice( 0, this.bigStack.length - this.undoIndex );
-	this.undoIndex = 0;
-	this.emit( 'history' );
+	if ( this.undoIndex ) {
+		this.bigStack = this.bigStack.slice( 0, this.bigStack.length - this.undoIndex );
+		this.undoIndex = 0;
+		this.emit( 'history' );
+	}
 };
 
 /**
