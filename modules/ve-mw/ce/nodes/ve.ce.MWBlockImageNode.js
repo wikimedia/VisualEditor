@@ -56,7 +56,7 @@ ve.ce.MWBlockImageNode = function VeCeMWBlockImageNode( model, config ) {
 
 	if ( type === 'none' || type ==='frameless' ) {
 		this.$thumb.addClass(
-			this.constructor.static.cssClasses.none[ this.model.getAttribute( 'align' ) ]
+			this.getCssClass( 'none', this.model.getAttribute( 'align' ) )
 		);
 		this.$a.appendTo( this.$thumb );
 	} else {
@@ -114,9 +114,7 @@ ve.ce.MWBlockImageNode.static.cssClasses = {
 		'left': 'tleft',
 		'right': 'tright',
 		'center' : 'tnone',
-		'none' : 'tnone',
-		// Default is different between RTL and LTR wikis:
-		'default': ['tright', 'tleft']
+		'none' : 'tnone'
 	},
 	'none': {
 		'left': 'floatleft',
@@ -129,24 +127,37 @@ ve.ce.MWBlockImageNode.static.cssClasses = {
 /* Methods */
 
 /**
+ * Get the right CSS class to use for alignment
+ * @param {string} type 'none' or 'default'
+ * @param {string} alignment 'left', 'right', 'center', 'none' or 'default'
+ */
+ve.ce.MWBlockImageNode.prototype.getCssClass = function ( type, alignment ) {
+	// TODO use this.model.getAttribute( 'type' ) etc., see bug 52065
+	// Default is different between RTL and LTR wikis:
+	if ( type === 'default' && alignment === 'default' ) {
+		if ( this.$.css( 'direction' ) === 'rtl' ) {
+			return 'tleft';
+		} else {
+			return 'tright';
+		}
+	} else {
+		return this.constructor.static.cssClasses[type][alignment];
+	}
+};
+
+/**
  * Override the default onSetup to add direction-dependent
  * classes to the image thumbnail.
  *
  * @method
  */
 ve.ce.MWBlockImageNode.prototype.onSetup = function ( ) {
-	var type = this.model.getAttribute( 'type' ),
-		isRTL;
+	var type = this.model.getAttribute( 'type' );
 
 	ve.ce.BranchNode.prototype.onSetup.call( this );
 
 	if ( type !== 'none' && type !=='frameless' ) {
-		// get the proper alignment for the image inside the editor
-		isRTL = ( this.$.css( 'direction' ) === 'rtl' ) ? 1 : 0;
-		this.$thumb
-			.addClass(
-				this.constructor.static.cssClasses[ 'default' ][ this.model.getAttribute( 'align' ) ][ isRTL ]
-			);
+		this.$thumb.addClass( this.getCssClass( 'default', this.model.getAttribute( 'align' ) ) );
 	}
 
 };
@@ -177,11 +188,11 @@ ve.ce.MWBlockImageNode.prototype.onAttributeChange = function ( key, from, to ) 
 				}
 				type = this.model.getAttribute( 'type' );
 				if ( type === 'none' || type === 'frameless' ) {
-					this.$thumb.removeClass( this.constructor.static.cssClasses.none[ from ] );
-					this.$thumb.addClass( this.constructor.static.cssClasses.none[ to ] );
+					this.$thumb.removeClass( this.getCssClass( 'none', from ) );
+					this.$thumb.addClass( this.getCssClass( 'none', to ) );
 				} else {
-					this.$thumb.removeClass( this.constructor.static.cssClasses[ 'default' ][ from ] );
-					this.$thumb.addClass( this.constructor.static.cssClasses[ 'default' ][ to ] );
+					this.$thumb.removeClass( this.getCssClass( 'default', from ) );
+					this.$thumb.addClass( this.getCssClass( 'default', to ) );
 				}
 				break;
 			case 'src':
