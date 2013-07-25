@@ -34,7 +34,11 @@ ve.ui.Toolbar = function VeUiToolbar( surface, options ) {
 	this.$tools = this.$$( '<div>' );
 	this.$actions = this.$$( '<div>' );
 	this.floating = false;
+	this.floatable = false;
+	this.initialized = false;
 	this.$window = null;
+	this.$surfaceView = null;
+	this.elementOffset = null;
 	this.windowEvents = {
 		'resize': ve.bind( this.onWindowResize, this ),
 		'scroll': ve.bind( this.onWindowScroll, this )
@@ -84,22 +88,44 @@ ve.mixinClass( ve.ui.Toolbar, ve.EventEmitter );
 /* Methods */
 
 /**
+ * Sets up handles and preloads required information for the toolbar to work.
+ * This must be called immediately after it is attached to a visible document.
+ */
+ve.ui.Toolbar.prototype.initialize = function () {
+	this.initialized = true;
+	this.$window = $( this.getElementWindow() );
+	this.$surfaceView = this.surface.getView().$;
+	this.elementOffset = this.$.offset();
+	this.elementOffset.right = this.$window.width() - this.$.outerWidth() - this.elementOffset.left;
+
+	// Initial position. Could be invalidated by the first
+	// call to onWindowScroll, but users of this event (e.g toolbarTracking)
+	// need to also now the non-floating position.
+	this.surface.emit( 'toolbarPosition', this.$bar, {
+		'floating': false,
+		'offset': this.elementOffset
+	} );
+
+	if ( this.floatable ) {
+		this.$window.on( this.windowEvents );
+		this.$surfaceView.on( this.surfaceViewEvents );
+		// The page may start with a non-zero scroll position
+		this.onWindowScroll();
+	}
+};
+
+/**
  * Handle window resize events while toolbar floating is enabled.
  *
  * @returns {jQuery.Event} e Window resize event
  */
 ve.ui.Toolbar.prototype.onWindowScroll = function () {
-	var scrollTop = this.$window.scrollTop(),
-		toolbarOffset = this.$.offset();
+	var scrollTop = this.$window.scrollTop();
 
-	if ( scrollTop > toolbarOffset.top ) {
-		this.setPosition(
-			0,
-			toolbarOffset.left,
-			this.$window.width() - this.$.outerWidth() - toolbarOffset.left
-		);
+	if ( scrollTop > this.elementOffset.top ) {
+		this.float();
 	} else if ( this.floating ) {
-		this.resetPosition();
+		this.unfloat();
 	}
 };
 
@@ -113,21 +139,27 @@ ve.ui.Toolbar.prototype.onWindowScroll = function () {
  * @returns {jQuery.Event} e Window scroll event
  */
 ve.ui.Toolbar.prototype.onWindowResize = function () {
-	var offset = this.$.offset();
+	var update = {},
+		offset = this.elementOffset;
+
+	// Update right offset after resize (see #float)
+	offset.right = this.$window.width() - this.$.outerWidth() - offset.left;
+	update.offset = offset;
 
 	if ( this.floating ) {
-		this.$bar.css( {
-			'left': offset.left,
-			'right': this.$window.width() - this.$.outerWidth() - offset.left
-		} );
-		this.surface.emit( 'toolbarPosition', this.$bar );
+		update.css = { 'right': offset.right };
+		this.$bar.css( update.css );
 	}
+
+	// If we're not floating, toolbar position didn't change.
+	// But the dimensions did naturally change on resize, as did the right offset.
+	// Which e.g. mw.ViewPageTarget's toolbarTracker needs.
+	this.surface.emit( 'toolbarPosition', this.$bar, update );
 };
 
 /**
  * Method to scroll to the cursor position while toolbar is floating on keyup only if
  * the cursor is obscured by the toolbar.
- *
  */
 ve.ui.Toolbar.prototype.onSurfaceViewKeyUp = function () {
 	var cursorPos = this.surface.view.getSelectionRect(),
@@ -137,14 +169,13 @@ ve.ui.Toolbar.prototype.onSurfaceViewKeyUp = function () {
 
 	// If toolbar is floating and cursor is obscured, scroll cursor into view
 	if ( obscured && this.floating ) {
-		$( 'html,body' ).animate( { scrollTop: scrollTo }, 0 );
+		$( 'html, body' ).animate( { scrollTop: scrollTo }, 0 );
 	}
 };
 
 /**
  * Gets the surface the toolbar controls.
  *
- * @method
  * @returns {ve.ui.Surface} Surface being controlled
  */
 ve.ui.Toolbar.prototype.getSurface = function () {
@@ -154,7 +185,6 @@ ve.ui.Toolbar.prototype.getSurface = function () {
 /**
  * Handle context changes on the surface.
  *
- * @method
  * @emits updateState
  */
 ve.ui.Toolbar.prototype.onContextChange = function () {
@@ -173,8 +203,6 @@ ve.ui.Toolbar.prototype.onContextChange = function () {
 
 /**
  * Initialize all tools and groups.
- *
- * @method
  */
 ve.ui.Toolbar.prototype.addTools = function ( tools ) {
 	var i, j, group, $group, tool;
@@ -208,11 +236,9 @@ ve.ui.Toolbar.prototype.addTools = function ( tools ) {
  * Destroys toolbar, removing event handlers and DOM elements.
  *
  * Call this whenever you are done using a toolbar.
- *
- * @method
  */
 ve.ui.Toolbar.prototype.destroy = function () {
-	this.disableFloating();
+	this.disableFloatable();
 	this.surface.getModel().disconnect( this, { 'contextChange': 'onContextChange' } );
 	this.$.remove();
 };
@@ -221,75 +247,74 @@ ve.ui.Toolbar.prototype.destroy = function () {
  * Float the toolbar.
  *
  * @see ve.ui.Surface#event-toolbarPosition
- * @param {number} top Top position, in pixels
- * @param {number} left Left position, in pixels
- * @param {number} right Right position, in pixels
  */
-ve.ui.Toolbar.prototype.setPosition = function ( top, left, right ) {
-	// When switching from default position, manually set the height of the wrapper
+ve.ui.Toolbar.prototype.float = function () {
+	var update;
 	if ( !this.floating ) {
+		// When switching into floating mode, set the height of the wrapper and
+		// move the bar to the same offset as the in-flow element
+		update = {
+			'css': { 'left': this.elementOffset.left, 'right': this.elementOffset.right },
+			'floating': true
+		};
 		this.$
 			.css( 'height', this.$.height() )
 			.addClass( 've-ui-toolbar-floating' );
+		this.$bar.css( update.css );
 		this.floating = true;
+
+		this.surface.emit( 'toolbarPosition', this.$bar, update );
 	}
-	this.$bar.css( { 'top': top, 'left': left, 'right': right } );
-	if ( top > 0 ) {
-		this.$.addClass( 've-ui-toolbar-bottom' );
-	} else {
-		this.$.removeClass( 've-ui-toolbar-bottom' );
-	}
-	this.surface.emit( 'toolbarPosition', this.$bar );
 };
 
 /**
- * Reset the toolbar to it's default position.
+ * Reset the toolbar to it's default non-floating position.
  *
  * @see ve.ui.Surface#event-toolbarPosition
  */
-ve.ui.Toolbar.prototype.resetPosition = function () {
-	this.$
-		.css( 'height', 'auto' )
-		.removeClass( 've-ui-toolbar-floating ve-ui-toolbar-bottom' );
-	this.$bar.css( { 'top': 0, 'left': 0, 'right': 0 } );
-	this.floating = false;
-	this.surface.emit( 'toolbarPosition', this.$bar  );
+ve.ui.Toolbar.prototype.unfloat = function () {
+	if ( this.floating ) {
+		this.$
+			.css( 'height', '' )
+			.removeClass( 've-ui-toolbar-floating' );
+		this.$bar.css( { 'left': '', 'right': '' } );
+		this.floating = false;
+
+		this.surface.emit( 'toolbarPosition', this.$bar, { 'floating': false } );
+	}
 };
 
 /**
- * Add automatic floating behavior to the toolbar.
+ * Set automatic floating behavior to the toolbar.
  *
  * Toolbar floating is not enabled by default, call this on setup to enable it.
- *
- * @method
+ * This will not make it float, but it will start listening for events that
+ * will result in it potentially being floated and defloated accordingly.
  */
-ve.ui.Toolbar.prototype.enableFloating = function () {
-	this.$window = $( this.getElementWindow() ).on( this.windowEvents );
-	this.$surfaceView = this.surface.getView().$.on( this.surfaceViewEvents );
+ve.ui.Toolbar.prototype.enableFloatable = function () {
+	this.floatable = true;
 
-	// TODO: Place this is a DOM attach event for this.$
-	setTimeout( ve.bind( function () {
-		// The page may load with a non-zero scroll without trigger the scroll event
-		this.onWindowScroll();
-	}, this ), 0 );
+	if ( this.initialized ) {
+		this.$window.on( this.windowEvents );
+		this.$surfaceView.on( this.surfaceViewEvents );
+	}
 };
 
 /**
  * Remove automatic floating behavior to the toolbar.
- *
- * @method
  */
-ve.ui.Toolbar.prototype.disableFloating = function () {
+ve.ui.Toolbar.prototype.disableFloatable = function () {
 	if ( this.$window ) {
 		this.$window.off( this.windowEvents );
-		this.$window = null;
 	}
+
 	if ( this.$surfaceView ) {
 		this.$surfaceView.off( this.surfaceViewEvents );
-		this.$surfaceView = null;
 	}
 
 	if ( this.floating ) {
-		this.resetPosition();
+		this.unfloat();
 	}
+
+	this.floatable = false;
 };

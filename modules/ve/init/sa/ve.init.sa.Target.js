@@ -31,8 +31,11 @@ ve.init.sa.Target = function VeInitSaTarget( $container, doc ) {
 	// Initialization
 	this.toolbar.$.addClass( 've-init-sa-target-toolbar' );
 	this.toolbar.addTools( this.constructor.static.toolbarTools );
-	this.toolbar.enableFloating();
+	this.toolbar.enableFloatable();
+
 	this.$.append( this.toolbar.$, this.surface.$ );
+
+	this.toolbar.initialize();
 	this.surface.addCommands( this.constructor.static.surfaceCommands );
 	this.surface.initialize();
 };
