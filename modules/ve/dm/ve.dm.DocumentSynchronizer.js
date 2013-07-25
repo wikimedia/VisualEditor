@@ -13,6 +13,7 @@
  * actions when the transaction is done being processed.
  *
  * IMPORTANT NOTE: It is assumed that:
+ *
  *   - The linear model has already been updated for the pushed actions
  *   - Actions are pushed in increasing offset order
  *   - Actions are non-overlapping

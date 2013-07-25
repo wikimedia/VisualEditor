@@ -184,9 +184,9 @@ ve.dm.MetaList.prototype.onTransact = function ( tx, reversed ) {
  * @param {number} index Index in the metadata array associated with that offset
  * @param {string} [group] Group to search in. If not set, search in all groups
  * @param {boolean} [forInsertion] If the item is not found, return the index where it should have
- *   been rather than null
+ *  been rather than null
  * @returns {number|null} Index into this.items or this.groups[group] where the item was found, or
- *   null if not found
+ *  null if not found
  */
 ve.dm.MetaList.prototype.findItem = function ( offset, index, group, forInsertion ) {
 	// Binary search for the item

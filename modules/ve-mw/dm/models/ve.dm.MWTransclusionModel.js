@@ -85,7 +85,7 @@ ve.dm.MWTransclusionModel.prototype.load = function ( data ) {
  *
  * @method
  * @param {Object[]} queue List of objects containing parts to add and optionally indexes to add
- *   them at, if no index is given parts will be added at the end
+ *  them at, if no index is given parts will be added at the end
  * @emits add For each item added
  */
 ve.dm.MWTransclusionModel.prototype.process = function ( queue ) {

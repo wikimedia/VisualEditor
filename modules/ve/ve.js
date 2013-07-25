@@ -178,7 +178,7 @@
 	 * @param {Function} func Function to bind
 	 * @param {Object} context Context for the function
 	 * @param {Mixed...} [args] Variadic list of arguments to prepend to arguments
-	 *   to the bound function
+	 *  to the bound function
 	 * @returns {Function} The bound
 	 */
 	ve.bind = $.proxy;

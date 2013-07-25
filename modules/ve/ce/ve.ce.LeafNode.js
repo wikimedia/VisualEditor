@@ -69,7 +69,7 @@ ve.ce.LeafNode.prototype.onTeardown = function () {
  *
  * @method
  * @returns {Array} Array of HTML fragments, i.e.
- *                   [ string | jQuery | [string|jQuery, ve.dm.AnnotationSet] ]
+ *  [ string | jQuery | [string|jQuery, ve.dm.AnnotationSet] ]
  */
 ve.ce.LeafNode.prototype.getAnnotatedHtml = function () {
 	return [ [ this.$, this.getModel().getAnnotations() ] ];

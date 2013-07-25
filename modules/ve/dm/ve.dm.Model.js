@@ -182,6 +182,7 @@ ve.dm.Model.static.enableAboutGrouping = false;
  * were already set by toDomElements().
  *
  * The value of this property can be one of the following:
+ *
  * - true, to preserve all attributes (default)
  * - false, to preserve none
  * - a string, to preserve only that attribute
