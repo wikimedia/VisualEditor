@@ -29,11 +29,11 @@
 
 /* ve.ui.MWCategoryWidget */
 
-.ve-ui-mwCategoryListWidget {
+.ve-ui-mwCategoryWidget {
 	padding: 0;
 }
 
-.ve-ui-mwCategoryListWidget-items {
+.ve-ui-mwCategoryWidget-items {
 	/* MDN claims we need to use word-wrap: break-word; and that it's been renamed to
 	 * overflow-wrap: break-word; , but the only thing that actually works in practice is
 	 * word-break: break-word; (which is not documented in any standard at all). So we just use
@@ -49,14 +49,14 @@
 	float: left;
 }
 
-/* ve.ui.MWCategoryListItemWidget */
+/* ve.ui.MWCategoryItemWidget */
 
-.ve-ui-mwCategoryListItemWidget {
+.ve-ui-mwCategoryItemWidget {
 	position: relative;
 	float: left;
 }
 
-.ve-ui-mwCategoryListItemButton {
+.ve-ui-mwCategoryItemButton {
 	position: relative;
 	padding: 0.5em 0.75em 0.5em 1.125em;
 	margin: 0.75em 0.75em 0 0;
@@ -92,23 +92,23 @@
 	background-image: linear-gradient(top, #ffffff 0%, #f0f0f0 100%);
 }
 
-.ve-ui-mwCategoryListItemButton:hover {
+.ve-ui-mwCategoryItemButton:hover {
 	opacity: 1;
 }
 
-.ve-ui-mwCategoryListItemButton span {
+.ve-ui-mwCategoryItemButton span {
 	display: block;
 	padding-right: 1.5em;
 	color: #333;
 }
 
-.ve-ui-mwCategoryListItemButton:active {
+.ve-ui-mwCategoryItemButton:active {
 	border-color: #ddd;
 	box-shadow: inset 0 1px 4px 0 rgba(0, 0, 0, 0.07);
 	color: black;
 }
 
-.ve-ui-mwCategoryListItemControl {
+.ve-ui-mwCategoryItemControl {
 	position: absolute;
 	right: 0;
 	top: 0;

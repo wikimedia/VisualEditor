@@ -47,9 +47,9 @@ ve.ui.MWCategoryWidget = function VeUiMWCategoryWidget( config ) {
 	} );
 
 	// Initialization
-	this.$.addClass( 've-ui-mwCategoryListWidget' )
+	this.$.addClass( 've-ui-mwCategoryWidget' )
 		.append(
-			this.$group.addClass( 've-ui-mwCategoryListWidget-items' ),
+			this.$group.addClass( 've-ui-mwCategoryWidget-items' ),
 			this.input.$,
 			this.$$( '<div>' ).css( 'clear', 'both' )
 		);
@@ -261,7 +261,7 @@ ve.ui.MWCategoryWidget.prototype.fitInput = function () {
 	min = $input.outerWidth();
 
 	$input.css( { 'width': '100%' } );
-	$lastItem = this.$.find( '.ve-ui-mwCategoryListItemWidget:last' );
+	$lastItem = this.$.find( '.ve-ui-mwCategoryItemWidget:last' );
 	if ( $lastItem.length ) {
 		// Try to fit to the right of the last item
 		gap = ( $input.offset().left + $input.outerWidth() ) -

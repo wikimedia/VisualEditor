@@ -41,12 +41,12 @@ ve.ui.MWCategoryItemWidget = function VeUiMWCategoryItemWidget( config ) {
 
 	// Initialization
 	this.$label.text( this.value );
-	this.$arrow.addClass( 've-ui-mwCategoryListItemControl ve-ui-icon-down' );
+	this.$arrow.addClass( 've-ui-mwCategoryItemControl ve-ui-icon-down' );
 	this.$categoryItem
-		.addClass( 've-ui-mwCategoryListItemButton' )
+		.addClass( 've-ui-mwCategoryItemButton' )
 		.append( this.$label, this.$arrow, this.$$( '<div>' ).css( 'clear', 'both' ) );
 	this.$
-		.addClass( 've-ui-mwCategoryListItemWidget' )
+		.addClass( 've-ui-mwCategoryItemWidget' )
 		.append( this.$categoryItem );
 };
 
