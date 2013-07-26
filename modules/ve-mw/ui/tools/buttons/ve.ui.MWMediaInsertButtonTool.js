@@ -1,12 +1,12 @@
 /*!
- * VisualEditor UserInterface MWMediaButtonTool class.
+ * VisualEditor UserInterface MWMediaInsertButtonTool class.
  *
  * @copyright 2011-2013 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * MediaWiki media insert button tool.
+ * UserInterface MediaWiki media insert button tool.
  *
  * @class
  * @extends ve.ui.DialogButtonTool
@@ -15,7 +15,7 @@
  * @param {ve.ui.Toolbar} toolbar
  * @param {Object} [config] Config options
  */
-ve.ui.MWMediaInsertButtonTool = function VeUiMWMediaButtonTool( toolbar, config ) {
+ve.ui.MWMediaInsertButtonTool = function VeUiMWMediaInsertButtonTool( toolbar, config ) {
 	// Parent constructor
 	ve.ui.DialogButtonTool.call( this, toolbar, config );
 };

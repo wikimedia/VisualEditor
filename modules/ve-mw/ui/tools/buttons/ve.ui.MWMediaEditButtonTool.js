@@ -6,7 +6,7 @@
  */
 
 /**
- * MediaEdit button tool.
+ * UserInterface MediaWiki media edit button tool.
  *
  * @class
  * @extends ve.ui.DialogButtonTool
