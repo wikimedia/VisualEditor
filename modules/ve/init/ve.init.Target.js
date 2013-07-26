@@ -32,7 +32,7 @@ ve.mixinClass( ve.init.Target, ve.EventEmitter );
 ve.init.Target.static.toolbarTools = [
 	{ 'items': ['undo', 'redo'] },
 	{ 'items': ['format'] },
-	{ 'items': ['bold', 'italic', 'link', 'clear'] },
+	{ 'items': ['bold', 'italic', 'link', 'code', 'clear'] },
 	{ 'items': ['number', 'bullet', 'outdent', 'indent'] }
 ];
 

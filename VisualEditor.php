@@ -586,6 +586,7 @@ $wgResourceModules += array(
 			'visualeditor',
 			'visualeditor-aliennode-tooltip',
 			'visualeditor-annotationbutton-bold-tooltip',
+			'visualeditor-annotationbutton-code-tooltip',
 			'visualeditor-annotationbutton-italic-tooltip',
 			'visualeditor-annotationbutton-link-tooltip',
 			'visualeditor-beta-label',
@@ -722,6 +723,7 @@ $wgResourceModules += array(
 			've-mw/ui/tools/buttons/ve.ui.MWMathButtonTool.js',
 			've/dm/annotations/ve.dm.LanguageAnnotation.js',
 			've/ce/annotations/ve.ce.LanguageAnnotation.js',
+			've/ui/tools/buttons/ve.ui.CodeButtonTool.js',
 		),
 		'dependencies' => array(
 			'ext.visualEditor.core',

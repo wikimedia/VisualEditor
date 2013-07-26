@@ -227,6 +227,7 @@
 		<script src="../../ve/ui/tools/buttons/ve.ui.ItalicButtonTool.js"></script>
 		<script src="../../ve/ui/tools/buttons/ve.ui.ClearButtonTool.js"></script>
 		<script src="../../ve/ui/tools/buttons/ve.ui.LinkButtonTool.js"></script>
+		<script src="../../ve/ui/tools/buttons/ve.ui.CodeButtonTool.js"></script>
 		<script src="../../ve/ui/tools/buttons/ve.ui.BulletButtonTool.js"></script>
 		<script src="../../ve/ui/tools/buttons/ve.ui.NumberButtonTool.js"></script>
 		<script src="../../ve/ui/tools/buttons/ve.ui.IndentButtonTool.js"></script>

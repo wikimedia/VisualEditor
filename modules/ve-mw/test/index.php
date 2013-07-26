@@ -273,6 +273,7 @@
 		<script src="../../ve/ui/tools/buttons/ve.ui.ItalicButtonTool.js"></script>
 		<script src="../../ve/ui/tools/buttons/ve.ui.ClearButtonTool.js"></script>
 		<script src="../../ve/ui/tools/buttons/ve.ui.LinkButtonTool.js"></script>
+		<script src="../../ve/ui/tools/buttons/ve.ui.CodeButtonTool.js"></script>
 		<script src="../../ve-mw/ui/tools/buttons/ve.ui.MWLinkButtonTool.js"></script>
 		<script src="../../ve-mw/ui/tools/buttons/ve.ui.MWMediaInsertButtonTool.js"></script>
 		<script src="../../ve-mw/ui/tools/buttons/ve.ui.MWMediaEditButtonTool.js"></script>

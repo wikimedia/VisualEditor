@@ -22,6 +22,7 @@ $messages['en'] = array(
 	'visualeditor' => 'VisualEditor',
 	'visualeditor-aliennode-tooltip' => 'Sorry, this element can only be edited in source mode for now.',
 	'visualeditor-annotationbutton-bold-tooltip' => 'Bold',
+	'visualeditor-annotationbutton-code-tooltip' => 'Computer code',
 	'visualeditor-annotationbutton-italic-tooltip' => 'Italic',
 	'visualeditor-annotationbutton-link-tooltip' => 'Link',
 	'visualeditor-beta-label' => 'beta',
@@ -220,6 +221,7 @@ See also:
 	'visualeditor' => 'The name of the VisualEditor extension',
 	'visualeditor-aliennode-tooltip' => 'Tooltip for items that VisualEditor cannot edit',
 	'visualeditor-annotationbutton-bold-tooltip' => 'Tooltip text for bold button',
+	'visualeditor-annotationbutton-code-tooltip' => 'Tooltip text for code button',
 	'visualeditor-annotationbutton-italic-tooltip' => 'Tooltip text for italic button',
 	'visualeditor-annotationbutton-link-tooltip' => 'Tooltip text for link button.
 {{Identical|Link}}',
