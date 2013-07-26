@@ -20,7 +20,8 @@
  */
 ( function () {
 	var conf, uri, pageExists, viewUri, veEditUri, isViewPage,
-		init, support, getTargetDeferred;
+		init, support, getTargetDeferred,
+		plugins = [];
 
 	/**
 	 * Use deferreds to avoid loading and instantiating Target multiple times.
@@ -37,6 +38,9 @@
 
 					// Transfer methods
 					ve.init.mw.ViewPageTarget.prototype.setupSectionEditLinks = init.setupSectionEditLinks;
+
+					// Add plugins
+					target.addPlugins( plugins );
 
 					getTargetDeferred.resolve( target );
 				} )
@@ -96,6 +100,45 @@
 			// Blacklist all versions:
 			'opera': null,
 			'blackberry': null
+		},
+
+		/**
+		 * Add a plugin module or function.
+		 *
+		 * Plugins are run after VisualEditor is loaded, but before it is initialized. This allows
+		 * plugins to add classes and register them with the factories and registries.
+		 *
+		 * The parameter to this function can be a ResourceLoader module name or a function.
+		 *
+		 * If it's a module name, it will be loaded together with the VisualEditor core modules when
+		 * VE is loaded. No special care is taken to ensure that the module runs after the VE
+		 * classes are loaded, so if this is desired, the module should depend on
+		 * ext.visualEditor.core .
+		 *
+		 * If it's a function, it will be invoked once the VisualEditor core modules and any
+		 * plugin modules registered through this function have been loaded, but before the editor
+		 * is intialized. The function takes one parameter, which is the ve.init.mw.Target instance
+		 * that's initializing, and can optionally return a jQuery.Promise . VisualEditor will
+		 * only be initialized once all promises returned by plugin functions have been resolved.
+		 *
+		 *     @example
+		 *     // Register ResourceLoader module
+		 *     ve.libs.mw.addPlugin( 'ext.gadget.foobar' );
+		 *
+		 *     // Register a callback
+		 *     ve.libs.mw.addPlugin( function ( target ) {
+		 *         ve.dm.Foobar = .....
+		 *     } );
+		 *
+		 *     // Register a callback that loads another script
+		 *     ve.libs.mw.addPlugin( function () {
+		 *         return $.getScript( 'http://example.com/foobar.js' );
+		 *     } );
+		 *
+		 * @param {string|Function} plugin Module name or callback that optionally returns a promise
+		 */
+		addPlugin: function( plugin ) {
+			plugins.push( plugin );
 		},
 
 		skinSetup: function () {

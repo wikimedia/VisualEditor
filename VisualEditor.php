@@ -10,6 +10,10 @@
 
 /* Configuration */
 
+// Array of ResourceLoader module names (strings) that should be loaded when VisualEditor is
+// loaded. Other extensions that extend VisualEditor should add to this array.
+$wgVisualEditorPluginModules = array();
+
 // URL to the Parsoid instance
 // MUST NOT end in a slash due to Parsoid bug
 $wgVisualEditorParsoidURL = 'http://localhost:8000';
@@ -38,6 +42,7 @@ $wgVisualEditorTabLayout = 'replace';
 // upon signup.
 // Depends on GuidedTour and EventLogging extensions.
 $wgVisualEditorEnableGenderSurvey = false;
+
 /* Setup */
 
 $wgExtensionCredits['other'][] = array(
