@@ -265,10 +265,10 @@ ve.dm.modelRegistry.register( ve.dm.TextStyleSubScriptAnnotation );
  * @constructor
  * @param {Object} element
  */
-ve.dm.TextStyleCodeScriptAnnotation = function VeDmTextStyleCodeScriptAnnotation( element ) {
+ve.dm.TextStyleCodeAnnotation = function VeDmTextStyleCodeAnnotation( element ) {
 	ve.dm.TextStyleAnnotation.call( this, element );
 };
-ve.inheritClass( ve.dm.TextStyleCodeScriptAnnotation, ve.dm.TextStyleAnnotation );
-ve.dm.TextStyleCodeScriptAnnotation.static.name = 'textStyle/code';
-ve.dm.TextStyleCodeScriptAnnotation.static.matchTagNames = ['code'];
-ve.dm.modelRegistry.register( ve.dm.TextStyleCodeScriptAnnotation );
+ve.inheritClass( ve.dm.TextStyleCodeAnnotation, ve.dm.TextStyleAnnotation );
+ve.dm.TextStyleCodeAnnotation.static.name = 'textStyle/code';
+ve.dm.TextStyleCodeAnnotation.static.matchTagNames = ['code'];
+ve.dm.modelRegistry.register( ve.dm.TextStyleCodeAnnotation );

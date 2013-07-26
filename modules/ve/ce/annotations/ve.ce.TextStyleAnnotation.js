@@ -229,13 +229,13 @@ ve.ce.annotationFactory.register( ve.ce.TextStyleSubScriptAnnotation );
  * @class
  * @extends ve.ce.TextStyleAnnotation
  * @constructor
- * @param {ve.dm.TextStyleCodeScriptAnnotation} model
+ * @param {ve.dm.TextStyleCodeAnnotation} model
  */
-ve.ce.TextStyleCodeScriptAnnotation = function VeCeTextStyleCodeScriptAnnotation( model, config ) {
+ve.ce.TextStyleCodeAnnotation = function VeCeTextStyleCodeAnnotation( model, config ) {
 	ve.ce.TextStyleAnnotation.call( this, model, config );
-	this.$.addClass( 've-ce-TextStyleCodeScriptAnnotation' );
+	this.$.addClass( 've-ce-TextStyleCodeAnnotation' );
 };
-ve.inheritClass( ve.ce.TextStyleCodeScriptAnnotation, ve.ce.TextStyleAnnotation );
-ve.ce.TextStyleCodeScriptAnnotation.static.name = 'textStyle/code';
-ve.ce.TextStyleCodeScriptAnnotation.static.tagName = 'code';
-ve.ce.annotationFactory.register( ve.ce.TextStyleCodeScriptAnnotation );
+ve.inheritClass( ve.ce.TextStyleCodeAnnotation, ve.ce.TextStyleAnnotation );
+ve.ce.TextStyleCodeAnnotation.static.name = 'textStyle/code';
+ve.ce.TextStyleCodeAnnotation.static.tagName = 'code';
+ve.ce.annotationFactory.register( ve.ce.TextStyleCodeAnnotation );
