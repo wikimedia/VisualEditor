@@ -30,8 +30,8 @@ QUnit.test( 'Basic usage', 32, function ( assert ) {
 	assert.equal( annotationSet.containsAnyOf( emptySet ), false, 'containsAnyOf empty set is false' );
 	assert.equal( annotationSet.containsAllOf( annotationSet2 ), false, 'containsAllOf set2 set is false' );
 	assert.equal( annotationSet.containsAllOf( annotationSet ), true, 'containsAllOf self is true' );
-	assert.equal( annotationSet.indexOf( italic ), 1, 'indexOf italic is 1' );
-	assert.equal( annotationSet.indexOf( underline ), -1, 'indexOf underline is -1' );
+	assert.equal( annotationSet.offsetOf( italic ), 1, 'offsetOf italic is 1' );
+	assert.equal( annotationSet.offsetOf( underline ), -1, 'offsetOf underline is -1' );
 	assert.deepEqual(
 		annotationSet.filter( function ( annotation ) { return annotation.name === 'textStyle/bold'; } ).get(),
 		[ bold ], 'filter for name=textStyle/bold returns just bold annotation'
@@ -40,11 +40,11 @@ QUnit.test( 'Basic usage', 32, function ( assert ) {
 	assert.equal( annotationSet.hasAnnotationWithName( 'textStyle/underline' ), false, 'hasAnnotationWithName underline is false' );
 
 	annotationSet2.add( bold, 1 );
-	assert.equal( annotationSet2.indexOf( bold ), 1, 'set2 contains bold at 1 after add at 1' );
+	assert.equal( annotationSet2.offsetOf( bold ), 1, 'set2 contains bold at 1 after add at 1' );
 	annotationSet2.remove( bold );
 	assert.equal( annotationSet2.contains( bold ), false, 'set2 doesn\'t contain bold after remove' );
 	annotationSet2.add( bold, 0 );
-	assert.equal( annotationSet2.indexOf( bold ), 0, 'set2 contains bold at 0 after add at 0' );
+	assert.equal( annotationSet2.offsetOf( bold ), 0, 'set2 contains bold at 0 after add at 0' );
 	annotationSet2.add( bold, 0 );
 	assert.equal( annotationSet2.getLength(), 3, 'adding existing annotation doesn\'t change length' );
 	// set is now [ bold, italic, underline ]
@@ -65,7 +65,7 @@ QUnit.test( 'Basic usage', 32, function ( assert ) {
 	assert.equal( annotationSet.contains( italic ) && !annotationSet.contains( underline ), true, 'contains italic not underline after removeNotInSet' );
 	annotationSet2.add( underline, 1 );
 	annotationSet3 = annotationSet2.reversed();
-	assert.equal( annotationSet3.indexOf( underline ), 0, 'underline has indexOf 0 after reverse' );
+	assert.equal( annotationSet3.offsetOf( underline ), 0, 'underline has offsetOf 0 after reverse' );
 	annotationSet3 = annotationSet.mergeWith( annotationSet2 );
 	assert.equal( annotationSet3.getLength(), 3, 'set merged with set2 has length 3' );
 	annotationSet3 = annotationSet.diffWith( annotationSet2 );

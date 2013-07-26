@@ -10,12 +10,12 @@
  *
  * @constructor
  * @param {ve.dm.IndexValueStore} store Index-value store
- * @param {number[]} [indexes] Array of indexes into the store
+ * @param {number[]} [indexes] Array of store indexes
  */
-ve.dm.AnnotationSet = function VeDmAnnotationSet( store, indexes ) {
+ve.dm.AnnotationSet = function VeDmAnnotationSet( store, storeIndexes ) {
 	// Parent constructor
 	this.store = store;
-	this.storeIndexes = indexes || [];
+	this.storeIndexes = storeIndexes || [];
 };
 
 /* Methods */
@@ -82,17 +82,17 @@ ve.dm.AnnotationSet.prototype.hasAnnotationWithName = function ( name ) {
 /**
  * Get an annotation or all annotations from the set.
  *
- * set.get( 5 ) returns the annotation at index 5, set.get() returns an array with all annotations
+ * set.get( 5 ) returns the annotation at offset 5, set.get() returns an array with all annotations
  * in the entire set.
  *
  * @method
- * @param {number} [index] If set, only get the annotation at the index
- * @returns {ve.dm.Annotation[]|ve.dm.Annotation|undefined} The annotation at index, or an array of all
+ * @param {number} [offset] If set, only get the annotation at the offset
+ * @returns {ve.dm.Annotation[]|ve.dm.Annotation|undefined} The annotation at offset, or an array of all
  *  annotations in the set
  */
-ve.dm.AnnotationSet.prototype.get = function ( index ) {
-	if ( index !== undefined ) {
-		return this.getStore().value( this.getIndex( index ) );
+ve.dm.AnnotationSet.prototype.get = function ( offset ) {
+	if ( offset !== undefined ) {
+		return this.getStore().value( this.getIndex( offset ) );
 	} else {
 		return this.getStore().values( this.getIndexes() );
 	}
@@ -145,18 +145,18 @@ ve.dm.AnnotationSet.prototype.isEmpty = function () {
  * @returns {boolean} There is an annotation in the set with the same hash as annotation
  */
 ve.dm.AnnotationSet.prototype.contains = function ( annotation ) {
-	return this.indexOf( annotation ) !== -1;
+	return this.offsetOf( annotation ) !== -1;
 };
 
 /**
  * Check whether a given store index occurs in the set.
  *
  * @method
- * @param {number} annotation Index of annotation in the store
+ * @param {number} storeIndex Store index of annotation
  * @returns {boolean} There is an annotation in the set with this store index
  */
-ve.dm.AnnotationSet.prototype.containsIndex = function ( index ) {
-	return ve.indexOf( index , this.getIndexes() ) !== -1;
+ve.dm.AnnotationSet.prototype.containsIndex = function ( storeIndex ) {
+	return ve.indexOf( storeIndex, this.getIndexes() ) !== -1;
 };
 
 /**
@@ -194,13 +194,13 @@ ve.dm.AnnotationSet.prototype.containsAllOf = function ( set ) {
 };
 
 /**
- * Get the index of a given annotation in the set.
+ * Get the offset of a given annotation in the set.
  *
  * @method
  * @param {ve.dm.Annotation} annotation Annotation to search for
- * @returns {number} Index of annotation in the set, or -1 if annotation is not in the set.
+ * @returns {number} Offset of annotation in the set, or -1 if annotation is not in the set.
  */
-ve.dm.AnnotationSet.prototype.indexOf = function ( annotation ) {
+ve.dm.AnnotationSet.prototype.offsetOf = function ( annotation ) {
 	return ve.indexOf( this.store.indexOfHash( ve.getHash( annotation ) ), this.getIndexes() );
 };
 
@@ -297,7 +297,7 @@ ve.dm.AnnotationSet.prototype.containsMatching = function ( callback ) {
  * @returns {boolean} The annotations are the same
  */
 ve.dm.AnnotationSet.prototype.compareTo = function ( annotationSet ) {
-	var i, indexes = this.getIndexes(), length = indexes.length;
+	var i, length = this.getIndexes().length;
 
 	if ( length === annotationSet.getLength() ) {
 		for ( i = 0; i < length; i++ ) {
@@ -316,28 +316,28 @@ ve.dm.AnnotationSet.prototype.compareTo = function ( annotationSet ) {
  *
  * If the annotation is already present in the set, nothing happens.
  *
- * The annotation will be inserted before the annotation that is currently at the given index. If index is
- * negative, it will be counted from the end (i.e. index -1 is the last item, -2 the second-to-last,
- * etc.). If index is out of bounds, the annotation will be added to the end of the set.
+ * The annotation will be inserted before the annotation that is currently at the given offset. If offset is
+ * negative, it will be counted from the end (i.e. offset -1 is the last item, -2 the second-to-last,
+ * etc.). If offset is out of bounds, the annotation will be added to the end of the set.
  *
  * @method
  * @param {ve.dm.Annotation} annotation Annotation to add
- * @param {number} index Index to add the annotation at
+ * @param {number} offset Offset to add the annotation at
  */
-ve.dm.AnnotationSet.prototype.add = function ( annotation, index ) {
+ve.dm.AnnotationSet.prototype.add = function ( annotation, offset ) {
 	var storeIndex = this.getStore().index( annotation );
 	// negative offset
-	if ( index < 0 ) {
-		index = this.getLength() + index;
+	if ( offset < 0 ) {
+		offset = this.getLength() + offset;
 	}
 	// greater than length, add to end
-	if ( index >= this.getLength() ) {
+	if ( offset >= this.getLength() ) {
 		this.push( annotation );
 		return;
 	}
 	// if not in set already, splice in place
 	if ( !this.containsIndex( storeIndex ) ) {
-		this.storeIndexes.splice( index, 0, storeIndex );
+		this.storeIndexes.splice( offset, 0, storeIndex );
 	}
 };
 
@@ -365,20 +365,20 @@ ve.dm.AnnotationSet.prototype.push = function ( annotation ) {
 };
 
 /**
- * Remove the annotation at a given index.
+ * Remove the annotation at a given offset.
  *
  * @method
- * @param {number} index Index to remove item at. If negative, the counts from the end, see add()
- * @throws {Error} Index out of bounds.
+ * @param {number} offset Offset to remove item at. If negative, the counts from the end, see add()
+ * @throws {Error} Offset out of bounds.
  */
-ve.dm.AnnotationSet.prototype.removeAt = function ( index ) {
-	if ( index < 0 ) {
-		index = this.getLength() + index;
+ve.dm.AnnotationSet.prototype.removeAt = function ( offset ) {
+	if ( offset < 0 ) {
+		offset = this.getLength() + offset;
 	}
-	if ( index >= this.getLength() ) {
-		throw new Error( 'Index out of bounds' );
+	if ( offset >= this.getLength() ) {
+		throw new Error( 'Offset out of bounds' );
 	}
-	this.storeIndexes.splice( index, 1 );
+	this.storeIndexes.splice( offset, 1 );
 };
 
 /**
@@ -390,9 +390,9 @@ ve.dm.AnnotationSet.prototype.removeAt = function ( index ) {
  * @param {ve.dm.Annotation} annotation Annotation to remove
  */
 ve.dm.AnnotationSet.prototype.remove = function ( annotation ) {
-	var index = this.indexOf( annotation );
-	if ( index !== -1 ) {
-		this.storeIndexes.splice( index, 1 );
+	var offset = this.offsetOf( annotation );
+	if ( offset !== -1 ) {
+		this.storeIndexes.splice( offset, 1 );
 	}
 };
 
