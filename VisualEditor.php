@@ -160,6 +160,7 @@ $wgResourceModules += array(
 			'mediawiki.Title',
 			'mediawiki.Uri',
 			'mediawiki.util',
+			'user.options',
 		),
 		'messages' => array(
 			'accesskey-ca-editsource',
