@@ -5,16 +5,6 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-.ve-ui-icon-reference {
-	/* @embed */
-	background-image: url(images/icons/reference.png);
-}
-
-.ve-ui-icon-references {
-	/* @embed */
-	background-image: url(images/icons/references.png);
-}
-
 .ve-ui-icon-language {
 	/* @embed */
 	background-image: url(images/icons/language.png);
@@ -23,11 +13,6 @@
 .ve-ui-icon-math {
 	/* @embed */
 	background-image: url(images/icons/math.png);
-}
-
-.ve-ui-icon-template {
-	/* @embed */
-	background-image: url(images/icons/template.png);
 }
 
 .ve-ui-icon-parameter {
@@ -40,7 +25,22 @@
 	background-image: url(images/icons/parameter-set.png);
 }
 
+.ve-ui-icon-reference {
+	/* @embed */
+	background-image: url(images/icons/reference.png);
+}
+
+.ve-ui-icon-references {
+	/* @embed */
+	background-image: url(images/icons/references.png);
+}
+
 .ve-ui-icon-source {
 	/* @embed */
 	background-image: url(images/icons/source.png);
+}
+
+.ve-ui-icon-template {
+	/* @embed */
+	background-image: url(images/icons/template.png);
 }
