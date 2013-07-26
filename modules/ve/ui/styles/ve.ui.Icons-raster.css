@@ -15,6 +15,11 @@
 	background-image: url(images/icons/picture.png);
 }
 
+.ve-ui-icon-code {
+	/* @embed */
+	background-image: url(images/icons/code.png);
+}
+
 .ve-ui-icon-close {
 	/* @embed */
 	background-image: url(images/icons/close.png);
