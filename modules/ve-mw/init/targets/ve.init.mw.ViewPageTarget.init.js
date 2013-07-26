@@ -62,7 +62,7 @@
 	);
 
 	support = {
-		es5: (
+		es5: !!(
 			// It would be much easier to do a quick inline function that asserts "use strict"
 			// works, but since IE9 doesn't support strict mode (and we don't use strict mode) we
 			// have to instead list all the ES5 features we do use.
@@ -375,10 +375,21 @@
 		!mw.config.get( 'wgIsRedirect', !!uri.query.redirect ) &&
 
 		// User has 'visualeditor-enable' preference enabled (for alpha opt-in)
-		mw.user.options.get( 'visualeditor-enable' ) &&
-
 		// User has 'visualeditor-betatempdisable' preference disabled
-		!mw.user.options.get( 'visualeditor-betatempdisable' ) &&
+		// Because user.options is embedded in the HTML and cached per-page for anons on wikis
+		// with static caching (e.g. wgUseFileCache or reverse-proxy) ignore user.options for
+		// anons as it is likely outdated.
+		(
+			mw.user.isAnon() ?
+				( conf.defaultUserOptions.enable && !conf.defaultUserOptions.betatempdisable ) :
+				(
+					mw.user.options.get( 'visualeditor-enable', conf.defaultUserOptions.enable ) &&
+						!mw.user.options.get(
+							'visualeditor-betatempdisable',
+							conf.defaultUserOptions.betatempdisable
+						)
+				)
+		) &&
 
 		// Only in supported skins
 		$.inArray( mw.config.get( 'skin' ), conf.skins ) !== -1 &&
