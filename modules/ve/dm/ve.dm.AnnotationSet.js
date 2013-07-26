@@ -201,7 +201,18 @@ ve.dm.AnnotationSet.prototype.containsAllOf = function ( set ) {
  * @returns {number} Offset of annotation in the set, or -1 if annotation is not in the set.
  */
 ve.dm.AnnotationSet.prototype.offsetOf = function ( annotation ) {
-	return ve.indexOf( this.store.indexOfHash( ve.getHash( annotation ) ), this.getIndexes() );
+	return this.offsetOfIndex( this.store.indexOfHash( ve.getHash( annotation ) ) );
+};
+
+/**
+ * Get the offset of a given annotation in the set by store index.
+ *
+ * @method
+ * @param {number} storeIndex Store index of annotation to search for
+ * @returns {number} Offset of annotation in the set, or -1 if annotation is not in the set.
+ */
+ve.dm.AnnotationSet.prototype.offsetOfIndex = function ( storeIndex ) {
+	return ve.indexOf( storeIndex, this.getIndexes() );
 };
 
 /**
@@ -360,7 +371,16 @@ ve.dm.AnnotationSet.prototype.addSet = function ( set ) {
  * @param {ve.dm.Annotation} annotation Annotation to add
  */
 ve.dm.AnnotationSet.prototype.push = function ( annotation ) {
-	var storeIndex = this.getStore().index( annotation );
+	this.pushIndex( this.getStore().index( annotation ) );
+};
+
+/**
+ * Add an annotation at the end of the set by store index.
+ *
+ * @method
+ * @param {number} storeIndex Store index of annotation to add
+ */
+ve.dm.AnnotationSet.prototype.pushIndex = function ( storeIndex ) {
 	this.storeIndexes.push( storeIndex );
 };
 
@@ -379,6 +399,21 @@ ve.dm.AnnotationSet.prototype.removeAt = function ( offset ) {
 		throw new Error( 'Offset out of bounds' );
 	}
 	this.storeIndexes.splice( offset, 1 );
+};
+
+/**
+ * Remove a given annotation from the set by store index.
+ *
+ * If the annotation isn't in the set, nothing happens.
+ *
+ * @method
+ * @param {number} storeIndex Store index of annotation to remove
+ */
+ve.dm.AnnotationSet.prototype.removeIndex = function ( storeIndex ) {
+	var offset = this.offsetOfIndex( storeIndex );
+	if ( offset !== -1 ) {
+		this.storeIndexes.splice( offset, 1 );
+	}
 };
 
 /**

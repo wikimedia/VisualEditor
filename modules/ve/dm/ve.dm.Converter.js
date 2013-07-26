@@ -68,24 +68,24 @@ ve.dm.Converter.getDataContentFromText = function ( text, annotations ) {
  * @param {Function} close Callback called when an annotation is closed. Passed a ve.dm.Annotation.
  */
 ve.dm.Converter.openAndCloseAnnotations = function ( currentSet, targetSet, open, close ) {
-	var i, len, annotation, startClosingAt, currentSetOpen, targetSetOpen;
+	var i, len, index, startClosingAt, currentSetOpen, targetSetOpen;
 
 	// Close annotations as needed
 	// Go through annotationStack from bottom to top (low to high),
 	// and find the first annotation that's not in annotations.
 	targetSetOpen = targetSet.clone();
 	for ( i = 0, len = currentSet.getLength(); i < len; i++ ) {
-		annotation = currentSet.get( i );
+		index = currentSet.getIndex( i );
 		// containsComparableForSerialization is expensive,
 		// so do a simple contains check first
 		if (
-			!targetSetOpen.contains( annotation ) &&
-			!targetSetOpen.containsComparableForSerialization( annotation )
+			targetSetOpen.containsIndex( index ) ||
+			targetSetOpen.containsComparableForSerialization( currentSet.get( i ) )
 		) {
+			targetSetOpen.removeIndex( index );
+		} else {
 			startClosingAt = i;
 			break;
-		} else {
-			targetSetOpen.remove( annotation );
 		}
 	}
 	if ( startClosingAt !== undefined ) {
@@ -101,21 +101,21 @@ ve.dm.Converter.openAndCloseAnnotations = function ( currentSet, targetSet, open
 	currentSetOpen = currentSet.clone();
 	// Open annotations as needed
 	for ( i = 0, len = targetSet.getLength(); i < len; i++ ) {
-		annotation = targetSet.get( i );
+		index = targetSet.getIndex( i );
 		// containsComparableForSerialization is expensive,
 		// so do a simple contains check first
 		if (
-			!currentSetOpen.contains( annotation ) &&
-			!currentSetOpen.containsComparableForSerialization( annotation )
+			currentSetOpen.containsIndex( index ) ||
+			currentSetOpen.containsComparableForSerialization( targetSet.get( i ) )
 		) {
-			open( annotation );
-			// Add to currentClone
-			currentSet.push( annotation );
-		} else {
 			// If an annotation is already open remove it from the currentSetOpen list
 			// as it may exist multiple times in the targetSet, and so may need to be
 			// opened again
-			currentSetOpen.remove( annotation );
+			currentSetOpen.removeIndex( index );
+		} else {
+			open( targetSet.get( i ) );
+			// Add to currentClone
+			currentSet.pushIndex( index );
 		}
 	}
 };
