@@ -76,7 +76,12 @@ ve.dm.Converter.openAndCloseAnnotations = function ( currentSet, targetSet, open
 	targetSetOpen = targetSet.clone();
 	for ( i = 0, len = currentSet.getLength(); i < len; i++ ) {
 		annotation = currentSet.get( i );
-		if ( !targetSetOpen.containsComparableForSerialization( annotation ) ) {
+		// containsComparableForSerialization is expensive,
+		// so do a simple contains check first
+		if (
+			!targetSetOpen.contains( annotation ) &&
+			!targetSetOpen.containsComparableForSerialization( annotation )
+		) {
 			startClosingAt = i;
 			break;
 		} else {
@@ -97,7 +102,12 @@ ve.dm.Converter.openAndCloseAnnotations = function ( currentSet, targetSet, open
 	// Open annotations as needed
 	for ( i = 0, len = targetSet.getLength(); i < len; i++ ) {
 		annotation = targetSet.get( i );
-		if ( !currentSetOpen.containsComparableForSerialization( annotation ) ) {
+		// containsComparableForSerialization is expensive,
+		// so do a simple contains check first
+		if (
+			!currentSetOpen.contains( annotation ) &&
+			!currentSetOpen.containsComparableForSerialization( annotation )
+		) {
 			open( annotation );
 			// Add to currentClone
 			currentSet.push( annotation );
@@ -1203,7 +1213,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container ) {
 				text = '';
 			}
 			// Close any remaining annotations
-			ve.dm.Converter.openAndCloseAnnotations( annotationStack, new ve.dm.AnnotationSet(),
+			ve.dm.Converter.openAndCloseAnnotations( annotationStack, new ve.dm.AnnotationSet( this.store ),
 				openAnnotation, closeAnnotation
 			);
 			// Put the annotated nodes in the DOM
