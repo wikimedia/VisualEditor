@@ -8,41 +8,6 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-/* Configuration */
-
-// Array of ResourceLoader module names (strings) that should be loaded when VisualEditor is
-// loaded. Other extensions that extend VisualEditor should add to this array.
-$wgVisualEditorPluginModules = array();
-
-// URL to the Parsoid instance
-// MUST NOT end in a slash due to Parsoid bug
-$wgVisualEditorParsoidURL = 'http://localhost:8000';
-// Interwiki prefix to pass to the Parsoid instance
-// Parsoid will be called as $url/$prefix/$pagename
-$wgVisualEditorParsoidPrefix = 'localhost';
-// Timeout for HTTP requests to Parsoid in seconds
-$wgVisualEditorParsoidTimeout = 100;
-// Namespaces to enable VisualEditor in
-$wgVisualEditorNamespaces = $wgContentNamespaces;
-// Whether to use change tagging for VisualEditor edits
-$wgVisualEditorUseChangeTagging = true;
-// Whether to log analytic events using EventLogging
-$wgVisualEditorEnableEventLogging = false;
-// Whether to disable for logged-in users
-// This allows you to enable the 'visualeditor-enable' preference by default
-// but still disable VE for logged-out users (by setting this to false).
-$wgVisualEditorDisableForAnons = false;
-// Whether to enable incomplete experimental code
-$wgVisualEditorEnableExperimentalCode = false;
-// Whether to use the 'add' or 'replace' tabLayout
-// * add: Adds #ca-ve-edit.
-// * replace: Re-creates #ca-edit for VisualEditor and adds #ca-editsource.
-$wgVisualEditorTabLayout = 'replace';
-// Conduct an optional survey (the user can decline to answer) on the user's gender
-// upon signup.
-// Depends on GuidedTour and EventLogging extensions.
-$wgVisualEditorEnableGenderSurvey = false;
-
 /* Setup */
 
 $wgExtensionCredits['other'][] = array(
@@ -65,8 +30,35 @@ $wgExtensionCredits['other'][] = array(
 	'url' => 'https://www.mediawiki.org/wiki/Extension:VisualEditor',
 	'descriptionmsg' => 'visualeditor-desc',
 );
+
 $dir = dirname( __FILE__ ) . '/';
+
+// Register files
+$wgAutoloadClasses['ApiVisualEditor'] = $dir . 'ApiVisualEditor.php';
+$wgAutoloadClasses['ApiVisualEditorEdit'] = $dir . 'ApiVisualEditorEdit.php';
+$wgAutoloadClasses['VisualEditorHooks'] = $dir . 'VisualEditor.hooks.php';
+$wgAutoloadClasses['VisualEditorMessagesModule'] = $dir . 'VisualEditorMessagesModule.php';
 $wgExtensionMessagesFiles['VisualEditor'] = $dir . 'VisualEditor.i18n.php';
+
+// Register API modules
+$wgAPIModules['visualeditor'] = 'ApiVisualEditor';
+$wgAPIModules['visualeditoredit'] = 'ApiVisualEditorEdit';
+
+// Register Hooks
+$wgHooks['BeforePageDisplay'][] = 'VisualEditorHooks::onBeforePageDisplay';
+$wgHooks['GetPreferences'][] = 'VisualEditorHooks::onGetPreferences';
+$wgHooks['ListDefinedTags'][] = 'VisualEditorHooks::onListDefinedTags';
+$wgHooks['MakeGlobalVariablesScript'][] = 'VisualEditorHooks::onMakeGlobalVariablesScript';
+$wgHooks['ResourceLoaderGetConfigVars'][] = 'VisualEditorHooks::onResourceLoaderGetConfigVars';
+$wgHooks['ResourceLoaderTestModules'][] = 'VisualEditorHooks::onResourceLoaderTestModules';
+$wgExtensionFunctions[] = 'VisualEditorHooks::onSetup';
+
+// Bug 49604: Running split test in production if $wgVisualEditorEnableSplitTest is true.
+// This requires that GuidedTour and EventLogging are also enabled on the wiki.
+$wgHooks['AddNewAccount'][] = 'VisualEditorHooks::onAddNewAccount';
+$wgHooks['BeforeWelcomeCreation'][] = 'VisualEditorHooks::onBeforeWelcomeCreation';
+
+// Register resource modules
 
 $wgVisualEditorResourceTemplate = array(
 	'localBasePath' => dirname( __FILE__ ) . '/modules',
@@ -75,7 +67,6 @@ $wgVisualEditorResourceTemplate = array(
 );
 
 $wgResourceModules += array(
-
 	'rangy' => $wgVisualEditorResourceTemplate + array(
 		'scripts' => array(
 			'rangy/rangy-core-1.3.js',
@@ -83,16 +74,19 @@ $wgResourceModules += array(
 			'rangy/rangy-export.js',
 		),
 	),
+
 	'jquery.visibleText' => $wgVisualEditorResourceTemplate + array(
 		'scripts' => array(
 			'jquery/jquery.visibleText.js',
 		),
 	),
+
 	'oojs' => $wgVisualEditorResourceTemplate + array(
 		'scripts' => array(
 			'oojs/oo.js',
 		),
 	),
+
 	'unicodejs.wordbreak' => $wgVisualEditorResourceTemplate + array(
 		'scripts' => array(
 			'unicodejs/unicodejs.js',
@@ -147,16 +141,19 @@ $wgResourceModules += array(
 			'ext.visualEditor.viewPageTarget',
 		)
 	),
+
 	'ext.visualEditor.viewPageTarget.icons-raster' => $wgVisualEditorResourceTemplate + array(
 		'styles' => array(
 			've-mw/init/styles/ve.init.mw.ViewPageTarget.Icons-raster.css',
 		),
 	),
+
 	'ext.visualEditor.viewPageTarget.icons-vector' => $wgVisualEditorResourceTemplate + array(
 		'styles' => array(
 			've-mw/init/styles/ve.init.mw.ViewPageTarget.Icons-vector.css',
 		),
 	),
+
 	'ext.visualEditor.viewPageTarget.init' => $wgVisualEditorResourceTemplate + array(
 		'scripts' => 've-mw/init/targets/ve.init.mw.ViewPageTarget.init.js',
 		'styles' => 've-mw/init/styles/ve.init.mw.ViewPageTarget.init.css',
@@ -182,6 +179,7 @@ $wgResourceModules += array(
 		),
 		'position' => 'top',
 	),
+
 	'ext.visualEditor.viewPageTarget' => $wgVisualEditorResourceTemplate + array(
 		'scripts' => array(
 			've-mw/init/targets/ve.init.mw.ViewPageTarget.js',
@@ -238,6 +236,7 @@ $wgResourceModules += array(
 			'visualeditor-savedialog-identify-user',
 		),
 	),
+
 	'ext.visualEditor.base' => $wgVisualEditorResourceTemplate + array(
 		'scripts' => array(
 			// ve
@@ -258,6 +257,7 @@ $wgResourceModules += array(
 			'mediawiki.util',
 		),
 	),
+
 	'ext.visualEditor.mediawiki' => $wgVisualEditorResourceTemplate + array(
 		'scripts' => array(
 			// init
@@ -271,6 +271,7 @@ $wgResourceModules += array(
 			'ext.visualEditor.base',
 		),
 	),
+
 	'ext.visualEditor.standalone' => $wgVisualEditorResourceTemplate + array(
 		'scripts' => array(
 			// init
@@ -282,9 +283,11 @@ $wgResourceModules += array(
 			'ext.visualEditor.base',
 		),
 	),
+
 	'ext.visualEditor.specialMessages' => $wgVisualEditorResourceTemplate + array(
 		'class' => 'VisualEditorMessagesModule'
 	),
+
 	'ext.visualEditor.core' => $wgVisualEditorResourceTemplate + array(
 		'scripts' => array(
 			// ve
@@ -714,6 +717,7 @@ $wgResourceModules += array(
 			'colon-separator',
 		),
 	),
+
 	'ext.visualEditor.experimental' => $wgVisualEditorResourceTemplate + array(
 		'scripts' => array(
 			've-mw/dm/annotations/ve.dm.MWNowikiAnnotation.js',
@@ -734,6 +738,7 @@ $wgResourceModules += array(
 			'visualeditor-mwmathinspector-title',
 		),
 	),
+
 	'ext.visualEditor.icons-raster' => $wgVisualEditorResourceTemplate + array(
 		'styles' => array(
 			've/ui/styles/ve.ui.Icons-raster.css',
@@ -747,26 +752,47 @@ $wgResourceModules += array(
 		),
 	),
 );
-// Parsoid Wrapper API
-$wgAutoloadClasses['ApiVisualEditor'] = $dir . 'ApiVisualEditor.php';
-$wgAutoloadClasses['ApiVisualEditorEdit'] = $dir . 'ApiVisualEditorEdit.php';
-$wgAPIModules['visualeditor'] = 'ApiVisualEditor';
-$wgAPIModules['visualeditoredit'] = 'ApiVisualEditorEdit';
 
-// Integration Hooks
-$wgAutoloadClasses['VisualEditorHooks'] = $dir . 'VisualEditor.hooks.php';
-$wgHooks['BeforePageDisplay'][] = 'VisualEditorHooks::onBeforePageDisplay';
-$wgHooks['GetPreferences'][] = 'VisualEditorHooks::onGetPreferences';
-$wgHooks['ListDefinedTags'][] = 'VisualEditorHooks::onListDefinedTags';
-$wgHooks['MakeGlobalVariablesScript'][] = 'VisualEditorHooks::onMakeGlobalVariablesScript';
-$wgHooks['ResourceLoaderGetConfigVars'][] = 'VisualEditorHooks::onResourceLoaderGetConfigVars';
-$wgHooks['ResourceLoaderTestModules'][] = 'VisualEditorHooks::onResourceLoaderTestModules';
 
-// Bug 49604: Running split test in production if $wgVisualEditorEnableSplitTest is true.
-// This requires that GuidedTour and EventLogging are also enabled on the wiki.
-$wgHooks['AddNewAccount'][] = 'VisualEditorHooks::onAddNewAccount';
-$wgHooks['BeforeWelcomeCreation'][] = 'VisualEditorHooks::onBeforeWelcomeCreation';
+/* Configuration */
 
-$wgExtensionFunctions[] = 'VisualEditorHooks::onSetup';
+// Array of ResourceLoader module names (strings) that should be loaded when VisualEditor is
+// loaded. Other extensions that extend VisualEditor should add to this array.
+$wgVisualEditorPluginModules = array();
 
-$wgAutoloadClasses['VisualEditorMessagesModule'] = $dir . 'VisualEditorMessagesModule.php';
+// URL to the Parsoid instance
+// MUST NOT end in a slash due to Parsoid bug
+$wgVisualEditorParsoidURL = 'http://localhost:8000';
+
+// Interwiki prefix to pass to the Parsoid instance
+// Parsoid will be called as $url/$prefix/$pagename
+$wgVisualEditorParsoidPrefix = 'localhost';
+
+// Timeout for HTTP requests to Parsoid in seconds
+$wgVisualEditorParsoidTimeout = 100;
+
+// Namespaces to enable VisualEditor in
+$wgVisualEditorNamespaces = $wgContentNamespaces;
+
+// Whether to use change tagging for VisualEditor edits
+$wgVisualEditorUseChangeTagging = true;
+
+// Whether to log analytic events using EventLogging
+$wgVisualEditorEnableEventLogging = false;
+
+// Whether to disable for logged-in users
+// This allows you to enable the 'visualeditor-enable' preference by default
+// but still disable VE for logged-out users (by setting this to false).
+$wgVisualEditorDisableForAnons = false;
+
+// Whether to enable incomplete experimental code
+$wgVisualEditorEnableExperimentalCode = false;
+
+// Whether to use the 'add' or 'replace' tabLayout
+// * add: Adds #ca-ve-edit.
+// * replace: Re-creates #ca-edit for VisualEditor and adds #ca-editsource.
+$wgVisualEditorTabLayout = 'replace';
+// Conduct an optional survey (the user can decline to answer) on the user's gender
+// upon signup.
+// Depends on GuidedTour and EventLogging extensions.
+$wgVisualEditorEnableGenderSurvey = false;
