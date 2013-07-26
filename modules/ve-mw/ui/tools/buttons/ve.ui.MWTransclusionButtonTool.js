@@ -6,7 +6,7 @@
  */
 
 /**
- * Transclusion button tool.
+ * UserInterface MediaWiki transclusion button tool.
  *
  * @class
  * @extends ve.ui.DialogButtonTool

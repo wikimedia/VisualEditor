@@ -6,7 +6,7 @@
  */
 
 /**
- * Reference button tool.
+ * UserInterface MediaWiki reference list button tool.
  *
  * @class
  * @extends ve.ui.DialogButtonTool

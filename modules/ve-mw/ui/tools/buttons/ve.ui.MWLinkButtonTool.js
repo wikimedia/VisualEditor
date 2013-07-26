@@ -6,7 +6,7 @@
  */
 
 /**
- * Creates an ve.ui.MWLinkButtonTool object.
+ * UserInterface MediaWiki link button tool.
  *
  * @class
  * @extends ve.ui.LinkButtonTool

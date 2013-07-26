@@ -6,7 +6,7 @@
  */
 
 /**
- * Math button tool.
+ * UserInterface MediaWiki math button tool.
  *
  * @class
  * @extends ve.ui.InspectorButtonTool
