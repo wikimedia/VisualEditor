@@ -1111,11 +1111,11 @@ ve.init.mw.ViewPageTarget.prototype.setUpSurface = function ( doc, callback ) {
  * (it's asynchronous, so it may still be pending when you check).
  */
 ve.init.mw.ViewPageTarget.prototype.startSanityCheck = function () {
-	// We have to get the converted DOM now, before we unlock the surface and let the user edit,
-	// but we can defer the actual comparison
+	// We have to get a copy of the data now, before we unlock the surface and let the user edit,
+	// but we can defer the actual conversion and comparison
 	var viewPage = this,
 		doc = viewPage.surface.getModel().getDocument(),
-		data = ve.copyArray( doc.getFullData() ),
+		data = new ve.dm.ElementLinearData( doc.getStore().clone(), ve.copyArray( doc.getFullData() ) ),
 		oldDom = viewPage.doc,
 		d = $.Deferred();
 
@@ -1128,7 +1128,8 @@ ve.init.mw.ViewPageTarget.prototype.startSanityCheck = function () {
 		// <body> were ignored in the conversion. So compare each child separately.
 		var i,
 			len = oldDom.body.childNodes.length,
-			newDom = ve.dm.converter.getDomFromData( data, doc.getStore(), doc.getInternalList() );
+			newDoc = new ve.dm.Document( data, undefined, doc.getInternalList() ),
+			newDom = ve.dm.converter.getDomFromData( newDoc.getFullData(), newDoc.getStore(), newDoc.getInternalList() );
 
 		// Explicitly unlink our full copy of the original version of the document data
 		data = undefined;
