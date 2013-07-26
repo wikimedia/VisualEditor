@@ -2144,6 +2144,30 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/internalList' }
 		]
 	},
+	'whitespace surrounding metadata in a wrapper': {
+		'html': '<body><b>Foo</b> <!-- comment -->\n<i>Bar</i></body>',
+		'data': [
+			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+			[ 'F', [ ve.dm.example.bold ] ],
+			[ 'o', [ ve.dm.example.bold ] ],
+			[ 'o', [ ve.dm.example.bold ] ],
+			' ',
+			{
+				'type': 'alienMeta',
+				'attributes': {
+					'domElements': $( '<!-- comment -->' ).toArray()
+				}
+			},
+			{ 'type': '/alienMeta' },
+			'\n',
+			[ 'B', [ ve.dm.example.italic ] ],
+			[ 'a', [ ve.dm.example.italic ] ],
+			[ 'r', [ ve.dm.example.italic ] ],
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
+		]
+	},
 	'whitespace preservation in empty branch node': {
 		'html': '<body><table>\n\n</table></body>',
 		'data': [
