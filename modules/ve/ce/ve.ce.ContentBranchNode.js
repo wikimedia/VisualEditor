@@ -183,7 +183,7 @@ ve.ce.ContentBranchNode.prototype.renderContents = function () {
 	if ( ve.debug ) {
 		this.$.css( 'backgroundColor', '#F6F6F6' );
 		setTimeout( ve.bind( function () {
-			this.$.css( 'backgroundColor', 'transparent' );
+			this.$.css( 'backgroundColor', '' );
 		}, this ), 350 );
 	}
 };
