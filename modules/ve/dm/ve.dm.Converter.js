@@ -455,15 +455,17 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, wrapp
 			nextWhitespace = '';
 		}
 	}
+	// FIXME rewrite this horrible meta item / whitespace queueing/wrapping business
 	function outputWrappedMetaItems( whitespaceTreatment ) {
 		var i, len,
+			toInsert = [],
 			prev = wrappingParagraph;
 
 		for ( i = 0, len = wrappedMetaItems.length; i < len; i++ ) {
 			if ( wrappedMetaItems[i].type && wrappedMetaItems[i].type.charAt( 0 ) !== '/' ) {
 				if ( wrappedMetaItems[i].internal && wrappedMetaItems[i].internal.whitespace ) {
 					if ( whitespaceTreatment === 'restore' ) {
-						data = data.concat( ve.dm.Converter.getDataContentFromText(
+						toInsert = toInsert.concat( ve.dm.Converter.getDataContentFromText(
 								wrappedMetaItems[i].internal.whitespace[0], context.annotations
 						) );
 						delete wrappedMetaItems[i].internal;
@@ -473,7 +475,14 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, wrapp
 				}
 				prev = wrappedMetaItems[i];
 			}
-			data.push( wrappedMetaItems[i] );
+			toInsert.push( wrappedMetaItems[i] );
+		}
+		if ( wrappedWhitespace !== '' && whitespaceTreatment === 'restore' ) {
+			// If we have wrapped whitespace, insert the wrapped meta items before it
+			// This is horrible and this whole system desperately needs to be rewritten
+			ve.batchSplice( data, wrappedWhitespaceIndex, 0, toInsert );
+		} else {
+			data = data.concat( toInsert );
 		}
 		wrappedMetaItems = [];
 	}
