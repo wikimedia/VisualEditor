@@ -34,7 +34,7 @@ ve.dm.example.preprocessAnnotations = function ( data, store ) {
 	var i, key;
 
 	// Sanity check to make sure ve.dm.example data has not been passed in
-	// by reference. Always use ve.copyArray.
+	// by reference. Always use ve#copy.
 	for ( i in ve.dm.example ) {
 		if ( data === ve.dm.example[i] ) {
 			throw new Error( 'Example data passed to preprocessAnnotations by reference' );
@@ -118,7 +118,7 @@ ve.dm.example.createExampleDocumentFromObject = function ( name, store, object )
 		throw new Error( 'Example data \'' + name + '\' not found' );
 	}
 	doc = new ve.dm.Document(
-		ve.dm.example.preprocessAnnotations( ve.copyArray( object[name] ), store )
+		ve.dm.example.preprocessAnnotations( ve.copy( object[name] ), store )
 	);
 	// HACK internalList isn't populated when creating a document from data
 	if ( object[name].internalItems ) {

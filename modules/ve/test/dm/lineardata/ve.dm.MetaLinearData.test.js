@@ -11,7 +11,7 @@ QUnit.module( 've.dm.MetaLinearData' );
 
 QUnit.test( 'basic usage', 6, function ( assert ) {
 	var store = new ve.dm.IndexValueStore(),
-		data = new ve.dm.MetaLinearData( store, ve.copyArray( ve.dm.example.withMetaMetaData ) );
+		data = new ve.dm.MetaLinearData( store, ve.copy( ve.dm.example.withMetaMetaData ) );
 
 	assert.equal( data.getData(), data.data, 'getData: with no arguments returns data by reference' );
 	assert.deepEqualWithDomElements( data.getData(), ve.dm.example.withMetaMetaData, 'getData: full array matches source data' );

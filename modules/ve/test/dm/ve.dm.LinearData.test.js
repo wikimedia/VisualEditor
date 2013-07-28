@@ -11,7 +11,7 @@ QUnit.module( 've.dm.LinearData' );
 
 QUnit.test( 'basic usage', 7, function ( assert ) {
 	var store = new ve.dm.IndexValueStore(),
-		data = new ve.dm.LinearData( store, ve.copyArray( ve.dm.example.data ) );
+		data = new ve.dm.LinearData( store, ve.copy( ve.dm.example.data ) );
 
 	assert.equal( data.getData(), data.data, 'getData: with no arguments returns data by reference' );
 	assert.deepEqual( data.getData(), ve.dm.example.data, 'getData: full array matches source data' );
@@ -28,8 +28,8 @@ QUnit.test( 'slice(Object)/splice(Object)/batchSplice', 12, function ( assert ) 
 	var dataSlice, expectedDataSlice,
 		dataSplice, expectedDataSplice,
 		store = new ve.dm.IndexValueStore(),
-		data = new ve.dm.LinearData( store, ve.copyArray( ve.dm.example.data ) ),
-		expectedData = ve.copyArray( ve.dm.example.data );
+		data = new ve.dm.LinearData( store, ve.copy( ve.dm.example.data ) ),
+		expectedData = ve.copy( ve.dm.example.data );
 
 	assert.deepEqual( data.slice( 7, 22 ), expectedData.slice( 7, 22 ),
 		'slice: result matches slice'
@@ -49,8 +49,8 @@ QUnit.test( 'slice(Object)/splice(Object)/batchSplice', 12, function ( assert ) 
 	);
 
 	// reset data
-	data = new ve.dm.LinearData( store, ve.copyArray( ve.dm.example.data ) );
-	expectedData = ve.copyArray( ve.dm.example.data );
+	data = new ve.dm.LinearData( store, ve.copy( ve.dm.example.data ) );
+	expectedData = ve.copy( ve.dm.example.data );
 
 	assert.deepEqual( data.splice( 1, 3, 'x', 'y', 'z' ), expectedData.splice( 1, 3, 'x', 'y', 'z' ),
 		'splice: result matches splice'
@@ -70,8 +70,8 @@ QUnit.test( 'slice(Object)/splice(Object)/batchSplice', 12, function ( assert ) 
 	);
 
 	// reset data
-	data = new ve.dm.LinearData( store, ve.copyArray( ve.dm.example.data ) );
-	expectedData = ve.copyArray( ve.dm.example.data );
+	data = new ve.dm.LinearData( store, ve.copy( ve.dm.example.data ) );
+	expectedData = ve.copy( ve.dm.example.data );
 
 	assert.deepEqual(
 		data.batchSplice( 1, 3, ['x', 'y', 'z'] ),

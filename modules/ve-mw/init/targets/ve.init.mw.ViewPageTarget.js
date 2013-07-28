@@ -1123,7 +1123,7 @@ ve.init.mw.ViewPageTarget.prototype.startSanityCheck = function () {
 	// but we can defer the actual conversion and comparison
 	var viewPage = this,
 		doc = viewPage.surface.getModel().getDocument(),
-		data = new ve.dm.ElementLinearData( doc.getStore().clone(), ve.copyArray( doc.getFullData() ) ),
+		data = new ve.dm.ElementLinearData( doc.getStore().clone(), ve.copy( doc.getFullData() ) ),
 		oldDom = viewPage.doc,
 		d = $.Deferred();
 

@@ -10,7 +10,7 @@
  *
  * WARNING: The data parameter is passed by reference. Do not modify a data array after passing
  * it to this constructor, and do not construct multiple Documents with the same data array. If you
- * need to do these things, make a deep copy (ve.copyArray()) of the data array and operate on the
+ * need to do these things, make a deep copy (ve#copy) of the data array and operate on the
  * copy.
  *
  * @class
@@ -322,7 +322,7 @@ ve.dm.Document.prototype.getDocumentSlice = function ( rangeOrNode ) {
 	} else {
 		throw new Error( 'rangeOrNode must be a ve.Range or a ve.dm.Node' );
 	}
-	data = ve.copyArray( this.getFullData( range, true ) );
+	data = ve.copy( this.getFullData( range, true ) );
 	if ( range.start > listRange.start || range.end < listRange.end ) {
 		// The range does not include the entire internal list, so add it
 		data = data.concat( this.getFullData( listRange ) );
@@ -749,7 +749,7 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 					if ( openingStack.length > 0 ) {
 						popped = openingStack.pop();
 						parentType = popped.type;
-						reopenElements.push( ve.copyObject( popped ) );
+						reopenElements.push( ve.copy( popped ) );
 						// The opening was on openingStack, so we're closing a node that was opened
 						// within data. Don't track that on closingStack
 					} else {

@@ -371,7 +371,7 @@ ve.dm.Model.prototype.hasAttributes = function ( attributes, strict ) {
  * @returns {Object} Cloned element object
  */
 ve.dm.Model.prototype.getClonedElement = function () {
-	return ve.copyObject( this.element );
+	return ve.copy( this.element );
 };
 
 /**

@@ -1383,7 +1383,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container ) {
 					// we modify .veInternal.whitespace[1] in some cases
 					childDomElements[0].veInternal = ve.extendObject(
 						{ 'childDomElements': childDomElements },
-						ve.copyObject( dataElement.internal || {} )
+						dataElement.internal ? ve.copy( dataElement.internal ) : {}
 					);
 					// Add elements
 					for ( j = 0; j < childDomElements.length; j++ ) {

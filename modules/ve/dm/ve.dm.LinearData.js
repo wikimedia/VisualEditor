@@ -217,5 +217,5 @@ ve.dm.LinearData.prototype.getDataSlice = function ( range, deep ) {
 	// IE work-around: arr.slice( 0, undefined ) returns [] while arr.slice( 0 ) behaves correctly
 	data = end === undefined ? this.slice( start ) : this.slice( start, end );
 	// Return either the slice or a deep copy of the slice
-	return deep ? ve.copyArray( data ) : data;
+	return deep ? ve.copy( data ) : data;
 };

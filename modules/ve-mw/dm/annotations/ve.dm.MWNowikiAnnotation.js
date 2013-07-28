@@ -35,7 +35,7 @@ ve.dm.MWNowikiAnnotation.static.toDataElement = function ( domElements ) {
 	return {
 		'type': 'mwNowiki',
 		'attributes': {
-			'originalDomElements': ve.copyArray( domElements )
+			'originalDomElements': ve.copy( domElements )
 		}
 	};
 };
@@ -71,8 +71,8 @@ ve.dm.MWNowikiAnnotation.static.getHashObject = function ( dataElement ) {
 	var parentResult = ve.dm.Annotation.static.getHashObject( dataElement );
 	if ( parentResult.attributes.originalDomElements ) {
 		// If present, replace originalDomElements with a DOM summary
-		parentResult.attributes = ve.copyObject( parentResult.attributes );
-		parentResult.attributes.originalDomElements = ve.copyArray(
+		parentResult.attributes = ve.copy( parentResult.attributes );
+		parentResult.attributes.originalDomElements = ve.copy(
 			parentResult.attributes.originalDomElements, ve.convertDomElements
 		);
 	}

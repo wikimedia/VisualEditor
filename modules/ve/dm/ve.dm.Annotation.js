@@ -114,7 +114,7 @@ ve.dm.Annotation.prototype.getComparableHtmlAttributes = function () {
 	var comparableAttributes, attributes = this.getHtmlAttributes();
 
 	if ( attributes[0] ) {
-		comparableAttributes = ve.copyObject( attributes[0].values );
+		comparableAttributes = ve.copy( attributes[0].values );
 		delete comparableAttributes['data-parsoid'];
 		return comparableAttributes;
 	} else {

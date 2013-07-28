@@ -75,7 +75,7 @@ ve.dm.MWTransclusionNode.static.toDataElement = function ( domElements, converte
 		'type': type,
 		'attributes': {
 			'mw': mwData,
-			'originalDomElements': ve.copyArray( domElements ),
+			'originalDomElements': ve.copy( domElements ),
 			'originalMw': mwDataJSON
 		}
 	};

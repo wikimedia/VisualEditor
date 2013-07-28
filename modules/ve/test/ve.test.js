@@ -48,9 +48,7 @@ QUnit.test( 'isMixedIn', 11, function ( assert ) {
 
 // ve.compare: Tested upstream (OOJS)
 
-// ve.copyArray: Tested upstream (OOJS)
-
-// ve.copyObject: Tested upstream (OOJS)
+// ve.copy: Tested upstream (OOJS)
 
 // ve.isPlainObject: Tested upstream (jQuery)
 

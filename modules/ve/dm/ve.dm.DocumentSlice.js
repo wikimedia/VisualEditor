@@ -14,7 +14,7 @@
  */
 ve.dm.DocumentSlice = function VeDmDocumentSlice( data, range ) {
 	// Properties
-	this.data = ve.copyArray( data );
+	this.data = ve.copy( data );
 	this.range = range || new ve.Range( 0, data.length );
 };
 

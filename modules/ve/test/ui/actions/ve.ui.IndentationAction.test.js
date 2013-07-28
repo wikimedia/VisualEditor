@@ -15,8 +15,8 @@ function runIndentationChangeTest( assert, range, method, expectedSelection, exp
 		target = new ve.init.sa.Target( $( '#qunit-fixture' ), dom ),
 		surface = target.surface,
 		indentationAction = new ve.ui.IndentationAction( surface ),
-		data = ve.copyArray( surface.getModel().getDocument().getFullData() ),
-		originalData = ve.copyArray( data );
+		data = ve.copy( surface.getModel().getDocument().getFullData() ),
+		originalData = ve.copy( data );
 
 	expectedData( data );
 	if ( expectedOriginalData ) {

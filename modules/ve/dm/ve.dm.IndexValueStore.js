@@ -42,7 +42,7 @@ ve.dm.IndexValueStore.prototype.index = function ( value, hash, overwrite ) {
 			index = this.valueStore.length;
 		}
 		if ( ve.isArray( value ) ) {
-			this.valueStore[index] = ve.copyArray( value );
+			this.valueStore[index] = ve.copy( value );
 		} else if ( typeof value === 'object' ) {
 			this.valueStore[index] = ve.cloneObject( value );
 		} else {

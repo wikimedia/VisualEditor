@@ -254,7 +254,7 @@ ve.dm.Node.prototype.isInspectable = function () {
  * @returns {Object} Cloned element object
  */
 ve.dm.Node.prototype.getClonedElement = function () {
-	var clone = ve.copyObject( this.element );
+	var clone = ve.copy( this.element );
 	if ( clone.internal ) {
 		delete clone.internal.generated;
 		if ( ve.isEmptyObject( clone.internal ) ) {

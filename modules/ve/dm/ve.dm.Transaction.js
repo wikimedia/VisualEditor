@@ -452,11 +452,11 @@ ve.dm.Transaction.newFromContentBranchConversion = function ( doc, range, type, 
 				branchOuterRange.start - ( previousBranch ? previousBranchOuterRange.end : 0 )
 			);
 			// Replace the opening
-			tx.pushReplace( doc, branchOuterRange.start, 1, [ve.copyObject( opening )] );
+			tx.pushReplace( doc, branchOuterRange.start, 1, [ ve.copy( opening ) ] );
 			// Retain the contents
 			tx.pushRetain( branch.getLength() );
 			// Replace the closing
-			tx.pushReplace( doc, branchOuterRange.end - 1, 1, [ve.copyObject( closing )] );
+			tx.pushReplace( doc, branchOuterRange.end - 1, 1, [ ve.copy( closing ) ] );
 			// Remember this branch and its range for next time
 			previousBranch = branch;
 			previousBranchOuterRange = branchOuterRange;
@@ -540,7 +540,7 @@ ve.dm.Transaction.newFromWrap = function ( doc, range, unwrapOuter, wrapOuter, u
 		}
 		// Instead of putting in unwrapOuter as given, put it in the
 		// way it appears in the model so we pick up any attributes
-		tx.pushReplace( doc, range.start - unwrapOuter.length, unwrapOuter.length, ve.copyArray( wrapOuter ) );
+		tx.pushReplace( doc, range.start - unwrapOuter.length, unwrapOuter.length, ve.copy( wrapOuter ) );
 	}
 
 	if ( wrapEach.length > 0 || unwrapEach.length > 0 ) {
@@ -567,7 +567,7 @@ ve.dm.Transaction.newFromWrap = function ( doc, range, unwrapOuter, wrapOuter, u
 						}
 						// Instead of putting in unwrapEach as given, put it in the
 						// way it appears in the model, so we pick up any attributes
-						tx.pushReplace( doc, i, unwrapEach.length, ve.copyArray( wrapEach ) );
+						tx.pushReplace( doc, i, unwrapEach.length, ve.copy( wrapEach ) );
 
 						// Store this offset for later
 						startOffset = i;
@@ -581,7 +581,7 @@ ve.dm.Transaction.newFromWrap = function ( doc, range, unwrapOuter, wrapOuter, u
 						// Retain the contents of what we're wrapping
 						tx.pushRetain( i - startOffset + 1 - unwrapEach.length*2 );
 						// Replace the closing elements
-						tx.pushReplace( doc, i + 1 - unwrapEach.length, unwrapEach.length, ve.copyArray( closingWrapEach ) );
+						tx.pushReplace( doc, i + 1 - unwrapEach.length, unwrapEach.length, ve.copy( closingWrapEach ) );
 					}
 				}
 			}

@@ -21,7 +21,7 @@ QUnit.module( 've.init.Platform', {
 			ve.init.platform.messages = {};
 		} else if ( ve.init.mw && ve.init.platform instanceof ve.init.mw.Platform ) {
 			/*global mw */
-			this.mwMessagesValues = ve.copyObject( mw.messages.values );
+			this.mwMessagesValues = ve.copy( mw.messages.values );
 		}
 	},
 	teardown: function () {

@@ -34,7 +34,7 @@ ve.dm.AlienMetaItem.static.toDataElement = function ( domElements ) {
 	return {
 		'type': this.name,
 		'attributes': {
-			'domElements': ve.copyArray( domElements )
+			'domElements': ve.copy( domElements )
 		}
 	};
 };

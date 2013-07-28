@@ -46,7 +46,7 @@ ve.dm.AlienNode.static.toDataElement = function ( domElements, converter ) {
 	return {
 		'type': type,
 		'attributes': {
-			'domElements': ve.copyArray( domElements )
+			'domElements': ve.copy( domElements )
 		}
 	};
 };

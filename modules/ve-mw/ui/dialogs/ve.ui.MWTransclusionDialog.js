@@ -101,7 +101,7 @@ ve.ui.MWTransclusionDialog.prototype.onOpen = function () {
 
 	// Initialization
 	if ( this.node instanceof ve.ce.MWTransclusionNode ) {
-		this.transclusion.load( ve.copyObject( this.node.getModel().getAttribute( 'mw' ) ) );
+		this.transclusion.load( ve.copy( this.node.getModel().getAttribute( 'mw' ) ) );
 	} else {
 		this.transclusion.addPart(
 			new ve.dm.MWTemplatePlaceholderModel( this.transclusion, 'user' )

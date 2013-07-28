@@ -56,7 +56,7 @@ ve.dm.MWMathNode.static.toDataElement = function ( domElements ) {
 
 ve.dm.MWMathNode.static.toDomElements = function ( dataElement, doc ) {
 	var el = doc.createElement( 'img' ),
-		mwData = ve.copyObject( dataElement.attributes.mw ),
+		mwData = ve.copy( dataElement.attributes.mw ),
 		originalMw = dataElement.attributes.originalMw;
 
 	mwData.body.extsrc = dataElement.attributes.extsrc;

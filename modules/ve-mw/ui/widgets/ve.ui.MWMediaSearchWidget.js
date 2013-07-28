@@ -28,7 +28,7 @@ ve.ui.MWMediaSearchWidget = function VeUiMWMediaSearchWidget( config ) {
 	ve.ui.SearchWidget.call( this, config );
 
 	// Properties
-	this.sources = ve.copyArray( ve.init.platform.getMediaSources() );
+	this.sources = ve.copy( ve.init.platform.getMediaSources() );
 	this.size = config.size || 150;
 	this.queryTimeout = null;
 	this.titles = {};

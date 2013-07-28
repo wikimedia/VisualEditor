@@ -57,7 +57,7 @@ ve.dm.MWReferenceNode.static.toDataElement = function ( domElements, converter )
 		'attributes': {
 			'mw': mwData,
 			'originalMw': mwDataJSON,
-			'childDomElements': ve.copyArray( Array.prototype.slice.apply( domElements[0].childNodes ) ),
+			'childDomElements': ve.copy( Array.prototype.slice.apply( domElements[0].childNodes ) ),
 			'about': about,
 			'listIndex': listIndex,
 			'listGroup': listGroup,
@@ -80,7 +80,7 @@ ve.dm.MWReferenceNode.static.toDomElements = function ( dataElement, doc, conver
 	el.setAttribute( 'about', dataElement.attributes.about );
 	el.setAttribute( 'typeof', 'mw:Extension/ref' );
 
-	mwData = dataElement.attributes.mw ? ve.copyObject( dataElement.attributes.mw ) : {};
+	mwData = dataElement.attributes.mw ? ve.copy( dataElement.attributes.mw ) : {};
 	mwData.name = 'ref';
 
 	setContents = dataElement.attributes.contentsUsed || dataElement.attributes.listKey === null;

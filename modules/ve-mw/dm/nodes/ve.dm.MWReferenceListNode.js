@@ -45,7 +45,7 @@ ve.dm.MWReferenceListNode.static.toDataElement = function ( domElements ) {
 			'mw': mwData,
 			'originalMw': mwDataJSON,
 			'about': domElements[0].getAttribute( 'about' ),
-			'domElements': ve.copyArray( domElements ),
+			'domElements': ve.copy( domElements ),
 			'refGroup': refGroup,
 			'listGroup': listGroup
 		}
@@ -65,7 +65,7 @@ ve.dm.MWReferenceListNode.static.toDomElements = function ( dataElement, doc ) {
 		els = [ el ];
 	}
 
-	mwData = attribs.mw ? ve.copyObject( attribs.mw ) : {};
+	mwData = attribs.mw ? ve.copy( attribs.mw ) : {};
 
 	mwData.name = 'references';
 

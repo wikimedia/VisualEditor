@@ -40,9 +40,9 @@ QUnit.test( 'getDomElementsFromDataElement', 20, function ( assert ) {
 } );
 
 QUnit.test( 'getDataFromDom', function ( assert ) {
-	ve.test.utils.runGetDataFromDomTests( assert, ve.copyObject( ve.dm.example.domToDataCases ) );
+	ve.test.utils.runGetDataFromDomTests( assert, ve.copy( ve.dm.example.domToDataCases ) );
 } );
 
 QUnit.test( 'getDomFromData', function ( assert ) {
-	ve.test.utils.runGetDomFromDataTests( assert, ve.copyObject( ve.dm.example.domToDataCases ) );
+	ve.test.utils.runGetDomFromDataTests( assert, ve.copy( ve.dm.example.domToDataCases ) );
 } );

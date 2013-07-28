@@ -37,7 +37,7 @@ ve.dm.NodeFactory.prototype.getDataElement = function ( type, attributes ) {
 	if ( type in this.registry ) {
 		attributes = ve.extendObject( {}, this.registry[type].static.defaultAttributes, attributes );
 		if ( !ve.isEmptyObject( attributes ) ) {
-			element.attributes = ve.copyObject( attributes );
+			element.attributes = ve.copy( attributes );
 		}
 		return element;
 	}

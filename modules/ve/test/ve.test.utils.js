@@ -13,7 +13,7 @@ ve.test.utils.runIsolateTest = function ( assert, type, range, expected, label )
 		fragment = new ve.dm.SurfaceFragment( surface, range ),
 		data;
 
-	data = ve.copyArray( doc.getFullData() );
+	data = ve.copy( doc.getFullData() );
 	fragment.isolateAndUnwrap( type );
 	expected( data );
 
@@ -26,8 +26,8 @@ ve.test.utils.runFormatConverterTest = function ( assert, range, type, attribute
 		target = new ve.init.sa.Target( $( '#qunit-fixture' ), dom ),
 		surface = target.surface,
 		formatAction = new ve.ui.FormatAction( surface ),
-		data = ve.copyArray( surface.getModel().getDocument().getFullData() ),
-		originalData = ve.copyArray( data );
+		data = ve.copy( surface.getModel().getDocument().getFullData() ),
+		originalData = ve.copy( data );
 
 	expectedData( data );
 
@@ -108,7 +108,7 @@ ve.test.utils.runGetDomFromDataTests = function( assert, cases ) {
 			cases[msg].modify( cases[msg].data );
 		}
 		doc = new ve.dm.Document( ve.dm.example.preprocessAnnotations( cases[msg].data, store ) );
-		originalData = ve.copyArray( doc.getFullData() );
+		originalData = ve.copy( doc.getFullData() );
 		assert.equalDomElement(
 			ve.dm.converter.getDomFromData( doc.getFullData(), doc.getStore(), doc.getInternalList() ),
 			ve.createDocumentFromHtml( cases[msg].normalizedHtml || cases[msg].html ),

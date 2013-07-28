@@ -350,10 +350,10 @@ QUnit.test( 'commit/rollback', function ( assert ) {
 		// Generate original document
 		originalData = cases[msg].data || ve.dm.example.data;
 		originalDoc = new ve.dm.Document(
-			ve.dm.example.preprocessAnnotations( ve.copyArray( originalData ), store )
+			ve.dm.example.preprocessAnnotations( ve.copy( originalData ), store )
 		);
 		testDoc = new ve.dm.Document(
-			ve.dm.example.preprocessAnnotations( ve.copyArray( originalData ), store )
+			ve.dm.example.preprocessAnnotations( ve.copy( originalData ), store )
 		);
 
 		tx = new ve.dm.Transaction();
@@ -367,7 +367,7 @@ QUnit.test( 'commit/rollback', function ( assert ) {
 
 		if ( 'expected' in cases[msg] ) {
 			// Generate expected document
-			expectedData = ve.copyArray( originalData );
+			expectedData = ve.copy( originalData );
 			cases[msg].expected( expectedData );
 			expectedDoc = new ve.dm.Document(
 				ve.dm.example.preprocessAnnotations( expectedData, store )

@@ -147,9 +147,9 @@ QUnit.test( 'removeContent', 6, function ( assert ) {
 		expectedDoc = ve.dm.example.createExampleDocument(),
 		surface = new ve.dm.Surface( doc ),
 		fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 1, 56 ) ),
-		expectedData = ve.copyArray( expectedDoc.data.slice( 0, 1 ) )
-			.concat( ve.copyArray( expectedDoc.data.slice( 4, 5 ) ) )
-			.concat( ve.copyArray( expectedDoc.data.slice( 55 ) ) );
+		expectedData = ve.copy( expectedDoc.data.slice( 0, 1 ) )
+			.concat( ve.copy( expectedDoc.data.slice( 4, 5 ) ) )
+			.concat( ve.copy( expectedDoc.data.slice( 55 ) ) );
 	fragment.removeContent();
 	assert.deepEqual(
 		doc.getData(),
@@ -350,7 +350,7 @@ QUnit.test( 'rewrapNodes', 4, function ( assert ) {
 	// Rewrap paragrphs as headings
 	// The intermediate stage (plain text attached to the document) would be invalid
 	// if performed as an unwrap and a wrap
-	expectedData = ve.copyArray( doc.getData() );
+	expectedData = ve.copy( doc.getData() );
 
 	fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 59, 65 ) );
 	fragment.rewrapNodes( 1, [ { 'type': 'heading', 'attributes': { 'level': 1 } } ] );
@@ -369,7 +369,7 @@ QUnit.test( 'wrapAllNodes', 10, function ( assert ) {
 		originalDoc = ve.dm.example.createExampleDocument(),
 		surface = new ve.dm.Surface( doc ),
 		fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 55, 61 ) ),
-		expectedData = ve.copyArray( doc.getData() );
+		expectedData = ve.copy( doc.getData() );
 
 	// Make 2 paragraphs into 1 lists of 1 item with 2 paragraphs
 	fragment.wrapAllNodes(

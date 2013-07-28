@@ -114,13 +114,7 @@
 	 * @method
 	 * @inheritdoc OO#copy
 	 */
-	ve.copyArray = oo.copy;
-
-	/**
-	 * @method
-	 * @inheritdoc OO#copy
-	 */
-	ve.copyObject = oo.copy;
+	ve.copy = oo.copy;
 
 	/**
 	 * Copy an array of DOM elements, optionally into a different document.
@@ -803,7 +797,7 @@
 	};
 
 	/**
-	 * Callback for #copyArray and #copyObject to convert nodes to a comparable summary.
+	 * Callback for #copy to convert nodes to a comparable summary.
 	 *
 	 * @private
 	 * @param {Object} value Value in the object/array

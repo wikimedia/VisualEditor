@@ -15,8 +15,8 @@ function runListConverterTest( assert, html, method, style, range, expectedSelec
 		target = new ve.init.sa.Target( $( '#qunit-fixture' ), dom ),
 		surface = target.surface,
 		listAction = new ve.ui.ListAction( surface ),
-		data = ve.copyArray( surface.getModel().getDocument().getFullData() ),
-		originalData = ve.copyArray( data );
+		data = ve.copy( surface.getModel().getDocument().getFullData() ),
+		originalData = ve.copy( data );
 
 	expectedData( data );
 	if ( expectedOriginalData ) {

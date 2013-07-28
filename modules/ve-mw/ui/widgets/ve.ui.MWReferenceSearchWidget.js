@@ -111,7 +111,7 @@ ve.ui.MWReferenceSearchWidget.prototype.buildIndex = function () {
 		indexOrder = group.indexOrder;
 		for ( j = 0, jLen = indexOrder.length; j < jLen; j++ ) {
 			refnode = firstNodes[indexOrder[j]];
-			attr = ve.copyObject( refnode.getAttributes() );
+			attr = ve.copy( refnode.getAttributes() );
 			view = new ve.ce.InternalItemNode( internalList.getItemNode( attr.listIndex ) );
 
 			// HACK: PHP parser doesn't wrap single lines in a paragraph

@@ -60,7 +60,7 @@ QUnit.test( 'constructor', 8, function ( assert ) {
 
 QUnit.test( 'getData', 1, function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument(),
-		expectedData = ve.dm.example.preprocessAnnotations( ve.copyArray( ve.dm.example.data ) );
+		expectedData = ve.dm.example.preprocessAnnotations( ve.copy( ve.dm.example.data ) );
 	assert.deepEqualWithDomElements( doc.getData(), expectedData.getData() );
 } );
 
@@ -221,7 +221,7 @@ QUnit.test( 'getNodeFromOffset', function ( assert ) {
 
 QUnit.test( 'getDataFromNode', 3, function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument(),
-		expectedData = ve.dm.example.preprocessAnnotations( ve.copyArray( ve.dm.example.data ) );
+		expectedData = ve.dm.example.preprocessAnnotations( ve.copy( ve.dm.example.data ) );
 	assert.deepEqual(
 		doc.getDataFromNode( doc.getDocumentNode().getChildren()[0] ),
 		expectedData.slice( 1, 4 ),
