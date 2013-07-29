@@ -51,10 +51,18 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 		this, { 'contentChange': 'onContentChange', 'selectionChange': 'onSelectionChange' }
 	);
 	this.model.connect( this, { 'change': 'onChange', 'lock': 'onLock', 'unlock': 'onUnlock' } );
-	this.documentView.getDocumentNode().$.on( {
+
+	var $documentNode = this.documentView.getDocumentNode().$;
+	$documentNode.on( {
 		'focus': ve.bind( this.documentOnFocus, this ),
 		'blur': ve.bind( this.documentOnBlur, this )
 	} );
+	$documentNode.on( 'focus', 'a', function () {
+		// Opera triggers 'blur' on document node before any link is
+		// focused and we don't want that
+		$documentNode[0].focus();
+	} );
+
 	this.$.on( {
 		'cut': ve.bind( this.onCut, this ),
 		'copy': ve.bind( this.onCopy, this ),
