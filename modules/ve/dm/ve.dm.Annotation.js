@@ -165,7 +165,7 @@ ve.dm.Annotation.prototype.isGenerated = function () {
 ve.dm.Annotation.prototype.compareToForSerialization = function ( annotation ) {
 	// If both annotations were generated
 	if ( this.isGenerated() && annotation.isGenerated() ) {
-		return ve.compare( this, annotation );
+		return ve.compare( this.getHashObject(), annotation.getHashObject() );
 	}
 
 	return ve.compare(

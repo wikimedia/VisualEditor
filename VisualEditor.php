@@ -372,6 +372,7 @@ $wgResourceModules += array(
 			've-mw/dm/annotations/ve.dm.MWExternalLinkAnnotation.js',
 			've-mw/dm/annotations/ve.dm.MWInternalLinkAnnotation.js',
 			've/dm/annotations/ve.dm.TextStyleAnnotation.js',
+			've-mw/dm/annotations/ve.dm.MWNowikiAnnotation.js',
 
 			've/dm/metaitems/ve.dm.AlienMetaItem.js',
 			've-mw/dm/metaitems/ve.dm.MWAlienMetaItem.js',
@@ -446,6 +447,7 @@ $wgResourceModules += array(
 			've-mw/ce/annotations/ve.ce.MWExternalLinkAnnotation.js',
 			've-mw/ce/annotations/ve.ce.MWInternalLinkAnnotation.js',
 			've/ce/annotations/ve.ce.TextStyleAnnotation.js',
+			've-mw/ce/annotations/ve.ce.MWNowikiAnnotation.js',
 
 			// ui
 			've/ui/ve.ui.js',
@@ -724,9 +726,7 @@ $wgResourceModules += array(
 
 	'ext.visualEditor.experimental' => $wgVisualEditorResourceTemplate + array(
 		'scripts' => array(
-			've-mw/dm/annotations/ve.dm.MWNowikiAnnotation.js',
 			've-mw/dm/nodes/ve.dm.MWMathNode.js',
-			've-mw/ce/annotations/ve.ce.MWNowikiAnnotation.js',
 			've-mw/ce/nodes/ve.ce.MWMathNode.js',
 			've-mw/ui/inspectors/ve.ui.MWMathInspector.js',
 			've-mw/ui/tools/buttons/ve.ui.MWMathButtonTool.js',
