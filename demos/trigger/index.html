@@ -99,8 +99,16 @@
 			</tr>
 		</table>
 		<script src="../../modules/jquery/jquery.js"></script>
+		<script src="../../modules/oojs/oo.js"></script>
+		<script src="../../modules/unicodejs/unicodejs.js"></script>
+		<script src="../../modules/unicodejs/unicodejs.graphemebreak.js"></script>
+		<script src="../../modules/unicodejs/unicodejs.graphemebreakproperties.js"></script>
+		<script src="../../modules/unicodejs/unicodejs.textstring.js"></script>
+		<script src="../../modules/unicodejs/unicodejs.wordbreak.js"></script>
+		<script src="../../modules/unicodejs/unicodejs.wordbreakproperties.js"></script>
 		<script src="../../modules/ve/ve.js"></script>
-		<script src="../../modules/ve/ve.Trigger.js"></script>
+		<script src="../../modules/ve/ui/ve.ui.js"></script>
+		<script src="../../modules/ve/ui/ve.ui.Trigger.js"></script>
 		<script>
 			function setTrigger( trigger ) {
 				var i, len, key,
@@ -119,9 +127,9 @@
 				$primary = $( '#primary' ),
 				$modifiers = $( '#modifiers' ),
 				$aliases = $( '#aliases' ),
-				primaryKeys = ve.Trigger.static.primaryKeys,
-				modifierKeys = ve.Trigger.static.modifierKeys,
-				keyAliases = ve.Trigger.static.keyAliases;
+				primaryKeys = ve.ui.Trigger.static.primaryKeys,
+				modifierKeys = ve.ui.Trigger.static.modifierKeys,
+				keyAliases = ve.ui.Trigger.static.keyAliases;
 
 			for ( i = 0, len = modifierKeys.length; i < len; i++ ) {
 				$modifiers.append(
@@ -155,7 +163,7 @@
 			$( 'body' ).on( {
 				'keydown': function ( e ) {
 					$( '.active' ).removeClass( 'active' );
-					setTrigger( new ve.Trigger( e ) );
+					setTrigger( new ve.ui.Trigger( e ) );
 					e.preventDefault();
 				}
 			} );
@@ -182,7 +190,7 @@
 						$( '.active' ).each( function () {
 							parts.push( $(this).attr( 'rel' ) );
 						} );
-						setTrigger( new ve.Trigger( parts.join( '+' ) ) );
+						setTrigger( new ve.ui.Trigger( parts.join( '+' ) ) );
 					}
 				}
 			} );
