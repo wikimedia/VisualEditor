@@ -14,7 +14,7 @@ class VisualEditorHooks {
 
 	public static function onSetup() {
 		global $wgVisualEditorEnableEventLogging, $wgResourceModules,
-			$wgVisualEditorEnableGenderSurvey, $wgVisualEditorResourceTemplate;
+			$wgVisualEditorResourceTemplate;
 
 		if ( $wgVisualEditorEnableEventLogging ) {
 			if ( class_exists( 'ResourceLoaderSchemaModule' ) ) {
@@ -25,14 +25,6 @@ class VisualEditorHooks {
 					'schema' => 'Edit',
 					'revision' => 5570274,
 				);
-
-				if ( $wgVisualEditorEnableGenderSurvey ) {
-					$wgResourceModules['schema.GenderSurvey'] = array(
-						'class' => 'ResourceLoaderSchemaModule',
-						'schema' => 'GenderSurvey',
-						'revision' => 5607845,
-					);
-				}
 			} else {
 				wfWarn( 'VisualEditor is configured to use EventLogging, but the extension is ' .
 						' not available. Disabling wgVisualEditorEnableEventLogging.' );
@@ -93,23 +85,6 @@ class VisualEditorHooks {
 		}
 
 		$output->addModules( array( 'ext.visualEditor.viewPageTarget.init' ) );
-
-		return true;
-	}
-
-	// Temporary survey in conjuction with split test (bug 49604)
-	// To be removed once no longer needed.
-	// Depends on GuidedTour and EventLogging
-	public static function onBeforeWelcomeCreation( &$welcomeCreationMsg, &$injectHtml ) {
-		global $wgOut, $wgVisualEditorEnableGenderSurvey;
-
-		if ( $wgVisualEditorEnableGenderSurvey ) {
-			$wgOut->addModules( array(
-				'ext.guidedTour.lib',
-				'ext.guidedTour.tour.vegendersurvey',
-				'ext.visualEditor.genderSurvey'
-			) );
-		}
 
 		return true;
 	}
