@@ -59,7 +59,7 @@ $wgHooks['AddNewAccount'][] = 'VisualEditorHooks::onAddNewAccount';
 $wgHooks['BeforeWelcomeCreation'][] = 'VisualEditorHooks::onBeforeWelcomeCreation';
 
 // Set default values for new preferences
-$wgDefaultUserOptions['visualeditor-enable'] = 1;
+$wgDefaultUserOptions['visualeditor-enable'] = 0;
 $wgDefaultUserOptions['visualeditor-betatempdisable'] = 0;
 
 // Register resource modules
