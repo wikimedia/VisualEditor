@@ -1059,51 +1059,57 @@ ve.init.mw.ViewPageTarget.prototype.setupToolbarBetaNotice = function () {
  * @param {Function} [callback] Callback to call when done
  */
 ve.init.mw.ViewPageTarget.prototype.setUpSurface = function ( doc, callback ) {
-	setTimeout( ve.bind( function () {
+	var target = this;
+	setTimeout( function () {
 		// Build linmod
 		var store = new ve.dm.IndexValueStore(),
 			internalList = new ve.dm.InternalList(),
 			data = ve.dm.converter.getDataFromDom( doc, store, internalList );
-		setTimeout( ve.bind( function () {
+		setTimeout( function () {
 			// Build DM tree
 			var dmDoc = new ve.dm.Document( data, undefined, internalList );
-			setTimeout( ve.bind( function () {
+			setTimeout( function () {
 				// Create ui.Surface (also creates ce.Surface and dm.Surface and builds CE tree)
-				this.surface = new ve.ui.Surface( dmDoc, this.surfaceOptions );
-				this.surface.$.addClass( 've-init-mw-viewPageTarget-surface' );
-				setTimeout( ve.bind( function () {
+				target.surface = new ve.ui.Surface( dmDoc, target.surfaceOptions );
+				target.surface.$.addClass( 've-init-mw-viewPageTarget-surface' );
+				setTimeout( function () {
 					// Initialize surface
-					this.surface.connect( this, { 'toolbarPosition': 'onSurfaceToolbarPosition' } );
-					this.surface.getContext().hide();
-					this.$document = this.surface.$.find( '.ve-ce-documentNode' );
-					this.surface.getModel().connect( this, { 'transact': 'onSurfaceModelTransact' } );
-					this.surface.getModel().connect( this, { 'change': 'onSurfaceModelChange' } );
-					this.surface.getModel().connect( this, { 'history': 'updateToolbarSaveButtonState' } );
-					this.$.append( this.surface.$ );
-					this.setUpToolbar();
-					this.transformPageTitle();
-					this.changeDocumentTitle();
+					target.surface.connect( target, { 'toolbarPosition': 'onSurfaceToolbarPosition' } );
+					target.surface.getContext().hide();
+					target.$document = target.surface.$.find( '.ve-ce-documentNode' );
+					target.surface.getModel().connect( target, {
+						'transact': 'onSurfaceModelTransact',
+						'change': 'onSurfaceModelChange',
+						'history': 'updateToolbarSaveButtonState'
+					} );
+					target.$.append( target.surface.$ );
+					target.setUpToolbar();
+					target.transformPageTitle();
+					target.changeDocumentTitle();
 
 					// Update UI
-					this.hidePageContent();
-					this.hideSpinner();
-					this.active = true;
-					this.$document.attr( {
+					target.hidePageContent();
+					target.hideSpinner();
+					target.active = true;
+					target.$document.attr( {
 						'lang': mw.config.get( 'wgVisualEditor' ).pageLanguageCode,
 						'dir': mw.config.get( 'wgVisualEditor' ).pageLanguageDir
 					} );
 
 					// Add appropriately mw-content-ltr or mw-content-rtl class
-					this.surface.view.$.addClass(
+					target.surface.view.$.addClass(
 						'mw-content-' + mw.config.get( 'wgVisualEditor' ).pageLanguageDir
 					);
-					this.surface.initialize();
+
+					// Now that the surface is attached to the document and ready,
+					// let it initialize itself
+					target.surface.initialize();
 
 					setTimeout( callback );
-				}, this ) );
-			}, this ) );
-		}, this ) );
-	}, this ) );
+				} );
+			} );
+		} );
+	} );
 };
 
 /**
