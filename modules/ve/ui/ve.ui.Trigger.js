@@ -83,7 +83,7 @@ ve.ui.Trigger.static.modifierKeys = ['meta', 'ctrl', 'alt', 'shift'];
 ve.ui.Trigger.static.primaryKeys = [
 	// Special keys
 	'backspace', 'tab', 'enter', 'escape', 'page-up', 'page-down', 'end', 'home', 'left', 'up',
-	'right', 'down', 'delete',
+	'right', 'down', 'delete', 'clear',
 	// Numbers
 	'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
 	// Letters
@@ -148,8 +148,8 @@ ve.ui.Trigger.static.keyAliases = {
  */
 ve.ui.Trigger.static.primaryKeyMap = {
 	// Special keys
-	8: 'backspace', 9: 'tab', 13: 'enter', 27: 'escape', 33: 'page-up', 34: 'page-down', 35: 'end',
-	36: 'home', 37: 'left', 38: 'up', 39: 'right', 40: 'down', 46: 'delete',
+	8: 'backspace', 9: 'tab', 12: 'clear', 13: 'enter', 27: 'escape', 33: 'page-up', 34: 'page-down',
+	35: 'end', 36: 'home', 37: 'left', 38: 'up', 39: 'right', 40: 'down', 46: 'delete',
 	// Numbers
 	48: '0', 49: '1', 50: '2', 51: '3', 52: '4', 53: '5', 54: '6', 55: '7', 56: '8', 57: '9',
 	// Punctuation
