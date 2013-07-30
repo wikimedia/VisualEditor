@@ -305,6 +305,7 @@ ve.dm.TransactionProcessor.processors.replace = function ( op ) {
 		insert = this.reversed ? op.remove : op.insert,
 		removeMetadata = this.reversed ? op.insertMetadata : op.removeMetadata,
 		insertMetadata = this.reversed ? op.removeMetadata : op.insertMetadata,
+		retainMetadata = op.retainMetadata || 0,
 		removeLinearData = new ve.dm.ElementLinearData( this.document.getStore(), remove ),
 		insertLinearData = new ve.dm.ElementLinearData( this.document.getStore(), insert ),
 		removeIsContent = removeLinearData.isContentData(),
@@ -324,14 +325,14 @@ ve.dm.TransactionProcessor.processors.replace = function ( op ) {
 		scopeStart,
 		scopeEnd,
 		opAdjustment = 0,
-		opRemove, opInsert, opRemoveMetadata, opInsertMetadata;
+		opRemove, opInsert, opRemoveMetadata, opInsertMetadata, opRetainMetadata;
 	if ( removeIsContent && insertIsContent ) {
 		// Content replacement
 		// Update the linear model
 		this.document.data.batchSplice( this.cursor, remove.length, insert );
 		// Keep the meta linear model in sync
 		if ( removeMetadata !== undefined ) {
-			this.document.metadata.batchSplice( this.cursor + op.retainMetadata, removeMetadata.length, insertMetadata );
+			this.document.metadata.batchSplice( this.cursor + retainMetadata, removeMetadata.length, insertMetadata );
 		} else if ( insert.length > remove.length ) {
 			this.document.metadata.batchSplice( this.cursor + remove.length, 0, new Array( insert.length - remove.length ) );
 		} else if ( insert.length < remove.length ) {
@@ -381,13 +382,14 @@ ve.dm.TransactionProcessor.processors.replace = function ( op ) {
 			if ( operation.type === 'replace' ) {
 				opRemove = this.reversed ? operation.insert : operation.remove;
 				opInsert = this.reversed ? operation.remove : operation.insert;
-				opRemoveMetadata = this.reversed ? operation.insertMetadata : operation.removeMetadata,
-				opInsertMetadata = this.reversed ? operation.removeMetadata : operation.insertMetadata,
+				opRemoveMetadata = this.reversed ? operation.insertMetadata : operation.removeMetadata;
+				opInsertMetadata = this.reversed ? operation.removeMetadata : operation.insertMetadata;
+				opRetainMetadata = operation.retainMetadata || 0;
 				// Update the linear model
 				this.document.data.batchSplice( this.cursor, opRemove.length, opInsert );
 				// Keep the meta linear model in sync
 				if ( opRemoveMetadata !== undefined ) {
-					this.document.metadata.batchSplice( this.cursor + op.retainMetadata, opRemoveMetadata.length, opInsertMetadata );
+					this.document.metadata.batchSplice( this.cursor + opRetainMetadata, opRemoveMetadata.length, opInsertMetadata );
 				} else if ( opInsert.length > opRemove.length ) {
 					this.document.metadata.batchSplice( this.cursor + opRemove.length, 0, new Array( opInsert.length - opRemove.length ) );
 				} else if ( opInsert.length < opRemove.length ) {
