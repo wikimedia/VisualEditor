@@ -16,6 +16,8 @@ class VisualEditorHooks {
 		global $wgVisualEditorEnableEventLogging, $wgResourceModules,
 			$wgVisualEditorEnableGenderSurvey;
 
+		wfUseMW( '1.22alpha' );
+
 		if ( $wgVisualEditorEnableEventLogging ) {
 			if ( class_exists( 'ResourceLoaderSchemaModule' ) ) {
 				// EventLogging schema module for logging edit events.
