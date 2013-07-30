@@ -149,12 +149,27 @@ ve.ce.MWReferenceListNode.prototype.update = function () {
 			index = nodes.indexOrder[i];
 			firstNode = nodes.firstNodes[index];
 
-			$li = $( '<li>' );
-
 			key = internalList.keys[index];
 			keyedNodes = nodes.keyedNodes[key] || [];
-			for ( j = 0, jLen = keyedNodes.length; j < jLen; j++ ) {
-				if ( keyedNodes.length > 1 ) {
+			// Exclude references defined inside the reference list node
+			/*jshint loopfunc:true */
+			keyedNodes = keyedNodes.filter( function ( node ) {
+				while ( ( node = node.parent ) && node !== null ) {
+					if ( node instanceof ve.dm.MWReferenceListNode ) {
+						return false;
+					}
+				}
+				return true;
+			} );
+
+			if ( !keyedNodes.length ) {
+				continue;
+			}
+
+			$li = $( '<li>' );
+
+			if ( keyedNodes.length > 1 ) {
+				for ( j = 0, jLen = keyedNodes.length; j < jLen; j++ ) {
 					$li.append(
 						$( '<sup>' ).append(
 							$( '<a>' ).text( ( i + 1 ) + '.' + j )
