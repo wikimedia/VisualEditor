@@ -39,7 +39,7 @@ ve.ui.MWReferenceDialog.static.toolbarTools = [
 ];
 
 ve.ui.MWReferenceDialog.static.surfaceCommands = [
-	'bold', 'italic', 'mwLink', 'undo', 'redo'
+	'bold', 'italic', 'mwLink', 'undo', 'redo', 'clear'
 ];
 
 /* Methods */

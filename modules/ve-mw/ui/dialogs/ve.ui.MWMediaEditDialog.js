@@ -39,7 +39,7 @@ ve.ui.MWMediaEditDialog.static.toolbarTools = [
 ];
 
 ve.ui.MWMediaEditDialog.static.surfaceCommands = [
-	'bold', 'italic', 'mwLink', 'undo', 'redo'
+	'bold', 'italic', 'mwLink', 'undo', 'redo', 'clear'
 ];
 
 /* Methods */
