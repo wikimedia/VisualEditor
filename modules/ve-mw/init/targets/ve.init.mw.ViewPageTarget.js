@@ -852,7 +852,8 @@ ve.init.mw.ViewPageTarget.prototype.onSurfaceModelChange = function ( tx, range 
 
 	if ( text.match( /\[\[|\{\{|''|<nowiki|~~~|^==|^\*|^\#/ ) ) {
 		mw.notify(
-			$.parseHTML( ve.init.platform.getParsedMessage( 'visualeditor-wikitext-warning' ) ),
+			$( $.parseHTML( ve.init.platform.getParsedMessage( 'visualeditor-wikitext-warning' ) ) )
+				.filter( 'a' ).attr( 'target', '_blank ' ).end(),
 			{
 				'title': ve.msg( 'visualeditor-wikitext-warning-title' ),
 				'tag': 'visualeditor-wikitext-warning',
