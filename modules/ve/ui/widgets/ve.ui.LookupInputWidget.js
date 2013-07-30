@@ -143,7 +143,7 @@ ve.ui.LookupInputWidget.prototype.populateLookupMenu = function () {
  */
 ve.ui.LookupInputWidget.prototype.initializeLookupMenuSelection = function () {
 	if ( !this.lookupMenu.getSelectedItem() ) {
-		this.lookupMenu.selectItem( this.lookupMenu.getFirstSelectableItem(), true );
+		this.lookupMenu.intializeSelection( this.lookupMenu.getFirstSelectableItem() );
 	}
 	this.lookupMenu.highlightItem( this.lookupMenu.getSelectedItem() );
 };

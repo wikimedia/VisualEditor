@@ -130,16 +130,3 @@ ve.ui.MWTitleInputWidget.prototype.getLookupMenuItemsFromData = function ( data 
 
 	return items;
 };
-
-/**
- * Set selection in the lookup menu with current information.
- *
- * @method
- * @chainable
- */
-ve.ui.MWTitleInputWidget.prototype.initializeLookupMenuSelection = function () {
-	// Attempt to maintain selection on current annotation
-	this.lookupMenu.selectItem( this.lookupMenu.getItemFromData( this.annotation ), true );
-	// Parent method
-	ve.ui.LookupInputWidget.prototype.initializeLookupMenuSelection.call( this );
-};

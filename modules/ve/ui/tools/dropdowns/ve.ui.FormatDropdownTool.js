@@ -164,10 +164,10 @@ ve.ui.FormatDropdownTool.prototype.onUpdateState = function ( nodes ) {
 		}
 	}
 	if ( match ) {
-		this.menu.selectItem( match, true );
+		this.menu.intializeSelection( match );
 		this.setLabel( match.$label.text() );
 	} else {
-		this.menu.selectItem( null, true );
+		this.menu.intializeSelection( null );
 		this.setLabel();
 	}
 };

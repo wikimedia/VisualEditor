@@ -397,6 +397,14 @@
 	display: block;
 }
 
+.ve-ui-menuItemWidget.ve-ui-optionWidget-selected {
+	background-color: transparent;
+}
+
+.ve-ui-menuItemWidget.ve-ui-optionWidget-highlighted {
+	background-color: #e1f3ff;
+}
+
 /* ve.ui.MenuSectionItemWidget */
 
 .ve-ui-menuSectionItemWidget {

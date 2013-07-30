@@ -128,11 +128,13 @@ ve.ui.MenuWidget.prototype.unbindKeydownListener = function () {
  *
  * @method
  * @param {ve.ui.OptionWidget} [item] Item to select, omit to deselect all
- * @param {boolean} [silent=false] Update UI only, do not emit `select` event
  * @chainable
  */
-ve.ui.MenuWidget.prototype.selectItem = function ( item, silent ) {
-	if ( !this.disabled && !silent ) {
+ve.ui.MenuWidget.prototype.selectItem = function ( item ) {
+	// Parent method
+	ve.ui.SelectWidget.prototype.selectItem.call( this, item );
+
+	if ( !this.disabled ) {
 		if ( item ) {
 			this.disabled = true;
 			item.flash( ve.bind( function () {
@@ -143,8 +145,6 @@ ve.ui.MenuWidget.prototype.selectItem = function ( item, silent ) {
 			this.hide();
 		}
 	}
-
-	ve.ui.SelectWidget.prototype.selectItem.call( this, item, silent );
 
 	return this;
 };
@@ -162,6 +162,7 @@ ve.ui.MenuWidget.prototype.selectItem = function ( item, silent ) {
 ve.ui.MenuWidget.prototype.addItems = function ( items, index ) {
 	var i, len, item;
 
+	// Parent method
 	ve.ui.SelectWidget.prototype.addItems.call( this, items, index );
 
 	for ( i = 0, len = items.length; i < len; i++ ) {

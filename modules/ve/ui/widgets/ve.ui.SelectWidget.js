@@ -93,7 +93,7 @@ ve.ui.SelectWidget.prototype.onMouseDown = function ( e ) {
 		this.pressed = true;
 		item = this.getTargetItem( e );
 		if ( item && item.isSelectable() ) {
-			this.selectItem( item, true );
+			this.intializeSelection( item );
 			this.selecting = item;
 			$( this.$$.context ).one( 'mouseup', ve.bind( this.onMouseUp, this ) );
 		}
@@ -130,7 +130,7 @@ ve.ui.SelectWidget.prototype.onMouseMove = function ( e ) {
 	if ( !this.disabled && this.pressed ) {
 		item = this.getTargetItem( e );
 		if ( item && item !== this.selecting && item.isSelectable() ) {
-			this.selectItem( item, true );
+			this.intializeSelection( item );
 			this.selecting = item;
 		}
 	}
@@ -244,25 +244,16 @@ ve.ui.SelectWidget.prototype.getItemFromData = function ( data ) {
  *
  * @method
  * @param {ve.ui.OptionWidget} [item] Item to highlight, omit to deselect all
- * @param {boolean} [silent=false] Update UI only, do not emit `highlight` event
  * @emits highlight
  * @chainable
  */
-ve.ui.SelectWidget.prototype.highlightItem = function ( item, silent ) {
+ve.ui.SelectWidget.prototype.highlightItem = function ( item ) {
 	var i, len;
 
-	item = this.getItemFromData( item && item.getData() );
-	if ( item ) {
-		item.setHighlighted( true );
-	}
 	for ( i = 0, len = this.items.length; i < len; i++ ) {
-		if ( this.items[i] !== item ) {
-			this.items[i].setHighlighted( false );
-		}
+		this.items[i].setHighlighted( this.items[i] === item );
 	}
-	if ( !silent ) {
-		this.emit( 'highlight', item );
-	}
+	this.emit( 'highlight', item );
 
 	return this;
 };
@@ -272,24 +263,36 @@ ve.ui.SelectWidget.prototype.highlightItem = function ( item, silent ) {
  *
  * @method
  * @param {ve.ui.OptionWidget} [item] Item to select, omit to deselect all
- * @param {boolean} [silent=false] Update UI only, do not emit `select` event
  * @emits select
  * @chainable
  */
-ve.ui.SelectWidget.prototype.selectItem = function ( item, silent ) {
+ve.ui.SelectWidget.prototype.selectItem = function ( item ) {
 	var i, len;
 
-	item = this.getItemFromData( item && item.getData() );
-	if ( item ) {
-		item.setSelected( true );
-	}
 	for ( i = 0, len = this.items.length; i < len; i++ ) {
-		if ( this.items[i] !== item ) {
-			this.items[i].setSelected( false );
-		}
+		this.items[i].setSelected( this.items[i] === item );
 	}
-	if ( !silent ) {
-		this.emit( 'select', item );
+	this.emit( 'select', item );
+
+	return this;
+};
+
+/**
+ * Setup selection and highlighting.
+ *
+ * This should be used to synchronize the UI with the model without emitting events that would in
+ * turn update the model.
+ *
+ * @param {ve.ui.OptionWidget} [item] Item to select
+ * @chainable
+ */
+ve.ui.SelectWidget.prototype.intializeSelection = function( item ) {
+	var i, len, selected;
+
+	for ( i = 0, len = this.items.length; i < len; i++ ) {
+		selected = this.items[i] === item;
+		this.items[i].setSelected( selected );
+		this.items[i].setHighlighted( selected );
 	}
 
 	return this;
