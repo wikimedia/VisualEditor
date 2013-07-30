@@ -456,13 +456,6 @@ ve.init.mw.ViewPageTarget.prototype.onSaveError = function ( jqXHR, status, data
 		return;
 	}
 
-	if ( data.error ) {
-		ve.init.mw.Target.onSerializeError.call(
-			this, null, 'Unsuccessful request: ' + data.error.info, null
-		);
-		return;
-	}
-
 	editApi = data && data.visualeditoredit && data.visualeditoredit.edit;
 
 	// Handle spam blacklist error (either from core or from Extension:SpamBlacklist)
@@ -481,7 +474,7 @@ ve.init.mw.ViewPageTarget.prototype.onSaveError = function ( jqXHR, status, data
 
 	// Handle warnings/errors from Extension:AbuseFilter
 	// TODO: Move this to a plugin
-	if ( editApi.info && editApi.info.indexOf( 'Hit AbuseFilter:' ) === 0 && editApi.warning ) {
+	if ( editApi && editApi.info && editApi.info.indexOf( 'Hit AbuseFilter:' ) === 0 && editApi.warning ) {
 		this.showMessage(
 			'api-save-error',
 			$.parseHTML( editApi.warning ),
@@ -620,9 +613,9 @@ ve.init.mw.ViewPageTarget.prototype.onSaveError = function ( jqXHR, status, data
 	this.showMessage(
 		'api-save-error',
 		document.createTextNode(
-			editApi.info ||
+			( editApi && editApi.info ) ||
 				( data.error && data.error.info ) ||
-				editApi.code ||
+				( editApi && editApi.code ) ||
 				( data.error && data.error.code ) ||
 				'Unknown error'
 		),
