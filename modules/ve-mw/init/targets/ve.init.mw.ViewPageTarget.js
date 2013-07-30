@@ -174,7 +174,7 @@ ve.init.mw.ViewPageTarget.static.toolbarTools = [
 ];
 
 ve.init.mw.ViewPageTarget.static.surfaceCommands = [
-	'bold', 'italic', 'mwLink', 'undo', 'redo', 'indent', 'outdent'
+	'bold', 'italic', 'mwLink', 'undo', 'redo', 'indent', 'outdent', 'clear'
 ];
 
 // TODO: Accessibility tooltips and logical tab order for prevButton and closeButton.
