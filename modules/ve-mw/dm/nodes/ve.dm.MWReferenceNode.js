@@ -41,7 +41,6 @@ ve.dm.MWReferenceNode.static.isContent = true;
 
 ve.dm.MWReferenceNode.static.toDataElement = function ( domElements, converter ) {
 	var dataElement,
-		about = domElements[0].getAttribute( 'about' ),
 		mwDataJSON = domElements[0].getAttribute( 'data-mw' ),
 		mwData = mwDataJSON ? JSON.parse( mwDataJSON ) : {},
 		body = mwData.body ? mwData.body.html : '',
@@ -58,7 +57,6 @@ ve.dm.MWReferenceNode.static.toDataElement = function ( domElements, converter )
 			'mw': mwData,
 			'originalMw': mwDataJSON,
 			'childDomElements': ve.copy( Array.prototype.slice.apply( domElements[0].childNodes ) ),
-			'about': about,
 			'listIndex': listIndex,
 			'listGroup': listGroup,
 			'listKey': listKey,
@@ -77,7 +75,6 @@ ve.dm.MWReferenceNode.static.toDomElements = function ( dataElement, doc, conver
 		itemNode = converter.internalList.getItemNode( dataElement.attributes.listIndex ),
 		itemNodeRange = itemNode.getRange();
 
-	el.setAttribute( 'about', dataElement.attributes.about );
 	el.setAttribute( 'typeof', 'mw:Extension/ref' );
 
 	mwData = dataElement.attributes.mw ? ve.copy( dataElement.attributes.mw ) : {};

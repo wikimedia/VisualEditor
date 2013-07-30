@@ -366,7 +366,6 @@ ve.dm.mwExample.references = [
 	{
 		'type': 'mwReference',
 		 'attributes': {
-			'about': '#mwt2',
 			'contentsUsed': true,
 			'listGroup': 'mwReference/',
 			'listIndex': 0,
@@ -396,7 +395,6 @@ ve.dm.mwExample.references = [
 	{
 		'type': 'mwReference',
 		 'attributes': {
-			'about': '#mwt6',
 			'contentsUsed': true,
 			'listGroup': 'mwReference/',
 			'listIndex': 1,
@@ -424,7 +422,6 @@ ve.dm.mwExample.references = [
 	{
 		'type': 'mwReference',
 		 'attributes': {
-			'about': '#mwt7',
 			'contentsUsed': true,
 			'listGroup': 'mwReference/',
 			'listIndex': 2,
@@ -452,7 +449,6 @@ ve.dm.mwExample.references = [
 	{
 		'type': 'mwReference',
 		'attributes': {
-			'about': '#mwt8',
 			'contentsUsed': false,
 			'listGroup': 'mwReference/',
 			'listIndex': 1,
@@ -481,7 +477,6 @@ ve.dm.mwExample.references = [
 	{
 		'type': 'mwReference',
 		 'attributes': {
-			'about': '#mwt11',
 			'contentsUsed': true,
 			'listGroup': 'mwReference/',
 			'listIndex': 3,
@@ -508,7 +503,6 @@ ve.dm.mwExample.references = [
 	{
 		'type': 'mwReference',
 		 'attributes': {
-			'about': '#mwt12',
 			'contentsUsed': true,
 			'listGroup': 'mwReference/',
 			'listIndex': 4,
@@ -536,7 +530,6 @@ ve.dm.mwExample.references = [
 	{
 		'type': 'mwReferenceList',
 		'attributes': {
-			'about': '#mwt12',
 			'mw': {
 				'name': 'references',
 				'attrs': {}
@@ -871,7 +864,6 @@ ve.dm.mwExample.domToDataCases = {
 			{
 				'type': 'mwReference',
 				'attributes': {
-					'about': '#mwt1',
 					'listIndex': 0,
 					'listGroup': 'mwReference/',
 					'listKey': 'bar',
@@ -907,7 +899,6 @@ ve.dm.mwExample.domToDataCases = {
 			{
 				'type': 'mwReference',
 				'attributes': {
-					'about': '#mwt2',
 					'listIndex': 1,
 					'listGroup': 'mwReference/',
 					'listKey': 'quux',
@@ -936,7 +927,6 @@ ve.dm.mwExample.domToDataCases = {
 			{
 				'type': 'mwReference',
 				'attributes': {
-					'about': '#mwt3',
 					'listIndex': 0,
 					'listGroup': 'mwReference/',
 					'listKey': 'bar',
@@ -965,7 +955,6 @@ ve.dm.mwExample.domToDataCases = {
 			{
 				'type': 'mwReference',
 				'attributes': {
-					'about': '#mwt4',
 					'listIndex': 2,
 					'listGroup': 'mwReference/g1',
 					'listKey': null,
@@ -994,7 +983,6 @@ ve.dm.mwExample.domToDataCases = {
 			{
 				'type': 'mwReference',
 				'attributes': {
-					'about': '#mwt5',
 					'listIndex': 0,
 					'listGroup': 'mwReference/',
 					'listKey': 'bar',
@@ -1023,7 +1011,6 @@ ve.dm.mwExample.domToDataCases = {
 			{
 				'type': 'mwReference',
 				'attributes': {
-					'about': '#mwt6',
 					'listGroup': 'mwReference/',
 					'listIndex': 3,
 					'listKey': 'foo',
@@ -1052,7 +1039,6 @@ ve.dm.mwExample.domToDataCases = {
 			{
 				'type': 'mwReferenceList',
 				'attributes': {
-					'about': '#mwt7',
 					'mw': {
 						'name': 'references',
 						'attrs': {},
@@ -1071,7 +1057,6 @@ ve.dm.mwExample.domToDataCases = {
 			{
 				'type': 'mwReference',
 				'attributes': {
-					'about': '#mwt8',
 					'childDomElements': $( '<a href="#cite_note-foo-3">[3]</a>' ).toArray(),
 					'contentsUsed': true,
 					'listGroup': 'mwReference/',
@@ -1179,7 +1164,6 @@ ve.dm.mwExample.domToDataCases = {
 			{
 				'type': 'mwReference',
 				'attributes': {
-					'about': '#mwt2',
 					'contentsUsed': true,
 					'listGroup': 'mwReference/',
 					'listIndex': 0,

@@ -47,7 +47,6 @@ ve.dm.MWReferenceListNode.static.toDataElement = function ( domElements, convert
 		'attributes': {
 			'mw': mwData,
 			'originalMw': mwDataJSON,
-			'about': domElements[0].getAttribute( 'about' ),
 			'domElements': ve.copy( domElements ),
 			'refGroup': refGroup,
 			'listGroup': listGroup
@@ -90,9 +89,6 @@ ve.dm.MWReferenceListNode.static.toDomElements = function ( data, doc, converter
 		delete mwData.attrs.refGroup;
 	}
 
-	if ( attribs.about ) {
-		el.setAttribute( 'about', attribs.about );
-	}
 	el.setAttribute( 'typeof', 'mw:Extension/references' );
 
 	if ( contentsData.length > 2 ) {
