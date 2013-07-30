@@ -2072,7 +2072,8 @@ ve.init.mw.ViewPageTarget.prototype.onWindowPopState = function () {
  * @param {HTMLElement} html Rendered HTML from server
  */
 ve.init.mw.ViewPageTarget.prototype.replacePageContent = function ( html ) {
-	$( '#mw-content-text' ).html( html );
+	var $content = $( $.parseHTML( html ) );
+	mw.hook( 'wikipage.content' ).fire( $( '#mw-content-text' ).empty().append( $content ) );
 };
 
 /**
