@@ -93,13 +93,6 @@ ve.init.mw.Target = function VeInitMwTarget( $container, pageName, revisionId ) 
  */
 
 /**
- * @event tokenError
- * @param {jqXHR|null} jqXHR
- * @param {string} status Text status message
- * @param {Mixed|null} error HTTP status text
- */
-
-/**
  * @event saveError
  * @param {jqXHR|null} jqXHR
  * @param {string} status Text status message
@@ -169,17 +162,10 @@ ve.init.mw.Target.onLoad = function ( response ) {
 			this, null, 'Invalid response in response from server', null
 		);
 	} else if ( response.error || data.result === 'error' ) {
-		if ( response.error.code === 'badtoken' && !this.retriedToken ) {
-			// Only retry once
-			this.retriedToken = true;
-			// Refresh the edit token and try again
-			this.retryToken();
-		} else {
-			ve.init.mw.Target.onLoadError.call( this, null,
-				response.error.code + ': ' + response.error.info,
-				null
-			);
-		}
+		ve.init.mw.Target.onLoadError.call( this, null,
+			response.error.code + ': ' + response.error.info,
+			null
+		);
 	} else if ( typeof data.content !== 'string' ) {
 		ve.init.mw.Target.onLoadError.call(
 			this, null, 'No HTML content in response from server', null
@@ -248,37 +234,6 @@ ve.init.mw.Target.onNoticesReady = function () {
 };
 
 /**
- * Handle response to a successful edit token refresh request.
- *
- * This method is called within the context of a target instance. If successful the token will
- * be stored and load() will be called.
- *
- * @static
- * @method
- * @param {Object} response XHR Response object
- * @param {string} status Text status message
- * @emits tokenError
- */
-ve.init.mw.Target.onToken = function ( response ) {
-	var token = response && response.tokens && response.tokens.edittoken;
-	if ( token ) {
-		this.editToken = token;
-		mw.user.tokens.set( 'editToken', token );
-		this.loading = false; // Otherwise this.load() doesn't do anything
-		this.load();
-	} else if ( !response.error ) {
-		ve.init.mw.Target.onTokenError.call(
-			this, null, 'Invalid response in response from server', null
-		);
-	} else {
-		ve.init.mw.Target.onTokenError.call( this, null,
-			response.error.code + ': ' + response.error.info,
-			null
-		);
-	}
-};
-
-/**
  * Handle both DOM and modules being loaded and ready.
  *
  * This method is called within the context of a target instance.
@@ -310,21 +265,6 @@ ve.init.mw.Target.onReady = function () {
 ve.init.mw.Target.onLoadError = function ( jqXHR, status, error ) {
 	this.loading = false;
 	this.emit( 'loadError', jqXHR, status, error );
-};
-
-/**
- * Handle an unsuccessful token refresh request.
- *
- * This method is called within the context of a target instance.
- *
- * @param {Object} jqXHR
- * @param {string} status Text status message
- * @param {Mixed} error HTTP status text
- * @emits tokenError
- */
-ve.init.mw.Target.onTokenError = function ( jqXHR, status, error ) {
-	this.loading = false;
-	this.emit( 'tokenError', jqXHR, status, error );
 };
 
 /**
@@ -587,24 +527,6 @@ ve.init.mw.Target.prototype.load = function () {
 		'error': ve.bind( ve.init.mw.Target.onLoadError, this )
 	} );
 	return true;
-};
-
-/**
- * Refresh the edit token, then call load()
- */
-ve.init.mw.Target.prototype.retryToken = function () {
-	$.ajax( {
-		'url': this.apiUrl,
-		'data': {
-			'action': 'tokens',
-			'format': 'json'
-		},
-		'dataType': 'json',
-		'type': 'GET',
-		'cache': 'false',
-		'success': ve.bind( ve.init.mw.Target.onToken, this ),
-		'error': ve.bind( ve.init.mw.Target.onTokenError, this )
-	} );
 };
 
 /**
