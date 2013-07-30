@@ -110,12 +110,12 @@
 .ve-init-mw-viewPageTarget-toolbarTracker {
 	position: absolute;
 	top: 0;
-	right: 0;
 	height: 0;
 	overflow: visible;
 }
 
 .ve-init-mw-viewPageTarget-toolbarTracker-floating {
+	position: fixed;
 	z-index: 100;
 }
 

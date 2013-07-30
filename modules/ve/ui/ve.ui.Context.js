@@ -225,6 +225,7 @@ ve.ui.Context.prototype.update = function () {
 			this.toolbar.addTools( [{ 'name': 'inspectors', 'items' : tools }] );
 			this.$menu.append( this.toolbar.$ );
 			this.show();
+			this.toolbar.initialize();
 		} else if ( this.visible ) {
 			// Nothing to inspect
 			this.hide();

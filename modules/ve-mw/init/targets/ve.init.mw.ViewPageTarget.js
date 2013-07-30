@@ -30,6 +30,8 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 	this.$document = null;
 	this.$spinner = $( '<div class="ve-init-mw-viewPageTarget-loading"></div>' );
 	this.$toolbarTracker = $( '<div class="ve-init-mw-viewPageTarget-toolbarTracker"></div>' );
+	this.toolbarTrackerFloating = null;
+	this.toolbarOffset = null;
 	this.toolbarCancelButton = null;
 	this.toolbarSaveButton = null;
 	this.saveDialogSlideHistory = [];
@@ -1170,56 +1172,47 @@ ve.init.mw.ViewPageTarget.prototype.startSanityCheck = function () {
 };
 
 /**
- * The toolbar has updated its position.
+ * @see ve.ui.Surface#toolbarPosition
  * @param {jQuery} $bar
+ * @param {Object} update
  */
-ve.init.mw.ViewPageTarget.prototype.onSurfaceToolbarPosition = function ( $bar ) {
-	var css, offset, startProp, startOffset,
-		dir = mw.config.get( 'wgVisualEditor' ).pageLanguageDir,
-		type = $bar.css( 'position' );
-
-	// HACK: If the toolbar is floating, also apply a floating class to the toolbar tracker
-	if ( $bar.parent().hasClass( 've-ui-toolbar-floating' ) ) {
-		this.$toolbarTracker.addClass( 've-init-mw-viewPageTarget-toolbarTracker-floating' );
-	} else {
-		this.$toolbarTracker.removeClass( 've-init-mw-viewPageTarget-toolbarTracker-floating' );
-	}
-
-	// It's important that the toolbar tracker has 0 height. Else it will block events on the
-	// toolbar (e.g. clicking "Save page") as it would overlap that space. The save dialog
+ve.init.mw.ViewPageTarget.prototype.onSurfaceToolbarPosition = function ( $bar, update ) {
+	// It's important that the toolbar tracker always has 0 height, otherwise it will block events
+	// on the toolbar (e.g. clicking "Save page") as it would overlap that space. The save dialog
 	// will remain visible for the same reason elsewhere: As long as we don't have overflow:hidden,
 	// the save dialog will stick out of the tracker in the right place without the tracker itself
 	// blocking the toolbar.
 
-	if ( type === 'relative' ) {
-		offset = $bar.offset();
-
-		css = {
-			'position': 'absolute',
-			'top': offset.top
-		};
-
-		if ( dir === 'ltr' ) {
-			startProp = 'left';
-			startOffset = offset.left;
-		} else {
-			startProp = 'right';
-			startOffset = $( window ).width() - ( offset.left + $bar.outerWidth() );
-
-		}
-
-		css[ startProp ] = startOffset;
-
-	} else if ( type === 'absolute' || type === 'fixed' ) {
-		css = {
-			'position': type,
-			'top': $bar.css( 'top' ),
-			'left': $bar.css( 'left' )
-		};
-	} else {
-		return;
+	if ( !this.toolbarTrackerFloating && update.floating === true ) {
+		// When switching to floating, undo the 'top' position set earlier
+		this.$toolbarTracker.css( 'top', '' );
 	}
-	this.$toolbarTracker.css( css );
+
+	if ( update.offset ) {
+		this.toolbarOffset = update.offset;
+	}
+
+	if ( typeof update.floating === 'boolean' ) {
+		this.$toolbarTracker.toggleClass(
+			've-init-mw-viewPageTarget-toolbarTracker-floating',
+			update.floating
+		);
+		this.toolbarTrackerFloating = update.floating;
+	}
+
+	// Switching to non-floating or offset update when already in non-floating
+	if ( update.floating === false || this.toolbarTrackerFloating === false && update.offset ) {
+		// Don't use update.css in this case since the toolbar is now in its non-floating
+		// position (static, in-flow). So make the tracker absolutely postioned matching the
+		// offset of the toolbar.
+		this.$toolbarTracker.css( {
+			'top': this.toolbarOffset.top,
+			'left': this.toolbarOffset.left,
+			'right': this.toolbarOffset.right
+		} );
+	} else if ( update.css ) {
+		this.$toolbarTracker.css( update.css );
+	}
 };
 
 /**
@@ -1900,7 +1893,7 @@ ve.init.mw.ViewPageTarget.prototype.setUpToolbar = function () {
 	this.toolbar.addTools( this.constructor.static.toolbarTools );
 	this.surface.addCommands( this.constructor.static.surfaceCommands );
 	if ( !this.isMobileDevice ) {
-		this.toolbar.enableFloating();
+		this.toolbar.enableFloatable();
 	}
 	this.toolbar.$
 		.addClass( 've-init-mw-viewPageTarget-toolbar' )
@@ -1908,12 +1901,8 @@ ve.init.mw.ViewPageTarget.prototype.setUpToolbar = function () {
 	this.toolbar.$bar.slideDown( 'fast', ve.bind( function () {
 		// Check the surface wasn't torn down while the toolbar was animating
 		if ( this.surface ) {
+			this.toolbar.initialize();
 			this.surface.getContext().update();
-
-			// Emit event for initial position. Must be done here after the
-			// slide down instead of in ve.ui.Toolbar#constructor because
-			// back there it'll still be out of view.
-			this.surface.emit( 'toolbarPosition', this.toolbar.$bar );
 		}
 	}, this ) );
 };

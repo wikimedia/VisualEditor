@@ -156,7 +156,7 @@ ve.Element.getFrameOffset = function ( from, to, offset ) {
 /**
  * Get the offset between two elements.
  *
- * @param {jQuery} $from 
+ * @param {jQuery} $from
  * @param {jQuery} $to
  * @returns {Object} Translated position coordinates, containing top and left properties
  */
