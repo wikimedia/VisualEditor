@@ -1070,7 +1070,6 @@ ve.init.mw.ViewPageTarget.prototype.setUpSurface = function ( doc, callback ) {
 				target.surface.$.addClass( 've-init-mw-viewPageTarget-surface' );
 				setTimeout( function () {
 					// Initialize surface
-					target.surface.connect( target, { 'toolbarPosition': 'onSurfaceToolbarPosition' } );
 					target.surface.getContext().hide();
 					target.$document = target.surface.$.find( '.ve-ce-documentNode' );
 					target.surface.getModel().connect( target, {
@@ -1165,11 +1164,11 @@ ve.init.mw.ViewPageTarget.prototype.startSanityCheck = function () {
 };
 
 /**
- * @see ve.ui.Surface#toolbarPosition
+ * @see ve.ui.Toolbar#position
  * @param {jQuery} $bar
  * @param {Object} update
  */
-ve.init.mw.ViewPageTarget.prototype.onSurfaceToolbarPosition = function ( $bar, update ) {
+ve.init.mw.ViewPageTarget.prototype.onToolbarPosition = function ( $bar, update ) {
 	// It's important that the toolbar tracker always has 0 height, otherwise it will block events
 	// on the toolbar (e.g. clicking "Save page") as it would overlap that space. The save dialog
 	// will remain visible for the same reason elsewhere: As long as we don't have overflow:hidden,
@@ -1883,6 +1882,7 @@ ve.init.mw.ViewPageTarget.prototype.hideTableOfContents = function () {
  */
 ve.init.mw.ViewPageTarget.prototype.setUpToolbar = function () {
 	this.toolbar = new ve.ui.Toolbar( this.surface, { 'shadow': true, 'actions': true } );
+	this.toolbar.connect( this, { 'position': 'onToolbarPosition' } );
 	this.toolbar.addTools( this.constructor.static.toolbarTools );
 	this.surface.addCommands( this.constructor.static.surfaceCommands );
 	if ( !this.isMobileDevice ) {

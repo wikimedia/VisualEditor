@@ -71,18 +71,6 @@ ve.mixinClass( ve.ui.Surface, ve.EventEmitter );
  * @event position
  */
 
-/**
- * Whenever the toolbar $bar position is updated, the changes that took place.
- *
- * @event toolbarPosition
- * @param {jQuery} $bar Toolbar bar
- * @param {Object} update
- * @param {boolean} [update.floating] Whether the toolbar is in floating mode
- * @param {Object} [update.css] One or more css properties that changed
- * @param {Object} [update.offset] Updated offset object (from jQuery.fn.offset, though
- *  it also includes `offset.right`)
- */
-
 /* Methods */
 
 ve.ui.Surface.prototype.initialize = function () {

@@ -85,6 +85,18 @@ ve.mixinClass( ve.ui.Toolbar, ve.EventEmitter );
  * @param {ve.dm.AnnotationSet} partial Annotations that cover some or all of the current selection
  */
 
+/**
+ * Whenever the toolbar $bar position is updated, the changes that took place.
+ *
+ * @event position
+ * @param {jQuery} $bar Toolbar bar
+ * @param {Object} update
+ * @param {boolean} [update.floating] Whether the toolbar is in floating mode
+ * @param {Object} [update.css] One or more css properties that changed
+ * @param {Object} [update.offset] Updated offset object (from jQuery.fn.offset, though
+ *  it also includes `offset.right`)
+ */
+
 /* Methods */
 
 /**
@@ -101,7 +113,7 @@ ve.ui.Toolbar.prototype.initialize = function () {
 	// Initial position. Could be invalidated by the first
 	// call to onWindowScroll, but users of this event (e.g toolbarTracking)
 	// need to also now the non-floating position.
-	this.surface.emit( 'toolbarPosition', this.$bar, {
+	this.emit( 'position', this.$bar, {
 		'floating': false,
 		'offset': this.elementOffset
 	} );
@@ -135,7 +147,7 @@ ve.ui.Toolbar.prototype.onWindowScroll = function () {
  * Toolbar will stick to the top of the screen unless it would be over or under the last visible
  * branch node in the root of the document being edited, at which point it will stop just above it.
  *
- * @see ve.ui.Surface#event-toolbarPosition
+ * @emits position
  * @returns {jQuery.Event} e Window scroll event
  */
 ve.ui.Toolbar.prototype.onWindowResize = function () {
@@ -154,7 +166,7 @@ ve.ui.Toolbar.prototype.onWindowResize = function () {
 	// If we're not floating, toolbar position didn't change.
 	// But the dimensions did naturally change on resize, as did the right offset.
 	// Which e.g. mw.ViewPageTarget's toolbarTracker needs.
-	this.surface.emit( 'toolbarPosition', this.$bar, update );
+	this.emit( 'position', this.$bar, update );
 };
 
 /**
@@ -246,7 +258,7 @@ ve.ui.Toolbar.prototype.destroy = function () {
 /**
  * Float the toolbar.
  *
- * @see ve.ui.Surface#event-toolbarPosition
+ * @emits position
  */
 ve.ui.Toolbar.prototype.float = function () {
 	var update;
@@ -263,14 +275,14 @@ ve.ui.Toolbar.prototype.float = function () {
 		this.$bar.css( update.css );
 		this.floating = true;
 
-		this.surface.emit( 'toolbarPosition', this.$bar, update );
+		this.emit( 'position', this.$bar, update );
 	}
 };
 
 /**
  * Reset the toolbar to it's default non-floating position.
  *
- * @see ve.ui.Surface#event-toolbarPosition
+ * @emits position
  */
 ve.ui.Toolbar.prototype.unfloat = function () {
 	if ( this.floating ) {
@@ -280,7 +292,7 @@ ve.ui.Toolbar.prototype.unfloat = function () {
 		this.$bar.css( { 'left': '', 'right': '' } );
 		this.floating = false;
 
-		this.surface.emit( 'toolbarPosition', this.$bar, { 'floating': false } );
+		this.emit( 'position', this.$bar, { 'floating': false } );
 	}
 };
 
