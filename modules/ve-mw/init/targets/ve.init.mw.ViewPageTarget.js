@@ -1895,6 +1895,7 @@ ve.init.mw.ViewPageTarget.prototype.setUpToolbar = function () {
 		// Check the surface wasn't torn down while the toolbar was animating
 		if ( this.surface ) {
 			this.toolbar.initialize();
+			this.surface.emit( 'position' );
 			this.surface.getContext().update();
 		}
 	}, this ) );
