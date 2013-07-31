@@ -162,6 +162,7 @@ ve.ce.MWBlockImageNode.prototype.onSetup = function ( ) {
 
 };
 
+/** */
 ve.ce.MWBlockImageNode.prototype.onAttributeChange = function ( key, from, to ) {
 	var $element, type;
 
@@ -209,10 +210,12 @@ ve.ce.MWBlockImageNode.prototype.onAttributeChange = function ( key, from, to ) 
 	}
 };
 
+/** */
 ve.ce.MWBlockImageNode.prototype.setupSlugs = function () {
 	// Intentionally empty
 };
 
+/** */
 ve.ce.MWBlockImageNode.prototype.onSplice = function () {
 	// Intentionally empty
 };

@@ -360,6 +360,7 @@ ve.dm.ElementLinearData.prototype.setAnnotationsAtOffset = function ( offset, an
 	}
 };
 
+/** */
 ve.dm.ElementLinearData.prototype.getCharacterData = function ( offset ) {
 	var item = this.getData( offset );
 	return ve.isArray( item ) ? item[0] : item;

@@ -38,6 +38,7 @@ ve.ui.MWMediaInsertDialog.static.icon = 'picture';
 
 /* Methods */
 
+/** */
 ve.ui.MWMediaInsertDialog.prototype.onSearchSelect = function ( item ) {
 	this.item = item;
 	if ( item ) {
@@ -45,6 +46,7 @@ ve.ui.MWMediaInsertDialog.prototype.onSearchSelect = function ( item ) {
 	}
 };
 
+/** */
 ve.ui.MWMediaInsertDialog.prototype.onOpen = function () {
 	// Parent method
 	ve.ui.MWDialog.prototype.onOpen.call( this );
@@ -55,6 +57,7 @@ ve.ui.MWMediaInsertDialog.prototype.onOpen = function () {
 	this.search.getResults().highlightItem();
 };
 
+/** */
 ve.ui.MWMediaInsertDialog.prototype.onClose = function ( action ) {
 	var info;
 
@@ -84,6 +87,7 @@ ve.ui.MWMediaInsertDialog.prototype.onClose = function ( action ) {
 	}
 };
 
+/** */
 ve.ui.MWMediaInsertDialog.prototype.initialize = function () {
 	// Parent method
 	ve.ui.MWDialog.prototype.initialize.call( this );

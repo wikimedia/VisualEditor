@@ -45,6 +45,7 @@ ve.inheritClass( ve.ui.MWMediaResultWidget, ve.ui.OptionWidget );
 
 /* Methods */
 
+/** */
 ve.ui.MWMediaResultWidget.prototype.onThumbnailLoad = function () {
 	this.$thumb.first().addClass( 've-ui-texture-transparency' );
 	this.$
@@ -52,6 +53,7 @@ ve.ui.MWMediaResultWidget.prototype.onThumbnailLoad = function () {
 		.removeClass( 've-ui-texture-pending' );
 };
 
+/** */
 ve.ui.MWMediaResultWidget.prototype.onThumbnailError = function () {
 	this.$thumb.last()
 		.css( 'background-image', '' )

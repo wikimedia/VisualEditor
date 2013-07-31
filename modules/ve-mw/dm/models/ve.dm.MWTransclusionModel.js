@@ -116,6 +116,7 @@ ve.dm.MWTransclusionModel.prototype.process = function ( queue ) {
 	}
 };
 
+/** */
 ve.dm.MWTransclusionModel.prototype.fetch = function () {
 	if ( !this.queue.length ) {
 		return;

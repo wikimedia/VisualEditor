@@ -49,6 +49,9 @@ ve.dm.LinkAnnotation.static.toDomElements = function ( dataElement, doc ) {
 
 /* Methods */
 
+/**
+ * @return {Object}
+ */
 ve.dm.LinkAnnotation.prototype.getComparableObject = function () {
 	return {
 		'type': this.getType(),

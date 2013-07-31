@@ -44,6 +44,7 @@ ve.ui.MWMediaEditDialog.static.surfaceCommands = [
 
 /* Methods */
 
+/** */
 ve.ui.MWMediaEditDialog.prototype.initialize = function () {
 	// Parent method
 	ve.ui.MWDialog.prototype.initialize.call( this );
@@ -74,6 +75,7 @@ ve.ui.MWMediaEditDialog.prototype.initialize = function () {
 	this.$foot.append( this.applyButton.$ );
 };
 
+/** */
 ve.ui.MWMediaEditDialog.prototype.onOpen = function () {
 	var data, doc = this.surface.getModel().getDocument();
 
@@ -105,6 +107,7 @@ ve.ui.MWMediaEditDialog.prototype.onOpen = function () {
 	this.captionSurface.initialize();
 };
 
+/** */
 ve.ui.MWMediaEditDialog.prototype.onClose = function ( action ) {
 	var data, doc, surfaceModel = this.surface.getModel();
 

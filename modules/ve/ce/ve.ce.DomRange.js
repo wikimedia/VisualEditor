@@ -32,6 +32,7 @@ ve.ce.DomRange.newFromDomSelection = function ( selection ) {
 
 /* Methods */
 
+/** */
 ve.ce.DomRange.prototype.equals = function ( other ) {
 	return other &&
 		this.focusNode === other.focusNode &&
@@ -40,6 +41,9 @@ ve.ce.DomRange.prototype.equals = function ( other ) {
 		this.anchorOffset === other.anchorOffset;
 };
 
+/**
+ * @return {ve.Range}
+ */
 ve.ce.DomRange.prototype.getRange = function () {
 	return new ve.Range(
 		ve.ce.getOffset( this.anchorNode, this.anchorOffset ),

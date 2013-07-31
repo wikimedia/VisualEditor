@@ -135,6 +135,7 @@ ve.ui.Dialog.prototype.close = function ( action ) {
 	}
 };
 
+/** */
 ve.ui.Dialog.prototype.initialize = function () {
 	// Parent method
 	ve.ui.Window.prototype.initialize.call( this );

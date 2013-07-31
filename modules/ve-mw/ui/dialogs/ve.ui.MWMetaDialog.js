@@ -51,6 +51,7 @@ ve.ui.MWMetaDialog.static.icon = 'settings';
 
 /* Methods */
 
+/** */
 ve.ui.MWMetaDialog.prototype.initialize = function () {
 	var languagePromise;
 
@@ -152,6 +153,7 @@ ve.ui.MWMetaDialog.prototype.initialize = function () {
 	}, this ) );
 };
 
+/** */
 ve.ui.MWMetaDialog.prototype.onOpen = function () {
 	var surfaceModel = this.surface.getModel(),
 		categoryWidget = this.categoryWidget,
@@ -175,6 +177,7 @@ ve.ui.MWMetaDialog.prototype.onOpen = function () {
 	} );
 };
 
+/** */
 ve.ui.MWMetaDialog.prototype.onClose = function ( action ) {
 	var hasTransactions, newDefaultSortKeyItem, newDefaultSortKeyItemData,
 		surfaceModel = this.surface.getModel(),
@@ -351,6 +354,7 @@ ve.ui.MWMetaDialog.prototype.getAllLanguageItems = function () {
 	return deferred.promise();
 };
 
+/** */
 ve.ui.MWMetaDialog.prototype.onAllLanuageItemsSuccess = function ( deferred, response ) {
 	var i, iLen, languages = [], langlinks = response.query.pages[response.query.pageids[0]].langlinks;
 	if ( langlinks ) {

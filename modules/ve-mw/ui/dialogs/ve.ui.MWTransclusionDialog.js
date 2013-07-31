@@ -63,6 +63,7 @@ ve.ui.MWTransclusionDialog.static.icon = 'template';
 
 /* Methods */
 
+/** */
 ve.ui.MWTransclusionDialog.prototype.initialize = function () {
 	// Parent method
 	ve.ui.MWDialog.prototype.initialize.call( this );
@@ -86,6 +87,7 @@ ve.ui.MWTransclusionDialog.prototype.initialize = function () {
 	this.$foot.append( this.applyButton.$ );
 };
 
+/** */
 ve.ui.MWTransclusionDialog.prototype.onOpen = function () {
 	// Parent method
 	ve.ui.MWDialog.prototype.onOpen.call( this );
@@ -109,6 +111,7 @@ ve.ui.MWTransclusionDialog.prototype.onOpen = function () {
 	}
 };
 
+/** */
 ve.ui.MWTransclusionDialog.prototype.onClose = function ( action ) {
 	var surfaceModel = this.surface.getModel(),
 		obj = this.transclusion.getPlainObject();

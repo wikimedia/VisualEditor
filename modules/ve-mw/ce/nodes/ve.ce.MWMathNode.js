@@ -61,6 +61,7 @@ ve.ce.MWMathNode.static.tagName = 'img';
 
 /* Methods */
 
+/** */
 ve.ce.MWMathNode.prototype.generateContents = function () {
 	var deferred = $.Deferred();
 	$.ajax( {

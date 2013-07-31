@@ -73,6 +73,7 @@ ve.mixinClass( ve.ui.Surface, ve.EventEmitter );
 
 /* Methods */
 
+/** */
 ve.ui.Surface.prototype.initialize = function () {
 	this.view.$.after( this.$localOverlay );
 	$( 'body' ).append( this.$globalOverlay );

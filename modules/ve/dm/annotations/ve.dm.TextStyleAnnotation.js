@@ -69,6 +69,9 @@ ve.dm.TextStyleAnnotation.static.toDomElements = function ( dataElement, doc ) {
 
 /* Methods */
 
+/**
+ * @return {Object}
+ */
 ve.dm.TextStyleAnnotation.prototype.getComparableObject = function () {
 	return {
 		'type': this.getType()

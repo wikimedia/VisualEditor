@@ -38,6 +38,7 @@ ve.inheritClass( ve.ui.MWParameterResultWidget, ve.ui.OptionWidget );
 
 /* Methods */
 
+/** */
 ve.ui.MWParameterResultWidget.prototype.buildLabel = function () {
 	var i, len,
 		$label = this.$$( '<div>' )

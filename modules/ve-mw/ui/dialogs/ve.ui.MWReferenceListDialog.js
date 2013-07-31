@@ -32,6 +32,7 @@ ve.ui.MWReferenceListDialog.static.icon = 'references';
 
 /* Methods */
 
+/** */
 ve.ui.MWReferenceListDialog.prototype.initialize = function () {
 	// Parent method
 	ve.ui.MWDialog.prototype.initialize.call( this );
@@ -67,6 +68,7 @@ ve.ui.MWReferenceListDialog.prototype.initialize = function () {
 	this.$foot.append( this.applyButton.$ );
 };
 
+/** */
 ve.ui.MWReferenceListDialog.prototype.onOpen = function () {
 	var node, refGroup;
 

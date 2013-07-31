@@ -168,6 +168,7 @@ ve.ui.MWCategoryWidget.prototype.onTogglePopupMenu = function ( item ) {
 	}
 };
 
+/** */
 ve.ui.MWCategoryWidget.prototype.setDefaultSortKey = function ( value ) {
 	this.popup.setDefaultSortKey( value );
 };

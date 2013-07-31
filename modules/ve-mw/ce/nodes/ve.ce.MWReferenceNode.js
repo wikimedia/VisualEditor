@@ -99,6 +99,7 @@ ve.ce.MWReferenceNode.prototype.update = function () {
 	this.$link.text( '[' + ( refGroup ? refGroup + ' ' : '' ) + ( position + 1 ) + ']' );
 };
 
+/** */
 ve.ce.MWReferenceNode.prototype.createPhantoms = function () {
 	// Parent method
 	ve.ce.ProtectedNode.prototype.createPhantoms.call( this );

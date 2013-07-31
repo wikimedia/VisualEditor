@@ -52,6 +52,7 @@ ve.ce.MWTransclusionNode.static.renderHtmlAttributes = false;
 
 /* Methods */
 
+/** */
 ve.ce.MWTransclusionNode.prototype.generateContents = function () {
 	var deferred = $.Deferred();
 	$.ajax( {
