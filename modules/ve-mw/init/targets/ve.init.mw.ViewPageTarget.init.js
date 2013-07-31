@@ -70,6 +70,7 @@
 			Array.prototype.filter &&
 			Array.prototype.indexOf &&
 			Array.prototype.map &&
+			Date.now &&
 			Date.prototype.toJSON &&
 			Function.prototype.bind &&
 			Object.create &&
