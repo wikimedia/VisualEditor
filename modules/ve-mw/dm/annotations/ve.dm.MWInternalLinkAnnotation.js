@@ -88,7 +88,7 @@ ve.dm.MWInternalLinkAnnotation.static.normalizeTitle = function ( title ) {
 /* Methods */
 
 /**
- * @return {Object}
+ * @returns {Object}
  */
 ve.dm.MWInternalLinkAnnotation.prototype.getComparableObject = function () {
 	return {

@@ -74,7 +74,7 @@ ve.ui.Tool.static.titleMessage = null;
  * @static
  * @inheritable
  * @param {ve.dm.Model} model Model to check
- * @return {boolean} Tool can be used to edit model
+ * @returns {boolean} Tool can be used to edit model
  */
 ve.ui.Tool.static.canEditModel = function () {
 	return false;

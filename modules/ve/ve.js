@@ -45,7 +45,7 @@
 	 * @method
 	 * @param {Object} subject Object to check
 	 * @param {Function[]} classes Classes to compare with
-	 * @return {boolean} Object inherits from one or more of the classes
+	 * @returns {boolean} Object inherits from one or more of the classes
 	 */
 	ve.isInstanceOfAny = function ( subject, classes ) {
 		var i = classes.length;
@@ -121,7 +121,7 @@
 	 *
 	 * @param {HTMLElement[]} domElements DOM elements to copy
 	 * @param {HTMLDocument} [doc] Document to create the copies in; if unset, simply clone each element
-	 * @return {HTMLElement[]} Copy of domElements with copies of each element
+	 * @returns {HTMLElement[]} Copy of domElements with copies of each element
 	 */
 	ve.copyDomElements = function ( domElements, doc ) {
 		return domElements.map( function ( domElement ) {

@@ -295,7 +295,7 @@ ve.ui.MWTransclusionDialog.prototype.onOutlineControlsAdd = function ( type ) {
  * Get an index for part insertion.
  *
  * @method
- * @return {number} Index to insert new parts at
+ * @returns {number} Index to insert new parts at
  */
 ve.ui.MWTransclusionDialog.prototype.getPartInsertionIndex = function () {
 	var parts = this.transclusion.getParts(),

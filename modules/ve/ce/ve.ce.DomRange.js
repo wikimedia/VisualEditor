@@ -42,7 +42,7 @@ ve.ce.DomRange.prototype.equals = function ( other ) {
 };
 
 /**
- * @return {ve.Range}
+ * @returns {ve.Range}
  */
 ve.ce.DomRange.prototype.getRange = function () {
 	return new ve.Range(

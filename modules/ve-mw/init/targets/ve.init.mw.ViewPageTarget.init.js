@@ -25,7 +25,7 @@
 
 	/**
 	 * Use deferreds to avoid loading and instantiating Target multiple times.
-	 * @return {jQuery.Promise}
+	 * @returns {jQuery.Promise}
 	 */
 	function getTarget() {
 		var loadTargetDeferred;
