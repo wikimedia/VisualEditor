@@ -989,6 +989,22 @@
 		return $element.get( 0 );
 	};
 
+	/**
+	 * Get the current time, measured in milliseconds since January 1, 1970 (UTC).
+	 *
+	 * On browsers that implement the Navigation Timing API, this function will produce floating-point
+	 * values with microsecond precision that are guaranteed to be monotonic. On all other browsers,
+	 * it will fall back to using `Date.now`.
+	 *
+	 * @returns {number} Current time
+	 */
+	ve.now = ( function () {
+		var perf = window.performance,
+			navStart = perf && perf.timing && perf.timing.navigationStart;
+		return navStart && typeof perf.now === 'function' ?
+			function () { return navStart + perf.now(); } : Date.now;
+	}() );
+
 	// Add more as you need
 	ve.Keys = {
 		'UNDEFINED': 0,
