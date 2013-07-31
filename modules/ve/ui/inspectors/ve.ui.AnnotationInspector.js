@@ -115,17 +115,17 @@ ve.ui.AnnotationInspector.prototype.onClose = function ( action ) {
 	// Parent method
 	ve.ui.Inspector.prototype.onClose.call( this, action );
 
-	var i, len, annotations, selection,
+	var i, len, annotations,
 		insert = false,
 		undo = false,
 		clear = false,
 		set = false,
 		target = this.targetInput.getValue(),
 		annotation = this.targetInput.getAnnotation(),
-		remove = action === 'remove' && !!annotation,
+		remove = target === '' || ( action === 'remove' && !!annotation ),
 		surfaceModel = this.surface.getModel(),
 		fragment = surfaceModel.getFragment( this.initialSelection, false ),
-		currentSelection = surfaceModel.getSelection();
+		selection = surfaceModel.getSelection();
 
 	if ( remove ) {
 		clear = true;
@@ -159,19 +159,15 @@ ve.ui.AnnotationInspector.prototype.onClose = function ( action ) {
 			fragment.annotateContent( 'clear', annotations[i] );
 		}
 	}
-	if ( set ) {
+	if ( set && annotation ) {
 		// Apply new annotation
 		fragment.annotateContent( 'set', annotation );
 	}
 	if ( action === 'back' ) {
+		// Restore selection to what it was before we expanded it
 		selection = this.previousSelection;
 	}
-	// Update selection unless it's been changed since opening inspector
-	if ( currentSelection.equals( this.initialSelection ) ) {
-		this.surface.execute(
-			'content', 'select', selection || new ve.Range( fragment.getRange().end )
-		);
-	}
+	this.surface.execute( 'content', 'select', selection );
 	// Reset state
 	this.isNewAnnotation = false;
 };

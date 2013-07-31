@@ -144,16 +144,19 @@ ve.ui.MWLinkTargetInputWidget.prototype.getLookupMenuItemsFromData = function ( 
 };
 
 /**
- * Set selection in the lookup menu with current information.
- *
- * @method
- * @chainable
+ * @inheritDoc
  */
 ve.ui.MWLinkTargetInputWidget.prototype.initializeLookupMenuSelection = function () {
-	// Attempt to maintain selection on current annotation
-	this.lookupMenu.selectItem( this.lookupMenu.getItemFromData( this.annotation ), true );
+	var item;
+
 	// Parent method
 	ve.ui.LookupInputWidget.prototype.initializeLookupMenuSelection.call( this );
+
+	// Update annotation to match selected item
+	item = this.lookupMenu.getSelectedItem();
+	if ( item ) {
+		this.setAnnotation( item.getData() );
+	}
 };
 
 /**
@@ -165,7 +168,7 @@ ve.ui.MWLinkTargetInputWidget.prototype.initializeLookupMenuSelection = function
  * @param {string} value New value
  */
 ve.ui.MWLinkTargetInputWidget.prototype.setValue = function ( value ) {
-	// Keep annotation in sync with value, call parent method.
+	// Keep annotation in sync with value by skipping parent and calling grandparent method
 	ve.ui.TextInputWidget.prototype.setValue.call( this, value );
 };
 
