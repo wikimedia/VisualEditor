@@ -25,6 +25,7 @@ $messages['en'] = array(
 	'visualeditor-annotationbutton-code-tooltip' => 'Computer code',
 	'visualeditor-annotationbutton-italic-tooltip' => 'Italic',
 	'visualeditor-annotationbutton-link-tooltip' => 'Link',
+	'visualeditor-annotationbutton-language-tooltip' => 'Language',
 	'visualeditor-beta-label' => 'beta',
 	'visualeditor-beta-warning' => 'VisualEditor is in \'beta\'. You may encounter software issues, and you may not be able to edit parts of the page. Click "{{int:visualeditor-ca-editsource}}" to switch to wikitext mode – unsaved changes will be lost.',
 	'visualeditor-browserwarning' => 'You are using a browser which is not officially supported by VisualEditor.',
@@ -114,12 +115,18 @@ $messages['en'] = array(
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Decrease indentation',
 	'visualeditor-inspector-close-tooltip' => 'Close',
 	'visualeditor-inspector-remove-tooltip' => 'Remove',
-	'visualeditor-languageinspector-block-tooltip' => 'Language Block: $1$2',
-	'visualeditor-languageinspector-block-tooltip-rtldirection' => ': Right to Left',
 	'visualeditor-linkinspector-suggest-external-link' => 'External link',
 	'visualeditor-linkinspector-suggest-matching-page' => 'Matching page',
 	'visualeditor-linkinspector-suggest-new-page' => 'New page',
 	'visualeditor-linkinspector-title' => 'Hyperlink',
+	'visualeditor-mwmathinspector-title' => 'LaTeX',
+	'visualeditor-languageinspector-title' => 'Language',
+	'visualeditor-languageinspector-block-tooltip' => 'Language block: $1',
+	'visualeditor-languageinspector-block-tooltip-rtldirection' => ': Right to Left',
+	'visualeditor-languageinspector-widget-changelang' => 'Change language',
+	'visualeditor-languageinspector-widget-label-language' => 'Language',
+	'visualeditor-languageinspector-widget-label-langcode' => 'Language code',
+	'visualeditor-languageinspector-widget-label-direction' => 'Direction',
 	'visualeditor-listbutton-bullet-tooltip' => 'Bullet list',
 	'visualeditor-listbutton-number-tooltip' => 'Numbered list',
 	'visualeditor-loadwarning' => 'Error loading data from server: $1. Would you like to retry?',
@@ -225,6 +232,7 @@ See also:
 	'visualeditor-annotationbutton-italic-tooltip' => 'Tooltip text for italic button',
 	'visualeditor-annotationbutton-link-tooltip' => 'Tooltip text for link button.
 {{Identical|Link}}',
+	'visualeditor-annotationbutton-language-tooltip' => 'Tooltip text for language button',
 	'visualeditor-beta-label' => 'Text of tool in the toolbar that highlights that VisualEditor is still in beta.
 {{Identical|Beta}}',
 	'visualeditor-beta-warning' => "Note shown when user clicks on 'beta' label in VisualEditor, warning users that the software may have issues",
@@ -386,10 +394,13 @@ Parameters:
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Tooltip text for list outdent button',
 	'visualeditor-inspector-close-tooltip' => '{{Identical|Close}}',
 	'visualeditor-inspector-remove-tooltip' => 'Tooltip text for the button to remove an annotation in an inspector',
-	'visualeditor-languageinspector-block-tooltip' => 'Tooltip identifying language block properties inside VisualEditor. Parameters:
-* $1 - the language code (for example "en")
-* $2 - the rtl label {{msg-mw|visualeditor-languageinspector-block-tooltip-rtldirection}}',
+	'visualeditor-languageinspector-block-tooltip' => 'Tooltip identifying language block properties inside VisualEditor. Parameters: $1 - the language code (for example "en")',
 	'visualeditor-languageinspector-block-tooltip-rtldirection' => 'The label "Right To Left" at the end of the tooltip if the language is RTL.',
+	'visualeditor-languageinspector-title' => 'Title of the language inspector dialog.',
+	'visualeditor-languageinspector-widget-changelang' => 'Label to change the language of the given block in the language inspector',
+	'visualeditor-languageinspector-widget-label-language' => 'Label for the language inspector widget, to denote the current block language',
+	'visualeditor-languageinspector-widget-label-langcode' => 'Label for the language inspector widget, to denote the current block language code',
+	'visualeditor-languageinspector-widget-label-direction' => 'Label for the language inspector widget, to denote the current block direction (rtl or ltr)',
 	'visualeditor-linkinspector-suggest-external-link' => 'Label for an external (Web) link in the link inspector.
 {{Identical|External link}}',
 	'visualeditor-linkinspector-suggest-matching-page' => 'Label for suggested matching local wiki page or pages in the link inspector',
@@ -397,6 +408,9 @@ Parameters:
 {{Identical|New page}}',
 	'visualeditor-linkinspector-title' => 'Title of the link inspector dialog.
 {{Identical|Hyperlink}}',
+	'visualeditor-mwmathinspector-title' => 'Used as title for MathInspector.
+
+See [[w:LaTeX]].',
 	'visualeditor-listbutton-bullet-tooltip' => 'Tooltip text for the bullet list button',
 	'visualeditor-listbutton-number-tooltip' => 'Tooltip text for the numbered list button',
 	'visualeditor-loadwarning' => 'Text (JavaScript confirm()) shown when the editor fails to load properly.

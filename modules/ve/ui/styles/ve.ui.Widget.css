@@ -364,6 +364,86 @@
 	background-repeat: no-repeat;
 }
 
+/* ve.ui.LanguageInputWidget */
+
+.ve-ui-langInputWidget {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	width: 20em;
+	position: relative;
+}
+
+.ve-ui-langInputWidget input,
+.ve-ui-langInputWidget input:focus[readonly],
+.ve-ui-widget-disabled.ve-ui-langInputWidget input:focus,
+.ve-ui-langInputWidget textarea,
+.ve-ui-langInputWidget textarea:focus[readonly],
+.ve-ui-widget-disabled.ve-ui-langInputWidget textarea:focus {
+	display: inline-block;
+	font-size: 1em;
+	font-family: sans-serif;
+	background-color: #f7f7f7;
+	border: solid 1px #ccc;
+	box-shadow: 0 0 0 white, inset 0 0.1em 0.2em #ddd;
+	padding: 0.5em;
+	border-radius: 0.25em;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	width: 100%;
+	resize: none;
+
+	/* Animation */
+	-webkit-transition: border-color 200ms, box-shadow 200ms, background-color 200ms;
+	-moz-transition: border-color 200ms, box-shadow 200ms, background-color 200ms;
+	-ms-transition: border-color 200ms, box-shadow 200ms, background-color 200ms;
+	-o-transition: border-color 200ms, box-shadow 200ms, background-color 200ms;
+	transition: border-color 200ms, box-shadow 200ms, background-color 200ms;
+}
+
+.ve-ui-langInputWidget-pending input,
+.ve-ui-langInputWidget-pending textarea {
+	background-color: transparent;
+}
+
+.ve-ui-langInputWidget input:focus,
+.ve-ui-langInputWidget textarea:focus {
+	outline: none;
+	border-color: #a7dcff;
+	box-shadow: 0 0 0.3em #a7dcff, 0 0 0 white;
+	background-color: #fff;
+}
+
+.ve-ui-langInputWidget input[readonly],
+.ve-ui-langInputWidget textarea[readonly] {
+	color: #777;
+	text-shadow: 0 1px 1px #fff;
+}
+
+.ve-ui-widget-disabled.ve-ui-langInputWidget input,
+.ve-ui-widget-disabled.ve-ui-langInputWidget input:focus,
+.ve-ui-widget-disabled.ve-ui-langInputWidget textarea,
+.ve-ui-widget-disabled.ve-ui-langInputWidget textarea:focus {
+	color: #ccc;
+	text-shadow: 0 1px 1px #fff;
+}
+
+.ve-ui-langInputWidget-decorated input,
+.ve-ui-langInputWidget-decorated textarea {
+	padding-left: 2em;
+}
+
+.ve-ui-langInputWidget-icon {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 2em;
+	height: 100%;
+	background-position: right center;
+	background-repeat: no-repeat;
+}
+
 /* ve.ui.MenuWidget */
 
 .ve-ui-menuWidget {
