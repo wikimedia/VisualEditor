@@ -65,6 +65,13 @@ ve.mixinClass( ve.ui.Surface, ve.EventEmitter );
 /* Events */
 
 /**
+ * When the surface changes its position (only if it happens
+ * after initialize has already been called).
+ *
+ * @event position
+ */
+
+/**
  * Whenever the toolbar $bar position is updated, the changes that took place.
  *
  * @event toolbarPosition
