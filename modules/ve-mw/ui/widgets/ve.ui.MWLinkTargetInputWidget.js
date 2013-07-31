@@ -144,7 +144,7 @@ ve.ui.MWLinkTargetInputWidget.prototype.getLookupMenuItemsFromData = function ( 
 };
 
 /**
- * @inheritDoc
+ * @inheritdoc
  */
 ve.ui.MWLinkTargetInputWidget.prototype.initializeLookupMenuSelection = function () {
 	var item;
