@@ -125,12 +125,12 @@ class VisualEditorHooks {
 		global $wgStylePath, $wgContLang;
 		$vars['wgVisualEditor'] = array(
 			'isPageWatched' => $out->getUser()->isWatched( $out->getTitle() ),
-			'pageLanguageCode' => $out->getTitle()->getPageLanguage()->getHtmlCode(),
-			'pageLanguageDir' => $out->getTitle()->getPageLanguage()->getDir(),
 			// Same as in Linker.php
 			'magnifyClipIconURL' => $wgStylePath .
 				'/common/images/magnify-clip' .
-				( $wgContLang->isRTL() ? '-rtl' : '' ) . '.png'
+				( $wgContLang->isRTL() ? '-rtl' : '' ) . '.png',
+			'pageLanguageCode' => $out->getTitle()->getPageLanguage()->getHtmlCode(),
+			'pageLanguageDir' => $out->getTitle()->getPageLanguage()->getDir(),
 		);
 
 		return true;
@@ -140,18 +140,26 @@ class VisualEditorHooks {
 	 * Adds extra variables to the global config
 	 */
 	public static function onResourceLoaderGetConfigVars( array &$vars ) {
-		global $wgVisualEditorEnableEventLogging, $wgVisualEditorPluginModules,
-			$wgVisualEditorEnableExperimentalCode, $wgVisualEditorTabLayout,
-			$wgVisualEditorDisableForAnons, $wgVisualEditorNamespaces;
+		global $wgDefaultUserOptions,
+			$wgVisualEditorDisableForAnons,
+			$wgVisualEditorEnableEventLogging,
+			$wgVisualEditorEnableExperimentalCode,
+			$wgVisualEditorNamespaces,
+			$wgVisualEditorPluginModules,
+			$wgVisualEditorTabLayout;
 
 		$vars['wgVisualEditorConfig'] = array(
-			'enableExperimentalCode' => $wgVisualEditorEnableExperimentalCode,
-			'enableEventLogging' => $wgVisualEditorEnableEventLogging,
-			'tabLayout' => $wgVisualEditorTabLayout,
 			'disableForAnons' => $wgVisualEditorDisableForAnons,
+			'enableEventLogging' => $wgVisualEditorEnableEventLogging,
+			'enableExperimentalCode' => $wgVisualEditorEnableExperimentalCode,
 			'namespaces' => $wgVisualEditorNamespaces,
-			'skins' => self::$supportedSkins,
 			'pluginModules' => $wgVisualEditorPluginModules,
+			'defaultUserOptions' => array(
+				'enable' => $wgDefaultUserOptions['visualeditor-enable'],
+				'betatempdisable' => $wgDefaultUserOptions['visualeditor-betatempdisable'],
+			),
+			'skins' => self::$supportedSkins,
+			'tabLayout' => $wgVisualEditorTabLayout,
 		);
 
 		return true;
