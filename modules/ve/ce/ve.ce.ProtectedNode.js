@@ -79,7 +79,7 @@ ve.ce.ProtectedNode.prototype.onProtectedSetup = function () {
 	this.getRoot().getSurface().getModel()
 		.connect( this, { 'change': 'onSurfaceModelChange' } );
 	this.getRoot().getSurface().getSurface()
-		.connect( this, { 'toolbarPosition': 'positionPhantoms' } );
+		.connect( this, { 'position': 'positionPhantoms' } );
 
 	// Shields
 	this.$.add( this.$.find( '*' ) ).each( function () {
@@ -115,7 +115,7 @@ ve.ce.ProtectedNode.prototype.onProtectedTeardown = function () {
 	this.root.getSurface().getModel()
 		.disconnect( this, { 'change': 'onSurfaceModelChange' } );
 	this.getRoot().getSurface().getSurface()
-		.disconnect( this, { 'toolbarPosition': 'positionPhantoms' } );
+		.disconnect( this, { 'position': 'positionPhantoms' } );
 
 	// Shields
 	this.$shields.remove();
