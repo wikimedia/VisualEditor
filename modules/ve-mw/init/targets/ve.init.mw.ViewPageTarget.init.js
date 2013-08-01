@@ -365,7 +365,7 @@
 
 		// Allow disabling for anonymous users separately from changing the
 		// default preference (bug 50000)
-		!( conf.disableForAnons && mw.user.isAnon() ) &&
+		!( conf.disableForAnons && mw.config.get( 'wgUserName' ) === null ) &&
 
 		// Disable on redirect pages until redirects are editable (bug 47328)
 		// Property wgIsRedirect is relatively new in core, many cached pages
@@ -381,7 +381,7 @@
 		// with static caching (e.g. wgUseFileCache or reverse-proxy) ignore user.options for
 		// anons as it is likely outdated.
 		(
-			mw.user.isAnon() ?
+			mw.config.get( 'wgUserName' ) === null ?
 				( conf.defaultUserOptions.enable && !conf.defaultUserOptions.betatempdisable ) :
 				(
 					mw.user.options.get( 'visualeditor-enable', conf.defaultUserOptions.enable ) &&
