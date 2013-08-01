@@ -46,12 +46,19 @@ ve.mixinClass( ve.ui.MWLinkTargetInputWidget, ve.ui.LookupInputWidget );
 /**
  * Handle menu item select event.
  *
+ * If no item is selected then the input must be invalid, so clear the annotation.
+ * We shouldn't just leave the previous annotation as the user has no way of knowing
+ * what that might be. For example if "Foo{}Bar" is typed, this.annotation will be
+ * a link to "Foo".
+ *
  * @method
- * @param {ve.ui.MenuItemWidget} item Selected item
+ * @param {ve.ui.MenuItemWidget|null} item Selected item
  */
 ve.ui.MWLinkTargetInputWidget.prototype.onLookupMenuItemSelect = function ( item ) {
 	if ( item ) {
 		this.setAnnotation( item.getData() );
+	} else if ( this.annotation ) {
+		this.annotation = null;
 	}
 };
 
@@ -92,7 +99,7 @@ ve.ui.MWLinkTargetInputWidget.prototype.getLookupCacheItemFromData = function ( 
  * @returns {ve.ui.MenuItemWidget[]} Menu items
  */
 ve.ui.MWLinkTargetInputWidget.prototype.getLookupMenuItemsFromData = function ( data ) {
-	var i, len,
+	var i, len, item,
 		menu$$ = this.lookupMenu.$$,
 		items = [],
 		matchingPages = data,
@@ -116,14 +123,23 @@ ve.ui.MWLinkTargetInputWidget.prototype.getLookupMenuItemsFromData = function ( 
 
 	// Internal link
 	if ( !pageExists ) {
-		items.push( new ve.ui.MenuSectionItemWidget(
-			'newPage',
-			{ '$$': menu$$, 'label': ve.msg( 'visualeditor-linkinspector-suggest-new-page' ) }
-		) );
-		items.push( new ve.ui.MenuItemWidget(
-			this.getInternalLinkAnnotationFromTitle( this.value ),
-			{ '$$': menu$$, 'rel': 'newPage', 'label': this.value }
-		) );
+		if ( ve.ui.MWLinkInspector.static.legalTitle.test( this.value ) ) {
+			items.push( new ve.ui.MenuSectionItemWidget(
+				'newPage',
+				{ '$$': menu$$, 'label': ve.msg( 'visualeditor-linkinspector-suggest-new-page' ) }
+			) );
+			items.push( new ve.ui.MenuItemWidget(
+				this.getInternalLinkAnnotationFromTitle( this.value ),
+				{ '$$': menu$$, 'rel': 'newPage', 'label': this.value }
+			) );
+		} else {
+			item = new ve.ui.MenuSectionItemWidget(
+				'illegalTitle',
+				{ '$$': menu$$, 'label': ve.msg( 'visualeditor-linkinspector-illegal-title' ) }
+			);
+			item.$.addClass( 've-ui-mwLinkTargetInputWidget-warning' );
+			items.push( item );
+		}
 	}
 
 	// Matching pages

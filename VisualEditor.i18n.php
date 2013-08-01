@@ -110,6 +110,7 @@ $messages['en'] = array(
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Decrease indentation',
 	'visualeditor-inspector-close-tooltip' => 'Close',
 	'visualeditor-inspector-remove-tooltip' => 'Remove',
+	'visualeditor-linkinspector-illegal-title' => 'Invalid page title',
 	'visualeditor-linkinspector-suggest-external-link' => 'External link',
 	'visualeditor-linkinspector-suggest-matching-page' => 'Matching page',
 	'visualeditor-linkinspector-suggest-new-page' => 'New page',
@@ -383,6 +384,7 @@ Parameters:
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Tooltip text for list outdent button',
 	'visualeditor-inspector-close-tooltip' => '{{Identical|Close}}',
 	'visualeditor-inspector-remove-tooltip' => 'Tooltip text for the button to remove an annotation in an inspector',
+	'visualeditor-linkinspector-illegal-title' => 'Warning that the entered text is not a valid page title.',
 	'visualeditor-linkinspector-suggest-external-link' => 'Label for an external (Web) link in the link inspector.
 {{Identical|External link}}',
 	'visualeditor-linkinspector-suggest-matching-page' => 'Label for suggested matching local wiki page or pages in the link inspector',
