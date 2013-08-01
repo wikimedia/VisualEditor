@@ -323,6 +323,9 @@ ve.init.mw.ViewPageTarget.prototype.onLoad = function ( doc ) {
 			this.setupBeforeUnloadHandler();
 			this.$document[0].focus();
 			this.activating = false;
+			if ( mw.config.get( 'wgVisualEditorConfig' ).showBetaWelcome ) {
+				this.showBetaWelcome();
+			}
 			mw.hook( 've.activationComplete' ).fire();
 		}, this ) );
 	}
@@ -2227,6 +2230,16 @@ ve.init.mw.ViewPageTarget.prototype.setupBeforeUnloadHandler = function () {
 ve.init.mw.ViewPageTarget.prototype.tearDownBeforeUnloadHandler = function () {
 	// Restore whatever previous onbeforeload hook existed
 	window.onbeforeunload = this.onBeforeUnloadFallback;
+};
+
+/**
+ * Show beta welcome dialog if first load.
+ */
+ve.init.mw.ViewPageTarget.prototype.showBetaWelcome = function () {
+	if ( $.cookie( 've-beta-welcome-dialog' ) === null ) {
+		this.surface.getDialogs().open( 'mwBetaWelcome' );
+	}
+	$.cookie( 've-beta-welcome-dialog', 1, { 'path': '/', 'expires': 30 } );
 };
 
 /**

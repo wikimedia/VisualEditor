@@ -27,6 +27,7 @@ ve.ui.Dialog = function VeUiDialog( surface, config ) {
 	// Properties
 	this.visible = false;
 	this.footless = !!config.footless;
+	this.small = !!config.small;
 	this.onWindowMouseWheelHandler = ve.bind( this.onWindowMouseWheel, this );
 	this.onDocumentKeyDownHandler = ve.bind( this.onDocumentKeyDown, this );
 
@@ -153,6 +154,9 @@ ve.ui.Dialog.prototype.initialize = function () {
 	this.frame.$content.addClass( 've-ui-dialog-content' );
 	if ( this.footless ) {
 		this.frame.$content.addClass( 've-ui-dialog-content-footless' );
+	}
+	if ( this.small ) {
+		this.$frame.addClass( 've-ui-window-frame-small' );
 	}
 	this.closeButton.$.addClass( 've-ui-window-closeButton' );
 	this.$head.append( this.closeButton.$ );
