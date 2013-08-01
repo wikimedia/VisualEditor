@@ -14,7 +14,7 @@ class VisualEditorHooks {
 
 	public static function onSetup() {
 		global $wgVisualEditorEnableEventLogging, $wgResourceModules,
-			$wgVisualEditorResourceTemplate;
+			$wgVisualEditorResourceTemplate, $wgVisualEditorTabMessages;
 
 		// This prevents VisualEditor from being run in environments that don't
 		// have the dependent code in core; this should be updated as a part of
@@ -24,6 +24,13 @@ class VisualEditorHooks {
 		// this should have no impact on deploying to Wikimedia's wiki cluster.
 		// Is fine for release tarballs because 1.22wmf11 < 1.22alpha < 1.22.0.
 		wfUseMW( '1.22wmf11' );
+
+		// Add tab messages to the init init module
+		foreach ( $wgVisualEditorTabMessages as $msg ) {
+			if ( $msg !== null ) {
+				$wgResourceModules['ext.visualEditor.viewPageTarget.init']['messages'][] = $msg;
+			}
+		}
 
 		if ( $wgVisualEditorEnableEventLogging ) {
 			if ( class_exists( 'ResourceLoaderSchemaModule' ) ) {
@@ -78,7 +85,7 @@ class VisualEditorHooks {
 	}
 
 	/**
-	 * Adds VisualEditor JS to the output if in the correct namespace.
+	 * Adds VisualEditor JS to the output.
 	 *
 	 * This is attached to the MediaWiki 'BeforePageDisplay' hook.
 	 *
@@ -86,14 +93,147 @@ class VisualEditorHooks {
 	 * @param $skin Skin
 	 */
 	public static function onBeforePageDisplay( &$output, &$skin ) {
-		global $wgVisualEditorNamespaces, $wgVisualEditorEnableEventLogging,
-			$wgVisualEditorDisableForAnons;
+		global $wgVisualEditorEnableEventLogging;
 
 		if ( $wgVisualEditorEnableEventLogging ) {
 			$output->addModules( array( 'schema.Edit' ) );
 		}
 
 		$output->addModules( array( 'ext.visualEditor.viewPageTarget.init' ) );
+		$output->addModuleStyles( array( 'ext.visualEditor.viewPageTarget.noscript' ) );
+
+		return true;
+	}
+
+	/**
+	 * Changes the Edit tab and adds the VisualEditor tab.
+	 *
+	 * This is attached to the MediaWiki 'SkinTemplateNavigation' hook.
+	 *
+	 * @param SkinTemplate $skin
+	 * @param array $links Navigation links
+	 * @return boolean
+	 */
+	public static function onSkinTemplateNavigation( &$skin, &$links ) {
+		// Only do this if the user has VE enabled
+		if (
+			!$skin->getUser()->getOption( 'visualeditor-enable' ) ||
+			$skin->getUser()->getOption( 'visualeditor-betatempdisable' )
+		) {
+			return true;
+		}
+
+		global $wgVisualEditorTabMessages, $wgVisualEditorTabPosition;
+		if ( !isset( $links['views']['edit'] ) ) {
+			// There's no edit link, nothing to do
+			return true;
+		}
+		$title = $skin->getRelevantTitle();
+		// Rebuild the $links['views'] array and inject the VisualEditor tab before or after
+		// the edit tab as appropriate. We have to rebuild the array because PHP doesn't allow
+		// us to splice into the middle of an associative array.
+		$newViews = array();
+		foreach ( $links['views'] as $action => $data ) {
+			if ( $action === 'edit' ) {
+				// Build the VisualEditor tab
+				$existing = $title->exists() || (
+					$title->getNamespace() == NS_MEDIAWIKI &&
+					$title->getDefaultMessageText() !== false
+				);
+				$veParams = $skin->editUrlOptions();
+				unset( $veParams['action'] ); // Remove action=edit
+				$veParams['veaction'] = 'edit'; // Set veaction=edit
+				$veTabMessage = $wgVisualEditorTabMessages[$existing ? 'edit' : 'create'];
+				$veTabText = $veTabMessage === null ? $data['text'] :
+					wfMessage( $veTabMessage )->setContext( $skin->getContext() )->text();
+				$veTab = array(
+					'href' => $title->getLocalURL( $veParams ),
+					'text' => $veTabText,
+					'primary' => true,
+					'class' => '',
+				);
+
+				// Alter the edit tab
+				$editTab = $data;
+				$editTabMessage = $wgVisualEditorTabMessages[$existing ? 'editsource' : 'createsource'];
+				if ( $editTabMessage !== null ) {
+					$editTab['text'] = wfMessage( $editTabMessage )->setContext( $skin->getContext() )->text();
+				}
+
+				// Inject the VE tab before or after the edit tab
+				if ( $wgVisualEditorTabPosition === 'before' ) {
+					$newViews['ve-edit'] = $veTab;
+					$newViews['edit'] = $editTab;
+				} else {
+					$newViews['edit'] = $editTab;
+					$newViews['ve-edit'] = $veTab;
+				}
+			} else {
+				// Just pass through
+				$newViews[$action] = $data;
+			}
+		}
+		$links['views'] = $newViews;
+		return true;
+	}
+
+	/**
+	 * Changes the section edit links to add a VE edit link.
+	 *
+	 * This is attached to the MediaWiki 'DoEditSectionLink' hook.
+	 *
+	 * @param $skin Skin
+	 * @param $title Title
+	 * @param $section string
+	 * @param $tooltip string
+	 * @param $result string HTML
+	 * @param $lang Language
+	 * @returns bool true
+	 */
+	public static function onDoEditSectionLink( $skin, $title, $section, $tooltip, &$result, $lang ) {
+		// Only do this if the user has VE enabled
+		if (
+			!$skin->getUser()->getOption( 'visualeditor-enable' ) ||
+			$skin->getUser()->getOption( 'visualeditor-betatempdisable' )
+		) {
+			return;
+		}
+
+		global $wgVisualEditorTabMessages, $wgVisualEditorTabPosition;
+		$veEditSection = $wgVisualEditorTabMessages['editsection'] !== null ?
+			$wgVisualEditorTabMessages['editsection'] : 'editsection';
+		$sourceEditSection = $wgVisualEditorTabMessages['editsectionsource'] !== null ?
+			$wgVisualEditorTabMessages['editsectionsource'] : 'editsection';
+
+		// Code mostly duplicated from Skin::doEditSectionLink() :(
+		$attribs = array();
+		if ( !is_null( $tooltip ) ) {
+			# Bug 25462: undo double-escaping.
+			$tooltip = Sanitizer::decodeCharReferences( $tooltip );
+			$attribs['title'] = wfMessage( 'editsectionhint' )->rawParams( $tooltip )
+				->inLanguage( $lang )->text();
+		}
+		$veLink = Linker::link( $title, wfMessage( $veEditSection )->inLanguage( $lang )->text(),
+			$attribs + array( 'class' => 'mw-editsection-visualeditor' ),
+			array( 'veaction' => 'edit', 'section' => $section ),
+			array( 'noclasses', 'known' )
+		);
+		$sourceLink = Linker::link( $title, wfMessage( $sourceEditSection )->inLanguage( $lang )->text(),
+			$attribs,
+			array( 'action' => 'edit', 'section' => $section ),
+			array( 'noclasses', 'known' )
+		);
+
+		$veFirst = $wgVisualEditorTabPosition === 'before';
+		$result = '<span class="mw-editsection">'
+			. '<span class="mw-editsection-bracket">[</span>'
+			. ( $veFirst ? $veLink : $sourceLink )
+			. '<span class="mw-editsection-divider">'
+			. wfMessage( 'pipe-separator' )->inLanguage( $lang )->text()
+			. '</span>'
+			. ( $veFirst ? $sourceLink : $veLink )
+			. '<span class="mw-editsection-bracket">]</span>'
+			. '</span>';
 
 		return true;
 	}
@@ -146,7 +286,8 @@ class VisualEditorHooks {
 			$wgVisualEditorEnableExperimentalCode,
 			$wgVisualEditorNamespaces,
 			$wgVisualEditorPluginModules,
-			$wgVisualEditorTabLayout;
+			$wgVisualEditorTabPosition,
+			$wgVisualEditorTabMessages;
 
 		$vars['wgVisualEditorConfig'] = array(
 			'disableForAnons' => $wgVisualEditorDisableForAnons,
@@ -159,7 +300,8 @@ class VisualEditorHooks {
 				'betatempdisable' => $wgDefaultUserOptions['visualeditor-betatempdisable'],
 			),
 			'skins' => self::$supportedSkins,
-			'tabLayout' => $wgVisualEditorTabLayout,
+			'tabPosition' => $wgVisualEditorTabPosition,
+			'tabMessages' => $wgVisualEditorTabMessages,
 		);
 
 		return true;

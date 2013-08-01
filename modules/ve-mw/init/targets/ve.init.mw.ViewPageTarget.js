@@ -1976,7 +1976,7 @@ ve.init.mw.ViewPageTarget.prototype.transformPage = function () {
 	// Put skin tabs in "edit" mode
 	$( $( '#p-views' ).length ? '#p-views' : '#p-cactions' )
 		.find( 'li.selected' ).removeClass( 'selected' );
-	$( this.tabLayout === 'add' ? '#ca-ve-edit' : '#ca-edit' )
+	$( '#ca-ve-edit' )
 		.addClass( 'selected' );
 
 	// Hide site notice (if present)

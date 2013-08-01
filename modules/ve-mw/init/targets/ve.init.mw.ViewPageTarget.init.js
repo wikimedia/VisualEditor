@@ -149,177 +149,159 @@
 		},
 
 		setupTabLayout: function () {
-			var caVeEdit, caVeEditSource,
+			var caVeEdit,
 				action = pageExists ? 'edit' : 'create',
 				pTabsId = $( '#p-views' ).length ? 'p-views' : 'p-cactions',
 				$caSource = $( '#ca-viewsource' ),
 				$caEdit = $( '#ca-edit' ),
+				$caVeEdit = $( '#ca-ve-edit' ),
 				$caEditLink = $caEdit.find( 'a' ),
+				$caVeEditLink = $caVeEdit.find( 'a' ),
 				reverseTabOrder = $( 'body' ).hasClass( 'rtl' ) && pTabsId === 'p-views',
-				caVeEditNextnode = reverseTabOrder ? $caEdit.get( 0 ) : $caEdit.next().get( 0 );
+				/*jshint bitwise:false */
+				caVeEditNextnode = ( reverseTabOrder ^ conf.tabPosition === 'before' ) ? $caEdit.get( 0 ) : $caEdit.next().get( 0 ),
+				tabMessages = conf.tabMessages;
 
-			if ( !$caEdit.length || $caSource.length ) {
+			if ( !$caVeEdit.length ) {
+				// The below duplicates the functionality of VisualEditorHooks::onSkinTemplateNavigation()
+				// in case we're running on a cached page that doesn't have these tabs yet.
+
 				// If there is no edit tab or a view-source tab,
 				// the user doesn't have permission to edit.
-				return;
+				if ( $caEdit.length && !$caSource.length ) {
+					// Add the VisualEditor tab (#ca-ve-edit)
+					caVeEdit = mw.util.addPortletLink(
+						pTabsId,
+						// Use url instead of '#'.
+						// So that 1) one can always open it in a new tab, even when
+						// onEditTabClick is bound.
+						// 2) when onEditTabClick is not bound (!isViewPage) it will
+						// just work.
+						veEditUri,
+						tabMessages[action] !== null ? mw.msg( tabMessages[action] ) : $caEditLink.text(),
+						'ca-ve-edit',
+						mw.msg( 'tooltip-ca-ve-edit' ),
+						mw.msg( 'accesskey-ca-ve-edit' ),
+						caVeEditNextnode
+					);
+
+					$caVeEdit = $( caVeEdit );
+					$caVeEditLink = $caVeEdit.find( 'a' );
+				}
+			} else {
+				// Make the state of the page consistent with the config if needed
+				/*jshint bitwise:false */
+				if ( reverseTabOrder ^ conf.tabPosition === 'before' ) {
+					if ( $caEdit[0].nextSibling === $caVeEdit[0] ) {
+						$caVeEdit.after( $caEdit );
+					}
+				} else {
+					if ( $caVeEdit[0].nextSibling === $caEdit[0] ) {
+						$caEdit.after( $caVeEdit );
+					}
+				}
+				if ( tabMessages[action] !== null ) {
+					$caVeEditLink.text( mw.msg( tabMessages[action] ) );
+				}
 			}
 
-			// Add independent "VisualEditor" tab (#ca-ve-edit).
-			if ( conf.tabLayout === 'add' ) {
-
-				caVeEdit = mw.util.addPortletLink(
-					pTabsId,
-					// Use url instead of '#'.
-					// So that 1) one can always open it in a new tab, even when
-					// onEditTabClick is bound.
-					// 2) when onEditTabClick is not bound (!isViewPage) it will
-					// just work.
-					veEditUri,
-					// visualeditor-ca-ve-create
-					// visualeditor-ca-ve-edit
-					mw.msg( 'visualeditor-ca-ve-' + action ),
-					'ca-ve-edit',
-					mw.msg( 'tooltip-ca-ve-edit' ),
-					mw.msg( 'accesskey-ca-ve-edit' ),
-					caVeEditNextnode
+			// Alter the edit tab (#ca-edit)
+			if ( tabMessages[action + 'source'] !== null ) {
+				$caEditLink.text( mw.msg( tabMessages[action + 'source'] ) );
+			}
+			// Process appendix messages
+			if ( tabMessages[action + 'appendix'] !== null ) {
+				$caVeEditLink.append(
+					$( '<span>' )
+						.addClass( 've-tabmessage-appendix' )
+						.text( mw.msg( tabMessages[action + 'appendix'] ) )
 				);
-
-			// Replace "Edit" tab with a veEditUri version, add "Edit source" tab.
-			} else {
-				// Create "Edit source" link.
-				// Re-create instead of convert ca-edit since we don't want to copy over accesskey etc.
-				caVeEditSource = mw.util.addPortletLink(
-					pTabsId,
-					// Use original href to preserve oldid etc. (bug 38125)
-					$caEditLink.attr( 'href' ),
-					// visualeditor-ca-createsource
-					// visualeditor-ca-editsource
-					mw.msg( 'visualeditor-ca-' + action + 'source' ),
-					'ca-editsource',
-					// tooltip-ca-editsource
-					// tooltip-ca-createsource
-					mw.msg( 'tooltip-ca-' + action + 'source' ),
-					mw.msg( 'accesskey-ca-editsource' ),
-					caVeEditNextnode
-				);
-				// Copy over classes (e.g. 'selected')
-				$( caVeEditSource ).addClass( $caEdit.attr( 'class' ) );
-
-				// Create "Edit" tab.
-				$caEdit.remove();
-				caVeEdit = mw.util.addPortletLink(
-					pTabsId,
-					// Use url instead of '#'.
-					// So that 1) one can always open it in a new tab, even when
-					// onEditTabClick is bound.
-					// 2) when onEditTabClick is not bound (!isViewPage) it will
-					// just work.
-					veEditUri,
-					$caEditLink.text(),
-					$caEdit.attr( 'id' ),
-					$caEditLink.attr( 'title' ),
-					mw.msg( 'accesskey-ca-ve-edit' ),
-					reverseTabOrder ? caVeEditSource.nextSibling : caVeEditSource
+			}
+			if ( tabMessages[action + 'sourceappendix'] !== null ) {
+				$caEditLink.append(
+					$( '<span>' )
+						.addClass( 've-tabmessage-appendix' )
+						.text( mw.msg( tabMessages[action + 'sourceappendix'] ) )
 				);
 			}
 
 			if ( isViewPage ) {
 				// Allow instant switching to edit mode, without refresh
-				$( caVeEdit ).click( init.onEditTabClick );
+				$caVeEdit.click( init.onEditTabClick );
 			}
 		},
 
 		setupSectionEditLinks: function () {
-			var $editsections = $( '#mw-content-text .mw-editsection' );
+			var $editsections = $( '#mw-content-text .mw-editsection' ),
+				tabMessages = conf.tabMessages;
 
 			// match direction to the user interface
 			$editsections.css( 'direction', $( 'body' ).css( 'direction' ) );
 			// The "visibility" css construct ensures we always occupy the same space in the layout.
 			// This prevents the heading from changing its wrap when the user toggles editSourceLink.
-			$editsections.each( function () {
-				var $closingBracket, $expandedOnly, $hiddenBracket, $outerClosingBracket,
-					expandTimeout, shrinkTimeout,
-					$editsection = $( this ),
-					$heading = $editsection.closest( 'h1, h2, h3, h4, h5, h6' ),
-					$editLink = $editsection.find( 'a' ).eq( 0 ),
-					$editSourceLink = $editLink.clone(),
-					$links = $editLink.add( $editSourceLink ),
-					$divider = $( '<span>' ),
-					dividerText = $.trim( mw.msg( 'pipe-separator' ) ),
-					$brackets = $( [ this.firstChild, this.lastChild ] );
+			if ( $editsections.find( '.mw-editsection-visualeditor' ).length === 0 ) {
+				// If PHP didn't build the section edit links (because of caching), build them
+				$editsections.each( function () {
+					var $editsection = $( this ),
+						$editSourceLink = $editsection.find( 'a' ).eq( 0 ),
+						$editLink = $editSourceLink.clone(),
+						$divider = $( '<span>' ),
+						dividerText = mw.msg( 'pipe-separator' );
 
-				function expandSoon() {
-					// Cancel pending shrink, schedule expansion instead
-					clearTimeout( shrinkTimeout );
-					expandTimeout = setTimeout( expand, 100 );
-				}
-
-				function expand() {
-					clearTimeout( shrinkTimeout );
-					$closingBracket.css( 'visibility', 'hidden' );
-					$expandedOnly.css( 'visibility', 'visible' );
-					$heading.addClass( 'mw-editsection-expanded' );
-				}
-
-				function shrinkSoon() {
-					// Cancel pending expansion, schedule shrink instead
-					clearTimeout( expandTimeout );
-					shrinkTimeout = setTimeout( shrink, 100 );
-				}
-
-				function shrink() {
-					clearTimeout( expandTimeout );
-					if ( !$links.is( ':focus' ) ) {
-						$closingBracket.css( 'visibility', 'visible' );
-						$expandedOnly.css( 'visibility', 'hidden' );
-						$heading.removeClass( 'mw-editsection-expanded' );
+					if ( tabMessages.editsectionsource !== null ) {
+						$editSourceLink.text( mw.msg( tabMessages.editsectionsource ) );
 					}
-				}
+					if ( tabMessages.editsection !== null ) {
+						$editLink.text( mw.msg( tabMessages.editsection ) );
+					}
+					$divider
+						.addClass( 'mw-editsection-divider' )
+						.text( dividerText );
+					$editLink
+						.attr( 'href', function ( i, val ) {
+							return new mw.Uri( veEditUri ).extend( {
+								'vesection': new mw.Uri( val ).query.section
+							} );
+						} )
+						.addClass( 'mw-editsection-visualeditor' );
+					if ( conf.tabPosition === 'before' ) {
+						$editSourceLink.before( $editLink, $divider );
+					} else {
+						$editSourceLink.after( $divider, $editLink );
+					}
+				} );
+			}
 
-				// TODO: Remove this (see Id27555c6 in mediawiki/core)
-				if ( !$brackets.hasClass( 'mw-editsection-bracket' ) ) {
-					$brackets = $brackets
-						.wrap( $( '<span>' ).addClass( 'mw-editsection-bracket' ) )
-						.parent();
-				}
+			// Process appendix messages
+			if ( tabMessages.editsectionappendix ) {
+				$editsections.find( '.mw-editsection-visualeditor' )
+					.append(
+						$( '<span>' )
+							.addClass( 've-tabmessage-appendix' )
+							.text( mw.msg( tabMessages.editsectionappendix ) )
+					);
+			}
+			if ( tabMessages.editsectionsourceappendix ) {
+				$editsections.find( 'a:not(.mw-editsection-visualeditor)' )
+					.append(
+						$( '<span>' )
+							.addClass( 've-tabmessage-appendix' )
+							.text( mw.msg( tabMessages.editsectionsourceappendix ) )
+					);
+			}
 
-				$closingBracket = $brackets.last();
-				$outerClosingBracket = $closingBracket.clone();
-				$expandedOnly = $divider.add( $editSourceLink ).add( $outerClosingBracket )
-					.css( 'visibility', 'hidden' );
-				// The hidden bracket after the devider ensures we have balanced space before and after
-				// divider. The space before the devider is provided by the original closing bracket.
-				$hiddenBracket = $closingBracket.clone().css( 'visibility', 'hidden' );
-
-				// Events
-				$heading.on( { 'mouseenter': expandSoon, 'mouseleave': shrinkSoon } );
-				$links.on( { 'focus': expand, 'blur': shrinkSoon } );
-				if ( isViewPage ) {
-					// Only init without refresh if we're on a view page. Though section edit links
-					// are rarely shown on non-view pages, they appear in one other case, namely
-					// when on a diff against the latest version of a page. In that case we mustn't
-					// init without refresh as that'd initialise for the wrong rev id (bug 50925)
-					// and would preserve the wrong DOM with a diff on top.
-					$editLink.click( init.onEditSectionLinkClick );
-				}
-
-				// Initialization
-				$editSourceLink
-					.addClass( 'mw-editsection-link-secondary' )
-					.text( mw.msg( 'visualeditor-ca-editsource-section' ) );
-				$divider
-					.addClass( 'mw-editsection-divider' )
-					.text( dividerText );
-				$editLink
-					.attr( 'href', function ( i, val ) {
-						return new mw.Uri( veEditUri ).extend( {
-							'vesection': new mw.Uri( val ).query.section
-						} );
-					} )
-					.addClass( 'mw-editsection-link-primary' );
-				$closingBracket
-					.after( $divider, $hiddenBracket, $editSourceLink, $outerClosingBracket );
-			} );
+			if ( isViewPage ) {
+				// Only init without refresh if we're on a view page. Though section edit links
+				// are rarely shown on non-view pages, they appear in one other case, namely
+				// when on a diff against the latest version of a page. In that case we mustn't
+				// init without refresh as that'd initialise for the wrong rev id (bug 50925)
+				// and would preserve the wrong DOM with a diff on top.
+				$editsections
+					.addClass( 'mw-editsection-expanded' )
+					.find( '.mw-editsection-visualeditor' )
+						.click( init.onEditSectionLinkClick )
+				;
+			}
 		},
 
 		onEditTabClick: function ( e ) {
@@ -415,8 +397,11 @@
 	mw.libs.ve = init;
 
 	if ( !init.isAvailable ) {
+		$( 'html' ).addClass( 've-not-available' );
 		return;
 	}
+	$( 'html' ).addClass( 've-available' );
+
 
 	$( function () {
 		if ( isViewPage ) {
@@ -428,5 +413,4 @@
 		}
 		init.skinSetup();
 	} );
-
 }() );
