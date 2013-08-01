@@ -53,11 +53,14 @@
 
 	conf = mw.config.get( 'wgVisualEditorConfig' );
 	uri = new mw.Uri();
-	pageExists = !!mw.config.get( 'wgArticleId' );
+	// For non-article pages, no information about page existence is exposed to
+	// mw.config, so we assume it exists TODO: fix this in core.
+	pageExists = !!mw.config.get( 'wgArticleId' ) || !mw.config.get( 'wgIsArticle' );
 	viewUri = new mw.Uri( mw.util.wikiGetlink( mw.config.get( 'wgRelevantPageName' ) ) );
 	veEditUri = viewUri.clone().extend( { 'veaction': 'edit' } );
 	isViewPage = (
 		mw.config.get( 'wgAction' ) === 'view' &&
+		mw.config.get( 'wgIsArticle' ) &&
 		!( 'diff' in uri.query )
 	);
 
