@@ -1168,7 +1168,7 @@ ve.init.mw.ViewPageTarget.prototype.startSanityCheck = function () {
 };
 
 /**
- * @see ve.ui.Toolbar#position
+ * @see ve.ui.SurfaceToolbar#position
  * @param {jQuery} $bar
  * @param {Object} update
  */
@@ -1885,7 +1885,7 @@ ve.init.mw.ViewPageTarget.prototype.hideTableOfContents = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.setUpToolbar = function () {
-	this.toolbar = new ve.ui.Toolbar( this.surface, { 'shadow': true, 'actions': true } );
+	this.toolbar = new ve.ui.SurfaceToolbar( this.surface, { 'shadow': true, 'actions': true } );
 	this.toolbar.connect( this, { 'position': 'onToolbarPosition' } );
 	this.toolbar.addTools( this.constructor.static.toolbarTools );
 	this.surface.addCommands( this.constructor.static.surfaceCommands );

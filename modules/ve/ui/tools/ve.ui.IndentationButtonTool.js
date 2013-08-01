@@ -12,7 +12,7 @@
  * @class
  * @extends ve.ui.ButtonTool
  * @constructor
- * @param {ve.ui.Toolbar} toolbar
+ * @param {ve.ui.SurfaceToolbar} toolbar
  * @param {Object} [config] Config options
  */
 ve.ui.IndentationButtonTool = function VeUiIndentationButtonTool( toolbar, config ) {

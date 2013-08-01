@@ -11,7 +11,7 @@
  * @class
  * @extends ve.ui.ListButtonTool
  * @constructor
- * @param {ve.ui.Toolbar} toolbar
+ * @param {ve.ui.SurfaceToolbar} toolbar
  * @param {Object} [config] Config options
  */
 ve.ui.NumberButtonTool = function VeUiNumberButtonTool( toolbar, config ) {
