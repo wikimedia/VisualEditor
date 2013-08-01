@@ -56,7 +56,6 @@ $wgExtensionFunctions[] = 'VisualEditorHooks::onSetup';
 // Bug 49604: Running split test in production if $wgVisualEditorEnableSplitTest is true.
 // This requires that GuidedTour and EventLogging are also enabled on the wiki.
 $wgHooks['AddNewAccount'][] = 'VisualEditorHooks::onAddNewAccount';
-$wgHooks['BeforeWelcomeCreation'][] = 'VisualEditorHooks::onBeforeWelcomeCreation';
 
 // Set default values for new preferences
 $wgDefaultUserOptions['visualeditor-enable'] = 0;
