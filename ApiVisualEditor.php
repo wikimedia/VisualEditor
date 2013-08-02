@@ -274,7 +274,7 @@ class ApiVisualEditor extends ApiBase {
 			case 'parsefragment':
 				$content = $this->parseWikitextFragment( $params['wikitext'], $page->getText() );
 				if ( $content === false ) {
-					$this->dieUsage( 'Error contacting the Parsoid server', 'parsoidserver' );
+					$this->dieUsage( 'Error querying MediaWiki API', 'parsoidserver' );
 				} else {
 					$result = array(
 						'result' => 'success',

@@ -79,11 +79,17 @@ ve.ce.MWTransclusionNode.prototype.generateContents = function () {
 /**
  * Handle a successful response from the parser for the wikitext fragment.
  *
- * @param {jQuery.Deferred} deferred The Deferred object created by generateContents
+ * @param {jQuery.Deferred} deferred The Deferred object created by #generateContents
  * @param {Object} response Response data
  */
 ve.ce.MWTransclusionNode.prototype.onParseSuccess = function ( deferred, response ) {
-	var data = response.visualeditor, contentNodes = $( data.content ).get();
+	var contentNodes;
+
+	if ( !response || response.error || !response.visualeditor || response.visualeditor.result !== 'success' ) {
+		return this.onParseError.call( this, deferred );
+	}
+
+	contentNodes = $( response.visualeditor.content ).get();
 	// HACK: if $content consists of a single paragraph, unwrap it.
 	// We have to do this because the PHP parser wraps everything in <p>s, and inline templates
 	// will render strangely when wrapped in <p>s.
@@ -96,7 +102,7 @@ ve.ce.MWTransclusionNode.prototype.onParseSuccess = function ( deferred, respons
 /**
  * Handle an unsuccessful response from the parser for the wikitext fragment.
  *
- * @param {jQuery.Deferred} deferred The promise object created by generateContents
+ * @param {jQuery.Deferred} deferred The promise object created by #generateContents
  * @param {Object} response Response data
  */
 ve.ce.MWTransclusionNode.prototype.onParseError = function ( deferred ) {
