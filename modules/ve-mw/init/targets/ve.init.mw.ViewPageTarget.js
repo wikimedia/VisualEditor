@@ -1045,6 +1045,7 @@ ve.init.mw.ViewPageTarget.prototype.setupToolbarBetaNotice = function () {
 				.addClass( 've-init-mw-viewPageTarget-subtool-label' )
 				.append( $( '<a>' )
 					.attr( 'title', ve.msg( 'visualeditor-help-title' ) )
+					.attr( 'target', '_blank' )
 					.attr( 'href', new mw.Title( ve.msg( 'visualeditor-help-link' ) ).getUrl() )
 					.text( ve.msg( 'visualeditor-help-label' ) )
 		) ) );
