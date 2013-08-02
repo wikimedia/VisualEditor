@@ -11,7 +11,7 @@
  * @class
  * @extends ve.ui.DropdownTool
  * @constructor
- * @param {ve.ui.Toolbar} toolbar
+ * @param {ve.ui.SurfaceToolbar} toolbar
  * @param {Object} [config] Config options
  */
 ve.ui.FormatDropdownTool = function VeUiFormatDropdownTool( toolbar, config ) {

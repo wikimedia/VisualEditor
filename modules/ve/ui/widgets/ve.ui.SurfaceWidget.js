@@ -27,7 +27,7 @@ ve.ui.SurfaceWidget = function VeUiSurfaceWidget( data, config ) {
 
 	// Properties
 	this.surface = new ve.ui.Surface( data, { '$$': this.$$ } );
-	this.toolbar = new ve.ui.Toolbar( this.surface, { '$$': this.$$ } );
+	this.toolbar = new ve.ui.SurfaceToolbar( this.surface, { '$$': this.$$ } );
 
 	// Initialization
 	this.$

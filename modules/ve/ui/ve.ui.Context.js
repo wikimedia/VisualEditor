@@ -221,7 +221,7 @@ ve.ui.Context.prototype.update = function () {
 			if ( this.toolbar ) {
 				this.toolbar.destroy();
 			}
-			this.toolbar = new ve.ui.Toolbar( this.surface );
+			this.toolbar = new ve.ui.SurfaceToolbar( this.surface );
 			this.toolbar.addTools( [{ 'name': 'inspectors', 'items' : tools }] );
 			this.$menu.append( this.toolbar.$ );
 			this.show();
