@@ -933,13 +933,13 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'paragraph with alienInline inside': {
-		'html': '<body><p>a<tt class="foo">b</tt>c</p></body>',
+		'html': '<body><p>a<foobar class="foo">b</foobar>c</p></body>',
 		'data': [
 			{ 'type': 'paragraph' },
 			'a',
 			{
 				'type': 'alienInline',
-				'attributes': { 'domElements': $( '<tt class="foo">b</tt>' ).toArray() }
+				'attributes': { 'domElements': $( '<foobar class="foo">b</foobar>' ).toArray() }
 			},
 			{ 'type': '/alienInline' },
 			'c',
@@ -968,20 +968,20 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'annotated inline nodes': {
-		'html': '<body><p>a<b><tt class="foo">b</tt><i><tt class="bar">c</tt></i></b>' +
+		'html': '<body><p>a<b><foobar class="foo">b</foobar><i><foobar class="bar">c</foobar></i></b>' +
 			'<i><br/>d</i>e</p></body>',
 		'data': [
 			{ 'type': 'paragraph' },
 			'a',
 			{
 				'type': 'alienInline',
-				'attributes': { 'domElements': $( '<tt class="foo">b</tt>' ).toArray() },
+				'attributes': { 'domElements': $( '<foobar class="foo">b</foobar>' ).toArray() },
 				'annotations': [ ve.dm.example.bold ]
 			},
 			{ 'type': '/alienInline' },
 			{
 				'type': 'alienInline',
-				'attributes': { 'domElements': $( '<tt class="bar">c</tt>' ).toArray() },
+				'attributes': { 'domElements': $( '<foobar class="bar">c</foobar>' ).toArray() },
 				'annotations': [ ve.dm.example.bold, ve.dm.example.italic ]
 			},
 			{ 'type': '/alienInline' },
@@ -1162,13 +1162,13 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'wrapping of bare content with inline alien': {
-		'html': '<body>1<tt class="bar">baz</tt>2</body>',
+		'html': '<body>1<foobar class="bar">baz</foobar>2</body>',
 		'data': [
 			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
 			'1',
 			{
 				'type': 'alienInline',
-				'attributes': { 'domElements': $( '<tt class="bar">baz</tt>' ).toArray() }
+				'attributes': { 'domElements': $( '<foobar class="bar">baz</foobar>' ).toArray() }
 			},
 			{ 'type': '/alienInline' },
 			'2',
@@ -1196,12 +1196,12 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'wrapping of bare content starting with inline alien': {
-		'html': '<body><tt class="bar">Foo</tt>Bar</body>',
+		'html': '<body><foobar class="bar">Foo</foobar>Bar</body>',
 		'data': [
 			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
 			{
 				'type': 'alienInline',
-				'attributes': { 'domElements': $( '<tt class="bar">Foo</tt>' ).toArray() }
+				'attributes': { 'domElements': $( '<foobar class="bar">Foo</foobar>' ).toArray() }
 			},
 			{ 'type': '/alienInline' },
 			'B',
@@ -1213,7 +1213,7 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'wrapping of bare content ending with inline alien': {
-		'html': '<body>Foo<tt class="bar">Bar</tt></body>',
+		'html': '<body>Foo<foobar class="bar">Bar</foobar></body>',
 		'data': [
 			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
 			'F',
@@ -1221,7 +1221,7 @@ ve.dm.example.domToDataCases = {
 			'o',
 			{
 				'type': 'alienInline',
-				'attributes': { 'domElements': $( '<tt class="bar">Bar</tt>' ).toArray() }
+				'attributes': { 'domElements': $( '<foobar class="bar">Bar</foobar>' ).toArray() }
 			},
 			{ 'type': '/alienInline' },
 			{ 'type': '/paragraph' },
@@ -1230,13 +1230,13 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'wrapping of bare content with about group': {
-		'html': '<body>1<tt about="#mwt1">foo</tt><tt about="#mwt1">bar</tt>2</body>',
+		'html': '<body>1<foobar about="#mwt1">foo</foobar><foobar about="#mwt1">bar</foobar>2</body>',
 		'data': [
 			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
 			'1',
 			{
 				'type': 'alienInline',
-				'attributes': { 'domElements': $( '<tt about="#mwt1">foo</tt><tt about="#mwt1">bar</tt>' ).toArray() }
+				'attributes': { 'domElements': $( '<foobar about="#mwt1">foo</foobar><foobar about="#mwt1">bar</foobar>' ).toArray() }
 			},
 			{ 'type': '/alienInline' },
 			'2',
@@ -1494,7 +1494,7 @@ ve.dm.example.domToDataCases = {
 	'whitespace between unwrapped inline nodes': {
 		'html':
 			'<body>' +
-				'<tt>c</tt> <tt>d</tt>\n<tt>e</tt>' +
+				'<foobar>c</foobar> <foobar>d</foobar>\n<foobar>e</foobar>' +
 			'</body>',
 		'data': [
 			{
@@ -1506,7 +1506,7 @@ ve.dm.example.domToDataCases = {
 			{
 				'type': 'alienInline',
 				'attributes': {
-					'domElements': $( '<tt>c</tt>' ).toArray()
+					'domElements': $( '<foobar>c</foobar>' ).toArray()
 				}
 			},
 			{ 'type': '/alienInline' },
@@ -1514,7 +1514,7 @@ ve.dm.example.domToDataCases = {
 			{
 				'type': 'alienInline',
 				'attributes': {
-					'domElements': $( '<tt>d</tt>' ).toArray()
+					'domElements': $( '<foobar>d</foobar>' ).toArray()
 				}
 			},
 			{ 'type': '/alienInline' },
@@ -1522,7 +1522,7 @@ ve.dm.example.domToDataCases = {
 			{
 				'type': 'alienInline',
 				'attributes': {
-					'domElements': $( '<tt>e</tt>' ).toArray()
+					'domElements': $( '<foobar>e</foobar>' ).toArray()
 				}
 			},
 			{ 'type': '/alienInline' },
@@ -1840,7 +1840,7 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'whitespace preservation with aliens': {
-		'html': '<body> <figure>  <br>   </figure>    <p>\tFoo\t\t<tt>\t\t\tBar\t\t\t\t</tt>\nBaz\n\n<tt>\n\n\nQuux\n\n\n\n</tt> \tWhee \n</p>\t\n<figure>\n\tYay \t </figure> \n </body>',
+		'html': '<body> <figure>  <br>   </figure>    <p>\tFoo\t\t<foobar>\t\t\tBar\t\t\t\t</foobar>\nBaz\n\n<foobar>\n\n\nQuux\n\n\n\n</foobar> \tWhee \n</p>\t\n<figure>\n\tYay \t </figure> \n </body>',
 		'data': [
 			{
 				'type': 'alienBlock',
@@ -1858,7 +1858,7 @@ ve.dm.example.domToDataCases = {
 			'o',
 			'\t',
 			'\t',
-			{ 'type': 'alienInline', 'attributes': { 'domElements': $( '<tt>\t\t\tBar\t\t\t\t</tt>' ).toArray() } },
+			{ 'type': 'alienInline', 'attributes': { 'domElements': $( '<foobar>\t\t\tBar\t\t\t\t</foobar>' ).toArray() } },
 			{ 'type': '/alienInline' },
 			'\n',
 			'B',
@@ -1869,7 +1869,7 @@ ve.dm.example.domToDataCases = {
 			{
 				'type': 'alienInline',
 				'attributes': {
-					'domElements': $( '<tt>\n\n\nQuux\n\n\n\n</tt>' ).toArray()
+					'domElements': $( '<foobar>\n\n\nQuux\n\n\n\n</foobar>' ).toArray()
 				}
 			},
 			{ 'type': '/alienInline' },
@@ -2351,11 +2351,11 @@ ve.dm.example.domToDataCases = {
 		'html': '<body><figure about="#mwt1">Foo</figure>' +
 			'<figure about="#mwt1">Bar</figure>' +
 			'<figure about="#mwt2">Baz</figure>' +
-			'<tt about="#mwt2">Quux</tt>' +
+			'<foobar about="#mwt2">Quux</foobar>' +
 			'<p>Whee</p>' +
-			'<tt about="#mwt2">Yay</tt>' +
+			'<foobar about="#mwt2">Yay</foobar>' +
 			'<figure about="#mwt2">Blah</figure>' +
-			'<tt about="#mwt3">Meh</tt></body>',
+			'<foobar about="#mwt3">Meh</foobar></body>',
 		'data': [
 			{
 				'type': 'alienBlock',
@@ -2369,7 +2369,7 @@ ve.dm.example.domToDataCases = {
 				'type': 'alienBlock',
 				'attributes': {
 					'domElements': $( '<figure about="#mwt2">Baz</figure>' +
-						'<tt about="#mwt2">Quux</tt>' ).toArray()
+						'<foobar about="#mwt2">Quux</foobar>' ).toArray()
 				}
 			},
 			{ 'type': '/alienBlock' },
@@ -2382,7 +2382,7 @@ ve.dm.example.domToDataCases = {
 			{
 				'type': 'alienBlock',
 				'attributes': {
-					'domElements': $( '<tt about="#mwt2">Yay</tt>' +
+					'domElements': $( '<foobar about="#mwt2">Yay</foobar>' +
 						'<figure about="#mwt2">Blah</figure>' ).toArray()
 				}
 			},
@@ -2391,7 +2391,7 @@ ve.dm.example.domToDataCases = {
 			{
 				'type': 'alienInline',
 				'attributes': {
-					'domElements': $( '<tt about="#mwt3">Meh</tt>' ).toArray()
+					'domElements': $( '<foobar about="#mwt3">Meh</foobar>' ).toArray()
 				}
 			},
 			{ 'type': '/alienInline' },

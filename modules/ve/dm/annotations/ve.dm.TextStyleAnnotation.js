@@ -41,8 +41,7 @@ ve.dm.TextStyleAnnotation.static.toDataElement = function ( domElements ) {
 		'strong': 'strong',
 		'em': 'emphasize',
 		'sup': 'superScript',
-		'sub': 'subScript',
-		'code': 'code'
+		'sub': 'subScript'
 	};
 	return {
 		'type': 'textStyle/' + types[domElements[0].nodeName.toLowerCase()]
@@ -61,8 +60,7 @@ ve.dm.TextStyleAnnotation.static.toDomElements = function ( dataElement, doc ) {
 		'strong': 'strong',
 		'emphasize': 'em',
 		'superScript': 'sup',
-		'subScript': 'sub',
-		'code': 'code'
+		'subScript': 'sub'
 	};
 	return [ doc.createElement( nodeNames[dataElement.type.substring( 10 )] ) ];
 };
@@ -273,5 +271,19 @@ ve.dm.TextStyleCodeAnnotation = function VeDmTextStyleCodeAnnotation( element ) 
 };
 ve.inheritClass( ve.dm.TextStyleCodeAnnotation, ve.dm.TextStyleAnnotation );
 ve.dm.TextStyleCodeAnnotation.static.name = 'textStyle/code';
-ve.dm.TextStyleCodeAnnotation.static.matchTagNames = ['code'];
+ve.dm.TextStyleCodeAnnotation.static.matchTagNames = ['code', 'tt'];
+
+ve.dm.TextStyleCodeAnnotation.static.toDataElement = function ( domElements ) {
+	return {
+		'type': 'textStyle/code',
+		'attributes': {
+			'nodeName': domElements[0].nodeName.toLowerCase()
+		}
+	};
+};
+
+ve.dm.TextStyleCodeAnnotation.static.toDomElements = function ( dataElement, doc ) {
+	return [ doc.createElement( ve.getProp( dataElement, 'attributes', 'nodeName' ) || 'code' ) ];
+};
+
 ve.dm.modelRegistry.register( ve.dm.TextStyleCodeAnnotation );
