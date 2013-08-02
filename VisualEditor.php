@@ -46,11 +46,13 @@ $wgAPIModules['visualeditoredit'] = 'ApiVisualEditorEdit';
 
 // Register Hooks
 $wgHooks['BeforePageDisplay'][] = 'VisualEditorHooks::onBeforePageDisplay';
+$wgHooks['DoEditSectionLink'][] = 'VisualEditorHooks::onDoEditSectionLink';
 $wgHooks['GetPreferences'][] = 'VisualEditorHooks::onGetPreferences';
 $wgHooks['ListDefinedTags'][] = 'VisualEditorHooks::onListDefinedTags';
 $wgHooks['MakeGlobalVariablesScript'][] = 'VisualEditorHooks::onMakeGlobalVariablesScript';
 $wgHooks['ResourceLoaderGetConfigVars'][] = 'VisualEditorHooks::onResourceLoaderGetConfigVars';
 $wgHooks['ResourceLoaderTestModules'][] = 'VisualEditorHooks::onResourceLoaderTestModules';
+$wgHooks['SkinTemplateNavigation'][] = 'VisualEditorHooks::onSkinTemplateNavigation';
 $wgExtensionFunctions[] = 'VisualEditorHooks::onSetup';
 
 // Bug 49604: Running split test in production if $wgVisualEditorEnableSplitTest is true.
@@ -143,13 +145,13 @@ $wgResourceModules += array(
 			'tooltip-ca-createsource',
 			'tooltip-ca-editsource',
 			'tooltip-ca-ve-edit',
-			'visualeditor-ca-createsource',
-			'visualeditor-ca-editsource',
 			'visualeditor-ca-editsource-section',
-			'visualeditor-ca-ve-create',
-			'visualeditor-ca-ve-edit',
 		),
 		'position' => 'top',
+	),
+
+	'ext.visualEditor.viewPageTarget.noscript' => $wgVisualEditorResourceTemplate + array(
+		'styles' => 've-mw/init/styles/ve.init.mw.ViewPageTarget.noscript.css',
 	),
 
 	'ext.visualEditor.viewPageTarget' => $wgVisualEditorResourceTemplate + array(
@@ -773,7 +775,40 @@ $wgVisualEditorDisableForAnons = false;
 // Whether to enable incomplete experimental code
 $wgVisualEditorEnableExperimentalCode = false;
 
-// Whether to use the 'add' or 'replace' tabLayout
-// * add: Adds #ca-ve-edit.
-// * replace: Re-creates #ca-edit for VisualEditor and adds #ca-editsource.
-$wgVisualEditorTabLayout = 'replace';
+// Where to put the VisualEditor edit tab
+// 'before': put it right before the old edit tab
+// 'after': put it right after the old edit tab
+$wgVisualEditorTabPosition = 'before';
+
+$wgVisualEditorTabMessages = array(
+	// i18n message key to use for the VisualEditor edit tab
+	// If null, the default edit tab caption will be used
+	// The 'visualeditor-ca-ve-edit' message is available for this
+	'edit' => null,
+	// i18n message key to use for the old edit tab
+	// If null, the tab's caption will not be changed
+	'editsource' => 'visualeditor-ca-editsource',
+	// i18n message key to use for the VisualEditor create tab
+	// If null, the default create tab caption will be used
+	// The 'visualeditor-ca-ve-create' message is available for this
+	'create' => null,
+	// i18n message key to use for the old create tab
+	// If null, the tab's caption will not be changed
+	'createsource' => 'visualeditor-ca-createsource',
+	// i18n message key to use for the VisualEditor section edit link
+	// If null, the default edit section link caption will be used
+	'editsection' => null,
+	// i18n message key to use for the source section edit link
+	// If null, the link's caption will not be changed
+	'editsectionsource' => 'visualeditor-ca-editsource-section',
+
+	// i18n message key for an optional appendix to add to each of these from JS
+	// Use this if you have HTML messages to add
+	// The 'visualeditor-beta-appendix' message is available for this purpose
+	'editappendix' => null,
+	'editsourceappendix' => null,
+	'createappendix' => null,
+	'createsourceappendix' => null,
+	'editsectionappendix' => null,
+	'editsectionsourceappendix' => null,
+);
