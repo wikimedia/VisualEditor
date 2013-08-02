@@ -19,8 +19,8 @@
  * @singleton
  */
 ( function () {
-	var conf, uri, pageExists, viewUri, veEditUri, isViewPage,
-		init, support, getTargetDeferred,
+	var conf, tabMessages, uri, pageExists, viewUri, veEditUri, isViewPage,
+		init, support, getTargetDeferred, userPrefEnabled,
 		plugins = [];
 
 	/**
@@ -52,6 +52,7 @@
 	}
 
 	conf = mw.config.get( 'wgVisualEditorConfig' );
+	tabMessages = conf.tabMessages;
 	uri = new mw.Uri();
 	// For special pages, no information about page existence is exposed to
 	// mw.config, so we assume it exists TODO: fix this in core.
@@ -145,12 +146,12 @@
 			plugins.push( plugin );
 		},
 
-		skinSetup: function () {
-			init.setupTabLayout();
-			init.setupSectionEditLinks();
+		setupSkin: function () {
+			init.setupTabs();
+			init.setupSectionLinks();
 		},
 
-		setupTabLayout: function () {
+		setupTabs: function () {
 			var caVeEdit,
 				action = pageExists ? 'edit' : 'create',
 				pTabsId = $( '#p-views' ).length ? 'p-views' : 'p-cactions',
@@ -161,8 +162,7 @@
 				$caVeEditLink = $caVeEdit.find( 'a' ),
 				reverseTabOrder = $( 'body' ).hasClass( 'rtl' ) && pTabsId === 'p-views',
 				/*jshint bitwise:false */
-				caVeEditNextnode = ( reverseTabOrder ^ conf.tabPosition === 'before' ) ? $caEdit.get( 0 ) : $caEdit.next().get( 0 ),
-				tabMessages = conf.tabMessages;
+				caVeEditNextnode = ( reverseTabOrder ^ conf.tabPosition === 'before' ) ? $caEdit.get( 0 ) : $caEdit.next().get( 0 );
 
 			if ( !$caVeEdit.length ) {
 				// The below duplicates the functionality of VisualEditorHooks::onSkinTemplateNavigation()
@@ -233,9 +233,8 @@
 			}
 		},
 
-		setupSectionEditLinks: function () {
-			var $editsections = $( '#mw-content-text .mw-editsection' ),
-				tabMessages = conf.tabMessages;
+		setupSectionLinks: function () {
+			var $editsections = $( '#mw-content-text .mw-editsection' );
 
 			// match direction to the user interface
 			$editsections.css( 'direction', $( 'body' ).css( 'direction' ) );
@@ -342,22 +341,10 @@
 		support.contentEditable &&
 		( ( 'vewhitelist' in uri.query ) || !$.client.test( init.blacklist, null, true ) );
 
-	// Whether VisualEditor should be available for the current user, page, wiki, mediawiki skin,
-	// browser etc.
-	init.isAvailable = (
-		support.visualEditor &&
-
+	userPrefEnabled = (
 		// Allow disabling for anonymous users separately from changing the
 		// default preference (bug 50000)
 		!( conf.disableForAnons && mw.config.get( 'wgUserName' ) === null ) &&
-
-		// Disable on redirect pages until redirects are editable (bug 47328)
-		// Property wgIsRedirect is relatively new in core, many cached pages
-		// don't have it yet. We do a best-effort approach using the url query
-		// which will cover all working redirect (the only case where one can
-		// read a redirect page without ?redirect=no is in case of broken or
-		// double redirects).
-		!mw.config.get( 'wgIsRedirect', !!uri.query.redirect ) &&
 
 		// User has 'visualeditor-enable' preference enabled (for alpha opt-in)
 		// User has 'visualeditor-betatempdisable' preference disabled
@@ -374,7 +361,23 @@
 							conf.defaultUserOptions.betatempdisable
 						)
 				)
-		) &&
+		)
+	);
+
+	// Whether VisualEditor should be available for the current user, page, wiki, mediawiki skin,
+	// browser etc.
+	init.isAvailable = (
+		support.visualEditor &&
+
+		userPrefEnabled &&
+
+		// Disable on redirect pages until redirects are editable (bug 47328)
+		// Property wgIsRedirect is relatively new in core, many cached pages
+		// don't have it yet. We do a best-effort approach using the url query
+		// which will cover all working redirect (the only case where one can
+		// read a redirect page without ?redirect=no is in case of broken or
+		// double redirects).
+		!mw.config.get( 'wgIsRedirect', !!uri.query.redirect ) &&
 
 		// Only in supported skins
 		$.inArray( mw.config.get( 'skin' ), conf.skins ) !== -1 &&
@@ -400,19 +403,22 @@
 
 	if ( !init.isAvailable ) {
 		$( 'html' ).addClass( 've-not-available' );
+	}
+
+	if ( !userPrefEnabled ) {
 		return;
 	}
+
 	$( 'html' ).addClass( 've-available' );
 
-
 	$( function () {
-		if ( isViewPage ) {
+		if ( init.isAvailable && isViewPage ) {
 			if ( uri.query.veaction === 'edit' ) {
 				getTarget().done( function ( target ) {
 					target.activate();
 				} );
 			}
 		}
-		init.skinSetup();
+		init.setupSkin();
 	} );
 }() );
