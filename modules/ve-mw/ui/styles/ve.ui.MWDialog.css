@@ -72,6 +72,14 @@
 	background: #F8F8F8;
 }
 
+/* ve.ui.MWBetaWelcomeDialog */
+
+.ve-ui-mwBetaWelcomeDialog-content {
+	padding: 1.5em;
+	line-height: 1.25em;
+	font-size: 1.1em;
+}
+
 /* ve.ui.MWMediaInsertDialog */
 
 .ve-ui-mwMediaInsertDialog-select {

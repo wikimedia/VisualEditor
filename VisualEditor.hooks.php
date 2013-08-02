@@ -270,7 +270,7 @@ class VisualEditorHooks {
 				'/common/images/magnify-clip' .
 				( $wgContLang->isRTL() ? '-rtl' : '' ) . '.png',
 			'pageLanguageCode' => $out->getTitle()->getPageLanguage()->getHtmlCode(),
-			'pageLanguageDir' => $out->getTitle()->getPageLanguage()->getDir(),
+			'pageLanguageDir' => $out->getTitle()->getPageLanguage()->getDir()
 		);
 
 		return true;
@@ -287,7 +287,8 @@ class VisualEditorHooks {
 			$wgVisualEditorNamespaces,
 			$wgVisualEditorPluginModules,
 			$wgVisualEditorTabPosition,
-			$wgVisualEditorTabMessages;
+			$wgVisualEditorTabMessages,
+			$wgVisualEditorShowBetaWelcome;
 
 		$vars['wgVisualEditorConfig'] = array(
 			'disableForAnons' => $wgVisualEditorDisableForAnons,
@@ -302,6 +303,7 @@ class VisualEditorHooks {
 			'skins' => self::$supportedSkins,
 			'tabPosition' => $wgVisualEditorTabPosition,
 			'tabMessages' => $wgVisualEditorTabMessages,
+			'showBetaWelcome' => $wgVisualEditorShowBetaWelcome,
 		);
 
 		return true;

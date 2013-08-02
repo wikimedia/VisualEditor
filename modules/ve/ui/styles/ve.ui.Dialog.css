@@ -52,6 +52,12 @@
 	animation: ve-ui-zoom-in 250ms ease-in-out 0 1 normal;
 }
 
+.ve-ui-dialog .ve-ui-window-frame.ve-ui-window-frame-small {
+	width: 600px;
+	min-height: 200px;
+	height: 200px;
+}
+
 .ve-ui-dialog-closing .ve-ui-window-frame {
 	-webkit-animation: ve-ui-zoom-in 250ms ease-in-out 0 1 reverse;
 	-moz-animation: ve-ui-zoom-in 250ms ease-in-out 0 1 reverse;

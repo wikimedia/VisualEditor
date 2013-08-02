@@ -493,6 +493,7 @@ $wgResourceModules += array(
 
 			've/ui/dialogs/ve.ui.PagedDialog.js',
 			've-mw/ui/dialogs/ve.ui.MWMetaDialog.js',
+			've-mw/ui/dialogs/ve.ui.MWBetaWelcomeDialog.js',
 			've-mw/ui/dialogs/ve.ui.MWMediaInsertDialog.js',
 			've-mw/ui/dialogs/ve.ui.MWMediaEditDialog.js',
 			've-mw/ui/dialogs/ve.ui.MWTransclusionDialog.js',
@@ -624,6 +625,9 @@ $wgResourceModules += array(
 			'visualeditor-dialog-transclusion-remove-template',
 			'visualeditor-dialog-transclusion-title',
 			'visualeditor-dialog-transclusion-wikitext-label',
+			'visualeditor-dialog-beta-welcome-title',
+			'visualeditor-dialog-beta-welcome-content',
+			'visualeditor-dialog-beta-welcome-action-continue',
 			'visualeditor-dialogbutton-media-tooltip',
 			'visualeditor-dialogbutton-meta-tooltip',
 			'visualeditor-dialogbutton-reference-tooltip',
@@ -774,6 +778,9 @@ $wgVisualEditorDisableForAnons = false;
 
 // Whether to enable incomplete experimental code
 $wgVisualEditorEnableExperimentalCode = false;
+
+// Whether to show the "welcome to the beta" dialog the first time a user uses VisualEditor
+$wgVisualEditorShowBetaWelcome = false;
 
 // Where to put the VisualEditor edit tab
 // 'before': put it right before the old edit tab
