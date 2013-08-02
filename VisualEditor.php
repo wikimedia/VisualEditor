@@ -55,9 +55,6 @@ $wgHooks['ResourceLoaderTestModules'][] = 'VisualEditorHooks::onResourceLoaderTe
 $wgHooks['SkinTemplateNavigation'][] = 'VisualEditorHooks::onSkinTemplateNavigation';
 $wgExtensionFunctions[] = 'VisualEditorHooks::onSetup';
 
-// Bug 49604: Running split test in production if $wgVisualEditorEnableSplitTest is true.
-$wgHooks['AddNewAccount'][] = 'VisualEditorHooks::onAddNewAccount';
-
 // Set default values for new preferences
 $wgDefaultUserOptions['visualeditor-enable'] = 0;
 $wgDefaultUserOptions['visualeditor-betatempdisable'] = 0;
@@ -99,13 +96,6 @@ $wgResourceModules += array(
 			'unicodejs/unicodejs.wordbreakproperties.js',
 			'unicodejs/unicodejs.wordbreak.js',
 		),
-	),
-
-	// Added for 18-Jun-2013 split test; safe to remove after
-	'ext.visualEditor.splitTest' => $wgVisualEditorResourceTemplate + array(
-		'scripts' => array(
-			've-mw/init/ve.init.mw.splitTest.js',
-		)
 	),
 
 	// Alias for backwards compat, safe to remove after
@@ -786,9 +776,6 @@ $wgVisualEditorNamespaces = $wgContentNamespaces;
 
 // Whether to use change tagging for VisualEditor edits
 $wgVisualEditorUseChangeTagging = true;
-
-// Whether to log analytic events using EventLogging
-$wgVisualEditorEnableEventLogging = false;
 
 // Whether to disable for logged-in users
 // This allows you to enable the 'visualeditor-enable' preference by default

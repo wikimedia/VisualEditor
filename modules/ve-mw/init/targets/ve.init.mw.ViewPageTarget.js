@@ -95,12 +95,6 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 		$.client.test( ve.init.mw.ViewPageTarget.compatibility.whitelist, null, true )
 	);
 
-	if ( mw.config.get( 'wgVisualEditorConfig' ).enableEventLogging ) {
-		this.setUpEventLogging();
-	} else {
-		this.logEvent = $.noop;
-	}
-
 	// Events
 	this.connect( this, {
 		'load': 'onLoad',
@@ -307,7 +301,7 @@ ve.init.mw.ViewPageTarget.prototype.deactivate = function ( override ) {
  */
 ve.init.mw.ViewPageTarget.prototype.onLoad = function ( doc ) {
 	if ( this.activating ) {
-		this.logEvent( 'Edit', { action: 'page-edit-impression' } );
+		ve.track( 'Edit', { action: 'page-edit-impression' } );
 		this.edited = false;
 		this.doc = doc;
 		this.setUpSurface( doc, ve.bind( function() {
@@ -376,9 +370,9 @@ ve.init.mw.ViewPageTarget.prototype.onTokenError = function ( response, status )
  * @param {number} [newid] New revision id, undefined if unchanged
  */
 ve.init.mw.ViewPageTarget.prototype.onSave = function ( html, newid ) {
-	this.logEvent( 'Edit', {
+	ve.track( 'Edit', {
 		action: 'page-save-success',
-		latency: this.saveStart ? new Date() - this.saveStart : 0
+		latency: this.saveStart ? ve.now() - this.saveStart : 0
 	} );
 	delete this.saveStart;
 
@@ -742,7 +736,7 @@ ve.init.mw.ViewPageTarget.prototype.onViewTabClick = function ( e ) {
  * @param {jQuery.Event} e Mouse click event
  */
 ve.init.mw.ViewPageTarget.prototype.onToolbarSaveButtonClick = function () {
-	this.logEvent( 'Edit', { action: 'page-save-attempt' } );
+	ve.track( 'Edit', { action: 'page-save-attempt' } );
 	if ( this.edited || this.restoring ) {
 		this.showSaveDialog();
 	}
@@ -899,7 +893,7 @@ ve.init.mw.ViewPageTarget.prototype.saveDocument = function () {
 
 	// Once we've retrieved the save options,
 	// reset save start and any old captcha data
-	this.saveStart = +new Date();
+	this.saveStart = ve.now();
 	if ( this.captcha ) {
 		this.clearMessage( 'captcha' );
 		delete this.captcha;
@@ -1209,40 +1203,6 @@ ve.init.mw.ViewPageTarget.prototype.onToolbarPosition = function ( $bar, update 
 	} else if ( update.css ) {
 		this.$toolbarTracker.css( update.css );
 	}
-};
-
-/**
- * Set up the logging of analytic edit events using EventLogging.
- *
- * @method
- */
-ve.init.mw.ViewPageTarget.prototype.setUpEventLogging = function () {
-	mw.loader.using( 'schema.Edit', function () {
-		mw.eventLog.setDefaults( 'Edit', {
-			version: 0,
-			editor: 'visualeditor',
-			pageId: mw.config.get( 'wgArticleId' ),
-			pageNs: mw.config.get( 'wgNamespaceNumber' ),
-			pageName: mw.config.get( 'wgPageName' ),
-			pageViewSessionId: mw.user.generateRandomSessionId(),
-			revId: function () {
-				return mw.config.get( 'wgCurRevisionId' );
-			},
-			userId: +mw.config.get( 'wgUserId' )
-		} );
-	} );
-};
-
-/**
- * Thin wrapper around EventLogging's 'logEvent' method which ensures the
- * relevant schema module has been loaded.
- *
- * @method
- */
-ve.init.mw.ViewPageTarget.prototype.logEvent = function ( schemaName, event ) {
-	mw.loader.using( 'schema.' + schemaName, function () {
-		mw.eventLog.logEvent( schemaName, event );
-	} );
 };
 
 /**

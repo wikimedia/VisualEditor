@@ -13,8 +13,8 @@ class VisualEditorHooks {
 	protected static $supportedSkins = array( 'vector', 'apex', 'monobook' );
 
 	public static function onSetup() {
-		global $wgVisualEditorEnableEventLogging, $wgResourceModules,
-			$wgVisualEditorResourceTemplate, $wgVisualEditorTabMessages;
+		global $wgResourceModules, $wgVisualEditorResourceTemplate,
+			$wgVisualEditorTabMessages;
 
 		// This prevents VisualEditor from being run in environments that don't
 		// have the dependent code in core; this should be updated as a part of
@@ -32,21 +32,6 @@ class VisualEditorHooks {
 			}
 		}
 
-		if ( $wgVisualEditorEnableEventLogging ) {
-			if ( class_exists( 'ResourceLoaderSchemaModule' ) ) {
-				// EventLogging schema module for logging edit events.
-				// See <http://meta.wikimedia.org/wiki/Schema:Edit>
-				$wgResourceModules['schema.Edit'] = array(
-					'class'  => 'ResourceLoaderSchemaModule',
-					'schema' => 'Edit',
-					'revision' => 5570274,
-				);
-			} else {
-				wfWarn( 'VisualEditor is configured to use EventLogging, but the extension is ' .
-						' not available. Disabling wgVisualEditorEnableEventLogging.' );
-				$wgVisualEditorEnableEventLogging = false;
-			}
-		}
 		// Only load jquery.ULS if ULS Extension isn't already installed:
 		if ( !class_exists( 'UniversalLanguageSelectorHooks' ) ) {
 			$wgResourceModules['jquery.uls'] = $wgVisualEditorResourceTemplate + array(
@@ -93,15 +78,8 @@ class VisualEditorHooks {
 	 * @param $skin Skin
 	 */
 	public static function onBeforePageDisplay( &$output, &$skin ) {
-		global $wgVisualEditorEnableEventLogging;
-
-		if ( $wgVisualEditorEnableEventLogging ) {
-			$output->addModules( array( 'schema.Edit' ) );
-		}
-
 		$output->addModules( array( 'ext.visualEditor.viewPageTarget.init' ) );
 		$output->addModuleStyles( array( 'ext.visualEditor.viewPageTarget.noscript' ) );
-
 		return true;
 	}
 
@@ -282,7 +260,6 @@ class VisualEditorHooks {
 	public static function onResourceLoaderGetConfigVars( array &$vars ) {
 		global $wgDefaultUserOptions,
 			$wgVisualEditorDisableForAnons,
-			$wgVisualEditorEnableEventLogging,
 			$wgVisualEditorEnableExperimentalCode,
 			$wgVisualEditorNamespaces,
 			$wgVisualEditorPluginModules,
@@ -292,7 +269,6 @@ class VisualEditorHooks {
 
 		$vars['wgVisualEditorConfig'] = array(
 			'disableForAnons' => $wgVisualEditorDisableForAnons,
-			'enableEventLogging' => $wgVisualEditorEnableEventLogging,
 			'enableExperimentalCode' => $wgVisualEditorEnableExperimentalCode,
 			'namespaces' => $wgVisualEditorNamespaces,
 			'pluginModules' => $wgVisualEditorPluginModules,
@@ -391,26 +367,6 @@ class VisualEditorHooks {
 			'localBasePath' => dirname( __FILE__ ) . '/modules',
 			'remoteExtPath' => 'VisualEditor/modules',
 		);
-
-		return true;
-	}
-
-
-	/**
-	 * Sets user preference to enable the VisualEditor account if their new
-	 * account's userID is even, if $wgVisualEditorEnableSplitTest is true.
-	 *
-	 * Added per bug 49604; to be removed once no longer needed.
-	 */
-	public static function onAddNewAccount( $user, $byEmail ) {
-		global $wgVisualEditorEnableSplitTest;
-
-		if ( $wgVisualEditorEnableSplitTest &&
-			$user->isLoggedin() &&
-			( ( $user->getId() % 2 ) === 0 ) ) {
-			$user->setOption( 'visualeditor-enable', 1 );
-			$user->saveSettings();
-		}
 
 		return true;
 	}
