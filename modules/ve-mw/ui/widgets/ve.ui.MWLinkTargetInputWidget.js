@@ -155,7 +155,8 @@ ve.ui.MWLinkTargetInputWidget.prototype.initializeLookupMenuSelection = function
 	// Update annotation to match selected item
 	item = this.lookupMenu.getSelectedItem();
 	if ( item ) {
-		this.setAnnotation( item.getData() );
+		// Set annotation directly, bypassing re-setting the value of the input
+		this.annotation = item.getData();
 	}
 };
 
