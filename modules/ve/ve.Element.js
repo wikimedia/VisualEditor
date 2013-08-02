@@ -48,7 +48,7 @@ ve.Element.static.tagName = 'div';
 /**
  * Gets a jQuery function within a specific document.
  *
- * @method
+ * @static
  * @param {jQuery|HTMLElement|HTMLDocument|Window} context Context to bind the function to
  * @param {ve.ui.Frame} [frame] Frame of the document context
  * @returns {Function} Bound jQuery function
@@ -70,7 +70,7 @@ ve.Element.get$$ = function ( context, frame ) {
 /**
  * Get the document of an element.
  *
- * @method
+ * @static
  * @param {jQuery|HTMLElement|HTMLDocument|Window} context Context to bind the function to
  * @returns {HTMLDocument} Document object
  * @throws {Error} If context is invalid
@@ -98,7 +98,7 @@ ve.Element.getDocument = function ( context ) {
 /**
  * Get the window of an element or document.
  *
- * @method
+ * @static
  * @param {jQuery|HTMLElement|HTMLDocument|Window} context Context to bind the function to
  * @returns {Window} Window object
  */
@@ -113,7 +113,7 @@ ve.Element.getWindow = function ( context ) {
  *
  * TODO: Make this function not use recursion.
  *
- * @method
+ * @static
  * @param {Window} from Window of the child frame
  * @param {Window} [to=window] Window of the parent frame
  * @param {Object} [offset] Offset to start with, used internally
@@ -156,6 +156,7 @@ ve.Element.getFrameOffset = function ( from, to, offset ) {
 /**
  * Get the offset between two elements.
  *
+ * @static
  * @param {jQuery} $from
  * @param {jQuery} $to
  * @returns {Object} Translated position coordinates, containing top and left properties
@@ -173,7 +174,6 @@ ve.Element.getRelativePosition = function ( $from, $to ) {
  *
  * Override this method to base the result on instance information.
  *
- * @method
  * @returns {string} HTML tag name
  */
 ve.Element.prototype.getTagName = function () {
@@ -183,7 +183,6 @@ ve.Element.prototype.getTagName = function () {
 /**
  * Get the DOM document.
  *
- * @method
  * @returns {HTMLDocument} Document object
  */
 ve.Element.prototype.getElementDocument = function () {
@@ -193,7 +192,6 @@ ve.Element.prototype.getElementDocument = function () {
 /**
  * Get the DOM window.
  *
- * @method
  * @returns {Window} Window object
  */
 ve.Element.prototype.getElementWindow = function () {
