@@ -1040,7 +1040,7 @@ ve.dm.Converter.prototype.getDomFromData = function ( documentData, store, inter
  * @throws Unbalanced data: looking for closing /type
  */
 ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container ) {
-	var text, i, j, annotations, dataElement, dataElementOrSlice,
+	var text, i, j, isStart, annotations, dataElement, dataElementOrSlice,
 		childDomElements, pre, ours, theirs, parentDomElement, lastChild, isContentNode, sibling,
 		previousSiblings, doUnwrap, textNode, type, annotatedDomElementStack, annotatedDomElements,
 		dataLen = data.length,
@@ -1151,9 +1151,16 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container ) {
 		if ( typeof data[i] === 'string' ) {
 			// Text
 			text = '';
+			isStart = i > 0 &&
+				ve.dm.LinearData.static.isOpenElementData( data[i-1] ) &&
+				ve.dm.LinearData.static.getType( data[i-1] ) !== 'preformatted';
 			// Continue forward as far as the plain text goes
 			while ( typeof data[i] === 'string' ) {
-				text += data[i];
+				// HACK: Skip over leading whitespace (bug 51462) in non-pre tags
+				if ( !( isStart && data[i].match( /\s/ ) ) ) {
+					text += data[i];
+					isStart = false;
+				}
 				i++;
 			}
 			// i points to the first non-text thing, go back one so we don't skip this later

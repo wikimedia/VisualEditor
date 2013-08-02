@@ -894,6 +894,25 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/internalList' }
 		]
 	},
+	'strip leading whitepsace in paragraphs': {
+		'data': [
+			{ 'type': 'paragraph' },
+			' ', 'f', 'o', 'o',
+			{ 'type': '/paragraph' },
+			{ 'type': 'paragraph' },
+			' ', '\t', ' ', '\t', 'b', 'a', 'r',
+			{ 'type': '/paragraph' },
+			{ 'type': 'heading', 'attributes': { 'level': 2 } },
+			' ', ' ', 'b', 'a', 'z',
+			{ 'type': '/heading' },
+			{ 'type': 'preformatted' },
+			' ', '\t', 'q', 'u', 'u', 'x',
+			{ 'type': '/preformatted' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
+		],
+		'normalizedHtml': '<body><p>foo</p><p>bar</p><h2>baz</h2><pre> \tquux</pre></body>'
+	},
 	'image': {
 		'html': '<body><img src="' + ve.dm.example.imgSrc + '"></body>',
 		'data': [
@@ -1300,7 +1319,6 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'empty document with content added by the editor': {
-		'html': null,
 		'data': [
 			{ 'type': 'paragraph', 'internal': { 'generated': 'empty' } },
 			'F',
@@ -1313,7 +1331,6 @@ ve.dm.example.domToDataCases = {
 		'normalizedHtml': '<body><p>Foo</p></body>'
 	},
 	'empty list item with content added by the editor': {
-		'html': null,
 		'data': [
 			{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
 			{ 'type': 'listItem' },
@@ -2178,7 +2195,6 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'mismatching whitespace data is ignored': {
-		'html': null,
 		'data': [
 			{ 'type': 'list', 'attributes': { 'style': 'bullet' }, 'internal': { 'whitespace': [ ' ', '  ', '   ', '    ' ] } },
 			{ 'type': 'listItem', 'internal': { 'whitespace': [ ' ', '  ', '   ', '    ' ] } },
