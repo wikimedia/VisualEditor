@@ -146,10 +146,12 @@ QUnit.assert.equalNodeSelection = function ( actual, expected, message ) {
  */
 QUnit.assert.equalDomElement = function ( actual, expected, message ) {
 	var actualSummary = ve.getDomElementSummary( actual ),
-		expectedSummary = ve.getDomElementSummary( expected );
+		expectedSummary = ve.getDomElementSummary( expected ),
+		actualSummaryHtml = ve.getDomElementSummary( actual, true ),
+		expectedSummaryHtml = ve.getDomElementSummary( expected, true );
 
 	QUnit.push(
-		QUnit.equiv( actualSummary, expectedSummary ), actualSummary, expectedSummary, message
+		QUnit.equiv( actualSummary, expectedSummary ), actualSummaryHtml, expectedSummaryHtml, message
 	);
 };
 
