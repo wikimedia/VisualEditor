@@ -252,7 +252,8 @@ class ApiVisualEditor extends ApiBase {
 				// HACK: Build a fake EditPage so we can get checkboxes from it
 				$article = new Article( $page ); // Deliberately omitting ,0 so oldid comes from request
 				$ep = new EditPage( $article );
-				$ep->importFormData( $this->getRequest() );
+				$req = $this->getRequest();
+				$ep->importFormData( $req ); // By reference for some reason (bug 52466)
 				$tabindex = 0;
 				$states = array( 'minor' => false, 'watch' => false );
 				$checkboxes = $ep->getCheckboxes( $tabindex, $states );
