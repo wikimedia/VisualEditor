@@ -19,6 +19,7 @@
  * @cfg {boolean} [shadow] Add a shadow below the toolbar
  */
 ve.ui.Toolbar = function VeUiToolbar( surface, options ) {
+	var toolbar = this;
 	// Configuration initialization
 	options = options || {};
 
@@ -40,11 +41,22 @@ ve.ui.Toolbar = function VeUiToolbar( surface, options ) {
 	this.$surfaceView = null;
 	this.elementOffset = null;
 	this.windowEvents = {
-		'resize': ve.bind( this.onWindowResize, this ),
-		'scroll': ve.bind( this.onWindowScroll, this )
+		// jQuery puts a guid on our prototype function when we use ve.bind,
+		// we don't want that because that means calling $window.off( toolbarB.windowEvents )
+		// will effectively also unbind toolbarA.windowEvents as they would share a guid.
+		// Though jQuery does not share the reference (both A and B have the correct context
+		// bound), it does unbind them. Use a regular closure instead.
+		'resize': function () {
+			return toolbar.onWindowResize.apply( toolbar, arguments );
+		},
+		'scroll': function () {
+			return toolbar.onWindowScroll.apply( toolbar, arguments );
+		}
 	};
 	this.surfaceViewEvents = {
-		'keyup': ve.bind( this.onSurfaceViewKeyUp, this )
+		'keyup': function () {
+			return toolbar.onSurfaceViewKeyUp.apply( toolbar, arguments );
+		}
 	};
 
 	// Events
