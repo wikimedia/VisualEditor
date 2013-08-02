@@ -767,9 +767,10 @@
 	 *
 	 * @private
 	 * @param {HTMLElement} element Element to summarize
+	 * @param {boolean} [includeHtml=false] Include an HTML summary for element nodes
 	 * @returns {Object} Summary of element.
 	 */
-	ve.getDomElementSummary = function ( element ) {
+	ve.getDomElementSummary = function ( element, includeHtml ) {
 		var i,
 			$element = $( element ),
 			summary = {
@@ -778,6 +779,10 @@
 				'attributes': {},
 				'children': []
 			};
+
+		if ( includeHtml && element.nodeType === Node.ELEMENT_NODE ) {
+			summary.html = element.outerHTML;
+		}
 
 		// Gather attributes
 		if ( element.attributes ) {
@@ -789,7 +794,7 @@
 		if ( element.childNodes ) {
 			for ( i = 0; i < element.childNodes.length; i++ ) {
 				if ( element.childNodes[i].nodeType !== Node.TEXT_NODE ) {
-					summary.children.push( ve.getDomElementSummary( element.childNodes[i] ) );
+					summary.children.push( ve.getDomElementSummary( element.childNodes[i], includeHtml ) );
 				}
 			}
 		}
