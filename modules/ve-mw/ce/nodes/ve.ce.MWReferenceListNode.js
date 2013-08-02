@@ -162,7 +162,7 @@ ve.ce.MWReferenceListNode.prototype.update = function () {
 				return true;
 			} );
 
-			if ( !keyedNodes.length ) {
+			if ( key !== undefined && !keyedNodes.length ) {
 				continue;
 			}
 
