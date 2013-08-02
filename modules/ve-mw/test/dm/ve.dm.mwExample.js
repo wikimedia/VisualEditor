@@ -1672,7 +1672,6 @@ ve.dm.mwExample.domToDataCases = {
 		'data': ve.dm.mwExample.mwNowiki
 	},
 	'mw:Nowiki unwraps when text modified': {
-		'html': null,
 		'data': ve.dm.mwExample.mwNowiki,
 		'modify': function ( data ) {
 			data[7][0] = 'z';
@@ -1680,7 +1679,6 @@ ve.dm.mwExample.domToDataCases = {
 		'normalizedHtml': '<body><p>Foo[[Bzr]]Baz</p></body>'
 	},
 	'mw:Nowiki unwraps when annotations modified': {
-		'html': null,
 		'data': ve.dm.mwExample.mwNowiki,
 		'modify': function ( data ) {
 			data[7][1].push( ve.dm.example.bold );
