@@ -35,7 +35,8 @@ ve.ui.MWMediaEditDialog.static.icon = 'picture';
 
 ve.ui.MWMediaEditDialog.static.toolbarTools = [
 	{ 'items': ['undo', 'redo'] },
-	{ 'items': ['bold', 'italic', 'mwLink', 'clear'] }
+	{ 'items': ['bold', 'italic', 'mwLink', 'clear'] },
+	{ 'items': ['mwReference', 'mwTransclusion', 'mwMath'] }
 ];
 
 ve.ui.MWMediaEditDialog.static.surfaceCommands = [
