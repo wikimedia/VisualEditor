@@ -55,6 +55,12 @@
 	display: inline-block;
 	margin: 0.3em;
 	vertical-align: middle;
+	border-radius: 0.25em;
+	border: solid 1px transparent;
+}
+
+.ve-ui-toolbar-group:hover {
+	border-color: rgba(0,0,0,0.05);
 }
 
 .ve-ui-toolbar-label {

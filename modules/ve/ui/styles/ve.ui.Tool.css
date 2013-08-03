@@ -5,51 +5,47 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-/* ve.ui.ButtonTool */
+/* ve.ui.Tool */
 
-.ve-ui-buttonTool {
+.ve-ui-tool {
+	position: relative;
 	display: inline-block;
+	margin: -1px 0 -1px -1px;
+}
+
+.ve-ui-tool:first-child {
+	border-top-left-radius: 0.25em;
+	border-bottom-left-radius: 0.25em;
+}
+
+.ve-ui-tool:last-child {
+	margin-right: -1px;
+	border-top-right-radius: 0.25em;
+	border-bottom-right-radius: 0.25em;
+}
+
+/* ve.ui.ButtonTool */
+/* ve.ui.DropdownTool */
+
+.ve-ui-buttonTool-active:not(.ve-ui-widget-disabled) + .ve-ui-buttonTool-active:not(.ve-ui-widget-disabled) {
+	border-left-color: rgba(0,0,0,0.1);
+}
+
+.ve-ui-dropdownTool,
+.ve-ui-buttonTool {
 	border: solid 1px transparent;
-	border-radius: 0.125em;
 	cursor: pointer;
 	vertical-align: top;
+}
+
+.ve-ui-dropdownTool {
+	border-color: rgba(0,0,0,0.1);
 }
 
 .ve-ui-buttonTool {
 	padding: 0.25em;
 	height: 1.5em;
 	width: 1.5em;
-}
-
-.ve-ui-buttonTool:hover {
-	border-color: #eee;
-}
-
-.ve-ui-buttonTool-active:hover {
-	border-color: #ccc;
-}
-
-.ve-ui-buttonTool:active,
-.ve-ui-buttonTool-active {
-	border-color: #ddd;
-	/* @embed */
-	background-image: url(images/fade-down.png);
-	background-position: left top;
-	background-repeat: repeat-x;
-	box-shadow: inset 0 0.07em 0.07em 0 rgba(0, 0, 0, 0.07);
-}
-
-.ve-ui-buttonTool.ve-ui-widget-disabled:active {
-	background-image: none;
-	box-shadow: none;
-}
-
-.ve-ui-buttonTool.ve-ui-widget-disabled:hover {
-	border-color: transparent;
-}
-
-.ve-ui-buttonTool.ve-ui-widget-disabled {
-	cursor: default;
 }
 
 .ve-ui-buttonTool-icon {
@@ -59,31 +55,6 @@
 	background-position: center center;
 	background-repeat: no-repeat;
 	opacity: 0.8;
-}
-
-.ve-ui-buttonTool:not(.ve-ui-widget-disabled):hover .ve-ui-buttonTool-icon {
-	opacity: 1;
-}
-
-.ve-ui-widget-disabled .ve-ui-buttonTool-icon {
-	opacity: 0.2;
-}
-
-/* ve.ui.DropdownTool */
-
-.ve-ui-dropdownTool {
-	position: relative;
-	display: inline-block;
-	cursor: pointer;
-	vertical-align: top;
-	border: solid 1px #ddd;
-	border-radius: 0.25em;
-	background-color: white;
-	box-shadow: inset 0 0.07em 0.07em 0 rgba(0, 0, 0, 0.07);
-}
-
-.ve-ui-dropdownTool:hover {
-	border-color: #ccc;
 }
 
 .ve-ui-dropdownTool-label {
@@ -109,10 +80,6 @@
 	opacity: 0.8;
 }
 
-.ve-ui-dropdownTool:hover .ve-ui-dropdownTool-icon {
-	opacity: 1;
-}
-
 .ve-ui-dropdownTool .ve-ui-menuWidget {
 	left: -1px;
 	top: 2.5em;
@@ -123,6 +90,40 @@
 	display: block;
 	padding: 0.33em 0 0.33em 0;
 }
+
+.ve-ui-buttonTool:hover:not(.ve-ui-widget-disabled),
+.ve-ui-dropdownTool:hover:not(.ve-ui-widget-disabled) {
+	border-color: rgba(0,0,0,0.2);
+}
+
+.ve-ui-buttonTool:hover:not(.ve-ui-widget-disabled) .ve-ui-buttonTool-icon,
+.ve-ui-dropdownTool:hover:not(.ve-ui-widget-disabled) .ve-ui-dropdownTool-icon {
+	opacity: 1;
+}
+
+.ve-ui-buttonTool:active:not(.ve-ui-widget-disabled),
+.ve-ui-buttonTool-active:not(.ve-ui-widget-disabled),
+.ve-ui-dropdownTool:active:not(.ve-ui-widget-disabled),
+.ve-ui-dropdownTool-active:not(.ve-ui-widget-disabled) {
+	/* @embed */
+	background-image: url(images/fade-down.png);
+	background-position: left top;
+	background-repeat: repeat-x;
+	box-shadow: inset 0 0.07em 0.07em 0 rgba(0, 0, 0, 0.07);
+	border-color: rgba(0,0,0,0.2);
+}
+
+.ve-ui-buttonTool.ve-ui-widget-disabled,
+.ve-ui-dropdownTool.ve-ui-widget-disabled  {
+	cursor: default;
+}
+
+.ve-ui-widget-disabled .ve-ui-buttonTool-icon,
+.ve-ui-widget-disabled .ve-ui-dropdownTool-icon {
+	opacity: 0.2;
+}
+
+/* ve.ui.FormatDropdownTool */
 
 .ve-ui-dropdownTool-format {
 	width: 8em;
@@ -165,3 +166,4 @@
 .ve-ui-dropdownTool-format .ve-ui-optionWidget[rel="preformatted"] .ve-ui-labeledElement-label {
 	font-family: monospace, "Courier New";
 }
+
