@@ -53,7 +53,7 @@ ve.ce.AlienNode.static.$phantomTemplate = ve.ce.AlienNode.static.$phantomTemplat
  *
  * @method
  */
-ve.ce.AlienNode.prototype.onUpdate = function () {
+ve.ce.AlienNode.prototype.update = function () {
 	// TODO use GeneratedContentNode the way it was meant to be used
 	this.$.html( ve.copyDomElements( this.model.getAttribute( 'domElements' ) || [], this.getElementDocument() ) );
 };

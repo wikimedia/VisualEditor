@@ -53,15 +53,15 @@ ve.ce.MWTransclusionNode.static.renderHtmlAttributes = false;
 /* Methods */
 
 /** */
-ve.ce.MWTransclusionNode.prototype.generateContents = function () {
-	var deferred = $.Deferred();
-	$.ajax( {
+ve.ce.MWTransclusionNode.prototype.generateContents = function ( config ) {
+	var xhr, promise, deferred = $.Deferred();
+	xhr = $.ajax( {
 		'url': mw.util.wikiScript( 'api' ),
 		'data': {
 			'action': 'visualeditor',
 			'paction': 'parsefragment',
 			'page': mw.config.get( 'wgRelevantPageName' ),
-			'wikitext': this.model.getWikitext(),
+			'wikitext': ( config && config.wikitext ) || this.model.getWikitext(),
 			'token': mw.user.tokens.get( 'editToken' ),
 			'format': 'json'
 		},
@@ -73,7 +73,11 @@ ve.ce.MWTransclusionNode.prototype.generateContents = function () {
 		'success': ve.bind( this.onParseSuccess, this, deferred ),
 		'error': ve.bind( this.onParseError, this, deferred )
 	} );
-	return deferred.promise();
+	promise = deferred.promise();
+	promise.abort = function () {
+		xhr.abort();
+	};
+	return promise;
 };
 
 /**

@@ -108,19 +108,19 @@ ve.dm.mwExample.MWTransclusion.mixedDataOpen = {
 };
 ve.dm.mwExample.MWTransclusion.mixedDataClose = { 'type': '/mwTransclusionInline' };
 
-ve.dm.mwExample.MWTransclusion.blockParamsHash = ve.getHash( ve.dm.MWTransclusionNode.static.getHashObject( ve.dm.mwExample.MWTransclusion.blockData ) );
+ve.dm.mwExample.MWTransclusion.blockParamsHash = ve.getHash( [ ve.dm.MWTransclusionNode.static.getHashObject( ve.dm.mwExample.MWTransclusion.blockData ), undefined ] );
 ve.dm.mwExample.MWTransclusion.blockStoreItems = {
 	'hash': ve.dm.mwExample.MWTransclusion.blockParamsHash,
 	'value': $( ve.dm.mwExample.MWTransclusion.blockOpen + ve.dm.mwExample.MWTransclusion.blockContent ).toArray()
 };
 
-ve.dm.mwExample.MWTransclusion.inlineParamsHash = ve.getHash( ve.dm.MWTransclusionNode.static.getHashObject( ve.dm.mwExample.MWTransclusion.inlineData ) );
+ve.dm.mwExample.MWTransclusion.inlineParamsHash = ve.getHash( [ ve.dm.MWTransclusionNode.static.getHashObject( ve.dm.mwExample.MWTransclusion.inlineData ), undefined ] );
 ve.dm.mwExample.MWTransclusion.inlineStoreItems = {
 	'hash': ve.dm.mwExample.MWTransclusion.inlineParamsHash,
 	'value': $( ve.dm.mwExample.MWTransclusion.inlineOpen + ve.dm.mwExample.MWTransclusion.inlineContent + ve.dm.mwExample.MWTransclusion.inlineClose ).toArray()
 };
 
-ve.dm.mwExample.MWTransclusion.mixedParamsHash = ve.getHash( ve.dm.MWTransclusionNode.static.getHashObject( ve.dm.mwExample.MWTransclusion.mixedDataOpen ) );
+ve.dm.mwExample.MWTransclusion.mixedParamsHash = ve.getHash( [ ve.dm.MWTransclusionNode.static.getHashObject( ve.dm.mwExample.MWTransclusion.mixedDataOpen ), undefined ] );
 ve.dm.mwExample.MWTransclusion.mixedStoreItems = {
 	'hash': ve.dm.mwExample.MWTransclusion.mixedParamsHash,
 	'value': $( ve.dm.mwExample.MWTransclusion.mixed ).toArray()
@@ -805,7 +805,7 @@ ve.dm.mwExample.domToDataCases = {
 		],
 		'storeItems': [
 			{
-				'hash': '{"mw":{"params":{"1":{"wt":"foo"}}},"type":"mwTransclusionBlock"}',
+				'hash': '[{"mw":{"params":{"1":{"wt":"foo"}}},"type":"mwTransclusionBlock"},null]',
 				'value': $( '<p about="#mwt1" typeof="mw:Transclusion" data-mw="{&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;foo&quot;}}}" data-parsoid="1">foo</p>' ).toArray()
 			}
 		]
