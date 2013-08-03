@@ -50,3 +50,9 @@
 .ve-ce-mwMathNode {
 	display: inline-block;
 }
+
+/* ve.ce.MWHieroNode */
+
+.ve-ce-mwHieroNode {
+	display: table;
+}

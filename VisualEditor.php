@@ -713,9 +713,13 @@ $wgResourceModules += array(
 		'scripts' => array(
 			've-mw/dm/nodes/ve.dm.MWExtensionNode.js',
 			've-mw/ce/nodes/ve.ce.MWExtensionNode.js',
+			've-mw/dm/nodes/ve.dm.MWHieroNode.js',
+			've-mw/ce/nodes/ve.ce.MWHieroNode.js',
 			've-mw/dm/nodes/ve.dm.MWMathNode.js',
 			've-mw/ce/nodes/ve.ce.MWMathNode.js',
 			've-mw/ui/inspectors/ve.ui.MWExtensionInspector.js',
+			've-mw/ui/inspectors/ve.ui.MWHieroInspector.js',
+			've-mw/ui/tools/buttons/ve.ui.MWHieroButtonTool.js',
 			've-mw/ui/inspectors/ve.ui.MWMathInspector.js',
 			've-mw/ui/tools/buttons/ve.ui.MWMathButtonTool.js',
 			've/dm/annotations/ve.dm.LanguageAnnotation.js',
@@ -732,6 +736,7 @@ $wgResourceModules += array(
 		),
 		'messages' => array(
 			// VE messages needed by code that is only in experimental mode
+			'visualeditor-mwhieroinspector-title',
 			'visualeditor-mwmathinspector-title',
 			'visualeditor-annotationbutton-language-tooltip',
 			'visualeditor-annotationbutton-strikethrough-tooltip',

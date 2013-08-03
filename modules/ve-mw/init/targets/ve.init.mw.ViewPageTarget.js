@@ -172,7 +172,7 @@ ve.init.mw.ViewPageTarget.static.toolbarTools = [
 	{ 'items': [ 'mwFormat' ] },
 	{ 'items': [ 'bold', 'italic', 'mwLink', 'language', 'code', 'strikethrough', 'clear' ] },
 	{ 'items': [ 'number', 'bullet', 'outdent', 'indent' ] },
-	{ 'items': [ 'mwMediaInsert', 'mwReference', 'mwReferenceList', 'mwTransclusion', 'mwMath' ] }
+	{ 'items': [ 'mwMediaInsert', 'mwReference', 'mwReferenceList', 'mwTransclusion', 'mwMath', 'mwHiero' ] }
 ];
 
 ve.init.mw.ViewPageTarget.static.surfaceCommands = [
