@@ -49,7 +49,7 @@ ve.dm.MWMathNode.static.toDataElement = function ( domElements, converter ) {
 		'type': 'mwMath',
 		'attributes': {
 			'mw': mwData,
-			'originalDomElements': ve.copyArray( domElements ),
+			'originalDomElements': ve.copy( domElements ),
 			'originalMw': mwDataJSON
 		}
 	};
