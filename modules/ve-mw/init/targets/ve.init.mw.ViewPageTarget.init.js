@@ -37,7 +37,7 @@
 					ve.init.mw.targets.push( target );
 
 					// Transfer methods
-					ve.init.mw.ViewPageTarget.prototype.setupSectionEditLinks = init.setupSectionEditLinks;
+					ve.init.mw.ViewPageTarget.prototype.setupSectionEditLinks = init.setupSectionLinks;
 
 					// Add plugins
 					target.addPlugins( plugins );
