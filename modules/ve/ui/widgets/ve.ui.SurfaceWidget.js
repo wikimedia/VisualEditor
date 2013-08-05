@@ -36,7 +36,7 @@ ve.ui.SurfaceWidget = function VeUiSurfaceWidget( data, config ) {
 		.addClass( 've-ui-surfaceWidget' )
 		.append( this.toolbar.$, this.surface.$ );
 	if ( config.tools ) {
-		this.toolbar.addTools( config.tools );
+		this.toolbar.setup( config.tools );
 	}
 	if ( config.commands ) {
 		this.surface.addCommands( config.commands );

@@ -421,6 +421,11 @@ $wgResourceModules += array(
 
 			// ui
 			've/ui/ve.ui.js',
+
+			've/ui/elements/ve.ui.LabeledElement.js',
+			've/ui/elements/ve.ui.GroupElement.js',
+			've/ui/elements/ve.ui.FlaggableElement.js',
+
 			've/ui/ve.ui.Surface.js',
 			've/ui/ve.ui.Context.js',
 			've/ui/ve.ui.Frame.js',
@@ -433,6 +438,7 @@ $wgResourceModules += array(
 			've/ui/ve.ui.Layout.js',
 			've/ui/ve.ui.Widget.js',
 			've/ui/ve.ui.Tool.js',
+			've/ui/ve.ui.ToolGroup.js',
 			've/ui/ve.ui.ToolFactory.js',
 			've/ui/ve.ui.Toolbar.js',
 			've/ui/ve.ui.SurfaceToolbar.js',
@@ -450,10 +456,6 @@ $wgResourceModules += array(
 			've/ui/actions/ve.ui.IndentationAction.js',
 			've/ui/actions/ve.ui.InspectorAction.js',
 			've/ui/actions/ve.ui.ListAction.js',
-
-			've/ui/elements/ve.ui.LabeledElement.js',
-			've/ui/elements/ve.ui.GroupElement.js',
-			've/ui/elements/ve.ui.FlaggableElement.js',
 
 			've/ui/widgets/ve.ui.PopupWidget.js',
 			've/ui/widgets/ve.ui.SelectWidget.js',

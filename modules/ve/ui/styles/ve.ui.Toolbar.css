@@ -51,27 +51,6 @@
 	user-select: none;
 }
 
-.ve-ui-toolbar-group {
-	display: inline-block;
-	margin: 0.3em;
-	vertical-align: middle;
-	border-radius: 0.25em;
-	border: solid 1px transparent;
-}
-
-.ve-ui-toolbar-group:hover {
-	border-color: rgba(0,0,0,0.05);
-}
-
-.ve-ui-toolbar-label {
-	display: inline-block;
-	padding: 0.5em 0.75em;
-	line-height: 22px;
-	font-size: 0.8em;
-	color: #555;
-	vertical-align: top;
-}
-
 .ve-ui-toolbar-shadow {
 	/* @embed */
 	background-image: url(images/toolbar-shadow.png);

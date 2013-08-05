@@ -24,6 +24,29 @@
 	border-bottom-right-radius: 0.25em;
 }
 
+/* ve.ui.ToolGroup */
+
+.ve-ui-toolGroup {
+	display: inline-block;
+	margin: 0.3em;
+	vertical-align: middle;
+	border-radius: 0.25em;
+	border: solid 1px transparent;
+}
+
+.ve-ui-toolGroup:hover {
+	border-color: rgba(0,0,0,0.05);
+}
+
+.ve-ui-toolGroup .ve-ui-labeledWidget-label {
+	display: inline-block;
+	padding: 0.5em 0.75em;
+	line-height: 22px;
+	font-size: 0.8em;
+	color: #555;
+	vertical-align: top;
+}
+
 /* ve.ui.ButtonTool */
 /* ve.ui.DropdownTool */
 
