@@ -721,6 +721,7 @@ $wgResourceModules += array(
 			've/ui/tools/buttons/ve.ui.LanguageButtonTool.js',
 			've/ui/widgets/ve.ui.LanguageInputWidget.js',
 			've/ui/tools/buttons/ve.ui.CodeButtonTool.js',
+			've/ui/tools/buttons/ve.ui.StrikethroughButtonTool.js',
 		),
 		'dependencies' => array(
 			'ext.visualEditor.core',
@@ -730,6 +731,7 @@ $wgResourceModules += array(
 			// VE messages needed by code that is only in experimental mode
 			'visualeditor-mwmathinspector-title',
 			'visualeditor-annotationbutton-language-tooltip',
+			'visualeditor-annotationbutton-strikethrough-tooltip',
 		),
 	),
 
