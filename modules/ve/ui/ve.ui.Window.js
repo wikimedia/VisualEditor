@@ -114,8 +114,8 @@ ve.ui.Window.prototype.onFrameInitialize = function () {
 ve.ui.Window.prototype.initialize = function () {
 	// Properties
 	this.$title = this.$$( '<div class="ve-ui-window-title"></div>' );
-	if ( this.constructor.static.titleMessage ) {
-		this.$title.text( ve.msg( this.constructor.static.titleMessage ) );
+	if ( this.getTitle() ) {
+		this.$title.text( this.getTitle() );
 	}
 	this.$icon = this.$$( '<div class="ve-ui-window-icon"></div>' )
 		.addClass( 've-ui-icon-' + this.constructor.static.icon );
@@ -191,6 +191,16 @@ ve.ui.Window.prototype.isVisible = function () {
  */
 ve.ui.Window.prototype.getFrame = function () {
 	return this.frame;
+};
+
+/**
+ * Get the title of the window.
+ *
+ * Use .static.titleMessage to set this unless you need to do something fancy.
+ * @returns {string} Window title
+ */
+ve.ui.Window.prototype.getTitle = function () {
+	return ve.msg( this.constructor.static.titleMessage );
 };
 
 /**
