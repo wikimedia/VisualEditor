@@ -13,7 +13,7 @@
  * @constructor
  * @param {ve.ui.Toolbar} toolbar
  */
-ve.ui.MWFormatDropdownTool = function VeUiMwFormatDropdownTool( toolbar, config ) {
+ve.ui.MWFormatDropdownTool = function VeUiMWFormatDropdownTool( toolbar, config ) {
 	// Parent constructor
 	ve.ui.FormatDropdownTool.call( this, toolbar, config );
 };

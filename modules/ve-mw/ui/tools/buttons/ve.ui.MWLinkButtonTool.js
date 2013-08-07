@@ -14,7 +14,7 @@
  * @param {ve.ui.Toolbar} toolbar
  * @param {Object} [config] Config options
  */
-ve.ui.MWLinkButtonTool = function VeUiMwLinkButtonTool( toolbar, config ) {
+ve.ui.MWLinkButtonTool = function VeUiMWLinkButtonTool( toolbar, config ) {
 	// Parent constructor
 	ve.ui.LinkButtonTool.call( this, toolbar, config );
 };

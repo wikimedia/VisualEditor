@@ -15,7 +15,7 @@
  * @constructor
  * @param {jQuery} [$resizable=this.$] Resizable DOM element
  */
-ve.ce.MWResizableNode = function VeCeMwResizableNode( $resizable ) {
+ve.ce.MWResizableNode = function VeCeMWResizableNode( $resizable ) {
 	ve.ce.ResizableNode.call( this, $resizable );
 };
 
