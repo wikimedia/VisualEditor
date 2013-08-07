@@ -5,8 +5,8 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-/* ve.ui.MWMathInspector */
+/* ve.ui.MWExtensionInspector */
 
-.ve-ui-mwMathInspector-input textarea {
+.ve-ui-mwExtensionInspector-input textarea {
 	height: 8em;
 }

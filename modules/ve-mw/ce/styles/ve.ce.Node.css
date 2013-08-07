@@ -45,6 +45,12 @@
 	display: inline-block;
 }
 
+/* ve.ce.MWAlienExtensionNode */
+
+.ve-ce-mwAlienExtensionNode {
+	display: inline-block;
+}
+
 /* ve.ce.MWMathNode */
 
 .ve-ce-mwMathNode {

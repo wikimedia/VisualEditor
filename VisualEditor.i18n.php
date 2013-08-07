@@ -132,6 +132,7 @@ $messages['en'] = array(
 	'visualeditor-linkinspector-suggest-matching-page' => 'Matching page',
 	'visualeditor-linkinspector-suggest-new-page' => 'New page',
 	'visualeditor-linkinspector-title' => 'Hyperlink',
+	'visualeditor-mwalienextensioninspector-title' => 'MediaWiki extension',
 	'visualeditor-mwhieroinspector-title' => 'Hieroglyphics',
 	'visualeditor-mwmathinspector-title' => 'LaTeX',
 	'visualeditor-languageinspector-title' => 'Language',
@@ -428,6 +429,7 @@ Parameters:
 {{Identical|New page}}',
 	'visualeditor-linkinspector-title' => 'Title of the link inspector dialog.
 {{Identical|Hyperlink}}',
+	'visualeditor-mwalienextensioninspector-title' => 'Used as title for unknown MediaWiki extensions.',
 	'visualeditor-mwhieroinspector-title' => 'Used as title for hieroglyphics inspector.',
 	'visualeditor-mwmathinspector-title' => 'Used as title for MathInspector.
 
