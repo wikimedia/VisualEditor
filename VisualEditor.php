@@ -67,7 +67,6 @@ $wgDefaultUserOptions['visualeditor-betatempdisable'] = 0;
 $wgVisualEditorResourceTemplate = array(
 	'localBasePath' => dirname( __FILE__ ) . '/modules',
 	'remoteExtPath' => 'VisualEditor/modules',
-	'group' => 'ext.visualEditor',
 );
 
 $wgResourceModules += array(
