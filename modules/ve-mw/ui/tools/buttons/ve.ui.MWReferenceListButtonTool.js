@@ -14,7 +14,7 @@
  * @param {ve.ui.Toolbar} toolbar
  * @param {Object} [config] Config options
  */
-ve.ui.MWReferenceListButtonTool = function VeUiMwReferenceListButtonTool( toolbar, config ) {
+ve.ui.MWReferenceListButtonTool = function VeUiMWReferenceListButtonTool( toolbar, config ) {
 	// Parent constructor
 	ve.ui.DialogButtonTool.call( this, toolbar, config );
 };

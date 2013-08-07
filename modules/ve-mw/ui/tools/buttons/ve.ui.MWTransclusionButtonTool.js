@@ -14,7 +14,7 @@
  * @param {ve.ui.Toolbar} toolbar
  * @param {Object} [config] Config options
  */
-ve.ui.MWTransclusionButtonTool = function VeUiMwTransclusionButtonTool( toolbar, config ) {
+ve.ui.MWTransclusionButtonTool = function VeUiMWTransclusionButtonTool( toolbar, config ) {
 	// Parent constructor
 	ve.ui.DialogButtonTool.call( this, toolbar, config );
 };

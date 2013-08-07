@@ -16,7 +16,7 @@
  * @constructor
  * @param {Object} element [description]
  */
-ve.dm.MWNowikiAnnotation = function VeDmMwNowikiAnnotation( element ) {
+ve.dm.MWNowikiAnnotation = function VeDmMWNowikiAnnotation( element ) {
 	// Parent constructor
 	ve.dm.Annotation.call( this, element );
 };
