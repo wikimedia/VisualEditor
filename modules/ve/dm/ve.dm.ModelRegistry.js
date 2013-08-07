@@ -201,7 +201,7 @@ ve.dm.ModelRegistry.prototype.matchElement = function ( element, forceAboutGroup
 					types[j] instanceof RegExp &&
 					type.match( types[j] ) &&
 					(
-						reg.registry[models[i]].static.matchTagNames === null ||
+						( tag === '' && reg.registry[models[i]].static.matchTagNames === null ) ||
 						ve.indexOf( tag, reg.registry[models[i]].static.matchTagNames ) !== -1
 					)
 				) {
