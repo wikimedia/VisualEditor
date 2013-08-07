@@ -258,6 +258,15 @@ ve.dm.Model.static.getHashObject = function ( dataElement ) {
 	};
 };
 
+/**
+ * Array of RDFa types that this model should be a match candidate for.
+ * @static
+ * @returns {Array} Array of strings or regular expressions
+ */
+ve.dm.Model.static.getMatchRdfaTypes = function () {
+	return this.matchRdfaTypes;
+};
+
 /* Methods */
 
 /**

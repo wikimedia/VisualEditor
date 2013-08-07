@@ -99,9 +99,9 @@ ve.dm.ModelRegistry.prototype.register = function ( constructor ) {
 	tags = constructor.static.matchTagNames === null ?
 		[ '' ] :
 		constructor.static.matchTagNames;
-	types = constructor.static.matchRdfaTypes === null ?
+	types = constructor.static.getMatchRdfaTypes() === null ?
 		[ '' ] :
-		constructor.static.matchRdfaTypes;
+		constructor.static.getMatchRdfaTypes();
 
 	for ( i = 0; i < tags.length; i++ ) {
 		// +!!foo is a shorter equivalent of Number( Boolean( foo ) ) or foo ? 1 : 0
@@ -195,7 +195,7 @@ ve.dm.ModelRegistry.prototype.matchElement = function ( element, forceAboutGroup
 			if ( excludeTypes && ve.indexOf( models[i], excludeTypes ) !== -1 ) {
 				continue;
 			}
-			types = reg.registry[models[i]].static.matchRdfaTypes;
+			types = reg.registry[models[i]].static.getMatchRdfaTypes();
 			for ( j = 0; j < types.length; j++ ) {
 				if (
 					types[j] instanceof RegExp &&
@@ -213,7 +213,7 @@ ve.dm.ModelRegistry.prototype.matchElement = function ( element, forceAboutGroup
 	}
 
 	function matchesAllTypes( types, name ) {
-		var i, j, haveMatch, matchTypes = reg.registry[name].static.matchRdfaTypes;
+		var i, j, haveMatch, matchTypes = reg.registry[name].static.getMatchRdfaTypes();
 		for ( i = 0; i < types.length; i++ ) {
 			haveMatch = false;
 			for ( j = 0; j < matchTypes.length; j++ ) {
@@ -360,7 +360,7 @@ ve.dm.ModelRegistry.prototype.matchElement = function ( element, forceAboutGroup
 			// Only process this one if it doesn't specify types
 			// If it does specify types, then we've either already processed it in the
 			// func+tag+type step above, or its type rule doesn't match
-			if ( model.static.matchRdfaTypes === null && model.static.matchFunction( element ) ) {
+			if ( model.static.getMatchRdfaTypes() === null && model.static.matchFunction( element ) ) {
 				return matches[i];
 			}
 		}
@@ -409,7 +409,7 @@ ve.dm.ModelRegistry.prototype.matchElement = function ( element, forceAboutGroup
 		// Only process this one if it doesn't specify types
 		// If it does specify types, then we've either already processed it in the
 		// tag+type step above, or its type rule doesn't match
-		if ( model.static.matchRdfaTypes === null ) {
+		if ( model.static.getMatchRdfaTypes() === null ) {
 			return matches[i];
 		}
 	}
