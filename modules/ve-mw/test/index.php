@@ -196,6 +196,9 @@
 		<script src="../../ve/ce/annotations/ve.ce.TextStyleAnnotation.js"></script>
 		<script src="../../ve-mw/ce/annotations/ve.ce.MWNowikiAnnotation.js"></script>
 		<script src="../../ve/ui/ve.ui.js"></script>
+		<script src="../../ve/ui/elements/ve.ui.LabeledElement.js"></script>
+		<script src="../../ve/ui/elements/ve.ui.GroupElement.js"></script>
+		<script src="../../ve/ui/elements/ve.ui.FlaggableElement.js"></script>
 		<script src="../../ve/ui/ve.ui.Surface.js"></script>
 		<script src="../../ve/ui/ve.ui.Context.js"></script>
 		<script src="../../ve/ui/ve.ui.Frame.js"></script>
@@ -209,6 +212,7 @@
 		<script src="../../ve/ui/ve.ui.Layout.js"></script>
 		<script src="../../ve/ui/ve.ui.Widget.js"></script>
 		<script src="../../ve/ui/ve.ui.Tool.js"></script>
+		<script src="../../ve/ui/ve.ui.ToolGroup.js"></script>
 		<script src="../../ve/ui/ve.ui.ToolFactory.js"></script>
 		<script src="../../ve/ui/ve.ui.Toolbar.js"></script>
 		<script src="../../ve/ui/ve.ui.SurfaceToolbar.js"></script>
@@ -224,9 +228,6 @@
 		<script src="../../ve/ui/actions/ve.ui.IndentationAction.js"></script>
 		<script src="../../ve/ui/actions/ve.ui.InspectorAction.js"></script>
 		<script src="../../ve/ui/actions/ve.ui.ListAction.js"></script>
-		<script src="../../ve/ui/elements/ve.ui.LabeledElement.js"></script>
-		<script src="../../ve/ui/elements/ve.ui.GroupElement.js"></script>
-		<script src="../../ve/ui/elements/ve.ui.FlaggableElement.js"></script>
 		<script src="../../ve/ui/widgets/ve.ui.PopupWidget.js"></script>
 		<script src="../../ve/ui/widgets/ve.ui.SelectWidget.js"></script>
 		<script src="../../ve/ui/widgets/ve.ui.OptionWidget.js"></script>

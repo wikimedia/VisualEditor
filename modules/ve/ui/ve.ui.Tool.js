@@ -29,7 +29,7 @@ ve.ui.Tool = function VeUiTool( toolbar, config ) {
 
 	// Initialization
 	this.setTitle();
-	this.$.addClass( 've-ui-Tool' );
+	this.$.addClass( 've-ui-tool' );
 };
 
 /* Inheritance */

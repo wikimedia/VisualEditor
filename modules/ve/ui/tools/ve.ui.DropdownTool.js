@@ -12,7 +12,7 @@
  * @class
  * @extends ve.ui.Tool
  * @constructor
- * @param {ve.ui.SurfaceToolbar} toolbar
+ * @param {ve.ui.Toolbar} toolbar
  * @param {Object} [config] Config options
  */
 ve.ui.DropdownTool = function VeUiDropdownTool( toolbar, config ) {
@@ -24,11 +24,9 @@ ve.ui.DropdownTool = function VeUiDropdownTool( toolbar, config ) {
 	this.$icon = this.$$( '<div class="ve-ui-dropdownTool-icon ve-ui-icon-down"></div>' );
 	this.$label = this.$$( '<div class="ve-ui-dropdownTool-label"></div>' );
 	this.$labelText = this.$$( '<span>&nbsp;</span>' );
+	this.onBlurHandler = ve.bind( this.onBlur, this );
 
 	// Events
-	this.$$( this.getElementDocument() )
-		.add( this.toolbar.getSurface().getView().$ )
-		.mousedown( ve.bind( this.onBlur, this ) );
 	this.$.on( {
 		'mousedown': ve.bind( this.onMouseDown, this ),
 		'mouseup': ve.bind( this.onMouseUp, this )
@@ -76,26 +74,54 @@ ve.ui.DropdownTool.prototype.onMouseUp = function ( e ) {
 	if ( e.which === 1 ) {
 		// Toggle menu
 		if ( this.menu.isVisible() ) {
-			this.menu.hide();
+			this.deactivate();
 		} else {
-			this.menu.show();
+			this.activate();
 		}
 	}
 	return false;
 };
 
 /**
+ * Switch into active mode.
+ *
+ * When active, the menu is visible, the tool has a different style and mousedown events are being
+ * captured from the document and will trigger deactivation.
+ *
+ * @method
+ */
+ve.ui.DropdownTool.prototype.activate = function () {
+	this.menu.show();
+	this.$.addClass( 've-ui-dropdownTool-active' );
+	this.getElementDocument().addEventListener( 'mousedown', this.onBlurHandler, true );
+};
+
+/**
+ * Switch out of active mode.
+ *
+ * When inactive, the menu is hidden, the tool returns to normal styling and mousedown events are
+ * no longer captured.
+ *
+ * @method
+ */
+ve.ui.DropdownTool.prototype.deactivate = function () {
+	this.menu.hide();
+	this.$.removeClass( 've-ui-dropdownTool-active' );
+	this.getElementDocument().removeEventListener( 'mousedown', this.onBlurHandler, true );
+};
+
+/**
  * Handle focus being lost.
  *
- * The event is actually generated from a mousedown on an element outside the menu, so it is not
- * a normal blur event object.
+ * The event is actually generated from a mousedown, so it is not a normal blur event object.
  *
  * @method
  * @param {jQuery.Event} e Mouse down event
  */
 ve.ui.DropdownTool.prototype.onBlur = function ( e ) {
-	if ( e.which === 1 ) {
-		this.menu.hide();
+	// Only deactivate when clicking outside the dropdown element
+	if ( $( e.target ).closest( '.ve-ui-dropdownTool' )[0] !== this.$[0] ) {
+		this.deactivate();
 	}
 };
 
@@ -109,11 +135,9 @@ ve.ui.DropdownTool.prototype.onBlur = function ( e ) {
  * @param {ve.ui.MenuItemWidget|null} item Selected menu item, null if none is selected
  */
 ve.ui.DropdownTool.prototype.onMenuItemSelect = function ( item ) {
-
-	if ( this.toolbar.getSurface().isEnabled() ) {
-		this.setLabel( item && item.$label.text() );
-		this.onSelect( item );
-	}
+	this.setLabel( item && item.$label.text() );
+	this.onSelect( item );
+	this.deactivate();
 };
 
 /**

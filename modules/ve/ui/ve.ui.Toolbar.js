@@ -62,32 +62,27 @@ ve.mixinClass( ve.ui.Toolbar, ve.EventEmitter );
 
 /**
  * Initialize all tools and groups.
+ *
+ * @method
+ * @param {Object[]} config List of tool group configurations
  */
-ve.ui.Toolbar.prototype.addTools = function ( tools ) {
-	var i, j, group, $group, tool;
+ve.ui.Toolbar.prototype.setup = function ( config ) {
+	var i, j, group, tools;
 
-	for ( i = 0; i < tools.length; i++ ) {
-		group = tools[i];
-		// Create group
-		$group = this.$$( '<div class="ve-ui-toolbar-group"></div>' )
-			.on( 'mousedown', false );
-		if ( group.label ) {
-			$group.append(
-				this.$$( '<div class="ve-ui-toolbar-label"></div>' ).html( group.label )
-			);
-		}
+	for ( i = 0; i < config.length; i++ ) {
+		tools = config[i].items;
+		group = new ve.ui.ToolGroup( this, { '$$': this.$$ } );
+
 		// Add tools
-		for ( j = 0; j < group.items.length; j++ ) {
-			tool = false;
+		for ( j = 0; j < tools.length; j++ ) {
 			try {
-				tool = ve.ui.toolFactory.create( group.items[j], this );
+				tools[j] = ve.ui.toolFactory.create( tools[j], this );
 			} catch( e ) {}
-			if ( tool ) {
-				$group.append( tool.$ );
-			}
 		}
+		group.addItems( tools );
+
 		// Append group
-		this.$tools.append( $group );
+		this.$tools.append( group.$ );
 	}
 };
 
