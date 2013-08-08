@@ -81,11 +81,13 @@ ve.dm.example.createAnnotationSet = function ( store, annotations ) {
 };
 
 /* Some common annotations in shorthand format */
-ve.dm.example.bold = { 'type': 'textStyle/bold' };
-ve.dm.example.italic = { 'type': 'textStyle/italic' };
-ve.dm.example.underline = { 'type': 'textStyle/underline' };
-ve.dm.example.span = { 'type': 'textStyle/span' };
-ve.dm.example.big = { 'type': 'textStyle/big' };
+ve.dm.example.bold = { 'type': 'textStyle/bold', 'attributes': { 'nodeName': 'b' } };
+ve.dm.example.italic = { 'type': 'textStyle/italic', 'attributes': { 'nodeName': 'i' } };
+ve.dm.example.underline = { 'type': 'textStyle/underline', 'attributes': { 'nodeName': 'u' } };
+ve.dm.example.span = { 'type': 'textStyle/span', 'attributes': { 'nodeName': 'span' } };
+ve.dm.example.big = { 'type': 'textStyle/big', 'attributes': { 'nodeName': 'big' } };
+ve.dm.example.code = { 'type': 'textStyle/code', 'attributes': { 'nodeName': 'code' } };
+ve.dm.example.tt = { 'type': 'textStyle/code', 'attributes': { 'nodeName': 'tt' } };
 
 /**
  * Creates a document from example data.
@@ -866,6 +868,22 @@ ve.dm.example.domToDataCases = {
 			{ 'type': 'internalList' },
 			{ 'type': '/internalList' }
 		]
+	},
+	'equivalent annotations': {
+		'html': '<body><p><code>a</code>b<tt>c</tt>d<code>e</code><tt>f</tt></body>',
+		'data': [
+			{ 'type': 'paragraph' },
+			['a', [ ve.dm.example.code ]],
+			'b',
+			['c', [ ve.dm.example.tt ]],
+			'd',
+			['e', [ ve.dm.example.code ]],
+			['f', [ ve.dm.example.tt ]],
+			{ 'type': '/paragraph' },
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' }
+		],
+		'normalizedHtml': '<body><p><code>a</code>b<tt>c</tt>d<code>ef</code></body>'
 	},
 	'additive annotations': {
 		'html': '<body><p><big>a<big>b</big>c</big><b>d<b>e</b>f</b></p></body>',

@@ -585,6 +585,7 @@ ve.dm.mwExample.domToDataCases = {
 				'b',
 				[ {
 					'type': 'textStyle/bold',
+					'attributes': { 'nodeName': 'b' },
 					'htmlAttributes': [ { 'values': {
 						'data-parsoid': '1'
 					} } ]
@@ -595,6 +596,7 @@ ve.dm.mwExample.domToDataCases = {
 				'd',
 				[ {
 					'type': 'textStyle/bold',
+					'attributes': { 'nodeName': 'b' },
 					'htmlAttributes': [ { 'values': {
 						'data-parsoid': '2'
 					} } ]
@@ -608,6 +610,7 @@ ve.dm.mwExample.domToDataCases = {
 				'a',
 				[ {
 					'type': 'textStyle/bold',
+					'attributes': { 'nodeName': 'b' },
 					'htmlAttributes': [ { 'values': {
 						'data-parsoid': '3'
 					} } ]
@@ -617,6 +620,7 @@ ve.dm.mwExample.domToDataCases = {
 				'b',
 				[ {
 					'type': 'textStyle/bold',
+					'attributes': { 'nodeName': 'b' },
 					'htmlAttributes': [ { 'values': {
 						'data-parsoid': '3'
 					} } ]
@@ -626,6 +630,7 @@ ve.dm.mwExample.domToDataCases = {
 				'c',
 				[ {
 					'type': 'textStyle/bold',
+					'attributes': { 'nodeName': 'b' },
 					'htmlAttributes': [ { 'values': {
 						'data-parsoid': '4'
 					} } ]
