@@ -5,6 +5,11 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
+.ve-ui-icon-alienextension {
+	/* @embed */
+	background-image: url(images/icons/alienextension.svg);
+}
+
 .ve-ui-icon-hiero {
 	/* @embed */
 	background-image: url(images/icons/hiero.svg);
