@@ -30,6 +30,12 @@ ve.inheritClass( ve.ce.TextStyleAnnotation, ve.ce.Annotation );
 
 ve.ce.TextStyleAnnotation.static.name = 'textStyle';
 
+/* Methods */
+
+ve.ce.TextStyleAnnotation.prototype.getTagName = function () {
+	return this.getModel().getAttribute( 'nodeName' ) || this.constructor.static.tagName;
+};
+
 /* Registration */
 
 ve.ce.annotationFactory.register( ve.ce.TextStyleAnnotation );
@@ -236,8 +242,6 @@ ve.ce.TextStyleCodeAnnotation = function VeCeTextStyleCodeAnnotation( model, con
 	this.$.addClass( 've-ce-TextStyleCodeAnnotation' );
 };
 ve.inheritClass( ve.ce.TextStyleCodeAnnotation, ve.ce.TextStyleAnnotation );
-ve.ce.TextStyleCodeAnnotation.prototype.getTagName = function () {
-	return this.getModel().getAttribute( 'nodeName' ) || 'code';
-};
 ve.ce.TextStyleCodeAnnotation.static.name = 'textStyle/code';
+ve.ce.TextStyleCodeAnnotation.static.tagName = 'code';
 ve.ce.annotationFactory.register( ve.ce.TextStyleCodeAnnotation );
