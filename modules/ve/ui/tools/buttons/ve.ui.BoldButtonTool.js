@@ -25,7 +25,7 @@ ve.inheritClass( ve.ui.BoldButtonTool, ve.ui.AnnotationButtonTool );
 
 /* Static Properties */
 
-ve.ui.BoldButtonTool.static.name = 'bold';
+ve.ui.BoldButtonTool.static.name = 'textStyle/bold';
 
 ve.ui.BoldButtonTool.static.icon = {
 	'default': 'bold-a',
@@ -61,10 +61,11 @@ ve.ui.BoldButtonTool.static.annotation = { 'name': 'textStyle/bold' };
 
 /* Registration */
 
-ve.ui.toolFactory.register( 'bold', ve.ui.BoldButtonTool );
+ve.ui.toolFactory.register( 'textStyle/bold', ve.ui.BoldButtonTool );
 
-ve.ui.commandRegistry.register( 'bold', 'annotation', 'toggle', 'textStyle/bold' );
+ve.ui.commandRegistry.register( 'textStyle/bold', 'annotation', 'toggle', 'textStyle/bold' );
 
 ve.ui.triggerRegistry.register(
-	'bold', { 'mac': new ve.ui.Trigger( 'cmd+b' ), 'pc': new ve.ui.Trigger( 'ctrl+b' ) }
+	'textStyle/bold',
+	{ 'mac': new ve.ui.Trigger( 'cmd+b' ), 'pc': new ve.ui.Trigger( 'ctrl+b' ) }
 );

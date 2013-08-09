@@ -25,17 +25,18 @@ ve.inheritClass( ve.ui.SuperscriptButtonTool, ve.ui.AnnotationButtonTool );
 
 /* Static Properties */
 
-ve.ui.SuperscriptButtonTool.static.name = 'superscript';
+ve.ui.SuperscriptButtonTool.static.name = 'textStyle/superscript';
 
 ve.ui.SuperscriptButtonTool.static.icon = 'superscript';
 
-ve.ui.SuperscriptButtonTool.static.titleMessage = 'visualeditor-annotationbutton-superscript-tooltip';
+ve.ui.SuperscriptButtonTool.static.titleMessage =
+	'visualeditor-annotationbutton-superscript-tooltip';
 
 ve.ui.SuperscriptButtonTool.static.annotation = { 'name': 'textStyle/superscript' };
 
 /* Registration */
 
-ve.ui.toolFactory.register( 'superscript', ve.ui.SuperscriptButtonTool );
+ve.ui.toolFactory.register( 'textStyle/superscript', ve.ui.SuperscriptButtonTool );
 
 ve.ui.commandRegistry.register(
 	'textStyle/superscript', 'annotation', 'toggle', 'textStyle/superscript'

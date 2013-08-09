@@ -25,7 +25,7 @@ ve.inheritClass( ve.ui.ItalicButtonTool, ve.ui.AnnotationButtonTool );
 
 /* Static Properties */
 
-ve.ui.ItalicButtonTool.static.name = 'italic';
+ve.ui.ItalicButtonTool.static.name = 'textStyle/italic';
 
 ve.ui.ItalicButtonTool.static.icon = {
 	'default': 'italic-a',
@@ -61,12 +61,11 @@ ve.ui.ItalicButtonTool.static.annotation = { 'name': 'textStyle/italic' };
 
 /* Registration */
 
-ve.ui.toolFactory.register( 'italic', ve.ui.ItalicButtonTool );
+ve.ui.toolFactory.register( 'textStyle/italic', ve.ui.ItalicButtonTool );
 
-ve.ui.commandRegistry.register(
-	'italic', 'annotation', 'toggle', 'textStyle/italic'
-);
+ve.ui.commandRegistry.register( 'textStyle/italic', 'annotation', 'toggle', 'textStyle/italic' );
 
 ve.ui.triggerRegistry.register(
-	'italic', { 'mac': new ve.ui.Trigger( 'cmd+i' ), 'pc': new ve.ui.Trigger( 'ctrl+i' ) }
+	'textStyle/italic',
+	{ 'mac': new ve.ui.Trigger( 'cmd+i' ), 'pc': new ve.ui.Trigger( 'ctrl+i' ) }
 );
