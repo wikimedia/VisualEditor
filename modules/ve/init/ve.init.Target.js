@@ -32,7 +32,7 @@ ve.mixinClass( ve.init.Target, ve.EventEmitter );
 ve.init.Target.static.toolbarTools = [
 	{ 'items': ['undo', 'redo'] },
 	{ 'items': ['format'] },
-	{ 'items': ['bold', 'italic', 'link', 'code', 'language', 'strikethrough', 'clear'] },
+	{ 'items': ['bold', 'italic', 'link', 'code', 'language', 'underline', 'strikethrough', 'clear'] },
 	{ 'items': ['number', 'bullet', 'outdent', 'indent'] }
 ];
 
@@ -43,6 +43,7 @@ ve.init.Target.static.surfaceCommands = [
 	//'language',
 	'undo',
 	'redo',
+	//'underline',
 	//'strikethrough',
 	'indent',
 	'outdent'

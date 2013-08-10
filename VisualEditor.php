@@ -732,6 +732,7 @@ $wgResourceModules += array(
 			've/ui/widgets/ve.ui.LanguageInputWidget.js',
 			've/ui/tools/buttons/ve.ui.CodeButtonTool.js',
 			've/ui/tools/buttons/ve.ui.StrikethroughButtonTool.js',
+			've/ui/tools/buttons/ve.ui.UnderlineButtonTool.js',
 		),
 		'dependencies' => array(
 			'ext.visualEditor.core',
@@ -744,6 +745,7 @@ $wgResourceModules += array(
 			'visualeditor-mwmathinspector-title',
 			'visualeditor-annotationbutton-language-tooltip',
 			'visualeditor-annotationbutton-strikethrough-tooltip',
+			'visualeditor-annotationbutton-underline-tooltip',
 		),
 	),
 
