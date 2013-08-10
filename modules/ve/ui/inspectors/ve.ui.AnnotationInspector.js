@@ -121,7 +121,7 @@ ve.ui.AnnotationInspector.prototype.onClose = function ( action ) {
 		clear = false,
 		set = false,
 		target = this.targetInput.getValue(),
-		annotation = this.targetInput.getAnnotation(),
+		annotation = this.getAnnotation(),
 		remove = target === '' || ( action === 'remove' && !!annotation ),
 		surfaceModel = this.surface.getModel(),
 		fragment = surfaceModel.getFragment( this.initialSelection, false ),

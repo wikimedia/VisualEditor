@@ -80,6 +80,16 @@ ve.ui.LinkInspector.prototype.onOpen = function () {
 };
 
 /**
+ * Get the annotation from the input (so AnnotationInspector can request the value
+ * from the inspector rather than the widget)
+ * @method
+ * @returns {ve.dm.LinkAnnotation} Link annotation
+ */
+ve.ui.LinkInspector.prototype.getAnnotation = function () {
+	return this.targetInput.annotation;
+};
+
+/**
  * @inheritdoc
  */
 ve.ui.LinkInspector.prototype.getAnnotationFromText = function ( text ) {

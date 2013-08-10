@@ -19,8 +19,12 @@ ve.ui.LanguageInspector = function VeUiLanguageInspector( surface, config ) {
 	// Parent constructor
 	ve.ui.AnnotationInspector.call( this, surface, config );
 
+	// Placeholder for the dm properties:
 	this.initLang = '';
 	this.initDir = '';
+
+	// Placeholder for the annotation:
+	this.annotation = null;
 };
 
 /* Inheritance */
@@ -54,7 +58,8 @@ ve.ui.LanguageInspector.prototype.initialize = function () {
 
 	// Properties
 	this.targetInput = new ve.ui.LanguageInputWidget( {
-		'$$': this.frame.$$, '$overlay': this.surface.$localOverlay
+		'$$': this.frame.$$,
+		'$overlay': this.surface.$localOverlay
 	} );
 
 	// Initialization
@@ -71,14 +76,14 @@ ve.ui.LanguageInspector.prototype.onOpen = function () {
 	// Wait for animation to complete
 	setTimeout( ve.bind( function () {
 		// Setup annotation
-		this.targetInput.setAnnotation( this.initialAnnotation );
+		this.setAnnotation( this.initialAnnotation );
 	}, this ), 200 );
 };
 /**
- * Handle the inspector being setup.
- * Make sure the initial language and direction are set by the parent of the DOM
- * element of the selected fragment before the rest of the onSetup method is
- * processed by the parent ve.ui.AnnotationInspector
+ * Handle the inspector being set up.
+ * Make sure the initial language and direction are set by the parent
+ * of the DOM element of the selected fragment before the rest of the
+ * onSetup method is processed by the parent ve.ui.AnnotationInspector
  */
 ve.ui.LanguageInspector.prototype.onSetup = function () {
 	var fragDOM,
@@ -98,6 +103,90 @@ ve.ui.LanguageInspector.prototype.onSetup = function () {
 	// Parent method
 	ve.ui.AnnotationInspector.prototype.onSetup.call( this );
 };
+
+
+/**
+ * Handle the inspector being closed: refresh the annotation
+ * from the widget values
+ *
+ * @param {string} action Action that caused the window to be closed
+ */
+ve.ui.LanguageInspector.prototype.onClose = function ( action ) {
+	// Read the annotation values from the widget:
+	var attrs = this.targetInput.getAttributes();
+
+	// Set the annotation with the new attributes:
+	this.annotation = new ve.dm.LanguageAnnotation( {
+		'type': 'language',
+		'attributes': attrs
+	} );
+
+	// Call parent method
+	ve.ui.AnnotationInspector.prototype.onClose.call( this, action );
+
+};
+
+/**
+ * Gets the annotation value.
+ *
+ * @method
+ * @returns {ve.dm.LanguageAnnotation} Language annotation
+ */
+ve.ui.LanguageInspector.prototype.getAnnotation = function () {
+	return this.annotation;
+};
+
+
+/**
+ * Validates and sets the annotation value
+ * Then updates the attributes and the widget table display
+ *
+ * @method
+ * @param {ve.dm.LanguageAnnotation} annotation Language annotation
+ * @chainable
+ */
+ve.ui.LanguageInspector.prototype.setAnnotation = function ( annotation ) {
+	var langCode = '',
+		langDir = '';
+
+	// Validate the given annotation:
+
+	// Give precedence to dir value if it already exists
+	// in the annotation:
+	if ( annotation.getAttribute( 'dir' ) ) {
+		langDir = annotation.getAttribute( 'dir' );
+	}
+
+	// Set language according to the one in the given annotation
+	// or leave blank if element has no language set
+	if ( annotation.getAttribute( 'lang' ) ) {
+		langCode = annotation.getAttribute( 'lang' );
+	}
+
+	// If language exists, but dir is undefined/null,
+	// fix the dir in terms of language:
+	if ( langCode && !langDir ) {
+		langDir = $.uls.data.getDir( this.lang );
+	}
+
+	this.lang = langCode;
+	this.dir = langDir;
+
+	// Update the widget:
+	this.targetInput.setAttributes( this.lang, this.dir );
+
+	// Set the annotation:
+	this.annotation = new ve.dm.LanguageAnnotation( {
+		'type': 'language',
+		'attributes': {
+			'lang': this.lang,
+			'dir': this.dir
+		}
+	} );
+
+	return this;
+};
+
 /**
  * @inheritdoc
  */
@@ -109,6 +198,20 @@ ve.ui.LanguageInspector.prototype.getAnnotationFromText = function () {
 			'dir': this.initDir
 		}
 	} );
+};
+
+/**
+ * Gets a language from the annotation.
+ *
+ * @method
+ * @param {ve.dm.LanguageAnnotation} annotation Language annotation
+ * @returns {string} Language
+ */
+ve.ui.LanguageInspector.prototype.getLanguageFromAnnotation = function ( annotation ) {
+	if ( annotation instanceof ve.dm.LanguageAnnotation ) {
+		return annotation.getAttribute( 'lang' );
+	}
+	return '';
 };
 
 /* Registration */
