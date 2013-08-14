@@ -659,6 +659,7 @@ $wgResourceModules += array(
 			'visualeditor-indentationbutton-outdent-tooltip',
 			'visualeditor-inspector-close-tooltip',
 			'visualeditor-inspector-remove-tooltip',
+			'visualeditor-linkinspector-illegal-title',
 			'visualeditor-linkinspector-suggest-external-link',
 			'visualeditor-linkinspector-suggest-matching-page',
 			'visualeditor-linkinspector-suggest-new-page',

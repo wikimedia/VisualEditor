@@ -73,7 +73,13 @@ ve.ui.LinkInspector.prototype.onOpen = function () {
 		// Note: Focus input prior to setting target annotation
 		this.targetInput.$input.focus();
 		// Setup annotation
-		this.targetInput.setAnnotation( this.initialAnnotation );
+		if ( this.initialAnnotation ) {
+			this.targetInput.setAnnotation( this.initialAnnotation );
+		} else {
+			// If an initial annotation couldn't be created (e.g. the text was invalid),
+			// just populate the text we tried to create the annotation from
+			this.targetInput.setValue( this.initialText );
+		}
 		this.targetInput.$input.select();
 		this.surface.enable();
 	}, this ), 200 );

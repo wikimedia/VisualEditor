@@ -23,6 +23,7 @@ ve.ui.AnnotationInspector = function VeUiAnnotationInspector( surface, config ) 
 	// Properties
 	this.initialAnnotation = null;
 	this.initialAnnotationHash = null;
+	this.initialText = null;
 	this.isNewAnnotation = false;
 };
 
@@ -75,8 +76,11 @@ ve.ui.AnnotationInspector.prototype.onSetup = function () {
 			// Create annotation from selection
 			truncatedFragment = fragment.truncateRange( 255 );
 			fragment = truncatedFragment;
-			annotation = this.getAnnotationFromText( fragment.getText() );
-			fragment.annotateContent( 'set', annotation );
+			this.initialText = fragment.getText();
+			annotation = this.getAnnotationFromText( this.initialText );
+			if ( annotation ) {
+				fragment.annotateContent( 'set', annotation );
+			}
 			this.isNewAnnotation = true;
 		}
 	} else {
@@ -129,7 +133,7 @@ ve.ui.AnnotationInspector.prototype.onClose = function ( action ) {
 
 	if ( remove ) {
 		clear = true;
-	} else {
+	} else if ( annotation ) {
 		if ( this.initialSelection.isCollapsed() ) {
 			insert = true;
 		}

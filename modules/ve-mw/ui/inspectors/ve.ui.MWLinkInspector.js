@@ -43,7 +43,7 @@ ve.ui.MWLinkInspector.static.linkTargetInputWidget = ve.ui.MWLinkTargetInputWidg
  *
  * @method
  * @param {string} target Link target
- * @returns {ve.dm.MWInternalLinkAnnotation|ve.dm.MWExternalLinkAnnotation}
+ * @returns {ve.dm.MWInternalLinkAnnotation|ve.dm.MWExternalLinkAnnotation|null}
  */
 ve.ui.MWLinkInspector.prototype.getAnnotationFromText = function ( target ) {
 	var title;
@@ -57,7 +57,7 @@ ve.ui.MWLinkInspector.prototype.getAnnotationFromText = function ( target ) {
 				'href': target
 			}
 		} );
-	} else {
+	} else if ( ve.ui.MWLinkInspector.static.legalTitle.test( target ) ) {
 		// Internal link
 		// TODO: In the longer term we'll want to have autocompletion and existence and validity
 		// checks using AJAX
@@ -77,8 +77,19 @@ ve.ui.MWLinkInspector.prototype.getAnnotationFromText = function ( target ) {
 				'normalizedTitle': ve.dm.MWInternalLinkAnnotation.static.normalizeTitle( target )
 			}
 		} );
+	} else {
+		return null;
 	}
 };
+
+/* Static Properties */
+
+/**
+ * Regular expression matching a valid internal link
+ *
+ * @type {RegExp}
+ */
+ve.ui.MWLinkInspector.static.legalTitle = /^[ %!"$&'()*,\-.\/0-9:;=?@A-Z\\^_`a-z~\u0080-\u00FF+]+$/;
 
 /* Registration */
 
