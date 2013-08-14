@@ -232,7 +232,7 @@ ve.dm.Surface.prototype.hasFutureState = function () {
  * @returns {boolean} Has a past state
  */
 ve.dm.Surface.prototype.hasPastState = function () {
-	return this.bigStack.length - this.undoIndex > 0;
+	return this.bigStack.length - this.undoIndex > 0 || !!this.smallStack.length;
 };
 
 /**
@@ -442,7 +442,7 @@ ve.dm.Surface.prototype.breakpoint = function ( selection ) {
  * @returns {ve.Range} Selection or null if no further state could be reached
  */
 ve.dm.Surface.prototype.undo = function () {
-	if ( !this.enabled ) {
+	if ( !this.enabled || !this.hasPastState() ) {
 		return;
 	}
 	var item, i, transaction, selection;
@@ -477,13 +477,13 @@ ve.dm.Surface.prototype.undo = function () {
  * @returns {ve.Range} Selection or null if no further state could be reached
  */
 ve.dm.Surface.prototype.redo = function () {
-	if ( !this.enabled ) {
+	if ( !this.enabled || !this.hasFutureState() ) {
 		return;
 	}
 	var item, i, transaction, selection;
 	this.breakpoint();
 
-	if ( this.undoIndex > 0 && this.bigStack[this.bigStack.length - this.undoIndex] ) {
+	if ( this.bigStack[this.bigStack.length - this.undoIndex] ) {
 		this.emit( 'lock' );
 		item = this.bigStack[this.bigStack.length - this.undoIndex];
 		selection = item.selection;
