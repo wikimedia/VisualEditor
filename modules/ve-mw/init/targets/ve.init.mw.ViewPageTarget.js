@@ -170,7 +170,8 @@ ve.init.mw.ViewPageTarget.compatibility = {
 ve.init.mw.ViewPageTarget.static.toolbarTools = [
 	{ 'items': [ 'undo', 'redo' ] },
 	{ 'items': [ 'mwFormat' ] },
-	{ 'items': [ 'bold', 'italic', 'strikethrough', 'superscript', 'underline', 'mwLink', 'language', 'code', 'clear' ] },
+	{ 'items': [ 'bold', 'italic', 'strikethrough', 'subscript', 'superscript',
+		'underline', 'mwLink', 'language', 'code', 'clear' ] },
 	{ 'items': [ 'number', 'bullet', 'outdent', 'indent' ] },
 	{ 'items': [ 'mwMediaInsert', 'mwReference', 'mwReferenceList', 'mwTransclusion', 'mwMath', 'mwHiero' ] }
 ];
