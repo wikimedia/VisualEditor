@@ -30,10 +30,6 @@ ve.ce.MWExtensionNode = function VeCeMWExtensionNode( model, config ) {
 	ve.ce.ProtectedNode.call( this );
 	ve.ce.GeneratedContentNode.call( this );
 
-	// Events
-	this.model.connect( this, { 'update': 'onUpdate' } );
-	this.$.on( 'click', ve.bind( this.onClick, this ) );
-
 	// DOM Changes
 	this.$.addClass( 've-ce-mwExtensionNode' );
 };
