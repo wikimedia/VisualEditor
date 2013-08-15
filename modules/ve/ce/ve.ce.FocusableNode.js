@@ -106,6 +106,8 @@ ve.ce.FocusableNode.prototype.onFocusableResize = function () {
 ve.ce.FocusableNode.prototype.onFocusableRerender = function () {
 	if ( this.focused ) {
 		this.redrawHighlight();
+		// reposition menu
+		this.surface.getSurface().getContext().show( true );
 	}
 };
 

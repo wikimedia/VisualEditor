@@ -33,18 +33,6 @@ ve.ce.MWHieroNode.static.name = 'mwHiero';
 
 ve.ce.MWHieroNode.static.tagName = 'div';
 
-/* Methods */
-
-/** */
-ve.ce.MWHieroNode.prototype.onParseSuccess = function ( deferred, response ) {
-	var data = response.visualeditor, contentNodes = $( data.content ).get();
-	deferred.resolve( contentNodes );
-	// Rerender after image load
-	this.$.find( 'img' ).on( 'load', ve.bind( function () {
-		this.emit( 'rerender' );
-	}, this ) );
-};
-
 /* Registration */
 
 ve.ce.nodeFactory.register( ve.ce.MWHieroNode );

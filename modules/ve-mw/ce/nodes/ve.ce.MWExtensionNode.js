@@ -82,6 +82,10 @@ ve.ce.MWExtensionNode.prototype.generateContents = function () {
 ve.ce.MWExtensionNode.prototype.onParseSuccess = function ( deferred, response ) {
 	var data = response.visualeditor, contentNodes = $( data.content ).get();
 	deferred.resolve( contentNodes );
+	// Rerender after images load
+	this.$.find( 'img' ).on( 'load', ve.bind( function () {
+		this.emit( 'rerender' );
+	}, this ) );
 };
 
 /**
