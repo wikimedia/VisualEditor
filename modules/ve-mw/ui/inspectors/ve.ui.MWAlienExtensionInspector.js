@@ -43,7 +43,7 @@ ve.ui.MWAlienExtensionInspector.prototype.initialize = function () {
 };
 
 ve.ui.MWAlienExtensionInspector.prototype.getTitle = function () {
-	return '<' + this.surface.getView().getFocusedNode().getModel().getAttribute('mw').name + '>';
+	return this.surface.getView().getFocusedNode().getModel().getExtensionName();
 };
 
 /* Registration */

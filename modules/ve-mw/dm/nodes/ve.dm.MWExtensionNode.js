@@ -97,3 +97,13 @@ ve.dm.MWExtensionNode.static.getHashObject = function ( dataElement ) {
 		mw: dataElement.attributes.mw
 	};
 };
+
+/* Methods */
+
+/**
+ * Get the extension's name
+ * @returns {string} Extension name
+ */
+ve.dm.MWExtensionNode.prototype.getExtensionName = function () {
+	return this.constructor.static.extensionName;
+};
