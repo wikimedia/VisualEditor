@@ -214,6 +214,7 @@ $wgResourceModules += array(
 		'scripts' => array(
 			// ve
 			've/ve.js',
+			've/ve.track.js',
 			've/ve.EventEmitter.js',
 
 			// init
