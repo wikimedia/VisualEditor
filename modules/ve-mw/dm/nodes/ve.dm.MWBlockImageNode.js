@@ -45,14 +45,15 @@ ve.dm.MWBlockImageNode.static.matchRdfaTypes = [
 
 ve.dm.MWBlockImageNode.static.toDataElement = function ( domElements, converter ) {
 	var $figure = $( domElements[0] ),
-		$a = $figure.children( 'a' ).eq( 0 ),
-		$img = $a.children( 'img' ).eq( 0 ),
+		// images with link='' have a span wrapper instead
+		$wrapper = $figure.children( 'a,span' ).eq( 0 ),
+		$img = $wrapper.children( 'img' ).eq( 0 ),
 		$caption = $figure.children( 'figcaption' ).eq( 0 ),
 		typeofAttr = $figure.attr( 'typeof' ),
 		classes = $figure.attr( 'class' ),
 		recognizedClasses = [],
 		attributes = {
-			href: $a.attr( 'href' ),
+			href: $wrapper.attr( 'href' ) || '',
 			src: $img.attr( 'src' ),
 			width: $img.attr( 'width' ),
 			height: $img.attr( 'height' ),
