@@ -34,6 +34,7 @@ $messages['en'] = array(
 	'visualeditor-annotationbutton-link-tooltip' => 'Link',
 	'visualeditor-annotationbutton-language-tooltip' => 'Language',
 	'visualeditor-annotationbutton-strikethrough-tooltip' => 'Strikethrough',
+	'visualeditor-annotationbutton-underline-tooltip' => 'Underline',
 	'visualeditor-beta-label' => 'beta',
 	'visualeditor-beta-warning' => 'VisualEditor is in \'beta\'. You may encounter software issues, and you may not be able to edit parts of the page. Click "{{int:visualeditor-ca-editsource}}" to switch to wikitext mode – unsaved changes will be lost.',
 	'visualeditor-beta-appendix' => 'beta',
@@ -253,6 +254,8 @@ See also:
 {{Identical|Language}}',
 	'visualeditor-annotationbutton-strikethrough-tooltip' => 'Tooltip text for strikethrough button.
 {{Identical|Strikethrough}}',
+	'visualeditor-annotationbutton-underline-tooltip' => 'Tooltip text for underline button.
+{{Identical|Underline}}',
 	'visualeditor-beta-label' => 'Text of tool in the toolbar that highlights that VisualEditor is still in beta.
 {{Identical|Beta}}',
 	'visualeditor-beta-warning' => "Note shown when user clicks on 'beta' label in VisualEditor, warning users that the software may have issues",
