@@ -46,14 +46,14 @@ ve.dm.MWBlockImageNode.static.matchRdfaTypes = [
 ve.dm.MWBlockImageNode.static.toDataElement = function ( domElements, converter ) {
 	var $figure = $( domElements[0] ),
 		// images with link='' have a span wrapper instead
-		$wrapper = $figure.children( 'a,span' ).eq( 0 ),
-		$img = $wrapper.children( 'img' ).eq( 0 ),
+		$imgWrapper = $figure.children( 'a, span' ).eq( 0 ),
+		$img = $imgWrapper.children( 'img' ).eq( 0 ),
 		$caption = $figure.children( 'figcaption' ).eq( 0 ),
 		typeofAttr = $figure.attr( 'typeof' ),
 		classes = $figure.attr( 'class' ),
 		recognizedClasses = [],
 		attributes = {
-			href: $wrapper.attr( 'href' ) || '',
+			href: $imgWrapper.attr( 'href' ) || '',
 			src: $img.attr( 'src' ),
 			width: $img.attr( 'width' ),
 			height: $img.attr( 'height' ),
@@ -126,7 +126,7 @@ ve.dm.MWBlockImageNode.static.toDataElement = function ( domElements, converter 
 ve.dm.MWBlockImageNode.static.toDomElements = function ( data, doc, converter ) {
 	var dataElement = data[0],
 		figure = doc.createElement( 'figure' ),
-		a = doc.createElement( 'a' ),
+		imgWrapper = doc.createElement( dataElement.attributes.href !== '' ? 'a' : 'span' ),
 		img = doc.createElement( 'img' ),
 		wrapper = doc.createElement( 'div' ),
 		classes = [],
@@ -182,13 +182,15 @@ ve.dm.MWBlockImageNode.static.toDomElements = function ( data, doc, converter ) 
 	} else if ( classes.length > 0 ) {
 		figure.className = classes.join( ' ' );
 	}
-	a.setAttribute( 'href', dataElement.attributes.href );
+	if ( dataElement.attributes.href !== '' ) {
+		imgWrapper.setAttribute( 'href', dataElement.attributes.href );
+	}
 	img.setAttribute( 'src', dataElement.attributes.src );
 	img.setAttribute( 'width', dataElement.attributes.width );
 	img.setAttribute( 'height', dataElement.attributes.height );
 	img.setAttribute( 'resource', dataElement.attributes.resource );
-	figure.appendChild( a );
-	a.appendChild( img );
+	figure.appendChild( imgWrapper );
+	imgWrapper.appendChild( img );
 
 	// If length of captionData is smaller or equal to 2 it means that there is no caption or that
 	// it is empty - in both cases we are going to skip appending <figcaption>.
