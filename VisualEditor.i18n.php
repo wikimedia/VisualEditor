@@ -34,6 +34,7 @@ $messages['en'] = array(
 	'visualeditor-annotationbutton-link-tooltip' => 'Link',
 	'visualeditor-annotationbutton-language-tooltip' => 'Language',
 	'visualeditor-annotationbutton-strikethrough-tooltip' => 'Strikethrough',
+	'visualeditor-annotationbutton-subscript-tooltip' => 'Subscript',
 	'visualeditor-annotationbutton-superscript-tooltip' => 'Superscript',
 	'visualeditor-annotationbutton-underline-tooltip' => 'Underline',
 	'visualeditor-beta-label' => 'beta',
@@ -255,6 +256,8 @@ See also:
 {{Identical|Language}}',
 	'visualeditor-annotationbutton-strikethrough-tooltip' => 'Tooltip text for strikethrough button.
 {{Identical|Strikethrough}}',
+	'visualeditor-annotationbutton-subscript-tooltip' => 'Tooltip text for subscript button.
+{{Identical|Subscript}}',
 	'visualeditor-annotationbutton-superscript-tooltip' => 'Tooltip text for superscript button.
 {{Identical|Superscript}}',
 	'visualeditor-annotationbutton-underline-tooltip' => 'Tooltip text for underline button.
