@@ -20,13 +20,12 @@ ve.ui.LanguageInputWidget = function VeUiLanguageInputWidget( config ) {
 	// Parent constructor
 	ve.ui.Widget.call( this, config );
 
-	// Properties
+	// Visual Properties
 	this.$langCodeDisp = this.getDisplayElement( config ); // language code
 	this.$langNameDisp = this.getDisplayElement( config ); // human-readable language name
 	this.$dirDisp = this.getDisplayElement( config );
 
-	// Placeholders for annotation value
-	this.annotation = null;
+	// Placeholders for attribute values
 	this.lang = '';
 	this.dir = '';
 
@@ -65,7 +64,8 @@ ve.ui.LanguageInputWidget = function VeUiLanguageInputWidget( config ) {
 
 	ulsParams = {
 		onSelect: function( language ) {
-			langInpObj.setValue( language );
+			// Save the attributes:
+			langInpObj.setAttributes( language, $.uls.data.getDir( language ) );
 		},
 		compact: true,
 		// Temporary Quicklist for the Prototype:
@@ -89,7 +89,10 @@ ve.ui.LanguageInputWidget = function VeUiLanguageInputWidget( config ) {
 
 ve.inheritClass( ve.ui.LanguageInputWidget, ve.ui.Widget );
 
+/* Static properties */
+
 /* Methods */
+
 /**
  * Get display element. This replaces the 'getInputElement'
  * of the InputWidget
@@ -103,98 +106,54 @@ ve.ui.LanguageInputWidget.prototype.getDisplayElement = function () {
 };
 
 /**
- * Set the value of the language display
+ * Return the current language attributes
  *
- * Overrides setValue to keep annotations in sync.
- *
- * @method
- * @param {string} value New value
  */
-ve.ui.LanguageInputWidget.prototype.setValue = function ( value ) {
-	// Keep annotation in sync with value
-	if ( value === '' ) {
-		this.annotation = null;
-	} else {
-		// Set up the annotation:
-		this.setAnnotation( new ve.dm.LanguageAnnotation( {
-			'type': 'language',
-			'attributes': {
-				'lang': value,
-				'dir': $.uls.data.getDir( value )
-			}
-		} ) );
-	}
+ve.ui.LanguageInputWidget.prototype.getAttributes = function () {
+	return {
+		'lang': this.lang,
+		'dir': this.dir
+	};
 };
 
 /**
- * Get the value of the current annotation
+ * Set the current language attributes
+ *
+ */
+ve.ui.LanguageInputWidget.prototype.setAttributes = function ( lang, dir ) {
+	this.lang = lang;
+	this.dir = dir;
+	// Update the view:
+	this.updateLanguageTable();
+};
+
+/**
+ * Get the language value of the current annotation
+ * This is required by the AnnotationInspector onClose method
  */
 ve.ui.LanguageInputWidget.prototype.getValue = function () {
 	// Specifically to be displayed
 	return this.lang;
 };
+
 /**
- * Sets the annotation value.
+ * Updates the language value in the display table
  *
- * The input value will automatically be updated.
+ * This shouldn't be used directly. It is called from the
+ * setAttributes method after receiving annotation details
+ * to make sure the annotation and the table are synchronized.
  *
  * @method
- * @param {ve.dm.LanguageAnnotation} annotation Language annotation
- * @chainable
  */
-ve.ui.LanguageInputWidget.prototype.setAnnotation = function ( annotation ) {
+ve.ui.LanguageInputWidget.prototype.updateLanguageTable = function () {
 	var langNameDisp = '';
-	this.annotation = annotation;
 
-	// Give precedence to dir value if it already exists:
-	if ( annotation.element.attributes.dir ) {
-		this.dir = annotation.element.attributes.dir;
-	}
-
-	// Set language according to currently set language
-	// or leave blank if element has no language set
-	if ( annotation.element.attributes.lang ) {
-		this.lang = annotation.element.attributes.lang;
-		// Take the full name of the language from its code:
+	if ( this.lang ) {
 		langNameDisp = $.uls.data.getAutonym( this.lang );
-	} else {
-		this.lang = '';
-	}
-
-	// If language exists, but dir is undefined/null,
-	// fix the dir in terms of language:
-	if ( this.lang && !this.dir ) {
-		this.dir = $.uls.data.getDir( this.lang );
 	}
 
 	// Display the information in the table:
 	this.$langCodeDisp.html( this.lang );
 	this.$langNameDisp.html( langNameDisp );
 	this.$dirDisp.html( this.dir );
-
-	return this;
-};
-
-/**
- * Gets the annotation value.
- *
- * @method
- * @returns {ve.dm.LanguageAnnotation} Language annotation
- */
-ve.ui.LanguageInputWidget.prototype.getAnnotation = function () {
-	return this.annotation;
-};
-
-/**
- * Gets a target from an annotation.
- *
- * @method
- * @param {ve.dm.LanguageAnnotation} annotation Language annotation
- * @returns {string} Language
- */
-ve.ui.LanguageInputWidget.prototype.getLanguageFromAnnotation = function ( annotation ) {
-	if ( annotation instanceof ve.dm.LanguageAnnotation ) {
-		return annotation.getAttribute( 'lang' );
-	}
-	return '';
 };
