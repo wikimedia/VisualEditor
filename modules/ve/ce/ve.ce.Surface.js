@@ -292,7 +292,7 @@ ve.ce.Surface.prototype.documentOnFocus = function () {
 		'compositionstart.ve-ce-Surface': ve.bind( this.onDocumentCompositionStart, this ),
 		'compositionend.ve-ce-Surface': ve.bind( this.onDocumentCompositionEnd, this )
 	} );
-	this.surfaceObserver.start( true );
+	this.surfaceObserver.start( true, true );
 };
 
 /**
@@ -303,7 +303,7 @@ ve.ce.Surface.prototype.documentOnFocus = function () {
  */
 ve.ce.Surface.prototype.documentOnBlur = function () {
 	this.$document.off( '.ve-ce-Surface' );
-	this.surfaceObserver.stop( true );
+	this.surfaceObserver.stop( true, true );
 	this.dragging = false;
 };
 
@@ -323,7 +323,7 @@ ve.ce.Surface.prototype.onDocumentMouseDown = function ( e ) {
 	// this.$$( e.target ).closest( '.ve-ce-documentNode' ).length === 0
 
 	if ( e.which === 1 ) {
-		this.surfaceObserver.stop( true );
+		this.surfaceObserver.stop( true, true );
 	}
 
 	// Handle triple click
@@ -349,7 +349,7 @@ ve.ce.Surface.prototype.onDocumentMouseDown = function ( e ) {
  * @emits selectionEnd
  */
 ve.ce.Surface.prototype.onDocumentMouseUp = function ( e ) {
-	this.surfaceObserver.start();
+	this.surfaceObserver.start( false, true );
 	if ( !e.shiftKey && this.selecting ) {
 		this.emit( 'selectionEnd' );
 		this.selecting = false;
@@ -467,7 +467,7 @@ ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
 		return;
 	}
 
-	this.surfaceObserver.stop( true );
+	this.surfaceObserver.stop( false, true );
 	switch ( e.keyCode ) {
 		case ve.Keys.LEFT:
 		case ve.Keys.RIGHT:
@@ -502,7 +502,7 @@ ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
 			}
 			break;
 	}
-	this.surfaceObserver.start();
+	this.surfaceObserver.start( false, false );
 };
 
 /**
@@ -540,7 +540,7 @@ ve.ce.Surface.prototype.onDocumentKeyPress = function ( e ) {
 
 	this.handleInsertion();
 	setTimeout( ve.bind( function () {
-		this.surfaceObserver.start();
+		this.surfaceObserver.start( false, true );
 	}, this ) );
 };
 
@@ -566,7 +566,7 @@ ve.ce.Surface.prototype.onDocumentKeyUp = function ( e ) {
  * @param {jQuery.Event} e Cut event
  */
 ve.ce.Surface.prototype.onCut = function ( e ) {
-	this.surfaceObserver.stop();
+	this.surfaceObserver.stop( false, true );
 	this.onCopy( e );
 	setTimeout( ve.bind( function () {
 		var selection, tx;
@@ -580,7 +580,7 @@ ve.ce.Surface.prototype.onCut = function ( e ) {
 
 		this.model.change( tx, new ve.Range( selection.start ) );
 		this.surfaceObserver.clear();
-		this.surfaceObserver.start();
+		this.surfaceObserver.start( false, true );
 	}, this ) );
 };
 
@@ -627,7 +627,7 @@ ve.ce.Surface.prototype.onPaste = function () {
 		view = this,
 		selection = this.model.getSelection();
 
-	this.surfaceObserver.stop();
+	this.surfaceObserver.stop( false, true );
 
 	// Pasting into a range? Remove first.
 	if ( !rangy.getSelection( this.$document[0] ).isCollapsed ) {
@@ -708,7 +708,7 @@ ve.ce.Surface.prototype.onDocumentCompositionStart = function () {
  */
 ve.ce.Surface.prototype.onDocumentCompositionEnd = function () {
 	this.inIme = false;
-	this.surfaceObserver.start();
+	this.surfaceObserver.start( false, false );
 };
 
 /*! Custom Events */
@@ -942,7 +942,7 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
  * @method
  */
 ve.ce.Surface.prototype.onLock = function () {
-	this.surfaceObserver.stop();
+	this.surfaceObserver.stop( false, true );
 };
 
 /**
@@ -952,7 +952,7 @@ ve.ce.Surface.prototype.onLock = function () {
  */
 ve.ce.Surface.prototype.onUnlock = function () {
 	this.surfaceObserver.clear( this.model.getSelection() );
-	this.surfaceObserver.start();
+	this.surfaceObserver.start( false, true );
 };
 
 /*! Relocation */
@@ -1000,7 +1000,7 @@ ve.ce.Surface.prototype.handleLeftOrRightArrowKey = function ( e ) {
 	// Selection is going to be displayed programmatically so prevent default browser behaviour
 	e.preventDefault();
 	// Stop with final poll cycle so we have correct information in model
-	this.surfaceObserver.stop( true );
+	this.surfaceObserver.stop( true, false );
 	selection = this.model.getSelection();
 	if ( this.$$( e.target ).css( 'direction' ) === 'rtl' ) {
 		// If the language direction is RTL, switch left/right directions:
@@ -1017,7 +1017,7 @@ ve.ce.Surface.prototype.handleLeftOrRightArrowKey = function ( e ) {
 	);
 
 	this.model.change( null, range );
-	this.surfaceObserver.start();
+	this.surfaceObserver.start( false, true );
 };
 
 /**
@@ -1034,7 +1034,7 @@ ve.ce.Surface.prototype.handleUpOrDownArrowKey = function ( e ) {
 		nativeSel.modify( 'extend', 'left', 'character' );
 		return;
 	}
-	this.surfaceObserver.stop( true );
+	this.surfaceObserver.stop( true, true );
 	selection = this.model.getSelection();
 	rangySelection = rangy.getSelection( this.$document[0] );
 	// Perform programatic handling only for selection that is expanded and backwards according to
@@ -1058,18 +1058,18 @@ ve.ce.Surface.prototype.handleUpOrDownArrowKey = function ( e ) {
 			if ( !$element.hasClass( 've-ce-branchNode-slug' ) ) {
 				$element.remove();
 			}
-			this.surfaceObserver.start();
-			this.surfaceObserver.stop( false );
+			this.surfaceObserver.start( false, true );
+			this.surfaceObserver.stop( false, true );
 			if ( e.shiftKey === true ) { // expanded range
 				range = new ve.Range( selection.from, this.model.getSelection().to );
 			} else { // collapsed range (just a cursor)
 				range = new ve.Range( this.model.getSelection().to );
 			}
 			this.model.change( null, range );
-			this.surfaceObserver.start();
+			this.surfaceObserver.start( false, true );
 		}, this ), 0 );
 	} else {
-		this.surfaceObserver.start();
+		this.surfaceObserver.start( false, true );
 	}
 };
 
@@ -1125,7 +1125,7 @@ ve.ce.Surface.prototype.handleInsertion = function () {
 		}
 	}
 
-	this.surfaceObserver.stop( true );
+	this.surfaceObserver.stop( true, true );
 };
 
 /**
