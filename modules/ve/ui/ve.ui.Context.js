@@ -255,7 +255,7 @@ ve.ui.Context.prototype.updateDimensions = function ( transition ) {
 	$container = inspector ? this.inspectors.$ : this.$menu;
 	if ( focusedNode ) {
 		// We're on top of a node
-		$node = focusedNode.$;
+		$node = focusedNode.$focusable || focusedNode.$;
 		nodePosition = $node.position();
 		if ( this.embedded ) {
 			// Get the position relative to the surface it is embedded in
