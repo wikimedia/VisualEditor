@@ -5019,6 +5019,9 @@ $messages['fr'] = array(
 	'visualeditor-annotationbutton-link-tooltip' => 'Lien',
 	'visualeditor-annotationbutton-language-tooltip' => 'Langue',
 	'visualeditor-annotationbutton-strikethrough-tooltip' => 'Barrer',
+	'visualeditor-annotationbutton-subscript-tooltip' => 'Indice',
+	'visualeditor-annotationbutton-superscript-tooltip' => 'Exposant',
+	'visualeditor-annotationbutton-underline-tooltip' => 'Souligné',
 	'visualeditor-beta-label' => 'bêta',
 	'visualeditor-beta-warning' => "L'ÉditeurVisuel est au stade 'bêta'. Il se peut que vous rencontriez des problèmes avec le logiciel et que vous ne puissiez pas modifier des parties de la page. Cliquez sur « {{int:visualeditor-ca-editsource}} » pour passer en mode wikitexte — les modifications non enregistrées seront perdues.",
 	'visualeditor-beta-appendix' => 'bêta',
@@ -5247,6 +5250,9 @@ $messages['frr'] = array(
 	'visualeditor-annotationbutton-link-tooltip' => 'Ferwisang',
 	'visualeditor-annotationbutton-language-tooltip' => 'Spriak',
 	'visualeditor-annotationbutton-strikethrough-tooltip' => 'Trochstrik',
+	'visualeditor-annotationbutton-subscript-tooltip' => 'Liach stel',
+	'visualeditor-annotationbutton-superscript-tooltip' => 'Huuchstel',
+	'visualeditor-annotationbutton-underline-tooltip' => 'Onerstrik',
 	'visualeditor-beta-label' => 'Beta',
 	'visualeditor-beta-warning' => "VisualEditor werket noch uun 'Beta'. Det ment, diar lääpt noch ei ales trinj. Trak üüb „{{int:visualeditor-ca-editsource}}“, do komst dü tu det Wikitext-muude. Wat noch ei seekert wurden as, gongt ferleesen.",
 	'visualeditor-beta-appendix' => 'Beta',
@@ -5340,6 +5346,7 @@ $messages['frr'] = array(
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Iinsuch letjer maage',
 	'visualeditor-inspector-close-tooltip' => 'Slütj',
 	'visualeditor-inspector-remove-tooltip' => 'Wechnem',
+	'visualeditor-linkinspector-illegal-title' => 'Didiar sidjennööm as ei tuläät',
 	'visualeditor-linkinspector-suggest-external-link' => 'Extern ferwisang',
 	'visualeditor-linkinspector-suggest-matching-page' => 'Auerianstemin sidj',
 	'visualeditor-linkinspector-suggest-new-page' => 'Nei sidj',
@@ -5594,6 +5601,9 @@ $messages['gu'] = array(
 	'visualeditor-annotationbutton-italic-tooltip' => 'ત્રાંસું',
 	'visualeditor-annotationbutton-link-tooltip' => 'કડી',
 	'visualeditor-annotationbutton-language-tooltip' => 'ભાષા',
+	'visualeditor-annotationbutton-strikethrough-tooltip' => 'ચેકી નાખેલ',
+	'visualeditor-annotationbutton-subscript-tooltip' => 'નીચલા સ્તરના અક્ષરો',
+	'visualeditor-annotationbutton-superscript-tooltip' => 'ઉપલા સ્તરના અક્ષરો',
 	'visualeditor-annotationbutton-underline-tooltip' => 'લખાણની નીચે લીટી',
 	'visualeditor-beta-label' => 'બીટા',
 	'visualeditor-beta-warning' => 'વિઝ્યુલસંપાદ \'બીટા\' માં છે. તમને કદાચ સોફ્ટવેર મુશ્કેલીઓનો સામનો કરવો પડશે, અને તમે કદાચ પાનાંના ભાગોમાં ફેરફાર નહી કરી શકો.  પર ક્લિક કરી વિકિલખાણ સ્થિતિમાં જવા માટે "{{int:visualeditor-ca-editsource}}" પર ક્લિક કરો – ન સાચવેલા ફેરફારો નાશ પામશે.',
@@ -5748,6 +5758,16 @@ $messages['gu'] = array(
 	'visualeditor-wikitext-warning-link' => 'Help:વિકિ માર્કઅપ',
 	'visualeditor-wikitext-warning-title' => 'વિકિલખાણ માર્કઅપ દેખાયું',
 	'visualeditor-window-title' => 'તપાસો',
+);
+
+/** Manx (Gaelg)
+ * @author Shimmin Beg
+ */
+$messages['gv'] = array(
+	'tag-visualeditor-needcheck' => '[[{{MediaWiki:visualeditor-descriptionpagelink}}|Reagheyder Reayrtagh: Son shickyraghey]]',
+	'tag-visualeditor-needcheck-description' => "Ceaghley jeant liorish y [[{{MediaWiki:visualeditor-descriptionpagelink}}|Reagheyder Reayrtagh]], as caghlaaghyn neuyioinagh jeant 'sy choad wiki, foddee.",
+	'visualeditor-annotationbutton-language-tooltip' => 'Çhengey',
+	'visualeditor-languageinspector-title' => 'Çhengey',
 );
 
 /** Hebrew (עברית)
@@ -12757,6 +12777,7 @@ $messages['sr-ec'] = array(
 	'visualeditor-toolbar-cancel' => 'Откажи',
 	'visualeditor-toolbar-savedialog' => 'Сачувај страницу',
 	'visualeditor-viewpage-savewarning' => 'Да ли сте сигурни да желите да се вратите на приказ без претходног чувања?',
+	'visualeditor-wikitext-warning' => 'Користите VisualEditor - [[{{MediaWiki:visualeditor-wikitext-warning-link}}|вики текст]] овде не ради. Кликните на „{{int:visualeditor-ca-editsource}}“ да уредите страницу у вики-текст моду - несачуване измене ће бити изгубљене.',
 	'visualeditor-window-title' => 'Провера',
 );
 
@@ -13712,6 +13733,7 @@ $messages['tr'] = array(
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Girinti azalt',
 	'visualeditor-inspector-close-tooltip' => 'Kapat',
 	'visualeditor-inspector-remove-tooltip' => 'Kaldır',
+	'visualeditor-linkinspector-illegal-title' => 'Geçersiz sayfa başlığı',
 	'visualeditor-linkinspector-suggest-external-link' => 'Dış bağlantı',
 	'visualeditor-linkinspector-suggest-matching-page' => 'Eşleşen sayfa',
 	'visualeditor-linkinspector-suggest-new-page' => 'Yeni sayfa',
@@ -13722,7 +13744,7 @@ $messages['tr'] = array(
 	'visualeditor-languageinspector-title' => 'Dil',
 	'visualeditor-languageinspector-block-tooltip' => 'Dil Bloğu: $1',
 	'visualeditor-languageinspector-block-tooltip-rtldirection' => ': Sağdan sola',
-	'visualeditor-languageinspector-widget-changelang' => 'Sayfa dili',
+	'visualeditor-languageinspector-widget-changelang' => 'Sayfa dilini değiştir',
 	'visualeditor-languageinspector-widget-label-language' => 'Dil',
 	'visualeditor-languageinspector-widget-label-langcode' => 'Dil kodu',
 	'visualeditor-languageinspector-widget-label-direction' => 'Yön',
@@ -13971,6 +13993,7 @@ $messages['ug-arab'] = array(
  * @author AS
  * @author Aced
  * @author Ahonc
+ * @author Andriykopanytsia
  * @author Base
  * @author Perohanych
  * @author RLuts
@@ -13979,26 +14002,34 @@ $messages['ug-arab'] = array(
  * @author Ата
  */
 $messages['uk'] = array(
-	'tag-visualeditor' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]', # Fuzzy
-	'tag-visualeditor-description' => 'Редагування зроблено з використанням [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]', # Fuzzy
-	'tag-visualeditor-needcheck' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor: перевірити]]', # Fuzzy
-	'tag-visualeditor-needcheck-description' => 'Редагування з допомогою [[{{MediaWiki:Visualeditor-descriptionpagelink}}|візуального редактора]], у якому система виявила вікітекст з, можливо, ненавмисними змінами.', # Fuzzy
+	'tag-visualeditor' => '[[{{MediaWiki:visualeditor-descriptionpagelink}}|Візуальний редактор]]',
+	'tag-visualeditor-description' => 'Редагування зроблено з використанням [[{{MediaWiki:visualeditor-descriptionpagelink}}|Візуального редактора]]',
+	'tag-visualeditor-needcheck' => '[[{{MediaWiki:visualeditor-descriptionpagelink}}|Візуальний редактор: Перевірити]]',
+	'tag-visualeditor-needcheck-description' => 'Редагування з допомогою [[{{MediaWiki:visualeditor-descriptionpagelink}}|візуального редактора]], у якому система виявила вікітекст з, можливо, ненавмисними змінами.',
 	'tooltip-ca-createsource' => 'Створити вихідний код сторінки',
 	'tooltip-ca-editsource' => 'Редагувати вихідний код сторінки',
 	'tooltip-ca-ve-edit' => 'Редагувати сторінку у візуальному редакторі',
 	'visualeditor' => 'VisualEditor',
 	'visualeditor-aliennode-tooltip' => 'Вибачте, цей елемент наразі можна редагувати лише у режимі вихідного тексту.',
 	'visualeditor-annotationbutton-bold-tooltip' => 'Жирний',
+	'visualeditor-annotationbutton-code-tooltip' => "Комп'ютерний код",
 	'visualeditor-annotationbutton-italic-tooltip' => 'Курсив',
 	'visualeditor-annotationbutton-link-tooltip' => 'Посилання',
+	'visualeditor-annotationbutton-language-tooltip' => 'Мова',
+	'visualeditor-annotationbutton-strikethrough-tooltip' => 'Закреслення',
+	'visualeditor-annotationbutton-subscript-tooltip' => 'Нижній індекс',
+	'visualeditor-annotationbutton-superscript-tooltip' => 'Верхній індекс',
+	'visualeditor-annotationbutton-underline-tooltip' => 'Підкреслення',
 	'visualeditor-beta-label' => 'бета-версія',
 	'visualeditor-beta-warning' => 'VisualEditor перебуває в статусі бета-версії. У вас можуть виникнути проблеми із програмним забезпеченням, і ви не зможете редагувати деякі частини сторінки. Натисніть "{{int:visualeditor-ca-editsource}}" для переходу до режиму вікі-розмітки. Незбережені зміни будуть втрачені.',
+	'visualeditor-beta-appendix' => 'бета',
 	'visualeditor-browserwarning' => 'Ви використовуєте браузер, який не підтримується візуальним редактором офіційно.',
 	'visualeditor-ca-createsource' => 'Створити код',
 	'visualeditor-ca-editsource' => 'Редагувати код',
 	'visualeditor-ca-editsource-section' => 'ред. код',
 	'visualeditor-ca-ve-create' => 'VisualEditor',
 	'visualeditor-ca-ve-edit' => 'VisualEditor',
+	'visualeditor-ca-ve-edit-section' => 'Візуальний редактор',
 	'visualeditor-clearbutton-tooltip' => 'Очистити форматування',
 	'visualeditor-desc' => 'Візуальний редактор для MediaWiki',
 	'visualeditor-descriptionpagelink' => 'Project:VisualEditor',
@@ -14044,11 +14075,15 @@ $messages['uk'] = array(
 	'visualeditor-dialog-transclusion-remove-param' => 'Видалити параметр',
 	'visualeditor-dialog-transclusion-remove-template' => 'Видалити шаблон',
 	'visualeditor-dialog-transclusion-title' => 'Включення',
+	'visualeditor-dialog-beta-welcome-title' => 'Ласкаво просимо до Візуального редактора',
+	'visualeditor-dialog-beta-welcome-content' => 'Це наш новий найлегший спосіб редагування. Він перебуває ще у бета-версії. Це означає, що ви можете знайти частини сторінки, які ви не можете редагувати або зіткнутися з вадами, які потрібно виправити. Ми рекомендуємо вам переглянути внесені зміни і вітаємо звіти про будь-які вади, які можуть виникнути при використанні Візуального редактора (натисніть кнопку\'{{int:visualeditor-beta-label}}\' для надсилання відгуку). Ви можете продовжити використання редактора вікітексту, натиснувши натомість вкладку "$1" – незбережені зміни будуть втрачені.',
+	'visualeditor-dialog-beta-welcome-action-continue' => 'Продовжити',
 	'visualeditor-dialogbutton-media-tooltip' => 'Мультимедіа',
 	'visualeditor-dialogbutton-meta-tooltip' => 'Налаштування сторінки',
 	'visualeditor-dialogbutton-reference-tooltip' => 'Примітка',
 	'visualeditor-dialogbutton-referencelist-tooltip' => 'Список приміток',
 	'visualeditor-dialogbutton-transclusion-tooltip' => 'Включення',
+	'visualeditor-diff-nochanges' => 'Не вдалося запустити перегляд, бо ваша редакція відповідає останній версії цієї сторінки.',
 	'visualeditor-differror' => 'Помилка при завантаженні даних із сервера: $1.',
 	'visualeditor-editconflict' => 'Ваші зміни не вдалось зберегти через конфлікт редагувань. Чи хочете Ви вирішити конфлікт власноруч?',
 	'visualeditor-editnotices-tool' => '$1 {{PLURAL:$1|сповіщення|сповіщення|сповіщень}}',
@@ -14078,13 +14113,21 @@ $messages['uk'] = array(
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Зменшити відступ',
 	'visualeditor-inspector-close-tooltip' => 'Закрити',
 	'visualeditor-inspector-remove-tooltip' => 'Вилучити',
+	'visualeditor-linkinspector-illegal-title' => 'Невірний заголовок сторінки',
 	'visualeditor-linkinspector-suggest-external-link' => 'Зовнішнє посилання',
 	'visualeditor-linkinspector-suggest-matching-page' => 'Відповідні сторінки',
 	'visualeditor-linkinspector-suggest-new-page' => 'Нова сторінка',
 	'visualeditor-linkinspector-title' => 'Гіперпосилання',
+	'visualeditor-mwalienextensioninspector-title' => 'Розширення Медіавікі',
+	'visualeditor-mwhieroinspector-title' => 'Ієрогліфи',
 	'visualeditor-mwmathinspector-title' => 'LaTeX',
+	'visualeditor-languageinspector-title' => 'Мова',
 	'visualeditor-languageinspector-block-tooltip' => 'Мовний блок: $1',
 	'visualeditor-languageinspector-block-tooltip-rtldirection' => ': Справа наліво',
+	'visualeditor-languageinspector-widget-changelang' => 'Змінити мову',
+	'visualeditor-languageinspector-widget-label-language' => 'Мова',
+	'visualeditor-languageinspector-widget-label-langcode' => 'Код мови',
+	'visualeditor-languageinspector-widget-label-direction' => 'Напрямок',
 	'visualeditor-listbutton-bullet-tooltip' => 'Маркований список',
 	'visualeditor-listbutton-number-tooltip' => 'Нумерований список',
 	'visualeditor-loadwarning' => 'Помилка при завантаженні даних із серверу: $1. Спробувати знову?',
@@ -14101,10 +14144,11 @@ $messages['uk'] = array(
 	'visualeditor-parameter-search-no-unused' => 'Немає невикористаних параметрів',
 	'visualeditor-parameter-search-unknown' => 'Невідомий параметр',
 	'visualeditor-preference-betatempdisable' => 'Тимчасово відключити Візуальний Редактор, доки він перебуває у бета-версії',
-	'visualeditor-preference-enable' => 'Увімкнути візуальний редактор (лише в [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|основному просторі назв]] та [[{{MediaWiki:Visualeditor-usernamespacepagelink}}|просторі назв користувача]])', # Fuzzy
+	'visualeditor-preference-enable' => 'Увімкнути візуальний редактор (лише в [[{{MediaWiki:visualeditor-mainnamespacepagelink}}|основному]] та [[{{MediaWiki:visualeditor-usernamespacepagelink}}|користувацькому]] просторах назв)',
 	'visualeditor-reference-input-placeholder' => 'На що ви хочете послатися?',
 	'visualeditor-referencelist-isempty' => 'На цій сторінці немає приміток з групою "$1".',
 	'visualeditor-referencelist-missingref' => 'Ця примітка визначена у шаблоні або іншому генерованому блоці, і на даний момент її можна редагувати лише в режимі вихідного тексту.',
+	'visualeditor-savedialog-error-badtoken' => 'Ми не змогли обробити ваші зміни, тому що сесія вже не в силі.',
 	'visualeditor-savedialog-identify-anon' => 'Ви бажаєте зберегти цю сторінку як анонімний користувач? Ваша IP-адреса буде записана в історію редагування цієї сторінки.',
 	'visualeditor-savedialog-identify-user' => "Ви увійшли як [[User:$1|$1]]. Ваше редагування буде пов'язане з цим обліковим записом, якщо ви збережете його.",
 	'visualeditor-savedialog-label-create' => 'Створити сторінку',
@@ -14127,6 +14171,8 @@ $messages['uk'] = array(
 	'visualeditor-toolbar-savedialog' => 'Зберегти сторінку',
 	'visualeditor-usernamespacepagelink' => 'Project:Простір назв користувача',
 	'visualeditor-viewpage-savewarning' => 'Ви дійсно хочете повернутися до режиму перегляду без збереження змін?',
+	'visualeditor-wikitext-warning' => 'Ви використовуєте Візуальний редактор - [[{{MediaWiki:visualeditor-wikitext-warning-link}}|вікітекст]] не працює тут. Натисніть "{{int:visualeditor-ca-editsource}}" для редагування сторінки  у режимі вікітексту – незбережені зміни будуть втрачені.',
+	'visualeditor-wikitext-warning-link' => 'Help: вікі-розмітка',
 	'visualeditor-wikitext-warning-title' => 'Виявлена вікі-розмітка',
 	'visualeditor-window-title' => 'Перевірити',
 );
