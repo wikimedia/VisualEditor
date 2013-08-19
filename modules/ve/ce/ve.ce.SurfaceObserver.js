@@ -86,12 +86,11 @@ ve.ce.SurfaceObserver.prototype.clear = function ( range ) {
  *
  * @method
  * @param {boolean} async Poll the first time asynchronously
- * @param {boolean} emitChangeEvents Allow change events to be emitted
  */
-ve.ce.SurfaceObserver.prototype.start = function ( async, emitChangeEvents ) {
+ve.ce.SurfaceObserver.prototype.start = function ( async ) {
 	this.domDocument = this.documentView.getDocumentNode().getElementDocument();
 	this.polling = true;
-	this.poll( async, emitChangeEvents );
+	this.poll( async );
 };
 
 /**
@@ -102,12 +101,11 @@ ve.ce.SurfaceObserver.prototype.start = function ( async, emitChangeEvents ) {
  *
  * @method
  * @param {boolean} poll Poll one last time before stopping future polling
- * @param {boolean} emitChangeEvents Allow change events to be emitted
  */
-ve.ce.SurfaceObserver.prototype.stop = function ( poll, emitChangeEvents ) {
+ve.ce.SurfaceObserver.prototype.stop = function ( poll ) {
 	if ( this.polling === true ) {
 		if ( poll === true ) {
-			this.poll( false, emitChangeEvents );
+			this.poll();
 		}
 		this.polling = false;
 		clearTimeout( this.timeoutId );
@@ -127,11 +125,10 @@ ve.ce.SurfaceObserver.prototype.stop = function ( poll, emitChangeEvents ) {
  *
  * @method
  * @param {boolean} async Poll asynchronously
- * @param {boolean} emitChangeEvents If false, don't emit change events
  * @emits contentChange
  * @emits selectionChange
  */
-ve.ce.SurfaceObserver.prototype.poll = function ( async, emitChangeEvents ) {
+ve.ce.SurfaceObserver.prototype.poll = function ( async ) {
 	var delayPoll, $nodeOrSlug, node, text, hash, range, rangyRange;
 
 	if ( this.polling === false ) {
@@ -143,16 +140,15 @@ ve.ce.SurfaceObserver.prototype.poll = function ( async, emitChangeEvents ) {
 		this.timeoutId = null;
 	}
 
-	delayPoll = ve.bind( function ( async, emitChangeEvents ) {
+	delayPoll = ve.bind( function ( async ) {
 		this.timeoutId = setTimeout(
 			ve.bind( this.poll, this ),
-			async === true ? 0 : this.frequency,
-			emitChangeEvents
+			async === true ? 0 : this.frequency
 		);
 	}, this );
 
 	if ( async === true ) {
-		delayPoll( true, emitChangeEvents );
+		delayPoll( true );
 		return;
 	}
 
@@ -182,32 +178,30 @@ ve.ce.SurfaceObserver.prototype.poll = function ( async, emitChangeEvents ) {
 			this.hash = ve.ce.getDomHash( node.$[0] );
 			this.node = node;
 		}
-	} else if ( node !== null ) {
-		text = ve.ce.getDomText( node.$[0] );
-		hash = ve.ce.getDomHash( node.$[0] );
-		if ( this.text !== text || this.hash !== hash ) {
-			if ( emitChangeEvents ) {
+	} else {
+		if ( node !== null ) {
+			text = ve.ce.getDomText( node.$[0] );
+			hash = ve.ce.getDomHash( node.$[0] );
+			if ( this.text !== text || this.hash !== hash ) {
 				this.emit(
 					'contentChange',
 					node,
 					{ 'text': this.text, 'hash': this.hash, 'range': this.range },
 					{ 'text': text, 'hash': hash, 'range': range }
 				);
+				this.text = text;
+				this.hash = hash;
 			}
-			this.text = text;
-			this.hash = hash;
 		}
 	}
 
 	// Only emit selectionChange event if there's a meaningful range difference
 	if ( ( this.range && range ) ? !this.range.equals( range ) : ( this.range !== range ) ) {
-		if ( emitChangeEvents ) {
-			this.emit(
-				'selectionChange',
-				this.range,
-				range
-			);
-		}
+		this.emit(
+			'selectionChange',
+			this.range,
+			range
+		);
 		this.range = range;
 	}
 
