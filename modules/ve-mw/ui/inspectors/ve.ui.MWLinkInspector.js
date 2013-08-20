@@ -89,7 +89,7 @@ ve.ui.MWLinkInspector.prototype.getAnnotationFromText = function ( target ) {
  *
  * @type {RegExp}
  */
-ve.ui.MWLinkInspector.static.legalTitle = /^[ %!"$&'()*,\-.\/0-9:;=?@A-Z\\^_`a-z~\u0080-\u00FF+]+$/;
+ve.ui.MWLinkInspector.static.legalTitle = /^[ %!"$&'()*,\-.\/0-9:;=?@A-Z\\^_`a-z~\u0080-\uFFFF+]+$/;
 
 /* Registration */
 
