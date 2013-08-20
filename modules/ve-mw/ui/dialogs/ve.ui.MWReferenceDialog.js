@@ -33,13 +33,44 @@ ve.ui.MWReferenceDialog.static.titleMessage = 'visualeditor-dialog-reference-tit
 
 ve.ui.MWReferenceDialog.static.icon = 'reference';
 
-ve.ui.MWReferenceDialog.static.toolbarTools = [
-	{ 'items': ['undo', 'redo'] },
-	{ 'items': ['bold', 'italic', 'mwLink', 'clear', 'mwMediaInsert', 'mwTransclusion'] }
+ve.ui.MWReferenceDialog.static.toolbarGroups = [
+	{
+		'include': [ 'history' ],
+		'promote': [
+			'history/undo',
+			'history/redo'
+		]
+	},
+	{
+		'include': [ 'textStyle', 'meta', 'utility/clear' ],
+		'promote': [
+			'textStyle/bold',
+			'textStyle/italic',
+			'meta/link'
+		],
+		'demote': [ 'utility/clear' ]
+	},
+	{
+		'include': [ 'structure' ],
+		'promote': [
+			'structure/number',
+			'structure/bullet',
+			'structure/outdent',
+			'structure/indent'
+		]
+	},
+	{ 'include': [ 'object' ], 'exclude': [ 'object/reference/mw', 'object/referenceList/mw' ] }
 ];
 
 ve.ui.MWReferenceDialog.static.surfaceCommands = [
-	'bold', 'italic', 'mwLink', 'undo', 'redo', 'clear'
+	'history/undo',
+	'history/redo',
+	'textStyle/bold',
+	'textStyle/italic',
+	'meta/link',
+	'utility/clear',
+	'structure/indent',
+	'structure/outdent'
 ];
 
 /* Methods */
@@ -306,7 +337,7 @@ ve.ui.MWReferenceDialog.prototype.useReference = function ( ref ) {
 		new ve.dm.ElementLinearData( doc.getStore(), data ),
 		{
 			'$$': this.frame.$$,
-			'tools': this.constructor.static.toolbarTools,
+			'tools': this.constructor.static.toolbarGroups,
 			'commands': this.constructor.static.surfaceCommands
 		}
 	);

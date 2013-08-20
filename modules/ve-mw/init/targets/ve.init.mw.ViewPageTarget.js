@@ -161,19 +161,6 @@ ve.init.mw.ViewPageTarget.compatibility = {
 	}
 };
 
-ve.init.mw.ViewPageTarget.static.toolbarTools = [
-	{ 'items': [ 'undo', 'redo' ] },
-	{ 'items': [ 'mwFormat' ] },
-	{ 'items': [ 'bold', 'italic', 'strikethrough', 'subscript', 'superscript',
-		'underline', 'mwLink', 'language', 'code', 'clear' ] },
-	{ 'items': [ 'number', 'bullet', 'outdent', 'indent' ] },
-	{ 'items': [ 'mwMediaInsert', 'mwReference', 'mwReferenceList', 'mwTransclusion', 'mwMath', 'mwHiero' ] }
-];
-
-ve.init.mw.ViewPageTarget.static.surfaceCommands = [
-	'bold', 'italic', 'mwLink', 'undo', 'redo', 'indent', 'outdent', 'clear'
-];
-
 // TODO: Accessibility tooltips and logical tab order for prevButton and closeButton.
 ve.init.mw.ViewPageTarget.saveDialogTemplate = '\
 	<div class="ve-init-mw-viewPageTarget-saveDialog-head">\
@@ -1848,7 +1835,7 @@ ve.init.mw.ViewPageTarget.prototype.hideTableOfContents = function () {
 ve.init.mw.ViewPageTarget.prototype.setUpToolbar = function () {
 	this.toolbar = new ve.ui.SurfaceToolbar( this.surface, { 'shadow': true, 'actions': true } );
 	this.toolbar.connect( this, { 'position': 'onToolbarPosition' } );
-	this.toolbar.setup( this.constructor.static.toolbarTools );
+	this.toolbar.setup( this.constructor.static.toolbarGroups );
 	this.surface.addCommands( this.constructor.static.surfaceCommands );
 	if ( !this.isMobileDevice ) {
 		this.toolbar.enableFloatable();

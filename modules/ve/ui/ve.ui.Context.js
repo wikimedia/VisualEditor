@@ -222,7 +222,7 @@ ve.ui.Context.prototype.update = function () {
 				this.toolbar.destroy();
 			}
 			this.toolbar = new ve.ui.SurfaceToolbar( this.surface );
-			this.toolbar.setup( [ { 'items' : tools } ] );
+			this.toolbar.setup( [ { 'include' : tools } ] );
 			this.$menu.append( this.toolbar.$ );
 			this.show();
 			this.toolbar.initialize();

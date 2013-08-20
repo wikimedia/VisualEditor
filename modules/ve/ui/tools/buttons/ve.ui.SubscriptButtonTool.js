@@ -25,7 +25,7 @@ ve.inheritClass( ve.ui.SubscriptButtonTool, ve.ui.AnnotationButtonTool );
 
 /* Static Properties */
 
-ve.ui.SubscriptButtonTool.static.name = 'subscript';
+ve.ui.SubscriptButtonTool.static.name = 'textStyle/subscript';
 
 ve.ui.SubscriptButtonTool.static.icon = 'subscript';
 
@@ -35,7 +35,7 @@ ve.ui.SubscriptButtonTool.static.annotation = { 'name': 'textStyle/subscript' };
 
 /* Registration */
 
-ve.ui.toolFactory.register( 'subscript', ve.ui.SubscriptButtonTool );
+ve.ui.toolFactory.register( 'textStyle/subscript', ve.ui.SubscriptButtonTool );
 
 ve.ui.commandRegistry.register(
 	'textStyle/subscript', 'annotation', 'toggle', 'textStyle/subscript'
