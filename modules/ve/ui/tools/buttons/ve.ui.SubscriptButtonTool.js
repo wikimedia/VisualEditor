@@ -31,10 +31,12 @@ ve.ui.SubscriptButtonTool.static.icon = 'subscript';
 
 ve.ui.SubscriptButtonTool.static.titleMessage = 'visualeditor-annotationbutton-subscript-tooltip';
 
-ve.ui.SubscriptButtonTool.static.annotation = { 'name': 'textStyle/subScript' };
+ve.ui.SubscriptButtonTool.static.annotation = { 'name': 'textStyle/subscript' };
 
 /* Registration */
 
 ve.ui.toolFactory.register( 'subscript', ve.ui.SubscriptButtonTool );
 
-ve.ui.commandRegistry.register( 'subscript', 'annotation', 'toggle', 'textStyle/subScript' );
+ve.ui.commandRegistry.register(
+	'textStyle/subscript', 'annotation', 'toggle', 'textStyle/subscript'
+);
