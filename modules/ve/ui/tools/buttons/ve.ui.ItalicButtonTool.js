@@ -29,7 +29,7 @@ ve.ui.ItalicButtonTool.static.name = 'italic';
 
 ve.ui.ItalicButtonTool.static.icon = {
 	'default': 'italic-a',
-	'be-tarask': 'italic-cyrl-ka',
+	'be': 'italic-cyrl-ka',
 	'cs': 'italic-i',
 	'da': 'italic-k',
 	'de': 'italic-k',
@@ -50,7 +50,6 @@ ve.ui.ItalicButtonTool.static.icon = {
 	'os': 'italic-cyrl-ka',
 	'pl': 'italic-i',
 	'pt': 'italic-i',
-	'pt-br': 'italic-i',
 	'ru': 'italic-cyrl-ka',
 	'sv': 'italic-k'
 };

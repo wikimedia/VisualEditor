@@ -106,12 +106,12 @@ ve.init.Platform.prototype.getSystemPlatform = function () {
 };
 
 /**
- * Gets the user language.
+ * Gets the user language and any fallback languages.
  *
  * @method
  * @abstract
- * @returns {string} User language string
+ * @returns {string[]} User language strings
  */
-ve.init.Platform.prototype.getUserLanguage = function () {
-	throw new Error( 've.init.Platform.getUserLanugage must be overridden in subclass' );
+ve.init.Platform.prototype.getUserLanguages = function () {
+	throw new Error( 've.init.Platform.getUserLanugages must be overridden in subclass' );
 };
