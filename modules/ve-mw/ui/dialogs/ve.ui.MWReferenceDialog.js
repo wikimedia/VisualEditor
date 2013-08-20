@@ -175,7 +175,7 @@ ve.ui.MWReferenceDialog.prototype.onClose = function ( action ) {
 
 	if ( action === 'insert' || action === 'apply' ) {
 		data = this.referenceSurface.getContent();
-		refGroup = this.referenceGroupInput.getValue(),
+		refGroup = this.referenceGroupInput.getValue();
 		listGroup = 'mwReference/' + refGroup;
 
 		// Internal item changes
