@@ -67,17 +67,18 @@ ve.mixinClass( ve.ui.Toolbar, ve.EventEmitter );
  * @param {Object[]} config List of tool group configurations
  */
 ve.ui.Toolbar.prototype.setup = function ( config ) {
-	var i, j, group, tools;
+	var i, j, group, items, tools;
 
 	for ( i = 0; i < config.length; i++ ) {
-		tools = config[i].items;
+		items = config[i].items;
+		tools = [];
 		group = new ve.ui.ToolGroup( this, { '$$': this.$$ } );
 
 		// Add tools
-		for ( j = 0; j < tools.length; j++ ) {
-			try {
-				tools[j] = ve.ui.toolFactory.create( tools[j], this );
-			} catch( e ) {}
+		for ( j = 0; j < items.length; j++ ) {
+			if ( ve.ui.toolFactory.lookup( items[j] ) ) {
+				tools.push( ve.ui.toolFactory.create( items[j], this ) );
+			}
 		}
 		group.addItems( tools );
 
