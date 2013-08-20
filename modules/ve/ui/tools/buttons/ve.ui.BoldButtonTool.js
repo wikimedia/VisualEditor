@@ -29,7 +29,7 @@ ve.ui.BoldButtonTool.static.name = 'bold';
 
 ve.ui.BoldButtonTool.static.icon = {
 	'default': 'bold-a',
-	'be-tarask': 'bold-cyrl-te',
+	'be': 'bold-cyrl-te',
 	'cs': 'bold-b',
 	'da': 'bold-f',
 	'de': 'bold-f',
@@ -50,7 +50,6 @@ ve.ui.BoldButtonTool.static.icon = {
 	'os': 'bold-cyrl-be',
 	'pl': 'bold-b',
 	'pt': 'bold-n',
-	'pt-br': 'bold-n',
 	'ru': 'bold-cyrl-zhe',
 	'sv': 'bold-f'
 };
