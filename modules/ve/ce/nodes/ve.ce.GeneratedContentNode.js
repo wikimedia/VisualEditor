@@ -22,7 +22,7 @@ ve.ce.GeneratedContentNode = function VeCeGeneratedContentNode() {
 	this.$.attr( 'contenteditable', false );
 
 	// Events
-	this.model.connect( this, { 'update': 'update' } );
+	this.model.connect( this, { 'update': 'onGeneratedContentNodeUpdate' } );
 
 	// Initialization
 	this.update();
@@ -70,6 +70,13 @@ ve.ce.GeneratedContentNode.prototype.generateContents = function () {
 };
 
 /* Methods */
+
+/**
+ * Handler for the update event
+ */
+ve.ce.GeneratedContentNode.prototype.onGeneratedContentNodeUpdate = function () {
+	this.update();
+};
 
 /**
  * Rerender the contents of this node.
