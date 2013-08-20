@@ -31,10 +31,12 @@ ve.ui.SuperscriptButtonTool.static.icon = 'superscript';
 
 ve.ui.SuperscriptButtonTool.static.titleMessage = 'visualeditor-annotationbutton-superscript-tooltip';
 
-ve.ui.SuperscriptButtonTool.static.annotation = { 'name': 'textStyle/superScript' };
+ve.ui.SuperscriptButtonTool.static.annotation = { 'name': 'textStyle/superscript' };
 
 /* Registration */
 
 ve.ui.toolFactory.register( 'superscript', ve.ui.SuperscriptButtonTool );
 
-ve.ui.commandRegistry.register( 'superscript', 'annotation', 'toggle', 'textStyle/superScript' );
+ve.ui.commandRegistry.register(
+	'textStyle/superscript', 'annotation', 'toggle', 'textStyle/superscript'
+);
