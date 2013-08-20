@@ -167,6 +167,9 @@ ve.ui.MWReferenceDialog.prototype.onOpen = function () {
 ve.ui.MWReferenceDialog.prototype.onClose = function ( action ) {
 	var i, len, txs, item, data, group, refGroup, listGroup, keyIndex, refNode, refNodes,
 		surfaceModel = this.surface.getModel(),
+		// Store the original selection browsers may reset it after
+		// the first model change.
+		selection = surfaceModel.getSelection().clone(),
 		doc = surfaceModel.getDocument(),
 		internalList = doc.getInternalList();
 
@@ -252,7 +255,7 @@ ve.ui.MWReferenceDialog.prototype.onClose = function ( action ) {
 				this.ref.listIndex = item.index;
 			}
 			// Add reference at cursor
-			surfaceModel.getFragment().collapseRangeToEnd().insertContent( [
+			surfaceModel.getFragment( selection ).collapseRangeToEnd().insertContent( [
 				{ 'type': 'mwReference', 'attributes': this.ref }, { 'type': '/mwReference' }
 			] );
 		}
