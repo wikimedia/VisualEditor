@@ -90,8 +90,16 @@ ve.init.mw.Platform.prototype.getSystemPlatform = function () {
 };
 
 /** */
-ve.init.mw.Platform.prototype.getUserLanguage = function () {
-	return mw.config.get( 'wgUserLanguage' );
+ve.init.mw.Platform.prototype.getUserLanguages = function () {
+	var lang = mw.config.get( 'wgUserLanguage' ),
+		langParts = lang.split( '-' ),
+		langs = [ lang ];
+
+	if ( langParts.length > 0 ) {
+		langs.push( langParts[0] );
+	}
+
+	return langs;
 };
 
 /**

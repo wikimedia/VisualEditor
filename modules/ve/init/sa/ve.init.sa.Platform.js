@@ -110,10 +110,17 @@ ve.init.sa.Platform.prototype.getSystemPlatform = function () {
 };
 
 /** */
-ve.init.sa.Platform.prototype.getUserLanguage = function () {
+ve.init.sa.Platform.prototype.getUserLanguages = function () {
 	// IE or Firefox Safari Opera
-	var lang = window.navigator.userLanguage || window.navigator.language;
-	return lang.split( '-' )[0];
+	var lang = window.navigator.userLanguage || window.navigator.language,
+		langParts = lang.split( '-' ),
+		langs = [ lang ];
+
+	if ( langParts.length > 0 ) {
+		langs.push( langParts[0] );
+	}
+
+	return langs;
 };
 
 /* Initialization */
