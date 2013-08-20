@@ -29,7 +29,7 @@ ve.ui.BoldButtonTool.static.name = 'bold';
 
 ve.ui.BoldButtonTool.static.icon = {
 	'default': 'bold-a',
-	'be-tarask': 'bold-cyrl-te-el',
+	'be-tarask': 'bold-cyrl-te',
 	'cs': 'bold-b',
 	'da': 'bold-f',
 	'de': 'bold-f',
