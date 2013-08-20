@@ -75,7 +75,7 @@ ve.init.Platform.prototype.getMessage = function () {
  *
  * @method
  * @abstract
- * @param {Object} messages Containing parsed html strings
+ * @param {Object} messages Map of message-key/html pairs
  */
 ve.init.Platform.prototype.addParsedMessages = function () {
 	throw new Error( 've.init.Platform.addParsedMessages must be overridden in subclass' );
@@ -106,7 +106,7 @@ ve.init.Platform.prototype.getSystemPlatform = function () {
 };
 
 /**
- * Gets the user language from the browser.
+ * Gets the user language.
  *
  * @method
  * @abstract
