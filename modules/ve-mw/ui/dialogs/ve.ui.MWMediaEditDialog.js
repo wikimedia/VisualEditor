@@ -58,7 +58,7 @@ ve.ui.MWMediaEditDialog.static.surfaceCommands = [
 	'history/redo',
 	'textStyle/bold',
 	'textStyle/italic',
-	'meta/link',
+	'meta/link/mw',
 	'utility/clear'
 ];
 

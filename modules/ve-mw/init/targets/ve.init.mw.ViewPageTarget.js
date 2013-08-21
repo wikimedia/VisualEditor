@@ -143,6 +143,17 @@ ve.inheritClass( ve.init.mw.ViewPageTarget, ve.init.mw.Target );
 
 /* Static Properties */
 
+ve.init.mw.ViewPageTarget.static.surfaceCommands = [
+	'history/undo',
+	'history/redo',
+	'textStyle/bold',
+	'textStyle/italic',
+	'meta/link/mw',
+	'utility/clear',
+	'structure/indent',
+	'structure/outdent'
+];
+
 /**
  * Compatibility map used with jQuery.client to black-list incompatible browsers.
  *

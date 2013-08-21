@@ -67,7 +67,7 @@ ve.ui.MWReferenceDialog.static.surfaceCommands = [
 	'history/redo',
 	'textStyle/bold',
 	'textStyle/italic',
-	'meta/link',
+	'meta/link/mw',
 	'utility/clear',
 	'structure/indent',
 	'structure/outdent'
