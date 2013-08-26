@@ -30,7 +30,7 @@ ve.inheritClass( ve.init.sa.Platform, ve.init.Platform );
 
 /* Methods */
 
-/** */
+/** @inheritdoc */
 ve.init.sa.Platform.prototype.getExternalLinkUrlProtocolsRegExp = function () {
 	return this.externalLinkUrlProtocolsRegExp;
 };
@@ -38,26 +38,26 @@ ve.init.sa.Platform.prototype.getExternalLinkUrlProtocolsRegExp = function () {
 /**
  * Set the remotely accessible URL to the modules directory.
  *
- * @method
  * @param {string} url Remote modules URL
  */
 ve.init.sa.Platform.prototype.setModulesUrl = function ( url ) {
 	this.modulesUrl = url;
 };
 
-/** */
+/** @inheritdoc */
 ve.init.sa.Platform.prototype.getModulesUrl = function () {
 	return this.modulesUrl;
 };
 
-/** */
+
+/** @inheritdoc */
 ve.init.sa.Platform.prototype.addMessages = function ( messages ) {
 	for ( var key in messages ) {
 		this.messages[key] = messages[key];
 	}
 };
 
-/** */
+/** @inheritdoc */
 ve.init.sa.Platform.prototype.getMessage = function ( key ) {
 	if ( key in this.messages ) {
 		// Simple message parser, does $N replacement and nothing else.
@@ -70,14 +70,14 @@ ve.init.sa.Platform.prototype.getMessage = function ( key ) {
 	return '<' + key + '>';
 };
 
-/** */
+/** @inheritdoc */
 ve.init.sa.Platform.prototype.addParsedMessages = function ( messages ) {
 	for ( var key in messages ) {
 		this.parsedMessages[key] = messages[key];
 	}
 };
 
-/** */
+/** @inheritdoc */
 ve.init.sa.Platform.prototype.getParsedMessage = function ( key ) {
 	if ( key in this.parsedMessages ) {
 		// Prefer parsed results from VisualEditorMessagesModule.php if available.
@@ -100,7 +100,7 @@ ve.init.sa.Platform.prototype.getParsedMessage = function ( key ) {
 	} );
 };
 
-/** */
+/** @inheritdoc */
 ve.init.sa.Platform.prototype.getSystemPlatform = function () {
 	var platforms = ['win', 'mac', 'linux', 'sunos', 'solaris', 'iphone'],
 		match = new RegExp( '(' + platforms.join( '|' ) + ')' ).exec( window.navigator.platform.toLowerCase() );
@@ -109,7 +109,7 @@ ve.init.sa.Platform.prototype.getSystemPlatform = function () {
 	}
 };
 
-/** */
+/** @inheritdoc */
 ve.init.sa.Platform.prototype.getUserLanguages = function () {
 	// IE or Firefox Safari Opera
 	var lang = window.navigator.userLanguage || window.navigator.language,

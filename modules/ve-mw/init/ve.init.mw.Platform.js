@@ -35,46 +35,35 @@ ve.inheritClass( ve.init.mw.Platform, ve.init.Platform );
 
 /* Methods */
 
-/**
- * Uses the mw.config wgUrlProtocols variable.
- * @inheritdoc
- */
+/** @inheritdoc */
 ve.init.mw.Platform.prototype.getExternalLinkUrlProtocolsRegExp = function () {
 	return this.externalLinkUrlProtocolsRegExp;
 };
 
-/**
- * Uses MediaWiki's {wgExtensionAssetsPath} variable.
- * @inheritdoc
- */
+/** @inheritdoc */
 ve.init.mw.Platform.prototype.getModulesUrl = function () {
 	return this.modulesUrl;
 };
 
-/**
- * Wrapper for mw.msg system.
- * @inheritdoc
- */
+/** @inheritdoc */
 ve.init.mw.Platform.prototype.addMessages = function ( messages ) {
 	return mw.messages.set( messages );
 };
 
 /**
- * Wrapper for mw.msg system.
+ * @method
+ * @inheritdoc
  */
 ve.init.mw.Platform.prototype.getMessage = ve.bind( mw.msg, mw );
 
-/** */
+/** @inheritdoc */
 ve.init.mw.Platform.prototype.addParsedMessages = function ( messages ) {
 	for ( var key in messages ) {
 		this.parsedMessages[key] = messages[key];
 	}
 };
 
-/**
- * Falls back to mw.messsage with .escaped().
- * @inheritdoc
- */
+/** @inheritdoc */
 ve.init.mw.Platform.prototype.getParsedMessage = function ( key ) {
 	if ( key in this.parsedMessages ) {
 		// Prefer parsed results from VisualEditorMessagesModule.php if available.
@@ -84,12 +73,12 @@ ve.init.mw.Platform.prototype.getParsedMessage = function ( key ) {
 	return mw.message( key ).escaped();
 };
 
-/** */
+/** @inheritdoc */
 ve.init.mw.Platform.prototype.getSystemPlatform = function () {
 	return $.client.profile().platform;
 };
 
-/** */
+/** @inheritdoc */
 ve.init.mw.Platform.prototype.getUserLanguages = function () {
 	var lang = mw.config.get( 'wgUserLanguage' ),
 		langParts = lang.split( '-' ),

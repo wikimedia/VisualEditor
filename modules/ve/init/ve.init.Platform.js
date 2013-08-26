@@ -83,6 +83,7 @@ ve.init.Platform.prototype.addParsedMessages = function () {
 
 /**
  * Get a parsed message as HTML string.
+ *
  * Does not support $# replacements.
  *
  * @method
@@ -95,7 +96,7 @@ ve.init.Platform.prototype.getParsedMessage = function () {
 };
 
 /**
- * Gets client platform string from browser.
+ * Get client platform string from browser.
  *
  * @method
  * @abstract
@@ -106,7 +107,7 @@ ve.init.Platform.prototype.getSystemPlatform = function () {
 };
 
 /**
- * Gets the user language and any fallback languages.
+ * Get the user language and any fallback languages.
  *
  * @method
  * @abstract
