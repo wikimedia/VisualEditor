@@ -581,6 +581,9 @@ ve.ce.Surface.prototype.onCut = function ( e ) {
 		// Transact
 		tx = ve.dm.Transaction.newFromRemoval( this.documentView.model, selection );
 
+		// Document may not have had real focus (e.g. with a FocusableNode)
+		this.documentView.documentNode.$[0].focus();
+
 		this.model.change( tx, new ve.Range( selection.start ) );
 		this.surfaceObserver.clear();
 		this.surfaceObserver.start( false, true );
@@ -694,7 +697,7 @@ ve.ce.Surface.prototype.onPaste = function ( e ) {
 		);
 
 		// Restore focus and scroll position
-		view.documentView.documentNode.$.focus();
+		view.documentView.documentNode.$[0].focus();
 		$window.scrollTop( scrollTop );
 
 		selection = tx.translateRange( selection );
