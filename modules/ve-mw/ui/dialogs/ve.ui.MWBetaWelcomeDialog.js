@@ -29,6 +29,8 @@ ve.inheritClass( ve.ui.MWBetaWelcomeDialog, ve.ui.MWDialog );
 
 /* Static Properties */
 
+ve.ui.MWBetaWelcomeDialog.static.name = 'betaWelcome';
+
 ve.ui.MWBetaWelcomeDialog.static.titleMessage = 'visualeditor-dialog-beta-welcome-title';
 
 ve.ui.MWBetaWelcomeDialog.static.icon = 'help';
@@ -65,4 +67,4 @@ ve.ui.MWBetaWelcomeDialog.prototype.initialize = function () {
 
 /* Registration */
 
-ve.ui.dialogFactory.register( 'mwBetaWelcome', ve.ui.MWBetaWelcomeDialog );
+ve.ui.dialogFactory.register( ve.ui.MWBetaWelcomeDialog );

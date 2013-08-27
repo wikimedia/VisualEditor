@@ -102,7 +102,6 @@
 					"ve.ui.Context",
 					"ve.ui.Frame",
 					"ve.ui.Toolbar",
-					"ve.ui.ToolGroup",
 					"ve.ui.SurfaceToolbar",
 					"ve.ui.Window",
 					"ve.ui.WindowSet",
@@ -125,6 +124,10 @@
 			{
 				"name": "Tools",
 				"classes": ["ve.ui.*Tool"]
+			},
+			{
+				"name": "Tool groups",
+				"classes": ["ve.ui.*ToolGroup"]
 			},
 			{
 				"name": "Inspectors",

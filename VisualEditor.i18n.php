@@ -187,6 +187,7 @@ $messages['en'] = array(
 	'visualeditor-saveerror' => 'Error saving data to server: $1.',
 	'visualeditor-serializeerror' => 'Error loading data from server: $1.',
 	'visualeditor-toolbar-cancel' => 'Cancel',
+	'visualeditor-toolbar-more' => 'More',
 	'visualeditor-toolbar-savedialog' => 'Save page',
 	'visualeditor-usernamespacepagelink' => 'Project:User namespace',
 	'visualeditor-version-label' => 'Version',
@@ -546,6 +547,7 @@ Parameters:
 * $1 is an error message, in English.',
 	'visualeditor-toolbar-cancel' => 'Label text for button to exit from VisualEditor.
 {{Identical|Cancel}}',
+	'visualeditor-toolbar-more' => 'Label for the toolbar group that contains a list of all other available tools',
 	'visualeditor-toolbar-savedialog' => 'Label text for button to open save dialog
 {{Identical|Save page}}',
 	'visualeditor-usernamespacepagelink' => 'Name of a page describing the user namespace (NS2) in this project.

@@ -143,17 +143,6 @@ ve.inheritClass( ve.init.mw.ViewPageTarget, ve.init.mw.Target );
 
 /* Static Properties */
 
-ve.init.mw.ViewPageTarget.static.surfaceCommands = [
-	'history/undo',
-	'history/redo',
-	'textStyle/bold',
-	'textStyle/italic',
-	'meta/link/mw',
-	'utility/clear',
-	'structure/indent',
-	'structure/outdent'
-];
-
 /**
  * Compatibility map used with jQuery.client to black-list incompatible browsers.
  *
@@ -758,7 +747,7 @@ ve.init.mw.ViewPageTarget.prototype.onToolbarCancelButtonClick = function () {
  * @param {jQuery.Event} e Mouse click event
  */
 ve.init.mw.ViewPageTarget.prototype.onToolbarMwMetaButtonClick = function () {
-	this.surface.getDialogs().open( 'mwMeta' );
+	this.surface.getDialogs().open( 'meta' );
 };
 
 
@@ -2215,7 +2204,7 @@ ve.init.mw.ViewPageTarget.prototype.tearDownBeforeUnloadHandler = function () {
  */
 ve.init.mw.ViewPageTarget.prototype.showBetaWelcome = function () {
 	if ( $.cookie( 've-beta-welcome-dialog' ) === null ) {
-		this.surface.getDialogs().open( 'mwBetaWelcome' );
+		this.surface.getDialogs().open( 'betaWelcome' );
 	}
 	$.cookie( 've-beta-welcome-dialog', 1, { 'path': '/', 'expires': 30 } );
 };

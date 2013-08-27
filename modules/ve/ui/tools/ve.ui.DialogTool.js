@@ -1,40 +1,40 @@
 /*!
- * VisualEditor UserInterface InspectorButtonTool class.
+ * VisualEditor UserInterface DialogTool class.
  *
  * @copyright 2011-2013 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * UserInterface inspector button tool.
+ * UserInterface dialog tool.
  *
  * @abstract
  * @class
- * @extends ve.ui.ButtonTool
+ * @extends ve.ui.Tool
  * @constructor
  * @param {ve.ui.SurfaceToolbar} toolbar
  * @param {Object} [config] Config options
  */
-ve.ui.InspectorButtonTool = function VeUiInspectorButtonTool( toolbar, config ) {
+ve.ui.DialogTool = function VeUiDialogTool( toolbar, config ) {
 	// Parent constructor
-	ve.ui.ButtonTool.call( this, toolbar, config );
+	ve.ui.Tool.call( this, toolbar, config );
 };
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.InspectorButtonTool, ve.ui.ButtonTool );
+ve.inheritClass( ve.ui.DialogTool, ve.ui.Tool );
 
 /* Static Properties */
 
 /**
- * Symbolic name of inspector the button opens.
+ * Symbolic name of dialog the tool opens.
  *
  * @abstract
  * @static
  * @property {string}
  * @inheritable
  */
-ve.ui.InspectorButtonTool.static.inspector = '';
+ve.ui.DialogTool.static.dialog = '';
 
 /**
  * Annotation or node models this tool is related to.
@@ -43,25 +43,27 @@ ve.ui.InspectorButtonTool.static.inspector = '';
  *
  * @static
  * @property {Function[]}
+ * @inheritable
  */
-ve.ui.InspectorButtonTool.static.modelClasses = [];
+ve.ui.DialogTool.static.modelClasses = [];
 
 /**
  * @inheritdoc
  */
-ve.ui.InspectorButtonTool.static.canEditModel = function ( model ) {
+ve.ui.DialogTool.static.canEditModel = function ( model ) {
 	return ve.isInstanceOfAny( model, this.modelClasses );
 };
 
 /* Methods */
 
 /**
- * Handle the button being clicked.
+ * Handle the tool being selected.
  *
  * @method
  */
-ve.ui.InspectorButtonTool.prototype.onClick = function () {
-	this.toolbar.getSurface().execute( 'inspector', 'open', this.constructor.static.inspector );
+ve.ui.DialogTool.prototype.onSelect = function () {
+	this.toolbar.getSurface().getDialogs().open( this.constructor.static.dialog );
+	this.setActive( false );
 };
 
 /**
@@ -72,8 +74,8 @@ ve.ui.InspectorButtonTool.prototype.onClick = function () {
  * @param {ve.dm.AnnotationSet} full Annotations that cover all of the current selection
  * @param {ve.dm.AnnotationSet} partial Annotations that cover some or all of the current selection
  */
-ve.ui.InspectorButtonTool.prototype.onUpdateState = function ( nodes, full ) {
-	this.setActive(
-		ve.ui.toolFactory.getToolsForAnnotations( full ).indexOf( this.constructor ) !== -1
-	);
+ve.ui.DialogTool.prototype.onUpdateState = function ( nodes ) {
+	if ( nodes.length ) {
+		this.setActive( ve.ui.toolFactory.getToolForNode( nodes[0] ) === this.constructor );
+	}
 };

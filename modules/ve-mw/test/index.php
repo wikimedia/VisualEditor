@@ -197,6 +197,7 @@
 		<script src="../../ve-mw/ce/annotations/ve.ce.MWNowikiAnnotation.js"></script>
 		<script src="../../ve/ui/ve.ui.js"></script>
 		<script src="../../ve/ui/elements/ve.ui.LabeledElement.js"></script>
+		<script src="../../ve/ui/elements/ve.ui.IconedElement.js"></script>
 		<script src="../../ve/ui/elements/ve.ui.GroupElement.js"></script>
 		<script src="../../ve/ui/elements/ve.ui.FlaggableElement.js"></script>
 		<script src="../../ve/ui/ve.ui.Surface.js"></script>
