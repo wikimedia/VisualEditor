@@ -33,6 +33,7 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 	this.documentView = new ve.ce.Document( model.getDocument(), this );
 	this.surfaceObserver = new ve.ce.SurfaceObserver( this.documentView );
 	this.selectionTimeout = null;
+	this.keyPressTimeout = null;
 	this.$document = $( this.getElementDocument() );
 	this.clipboard = {};
 	this.renderingEnabled = true;
@@ -453,6 +454,7 @@ ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
  */
 ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
 	var trigger;
+	this.forceKeyPressTimeout();
 
 	// Ignore keydowns while in IME mode but do not preventDefault them (so text actually appear on
 	// the screen).
@@ -517,6 +519,8 @@ ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
 ve.ce.Surface.prototype.onDocumentKeyPress = function ( e ) {
 	var selection, prevNode, documentModel = this.model.getDocument();
 
+	this.forceKeyPressTimeout();
+
 	// Prevent IE from editing Aliens/Entities
 	// TODO: Better comment about what's going on here is needed.
 	if ( $.browser.msie === true ) {
@@ -542,9 +546,39 @@ ve.ce.Surface.prototype.onDocumentKeyPress = function ( e ) {
 	}
 
 	this.handleInsertion();
-	setTimeout( ve.bind( function () {
-		this.surfaceObserver.start( false, true );
+	this.setKeyPressTimeout();
+};
+
+/**
+ * Append a call to onKeyPressTimeout to the event queue.
+ * @method
+ */
+ve.ce.Surface.prototype.setKeyPressTimeout = function () {
+	this.keyPressTimeout = setTimeout( ve.bind( function() {
+		this.keyPressTimeout = null;
+		this.onKeyPressTimeout();
 	}, this ) );
+};
+
+/**
+ * If there is a pending call to onKeyPressTimeout in the event queue, delete it and call now
+ * @method
+ */
+ve.ce.Surface.prototype.forceKeyPressTimeout = function () {
+	if ( this.keyPressTimeout === null ) {
+		return;
+	}
+	clearTimeout( this.keyPressTimeout );
+	this.keyPressTimeout = null;
+	this.onKeyPressTimeout();
+};
+
+/**
+ * post-keypress handler: re-sync the surface and model
+ * @method
+ */
+ve.ce.Surface.prototype.onKeyPressTimeout = function () {
+	this.surfaceObserver.start( false, true );
 };
 
 /**
