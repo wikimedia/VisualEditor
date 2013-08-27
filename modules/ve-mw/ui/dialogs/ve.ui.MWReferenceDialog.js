@@ -342,12 +342,27 @@ ve.ui.MWReferenceDialog.prototype.useReference = function ( ref ) {
 		}
 	);
 
+	// Event handlers
+	this.referenceSurface.getSurface().getModel().connect( this, { 'change': 'onSurfaceChange' } );
+
 	// Initialization
 	this.referenceGroupInput.setValue( refGroup );
 	this.contentFieldset.$.append( this.referenceSurface.$ );
 	this.referenceSurface.initialize();
 
 	return this;
+};
+
+/**
+ * Handle reference surface change events
+ */
+ve.ui.MWReferenceDialog.prototype.onSurfaceChange = function () {
+	var data = this.referenceSurface.getContent(),
+		// TODO: Check for other types of empty, e.g. only whitespace?
+		disabled = data.length <= 2;
+
+	this.insertButton.setDisabled( disabled );
+	this.applyButton.setDisabled( disabled );
 };
 
 /* Registration */
