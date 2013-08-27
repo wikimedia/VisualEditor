@@ -125,7 +125,7 @@ ve.dm.Surface.prototype.purgeHistory = function () {
 	if ( !this.enabled ) {
 		return;
 	}
-	this.selection = null;
+	this.selection = new ve.Range( 0, 0 );
 	this.smallStack = [];
 	this.bigStack = [];
 	this.undoIndex = 0;
