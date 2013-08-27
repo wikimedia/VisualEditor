@@ -150,7 +150,7 @@ ve.ce.MWReferenceListNode.prototype.update = function () {
 			firstNode = nodes.firstNodes[index];
 
 			key = internalList.keys[index];
-			keyedNodes = nodes.keyedNodes[key] || [];
+			keyedNodes = nodes.keyedNodes[key];
 			// Exclude references defined inside the reference list node
 			/*jshint loopfunc:true */
 			keyedNodes = keyedNodes.filter( function ( node ) {
@@ -162,7 +162,7 @@ ve.ce.MWReferenceListNode.prototype.update = function () {
 				return true;
 			} );
 
-			if ( key !== undefined && !keyedNodes.length ) {
+			if ( !keyedNodes.length ) {
 				continue;
 			}
 

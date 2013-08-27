@@ -196,7 +196,7 @@ ve.ui.MWReferenceDialog.prototype.onOpen = function () {
  * @inheritdoc
  */
 ve.ui.MWReferenceDialog.prototype.onClose = function ( action ) {
-	var i, len, txs, item, data, group, refGroup, listGroup, keyIndex, refNode, refNodes,
+	var i, len, txs, item, data, group, refGroup, listGroup, keyIndex, refNodes,
 		surfaceModel = this.surface.getModel(),
 		// Store the original selection browsers may reset it after
 		// the first model change.
@@ -257,28 +257,12 @@ ve.ui.MWReferenceDialog.prototype.onClose = function ( action ) {
 
 		// Content changes
 		if ( action === 'insert' ) {
-			if ( this.ref ) {
-				// Re-use existing internal item
-				if ( this.ref.listKey === null ) {
-					// Auto-generate list key on first re-use
-					this.ref.listKey = internalList.getUniqueListKey( this.ref.listGroup );
-					// Update the list key in the other use of this source
-					refNode = internalList.nodes[this.ref.listGroup].firstNodes[this.ref.listIndex];
-					// HACK: Removing and re-inserting nodes to/from the internal list is done
-					// because internal list doesn't yet support attribute changes
-					refNode.removeFromInternalList();
-					surfaceModel.change(
-						ve.dm.Transaction.newFromAttributeChanges(
-							doc, refNode.getOuterRange().start, { 'listKey': this.ref.listKey }
-						)
-					);
-					refNode.addToInternalList();
-				}
-			} else {
+			if ( !this.ref ) {
+				listGroup = 'mwReference/' + refGroup;
 				// Create new internal item
 				this.ref = {
-					'listKey': null,
-					'listGroup': 'mwReference/' + refGroup,
+					'listKey': internalList.getUniqueListKey( listGroup ),
+					'listGroup': listGroup,
 					'refGroup': refGroup
 				};
 				item = internalList.getItemInsertion( this.ref.listGroup, this.ref.listKey, data );
