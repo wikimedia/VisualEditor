@@ -87,11 +87,19 @@ ve.ce.GeneratedContentNode.prototype.onGeneratedContentNodeUpdate = function () 
  * @emits rerender
  */
 ve.ce.GeneratedContentNode.prototype.render = function ( domElements ) {
-	var doc = this.getElementDocument();
+	var $rendering, doc = this.getElementDocument();
 	if ( this.live ) {
 		this.emit( 'teardown' );
 	}
-	this.$.empty().append( ve.copyDomElements( domElements, doc ) );
+	// Filter out link, meta and style tags for bug 50043
+	// .not( 'link, meta, style' ) doesn't work because it drops text nodes
+	$rendering = $( ve.copyDomElements( domElements, doc ) ).filter( function () {
+		var name = this.nodeName && this.nodeName.toLowerCase();
+		return name !== 'link' && name !== 'meta' && name !== 'style';
+	} );
+	// Also remove link, meta and style tags nested inside other tags
+	$rendering.find( 'link, meta, style' ).remove();
+	this.$.empty().append( $rendering );
 	if ( this.live ) {
 		this.emit( 'setup' );
 		this.emit( 'rerender' );
