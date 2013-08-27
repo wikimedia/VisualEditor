@@ -63,13 +63,16 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 		$documentNode.focus();
 	} );
 
-	this.$.on( {
+	this.$document.on( {
 		'cut': ve.bind( this.onCut, this ),
 		'copy': ve.bind( this.onCopy, this ),
-		'paste': ve.bind( this.onPaste, this ),
+		'paste': ve.bind( this.onPaste, this )
+	} );
+	this.$.on( {
 		'dragover': ve.bind( this.onDocumentDragOver, this ),
 		'drop': ve.bind( this.onDocumentDrop, this )
 	} );
+
 	if ( $.browser.msie ) {
 		this.$.on( 'beforepaste', ve.bind( this.onPaste, this ) );
 	}
@@ -590,21 +593,31 @@ ve.ce.Surface.prototype.onCut = function ( e ) {
  * @method
  * @param {jQuery.Event} e Copy event
  */
-ve.ce.Surface.prototype.onCopy = function () {
+ve.ce.Surface.prototype.onCopy = function ( e ) {
 	var sel = rangy.getSelection( this.$document[0] ),
-		$frag = this.$$( sel.getRangeAt(0).cloneContents() ),
+		$frag = sel.rangeCount ? this.$$( sel.getRangeAt(0).cloneContents() ) : null,
 		slice = this.documentView.model.getSlice( this.model.getSelection() ),
-		key = '';
+		clipboardData = e.originalEvent.clipboardData,
+		fragText = $frag ? $frag.text() : '',
+		key = 've-' + fragText.replace( /\s/gm, '' );
 
 	// CLone the elements in the slice
 	slice.cloneElements();
 
-	// Create key from text and element names
-	$frag.contents().each( function () {
-		key += this.textContent || this.nodeName;
-	} );
-	key = 've-' + key.replace( /\s/gm, '' );
-
+	// Check we have setData and that it actually works (returns true)
+	if ( clipboardData && clipboardData.setData && clipboardData.setData( 'text/xcustom', '' ) ) {
+		// Webkit
+		e.preventDefault();
+		clipboardData.setData( 'text/xcustom', key );
+		// As we've disabled the default event we need to set the normal clipboard data
+		clipboardData.setData( 'text/plain', fragText );
+	} else {
+		if ( window.clipboardData ) {
+			// IE
+			e.originalEvent.returnValue = false;
+			window.clipboardData.setData( 'text/plain', fragText );
+		}
+	}
 	// Set clipboard
 	this.clipboard[key] = slice;
 };
@@ -615,7 +628,7 @@ ve.ce.Surface.prototype.onCopy = function () {
  * @method
  * @param {jQuery.Event} e Paste event
  */
-ve.ce.Surface.prototype.onPaste = function () {
+ve.ce.Surface.prototype.onPaste = function ( e ) {
 	// Prevent pasting until after we are done
 	if ( this.pasting ) {
 		return false;
@@ -625,7 +638,10 @@ ve.ce.Surface.prototype.onPaste = function () {
 	var tx, scrollTop,
 		$window = $( ve.Element.getWindow( this.$$.context ) ),
 		view = this,
-		selection = this.model.getSelection();
+		selection = this.model.getSelection(),
+		clipboardData = e.originalEvent.clipboardData,
+		eventPasteKey = clipboardData.getData( 'text/xcustom' ) || null,
+		eventPasteText = clipboardData.getData( 'text/plain' ) || null;
 
 	this.surfaceObserver.stop( false, true );
 
@@ -644,11 +660,16 @@ ve.ce.Surface.prototype.onPaste = function () {
 		var pasteData, slice, tx,
 			key = '';
 
-		// Create key from text and element names
-		view.$pasteTarget.hide().contents().each( function () {
-			key += this.textContent || this.nodeName;
-		} );
-		key = 've-' + key.replace( /\s/gm, '' );
+		if ( eventPasteKey ) {
+			key = eventPasteKey;
+		} else {
+			if ( eventPasteText ) {
+				key = eventPasteText;
+			} else {
+				key = view.$pasteTarget.text();
+			}
+			key = 've-' + key.replace( /\s/gm, '' );
+		}
 
 		// Get linear model from clipboard or create array from unknown pasted content
 		if ( view.clipboard[key] ) {
