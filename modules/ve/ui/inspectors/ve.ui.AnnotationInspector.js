@@ -60,10 +60,9 @@ ve.ui.AnnotationInspector.prototype.onSetup = function () {
 
 	// Parent method
 	ve.ui.Inspector.prototype.onSetup.call( this );
-
 	// Initialize range
 	if ( !annotation ) {
-		if ( fragment.getRange().isCollapsed() ) {
+		if ( fragment.getRange().isCollapsed() && !this.surface.view.hasSlugAtOffset( fragment.getRange().start ) ) {
 			// Expand to nearest word
 			expandedFragment = fragment.expandRange( 'word' );
 			fragment = expandedFragment;
