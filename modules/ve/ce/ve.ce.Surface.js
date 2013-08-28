@@ -677,8 +677,8 @@ ve.ce.Surface.prototype.onPaste = function ( e ) {
 		view = this,
 		selection = this.model.getSelection(),
 		clipboardData = e.originalEvent.clipboardData,
-		eventPasteKey = clipboardData.getData( 'text/xcustom' ) || null,
-		eventPasteText = clipboardData.getData( 'text/plain' ) || null;
+		eventPasteKey = clipboardData && clipboardData.getData( 'text/xcustom' ),
+		eventPasteText = clipboardData && clipboardData.getData( 'text/plain' );
 
 	this.surfaceObserver.stop( false, true );
 
