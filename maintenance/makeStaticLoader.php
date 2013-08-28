@@ -162,7 +162,7 @@ class MakeStaticLoader extends Maintenance {
 			$headAdd = $bodyAdd = '';
 
 			if ( isset( $registry['styles'] ) && $target !== 'test' ){
-				foreach ( $registry['styles'] as $path ) {
+				foreach ( (array)$registry['styles'] as $path ) {
 					if ( strpos( $path, 've-mw/' ) === 0 ) {
 						continue;
 					}
@@ -173,7 +173,7 @@ class MakeStaticLoader extends Maintenance {
 				}
 			}
 			if ( isset( $registry['scripts'] ) ) {
-				foreach ( $registry['scripts'] as $path ) {
+				foreach ( (array)$registry['scripts'] as $path ) {
 					if ( strpos( $path, 've-mw/' ) === 0 ) {
 						continue;
 					}
@@ -181,7 +181,7 @@ class MakeStaticLoader extends Maintenance {
 				}
 			}
 			if ( isset( $registry['debugScripts'] ) ) {
-				foreach ( $registry['debugScripts'] as $path ) {
+				foreach ( (array)$registry['debugScripts'] as $path ) {
 					if ( strpos( $path, 've-mw/' ) === 0 ) {
 						continue;
 					}
