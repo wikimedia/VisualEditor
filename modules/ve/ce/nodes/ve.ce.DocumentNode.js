@@ -25,7 +25,7 @@ ve.ce.DocumentNode = function VeCeDocumentNode( model, surface, config ) {
 	// Set root
 	this.setRoot( this );
 
-	// DOM Changes
+	// DOM changes
 	this.$.addClass( 've-ce-documentNode' );
 	this.$.attr( { 'contentEditable': 'true', 'spellcheck': 'true' } );
 };

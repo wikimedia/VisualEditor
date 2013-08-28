@@ -17,7 +17,7 @@ ve.ce.GeneratedContentNode = function VeCeGeneratedContentNode() {
 	// Properties
 	this.generatingPromise = null;
 
-	// DOM Changes
+	// DOM changes
 	this.$.addClass( 've-ce-generatedContentNode' );
 	this.$.attr( 'contenteditable', false );
 
