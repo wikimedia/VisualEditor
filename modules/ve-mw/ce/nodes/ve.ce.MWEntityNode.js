@@ -18,7 +18,7 @@ ve.ce.MWEntityNode = function VeCeMWEntityNode( model, config ) {
 	// Parent constructor
 	ve.ce.LeafNode.call( this, model, config );
 
-	// DOM Changes
+	// DOM changes
 	this.$.addClass( 've-ce-mwEntityNode' );
 	// Need CE=false to prevent selection issues
 	this.$.attr( 'contenteditable', false );
