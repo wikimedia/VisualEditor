@@ -149,14 +149,19 @@ ve.ui.LanguageInspector.prototype.setAnnotation = function ( annotation ) {
 	var langCode, langDir, annData;
 
 	// Validate the given annotation:
+	if ( annotation ) {
+		// Give precedence to dir value if it already exists
+		// in the annotation:
+		langDir = annotation.getAttribute( 'dir' );
 
-	// Give precedence to dir value if it already exists
-	// in the annotation:
-	langDir = annotation.getAttribute( 'dir' );
-
-	// Set language according to the one in the given annotation
-	// or leave blank if element has no language set
-	langCode = annotation.getAttribute( 'lang' );
+		// Set language according to the one in the given annotation
+		// or leave blank if element has no language set
+		langCode = annotation.getAttribute( 'lang' );
+	} else {
+		// No annotation (empty text or collapsed fragment on empty line)
+		langCode = this.initLang;
+		langDir = this.initDir;
+	}
 
 	// If language exists, but dir is undefined/null,
 	// fix the dir in terms of language:
