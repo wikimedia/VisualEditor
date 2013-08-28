@@ -27,9 +27,7 @@ ve.ce.MWReferenceNode = function VeCeMWReferenceNode( model, config ) {
 
 	// DOM changes
 	this.$link = $( '<a>' ).attr( 'href', '#' );
-	this.$.addClass( 've-ce-mwReferenceNode', 'reference' )
-		.attr( 'contenteditable', false )
-		.append( this.$link );
+	this.$.addClass( 've-ce-mwReferenceNode', 'reference' ).append( this.$link );
 
 	this.index = '';
 	this.internalList = this.model.getDocument().internalList;
