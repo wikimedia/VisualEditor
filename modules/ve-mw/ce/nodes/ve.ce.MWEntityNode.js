@@ -21,7 +21,7 @@ ve.ce.MWEntityNode = function VeCeMWEntityNode( model, config ) {
 	// DOM changes
 	this.$.addClass( 've-ce-mwEntityNode' );
 	// Need CE=false to prevent selection issues
-	this.$.attr( 'contenteditable', false );
+	this.$.prop( 'contentEditable', 'false' );
 
 	// Events
 	this.model.connect( this, { 'update': 'onUpdate' } );

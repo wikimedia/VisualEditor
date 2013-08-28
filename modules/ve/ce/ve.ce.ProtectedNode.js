@@ -28,7 +28,7 @@ ve.ce.ProtectedNode = function VeCeProtectedNode() {
 	// DOM changes
 	this.$
 		.addClass( 've-ce-protectedNode' )
-		.prop( 'contentEditable', false );
+		.prop( 'contentEditable', 'false' );
 };
 
 /* Static Properties */
