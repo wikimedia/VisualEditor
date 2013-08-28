@@ -19,7 +19,6 @@ ve.ce.GeneratedContentNode = function VeCeGeneratedContentNode() {
 
 	// DOM changes
 	this.$.addClass( 've-ce-generatedContentNode' );
-	this.$.attr( 'contenteditable', false );
 
 	// Events
 	this.model.connect( this, { 'update': 'onGeneratedContentNodeUpdate' } );
