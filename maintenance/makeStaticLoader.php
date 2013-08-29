@@ -149,6 +149,10 @@ class MakeStaticLoader extends Maintenance {
 			'Dependencies',
 			'ext.visualEditor.base#standalone-init',
 			'ext.visualEditor.core',
+			'jquery.uls.grid',
+			'jquery.uls.data',
+			'jquery.uls.compact',
+			'jquery.uls',
 			'ext.visualEditor.experimental',
 		);
 
