@@ -166,7 +166,7 @@ ve.ui.AnnotationInspector.prototype.onClose = function ( action ) {
 		// Apply new annotation
 		fragment.annotateContent( 'set', annotation );
 	}
-	if ( action === 'back' ) {
+	if ( action === 'back' || insert ) {
 		// Restore selection to what it was before we expanded it
 		selection = this.previousSelection;
 	}
