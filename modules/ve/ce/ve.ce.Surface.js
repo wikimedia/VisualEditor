@@ -718,17 +718,35 @@ ve.ce.Surface.prototype.onPaste = function ( e ) {
 				)
 			);
 		}
-		pasteData = slice.getBalancedData();
 
-		// Annotate
-		ve.dm.Document.addAnnotationsToData( pasteData, this.model.getInsertionAnnotations() );
+		try {
+			// Try to paste in the orignal data
+			// Take a copy to prevent the data being annotated a second time in the catch block
+			pasteData = ve.copy( slice.getData() );
 
-		// Transaction
-		tx = ve.dm.Transaction.newFromInsertion(
-			view.documentView.model,
-			selection.start,
-			pasteData
-		);
+			// Annotate
+			ve.dm.Document.addAnnotationsToData( pasteData, this.model.getInsertionAnnotations() );
+
+			// Transaction
+			tx = ve.dm.Transaction.newFromInsertion(
+				view.documentView.model,
+				selection.start,
+				pasteData
+			);
+		} catch ( e ) {
+			// If that fails, balance the data before pasting
+			pasteData = slice.getBalancedData();
+
+			// Annotate
+			ve.dm.Document.addAnnotationsToData( pasteData, this.model.getInsertionAnnotations() );
+
+			// Transaction
+			tx = ve.dm.Transaction.newFromInsertion(
+				view.documentView.model,
+				selection.start,
+				pasteData
+			);
+		}
 
 		// Restore focus and scroll position
 		view.documentView.documentNode.$[0].focus();
