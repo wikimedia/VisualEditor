@@ -14,6 +14,7 @@ When(/^I click Edit for VisualEditor$/) do
       page.beta_warning_element.when_present.click
     rescue
     end
+    page.content_element.fire_event('onfocus')
   end
 end
 
