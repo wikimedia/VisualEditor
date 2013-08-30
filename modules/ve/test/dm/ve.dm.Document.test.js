@@ -118,7 +118,6 @@ QUnit.test( 'getMetadataReplace', 3, function ( assert ) {
 
 	replace = doc.getMetadataReplace( 10, 1, [] );
 	expectedReplace = {
-		'retain': 0,
 		'remove': doc.getMetadata().slice( 10, 12 ),
 		'insert': ve.dm.MetaLinearData.static.merge( doc.getMetadata().slice( 10, 12 ) )
 	};
@@ -126,7 +125,6 @@ QUnit.test( 'getMetadataReplace', 3, function ( assert ) {
 
 	replace = doc.getMetadataReplace( 5, 2, [] );
 	expectedReplace = {
-		'retain': 0,
 		'remove': doc.getMetadata().slice( 5, 8 ),
 		'insert': ve.dm.MetaLinearData.static.merge( doc.getMetadata().slice( 5, 8 ) )
 	};
@@ -134,7 +132,6 @@ QUnit.test( 'getMetadataReplace', 3, function ( assert ) {
 
 	replace = doc.getMetadataReplace( 1, 8, [] );
 	expectedReplace = {
-		'retain': 0,
 		'remove': doc.getMetadata().slice( 1, 10 ),
 		'insert': ve.dm.MetaLinearData.static.merge( doc.getMetadata().slice( 1, 10 ) )
 	};

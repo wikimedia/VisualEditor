@@ -343,23 +343,32 @@ ve.dm.Document.prototype.getDocumentSlice = function ( rangeOrNode ) {
  * @returns {Object} Metadata replace operation to keep data & metadata in sync
  */
 ve.dm.Document.prototype.getMetadataReplace = function ( offset, remove, insert ) {
-	var removeMetadata, insertMetadata, replace = {};
-	if ( remove > insert.length ) {
-		// if we are removing more than we are inserting we need to collapse the excess metadata
-		removeMetadata = this.getMetadata( new ve.Range( offset + insert.length, offset + remove + 1 ) );
+	var removeMetadata, insertMetadata, replace = {}, extend;
+	if ( remove > 0 ) {
+		// if we are removing anything we need to collapse the metadata
+		if ( insert.length > 0 ) {
+			// if there's at least one element inserted, collapse the metadata
+			// onto the first cursor position.
+			extend = 0;
+		} else {
+			// Make the collapsed region is 1 larger than the deleted region, so we
+			// can put the collapsed metadata on the element immediately
+			// following the deleted region.
+			extend = 1;
+		}
+		removeMetadata = this.getMetadata( new ve.Range( offset, offset + remove + extend ) );
 		// check removeMetadata is non-empty
 		if ( !ve.compare( removeMetadata, new Array( removeMetadata.length ) ) ) {
 			insertMetadata = ve.dm.MetaLinearData.static.merge( removeMetadata );
-			replace.retain = insert.length;
+			// pad out the end of `insertMetadata` so it is
+			// `insert.length + extend` elements long.  (if `extend` is 1, then
+			// `insert.length` is 0 and thus we don't need to pad further.)
+			if ( extend === 0 ) {
+				ve.batchSplice( insertMetadata, 1, 0, new Array( insert.length - 1 ) );
+			}
 			replace.remove = removeMetadata;
 			replace.insert = insertMetadata;
 		}
-	}
-	// if insert.length === remove metadata can just stay where it is
-	if ( insert.length > remove ) {
-		// if we are inserting more than we are removing then we need to pad out with undefineds
-		replace.retain = remove;
-		replace.insert = new Array( insert.length - remove );
 	}
 	return replace;
 };

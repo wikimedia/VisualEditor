@@ -577,7 +577,6 @@ QUnit.test( 'newFromRemoval', function ( assert ) {
 						'type': 'replace',
 						'remove': ['B', 'a'],
 						'insert': [],
-						'retainMetadata': 0,
 						'removeMetadata': metaDoc.getMetadata().slice( 7, 10 ),
 						'insertMetadata': ve.dm.MetaLinearData.static.merge( metaDoc.getMetadata().slice( 7, 10 ) )
 					},

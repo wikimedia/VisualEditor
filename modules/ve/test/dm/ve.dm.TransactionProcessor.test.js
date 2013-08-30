@@ -334,7 +334,122 @@ QUnit.test( 'commit/rollback', function ( assert ) {
 					['pushReplace', 0, 5, [ { 'type': 'table' }, { 'type': '/table' } ]]
 				],
 				'expected': function ( data ) {
-					data.splice( 0, 2, { 'type': 'table' }, { 'type': '/table' } );
+					data.splice( 0, 2 );
+					data.splice( 2, 3, { 'type': 'table' }, { 'type': '/table' } );
+				}
+			},
+			'structural replacement starting at an offset with metadata': {
+				'data': [
+					{
+						'type': 'alienMeta',
+						'attributes': {
+							'domElements': $( '<!-- foo -->' ).toArray()
+						}
+					},
+					{ 'type': '/alienMeta' },
+					{ 'type': 'paragraph' },
+					'F',
+					{
+						'type': 'alienMeta',
+						'attributes': {
+							'style': 'comment',
+							'text': ' inline '
+						}
+					},
+					{ 'type': '/alienMeta' },
+					'o', 'o',
+					{ 'type': '/paragraph' }
+				],
+				'calls': [
+					['pushReplace', 0, 5, [ { 'type': 'table' }, { 'type': '/table' } ]]
+				],
+				'expected': function ( data ) {
+					// metadata  is merged.
+					data.splice( 2, 2 );
+					data.splice( 4, 3, { 'type': 'table' }, { 'type': '/table' } );
+				}
+			},
+			'structural replacement ending at an offset with metadata': {
+				'data': [
+					{
+						'type': 'alienMeta',
+						'attributes': {
+							'domElements': $( '<!-- foo -->' ).toArray()
+						}
+					},
+					{ 'type': '/alienMeta' },
+					{ 'type': 'paragraph' },
+					'F',
+					{
+						'type': 'alienMeta',
+						'attributes': {
+							'style': 'comment',
+							'text': ' inline '
+						}
+					},
+					{ 'type': '/alienMeta' },
+					'o', 'o',
+					{ 'type': '/paragraph' },
+					{
+						'type': 'alienMeta',
+						'attributes': {
+							'domElements': $( '<!-- bar -->' ).toArray()
+						}
+					},
+					{ 'type': '/alienMeta' },
+					{ 'type': 'paragraph' },
+					'B', 'a', 'r',
+					{ 'type': '/paragraph' }
+				],
+				'calls': [
+					['pushReplace', 0, 5, [ { 'type': 'table' }, { 'type': '/table' } ]],
+					['pushRetain', 5 ]
+				],
+				'expected': function ( data ) {
+					// metadata  is merged.
+					data.splice( 2, 2 );
+					data.splice( 4, 3, { 'type': 'table' }, { 'type': '/table' } );
+				}
+			},
+			'structural deletion ending at an offset with metadata': {
+				'data': [
+					{
+						'type': 'alienMeta',
+						'attributes': {
+							'domElements': $( '<!-- foo -->' ).toArray()
+						}
+					},
+					{ 'type': '/alienMeta' },
+					{ 'type': 'paragraph' },
+					'F',
+					{
+						'type': 'alienMeta',
+						'attributes': {
+							'style': 'comment',
+							'text': ' inline '
+						}
+					},
+					{ 'type': '/alienMeta' },
+					'o', 'o',
+					{ 'type': '/paragraph' },
+					{
+						'type': 'alienMeta',
+						'attributes': {
+							'domElements': $( '<!-- bar -->' ).toArray()
+						}
+					},
+					{ 'type': '/alienMeta' },
+					{ 'type': 'paragraph' },
+					'B', 'a', 'r',
+					{ 'type': '/paragraph' }
+				],
+				'calls': [
+					['pushReplace', 0, 5, [] ],
+					['pushRetain', 5 ]
+				],
+				'expected': function ( data ) {
+					// metadata  is merged.
+					data.splice( 2, 2 );
 					data.splice( 4, 3 );
 				}
 			}
