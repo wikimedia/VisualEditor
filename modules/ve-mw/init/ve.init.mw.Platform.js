@@ -66,7 +66,7 @@ ve.init.mw.Platform.prototype.addParsedMessages = function ( messages ) {
 /** @inheritdoc */
 ve.init.mw.Platform.prototype.getParsedMessage = function ( key ) {
 	if ( key in this.parsedMessages ) {
-		// Prefer parsed results from VisualEditorMessagesModule.php if available.
+		// Prefer parsed results from VisualEditorDataModule if available.
 		return this.parsedMessages[key];
 	}
 	// Fallback to regular messages, with mw.message html escaping applied.

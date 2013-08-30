@@ -38,7 +38,7 @@ $dir = dirname( __FILE__ ) . '/';
 $wgAutoloadClasses['ApiVisualEditor'] = $dir . 'ApiVisualEditor.php';
 $wgAutoloadClasses['ApiVisualEditorEdit'] = $dir . 'ApiVisualEditorEdit.php';
 $wgAutoloadClasses['VisualEditorHooks'] = $dir . 'VisualEditor.hooks.php';
-$wgAutoloadClasses['VisualEditorMessagesModule'] = $dir . 'VisualEditorMessagesModule.php';
+$wgAutoloadClasses['VisualEditorDataModule'] = $dir . 'VisualEditorDataModule.php';
 $wgExtensionMessagesFiles['VisualEditor'] = $dir . 'VisualEditor.i18n.php';
 
 // Register API modules
@@ -249,8 +249,8 @@ $wgResourceModules += array(
 		),
 	),
 
-	'ext.visualEditor.specialMessages' => $wgVisualEditorResourceTemplate + array(
-		'class' => 'VisualEditorMessagesModule'
+	'ext.visualEditor.data' => $wgVisualEditorResourceTemplate + array(
+		'class' => 'VisualEditorDataModule'
 	),
 
 	'ext.visualEditor.core' => $wgVisualEditorResourceTemplate + array(

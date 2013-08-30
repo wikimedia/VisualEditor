@@ -80,7 +80,6 @@ ve.init.sa.Platform.prototype.addParsedMessages = function ( messages ) {
 /** @inheritdoc */
 ve.init.sa.Platform.prototype.getParsedMessage = function ( key ) {
 	if ( key in this.parsedMessages ) {
-		// Prefer parsed results from VisualEditorMessagesModule.php if available.
 		return this.parsedMessages[key];
 	}
 	// Fallback to regular messages, html escaping applied.
