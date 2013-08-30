@@ -577,8 +577,13 @@ QUnit.test( 'newFromRemoval', function ( assert ) {
 						'type': 'replace',
 						'remove': ['B', 'a'],
 						'insert': [],
-						'removeMetadata': metaDoc.getMetadata().slice( 7, 10 ),
-						'insertMetadata': ve.dm.MetaLinearData.static.merge( metaDoc.getMetadata().slice( 7, 10 ) )
+						'removeMetadata': metaDoc.getMetadata().slice( 7, 9 ),
+						'insertMetadata': []
+					},
+					{
+						'type': 'replaceMetadata',
+						'remove': [],
+						'insert': ve.dm.MetaLinearData.static.merge( metaDoc.getMetadata().slice( 7, 9 ) )[0]
 					},
 					{ 'type': 'retain', 'length': 4 }
 				]
@@ -1139,22 +1144,34 @@ QUnit.test( 'newFromWrap', function ( assert ) {
 					{ 'type': 'replace',
 					  'remove': [ { 'type': 'list' }, { 'type': 'listItem', 'attributes': { 'styles': ['bullet'] } } ],
 					  'insert': [],
-					  'insertMetadata': ve.dm.MetaLinearData.static.merge( listMetaDoc.getMetadata().slice(0, 3) ),
-					  'removeMetadata': listMetaDoc.getMetadata().slice(0, 3)
+					  'insertMetadata': [],
+					  'removeMetadata': listMetaDoc.getMetadata().slice(0, 2)
+					},
+					{ 'type': 'replaceMetadata',
+					  'insert': ve.dm.MetaLinearData.static.merge( listMetaDoc.getMetadata().slice(0, 2) )[0],
+					  'remove': []
 					},
 					{ 'type': 'retain', 'length': 3 },
 					{ 'type': 'replace',
 					  'remove': [ { 'type': '/listItem' }, { 'type': 'listItem', 'attributes': { 'styles': ['bullet'] } } ],
 					  'insert': [],
-					  'insertMetadata': ve.dm.MetaLinearData.static.merge( listMetaDoc.getMetadata().slice(5, 8) ),
-					  'removeMetadata': listMetaDoc.getMetadata().slice(5, 8)
+					  'insertMetadata': [],
+					  'removeMetadata': listMetaDoc.getMetadata().slice(5, 7)
+					},
+					{ 'type': 'replaceMetadata',
+					  'insert': ve.dm.MetaLinearData.static.merge( listMetaDoc.getMetadata().slice(5, 7) )[0],
+					  'remove': []
 					},
 					{ 'type': 'retain', 'length': 3 },
 					{ 'type': 'replace',
 					  'remove': [ { 'type': '/listItem' }, { 'type': '/list' } ],
 					  'insert': [],
-					  'insertMetadata': ve.dm.MetaLinearData.static.merge( listMetaDoc.getMetadata().slice(10, 13) ),
-					  'removeMetadata': listMetaDoc.getMetadata().slice(10, 13)
+					  'insertMetadata': [],
+					  'removeMetadata': listMetaDoc.getMetadata().slice(10, 12)
+					},
+					{ 'type': 'replaceMetadata',
+					  'insert': ve.dm.MetaLinearData.static.merge( listMetaDoc.getMetadata().slice(10, 12) )[0],
+					  'remove': []
 					}
 				]
 			},

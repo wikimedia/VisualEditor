@@ -100,7 +100,32 @@ ve.dm.MetaList.prototype.onTransact = function ( tx, reversed ) {
 				// offset and index directly
 				ins = reversed ? ops[i].removeMetadata : ops[i].insertMetadata;
 				rm = reversed ? ops[i].insertMetadata : ops[i].removeMetadata;
-				if ( rm !== undefined ) {
+				if ( rm === undefined ) {
+					// no impact on metadata.
+					/* jshint noempty: false */
+				} else if ( ins.length === 0 ) {
+					for ( j = 0, jlen = rm.length; j < jlen; j++ ) {
+						if ( rm[j] !== undefined ) {
+							for ( k = 0, klen = rm[j].length; k < klen; k++ ) {
+								item = this.deleteRemovedItem( offset + j, k );
+								removedItems.push( { 'item': item, 'offset': offset + j, 'index': k } );
+							}
+						}
+					}
+				} else if ( rm.length === 0 ) {
+					itemIndex = -Math.pow(2, 53); // INT_MIN
+					for ( j = 0, jlen = ins.length; j < jlen; j++ ) {
+						if ( ins[j] !== undefined ) {
+							for ( k = 0, klen = ins[j].length; k < klen; k++ ) {
+								item = ve.dm.metaItemFactory.createFromElement( ins[j][k] );
+								// offset is pre-transaction, but we'll fix it up w/ setMove
+								this.addInsertedItem( offset, itemIndex++, item );
+								item.setMove( newOffset + j, k );
+								insertedItems.push( { 'item': item } );
+							}
+						}
+					}
+				} else {
 					// find the first itemIndex - the rest should be in order after it
 					for ( j = 0, jlen = rm.length; j < jlen; j++ ) {
 						if ( rm[j] !== undefined ) {
