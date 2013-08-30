@@ -141,7 +141,6 @@ ve.ui.MWReferenceDialog.prototype.initialize = function () {
 	this.search.connect( this, { 'select': 'onSearchSelect' } );
 
 	// Initialization
-	this.search.buildIndex();
 	this.panels.addItems( [ this.editPanel, this.searchPanel ] );
 	this.editPanel.$.append( this.contentFieldset.$, this.optionsFieldset.$ );
 	this.optionsFieldset.$.append( this.referenceGroupLabel.$, this.referenceGroupInput.$ );
@@ -190,6 +189,8 @@ ve.ui.MWReferenceDialog.prototype.onOpen = function () {
 	this.backButton.$.hide();
 	this.panels.showItem( this.editPanel );
 	this.useReference( ref );
+	this.search.buildIndex();
+	this.selectButton.setDisabled( !this.search.getResults().getItems().length );
 };
 
 /**
