@@ -69,6 +69,7 @@
 		<script src="../../ve/ve.LeafNode.js"></script>
 		<script src="../../ve/ve.Element.js"></script>
 		<script src="../../ve/ve.Document.js"></script>
+		<script src="../../ve/ve.EventSequencer.js"></script>
 		<script src="../../ve/dm/ve.dm.js"></script>
 		<script src="../../ve/dm/ve.dm.Model.js"></script>
 		<script src="../../ve/dm/ve.dm.ModelRegistry.js"></script>

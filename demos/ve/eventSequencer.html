@@ -1,0 +1,73 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<style>
+			#good, #bad {
+				min-height: 2em;
+				border: solid red 1px;
+			}
+		</style>
+		<script src="../../modules/jquery/jquery.js"></script>
+		<script src="../../modules/jquery/jquery.client.js"></script>
+		<script src="../../modules/oojs/oo.js"></script>
+		<script src="../../modules/unicodejs/unicodejs.js"></script>
+		<script src="../../modules/unicodejs/unicodejs.graphemebreak.js"></script>
+		<script src="../../modules/unicodejs/unicodejs.wordbreak.js"></script>
+		<script src="../../modules/ve/ve.js"></script>
+		<script src="../../modules/ve/ve.EventSequencer.js"></script>
+		<script src="../../modules/ve/ce/ve.ce.js"></script>
+		<script>
+			function onbodyload () {
+				var i, eventSequencer,
+					eventNames = ['compositionstart', 'compositionend',
+						'keydown', 'keyup', 'keypress'],
+					badDiv = document.getElementById( 'bad' ),
+					goodDiv = document.getElementById( 'good' );
+
+				eventSequencer = new ve.EventSequencer( goodDiv, eventNames,
+					ve.bind( console.log, console ) );
+				for( i = 0; i < eventNames.length; i++ ) {
+					addPrePostListeners( eventSequencer, eventNames[i] );
+					addSetTimeoutListeners( badDiv, eventNames[i] );
+				}
+				goodDiv.focus();
+			}
+
+			function addSetTimeoutListeners( node, eventName ) {
+				node.addEventListener( eventName, function ( e ) {
+					console.log( eventName + showEventCode( e ) + ': ' +
+						JSON.stringify( node.innerHTML ) );
+					setTimeout( function () {
+						console.log( 'setTimeout from ' + eventName +
+							showEventCode( e ) + ': ' +
+							JSON.stringify( node.innerHTML ) );
+					} );
+				});
+			}
+
+			function addPrePostListeners ( eventSequencer, eventName ) {
+				eventSequencer.addPreListener( eventName, function ( e ) {
+					console.log( '*** pre ' + eventName + showEventCode( e ) +
+						' ' + JSON.stringify( document.getElementById(
+						'good' ).innerHTML ) );
+				});
+				eventSequencer.addPostListener( eventName, function ( e ) {
+					console.log( '*** post ' + eventName + showEventCode( e ) +
+						' ' + JSON.stringify( document.getElementById(
+						'good' ).innerHTML ) );
+				});
+			}
+
+			function showEventCode( e ) {
+				return ( e && e.keyCode ) ? '(keyCode=' + e.keyCode + ')' : '';
+			}
+		</script>
+	</head>
+	<body onload="onbodyload()">
+		Good (ve.EventSequencer):
+		<div id="good" contenteditable="true"></div>
+		Bad (setTimeout):
+		<div id="bad" contenteditable="true"></div>
+	</body>
+</html>

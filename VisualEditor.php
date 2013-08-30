@@ -264,6 +264,7 @@ $wgResourceModules += array(
 			've/ve.LeafNode.js',
 			've/ve.Element.js',
 			've/ve.Document.js',
+			've/ve.EventSequencer.js',
 
 			// dm
 			've/dm/ve.dm.js',

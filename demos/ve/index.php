@@ -116,6 +116,7 @@ $html = file_get_contents( $page );
 		<script src="../../modules/ve/ve.LeafNode.js"></script>
 		<script src="../../modules/ve/ve.Element.js"></script>
 		<script src="../../modules/ve/ve.Document.js"></script>
+		<script src="../../modules/ve/ve.EventSequencer.js"></script>
 		<script src="../../modules/ve/dm/ve.dm.js"></script>
 		<script src="../../modules/ve/dm/ve.dm.Model.js"></script>
 		<script src="../../modules/ve/dm/ve.dm.ModelRegistry.js"></script>
