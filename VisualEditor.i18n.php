@@ -189,6 +189,7 @@ $messages['en'] = array(
 	'visualeditor-toolbar-cancel' => 'Cancel',
 	'visualeditor-toolbar-savedialog' => 'Save page',
 	'visualeditor-usernamespacepagelink' => 'Project:User namespace',
+	'visualeditor-version-label' => 'Version',
 	'visualeditor-viewpage-savewarning' => 'Are you sure you want to go back to view mode without saving first?',
 	'visualeditor-wikitext-warning' => 'You are using VisualEditor - [[{{MediaWiki:visualeditor-wikitext-warning-link}}|wikitext]] does not work here. Click "{{int:visualeditor-ca-editsource}}" to edit the page in wikitext mode – unsaved changes will be lost.',
 	'visualeditor-wikitext-warning-link' => 'Help:Wiki markup',
@@ -549,6 +550,8 @@ Parameters:
 {{Identical|Save page}}',
 	'visualeditor-usernamespacepagelink' => 'Name of a page describing the user namespace (NS2) in this project.
 {{doc-important|Do not translate "Project"; it is automatically converted to the wiki\'s project namespace.}}',
+	'visualeditor-version-label' => 'Label text for version number
+{{Identical|Version}}',
 	'visualeditor-viewpage-savewarning' => 'Text shown when the user tries to leave the editor without saving their changes',
 	'visualeditor-wikitext-warning' => 'Contents of notification displayed when Wikitext has been detected.
 

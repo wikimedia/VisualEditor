@@ -13,10 +13,17 @@ class VisualEditorDataModule extends ResourceLoaderModule {
 	/* Protected Members */
 
 	protected $origin = self::ORIGIN_USER_SITEWIDE;
+	protected $gitInfo;
+	protected $gitHeadHash;
 
 	/* Methods */
 
+	public function __construct () {
+		$this->gitInfo = new GitInfo( __DIR__ );
+	}
+
 	public function getScript( ResourceLoaderContext $context ) {
+		// Messages
 		$msgInfo = $this->getMessageInfo();
 		$parsedMesssages = array();
 		$messages = array();
@@ -29,6 +36,14 @@ class VisualEditorDataModule extends ResourceLoaderModule {
 			$messages[ $msgKey ] = $msgVal;
 		}
 
+		// Version information
+		$language = Language::factory( $context->getLanguage() );
+
+		$id = substr( $this->getGitHeadHash(), 0, 7 );
+		$url = $this->gitInfo->getHeadViewUrl();
+		$date = $this->gitInfo->getHeadCommitDate();
+		$dateString = $date ? $language->timeanddate( $date, true ) : '';
+
 		return
 			've.init.platform.addParsedMessages(' . FormatJson::encode(
 				$parsedMesssages,
@@ -37,7 +52,15 @@ class VisualEditorDataModule extends ResourceLoaderModule {
 			've.init.platform.addMessages(' . FormatJson::encode(
 				$messages,
 				ResourceLoader::inDebugMode()
-			) . ');';
+			) . ');'.
+			've.version = ' . FormatJson::encode(
+				array(
+					'id' => $id,
+					'url' => $url,
+					'timestamp' => $date,
+					'dateString' => $dateString,
+				), ResourceLoader::inDebugMode()
+			) . ';';
 	}
 
 	protected function getMessageInfo() {
@@ -110,11 +133,37 @@ class VisualEditorDataModule extends ResourceLoaderModule {
 
 	public function getModifiedTime( ResourceLoaderContext $context ) {
 		return max(
+			$this->getGitHeadModifiedTime( $context ),
 			$this->getMsgBlobMtime( $context->getLanguage() ),
 			// Also invalidate this module if this file changes (i.e. when messages were
 			// added or removed, or when the Javascript invocation in getScript is changed).
 			// Use 1 because 0 = now, would invalidate continously
 			file_exists( __FILE__ ) ? filemtime( __FILE__ ) : 1
 		);
+	}
+
+	protected function getGitHeadModifiedTime( ResourceLoaderContext $context ) {
+		$cache = wfGetCache( CACHE_ANYTHING );
+		$key = wfMemcKey( 'resourceloader', 'vedatamodule', 'changeinfo' );
+
+		$hash = $this->getGitHeadHash();
+
+		$result = $cache->get( $key );
+		if ( is_array( $result ) && $result['hash'] === $hash ) {
+			return $result['timestamp'];
+		}
+		$timestamp = wfTimestamp();
+		$cache->set( $key, array(
+			'hash' => $hash,
+			'timestamp' => $timestamp,
+		) );
+		return $timestamp;
+	}
+
+	protected function getGitHeadHash() {
+		if ( !$this->gitHeadHash ) {
+			$this->gitHeadHash = $this->gitInfo->getHeadSHA1();
+		}
+		return $this->gitHeadHash;
 	}
 }

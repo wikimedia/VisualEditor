@@ -682,6 +682,7 @@ $wgResourceModules += array(
 			'visualeditor-toolbar-cancel',
 			'visualeditor-toolbar-savedialog',
 			'visualeditor-viewpage-savewarning',
+			'visualeditor-version-label',
 			'visualeditor-wikitext-warning-title',
 			'visualeditor-window-title',
 
