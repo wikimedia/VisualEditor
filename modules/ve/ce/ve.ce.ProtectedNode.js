@@ -48,7 +48,7 @@ ve.ce.ProtectedNode.static = {};
  */
 ve.ce.ProtectedNode.static.$shieldTemplate = $( '<img>' )
 	.addClass( 've-ce-protectedNode-shield' )
-	.attr( 'src', 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==' );
+	.attr( 'src', 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7' );
 
 /**
  * Phantom element template.
