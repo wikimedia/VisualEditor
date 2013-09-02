@@ -452,6 +452,22 @@ QUnit.test( 'commit/rollback', function ( assert ) {
 					data.splice( 2, 2 );
 					data.splice( 4, 3 );
 				}
+			},
+			'preserves metadata on unwrap': {
+				'data': ve.dm.example.listWithMeta,
+				'calls': [
+					[ 'newFromWrap', new ve.Range( 1, 11 ),
+					  [ { 'type': 'list' } ], [],
+					  [ { 'type': 'listItem', 'attributes': {'styles': ['bullet']} } ], [] ]
+				],
+				'expected': function ( data ) {
+					data.splice( 35, 1 ); // remove '/list'
+					data.splice( 32, 1 ); // remove '/listItem'
+					data.splice( 20, 1 ); // remove 'listItem'
+					data.splice( 17, 1 ); // remove '/listItem'
+					data.splice(  5, 1 ); // remove 'listItem'
+					data.splice(  2, 1 ); // remove 'list'
+				}
 			}
 		};
 
@@ -473,9 +489,14 @@ QUnit.test( 'commit/rollback', function ( assert ) {
 
 		tx = new ve.dm.Transaction();
 		for ( i = 0; i < cases[msg].calls.length; i++ ) {
-			// pushReplace needs the document as its first argument
-			if ( cases[msg].calls[i][0] === 'pushReplace' ) {
+			// some calls need the document as its first argument
+			if ( /^(pushReplace$|new)/.test( cases[msg].calls[i][0] ) ) {
 				cases[msg].calls[i].splice( 1, 0, testDoc );
+			}
+			// special case static methods of Transaction
+			if ( /^new/.test( cases[msg].calls[i][0] ) ) {
+				tx = ve.dm.Transaction[cases[msg].calls[i][0]].apply( null, cases[msg].calls[i].slice( 1 ) );
+				break;
 			}
 			tx[cases[msg].calls[i][0]].apply( tx, cases[msg].calls[i].slice( 1 ) );
 		}

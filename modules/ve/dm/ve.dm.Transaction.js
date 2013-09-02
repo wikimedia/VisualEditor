@@ -890,11 +890,22 @@ ve.dm.Transaction.prototype.pushReplace = function ( doc, offset, removeLength, 
 		removeMetadata = metadataReplace.remove,
 		insertMetadata = metadataReplace.insert;
 
-	if ( lastOp && lastOp.type === 'replace' && !lastOp.removeMetadata && !removeMetadata ) {
-		// simple replaces can just be concatenated
-		// TODO: allow replaces with meta to be merged?
-		lastOp.insert = lastOp.insert.concat( insert );
-		lastOp.remove = lastOp.remove.concat( remove );
+	// simple replaces can be combined
+	// (but don't do this if there is metadata to be removed and the previous
+	// replace had a non-zero insertion, because that would shift the metadata
+	// location.)
+	if (
+		lastOp && lastOp.type === 'replace' &&
+		!( lastOp.insert.length > 0 && removeMetadata !== undefined )
+	) {
+		lastOp = this.operations.pop();
+		this.lengthDifference -= lastOp.insert.length - lastOp.remove.length;
+		this.pushReplace(
+			doc,
+			offset - lastOp.remove.length,
+			lastOp.remove.length + removeLength,
+			lastOp.insert.concat( insert )
+		);
 	} else {
 		op = {
 			'type': 'replace',
@@ -906,8 +917,8 @@ ve.dm.Transaction.prototype.pushReplace = function ( doc, offset, removeLength, 
 			op.insertMetadata = insertMetadata;
 		}
 		this.operations.push( op );
+		this.lengthDifference += insert.length - remove.length;
 	}
-	this.lengthDifference += insert.length - remove.length;
 };
 
 /**

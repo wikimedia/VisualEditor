@@ -1024,6 +1024,9 @@ QUnit.test( 'newFromContentBranchConversion', function ( assert ) {
 QUnit.test( 'newFromWrap', function ( assert ) {
 	var i, key,
 		doc = ve.dm.example.createExampleDocument(),
+		metaDoc = ve.dm.example.createExampleDocument( 'withMeta' ),
+		listMetaDoc = ve.dm.example.createExampleDocument( 'listWithMeta' ),
+		listDoc = ve.dm.example.createExampleDocumentFromObject( 'listDoc', null, { 'listDoc': listMetaDoc.getData() } ),
 		cases = {
 			'changes a heading to a paragraph': {
 				'args': [doc, new ve.Range( 1, 4 ), [ { 'type': 'heading', 'attributes': { 'level': 1 } } ], [ { 'type': 'paragraph' } ], [], []],
@@ -1046,6 +1049,25 @@ QUnit.test( 'newFromWrap', function ( assert ) {
 					{ 'type': 'retain', 'length': 10 },
 					{ 'type': 'replace', 'remove': [ { 'type': '/listItem' }, { 'type': '/list' } ], 'insert': [] },
 					{ 'type': 'retain', 'length': 37 }
+				]
+			},
+			'unwraps a multiple-item list': {
+				'args': [listDoc, new ve.Range( 1, 11 ), [ { 'type': 'list' } ], [], [ { 'type': 'listItem', 'attributes': {'styles': ['bullet']} } ], [] ],
+				'ops': [
+					{ 'type': 'replace',
+					  'remove': [ { 'type': 'list' }, { 'type': 'listItem', 'attributes': { 'styles': ['bullet'] } } ],
+					  'insert': []
+					},
+					{ 'type': 'retain', 'length': 3 },
+					{ 'type': 'replace',
+					  'remove': [ { 'type': '/listItem' }, { 'type': 'listItem', 'attributes': { 'styles': ['bullet'] } } ],
+					  'insert': []
+					},
+					{ 'type': 'retain', 'length': 3 },
+					{ 'type': 'replace',
+					  'remove': [ { 'type': '/listItem' }, { 'type': '/list' } ],
+					  'insert': []
+					}
 				]
 			},
 			'replaces a table with a list': {
@@ -1092,6 +1114,48 @@ QUnit.test( 'newFromWrap', function ( assert ) {
 					{ 'type': 'retain', 'length': 3 },
 					{ 'type': 'replace', 'remove': [], 'insert': [ { 'type': '/definitionListItem' }, { 'type': '/definitionList' } ] },
 					{ 'type': 'retain', 'length': 2 }
+				]
+			},
+			'metadata is preserved on wrap': {
+				'args': [metaDoc, new ve.Range( 1, 10 ), [ { 'type': 'paragraph' } ], [ { 'type': 'heading', 'level': 1 } ], [], [] ],
+				'ops': [
+					{ 'type': 'replace',
+					  'remove': [ { 'type': 'paragraph' } ],
+					  'insert': [ { 'type': 'heading', 'level': 1 } ],
+					  'insertMetadata': metaDoc.getMetadata().slice(0, 1),
+					  'removeMetadata': metaDoc.getMetadata().slice(0, 1)
+					},
+					{ 'type': 'retain', 'length': 9 },
+					{ 'type': 'replace',
+					  'remove': [ { 'type': '/paragraph' } ],
+					  'insert': [ { 'type': '/heading' } ]
+					},
+					{ 'type': 'retain', 'length': 2 }
+				]
+			},
+			'metadata is preserved on unwrap': {
+				'args': [listMetaDoc, new ve.Range( 1, 11 ), [ { 'type': 'list' } ], [], [ { 'type': 'listItem', 'attributes': {'styles': ['bullet']} } ], [] ],
+				'ops': [
+					{ 'type': 'replace',
+					  'remove': [ { 'type': 'list' }, { 'type': 'listItem', 'attributes': { 'styles': ['bullet'] } } ],
+					  'insert': [],
+					  'insertMetadata': ve.dm.MetaLinearData.static.merge( listMetaDoc.getMetadata().slice(0, 3) ),
+					  'removeMetadata': listMetaDoc.getMetadata().slice(0, 3)
+					},
+					{ 'type': 'retain', 'length': 3 },
+					{ 'type': 'replace',
+					  'remove': [ { 'type': '/listItem' }, { 'type': 'listItem', 'attributes': { 'styles': ['bullet'] } } ],
+					  'insert': [],
+					  'insertMetadata': ve.dm.MetaLinearData.static.merge( listMetaDoc.getMetadata().slice(5, 8) ),
+					  'removeMetadata': listMetaDoc.getMetadata().slice(5, 8)
+					},
+					{ 'type': 'retain', 'length': 3 },
+					{ 'type': 'replace',
+					  'remove': [ { 'type': '/listItem' }, { 'type': '/list' } ],
+					  'insert': [],
+					  'insertMetadata': ve.dm.MetaLinearData.static.merge( listMetaDoc.getMetadata().slice(10, 13) ),
+					  'removeMetadata': listMetaDoc.getMetadata().slice(10, 13)
+					}
 				]
 			},
 			'checks integrity of unwrapOuter parameter': {

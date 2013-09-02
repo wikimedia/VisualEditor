@@ -589,6 +589,118 @@ ve.dm.example.withMetaMetaData = [
 ];
 
 
+ve.dm.example.listWithMeta = [
+	//  0 - Beginning of list
+	{
+		'type': 'alienMeta',
+		'attributes': {
+			'domElements': $( '<meta property="one" />' ).toArray()
+		}
+	},
+	{ 'type': '/alienMeta' },
+	{ 'type': 'list' },
+	//  1 - Beginning of first list item
+	{
+		'type': 'alienMeta',
+		'attributes': {
+			'domElements': $( '<meta property="two" />' ).toArray()
+		}
+	},
+	{ 'type': '/alienMeta' },
+	{ 'type': 'listItem', 'attributes': { 'styles': ['bullet'] } },
+	//  2 - Beginning of paragraph
+	{
+		'type': 'alienMeta',
+		'attributes': {
+			'domElements': $( '<meta property="three" />' ).toArray()
+		}
+	},
+	{ 'type': '/alienMeta' },
+	{ 'type': 'paragraph' },
+	//  3 - Plain "a"
+	{
+		'type': 'alienMeta',
+		'attributes': {
+			'domElements': $( '<meta property="four" />' ).toArray()
+		}
+	},
+	{ 'type': '/alienMeta' },
+	'a',
+	//  4 - End of paragraph
+	{
+		'type': 'alienMeta',
+		'attributes': {
+			'domElements': $( '<meta property="five" />' ).toArray()
+		}
+	},
+	{ 'type': '/alienMeta' },
+	{ 'type': '/paragraph' },
+	//  5 - End of first list item
+	{
+		'type': 'alienMeta',
+		'attributes': {
+			'domElements': $( '<meta property="six" />' ).toArray()
+		}
+	},
+	{ 'type': '/alienMeta' },
+	{ 'type': '/listItem' },
+	//  6 - Beginning of second list item
+	{
+		'type': 'alienMeta',
+		'attributes': {
+			'domElements': $( '<meta property="seven" />' ).toArray()
+		}
+	},
+	{ 'type': '/alienMeta' },
+	{ 'type': 'listItem', 'attributes': { 'styles': ['bullet'] } },
+	//  7 - Beginning of paragraph
+	{
+		'type': 'alienMeta',
+		'attributes': {
+			'domElements': $( '<meta property="eight" />' ).toArray()
+		}
+	},
+	{ 'type': '/alienMeta' },
+	{ 'type': 'paragraph' },
+	//  8 - Plain "b"
+	{
+		'type': 'alienMeta',
+		'attributes': {
+			'domElements': $( '<meta property="nine" />' ).toArray()
+		}
+	},
+	{ 'type': '/alienMeta' },
+	'b',
+	//  9 - End of paragraph
+	{
+		'type': 'alienMeta',
+		'attributes': {
+			'domElements': $( '<meta property="ten" />' ).toArray()
+		}
+	},
+	{ 'type': '/alienMeta' },
+	{ 'type': '/paragraph' },
+	// 10 - End of second list item
+	{
+		'type': 'alienMeta',
+		'attributes': {
+			'domElements': $( '<meta property="eleven" />' ).toArray()
+		}
+	},
+	{ 'type': '/alienMeta' },
+	{ 'type': '/listItem' },
+	// 11 - End of list
+	{
+		'type': 'alienMeta',
+		'attributes': {
+			'domElements': $( '<meta property="twelve" />' ).toArray()
+		}
+	},
+	{ 'type': '/alienMeta' },
+	{ 'type': '/list' }
+];
+
+
 ve.dm.example.complexTableHtml = '<table><caption>Foo</caption><thead><tr><th>Bar</th></tr></thead>' +
 	'<tfoot><tr><td>Baz</td></tr></tfoot><tbody><tr><td>Quux</td><td>Whee</td></tr></tbody></table>';
 
