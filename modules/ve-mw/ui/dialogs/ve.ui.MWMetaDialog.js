@@ -45,6 +45,8 @@ ve.mixinClass( ve.ui.MWMetaDialog, ve.ui.PagedDialog );
 
 /* Static Properties */
 
+ve.ui.MWMetaDialog.static.name = 'meta';
+
 ve.ui.MWMetaDialog.static.titleMessage = 'visualeditor-dialog-meta-title';
 
 ve.ui.MWMetaDialog.static.icon = 'settings';
@@ -456,4 +458,4 @@ ve.ui.MWMetaDialog.prototype.insertMetaListItem = function ( metaBase ) {
 
 /* Registration */
 
-ve.ui.dialogFactory.register( 'mwMeta', ve.ui.MWMetaDialog );
+ve.ui.dialogFactory.register( ve.ui.MWMetaDialog );

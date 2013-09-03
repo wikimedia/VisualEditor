@@ -29,37 +29,20 @@ ve.inheritClass( ve.ui.MWMediaEditDialog, ve.ui.MWDialog );
 
 /* Static Properties */
 
+ve.ui.MWMediaEditDialog.static.name = 'mediaEdit';
+
 ve.ui.MWMediaEditDialog.static.titleMessage = 'visualeditor-dialog-media-title';
 
 ve.ui.MWMediaEditDialog.static.icon = 'picture';
 
 ve.ui.MWMediaEditDialog.static.toolbarGroups = [
-	{
-		'include': [ 'history' ],
-		'promote': [
-			'history/undo',
-			'history/redo'
-		]
-	},
-	{
-		'include': [ 'textStyle', 'meta', 'utility/clear' ],
-		'promote': [
-			'textStyle/bold',
-			'textStyle/italic',
-			'meta/link'
-		],
-		'demote': [ 'utility/clear' ]
-	},
-	{ 'include': [ 'object' ], 'exclude': [ 'object/referenceList/mw' ] }
+	{ 'include': [ 'undo', 'redo' ] },
+	{ 'include': [ 'bold', 'italic', 'link', 'clear' ] },
+	{ 'include': '*', 'exclude': [ 'referenceList' ] }
 ];
 
 ve.ui.MWMediaEditDialog.static.surfaceCommands = [
-	'history/undo',
-	'history/redo',
-	'textStyle/bold',
-	'textStyle/italic',
-	'meta/link/mw',
-	'utility/clear'
+	'undo', 'redo', 'bold', 'italic', 'link', 'clear'
 ];
 
 /* Methods */
@@ -161,4 +144,4 @@ ve.ui.MWMediaEditDialog.prototype.onClose = function ( action ) {
 
 /* Registration */
 
-ve.ui.dialogFactory.register( 'mwMediaEdit', ve.ui.MWMediaEditDialog );
+ve.ui.dialogFactory.register( ve.ui.MWMediaEditDialog );
