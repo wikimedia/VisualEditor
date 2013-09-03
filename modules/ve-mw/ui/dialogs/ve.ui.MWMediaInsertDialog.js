@@ -66,7 +66,7 @@ ve.ui.MWMediaInsertDialog.prototype.onClose = function ( action ) {
 
 	if ( action === 'insert' ) {
 		info = this.item.imageinfo[0];
-		this.surface.getModel().getFragment().insertContent( [
+		this.surface.getModel().getFragment().collapseRangeToEnd().insertContent( [
 			{
 				'type': 'mwBlockImage',
 				'attributes': {
