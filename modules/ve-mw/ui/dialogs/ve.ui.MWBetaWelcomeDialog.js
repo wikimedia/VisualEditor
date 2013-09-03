@@ -43,12 +43,11 @@ ve.ui.MWBetaWelcomeDialog.prototype.initialize = function () {
 	ve.ui.MWDialog.prototype.initialize.call( this );
 
 	// Properties
-	this.$content = this.$$( '<div>' )
-		.addClass( 've-ui-mwBetaWelcomeDialog-content' )
-		.text(
-			ve.msg( 'visualeditor-dialog-beta-welcome-content', $( '#ca-edit' ).text() )
-		);
-
+	this.contentLayout = new ve.ui.PanelLayout( {
+		'$$': this.frame.$$,
+		'scrollable': true,
+		'padded': true
+	} );
 	this.continueButton = new ve.ui.ButtonWidget( {
 		'$$': this.$$,
 		'label': ve.msg( 'visualeditor-dialog-beta-welcome-action-continue' ),
@@ -59,7 +58,10 @@ ve.ui.MWBetaWelcomeDialog.prototype.initialize = function () {
 	this.continueButton.connect( this, { 'click': [ 'close', 'close' ] } );
 
 	// Initialization
-	this.$body.append( this.$content );
+	this.contentLayout.$
+		.addClass( 've-ui-mwBetaWelcomeDialog-content' )
+		.text( ve.msg( 'visualeditor-dialog-beta-welcome-content', $( '#ca-edit' ).text() ) );
+	this.$body.append( this.contentLayout.$ );
 	this.$foot.append( this.continueButton.$ );
 };
 
