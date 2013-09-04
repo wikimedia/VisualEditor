@@ -80,7 +80,7 @@ ve.mixinClass( ve.dm.MetaList, ve.EventEmitter );
  * @emits remove
  */
 ve.dm.MetaList.prototype.onTransact = function ( tx, reversed ) {
-	var i, j, k, ilen, jlen, klen, ins, rm, retain, itemIndex, item,
+	var i, j, k, ilen, jlen, klen, ins, rm, itemIndex, item,
 		offset = 0, newOffset = 0, index = 0, ops = tx.getOperations(),
 		insertedItems = [], removedItems = [];
 	// Look for replaceMetadata operations in the transaction and insert/remove items as appropriate
@@ -100,12 +100,11 @@ ve.dm.MetaList.prototype.onTransact = function ( tx, reversed ) {
 				// offset and index directly
 				ins = reversed ? ops[i].removeMetadata : ops[i].insertMetadata;
 				rm = reversed ? ops[i].insertMetadata : ops[i].removeMetadata;
-				retain = ops[i].retainMetadata || 0;
 				if ( rm !== undefined ) {
 					// find the first itemIndex - the rest should be in order after it
 					for ( j = 0, jlen = rm.length; j < jlen; j++ ) {
 						if ( rm[j] !== undefined ) {
-							itemIndex = this.findItem( offset + retain + j, 0 );
+							itemIndex = this.findItem( offset + j, 0 );
 							break;
 						}
 					}
@@ -115,7 +114,7 @@ ve.dm.MetaList.prototype.onTransact = function ( tx, reversed ) {
 						if ( item !== undefined ) {
 							for ( k = 0, klen = item.length; k < klen; k++ ) {
 								// Queue up the move for later so we don't break the metaItem ordering
-								this.items[itemIndex].setMove( newOffset + retain + j, k );
+								this.items[itemIndex].setMove( newOffset + j, k );
 								itemIndex++;
 							}
 						}

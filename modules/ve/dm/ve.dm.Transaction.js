@@ -887,7 +887,6 @@ ve.dm.Transaction.prototype.pushReplace = function ( doc, offset, removeLength, 
 		lastOp = end >= 0 ? this.operations[end] : null,
 		remove = doc.getData( new ve.Range( offset, offset + removeLength ) ),
 		metadataReplace = doc.getMetadataReplace( offset, removeLength, insert ),
-		retainMetadata = metadataReplace.retain,
 		removeMetadata = metadataReplace.remove,
 		insertMetadata = metadataReplace.insert;
 
@@ -903,7 +902,6 @@ ve.dm.Transaction.prototype.pushReplace = function ( doc, offset, removeLength, 
 			'insert': insert
 		};
 		if ( removeMetadata !== undefined ) {
-			op.retainMetadata = retainMetadata;
 			op.removeMetadata = removeMetadata;
 			op.insertMetadata = insertMetadata;
 		}
