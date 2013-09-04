@@ -31,7 +31,7 @@ ve.dm.Transaction = function VeDmTransaction() {
  */
 ve.dm.Transaction.newFromInsertion = function ( doc, offset, insertion ) {
 	var tx = new ve.dm.Transaction(),
-		data = doc.getData();
+		data = doc.data;
 	// Fix up the insertion
 	insertion = doc.fixupInsertion( insertion, offset );
 	// Retain up to insertion point, if needed
@@ -39,7 +39,7 @@ ve.dm.Transaction.newFromInsertion = function ( doc, offset, insertion ) {
 	// Insert data
 	tx.pushReplace( doc, insertion.offset, insertion.remove, insertion.data );
 	// Retain to end of document, if needed (for completeness)
-	tx.pushRetain( data.length - insertion.offset );
+	tx.pushRetain( data.getLength() - ( insertion.offset + insertion.remove ) );
 	return tx;
 };
 
@@ -73,11 +73,11 @@ ve.dm.Transaction.newFromRemoval = function ( doc, range ) {
 		removeStart = null,
 		removeEnd = null,
 		tx = new ve.dm.Transaction(),
-		data = doc.getData();
+		data = doc.data;
 	// Validate range
 	if ( range.isCollapsed() ) {
 		// Empty range, nothing to remove, retain up to the end of the document (for completeness)
-		tx.pushRetain( data.length );
+		tx.pushRetain( data.getLength() );
 		return tx;
 	}
 	// Select nodes and validate selection
@@ -102,7 +102,7 @@ ve.dm.Transaction.newFromRemoval = function ( doc, range ) {
 		}
 		tx.pushRetain( removeStart );
 		tx.addSafeRemoveOps( doc, removeStart, removeEnd );
-		tx.pushRetain( data.length - removeEnd );
+		tx.pushRetain( data.getLength() - removeEnd );
 		// All done
 		return tx;
 	}
@@ -149,7 +149,7 @@ ve.dm.Transaction.newFromRemoval = function ( doc, range ) {
 		offset = removeEnd;
 	}
 	// Retain up to the end of the document
-	tx.pushRetain( data.length - offset );
+	tx.pushRetain( data.getLength() - offset );
 	return tx;
 };
 
@@ -570,7 +570,7 @@ ve.dm.Transaction.newFromWrap = function ( doc, range, unwrapOuter, wrapOuter, u
 						tx.pushReplace( doc, i, unwrapEach.length, ve.copy( wrapEach ) );
 
 						// Store this offset for later
-						startOffset = i;
+						startOffset = i + unwrapEach.length;
 					}
 					depth++;
 				} else {
@@ -578,10 +578,12 @@ ve.dm.Transaction.newFromWrap = function ( doc, range, unwrapOuter, wrapOuter, u
 					depth--;
 					if ( depth === 0 ) {
 						// We are at the end of a top-level element
+						// Advance past the element, then back up past the unwrapEach
+						j = ( i + 1 ) - unwrapEach.length;
 						// Retain the contents of what we're wrapping
-						tx.pushRetain( i - startOffset + 1 - unwrapEach.length*2 );
+						tx.pushRetain( j - startOffset );
 						// Replace the closing elements
-						tx.pushReplace( doc, i + 1 - unwrapEach.length, unwrapEach.length, ve.copy( closingWrapEach ) );
+						tx.pushReplace( doc, j, unwrapEach.length, ve.copy( closingWrapEach ) );
 					}
 				}
 			}
@@ -592,14 +594,11 @@ ve.dm.Transaction.newFromWrap = function ( doc, range, unwrapOuter, wrapOuter, u
 		tx.pushRetain( range.end - range.start );
 	}
 
-	if ( wrapOuter.length > 0 || unwrapOuter.length > 0 ) {
-		tx.pushReplace( doc, range.end, unwrapOuter.length, closingArray( wrapOuter ) );
-	}
+	// this is a no-op if unwrapOuter.length===0 and wrapOuter.length===0
+	tx.pushReplace( doc, range.end, unwrapOuter.length, closingArray( wrapOuter ) );
 
 	// Retain up to the end of the document
-	if ( range.end < doc.data.getLength() ) {
-		tx.pushRetain( doc.data.getLength() - range.end - unwrapOuter.length );
-	}
+	tx.pushRetain( doc.data.getLength() - range.end - unwrapOuter.length );
 
 	return tx;
 };
@@ -915,7 +914,6 @@ ve.dm.Transaction.prototype.pushReplace = function ( doc, offset, removeLength, 
 
 /**
  * Add a replace metadata operation
- * // TODO: this is a copy/paste of pushReplace (at the moment). Consider a refactor.
  *
  * @method
  * @param {Array} remove Metadata to remove
