@@ -132,6 +132,6 @@ ve.ui.LanguageInspectorTool.static.name = 'language';
 ve.ui.LanguageInspectorTool.static.group = 'meta';
 ve.ui.LanguageInspectorTool.static.icon = 'language';
 ve.ui.LanguageInspectorTool.static.titleMessage = 'visualeditor-annotationbutton-language-tooltip';
-ve.ui.LanguageInspectorTool.static.inspector = 'meta/language';
+ve.ui.LanguageInspectorTool.static.inspector = 'language';
 ve.ui.LanguageInspectorTool.static.modelClasses = [ ve.dm.LanguageAnnotation ];
 ve.ui.toolFactory.register( ve.ui.LanguageInspectorTool );
