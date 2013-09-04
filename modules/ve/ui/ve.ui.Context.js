@@ -245,12 +245,12 @@ ve.ui.Context.prototype.update = function () {
  * @chainable
  */
 ve.ui.Context.prototype.updateDimensions = function ( transition ) {
-	var $container, focusableOffset, focusableWidth,
+	var $node, $container, focusableOffset, focusableWidth, nodePosition, cursorPosition, position,
 		surface = this.surface.getView(),
 		inspector = this.inspectors.getCurrent(),
 		focusedNode = surface.getFocusedNode(),
 		surfaceOffset = surface.$.offset(),
-		$node, nodePosition, cursorPosition, position;
+		rtl = this.surface.view.getDir() === 'rtl';
 
 	$container = inspector ? this.inspectors.$ : this.$menu;
 	if ( focusedNode ) {
@@ -263,10 +263,9 @@ ve.ui.Context.prototype.updateDimensions = function ( transition ) {
 				$node, this.surface.$
 			);
 			position = { 'y': focusableOffset.top };
-
-			// When inspector is embedded in RTL, it requires
-			// adjustments to the relative positioning (pop up on the other side):
-			if ( this.surface.view.getDir() === 'rtl' ) {
+			// When context is embedded in RTL, it requires adjustments to the relative
+			// positioning (pop up on the other side):
+			if ( rtl ) {
 				position.x = focusableOffset.left;
 				this.popup.align = 'left';
 			} else {
@@ -276,10 +275,11 @@ ve.ui.Context.prototype.updateDimensions = function ( transition ) {
 			}
 		} else {
 			// Get the position of the focusedNode:
-			position = {
-				x: nodePosition.left,
-				y: nodePosition.top
-			};
+			position = { 'x': nodePosition.left, 'y': nodePosition.top + $node.outerHeight() };
+			// When the context is displayed in LTR, it should be on the right of the node
+			if ( !rtl ) {
+				position.x += $node.outerWidth();
+			}
 			this.popup.align = 'center';
 		}
 	} else {
@@ -289,8 +289,8 @@ ve.ui.Context.prototype.updateDimensions = function ( transition ) {
 
 		// Correct for surface offset:
 		position = {
-			x: cursorPosition.end.x - surfaceOffset.left,
-			y: cursorPosition.end.y - surfaceOffset.top
+			'x': cursorPosition.end.x - surfaceOffset.left,
+			'y': cursorPosition.end.y - surfaceOffset.top
 		};
 		this.popup.align = 'center';
 	}
