@@ -404,15 +404,21 @@
 	// on this page. See above for why it may be false.
 	mw.libs.ve = init;
 
-	if ( !init.isAvailable ) {
+	if ( init.isAvailable ) {
+		$( 'html' ).addClass( 've-available' );
+	} else {
 		$( 'html' ).addClass( 've-not-available' );
+		// Don't return here because we do want the skin setup to consistently happen
+		// for e.g. "Edit" > "Edit source" even when VE is not available.
 	}
 
 	if ( !userPrefEnabled ) {
+		// However if ve is not available because of user preferences (as opposed
+		// to because of the page, namespace, browser etc.) then we do want to
+		// return early as in that case even transformation of edit source should
+		// not be done.
 		return;
 	}
-
-	$( 'html' ).addClass( 've-available' );
 
 	$( function () {
 		if ( init.isAvailable && isViewPage ) {
