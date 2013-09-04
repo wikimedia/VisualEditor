@@ -156,7 +156,10 @@
 		"groups": [
 			{
 				"name": "Utilities",
-				"classes": ["ve", "ve.EventEmitter", "ve.Registry", "ve.Factory", "ve.Range", "ve.Element"]
+				"classes": [
+					"ve", "ve.EventEmitter", "ve.Registry", "ve.Factory",
+					"ve.Range", "ve.Element", "ve.EventSequencer"
+				]
 			},
 			{
 				"name": "Factories",
