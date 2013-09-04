@@ -89,3 +89,20 @@ Browser classes:
 jQuery classes:
 * jQuery
 * jQuery.Event
+
+## Add a new javascript class
+
+When a new javascript class is added, the file must be referenced in a number of places
+before it can be used.
+
+Test files:
+* VisualEditor.hooks.php in onResourceLoaderTestModules
+
+Regular files:
+* .docs/categories.json in General->Utilities (or somewhere more specific)
+* VisualEditor.php in ext.visualEditor.core (or somewhere more specific)
+* Run `php maintenance/makeStaticLoader.php --target demo --write-file demos/ve/index.php`
+* Run `php maintenance/makeStaticLoader.php --target test --write-file modules/ve/test/index.php`
+
+makeStaticLoader.php is a maintenance script to automatically generate an HTML document fragment
+containing script tags in dependency order (for standalone environments without ResourceLoader).
