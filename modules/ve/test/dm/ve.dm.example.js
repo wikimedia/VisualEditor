@@ -126,6 +126,7 @@ ve.dm.example.createExampleDocumentFromObject = function ( name, store, object )
 	if ( object[name].internalItems ) {
 		for ( i = 0; i < object[name].internalItems.length; i++ ) {
 			doc.internalList.queueItemHtml(
+				object[name].internalItems[i].group,
 				object[name].internalItems[i].key,
 				object[name].internalItems[i].body
 			);
@@ -412,8 +413,8 @@ ve.dm.example.internalData = [
 ];
 
 ve.dm.example.internalData.internalItems = [
-	{ 'key': 'bar', 'body': 'Bar' },
-	{ 'key': 'baz', 'body': 'Baz' }
+	{ 'group': 'test', 'key': 'bar', 'body': 'Bar' },
+	{ 'group': 'test', 'key': 'baz', 'body': 'Baz' }
 ];
 
 ve.dm.example.withMeta = [
