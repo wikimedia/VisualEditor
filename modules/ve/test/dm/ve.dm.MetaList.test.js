@@ -106,7 +106,6 @@ QUnit.test( 'onTransact', function ( assert ) {
 					[ 'pushRetain', 1 ],
 					[ 'pushReplaceMetadata', [ ve.dm.example.withMetaMetaData[9][0] ], [] ],
 					[ 'pushRetain', 2 ],
-					[ 'pushRetainMetadata', 2 ],
 					// The two operations below have to be in this order because of bug 46138
 					[ 'pushReplace', doc, 11, 0, [ { 'type': 'paragraph' }, 'a', 'b', 'c', { 'type': '/paragraph' } ] ],
 					[ 'pushReplaceMetadata', [], [ comment ] ]
@@ -123,7 +122,7 @@ QUnit.test( 'onTransact', function ( assert ) {
 		for ( j = 0; j < cases[i].calls.length; j++ ) {
 			tx[cases[i].calls[j][0]].apply( tx, cases[i].calls[j].slice( 1 ) );
 		}
-		doc = ve.dm.example.createExampleDocument( 'withMeta' ),
+		doc = ve.dm.example.createExampleDocument( 'withMeta' );
 		surface = new ve.dm.Surface( doc );
 		list = new ve.dm.MetaList( surface );
 		// Test both the transaction-via-surface and transaction-via-document flows
