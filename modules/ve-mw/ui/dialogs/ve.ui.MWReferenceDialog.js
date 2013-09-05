@@ -39,7 +39,7 @@ ve.ui.MWReferenceDialog.static.toolbarGroups = [
 	{ 'include': [ 'undo', 'redo' ] },
 	{ 'include': [ 'bold', 'italic', 'link', 'clear' ] },
 	{ 'include': [ 'number', 'bullet', 'outdent', 'indent' ] },
-	{ 'include': '*', 'exclude': [ 'reference', 'referenceList' ] }
+	{ 'include': '*', 'exclude': [ { 'group': 'format' }, 'reference', 'referenceList' ] }
 ];
 
 ve.ui.MWReferenceDialog.static.surfaceCommands = [
