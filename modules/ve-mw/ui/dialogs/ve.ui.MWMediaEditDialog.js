@@ -38,7 +38,14 @@ ve.ui.MWMediaEditDialog.static.icon = 'picture';
 ve.ui.MWMediaEditDialog.static.toolbarGroups = [
 	{ 'include': [ 'undo', 'redo' ] },
 	{ 'include': [ 'bold', 'italic', 'link', 'clear' ] },
-	{ 'include': '*', 'exclude': [ 'referenceList' ] }
+	{
+		'include': '*',
+		'exclude': [
+			{ 'group': 'format' },
+			{ 'group': 'structure' },
+			'referenceList'
+		]
+	}
 ];
 
 ve.ui.MWMediaEditDialog.static.surfaceCommands = [
