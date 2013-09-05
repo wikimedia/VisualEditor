@@ -44,10 +44,8 @@ QUnit.test( 'getOffsetFrom(Element|Text)Node', function ( assert ) {
 					1, 1,
 					2,
 					3,
-					// TODO: offset 7 should return 4
-					4, 4, 6,
-					// TODO: offset 16 should return 6
-					6, 6, 6, 6, 6, 6, 6, 6, null, 6, 6, 6, 6,
+					4, 4, 4,
+					6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
 					7,
 					8,
 					9, 9,
@@ -60,8 +58,7 @@ QUnit.test( 'getOffsetFrom(Element|Text)Node', function ( assert ) {
 		expected += testCases[i].expected.length;
 	}
 
-	// HACK: one case skips
-	QUnit.expect( expected - 1 );
+	QUnit.expect( expected );
 
 	function testOffsets( parent, testCase, expectedIndex ) {
 		var i;
@@ -69,14 +66,11 @@ QUnit.test( 'getOffsetFrom(Element|Text)Node', function ( assert ) {
 			case Node.ELEMENT_NODE:
 				for ( i = 0; i <= parent.childNodes.length; i++ ) {
 					expectedIndex++;
-					// TODO: expected should never be null
-					if ( testCase.expected[expectedIndex] !== null ) {
-						assert.equal(
-							ve.ce.getOffsetFromElementNode( parent, i ),
-							testCase.expected[expectedIndex],
-							testCase.msg + ': offset ' + i + ' in <' + parent.nodeName.toLowerCase() + '>'
-						);
-					}
+					assert.equal(
+						ve.ce.getOffsetFromElementNode( parent, i ),
+						testCase.expected[expectedIndex],
+						testCase.msg + ': offset ' + i + ' in <' + parent.nodeName.toLowerCase() + '>'
+					);
 					if ( parent.childNodes[i] ) {
 						expectedIndex = testOffsets( parent.childNodes[i], testCase, expectedIndex );
 					}
