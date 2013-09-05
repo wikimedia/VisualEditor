@@ -570,6 +570,67 @@ ve.dm.mwExample.references = [
 	{ 'type': '/internalList' }
 ];
 
+ve.dm.mwExample.complexInternalData = [
+	{ 'type': 'alienMeta', 'attributes': { 'domElements': $( '<!-- before -->' ).get() } },
+	{ 'type': '/alienMeta' },
+	{ 'type': 'paragraph' },
+	'F', ['o', [ve.dm.example.bold]], ['o', [ve.dm.example.italic]],
+	{ 'type': 'mwReference', 'attributes': {
+		'mw': {},
+		'about': '#mwt1',
+		'listIndex': 0,
+		'listGroup': 'mwReference/',
+		'listKey': null,
+		'refGroup': '',
+		'contentsUsed': true
+	} },
+	{ 'type': '/mwReference' },
+	{ 'type': '/paragraph' },
+	{ 'type': 'alienMeta', 'attributes': { 'domElements': $( '<!-- after -->' ).get() } },
+	{ 'type': '/alienMeta' },
+	{ 'type': 'internalList' },
+	{ 'type': 'internalItem' },
+	{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+	'R', ['e', [ve.dm.example.bold]], 'f',
+	{ 'type': 'alienMeta', 'attributes': { 'domElements': $( '<!-- reference -->' ).get() } },
+	{ 'type': '/alienMeta' },
+	'e', ['r', [ve.dm.example.italic]], ['e', [ve.dm.example.italic]],
+	{ 'type': 'mwReference', 'attributes': {
+		'mw': {},
+		'about': '#mwt2',
+		'listIndex': 1,
+		'listGroup': 'mwReference/',
+		'listKey': 'foo',
+		'refGroup': '',
+		'contentsUsed': true
+	} },
+	{ 'type': '/mwReference' },
+	'n', 'c', 'e',
+	{ 'type': '/paragraph' },
+	{ 'type': '/internalItem' },
+	{ 'type': 'internalItem' },
+	{ 'type': 'alienMeta', 'attributes': { 'domElements': $( '<!-- beginning -->' ).get() } },
+	{ 'type': '/alienMeta' },
+	{ 'type': 'preformatted' },
+	{ 'type': 'alienMeta', 'attributes': { 'domElements': $( '<!-- inside -->' ).get() } },
+	{ 'type': '/alienMeta' },
+	{ 'type': 'mwEntity', 'attributes': { 'character': '€' } },
+	{ 'type': '/mwEntity' },
+	'2', '5', '0',
+	{ 'type': 'alienMeta', 'attributes': { 'domElements': $( '<!-- inside2 -->' ).get() } },
+	{ 'type': '/alienMeta' },
+	{ 'type': '/preformatted' },
+	{ 'type': 'alienMeta', 'attributes': { 'domElements': $( '<!-- end -->' ).get() } },
+	{ 'type': '/alienMeta' },
+	{ 'type': '/internalItem' },
+	{ 'type': '/internalList' }
+];
+
+ve.dm.mwExample.complexInternalData.internalItems = [
+	{ 'group': 'mwReference', 'key': null, 'body': 'First reference' },
+	{ 'group': 'mwReference', 'key': 'foo', 'body': 'Table in ref: <table><tr><td>because I can</td></tr></table>' }
+];
+
 ve.dm.mwExample.domToDataCases = {
 	'adjacent annotations': {
 		'html':

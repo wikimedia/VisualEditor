@@ -341,6 +341,7 @@ class VisualEditorHooks {
 				've/test/dm/ve.dm.InternalList.test.js',
 				've-mw/test/dm/ve.dm.InternalList.test.js',
 				've/test/dm/ve.dm.Transaction.test.js',
+				've-mw/test/dm/ve.dm.Transaction.test.js',
 				've/test/dm/ve.dm.TransactionProcessor.test.js',
 				've/test/dm/ve.dm.Surface.test.js',
 				've/test/dm/ve.dm.SurfaceFragment.test.js',
