@@ -31,15 +31,15 @@ $messages['en'] = array(
 	'visualeditor-annotationbutton-bold-tooltip' => 'Bold',
 	'visualeditor-annotationbutton-code-tooltip' => 'Computer code',
 	'visualeditor-annotationbutton-italic-tooltip' => 'Italic',
-	'visualeditor-annotationbutton-link-tooltip' => 'Link',
 	'visualeditor-annotationbutton-language-tooltip' => 'Language',
+	'visualeditor-annotationbutton-link-tooltip' => 'Link',
 	'visualeditor-annotationbutton-strikethrough-tooltip' => 'Strikethrough',
 	'visualeditor-annotationbutton-subscript-tooltip' => 'Subscript',
 	'visualeditor-annotationbutton-superscript-tooltip' => 'Superscript',
 	'visualeditor-annotationbutton-underline-tooltip' => 'Underline',
+	'visualeditor-beta-appendix' => 'beta',
 	'visualeditor-beta-label' => 'beta',
 	'visualeditor-beta-warning' => 'VisualEditor is in \'beta\'. You may encounter software issues, and you may not be able to edit parts of the page. Click "{{int:visualeditor-ca-editsource}}" to switch to wikitext mode – unsaved changes will be lost.',
-	'visualeditor-beta-appendix' => 'beta',
 	'visualeditor-browserwarning' => 'You are using a browser which is not officially supported by VisualEditor.',
 	'visualeditor-ca-createsource' => 'Create source',
 	'visualeditor-ca-editsource' => 'Edit source',
@@ -54,6 +54,9 @@ $messages['en'] = array(
 	'visualeditor-dialog-action-cancel' => 'Cancel',
 	'visualeditor-dialog-action-close' => 'Close',
 	'visualeditor-dialog-action-goback' => 'Go back',
+	'visualeditor-dialog-beta-welcome-action-continue' => 'Continue',
+	'visualeditor-dialog-beta-welcome-content' => 'This is our new, easier way to edit. It\'s still in beta, which means you might find parts of the page you can\'t edit, or encounter issues that need to be fixed. We encourage you to review your changes, and we welcome reports about any issues you might encounter in using VisualEditor (click the \'{{int:visualeditor-beta-label}}\' button to submit feedback). You can keep using the wikitext editor by clicking the "$1" tab instead – unsaved changes will be lost.',
+	'visualeditor-dialog-beta-welcome-title' => 'Welcome to VisualEditor',
 	'visualeditor-dialog-media-content-section' => 'Caption',
 	'visualeditor-dialog-media-insert-button' => 'Insert media',
 	'visualeditor-dialog-media-insert-title' => 'Insert media',
@@ -92,9 +95,6 @@ $messages['en'] = array(
 	'visualeditor-dialog-transclusion-remove-param' => 'Remove parameter',
 	'visualeditor-dialog-transclusion-remove-template' => 'Remove template',
 	'visualeditor-dialog-transclusion-title' => 'Transclusion',
-	'visualeditor-dialog-beta-welcome-title' => 'Welcome to VisualEditor',
-	'visualeditor-dialog-beta-welcome-content' => 'This is our new, easier way to edit. It\'s still in beta, which means you might find parts of the page you can\'t edit, or encounter issues that need to be fixed. We encourage you to review your changes, and we welcome reports about any issues you might encounter in using VisualEditor (click the \'{{int:visualeditor-beta-label}}\' button to submit feedback). You can keep using the wikitext editor by clicking the "$1" tab instead – unsaved changes will be lost.',
-	'visualeditor-dialog-beta-welcome-action-continue' => 'Continue',
 	'visualeditor-dialogbutton-media-tooltip' => 'Media',
 	'visualeditor-dialogbutton-meta-tooltip' => 'Page settings',
 	'visualeditor-dialogbutton-reference-tooltip' => 'Reference',
@@ -131,21 +131,18 @@ $messages['en'] = array(
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Decrease indentation',
 	'visualeditor-inspector-close-tooltip' => 'Close',
 	'visualeditor-inspector-remove-tooltip' => 'Remove',
+	'visualeditor-languageinspector-block-tooltip' => 'Language block: $1',
+	'visualeditor-languageinspector-block-tooltip-rtldirection' => ': Right to Left',
+	'visualeditor-languageinspector-title' => 'Language',
+	'visualeditor-languageinspector-widget-changelang' => 'Change language',
+	'visualeditor-languageinspector-widget-label-direction' => 'Direction',
+	'visualeditor-languageinspector-widget-label-langcode' => 'Language code',
+	'visualeditor-languageinspector-widget-label-language' => 'Language',
 	'visualeditor-linkinspector-illegal-title' => 'Invalid page title',
 	'visualeditor-linkinspector-suggest-external-link' => 'External link',
 	'visualeditor-linkinspector-suggest-matching-page' => 'Matching page',
 	'visualeditor-linkinspector-suggest-new-page' => 'New page',
 	'visualeditor-linkinspector-title' => 'Hyperlink',
-	'visualeditor-mwalienextensioninspector-title' => 'MediaWiki extension',
-	'visualeditor-mwhieroinspector-title' => 'Hieroglyphics',
-	'visualeditor-mwmathinspector-title' => 'LaTeX',
-	'visualeditor-languageinspector-title' => 'Language',
-	'visualeditor-languageinspector-block-tooltip' => 'Language block: $1',
-	'visualeditor-languageinspector-block-tooltip-rtldirection' => ': Right to Left',
-	'visualeditor-languageinspector-widget-changelang' => 'Change language',
-	'visualeditor-languageinspector-widget-label-language' => 'Language',
-	'visualeditor-languageinspector-widget-label-langcode' => 'Language code',
-	'visualeditor-languageinspector-widget-label-direction' => 'Direction',
 	'visualeditor-listbutton-bullet-tooltip' => 'Bullet list',
 	'visualeditor-listbutton-number-tooltip' => 'Numbered list',
 	'visualeditor-loadwarning' => 'Error loading data from server: $1. Would you like to retry?',
@@ -153,6 +150,8 @@ $messages['en'] = array(
 	'visualeditor-mainnamespacepagelink' => 'Project:Main namespace',
 	'visualeditor-media-input-placeholder' => 'Search for media',
 	'visualeditor-meta-tool' => 'Page settings',
+	'visualeditor-mwalienextensioninspector-title' => 'MediaWiki extension',
+	'visualeditor-mwhieroinspector-title' => 'Hieroglyphics',
 	'visualeditor-mwmathinspector-title' => 'LaTeX',
 	'visualeditor-notification-created' => '$1 has been created.',
 	'visualeditor-notification-restored' => '$1 has been restored.',
@@ -252,10 +251,10 @@ See also:
 	'visualeditor-annotationbutton-code-tooltip' => 'Tooltip text for code button',
 	'visualeditor-annotationbutton-italic-tooltip' => 'Tooltip text for italic button.
 {{Identical|Italic}}',
-	'visualeditor-annotationbutton-link-tooltip' => 'Tooltip text for link button.
-{{Identical|Link}}',
 	'visualeditor-annotationbutton-language-tooltip' => 'Tooltip text for language button.
 {{Identical|Language}}',
+	'visualeditor-annotationbutton-link-tooltip' => 'Tooltip text for link button.
+{{Identical|Link}}',
 	'visualeditor-annotationbutton-strikethrough-tooltip' => 'Tooltip text for strikethrough button.
 {{Identical|Strikethrough}}',
 	'visualeditor-annotationbutton-subscript-tooltip' => 'Tooltip text for subscript button.
@@ -269,10 +268,10 @@ See also:
 {{Identical|Superscript}}',
 	'visualeditor-annotationbutton-underline-tooltip' => 'Tooltip text for underline button.
 {{Identical|Underline}}',
+	'visualeditor-beta-appendix' => '{{Identical|Beta}}',
 	'visualeditor-beta-label' => 'Text of tool in the toolbar that highlights that VisualEditor is still in beta.
 {{Identical|Beta}}',
 	'visualeditor-beta-warning' => "Note shown when user clicks on 'beta' label in VisualEditor, warning users that the software may have issues",
-	'visualeditor-beta-appendix' => '{{Identical|Beta}}',
 	'visualeditor-browserwarning' => 'Edit notice shown when VisualEditor loads, warning users that their browser is not officially supported',
 	'visualeditor-ca-createsource' => 'Text for the create source link in the tab dropdown, if the page doesn\'t exist. It\'s shown next to the message {{msg-mw|vector-view-create}}, so they should be similar (for example, use a similar translation for "Create").
 
@@ -321,6 +320,14 @@ See also:
 * {{msg-mw|Visualeditor-dialog-action-cancel}}
 * {{msg-mw|Visualeditor-dialog-action-close}}
 {{Identical|Go back}}',
+	'visualeditor-dialog-beta-welcome-action-continue' => 'Used as label for the Continue button which is used to close the dialog and continue using VisualEditor.
+{{Identical|Continue}}',
+	'visualeditor-dialog-beta-welcome-content' => 'Text explaining VisualEditor is in beta. Parameters:
+* $1 - {{msg-mw|Edit}}
+
+See also:
+* {{msg-mw|Visualeditor-beta-label}}',
+	'visualeditor-dialog-beta-welcome-title' => 'Title of the beta welcome dialog',
 	'visualeditor-dialog-media-content-section' => 'Label for the image content sub-section.
 {{Identical|Caption}}',
 	'visualeditor-dialog-media-insert-button' => 'Used as label for the button.
@@ -381,14 +388,6 @@ See also:
 	'visualeditor-dialog-transclusion-remove-template' => 'Label for button that removes a template from a transclusion.
 {{Identical|Remove template}}',
 	'visualeditor-dialog-transclusion-title' => '{{Identical|Transclusion}}',
-	'visualeditor-dialog-beta-welcome-title' => 'Title of the beta welcome dialog',
-	'visualeditor-dialog-beta-welcome-content' => 'Text explaining VisualEditor is in beta. Parameters:
-* $1 - {{msg-mw|Edit}}
-
-See also:
-* {{msg-mw|Visualeditor-beta-label}}',
-	'visualeditor-dialog-beta-welcome-action-continue' => 'Used as label for the Continue button which is used to close the dialog and continue using VisualEditor.
-{{Identical|Continue}}',
 	'visualeditor-dialogbutton-media-tooltip' => '{{Identical|Media}}',
 	'visualeditor-dialogbutton-meta-tooltip' => '{{Identical|Page Settings}}',
 	'visualeditor-dialogbutton-reference-tooltip' => '{{Identical|Reference}}',
@@ -444,6 +443,23 @@ Parameters:
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Tooltip text for list outdent button',
 	'visualeditor-inspector-close-tooltip' => '{{Identical|Close}}',
 	'visualeditor-inspector-remove-tooltip' => 'Tooltip text for the button to remove an annotation in an inspector',
+	'visualeditor-languageinspector-block-tooltip' => 'Tooltip identifying language block properties inside VisualEditor.
+
+A "language block" is an element that is written in a language that is different from the surrounding language. For example, it can be the Belarusian name of a Belarusian person in the French Wikipedia.
+
+Parameters:
+* $1 - the language code (for example "be")',
+	'visualeditor-languageinspector-block-tooltip-rtldirection' => 'The label "Right To Left" at the end of the tooltip if the language is RTL.',
+	'visualeditor-languageinspector-title' => 'Title of the language inspector dialog.
+{{Identical|Language}}',
+	'visualeditor-languageinspector-widget-changelang' => 'Used as label for the button which is used to change the language of the given block in the language inspector.
+{{Identical|Change language}}',
+	'visualeditor-languageinspector-widget-label-direction' => 'Label for the language inspector widget, to denote the text direction of the current element (left-to-right or right-to-left).
+{{Identical|Direction}}',
+	'visualeditor-languageinspector-widget-label-langcode' => 'Label for the language inspector widget, to denote the current block language code.
+{{Identical|Language code}}',
+	'visualeditor-languageinspector-widget-label-language' => 'Label for the language inspector widget, to denote the current block language.
+{{Identical|Language}}',
 	'visualeditor-linkinspector-illegal-title' => 'Warning that the entered text is not a valid page title.',
 	'visualeditor-linkinspector-suggest-external-link' => 'Label for an external (Web) link in the link inspector.
 {{Identical|External link}}',
@@ -452,29 +468,6 @@ Parameters:
 {{Identical|New page}}',
 	'visualeditor-linkinspector-title' => 'Title of the link inspector dialog.
 {{Identical|Hyperlink}}',
-	'visualeditor-mwalienextensioninspector-title' => 'Used as title for unknown MediaWiki extensions.
-{{Identical|MediaWiki extension}}',
-	'visualeditor-mwhieroinspector-title' => 'Used as title for hieroglyphics inspector.',
-	'visualeditor-mwmathinspector-title' => 'Used as title for MathInspector.
-
-See [[w:LaTeX]].',
-	'visualeditor-languageinspector-title' => 'Title of the language inspector dialog.
-{{Identical|Language}}',
-	'visualeditor-languageinspector-block-tooltip' => 'Tooltip identifying language block properties inside VisualEditor.
-
-A "language block" is an element that is written in a language that is different from the surrounding language. For example, it can be the Belarusian name of a Belarusian person in the French Wikipedia.
-
-Parameters:
-* $1 - the language code (for example "be")',
-	'visualeditor-languageinspector-block-tooltip-rtldirection' => 'The label "Right To Left" at the end of the tooltip if the language is RTL.',
-	'visualeditor-languageinspector-widget-changelang' => 'Used as label for the button which is used to change the language of the given block in the language inspector.
-{{Identical|Change language}}',
-	'visualeditor-languageinspector-widget-label-language' => 'Label for the language inspector widget, to denote the current block language.
-{{Identical|Language}}',
-	'visualeditor-languageinspector-widget-label-langcode' => 'Label for the language inspector widget, to denote the current block language code.
-{{Identical|Language code}}',
-	'visualeditor-languageinspector-widget-label-direction' => 'Label for the language inspector widget, to denote the text direction of the current element (left-to-right or right-to-left).
-{{Identical|Direction}}',
 	'visualeditor-listbutton-bullet-tooltip' => 'Tooltip text for the bullet list button',
 	'visualeditor-listbutton-number-tooltip' => 'Tooltip text for the numbered list button',
 	'visualeditor-loadwarning' => 'Text (JavaScript confirm()) shown when the editor fails to load properly.
@@ -490,6 +483,12 @@ Parameters:
 	'visualeditor-media-input-placeholder' => 'Place holder text for media search input',
 	'visualeditor-meta-tool' => 'Text of tool in the toolbar the lets users set categories, language links and other page settings.
 {{Identical|Page settings}}',
+	'visualeditor-mwalienextensioninspector-title' => 'Used as title for unknown MediaWiki extensions.
+{{Identical|MediaWiki extension}}',
+	'visualeditor-mwhieroinspector-title' => 'Used as title for hieroglyphics inspector.',
+	'visualeditor-mwmathinspector-title' => 'Used as title for MathInspector.
+
+See [[w:LaTeX]].',
 	'visualeditor-notification-created' => 'Shown after a user creates a new page. Parameters:
 * $1 - a page name',
 	'visualeditor-notification-restored' => 'Shown after a user restores a page to a previous revision. Parameters:
