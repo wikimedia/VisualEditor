@@ -26,11 +26,6 @@ ve.ce.ProtectedNode = function VeCeProtectedNode( $phantomable ) {
 		'setup': 'onProtectedSetup',
 		'teardown': 'onProtectedTeardown'
 	} );
-
-	// DOM changes
-	this.$
-		.addClass( 've-ce-protectedNode' )
-		.prop( 'contentEditable', 'false' );
 };
 
 /* Static Properties */
@@ -85,6 +80,11 @@ ve.ce.ProtectedNode.prototype.onProtectedSetup = function () {
 	this.getRoot().getSurface().getSurface()
 		.connect( this, { 'position': 'positionPhantoms' } );
 
+	// DOM changes
+	this.$
+		.addClass( 've-ce-protectedNode' )
+		.prop( 'contentEditable', 'false' );
+
 	// Shields
 	this.$.add( this.$.find( '*' ) ).each( function () {
 		var $this = $( this );
@@ -129,6 +129,11 @@ ve.ce.ProtectedNode.prototype.onProtectedTeardown = function () {
 
 	// Phantoms
 	this.clearPhantoms();
+
+	// DOM changes
+	this.$
+		.removeClass( 've-ce-protectedNode' )
+		.removeProp( 'contentEditable' );
 
 	this.isSetup = false;
 };
