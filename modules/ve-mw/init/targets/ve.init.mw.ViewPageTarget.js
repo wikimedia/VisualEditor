@@ -793,6 +793,47 @@ ve.init.mw.ViewPageTarget.prototype.saveDocument = function () {
 };
 
 /**
+ * Switch to edit source mode with the current wikitext
+ *
+ * @method
+ */
+ve.init.mw.ViewPageTarget.prototype.editSource = function () {
+	var doc = this.surface.getModel().getDocument();
+
+	this.$document.css( 'opacity', 0.5 );
+
+	if ( !confirm( ve.msg( 'visualeditor-mweditmodesource-warning' ) ) ) {
+		this.$document.css( 'opacity', 1 );
+		return;
+	}
+	// Get Wikitext from the DOM
+	this.serialize(
+		ve.dm.converter.getDomFromData( doc.getFullData(), doc.getStore(), doc.getInternalList() ),
+		ve.bind( function ( wikitext ) {
+			var options = this.getSaveOptions(),
+				action = new mw.Uri( mw.util.wikiScript() ).extend( { title: this.pageName, action: 'edit' } ).toString();
+
+			this.submitting = true;
+
+			$( '<form method="post" enctype="multipart/form-data"></form>' )
+				.attr( 'action', action )
+				.append( $( '<textarea name="wpTextbox1"></textarea>' ).val( wikitext ) )
+				.append( $( '<input type="checkbox" name="wpMinoredit" value="1">' ).prop( 'checked', options.minor ) )
+				.append( $( '<input type="checkbox" name="wpWatchthis" value="1">' ).prop( 'checked', options.watch ) )
+				.append( $( '<input type="hidden" name="wpSummary">' ).val( options.summary ) )
+				.append( $( '<input type="hidden" name="wpStarttime">' ).val( this.startTimeStamp ) )
+				.append( $( '<input type="hidden" name="wpEditToken">' ).val( this.editToken ) )
+				.append( $( '<input type="hidden" name="wpDiff" value="1">' ) )
+				.append( $( '<input type="hidden" name="model" value="wikitext">' ) )
+				.append( $( '<input type="hidden" name="format" value="text/x-wiki">' ) )
+				.append( $( '<input type="hidden" name="wpEdittime">' ) )
+				.submit()
+			;
+		}, this )
+	);
+};
+
+/**
  * Handle clicks on the resolve conflict button in the conflict dialog.
  *
  * @method
@@ -1096,7 +1137,7 @@ ve.init.mw.ViewPageTarget.prototype.attachToolbarButtons = function () {
 		{
 			'type': 'list',
 			'icon': 'menu',
-			'include': [ 'meta', 'categories', 'languages' ] }
+			'include': [ 'meta', 'categories', 'languages', 'editModeSource' ] }
 	] );
 
 	$actionTools
