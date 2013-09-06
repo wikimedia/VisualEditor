@@ -36,7 +36,7 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 	this.keyPressTimeout = null;
 	this.$document = $( this.getElementDocument() );
 	this.clipboard = {};
-	this.renderingEnabled = true;
+	this.renderLocks = 0;
 	this.dragging = false;
 	this.relocating = false;
 	this.selecting = false;
@@ -827,7 +827,7 @@ ve.ce.Surface.prototype.onChange = function ( transaction, selection ) {
 			}
 		}
 		// If there is no focused node, use native selection
-		if ( !this.focusedNode && this.isRenderingEnabled() ) {
+		if ( !this.focusedNode && !this.isRenderingLocked() ) {
 			this.showSelection( selection );
 		}
 	}
@@ -847,9 +847,12 @@ ve.ce.Surface.prototype.onSelectionChange = function ( oldRange, newRange ) {
 		// Ignore when the newRange is just a flipped oldRange
 		return;
 	}
-	this.disableRendering();
-	this.model.change( null, newRange );
-	this.enableRendering();
+	this.incRenderLock();
+	try {
+		this.model.change( null, newRange );
+	} finally {
+		this.decRenderLock();
+	}
 };
 
 /**
@@ -913,14 +916,17 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 			if ( annotations instanceof ve.dm.AnnotationSet ) {
 				ve.dm.Document.addAnnotationsToData( data, this.model.getInsertionAnnotations() );
 			}
-			this.disableRendering();
-			this.model.change(
-				ve.dm.Transaction.newFromInsertion(
-					this.documentView.model, previous.range.start, data
-				),
-				next.range
-			);
-			this.enableRendering();
+			this.incRenderLock();
+			try {
+				this.model.change(
+					ve.dm.Transaction.newFromInsertion(
+						this.documentView.model, previous.range.start, data
+					),
+					next.range
+				);
+			} finally {
+				this.decRenderLock();
+			}
 			return;
 		}
 
@@ -931,12 +937,16 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 			} else {
 				range = new ve.Range( next.range.start, previous.range.start );
 			}
-			this.disableRendering();
-			this.model.change(
-				ve.dm.Transaction.newFromRemoval( this.documentView.model, range ),
-				next.range
-			);
-			this.enableRendering();
+			this.incRenderLock();
+			try {
+				this.model.change(
+					ve.dm.Transaction.newFromRemoval( this.documentView.model,
+						range ),
+					next.range
+				);
+			} finally {
+				this.decRenderLock();
+			}
 			return;
 		}
 	}
@@ -990,13 +1000,15 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 	if ( newRange.isCollapsed() ) {
 		newRange = new ve.Range( this.getNearestCorrectOffset( newRange.start, 1 ) );
 	}
+
 	if ( data.length > 0 ) {
-		this.model.change(
-			ve.dm.Transaction.newFromInsertion(
-				this.documentView.model, nodeOffset + 1 + fromLeft, data
-			),
-			newRange
-		);
+			this.model.change(
+				ve.dm.Transaction.newFromInsertion(
+					this.documentView.model, nodeOffset + 1 + fromLeft,
+					data
+				),
+				newRange
+			);
 	}
 	if ( fromLeft + fromRight < previousData.length ) {
 		this.model.change(
@@ -1004,7 +1016,8 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 				this.documentView.model,
 				new ve.Range(
 					data.length + nodeOffset + 1 + fromLeft,
-					data.length + nodeOffset + 1 + previousData.length - fromRight
+					data.length + nodeOffset + 1 +
+						previousData.length - fromRight
 				)
 			),
 			newRange
@@ -1091,7 +1104,6 @@ ve.ce.Surface.prototype.handleLeftOrRightArrowKey = function ( e ) {
 		( e.altKey === true || e.ctrlKey === true ) ? 'word' : 'character',
 		e.shiftKey
 	);
-
 	this.model.change( null, range );
 	this.surfaceObserver.start( false, true );
 };
@@ -1647,31 +1659,31 @@ ve.ce.Surface.prototype.getFocusedNode = function () {
 };
 
 /**
- * Check if rendering is enabled.
+ * Check whether there are any render locks
  *
  * @method
- * @returns {boolean} Render is enabled
+ * @returns {boolean} Render is locked
  */
-ve.ce.Surface.prototype.isRenderingEnabled = function () {
-	return this.renderingEnabled;
+ve.ce.Surface.prototype.isRenderingLocked = function () {
+	return this.renderLocks > 0;
 };
 
 /**
- * Enable rendering.
+ * Add a single render lock (to disable rendering)
  *
  * @method
  */
-ve.ce.Surface.prototype.enableRendering = function () {
-	this.renderingEnabled = true;
+ve.ce.Surface.prototype.incRenderLock = function () {
+	this.renderLocks++;
 };
 
 /**
- * Disable rendering.
+ * Remove a single render lock
  *
  * @method
  */
-ve.ce.Surface.prototype.disableRendering = function () {
-	this.renderingEnabled = false;
+ve.ce.Surface.prototype.decRenderLock = function () {
+	this.renderLocks--;
 };
 
 /**
