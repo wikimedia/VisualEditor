@@ -11,4 +11,4 @@ Feature: VisualEditor References
     Given I can see the References User Interface
     When I enter THIS IS CONTENT into Content box
       And I click Insert reference
-    Then link to references dialog should be visible
+    Then link to More menu should be visible

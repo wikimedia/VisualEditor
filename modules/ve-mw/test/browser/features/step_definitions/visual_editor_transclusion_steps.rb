@@ -15,7 +15,10 @@ When(/^I click Remove template$/) do
 end
 
 When(/^I click Transclusion$/) do
-  on(VisualEditorPage).transclusion_element.when_present.click
+  on(VisualEditorPage) do |page|
+    page.more_menu_element.when_present.click
+    page.transclusion_element.when_present.click
+  end
 end
 
 When(/^I enter (.+) in the parameter box$/) do |param_value|
