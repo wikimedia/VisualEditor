@@ -131,3 +131,108 @@ QUnit.test( 'isShortcutKey', 3, function ( assert ) {
 	assert.equal( ve.ce.isShortcutKey( { 'metaKey': true } ), true, 'metaKey' );
 	assert.equal( ve.ce.isShortcutKey( {} ), false, 'Not set' );
 } );
+
+QUnit.test( 'resolveTestOffset', function ( assert ) {
+	var i, ilen, j, jlen, tests, test, testOffset, elt, pre, post, count, dom;
+	tests = [
+		['o', 'k'],
+		// TODO: doesn't handle tags correctly yet!
+		// ['w', '<b>', 'x', 'y', '</b>', 'z'],
+		// ['q', '<b>', 'r', '<b>', 's', 't', '</b>', 'u', '</b>', 'v']
+		['h', 'e', 'l', 'l', 'o']
+	];
+	count = 0;
+	for ( i = 0, ilen = tests.length; i < ilen; i++ ) {
+		count += tests[i].length + 1;
+	}
+	QUnit.expect( 2 * count );
+	dom = ve.createDocumentFromHtml( '' );
+	elt = dom.createElement( 'div' );
+	for ( i = 0, ilen = tests.length; i < ilen; i++ ) {
+		test = tests[i];
+		elt.innerHTML = test.join( '' );
+		for ( j = 0, jlen = test.length; j < jlen + 1; j++ ) {
+			testOffset = new ve.ce.TestOffset( 'forward', j );
+			pre = test.slice( 0, j ).join( '' );
+			post = test.slice( j ).join( '' );
+			assert.equal(
+				testOffset.resolve( elt ).slice,
+				pre + '|' + post
+			);
+			testOffset = new ve.ce.TestOffset( 'backward', j );
+			pre = test.slice( 0, jlen - j ).join( '' );
+			post = test.slice( jlen - j ).join( '' );
+			assert.equal(
+				testOffset.resolve( elt ).slice,
+				pre + '|' + post
+			);
+		}
+	}
+} );
+
+QUnit.test( 'fakeImes', function ( assert ) {
+	var i, ilen, j, jlen, dom, target, testRunner, testName, testActions, seq, testInfo,
+		action, args, count, foundEndLoop, fakePreventDefault;
+
+	// count tests
+	count = 0;
+	for ( i = 0, ilen = ve.ce.imetests.length; i < ilen; i++ ) {
+		testName = ve.ce.imetests[i][0];
+		if ( ve.ce.imetestsBroken[testName] ) {
+			// Skip broken test for now
+			continue;
+		}
+		testActions = ve.ce.imetests[i][1];
+		// For the test that there is at least one endLoop
+		count++;
+		for ( j = 1, jlen = testActions.length; j < jlen; j++ ) {
+			action = testActions[j].action;
+			if ( action === 'endLoop' ) {
+				// For the test that the model and CE surface are in sync
+				count++;
+			}
+		}
+	}
+	if ( !count ) {
+		throw new Error( 'No IME tests found' );
+	}
+	QUnit.expect( count );
+
+	// TODO: make this function actually affect the events triggered
+	fakePreventDefault = function() {};
+
+	for ( i = 0, ilen = ve.ce.imetests.length; i < ilen; i++ ) {
+		testName = ve.ce.imetests[i][0];
+		if ( ve.ce.imetestsBroken[testName] ) {
+			// Skip broken test for now
+			continue;
+		}
+		testActions = ve.ce.imetests[i][1];
+		foundEndLoop = false;
+		// First element is the testInfo
+		testInfo = testActions[0];
+		dom = ve.createDocumentFromHtml( testInfo.startDom || '' );
+		target = new ve.init.sa.Target( $( '<div>' ).appendTo( '#qunit-fixture' ), dom );
+		testRunner = new ve.ce.TestRunner( target.surface );
+		// start at 1 to omit the testInfo
+		for ( j = 1, jlen = testActions.length; j < jlen; j++ ) {
+			action = testActions[j].action;
+			args = testActions[j].args;
+			seq = testActions[j].seq;
+			if ( action === 'sendEvent' ) {
+				// TODO: make preventDefault work
+				args[1].preventDefault = fakePreventDefault;
+			}
+			testRunner[action].apply( testRunner, args );
+			// Check synchronized at the end of each event loop
+			if ( action === 'endLoop' ) {
+				// Test that the model and CE surface are in sync
+				testRunner.testEqual( assert, testName, seq );
+				foundEndLoop = true;
+			}
+		}
+		// Test that there is at least one endLoop
+		assert.equal( foundEndLoop, true, testName + ' found at least one endLoop' );
+		target.surface.destroy();
+	}
+} );

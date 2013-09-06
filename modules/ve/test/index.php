@@ -263,6 +263,34 @@
 		<script src="ui/actions/ve.ui.IndentationAction.test.js"></script>
 		<script src="ui/actions/ve.ui.ListAction.test.js"></script>
 
+                <!-- IME tests -->
+		<script src="ce/ve.ce.TestRunner.js"></script>
+		<script src="ce/ve.ce.imetests.test.js"></script>
+		<script src="ce/imetests/backspace-chromium-ubuntu-none.js"></script>
+		<script src="ce/imetests/backspace-firefox-ubuntu-none.js"></script>
+		<script src="ce/imetests/backspace-ie-win-none.js"></script>
+		<script src="ce/imetests/input-chrome-win-chinese-traditional-handwriting.js"></script>
+		<script src="ce/imetests/input-chrome-win-greek.js"></script>
+		<script src="ce/imetests/input-chrome-win-welsh.js"></script>
+		<script src="ce/imetests/input-chromium-ubuntu-ibus-chinese-cantonese.js"></script>
+		<script src="ce/imetests/input-chromium-ubuntu-ibus-japanese-anthy--hiraganaonly.js"></script>
+		<script src="ce/imetests/input-chromium-ubuntu-ibus-korean-korean.js"></script>
+		<script src="ce/imetests/input-chromium-ubuntu-ibus-malayalam-swanalekha.js"></script>
+		<script src="ce/imetests/input-firefox-ubuntu-ibus-chinese-cantonese.js"></script>
+		<script src="ce/imetests/input-firefox-ubuntu-ibus-japanese-anthy--hiraganaonly.js"></script>
+		<script src="ce/imetests/input-firefox-ubuntu-ibus-korean-korean.js"></script>
+		<script src="ce/imetests/input-firefox-ubuntu-ibus-malayalam.swanalekha.js"></script>
+		<script src="ce/imetests/input-firefox-win-chinese-traditional-handwriting.js"></script>
+		<script src="ce/imetests/input-firefox-win-greek.js"></script>
+		<script src="ce/imetests/input-firefox-win-welsh.js"></script>
+		<script src="ce/imetests/input-ie-win-chinese-traditional-handwriting.js"></script>
+		<script src="ce/imetests/input-ie-win-greek.js"></script>
+		<script src="ce/imetests/input-ie-win-korean.js"></script>
+		<script src="ce/imetests/input-ie-win-welsh.js"></script>
+		<script src="ce/imetests/leftarrow-chromium-ubuntu-none.js"></script>
+		<script src="ce/imetests/leftarrow-firefox-ubuntu-none.js"></script>
+		<script src="ce/imetests/leftarrow-ie-win-none.js"></script>
+
 		<div id="qunit"></div>
 		<div id="qunit-fixture">test markup</div>
 	</body>
