@@ -20,6 +20,7 @@
  * @param {Object} [config] Config options
  */
 ve.ce.Surface = function VeCeSurface( model, surface, options ) {
+	var $documentNode;
 	// Parent constructor
 	ve.Element.call( this, options );
 
@@ -33,8 +34,11 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 	this.documentView = new ve.ce.Document( model.getDocument(), this );
 	this.surfaceObserver = new ve.ce.SurfaceObserver( this.documentView );
 	this.selectionTimeout = null;
-	this.keyPressTimeout = null;
 	this.$document = $( this.getElementDocument() );
+	this.eventSequencer = new ve.EventSequencer( [
+		'keydown', 'keypress', 'keyup', 'mousedown', 'mouseup',
+		'mousemove', 'compositionstart', 'compositionend'
+	] );
 	this.clipboard = {};
 	this.renderLocks = 0;
 	this.dragging = false;
@@ -53,7 +57,7 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 	);
 	this.model.connect( this, { 'change': 'onChange', 'lock': 'onLock', 'unlock': 'onUnlock' } );
 
-	var $documentNode = this.documentView.getDocumentNode().$;
+	$documentNode = this.documentView.getDocumentNode().$;
 	$documentNode.on( {
 		'focus': ve.bind( this.documentOnFocus, this ),
 		'blur': ve.bind( this.documentOnBlur, this )
@@ -77,6 +81,22 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 	if ( $.browser.msie ) {
 		this.$.on( 'beforepaste', ve.bind( this.onPaste, this ) );
 	}
+
+	// Add listeners to the eventSequencer. They won't get called until
+	// eventSequencer.attach(node) has been called.
+	this.eventSequencer.on( {
+		'keydown': ve.bind( this.onDocumentKeyDown, this ),
+		'keyup': ve.bind( this.onDocumentKeyUp, this ),
+		'keypress': ve.bind( this.onDocumentKeyPress, this ),
+		'mousedown': ve.bind( this.onDocumentMouseDown, this ),
+		'mouseup': ve.bind( this.onDocumentMouseUp, this ),
+		'mousemove': ve.bind( this.onDocumentMouseMove, this ),
+		'compositionstart': ve.bind( this.onDocumentCompositionStart, this ),
+		'compositionend': ve.bind( this.onDocumentCompositionEnd, this )
+	} );
+	this.eventSequencer.after( {
+		'keypress': ve.bind( this.afterDocumentKeyPress, this )
+	} );
 
 	// Initialization
 	this.$.addClass( 've-ce-surface' );
@@ -285,18 +305,7 @@ ve.ce.Surface.prototype.focus = function () {
  * @param {jQuery.Event} e Focus event
  */
 ve.ce.Surface.prototype.documentOnFocus = function () {
-	this.$document.off( '.ve-ce-Surface' );
-	this.$document.on( {
-		'keydown.ve-ce-Surface': ve.bind( this.onDocumentKeyDown, this ),
-		'keyup.ve-ce-Surface': ve.bind( this.onDocumentKeyUp, this ),
-		'keypress.ve-ce-Surface': ve.bind( this.onDocumentKeyPress, this ),
-		'mousedown.ve-ce-Surface': ve.bind( this.onDocumentMouseDown, this ),
-		'mouseup.ve-ce-Surface': ve.bind( this.onDocumentMouseUp, this ),
-		'mousemove.ve-ce-Surface': ve.bind( this.onDocumentMouseMove, this ),
-		'compositionstart.ve-ce-Surface': ve.bind( this.onDocumentCompositionStart, this ),
-		'compositionend.ve-ce-Surface': ve.bind( this.onDocumentCompositionEnd, this )
-	} );
-	this.surfaceObserver.start( true, true );
+	this.eventSequencer.attach( this.$document );
 };
 
 /**
@@ -308,6 +317,7 @@ ve.ce.Surface.prototype.documentOnFocus = function () {
 ve.ce.Surface.prototype.documentOnBlur = function () {
 	this.$document.off( '.ve-ce-Surface' );
 	this.surfaceObserver.stop( true, true );
+	this.eventSequencer.detach();
 	this.dragging = false;
 };
 
@@ -454,7 +464,6 @@ ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
  */
 ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
 	var trigger;
-	this.forceKeyPressTimeout();
 
 	// Ignore keydowns while in IME mode but do not preventDefault them (so text actually appear on
 	// the screen).
@@ -519,8 +528,6 @@ ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
 ve.ce.Surface.prototype.onDocumentKeyPress = function ( e ) {
 	var selection, prevNode, documentModel = this.model.getDocument();
 
-	this.forceKeyPressTimeout();
-
 	// Prevent IE from editing Aliens/Entities
 	// TODO: Better comment about what's going on here is needed.
 	if ( $.browser.msie === true ) {
@@ -546,38 +553,13 @@ ve.ce.Surface.prototype.onDocumentKeyPress = function ( e ) {
 	}
 
 	this.handleInsertion();
-	this.setKeyPressTimeout();
 };
 
 /**
- * Append a call to onKeyPressTimeout to the event queue.
- * @method
+ * Poll again after the native key press
+ * @param {jQuery.Event} ev
  */
-ve.ce.Surface.prototype.setKeyPressTimeout = function () {
-	this.keyPressTimeout = setTimeout( ve.bind( function() {
-		this.keyPressTimeout = null;
-		this.onKeyPressTimeout();
-	}, this ) );
-};
-
-/**
- * If there is a pending call to onKeyPressTimeout in the event queue, delete it and call now
- * @method
- */
-ve.ce.Surface.prototype.forceKeyPressTimeout = function () {
-	if ( this.keyPressTimeout === null ) {
-		return;
-	}
-	clearTimeout( this.keyPressTimeout );
-	this.keyPressTimeout = null;
-	this.onKeyPressTimeout();
-};
-
-/**
- * post-keypress handler: re-sync the surface and model
- * @method
- */
-ve.ce.Surface.prototype.onKeyPressTimeout = function () {
+ve.ce.Surface.prototype.afterDocumentKeyPress = function () {
 	this.surfaceObserver.start( false, true );
 };
 
