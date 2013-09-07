@@ -6,12 +6,12 @@
  */
 
 /**
- * EventSequencer class with pre-event and post-event listeners.
+ * EventSequencer class with on-event and after-event listeners.
  *
- * Post-event listeners are fired as soon as possible after the
+ * After-event listeners are fired as soon as possible after the
  * corresponding native event. They are similar to the setTimeout(f, 0)
  * idiom, except that they are guaranteed to execute before any subsequent
- * pre-event listener. Therefore, events are executed in the 'right order'.
+ * on-event listener. Therefore, events are executed in the 'right order'.
  *
  * This matters when many events are added to the event queue in one go.
  * For instance, browsers often queue 'keydown' and 'keypress' in immediate
@@ -19,17 +19,29 @@
  * *after* the keypress listener (i.e. in the 'wrong' order). EventSequencer
  * ensures that this does not happen.
  *
- * @constructor
- * @param {HTMLElement} node Node to which listeners should be attached
- * @param {string[]} eventNames List of event Names to listen to
- * @param {Function} [boundLogFunc] Logging function, pre-bound with ve.bind
+ * All listeners receive the jQuery event as an argument. If an on-event
+ * listener needs to pass information to a corresponding after-event listener,
+ * it can do so by adding properties into the jQuery event itself.
+ *
+ * @class ve.EventSequencer
  */
-ve.EventSequencer = function ( node, eventNames, boundLogFunc ) {
-	var i, len, eventName, $node = $( node );
-	this.node = node;
-	this.preListenersForEvent = {};
-	this.postListenersForEvent = {};
-	this.log = boundLogFunc || function () {};
+
+/**
+ *
+ * To fire after-event listeners promptly, the EventSequencer may need to
+ * listen to some events for which it has no registered on-event or
+ * event-event listeners. For instance, to ensure an after-keydown listener
+ * is be fired before the native keyup action, you must include both
+ * 'keydown' and 'keyup' in the eventNames Array.
+ *
+ * @constructor
+ * @param {string[]} eventNames List of event Names to listen to
+ */
+ve.EventSequencer = function ( eventNames ) {
+	var i, len, eventName, makeEventHandler, eventSequencer = this;
+	this.$node = null;
+	this.eventNames = eventNames;
+	this.eventHandlers = {};
 
 	/**
 	 * @property {Object[]}
@@ -39,72 +51,122 @@ ve.EventSequencer = function ( node, eventNames, boundLogFunc ) {
          *  - eventName {string} Name, such as keydown
          */
 	this.pendingCalls = [];
+
+	/**
+         * @property {Object.<string,Function>}
+	 */
+	this.onListenersForEvent = {};
+
+	/**
+         * @property {Object.<string,Function>}
+	 */
+	this.afterListenersForEvent = {};
+
+	makeEventHandler = function ( eventName ) {
+		return function ( ev ) {
+			return eventSequencer.onEvent( eventName, ev );
+		};
+	};
+
 	for ( i = 0, len = eventNames.length; i < len; i++ ) {
 		eventName = eventNames[i];
-		$node.on( eventName, ve.bind( this.onEvent, this, eventName ) );
-		this.preListenersForEvent[eventName] = [];
-		this.postListenersForEvent[eventName] = [];
+		this.onListenersForEvent[eventName] = [];
+		this.afterListenersForEvent[eventName] = [];
+		this.eventHandlers[eventName] = makeEventHandler( eventName );
 	}
 };
 
 /**
- * Add a listener to be fired just before the browser native action
+ * Attach to a node, to listen to its jQuery events
+ *
  * @method
- * @param {string} eventName Javascript name of the event, e.g. 'keydown'
- * @param {Function} listener Listener accepting a single argument 'event'
+ * @param {jQuery} $node The node to attach to
  */
-ve.EventSequencer.prototype.addPreListener = function( eventName, listener ) {
-	this.preListenersForEvent[eventName].push( listener );
+ve.EventSequencer.prototype.attach = function ( $node ) {
+	this.detach();
+	this.$node = $node.on( this.eventHandlers );
 };
 
 /**
- * Add a listener to be fired as soon as possible after the native action
+ * Detach from a node (if attached), to stop listen to its jQuery events
+ *
  * @method
- * @param {string} eventName Javascript name of the event, e.g. 'keydown'
- * @param {Function} listener Listener accepting a single argument 'event'
  */
-ve.EventSequencer.prototype.addPostListener = function( eventName, listener ) {
-	this.postListenersForEvent[eventName].push( listener );
+ve.EventSequencer.prototype.detach = function () {
+	if ( this.$node === null ) {
+		return;
+	}
+	this.runPendingCalls();
+	this.$node.off( this.eventHandlers );
+	this.$node = null;
+};
+
+
+/**
+ * Add listeners to be fired just before the browser native action
+ * @method
+ * @param {Object.<string,Function>} listeners Function for each event
+ */
+ve.EventSequencer.prototype.on = function ( listeners ) {
+	var eventName;
+	for ( eventName in listeners ) {
+		this.onListenersForEvent[eventName].push( listeners[eventName] );
+	}
+};
+
+
+/**
+ * Add listeners to be fired as soon as possible after the native action
+ * @method
+ * @param {Object.<string,Function>} listeners Function for each event
+ */
+ve.EventSequencer.prototype.after = function ( listeners ) {
+	var eventName;
+	for ( eventName in listeners ) {
+		this.afterListenersForEvent[eventName].push( listeners[eventName] );
+	}
 };
 
 /**
  * Generic listener method which does the sequencing
+ * @private
  * @method
  * @param {string} eventName Javascript name of the event, e.g. 'keydown'
  * @param {jQuery.Event} ev The browser event
  */
-ve.EventSequencer.prototype.onEvent = function( eventName, ev ) {
-	var i, len, preListener, postListener, pendingCall;
-	this.log( '(EventSequencer: onEvent', eventName, ev, ')' );
-	this.runAllPendingCallsNow();
-	for ( i = 0, len = this.preListenersForEvent[eventName].length; i < len; i++ ) {
-		// Length cache is required, as a preListener could add another preListener
-		preListener = this.preListenersForEvent[eventName][i];
-		this.log( '(EventSequencer: preListener', eventName, ev, ')' );
-		preListener( ev );
+ve.EventSequencer.prototype.onEvent = function ( eventName, ev ) {
+	var i, len, onListener, afterListener, pendingCall;
+	ve.log( 'EventSequencer: onEvent', eventName, ev );
+	this.runPendingCalls();
+	// Length cache 'len' is required, as an onListener could add another onListener
+	for ( i = 0, len = this.onListenersForEvent[eventName].length; i < len; i++ ) {
+		onListener = this.onListenersForEvent[eventName][i];
+		ve.log( 'EventSequencer: on ', eventName, ev );
+		onListener( ev );
 	}
-	for ( i = 0, len = this.postListenersForEvent[eventName].length; i < len; i++ ) {
-		// Length cache for style
-		postListener = this.postListenersForEvent[eventName][i];
+	// Length cache 'len' for style only
+	for ( i = 0, len = this.afterListenersForEvent[eventName].length; i < len; i++ ) {
+		afterListener = this.afterListenersForEvent[eventName][i];
 
 		// Create a cancellable pending call
 		// - Create the pendingCall object first
 		// - then create the setTimeout invocation to modify pendingCall.id
 		// - then set pendingCall.id to the setTimeout id, so the call can cancel itself
 		// Must wrap everything in a function call, to create the required closure.
-		pendingCall = { 'func': postListener, 'id': null, 'ev': ev, 'eventName': eventName };
+		pendingCall = { 'func': afterListener, 'id': null, 'ev': ev, 'eventName': eventName };
 		/*jshint loopfunc:true */
-		( function ( pendingCall, ev, log ) {
+		( function ( pendingCall, ev ) {
 			var id = setTimeout( function () {
 				if ( pendingCall.id === null ) {
-					return; // Seems to be necessary in Chromium
+					// clearTimeout seems not always to work immediately
+					return;
 				}
 				pendingCall.id = null;
-				log( '(EventSequencer: reached postListener', eventName, ev, ')' );
+				ve.log( 'EventSequencer: timed: after', eventName, ev );
 				pendingCall.func( ev );
 			} );
 			pendingCall.id = id;
-		} )( pendingCall, ev, this.log );
+		} )( pendingCall, ev );
 		/*jshint loopfunc:false */
 		this.pendingCalls.push( pendingCall );
 	}
@@ -112,22 +174,29 @@ ve.EventSequencer.prototype.onEvent = function( eventName, ev ) {
 
 /**
  * Run any pending listeners, and clear the pending queue
+ * @private
  * @method
  */
-ve.EventSequencer.prototype.runAllPendingCallsNow = function () {
+ve.EventSequencer.prototype.runPendingCalls = function () {
 	var i, pendingCall;
-	this.log( '(EventSequencer: runAllPendingCallsNow', this.pendingCalls, ')' );
+	ve.log( 'EventSequencer: runPendingCalls', this.pendingCalls );
 	for ( i = 0; i < this.pendingCalls.length; i++ ) {
 		// Length cache not possible, as a pending call appends another pending call.
+		// It's important that this list remains mutable, in the case that this
+		// function indirectly recurses.
 		pendingCall = this.pendingCalls[i];
 		if ( pendingCall.id === null ) {
-			continue; // already run
+			// the call has already run
+			continue;
 		}
 		clearTimeout( pendingCall.id );
 		pendingCall.id = null;
-		this.log( '(EventSequencer: reached postListener', pendingCall, ')' );
-		// Force to run now
+		ve.log( 'EventSequencer: forced: after', pendingCall );
+		// Force to run now. It's important that we set id to null before running,
+		// so that there's no chance a recursive call will call the listener again.
 		pendingCall.func( pendingCall.ev );
 	}
-	this.pendingCalls = [];
+	// This is safe because we only ever appended to the list, so it's definitely exhausted
+	// now.
+	this.pendingCalls.length = 0;
 };

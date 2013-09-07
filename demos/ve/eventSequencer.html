@@ -18,19 +18,34 @@
 		<script src="../../modules/ve/ve.EventSequencer.js"></script>
 		<script src="../../modules/ve/ce/ve.ce.js"></script>
 		<script>
+			function makeListener( message ) {
+				return function ( e ) {
+					console.log( message + showEventCode( e ) +
+						' ' + JSON.stringify( document.getElementById(
+						'good' ).innerHTML ) );
+				};
+			};
 			function onbodyload () {
-				var i, eventSequencer,
+				var i, len, eventSequencer, eventName,
+					onEvents = {},
+					afterEvents = {},
 					eventNames = ['compositionstart', 'compositionend',
 						'keydown', 'keyup', 'keypress'],
 					badDiv = document.getElementById( 'bad' ),
 					goodDiv = document.getElementById( 'good' );
 
-				eventSequencer = new ve.EventSequencer( goodDiv, eventNames,
-					ve.bind( console.log, console ) );
-				for( i = 0; i < eventNames.length; i++ ) {
-					addPrePostListeners( eventSequencer, eventNames[i] );
-					addSetTimeoutListeners( badDiv, eventNames[i] );
+				for ( i = 0, len = eventNames.length; i < len; i++ ) {
+					eventName = eventNames[i];
+					onEvents[eventName] = makeListener( 'on ' + eventName );
+					afterEvents[eventName] = makeListener(
+						'after ' + eventName );
+					addSetTimeoutListeners( badDiv, eventName );
 				}
+
+				eventSequencer = new ve.EventSequencer( eventNames );
+				eventSequencer.on( onEvents );
+				eventSequencer.after( afterEvents );
+				eventSequencer.attach( $( goodDiv ) );
 				goodDiv.focus();
 			}
 
@@ -43,19 +58,6 @@
 							showEventCode( e ) + ': ' +
 							JSON.stringify( node.innerHTML ) );
 					} );
-				});
-			}
-
-			function addPrePostListeners ( eventSequencer, eventName ) {
-				eventSequencer.addPreListener( eventName, function ( e ) {
-					console.log( '*** pre ' + eventName + showEventCode( e ) +
-						' ' + JSON.stringify( document.getElementById(
-						'good' ).innerHTML ) );
-				});
-				eventSequencer.addPostListener( eventName, function ( e ) {
-					console.log( '*** post ' + eventName + showEventCode( e ) +
-						' ' + JSON.stringify( document.getElementById(
-						'good' ).innerHTML ) );
 				});
 			}
 
