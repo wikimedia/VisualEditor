@@ -722,6 +722,7 @@ ve.ce.Surface.prototype.onPaste = function ( e ) {
 		try {
 			// Try to paste in the orignal data
 			// Take a copy to prevent the data being annotated a second time in the catch block
+			// and to prevent actions in the data model affecting view.clipboard
 			pasteData = ve.copy( slice.getData() );
 
 			// Annotate
@@ -735,7 +736,8 @@ ve.ce.Surface.prototype.onPaste = function ( e ) {
 			);
 		} catch ( e ) {
 			// If that fails, balance the data before pasting
-			pasteData = slice.getBalancedData();
+			// Take a copy to prevent actions in the data model affecting view.clipboard
+			pasteData = ve.copy( slice.getBalancedData() );
 
 			// Annotate
 			ve.dm.Document.addAnnotationsToData( pasteData, this.model.getInsertionAnnotations() );
