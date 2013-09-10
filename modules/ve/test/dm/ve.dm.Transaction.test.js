@@ -319,7 +319,8 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 						'remove': [],
 						'insert': [ 'b' ]
 					},
-					{ 'type': 'retain', 'length': 8 }
+					{ 'type': 'retain', 'length': 8 },
+					{ 'type': 'retainMetadata', 'length': 1 }
 				]
 			}
 			// TODO test cases for unclosed openings
@@ -1177,7 +1178,8 @@ QUnit.test( 'newFromWrap', function ( assert ) {
 					{ 'type': 'replaceMetadata',
 					  'insert': ve.dm.MetaLinearData.static.merge( listMetaDoc.getMetadata().slice(10, 12) )[0],
 					  'remove': []
-					}
+					},
+					{ 'type': 'retainMetadata', 'length': 1 }
 				]
 			},
 			'checks integrity of unwrapOuter parameter': {
