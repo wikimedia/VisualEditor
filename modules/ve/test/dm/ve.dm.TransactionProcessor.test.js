@@ -468,6 +468,76 @@ QUnit.test( 'commit/rollback', function ( assert ) {
 					data.splice(  5, 1 ); // remove 'listItem'
 					data.splice(  2, 1 ); // remove 'list'
 				}
+			},
+			'inserting trailing metadata (1)': {
+				'data': ve.dm.example.listWithMeta,
+				'calls': [
+					[ 'newFromMetadataInsertion', 12, 0, [
+						{
+							'type': 'alienMeta',
+							'attributes': {
+								'domElements': $( '<meta property="fourteen" />' ).toArray()
+							}
+						}
+					] ]
+				],
+				'expected': function ( data ) {
+					ve.batchSplice( data, data.length - 2, 0, [
+						{
+							'type': 'alienMeta',
+							'attributes': {
+								'domElements': $( '<meta property="fourteen" />' ).toArray()
+							}
+						},
+						{
+							'type': '/alienMeta'
+						}
+					] );
+				}
+			},
+			'inserting trailing metadata (2)': {
+				'data': ve.dm.example.listWithMeta,
+				'calls': [
+					[ 'newFromMetadataInsertion', 12, 1, [
+						{
+							'type': 'alienMeta',
+							'attributes': {
+								'domElements': $( '<meta property="fourteen" />' ).toArray()
+							}
+						}
+					] ]
+				],
+				'expected': function ( data ) {
+					ve.batchSplice( data, data.length, 0, [
+						{
+							'type': 'alienMeta',
+							'attributes': {
+								'domElements': $( '<meta property="fourteen" />' ).toArray()
+							}
+						},
+						{
+							'type': '/alienMeta'
+						}
+					] );
+				}
+			},
+			'removing trailing metadata': {
+				'data': ve.dm.example.listWithMeta,
+				'calls': [
+					[ 'newFromMetadataRemoval', 12, new ve.Range( 0, 1 ) ]
+				],
+				'expected': function ( data ) {
+					ve.batchSplice( data, data.length - 2, 2, [] );
+				}
+			},
+			'preserves trailing metadata': {
+				'data': ve.dm.example.listWithMeta,
+				'calls': [
+					[ 'newFromInsertion', 4, [ 'b' ] ]
+				],
+				'expected': function ( data ) {
+					ve.batchSplice( data, 12, 0, [ 'b' ] );
+				}
 			}
 		};
 
