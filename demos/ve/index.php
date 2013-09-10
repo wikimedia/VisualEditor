@@ -220,6 +220,7 @@ $html = file_get_contents( $page );
 		<script src="../../modules/ve/ce/annotations/ve.ce.LinkAnnotation.js"></script>
 		<script src="../../modules/ve/ce/annotations/ve.ce.TextStyleAnnotation.js"></script>
 		<script src="../../modules/ve/ui/ve.ui.js"></script>
+		<script src="../../modules/ve/ui/elements/ve.ui.ClippableElement.js"></script>
 		<script src="../../modules/ve/ui/elements/ve.ui.LabeledElement.js"></script>
 		<script src="../../modules/ve/ui/elements/ve.ui.IconedElement.js"></script>
 		<script src="../../modules/ve/ui/elements/ve.ui.GroupElement.js"></script>
