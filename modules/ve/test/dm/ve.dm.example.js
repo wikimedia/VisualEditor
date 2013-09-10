@@ -165,6 +165,25 @@ ve.dm.example.testDir = window.VE_TESTDIR || '.';
 
 ve.dm.example.imgSrc = ve.dm.example.testDir + '/example.png';
 
+ve.dm.example.image = {
+	html: '<img src="' + ve.dm.example.imgSrc + '" alt="Example" width="100" height="50">',
+	data: {
+		'type': 'image',
+		'attributes' : {
+			'src': ve.dm.example.imgSrc,
+			'alt': 'Example',
+			'width': 100,
+			'height': 50
+		},
+		'htmlAttributes': [ { 'values': {
+			'src': ve.dm.example.imgSrc,
+			'alt': 'Example',
+			'width': '100',
+			'height': '50'
+		} } ]
+	}
+};
+
 /**
  * Serialized HTML.
  *
@@ -195,7 +214,7 @@ ve.dm.example.html =
 			'</td>' +
 		'</tr>' +
 	'</table>' +
-	'<pre>h<img src="' + ve.dm.example.imgSrc + '">i</pre>'+
+	'<pre>h' + ve.dm.example.image.html + 'i</pre>'+
 	'<dl>' +
 		'<dt>' +
 			'<p>j</p>' +
@@ -305,15 +324,7 @@ ve.dm.example.data = [
 	// 38 - Plain "h"
 	'h',
 	// 39 - Beginning of inline image
-	{
-		'type': 'image',
-		'attributes': {
-			'src': ve.dm.example.imgSrc,
-			'width': null,
-			'height': null
-		},
-		'htmlAttributes': [ { 'values': { 'src': ve.dm.example.imgSrc } } ]
-	},
+	ve.dm.example.image.data,
 	// 40 - End of inline image
 	{ 'type': '/image' },
 	// 41 - Plain "i"
@@ -762,15 +773,7 @@ ve.dm.example.complexTable = [
 
 ve.dm.example.inlineAtEdges = [
 	{ 'type': 'paragraph' },
-	{
-		'type': 'image',
-		'attributes': {
-			'src': ve.dm.example.imgSrc,
-			'width': null,
-			'height': null
-		},
-		'htmlAttributes': [ { 'values': { 'src': ve.dm.example.imgSrc } } ]
-	},
+	ve.dm.example.image.data,
 	{ 'type': '/image' },
 	'F',
 	'o',
@@ -1045,18 +1048,10 @@ ve.dm.example.domToDataCases = {
 		'normalizedHtml': '<body><p>foo</p><p>bar</p><h2>baz</h2><pre> \tquux</pre></body>'
 	},
 	'image': {
-		'html': '<body><img src="' + ve.dm.example.imgSrc + '"></body>',
+		'html': '<body>' + ve.dm.example.image.html + '</body>',
 		'data': [
 			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
-			{
-				'type': 'image',
-				'attributes' : {
-					'width': null,
-					'height': null,
-					'src': ve.dm.example.imgSrc
-				},
-				'htmlAttributes': [ { 'values': { 'src': ve.dm.example.imgSrc } } ]
-			},
+			ve.dm.example.image.data,
 			{ 'type' : '/image' },
 			{ 'type': '/paragraph' },
 			{ 'type': 'internalList' },
@@ -1272,18 +1267,10 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'wrapping of bare content starting with inline node': {
-		'html': '<body><img src="' + ve.dm.example.imgSrc + '">12</body>',
+		'html': '<body>' + ve.dm.example.image.html + '12</body>',
 		'data': [
 			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
-			{
-				'type': 'image',
-				'attributes': {
-					'src': ve.dm.example.imgSrc,
-					'width': null,
-					'height': null
-				},
-				'htmlAttributes': [ { 'values': { 'src': ve.dm.example.imgSrc } } ]
-			},
+			ve.dm.example.image.data,
 			{ 'type': '/image' },
 			'1',
 			'2',
