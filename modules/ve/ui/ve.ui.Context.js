@@ -386,11 +386,12 @@ ve.ui.Context.prototype.hide = function () {
  *
  * @method
  * @param {string} name Symbolic name of inspector
+ * @param {Object} [config] Config options to be sent to the inspector class constructor
  * @chainable
  */
-ve.ui.Context.prototype.openInspector = function ( name ) {
+ve.ui.Context.prototype.openInspector = function ( name, config ) {
 	if ( !this.inspectors.currentWindow ) {
-		this.inspectors.open( name );
+		this.inspectors.open( name, config );
 	}
 	return this;
 };
