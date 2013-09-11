@@ -3,12 +3,18 @@ Given(/^I can see the References User Interface$/) do
 end
 
 When(/^I click Insert reference$/) do
-	sleep 2 #fix for Chrome see https://code.google.com/p/selenium/issues/detail?id=2766
-  on(VisualEditorPage).create_new_element.when_present.click
+  on(VisualEditorPage).insert_reference_element.when_present.click
 end
 
 When(/^I click Edit for VisualEditor$/) do
-  on(VisualEditorPage).edit_ve
+  on(VisualEditorPage) do |page|
+    page.edit_ve
+    #This begin/rescue clause dismisses the VE warning message when it exists, and does not fail when it does not exist
+    begin
+      page.beta_warning_element.when_present.click
+    rescue
+    end
+  end
 end
 
 When(/^I click Reference$/) do
@@ -19,8 +25,10 @@ When(/^I click Reference$/) do
 end
 
 When(/^I enter (.+) into Content box$/) do |content|
-  on(VisualEditorPage).content_box_element.when_present
-  on(VisualEditorPage).content_box=content
+  on(VisualEditorPage) do |page|
+    page.content_box_element.when_present
+    page.content_box_element.send_keys(content)
+  end
 end
 
 Then(/^I should see Insert reference button enabled$/) do
