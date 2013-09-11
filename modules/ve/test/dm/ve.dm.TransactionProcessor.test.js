@@ -305,6 +305,21 @@ QUnit.test( 'commit/rollback', function ( assert ) {
 					data.splice( 27, 2, metaElementInsert, metaElementInsertClose );
 				}
 			},
+			'replacing metadata twice at the same offset': {
+				'data': ve.dm.example.withMeta,
+				'calls': [
+					[ 'pushRetain', 11 ],
+					[ 'pushRetainMetadata', 1 ],
+					[ 'pushReplaceMetadata', [ ve.dm.example.withMetaMetaData[11][1] ], [ metaElementInsert ] ],
+					[ 'pushRetainMetadata', 1 ],
+					[ 'pushReplaceMetadata', [ ve.dm.example.withMetaMetaData[11][3] ], [ metaElementInsert ] ],
+					[ 'pushRetain', 1 ]
+				],
+				'expected': function ( data ) {
+					data.splice( 23, 2, metaElementInsert, metaElementInsertClose );
+					data.splice( 27, 2, metaElementInsert, metaElementInsertClose );
+				}
+			},
 			'removing data from between metadata merges metadata': {
 				'data': ve.dm.example.withMeta,
 				'calls': [

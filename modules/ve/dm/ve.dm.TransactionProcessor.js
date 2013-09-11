@@ -497,4 +497,5 @@ ve.dm.TransactionProcessor.processors.replaceMetadata = function ( op ) {
 		insert = this.reversed ? op.remove : op.insert;
 
 	this.document.spliceMetadata( this.cursor, this.metadataCursor, remove.length, insert );
+	this.metadataCursor += insert.length;
 };
