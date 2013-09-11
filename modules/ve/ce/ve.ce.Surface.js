@@ -306,6 +306,7 @@ ve.ce.Surface.prototype.focus = function () {
  */
 ve.ce.Surface.prototype.documentOnFocus = function () {
 	this.eventSequencer.attach( this.$document );
+	this.surfaceObserver.startTimerLoop();
 };
 
 /**
@@ -315,9 +316,9 @@ ve.ce.Surface.prototype.documentOnFocus = function () {
  * @param {jQuery.Event} e Element blur event
  */
 ve.ce.Surface.prototype.documentOnBlur = function () {
-	this.$document.off( '.ve-ce-Surface' );
-	this.surfaceObserver.stop( true, true );
 	this.eventSequencer.detach();
+	this.surfaceObserver.stopTimerLoop();
+	this.surfaceObserver.pollOnce();
 	this.dragging = false;
 };
 
@@ -337,7 +338,9 @@ ve.ce.Surface.prototype.onDocumentMouseDown = function ( e ) {
 	// this.$$( e.target ).closest( '.ve-ce-documentNode' ).length === 0
 
 	if ( e.which === 1 ) {
-		this.surfaceObserver.stop( true, true );
+		this.surfaceObserver.stopTimerLoop();
+		// TODO: guard with incRenderLock?
+		this.surfaceObserver.pollOnce();
 	}
 
 	// Handle triple click
@@ -363,7 +366,9 @@ ve.ce.Surface.prototype.onDocumentMouseDown = function ( e ) {
  * @emits selectionEnd
  */
 ve.ce.Surface.prototype.onDocumentMouseUp = function ( e ) {
-	this.surfaceObserver.start( false, true );
+	this.surfaceObserver.startTimerLoop();
+	// TODO: guard with incRenderLock?
+	this.surfaceObserver.pollOnce();
 	if ( !e.shiftKey && this.selecting ) {
 		this.emit( 'selectionEnd' );
 		this.selecting = false;
@@ -481,7 +486,14 @@ ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
 		return;
 	}
 
-	this.surfaceObserver.stop( true, false );
+	this.surfaceObserver.stopTimerLoop();
+	this.incRenderLock();
+	try {
+		// TODO: is this correct?
+		this.surfaceObserver.pollOnce();
+	} finally {
+		this.decRenderLock();
+	}
 	switch ( e.keyCode ) {
 		case ve.Keys.LEFT:
 		case ve.Keys.RIGHT:
@@ -516,7 +528,13 @@ ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
 			}
 			break;
 	}
-	this.surfaceObserver.start( false, false );
+	this.incRenderLock();
+	try {
+		this.surfaceObserver.pollOnce();
+	} finally {
+		this.decRenderLock();
+	}
+	this.surfaceObserver.startTimerLoop();
 };
 
 /**
@@ -560,7 +578,7 @@ ve.ce.Surface.prototype.onDocumentKeyPress = function ( e ) {
  * @param {jQuery.Event} ev
  */
 ve.ce.Surface.prototype.afterDocumentKeyPress = function () {
-	this.surfaceObserver.start( false, true );
+	this.surfaceObserver.pollOnce();
 };
 
 /**
@@ -585,7 +603,8 @@ ve.ce.Surface.prototype.onDocumentKeyUp = function ( e ) {
  * @param {jQuery.Event} e Cut event
  */
 ve.ce.Surface.prototype.onCut = function ( e ) {
-	this.surfaceObserver.stop( false, true );
+	// TODO: no pollOnce here: but should we add one?
+	this.surfaceObserver.stopTimerLoop();
 	this.onCopy( e );
 	setTimeout( ve.bind( function () {
 		var selection, tx;
@@ -602,7 +621,8 @@ ve.ce.Surface.prototype.onCut = function ( e ) {
 
 		this.model.change( tx, new ve.Range( selection.start ) );
 		this.surfaceObserver.clear();
-		this.surfaceObserver.start( false, true );
+		this.surfaceObserver.startTimerLoop();
+		this.surfaceObserver.pollOnce();
 	}, this ) );
 };
 
@@ -662,7 +682,8 @@ ve.ce.Surface.prototype.onPaste = function ( e ) {
 		eventPasteKey = clipboardData && clipboardData.getData( 'text/xcustom' ),
 		eventPasteText = clipboardData && clipboardData.getData( 'text/plain' );
 
-	this.surfaceObserver.stop( false, true );
+	// TODO: no pollOnce here: but should we add one?
+	this.surfaceObserver.stopTimerLoop();
 
 	// Pasting into a range? Remove first.
 	if ( !rangy.getSelection( this.$document[0] ).isCollapsed ) {
@@ -768,7 +789,13 @@ ve.ce.Surface.prototype.onDocumentCompositionStart = function () {
  */
 ve.ce.Surface.prototype.onDocumentCompositionEnd = function () {
 	this.inIme = false;
-	this.surfaceObserver.start( false, false );
+	this.incRenderLock();
+	try {
+		this.surfaceObserver.pollOnce();
+	} finally {
+		this.decRenderLock();
+	}
+	this.surfaceObserver.startTimerLoop();
 };
 
 /*! Custom Events */
@@ -820,7 +847,7 @@ ve.ce.Surface.prototype.onChange = function ( transaction, selection ) {
 /**
  * Handle selection change events.
  *
- * @see ve.ce.SurfaceObserver#poll
+ * @see ve.ce.SurfaceObserver#pollOnce
  *
  * @method
  * @param {ve.Range} oldRange
@@ -842,7 +869,7 @@ ve.ce.Surface.prototype.onSelectionChange = function ( oldRange, newRange ) {
 /**
  * Handle content change events.
  *
- * @see ve.ce.SurfaceObserver#poll
+ * @see ve.ce.SurfaceObserver#pollOnce
  *
  * @method
  * @param {HTMLElement} node DOM node the change occured in
@@ -1015,7 +1042,7 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
  * @method
  */
 ve.ce.Surface.prototype.onLock = function () {
-	this.surfaceObserver.stop( false, true );
+	this.surfaceObserver.locked = true;
 };
 
 /**
@@ -1024,8 +1051,8 @@ ve.ce.Surface.prototype.onLock = function () {
  * @method
  */
 ve.ce.Surface.prototype.onUnlock = function () {
-	this.surfaceObserver.clear( this.model.getSelection() );
-	this.surfaceObserver.start( false, true );
+	this.surfaceObserver.locked = false;
+	// TODO: should we pollOnce?
 };
 
 /*! Relocation */
@@ -1072,8 +1099,15 @@ ve.ce.Surface.prototype.handleLeftOrRightArrowKey = function ( e ) {
 
 	// Selection is going to be displayed programmatically so prevent default browser behaviour
 	e.preventDefault();
-	// Stop with final poll cycle so we have correct information in model
-	this.surfaceObserver.stop( true, false );
+	// TODO: onDocumentKeyDown did this already
+	this.surfaceObserver.stopTimerLoop();
+	this.incRenderLock();
+	try {
+		// TODO: onDocumentKeyDown did this already
+		this.surfaceObserver.pollOnce();
+	} finally {
+		this.decRenderLock();
+	}
 	selection = this.model.getSelection();
 	if ( this.$$( e.target ).css( 'direction' ) === 'rtl' ) {
 		// If the language direction is RTL, switch left/right directions:
@@ -1089,7 +1123,9 @@ ve.ce.Surface.prototype.handleLeftOrRightArrowKey = function ( e ) {
 		e.shiftKey
 	);
 	this.model.change( null, range );
-	this.surfaceObserver.start( false, true );
+	// TODO: onDocumentKeyDown does this anyway
+	this.surfaceObserver.startTimerLoop();
+	this.surfaceObserver.pollOnce();
 };
 
 /**
@@ -1106,7 +1142,11 @@ ve.ce.Surface.prototype.handleUpOrDownArrowKey = function ( e ) {
 		nativeSel.modify( 'extend', 'left', 'character' );
 		return;
 	}
-	this.surfaceObserver.stop( true, true );
+	// TODO: onDocumentKeyDown did this already
+	this.surfaceObserver.stopTimerLoop();
+	// TODO: onDocumentKeyDown did this already
+	this.surfaceObserver.pollOnce();
+
 	selection = this.model.getSelection();
 	rangySelection = rangy.getSelection( this.$document[0] );
 	// Perform programatic handling only for selection that is expanded and backwards according to
@@ -1130,18 +1170,20 @@ ve.ce.Surface.prototype.handleUpOrDownArrowKey = function ( e ) {
 			if ( !$element.hasClass( 've-ce-branchNode-slug' ) ) {
 				$element.remove();
 			}
-			this.surfaceObserver.start( false, true );
-			this.surfaceObserver.stop( false, true );
+			this.surfaceObserver.pollOnce();
 			if ( e.shiftKey === true ) { // expanded range
 				range = new ve.Range( selection.from, this.model.getSelection().to );
 			} else { // collapsed range (just a cursor)
 				range = new ve.Range( this.model.getSelection().to );
 			}
 			this.model.change( null, range );
-			this.surfaceObserver.start( false, true );
+			this.surfaceObserver.pollOnce();
 		}, this ), 0 );
 	} else {
-		this.surfaceObserver.start( false, true );
+		// TODO: onDocumentKeyDown does this anyway
+		this.surfaceObserver.startTimerLoop();
+
+		this.surfaceObserver.pollOnce();
 	}
 };
 
@@ -1197,7 +1239,8 @@ ve.ce.Surface.prototype.handleInsertion = function () {
 		}
 	}
 
-	this.surfaceObserver.stop( true, true );
+	this.surfaceObserver.stopTimerLoop();
+	this.surfaceObserver.pollOnce();
 };
 
 /**
