@@ -47,6 +47,7 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 		doc = ve.dm.example.createExampleDocument(),
 		isolationDoc = ve.dm.example.createExampleDocument( 'isolationData' ),
 		complexTableDoc = ve.dm.example.createExampleDocument( 'complexTable' ),
+		listWithMetaDoc = ve.dm.example.createExampleDocument( 'listWithMeta' ),
 		doc2 = new ve.dm.Document(
 			ve.dm.example.preprocessAnnotations( [ { 'type': 'paragraph' }, { 'type': '/paragraph' } ] )
 		),
@@ -307,6 +308,18 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 						]
 					},
 					{ 'type': 'retain', 'length': 13 }
+				]
+			},
+			'preserving trailing metadata': {
+				'args': [ listWithMetaDoc, 4, [ 'b' ] ],
+				'ops': [
+					{ 'type': 'retain', 'length': 4 },
+					{
+						'type': 'replace',
+						'remove': [],
+						'insert': [ 'b' ]
+					},
+					{ 'type': 'retain', 'length': 8 }
 				]
 			}
 			// TODO test cases for unclosed openings
@@ -1581,6 +1594,7 @@ QUnit.test( 'push*Annotating', function ( assert ) {
 
 QUnit.test( 'newFromMetadataInsertion', function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument( 'withMeta' ),
+		listWithMetaDoc = ve.dm.example.createExampleDocument( 'listWithMeta' ),
 		element = {
 			'type': 'alienMeta',
 			'attributes': {
@@ -1600,7 +1614,7 @@ QUnit.test( 'newFromMetadataInsertion', function ( assert ) {
 						'insert': [ element ]
 					},
 					{ 'type': 'retainMetadata', 'length': 2 },
-					{ 'type': 'retain', 'length': 3 }
+					{ 'type': 'retain', 'length': 2 }
 				]
 			},
 			'inserting metadata element into empty list': {
@@ -1612,7 +1626,31 @@ QUnit.test( 'newFromMetadataInsertion', function ( assert ) {
 						'remove': [],
 						'insert': [ element ]
 					},
-					{ 'type': 'retain', 'length': 11 }
+					{ 'type': 'retain', 'length': 10 }
+				]
+			},
+			'inserting trailing metadata (1)': {
+				'args': [ listWithMetaDoc, 12, 0, [ element ] ],
+				'ops': [
+					{ 'type': 'retain', 'length': 12 },
+					{
+						'type': 'replaceMetadata',
+						'remove': [],
+						'insert': [ element ]
+					},
+					{ 'type': 'retainMetadata', 'length': 1 }
+				]
+			},
+			'inserting trailing metadata (2)': {
+				'args': [ listWithMetaDoc, 12, 1, [ element ] ],
+				'ops': [
+					{ 'type': 'retain', 'length': 12 },
+					{ 'type': 'retainMetadata', 'length': 1 },
+					{
+						'type': 'replaceMetadata',
+						'remove': [],
+						'insert': [ element ]
+					}
 				]
 			}
 		};
@@ -1622,6 +1660,7 @@ QUnit.test( 'newFromMetadataInsertion', function ( assert ) {
 
 QUnit.test( 'newFromMetadataRemoval', function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument( 'withMeta' ),
+		listWithMetaDoc = ve.dm.example.createExampleDocument( 'listWithMeta' ),
 		allElements = ve.dm.example.withMetaMetaData[11],
 		someElements = allElements.slice( 1, 3 ),
 		cases = {
@@ -1634,7 +1673,7 @@ QUnit.test( 'newFromMetadataRemoval', function ( assert ) {
 						'remove': allElements,
 						'insert': []
 					},
-					{ 'type': 'retain', 'length': 3 }
+					{ 'type': 'retain', 'length': 2 }
 				]
 			},
 			'removing some metadata elements from metadata list': {
@@ -1648,7 +1687,25 @@ QUnit.test( 'newFromMetadataRemoval', function ( assert ) {
 						'insert': []
 					},
 					{ 'type': 'retainMetadata', 'length': 1 },
-					{ 'type': 'retain', 'length': 3 }
+					{ 'type': 'retain', 'length': 2 }
+				]
+			},
+			'removing trailing metadata': {
+				'args': [ listWithMetaDoc, 12, new ve.Range( 0, 1 ) ],
+				'ops': [
+					{ 'type': 'retain', 'length': 12 },
+					{
+						'type': 'replaceMetadata',
+						'remove': [
+							{
+								'type': 'alienMeta',
+								'attributes': {
+									'domElements': $( '<meta property="thirteen" />' ).toArray()
+								}
+							}
+						],
+						'insert': []
+					}
 				]
 			},
 			'checks metadata at offset is non-empty': {
@@ -1666,6 +1723,7 @@ QUnit.test( 'newFromMetadataRemoval', function ( assert ) {
 
 QUnit.test( 'newFromMetadataElementReplacement', function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument( 'withMeta' ),
+		listWithMetaDoc = ve.dm.example.createExampleDocument( 'listWithMeta' ),
 		newElement = {
 			'type': 'alienMeta',
 			'attributes': {
@@ -1685,7 +1743,18 @@ QUnit.test( 'newFromMetadataElementReplacement', function ( assert ) {
 						'remove': [ oldElement ],
 						'insert': [ newElement ]
 					},
-					{ 'type': 'retain', 'length': 3 }
+					{ 'type': 'retain', 'length': 2 }
+				]
+			},
+			'replacing trailing metadata': {
+				'args': [ listWithMetaDoc, 12, 0, newElement ],
+				'ops': [
+					{ 'type': 'retain', 'length': 12 },
+					{
+						'type': 'replaceMetadata',
+						'remove': [ listWithMetaDoc.metadata.getData( 12 )[0] ],
+						'insert': [ newElement ]
+					}
 				]
 			},
 			'checks offset is in bounds': {

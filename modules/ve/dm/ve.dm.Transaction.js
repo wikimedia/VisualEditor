@@ -320,7 +320,7 @@ ve.dm.Transaction.newFromMetadataInsertion = function ( doc, offset, index, newE
 	// Retain up to end of metadata elements (second dimension)
 	tx.pushRetainMetadata( elements.length - index );
 	// Retain to end of document
-	tx.pushRetain( data.getLength() - offset );
+	tx.pushRetain( doc.data.getLength() - offset );
 	return tx;
 };
 
@@ -364,12 +364,12 @@ ve.dm.Transaction.newFromMetadataRemoval = function ( doc, offset, range ) {
 	// Retain up to end of metadata elements (second dimension)
 	tx.pushRetainMetadata( elements.length - range.end );
 	// Retain to end of document
-	tx.pushRetain( data.getLength() - offset );
+	tx.pushRetain( doc.data.getLength() - offset );
 	return tx;
 };
 
 /**
- * Generate a transaction that relaces a single metadata element.
+ * Generate a transaction that replaces a single metadata element.
  *
  * @static
  * @method
@@ -403,7 +403,7 @@ ve.dm.Transaction.newFromMetadataElementReplacement = function ( doc, offset, in
 	// Retain up to end of metadata elements (second dimension)
 	tx.pushRetainMetadata( elements.length - index - 1 );
 	// Retain to end of document
-	tx.pushRetain( data.length - offset );
+	tx.pushRetain( doc.data.getLength() - offset );
 	return tx;
 };
 

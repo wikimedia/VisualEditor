@@ -708,7 +708,15 @@ ve.dm.example.listWithMeta = [
 		}
 	},
 	{ 'type': '/alienMeta' },
-	{ 'type': '/list' }
+	{ 'type': '/list' },
+	// 12 - Trailing metadata
+	{
+		'type': 'alienMeta',
+		'attributes': {
+			'domElements': $( '<meta property="thirteen" />' ).toArray()
+		}
+	},
+	{ 'type': '/alienMeta' }
 ];
 
 
