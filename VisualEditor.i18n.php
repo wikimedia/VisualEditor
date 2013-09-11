@@ -163,6 +163,8 @@ $messages['en'] = array(
 	'visualeditor-parameter-search-unknown' => 'Unknown parameter',
 	'visualeditor-preference-betatempdisable' => 'Temporarily disable VisualEditor while it is in beta',
 	'visualeditor-preference-enable' => 'Enable VisualEditor (only in the [[{{MediaWiki:visualeditor-mainnamespacepagelink}}|main]] and [[{{MediaWiki:visualeditor-usernamespacepagelink}}|user]] namespaces)',
+	'visualeditor-preference-experimental-description' => 'Enable the latest features inside VisualEditor. As we develop tools and make changes for the editor, we make them available for testing ahead of general release. Please remember to always review your changes before saving when using experimental features.',
+	'visualeditor-preference-experimental-label' => 'VisualEditor experimental features',
 	'visualeditor-reference-input-placeholder' => 'What do you want to reference?',
 	'visualeditor-referencelist-isempty' => 'There are no references with the group "$1" on this page.',
 	'visualeditor-referencelist-missingref' => 'This reference is defined in a template or other generated block, and for now can only be edited in source mode.',
@@ -504,6 +506,8 @@ See [[w:LaTeX]].',
 	'visualeditor-preference-betatempdisable' => 'Label for the temporary user preference to disable VisualEditor while it is in beta.',
 	'visualeditor-preference-enable' => 'Label for the user preference to enable VisualEditor while it is in alpha (opt-in) mode.
 Links are in {{msg-mw|Visualeditor-mainnamespacepagelink}} and {{msg-mw|visualeditor-usernamespacepagelink}}.',
+	'visualeditor-preference-experimental-description' => 'Description of VisualEditor experimental features',
+	'visualeditor-preference-experimental-label' => 'Label for option to enable VisualEditor experimental features',
 	'visualeditor-reference-input-placeholder' => 'Placeholder text for reference search field: searches existing on-page references.',
 	'visualeditor-referencelist-isempty' => 'Message that appears in the references list when there are no references on the page of that group.
 

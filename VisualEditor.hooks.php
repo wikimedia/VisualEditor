@@ -230,6 +230,19 @@ class VisualEditorHooks {
 		return true;
 	}
 
+	public static function onGetBetaPreferences( $user, &$preferences ) {
+		global $wgExtensionAssetsPath;
+
+		$preferences['visualeditor-enable-experimental'] = array(
+			'version' => '1.0',
+			'label-message' => 'visualeditor-preference-experimental-label',
+			'desc-message' => 'visualeditor-preference-experimental-description',
+			'info-link' => 'visualeditor-preference-experimental-info-link',
+			'discussion-link' => 'visualeditor-preference-experimental-discussion-link',
+			'screenshot' => $wgExtensionAssetsPath . '/VisualEditor/logo-experimental.png',
+		);
+	}
+
 	public static function onListDefinedTags( &$tags ) {
 		$tags[] = 'visualeditor';
 		$tags[] = 'visualeditor-needcheck';
@@ -273,8 +286,9 @@ class VisualEditorHooks {
 			'namespaces' => $wgVisualEditorNamespaces,
 			'pluginModules' => $wgVisualEditorPluginModules,
 			'defaultUserOptions' => array(
-				'enable' => $wgDefaultUserOptions['visualeditor-enable'],
 				'betatempdisable' => $wgDefaultUserOptions['visualeditor-betatempdisable'],
+				'enable' => $wgDefaultUserOptions['visualeditor-enable'],
+				'experimental' => $wgDefaultUserOptions['visualeditor-enable-experimental'],
 			),
 			'skins' => self::$supportedSkins,
 			'tabPosition' => $wgVisualEditorTabPosition,

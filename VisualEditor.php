@@ -48,6 +48,9 @@ $wgAPIModules['visualeditoredit'] = 'ApiVisualEditorEdit';
 // Register Hooks
 $wgHooks['BeforePageDisplay'][] = 'VisualEditorHooks::onBeforePageDisplay';
 $wgHooks['DoEditSectionLink'][] = 'VisualEditorHooks::onDoEditSectionLink';
+if ( array_key_exists( 'GetBetaFeaturePreferences', $wgHooks ) ) {
+	$wgHooks['GetBetaFeaturePreferences'][] = 'VisualEditorHooks::onGetBetaPreferences';
+}
 $wgHooks['GetPreferences'][] = 'VisualEditorHooks::onGetPreferences';
 $wgHooks['ListDefinedTags'][] = 'VisualEditorHooks::onListDefinedTags';
 $wgHooks['MakeGlobalVariablesScript'][] = 'VisualEditorHooks::onMakeGlobalVariablesScript';
@@ -58,6 +61,7 @@ $wgExtensionFunctions[] = 'VisualEditorHooks::onSetup';
 
 // Set default values for new preferences
 $wgDefaultUserOptions['visualeditor-enable'] = 0;
+$wgDefaultUserOptions['visualeditor-enable-experimental'] = 0;
 $wgDefaultUserOptions['visualeditor-betatempdisable'] = 0;
 
 // Register resource modules
@@ -773,9 +777,6 @@ $wgVisualEditorUseChangeTagging = true;
 // This allows you to enable the 'visualeditor-enable' preference by default
 // but still disable VE for logged-out users (by setting this to false).
 $wgVisualEditorDisableForAnons = false;
-
-// Whether to enable incomplete experimental code
-$wgVisualEditorEnableExperimentalCode = false;
 
 // Whether to show the "welcome to the beta" dialog the first time a user uses VisualEditor
 $wgVisualEditorShowBetaWelcome = false;
