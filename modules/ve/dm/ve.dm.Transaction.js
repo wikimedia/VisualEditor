@@ -30,8 +30,7 @@ ve.dm.Transaction = function VeDmTransaction() {
  * @returns {ve.dm.Transaction} Transaction that inserts data
  */
 ve.dm.Transaction.newFromInsertion = function ( doc, offset, insertion ) {
-	var tx = new ve.dm.Transaction(),
-		data = doc.data;
+	var tx = new ve.dm.Transaction();
 	// Fix up the insertion
 	insertion = doc.fixupInsertion( insertion, offset );
 	// Retain up to insertion point, if needed
@@ -39,7 +38,7 @@ ve.dm.Transaction.newFromInsertion = function ( doc, offset, insertion ) {
 	// Insert data
 	tx.pushReplace( doc, insertion.offset, insertion.remove, insertion.data );
 	// Retain to end of document, if needed (for completeness)
-	tx.pushRetain( data.getLength() - ( insertion.offset + insertion.remove ) );
+	tx.pushFinalRetain( doc, insertion.offset + insertion.remove );
 	return tx;
 };
 
@@ -72,12 +71,11 @@ ve.dm.Transaction.newFromRemoval = function ( doc, range ) {
 		offset = 0,
 		removeStart = null,
 		removeEnd = null,
-		tx = new ve.dm.Transaction(),
-		data = doc.data;
+		tx = new ve.dm.Transaction();
 	// Validate range
 	if ( range.isCollapsed() ) {
 		// Empty range, nothing to remove, retain up to the end of the document (for completeness)
-		tx.pushRetain( data.getLength() );
+		tx.pushFinalRetain( doc, 0 );
 		return tx;
 	}
 	// Select nodes and validate selection
@@ -102,7 +100,7 @@ ve.dm.Transaction.newFromRemoval = function ( doc, range ) {
 		}
 		tx.pushRetain( removeStart );
 		tx.addSafeRemoveOps( doc, removeStart, removeEnd );
-		tx.pushRetain( data.getLength() - removeEnd );
+		tx.pushFinalRetain( doc, removeEnd );
 		// All done
 		return tx;
 	}
@@ -149,7 +147,7 @@ ve.dm.Transaction.newFromRemoval = function ( doc, range ) {
 		offset = removeEnd;
 	}
 	// Retain up to the end of the document
-	tx.pushRetain( data.getLength() - offset );
+	tx.pushFinalRetain( doc, offset );
 	return tx;
 };
 
@@ -174,7 +172,7 @@ ve.dm.Transaction.newFromNodeReplacement = function ( doc, nodeOrRange, newData 
 	}
 	tx.pushRetain( range.start );
 	tx.pushReplace( doc, range.start, range.end - range.start, newData );
-	tx.pushRetain( doc.data.getLength() - range.end );
+	tx.pushFinalRetain( doc, range.end );
 	return tx;
 };
 
@@ -212,7 +210,7 @@ ve.dm.Transaction.newFromAttributeChanges = function ( doc, offset, attr ) {
 		);
 	}
 	// Retain to end of document
-	tx.pushRetain( data.length - offset );
+	tx.pushFinalRetain( doc, offset );
 	return tx;
 };
 
@@ -288,7 +286,7 @@ ve.dm.Transaction.newFromAnnotation = function ( doc, range, method, annotation 
 	if ( on ) {
 		tx.pushStopAnnotating( method, annotation );
 	}
-	tx.pushRetain( data.getLength() - range.end );
+	tx.pushFinalRetain( doc, range.end );
 	return tx;
 };
 
@@ -320,7 +318,7 @@ ve.dm.Transaction.newFromMetadataInsertion = function ( doc, offset, index, newE
 	// Retain up to end of metadata elements (second dimension)
 	tx.pushRetainMetadata( elements.length - index );
 	// Retain to end of document
-	tx.pushRetain( doc.data.getLength() - offset );
+	tx.pushFinalRetain( doc, offset, elements.length );
 	return tx;
 };
 
@@ -363,8 +361,8 @@ ve.dm.Transaction.newFromMetadataRemoval = function ( doc, offset, range ) {
 	);
 	// Retain up to end of metadata elements (second dimension)
 	tx.pushRetainMetadata( elements.length - range.end );
-	// Retain to end of document
-	tx.pushRetain( doc.data.getLength() - offset );
+	// Retain to end of document (unless we're already off the end )
+	tx.pushFinalRetain( doc, offset, elements.length );
 	return tx;
 };
 
@@ -402,8 +400,8 @@ ve.dm.Transaction.newFromMetadataElementReplacement = function ( doc, offset, in
 	);
 	// Retain up to end of metadata elements (second dimension)
 	tx.pushRetainMetadata( elements.length - index - 1 );
-	// Retain to end of document
-	tx.pushRetain( doc.data.getLength() - offset );
+	// Retain to end of document (unless we're already off the end )
+	tx.pushFinalRetain( doc, offset, elements.length );
 	return tx;
 };
 
@@ -421,7 +419,6 @@ ve.dm.Transaction.newFromMetadataElementReplacement = function ( doc, offset, in
 ve.dm.Transaction.newFromContentBranchConversion = function ( doc, range, type, attr ) {
 	var i, selected, branch, branchOuterRange,
 		tx = new ve.dm.Transaction(),
-		data = doc.getData(),
 		selection = doc.selectNodes( range, 'leaves' ),
 		opening = { 'type': type },
 		closing = { 'type': '/' + type },
@@ -463,9 +460,7 @@ ve.dm.Transaction.newFromContentBranchConversion = function ( doc, range, type, 
 		}
 	}
 	// Retain until the end
-	tx.pushRetain(
-		data.length - ( previousBranch ? previousBranchOuterRange.end : 0 )
-	);
+	tx.pushFinalRetain( doc, previousBranch ? previousBranchOuterRange.end : 0 );
 	return tx;
 };
 
@@ -598,7 +593,7 @@ ve.dm.Transaction.newFromWrap = function ( doc, range, unwrapOuter, wrapOuter, u
 	tx.pushReplace( doc, range.end, unwrapOuter.length, closingArray( wrapOuter ) );
 
 	// Retain up to the end of the document
-	tx.pushRetain( doc.data.getLength() - range.end - unwrapOuter.length );
+	tx.pushFinalRetain( doc, range.end + unwrapOuter.length );
 
 	return tx;
 };
@@ -785,6 +780,29 @@ ve.dm.Transaction.prototype.translateRange = function ( range, reversed ) {
 	var start = this.translateOffset( range.start, reversed, true ),
 		end = this.translateOffset( range.end, reversed, false );
 	return range.isBackwards() ? new ve.Range( end, start ) : new ve.Range( start, end );
+};
+
+/**
+ * Add a final retain operation to finish off a transaction (internal helper).
+ *
+ * @private
+ * @method
+ * @param {ve.dm.Document} doc Document to finish off.
+ * @param {number} Final offset edited by the transaction up to this point.
+ * @param {number} [metaOffset=0] Final metadata offset edited, if nonzero.
+ */
+ve.dm.Transaction.prototype.pushFinalRetain = function ( doc, offset, metaOffset ) {
+	var data = doc.data,
+		metadata = doc.metadata,
+		finalMetadata = metadata.getData( data.getLength() );
+	if ( offset < doc.data.getLength() ) {
+		this.pushRetain( doc.data.getLength() - offset );
+		metaOffset = 0;
+	}
+	// if there is trailing metadata, push a final retainMetadata
+	if ( finalMetadata !== undefined && finalMetadata.length > 0 ) {
+		this.pushRetainMetadata( finalMetadata.length - ( metaOffset || 0 ) );
+	}
 };
 
 /**
