@@ -125,8 +125,6 @@ ve.ce.SurfaceObserver.prototype.stopTimerLoop = function () {
 /**
  * Poll for changes.
  *
- * If `postpone` is false or undefined then polling will occcur immediately.
- *
  * TODO: fixing selection in certain cases, handling selection across multiple nodes in Firefox
  *
  * FIXME: Does not work well (selectionChange is not emitted) when cursor is placed inside a slug
@@ -137,6 +135,34 @@ ve.ce.SurfaceObserver.prototype.stopTimerLoop = function () {
  * @emits selectionChange
  */
 ve.ce.SurfaceObserver.prototype.pollOnce = function () {
+	this.pollOnceInternal( true );
+};
+
+/**
+ * Poll to update SurfaceObserver, but don't emit change events
+ *
+ * @method
+ */
+
+ve.ce.SurfaceObserver.prototype.pollOnceNoEmit = function () {
+	this.pollOnceInternal( false );
+};
+
+/**
+ * Poll for changes.
+ *
+ * TODO: fixing selection in certain cases, handling selection across multiple nodes in Firefox
+ *
+ * FIXME: Does not work well (selectionChange is not emitted) when cursor is placed inside a slug
+ * with a mouse.
+ *
+ * @method
+ * @private
+ * @param {boolean} emitChanges Emit change events if selection changed
+ * @emits contentChange
+ * @emits selectionChange
+ */
+ve.ce.SurfaceObserver.prototype.pollOnceInternal = function ( emitChanges ) {
 	var $nodeOrSlug, node, text, hash, range, rangyRange;
 
 	range = this.range;
@@ -169,12 +195,15 @@ ve.ce.SurfaceObserver.prototype.pollOnce = function () {
 		text = ve.ce.getDomText( node.$[0] );
 		hash = ve.ce.getDomHash( node.$[0] );
 		if ( this.text !== text || this.hash !== hash ) {
-			this.emit(
-				'contentChange',
-				node,
-				{ 'text': this.text, 'hash': this.hash, 'range': this.range },
-				{ 'text': text, 'hash': hash, 'range': range }
-			);
+			if ( emitChanges ) {
+				this.emit(
+					'contentChange',
+					node,
+					{ 'text': this.text, 'hash': this.hash,
+						'range': this.range },
+					{ 'text': text, 'hash': hash, 'range': range }
+				);
+			}
 			this.text = text;
 			this.hash = hash;
 		}
@@ -182,11 +211,13 @@ ve.ce.SurfaceObserver.prototype.pollOnce = function () {
 
 	// Only emit selectionChange event if there's a meaningful range difference
 	if ( ( this.range && range ) ? !this.range.equals( range ) : ( this.range !== range ) ) {
-		this.emit(
-			'selectionChange',
-			this.range,
-			range
-		);
+		if ( emitChanges ) {
+			this.emit(
+				'selectionChange',
+				this.range,
+				range
+			);
+		}
 		this.range = range;
 	}
 };

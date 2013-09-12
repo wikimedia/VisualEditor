@@ -1158,7 +1158,7 @@ ve.ce.Surface.prototype.onLock = function () {
  */
 ve.ce.Surface.prototype.onUnlock = function () {
 	this.surfaceObserver.locked = false;
-	// TODO: should we pollOnce?
+	this.surfaceObserver.pollOnceNoEmit();
 };
 
 /*! Relocation */
