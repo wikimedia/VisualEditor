@@ -79,7 +79,7 @@ ve.ui.BoldAnnotationTool.static.name = 'bold';
 ve.ui.BoldAnnotationTool.static.group = 'textStyle';
 ve.ui.BoldAnnotationTool.static.icon = {
 	'default': 'bold-a',
-	'be-tarask': 'bold-cyrl-te-el',
+	'be': 'bold-cyrl-te',
 	'cs': 'bold-b',
 	'da': 'bold-f',
 	'de': 'bold-f',
@@ -100,7 +100,6 @@ ve.ui.BoldAnnotationTool.static.icon = {
 	'os': 'bold-cyrl-be',
 	'pl': 'bold-b',
 	'pt': 'bold-n',
-	'pt-br': 'bold-n',
 	'ru': 'bold-cyrl-zhe',
 	'sv': 'bold-f'
 };
@@ -125,7 +124,7 @@ ve.ui.ItalicAnnotationTool.static.name = 'italic';
 ve.ui.ItalicAnnotationTool.static.group = 'textStyle';
 ve.ui.ItalicAnnotationTool.static.icon = {
 	'default': 'italic-a',
-	'be-tarask': 'italic-cyrl-ka',
+	'be': 'italic-cyrl-ka',
 	'cs': 'italic-i',
 	'da': 'italic-k',
 	'de': 'italic-k',
@@ -146,7 +145,6 @@ ve.ui.ItalicAnnotationTool.static.icon = {
 	'os': 'italic-cyrl-ka',
 	'pl': 'italic-i',
 	'pt': 'italic-i',
-	'pt-br': 'italic-i',
 	'ru': 'italic-cyrl-ka',
 	'sv': 'italic-k'
 };
