@@ -219,20 +219,36 @@ $messages['en'] = array(
 $messages['qqq'] = array(
 	'accesskey-ca-editsource' => '{{optional}}',
 	'accesskey-ca-ve-edit' => '{{Ignore}}',
-	'tag-visualeditor' => 'Short description of the visualeditor tag ({{msg-mw|Tag-visualeditor}}). Shown on lists of changes (history, recentchanges, etc.) for each edit made using VisualEditor.
+	'tag-visualeditor' => 'Short description of the visualeditor tag.
+
+Shown on lists of changes (history, recentchanges, etc.) for each edit made using VisualEditor.
+
+Refers to {{msg-mw|Visualeditor-descriptionpagelink}}.
 
 See also:
 * {{msg-mw|Tag-visualeditor-needcheck}}
 {{Identical|VisualEditor}}',
-	'tag-visualeditor-description' => 'Long description of the visualeditor tag ({{msg-mw|Tag-visualeditor}}). Shown on [[Special:Tags]].
+	'tag-visualeditor-description' => 'Long description of the visualeditor tag ({{msg-mw|Tag-visualeditor}}).
+
+Shown on [[Special:Tags]].
+
+Refers to {{msg-mw|Visualeditor-descriptionpagelink}}.
 
 See also:
 * {{msg-mw|Tag-visualeditor-needcheck-description}}',
-	'tag-visualeditor-needcheck' => '"Check" indicates "Check needed". See {{msg-mw|Tag-visualeditor-needcheck-description}}.
+	'tag-visualeditor-needcheck' => '"Check" indicates "Check needed".
+
+See {{msg-mw|Tag-visualeditor-needcheck-description}}.
+
+Refers to {{msg-mw|Visualeditor-descriptionpagelink}}.
 
 See also:
 * {{msg-mw|Tag-visualeditor|similar message}}',
-	'tag-visualeditor-needcheck-description' => 'Long description of the visualeditor tag ({{msg-mw|Tag-visualeditor-needcheck}}). Shown on [[Special:Tags]].
+	'tag-visualeditor-needcheck-description' => 'Long description of the visualeditor tag ({{msg-mw|Tag-visualeditor-needcheck}}).
+
+Shown on [[Special:Tags]].
+
+Refers to {{msg-mw|Visualeditor-descriptionpagelink}}.
 
 See also:
 * {{msg-mw|Tag-visualeditor-description}}',
@@ -273,7 +289,9 @@ See also:
 	'visualeditor-beta-appendix' => '{{Identical|Beta}}',
 	'visualeditor-beta-label' => 'Text of tool in the toolbar that highlights that VisualEditor is still in beta.
 {{Identical|Beta}}',
-	'visualeditor-beta-warning' => "Note shown when user clicks on 'beta' label in VisualEditor, warning users that the software may have issues",
+	'visualeditor-beta-warning' => "Note shown when user clicks on 'beta' label in VisualEditor, warning users that the software may have issues.
+
+Refers to {{msg-mw|Visualeditor-ca-editsource}}.",
 	'visualeditor-browserwarning' => 'Edit notice shown when VisualEditor loads, warning users that their browser is not officially supported',
 	'visualeditor-ca-createsource' => 'Text for the create source link in the tab dropdown, if the page doesn\'t exist. It\'s shown next to the message {{msg-mw|vector-view-create}}, so they should be similar (for example, use a similar translation for "Create").
 
@@ -281,6 +299,10 @@ If the page exists, the following link text is used: {{msg-mw|Visualeditor-ca-ed
 	'visualeditor-ca-editsource' => 'Text for the "Edit source" tab, if the page exists.
 
 If the page doesn\'t exist, the following link text is used: {{msg-mw|Visualeditor-ca-createsource}}
+
+Used in:
+* {{msg-mw|Visualeditor-beta-warning}}
+* {{msg-mw|Visualeditor-wikitext-warning}}
 {{Identical|Edit source}}',
 	'visualeditor-ca-editsource-section' => 'Used as link text for "edit source" mode of section edit links.
 
@@ -293,8 +315,14 @@ Corresponds to the {{msg-mw|editsection}} message for default mode.
 	'visualeditor-ca-ve-edit-section' => '{{Identical|VisualEditor}}',
 	'visualeditor-clearbutton-tooltip' => 'Tooltip text for the clear formatting button',
 	'visualeditor-desc' => '{{desc|name=VisualEditor|url=http://www.mediawiki.org/wiki/Extension:VisualEditor}}',
-	'visualeditor-descriptionpagelink' => 'Name of a page describing the use of VisualEditor in this project.
-{{doc-important|Do not translate "Project"; it is automatically converted to the wiki\'s project namespace.}}',
+	'visualeditor-descriptionpagelink' => '{{doc-important|Do not translate "Project"; it is automatically converted to the wiki\'s project namespace.}}
+Name of a page describing the use of VisualEditor in this project.
+
+Used in:
+* {{msg-mw|Tag-visualeditor}}
+* {{msg-mw|Tag-visualeditor-description}}
+* {{msg-mw|Tag-visualeditor-needcheck}}
+* {{msg-mw|Tag-visualeditor-needcheck-description}}',
 	'visualeditor-dialog-action-apply' => 'Label text for button to apply changes made in dialog.
 
 See also:
@@ -575,10 +603,13 @@ Used in:
 	'visualeditor-viewpage-savewarning' => 'Text shown when the user tries to leave the editor without saving their changes',
 	'visualeditor-wikitext-warning' => 'Contents of notification displayed when Wikitext has been detected.
 
-Refers the following messages:
+Refers to:
 * {{msg-mw|Visualeditor-wikitext-warning-link}}
 * {{msg-mw|Visualeditor-ca-editsource}}',
-	'visualeditor-wikitext-warning-link' => 'Link to page describing what Wikitext is',
+	'visualeditor-wikitext-warning-link' => 'Link to page describing what Wikitext is.
+
+Used in:
+* {{msg-mw|Visualeditor-wikitext-warning}}.',
 	'visualeditor-wikitext-warning-title' => 'Title of notification displayed when Wikitext has been detected',
 	'visualeditor-window-title' => 'Title of an unnamed inspector',
 );
@@ -1506,6 +1537,7 @@ $messages['ba'] = array(
 
 /** Bikol Central (Bikol Central)
  * @author Geopoet
+ * @author Sky Harbor
  */
 $messages['bcl'] = array(
 	'tag-visualeditor' => '[[{{MediaWiki:visualeditor-descriptionpagelink}}|Biswal-na-Paraliwat]]',
@@ -1680,7 +1712,7 @@ $messages['bcl'] = array(
 	'visualeditor-version-label' => 'Bersyon',
 	'visualeditor-viewpage-savewarning' => 'Nakakaseguro ka na gusto mong bumalik sa kamugtakan nin pagtanaw na dae nagtatagamang enot?',
 	'visualeditor-wikitext-warning' => 'Ika naggagamit nin Biswal-na-Paraliwat - [[{{MediaWiki:visualeditor-wikitext-warning-link}}|wikiteksto]] dae naggagana digde. I-klik an "{{int:visualeditor-ca-editsource}}" sa pagliwat nin pahina sa kamugtakan na wikiteksto – an dae naipagtagamang mga kaliwatan magkawarara.',
-	'visualeditor-wikitext-warning-link' => 'Katabangan:Markang pataas kan Wiki', # Fuzzy
+	'visualeditor-wikitext-warning-link' => 'Help:Markang pataas kan Wiki',
 	'visualeditor-wikitext-warning-title' => 'Markang pataas na Wikiteksto detektado',
 	'visualeditor-window-title' => 'Magsayudsod',
 );
@@ -4750,8 +4782,8 @@ $messages['eu'] = array(
 	'visualeditor-beta-warning' => 'Ikusizko editorea beta fasean da. Horrenbestez, beharbada arazo teknikoak topatuko dituzu edota ezingo duzu orriaren zatiren bat editatu. Klika ezazu {{int:visualeditor-ca-editsource}}» dioen tokian, wikitestu modura aldatzeko; gorde gabeko aldaketak galduko dituzu.',
 	'visualeditor-browserwarning' => 'Erabiltzen ari zaren nabigagailua ez dago ofizialki onartua ikusizko editorerako.',
 	'visualeditor-ca-createsource' => 'Sortu iturburua',
-	'visualeditor-ca-editsource' => 'Jatorria aldatu',
-	'visualeditor-ca-editsource-section' => 'jatorria aldatu',
+	'visualeditor-ca-editsource' => 'Aldatu iturburu kodea',
+	'visualeditor-ca-editsource-section' => 'aldatu iturburu kodea',
 	'visualeditor-ca-ve-create' => 'Ikusizko editorea',
 	'visualeditor-ca-ve-edit' => 'Ikusizko editorea',
 	'visualeditor-ca-ve-edit-section' => 'Ikusizko editorea',
@@ -4763,7 +4795,7 @@ $messages['eu'] = array(
 	'visualeditor-dialog-action-close' => 'Itxi',
 	'visualeditor-dialog-action-goback' => 'Atzera jo',
 	'visualeditor-dialog-beta-welcome-action-continue' => 'Jarraitu',
-	'visualeditor-dialog-beta-welcome-content' => 'Hau da editatzeko gure modu berria, errazagoa. Oraindik beta fasean da; beraz, orriko zatiren bat ezingo duzu editatu beharbada, edo konpontzeke ditugun arazoren bat aurkituko duzu beharbada. Mesedez, berrikus itzazu zeure aldaketak, eta jakinaraz iezaguzu ikusizko editorea erabiltzean sortzen zaizu edozein arazo (klika ezazu «{{int:visualeditor-beta-label}}» botoia, zeure oharrak guri bidaltzeko). Wikitestuaren editorea erabiltzen jarraitu nahi baduzu, klika ezazu «$1» fitxa; gorde gabeko aldaketak galduko dituzu.',
+	'visualeditor-dialog-beta-welcome-content' => 'Hau da editatzeko gure modu berria, errazagoa. Oraindik beta fasean da; beraz, beharbada orriko zatiren bat ezingo duzu editatu, edo konpontzeke dugun arazoren bat aurkituko duzu. Mesedez, berrikus itzazu zeure aldaketak, eta jakinaraz iezaguzu ikusizko editorea erabiltzean sortzen zaizu edozein arazo (klika ezazu «{{int:visualeditor-beta-label}}» botoia, zeure oharrak guri bidaltzeko). Wikitestuaren editorea erabiltzen jarraitu nahi baduzu, klika ezazu «$1» fitxa; gorde gabeko aldaketak galduko dituzu.',
 	'visualeditor-dialog-beta-welcome-title' => 'Ongi etorri ikusizko editorera',
 	'visualeditor-dialog-media-content-section' => 'Irudi-oineko testua',
 	'visualeditor-dialog-media-insert-button' => 'Multimedia txertatu',
@@ -4850,11 +4882,14 @@ $messages['eu'] = array(
 	'visualeditor-linkinspector-suggest-matching-page' => 'Bat datorren orria',
 	'visualeditor-linkinspector-suggest-new-page' => 'Orrialde berria',
 	'visualeditor-linkinspector-title' => 'Hiperesteka',
+	'visualeditor-listbutton-bullet-tooltip' => 'Buletdun zerrenda',
+	'visualeditor-listbutton-number-tooltip' => 'Zenbakidun zerrenda',
 	'visualeditor-media-input-placeholder' => 'Multimedia bilatu',
 	'visualeditor-meta-tool' => 'Orrialde-konfigurazioa',
 	'visualeditor-mwmathinspector-title' => 'LaTeX',
 	'visualeditor-parameter-input-placeholder' => 'Parametro-izena',
 	'visualeditor-parameter-search-unknown' => 'Parametro ezezaguna',
+	'visualeditor-preference-enable' => 'Gaitu ikusizko editorea ([[{{MediaWiki:visualeditor-mainnamespacepagelink}}|artikulu orrietan]] eta [[{{MediaWiki:visualeditor-usernamespacepagelink}}|erabiltzaile orrietan]] soilik)',
 	'visualeditor-savedialog-label-create' => 'Orrialdea sortu',
 	'visualeditor-savedialog-label-error' => 'Akatsa',
 	'visualeditor-savedialog-label-report' => 'Arazoaz ohartarazi',
@@ -5573,6 +5608,8 @@ $messages['fr'] = array(
 	'visualeditor-parameter-search-unknown' => 'Paramètre inconnu',
 	'visualeditor-preference-betatempdisable' => "Désactiver temporairement l'ÉditeurVisuel tant qu’il est en version bêta",
 	'visualeditor-preference-enable' => "Activer l'ÉditeurVisuel (seulement dans les espaces de noms [[{{MediaWiki:visualeditor-mainnamespacepagelink}}|principal]] et [[{{MediaWiki:visualeditor-usernamespacepagelink}}|utilisateur]])",
+	'visualeditor-preference-experimental-description' => 'Active les dernières fonctionnalités de l’Éditeur visuel. Au fur et à mesure que nous développons des outils et apportons des changement l’éditeur, nous les rendons disponibles à des fins de test avant le déploiement complet. N’oubliez pas de toujours vérifier vos modifications avant publication lorsque vous utilisez des fonctionnalités expérimentales.',
+	'visualeditor-preference-experimental-label' => 'Fonctionnalités expérimentales de l’Éditeur visuel',
 	'visualeditor-reference-input-placeholder' => 'Que voulez-vous référencer ?',
 	'visualeditor-referencelist-isempty' => 'Il n’y a aucune référence avec le groupe « $1 » sur cette page.',
 	'visualeditor-referencelist-missingref' => 'Cette référence est définie dans un modèle ou un autre bloc généré, et ne peut pour l’instant être modifiée qu’en mode source.',
@@ -6910,6 +6947,8 @@ $messages['hu'] = array(
 	'visualeditor-parameter-search-unknown' => 'Ismeretlen paraméter',
 	'visualeditor-preference-betatempdisable' => 'A VisualEditor ideiglenes letiltása, amíg béta állapotban van',
 	'visualeditor-preference-enable' => 'VisualEditor engedélyezése (csak a [[{{MediaWiki:visualeditor-mainnamespacepagelink}}|main]] és [[{{MediaWiki:visualeditor-usernamespacepagelink}}|user]] névterekben)',
+	'visualeditor-preference-experimental-description' => 'Ahogy az eszközöket fejlesztjük, lehetővé tesszük azok kipróbálását, mielőtt mindenki használni kezdené őket. Kérjük mindig ellenőrizd a változtatásokat a szerkesztésedben, ha kísérleti stádiumban lévő funkciókat használsz.',
+	'visualeditor-preference-experimental-label' => 'A VisualEditor kísérleti funkciói',
 	'visualeditor-reference-input-placeholder' => 'Mire szeretnél hivatkozni?',
 	'visualeditor-referencelist-isempty' => 'Nincsenek forráshivatkozások a $1 csoportban ezen az oldalon.',
 	'visualeditor-referencelist-missingref' => 'Ez a forráshivatkozás egy sablonban vagy más generált blokkban van definiálva, és jelenleg csak forrásnézetben szerkeszthető.',
@@ -7325,15 +7364,15 @@ $messages['ilo'] = array(
 	'visualeditor-annotationbutton-bold-tooltip' => 'Napuskol',
 	'visualeditor-annotationbutton-code-tooltip' => 'Kodigo ti kompiuter',
 	'visualeditor-annotationbutton-italic-tooltip' => 'Italiko',
-	'visualeditor-annotationbutton-link-tooltip' => 'Silpo',
 	'visualeditor-annotationbutton-language-tooltip' => 'Pagsasao',
+	'visualeditor-annotationbutton-link-tooltip' => 'Silpo',
 	'visualeditor-annotationbutton-strikethrough-tooltip' => 'Kurosan',
 	'visualeditor-annotationbutton-subscript-tooltip' => 'Subindise',
 	'visualeditor-annotationbutton-superscript-tooltip' => 'Sobreskritu',
 	'visualeditor-annotationbutton-underline-tooltip' => 'Ugisan iti baba',
+	'visualeditor-beta-appendix' => 'beta',
 	'visualeditor-beta-label' => 'beta',
 	'visualeditor-beta-warning' => 'Ti VisualEditor ket adda iti \'beta\'. Mabalin a makasarakka kadagiti parikut ti sopwer, ken mabalin a saanka a makaurnos kadagiti paset iti panid. Pindutem ti  "{{int:visualeditor-ca-editsource}}" tapno maiyallatiwka ti wikitext a moda – dagiti saan a naidulin a panagbalbaliw ket mapukawto.',
-	'visualeditor-beta-appendix' => 'beta',
 	'visualeditor-browserwarning' => 'Agus-usarka ti pagbasabasa a saan nga opisial a nasuportaran babaen ti VisualEditor.',
 	'visualeditor-ca-createsource' => 'Partuaten ti taudan',
 	'visualeditor-ca-editsource' => 'Urnosen ti taudan',
@@ -7348,6 +7387,9 @@ $messages['ilo'] = array(
 	'visualeditor-dialog-action-cancel' => 'Ukasen',
 	'visualeditor-dialog-action-close' => 'Irekep',
 	'visualeditor-dialog-action-goback' => 'Agsubli',
+	'visualeditor-dialog-beta-welcome-action-continue' => 'Agtuloy',
+	'visualeditor-dialog-beta-welcome-content' => 'Daytoy ti bukodmi a baro, nalaklaka a waya ti panagurnos. Daytoy ket beta pay laeng, a ti kayatna asaoen ket mabalinmo ti makaduktal kadagiti paset a saanmo a maurnos, wenno makasarak kadagiti parikut a masapul a masimpa. Agawgawis kami kaniam nga agirepasoka kadagiti sinuksukatam, ken kumablaawkami kadagiti reporta a maipanggep kadagiti aniaman a parikut a masarakam iti panagusar ti VisualEditor (pinduten ti \'{{int:visualeditor-beta-label}}\' a buton tapno mangited ti feedback). Mabalinmo ti kankanayon nga agusar ti wikitext nga editor babaen ti embes a panagpidut ti etiketa ti "$1" – dagiti saan a naidulin a sinuksukatan ket mapukawto.',
+	'visualeditor-dialog-beta-welcome-title' => 'Naragsak nga isasangbay iti VisualEditor',
 	'visualeditor-dialog-media-content-section' => 'Maisurat',
 	'visualeditor-dialog-media-insert-button' => 'Isengngat ti midia',
 	'visualeditor-dialog-media-insert-title' => 'Isengngat ti midia',
@@ -7386,9 +7428,6 @@ $messages['ilo'] = array(
 	'visualeditor-dialog-transclusion-remove-param' => 'Ikkaten ti parametro',
 	'visualeditor-dialog-transclusion-remove-template' => 'Ikkaten ti plantilia',
 	'visualeditor-dialog-transclusion-title' => 'Mailak-am',
-	'visualeditor-dialog-beta-welcome-title' => 'Naragsak nga isasangbay iti VisualEditor',
-	'visualeditor-dialog-beta-welcome-content' => 'Daytoy ti bukodmi a baro, nalaklaka a waya ti panagurnos. Daytoy ket beta pay laeng, a ti kayatna asaoen ket mabalinmo ti makaduktal kadagiti paset a saanmo a maurnos, wenno makasarak kadagiti parikut a masapul a masimpa. Agawgawis kami kaniam nga agirepasoka kadagiti sinuksukatam, ken kumablaawkami kadagiti reporta a maipanggep kadagiti aniaman a parikut a masarakam iti panagusar ti VisualEditor (pinduten ti \'{{int:visualeditor-beta-label}}\' a buton tapno mangited ti feedback). Mabalinmo ti kankanayon nga agusar ti wikitext nga editor babaen ti embes a panagpidut ti etiketa ti "$1" – dagiti saan a naidulin a sinuksukatan ket mapukawto.',
-	'visualeditor-dialog-beta-welcome-action-continue' => 'Agtuloy',
 	'visualeditor-dialogbutton-media-tooltip' => 'Midia',
 	'visualeditor-dialogbutton-meta-tooltip' => 'Pannakaiyasentar ti panid',
 	'visualeditor-dialogbutton-reference-tooltip' => 'Reperensia',
@@ -7424,21 +7463,18 @@ $messages['ilo'] = array(
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Pabassiten ti lennek',
 	'visualeditor-inspector-close-tooltip' => 'Irekep',
 	'visualeditor-inspector-remove-tooltip' => 'Ikkaten',
+	'visualeditor-languageinspector-block-tooltip' => 'Muton ti Pagsasao:$1',
+	'visualeditor-languageinspector-block-tooltip-rtldirection' => ': Kanawan nga Agpakanigid',
+	'visualeditor-languageinspector-title' => 'Pagsasao',
+	'visualeditor-languageinspector-widget-changelang' => 'Sukatan ti pagsasao',
+	'visualeditor-languageinspector-widget-label-direction' => 'Turong',
+	'visualeditor-languageinspector-widget-label-langcode' => 'Kodigo ti pagsasao',
+	'visualeditor-languageinspector-widget-label-language' => 'Pagsasao',
 	'visualeditor-linkinspector-illegal-title' => 'Imbalido a titulo ti panid',
 	'visualeditor-linkinspector-suggest-external-link' => 'Akin-ruar a silpo',
 	'visualeditor-linkinspector-suggest-matching-page' => 'Kapada a panid',
 	'visualeditor-linkinspector-suggest-new-page' => 'Baro a panid',
 	'visualeditor-linkinspector-title' => 'Hyperlink',
-	'visualeditor-mwalienextensioninspector-title' => 'Pagpaatiddog ti MediaWiki',
-	'visualeditor-mwhieroinspector-title' => 'Hieroglipika',
-	'visualeditor-mwmathinspector-title' => 'LaTeX',
-	'visualeditor-languageinspector-title' => 'Pagsasao',
-	'visualeditor-languageinspector-block-tooltip' => 'Muton ti Pagsasao:$1',
-	'visualeditor-languageinspector-block-tooltip-rtldirection' => ': Kanawan nga Agpakanigid',
-	'visualeditor-languageinspector-widget-changelang' => 'Sukatan ti pagsasao',
-	'visualeditor-languageinspector-widget-label-language' => 'Pagsasao',
-	'visualeditor-languageinspector-widget-label-langcode' => 'Kodigo ti pagsasao',
-	'visualeditor-languageinspector-widget-label-direction' => 'Turong',
 	'visualeditor-listbutton-bullet-tooltip' => 'Punglo a listaan',
 	'visualeditor-listbutton-number-tooltip' => 'Nabilangan a listaan',
 	'visualeditor-loadwarning' => 'Biddut ti panagikarga manipud ti server: $1. Kayatmo a manen a padasen?',
@@ -7446,6 +7482,9 @@ $messages['ilo'] = array(
 	'visualeditor-mainnamespacepagelink' => 'Project:Umuna a nagan ti lugar',
 	'visualeditor-media-input-placeholder' => 'Agbiruk para iti midia',
 	'visualeditor-meta-tool' => 'Pannakaiyasentar ti panid',
+	'visualeditor-mwalienextensioninspector-title' => 'Pagpaatiddog ti MediaWiki',
+	'visualeditor-mwhieroinspector-title' => 'Hieroglipika',
+	'visualeditor-mwmathinspector-title' => 'LaTeX',
 	'visualeditor-notification-created' => 'Ti $1 ket napartuaten.',
 	'visualeditor-notification-restored' => 'Ti $1 ket naipasublin.',
 	'visualeditor-notification-saved' => 'Dagiti binaliwam iti $1 ket naidulinen.',
@@ -7456,6 +7495,8 @@ $messages['ilo'] = array(
 	'visualeditor-parameter-search-unknown' => 'Di ammo a parametro',
 	'visualeditor-preference-betatempdisable' => 'Temporario nga ibaldado ti VisualEditor bayat a daytoy ket adda iti beta',
 	'visualeditor-preference-enable' => 'Pakabaelan ti VisualEditor (kadagiti laeng [[{{MediaWiki:visualeditor-mainnamespacepagelink}}|umuna]] ken [[{{MediaWiki:visualeditor-usernamespacepagelink}}|agar-aramat]] a nagan ti espasio)',
+	'visualeditor-preference-experimental-description' => 'Pakabaelan dagiti kinaudi a langa iti uneg ti VisualEditor. Iti las-ud nga agparparang-aykami kadagiti ramit ken agibalbaliw para iti editor, dagitoy ket mabalin a magun-od para iti umuna a panagsubok sakbay ti sapasap a pannakaipablaak. Pangngaasi a laglagipen nga irepaso dagiti binalbaliwam sakbay nga agidulin no agus-usar kadagiti eksperimental a langa.',
+	'visualeditor-preference-experimental-label' => 'Dagiti eksperimental a langa ti VisualEditor',
 	'visualeditor-reference-input-placeholder' => 'Ania kadi ti kayatmo nga ibasaran?',
 	'visualeditor-referencelist-isempty' => 'Awan dagiti nagibasaran iti grupo ti "$1" iti daytoy a panid.',
 	'visualeditor-referencelist-missingref' => 'Daytoy a nagibasaran ket nainaganan iti maysa a plantilia wenno sabali a naaramid a muton, ken iti agadama mabalin laeng a maurnos iti taudan a moda.',
@@ -7479,8 +7520,10 @@ $messages['ilo'] = array(
 	'visualeditor-saveerror' => 'Biddut ti panagidulin ti datos iti server:$1.',
 	'visualeditor-serializeerror' => 'Biddut ti panagikarga ti datos manipud ti server:$1.',
 	'visualeditor-toolbar-cancel' => 'Ukasen',
+	'visualeditor-toolbar-more' => 'Adu pay',
 	'visualeditor-toolbar-savedialog' => 'Idulin ti panid',
 	'visualeditor-usernamespacepagelink' => 'Project:Agar-aramat a nagan ti lugar',
+	'visualeditor-version-label' => 'Bersion',
 	'visualeditor-viewpage-savewarning' => 'Siguradoka kadi a kayatmo ti agsubli iti moda a panagkita a saan nga umuna nga agidulin?',
 	'visualeditor-wikitext-warning' => 'Agus-usarka ti VisualEditor - ti [[{{MediaWiki:visualeditor-wikitext-warning-link}}|wikitext]] ket saan a mabalin ditoy. Pinduten ti "{{int:visualeditor-ca-editsource}}" tapno agurnos ti panid iti wikitext a moda – dagiti saan a naidulin a sinuksukatan ket mapukawto.',
 	'visualeditor-wikitext-warning-link' => 'Help:Wiki a panagsurat',
@@ -8492,6 +8535,7 @@ $messages['ko'] = array(
 	'visualeditor-parameter-search-unknown' => '알 수 없는 변수',
 	'visualeditor-preference-betatempdisable' => '베타 동안 시각편집기를 일시적으로 비활성화',
 	'visualeditor-preference-enable' => '시각편집기 활성화 ([[{{MediaWiki:visualeditor-mainnamespacepagelink}}|표준]] 및 [[{{MediaWiki:visualeditor-usernamespacepagelink}}|사용자]] 이름공간에서만)',
+	'visualeditor-preference-experimental-label' => '시각편집기 실험 기능',
 	'visualeditor-reference-input-placeholder' => '어느 주석을 찾겠습니까?',
 	'visualeditor-referencelist-isempty' => '이 문서에 "$1" 그룹으로 된 주석이 없습니다.',
 	'visualeditor-referencelist-missingref' => '이 주석은 틀이나 다른 생성된 블록에서 정의했고, 지금은 원본 모드에서만 편집할 수 있습니다.',
@@ -12470,6 +12514,8 @@ $messages['ro'] = array(
 	'visualeditor-parameter-search-unknown' => 'Parametru necunoscut',
 	'visualeditor-preference-betatempdisable' => 'Dezactivează temporar EditorulVizual cât timp este în versiune beta',
 	'visualeditor-preference-enable' => 'Activează EditorulVizual (doar în spațiile de nume [[{{MediaWiki:visualeditor-mainnamespacepagelink}}|principal]] și al [[{{MediaWiki:visualeditor-usernamespacepagelink}}|utilizatorilor]])',
+	'visualeditor-preference-experimental-description' => 'Activează cele mai recente caracteristici ale EditoruluiVizual. Pe măsură ce dezvoltăm și aducem schimbări editorului, le facem disponibile pentru teste înainte de lansarea publică. Atunci când utilizați caracteristici experimentale nu uitați să vă verificați întotdeauna modificările înainte de a le salva.',
+	'visualeditor-preference-experimental-label' => 'Caracteristici experimentale ale EditoruluiVizual',
 	'visualeditor-reference-input-placeholder' => 'Ce doriți să folosiți ca referință?',
 	'visualeditor-referencelist-isempty' => 'Nu există referințe cu grupul „$1” în această pagină.',
 	'visualeditor-referencelist-missingref' => 'Această referință este definită printr-un format sau alt cadru generat și, pentru moment, poate fi modificată doar editând codul sursă al paginii.',
@@ -12651,6 +12697,8 @@ $messages['roa-tara'] = array(
 	'visualeditor-parameter-search-unknown' => 'Parametre scanusciute',
 	'visualeditor-preference-betatempdisable' => 'Temboraneamende è disabbiltiate VisualEditor mednre ca ste in prove',
 	'visualeditor-preference-enable' => "Abbilite VisualEditor (sulamende jndr'à le namespace [[{{MediaWiki:visualeditor-mainnamespacepagelink}}|prengèpale]] e [[{{MediaWiki:visualeditor-usernamespacepagelink}}|utende]])",
+	'visualeditor-preference-experimental-description' => "Abbilite le urteme funziune jndr'à VisualEditor. Cumme nuje sveluppame le struminde e facime le cangiaminde pu cangiatore, nuje le facime disponibbile pu n'ause generale. Pe piacere arrecuèrdate sembre de recondrollà le cangiaminde apprime de reggistrà quanne ste ause le funziune sperimendale.",
+	'visualeditor-preference-experimental-label' => 'Funziune sperimendale de VisualEditor',
 	'visualeditor-reference-input-placeholder' => 'A ce vuè ccu face referimende?',
 	'visualeditor-referencelist-isempty' => 'Non ge stonne refèreminde cu \'u gruppe "$1" sus a sta pàgene.',
 	'visualeditor-referencelist-missingref' => "Stu refèrimende jè definite jndr'à 'nu template o otre blocche generate e pe mò pò sulamende essere cangiate jndr'à 'u mode sorgende.",
@@ -14841,7 +14889,7 @@ $messages['tl'] = array(
 	'visualeditor-dialog-action-close' => 'Isara',
 	'visualeditor-dialog-action-goback' => 'Bumalik',
 	'visualeditor-dialog-beta-welcome-action-continue' => 'Magpatuloy',
-	'visualeditor-dialog-beta-welcome-content' => 'Ito ang aming makabago at mas pinadaling paraan ng pamamatnugot.  Nasa beta pa ito, kaya maaaring hindi ka makakapagbago sa ilang bahagi ng pahina, o maaari mong matuklasan ang mga isyung kailangang ayusin.  Inaanyayahan namin kayo na repasuhin ang inyong mga pagbabago, at tinatanggap namin ang mga ulat tungjol sa anumang mga isyung maaari ninyong matuklasan sa paggamit ng VisualEditor (i-klik ang pindutang \'{{int:visualeditor-beta-label}}\' upang makapagbigay ng komento).  Maaari niyo pa ring gamitin na lang ang editor ng wikisintaksis sa pag-klik ng tab na "$1" – mawawala ang mga pagbabagong hindi itinala.',
+	'visualeditor-dialog-beta-welcome-content' => 'Ito ang aming makabago at mas pinadaling paraan ng pamamatnugot.  Nasa beta pa ito, kaya maaaring hindi ka makakapagbago sa ilang bahagi ng pahina, o maaari mong matuklasan ang mga isyung kailangang ayusin.  Inaanyayahan namin kayo na repasuhin ang inyong mga pagbabago, at tinatanggap namin ang mga ulat tungkol sa anumang mga isyung maaari ninyong matuklasan sa paggamit ng VisualEditor (i-klik ang pindutang \'{{int:visualeditor-beta-label}}\' upang makapagbigay ng komento).  Maaari niyo pa ring gamitin na lang ang editor ng wikisintaksis sa pag-klik ng tab na "$1" – mawawala ang mga pagbabagong hindi itinala.',
 	'visualeditor-dialog-beta-welcome-title' => 'Maligayang pagdating sa VisualEditor',
 	'visualeditor-dialog-media-content-section' => 'Kapsiyon',
 	'visualeditor-dialog-media-insert-button' => 'Maglagay ng midya',
@@ -14929,7 +14977,7 @@ $messages['tl'] = array(
 	'visualeditor-linkinspector-suggest-new-page' => 'Bagong pahina',
 	'visualeditor-linkinspector-title' => 'Hyperlink',
 	'visualeditor-listbutton-bullet-tooltip' => 'Talang napungluan',
-	'visualeditor-listbutton-number-tooltip' => 'Talang may bilang',
+	'visualeditor-listbutton-number-tooltip' => 'Talang nakabilang',
 	'visualeditor-loadwarning' => 'Kamalian sa pagkakarga ng datos mula sa serbidor: $1. Nais mo bang subukan muli?',
 	'visualeditor-loadwarning-token' => 'Kamalian sa pagkakarga ng token ng pagbabago mula sa serbidor: $1.  Nais mo bang subukan muli?',
 	'visualeditor-mainnamespacepagelink' => 'Project:Pangunahing ngalan-espasyo',
@@ -14940,7 +14988,7 @@ $messages['tl'] = array(
 	'visualeditor-mwmathinspector-title' => 'LaTeX',
 	'visualeditor-notification-created' => 'Nailikha na ang $1.',
 	'visualeditor-notification-restored' => 'Ibinalik na ang $1.',
-	'visualeditor-notification-saved' => 'Naitala na ang mga pagbabago mo sa $1.',
+	'visualeditor-notification-saved' => 'Naitala na ang mga pagbabago mo sa pahinang "$1".',
 	'visualeditor-outline-control-move-down' => 'Ilipat ang aytem pababa',
 	'visualeditor-outline-control-move-up' => 'Ilipat ang aytem pataas',
 	'visualeditor-parameter-input-placeholder' => 'Pangalan ng parametro',
@@ -14987,6 +15035,7 @@ $messages['tl'] = array(
 /** Turkish (Türkçe)
  * @author Emperyan
  * @author Incelemeelemani
+ * @author LuCKY
  * @author Maidis
  * @author Talha Samil Cakir
  * @author TurkishStyles
@@ -15004,12 +15053,15 @@ $messages['tr'] = array(
 	'visualeditor-annotationbutton-bold-tooltip' => 'Kalın',
 	'visualeditor-annotationbutton-code-tooltip' => 'Bilgisayar kodu',
 	'visualeditor-annotationbutton-italic-tooltip' => 'Eğik',
-	'visualeditor-annotationbutton-link-tooltip' => 'Bağlantı',
 	'visualeditor-annotationbutton-language-tooltip' => 'Dil',
+	'visualeditor-annotationbutton-link-tooltip' => 'Bağlantı',
 	'visualeditor-annotationbutton-strikethrough-tooltip' => 'Üstü çizili',
+	'visualeditor-annotationbutton-subscript-tooltip' => 'Alt simge',
+	'visualeditor-annotationbutton-superscript-tooltip' => 'Üst simge',
+	'visualeditor-annotationbutton-underline-tooltip' => 'Altı çizili',
+	'visualeditor-beta-appendix' => 'beta',
 	'visualeditor-beta-label' => 'beta',
 	'visualeditor-beta-warning' => 'Görsel Düzenleyici \'beta\' aşamasındadır. Yazılım sorunlarıyla karşılaşabilir veya sayfanın bazı bölümlerini düzenleyemeyebilirsiniz. Vikimetin moduna geçmek için lütfen "{{int:visualeditor-ca-editsource}}" bağlantısını tıklayın – ancak  kaydedilmemiş değişiklikleriniz kaybolacaktır.',
-	'visualeditor-beta-appendix' => 'beta',
 	'visualeditor-browserwarning' => 'Görsel Düzenleyici tarafından resmi olarak desteklenmeyen bir tarayıcı kullanıyorsunuz.',
 	'visualeditor-ca-createsource' => 'Kaynak oluştur',
 	'visualeditor-ca-editsource' => 'Kaynağı düzenle',
@@ -15024,6 +15076,9 @@ $messages['tr'] = array(
 	'visualeditor-dialog-action-cancel' => 'İptal et',
 	'visualeditor-dialog-action-close' => 'Kapat',
 	'visualeditor-dialog-action-goback' => 'Geri dön',
+	'visualeditor-dialog-beta-welcome-action-continue' => 'Devam et',
+	'visualeditor-dialog-beta-welcome-content' => 'Bu düzenleme için yeni ve daha kolay bir yöntemdir. Görsel Düzenleyici henüz beta aşamasında olduğundan dolayı sayfanın bazı kısımlarını düzenleme bölümünde bulamayabilir veya düzeltilmesi gereken sorunlar ile karşılaşabilirsiniz. Bu nedenle değişikliklerinizi gözden geçirmenizi öneririz. Görsel Düzenleyiciden çıkmak için (lütfen tıklayın \'{{int:visualeditor-beta-label}}\' tıklayınız ve bize karşılaştığınız sorunları lütfen bildiriniz). Bu görsel düzenleyici yerine dilerseniz "$1" sekmesini tıklayarak wiki metin editörüyle devam edebilirsiniz – ancak kaydedilmemiş değişiklikleriniz kaybolacaktır.',
+	'visualeditor-dialog-beta-welcome-title' => "Görsel Düzenleyici'ye Hoşgeldiniz",
 	'visualeditor-dialog-media-content-section' => 'Başlık',
 	'visualeditor-dialog-media-insert-button' => 'Dosya ekle',
 	'visualeditor-dialog-media-insert-title' => 'Dosya ekle',
@@ -15062,9 +15117,6 @@ $messages['tr'] = array(
 	'visualeditor-dialog-transclusion-remove-param' => 'Parametreyi temizle',
 	'visualeditor-dialog-transclusion-remove-template' => 'Şablonu kaldır',
 	'visualeditor-dialog-transclusion-title' => 'Şablon bütünleştirme',
-	'visualeditor-dialog-beta-welcome-title' => "Görsel Düzenleyici'ye Hoşgeldiniz",
-	'visualeditor-dialog-beta-welcome-content' => 'Bu düzenleme için yeni ve daha kolay bir yöntemdir. Görsel Düzenleyici henüz beta aşamasında olduğundan dolayı sayfanın bazı kısımlarını düzenleme bölümünde bulamayabilir veya düzeltilmesi gereken sorunlar ile karşılaşabilirsiniz. Bu nedenle değişikliklerinizi gözden geçirmenizi öneririz. Görsel Düzenleyiciden çıkmak için (lütfen tıklayın \'{{int:visualeditor-beta-label}}\' tıklayınız ve bize karşılaştığınız sorunları lütfen bildiriniz). Bu görsel düzenleyici yerine dilerseniz "$1" sekmesini tıklayarak wiki metin editörüyle devam edebilirsiniz – ancak kaydedilmemiş değişiklikleriniz kaybolacaktır.',
-	'visualeditor-dialog-beta-welcome-action-continue' => 'Devam et',
 	'visualeditor-dialogbutton-media-tooltip' => 'Dosya',
 	'visualeditor-dialogbutton-meta-tooltip' => 'Sayfa ayarları',
 	'visualeditor-dialogbutton-reference-tooltip' => 'Kaynak',
@@ -15100,21 +15152,18 @@ $messages['tr'] = array(
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Girinti azalt',
 	'visualeditor-inspector-close-tooltip' => 'Kapat',
 	'visualeditor-inspector-remove-tooltip' => 'Kaldır',
+	'visualeditor-languageinspector-block-tooltip' => 'Dil Bloğu: $1',
+	'visualeditor-languageinspector-block-tooltip-rtldirection' => ': Sağdan sola',
+	'visualeditor-languageinspector-title' => 'Dil',
+	'visualeditor-languageinspector-widget-changelang' => 'Sayfa dilini değiştir',
+	'visualeditor-languageinspector-widget-label-direction' => 'Yön',
+	'visualeditor-languageinspector-widget-label-langcode' => 'Dil kodu',
+	'visualeditor-languageinspector-widget-label-language' => 'Dil',
 	'visualeditor-linkinspector-illegal-title' => 'Geçersiz sayfa başlığı',
 	'visualeditor-linkinspector-suggest-external-link' => 'Dış bağlantı',
 	'visualeditor-linkinspector-suggest-matching-page' => 'Eşleşen sayfa',
 	'visualeditor-linkinspector-suggest-new-page' => 'Yeni sayfa',
 	'visualeditor-linkinspector-title' => 'Bağ',
-	'visualeditor-mwalienextensioninspector-title' => 'MediaWiki uzantısı',
-	'visualeditor-mwhieroinspector-title' => 'Hiyeroglifler',
-	'visualeditor-mwmathinspector-title' => 'LaTeX',
-	'visualeditor-languageinspector-title' => 'Dil',
-	'visualeditor-languageinspector-block-tooltip' => 'Dil Bloğu: $1',
-	'visualeditor-languageinspector-block-tooltip-rtldirection' => ': Sağdan sola',
-	'visualeditor-languageinspector-widget-changelang' => 'Sayfa dilini değiştir',
-	'visualeditor-languageinspector-widget-label-language' => 'Dil',
-	'visualeditor-languageinspector-widget-label-langcode' => 'Dil kodu',
-	'visualeditor-languageinspector-widget-label-direction' => 'Yön',
 	'visualeditor-listbutton-bullet-tooltip' => 'Madde imli liste',
 	'visualeditor-listbutton-number-tooltip' => 'Numaralı liste',
 	'visualeditor-loadwarning' => 'Sunucudan veri yüklenirken hata: $1. Yeniden denemek ister misiniz?',
@@ -15122,6 +15171,9 @@ $messages['tr'] = array(
 	'visualeditor-mainnamespacepagelink' => 'Project:Main namespace',
 	'visualeditor-media-input-placeholder' => 'Dosya ara',
 	'visualeditor-meta-tool' => 'Sayfa ayarları',
+	'visualeditor-mwalienextensioninspector-title' => 'MediaWiki uzantısı',
+	'visualeditor-mwhieroinspector-title' => 'Hiyeroglifler',
+	'visualeditor-mwmathinspector-title' => 'LaTeX',
 	'visualeditor-notification-created' => '$1 oluşturuldu.',
 	'visualeditor-notification-restored' => '$1 geri yüklendi.',
 	'visualeditor-notification-saved' => '$1 için yaptığınız değişiklikler kaydedildi.',
@@ -15132,6 +15184,7 @@ $messages['tr'] = array(
 	'visualeditor-parameter-search-unknown' => 'Bilinmeyen değişken',
 	'visualeditor-preference-betatempdisable' => "Beta aşamasındayken Görsel Düzenleyici'yi geçici olarak devre dışı bırak",
 	'visualeditor-preference-enable' => "Görsel Düzenleyici'yi (yalnızca [[{{MediaWiki:visualeditor-mainnamespacepagelink}}|madde]] ve [[{{MediaWiki:visualeditor-usernamespacepagelink}}|kullanıcı]] ad alanlarında) etkinleştir",
+	'visualeditor-preference-experimental-label' => 'Görsel Düzenleyici deneysel özellikleri',
 	'visualeditor-reference-input-placeholder' => 'Hangi kaynağı kullanmak istersiniz?',
 	'visualeditor-referencelist-isempty' => 'Bu sayfada "$1" grubu kaynağına uygun kaynak bulunmamaktadır.',
 	'visualeditor-referencelist-missingref' => 'Bu kaynak ve şablonlar blok olarak tanımlandığından dolayı henüz yalnızca wiki metin editöründe kaynak modunda düzenlenebilir.',
@@ -15155,8 +15208,10 @@ $messages['tr'] = array(
 	'visualeditor-saveerror' => 'Sunucuya veri kaydedilirken hata: $1.',
 	'visualeditor-serializeerror' => 'Sunucudan veri yüklenirken hata oluştu: $1.',
 	'visualeditor-toolbar-cancel' => 'Vazgeç',
+	'visualeditor-toolbar-more' => 'Daha fazla',
 	'visualeditor-toolbar-savedialog' => 'Sayfayı kaydet',
 	'visualeditor-usernamespacepagelink' => 'Project:Kullanıcı sayfası',
+	'visualeditor-version-label' => 'Sürüm',
 	'visualeditor-viewpage-savewarning' => 'Kaydetmeden önce ilk görüntüleme moduna geri dönmek istediğinizden emin misiniz?',
 	'visualeditor-wikitext-warning' => 'Eğer görsel düzenleyiciyi kullanıyorsanız - [[{{MediaWiki:visualeditor-wikitext-warning-link}}|wiki metin editörü]] bu alanda çalışmamaktadır. Wiki metin modunda sayfayı düzenlemek için lütfen "{{int:visualeditor-ca-editsource}}" buraya tıklayın – ancak kaydedilmemiş değişiklikleriniz kaybolacaktır.',
 	'visualeditor-wikitext-warning-link' => 'Help:Wiki markup',
