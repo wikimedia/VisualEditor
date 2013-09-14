@@ -1108,6 +1108,37 @@ ve.dm.Transaction.prototype.addSafeRemoveOps = function ( doc, removeStart, remo
 };
 
 /**
+ * Add a replace operation (internal helper).
+ *
+ * @private
+ * @method
+ * @param {Array} remove Data removed.
+ * @param {Array} insert Data to insert.
+ * @param {Array|undefined} removeMetadata Metadata removed.
+ * @param {Array} insertMetadata Metadata to insert.
+ */
+ve.dm.Transaction.prototype.pushReplaceInternal = function ( remove, insert, removeMetadata, insertMetadata, insertedDataOffset, insertedDataLength ) {
+	if ( remove.length === 0 && insert.length === 0) {
+		return; // no-op
+	}
+	var op = {
+		type: 'replace',
+		remove: remove,
+		insert: insert
+	};
+	if ( removeMetadata !== undefined && insertMetadata !== undefined ) {
+		op.removeMetadata = removeMetadata;
+		op.insertMetadata = insertMetadata;
+	}
+	if ( insertedDataOffset !== undefined && insertedDataLength !== undefined ) {
+		op.insertedDataOffset = insertedDataOffset;
+		op.insertedDataLength = insertedDataLength;
+	}
+	this.operations.push( op );
+	this.lengthDifference += insert.length - remove.length;
+};
+
+/**
  * Add a replace operation, keeping metadata in sync if required.
  *
  * Note that metadata attached to removed content is moved so that it
@@ -1135,7 +1166,8 @@ ve.dm.Transaction.prototype.pushReplace = function ( doc, offset, removeLength, 
 		return;
 	}
 
-	var op, extraMetadata, end = this.operations.length - 1,
+	var extraMetadata,
+		end = this.operations.length - 1,
 		lastOp = end >= 0 ? this.operations[end] : null,
 		penultOp = end >= 1 ? this.operations[ end - 1 ] : null,
 		range = new ve.Range( offset, offset + removeLength ),
@@ -1237,21 +1269,8 @@ ve.dm.Transaction.prototype.pushReplace = function ( doc, offset, removeLength, 
 		throw new Error( 'replace after replaceMetadata not allowed' );
 	}
 
-	op = {
-		type: 'replace',
-		remove: remove,
-		insert: insert
-	};
-	if ( insertMetadata !== undefined ) {
-		op.removeMetadata = removeMetadata;
-		op.insertMetadata = insertMetadata;
-	}
-	if ( insertedDataOffset !== undefined ) {
-		op.insertedDataOffset = insertedDataOffset;
-		op.insertedDataLength = insertedDataLength;
-	}
-	this.operations.push( op );
-	this.lengthDifference += insert.length - remove.length;
+	this.pushReplaceInternal( remove, insert, removeMetadata, insertMetadata, insertedDataOffset, insertedDataLength );
+
 	if ( extraMetadata !== undefined ) {
 		this.pushReplaceMetadata( [], extraMetadata );
 	}
