@@ -30,43 +30,50 @@
  *
  * To fire after-event listeners promptly, the EventSequencer may need to
  * listen to some events for which it has no registered on-event or
- * event-event listeners. For instance, to ensure an after-keydown listener
+ * after-event listeners. For instance, to ensure an after-keydown listener
  * is be fired before the native keyup action, you must include both
  * 'keydown' and 'keyup' in the eventNames Array.
  *
  * @constructor
  * @param {string[]} eventNames List of event Names to listen to
  */
-ve.EventSequencer = function ( eventNames ) {
-	var i, len, eventName, makeEventHandler, eventSequencer = this;
+ve.EventSequencer = function VeEventSequencer( eventNames ) {
+	var i, len, eventName, eventSequencer = this;
 	this.$node = null;
 	this.eventNames = eventNames;
 	this.eventHandlers = {};
+
+	/**
+	 * Generate an event handler for a specific event
+	 *
+	 * @private
+	 * @param {string} eventName The event's name
+	 * @returns {Function} An event handler
+	 */
+	function makeEventHandler( eventName ) {
+		return function ( ev ) {
+			return eventSequencer.onEvent( eventName, ev );
+		};
+	}
 
 	/**
 	 * @property {Object[]}
 	 *  - id {number} Id for setTimeout
 	 *  - func {Function} Post-event listener
 	 *  - ev {jQuery.Event} Browser event
-         *  - eventName {string} Name, such as keydown
-         */
+	 *  - eventName {string} Name, such as keydown
+	 */
 	this.pendingCalls = [];
 
 	/**
-         * @property {Object.<string,Function>}
+	 * @property {Object.<string,Function>}
 	 */
 	this.onListenersForEvent = {};
 
 	/**
-         * @property {Object.<string,Function>}
+	 * @property {Object.<string,Function>}
 	 */
 	this.afterListenersForEvent = {};
-
-	makeEventHandler = function ( eventName ) {
-		return function ( ev ) {
-			return eventSequencer.onEvent( eventName, ev );
-		};
-	};
 
 	for ( i = 0, len = eventNames.length; i < len; i++ ) {
 		eventName = eventNames[i];
