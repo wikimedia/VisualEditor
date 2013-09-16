@@ -331,7 +331,7 @@ ve.dm.Transaction.newFromMetadataInsertion = function ( doc, offset, index, newE
  * @param {ve.dm.Document} doc Document to create transaction for
  * @param {number} offset Offset of element
  * @param {ve.Range} range Range of metadata to remove
- * @returns {ve.dm.Transaction} Transaction that removes data
+ * @returns {ve.dm.Transaction} Transaction that removes metadata elements
  * @throws {Error} Cannot remove metadata from empty list
  * @throws {Error} Range out of bounds
  */
@@ -375,7 +375,7 @@ ve.dm.Transaction.newFromMetadataRemoval = function ( doc, offset, range ) {
  * @param {number} offset Offset of element
  * @param {number} index Index of metadata cursor within element
  * @param {Object} newElement New element to insert
- * @returns {ve.dm.Transaction} Transaction that removes data
+ * @returns {ve.dm.Transaction} Transaction that replaces a metadata element
  * @throws {Error} Metadata index out of bounds
  */
 ve.dm.Transaction.newFromMetadataElementReplacement = function ( doc, offset, index, newElement ) {
