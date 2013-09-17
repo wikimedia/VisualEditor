@@ -418,6 +418,7 @@ $wgResourceModules += array(
 			// ui
 			've/ui/ve.ui.js',
 
+			've/ui/elements/ve.ui.ClippableElement.js',
 			've/ui/elements/ve.ui.LabeledElement.js',
 			've/ui/elements/ve.ui.IconedElement.js',
 			've/ui/elements/ve.ui.GroupElement.js',

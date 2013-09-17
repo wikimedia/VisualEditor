@@ -13,6 +13,7 @@
  * @extends ve.ui.ToolGroup
  * @mixins ve.ui.IconedElement
  * @mixins ve.ui.LabeledElement
+ * @mixins ve.ui.ClippableElement
  *
  * @constructor
  * @param {ve.ui.Toolbar} toolbar
@@ -28,12 +29,15 @@ ve.ui.PopupToolGroup = function VeUiPopupToolGroup( toolbar, config ) {
 	// Mixin constructors
 	ve.ui.IconedElement.call( this, this.$$( '<span>' ), config );
 	ve.ui.LabeledElement.call( this, this.$$( '<span>' ) );
-	this.$handle = this.$$( '<span>' );
+	ve.ui.ClippableElement.call( this, this.$group );
 
 	// Properties
 	this.active = false;
 	this.dragging = false;
 	this.onBlurHandler = ve.bind( this.onBlur, this );
+	this.$handle = this.$$( '<span>' );
+
+	// Events
 	this.$handle.on( {
 		'mousedown': ve.bind( this.onHandleMouseDown, this ),
 		'mouseup': ve.bind( this.onHandleMouseUp, this )
@@ -55,6 +59,7 @@ ve.inheritClass( ve.ui.PopupToolGroup, ve.ui.ToolGroup );
 
 ve.mixinClass( ve.ui.PopupToolGroup, ve.ui.IconedElement );
 ve.mixinClass( ve.ui.PopupToolGroup, ve.ui.LabeledElement );
+ve.mixinClass( ve.ui.PopupToolGroup, ve.ui.ClippableElement );
 
 /* Static Properties */
 
@@ -125,9 +130,11 @@ ve.ui.PopupToolGroup.prototype.setActive = function ( value ) {
 	if ( this.active !== value ) {
 		this.active = value;
 		if ( value ) {
+			this.setClipping( true );
 			this.$.addClass( 've-ui-popupToolGroup-active' );
 			this.getElementDocument().addEventListener( 'mouseup', this.onBlurHandler, true );
 		} else {
+			this.setClipping( false );
 			this.$.removeClass( 've-ui-popupToolGroup-active' );
 			this.getElementDocument().removeEventListener( 'mouseup', this.onBlurHandler, true );
 		}
