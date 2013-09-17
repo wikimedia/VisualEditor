@@ -908,22 +908,24 @@ ve.dm.Transaction.prototype.addSafeRemoveOps = function ( doc, removeStart, remo
  * @param {number} offset Offset to start at
  * @param {number} removeLength Number of data items to remove
  * @param {Array} insert Data to insert
+ * @param {Array} [insertMetadata] Overwrite the metadata with this data, rather than collapsing it
  */
-ve.dm.Transaction.prototype.pushReplace = function ( doc, offset, removeLength, insert ) {
+ve.dm.Transaction.prototype.pushReplace = function ( doc, offset, removeLength, insert, insertMetadata ) {
 	if ( removeLength === 0 && insert.length === 0 ) {
 		// Don't push no-ops
 		return;
 	}
 
-	var op, end = this.operations.length - 1,
+	var op, extraMetadata, end = this.operations.length - 1,
 		lastOp = end >= 0 ? this.operations[end] : null,
 		penultOp = end >= 1 ? this.operations[ end - 1 ] : null,
 		range = new ve.Range( offset, offset + removeLength ),
 		remove = doc.getData( range ),
 		removeMetadata = doc.getMetadata( range ),
-		insertMetadata, extraMetadata;
+		isRemoveEmpty = ve.compare( removeMetadata, new Array( removeMetadata.length ) ),
+		isInsertEmpty = insertMetadata && ve.compare( insertMetadata, new Array( insertMetadata.length ) );
 
-	if ( !ve.compare( removeMetadata, new Array( removeMetadata.length ) ) ) {
+	if ( !insertMetadata && !isRemoveEmpty ) {
 		// if we are removing a range which includes metadata, we need to
 		// collapse it.  If there's nothing to insert, we also need to add
 		// an extra `replaceMetadata` operation later in order to insert the
@@ -936,6 +938,9 @@ ve.dm.Transaction.prototype.pushReplace = function ( doc, offset, removeLength, 
 			// pad out at end so insert metadata is the same length as insert data
 			ve.batchSplice( insertMetadata, 1, 0, new Array( insert.length - 1 ) );
 		}
+	} else if ( isInsertEmpty && isRemoveEmpty ) {
+		// No metadata changes, don't pollute the transaction with [undefined, undefined, ...]
+		insertMetadata = undefined;
 	}
 
 	// simple replaces can be combined
