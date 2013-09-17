@@ -136,12 +136,10 @@ ve.EventSequencer.prototype.after = function ( listeners ) {
  */
 ve.EventSequencer.prototype.onEvent = function ( eventName, ev ) {
 	var i, len, onListener, afterListener, pendingCall;
-	ve.log( 'EventSequencer: onEvent', eventName, ev );
 	this.runPendingCalls();
 	// Length cache 'len' is required, as an onListener could add another onListener
 	for ( i = 0, len = this.onListenersForEvent[eventName].length; i < len; i++ ) {
 		onListener = this.onListenersForEvent[eventName][i];
-		ve.log( 'EventSequencer: on ', eventName, ev );
 		onListener( ev );
 	}
 	// Length cache 'len' for style only
@@ -162,7 +160,6 @@ ve.EventSequencer.prototype.onEvent = function ( eventName, ev ) {
 					return;
 				}
 				pendingCall.id = null;
-				ve.log( 'EventSequencer: timed: after', eventName, ev );
 				pendingCall.func( ev );
 			} );
 			pendingCall.id = id;
@@ -179,7 +176,6 @@ ve.EventSequencer.prototype.onEvent = function ( eventName, ev ) {
  */
 ve.EventSequencer.prototype.runPendingCalls = function () {
 	var i, pendingCall;
-	ve.log( 'EventSequencer: runPendingCalls', this.pendingCalls );
 	for ( i = 0; i < this.pendingCalls.length; i++ ) {
 		// Length cache not possible, as a pending call appends another pending call.
 		// It's important that this list remains mutable, in the case that this
@@ -191,7 +187,6 @@ ve.EventSequencer.prototype.runPendingCalls = function () {
 		}
 		clearTimeout( pendingCall.id );
 		pendingCall.id = null;
-		ve.log( 'EventSequencer: forced: after', pendingCall );
 		// Force to run now. It's important that we set id to null before running,
 		// so that there's no chance a recursive call will call the listener again.
 		pendingCall.func( pendingCall.ev );
