@@ -81,6 +81,6 @@ class VisualEditorPage
     div(:title, class: 've-ui-window-title', frame: frame)
     text_area(:transclusion_textarea, index: 0, frame: frame)
     text_field(:transclusion_textfield, index: 0, frame: frame)
-    unordered_list(:suggestion_list, class: 've-ui-widget ve-ui-selectWidget ve-ui-menuWidget ve-ui-textInputMenuWidget ve-ui-lookupWidget-menu ve-ui-mwTitleInputWidget-menu', frame: frame)
+    unordered_list(:suggestion_list, class: 've-ui-widget ve-ui-selectWidget ve-ui-clippableElement-clippable ve-ui-menuWidget ve-ui-textInputMenuWidget ve-ui-lookupWidget-menu ve-ui-mwTitleInputWidget-menu', frame: frame)
   end
 end
