@@ -102,6 +102,9 @@ We inherit the code structure (about whitespace, naming and comments) convention
 from MediaWiki. See [Manual:Coding conventions/JavaScript](https://www.mediawiki.org/wiki/Manual:Coding_conventions/JavaScript)
 on mediawiki.org.
 
+Git commit messages should follow the conventions described in
+<https://www.mediawiki.org/wiki/Gerrit/Commit_message_guidelines>.
+
 ### Documentation comments
 
 * End sentences in a full stop.
