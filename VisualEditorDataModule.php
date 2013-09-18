@@ -39,7 +39,8 @@ class VisualEditorDataModule extends ResourceLoaderModule {
 		// Version information
 		$language = Language::factory( $context->getLanguage() );
 
-		$id = substr( $this->getGitHeadHash(), 0, 7 );
+		$hash = $this->getGitHeadHash();
+		$id = $hash ? substr( $this->getGitHeadHash(), 0, 7 ) : false;
 		$url = $this->gitInfo->getHeadViewUrl();
 		$date = $this->gitInfo->getHeadCommitDate();
 		$dateString = $date ? $language->timeanddate( $date, true ) : '';
@@ -53,6 +54,7 @@ class VisualEditorDataModule extends ResourceLoaderModule {
 				$messages,
 				ResourceLoader::inDebugMode()
 			) . ');'.
+			// Documented in .docs/external.json
 			've.version = ' . FormatJson::encode(
 				array(
 					'id' => $id,
@@ -161,7 +163,7 @@ class VisualEditorDataModule extends ResourceLoaderModule {
 	}
 
 	protected function getGitHeadHash() {
-		if ( !$this->gitHeadHash ) {
+		if ( $this->gitHeadHash === null ) {
 			$this->gitHeadHash = $this->gitInfo->getHeadSHA1();
 		}
 		return $this->gitHeadHash;

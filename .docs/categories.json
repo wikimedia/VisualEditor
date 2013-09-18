@@ -83,7 +83,7 @@
 			},
 			{
 				"name": "MediaWiki integration",
-				"classes": ["ve.init.mw*"]
+				"classes": ["ve.init.mw*", "ve.version"]
 			},
 			{
 				"name": "Stand-alone",
