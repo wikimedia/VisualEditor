@@ -1030,25 +1030,28 @@ ve.init.mw.ViewPageTarget.prototype.setupToolbarBetaNotice = function () {
 					.attr( 'target', '_blank' )
 					.attr( 'href', new mw.Title( ve.msg( 'visualeditor-help-link' ) ).getUrl() )
 					.text( ve.msg( 'visualeditor-help-label' ) )
-		) ) )
-		.append( $( '<div>' )
-			.append( $( '<span>' )
-				.addClass( 've-init-mw-ViewPageTarget-version-label' )
-				.text( ve.msg( 'visualeditor-version-label' ) )
-			)
-			.append( ' ' )
-			.append( $( '<a>' )
-				.addClass( 've-init-mw-ViewPageTarget-version-link' )
-				.attr( 'target', '_blank' )
-				.attr( 'href', ve.version.url )
-				.text( ve.version.id )
-			)
-			.append( ' ' )
-			.append( $( '<span>' )
-				.addClass( 've-init-mw-ViewPageTarget-version-date' )
-				.text( ve.version.dateString )
-			)
-		);
+		) ) );
+	if ( ve.version.id !== false ) {
+		this.$toolbarBetaNotice
+			.append( $( '<div>' )
+				.append( $( '<span>' )
+					.addClass( 've-init-mw-ViewPageTarget-version-label' )
+					.text( ve.msg( 'visualeditor-version-label' ) )
+				)
+				.append( ' ' )
+				.append( $( '<a>' )
+					.addClass( 've-init-mw-ViewPageTarget-version-link' )
+					.attr( 'target', '_blank' )
+					.attr( 'href', ve.version.url )
+					.text( ve.version.id )
+				)
+				.append( ' ' )
+				.append( $( '<span>' )
+					.addClass( 've-init-mw-ViewPageTarget-version-date' )
+					.text( ve.version.dateString )
+				)
+			);
+	}
 };
 
 /**
