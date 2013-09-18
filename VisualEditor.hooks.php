@@ -170,7 +170,9 @@ class VisualEditorHooks {
 	 */
 	public static function onDoEditSectionLink( $skin, $title, $section, $tooltip, &$result, $lang ) {
 		// Only do this if the user has VE enabled
+		// (and we're not in parserTests)
 		if (
+			isset( $GLOBALS[ 'wgVisualEditorInParserTests' ] ) ||
 			!$skin->getUser()->getOption( 'visualeditor-enable' ) ||
 			$skin->getUser()->getOption( 'visualeditor-betatempdisable' )
 		) {
@@ -383,5 +385,12 @@ class VisualEditorHooks {
 		);
 
 		return true;
+	}
+
+	/**
+	 * Ensures that we know whether we're running inside a parser test.
+	 */
+	public static function onParserTestGlobals( array &$settings ) {
+		$settings['wgVisualEditorInParserTests'] = true;
 	}
 }
