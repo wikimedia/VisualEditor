@@ -29,10 +29,10 @@ ve.dm.Transaction = function VeDmTransaction() {
  * @param {Array} data Data to insert
  * @returns {ve.dm.Transaction} Transaction that inserts data
  */
-ve.dm.Transaction.newFromInsertion = function ( doc, offset, insertion ) {
-	var tx = new ve.dm.Transaction();
+ve.dm.Transaction.newFromInsertion = function ( doc, offset, data ) {
+	var insertion, tx = new ve.dm.Transaction();
 	// Fix up the insertion
-	insertion = doc.fixupInsertion( insertion, offset );
+	insertion = doc.fixupInsertion( data, offset );
 	// Retain up to insertion point, if needed
 	tx.pushRetain( insertion.offset );
 	// Insert data
