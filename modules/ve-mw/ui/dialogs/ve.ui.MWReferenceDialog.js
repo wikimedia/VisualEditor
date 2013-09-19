@@ -199,7 +199,7 @@ ve.ui.MWReferenceDialog.prototype.onClose = function ( action ) {
 				keyIndex = internalList.getKeyIndex( this.ref.listGroup, this.ref.listKey );
 				if ( keyIndex !== undefined ) {
 					// Resolve name collision by generating a new list key
-					this.ref.listKey = internalList.getUniqueListKey( listGroup );
+					this.ref.listKey = 'auto/' + internalList.getNextUniqueNumber();
 				}
 				// Update the group name of all references nodes with the same group and key
 				txs = [];
@@ -235,7 +235,7 @@ ve.ui.MWReferenceDialog.prototype.onClose = function ( action ) {
 				listGroup = 'mwReference/' + refGroup;
 				// Create new internal item
 				this.ref = {
-					'listKey': internalList.getUniqueListKey( listGroup ),
+					'listKey': 'auto/' + internalList.getNextUniqueNumber(),
 					'listGroup': listGroup,
 					'refGroup': refGroup
 				};

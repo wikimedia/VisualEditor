@@ -369,7 +369,7 @@ ve.dm.mwExample.references = [
 			'contentsUsed': true,
 			'listGroup': 'mwReference/',
 			'listIndex': 0,
-			'listKey': '"No name 1"',
+			'listKey': 'auto/0',
 			'mw': {
 				'attrs': {},
 				'body': { 'html': 'No name 1' },
@@ -398,7 +398,7 @@ ve.dm.mwExample.references = [
 			'contentsUsed': true,
 			'listGroup': 'mwReference/',
 			'listIndex': 1,
-			'listKey': 'bar',
+			'listKey': 'literal/bar',
 			'mw': {
 				'attrs': { 'name': 'bar' },
 				'body': { 'html': 'Bar' },
@@ -425,13 +425,13 @@ ve.dm.mwExample.references = [
 			'contentsUsed': true,
 			'listGroup': 'mwReference/',
 			'listIndex': 2,
-			'listKey': 'quux',
+			'listKey': 'literal/:3',
 			'mw': {
-				'attrs': { 'name': 'quux' },
+				'attrs': { 'name': ':3' },
 				'body': { 'html': 'Quux' },
 				'name': 'ref'
 			},
-			'originalMw': '{"name":"ref","body":{"html":"Quux"},"attrs":{"name":"quux"}}',
+			'originalMw': '{"name":"ref","body":{"html":"Quux"},"attrs":{"name":":3"}}',
 			'refGroup': ''
 		},
 		'htmlAttributes': [ { 'values': {
@@ -452,7 +452,7 @@ ve.dm.mwExample.references = [
 			'contentsUsed': false,
 			'listGroup': 'mwReference/',
 			'listIndex': 1,
-			'listKey': 'bar',
+			'listKey': 'literal/bar',
 			'mw': {
 				'attrs': { 'name': 'bar' },
 				'name': 'ref'
@@ -480,7 +480,7 @@ ve.dm.mwExample.references = [
 			'contentsUsed': true,
 			'listGroup': 'mwReference/',
 			'listIndex': 3,
-			'listKey': '"No name 2"',
+			'listKey': 'auto/1',
 			'mw': {
 				'attrs': {},
 				'body': { 'html': 'No name 2' },
@@ -504,16 +504,16 @@ ve.dm.mwExample.references = [
 		'type': 'mwReference',
 		 'attributes': {
 			'contentsUsed': true,
-			'listGroup': 'mwReference/',
+			'listGroup': 'mwReference/foo',
 			'listIndex': 4,
-			'listKey': '"No name 3"',
+			'listKey': 'auto/2',
 			'mw': {
-				'attrs': {},
+				'attrs': { 'group': 'foo' },
 				'body': { 'html': 'No name 3' },
 				'name': 'ref'
 			},
-			'originalMw': '{"name":"ref","body":{"html":"No name 3"},"attrs":{}}',
-			'refGroup': ''
+			'originalMw': '{"name":"ref","body":{"html":"No name 3"},"attrs":{"group":"foo"}}',
+			'refGroup': 'foo'
 		},
 		'htmlAttributes': [ { 'values': {
 			'about': '#mwt12',
@@ -834,7 +834,7 @@ ve.dm.mwExample.domToDataCases = {
 	},
 	'mw:Reference': {
 		// Wikitext:
-		// Foo<ref name="bar" /> Baz<ref name="quux">Quux</ref> Whee<ref name="bar">[[Bar]]</ref> Yay<ref group="g1">No name</ref> Quux<ref name="bar">Different content</ref> Foo<ref group="g1">No name</ref> Bar<ref name="foo" />
+		// Foo<ref name="bar" /> Baz<ref group="g1" name=":0">Quux</ref> Whee<ref name="bar">[[Bar]]</ref> Yay<ref group="g1">No name</ref> Quux<ref name="bar">Different content</ref> Foo<ref group="g1">No name</ref> Bar<ref name="foo" />
 		// <references><ref name="foo">Ref in refs</ref></references>
 		'html':
 			'<body>' +
@@ -843,7 +843,7 @@ ve.dm.mwExample.domToDataCases = {
 						'<a href="#cite_note-bar-1">[1]</a>' +
 					'</span>' +
 					' Baz' +
-					'<span about="#mwt2" class="reference" data-mw="{&quot;name&quot;:&quot;ref&quot;,&quot;body&quot;:{&quot;html&quot;:&quot;Quux&quot;},&quot;attrs&quot;:{&quot;name&quot;:&quot;quux&quot;}}" id="cite_ref-quux-2-0" rel="dc:references" typeof="mw:Extension/ref" data-parsoid="{}">' +
+					'<span about="#mwt2" class="reference" data-mw="{&quot;name&quot;:&quot;ref&quot;,&quot;body&quot;:{&quot;html&quot;:&quot;Quux&quot;},&quot;attrs&quot;:{&quot;group&quot;:&quot;g1&quot;,&quot;name&quot;:&quot;:0&quot;}}" id="cite_ref-quux-2-0" rel="dc:references" typeof="mw:Extension/ref" data-parsoid="{}">' +
 					'</span>' +
 					' Whee' +
 					'<span about="#mwt3" class="reference" data-mw="{&quot;name&quot;:&quot;ref&quot;,&quot;body&quot;:{&quot;html&quot;:&quot;' +
@@ -871,7 +871,7 @@ ve.dm.mwExample.domToDataCases = {
 				'attributes': {
 					'listIndex': 0,
 					'listGroup': 'mwReference/',
-					'listKey': 'bar',
+					'listKey': 'literal/bar',
 					'refGroup': '',
 					'mw': { 'name': 'ref', 'attrs': { 'name': 'bar' } },
 					'originalMw': '{"name":"ref","attrs":{"name":"bar"}}',
@@ -905,11 +905,11 @@ ve.dm.mwExample.domToDataCases = {
 				'type': 'mwReference',
 				'attributes': {
 					'listIndex': 1,
-					'listGroup': 'mwReference/',
-					'listKey': 'quux',
-					'refGroup': '',
-					'mw': { 'name': 'ref', 'body': { 'html': 'Quux' }, 'attrs': { 'name': 'quux' } },
-					'originalMw': '{"name":"ref","body":{"html":"Quux"},"attrs":{"name":"quux"}}',
+					'listGroup': 'mwReference/g1',
+					'listKey': 'literal/:0',
+					'refGroup': 'g1',
+					'mw': { 'name': 'ref', 'body': { 'html': 'Quux' }, 'attrs': { 'group': 'g1', 'name': ':0' } },
+					'originalMw': '{"name":"ref","body":{"html":"Quux"},"attrs":{"group":"g1","name":":0"}}',
 					'childDomElements': [],
 					'contentsUsed': true
 				},
@@ -918,7 +918,7 @@ ve.dm.mwExample.domToDataCases = {
 						'values': {
 							'about': '#mwt2',
 							'class': 'reference',
-							'data-mw': '{"name":"ref","body":{"html":"Quux"},"attrs":{"name":"quux"}}',
+							'data-mw': '{"name":"ref","body":{"html":"Quux"},"attrs":{"group":"g1","name":":0"}}',
 							'data-parsoid': '{}',
 							'id': 'cite_ref-quux-2-0',
 							'rel': 'dc:references',
@@ -934,7 +934,7 @@ ve.dm.mwExample.domToDataCases = {
 				'attributes': {
 					'listIndex': 0,
 					'listGroup': 'mwReference/',
-					'listKey': 'bar',
+					'listKey': 'literal/bar',
 					'refGroup': '',
 					'mw': { 'name': 'ref', 'body': { 'html': '<a rel="mw:WikiLink" href="./Bar">Bar</a>' }, 'attrs': { 'name': 'bar' } },
 					'originalMw': '{"name":"ref","body":{"html":"<a rel=\\"mw:WikiLink\\" href=\\"./Bar\\">Bar</a>"},"attrs":{"name":"bar"}}',
@@ -962,7 +962,7 @@ ve.dm.mwExample.domToDataCases = {
 				'attributes': {
 					'listIndex': 2,
 					'listGroup': 'mwReference/g1',
-					'listKey': ':2',
+					'listKey': 'auto/0',
 					'refGroup': 'g1',
 					'mw': { 'name': 'ref', 'body': { 'html': 'No name' }, 'attrs': { 'group': 'g1' } },
 					'originalMw': '{"name":"ref","body":{"html":"No name"},"attrs":{"group":"g1"}}',
@@ -990,7 +990,7 @@ ve.dm.mwExample.domToDataCases = {
 				'attributes': {
 					'listIndex': 0,
 					'listGroup': 'mwReference/',
-					'listKey': 'bar',
+					'listKey': 'literal/bar',
 					'refGroup': '',
 					'mw': { 'name': 'ref', 'body': { 'html': 'Different content' }, 'attrs': { 'name': 'bar' } },
 					'originalMw': '{"name":"ref","body":{"html":"Different content"},"attrs":{"name":"bar"}}',
@@ -1018,7 +1018,7 @@ ve.dm.mwExample.domToDataCases = {
 				'attributes': {
 					'listGroup': 'mwReference/',
 					'listIndex': 3,
-					'listKey': 'foo',
+					'listKey': 'literal/foo',
 					'refGroup': '',
 					'mw': { 'name': 'ref', 'attrs': { 'name': 'foo' } },
 					'originalMw': '{"name":"ref","attrs":{"name":"foo"}}',
@@ -1066,7 +1066,7 @@ ve.dm.mwExample.domToDataCases = {
 					'contentsUsed': true,
 					'listGroup': 'mwReference/',
 					'listIndex': 3,
-					'listKey': 'foo',
+					'listKey': 'literal/foo',
 					'mw': { 'name': 'ref', 'attrs': { 'name': 'foo' }, 'body': { 'html': 'Ref in refs' } },
 					'originalMw': '{"name":"ref","body":{"html":"Ref in refs"},"attrs":{"name":"foo"}}',
 					'refGroup': ''
@@ -1172,7 +1172,7 @@ ve.dm.mwExample.domToDataCases = {
 					'contentsUsed': true,
 					'listGroup': 'mwReference/',
 					'listIndex': 0,
-					'listKey': ':0',
+					'listKey': 'auto/0',
 					'mw': {
 						'attrs': {},
 						'body': {

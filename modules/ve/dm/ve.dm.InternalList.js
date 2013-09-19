@@ -26,6 +26,7 @@ ve.dm.InternalList = function VeDmInternalList( doc ) {
 	this.groupsChanged = [];
 	this.keyIndexes = {};
 	this.keys = [];
+	this.nextUniqueNumber = 0;
 
 	// Event handlers
 	if ( doc ) {
@@ -43,17 +44,6 @@ ve.mixinClass( ve.dm.InternalList, ve.EventEmitter );
  * @event update
  * @param {string[]} groupsChanged List of groups changed since the last transaction
  */
-
-/* Static methods */
-
-/**
- * Is a specific key an automatically generated unique key
- * @param {string} listKey List key
- * @returns {boolean} The key is an automatically generated unique key
- */
-ve.dm.InternalList.static.isUniqueListKey = function( listKey ) {
-	return ( /^:[0-9]+$/ ).test( listKey );
-};
 
 /* Methods */
 
@@ -173,23 +163,39 @@ ve.dm.InternalList.prototype.getNodeGroup = function ( groupName ) {
 /**
  * Get a unique list key for a given group.
  *
- * Generated list keys begin with ":", so that they are obviously different from hand-coded ones.
+ * The returned list key is added to the list of unique list keys used in this group so that it
+ * won't be allocated again. It will also be associated to oldListKey so that if the same oldListKey
+ * is passed in again later, the previously allocated name will be returned.
  *
  * @method
  * @param {string} groupName Name of the group
- * @returns {string} Unique list key
+ * @param {string} oldListKey Current list key to associate the generated list key with
+ * @param {string} prefix Prefix to distinguish generated keys from non-generated ones
+ * @returns {string} Generated unique list key, or existing unique key associated with oldListKey
  */
-ve.dm.InternalList.prototype.getUniqueListKey = function ( groupName ) {
+ve.dm.InternalList.prototype.getUniqueListKey = function ( groupName, oldListKey, prefix ) {
 	var group = this.getNodeGroup( groupName ),
 		num = 0;
 
-	if ( group ) {
-		while ( group.keyedNodes[':' + num ] ) {
-			num++;
-		}
+	if ( group.uniqueListKeys[oldListKey] !== undefined ) {
+		return group.uniqueListKeys[oldListKey];
 	}
 
-	return ':' + num;
+	while ( group.keyedNodes[prefix + num] || group.uniqueListKeysInUse[prefix + num] ) {
+		num++;
+	}
+
+	group.uniqueListKeys[oldListKey] = prefix + num;
+	group.uniqueListKeysInUse[prefix + num] = true;
+	return prefix + num;
+};
+
+/**
+ * Get the next number in a monotonically increasing series.
+ * @returns {number} One higher than the return value of the previous call, or 0 on the first call
+ */
+ve.dm.InternalList.prototype.getNextUniqueNumber = function () {
+	return this.nextUniqueNumber++;
 };
 
 /**
@@ -294,7 +300,9 @@ ve.dm.InternalList.prototype.addNode = function ( groupName, key, index, node ) 
 		group = this.nodes[groupName] = {
 			'keyedNodes': {},
 			'firstNodes': [],
-			'indexOrder': []
+			'indexOrder': [],
+			'uniqueListKeys': {},
+			'uniqueListKeysInUse': {}
 		};
 	}
 	keyedNodes = group.keyedNodes[key];
