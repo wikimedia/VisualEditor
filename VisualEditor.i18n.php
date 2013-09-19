@@ -12792,14 +12792,15 @@ $messages['roa-tara'] = array(
  * @author MaxBioHazard
  * @author NBS
  * @author Niklem
+ * @author Okras
  * @author Ole Yves
  * @author Putnik
  * @author Sunpriat
  * @author Yury Katkov
  */
 $messages['ru'] = array(
-	'tag-visualeditor' => '[[{{MediaWiki:visualeditor-descriptionpagelink}}|Визуальный редактор]]', # Fuzzy
-	'tag-visualeditor-description' => 'Правка сделана с использованием [[{{MediaWiki:Visualeditor-descriptionpagelink}}|визуального редактора]]', # Fuzzy
+	'tag-visualeditor' => '[[{{MediaWiki:visualeditor-descriptionpagelink}}|Визуальный редактор]]',
+	'tag-visualeditor-description' => 'Правка сделана с использованием [[{{MediaWiki:visualeditor-descriptionpagelink}}|визуального редактора]]',
 	'tag-visualeditor-needcheck' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|Визуальный редактор]]: проверить', # Fuzzy
 	'tag-visualeditor-needcheck-description' => 'Правка с помощью [[{{MediaWiki:Visualeditor-descriptionpagelink}}|визуального редактора]], в которой система обнаружила, возможно, непреднамеренно изменённый вики-текст.', # Fuzzy
 	'tooltip-ca-createsource' => 'Создать страницу в редакторе исходного кода',
@@ -12811,7 +12812,7 @@ $messages['ru'] = array(
 	'visualeditor-annotationbutton-italic-tooltip' => 'Курсив',
 	'visualeditor-annotationbutton-link-tooltip' => 'Ссылка',
 	'visualeditor-beta-label' => 'бета-версия',
-	'visualeditor-beta-warning' => 'VisualEditor находится в статусе бета-версии. Могут возникнуть проблемы с программным обеспечением, и вы не сможете редактировать некоторые части страниц. Нажмите кнопку «Править исходный текст» для переключения в режим вики-текста. Несохранённые изменения будут утеряны.', # Fuzzy
+	'visualeditor-beta-warning' => 'VisualEditor находится в статусе бета-версии. Могут возникнуть проблемы с программным обеспечением, и вы не сможете редактировать некоторые части страниц. Нажмите «{{int:visualeditor-ca-editsource}}» для переключения в режим вики-текста. Несохранённые изменения будут утеряны.',
 	'visualeditor-browserwarning' => 'Вы используете браузер, который официально не поддерживается VisualEditor.',
 	'visualeditor-ca-createsource' => 'Создать как исходный код',
 	'visualeditor-ca-editsource' => 'Править исходный текст',
@@ -12898,13 +12899,12 @@ $messages['ru'] = array(
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Уменьшить отступ',
 	'visualeditor-inspector-close-tooltip' => 'Закрыть',
 	'visualeditor-inspector-remove-tooltip' => 'Убрать',
+	'visualeditor-languageinspector-block-tooltip' => 'Языковой блок: $1',
+	'visualeditor-languageinspector-block-tooltip-rtldirection' => ': Справа налево',
 	'visualeditor-linkinspector-suggest-external-link' => 'Внешняя ссылка',
 	'visualeditor-linkinspector-suggest-matching-page' => 'Соответствующие страницы',
 	'visualeditor-linkinspector-suggest-new-page' => 'Новая страница',
 	'visualeditor-linkinspector-title' => 'Гиперссылка',
-	'visualeditor-mwmathinspector-title' => 'LaTeX',
-	'visualeditor-languageinspector-block-tooltip' => 'Языковой блок: $1',
-	'visualeditor-languageinspector-block-tooltip-rtldirection' => ': Справа налево',
 	'visualeditor-listbutton-bullet-tooltip' => 'Маркированный список',
 	'visualeditor-listbutton-number-tooltip' => 'Нумерованный список',
 	'visualeditor-loadwarning' => 'Ошибка при загрузке данных: $1. Попробовать снова?',
@@ -12912,6 +12912,7 @@ $messages['ru'] = array(
 	'visualeditor-mainnamespacepagelink' => 'Project:Основное пространство',
 	'visualeditor-media-input-placeholder' => 'Поиск мультимедиа',
 	'visualeditor-meta-tool' => 'Параметры страницы',
+	'visualeditor-mwmathinspector-title' => 'LaTeX',
 	'visualeditor-notification-created' => 'Страница $1 была создана.',
 	'visualeditor-notification-restored' => 'Прошлая версия на странице $1 была восстановлена.',
 	'visualeditor-notification-saved' => 'Ваши изменения на странице $1 были сохранены.',
@@ -12921,7 +12922,7 @@ $messages['ru'] = array(
 	'visualeditor-parameter-search-no-unused' => 'Нет неиспользованных параметров',
 	'visualeditor-parameter-search-unknown' => 'Неизвестный параметр',
 	'visualeditor-preference-betatempdisable' => 'Временно отключить Визуальный редактор, пока он находится в бета-версии',
-	'visualeditor-preference-enable' => 'Включить Визуальный редактор (только в [[{{MediaWiki:visualeditor-mainnamespacepagelink}}|основном]] и [[{{MediaWiki:visualeditor-usernamespacepagelink}}|личном]] пространствах)', # Fuzzy
+	'visualeditor-preference-enable' => 'Включить Визуальный редактор (только в [[{{MediaWiki:visualeditor-mainnamespacepagelink}}|основном]] и [[{{MediaWiki:visualeditor-usernamespacepagelink}}|личном]] пространствах)',
 	'visualeditor-reference-input-placeholder' => 'На что вы хотите сослаться?',
 	'visualeditor-referencelist-isempty' => 'На этой странице нет ссылок с группой « $1 ».',
 	'visualeditor-referencelist-missingref' => 'Эта сноска определяется в шаблоне или другом генерируемом блоке и на данный момент может быть отредактирована только в режиме исходного кода.',
@@ -12948,7 +12949,7 @@ $messages['ru'] = array(
 	'visualeditor-toolbar-savedialog' => 'Проверить и сохранить',
 	'visualeditor-usernamespacepagelink' => 'Project:Личное пространство',
 	'visualeditor-viewpage-savewarning' => 'Вы точно хотите вернуться в режим просмотра, не сохранив изменения?',
-	'visualeditor-wikitext-warning' => 'Вы используете VisualEditor — [[{{MediaWiki:Visualeditor-wikitext-warning-link}}|вики-разметка]] здесь не работает. Нажмите «{{MediaWiki:Visualeditor-ca-editsource}}» для редактирования страницы в режиме вики-текста. Несохранённые изменения будут утеряны.', # Fuzzy
+	'visualeditor-wikitext-warning' => 'Вы используете VisualEditor — [[{{MediaWiki:visualeditor-wikitext-warning-link}}|вики-разметка]] здесь не работает. Нажмите «{{MediaWiki:visualeditor-ca-editsource}}» для редактирования страницы в режиме вики-текста. Несохранённые изменения будут утеряны.',
 	'visualeditor-wikitext-warning-link' => 'Help:Вики-разметка',
 	'visualeditor-wikitext-warning-title' => 'Обнаружена вики-разметка',
 	'visualeditor-window-title' => 'Проверить',
@@ -14309,7 +14310,7 @@ $messages['sv'] = array(
 	'visualeditor-editconflict' => 'Dina ändringar kunde inte sparas på grund av en redigeringskonflikt. Vill du lösa konflikten manuellt?',
 	'visualeditor-editnotices-tool' => '$1 {{PLURAL:$1|notis|notiser}}',
 	'visualeditor-editsummary' => 'Beskriv vad du har ändrat',
-	'visualeditor-feedback-link' => 'Project:VisualEditor/Feedback',
+	'visualeditor-feedback-link' => 'Project:VisualEditor/Återkoppling',
 	'visualeditor-feedback-tool' => 'Lämna feedback',
 	'visualeditor-formatdropdown-format-heading1' => 'Rubrik 1',
 	'visualeditor-formatdropdown-format-heading2' => 'Rubrik 2',
@@ -14366,6 +14367,8 @@ $messages['sv'] = array(
 	'visualeditor-parameter-search-unknown' => 'Okänd parameter',
 	'visualeditor-preference-betatempdisable' => 'Avaktivera VisualEditor tillfälligt medan den är i beta',
 	'visualeditor-preference-enable' => 'Aktivera VisualEditor (endast i  [[{{MediaWiki:visualeditor-mainnamespacepagelink}}|huvud-]] och [[{{MediaWiki:visualeditor-usernamespacepagelink}}|användar]]namnrymderna)',
+	'visualeditor-preference-experimental-description' => 'Aktivera de senaste funktionerna i VisualEditor. Allteftersom vi utvecklar verktyg och ändrar redigeraren så gör vi dem tillgängliga för testning innan den släpps för allmän användning. Kom ihåg att alltid granska dina ändringar innan du sparar när du använder experimentell funktionalitet.',
+	'visualeditor-preference-experimental-label' => 'VisualEditor: experimentella funktioner',
 	'visualeditor-reference-input-placeholder' => 'Vad vill du referera till?',
 	'visualeditor-referencelist-isempty' => 'Det finns inga referenser med grupp "$1" på denna sida.',
 	'visualeditor-referencelist-missingref' => 'Den här källan är definierad i en mall eller ett annat genererat block och kan bara redigeras i wikitext.',
