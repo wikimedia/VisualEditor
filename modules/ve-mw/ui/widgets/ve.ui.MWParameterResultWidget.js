@@ -17,7 +17,7 @@
  */
 ve.ui.MWParameterResultWidget = function VeUiMWParameterResultWidget( data, config ) {
 	// Configuration initialization
-	config = ve.extendObject( {}, config, { 'icon': 'parameter' } );
+	config = ve.extendObject( { 'icon': 'parameter' }, config );
 
 	// Parent constructor
 	ve.ui.OptionWidget.call( this, data, config );
@@ -26,11 +26,6 @@ ve.ui.MWParameterResultWidget = function VeUiMWParameterResultWidget( data, conf
 	this.$.addClass( 've-ui-mwParameterResultWidget' );
 	this.setLabel( this.buildLabel() );
 };
-
-/**
- * @private
- * @cfg {string} icon
- */
 
 /* Inheritance */
 
