@@ -286,7 +286,8 @@ See also:
 {{Identical|Superscript}}',
 	'visualeditor-annotationbutton-underline-tooltip' => 'Tooltip text for underline button.
 {{Identical|Underline}}',
-	'visualeditor-beta-appendix' => '{{Identical|Beta}}',
+	'visualeditor-beta-appendix' => 'Used in {{msg-mw|Guidedtour-tour-firsteditve-edit-page-description}}.
+{{Identical|Beta}}',
 	'visualeditor-beta-label' => 'Text of tool in the toolbar that highlights that VisualEditor is still in beta.
 {{Identical|Beta}}',
 	'visualeditor-beta-warning' => "Note shown when user clicks on 'beta' label in VisualEditor, warning users that the software may have issues.
@@ -2544,7 +2545,7 @@ $messages['ca'] = array(
 	'tag-visualeditor' => '[[{{MediaWiki:visualeditor-descriptionpagelink}}|Editor visual]]',
 	'tag-visualeditor-description' => "Modificació feta amb l'[[{{MediaWiki:visualeditor-descriptionpagelink}}|editor visual]]",
 	'tag-visualeditor-needcheck' => '[[{{MediaWiki:visualeditor-descriptionpagelink}}|Editor visual: comprovació]]',
-	'tag-visualeditor-needcheck-description' => "Edició feta mitjançant l'[[{{MediaWiki:visualeditor-descriptionpagelink}}|Editor visual]] en la qual el sistema ha detectat que el text wiki pot contenir canvis no desitjats.",
+	'tag-visualeditor-needcheck-description' => "Edició feta amb l'[[{{MediaWiki:visualeditor-descriptionpagelink}}|editor visual]], en la qual el sistema ha detectat que el text wiki pot contenir canvis no desitjats.",
 	'tooltip-ca-createsource' => "Crea el codi font d'aquesta pàgina",
 	'tooltip-ca-editsource' => "Modifica el codi font d'aquesta pàgina",
 	'tooltip-ca-ve-edit' => "Modifica aquesta pàgina amb l'editor visual",
@@ -2561,14 +2562,14 @@ $messages['ca'] = array(
 	'visualeditor-annotationbutton-underline-tooltip' => 'Subratllat',
 	'visualeditor-beta-appendix' => 'beta',
 	'visualeditor-beta-label' => 'beta',
-	'visualeditor-beta-warning' => 'L\'Editor visual és en fase "beta". Pot succeir que trobeu problemes tècnics i que no pugueu editar parts de la pàgina. Cliqueu a "{{int:visualeditor-ca-editsource}}" per a canviar al mode de wikitext. Els canvis no desats seran perduts.',
-	'visualeditor-browserwarning' => 'Esteu utilitzant un navegador que no està oficialment admès per VisualEditor',
+	'visualeditor-beta-warning' => 'L\'editor visual és en fase "beta". Pot succeir que trobeu problemes tècnics i que no pugueu editar parts de la pàgina. Cliqueu a "{{int:visualeditor-ca-editsource}}" per a canviar al mode de wikitext. Els canvis no desats seran perduts.',
+	'visualeditor-browserwarning' => "Esteu utilitzant un navegador que no està oficialment suportat per l'editor visual",
 	'visualeditor-ca-createsource' => 'Crea codi',
 	'visualeditor-ca-editsource' => 'Modifica la font',
 	'visualeditor-ca-editsource-section' => 'modifica la font',
 	'visualeditor-ca-ve-create' => 'Editor visual',
 	'visualeditor-ca-ve-edit' => 'Editor visual',
-	'visualeditor-ca-ve-edit-section' => 'Editor Visual',
+	'visualeditor-ca-ve-edit-section' => 'Editor visual',
 	'visualeditor-clearbutton-tooltip' => 'Neteja el format',
 	'visualeditor-desc' => 'Editor visual per a MediaWiki',
 	'visualeditor-descriptionpagelink' => 'Project:Editor visual',
@@ -2577,8 +2578,8 @@ $messages['ca'] = array(
 	'visualeditor-dialog-action-close' => 'Tancar',
 	'visualeditor-dialog-action-goback' => 'Enrere',
 	'visualeditor-dialog-beta-welcome-action-continue' => 'Continua',
-	'visualeditor-dialog-beta-welcome-content' => "Aquesta és la nostra nova forma d'editar, més fàcil. Encara està en fase beta, la qual cosa significa que encara podeu trobar parts de la pàgina que no pugueu editar, o potser trobeu problemes que hem de resoldre. Us animem a què reviseu els canvis, i ens informeu de qualsevol problema que trobeu quan utilitzeu VisualEditor (feu clic al botó '{{int:visualeditor-beta-label}}' per a enviar-nos els vostres comentaris). Encara podeu utilitzar l'editor de wikitext si cliqueu la pestanya \"\$1\". Els canvis que no hàgiu desat es perdran.",
-	'visualeditor-dialog-beta-welcome-title' => "Benvingut a l'Editor Visual",
+	'visualeditor-dialog-beta-welcome-content' => "Aquesta és la nostra nova, més senzilla forma d'editar. Encara està en fase beta, la qual cosa significa que podeu trobar parts de la pàgina que no siguin editables, o potser trobeu problemes que hem de resoldre. Us animem a què reviseu els canvis, i ens informeu de qualsevol problema que trobeu quan utilitzeu l'editor visual (feu clic al botó '{{int:visualeditor-beta-label}}' per a enviar-nos els vostres comentaris). Encara podeu utilitzar l'editor de wikitext si cliqueu la pestanya \"\$1\". Els canvis que no hàgiu desat es perdran.",
+	'visualeditor-dialog-beta-welcome-title' => "Benvingut a l'editor visual",
 	'visualeditor-dialog-media-content-section' => "Peu d'imatge",
 	'visualeditor-dialog-media-insert-button' => 'Insereix fitxers multimèdia',
 	'visualeditor-dialog-media-insert-title' => 'Insereix fitxers multimèdia',
@@ -7911,7 +7912,7 @@ $messages['ja'] = array(
 	'visualeditor-annotationbutton-subscript-tooltip' => '下付き',
 	'visualeditor-annotationbutton-superscript-tooltip' => '上付き',
 	'visualeditor-annotationbutton-underline-tooltip' => '下線',
-	'visualeditor-beta-appendix' => 'ベータ',
+	'visualeditor-beta-appendix' => 'ベータ版',
 	'visualeditor-beta-label' => 'ベータ',
 	'visualeditor-beta-warning' => 'ビジュアルエディターは「ベータ版」です。ソフトウェアの問題点に遭遇するおそれがあり、ページの一部を編集できないおそれがあります。ウィキテキスト モードに切り替えるには「{{int:visualeditor-ca-editsource}}」をクリックしてください。クリックすると、未保存の編集内容は失われます。',
 	'visualeditor-browserwarning' => 'ビジュアルエディタ―は、ご使用中のブラウザーに正式には対応していません。',
@@ -16157,6 +16158,14 @@ $messages['vo'] = array(
 	'visualeditor-toolbar-more' => 'Pluikos',
 	'visualeditor-toolbar-savedialog' => 'Dakipön padi',
 	'visualeditor-version-label' => 'Fomam',
+);
+
+/** Wu (吴语)
+ * @author 十弌
+ */
+$messages['wuu'] = array(
+	'visualeditor-toolbar-more' => '還多',
+	'visualeditor-version-label' => '版本',
 );
 
 /** Yiddish (ייִדיש)
