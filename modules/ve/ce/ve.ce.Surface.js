@@ -60,24 +60,22 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 
 	$documentNode = this.documentView.getDocumentNode().$;
 	$documentNode.on( {
+		'cut': ve.bind( this.onCut, this ),
+		'copy': ve.bind( this.onCopy, this ),
 		'focus': ve.bind( this.documentOnFocus, this ),
 		'blur': ve.bind( this.documentOnBlur, this )
 	} );
+	this.$pasteTarget.on( {
+		'cut': ve.bind( this.onCut, this ),
+		'copy': ve.bind( this.onCopy, this )
+	} );
+	$documentNode.on( $.browser.msie ? 'beforepaste' : 'paste', ve.bind( this.onPaste, this ) );
 	$documentNode.on( 'focus', 'a', function () {
 		// Opera triggers 'blur' on document node before any link is
 		// focused and we don't want that
 		$documentNode.focus();
 	} );
 
-	this.$document.on( {
-		'cut': ve.bind( this.onCut, this ),
-		'copy': ve.bind( this.onCopy, this )
-	} );
-	if ( $.browser.msie ) {
-		this.$document.on( 'beforepaste', ve.bind( this.onPaste, this ) );
-	} else {
-		this.$document.on( 'paste', ve.bind( this.onPaste, this ) );
-	}
 	this.$.on( {
 		'dragover': ve.bind( this.onDocumentDragOver, this ),
 		'drop': ve.bind( this.onDocumentDrop, this )
