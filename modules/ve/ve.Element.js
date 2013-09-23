@@ -175,9 +175,10 @@ ve.Element.getRelativePosition = function ( $from, $to ) {
 ve.Element.getBorders = function ( el ) {
 	var doc = el.ownerDocument,
 		win = doc.parentWindow || doc.defaultView,
-		style = win && win.getComputedStyle ?
-			win.getComputedStyle( el, null ) : el.currentStyle,
-		loc = win && win.getComputedStyle ? true : false,
+		loc = win && win.getComputedStyle,
+		style = loc ?
+			win.getComputedStyle( el, null ) :
+			el.currentStyle,
 		$el = $( el ),
 		top = parseFloat( loc ? style.borderTopWidth : $el.css( 'borderTopWidth' ) ) || 0,
 		left = parseFloat( loc ? style.borderLeftWidth : $el.css( 'borderLeftWidth' ) ) || 0,
