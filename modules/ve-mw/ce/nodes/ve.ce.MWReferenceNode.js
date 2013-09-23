@@ -12,6 +12,7 @@
  * @extends ve.ce.LeafNode
  * @mixins ve.ce.FocusableNode
  * @mixins ve.ce.ProtectedNode
+ * @mixins ve.ce.RelocatableNode
  *
  * @constructor
  * @param {ve.dm.MWReferenceNode} model Model to observe
@@ -24,6 +25,7 @@ ve.ce.MWReferenceNode = function VeCeMWReferenceNode( model, config ) {
 	// Mixin constructors
 	ve.ce.FocusableNode.call( this );
 	ve.ce.ProtectedNode.call( this );
+	ve.ce.RelocatableNode.call( this );
 
 	// DOM changes
 	this.$link = $( '<a>' ).attr( 'href', '#' );
@@ -45,6 +47,7 @@ ve.inheritClass( ve.ce.MWReferenceNode, ve.ce.LeafNode );
 
 ve.mixinClass( ve.ce.MWReferenceNode, ve.ce.FocusableNode );
 ve.mixinClass( ve.ce.MWReferenceNode, ve.ce.ProtectedNode );
+ve.mixinClass( ve.ce.MWReferenceNode, ve.ce.RelocatableNode );
 
 /* Static Properties */
 

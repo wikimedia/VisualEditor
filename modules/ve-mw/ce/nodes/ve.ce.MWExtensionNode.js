@@ -15,6 +15,7 @@
  * @extends ve.ce.LeafNode
  * @mixins ve.ce.FocusableNode
  * @mixins ve.ce.ProtectedNode
+ * @mixins ve.ce.RelocatableNode
  * @mixins ve.ce.GeneratedContentNode
  *
  * @constructor
@@ -28,6 +29,7 @@ ve.ce.MWExtensionNode = function VeCeMWExtensionNode( model, config ) {
 	// Mixin constructors
 	ve.ce.FocusableNode.call( this );
 	ve.ce.ProtectedNode.call( this );
+	ve.ce.RelocatableNode.call( this );
 	ve.ce.GeneratedContentNode.call( this );
 
 	// DOM changes
@@ -40,6 +42,7 @@ ve.inheritClass( ve.ce.MWExtensionNode, ve.ce.LeafNode );
 
 ve.mixinClass( ve.ce.MWExtensionNode, ve.ce.FocusableNode );
 ve.mixinClass( ve.ce.MWExtensionNode, ve.ce.ProtectedNode );
+ve.mixinClass( ve.ce.MWExtensionNode, ve.ce.RelocatableNode );
 ve.mixinClass( ve.ce.MWExtensionNode, ve.ce.GeneratedContentNode );
 
 /* Methods */
