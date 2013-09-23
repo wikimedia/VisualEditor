@@ -62,7 +62,7 @@ ve.mixinClass( ve.ce.View, ve.EventEmitter );
  * @event teardown
  */
 
-/* Static Members */
+/* Static members */
 
 /**
  * Allowed attributes for DOM elements, in the same format as ve.dm.Model#static.storeHtmlAttributes
