@@ -289,6 +289,7 @@
 		<script src="dm/lineardata/ve.dm.MetaLinearData.test.js"></script>
 		<script src="ce/ve.ce.test.js"></script>
 		<script src="ce/ve.ce.Document.test.js"></script>
+		<script src="ce/ve.ce.Surface.test.js"></script>
 		<script src="ce/ve.ce.NodeFactory.test.js"></script>
 		<script src="ce/ve.ce.Node.test.js"></script>
 		<script src="ce/ve.ce.BranchNode.test.js"></script>

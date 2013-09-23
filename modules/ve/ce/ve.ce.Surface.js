@@ -290,7 +290,6 @@ ve.ce.Surface.prototype.disable = function () {
  * Destroy the surface, removing all DOM elements.
  *
  * @method
- * @returns {ve.ui.Context} Context user interface
  */
 ve.ce.Surface.prototype.destroy = function () {
 	this.documentView.getDocumentNode().setLive( false );
