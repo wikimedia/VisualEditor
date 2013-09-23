@@ -154,11 +154,17 @@ ve.ce.Surface.static.textPattern = new RegExp(
  * When pasting, browsers normalize HTML to varying degrees.
  * This hash creates a comparable string for validating clipboard contents.
  *
- * @param {string} html Clipboard HTML
+ * @param {jQuery} $elements Clipboard HTML elements
  * @returns {string} Hash
  */
-ve.ce.Surface.static.getClipboardHash = function ( html ) {
-	return html.replace( /\s+/gm, '' );
+ve.ce.Surface.static.getClipboardHash = function ( $elements ) {
+	var hash = '';
+	// Collect text contents, or just node name for content-less nodes.
+	$elements.each( function () {
+		hash += this.textContent || '<' + this.nodeName + '>';
+	} );
+	// Whitespace may be added/removed, so strip it all
+	return hash.replace( /\s/gm, '' );
 };
 
 
@@ -683,7 +689,7 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 		this.$pasteTarget.prepend(
 			$( '<span>' ).attr( 'data-ve-clipboard-key', this.clipboardId + '-' + clipboardIndex )
 		);
-		clipboardItem.hash = this.constructor.static.getClipboardHash( this.$pasteTarget.html() );
+		clipboardItem.hash = this.constructor.static.getClipboardHash( this.$pasteTarget.contents() );
 		// If direct clipboard editing is not allowed, we must use the pasteTarget to
 		// select the data we want to go in the clipboard
 		rangyRange = rangy.createRange( this.getElementDocument() );
@@ -791,12 +797,12 @@ ve.ce.Surface.prototype.afterPaste = function () {
 		clipboardId = parts[0];
 		clipboardIndex = parts[1];
 		if ( clipboardId === this.clipboardId && this.clipboard[clipboardIndex] ) {
-			// Hash validation: either the hash must be null (i.e. text/xcustom was used)
-			// or it must be equal to the hash of the pasted HTML to assert that the HTML
+			// Hash validation: either text/xcustom was used or the hash must be
+			// equal to the hash of the pasted HTML to assert that the HTML
 			// hasn't been modified in another editor before being pasted back.
-			if ( this.clipboard[clipboardIndex].hash === null ||
+			if ( beforePasteData.custom ||
 				this.clipboard[clipboardIndex].hash ===
-					this.constructor.static.getClipboardHash( beforePasteData.html || this.$pasteTarget.html() )
+					this.constructor.static.getClipboardHash( $elements )
 			) {
 				slice = this.clipboard[clipboardIndex].data;
 			}
