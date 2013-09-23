@@ -78,6 +78,15 @@ QUnit.test( 'handleDelete', function ( assert ) {
 				},
 				'expectedRange': new ve.Range( 1 ),
 				'msg': 'Whole word deleted by modified delete'
+			},
+			{
+				'range': new ve.Range( 1, 4 ),
+				'operations': ['delete', 'delete'],
+				'expectedData': function ( data ) {
+					data.splice( 0, 5 );
+				},
+				'expectedRange': new ve.Range( 1 ),
+				'msg': 'Empty node deleted by delete'
 			}
 		];
 

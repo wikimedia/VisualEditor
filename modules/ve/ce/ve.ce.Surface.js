@@ -1496,7 +1496,7 @@ ve.ce.Surface.prototype.handleEnter = function ( e ) {
  */
 ve.ce.Surface.prototype.handleDelete = function ( e, backspace ) {
 	var rangeToRemove = this.model.getSelection(),
-		tx, endNode, endNodeData, nodeToDelete;
+		tx, startNode, endNode, endNodeData, nodeToDelete;
 
 	if ( rangeToRemove.isCollapsed() ) {
 		// In case when the range is collapsed use the same logic that is used for cursor left and
@@ -1519,33 +1519,47 @@ ve.ce.Surface.prototype.handleDelete = function ( e, backspace ) {
 		// If after processing removal transaction range is not collapsed it means that not
 		// everything got merged nicely (at this moment transaction processor is capable of merging
 		// nodes of the same type and at the same depth level only), so we process with another
-		// merging that takes remaing data from "endNode" and inserts it at the end of "startNode",
-		// "endNode" or recrusivly its parent (if have only one child) gets removed.
+		// merging that takes remaing data from endNode and inserts it at the end of startNode,
+		// endNode or recrusivly its parent (if have only one child) gets removed.
+		//
+		// If startNode has no content then we just delete that node instead of merging.
+		// This prevents content being inserted into empty structure which, e.g. and empty heading
+		// will be deleted, rather than "converting" the paragraph beneath to a heading.
+
 		endNode = this.documentView.getNodeFromOffset( rangeToRemove.end, false );
 
-		// If "endNode" is within our rangeToRemove, then we shouldn't delete it
+		// If endNode is within our rangeToRemove, then we shouldn't delete it
 		if ( endNode.getModel().getRange().start >= rangeToRemove.end ) {
-			endNodeData = this.documentView.model.getData( endNode.getModel().getRange() );
-			nodeToDelete = endNode;
-			nodeToDelete.traverseUpstream( function ( node ) {
-				var parent = node.getParent();
-				if ( parent.children.length === 1 ) {
-					nodeToDelete = parent;
-					return true;
-				} else {
-					return false;
-				}
-			} );
-			this.model.change(
-				[
+			startNode = this.documentView.getNodeFromOffset( rangeToRemove.start, false );
+			if ( startNode.getModel().getRange().isCollapsed() ) {
+				// Remove startNode
+				this.model.change( [
+					ve.dm.Transaction.newFromRemoval(
+						this.documentView.model, startNode.getModel().getOuterRange()
+					)
+				] );
+			} else {
+				endNodeData = this.documentView.model.getData( endNode.getModel().getRange() );
+				nodeToDelete = endNode;
+				nodeToDelete.traverseUpstream( function ( node ) {
+					var parent = node.getParent();
+					if ( parent.children.length === 1 ) {
+						nodeToDelete = parent;
+						return true;
+					} else {
+						return false;
+					}
+				} );
+				// Move contents of endNode into startNode, and delete nodeToDelete
+				this.model.change( [
 					ve.dm.Transaction.newFromRemoval(
 						this.documentView.model, nodeToDelete.getModel().getOuterRange()
 					),
 					ve.dm.Transaction.newFromInsertion(
 						this.documentView.model, rangeToRemove.start, endNodeData
 					)
-				]
-			);
+				] );
+			}
 		}
 	}
 	this.model.change( null, new ve.Range( rangeToRemove.start ) );
