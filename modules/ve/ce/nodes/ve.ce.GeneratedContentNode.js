@@ -164,7 +164,7 @@ ve.ce.GeneratedContentNode.prototype.forceUpdate = function ( config ) {
  * @method
  */
 ve.ce.GeneratedContentNode.prototype.startGenerating = function () {
-	// TODO: add 'generating' style
+	this.$.addClass( 've-ce-generatedContentNode-generating' );
 };
 
 /**
@@ -178,7 +178,7 @@ ve.ce.GeneratedContentNode.prototype.doneGenerating = function ( domElements, co
 	var store = this.model.doc.getStore(),
 		hash = ve.getHash( [ this.model, config ] );
 	store.index( domElements, hash );
-	// TODO: remove 'generating' style
+	this.$.removeClass( 've-ce-generatedContentNode-generating' );
 	this.generatingPromise = null;
 	this.render( domElements );
 };
@@ -189,6 +189,6 @@ ve.ce.GeneratedContentNode.prototype.doneGenerating = function ( domElements, co
  * @method
  */
 ve.ce.GeneratedContentNode.prototype.failGenerating = function () {
-	// TODO: remove 'generating' style
+	this.$.removeClass( 've-ce-generatedContentNode-generating' );
 	this.generatingPromise = null;
 };
