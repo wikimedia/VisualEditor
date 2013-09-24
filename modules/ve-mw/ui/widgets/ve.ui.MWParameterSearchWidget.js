@@ -16,9 +16,9 @@
  */
 ve.ui.MWParameterSearchWidget = function VeUiMWParameterSearchWidget( template, config ) {
 	// Configuration intialization
-	config = ve.extendObject( {}, config, {
+	config = ve.extendObject( {
 		'placeholder': ve.msg( 'visualeditor-parameter-input-placeholder' )
-	} );
+	}, config );
 
 	// Parent constructor
 	ve.ui.SearchWidget.call( this, config );

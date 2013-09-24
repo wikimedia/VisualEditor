@@ -19,10 +19,10 @@
  */
 ve.ui.MWMediaSearchWidget = function VeUiMWMediaSearchWidget( config ) {
 	// Configuration intialization
-	config = ve.extendObject( {}, config, {
+	config = ve.extendObject( {
 		'placeholder': ve.msg( 'visualeditor-media-input-placeholder' ),
 		'value': mw.config.get( 'wgTitle' )
-	} );
+	}, config );
 
 	// Parent constructor
 	ve.ui.SearchWidget.call( this, config );

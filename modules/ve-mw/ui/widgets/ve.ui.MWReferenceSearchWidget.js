@@ -17,9 +17,9 @@
  */
 ve.ui.MWReferenceSearchWidget = function VeUiMWReferenceSearchWidget( surface, config ) {
 	// Configuration intialization
-	config = ve.extendObject( {}, config, {
+	config = ve.extendObject( {
 		'placeholder': ve.msg( 'visualeditor-reference-input-placeholder' )
-	} );
+	}, config );
 
 	// Parent constructor
 	ve.ui.SearchWidget.call( this, config );
