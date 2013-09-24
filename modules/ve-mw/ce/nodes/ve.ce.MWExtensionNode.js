@@ -10,6 +10,10 @@
 /**
  * ContentEditable MediaWiki extension node.
  *
+ * Configuration options for .update():
+ * - 'extsrc': override the contents of the tag (string)
+ * - 'attrs': override the attributes of the tag (object)
+ *
  * @class
  * @abstract
  * @extends ve.ce.LeafNode
@@ -45,11 +49,13 @@ ve.mixinClass( ve.ce.MWExtensionNode, ve.ce.GeneratedContentNode );
 /* Methods */
 
 /** */
-ve.ce.MWExtensionNode.prototype.generateContents = function () {
+ve.ce.MWExtensionNode.prototype.generateContents = function ( config ) {
 	var deferred = $.Deferred(),
+		mwData = this.getModel().getAttribute( 'mw' ),
+		extsrc = config && config.extsrc !== undefined ? config.extsrc : mwData.body.extsrc,
+		attrs = config && config.attrs || mwData.attrs,
 		extensionNode = $( document.createElement( this.getModel().getExtensionName() ) )
-			.attr( this.getModel().getAttribute( 'mw' ).attrs )
-			.text( this.getModel().getAttribute( 'mw' ).body.extsrc );
+			.attr( attrs ).text( extsrc );
 
 	$.ajax( {
 		'url': mw.util.wikiScript( 'api' ),
