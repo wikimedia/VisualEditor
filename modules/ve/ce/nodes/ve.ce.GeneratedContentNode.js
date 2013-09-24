@@ -41,6 +41,13 @@ ve.ce.GeneratedContentNode = function VeCeGeneratedContentNode() {
  * @event rerender
  */
 
+/* Static members */
+
+ve.ce.GeneratedContentNode.static = {};
+
+// this.$ is just a wrapper for the real content, so don't duplicate attributes on it
+ve.ce.GeneratedContentNode.static.renderHtmlAttributes = false;
+
 /* Abstract methods */
 
 /**
