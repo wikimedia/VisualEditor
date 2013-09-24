@@ -923,6 +923,12 @@ ve.ce.Surface.prototype.onChange = function ( transaction, selection ) {
 					next = start;
 				}
 			}
+		} else {
+			// Check we haven't been programmatically placed inside a focusable node with a collapsed selection
+			start = this.documentView.getDocumentNode().getNodeFromOffset( selection.start );
+			if ( ve.isMixedIn( start, ve.ce.FocusableNode ) ) {
+				next = start;
+			}
 		}
 		// Update nodes if something changed
 		if ( previous !== next ) {
