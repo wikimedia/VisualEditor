@@ -764,6 +764,7 @@ QUnit.test( 'newFromAttributeChanges', function ( assert ) {
 QUnit.test( 'newFromAnnotation', function ( assert ) {
 	var bold = ve.dm.example.createAnnotation( ve.dm.example.bold ),
 		doc = ve.dm.example.createExampleDocument(),
+		annotationDoc = ve.dm.example.createExampleDocument( 'annotationData' ),
 		cases = {
 			'over plain text': {
 				'args': [doc, new ve.Range( 1, 2 ), 'set', bold],
@@ -858,8 +859,63 @@ QUnit.test( 'newFromAnnotation', function ( assert ) {
 					},
 					{ 'type': 'retain', 'length': 52 }
 				]
+			},
+			'over content and content element (image)': {
+				'args': [doc, new ve.Range( 38, 42 ), 'set', bold],
+				'ops': [
+					{ 'type': 'retain', 'length': 38 },
+					{
+						'type': 'annotate',
+						'method': 'set',
+						'bias': 'start',
+						'annotation': bold
+					},
+					{ 'type': 'retain', 'length': 4 },
+					{
+						'type': 'annotate',
+						'method': 'set',
+						'bias': 'stop',
+						'annotation': bold
+					},
+					{ 'type': 'retain', 'length': 21 }
+				]
+			},
+			'over content and unannotatable content element (unboldable node)': {
+				'args': [annotationDoc, new ve.Range( 1, 9 ), 'set', bold],
+				'ops': [
+					{ 'type': 'retain', 'length': 1 },
+					{
+						'type': 'annotate',
+						'method': 'set',
+						'bias': 'start',
+						'annotation': bold
+					},
+					{ 'type': 'retain', 'length': 3 },
+					{
+						'type': 'annotate',
+						'method': 'set',
+						'bias': 'stop',
+						'annotation': bold
+					},
+					{ 'type': 'retain', 'length': 2 },
+					{
+						'type': 'annotate',
+						'method': 'set',
+						'bias': 'start',
+						'annotation': bold
+					},
+					{ 'type': 'retain', 'length': 3 },
+					{
+						'type': 'annotate',
+						'method': 'set',
+						'bias': 'stop',
+						'annotation': bold
+					},
+					{ 'type': 'retain', 'length': 3 }
+				]
 			}
 		};
+
 	QUnit.expect( ve.getObjectKeys( cases ).length );
 	runConstructorTests( assert, ve.dm.Transaction.newFromAnnotation, cases );
 } );

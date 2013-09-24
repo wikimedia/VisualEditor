@@ -228,7 +228,7 @@ ve.dm.Transaction.newFromAttributeChanges = function ( doc, offset, attr ) {
  * @returns {ve.dm.Transaction} Transaction that annotates content
  */
 ve.dm.Transaction.newFromAnnotation = function ( doc, range, method, annotation ) {
-	var covered, type,
+	var covered, type, annotatable,
 		tx = new ve.dm.Transaction(),
 		data = doc.data,
 		i = range.start,
@@ -237,9 +237,25 @@ ve.dm.Transaction.newFromAnnotation = function ( doc, range, method, annotation 
 		insideContentNode = false;
 	// Iterate over all data in range, annotating where appropriate
 	while ( i < range.end ) {
-		type = data.getType( i );
+		if ( data.isElementData( i ) ) {
+			type = data.getType( i );
+			if ( ve.dm.nodeFactory.isNodeContent( type ) ) {
+				if ( method === 'set' && !ve.dm.nodeFactory.canNodeTakeAnnotationType( type, annotation ) ) {
+					// Blacklisted annotations can't be set
+					annotatable = false;
+				} else {
+					annotatable = true;
+				}
+			} else {
+				// Structural nodes are never annotatable
+				annotatable = false;
+			}
+		} else {
+			// Text is always annotatable
+			annotatable = true;
+		}
 		if (
-			( data.isElementData( i ) && !ve.dm.nodeFactory.isNodeContent( type ) ) ||
+			!annotatable ||
 			( insideContentNode && !data.isCloseElementData( i ) )
 		) {
 			// Structural element opening or closing, or entering a content node
