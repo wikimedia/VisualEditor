@@ -121,6 +121,29 @@
 	right: -0.33em;
 }
 
+.ve-ce-resizableNode-sizeLabel {
+	position: absolute;
+	text-align: center;
+	opacity: 0;
+	-webkit-transition: opacity 200ms;
+	-moz-transition: opacity 200ms;
+	-o-transition: opacity 200ms;
+	transition: opacity 200ms;
+}
+
+.ve-ce-resizableNode-sizeLabel-resizing {
+	opacity: 0.75;
+}
+
+.ve-ce-resizableNode-sizeText {
+	font-size: 0.8em;
+	padding: 0.25em 0.5em;
+	border: solid 1px #ccc;
+	background-color: white;
+	border-radius: 0.3em;
+	white-space: nowrap;
+}
+
 /* ve.ce.RelocatableNode */
 
 .ve-ce-relocatableNode-marker {

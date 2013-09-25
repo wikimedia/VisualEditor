@@ -16,6 +16,7 @@
  * @param {Object} [config] Configuration options
  * @param {number|null} [config.snapToGrid=10] Snap to a grid of size X when the shift key is held. Null disables.
  * @param {boolean} [config.outline=false] Resize using an outline of the element only, don't live preview.
+ * @param {boolean} [config.showSizeLabel=true] Show a label with the current dimensions while resizing
  */
 ve.ce.ResizableNode = function VeCeResizableNode( $resizable, config ) {
 	// Properties
@@ -25,6 +26,10 @@ ve.ce.ResizableNode = function VeCeResizableNode( $resizable, config ) {
 	this.$resizeHandles = this.$$( '<div>' );
 	this.snapToGrid = ( config && config.snapToGrid !== undefined ) ? config.snapToGrid : 10;
 	this.outline = !!( config && config.outline );
+	if ( !config || config.showSizeLabel !== false ) {
+		this.$sizeText = this.$$( '<span>' ).addClass( 've-ce-resizableNode-sizeText' );
+		this.$sizeLabel = this.$$( '<div>' ).addClass( 've-ce-resizableNode-sizeLabel' ).append( this.$sizeText );
+	}
 
 	// Events
 	this.connect( this, {
@@ -67,11 +72,56 @@ ve.ce.ResizableNode.static = {};
 /* Methods */
 
 /**
+ * Update the contents and position of the size label
+ *
+ * Omitting the dimensions object will hide the size label.
+ *
+ * @param {Object} [dimensions] Dimensions object with width, height, top & left, or undefined to hide
+ */
+ve.ce.ResizableNode.prototype.updateSizeLabel = function ( dimensions ) {
+	if ( !this.$sizeLabel ) {
+		return;
+	}
+	var node, top, height;
+	if ( dimensions ) {
+		// Things get a bit tight below 100px, so put the label on the outside
+		if ( dimensions.width < 100 ) {
+			top = dimensions.top + dimensions.height;
+			height = 30;
+		} else {
+			top = dimensions.top;
+			height = dimensions.height;
+		}
+		this.$sizeLabel
+			.addClass( 've-ce-resizableNode-sizeLabel-resizing' )
+			.css( {
+				'top': top,
+				'left': dimensions.left,
+				'width': dimensions.width,
+				'height': height,
+				'lineHeight': height + 'px'
+			} );
+		this.$sizeText.text( Math.round( dimensions.width ) + ' × ' + Math.round( dimensions.height ) );
+	} else {
+		node = this;
+		// Defer the removal of this class otherwise other DOM changes may cause
+		// the opacity transition to not play out smoothly
+		setTimeout( function () {
+			node.$sizeLabel.removeClass( 've-ce-resizableNode-sizeLabel-resizing' );
+		} );
+	}
+};
+
+/**
  * Handle node focus.
  *
  * @method
  */
 ve.ce.ResizableNode.prototype.onResizableFocus = function () {
+	if ( this.$sizeLabel ) {
+		// Attach the size label first so it doesn't mask the resize handles
+		this.$sizeLabel.appendTo( this.root.getSurface().getSurface().$localOverlayControls );
+	}
 	this.$resizeHandles.appendTo( this.root.getSurface().getSurface().$localOverlayControls );
 
 	this.setResizableHandlesSizeAndPosition();
@@ -104,6 +154,9 @@ ve.ce.ResizableNode.prototype.onResizableFocus = function () {
  */
 ve.ce.ResizableNode.prototype.onResizableBlur = function () {
 	this.$resizeHandles.detach();
+	if ( this.$sizeLabel ) {
+		this.$sizeLabel.detach();
+	}
 };
 
 /**
@@ -136,6 +189,7 @@ ve.ce.ResizableNode.prototype.onResizableResizing = function ( dimensions ) {
 		} );
 		this.setResizableHandlesPosition();
 	}
+	this.updateSizeLabel( dimensions );
 };
 
 /**
@@ -174,6 +228,7 @@ ve.ce.ResizableNode.prototype.onResizeHandlesCornerMouseDown = function ( e ) {
 
 	// Bind resize events
 	this.resizing = true;
+	this.updateSizeLabel( this.resizeInfo );
 	$( this.getElementDocument() ).on( {
 		'mousemove.ve-ce-resizableNode': ve.bind( this.onDocumentMouseMove, this ),
 		'mouseup.ve-ce-resizableNode': ve.bind( this.onDocumentMouseUp, this )
@@ -335,6 +390,7 @@ ve.ce.ResizableNode.prototype.onDocumentMouseUp = function () {
 	this.$resizeHandles.removeClass( 've-ce-resizableNode-handles-resizing' );
 	$( this.getElementDocument() ).off( '.ve-ce-resizableNode' );
 	this.resizing = false;
+	this.updateSizeLabel();
 
 	// Apply changes to the model
 	attrChanges = this.getAttributeChanges( width, height );
