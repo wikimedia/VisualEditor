@@ -13,7 +13,7 @@
  *
  * @constructor
  * @param {Mixed} data Item data
- * @param {Object} [config] Config options
+ * @param {Object} [config] Configuration options
  */
 ve.ui.MenuItemWidget = function VeUiMenuItemWidget( data, config ) {
 	// Configuration initialization

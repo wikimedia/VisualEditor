@@ -12,7 +12,7 @@
  * @extends ve.ui.Widget
  *
  * @constructor
- * @param {Object} [config] Config options
+ * @param {Object} [config] Configuration options
  * @cfg {jQuery} [$container] Container to make popup positioned relative to
  * @cfg {boolean} [autoClose=false] Popup auto-closes when it loses focus
  */

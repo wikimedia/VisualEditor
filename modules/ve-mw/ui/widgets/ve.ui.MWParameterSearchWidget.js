@@ -12,7 +12,7 @@
  * @extends ve.ui.SearchWidget
  *
  * @constructor
- * @param {Object} [config] Config options
+ * @param {Object} [config] Configuration options
  */
 ve.ui.MWParameterSearchWidget = function VeUiMWParameterSearchWidget( template, config ) {
 	// Configuration intialization

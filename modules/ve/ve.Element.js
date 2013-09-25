@@ -12,7 +12,7 @@
  * @abstract
  *
  * @constructor
- * @param {Object} [config] Config options
+ * @param {Object} [config] Configuration options
  * @cfg {Function} [$$] jQuery for the frame the widget is in
  */
 ve.Element = function VeElement( config ) {

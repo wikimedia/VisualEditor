@@ -13,7 +13,7 @@
  *
  * @constructor
  * @param {ve.ui.Surface} surface
- * @param {Object} [config] Config options
+ * @param {Object} [config] Configuration options
  */
 ve.ui.Context = function VeUiContext( surface, config ) {
 	// Parent constructor
@@ -386,7 +386,7 @@ ve.ui.Context.prototype.hide = function () {
  *
  * @method
  * @param {string} name Symbolic name of inspector
- * @param {Object} [config] Config options to be sent to the inspector class constructor
+ * @param {Object} [config] Configuration options to be sent to the inspector class constructor
  * @chainable
  */
 ve.ui.Context.prototype.openInspector = function ( name, config ) {
