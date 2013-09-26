@@ -90,7 +90,6 @@ ve.ce.GeneratedContentNode.prototype.onGeneratedContentNodeUpdate = function () 
  * @param {HTMLElement[]} domElements Array of DOM elements
  * @emits setup
  * @emits teardown
- * @emits rerender
  */
 ve.ce.GeneratedContentNode.prototype.render = function ( domElements ) {
 	var $rendering, doc = this.getElementDocument();
@@ -104,8 +103,20 @@ ve.ce.GeneratedContentNode.prototype.render = function ( domElements ) {
 	this.$.empty().append( $rendering );
 	if ( this.live ) {
 		this.emit( 'setup' );
-		this.emit( 'rerender' );
+		this.afterRender( domElements );
 	}
+};
+
+/**
+ * Trigger rerender events after rendering the contents of the node.
+ *
+ * Nodes may override this method if the rerender event needs to be deferred (e.g. until images have loaded)
+ *
+ * @param {HTMLElement[]} domElements Array of DOM elements
+ * @emits rerender
+ */
+ve.ce.GeneratedContentNode.prototype.afterRender = function () {
+	this.emit( 'rerender' );
 };
 
 /**
