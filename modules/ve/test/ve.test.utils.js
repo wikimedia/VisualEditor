@@ -48,7 +48,7 @@ ve.test.utils.runFormatConverterTest = function ( assert, range, type, attribute
 };
 
 ve.test.utils.runGetDataFromDomTests = function( assert, cases ) {
-	var msg, doc, store, internalList, i, length, hash, data, n = 0;
+	var msg, doc, store, internalList, i, length, hash, data, html, n = 0;
 
 	// TODO: this is a hack to make normal heading/preformatted
 	// nodes the most recently registered, instead of the MW versions
@@ -70,8 +70,15 @@ ve.test.utils.runGetDataFromDomTests = function( assert, cases ) {
 			doc = new ve.dm.Document( [] );
 			store = doc.getStore();
 			internalList = doc.getInternalList();
+
+			html = '';
+			if ( cases[msg].head ) {
+				html = '<head>' + cases[msg].head + '</head>';
+			}
+			html += cases[msg].html;
+
 			data = ve.dm.converter.getDataFromDom(
-				ve.createDocumentFromHtml( cases[msg].html ), store, internalList
+				ve.createDocumentFromHtml( html ), store, internalList
 			).getData();
 			ve.dm.example.preprocessAnnotations( cases[msg].data, store );
 			assert.deepEqualWithDomElements( data, cases[msg].data, msg );

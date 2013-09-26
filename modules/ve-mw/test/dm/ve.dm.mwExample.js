@@ -258,7 +258,17 @@ ve.dm.mwExample.withMeta = [
 			'origSortkey': '',
 			'origRel': 'mw:PageProp/Category'
 		},
-		'htmlAttributes': [ { 'values': { 'rel': 'mw:PageProp/Category', 'href': './Category:Bar' } } ]
+		'htmlAttributes': [
+			{
+				'values': {
+					'rel': 'mw:PageProp/Category',
+					'href': './Category:Bar'
+				},
+				'computed': {
+					'href': 'http://example.com/Category:Bar'
+				}
+			}
+		]
 	},
 	{ 'type': '/mwCategory' },
 	'B',
@@ -306,10 +316,18 @@ ve.dm.mwExample.withMeta = [
 			'origSortkey': 'Bar baz%23quux',
 			'origRel': 'mw:PageProp/Category'
 		},
-		'htmlAttributes': [ { 'values':  {
-			'rel': 'mw:PageProp/Category',
-			'href': './Category:Foo_foo#Bar baz%23quux'
-		} } ]
+
+		'htmlAttributes': [
+			{
+				'values':  {
+					'rel': 'mw:PageProp/Category',
+					'href': './Category:Foo_foo#Bar baz%23quux'
+				},
+				'computed': {
+					'href': 'http://example.com/Category:Foo_foo#Bar baz%23quux'
+				}
+			}
+		]
 	},
 	{ 'type': '/mwCategory' },
 	{
@@ -367,7 +385,17 @@ ve.dm.mwExample.withMetaMetaData = [
 				'sortkey': '',
 				'origSortkey': ''
 			},
-			'htmlAttributes': [ { 'values': { 'rel': 'mw:WikiLink/Category', 'href': './Category:Bar' } } ]
+			'htmlAttributes': [
+				{
+					'values': {
+						'rel': 'mw:WikiLink/Category',
+						'href': './Category:Bar'
+					},
+					'computed': {
+						'href': 'http://example.com/Category:Bar'
+					}
+				}
+			]
 		}
 	],
 	undefined,
@@ -956,6 +984,7 @@ ve.dm.mwExample.domToDataCases = {
 				'</p>' +
 				ve.dm.mwExample.MWReference.referenceList +
 			'</body>',
+		'head': '<base href="http://example.com" />',
 		'data': [
 			{ 'type': 'paragraph' },
 			'F', 'o', 'o',
@@ -986,6 +1015,9 @@ ve.dm.mwExample.domToDataCases = {
 							{
 								'values': {
 									'href': '#cite_note-bar-1'
+								},
+								'computed': {
+									'href': 'http://example.com/#cite_note-bar-1'
 								}
 							}
 						]
@@ -1165,9 +1197,16 @@ ve.dm.mwExample.domToDataCases = {
 					'refGroup': ''
 				},
 				'htmlAttributes': [ {
-					'children': [ { 'values': {
-						'href': '#cite_note-foo-3'
-					} } ],
+					'children': [
+						{
+							'values': {
+								'href': '#cite_note-foo-3'
+							},
+							'computed': {
+								'href': 'http://example.com/#cite_note-foo-3'
+							}
+						}
+					],
 					'values': {
 						'about': '#mwt8',
 						'class': 'reference',
@@ -1193,10 +1232,17 @@ ve.dm.mwExample.domToDataCases = {
 						'normalizedTitle': 'Bar',
 						'hrefPrefix': './'
 					},
-					'htmlAttributes': [ { 'values': {
-						'href': './Bar',
-						'rel': 'mw:WikiLink'
-					} } ]
+					'htmlAttributes': [
+						{
+							'values': {
+								'href': './Bar',
+								'rel': 'mw:WikiLink'
+							},
+							'computed': {
+								'href': 'http://example.com/Bar'
+							}
+						}
+					]
 				} ]
 			],
 			[
@@ -1209,10 +1255,17 @@ ve.dm.mwExample.domToDataCases = {
 						'normalizedTitle': 'Bar',
 						'hrefPrefix': './'
 					},
-					'htmlAttributes': [ { 'values': {
-						'href': './Bar',
-						'rel': 'mw:WikiLink'
-					} } ]
+					'htmlAttributes': [
+						{
+							'values': {
+								'href': './Bar',
+								'rel': 'mw:WikiLink'
+							},
+							'computed': {
+								'href': 'http://example.com/Bar'
+							}
+						}
+					]
 				} ]
 			],
 			[
@@ -1225,10 +1278,17 @@ ve.dm.mwExample.domToDataCases = {
 						'normalizedTitle': 'Bar',
 						'hrefPrefix': './'
 					},
-					'htmlAttributes': [ { 'values': {
-						'href': './Bar',
-						'rel': 'mw:WikiLink'
-					} } ]
+					'htmlAttributes': [
+						{
+							'values': {
+								'href': './Bar',
+								'rel': 'mw:WikiLink'
+							},
+							'computed': {
+								'href': 'http://example.com/Bar'
+							}
+						}
+					]
 				} ]
 			],
 			{ 'type': '/paragraph' },
@@ -1257,6 +1317,7 @@ ve.dm.mwExample.domToDataCases = {
 			'{&quot;html&quot;:&quot;Foo<!-- bar -->&quot;},&quot;attrs&quot;:{}}" ' +
 			'id="cite_ref-1-0" rel="dc:references" typeof="mw:Extension/ref" data-parsoid="{}">' +
 			'<a href="#cite_note-bar-1" data-parsoid="{}">[1]</a></span></p>',
+		'head': '<base href="http://example.com" />',
 		'data': [
 			{ 'type': 'paragraph' },
 			{
@@ -1288,7 +1349,15 @@ ve.dm.mwExample.domToDataCases = {
 							'rel': 'dc:references',
 							'typeof': 'mw:Extension/ref'
 						},
-						'children': [ { 'values': { 'data-parsoid': '{}', 'href': '#cite_note-bar-1' } } ]
+						'children': [
+							{
+								'values': {
+									'data-parsoid': '{}',
+									'href': '#cite_note-bar-1'
+								},
+								'computed': {
+									'href': 'http://example.com/#cite_note-bar-1'
+								} } ]
 					}
 				]
 			},
@@ -1317,6 +1386,7 @@ ve.dm.mwExample.domToDataCases = {
 	},
 	'internal link with ./ and ../': {
 		'html': '<body><p><a rel="mw:WikiLink" href="./../../../Foo/Bar">Foo</a></p></body>',
+		'head': '<base href="http://example.com/one/two/three/four/five" />',
 		'data': [
 			{ 'type': 'paragraph' },
 			[
@@ -1329,10 +1399,17 @@ ve.dm.mwExample.domToDataCases = {
 						'normalizedTitle': 'Foo/Bar',
 						'hrefPrefix': './../../../'
 					},
-					'htmlAttributes': [ { 'values': {
-						'href': './../../../Foo/Bar',
-						'rel': 'mw:WikiLink'
-					} } ]
+					'htmlAttributes': [
+						{
+							'values': {
+								'href': './../../../Foo/Bar',
+								'rel': 'mw:WikiLink'
+							},
+							'computed': {
+								'href': 'http://example.com/one/Foo/Bar'
+							}
+						}
+					]
 				} ]
 			],
 			[
@@ -1345,10 +1422,17 @@ ve.dm.mwExample.domToDataCases = {
 						'normalizedTitle': 'Foo/Bar',
 						'hrefPrefix': './../../../'
 					},
-					'htmlAttributes': [ { 'values': {
-						'href': './../../../Foo/Bar',
-						'rel': 'mw:WikiLink'
-					} } ]
+					'htmlAttributes': [
+						{
+							'values': {
+								'href': './../../../Foo/Bar',
+								'rel': 'mw:WikiLink'
+							},
+							'computed': {
+								'href': 'http://example.com/one/Foo/Bar'
+							}
+						}
+					]
 				} ]
 			],
 			[
@@ -1361,10 +1445,17 @@ ve.dm.mwExample.domToDataCases = {
 						'normalizedTitle': 'Foo/Bar',
 						'hrefPrefix': './../../../'
 					},
-					'htmlAttributes': [ { 'values': {
-						'href': './../../../Foo/Bar',
-						'rel': 'mw:WikiLink'
-					} } ]
+					'htmlAttributes': [
+						{
+							'values': {
+								'href': './../../../Foo/Bar',
+								'rel': 'mw:WikiLink'
+							},
+							'computed': {
+								'href': 'http://example.com/one/Foo/Bar'
+							}
+						}
+					]
 				} ]
 			],
 			{ 'type': '/paragraph' },
@@ -1386,6 +1477,9 @@ ve.dm.mwExample.domToDataCases = {
 					'values': {
 						'href': 'http://www.example.com',
 						'rel': 'mw:ExtLink'
+					},
+					'computed': {
+						'href': 'http://www.example.com/'
 					}
 				} ]
 			},
@@ -1408,10 +1502,17 @@ ve.dm.mwExample.domToDataCases = {
 						'href': 'http://www.mediawiki.org/',
 						'rel': 'mw:ExtLink'
 					},
-					'htmlAttributes': [ { 'values': {
-						'rel': 'mw:ExtLink',
-						'href': 'http://www.mediawiki.org/'
-					} } ]
+					'htmlAttributes': [
+						{
+							'values': {
+								'href': 'http://www.mediawiki.org/',
+								'rel': 'mw:ExtLink'
+							},
+							'computed': {
+								'href': 'http://www.mediawiki.org/'
+							}
+						}
+					]
 				} ]
 			],
 			[
@@ -1422,10 +1523,17 @@ ve.dm.mwExample.domToDataCases = {
 						'href': 'http://www.mediawiki.org/',
 						'rel': 'mw:ExtLink'
 					},
-					'htmlAttributes': [ { 'values': {
-						'rel': 'mw:ExtLink',
-						'href': 'http://www.mediawiki.org/'
-					} } ]
+					'htmlAttributes': [
+						{
+							'values': {
+								'href': 'http://www.mediawiki.org/',
+								'rel': 'mw:ExtLink'
+							},
+							'computed': {
+								'href': 'http://www.mediawiki.org/'
+							}
+						}
+					]
 				} ]
 			],
 			{ 'type': '/paragraph' },
@@ -1455,10 +1563,17 @@ ve.dm.mwExample.domToDataCases = {
 					'href': 'http://de.wikipedia.org/wiki/Foo',
 					'origRel': 'mw:WikiLink/Language'
 				},
-				'htmlAttributes': [ { 'values': {
-					'href': 'http://de.wikipedia.org/wiki/Foo',
-					'rel': 'mw:WikiLink/Language'
-				} } ],
+				'htmlAttributes': [
+					{
+						'values': {
+							'href': 'http://de.wikipedia.org/wiki/Foo',
+							'rel': 'mw:WikiLink/Language'
+						},
+						'computed': {
+							'href': 'http://de.wikipedia.org/wiki/Foo'
+						}
+					}
+				],
 				'internal': { 'whitespace': [ '\n', undefined, undefined, '\n' ] }
 			},
 			{ 'type': '/mwLanguage' },
@@ -1468,10 +1583,17 @@ ve.dm.mwExample.domToDataCases = {
 					'href': 'http://fr.wikipedia.org/wiki/Foo',
 					'origRel': 'mw:PageProp/Language'
 				 },
-				 'htmlAttributes': [ { 'values': {
-					'href': 'http://fr.wikipedia.org/wiki/Foo',
-					'rel': 'mw:PageProp/Language'
-				} } ],
+				'htmlAttributes': [
+					{
+						'values': {
+							'href': 'http://fr.wikipedia.org/wiki/Foo',
+							'rel': 'mw:PageProp/Language'
+						},
+						'computed': {
+							'href': 'http://fr.wikipedia.org/wiki/Foo'
+						}
+					}
+				],
 				'internal': { 'whitespace': [ '\n' ] }
 			},
 			{ 'type': '/mwLanguage' },
@@ -1486,6 +1608,7 @@ ve.dm.mwExample.domToDataCases = {
 			'<meta property="mw:bar" content="baz" /><!--barbaz-->' +
 			'<link rel="mw:PageProp/Category" href="./Category:Foo_foo#Bar baz%23quux" />' +
 			'<meta typeof="mw:Placeholder" data-parsoid="foobar" /></body>',
+		'head': '<base href="http://example.com" />',
 		'data': ve.dm.mwExample.withMeta
 	},
 	'RDFa types spread across two attributes, about grouping is forced': {
@@ -1638,6 +1761,7 @@ ve.dm.mwExample.domToDataCases = {
 					'</figcaption>' +
 				'</figure>' +
 			'</body>',
+		'head': '<base href="http://example.com" />',
 		'data': [
 			{
 				'type': 'mwBlockImage',
@@ -1683,7 +1807,18 @@ ve.dm.mwExample.domToDataCases = {
 						'normalizedTitle': 'Bar',
 						'hrefPrefix': './'
 					},
-					'htmlAttributes': [ { 'values': { 'href': './Bar', 'rel': 'mw:WikiLink', 'data-parsoid': '{}' } } ]
+					'htmlAttributes': [
+						{
+							'values': {
+								'href': './Bar',
+								'rel': 'mw:WikiLink',
+								'data-parsoid': '{}'
+							},
+							'computed': {
+								'href': 'http://example.com/Bar'
+							}
+						}
+					]
 				} ]
 			],
 			[
@@ -1696,7 +1831,18 @@ ve.dm.mwExample.domToDataCases = {
 						'normalizedTitle': 'Bar',
 						'hrefPrefix': './'
 					},
-					'htmlAttributes': [ { 'values': { 'href': './Bar', 'rel': 'mw:WikiLink', 'data-parsoid': '{}' } } ]
+					'htmlAttributes': [
+						{
+							'values': {
+								'href': './Bar',
+								'rel': 'mw:WikiLink',
+								'data-parsoid': '{}'
+							},
+							'computed': {
+								'href': 'http://example.com/Bar'
+							}
+						}
+					]
 				} ]
 			],
 			[
@@ -1709,7 +1855,18 @@ ve.dm.mwExample.domToDataCases = {
 						'normalizedTitle': 'Bar',
 						'hrefPrefix': './'
 					},
-					'htmlAttributes': [ { 'values': { 'href': './Bar', 'rel': 'mw:WikiLink', 'data-parsoid': '{}' } } ]
+					'htmlAttributes': [
+						{
+							'values': {
+								'href': './Bar',
+								'rel': 'mw:WikiLink',
+								'data-parsoid': '{}'
+							},
+							'computed': {
+								'href': 'http://example.com/Bar'
+							}
+						}
+					]
 				} ]
 			],
 			' ', 'b', 'a', 'z',

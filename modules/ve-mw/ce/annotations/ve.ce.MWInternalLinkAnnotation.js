@@ -22,9 +22,14 @@ ve.ce.MWInternalLinkAnnotation = function VeCeMWInternalLinkAnnotation( model, c
 	// DOM changes
 	this.$.addClass( 've-ce-mwInternalLinkAnnotation' );
 	this.$.attr( 'title', model.getAttribute( 'title' ) );
-	// Get href from DM rendering
-	dmRendering = model.getDomElements()[0];
-	this.$.attr( 'href', dmRendering.getAttribute( 'href' ) );
+	// HACK get href from DM rendering
+	// HACK HACK except if we already have a computed href
+	// FIXME get rid of this hack, see bug 51487
+	if ( !this.$.attr( 'href' ) ) {
+		dmRendering = model.getDomElements()[0];
+		this.$.attr( 'href', dmRendering.getAttribute( 'href' ) );
+	}
+	// else let the default attribute rendering happen
 };
 
 /* Inheritance */

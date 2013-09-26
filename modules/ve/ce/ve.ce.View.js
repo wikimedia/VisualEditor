@@ -158,6 +158,7 @@ ve.ce.View.prototype.renderAttributes = function ( attributeList ) {
 	ve.dm.Converter.renderHtmlAttributeList(
 		attributeList || this.model.getHtmlAttributes(),
 		this.$,
-		this.constructor.static.renderHtmlAttributes
+		this.constructor.static.renderHtmlAttributes,
+		true // computed attributes
 	);
 };
