@@ -16,7 +16,7 @@
  *
  * @constructor
  * @param {ve.dm.MWReferenceNode} model Model to observe
- * @param {Object} [config] Config options
+ * @param {Object} [config] Configuration options
  */
 ve.ce.MWReferenceNode = function VeCeMWReferenceNode( model, config ) {
 	// Parent constructor

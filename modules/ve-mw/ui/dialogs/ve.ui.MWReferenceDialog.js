@@ -13,7 +13,7 @@
  *
  * @constructor
  * @param {ve.ui.Surface} surface
- * @param {Object} [config] Config options
+ * @param {Object} [config] Configuration options
  */
 ve.ui.MWReferenceDialog = function VeUiMWReferenceDialog( surface, config ) {
 	// Parent constructor

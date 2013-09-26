@@ -15,7 +15,7 @@
  * @constructor
  * @param {ve.ui.Surface} surface
  * @param {ve.Factory} factory Window factory
- * @param {Object} [config] Config options
+ * @param {Object} [config] Configuration options
  */
 ve.ui.WindowSet = function VeUiWindowSet( surface, factory, config ) {
 	// Parent constructor
@@ -113,7 +113,7 @@ ve.ui.WindowSet.prototype.getCurrent = function () {
  *
  * @method
  * @param {string} name Symbolic name of window
- * @param {Object} [config] Config options to be sent to the window class constructor
+ * @param {Object} [config] Configuration options to be sent to the window class constructor
  * @chainable
  */
 ve.ui.WindowSet.prototype.open = function ( name, config ) {

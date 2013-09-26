@@ -24,7 +24,7 @@
  *
  * @constructor
  * @param {ve.dm.MWExtensionNode} model Model to observe
- * @param {Object} [config] Config options
+ * @param {Object} [config] Configuration options
  */
 ve.ce.MWExtensionNode = function VeCeMWExtensionNode( model, config ) {
 	// Parent constructor

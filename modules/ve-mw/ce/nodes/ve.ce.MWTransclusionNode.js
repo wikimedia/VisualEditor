@@ -20,7 +20,7 @@
  *
  * @constructor
  * @param {ve.dm.MWTransclusionNode} model Model to observe
- * @param {Object} [config] Config options
+ * @param {Object} [config] Configuration options
  */
 ve.ce.MWTransclusionNode = function VeCeMWTransclusionNode( model, config ) {
 	// Parent constructor

@@ -14,7 +14,7 @@
  * @extends ve.ui.SearchWidget
  *
  * @constructor
- * @param {Object} [config] Config options
+ * @param {Object} [config] Configuration options
  * @param {number} [size] Vertical size of thumbnails
  */
 ve.ui.MWMediaSearchWidget = function VeUiMWMediaSearchWidget( config ) {

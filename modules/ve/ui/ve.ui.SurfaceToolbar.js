@@ -13,7 +13,7 @@
  *
  * @constructor
  * @param {ve.ui.Surface} surface Surface to control
- * @param {Object} [options] Config options
+ * @param {Object} [options] Configuration options
  */
 ve.ui.SurfaceToolbar = function VeUiSurfaceToolbar( surface, options ) {
 	var toolbar = this;

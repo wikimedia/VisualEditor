@@ -12,7 +12,7 @@
  * @extends ve.ui.PopupWidget
  *
  * @constructor
- * @param {Object} [config] Config options
+ * @param {Object} [config] Configuration options
  */
 ve.ui.MWCategoryPopupWidget = function VeUiMWCategoryPopupWidget ( config ) {
 	// Configuration initialization

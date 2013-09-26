@@ -17,7 +17,7 @@
  * @param {jQuery} $container
  * @param {ve.dm.Surface} model Surface model to observe
  * @param {ve.ui.Surface} surface Surface user interface
- * @param {Object} [config] Config options
+ * @param {Object} [config] Configuration options
  */
 ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 	var $documentNode;

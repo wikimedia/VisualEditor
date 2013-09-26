@@ -13,7 +13,7 @@
  *
  * @constructor
  * @param {ve.ui.Surface} [varname] [description]
- * @param {Object} [config] Config options
+ * @param {Object} [config] Configuration options
  */
 ve.ui.MWReferenceSearchWidget = function VeUiMWReferenceSearchWidget( surface, config ) {
 	// Configuration intialization

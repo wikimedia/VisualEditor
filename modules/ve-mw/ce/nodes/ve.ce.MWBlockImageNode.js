@@ -17,7 +17,7 @@
  *
  * @constructor
  * @param {ve.dm.MWBlockImageNode} model Model to observe
- * @param {Object} [config] Config options
+ * @param {Object} [config] Configuration options
  */
 ve.ce.MWBlockImageNode = function VeCeMWBlockImageNode( model, config ) {
 	var captionModel, captionView, type;

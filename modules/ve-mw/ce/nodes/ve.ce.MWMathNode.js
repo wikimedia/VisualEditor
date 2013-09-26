@@ -15,7 +15,7 @@
  *
  * @constructor
  * @param {ve.dm.MWMathNode} model Model to observe
- * @param {Object} [config] Config options
+ * @param {Object} [config] Configuration options
  */
 ve.ce.MWMathNode = function VeCeMWMathNode( model, config ) {
 	// Parent constructor
