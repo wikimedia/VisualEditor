@@ -242,6 +242,7 @@ ve.ui.Context.prototype.update = function () {
  * Updates the position and size.
  *
  * @method
+ * @param {boolean} [transition=false] Use a smooth transition
  * @chainable
  */
 ve.ui.Context.prototype.updateDimensions = function ( transition ) {
