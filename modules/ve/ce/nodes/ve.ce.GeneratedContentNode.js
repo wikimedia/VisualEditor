@@ -120,7 +120,7 @@ ve.ce.GeneratedContentNode.prototype.update = function ( config ) {
 	if ( index !== null ) {
 		this.render( store.value( index ) );
 	} else {
-		this.forceUpdate();
+		this.forceUpdate( config );
 	}
 };
 
