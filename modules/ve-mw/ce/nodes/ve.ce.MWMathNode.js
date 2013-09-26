@@ -41,12 +41,19 @@ ve.ce.MWMathNode.prototype.onParseSuccess = function ( deferred, response ) {
 	// HACK: unwrap paragraph from PHP parser
 	contentNodes = Array.prototype.slice.apply( contentNodes[0].childNodes );
 	deferred.resolve( contentNodes );
-	if ( $( contentNodes ).is( 'span.tex' ) ) {
+};
+
+/** */
+ve.ce.MWExtensionNode.prototype.afterRender = function ( domElements ) {
+	if ( $( domElements ).is( 'span.tex' ) ) {
 		// MathJax
-		MathJax.Hub.Queue( [ 'Typeset', MathJax.Hub ] );
+		MathJax.Hub.Queue(
+			[ 'Typeset', MathJax.Hub ],
+			[ this, this.emit, 'rerender' ]
+		);
 	} else {
 		// Rerender after image load
-		this.$.find( 'img' ).on( 'load', ve.bind( function () {
+		this.$.find( 'img.tex' ).on( 'load', ve.bind( function () {
 			this.emit( 'rerender' );
 		}, this ) );
 	}

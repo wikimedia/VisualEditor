@@ -90,7 +90,12 @@ ve.ce.MWExtensionNode.prototype.generateContents = function ( config ) {
 ve.ce.MWExtensionNode.prototype.onParseSuccess = function ( deferred, response ) {
 	var data = response.visualeditor, contentNodes = $( data.content ).get();
 	deferred.resolve( contentNodes );
+};
+
+/** */
+ve.ce.MWExtensionNode.prototype.afterRender = function () {
 	// Rerender after images load
+	// TODO: ignore shields, and count multiple images
 	this.$.find( 'img' ).on( 'load', ve.bind( function () {
 		this.emit( 'rerender' );
 	}, this ) );
