@@ -31,7 +31,7 @@ QUnit.test( 'getDomHash', 1, function ( assert ) {
 } );
 
 QUnit.test( 'getOffsetFrom(Element|Text)Node', function ( assert ) {
-	var i, dom, target, surface, documentModel, documentView,
+	var i, surface, documentModel, documentView,
 		expected = 0,
 		testCases = [
 			{
@@ -91,9 +91,7 @@ QUnit.test( 'getOffsetFrom(Element|Text)Node', function ( assert ) {
 	}
 
 	for ( i = 0; i < testCases.length; i++ ) {
-		dom = ve.createDocumentFromHtml( testCases[i].html );
-		target = new ve.init.sa.Target( $( '#qunit-fixture' ), dom );
-		surface = target.surface;
+		surface = ve.test.utils.createSurfaceFromHtml( testCases[i].html );
 		documentModel = surface.getModel().getDocument();
 		documentView = surface.getView().getDocument();
 

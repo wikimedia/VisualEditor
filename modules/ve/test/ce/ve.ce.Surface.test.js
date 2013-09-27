@@ -11,9 +11,7 @@ QUnit.module( 've.ce.Surface' );
 
 QUnit.test( 'handleDelete', function ( assert ) {
 	var i,
-		dom = ve.createDocumentFromHtml( ve.dm.example.html ),
-		target = new ve.init.sa.Target( $( '#qunit-fixture' ), dom ),
-		surface = target.surface,
+		surface = ve.test.utils.createSurfaceFromHtml( ve.dm.example.html ),
 		view = surface.getView(),
 		model = surface.getModel(),
 		data = ve.copy( model.getDocument().getFullData() ),
