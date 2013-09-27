@@ -38,8 +38,9 @@ ve.ce.MWMathNode.static.name = 'mwMath';
 /** */
 ve.ce.MWMathNode.prototype.onParseSuccess = function ( deferred, response ) {
 	var data = response.visualeditor, contentNodes = $( data.content ).get();
-	// HACK: unwrap paragraph from PHP parser
-	contentNodes = Array.prototype.slice.apply( contentNodes[0].childNodes );
+	if ( contentNodes[0] && contentNodes[0].childNodes ) {
+		contentNodes = Array.prototype.slice.apply( contentNodes[0].childNodes );
+	}
 	deferred.resolve( contentNodes );
 };
 
@@ -48,7 +49,7 @@ ve.ce.MWExtensionNode.prototype.afterRender = function ( domElements ) {
 	if ( $( domElements ).is( 'span.tex' ) ) {
 		// MathJax
 		MathJax.Hub.Queue(
-			[ 'Typeset', MathJax.Hub ],
+			[ 'Typeset', MathJax.Hub, this.$[0] ],
 			[ this, this.emit, 'rerender' ]
 		);
 	} else {
