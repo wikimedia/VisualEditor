@@ -140,7 +140,7 @@ ve.dm.Surface.prototype.purgeHistory = function () {
  * Get a list of all history states.
  *
  * @method
- * @returns {Array[]} List of transaction stacks
+ * @returns {Object[]} List of transaction stacks
  */
 ve.dm.Surface.prototype.getHistory = function () {
 	if ( this.smallStack.length > 0 ) {
