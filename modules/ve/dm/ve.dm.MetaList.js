@@ -232,7 +232,7 @@ ve.dm.MetaList.prototype.onTransact = function ( tx, reversed ) {
 	for ( i = 0, ilen = removedItems.length; i < ilen; i++ ) {
 		this.deleteRemovedItem( removedItems[i].offset, removedItems[i].index );
 		events.push( [
-			'remove', removedItems[i].item, removedItems[i].offset, removedItems[i].index
+			'remove', removedItems[i], removedItems[i].offset, removedItems[i].index
 		] );
 	}
 
