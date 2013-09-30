@@ -51,6 +51,9 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 	this.pasting = false;
 	this.clickHistory = [];
 	this.focusedNode = null;
+	// This is set on entering changeModelSelection, then unset when leaving.
+	// It is used to test whether a reflected change event is emitted.
+	this.newModelSelection = null;
 
 	// Events
 	this.surfaceObserver.connect(
@@ -913,7 +916,9 @@ ve.ce.Surface.prototype.onChange = function ( transaction, selection ) {
 		next = null,
 		previous = this.focusedNode;
 
-	if ( selection ) {
+	// Ignore selection if changeModelSelection is currently being called with the same
+	// (object-identical) selection object (i.e. if the model is calling us back)
+	if ( selection && selection !== this.newModelSelection ) {
 		// Detect when only a single inline element is selected
 		if ( !selection.isCollapsed() ) {
 			start = this.documentView.getDocumentNode().getNodeFromOffset( selection.start + 1 );
@@ -975,7 +980,7 @@ ve.ce.Surface.prototype.onSelectionChange = function ( oldRange, newRange ) {
 	}
 	this.incRenderLock();
 	try {
-		this.model.change( null, newRange );
+		this.changeModelSelection( newRange );
 	} finally {
 		this.decRenderLock();
 	}
@@ -1848,4 +1853,25 @@ ve.ce.Surface.prototype.decRenderLock = function () {
  */
 ve.ce.Surface.prototype.getDir = function () {
 	return this.$.css( 'direction' );
+};
+
+/**
+ * Change selection in the model only, not the CE surface
+ *
+ * This avoids event storms when the CE surface is already correct
+ *
+ * @method
+ * @param {ve.Range} range New selection for model
+ * @throws {Error} If calls to the method are nested
+ */
+ve.ce.Surface.prototype.changeModelSelection = function ( range ) {
+	if ( this.newModelSelection !== null ) {
+		throw new Error( 'Nested changeModelSelection' );
+	}
+	this.newModelSelection = range;
+	try {
+		this.model.change( null, range );
+	} finally {
+		this.newModelSelection = null;
+	}
 };
