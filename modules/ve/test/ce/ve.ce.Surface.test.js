@@ -117,6 +117,51 @@ QUnit.test( 'onContentChange', function ( assert ) {
 	var i,
 		cases = [
 			{
+				'prevHtml': '<p></p>',
+				'prevRange': new ve.Range( 1 ),
+				'nextHtml': '<p>A</p>',
+				'nextRange': new ve.Range( 2 ),
+				'expectedOps': [
+					[
+						{ 'type': 'retain', 'length': 1 },
+						{
+							'type': 'replace',
+							'insert': [ 'A' ],
+							'remove': []
+						},
+						{ 'type': 'retain', 'length': 3 }
+					]
+				],
+				'msg': 'Simple insertion into empty paragraph'
+			},
+			{
+				'prevHtml': '<p>A</p>',
+				'prevRange': new ve.Range( 1, 2 ),
+				'nextHtml': '<p>B</p>',
+				'nextRange': new ve.Range( 2 ),
+				'expectedOps': [
+					[
+						{ 'type': 'retain', 'length': 1 },
+						{
+							'type': 'replace',
+							'insert': [ 'B' ],
+							'remove': []
+						},
+						{ 'type': 'retain', 'length': 4 }
+					],
+					[
+						{ 'type': 'retain', 'length': 2 },
+						{
+							'type': 'replace',
+							'insert': [],
+							'remove': [ 'A' ]
+						},
+						{ 'type': 'retain', 'length': 3 }
+					]
+				],
+				'msg': 'Simple replace'
+			},
+			{
 				'prevHtml': '<p><a href="Foo">A</a><a href="Bar">FooX?</a></p>',
 				'prevRange': new ve.Range( 5, 6 ),
 				'nextHtml': '<p><a href="Foo">A</a><a href="Bar">FooB?</a></p>',
