@@ -5,6 +5,9 @@
 		<title>VisualEditor Tests</title>
 
 		<!-- Load test framework -->
+		<link rel="stylesheet" href="../../jsdifflib/diffview.css">
+		<script src="../../jsdifflib/diffview.js"></script>
+		<script src="../../jsdifflib/difflib.js"></script>
 		<link rel="stylesheet" href="../../qunit/qunit.css">
 		<script src="../../qunit/qunit.js"></script>
 

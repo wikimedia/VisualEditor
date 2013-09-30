@@ -2,5 +2,6 @@ docs/**
 node_modules/**
 modules/jquery/**
 modules/jquery.uls/**
+modules/jsdifflib/**
 modules/qunit/**
 modules/rangy/**

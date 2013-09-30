@@ -331,9 +331,16 @@ class VisualEditorHooks {
 		ResourceLoader &$resourceLoader
 	) {
 		$testModules['qunit']['ext.visualEditor.test'] = array(
+			'styles' => array(
+				// jsdifflib
+				'jsdifflib/diffview.css',
+			),
 			'scripts' => array(
 				// MW config preload
 				've-mw/test/mw-preload.js',
+				// jsdifflib
+				'jsdifflib/diffview.js',
+				'jsdifflib/difflib.js',
 				// QUnit plugin
 				've/test/ve.qunit.js',
 				// UnicodeJS Tests
