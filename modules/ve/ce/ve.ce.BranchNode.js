@@ -231,7 +231,7 @@ ve.ce.BranchNode.prototype.setupSlugs = function () {
 	// from becoming invisible/unfocusable. In Firefox, backspace after Ctrl-A leaves the document
 	// completely empty, so this ensures DocumentNode gets a slug.
 	// Can't use this.getLength() because the internal list adds to the length but doesn't render.
-	if ( this.$.children().length === 0 ) {
+	if ( this.$.contents().length === 0 ) {
 		this.slugs[0] = doc.importNode( slug, true );
 		this.$[0].appendChild( this.slugs[0] );
 	} else {
