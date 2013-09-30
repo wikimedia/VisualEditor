@@ -987,7 +987,7 @@ ve.ce.Surface.prototype.onSelectionChange = function ( oldRange, newRange ) {
  * @see ve.ce.SurfaceObserver#pollOnce
  *
  * @method
- * @param {HTMLElement} node DOM node the change occured in
+ * @param {ve.ce.Node} node CE node the change occured in
  * @param {Object} previous Old data
  * @param {Object} previous.text Old plain text content
  * @param {Object} previous.hash Old DOM hash
@@ -1001,7 +1001,7 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 	var data, range, len, annotations, offsetDiff, lengthDiff, sameLeadingAndTrailing,
 		previousStart, nextStart, newRange,
 		previousData, nextData,
-		i, length, annotation, dataString,
+		i, length, annotation, annotationIndex, dataString,
 		annotationsLeft, annotationsRight,
 		fromLeft = 0,
 		fromRight = 0,
@@ -1102,17 +1102,18 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 		annotationsRight = this.model.getDocument().data.getAnnotationsFromOffset( nodeOffset + 1 + previousData.length - fromRight );
 		for ( i = 0, length = annotations.getLength(); i < length; i++ ) {
 			annotation = annotations.get( i );
+			annotationIndex = annotations.getIndex( i );
 			if ( annotation.constructor.static.splitOnWordbreak ) {
 				dataString = new ve.dm.DataString( nextData );
 				if (
 					// if no annotation to the right, check for wordbreak
 					(
-						!annotationsRight.containsIndex( i ) &&
+						!annotationsRight.containsIndex( annotationIndex ) &&
 						unicodeJS.wordbreak.isBreak( dataString, fromLeft )
 					) ||
 					// if no annotation to the left, check for wordbreak
 					(
-						!annotationsLeft.containsIndex( i ) &&
+						!annotationsLeft.containsIndex( annotationIndex ) &&
 						unicodeJS.wordbreak.isBreak( dataString, nextData.length - fromRight )
 					)
 				) {
