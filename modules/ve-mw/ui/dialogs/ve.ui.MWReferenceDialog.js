@@ -297,8 +297,13 @@ ve.ui.MWReferenceDialog.prototype.teardown = function ( data ) {
 			}
 			// Update internal node content
 			surfaceModel.change(
-				ve.dm.Transaction.newFromDocumentReplace(
-					doc, internalList.getItemNode( this.ref.listIndex ), newDoc
+				ve.dm.Transaction.newFromRemoval(
+					doc, internalList.getItemNode( this.ref.listIndex ).getRange()
+				)
+			);
+			surfaceModel.change(
+				ve.dm.Transaction.newFromDocumentInsertion(
+					doc, internalList.getItemNode( this.ref.listIndex ).getRange().start, newDoc
 				)
 			);
 		}
@@ -318,7 +323,12 @@ ve.ui.MWReferenceDialog.prototype.teardown = function ( data ) {
 				surfaceModel.change( item.transaction );
 				this.ref.listIndex = item.index;
 				surfaceModel.change(
-					ve.dm.Transaction.newFromDocumentReplace(
+					ve.dm.Transaction.newFromRemoval(
+						doc, internalList.getItemNode( this.ref.listIndex ), newDoc, true
+					)
+				);
+				surfaceModel.change(
+					ve.dm.Transaction.newFromDocumentInsertion(
 						doc, internalList.getItemNode( this.ref.listIndex ), newDoc
 					)
 				);

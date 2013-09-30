@@ -668,8 +668,8 @@ QUnit.test( 'newFromRemoval', function ( assert ) {
 	runConstructorTests( assert, ve.dm.Transaction.newFromRemoval, cases );
 } );
 
-QUnit.test( 'newFromDocumentReplace', function ( assert ) {
-	var i, j, doc2, tx, actualStoreItems, expectedStoreItems,
+QUnit.test( 'newFromDocumentInsertion', function ( assert ) {
+	var i, j, doc2, tx, actualStoreItems, expectedStoreItems, removalOps,
 		doc = ve.dm.example.createExampleDocument( 'internalData' ),
 		nextIndex = doc.store.valueStore.length,
 		whee = [ { 'type': 'paragraph' }, 'W', 'h', 'e', 'e', { 'type': '/paragraph' } ],
@@ -678,6 +678,7 @@ QUnit.test( 'newFromDocumentReplace', function ( assert ) {
 			{
 				'msg': 'simple insertion',
 				'doc': 'internalData',
+				'offset': 7,
 				'range': new ve.Range( 7, 12 ),
 				'modify': function ( newDoc ) {
 					// Change "Bar" to "Bazaar"
@@ -685,11 +686,21 @@ QUnit.test( 'newFromDocumentReplace', function ( assert ) {
 						newDoc, 3, [ 'z', 'a', 'a' ]
 					) );
 				},
+				'removalOps': [
+					{ 'type': 'retain', 'length': 7 },
+					{
+						'type': 'replace',
+						'remove': doc.getData( new ve.Range( 7, 12 ) ),
+						'insert': []
+					},
+					{ 'type': 'retain', 'length': 15 }
+				],
 				'expectedOps': [
 					{ 'type': 'retain', 'length': 6 },
 					{
 						'type': 'replace',
-						'remove': doc.getData( new ve.Range( 6, 20 ) ),
+						'remove': doc.getData( new ve.Range( 6, 7 ) )
+							.concat( doc.getData( new ve.Range( 12, 20 ) ) ),
 						'insert': doc.getData( new ve.Range( 6, 10 ) )
 							.concat( [ 'z', 'a', 'a' ] )
 							.concat( doc.getData( new ve.Range( 10, 20 ) ) )
@@ -700,18 +711,29 @@ QUnit.test( 'newFromDocumentReplace', function ( assert ) {
 			{
 				'msg': 'simple annotation',
 				'doc': 'internalData',
-				'range': doc.getInternalList().getItemNode( 1 ),
+				'offset': 14,
+				'range': new ve.Range( 14, 19 ),
 				'modify': function ( newDoc ) {
 					// Bold the first two characters
 					newDoc.commit( ve.dm.Transaction.newFromAnnotation(
 						newDoc, new ve.Range( 1, 3 ), 'set', ve.dm.example.bold
 					) );
 				},
+				'removalOps': [
+					{ 'type': 'retain', 'length': 14 },
+					{
+						'type': 'replace',
+						'remove': doc.getData( new ve.Range( 14, 19 ) ),
+						'insert': []
+					},
+					{ 'type': 'retain', 'length': 8 }
+				],
 				'expectedOps': [
 					{ 'type': 'retain', 'length': 6 },
 					{
 						'type': 'replace',
-						'remove': doc.getData( new ve.Range( 6, 20 ) ),
+						'remove': doc.getData( new ve.Range( 6, 14 ) )
+							.concat( doc.getData( new ve.Range( 19, 20 ) ) ),
 						'insert': doc.getData( new ve.Range( 6, 15 ) )
 							.concat( [ [ doc.data.getData( 15 ), [ nextIndex ] ] ] )
 							.concat( [ [ doc.data.getData( 16 ), [ nextIndex ] ] ] )
@@ -726,11 +748,20 @@ QUnit.test( 'newFromDocumentReplace', function ( assert ) {
 			{
 				'msg': 'insertion into internal list',
 				'doc': 'internalData',
+				'offset': 21,
 				'range': new ve.Range( 21, 27 ),
 				'modify': function ( newDoc ) {
 					var insertion = newDoc.internalList.getItemInsertion( 'test', 'whee', whee );
 					newDoc.commit( insertion.transaction );
 				},
+				'removalOps': [
+					{ 'type': 'retain', 'length': 21 },
+					{
+						'type': 'replace',
+						'remove': doc.getData( new ve.Range( 21, 27 ) ),
+						'insert': []
+					}
+				],
 				'expectedOps': [
 					{ 'type': 'retain', 'length': 6 },
 					{
@@ -741,7 +772,7 @@ QUnit.test( 'newFromDocumentReplace', function ( assert ) {
 					{ 'type': 'retain', 'length': 1 },
 					{
 						'type': 'replace',
-						'remove': doc.getData( new ve.Range( 21, 27 ) ),
+						'remove': [],
 						'insert': doc.getData( new ve.Range( 21, 27 ) )
 					}
 				]
@@ -749,12 +780,21 @@ QUnit.test( 'newFromDocumentReplace', function ( assert ) {
 			{
 				'msg': 'change in internal list',
 				'doc': 'internalData',
+				'offset': 21,
 				'range': new ve.Range( 21, 27 ),
 				'modify': function ( newDoc ) {
 					newDoc.commit( ve.dm.Transaction.newFromInsertion(
 						newDoc, 12, [ '!', '!', '!' ]
 					) );
 				},
+				'removalOps': [
+					{ 'type': 'retain', 'length': 21 },
+					{
+						'type': 'replace',
+						'remove': doc.getData( new ve.Range( 21, 27 ) ),
+						'insert': []
+					}
+				],
 				'expectedOps': [
 					{ 'type': 'retain', 'length': 6 },
 					{
@@ -767,7 +807,7 @@ QUnit.test( 'newFromDocumentReplace', function ( assert ) {
 					{ 'type': 'retain', 'length': 1 },
 					{
 						'type': 'replace',
-						'remove': doc.getData( new ve.Range( 21, 27 ) ),
+						'remove': [],
 						'insert': doc.getData( new ve.Range( 21, 27 ) )
 					}
 				]
@@ -775,32 +815,52 @@ QUnit.test( 'newFromDocumentReplace', function ( assert ) {
 			{
 				'msg': 'insertion into internal list from slice within internal list',
 				'doc': 'internalData',
+				'offset': 7,
 				'range': new ve.Range( 7, 12 ),
 				'modify': function ( newDoc ) {
 					var insertion = newDoc.internalList.getItemInsertion( 'test', 'whee', whee );
 					newDoc.commit( insertion.transaction );
 				},
+				'removalOps': [
+					{ 'type': 'retain', 'length': 7 },
+					{
+						'type': 'replace',
+						'remove': doc.getData( new ve.Range( 7, 12 ) ),
+						'insert': []
+					},
+					{ 'type': 'retain', 'length': 15 }
+				],
 				'expectedOps': [
 					{ 'type': 'retain', 'length': 6 },
 					{
 						'type': 'replace',
-						'remove': doc.getData( new ve.Range( 6, 20 ) ),
+						'remove': doc.getData( new ve.Range( 6, 7 ) )
+							.concat( doc.getData( new ve.Range( 12, 20 ) ) ),
 						'insert': doc.getData( new ve.Range( 6, 20 ) ).concat( wheeItem )
 					},
 					{ 'type': 'retain', 'length': 7 }
 				]
 			}
 		];
-	QUnit.expect( 2 * cases.length );
+
+	QUnit.expect( cases.length * 3 );
+
 	for ( i = 0; i < cases.length; i++ ) {
 		doc = ve.dm.example.createExampleDocument( cases[i].doc );
 		if ( cases[i].newDocData ) {
 			doc2 = new ve.dm.Document( cases[i].newDocData );
-		} else {
-			doc2 = doc.cloneFromRange( cases[i].range instanceof ve.Range ? cases[i].range : cases[i].range.getRange() );
+			removalOps = [];
+		} else if ( cases[i].range ) {
+			doc2 = doc.cloneFromRange( cases[i].range );
 			cases[i].modify( doc2 );
+			tx = ve.dm.Transaction.newFromRemoval( doc, cases[i].range );
+			doc.commit( tx );
+			removalOps = tx.getOperations();
 		}
-		tx = ve.dm.Transaction.newFromDocumentReplace( doc, cases[i].range, doc2 );
+
+		assert.deepEqualWithDomElements( removalOps, cases[i].removalOps, cases[i].msg + ': removal' );
+
+		tx = ve.dm.Transaction.newFromDocumentInsertion( doc, cases[i].offset, doc2 );
 		assert.deepEqualWithDomElements( tx.getOperations(), cases[i].expectedOps, cases[i].msg + ': transaction' );
 
 		actualStoreItems = [];
@@ -813,6 +873,7 @@ QUnit.test( 'newFromDocumentReplace', function ( assert ) {
 		assert.deepEqual( actualStoreItems, expectedStoreItems, cases[i].msg + ': store items' );
 	}
 } );
+
 QUnit.test( 'newFromAttributeChanges', function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument(),
 		cases = {

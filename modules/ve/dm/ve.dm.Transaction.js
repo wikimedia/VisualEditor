@@ -63,10 +63,11 @@ ve.dm.Transaction.newFromInsertion = function ( doc, offset, data ) {
  * @method
  * @param {ve.dm.Document} doc Document to create transaction for
  * @param {ve.Range} range Range of data to remove
+ * @param {boolean} [removeMetadata=false] Remove metadata instead of collapsing it
  * @returns {ve.dm.Transaction} Transaction that removes data
  * @throws {Error} Invalid range
  */
-ve.dm.Transaction.newFromRemoval = function ( doc, range ) {
+ve.dm.Transaction.newFromRemoval = function ( doc, range, removeMetadata ) {
 	var i, selection, first, last, nodeStart, nodeEnd,
 		offset = 0,
 		removeStart = null,
@@ -99,7 +100,7 @@ ve.dm.Transaction.newFromRemoval = function ( doc, range ) {
 			removeEnd = ( last.range || last.nodeRange ).end;
 		}
 		tx.pushRetain( removeStart );
-		tx.addSafeRemoveOps( doc, removeStart, removeEnd );
+		tx.addSafeRemoveOps( doc, removeStart, removeEnd, removeMetadata );
 		tx.pushFinalRetain( doc, removeEnd );
 		// All done
 		return tx;
@@ -132,7 +133,7 @@ ve.dm.Transaction.newFromRemoval = function ( doc, range ) {
 
 			// Push the previous removal first
 			tx.pushRetain( removeStart - offset );
-			tx.addSafeRemoveOps( doc, removeStart, removeEnd );
+			tx.addSafeRemoveOps( doc, removeStart, removeEnd, removeMetadata );
 			offset = removeEnd;
 
 			// Now start this removal
@@ -143,7 +144,7 @@ ve.dm.Transaction.newFromRemoval = function ( doc, range ) {
 	// Apply the last removal, if any
 	if ( removeEnd !== null ) {
 		tx.pushRetain( removeStart - offset );
-		tx.addSafeRemoveOps( doc, removeStart, removeEnd );
+		tx.addSafeRemoveOps( doc, removeStart, removeEnd, removeMetadata );
 		offset = removeEnd;
 	}
 	// Retain up to the end of the document
@@ -152,7 +153,7 @@ ve.dm.Transaction.newFromRemoval = function ( doc, range ) {
 };
 
 /**
- * Build a transaction that replaces the contents of a node with the contents of a document.
+ * Build a transaction that inserts the contents of a document at a given offset.
  *
  * This is typically used to merge changes to a document slice back into the main document. If newDoc
  * is a document slice of doc, it's assumed that there were no changes to doc's internal list since
@@ -160,27 +161,17 @@ ve.dm.Transaction.newFromRemoval = function ( doc, range ) {
  * be resolved in newDoc's favor.
  *
  * @param {ve.dm.Document} doc Main document
- * @param {ve.Range|ve.dm.Node} removeNodeOrRange Node or range to remove
+ * @param {number} offset Offset to insert at
  * @param {ve.dm.Document} newDoc Document to insert
- * @returns {ve.dm.Transaction} Transaction that replaces the node and updates the internal list
- * @throws {Error} removeNodeOrRange must be a ve.dm.Node or a ve.Range
+ * @returns {ve.dm.Transaction} Transaction that inserts the nodes and updates the internal list
  */
-ve.dm.Transaction.newFromDocumentReplace = function ( doc, removeNodeOrRange, newDoc ) {
-	var i, len, range, merge, data, metadata, listData, listMetadata, oldEndOffset, newEndOffset,
+ve.dm.Transaction.newFromDocumentInsertion = function ( doc, offset, newDoc ) {
+	var i, len, merge, data, metadata, listData, listMetadata, oldEndOffset, newEndOffset, tx, insertion, range,
 		listNode = doc.internalList.getListNode(),
 		listNodeRange = listNode.getRange(),
 		newListNode = newDoc.internalList.getListNode(),
 		newListNodeRange = newListNode.getRange(),
-		newListNodeOuterRange = newListNode.getOuterRange(),
-		tx = new ve.dm.Transaction();
-
-	if ( removeNodeOrRange instanceof ve.dm.Node ) {
-		range = removeNodeOrRange.getRange();
-	} else if ( removeNodeOrRange instanceof ve.Range ) {
-		range = removeNodeOrRange;
-	} else {
-		throw new Error( 'removeNodeOrRange must be a ve.dm.Node or a ve.Range' );
-	}
+		newListNodeOuterRange = newListNode.getOuterRange();
 
 	// Get the data and the metadata, but skip over the internal list
 	data = new ve.dm.ElementLinearData( doc.getStore(),
@@ -233,38 +224,58 @@ ve.dm.Transaction.newFromDocumentReplace = function ( doc, removeNodeOrRange, ne
 		listMetadata = listMetadata.concat( newDoc.getMetadata( merge.newItemRanges[i], true ) );
 	}
 
-	if ( range.end <= listNodeRange.start ) {
-		// range is entirely before listNodeRange
+	tx = new ve.dm.Transaction();
+
+	if ( offset <= listNodeRange.start ) {
+		// offset is before listNodeRange
 		// First replace the node, then the internal list
-		tx.pushRetain( range.start );
-		tx.pushReplace( doc, range.start, range.end - range.start, data.data, metadata.data );
-		tx.pushRetain( listNodeRange.start - range.end );
+
+		// Fix up the node insertion
+		insertion = doc.fixupInsertion( data.data, offset );
+		tx.pushRetain( insertion.offset );
+		tx.pushReplace( doc, insertion.offset, insertion.remove, insertion.data, metadata.data );
+		tx.pushRetain( listNodeRange.start - ( insertion.offset + insertion.remove ) );
 		tx.pushReplace( doc, listNodeRange.start, listNodeRange.end - listNodeRange.start,
 			listData, listMetadata
 		);
-		tx.pushRetain( doc.data.getLength() - listNodeRange.end );
-	} else if ( listNodeRange.end <= range.start ) {
-		// range is entirely after listNodeRange
+		tx.pushFinalRetain( doc, listNodeRange.end );
+	} else if ( offset >= listNodeRange.end ) {
+		// offset is after listNodeRange
 		// First replace the internal list, then the node
+
+		// Fix up the node insertion
+		insertion = doc.fixupInsertion( data.data, offset );
 		tx.pushRetain( listNodeRange.start );
 		tx.pushReplace( doc, listNodeRange.start, listNodeRange.end - listNodeRange.start,
 			listData, listMetadata
 		);
-		tx.pushRetain( range.start - listNodeRange.end );
-		tx.pushReplace( doc, range.start, range.end - range.start, data.data, metadata.data );
-		tx.pushRetain( doc.data.getLength() - range.end );
-	} else if ( range.start >= listNodeRange.start && range.end <= listNodeRange.end ) {
-		// range is entirely within listNodeRange
+		tx.pushRetain( insertion.offset - listNodeRange.end );
+		tx.pushReplace( doc, insertion.offset, insertion.remove, insertion.data, metadata.data );
+		tx.pushFinalRetain( doc, insertion.offset + insertion.remove );
+	} else if ( offset >= listNodeRange.start && offset <= listNodeRange.end ) {
+		// offset is within listNodeRange
 		// Merge data into listData, then only replace the internal list
-		ve.batchSplice( listData, range.start - listNodeRange.start,
+		// Find the internalItem we are inserting into
+		i = 0;
+		// Find item node in doc
+		while (
+			( range = doc.internalList.getItemNode( i ).getRange() ) &&
+			offset > range.end
+		) {
+			i++;
+		}
+		// Get range from newDoc
+		range = newDoc.internalList.getItemNode( i ).getRange();
+
+		ve.batchSplice( listData, range.start - newListNodeRange.start,
 			range.end - range.start, data.data );
-		ve.batchSplice( listMetadata, range.start - listNodeRange.start,
+		ve.batchSplice( listMetadata, range.start - newListNodeRange.start,
 			range.end - range.start, metadata.data );
 		tx.pushRetain( listNodeRange.start );
 		tx.pushReplace( doc, listNodeRange.start, listNodeRange.end - listNodeRange.start,
 			listData, listMetadata
 		);
-		tx.pushRetain( doc.data.getLength() - listNodeRange.end );
+		tx.pushFinalRetain( doc, listNodeRange.end );
 	}
 	return tx;
 };
@@ -1040,8 +1051,9 @@ ve.dm.Transaction.prototype.pushRetainMetadata = function ( length ) {
  * @param {ve.dm.Document} doc Document
  * @param {number} removeStart Offset to start removing from
  * @param {number} removeEnd Offset to remove to
+ * @param {boolean} [removeMetadata=false] Remove metadata instead of collapsing it
  */
-ve.dm.Transaction.prototype.addSafeRemoveOps = function ( doc, removeStart, removeEnd ) {
+ve.dm.Transaction.prototype.addSafeRemoveOps = function ( doc, removeStart, removeEnd, removeMetadata ) {
 	var i, retainStart, internalStackDepth = 0;
 	// Iterate over removal range and use a stack counter to determine if
 	// we are inside an internal node
@@ -1049,7 +1061,7 @@ ve.dm.Transaction.prototype.addSafeRemoveOps = function ( doc, removeStart, remo
 		if ( doc.data.isElementData( i ) && ve.dm.nodeFactory.isNodeInternal( doc.data.getType( i ) ) ) {
 			if ( !doc.data.isCloseElementData( i ) ) {
 				if ( internalStackDepth === 0 ) {
-					this.pushReplace( doc, removeStart, i - removeStart, [] );
+					this.pushReplace( doc, removeStart, i - removeStart, [], removeMetadata ? [] : undefined );
 					retainStart = i;
 				}
 				internalStackDepth++;
@@ -1062,7 +1074,7 @@ ve.dm.Transaction.prototype.addSafeRemoveOps = function ( doc, removeStart, remo
 			}
 		}
 	}
-	this.pushReplace( doc, removeStart, removeEnd - removeStart, [] );
+	this.pushReplace( doc, removeStart, removeEnd - removeStart, [], removeMetadata ? [] : undefined );
 };
 
 /**

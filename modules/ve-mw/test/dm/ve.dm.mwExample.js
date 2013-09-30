@@ -666,10 +666,13 @@ ve.dm.mwExample.references = [
 ];
 
 ve.dm.mwExample.complexInternalData = [
-	{ 'type': 'alienMeta', 'attributes': { 'domElements': $( '<!-- before -->' ).get() } },
-	{ 'type': '/alienMeta' },
+	// Metadata is indented
+	// 0
+		{ 'type': 'alienMeta', 'attributes': { 'domElements': $( '<!-- before -->' ).get() } },
+		{ 'type': '/alienMeta' },
 	{ 'type': 'paragraph' },
 	'F', ['o', [ve.dm.example.bold]], ['o', [ve.dm.example.italic]],
+	// 4
 	{ 'type': 'mwReference', 'attributes': {
 		'mw': {},
 		'about': '#mwt1',
@@ -679,17 +682,24 @@ ve.dm.mwExample.complexInternalData = [
 		'refGroup': '',
 		'contentsUsed': true
 	} },
+	// 5
 	{ 'type': '/mwReference' },
+	// 6
 	{ 'type': '/paragraph' },
-	{ 'type': 'alienMeta', 'attributes': { 'domElements': $( '<!-- after -->' ).get() } },
-	{ 'type': '/alienMeta' },
+		{ 'type': 'alienMeta', 'attributes': { 'domElements': $( '<!-- after -->' ).get() } },
+		{ 'type': '/alienMeta' },
+	// 7
 	{ 'type': 'internalList' },
+	// 8
 	{ 'type': 'internalItem' },
+	// 9
 	{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
 	'R', ['e', [ve.dm.example.bold]], 'f',
-	{ 'type': 'alienMeta', 'attributes': { 'domElements': $( '<!-- reference -->' ).get() } },
-	{ 'type': '/alienMeta' },
+	// 13
+		{ 'type': 'alienMeta', 'attributes': { 'domElements': $( '<!-- reference -->' ).get() } },
+		{ 'type': '/alienMeta' },
 	'e', ['r', [ve.dm.example.italic]], ['e', [ve.dm.example.italic]],
+	// 16
 	{ 'type': 'mwReference', 'attributes': {
 		'mw': {},
 		'about': '#mwt2',
@@ -699,26 +709,37 @@ ve.dm.mwExample.complexInternalData = [
 		'refGroup': '',
 		'contentsUsed': true
 	} },
+	// 17
 	{ 'type': '/mwReference' },
 	'n', 'c', 'e',
+	// 21
 	{ 'type': '/paragraph' },
+	// 22
 	{ 'type': '/internalItem' },
+	// 23
 	{ 'type': 'internalItem' },
-	{ 'type': 'alienMeta', 'attributes': { 'domElements': $( '<!-- beginning -->' ).get() } },
-	{ 'type': '/alienMeta' },
+		{ 'type': 'alienMeta', 'attributes': { 'domElements': $( '<!-- beginning -->' ).get() } },
+		{ 'type': '/alienMeta' },
+	// 24
 	{ 'type': 'preformatted' },
-	{ 'type': 'alienMeta', 'attributes': { 'domElements': $( '<!-- inside -->' ).get() } },
-	{ 'type': '/alienMeta' },
+		{ 'type': 'alienMeta', 'attributes': { 'domElements': $( '<!-- inside -->' ).get() } },
+		{ 'type': '/alienMeta' },
+	// 25
 	{ 'type': 'mwEntity', 'attributes': { 'character': '€' } },
+	// 26
 	{ 'type': '/mwEntity' },
 	'2', '5', '0',
-	{ 'type': 'alienMeta', 'attributes': { 'domElements': $( '<!-- inside2 -->' ).get() } },
-	{ 'type': '/alienMeta' },
+		{ 'type': 'alienMeta', 'attributes': { 'domElements': $( '<!-- inside2 -->' ).get() } },
+		{ 'type': '/alienMeta' },
+	// 30
 	{ 'type': '/preformatted' },
-	{ 'type': 'alienMeta', 'attributes': { 'domElements': $( '<!-- end -->' ).get() } },
-	{ 'type': '/alienMeta' },
+		{ 'type': 'alienMeta', 'attributes': { 'domElements': $( '<!-- end -->' ).get() } },
+		{ 'type': '/alienMeta' },
+	// 31
 	{ 'type': '/internalItem' },
+	// 32
 	{ 'type': '/internalList' }
+	// 33
 ];
 
 ve.dm.mwExample.complexInternalData.internalItems = [
