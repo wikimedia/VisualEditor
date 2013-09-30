@@ -231,3 +231,15 @@ ve.dm.LinearData.prototype.getDataSlice = function ( range, deep ) {
 	// Return either the slice or a deep copy of the slice
 	return deep ? ve.copy( data ) : data;
 };
+
+/*
+ * Clone the data, with a deep copy of the data.
+ *
+ * @returns {ve.dm.LinearData} Clone of this object
+ */
+ve.dm.LinearData.prototype.clone = function () {
+	return new this.constructor(
+		this.getStore(),
+		ve.copy( this.data )
+	);
+};

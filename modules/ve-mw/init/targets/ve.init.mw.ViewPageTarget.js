@@ -122,6 +122,16 @@ OO.inheritClass( ve.init.mw.ViewPageTarget, ve.init.mw.Target );
 
 /* Static Properties */
 
+ve.init.mw.ViewPageTarget.static.pasteRules = {
+	'blacklist': [
+		// Annotations
+		'link', 'textStyle/span', 'textStyle/underline',
+		// Nodes
+		'image', 'div', 'alienInline', 'alienBlock'
+	],
+	'removeHtmlAttributes': true
+};
+
 /**
  * Compatibility map used with jQuery.client to black-list incompatible browsers.
  *
@@ -961,7 +971,7 @@ ve.init.mw.ViewPageTarget.prototype.setUpSurface = function ( doc, callback ) {
 			var dmDoc = new ve.dm.Document( data, doc, undefined, internalList, innerWhitespace );
 			setTimeout( function () {
 				// Create ui.Surface (also creates ce.Surface and dm.Surface and builds CE tree)
-				target.surface = new ve.ui.Surface( dmDoc, target.surfaceOptions );
+				target.surface = new ve.ui.Surface( dmDoc );
 				target.surface.$element.addClass( 've-init-mw-viewPageTarget-surface' );
 				setTimeout( function () {
 					// Initialize surface
@@ -977,6 +987,7 @@ ve.init.mw.ViewPageTarget.prototype.setUpSurface = function ( doc, callback ) {
 						'documentUpdate': 'checkForWikitextWarning',
 						'history': 'updateToolbarSaveButtonState'
 					} );
+					target.surface.setPasteRules( target.constructor.static.pasteRules );
 					target.$element.append( target.surface.$element );
 					target.setUpToolbar();
 					target.transformPageTitle();

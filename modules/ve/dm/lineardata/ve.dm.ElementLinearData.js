@@ -17,12 +17,49 @@
  * @param {Array} [data] Linear data
  */
 ve.dm.ElementLinearData = function VeDmElementLinearData( store, data ) {
-	ve.dm.LinearData.call( this, store, data );
+	ve.dm.FlatLinearData.call( this, store, data );
 };
 
 /* Inheritance */
 
 OO.inheritClass( ve.dm.ElementLinearData, ve.dm.FlatLinearData );
+
+/* Static Methods */
+
+/**
+ * Compare two elements ignoring any annotations
+ *
+ * @param {Object|Array|string} a First element
+ * @param {Object|Array|string} b Second element
+ * @returns {boolean} Elements are comparable
+ */
+ve.dm.ElementLinearData.static.compareUnannotated = function( a, b ) {
+	if ( a === undefined || b === undefined ) {
+		return false;
+	}
+
+	var aPlain = a, bPlain = b;
+
+	if ( ve.isArray( a ) ) {
+		aPlain = a[0];
+	}
+	if ( ve.isArray( b ) ) {
+		bPlain = b[0];
+	}
+	if ( a && a.type ) {
+		aPlain = ve.copy( a );
+		delete aPlain.annotations;
+		delete aPlain.internal;
+	}
+	if ( b && b.type ) {
+		bPlain = ve.copy( b );
+		delete bPlain.annotations;
+		delete bPlain.internal;
+	}
+	return ve.compare( aPlain, bPlain );
+};
+
+/* Methods */
 
 /**
  * Check if content can be inserted at an offset in document data.
@@ -393,7 +430,7 @@ ve.dm.ElementLinearData.prototype.getAnnotatedRangeFromSelection = function ( ra
  *
  * @method
  * @param {ve.Range} range Range to get annotations for
- * @param {boolean} [all] Get all annotations found within the range, not just those that cover it
+ * @param {boolean} [all=false] Get all annotations found within the range, not just those that cover it
  * @returns {ve.dm.AnnotationSet} All annotation objects range is covered by
  */
 ve.dm.ElementLinearData.prototype.getAnnotationsFromRange = function ( range, all ) {
@@ -740,25 +777,99 @@ ve.dm.ElementLinearData.prototype.remapInternalListIndexes = function ( mapping,
 };
 
 /**
- * Sliced element linear data storage
+ * Remap the internal list keys used in this linear data.
  *
- * @class
- * @extends ve.dm.ElementLinearData
- * @mixins ve.dm.SlicedLinearData
- * @constructor
- * @param {ve.dm.IndexValueStore} store Index-value store
- * @param {Array} [data] Linear data
- * @param {ve.Range} [range] Original context within data
+ * Calls remapInternalListKeys() for each node.
+ *
+ * @method
+ * @param {ve.dm.InternalList} internalList Internal list the keys are being mapped into.
  */
-ve.dm.ElementLinearDataSlice = function VeDmElementLinearDataSlice( store, data, range ) {
-	ve.dm.ElementLinearData.call( this, store, data );
-
-	// Mixins
-	ve.dm.SlicedLinearData.call( this, range );
+ve.dm.ElementLinearData.prototype.remapInternalListKeys = function ( internalList ) {
+	var i, ilen, nodeClass;
+	for ( i = 0, ilen = this.data.length; i < ilen; i++ ) {
+		if ( this.isOpenElementData( i ) ) {
+			nodeClass = ve.dm.nodeFactory.lookup( this.getType( i ) );
+			nodeClass.static.remapInternalListKeys( this.data[i], internalList );
+		}
+	}
 };
 
-/* Inheritance */
+/**
+ * Sanitize data according to a set of rules.
+ *
+ * @param {Object} rules Sanitization rules
+ * @param {string[]} [rules.blacklist] Blacklist of model types which aren't allowed
+ * @param {boolean} [rules.removeHtmlAttributes] Remove all left over HTML attributes and any empty spans it creates
+ */
+ve.dm.ElementLinearData.prototype.sanitize = function ( rules ) {
+	var i, len, annotations, setToRemove,
+		allAnnotations = this.getAnnotationsFromRange( new ve.Range( 0, this.getLength() ), true );
 
-OO.inheritClass( ve.dm.ElementLinearDataSlice, ve.dm.ElementLinearData );
+	if ( rules.removeHtmlAttributes ) {
+		// Remove HTML attributes from annotations
+		for ( i = 0, len = allAnnotations.getLength(); i < len; i++ ) {
+			delete allAnnotations.get( i ).element.htmlAttributes;
+		}
+	}
 
-OO.mixinClass( ve.dm.ElementLinearDataSlice, ve.dm.SlicedLinearData );
+	// Create annotation set to remove from blacklist
+	setToRemove = allAnnotations.filter( function ( annotation ) {
+		return ve.indexOf( annotation.name, rules.blacklist ) !== -1 ||
+			// If HTML attributes are stripped and you are left with an empty span, remove it
+			( rules.removeHtmlAttributes && annotation.name === 'textStyle/span' && !annotation.element.htmlAttributes );
+	} );
+
+	for ( i = 0, len = this.getLength(); i < len; i++ ) {
+		if ( this.isElementData( i ) ) {
+			// Remove blacklisted nodes
+			if ( ve.indexOf( this.getType( i ), rules.blacklist ) !== -1 ) {
+				this.splice( i, 1 );
+				// Make sure you haven't just unwrapped a wrapper paragraph
+				if ( ve.getProp( this.getData( i ), 'internal', 'generated' ) ) {
+					delete this.getData( i ).internal.generated;
+					if ( ve.isEmptyObject( this.getData( i ).internal ) ) {
+						delete this.getData( i ).internal;
+					}
+				}
+				i--;
+				len--;
+				continue;
+			}
+			// If a node is empty but can contain content, then just remove it
+			if (
+				i > 0 && this.isCloseElementData( i ) && this.isOpenElementData( i - 1 ) &&
+				ve.dm.nodeFactory.canNodeContainContent( this.getType( i ) )
+			) {
+				this.splice( i - 1, 2 );
+				i -= 2;
+				len -= 2;
+				continue;
+			}
+		}
+		annotations = this.getAnnotationsFromOffset( i );
+		if ( !annotations.isEmpty() ) {
+			// Remove blacklisted annotations
+			annotations.removeSet( setToRemove );
+			this.setAnnotationsAtOffset( i, annotations );
+		}
+		if ( rules.removeHtmlAttributes && this.isOpenElementData( i ) ) {
+			// Remove HTML attributes from nodes
+			delete this.getData( i ).htmlAttributes;
+		}
+	}
+};
+
+/**
+ * Run all elements through getClonedElement(). This should be done if
+ * you intend to insert the sliced data back into the document as a copy
+ * of the original data (e.g. for copy and paste).
+ */
+ve.dm.ElementLinearData.prototype.cloneElements = function () {
+	var i, len, node;
+	for ( i = 0, len = this.getLength(); i < len; i++ ) {
+		if ( this.isOpenElementData( i ) ) {
+			node = ve.dm.nodeFactory.create( this.getType( i ), [], this.getData( i ) );
+			this.data[i] = node.getClonedElement();
+		}
+	}
+};

@@ -9,7 +9,7 @@ QUnit.module( 've.ce.Surface' );
 
 /* Tests */
 
-ve.test.utils.runSurfaceHandleDeleteTest = function( assert, html, range, operations, expectedData, expectedRange, msg ) {
+ve.test.utils.runSurfaceHandleDeleteTest = function ( assert, html, range, operations, expectedData, expectedRange, msg ) {
 	var i, args,
 		selection,
 		deleteArgs = {
@@ -261,8 +261,271 @@ QUnit.test( 'onContentChange', function ( assert ) {
 
 } );
 
+QUnit.test( 'getClipboardHash', 1, function ( assert ) {
+	assert.equal(
+		ve.ce.Surface.static.getClipboardHash(
+			$( $.parseHTML( '  <p class="foo"> Bar </p>\n\t<span class="baz"></span> Quux <h1><span></span>Whee</h1>' ) )
+		),
+		'Bar<SPAN>QuuxWhee',
+		'Simple usage'
+	);
+} );
+
+QUnit.test( 'onCopy', function ( assert ) {
+	var i, testClipboardData,
+		testEvent = {
+			'originalEvent': {
+				'clipboardData': {
+					'setData': function ( prop, val ) {
+						testClipboardData[prop] = val;
+						return true;
+					}
+				}
+			},
+			'preventDefault': function() {}
+		},
+		cases = [
+			{
+				'range': new ve.Range( 27, 32 ),
+				'expectedData': [
+					{ 'type': 'list', 'attributes': { 'style': 'number' } },
+					{ 'type': 'listItem' },
+					{ 'type': 'paragraph' },
+					'g',
+					{ 'type': '/paragraph' },
+					{ 'type': '/listItem' },
+					{ 'type': '/list' },
+					{ 'type': 'internalList' },
+					{ 'type': '/internalList' }
+				],
+				'expectedOriginalRange': new ve.Range( 1, 6 ),
+				'expectedBalancedRange': new ve.Range( 1, 6 ),
+				'msg': 'Copy list item'
+			}
+		];
+
+	QUnit.expect( cases.length * 4 );
+
+	function testRunner( doc, range, expectedData, expectedOriginalRange, expectedBalancedRange, msg ) {
+		var clipboardKey, parts, clipboardIndex, slice,
+			surface = ve.test.utils.createSurfaceFromDocument(
+				doc || ve.dm.example.createExampleDocument()
+			),
+			view = surface.getView(),
+			model = surface.getModel();
+
+		// Paste sequence
+		model.setSelection( range );
+		testClipboardData = {};
+		view.onCopy( testEvent );
+
+		clipboardKey = testClipboardData['text/xcustom'];
+
+		assert.equal( clipboardKey, view.clipboardId + '-0', msg + ': clipboardId set' );
+
+		parts = clipboardKey.split( '-' );
+		clipboardIndex = parts[1];
+		slice = view.clipboard[clipboardIndex].slice;
+
+		assert.deepEqual( slice.data.data, expectedData, msg + ': data' );
+		assert.deepEqual( slice.originalRange, expectedOriginalRange, msg + ': originalRange' );
+		assert.deepEqual( slice.balancedRange, expectedBalancedRange, msg + ': balancedRange' );
+
+		surface.destroy();
+	}
+
+	for ( i = 0; i < cases.length; i++ ) {
+		testRunner(
+			cases[i].doc, cases[i].range, cases[i].expectedData,
+			cases[i].expectedOriginalRange, cases[i].expectedBalancedRange, cases[i].msg
+		);
+	}
+
+} );
+
+QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
+	var i, exampleDoc = '<p></p><p>Foo</p>',
+		TestEvent = function ( data ) {
+			this.originalEvent = {
+				'clipboardData': {
+					'getData': function ( prop ) {
+						return data[prop];
+					}
+				}
+			};
+			this.preventDefault = function() {};
+		},
+		cases = [
+			{
+				'range': new ve.Range( 1 ),
+				'pasteTargetHtml': 'Foo',
+				'expectedRange': new ve.Range( 4 ),
+				'expectedOps': [
+					[
+						{ 'type': 'retain', 'length': 1 },
+						{
+							'type': 'replace',
+							'insert': [
+								'F', 'o', 'o',
+							],
+							'remove': []
+						},
+						{ 'type': 'retain', 'length': 8 }
+					]
+				],
+				'msg': 'Text into empty paragraph'
+			},
+			{
+				'range': new ve.Range( 4 ),
+				'pasteTargetHtml': 'Bar',
+				'expectedRange': new ve.Range( 7 ),
+				'expectedOps': [
+					[
+						{ 'type': 'retain', 'length': 4 },
+						{
+							'type': 'replace',
+							'insert': [ 'B', 'a', 'r' ],
+							'remove': []
+						},
+						{ 'type': 'retain', 'length': 5 }
+					]
+				],
+				'msg': 'Text into paragraph'
+			},
+			{
+				'range': new ve.Range( 4 ),
+				'pasteTargetHtml': '<p>Bar</p>',
+				'expectedRange': new ve.Range( 7 ),
+				'expectedOps': [
+					[
+						{ 'type': 'retain', 'length': 4 },
+						{
+							'type': 'replace',
+							'insert': [ 'B', 'a', 'r' ],
+							'remove': []
+						},
+						{ 'type': 'retain', 'length': 5 }
+					]
+				],
+				'msg': 'Paragraph into paragraph'
+			},
+			{
+				'range': new ve.Range( 6 ),
+				'pasteTargetHtml': '<p>Bar</p>',
+				'expectedRange': new ve.Range( 9 ),
+				'expectedOps': [
+					[
+						{ 'type': 'retain', 'length': 6 },
+						{
+							'type': 'replace',
+							'insert': [ 'B', 'a', 'r' ],
+							'remove': []
+						},
+						{ 'type': 'retain', 'length': 3 }
+					]
+				],
+				'msg': 'Paragraph at end of paragraph'
+			},
+			{
+				'range': new ve.Range( 3 ),
+				'pasteTargetHtml': '<p>Bar</p>',
+				'expectedRange': new ve.Range( 6 ),
+				'expectedOps': [
+					[
+						{ 'type': 'retain', 'length': 3 },
+						{
+							'type': 'replace',
+							'insert': [ 'B', 'a', 'r' ],
+							'remove': []
+						},
+						{ 'type': 'retain', 'length': 6 }
+					]
+				],
+				'msg': 'Paragraph at start of paragraph'
+			},
+			{
+				'range': new ve.Range( 4 ),
+				'pasteTargetHtml': 'BfooA',
+				'expectedRange': new ve.Range( 9 ),
+				'expectedOps': [
+					[
+						{ 'type': 'retain', 'length': 4 },
+						{
+							'type': 'replace',
+							'insert': [ 'B', 'f', 'o', 'o', 'A' ],
+							'remove': []
+						},
+						{ 'type': 'retain', 'length': 5 }
+					]
+				],
+				'msg': 'Left/right placeholder characters'
+			},
+			{
+				'range': new ve.Range( 6 ),
+				'pasteTargetHtml': '<ul><li>Foo</li></ul>',
+				'expectedRange': new ve.Range( 6 ),
+				'expectedOps': [
+					[
+						{ 'type': 'retain', 'length': 7 },
+						{
+							'type': 'replace',
+							'insert': [
+								{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
+								{ 'type': 'listItem' },
+								{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+								'F', 'o', 'o',
+								{ 'type': '/paragraph' },
+								{ 'type': '/listItem' },
+								{ 'type': '/list' }
+							],
+							'remove': []
+						},
+						{ 'type': 'retain', 'length': 2 }
+					]
+				],
+				'msg': 'List at end of paragraph (moves insertion point)'
+			}
+		];
+
+	QUnit.expect( cases.length * 2 );
+
+	function testRunner( documentHtml, pasteTargetHtml, clipboardHtml, range, expectedOps, expectedRange, msg ) {
+		var i, txs, ops,
+			surface = ve.test.utils.createSurfaceFromHtml( documentHtml || exampleDoc ),
+			view = surface.getView(),
+			model = surface.getModel();
+
+		// Paste sequence
+		model.setSelection( range );
+		if ( pasteTargetHtml ) {
+			view.beforePaste( { 'originalEvent': {} } );
+			document.execCommand( 'insertHTML', false, pasteTargetHtml ) ;
+		} else {
+			view.beforePaste( new TestEvent( { 'text/xcustom': '0.123-0', 'text/html': clipboardHtml } ) );
+		}
+		view.afterPaste();
+
+		txs = model.getHistory()[0].stack;
+		ops = [];
+		for ( i = 0; i < txs.length; i++ ) {
+			ops.push( txs[i].getOperations() );
+		}
+		assert.deepEqual( ops, expectedOps, msg + ': operations' );
+		assert.deepEqual( model.getSelection(), expectedRange, msg +  ': range' );
+
+		surface.destroy();
+	}
+
+	for ( i = 0; i < cases.length; i++ ) {
+		testRunner(
+			cases[i].documentHtml, cases[i].pasteTargetHtml, cases[i].clipboardHtml,
+			cases[i].range, cases[i].expectedOps, cases[i].expectedRange, cases[i].msg
+		);
+	}
+
+} );
+
 /* Methods with return values */
-// TODO: ve.ce.Surface.static.getClipboardHash
 // TODO: ve.ce.Surface#hasSlugAtOffset
 // TODO: ve.ce.Surface#getClickCount
 // TODO: ve.ce.Surface#needsPawn
@@ -294,8 +557,6 @@ QUnit.test( 'onContentChange', function ( assert ) {
 // TODO: ve.ce.Surface#onCut
 // TODO: ve.ce.Surface#onCopy
 // TODO: ve.ce.Surface#onPaste
-// TODO: ve.ce.Surface#beforePaste
-// TODO: ve.ce.Surface#afterPaste
 // TODO: ve.ce.Surface#onDocumentCompositionEnd
 // TODO: ve.ce.Surface#onChange
 // TODO: ve.ce.Surface#onSelectionChange

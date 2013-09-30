@@ -37,6 +37,7 @@ ve.init.sa.Target = function VeInitSaTarget( $container, doc ) {
 
 	this.toolbar.initialize();
 	this.surface.addCommands( this.constructor.static.surfaceCommands );
+	this.surface.setPasteRules( this.constructor.static.pasteRules );
 	this.surface.initialize();
 };
 

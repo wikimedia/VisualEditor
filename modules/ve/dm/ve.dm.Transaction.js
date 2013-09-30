@@ -163,9 +163,10 @@ ve.dm.Transaction.newFromRemoval = function ( doc, range, removeMetadata ) {
  * @param {ve.dm.Document} doc Main document
  * @param {number} offset Offset to insert at
  * @param {ve.dm.Document} newDoc Document to insert
+ * @param {ve.Range} [newDocRange] Range from the new document to insert (defaults to entire document)
  * @returns {ve.dm.Transaction} Transaction that inserts the nodes and updates the internal list
  */
-ve.dm.Transaction.newFromDocumentInsertion = function ( doc, offset, newDoc ) {
+ve.dm.Transaction.newFromDocumentInsertion = function ( doc, offset, newDoc, newDocRange ) {
 	var i, len, merge, data, metadata, listData, listMetadata, oldEndOffset, newEndOffset, tx, insertion, range,
 		listNode = doc.internalList.getListNode(),
 		listNodeRange = listNode.getRange(),
@@ -173,20 +174,25 @@ ve.dm.Transaction.newFromDocumentInsertion = function ( doc, offset, newDoc ) {
 		newListNodeRange = newListNode.getRange(),
 		newListNodeOuterRange = newListNode.getOuterRange();
 
-	// Get the data and the metadata, but skip over the internal list
-	data = new ve.dm.ElementLinearData( doc.getStore(),
-		newDoc.getData( new ve.Range( 0, newListNodeOuterRange.start ), true ).concat(
-			newDoc.getData( new ve.Range( newListNodeOuterRange.end, newDoc.data.getLength() ), true )
-		)
-	);
-	metadata = new ve.dm.MetaLinearData( doc.getStore(),
-		newDoc.getMetadata( new ve.Range( 0, newListNodeOuterRange.start ), true ).concat(
-			newListNodeOuterRange.end < newDoc.data.getLength() ? newDoc.getMetadata(
-				new ve.Range( newListNodeOuterRange.end + 1, newDoc.data.getLength() ), true
-			) : []
-		)
-	);
-	// TODO deal with metadata right before and right after the internal list
+	if ( newDocRange ) {
+		data = new ve.dm.ElementLinearData( doc.getStore(), newDoc.getData( newDocRange, true ) );
+		metadata = new ve.dm.MetaLinearData( doc.getStore(), newDoc.getMetadata( newDocRange, true ) );
+	} else {
+		// Get the data and the metadata, but skip over the internal list
+		data = new ve.dm.ElementLinearData( doc.getStore(),
+			newDoc.getData( new ve.Range( 0, newListNodeOuterRange.start ), true ).concat(
+				newDoc.getData( new ve.Range( newListNodeOuterRange.end, newDoc.data.getLength() ), true )
+			)
+		);
+		metadata = new ve.dm.MetaLinearData( doc.getStore(),
+			newDoc.getMetadata( new ve.Range( 0, newListNodeOuterRange.start ), true ).concat(
+				newListNodeOuterRange.end < newDoc.data.getLength() ? newDoc.getMetadata(
+					new ve.Range( newListNodeOuterRange.end + 1, newDoc.data.getLength() ), true
+				) : []
+			)
+		);
+		// TODO deal with metadata right before and right after the internal list
+	}
 
 	// Merge the stores
 	merge = doc.getStore().merge( newDoc.getStore() );

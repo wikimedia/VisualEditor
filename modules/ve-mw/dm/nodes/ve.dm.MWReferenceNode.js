@@ -96,6 +96,7 @@ ve.dm.MWReferenceNode.static.toDomElements = function ( dataElement, doc, conver
 	keyedNodes = converter.internalList
 		.getNodeGroup( dataElement.attributes.listGroup )
 		.keyedNodes[dataElement.attributes.listKey];
+
 	if ( setContents ) {
 		// Check if a previous node has already set the content. If so, we don't overwrite this
 		// node's contents.
@@ -115,7 +116,7 @@ ve.dm.MWReferenceNode.static.toDomElements = function ( dataElement, doc, conver
 		// Check if any other nodes with this key provided content. If not
 		// then we attach the contents to the first reference with this key
 
-		// Check that this the first reference with its key
+		// Check that this is the first reference with its key
 		if ( keyedNodes && dataElement === keyedNodes[0].element ) {
 			setContents = true;
 			// Check no other reference originally defined the contents
@@ -200,6 +201,17 @@ ve.dm.MWReferenceNode.static.remapInternalListIndexes = function ( dataElement, 
 	listKeyParts = dataElement.attributes.listKey.match( this.listKeyRegex );
 	if ( listKeyParts[1] === 'auto' ) {
 		dataElement.attributes.listKey = 'auto/' + internalList.getNextUniqueNumber();
+	}
+};
+
+ve.dm.MWReferenceNode.static.remapInternalListKeys = function ( dataElement, internalList ) {
+	var suffix = '';
+	// Try name, name2, name3, ... until unique
+	while ( ve.indexOf( dataElement.attributes.listKey + suffix, internalList.keys ) !== -1 ) {
+		suffix = suffix ? suffix + 1 : 2;
+	}
+	if ( suffix ) {
+		dataElement.attributes.listKey = dataElement.attributes.listKey + suffix;
 	}
 };
 

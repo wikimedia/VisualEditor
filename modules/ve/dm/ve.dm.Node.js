@@ -214,6 +214,20 @@ ve.dm.Node.static.remapInternalListIndexes = function ( /*dataElement, mapping, 
 };
 
 /**
+ * Remap the internal list keys stored in a linear model data element.
+ *
+ * The default implementation is empty. Nodes should override this if they store internal list
+ * keys in attributes.
+ *
+ * @static
+ * @inheritable
+ * @param {Object} dataElement Data element (opening) to remap. Will be modified.
+ * @param {ve.dm.InternalList} internalList Internal list the keys are being mapped into.
+ */
+ve.dm.Node.static.remapInternalListKeys = function ( /*dataElement, internalList*/ ) {
+};
+
+/**
  * Determine if a hybrid element is inline and allowed to be inline in this context
  *
  * We generate block elements for block tags and inline elements for inline

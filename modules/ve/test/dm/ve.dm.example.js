@@ -319,7 +319,7 @@ ve.dm.example.data = [
 	{ 'type': '/paragraph' },
 	// 31 - End of item
 	{ 'type': '/listItem' },
-	// 32 - End of lis t
+	// 32 - End of list
 	{ 'type': '/list' },
 	// 33 - End of cell
 	{ 'type': '/tableCell' },

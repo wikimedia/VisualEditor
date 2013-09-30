@@ -663,23 +663,30 @@ ve.ce.Surface.prototype.onCut = function ( e ) {
  */
 ve.ce.Surface.prototype.onCopy = function ( e ) {
 	var rangyRange, sel, originalRange,
-		clipboardIndex, clipboardItem,
+		clipboardIndex, clipboardItem, pasteData,
 		scrollTop,
 		view = this,
-		slice = this.documentView.model.getSlicedLinearData( this.model.getSelection() ),
+		slice = this.model.documentModel.cloneSliceFromRange( this.model.getSelection() ),
 		clipboardData = e.originalEvent.clipboardData,
 		$window = this.$( OO.ui.Element.getWindow( this.$.context ) );
 
-	// Clone the elements in the slice
-	slice.cloneElements();
-
 	this.$pasteTarget.empty();
 
-	ve.dm.converter.store = this.documentView.model.getStore();
-	ve.dm.converter.internalList = this.documentView.model.getInternalList();
+	pasteData = slice.data.clone();
+
+	ve.dm.converter.store = slice.getStore();
+	ve.dm.converter.internalList = slice.getInternalList();
 	ve.dm.converter.getDomSubtreeFromData( slice.getData(), this.$pasteTarget[0] );
 
-	clipboardItem = { 'data': slice, 'hash': null };
+	// Some browsers strip out spans when they match the styling of the
+	// paste target (e.g. plain spans) so we must protect against this
+	// by adding a dummy class, which we can remove after paste.
+	this.$pasteTarget.find( 'span' ).addClass( 've-pasteProtect' );
+
+	// Clone the elements in the slice, but only after the DM HTML has been built
+	slice.data.cloneElements();
+
+	clipboardItem = { 'slice': slice, 'hash': null };
 	clipboardIndex = this.clipboard.push( clipboardItem ) - 1;
 
 	// Check we have setData and that it actually works (returns true)
@@ -696,10 +703,10 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 		clipboardData.setData( 'text/html', this.$pasteTarget.html() );
 		clipboardData.setData( 'text/plain', this.$pasteTarget.text() );
 	} else {
+		clipboardItem.hash = this.constructor.static.getClipboardHash( this.$pasteTarget.contents() );
 		this.$pasteTarget.prepend(
 			this.$( '<span>' ).attr( 'data-ve-clipboard-key', this.clipboardId + '-' + clipboardIndex )
 		);
-		clipboardItem.hash = this.constructor.static.getClipboardHash( this.$pasteTarget.contents() );
 		// If direct clipboard editing is not allowed, we must use the pasteTarget to
 		// select the data we want to go in the clipboard
 		rangyRange = rangy.createRange( this.getElementDocument() );
@@ -747,16 +754,17 @@ ve.ce.Surface.prototype.onPaste = function ( e ) {
  * @param {jQuery.Event} e Paste event
  */
 ve.ce.Surface.prototype.beforePaste = function ( e ) {
-	var tx,
+	var tx, node, range, rangyRange, sel,
+		context, leftText, rightText, textNode, textStart, textEnd,
 		$window = this.$( OO.ui.Element.getWindow( this.$.context ) ),
 		selection = this.model.getSelection(),
-		clipboardData = e.originalEvent.clipboardData;
+		clipboardData = e.originalEvent.clipboardData,
+		doc = this.model.documentModel;
 
 	this.beforePasteData = {};
 	if ( clipboardData ) {
 		this.beforePasteData.custom = clipboardData.getData( 'text/xcustom' );
 		this.beforePasteData.html = clipboardData.getData( 'text/html' );
-		this.beforePasteData.plain = clipboardData.getData( 'text/plain' );
 	}
 
 	// TODO: no pollOnce here: but should we add one?
@@ -764,15 +772,69 @@ ve.ce.Surface.prototype.beforePaste = function ( e ) {
 
 	// Pasting into a range? Remove first.
 	if ( !rangy.getSelection( this.$document[0] ).isCollapsed ) {
-		tx = ve.dm.Transaction.newFromRemoval( this.documentView.model, selection );
+		tx = ve.dm.Transaction.newFromRemoval( doc, selection );
 		selection = tx.translateRange( selection );
 		this.model.change( tx, selection );
+		selection = this.model.getSelection();
 	}
 
 	// Save scroll position before changing focus to "offscreen" paste target
 	this.beforePasteData.scrollTop = $window.scrollTop();
+
 	this.$pasteTarget.empty();
-	this.$pasteTarget[0].focus();
+
+	// Get node from cursor position
+	node = doc.getNodeFromOffset( selection.start );
+	if ( node.canContainContent() ) {
+		// If this is a content branch node, then add its DM HTML
+		// to the paste target to give CE some context.
+		textStart = textEnd = 0;
+		range = node.getRange();
+		context = [ node.getClonedElement() ];
+		// If there is content to the left of the cursor, put a placeholder
+		// character to the left of the cursor
+		if ( selection.start > range.start ) {
+			leftText = 'A';
+			context.push( leftText );
+			textStart = textEnd = 1;
+		}
+		// If there is content to the right of the cursor, put a placeholder
+		// character to the right of the cursor
+		if ( selection.end < range.end ) {
+			rightText = 'B';
+			context.push( rightText );
+		}
+		// If there is no text context, select some text to be replaced
+		if ( !leftText && !rightText ) {
+			context.push( 'C' );
+			textEnd = 1;
+		}
+		context.push( { 'type': '/' + context[0].type } );
+
+		ve.dm.converter.store = doc.getStore();
+		ve.dm.converter.internalList = doc.getInternalList();
+		ve.dm.converter.getDomSubtreeFromData( context, this.$pasteTarget[0] );
+
+		rangyRange = rangy.createRange( this.getElementDocument() );
+		// Assume that the DM node only generated one child
+		textNode = this.$pasteTarget.children().contents()[0];
+		// Place the cursor between the placeholder characters
+		rangyRange.setStart( textNode, textStart );
+		rangyRange.setEnd( textNode, textEnd );
+		sel = rangy.getSelection( this.getElementDocument() );
+		sel.removeAllRanges();
+		this.$pasteTarget[0].focus();
+		sel.addRange( rangyRange, false );
+
+		this.beforePasteData.context = context;
+		this.beforePasteData.leftText = leftText;
+		this.beforePasteData.rightText = rightText;
+	} else {
+		// If we're not in a content branch node, don't bother trying to do
+		// anything clever with paste context
+		this.$pasteTarget[0].focus();
+	}
+
 };
 
 /**
@@ -782,26 +844,35 @@ ve.ce.Surface.prototype.beforePaste = function ( e ) {
  */
 ve.ce.Surface.prototype.afterPaste = function () {
 	var clipboardKey, clipboardId, clipboardIndex,
-		$elements, parts, pasteData, slice, tx,
+		$elements, parts, pasteData, slice, tx, internalListRange,
+		store, internalList, innerWhitespace, result, fullData, data, doc, html,
+		context, left, right, contextRange,
 		beforePasteData = this.beforePasteData || {},
 		$window = this.$( OO.ui.Element.getWindow( this.$.context ) ),
 		selection = this.model.getSelection();
 
+	// Remove the pasteProtect class. See #onCopy.
+	this.$pasteTarget.find( 'span' ).removeClass( 've-pasteProtect' );
+
+	// Find the clipboard key
 	if ( beforePasteData.custom ) {
 		clipboardKey = beforePasteData.custom;
 	} else {
 		$elements = beforePasteData.html ? this.$( $.parseHTML( beforePasteData.html ) ) : this.$pasteTarget.contents();
 
 		// Try to find the clipboard key hidden in the HTML
-		$elements.each( function () {
+		$elements = $elements.filter( function () {
 			var val = this.getAttribute && this.getAttribute( 'data-ve-clipboard-key' );
 			if ( val ) {
 				clipboardKey = val;
+				// Remove the clipboard key span once read
 				return false;
 			}
+			return true;
 		} );
-
 	}
+
+	// If we have a clipboard key, validate it and fetch data
 	if ( clipboardKey ) {
 		parts = clipboardKey.split( '-' );
 		clipboardId = parts[0];
@@ -814,53 +885,132 @@ ve.ce.Surface.prototype.afterPaste = function () {
 				this.clipboard[clipboardIndex].hash ===
 					this.constructor.static.getClipboardHash( $elements )
 			) {
-				slice = this.clipboard[clipboardIndex].data;
+				slice = this.clipboard[clipboardIndex].slice;
 			}
 		}
 	}
 
-	if ( !slice ) {
-		// TODO: try to convert the HTML
-		if ( !beforePasteData.plain ) {
-			beforePasteData.plain = this.$pasteTarget.text();
+	if ( slice ) {
+		// Internal paste
+		try {
+			// Try to paste in the orignal data
+			// Take a copy to prevent the data being annotated a second time in the catch block
+			// and to prevent actions in the data model affecting view.clipboard
+			pasteData = new ve.dm.ElementLinearData(
+				slice.getStore(),
+				ve.copy( slice.getOriginalData() )
+			);
+
+			// Annotate
+			ve.dm.Document.static.addAnnotationsToData( pasteData.getData(), this.model.getInsertionAnnotations() );
+
+			// Transaction
+			tx = ve.dm.Transaction.newFromInsertion(
+				this.documentView.model,
+				selection.start,
+				pasteData.getData()
+			);
+		} catch ( err ) {
+			// If that fails, use the balanced data
+			// Take a copy to prevent actions in the data model affecting view.clipboard
+			pasteData = new ve.dm.ElementLinearData(
+				slice.getStore(),
+				ve.copy( slice.getBalancedData() )
+			);
+
+			// Annotate
+			ve.dm.Document.static.addAnnotationsToData( pasteData.getData(), this.model.getInsertionAnnotations() );
+
+			// Transaction
+			tx = ve.dm.Transaction.newFromInsertion(
+				this.documentView.model,
+				selection.start,
+				pasteData.getData()
+			);
 		}
-		slice = new ve.dm.ElementLinearDataSlice(
-			new ve.dm.IndexValueStore(),
-			ve.splitClusters(
-				// TODO: handle plain text line breaks better
-				beforePasteData.plain.replace( /\n+/gm, ' ' )
-			)
-		);
-	}
+	} else {
+		if ( clipboardKey && beforePasteData.html ) {
+			// If the clipboardKey is set (paste from other VE instance), and clipboard
+			// data is available, then make sure important spans haven't been dropped
+			if ( !$elements ) {
+				$elements = this.$( $.parseHTML( beforePasteData.html ) );
+			}
+			if (
+				$elements.filter( 'span[id],span[typeof],span[rel]' ).length > 0 &&
+				this.$pasteTarget.filter('span[id],span[typeof],span[rel]').length === 0
+			) {
+				// CE destroyed an important span, so revert to using clipboard data
+				html = beforePasteData.html;
+				beforePasteData.context = null;
+			}
+		}
+		if ( !html ) {
+			// If there were no problems, let CE do its sanitizing as it may
+			// contain all sorts of horrible metadata (head tags etc.)
+			// TODO: IE will always take this path, and so may have bugs with span unwapping
+			// in edge cases (e.g. pasting a single MWReference)
+			html = this.$pasteTarget.html();
+		}
+		// External paste
+		store = new ve.dm.IndexValueStore();
+		internalList = new ve.dm.InternalList();
+		innerWhitespace = new Array( 2 );
+		fullData = ve.dm.converter.getDataFromDom( ve.createDocumentFromHtml( html ), store, internalList, innerWhitespace );
+		result = ve.dm.Document.static.splitData( fullData, true );
+		data = result.elementData;
+		// If the clipboardKey is set (paste from other VE instance), skip sanitization
+		if ( !clipboardKey ) {
+			data.sanitize( this.getSurface().getPasteRules() );
+		} else {
+			// ...except not quite - contentEditable can't be trusted not
+			// to add styles, so for now remove them
+			// TODO: store original styles in data
+			data.sanitize( { 'removeHtmlAttributes': true } );
+		}
+		data.remapInternalListKeys( this.model.getDocument().getInternalList() );
 
-	try {
-		// Try to paste in the orignal data
-		// Take a copy to prevent the data being annotated a second time in the catch block
-		// and to prevent actions in the data model affecting view.clipboard
-		pasteData = ve.copy( slice.getOriginalData() );
+		doc = new ve.dm.Document( data, this.getElementDocument(), undefined, internalList, innerWhitespace );
+		// If the paste was given context, calculate the range of the inserted data
+		if ( beforePasteData.context ) {
+			internalListRange = doc.getInternalList().getListNode().getOuterRange();
+			context = new ve.dm.ElementLinearData(
+				store,
+				ve.copy( beforePasteData.context )
+			);
 
-		// Annotate
-		ve.dm.Document.static.addAnnotationsToData( pasteData, this.model.getInsertionAnnotations() );
+			// Remove matching context from the left
+			left = 0;
+			while (
+				context.getLength() &&
+				ve.dm.ElementLinearData.static.compareUnannotated(
+					data.getData( left ),
+					data.isElementData( left ) ? context.getData( 0 ) : beforePasteData.leftText
+				)
+			) {
+				left++;
+				context.splice( 0, 1 );
+			}
 
-		// Transaction
-		tx = ve.dm.Transaction.newFromInsertion(
+			// Remove matching context from the right
+			right = internalListRange.start;
+			while (
+				context.getLength() &&
+				ve.dm.ElementLinearData.static.compareUnannotated(
+					data.getData( right - 1 ),
+					data.isElementData( right - 1 ) ? context.getData( context.getLength() - 1 ) : beforePasteData.rightText
+				)
+			) {
+				right--;
+				context.splice( context.getLength() - 1, 1 );
+			}
+			contextRange = new ve.Range( left, right );
+		}
+
+		tx = ve.dm.Transaction.newFromDocumentInsertion(
 			this.documentView.model,
 			selection.start,
-			pasteData
-		);
-	} catch ( err ) {
-		// If that fails, balance the data before pasting
-		// Take a copy to prevent actions in the data model affecting view.clipboard
-		pasteData = ve.copy( slice.getData() );
-
-		// Annotate
-		ve.dm.Document.static.addAnnotationsToData( pasteData, this.model.getInsertionAnnotations() );
-
-		// Transaction
-		tx = ve.dm.Transaction.newFromInsertion(
-			this.documentView.model,
-			selection.start,
-			pasteData
+			doc,
+			contextRange
 		);
 	}
 

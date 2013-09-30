@@ -1365,3 +1365,74 @@ QUnit.test( 'getNearestWordRange', function ( assert ) {
 		);
 	}
 } );
+
+QUnit.test( 'sanitize', function ( assert ) {
+	var i, fullData, result, data,
+		store, internalList, innerWhitespace,
+		count = 0,
+		bold = new ve.dm.TextStyleBoldAnnotation( { 'type': 'textStyle/bold', 'attributes': { 'nodeName': 'b' } } ),
+		cases = [
+			{
+				'html': '<p style="text-shadow: 0 0 1px #000;">F<b>o</b>o</p>',
+				'data': [
+					{ 'type': 'paragraph' },
+					'F', ['o', [0]], 'o',
+					{ 'type': '/paragraph' },
+					{ 'type': 'internalList' },
+					{ 'type': '/internalList' }
+				],
+				'store': [ bold ],
+				'rules': { 'removeHtmlAttributes': true },
+				'msg': 'HTML attributes removed'
+			},
+			{
+				'html': '<p>B<abbr>a</abbr>r<img src="Image.jpg"/></p>',
+				'data': [
+					{ 'type': 'paragraph' },
+					'B', 'r',
+					{ 'type': '/paragraph' },
+					{ 'type': 'internalList' },
+					{ 'type': '/internalList' }
+				],
+				'rules': { 'blacklist': ['alienInline','image'] },
+				'msg': 'Blacklisted nodes removed'
+			},
+			{
+				'html': '<p>Foo</p><p></p><h1></h1><p>Bar</p>',
+				'data': [
+					{ 'type': 'paragraph' },
+					'F', 'o', 'o',
+					{ 'type': '/paragraph' },
+					{ 'type': 'paragraph' },
+					'B', 'a', 'r',
+					{ 'type': '/paragraph' },
+					{ 'type': 'internalList' },
+					{ 'type': '/internalList' }
+				],
+				'msg': 'Empty content nodes are stripped'
+			}
+		];
+
+	for ( i = 0; i < cases.length; i++ ) {
+		count++;
+		if ( cases[i].store ) {
+			count++;
+		}
+	}
+	QUnit.expect( count );
+
+	for ( i = 0; i < cases.length; i++ ) {
+		store = new ve.dm.IndexValueStore();
+		internalList = new ve.dm.InternalList();
+		innerWhitespace = new Array( 2 );
+
+		fullData = ve.dm.converter.getDataFromDom( ve.createDocumentFromHtml( cases[i].html ), store, internalList, innerWhitespace );
+		result = ve.dm.Document.static.splitData( fullData, true );
+		data = result.elementData;
+		data.sanitize( cases[i].rules || {} );
+		assert.deepEqualWithDomElements( data.data, cases[i].data, cases[i].msg + ': data' );
+		if ( cases[i].store ) {
+			assert.deepEqualWithDomElements( data.getStore().valueStore, cases[i].store, cases[i].msg + ': store' );
+		}
+	}
+} );

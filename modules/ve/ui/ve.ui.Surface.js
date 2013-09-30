@@ -36,6 +36,7 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 	this.dialogs = new ve.ui.WindowSet( this, ve.ui.dialogFactory, { '$': this.$ } );
 	this.commands = {};
 	this.triggers = {};
+	this.pasteRules = {};
 	this.enabled = true;
 
 	// Initialization
@@ -274,6 +275,26 @@ ve.ui.Surface.prototype.addCommands = function ( names ) {
 		this.triggers[names[i]] = trigger;
 		this.emit( 'addCommand', names[i], command, trigger );
 	}
+};
+
+/**
+ * Get sanitization rules for rich paste
+ *
+ * @returns {Object} Paste rules
+ */
+ve.ui.Surface.prototype.getPasteRules = function () {
+	return this.pasteRules;
+};
+
+/**
+ * Set sanitization rules for rich paste
+ *
+ * @param {Object} pasteRules Paste rules
+ * @param {string[]} [pasteRules.blacklist] Blacklist of model types which aren't allowed
+ * @param {boolean} [pasteRules.removeHtmlAttributes] Remove all left over HTML attributes
+ */
+ve.ui.Surface.prototype.setPasteRules = function ( pasteRules ) {
+	this.pasteRules = pasteRules;
 };
 
 /**
