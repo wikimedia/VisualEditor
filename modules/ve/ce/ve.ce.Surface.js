@@ -70,7 +70,10 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 	} );
 	this.$pasteTarget.on( {
 		'cut': ve.bind( this.onCut, this ),
-		'copy': ve.bind( this.onCopy, this )
+		'copy': ve.bind( this.onCopy, this ),
+		// $pasteTarget is focused when selecting a FocusableNode
+		'focus': ve.bind( this.documentOnFocus, this ),
+		'blur': ve.bind( this.documentOnBlur, this )
 	} );
 	$documentNode.on( $.browser.msie ? 'beforepaste' : 'paste', ve.bind( this.onPaste, this ) );
 	$documentNode.on( 'focus', 'a', function () {
@@ -326,7 +329,7 @@ ve.ce.Surface.prototype.focus = function () {
  * @param {jQuery.Event} e Focus event
  */
 ve.ce.Surface.prototype.documentOnFocus = function () {
-	this.eventSequencer.attach( this.$document );
+	this.eventSequencer.attach( this.$ );
 	this.surfaceObserver.startTimerLoop();
 };
 
