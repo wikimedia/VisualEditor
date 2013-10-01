@@ -60,13 +60,6 @@ OO.mixinClass( ve.dm.Surface, OO.EventEmitter );
  */
 
 /**
- * @event change
- * @see #method-change
- * @param {ve.dm.Transaction|null} transaction
- * @param {ve.Range|undefined} selection
- */
-
-/**
  * @event history
  */
 
@@ -306,7 +299,6 @@ ve.dm.Surface.prototype.truncateUndoStack = function () {
  * @fires select
  * @fires transact
  * @fires contextChange
- * @fires change
  * @fires unlock
  */
 ve.dm.Surface.prototype.change = function ( transactions, selection ) {
@@ -413,8 +405,6 @@ ve.dm.Surface.prototype.change = function ( transactions, selection ) {
 	if ( contextChange ) {
 		this.emit( 'contextChange' );
 	}
-
-	this.emit( 'change', transactions, selection );
 
 	// Continue observation polling, we want to know about things that change from here on out
 	this.emit( 'unlock' );

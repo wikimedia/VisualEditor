@@ -51,7 +51,7 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 	this.pasting = false;
 	this.clickHistory = [];
 	this.focusedNode = null;
-	// This is set on entering changeModelSelection, then unset when leaving.
+	// This is set on entering changeModel, then unset when leaving.
 	// It is used to test whether a reflected change event is emitted.
 	this.newModelSelection = null;
 
@@ -59,7 +59,8 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 	this.surfaceObserver.connect(
 		this, { 'contentChange': 'onContentChange', 'selectionChange': 'onSelectionChange' }
 	);
-	this.model.connect( this, { 'change': 'onChange', 'lock': 'onLock', 'unlock': 'onUnlock' } );
+	this.model.connect( this,
+		{ 'select': 'onModelSelect', 'lock': 'onLock', 'unlock': 'onUnlock' } );
 
 	$documentNode = this.documentView.getDocumentNode().$;
 	$documentNode.on( {
@@ -323,7 +324,7 @@ ve.ce.Surface.prototype.focus = function () {
 	// Calling focus sets the cursor to zero offset, so we need to restore scrollTop
 	$window.scrollTop( scrollTop );
 	this.focusedNode = null;
-	this.onChange( null, this.surface.getModel().selection );
+	this.onModelSelect( this.surface.getModel().selection );
 };
 
 /*! Native Browser Events */
@@ -498,7 +499,8 @@ ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
  * @fires selectionStart
  */
 ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
-	var trigger;
+	var trigger,
+		updateFromModel = false;
 
 	// Ignore keydowns while in IME mode but do not preventDefault them (so text actually appear on
 	// the screen).
@@ -537,32 +539,41 @@ ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
 				this.handleLeftOrRightArrowKey( e );
 			} else {
 				this.handleUpOrDownArrowKey( e );
+				updateFromModel = true;
 			}
 			break;
 		case ve.Keys.ENTER:
 			e.preventDefault();
 			this.handleEnter( e );
+			updateFromModel = true;
 			break;
 		case ve.Keys.BACKSPACE:
 			e.preventDefault();
 			this.handleDelete( e, true );
+			updateFromModel = true;
 			break;
 		case ve.Keys.DELETE:
 			e.preventDefault();
 			this.handleDelete( e, false );
+			updateFromModel = true;
 			break;
 		default:
 			trigger = new ve.ui.Trigger( e );
 			if ( trigger.isComplete() && this.surface.execute( trigger ) ) {
 				e.preventDefault();
+				updateFromModel = true;
 			}
 			break;
 	}
-	this.incRenderLock();
+	if ( !updateFromModel ) {
+		this.incRenderLock();
+	}
 	try {
 		this.surfaceObserver.pollOnce();
 	} finally {
-		this.decRenderLock();
+		if ( !updateFromModel ) {
+			this.decRenderLock();
+		}
 	}
 	this.surfaceObserver.startTimerLoop();
 };
@@ -577,7 +588,8 @@ ve.ce.Surface.prototype.onDocumentKeyPress = function ( e ) {
 	var selection, prevNode, documentModel = this.model.getDocument();
 
 	// Prevent IE from editing Aliens/Entities
-	// TODO: Better comment about what's going on here is needed.
+	// This is for cases like <p><div>alien</div></p>, to put the cursor outside
+	// the alien tag.
 	if ( $.browser.msie === true ) {
 		selection = this.model.getSelection();
 		if ( selection.start !== 0 && selection.isCollapsed() ) {
@@ -913,65 +925,62 @@ ve.ce.Surface.prototype.onDocumentCompositionEnd = function () {
 /*! Custom Events */
 
 /**
- * Handle change events.
+ * Handle model select events.
  *
  * @see ve.dm.Surface#method-change
  *
  * @method
- * @param {ve.dm.Transaction|null} transaction
- * @param {ve.Range|undefined} selection
+ * @param {ve.Range} selection
  */
-ve.ce.Surface.prototype.onChange = function ( transaction, selection ) {
+ve.ce.Surface.prototype.onModelSelect = function ( selection ) {
 	var start, end, rangySel, rangyRange,
 		next = null,
 		previous = this.focusedNode;
 
-	if ( selection ) {
-		// Detect when only a single inline element is selected
-		if ( !selection.isCollapsed() ) {
-			start = this.documentView.getDocumentNode().getNodeFromOffset( selection.start + 1 );
-			if ( start.isFocusable() ) {
-				end = this.documentView.getDocumentNode().getNodeFromOffset( selection.end - 1 );
-				if ( start === end ) {
-					next = start;
-				}
-			}
-		} else {
-			// Check we haven't been programmatically placed inside a focusable node with a collapsed selection
-			start = this.documentView.getDocumentNode().getNodeFromOffset( selection.start );
-			if ( start.isFocusable() ) {
+	// Detect when only a single inline element is selected
+	if ( !selection.isCollapsed() ) {
+		start = this.documentView.getDocumentNode().getNodeFromOffset( selection.start + 1 );
+		if ( start.isFocusable() ) {
+			end = this.documentView.getDocumentNode().getNodeFromOffset( selection.end - 1 );
+			if ( start === end ) {
 				next = start;
 			}
 		}
-		// Update nodes if something changed
-		if ( previous !== next ) {
-			if ( previous ) {
-				previous.setFocused( false );
-				this.focusedNode = null;
-			}
-			if ( next ) {
-				next.setFocused( true );
-				this.focusedNode = start;
-				// As FF won't fire a copy event with nothing selected, make
-				// a dummy selection of one space in the pasteTarget.
-				// onCopy will ignore this native selection and use the DM selection
-				this.$pasteTarget.text( ' ' );
-				rangySel = rangy.getSelection( this.getElementDocument() );
-				rangyRange = rangy.createRange( this.getElementDocument() );
-				rangyRange.setStart( this.$pasteTarget[0], 0 );
-				rangyRange.setEnd( this.$pasteTarget[0], 1 );
-				rangySel.removeAllRanges();
-				this.$pasteTarget[0].focus();
-				rangySel.addRange( rangyRange, false );
-			}
+	} else {
+		// Check we haven't been programmatically placed inside a focusable node with a collapsed selection
+		start = this.documentView.getDocumentNode().getNodeFromOffset( selection.start );
+		if ( start.isFocusable() ) {
+			next = start;
 		}
+	}
+	// Update nodes if something changed
+	if ( previous !== next ) {
+		if ( previous ) {
+			previous.setFocused( false );
+			this.focusedNode = null;
+		}
+		if ( next ) {
+			next.setFocused( true );
+			this.focusedNode = start;
+			// As FF won't fire a copy event with nothing selected, make
+			// a dummy selection of one space in the pasteTarget.
+			// onCopy will ignore this native selection and use the DM selection
+			this.$pasteTarget.text( ' ' );
+			rangySel = rangy.getSelection( this.getElementDocument() );
+			rangyRange = rangy.createRange( this.getElementDocument() );
+			rangyRange.setStart( this.$pasteTarget[0], 0 );
+			rangyRange.setEnd( this.$pasteTarget[0], 1 );
+			rangySel.removeAllRanges();
+			this.$pasteTarget[0].focus();
+			rangySel.addRange( rangyRange, false );
+		}
+	}
 
-		// If there is no focused node, use native selection, but ignore the selection if
-		// changeModelSelection is currently being called with the same (object-identical)
-		// selection object (i.e. if the model is calling us back)
-		if ( !this.focusedNode && !this.isRenderingLocked() && selection !== this.newModelSelection ) {
-			this.showSelection( selection );
-		}
+	// If there is no focused node, use native selection, but ignore the selection if
+	// changeModelSelection is currently being called with the same (object-identical)
+	// selection object (i.e. if the model is calling us back)
+	if ( !this.focusedNode && !this.isRenderingLocked() && selection !== this.newModelSelection ) {
+		this.showSelection( selection );
 	}
 };
 
@@ -991,7 +1000,7 @@ ve.ce.Surface.prototype.onSelectionChange = function ( oldRange, newRange ) {
 	}
 	this.incRenderLock();
 	try {
-		this.changeModelSelection( newRange );
+		this.changeModel( null, newRange );
 	} finally {
 		this.decRenderLock();
 	}
@@ -1060,7 +1069,7 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 			}
 			this.incRenderLock();
 			try {
-				this.model.change(
+				this.changeModel(
 					ve.dm.Transaction.newFromInsertion(
 						this.documentView.model, previous.range.start, data
 					),
@@ -1081,7 +1090,7 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 			}
 			this.incRenderLock();
 			try {
-				this.model.change(
+				this.changeModel(
 					ve.dm.Transaction.newFromRemoval( this.documentView.model,
 						range ),
 					next.range
@@ -1145,7 +1154,7 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 	}
 
 	if ( data.length > 0 ) {
-			this.model.change(
+			this.changeModel(
 				ve.dm.Transaction.newFromInsertion(
 					this.documentView.model, nodeOffset + 1 + fromLeft,
 					data
@@ -1154,7 +1163,7 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 			);
 	}
 	if ( fromLeft + fromRight < previousData.length ) {
-		this.model.change(
+		this.changeModel(
 			ve.dm.Transaction.newFromRemoval(
 				this.documentView.model,
 				new ve.Range(
@@ -1399,6 +1408,7 @@ ve.ce.Surface.prototype.handleEnter = function ( e ) {
 	if ( selection.from !== selection.to ) {
 		tx = ve.dm.Transaction.newFromRemoval( documentModel, selection );
 		selection = tx.translateRange( selection );
+		// We do want this to propagate to the surface
 		this.model.change( tx, selection );
 	}
 
@@ -1883,21 +1893,23 @@ ve.ce.Surface.prototype.getDir = function () {
 };
 
 /**
- * Change selection in the model only, not the CE surface
+ * Change the model only, not the CE surface
  *
  * This avoids event storms when the CE surface is already correct
  *
  * @method
- * @param {ve.Range} range New selection for model
- * @throws {Error} If calls to the method are nested
+ * @param {ve.dm.Transaction|ve.dm.Transaction[]|null} transactions One or more transactions to
+ * process, or null to process none
+ * @param {ve.Range} new selection
+ * @throws {Error} If calls to this method are nested
  */
-ve.ce.Surface.prototype.changeModelSelection = function ( range ) {
+ve.ce.Surface.prototype.changeModel = function ( transaction, range ) {
 	if ( this.newModelSelection !== null ) {
-		throw new Error( 'Nested changeModelSelection' );
+		throw new Error( 'Nested change of newModelSelection' );
 	}
 	this.newModelSelection = range;
 	try {
-		this.model.change( null, range );
+		this.model.change( transaction, range );
 	} finally {
 		this.newModelSelection = null;
 	}
