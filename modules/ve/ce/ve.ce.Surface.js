@@ -60,7 +60,8 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 		this, { 'contentChange': 'onContentChange', 'selectionChange': 'onSelectionChange' }
 	);
 	this.model.connect( this,
-		{ 'select': 'onModelSelect', 'lock': 'onLock', 'unlock': 'onUnlock' } );
+		{ 'select': 'onModelSelect', 'documentUpdate': 'onModelDocumentUpdate' }
+	);
 
 	$documentNode = this.documentView.getDocumentNode().$;
 	$documentNode.on( {
@@ -982,6 +983,18 @@ ve.ce.Surface.prototype.onModelSelect = function ( selection ) {
 	if ( !this.focusedNode && !this.isRenderingLocked() && selection !== this.newModelSelection ) {
 		this.showSelection( selection );
 	}
+
+	// Update the selection state in the SurfaceObserver
+	this.surfaceObserver.pollOnceNoEmit();
+};
+
+/**
+ * Handle documentUpdate events on the surface model.
+ * @param {ve.dm.Transaction} transaction Transaction that was processed
+ */
+ve.ce.Surface.prototype.onModelDocumentUpdate = function () {
+	// Update the state of the SurfaceObserver
+	this.surfaceObserver.pollOnceNoEmit();
 };
 
 /**
@@ -1175,25 +1188,6 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 			newRange
 		);
 	}
-};
-
-/**
- * Handle surface lock events.
- *
- * @method
- */
-ve.ce.Surface.prototype.onLock = function () {
-	this.surfaceObserver.locked = true;
-};
-
-/**
- * Handle surface unlock events.
- *
- * @method
- */
-ve.ce.Surface.prototype.onUnlock = function () {
-	this.surfaceObserver.locked = false;
-	this.surfaceObserver.pollOnceNoEmit();
 };
 
 /*! Relocation */

@@ -44,14 +44,6 @@ OO.mixinClass( ve.dm.Surface, OO.EventEmitter );
 /* Events */
 
 /**
- * @event lock
- */
-
-/**
- * @event unlock
- */
-
-/**
  * @event select
  * @param {ve.Range} selection
  */
@@ -366,8 +358,6 @@ ve.dm.Surface.prototype.stopQueueingContextChanges = function () {
  *
  * @param {ve.Range} selection New selection
  *
- * @fires lock
- * @fires unlock
  * @fires select
  * @fires contextChange
  */
@@ -387,9 +377,6 @@ ve.dm.Surface.prototype.setSelection = function ( selection ) {
 		this.selection = selection;
 		return;
 	}
-
-	// Stop observation polling, things changing right now are known already
-	this.emit( 'lock' );
 
 	// Detect if selected nodes changed
 	selectedNodes.start = this.documentModel.getNodeFromOffset( selection.start );
@@ -447,9 +434,6 @@ ve.dm.Surface.prototype.setSelection = function ( selection ) {
 	if ( contextChange ) {
 		this.emitContextChange();
 	}
-
-	// Continue observation polling, we want to know about things that change from here on out
-	this.emit( 'unlock' );
 };
 
 /**
@@ -459,9 +443,7 @@ ve.dm.Surface.prototype.setSelection = function ( selection ) {
  * @param {ve.dm.Transaction|ve.dm.Transaction[]|null} transactions One or more transactions to
  *  process, or null to process none
  * @param {ve.Range} [selection] Selection to apply
- * @fires lock
  * @fires contextChange
- * @fires unlock
  */
 ve.dm.Surface.prototype.change = function ( transactions, selection ) {
 	this.changeInternal( transactions, selection, false );
@@ -475,9 +457,7 @@ ve.dm.Surface.prototype.change = function ( transactions, selection ) {
  * @param {ve.dm.Transaction|ve.dm.Transaction[]|null} transactions
  * @param {ve.Range} [selection] [selection]
  * @param {boolean} [skipUndoStack=false] If true, do not modify the undo stack. Used by undo/redo
- * @fires lock
  * @fires contextChange
- * @fires unlock
  */
 ve.dm.Surface.prototype.changeInternal = function ( transactions, selection, skipUndoStack ) {
 	var i, len, selectionAfter, selectionBefore = this.selection, contextChange = false;
@@ -494,7 +474,6 @@ ve.dm.Surface.prototype.changeInternal = function ( transactions, selection, ski
 			transactions = [transactions];
 		}
 		this.transacting = true;
-		this.emit( 'lock' );
 		for ( i = 0, len = transactions.length; i < len; i++ ) {
 			if ( !transactions[i].isNoOp() ) {
 				if ( !skipUndoStack ) {
@@ -508,7 +487,6 @@ ve.dm.Surface.prototype.changeInternal = function ( transactions, selection, ski
 				}
 			}
 		}
-		this.emit( 'unlock' );
 		this.transacting = false;
 	}
 	selectionAfter = this.selection;
