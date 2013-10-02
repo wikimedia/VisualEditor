@@ -61,21 +61,21 @@ ve.ui.MWReferenceDialog.prototype.initialize = function () {
 		'$$': this.frame.$$, 'scrollable': true, 'padded': true
 	} );
 	this.searchPanel = new ve.ui.PanelLayout( { '$$': this.frame.$$ } );
-	this.applyButton = new ve.ui.ButtonWidget( {
+	this.applyButton = new ve.ui.PushButtonWidget( {
 		'$$': this.frame.$$,
 		'label': ve.msg( 'visualeditor-dialog-action-apply' ),
 		'flags': ['primary']
 	} );
-	this.insertButton = new ve.ui.ButtonWidget( {
+	this.insertButton = new ve.ui.PushButtonWidget( {
 		'$$': this.frame.$$,
 		'label': ve.msg( 'visualeditor-dialog-reference-insert-button' ),
 		'flags': ['constructive']
 	} );
-	this.selectButton = new ve.ui.ButtonWidget( {
+	this.selectButton = new ve.ui.PushButtonWidget( {
 		'$$': this.frame.$$,
 		'label': ve.msg ( 'visualeditor-dialog-reference-useexisting-label' )
 	} );
-	this.backButton = new ve.ui.ButtonWidget( {
+	this.backButton = new ve.ui.PushButtonWidget( {
 		'$$': this.frame.$$,
 		'label': ve.msg( 'visualeditor-dialog-action-goback' )
 	} );

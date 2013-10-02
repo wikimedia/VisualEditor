@@ -32,25 +32,21 @@
 	background-image: none;
 }
 
-.ve-ui-context-embed .ve-ui-popupWidget-callout {
-	display: none;
-}
-
-.ve-ui-context-embed .ve-ui-popupWidget-body {
+.ve-ui-context > .ve-ui-popupWidget:not(.ve-ui-popupWidget-tailed) .ve-ui-popupWidget-popup {
 	margin-top: 0.25em;
 }
 
 /* @noflip */
-.ltr .ve-ui-context-embed .ve-ui-popupWidget-body {
-	margin-left: -0.75em;
+.ltr .ve-ui-context > .ve-ui-popupWidget:not(.ve-ui-popupWidget-tailed) .ve-ui-popupWidget-popup {
+	margin-left: -0.5em;
 }
 
 /* @noflip */
-.rtl .ve-ui-context-embed .ve-ui-popupWidget-body {
-	margin-left: 0.75em;
+.rtl .ve-ui-context > .ve-ui-popupWidget:not(.ve-ui-popupWidget-tailed) .ve-ui-popupWidget-popup {
+	margin-left: 0.5em;
 }
 
-.ve-ui-context-embed .ve-ui-context-menu {
+.ve-ui-context > .ve-ui-popupWidget:not(.ve-ui-popupWidget-tailed) .ve-ui-context-menu {
 	right: 0;
 }
 

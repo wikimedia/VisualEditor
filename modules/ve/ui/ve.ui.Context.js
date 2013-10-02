@@ -306,8 +306,6 @@ ve.ui.Context.prototype.updateDimensions = function ( transition ) {
 	this.$.css( { 'left': position.x, 'top': position.y } );
 
 	this.popup.display(
-		position.x,
-		position.y,
 		$container.outerWidth( true ),
 		$container.outerHeight( true ),
 		transition
@@ -345,17 +343,12 @@ ve.ui.Context.prototype.show = function ( transition ) {
 			}, this ), 200 );
 		} else {
 			this.inspectors.$.hide();
-			if (
+			this.embedded = (
 				focusedNode &&
 				focusedNode.$focusable.outerHeight() > this.$menu.outerHeight() * 2 &&
 				focusedNode.$focusable.outerWidth() > this.$menu.outerWidth() * 2
-			) {
-				this.$.addClass( 've-ui-context-embed' );
-				this.embedded = true;
-			} else {
-				this.$.removeClass( 've-ui-context-embed' );
-				this.embedded = false;
-			}
+			);
+			this.popup.useTail( !this.embedded );
 			this.$menu.show();
 		}
 

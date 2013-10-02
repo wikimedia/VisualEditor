@@ -71,7 +71,7 @@ ve.ui.MWMediaEditDialog.prototype.initialize = function () {
 		'label': ve.msg( 'visualeditor-dialog-media-content-section' ),
 		'icon': 'parameter'
 	} );
-	this.applyButton = new ve.ui.ButtonWidget( {
+	this.applyButton = new ve.ui.PushButtonWidget( {
 		'$$': this.$$,
 		'label': ve.msg( 'visualeditor-dialog-action-apply' ),
 		'flags': ['primary']

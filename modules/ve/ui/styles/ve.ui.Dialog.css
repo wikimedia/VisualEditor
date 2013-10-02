@@ -118,14 +118,14 @@
 	line-height: 2.8em;
 }
 
-.ve-ui-dialog-content .ve-ui-window-foot .ve-ui-buttonWidget {
+.ve-ui-dialog-content .ve-ui-window-foot .ve-ui-pushButtonWidget {
 	float: left;
 	margin: 0.125em 0.25em;
 }
 
-.ve-ui-dialog-content .ve-ui-window-foot .ve-ui-buttonWidget.ve-ui-flaggableElement-primary,
-.ve-ui-dialog-content .ve-ui-window-foot .ve-ui-buttonWidget.ve-ui-flaggableElement-constructive,
-.ve-ui-dialog-content .ve-ui-window-foot .ve-ui-buttonWidget.ve-ui-flaggableElement-destructive {
+.ve-ui-dialog-content .ve-ui-window-foot .ve-ui-pushButtonWidget.ve-ui-flaggableElement-primary,
+.ve-ui-dialog-content .ve-ui-window-foot .ve-ui-pushButtonWidget.ve-ui-flaggableElement-constructive,
+.ve-ui-dialog-content .ve-ui-window-foot .ve-ui-pushButtonWidget.ve-ui-flaggableElement-destructive {
 	float: right;
 }
 

@@ -37,22 +37,14 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 	this.saveDialogSlideHistory = [];
 	this.saveDialogSaveButton = null;
 	this.saveDialogReviewGoodButton = null;
+	this.toolbarEditNoticesButton = null;
+	this.toolbarEditNotices = null;
+	this.toolbarBetaNoticesButton = null;
+	this.toolbarBetaNotices = null;
+	this.toolbarHelpButton = null;
+	this.toolbarFeedbackButton = null;
+	this.toolbarMetaButton = null;
 
-	this.$toolbarEditNotices = $( '<div>' )
-		.addClass( 've-init-mw-viewPageTarget-toolbar-editNotices' );
-	this.$toolbarEditNoticesTool = $( '<div>' )
-		.addClass( 've-init-mw-viewPageTarget-tool' );
-
-	this.$toolbarFeedbackTool = $( '<div>' )
-		.addClass( 've-init-mw-viewPageTarget-tool' );
-
-	this.$toolbarBetaNotice = $( '<div>' )
-		.addClass( 've-init-mw-viewPageTarget-toolbar-betaNotice' );
-	this.$toolbarBetaNoticeTool = $( '<div>' )
-		.addClass( 've-init-mw-viewPageTarget-tool' );
-
-	this.$toolbarMwMetaButton = $( '<div>' )
-		.addClass( 've-init-mw-viewPageTarget-tool' );
 	this.$saveDialog = $( '<div>' )
 		.addClass( 've-init-mw-viewPageTarget-saveDialog' );
 
@@ -294,9 +286,9 @@ ve.init.mw.ViewPageTarget.prototype.onLoad = function ( doc ) {
 		this.doc = doc;
 		this.setUpSurface( doc, ve.bind( function() {
 			this.startSanityCheck();
-			this.setupToolbarEditNotices();
-			this.setupToolbarBetaNotice();
 			this.setupToolbarButtons();
+			this.setupToolbarEditNotices();
+			this.setupToolbarBetaNotices();
 			this.setupSaveDialog();
 			this.attachToolbarButtons();
 			this.attachSaveDialog();
@@ -746,33 +738,8 @@ ve.init.mw.ViewPageTarget.prototype.onToolbarCancelButtonClick = function () {
  * @method
  * @param {jQuery.Event} e Mouse click event
  */
-ve.init.mw.ViewPageTarget.prototype.onToolbarMwMetaButtonClick = function () {
+ve.init.mw.ViewPageTarget.prototype.onToolbarMetaButtonClick = function () {
 	this.surface.getDialogs().open( 'meta' );
-};
-
-
-/**
- * Handle clicks on the edit notices tool in the toolbar.
- *
- * @method
- * @param {jQuery.Event} e Mouse click event
- */
-ve.init.mw.ViewPageTarget.prototype.onToolbarEditNoticesToolClick = function () {
-	this.$toolbarEditNotices.fadeToggle( 'fast' );
-	this.$toolbarBetaNotice.fadeOut( 'fast' );
-	this.$document[0].focus();
-};
-
-/**
- * Handle clicks on the beta notices tool in the toolbar.
- *
- * @method
- * @param {jQuery.Event} e Mouse click event
- */
-ve.init.mw.ViewPageTarget.prototype.onToolbarBetaNoticeToolClick = function () {
-	this.$toolbarBetaNotice.fadeToggle( 'fast' );
-	this.$toolbarEditNotices.fadeOut( 'fast' );
-	this.$document[0].focus();
 };
 
 /**
@@ -782,7 +749,7 @@ ve.init.mw.ViewPageTarget.prototype.onToolbarBetaNoticeToolClick = function () {
  * @param {jQuery.Event} e Mouse click event
  */
 ve.init.mw.ViewPageTarget.prototype.onToolbarFeedbackToolClick = function () {
-	this.$toolbarEditNotices.fadeOut( 'fast' );
+	this.toolbarBetaNotices.hide();
 	if ( !this.feedback ) {
 		// This can't be constructed until the editor has loaded as it uses special messages
 		this.feedback = new mw.Feedback( {
@@ -1001,12 +968,18 @@ ve.init.mw.ViewPageTarget.prototype.onSaveDialogPrevButtonClick = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.setupToolbarEditNotices = function () {
-	var key;
-	this.$toolbarEditNotices.empty();
+	var key,
+		$notices = $( '<div>' );
+
 	for ( key in this.editNotices ) {
-		this.$toolbarEditNotices.append( this.editNotices[key] );
+		$notices.append( this.editNotices[key] );
 	}
-	this.$toolbarEditNotices.find( 'a' ).attr( 'target', '_blank' );
+	$notices
+		.addClass( 've-init-mw-viewPageTarget-editNotices' )
+		.find( 'a' ).attr( 'target', '_blank' );
+
+	this.toolbarEditNotices = this.toolbarEditNoticesButton.getPopup();
+	this.toolbarEditNotices.$body.empty().append( $notices );
 };
 
 /**
@@ -1015,25 +988,27 @@ ve.init.mw.ViewPageTarget.prototype.setupToolbarEditNotices = function () {
  * @method
  * @returns {string[]} HTML strings for each edit notice
  */
-ve.init.mw.ViewPageTarget.prototype.setupToolbarBetaNotice = function () {
-	this.$toolbarBetaNotice.empty();
-	this.$toolbarBetaNotice
-		.append( $( '<span>' )
-			.text( ve.msg( 'visualeditor-beta-warning' ) )
+ve.init.mw.ViewPageTarget.prototype.setupToolbarBetaNotices = function () {
+	var $notices = $( '<div>' );
+
+	$notices
+		.addClass( 've-init-mw-viewPageTarget-betaNotices' )
+		.append(
+			$( '<div>' )
+				.addClass( 've-init-mw-viewPageTarget-betaNotices-notice' )
+				.text( ve.msg( 'visualeditor-beta-warning' ) )
 		)
-		.append( $( '<div>' )
-			.addClass( 've-init-mw-viewPageTarget-tool' )
-			.append( $( '<span>' )
-				.addClass( 've-init-mw-viewPageTarget-subtool-label' )
-				.append( $( '<a>' )
-					.attr( 'title', ve.msg( 'visualeditor-help-title' ) )
-					.attr( 'target', '_blank' )
-					.attr( 'href', new mw.Title( ve.msg( 'visualeditor-help-link' ) ).getUrl() )
-					.text( ve.msg( 'visualeditor-help-label' ) )
-		) ) );
+		.append(
+			$( '<div>' )
+				.addClass( 've-init-mw-viewPageTarget-betaNotices-notice' )
+				.append( this.toolbarHelpButton.$ )
+				.append( this.toolbarFeedbackButton.$ )
+		);
+
 	if ( ve.version.id !== false ) {
-		this.$toolbarBetaNotice
+		$notices
 			.append( $( '<div>' )
+				.addClass( 've-init-mw-viewPageTarget-betaNotices-notice' )
 				.append( $( '<span>' )
 					.addClass( 've-init-mw-ViewPageTarget-version-label' )
 					.text( ve.msg( 'visualeditor-version-label' ) )
@@ -1052,6 +1027,9 @@ ve.init.mw.ViewPageTarget.prototype.setupToolbarBetaNotice = function () {
 				)
 			);
 	}
+
+	this.toolbarBetaNotices = this.toolbarBetaNoticesButton.getPopup();
+	this.toolbarBetaNotices.$body.empty().append( $notices );
 };
 
 /**
@@ -1270,9 +1248,9 @@ ve.init.mw.ViewPageTarget.prototype.setupSectionEditLinks = null;
 ve.init.mw.ViewPageTarget.prototype.setupToolbarButtons = function () {
 	var editNoticeCount = ve.getObjectKeys( this.editNotices ).length;
 
-	this.toolbarCancelButton = new ve.ui.ButtonWidget( { 'label': ve.msg( 'visualeditor-toolbar-cancel' ) } );
+	this.toolbarCancelButton = new ve.ui.PushButtonWidget( { 'label': ve.msg( 'visualeditor-toolbar-cancel' ) } );
 	this.toolbarCancelButton.$.addClass( 've-ui-toolbar-cancelButton' );
-	this.toolbarSaveButton = new ve.ui.ButtonWidget( {
+	this.toolbarSaveButton = new ve.ui.PushButtonWidget( {
 		'label': ve.msg( 'visualeditor-toolbar-savedialog' ),
 		'flags': ['constructive'],
 		'disabled': !this.restoring
@@ -1285,47 +1263,49 @@ ve.init.mw.ViewPageTarget.prototype.setupToolbarButtons = function () {
 	this.toolbarCancelButton.connect( this, { 'click': 'onToolbarCancelButtonClick' } );
 	this.toolbarSaveButton.connect( this, { 'click': 'onToolbarSaveButtonClick' } );
 
-	this.$toolbarMwMetaButton
-		.addClass( 've-ui-icon-settings' )
-		.append(
-			$( '<span>' )
-				.addClass( 've-init-mw-viewPageTarget-tool-label' )
-				.text( ve.msg( 'visualeditor-meta-tool' ) )
-		)
-		.click( ve.bind( this.onToolbarMwMetaButtonClick, this ) );
+	this.toolbarMetaButton = new ve.ui.IconButtonWidget( {
+		'icon': 'settings',
+		'label': ve.msg( 'visualeditor-meta-tool' )
+	} );
+	this.toolbarMetaButton.connect( this, { 'click': 'onToolbarMetaButtonClick' } );
 
-
+	this.toolbarEditNoticesButton = new ve.ui.PopupButtonWidget( {
+		'icon': 'alert',
+		'popup': {
+			'label': ve.msg( 'visualeditor-editnotices-tool', editNoticeCount ),
+			'head': true
+		}
+	} );
 	if ( editNoticeCount ) {
-		this.$toolbarEditNoticesTool
-			.addClass( 've-ui-icon-alert' )
-			.append(
-				$( '<span>' )
-					.addClass( 've-init-mw-viewPageTarget-tool-label' )
-					.text( ve.msg( 'visualeditor-editnotices-tool', editNoticeCount ) )
-			)
-			.append( this.$toolbarEditNotices )
-			.click( ve.bind( this.onToolbarEditNoticesToolClick, this ) );
-		this.$toolbarEditNotices.fadeIn( 'fast' );
+		setTimeout( ve.bind( function () {
+			this.toolbarEditNoticesButton.showPopup();
+		}, this ), 500 );
+	} else {
+		this.toolbarEditNoticesButton.hide();
 	}
 
-	this.$toolbarBetaNoticeTool
-		.addClass( 've-ui-icon-help' )
-		.append(
-			$( '<span>' )
-				.addClass( 've-init-mw-viewPageTarget-tool-label ve-init-mw-viewPageTarget-tool-beta-label' )
-				.text( ve.msg( 'visualeditor-beta-label' ) )
-		)
-		.append( this.$toolbarBetaNotice )
-		.click( ve.bind( this.onToolbarBetaNoticeToolClick, this ) );
+	this.toolbarBetaNoticesButton = new ve.ui.PopupButtonWidget( {
+		'icon': 'help',
+		'popup': {
+			'label': ve.msg( 'visualeditor-help-tool' ),
+			'head': true
+		}
+	} );
+	this.toolbarBetaNoticesButton.$label.addClass( 've-init-mw-viewPageTarget-tool-beta-label' );
 
-	this.$toolbarFeedbackTool
-		.addClass( 've-ui-icon-comment' )
-		.append(
-			$( '<span>' )
-				.addClass( 've-init-mw-viewPageTarget-tool-label' )
-				.text( ve.msg( 'visualeditor-feedback-tool' ) )
-		)
-		.click( ve.bind( this.onToolbarFeedbackToolClick, this ) );
+	this.toolbarHelpButton = new ve.ui.IconButtonWidget( {
+		'icon': 'help',
+		'title': ve.msg( 'visualeditor-help-title' ),
+		'href': new mw.Title( ve.msg( 'visualeditor-help-link' ) ).getUrl(),
+		'target': '_blank',
+		'label': ve.msg( 'visualeditor-help-label' )
+	} );
+
+	this.toolbarFeedbackButton = new ve.ui.IconButtonWidget( {
+		'icon': 'comment',
+		'label': ve.msg( 'visualeditor-feedback-tool' )
+	} );
+	this.toolbarFeedbackButton.connect( this, { 'click': 'onToolbarFeedbackToolClick' } );
 };
 
 /**
@@ -1336,10 +1316,10 @@ ve.init.mw.ViewPageTarget.prototype.setupToolbarButtons = function () {
 ve.init.mw.ViewPageTarget.prototype.tearDownToolbarButtons = function () {
 	this.toolbarCancelButton.disconnect( this );
 	this.toolbarSaveButton.disconnect( this );
-	this.$toolbarMwMetaButton.empty().off( 'click' );
-	this.$toolbarEditNoticesTool.empty().off( 'click' );
-	this.$toolbarBetaNoticeTool.empty().off( 'click' );
-	this.$toolbarFeedbackTool.empty().off( 'click' );
+	this.toolbarMetaButton.disconnect( this );
+	this.toolbarFeedbackButton.disconnect( this );
+	this.toolbarEditNotices.$body.empty();
+	this.toolbarBetaNotices.$body.empty();
 };
 
 /**
@@ -1348,18 +1328,25 @@ ve.init.mw.ViewPageTarget.prototype.tearDownToolbarButtons = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.attachToolbarButtons = function () {
-	var $target = this.toolbar.$actions;
-	$target.append( this.$toolbarBetaNoticeTool );
-	this.$toolbarBetaNotice.append( this.$toolbarFeedbackTool );
+	var $iconButtons = $( '<div>' ),
+		$pushButtons = $( '<div>' );
 
-	if ( !ve.isEmptyObject( this.editNotices ) ) {
-		$target.append( this.$toolbarEditNoticesTool );
-	}
-	$target.append(
-		this.$toolbarMwMetaButton,
-		this.toolbarCancelButton.$,
-		this.toolbarSaveButton.$
-	);
+	$iconButtons
+		.addClass( 've-init-mw-viewPageTarget-toolbar-utilites' )
+		.append(
+			this.toolbarBetaNoticesButton.$,
+			this.toolbarEditNoticesButton.$,
+			this.toolbarMetaButton.$
+		);
+
+	$pushButtons
+		.addClass( 've-init-mw-viewPageTarget-toolbar-actions' )
+		.append(
+			this.toolbarCancelButton.$,
+			this.toolbarSaveButton.$
+		);
+
+	this.toolbar.$actions.append( $iconButtons, $pushButtons );
 };
 
 /**
@@ -1370,10 +1357,12 @@ ve.init.mw.ViewPageTarget.prototype.attachToolbarButtons = function () {
 ve.init.mw.ViewPageTarget.prototype.detachToolbarButtons = function () {
 	this.toolbarCancelButton.$.detach();
 	this.toolbarSaveButton.$.detach();
-	this.$toolbarMwMetaButton.detach();
-	this.$toolbarEditNoticesTool.detach();
-	this.$toolbarFeedbackTool.detach();
-	this.$toolbarBetaNoticeTool.detach();
+	this.toolbarMetaButton.$.detach();
+	this.toolbarHelpButton.$.detach();
+	this.toolbarFeedbackButton.$.detach();
+	this.toolbarBetaNoticesButton.$.detach();
+	this.toolbarEditNoticesButton.$.detach();
+	this.toolbar.$actions.empty();
 };
 
 /**
@@ -1385,7 +1374,7 @@ ve.init.mw.ViewPageTarget.prototype.setupSaveDialog = function () {
 	var sectionTitle = '', viewPage = this;
 
 	// Save button on "save" slide
-	this.saveDialogSaveButton = new ve.ui.ButtonWidget( {
+	this.saveDialogSaveButton = new ve.ui.PushButtonWidget( {
 		'label': ve.msg(
 			 // visualeditor-savedialog-label-restore, visualeditor-savedialog-label-save
 			'visualeditor-savedialog-label-' + ( viewPage.restoring ? 'restore' : 'save' )
@@ -1395,14 +1384,14 @@ ve.init.mw.ViewPageTarget.prototype.setupSaveDialog = function () {
 	this.saveDialogSaveButton.connect( this, { 'click': 'onSaveDialogSaveButtonClick' } );
 
 	// Review button on "save" slide
-	this.saveDialogReviewButton = new ve.ui.ButtonWidget( {
+	this.saveDialogReviewButton = new ve.ui.PushButtonWidget( {
 		'label': ve.msg(
 			'visualeditor-savedialog-label-review'
 		)
 	} );
 	this.saveDialogReviewButton.connect( this, { 'click': 'onSaveDialogReviewButtonClick' } );
 
-	this.saveDialogReviewGoodButton = new ve.ui.ButtonWidget( {
+	this.saveDialogReviewGoodButton = new ve.ui.PushButtonWidget( {
 		'label': ve.msg( 'visualeditor-savedialog-label-review-good' ),
 		'flags': ['constructive']
 	} );
@@ -1410,7 +1399,7 @@ ve.init.mw.ViewPageTarget.prototype.setupSaveDialog = function () {
 		this, { 'click': 'onSaveDialogReviewGoodButtonClick' }
 	);
 
-	this.saveDialogResolveConflictButton = new ve.ui.ButtonWidget( {
+	this.saveDialogResolveConflictButton = new ve.ui.PushButtonWidget( {
 		'label': ve.msg( 'visualeditor-savedialog-label-resolve-conflict' ),
 		'flags': ['constructive']
 	} );
@@ -1546,8 +1535,8 @@ ve.init.mw.ViewPageTarget.prototype.showSaveDialog = function () {
 	viewPage.surface.disable();
 	viewPage.$document.css( 'opacity', 0.5 );
 
-	viewPage.$toolbarBetaNotice.fadeOut( 'fast' );
-	viewPage.$toolbarEditNotices.fadeOut( 'fast' );
+	viewPage.toolbarBetaNotices.hide();
+	viewPage.toolbarEditNotices.hide();
 
 	viewPage.swapSaveDialog( 'save' );
 

@@ -24,7 +24,22 @@
 
 /* Toolbar */
 
-.ve-ui-toolbar-actions .ve-ui-buttonWidget {
+.ve-init-mw-viewPageTarget-toolbar-utilites,
+.ve-init-mw-viewPageTarget-toolbar-actions {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.ve-init-mw-viewPageTarget-toolbar-utilites {
+	margin-right: 1em;
+}
+
+.ve-init-mw-viewPageTarget-toolbar-utilites > .ve-ui-iconButtonWidget {
+	margin-right: 0.2em;
+	margin-top: 0.2em;
+}
+
+.ve-init-mw-viewPageTarget-toolbar-actions > .ve-ui-pushButtonWidget {
 	margin-left: 0.25em;
 	margin-right: 0.25em;
 	margin-top: 0.2em;
@@ -33,48 +48,6 @@
 /* Needs to override .ve-ui.widget.ve-ui-widget-disabled */
 .ve-ui-toolbar-actions .ve-init-mw-viewPageTarget-waiting.ve-ui-widget.ve-ui-widget-disabled {
 	cursor: progress;
-}
-
-/* Beta notices */
-
-.ve-init-mw-viewPageTarget-toolbar-betaNotice {
-	display: none;
-	position: absolute;
-	right: -0.5em;
-	top: 30px;
-	width: 20em;
-	font-family: sans-serif;
-	border: solid 1px #ccc;
-	padding: 0.5em 1.25em 0 1.25em;
-	border-radius: 0.25em;
-	background-color: #fff;
-	box-shadow: 0 0.15em 0.5em 0 rgba(0, 0, 0, 0.2);
-	z-index: 3;
-	line-height: 1.5em;
-}
-
-/* Edit notices */
-
-.ve-init-mw-viewPageTarget-toolbar-editNotices {
-	display: none;
-	position: absolute;
-	right: -0.5em;
-	top: 30px;
-	width: 29em;
-	font-family: sans-serif;
-	border: solid 1px #ccc;
-	padding: 0 1.75em 0 0.75em;
-	border-radius: 0.25em;
-	background-color: #fff;
-	box-shadow: 0 0.15em 0.5em 0 rgba(0, 0, 0, 0.2);
-	z-index: 3;
-}
-
-.ve-init-mw-viewPageTarget-toolbar-editNotices-notice {
-	padding: 0.5em 0;
-	line-height: 1.5em;
-	border-top: solid 1px #ccc;
-	margin-top: -1px;
 }
 
 /* Tools */
@@ -105,6 +78,39 @@
 	text-decoration: underline;
 }
 
+.ve-init-mw-viewPageTarget-editNotices,
+.ve-init-mw-viewPageTarget-betaNotices {
+	padding: 0.5em 1em;
+}
+
+.ve-init-mw-viewPageTarget-toolbar .ve-ui-popupButtonWidget .ve-ui-popupWidget-popup,
+.ve-init-mw-viewPageTarget-toolbar .ve-ui-popupButtonWidget .ve-ui-popupWidget-tail {
+	z-index: 4;
+}
+
+.ve-init-mw-viewPageTarget-editNotices-notice:not(:first-child),
+.ve-init-mw-viewPageTarget-betaNotices-notice:not(:first-child) {
+	border-top: solid 1px #ddd;
+	padding-top: 0.8em;
+	margin-top: 0.8em;
+}
+
+.ve-init-mw-viewPageTarget-betaNotices-notice > .ve-ui-iconButtonWidget {
+	display: block;
+	margin: 0.5em 0;
+}
+
+.ve-init-mw-viewPageTarget-betaNotices-notice > .ve-ui-iconButtonWidget:first-child {
+	margin-top: 0;
+}
+
+.ve-init-mw-ViewPageTarget-version-label,
+.ve-init-mw-ViewPageTarget-version-link,
+.ve-init-mw-ViewPageTarget-version-date {
+	font-size: 0.8em;
+	color: #555;
+}
+
 /* Save dialog styles */
 
 .ve-init-mw-viewPageTarget-toolbarTracker {
@@ -119,7 +125,7 @@
 	z-index: 100;
 }
 
-.ve-init-mw-viewPageTarget-saveDialog .ve-ui-buttonWidget {
+.ve-init-mw-viewPageTarget-saveDialog .ve-ui-pushButtonWidget {
 	float: right;
 	margin-left: 0.5em;
 	font-size: 0.8em;

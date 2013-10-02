@@ -224,7 +224,7 @@ ve.init.mw.Target.onNoticesReady = function () {
 
 	for ( i = 0, len = noticeHtmls.length; i < len; i++ ) {
 		el = $( '<div>' )
-			.addClass( 've-init-mw-viewPageTarget-toolbar-editNotices-notice' )
+			.addClass( 've-init-mw-viewPageTarget-editNotices-notice' )
 			.html( noticeHtmls[i] )
 			.get( 0 );
 

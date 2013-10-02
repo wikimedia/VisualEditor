@@ -111,16 +111,13 @@
 .ve-ui-mwCategoryItemControl {
 	position: absolute;
 	right: 0;
-	top: 0;
+	top: 0.125em;
 	width: 2.25em;
 	height: 2.25em;
 	background-repeat: no-repeat;
 	background-position: center center;
 }
 
-.ve-ui-mwCategoryPopupMenu .ve-ui-popupWidget-body {
-	padding: 0.75em 0.5em;
-}
 /* ve.ui.MWCategoryInputWidget */
 
 .ve-ui-mwCategoryInputWidget {
@@ -138,33 +135,39 @@
 	padding-right: 0.75em;
 }
 
-.ve-ui-mwCategoryPopupMenu {
+/* ve.ui.MWCategoryPopupWidget */
+
+.ve-ui-mwCategoryPopupWidget {
 	position: absolute;
 	margin-top: -10px;
 }
 
-.ve-ui-mwCategoryPopupMenu .ve-ui-iconButtonWidget {
+.ve-ui-mwCategoryPopupWidget-content {
+	padding: 0.75em 0.5em;
+}
+
+.ve-ui-mwCategoryPopupWidget .ve-ui-iconButtonWidget {
 	display: block;
 	float: left;
 }
 
-.ve-ui-mwCategoryPopupMenu label {
+.ve-ui-mwCategoryPopupWidget label {
 	opacity: .8;
 	display: block;
 }
 
-.ve-ui-mwCategoryPopupTitle {
+.ve-ui-mwCategoryPopupWidget-title {
 	background-position: left center;
 	background-repeat: no-repeat;
 	padding: 0.5em 0.5em 0.5em 2.25em;
 	margin: -0.4em 0 1em 0.125em;
 }
 
-.ve-ui-mwCategoryPopupMenu .ve-ui-removeButtonLabel:hover {
+.ve-ui-mwCategoryPopupWidget .ve-ui-removeButtonLabel:hover {
 	opacity: 1;
 }
 
-.ve-ui-mwCategoryRemoveButton {
+.ve-ui-mwCategoryPopupWidget-removeButton {
 	position: absolute;
 	margin-right: 2px;
 	padding: 0.5em;
@@ -172,12 +175,12 @@
 	top: 0;
 }
 
-.ve-ui-mwCategorySortkeyForm {
+.ve-ui-mwCategoryPopupWidget-sortKeyForm {
 	padding: 0.5em;
 	display: block;
 }
 
-.ve-ui-mwCategorySortkeyForm .ve-ui-inputLabelWidget {
+.ve-ui-mwCategoryPopupWidget-sortKeyForm .ve-ui-inputLabelWidget {
 	padding: 0 0.125em 0.5em 0.125em;
 }
 

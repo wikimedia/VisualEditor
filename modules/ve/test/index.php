@@ -204,6 +204,8 @@
 		<script src="../../ve/ui/widgets/ve.ui.SearchWidget.js"></script>
 		<script src="../../ve/ui/widgets/ve.ui.SurfaceWidget.js"></script>
 		<script src="../../ve/ui/widgets/ve.ui.ButtonWidget.js"></script>
+		<script src="../../ve/ui/widgets/ve.ui.PushButtonWidget.js"></script>
+		<script src="../../ve/ui/widgets/ve.ui.PopupButtonWidget.js"></script>
 		<script src="../../ve/ui/widgets/ve.ui.IconButtonWidget.js"></script>
 		<script src="../../ve/ui/widgets/ve.ui.InputWidget.js"></script>
 		<script src="../../ve/ui/widgets/ve.ui.InputLabelWidget.js"></script>

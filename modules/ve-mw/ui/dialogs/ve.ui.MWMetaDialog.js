@@ -82,7 +82,7 @@ ve.ui.MWMetaDialog.prototype.initialize = function () {
 		'label': ve.msg( 'visualeditor-dialog-meta-languages-label' ),
 		'icon': 'language'
 	} );
-	this.applyButton = new ve.ui.ButtonWidget( {
+	this.applyButton = new ve.ui.PushButtonWidget( {
 		'$$': this.$$, 'label': ve.msg( 'visualeditor-dialog-action-apply' ), 'flags': ['primary']
 	} );
 

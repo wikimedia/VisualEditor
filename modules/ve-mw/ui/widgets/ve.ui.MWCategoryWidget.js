@@ -31,7 +31,7 @@ ve.ui.MWCategoryWidget = function VeUiMWCategoryWidget( config ) {
 	this.popupState = false;
 	this.savedPopupState = false;
 	this.popup = new ve.ui.MWCategoryPopupWidget( {
-		'$$': this.$$, 'align': 'right', '$overlay': config.$overlay
+		'$$': this.$$, '$overlay': config.$overlay
 	} );
 	this.input = new ve.ui.MWCategoryInputWidget( this, {
 		'$$': this.$$, '$overlay': config.$overlay, '$container': this.$

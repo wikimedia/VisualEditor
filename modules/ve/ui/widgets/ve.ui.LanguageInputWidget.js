@@ -74,7 +74,7 @@ ve.ui.LanguageInputWidget = function VeUiLanguageInputWidget( config ) {
 	};
 
 	// Create a 'change language' Button:
-	this.$button = new ve.ui.ButtonWidget({
+	this.$button = new ve.ui.PushButtonWidget({
 		'label': ve.msg( 'visualeditor-languageinspector-widget-changelang' ),
 		'flags': ['primary']
 	});
