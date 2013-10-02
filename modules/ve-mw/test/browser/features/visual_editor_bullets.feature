@@ -12,6 +12,7 @@ Feature: VisualEditor Bullets, Numbering
     | Numbering | #         |
     | Bullets   | *         |
 
+@make_selectable_line
   Scenario Outline: check increase indent for bullets and numbering
     When I click <control>
       And I click Increase indentation
@@ -25,6 +26,7 @@ Feature: VisualEditor Bullets, Numbering
     | Numbering | ##        |
     | Bullets   | **        |
 
+@make_selectable_line
   Scenario Outline: check decrease indent for bullets and numbering
     When I click <control>
       And I click Decrease indentation
