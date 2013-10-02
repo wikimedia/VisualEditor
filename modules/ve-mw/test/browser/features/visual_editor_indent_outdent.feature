@@ -6,6 +6,7 @@ Feature: VisualEditor Indent, Outdent
     Then Decrease indentation should be disabled
       And Increase indentation should be disabled
 
+@make_selectable_line
   Scenario Outline: check indent and outdent enable and disable
     When I click <control>
     Then Decrease indentation should be <initial_state>
