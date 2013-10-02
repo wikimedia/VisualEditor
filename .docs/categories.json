@@ -163,10 +163,6 @@
 				]
 			},
 			{
-				"name": "Factories",
-				"classes": ["ve.NamedClassFactory"]
-			},
-			{
 				"name": "Nodes",
 				"classes": ["ve.Node", "ve.BranchNode", "ve.LeafNode", "ve.Document"]
 			},

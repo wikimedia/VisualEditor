@@ -265,7 +265,6 @@ $wgResourceModules += array(
 			've/ve.Factory.js',
 			've/ve.Range.js',
 			've/ve.Node.js',
-			've/ve.NamedClassFactory.js',
 			've/ve.BranchNode.js',
 			've/ve.LeafNode.js',
 			've/ve.Element.js',
