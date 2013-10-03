@@ -64,17 +64,21 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 	$documentNode = this.documentView.getDocumentNode().$;
 	$documentNode.on( {
 		'cut': ve.bind( this.onCut, this ),
-		'copy': ve.bind( this.onCopy, this ),
-		'focus': ve.bind( this.documentOnFocus, this ),
-		'blur': ve.bind( this.documentOnBlur, this )
+		'copy': ve.bind( this.onCopy, this )
 	} );
 	this.$pasteTarget.on( {
 		'cut': ve.bind( this.onCut, this ),
-		'copy': ve.bind( this.onCopy, this ),
-		// $pasteTarget is focused when selecting a FocusableNode
-		'focus': ve.bind( this.documentOnFocus, this ),
-		'blur': ve.bind( this.documentOnBlur, this )
+		'copy': ve.bind( this.onCopy, this )
 	} );
+
+	// blur and focus fire in the wrong order in jQuery 1.8 . Bind to the native events which do
+	// fire in the correct order.
+	$documentNode[0].addEventListener( 'focus', ve.bind( this.documentOnFocus, this ) );
+	$documentNode[0].addEventListener( 'blur', ve.bind( this.documentOnBlur, this ) );
+	// $pasteTarget is focused when selecting a FocusableNode
+	this.$pasteTarget[0].addEventListener( 'focus', ve.bind( this.documentOnFocus, this ) );
+	this.$pasteTarget[0].addEventListener( 'blur', ve.bind( this.documentOnBlur, this ) );
+
 	$documentNode.on( $.browser.msie ? 'beforepaste' : 'paste', ve.bind( this.onPaste, this ) );
 	$documentNode.on( 'focus', 'a', function () {
 		// Opera triggers 'blur' on document node before any link is
@@ -326,7 +330,7 @@ ve.ce.Surface.prototype.focus = function () {
  * Handle document focus events.
  *
  * @method
- * @param {jQuery.Event} e Focus event
+ * @param {Event} e Focus event (native event, NOT a jQuery event!)
  */
 ve.ce.Surface.prototype.documentOnFocus = function () {
 	this.eventSequencer.attach( this.$ );
@@ -337,7 +341,7 @@ ve.ce.Surface.prototype.documentOnFocus = function () {
  * Handle document blur events.
  *
  * @method
- * @param {jQuery.Event} e Element blur event
+ * @param {Event} e Blur event (native event, NOT a jQuery event!)
  */
 ve.ce.Surface.prototype.documentOnBlur = function () {
 	this.eventSequencer.detach();
