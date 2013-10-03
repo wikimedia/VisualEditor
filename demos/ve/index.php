@@ -120,7 +120,6 @@ $html = file_get_contents( $page );
 		<script src="../../modules/ve/ve.Factory.js"></script>
 		<script src="../../modules/ve/ve.Range.js"></script>
 		<script src="../../modules/ve/ve.Node.js"></script>
-		<script src="../../modules/ve/ve.NamedClassFactory.js"></script>
 		<script src="../../modules/ve/ve.BranchNode.js"></script>
 		<script src="../../modules/ve/ve.LeafNode.js"></script>
 		<script src="../../modules/ve/ve.Element.js"></script>
