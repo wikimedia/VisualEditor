@@ -824,24 +824,24 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 /**
  * Get the document data for a range.
  *
- * Data will be fixed up so that unopened closings and unclosed openings in the document data slice
- * are balanced.
+ * Data will be fixed up so that unopened closings and unclosed openings in the
+ * linear data slice are balanced.
  *
  * @param {ve.Range} range Range to get contents of
- * @returns {ve.dm.DocumentSlice} Balanced slice of linear model data
+ * @returns {ve.dm.ElementLinearDataSlice} Balanced slice of linear model data
  */
-ve.dm.Document.prototype.getSlice = function ( range ) {
+ve.dm.Document.prototype.getSlicedLinearData = function ( range ) {
 	var first, last, firstNode, lastNode,
 		node = this.getNodeFromOffset( range.start ),
 		selection = this.selectNodes( range, 'siblings' ),
 		addOpenings = [],
 		addClosings = [];
 	if ( selection.length === 0 ) {
-		return new ve.dm.DocumentSlice( [] );
+		return new ve.dm.ElementLinearDataSlice( this.getStore(), [] );
 	}
 	if ( selection.length === 1 && selection[0].range && selection[0].range.equalsSelection( range ) ) {
 		// Nothing to fix up
-		return new ve.dm.DocumentSlice( this.data.slice( range.start, range.end ) );
+		return new ve.dm.ElementLinearDataSlice( this.getStore(), this.data.slice( range.start, range.end ) );
 	}
 
 	first = selection[0];
@@ -882,7 +882,8 @@ ve.dm.Document.prototype.getSlice = function ( range ) {
 		}
 	}
 
-	return new ve.dm.DocumentSlice(
+	return new ve.dm.ElementLinearDataSlice(
+		this.getStore(),
 		addOpenings.reverse()
 			.concat( this.data.slice( range.start, range.end ) )
 			.concat( addClosings ),

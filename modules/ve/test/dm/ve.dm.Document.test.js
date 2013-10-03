@@ -271,19 +271,21 @@ QUnit.test( 'selectNodes', function ( assert ) {
 } );
 
 QUnit.test( 'getSlice', function ( assert ) {
-	var i, data, doc = ve.dm.example.createExampleDocument(),
+	var i, expectedData, doc = ve.dm.example.createExampleDocument(),
 		cases = [
 		{
 			'msg': 'empty range',
 			'range': new ve.Range( 2, 2 ),
-			'expected': []
+			'expected': [],
+			'expectedRange': new ve.Range( 0 )
 		},
 		{
 			'msg': 'range with one character',
 			'range': new ve.Range( 2, 3 ),
 			'expected': [
 				['b', [ ve.dm.example.bold ]]
-			]
+			],
+			'expectedRange': new ve.Range( 0, 1 )
 		},
 		{
 			'msg': 'range with two characters',
@@ -291,7 +293,8 @@ QUnit.test( 'getSlice', function ( assert ) {
 			'expected': [
 				['b', [ ve.dm.example.bold ]],
 				['c', [ ve.dm.example.italic ]]
-			]
+			],
+			'expectedRange': new ve.Range( 0, 2 )
 		},
 		{
 			'msg': 'range with two characters and a header closing',
@@ -301,7 +304,8 @@ QUnit.test( 'getSlice', function ( assert ) {
 				['b', [ ve.dm.example.bold ]],
 				['c', [ ve.dm.example.italic ]],
 				{ 'type': '/heading' }
-			]
+			],
+			'expectedRange': new ve.Range( 1, 4 )
 		},
 		{
 			'msg': 'range with one character, a header closing and a table opening',
@@ -312,7 +316,8 @@ QUnit.test( 'getSlice', function ( assert ) {
 				{ 'type': '/heading' },
 				{ 'type': 'table' },
 				{ 'type': '/table' }
-			]
+			],
+			'expectedRange': new ve.Range( 1, 4 )
 		},
 		{
 			'msg': 'range from a paragraph into a list',
@@ -328,7 +333,8 @@ QUnit.test( 'getSlice', function ( assert ) {
 				{ 'type': '/paragraph' },
 				{ 'type': '/listItem' },
 				{ 'type': '/list' }
-			]
+			],
+			'expectedRange': new ve.Range( 1, 7 )
 		},
 		{
 			'msg': 'range from a paragraph inside a nested list into the next list',
@@ -347,7 +353,8 @@ QUnit.test( 'getSlice', function ( assert ) {
 				{ 'type': '/list' },
 				{ 'type': 'list', 'attributes': { 'style': 'number' } },
 				{ 'type': '/list' }
-			]
+			],
+			'expectedRange': new ve.Range( 5, 12 )
 		},
 		{
 			'msg': 'range from a paragraph inside a nested list out of both lists',
@@ -364,7 +371,8 @@ QUnit.test( 'getSlice', function ( assert ) {
 				{ 'type': '/list' },
 				{ 'type': '/listItem' },
 				{ 'type': '/list' }
-			]
+			],
+			'expectedRange': new ve.Range( 5, 11 )
 		},
 		{
 			'msg': 'range from a paragraph inside a nested list out of the outer listItem',
@@ -379,16 +387,22 @@ QUnit.test( 'getSlice', function ( assert ) {
 				{ 'type': '/listItem' },
 				{ 'type': '/list' },
 				{ 'type': '/listItem' }
-			]
+			],
+			'expectedRange': new ve.Range( 4, 9 )
 		}
 	];
-	QUnit.expect( cases.length );
+	QUnit.expect( 2 * cases.length );
 	for ( i = 0; i < cases.length; i++ ) {
-		data = ve.dm.example.preprocessAnnotations( cases[i].expected.slice(), doc.getStore() );
+		expectedData = ve.dm.example.preprocessAnnotations( cases[i].expected.slice(), doc.getStore() ).getData();
 		assert.deepEqual(
-			doc.getSlice( cases[i].range ).getBalancedData(),
-			data.getData(),
-			cases[i].msg
+			doc.getSlicedLinearData( cases[i].range ).getData(),
+			expectedData,
+			cases[i].msg + ': balanced data'
+		);
+		assert.deepEqual(
+			doc.getSlicedLinearData( cases[i].range ).getRange(),
+			cases[i].expectedRange,
+			cases[i].msg + ': range'
 		);
 	}
 } );

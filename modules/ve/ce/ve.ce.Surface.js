@@ -655,7 +655,7 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 		clipboardIndex, clipboardItem,
 		scrollTop,
 		view = this,
-		slice = this.documentView.model.getSlice( this.model.getSelection() ),
+		slice = this.documentView.model.getSlicedLinearData( this.model.getSelection() ),
 		clipboardData = e.originalEvent.clipboardData,
 		$window = $( ve.Element.getWindow( this.$$.context ) );
 
@@ -666,7 +666,7 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 
 	ve.dm.converter.store = this.documentView.model.getStore();
 	ve.dm.converter.internalList = this.documentView.model.getInternalList();
-	ve.dm.converter.getDomSubtreeFromData( slice.getBalancedData(), this.$pasteTarget[0] );
+	ve.dm.converter.getDomSubtreeFromData( slice.getData(), this.$pasteTarget[0] );
 
 	clipboardItem = { 'data': slice, 'hash': null };
 	clipboardIndex = this.clipboard.push( clipboardItem ) - 1;
@@ -813,7 +813,8 @@ ve.ce.Surface.prototype.afterPaste = function () {
 		if ( !beforePasteData.plain ) {
 			beforePasteData.plain = this.$pasteTarget.text();
 		}
-		slice = new ve.dm.DocumentSlice(
+		slice = new ve.dm.ElementLinearDataSlice(
+			new ve.dm.IndexValueStore(),
 			ve.splitClusters(
 				// TODO: handle plain text line breaks better
 				beforePasteData.plain.replace( /\n+/gm, ' ' )
@@ -825,7 +826,7 @@ ve.ce.Surface.prototype.afterPaste = function () {
 		// Try to paste in the orignal data
 		// Take a copy to prevent the data being annotated a second time in the catch block
 		// and to prevent actions in the data model affecting view.clipboard
-		pasteData = ve.copy( slice.getData() );
+		pasteData = ve.copy( slice.getOriginalData() );
 
 		// Annotate
 		ve.dm.Document.addAnnotationsToData( pasteData, this.model.getInsertionAnnotations() );
@@ -839,7 +840,7 @@ ve.ce.Surface.prototype.afterPaste = function () {
 	} catch ( err ) {
 		// If that fails, balance the data before pasting
 		// Take a copy to prevent actions in the data model affecting view.clipboard
-		pasteData = ve.copy( slice.getBalancedData() );
+		pasteData = ve.copy( slice.getData() );
 
 		// Annotate
 		ve.dm.Document.addAnnotationsToData( pasteData, this.model.getInsertionAnnotations() );
