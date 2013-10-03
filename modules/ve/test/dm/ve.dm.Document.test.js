@@ -69,38 +69,38 @@ QUnit.test( 'getFullData', 1, function ( assert ) {
 	assert.deepEqualWithDomElements( doc.getFullData(), ve.dm.example.withMeta );
 } );
 
-QUnit.test( 'getDocumentSlice', function ( assert ) {
+QUnit.test( 'cloneFromRange', function ( assert ) {
 	var i, doc2, doc = ve.dm.example.createExampleDocument( 'internalData' ),
 		cases = [
 			{
-				'msg': 'with range',
+				'msg': 'first internal item',
 				'doc': 'internalData',
-				'arg': new ve.Range( 7, 12 ),
+				'range': new ve.Range( 7, 12 ),
 				'expectedData': doc.data.slice( 7, 12 ).concat( doc.data.slice( 5, 21 ) )
 			},
 			{
-				'msg': 'with node',
+				'msg': 'second internal item',
 				'doc': 'internalData',
-				'arg': doc.getInternalList().getItemNode( 1 ),
+				'range': doc.getInternalList().getItemNode( 1 ).getRange(),
 				'expectedData': doc.data.slice( 14, 19 ).concat( doc.data.slice( 5, 21 ) )
 			},
 			{
 				'msg': 'paragraph at the start',
 				'doc': 'internalData',
-				'arg': new ve.Range( 0, 5 ),
+				'range': new ve.Range( 0, 5 ),
 				'expectedData': doc.data.slice( 0, 21 )
 			},
 			{
 				'msg': 'paragraph at the end',
 				'doc': 'internalData',
-				'arg': new ve.Range( 21, 27 ),
+				'range': new ve.Range( 21, 27 ),
 				'expectedData': doc.data.slice( 21, 27 ).concat( doc.data.slice( 5, 21 ) )
 			}
 		];
 	QUnit.expect( 4*cases.length );
 	for ( i = 0; i < cases.length; i++ ) {
 		doc = ve.dm.example.createExampleDocument( cases[i].doc );
-		doc2 = doc.getDocumentSlice( cases[i].arg );
+		doc2 = doc.cloneFromRange( cases[i].range );
 		assert.deepEqual( doc2.data.data, cases[i].expectedData,
 			cases[i].msg + ': sliced data' );
 		assert.notStrictEqual( doc2.data[0], cases[i].expectedData[0],

@@ -304,24 +304,17 @@ ve.dm.Document.prototype.getInternalList = function () {
 };
 
 /**
- * Get a document from a slice of this document. The new document's store and internal list will be
+ * Clone a sub-document from a range in this document. The new document's store and internal list will be
  * clones of the ones in this document.
  *
- * @param {ve.Range|ve.dm.Node} rangeOrNode Range of data to clone, or node whose contents should be cloned
+ * @param {ve.Range} range Range of data to clone
  * @returns {ve.dm.Document} New document
- * @throws {Error} rangeOrNode must be a ve.Range or a ve.dm.Node
  */
-ve.dm.Document.prototype.getDocumentSlice = function ( rangeOrNode ) {
-	var data, range, newDoc,
+ve.dm.Document.prototype.cloneFromRange = function ( range ) {
+	var data, newDoc,
 		store = this.store.clone(),
 		listRange = this.internalList.getListNode().getOuterRange();
-	if ( rangeOrNode instanceof ve.dm.Node ) {
-		range = rangeOrNode.getRange();
-	} else if ( rangeOrNode instanceof ve.Range ) {
-		range = rangeOrNode;
-	} else {
-		throw new Error( 'rangeOrNode must be a ve.Range or a ve.dm.Node' );
-	}
+
 	data = ve.copy( this.getFullData( range, true ) );
 	if ( range.start > listRange.start || range.end < listRange.end ) {
 		// The range does not include the entire internal list, so add it

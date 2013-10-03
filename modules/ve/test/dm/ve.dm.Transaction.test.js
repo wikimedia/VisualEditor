@@ -797,7 +797,7 @@ QUnit.test( 'newFromDocumentReplace', function ( assert ) {
 		if ( cases[i].newDocData ) {
 			doc2 = new ve.dm.Document( cases[i].newDocData );
 		} else {
-			doc2 = doc.getDocumentSlice( cases[i].range );
+			doc2 = doc.cloneFromRange( cases[i].range instanceof ve.Range ? cases[i].range : cases[i].range.getRange() );
 			cases[i].modify( doc2 );
 		}
 		tx = ve.dm.Transaction.newFromDocumentReplace( doc, cases[i].range, doc2 );
