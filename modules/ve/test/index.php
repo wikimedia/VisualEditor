@@ -92,10 +92,10 @@
 		<script src="../../ve/dm/ve.dm.DataString.js"></script>
 		<script src="../../ve/dm/ve.dm.Document.js"></script>
 		<script src="../../ve/dm/ve.dm.LinearData.js"></script>
-		<script src="../../ve/dm/ve.dm.DocumentSlice.js"></script>
 		<script src="../../ve/dm/ve.dm.DocumentSynchronizer.js"></script>
 		<script src="../../ve/dm/ve.dm.IndexValueStore.js"></script>
 		<script src="../../ve/dm/ve.dm.Converter.js"></script>
+		<script src="../../ve/dm/lineardata/ve.dm.SlicedLinearData.js"></script>
 		<script src="../../ve/dm/lineardata/ve.dm.ElementLinearData.js"></script>
 		<script src="../../ve/dm/lineardata/ve.dm.MetaLinearData.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.GeneratedContentNode.js"></script>
