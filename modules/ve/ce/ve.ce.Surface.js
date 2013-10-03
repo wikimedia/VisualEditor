@@ -924,9 +924,7 @@ ve.ce.Surface.prototype.onChange = function ( transaction, selection ) {
 		next = null,
 		previous = this.focusedNode;
 
-	// Ignore selection if changeModelSelection is currently being called with the same
-	// (object-identical) selection object (i.e. if the model is calling us back)
-	if ( selection && selection !== this.newModelSelection ) {
+	if ( selection ) {
 		// Detect when only a single inline element is selected
 		if ( !selection.isCollapsed() ) {
 			start = this.documentView.getDocumentNode().getNodeFromOffset( selection.start + 1 );
@@ -965,8 +963,11 @@ ve.ce.Surface.prototype.onChange = function ( transaction, selection ) {
 				rangySel.addRange( rangyRange, false );
 			}
 		}
-		// If there is no focused node, use native selection
-		if ( !this.focusedNode && !this.isRenderingLocked() ) {
+
+		// If there is no focused node, use native selection, but ignore the selection if
+		// changeModelSelection is currently being called with the same (object-identical)
+		// selection object (i.e. if the model is calling us back)
+		if ( !this.focusedNode && !this.isRenderingLocked() && selection !== this.newModelSelection ) {
 			this.showSelection( selection );
 		}
 	}
