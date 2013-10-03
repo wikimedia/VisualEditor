@@ -37,6 +37,12 @@ ve.ui.MWSyntaxHighlightTool.static.autoAdd = true;
 
 ve.ui.toolFactory.register( ve.ui.MWSyntaxHighlightTool );
 
+/*
+ * Factory for SyntaxHighlight tools.
+ */
+ve.ui.syntaxHighlightEditorToolFactory = new ve.ui.ToolFactory();
+
+/* SyntaxHighlight Editor Tools */
 
 ve.ui.MWSyntaxHighlightEditorTool = function VeUiMWSyntaxHighlightEditorTool( toolbar, config ) {
 	// Parent constructor
@@ -67,7 +73,7 @@ ve.ui.MWSynHiUndoTool.static.method = 'undo';
 ve.ui.MWSynHiUndoTool.static.icon = 'undo';
 ve.ui.MWSynHiUndoTool.static.titleMessage = 'visualeditor-historybutton-undo-tooltip';
 ve.ui.MWSynHiUndoTool.static.autoAdd = false;
-ve.ui.toolFactory.register( ve.ui.MWSynHiUndoTool );
+ve.ui.syntaxHighlightEditorToolFactory.register( ve.ui.MWSynHiUndoTool );
 
 ve.ui.MWSynHiRedoTool = function VeUiMWSynHiRedoTool( toolbar, config ) {
 	ve.ui.MWSyntaxHighlightEditorTool.call( this, toolbar, config );
@@ -79,7 +85,7 @@ ve.ui.MWSynHiRedoTool.static.method = 'redo';
 ve.ui.MWSynHiRedoTool.static.icon = 'redo';
 ve.ui.MWSynHiRedoTool.static.titleMessage = 'visualeditor-historybutton-redo-tooltip';
 ve.ui.MWSynHiRedoTool.static.autoAdd = false;
-ve.ui.toolFactory.register( ve.ui.MWSynHiRedoTool );
+ve.ui.syntaxHighlightEditorToolFactory.register( ve.ui.MWSynHiRedoTool );
 
 ve.ui.MWSynHiIndentTool = function VeUiMWSynHiIndentTool( toolbar, config ) {
 	ve.ui.MWSyntaxHighlightEditorTool.call( this, toolbar, config );
@@ -91,7 +97,7 @@ ve.ui.MWSynHiIndentTool.static.method = 'indent';
 ve.ui.MWSynHiIndentTool.static.icon = 'indent-list';
 ve.ui.MWSynHiIndentTool.static.titleMessage = '';
 ve.ui.MWSynHiIndentTool.static.autoAdd = false;
-ve.ui.toolFactory.register( ve.ui.MWSynHiIndentTool );
+ve.ui.syntaxHighlightEditorToolFactory.register( ve.ui.MWSynHiIndentTool );
 
 ve.ui.MWSynHiBeautifyTool = function VeUiMWSynHiBeautifyTool( toolbar, config ) {
 	ve.ui.MWSyntaxHighlightEditorTool.call( this, toolbar, config );
@@ -103,4 +109,4 @@ ve.ui.MWSynHiBeautifyTool.static.method = 'doBeautify';
 ve.ui.MWSynHiBeautifyTool.static.icon = 'reformat';
 ve.ui.MWSynHiBeautifyTool.static.titleMessage = '';
 ve.ui.MWSynHiBeautifyTool.static.autoAdd = false;
-ve.ui.toolFactory.register( ve.ui.MWSynHiBeautifyTool );
+ve.ui.syntaxHighlightEditorToolFactory.register( ve.ui.MWSynHiBeautifyTool );

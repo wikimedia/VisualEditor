@@ -90,7 +90,7 @@ ve.ui.MWSyntaxHighlightSimpleSurface = function VeUiMWSyntaxHighlightSimpleSurfa
 	this.searchRegex = null;
 	this.searchHasResult = false;
 
-	this.toolbar = new ve.ui.Toolbar({ '$$': this.$$ });
+	this.toolbar = new ve.ui.Toolbar( ve.ui.syntaxHighlightEditorToolFactory, { '$$': this.$$ });
 	this.toolbar.setup([{
 		'include':[ 'synhiUndo', 'synhiRedo', 'synhiIndent', 'synhiBeautify' ]
 	}]);
