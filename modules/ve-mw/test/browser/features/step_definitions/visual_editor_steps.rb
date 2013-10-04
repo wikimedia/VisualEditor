@@ -44,7 +44,7 @@ When(/^I edit the page with a string$/) do
     rescue
     end
     page.content_element.fire_event('onfocus')
-    page.content_element.when_present.send_keys("Editing with #{@does_not_exist_page_name}")
+    page.content_element.when_present.send_keys("Editing with #{@random_string}")
   end
 end
 
@@ -60,7 +60,7 @@ When(/^I click Review your changes$/) do
 end
 
 When(/^I edit the description of the change$/) do
-  on(VisualEditorPage).describe_change_element.when_visible.send_keys("Describing with #{@does_not_exist_page_name}")
+  on(VisualEditorPage).describe_change_element.when_visible.send_keys("Describing with #{@random_string}")
 end
 
 When(/^I see the IP warning signs$/) do
@@ -68,5 +68,5 @@ When(/^I see the IP warning signs$/) do
 end
 
 Then(/^Page text should contain the string$/) do
-  on(VisualEditorPage).page_text_element.when_present.text.should match Regexp.escape("Editing with #{@does_not_exist_page_name}")
+  on(VisualEditorPage).page_text_element.when_present.text.should match Regexp.escape("Editing with #{@random_string}")
 end

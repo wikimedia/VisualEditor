@@ -1,3 +1,6 @@
+at_exit do
+  $browser.close unless ENV['KEEP_BROWSER_OPEN'] == 'true'
+end
 
 #This is for the Headings test
 Before('@edit_user_page') do
