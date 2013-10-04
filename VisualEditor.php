@@ -490,10 +490,11 @@ $wgResourceModules += array(
 
 			've/ui/layouts/ve.ui.FieldsetLayout.js',
 			've/ui/layouts/ve.ui.GridLayout.js',
+			've/ui/layouts/ve.ui.PagedLayout.js',
+			've/ui/layouts/ve.ui.PagedOutlineLayout.js',
 			've/ui/layouts/ve.ui.PanelLayout.js',
 			've/ui/layouts/ve.ui.StackPanelLayout.js',
 
-			've/ui/dialogs/ve.ui.PagedDialog.js',
 			've-mw/ui/dialogs/ve.ui.MWMetaDialog.js',
 			've-mw/ui/dialogs/ve.ui.MWBetaWelcomeDialog.js',
 			've-mw/ui/dialogs/ve.ui.MWMediaInsertDialog.js',
