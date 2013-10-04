@@ -366,7 +366,7 @@ ve.dm.Converter.prototype.getDomElementFromDataAnnotation = function ( dataAnnot
  * @param {HTMLDocument} doc HTML document to convert
  * @param {ve.dm.IndexValueStore} store Index-value store
  * @param {ve.dm.InternalList} internalList Internal list
- * @returns {ve.dm.ElementLinearData} Linear model data
+ * @returns {ve.dm.FlatLinearData} Linear model data
  */
 ve.dm.Converter.prototype.getDataFromDom = function ( doc, store, internalList ) {
 	var linearData, refData;
@@ -378,7 +378,7 @@ ve.dm.Converter.prototype.getDataFromDom = function ( doc, store, internalList )
 	this.contextStack = [];
 	// Possibly do things with doc and the head in the future
 
-	linearData = new ve.dm.ElementLinearData(
+	linearData = new ve.dm.FlatLinearData(
 		store,
 		this.getDataFromDomRecursion( doc.body )
 	);
