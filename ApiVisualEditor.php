@@ -49,6 +49,19 @@ class ApiVisualEditor extends ApiBase {
 
 			if ( $status->isOK() ) {
 				$content = $req->getContent();
+				// Pass thru performance data from Parsoid to the client, unless the response was
+				// served directly from Varnish, in  which case discard the value of the XPP header
+				// and use it to declare the cache hit instead.
+				$xCache = $req->getResponseHeader( 'X-Cache' );
+				if ( is_string( $xCache ) && strpos( $xCache, 'hit' ) !== false ) {
+					$xpp = 'backend-varnish-hit: true';
+				} else {
+					$xpp = $req->getResponseHeader( 'X-Parsoid-Performance' );
+				}
+				if ( $xpp !== null ) {
+					$resp = $this->getRequest()->response();
+					$resp->header( 'X-Parsoid-Performance: ' . $xpp );
+				}
 			} elseif ( $status->isGood() ) {
 				$this->dieUsage( $req->getContent(), 'parsoidserver-http-'.$req->getStatus() );
 			} elseif ( $errors = $status->getErrorsByType( 'error' ) ) {
