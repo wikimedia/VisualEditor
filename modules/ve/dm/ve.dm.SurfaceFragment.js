@@ -574,7 +574,7 @@ ve.dm.SurfaceFragment.prototype.insertContent = function ( content, annotate ) {
 		if ( annotate ) {
 			annotations = this.document.data.getAnnotationsFromOffset( this.getRange( true ).start - 1 );
 			if ( annotations.getLength() > 0 ) {
-				ve.dm.Document.addAnnotationsToData( content, annotations );
+				ve.dm.Document.static.addAnnotationsToData( content, annotations );
 			}
 		}
 		tx = ve.dm.Transaction.newFromInsertion( this.document, this.getRange( true ).start, content );

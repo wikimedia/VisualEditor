@@ -9,8 +9,9 @@ QUnit.module( 've.dm.Document' );
 
 /* Tests */
 
-QUnit.test( 'constructor', 8, function ( assert ) {
-	var doc = ve.dm.example.createExampleDocument();
+QUnit.test( 'constructor', 9, function ( assert ) {
+	var data,
+		doc = ve.dm.example.createExampleDocument();
 	assert.equalNodeTree( doc.getDocumentNode(), ve.dm.example.tree, 'node tree matches example data' );
 	assert.throws(
 		function () {
@@ -23,7 +24,6 @@ QUnit.test( 'constructor', 8, function ( assert ) {
 		'unbalanced input causes exception'
 	);
 
-	// TODO data provider?
 	doc = new ve.dm.Document( [ 'a', 'b', 'c', 'd' ] );
 	assert.equalNodeTree(
 		doc.getDocumentNode(),
@@ -34,12 +34,17 @@ QUnit.test( 'constructor', 8, function ( assert ) {
 		'sparse metadata array is created'
 	);
 
-	doc = new ve.dm.Document( [ { 'type': 'paragraph' }, { 'type': '/paragraph' } ] );
+	data = new ve.dm.ElementLinearData(
+		new ve.dm.IndexValueStore(),
+		[ { 'type': 'paragraph' }, { 'type': '/paragraph' } ]
+	);
+	doc = new ve.dm.Document( data );
 	assert.equalNodeTree(
 		doc.getDocumentNode(),
 		new ve.dm.DocumentNode( [ new ve.dm.ParagraphNode( [], { 'type': 'paragraph' } ) ] ),
 		'empty paragraph no longer has a text node'
 	);
+	assert.equal( doc.data, data, 'ElementLinearData is stored by reference' );
 
 	doc = ve.dm.example.createExampleDocument( 'withMeta' );
 	assert.deepEqualWithDomElements( doc.getData(), ve.dm.example.withMetaPlainData,

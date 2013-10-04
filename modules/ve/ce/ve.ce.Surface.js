@@ -839,7 +839,7 @@ ve.ce.Surface.prototype.afterPaste = function () {
 		pasteData = ve.copy( slice.getOriginalData() );
 
 		// Annotate
-		ve.dm.Document.addAnnotationsToData( pasteData, this.model.getInsertionAnnotations() );
+		ve.dm.Document.static.addAnnotationsToData( pasteData, this.model.getInsertionAnnotations() );
 
 		// Transaction
 		tx = ve.dm.Transaction.newFromInsertion(
@@ -853,7 +853,7 @@ ve.ce.Surface.prototype.afterPaste = function () {
 		pasteData = ve.copy( slice.getData() );
 
 		// Annotate
-		ve.dm.Document.addAnnotationsToData( pasteData, this.model.getInsertionAnnotations() );
+		ve.dm.Document.static.addAnnotationsToData( pasteData, this.model.getInsertionAnnotations() );
 
 		// Transaction
 		tx = ve.dm.Transaction.newFromInsertion(
@@ -1054,7 +1054,7 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 			// Apply insertion annotations
 			annotations = this.model.getInsertionAnnotations();
 			if ( annotations instanceof ve.dm.AnnotationSet ) {
-				ve.dm.Document.addAnnotationsToData( data, this.model.getInsertionAnnotations() );
+				ve.dm.Document.static.addAnnotationsToData( data, this.model.getInsertionAnnotations() );
 			}
 			this.incRenderLock();
 			try {
@@ -1135,7 +1135,7 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 				}
 			}
 		}
-		ve.dm.Document.addAnnotationsToData( data, annotations );
+		ve.dm.Document.static.addAnnotationsToData( data, annotations );
 	}
 	newRange = next.range;
 	if ( newRange.isCollapsed() ) {
