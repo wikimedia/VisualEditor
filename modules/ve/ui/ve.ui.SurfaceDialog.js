@@ -1,26 +1,29 @@
 /*!
- * VisualEditor UserInterface MWDialog class.
+ * VisualEditor UserInterface SurfaceDialog class.
  *
  * @copyright 2011-2013 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * UserInterface MediaWiki dialog.
+ * UserInterface surface dialog.
  *
  * @class
  * @abstract
- * @extends ve.ui.SurfaceDialog
+ * @extends ve.ui.Window
  *
  * @constructor
  * @param {ve.ui.SurfaceWindowSet} windowSet Window set this dialog is part of
  * @param {Object} [config] Configuration options
  */
-ve.ui.MWDialog = function VeUiMWDialog( windowSet, config ) {
+ve.ui.SurfaceDialog = function VeUiSurfaceDialog( windowSet, config ) {
 	// Parent constructor
-	ve.ui.SurfaceDialog.call( this, windowSet, config );
+	ve.ui.Dialog.call( this, windowSet, config );
+
+	// Properties
+	this.surface = windowSet.getSurface();
 };
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.MWDialog, ve.ui.SurfaceDialog );
+ve.inheritClass( ve.ui.SurfaceDialog, ve.ui.Dialog );

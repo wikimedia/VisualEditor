@@ -10,7 +10,7 @@
  *
  * @class
  * @abstract
- * @extends ve.ui.Inspector
+ * @extends ve.ui.SurfaceInspector
  *
  * @constructor
  * @param {ve.ui.Surface} surface
@@ -18,7 +18,7 @@
  */
 ve.ui.AnnotationInspector = function VeUiAnnotationInspector( surface, config ) {
 	// Parent constructor
-	ve.ui.Inspector.call( this, surface, config );
+	ve.ui.SurfaceInspector.call( this, surface, config );
 
 	// Properties
 	this.initialAnnotation = null;
@@ -29,7 +29,7 @@ ve.ui.AnnotationInspector = function VeUiAnnotationInspector( surface, config ) 
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.AnnotationInspector, ve.ui.Inspector );
+ve.inheritClass( ve.ui.AnnotationInspector, ve.ui.SurfaceInspector );
 
 /**
  * Annotation models this inspector can edit.
@@ -59,7 +59,7 @@ ve.ui.AnnotationInspector.prototype.onSetup = function () {
 		annotation = this.getMatchingAnnotations( fragment, true ).get( 0 );
 
 	// Parent method
-	ve.ui.Inspector.prototype.onSetup.call( this );
+	ve.ui.SurfaceInspector.prototype.onSetup.call( this );
 	// Initialize range
 	if ( !annotation ) {
 		if ( fragment.getRange().isCollapsed() && !this.surface.view.hasSlugAtOffset( fragment.getRange().start ) ) {
@@ -102,7 +102,7 @@ ve.ui.AnnotationInspector.prototype.onOpen = function () {
 		initialAnnotation = this.getMatchingAnnotations( fragment ).get( 0 );
 
 	// Parent method
-	ve.ui.Inspector.prototype.onOpen.call( this );
+	ve.ui.SurfaceInspector.prototype.onOpen.call( this );
 
 	// Initialization
 	this.initialAnnotation = initialAnnotation;
@@ -116,7 +116,7 @@ ve.ui.AnnotationInspector.prototype.onOpen = function () {
  */
 ve.ui.AnnotationInspector.prototype.onClose = function ( action ) {
 	// Parent method
-	ve.ui.Inspector.prototype.onClose.call( this, action );
+	ve.ui.SurfaceInspector.prototype.onClose.call( this, action );
 
 	var i, len, annotations,
 		insert = false,

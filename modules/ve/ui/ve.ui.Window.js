@@ -14,11 +14,11 @@
  * @mixins ve.EventEmitter
  *
  * @constructor
- * @param {ve.ui.Surface} surface
+ * @param {ve.ui.WindowSet} windowSet Window set this dialog is part of
  * @param {Object} [config] Configuration options
  * @emits initialize
  */
-ve.ui.Window = function VeUiWindow( surface, config ) {
+ve.ui.Window = function VeUiWindow( windowSet, config ) {
 	// Parent constructor
 	ve.Element.call( this, config );
 
@@ -26,7 +26,7 @@ ve.ui.Window = function VeUiWindow( surface, config ) {
 	ve.EventEmitter.call( this );
 
 	// Properties
-	this.surface = surface;
+	this.windowSet = windowSet;
 	this.visible = false;
 	this.opening = false;
 	this.closing = false;
@@ -194,6 +194,16 @@ ve.ui.Window.prototype.getFrame = function () {
 };
 
 /**
+ * Get the window set.
+ *
+ * @method
+ * @returns {ve.ui.WindowSet} Window set
+ */
+ve.ui.Window.prototype.getWindowSet = function () {
+	return this.windowSet;
+};
+
+/**
  * Get the title of the window.
  *
  * Use .static.titleMessage to set this unless you need to do something fancy.
@@ -290,10 +300,8 @@ ve.ui.Window.prototype.close = function ( action ) {
 		this.visible = false;
 		this.onClose( action );
 		this.frame.$content.find( ':focus' ).blur();
-		this.surface.getView().focus();
 		this.emit( 'close', action );
-		// Note that focussing the surface view calls an on focus event, which in turn will
-		// try to close the window again, hence we put this.closing = false right at the bottom
+		// This is at the bottom in case handlers of the close event try to close the window again
 		this.closing = false;
 	}
 };

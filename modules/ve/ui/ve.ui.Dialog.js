@@ -13,16 +13,16 @@
  * @extends ve.ui.Window
  *
  * @constructor
- * @param {ve.ui.Surface} surface
+ * @param {ve.ui.WindowSet} windowSet Window set this dialog is part of
  * @param {Object} [config] Configuration options
  * @cfg {boolean} [footless] Hide foot
  */
-ve.ui.Dialog = function VeUiDialog( surface, config ) {
+ve.ui.Dialog = function VeUiDialog( windowSet, config ) {
 	// Configuration initialization
 	config = config || {};
 
 	// Parent constructor
-	ve.ui.Window.call( this, surface, config );
+	ve.ui.Window.call( this, windowSet, config );
 
 	// Properties
 	this.visible = false;

@@ -13,12 +13,12 @@
  * @extends ve.ui.Window
  *
  * @constructor
- * @param {ve.ui.Surface} surface
+ * @param {ve.ui.WindowSet} windowSet Window set this dialog is part of
  * @param {Object} [config] Configuration options
  */
-ve.ui.Inspector = function VeUiInspector( surface, config ) {
+ve.ui.Inspector = function VeUiInspector( windowSet, config ) {
 	// Parent constructor
-	ve.ui.Window.call( this, surface, config );
+	ve.ui.Window.call( this, windowSet, config );
 
 	// Properties
 	this.initialSelection = null;
@@ -138,22 +138,4 @@ ve.ui.Inspector.prototype.onFormKeyDown = function ( e ) {
 		this.close( 'back' );
 		return false;
 	}
-};
-
-/**
- * Handle inspector setup events.
- *
- * @method
- */
-ve.ui.Inspector.prototype.onSetup = function () {
-	this.previousSelection = this.surface.getModel().getSelection();
-};
-
-/**
- * Handle inspector open events.
- *
- * @method
- */
-ve.ui.Inspector.prototype.onOpen = function () {
-	this.initialSelection = this.surface.getModel().getSelection();
 };

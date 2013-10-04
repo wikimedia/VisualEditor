@@ -98,7 +98,7 @@ ve.ui.MWMathInspector.prototype.onClose = function ( action ) {
 		ve.ui.MWExtensionInspector.prototype.onClose.call( this, action );
 	} else {
 		// Grandparent method; we're overriding the parent behavior in this case
-		ve.ui.Inspector.prototype.onClose.call( this, action );
+		ve.ui.SurfaceInspector.prototype.onClose.call( this, action );
 
 		// The user tried to empty the node, remove it
 		surfaceModel.change( ve.dm.Transaction.newFromRemoval(

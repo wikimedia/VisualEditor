@@ -31,7 +31,7 @@ ve.ui.Context = function VeUiContext( surface, config ) {
 	this.toolbar = null;
 	this.popup = new ve.ui.PopupWidget( { '$$': this.$$, '$container': this.surface.getView().$ } );
 	this.$menu = this.$$( '<div>' );
-	this.inspectors = new ve.ui.WindowSet( surface, ve.ui.inspectorFactory );
+	this.inspectors = new ve.ui.SurfaceWindowSet( surface, ve.ui.inspectorFactory );
 
 	// Initialization
 	this.$.addClass( 've-ui-context' ).append( this.popup.$ );
@@ -134,7 +134,7 @@ ve.ui.Context.prototype.onRelocationEnd = function () {
  * Handle an inspector being setup.
  *
  * @method
- * @param {ve.ui.Inspector} inspector Inspector that's been setup
+ * @param {ve.ui.SurfaceInspector} inspector Inspector that's been setup
  */
 ve.ui.Context.prototype.onInspectorSetup = function () {
 	this.selection = this.surface.getModel().getSelection();
@@ -144,7 +144,7 @@ ve.ui.Context.prototype.onInspectorSetup = function () {
  * Handle an inspector being opened.
  *
  * @method
- * @param {ve.ui.Inspector} inspector Inspector that's been opened
+ * @param {ve.ui.SurfaceInspector} inspector Inspector that's been opened
  */
 ve.ui.Context.prototype.onInspectorOpen = function () {
 	// Transition between menu and inspector
@@ -155,7 +155,7 @@ ve.ui.Context.prototype.onInspectorOpen = function () {
  * Handle an inspector being closed.
  *
  * @method
- * @param {ve.ui.Inspector} inspector Inspector that's been opened
+ * @param {ve.ui.SurfaceInspector} inspector Inspector that's been opened
  * @param {boolean} accept Changes have been accepted
  */
 ve.ui.Context.prototype.onInspectorClose = function () {

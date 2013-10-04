@@ -13,11 +13,10 @@
  * @mixins ve.EventEmitter
  *
  * @constructor
- * @param {ve.ui.Surface} surface
  * @param {ve.Factory} factory Window factory
  * @param {Object} [config] Configuration options
  */
-ve.ui.WindowSet = function VeUiWindowSet( surface, factory, config ) {
+ve.ui.WindowSet = function VeUiWindowSet( factory, config ) {
 	// Parent constructor
 	ve.Element.call( this, config );
 
@@ -25,7 +24,6 @@ ve.ui.WindowSet = function VeUiWindowSet( surface, factory, config ) {
 	ve.EventEmitter.call( this );
 
 	// Properties
-	this.surface = surface;
 	this.factory = factory;
 	this.windows = {};
 	this.currentWindow = null;
@@ -126,7 +124,7 @@ ve.ui.WindowSet.prototype.open = function ( name, config ) {
 		throw new Error( 'Cannot open another window while another one is active' );
 	}
 	if ( !( name in this.windows ) ) {
-		win = this.windows[name] = this.factory.create( name, this.surface, config );
+		win = this.windows[name] = this.factory.create( name, this, config );
 		win.connect( this, {
 			'setup': ['onWindowSetup', win],
 			'open': ['onWindowOpen', win],
