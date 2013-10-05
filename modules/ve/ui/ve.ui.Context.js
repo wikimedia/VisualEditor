@@ -318,9 +318,11 @@ ve.ui.Context.prototype.updateDimensions = function ( transition ) {
  * Shows the context menu.
  *
  * @method
+ * @param {boolean} [transition=false] Use a smooth transition
+ * @param {boolean} [repositionOnly=false] The context is only being moved so don't fade in
  * @chainable
  */
-ve.ui.Context.prototype.show = function ( transition ) {
+ve.ui.Context.prototype.show = function ( transition, repositionOnly ) {
 	var inspector = this.inspectors.getCurrent(),
 		focusedNode = this.surface.getView().getFocusedNode();
 
@@ -334,7 +336,9 @@ ve.ui.Context.prototype.show = function ( transition ) {
 		if ( inspector ) {
 			this.$menu.hide();
 			this.inspectors.$.show();
-			inspector.$.css( 'opacity', 0 );
+			if ( !repositionOnly ) {
+				inspector.$.css( 'opacity', 0 );
+			}
 			// Update size and fade the inspector in after animation is complete
 			setTimeout( ve.bind( function () {
 				inspector.fitHeightToContents();
