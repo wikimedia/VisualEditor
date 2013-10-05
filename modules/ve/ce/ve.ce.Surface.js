@@ -1512,7 +1512,8 @@ ve.ce.Surface.prototype.handleEnter = function ( e ) {
  */
 ve.ce.Surface.prototype.handleDelete = function ( e, backspace ) {
 	var rangeToRemove = this.model.getSelection(),
-		tx, startNode, endNode, endNodeData, nodeToDelete;
+		offset = 0,
+		docLength, tx, startNode, endNode, endNodeData, nodeToDelete;
 
 	if ( rangeToRemove.isCollapsed() ) {
 		// In case when the range is collapsed use the same logic that is used for cursor left and
@@ -1523,6 +1524,20 @@ ve.ce.Surface.prototype.handleDelete = function ( e, backspace ) {
 			( e.altKey === true || e.ctrlKey === true ) ? 'word' : 'character',
 			true
 		);
+		offset = rangeToRemove.start;
+		docLength = this.model.getDocument().data.getLength();
+		if ( offset < docLength ) {
+			while ( offset < docLength && this.model.getDocument().data.isCloseElementData( offset ) ) {
+				offset++;
+			}
+			// If the user tries to delete a focusable node from a collapsed selection,
+			// just select the node and cancel the deletion.
+			startNode = this.documentView.getDocumentNode().getNodeFromOffset( offset + 1 );
+			if ( ve.isMixedIn( startNode, ve.ce.FocusableNode ) ) {
+				this.model.change( null, startNode.getModel().getOuterRange() );
+				return;
+			}
+		}
 		if ( rangeToRemove.isCollapsed() ) {
 			// For instance beginning or end of the document.
 			return;
