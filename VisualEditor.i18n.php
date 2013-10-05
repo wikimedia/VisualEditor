@@ -127,6 +127,7 @@ $messages['en'] = array(
 	'visualeditor-help-label' => 'Read the user guide',
 	'visualeditor-help-link' => 'mw:Special:MyLanguage/Help:VisualEditor/User guide',
 	'visualeditor-help-title' => 'User guide for how to use the editor',
+	'visualeditor-help-tool' => 'Help',
 	'visualeditor-historybutton-redo-tooltip' => 'Redo',
 	'visualeditor-historybutton-undo-tooltip' => 'Undo',
 	'visualeditor-indentationbutton-indent-tooltip' => 'Increase indentation',
@@ -469,6 +470,7 @@ Parameters:
 {{Identical|User guide}}',
 	'visualeditor-help-link' => '{{notranslate}} Link to the user guide for how to use VisualEditor',
 	'visualeditor-help-title' => 'Title (hover) text for the link to the user guide',
+	'visualeditor-help-tool' => 'Title of popup tool in toolbar that provides help information',
 	'visualeditor-historybutton-redo-tooltip' => 'Tooltip text for the redo button.
 {{Identical|Redo}}',
 	'visualeditor-historybutton-undo-tooltip' => 'Tooltip text for the undo button.

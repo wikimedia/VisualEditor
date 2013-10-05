@@ -56,7 +56,7 @@ ve.ui.MWReferenceListDialog.prototype.initialize = function () {
 		'label': ve.msg( 'visualeditor-dialog-reference-options-group-label' )
 	} );
 
-	this.applyButton = new ve.ui.ButtonWidget( {
+	this.applyButton = new ve.ui.PushButtonWidget( {
 		'$$': this.$$, 'label': ve.msg( 'visualeditor-dialog-action-apply' ), 'flags': ['primary']
 	} );
 

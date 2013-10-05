@@ -163,7 +163,7 @@ ve.Element.getFrameOffset = function ( from, to, offset ) {
 ve.Element.getRelativePosition = function ( $from, $to ) {
 	var from = $from.offset(),
 		to = $to.offset();
-	return { 'top': from.top - to.top, 'left': from.left - to.left };
+	return { 'top': Math.round( from.top - to.top ), 'left': Math.round( from.left - to.left ) };
 };
 
 /**

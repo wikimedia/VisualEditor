@@ -259,6 +259,8 @@ $html = file_get_contents( $page );
 		<script src="../../modules/ve/ui/widgets/ve.ui.SearchWidget.js"></script>
 		<script src="../../modules/ve/ui/widgets/ve.ui.SurfaceWidget.js"></script>
 		<script src="../../modules/ve/ui/widgets/ve.ui.ButtonWidget.js"></script>
+		<script src="../../modules/ve/ui/widgets/ve.ui.PushButtonWidget.js"></script>
+		<script src="../../modules/ve/ui/widgets/ve.ui.PopupButtonWidget.js"></script>
 		<script src="../../modules/ve/ui/widgets/ve.ui.IconButtonWidget.js"></script>
 		<script src="../../modules/ve/ui/widgets/ve.ui.InputWidget.js"></script>
 		<script src="../../modules/ve/ui/widgets/ve.ui.InputLabelWidget.js"></script>
@@ -350,12 +352,12 @@ $html = file_get_contents( $page );
 				endTextInputLabel = new ve.ui.InputLabelWidget(
 					{ 'label': 'End', 'input': endTextInput }
 				),
-				getRangeButton = new ve.ui.ButtonWidget( { 'label': 'Get selected range' } ),
-				logRangeButton = new ve.ui.ButtonWidget(
+				getRangeButton = new ve.ui.PushButtonWidget( { 'label': 'Get selected range' } ),
+				logRangeButton = new ve.ui.PushButtonWidget(
 					{ 'label': 'Log to console', 'disabled': true }
 				),
-				dumpModelButton = new ve.ui.ButtonWidget( { 'label': 'Dump model' } ),
-				validateButton = new ve.ui.ButtonWidget( { 'label': 'Validate view and model' } );
+				dumpModelButton = new ve.ui.PushButtonWidget( { 'label': 'Dump model' } ),
+				validateButton = new ve.ui.PushButtonWidget( { 'label': 'Validate view and model' } );
 
 			// Initialization
 			$( '.ve-demo-utilities-commands' ).append(

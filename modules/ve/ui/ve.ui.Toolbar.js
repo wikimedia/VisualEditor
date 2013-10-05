@@ -41,7 +41,7 @@ ve.ui.Toolbar = function VeUiToolbar( toolFactory, options ) {
 	// Events
 	this.$
 		.add( this.$bar ).add( this.$group ).add( this.$actions )
-		.on( 'mousedown', false );
+		.on( 'mousedown', ve.bind( this.onMouseDown, this ) );
 
 	// Initialization
 	this.$group.addClass( 've-ui-toolbar-tools' );
@@ -74,6 +74,20 @@ ve.mixinClass( ve.ui.Toolbar, ve.ui.GroupElement );
  */
 ve.ui.Toolbar.prototype.getToolFactory = function () {
 	return this.toolFactory;
+};
+
+/**
+ * Handles mouse down events.
+ *
+ * @method
+ * @param {jQuery.Event} e Mouse down event
+ */
+ve.ui.Toolbar.prototype.onMouseDown = function ( e ) {
+	var $closestWidgetToEvent = $( e.target ).closest( '.ve-ui-widget' ),
+		$closestWidgetToToolbar = this.$.closest( '.ve-ui-widget' );
+	if ( !$closestWidgetToEvent.length || $closestWidgetToEvent[0] === $closestWidgetToToolbar[0] ) {
+		return false;
+	}
 };
 
 /**

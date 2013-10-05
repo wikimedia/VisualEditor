@@ -10,11 +10,16 @@
  *
  * @class
  * @extends ve.ui.Widget
+ * @mixins ve.ui.LabeledElement
  *
  * @constructor
  * @param {Object} [config] Configuration options
- * @cfg {jQuery} [$container] Container to make popup positioned relative to
+ * @cfg {boolean} [tail=true] Show tail pointing to origin of popup
+ * @cfg {string} [align='center'] Alignment of popup to origin
+ * @cfg {jQuery} [$container] Container to prevent popup from rendering outside of
  * @cfg {boolean} [autoClose=false] Popup auto-closes when it loses focus
+ * @cfg {jQuery} [$autoCloseIgnore] Elements to not auto close when clicked
+ * @cfg {boolean} [head] Show label and close button at the top
  */
 ve.ui.PopupWidget = function VeUiPopupWidget( config ) {
 	// Config intialization
@@ -23,40 +28,50 @@ ve.ui.PopupWidget = function VeUiPopupWidget( config ) {
 	// Parent constructor
 	ve.ui.Widget.call( this, config );
 
+	// Mixin constructors
+	ve.ui.LabeledElement.call( this, this.$$( '<div>' ), config );
+
 	// Properties
 	this.visible = false;
-	this.$callout = this.$$( '<div>' );
-	this.$container = config.$container || this.$$( 'body' );
+	this.$popup = this.$$( '<div>' );
+	this.$head = this.$$( '<div>' );
 	this.$body = this.$$( '<div>' );
-	this.transitionTimeout = null;
-	this.align = config.align || 'center';
+	this.$tail = this.$$( '<div>' );
+	this.$container = config.$container || this.$$( 'body' );
 	this.autoClose = !!config.autoClose;
+	this.$autoCloseIgnore = config.$autoCloseIgnore;
+	this.transitionTimeout = null;
+	this.tail = false;
+	this.align = config.align || 'center';
+	this.closeButton = new ve.ui.IconButtonWidget( { '$$': this.$$, 'icon': 'close' } );
+	this.onMouseDownHandler = ve.bind( this.onMouseDown, this );
 
 	// Events
-	this.$.add( this.$body ).add( this.$callout )
-		.on( 'mousedown', function ( e ) {
-			// Cancel only local mousedown events
-			return e.target !== this;
-		} );
+	this.closeButton.connect( this, { 'click': 'onCloseButtonClick' } );
 
 	// Initialization
-	if ( this.autoClose ) {
-		// Tab index on body so that it may blur
-		this.$body.attr( 'tabindex', 1 );
-		// Listen for blur events
-		this.$body.on( 'blur', ve.bind( this.onPopupBlur, this ) );
+	this.useTail( config.tail !== undefined ? !!config.tail : true );
+	this.$body.addClass( 've-ui-popupWidget-body' );
+	this.$tail.addClass( 've-ui-popupWidget-tail' );
+	this.$head
+		.addClass( 've-ui-popupWidget-head' )
+		.append( this.$label, this.closeButton.$ );
+	if ( !config.head ) {
+		this.$head.hide();
 	}
+	this.$popup
+		.addClass( 've-ui-popupWidget-popup' )
+		.append( this.$head, this.$body );
 	this.$.hide()
 		.addClass( 've-ui-popupWidget' )
-		.append(
-			this.$body.addClass( 've-ui-popupWidget-body' ),
-			this.$callout.addClass( 've-ui-popupWidget-callout' )
-		);
+		.append( this.$popup, this.$tail );
 };
 
 /* Inheritance */
 
 ve.inheritClass( ve.ui.PopupWidget, ve.ui.Widget );
+
+ve.mixinClass( ve.ui.PopupWidget, ve.ui.LabeledElement );
 
 /* Events */
 
@@ -64,38 +79,56 @@ ve.inheritClass( ve.ui.PopupWidget, ve.ui.Widget );
  * @event hide
  */
 
+/**
+ * @event show
+ */
+
 /* Methods */
 
 /**
- * Handle blur events.
+ * Handles mouse down events.
  *
- * @param {jQuery.Event} e Blur event
+ * @method
+ * @param {jQuery.Event} e Mouse down event
  */
-ve.ui.PopupWidget.prototype.onPopupBlur = function () {
-	var $body = this.$body;
+ve.ui.PopupWidget.prototype.onMouseDown = function ( e ) {
+	if (
+		this.visible &&
+		!$.contains( this.$[0], e.target ) &&
+		( !this.$autoCloseIgnore || !this.$autoCloseIgnore.has( e.target ).length )
+	) {
+		this.hide();
+	}
+};
 
-	// Find out what is focused after blur
-	setTimeout( ve.bind( function () {
-		var $focused = $body.find( ':focus' );
-		// Is there a focused child element?
-		if ( $focused.length > 0 ) {
-			// Bind a one off blur event to that focused child element
-			$focused.one( 'blur', ve.bind( function () {
-				setTimeout( ve.bind( function () {
-					if ( $body.find( ':focus' ).length === 0 ) {
-						// Be sure focus is not the popup itself.
-						if ( $body.is( ':focus' ) ) {
-							return;
-						}
-						// Not a child and not the popup itself, so hide.
-						this.hide();
-					}
-				}, this ), 0 );
-			}, this ) );
-		} else {
-			this.hide();
-		}
-	}, this ), 0 );
+/**
+ * Bind mouse down listener
+ *
+ * @method
+ */
+ve.ui.PopupWidget.prototype.bindMouseDownListener = function () {
+	// Capture clicks outside popup
+	this.getElementWindow().addEventListener( 'mousedown', this.onMouseDownHandler, true );
+};
+
+/**
+ * Handles close button click events.
+ *
+ * @method
+ */
+ve.ui.PopupWidget.prototype.onCloseButtonClick = function () {
+	if ( this.visible ) {
+		this.hide();
+	}
+};
+
+/**
+ * Unbind mouse down listener
+ *
+ * @method
+ */
+ve.ui.PopupWidget.prototype.unbindMouseDownListener = function () {
+	this.getElementWindow().removeEventListener( 'mousedown', this.onMouseDownHandler, true );
 };
 
 /**
@@ -109,17 +142,48 @@ ve.ui.PopupWidget.prototype.isVisible = function () {
 };
 
 /**
+ * Set whether to show a tail.
+ *
+ * @method
+ * @returns {boolean} Make tail visible
+ */
+ve.ui.PopupWidget.prototype.useTail = function ( value ) {
+	value = !!value;
+	if ( this.tail !== value ) {
+		this.tail = value;
+		if ( value ) {
+			this.$.addClass( 've-ui-popupWidget-tailed' );
+		} else {
+			this.$.removeClass( 've-ui-popupWidget-tailed' );
+		}
+	}
+};
+
+/**
+ * Check if showing a tail.
+ *
+ * @method
+ * @returns {boolean} tail is visible
+ */
+ve.ui.PopupWidget.prototype.hasTail = function () {
+	return this.tail;
+};
+
+/**
  * Show the context.
  *
  * @method
+ * @emits show
  * @chainable
  */
 ve.ui.PopupWidget.prototype.show = function () {
-	this.$.show();
-	this.visible = true;
-	if ( this.autoClose ) {
-		// Focus body so that it may blur
-		this.$body.focus();
+	if ( !this.visible ) {
+		this.$.show();
+		this.visible = true;
+		this.emit( 'show' );
+		if ( this.autoClose ) {
+			this.bindMouseDownListener();
+		}
 	}
 	return this;
 };
@@ -128,60 +192,63 @@ ve.ui.PopupWidget.prototype.show = function () {
  * Hide the context.
  *
  * @method
+ * @emits hide
  * @chainable
  */
 ve.ui.PopupWidget.prototype.hide = function () {
-	this.$.hide();
-	this.visible = false;
-	this.emit( 'hide' );
+	if ( this.visible ) {
+		this.$.hide();
+		this.visible = false;
+		this.emit( 'hide' );
+		if ( this.autoClose ) {
+			this.unbindMouseDownListener();
+		}
+	}
 	return this;
 };
-
 
 /**
  * Updates the position and size.
  *
  * @method
- * @param {number} x Horizontal position
- * @param {number} y Vertical position
  * @param {number} width Width
  * @param {number} height Height
  * @param {boolean} [transition=false] Use a smooth transition
  * @chainable
  */
-ve.ui.PopupWidget.prototype.display = function ( x, y, width, height, transition ) {
-	var left, overlapLeft, overlapRight,
-		overlapOffset = 0, padding = 7;
-
-	switch ( this.align ) {
-		case 'left':
-			// Inset callout from left
-			left = -padding;
-			break;
-		case 'right':
-			// Inset callout from right
-			left = -width + padding;
-			break;
-		default:
-			// Place callout in center
-			left = -width / 2;
-			break;
-	}
-
-	// Prevent viewport clipping, using padding between body and popup edges
-	overlapRight = this.$container.outerWidth( true ) - ( x + ( width + left + ( padding * 2 ) ) );
-	overlapLeft = x + ( left - ( padding * 2 ) );
-	if ( overlapRight < 0 ) {
-		overlapOffset = overlapRight;
-	} else if ( overlapLeft < 0 ) {
-		overlapOffset -= overlapLeft;
-	}
+ve.ui.PopupWidget.prototype.display = function ( width, height, transition ) {
+	var padding = 10,
+		originOffset = Math.round( this.$.offset().left ),
+		containerLeft = Math.round( this.$container.offset().left ),
+		containerWidth = this.$container.innerWidth(),
+		containerRight = containerLeft + containerWidth,
+		popupOffset = width * ( { 'left': 0, 'center': -0.5, 'right': -1 } )[this.align],
+		popupLeft = popupOffset - padding,
+		popupRight = popupOffset + padding + width + padding,
+		overlapLeft = ( originOffset + popupLeft ) - containerLeft,
+		overlapRight = containerRight - ( originOffset + popupRight );
 
 	// Prevent transition from being interrupted
 	clearTimeout( this.transitionTimeout );
 	if ( transition ) {
 		// Enable transition
 		this.$.addClass( 've-ui-popupWidget-transitioning' );
+	}
+
+	if ( overlapRight < 0 ) {
+		popupOffset += overlapRight;
+	} else if ( overlapLeft < 0 ) {
+		popupOffset -= overlapLeft;
+	}
+
+	// Position body relative to anchor and resize
+	this.$popup.css( {
+		'left': popupOffset,
+		'width': width,
+		'height': height === undefined ? 'auto' : height
+	} );
+
+	if ( transition ) {
 		// Prevent transitioning after transition is complete
 		this.transitionTimeout = setTimeout( ve.bind( function () {
 			this.$.removeClass( 've-ui-popupWidget-transitioning' );
@@ -190,11 +257,6 @@ ve.ui.PopupWidget.prototype.display = function ( x, y, width, height, transition
 		// Prevent transitioning immediately
 		this.$.removeClass( 've-ui-popupWidget-transitioning' );
 	}
-
-	// Position body relative to anchor and adjust size
-	this.$body.css( {
-		'left': left + overlapOffset, 'width': width, 'height': height === undefined ? 'auto' : height
-	} );
 
 	return this;
 };

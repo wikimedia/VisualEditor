@@ -48,7 +48,7 @@ ve.ui.MWTransclusionDialog.prototype.initialize = function () {
 	ve.ui.MWDialog.prototype.initialize.call( this );
 
 	// Properties
-	this.applyButton = new ve.ui.ButtonWidget( {
+	this.applyButton = new ve.ui.PushButtonWidget( {
 		'$$': this.$$, 'label': ve.msg( 'visualeditor-dialog-action-apply' ), 'flags': ['primary']
 	} );
 	this.pagedOutlineLayout = new ve.ui.PagedOutlineLayout( {
@@ -376,7 +376,7 @@ ve.ui.MWTransclusionDialog.prototype.getContentPage = function ( content ) {
 		'icon': 'settings'
 	} );
 
-	removeButton = new ve.ui.ButtonWidget( {
+	removeButton = new ve.ui.PushButtonWidget( {
 		'$$': this.frame.$$,
 		'label': ve.msg( 'visualeditor-dialog-transclusion-remove-content' ),
 		'flags': ['destructive']
@@ -444,7 +444,7 @@ ve.ui.MWTransclusionDialog.prototype.getTemplatePage = function ( template ) {
 		'icon': 'settings'
 	} );
 
-	removeButton = new ve.ui.ButtonWidget( {
+	removeButton = new ve.ui.PushButtonWidget( {
 		'$$': this.frame.$$,
 		'label': ve.msg( 'visualeditor-dialog-transclusion-remove-template' ),
 		'flags': ['destructive']
@@ -504,7 +504,7 @@ ve.ui.MWTransclusionDialog.prototype.getParameterPage = function ( parameter ) {
 		'icon': 'settings'
 	} );
 
-	removeButton = new ve.ui.ButtonWidget( {
+	removeButton = new ve.ui.PushButtonWidget( {
 		'$$': this.frame.$$,
 		'label': ve.msg( 'visualeditor-dialog-transclusion-remove-param' ),
 		'flags': ['destructive']
@@ -560,7 +560,7 @@ ve.ui.MWTransclusionDialog.prototype.getPlaceholderPage = function ( placeholder
 	addTemplateInput = new ve.ui.MWTitleInputWidget( {
 		'$$': this.frame.$$, '$overlay': this.$overlay, 'namespace': 10
 	} );
-	addTemplateButton = new ve.ui.ButtonWidget( {
+	addTemplateButton = new ve.ui.PushButtonWidget( {
 		'$$': this.frame.$$,
 		'label': ve.msg( 'visualeditor-dialog-transclusion-add-template' ),
 		'flags': ['constructive'],
@@ -581,7 +581,7 @@ ve.ui.MWTransclusionDialog.prototype.getPlaceholderPage = function ( placeholder
 		'icon': 'settings'
 	} );
 
-	removeButton = new ve.ui.ButtonWidget( {
+	removeButton = new ve.ui.PushButtonWidget( {
 		'$$': this.frame.$$,
 		'label': ve.msg( 'visualeditor-dialog-transclusion-remove-template' ),
 		'flags': ['destructive']

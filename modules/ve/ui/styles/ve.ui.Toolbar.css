@@ -51,6 +51,14 @@
 	user-select: none;
 }
 
+.ve-ui-toolbar-actions .ve-ui-popupWidget {
+	-webkit-touch-callout: default;
+	-webkit-user-select: all;
+	-moz-user-select: all;
+	-ms-user-select: all;
+	user-select: all;
+}
+
 .ve-ui-toolbar-shadow {
 	/* @embed */
 	background-image: url(images/toolbar-shadow.png);

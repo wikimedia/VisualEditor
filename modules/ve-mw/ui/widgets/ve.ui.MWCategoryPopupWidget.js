@@ -34,7 +34,7 @@ ve.ui.MWCategoryPopupWidget = function VeUiMWCategoryPopupWidget ( config ) {
 	this.sortKeyLabel = new ve.ui.InputLabelWidget(
 		{ '$$': this.$$, '$input': this.sortKeyInput, 'label': ve.msg ( 'visualeditor-dialog-meta-categories-sortkey-label' ) }
 	);
-	this.$sortKeyForm = this.$$( '<form>' ).addClass( 've-ui-mwCategorySortkeyForm' )
+	this.$sortKeyForm = this.$$( '<form>' ).addClass( 've-ui-mwCategoryPopupWidget-sortKeyForm' )
 		.append( this.sortKeyLabel.$, this.sortKeyInput.$ );
 
 	// Events
@@ -43,15 +43,17 @@ ve.ui.MWCategoryPopupWidget = function VeUiMWCategoryPopupWidget ( config ) {
 	this.$sortKeyForm.on( 'submit', ve.bind( this.onSortKeySubmit, this ) );
 
 	// Initialization
-	this.$.addClass( 've-ui-mwCategoryPopupMenu' ).hide();
+	this.$.addClass( 've-ui-mwCategoryPopupWidget' ).hide();
 	this.$title
-		.addClass( 've-ui-mwCategoryPopupTitle ve-ui-icon-tag' )
+		.addClass( 've-ui-mwCategoryPopupWidget-title ve-ui-icon-tag' )
 		.text( ve.msg( 'visualeditor-dialog-meta-categories-category' ) );
-	this.$menu.append(
-		this.$title,
-		this.removeButton.$.addClass( 've-ui-mwCategoryRemoveButton' ),
-		this.$sortKeyForm
-	);
+	this.$menu
+		.addClass( 've-ui-mwCategoryPopupWidget-content' )
+		.append(
+			this.$title,
+			this.removeButton.$.addClass( 've-ui-mwCategoryPopupWidget-removeButton' ),
+			this.$sortKeyForm
+		);
 	this.$body.append( this.$menu );
 	config.$overlay.append( this.$ );
 };
@@ -179,5 +181,5 @@ ve.ui.MWCategoryPopupWidget.prototype.setPopup = function ( item ) {
 		this.$.css( { 'left': left, 'top': top } );
 	}
 
-	this.display( left, top, width, height );
+	this.display( width, height );
 };

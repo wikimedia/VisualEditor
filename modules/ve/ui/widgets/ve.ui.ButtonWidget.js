@@ -9,6 +9,7 @@
  * Creates an ve.ui.ButtonWidget object.
  *
  * @class
+ * @abstract
  * @extends ve.ui.Widget
  * @mixins ve.ui.FlaggableElement
  * @mixins ve.ui.LabeledElement
@@ -16,8 +17,14 @@
  * @constructor
  * @param {Object} [config] Configuration options
  * @cfg {number} [tabIndex] Button's tab index
+ * @cfg {string} [title=''] Title text
+ * @cfg {string} [href] Hyperlink to visit when clicked
+ * @cfg {string} [target] Target to open hyperlink in
  */
 ve.ui.ButtonWidget = function VeUiButtonWidget( config ) {
+	// Configuration initialization
+	config = ve.extendObject( { 'target': '_blank' }, config );
+
 	// Parent constructor
 	ve.ui.Widget.call( this, config );
 
@@ -25,16 +32,33 @@ ve.ui.ButtonWidget = function VeUiButtonWidget( config ) {
 	ve.ui.FlaggableElement.call( this, config );
 	ve.ui.LabeledElement.call( this, this.$$( '<span>' ), config );
 
+	// Properties
+	this.$button = this.$$( '<a>' );
+	this.isHyperlink = typeof config.href === 'string';
+	this.tabIndex = null;
+
 	// Events
-	this.$.on( 'click', ve.bind( this.onClick, this ) );
-	this.$.on( 'keypress', ve.bind( this.onKeyPress, this ) );
+	this.$button.on( {
+		'mousedown': ve.bind( this.onMouseDown, this ),
+		'mouseup': ve.bind( this.onMouseUp, this ),
+		'click': ve.bind( this.onClick, this ),
+		'keypress': ve.bind( this.onKeyPress, this )
+	} );
 
 	// Initialization
-	this.$.attr( {
-		'role': 'button',
-		'tabIndex': config.tabIndex || 0
-	} );
-	this.$.addClass( 've-ui-buttonWidget' ).append( this.$label );
+	this.$button
+		.addClass( 've-ui-buttonWidget-button' )
+		.append( this.$label )
+		.attr( {
+			'role': 'button',
+			'tabIndex': config.tabIndex || 0,
+			'title': config.title,
+			'href': config.href,
+			'target': config.target
+		} );
+	this.$
+		.addClass( 've-ui-buttonWidget' )
+		.append( this.$button );
 };
 
 /* Inheritance */
@@ -42,7 +66,6 @@ ve.ui.ButtonWidget = function VeUiButtonWidget( config ) {
 ve.inheritClass( ve.ui.ButtonWidget, ve.ui.Widget );
 
 ve.mixinClass( ve.ui.ButtonWidget, ve.ui.FlaggableElement );
-
 ve.mixinClass( ve.ui.ButtonWidget, ve.ui.LabeledElement );
 
 /* Events */
@@ -54,6 +77,29 @@ ve.mixinClass( ve.ui.ButtonWidget, ve.ui.LabeledElement );
 /* Methods */
 
 /**
+ * Handles mouse down events.
+ *
+ * @method
+ * @param {jQuery.Event} e Mouse down event
+ */
+ve.ui.ButtonWidget.prototype.onMouseDown = function () {
+	this.tabIndex = this.$button.attr( 'tabIndex' );
+	// Remove the tab-index while the button is down to prevent the button from stealing focus
+	this.$button.removeAttr( 'tabIndex' );
+};
+
+/**
+ * Handles mouse up events.
+ *
+ * @method
+ * @param {jQuery.Event} e Mouse up event
+ */
+ve.ui.ButtonWidget.prototype.onMouseUp = function () {
+	// Restore the tab-index after the button is up to restore the button's accesssibility
+	this.$button.attr( 'tabIndex', this.tabIndex );
+};
+
+/**
  * Handles mouse click events.
  *
  * @method
@@ -63,6 +109,9 @@ ve.mixinClass( ve.ui.ButtonWidget, ve.ui.LabeledElement );
 ve.ui.ButtonWidget.prototype.onClick = function () {
 	if ( !this.disabled ) {
 		this.emit( 'click' );
+		if ( this.isHyperlink ) {
+			return true;
+		}
 	}
 	return false;
 };
@@ -76,7 +125,10 @@ ve.ui.ButtonWidget.prototype.onClick = function () {
  */
 ve.ui.ButtonWidget.prototype.onKeyPress = function ( e ) {
 	if ( !this.disabled && e.which === ve.Keys.SPACE ) {
-		this.emit( 'click' );
+		if ( this.isHyperlink ) {
+			this.onClick();
+			return true;
+		}
 	}
 	return false;
 };

@@ -5,15 +5,30 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
+/* ve.ui.ButtonWidget */
+
+.ve-ui-buttonWidget {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+a.ve-ui-buttonWidget-button {
+	color: #333;
+	cursor: pointer;
+	display: inline-block;
+	vertical-align: middle;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
 /* ve.ui.IconButtonWidget */
 
 .ve-ui-iconButtonWidget {
-	width: 2em;
-	height: 2em;
-	background-position: center center;
-	background-repeat: no-repeat;
-	cursor: pointer;
-	opacity: 0.8;
+	display: inline-block;
+	position: relative;
 	-webkit-transition: opacity 200ms;
 	-moz-transition: opacity 200ms;
 	-ms-transition: opacity 200ms;
@@ -21,34 +36,65 @@
 	transition: opacity 200ms;
 }
 
-.ve-ui-iconButtonWidget:hover {
+.ve-ui-iconButtonWidget .ve-ui-buttonWidget-button > .ve-ui-iconedElement-icon {
+	opacity: 0.8;
+	display: inline-block;
+	vertical-align: middle;
+	background-position: center center;
+	background-repeat: no-repeat;
+	width: 2em;
+	height: 2em;
+}
+
+.ve-ui-iconButtonWidget .ve-ui-buttonWidget-button:hover > .ve-ui-iconedElement-icon,
+.ve-ui-iconButtonWidget .ve-ui-buttonWidget-button:focus > .ve-ui-iconedElement-icon {
 	opacity: 1;
 }
 
-.ve-ui-iconButtonWidget.ve-ui-widget-disabled {
+.ve-ui-iconButtonWidget.ve-ui-widget-disabled .ve-ui-buttonWidget-button > .ve-ui-iconedElement-icon {
 	opacity: 0.2;
 }
 
-/* ve.ui.ButtonWidget */
-
-.ve-ui-buttonWidget {
+.ve-ui-iconButtonWidget .ve-ui-buttonWidget-button > .ve-ui-labeledElement-label {
 	display: inline-block;
-	height: 1.8em;
+	vertical-align: middle;
+	margin-left: 0.25em;
+	color: #333;
+}
+
+.ve-ui-iconButtonWidget .ve-ui-buttonWidget-button:hover > .ve-ui-labeledElement-label,
+.ve-ui-iconButtonWidget .ve-ui-buttonWidget-button:focus > .ve-ui-labeledElement-label {
+	color: #000;
+}
+
+.ve-ui-iconButtonWidget.ve-ui-widget-disabled .ve-ui-buttonWidget-button > .ve-ui-labeledElement-label {
+	color: #ccc;
+}
+
+/* ve.ui.PopupButtonWidget */
+
+.ve-ui-popupButtonWidget {
+	position: relative;
+}
+
+.ve-ui-popupButtonWidget .ve-ui-popupWidget {
+	position: absolute;
+	left: 1em;
+	cursor: auto;
+}
+
+/* ve.ui.PushButtonWidget */
+
+.ve-ui-pushButtonWidget .ve-ui-buttonWidget-button {
+	display: inline-block;
+	font-size: 1em;
 	margin: 0.1em 0;
-	padding: 0.25em 0.75em;
+	padding: 0.2em 0.8em;
 	border-radius: 0.3em;
 	vertical-align: top;
-	color: #333;
 	text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
 	box-shadow: 0 0.1em 0.25em rgba(0, 0, 0, 0.1);
 	text-align: center;
-	font-size: 1em;
-	cursor: pointer;
-	-webkit-touch-callout: none;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
 
 	/* Animation */
 	-webkit-transition: border-color 100ms;
@@ -73,41 +119,43 @@
 	background-image: linear-gradient(top, #ffffff 0%, #f0f0f0 100%);
 }
 
-.ve-ui-buttonWidget:hover {
+.ve-ui-pushButtonWidget .ve-ui-buttonWidget-button:hover,
+.ve-ui-pushButtonWidget .ve-ui-buttonWidget-button:focus {
 	border-color: #aaa;
 }
 
-.ve-ui-buttonWidget:active {
+.ve-ui-pushButtonWidget .ve-ui-buttonWidget-button:active {
 	border-color: #ddd;
 	box-shadow: inset 0 1px 4px 0 rgba(0, 0, 0, 0.07);
 	color: black;
 }
 
-.ve-ui-widget-disabled.ve-ui-buttonWidget,
-.ve-ui-widget-disabled.ve-ui-buttonWidget:active {
+.ve-ui-pushButtonWidget.ve-ui-widget-disabled .ve-ui-buttonWidget-button,
+.ve-ui-pushButtonWidget.ve-ui-widget-disabled .ve-ui-buttonWidget-button:active {
 	opacity: 0.5;
 	cursor: default;
 	box-shadow: none;
 	color: #333;
 }
 
-.ve-ui-widget-disabled.ve-ui-buttonWidget:hover {
+.ve-ui-pushButtonWidget.ve-ui-widget-disabled .ve-ui-buttonWidget-button:hover,
+.ve-ui-pushButtonWidget.ve-ui-widget-disabled .ve-ui-buttonWidget-button:focus {
 	border-color: #ccc;
 	box-shadow: none;
 }
 
-.ve-ui-buttonWidget .ve-ui-labeledElement-label {
+.ve-ui-pushButtonWidget .ve-ui-buttonWidget-button > .ve-ui-labeledElement-label {
 	display: inline-block;
 	vertical-align: middle;
 	line-height: 1.9em;
 }
 
-.ve-ui-flaggableElement-destructive.ve-ui-buttonWidget {
+.ve-ui-pushButtonWidget.ve-ui-flaggableElement-destructive .ve-ui-buttonWidget-button {
 	/* Red text */
 	color: #d45353;
 }
 
-.ve-ui-flaggableElement-constructive.ve-ui-buttonWidget {
+.ve-ui-pushButtonWidget.ve-ui-flaggableElement-constructive .ve-ui-buttonWidget-button {
 	/* Green */
 	border: solid 1px #c3e59a;
 	background-color: #f0fbe1;
@@ -124,11 +172,12 @@
 	background-image: linear-gradient(top, #f0fbe1 0%, #c3e59a 100%);
 }
 
-.ve-ui-flaggableElement-constructive.ve-ui-buttonWidget:hover {
+.ve-ui-pushButtonWidget.ve-ui-flaggableElement-constructive .ve-ui-buttonWidget-button:hover,
+.ve-ui-pushButtonWidget.ve-ui-flaggableElement-constructive .ve-ui-buttonWidget-button:focus {
 	border-color: #a6cf74;
 }
 
-.ve-ui-flaggableElement-primary.ve-ui-buttonWidget {
+.ve-ui-pushButtonWidget.ve-ui-flaggableElement-primary .ve-ui-buttonWidget-button {
 	/* Blue */
 	border: solid 1px #b0d9ee;
 	background-color: #eaf4fa;
@@ -145,7 +194,8 @@
 	background-image: linear-gradient(top, #eaf4fa 0%, #b0d9ee 100%);
 }
 
-.ve-ui-flaggableElement-primary.ve-ui-buttonWidget:hover {
+.ve-ui-pushButtonWidget.ve-ui-flaggableElement-primary .ve-ui-buttonWidget-button:hover,
+.ve-ui-pushButtonWidget.ve-ui-flaggableElement-primary .ve-ui-buttonWidget-button:focus {
 	border-color: #84b9d4;
 }
 
@@ -495,18 +545,7 @@
 
 /* ve.ui.PopupWidget */
 
-.ve-ui-popupWidget-callout {
-	position: absolute;
-	/* @embed */
-	background-image: url(images/callout.svg);
-	background-repeat: no-repeat;
-	width: 15px;
-	height: 8px;
-	margin-left: -7px;
-}
-
-.ve-ui-popupWidget-body {
-	margin-top: 7px;
+.ve-ui-popupWidget-popup {
 	position: absolute;
 	overflow: hidden;
 	border: solid 1px #ccc;
@@ -515,7 +554,26 @@
 	box-shadow: 0 0.15em 0.5em 0 rgba(0, 0, 0, 0.2);
 }
 
-.ve-ui-popupWidget-transitioning .ve-ui-popupWidget-body {
+.ve-ui-popupWidget-tail {
+	display: none;
+}
+
+.ve-ui-popupWidget-tailed .ve-ui-popupWidget-popup {
+	margin-top: 7px;
+}
+
+.ve-ui-popupWidget-tailed .ve-ui-popupWidget-tail {
+	display: block;
+	position: absolute;
+	/* @embed */
+	background-image: url(images/tail.svg);
+	background-repeat: no-repeat;
+	width: 15px;
+	height: 8px;
+	margin-left: -7px;
+}
+
+.ve-ui-popupWidget-transitioning .ve-ui-popupWidget-popup {
 	-webkit-transition: width 100ms, height 100ms, left 100ms;
 	-moz-transition: width 100ms, height 100ms, left 100ms;
 	-ms-transition: width 100ms, height 100ms, left 100ms;
@@ -528,9 +586,28 @@
 	transition-timing-function: ease-in-out;
 }
 
-.ve-ui-popupWidget-body:focus {
-	/* No outline. The body has a tabindex and is focused on show */
-	outline: none;
+.ve-ui-popupWidget-head {
+	height: 2.5em;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.ve-ui-popupWidget-head .ve-ui-iconButtonWidget {
+	float: right;
+	margin: 0.25em;
+}
+
+.ve-ui-popupWidget-head .ve-ui-labeledElement-label {
+	float: left;
+	margin: 0.75em 1em;
+	cursor: default;
+}
+
+.ve-ui-popupWidget-body {
+	box-shadow: 0 0 0.66em rgba(0,0,0,0.25);
 }
 
 /* ve.ui.SearchWidget */

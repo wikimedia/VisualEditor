@@ -107,29 +107,29 @@ ve.ui.MenuWidget.prototype.isVisible = function () {
 };
 
 /**
- * Bind keydown listener
+ * Bind key down listener
  *
  * @method
  */
-ve.ui.MenuWidget.prototype.bindKeydownListener = function () {
+ve.ui.MenuWidget.prototype.bindKeyDownListener = function () {
 	if ( this.$input ) {
 		this.$input.on( 'keydown', this.onKeyDownHandler );
 	} else {
 		// Capture menu navigation keys
-		window.addEventListener( 'keydown', this.onKeyDownHandler, true );
+		this.getElementWindow().addEventListener( 'keydown', this.onKeyDownHandler, true );
 	}
 };
 
 /**
- * Unbind keydown listener
+ * Unbind key down listener
  *
  * @method
  */
-ve.ui.MenuWidget.prototype.unbindKeydownListener = function () {
+ve.ui.MenuWidget.prototype.unbindKeyDownListener = function () {
 	if ( this.$input ) {
 		this.$input.off( 'keydown' );
 	} else {
-		window.removeEventListener( 'keydown', this.onKeyDownHandler, true );
+		this.getElementWindow().removeEventListener( 'keydown', this.onKeyDownHandler, true );
 	}
 };
 
@@ -202,7 +202,7 @@ ve.ui.MenuWidget.prototype.show = function () {
 	if ( this.items.length ) {
 		this.$.show();
 		this.visible = true;
-		this.bindKeydownListener();
+		this.bindKeyDownListener();
 
 		// Change focus to enable keyboard navigation
 		if ( this.isolated && this.$input && !this.$input.is( ':focus' ) ) {
@@ -231,7 +231,7 @@ ve.ui.MenuWidget.prototype.show = function () {
 ve.ui.MenuWidget.prototype.hide = function () {
 	this.$.hide();
 	this.visible = false;
-	this.unbindKeydownListener();
+	this.unbindKeyDownListener();
 
 	if ( this.isolated && this.$previousFocus ) {
 		this.$previousFocus.focus();

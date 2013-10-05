@@ -29,6 +29,19 @@ ve.ui.LabeledElement = function VeUiLabeledElement( $label, config ) {
 	this.setLabel( config.label );
 };
 
+/* Static Properties */
+
+ve.ui.LabeledElement.static = {};
+
+/*
+ * HTML to use when label is empty.
+ *
+ * @static
+ * @property {string}
+ * @inheritable
+ */
+ve.ui.LabeledElement.static.emptyHtml = '&nbsp';
+
 /* Methods */
 
 /**
@@ -46,7 +59,7 @@ ve.ui.LabeledElement.prototype.setLabel = function ( value ) {
 		this.$label.empty().append( value );
 		this.label = value;
 	} else {
-		this.$label.html( '&nbsp;' );
+		this.$label.html( this.constructor.static.emptyLabel );
 		this.label = null;
 	}
 	return this;

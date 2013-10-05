@@ -9,56 +9,30 @@
  * Creates an ve.ui.IconButtonWidget object.
  *
  * @class
- * @extends ve.ui.Widget
+ * @extends ve.ui.ButtonWidget
+ * @mixins ve.ui.IconedElement
  *
  * @constructor
  * @param {Object} [config] Configuration options
- * @cfg {string} [icon] Symbolic name of icon
- * @cfg {string} [title=''] Title text
  */
 ve.ui.IconButtonWidget = function VeUiIconButtonWidget( config ) {
 	// Parent constructor
-	ve.ui.Widget.call( this, config );
+	ve.ui.ButtonWidget.call( this, config );
 
-	// Events
-	this.$.on( 'click', ve.bind( this.onClick, this ) );
+	// Mixin constructors
+	ve.ui.IconedElement.call( this, this.$$( '<span>' ), config );
 
 	// Initialization
+	this.$button.prepend( this.$icon );
 	this.$.addClass( 've-ui-iconButtonWidget' );
-	if ( config.icon ) {
-		this.$.addClass( 've-ui-icon-' + config.icon );
-	}
-	if ( config.title ) {
-		this.$.attr( 'title', config.title );
-	}
 };
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.IconButtonWidget, ve.ui.Widget );
+ve.inheritClass( ve.ui.IconButtonWidget, ve.ui.ButtonWidget );
 
-/* Events */
-
-/**
- * @event click
- */
+ve.mixinClass( ve.ui.IconButtonWidget, ve.ui.IconedElement );
 
 /* Static Properties */
 
-ve.ui.IconButtonWidget.static.tagName = 'a';
-
-/* Methods */
-
-/**
- * Handles mouse click events.
- *
- * @method
- * @param {jQuery.Event} e Mouse click event
- * @emits click
- */
-ve.ui.IconButtonWidget.prototype.onClick = function () {
-	if ( !this.disabled ) {
-		this.emit( 'click' );
-	}
-	return false;
-};
+ve.ui.IconButtonWidget.static.emptyHtml = '';
