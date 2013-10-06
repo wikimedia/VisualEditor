@@ -154,10 +154,10 @@ ve.ui.Surface.prototype.getCommands = function () {
  */
 ve.ui.Surface.prototype.destroy = function () {
 	ve.instances.splice( ve.instances.indexOf( this ), 1 );
+	this.view.destroy();
 	this.$.remove();
 	this.$globalOverlay.remove();
 	this.$localOverlay.remove();
-	this.view.destroy();
 };
 
 /**

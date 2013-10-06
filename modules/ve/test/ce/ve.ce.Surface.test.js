@@ -217,6 +217,8 @@ QUnit.test( 'onContentChange', function ( assert ) {
 		}
 		assert.deepEqual( ops, expectedOps, msg + ': operations' );
 		assert.deepEqual( surface.getModel().getSelection(), expectedRange, msg + ': range' );
+
+		surface.destroy();
 	}
 
 	for ( i = 0; i < cases.length; i++ ) {

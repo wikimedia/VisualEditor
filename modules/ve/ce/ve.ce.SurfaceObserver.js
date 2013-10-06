@@ -81,6 +81,16 @@ ve.ce.SurfaceObserver.prototype.clear = function ( range ) {
 };
 
 /**
+ * Detach from the document view
+ *
+ * @method
+ */
+ve.ce.SurfaceObserver.prototype.detach = function () {
+	this.documentView = null;
+	this.domDocument = null;
+};
+
+/**
  * Start the setTimeout synchronisation loop
  *
  * @method
@@ -164,6 +174,10 @@ ve.ce.SurfaceObserver.prototype.pollOnceNoEmit = function () {
  */
 ve.ce.SurfaceObserver.prototype.pollOnceInternal = function ( emitChanges ) {
 	var $nodeOrSlug, node, text, hash, range, rangyRange;
+
+	if ( !this.domDocument ) {
+		return;
+	}
 
 	range = this.range;
 	node = this.node;

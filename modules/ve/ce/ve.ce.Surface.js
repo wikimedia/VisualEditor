@@ -302,6 +302,7 @@ ve.ce.Surface.prototype.disable = function () {
  * @method
  */
 ve.ce.Surface.prototype.destroy = function () {
+	this.surfaceObserver.detach();
 	this.documentView.getDocumentNode().setLive( false );
 	this.$.remove();
 	this.$phantoms.remove();
