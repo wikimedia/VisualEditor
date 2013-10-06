@@ -54,7 +54,7 @@ class ApiVisualEditor extends ApiBase {
 				// and use it to declare the cache hit instead.
 				$xCache = $req->getResponseHeader( 'X-Cache' );
 				if ( is_string( $xCache ) && strpos( $xCache, 'hit' ) !== false ) {
-					$xpp = 'backend-varnish-hit: true';
+					$xpp = 'cached-response=true';
 				} else {
 					$xpp = $req->getResponseHeader( 'X-Parsoid-Performance' );
 				}
