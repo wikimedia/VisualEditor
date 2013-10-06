@@ -223,7 +223,9 @@ ve.init.mw.ViewPageTarget.prototype.activate = function () {
 		this.hideTableOfContents();
 		this.mutePageContent();
 		this.mutePageTitle();
+
 		this.saveScrollPosition();
+
 		this.load();
 	}
 };
@@ -244,6 +246,7 @@ ve.init.mw.ViewPageTarget.prototype.deactivate = function ( override ) {
 			// User interface changes
 			this.restorePage();
 			this.hideSpinner();
+			this.showTableOfContents();
 
 			if ( this.toolbarCancelButton ) {
 				// If deactivate is called before a successful load, then
@@ -256,17 +259,21 @@ ve.init.mw.ViewPageTarget.prototype.deactivate = function ( override ) {
 			this.resetSaveDialog();
 			this.hideSaveDialog();
 			this.detachSaveDialog();
-			// Check we got as far as setting up the surface
+
 			if ( this.active ) {
+				// If we got as far as setting up the surface, tear that down
 				this.tearDownSurface();
-			} else {
-				this.showPageContent();
 			}
+
+			// Show/restore components that are otherwise handled by tearDownSurface
+			this.showPageContent();
+			this.restorePageTitle();
+
 			// If there is a load in progress, abort it
 			if ( this.loading ) {
 				this.loading.abort();
 			}
-			this.showTableOfContents();
+
 			this.deactivating = false;
 			mw.hook( 've.deactivationComplete' ).fire();
 		}
@@ -1204,11 +1211,7 @@ ve.init.mw.ViewPageTarget.prototype.tearDownSurface = function () {
 		this.$document = null;
 	}
 	this.tearDownToolbar();
-	this.hideSpinner();
-	this.showPageContent();
-	this.restorePageTitle();
 	this.restoreDocumentTitle();
-	this.showTableOfContents();
 	// Destroy surface
 	if ( this.surface ) {
 		this.surface.destroy();
