@@ -7,12 +7,22 @@
 
 /* VisualEditor */
 
-.ve-init-mw-viewPageTarget-pageTitle {
+.ve-init-mw-viewPageTarget-transform {
 	-webkit-transition: opacity 200ms ease-out;
 	-moz-transition: opacity 200ms ease-out;
-	-ms-transition: opacity 200ms ease-out;
 	-o-transition: opacity 200ms ease-out;
 	transition: opacity 200ms ease-out;
+}
+
+.ve-init-mw-viewPageTarget-transform-muted {
+	opacity: 0.6;
+}
+
+.ve-init-mw-viewPageTarget-transform-hidden {
+	opacity: 0;
+}
+
+.ve-init-mw-viewPageTarget-pageTitle {
 	cursor: default;
 }
 
