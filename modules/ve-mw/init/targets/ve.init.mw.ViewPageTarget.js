@@ -1276,12 +1276,15 @@ ve.init.mw.ViewPageTarget.prototype.setupToolbarButtons = function () {
 			'head': true
 		}
 	} );
+
+	// Either keep the button shown and show the popup as well, or hide the button itself
+	// entirely (so that when it is attached later #attachToolbarButtons it will not be visible).
 	if ( editNoticeCount ) {
 		setTimeout( ve.bind( function () {
 			this.toolbarEditNoticesButton.showPopup();
 		}, this ), 500 );
 	} else {
-		this.toolbarEditNoticesButton.hide();
+		this.toolbarEditNoticesButton.$.hide();
 	}
 
 	this.toolbarBetaNoticesButton = new ve.ui.PopupButtonWidget( {
