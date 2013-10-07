@@ -7336,7 +7336,7 @@ $messages['id'] = array(
 	'visualeditor-dialog-action-goback' => 'Kembali',
 	'visualeditor-dialog-beta-welcome-action-continue' => 'Lanjutkan',
 	'visualeditor-dialog-beta-welcome-content' => 'Ini adalah cara kita yang baru dan lebih mudah dalam menyunting. VisualEditor masih dalam versi beta, yang artinya Anda mungkin akan menemukan bagian halaman yang tidak dapat Anda sunting, atau mengalami masalah yang perlu perbaikan. Kami menyarankan Anda untuk meninjau dahulu perubahan Anda, dan kami menyambut baik semua laporan tentang masalah apa pun yang mungkin Anda alami selama menggunakan VisualEditor (klik tombol \'{{int:visualeditor-beta-label}}\'  untuk mengirimkan umpan balik). Anda dapat tetap menggunakan penyunting teks wiki dengan mengklik tab "$1" – perubahan yang belum disimpan akan hilang.',
-	'visualeditor-dialog-beta-welcome-title' => 'Selamat datang di VisualEditor',
+	'visualeditor-dialog-beta-welcome-title' => '{{GENDER:$1|Selamat datang}} di VisualEditor',
 	'visualeditor-dialog-media-content-section' => 'Takarir',
 	'visualeditor-dialog-media-insert-button' => 'Masukkan media',
 	'visualeditor-dialog-media-insert-title' => 'Masukkan media',
@@ -7379,6 +7379,7 @@ $messages['id'] = array(
 	'visualeditor-dialogbutton-meta-tooltip' => 'Pengaturan halaman',
 	'visualeditor-dialogbutton-reference-tooltip' => 'Referensi',
 	'visualeditor-dialogbutton-referencelist-tooltip' => 'Daftar referensi',
+	'visualeditor-dialogbutton-syntaxhighlight-tooltip' => 'Kode SyntaxHighlight',
 	'visualeditor-dialogbutton-transclusion-tooltip' => 'Transklusi',
 	'visualeditor-diff-nochanges' => 'Tidak dapat memulai peninjauan karena revisi Anda cocok dengan versi terbaru dari halaman ini.',
 	'visualeditor-differror' => 'Galat memuat data dari peladen: $1.',
@@ -7445,7 +7446,7 @@ $messages['id'] = array(
 	'visualeditor-preference-experimental-description' => 'Aktifkan fitur terbaru dalam VisualEditor. Selagi kami mengembangkan peralatan dan membuat perubahan untuk penyunting ini, kami juga menyediakannya untuk uji coba sebelum rilis umum dilakukan. Mohon diingat, saat menggunakan fitur eksperimental selalu tinjau perubahan Anda sebelum menyimpannya.',
 	'visualeditor-preference-experimental-label' => 'Fitur eksperimental VisualEditor',
 	'visualeditor-reference-input-placeholder' => 'Apa yang ingin Anda referensikan?',
-	'visualeditor-referencelist-isempty' => 'Tidak ada referensi dengan kelompok "$1" pada halaman ini.',
+	'visualeditor-referencelist-isempty' => 'Tidak ada referensi dengan kelompok "$1" pada halaman ini yang dapat disertakan dalam daftar ini.',
 	'visualeditor-referencelist-missingref' => 'Referensi ini didefinisikan dalam templat atau blok lain, dan sekarang hanya dapat disunting dalam mode "sunting sumber".',
 	'visualeditor-savedialog-error-badtoken' => 'Kami tidak dapat memproses suntingan Anda karena sesi sudah tidak sah.',
 	'visualeditor-savedialog-identify-anon' => 'Apakah Anda ingin menyimpan halaman ini sebagai pengguna anonim saja? Alamat IP Anda akan tercatat dalam riwayat revisi halaman ini.',
@@ -7907,6 +7908,7 @@ $messages['it'] = array(
 	'visualeditor-formatdropdown-title' => 'Cambia formato',
 	'visualeditor-help-label' => 'Leggi la guida utente',
 	'visualeditor-help-title' => "Guida utente per l'utilizzo dell'editor",
+	'visualeditor-help-tool' => 'Aiuto',
 	'visualeditor-historybutton-redo-tooltip' => 'Rifai',
 	'visualeditor-historybutton-undo-tooltip' => 'Annulla',
 	'visualeditor-indentationbutton-indent-tooltip' => 'Aumenta indentazione',
@@ -8527,6 +8529,7 @@ $messages['kk-cyrl'] = array(
 
 /** Korean (한국어)
  * @author Freebiekr
+ * @author Hym411
  * @author Kwj2772
  * @author LFM
  * @author 아라
@@ -8569,7 +8572,7 @@ $messages['ko'] = array(
 	'visualeditor-dialog-action-goback' => '돌아가기',
 	'visualeditor-dialog-beta-welcome-action-continue' => '계속',
 	'visualeditor-dialog-beta-welcome-content' => '이것은 우리의 편집하기 새롭고, 쉬운 방법입니다. 아직 베타이며, 편집할 수 없는 문서의 일부를 찾을 수 있거나, 고쳐져야 하는 문제가 발생할 수 있다는 것을 의미합니다. 바뀐 내용을 검토하는 것이 좋으며, 시각편집기를 사용하여 발생할 수 있는 문제에 대해 보고하는 것을 환영합니다. (피드백을 제출하려면 \'{{int:visualeditor-beta-label}}\' 버튼을 클릭하세요) "$1" 탭을 대신 클릭하면 위키텍스트를 사용하는 편집을 유지할 수 있습니다 - 저장하지 않은 바뀜은 사라집니다.',
-	'visualeditor-dialog-beta-welcome-title' => '시각편집기에 오신 것을 환영합니다',
+	'visualeditor-dialog-beta-welcome-title' => '시각편집기에 오신 것을 {{GENDER:$1|환영합니다}}',
 	'visualeditor-dialog-media-content-section' => '설명',
 	'visualeditor-dialog-media-insert-button' => '미디어 넣기',
 	'visualeditor-dialog-media-insert-title' => '미디어 넣기',
@@ -8637,6 +8640,7 @@ $messages['ko'] = array(
 	'visualeditor-formatdropdown-title' => '서식 바꾸기',
 	'visualeditor-help-label' => '사용자 가이드 읽기',
 	'visualeditor-help-title' => '편집기를 사용하는 방법에 대한 사용자 가이드',
+	'visualeditor-help-tool' => '도움말',
 	'visualeditor-historybutton-redo-tooltip' => '다시 실행',
 	'visualeditor-historybutton-undo-tooltip' => '실행 취소',
 	'visualeditor-indentationbutton-indent-tooltip' => '들여쓰기 높이기',
@@ -8677,7 +8681,7 @@ $messages['ko'] = array(
 	'visualeditor-preference-enable' => '시각편집기 활성화 ([[{{MediaWiki:visualeditor-mainnamespacepagelink}}|표준]] 및 [[{{MediaWiki:visualeditor-usernamespacepagelink}}|사용자]] 이름공간에서만)',
 	'visualeditor-preference-experimental-label' => '시각편집기 실험 기능',
 	'visualeditor-reference-input-placeholder' => '어느 주석을 찾겠습니까?',
-	'visualeditor-referencelist-isempty' => '이 문서에 "$1" 그룹으로 된 주석이 없습니다.',
+	'visualeditor-referencelist-isempty' => '이 문서에 "$1" 그룹으로 된 주석이 없습니다.', # Fuzzy
 	'visualeditor-referencelist-missingref' => '이 주석은 틀이나 다른 생성된 블록에서 정의했고, 지금은 원본 모드에서만 편집할 수 있습니다.',
 	'visualeditor-savedialog-error-badtoken' => '세션이 더 이상 유효하지 않기 때문에 편집을 처리할 수 없습니다.',
 	'visualeditor-savedialog-identify-anon' => '이 문서를 익명 사용자로 대신 저장하겠습니까? 당신의 IP 주소가 이 문서의 편집 역사에 기록됩니다.',
@@ -9040,6 +9044,13 @@ $messages['ky'] = array(
 	'visualeditor-toolbar-cancel' => 'Жокко чыгаруу',
 	'visualeditor-toolbar-savedialog' => 'Баракты сактоо',
 	'visualeditor-window-title' => 'Текшерүү',
+);
+
+/** Latin (Latina)
+ * @author Autokrator
+ */
+$messages['la'] = array(
+	'visualeditor-ca-editsource' => 'Fontem recensere',
 );
 
 /** Luxembourgish (Lëtzebuergesch)
@@ -16343,6 +16354,7 @@ $messages['vi'] = array(
 	'visualeditor-formatdropdown-title' => 'Thay đổi định dạng',
 	'visualeditor-help-label' => 'Đọc hướng dẫn sử dụng',
 	'visualeditor-help-title' => 'Hướng dẫn sử dụng trình soạn',
+	'visualeditor-help-tool' => 'Trợ giúp',
 	'visualeditor-historybutton-redo-tooltip' => 'Làm lại',
 	'visualeditor-historybutton-undo-tooltip' => 'Hoàn tác',
 	'visualeditor-indentationbutton-indent-tooltip' => 'Tăng lề',
