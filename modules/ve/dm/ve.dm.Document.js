@@ -16,7 +16,8 @@
  * @class
  * @extends ve.Document
  * @constructor
- * @param {HTMLDocument|Array|ve.dm.FlatLinearData} documentOrData HTML document, raw linear model data or FlatLinearData to start with
+ * @param {HTMLDocument|Array|ve.dm.ElementLinearData|ve.dm.FlatLinearData} documentOrData HTML document,
+ *  raw linear model data, ElementLinearData or FlatLinearData to be split
  * @param {ve.dm.Document} [parentDocument] Document to use as root for created nodes
  * @param {ve.dm.InternalList} [internalList] Internal list to clone; passed when creating a document slice
  */
@@ -25,21 +26,11 @@ ve.dm.Document = function VeDmDocument( documentOrData, parentDocument, internal
 	ve.Document.call( this, new ve.dm.DocumentNode() );
 
 	// Initialization
-	/*
-	 * Build a tree of nodes and nodes that will be added to them after a full scan is complete,
-	 * then from the bottom up add nodes to their potential parents. This avoids massive length
-	 * updates being broadcast upstream constantly while building is underway.
-	 */
-	var i, len, offset, node, children, meta, fullData,
+	var fullData, result,
+		split = true,
 		doc = parentDocument || this,
-		root = this.getDocumentNode(),
-		textLength = 0,
-		inTextNode = false,
-		// Stack of stacks, each containing a
-		stack = [[this.documentNode], []],
-		currentStack = stack[1],
-		parentStack = stack[0],
-		currentNode = this.documentNode;
+		root = this.getDocumentNode();
+
 	this.documentNode.setRoot( root );
 	this.documentNode.setDocument( doc );
 	this.internalList = internalList ? internalList.clone( this ) : new ve.dm.InternalList( this );
@@ -48,11 +39,18 @@ ve.dm.Document = function VeDmDocument( documentOrData, parentDocument, internal
 	this.parentDocument = parentDocument;
 	this.completeHistory = [];
 
-	if ( documentOrData instanceof ve.dm.FlatLinearData ) {
+	if ( documentOrData instanceof ve.dm.ElementLinearData ) {
+		// Pre-split ElementLinearData
+		split = false;
+		fullData = documentOrData;
+	} else if ( documentOrData instanceof ve.dm.FlatLinearData ) {
+		// Element + Meta linear data
 		fullData = documentOrData;
 	} else if ( !ve.isArray( documentOrData ) && typeof documentOrData === 'object' ) {
+		// HTMLDocument
 		fullData = ve.dm.converter.getDataFromDom( documentOrData, new ve.dm.IndexValueStore(), this.getInternalList() );
 	} else {
+		// Raw linear model data
 		fullData = new ve.dm.FlatLinearData(
 			new ve.dm.IndexValueStore(),
 			ve.isArray( documentOrData ) ? documentOrData : []
@@ -60,121 +58,9 @@ ve.dm.Document = function VeDmDocument( documentOrData, parentDocument, internal
 	}
 	this.store = fullData.getStore();
 
-	this.data = new ve.dm.ElementLinearData( this.getStore() );
-	// Sparse array containing the metadata for each offset
-	// Each element is either undefined, or an array of metadata elements
-	// Because the indexes in the metadata array represent offsets in the data array, the
-	// metadata array has one element more than the data array.
-	this.metadata = new ve.dm.MetaLinearData( this.getStore() );
-
-	// Separate element data and metadata and build node tree
-	for ( i = 0, len = fullData.getLength(); i < len; i++ ) {
-		// Infer that if an item in the linear model has a type attribute than it must be an element
-		if ( !fullData.isElementData( i ) ) {
-			// Text node opening
-			if ( !inTextNode ) {
-				// Create a lengthless text node
-				node = new ve.dm.TextNode();
-				node.setDocument( doc );
-				// Put the node on the current inner stack
-				currentStack.push( node );
-				currentNode = node;
-				// Set a flag saying we're inside a text node
-				inTextNode = true;
-			}
-			// Track the length
-			textLength++;
-
-			// Add to element linear data
-			this.data.push( fullData.getData( i ) );
-		} else {
-			// Element data
-			if ( fullData.isOpenElementData( i ) &&
-				ve.dm.metaItemFactory.lookup( fullData.getType( i ) )
-			) {
-				// Metadata
-				meta = fullData.getData( i );
-				offset = this.data.getLength();
-				// Put the metadata in the meta-linmod
-				if ( !this.metadata.getData( offset ) ) {
-					this.metadata.setData( offset, [] );
-				}
-				this.metadata.getData( offset ).push( meta );
-				// Skip close element
-				i++;
-				continue;
-			}
-
-			// Add to element linear data
-			this.data.push( fullData.getData( i ) );
-
-			// Text node closing
-			if ( inTextNode ) {
-				// Finish the text node by setting the length
-				currentNode.setLength( textLength );
-				// Put the state variables back as they were
-				currentNode = parentStack[parentStack.length - 1];
-				inTextNode = false;
-				textLength = 0;
-			}
-			// Element open/close
-			if ( fullData.isOpenElementData( i ) ) {
-				// Branch or leaf node opening
-				// Create a childless node
-				node = ve.dm.nodeFactory.create(
-					fullData.getType( i ), [], fullData.getData( i )
-				);
-				node.setDocument( doc );
-				// Put the childless node on the current inner stack
-				currentStack.push( node );
-				if ( ve.dm.nodeFactory.canNodeHaveChildren( node.getType() ) ) {
-					// Create a new inner stack for this node
-					parentStack = currentStack;
-					currentStack = [];
-					stack.push( currentStack );
-				}
-				currentNode = node;
-			} else {
-				// Branch or leaf node closing
-				if ( ve.dm.nodeFactory.canNodeHaveChildren( currentNode.getType() ) ) {
-					// Pop this node's inner stack from the outer stack. It'll have all of the
-					// node's child nodes fully constructed
-					children = stack.pop();
-					currentStack = parentStack;
-					parentStack = stack[stack.length - 2];
-					if ( !parentStack ) {
-						// This can only happen if we got unbalanced data
-						throw new Error( 'Unbalanced input passed to document' );
-					}
-					// Attach the children to the node
-					ve.batchSplice( currentNode, 0, 0, children );
-				}
-				currentNode = parentStack[parentStack.length - 1];
-			}
-		}
-	}
-	// Pad out the metadata length to element data length + 1
-	if ( this.metadata.getLength() < this.data.getLength() + 1 ) {
-		this.metadata.data = this.metadata.data.concat(
-			new Array( 1 + this.data.getLength() - this.metadata.getLength() )
-		);
-	}
-
-	if ( inTextNode ) {
-		// Text node ended by end-of-input rather than by an element
-		currentNode.setLength( textLength );
-		// Don't bother updating currentNode et al, we don't use them below
-	}
-
-	// State variable that allows nodes to know that they are being
-	// appended in order. Used by ve.dm.InternalList.
-	this.buildingNodeTree = true;
-
-	// The end state is stack = [ [this.documentNode] [ array, of, its, children ] ]
-	// so attach all nodes in stack[1] to the root node
-	ve.batchSplice( this.documentNode, 0, 0, stack[1] );
-
-	this.buildingNodeTree = false;
+	result = this.constructor.static.splitData( fullData, split, true, this.documentNode );
+	this.data = result.elementData;
+	this.metadata = result.metaData || new ve.dm.MetaLinearData( this.data.getStore(), new Array( 1 + this.data.getLength() ) );
 };
 
 /* Inheritance */
@@ -190,6 +76,173 @@ ve.inheritClass( ve.dm.Document, ve.Document );
 
 /* Static methods */
 
+ve.dm.Document.static = {};
+
+/**
+ * Split data into element data and meta data. Also build a node tree if requried.
+ *
+ * @param {ve.dm.FlatLinearData} fullData Full data from converter
+ * @param {boolean} [split=false] Split out meta and element data, otherwise return fullData by reference
+ * @param {boolean} [keepMeta=false] Process and return metadata
+ * @param {ve.dm.Node} [parentNode] Parent node
+ * @returns {Object} Object containing element linear data and meta linear data (if processed)
+ */
+ve.dm.Document.static.splitData = function( fullData, split, keepMeta, parentNode ) {
+	var i, len, offset, node, children, meta, elementData, metaData,
+		currentStack, parentStack, nodeStack, currentNode, doc,
+		textLength = 0,
+		inTextNode = false;
+
+	if ( split ) {
+		elementData = new ve.dm.ElementLinearData( fullData.getStore() );
+		if ( keepMeta ) {
+			// Sparse array containing the metadata for each offset
+			// Each element is either undefined, or an array of metadata elements
+			// Because the indexes in the metadata array represent offsets in the data array, the
+			// metadata array has one element more than the data array.
+			metaData = new ve.dm.MetaLinearData( fullData.getStore() );
+		}
+	} else {
+	// If metadata is not being split out, just return fullData as elementData
+		elementData = fullData;
+	}
+
+	if ( parentNode ) {
+		// Build a tree of nodes and nodes that will be added to them after a full scan is complete,
+		// then from the bottom up add nodes to their potential parents. This avoids massive length
+		// updates being broadcast upstream constantly while building is underway.
+		currentStack = [];
+		parentStack = [parentNode];
+		// Stack of stacks
+		nodeStack = [parentStack, currentStack];
+		currentNode = parentNode;
+		doc = parentNode.getDocument();
+	}
+
+	// Separate element data and metadata and build node tree
+	for ( i = 0, len = fullData.getLength(); i < len; i++ ) {
+		if ( !fullData.isElementData( i ) ) {
+			if ( split ) {
+				// Add to element linear data
+				elementData.push( fullData.getData( i ) );
+			}
+			if ( parentNode ) {
+				// Text node opening
+				if ( !inTextNode ) {
+					// Create a lengthless text node
+					node = new ve.dm.TextNode();
+					node.setDocument( doc );
+					// Put the node on the current inner stack
+					currentStack.push( node );
+					currentNode = node;
+					// Set a flag saying we're inside a text node
+					inTextNode = true;
+				}
+				// Track the length
+				textLength++;
+			}
+		} else {
+			if ( split ) {
+				// Element data
+				if ( fullData.isOpenElementData( i ) &&
+					ve.dm.metaItemFactory.lookup( fullData.getType( i ) )
+				) {
+					if ( keepMeta ) {
+						// Metadata
+						meta = fullData.getData( i );
+						offset = elementData.getLength();
+						// Put the meta data in the meta-linmod
+						if ( !metaData.getData( offset ) ) {
+							metaData.setData( offset, [] );
+						}
+						metaData.getData( offset ).push( meta );
+					}
+					// Skip close element
+					i++;
+					continue;
+				}
+				// Add to element linear data
+				elementData.push( fullData.getData( i ) );
+			}
+
+			if ( parentNode ) {
+				// Text node closing
+				if ( inTextNode ) {
+					// Finish the text node by setting the length
+					currentNode.setLength( textLength );
+					// Put the state variables back as they were
+					currentNode = parentStack[parentStack.length - 1];
+					inTextNode = false;
+					textLength = 0;
+				}
+				// Element open/close
+				if ( fullData.isOpenElementData( i ) ) {
+					// Branch or leaf node opening
+					// Create a childless node
+					node = ve.dm.nodeFactory.create(
+						fullData.getType( i ), [], fullData.getData( i )
+					);
+					node.setDocument( doc );
+					// Put the childless node on the current inner stack
+					currentStack.push( node );
+					if ( ve.dm.nodeFactory.canNodeHaveChildren( node.getType() ) ) {
+						// Create a new inner stack for this node
+						parentStack = currentStack;
+						currentStack = [];
+						nodeStack.push( currentStack );
+					}
+					currentNode = node;
+				} else {
+					// Branch or leaf node closing
+					if ( ve.dm.nodeFactory.canNodeHaveChildren( currentNode.getType() ) ) {
+						// Pop this node's inner stack from the outer stack. It'll have all of the
+						// node's child nodes fully constructed
+						children = nodeStack.pop();
+						currentStack = parentStack;
+						parentStack = nodeStack[nodeStack.length - 2];
+						if ( !parentStack ) {
+							// This can only happen if we got unbalanced data
+							throw new Error( 'Unbalanced input passed to document' );
+						}
+						// Attach the children to the node
+						ve.batchSplice( currentNode, 0, 0, children );
+					}
+					currentNode = parentStack[parentStack.length - 1];
+				}
+			}
+		}
+	}
+	// Pad out the metadata length to element data length + 1
+	if ( split && keepMeta && metaData.getLength() < elementData.getLength() + 1 ) {
+		metaData.data = metaData.data.concat(
+			new Array( 1 + elementData.getLength() - metaData.getLength() )
+		);
+	}
+
+	if ( parentNode ) {
+		if ( inTextNode ) {
+			// Text node ended by end-of-input rather than by an element
+			currentNode.setLength( textLength );
+			// Don't bother updating currentNode et al, we don't use them below
+		}
+
+		// State variable that allows nodes to know that they are being
+		// appended in order. Used by ve.dm.InternalList.
+		doc.buildingNodeTree = true;
+
+		// The end state is stack = [ [this.documentNode] [ array, of, its, children ] ]
+		// so attach all nodes in stack[1] to the root node
+		ve.batchSplice( parentNode, 0, 0, currentStack );
+
+		doc.buildingNodeTree = false;
+	}
+
+	return {
+		'elementData': elementData,
+		'metaData': metaData
+	};
+};
+
 /**
  * Apply annotations to content data.
  *
@@ -199,7 +252,7 @@ ve.inheritClass( ve.dm.Document, ve.Document );
  * @param {Array} data Data to apply annotations to
  * @param {ve.dm.AnnotationSet} annotationSet Annotations to apply
  */
-ve.dm.Document.addAnnotationsToData = function ( data, annotationSet ) {
+ve.dm.Document.static.addAnnotationsToData = function ( data, annotationSet ) {
 	var i, length, newAnnotationSet, store = annotationSet.getStore();
 	if ( annotationSet.isEmpty() ) {
 		// Nothing to do
