@@ -1896,8 +1896,10 @@ ve.init.mw.ViewPageTarget.prototype.transformPageTitle = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.mutePageTitle = function () {
-	$( '#firstHeading, #siteSub:visible' ).fadeTo( 'fast', 0.6 );
-	$( '#contentSub:visible' ).fadeTo( 'fast', 0 );
+	$( '#firstHeading, #siteSub' )
+		.addClass( 've-init-mw-viewPageTarget-transform ve-init-mw-viewPageTarget-transform-muted' );
+	$( '#contentSub' )
+		.addClass( 've-init-mw-viewPageTarget-transform ve-init-mw-viewPageTarget-transform-hidden' );
 };
 
 /**
@@ -1906,8 +1908,11 @@ ve.init.mw.ViewPageTarget.prototype.mutePageTitle = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.restorePageTitle = function () {
-	$( '#firstHeading, #siteSub:visible, #contentSub:visible' ).fadeTo( 'fast', 1 );
+	var $els = $( '#firstHeading, #siteSub, #contentSub' )
+		.removeClass( 've-init-mw-viewPageTarget-transform-muted ve-init-mw-viewPageTarget-transform-hidden' );
+
 	setTimeout( function () {
+		$els.removeClass( 've-init-mw-viewPageTarget-transform' );
 		$( '#firstHeading' ).removeClass( 've-init-mw-viewPageTarget-pageTitle' );
 	}, 1000 );
 };
