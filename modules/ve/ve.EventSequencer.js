@@ -91,6 +91,7 @@ ve.EventSequencer = function VeEventSequencer( eventNames ) {
 		eventName = eventNames[i];
 		this.onListenersForEvent[eventName] = [];
 		this.afterListenersForEvent[eventName] = [];
+		this.afterOneListenersForEvent[eventName] = [];
 		this.eventHandlers[eventName] = makeEventHandler( eventName );
 	}
 
@@ -228,9 +229,11 @@ ve.EventSequencer.prototype.onEvent = function ( eventName, ev ) {
 		onListener = this.onListenersForEvent[eventName][i];
 		onListener( ev );
 	}
-	// Queue a call to afterEvent only if there are some afterListeners/afterOneListeners
+	// Queue a call to afterEvent only if there are some
+	// afterListeners/afterOneListeners/afterLoopListeners
 	if ( this.afterListenersForEvent[eventName].length > 0 ||
-		this.afterOneListenersForEvent[eventName].length > 0 ) {
+		this.afterOneListenersForEvent[eventName].length > 0 ||
+		this.afterLoopListeners.length > 0 ) {
 		// Create a cancellable pending call
 		// - Create the pendingCall object first
 		// - then create the setTimeout invocation to modify pendingCall.id
@@ -296,7 +299,7 @@ ve.EventSequencer.prototype.doOnLoop = function () {
  * @param {number} myTimeoutId The calling setTimeout id
  */
 ve.EventSequencer.prototype.doAfterLoop = function ( myTimeoutId ) {
-	var i, len, afterLoopListeners, afterOneLoopListeners;
+	var i, len, afterLoopListeners, afterLoopOneListeners;
 
 	if ( this.afterLoopTimeoutId !== myTimeoutId ) {
 		// cancelled; do nothing
@@ -307,8 +310,8 @@ ve.EventSequencer.prototype.doAfterLoop = function ( myTimeoutId ) {
 	// Snapshot the listener lists, and blank *OneListener list.
 	// This ensures reasonable behaviour if a function called adds another listener.
 	afterLoopListeners = this.afterLoopListeners.slice();
-	afterOneLoopListeners = this.afterOneLoopListeners.slice();
-	this.afterOneLoopListeners.length = 0;
+	afterLoopOneListeners = this.afterLoopOneListeners.slice();
+	this.afterLoopOneListeners.length = 0;
 
 	for ( i = 0, len = this.afterLoopListeners.length; i < len; i++ ) {
 		this.afterLoopListeners[i]();
