@@ -805,6 +805,9 @@ $wgVisualEditorParsoidTimeout = 100;
 // Namespaces to enable VisualEditor in
 $wgVisualEditorNamespaces = $wgContentNamespaces;
 
+// List of skins VisualEditor integration supports
+$wgVisualEditorSupportedSkins = array( 'vector', 'apex', 'monobook' );
+
 // Whether to use change tagging for VisualEditor edits
 $wgVisualEditorUseChangeTagging = true;
 
