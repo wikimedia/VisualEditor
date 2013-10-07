@@ -278,7 +278,6 @@ $html = file_get_contents( $page );
 		<script src="../../modules/ve/ui/layouts/ve.ui.GridLayout.js"></script>
 		<script src="../../modules/ve/ui/layouts/ve.ui.PanelLayout.js"></script>
 		<script src="../../modules/ve/ui/layouts/ve.ui.StackPanelLayout.js"></script>
-		<script src="../../modules/ve/ui/dialogs/ve.ui.PagedDialog.js"></script>
 		<script src="../../modules/ve/ui/tools/ve.ui.AnnotationTool.js"></script>
 		<script src="../../modules/ve/ui/tools/ve.ui.ClearAnnotationTool.js"></script>
 		<script src="../../modules/ve/ui/tools/ve.ui.DialogTool.js"></script>
