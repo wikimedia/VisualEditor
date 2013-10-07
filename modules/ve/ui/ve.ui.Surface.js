@@ -33,7 +33,7 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 	);
 	this.view = new ve.ce.Surface( this.model, this, { '$$': this.$$ } );
 	this.context = new ve.ui.Context( this, { '$$': this.$$ } );
-	this.dialogs = new ve.ui.WindowSet( this, ve.ui.dialogFactory );
+	this.dialogs = new ve.ui.SurfaceWindowSet( this, ve.ui.dialogFactory );
 	this.commands = {};
 	this.enabled = true;
 

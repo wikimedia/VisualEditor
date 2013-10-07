@@ -9,15 +9,15 @@
  * Document dialog.
  *
  * @class
- * @extends ve.ui.Dialog
+ * @extends ve.ui.MWDialog
  *
  * @constructor
- * @param {ve.ui.Surface} surface
+ * @param {ve.ui.WindowSet} windowSet Window set this dialog is part of
  * @param {Object} [config] Config options
  */
-ve.ui.MWSyntaxHighlightDialog = function VeUiMWSyntaxHighlightDialog( surface, config ) {
+ve.ui.MWSyntaxHighlightDialog = function VeUiMWSyntaxHighlightDialog( windowSet, config ) {
 	// Parent constructor
-	ve.ui.MWDialog.call( this, surface, config );
+	ve.ui.MWDialog.call( this, windowSet, config );
 };
 
 /* Inheritance */
@@ -41,7 +41,7 @@ ve.ui.MWSyntaxHighlightDialog.static.name = 'mwSyntaxHighlight';
  */
 ve.ui.MWSyntaxHighlightDialog.prototype.initialize = function () {
 	// Call parent method
-	ve.ui.Dialog.prototype.initialize.call( this );
+	ve.ui.MWDialog.prototype.initialize.call( this );
 	this.editPanel = new ve.ui.PanelLayout( {
 		'$$': this.frame.$$, 'scrollable': false, 'padded': false
 	} );
@@ -60,7 +60,7 @@ ve.ui.MWSyntaxHighlightDialog.prototype.initialize = function () {
  */
 ve.ui.MWSyntaxHighlightDialog.prototype.onOpen = function () {
 	// Parent method
-	ve.ui.Dialog.prototype.onOpen.call( this );
+	ve.ui.MWDialog.prototype.onOpen.call( this );
 	// Properties
 	this.sourceNode = this.surface.getView().getFocusedNode();
 	this.sourceText = this.sourceNode.getModel().getAttribute( 'body' );
@@ -81,7 +81,7 @@ ve.ui.MWSyntaxHighlightDialog.prototype.onClose = function ( action ) {
 	var tx,
 		doc = this.surface.getModel().getDocument();
 	// Parent method
-	ve.ui.Dialog.prototype.onClose.call( this );
+	ve.ui.MWDialog.prototype.onClose.call( this );
 	// Save changes via Transaction
 	if ( action === 'apply' ) {
 		tx = ve.dm.Transaction.newFromAttributeChanges(

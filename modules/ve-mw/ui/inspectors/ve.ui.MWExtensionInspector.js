@@ -10,7 +10,7 @@
  *
  * @class
  * @abstract
- * @extends ve.ui.Inspector
+ * @extends ve.ui.SurfaceInspector
  *
  * @constructor
  * @param {ve.ui.Surface} surface
@@ -18,12 +18,12 @@
  */
 ve.ui.MWExtensionInspector = function VeUiMWExtensionInspector( surface, config ) {
 	// Parent constructor
-	ve.ui.Inspector.call( this, surface, config );
+	ve.ui.SurfaceInspector.call( this, surface, config );
 };
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.MWExtensionInspector, ve.ui.Inspector );
+ve.inheritClass( ve.ui.MWExtensionInspector, ve.ui.SurfaceInspector );
 
 /* Static properties */
 
@@ -42,7 +42,7 @@ ve.ui.MWExtensionInspector.static.removeable = false;
  */
 ve.ui.MWExtensionInspector.prototype.initialize = function () {
 	// Parent method
-	ve.ui.Inspector.prototype.initialize.call( this );
+	ve.ui.SurfaceInspector.prototype.initialize.call( this );
 
 	this.input = new ve.ui.TextInputWidget( {
 		'$$': this.frame.$$,
@@ -63,7 +63,7 @@ ve.ui.MWExtensionInspector.prototype.onOpen = function () {
 	var extsrc = '';
 
 	// Parent method
-	ve.ui.Inspector.prototype.onOpen.call( this );
+	ve.ui.SurfaceInspector.prototype.onOpen.call( this );
 
 	this.node = this.surface.getView().getFocusedNode();
 
@@ -89,7 +89,7 @@ ve.ui.MWExtensionInspector.prototype.onClose = function ( action ) {
 		surfaceModel = this.surface.getModel();
 
 	// Parent method
-	ve.ui.Inspector.prototype.onClose.call( this, action );
+	ve.ui.SurfaceInspector.prototype.onClose.call( this, action );
 
 	if ( this.node instanceof this.constructor.static.nodeView ) {
 		mwData = ve.copy( this.node.getModel().getAttribute( 'mw' ) );

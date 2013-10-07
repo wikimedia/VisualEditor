@@ -175,9 +175,12 @@
 		<script src="../../ve/ui/ve.ui.Frame.js"></script>
 		<script src="../../ve/ui/ve.ui.Window.js"></script>
 		<script src="../../ve/ui/ve.ui.WindowSet.js"></script>
+		<script src="../../ve/ui/ve.ui.SurfaceWindowSet.js"></script>
 		<script src="../../ve/ui/ve.ui.Inspector.js"></script>
+		<script src="../../ve/ui/ve.ui.SurfaceInspector.js"></script>
 		<script src="../../ve/ui/ve.ui.InspectorFactory.js"></script>
 		<script src="../../ve/ui/ve.ui.Dialog.js"></script>
+		<script src="../../ve/ui/ve.ui.SurfaceDialog.js"></script>
 		<script src="../../ve/ui/ve.ui.DialogFactory.js"></script>
 		<script src="../../ve/ui/ve.ui.Layout.js"></script>
 		<script src="../../ve/ui/ve.ui.Widget.js"></script>
