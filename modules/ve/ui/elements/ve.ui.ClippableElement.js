@@ -20,6 +20,7 @@ ve.ui.ClippableElement = function VeUiClippableElement( $clippable ) {
 	this.clipping = false;
 	this.clipped = false;
 	this.$clippableContainer = null;
+	this.$clippableScroller = null;
 	this.$clippableWindow = null;
 	this.onClippableContainerScrollHandler = ve.bind( this.clip, this );
 	this.onClippableWindowResizeHandler = ve.bind( this.clip, this );
@@ -43,15 +44,21 @@ ve.ui.ClippableElement.prototype.setClipping = function ( value ) {
 	if ( this.clipping !== value ) {
 		this.clipping = value;
 		if ( this.clipping ) {
-			this.$clippableContainer = this.$$( this.getClosestScrollableElementContainer() )
-				.on( 'scroll', this.onClippableContainerScrollHandler );
+			this.$clippableContainer = this.$$( this.getClosestScrollableElementContainer() );
+			// If the clippable container is the body, we have to listen to scroll events and check
+			// jQuery.scrollTop on the window because of browser inconsistencies
+			this.$clippableScroller = this.$clippableContainer.is( 'body' ) ?
+				this.$$( ve.Element.getWindow( this.$clippableContainer ) ) :
+				this.$clippableContainer;
+			this.$clippableScroller.on( 'scroll', this.onClippableContainerScrollHandler );
 			this.$clippableWindow = this.$$( this.getElementWindow() )
 				.on( 'resize', this.onClippableWindowResizeHandler );
 			// Initial clip after visible
 			setTimeout( ve.bind( this.clip, this ) );
 		} else {
-			this.$clippableContainer.off( 'scroll', this.onClippableContainerScrollHandler );
 			this.$clippableContainer = null;
+			this.$clippableScroller.off( 'scroll', this.onClippableContainerScrollHandler );
+			this.$clippableScroller = null;
 			this.$clippableWindow.off( 'resize', this.onClippableWindowResizeHandler );
 			this.$clippableWindow = null;
 		}
@@ -100,8 +107,8 @@ ve.ui.ClippableElement.prototype.clip = function () {
 		ccOffset = this.$clippableContainer.offset() || { 'top': 0, 'left': 0 },
 		ccHeight = this.$clippableContainer.innerHeight() - buffer,
 		ccWidth = this.$clippableContainer.innerWidth() - buffer,
-		scrollTop = this.$clippableContainer.scrollTop(),
-		scrollLeft = this.$clippableContainer.scrollLeft(),
+		scrollTop = this.$clippableScroller.scrollTop(),
+		scrollLeft = this.$clippableScroller.scrollLeft(),
 		desiredWidth = ( ccOffset.left + scrollLeft + ccWidth ) - cOffset.left,
 		desiredHeight = ( ccOffset.top + scrollTop + ccHeight ) - cOffset.top,
 		naturalWidth = this.$clippable.prop( 'scrollWidth' ),
