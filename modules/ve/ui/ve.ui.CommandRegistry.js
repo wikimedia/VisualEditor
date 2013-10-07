@@ -114,3 +114,6 @@ ve.ui.commandRegistry.register(
 ve.ui.commandRegistry.register(
 	'preformatted', new ve.ui.Command( 'format', 'convert', 'preformatted' )
 );
+ve.ui.commandRegistry.register(
+	'pasteSpecial', new ve.ui.Command( 'content', 'pasteSpecial' )
+);

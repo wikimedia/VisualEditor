@@ -1398,6 +1398,18 @@ QUnit.test( 'sanitize', function ( assert ) {
 				'msg': 'Blacklisted nodes removed'
 			},
 			{
+				'html': '<p>B<i><b>a</b>z</i></p>',
+				'data': [
+					{ 'type': 'paragraph' },
+					'B', 'a', 'z',
+					{ 'type': '/paragraph' },
+					{ 'type': 'internalList' },
+					{ 'type': '/internalList' }
+				],
+				'plainText': true,
+				'msg': 'Annotations removed in plainText mode'
+			},
+			{
 				'html': '<p>Foo</p><p></p><h1></h1><p>Bar</p>',
 				'data': [
 					{ 'type': 'paragraph' },
@@ -1429,7 +1441,7 @@ QUnit.test( 'sanitize', function ( assert ) {
 		fullData = ve.dm.converter.getDataFromDom( ve.createDocumentFromHtml( cases[i].html ), store, internalList, innerWhitespace );
 		result = ve.dm.Document.static.splitData( fullData, true );
 		data = result.elementData;
-		data.sanitize( cases[i].rules || {} );
+		data.sanitize( cases[i].rules || {}, cases[i].plainText );
 		assert.deepEqualWithDomElements( data.data, cases[i].data, cases[i].msg + ': data' );
 		if ( cases[i].store ) {
 			assert.deepEqualWithDomElements( data.getStore().valueStore, cases[i].store, cases[i].msg + ': store' );

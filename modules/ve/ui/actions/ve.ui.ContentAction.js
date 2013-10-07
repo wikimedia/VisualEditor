@@ -32,7 +32,7 @@ ve.ui.ContentAction.static.name = 'content';
  * @static
  * @property
  */
-ve.ui.ContentAction.static.methods = [ 'insert', 'remove', 'select' ];
+ve.ui.ContentAction.static.methods = [ 'insert', 'remove', 'select', 'pasteSpecial' ];
 
 /* Methods */
 
@@ -64,6 +64,17 @@ ve.ui.ContentAction.prototype.remove = function () {
  */
 ve.ui.ContentAction.prototype.select = function ( range ) {
 	this.surface.getModel().setSelection( range );
+};
+
+/**
+ * Paste special.
+ *
+ * @method
+ */
+ve.ui.ContentAction.prototype.pasteSpecial = function () {
+	this.surface.getView().pasteSpecial = true;
+	// Return false to allow the paste event to occur
+	return false;
 };
 
 /* Registration */

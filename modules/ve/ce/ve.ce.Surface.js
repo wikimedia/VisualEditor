@@ -50,6 +50,7 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 	this.$highlights = this.$( '<div>' );
 	this.$pasteTarget = this.$( '<div>' );
 	this.pasting = false;
+	this.pasteSpecial = false;
 	this.clickHistory = [];
 	this.focusedNode = null;
 	// This is set on entering changeModel, then unset when leaving.
@@ -901,6 +902,10 @@ ve.ce.Surface.prototype.afterPaste = function () {
 				ve.copy( slice.getOriginalData() )
 			);
 
+			if ( this.pasteSpecial ) {
+				pasteData.sanitize( this.getSurface().getPasteRules(), true );
+			}
+
 			// Annotate
 			ve.dm.Document.static.addAnnotationsToData( pasteData.getData(), this.model.getInsertionAnnotations() );
 
@@ -917,6 +922,10 @@ ve.ce.Surface.prototype.afterPaste = function () {
 				slice.getStore(),
 				ve.copy( slice.getBalancedData() )
 			);
+
+			if ( this.pasteSpecial ) {
+				pasteData.sanitize( this.getSurface().getPasteRules(), true );
+			}
 
 			// Annotate
 			ve.dm.Document.static.addAnnotationsToData( pasteData.getData(), this.model.getInsertionAnnotations() );
@@ -958,9 +967,9 @@ ve.ce.Surface.prototype.afterPaste = function () {
 		fullData = ve.dm.converter.getDataFromDom( ve.createDocumentFromHtml( html ), store, internalList, innerWhitespace );
 		result = ve.dm.Document.static.splitData( fullData, true );
 		data = result.elementData;
-		// If the clipboardKey is set (paste from other VE instance), skip sanitization
-		if ( !clipboardKey ) {
-			data.sanitize( this.getSurface().getPasteRules() );
+		// If the clipboardKey is set (paste from other VE instance), and it's a non-special paste, skip sanitization
+		if ( !clipboardKey || this.pasteSpecial ) {
+			data.sanitize( this.getSurface().getPasteRules(), this.pasteSpecial );
 		} else {
 			// ...except not quite - contentEditable can't be trusted not
 			// to add styles, so for now remove them
@@ -977,6 +986,10 @@ ve.ce.Surface.prototype.afterPaste = function () {
 				store,
 				ve.copy( beforePasteData.context )
 			);
+			if ( this.pasteSpecial ) {
+				// The context may have been sanitized, so sanitize here as well for comparison
+				context.sanitize( this.getSurface().getPasteRules(), this.pasteSpecial, true );
+			}
 
 			// Remove matching context from the left
 			left = 0;
@@ -1025,6 +1038,7 @@ ve.ce.Surface.prototype.afterPaste = function () {
 
 	// Allow pasting again
 	this.pasting = false;
+	this.pasteSpecial = false;
 	this.beforePasteData = null;
 };
 

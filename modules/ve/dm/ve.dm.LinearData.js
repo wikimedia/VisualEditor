@@ -104,11 +104,11 @@ ve.dm.LinearData.prototype.setData = function ( offset, value ) {
  * Push data to the end of the array
  *
  * @method
- * @param {Object|string} value Value to store
+ * @param {Object...} [value] Values to store
  * @returns {number} The new length of the linear data
  */
-ve.dm.LinearData.prototype.push = function ( value ) {
-	return this.data.push( value );
+ve.dm.LinearData.prototype.push = function () {
+	return Array.prototype.push.apply( this.data, arguments );
 };
 
 /**

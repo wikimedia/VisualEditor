@@ -800,29 +800,39 @@ ve.dm.ElementLinearData.prototype.remapInternalListKeys = function ( internalLis
  * @param {Object} rules Sanitization rules
  * @param {string[]} [rules.blacklist] Blacklist of model types which aren't allowed
  * @param {boolean} [rules.removeHtmlAttributes] Remove all left over HTML attributes and any empty spans it creates
+ * @param {boolean} [plainText=false] Remove all formatting for plain text paste
+ * @param {boolean} [keepEmptyContentBranches=false] Preserve empty content branch nodes
  */
-ve.dm.ElementLinearData.prototype.sanitize = function ( rules ) {
-	var i, len, annotations, setToRemove,
+ve.dm.ElementLinearData.prototype.sanitize = function ( rules, plainText, keepEmptyContentBranches ) {
+	var i, len, annotations, emptySet, setToRemove, type,
 		allAnnotations = this.getAnnotationsFromRange( new ve.Range( 0, this.getLength() ), true );
 
-	if ( rules.removeHtmlAttributes ) {
-		// Remove HTML attributes from annotations
-		for ( i = 0, len = allAnnotations.getLength(); i < len; i++ ) {
-			delete allAnnotations.get( i ).element.htmlAttributes;
+	if ( plainText ) {
+		emptySet = new ve.dm.AnnotationSet( this.getStore() );
+	} else {
+		if ( rules.removeHtmlAttributes ) {
+			// Remove HTML attributes from annotations
+			for ( i = 0, len = allAnnotations.getLength(); i < len; i++ ) {
+				delete allAnnotations.get( i ).element.htmlAttributes;
+			}
 		}
-	}
 
-	// Create annotation set to remove from blacklist
-	setToRemove = allAnnotations.filter( function ( annotation ) {
-		return ve.indexOf( annotation.name, rules.blacklist ) !== -1 ||
-			// If HTML attributes are stripped and you are left with an empty span, remove it
-			( rules.removeHtmlAttributes && annotation.name === 'textStyle/span' && !annotation.element.htmlAttributes );
-	} );
+		// Create annotation set to remove from blacklist
+		setToRemove = allAnnotations.filter( function ( annotation ) {
+			return ve.indexOf( annotation.name, rules.blacklist ) !== -1 ||
+				// If HTML attributes are stripped and you are left with an empty span, remove it
+				( rules.removeHtmlAttributes && annotation.name === 'textStyle/span' && !annotation.element.htmlAttributes );
+		} );
+	}
 
 	for ( i = 0, len = this.getLength(); i < len; i++ ) {
 		if ( this.isElementData( i ) ) {
+			type = this.getType( i );
 			// Remove blacklisted nodes
-			if ( ve.indexOf( this.getType( i ), rules.blacklist ) !== -1 ) {
+			if (
+				ve.indexOf( type, rules.blacklist ) !== -1 ||
+				( plainText && type !== 'paragraph' && type !== 'internalList' )
+			) {
 				this.splice( i, 1 );
 				// Make sure you haven't just unwrapped a wrapper paragraph
 				if ( ve.getProp( this.getData( i ), 'internal', 'generated' ) ) {
@@ -837,8 +847,9 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules ) {
 			}
 			// If a node is empty but can contain content, then just remove it
 			if (
+				!keepEmptyContentBranches &&
 				i > 0 && this.isCloseElementData( i ) && this.isOpenElementData( i - 1 ) &&
-				ve.dm.nodeFactory.canNodeContainContent( this.getType( i ) )
+				ve.dm.nodeFactory.canNodeContainContent( type )
 			) {
 				this.splice( i - 1, 2 );
 				i -= 2;
@@ -848,9 +859,13 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules ) {
 		}
 		annotations = this.getAnnotationsFromOffset( i );
 		if ( !annotations.isEmpty() ) {
-			// Remove blacklisted annotations
-			annotations.removeSet( setToRemove );
-			this.setAnnotationsAtOffset( i, annotations );
+			if ( plainText ) {
+				this.setAnnotationsAtOffset( i, emptySet );
+			} else {
+				// Remove blacklisted annotations
+				annotations.removeSet( setToRemove );
+				this.setAnnotationsAtOffset( i, annotations );
+			}
 		}
 		if ( rules.removeHtmlAttributes && this.isOpenElementData( i ) ) {
 			// Remove HTML attributes from nodes

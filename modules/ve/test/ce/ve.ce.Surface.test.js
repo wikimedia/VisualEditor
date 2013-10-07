@@ -394,6 +394,41 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 			},
 			{
 				'range': new ve.Range( 4 ),
+				'pasteTargetHtml': '<cite>Foo</cite><b>B</b>a<!-- comment --><b>r</b>',
+				'expectedRange': new ve.Range( 7 ),
+				'expectedOps': [
+					[
+						{ 'type': 'retain', 'length': 4 },
+						{
+							'type': 'replace',
+							'insert': [ ['B', [0]], 'a', ['r', [0]] ],
+							'remove': []
+						},
+						{ 'type': 'retain', 'length': 5 }
+					]
+				],
+				'msg': 'Formatted text into paragraph'
+			},
+			{
+				'range': new ve.Range( 4 ),
+				'pasteTargetHtml': '<cite>Foo</cite><b>B</b>a<!-- comment --><b>r</b>',
+				'pasteSpecial': true,
+				'expectedRange': new ve.Range( 7 ),
+				'expectedOps': [
+					[
+						{ 'type': 'retain', 'length': 4 },
+						{
+							'type': 'replace',
+							'insert': [ 'B', 'a', 'r' ],
+							'remove': []
+						},
+						{ 'type': 'retain', 'length': 5 }
+					]
+				],
+				'msg': 'Formatted text into paragraph with pasteSpecial'
+			},
+			{
+				'range': new ve.Range( 4 ),
 				'pasteTargetHtml': '<p>Bar</p>',
 				'expectedRange': new ve.Range( 7 ),
 				'expectedOps': [
@@ -489,7 +524,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 
 	QUnit.expect( cases.length * 2 );
 
-	function testRunner( documentHtml, pasteTargetHtml, clipboardHtml, range, expectedOps, expectedRange, msg ) {
+	function testRunner( documentHtml, pasteTargetHtml, clipboardHtml, range, expectedOps, pasteSpecial, expectedRange, msg ) {
 		var i, txs, ops,
 			surface = ve.test.utils.createSurfaceFromHtml( documentHtml || exampleDoc ),
 			view = surface.getView(),
@@ -497,6 +532,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 
 		// Paste sequence
 		model.setSelection( range );
+		view.pasteSpecial = pasteSpecial;
 		if ( pasteTargetHtml ) {
 			view.beforePaste( { 'originalEvent': {} } );
 			document.execCommand( 'insertHTML', false, pasteTargetHtml ) ;
@@ -519,7 +555,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 	for ( i = 0; i < cases.length; i++ ) {
 		testRunner(
 			cases[i].documentHtml, cases[i].pasteTargetHtml, cases[i].clipboardHtml,
-			cases[i].range, cases[i].expectedOps, cases[i].expectedRange, cases[i].msg
+			cases[i].range, cases[i].expectedOps, cases[i].pasteSpecial, cases[i].expectedRange, cases[i].msg
 		);
 	}
 
