@@ -95,6 +95,7 @@
 		<script src="../../ve/dm/ve.dm.IndexValueStore.js"></script>
 		<script src="../../ve/dm/ve.dm.Converter.js"></script>
 		<script src="../../ve/dm/lineardata/ve.dm.SlicedLinearData.js"></script>
+		<script src="../../ve/dm/lineardata/ve.dm.FlatLinearData.js"></script>
 		<script src="../../ve/dm/lineardata/ve.dm.ElementLinearData.js"></script>
 		<script src="../../ve/dm/lineardata/ve.dm.MetaLinearData.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.GeneratedContentNode.js"></script>

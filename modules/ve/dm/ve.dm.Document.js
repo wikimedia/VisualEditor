@@ -16,7 +16,7 @@
  * @class
  * @extends ve.Document
  * @constructor
- * @param {HTMLDocument|Array|ve.dm.LinearData} documentOrData HTML document, raw linear model data or LinearData to start with
+ * @param {HTMLDocument|Array|ve.dm.FlatLinearData} documentOrData HTML document, raw linear model data or FlatLinearData to start with
  * @param {ve.dm.Document} [parentDocument] Document to use as root for created nodes
  * @param {ve.dm.InternalList} [internalList] Internal list to clone; passed when creating a document slice
  */
@@ -30,7 +30,7 @@ ve.dm.Document = function VeDmDocument( documentOrData, parentDocument, internal
 	 * then from the bottom up add nodes to their potential parents. This avoids massive length
 	 * updates being broadcast upstream constantly while building is underway.
 	 */
-	var i, node, children, meta,
+	var i, len, offset, node, children, meta, fullData,
 		doc = parentDocument || this,
 		root = this.getDocumentNode(),
 		textLength = 0,
@@ -48,29 +48,29 @@ ve.dm.Document = function VeDmDocument( documentOrData, parentDocument, internal
 	this.parentDocument = parentDocument;
 	this.completeHistory = [];
 
-	if ( documentOrData instanceof ve.dm.LinearData ) {
-		this.data = documentOrData;
+	if ( documentOrData instanceof ve.dm.FlatLinearData ) {
+		fullData = documentOrData;
 	} else if ( !ve.isArray( documentOrData ) && typeof documentOrData === 'object' ) {
-		this.data = ve.dm.converter.getDataFromDom( documentOrData, new ve.dm.IndexValueStore(), this.getInternalList() );
+		fullData = ve.dm.converter.getDataFromDom( documentOrData, new ve.dm.IndexValueStore(), this.getInternalList() );
 	} else {
-		this.data = new ve.dm.ElementLinearData(
+		fullData = new ve.dm.FlatLinearData(
 			new ve.dm.IndexValueStore(),
 			ve.isArray( documentOrData ) ? documentOrData : []
 		);
 	}
-	this.store = this.data.getStore();
+	this.store = fullData.getStore();
 
+	this.data = new ve.dm.ElementLinearData( this.getStore() );
 	// Sparse array containing the metadata for each offset
 	// Each element is either undefined, or an array of metadata elements
 	// Because the indexes in the metadata array represent offsets in the data array, the
 	// metadata array has one element more than the data array.
-	this.metadata = new ve.dm.MetaLinearData( this.getStore(), [] );
+	this.metadata = new ve.dm.MetaLinearData( this.getStore() );
 
-	// extract metadata and build node tree
-	// NB: this.data.getLength() will change as data is spliced out
-	for ( i = 0; i < this.data.getLength(); i++ ) {
+	// Separate element data and metadata and build node tree
+	for ( i = 0, len = fullData.getLength(); i < len; i++ ) {
 		// Infer that if an item in the linear model has a type attribute than it must be an element
-		if ( !this.data.isElementData( i ) ) {
+		if ( !fullData.isElementData( i ) ) {
 			// Text node opening
 			if ( !inTextNode ) {
 				// Create a lengthless text node
@@ -84,24 +84,29 @@ ve.dm.Document = function VeDmDocument( documentOrData, parentDocument, internal
 			}
 			// Track the length
 			textLength++;
+
+			// Add to element linear data
+			this.data.push( fullData.getData( i ) );
 		} else {
 			// Element data
-			if ( !this.data.isCloseElementData( i ) &&
-				ve.dm.metaItemFactory.lookup( this.data.getData( i ).type )
+			if ( fullData.isOpenElementData( i ) &&
+				ve.dm.metaItemFactory.lookup( fullData.getType( i ) )
 			) {
 				// Metadata
-				// Splice the meta element and its closing out of the linmod
-				meta = this.data.getData( i );
-				this.data.splice( i, 2 );
+				meta = fullData.getData( i );
+				offset = this.data.getLength();
 				// Put the metadata in the meta-linmod
-				if ( !this.metadata.getData( i ) ) {
-					this.metadata.setData( i, [] );
+				if ( !this.metadata.getData( offset ) ) {
+					this.metadata.setData( offset, [] );
 				}
-				this.metadata.getData( i ).push( meta );
-				// Make sure the loop doesn't skip the next element
-				i--;
+				this.metadata.getData( offset ).push( meta );
+				// Skip close element
+				i++;
 				continue;
 			}
+
+			// Add to element linear data
+			this.data.push( fullData.getData( i ) );
 
 			// Text node closing
 			if ( inTextNode ) {
@@ -113,11 +118,11 @@ ve.dm.Document = function VeDmDocument( documentOrData, parentDocument, internal
 				textLength = 0;
 			}
 			// Element open/close
-			if ( !this.data.isCloseElementData( i ) ) {
+			if ( fullData.isOpenElementData( i ) ) {
 				// Branch or leaf node opening
 				// Create a childless node
 				node = ve.dm.nodeFactory.create(
-					this.data.getData( i ).type, [], this.data.getData( i )
+					fullData.getType( i ), [], fullData.getData( i )
 				);
 				node.setDocument( doc );
 				// Put the childless node on the current inner stack
@@ -148,7 +153,7 @@ ve.dm.Document = function VeDmDocument( documentOrData, parentDocument, internal
 			}
 		}
 	}
-	// pad out the metadata array
+	// Pad out the metadata length to element data length + 1
 	if ( this.metadata.getLength() < this.data.getLength() + 1 ) {
 		this.metadata.data = this.metadata.data.concat(
 			new Array( 1 + this.data.getLength() - this.metadata.getLength() )
@@ -297,7 +302,7 @@ ve.dm.Document.prototype.cloneFromRange = function ( range ) {
 		data = data.concat( this.getFullData( listRange ) );
 	}
 	newDoc = new this.constructor(
-		new ve.dm.ElementLinearData( store, data ),
+		new ve.dm.FlatLinearData( store, data ),
 		undefined, this.internalList
 	);
 	// Record the length of the internal list at the time the slice was created so we can

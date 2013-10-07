@@ -11,7 +11,7 @@
  * Element linear data storage
  *
  * @class
- * @extends ve.dm.LinearData
+ * @extends ve.dm.FlatLinearData
  * @constructor
  * @param {ve.dm.IndexValueStore} store Index-value store
  * @param {Array} [data] Linear data
@@ -22,49 +22,7 @@ ve.dm.ElementLinearData = function VeDmElementLinearData( store, data ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.dm.ElementLinearData, ve.dm.LinearData );
-
-/* Methods */
-
-/**
- * Get the type of the element at a specified offset
- * @method
- * @param {number} offset Document offset
- * @returns {string} Type of the element
- */
-ve.dm.ElementLinearData.prototype.getType = function ( offset ) {
-	return ve.dm.LinearData.static.getType( this.getData( offset ) );
-};
-
-/**
- * Check if data at a given offset is an element.
- * @method
- * @param {number} offset Document offset
- * @returns {boolean} Data at offset is an element
- */
-ve.dm.ElementLinearData.prototype.isElementData = function ( offset ) {
-	return ve.dm.LinearData.static.isElementData( this.getData( offset ) );
-};
-
-/**
- * Checks if data at a given offset is an open element.
- * @method
- * @param {number} offset Document offset
- * @returns {boolean} Data at offset is an open element
- */
-ve.dm.ElementLinearData.prototype.isOpenElementData = function ( offset ) {
-	return ve.dm.LinearData.static.isOpenElementData( this.getData( offset ) );
-};
-
-/**
- * Checks if data at a given offset is a close element.
- * @method
- * @param {number} offset Document offset
- * @returns {boolean} Data at offset is a close element
- */
-ve.dm.ElementLinearData.prototype.isCloseElementData = function ( offset ) {
-	return ve.dm.LinearData.static.isCloseElementData( this.getData( offset ) );
-};
+ve.inheritClass( ve.dm.ElementLinearData, ve.dm.FlatLinearData );
 
 /**
  * Check if content can be inserted at an offset in document data.

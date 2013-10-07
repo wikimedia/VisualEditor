@@ -27,7 +27,7 @@ ve.dm.example = {};
  * @method
  * @param {Array} data Linear model data
  * @param {ve.dm.IndexValueStore} [store] Index-value store to use, creates one if undefined
- * @returns {ve.dm.ElementLinearData} Element linear data store
+ * @returns {ve.dm.FlatLinearData} Linear data store
  * @throws {Error} Example data passed to preprocessAnnotations by reference
  */
 ve.dm.example.preprocessAnnotations = function ( data, store ) {
@@ -49,7 +49,7 @@ ve.dm.example.preprocessAnnotations = function ( data, store ) {
 			data[i][key] = ve.dm.example.createAnnotationSet( store, data[i][key] ).getIndexes();
 		}
 	}
-	return new ve.dm.ElementLinearData( store, data );
+	return new ve.dm.FlatLinearData( store, data );
 };
 
 /**

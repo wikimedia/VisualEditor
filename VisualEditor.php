@@ -298,6 +298,7 @@ $wgResourceModules += array(
 			've/dm/ve.dm.Converter.js',
 
 			've/dm/lineardata/ve.dm.SlicedLinearData.js',
+			've/dm/lineardata/ve.dm.FlatLinearData.js',
 			've/dm/lineardata/ve.dm.ElementLinearData.js',
 			've/dm/lineardata/ve.dm.MetaLinearData.js',
 
