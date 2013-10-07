@@ -502,6 +502,7 @@ $wgResourceModules += array(
 			've/ui/layouts/ve.ui.PanelLayout.js',
 			've/ui/layouts/ve.ui.StackPanelLayout.js',
 
+			've-mw/ui/dialogs/ve.ui.MWSaveDialog.js',
 			've-mw/ui/dialogs/ve.ui.MWMetaDialog.js',
 			've-mw/ui/dialogs/ve.ui.MWBetaWelcomeDialog.js',
 			've-mw/ui/dialogs/ve.ui.MWMediaInsertDialog.js',
@@ -559,6 +560,7 @@ $wgResourceModules += array(
 			'unicodejs.wordbreak',
 			'ext.visualEditor.base',
 			'mediawiki.Title',
+			'mediawiki.action.history.diff',
 			'jquery.autoEllipsis',
 		),
 		'messages' => array(

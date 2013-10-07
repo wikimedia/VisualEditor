@@ -105,16 +105,13 @@ ve.ui.WindowSet.prototype.getCurrent = function () {
 };
 
 /**
- * Opens a given window.
+ * Return a given window.
  *
- * Any already open dialog will be closed.
- *
- * @method
  * @param {string} name Symbolic name of window
  * @param {Object} [config] Configuration options to be sent to the window class constructor
- * @chainable
+ * @return {ve.ui.Window} Window with specified name
  */
-ve.ui.WindowSet.prototype.open = function ( name, config ) {
+ve.ui.WindowSet.prototype.getWindow = function ( name, config ) {
 	var win;
 
 	if ( !this.factory.lookup( name ) ) {
@@ -133,8 +130,19 @@ ve.ui.WindowSet.prototype.open = function ( name, config ) {
 		this.$.append( win.$ );
 		win.getFrame().load();
 	}
+	return this.windows[name];
+};
 
-	this.windows[name].open();
-
+/**
+ * Opens a given window.
+ *
+ * Any already open dialog will be closed.
+ *
+ * @param {string} name Symbolic name of window
+ * @param {Object} [config] Config options to be sent to the window class constructor
+ * @chainable
+ */
+ve.ui.WindowSet.prototype.open = function ( name, config ) {
+	this.getWindow( name, config ).open();
 	return this;
 };

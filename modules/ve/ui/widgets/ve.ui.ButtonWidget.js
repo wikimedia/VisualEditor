@@ -51,11 +51,11 @@ ve.ui.ButtonWidget = function VeUiButtonWidget( config ) {
 		.append( this.$label )
 		.attr( {
 			'role': 'button',
-			'tabIndex': config.tabIndex || 0,
 			'title': config.title,
 			'href': config.href,
 			'target': config.target
-		} );
+		} )
+		.prop( 'tabIndex', config.tabIndex || 0 );
 	this.$
 		.addClass( 've-ui-buttonWidget' )
 		.append( this.$button );

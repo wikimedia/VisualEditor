@@ -17,7 +17,6 @@
 	background-color: rgba(255,255,255,0.5);
 	-webkit-animation: ve-ui-fade-in 250ms ease-in-out 0 1 normal;
 	-moz-animation: ve-ui-fade-in 250ms ease-in-out 0 1 normal;
-	-ms-animation: ve-ui-fade-in 250ms ease-in-out 0 1 normal;
 	-o-animation: ve-ui-fade-in 250ms ease-in-out 0 1 normal;
 	animation: ve-ui-fade-in 250ms ease-in-out 0 1 normal;
 }
@@ -25,7 +24,6 @@
 .ve-ui-dialog-closing {
 	-webkit-animation: ve-ui-fade-in 250ms ease-in-out 0 1 reverse;
 	-moz-animation: ve-ui-fade-in 250ms ease-in-out 0 1 reverse;
-	-ms-animation: ve-ui-fade-in 250ms ease-in-out 0 1 reverse;
 	-o-animation: ve-ui-fade-in 250ms ease-in-out 0 1 reverse;
 	animation: ve-ui-fade-in 250ms ease-in-out 0 1 reverse;
 }
@@ -45,22 +43,24 @@
 	border-radius: 0.5em;
 	box-shadow: 0 0.2em 1em rgba(0, 0, 0, 0.3);
 	overflow: hidden;
+	-webkit-transition: all 250ms ease-in-out;
+	-moz-transition: all 250ms ease-in-out;
+	-o-transition: all 250ms ease-in-out;
+	transition: all 250ms ease-in-out;
 	-webkit-animation: ve-ui-zoom-in 250ms ease-in-out 0 1 normal;
 	-moz-animation: ve-ui-zoom-in 250ms ease-in-out 0 1 normal;
-	-ms-animation: ve-ui-zoom-in 250ms ease-in-out 0 1 normal;
 	-o-animation: ve-ui-zoom-in 250ms ease-in-out 0 1 normal;
 	animation: ve-ui-zoom-in 250ms ease-in-out 0 1 normal;
 }
 
-.ve-ui-dialog .ve-ui-window-frame.ve-ui-window-frame-small {
-	max-width: 600px;
-	max-height: 300px;
+.ve-ui-dialog .ve-ui-window-frame-small {
+	width: 600px;
+	max-height: 375px;
 }
 
 .ve-ui-dialog-closing .ve-ui-window-frame {
 	-webkit-animation: ve-ui-zoom-in 250ms ease-in-out 0 1 reverse;
 	-moz-animation: ve-ui-zoom-in 250ms ease-in-out 0 1 reverse;
-	-ms-animation: ve-ui-zoom-in 250ms ease-in-out 0 1 reverse;
 	-o-animation: ve-ui-zoom-in 250ms ease-in-out 0 1 reverse;
 	animation: ve-ui-zoom-in 250ms ease-in-out 0 1 reverse;
 }
@@ -184,4 +184,8 @@
 	left: 0;
 	right: 0;
 	box-shadow: 0 0 0.25em rgba(0,0,0,0.25);
+}
+
+.ve-ui-window-body .ve-ce-documentNode {
+	padding: 1.875em; /* 1.5/0.8 */
 }

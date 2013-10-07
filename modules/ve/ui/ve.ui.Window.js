@@ -115,7 +115,7 @@ ve.ui.Window.prototype.initialize = function () {
 	// Properties
 	this.$title = this.$$( '<div class="ve-ui-window-title"></div>' );
 	if ( this.getTitle() ) {
-		this.$title.text( this.getTitle() );
+		this.setTitle();
 	}
 	this.$icon = this.$$( '<div class="ve-ui-window-icon"></div>' )
 		.addClass( 've-ui-icon-' + this.constructor.static.icon );
@@ -214,8 +214,10 @@ ve.ui.Window.prototype.getTitle = function () {
 };
 
 /**
+ * Set the size of window frame.
  *
- * @method
+ * @param {number} [width=auto] Custom width
+ * @param {number} [height=auto] Custom height
  */
 ve.ui.Window.prototype.setSize = function ( width, height ) {
 	if ( !this.frame.$content ) {
@@ -229,8 +231,19 @@ ve.ui.Window.prototype.setSize = function ( width, height ) {
 };
 
 /**
+ * Set the title of the window.
  *
- * @method
+ * @param {string} [customTitle] Custom title, override the static.titleMessage
+ */
+ve.ui.Window.prototype.setTitle = function ( customTitle ) {
+	this.$title.text( customTitle || this.getTitle() );
+};
+
+/**
+ * Set the height of window to fit with contents.
+ *
+ * @param {number} [min=0] Min height
+ * @param {number} [max] Max height (defaults to content's outer height)
  */
 ve.ui.Window.prototype.fitHeightToContents = function ( min, max ) {
 	var height = this.frame.$content.outerHeight();
@@ -241,7 +254,10 @@ ve.ui.Window.prototype.fitHeightToContents = function ( min, max ) {
 };
 
 /**
+ * Set the width of window to fit with contents.
  *
+ * @param {number} [min=0] Min height
+ * @param {number} [max] Max height (defaults to content's outer width)
  */
 ve.ui.Window.prototype.fitWidthToContents = function ( min, max ) {
 	var width = this.frame.$content.outerWidth();
@@ -252,8 +268,10 @@ ve.ui.Window.prototype.fitWidthToContents = function ( min, max ) {
 };
 
 /**
+ * Set the position of window to fit with contents..
  *
- * @method
+ * @param {string} left Left offset
+ * @param {string} top Top offset
  */
 ve.ui.Window.prototype.setPosition = function ( left, top ) {
 	this.$.css( { 'left': left, 'top': top } );
