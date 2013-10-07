@@ -491,7 +491,7 @@ ve.init.mw.Target.prototype.getHtml = function ( newDoc ) {
  * @returns {boolean} Loading has been started
 */
 ve.init.mw.Target.prototype.load = function () {
-	var data;
+	var data, start;
 	// Prevent duplicate requests
 	if ( this.loading ) {
 		return false;
@@ -519,6 +519,8 @@ ve.init.mw.Target.prototype.load = function () {
 	}
 
 	// Load DOM
+	start = ve.now();
+
 	this.loading = $.ajax( {
 		'url': this.apiUrl,
 		'data': data,
@@ -530,6 +532,16 @@ ve.init.mw.Target.prototype.load = function () {
 		'success': ve.bind( ve.init.mw.Target.onLoad, this ),
 		'error': ve.bind( ve.init.mw.Target.onLoadError, this )
 	} );
+
+	this.loading.done( function ( data, status, jqxhr ) {
+		ve.track( 'DOM retrieved', {
+			'bytes': $.byteLength( jqxhr.responseText ),
+			'duration': ve.now() - start,
+			'cacheHit': /hit/i.test( jqxhr.getResponseHeader( 'X-Cache' ) ),
+			'parsoid': jqxhr.getResponseHeader( 'X-Parsoid-Performance' )
+		} );
+	} );
+
 	return true;
 };
 

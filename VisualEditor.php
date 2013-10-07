@@ -236,6 +236,7 @@ $wgResourceModules += array(
 			've-mw/init/ve.init.mw.Target.js',
 		),
 		'dependencies' => array(
+			'jquery.byteLength',
 			'jquery.client',
 			'mediawiki.Uri',
 			'ext.visualEditor.base',
