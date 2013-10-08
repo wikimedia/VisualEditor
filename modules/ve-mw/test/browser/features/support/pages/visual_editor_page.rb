@@ -47,7 +47,6 @@ class VisualEditorPage
   span(:transclusion, text: 'Transclusion')
 
   in_frame(:index => 0) do |frame|
-    a(:beta_warning, title: 'Close', frame: frame)
     div(:content_box, class: 've-ce-documentNode ve-ce-branchNode', frame: frame)
     span(:create_new, text:'Insert reference', frame: frame)
     span(:heading, text: 'Heading')
@@ -71,6 +70,7 @@ class VisualEditorPage
   end
 
   in_frame(:index => 1) do |frame|
+    a(:beta_warning, title: 'Close', frame: frame)
     span(:apply_changes, text: 'Apply changes', frame: frame)
     span(:add_parameter, class: 've-ui-mwParameterResultWidget-name', frame: frame)
     span(:add_template, text: 'Add template', frame: frame)
