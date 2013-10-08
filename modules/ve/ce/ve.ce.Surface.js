@@ -184,6 +184,7 @@ ve.ce.Surface.static.getClipboardHash = function ( $elements ) {
  * Get the coordinates of the selection anchor.
  *
  * @method
+ * @returns {Object|null} { 'start': { 'x': ..., 'y': ... }, 'end': { 'x': ..., 'y': ... } }
  */
 ve.ce.Surface.prototype.getSelectionRect = function () {
 	var sel, rect, $span, lineHeight, startRange, startOffset, endRange, endOffset, focusedOffset;
