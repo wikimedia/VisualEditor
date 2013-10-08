@@ -25,8 +25,9 @@ ve.test.utils.runSurfaceHandleDeleteTest = function( assert, html, range, operat
 
 	// TODO: model.getSelection() should be consistent after it has been
 	// changed but appears to behave differently depending on the browser.
-	// The selection from the change event is still consistent.
-	model.on( 'change', function( tx, s ) {
+	// The selection from the select event is still consistent.
+	selection = range;
+	model.on( 'select', function( s ) {
 		selection = s;
 	} );
 

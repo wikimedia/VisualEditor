@@ -552,7 +552,7 @@ ve.init.mw.ViewPageTarget.prototype.onSaveError = function ( jqXHR, status, data
  */
 ve.init.mw.ViewPageTarget.prototype.onShowChanges = function ( diffHtml ) {
 	// Invalidate the viewer diff on next change
-	this.surface.getModel().connect( this, { 'transact': 'onSurfaceModelTransact' } );
+	this.surface.getModel().getDocument().connect( this, { 'transact': 'clearSaveDialogDiff' } );
 	this.saveDialog.setDiffAndReview( diffHtml );
 };
 
@@ -564,7 +564,7 @@ ve.init.mw.ViewPageTarget.prototype.onShowChanges = function ( diffHtml ) {
  */
 ve.init.mw.ViewPageTarget.prototype.onSerialize = function ( wikitext ) {
 	// Invalidate the viewer wikitext on next change
-	this.surface.getModel().connect( this, { 'transact': 'onSurfaceModelTransact' } );
+	this.surface.getModel().getDocument().connect( this, { 'transact': 'clearSaveDialogDiff' } );
 	this.saveDialog.setDiffAndReview( $( '<pre>' ).text( wikitext ) );
 };
 
@@ -686,33 +686,37 @@ ve.init.mw.ViewPageTarget.prototype.onToolbarFeedbackToolClick = function () {
 };
 
 /**
- * Handle the first transaction in the surface model.
+ * Clear the diff in the save dialog.
  *
- * This handler is removed the first time it's used, but added each time the surface is set up.
+ * This method is bound to the 'transact' event on the document model, and unbinds itself the first
+ * time it runs. It's bound when the surface is set up and rebound every time a diff is loaded into
+ * the save dialog.
  *
  * @method
  * @param {ve.dm.Transaction} tx Processed transaction
  */
-ve.init.mw.ViewPageTarget.prototype.onSurfaceModelTransact = function () {
+ve.init.mw.ViewPageTarget.prototype.clearSaveDialogDiff = function () {
 	// Clear the diff
 	this.saveDialog.$reviewViewer.empty();
-	this.surface.getModel().disconnect( this, { 'transact': 'onSurfaceModelTransact' } );
+	this.surface.getModel().getDocument().disconnect( this, { 'transact': 'clearSaveDialogDiff' } );
 };
 
 /**
- * Handle changes to the surface model.
+ * Check if the user is entering wikitext, and show a notification if they are.
  *
- * This is used to trigger notifications when the user starts entering wikitext
+ * This check is fairly simplistic: it checks whether the content branch node the selection is in
+ * looks like wikitext, so it can trigger if the user types in a paragraph that has pre-existing
+ * wikitext-like content.
  *
- * @param {ve.dm.Transaction} tx
- * @param {ve.Range} range
+ * This method is bound to the 'transact' event on the surface model, and unbinds itself when
+ * the wikitext notification is displayed.
+ *
+ * @param {ve.dm.Transaction[]} transactions
  */
-ve.init.mw.ViewPageTarget.prototype.onSurfaceModelChange = function ( tx, range ) {
-	if ( !range ) {
-		return;
-	}
+ve.init.mw.ViewPageTarget.prototype.checkForWikitextWarning = function () {
 	var text, doc = this.surface.getView().getDocument(),
-		node = doc.getNodeFromOffset( range.start );
+		selection = this.surface.getModel().getSelection(),
+		node = doc.getNodeFromOffset( selection.start );
 	if ( !( node instanceof ve.ce.ContentBranchNode ) ) {
 		return;
 	}
@@ -728,7 +732,9 @@ ve.init.mw.ViewPageTarget.prototype.onSurfaceModelChange = function ( tx, range 
 				'autoHide': false
 			}
 		);
-		this.surface.getModel().disconnect( this, { 'change': 'onSurfaceModelChange' } );
+		this.surface.getModel().disconnect(
+			this, { 'transact': 'checkForWikitextWarning' }
+		);
 	}
 };
 
@@ -960,9 +966,11 @@ ve.init.mw.ViewPageTarget.prototype.setUpSurface = function ( doc, callback ) {
 					// Initialize surface
 					target.surface.getContext().hide();
 					target.$document = target.surface.$.find( '.ve-ce-documentNode' );
+					target.surface.getModel().getDocument().connect( target, {
+						'transact': 'clearSaveDialogDiff'
+					} );
 					target.surface.getModel().connect( target, {
-						'transact': 'onSurfaceModelTransact',
-						'change': 'onSurfaceModelChange',
+						'transact': 'checkForWikitextWarning',
 						'history': 'updateToolbarSaveButtonState'
 					} );
 					target.$.append( target.surface.$ );
