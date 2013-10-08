@@ -29,6 +29,12 @@ ve.dm.Surface = function VeDmSurface( doc ) {
 	this.historyTrackingInterval = null;
 	this.insertionAnnotations = new ve.dm.AnnotationSet( this.documentModel.getStore() );
 	this.enabled = true;
+	this.transacting = false;
+	this.queueingContextChanges = false;
+	this.contextChangeQueued = false;
+
+	// Events
+	this.documentModel.connect( this, { 'transact': 'onDocumentTransact' } );
 };
 
 /* Inheritance */
@@ -53,6 +59,16 @@ OO.mixinClass( ve.dm.Surface, OO.EventEmitter );
 /**
  * @event transact
  * @param {ve.dm.Transaction[]} transactions Transactions that have just been processed
+ */
+
+/**
+ * @event documentUpdate
+ *
+ * Emitted when a transaction has been processed on the document and the selection has been
+ * translated to account for that transaction. You should only use this event if you need
+ * to access the selection; in most cases, you should use {ve.dm.Document#event-transact}.
+ *
+ * @param {ve.dm.Transaction} tx Transaction that was processed on the document
  */
 
 /**
@@ -289,84 +305,107 @@ ve.dm.Surface.prototype.truncateUndoStack = function () {
 };
 
 /**
- * Apply a transactions and selection changes to the document.
+ * Start queueing up calls to {#emitContextChange} until {#stopQueueingContextChanges} is called.
+ * While queueing is active, contextChanges are also collapsed, so if {#emitContextChange} is called
+ * multiple times, only one contextChange event will be emitted by {#stopQueueingContextChanges}.
+ *
+ *     @example
+ *     this.emitContextChange(); // emits immediately
+ *     this.startQueueingContextChanges();
+ *     this.emitContextChange(); // doesn't emit
+ *     this.emitContextChange(); // doesn't emit
+ *     this.stopQueueingContextChanges(); // emits one contextChange event
  *
  * @method
- * @param {ve.dm.Transaction|ve.dm.Transaction[]|null} transactions One or more transactions to
- *  process, or null to process none
- * @param {ve.Range|undefined} selection
- * @fires lock
- * @fires select
- * @fires transact
- * @fires contextChange
- * @fires unlock
+ * @private
  */
-ve.dm.Surface.prototype.change = function ( transactions, selection ) {
-	if ( !this.enabled ) {
-		return;
+ve.dm.Surface.prototype.startQueueingContextChanges = function () {
+	if ( !this.queueingContextChanges ) {
+		this.queueingContextChanges = true;
+		this.contextChangeQueued = false;
 	}
-	var i, len, left, right, leftAnnotations, rightAnnotations, insertionAnnotations,
+};
+
+/**
+ * Emit a contextChange event. If {#startQueueingContextChanges} has been called, then the event
+ * is deferred until {#stopQueueingContextChanges} is called.
+ *
+ * @method
+ * @private
+ * @fires contextChange
+ */
+ve.dm.Surface.prototype.emitContextChange = function () {
+	if ( this.queueingContextChanges ) {
+		this.contextChangeQueued = true;
+	} else {
+		this.emit( 'contextChange' );
+	}
+};
+
+/**
+ * Stop queueing contextChange events. If {#emitContextChange} was called previously, a contextChange
+ * event will now be emitted. Any future calls to {#emitContextChange} will once again emit the
+ * event immediately.
+ *
+ * @method
+ * @private
+ * @fires contextChange
+ */
+ve.dm.Surface.prototype.stopQueueingContextChanges = function () {
+	if ( this.queueingContextChanges ) {
+		this.queueingContextChanges = false;
+		if ( this.contextChangeQueued ) {
+			this.contextChangeQueued = false;
+			this.emit( 'contextChange' );
+		}
+	}
+};
+
+/**
+ * Change the selection
+ *
+ * @param {ve.Range} selection New selection
+ *
+ * @fires lock
+ * @fires unlock
+ * @fires select
+ * @fires contextChange
+ */
+ve.dm.Surface.prototype.setSelection = function ( selection ) {
+	var left, right, leftAnnotations, rightAnnotations, insertionAnnotations,
 		selectedNodes = {},
 		oldSelection = this.selection,
 		contextChange = false,
 		dataModelData = this.documentModel.data;
 
+	if ( !this.enabled ) {
+		return;
+	}
+
+	if ( this.transacting ) {
+		// Update the selection but don't do any processing
+		this.selection = selection;
+		return;
+	}
+
 	// Stop observation polling, things changing right now are known already
 	this.emit( 'lock' );
 
-	// Process transactions and apply selection changes
-	if ( transactions ) {
-		if ( transactions instanceof ve.dm.Transaction ) {
-			transactions = [transactions];
-		}
-		for ( i = 0, len = transactions.length; i < len; i++ ) {
-			if ( !transactions[i].isNoOp() ) {
-				this.truncateUndoStack();
-				this.smallStack.push( transactions[i] );
-				this.documentModel.commit( transactions[i] );
-				if ( !selection ) {
-					// translateRange only if selection is not provided because otherwise we are
-					// going to overwrite it
-					this.selection = transactions[i].translateRange( this.selection );
-				}
-			}
-		}
+	// Detect if selected nodes changed
+	selectedNodes.start = this.documentModel.getNodeFromOffset( selection.start );
+	if ( selection.getLength() ) {
+		selectedNodes.end = this.documentModel.getNodeFromOffset( selection.end );
+	}
+	if (
+		selectedNodes.start !== this.selectedNodes.start ||
+		selectedNodes.end !== this.selectedNodes.end
+	) {
+		contextChange = true;
 	}
 
-	if ( selection ) {
-		// Detect if selected nodes changed
-		selectedNodes.start = this.documentModel.getNodeFromOffset( selection.start );
-		if ( selection.getLength() ) {
-			selectedNodes.end = this.documentModel.getNodeFromOffset( selection.end );
-		}
-		if (
-			selectedNodes.start !== this.selectedNodes.start ||
-			selectedNodes.end !== this.selectedNodes.end
-		) {
-			contextChange = true;
-		}
-		this.selectedNodes = selectedNodes;
-		this.selection = selection;
-	}
-
-	// Emit select event if selection range changed
-	if ( !oldSelection || !oldSelection.equals( this.selection ) ) {
-		this.emit( 'select', this.selection.clone() );
-	}
-
-	// Only emit a transact event if transactions were actually processed
-	if ( transactions ) {
-		this.emit( 'transact', transactions );
-		// Detect context change, if not detected already, when element attributes have changed
-		if ( !contextChange ) {
-			for ( i = 0, len = transactions.length; i < len; i++ ) {
-				if ( transactions[i].hasElementAttributeOperations() ) {
-					contextChange = true;
-					break;
-				}
-			}
-		}
-	}
+	// Update state
+	this.selectedNodes = selectedNodes;
+	this.selection = selection;
 
 	// Figure out which annotations to use for insertions
 	if ( this.selection.isCollapsed() ) {
@@ -401,13 +440,81 @@ ve.dm.Surface.prototype.change = function ( transactions, selection ) {
 		contextChange = true;
 	}
 
-	// Only emit one context change event
+	// Emit events
+	if ( !oldSelection || !oldSelection.equals( this.selection ) ) {
+		this.emit( 'select', this.selection.clone() );
+	}
 	if ( contextChange ) {
-		this.emit( 'contextChange' );
+		this.emitContextChange();
 	}
 
 	// Continue observation polling, we want to know about things that change from here on out
 	this.emit( 'unlock' );
+};
+
+/**
+ * Apply a transactions and selection changes to the document.
+ *
+ * @method
+ * @param {ve.dm.Transaction|ve.dm.Transaction[]|null} transactions One or more transactions to
+ *  process, or null to process none
+ * @param {ve.Range|undefined} selection
+ * @fires lock
+ * @fires contextChange
+ * @fires unlock
+ */
+ve.dm.Surface.prototype.change = function ( transactions, selection ) {
+	var i, len, selectionAfter, selectionBefore = this.selection, contextChange = false;
+
+	if ( !this.enabled ) {
+		return;
+	}
+
+	this.startQueueingContextChanges();
+
+	// Process transactions
+	if ( transactions ) {
+		if ( transactions instanceof ve.dm.Transaction ) {
+			transactions = [transactions];
+		}
+		this.transacting = true;
+		this.emit( 'lock' );
+		for ( i = 0, len = transactions.length; i < len; i++ ) {
+			if ( !transactions[i].isNoOp() ) {
+				this.truncateUndoStack();
+				this.smallStack.push( transactions[i] );
+				// The .commit() call below indirectly invokes setSelection()
+				this.documentModel.commit( transactions[i] );
+				if ( transactions[i].hasElementAttributeOperations() ) {
+					contextChange = true;
+				}
+			}
+		}
+		this.emit( 'unlock' );
+		this.transacting = false;
+	}
+	selectionAfter = this.selection;
+
+	// Apply selection change
+	if ( selection ) {
+		this.setSelection( selection );
+	} else if ( transactions ) {
+		// Call setSelection() to trigger selection processing that was bypassed earlier
+		this.setSelection( this.selection );
+	}
+
+	// If the selection changed while applying the transactions but not while applying the
+	// selection change, setSelection() won't have emitted a 'select' event. We don't want that
+	// to happen, so emit one anyway.
+	if ( !selectionBefore.equals( selectionAfter ) && selectionAfter.equals( this.selection ) ) {
+		this.emit( 'select', this.selection.clone() );
+	}
+
+	if ( contextChange ) {
+		this.emitContextChange();
+	}
+
+	this.stopQueueingContextChanges();
 };
 
 /**
@@ -498,4 +605,16 @@ ve.dm.Surface.prototype.redo = function () {
 		return selection;
 	}
 	return null;
+};
+
+/**
+ * Respond to transactions processed on the document by translating the selection and updating
+ * other state.
+ *
+ * @param {ve.dm.Transaction} tx Transaction that was processed
+ * @fires documentUpdate
+ */
+ve.dm.Surface.prototype.onDocumentTransact = function ( tx ) {
+	this.setSelection( tx.translateRange( this.selection ) );
+	this.emit( 'documentUpdate', tx );
 };

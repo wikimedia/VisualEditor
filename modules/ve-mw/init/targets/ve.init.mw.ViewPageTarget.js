@@ -708,10 +708,10 @@ ve.init.mw.ViewPageTarget.prototype.clearSaveDialogDiff = function () {
  * looks like wikitext, so it can trigger if the user types in a paragraph that has pre-existing
  * wikitext-like content.
  *
- * This method is bound to the 'transact' event on the surface model, and unbinds itself when
+ * This method is bound to the 'documentUpdate' event on the surface model, and unbinds itself when
  * the wikitext notification is displayed.
  *
- * @param {ve.dm.Transaction[]} transactions
+ * @param {ve.dm.Transaction} transaction
  */
 ve.init.mw.ViewPageTarget.prototype.checkForWikitextWarning = function () {
 	var text, doc = this.surface.getView().getDocument(),
@@ -733,7 +733,7 @@ ve.init.mw.ViewPageTarget.prototype.checkForWikitextWarning = function () {
 			}
 		);
 		this.surface.getModel().disconnect(
-			this, { 'transact': 'checkForWikitextWarning' }
+			this, { 'documentUpdate': 'checkForWikitextWarning' }
 		);
 	}
 };
@@ -970,7 +970,7 @@ ve.init.mw.ViewPageTarget.prototype.setUpSurface = function ( doc, callback ) {
 						'transact': 'clearSaveDialogDiff'
 					} );
 					target.surface.getModel().connect( target, {
-						'transact': 'checkForWikitextWarning',
+						'documentUpdate': 'checkForWikitextWarning',
 						'history': 'updateToolbarSaveButtonState'
 					} );
 					target.$.append( target.surface.$ );

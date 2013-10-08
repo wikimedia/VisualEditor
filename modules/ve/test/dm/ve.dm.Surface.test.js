@@ -33,25 +33,27 @@ QUnit.test( 'getSelection', 1, function ( assert ) {
 } );
 
 QUnit.test( 'change', 3, function ( assert ) {
-	var surface = new ve.dm.SurfaceStub(),
-		tx = new ve.dm.Transaction(),
+	var tx, surface = new ve.dm.SurfaceStub(),
 		events = {
-			'transact': 0,
+			'documentUpdate': 0,
 			'select': 0
 		};
 
-	surface.on( 'transact', function () {
-		events.transact++;
+	// docmentUpdate doesn't fire for no-op transactions, so make sure there's something there
+	tx = ve.dm.Transaction.newFromInsertion( surface.getDocument(), 3, [ 'i' ] );
+
+	surface.on( 'documentUpdate', function () {
+		events.documentUpdate++;
 	} );
 	surface.on( 'select', function () {
 		events.select++;
 	} );
-	surface.change( tx );
-	assert.deepEqual( events, { 'transact': 1, 'select': 0 }, 'transaction without selection' );
+	surface.change( tx.clone() );
+	assert.deepEqual( events, { 'documentUpdate': 1, 'select': 0 }, 'transaction without selection' );
 	surface.change( null, new ve.Range( 2, 2 ) );
-	assert.deepEqual( events, { 'transact': 1, 'select': 1 }, 'selection without transaction' );
-	surface.change( tx, new ve.Range( 3, 3 ) );
-	assert.deepEqual( events, { 'transact': 2, 'select': 2 }, 'transaction and selection' );
+	assert.deepEqual( events, { 'documentUpdate': 1, 'select': 1 }, 'selection without transaction' );
+	surface.change( tx.clone(), new ve.Range( 3, 3 ) );
+	assert.deepEqual( events, { 'documentUpdate': 2, 'select': 2 }, 'transaction and selection' );
 } );
 
 QUnit.test( 'breakpoint', 7, function ( assert ) {
