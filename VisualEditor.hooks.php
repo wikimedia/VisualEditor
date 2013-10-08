@@ -9,9 +9,6 @@
  */
 
 class VisualEditorHooks {
-	/** List of skins VisualEditor integration supports */
-	protected static $supportedSkins = array( 'vector', 'apex', 'monobook' );
-
 	public static function onSetup() {
 		global $wgResourceModules, $wgVisualEditorResourceTemplate,
 			$wgVisualEditorTabMessages;
@@ -280,6 +277,7 @@ class VisualEditorHooks {
 			$wgVisualEditorPluginModules,
 			$wgVisualEditorTabPosition,
 			$wgVisualEditorTabMessages,
+			$wgVisualEditorSupportedSkins,
 			$wgVisualEditorShowBetaWelcome;
 
 		$vars['wgVisualEditorConfig'] = array(
@@ -292,7 +290,7 @@ class VisualEditorHooks {
 				'enable' => $wgDefaultUserOptions['visualeditor-enable'],
 				'experimental' => $wgDefaultUserOptions['visualeditor-enable-experimental'],
 			),
-			'skins' => self::$supportedSkins,
+			'skins' => $wgVisualEditorSupportedSkins,
 			'tabPosition' => $wgVisualEditorTabPosition,
 			'tabMessages' => $wgVisualEditorTabMessages,
 			'showBetaWelcome' => $wgVisualEditorShowBetaWelcome,
