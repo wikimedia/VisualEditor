@@ -19,7 +19,7 @@ class VisualEditorPage
   div(:insert_references, class: 've-ui-window-title')
   div(:internal_diff_view, class: 've-init-mw-viewPageTarget-saveDialog-viewer')
   span(:internal_linksuggestion, text: 'Main Page')
-  div(:ip_warning, class: 've-init-mw-viewPageTarget-editNotices-notice')
+  div(:ip_warning, class: 've-init-mw-viewPageTarget-toolbar-editNotices-notice')
   span(:linksuggestion, text: 'http://www.example.com')
   span(:looks_good, class: 've-ui-labeledElement-label', text: 'Looks good to me')
   checkbox(:minor_edit, id: 'wpMinoredit')
