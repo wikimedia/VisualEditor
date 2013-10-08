@@ -13,14 +13,14 @@ Then(/^(.+) should appear in the diff view$/) do |headings_string|
     # So we put single quotes around the entries in the .feature file and strip them here to get unescaped regexes.
     headings_string = headings_string.gsub(/'/, '')
     page.wait_until(10) do
-      page.paragraph_diff_view.include? "Your text"
+      page.diff_view.include? "Your text"
     end
-    page.paragraph_diff_view.should match Regexp.new(headings_string)
+    page.diff_view.should match Regexp.new(headings_string)
   end
 end
 
-Then(/^I can click the up arrow on the save box$/) do
-  on(VisualEditorPage).uparrow_element.when_present.click
+Then(/^I can click the X on the save box$/) do
+  on(VisualEditorPage).ex_element.when_present.click
 end
 
 When(/^I click Heading$/) do

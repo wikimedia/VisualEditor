@@ -30,9 +30,9 @@ end
 Then(/^an internal link appears in the diff view$/) do
   on(VisualEditorPage) do |page|
     page.wait_until(10) do
-      page.internal_diff_view.include? 'Main Page'
+      page.diff_view.include? 'Main Page'
     end
-    page.internal_diff_view.should match Regexp.escape('[[Main Page|Editing]]')
+    page.diff_view.should match Regexp.escape('[[Main Page|Editing]]')
   end
 end
 
@@ -43,9 +43,9 @@ end
 Then(/^a non\-existing link appears in the diff view$/) do
   on(VisualEditorPage) do |page|
     page.wait_until(10) do
-      page.internal_diff_view.include? 'DoesNotExist'
+      page.diff_view.include? 'DoesNotExist'
     end
-    page.internal_diff_view.should match Regexp.escape('[[DoesNotExist|Editing]]')
+    page.diff_view.should match Regexp.escape('[[DoesNotExist|Editing]]')
   end
 end
 

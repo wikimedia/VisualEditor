@@ -8,7 +8,7 @@ Feature: VisualEditor Headings
       And I click Save page
       And I click Review your changes
     Then <headings_string> should appear in the diff view
-      And I can click the up arrow on the save box
+      And I can click the X on the save box
   Examples:
     | headings_interface_name | headings_string  |
     | Paragraph               | '^Editing'       |

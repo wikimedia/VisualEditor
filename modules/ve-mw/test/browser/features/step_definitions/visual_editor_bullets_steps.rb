@@ -22,9 +22,9 @@ end
 Then(/^a \# is added in front of input string in the diff view$/) do
   on(VisualEditorPage) do |page|
     page.wait_until(10) do
-      page.heading_diff_view.include? '# This '
+      page.diff_view.include? '# This '
     end
-    page.heading_diff_view.should match Regexp.new(/^\# This is a new line/)
+    page.diff_view.should match Regexp.new(/^\# This is a new line/)
   end
 end
 
@@ -35,9 +35,9 @@ end
 Then(/^a \* is added in front of input string in the diff view$/) do
   on(VisualEditorPage) do |page|
     page.wait_until(10) do
-      page.heading_diff_view.include? '* This '
+      page.diff_view.include? '* This '
     end
-    page.heading_diff_view.should match Regexp.new(/^\* This is a new line/)
+    page.diff_view.should match Regexp.new(/^\* This is a new line/)
   end
 end
 
@@ -48,18 +48,18 @@ end
 Then(/^a \#\# is added in front of input string in the diff view$/) do
   on(VisualEditorPage) do |page|
     page.wait_until(10) do
-      page.heading_diff_view.include? '## This '
+      page.diff_view.include? '## This '
     end
-    page.heading_diff_view.should match Regexp.new(/^\#\# This is a new line/)
+    page.diff_view.should match Regexp.new(/^\#\# This is a new line/)
   end
 end
 
 Then(/^a \*\* is added in front of input string in the diff view$/) do
   on(VisualEditorPage) do |page|
     page.wait_until(10) do
-      page.heading_diff_view.include? '** This '
+      page.diff_view.include? '** This '
     end
-    page.heading_diff_view.should match Regexp.new(/^\*\* This is a new line/)
+    page.diff_view.should match Regexp.new(/^\*\* This is a new line/)
   end
 end
 
@@ -71,9 +71,9 @@ end
 Then(/^nothing is added in front of input string in the diff view$/) do
   on(VisualEditorPage) do |page|
     page.wait_until(10) do
-      page.heading_diff_view.include? 'This '
+      page.diff_view.include? 'This '
     end
-    page.heading_diff_view.should match Regexp.new(/^This is a new line/)
+    page.diff_view.should match Regexp.new(/^This is a new line/)
   end
 end
 
