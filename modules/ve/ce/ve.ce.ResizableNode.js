@@ -13,13 +13,16 @@
  *
  * @constructor
  * @param {jQuery} [$resizable=this.$] Resizable DOM element
+ * @param {Object} [config] Configuration options
+ * @param {number|null} [config.snapToGrid=10] Snap to a grid of size X when the shift key is held. Null disables.
  */
-ve.ce.ResizableNode = function VeCeResizableNode( $resizable ) {
+ve.ce.ResizableNode = function VeCeResizableNode( $resizable, config ) {
 	// Properties
 	this.$resizable = $resizable || this.$;
 	this.ratio = this.model.getAttribute( 'width' ) / this.model.getAttribute( 'height' );
 	this.resizing = false;
 	this.$resizeHandles = this.$$( '<div>' );
+	this.snapToGrid = ( config && config.snapToGrid !== undefined ) ? config.snapToGrid : 10;
 
 	// Events
 	this.connect( this, {
@@ -180,7 +183,7 @@ ve.ce.ResizableNode.prototype.setResizableHandlesSizeAndPosition = function () {
  * @param {jQuery.Event} e Click event
  */
 ve.ce.ResizableNode.prototype.onDocumentMouseMove = function ( e ) {
-	var newWidth, newHeight, newRatio,
+	var newWidth, newHeight, newRatio, snapMin, snapMax, snap,
 		// TODO: Make these configurable
 		min = 1,
 		max = 1000,
@@ -227,6 +230,14 @@ ve.ce.ResizableNode.prototype.onDocumentMouseMove = function ( e ) {
 			dimensions.width = this.$resizable.width() +
 				( newHeight - this.$resizable.height() ) * this.ratio;
 			dimensions.height = newHeight;
+		}
+
+		if ( this.snapToGrid && e.shiftKey ) {
+			snapMin = Math.ceil( min / this.snapToGrid );
+			snapMax = Math.floor( max / this.snapToGrid );
+			snap = Math.round( dimensions.width / this.snapToGrid );
+			dimensions.width = Math.max( Math.min( snap, snapMax ), snapMin ) * this.snapToGrid;
+			dimensions.height = dimensions.width / this.ratio;
 		}
 
 		// Fix the position
