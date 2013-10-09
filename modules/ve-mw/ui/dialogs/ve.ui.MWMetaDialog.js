@@ -260,11 +260,9 @@ ve.ui.MWMetaDialog.prototype.getCategoryItems = function () {
  * @returns {Object} item
  */
 ve.ui.MWMetaDialog.prototype.getCategoryItemFromMetaListItem = function ( metaItem ) {
-	var title, value = '';
-	try {
-		title = new mw.Title( metaItem.element.attributes.category );
-		value = title.getMainText();
-	} catch ( e ) { }
+	var title = mw.Title.newFromText( metaItem.element.attributes.category ),
+		value = title ? title.getMainText() : '';
+
 	return {
 		'name': metaItem.element.attributes.category,
 		'value': value,

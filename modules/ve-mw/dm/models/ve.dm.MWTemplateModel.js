@@ -27,6 +27,8 @@ ve.dm.MWTemplateModel = function VeDmMWTemplateModel( transclusion, target, orig
 	// Properties
 	this.target = target;
 	this.origin = origin;
+
+	// TODO: Either here or in uses of this constructor we need to validate the title
 	this.title = ( target.href && target.href.replace( /^(\.\.?\/)*/, '' ) ) || null;
 	this.sequence = null;
 	this.params = {};
@@ -92,6 +94,8 @@ ve.dm.MWTemplateModel.newFromName = function ( transclusion, name ) {
 	if ( href.charAt( 0 ) !== ':' ) {
 		href = mw.config.get( 'wgFormattedNamespaces' )[10] + ':' + href;
 	}
+
+	// TODO: Do we need to account for the title being invalid?
 	href = new mw.Title( href ).getPrefixedText();
 
 	return new ve.dm.MWTemplateModel( transclusion, { 'href': href, 'wt': name }, 'user' );

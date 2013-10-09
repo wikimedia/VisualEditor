@@ -76,14 +76,11 @@ ve.dm.MWInternalLinkAnnotation.static.toDomElements = function ( dataElement, do
 /**
  * Normalize title for comparison purposes
  * @param {string} title Original title
- * @returns {string} Normalized title
+ * @returns {string} Normalized title, or the original if it is invalid
  */
-ve.dm.MWInternalLinkAnnotation.static.normalizeTitle = function ( title ) {
-	var normalizedTitle = title;
-	try {
-		normalizedTitle = new mw.Title( title ).getPrefixedText();
-	} catch ( e ) {}
-	return normalizedTitle;
+ve.dm.MWInternalLinkAnnotation.static.normalizeTitle = function ( original ) {
+	var title = mw.Title.newFromText( original );
+	return title ? title.getPrefixedText() : original;
 };
 
 /* Methods */

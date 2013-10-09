@@ -77,10 +77,10 @@ ve.ui.MWCategoryInputWidget.prototype.getLookupCacheItemFromData = function ( da
 	var i, len, title, result = [];
 	if ( ve.isArray( data ) && data.length ) {
 		for ( i = 0, len = data[1].length; i < len; i++ ) {
-			try {
-				title = new mw.Title( data[1][i] );
+			title = mw.Title.newFromText( data[1][i] );
+			if ( title ) {
 				result.push( title.getMainText() );
-			} catch ( e ) { }
+			}
 			// If the received title isn't valid, just ignore it
 		}
 	}
@@ -177,18 +177,22 @@ ve.ui.MWCategoryInputWidget.prototype.getCategoryItemFromValue = function ( valu
 	var title;
 
 	// Normalize
-	try {
-		title = new mw.Title( this.categoryPrefix + value );
+	title = mw.Title.newFromText( this.categoryPrefix + value );
+	if ( title ) {
 		return {
 			'name': title.getPrefixedText(),
 			'value': title.getMainText(),
 			'metaItem': {}
 		};
-	} catch ( e ) { }
+	}
 
 	if ( this.forceCapitalization ) {
 		value = value.substr( 0, 1 ).toUpperCase() + value.substr( 1 );
 	}
 
-	return { 'name': this.categoryPrefix + value, 'value': value, 'metaItem': {} };
+	return {
+		'name': this.categoryPrefix + value,
+		'value': value,
+		'metaItem': {}
+	};
 };

@@ -63,15 +63,15 @@ ve.ui.MWLinkInspector.prototype.getAnnotationFromText = function ( target ) {
 		// Internal link
 		// TODO: In the longer term we'll want to have autocompletion and existence and validity
 		// checks using AJAX
-		try {
-			title = new mw.Title( target );
-			if ( title.getNamespaceId() === 6 || title.getNamespaceId() === 14 ) {
-				// File: or Category: link
-				// We have to prepend a colon so this is interpreted as a link
-				// rather than an image inclusion or categorization
-				target = ':' + target;
-			}
-		} catch ( e ) { }
+		title = mw.Title.newFromText( target );
+
+		if ( title && ( title.getNamespaceId() === 6 || title.getNamespaceId() === 14 ) ) {
+			// File: or Category: link
+			// We have to prepend a colon so this is interpreted as a link
+			// rather than an image inclusion or categorization
+			target = ':' + target;
+		}
+
 		return new ve.dm.MWInternalLinkAnnotation( {
 			'type': 'link/mwInternal',
 			'attributes': {

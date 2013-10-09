@@ -205,13 +205,13 @@ ve.ui.MWLinkTargetInputWidget.prototype.setValue = function ( value ) {
  * @returns {ve.dm.MWInternalLinkAnnotation}
  */
 ve.ui.MWLinkTargetInputWidget.prototype.getInternalLinkAnnotationFromTitle = function ( target ) {
-	var title;
-	try {
-		title = new mw.Title( target );
-		if ( title.getNamespaceId() === 6 || title.getNamespaceId() === 14 ) {
-			target = ':' + target;
-		}
-	} catch ( e ) { }
+	var title = mw.Title.newFromText( target );
+
+	if ( title && ( title.getNamespaceId() === 6 || title.getNamespaceId() === 14 ) ) {
+		// Prepend links to File and Category namespace with a colon
+		target = ':' + target;
+	}
+
 	return new ve.dm.MWInternalLinkAnnotation( {
 		'type': 'link/mwInternal',
 		'attributes': {
