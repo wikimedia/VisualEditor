@@ -1,6 +1,7 @@
 @ie6-bug  @ie7-bug  @ie8-bug @ie9-bug @ie10-bug @test2.wikipedia.org @en.wikipedia.beta.wmflabs.org @login
 Feature: VisualEditor References
 
+  Scenario: VisualEditor References
     Given I am logged in
       And I am at my user page
     When I click Edit for VisualEditor

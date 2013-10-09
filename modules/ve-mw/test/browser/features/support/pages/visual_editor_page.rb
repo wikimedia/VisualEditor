@@ -38,13 +38,10 @@ class VisualEditorPage
 
   in_frame(:index => 0) do |frame|
     checkbox(:minor_edit, id: 'wpMinoredit', frame: frame)
-    div(:content_box, class: 've-ce-documentNode ve-ce-branchNode', frame: frame)
-    span(:create_new, text:'Insert reference', frame: frame)
     div(:diff_view, class: 've-ui-mwSaveDialog-viewer', frame: frame)
     text_area(:describe_change, index: 0, frame: frame)
     a(:ex, title: 'Close', frame: frame)
     span(:heading, text: 'Heading')
-    div(:insert_reference, text: 'Insert reference', frame: frame)
     text_field(:link_textfield, index: 0, frame: frame)
     span(:paragraph, text: 'Paragraph')
     span(:preformatted, text: 'Preformatted')
@@ -69,16 +66,16 @@ class VisualEditorPage
     a(:beta_warning, title: 'Close', frame: frame)
     div(:ref_body, class:'ve-ui-window-head', frame: frame)
     div(:content_box, class: 've-ce-documentNode ve-ce-branchNode', frame: frame)
-    div(:insert_reference, text: 'Insert reference', frame: frame)
     span(:links_review_changes, class: 've-ui-labeledElement-label', text: 'Review your changes', frame: frame)
     div(:links_diff_view, class: 've-ui-mwSaveDialog-viewer', frame: frame)
-
   end
 
   in_frame(:index => 2) do |frame|
+    span(:insert_reference, text: 'Insert reference', frame: frame)
     span(:add_parameter, class: 've-ui-mwParameterResultWidget-name', frame: frame)
     span(:add_template, text: 'Add template', frame: frame)
     span(:apply_changes, text: 'Apply changes', frame: frame)
+    div(:content_box, class: 've-ce-documentNode ve-ce-branchNode', frame: frame)
     text_field(:parameter_box, index: 0, frame: frame)
     span(:remove_parameter, text: 'Remove parameter', frame: frame)
     span(:remove_template, text: 'Remove template', frame: frame)

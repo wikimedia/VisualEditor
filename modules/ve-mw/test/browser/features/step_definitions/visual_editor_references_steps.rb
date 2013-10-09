@@ -1,5 +1,5 @@
 Given(/^I can see the References User Interface$/) do
-  on(VisualEditorPage).ref_body.should match Regexp.escape('Reference')
+  on(VisualEditorPage).title.should match 'Reference'
 end
 
 When(/^I click Insert reference$/) do
