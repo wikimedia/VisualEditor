@@ -9,7 +9,7 @@
  * Creates an ve.ui.MWParameterSearchWidget object.
  *
  * @class
- * @extends ve.ui.SearchWidget
+ * @extends OO.ui.SearchWidget
  *
  * @constructor
  * @param {Object} [config] Configuration options
@@ -21,7 +21,7 @@ ve.ui.MWParameterSearchWidget = function VeUiMWParameterSearchWidget( template, 
 	}, config );
 
 	// Parent constructor
-	ve.ui.SearchWidget.call( this, config );
+	OO.ui.SearchWidget.call( this, config );
 
 	// Properties
 	this.template = template;
@@ -37,7 +37,7 @@ ve.ui.MWParameterSearchWidget = function VeUiMWParameterSearchWidget( template, 
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.MWParameterSearchWidget, ve.ui.SearchWidget );
+OO.inheritClass( ve.ui.MWParameterSearchWidget, OO.ui.SearchWidget );
 
 /* Events */
 
@@ -56,7 +56,7 @@ OO.inheritClass( ve.ui.MWParameterSearchWidget, ve.ui.SearchWidget );
  */
 ve.ui.MWParameterSearchWidget.prototype.onQueryChange = function () {
 	// Parent method
-	ve.ui.SearchWidget.prototype.onQueryChange.call( this );
+	OO.ui.SearchWidget.prototype.onQueryChange.call( this );
 
 	// Populate
 	this.addResults();
@@ -66,7 +66,7 @@ ve.ui.MWParameterSearchWidget.prototype.onQueryChange = function () {
  * Handle select widget select events.
  *
  * @method
- * @param {ve.ui.OptionWidget} item Selected item
+ * @param {OO.ui.OptionWidget} item Selected item
  * @fires select
  */
 ve.ui.MWParameterSearchWidget.prototype.onResultsSelect = function ( item ) {

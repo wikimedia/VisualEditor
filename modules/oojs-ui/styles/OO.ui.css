@@ -1,0 +1,73 @@
+/*!
+ * ObjectOriented UserInterface styles.
+ *
+ * @copyright 2011-2013 OOJS Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+
+/*csslint vendor-prefix:false */
+
+/* Textures */
+
+.oo-ui-texture-pending {
+	/* @embed */
+	background-image: url(images/textures/pending.gif);
+}
+
+.oo-ui-texture-transparency {
+	/* @embed */
+	background-image: url(images/textures/transparency.png);
+}
+
+/* Animation */
+
+@-webkit-keyframes oo-ui-zoom-in {
+	from { -webkit-transform: scale(0.5); }
+	to { -webkit-transform: scale(1); }
+}
+
+@-moz-keyframes oo-ui-zoom-in {
+	from { -moz-transform: scale(0.5); }
+	to { -moz-transform: scale(1); }
+}
+
+@-o-keyframes oo-ui-zoom-in {
+	from { -o-transform: scale(0.5); }
+	to { -o-transform: scale(1); }
+}
+
+@keyframes oo-ui-zoom-in {
+	from { transform: scale(0.5); }
+	to { transform: scale(1); }
+}
+
+@-webkit-keyframes oo-ui-fade-in {
+	from { opacity: 0; }
+	to { opacity: 1; }
+}
+
+@-moz-keyframes oo-ui-fade-in {
+	from { opacity: 0; }
+	to { opacity: 1; }
+}
+
+@-o-keyframes oo-ui-fade-in {
+	from { opacity: 0; }
+	to { opacity: 1; }
+}
+
+@keyframes oo-ui-fade-in {
+	from { opacity: 0; }
+	to { opacity: 1; }
+}
+
+/* RTL Definitions */
+
+/* @noflip */
+.oo-ui-rtl {
+	direction: rtl;
+}
+/* @noflip */
+.oo-ui-ltr {
+	direction: ltr;
+}

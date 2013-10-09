@@ -40,23 +40,23 @@ ve.ui.MWReferenceListDialog.prototype.initialize = function () {
 	ve.ui.MWDialog.prototype.initialize.call( this );
 
 	// Properties
-	this.editPanel = new ve.ui.PanelLayout( {
+	this.editPanel = new OO.ui.PanelLayout( {
 		'$$': this.frame.$$, 'scrollable': true, 'padded': true
 	} );
-	this.optionsFieldset = new ve.ui.FieldsetLayout( {
+	this.optionsFieldset = new OO.ui.FieldsetLayout( {
 		'$$': this.frame.$$,
 		'label': ve.msg( 'visualeditor-dialog-reference-options-section' ),
 		'icon': 'settings'
 	} );
 
-	this.groupInput = new ve.ui.TextInputWidget( { '$$': this.frame.$$ } );
-	this.groupLabel = new ve.ui.InputLabelWidget( {
+	this.groupInput = new OO.ui.TextInputWidget( { '$$': this.frame.$$ } );
+	this.groupLabel = new OO.ui.InputLabelWidget( {
 		'$$': this.frame.$$,
 		'input': this.groupInput,
 		'label': ve.msg( 'visualeditor-dialog-reference-options-group-label' )
 	} );
 
-	this.applyButton = new ve.ui.PushButtonWidget( {
+	this.applyButton = new OO.ui.PushButtonWidget( {
 		'$$': this.$$, 'label': ve.msg( 'visualeditor-dialog-action-apply' ), 'flags': ['primary']
 	} );
 

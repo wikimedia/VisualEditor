@@ -10,7 +10,7 @@
  *
  * @class
  * @abstract
- * @extends ve.ui.Tool
+ * @extends OO.ui.Tool
  *
  * @constructor
  * @param {ve.ui.SurfaceToolbar} toolbar
@@ -18,12 +18,12 @@
  */
 ve.ui.AnnotationTool = function VeUiAnnotationTool( toolbar, config ) {
 	// Parent constructor
-	ve.ui.Tool.call( this, toolbar, config );
+	OO.ui.Tool.call( this, toolbar, config );
 };
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.AnnotationTool, ve.ui.Tool );
+OO.inheritClass( ve.ui.AnnotationTool, OO.ui.Tool );
 
 /* Static Properties */
 

@@ -46,12 +46,12 @@ ve.ui.MWBetaWelcomeDialog.prototype.initialize = function () {
 	ve.ui.MWDialog.prototype.initialize.call( this );
 
 	// Properties
-	this.contentLayout = new ve.ui.PanelLayout( {
+	this.contentLayout = new OO.ui.PanelLayout( {
 		'$$': this.frame.$$,
 		'scrollable': true,
 		'padded': true
 	} );
-	this.continueButton = new ve.ui.PushButtonWidget( {
+	this.continueButton = new OO.ui.PushButtonWidget( {
 		'$$': this.$$,
 		'label': ve.msg( 'visualeditor-dialog-beta-welcome-action-continue' ),
 		'flags': ['primary']

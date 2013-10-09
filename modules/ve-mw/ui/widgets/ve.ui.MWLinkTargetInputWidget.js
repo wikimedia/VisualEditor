@@ -12,7 +12,7 @@
  *
  * @class
  * @extends ve.ui.LinkTargetInputWidget
- * @mixins ve.ui.LookupInputWidget
+ * @mixins OO.ui.LookupInputWidget
  *
  * @constructor
  * @param {Object} [config] Configuration options
@@ -25,7 +25,7 @@ ve.ui.MWLinkTargetInputWidget = function VeUiMWLinkTargetInputWidget( config ) {
 	ve.ui.LinkTargetInputWidget.call( this, config );
 
 	// Mixin constructors
-	ve.ui.LookupInputWidget.call( this, this, config );
+	OO.ui.LookupInputWidget.call( this, this, config );
 
 	// Events
 	this.lookupMenu.connect( this, { 'select': 'onLookupMenuItemSelect' } );
@@ -39,7 +39,7 @@ ve.ui.MWLinkTargetInputWidget = function VeUiMWLinkTargetInputWidget( config ) {
 
 OO.inheritClass( ve.ui.MWLinkTargetInputWidget, ve.ui.LinkTargetInputWidget );
 
-OO.mixinClass( ve.ui.MWLinkTargetInputWidget, ve.ui.LookupInputWidget );
+OO.mixinClass( ve.ui.MWLinkTargetInputWidget, OO.ui.LookupInputWidget );
 
 /* Methods */
 
@@ -52,7 +52,7 @@ OO.mixinClass( ve.ui.MWLinkTargetInputWidget, ve.ui.LookupInputWidget );
  * a link to "Foo".
  *
  * @method
- * @param {ve.ui.MenuItemWidget|null} item Selected item
+ * @param {OO.ui.MenuItemWidget|null} item Selected item
  */
 ve.ui.MWLinkTargetInputWidget.prototype.onLookupMenuItemSelect = function ( item ) {
 	if ( item ) {
@@ -96,7 +96,7 @@ ve.ui.MWLinkTargetInputWidget.prototype.getLookupCacheItemFromData = function ( 
  * Get list of menu items from a server response.
  *
  * @param {Object} data Query result
- * @returns {ve.ui.MenuItemWidget[]} Menu items
+ * @returns {OO.ui.MenuItemWidget[]} Menu items
  */
 ve.ui.MWLinkTargetInputWidget.prototype.getLookupMenuItemsFromData = function ( data ) {
 	var i, len, item,
@@ -113,11 +113,11 @@ ve.ui.MWLinkTargetInputWidget.prototype.getLookupMenuItemsFromData = function ( 
 
 	// External link
 	if ( ve.init.platform.getExternalLinkUrlProtocolsRegExp().test( this.value ) ) {
-		items.push( new ve.ui.MenuSectionItemWidget(
+		items.push( new OO.ui.MenuSectionItemWidget(
 			'externalLink',
 			{ '$$': menu$$, 'label': ve.msg( 'visualeditor-linkinspector-suggest-external-link' ) }
 		) );
-		items.push( new ve.ui.MenuItemWidget(
+		items.push( new OO.ui.MenuItemWidget(
 			this.getExternalLinkAnnotationFromUrl( this.value ),
 			{ '$$': menu$$, 'rel': 'externalLink', 'label': this.value }
 		) );
@@ -126,17 +126,17 @@ ve.ui.MWLinkTargetInputWidget.prototype.getLookupMenuItemsFromData = function ( 
 	// Internal link
 	if ( !pageExists ) {
 		if ( titleObj ) {
-			items.push( new ve.ui.MenuSectionItemWidget(
+			items.push( new OO.ui.MenuSectionItemWidget(
 				'newPage',
 				{ '$$': menu$$, 'label': ve.msg( 'visualeditor-linkinspector-suggest-new-page' ) }
 			) );
-			items.push( new ve.ui.MenuItemWidget(
+			items.push( new OO.ui.MenuItemWidget(
 				this.getInternalLinkAnnotationFromTitle( this.value ),
 				{ '$$': menu$$, 'rel': 'newPage', 'label': this.value }
 			) );
 		} else {
 			// If no title object could be created, it means the title is illegal
-			item = new ve.ui.MenuSectionItemWidget(
+			item = new OO.ui.MenuSectionItemWidget(
 				'illegalTitle',
 				{ '$$': menu$$, 'label': ve.msg( 'visualeditor-linkinspector-illegal-title' ) }
 			);
@@ -147,7 +147,7 @@ ve.ui.MWLinkTargetInputWidget.prototype.getLookupMenuItemsFromData = function ( 
 
 	// Matching pages
 	if ( matchingPages && matchingPages.length ) {
-		items.push( new ve.ui.MenuSectionItemWidget(
+		items.push( new OO.ui.MenuSectionItemWidget(
 			'matchingPages',
 			{ '$$': menu$$, 'label': ve.msg( 'visualeditor-linkinspector-suggest-matching-page' ) }
 		) );
@@ -156,7 +156,7 @@ ve.ui.MWLinkTargetInputWidget.prototype.getLookupMenuItemsFromData = function ( 
 			matchingPages.unshift( this.value );
 		}
 		for ( i = 0, len = matchingPages.length; i < len; i++ ) {
-			items.push( new ve.ui.MenuItemWidget(
+			items.push( new OO.ui.MenuItemWidget(
 				this.getInternalLinkAnnotationFromTitle( matchingPages[i] ),
 				{ '$$': menu$$, 'rel': 'matchingPage', 'label': matchingPages[i] }
 			) );
@@ -173,7 +173,7 @@ ve.ui.MWLinkTargetInputWidget.prototype.initializeLookupMenuSelection = function
 	var item;
 
 	// Parent method
-	ve.ui.LookupInputWidget.prototype.initializeLookupMenuSelection.call( this );
+	OO.ui.LookupInputWidget.prototype.initializeLookupMenuSelection.call( this );
 
 	// Update annotation to match selected item
 	item = this.lookupMenu.getSelectedItem();
@@ -193,7 +193,7 @@ ve.ui.MWLinkTargetInputWidget.prototype.initializeLookupMenuSelection = function
  */
 ve.ui.MWLinkTargetInputWidget.prototype.setValue = function ( value ) {
 	// Keep annotation in sync with value by skipping parent and calling grandparent method
-	ve.ui.TextInputWidget.prototype.setValue.call( this, value );
+	OO.ui.TextInputWidget.prototype.setValue.call( this, value );
 };
 
 /**

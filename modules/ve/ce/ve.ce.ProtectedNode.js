@@ -240,7 +240,7 @@ ve.ce.ProtectedNode.prototype.positionPhantoms = function () {
 	this.$phantomable.find( '.ve-ce-protectedNode-shield' ).each(
 		ve.bind( function ( i, element ) {
 			var $shield = $( element ),
-				offset = ve.Element.getRelativePosition(
+				offset = OO.ui.Element.getRelativePosition(
 					$shield, this.getRoot().getSurface().getSurface().$
 				);
 			this.$phantoms.eq( i ).css( {

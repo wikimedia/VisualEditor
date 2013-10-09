@@ -1,0 +1,49 @@
+/*!
+ * ObjectOriented UserInterface Window styles.
+ *
+ * @copyright 2011-2013 OOJS Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+
+.oo-ui-window {
+	display: none;
+}
+
+.oo-ui-window-head {
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.oo-ui-window-body {
+	padding: 0 0.75em;
+}
+
+.oo-ui-window-icon {
+	float: left;
+	width: 2em;
+	height: 2em;
+	line-height: 2em;
+	margin-right: 0.5em;
+	background-position: right center;
+	background-repeat: no-repeat;
+}
+
+.oo-ui-window-title {
+	float: left;
+	line-height: 2em;
+	color: #333;
+	white-space: nowrap;
+	cursor: default;
+}
+
+.oo-ui-window-overlay {
+	font-family: sans-serif;
+	line-height: 1.5em;
+	font-size: 1em;
+	position: absolute;
+	top: 0;
+	left: 0;
+}

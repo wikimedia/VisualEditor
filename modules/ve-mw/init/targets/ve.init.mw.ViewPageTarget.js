@@ -504,7 +504,7 @@ ve.init.mw.ViewPageTarget.prototype.onSaveError = function ( jqXHR, status, data
 	// very intuitively detect by the presence of a "url" property.
 	if ( editApi && editApi.captcha && editApi.captcha.url ) {
 		this.captcha = {
-			input: new ve.ui.TextInputWidget(),
+			input: new OO.ui.TextInputWidget(),
 			id: editApi.captcha.id
 		};
 		this.saveDialog.showMessage(
@@ -1155,9 +1155,9 @@ ve.init.mw.ViewPageTarget.prototype.setupSectionEditLinks = null;
 ve.init.mw.ViewPageTarget.prototype.setupToolbarButtons = function () {
 	var editNoticeCount = ve.getObjectKeys( this.editNotices ).length;
 
-	this.toolbarCancelButton = new ve.ui.PushButtonWidget( { 'label': ve.msg( 'visualeditor-toolbar-cancel' ) } );
+	this.toolbarCancelButton = new OO.ui.PushButtonWidget( { 'label': ve.msg( 'visualeditor-toolbar-cancel' ) } );
 	this.toolbarCancelButton.$.addClass( 've-ui-toolbar-cancelButton' );
-	this.toolbarSaveButton = new ve.ui.PushButtonWidget( {
+	this.toolbarSaveButton = new OO.ui.PushButtonWidget( {
 		'label': ve.msg( 'visualeditor-toolbar-savedialog' ),
 		'flags': ['constructive'],
 		'disabled': !this.restoring
@@ -1170,13 +1170,13 @@ ve.init.mw.ViewPageTarget.prototype.setupToolbarButtons = function () {
 	this.toolbarCancelButton.connect( this, { 'click': 'onToolbarCancelButtonClick' } );
 	this.toolbarSaveButton.connect( this, { 'click': 'onToolbarSaveButtonClick' } );
 
-	this.toolbarMetaButton = new ve.ui.IconButtonWidget( {
+	this.toolbarMetaButton = new OO.ui.IconButtonWidget( {
 		'icon': 'settings',
 		'label': ve.msg( 'visualeditor-meta-tool' )
 	} );
 	this.toolbarMetaButton.connect( this, { 'click': 'onToolbarMetaButtonClick' } );
 
-	this.toolbarEditNoticesButton = new ve.ui.PopupButtonWidget( {
+	this.toolbarEditNoticesButton = new OO.ui.PopupButtonWidget( {
 		'icon': 'alert',
 		'popup': {
 			'label': ve.msg( 'visualeditor-editnotices-tool', editNoticeCount ),
@@ -1194,7 +1194,7 @@ ve.init.mw.ViewPageTarget.prototype.setupToolbarButtons = function () {
 		this.toolbarEditNoticesButton.$.hide();
 	}
 
-	this.toolbarBetaNoticesButton = new ve.ui.PopupButtonWidget( {
+	this.toolbarBetaNoticesButton = new OO.ui.PopupButtonWidget( {
 		'icon': 'help',
 		'popup': {
 			'label': ve.msg( 'visualeditor-help-tool' ),
@@ -1203,7 +1203,7 @@ ve.init.mw.ViewPageTarget.prototype.setupToolbarButtons = function () {
 	} );
 	this.toolbarBetaNoticesButton.$label.addClass( 've-init-mw-viewPageTarget-tool-beta-label' );
 
-	this.toolbarHelpButton = new ve.ui.IconButtonWidget( {
+	this.toolbarHelpButton = new OO.ui.IconButtonWidget( {
 		'icon': 'help',
 		'title': ve.msg( 'visualeditor-help-title' ),
 		'href': new mw.Title( ve.msg( 'visualeditor-help-link' ) ).getUrl(),
@@ -1211,7 +1211,7 @@ ve.init.mw.ViewPageTarget.prototype.setupToolbarButtons = function () {
 		'label': ve.msg( 'visualeditor-help-label' )
 	} );
 
-	this.toolbarFeedbackButton = new ve.ui.IconButtonWidget( {
+	this.toolbarFeedbackButton = new OO.ui.IconButtonWidget( {
 		'icon': 'comment',
 		'label': ve.msg( 'visualeditor-feedback-tool' )
 	} );
@@ -1673,7 +1673,7 @@ ve.init.mw.ViewPageTarget.prototype.restoreEditSection = function () {
 				// Scroll to heading:
 				// Wait for toolbar to animate in so we can account for its height
 				setTimeout( function () {
-					var $window = $( ve.Element.getWindow( target.$ ) );
+					var $window = $( OO.ui.Element.getWindow( target.$ ) );
 					$window.scrollTop( headingNode.$.offset().top - target.toolbar.$.height() );
 				}, 200 );
 			}

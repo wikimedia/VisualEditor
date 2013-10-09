@@ -175,7 +175,7 @@ ve.ce.FocusableNode.prototype.createHighlight = function () {
 			if ( !$element.is( ':visible' ) ) {
 				return true;
 			}
-			offset = ve.Element.getRelativePosition(
+			offset = OO.ui.Element.getRelativePosition(
 				$element, this.getRoot().getSurface().getSurface().$
 			);
 			this.$highlights = this.$highlights.add(

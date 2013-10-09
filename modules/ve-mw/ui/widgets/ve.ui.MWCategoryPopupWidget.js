@@ -9,7 +9,7 @@
  * Creates an ve.ui.MWCategoryPopupWidget object.
  *
  * @class
- * @extends ve.ui.PopupWidget
+ * @extends OO.ui.PopupWidget
  *
  * @constructor
  * @param {Object} [config] Configuration options
@@ -19,7 +19,7 @@ ve.ui.MWCategoryPopupWidget = function VeUiMWCategoryPopupWidget ( config ) {
 	config = ve.extendObject( { 'autoClose': true }, config );
 
 	// Parent constructor
-	ve.ui.PopupWidget.call( this, config );
+	OO.ui.PopupWidget.call( this, config );
 
 	// Properties
 	this.category = null;
@@ -27,11 +27,11 @@ ve.ui.MWCategoryPopupWidget = function VeUiMWCategoryPopupWidget ( config ) {
 	this.removed = false;
 	this.$title = this.$$( '<label>' );
 	this.$menu = this.$$( '<div>' );
-	this.removeButton = new ve.ui.IconButtonWidget( {
+	this.removeButton = new OO.ui.IconButtonWidget( {
 		'$$': this.$$, 'icon': 'remove', 'title': ve.msg( 'visualeditor-inspector-remove-tooltip' )
 	} );
-	this.sortKeyInput = new ve.ui.TextInputWidget( { '$$': this.$$ } );
-	this.sortKeyLabel = new ve.ui.InputLabelWidget(
+	this.sortKeyInput = new OO.ui.TextInputWidget( { '$$': this.$$ } );
+	this.sortKeyLabel = new OO.ui.InputLabelWidget(
 		{ '$$': this.$$, '$input': this.sortKeyInput, 'label': ve.msg ( 'visualeditor-dialog-meta-categories-sortkey-label' ) }
 	);
 	this.$sortKeyForm = this.$$( '<form>' ).addClass( 've-ui-mwCategoryPopupWidget-sortKeyForm' )
@@ -45,7 +45,7 @@ ve.ui.MWCategoryPopupWidget = function VeUiMWCategoryPopupWidget ( config ) {
 	// Initialization
 	this.$.addClass( 've-ui-mwCategoryPopupWidget' ).hide();
 	this.$title
-		.addClass( 've-ui-mwCategoryPopupWidget-title ve-ui-icon-tag' )
+		.addClass( 've-ui-mwCategoryPopupWidget-title oo-ui-icon-tag' )
 		.text( ve.msg( 'visualeditor-dialog-meta-categories-category' ) );
 	this.$menu
 		.addClass( 've-ui-mwCategoryPopupWidget-content' )
@@ -60,7 +60,7 @@ ve.ui.MWCategoryPopupWidget = function VeUiMWCategoryPopupWidget ( config ) {
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.MWCategoryPopupWidget, ve.ui.PopupWidget );
+OO.inheritClass( ve.ui.MWCategoryPopupWidget, OO.ui.PopupWidget );
 
 /* Events */
 

@@ -9,7 +9,7 @@
  * UserInterface surface window set.
  *
  * @class
- * @extends ve.ui.WindowSet
+ * @extends OO.ui.WindowSet
  *
  * @constructor
  * @param {ve.ui.Surface} surface
@@ -18,7 +18,7 @@
  */
 ve.ui.SurfaceWindowSet = function VeUiSurfaceWindowSet( surface, factory, config ) {
 	// Parent constructor
-	ve.ui.WindowSet.call( this, factory, config );
+	OO.ui.WindowSet.call( this, factory, config );
 
 	// Properties
 	this.surface = surface;
@@ -29,7 +29,7 @@ ve.ui.SurfaceWindowSet = function VeUiSurfaceWindowSet( surface, factory, config
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.SurfaceWindowSet, ve.ui.WindowSet );
+OO.inheritClass( ve.ui.SurfaceWindowSet, OO.ui.WindowSet );
 
 /* Methods */
 
@@ -38,7 +38,7 @@ OO.inheritClass( ve.ui.SurfaceWindowSet, ve.ui.WindowSet );
  */
 ve.ui.SurfaceWindowSet.prototype.onWindowClose = function ( win, accept ) {
 	this.surface.getView().focus();
-	ve.ui.WindowSet.prototype.onWindowClose.call( this, win, accept );
+	OO.ui.WindowSet.prototype.onWindowClose.call( this, win, accept );
 };
 
 /**

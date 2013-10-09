@@ -9,7 +9,7 @@
  * Generic base class for CE views.
  *
  * @abstract
- * @extends ve.Element
+ * @extends OO.ui.Element
  * @mixins OO.EventEmitter
  *
  * @constructor
@@ -19,11 +19,11 @@
 ve.ce.View = function VeCeView( model, config ) {
 	// Setting this property before calling the parent constructor allows overriden #getTagName
 	// methods in view classes to have access to the model when they are called for the first time
-	// inside of ve.Element
+	// inside of OO.ui.Element
 	this.model = model;
 
 	// Parent constructor
-	ve.Element.call( this, config );
+	OO.ui.Element.call( this, config );
 
 	// Mixin constructors
 	OO.EventEmitter.call( this );
@@ -43,7 +43,7 @@ ve.ce.View = function VeCeView( model, config ) {
 
 /* Inheritance */
 
-OO.inheritClass( ve.ce.View, ve.Element );
+OO.inheritClass( ve.ce.View, OO.ui.Element );
 
 OO.mixinClass( ve.ce.View, OO.EventEmitter );
 

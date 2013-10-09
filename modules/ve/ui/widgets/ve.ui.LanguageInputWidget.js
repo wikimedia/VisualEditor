@@ -9,7 +9,7 @@
  * Creates an ve.ui.LanguageInputWidget object.
  *
  * @class
- * @extends ve.ui.TextInputWidget
+ * @extends OO.ui.TextInputWidget
  *
  * @constructor
  * @param {Object} [config] Configuration options
@@ -18,7 +18,7 @@ ve.ui.LanguageInputWidget = function VeUiLanguageInputWidget( config ) {
 	var ulsParams, langInpObj, table;
 
 	// Parent constructor
-	ve.ui.Widget.call( this, config );
+	OO.ui.Widget.call( this, config );
 
 	// Visual Properties
 	this.$langCodeDisp = this.getDisplayElement( config ); // language code
@@ -74,7 +74,7 @@ ve.ui.LanguageInputWidget = function VeUiLanguageInputWidget( config ) {
 	};
 
 	// Create a 'change language' Button:
-	this.$button = new ve.ui.PushButtonWidget({
+	this.$button = new OO.ui.PushButtonWidget({
 		'label': ve.msg( 'visualeditor-languageinspector-widget-changelang' ),
 		// Add 'href' so the button returns true on click and triggers ULS
 		'href': '#',
@@ -89,7 +89,7 @@ ve.ui.LanguageInputWidget = function VeUiLanguageInputWidget( config ) {
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.LanguageInputWidget, ve.ui.Widget );
+OO.inheritClass( ve.ui.LanguageInputWidget, OO.ui.Widget );
 
 /* Static properties */
 

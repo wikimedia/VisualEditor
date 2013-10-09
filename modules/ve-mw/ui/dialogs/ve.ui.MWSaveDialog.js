@@ -52,12 +52,12 @@ ve.ui.MWSaveDialog.prototype.initialize = function () {
 	ve.ui.MWDialog.prototype.initialize.call( this );
 
 	// Properties
-	this.savePanel = new ve.ui.PanelLayout( { '$$': this.frame.$$, 'scrollable': true } );
+	this.savePanel = new OO.ui.PanelLayout( { '$$': this.frame.$$, 'scrollable': true } );
 
 	// Save panel
 	this.$editSummaryLabel = this.frame.$$( '<div>' ).addClass( 've-ui-mwSaveDialog-summaryLabel' )
 		.html( ve.init.platform.getParsedMessage( 'summary' ) );
-	this.editSummaryInput = new ve.ui.TextInputWidget(
+	this.editSummaryInput = new OO.ui.TextInputWidget(
 		{ '$$': this.frame.$$, 'multiline': true, 'placeholder': ve.msg( 'visualeditor-editsummary' ) }
 	);
 	this.editSummaryInput.$.addClass( 've-ui-mwSaveDialog-summary' );
@@ -80,7 +80,7 @@ ve.ui.MWSaveDialog.prototype.initialize = function () {
 
 	this.$saveOptions = this.frame.$$( '<div>' ).addClass( 've-ui-mwSaveDialog-options' ).append(
 		this.frame.$$( '<div>' ).addClass( 've-ui-mwSaveDialog-checkboxes' ),
-		new ve.ui.InputLabelWidget( { '$$': this.frame.$$, 'label': 'text' } ).$
+		new OO.ui.InputLabelWidget( { '$$': this.frame.$$, 'label': 'text' } ).$
 			.addClass( 've-ui-mwSaveDialog-editSummary-count' ).text( this.editSummaryByteLimit )
 	);
 	this.$saveMessages = this.frame.$$( '<div>' );
@@ -101,32 +101,32 @@ ve.ui.MWSaveDialog.prototype.initialize = function () {
 	);
 
 	// Review panel
-	this.reviewPanel = new ve.ui.PanelLayout( { '$$': this.frame.$$, 'scrollable': true } );
+	this.reviewPanel = new OO.ui.PanelLayout( { '$$': this.frame.$$, 'scrollable': true } );
 	this.$reviewViewer = this.frame.$$( '<div>' ).addClass( 've-ui-mwSaveDialog-viewer' );
 	this.$reviewActions = this.frame.$$( '<div>' ).addClass( 've-ui-mwSaveDialog-actions' );
 	this.reviewPanel.$.append( this.$reviewViewer, this.$reviewActions );
 
 	// Conflict panel
-	this.conflictPanel = new ve.ui.PanelLayout( { '$$': this.frame.$$, 'scrollable': true } );
+	this.conflictPanel = new OO.ui.PanelLayout( { '$$': this.frame.$$, 'scrollable': true } );
 	this.$conflict = this.frame.$$( '<div>' ).addClass( 've-ui-mwSaveDialog-conflict' )
 		.html( ve.init.platform.getParsedMessage( 'visualeditor-editconflict' ) );
 	this.conflictPanel.$.append( this.$conflict );
 
 	// No changes panel
-	this.nochangesPanel = new ve.ui.PanelLayout( { '$$': this.frame.$$, 'scrollable': true } );
+	this.nochangesPanel = new OO.ui.PanelLayout( { '$$': this.frame.$$, 'scrollable': true } );
 	this.$noChanges = this.frame.$$( '<div>' ).addClass( 've-ui-mwSaveDialog-nochanges' )
 		.html( ve.init.platform.getParsedMessage( 'visualeditor-diff-nochanges' ) );
 	this.nochangesPanel.$.append( this.$noChanges );
 
 	// Panel stack
-	this.panel = new ve.ui.StackPanelLayout( { '$$': this.frame.$$, 'scrollable': true } );
+	this.panel = new OO.ui.StackPanelLayout( { '$$': this.frame.$$, 'scrollable': true } );
 	this.panel.$.addClass( 've-ui-mwSaveDialog-panel' );
 	this.panel.addItems( [this.savePanel, this.reviewPanel, this.conflictPanel, this.nochangesPanel], 0 );
 
 	/* Buttons */
 
 	// Save button for "save" panel
-	this.saveButton = new ve.ui.PushButtonWidget( {
+	this.saveButton = new OO.ui.PushButtonWidget( {
 		'label': ve.msg(
 			 // visualeditor-savedialog-label-restore, visualeditor-savedialog-label-save
 			'visualeditor-savedialog-label-' + ( this.restoring ? 'restore' : 'save' )
@@ -136,19 +136,19 @@ ve.ui.MWSaveDialog.prototype.initialize = function () {
 	this.saveButton.connect( this, { 'click': 'onSaveButtonClick' } );
 
 	// Review button for "save" panel
-	this.reviewButton = new ve.ui.PushButtonWidget( {
+	this.reviewButton = new OO.ui.PushButtonWidget( {
 		'label': ve.msg( 'visualeditor-savedialog-label-review' )
 	} );
 	this.reviewButton.connect( this, { 'click': 'onReviewButtonClick' } );
 
 	// Review good button on "review" panel
-	this.reviewGoodButton = new ve.ui.PushButtonWidget( {
+	this.reviewGoodButton = new OO.ui.PushButtonWidget( {
 		'label': ve.msg( 'visualeditor-savedialog-label-review-good' ),
 		'flags': ['constructive']
 	} );
 	this.reviewGoodButton.connect( this, { 'click': 'onReviewGoodButtonClick' } );
 	// Resolve conflict
-	this.resolveConflictButton = new ve.ui.PushButtonWidget( {
+	this.resolveConflictButton = new OO.ui.PushButtonWidget( {
 		'label': ve.msg( 'visualeditor-savedialog-label-resolve-conflict' ),
 		'flags': ['constructive']
 	} );

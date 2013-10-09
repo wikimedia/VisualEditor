@@ -9,7 +9,7 @@
  * Creates an ve.ui.MWReferenceSearchWidget object.
  *
  * @class
- * @extends ve.ui.SearchWidget
+ * @extends OO.ui.SearchWidget
  *
  * @constructor
  * @param {ve.ui.Surface} [varname] [description]
@@ -22,7 +22,7 @@ ve.ui.MWReferenceSearchWidget = function VeUiMWReferenceSearchWidget( surface, c
 	}, config );
 
 	// Parent constructor
-	ve.ui.SearchWidget.call( this, config );
+	OO.ui.SearchWidget.call( this, config );
 
 	// Properties
 	this.surface = surface;
@@ -34,7 +34,7 @@ ve.ui.MWReferenceSearchWidget = function VeUiMWReferenceSearchWidget( surface, c
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.MWReferenceSearchWidget, ve.ui.SearchWidget );
+OO.inheritClass( ve.ui.MWReferenceSearchWidget, OO.ui.SearchWidget );
 
 /* Events */
 
@@ -54,7 +54,7 @@ OO.inheritClass( ve.ui.MWReferenceSearchWidget, ve.ui.SearchWidget );
  */
 ve.ui.MWReferenceSearchWidget.prototype.onQueryChange = function () {
 	// Parent method
-	ve.ui.SearchWidget.prototype.onQueryChange.call( this );
+	OO.ui.SearchWidget.prototype.onQueryChange.call( this );
 
 	// Populate
 	this.addResults();
@@ -64,7 +64,7 @@ ve.ui.MWReferenceSearchWidget.prototype.onQueryChange = function () {
  * Handle select widget select events.
  *
  * @method
- * @param {ve.ui.OptionWidget} item Selected item
+ * @param {OO.ui.OptionWidget} item Selected item
  * @fires select
  */
 ve.ui.MWReferenceSearchWidget.prototype.onResultsSelect = function ( item ) {

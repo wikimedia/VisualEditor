@@ -10,7 +10,7 @@
  *
  * @class
  * @abstract
- * @extends ve.ui.Dialog
+ * @extends OO.ui.Dialog
  *
  * @constructor
  * @param {ve.ui.SurfaceWindowSet} windowSet Window set this dialog is part of
@@ -18,7 +18,7 @@
  */
 ve.ui.SurfaceDialog = function VeUiSurfaceDialog( windowSet, config ) {
 	// Parent constructor
-	ve.ui.Dialog.call( this, windowSet, config );
+	OO.ui.Dialog.call( this, windowSet, config );
 
 	// Properties
 	this.surface = windowSet.getSurface();
@@ -26,4 +26,4 @@ ve.ui.SurfaceDialog = function VeUiSurfaceDialog( windowSet, config ) {
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.SurfaceDialog, ve.ui.Dialog );
+OO.inheritClass( ve.ui.SurfaceDialog, OO.ui.Dialog );

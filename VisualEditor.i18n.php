@@ -19,6 +19,12 @@ $messages = array();
 $messages['en'] = array(
 	'accesskey-ca-editsource' => 'e',
 	'accesskey-ca-ve-edit' => 'v',
+	'ooui-dialog-action-close' => 'Close',
+	'ooui-inspector-close-tooltip' => 'Close',
+	'ooui-inspector-remove-tooltip' => 'Remove',
+	'ooui-outline-control-move-down' => 'Move item down',
+	'ooui-outline-control-move-up' => 'Move item up',
+	'ooui-toolbar-more' => 'More',
 	'tag-visualeditor' => '[[{{MediaWiki:visualeditor-descriptionpagelink}}|VisualEditor]]',
 	'tag-visualeditor-description' => 'Edit made using the [[{{MediaWiki:visualeditor-descriptionpagelink}}|VisualEditor]]',
 	'tag-visualeditor-needcheck' => '[[{{MediaWiki:visualeditor-descriptionpagelink}}|VisualEditor: Check]]',
@@ -52,7 +58,6 @@ $messages['en'] = array(
 	'visualeditor-descriptionpagelink' => 'Project:VisualEditor',
 	'visualeditor-dialog-action-apply' => 'Apply changes',
 	'visualeditor-dialog-action-cancel' => 'Cancel',
-	'visualeditor-dialog-action-close' => 'Close',
 	'visualeditor-dialog-action-goback' => 'Go back',
 	'visualeditor-dialog-beta-welcome-action-continue' => 'Continue',
 	'visualeditor-dialog-beta-welcome-content' => 'This is our new, easier way to edit. It\'s still in beta, which means you might find parts of the page you can\'t edit, or encounter issues that need to be fixed. We encourage you to review your changes, and we welcome reports about any issues you might encounter in using VisualEditor (click the \'{{int:visualeditor-beta-label}}\' button to submit feedback). You can keep using the wikitext editor by clicking the "$1" tab instead – unsaved changes will be lost.',
@@ -132,8 +137,6 @@ $messages['en'] = array(
 	'visualeditor-historybutton-undo-tooltip' => 'Undo',
 	'visualeditor-indentationbutton-indent-tooltip' => 'Increase indentation',
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Decrease indentation',
-	'visualeditor-inspector-close-tooltip' => 'Close',
-	'visualeditor-inspector-remove-tooltip' => 'Remove',
 	'visualeditor-languageinspector-block-tooltip' => 'Language block: $1',
 	'visualeditor-languageinspector-block-tooltip-rtldirection' => ': Right to Left',
 	'visualeditor-languageinspector-title' => 'Language',
@@ -159,8 +162,6 @@ $messages['en'] = array(
 	'visualeditor-notification-created' => '"$1" has been created.',
 	'visualeditor-notification-restored' => '"$1" has been restored.',
 	'visualeditor-notification-saved' => 'Your changes to "$1" have been saved.',
-	'visualeditor-outline-control-move-down' => 'Move item down',
-	'visualeditor-outline-control-move-up' => 'Move item up',
 	'visualeditor-parameter-input-placeholder' => 'Parameter name',
 	'visualeditor-parameter-search-no-unused' => 'No unused parameters',
 	'visualeditor-parameter-search-unknown' => 'Unknown parameter',
@@ -194,7 +195,6 @@ $messages['en'] = array(
 	'visualeditor-saveerror' => 'Error saving data to server: $1.',
 	'visualeditor-serializeerror' => 'Error loading data from server: $1.',
 	'visualeditor-toolbar-cancel' => 'Cancel',
-	'visualeditor-toolbar-more' => 'More',
 	'visualeditor-toolbar-savedialog' => 'Save page',
 	'visualeditor-usernamespacepagelink' => 'Project:User namespace',
 	'visualeditor-version-label' => 'Version',
@@ -226,6 +226,15 @@ $messages['en'] = array(
 $messages['qqq'] = array(
 	'accesskey-ca-editsource' => '{{optional}}',
 	'accesskey-ca-ve-edit' => '{{Ignore}}',
+	'ooui-inspector-close-tooltip' => '{{Identical|Close}}',
+	'ooui-inspector-remove-tooltip' => 'Tooltip text for the button to remove an annotation in an inspector',
+	'ooui-dialog-action-close' => 'Label text for button to exit from dialog.
+
+{{Identical|Close}}',
+	'ooui-outline-control-move-down' => 'Tool tip for a button that moves items in a list down one place',
+	'ooui-outline-control-move-up' => 'Tool tip for a button that moves items in a list up one place',
+	'ooui-toolbar-more' => 'Label for the toolbar group that contains a list of all other available tools.
+{{Identical|More}}',
 	'tag-visualeditor' => 'Short description of the visualeditor tag.
 
 Shown on lists of changes (history, recentchanges, etc.) for each edit made using VisualEditor.
@@ -335,28 +344,18 @@ Used in:
 
 See also:
 * {{msg-mw|Visualeditor-dialog-action-cancel}}
-* {{msg-mw|Visualeditor-dialog-action-close}}
 * {{msg-mw|Visualeditor-dialog-action-goback}}',
 	'visualeditor-dialog-action-cancel' => 'Label text for button to exit from dialog without making changes.
 
 See also:
 * {{msg-mw|Visualeditor-dialog-action-apply}}
-* {{msg-mw|Visualeditor-dialog-action-close}}
 * {{msg-mw|Visualeditor-dialog-action-goback}}
 {{Identical|Cancel}}',
-	'visualeditor-dialog-action-close' => 'Label text for button to exit from dialog.
-
-See also:
-* {{msg-mw|Visualeditor-dialog-action-apply}}
-* {{msg-mw|Visualeditor-dialog-action-cancel}}
-* {{msg-mw|Visualeditor-dialog-action-goback}}
-{{Identical|Close}}',
 	'visualeditor-dialog-action-goback' => 'Label text for button to go back in a dialog.
 
 See also:
 * {{msg-mw|Visualeditor-dialog-action-apply}}
 * {{msg-mw|Visualeditor-dialog-action-cancel}}
-* {{msg-mw|Visualeditor-dialog-action-close}}
 {{Identical|Go back}}',
 	'visualeditor-dialog-beta-welcome-action-continue' => 'Used as label for the Continue button which is used to close the dialog and continue using VisualEditor.
 {{Identical|Continue}}',
@@ -484,8 +483,6 @@ Parameters:
 {{Identical|Undo}}',
 	'visualeditor-indentationbutton-indent-tooltip' => 'Tooltip text for list indent button',
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Tooltip text for list outdent button',
-	'visualeditor-inspector-close-tooltip' => '{{Identical|Close}}',
-	'visualeditor-inspector-remove-tooltip' => 'Tooltip text for the button to remove an annotation in an inspector',
 	'visualeditor-languageinspector-block-tooltip' => 'Tooltip identifying language block properties inside VisualEditor.
 
 A "language block" is an element that is written in a language that is different from the surrounding language. For example, it can be the Belarusian name of a Belarusian person in the French Wikipedia.
@@ -538,8 +535,6 @@ See [[w:LaTeX]].',
 * $1 is a page name.',
 	'visualeditor-notification-saved' => 'Shown after a user saves a page. Parameters:
 * $1 - a page name',
-	'visualeditor-outline-control-move-down' => 'Tool tip for a button that moves items in a list down one place',
-	'visualeditor-outline-control-move-up' => 'Tool tip for a button that moves items in a list up one place',
 	'visualeditor-parameter-input-placeholder' => 'Placeholder text label for an input for adding a parameter to a template.
 {{Identical|Parameter name}}',
 	'visualeditor-parameter-search-no-unused' => 'Message displayed in the transclusion dialog when no known parameters are unused by this template.',
@@ -621,8 +616,6 @@ Parameters:
 * $1 is an error message, in English.',
 	'visualeditor-toolbar-cancel' => 'Label text for button to exit from VisualEditor.
 {{Identical|Cancel}}',
-	'visualeditor-toolbar-more' => 'Label for the toolbar group that contains a list of all other available tools.
-{{Identical|More}}',
 	'visualeditor-toolbar-savedialog' => 'Label text for button to open save dialog.
 
 Used in:

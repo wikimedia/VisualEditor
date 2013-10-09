@@ -10,7 +10,7 @@
  * Not compatible with other nodes.
  *
  * @class
- * @extends ve.Element
+ * @extends OO.ui.Element
  *
  * @constructor
  * @param {String} data MWSyntaxHighlight model data
@@ -18,7 +18,7 @@
  */
 ve.ui.MWSyntaxHighlightSimpleSurface = function VeUiMWSyntaxHighlightSimpleSurface( data, lang ) {
 	// Parent constructor
-	ve.Element.call( this );
+	OO.ui.Element.call( this );
 	// Surface properties
 	this.lang = lang;
 	// Character dimension; in px
@@ -90,7 +90,7 @@ ve.ui.MWSyntaxHighlightSimpleSurface = function VeUiMWSyntaxHighlightSimpleSurfa
 	this.searchRegex = null;
 	this.searchHasResult = false;
 
-	this.toolbar = new ve.ui.Toolbar( ve.ui.syntaxHighlightEditorToolFactory, { '$$': this.$$ });
+	this.toolbar = new OO.ui.Toolbar( ve.ui.syntaxHighlightEditorToolFactory, { '$$': this.$$ });
 	this.toolbar.setup([{
 		'include':[ 'synhiUndo', 'synhiRedo', 'synhiIndent', 'synhiBeautify' ]
 	}]);
@@ -106,20 +106,20 @@ ve.ui.MWSyntaxHighlightSimpleSurface = function VeUiMWSyntaxHighlightSimpleSurfa
 				.append(
 					this.$buttonUndo.$
 						.addClass('ve-ui-simplesurface-toolbar-button')
-						.addClass('ve-ui-icon-undo') )
+						.addClass('oo-ui-icon-undo') )
 				)
 				.append(
 					this.$buttonRedo
 						.addClass('ve-ui-simplesurface-toolbar-button')
-						.addClass('ve-ui-icon-redo') )
+						.addClass('oo-ui-icon-redo') )
 				.append(
 					this.$buttonIndent
 						.addClass('ve-ui-simplesurface-toolbar-button')
-						.addClass('ve-ui-icon-indent-list') )
+						.addClass('oo-ui-icon-indent-list') )
 				.append(
 					this.$buttonBeautify
 						.addClass('ve-ui-simplesurface-toolbar-button')
-						.addClass('ve-ui-icon-reformat') )*/
+						.addClass('oo-ui-icon-reformat') )*/
 				.append(
 					this.$langDropdown
 						.addClass('ve-ui-simplesurface-toolbar-dropdown') )
@@ -156,18 +156,18 @@ ve.ui.MWSyntaxHighlightSimpleSurface = function VeUiMWSyntaxHighlightSimpleSurfa
 		.append( this.$searchBox )
 		.append( this.$buttonSearch
 				.addClass('ve-ui-simplesurface-toolbar-button')
-				.addClass('ve-ui-icon-search') )
+				.addClass('oo-ui-icon-search') )
 		.append( this.$replaceBox )
 		.append( this.$buttonReplace
 				.addClass('ve-ui-simplesurface-toolbar-button')
-				.addClass('ve-ui-icon-replace') );
+				.addClass('oo-ui-icon-replace') );
 	// Make instance globally accessible for debugging
 	ve.instances.push( this );
 };
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.MWSyntaxHighlightSimpleSurface , ve.Element );
+OO.inheritClass( ve.ui.MWSyntaxHighlightSimpleSurface , OO.ui.Element );
 
 /* Methods */
 

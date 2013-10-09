@@ -1,0 +1,18 @@
+/*!
+ * ObjectOriented UserInterface Element styles.
+ *
+ * @copyright 2011-2013 OOJS Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+
+/* OO.ui.LabeledElement */
+
+.oo-ui-labeledElement-label {
+	display: block;
+}
+
+.oo-ui-clippableElement-clippable {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}

@@ -9,14 +9,14 @@
  * UserInterface history tool.
  *
  * @class
- * @extends ve.ui.Tool
+ * @extends OO.ui.Tool
  * @constructor
  * @param {ve.ui.SurfaceToolbar} toolbar
  * @param {Object} [config] Configuration options
  */
 ve.ui.HistoryTool = function VeUiHistoryTool( toolbar, config ) {
 	// Parent constructor
-	ve.ui.Tool.call( this, toolbar, config );
+	OO.ui.Tool.call( this, toolbar, config );
 
 	// Events
 	this.toolbar.getSurface().getModel().connect( this, { 'history': 'onUpdateState' } );
@@ -27,7 +27,7 @@ ve.ui.HistoryTool = function VeUiHistoryTool( toolbar, config ) {
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.HistoryTool, ve.ui.Tool );
+OO.inheritClass( ve.ui.HistoryTool, OO.ui.Tool );
 
 /* Static Properties */
 
@@ -80,7 +80,7 @@ ve.ui.HistoryTool.prototype.onUpdateState = function () {
  */
 ve.ui.HistoryTool.prototype.destroy = function () {
 	this.toolbar.getSurface().getModel().disconnect( this );
-	ve.ui.Tool.prototype.destroy.call( this );
+	OO.ui.Tool.prototype.destroy.call( this );
 };
 
 /**

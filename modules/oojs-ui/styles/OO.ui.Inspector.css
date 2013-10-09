@@ -1,0 +1,43 @@
+/*!
+ * ObjectOriented UserInterface Inspector styles.
+ *
+ * @copyright 2011-2013 OOJS Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+
+.oo-ui-inspector {
+	-webkit-transition: opacity 100ms;
+	-moz-transition: opacity 100ms;
+	-o-transition: opacity 100ms;
+	transition: opacity 100ms;
+}
+
+.oo-ui-inspector .oo-ui-frame {
+	width: 17.25em;
+	height: 3em;
+}
+
+.oo-ui-inspector-content .oo-ui-window-head {
+	height: 2em;
+	padding: 0.5em;
+}
+
+.oo-ui-inspector-content .oo-ui-window-icon {
+	padding-left: 0.5em;
+	margin-left: 0.25em;
+	border-left: solid 1px #eee;
+}
+
+.oo-ui-inspector-content .oo-ui-inspector-closeButton {
+	float: left;
+}
+
+.oo-ui-inspector-content .oo-ui-inspector-removeButton {
+	float: right;
+}
+
+.oo-ui-inspector-content .oo-ui-window-body form {
+	margin: 0.25em 0 0 0;
+	padding: 0;
+	white-space: nowrap;
+}

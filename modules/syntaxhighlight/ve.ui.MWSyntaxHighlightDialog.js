@@ -12,7 +12,7 @@
  * @extends ve.ui.MWDialog
  *
  * @constructor
- * @param {ve.ui.WindowSet} windowSet Window set this dialog is part of
+ * @param {OO.ui.WindowSet} windowSet Window set this dialog is part of
  * @param {Object} [config] Config options
  */
 ve.ui.MWSyntaxHighlightDialog = function VeUiMWSyntaxHighlightDialog( windowSet, config ) {
@@ -42,10 +42,10 @@ ve.ui.MWSyntaxHighlightDialog.static.name = 'mwSyntaxHighlight';
 ve.ui.MWSyntaxHighlightDialog.prototype.initialize = function () {
 	// Call parent method
 	ve.ui.MWDialog.prototype.initialize.call( this );
-	this.editPanel = new ve.ui.PanelLayout( {
+	this.editPanel = new OO.ui.PanelLayout( {
 		'$$': this.frame.$$, 'scrollable': false, 'padded': false
 	} );
-	this.applyButton = new ve.ui.PushButtonWidget( {
+	this.applyButton = new OO.ui.PushButtonWidget( {
 		'$$': this.frame.$$, 'label': ve.msg( 'visualeditor-dialog-action-apply' ), 'flags': ['primary']
 	} );
 	this.applyButton.connect( this, { 'click': [ 'close', 'apply' ] } );

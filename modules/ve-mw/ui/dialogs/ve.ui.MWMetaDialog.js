@@ -55,13 +55,13 @@ ve.ui.MWMetaDialog.prototype.initialize = function () {
 	ve.ui.MWDialog.prototype.initialize.call( this );
 
 	// Properties
-	this.pagedOutlineLayout = new ve.ui.PagedOutlineLayout( { '$$': this.frame.$$ } );
-	this.categoriesFieldset = new ve.ui.FieldsetLayout( {
+	this.pagedOutlineLayout = new OO.ui.PagedOutlineLayout( { '$$': this.frame.$$ } );
+	this.categoriesFieldset = new OO.ui.FieldsetLayout( {
 		'$$': this.frame.$$,
 		'label': ve.msg( 'visualeditor-dialog-meta-categories-data-label' ),
 		'icon': 'tag'
 	} );
-	this.categoryOptionsFieldset = new ve.ui.FieldsetLayout( {
+	this.categoryOptionsFieldset = new OO.ui.FieldsetLayout( {
 		'$$': this.frame.$$,
 		'label': ve.msg( 'visualeditor-dialog-meta-categories-options' ),
 		'icon': 'settings'
@@ -69,20 +69,20 @@ ve.ui.MWMetaDialog.prototype.initialize = function () {
 	this.categoryWidget = new ve.ui.MWCategoryWidget( {
 		'$$': this.frame.$$, '$overlay': this.$overlay
 	} );
-	this.defaultSortInput = new ve.ui.TextInputWidget( {
+	this.defaultSortInput = new OO.ui.TextInputWidget( {
 		'$$': this.frame.$$, 'placeholder': this.fallbackDefaultSortKey
 	} );
-	this.defaultSortLabel = new ve.ui.InputLabelWidget( {
+	this.defaultSortLabel = new OO.ui.InputLabelWidget( {
 		'$$': this.frame.$$,
 		'input': this.defaultSortInput,
 		'label': ve.msg( 'visualeditor-dialog-meta-categories-defaultsort-label' )
 	} );
-	this.languagesFieldset = new ve.ui.FieldsetLayout( {
+	this.languagesFieldset = new OO.ui.FieldsetLayout( {
 		'$$': this.frame.$$,
 		'label': ve.msg( 'visualeditor-dialog-meta-languages-label' ),
 		'icon': 'language'
 	} );
-	this.applyButton = new ve.ui.PushButtonWidget( {
+	this.applyButton = new OO.ui.PushButtonWidget( {
 		'$$': this.$$, 'label': ve.msg( 'visualeditor-dialog-action-apply' ), 'flags': ['primary']
 	} );
 

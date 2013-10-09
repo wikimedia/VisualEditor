@@ -9,7 +9,7 @@
  * UserInterface context.
  *
  * @class
- * @extends ve.Element
+ * @extends OO.ui.Element
  *
  * @constructor
  * @param {ve.ui.Surface} surface
@@ -17,7 +17,7 @@
  */
 ve.ui.Context = function VeUiContext( surface, config ) {
 	// Parent constructor
-	ve.Element.call( this, config );
+	OO.ui.Element.call( this, config );
 
 	// Properties
 	this.surface = surface;
@@ -32,7 +32,7 @@ ve.ui.Context = function VeUiContext( surface, config ) {
 	this.selection = null;
 	this.toolbar = null;
 	this.afterModelSelectTimeout = null;
-	this.popup = new ve.ui.PopupWidget( { '$$': this.$$, '$container': this.surface.getView().$ } );
+	this.popup = new OO.ui.PopupWidget( { '$$': this.$$, '$container': this.surface.getView().$ } );
 	this.$menu = this.$$( '<div>' );
 	this.inspectors = new ve.ui.SurfaceWindowSet( surface, ve.ui.inspectorFactory );
 
@@ -67,7 +67,7 @@ ve.ui.Context = function VeUiContext( surface, config ) {
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.Context, ve.Element );
+OO.inheritClass( ve.ui.Context, OO.ui.Element );
 
 /* Methods */
 
@@ -282,7 +282,7 @@ ve.ui.Context.prototype.updateDimensions = function ( transition ) {
 		$node = focusedNode.$focusable || focusedNode.$;
 		if ( this.embedded ) {
 			// Get the position relative to the surface it is embedded in
-			focusableOffset = ve.Element.getRelativePosition(
+			focusableOffset = OO.ui.Element.getRelativePosition(
 				$node, this.surface.$
 			);
 			position = { 'y': focusableOffset.top };
