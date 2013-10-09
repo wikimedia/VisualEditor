@@ -106,9 +106,10 @@ ve.ui.MWLinkTargetInputWidget.prototype.getLookupMenuItemsFromData = function ( 
 		// If not found, run value through mw.Title to avoid treating a match as a
 		// mismatch where normalisation would make them matching (bug 48476)
 		pageExistsExact = ve.indexOf( this.value, matchingPages ) !== -1,
-		pageExists =
-			pageExistsExact ||
-			ve.indexOf( new mw.Title( this.value ).getPrefixedText(), matchingPages ) !== -1;
+		titleObj = mw.Title.newFromText( this.value ),
+		pageExists = pageExistsExact || (
+			titleObj && ve.indexOf( titleObj.getPrefixedText(), matchingPages ) !== -1
+		);
 
 	// External link
 	if ( ve.init.platform.getExternalLinkUrlProtocolsRegExp().test( this.value ) ) {
@@ -124,7 +125,7 @@ ve.ui.MWLinkTargetInputWidget.prototype.getLookupMenuItemsFromData = function ( 
 
 	// Internal link
 	if ( !pageExists ) {
-		if ( ve.ui.MWLinkInspector.static.legalTitle.test( this.value ) ) {
+		if ( titleObj ) {
 			items.push( new ve.ui.MenuSectionItemWidget(
 				'newPage',
 				{ '$$': menu$$, 'label': ve.msg( 'visualeditor-linkinspector-suggest-new-page' ) }
@@ -134,6 +135,7 @@ ve.ui.MWLinkTargetInputWidget.prototype.getLookupMenuItemsFromData = function ( 
 				{ '$$': menu$$, 'rel': 'newPage', 'label': this.value }
 			) );
 		} else {
+			// If no title object could be created, it means the title is illegal
 			item = new ve.ui.MenuSectionItemWidget(
 				'illegalTitle',
 				{ '$$': menu$$, 'label': ve.msg( 'visualeditor-linkinspector-illegal-title' ) }

@@ -48,7 +48,7 @@ ve.ui.MWLinkInspector.static.linkTargetInputWidget = ve.ui.MWLinkTargetInputWidg
  * @returns {ve.dm.MWInternalLinkAnnotation|ve.dm.MWExternalLinkAnnotation|null}
  */
 ve.ui.MWLinkInspector.prototype.getAnnotationFromText = function ( target ) {
-	var title;
+	var title = mw.Title.newFromText( target );
 
 	// Figure out if this is an internal or external link
 	if ( ve.init.platform.getExternalLinkUrlProtocolsRegExp().test( target ) ) {
@@ -59,13 +59,12 @@ ve.ui.MWLinkInspector.prototype.getAnnotationFromText = function ( target ) {
 				'href': target
 			}
 		} );
-	} else if ( ve.ui.MWLinkInspector.static.legalTitle.test( target ) ) {
+	} else if ( title ) {
 		// Internal link
 		// TODO: In the longer term we'll want to have autocompletion and existence and validity
 		// checks using AJAX
-		title = mw.Title.newFromText( target );
 
-		if ( title && ( title.getNamespaceId() === 6 || title.getNamespaceId() === 14 ) ) {
+		if ( title.getNamespaceId() === 6 || title.getNamespaceId() === 14 ) {
 			// File: or Category: link
 			// We have to prepend a colon so this is interpreted as a link
 			// rather than an image inclusion or categorization
@@ -80,22 +79,11 @@ ve.ui.MWLinkInspector.prototype.getAnnotationFromText = function ( target ) {
 			}
 		} );
 	} else {
+		// Doesn't look like an external link and mw.Title considered it an illegal value,
+		// for an internal link.
 		return null;
 	}
 };
-
-/* Static Properties */
-
-/**
- * Regular expression matching a valid internal link
- *
- * This is a slightly modified version of the PHP regex
- * - unicode range changed from 0080-00ff to 0080-ffff
- * - added '(#.*)?' to allow section links
- *
- * @type {RegExp}
- */
-ve.ui.MWLinkInspector.static.legalTitle = /^[ %!"$&'()*,\-.\/0-9:;=?@A-Z\\^_`a-z~\u0080-\uFFFF+]+(#.*)?$/;
 
 /* Registration */
 
