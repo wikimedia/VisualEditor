@@ -13,7 +13,7 @@
  * @extends ve.ui.Inspector
  *
  * @constructor
- * @param {ve.ui.SurfaceWindowSet} windowSet Window set this dialog is part of
+ * @param {ve.ui.SurfaceWindowSet} windowSet Window set this inspector is part of
  * @param {Object} [config] Configuration options
  */
 ve.ui.SurfaceInspector = function VeUiSurfaceInspector( windowSet, config ) {

@@ -13,12 +13,12 @@
  * @extends ve.ui.SurfaceInspector
  *
  * @constructor
- * @param {ve.ui.Surface} surface
+ * @param {ve.ui.SurfaceWindowSet} windowSet Window set this inspector is part of
  * @param {Object} [config] Configuration options
  */
-ve.ui.AnnotationInspector = function VeUiAnnotationInspector( surface, config ) {
+ve.ui.AnnotationInspector = function VeUiAnnotationInspector( windowSet, config ) {
 	// Parent constructor
-	ve.ui.SurfaceInspector.call( this, surface, config );
+	ve.ui.SurfaceInspector.call( this, windowSet, config );
 
 	// Properties
 	this.initialAnnotation = null;

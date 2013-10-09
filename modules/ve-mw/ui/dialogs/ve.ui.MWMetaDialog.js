@@ -14,15 +14,15 @@
  * @extends ve.ui.MWDialog
  *
  * @constructor
- * @param {ve.ui.Surface} surface
+ * @param {ve.ui.SurfaceWindowSet} windowSet Window set this dialog is part of
  * @param {Object} [config] Configuration options
  */
-ve.ui.MWMetaDialog = function VeUiMWMetaDialog( surface, config ) {
+ve.ui.MWMetaDialog = function VeUiMWMetaDialog( windowSet, config ) {
 	// Parent constructor
-	ve.ui.MWDialog.call( this, surface, config );
+	ve.ui.MWDialog.call( this, windowSet, config );
 
 	// Properties
-	this.metaList = surface.getModel().metaList;
+	this.metaList = windowSet.getSurface().getModel().metaList;
 	this.defaultSortKeyChanged = false;
 	this.fallbackDefaultSortKey = mw.config.get( 'wgTitle' );
 

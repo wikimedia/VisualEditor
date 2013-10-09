@@ -12,15 +12,15 @@
  * @extends ve.ui.MWDialog
  *
  * @constructor
- * @param {ve.ui.Surface} surface
+ * @param {ve.ui.SurfaceWindowSet} windowSet Window set this dialog is part of
  * @param {Object} [config] Configuration options
  */
-ve.ui.MWMediaInsertDialog = function VeUiMWMediaInsertDialog( surface, config ) {
+ve.ui.MWMediaInsertDialog = function VeUiMWMediaInsertDialog( windowSet, config ) {
 	// Configuration initialization
 	config = ve.extendObject( { 'footless': true }, config );
 
 	// Parent constructor
-	ve.ui.MWDialog.call( this, surface, config );
+	ve.ui.MWDialog.call( this, windowSet, config );
 
 	// Properties
 	this.item = null;
