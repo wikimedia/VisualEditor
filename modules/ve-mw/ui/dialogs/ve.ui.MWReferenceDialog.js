@@ -12,12 +12,12 @@
  * @extends ve.ui.MWDialog
  *
  * @constructor
- * @param {ve.ui.Surface} surface
+ * @param {ve.ui.SurfaceWindowSet} windowSet Window set this dialog is part of
  * @param {Object} [config] Configuration options
  */
-ve.ui.MWReferenceDialog = function VeUiMWReferenceDialog( surface, config ) {
+ve.ui.MWReferenceDialog = function VeUiMWReferenceDialog( windowSet, config ) {
 	// Parent constructor
-	ve.ui.MWDialog.call( this, surface, config );
+	ve.ui.MWDialog.call( this, windowSet, config );
 
 	// Properties
 	this.ref = null;

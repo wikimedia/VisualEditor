@@ -251,6 +251,16 @@ ve.dm.Surface.prototype.getDocument = function () {
 };
 
 /**
+ * Get the meta list.
+ *
+ * @method
+ * @returns {ve.dm.MetaList} Meta list of the surface
+ */
+ve.dm.Surface.prototype.getMetaList = function () {
+	return this.metaList;
+};
+
+/**
  * Get the selection.
  *
  * @method

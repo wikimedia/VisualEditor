@@ -10,7 +10,7 @@
  *
  * @class
  * @abstract
- * @extends ve.ui.Window
+ * @extends ve.ui.Dialog
  *
  * @constructor
  * @param {ve.ui.SurfaceWindowSet} windowSet Window set this dialog is part of
