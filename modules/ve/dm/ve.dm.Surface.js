@@ -458,12 +458,28 @@ ve.dm.Surface.prototype.setSelection = function ( selection ) {
  * @method
  * @param {ve.dm.Transaction|ve.dm.Transaction[]|null} transactions One or more transactions to
  *  process, or null to process none
- * @param {ve.Range|undefined} selection
+ * @param {ve.Range} [selection] Selection to apply
  * @fires lock
  * @fires contextChange
  * @fires unlock
  */
 ve.dm.Surface.prototype.change = function ( transactions, selection ) {
+	this.changeInternal( transactions, selection, false );
+};
+
+/**
+ * Internal implementation of change(). Do not use this, use change() instead.
+ *
+ * @private
+ * @method
+ * @param {ve.dm.Transaction|ve.dm.Transaction[]|null} transactions
+ * @param {ve.Range} [selection] [selection]
+ * @param {boolean} [skipUndoStack=false] If true, do not modify the undo stack. Used by undo/redo
+ * @fires lock
+ * @fires contextChange
+ * @fires unlock
+ */
+ve.dm.Surface.prototype.changeInternal = function ( transactions, selection, skipUndoStack ) {
 	var i, len, selectionAfter, selectionBefore = this.selection, contextChange = false;
 
 	if ( !this.enabled ) {
@@ -481,8 +497,10 @@ ve.dm.Surface.prototype.change = function ( transactions, selection ) {
 		this.emit( 'lock' );
 		for ( i = 0, len = transactions.length; i < len; i++ ) {
 			if ( !transactions[i].isNoOp() ) {
-				this.truncateUndoStack();
-				this.smallStack.push( transactions[i] );
+				if ( !skipUndoStack ) {
+					this.truncateUndoStack();
+					this.smallStack.push( transactions[i] );
+				}
 				// The .commit() call below indirectly invokes setSelection()
 				this.documentModel.commit( transactions[i] );
 				if ( transactions[i].hasElementAttributeOperations() ) {
@@ -545,66 +563,52 @@ ve.dm.Surface.prototype.breakpoint = function ( selection ) {
  * Step backwards in history.
  *
  * @method
- * @fires lock
- * @fires unlock
  * @fires history
- * @returns {ve.Range} Selection or null if no further state could be reached
  */
 ve.dm.Surface.prototype.undo = function () {
+	var i, item, selection, transaction, transactions = [];
 	if ( !this.enabled || !this.hasPastState() ) {
 		return;
 	}
-	var item, i, transaction, selection;
+
 	this.breakpoint();
 	this.undoIndex++;
 
-	if ( this.bigStack[this.bigStack.length - this.undoIndex] ) {
-		this.emit( 'lock' );
-		item = this.bigStack[this.bigStack.length - this.undoIndex];
+	item = this.bigStack[this.bigStack.length - this.undoIndex];
+	if ( item ) {
+		// Apply reversed transactions in reversed order, and translate the selection accordingly
 		selection = item.selection;
-
 		for ( i = item.stack.length - 1; i >= 0; i-- ) {
 			transaction = item.stack[i].reversed();
 			selection = transaction.translateRange( selection );
-			this.documentModel.commit( transaction );
+			transactions.push( transaction );
 		}
-		this.emit( 'unlock' );
+		this.changeInternal( transactions, selection, true );
 		this.emit( 'history' );
-		return selection;
 	}
-	return null;
 };
 
 /**
  * Step forwards in history.
  *
  * @method
- * @fires lock
- * @fires unlock
  * @fires history
- * @returns {ve.Range} Selection or null if no further state could be reached
  */
 ve.dm.Surface.prototype.redo = function () {
+	var item;
 	if ( !this.enabled || !this.hasFutureState() ) {
 		return;
 	}
-	var item, i, transaction, selection;
+
 	this.breakpoint();
 
-	if ( this.bigStack[this.bigStack.length - this.undoIndex] ) {
-		this.emit( 'lock' );
-		item = this.bigStack[this.bigStack.length - this.undoIndex];
-		selection = item.selection;
-		for ( i = 0; i < item.stack.length; i++ ) {
-			transaction = item.stack[i].clone();
-			this.documentModel.commit( transaction );
-		}
+	item = this.bigStack[this.bigStack.length - this.undoIndex];
+	if ( item ) {
+		// ve.copy( item.stack ) invokes .clone() on each transaction in item.stack
+		this.changeInternal( ve.copy( item.stack ), item.selection, true );
 		this.undoIndex--;
-		this.emit( 'unlock' );
 		this.emit( 'history' );
-		return selection;
 	}
-	return null;
 };
 
 /**
