@@ -1,5 +1,10 @@
 Given(/^I can see the Transclusion User Interface$/) do
-  on(VisualEditorPage).title.should match 'Transclusion'
+  on(VisualEditorPage) do |page|
+    page.wait_until(10) do
+      page.title.include? 'Transclusion'
+    end
+    page.title.should match 'Transclusion'
+  end
 end
 
 When(/^I add the parameter$/) do

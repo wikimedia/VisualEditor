@@ -61,19 +61,21 @@ class VisualEditorPage
     span(:subheading4, text: 'Sub-heading 4')
     list_item(:template_list_item, text: 'S', frame: frame)
     div(:ve_link_ui, class: 've-ui-window-head', frame: frame)
-    div(:title, class: 've-ui-window-title', frame: frame)
     div(:uparrow, class:'ve-init-mw-viewPageTarget-saveDialog-closeButton')
     span(:ve_heading_ui, text: 'Paragraph')
   end
 
   in_frame(:index => 1) do |frame|
     a(:beta_warning, title: 'Close', frame: frame)
-    span(:apply_changes, text: 'Apply changes', frame: frame)
-    span(:add_parameter, class: 've-ui-mwParameterResultWidget-name', frame: frame)
-    span(:add_template, text: 'Add template', frame: frame)
     div(:ref_body, class:'ve-ui-window-head', frame: frame)
     div(:content_box, class: 've-ce-documentNode ve-ce-branchNode', frame: frame)
     div(:insert_reference, text: 'Insert reference', frame: frame)
+  end
+
+  in_frame(:index => 2) do |frame|
+    span(:add_parameter, class: 've-ui-mwParameterResultWidget-name', frame: frame)
+    span(:add_template, text: 'Add template', frame: frame)
+    span(:apply_changes, text: 'Apply changes', frame: frame)
     text_field(:parameter_box, index: 0, frame: frame)
     span(:remove_parameter, text: 'Remove parameter', frame: frame)
     span(:remove_template, text: 'Remove template', frame: frame)
@@ -82,4 +84,5 @@ class VisualEditorPage
     text_field(:transclusion_textfield, index: 0, frame: frame)
     unordered_list(:suggestion_list, class: 've-ui-widget ve-ui-selectWidget ve-ui-clippableElement-clippable ve-ui-menuWidget ve-ui-textInputMenuWidget ve-ui-lookupWidget-menu ve-ui-mwTitleInputWidget-menu', frame: frame)
   end
+
 end
