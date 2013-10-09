@@ -13,7 +13,7 @@ Feature: VisualEditor Links
     And I click the blue text
     And I click < to close Link User Interface
     And I click Save page
-    And I click Review your changes
+    And I click Links Review your changes
   Then an external link appears in the diff view
 
   Scenario: Enter internal link
@@ -22,7 +22,7 @@ Feature: VisualEditor Links
     And I click the blue text for Matching Page
     And I click < to close Link User Interface
     And I click Save page
-    And I click Review your changes
+    And I click Links Review your changes
   Then an internal link appears in the diff view
 
   Scenario: Enter non-existing link
@@ -31,5 +31,5 @@ Feature: VisualEditor Links
     And I click the blue text for New Page
     And I click < to close Link User Interface
     And I click Save page
-    And I click Review your changes
+    And I click Links Review your changes
     Then a non-existing link appears in the diff view

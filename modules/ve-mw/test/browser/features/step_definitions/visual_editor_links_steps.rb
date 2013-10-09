@@ -11,15 +11,15 @@ When(/^I click the blue text$/) do
 end
 
 When(/^I click < to close Link User Interface$/) do
-  on(VisualEditorPage).leftarrowclose
+  on(VisualEditorPage).leftarrowclose_element.when_present.click
 end
 
 Then(/^an external link appears in the diff view$/) do
   on(VisualEditorPage) do |page|
     page.wait_until(10) do
-      page.diff_view.include? 'example.com'
+      page.links_diff_view.include? 'example.com'
     end
-    page.diff_view.should match Regexp.escape('[http://www.example.com Editing] ')
+    page.links_diff_view.should match Regexp.escape('[http://www.example.com Editing] ')
   end
 end
 
@@ -30,9 +30,9 @@ end
 Then(/^an internal link appears in the diff view$/) do
   on(VisualEditorPage) do |page|
     page.wait_until(10) do
-      page.diff_view.include? 'Main Page'
+      page.links_diff_view.include? 'Main Page'
     end
-    page.diff_view.should match Regexp.escape('[[Main Page|Editing]]')
+    page.links_diff_view.should match Regexp.escape('[[Main Page|Editing]]')
   end
 end
 
@@ -43,9 +43,9 @@ end
 Then(/^a non\-existing link appears in the diff view$/) do
   on(VisualEditorPage) do |page|
     page.wait_until(10) do
-      page.diff_view.include? 'DoesNotExist'
+      page.links_diff_view.include? 'DoesNotExist'
     end
-    page.diff_view.should match Regexp.escape('[[DoesNotExist|Editing]]')
+    page.links_diff_view.should match Regexp.escape('[[DoesNotExist|Editing]]')
   end
 end
 
@@ -55,3 +55,8 @@ When(/^I enter (.+) into link Content box$/) do |content|
     page.link_textfield_element.send_keys(content)
   end
 end
+
+When(/^I click Links Review your changes$/) do
+  on(VisualEditorPage).links_review_changes_element.when_present.click
+end
+

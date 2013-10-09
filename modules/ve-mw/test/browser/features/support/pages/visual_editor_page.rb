@@ -45,7 +45,6 @@ class VisualEditorPage
     a(:ex, title: 'Close', frame: frame)
     span(:heading, text: 'Heading')
     div(:insert_reference, text: 'Insert reference', frame: frame)
-    a(:leftarrowclose, class: 've-ui-widget ve-ui-iconButtonWidget ve-ui-icon-previous ve-ui-inspector-closeButton', frame: frame)
     text_field(:link_textfield, index: 0, frame: frame)
     span(:paragraph, text: 'Paragraph')
     span(:preformatted, text: 'Preformatted')
@@ -63,6 +62,7 @@ class VisualEditorPage
     div(:ve_link_ui, class: 've-ui-window-head', frame: frame)
     div(:uparrow, class:'ve-init-mw-viewPageTarget-saveDialog-closeButton')
     span(:ve_heading_ui, text: 'Paragraph')
+    a(:leftarrowclose, title: 'Close', frame: frame)
   end
 
   in_frame(:index => 1) do |frame|
@@ -70,6 +70,9 @@ class VisualEditorPage
     div(:ref_body, class:'ve-ui-window-head', frame: frame)
     div(:content_box, class: 've-ce-documentNode ve-ce-branchNode', frame: frame)
     div(:insert_reference, text: 'Insert reference', frame: frame)
+    span(:links_review_changes, class: 've-ui-labeledElement-label', text: 'Review your changes', frame: frame)
+    div(:links_diff_view, class: 've-ui-mwSaveDialog-viewer', frame: frame)
+
   end
 
   in_frame(:index => 2) do |frame|
