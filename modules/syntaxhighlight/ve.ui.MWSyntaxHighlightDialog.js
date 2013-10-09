@@ -45,7 +45,7 @@ ve.ui.MWSyntaxHighlightDialog.prototype.initialize = function () {
 	this.editPanel = new ve.ui.PanelLayout( {
 		'$$': this.frame.$$, 'scrollable': false, 'padded': false
 	} );
-	this.applyButton = new ve.ui.ButtonWidget( {
+	this.applyButton = new ve.ui.PushButtonWidget( {
 		'$$': this.frame.$$, 'label': ve.msg( 'visualeditor-dialog-action-apply' ), 'flags': ['primary']
 	} );
 	this.applyButton.connect( this, { 'click': [ 'close', 'apply' ] } );
