@@ -356,6 +356,7 @@ class VisualEditorHooks {
 				've/test/ce/ve.ce.Document.test.js',
 				've/test/ce/ve.ce.Surface.test.js',
 				've-mw/test/ce/ve.ce.Document.test.js',
+				've-mw/test/ce/ve.ce.Surface.test.js',
 				've/test/ce/ve.ce.NodeFactory.test.js',
 				've/test/ce/ve.ce.Node.test.js',
 				've/test/ce/ve.ce.BranchNode.test.js',

@@ -126,6 +126,37 @@ ve.dm.mwExample.MWTransclusion.mixedStoreItems = {
 	'value': $( ve.dm.mwExample.MWTransclusion.mixed ).toArray()
 };
 
+ve.dm.mwExample.MWBlockImage = {
+	'html':
+		'<figure typeof="mw:Image/Thumb" class="mw-halign-right foobar">' +
+			'<a href="Foo"><img src="Bar" width="1" height="2" resource="FooBar"></a>' +
+			'<figcaption>abc</figcaption>' +
+		'</figure>',
+	'data': [
+		{
+			'type': 'mwBlockImage',
+			'attributes': {
+				'type': 'thumb',
+				'align': 'right',
+				'href': 'Foo',
+				'src': 'Bar',
+				'width': '1',
+				'height': '2',
+				'resource': 'FooBar',
+				'originalClasses': 'mw-halign-right foobar',
+				'unrecognizedClasses': ['foobar']
+			}
+		},
+		{ 'type': 'mwImageCaption' },
+		{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+		'a', 'b', 'c',
+		{ 'type': '/paragraph' },
+		{ 'type': '/mwImageCaption' },
+		{ 'type': '/mwBlockImage' }
+	]
+};
+
+
 ve.dm.mwExample.MWReference = {
 	'referenceList':
 		'<ol class="references" typeof="mw:Extension/references" about="#mwt7" data-parsoid="{}"' +
@@ -1613,31 +1644,11 @@ ve.dm.mwExample.domToDataCases = {
 		]
 	},
 	'thumb image': {
-		'html': '<body><figure typeof="mw:Image/Thumb" class="mw-halign-right foobar"><a href="Foo"><img src="Bar" width="1" height="2" resource="FooBar"></a><figcaption>abc</figcaption></figure></body>',
-		'data': [
-			{
-				'type': 'mwBlockImage',
-				'attributes': {
-					'type': 'thumb',
-					'align': 'right',
-					'href': 'Foo',
-					'src': 'Bar',
-					'width': '1',
-					'height': '2',
-					'resource': 'FooBar',
-					'originalClasses': 'mw-halign-right foobar',
-					'unrecognizedClasses': ['foobar']
-				}
-			},
-			{ 'type': 'mwImageCaption' },
-			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
-			'a', 'b', 'c',
-			{ 'type': '/paragraph' },
-			{ 'type': '/mwImageCaption' },
-			{ 'type': '/mwBlockImage' },
+		'html': '<body>' + ve.dm.mwExample.MWBlockImage.html + '</body>',
+		'data': ve.dm.mwExample.MWBlockImage.data.concat( [
 			{ 'type': 'internalList' },
 			{ 'type': '/internalList' }
-		]
+		] )
 	},
 	'attribute preservation does not crash due to text node split': {
 		'html':
