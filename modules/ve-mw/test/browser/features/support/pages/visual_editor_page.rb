@@ -8,7 +8,6 @@ class VisualEditorPage
   a(:decrease_indentation_on, title: 'Decrease indentation [SHIFT+TAB]')
   div(:container_disabled, class: 've-ui-widget ve-ui-widget-disabled ve-ui-flaggableElement-constructive ve-ui-pushButtonWidget')
   div(:content, class: 've-ce-documentNode ve-ce-branchNode')
-  text_area(:describe_change, id: 've-init-mw-viewPageTarget-saveDialog-editSummary')
   span(:downarrow, class: 've-ui-iconedElement-icon ve-ui-icon-down')
   span(:heading, text: 'Heading')
   a(:edit_ve, title: /Edit this page with VisualEditor/)
@@ -19,7 +18,6 @@ class VisualEditorPage
   div(:ip_warning, class: 've-init-mw-viewPageTarget-toolbar-editNotices-notice')
   span(:linksuggestion, text: 'http://www.example.com')
   span(:looks_good, class: 've-ui-labeledElement-label', text: 'Looks good to me')
-  checkbox(:minor_edit, id: 'wpMinoredit')
   span(:more_menu, text: 'More')
   span(:newpage_linksuggestion, text: 'DoesNotExist')
   div(:page_text, id: 'mw-content-text')
@@ -29,7 +27,6 @@ class VisualEditorPage
   span(:refs_link, text: 'Reference')
   div(:save_disabled, class: 've-ui-widget ve-ui-widget-disabled ve-ui-flaggableElement-constructive ve-ui-pushButtonWidget')
   span(:save_page, class: 've-ui-labeledElement-label', text: 'Save page')
-  span(:second_save_page, class: 've-ui-labeledElement-label', text: 'Save page', index: 1)
   span(:ve_bullets, class: 've-ui-iconedElement-icon ve-ui-icon-bullet-list')
   div(:ve_heading_menu, class: 've-ui-dropdownTool-icon ve-ui-icon-down')
   span(:ve_heading_ui, text: 'Paragraph')
@@ -40,9 +37,11 @@ class VisualEditorPage
   span(:transclusion, text: 'Transclusion')
 
   in_frame(:index => 0) do |frame|
+    checkbox(:minor_edit, id: 'wpMinoredit', frame: frame)
     div(:content_box, class: 've-ce-documentNode ve-ce-branchNode', frame: frame)
     span(:create_new, text:'Insert reference', frame: frame)
     div(:diff_view, class: 've-ui-mwSaveDialog-viewer', frame: frame)
+    text_area(:describe_change, index: 0, frame: frame)
     a(:ex, title: 'Close', frame: frame)
     span(:heading, text: 'Heading')
     div(:insert_reference, text: 'Insert reference', frame: frame)
@@ -54,6 +53,7 @@ class VisualEditorPage
     span(:review_changes, class: 've-ui-labeledElement-label', text: 'Review your changes', frame: frame)
     div(:ref_body, class:'ve-ui-window-head', frame: frame)
     span(:return_to_save, class: 've-ui-labeledElement-label', text: 'Return to save form', frame: frame)
+    span(:second_save_page, class: 've-ui-labeledElement-label', text: 'Save page', frame: frame)
     div(:ve_link_ui, class: 've-ui-window-head', frame: frame)
     span(:subheading1, text: 'Sub-heading 1')
     span(:subheading2, text: 'Sub-heading 2')
@@ -84,5 +84,4 @@ class VisualEditorPage
     text_field(:transclusion_textfield, index: 0, frame: frame)
     unordered_list(:suggestion_list, class: 've-ui-widget ve-ui-selectWidget ve-ui-clippableElement-clippable ve-ui-menuWidget ve-ui-textInputMenuWidget ve-ui-lookupWidget-menu ve-ui-mwTitleInputWidget-menu', frame: frame)
   end
-
 end
