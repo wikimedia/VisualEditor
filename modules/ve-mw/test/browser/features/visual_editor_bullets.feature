@@ -6,7 +6,7 @@ Feature: VisualEditor Bullets, Numbering
       And I click Save page
       And I click Review your changes
     Then a <character> is added in front of input string in the diff view
-      And I can click the up arrow on the save box
+      And I can click the X on the save box
   Examples:
     | control   | character |
     | Numbering | #         |
@@ -19,7 +19,7 @@ Feature: VisualEditor Bullets, Numbering
       And I click Save page
       And I click Review your changes
     Then a <character> is added in front of input string in the diff view
-      And I can click the up arrow on the save box
+      And I can click the X on the save box
       And I click Decrease indentation
   Examples:
     | control   | character |
@@ -33,7 +33,7 @@ Feature: VisualEditor Bullets, Numbering
       And I click Save page
       And I click Review your changes
     Then nothing is added in front of input string in the diff view
-      And I can click the up arrow on the save box
+      And I can click the X on the save box
   Examples:
     | control   |
     | Numbering |
