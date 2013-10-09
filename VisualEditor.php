@@ -730,7 +730,6 @@ $wgResourceModules += array(
 		'dependencies' => array(
 			'ext.visualEditor.core',
 			'jquery.uls',
-			'ext.visualEditor.syntaxHighlight',
 		),
 		'messages' => array(
 			// VE messages needed by code that is only in experimental mode
