@@ -809,6 +809,25 @@ $wgVisualEditorNamespaces = $wgContentNamespaces;
 // List of skins VisualEditor integration supports
 $wgVisualEditorSupportedSkins = array( 'vector', 'apex', 'monobook' );
 
+// List of browsers VisualEditor is incompatibe with
+// See jQuery.client for specification
+$wgVisualEditorBrowserBlacklist = array(
+	// IE <= 8 has various incompatibilities in layout and feature support
+	// IE9 and IE10 generally work but fail in ajax handling when making POST
+	// requests to the VisualEditor/Parsoid API which is causing silent failures
+	// when trying to save a page (bug 49187)
+	'msie' => array( array( '<=', 10 ) ),
+	// Android 2.x and below "support" CE but don't trigger keyboard input
+	'android' => array( array( '<', 3 ) ),
+	// Firefox issues in versions 12 and below (bug 50780)
+	// Wikilink [[./]] bug in Firefox 14 and below (bug 50720)
+	'firefox' => array( array( '<=', 14 ) ),
+	// Opera < 12 was not tested and it's userbase is almost nonexistent anyway
+	'opera' => array( array( '<', 12 ) ),
+	// Blacklist all versions:
+	'blackberry' => null,
+);
+
 // Whether to use change tagging for VisualEditor edits
 $wgVisualEditorUseChangeTagging = true;
 

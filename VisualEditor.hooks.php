@@ -232,7 +232,7 @@ class VisualEditorHooks {
 	}
 
 	public static function onGetBetaPreferences( $user, &$preferences ) {
-		global $wgExtensionAssetsPath;
+		global $wgExtensionAssetsPath, $wgVisualEditorSupportedSkins, $wgVisualEditorBrowserBlacklist;
 
 		$preferences['visualeditor-enable'] = array(
 			'version' => '1.0',
@@ -243,6 +243,11 @@ class VisualEditorHooks {
 			// TODO: use message 'visualeditor-preference-core-discussion-link'
 			'discussion-link' => false,
 			'screenshot' => $wgExtensionAssetsPath . '/VisualEditor/logo.png',
+			'requirements' => array(
+				'javascript' => true,
+				'blacklist' => $wgVisualEditorBrowserBlacklist,
+				'skins' => $wgVisualEditorSupportedSkins,
+			)
 		);
 
 		$preferences['visualeditor-enable-experimental'] = array(
@@ -254,6 +259,11 @@ class VisualEditorHooks {
 			// TODO: use message 'visualeditor-preference-experimental-discussion-link'
 			'discussion-link' => false,
 			'screenshot' => $wgExtensionAssetsPath . '/VisualEditor/logo-experimental.png',
+			'requirements' => array(
+				'betafeatures' => array(
+					'visualeditor-enable',
+				),
+			),
 		);
 	}
 
@@ -292,6 +302,7 @@ class VisualEditorHooks {
 			$wgVisualEditorPluginModules,
 			$wgVisualEditorTabPosition,
 			$wgVisualEditorTabMessages,
+			$wgVisualEditorBrowserBlacklist,
 			$wgVisualEditorSupportedSkins,
 			$wgVisualEditorShowBetaWelcome;
 
@@ -305,6 +316,7 @@ class VisualEditorHooks {
 				'enable' => $wgDefaultUserOptions['visualeditor-enable'],
 				'experimental' => $wgDefaultUserOptions['visualeditor-enable-experimental'],
 			),
+			'blacklist' => $wgVisualEditorBrowserBlacklist,
 			'skins' => $wgVisualEditorSupportedSkins,
 			'tabPosition' => $wgVisualEditorTabPosition,
 			'tabMessages' => $wgVisualEditorTabMessages,
