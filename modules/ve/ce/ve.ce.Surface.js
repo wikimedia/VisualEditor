@@ -929,7 +929,7 @@ ve.ce.Surface.prototype.onChange = function ( transaction, selection ) {
 		// Detect when only a single inline element is selected
 		if ( !selection.isCollapsed() ) {
 			start = this.documentView.getDocumentNode().getNodeFromOffset( selection.start + 1 );
-			if ( ve.isMixedIn( start, ve.ce.FocusableNode ) ) {
+			if ( ve.ce.nodeFactory.isNodeFocusable( start.getModel().getType() ) ) {
 				end = this.documentView.getDocumentNode().getNodeFromOffset( selection.end - 1 );
 				if ( start === end ) {
 					next = start;
@@ -938,7 +938,7 @@ ve.ce.Surface.prototype.onChange = function ( transaction, selection ) {
 		} else {
 			// Check we haven't been programmatically placed inside a focusable node with a collapsed selection
 			start = this.documentView.getDocumentNode().getNodeFromOffset( selection.start );
-			if ( ve.isMixedIn( start, ve.ce.FocusableNode ) ) {
+			if ( ve.ce.nodeFactory.isNodeFocusable( start.getModel().getType() ) ) {
 				next = start;
 			}
 		}
@@ -1533,7 +1533,7 @@ ve.ce.Surface.prototype.handleDelete = function ( e, backspace ) {
 			// If the user tries to delete a focusable node from a collapsed selection,
 			// just select the node and cancel the deletion.
 			startNode = this.documentView.getDocumentNode().getNodeFromOffset( offset + 1 );
-			if ( ve.isMixedIn( startNode, ve.ce.FocusableNode ) ) {
+			if ( ve.ce.nodeFactory.isNodeFocusable( startNode.getModel().getType() ) ) {
 				this.model.change( null, startNode.getModel().getOuterRange() );
 				return;
 			}

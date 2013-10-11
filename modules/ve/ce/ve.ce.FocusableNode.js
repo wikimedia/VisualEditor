@@ -50,6 +50,12 @@ ve.ce.FocusableNode = function VeCeFocusableNode( $focusable ) {
  * @event blur
  */
 
+/* Static Methods */
+
+ve.ce.FocusableNode.static = {};
+
+ve.ce.FocusableNode.static.isFocusable = true;
+
 /* Methods */
 
 /**

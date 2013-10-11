@@ -50,6 +50,19 @@ ve.mixinClass( ve.ce.Node, ve.Node );
  */
 ve.ce.Node.static.canBeSplit = false;
 
+/**
+ * Whether this node type can be focused.
+ *
+ * If this is set to true on a node, it should implement:
+ *     setFocused( boolean val )
+ *     boolean isFocused()
+ *
+ * @static
+ * @property static.isFocusable
+ * @inheritable
+ */
+ve.ce.Node.static.isFocusable = false;
+
 /* Methods */
 
 /**
