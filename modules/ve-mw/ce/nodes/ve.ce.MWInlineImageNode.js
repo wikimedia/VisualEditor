@@ -13,6 +13,7 @@
  * @mixins ve.ce.ProtectedNode
  * @mixins ve.ce.FocusableNode
  * @mixins ve.ce.RelocatableNode
+ * @mixins ve.ce.MWResizableNode
  *
  * @constructor
  * @param {ve.dm.MWInlineImageNode} model Model to observe
@@ -39,6 +40,7 @@ ve.ce.MWInlineImageNode = function VeCeMWInlineImageNode( model, config ) {
 	ve.ce.ProtectedNode.call( this );
 	ve.ce.FocusableNode.call( this );
 	ve.ce.RelocatableNode.call( this );
+	ve.ce.MWResizableNode.call( this );
 
 	this.$image
 		.attr( 'src', this.model.getAttribute( 'src' ) )
@@ -68,11 +70,37 @@ ve.mixinClass( ve.ce.MWInlineImageNode, ve.ce.FocusableNode );
 
 ve.mixinClass( ve.ce.MWInlineImageNode, ve.ce.RelocatableNode );
 
+// Need to mixin base class as well
+ve.mixinClass( ve.ce.MWInlineImageNode, ve.ce.ResizableNode );
+
+ve.mixinClass( ve.ce.MWInlineImageNode, ve.ce.MWResizableNode );
+
 /* Static Properties */
 
 ve.ce.MWInlineImageNode.static.name = 'mwInlineImage';
 
 ve.ce.MWInlineImageNode.static.tagName = 'img';
+
+/* Methods */
+
+/** */
+ve.ce.MWInlineImageNode.prototype.onAttributeChange = function ( key, from, to ) {
+	if ( key === 'height' || key === 'width' ) {
+		to = parseInt( to, 10 );
+	}
+
+	if ( from !== to ) {
+		switch ( key ) {
+			// TODO: 'align', 'src', 'valign', 'border'
+			case 'width':
+				this.$image.css( 'width', to );
+				break;
+			case 'height':
+				this.$image.css( 'height', to );
+				break;
+		}
+	}
+};
 
 /* Registration */
 
