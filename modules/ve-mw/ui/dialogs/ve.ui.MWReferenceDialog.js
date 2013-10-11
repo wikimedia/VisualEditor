@@ -325,7 +325,7 @@ ve.ui.MWReferenceDialog.prototype.useReference = function ( ref ) {
 ve.ui.MWReferenceDialog.prototype.onSurfaceChange = function () {
 	var data = this.referenceSurface.getContent(),
 		// TODO: Check for other types of empty, e.g. only whitespace?
-		disabled = data.length <= 2;
+		disabled = data.length <= 4;
 
 	this.insertButton.setDisabled( disabled );
 	this.applyButton.setDisabled( disabled );
