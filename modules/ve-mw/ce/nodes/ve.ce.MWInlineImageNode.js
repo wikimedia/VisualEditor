@@ -79,8 +79,6 @@ ve.mixinClass( ve.ce.MWInlineImageNode, ve.ce.MWResizableNode );
 
 ve.ce.MWInlineImageNode.static.name = 'mwInlineImage';
 
-ve.ce.MWInlineImageNode.static.tagName = 'img';
-
 /* Methods */
 
 /** */
