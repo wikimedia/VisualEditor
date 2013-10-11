@@ -164,6 +164,16 @@ ve.ce.Node.prototype.isContent = function () {
 };
 
 /**
+ * Check if the node is focusable
+ *
+ * @see #static.isFocusable
+ * @returns {boolean} Node is focusable
+ */
+ve.ce.Node.prototype.isFocusable = function () {
+	return this.constructor.static.isFocusable;
+};
+
+/**
  * Check if the node can have a slug before it.
  *
  * TODO: Figure out a way to remove the hard-coding for text nodes here.
