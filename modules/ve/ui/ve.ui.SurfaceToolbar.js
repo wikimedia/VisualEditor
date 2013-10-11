@@ -130,10 +130,14 @@ ve.ui.SurfaceToolbar.prototype.onWindowResize = function () {
  * the cursor is obscured by the toolbar.
  */
 ve.ui.SurfaceToolbar.prototype.onSurfaceViewKeyUp = function () {
-	var cursorPos = this.surface.view.getSelectionRect(),
-		barHeight = this.$bar.height(),
-		scrollTo = this.$bar.offset().top - barHeight + ( cursorPos.end.y - cursorPos.start.y ),
-		obscured = cursorPos.start.y - this.$window.scrollTop() < barHeight;
+	var barHeight, scrollTo, obscured, cursorPos = this.surface.view.getSelectionRect();
+	if ( !cursorPos ) {
+		return;
+	}
+
+	barHeight = this.$bar.height();
+	scrollTo = this.$bar.offset().top - barHeight + ( cursorPos.end.y - cursorPos.start.y );
+	obscured = cursorPos.start.y - this.$window.scrollTop() < barHeight;
 
 	// If toolbar is floating and cursor is obscured, scroll cursor into view
 	if ( obscured && this.floating ) {

@@ -294,6 +294,14 @@ ve.ui.Context.prototype.updateDimensions = function ( transition ) {
 		// We're on top of a selected text
 		// Get the position of the cursor
 		cursorPosition = surface.getSelectionRect();
+		if ( !cursorPosition ) {
+			// The surface apparently isn't selected, so getSelectionRect() returned null.
+			// This shouldn't happen because the context is only supposed to be displayed in
+			// response to a selection, but for some reason this does happen in phantomjs.
+			// We can't update the context position if we don't know where the selection is,
+			// so just bail.
+			return this;
+		}
 
 		// Correct for surface offset:
 		position = {
