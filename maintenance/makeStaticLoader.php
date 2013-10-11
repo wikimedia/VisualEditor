@@ -73,11 +73,11 @@ class MakeStaticLoader extends Maintenance {
 
 		// Path to /modules/
 		$vePath = $this->getOption( 've-path',
-			$target === 'demo'
+			$target === 'demo' ?
 			// From /demos/ve/index.php
-			? '../../modules'
+			'../../modules' :
 			// From /modules/ve/test/index.html
-			: '../..'
+			'../..'
 		);
 
 		$wgResourceModules['Dependencies'] = array(
@@ -141,7 +141,7 @@ class MakeStaticLoader extends Maintenance {
 			've/init/sa/ve.init.sa.Target.js',
 		) );
 
-		$self = isset( $_SERVER['PHP_SELF'] ) ? $_SERVER['PHP_SELF'] :  ( lcfirst( __CLASS__ ) . '.php' );
+		$self = isset( $_SERVER['PHP_SELF'] ) ? $_SERVER['PHP_SELF'] : ( lcfirst( __CLASS__ ) . '.php' );
 
 		$head = $body = '';
 
