@@ -35,7 +35,7 @@ ve.ui.MWMetaDialog = function VeUiMWMetaDialog( windowSet, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.MWMetaDialog, ve.ui.MWDialog );
+OO.inheritClass( ve.ui.MWMetaDialog, ve.ui.MWDialog );
 
 /* Static Properties */
 

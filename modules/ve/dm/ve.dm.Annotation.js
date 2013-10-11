@@ -28,7 +28,7 @@ ve.dm.Annotation = function VeDmAnnotation( element ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.dm.Annotation, ve.dm.Model );
+OO.inheritClass( ve.dm.Annotation, ve.dm.Model );
 
 /* Static properties */
 

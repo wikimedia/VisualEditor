@@ -52,7 +52,7 @@ ve.ui.MWCategoryItemWidget = function VeUiMWCategoryItemWidget( config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.MWCategoryItemWidget, ve.ui.Widget );
+OO.inheritClass( ve.ui.MWCategoryItemWidget, ve.ui.Widget );
 
 /* Events */
 

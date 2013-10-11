@@ -41,7 +41,7 @@ ve.ui.MWMediaResultWidget = function VeUiMWMediaResultWidget( data, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.MWMediaResultWidget, ve.ui.OptionWidget );
+OO.inheritClass( ve.ui.MWMediaResultWidget, ve.ui.OptionWidget );
 
 /* Methods */
 

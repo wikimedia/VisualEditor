@@ -27,7 +27,7 @@ ve.ui.HistoryTool = function VeUiHistoryTool( toolbar, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.HistoryTool, ve.ui.Tool );
+OO.inheritClass( ve.ui.HistoryTool, ve.ui.Tool );
 
 /* Static Properties */
 
@@ -95,7 +95,7 @@ ve.ui.HistoryTool.prototype.destroy = function () {
 ve.ui.UndoHistoryTool = function VeUiUndoHistoryTool( toolbar, config ) {
 	ve.ui.HistoryTool.call( this, toolbar, config );
 };
-ve.inheritClass( ve.ui.UndoHistoryTool, ve.ui.HistoryTool );
+OO.inheritClass( ve.ui.UndoHistoryTool, ve.ui.HistoryTool );
 ve.ui.UndoHistoryTool.static.name = 'undo';
 ve.ui.UndoHistoryTool.static.group = 'history';
 ve.ui.UndoHistoryTool.static.icon = 'undo';
@@ -116,7 +116,7 @@ ve.ui.toolFactory.register( ve.ui.UndoHistoryTool );
 ve.ui.RedoHistoryTool = function VeUiRedoHistoryTool( toolbar, config ) {
 	ve.ui.HistoryTool.call( this, toolbar, config );
 };
-ve.inheritClass( ve.ui.RedoHistoryTool, ve.ui.HistoryTool );
+OO.inheritClass( ve.ui.RedoHistoryTool, ve.ui.HistoryTool );
 ve.ui.RedoHistoryTool.static.name = 'redo';
 ve.ui.RedoHistoryTool.static.group = 'history';
 ve.ui.RedoHistoryTool.static.icon = 'redo';

@@ -32,7 +32,7 @@ ve.ui.LinkTargetInputWidget = function VeUiLinkTargetInputWidget( config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.LinkTargetInputWidget, ve.ui.TextInputWidget );
+OO.inheritClass( ve.ui.LinkTargetInputWidget, ve.ui.TextInputWidget );
 
 /* Methods */
 

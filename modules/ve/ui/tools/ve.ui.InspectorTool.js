@@ -22,7 +22,7 @@ ve.ui.InspectorTool = function VeUiInspectorTool( toolbar, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.InspectorTool, ve.ui.Tool );
+OO.inheritClass( ve.ui.InspectorTool, ve.ui.Tool );
 
 /* Static Properties */
 
@@ -91,7 +91,7 @@ ve.ui.InspectorTool.prototype.onUpdateState = function ( nodes, full ) {
 ve.ui.LinkInspectorTool = function VeUiLinkInspectorTool( toolbar, config ) {
 	ve.ui.InspectorTool.call( this, toolbar, config );
 };
-ve.inheritClass( ve.ui.LinkInspectorTool, ve.ui.InspectorTool );
+OO.inheritClass( ve.ui.LinkInspectorTool, ve.ui.InspectorTool );
 ve.ui.LinkInspectorTool.static.name = 'link';
 ve.ui.LinkInspectorTool.static.group = 'meta';
 ve.ui.LinkInspectorTool.static.icon = 'link';

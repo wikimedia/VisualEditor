@@ -31,9 +31,9 @@ ve.dm.MetaItem = function VeDmMetaItem( element ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.dm.MetaItem, ve.dm.Model );
+OO.inheritClass( ve.dm.MetaItem, ve.dm.Model );
 
-ve.mixinClass( ve.dm.MetaItem, ve.EventEmitter );
+OO.mixinClass( ve.dm.MetaItem, ve.EventEmitter );
 
 /* Static members */
 

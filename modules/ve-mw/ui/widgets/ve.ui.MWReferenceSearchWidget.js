@@ -34,7 +34,7 @@ ve.ui.MWReferenceSearchWidget = function VeUiMWReferenceSearchWidget( surface, c
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.MWReferenceSearchWidget, ve.ui.SearchWidget );
+OO.inheritClass( ve.ui.MWReferenceSearchWidget, ve.ui.SearchWidget );
 
 /* Events */
 

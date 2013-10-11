@@ -29,6 +29,6 @@ ve.ui.IconButtonWidget = function VeUiIconButtonWidget( config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.IconButtonWidget, ve.ui.ButtonWidget );
+OO.inheritClass( ve.ui.IconButtonWidget, ve.ui.ButtonWidget );
 
-ve.mixinClass( ve.ui.IconButtonWidget, ve.ui.IconedElement );
+OO.mixinClass( ve.ui.IconButtonWidget, ve.ui.IconedElement );

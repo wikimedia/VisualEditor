@@ -29,7 +29,7 @@ ve.ui.MWParameterResultWidget = function VeUiMWParameterResultWidget( data, conf
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.MWParameterResultWidget, ve.ui.OptionWidget );
+OO.inheritClass( ve.ui.MWParameterResultWidget, ve.ui.OptionWidget );
 
 /* Methods */
 

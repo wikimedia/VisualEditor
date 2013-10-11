@@ -124,7 +124,7 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 
 /* Inheritance */
 
-ve.inheritClass( ve.init.mw.ViewPageTarget, ve.init.mw.Target );
+OO.inheritClass( ve.init.mw.ViewPageTarget, ve.init.mw.Target );
 
 /* Static Properties */
 

@@ -25,7 +25,7 @@ ve.dm.MWTransclusionPartModel = function VeDmMWTransclusionPartModel( transclusi
 
 /* Inheritance */
 
-ve.mixinClass( ve.dm.MWTransclusionPartModel, ve.EventEmitter );
+OO.mixinClass( ve.dm.MWTransclusionPartModel, ve.EventEmitter );
 
 /* Methods */
 

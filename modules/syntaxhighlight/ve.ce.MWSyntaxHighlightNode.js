@@ -43,11 +43,11 @@ ve.ce.MWSyntaxHighlightNode = function VeCeMWSyntaxHighlightNode( model, config 
 
 /* Inheritance */
 
-ve.inheritClass( ve.ce.MWSyntaxHighlightNode, ve.ce.LeafNode );
+OO.inheritClass( ve.ce.MWSyntaxHighlightNode, ve.ce.LeafNode );
 
-ve.mixinClass( ve.ce.MWSyntaxHighlightNode, ve.ce.FocusableNode );
-ve.mixinClass( ve.ce.MWSyntaxHighlightNode, ve.ce.ProtectedNode );
-ve.mixinClass( ve.ce.MWSyntaxHighlightNode, ve.ce.GeneratedContentNode );
+OO.mixinClass( ve.ce.MWSyntaxHighlightNode, ve.ce.FocusableNode );
+OO.mixinClass( ve.ce.MWSyntaxHighlightNode, ve.ce.ProtectedNode );
+OO.mixinClass( ve.ce.MWSyntaxHighlightNode, ve.ce.GeneratedContentNode );
 
 /* Static Properties */
 

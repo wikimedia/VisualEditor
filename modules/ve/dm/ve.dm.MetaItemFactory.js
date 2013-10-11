@@ -19,7 +19,7 @@ ve.dm.MetaItemFactory = function VeDmMetaItemFactory() {
 
 /* Inheritance */
 
-ve.inheritClass( ve.dm.MetaItemFactory, ve.Factory );
+OO.inheritClass( ve.dm.MetaItemFactory, ve.Factory );
 
 /* Methods */
 

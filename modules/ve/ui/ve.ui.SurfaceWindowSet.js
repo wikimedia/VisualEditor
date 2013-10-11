@@ -29,7 +29,7 @@ ve.ui.SurfaceWindowSet = function VeUiSurfaceWindowSet( surface, factory, config
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.SurfaceWindowSet, ve.ui.WindowSet );
+OO.inheritClass( ve.ui.SurfaceWindowSet, ve.ui.WindowSet );
 
 /* Methods */
 

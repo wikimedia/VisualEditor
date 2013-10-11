@@ -43,11 +43,11 @@ ve.ce.MWReferenceListNode = function VeCeMWReferenceListNode( model, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ce.MWReferenceListNode, ve.ce.LeafNode );
+OO.inheritClass( ve.ce.MWReferenceListNode, ve.ce.LeafNode );
 
-ve.mixinClass( ve.ce.MWReferenceListNode, ve.ce.ProtectedNode );
+OO.mixinClass( ve.ce.MWReferenceListNode, ve.ce.ProtectedNode );
 
-ve.mixinClass( ve.ce.MWReferenceListNode, ve.ce.FocusableNode );
+OO.mixinClass( ve.ce.MWReferenceListNode, ve.ce.FocusableNode );
 
 /* Static Properties */
 

@@ -25,7 +25,7 @@ ve.ce.MWExternalLinkAnnotation = function VeCeMWExternalLinkAnnotation( model, c
 
 /* Inheritance */
 
-ve.inheritClass( ve.ce.MWExternalLinkAnnotation, ve.ce.LinkAnnotation );
+OO.inheritClass( ve.ce.MWExternalLinkAnnotation, ve.ce.LinkAnnotation );
 
 /* Static Properties */
 

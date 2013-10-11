@@ -25,7 +25,7 @@ ve.ce.MWAlienExtensionNode = function VeCeMWAlienExtensionNode( model, config ) 
 
 /* Inheritance */
 
-ve.inheritClass( ve.ce.MWAlienExtensionNode, ve.ce.MWExtensionNode );
+OO.inheritClass( ve.ce.MWAlienExtensionNode, ve.ce.MWExtensionNode );
 
 /* Static Properties */
 

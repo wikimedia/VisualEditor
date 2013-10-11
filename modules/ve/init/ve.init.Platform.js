@@ -20,7 +20,7 @@ ve.init.Platform = function VeInitPlatform() {
 
 /* Inheritance */
 
-ve.mixinClass( ve.init.Platform, ve.EventEmitter );
+OO.mixinClass( ve.init.Platform, ve.EventEmitter );
 
 /* Methods */
 

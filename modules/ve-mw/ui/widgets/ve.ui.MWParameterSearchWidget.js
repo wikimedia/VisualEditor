@@ -37,7 +37,7 @@ ve.ui.MWParameterSearchWidget = function VeUiMWParameterSearchWidget( template, 
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.MWParameterSearchWidget, ve.ui.SearchWidget );
+OO.inheritClass( ve.ui.MWParameterSearchWidget, ve.ui.SearchWidget );
 
 /* Events */
 

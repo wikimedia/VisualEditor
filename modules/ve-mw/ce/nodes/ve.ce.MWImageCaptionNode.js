@@ -26,7 +26,7 @@ ve.ce.MWImageCaptionNode = function VeCeMWImageCaptionNode( model, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ce.MWImageCaptionNode, ve.ce.BranchNode );
+OO.inheritClass( ve.ce.MWImageCaptionNode, ve.ce.BranchNode );
 
 /* Static Properties */
 

@@ -37,9 +37,9 @@ ve.ui.Widget = function VeUiWidget( config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.Widget, ve.Element );
+OO.inheritClass( ve.ui.Widget, ve.Element );
 
-ve.mixinClass( ve.ui.Widget, ve.EventEmitter );
+OO.mixinClass( ve.ui.Widget, ve.EventEmitter );
 
 /* Methods */
 

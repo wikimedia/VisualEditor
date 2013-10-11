@@ -24,7 +24,7 @@ ve.ce.ListNode = function VeCeListNode( model, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ce.ListNode, ve.ce.BranchNode );
+OO.inheritClass( ve.ce.ListNode, ve.ce.BranchNode );
 
 /* Static Properties */
 

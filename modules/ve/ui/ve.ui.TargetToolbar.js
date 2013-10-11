@@ -26,7 +26,7 @@ ve.ui.TargetToolbar = function VeUiTargetToolbar( target, surface, options ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.TargetToolbar, ve.ui.SurfaceToolbar );
+OO.inheritClass( ve.ui.TargetToolbar, ve.ui.SurfaceToolbar );
 
 /* Methods */
 

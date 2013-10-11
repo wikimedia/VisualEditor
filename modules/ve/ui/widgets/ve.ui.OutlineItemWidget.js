@@ -35,7 +35,7 @@ ve.ui.OutlineItemWidget = function VeUiOutlineItemWidget( data, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.OutlineItemWidget, ve.ui.OptionWidget );
+OO.inheritClass( ve.ui.OutlineItemWidget, ve.ui.OptionWidget );
 
 /* Static Properties */
 

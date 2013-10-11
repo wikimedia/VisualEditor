@@ -19,7 +19,7 @@ ve.ui.InspectorFactory = function VeUiInspectorFactory() {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.InspectorFactory, ve.Factory );
+OO.inheritClass( ve.ui.InspectorFactory, ve.Factory );
 
 /* Initialization */
 

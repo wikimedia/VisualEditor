@@ -40,9 +40,9 @@ ve.ui.InputLabelWidget = function VeUiInputLabelWidget( config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.InputLabelWidget, ve.ui.Widget );
+OO.inheritClass( ve.ui.InputLabelWidget, ve.ui.Widget );
 
-ve.mixinClass( ve.ui.InputLabelWidget, ve.ui.LabeledElement );
+OO.mixinClass( ve.ui.InputLabelWidget, ve.ui.LabeledElement );
 
 /* Static Properties */
 

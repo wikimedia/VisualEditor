@@ -34,9 +34,9 @@ ve.ui.WindowSet = function VeUiWindowSet( factory, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.WindowSet, ve.Element );
+OO.inheritClass( ve.ui.WindowSet, ve.Element );
 
-ve.mixinClass( ve.ui.WindowSet, ve.EventEmitter );
+OO.mixinClass( ve.ui.WindowSet, ve.EventEmitter );
 
 /* Events */
 

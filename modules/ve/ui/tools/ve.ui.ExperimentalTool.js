@@ -17,7 +17,7 @@
 ve.ui.LanguageInspectorTool = function VeUiLanguageInspectorTool( toolbar, config ) {
 	ve.ui.InspectorTool.call( this, toolbar, config );
 };
-ve.inheritClass( ve.ui.LanguageInspectorTool, ve.ui.InspectorTool );
+OO.inheritClass( ve.ui.LanguageInspectorTool, ve.ui.InspectorTool );
 ve.ui.LanguageInspectorTool.static.name = 'language';
 ve.ui.LanguageInspectorTool.static.group = 'meta';
 ve.ui.LanguageInspectorTool.static.icon = 'language';

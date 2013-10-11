@@ -23,7 +23,7 @@ ve.ui.AnnotationTool = function VeUiAnnotationTool( toolbar, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.AnnotationTool, ve.ui.Tool );
+OO.inheritClass( ve.ui.AnnotationTool, ve.ui.Tool );
 
 /* Static Properties */
 
@@ -74,7 +74,7 @@ ve.ui.AnnotationTool.prototype.onUpdateState = function ( nodes, full ) {
 ve.ui.BoldAnnotationTool = function VeUiBoldAnnotationTool( toolbar, config ) {
 	ve.ui.AnnotationTool.call( this, toolbar, config );
 };
-ve.inheritClass( ve.ui.BoldAnnotationTool, ve.ui.AnnotationTool );
+OO.inheritClass( ve.ui.BoldAnnotationTool, ve.ui.AnnotationTool );
 ve.ui.BoldAnnotationTool.static.name = 'bold';
 ve.ui.BoldAnnotationTool.static.group = 'textStyle';
 ve.ui.BoldAnnotationTool.static.icon = {
@@ -119,7 +119,7 @@ ve.ui.toolFactory.register( ve.ui.BoldAnnotationTool );
 ve.ui.ItalicAnnotationTool = function VeUiItalicAnnotationTool( toolbar, config ) {
 	ve.ui.AnnotationTool.call( this, toolbar, config );
 };
-ve.inheritClass( ve.ui.ItalicAnnotationTool, ve.ui.AnnotationTool );
+OO.inheritClass( ve.ui.ItalicAnnotationTool, ve.ui.AnnotationTool );
 ve.ui.ItalicAnnotationTool.static.name = 'italic';
 ve.ui.ItalicAnnotationTool.static.group = 'textStyle';
 ve.ui.ItalicAnnotationTool.static.icon = {
@@ -164,7 +164,7 @@ ve.ui.toolFactory.register( ve.ui.ItalicAnnotationTool );
 ve.ui.CodeAnnotationTool = function VeUiCodeAnnotationTool( toolbar, config ) {
 	ve.ui.AnnotationTool.call( this, toolbar, config );
 };
-ve.inheritClass( ve.ui.CodeAnnotationTool, ve.ui.AnnotationTool );
+OO.inheritClass( ve.ui.CodeAnnotationTool, ve.ui.AnnotationTool );
 ve.ui.CodeAnnotationTool.static.name = 'code';
 ve.ui.CodeAnnotationTool.static.group = 'textStyle';
 ve.ui.CodeAnnotationTool.static.icon = 'code';
@@ -184,7 +184,7 @@ ve.ui.toolFactory.register( ve.ui.CodeAnnotationTool );
 ve.ui.StrikethroughAnnotationTool = function VeUiStrikethroughAnnotationTool( toolbar, config ) {
 	ve.ui.AnnotationTool.call( this, toolbar, config );
 };
-ve.inheritClass( ve.ui.StrikethroughAnnotationTool, ve.ui.AnnotationTool );
+OO.inheritClass( ve.ui.StrikethroughAnnotationTool, ve.ui.AnnotationTool );
 ve.ui.StrikethroughAnnotationTool.static.name = 'strikethrough';
 ve.ui.StrikethroughAnnotationTool.static.group = 'textStyle';
 ve.ui.StrikethroughAnnotationTool.static.icon = {
@@ -208,7 +208,7 @@ ve.ui.toolFactory.register( ve.ui.StrikethroughAnnotationTool );
 ve.ui.UnderlineAnnotationTool = function VeUiUnderlineAnnotationTool( toolbar, config ) {
 	ve.ui.AnnotationTool.call( this, toolbar, config );
 };
-ve.inheritClass( ve.ui.UnderlineAnnotationTool, ve.ui.AnnotationTool );
+OO.inheritClass( ve.ui.UnderlineAnnotationTool, ve.ui.AnnotationTool );
 ve.ui.UnderlineAnnotationTool.static.name = 'underline';
 ve.ui.UnderlineAnnotationTool.static.group = 'textStyle';
 ve.ui.UnderlineAnnotationTool.static.icon = {
@@ -232,7 +232,7 @@ ve.ui.toolFactory.register( ve.ui.UnderlineAnnotationTool );
 ve.ui.SubscriptAnnotationTool = function VeUiSubscriptAnnotationTool( toolbar, config ) {
 	ve.ui.AnnotationTool.call( this, toolbar, config );
 };
-ve.inheritClass( ve.ui.SubscriptAnnotationTool, ve.ui.AnnotationTool );
+OO.inheritClass( ve.ui.SubscriptAnnotationTool, ve.ui.AnnotationTool );
 ve.ui.SubscriptAnnotationTool.static.name = 'subscript';
 ve.ui.SubscriptAnnotationTool.static.group = 'textStyle';
 ve.ui.SubscriptAnnotationTool.static.icon = 'subscript';
@@ -253,7 +253,7 @@ ve.ui.toolFactory.register( ve.ui.SubscriptAnnotationTool );
 ve.ui.SuperscriptAnnotationTool = function VeUiSuperscriptAnnotationTool( toolbar, config ) {
 	ve.ui.AnnotationTool.call( this, toolbar, config );
 };
-ve.inheritClass( ve.ui.SuperscriptAnnotationTool, ve.ui.AnnotationTool );
+OO.inheritClass( ve.ui.SuperscriptAnnotationTool, ve.ui.AnnotationTool );
 ve.ui.SuperscriptAnnotationTool.static.name = 'superscript';
 ve.ui.SuperscriptAnnotationTool.static.group = 'textStyle';
 ve.ui.SuperscriptAnnotationTool.static.icon = 'superscript';

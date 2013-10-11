@@ -25,7 +25,7 @@ ve.ce.Document = function VeCeDocument( model, surface ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ce.Document, ve.Document );
+OO.inheritClass( ve.ce.Document, ve.Document );
 
 /* Methods */
 

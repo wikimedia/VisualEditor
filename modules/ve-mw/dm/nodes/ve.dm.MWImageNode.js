@@ -22,7 +22,7 @@ ve.dm.MWImageNode = function VeDmMWImageNode() {
 
 /* Inheritance */
 
-ve.inheritClass( ve.dm.MWImageNode, ve.dm.GeneratedContentNode );
+OO.inheritClass( ve.dm.MWImageNode, ve.dm.GeneratedContentNode );
 
 /* Static methods */
 

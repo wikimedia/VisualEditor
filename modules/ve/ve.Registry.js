@@ -23,7 +23,7 @@ ve.Registry = function VeRegistry() {
 
 /* Inheritance */
 
-ve.mixinClass( ve.Registry, ve.EventEmitter );
+OO.mixinClass( ve.Registry, ve.EventEmitter );
 
 /* Events */
 

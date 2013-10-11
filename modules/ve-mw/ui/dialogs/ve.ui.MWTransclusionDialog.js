@@ -30,7 +30,7 @@ ve.ui.MWTransclusionDialog = function VeUiMWTransclusionDialog( windowSet, confi
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.MWTransclusionDialog, ve.ui.MWDialog );
+OO.inheritClass( ve.ui.MWTransclusionDialog, ve.ui.MWDialog );
 
 /* Static Properties */
 

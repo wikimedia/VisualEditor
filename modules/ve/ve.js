@@ -34,12 +34,6 @@
 	ve.createObject = Object.create;
 
 	/**
-	 * @method
-	 * @inheritdoc OO#inheritClass
-	 */
-	ve.inheritClass = oo.inheritClass;
-
-	/**
 	 * Checks if an object is an instance of one or more classes.
 	 *
 	 * @method
@@ -57,12 +51,6 @@
 		}
 		return false;
 	};
-
-	/**
-	 * @method
-	 * @inheritdoc OO#mixinClass
-	 */
-	ve.mixinClass = oo.mixinClass;
 
 	/**
 	 * @method

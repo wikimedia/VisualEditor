@@ -37,9 +37,9 @@ ve.ui.MWLinkTargetInputWidget = function VeUiMWLinkTargetInputWidget( config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.MWLinkTargetInputWidget, ve.ui.LinkTargetInputWidget );
+OO.inheritClass( ve.ui.MWLinkTargetInputWidget, ve.ui.LinkTargetInputWidget );
 
-ve.mixinClass( ve.ui.MWLinkTargetInputWidget, ve.ui.LookupInputWidget );
+OO.mixinClass( ve.ui.MWLinkTargetInputWidget, ve.ui.LookupInputWidget );
 
 /* Methods */
 

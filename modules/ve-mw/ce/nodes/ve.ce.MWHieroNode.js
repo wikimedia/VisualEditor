@@ -25,7 +25,7 @@ ve.ce.MWHieroNode = function VeCeMWHieroNode( model, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ce.MWHieroNode, ve.ce.MWExtensionNode );
+OO.inheritClass( ve.ce.MWHieroNode, ve.ce.MWExtensionNode );
 
 /* Static Properties */
 

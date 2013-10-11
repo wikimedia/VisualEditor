@@ -65,7 +65,7 @@ ve.dm.Document = function VeDmDocument( documentOrData, parentDocument, internal
 
 /* Inheritance */
 
-ve.inheritClass( ve.dm.Document, ve.Document );
+OO.inheritClass( ve.dm.Document, ve.Document );
 
 /* Events */
 

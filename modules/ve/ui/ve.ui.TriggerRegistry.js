@@ -19,7 +19,7 @@ ve.ui.TriggerRegistry = function VeUiTriggerRegistry() {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.TriggerRegistry, ve.Registry );
+OO.inheritClass( ve.ui.TriggerRegistry, ve.Registry );
 
 /* Methods */
 

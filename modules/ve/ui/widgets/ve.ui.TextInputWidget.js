@@ -50,7 +50,7 @@ ve.ui.TextInputWidget = function VeUiTextInputWidget( config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.TextInputWidget, ve.ui.InputWidget );
+OO.inheritClass( ve.ui.TextInputWidget, ve.ui.InputWidget );
 
 /* Events */
 

@@ -22,7 +22,7 @@ ve.ui.MWHieroInspector = function VeUiMWHieroInspector( windowSet, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.MWHieroInspector, ve.ui.MWExtensionInspector );
+OO.inheritClass( ve.ui.MWHieroInspector, ve.ui.MWExtensionInspector );
 
 /* Static properties */
 

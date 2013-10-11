@@ -56,9 +56,9 @@ ve.ui.OptionWidget = function VeUiOptionWidget( data, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.OptionWidget, ve.ui.Widget );
+OO.inheritClass( ve.ui.OptionWidget, ve.ui.Widget );
 
-ve.mixinClass( ve.ui.OptionWidget, ve.ui.LabeledElement );
+OO.mixinClass( ve.ui.OptionWidget, ve.ui.LabeledElement );
 
 /* Static Properties */
 

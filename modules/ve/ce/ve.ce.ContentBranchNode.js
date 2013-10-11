@@ -29,7 +29,7 @@ ve.ce.ContentBranchNode = function VeCeContentBranchNode( model, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ce.ContentBranchNode, ve.ce.BranchNode );
+OO.inheritClass( ve.ce.ContentBranchNode, ve.ce.BranchNode );
 
 /* Methods */
 

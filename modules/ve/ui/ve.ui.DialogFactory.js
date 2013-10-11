@@ -19,7 +19,7 @@ ve.ui.DialogFactory = function VeUiDialogFactory() {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.DialogFactory, ve.Factory );
+OO.inheritClass( ve.ui.DialogFactory, ve.Factory );
 
 /* Initialization */
 

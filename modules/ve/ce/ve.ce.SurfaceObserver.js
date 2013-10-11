@@ -34,7 +34,7 @@ ve.ce.SurfaceObserver = function VeCeSurfaceObserver( documentView ) {
 
 /* Inheritance */
 
-ve.mixinClass( ve.ce.SurfaceObserver, ve.EventEmitter );
+OO.mixinClass( ve.ce.SurfaceObserver, ve.EventEmitter );
 
 /* Events */
 

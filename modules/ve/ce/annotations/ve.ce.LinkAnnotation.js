@@ -25,7 +25,7 @@ ve.ce.LinkAnnotation = function VeCeLinkAnnotation( model, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ce.LinkAnnotation, ve.ce.Annotation );
+OO.inheritClass( ve.ce.LinkAnnotation, ve.ce.Annotation );
 
 /* Static Properties */
 

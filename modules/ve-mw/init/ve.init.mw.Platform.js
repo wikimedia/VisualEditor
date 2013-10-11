@@ -32,7 +32,7 @@ ve.init.mw.Platform = function VeInitMwPlatform() {
 
 /* Inheritance */
 
-ve.inheritClass( ve.init.mw.Platform, ve.init.Platform );
+OO.inheritClass( ve.init.mw.Platform, ve.init.Platform );
 
 /* Methods */
 

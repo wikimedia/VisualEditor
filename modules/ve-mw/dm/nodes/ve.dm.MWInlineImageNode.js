@@ -25,12 +25,12 @@ ve.dm.MWInlineImageNode = function VeDmMWInlineImageNode( length, element ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.dm.MWInlineImageNode, ve.dm.LeafNode );
+OO.inheritClass( ve.dm.MWInlineImageNode, ve.dm.LeafNode );
 
 // Need to mixin base class as well
-ve.mixinClass( ve.dm.MWInlineImageNode, ve.dm.GeneratedContentNode );
+OO.mixinClass( ve.dm.MWInlineImageNode, ve.dm.GeneratedContentNode );
 
-ve.mixinClass( ve.dm.MWInlineImageNode, ve.dm.MWImageNode );
+OO.mixinClass( ve.dm.MWInlineImageNode, ve.dm.MWImageNode );
 
 /* Static Properties */
 

@@ -46,9 +46,9 @@ ve.ui.SelectWidget = function VeUiSelectWidget( config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.SelectWidget, ve.ui.Widget );
+OO.inheritClass( ve.ui.SelectWidget, ve.ui.Widget );
 
-ve.mixinClass( ve.ui.SelectWidget, ve.ui.GroupElement );
+OO.mixinClass( ve.ui.SelectWidget, ve.ui.GroupElement );
 
 /* Events */
 

@@ -32,7 +32,7 @@ ve.dm.MWTransclusionModel = function VeDmMWTransclusionModel() {
 
 /* Inheritance */
 
-ve.mixinClass( ve.dm.MWTransclusionModel, ve.EventEmitter );
+OO.mixinClass( ve.dm.MWTransclusionModel, ve.EventEmitter );
 
 /* Events */
 

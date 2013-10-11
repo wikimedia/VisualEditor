@@ -40,7 +40,7 @@ ve.ui.PagedLayout = function VeUiPagedLayout( config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.PagedLayout, ve.ui.Layout );
+OO.inheritClass( ve.ui.PagedLayout, ve.ui.Layout );
 
 /* Events */
 

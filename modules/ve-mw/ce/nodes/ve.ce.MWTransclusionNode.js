@@ -38,15 +38,15 @@ ve.ce.MWTransclusionNode = function VeCeMWTransclusionNode( model, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ce.MWTransclusionNode, ve.ce.LeafNode );
+OO.inheritClass( ve.ce.MWTransclusionNode, ve.ce.LeafNode );
 
-ve.mixinClass( ve.ce.MWTransclusionNode, ve.ce.ProtectedNode );
+OO.mixinClass( ve.ce.MWTransclusionNode, ve.ce.ProtectedNode );
 
-ve.mixinClass( ve.ce.MWTransclusionNode, ve.ce.FocusableNode );
+OO.mixinClass( ve.ce.MWTransclusionNode, ve.ce.FocusableNode );
 
-ve.mixinClass( ve.ce.MWTransclusionNode, ve.ce.RelocatableNode );
+OO.mixinClass( ve.ce.MWTransclusionNode, ve.ce.RelocatableNode );
 
-ve.mixinClass( ve.ce.MWTransclusionNode, ve.ce.GeneratedContentNode );
+OO.mixinClass( ve.ce.MWTransclusionNode, ve.ce.GeneratedContentNode );
 
 /* Static Properties */
 
@@ -134,7 +134,7 @@ ve.ce.MWTransclusionBlockNode = function VeCeMWTransclusionBlockNode( model ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ce.MWTransclusionBlockNode, ve.ce.MWTransclusionNode );
+OO.inheritClass( ve.ce.MWTransclusionBlockNode, ve.ce.MWTransclusionNode );
 
 /* Static Properties */
 
@@ -160,7 +160,7 @@ ve.ce.MWTransclusionInlineNode = function VeCeMWTransclusionInlineNode( model ) 
 
 /* Inheritance */
 
-ve.inheritClass( ve.ce.MWTransclusionInlineNode, ve.ce.MWTransclusionNode );
+OO.inheritClass( ve.ce.MWTransclusionInlineNode, ve.ce.MWTransclusionNode );
 
 /* Static Properties */
 

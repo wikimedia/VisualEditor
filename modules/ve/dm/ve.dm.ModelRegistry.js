@@ -36,7 +36,7 @@ ve.dm.ModelRegistry = function VeDmModelRegistry() {
 
 /* Inheritance */
 
-ve.inheritClass( ve.dm.ModelRegistry, ve.Registry );
+OO.inheritClass( ve.dm.ModelRegistry, ve.Registry );
 
 /* Private helper functions */
 

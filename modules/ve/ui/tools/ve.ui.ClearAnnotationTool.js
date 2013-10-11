@@ -24,7 +24,7 @@ ve.ui.ClearAnnotationTool = function VeUiClearAnnotationTool( toolbar, config ) 
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.ClearAnnotationTool, ve.ui.Tool );
+OO.inheritClass( ve.ui.ClearAnnotationTool, ve.ui.Tool );
 
 /* Static Properties */
 

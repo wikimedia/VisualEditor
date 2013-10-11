@@ -29,7 +29,7 @@ ve.ce.MWInternalLinkAnnotation = function VeCeMWInternalLinkAnnotation( model, c
 
 /* Inheritance */
 
-ve.inheritClass( ve.ce.MWInternalLinkAnnotation, ve.ce.LinkAnnotation );
+OO.inheritClass( ve.ce.MWInternalLinkAnnotation, ve.ce.LinkAnnotation );
 
 /* Static Properties */
 

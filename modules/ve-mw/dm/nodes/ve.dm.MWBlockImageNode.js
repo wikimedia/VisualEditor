@@ -25,12 +25,12 @@ ve.dm.MWBlockImageNode = function VeDmMWBlockImageNode( length, element ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.dm.MWBlockImageNode, ve.dm.BranchNode );
+OO.inheritClass( ve.dm.MWBlockImageNode, ve.dm.BranchNode );
 
 // Need to mixin base class as well
-ve.mixinClass( ve.dm.MWBlockImageNode, ve.dm.GeneratedContentNode );
+OO.mixinClass( ve.dm.MWBlockImageNode, ve.dm.GeneratedContentNode );
 
-ve.mixinClass( ve.dm.MWBlockImageNode, ve.dm.MWImageNode );
+OO.mixinClass( ve.dm.MWBlockImageNode, ve.dm.MWImageNode );
 
 /* Static Properties */
 

@@ -49,11 +49,11 @@ ve.ce.ImageNode = function VeCeImageNode( model, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ce.ImageNode, ve.ce.LeafNode );
+OO.inheritClass( ve.ce.ImageNode, ve.ce.LeafNode );
 
-ve.mixinClass( ve.ce.ImageNode, ve.ce.FocusableNode );
-ve.mixinClass( ve.ce.ImageNode, ve.ce.RelocatableNode );
-ve.mixinClass( ve.ce.ImageNode, ve.ce.ResizableNode );
+OO.mixinClass( ve.ce.ImageNode, ve.ce.FocusableNode );
+OO.mixinClass( ve.ce.ImageNode, ve.ce.RelocatableNode );
+OO.mixinClass( ve.ce.ImageNode, ve.ce.ResizableNode );
 
 /* Static Properties */
 

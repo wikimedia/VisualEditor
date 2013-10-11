@@ -28,7 +28,7 @@ ve.ui.MWMediaInsertDialog = function VeUiMWMediaInsertDialog( windowSet, config 
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.MWMediaInsertDialog, ve.ui.MWDialog );
+OO.inheritClass( ve.ui.MWMediaInsertDialog, ve.ui.MWDialog );
 
 /* Static Properties */
 

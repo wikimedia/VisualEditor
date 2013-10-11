@@ -40,9 +40,9 @@ ve.ui.MenuWidget = function VeUiMenuWidget( config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.MenuWidget, ve.ui.SelectWidget );
+OO.inheritClass( ve.ui.MenuWidget, ve.ui.SelectWidget );
 
-ve.mixinClass( ve.ui.MenuWidget, ve.ui.ClippableElement );
+OO.mixinClass( ve.ui.MenuWidget, ve.ui.ClippableElement );
 
 /* Methods */
 

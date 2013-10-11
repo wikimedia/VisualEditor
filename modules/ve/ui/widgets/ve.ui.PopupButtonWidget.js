@@ -30,9 +30,9 @@ ve.ui.PopupButtonWidget = function VeUiPopupButtonWidget( config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.PopupButtonWidget, ve.ui.IconButtonWidget );
+OO.inheritClass( ve.ui.PopupButtonWidget, ve.ui.IconButtonWidget );
 
-ve.mixinClass( ve.ui.PopupButtonWidget, ve.ui.PopuppableElement );
+OO.mixinClass( ve.ui.PopupButtonWidget, ve.ui.PopuppableElement );
 
 /* Methods */
 

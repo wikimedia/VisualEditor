@@ -26,7 +26,7 @@ ve.ui.MWBetaWelcomeDialog = function VeUiMWBetaWelcomeDialog( windowSet, config 
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.MWBetaWelcomeDialog, ve.ui.MWDialog );
+OO.inheritClass( ve.ui.MWBetaWelcomeDialog, ve.ui.MWDialog );
 
 /* Static Properties */
 

@@ -29,7 +29,7 @@ ve.ui.MenuToolGroup = function VeUiMenuToolGroup( toolbar, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.MenuToolGroup, ve.ui.PopupToolGroup );
+OO.inheritClass( ve.ui.MenuToolGroup, ve.ui.PopupToolGroup );
 
 /* Static Properties */
 

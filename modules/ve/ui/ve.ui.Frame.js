@@ -35,9 +35,9 @@ ve.ui.Frame = function VeUiFrame( config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.Frame, ve.Element );
+OO.inheritClass( ve.ui.Frame, ve.Element );
 
-ve.mixinClass( ve.ui.Frame, ve.EventEmitter );
+OO.mixinClass( ve.ui.Frame, ve.EventEmitter );
 
 /* Static Properties */
 

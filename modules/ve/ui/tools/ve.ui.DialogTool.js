@@ -22,7 +22,7 @@ ve.ui.DialogTool = function VeUiDialogTool( toolbar, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.DialogTool, ve.ui.Tool );
+OO.inheritClass( ve.ui.DialogTool, ve.ui.Tool );
 
 /* Static Properties */
 

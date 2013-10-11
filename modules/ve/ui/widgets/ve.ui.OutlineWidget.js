@@ -27,4 +27,4 @@ ve.ui.OutlineWidget = function VeUiOutlineWidget( config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.OutlineWidget, ve.ui.SelectWidget );
+OO.inheritClass( ve.ui.OutlineWidget, ve.ui.SelectWidget );

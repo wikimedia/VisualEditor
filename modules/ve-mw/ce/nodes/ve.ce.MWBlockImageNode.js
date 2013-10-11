@@ -95,12 +95,12 @@ ve.ce.MWBlockImageNode = function VeCeMWBlockImageNode( model, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ce.MWBlockImageNode, ve.ce.BranchNode );
+OO.inheritClass( ve.ce.MWBlockImageNode, ve.ce.BranchNode );
 
 // Need to mixin base class as well
-ve.mixinClass( ve.ce.MWBlockImageNode, ve.ce.GeneratedContentNode );
+OO.mixinClass( ve.ce.MWBlockImageNode, ve.ce.GeneratedContentNode );
 
-ve.mixinClass( ve.ce.MWBlockImageNode, ve.ce.MWImageNode );
+OO.mixinClass( ve.ce.MWBlockImageNode, ve.ce.MWImageNode );
 
 /* Static Properties */
 

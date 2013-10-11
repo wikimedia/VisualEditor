@@ -44,7 +44,7 @@ ve.ui.MWMediaSearchWidget = function VeUiMWMediaSearchWidget( config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.MWMediaSearchWidget, ve.ui.SearchWidget );
+OO.inheritClass( ve.ui.MWMediaSearchWidget, ve.ui.SearchWidget );
 
 /* Methods */
 

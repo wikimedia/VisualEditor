@@ -17,7 +17,7 @@
 ve.ui.MWMediaEditDialogTool = function VeUiMWMediaEditDialogTool( toolbar, config ) {
 	ve.ui.DialogTool.call( this, toolbar, config );
 };
-ve.inheritClass( ve.ui.MWMediaEditDialogTool, ve.ui.DialogTool );
+OO.inheritClass( ve.ui.MWMediaEditDialogTool, ve.ui.DialogTool );
 ve.ui.MWMediaEditDialogTool.static.name = 'mediaEdit';
 ve.ui.MWMediaEditDialogTool.static.group = 'object';
 ve.ui.MWMediaEditDialogTool.static.icon = 'picture';
@@ -40,7 +40,7 @@ ve.ui.toolFactory.register( ve.ui.MWMediaEditDialogTool );
 ve.ui.MWMediaInsertDialogTool = function VeUiMWMediaInsertDialogTool( toolbar, config ) {
 	ve.ui.DialogTool.call( this, toolbar, config );
 };
-ve.inheritClass( ve.ui.MWMediaInsertDialogTool, ve.ui.DialogTool );
+OO.inheritClass( ve.ui.MWMediaInsertDialogTool, ve.ui.DialogTool );
 ve.ui.MWMediaInsertDialogTool.static.name = 'mediaInsert';
 ve.ui.MWMediaInsertDialogTool.static.group = 'object';
 ve.ui.MWMediaInsertDialogTool.static.icon = 'picture';
@@ -61,7 +61,7 @@ ve.ui.toolFactory.register( ve.ui.MWMediaInsertDialogTool );
 ve.ui.MWReferenceDialogTool = function VeUiMWReferenceDialogTool( toolbar, config ) {
 	ve.ui.DialogTool.call( this, toolbar, config );
 };
-ve.inheritClass( ve.ui.MWReferenceDialogTool, ve.ui.DialogTool );
+OO.inheritClass( ve.ui.MWReferenceDialogTool, ve.ui.DialogTool );
 ve.ui.MWReferenceDialogTool.static.name = 'reference';
 ve.ui.MWReferenceDialogTool.static.group = 'object';
 ve.ui.MWReferenceDialogTool.static.icon = 'reference';
@@ -82,7 +82,7 @@ ve.ui.toolFactory.register( ve.ui.MWReferenceDialogTool );
 ve.ui.MWReferenceListDialogTool = function VeUiMWReferenceListDialogTool( toolbar, config ) {
 	ve.ui.DialogTool.call( this, toolbar, config );
 };
-ve.inheritClass( ve.ui.MWReferenceListDialogTool, ve.ui.DialogTool );
+OO.inheritClass( ve.ui.MWReferenceListDialogTool, ve.ui.DialogTool );
 ve.ui.MWReferenceListDialogTool.static.name = 'referenceList';
 ve.ui.MWReferenceListDialogTool.static.group = 'object';
 ve.ui.MWReferenceListDialogTool.static.icon = 'references';
@@ -104,7 +104,7 @@ ve.ui.toolFactory.register( ve.ui.MWReferenceListDialogTool );
 ve.ui.MWTransclusionDialogTool = function VeUiMWTransclusionDialogTool( toolbar, config ) {
 	ve.ui.DialogTool.call( this, toolbar, config );
 };
-ve.inheritClass( ve.ui.MWTransclusionDialogTool, ve.ui.DialogTool );
+OO.inheritClass( ve.ui.MWTransclusionDialogTool, ve.ui.DialogTool );
 ve.ui.MWTransclusionDialogTool.static.name = 'transclusion';
 ve.ui.MWTransclusionDialogTool.static.group = 'object';
 ve.ui.MWTransclusionDialogTool.static.icon = 'template';

@@ -17,7 +17,7 @@
 ve.ui.MWHieroInspectorTool = function VeUiMWHieroInspectorTool( toolbar, config ) {
 	ve.ui.InspectorTool.call( this, toolbar, config );
 };
-ve.inheritClass( ve.ui.MWHieroInspectorTool, ve.ui.InspectorTool );
+OO.inheritClass( ve.ui.MWHieroInspectorTool, ve.ui.InspectorTool );
 ve.ui.MWHieroInspectorTool.static.name = 'hiero';
 ve.ui.MWHieroInspectorTool.static.group = 'object';
 ve.ui.MWHieroInspectorTool.static.icon = 'hiero';
@@ -38,7 +38,7 @@ ve.ui.toolFactory.register( ve.ui.MWHieroInspectorTool );
 ve.ui.MWAlienExtensionInspectorTool = function VeUiMWAlienExtensionInspectorTool( toolbar, config ) {
 	ve.ui.InspectorTool.call( this, toolbar, config );
 };
-ve.inheritClass( ve.ui.MWAlienExtensionInspectorTool, ve.ui.InspectorTool );
+OO.inheritClass( ve.ui.MWAlienExtensionInspectorTool, ve.ui.InspectorTool );
 ve.ui.MWAlienExtensionInspectorTool.static.name = 'alienExtension';
 ve.ui.MWAlienExtensionInspectorTool.static.group = 'object';
 ve.ui.MWAlienExtensionInspectorTool.static.icon = 'alienextension';
@@ -61,7 +61,7 @@ ve.ui.toolFactory.register( ve.ui.MWAlienExtensionInspectorTool );
 ve.ui.MWMathInspectorTool = function VeUiMWMathInspectorTool( toolbar, config ) {
 	ve.ui.InspectorTool.call( this, toolbar, config );
 };
-ve.inheritClass( ve.ui.MWMathInspectorTool, ve.ui.InspectorTool );
+OO.inheritClass( ve.ui.MWMathInspectorTool, ve.ui.InspectorTool );
 ve.ui.MWMathInspectorTool.static.name = 'math';
 ve.ui.MWMathInspectorTool.static.group = 'object';
 ve.ui.MWMathInspectorTool.static.icon = 'math';

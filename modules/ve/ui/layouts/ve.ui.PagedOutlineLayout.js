@@ -64,7 +64,7 @@ ve.ui.PagedOutlineLayout = function VeUiPagedOutlineLayout( config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.PagedOutlineLayout, ve.ui.PagedLayout );
+OO.inheritClass( ve.ui.PagedOutlineLayout, ve.ui.PagedLayout );
 
 /* Methods */
 

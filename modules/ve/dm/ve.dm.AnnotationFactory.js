@@ -19,7 +19,7 @@ ve.dm.AnnotationFactory = function VeDmAnnotationFactory() {
 
 /* Inheritance */
 
-ve.inheritClass( ve.dm.AnnotationFactory, ve.Factory );
+OO.inheritClass( ve.dm.AnnotationFactory, ve.Factory );
 
 /* Initialization */
 

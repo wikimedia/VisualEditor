@@ -89,7 +89,7 @@ ve.ui.LanguageInputWidget = function VeUiLanguageInputWidget( config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.LanguageInputWidget, ve.ui.Widget );
+OO.inheritClass( ve.ui.LanguageInputWidget, ve.ui.Widget );
 
 /* Static properties */
 

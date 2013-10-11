@@ -57,9 +57,9 @@ ve.ui.MWCategoryWidget = function VeUiMWCategoryWidget( config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.MWCategoryWidget, ve.ui.Widget );
+OO.inheritClass( ve.ui.MWCategoryWidget, ve.ui.Widget );
 
-ve.mixinClass( ve.ui.MWCategoryWidget, ve.ui.GroupElement );
+OO.mixinClass( ve.ui.MWCategoryWidget, ve.ui.GroupElement );
 
 /* Events */
 

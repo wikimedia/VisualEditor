@@ -42,9 +42,9 @@ ve.ui.MWCategoryInputWidget = function VeUiMWCategoryInputWidget( categoryWidget
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.MWCategoryInputWidget, ve.ui.TextInputWidget );
+OO.inheritClass( ve.ui.MWCategoryInputWidget, ve.ui.TextInputWidget );
 
-ve.mixinClass( ve.ui.MWCategoryInputWidget, ve.ui.LookupInputWidget );
+OO.mixinClass( ve.ui.MWCategoryInputWidget, ve.ui.LookupInputWidget );
 
 /* Methods */
 

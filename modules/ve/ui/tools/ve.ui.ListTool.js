@@ -25,7 +25,7 @@ ve.ui.ListTool = function VeUiListTool( toolbar, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.ListTool, ve.ui.Tool );
+OO.inheritClass( ve.ui.ListTool, ve.ui.Tool );
 
 /**
  * List style the tool applies.
@@ -87,7 +87,7 @@ ve.ui.ListTool.prototype.onUpdateState = function ( nodes ) {
 ve.ui.BulletListTool = function VeUiBulletListTool( toolbar, config ) {
 	ve.ui.ListTool.call( this, toolbar, config );
 };
-ve.inheritClass( ve.ui.BulletListTool, ve.ui.ListTool );
+OO.inheritClass( ve.ui.BulletListTool, ve.ui.ListTool );
 ve.ui.BulletListTool.static.name = 'bullet';
 ve.ui.BulletListTool.static.group = 'structure';
 ve.ui.BulletListTool.static.icon = 'bullet-list';
@@ -107,7 +107,7 @@ ve.ui.toolFactory.register( ve.ui.BulletListTool );
 ve.ui.NumberListTool = function VeUiNumberListTool( toolbar, config ) {
 	ve.ui.ListTool.call( this, toolbar, config );
 };
-ve.inheritClass( ve.ui.NumberListTool, ve.ui.ListTool );
+OO.inheritClass( ve.ui.NumberListTool, ve.ui.ListTool );
 ve.ui.NumberListTool.static.name = 'number';
 ve.ui.NumberListTool.static.group = 'structure';
 ve.ui.NumberListTool.static.icon = 'number-list';

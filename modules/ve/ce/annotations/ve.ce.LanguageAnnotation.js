@@ -33,7 +33,7 @@ ve.ce.LanguageAnnotation = function VeCeLanguageAnnotation( model, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ce.LanguageAnnotation, ve.ce.Annotation );
+OO.inheritClass( ve.ce.LanguageAnnotation, ve.ce.Annotation );
 
 /* Static Properties */
 

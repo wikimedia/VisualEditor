@@ -33,9 +33,9 @@ ve.ce.LeafNode = function VeCeLeafNode( model, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ce.LeafNode, ve.ce.Node );
+OO.inheritClass( ve.ce.LeafNode, ve.ce.Node );
 
-ve.mixinClass( ve.ce.LeafNode, ve.LeafNode );
+OO.mixinClass( ve.ce.LeafNode, ve.LeafNode );
 
 /* Static Properties */
 

@@ -24,7 +24,7 @@ ve.ui.MWMathInspector = function VeUiMWMathInspector( windowSet, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.MWMathInspector, ve.ui.MWExtensionInspector );
+OO.inheritClass( ve.ui.MWMathInspector, ve.ui.MWExtensionInspector );
 
 /* Static properties */
 

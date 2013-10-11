@@ -28,4 +28,4 @@ ve.ui.MenuItemWidget = function VeUiMenuItemWidget( data, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.MenuItemWidget, ve.ui.OptionWidget );
+OO.inheritClass( ve.ui.MenuItemWidget, ve.ui.OptionWidget );

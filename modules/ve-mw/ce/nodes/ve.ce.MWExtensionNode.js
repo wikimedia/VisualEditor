@@ -42,12 +42,12 @@ ve.ce.MWExtensionNode = function VeCeMWExtensionNode( model, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ce.MWExtensionNode, ve.ce.LeafNode );
+OO.inheritClass( ve.ce.MWExtensionNode, ve.ce.LeafNode );
 
-ve.mixinClass( ve.ce.MWExtensionNode, ve.ce.FocusableNode );
-ve.mixinClass( ve.ce.MWExtensionNode, ve.ce.ProtectedNode );
-ve.mixinClass( ve.ce.MWExtensionNode, ve.ce.RelocatableNode );
-ve.mixinClass( ve.ce.MWExtensionNode, ve.ce.GeneratedContentNode );
+OO.mixinClass( ve.ce.MWExtensionNode, ve.ce.FocusableNode );
+OO.mixinClass( ve.ce.MWExtensionNode, ve.ce.ProtectedNode );
+OO.mixinClass( ve.ce.MWExtensionNode, ve.ce.RelocatableNode );
+OO.mixinClass( ve.ce.MWExtensionNode, ve.ce.GeneratedContentNode );
 
 /* Methods */
 

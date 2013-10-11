@@ -32,11 +32,11 @@ ve.ce.AlienNode = function VeCeAlienNode( model, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ce.AlienNode, ve.ce.LeafNode );
+OO.inheritClass( ve.ce.AlienNode, ve.ce.LeafNode );
 
-ve.mixinClass( ve.ce.AlienNode, ve.ce.ProtectedNode );
+OO.mixinClass( ve.ce.AlienNode, ve.ce.ProtectedNode );
 
-ve.mixinClass( ve.ce.AlienNode, ve.ce.GeneratedContentNode );
+OO.mixinClass( ve.ce.AlienNode, ve.ce.GeneratedContentNode );
 
 /* Static Properties */
 
@@ -74,7 +74,7 @@ ve.ce.AlienBlockNode = function VeCeAlienBlockNode( model ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ce.AlienBlockNode, ve.ce.AlienNode );
+OO.inheritClass( ve.ce.AlienBlockNode, ve.ce.AlienNode );
 
 /* Static Properties */
 
@@ -98,7 +98,7 @@ ve.ce.AlienInlineNode = function VeCeAlienInlineNode( model ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ce.AlienInlineNode, ve.ce.AlienNode );
+OO.inheritClass( ve.ce.AlienInlineNode, ve.ce.AlienNode );
 
 /* Static Properties */
 

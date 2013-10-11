@@ -66,9 +66,9 @@ ve.ui.ToolGroup = function VeUiToolGroup( toolbar, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.ToolGroup, ve.ui.Widget );
+OO.inheritClass( ve.ui.ToolGroup, ve.ui.Widget );
 
-ve.mixinClass( ve.ui.ToolGroup, ve.ui.GroupElement );
+OO.mixinClass( ve.ui.ToolGroup, ve.ui.GroupElement );
 
 /* Events */
 

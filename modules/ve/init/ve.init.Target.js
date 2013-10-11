@@ -25,7 +25,7 @@ ve.init.Target = function VeInitTarget( $container ) {
 
 /* Inheritance */
 
-ve.mixinClass( ve.init.Target, ve.EventEmitter );
+OO.mixinClass( ve.init.Target, ve.EventEmitter );
 
 /* Static Properties */
 

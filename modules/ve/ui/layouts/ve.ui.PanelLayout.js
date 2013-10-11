@@ -39,4 +39,4 @@ ve.ui.PanelLayout = function VeUiPanelLayout( config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.PanelLayout, ve.ui.Layout );
+OO.inheritClass( ve.ui.PanelLayout, ve.ui.Layout );

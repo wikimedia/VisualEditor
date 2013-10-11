@@ -42,4 +42,4 @@ ve.init.sa.Target = function VeInitSaTarget( $container, doc ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.init.sa.Target, ve.init.Target );
+OO.inheritClass( ve.init.sa.Target, ve.init.Target );

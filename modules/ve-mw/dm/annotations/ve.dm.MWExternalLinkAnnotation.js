@@ -27,7 +27,7 @@ ve.dm.MWExternalLinkAnnotation = function VeDmMWExternalLinkAnnotation( element 
 
 /* Inheritance */
 
-ve.inheritClass( ve.dm.MWExternalLinkAnnotation, ve.dm.LinkAnnotation );
+OO.inheritClass( ve.dm.MWExternalLinkAnnotation, ve.dm.LinkAnnotation );
 
 /* Static Properties */
 

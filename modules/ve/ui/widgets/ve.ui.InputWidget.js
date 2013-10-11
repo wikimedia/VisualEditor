@@ -42,7 +42,7 @@ ve.ui.InputWidget = function VeUiInputWidget( config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.InputWidget, ve.ui.Widget );
+OO.inheritClass( ve.ui.InputWidget, ve.ui.Widget );
 
 /* Events */
 

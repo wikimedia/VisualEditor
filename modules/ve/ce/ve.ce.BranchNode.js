@@ -38,9 +38,9 @@ ve.ce.BranchNode = function VeCeBranchNode( model, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ce.BranchNode, ve.ce.Node );
+OO.inheritClass( ve.ce.BranchNode, ve.ce.Node );
 
-ve.mixinClass( ve.ce.BranchNode, ve.BranchNode );
+OO.mixinClass( ve.ce.BranchNode, ve.BranchNode );
 
 /* Events */
 

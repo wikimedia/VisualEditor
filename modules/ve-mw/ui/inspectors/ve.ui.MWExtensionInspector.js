@@ -23,7 +23,7 @@ ve.ui.MWExtensionInspector = function VeUiMWExtensionInspector( windowSet, confi
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.MWExtensionInspector, ve.ui.SurfaceInspector );
+OO.inheritClass( ve.ui.MWExtensionInspector, ve.ui.SurfaceInspector );
 
 /* Static properties */
 

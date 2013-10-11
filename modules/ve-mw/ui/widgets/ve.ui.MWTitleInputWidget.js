@@ -41,9 +41,9 @@ ve.ui.MWTitleInputWidget = function VeUiMWTitleInputWidget( config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.MWTitleInputWidget, ve.ui.TextInputWidget );
+OO.inheritClass( ve.ui.MWTitleInputWidget, ve.ui.TextInputWidget );
 
-ve.mixinClass( ve.ui.MWTitleInputWidget, ve.ui.LookupInputWidget );
+OO.mixinClass( ve.ui.MWTitleInputWidget, ve.ui.LookupInputWidget );
 
 /* Methods */
 

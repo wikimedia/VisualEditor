@@ -35,9 +35,9 @@ ve.ui.StackPanelLayout = function VeUiStackPanelLayout( config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.StackPanelLayout, ve.ui.PanelLayout );
+OO.inheritClass( ve.ui.StackPanelLayout, ve.ui.PanelLayout );
 
-ve.mixinClass( ve.ui.StackPanelLayout, ve.ui.GroupElement );
+OO.mixinClass( ve.ui.StackPanelLayout, ve.ui.GroupElement );
 
 /* Methods */
 

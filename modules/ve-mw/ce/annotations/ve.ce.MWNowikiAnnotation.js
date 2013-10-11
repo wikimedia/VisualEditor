@@ -24,7 +24,7 @@ ve.ce.MWNowikiAnnotation = function VeCeMWInternalLinkAnnotation( model, config 
 
 /* Inheritance */
 
-ve.inheritClass( ve.ce.MWNowikiAnnotation, ve.ce.Annotation );
+OO.inheritClass( ve.ce.MWNowikiAnnotation, ve.ce.Annotation );
 
 /* Static Properties */
 

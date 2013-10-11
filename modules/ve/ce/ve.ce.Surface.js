@@ -120,9 +120,9 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ce.Surface, ve.Element );
+OO.inheritClass( ve.ce.Surface, ve.Element );
 
-ve.mixinClass( ve.ce.Surface, ve.EventEmitter );
+OO.mixinClass( ve.ce.Surface, ve.EventEmitter );
 
 /* Events */
 

@@ -43,9 +43,9 @@ ve.ce.View = function VeCeView( model, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ce.View, ve.Element );
+OO.inheritClass( ve.ce.View, ve.Element );
 
-ve.mixinClass( ve.ce.View, ve.EventEmitter );
+OO.mixinClass( ve.ce.View, ve.EventEmitter );
 
 /* Events */
 

@@ -29,7 +29,7 @@ ve.ui.Inspector = function VeUiInspector( windowSet, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.Inspector, ve.ui.Window );
+OO.inheritClass( ve.ui.Inspector, ve.ui.Window );
 
 /* Static Properties */
 

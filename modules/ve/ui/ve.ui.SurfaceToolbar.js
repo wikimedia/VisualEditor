@@ -56,7 +56,7 @@ ve.ui.SurfaceToolbar = function VeUiSurfaceToolbar( surface, options ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.SurfaceToolbar, ve.ui.Toolbar );
+OO.inheritClass( ve.ui.SurfaceToolbar, ve.ui.Toolbar );
 
 /* Events */
 

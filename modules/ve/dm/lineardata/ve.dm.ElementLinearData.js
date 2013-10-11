@@ -22,7 +22,7 @@ ve.dm.ElementLinearData = function VeDmElementLinearData( store, data ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.dm.ElementLinearData, ve.dm.FlatLinearData );
+OO.inheritClass( ve.dm.ElementLinearData, ve.dm.FlatLinearData );
 
 /**
  * Check if content can be inserted at an offset in document data.
@@ -757,6 +757,6 @@ ve.dm.ElementLinearDataSlice = function VeDmElementLinearDataSlice( store, data,
 
 /* Inheritance */
 
-ve.inheritClass( ve.dm.ElementLinearDataSlice, ve.dm.ElementLinearData );
+OO.inheritClass( ve.dm.ElementLinearDataSlice, ve.dm.ElementLinearData );
 
-ve.mixinClass( ve.dm.ElementLinearDataSlice, ve.dm.SlicedLinearData );
+OO.mixinClass( ve.dm.ElementLinearDataSlice, ve.dm.SlicedLinearData );

@@ -59,7 +59,7 @@ ve.ui.SearchWidget = function VeUiSearchWidget( config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.SearchWidget, ve.ui.Widget );
+OO.inheritClass( ve.ui.SearchWidget, ve.ui.Widget );
 
 /* Events */
 

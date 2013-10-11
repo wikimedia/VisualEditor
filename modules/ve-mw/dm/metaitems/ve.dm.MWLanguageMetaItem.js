@@ -20,7 +20,7 @@ ve.dm.MWLanguageMetaItem = function VeDmMWLanguageMetaItem( element ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.dm.MWLanguageMetaItem, ve.dm.MetaItem );
+OO.inheritClass( ve.dm.MWLanguageMetaItem, ve.dm.MetaItem );
 
 /* Static Properties */
 

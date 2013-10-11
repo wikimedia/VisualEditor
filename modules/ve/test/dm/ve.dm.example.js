@@ -2843,7 +2843,7 @@ ve.dm.example.UnboldableNode = function ( lenght, element ) {
 	// Parent constructor
 	ve.dm.LeafNode.call( this, 0, element );
 };
-ve.inheritClass( ve.dm.example.UnboldableNode, ve.dm.LeafNode );
+OO.inheritClass( ve.dm.example.UnboldableNode, ve.dm.LeafNode );
 ve.dm.example.UnboldableNode.static.name = 'exampleUnboldable';
 ve.dm.example.UnboldableNode.static.isContent = true;
 ve.dm.example.UnboldableNode.static.blacklistedAnnotationTypes = [ 'textStyle/bold' ];

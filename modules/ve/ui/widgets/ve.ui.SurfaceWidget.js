@@ -45,7 +45,7 @@ ve.ui.SurfaceWidget = function VeUiSurfaceWidget( data, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.SurfaceWidget, ve.ui.Widget );
+OO.inheritClass( ve.ui.SurfaceWidget, ve.ui.Widget );
 
 /* Methods */
 

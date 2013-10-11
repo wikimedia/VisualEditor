@@ -33,7 +33,7 @@ ve.ui.MWSaveDialog = function VeUiMWSaveDialog( windowSet, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.MWSaveDialog, ve.ui.MWDialog );
+OO.inheritClass( ve.ui.MWSaveDialog, ve.ui.MWDialog );
 
 /* Static Properties */
 

@@ -24,7 +24,7 @@ ve.ce.TextStyleAnnotation = function VeCeTextStyleAnnotation( model, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ce.TextStyleAnnotation, ve.ce.Annotation );
+OO.inheritClass( ve.ce.TextStyleAnnotation, ve.ce.Annotation );
 
 /* Static Properties */
 
@@ -54,7 +54,7 @@ ve.ce.TextStyleBoldAnnotation = function VeCeTextStyleBoldAnnotation( model, con
 	ve.ce.TextStyleAnnotation.call( this, model, config );
 	this.$.addClass( 've-ce-TextStyleBoldAnnotation' );
 };
-ve.inheritClass( ve.ce.TextStyleBoldAnnotation, ve.ce.TextStyleAnnotation );
+OO.inheritClass( ve.ce.TextStyleBoldAnnotation, ve.ce.TextStyleAnnotation );
 ve.ce.TextStyleBoldAnnotation.static.name = 'textStyle/bold';
 ve.ce.TextStyleBoldAnnotation.static.tagName = 'b';
 ve.ce.annotationFactory.register( ve.ce.TextStyleBoldAnnotation );
@@ -71,7 +71,7 @@ ve.ce.TextStyleItalicAnnotation = function VeCeTextStyleItalicAnnotation( model,
 	ve.ce.TextStyleAnnotation.call( this, model, config );
 	this.$.addClass( 've-ce-TextStyleItalicAnnotation' );
 };
-ve.inheritClass( ve.ce.TextStyleItalicAnnotation, ve.ce.TextStyleAnnotation );
+OO.inheritClass( ve.ce.TextStyleItalicAnnotation, ve.ce.TextStyleAnnotation );
 ve.ce.TextStyleItalicAnnotation.static.name = 'textStyle/italic';
 ve.ce.TextStyleItalicAnnotation.static.tagName = 'i';
 ve.ce.annotationFactory.register( ve.ce.TextStyleItalicAnnotation );
@@ -88,7 +88,7 @@ ve.ce.TextStyleUnderlineAnnotation = function VeCeTextStyleUnderlineAnnotation( 
 	ve.ce.TextStyleAnnotation.call( this, model, config );
 	this.$.addClass( 've-ce-TextStyleUnderlineAnnotation' );
 };
-ve.inheritClass( ve.ce.TextStyleUnderlineAnnotation, ve.ce.TextStyleAnnotation );
+OO.inheritClass( ve.ce.TextStyleUnderlineAnnotation, ve.ce.TextStyleAnnotation );
 ve.ce.TextStyleUnderlineAnnotation.static.name = 'textStyle/underline';
 ve.ce.TextStyleUnderlineAnnotation.static.tagName = 'u';
 ve.ce.annotationFactory.register( ve.ce.TextStyleUnderlineAnnotation );
@@ -105,7 +105,7 @@ ve.ce.TextStyleStrikeAnnotation = function VeCeTextStyleStrikeAnnotation( model,
 	ve.ce.TextStyleAnnotation.call( this, model, config );
 	this.$.addClass( 've-ce-TextStyleStrikeAnnotation' );
 };
-ve.inheritClass( ve.ce.TextStyleStrikeAnnotation, ve.ce.TextStyleAnnotation );
+OO.inheritClass( ve.ce.TextStyleStrikeAnnotation, ve.ce.TextStyleAnnotation );
 ve.ce.TextStyleStrikeAnnotation.static.name = 'textStyle/strike';
 ve.ce.TextStyleStrikeAnnotation.static.tagName = 's';
 ve.ce.annotationFactory.register( ve.ce.TextStyleStrikeAnnotation );
@@ -122,7 +122,7 @@ ve.ce.TextStyleSmallAnnotation = function VeCeTextStyleSmallAnnotation( model, c
 	ve.ce.TextStyleAnnotation.call( this, model, config );
 	this.$.addClass( 've-ce-TextStyleSmallAnnotation' );
 };
-ve.inheritClass( ve.ce.TextStyleSmallAnnotation, ve.ce.TextStyleAnnotation );
+OO.inheritClass( ve.ce.TextStyleSmallAnnotation, ve.ce.TextStyleAnnotation );
 ve.ce.TextStyleSmallAnnotation.static.name = 'textStyle/small';
 ve.ce.TextStyleSmallAnnotation.static.tagName = 'small';
 ve.ce.annotationFactory.register( ve.ce.TextStyleSmallAnnotation );
@@ -139,7 +139,7 @@ ve.ce.TextStyleBigAnnotation = function VeCeTextStyleBigAnnotation( model, confi
 	ve.ce.TextStyleAnnotation.call( this, model, config );
 	this.$.addClass( 've-ce-TextStyleBigAnnotation' );
 };
-ve.inheritClass( ve.ce.TextStyleBigAnnotation, ve.ce.TextStyleAnnotation );
+OO.inheritClass( ve.ce.TextStyleBigAnnotation, ve.ce.TextStyleAnnotation );
 ve.ce.TextStyleBigAnnotation.static.name = 'textStyle/big';
 ve.ce.TextStyleBigAnnotation.static.tagName = 'big';
 ve.ce.annotationFactory.register( ve.ce.TextStyleBigAnnotation );
@@ -156,7 +156,7 @@ ve.ce.TextStyleSpanAnnotation = function VeCeTextStyleSpanAnnotation( model, con
 	ve.ce.TextStyleAnnotation.call( this, model, config );
 	this.$.addClass( 've-ce-TextStyleSpanAnnotation' );
 };
-ve.inheritClass( ve.ce.TextStyleSpanAnnotation, ve.ce.TextStyleAnnotation );
+OO.inheritClass( ve.ce.TextStyleSpanAnnotation, ve.ce.TextStyleAnnotation );
 ve.ce.TextStyleSpanAnnotation.static.name = 'textStyle/span';
 ve.ce.TextStyleSpanAnnotation.static.tagName = 'span';
 ve.ce.annotationFactory.register( ve.ce.TextStyleSpanAnnotation );
@@ -173,7 +173,7 @@ ve.ce.TextStyleStrongAnnotation = function VeCeTextStyleStrongAnnotation( model,
 	ve.ce.TextStyleAnnotation.call( this, model, config );
 	this.$.addClass( 've-ce-TextStyleStrongAnnotation' );
 };
-ve.inheritClass( ve.ce.TextStyleStrongAnnotation, ve.ce.TextStyleAnnotation );
+OO.inheritClass( ve.ce.TextStyleStrongAnnotation, ve.ce.TextStyleAnnotation );
 ve.ce.TextStyleStrongAnnotation.static.name = 'textStyle/strong';
 ve.ce.TextStyleStrongAnnotation.static.tagName = 'strong';
 ve.ce.annotationFactory.register( ve.ce.TextStyleStrongAnnotation );
@@ -190,7 +190,7 @@ ve.ce.TextStyleEmphasizeAnnotation = function VeCeTextStyleEmphasizeAnnotation( 
 	ve.ce.TextStyleAnnotation.call( this, model, config );
 	this.$.addClass( 've-ce-TextStyleEmphasizeAnnotation' );
 };
-ve.inheritClass( ve.ce.TextStyleEmphasizeAnnotation, ve.ce.TextStyleAnnotation );
+OO.inheritClass( ve.ce.TextStyleEmphasizeAnnotation, ve.ce.TextStyleAnnotation );
 ve.ce.TextStyleEmphasizeAnnotation.static.name = 'textStyle/emphasize';
 ve.ce.TextStyleEmphasizeAnnotation.static.tagName = 'em';
 ve.ce.annotationFactory.register( ve.ce.TextStyleEmphasizeAnnotation );
@@ -207,7 +207,7 @@ ve.ce.TextStyleSuperscriptAnnotation = function VeCeTextStyleSuperscriptAnnotati
 	ve.ce.TextStyleAnnotation.call( this, model, config );
 	this.$.addClass( 've-ce-TextStyleSuperscriptAnnotation' );
 };
-ve.inheritClass( ve.ce.TextStyleSuperscriptAnnotation, ve.ce.TextStyleAnnotation );
+OO.inheritClass( ve.ce.TextStyleSuperscriptAnnotation, ve.ce.TextStyleAnnotation );
 ve.ce.TextStyleSuperscriptAnnotation.static.name = 'textStyle/superscript';
 ve.ce.TextStyleSuperscriptAnnotation.static.tagName = 'sup';
 ve.ce.annotationFactory.register( ve.ce.TextStyleSuperscriptAnnotation );
@@ -224,7 +224,7 @@ ve.ce.TextStyleSubscriptAnnotation = function VeCeTextStyleSubscriptAnnotation( 
 	ve.ce.TextStyleAnnotation.call( this, model, config );
 	this.$.addClass( 've-ce-TextStyleSubscriptAnnotation' );
 };
-ve.inheritClass( ve.ce.TextStyleSubscriptAnnotation, ve.ce.TextStyleAnnotation );
+OO.inheritClass( ve.ce.TextStyleSubscriptAnnotation, ve.ce.TextStyleAnnotation );
 ve.ce.TextStyleSubscriptAnnotation.static.name = 'textStyle/subscript';
 ve.ce.TextStyleSubscriptAnnotation.static.tagName = 'sub';
 ve.ce.annotationFactory.register( ve.ce.TextStyleSubscriptAnnotation );
@@ -241,7 +241,7 @@ ve.ce.TextStyleCodeAnnotation = function VeCeTextStyleCodeAnnotation( model, con
 	ve.ce.TextStyleAnnotation.call( this, model, config );
 	this.$.addClass( 've-ce-TextStyleCodeAnnotation' );
 };
-ve.inheritClass( ve.ce.TextStyleCodeAnnotation, ve.ce.TextStyleAnnotation );
+OO.inheritClass( ve.ce.TextStyleCodeAnnotation, ve.ce.TextStyleAnnotation );
 ve.ce.TextStyleCodeAnnotation.static.name = 'textStyle/code';
 ve.ce.TextStyleCodeAnnotation.static.tagName = 'code';
 ve.ce.annotationFactory.register( ve.ce.TextStyleCodeAnnotation );

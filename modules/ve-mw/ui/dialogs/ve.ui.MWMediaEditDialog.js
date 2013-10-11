@@ -26,7 +26,7 @@ ve.ui.MWMediaEditDialog = function VeUiMWMediaEditDialog( windowSet, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.MWMediaEditDialog, ve.ui.MWDialog );
+OO.inheritClass( ve.ui.MWMediaEditDialog, ve.ui.MWDialog );
 
 /* Static Properties */
 

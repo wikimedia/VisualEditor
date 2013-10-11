@@ -59,10 +59,10 @@ ve.ui.Toolbar = function VeUiToolbar( toolFactory, options ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.Toolbar, ve.Element );
+OO.inheritClass( ve.ui.Toolbar, ve.Element );
 
-ve.mixinClass( ve.ui.Toolbar, ve.EventEmitter );
-ve.mixinClass( ve.ui.Toolbar, ve.ui.GroupElement );
+OO.mixinClass( ve.ui.Toolbar, ve.EventEmitter );
+OO.mixinClass( ve.ui.Toolbar, ve.ui.GroupElement );
 
 /* Methods */
 

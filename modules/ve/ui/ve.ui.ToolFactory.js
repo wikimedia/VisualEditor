@@ -19,7 +19,7 @@ ve.ui.ToolFactory = function VeUiToolFactory() {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.ToolFactory, ve.Factory );
+OO.inheritClass( ve.ui.ToolFactory, ve.Factory );
 
 /* Methods */
 

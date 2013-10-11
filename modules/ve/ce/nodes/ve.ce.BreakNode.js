@@ -24,7 +24,7 @@ ve.ce.BreakNode = function VeCeBreakNode( model, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ce.BreakNode, ve.ce.LeafNode );
+OO.inheritClass( ve.ce.BreakNode, ve.ce.LeafNode );
 
 /* Static Properties */
 

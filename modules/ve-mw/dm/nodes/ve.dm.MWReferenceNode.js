@@ -27,7 +27,7 @@ ve.dm.MWReferenceNode = function VeDmMWReferenceNode( length, element ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.dm.MWReferenceNode, ve.dm.LeafNode );
+OO.inheritClass( ve.dm.MWReferenceNode, ve.dm.LeafNode );
 
 /* Static members */
 

@@ -167,7 +167,7 @@ ve.ui.MWSyntaxHighlightSimpleSurface = function VeUiMWSyntaxHighlightSimpleSurfa
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.MWSyntaxHighlightSimpleSurface , ve.Element );
+OO.inheritClass( ve.ui.MWSyntaxHighlightSimpleSurface , ve.Element );
 
 /* Methods */
 

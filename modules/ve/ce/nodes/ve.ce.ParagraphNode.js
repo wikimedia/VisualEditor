@@ -29,7 +29,7 @@ ve.ce.ParagraphNode = function VeCeParagraphNode( model, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ce.ParagraphNode, ve.ce.ContentBranchNode );
+OO.inheritClass( ve.ce.ParagraphNode, ve.ce.ContentBranchNode );
 
 /* Static Properties */
 

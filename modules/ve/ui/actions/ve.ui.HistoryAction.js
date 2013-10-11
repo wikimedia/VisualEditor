@@ -20,7 +20,7 @@ ve.ui.HistoryAction = function VeUiHistoryAction( surface ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.HistoryAction, ve.ui.Action );
+OO.inheritClass( ve.ui.HistoryAction, ve.ui.Action );
 
 /* Static Properties */
 

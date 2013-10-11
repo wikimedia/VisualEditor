@@ -69,9 +69,9 @@ ve.ui.PopupWidget = function VeUiPopupWidget( config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.PopupWidget, ve.ui.Widget );
+OO.inheritClass( ve.ui.PopupWidget, ve.ui.Widget );
 
-ve.mixinClass( ve.ui.PopupWidget, ve.ui.LabeledElement );
+OO.mixinClass( ve.ui.PopupWidget, ve.ui.LabeledElement );
 
 /* Events */
 

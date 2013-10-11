@@ -33,7 +33,7 @@ ve.dm.Surface = function VeDmSurface( doc ) {
 
 /* Inheritance */
 
-ve.mixinClass( ve.dm.Surface, ve.EventEmitter );
+OO.mixinClass( ve.dm.Surface, ve.EventEmitter );
 
 /* Events */
 

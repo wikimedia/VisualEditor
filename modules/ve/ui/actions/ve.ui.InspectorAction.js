@@ -20,7 +20,7 @@ ve.ui.InspectorAction = function VeUiInspectorAction( surface ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.InspectorAction, ve.ui.Action );
+OO.inheritClass( ve.ui.InspectorAction, ve.ui.Action );
 
 /* Static Properties */
 

@@ -40,7 +40,7 @@ ve.ui.Dialog = function VeUiDialog( windowSet, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.Dialog, ve.ui.Window );
+OO.inheritClass( ve.ui.Dialog, ve.ui.Window );
 
 /* Static Properties */
 

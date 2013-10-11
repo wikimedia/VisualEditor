@@ -26,7 +26,7 @@ ve.dm.MWInternalLinkAnnotation = function VeDmMWInternalLinkAnnotation( element 
 
 /* Inheritance */
 
-ve.inheritClass( ve.dm.MWInternalLinkAnnotation, ve.dm.LinkAnnotation );
+OO.inheritClass( ve.dm.MWInternalLinkAnnotation, ve.dm.LinkAnnotation );
 
 /* Static Properties */
 

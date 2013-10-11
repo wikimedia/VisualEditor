@@ -19,7 +19,7 @@ ve.ce.AnnotationFactory = function VeCeAnnotationFactory() {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ce.AnnotationFactory, ve.Factory );
+OO.inheritClass( ve.ce.AnnotationFactory, ve.Factory );
 
 /* Methods */
 

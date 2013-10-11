@@ -64,7 +64,7 @@ ve.ui.Context = function VeUiContext( surface, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.Context, ve.Element );
+OO.inheritClass( ve.ui.Context, ve.Element );
 
 /* Methods */
 

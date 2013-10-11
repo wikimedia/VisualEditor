@@ -36,7 +36,7 @@ ve.dm.InternalList = function VeDmInternalList( doc ) {
 
 /* Inheritance */
 
-ve.mixinClass( ve.dm.InternalList, ve.EventEmitter );
+OO.mixinClass( ve.dm.InternalList, ve.EventEmitter );
 
 /* Events */
 

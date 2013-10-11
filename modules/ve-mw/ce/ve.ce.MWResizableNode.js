@@ -22,7 +22,7 @@ ve.ce.MWResizableNode = function VeCeMWResizableNode( $resizable, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ce.MWResizableNode, ve.ce.ResizableNode );
+OO.inheritClass( ve.ce.MWResizableNode, ve.ce.ResizableNode );
 
 /**
  * Generate an object of attributes changes from the new width and height.

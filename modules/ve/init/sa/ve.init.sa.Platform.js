@@ -26,7 +26,7 @@ ve.init.sa.Platform = function VeInitSaPlatform() {
 
 /* Inheritance */
 
-ve.inheritClass( ve.init.sa.Platform, ve.init.Platform );
+OO.inheritClass( ve.init.sa.Platform, ve.init.Platform );
 
 /* Methods */
 

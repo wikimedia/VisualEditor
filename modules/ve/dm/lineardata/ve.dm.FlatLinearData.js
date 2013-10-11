@@ -22,7 +22,7 @@ ve.dm.FlatLinearData = function VeDmFlatLinearData( store, data ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.dm.FlatLinearData, ve.dm.LinearData );
+OO.inheritClass( ve.dm.FlatLinearData, ve.dm.LinearData );
 
 /* Methods */
 

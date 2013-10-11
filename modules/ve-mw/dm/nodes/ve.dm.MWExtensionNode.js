@@ -26,9 +26,9 @@ ve.dm.MWExtensionNode = function VeDmMWExtensionNode( length, element ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.dm.MWExtensionNode, ve.dm.LeafNode );
+OO.inheritClass( ve.dm.MWExtensionNode, ve.dm.LeafNode );
 
-ve.mixinClass( ve.dm.MWExtensionNode, ve.dm.GeneratedContentNode );
+OO.mixinClass( ve.dm.MWExtensionNode, ve.dm.GeneratedContentNode );
 
 /* Static members */
 

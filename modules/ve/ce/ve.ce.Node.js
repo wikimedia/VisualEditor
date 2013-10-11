@@ -29,9 +29,9 @@ ve.ce.Node = function VeCeNode( model, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ce.Node, ve.ce.View );
+OO.inheritClass( ve.ce.Node, ve.ce.View );
 
-ve.mixinClass( ve.ce.Node, ve.Node );
+OO.mixinClass( ve.ce.Node, ve.Node );
 
 /* Static Members */
 

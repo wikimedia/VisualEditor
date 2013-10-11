@@ -27,7 +27,7 @@ ve.ce.Annotation = function VeCeAnnotation( model, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ce.Annotation, ve.ce.View );
+OO.inheritClass( ve.ce.Annotation, ve.ce.View );
 
 /* Static Properties */
 

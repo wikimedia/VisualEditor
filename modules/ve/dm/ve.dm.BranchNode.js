@@ -43,9 +43,9 @@ ve.dm.BranchNode = function VeDmBranchNode( children, element ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.dm.BranchNode, ve.dm.Node );
+OO.inheritClass( ve.dm.BranchNode, ve.dm.Node );
 
-ve.mixinClass( ve.dm.BranchNode, ve.BranchNode );
+OO.mixinClass( ve.dm.BranchNode, ve.BranchNode );
 
 /* Methods */
 

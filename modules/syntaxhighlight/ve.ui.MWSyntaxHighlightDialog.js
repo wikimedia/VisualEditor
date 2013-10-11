@@ -22,7 +22,7 @@ ve.ui.MWSyntaxHighlightDialog = function VeUiMWSyntaxHighlightDialog( windowSet,
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.MWSyntaxHighlightDialog, ve.ui.MWDialog );
+OO.inheritClass( ve.ui.MWSyntaxHighlightDialog, ve.ui.MWDialog );
 
 /* Static Properties */
 

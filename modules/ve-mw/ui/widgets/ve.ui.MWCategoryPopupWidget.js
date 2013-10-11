@@ -60,7 +60,7 @@ ve.ui.MWCategoryPopupWidget = function VeUiMWCategoryPopupWidget ( config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.MWCategoryPopupWidget, ve.ui.PopupWidget );
+OO.inheritClass( ve.ui.MWCategoryPopupWidget, ve.ui.PopupWidget );
 
 /* Events */
 

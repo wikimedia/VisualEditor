@@ -29,7 +29,7 @@ ve.ui.LanguageInspector = function VeUiLanguageInspector( windowSet, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.LanguageInspector, ve.ui.AnnotationInspector );
+OO.inheritClass( ve.ui.LanguageInspector, ve.ui.AnnotationInspector );
 
 /* Static properties */
 

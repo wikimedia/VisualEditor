@@ -26,4 +26,4 @@ ve.ui.SurfaceDialog = function VeUiSurfaceDialog( windowSet, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.SurfaceDialog, ve.ui.Dialog );
+OO.inheritClass( ve.ui.SurfaceDialog, ve.ui.Dialog );

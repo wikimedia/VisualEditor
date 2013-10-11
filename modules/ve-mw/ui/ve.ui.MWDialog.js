@@ -23,4 +23,4 @@ ve.ui.MWDialog = function VeUiMWDialog( windowSet, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.MWDialog, ve.ui.SurfaceDialog );
+OO.inheritClass( ve.ui.MWDialog, ve.ui.SurfaceDialog );

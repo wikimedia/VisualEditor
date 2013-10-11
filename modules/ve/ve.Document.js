@@ -24,7 +24,7 @@ ve.Document = function VeDocument( documentNode ) {
 
 /* Inheritance */
 
-ve.mixinClass( ve.Document, ve.EventEmitter );
+OO.mixinClass( ve.Document, ve.EventEmitter );
 
 /* Methods */
 

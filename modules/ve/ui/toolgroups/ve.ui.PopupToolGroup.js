@@ -55,11 +55,11 @@ ve.ui.PopupToolGroup = function VeUiPopupToolGroup( toolbar, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.PopupToolGroup, ve.ui.ToolGroup );
+OO.inheritClass( ve.ui.PopupToolGroup, ve.ui.ToolGroup );
 
-ve.mixinClass( ve.ui.PopupToolGroup, ve.ui.IconedElement );
-ve.mixinClass( ve.ui.PopupToolGroup, ve.ui.LabeledElement );
-ve.mixinClass( ve.ui.PopupToolGroup, ve.ui.ClippableElement );
+OO.mixinClass( ve.ui.PopupToolGroup, ve.ui.IconedElement );
+OO.mixinClass( ve.ui.PopupToolGroup, ve.ui.LabeledElement );
+OO.mixinClass( ve.ui.PopupToolGroup, ve.ui.ClippableElement );
 
 /* Static Properties */
 

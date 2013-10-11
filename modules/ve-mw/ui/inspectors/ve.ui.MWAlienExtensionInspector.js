@@ -22,7 +22,7 @@ ve.ui.MWAlienExtensionInspector = function VeUiMWAlienExtensionInspector( window
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.MWAlienExtensionInspector, ve.ui.MWExtensionInspector );
+OO.inheritClass( ve.ui.MWAlienExtensionInspector, ve.ui.MWExtensionInspector );
 
 /* Static properties */
 

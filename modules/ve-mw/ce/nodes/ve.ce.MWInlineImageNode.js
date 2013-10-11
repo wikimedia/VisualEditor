@@ -59,12 +59,12 @@ ve.ce.MWInlineImageNode = function VeCeMWInlineImageNode( model, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ce.MWInlineImageNode, ve.ce.LeafNode );
+OO.inheritClass( ve.ce.MWInlineImageNode, ve.ce.LeafNode );
 
 // Need to mixin base class as well
-ve.mixinClass( ve.ce.MWInlineImageNode, ve.ce.GeneratedContentNode );
+OO.mixinClass( ve.ce.MWInlineImageNode, ve.ce.GeneratedContentNode );
 
-ve.mixinClass( ve.ce.MWInlineImageNode, ve.ce.MWImageNode );
+OO.mixinClass( ve.ce.MWInlineImageNode, ve.ce.MWImageNode );
 
 /* Static Properties */
 

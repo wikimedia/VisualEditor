@@ -22,7 +22,7 @@ ve.ui.LinkInspector = function VeUiLinkInspector( windowSet, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.LinkInspector, ve.ui.AnnotationInspector );
+OO.inheritClass( ve.ui.LinkInspector, ve.ui.AnnotationInspector );
 
 /* Static properties */
 

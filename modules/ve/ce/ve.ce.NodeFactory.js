@@ -19,7 +19,7 @@ ve.ce.NodeFactory = function VeCeNodeFactory() {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ce.NodeFactory, ve.Factory );
+OO.inheritClass( ve.ce.NodeFactory, ve.Factory );
 
 /* Methods */
 

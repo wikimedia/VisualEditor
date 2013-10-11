@@ -32,7 +32,7 @@ ve.ce.DocumentNode = function VeCeDocumentNode( model, surface, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ce.DocumentNode, ve.ce.BranchNode );
+OO.inheritClass( ve.ce.DocumentNode, ve.ce.BranchNode );
 
 /* Static Properties */
 

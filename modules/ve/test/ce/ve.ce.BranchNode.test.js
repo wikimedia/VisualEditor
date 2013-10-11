@@ -14,7 +14,7 @@ ve.ce.BranchNodeStub = function VeCeBranchNodeStub( model, $element ) {
 	ve.ce.BranchNode.call( this, model, $element );
 };
 
-ve.inheritClass( ve.ce.BranchNodeStub, ve.ce.BranchNode );
+OO.inheritClass( ve.ce.BranchNodeStub, ve.ce.BranchNode );
 
 ve.ce.BranchNodeStub.static.name = 'branch-stub';
 

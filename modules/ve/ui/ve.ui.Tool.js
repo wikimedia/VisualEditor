@@ -49,10 +49,10 @@ ve.ui.Tool = function VeUiTool( toolbar, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.Tool, ve.ui.Widget );
+OO.inheritClass( ve.ui.Tool, ve.ui.Widget );
 
-ve.mixinClass( ve.ui.Tool, ve.ui.IconedElement );
-ve.mixinClass( ve.ui.Tool, ve.ui.LabeledElement );
+OO.mixinClass( ve.ui.Tool, ve.ui.IconedElement );
+OO.mixinClass( ve.ui.Tool, ve.ui.LabeledElement );
 
 /* Events */
 

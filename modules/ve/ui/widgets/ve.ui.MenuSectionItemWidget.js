@@ -25,7 +25,7 @@ ve.ui.MenuSectionItemWidget = function VeUiMenuSectionItemWidget( data, config )
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.MenuSectionItemWidget, ve.ui.OptionWidget );
+OO.inheritClass( ve.ui.MenuSectionItemWidget, ve.ui.OptionWidget );
 
 ve.ui.MenuSectionItemWidget.static.selectable = false;
 

@@ -26,7 +26,7 @@ ve.ui.ListToolGroup = function VeUiListToolGroup( toolbar, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.ListToolGroup, ve.ui.PopupToolGroup );
+OO.inheritClass( ve.ui.ListToolGroup, ve.ui.PopupToolGroup );
 
 /* Static Properties */
 

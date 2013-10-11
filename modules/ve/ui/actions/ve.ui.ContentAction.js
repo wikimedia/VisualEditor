@@ -20,7 +20,7 @@ ve.ui.ContentAction = function VeUiContentAction( surface ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.ContentAction, ve.ui.Action );
+OO.inheritClass( ve.ui.ContentAction, ve.ui.Action );
 
 /* Static Properties */
 

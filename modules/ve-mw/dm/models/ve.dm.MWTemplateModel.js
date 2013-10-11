@@ -38,7 +38,7 @@ ve.dm.MWTemplateModel = function VeDmMWTemplateModel( transclusion, target, orig
 
 /* Inheritance */
 
-ve.inheritClass( ve.dm.MWTemplateModel, ve.dm.MWTransclusionPartModel );
+OO.inheritClass( ve.dm.MWTemplateModel, ve.dm.MWTransclusionPartModel );
 
 /* Events */
 

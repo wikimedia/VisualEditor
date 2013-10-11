@@ -22,7 +22,7 @@ ve.Factory = function VeFactory() {
 
 /* Inheritance */
 
-ve.inheritClass( ve.Factory, ve.Registry );
+OO.inheritClass( ve.Factory, ve.Registry );
 
 /* Methods */
 

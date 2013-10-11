@@ -37,18 +37,18 @@ ve.ce.MWImageNode = function VeCeMWImageNode( $inner, $image, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ce.MWImageNode, ve.ce.GeneratedContentNode );
+OO.inheritClass( ve.ce.MWImageNode, ve.ce.GeneratedContentNode );
 
-ve.mixinClass( ve.ce.MWImageNode, ve.ce.ProtectedNode );
+OO.mixinClass( ve.ce.MWImageNode, ve.ce.ProtectedNode );
 
-ve.mixinClass( ve.ce.MWImageNode, ve.ce.FocusableNode );
+OO.mixinClass( ve.ce.MWImageNode, ve.ce.FocusableNode );
 
-ve.mixinClass( ve.ce.MWImageNode, ve.ce.RelocatableNode );
+OO.mixinClass( ve.ce.MWImageNode, ve.ce.RelocatableNode );
 
 // Need to mixin base class as well
-ve.mixinClass( ve.ce.MWImageNode, ve.ce.ResizableNode );
+OO.mixinClass( ve.ce.MWImageNode, ve.ce.ResizableNode );
 
-ve.mixinClass( ve.ce.MWImageNode, ve.ce.MWResizableNode );
+OO.mixinClass( ve.ce.MWImageNode, ve.ce.MWResizableNode );
 
 /* Methods */
 

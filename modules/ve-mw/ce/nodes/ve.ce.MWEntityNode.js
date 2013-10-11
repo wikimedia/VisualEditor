@@ -32,7 +32,7 @@ ve.ce.MWEntityNode = function VeCeMWEntityNode( model, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ce.MWEntityNode, ve.ce.LeafNode );
+OO.inheritClass( ve.ce.MWEntityNode, ve.ce.LeafNode );
 
 /* Static Properties */
 

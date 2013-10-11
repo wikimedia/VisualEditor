@@ -19,7 +19,7 @@ ve.ui.ActionFactory = function VeUiActionFactory() {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.ActionFactory, ve.Factory );
+OO.inheritClass( ve.ui.ActionFactory, ve.Factory );
 
 /* Methods */
 

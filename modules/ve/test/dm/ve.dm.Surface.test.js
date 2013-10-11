@@ -18,7 +18,7 @@ ve.dm.SurfaceStub = function VeDmSurfaceStub( data ) {
 	ve.dm.Surface.call( this, this.dm );
 };
 
-ve.inheritClass( ve.dm.SurfaceStub, ve.dm.Surface );
+OO.inheritClass( ve.dm.SurfaceStub, ve.dm.Surface );
 
 // Tests
 

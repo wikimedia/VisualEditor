@@ -32,6 +32,6 @@ ve.ui.Layout = function VeUiLayout( config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.Layout, ve.Element );
+OO.inheritClass( ve.ui.Layout, ve.Element );
 
-ve.mixinClass( ve.ui.Layout, ve.EventEmitter );
+OO.mixinClass( ve.ui.Layout, ve.EventEmitter );

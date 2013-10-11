@@ -41,9 +41,9 @@ ve.ui.FieldsetLayout = function VeUiFieldsetLayout( config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.FieldsetLayout, ve.ui.Layout );
+OO.inheritClass( ve.ui.FieldsetLayout, ve.ui.Layout );
 
-ve.mixinClass( ve.ui.FieldsetLayout, ve.ui.LabeledElement );
+OO.mixinClass( ve.ui.FieldsetLayout, ve.ui.LabeledElement );
 
 /* Static Properties */
 

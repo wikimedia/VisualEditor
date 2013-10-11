@@ -22,7 +22,7 @@ ve.dm.MWMathNode = function VeDmMWMathNode( length, element ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.dm.MWMathNode, ve.dm.MWExtensionNode );
+OO.inheritClass( ve.dm.MWMathNode, ve.dm.MWExtensionNode );
 
 /* Static members */
 

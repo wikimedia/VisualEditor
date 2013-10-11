@@ -26,7 +26,7 @@ ve.ui.SurfaceInspector = function VeUiSurfaceInspector( windowSet, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.SurfaceInspector, ve.ui.Inspector );
+OO.inheritClass( ve.ui.SurfaceInspector, ve.ui.Inspector );
 
 /* Methods */
 

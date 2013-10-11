@@ -19,7 +19,7 @@ ve.dm.NodeFactory = function VeDmNodeFactory() {
 
 /* Inheritance */
 
-ve.inheritClass( ve.dm.NodeFactory, ve.Factory );
+OO.inheritClass( ve.dm.NodeFactory, ve.Factory );
 
 /* Methods */
 

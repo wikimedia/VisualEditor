@@ -59,7 +59,7 @@ ve.ui.OutlineControlsWidget = function VeUiOutlineControlsWidget( outline, confi
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.OutlineControlsWidget, ve.ui.Widget );
+OO.inheritClass( ve.ui.OutlineControlsWidget, ve.ui.Widget );
 
 /* Events */
 

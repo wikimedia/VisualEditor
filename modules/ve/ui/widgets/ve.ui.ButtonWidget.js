@@ -63,10 +63,10 @@ ve.ui.ButtonWidget = function VeUiButtonWidget( config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.ButtonWidget, ve.ui.Widget );
+OO.inheritClass( ve.ui.ButtonWidget, ve.ui.Widget );
 
-ve.mixinClass( ve.ui.ButtonWidget, ve.ui.FlaggableElement );
-ve.mixinClass( ve.ui.ButtonWidget, ve.ui.LabeledElement );
+OO.mixinClass( ve.ui.ButtonWidget, ve.ui.FlaggableElement );
+OO.mixinClass( ve.ui.ButtonWidget, ve.ui.LabeledElement );
 
 /* Events */
 

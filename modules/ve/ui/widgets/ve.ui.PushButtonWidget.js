@@ -24,4 +24,4 @@ ve.ui.PushButtonWidget = function VeUiPushButtonWidget( config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.PushButtonWidget, ve.ui.ButtonWidget );
+OO.inheritClass( ve.ui.PushButtonWidget, ve.ui.ButtonWidget );

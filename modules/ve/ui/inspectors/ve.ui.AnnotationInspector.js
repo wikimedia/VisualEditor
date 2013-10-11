@@ -29,7 +29,7 @@ ve.ui.AnnotationInspector = function VeUiAnnotationInspector( windowSet, config 
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.AnnotationInspector, ve.ui.SurfaceInspector );
+OO.inheritClass( ve.ui.AnnotationInspector, ve.ui.SurfaceInspector );
 
 /**
  * Annotation models this inspector can edit.

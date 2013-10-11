@@ -58,9 +58,9 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.Surface, ve.Element );
+OO.inheritClass( ve.ui.Surface, ve.Element );
 
-ve.mixinClass( ve.ui.Surface, ve.EventEmitter );
+OO.mixinClass( ve.ui.Surface, ve.EventEmitter );
 
 /* Events */
 

@@ -22,7 +22,7 @@ ve.dm.LinkAnnotation = function VeDmLinkAnnotation( element ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.dm.LinkAnnotation, ve.dm.Annotation );
+OO.inheritClass( ve.dm.LinkAnnotation, ve.dm.Annotation );
 
 /* Static Properties */
 

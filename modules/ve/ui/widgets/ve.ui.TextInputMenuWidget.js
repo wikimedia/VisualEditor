@@ -31,7 +31,7 @@ ve.ui.TextInputMenuWidget = function VeUiTextInputMenuWidget( input, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.TextInputMenuWidget, ve.ui.MenuWidget );
+OO.inheritClass( ve.ui.TextInputMenuWidget, ve.ui.MenuWidget );
 
 /* Methods */
 

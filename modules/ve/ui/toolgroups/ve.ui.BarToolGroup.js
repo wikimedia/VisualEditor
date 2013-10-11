@@ -26,7 +26,7 @@ ve.ui.BarToolGroup = function VeUiBarToolGroup( toolbar, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.BarToolGroup, ve.ui.ToolGroup );
+OO.inheritClass( ve.ui.BarToolGroup, ve.ui.ToolGroup );
 
 /* Static Properties */
 

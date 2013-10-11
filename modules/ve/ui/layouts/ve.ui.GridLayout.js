@@ -51,7 +51,7 @@ ve.ui.GridLayout = function VeUiGridLayout( panels, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.GridLayout, ve.ui.Layout );
+OO.inheritClass( ve.ui.GridLayout, ve.ui.Layout );
 
 /* Events */
 

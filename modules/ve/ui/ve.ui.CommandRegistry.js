@@ -19,7 +19,7 @@ ve.ui.CommandRegistry = function VeCommandRegistry() {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.CommandRegistry, ve.Registry );
+OO.inheritClass( ve.ui.CommandRegistry, ve.Registry );
 
 /* Methods */
 

@@ -128,7 +128,7 @@ ve.init.mw.Target = function VeInitMwTarget( $container, pageName, revisionId ) 
 
 /* Inheritance */
 
-ve.inheritClass( ve.init.mw.Target, ve.init.Target );
+OO.inheritClass( ve.init.mw.Target, ve.init.Target );
 
 /* Static Methods */
 

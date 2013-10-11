@@ -40,11 +40,11 @@ ve.dm.Node = function VeDmNode( length, element ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.dm.Node, ve.dm.Model );
+OO.inheritClass( ve.dm.Node, ve.dm.Model );
 
-ve.mixinClass( ve.dm.Node, ve.Node );
+OO.mixinClass( ve.dm.Node, ve.Node );
 
-ve.mixinClass( ve.dm.Node, ve.EventEmitter );
+OO.mixinClass( ve.dm.Node, ve.EventEmitter );
 
 /* Static Properties */
 

@@ -24,7 +24,7 @@ ve.ui.MWLinkInspector = function VeUiMWLinkInspector( windowSet, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.MWLinkInspector, ve.ui.LinkInspector );
+OO.inheritClass( ve.ui.MWLinkInspector, ve.ui.LinkInspector );
 
 /* Static properties */
 

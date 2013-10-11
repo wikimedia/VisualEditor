@@ -25,7 +25,7 @@ ve.ui.MWReferenceDialog = function VeUiMWReferenceDialog( windowSet, config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.MWReferenceDialog, ve.ui.MWDialog );
+OO.inheritClass( ve.ui.MWReferenceDialog, ve.ui.MWDialog );
 
 /* Static Properties */
 

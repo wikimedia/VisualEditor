@@ -49,7 +49,7 @@ ve.dm.MetaList = function VeDmMetaList( surface ) {
 
 /* Inheritance */
 
-ve.mixinClass( ve.dm.MetaList, ve.EventEmitter );
+OO.mixinClass( ve.dm.MetaList, ve.EventEmitter );
 
 /* Events */
 

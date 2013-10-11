@@ -21,7 +21,7 @@ ve.ui.MWSyntaxHighlightTool = function VeUiMWSyntaxHighlightTool( toolbar, confi
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.MWSyntaxHighlightTool, ve.ui.DialogTool );
+OO.inheritClass( ve.ui.MWSyntaxHighlightTool, ve.ui.DialogTool );
 
 /* Static Properties */
 
@@ -48,7 +48,7 @@ ve.ui.MWSyntaxHighlightEditorTool = function VeUiMWSyntaxHighlightEditorTool( to
 	// Parent constructor
 	ve.ui.Tool.call( this, toolbar, config );
 };
-ve.inheritClass( ve.ui.MWSyntaxHighlightEditorTool, ve.ui.Tool );
+OO.inheritClass( ve.ui.MWSyntaxHighlightEditorTool, ve.ui.Tool );
 
 ve.ui.MWSyntaxHighlightEditorTool.prototype.onSelect = function () {
 	this.toolbar.context[this.constructor.static.method]();
@@ -66,7 +66,7 @@ ve.ui.MWSyntaxHighlightEditorTool.prototype.onUpdateState = function () {
 ve.ui.MWSynHiUndoTool = function VeUiMWSynhiUndoTool( toolbar, config ) {
 	ve.ui.MWSyntaxHighlightEditorTool.call( this, toolbar, config );
 };
-ve.inheritClass( ve.ui.MWSynHiUndoTool, ve.ui.MWSyntaxHighlightEditorTool );
+OO.inheritClass( ve.ui.MWSynHiUndoTool, ve.ui.MWSyntaxHighlightEditorTool );
 ve.ui.MWSynHiUndoTool.static.name = 'synhiUndo';
 ve.ui.MWSynHiUndoTool.static.group = 'synhiEditorTool';
 ve.ui.MWSynHiUndoTool.static.method = 'undo';
@@ -78,7 +78,7 @@ ve.ui.syntaxHighlightEditorToolFactory.register( ve.ui.MWSynHiUndoTool );
 ve.ui.MWSynHiRedoTool = function VeUiMWSynHiRedoTool( toolbar, config ) {
 	ve.ui.MWSyntaxHighlightEditorTool.call( this, toolbar, config );
 };
-ve.inheritClass( ve.ui.MWSynHiRedoTool, ve.ui.MWSyntaxHighlightEditorTool );
+OO.inheritClass( ve.ui.MWSynHiRedoTool, ve.ui.MWSyntaxHighlightEditorTool );
 ve.ui.MWSynHiRedoTool.static.name = 'synhiRedo';
 ve.ui.MWSynHiRedoTool.static.group = 'synhiEditorTool';
 ve.ui.MWSynHiRedoTool.static.method = 'redo';
@@ -90,7 +90,7 @@ ve.ui.syntaxHighlightEditorToolFactory.register( ve.ui.MWSynHiRedoTool );
 ve.ui.MWSynHiIndentTool = function VeUiMWSynHiIndentTool( toolbar, config ) {
 	ve.ui.MWSyntaxHighlightEditorTool.call( this, toolbar, config );
 };
-ve.inheritClass( ve.ui.MWSynHiIndentTool, ve.ui.MWSyntaxHighlightEditorTool );
+OO.inheritClass( ve.ui.MWSynHiIndentTool, ve.ui.MWSyntaxHighlightEditorTool );
 ve.ui.MWSynHiIndentTool.static.name = 'synhiIndent';
 ve.ui.MWSynHiIndentTool.static.group = 'synhiEditorTool';
 ve.ui.MWSynHiIndentTool.static.method = 'indent';
@@ -102,7 +102,7 @@ ve.ui.syntaxHighlightEditorToolFactory.register( ve.ui.MWSynHiIndentTool );
 ve.ui.MWSynHiBeautifyTool = function VeUiMWSynHiBeautifyTool( toolbar, config ) {
 	ve.ui.MWSyntaxHighlightEditorTool.call( this, toolbar, config );
 };
-ve.inheritClass( ve.ui.MWSynHiBeautifyTool, ve.ui.MWSyntaxHighlightEditorTool );
+OO.inheritClass( ve.ui.MWSynHiBeautifyTool, ve.ui.MWSyntaxHighlightEditorTool );
 ve.ui.MWSynHiBeautifyTool.static.name = 'synhiBeautify';
 ve.ui.MWSynHiBeautifyTool.static.group = 'synhiEditorTool';
 ve.ui.MWSynHiBeautifyTool.static.method = 'doBeautify';
