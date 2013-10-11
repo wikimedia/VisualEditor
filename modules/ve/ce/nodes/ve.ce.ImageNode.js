@@ -31,14 +31,15 @@ ve.ce.ImageNode = function VeCeImageNode( model, config ) {
 	this.$image = this.$;
 
 	// Events
-	this.model.connect( this, { 'update': 'onUpdate' } );
 	this.$.on( 'click', ve.bind( this.onClick, this ) );
 
 	// Initialization
 	this.$image
 		.addClass( 've-ce-imageNode' )
-		.attr( 'alt', this.model.getAttribute( 'alt' ) )
-		.attr( 'src', this.model.getAttribute( 'src' ) )
+		.attr( {
+			'alt': this.model.getAttribute( 'alt' ),
+			'src': this.model.getAttribute( 'src' )
+		} )
 		.css( {
 			'width': this.model.getAttribute( 'width' ),
 			'height': this.model.getAttribute( 'height' )
@@ -81,14 +82,6 @@ ve.ce.ImageNode.prototype.onAttributeChange = function ( key, from, to ) {
 			this.$image.css( key, to );
 		}
 	}
-};
-
-/**
- * Update method
- *
- * @method
- */
-ve.ce.ImageNode.prototype.onUpdate = function () {
 };
 
 /**
