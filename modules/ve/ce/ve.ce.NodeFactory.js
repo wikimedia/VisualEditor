@@ -37,6 +37,21 @@ ve.ce.NodeFactory.prototype.canNodeBeSplit = function ( type ) {
 	throw new Error( 'Unknown node type: ' + type );
 };
 
+/**
+ * Check if the node is focusable.
+ *
+ * @method
+ * @param {string} type Node type
+ * @returns {boolean} Whether the node is focusable
+ * @throws {Error} Unknown node type
+ */
+ve.ce.NodeFactory.prototype.isNodeFocusable = function ( type ) {
+	if ( type in this.registry ) {
+		return this.registry[type].static.isFocusable;
+	}
+	throw new Error( 'Unknown node type: ' + type );
+};
+
 /* Initialization */
 
 // TODO: Move instantiation to a different file

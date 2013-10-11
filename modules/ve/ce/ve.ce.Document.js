@@ -208,14 +208,14 @@ ve.ce.Document.prototype.getNearestFocusableNode = function ( offset, direction,
 			}
 			if (
 				this.isOpenElementData( index ) &&
-				ve.dm.nodeFactory.isNodeFocusable( this.getType( index ) )
+				ve.ce.nodeFactory.isNodeFocusable( this.getType( index ) )
 			) {
 				coveredOffset = index + 1;
 				return true;
 			}
 			if (
 				this.isCloseElementData( index ) &&
-				ve.dm.nodeFactory.isNodeFocusable( this.getType( index ) )
+				ve.ce.nodeFactory.isNodeFocusable( this.getType( index ) )
 			) {
 				coveredOffset = index;
 				return true;
@@ -252,7 +252,7 @@ ve.ce.Document.prototype.getRelativeRange = function ( range, direction, unit, e
 	}
 
 	node = this.documentNode.getNodeFromOffset( range.start + 1 );
-	if ( node && ve.dm.nodeFactory.isNodeFocusable( node.type ) ) {
+	if ( node && ve.ce.nodeFactory.isNodeFocusable( node.type ) ) {
 		if ( node === this.documentNode.getNodeFromOffset( range.end - 1 ) ) {
 			if ( this.model.data.isContentOffset( range.to ) || !!this.getSlugAtOffset( range.to ) ) {
 				return new ve.Range( direction === 1 ? range.end : range.start );
