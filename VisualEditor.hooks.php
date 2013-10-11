@@ -288,7 +288,7 @@ class VisualEditorHooks {
 			'defaultUserOptions' => array(
 				'betatempdisable' => $wgDefaultUserOptions['visualeditor-betatempdisable'],
 				'enable' => $wgDefaultUserOptions['visualeditor-enable'],
-				'experimental' => $wgDefaultUserOptions['visualeditor-enable-experimental'],
+				'enable-experimental' => $wgDefaultUserOptions['visualeditor-enable-experimental'],
 			),
 			'skins' => $wgVisualEditorSupportedSkins,
 			'tabPosition' => $wgVisualEditorTabPosition,
