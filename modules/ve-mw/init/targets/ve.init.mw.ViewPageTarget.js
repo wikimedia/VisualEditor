@@ -37,10 +37,6 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 	this.timings = {};
 	this.active = false;
 	this.edited = false;
-	this.sanityCheckFinished = false;
-	this.sanityCheckVerified = false;
-	this.activating = false;
-	this.deactivating = false;
 	// If this is true then #transformPage / #restorePage will not call pushState
 	// This is to avoid adding a new history entry for the url we just got from onpopstate
 	// (which would mess up with the expected order of Back/Forwards browsing)
@@ -70,16 +66,17 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 
 	// Events
 	this.connect( this, {
-		'load': 'onLoad',
 		'save': 'onSave',
 		'loadError': 'onLoadError',
+		'surfaceReady': 'onSurfaceReady',
 		'tokenError': 'onTokenError',
 		'saveError': 'onSaveError',
 		'editConflict': 'onEditConflict',
 		'showChanges': 'onShowChanges',
 		'showChangesError': 'onShowChangesError',
 		'noChanges': 'onNoChanges',
-		'serializeError': 'onSerializeError'
+		'serializeError': 'onSerializeError',
+		'sanityCheckComplete': 'updateToolbarSaveButtonState'
 	} );
 
 	if ( !browserWhitelisted ) {
@@ -165,7 +162,7 @@ ve.init.mw.ViewPageTarget.prototype.activate = function () {
 
 		this.saveScrollPosition();
 
-		this.load();
+		this.load( [ 'site', 'user' ] );
 	}
 };
 
@@ -217,34 +214,6 @@ ve.init.mw.ViewPageTarget.prototype.deactivate = function ( override ) {
 };
 
 /**
- * Handle successful DOM load event.
- *
- * @method
- * @param {HTMLDocument} doc Parsed DOM from server
- */
-ve.init.mw.ViewPageTarget.prototype.onLoad = function ( doc ) {
-	if ( this.activating ) {
-		this.edited = false;
-		this.doc = doc;
-		this.setUpSurface( doc, ve.bind( function() {
-			this.startSanityCheck();
-			this.setupToolbarButtons();
-			this.attachToolbarButtons();
-			this.restoreScrollPosition();
-			this.restoreEditSection();
-			this.setupBeforeUnloadHandler();
-			this.$document[0].focus();
-			this.activating = false;
-			if ( mw.config.get( 'wgVisualEditorConfig' ).showBetaWelcome ) {
-				this.showBetaWelcome();
-			}
-			ve.track( 'performance.system.activation', { 'duration': ve.now() - this.timings.activationStart } );
-			mw.hook( 've.activationComplete' ).fire();
-		}, this ) );
-	}
-};
-
-/**
  * Handle failed DOM load event.
  *
  * @method
@@ -279,6 +248,36 @@ ve.init.mw.ViewPageTarget.prototype.onTokenError = function ( response, status )
 		// User interface changes
 		this.deactivate( true );
 	}
+};
+
+/**
+ * Once surface is ready ready, init UI
+ *
+ * @method
+ */
+ve.init.mw.ViewPageTarget.prototype.onSurfaceReady = function () {
+	this.surface.getModel().getDocument().connect( this, {
+		'transact': 'recordLastTransactionTime'
+	} );
+	this.surface.getModel().connect( this, {
+		'documentUpdate': 'checkForWikitextWarning',
+		'history': 'updateToolbarSaveButtonState'
+	} );
+	// Update UI
+	this.transformPageTitle();
+	this.changeDocumentTitle();
+	this.hidePageContent();
+	this.hideSpinner();
+	this.setupToolbarButtons();
+	this.attachToolbarButtons();
+	this.restoreScrollPosition();
+	this.restoreEditSection();
+	this.setupBeforeUnloadHandler();
+	if ( mw.config.get( 'wgVisualEditorConfig' ).showBetaWelcome ) {
+		this.showBetaWelcome();
+	}
+	ve.track( 'performance.system.activation', { 'duration': ve.now() - this.timings.activationStart } );
+	mw.hook( 've.activationComplete' ).fire();
 };
 
 /**
@@ -1333,33 +1332,6 @@ ve.init.mw.ViewPageTarget.prototype.hideTableOfContents = function () {
 		.parent()
 			.data( 've.hideTableOfContents', true )
 			.slideUp();
-};
-
-/**
- * Show the toolbar.
- *
- * This also transplants the toolbar to a new location.
- *
- * @method
- */
-ve.init.mw.ViewPageTarget.prototype.setUpToolbar = function () {
-	this.toolbar = new ve.ui.TargetToolbar( this, this.surface, { 'shadow': true, 'actions': true } );
-	this.toolbar.setup( this.constructor.static.toolbarGroups );
-	this.surface.addCommands( this.constructor.static.surfaceCommands );
-	if ( !this.isMobileDevice ) {
-		this.toolbar.enableFloatable();
-	}
-	this.toolbar.$element
-		.addClass( 've-init-mw-viewPageTarget-toolbar' )
-		.insertBefore( '#firstHeading' );
-	this.toolbar.$bar.slideDown( 'fast', ve.bind( function () {
-		// Check the surface wasn't torn down while the toolbar was animating
-		if ( this.surface ) {
-			this.toolbar.initialize();
-			this.surface.emit( 'position' );
-			this.surface.getContext().update();
-		}
-	}, this ) );
 };
 
 /**

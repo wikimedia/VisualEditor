@@ -81,18 +81,21 @@ $wgResourceModules += array(
 			'rangy/rangy-position-1.3.js',
 			'rangy/rangy-export.js',
 		),
+		'targets' => array( 'desktop', 'mobile' ),
 	),
 
 	'jquery.visibleText' => $wgVisualEditorResourceTemplate + array(
 		'scripts' => array(
 			'jquery/jquery.visibleText.js',
 		),
+		'targets' => array( 'desktop', 'mobile' ),
 	),
 
 	'oojs' => $wgVisualEditorResourceTemplate + array(
 		'scripts' => array(
 			'oojs/oojs.js',
 		),
+		'targets' => array( 'desktop', 'mobile' ),
 	),
 
 	'oojs-ui' => $wgVisualEditorResourceTemplate + array(
@@ -114,7 +117,8 @@ $wgResourceModules += array(
 		),
 		'dependencies' => array(
 			'oojs'
-		)
+		),
+		'targets' => array( 'desktop', 'mobile' ),
 	),
 
 	'unicodejs.wordbreak' => $wgVisualEditorResourceTemplate + array(
@@ -126,6 +130,7 @@ $wgResourceModules += array(
 			'unicodejs/unicodejs.wordbreakproperties.js',
 			'unicodejs/unicodejs.wordbreak.js',
 		),
+		'targets' => array( 'desktop', 'mobile' ),
 	),
 
 	// Alias for backwards compat, safe to remove after
@@ -139,12 +144,14 @@ $wgResourceModules += array(
 		'styles' => array(
 			've-mw/init/styles/ve.init.mw.ViewPageTarget.Icons-raster.css',
 		),
+		'targets' => array( 'desktop', 'mobile' ),
 	),
 
 	'ext.visualEditor.viewPageTarget.icons-vector' => $wgVisualEditorResourceTemplate + array(
 		'styles' => array(
 			've-mw/init/styles/ve.init.mw.ViewPageTarget.Icons-vector.css',
 		),
+		'targets' => array( 'desktop', 'mobile' ),
 	),
 
 	'ext.visualEditor.viewPageTarget.init' => $wgVisualEditorResourceTemplate + array(
@@ -197,20 +204,9 @@ $wgResourceModules += array(
 		'dependencies' => array(
 			'ext.visualEditor.base',
 			'ext.visualEditor.mediawiki',
-			'jquery.byteLength',
-			'jquery.byteLimit',
-			'jquery.client',
 			'jquery.placeholder',
-			'jquery.visibleText',
-			'mediawiki.api',
 			'mediawiki.feedback',
 			'mediawiki.jqueryMsg',
-			'mediawiki.notify',
-			'mediawiki.Title',
-			'mediawiki.Uri',
-			'mediawiki.user',
-			'user.options',
-			'user.tokens',
 		),
 		'messages' => array(
 			// MW core messages
@@ -228,6 +224,16 @@ $wgResourceModules += array(
 			'visualeditor-savedialog-identify-anon',
 			'visualeditor-savedialog-identify-user',
 		),
+	),
+	'ext.visualEditor.mobileViewTarget' => $wgVisualEditorResourceTemplate + array(
+		'scripts' => array(
+			've-mw/init/targets/ve.init.mw.MobileViewTarget.js',
+		),
+		'dependencies' => array(
+			'ext.visualEditor.base',
+			'ext.visualEditor.mediawiki',
+		),
+		'targets' => array( 'mobile' ),
 	),
 
 	'ext.visualEditor.base' => $wgVisualEditorResourceTemplate + array(
@@ -250,6 +256,7 @@ $wgResourceModules += array(
 			'unicodejs.wordbreak',
 			'mediawiki.util',
 		),
+		'targets' => array( 'desktop', 'mobile' ),
 	),
 
 	'ext.visualEditor.mediawiki' => $wgVisualEditorResourceTemplate + array(
@@ -260,11 +267,20 @@ $wgResourceModules += array(
 			've-mw/init/ve.init.mw.Target.js',
 		),
 		'dependencies' => array(
+			'jquery.visibleText',
 			'jquery.byteLength',
 			'jquery.client',
 			'mediawiki.Uri',
+			'mediawiki.api',
+			'mediawiki.notify',
+			'mediawiki.Title',
+			'mediawiki.Uri',
+			'mediawiki.user',
+			'user.options',
+			'user.tokens',
 			'ext.visualEditor.base',
 		),
+		'targets' => array( 'desktop', 'mobile' ),
 	),
 
 	'ext.visualEditor.standalone' => $wgVisualEditorResourceTemplate + array(
@@ -280,7 +296,7 @@ $wgResourceModules += array(
 	),
 
 	'ext.visualEditor.data' => $wgVisualEditorResourceTemplate + array(
-		'class' => 'VisualEditorDataModule'
+		'class' => 'VisualEditorDataModule',
 	),
 
 	'ext.visualEditor.core' => $wgVisualEditorResourceTemplate + array(
@@ -541,6 +557,7 @@ $wgResourceModules += array(
 			'mediawiki.action.history.diff',
 			'mediawiki.user',
 			'jquery.autoEllipsis',
+			'jquery.byteLimit',
 		),
 		'messages' => array(
 			// VE messages for the editor (NOT experimental mode messages)
@@ -682,6 +699,7 @@ $wgResourceModules += array(
 			'fancycaptcha-edit',
 			'colon-separator',
 		),
+		'targets' => array( 'desktop', 'mobile' ),
 	),
 
 	'ext.visualEditor.language' => $wgVisualEditorResourceTemplate + array(
@@ -708,6 +726,7 @@ $wgResourceModules += array(
 			'visualeditor-languageinspector-block-tooltip-rtldirection',
 			'visualeditor-annotationbutton-language-tooltip',
 		),
+		'targets' => array( 'desktop', 'mobile' ),
 	),
 
 	'ext.visualEditor.mwalienextension' => $wgVisualEditorResourceTemplate + array(
@@ -723,6 +742,7 @@ $wgResourceModules += array(
 		'messages' => array(
 			'visualeditor-mwalienextensioninspector-title',
 		),
+		'targets' => array( 'desktop', 'mobile' ),
 	),
 
 	'ext.visualEditor.mwmath' => $wgVisualEditorResourceTemplate + array(
@@ -738,6 +758,7 @@ $wgResourceModules += array(
 		'messages' => array(
 			'visualeditor-mwmathinspector-title',
 		),
+		'targets' => array( 'desktop', 'mobile' ),
 	),
 
 	'ext.visualEditor.mwhiero' => $wgVisualEditorResourceTemplate + array(
@@ -753,6 +774,7 @@ $wgResourceModules += array(
 		'messages' => array(
 			'visualeditor-mwhieroinspector-title',
 		),
+		'targets' => array( 'desktop', 'mobile' ),
 	),
 
 	'ext.visualEditor.mwsyntaxHighlight' => $wgVisualEditorResourceTemplate + array(
@@ -776,6 +798,7 @@ $wgResourceModules += array(
 		'styles' => array(
 			'syntaxhighlight/styles/ve.ui.MWSyntaxHighlight.css',
 		),
+		'targets' => array( 'desktop', 'mobile' ),
 	),
 
 	'ext.visualEditor.experimental' => array(
@@ -786,6 +809,7 @@ $wgResourceModules += array(
 			'ext.visualEditor.mwalienextension',
 			//'ext.visualEditor.mwsyntaxHighlight',
 		),
+		'targets' => array( 'desktop', 'mobile' ),
 	),
 
 	'ext.visualEditor.icons-raster' => $wgVisualEditorResourceTemplate + array(
@@ -793,12 +817,14 @@ $wgResourceModules += array(
 			've/ui/styles/ve.ui.Icons-raster.css',
 			've-mw/ui/styles/ve.ui.Icons-raster.css',
 		),
+		'targets' => array( 'desktop', 'mobile' ),
 	),
 	'ext.visualEditor.icons-vector' => $wgVisualEditorResourceTemplate + array(
 		'styles' => array(
 			've/ui/styles/ve.ui.Icons-vector.css',
 			've-mw/ui/styles/ve.ui.Icons-vector.css',
 		),
+		'targets' => array( 'desktop', 'mobile' ),
 	),
 );
 

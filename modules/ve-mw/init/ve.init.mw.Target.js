@@ -21,6 +21,7 @@
  */
 ve.init.mw.Target = function VeInitMwTarget( $container, pageName, revisionId ) {
 	var i, len, prefName, prefValue, conf = mw.config.get( 'wgVisualEditorConfig' ),
+		// language, mwalienextension and mwhiero are commented out in VisualEditorHooks::onGetBetaPreferences()
 		extraModules = [ 'experimental'/* , 'language'*//*, 'mwalienextension'*/, 'mwmath'/*, 'mwhiero'*/ ];
 
 	// Parent constructor
@@ -71,6 +72,10 @@ ve.init.mw.Target = function VeInitMwTarget( $container, pageName, revisionId ) 
 	this.$checkboxes = null;
 	this.remoteNotices = [];
 	this.localNoticeMessages = [];
+	this.sanityCheckFinished = false;
+	this.sanityCheckVerified = false;
+	this.activating = false;
+	this.deactivating = false;
 	this.isMobileDevice = (
 		'ontouchstart' in window ||
 			( window.DocumentTouch && document instanceof window.DocumentTouch )
@@ -78,8 +83,7 @@ ve.init.mw.Target = function VeInitMwTarget( $container, pageName, revisionId ) 
 };
 
 /**
- * @event load
- * @param {HTMLDocument} dom
+ * @event surfaceReady
  */
 
 /**
@@ -128,6 +132,10 @@ ve.init.mw.Target = function VeInitMwTarget( $container, pageName, revisionId ) 
  * @param {Mixed|null} error HTTP status text
  */
 
+/**
+ * @event sanityCheckComplete
+ */
+
 /* Inheritance */
 
 OO.inheritClass( ve.init.mw.Target, ve.init.Target );
@@ -160,8 +168,8 @@ ve.init.mw.Target.onModulesReady = function () {
  * Handle response to a successful load request.
  *
  * This method is called within the context of a target instance. If successful the DOM from the
- * server will be parsed, stored in {this.doc} and then {ve.init.mw.Target.onReady} will be called once
- * the modules are ready.
+ * server will be parsed, stored in {this.doc} and then {this.onReady} will be called once modules
+ * are ready.
  *
  * @static
  * @method
@@ -207,17 +215,16 @@ ve.init.mw.Target.onLoad = function ( response ) {
 		this.startTimeStamp = data.starttimestamp;
 		this.revid = data.oldid;
 		// Everything worked, the page was loaded, continue as soon as the modules are loaded
-		this.modulesReady.done( ve.bind( ve.init.mw.Target.onReady, this ) );
+		this.modulesReady.done( ve.bind( this.onReady, this ) );
 	}
 };
 
 /**
  * Handle the edit notices being ready for rendering.
  *
- * @static
  * @method
  */
-ve.init.mw.Target.onNoticesReady = function () {
+ve.init.mw.Target.prototype.onNoticesReady = function () {
 	var i, len, noticeHtmls, tmp, el;
 
 	// Since we're going to parse them, we might as well save these nodes
@@ -261,18 +268,22 @@ ve.init.mw.Target.onNoticesReady = function () {
 /**
  * Handle both DOM and modules being loaded and ready.
  *
- * This method is called within the context of a target instance.
- *
- * @static
  * @method
- * @fires load
+ * @fires surfaceReady
  */
-ve.init.mw.Target.onReady = function () {
+ve.init.mw.Target.prototype.onReady = function () {
 	// We need to wait until onReady as local notices may require special messages
-	ve.init.mw.Target.onNoticesReady.call( this );
-
+	this.onNoticesReady();
 	this.loading = false;
-	this.emit( 'load', this.doc );
+	if ( this.activating ) {
+		this.edited = false;
+		this.setUpSurface( this.doc, ve.bind( function() {
+			this.startSanityCheck();
+			this.$document[0].focus();
+			this.activating = false;
+			this.emit( 'surfaceReady' );
+		}, this ) );
+	}
 };
 
 /**
@@ -510,9 +521,10 @@ ve.init.mw.Target.prototype.getHtml = function ( newDoc ) {
  * A side-effect of calling this method is that it requests {this.modules} be loaded.
  *
  * @method
+ * @param {string[]} [additionalModules=[]] Resource loader modules
  * @returns {boolean} Loading has been started
 */
-ve.init.mw.Target.prototype.load = function () {
+ve.init.mw.Target.prototype.load = function ( additionalModules ) {
 	var data, start;
 	// Prevent duplicate requests
 	if ( this.loading ) {
@@ -521,7 +533,7 @@ ve.init.mw.Target.prototype.load = function () {
 	// Start loading the module immediately
 	mw.loader.using(
 		// Wait for site and user JS before running plugins
-		this.modules.concat( [ 'site', 'user' ] ),
+		this.modules.concat( additionalModules || [] ),
 		ve.bind( ve.init.mw.Target.onModulesReady, this )
 	);
 
@@ -866,4 +878,139 @@ ve.init.mw.Target.prototype.serialize = function ( doc, callback ) {
  */
 ve.init.mw.Target.prototype.getEditNotices = function () {
 	return this.editNotices;
+};
+
+// FIXME: split out view specific functionality, emit to subclass
+
+/**
+ * Switch to editing mode.
+ *
+ * @method
+ * @param {HTMLDocument} doc HTML DOM to edit
+ * @param {Function} [callback] Callback to call when done
+ */
+ve.init.mw.Target.prototype.setUpSurface = function ( doc, callback ) {
+	var target = this;
+	setTimeout( function () {
+		// Build linmod
+		var store = new ve.dm.IndexValueStore(),
+			internalList = new ve.dm.InternalList(),
+			innerWhitespace = new Array( 2 ),
+			data = ve.dm.converter.getDataFromDom( doc, store, internalList, innerWhitespace );
+		setTimeout( function () {
+			// Build DM tree
+			var dmDoc = new ve.dm.Document( data, doc, undefined, internalList, innerWhitespace );
+			setTimeout( function () {
+				// Create ui.Surface (also creates ce.Surface and dm.Surface and builds CE tree)
+				target.surface = new ve.ui.Surface( dmDoc, target.surfaceOptions );
+				target.surface.$element.addClass( 've-init-mw-viewPageTarget-surface' );
+				setTimeout( function () {
+					// Initialize surface
+					target.surface.getContext().hide();
+					target.$document = target.surface.$element.find( '.ve-ce-documentNode' );
+					target.$element.append( target.surface.$element );
+					target.setUpToolbar();
+					target.$document.attr( {
+						'lang': mw.config.get( 'wgVisualEditor' ).pageLanguageCode,
+						'dir': mw.config.get( 'wgVisualEditor' ).pageLanguageDir
+					} );
+					// Add appropriately mw-content-ltr or mw-content-rtl class
+					target.surface.view.$element.addClass(
+						'mw-content-' + mw.config.get( 'wgVisualEditor' ).pageLanguageDir
+					);
+					target.active = true;
+					// Now that the surface is attached to the document and ready,
+					// let it initialize itself
+					target.surface.initialize();
+					setTimeout( callback );
+				} );
+			} );
+		} );
+	} );
+};
+
+/**
+ * Show the toolbar.
+ *
+ * This also transplants the toolbar to a new location.
+ *
+ * @method
+ */
+ve.init.mw.Target.prototype.setUpToolbar = function () {
+	this.toolbar = new ve.ui.TargetToolbar( this, this.surface, { 'shadow': true, 'actions': true } );
+	this.toolbar.setup( this.constructor.static.toolbarGroups );
+	this.surface.addCommands( this.constructor.static.surfaceCommands );
+	if ( !this.isMobileDevice ) {
+		this.toolbar.enableFloatable();
+	}
+	this.toolbar.$element
+		.addClass( 've-init-mw-viewPageTarget-toolbar' )
+		.insertBefore( $( '#firstHeading' ).length > 0 ? '#firstHeading' : this.surface.$element );
+	this.toolbar.$bar.slideDown( 'fast', ve.bind( function () {
+		// Check the surface wasn't torn down while the toolbar was animating
+		if ( this.surface ) {
+			this.toolbar.initialize();
+			this.surface.emit( 'position' );
+			this.surface.getContext().update();
+		}
+	}, this ) );
+};
+
+/**
+ * Fire off the sanity check. Must be called before the surface is activated.
+ *
+ * To access the result, check whether #sanityCheckPromise has been resolved or rejected
+ * (it's asynchronous, so it may still be pending when you check).
+ *
+ * @method
+ * @fires sanityCheckComplete
+ */
+ve.init.mw.Target.prototype.startSanityCheck = function () {
+	// We have to get a copy of the data now, before we unlock the surface and let the user edit,
+	// but we can defer the actual conversion and comparison
+	var viewPage = this,
+		doc = viewPage.surface.getModel().getDocument(),
+		data = new ve.dm.FlatLinearData( doc.getStore().clone(), ve.copy( doc.getFullData() ) ),
+		oldDom = viewPage.doc,
+		d = $.Deferred();
+
+	// Reset
+	viewPage.sanityCheckFinished = false;
+	viewPage.sanityCheckVerified = false;
+
+	setTimeout( function () {
+		// We can't compare oldDom.body and newDom.body directly, because the attributes on the
+		// <body> were ignored in the conversion. So compare each child separately.
+		var i,
+			len = oldDom.body.childNodes.length,
+			newDoc = new ve.dm.Document( data, oldDom, undefined, doc.getInternalList(), doc.getInnerWhitespace() ),
+			newDom = ve.dm.converter.getDomFromData( newDoc.getFullData(), newDoc.getStore(), newDoc.getInternalList(), newDoc.getInnerWhitespace() );
+
+		// Explicitly unlink our full copy of the original version of the document data
+		data = undefined;
+
+		if ( len !== newDom.body.childNodes.length ) {
+			// Different number of children, so they're definitely different
+			d.reject();
+			return;
+		}
+		for ( i = 0; i < len; i++ ) {
+			if ( !oldDom.body.childNodes[i].isEqualNode( newDom.body.childNodes[i] ) ) {
+				d.reject();
+				return;
+			}
+		}
+		d.resolve();
+	} );
+
+	viewPage.sanityCheckPromise = d.promise()
+		.done( function () {
+			// If we detect no roundtrip errors,
+			// don't emphasize "review changes" to the user.
+			viewPage.sanityCheckVerified = true;
+		})
+		.always( function () {
+			viewPage.sanityCheckFinished = true;
+			viewPage.emit( 'sanityCheckComplete' );
+		} );
 };
