@@ -31,14 +31,16 @@ ve.ce.ImageNode = function VeCeImageNode( model, config ) {
 	this.$image = this.$;
 
 	// Events
-	this.model.connect( this, { 'update': 'onUpdate' } );
 	this.$.on( 'click', ve.bind( this.onClick, this ) );
+	this.model.connect( this, { 'attributeChange': 'onAttributeChange' } );
 
 	// Initialization
 	this.$image
 		.addClass( 've-ce-imageNode' )
-		.attr( 'alt', this.model.getAttribute( 'alt' ) )
-		.attr( 'src', this.model.getAttribute( 'src' ) )
+		.attr( {
+			'alt': this.model.getAttribute( 'alt' ),
+			'src': this.model.getAttribute( 'src' )
+		} )
 		.css( {
 			'width': this.model.getAttribute( 'width' ),
 			'height': this.model.getAttribute( 'height' )
@@ -62,10 +64,7 @@ ve.ce.ImageNode.static.tagName = 'img';
 /* Methods */
 
 /**
- * Handle attribute change events.
- *
- * Whitelisted attributes will be added or removed in sync with the DOM. They are initially set in
- * the constructor.
+ * Update the rendering of the 'src', 'width' and 'height' attributes when they change in the model.
  *
  * @method
  * @param {string} key Attribute key
@@ -81,14 +80,6 @@ ve.ce.ImageNode.prototype.onAttributeChange = function ( key, from, to ) {
 			this.$image.css( key, to );
 		}
 	}
-};
-
-/**
- * Update method
- *
- * @method
- */
-ve.ce.ImageNode.prototype.onUpdate = function () {
 };
 
 /**
