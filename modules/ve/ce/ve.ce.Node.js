@@ -25,9 +25,6 @@ ve.ce.Node = function VeCeNode( model, config ) {
 
 	// Properties
 	this.parent = null;
-
-	// Events
-	this.model.connect( this, { 'attributeChange': 'onAttributeChange' } );
 };
 
 /* Inheritance */
@@ -51,20 +48,6 @@ ve.mixinClass( ve.ce.Node, ve.Node );
 ve.ce.Node.static.canBeSplit = false;
 
 /* Methods */
-
-/**
- * Handle attribute change events.
- *
- * Whitelisted attributes will be added or removed in sync with the DOM. They are initially set in
- * the constructor.
- *
- * @method
- * @param {string} key Attribute key
- * @param {string} from Old value
- * @param {string} to New value
- */
-ve.ce.Node.prototype.onAttributeChange = function () {
-};
 
 /**
  * Get allowed child node types.

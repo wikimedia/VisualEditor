@@ -32,6 +32,7 @@ ve.ce.ImageNode = function VeCeImageNode( model, config ) {
 
 	// Events
 	this.$.on( 'click', ve.bind( this.onClick, this ) );
+	this.model.connect( this, { 'attributeChange': 'onAttributeChange' } );
 
 	// Initialization
 	this.$image
@@ -63,10 +64,7 @@ ve.ce.ImageNode.static.tagName = 'img';
 /* Methods */
 
 /**
- * Handle attribute change events.
- *
- * Whitelisted attributes will be added or removed in sync with the DOM. They are initially set in
- * the constructor.
+ * Update the rendering of the 'src', 'width' and 'height' attributes when they change in the model.
  *
  * @method
  * @param {string} key Attribute key

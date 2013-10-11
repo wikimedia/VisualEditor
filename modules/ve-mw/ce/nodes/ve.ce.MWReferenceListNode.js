@@ -34,6 +34,9 @@ ve.ce.MWReferenceListNode = function VeCeMWReferenceListNode( model, config ) {
 	this.$refmsg = $( '<p>' )
 		.addClass( 've-ce-mwReferenceListNode-muted' );
 
+	// Events
+	this.model.connect( this, { 'attributeChange': 'onAttributeChange' } );
+
 	// Initialization
 	this.update();
 };
@@ -102,7 +105,7 @@ ve.ce.MWReferenceListNode.prototype.onInternalListUpdate = function ( groupsChan
 };
 
 /**
- * Handle attribute change events.
+ * Rerender when the 'listGroup' attribute changes in the model.
  *
  * @param {string} key Attribute key
  * @param {string} from Old value
