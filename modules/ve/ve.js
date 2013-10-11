@@ -62,28 +62,7 @@
 	 * @method
 	 * @inheritdoc OO#mixinClass
 	 */
-	ve.mixinClass = function ( targetFn, originFn ) {
-		oo.mixinClass( targetFn, originFn );
-
-		// Track mixins
-		targetFn.mixins = targetFn.mixins || [];
-		targetFn.mixins.push( originFn );
-	};
-
-	/**
-	 * Check if a constructor or object contains a certain mixin.
-	 *
-	 * @param {Function|Object} a Class or object to check
-	 * @param {Function} mixin Mixin to check for
-	 * @returns {boolean} Class or object uses mixin
-	 */
-	ve.isMixedIn = function ( subject, mixin ) {
-		// Traverse from instances to the constructor
-		if ( $.type( subject ) !== 'function' ) {
-			subject = subject.constructor;
-		}
-		return !!subject.mixins && subject.mixins.indexOf( mixin ) !== -1;
-	};
+	ve.mixinClass = oo.mixinClass;
 
 	/**
 	 * @method
