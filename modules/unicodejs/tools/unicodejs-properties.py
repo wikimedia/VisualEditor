@@ -24,7 +24,7 @@ for breaktype in ['Grapheme', 'Word']:
 		if not m:
 			raise ValueError( "Bad line: %r" % line )
 		start, end, prop = m.groups()
-		if start == 'D800' and end == 'DFFF':
+		if breaktype == 'Grapheme' and start == 'D800' and end == 'DFFF':
 			continue # raw surrogates are not treated
 
 		if not ranges.has_key( prop ):
