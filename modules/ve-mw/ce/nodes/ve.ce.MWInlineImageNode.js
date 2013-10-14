@@ -40,7 +40,7 @@ ve.ce.MWInlineImageNode = function VeCeMWInlineImageNode( model, config ) {
 	ve.ce.ProtectedNode.call( this );
 	ve.ce.FocusableNode.call( this );
 	ve.ce.RelocatableNode.call( this );
-	ve.ce.MWResizableNode.call( this );
+	ve.ce.MWResizableNode.call( this, this.$image );
 
 	this.$image
 		.attr( 'src', this.model.getAttribute( 'src' ) )

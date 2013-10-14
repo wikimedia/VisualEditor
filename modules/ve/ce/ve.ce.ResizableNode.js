@@ -15,6 +15,7 @@
  * @param {jQuery} [$resizable=this.$] Resizable DOM element
  * @param {Object} [config] Configuration options
  * @param {number|null} [config.snapToGrid=10] Snap to a grid of size X when the shift key is held. Null disables.
+ * @param {boolean} [config.outline=false] Resize using an outline of the element only, don't live preview.
  */
 ve.ce.ResizableNode = function VeCeResizableNode( $resizable, config ) {
 	// Properties
@@ -23,12 +24,14 @@ ve.ce.ResizableNode = function VeCeResizableNode( $resizable, config ) {
 	this.resizing = false;
 	this.$resizeHandles = this.$$( '<div>' );
 	this.snapToGrid = ( config && config.snapToGrid !== undefined ) ? config.snapToGrid : 10;
+	this.outline = !!( config && config.outline );
 
 	// Events
 	this.connect( this, {
 		'focus': 'onResizableFocus',
 		'blur': 'onResizableBlur',
 		'live': 'onResizableLive',
+		'resizing': 'onResizableResizing',
 		'resizeEnd': 'onResizableFocus'
 	} );
 
@@ -116,6 +119,22 @@ ve.ce.ResizableNode.prototype.onResizableLive = function () {
 	} else {
 		surfaceModel.disconnect( this, { 'history': 'setResizableHandlesSizeAndPosition' } );
 		this.onResizableBlur();
+	}
+};
+
+/**
+ * Handle resizing event.
+ *
+ * @method
+ * @param {Object} dimensions Dimension object containing width & height
+ */
+ve.ce.ResizableNode.prototype.onResizableResizing = function ( dimensions ) {
+	if ( !this.outline ) {
+		this.$resizable.css( {
+			'width': dimensions.width,
+			'height': dimensions.height
+		} );
+		this.setResizableHandlesPosition();
 	}
 };
 

@@ -34,7 +34,8 @@ ve.ce.FocusableNode = function VeCeFocusableNode( $focusable ) {
 	// Events
 	this.connect( this, {
 		'setup': 'onFocusableSetup',
-		'resizeEnd': 'onFocusableResize',
+		'resizeEnd': 'onFocusableResizeEnd',
+		'resizing': 'onFocusableResizing',
 		'rerender': 'onFocusableRerender',
 		'live': 'onFocusableLive'
 	} );
@@ -94,12 +95,23 @@ ve.ce.FocusableNode.prototype.onFocusableHistory = function () {
 };
 
 /**
- * Handle resize event.
+ * Handle resize end event.
  *
  * @method
  */
-ve.ce.FocusableNode.prototype.onFocusableResize = function () {
+ve.ce.FocusableNode.prototype.onFocusableResizeEnd = function () {
 	if ( this.focused ) {
+		this.redrawHighlight();
+	}
+};
+
+/**
+ * Handle resizing event.
+ *
+ * @method
+ */
+ve.ce.FocusableNode.prototype.onFocusableResizing = function () {
+	if ( this.focused && !this.outline ) {
 		this.redrawHighlight();
 	}
 };

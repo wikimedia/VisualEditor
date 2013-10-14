@@ -24,7 +24,8 @@ ve.ce.ProtectedNode = function VeCeProtectedNode( $phantomable ) {
 	// Events
 	this.connect( this, {
 		'setup': 'onProtectedSetup',
-		'teardown': 'onProtectedTeardown'
+		'teardown': 'onProtectedTeardown',
+		'resizeStart': 'onProtectedResizeStart'
 	} );
 };
 
@@ -166,7 +167,7 @@ ve.ce.ProtectedNode.prototype.onPhantomMouseDown = function ( e ) {
  * @method
  */
 ve.ce.ProtectedNode.prototype.onProtectedMouseEnter = function () {
-	if ( !this.root.getSurface().dragging ) {
+	if ( !this.root.getSurface().dragging && !this.resizing ) {
 		this.createPhantoms();
 	}
 };
@@ -208,6 +209,15 @@ ve.ce.ProtectedNode.prototype.onSurfaceModelChange = function () {
 	if ( this.$phantoms.length ) {
 		this.positionPhantoms();
 	}
+};
+
+/**
+ * Handle resize start events.
+ *
+ * @method
+ */
+ve.ce.ProtectedNode.prototype.onProtectedResizeStart = function () {
+	this.clearPhantoms();
 };
 
 /**
