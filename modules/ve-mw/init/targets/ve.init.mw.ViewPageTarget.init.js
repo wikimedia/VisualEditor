@@ -20,7 +20,7 @@
  */
 ( function () {
 	var conf, tabMessages, uri, pageExists, viewUri, veEditUri, isViewPage,
-		init, support, getTargetDeferred, userPrefEnabled,
+		init, support, getTargetDeferred, enable, userPrefEnabled,
 		plugins = [];
 
 	/**
@@ -341,6 +341,8 @@
 		support.contentEditable &&
 		( ( 'vewhitelist' in uri.query ) || !$.client.test( init.blacklist, null, true ) );
 
+	enable = mw.user.options.get( 'visualeditor-enable', conf.defaultUserOptions.enable );
+
 	userPrefEnabled = (
 		// Allow disabling for anonymous users separately from changing the
 		// default preference (bug 50000)
@@ -355,7 +357,7 @@
 			mw.config.get( 'wgUserName' ) === null ?
 				( conf.defaultUserOptions.enable && !conf.defaultUserOptions.betatempdisable ) :
 				(
-					mw.user.options.get( 'visualeditor-enable', conf.defaultUserOptions.enable ) &&
+					enable && enable !== '0' &&
 						!mw.user.options.get(
 							'visualeditor-betatempdisable',
 							conf.defaultUserOptions.betatempdisable

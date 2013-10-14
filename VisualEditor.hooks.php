@@ -216,11 +216,13 @@ class VisualEditorHooks {
 	}
 
 	public static function onGetPreferences( $user, &$preferences ) {
-		$preferences['visualeditor-enable'] = array(
-			'type' => 'toggle',
-			'label-message' => 'visualeditor-preference-enable',
-			'section' => 'editing/beta'
-		);
+		if ( !array_key_exists( 'visualeditor-enable', $preferences ) ) {
+			$preferences['visualeditor-enable'] = array(
+				'type' => 'toggle',
+				'label-message' => 'visualeditor-preference-enable',
+				'section' => 'editing/beta'
+			);
+		}
 		$preferences['visualeditor-betatempdisable'] = array(
 			'type' => 'toggle',
 			'label-message' => 'visualeditor-preference-betatempdisable',
@@ -232,12 +234,25 @@ class VisualEditorHooks {
 	public static function onGetBetaPreferences( $user, &$preferences ) {
 		global $wgExtensionAssetsPath;
 
+		$preferences['visualeditor-enable'] = array(
+			'version' => '1.0',
+			'label-message' => 'visualeditor-preference-core-label',
+			'desc-message' => 'visualeditor-preference-core-description',
+			// TODO: use message 'visualeditor-preference-core-info-link'
+			'info-link' => false,
+			// TODO: use message 'visualeditor-preference-core-discussion-link'
+			'discussion-link' => false,
+			'screenshot' => $wgExtensionAssetsPath . '/VisualEditor/logo.png',
+		);
+
 		$preferences['visualeditor-enable-experimental'] = array(
 			'version' => '1.0',
 			'label-message' => 'visualeditor-preference-experimental-label',
 			'desc-message' => 'visualeditor-preference-experimental-description',
-			'info-link' => 'visualeditor-preference-experimental-info-link',
-			'discussion-link' => 'visualeditor-preference-experimental-discussion-link',
+			// TODO: use message 'visualeditor-preference-experimental-info-link'
+			'info-link' => false,
+			// TODO: use message 'visualeditor-preference-experimental-discussion-link'
+			'discussion-link' => false,
 			'screenshot' => $wgExtensionAssetsPath . '/VisualEditor/logo-experimental.png',
 		);
 	}
