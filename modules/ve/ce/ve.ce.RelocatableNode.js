@@ -26,7 +26,7 @@ ve.ce.RelocatableNode = function VeCeRelocatableNode( $relocatable ) {
 	this.connect( this, {
 		'focus': 'onRelocatableFocus',
 		'blur': 'onRelocatableBlur',
-		'resize': 'onRelocatableResize',
+		'resizeEnd': 'onRelocatableResize',
 		'live': 'onRelocatableLive'
 	} );
 
