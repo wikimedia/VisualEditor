@@ -544,18 +544,25 @@ See [[w:LaTeX]].',
 	'visualeditor-parameter-search-unknown' => '{{Identical|Unknown parameter}}',
 	'visualeditor-preference-betatempdisable' => 'Label for the temporary user preference to disable VisualEditor while it is in beta.',
 	'visualeditor-preference-enable' => 'Label for the user preference to enable VisualEditor while it is in alpha (opt-in) mode.
-Links are in {{msg-mw|Visualeditor-mainnamespacepagelink}} and {{msg-mw|visualeditor-usernamespacepagelink}}.',
+Links are in {{msg-mw|Visualeditor-mainnamespacepagelink}} and {{msg-mw|visualeditor-usernamespacepagelink}}.
+
+See also:
+* {{msg-mw|Visualeditor-preference-core-description}}',
 	'visualeditor-preference-core-description' => 'Used in [[Special:Preferences]].
 
 Used as description for the checkbox to enable VisualEditor.
 
-The label for this checkbox is {{msg-mw|Visualeditor-preference-core-label}}.',
+The label for this checkbox is {{msg-mw|Visualeditor-preference-core-label}}.
+
+See also:
+* {{msg-mw|Visualeditor-preference-enable}}',
 	'visualeditor-preference-core-label' => 'Used in [[Special:Preferences]].
 
 Used as label for checkbox to enable VisualEditor.
 
 The description for this checkbox is:
-* {{msg-mw|Visualeditor-preference-core-description}}',
+* {{msg-mw|Visualeditor-preference-core-description}}
+{{Identical|VisualEditor}}',
 	'visualeditor-preference-experimental-description' => 'Used in [[Special:Preferences]].
 
 Used as description for the checkbox to enable VisualEditor experimental features.
@@ -3836,6 +3843,8 @@ $messages['de'] = array(
 	'visualeditor-parameter-search-unknown' => 'Unbekannter Parameter',
 	'visualeditor-preference-betatempdisable' => 'VisualEditor während der Beta-Phase vorübergehend deaktivieren',
 	'visualeditor-preference-enable' => 'Aktiviere den VisualEditor (nur im [[{{MediaWiki:visualeditor-mainnamespacepagelink}}|Artikel-]] und [[{{MediaWiki:visualeditor-usernamespacepagelink}}|Benutzernamensraum]]; nur Firefox, Chrome und Safari)',
+	'visualeditor-preference-core-description' => 'VisualEditor aktivieren (nur in den Artikel- und Benutzernamensräumen).',
+	'visualeditor-preference-core-label' => 'VisualEditor',
 	'visualeditor-preference-experimental-description' => 'Die aktuellsten Funktionen innerhalb VisualEditor aktivieren. Beim Entwickeln von Werkzeugen und Durchführen von Änderungen für den Editor machen wir sie zum Vorabtesten verfügbar. Bitte vergiss nicht, immer deine Änderungen vor dem Speichern zu überprüfen, wenn du experimentelle Funktionen verwendest.',
 	'visualeditor-preference-experimental-label' => 'Experimentelle VisualEditor-Funktionen',
 	'visualeditor-reference-input-placeholder' => 'Was willst du referenzieren?',
@@ -5778,6 +5787,8 @@ $messages['fr'] = array(
 	'visualeditor-parameter-search-unknown' => 'Paramètre inconnu',
 	'visualeditor-preference-betatempdisable' => "Désactiver temporairement l'ÉditeurVisuel tant qu’il est en version bêta",
 	'visualeditor-preference-enable' => "Activer l'ÉditeurVisuel (seulement dans les espaces de noms [[{{MediaWiki:visualeditor-mainnamespacepagelink}}|principal]] et [[{{MediaWiki:visualeditor-usernamespacepagelink}}|utilisateur]])",
+	'visualeditor-preference-core-description' => 'Activer VisualEditor (seulement dans les espaces de nom principal et utilisateur)',
+	'visualeditor-preference-core-label' => 'VisualEditor',
 	'visualeditor-preference-experimental-description' => 'Active les dernières fonctionnalités de l’Éditeur visuel. Au fur et à mesure que nous développons des outils et apportons des changement l’éditeur, nous les rendons disponibles à des fins de test avant le déploiement complet. N’oubliez pas de toujours vérifier vos modifications avant publication lorsque vous utilisez des fonctionnalités expérimentales.',
 	'visualeditor-preference-experimental-label' => 'Fonctionnalités expérimentales de l’Éditeur visuel',
 	'visualeditor-reference-input-placeholder' => 'Que voulez-vous référencer ?',
@@ -7847,6 +7858,7 @@ $messages['is'] = array(
  * @author Eleonora negri
  * @author F. Cosoleto
  * @author Gianfranco
+ * @author Minerva Titani
  * @author Raoli
  * @author Una giornata uggiosa '94
  */
@@ -7887,7 +7899,7 @@ $messages['it'] = array(
 	'visualeditor-dialog-action-close' => 'Chiudi',
 	'visualeditor-dialog-action-goback' => 'Indietro',
 	'visualeditor-dialog-beta-welcome-action-continue' => 'Continua',
-	'visualeditor-dialog-beta-welcome-content' => 'Questo è il nuovo, semplice strumento per modificare. È ancora in versione di prova, per cui puoi trovare parti della pagina non modificabili, o incontrare errori che dovranno essere corretti. Ti invitiamo a rivedere le modifiche apportate, e siamo pronti a ricevere qualsiasi segnalazione sui problemi che potresti incontrare usando VisualEditor (clicca su \'{{int:visualeditor-beta-label}}\' per lasciare un tuo messaggio). Puoi utilizzare l\'editor di wikicodice cliccando sulla scheda "$1" - le modifiche non salvate andranno perse.',
+	'visualeditor-dialog-beta-welcome-content' => 'Questo è il nuovo, semplice strumento per modificare. È ancora in versione di prova, per cui puoi trovare parti della pagina non modificabili, o incontrare errori che dovranno essere corretti. Ti invitiamo a rivedere le modifiche apportate, e siamo pronti a ricevere qualsiasi segnalazione sui problemi che potresti incontrare usando VisualEditor (clicca su \'{{int:visualeditor-beta-label}}\' per lasciare un tuo messaggio). Puoi continuare a usare l\'editor in wikitext cliccando sulla scheda "$1" (le modifiche non salvate andranno perse).',
 	'visualeditor-dialog-beta-welcome-title' => '{{GENDER:$1|Benvenuto|Benvenuta|Benvenuto/a}} in VisualEditor',
 	'visualeditor-dialog-media-content-section' => 'Didascalia',
 	'visualeditor-dialog-media-insert-button' => 'Inserisci file multimediale',
@@ -7997,7 +8009,9 @@ $messages['it'] = array(
 	'visualeditor-parameter-search-unknown' => 'Parametro sconosciuto',
 	'visualeditor-preference-betatempdisable' => 'Disattiva temporaneamente VisualEditor mentre è in versione beta',
 	'visualeditor-preference-enable' => 'Abilita VisualEditor (solo nei namespace [[{{MediaWiki:visualeditor-mainnamespacepagelink}}|principale]] e [[{{MediaWiki:visualeditor-usernamespacepagelink}}|Utente]])',
-	'visualeditor-preference-experimental-description' => "Attiva le funzionalità più recenti all'interno di VisualEditor. Come gli strumenti di sviluppo e la possibilità di apportare modifiche all'editor, noi li rendiamo disponibili per il test prima del rilascio generale. Ricordati di controllare sempre le modifiche prima di salvare quando usi le funzionalità sperimentali.",
+	'visualeditor-preference-core-description' => 'Abilita VisualEditor (solo nei namespace Principale e Utente)',
+	'visualeditor-preference-core-label' => 'VisualEditor',
+	'visualeditor-preference-experimental-description' => "Attiva le funzionalità più recenti all'interno di VisualEditor. Man mano che sviluppiamo gli strumenti e apportiamo cambiamenti all'editor, li rendiamo disponibili per il test prima del rilascio generale. Ricordati di controllare sempre le modifiche prima di salvare quando usi le funzionalità sperimentali.",
 	'visualeditor-preference-experimental-label' => 'Funzioni sperimentali VisualEditor',
 	'visualeditor-reference-input-placeholder' => 'A cosa si desidera fare riferimento?',
 	'visualeditor-referencelist-isempty' => 'Non ci sono riferimenti con il gruppo "$1" su questa pagina da includere in questo elenco.',
@@ -8027,7 +8041,7 @@ $messages['it'] = array(
 	'visualeditor-toolbar-savedialog' => 'Salva la pagina',
 	'visualeditor-usernamespacepagelink' => 'Project:Namespace utente',
 	'visualeditor-version-label' => 'Versione',
-	'visualeditor-viewpage-savewarning' => 'Tornare alla modalità in visualizzazione senza salvare prima?',
+	'visualeditor-viewpage-savewarning' => 'Tornare alla modalità visualizzazione senza salvare prima?',
 	'visualeditor-wikitext-warning' => 'Stai usando VisualEditor - il [[{{MediaWiki:visualeditor-wikitext-warning-link}}|wikitesto]] non funziona qui. Clicca "{{MediaWiki:visualeditor-ca-editsource}}" per modificare la pagina usando wikitesto (le modifiche non salvate andranno perse).',
 	'visualeditor-wikitext-warning-link' => 'Help:Markup',
 	'visualeditor-wikitext-warning-title' => 'Rilevato wikitesto',
@@ -8185,6 +8199,8 @@ $messages['ja'] = array(
 	'visualeditor-parameter-search-unknown' => '不明な引数',
 	'visualeditor-preference-betatempdisable' => 'ビジュアルエディターを、ベータ版である間は一時的に無効にする',
 	'visualeditor-preference-enable' => 'ビジュアルエディターを有効にする ([[{{MediaWiki:visualeditor-mainnamespacepagelink}}|標準名前空間]]および[[{{MediaWiki:visualeditor-usernamespacepagelink}}|利用者名前空間]]のみ)',
+	'visualeditor-preference-core-description' => 'ビジュアルエディターを有効にする (標準名前空間および利用者名前空間のみ)',
+	'visualeditor-preference-core-label' => 'ビジュアルエディター',
 	'visualeditor-preference-experimental-description' => 'ビジュアルエディターの最新の機能を有効にします。開発者がツールの開発を行ない、エディターに変更を加えているため、一般公開の前に動作テストを行なっています。実験的な機能を使用する際は、保存する前に変更内容を必ず確認するようにしてください。',
 	'visualeditor-preference-experimental-label' => 'ビジュアルエディターの実験的な機能',
 	'visualeditor-reference-input-placeholder' => '出典を検索',
@@ -9936,7 +9952,7 @@ $messages['mk'] = array(
 	'tooltip-ca-createsource' => 'Создајте го изворниот код на страницава',
 	'tooltip-ca-editsource' => 'Уредување на изворниот код на страницава',
 	'tooltip-ca-ve-edit' => 'Уреди ја страницава со ВизуеленУредник',
-	'visualeditor' => 'Визуелен уредник',
+	'visualeditor' => 'ВизуеленУредник',
 	'visualeditor-aliennode-tooltip' => 'Нажалост, овој елемент засега може да се уредува само непосредно од изворот.',
 	'visualeditor-annotationbutton-bold-tooltip' => 'Задебелено',
 	'visualeditor-annotationbutton-code-tooltip' => 'Сметачки код',
@@ -10075,6 +10091,8 @@ $messages['mk'] = array(
 	'visualeditor-parameter-search-unknown' => 'Непознат параметар',
 	'visualeditor-preference-betatempdisable' => 'Привремено исклучи го ВизуеленУредник додека е во бета',
 	'visualeditor-preference-enable' => 'Овозможи ВизуеленУредник (само во [[{{MediaWiki:visualeditor-mainnamespacepagelink}}|главниот]] и [[{{MediaWiki:visualeditor-usernamespacepagelink}}|корисничкиот]] именски простор)',
+	'visualeditor-preference-core-description' => 'Вклучи го ВизуеленУредник (само во главниот и корисничкиот именски простор).',
+	'visualeditor-preference-core-label' => 'ВизуеленУредник',
 	'visualeditor-preference-experimental-description' => 'Вклучување на најновите функции на ВизуеленУредник. Кога разработуваме нови алатки за уредникот, најпрвин ги нудиме за испробување, а потоа ги ставаме на располагање за сите. Не заборавајте да ги прегледувате направените промени пред зачувување кога користите експериментални можности.',
 	'visualeditor-preference-experimental-label' => 'Експериментални функции на ВизуеленУредник',
 	'visualeditor-reference-input-placeholder' => 'Што сакате да наведете?',
@@ -11902,11 +11920,13 @@ $messages['pl'] = array(
 	'visualeditor-parameter-search-unknown' => 'Nieznany parametr',
 	'visualeditor-preference-betatempdisable' => 'Tymczasowo wyłącz VisualEditor (podczas gdy jest w wersji beta)',
 	'visualeditor-preference-enable' => 'Uaktywnij VisualEditor (tylko w [[{{MediaWiki:visualeditor-mainnamespacepagelink}}|przestrzeni głównej]] i w [[{{MediaWiki:visualeditor-usernamespacepagelink}}|przestrzeni użytkownika]])',
+	'visualeditor-preference-core-description' => 'Włącz VisualEditora (tylko w przestrzeni głównej i użytkownika).',
+	'visualeditor-preference-core-label' => 'VisualEditor',
 	'visualeditor-preference-experimental-description' => 'Włącza najnowsze funkcje w VisualEdytorze. Tak jak rozwijamy narzędzia i wprowadzamy zmiany dla edytora, tak samo udostępniamy je do testowania przed głównym wydaniem. Proszę pamiętać o każdorazowym przejrzeniu swoich zmian przed zapisaniem podczas korzystania z funkcji eksperymentalnych.',
 	'visualeditor-preference-experimental-label' => 'Funkcje eksperymentalne',
 	'visualeditor-reference-input-placeholder' => 'Jaki przypis chcesz wstawić?',
-	'visualeditor-referencelist-isempty' => 'Na tej stronie nie ma przypisów z grupy "$1" aby uwzględnić je na tej liście.',
-	'visualeditor-referencelist-isempty-default' => 'Na tej stronie nie ma żadnych przypisów aby uwzględnić je na tej liście.',
+	'visualeditor-referencelist-isempty' => 'Na tej stronie nie ma przypisów z grupy "$1", aby uwzględnić je na tej liście.',
+	'visualeditor-referencelist-isempty-default' => 'Na tej stronie nie ma żadnych przypisów, aby uwzględnić je na tej liście.',
 	'visualeditor-referencelist-missingref' => 'Ten przypis jest zdefiniowany w szablonie lub wygenerowany w inny sposób. Teraz może być edytowany wyłącznie w edytorze kodu źródłowego.',
 	'visualeditor-savedialog-error-badtoken' => 'Nie można przetworzyć edycji, ponieważ twoja sesja wygasła.',
 	'visualeditor-savedialog-identify-anon' => 'Czy chcesz mimo wszystko zapisać tę stronę jako anonimowy użytkownik? Twój adres IP zostanie zapisany w historii edycji strony.',
@@ -12767,6 +12787,8 @@ $messages['ro'] = array(
 	'visualeditor-parameter-search-unknown' => 'Parametru necunoscut',
 	'visualeditor-preference-betatempdisable' => 'Dezactivează temporar EditorulVizual cât timp este în versiune beta',
 	'visualeditor-preference-enable' => 'Activează EditorulVizual (doar în spațiile de nume [[{{MediaWiki:visualeditor-mainnamespacepagelink}}|principal]] și al [[{{MediaWiki:visualeditor-usernamespacepagelink}}|utilizatorilor]])',
+	'visualeditor-preference-core-description' => 'Activează EditorulVizual (doar în spațiile de nume principal și utilizator).',
+	'visualeditor-preference-core-label' => 'EditorVizual',
 	'visualeditor-preference-experimental-description' => 'Activează cele mai recente caracteristici ale EditoruluiVizual. Pe măsură ce dezvoltăm și aducem schimbări editorului, le facem disponibile pentru teste înainte de lansarea publică. Atunci când utilizați caracteristici experimentale nu uitați să vă verificați întotdeauna modificările înainte de a le salva.',
 	'visualeditor-preference-experimental-label' => 'Caracteristici experimentale ale EditoruluiVizual',
 	'visualeditor-reference-input-placeholder' => 'Ce doriți să folosiți ca referință?',
@@ -15913,6 +15935,8 @@ $messages['uk'] = array(
 	'visualeditor-parameter-search-unknown' => 'Невідомий параметр',
 	'visualeditor-preference-betatempdisable' => 'Тимчасово відключити Візуальний Редактор, доки він перебуває у бета-версії',
 	'visualeditor-preference-enable' => 'Увімкнути візуальний редактор (лише в [[{{MediaWiki:visualeditor-mainnamespacepagelink}}|основному]] та [[{{MediaWiki:visualeditor-usernamespacepagelink}}|користувацькому]] просторах назв)',
+	'visualeditor-preference-core-description' => 'Увімкнути Візуальний редактор (тільки у головному і користувацькому просторі імен).',
+	'visualeditor-preference-core-label' => 'Візуальний редактор',
 	'visualeditor-preference-experimental-description' => "Увімкнути новітні функції всередині VisualEditor. Оскільки ми розробляємо інструменти та вносимо зміни для редактора, ми робимо їх доступними для тестування перед загальним випуском. Будь ласка, пам'ятайте про потребу завжди перевірити внесені зміни перед збереженням при використанні експериментальних функцій.",
 	'visualeditor-preference-experimental-label' => 'Експериментальні функції VisualEditor',
 	'visualeditor-reference-input-placeholder' => 'На що ви хочете послатися?',
