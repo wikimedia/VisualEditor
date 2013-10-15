@@ -71,9 +71,9 @@ ve.ce.ResizableNode.prototype.onResizableFocus = function () {
 			} );
 
 	this.$resizeHandles.children()
-		.off( '.ve-ui-resizableNode' )
+		.off( '.ve-ce-resizableNode' )
 		.on(
-			'mousedown.ve-ui-resizableNode',
+			'mousedown.ve-ce-resizableNode',
 			ve.bind( this.onResizeHandlesCornerMouseDown, this )
 		);
 };
@@ -117,7 +117,7 @@ ve.ce.ResizableNode.prototype.onResizeHandlesCornerMouseDown = function ( e ) {
 
 	// Set bounding box width and undo the handle margins
 	this.$resizeHandles
-		.addClass( 've-ui-resizableNode-handles-resizing' )
+		.addClass( 've-ce-resizableNode-handles-resizing' )
 		.css( {
 			'width': this.$resizable.width(),
 			'height': this.$resizable.height()
@@ -277,7 +277,7 @@ ve.ce.ResizableNode.prototype.onDocumentMouseUp = function () {
 		documentModel = surfaceModel.getDocument(),
 		selection = surfaceModel.getSelection();
 
-	this.$resizeHandles.removeClass( 've-ui-resizableNode-handles-resizing' );
+	this.$resizeHandles.removeClass( 've-ce-resizableNode-handles-resizing' );
 	$( this.getElementDocument() ).off( '.ve-ce-resizableNode' );
 	this.resizing = false;
 

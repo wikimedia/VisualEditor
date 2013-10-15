@@ -11,7 +11,7 @@
  * @class
  * @extends ve.ui.DialogTool
  * @constructor
- * @param {ve.ui.Toolbar} toolbar
+ * @param {ve.ui.SurfaceToolbar} toolbar
  * @param {Object} [config] Configuration options
  */
 ve.ui.MWMediaEditDialogTool = function VeUiMWMediaEditDialogTool( toolbar, config ) {
@@ -34,7 +34,7 @@ ve.ui.toolFactory.register( ve.ui.MWMediaEditDialogTool );
  * @extends ve.ui.DialogTool
  *
  * @constructor
- * @param {ve.ui.Toolbar} toolbar
+ * @param {ve.ui.SurfaceToolbar} toolbar
  * @param {Object} [config] Configuration options
  */
 ve.ui.MWMediaInsertDialogTool = function VeUiMWMediaInsertDialogTool( toolbar, config ) {
@@ -55,7 +55,7 @@ ve.ui.toolFactory.register( ve.ui.MWMediaInsertDialogTool );
  * @extends ve.ui.DialogTool
  *
  * @constructor
- * @param {ve.ui.Toolbar} toolbar
+ * @param {ve.ui.SurfaceToolbar} toolbar
  * @param {Object} [config] Configuration options
  */
 ve.ui.MWReferenceDialogTool = function VeUiMWReferenceDialogTool( toolbar, config ) {
@@ -76,7 +76,7 @@ ve.ui.toolFactory.register( ve.ui.MWReferenceDialogTool );
  * @class
  * @extends ve.ui.DialogTool
  * @constructor
- * @param {ve.ui.Toolbar} toolbar
+ * @param {ve.ui.SurfaceToolbar} toolbar
  * @param {Object} [config] Configuration options
  */
 ve.ui.MWReferenceListDialogTool = function VeUiMWReferenceListDialogTool( toolbar, config ) {
@@ -98,7 +98,7 @@ ve.ui.toolFactory.register( ve.ui.MWReferenceListDialogTool );
  * @class
  * @extends ve.ui.DialogTool
  * @constructor
- * @param {ve.ui.Toolbar} toolbar
+ * @param {ve.ui.SurfaceToolbar} toolbar
  * @param {Object} [config] Configuration options
  */
 ve.ui.MWTransclusionDialogTool = function VeUiMWTransclusionDialogTool( toolbar, config ) {

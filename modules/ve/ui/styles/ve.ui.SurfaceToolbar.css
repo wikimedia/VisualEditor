@@ -1,0 +1,17 @@
+/*!
+ * VisualEditor SurfaceToolbar styles.
+ *
+ * @copyright 2011-2013 VisualEditor Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+
+.ve-ui-surfaceToolbar-floating .oo-ui-toolbar-bar {
+	position: fixed;
+	top: 0;
+	z-index: 100;
+	border-top: none; /* TODO: Do we need this? What does it reset? */
+}
+
+.ve-ui-surfaceToolbar-floating .oo-ui-toolbar-shadow {
+	opacity: 0.5;
+}

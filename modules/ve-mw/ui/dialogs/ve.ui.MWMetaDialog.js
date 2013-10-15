@@ -22,7 +22,7 @@ ve.ui.MWMetaDialog = function VeUiMWMetaDialog( windowSet, config ) {
 	ve.ui.MWDialog.call( this, windowSet, config );
 
 	// Properties
-	this.metaList = windowSet.getSurface().getModel().metaList;
+	this.metaList = this.surface.getModel().metaList;
 	this.defaultSortKeyChanged = false;
 	this.fallbackDefaultSortKey = mw.config.get( 'wgTitle' );
 

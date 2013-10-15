@@ -54,6 +54,7 @@ $html = file_get_contents( $page );
 		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.Toolbar.css">
 		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.ToolGroup.css">
 		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.Tool.css">
+		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.SurfaceToolbar.css">
 		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.Element.css">
 		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.Layout.css">
 		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.Widget.css">
