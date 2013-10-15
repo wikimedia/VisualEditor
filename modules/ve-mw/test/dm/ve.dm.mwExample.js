@@ -152,6 +152,12 @@ ve.dm.mwExample.MWBlockImage = {
 		{ 'type': '/paragraph' },
 		{ 'type': '/mwImageCaption' },
 		{ 'type': '/mwBlockImage' }
+	],
+	'storeItems': [
+		{
+			'hash': '[{"height":2,"resource":"FooBar","type":"mwBlockImage","width":1},null]',
+			'value': 'Bar'
+		}
 	]
 };
 
@@ -176,7 +182,13 @@ ve.dm.mwExample.MWInlineImage = {
 			'originalClasses': 'foo mw-valign-text-top',
 			'unrecognizedClasses': ['foo']
 		},
-	}
+	},
+	'storeItems': [
+		{
+			'hash': '[{"height":155,"resource":"./File:Wiki.png","type":"mwInlineImage","width":135},null]',
+			'value': 'http://upload.wikimedia.org/wikipedia/en/b/bc/Wiki.png'
+		}
+	]
 };
 
 ve.dm.mwExample.MWReference = {

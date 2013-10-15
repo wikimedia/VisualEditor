@@ -24,6 +24,7 @@ ve.init.mw.Platform = function VeInitMwPlatform() {
 	this.modulesUrl = mw.config.get( 'wgExtensionAssetsPath' ) + '/VisualEditor/modules';
 	this.parsedMessages = {};
 	this.mediaSources = [
+		//TODO: Bug 50673
 		{ 'url': mw.util.wikiScript( 'api' ) },
 		{ 'url': '//commons.wikimedia.org/w/api.php' }
 	];

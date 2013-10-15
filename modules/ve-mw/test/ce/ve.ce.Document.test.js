@@ -13,6 +13,10 @@ QUnit.module( 've.ce.Document' );
 QUnit.test( 'getRelativeRange (mwBlockImage / mwInlineImage)', function ( assert ) {
 	var documentModel, documentView, i, j, expectCount = 0,
 		store = new ve.dm.IndexValueStore(),
+		storeItems = [
+			ve.dm.mwExample.MWBlockImage.storeItems,
+			ve.dm.mwExample.MWInlineImage.storeItems
+		],
 		tests = [
 			{
 				data: [
@@ -204,6 +208,11 @@ QUnit.test( 'getRelativeRange (mwBlockImage / mwInlineImage)', function ( assert
 			}
 		];
 
+	for ( i = 0; i < storeItems.length; i++ ) {
+		for ( j = 0; j < storeItems[i].length; j++ ) {
+			store.index( storeItems[i][j].value, storeItems[i][j].hash );
+		}
+	}
 	for ( i = 0; i < tests.length; i++ ) {
 		documentModel = new ve.dm.Document( new ve.dm.ElementLinearData( store, tests[i].data ) );
 		documentView = new ve.ce.Document( documentModel );
