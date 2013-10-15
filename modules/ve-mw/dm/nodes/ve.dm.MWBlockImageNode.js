@@ -62,11 +62,14 @@ ve.dm.MWBlockImageNode.static.toDataElement = function ( domElements, converter 
 			type: this.rdfaToType[typeofAttr],
 			href: $imgWrapper.attr( 'href' ) || '',
 			src: $img.attr( 'src' ),
-			width: $img.attr( 'width' ),
-			height: $img.attr( 'height' ),
 			resource: $img.attr( 'resource' ),
 			originalClasses: classes
-		};
+		},
+		width = $img.attr( 'width' ),
+		height = $img.attr( 'height' );
+
+	attributes.width = width !== undefined && width !== '' ? Number( width ) : null;
+	attributes.height = height !== undefined && height !== '' ? Number( height ) : null;
 
 	// Extract individual classes
 	classes = typeof classes === 'string' ? classes.trim().split( /\s+/ ) : [];
