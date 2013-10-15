@@ -45,7 +45,7 @@ ve.init.mw.Target = function VeInitMwTarget( $container, pageName, revisionId ) 
 				['ext.visualEditor.viewPageTarget.icons-vector', 'ext.visualEditor.icons-vector'] :
 				['ext.visualEditor.viewPageTarget.icons-raster', 'ext.visualEditor.icons-raster']
 		)
-		.concat( mw.config.get( 'wgVisualEditorConfig' ).pluginModules || [] );
+		.concat( conf.pluginModules || [] );
 	for ( i = 0, len = extraModules.length; i < len; i++ ) {
 		prefName = 'visualeditor-enable-' + extraModules[i];
 		prefValue = mw.config.get( 'wgUserName' ) === null ?
