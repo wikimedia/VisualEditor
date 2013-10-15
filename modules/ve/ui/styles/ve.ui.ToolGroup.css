@@ -137,6 +137,10 @@
 	margin: 0 2.25em 0 1em;
 }
 
+.ve-ui-popupToolGroup-handle .ve-ui-labeledElement-empty {
+	display: none;
+}
+
 .ve-ui-popupToolGroup .ve-ui-toolGroup-tools {
 	display: none;
 	position: absolute;

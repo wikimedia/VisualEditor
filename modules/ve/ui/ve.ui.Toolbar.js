@@ -128,10 +128,10 @@ ve.ui.Toolbar.prototype.setup = function ( groups ) {
 		group = groups[i];
 		if ( group.include === '*' ) {
 			// Apply defaults to catch-all groups
-			if ( !group.type ) {
+			if ( group.type === undefined ) {
 				group.type = 'list';
 			}
-			if ( !group.label ) {
+			if ( group.label === undefined ) {
 				group.label = 'visualeditor-toolbar-more';
 			}
 		}

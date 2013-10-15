@@ -33,15 +33,6 @@ ve.ui.LabeledElement = function VeUiLabeledElement( $label, config ) {
 
 ve.ui.LabeledElement.static = {};
 
-/*
- * HTML to use when label is empty.
- *
- * @static
- * @property {string}
- * @inheritable
- */
-ve.ui.LabeledElement.static.emptyHtml = '&nbsp';
-
 /* Methods */
 
 /**
@@ -52,6 +43,8 @@ ve.ui.LabeledElement.static.emptyHtml = '&nbsp';
  * @chainable
  */
 ve.ui.LabeledElement.prototype.setLabel = function ( value ) {
+	var empty = false;
+
 	if ( typeof value === 'string' && value.trim() ) {
 		this.$label.text( value );
 		this.label = value;
@@ -59,9 +52,12 @@ ve.ui.LabeledElement.prototype.setLabel = function ( value ) {
 		this.$label.empty().append( value );
 		this.label = value;
 	} else {
-		this.$label.html( this.constructor.static.emptyLabel );
+		this.$label.empty();
 		this.label = null;
+		empty = true;
 	}
+	this.$label[empty ? 'addClass' : 'removeClass']( 've-ui-labeledElement-empty' );
+
 	return this;
 };
 

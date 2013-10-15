@@ -70,6 +70,10 @@ a.ve-ui-buttonWidget-button {
 	color: #ccc;
 }
 
+.ve-ui-iconButtonWidget .ve-ui-buttonWidget-button > .ve-ui-labeledElement-empty {
+	display: none;
+}
+
 /* ve.ui.PopupButtonWidget */
 
 .ve-ui-popupButtonWidget {

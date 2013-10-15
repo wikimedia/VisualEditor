@@ -32,7 +32,3 @@ ve.ui.IconButtonWidget = function VeUiIconButtonWidget( config ) {
 ve.inheritClass( ve.ui.IconButtonWidget, ve.ui.ButtonWidget );
 
 ve.mixinClass( ve.ui.IconButtonWidget, ve.ui.IconedElement );
-
-/* Static Properties */
-
-ve.ui.IconButtonWidget.static.emptyHtml = '';
