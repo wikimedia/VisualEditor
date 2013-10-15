@@ -106,7 +106,7 @@ ve.ui.AnnotationInspector.prototype.onOpen = function () {
 
 	// Initialization
 	this.initialAnnotation = initialAnnotation;
-	this.initialAnnotationHash = initialAnnotation ? ve.getHash( initialAnnotation ) : null;
+	this.initialAnnotationHash = initialAnnotation ? OO.getHash( initialAnnotation ) : null;
 };
 
 /**
@@ -136,7 +136,7 @@ ve.ui.AnnotationInspector.prototype.onClose = function ( action ) {
 		if ( this.initialSelection.isCollapsed() ) {
 			insert = true;
 		}
-		if ( ve.getHash( annotation ) !== this.initialAnnotationHash ) {
+		if ( OO.getHash( annotation ) !== this.initialAnnotationHash ) {
 			if ( this.isNewAnnotation ) {
 				undo = true;
 			} else {

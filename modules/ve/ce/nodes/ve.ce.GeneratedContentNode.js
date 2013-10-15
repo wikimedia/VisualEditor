@@ -127,7 +127,7 @@ ve.ce.GeneratedContentNode.prototype.afterRender = function () {
  */
 ve.ce.GeneratedContentNode.prototype.update = function ( config ) {
 	var store = this.model.doc.getStore(),
-		index = store.indexOfHash( ve.getHash( [ this.model, config ] ) );
+		index = store.indexOfHash( OO.getHash( [ this.model, config ] ) );
 	if ( index !== null ) {
 		this.render( store.value( index ) );
 	} else {
@@ -194,7 +194,7 @@ ve.ce.GeneratedContentNode.prototype.startGenerating = function () {
  */
 ve.ce.GeneratedContentNode.prototype.doneGenerating = function ( generatedContents, config ) {
 	var store = this.model.doc.getStore(),
-		hash = ve.getHash( [ this.model, config ] );
+		hash = OO.getHash( [ this.model, config ] );
 
 	store.index( generatedContents, hash );
 	this.$.removeClass( 've-ce-generatedContentNode-generating' );

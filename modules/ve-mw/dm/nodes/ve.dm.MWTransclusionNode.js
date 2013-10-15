@@ -88,7 +88,7 @@ ve.dm.MWTransclusionNode.static.toDataElement = function ( domElements, converte
 
 ve.dm.MWTransclusionNode.static.toDomElements = function ( dataElement, doc, converter ) {
 	var el,
-		index = converter.getStore().indexOfHash( ve.getHash( this.getHashObject( dataElement ) ) ),
+		index = converter.getStore().indexOfHash( OO.getHash( this.getHashObject( dataElement ) ) ),
 		originalMw = dataElement.attributes.originalMw;
 
 	// If the transclusion is unchanged just send back the

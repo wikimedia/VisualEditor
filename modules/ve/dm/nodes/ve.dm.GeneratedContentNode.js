@@ -29,6 +29,6 @@ ve.dm.GeneratedContentNode.static = {};
  * @returns {number} Index of stored data
  */
 ve.dm.GeneratedContentNode.static.storeGeneratedContents = function ( dataElement, generatedContents, store ) {
-	var hash = ve.getHash( [ this.getHashObject( dataElement ), undefined ] );
+	var hash = OO.getHash( [ this.getHashObject( dataElement ), undefined ] );
 	return store.index( generatedContents, hash );
 };

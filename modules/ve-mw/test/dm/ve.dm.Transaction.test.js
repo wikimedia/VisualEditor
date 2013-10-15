@@ -137,7 +137,7 @@ QUnit.test( 'newFromDocumentReplace with references', function ( assert ) {
 			expectedStoreItems = cases[i].expectedStoreItems || [];
 			for ( j = 0; j < expectedStoreItems.length; j++ ) {
 				actualStoreItems[j] = doc.store.value( doc.store.indexOfHash(
-					ve.getHash( expectedStoreItems[j] )
+					OO.getHash( expectedStoreItems[j] )
 				) );
 			}
 			assert.deepEqual( actualStoreItems, expectedStoreItems, cases[i].msg + ': store items' );

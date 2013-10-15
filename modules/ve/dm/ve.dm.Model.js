@@ -389,7 +389,7 @@ ve.dm.Model.prototype.getClonedElement = function () {
  * The actual logic is in a static function as this needs
  * to be accessible from ve.dm.Converter
  *
- * This is a custom hash function for ve#getHash.
+ * This is a custom hash function for oo#getHash.
  *
  * @method
  * @returns {Object} Hash object

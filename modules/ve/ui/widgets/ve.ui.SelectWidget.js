@@ -235,7 +235,7 @@ ve.ui.SelectWidget.prototype.getHighlightedItem = function () {
  * @returns {ve.ui.OptionWidget|null} Item with equivilent value, `null` if none exists
  */
 ve.ui.SelectWidget.prototype.getItemFromData = function ( data ) {
-	var hash = ve.getHash( data );
+	var hash = OO.getHash( data );
 
 	if ( hash in this.hashes ) {
 		return this.hashes[hash];
@@ -374,7 +374,7 @@ ve.ui.SelectWidget.prototype.addItems = function ( items, index ) {
 
 	for ( i = 0, len = items.length; i < len; i++ ) {
 		item = items[i];
-		hash = ve.getHash( item.getData() );
+		hash = OO.getHash( item.getData() );
 		if ( hash in this.hashes ) {
 			// Use existing item with the same value
 			items[i] = this.hashes[hash];
@@ -406,7 +406,7 @@ ve.ui.SelectWidget.prototype.removeItems = function ( items ) {
 
 	for ( i = 0, len = items.length; i < len; i++ ) {
 		item = items[i];
-		hash = ve.getHash( item.getData() );
+		hash = OO.getHash( item.getData() );
 		if ( hash in this.hashes ) {
 			// Remove existing item
 			delete this.hashes[hash];

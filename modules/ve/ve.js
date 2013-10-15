@@ -259,59 +259,6 @@
 	ve.extendObject = $.extend;
 
 	/**
-	 * Generates a hash of an object based on its name and data.
-	 * Performance optimization: http://jsperf.com/ve-gethash-201208#/toJson_fnReplacerIfAoForElse
-	 *
-	 * To avoid two objects with the same values generating different hashes, we utilize the replacer
-	 * argument of JSON.stringify and sort the object by key as it's being serialized. This may or may
-	 * not be the fastest way to do this; we should investigate this further.
-	 *
-	 * Objects and arrays are hashed recursively. When hashing an object that has a .getHash()
-	 * function, we call that function and use its return value rather than hashing the object
-	 * ourselves. This allows classes to define custom hashing.
-	 *
-	 * @param {Object} val Object to generate hash for
-	 * @returns {string} Hash of object
-	 */
-	ve.getHash = function ( val ) {
-		return JSON.stringify( val, ve.getHash.keySortReplacer );
-	};
-
-	/**
-	 * Helper function for ve.getHash which sorts objects by key.
-	 *
-	 * This is a callback passed into JSON.stringify.
-	 *
-	 * @param {string} key Property name of value being replaced
-	 * @param {Mixed} val Property value to replace
-	 * @returns {Mixed} Replacement value
-	 */
-	ve.getHash.keySortReplacer = function ( key, val ) {
-		var normalized, keys, i, len;
-		if ( val && typeof val.getHashObject === 'function' ) {
-			// This object has its own custom hash function, use it
-			val = val.getHashObject();
-		}
-		if ( !ve.isArray( val ) && Object( val ) === val ) {
-			// Only normalize objects when the key-order is ambiguous
-			// (e.g. any object not an array).
-			normalized = {};
-			keys = ve.getObjectKeys( val ).sort();
-			i = 0;
-			len = keys.length;
-			for ( ; i < len; i += 1 ) {
-				normalized[keys[i]] = val[keys[i]];
-			}
-			return normalized;
-
-		// Primitive values and arrays get stable hashes
-		// by default. Lets those be stringified as-is.
-		} else {
-			return val;
-		}
-	};
-
-	/**
 	 * Splice one array into another.
 	 *
 	 * This is the equivalent of arr.splice( offset, remove, d1, d2, d3, ... ) except that arguments are

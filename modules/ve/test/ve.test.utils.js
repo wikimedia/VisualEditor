@@ -79,7 +79,7 @@ ve.test.utils.runGetDataFromDomTests = function( assert, cases ) {
 			// check storeItems have been added to store
 			if ( cases[msg].storeItems ) {
 				for ( i = 0, length = cases[msg].storeItems.length; i < length; i++ ) {
-					hash = cases[msg].storeItems[i].hash || ve.getHash( cases[msg].storeItems[i].value );
+					hash = cases[msg].storeItems[i].hash || OO.getHash( cases[msg].storeItems[i].value );
 					assert.deepEqualWithDomElements(
 						store.value( store.indexOfHash( hash ) ) || {},
 						cases[msg].storeItems[i].value,

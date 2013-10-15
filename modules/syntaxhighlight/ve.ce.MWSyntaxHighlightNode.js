@@ -121,7 +121,7 @@ ve.ce.MWSyntaxHighlightNode.prototype.failGenerating = function () {
  */
 ve.ce.MWSyntaxHighlightNode.prototype.doneGenerating = function ( domElements ) {
 	var store = this.model.doc.getStore(),
-		hash = ve.getHash( this.model );
+		hash = OO.getHash( this.model );
 	store.index( domElements.toArray() , hash );
 	this.render( domElements.toArray() );
 	this.generatingPromise = null;
