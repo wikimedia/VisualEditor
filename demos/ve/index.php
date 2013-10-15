@@ -116,8 +116,6 @@ $html = file_get_contents( $page );
 			ve.init.platform.setModulesUrl( '../../modules' );
 		</script>
 		<!-- ext.visualEditor.core -->
-		<script src="../../modules/ve/ve.Registry.js"></script>
-		<script src="../../modules/ve/ve.Factory.js"></script>
 		<script src="../../modules/ve/ve.Range.js"></script>
 		<script src="../../modules/ve/ve.Node.js"></script>
 		<script src="../../modules/ve/ve.BranchNode.js"></script>

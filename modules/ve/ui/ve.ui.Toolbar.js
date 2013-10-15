@@ -14,7 +14,7 @@
  * @mixins ve.ui.GroupElement
  *
  * @constructor
- * @param {ve.Factory} toolFactory Factory for creating tools
+ * @param {OO.Factory} toolFactory Factory for creating tools
  * @param {Object} [options] Configuration options
  * @cfg {boolean} [actions] Add an actions section opposite to the tools
  * @cfg {boolean} [shadow] Add a shadow below the toolbar
@@ -70,7 +70,7 @@ OO.mixinClass( ve.ui.Toolbar, ve.ui.GroupElement );
  * Get the tool factory.
  *
  * @method
- * @returns {ve.Factory} Tool factory
+ * @returns {OO.Factory} Tool factory
  */
 ve.ui.Toolbar.prototype.getToolFactory = function () {
 	return this.toolFactory;

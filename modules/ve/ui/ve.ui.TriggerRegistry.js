@@ -9,17 +9,17 @@
  * Trigger registry.
  *
  * @class
- * @extends ve.Registry
+ * @extends OO.Registry
  * @constructor
  */
 ve.ui.TriggerRegistry = function VeUiTriggerRegistry() {
 	// Parent constructor
-	ve.Registry.call( this );
+	OO.Registry.call( this );
 };
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.TriggerRegistry, ve.Registry );
+OO.inheritClass( ve.ui.TriggerRegistry, OO.Registry );
 
 /* Methods */
 
@@ -53,10 +53,10 @@ ve.ui.TriggerRegistry.prototype.register = function ( name, trigger ) {
 	if ( ve.isPlainObject( trigger ) ) {
 		// Only register if the current platform is supported
 		if ( platformKey in trigger ) {
-			ve.Registry.prototype.register.call( this, name, trigger[platformKey] );
+			OO.Registry.prototype.register.call( this, name, trigger[platformKey] );
 		}
 	} else {
-		ve.Registry.prototype.register.call( this, name, trigger );
+		OO.Registry.prototype.register.call( this, name, trigger );
 	}
 };
 

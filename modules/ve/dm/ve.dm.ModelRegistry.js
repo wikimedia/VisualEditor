@@ -11,12 +11,12 @@
  *
  * To register a new model type, call ve.dm.modelRegistry.register()
  *
- * @extends ve.Registry
+ * @extends OO.Registry
  * @constructor
  */
 ve.dm.ModelRegistry = function VeDmModelRegistry() {
 	// Parent constructor
-	ve.Registry.call( this );
+	OO.Registry.call( this );
 	// Map of func presence and tag names to model names
 	// [ { tagName: [modelNamesWithoutFunc] }, { tagName: [modelNamesWithFunc] } ]
 	this.modelsByTag = [ {}, {} ];
@@ -36,7 +36,7 @@ ve.dm.ModelRegistry = function VeDmModelRegistry() {
 
 /* Inheritance */
 
-OO.inheritClass( ve.dm.ModelRegistry, ve.Registry );
+OO.inheritClass( ve.dm.ModelRegistry, OO.Registry );
 
 /* Private helper functions */
 
@@ -94,7 +94,7 @@ ve.dm.ModelRegistry.prototype.register = function ( constructor ) {
 		throw new Error( 'No factory associated with this ve.dm.Model subclass' );
 	}
 	// Parent method
-	ve.Registry.prototype.register.call( this, name, constructor );
+	OO.Registry.prototype.register.call( this, name, constructor );
 
 	tags = constructor.static.matchTagNames === null ?
 		[ '' ] :
