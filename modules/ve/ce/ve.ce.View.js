@@ -10,7 +10,7 @@
  *
  * @abstract
  * @extends ve.Element
- * @mixins ve.EventEmitter
+ * @mixins OO.EventEmitter
  *
  * @constructor
  * @param {ve.dm.Model} model Model to observe
@@ -26,7 +26,7 @@ ve.ce.View = function VeCeView( model, config ) {
 	ve.Element.call( this, config );
 
 	// Mixin constructors
-	ve.EventEmitter.call( this );
+	OO.EventEmitter.call( this );
 
 	// Properties
 	this.live = false;
@@ -45,7 +45,7 @@ ve.ce.View = function VeCeView( model, config ) {
 
 OO.inheritClass( ve.ce.View, ve.Element );
 
-OO.mixinClass( ve.ce.View, ve.EventEmitter );
+OO.mixinClass( ve.ce.View, OO.EventEmitter );
 
 /* Events */
 

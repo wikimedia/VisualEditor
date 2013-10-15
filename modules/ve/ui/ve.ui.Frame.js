@@ -10,7 +10,7 @@
  *
  * @class
  * @extends ve.Element
- * @mixins ve.EventEmitter
+ * @mixins OO.EventEmitter
  *
  * @constructor
  * @param {Object} [config] Configuration options
@@ -20,7 +20,7 @@ ve.ui.Frame = function VeUiFrame( config ) {
 	ve.Element.call( this, config );
 
 	// Mixin constructors
-	ve.EventEmitter.call( this );
+	OO.EventEmitter.call( this );
 
 	// Properties
 	this.initialized = false;
@@ -37,7 +37,7 @@ ve.ui.Frame = function VeUiFrame( config ) {
 
 OO.inheritClass( ve.ui.Frame, ve.Element );
 
-OO.mixinClass( ve.ui.Frame, ve.EventEmitter );
+OO.mixinClass( ve.ui.Frame, OO.EventEmitter );
 
 /* Static Properties */
 

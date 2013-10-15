@@ -9,13 +9,13 @@
  * Generic data registry.
  *
  * @abstract
- * @mixins ve.EventEmitter
+ * @mixins OO.EventEmitter
  *
  * @constructor
  */
 ve.Registry = function VeRegistry() {
 	// Mixin constructors
-	ve.EventEmitter.call( this );
+	OO.EventEmitter.call( this );
 
 	// Properties
 	this.registry = {};
@@ -23,7 +23,7 @@ ve.Registry = function VeRegistry() {
 
 /* Inheritance */
 
-OO.mixinClass( ve.Registry, ve.EventEmitter );
+OO.mixinClass( ve.Registry, OO.EventEmitter );
 
 /* Events */
 

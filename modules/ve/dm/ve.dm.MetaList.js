@@ -9,7 +9,7 @@
  * DataModel meta item.
  *
  * @class
- * @mixins ve.EventEmitter
+ * @mixins OO.EventEmitter
  *
  * @constructor
  * @param {ve.dm.Surface} surface Surface model
@@ -18,7 +18,7 @@ ve.dm.MetaList = function VeDmMetaList( surface ) {
 	var i, j, jlen, metadata, item, group;
 
 	// Mixin constructors
-	ve.EventEmitter.call( this );
+	OO.EventEmitter.call( this );
 
 	// Properties
 	this.surface = surface;
@@ -49,7 +49,7 @@ ve.dm.MetaList = function VeDmMetaList( surface ) {
 
 /* Inheritance */
 
-OO.mixinClass( ve.dm.MetaList, ve.EventEmitter );
+OO.mixinClass( ve.dm.MetaList, OO.EventEmitter );
 
 /* Events */
 

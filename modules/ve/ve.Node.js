@@ -9,7 +9,7 @@
  * Generic node.
  *
  * @abstract
- * @mixins ve.EventEmitter
+ * @mixins OO.EventEmitter
  *
  * @constructor
  */

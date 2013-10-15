@@ -11,7 +11,7 @@
  *
  * @class
  * @extends ve.Element
- * @mixins ve.EventEmitter
+ * @mixins OO.EventEmitter
  *
  * @constructor
  * @param {jQuery} $container
@@ -25,7 +25,7 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 	ve.Element.call( this, options );
 
 	// Mixin constructors
-	ve.EventEmitter.call( this );
+	OO.EventEmitter.call( this );
 
 	// Properties
 	this.surface = surface;
@@ -122,7 +122,7 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 
 OO.inheritClass( ve.ce.Surface, ve.Element );
 
-OO.mixinClass( ve.ce.Surface, ve.EventEmitter );
+OO.mixinClass( ve.ce.Surface, OO.EventEmitter );
 
 /* Events */
 

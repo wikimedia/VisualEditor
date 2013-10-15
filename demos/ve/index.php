@@ -101,7 +101,6 @@ $html = file_get_contents( $page );
 		<!-- ext.visualEditor.base#standalone-init -->
 		<script src="../../modules/ve/ve.js"></script>
 		<script src="../../modules/ve/ve.track.js"></script>
-		<script src="../../modules/ve/ve.EventEmitter.js"></script>
 		<script src="../../modules/ve/init/ve.init.js"></script>
 		<script src="../../modules/ve/init/ve.init.Platform.js"></script>
 		<script src="../../modules/ve/init/ve.init.Target.js"></script>

@@ -45,7 +45,6 @@
 		<!-- ext.visualEditor.base#standalone-init -->
 		<script src="../../ve/ve.js"></script>
 		<script src="../../ve/ve.track.js"></script>
-		<script src="../../ve/ve.EventEmitter.js"></script>
 		<script src="../../ve/init/ve.init.js"></script>
 		<script src="../../ve/init/ve.init.Platform.js"></script>
 		<script src="../../ve/init/ve.init.Target.js"></script>

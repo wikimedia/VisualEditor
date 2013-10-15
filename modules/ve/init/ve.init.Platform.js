@@ -9,18 +9,18 @@
  * Generic Initialization platform.
  *
  * @abstract
- * @mixins ve.EventEmitter
+ * @mixins OO.EventEmitter
  *
  * @constructor
  */
 ve.init.Platform = function VeInitPlatform() {
 	// Mixin constructors
-	ve.EventEmitter.call( this );
+	OO.EventEmitter.call( this );
 };
 
 /* Inheritance */
 
-OO.mixinClass( ve.init.Platform, ve.EventEmitter );
+OO.mixinClass( ve.init.Platform, OO.EventEmitter );
 
 /* Methods */
 

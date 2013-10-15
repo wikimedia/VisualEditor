@@ -9,14 +9,14 @@
  * DataModel surface.
  *
  * @class
- * @mixins ve.EventEmitter
+ * @mixins OO.EventEmitter
  *
  * @constructor
  * @param {ve.dm.Document} doc Document model to create surface for
  */
 ve.dm.Surface = function VeDmSurface( doc ) {
 	// Mixin constructors
-	ve.EventEmitter.call( this );
+	OO.EventEmitter.call( this );
 
 	// Properties
 	this.documentModel = doc;
@@ -33,7 +33,7 @@ ve.dm.Surface = function VeDmSurface( doc ) {
 
 /* Inheritance */
 
-OO.mixinClass( ve.dm.Surface, ve.EventEmitter );
+OO.mixinClass( ve.dm.Surface, OO.EventEmitter );
 
 /* Events */
 

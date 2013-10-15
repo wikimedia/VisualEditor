@@ -11,7 +11,7 @@
  * @class
  * @abstract
  * @extends ve.Element
- * @mixins ve.EventEmitter
+ * @mixins OO.EventEmitter
  *
  * @constructor
  * @param {ve.ui.WindowSet} windowSet Window set this dialog is part of
@@ -23,7 +23,7 @@ ve.ui.Window = function VeUiWindow( windowSet, config ) {
 	ve.Element.call( this, config );
 
 	// Mixin constructors
-	ve.EventEmitter.call( this );
+	OO.EventEmitter.call( this );
 
 	// Properties
 	this.windowSet = windowSet;
@@ -50,7 +50,7 @@ ve.ui.Window = function VeUiWindow( windowSet, config ) {
 
 OO.inheritClass( ve.ui.Window, ve.Element );
 
-OO.mixinClass( ve.ui.Window, ve.EventEmitter );
+OO.mixinClass( ve.ui.Window, OO.EventEmitter );
 
 /* Events */
 

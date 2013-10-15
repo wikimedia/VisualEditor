@@ -10,14 +10,14 @@
  *
  * @class
  * @abstract
- * @mixins ve.EventEmitter
+ * @mixins OO.EventEmitter
  *
  * @constructor
  * @param {jQuery} $container Conainter to render target into
  */
 ve.init.Target = function VeInitTarget( $container ) {
 	// Mixin constructors
-	ve.EventEmitter.call( this );
+	OO.EventEmitter.call( this );
 
 	// Properties
 	this.$ = $container;
@@ -25,7 +25,7 @@ ve.init.Target = function VeInitTarget( $container ) {
 
 /* Inheritance */
 
-OO.mixinClass( ve.init.Target, ve.EventEmitter );
+OO.mixinClass( ve.init.Target, OO.EventEmitter );
 
 /* Static Properties */
 

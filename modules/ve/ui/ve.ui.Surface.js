@@ -20,7 +20,7 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 	ve.Element.call( this, config );
 
 	// Mixin constructor
-	ve.EventEmitter.call( this, config );
+	OO.EventEmitter.call( this, config );
 
 	// Properties
 	this.$globalOverlay = $( '<div>' );
@@ -60,7 +60,7 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 
 OO.inheritClass( ve.ui.Surface, ve.Element );
 
-OO.mixinClass( ve.ui.Surface, ve.EventEmitter );
+OO.mixinClass( ve.ui.Surface, OO.EventEmitter );
 
 /* Events */
 

@@ -10,7 +10,7 @@
  *
  * @class
  * @extends ve.Element
- * @mixins ve.EventEmitter
+ * @mixins OO.EventEmitter
  * @mixins ve.ui.GroupElement
  *
  * @constructor
@@ -27,7 +27,7 @@ ve.ui.Toolbar = function VeUiToolbar( toolFactory, options ) {
 	ve.Element.call( this, options );
 
 	// Mixin constructors
-	ve.EventEmitter.call( this );
+	OO.EventEmitter.call( this );
 	ve.ui.GroupElement.call( this, this.$$( '<div>' ) );
 
 	// Properties
@@ -61,7 +61,7 @@ ve.ui.Toolbar = function VeUiToolbar( toolFactory, options ) {
 
 OO.inheritClass( ve.ui.Toolbar, ve.Element );
 
-OO.mixinClass( ve.ui.Toolbar, ve.EventEmitter );
+OO.mixinClass( ve.ui.Toolbar, OO.EventEmitter );
 OO.mixinClass( ve.ui.Toolbar, ve.ui.GroupElement );
 
 /* Methods */

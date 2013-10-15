@@ -11,7 +11,7 @@
  * @class
  * @abstract
  * @extends ve.dm.Model
- * @mixins ve.EventEmitter
+ * @mixins OO.EventEmitter
  *
  * @constructor
  * @param {Object} element Reference to element in meta-linmod
@@ -20,7 +20,7 @@ ve.dm.MetaItem = function VeDmMetaItem( element ) {
 	// Parent constructor
 	ve.dm.Model.call( this, element );
 	// Mixin
-	ve.EventEmitter.call( this );
+	OO.EventEmitter.call( this );
 
 	// Properties
 	this.list = null;
@@ -33,7 +33,7 @@ ve.dm.MetaItem = function VeDmMetaItem( element ) {
 
 OO.inheritClass( ve.dm.MetaItem, ve.dm.Model );
 
-OO.mixinClass( ve.dm.MetaItem, ve.EventEmitter );
+OO.mixinClass( ve.dm.MetaItem, OO.EventEmitter );
 
 /* Static members */
 

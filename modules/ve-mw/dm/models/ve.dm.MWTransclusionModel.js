@@ -15,13 +15,13 @@ var hasOwn = Object.hasOwnProperty,
  * MediaWiki transclusion model.
  *
  * @class
- * @mixins ve.EventEmitter
+ * @mixins OO.EventEmitter
  *
  * @constructor
  */
 ve.dm.MWTransclusionModel = function VeDmMWTransclusionModel() {
 	// Mixin constructors
-	ve.EventEmitter.call( this );
+	OO.EventEmitter.call( this );
 
 	// Properties
 	this.parts = [];
@@ -32,7 +32,7 @@ ve.dm.MWTransclusionModel = function VeDmMWTransclusionModel() {
 
 /* Inheritance */
 
-OO.mixinClass( ve.dm.MWTransclusionModel, ve.EventEmitter );
+OO.mixinClass( ve.dm.MWTransclusionModel, OO.EventEmitter );
 
 /* Events */
 

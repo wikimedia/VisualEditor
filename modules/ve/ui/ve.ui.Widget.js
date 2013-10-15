@@ -11,7 +11,7 @@
  * @class
  * @abstract
  * @extends ve.Element
- * @mixin ve.EventEmitter
+ * @mixin OO.EventEmitter
  *
  * @constructor
  * @param {Object} [config] Configuration options
@@ -25,7 +25,7 @@ ve.ui.Widget = function VeUiWidget( config ) {
 	ve.Element.call( this, config );
 
 	// Mixin constructors
-	ve.EventEmitter.call( this );
+	OO.EventEmitter.call( this );
 
 	// Properties
 	this.disabled = config.disabled;
@@ -39,7 +39,7 @@ ve.ui.Widget = function VeUiWidget( config ) {
 
 OO.inheritClass( ve.ui.Widget, ve.Element );
 
-OO.mixinClass( ve.ui.Widget, ve.EventEmitter );
+OO.mixinClass( ve.ui.Widget, OO.EventEmitter );
 
 /* Methods */
 

@@ -10,7 +10,7 @@
  *
  * @class
  * @extends ve.Element
- * @mixins ve.EventEmitter
+ * @mixins OO.EventEmitter
  *
  * @constructor
  * @param {ve.Factory} factory Window factory
@@ -21,7 +21,7 @@ ve.ui.WindowSet = function VeUiWindowSet( factory, config ) {
 	ve.Element.call( this, config );
 
 	// Mixin constructors
-	ve.EventEmitter.call( this );
+	OO.EventEmitter.call( this );
 
 	// Properties
 	this.factory = factory;
@@ -36,7 +36,7 @@ ve.ui.WindowSet = function VeUiWindowSet( factory, config ) {
 
 OO.inheritClass( ve.ui.WindowSet, ve.Element );
 
-OO.mixinClass( ve.ui.WindowSet, ve.EventEmitter );
+OO.mixinClass( ve.ui.WindowSet, OO.EventEmitter );
 
 /* Events */
 

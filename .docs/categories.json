@@ -158,7 +158,7 @@
 			{
 				"name": "Utilities",
 				"classes": [
-					"ve", "ve.EventEmitter", "ve.Registry", "ve.Factory",
+					"ve", "ve.Registry", "ve.Factory",
 					"ve.Range", "ve.Element", "ve.EventSequencer"
 				]
 			},

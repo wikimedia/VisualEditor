@@ -9,14 +9,14 @@
  * DataModel meta item.
  *
  * @class
- * @mixins ve.EventEmitter
+ * @mixins OO.EventEmitter
  *
  * @constructor
  * @param {ve.dm.Document} doc Document model
  */
 ve.dm.InternalList = function VeDmInternalList( doc ) {
 	// Mixin constructors
-	ve.EventEmitter.call( this );
+	OO.EventEmitter.call( this );
 
 	// Properties
 	this.document = doc;
@@ -36,7 +36,7 @@ ve.dm.InternalList = function VeDmInternalList( doc ) {
 
 /* Inheritance */
 
-OO.mixinClass( ve.dm.InternalList, ve.EventEmitter );
+OO.mixinClass( ve.dm.InternalList, OO.EventEmitter );
 
 /* Events */
 

@@ -11,7 +11,7 @@
  * @class
  * @abstract
  * @extends ve.Element
- * @mixin ve.EventEmitter
+ * @mixin OO.EventEmitter
  *
  * @constructor
  * @param {Object} [config] Configuration options
@@ -24,7 +24,7 @@ ve.ui.Layout = function VeUiLayout( config ) {
 	ve.Element.call( this, config );
 
 	// Mixin constructors
-	ve.EventEmitter.call( this );
+	OO.EventEmitter.call( this );
 
 	// Initialization
 	this.$.addClass( 've-ui-layout' );
@@ -34,4 +34,4 @@ ve.ui.Layout = function VeUiLayout( config ) {
 
 OO.inheritClass( ve.ui.Layout, ve.Element );
 
-OO.mixinClass( ve.ui.Layout, ve.EventEmitter );
+OO.mixinClass( ve.ui.Layout, OO.EventEmitter );

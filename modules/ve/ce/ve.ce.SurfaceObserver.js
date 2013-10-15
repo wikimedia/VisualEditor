@@ -11,14 +11,14 @@
  * ContentEditable surface observer.
  *
  * @class
- * @mixins ve.EventEmitter
+ * @mixins OO.EventEmitter
  *
  * @constructor
  * @param {ve.ce.Document} documentView Document to observe
  */
 ve.ce.SurfaceObserver = function VeCeSurfaceObserver( documentView ) {
 	// Mixin constructors
-	ve.EventEmitter.call( this );
+	OO.EventEmitter.call( this );
 
 	// Properties
 	this.documentView = documentView;
@@ -34,7 +34,7 @@ ve.ce.SurfaceObserver = function VeCeSurfaceObserver( documentView ) {
 
 /* Inheritance */
 
-OO.mixinClass( ve.ce.SurfaceObserver, ve.EventEmitter );
+OO.mixinClass( ve.ce.SurfaceObserver, OO.EventEmitter );
 
 /* Events */
 
