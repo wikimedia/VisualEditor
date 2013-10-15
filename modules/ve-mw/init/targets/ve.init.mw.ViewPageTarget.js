@@ -799,7 +799,7 @@ ve.init.mw.ViewPageTarget.prototype.saveDocument = function () {
 	// reset save start and any old captcha data
 	this.saveStart = ve.now();
 	if ( this.captcha ) {
-		this.clearMessage( 'captcha' );
+		this.saveDialog.clearMessage( 'captcha' );
 		delete this.captcha;
 	}
 
