@@ -5,7 +5,7 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-( function ( oo ) {
+( function () {
 	var ve, hasOwn;
 
 	/**
@@ -23,15 +23,6 @@
 	hasOwn = Object.prototype.hasOwnProperty;
 
 	/* Static Methods */
-
-	/**
-	 * Create an object that inherits from another object.
-	 *
-	 * @method
-	 * @until ES5: Object#create
-	 * @inheritdoc Object#create
-	 */
-	ve.createObject = Object.create;
 
 	/**
 	 * Checks if an object is an instance of one or more classes.
@@ -56,13 +47,13 @@
 	 * @method
 	 * @inheritdoc OO#cloneObject
 	 */
-	ve.cloneObject = oo.cloneObject;
+	ve.cloneObject = OO.cloneObject;
 
 	/**
 	 * @method
 	 * @inheritdoc OO#cloneObject
 	 */
-	ve.getObjectValues = oo.getObjectValues;
+	ve.getObjectValues = OO.getObjectValues;
 
 	/**
 	 * @method
@@ -75,13 +66,13 @@
 	 * @method
 	 * @inheritdoc OO#compare
 	 */
-	ve.compare = oo.compare;
+	ve.compare = OO.compare;
 
 	/**
 	 * @method
 	 * @inheritdoc OO#copy
 	 */
-	ve.copy = oo.copy;
+	ve.copy = OO.copy;
 
 	/**
 	 * Copy an array of DOM elements, optionally into a different document.
@@ -945,4 +936,4 @@
 
 	// Expose
 	window.ve = ve;
-}( OO ) );
+}() );
