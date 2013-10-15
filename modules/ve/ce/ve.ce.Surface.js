@@ -386,7 +386,7 @@ ve.ce.Surface.prototype.onDocumentMouseDown = function ( e ) {
 		while ( node.parent !== null && node.model.isContent() ) {
 			node = node.parent;
 		}
-		this.model.change( null, node.model.getRange() );
+		this.model.setSelection( node.model.getRange() );
 	}
 };
 
@@ -600,7 +600,7 @@ ve.ce.Surface.prototype.onDocumentKeyPress = function ( e ) {
 				prevNode.isContent() &&
 				documentModel.data.isCloseElementData( selection.start - 1 )
 			) {
-				this.model.change( null, new ve.Range( selection.start ) );
+				this.model.setSelection( new ve.Range( selection.start ) );
 			}
 		}
 	}
@@ -885,7 +885,7 @@ ve.ce.Surface.prototype.afterPaste = function () {
 	selection = tx.translateRange( selection );
 	this.model.change( tx, new ve.Range( selection.start ) );
 	// Move cursor to end of selection
-	this.model.change( null, new ve.Range( selection.end ) );
+	this.model.setSelection( new ve.Range( selection.end ) );
 
 	// Allow pasting again
 	this.pasting = false;
@@ -1257,7 +1257,7 @@ ve.ce.Surface.prototype.handleLeftOrRightArrowKey = function ( e ) {
 		( e.altKey === true || e.ctrlKey === true ) ? 'word' : 'character',
 		e.shiftKey
 	);
-	this.model.change( null, range );
+	this.model.setSelection( range );
 	// TODO: onDocumentKeyDown does this anyway
 	this.surfaceObserver.startTimerLoop();
 	this.surfaceObserver.pollOnce();
@@ -1311,7 +1311,7 @@ ve.ce.Surface.prototype.handleUpOrDownArrowKey = function ( e ) {
 			} else { // collapsed range (just a cursor)
 				range = new ve.Range( this.model.getSelection().to );
 			}
-			this.model.change( null, range );
+			this.model.setSelection( range );
 			this.surfaceObserver.pollOnce();
 		}, this ), 0 );
 	} else {
@@ -1496,12 +1496,12 @@ ve.ce.Surface.prototype.handleEnter = function ( e ) {
 
 	// Now we can move the cursor forward
 	if ( advanceCursor ) {
-		this.model.change(
-			null, new ve.Range( documentModel.data.getRelativeContentOffset( selection.from, 1 ) )
+		this.model.setSelection(
+			new ve.Range( documentModel.data.getRelativeContentOffset( selection.from, 1 ) )
 		);
 	} else {
-		this.model.change(
-			null, new ve.Range( documentModel.data.getNearestContentOffset( selection.from ) )
+		this.model.setSelection(
+			new ve.Range( documentModel.data.getNearestContentOffset( selection.from ) )
 		);
 	}
 	// Reset and resume polling
@@ -1539,7 +1539,7 @@ ve.ce.Surface.prototype.handleDelete = function ( e, backspace ) {
 			// just select the node and cancel the deletion.
 			startNode = this.documentView.getDocumentNode().getNodeFromOffset( offset + 1 );
 			if ( startNode.isFocusable() ) {
-				this.model.change( null, startNode.getModel().getOuterRange() );
+				this.model.setSelection( startNode.getModel().getOuterRange() );
 				return;
 			}
 		}
@@ -1598,7 +1598,7 @@ ve.ce.Surface.prototype.handleDelete = function ( e, backspace ) {
 			}
 		}
 	}
-	this.model.change( null, new ve.Range( rangeToRemove.start ) );
+	this.model.setSelection( new ve.Range( rangeToRemove.start ) );
 	this.surfaceObserver.clear();
 };
 

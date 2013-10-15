@@ -33,7 +33,7 @@ ve.test.utils.runFormatConverterTest = function ( assert, range, type, attribute
 
 	expectedData( data );
 
-	surface.getModel().change( null, range );
+	surface.getModel().setSelection( range );
 	formatAction.convert( type, attributes );
 
 	assert.deepEqual( surface.getModel().getDocument().getFullData(), data, msg + ': data models match' );

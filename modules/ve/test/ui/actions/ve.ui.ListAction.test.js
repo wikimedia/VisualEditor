@@ -19,7 +19,7 @@ function runListConverterTest( assert, html, method, style, range, expectedSelec
 	if ( expectedOriginalData ) {
 		expectedOriginalData( originalData );
 	}
-	surface.getModel().change( null, range );
+	surface.getModel().setSelection( range );
 	listAction[method]( style );
 
 	assert.deepEqual( surface.getModel().getDocument().getFullData(), data, msg + ': data models match' );

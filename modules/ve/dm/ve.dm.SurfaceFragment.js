@@ -445,7 +445,7 @@ ve.dm.SurfaceFragment.prototype.select = function () {
 	if ( !this.surface ) {
 		return this;
 	}
-	this.surface.change( null, this.getRange() );
+	this.surface.setSelection( this.getRange() );
 	return this;
 };
 

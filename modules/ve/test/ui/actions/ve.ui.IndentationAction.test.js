@@ -20,7 +20,7 @@ function runIndentationChangeTest( assert, range, method, expectedSelection, exp
 		expectedOriginalData( originalData );
 	}
 
-	surface.getModel().change( null, range );
+	surface.getModel().setSelection( range );
 	indentationAction[method]();
 
 	assert.deepEqual( surface.getModel().getDocument().getFullData(), data, msg + ': data models match' );

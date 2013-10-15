@@ -50,7 +50,7 @@ QUnit.test( 'change', 3, function ( assert ) {
 	} );
 	surface.change( tx.clone() );
 	assert.deepEqual( events, { 'documentUpdate': 1, 'select': 0 }, 'transaction without selection' );
-	surface.change( null, new ve.Range( 2, 2 ) );
+	surface.setSelection( new ve.Range( 2, 2 ) );
 	assert.deepEqual( events, { 'documentUpdate': 1, 'select': 1 }, 'selection without transaction' );
 	surface.change( tx.clone(), new ve.Range( 3, 3 ) );
 	assert.deepEqual( events, { 'documentUpdate': 2, 'select': 2 }, 'transaction and selection' );

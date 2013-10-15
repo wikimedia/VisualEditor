@@ -1669,7 +1669,7 @@ ve.init.mw.ViewPageTarget.prototype.restoreEditSection = function () {
 				offset = surfaceModel.getDocument().data.getNearestContentOffset(
 					offsetNode.getModel().getOffset(), 1
 				);
-				surfaceModel.change( null, new ve.Range( offset ) );
+				surfaceModel.setSelection( new ve.Range( offset ) );
 				// Scroll to heading:
 				// Wait for toolbar to animate in so we can account for its height
 				setTimeout( function () {

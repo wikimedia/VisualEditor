@@ -31,7 +31,7 @@ ve.test.utils.runSurfaceHandleDeleteTest = function( assert, html, range, operat
 		selection = s;
 	} );
 
-	model.change( null, range );
+	model.setSelection( range );
 	for ( i = 0; i < operations.length; i++ ) {
 		args = deleteArgs[operations[i]];
 		view.handleDelete( args[0], args[1] );

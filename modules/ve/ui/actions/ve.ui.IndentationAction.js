@@ -188,7 +188,7 @@ ve.ui.IndentationAction.prototype.indentListItem = function ( listItem ) {
 
 	// TODO If this listItem has a child list, split&unwrap it
 
-	surfaceModel.change( null, selection );
+	surfaceModel.setSelection( selection );
 };
 
 /**
