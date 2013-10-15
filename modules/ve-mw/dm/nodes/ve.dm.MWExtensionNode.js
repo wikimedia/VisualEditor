@@ -64,7 +64,7 @@ ve.dm.MWExtensionNode.static.toDataElement = function ( domElements, converter )
 		}
 	};
 
-	index = this.storeDomElements( dataElement, domElements, converter.getStore() );
+	index = this.storeGeneratedContents( dataElement, domElements, converter.getStore() );
 	dataElement.attributes.originalIndex = index;
 
 	return dataElement;
