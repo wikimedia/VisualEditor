@@ -233,7 +233,7 @@ ve.ui.SurfaceToolbar.prototype.float = function () {
 		};
 		this.$
 			.css( 'height', this.$.height() )
-			.addClass( 've-ui-toolbar-floating' );
+			.addClass( 've-ui-surfaceToolbar-floating' );
 		this.$bar.css( update.css );
 		this.floating = true;
 
@@ -250,7 +250,7 @@ ve.ui.SurfaceToolbar.prototype.unfloat = function () {
 	if ( this.floating ) {
 		this.$
 			.css( 'height', '' )
-			.removeClass( 've-ui-toolbar-floating' );
+			.removeClass( 've-ui-surfaceToolbar-floating' );
 		this.$bar.css( { 'left': '', 'right': '' } );
 		this.floating = false;
 

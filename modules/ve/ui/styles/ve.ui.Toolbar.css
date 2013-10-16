@@ -20,13 +20,6 @@
 	line-height: 1em;
 }
 
-.ve-ui-toolbar-floating .ve-ui-toolbar-bar {
-	position: fixed;
-	top: 0;
-	z-index: 100;
-	border-top: none; /* TODO: Do we need this? What does it reset? */
-}
-
 .ve-ui-toolbar-bottom .ve-ui-toolbar-bar {
 	position: absolute;
 }
@@ -75,8 +68,4 @@
 	-o-transition: opacity 500ms ease-in-out;
 	transition: opacity 500ms ease-in-out;
 	opacity: 0.125;
-}
-
-.ve-ui-toolbar-floating .ve-ui-toolbar-shadow {
-	opacity: 0.5;
 }

@@ -545,6 +545,7 @@ $wgResourceModules += array(
 			've/ui/styles/ve.ui.Toolbar.css',
 			've/ui/styles/ve.ui.ToolGroup.css',
 			've/ui/styles/ve.ui.Tool.css',
+			've/ui/styles/ve.ui.SurfaceToolbar.css',
 			've/ui/styles/ve.ui.Element.css',
 			've/ui/styles/ve.ui.Layout.css',
 			've/ui/styles/ve.ui.Widget.css',
