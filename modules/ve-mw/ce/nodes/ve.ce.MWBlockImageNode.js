@@ -235,6 +235,14 @@ ve.ce.MWBlockImageNode.prototype.onAttributeChange = function ( key, from, to ) 
 };
 
 /** */
+ve.ce.MWBlockImageNode.prototype.onResizableResizing = function ( dimensions ) {
+	if ( !this.outline ) {
+		ve.ce.ResizableNode.prototype.onResizableResizing.call( this, dimensions );
+		this.$thumbInner.css( 'width', dimensions.width + 2 );
+	}
+};
+
+/** */
 ve.ce.MWBlockImageNode.prototype.setupSlugs = function () {
 	// Intentionally empty
 };

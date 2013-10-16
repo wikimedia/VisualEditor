@@ -14,9 +14,10 @@
  *
  * @constructor
  * @param {jQuery} [$resizable=this.$] Resizable DOM element
+ * @param {Object} [config] Configuration options
  */
-ve.ce.MWResizableNode = function VeCeMWResizableNode( $resizable ) {
-	ve.ce.ResizableNode.call( this, $resizable );
+ve.ce.MWResizableNode = function VeCeMWResizableNode( $resizable, config ) {
+	ve.ce.ResizableNode.call( this, $resizable, config );
 };
 
 /* Inheritance */
