@@ -42,10 +42,6 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 	this.toolbarHelpButton = null;
 	this.toolbarFeedbackButton = null;
 	this.toolbarMetaButton = null;
-
-	this.$saveDialog = $( '<div>' )
-		.addClass( 've-init-mw-viewPageTarget-saveDialog' );
-
 	this.onBeforeUnloadFallback = null;
 	this.onBeforeUnloadHandler = null;
 	this.active = false;
@@ -310,9 +306,10 @@ ve.init.mw.ViewPageTarget.prototype.onSave = function ( html, newid ) {
 		// Just checking for mw.page.watch is not enough because in Firefox
 		// there is Object.prototype.watch...
 		if ( mw.page.watch && mw.page.watch.updateWatchLink ) {
-			var watchChecked = this.$saveDialog
-				.find( '#wpWatchthis' )
-				.prop( 'checked' );
+			var watchChecked = this.saveDialog.$saveOptions
+				.find( '.ve-ui-mwSaveDialog-checkboxes' )
+					.find( '#wpWatchthis' )
+					.prop( 'checked' );
 			mw.page.watch.updateWatchLink(
 				$( '#ca-watch a, #ca-unwatch a' ),
 				watchChecked ? 'unwatch': 'watch'
