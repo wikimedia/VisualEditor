@@ -10,17 +10,27 @@
  *
  * @class
  * @extends ve.dm.BranchNode
+ * @mixins ve.dm.MWImageNode
  * @constructor
  * @param {number} [length] Length of content data in document
  * @param {Object} [element] Reference to element in linear model
  */
 ve.dm.MWBlockImageNode = function VeDmMWBlockImageNode( length, element ) {
+	// Parent constructor
 	ve.dm.BranchNode.call( this, 0, element );
+
+	// Mixin constructors
+	ve.dm.MWImageNode.call( this );
 };
 
 /* Inheritance */
 
 ve.inheritClass( ve.dm.MWBlockImageNode, ve.dm.BranchNode );
+
+// Need to mixin base class as well
+ve.mixinClass( ve.dm.MWBlockImageNode, ve.dm.GeneratedContentNode );
+
+ve.mixinClass( ve.dm.MWBlockImageNode, ve.dm.MWImageNode );
 
 /* Static Properties */
 
@@ -50,7 +60,8 @@ ve.dm.MWBlockImageNode.static.getMatchRdfaTypes = function () {
 };
 
 ve.dm.MWBlockImageNode.static.toDataElement = function ( domElements, converter ) {
-	var $figure = $( domElements[0] ),
+	var dataElement,
+		$figure = $( domElements[0] ),
 		// images with link='' have a span wrapper instead
 		$imgWrapper = $figure.children( 'a, span' ).eq( 0 ),
 		$img = $imgWrapper.children( 'img' ).eq( 0 ),
@@ -100,15 +111,19 @@ ve.dm.MWBlockImageNode.static.toDataElement = function ( domElements, converter 
 	// Store unrecognized classes so we can restore them on the way out
 	attributes.unrecognizedClasses = ve.simpleArrayDifference( classes, recognizedClasses );
 
+	dataElement = { 'type': this.name, 'attributes': attributes };
+
+	this.storeGeneratedContents( dataElement, dataElement.attributes.src, converter.getStore() );
+
 	if ( $caption.length === 0 ) {
 		return [
-			{ 'type': this.name, 'attributes': attributes },
+			dataElement,
 			{ 'type': 'mwImageCaption' },
 			{ 'type': '/mwImageCaption' },
 			{ 'type': '/' + this.name }
 		];
 	} else {
-		return [ { 'type': this.name, 'attributes': attributes } ].
+		return [ dataElement ].
 			concat( converter.getDataFromDomRecursionClean( $caption[0], { 'type': 'mwImageCaption' } ) ).
 			concat( [ { 'type': '/' + this.name } ] );
 	}

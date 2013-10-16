@@ -10,10 +10,7 @@
  *
  * @class
  * @extends ve.ce.BranchNode
- * @mixins ve.ce.ProtectedNode
- * @mixins ve.ce.FocusableNode
- * @mixins ve.ce.RelocatableNode
- * @mixins ve.ce.MWResizableNode
+ * @mixins ve.ce.MWImageNode
  *
  * @constructor
  * @param {ve.dm.MWBlockImageNode} model Model to observe
@@ -77,10 +74,7 @@ ve.ce.MWBlockImageNode = function VeCeMWBlockImageNode( model, config ) {
 	}
 
 	// Mixin constructors
-	ve.ce.ProtectedNode.call( this, this.$inner );
-	ve.ce.FocusableNode.call( this, this.$inner );
-	ve.ce.RelocatableNode.call( this, this.$inner );
-	ve.ce.MWResizableNode.call( this, this.$image );
+	ve.ce.MWImageNode.call( this, this.$inner, this.$image );
 
 	// I smell a caption!
 	if ( type !== 'none' && type !== 'frameless' && this.model.children.length === 1 ) {
@@ -103,16 +97,10 @@ ve.ce.MWBlockImageNode = function VeCeMWBlockImageNode( model, config ) {
 
 ve.inheritClass( ve.ce.MWBlockImageNode, ve.ce.BranchNode );
 
-ve.mixinClass( ve.ce.MWBlockImageNode, ve.ce.ProtectedNode );
-
-ve.mixinClass( ve.ce.MWBlockImageNode, ve.ce.FocusableNode );
-
-ve.mixinClass( ve.ce.MWBlockImageNode, ve.ce.RelocatableNode );
-
 // Need to mixin base class as well
-ve.mixinClass( ve.ce.MWBlockImageNode, ve.ce.ResizableNode );
+ve.mixinClass( ve.ce.MWBlockImageNode, ve.ce.GeneratedContentNode );
 
-ve.mixinClass( ve.ce.MWBlockImageNode, ve.ce.MWResizableNode );
+ve.mixinClass( ve.ce.MWBlockImageNode, ve.ce.MWImageNode );
 
 /* Static Properties */
 
