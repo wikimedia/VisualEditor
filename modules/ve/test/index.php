@@ -225,6 +225,8 @@
 		<script src="../../ve/ui/widgets/ve.ui.LinkTargetInputWidget.js"></script>
 		<script src="../../ve/ui/layouts/ve.ui.FieldsetLayout.js"></script>
 		<script src="../../ve/ui/layouts/ve.ui.GridLayout.js"></script>
+		<script src="../../ve/ui/layouts/ve.ui.PagedLayout.js"></script>
+		<script src="../../ve/ui/layouts/ve.ui.PagedOutlineLayout.js"></script>
 		<script src="../../ve/ui/layouts/ve.ui.PanelLayout.js"></script>
 		<script src="../../ve/ui/layouts/ve.ui.StackPanelLayout.js"></script>
 		<script src="../../ve/ui/tools/ve.ui.AnnotationTool.js"></script>
