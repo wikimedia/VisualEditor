@@ -31,7 +31,6 @@ a.ve-ui-buttonWidget-button {
 	position: relative;
 	-webkit-transition: opacity 200ms;
 	-moz-transition: opacity 200ms;
-	-ms-transition: opacity 200ms;
 	-o-transition: opacity 200ms;
 	transition: opacity 200ms;
 }
@@ -99,7 +98,6 @@ a.ve-ui-buttonWidget-button {
 	/* Animation */
 	-webkit-transition: border-color 100ms;
 	-moz-transition: border-color 100ms;
-	-ms-transition: border-color 100ms;
 	-o-transition: border-color 100ms;
 	transition: border-color 100ms;
 
@@ -367,7 +365,6 @@ a.ve-ui-buttonWidget-button {
 	/* Animation */
 	-webkit-transition: border-color 200ms, box-shadow 200ms, background-color 200ms;
 	-moz-transition: border-color 200ms, box-shadow 200ms, background-color 200ms;
-	-ms-transition: border-color 200ms, box-shadow 200ms, background-color 200ms;
 	-o-transition: border-color 200ms, box-shadow 200ms, background-color 200ms;
 	transition: border-color 200ms, box-shadow 200ms, background-color 200ms;
 }
@@ -447,7 +444,6 @@ a.ve-ui-buttonWidget-button {
 	/* Animation */
 	-webkit-transition: border-color 200ms, box-shadow 200ms, background-color 200ms;
 	-moz-transition: border-color 200ms, box-shadow 200ms, background-color 200ms;
-	-ms-transition: border-color 200ms, box-shadow 200ms, background-color 200ms;
 	-o-transition: border-color 200ms, box-shadow 200ms, background-color 200ms;
 	transition: border-color 200ms, box-shadow 200ms, background-color 200ms;
 }
@@ -576,12 +572,10 @@ a.ve-ui-buttonWidget-button {
 .ve-ui-popupWidget-transitioning .ve-ui-popupWidget-popup {
 	-webkit-transition: width 100ms, height 100ms, left 100ms;
 	-moz-transition: width 100ms, height 100ms, left 100ms;
-	-ms-transition: width 100ms, height 100ms, left 100ms;
 	-o-transition: width 100ms, height 100ms, left 100ms;
 	transition: width 100ms, height 100ms, left 100ms;
 	-webkit-transition-timing-function: ease-in-out;
 	-moz-transition-timing-function: ease-in-out;
-	-ms-transition-timing-function: ease-in-out;
 	-o-transition-timing-function: ease-in-out;
 	transition-timing-function: ease-in-out;
 }

@@ -8,7 +8,6 @@
 .ve-ui-inspector {
 	-webkit-transition: opacity 100ms;
 	-moz-transition: opacity 100ms;
-	-ms-transition: opacity 100ms;
 	-o-transition: opacity 100ms;
 	transition: opacity 100ms;
 }

@@ -15,7 +15,6 @@
 	border: solid 1px transparent;
 	-webkit-transition: border-color 300ms;
 	-moz-transition: border-color 300ms;
-	-ms-transition: border-color 300ms;
 	-o-transition: border-color 300ms;
 	transition: border-color 300ms;
 }

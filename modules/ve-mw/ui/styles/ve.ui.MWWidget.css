@@ -71,7 +71,6 @@
 	/* Animation */
 	-webkit-transition: border-color 100ms;
 	-moz-transition: border-color 100ms;
-	-ms-transition: border-color 100ms;
 	-o-transition: border-color 100ms;
 	transition: border-color 100ms;
 
@@ -203,7 +202,6 @@
 	opacity: 0;
 	-webkit-transition: opacity 400ms;
 	-moz-transition: opacity 400ms;
-	-ms-transition: opacity 400ms;
 	-o-transition: opacity 400ms;
 	transition: opacity 400ms;
 }
