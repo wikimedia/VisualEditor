@@ -231,7 +231,6 @@ ve.init.mw.ViewPageTarget.prototype.deactivate = function ( override ) {
  */
 ve.init.mw.ViewPageTarget.prototype.onLoad = function ( doc ) {
 	if ( this.activating ) {
-		ve.track( 'Edit', { action: 'page-edit-impression' } );
 		this.edited = false;
 		this.doc = doc;
 		this.setUpSurface( doc, ve.bind( function() {
@@ -299,12 +298,6 @@ ve.init.mw.ViewPageTarget.prototype.onTokenError = function ( response, status )
  * @param {number} [newid] New revision id, undefined if unchanged
  */
 ve.init.mw.ViewPageTarget.prototype.onSave = function ( html, newid ) {
-	ve.track( 'Edit', {
-		action: 'page-save-success',
-		latency: this.saveStart ? ve.now() - this.saveStart : 0
-	} );
-	delete this.saveStart;
-
 	if ( !this.pageExists || this.restoring ) {
 		// This is a page creation or restoration, refresh the page
 		this.tearDownBeforeUnloadHandler();
@@ -648,7 +641,6 @@ ve.init.mw.ViewPageTarget.prototype.onViewTabClick = function ( e ) {
  * @param {jQuery.Event} e Mouse click event
  */
 ve.init.mw.ViewPageTarget.prototype.onToolbarSaveButtonClick = function () {
-	ve.track( 'Edit', { action: 'page-save-attempt' } );
 	if ( this.edited || this.restoring ) {
 		this.showSaveDialog();
 	}
@@ -795,9 +787,7 @@ ve.init.mw.ViewPageTarget.prototype.saveDocument = function () {
 	var doc = this.surface.getModel().getDocument(),
 		saveOptions = this.getSaveOptions();
 
-	// Once we've retrieved the save options,
-	// reset save start and any old captcha data
-	this.saveStart = ve.now();
+	// Reset any old captcha data
 	if ( this.captcha ) {
 		this.saveDialog.clearMessage( 'captcha' );
 		delete this.captcha;
