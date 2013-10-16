@@ -80,7 +80,7 @@ ve.dm.MWTransclusionNode.static.toDataElement = function ( domElements, converte
 		}
 	};
 
-	index = this.storeDomElements( dataElement, domElements, converter.getStore() );
+	index = this.storeGeneratedContents( dataElement, domElements, converter.getStore() );
 	dataElement.attributes.originalIndex = index;
 
 	return dataElement;

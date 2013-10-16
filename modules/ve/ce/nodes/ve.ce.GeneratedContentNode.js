@@ -87,23 +87,23 @@ ve.ce.GeneratedContentNode.prototype.onGeneratedContentNodeUpdate = function () 
 /**
  * Rerender the contents of this node.
  *
- * @param {HTMLElement[]} domElements Array of DOM elements
+ * @param {Object|string|Array} generatedContents Generated contents, in the default case an HTMLElement array
  * @emits setup
  * @emits teardown
  */
-ve.ce.GeneratedContentNode.prototype.render = function ( domElements ) {
+ve.ce.GeneratedContentNode.prototype.render = function ( generatedContents ) {
 	var $rendering, doc = this.getElementDocument();
 	if ( this.live ) {
 		this.emit( 'teardown' );
 	}
 	// Filter out link, meta and style tags for bug 50043
-	$rendering = $( ve.copyDomElements( domElements, doc ) ).not( 'link, meta, style' );
+	$rendering = $( ve.copyDomElements( generatedContents, doc ) ).not( 'link, meta, style' );
 	// Also remove link, meta and style tags nested inside other tags
 	$rendering.find( 'link, meta, style' ).remove();
 	this.$.empty().append( $rendering );
 	if ( this.live ) {
 		this.emit( 'setup' );
-		this.afterRender( domElements );
+		this.afterRender( generatedContents );
 	}
 };
 
@@ -112,7 +112,7 @@ ve.ce.GeneratedContentNode.prototype.render = function ( domElements ) {
  *
  * Nodes may override this method if the rerender event needs to be deferred (e.g. until images have loaded)
  *
- * @param {HTMLElement[]} domElements Array of DOM elements
+ * @param {Object|string|Array} generatedContents Generated contents
  * @emits rerender
  */
 ve.ce.GeneratedContentNode.prototype.afterRender = function () {
@@ -160,9 +160,9 @@ ve.ce.GeneratedContentNode.prototype.forceUpdate = function ( config ) {
 	promise = this.generatingPromise = this.generateContents( config );
 	promise
 		// If this promise is no longer the currently pending one, ignore it completely
-		.done( function ( domElements ) {
+		.done( function ( generatedContents ) {
 			if ( node.generatingPromise === promise ) {
-				node.doneGenerating( domElements, config );
+				node.doneGenerating( generatedContents, config );
 			}
 		} )
 		.fail( function () {
@@ -189,16 +189,17 @@ ve.ce.GeneratedContentNode.prototype.startGenerating = function () {
  * Called when the node successfully finishes generating new content.
  *
  * @method
- * @param {HTMLElement[]} domElements Generated content
+ * @param {Object|string|Array} generatedContents Generated contents
  * @param {Object} [config] Config object passed to forceUpdate()
  */
-ve.ce.GeneratedContentNode.prototype.doneGenerating = function ( domElements, config ) {
+ve.ce.GeneratedContentNode.prototype.doneGenerating = function ( generatedContents, config ) {
 	var store = this.model.doc.getStore(),
 		hash = ve.getHash( [ this.model, config ] );
-	store.index( domElements, hash );
+
+	store.index( generatedContents, hash );
 	this.$.removeClass( 've-ce-generatedContentNode-generating' );
 	this.generatingPromise = null;
-	this.render( domElements );
+	this.render( generatedContents );
 };
 
 /**
