@@ -543,7 +543,7 @@ ve.init.mw.Target.prototype.load = function () {
 	} );
 
 	this.loading.done( function ( data, status, jqxhr ) {
-		ve.track( 'performance.parsoid.domLoad', {
+		ve.track( 'performance.domLoad', {
 			'bytes': $.byteLength( jqxhr.responseText ),
 			'duration': ve.now() - start,
 			'cacheHit': /hit/i.test( jqxhr.getResponseHeader( 'X-Cache' ) ),
@@ -602,7 +602,7 @@ ve.init.mw.Target.prototype.save = function ( doc, options ) {
 	} );
 
 	this.saving.done( function ( data, status, jqxhr ) {
-		ve.track( 'performance.parsoid.domSave', {
+		ve.track( 'performance.domSave', {
 			'bytes': $.byteLength( jqxhr.responseText ),
 			'duration': ve.now() - start,
 			'parsoid': jqxhr.getResponseHeader( 'X-Parsoid-Performance' )
