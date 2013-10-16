@@ -170,28 +170,43 @@ ve.ce.ResizableNode.prototype.onResizeHandlesCornerMouseDown = function ( e ) {
  * @method
  */
 ve.ce.ResizableNode.prototype.setResizableHandlesSizeAndPosition = function () {
-	var offset = ve.Element.getRelativePosition(
-		this.$resizable, this.getRoot().getSurface().getSurface().$
-	);
+	var width = this.$resizable.width(),
+		height = this.$resizable.height();
+
+	this.setResizableHandlesPosition();
 
 	this.$resizeHandles
 		.css( {
 			'width': 0,
-			'height': 0,
-			'top': offset.top,
-			'left': offset.left
+			'height': 0
 		} )
 		.find( '.ve-ce-resizableNode-neHandle' )
-			.css( { 'margin-right': -this.$resizable.width() } )
+			.css( { 'margin-right': -width } )
 			.end()
 		.find( '.ve-ce-resizableNode-swHandle' )
-			.css( { 'margin-bottom': -this.$resizable.height() } )
+			.css( { 'margin-bottom': -height } )
 			.end()
 		.find( '.ve-ce-resizableNode-seHandle' )
 			.css( {
-				'margin-right': -this.$resizable.width(),
-				'margin-bottom': -this.$resizable.height()
+				'margin-right': -width,
+				'margin-bottom': -height
 			} );
+};
+
+/**
+ * Set the proper position for resize handles
+ *
+ * @method
+ */
+ve.ce.ResizableNode.prototype.setResizableHandlesPosition = function () {
+	var offset = ve.Element.getRelativePosition(
+			this.$resizable, this.getRoot().getSurface().getSurface().$
+		);
+
+	this.$resizeHandles.css( {
+		'top': offset.top,
+		'left': offset.left
+	} );
 };
 
 /**
