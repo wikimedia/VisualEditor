@@ -251,18 +251,18 @@ ve.ce.ResizableNode.prototype.onDocumentMouseMove = function ( e ) {
 		}
 
 		// Unconstrained dimensions and ratio
-		newWidth = Math.max( Math.min( this.$resizable.width() + diff.x, max ), min );
-		newHeight = Math.max( Math.min( this.$resizable.height() + diff.y, max ), min );
+		newWidth = Math.max( Math.min( this.resizeInfo.width + diff.x, max ), min );
+		newHeight = Math.max( Math.min( this.resizeInfo.height + diff.y, max ), min );
 		newRatio = newWidth / newHeight;
 
 		// Fix the ratio
 		if ( this.ratio > newRatio ) {
 			dimensions.width = newWidth;
-			dimensions.height = this.$resizable.height() +
-				( newWidth - this.$resizable.width() ) / this.ratio;
+			dimensions.height = this.resizeInfo.height +
+				( newWidth - this.resizeInfo.width ) / this.ratio;
 		} else {
-			dimensions.width = this.$resizable.width() +
-				( newHeight - this.$resizable.height() ) * this.ratio;
+			dimensions.width = this.resizeInfo.width +
+				( newHeight - this.resizeInfo.height ) * this.ratio;
 			dimensions.height = newHeight;
 		}
 
