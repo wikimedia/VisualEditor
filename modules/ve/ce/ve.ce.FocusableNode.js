@@ -16,7 +16,7 @@
  * node's DOM rendering.
  *
  * If your focusable node changes size and the highlight must be redrawn, call redrawHighlight().
- * 'resize' and 'rerender' are already bound to call this.
+ * 'resizeEnd' and 'rerender' are already bound to call this.
  *
  * @class
  * @abstract
@@ -34,7 +34,7 @@ ve.ce.FocusableNode = function VeCeFocusableNode( $focusable ) {
 	// Events
 	this.connect( this, {
 		'setup': 'onFocusableSetup',
-		'resize': 'onFocusableResize',
+		'resizeEnd': 'onFocusableResize',
 		'rerender': 'onFocusableRerender',
 		'live': 'onFocusableLive'
 	} );

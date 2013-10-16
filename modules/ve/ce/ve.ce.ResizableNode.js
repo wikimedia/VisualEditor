@@ -29,7 +29,7 @@ ve.ce.ResizableNode = function VeCeResizableNode( $resizable, config ) {
 		'focus': 'onResizableFocus',
 		'blur': 'onResizableBlur',
 		'live': 'onResizableLive',
-		'resize': 'onResizableFocus'
+		'resizeEnd': 'onResizableFocus'
 	} );
 
 	// Initialization
@@ -40,6 +40,22 @@ ve.ce.ResizableNode = function VeCeResizableNode( $resizable, config ) {
 		.append( this.$$( '<div>' ).addClass( 've-ce-resizableNode-seHandle' ) )
 		.append( this.$$( '<div>' ).addClass( 've-ce-resizableNode-swHandle' ) );
 };
+
+/* Events */
+
+/**
+ * @event resizeStart
+ */
+
+/**
+ * @event resizing
+ * @param {Object} dimensions Dimension object containing width & height
+ */
+
+/**
+ * @event resizeEnd
+ */
+
 
 /* Static Properties */
 
@@ -108,6 +124,7 @@ ve.ce.ResizableNode.prototype.onResizableLive = function () {
  *
  * @method
  * @param {jQuery.Event} e Click event
+ * @emits resizeStart
  */
 ve.ce.ResizableNode.prototype.onResizeHandlesCornerMouseDown = function ( e ) {
 	// Hide context menu
@@ -142,6 +159,7 @@ ve.ce.ResizableNode.prototype.onResizeHandlesCornerMouseDown = function ( e ) {
 		'mousemove.ve-ce-resizableNode': ve.bind( this.onDocumentMouseMove, this ),
 		'mouseup.ve-ce-resizableNode': ve.bind( this.onDocumentMouseUp, this )
 	} );
+	this.emit( 'resizeStart' );
 
 	return false;
 };
@@ -181,6 +199,7 @@ ve.ce.ResizableNode.prototype.setResizableHandlesSizeAndPosition = function () {
  *
  * @method
  * @param {jQuery.Event} e Click event
+ * @emits resizing
  */
 ve.ce.ResizableNode.prototype.onDocumentMouseMove = function ( e ) {
 	var newWidth, newHeight, newRatio, snapMin, snapMax, snap,
@@ -260,6 +279,7 @@ ve.ce.ResizableNode.prototype.onDocumentMouseMove = function ( e ) {
 
 		// Update bounding box
 		this.$resizeHandles.css( dimensions );
+		this.emit( 'resizing', dimensions );
 	}
 };
 
@@ -267,6 +287,7 @@ ve.ce.ResizableNode.prototype.onDocumentMouseMove = function ( e ) {
  * Handle body mouseup.
  *
  * @method
+ * @emits resizeEnd
  */
 ve.ce.ResizableNode.prototype.onDocumentMouseUp = function () {
 	var attrChanges,
@@ -294,7 +315,7 @@ ve.ce.ResizableNode.prototype.onDocumentMouseUp = function () {
 	// user doesn't perform a drag
 	this.root.getSurface().getSurface().getContext().update();
 
-	this.emit( 'resize' );
+	this.emit( 'resizeEnd' );
 };
 
 /**
