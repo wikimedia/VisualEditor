@@ -33,10 +33,7 @@ OO.inheritClass( ve.dm.MWExternalLinkAnnotation, ve.dm.LinkAnnotation );
 
 ve.dm.MWExternalLinkAnnotation.static.name = 'link/mwExternal';
 
-ve.dm.MWExternalLinkAnnotation.static.matchRdfaTypes = [
-	'mw:ExtLink',
-	'mw:ExtLink/Numbered'
-];
+ve.dm.MWExternalLinkAnnotation.static.matchRdfaTypes = [ 'mw:ExtLink' ];
 
 ve.dm.MWExternalLinkAnnotation.static.toDataElement = function ( domElements ) {
 	var parentResult = ve.dm.LinkAnnotation.static.toDataElement.apply( this, arguments );
