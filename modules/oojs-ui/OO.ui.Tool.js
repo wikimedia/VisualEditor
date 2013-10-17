@@ -198,6 +198,17 @@ OO.ui.Tool.prototype.setActive = function ( state ) {
 };
 
 /**
+ * Get the tool title.
+ *
+ * @method
+ * @returns {string} [title] Title text
+ */
+OO.ui.Tool.prototype.getTitle = function () {
+	var key = this.constructor.static.titleMessage;
+	return typeof key === 'string' ? OO.ui.msg( key ) : '';
+};
+
+/**
  * Get the tool's symbolic name.
  *
  * @method
@@ -213,10 +224,9 @@ OO.ui.Tool.prototype.getName = function () {
  * @method
  */
 OO.ui.Tool.prototype.updateLabel = function () {
-	var titleMessage = this.constructor.static.titleMessage,
+	var title = this.getTitle(),
 		labelTooltips = this.toolGroup.constructor.static.labelTooltips,
 		accelTooltips = this.toolGroup.constructor.static.accelTooltips,
-		title = titleMessage ? OO.ui.msg( titleMessage ) : '',
 		accel = this.toolbar.getToolAccelerator( this.constructor.static.name ),
 		tooltipParts = [];
 
