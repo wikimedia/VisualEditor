@@ -226,6 +226,7 @@ $html = file_get_contents( $page );
 		<script src="../../modules/ve/ui/elements/ve.ui.IconedElement.js"></script>
 		<script src="../../modules/ve/ui/elements/ve.ui.GroupElement.js"></script>
 		<script src="../../modules/ve/ui/elements/ve.ui.FlaggableElement.js"></script>
+		<script src="../../modules/ve/ui/elements/ve.ui.PopuppableElement.js"></script>
 		<script src="../../modules/ve/ui/ve.ui.Surface.js"></script>
 		<script src="../../modules/ve/ui/ve.ui.Context.js"></script>
 		<script src="../../modules/ve/ui/ve.ui.Frame.js"></script>
