@@ -109,9 +109,13 @@ ve.ui.SelectWidget.prototype.onMouseDown = function ( e ) {
  * @param {jQuery.Event} e Mouse up event
  */
 ve.ui.SelectWidget.prototype.onMouseUp = function ( e ) {
+	var item;
 	this.pressed = false;
 	if ( !this.selecting ) {
-		this.selecting = this.getTargetItem( e );
+		item = this.getTargetItem( e );
+		if ( item && item.isSelectable() ) {
+			this.selecting = item;
+		}
 	}
 	if ( !this.disabled && e.which === 1 && this.selecting ) {
 		this.selectItem( this.selecting );
