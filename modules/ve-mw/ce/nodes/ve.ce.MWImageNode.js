@@ -67,12 +67,12 @@ ve.ce.MWImageNode.prototype.generateContents = function () {
 			'titles': this.model.getAttribute( 'resource' ).replace( /^(.+\/)*/, '' ),
 			'format': 'json'
 		},
-		'cache': 'false',
-		'success': ve.bind( this.onParseSuccess, this, deferred ),
-		'error': ve.bind( this.onParseError, this, deferred )
-	} );
+		'cache': 'false'
+	} )
+		.done( ve.bind( this.onParseSuccess, this, deferred ) )
+		.fail( ve.bind( this.onParseError, this, deferred ) );
 
-	return deferred.promise();
+	return deferred.promise( { abort: xhr.abort } );
 };
 
 /**
