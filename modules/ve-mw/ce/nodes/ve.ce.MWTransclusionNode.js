@@ -58,7 +58,7 @@ ve.ce.MWTransclusionNode.static.renderHtmlAttributes = false;
 
 /** */
 ve.ce.MWTransclusionNode.prototype.generateContents = function ( config ) {
-	var xhr, promise, deferred = $.Deferred();
+	var xhr, deferred = $.Deferred();
 	xhr = $.ajax( {
 		'url': mw.util.wikiScript( 'api' ),
 		'data': {
@@ -73,15 +73,12 @@ ve.ce.MWTransclusionNode.prototype.generateContents = function ( config ) {
 		'type': 'POST',
 		// Wait up to 100 seconds before giving up
 		'timeout': 100000,
-		'cache': 'false',
-		'success': ve.bind( this.onParseSuccess, this, deferred ),
-		'error': ve.bind( this.onParseError, this, deferred )
-	} );
-	promise = deferred.promise();
-	promise.abort = function () {
-		xhr.abort();
-	};
-	return promise;
+		'cache': 'false'
+	} )
+		.done( ve.bind( this.onParseSuccess, this, deferred ) )
+		.fail( ve.bind( this.onParseError, this, deferred ) );
+
+	return deferred.promise( { abort: xhr.abort} );
 };
 
 /**

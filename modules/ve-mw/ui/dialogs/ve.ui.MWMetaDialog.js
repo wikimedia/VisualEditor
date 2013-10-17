@@ -350,10 +350,10 @@ ve.ui.MWMetaDialog.prototype.getAllLanguageItems = function () {
 		'type': 'POST',
 		// Wait up to 100 seconds before giving up
 		'timeout': 100000,
-		'cache': 'false',
-		'success': ve.bind( this.onAllLanuageItemsSuccess, this, deferred ),
-		'error': ve.bind( this.onAllLanuageItemsError, this, deferred )
-	} );
+		'cache': 'false'
+	} )
+		.done( ve.bind( this.onAllLanuageItemsSuccess, this, deferred ) )
+		.fail( ve.bind( this.onAllLanuageItemsError, this, deferred ) );
 	return deferred.promise();
 };
 

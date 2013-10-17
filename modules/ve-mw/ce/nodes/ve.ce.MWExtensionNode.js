@@ -53,14 +53,15 @@ ve.mixinClass( ve.ce.MWExtensionNode, ve.ce.GeneratedContentNode );
 
 /** */
 ve.ce.MWExtensionNode.prototype.generateContents = function ( config ) {
-	var deferred = $.Deferred(),
+	var xhr,
+		deferred = $.Deferred(),
 		mwData = this.getModel().getAttribute( 'mw' ),
 		extsrc = config && config.extsrc !== undefined ? config.extsrc : mwData.body.extsrc,
 		attrs = config && config.attrs || mwData.attrs,
 		extensionNode = $( document.createElement( this.getModel().getExtensionName() ) )
 			.attr( attrs ).text( extsrc );
 
-	$.ajax( {
+	xhr = $.ajax( {
 		'url': mw.util.wikiScript( 'api' ),
 		'data': {
 			'action': 'visualeditor',
@@ -74,11 +75,12 @@ ve.ce.MWExtensionNode.prototype.generateContents = function ( config ) {
 		'type': 'POST',
 		// Wait up to 100 seconds before giving up
 		'timeout': 100000,
-		'cache': 'false',
-		'success': ve.bind( this.onParseSuccess, this, deferred ),
-		'error': ve.bind( this.onParseError, this, deferred )
-	} );
-	return deferred.promise();
+		'cache': 'false'
+	} )
+		.done( ve.bind( this.onParseSuccess, this, deferred ) )
+		.fail( ve.bind( this.onParseError, this, deferred ) );
+
+	return deferred.promise( { abort: xhr.abort } );
 };
 
 /**

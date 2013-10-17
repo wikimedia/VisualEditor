@@ -537,10 +537,10 @@ ve.init.mw.Target.prototype.load = function () {
 		'type': 'POST',
 		// Wait up to 100 seconds before giving up
 		'timeout': 100000,
-		'cache': 'false',
-		'success': ve.bind( ve.init.mw.Target.onLoad, this ),
-		'error': ve.bind( ve.init.mw.Target.onLoadError, this )
-	} );
+		'cache': 'false'
+	} )
+		.done( ve.bind( ve.init.mw.Target.onLoad, this ) )
+		.fail( ve.bind( ve.init.mw.Target.onLoadError, this ) );
 
 	this.loading.done( function ( data, status, jqxhr ) {
 		ve.track( 'performance.parsoid.domLoad', {
@@ -596,10 +596,10 @@ ve.init.mw.Target.prototype.save = function ( doc, options ) {
 		'dataType': 'json',
 		'type': 'POST',
 		// Wait up to 100 seconds before giving up
-		'timeout': 100000,
-		'success': ve.bind( ve.init.mw.Target.onSave, this ),
-		'error': ve.bind( ve.init.mw.Target.onSaveError, this )
-	} );
+		'timeout': 100000
+	} )
+		.done( ve.bind( ve.init.mw.Target.onSave, this ) )
+		.fail( ve.bind( ve.init.mw.Target.onSaveError, this ) );
 
 	this.saving.done( function ( data, status, jqxhr ) {
 		ve.track( 'performance.parsoid.domSave', {
@@ -632,10 +632,10 @@ ve.init.mw.Target.prototype.showChanges = function ( doc ) {
 		'dataType': 'json',
 		'type': 'POST',
 		// Wait up to 100 seconds before giving up
-		'timeout': 100000,
-		'success': ve.bind( ve.init.mw.Target.onShowChanges, this ),
-		'error': ve.bind( ve.init.mw.Target.onShowChangesError, this )
-	} );
+		'timeout': 100000
+	} )
+		.done( ve.bind( ve.init.mw.Target.onShowChanges, this ) )
+		.fail( ve.bind( ve.init.mw.Target.onShowChangesError, this ) );
 };
 
 /**
@@ -722,9 +722,9 @@ ve.init.mw.Target.prototype.serialize = function ( doc, callback ) {
 		'type': 'POST',
 		// Wait up to 100 seconds before giving up
 		'timeout': 100000,
-		'cache': 'false',
-		'success': ve.bind( ve.init.mw.Target.onSerialize, this ),
-		'error': ve.bind( ve.init.mw.Target.onSerializeError, this )
-	} );
+		'cache': 'false'
+	} )
+		.done( ve.bind( ve.init.mw.Target.onSerialize, this ) )
+		.fail( ve.bind( ve.init.mw.Target.onSerializeError, this ) );
 	return true;
 };
