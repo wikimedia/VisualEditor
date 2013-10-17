@@ -1091,7 +1091,13 @@ ve.init.mw.ViewPageTarget.prototype.attachToolbarButtons = function () {
 		$pushButtons = $( '<div>' ),
 		actions = new ve.ui.TargetToolbar( this, this.surface );
 
-	actions.setup( [ { 'include': [ 'help', 'notices', 'meta' ] } ] );
+	actions.setup( [
+		{ 'include': [ 'help', 'notices' ] },
+		{
+			'type': 'list',
+			'icon': 'menu',
+			'include': [ 'meta', 'categories', 'languages' ] }
+	] );
 
 	$actionTools
 		.addClass( 've-init-mw-viewPageTarget-toolbar-utilites' )

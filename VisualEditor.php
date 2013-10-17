@@ -532,6 +532,7 @@ $wgResourceModules += array(
 
 			've/ui/actions/ve.ui.AnnotationAction.js',
 			've/ui/actions/ve.ui.ContentAction.js',
+			've/ui/actions/ve.ui.DialogAction.js',
 			've/ui/actions/ve.ui.FormatAction.js',
 			've/ui/actions/ve.ui.HistoryAction.js',
 			've/ui/actions/ve.ui.IndentationAction.js',
@@ -619,6 +620,7 @@ $wgResourceModules += array(
 			'visualeditor-beta-label',
 			'visualeditor-beta-warning',
 			'visualeditor-browserwarning',
+			'visualeditor-categories-tool',
 			'visualeditor-clearbutton-tooltip',
 			'visualeditor-dialog-action-apply',
 			'visualeditor-dialog-action-cancel',
@@ -693,6 +695,7 @@ $wgResourceModules += array(
 			'visualeditor-historybutton-undo-tooltip',
 			'visualeditor-indentationbutton-indent-tooltip',
 			'visualeditor-indentationbutton-outdent-tooltip',
+			'visualeditor-languages-tool',
 			'visualeditor-linkinspector-illegal-title',
 			'visualeditor-linkinspector-suggest-external-link',
 			'visualeditor-linkinspector-suggest-matching-page',

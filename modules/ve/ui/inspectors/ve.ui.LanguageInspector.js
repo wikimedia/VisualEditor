@@ -86,8 +86,10 @@ ve.ui.LanguageInspector.prototype.onOpen = function () {
  * Make sure the initial language and direction are set by the parent
  * of the DOM element of the selected fragment before the rest of the
  * onSetup method is processed by the parent ve.ui.AnnotationInspector
+ *
+ * @param {Object} [config] Configuration options for inspector setup
  */
-ve.ui.LanguageInspector.prototype.onSetup = function () {
+ve.ui.LanguageInspector.prototype.onSetup = function ( config ) {
 	var fragDOM,
 		fragment = this.surface.getModel().getFragment( null, true );
 
@@ -103,7 +105,7 @@ ve.ui.LanguageInspector.prototype.onSetup = function () {
 	}
 
 	// Parent method
-	ve.ui.AnnotationInspector.prototype.onSetup.call( this );
+	ve.ui.AnnotationInspector.prototype.onSetup.call( this, config );
 };
 
 

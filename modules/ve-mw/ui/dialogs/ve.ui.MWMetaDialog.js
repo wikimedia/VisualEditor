@@ -47,7 +47,9 @@ ve.ui.MWMetaDialog.static.icon = 'settings';
 
 /* Methods */
 
-/** */
+/**
+ * @inheritdoc
+ */
 ve.ui.MWMetaDialog.prototype.initialize = function () {
 	var languagePromise;
 
@@ -158,7 +160,20 @@ ve.ui.MWMetaDialog.prototype.initialize = function () {
 	}, this ) );
 };
 
-/** */
+/**
+ * @inheritdoc
+ */
+ve.ui.MWMetaDialog.prototype.onSetup = function ( config ) {
+	// Parent method
+	ve.ui.MWDialog.prototype.onSetup.call( this, config );
+	if ( config && config.page && this.pagedOutlineLayout.getPage( config.page ) ) {
+		this.pagedOutlineLayout.setPage( config.page );
+	}
+};
+
+/**
+ * @inheritdoc
+ */
 ve.ui.MWMetaDialog.prototype.onOpen = function () {
 	var surfaceModel = this.surface.getModel(),
 		categoryWidget = this.categoryWidget,
@@ -182,7 +197,9 @@ ve.ui.MWMetaDialog.prototype.onOpen = function () {
 	} );
 };
 
-/** */
+/**
+ * @inheritdoc
+ */
 ve.ui.MWMetaDialog.prototype.onClose = function ( action ) {
 	var hasTransactions, newDefaultSortKeyItem, newDefaultSortKeyItemData,
 		surfaceModel = this.surface.getModel(),

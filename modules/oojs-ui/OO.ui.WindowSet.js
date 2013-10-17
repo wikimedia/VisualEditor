@@ -63,10 +63,11 @@ OO.mixinClass( OO.ui.WindowSet, OO.EventEmitter );
  *
  * @method
  * @param {OO.ui.Window} win Window that's been setup
+ * @param {Object} [config] Configuration options for window setup
  * @fires setup
  */
-OO.ui.WindowSet.prototype.onWindowSetup = function ( win ) {
-	this.emit( 'setup', win );
+OO.ui.WindowSet.prototype.onWindowSetup = function ( win, config ) {
+	this.emit( 'setup', win, config );
 };
 
 /**
@@ -108,10 +109,9 @@ OO.ui.WindowSet.prototype.getCurrent = function () {
  * Return a given window.
  *
  * @param {string} name Symbolic name of window
- * @param {Object} [config] Configuration options to be sent to the window class constructor
  * @return {OO.ui.Window} Window with specified name
  */
-OO.ui.WindowSet.prototype.getWindow = function ( name, config ) {
+OO.ui.WindowSet.prototype.getWindow = function ( name ) {
 	var win;
 
 	if ( !this.factory.lookup( name ) ) {
@@ -121,7 +121,7 @@ OO.ui.WindowSet.prototype.getWindow = function ( name, config ) {
 		throw new Error( 'Cannot open another window while another one is active' );
 	}
 	if ( !( name in this.windows ) ) {
-		win = this.windows[name] = this.factory.create( name, this, config );
+		win = this.windows[name] = this.factory.create( name, this, { '$$': this.$$ } );
 		win.connect( this, {
 			'setup': ['onWindowSetup', win],
 			'open': ['onWindowOpen', win],
@@ -139,10 +139,10 @@ OO.ui.WindowSet.prototype.getWindow = function ( name, config ) {
  * Any already open dialog will be closed.
  *
  * @param {string} name Symbolic name of window
- * @param {Object} [config] Config options to be sent to the window class constructor
+ * @param {Object} [config] Configuration options for window setup
  * @chainable
  */
 OO.ui.WindowSet.prototype.open = function ( name, config ) {
-	this.getWindow( name, config ).open();
+	this.getWindow( name ).open( config );
 	return this;
 };

@@ -37,6 +37,16 @@ OO.inheritClass( ve.ui.DialogTool, OO.ui.Tool );
 ve.ui.DialogTool.static.dialog = '';
 
 /**
+ * Configuration options for setting up dialog.
+ *
+ * @abstract
+ * @static
+ * @property {Object}
+ * @inheritable
+ */
+ve.ui.DialogTool.static.config = {};
+
+/**
  * Annotation or node models this tool is related to.
  *
  * Used by #isCompatibleWith.
@@ -62,7 +72,12 @@ ve.ui.DialogTool.static.isCompatibleWith = function ( model ) {
  * @method
  */
 ve.ui.DialogTool.prototype.onSelect = function () {
-	this.toolbar.getSurface().getDialogs().open( this.constructor.static.dialog );
+	this.toolbar.getSurface().execute(
+		'dialog',
+		'open',
+		this.constructor.static.dialog,
+		this.constructor.static.config
+	);
 	this.setActive( false );
 };
 

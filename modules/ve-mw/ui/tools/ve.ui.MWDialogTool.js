@@ -134,3 +134,47 @@ ve.ui.MWMetaDialogTool.static.titleMessage = 'visualeditor-meta-tool';
 ve.ui.MWMetaDialogTool.static.dialog = 'meta';
 ve.ui.MWMetaDialogTool.static.autoAdd = false;
 ve.ui.toolFactory.register( ve.ui.MWMetaDialogTool );
+
+/**
+ * MediaWiki UserInterface categories tool.
+ *
+ * @class
+ * @extends ve.ui.DialogTool
+ * @constructor
+ * @param {OO.ui.Toolbar} toolbar
+ * @param {Object} [config] Configuration options
+ */
+ve.ui.MWCategoriesDialogTool = function VeUiMWCategoriesDialogTool( toolbar, config ) {
+	ve.ui.DialogTool.call( this, toolbar, config );
+};
+OO.inheritClass( ve.ui.MWCategoriesDialogTool, ve.ui.DialogTool );
+ve.ui.MWCategoriesDialogTool.static.name = 'categories';
+ve.ui.MWCategoriesDialogTool.static.group = 'utility';
+ve.ui.MWCategoriesDialogTool.static.icon = 'tag';
+ve.ui.MWCategoriesDialogTool.static.titleMessage = 'visualeditor-categories-tool';
+ve.ui.MWCategoriesDialogTool.static.dialog = 'meta';
+ve.ui.MWCategoriesDialogTool.static.config = { 'page': 'categories' };
+ve.ui.MWCategoriesDialogTool.static.autoAdd = false;
+ve.ui.toolFactory.register( ve.ui.MWCategoriesDialogTool );
+
+/**
+ * MediaWiki UserInterface languages tool.
+ *
+ * @class
+ * @extends ve.ui.DialogTool
+ * @constructor
+ * @param {OO.ui.Toolbar} toolbar
+ * @param {Object} [config] Configuration options
+ */
+ve.ui.MWLanguagesDialogTool = function VeUiMWLanguagesDialogTool( toolbar, config ) {
+	ve.ui.DialogTool.call( this, toolbar, config );
+};
+OO.inheritClass( ve.ui.MWLanguagesDialogTool, ve.ui.DialogTool );
+ve.ui.MWLanguagesDialogTool.static.name = 'languages';
+ve.ui.MWLanguagesDialogTool.static.group = 'utility';
+ve.ui.MWLanguagesDialogTool.static.icon = 'language';
+ve.ui.MWLanguagesDialogTool.static.titleMessage = 'visualeditor-languages-tool';
+ve.ui.MWLanguagesDialogTool.static.dialog = 'meta';
+ve.ui.MWLanguagesDialogTool.static.config = { 'page': 'languages' };
+ve.ui.MWLanguagesDialogTool.static.autoAdd = false;
+ve.ui.toolFactory.register( ve.ui.MWLanguagesDialogTool );

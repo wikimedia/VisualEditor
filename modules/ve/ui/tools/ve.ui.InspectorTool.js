@@ -37,6 +37,16 @@ OO.inheritClass( ve.ui.InspectorTool, OO.ui.Tool );
 ve.ui.InspectorTool.static.inspector = '';
 
 /**
+ * Configuration options for setting up inspector.
+ *
+ * @abstract
+ * @static
+ * @property {Object}
+ * @inheritable
+ */
+ve.ui.InspectorTool.static.config = {};
+
+/**
  * Annotation or node models this tool is related to.
  *
  * Used by #isCompatibleWith.
@@ -62,7 +72,12 @@ ve.ui.InspectorTool.static.isCompatibleWith = function ( model ) {
  * @method
  */
 ve.ui.InspectorTool.prototype.onSelect = function () {
-	this.toolbar.getSurface().execute( 'inspector', 'open', this.constructor.static.inspector );
+	this.toolbar.getSurface().execute(
+		'inspector',
+		'open',
+		this.constructor.static.inspector,
+		this.constructor.static.config
+	);
 	this.setActive( false );
 };
 
