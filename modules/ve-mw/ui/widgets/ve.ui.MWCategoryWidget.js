@@ -34,7 +34,7 @@ ve.ui.MWCategoryWidget = function VeUiMWCategoryWidget( config ) {
 		'$$': this.$$, '$overlay': config.$overlay
 	} );
 	this.input = new ve.ui.MWCategoryInputWidget( this, {
-		'$$': this.$$, '$overlay': config.$overlay, '$container': this.$
+		'$$': this.$$, '$overlay': config.$overlay
 	} );
 
 	// Events
