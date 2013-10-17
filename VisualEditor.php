@@ -427,6 +427,7 @@ $wgResourceModules += array(
 			've/ui/elements/ve.ui.IconedElement.js',
 			've/ui/elements/ve.ui.GroupElement.js',
 			've/ui/elements/ve.ui.FlaggableElement.js',
+			've/ui/elements/ve.ui.PopuppableElement.js',
 
 			've/ui/ve.ui.Surface.js',
 			've/ui/ve.ui.Context.js',

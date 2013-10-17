@@ -170,6 +170,7 @@
 		<script src="../../ve/ui/elements/ve.ui.IconedElement.js"></script>
 		<script src="../../ve/ui/elements/ve.ui.GroupElement.js"></script>
 		<script src="../../ve/ui/elements/ve.ui.FlaggableElement.js"></script>
+		<script src="../../ve/ui/elements/ve.ui.PopuppableElement.js"></script>
 		<script src="../../ve/ui/ve.ui.Surface.js"></script>
 		<script src="../../ve/ui/ve.ui.Context.js"></script>
 		<script src="../../ve/ui/ve.ui.Frame.js"></script>
