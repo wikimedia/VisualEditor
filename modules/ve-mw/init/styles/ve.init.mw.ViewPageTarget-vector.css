@@ -27,10 +27,6 @@
 	position: relative;
 }
 
-.ve-init-mw-viewPageTarget-toolbar .oo-ui-toolbar-bar {
-	display: none;
-}
-
 .ve-ui-surface-overlay-global {
 	z-index: 101; /* #p-personal is z-index 100 in vector :( */
 }

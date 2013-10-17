@@ -114,3 +114,23 @@ ve.ui.MWTransclusionDialogTool.static.dialog = 'transclusion';
 ve.ui.MWTransclusionDialogTool.static.modelClasses = [ ve.dm.MWTransclusionNode ];
 ve.ui.toolFactory.register( ve.ui.MWTransclusionDialogTool );
 
+/**
+ * MediaWiki UserInterface categories tool.
+ *
+ * @class
+ * @extends ve.ui.DialogTool
+ * @constructor
+ * @param {OO.ui.Toolbar} toolbar
+ * @param {Object} [config] Configuration options
+ */
+ve.ui.MWMetaDialogTool = function VeUiMWMetaDialogTool( toolbar, config ) {
+	ve.ui.DialogTool.call( this, toolbar, config );
+};
+OO.inheritClass( ve.ui.MWMetaDialogTool, ve.ui.DialogTool );
+ve.ui.MWMetaDialogTool.static.name = 'meta';
+ve.ui.MWMetaDialogTool.static.group = 'utility';
+ve.ui.MWMetaDialogTool.static.icon = 'settings';
+ve.ui.MWMetaDialogTool.static.titleMessage = 'visualeditor-meta-tool';
+ve.ui.MWMetaDialogTool.static.dialog = 'meta';
+ve.ui.MWMetaDialogTool.static.autoAdd = false;
+ve.ui.toolFactory.register( ve.ui.MWMetaDialogTool );

@@ -40,8 +40,14 @@
 	vertical-align: middle;
 }
 
-.ve-init-mw-viewPageTarget-toolbar-utilites {
-	margin-right: 1em;
+.ve-init-mw-viewPageTarget-toolbar-actions {
+	font-size: 0.8em;
+	vertical-align: top;
+	padding: 0.25em;
+}
+
+.ve-init-mw-viewPageTarget-toolbar-utilites .ve-ui-toolbar-bar {
+	border: none;
 }
 
 .ve-init-mw-viewPageTarget-toolbar-utilites > .oo-ui-iconButtonWidget {
@@ -88,8 +94,8 @@
 	text-decoration: underline;
 }
 
-.ve-init-mw-viewPageTarget-editNotices,
-.ve-init-mw-viewPageTarget-betaNotices {
+.ve-ui-mwNoticesPopupTool-items,
+.ve-ui-mwHelpPopupTool-items {
 	padding: 0.5em 1em;
 }
 
@@ -98,19 +104,19 @@
 	z-index: 4;
 }
 
-.ve-init-mw-viewPageTarget-editNotices-notice:not(:first-child),
-.ve-init-mw-viewPageTarget-betaNotices-notice:not(:first-child) {
+.ve-ui-mwNoticesPopupTool-items > div:not(:first-child),
+.ve-ui-mwHelpPopupTool-item:not(:first-child) {
 	border-top: solid 1px #ddd;
 	padding-top: 0.8em;
 	margin-top: 0.8em;
 }
 
-.ve-init-mw-viewPageTarget-betaNotices-notice > .oo-ui-iconButtonWidget {
+.ve-ui-mwHelpPopupTool-item > .oo-ui-iconButtonWidget {
 	display: block;
 	margin: 0.5em 0;
 }
 
-.ve-init-mw-viewPageTarget-betaNotices-notice > .oo-ui-iconButtonWidget:first-child {
+.ve-ui-mwHelpPopupTool-item > .oo-ui-iconButtonWidget:first-child {
 	margin-top: 0;
 }
 
