@@ -77,6 +77,7 @@
 		<script src="../../oojs-ui/layouts/OO.ui.PagedOutlineLayout.js"></script>
 		<script src="../../oojs-ui/layouts/OO.ui.PanelLayout.js"></script>
 		<script src="../../oojs-ui/layouts/OO.ui.StackPanelLayout.js"></script>
+		<script src="../../oojs-ui/tools/OO.ui.PopupTool.js"></script>
 		<script src="../../oojs-ui/toolgroups/OO.ui.BarToolGroup.js"></script>
 		<script src="../../oojs-ui/toolgroups/OO.ui.PopupToolGroup.js"></script>
 		<script src="../../oojs-ui/toolgroups/OO.ui.ListToolGroup.js"></script>
