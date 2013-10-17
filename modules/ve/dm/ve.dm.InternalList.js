@@ -29,9 +29,7 @@ ve.dm.InternalList = function VeDmInternalList( doc ) {
 	this.nextUniqueNumber = 0;
 
 	// Event handlers
-	if ( doc ) {
-		doc.connect( this, { 'transact': 'onTransact' } );
-	}
+	this.document.connect( this, { 'transact': 'onTransact' } );
 };
 
 /* Inheritance */
