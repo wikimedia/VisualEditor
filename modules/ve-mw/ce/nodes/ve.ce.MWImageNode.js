@@ -5,6 +5,8 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
+/*global mw */
+
 /**
  * ContentEditable MediaWiki image node.
  *
@@ -52,35 +54,23 @@ ve.mixinClass( ve.ce.MWImageNode, ve.ce.MWResizableNode );
 
 /** */
 ve.ce.MWImageNode.prototype.generateContents = function () {
-	var i, len, source,
-		sources = ve.copy( ve.init.platform.getMediaSources() ),
-		deferred = $.Deferred();
+	var xhr, deferred = $.Deferred();
 
-	for ( i = 0, len = sources.length; i < len; i++ ) {
-		source = sources[i];
-		source.request = $.ajax( {
-			'url': source.url,
-			'data': {
-				'action': 'query',
-				'prop': 'imageinfo',
-				'iiprop': 'url',
-				'iiurlwidth': this.model.getAttribute( 'width' ),
-				'iiurlheight': this.model.getAttribute( 'height' ),
-				'titles': this.model.getAttribute( 'resource' ).replace( /^(.+\/)*/, '' ),
-				'format': 'json'
-			},
-			// This request won't be cached since the JSON-P callback is unique. However make sure
-			// to allow jQuery to cache otherwise so it won't e.g. add "&_=(random)" which will
-			// trigger a MediaWiki API error for invalid parameter "_".
-			'cache': true,
-			// TODO: Only use JSON-P for cross-domain.
-			// jQuery has this logic built-in (if url is not same-origin ..)
-			// but isn't working for some reason.
-			'dataType': 'jsonp',
-			'success': ve.bind( this.onParseSuccess, this, deferred ),
-			'error': ve.bind( this.onParseError, this, deferred )
-		} );
-	}
+	xhr = $.ajax( {
+		'url': mw.util.wikiScript( 'api' ),
+		'data': {
+			'action': 'query',
+			'prop': 'imageinfo',
+			'iiprop': 'url',
+			'iiurlwidth': this.model.getAttribute( 'width' ),
+			'iiurlheight': this.model.getAttribute( 'height' ),
+			'titles': this.model.getAttribute( 'resource' ).replace( /^(.+\/)*/, '' ),
+			'format': 'json'
+		},
+		'cache': 'false',
+		'success': ve.bind( this.onParseSuccess, this, deferred ),
+		'error': ve.bind( this.onParseError, this, deferred )
+	} );
 
 	return deferred.promise();
 };
@@ -100,6 +90,8 @@ ve.ce.MWImageNode.prototype.onParseSuccess = function ( deferred, response ) {
 	}
 	if ( src ) {
 		deferred.resolve( src );
+	} else {
+		deferred.reject();
 	}
 };
 
