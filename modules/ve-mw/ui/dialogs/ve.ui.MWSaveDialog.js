@@ -211,21 +211,20 @@ ve.ui.MWSaveDialog.prototype.swapPanel = function ( panel ) {
 		case 'save':
 			if ( !this.sanityCheckVerified ) {
 				this.showMessage( 'dirtywarning', mw.msg( 'visualeditor-savedialog-warning-dirty' ) );
-			} else {
-				this.saveButton.$.show();
-				this.reviewButton.$.show();
-				this.reviewGoodButton.$.hide();
-				this.resolveConflictButton.$.hide();
-				setTimeout( function () {
-					// fix input reference
-					var $textarea = dialog.editSummaryInput.$input;
-					$textarea.focus();
-					// If message has be pre-filled (e.g. section edit), move cursor to end
-					if ( $textarea.val() !== '' ) {
-						ve.selectEnd( $textarea[0] );
-					}
-				} );
 			}
+			this.saveButton.$.show();
+			this.reviewButton.$.show();
+			this.reviewGoodButton.$.hide();
+			this.resolveConflictButton.$.hide();
+			setTimeout( function () {
+				// fix input reference
+				var $textarea = dialog.editSummaryInput.$input;
+				$textarea.focus();
+				// If message has be pre-filled (e.g. section edit), move cursor to end
+				if ( $textarea.val() !== '' ) {
+					ve.selectEnd( $textarea[0] );
+				}
+			} );
 			break;
 		case 'conflict':
 			this.saveButton.$.hide();
