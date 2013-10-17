@@ -176,15 +176,18 @@ OO.ui.ToolGroup.prototype.onMouseOut = function ( e ) {
 /**
  * Get the closest tool to a jQuery.Event.
  *
+ * Only tool links are considered, which prevents other elements in the tool such as popups from
+ * triggering tool group interactions.
+ *
  * @method
  * @private
  * @param {jQuery.Event} e
  * @returns {OO.ui.Tool|null} Tool, `null` if none was found
  */
 OO.ui.ToolGroup.prototype.getTargetTool = function ( e ) {
-	var $item = $( e.target ).closest( '.oo-ui-tool' );
+	var $item = $( e.target ).closest( '.oo-ui-tool-link' );
 	if ( $item.length ) {
-		return $item.data( 'oo-ui-tool' );
+		return $item.parent().data( 'oo-ui-tool' );
 	}
 	return null;
 };
