@@ -138,6 +138,18 @@
 		]
 	},
 	{
+		"name": "Tests",
+		"groups": [
+			{
+				"name": "IME",
+				"classes": [
+					"ve.ce.TestOffset",
+					"ve.ce.TestRunner"
+				]
+			}
+		]
+	},
+	{
 		"name": "General",
 		"groups": [
 			{

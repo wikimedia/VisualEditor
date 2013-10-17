@@ -243,7 +243,7 @@ ve.EventSequencer.prototype.onEvent = function ( eventName, ev ) {
 		// - then set pendingCall.id to the setTimeout id, so the call can cancel itself
 		pendingCall = { 'id': null, 'ev': ev, 'eventName': eventName };
 		me = this;
-		id = setTimeout( function () {
+		id = this.postpone( function () {
 			if ( pendingCall.id === null ) {
 				// clearTimeout seems not always to work immediately
 				return;
@@ -333,9 +333,9 @@ ve.EventSequencer.prototype.doAfterLoop = function ( myTimeoutId ) {
 ve.EventSequencer.prototype.resetAfterLoopTimeout = function () {
 	var timeoutId, me = this;
 	if ( this.afterLoopTimeoutId !== null ) {
-		clearTimeout( this.afterLoopTimeoutId );
+		this.cancelPostponed( this.afterLoopTimeoutId );
 	}
-	timeoutId = setTimeout( function () {
+	timeoutId = this.postpone( function () {
 		me.doAfterLoop( timeoutId );
 	} );
 	this.afterLoopTimeoutId = timeoutId;
@@ -357,7 +357,7 @@ ve.EventSequencer.prototype.runPendingCalls = function () {
 			// the call has already run
 			continue;
 		}
-		clearTimeout( pendingCall.id );
+		this.cancelPostponed( pendingCall.id );
 		pendingCall.id = null;
 		// Force to run now. It's important that we set id to null before running,
 		// so that there's no chance a recursive call will call the listener again.
@@ -366,4 +366,25 @@ ve.EventSequencer.prototype.runPendingCalls = function () {
 	// This is safe because we only ever appended to the list, so it's definitely exhausted
 	// now.
 	this.pendingCalls.length = 0;
+};
+
+/**
+ * Make a postponed call.
+ *
+ * This is a separate function because that makes it easier to replace when testing
+ * @param {Function} f The function to call
+ * @returns {number} Unique postponed call id
+ */
+ve.EventSequencer.prototype.postpone = function ( f ) {
+	return setTimeout( f );
+};
+
+/**
+ * Cancel a postponed call.
+ *
+ * This is a separate function because that makes it easier to replace when testing
+ * @param {number} callId Unique postponed call id
+ */
+ve.EventSequencer.prototype.cancelPostponed = function ( callId ) {
+	clearTimeout( callId );
 };
