@@ -13,6 +13,8 @@
  * @mixins ve.dm.GeneratedContentNode
  *
  * @constructor
+ * @param {number} [length] Length of content data (ignored, forced to 0)
+ * @param {Object} [element] Reference to element in linear model
  */
 ve.dm.MWExtensionNode = function VeDmMWExtensionNode( length, element ) {
 	// Parent constructor
