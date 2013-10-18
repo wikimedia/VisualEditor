@@ -511,6 +511,9 @@ $wgResourceModules += array(
 			've/ui/inspectors/ve.ui.LinkInspector.js',
 			've-mw/ui/inspectors/ve.ui.MWLinkInspector.js',
 			've-mw/ui/inspectors/ve.ui.MWExtensionInspector.js',
+
+			've/ui/widgets/ve.ui.GroupButtonWidget.js',
+			've/ui/inspectors/ve.ui.SpecialCharacterInspector.js',
 		),
 		'styles' => array(
 			// ce
@@ -667,6 +670,9 @@ $wgResourceModules += array(
 			'visualeditor-savedialog-warning-dirty',
 			'visualeditor-saveerror',
 			'visualeditor-serializeerror',
+			'visualeditor-specialcharacter-button-tooltip',
+			'visualeditor-specialcharacterinspector-title',
+			'visualeditor-specialcharinspector-characterlist-insert',
 			'visualeditor-toolbar-cancel',
 			'visualeditor-toolbar-savedialog',
 			'visualeditor-version-label',

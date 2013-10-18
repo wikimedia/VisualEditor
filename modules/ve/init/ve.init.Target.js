@@ -39,7 +39,8 @@ ve.init.Target.static.toolbarGroups = [
 	},
 	{ 'include': [ 'bold', 'italic', 'link', 'clear' ] },
 	{ 'include': [ 'number', 'bullet', 'outdent', 'indent' ] },
-	{ 'include': '*' }
+	{ 'include': '*', 'demote': [ 'specialcharacter' ] }
+
 ];
 
 ve.init.Target.static.surfaceCommands = [

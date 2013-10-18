@@ -108,3 +108,9 @@
 	border-bottom-left-radius: 0;
 	border-bottom-width: 0;
 }
+
+/* ve.ui.GroupButtonWidget.js */
+
+.ve-ui-groupButtonWidget {
+	white-space: normal;
+}

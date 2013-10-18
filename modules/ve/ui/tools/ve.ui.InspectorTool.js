@@ -119,3 +119,23 @@ ve.ui.LinkInspectorTool.static.titleMessage = 'visualeditor-annotationbutton-lin
 ve.ui.LinkInspectorTool.static.inspector = 'link';
 ve.ui.LinkInspectorTool.static.modelClasses = [ ve.dm.LinkAnnotation ];
 ve.ui.toolFactory.register( ve.ui.LinkInspectorTool );
+
+/**
+ * Insert characters tool.
+ *
+ * @class
+ * @extends ve.ui.InspectorTool
+ * @constructor
+ * @param {OO.ui.ToolGroup} toolGroup
+ * @param {Object} [config] Configuration options
+ */
+ve.ui.InsertCharacterInspectorTool = function VeUiInsertCharacterInspectorTool( toolGroup, config ) {
+	ve.ui.InspectorTool.call( this, toolGroup, config );
+};
+OO.inheritClass( ve.ui.InsertCharacterInspectorTool, ve.ui.InspectorTool );
+ve.ui.InsertCharacterInspectorTool.static.name = 'specialcharacter';
+ve.ui.InsertCharacterInspectorTool.static.group = 'insert';
+ve.ui.InsertCharacterInspectorTool.static.icon = 'special-character';
+ve.ui.InsertCharacterInspectorTool.static.titleMessage = 'visualeditor-specialcharacter-button-tooltip';
+ve.ui.InsertCharacterInspectorTool.static.inspector = 'specialcharacter';
+ve.ui.toolFactory.register( ve.ui.InsertCharacterInspectorTool );

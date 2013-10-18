@@ -155,6 +155,55 @@ $messages['en'] = array(
 	'visualeditor-linkinspector-title' => 'Hyperlink',
 	'visualeditor-listbutton-bullet-tooltip' => 'Bullet list',
 	'visualeditor-listbutton-number-tooltip' => 'Numbered list',
+	'visualeditor-specialcharacter-button-tooltip' => 'Special character',
+	'visualeditor-specialcharacterinspector-title' => 'Special character',
+	'visualeditor-specialcharinspector-characterlist-insert' => '{
+	"symbols": {
+		"−": "−",
+		"—": "—",
+		"°": "°",
+		"″": "″",
+		"′": "′",
+		"←": "←",
+		"→": "→",
+		"·": "·",
+		"§": "§"
+	},
+	"accents": {
+		"à": "à",
+		"á": "á",
+		"â": "â",
+		"ä": "ä",
+		"ç": "ç",
+		"è": "è",
+		"é": "é",
+		"ê": "ê",
+		"ë": "ë",
+		"ì": "ì",
+		"í": "í",
+		"î": "î",
+		"ï": "ï",
+		"ò": "ò",
+		"ó": "ó",
+		"ô": "ô",
+		"ö": "ö",
+		"ø": "ø",
+		"ù": "ù",
+		"ú": "ú",
+		"û": "û",
+		"ü": "ü"
+	},
+	"math": {
+		"−": "−",
+		"×": "×",
+		"÷": "÷",
+		"≈": "≈",
+		"≠": "≠",
+		"≤": "≤",
+		"≥": "≥",
+		"±": "±"
+	}
+}',
 	'visualeditor-loadwarning' => 'Error loading data from server: $1. Would you like to retry?',
 	'visualeditor-loadwarning-token' => 'Error loading edit token from server: $1. Would you like to retry?',
 	'visualeditor-mainnamespacepagelink' => 'Project:Main namespace',
@@ -555,6 +604,9 @@ Parameters:
 {{Identical|Hyperlink}}',
 	'visualeditor-listbutton-bullet-tooltip' => 'Tooltip text for the bullet list button',
 	'visualeditor-listbutton-number-tooltip' => 'Tooltip text for the numbered list button',
+	'visualeditor-specialcharacter-button-tooltip' => 'Tooltip text for the insert character button',
+	'visualeditor-specialcharacterinspector-title' => 'Used as title for special character inspector',
+	'visualeditor-specialcharinspector-characterlist-insert' => 'This is a JSON string defining the special characters that can be inserted using the special character insertion tool. Please make sure it is a valid JSON string.',
 	'visualeditor-loadwarning' => 'Text (JavaScript confirm()) shown when the editor fails to load properly.
 
 Parameters:
