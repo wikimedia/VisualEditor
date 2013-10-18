@@ -728,12 +728,10 @@ ve.dm.mwExample.complexInternalData.internalItems = [
 
 ve.dm.mwExample.domToDataCases = {
 	'adjacent annotations': {
-		'html':
-			'<body>' +
-				'<b>a</b><b data-parsoid="1">b</b><b>c</b><b data-parsoid="2">d</b> ' +
-				'<b>a</b><b>b</b> ' +
-				'<b data-parsoid="3">ab</b><b data-parsoid="4">c</b>' +
-			'</body>',
+		'body':
+			'<b>a</b><b data-parsoid="1">b</b><b>c</b><b data-parsoid="2">d</b> ' +
+			'<b>a</b><b>b</b> ' +
+			'<b data-parsoid="3">ab</b><b data-parsoid="4">c</b>',
 		'data': [
 			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
 			[ 'a', [ ve.dm.example.bold ] ],
@@ -796,15 +794,10 @@ ve.dm.mwExample.domToDataCases = {
 			{ 'type': 'internalList' },
 			{ 'type': '/internalList' }
 		],
-		'normalizedHtml':
-			'<body>' +
-				'<b>abcd</b> ' +
-				'<b>ab</b> ' +
-				'<b data-parsoid="3">ab</b><b data-parsoid="4">c</b>' +
-			'</body>'
+		'normalizedBody': '<b>abcd</b> <b>ab</b> <b data-parsoid="3">ab</b><b data-parsoid="4">c</b>',
 	},
 	'mw:Image': {
-		'html': '<body><p>' + ve.dm.mwExample.MWInlineImage.html + '</p></body>',
+		'body': '<p>' + ve.dm.mwExample.MWInlineImage.html + '</p>',
 		'data': [
 			{ 'type': 'paragraph' },
 			ve.dm.mwExample.MWInlineImage.data,
@@ -815,7 +808,7 @@ ve.dm.mwExample.domToDataCases = {
 		]
 	},
 	'mw:Transclusion (block level)': {
-		'html': '<body>' + ve.dm.mwExample.MWTransclusion.blockOpen + ve.dm.mwExample.MWTransclusion.blockContent + '</body>',
+		'body': ve.dm.mwExample.MWTransclusion.blockOpen + ve.dm.mwExample.MWTransclusion.blockContent,
 		'data': [
 			ve.dm.mwExample.MWTransclusion.blockData,
 			{ 'type': '/mwTransclusionBlock' },
@@ -825,10 +818,10 @@ ve.dm.mwExample.domToDataCases = {
 		'storeItems': [
 			ve.dm.mwExample.MWTransclusion.blockStoreItems
 		],
-		'normalizedHtml': ve.dm.mwExample.MWTransclusion.blockOpen + ve.dm.mwExample.MWTransclusion.blockContent
+		'normalizedBody': ve.dm.mwExample.MWTransclusion.blockOpen + ve.dm.mwExample.MWTransclusion.blockContent
 	},
 	'mw:Transclusion (block level - modified)': {
-		'html': '<body>' + ve.dm.mwExample.MWTransclusion.blockOpen + ve.dm.mwExample.MWTransclusion.blockContent + '</body>',
+		'body': ve.dm.mwExample.MWTransclusion.blockOpen + ve.dm.mwExample.MWTransclusion.blockContent,
 		'data': [
 			ve.dm.mwExample.MWTransclusion.blockData,
 			{ 'type': '/mwTransclusionBlock' },
@@ -841,10 +834,10 @@ ve.dm.mwExample.domToDataCases = {
 		'modify': function ( data ) {
 			data[0].attributes.mw.params['1'].wt = 'Hello, globe!';
 		},
-		'normalizedHtml': ve.dm.mwExample.MWTransclusion.blockOpenModified
+		'normalizedBody': ve.dm.mwExample.MWTransclusion.blockOpenModified
 	},
 	'mw:Transclusion (inline)': {
-		'html': '<body>' + ve.dm.mwExample.MWTransclusion.inlineOpen + ve.dm.mwExample.MWTransclusion.inlineContent + ve.dm.mwExample.MWTransclusion.inlineClose + '</body>',
+		'body': ve.dm.mwExample.MWTransclusion.inlineOpen + ve.dm.mwExample.MWTransclusion.inlineContent + ve.dm.mwExample.MWTransclusion.inlineClose,
 		'data': [
 			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
 			ve.dm.mwExample.MWTransclusion.inlineData,
@@ -856,10 +849,10 @@ ve.dm.mwExample.domToDataCases = {
 		'storeItems': [
 			ve.dm.mwExample.MWTransclusion.inlineStoreItems
 		],
-		'normalizedHtml': ve.dm.mwExample.MWTransclusion.inlineOpen + ve.dm.mwExample.MWTransclusion.inlineContent + ve.dm.mwExample.MWTransclusion.inlineClose
+		'normalizedBody': ve.dm.mwExample.MWTransclusion.inlineOpen + ve.dm.mwExample.MWTransclusion.inlineContent + ve.dm.mwExample.MWTransclusion.inlineClose
 	},
 	'mw:Transclusion (inline - modified)': {
-		'html': '<body>' + ve.dm.mwExample.MWTransclusion.inlineOpen + ve.dm.mwExample.MWTransclusion.inlineContent + ve.dm.mwExample.MWTransclusion.inlineClose + '</body>',
+		'body': ve.dm.mwExample.MWTransclusion.inlineOpen + ve.dm.mwExample.MWTransclusion.inlineContent + ve.dm.mwExample.MWTransclusion.inlineClose,
 		'data': [
 			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
 			ve.dm.mwExample.MWTransclusion.inlineData,
@@ -874,13 +867,10 @@ ve.dm.mwExample.domToDataCases = {
 		'modify': function ( data ) {
 			data[1].attributes.mw.params['1'].wt = '5,678';
 		},
-		'normalizedHtml': ve.dm.mwExample.MWTransclusion.inlineOpenModified + ve.dm.mwExample.MWTransclusion.inlineClose
+		'normalizedBody': ve.dm.mwExample.MWTransclusion.inlineOpenModified + ve.dm.mwExample.MWTransclusion.inlineClose
 	},
 	'two mw:Transclusion nodes with identical params but different htmlAttributes': {
-		'html': '<body>' +
-			ve.dm.mwExample.MWTransclusion.pairOne +
-			ve.dm.mwExample.MWTransclusion.pairTwo +
-		'</body>',
+		'body': ve.dm.mwExample.MWTransclusion.pairOne + ve.dm.mwExample.MWTransclusion.pairTwo,
 		'data': [
 			{
 				'type': 'mwTransclusionBlock',
@@ -937,8 +927,7 @@ ve.dm.mwExample.domToDataCases = {
 		]
 	},
 	'mw:Transclusion containing only meta data': {
-		'html':
-			'<body>' + ve.dm.mwExample.MWTransclusion.meta + '</body>',
+		'body': ve.dm.mwExample.MWTransclusion.meta,
 		'data': [
 			{
 				'type': 'mwTransclusionMeta',
@@ -957,33 +946,31 @@ ve.dm.mwExample.domToDataCases = {
 		// Wikitext:
 		// Foo<ref name="bar" /> Baz<ref group="g1" name=":0">Quux</ref> Whee<ref name="bar">[[Bar]]</ref> Yay<ref group="g1">No name</ref> Quux<ref name="bar">Different content</ref> Foo<ref group="g1">No name</ref> Bar<ref name="foo" />
 		// <references><ref name="foo">Ref in refs</ref></references>
-		'html':
-			'<body>' +
-				'<p>Foo' +
-					'<span about="#mwt1" class="reference" data-mw="{&quot;name&quot;:&quot;ref&quot;,&quot;attrs&quot;:{&quot;name&quot;:&quot;bar&quot;}}" id="cite_ref-bar-1-0" rel="dc:references" typeof="mw:Extension/ref" data-parsoid="{}">' +
-						'<a href="#cite_note-bar-1">[1]</a>' +
-					'</span>' +
-					' Baz' +
-					'<span about="#mwt2" class="reference" data-mw="{&quot;name&quot;:&quot;ref&quot;,&quot;body&quot;:{&quot;html&quot;:&quot;Quux&quot;},&quot;attrs&quot;:{&quot;group&quot;:&quot;g1&quot;,&quot;name&quot;:&quot;:0&quot;}}" id="cite_ref-quux-2-0" rel="dc:references" typeof="mw:Extension/ref" data-parsoid="{}">' +
-					'</span>' +
-					' Whee' +
-					'<span about="#mwt3" class="reference" data-mw="{&quot;name&quot;:&quot;ref&quot;,&quot;body&quot;:{&quot;html&quot;:&quot;' +
-					'<a rel=\\&quot;mw:WikiLink\\&quot; href=\\&quot;./Bar\\&quot;>Bar' +
-					'</a>&quot;},&quot;attrs&quot;:{&quot;name&quot;:&quot;bar&quot;}}" id="cite_ref-bar-1-1" rel="dc:references" typeof="mw:Extension/ref" data-parsoid="{}">' +
-					'</span>' +
-					' Yay' +
-					'<span about="#mwt4" class="reference" data-mw="{&quot;name&quot;:&quot;ref&quot;,&quot;body&quot;:{&quot;html&quot;:&quot;No name&quot;},&quot;attrs&quot;:{&quot;group&quot;:&quot;g1&quot;}}" id="cite_ref-1-0" rel="dc:references" typeof="mw:Extension/ref" data-parsoid="{}">' +
-					'</span>' +
-					' Quux' +
-					'<span about="#mwt5" class="reference" data-mw="{&quot;name&quot;:&quot;ref&quot;,&quot;body&quot;:{&quot;html&quot;:&quot;Different content&quot;},&quot;attrs&quot;:{&quot;name&quot;:&quot;bar&quot;}}" id="cite_ref-bar-1-2" rel="dc:references" typeof="mw:Extension/ref" data-parsoid="{}">' +
-					'</span>' +
-					' Foo' +
-					'<span about="#mwt6" class="reference" data-mw="{&quot;name&quot;:&quot;ref&quot;,&quot;attrs&quot;:{&quot;name&quot;:&quot;foo&quot;}}" ' +
-						'id="cite_ref-foo-3-0" rel="dc:references" typeof="mw:Extension/ref" data-parsoid="{}">' +
-					'</span>' +
-				'</p>' +
-				ve.dm.mwExample.MWReference.referenceList +
-			'</body>',
+		'body':
+			'<p>Foo' +
+				'<span about="#mwt1" class="reference" data-mw="{&quot;name&quot;:&quot;ref&quot;,&quot;attrs&quot;:{&quot;name&quot;:&quot;bar&quot;}}" id="cite_ref-bar-1-0" rel="dc:references" typeof="mw:Extension/ref" data-parsoid="{}">' +
+					'<a href="#cite_note-bar-1">[1]</a>' +
+				'</span>' +
+				' Baz' +
+				'<span about="#mwt2" class="reference" data-mw="{&quot;name&quot;:&quot;ref&quot;,&quot;body&quot;:{&quot;html&quot;:&quot;Quux&quot;},&quot;attrs&quot;:{&quot;group&quot;:&quot;g1&quot;,&quot;name&quot;:&quot;:0&quot;}}" id="cite_ref-quux-2-0" rel="dc:references" typeof="mw:Extension/ref" data-parsoid="{}">' +
+				'</span>' +
+				' Whee' +
+				'<span about="#mwt3" class="reference" data-mw="{&quot;name&quot;:&quot;ref&quot;,&quot;body&quot;:{&quot;html&quot;:&quot;' +
+				'<a rel=\\&quot;mw:WikiLink\\&quot; href=\\&quot;./Bar\\&quot;>Bar' +
+				'</a>&quot;},&quot;attrs&quot;:{&quot;name&quot;:&quot;bar&quot;}}" id="cite_ref-bar-1-1" rel="dc:references" typeof="mw:Extension/ref" data-parsoid="{}">' +
+				'</span>' +
+				' Yay' +
+				'<span about="#mwt4" class="reference" data-mw="{&quot;name&quot;:&quot;ref&quot;,&quot;body&quot;:{&quot;html&quot;:&quot;No name&quot;},&quot;attrs&quot;:{&quot;group&quot;:&quot;g1&quot;}}" id="cite_ref-1-0" rel="dc:references" typeof="mw:Extension/ref" data-parsoid="{}">' +
+				'</span>' +
+				' Quux' +
+				'<span about="#mwt5" class="reference" data-mw="{&quot;name&quot;:&quot;ref&quot;,&quot;body&quot;:{&quot;html&quot;:&quot;Different content&quot;},&quot;attrs&quot;:{&quot;name&quot;:&quot;bar&quot;}}" id="cite_ref-bar-1-2" rel="dc:references" typeof="mw:Extension/ref" data-parsoid="{}">' +
+				'</span>' +
+				' Foo' +
+				'<span about="#mwt6" class="reference" data-mw="{&quot;name&quot;:&quot;ref&quot;,&quot;attrs&quot;:{&quot;name&quot;:&quot;foo&quot;}}" ' +
+					'id="cite_ref-foo-3-0" rel="dc:references" typeof="mw:Extension/ref" data-parsoid="{}">' +
+				'</span>' +
+			'</p>' +
+			ve.dm.mwExample.MWReference.referenceList,
 		'head': '<base href="http://example.com" />',
 		'data': [
 			{ 'type': 'paragraph' },
@@ -1312,7 +1299,7 @@ ve.dm.mwExample.domToDataCases = {
 		]
 	},
 	'mw:Reference with metadata': {
-		'html': '<p><span about="#mwt2" class="reference" ' +
+		'body': '<p><span about="#mwt2" class="reference" ' +
 			'data-mw="{&quot;name&quot;:&quot;ref&quot;,&quot;body&quot;:' +
 			'{&quot;html&quot;:&quot;Foo<!-- bar -->&quot;},&quot;attrs&quot;:{}}" ' +
 			'id="cite_ref-1-0" rel="dc:references" typeof="mw:Extension/ref" data-parsoid="{}">' +
@@ -1385,7 +1372,7 @@ ve.dm.mwExample.domToDataCases = {
 		]
 	},
 	'internal link with ./ and ../': {
-		'html': '<body><p><a rel="mw:WikiLink" href="./../../../Foo/Bar">Foo</a></p></body>',
+		'body': '<p><a rel="mw:WikiLink" href="./../../../Foo/Bar">Foo</a></p>',
 		'head': '<base href="http://example.com/one/two/three/four/five" />',
 		'data': [
 			{ 'type': 'paragraph' },
@@ -1464,7 +1451,7 @@ ve.dm.mwExample.domToDataCases = {
 		]
 	},
 	'numbered external link (empty mw:Extlink)': {
-		'html': '<body><p>Foo<a rel="mw:ExtLink" href="http://www.example.com"></a>Bar</p></body>',
+		'body': '<p>Foo<a rel="mw:ExtLink" href="http://www.example.com"></a>Bar</p>',
 		'data': [
 			{ 'type': 'paragraph' },
 			'F', 'o', 'o',
@@ -1491,7 +1478,7 @@ ve.dm.mwExample.domToDataCases = {
 		]
 	},
 	'URL link': {
-		'html': '<body><p><a rel="mw:ExtLink" href="http://www.mediawiki.org/">mw</a></p></body>',
+		'body': '<p><a rel="mw:ExtLink" href="http://www.mediawiki.org/">mw</a></p>',
 		'data': [
 			{ 'type': 'paragraph' },
 			[
@@ -1542,9 +1529,9 @@ ve.dm.mwExample.domToDataCases = {
 		]
 	},
 	'whitespace preservation with wrapped comments and language links': {
-		'html': '<body>Foo\n' +
+		'body': 'Foo\n' +
 			'<link rel="mw:WikiLink/Language" href="http://de.wikipedia.org/wiki/Foo">\n' +
-			'<link rel="mw:PageProp/Language" href="http://fr.wikipedia.org/wiki/Foo"></body>',
+			'<link rel="mw:PageProp/Language" href="http://fr.wikipedia.org/wiki/Foo">',
 		'data': [
 			{
 				'type': 'paragraph',
@@ -1602,17 +1589,17 @@ ve.dm.mwExample.domToDataCases = {
 		]
 	},
 	'document with meta elements': {
-		'html': '<body><!-- No content conversion --><meta property="mw:PageProp/nocc" /><p>Foo' +
+		'body': '<!-- No content conversion --><meta property="mw:PageProp/nocc" /><p>Foo' +
 			'<link rel="mw:PageProp/Category" href="./Category:Bar" />Bar' +
 			'<meta property="mw:foo" content="bar" />Ba<!-- inline -->z</p>' +
 			'<meta property="mw:bar" content="baz" /><!--barbaz-->' +
 			'<link rel="mw:PageProp/Category" href="./Category:Foo_foo#Bar baz%23quux" />' +
-			'<meta typeof="mw:Placeholder" data-parsoid="foobar" /></body>',
+			'<meta typeof="mw:Placeholder" data-parsoid="foobar" />',
 		'head': '<base href="http://example.com" />',
 		'data': ve.dm.mwExample.withMeta
 	},
 	'RDFa types spread across two attributes, about grouping is forced': {
-		'html': '<body>' + ve.dm.mwExample.MWTransclusion.mixed + '</body>',
+		'body': ve.dm.mwExample.MWTransclusion.mixed,
 		'data': [
 			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
 			ve.dm.mwExample.MWTransclusion.mixedDataOpen,
@@ -1626,7 +1613,7 @@ ve.dm.mwExample.domToDataCases = {
 		]
 	},
 	'mw:Entity': {
-		'html': '<body><p>a<span typeof="mw:Entity">¢</span>b<span typeof="mw:Entity">¥</span><span typeof="mw:Entity">™</span></p></body>',
+		'body': '<p>a<span typeof="mw:Entity">¢</span>b<span typeof="mw:Entity">¥</span><span typeof="mw:Entity">™</span></p>',
 		'data': [
 			{ 'type': 'paragraph' },
 			'a',
@@ -1655,7 +1642,7 @@ ve.dm.mwExample.domToDataCases = {
 		]
 	},
 	'wrapping with mw:Entity': {
-		'html': '<body>a<span typeof="mw:Entity">¢</span>b<span typeof="mw:Entity">¥</span><span typeof="mw:Entity">™</span></body>',
+		'body': 'a<span typeof="mw:Entity">¢</span>b<span typeof="mw:Entity">¥</span><span typeof="mw:Entity">™</span>',
 		'data': [
 			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
 			'a',
@@ -1684,7 +1671,7 @@ ve.dm.mwExample.domToDataCases = {
 		]
 	},
 	'whitespace preservation with mw:Entity': {
-		'html': '<body><p> a  <span typeof="mw:Entity"> </span>   b    <span typeof="mw:Entity">¥</span>\t<span typeof="mw:Entity">™</span></p></body>',
+		'body': '<p> a  <span typeof="mw:Entity"> </span>   b    <span typeof="mw:Entity">¥</span>\t<span typeof="mw:Entity">™</span></p>',
 		'data': [
 			{ 'type': 'paragraph', 'internal': { 'whitespace': [ undefined, ' ' ] } },
 			'a',
@@ -1723,7 +1710,7 @@ ve.dm.mwExample.domToDataCases = {
 		]
 	},
 	'category default sort key': {
-		'html': '<body><meta property="mw:PageProp/categorydefaultsort" content="foo"></body>',
+		'body': '<meta property="mw:PageProp/categorydefaultsort" content="foo">',
 		'data': [
 			{
 				'type': 'mwDefaultSort',
@@ -1743,24 +1730,22 @@ ve.dm.mwExample.domToDataCases = {
 		]
 	},
 	'thumb image': {
-		'html': '<body>' + ve.dm.mwExample.MWBlockImage.html + '</body>',
+		'body': ve.dm.mwExample.MWBlockImage.html,
 		'data': ve.dm.mwExample.MWBlockImage.data.concat( [
 			{ 'type': 'internalList' },
 			{ 'type': '/internalList' }
 		] )
 	},
 	'attribute preservation does not crash due to text node split': {
-		'html':
-			'<body>' +
-				'<figure typeof="mw:Image/Thumb" data-parsoid="{}">' +
-					'<a href="Foo" data-parsoid="{}">' +
-						'<img src="Bar" width="1" height="2" resource="FooBar" data-parsoid="{}">' +
-					'</a>' +
-					'<figcaption data-parsoid="{}">' +
-					' foo <a rel="mw:WikiLink" href="./Bar" data-parsoid="{}">bar</a> baz' +
-					'</figcaption>' +
-				'</figure>' +
-			'</body>',
+		'body':
+			'<figure typeof="mw:Image/Thumb" data-parsoid="{}">' +
+				'<a href="Foo" data-parsoid="{}">' +
+					'<img src="Bar" width="1" height="2" resource="FooBar" data-parsoid="{}">' +
+				'</a>' +
+				'<figcaption data-parsoid="{}">' +
+				' foo <a rel="mw:WikiLink" href="./Bar" data-parsoid="{}">bar</a> baz' +
+				'</figcaption>' +
+			'</figure>',
 		'head': '<base href="http://example.com" />',
 		'data': [
 			{
@@ -1878,7 +1863,7 @@ ve.dm.mwExample.domToDataCases = {
 		]
 	},
 	'mw:Nowiki': {
-		'html': ve.dm.mwExample.mwNowikiHtml,
+		'body': ve.dm.mwExample.mwNowikiHtml,
 		'data': ve.dm.mwExample.mwNowiki
 	},
 	'mw:Nowiki unwraps when text modified': {
@@ -1886,13 +1871,13 @@ ve.dm.mwExample.domToDataCases = {
 		'modify': function ( data ) {
 			data[7][0] = 'z';
 		},
-		'normalizedHtml': '<body><p>Foo[[Bzr]]Baz</p></body>'
+		'normalizedBody': '<p>Foo[[Bzr]]Baz</p>'
 	},
 	'mw:Nowiki unwraps when annotations modified': {
 		'data': ve.dm.mwExample.mwNowiki,
 		'modify': function ( data ) {
 			data[7][1].push( ve.dm.example.bold );
 		},
-		'normalizedHtml': '<body><p>Foo[[B<b>a</b>r]]Baz</p></body>'
+		'normalizedBody': '<p>Foo[[B<b>a</b>r]]Baz</p>'
 	}
 };
