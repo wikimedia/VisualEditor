@@ -5,13 +5,13 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-.ve-ui-surfaceToolbar-floating .oo-ui-toolbar-bar {
+.ve-ui-surfaceToolbar-floating .ve-ui-toolbar-bar {
 	position: fixed;
 	top: 0;
 	z-index: 100;
 	border-top: none; /* TODO: Do we need this? What does it reset? */
 }
 
-.ve-ui-surfaceToolbar-floating .oo-ui-toolbar-shadow {
+.ve-ui-surfaceToolbar-floating .ve-ui-toolbar-shadow {
 	opacity: 0.5;
 }
