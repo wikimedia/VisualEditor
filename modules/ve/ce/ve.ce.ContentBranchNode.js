@@ -88,7 +88,8 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 		annotatedHtml = [],
 		wrapper = document.createElement( 'div' ),
 		current = wrapper,
-		buffer = '';
+		buffer = '',
+		node = this;
 
 	function openAnnotation( annotation ) {
 		if ( buffer !== '' ) {
@@ -97,7 +98,7 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 		}
 		// Create a new DOM node and descend into it
 		ann = ve.ce.annotationFactory.create(
-			annotation.getType(), annotation, { '$$': this.$$ }
+			annotation.getType(), annotation, node, { '$$': this.$$ }
 		).$[0];
 		current.appendChild( ann );
 		current = ann;

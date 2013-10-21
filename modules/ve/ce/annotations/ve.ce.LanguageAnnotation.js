@@ -12,11 +12,12 @@
  * @extends ve.ce.Annotation
  * @constructor
  * @param {ve.dm.LanguageAnnotation} model Model to observe
+ * @param {ve.ce.ContentBranchNode} [parentNode] Node rendering this annotation
  * @param {Object} [config] Configuration options
  */
-ve.ce.LanguageAnnotation = function VeCeLanguageAnnotation( model, config ) {
+ve.ce.LanguageAnnotation = function VeCeLanguageAnnotation( model, parentNode, config ) {
 	// Parent constructor
-	ve.ce.Annotation.call( this, model, config );
+	ve.ce.Annotation.call( this, model, parentNode, config );
 
 	// DOM changes
 	this.$.addClass( 've-ce-LanguageAnnotation' );
@@ -28,7 +29,7 @@ ve.ce.LanguageAnnotation = function VeCeLanguageAnnotation( model, config ) {
 	// When ULS is active, use $.uls.getAutonym(lang) to get the full
 	// language name in the tooltip
 	// (eg 'he' will be 'Hebrew' and 'en' will be 'English')
-	this.$.attr( 'title' , ve.msg( 'visualeditor-languageinspector-block-tooltip', model.getAttribute( 'lang' ) ) );
+	this.$.attr( 'title', ve.msg( 'visualeditor-languageinspector-block-tooltip', model.getAttribute( 'lang' ) ) );
 };
 
 /* Inheritance */
