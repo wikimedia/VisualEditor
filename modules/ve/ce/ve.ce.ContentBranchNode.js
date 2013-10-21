@@ -96,7 +96,9 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 			buffer = '';
 		}
 		// Create a new DOM node and descend into it
-		ann = ve.ce.annotationFactory.create( annotation.getType(), annotation ).$[0];
+		ann = ve.ce.annotationFactory.create(
+			annotation.getType(), annotation, { '$$': this.$$ }
+		).$[0];
 		current.appendChild( ann );
 		current = ann;
 	}

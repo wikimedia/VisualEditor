@@ -130,6 +130,15 @@ ve.test.utils.runGetDomFromDataTests = function( assert, cases ) {
  * @returns {ve.ui.Surface} UI surface
  */
 ve.test.utils.createSurfaceFromHtml = function ( html ) {
-	var target = new ve.init.sa.Target( $( '#qunit-fixture' ), ve.createDocumentFromHtml( html ) );
+	return this.createSurfaceFromDocument( ve.createDocumentFromHtml( html ) );
+};
+
+/**
+ * Create a UI surface from a document
+ * @param {ve.dm.Document|HTMLDocument} doc Document
+ * @returns {ve.ui.Surface} UI surface
+ */
+ve.test.utils.createSurfaceFromDocument = function ( doc ) {
+	var target = new ve.init.sa.Target( $( '#qunit-fixture' ), doc );
 	return target.surface;
 };
