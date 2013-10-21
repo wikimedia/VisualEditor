@@ -252,12 +252,12 @@
 		<script src="../../jquery.uls/src/jquery.uls.lcd.js"></script>
 		<script src="../../jquery.uls/src/jquery.uls.languagefilter.js"></script>
 		<script src="../../jquery.uls/src/jquery.uls.regionfilter.js"></script>
-		<!-- ext.visualEditor.experimental -->
+		<!-- ext.visualEditor.language -->
 		<script src="../../ve/dm/annotations/ve.dm.LanguageAnnotation.js"></script>
 		<script src="../../ve/ce/annotations/ve.ce.LanguageAnnotation.js"></script>
 		<script src="../../ve/ui/inspectors/ve.ui.LanguageInspector.js"></script>
+		<script src="../../ve/ui/tools/ve.ui.LanguageInspectorTool.js"></script>
 		<script src="../../ve/ui/widgets/ve.ui.LanguageInputWidget.js"></script>
-		<script src="../../ve/ui/tools/ve.ui.ExperimentalTool.js"></script>
 
 		<!-- Load plugins for test framework -->
 		<script src="ve.qunit.js"></script>

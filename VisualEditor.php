@@ -337,6 +337,7 @@ $wgResourceModules += array(
 			've-mw/dm/nodes/ve.dm.MWTransclusionNode.js',
 			've-mw/dm/nodes/ve.dm.MWReferenceListNode.js',
 			've-mw/dm/nodes/ve.dm.MWReferenceNode.js',
+			've-mw/dm/nodes/ve.dm.MWExtensionNode.js',
 
 			've/dm/annotations/ve.dm.LinkAnnotation.js',
 			've-mw/dm/annotations/ve.dm.MWExternalLinkAnnotation.js',
@@ -414,6 +415,7 @@ $wgResourceModules += array(
 			've-mw/ce/nodes/ve.ce.MWTransclusionNode.js',
 			've-mw/ce/nodes/ve.ce.MWReferenceListNode.js',
 			've-mw/ce/nodes/ve.ce.MWReferenceNode.js',
+			've-mw/ce/nodes/ve.ce.MWExtensionNode.js',
 
 			've/ce/annotations/ve.ce.LinkAnnotation.js',
 			've-mw/ce/annotations/ve.ce.MWExternalLinkAnnotation.js',
@@ -535,6 +537,7 @@ $wgResourceModules += array(
 			've/ui/inspectors/ve.ui.AnnotationInspector.js',
 			've/ui/inspectors/ve.ui.LinkInspector.js',
 			've-mw/ui/inspectors/ve.ui.MWLinkInspector.js',
+			've-mw/ui/inspectors/ve.ui.MWExtensionInspector.js',
 		),
 		'styles' => array(
 			// ce
@@ -712,33 +715,19 @@ $wgResourceModules += array(
 		),
 	),
 
-	'ext.visualEditor.experimental' => $wgVisualEditorResourceTemplate + array(
+	'ext.visualEditor.language' => $wgVisualEditorResourceTemplate + array(
 		'scripts' => array(
-			've-mw/dm/nodes/ve.dm.MWExtensionNode.js',
-			've-mw/ce/nodes/ve.ce.MWExtensionNode.js',
-			've-mw/dm/nodes/ve.dm.MWAlienExtensionNode.js',
-			've-mw/ce/nodes/ve.ce.MWAlienExtensionNode.js',
-			've-mw/dm/nodes/ve.dm.MWHieroNode.js',
-			've-mw/ce/nodes/ve.ce.MWHieroNode.js',
-			've-mw/dm/nodes/ve.dm.MWMathNode.js',
-			've-mw/ce/nodes/ve.ce.MWMathNode.js',
-			've-mw/ui/inspectors/ve.ui.MWExtensionInspector.js',
-			've-mw/ui/inspectors/ve.ui.MWAlienExtensionInspector.js',
-			've-mw/ui/inspectors/ve.ui.MWHieroInspector.js',
-			've-mw/ui/inspectors/ve.ui.MWMathInspector.js',
 			've/dm/annotations/ve.dm.LanguageAnnotation.js',
 			've/ce/annotations/ve.ce.LanguageAnnotation.js',
 			've/ui/inspectors/ve.ui.LanguageInspector.js',
+			've/ui/tools/ve.ui.LanguageInspectorTool.js',
 			've/ui/widgets/ve.ui.LanguageInputWidget.js',
-			've/ui/tools/ve.ui.ExperimentalTool.js',
-			've-mw/ui/tools/ve.ui.MWExperimentalTool.js',
 		),
 		'dependencies' => array(
 			'ext.visualEditor.core',
 			'jquery.uls',
 		),
 		'messages' => array(
-			// VE messages needed by code that is only in experimental mode
 			'visualeditor-languageinspector-title',
 			'visualeditor-languageinspector-block-tooltip',
 			'visualeditor-languageinspector-block-tooltip-rtldirection',
@@ -749,25 +738,55 @@ $wgResourceModules += array(
 			'visualeditor-languageinspector-block-tooltip',
 			'visualeditor-languageinspector-block-tooltip-rtldirection',
 			'visualeditor-annotationbutton-language-tooltip',
+		),
+	),
+
+	'ext.visualEditor.mwalienextension' => $wgVisualEditorResourceTemplate + array(
+		'scripts' => array(
+			've-mw/dm/nodes/ve.dm.MWAlienExtensionNode.js',
+			've-mw/ce/nodes/ve.ce.MWAlienExtensionNode.js',
+			've-mw/ui/inspectors/ve.ui.MWAlienExtensionInspector.js',
+			've-mw/ui/tools/ve.ui.MWAlienExtensionInspectorTool.js',
+		),
+		'dependencies' => array(
+			'ext.visualEditor.core',
+		),
+		'messages' => array(
 			'visualeditor-mwalienextensioninspector-title',
-			'visualeditor-mwhieroinspector-title',
+		),
+	),
+
+	'ext.visualEditor.mwmath' => $wgVisualEditorResourceTemplate + array(
+		'scripts' => array(
+			've-mw/dm/nodes/ve.dm.MWMathNode.js',
+			've-mw/ce/nodes/ve.ce.MWMathNode.js',
+			've-mw/ui/inspectors/ve.ui.MWMathInspector.js',
+			've-mw/ui/tools/ve.ui.MWMathInspectorTool.js',
+		),
+		'dependencies' => array(
+			'ext.visualEditor.core',
+		),
+		'messages' => array(
 			'visualeditor-mwmathinspector-title',
 		),
 	),
 
-	'ext.visualEditor.icons-raster' => $wgVisualEditorResourceTemplate + array(
-		'styles' => array(
-			've/ui/styles/ve.ui.Icons-raster.css',
-			've-mw/ui/styles/ve.ui.Icons-raster.css',
+	'ext.visualEditor.mwhiero' => $wgVisualEditorResourceTemplate + array(
+		'scripts' => array(
+			've-mw/dm/nodes/ve.dm.MWHieroNode.js',
+			've-mw/ce/nodes/ve.ce.MWHieroNode.js',
+			've-mw/ui/inspectors/ve.ui.MWHieroInspector.js',
+			've-mw/ui/tools/ve.ui.MWHieroInspectorTool.js',
+		),
+		'dependencies' => array(
+			'ext.visualEditor.core',
+		),
+		'messages' => array(
+			'visualeditor-mwhieroinspector-title',
 		),
 	),
-	'ext.visualEditor.icons-vector' => $wgVisualEditorResourceTemplate + array(
-		'styles' => array(
-			've/ui/styles/ve.ui.Icons-vector.css',
-			've-mw/ui/styles/ve.ui.Icons-vector.css',
-		),
-	),
-	'ext.visualEditor.syntaxHighlight' => $wgVisualEditorResourceTemplate + array(
+
+	'ext.visualEditor.mwsyntaxHighlight' => $wgVisualEditorResourceTemplate + array(
 		'scripts' => array(
 			'syntaxhighlight/ve.dm.MWSyntaxHighlightNode.js',
 			'syntaxhighlight/ve.ce.MWSyntaxHighlightNode.js',
@@ -787,6 +806,29 @@ $wgResourceModules += array(
 		),
 		'styles' => array(
 			'syntaxhighlight/styles/ve.ui.MWSyntaxHighlight.css',
+		),
+	),
+
+	'ext.visualEditor.experimental' => array(
+		'dependencies' => array(
+			'ext.visualEditor.mwmath',
+			'ext.visualEditor.mwhiero',
+			'ext.visualEditor.language',
+			'ext.visualEditor.mwalienextension',
+			//'ext.visualEditor.mwsyntaxHighlight',
+		),
+	),
+
+	'ext.visualEditor.icons-raster' => $wgVisualEditorResourceTemplate + array(
+		'styles' => array(
+			've/ui/styles/ve.ui.Icons-raster.css',
+			've-mw/ui/styles/ve.ui.Icons-raster.css',
+		),
+	),
+	'ext.visualEditor.icons-vector' => $wgVisualEditorResourceTemplate + array(
+		'styles' => array(
+			've/ui/styles/ve.ui.Icons-vector.css',
+			've-mw/ui/styles/ve.ui.Icons-vector.css',
 		),
 	),
 );
