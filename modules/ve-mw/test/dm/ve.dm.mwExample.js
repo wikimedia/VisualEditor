@@ -1370,52 +1370,25 @@ ve.dm.mwExample.domToDataCases = {
 			{ 'type': '/internalList' }
 		]
 	},
-	'numbered external link': {
-		'html': '<body><p><a rel="mw:ExtLink/Numbered" href="http://www.mediawiki.org/">[1]</a></p></body>',
+	'numbered external link (empty mw:Extlink)': {
+		'html': '<body><p>Foo<a rel="mw:ExtLink" href="http://www.example.com"></a>Bar</p></body>',
 		'data': [
 			{ 'type': 'paragraph' },
-			[
-				'[',
-				[ {
-					'type': 'link/mwExternal',
-					'attributes': {
-						'href': 'http://www.mediawiki.org/',
-						'rel': 'mw:ExtLink/Numbered'
-					},
-					'htmlAttributes': [ { 'values': {
-						'href': 'http://www.mediawiki.org/',
-						'rel': 'mw:ExtLink/Numbered'
-					} } ]
+			'F', 'o', 'o',
+			{
+				'type': 'link/mwNumberedExternal',
+				'attributes': {
+					'href': 'http://www.example.com'
+				},
+				'htmlAttributes': [ {
+					'values': {
+						'href': 'http://www.example.com',
+						'rel': 'mw:ExtLink'
+					}
 				} ]
-			],
-			[
-				'1',
-				[ {
-					'type': 'link/mwExternal',
-					'attributes': {
-						'href': 'http://www.mediawiki.org/',
-						'rel': 'mw:ExtLink/Numbered'
-					},
-					'htmlAttributes': [ { 'values': {
-						'href': 'http://www.mediawiki.org/',
-						'rel': 'mw:ExtLink/Numbered'
-					} } ]
-				} ]
-			],
-			[
-				']',
-				[ {
-					'type': 'link/mwExternal',
-					'attributes': {
-						'href': 'http://www.mediawiki.org/',
-						'rel': 'mw:ExtLink/Numbered'
-					},
-					'htmlAttributes': [ { 'values': {
-						'href': 'http://www.mediawiki.org/',
-						'rel': 'mw:ExtLink/Numbered'
-					} } ]
-				} ]
-			],
+			},
+			{ 'type': '/link/mwNumberedExternal' },
+			'B', 'a', 'r',
 			{ 'type': '/paragraph' },
 			{ 'type': 'internalList' },
 			{ 'type': '/internalList' }
