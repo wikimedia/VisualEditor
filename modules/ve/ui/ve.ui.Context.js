@@ -82,7 +82,7 @@ ve.ui.Context.prototype.onChange = function ( transactions, selection ) {
 		if ( this.popup.isVisible() ) {
 			this.hide();
 			this.update();
-		} else if ( !this.selecting && !this.draggingAndDropping ) {
+		} else if ( !this.selecting && !this.relocating ) {
 			this.update();
 		}
 	}
