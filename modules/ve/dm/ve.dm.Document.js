@@ -16,12 +16,15 @@
  * @class
  * @extends ve.Document
  * @constructor
- * @param {HTMLDocument|Array|ve.dm.ElementLinearData|ve.dm.FlatLinearData} documentOrData HTML document,
+ * @param {HTMLDocument|Array|ve.dm.ElementLinearData|ve.dm.FlatLinearData} data HTML document,
  *  raw linear model data, ElementLinearData or FlatLinearData to be split
+ * @param {HTMLDocument} [htmlDocument] HTML document the data was converted from, if any.
+ *  If omitted, a new document will be created. If data is an HTMLDocument, this parameter is
+ *  ignored.
  * @param {ve.dm.Document} [parentDocument] Document to use as root for created nodes
  * @param {ve.dm.InternalList} [internalList] Internal list to clone; passed when creating a document slice
  */
-ve.dm.Document = function VeDmDocument( documentOrData, parentDocument, internalList ) {
+ve.dm.Document = function VeDmDocument( data, htmlDocument, parentDocument, internalList ) {
 	// Parent constructor
 	ve.Document.call( this, new ve.dm.DocumentNode() );
 
@@ -39,24 +42,26 @@ ve.dm.Document = function VeDmDocument( documentOrData, parentDocument, internal
 	this.parentDocument = parentDocument;
 	this.completeHistory = [];
 
-	if ( documentOrData instanceof ve.dm.ElementLinearData ) {
+	if ( data instanceof ve.dm.ElementLinearData ) {
 		// Pre-split ElementLinearData
 		split = false;
-		fullData = documentOrData;
-	} else if ( documentOrData instanceof ve.dm.FlatLinearData ) {
+		fullData = data;
+	} else if ( data instanceof ve.dm.FlatLinearData ) {
 		// Element + Meta linear data
-		fullData = documentOrData;
-	} else if ( !ve.isArray( documentOrData ) && typeof documentOrData === 'object' ) {
+		fullData = data;
+	} else if ( !ve.isArray( data ) && typeof data === 'object' ) {
 		// HTMLDocument
-		fullData = ve.dm.converter.getDataFromDom( documentOrData, new ve.dm.IndexValueStore(), this.getInternalList() );
+		fullData = ve.dm.converter.getDataFromDom( data, new ve.dm.IndexValueStore(), this.getInternalList() );
+		htmlDocument = data;
 	} else {
 		// Raw linear model data
 		fullData = new ve.dm.FlatLinearData(
 			new ve.dm.IndexValueStore(),
-			ve.isArray( documentOrData ) ? documentOrData : []
+			ve.isArray( data ) ? data : []
 		);
 	}
 	this.store = fullData.getStore();
+	this.htmlDocument = htmlDocument || ve.createDocumentFromHtml( '' );
 
 	result = this.constructor.static.splitData( fullData, split, true, this.documentNode );
 	this.data = result.elementData;
@@ -320,6 +325,16 @@ ve.dm.Document.prototype.getMetadata = function ( range, deep ) {
 };
 
 /**
+ * Get the HTMLDocument associated with this document.
+ *
+ * @method
+ * @returns {HTMLDocument} Associated document
+ */
+ve.dm.Document.prototype.getHtmlDocument = function () {
+	return this.htmlDocument;
+};
+
+/**
  * Get the document's index-value store
  *
  * @method
@@ -356,7 +371,7 @@ ve.dm.Document.prototype.cloneFromRange = function ( range ) {
 	}
 	newDoc = new this.constructor(
 		new ve.dm.FlatLinearData( store, data ),
-		undefined, this.internalList
+		this.htmlDocument, undefined, this.internalList
 	);
 	// Record the length of the internal list at the time the slice was created so we can
 	// reconcile additions properly
@@ -521,7 +536,7 @@ ve.dm.Document.prototype.rebuildNodes = function ( parent, index, numNodes, offs
 	var // Get a slice of the document where it's been changed
 		data = this.data.sliceObject( offset, offset + newLength ),
 		// Build document fragment from data
-		fragment = new ve.dm.Document( data, this ),
+		fragment = new this.constructor( data, this.htmlDocument, this ),
 		// Get generated child nodes from the document fragment
 		nodes = fragment.getDocumentNode().getChildren();
 	// Replace nodes in the model tree

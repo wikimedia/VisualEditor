@@ -9,8 +9,8 @@ QUnit.module( 've.dm.Document' );
 
 /* Tests */
 
-QUnit.test( 'constructor', 9, function ( assert ) {
-	var data,
+QUnit.test( 'constructor', 12, function ( assert ) {
+	var data, htmlDoc,
 		doc = ve.dm.example.createExampleDocument();
 	assert.equalNodeTree( doc.getDocumentNode(), ve.dm.example.tree, 'node tree matches example data' );
 	assert.throws(
@@ -33,6 +33,13 @@ QUnit.test( 'constructor', 9, function ( assert ) {
 	assert.deepEqualWithDomElements( doc.getMetadata(), new Array( 5 ),
 		'sparse metadata array is created'
 	);
+	assert.equal( doc.getHtmlDocument().body.innerHTML, '', 'Empty HTML document is created' );
+
+	htmlDoc = ve.createDocumentFromHtml( 'abcd' );
+	doc = new ve.dm.Document( [ 'a', 'b', 'c', 'd' ], htmlDoc );
+	assert.equal( doc.getHtmlDocument(), htmlDoc, 'Provided HTML document is used' );
+	doc = new ve.dm.Document( htmlDoc, ve.createDocumentFromHtml( 'efgh' ) );
+	assert.equal( doc.getHtmlDocument(), htmlDoc, 'Second parameter ignored if first parameter is a document' );
 
 	data = new ve.dm.ElementLinearData(
 		new ve.dm.IndexValueStore(),
