@@ -25,6 +25,7 @@ ve.ui.Context = function VeUiContext( surface, config ) {
 	this.visible = false;
 	this.showing = false;
 	this.hiding = false;
+	this.openingInspector = false;
 	this.selecting = false;
 	this.relocating = false;
 	this.embedded = false;
@@ -72,14 +73,17 @@ OO.inheritClass( ve.ui.Context, ve.Element );
 /**
  * Handle change events on the model.
  *
- * Changes are ignored while the user is selecting text.
+ * Changes are ignored while the user is selecting text or relocating content, apart from closing
+ * the popup if it's open. While an inspector is opening or closing, all changes are ignored so as
+ * to prevent inspectors that change the selection from within their open/close handlers from
+ * causing issues.
  *
  * @method
  * @param {ve.dm.Transaction[]} transactions Change transactions
  * @param {ve.Range} selection Change selection
  */
 ve.ui.Context.prototype.onChange = function ( transactions, selection ) {
-	if ( selection ) {
+	if ( selection && !this.openingInspector && !this.hiding ) {
 		if ( this.popup.isVisible() ) {
 			this.hide();
 			this.update();
@@ -407,7 +411,9 @@ ve.ui.Context.prototype.hide = function () {
  */
 ve.ui.Context.prototype.openInspector = function ( name, config ) {
 	if ( !this.inspectors.currentWindow ) {
+		this.openingInspector = true;
 		this.inspectors.open( name, config );
+		this.openingInspector = false;
 	}
 	return this;
 };
