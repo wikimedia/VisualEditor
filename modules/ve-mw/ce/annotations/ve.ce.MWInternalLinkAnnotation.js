@@ -16,21 +16,12 @@
  * @param {Object} [config] Configuration options
  */
 ve.ce.MWInternalLinkAnnotation = function VeCeMWInternalLinkAnnotation( model, parentNode, config ) {
-	var dmRendering;
 	// Parent constructor
 	ve.ce.LinkAnnotation.call( this, model, parentNode, config );
 
 	// DOM changes
 	this.$.addClass( 've-ce-mwInternalLinkAnnotation' );
 	this.$.attr( 'title', model.getAttribute( 'title' ) );
-	// HACK get href from DM rendering
-	// HACK HACK except if we already have a computed href
-	// FIXME get rid of this hack, see bug 51487
-	if ( !this.$.attr( 'href' ) ) {
-		dmRendering = model.getDomElements( this.getModelHtmlDocument() )[0];
-		this.$.attr( 'href', dmRendering.href );
-	}
-	// else let the default attribute rendering happen
 };
 
 /* Inheritance */
