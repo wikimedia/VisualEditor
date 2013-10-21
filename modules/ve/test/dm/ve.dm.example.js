@@ -163,13 +163,9 @@ ve.dm.example.createDomElement = function ( type, attributes ) {
 
 ve.dm.example.testDir = window.VE_TESTDIR || '.';
 
-ve.dm.example.fullUrl = function ( href ) {
-	return $( '<a>' ).attr( 'href', href )[0].href;
-};
-
 ve.dm.example.imgSrc = ve.dm.example.testDir + '/example.png';
 
-ve.dm.example.fullImgSrc = ve.dm.example.fullUrl( ve.dm.example.imgSrc );
+ve.dm.example.fullImgSrc = ve.resolveUrl( ve.dm.example.imgSrc, document );
 
 ve.dm.example.image = {
 	html: '<img src="' + ve.dm.example.imgSrc + '" alt="Example" width="100" height="50">',

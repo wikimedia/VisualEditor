@@ -751,6 +751,32 @@
 	};
 
 	/**
+	 * Resolve a URL according to a given base.
+	 *
+	 * Passing a string for the base parameter causes a throwaway document to be created, which is
+	 * slow.
+	 *
+	 * @param {string} url URL to resolve
+	 * @param {HTMLDocument|string} base Document whose base URL to use, or base URL as a string
+	 * @returns {string} Resolved URL
+	 */
+	ve.resolveUrl = function ( url, base ) {
+		var doc, node;
+		if ( typeof base === 'string' ) {
+			doc = ve.createDocumentFromHtml( '' );
+			node = doc.createElement( 'base' );
+			node.setAttribute( 'href', base );
+			doc.head.appendChild( node );
+		} else {
+			doc = base;
+		}
+
+		node = doc.createElement( 'a' );
+		node.setAttribute( 'href', url );
+		return node.href;
+	};
+
+	/**
 	 * Get the actual inner HTML of a DOM node.
 	 *
 	 * In most browsers, .innerHTML is broken and eats newlines in `<pre>` elements, see
