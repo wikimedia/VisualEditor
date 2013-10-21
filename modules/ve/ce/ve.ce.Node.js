@@ -255,3 +255,8 @@ ve.ce.Node.prototype.destroy = function () {
 	this.parent = null;
 	this.model.disconnect( this );
 };
+
+/** */
+ve.ce.Node.prototype.getModelHtmlDocument = function () {
+	return this.model.getDocument() && this.model.getDocument().getHtmlDocument();
+};

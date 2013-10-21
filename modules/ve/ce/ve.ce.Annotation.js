@@ -58,3 +58,8 @@ ve.ce.Annotation.static.forceContinuation = false;
 ve.ce.Annotation.prototype.getParentNode = function () {
 	return this.parentNode;
 };
+
+/** */
+ve.ce.Annotation.prototype.getModelHtmlDocument = function () {
+	return this.parentNode && this.parentNode.getModelHtmlDocument();
+};

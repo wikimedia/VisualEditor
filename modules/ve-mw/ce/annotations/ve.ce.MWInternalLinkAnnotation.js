@@ -27,8 +27,8 @@ ve.ce.MWInternalLinkAnnotation = function VeCeMWInternalLinkAnnotation( model, p
 	// HACK HACK except if we already have a computed href
 	// FIXME get rid of this hack, see bug 51487
 	if ( !this.$.attr( 'href' ) ) {
-		dmRendering = model.getDomElements()[0];
-		this.$.attr( 'href', dmRendering.getAttribute( 'href' ) );
+		dmRendering = model.getDomElements( this.getModelHtmlDocument() )[0];
+		this.$.attr( 'href', dmRendering.href );
 	}
 	// else let the default attribute rendering happen
 };

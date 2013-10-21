@@ -37,7 +37,7 @@ ve.ce.MWInlineImageNode = function VeCeMWInlineImageNode( model, config ) {
 	ve.ce.MWImageNode.call( this, this.$, this.$image );
 
 	this.$image
-		.attr( 'src', this.model.getAttribute( 'src' ) )
+		.attr( 'src', this.getResolvedAttribute( 'src' ) )
 		.attr( 'width', this.model.getAttribute( 'width' ) )
 		.attr( 'height', this.model.getAttribute( 'height' ) );
 

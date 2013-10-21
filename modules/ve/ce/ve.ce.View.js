@@ -91,6 +91,19 @@ ve.ce.View.static.renderHtmlAttributes = [
 /* Methods */
 
 /**
+ * Get an HTML document from the model, to use for URL resolution.
+ *
+ * The default implementation returns null; subclasses should override this if they can provide
+ * a resolution document.
+ *
+ * @see #getResolvedAttribute
+ * @returns {HTMLDocument|null} HTML document to use for resolution, or null if not available
+ */
+ve.ce.View.prototype.getModelHtmlDocument = function () {
+	return null;
+};
+
+/**
  * Handle setup event.
  *
  * @method
@@ -161,4 +174,18 @@ ve.ce.View.prototype.renderAttributes = function ( attributeList ) {
 		this.constructor.static.renderHtmlAttributes,
 		true // computed attributes
 	);
+};
+
+/**
+ * Get a resolved URL from a model attribute.
+ *
+ * @abstract
+ * @method
+ * @param {string} key Attribute name whose value is a URL
+ * @returns {string} URL resolved according to the document's base
+ */
+ve.ce.View.prototype.getResolvedAttribute = function ( key ) {
+	var plainValue = this.model.getAttribute( key ),
+		doc = this.getModelHtmlDocument();
+	return doc && typeof plainValue === 'string' ? ve.resolveUrl( plainValue, doc ) : plainValue;
 };

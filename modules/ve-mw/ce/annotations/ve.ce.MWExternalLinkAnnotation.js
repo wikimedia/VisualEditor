@@ -21,6 +21,8 @@ ve.ce.MWExternalLinkAnnotation = function VeCeMWExternalLinkAnnotation( model, p
 
 	// DOM changes
 	this.$.addClass( 've-ce-mwExternalLinkAnnotation' );
+	// Put the href in the title
+	// Deliberately not using getResolvedAttribute() here
 	this.$.attr( 'title', model.getAttribute( 'href' ) );
 };
 

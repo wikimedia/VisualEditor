@@ -37,10 +37,10 @@ ve.ce.MWBlockImageNode = function VeCeMWBlockImageNode( model, config ) {
 
 	this.$a = this.$$( '<a>' )
 		.addClass( 'image' )
-		.attr( 'href', this.model.getAttribute( 'href' ) );
+		.attr( 'href', this.getResolvedAttribute( 'href' ) );
 
 	this.$image = this.$$( '<img>' )
-		.attr( 'src', this.model.getAttribute( 'src' ) )
+		.attr( 'src', this.getResolvedAttribute( 'src' ) )
 		.attr( 'width', this.model.getAttribute( 'width' ) )
 		.attr( 'height', this.model.getAttribute( 'height' ) )
 		.appendTo( this.$a );
@@ -209,7 +209,7 @@ ve.ce.MWBlockImageNode.prototype.onAttributeChange = function ( key, from, to ) 
 				}
 				break;
 			case 'src':
-				this.$image.attr( 'src', to );
+				this.$image.attr( 'src', this.getResolvedAttribute( 'src' ) );
 				break;
 			case 'width':
 				this.$thumbInner.css( 'width', to + 2 );

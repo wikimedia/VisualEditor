@@ -21,7 +21,7 @@ ve.ce.LinkAnnotation = function VeCeLinkAnnotation( model, parentNode, config ) 
 
 	// DOM changes
 	this.$.addClass( 've-ce-LinkAnnotation' );
-	this.$.attr( 'href', model.getAttribute( 'href' ) );
+	this.$.attr( 'href', this.getResolvedAttribute( 'href' ) );
 };
 
 /* Inheritance */
