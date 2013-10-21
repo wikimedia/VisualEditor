@@ -21,7 +21,7 @@
  */
 ve.init.mw.Target = function VeInitMwTarget( $container, pageName, revisionId ) {
 	var i, len, prefName, prefValue, conf = mw.config.get( 'wgVisualEditorConfig' ),
-		extraModules = [ 'experimental' ];
+		extraModules = [ 'experimental'/* , 'language'*//*, 'mwalienextension'*/, 'mwmath'/*, 'mwhiero'*/ ];
 
 	// Parent constructor
 	ve.init.Target.call( this, $container );

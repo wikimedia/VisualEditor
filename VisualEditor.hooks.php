@@ -242,7 +242,8 @@ class VisualEditorHooks {
 			'info-link' => false,
 			// TODO: use message 'visualeditor-preference-core-discussion-link'
 			'discussion-link' => false,
-			'screenshot' => $wgExtensionAssetsPath . '/VisualEditor/logo.svg',
+			'screenshot' => $wgExtensionAssetsPath .
+				'/VisualEditor/betafeatures-icon-VisualEditor.svg',
 			'requirements' => array(
 				'javascript' => true,
 				'blacklist' => $wgVisualEditorBrowserBlacklist,
@@ -250,21 +251,98 @@ class VisualEditorHooks {
 			)
 		);
 
-		$preferences['visualeditor-enable-experimental'] = array(
+/* Disabling Beta Features option for language for now
+		$preferences['visualeditor-enable-language'] = array(
 			'version' => '1.0',
-			'label-message' => 'visualeditor-preference-experimental-label',
-			'desc-message' => 'visualeditor-preference-experimental-description',
-			// TODO: use message 'visualeditor-preference-experimental-info-link'
+			'label-message' => 'visualeditor-preference-language-label',
+			'desc-message' => 'visualeditor-preference-language-description',
+			// TODO: use message 'visualeditor-preference-language-info-link'
 			'info-link' => false,
-			// TODO: use message 'visualeditor-preference-experimental-discussion-link'
+			// TODO: use message 'visualeditor-preference-language-discussion-link'
 			'discussion-link' => false,
-			'screenshot' => $wgExtensionAssetsPath . '/VisualEditor/logo-experimental.svg',
+			'screenshot' => $wgExtensionAssetsPath .
+				'/VisualEditor/betafeatures-icon-VisualEditor-language.svg',
 			'requirements' => array(
 				'betafeatures' => array(
 					'visualeditor-enable',
 				),
 			),
 		);
+*/
+
+/* Disabling Beta Features option for generic content for now
+		$preferences['visualeditor-enable-mwalienextension'] = array(
+			'version' => '1.0',
+			'label-message' => 'visualeditor-preference-mwalienextension-label',
+			'desc-message' => 'visualeditor-preference-mwalienextension-description',
+			// TODO: use message 'visualeditor-preference-mwalienextension-info-link'
+			'info-link' => false,
+			// TODO: use message 'visualeditor-preference-mwalienextension-discussion-link'
+			'discussion-link' => false,
+			'screenshot' => $wgExtensionAssetsPath .
+				'/VisualEditor/betafeatures-icon-VisualEditor-alien.svg',
+			'requirements' => array(
+				'betafeatures' => array(
+					'visualeditor-enable',
+				),
+			),
+		);
+*/
+
+		$preferences['visualeditor-enable-mwmath'] = array(
+			'version' => '1.0',
+			'label-message' => 'visualeditor-preference-mwmath-label',
+			'desc-message' => 'visualeditor-preference-mwmath-description',
+			// TODO: use message 'visualeditor-preference-mwmath-info-link'
+			'info-link' => false,
+			// TODO: use message 'visualeditor-preference-mwmath-discussion-link'
+			'discussion-link' => false,
+			'screenshot' => $wgExtensionAssetsPath .
+				'/VisualEditor/betafeatures-icon-VisualEditor-formulæ.svg',
+			'requirements' => array(
+				'betafeatures' => array(
+					'visualeditor-enable',
+				),
+			),
+		);
+
+/* Disabling Beta Features option for hieroglyphics for now
+		$preferences['visualeditor-enable-mwhiero'] = array(
+			'version' => '1.0',
+			'label-message' => 'visualeditor-preference-mwhiero-label',
+			'desc-message' => 'visualeditor-preference-mwhiero-description',
+			// TODO: use message 'visualeditor-preference-mwhiero-info-link'
+			'info-link' => false,
+			// TODO: use message 'visualeditor-preference-mwhiero-discussion-link'
+			'discussion-link' => false,
+			'screenshot' => $wgExtensionAssetsPath .
+				'/VisualEditor/betafeatures-icon-VisualEditor-hieroglyphics.svg',
+			'requirements' => array(
+				'betafeatures' => array(
+					'visualeditor-enable',
+				),
+			),
+		);
+*/
+
+/* Disabling Beta Features option for syntax highlighting for now
+		$preferences['visualeditor-enable-mwsyntaxHighlight'] = array(
+			'version' => '1.0',
+			'label-message' => 'visualeditor-preference-mwsyntaxHighlight-label',
+			'desc-message' => 'visualeditor-preference-mwsyntaxHighlight-description',
+			// TODO: use message 'visualeditor-preference-mwsyntaxHighlight-info-link'
+			'info-link' => false,
+			// TODO: use message 'visualeditor-preference-mwsyntaxHighlight-discussion-link'
+			'discussion-link' => false,
+			'screenshot' => $wgExtensionAssetsPath .
+				'/VisualEditor/betafeatures-icon-VisualEditor-syntaxHighlight.svg',
+			'requirements' => array(
+				'betafeatures' => array(
+					'visualeditor-enable',
+				),
+			),
+		);
+*/
 	}
 
 	public static function onListDefinedTags( &$tags ) {
@@ -315,6 +393,11 @@ class VisualEditorHooks {
 				'betatempdisable' => $wgDefaultUserOptions['visualeditor-betatempdisable'],
 				'enable' => $wgDefaultUserOptions['visualeditor-enable'],
 				'enable-experimental' => $wgDefaultUserOptions['visualeditor-enable-experimental'],
+//				'enable-language' => $wgDefaultUserOptions['visualeditor-enable-language'],
+//				'enable-mwalienextension' => $wgDefaultUserOptions['visualeditor-enable-mwalienextension'],
+				'enable-mwmath' => $wgDefaultUserOptions['visualeditor-enable-mwmath'],
+//				'enable-mwhiero' => $wgDefaultUserOptions['visualeditor-enable-mwhiero'],
+//				'enable-mwsyntaxHighlight' => $wgDefaultUserOptions['visualeditor-enable-mwsyntaxHighlight'],
 			),
 			'blacklist' => $wgVisualEditorBrowserBlacklist,
 			'skins' => $wgVisualEditorSupportedSkins,

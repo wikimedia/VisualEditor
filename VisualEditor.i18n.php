@@ -165,11 +165,17 @@ $messages['en'] = array(
 	'visualeditor-parameter-search-no-unused' => 'No unused parameters',
 	'visualeditor-parameter-search-unknown' => 'Unknown parameter',
 	'visualeditor-preference-betatempdisable' => 'Temporarily disable VisualEditor while it is in beta',
-	'visualeditor-preference-enable' => 'Enable VisualEditor. It will not be available on talk pages and some other namespaces.',
 	'visualeditor-preference-core-description' => 'Enable VisualEditor. It will not be available on talk pages and some other namespaces.',
 	'visualeditor-preference-core-label' => 'VisualEditor',
-	'visualeditor-preference-experimental-description' => 'Enable the latest features inside VisualEditor. As we develop tools and make changes for the editor, we make them available for testing ahead of general release. Please remember to always review your changes before saving when using experimental features.',
-	'visualeditor-preference-experimental-label' => 'VisualEditor experimental features',
+	'visualeditor-preference-enable' => 'Enable VisualEditor. It will not be available on talk pages and some other namespaces.',
+	'visualeditor-preference-language-description' => 'Add experimental tools to VisualEditor for marking multi-lingual and bi-directional for testing, ahead of general release. Please remember to always review your changes before saving when using experimental features.',
+	'visualeditor-preference-language-label' => 'VisualEditor language tools',
+	'visualeditor-preference-mwalienextension-description' => 'Add experimental basic support to VisualEditor for editing extension tags (like galleries or source code blocks), ahead of individual tools being available. Please remember to always review your changes before saving when using experimental features.',
+	'visualeditor-preference-mwalienextension-label' => 'VisualEditor extension tag editing',
+	'visualeditor-preference-mwhiero-description' => 'Add experimental support to VisualEditor for creating and editing hieroglyphics for testing, ahead of general release. Please remember to always review your changes before saving when using experimental features.',
+	'visualeditor-preference-mwhiero-label' => 'VisualEditor hieroglyphics editing',
+	'visualeditor-preference-mwmath-description' => 'Add experimental support to VisualEditor for creating and editing of mathematical formulæ for testing, ahead of general release. Please remember to always review your changes before saving when using experimental features.',
+	'visualeditor-preference-mwmath-label' => 'VisualEditor formulæ editing',
 	'visualeditor-reference-input-placeholder' => 'What do you want to reference?',
 	'visualeditor-referencelist-isempty' => 'There are no references with the group "$1" on this page to include in this list.',
 	'visualeditor-referencelist-isempty-default' => 'There are no references on this page to include in this list.',
@@ -565,17 +571,50 @@ Used as label for checkbox to enable VisualEditor.
 The description for this checkbox is:
 * {{msg-mw|Visualeditor-preference-core-description}}
 {{Identical|VisualEditor}}',
-	'visualeditor-preference-experimental-description' => 'Used in [[Special:Preferences]].
+	'visualeditor-preference-mwalienextension-description' => 'Used in [[Special:Preferences]].
 
-Used as description for the checkbox to enable VisualEditor experimental features.
+Used as description for the checkbox to enable editing of extension tags in VisualEditor.
 
-The label for this checkbox is {{msg-mw|Visualeditor-preference-experimental-label}}.',
-	'visualeditor-preference-experimental-label' => 'Used in [[Special:Preferences]].
+The label for this checkbox is {{msg-mw|Visualeditor-preference-mwalienextension-label}}.',
+	'visualeditor-preference-mwalienextension-label' => 'Used in [[Special:Preferences]].
 
-Used as label for checkbox to enable VisualEditor experimental features.
+Used as label for checkbox to enable editing of extension tags in VisualEditor.
 
 The description for this checkbox is:
-* {{msg-mw|Visualeditor-preference-experimental-description}}',
+* {{msg-mw|Visualeditor-preference-mwalienextension-description}}',
+	'visualeditor-preference-mwhiero-description' => 'Used in [[Special:Preferences]].
+
+Used as description for the checkbox to enable editing of hieroglyphics in VisualEditor.
+
+The label for this checkbox is {{msg-mw|Visualeditor-preference-mwhiero-label}}.',
+	'visualeditor-preference-mwhiero-label' => 'Used in [[Special:Preferences]].
+
+Used as label for checkbox to enable editing of hieroglyphics in VisualEditor.
+
+The description for this checkbox is:
+* {{msg-mw|Visualeditor-preference-mwhiero-description}}',
+	'visualeditor-preference-language-description' => 'Used in [[Special:Preferences]].
+
+Used as description for the checkbox to enable language tools in VisualEditor.
+
+The label for this checkbox is {{msg-mw|Visualeditor-preference-language-label}}.',
+	'visualeditor-preference-language-label' => 'Used in [[Special:Preferences]].
+
+Used as label for checkbox to enable language tools in VisualEditor.
+
+The description for this checkbox is:
+* {{msg-mw|Visualeditor-preference-language-description}}',
+	'visualeditor-preference-mwmath-description' => 'Used in [[Special:Preferences]].
+
+Used as description for the checkbox to enable editing of mathematical formulae in VisualEditor.
+
+The label for this checkbox is {{msg-mw|Visualeditor-preference-mwmath-label}}.',
+	'visualeditor-preference-mwmath-label' => 'Used in [[Special:Preferences]].
+
+Used as label for checkbox to enable editing of mathematical formulae in VisualEditor.
+
+The description for this checkbox is:
+* {{msg-mw|Visualeditor-preference-mwmath-description}}',
 	'visualeditor-reference-input-placeholder' => 'Placeholder text for reference search field: searches existing on-page references.',
 	'visualeditor-referencelist-isempty' => 'Message that appears in the references list when there are no references on the page of that group.
 
