@@ -112,7 +112,7 @@ ve.ce.View.prototype.onTeardown = function () {
  * Get the model the view observes.
  *
  * @method
- * @returns {ve.dm.Node} Model the view observes
+ * @returns {ve.dm.Model} Model the view observes
  */
 ve.ce.View.prototype.getModel = function () {
 	return this.model;
