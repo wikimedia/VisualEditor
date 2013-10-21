@@ -37,7 +37,7 @@ ve.ce.MWBlockImageNode = function VeCeMWBlockImageNode( model, config ) {
 
 	this.$a = this.$$( '<a>' )
 		.addClass( 'image' )
-		.attr( 'src', this.model.getAttribute( 'href' ) );
+		.attr( 'href', this.model.getAttribute( 'href' ) );
 
 	this.$image = this.$$( '<img>' )
 		.attr( 'src', this.model.getAttribute( 'src' ) )
