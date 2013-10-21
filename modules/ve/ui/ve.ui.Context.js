@@ -31,6 +31,7 @@ ve.ui.Context = function VeUiContext( surface, config ) {
 	this.embedded = false;
 	this.selection = null;
 	this.toolbar = null;
+	this.afterChangeTimeout = null;
 	this.popup = new ve.ui.PopupWidget( { '$$': this.$$, '$container': this.surface.getView().$ } );
 	this.$menu = this.$$( '<div>' );
 	this.inspectors = new ve.ui.SurfaceWindowSet( surface, ve.ui.inspectorFactory );
@@ -71,25 +72,43 @@ OO.inheritClass( ve.ui.Context, ve.Element );
 /* Methods */
 
 /**
- * Handle change events on the model.
+ * Handle selection changes in the model.
  *
  * Changes are ignored while the user is selecting text or relocating content, apart from closing
  * the popup if it's open. While an inspector is opening or closing, all changes are ignored so as
  * to prevent inspectors that change the selection from within their open/close handlers from
  * causing issues.
  *
+ * The response to selection changes is deferred to prevent close handlers that process
+ * changes from causing this function to recurse. These responses are also batched for efficiency,
+ * so that if there are three selection changes in the same tick, afterChange() only runs once.
+ *
  * @method
+ * @see #afterChange
  * @param {ve.dm.Transaction[]} transactions Change transactions
  * @param {ve.Range} selection Change selection
  */
 ve.ui.Context.prototype.onChange = function ( transactions, selection ) {
 	if ( selection && !this.openingInspector && !this.hiding ) {
-		if ( this.popup.isVisible() ) {
-			this.hide();
-			this.update();
-		} else if ( !this.selecting && !this.relocating ) {
-			this.update();
+		if ( this.afterChangeTimeout === null ) {
+			this.afterChangeTimeout = setTimeout( ve.bind( this.afterChange, this ) );
 		}
+	}
+};
+
+/**
+ * Deferred response to one or more selection changes.
+ *
+ * Update the context menu for the new selection, except if the user is selecting or relocating
+ * content. If the popup is open, close it, even while selecting or relocating.
+ */
+ve.ui.Context.prototype.afterChange = function () {
+	this.afterChangeTimeout = null;
+	if ( this.popup.isVisible() ) {
+		this.hide();
+		this.update();
+	} else if ( !this.selecting && !this.relocating ) {
+		this.update();
 	}
 };
 
