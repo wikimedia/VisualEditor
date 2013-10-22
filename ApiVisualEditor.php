@@ -12,7 +12,7 @@ class ApiVisualEditor extends ApiBase {
 
 	protected function getHTML( $title, $parserParams ) {
 		global $wgVisualEditorParsoidURL, $wgVisualEditorParsoidPrefix,
-			$wgVisualEditorParsoidTimeout;
+			$wgVisualEditorParsoidTimeout, $wgVisualEditorParsoidForwardCookies;
 
 		$restoring = false;
 
@@ -45,6 +45,10 @@ class ApiVisualEditor extends ApiBase {
 					'timeout' => $wgVisualEditorParsoidTimeout
 				)
 			);
+			// Forward cookies, but only if configured to do so and if there are read restrictions
+			if ( $wgVisualEditorParsoidForwardCookies && !User::isEveryoneAllowed( 'read' ) ) {
+				$req->setHeader( 'Cookie', $this->getRequest()->getHeader( 'Cookie' ) );
+			}
 			$status = $req->execute();
 
 			if ( $status->isOK() ) {
@@ -97,14 +101,15 @@ class ApiVisualEditor extends ApiBase {
 
 	protected function postHTML( $title, $html, $parserParams ) {
 		global $wgVisualEditorParsoidURL, $wgVisualEditorParsoidPrefix,
-			$wgVisualEditorParsoidTimeout;
+			$wgVisualEditorParsoidTimeout, $wgVisualEditorParsoidForwardCookies;
 		if ( $parserParams['oldid'] === 0 ) {
 			$parserParams['oldid'] = '';
 		}
-		return Http::post(
+		$req = MWHttpRequest::factory(
 			$wgVisualEditorParsoidURL . '/' . $wgVisualEditorParsoidPrefix .
 				'/' . urlencode( $title->getPrefixedDBkey() ),
 			array(
+				'method' => 'POST',
 				'postData' => array(
 					'content' => $html,
 					'oldid' => $parserParams['oldid']
@@ -112,6 +117,17 @@ class ApiVisualEditor extends ApiBase {
 				'timeout' => $wgVisualEditorParsoidTimeout
 			)
 		);
+		// Forward cookies, but only if configured to do so and if there are read restrictions
+		if ( $wgVisualEditorParsoidForwardCookies && !User::isEveryoneAllowed( 'read' ) ) {
+			$req->setHeader( 'Cookie', $this->getRequest()->getHeader( 'Cookie' ) );
+		}
+		$status = $req->execute();
+		if ( !$status->isOK() ) {
+			// TODO proper error handling, merge with getHTML above
+			return false;
+		}
+		// TODO pass through X-Parsoid-Performance header, merge with getHTML above
+		return $req->getContent();
 	}
 
 	protected function parseWikitext( $title ) {
