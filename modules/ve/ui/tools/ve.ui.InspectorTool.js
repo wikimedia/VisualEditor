@@ -39,7 +39,7 @@ ve.ui.InspectorTool.static.inspector = '';
 /**
  * Annotation or node models this tool is related to.
  *
- * Used by #canEditModel.
+ * Used by #isCompatibleWith.
  *
  * @static
  * @property {Function[]}
@@ -50,7 +50,7 @@ ve.ui.InspectorTool.static.modelClasses = [];
 /**
  * @inheritdoc
  */
-ve.ui.InspectorTool.static.canEditModel = function ( model ) {
+ve.ui.InspectorTool.static.isCompatibleWith = function ( model ) {
 	return ve.isInstanceOfAny( model, this.modelClasses );
 };
 

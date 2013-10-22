@@ -39,7 +39,7 @@ ve.ui.DialogTool.static.dialog = '';
 /**
  * Annotation or node models this tool is related to.
  *
- * Used by #canEditModel.
+ * Used by #isCompatibleWith.
  *
  * @static
  * @property {Function[]}
@@ -50,7 +50,7 @@ ve.ui.DialogTool.static.modelClasses = [];
 /**
  * @inheritdoc
  */
-ve.ui.DialogTool.static.canEditModel = function ( model ) {
+ve.ui.DialogTool.static.isCompatibleWith = function ( model ) {
 	return ve.isInstanceOfAny( model, this.modelClasses );
 };
 

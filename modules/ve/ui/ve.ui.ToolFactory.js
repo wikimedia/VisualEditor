@@ -145,7 +145,7 @@ ve.ui.ToolFactory.prototype.getToolsForAnnotations = function ( annotations ) {
 		candidateTool = null;
 		for ( name in this.registry ) {
 			tool = this.registry[name];
-			if ( tool.static.canEditModel( annotation ) ) {
+			if ( tool.static.isCompatibleWith( annotation ) ) {
 				if ( !candidateTool || tool.prototype instanceof candidateTool ) {
 					candidateTool = tool;
 					candidateToolName = name;
@@ -182,7 +182,7 @@ ve.ui.ToolFactory.prototype.getToolForNode = function ( node ) {
 
 	for ( name in this.registry ) {
 		tool = this.registry[name];
-		if ( tool.static.canEditModel( node ) ) {
+		if ( tool.static.isCompatibleWith( node ) ) {
 			if ( !candidateTool || tool.prototype instanceof candidateTool ) {
 				candidateTool = tool;
 				candidateToolName = name;

@@ -127,15 +127,15 @@ ve.ui.Tool.static.titleMessage = '';
 ve.ui.Tool.static.autoAdd = true;
 
 /**
- * Check if this tool can be used on a model.
+ * Check if this tool is compatible with given data.
  *
  * @method
  * @static
  * @inheritable
- * @param {ve.dm.Model} model Model to check
- * @returns {boolean} Tool can be used to edit model
+ * @param {Mixed} data Data to check
+ * @returns {boolean} Tool can be used with data
  */
-ve.ui.Tool.static.canEditModel = function () {
+ve.ui.Tool.static.isCompatibleWith = function () {
 	return false;
 };
 
