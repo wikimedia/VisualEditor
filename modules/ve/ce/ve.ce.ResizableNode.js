@@ -30,6 +30,7 @@ ve.ce.ResizableNode = function VeCeResizableNode( $resizable, config ) {
 		this.$sizeText = this.$$( '<span>' ).addClass( 've-ce-resizableNode-sizeText' );
 		this.$sizeLabel = this.$$( '<div>' ).addClass( 've-ce-resizableNode-sizeLabel' ).append( this.$sizeText );
 	}
+	this.resizableOffset = null;
 
 	// Events
 	this.connect( this, {
@@ -72,6 +73,20 @@ ve.ce.ResizableNode.static = {};
 /* Methods */
 
 /**
+ * Get and cache the relative offset of the $resizable node
+ *
+ * @returns {Object} Position coordinates, containing top & left
+ */
+ve.ce.ResizableNode.prototype.getResizableOffset = function () {
+	if ( !this.resizableOffset ) {
+		this.resizableOffset = ve.Element.getRelativePosition(
+			this.$resizable, this.getRoot().getSurface().getSurface().$
+		);
+	}
+	return this.resizableOffset;
+};
+
+/**
  * Update the contents and position of the size label
  *
  * Omitting the dimensions object will hide the size label.
@@ -84,9 +99,7 @@ ve.ce.ResizableNode.prototype.updateSizeLabel = function ( dimensions ) {
 	}
 	var offset, node, top, height;
 	if ( dimensions ) {
-		offset = ve.Element.getRelativePosition(
-			this.$resizable, this.getRoot().getSurface().getSurface().$
-		);
+		offset = this.getResizableOffset();
 		// Things get a bit tight below 100px, so put the label on the outside
 		if ( dimensions.width < 100 ) {
 			top = offset.top + dimensions.height;
@@ -185,6 +198,8 @@ ve.ce.ResizableNode.prototype.onResizableLive = function () {
  * @param {Object} dimensions Dimension object containing width & height
  */
 ve.ce.ResizableNode.prototype.onResizableResizing = function ( dimensions ) {
+	// Clear cached resizable offset position as it may have changed
+	this.resizableOffset = null;
 	if ( !this.outline ) {
 		this.$resizable.css( {
 			'width': dimensions.width,
@@ -276,9 +291,7 @@ ve.ce.ResizableNode.prototype.setResizableHandlesSizeAndPosition = function () {
  * @method
  */
 ve.ce.ResizableNode.prototype.setResizableHandlesPosition = function () {
-	var offset = ve.Element.getRelativePosition(
-			this.$resizable, this.getRoot().getSurface().getSurface().$
-		);
+	var offset = this.getResizableOffset();
 
 	this.$resizeHandles.css( {
 		'top': offset.top,
