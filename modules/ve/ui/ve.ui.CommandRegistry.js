@@ -9,17 +9,17 @@
  * Command registry.
  *
  * @class
- * @extends ve.Registry
+ * @extends OO.Registry
  * @constructor
  */
 ve.ui.CommandRegistry = function VeCommandRegistry() {
 	// Parent constructor
-	ve.Registry.call( this );
+	OO.Registry.call( this );
 };
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.CommandRegistry, ve.Registry );
+OO.inheritClass( ve.ui.CommandRegistry, OO.Registry );
 
 /* Methods */
 
@@ -44,7 +44,7 @@ ve.ui.CommandRegistry.prototype.register = function ( name, action, method ) {
 	if ( typeof method !== 'string' ) {
 		throw new Error( 'method must be a string, cannot be a ' + typeof method );
 	}
-	ve.Registry.prototype.register.call(
+	OO.Registry.prototype.register.call(
 		this, name, { 'action': Array.prototype.slice.call( arguments, 1 ) }
 	);
 };

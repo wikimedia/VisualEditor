@@ -13,7 +13,7 @@
  *
  * @constructor
  * @param {ve.ui.Surface} surface
- * @param {ve.Factory} factory Window factory
+ * @param {OO.Factory} factory Window factory
  * @param {Object} [config] Configuration options
  */
 ve.ui.SurfaceWindowSet = function VeUiSurfaceWindowSet( surface, factory, config ) {

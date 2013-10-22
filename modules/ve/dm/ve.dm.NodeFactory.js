@@ -9,17 +9,17 @@
  * DataModel node factory.
  *
  * @class
- * @extends ve.Factory
+ * @extends OO.Factory
  * @constructor
  */
 ve.dm.NodeFactory = function VeDmNodeFactory() {
 	// Parent constructor
-	ve.Factory.call( this );
+	OO.Factory.call( this );
 };
 
 /* Inheritance */
 
-OO.inheritClass( ve.dm.NodeFactory, ve.Factory );
+OO.inheritClass( ve.dm.NodeFactory, OO.Factory );
 
 /* Methods */
 

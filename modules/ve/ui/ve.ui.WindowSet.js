@@ -13,7 +13,7 @@
  * @mixins OO.EventEmitter
  *
  * @constructor
- * @param {ve.Factory} factory Window factory
+ * @param {OO.Factory} factory Window factory
  * @param {Object} [config] Configuration options
  */
 ve.ui.WindowSet = function VeUiWindowSet( factory, config ) {

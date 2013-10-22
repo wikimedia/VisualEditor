@@ -158,8 +158,7 @@
 			{
 				"name": "Utilities",
 				"classes": [
-					"ve", "ve.Registry", "ve.Factory",
-					"ve.Range", "ve.Element", "ve.EventSequencer"
+					"ve", "ve.Range", "ve.Element", "ve.EventSequencer"
 				]
 			},
 			{

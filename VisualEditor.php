@@ -261,8 +261,6 @@ $wgResourceModules += array(
 	'ext.visualEditor.core' => $wgVisualEditorResourceTemplate + array(
 		'scripts' => array(
 			// ve
-			've/ve.Registry.js',
-			've/ve.Factory.js',
 			've/ve.Range.js',
 			've/ve.Node.js',
 			've/ve.BranchNode.js',

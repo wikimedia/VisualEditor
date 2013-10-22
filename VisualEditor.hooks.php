@@ -348,7 +348,6 @@ class VisualEditorHooks {
 				've/test/ve.Node.test.js',
 				've/test/ve.BranchNode.test.js',
 				've/test/ve.LeafNode.test.js',
-				've/test/ve.Factory.test.js',
 				// VisualEditor DataModel Tests
 				've/test/dm/ve.dm.example.js',
 				've/test/dm/ve.dm.AnnotationSet.test.js',

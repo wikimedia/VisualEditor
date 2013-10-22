@@ -9,17 +9,17 @@
  * UserInterface inspector factory.
  *
  * @class
- * @extends ve.Factory
+ * @extends OO.Factory
  * @constructor
  */
 ve.ui.InspectorFactory = function VeUiInspectorFactory() {
 	// Parent constructor
-	ve.Factory.call( this );
+	OO.Factory.call( this );
 };
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.InspectorFactory, ve.Factory );
+OO.inheritClass( ve.ui.InspectorFactory, OO.Factory );
 
 /* Initialization */
 

@@ -60,8 +60,6 @@
 			ve.init.platform.setModulesUrl( '../..' );
 		</script>
 		<!-- ext.visualEditor.core -->
-		<script src="../../ve/ve.Registry.js"></script>
-		<script src="../../ve/ve.Factory.js"></script>
 		<script src="../../ve/ve.Range.js"></script>
 		<script src="../../ve/ve.Node.js"></script>
 		<script src="../../ve/ve.BranchNode.js"></script>
@@ -270,7 +268,7 @@
 		<script src="ve.Node.test.js"></script>
 		<script src="ve.BranchNode.test.js"></script>
 		<script src="ve.LeafNode.test.js"></script>
-		<script src="ve.Factory.test.js"></script>
+		<script src="OO.Factory.test.js"></script>
 		<script src="dm/ve.dm.example.js"></script>
 		<script src="dm/ve.dm.AnnotationSet.test.js"></script>
 		<script src="dm/ve.dm.NodeFactory.test.js"></script>
