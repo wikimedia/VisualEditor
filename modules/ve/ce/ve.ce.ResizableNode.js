@@ -82,21 +82,24 @@ ve.ce.ResizableNode.prototype.updateSizeLabel = function ( dimensions ) {
 	if ( !this.$sizeLabel ) {
 		return;
 	}
-	var node, top, height;
+	var offset, node, top, height;
 	if ( dimensions ) {
+		offset = ve.Element.getRelativePosition(
+			this.$resizable, this.getRoot().getSurface().getSurface().$
+		);
 		// Things get a bit tight below 100px, so put the label on the outside
 		if ( dimensions.width < 100 ) {
-			top = dimensions.top + dimensions.height;
+			top = offset.top + dimensions.height;
 			height = 30;
 		} else {
-			top = dimensions.top;
+			top = offset.top;
 			height = dimensions.height;
 		}
 		this.$sizeLabel
 			.addClass( 've-ce-resizableNode-sizeLabel-resizing' )
 			.css( {
 				'top': top,
-				'left': dimensions.left,
+				'left': offset.left,
 				'width': dimensions.width,
 				'height': height,
 				'lineHeight': height + 'px'
