@@ -196,8 +196,11 @@ ve.init.mw.ViewPageTarget.prototype.deactivate = function ( override ) {
 				this.detachToolbarButtons();
 			}
 
-			this.saveDialog.reset();
-			this.saveDialog.close();
+			if ( this.saveDialog ) {
+				// If we got as far as setting up the save dialog, tear it down
+				this.saveDialog.reset();
+				this.saveDialog.close();
+			}
 			// Check we got as far as setting up the surface
 			if ( this.active ) {
 				// If we got as far as setting up the surface, tear that down
