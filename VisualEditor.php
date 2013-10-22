@@ -89,7 +89,7 @@ $wgResourceModules += array(
 
 	'oojs' => $wgVisualEditorResourceTemplate + array(
 		'scripts' => array(
-			'oojs/oo.js',
+			'oojs/oojs.js',
 		),
 	),
 
