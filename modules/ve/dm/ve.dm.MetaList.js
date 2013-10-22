@@ -75,8 +75,8 @@ OO.mixinClass( ve.dm.MetaList, OO.EventEmitter );
  * - remove items for metadata that was removed
  * - translate offsets and recompute indices for metadata that has shifted
  * @param {ve.dm.Transaction} tx Transaction that was applied to the document
- * @emits insert
- * @emits remove
+ * @fires insert
+ * @fires remove
  */
 ve.dm.MetaList.prototype.onTransact = function ( tx ) {
 	var i, ilen, j, jlen, k, klen, item, ins, rm, insMeta, rmMeta,
@@ -377,7 +377,7 @@ ve.dm.MetaList.prototype.removeMeta = function ( item ) {
  * @param {number} offset Offset in the linear model of the new item
  * @param {number} index Index of the new item in the metadata array at offset
  * @param {ve.dm.MetaItem} item Item object
- * @emits insert
+ * @fires insert
  */
 ve.dm.MetaList.prototype.addInsertedItem = function ( offset, index, item ) {
 	var group = item.getGroup(), at = this.findItem( offset, index, null, true );
@@ -399,7 +399,7 @@ ve.dm.MetaList.prototype.addInsertedItem = function ( offset, index, item ) {
  *
  * @param {number} offset Offset in the linear model of the item
  * @param {number} index Index of the item in the metadata array at offset
- * @emits remove
+ * @fires remove
  */
 ve.dm.MetaList.prototype.deleteRemovedItem = function ( offset, index ) {
 	var item, group, at = this.findItem( offset, index );

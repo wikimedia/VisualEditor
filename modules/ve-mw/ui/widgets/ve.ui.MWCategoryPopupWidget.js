@@ -81,7 +81,7 @@ OO.inheritClass( ve.ui.MWCategoryPopupWidget, ve.ui.PopupWidget );
  * Handle category remove events.
  *
  * @method
- * @emits removeCategory
+ * @fires removeCategory
  */
 ve.ui.MWCategoryPopupWidget.prototype.onRemoveCategory = function () {
 	this.removed = true;
@@ -94,7 +94,7 @@ ve.ui.MWCategoryPopupWidget.prototype.onRemoveCategory = function () {
  *
  * @method
  * @param {jQuery.Event} e Form submit event
- * @emits updateSortkey
+ * @fires updateSortkey
  */
 ve.ui.MWCategoryPopupWidget.prototype.onSortKeySubmit = function () {
 	this.closePopup();

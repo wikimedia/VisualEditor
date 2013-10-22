@@ -16,7 +16,7 @@
  * @constructor
  * @param {ve.ui.WindowSet} windowSet Window set this dialog is part of
  * @param {Object} [config] Configuration options
- * @emits initialize
+ * @fires initialize
  */
 ve.ui.Window = function VeUiWindow( windowSet, config ) {
 	// Parent constructor
@@ -281,8 +281,8 @@ ve.ui.Window.prototype.setPosition = function ( left, top ) {
  * Open window.
  *
  * @method
- * @emits setup
- * @emits open
+ * @fires setup
+ * @fires open
  */
 ve.ui.Window.prototype.open = function () {
 	if ( !this.opening ) {
@@ -309,7 +309,7 @@ ve.ui.Window.prototype.open = function () {
  *
  * @method
  * @param {string} action Action that caused the window to be closed
- * @emits close
+ * @fires close
  */
 ve.ui.Window.prototype.close = function ( action ) {
 	if ( !this.closing ) {

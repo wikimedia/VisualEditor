@@ -197,7 +197,7 @@ ve.ce.ResizableNode.prototype.onResizableResizing = function ( dimensions ) {
  *
  * @method
  * @param {jQuery.Event} e Click event
- * @emits resizeStart
+ * @fires resizeStart
  */
 ve.ce.ResizableNode.prototype.onResizeHandlesCornerMouseDown = function ( e ) {
 	// Hide context menu
@@ -288,7 +288,7 @@ ve.ce.ResizableNode.prototype.setResizableHandlesPosition = function () {
  *
  * @method
  * @param {jQuery.Event} e Click event
- * @emits resizing
+ * @fires resizing
  */
 ve.ce.ResizableNode.prototype.onDocumentMouseMove = function ( e ) {
 	var newWidth, newHeight, newRatio, snapMin, snapMax, snap,
@@ -376,7 +376,7 @@ ve.ce.ResizableNode.prototype.onDocumentMouseMove = function ( e ) {
  * Handle body mouseup.
  *
  * @method
- * @emits resizeEnd
+ * @fires resizeEnd
  */
 ve.ce.ResizableNode.prototype.onDocumentMouseUp = function () {
 	var attrChanges,

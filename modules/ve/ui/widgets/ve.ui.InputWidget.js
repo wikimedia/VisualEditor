@@ -110,7 +110,7 @@ ve.ui.InputWidget.prototype.setRTL = function ( isRTL ) {
  *
  * @method
  * @param {string} value New value
- * @emits change
+ * @fires change
  * @chainable
  */
 ve.ui.InputWidget.prototype.setValue = function ( value ) {

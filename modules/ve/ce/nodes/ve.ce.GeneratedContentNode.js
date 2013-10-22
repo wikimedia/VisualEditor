@@ -88,8 +88,8 @@ ve.ce.GeneratedContentNode.prototype.onGeneratedContentNodeUpdate = function () 
  * Rerender the contents of this node.
  *
  * @param {Object|string|Array} generatedContents Generated contents, in the default case an HTMLElement array
- * @emits setup
- * @emits teardown
+ * @fires setup
+ * @fires teardown
  */
 ve.ce.GeneratedContentNode.prototype.render = function ( generatedContents ) {
 	var $rendering, doc = this.getElementDocument();
@@ -113,7 +113,7 @@ ve.ce.GeneratedContentNode.prototype.render = function ( generatedContents ) {
  * Nodes may override this method if the rerender event needs to be deferred (e.g. until images have loaded)
  *
  * @param {Object|string|Array} generatedContents Generated contents
- * @emits rerender
+ * @fires rerender
  */
 ve.ce.GeneratedContentNode.prototype.afterRender = function () {
 	this.emit( 'rerender' );

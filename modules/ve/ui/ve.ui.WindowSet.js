@@ -63,7 +63,7 @@ OO.mixinClass( ve.ui.WindowSet, OO.EventEmitter );
  *
  * @method
  * @param {ve.ui.Window} win Window that's been setup
- * @emits setup
+ * @fires setup
  */
 ve.ui.WindowSet.prototype.onWindowSetup = function ( win ) {
 	this.emit( 'setup', win );
@@ -74,7 +74,7 @@ ve.ui.WindowSet.prototype.onWindowSetup = function ( win ) {
  *
  * @method
  * @param {ve.ui.Window} win Window that's been opened
- * @emits open
+ * @fires open
  */
 ve.ui.WindowSet.prototype.onWindowOpen = function ( win ) {
 	this.currentWindow = win;
@@ -87,7 +87,7 @@ ve.ui.WindowSet.prototype.onWindowOpen = function ( win ) {
  * @method
  * @param {ve.ui.Window} win Window that's been opened
  * @param {boolean} accept Changes have been accepted
- * @emits close
+ * @fires close
  */
 ve.ui.WindowSet.prototype.onWindowClose = function ( win, accept ) {
 	this.currentWindow = null;

@@ -87,7 +87,7 @@ ve.dm.MWTransclusionModel.prototype.load = function ( data ) {
  * @method
  * @param {Object[]} queue List of objects containing parts to add and optionally indexes to add
  *  them at, if no index is given parts will be added at the end
- * @emits add For each item added
+ * @fires add For each item added
  */
 ve.dm.MWTransclusionModel.prototype.process = function ( queue ) {
 	var i, len, item, title, index;
@@ -290,7 +290,7 @@ ve.dm.MWTransclusionModel.prototype.addPart = function ( part, index ) {
  *
  * @method
  * @param {ve.dm.MWTransclusionPartModel} part Part to remove
- * @emits remove
+ * @fires remove
  */
 ve.dm.MWTransclusionModel.prototype.removePart = function ( part ) {
 	var index = ve.indexOf( part, this.parts );

@@ -165,7 +165,7 @@ ve.dm.Surface.prototype.getInsertionAnnotations = function () {
  *
  * @method
  * @param {ve.dm.AnnotationSet|null} Insertion anotations to use or null to disable them
- * @emits contextChange
+ * @fires contextChange
  */
 ve.dm.Surface.prototype.setInsertionAnnotations = function ( annotations ) {
 	if ( !this.enabled ) {
@@ -183,7 +183,7 @@ ve.dm.Surface.prototype.setInsertionAnnotations = function ( annotations ) {
  *
  * @method
  * @param {ve.dm.Annotation|ve.dm.AnnotationSet} annotations Insertion annotation to add
- * @emits contextChange
+ * @fires contextChange
  */
 ve.dm.Surface.prototype.addInsertionAnnotations = function ( annotations ) {
 	if ( !this.enabled ) {
@@ -204,7 +204,7 @@ ve.dm.Surface.prototype.addInsertionAnnotations = function ( annotations ) {
  *
  * @method
  * @param {ve.dm.Annotation|ve.dm.AnnotationSet} annotations Insertion annotation to remove
- * @emits contextChange
+ * @fires contextChange
  */
 ve.dm.Surface.prototype.removeInsertionAnnotations = function ( annotations ) {
 	if ( !this.enabled ) {
@@ -285,7 +285,7 @@ ve.dm.Surface.prototype.getFragment = function ( range, noAutoSelect ) {
  * Prevent future states from being redone.
  *
  * @method
- * @emits history
+ * @fires history
  */
 ve.dm.Surface.prototype.truncateUndoStack = function () {
 	if ( this.undoIndex ) {
@@ -302,12 +302,12 @@ ve.dm.Surface.prototype.truncateUndoStack = function () {
  * @param {ve.dm.Transaction|ve.dm.Transaction[]|null} transactions One or more transactions to
  *  process, or null to process none
  * @param {ve.Range|undefined} selection
- * @emits lock
- * @emits select
- * @emits transact
- * @emits contextChange
- * @emits change
- * @emits unlock
+ * @fires lock
+ * @fires select
+ * @fires transact
+ * @fires contextChange
+ * @fires change
+ * @fires unlock
  */
 ve.dm.Surface.prototype.change = function ( transactions, selection ) {
 	if ( !this.enabled ) {
@@ -427,7 +427,7 @@ ve.dm.Surface.prototype.change = function ( transactions, selection ) {
  *
  * @method
  * @param {ve.Range} selection New selection range
- * @emits history
+ * @fires history
  * @returns {boolean} A breakpoint was added
  */
 ve.dm.Surface.prototype.breakpoint = function ( selection ) {
@@ -450,9 +450,9 @@ ve.dm.Surface.prototype.breakpoint = function ( selection ) {
  * Step backwards in history.
  *
  * @method
- * @emits lock
- * @emits unlock
- * @emits history
+ * @fires lock
+ * @fires unlock
+ * @fires history
  * @returns {ve.Range} Selection or null if no further state could be reached
  */
 ve.dm.Surface.prototype.undo = function () {
@@ -484,9 +484,9 @@ ve.dm.Surface.prototype.undo = function () {
  * Step forwards in history.
  *
  * @method
- * @emits lock
- * @emits unlock
- * @emits history
+ * @fires lock
+ * @fires unlock
+ * @fires history
  * @returns {ve.Range} Selection or null if no further state could be reached
  */
 ve.dm.Surface.prototype.redo = function () {

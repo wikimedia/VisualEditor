@@ -165,7 +165,7 @@ ve.init.mw.Target.onModulesReady = function () {
  * @method
  * @param {Object} response XHR Response object
  * @param {string} status Text status message
- * @emits loadError
+ * @fires loadError
  */
 ve.init.mw.Target.onLoad = function ( response ) {
 	var data = response ? response.visualeditor : null;
@@ -253,7 +253,7 @@ ve.init.mw.Target.onNoticesReady = function () {
  *
  * @static
  * @method
- * @emits load
+ * @fires load
  */
 ve.init.mw.Target.onReady = function () {
 	// We need to wait until onReady as local notices may require special messages
@@ -273,7 +273,7 @@ ve.init.mw.Target.onReady = function () {
  * @param {Object} jqXHR
  * @param {string} status Text status message
  * @param {Mixed} error HTTP status text
- * @emits loadError
+ * @fires loadError
  */
 ve.init.mw.Target.onLoadError = function ( jqXHR, status, error ) {
 	this.loading = false;
@@ -289,8 +289,8 @@ ve.init.mw.Target.onLoadError = function ( jqXHR, status, error ) {
  * @method
  * @param {Object} response Response data
  * @param {string} status Text status message
- * @emits editConflict
- * @emits save
+ * @fires editConflict
+ * @fires save
  */
 ve.init.mw.Target.onSave = function ( response ) {
 	this.saving = false;
@@ -327,7 +327,7 @@ ve.init.mw.Target.onSave = function ( response ) {
  * @param {Object} jqXHR
  * @param {string} status Text status message
  * @param {Object|null} data API response data
- * @emits saveError
+ * @fires saveError
  */
 ve.init.mw.Target.onSaveError = function ( jqXHR, status, data ) {
 	this.saving = false;
@@ -342,8 +342,8 @@ ve.init.mw.Target.onSaveError = function ( jqXHR, status, data ) {
  * @method
  * @param {Object} response API response data
  * @param {string} status Text status message
- * @emits showChanges
- * @emits noChanges
+ * @fires showChanges
+ * @fires noChanges
  */
 ve.init.mw.Target.onShowChanges = function ( response ) {
 	var data = response.visualeditor;
@@ -375,7 +375,7 @@ ve.init.mw.Target.onShowChanges = function ( response ) {
  * @param {Object} jqXHR
  * @param {string} status Text status message
  * @param {Mixed} error HTTP status text
- * @emits showChangesError
+ * @fires showChangesError
  */
 ve.init.mw.Target.onShowChangesError = function ( jqXHR, status, error ) {
 	this.saving = false;
@@ -425,7 +425,7 @@ ve.init.mw.Target.onSerialize = function ( response ) {
  * @param {jqXHR|null} jqXHR
  * @param {string} status Text status message
  * @param {Mixed|null} error HTTP status text
- * @emits serializeError
+ * @fires serializeError
  */
 ve.init.mw.Target.onSerializeError = function ( jqXHR, status, error ) {
 	this.serializing = false;

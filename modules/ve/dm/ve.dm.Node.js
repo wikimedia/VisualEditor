@@ -447,8 +447,8 @@ ve.dm.Node.prototype.getOuterRange = function () {
  *
  * @method
  * @param {number} length Length of content
- * @emits lengthChange
- * @emits update
+ * @fires lengthChange
+ * @fires update
  * @throws {Error} Invalid content length error if length is less than 0
  */
 ve.dm.Node.prototype.setLength = function ( length ) {
@@ -476,8 +476,8 @@ ve.dm.Node.prototype.setLength = function ( length ) {
  *
  * @method
  * @param {number} adjustment Amount to adjust length by
- * @emits lengthChange
- * @emits update
+ * @fires lengthChange
+ * @fires update
  * @throws {Error} Invalid adjustment error if resulting length is less than 0
  */
 ve.dm.Node.prototype.adjustLength = function ( adjustment ) {

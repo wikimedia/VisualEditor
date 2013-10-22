@@ -65,7 +65,7 @@ ve.ui.MWReferenceSearchWidget.prototype.onQueryChange = function () {
  *
  * @method
  * @param {ve.ui.OptionWidget} item Selected item
- * @emits select
+ * @fires select
  */
 ve.ui.MWReferenceSearchWidget.prototype.onResultsSelect = function ( item ) {
 	var data;

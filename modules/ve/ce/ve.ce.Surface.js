@@ -393,7 +393,7 @@ ve.ce.Surface.prototype.onDocumentMouseDown = function ( e ) {
  *
  * @method
  * @param {jQuery.Event} e Mouse up event
- * @emits selectionEnd
+ * @fires selectionEnd
  */
 ve.ce.Surface.prototype.onDocumentMouseUp = function ( e ) {
 	this.surfaceObserver.startTimerLoop();
@@ -411,7 +411,7 @@ ve.ce.Surface.prototype.onDocumentMouseUp = function ( e ) {
  *
  * @method
  * @param {jQuery.Event} e Mouse move event
- * @emits selectionStart
+ * @fires selectionStart
  */
 ve.ce.Surface.prototype.onDocumentMouseMove = function () {
 	// Detect beginning of selection by moving mouse while dragging
@@ -495,7 +495,7 @@ ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
  *
  * @method
  * @param {jQuery.Event} e Key down event
- * @emits selectionStart
+ * @fires selectionStart
  */
 ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
 	var trigger;
@@ -616,7 +616,7 @@ ve.ce.Surface.prototype.afterDocumentKeyPress = function () {
  *
  * @method
  * @param {jQuery.Event} e Key up event
- * @emits selectionEnd
+ * @fires selectionEnd
  */
 ve.ce.Surface.prototype.onDocumentKeyUp = function ( e ) {
 	// Detect end of selecting by letting go of shift

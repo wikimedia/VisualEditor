@@ -72,7 +72,7 @@ OO.inheritClass( ve.ui.MWCategoryItemWidget, ve.ui.Widget );
  *
  * @method
  * @param {jQuery.Event} e Mouse down event
- * @emits savePopupState on mousedown.
+ * @fires savePopupState on mousedown.
  */
 ve.ui.MWCategoryItemWidget.prototype.onMouseDown = function () {
 	this.emit( 'savePopupState' );
@@ -83,7 +83,7 @@ ve.ui.MWCategoryItemWidget.prototype.onMouseDown = function () {
  *
  * @method
  * @param {jQuery.Event} e Mouse click event
- * @emits togglePopupMenu on mousedown.
+ * @fires togglePopupMenu on mousedown.
  */
 ve.ui.MWCategoryItemWidget.prototype.onClick = function () {
 	this.emit( 'togglePopupMenu', this );

@@ -68,7 +68,7 @@ OO.inheritClass( ve.ui.TextInputWidget, ve.ui.InputWidget );
  * Handles key press events.
  *
  * @param {jQuery.Event} e Key press event
- * @emits enter If enter key is pressed and input is not multiline
+ * @fires enter If enter key is pressed and input is not multiline
  */
 ve.ui.TextInputWidget.prototype.onKeyPress = function ( e ) {
 	if ( e.which === ve.Keys.ENTER && !this.multiline ) {

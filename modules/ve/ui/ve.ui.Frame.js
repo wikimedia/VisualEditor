@@ -71,7 +71,7 @@ ve.ui.Frame.static.tagName = 'iframe';
  * multiple `@import` statements - which ends up being simpler anyway. Since we created that style,
  * we always have access, and its contents are only available when everything is done loading.
  *
- * @emits initialize
+ * @fires initialize
  */
 ve.ui.Frame.prototype.load = function () {
 	var win = this.$.prop( 'contentWindow' ),

@@ -235,7 +235,7 @@ ve.dm.MWTemplateModel.prototype.getParameterNames = function () {
  *
  * @method
  * @param {ve.dm.MWTemplateParameterModel} param Parameter to add
- * @emits add
+ * @fires add
  */
 ve.dm.MWTemplateModel.prototype.addParameter = function ( param ) {
 	var name = param.getName();
@@ -250,7 +250,7 @@ ve.dm.MWTemplateModel.prototype.addParameter = function ( param ) {
  *
  * @method
  * @param {ve.dm.MWTemplateParameterModel} param Parameter to remove
- * @emits remove
+ * @fires remove
  */
 ve.dm.MWTemplateModel.prototype.removeParameter = function ( param ) {
 	if ( param ) {

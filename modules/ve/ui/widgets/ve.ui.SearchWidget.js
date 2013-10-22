@@ -127,7 +127,7 @@ ve.ui.SearchWidget.prototype.onQueryEnter = function () {
  *
  * @method
  * @param {ve.ui.OptionWidget} item Highlighted item
- * @emits highlight
+ * @fires highlight
  */
 ve.ui.SearchWidget.prototype.onResultsHighlight = function ( item ) {
 	this.emit( 'highlight', item ? item.getData() : null );
@@ -138,7 +138,7 @@ ve.ui.SearchWidget.prototype.onResultsHighlight = function ( item ) {
  *
  * @method
  * @param {ve.ui.OptionWidget} item Selected item
- * @emits select
+ * @fires select
  */
 ve.ui.SearchWidget.prototype.onResultsSelect = function ( item ) {
 	this.emit( 'select', item ? item.getData() : null );

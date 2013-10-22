@@ -43,7 +43,7 @@ OO.mixinClass( ve.Registry, OO.EventEmitter );
  * @method
  * @param {string|string[]} name Symbolic name or list of symbolic names
  * @param {Mixed} data Data to associate with symbolic name
- * @emits register
+ * @fires register
  * @throws {Error} Name argument must be a string or array
  */
 ve.Registry.prototype.register = function ( name, data ) {

@@ -283,7 +283,7 @@ ve.dm.Document.static.addAnnotationsToData = function ( data, annotationSet ) {
  *
  * @method
  * @param {ve.dm.Transaction} transaction Transaction to apply
- * @emits transact
+ * @fires transact
  * @throws {Error} Cannot commit a transaction that has already been committed
  */
 ve.dm.Document.prototype.commit = function ( transaction ) {

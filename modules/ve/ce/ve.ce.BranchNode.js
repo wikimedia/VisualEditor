@@ -107,7 +107,7 @@ ve.ce.BranchNode.prototype.onTeardown = function () {
  * 'rewrap' event and copy information from the {$old} wrapper the {$new} wrapper.
  *
  * @method
- * @emits rewrap
+ * @fires rewrap
  */
 ve.ce.BranchNode.prototype.updateTagName = function () {
 	var $element,
@@ -290,7 +290,7 @@ ve.ce.BranchNode.prototype.getSlugAtOffset = function ( offset ) {
  *
  * @method
  * @param {boolean} live New live state
- * @emits live
+ * @fires live
  */
 ve.ce.BranchNode.prototype.setLive = function ( live ) {
 	ve.ce.Node.prototype.setLive.call( this, live );

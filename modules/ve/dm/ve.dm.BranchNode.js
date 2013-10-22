@@ -55,8 +55,8 @@ OO.mixinClass( ve.dm.BranchNode, ve.BranchNode );
  * @method
  * @param {ve.dm.BranchNode} childModel Item to add
  * @returns {number} New number of children
- * @emits splice
- * @emits update
+ * @fires splice
+ * @fires update
  */
 ve.dm.BranchNode.prototype.push = function ( childModel ) {
 	this.splice( this.children.length, 0, childModel );
@@ -68,8 +68,8 @@ ve.dm.BranchNode.prototype.push = function ( childModel ) {
  *
  * @method
  * @returns {ve.dm.BranchNode} Removed childModel
- * @emits splice
- * @emits update
+ * @fires splice
+ * @fires update
  */
 ve.dm.BranchNode.prototype.pop = function () {
 	if ( this.children.length ) {
@@ -85,8 +85,8 @@ ve.dm.BranchNode.prototype.pop = function () {
  * @method
  * @param {ve.dm.BranchNode} childModel Item to add
  * @returns {number} New number of children
- * @emits splice
- * @emits update
+ * @fires splice
+ * @fires update
  */
 ve.dm.BranchNode.prototype.unshift = function ( childModel ) {
 	this.splice( 0, 0, childModel );
@@ -98,8 +98,8 @@ ve.dm.BranchNode.prototype.unshift = function ( childModel ) {
  *
  * @method
  * @returns {ve.dm.BranchNode} Removed childModel
- * @emits splice
- * @emits update
+ * @fires splice
+ * @fires update
  */
 ve.dm.BranchNode.prototype.shift = function () {
 	if ( this.children.length ) {
@@ -116,7 +116,7 @@ ve.dm.BranchNode.prototype.shift = function () {
  * @param {number} index Index to remove and or insert nodes at
  * @param {number} howmany Number of nodes to remove
  * @param {ve.dm.BranchNode...} [nodes] Variadic list of nodes to insert
- * @emits splice
+ * @fires splice
  * @returns {ve.dm.BranchNode[]} Removed nodes
  */
 ve.dm.BranchNode.prototype.splice = function () {

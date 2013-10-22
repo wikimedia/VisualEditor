@@ -251,7 +251,7 @@ ve.ui.SelectWidget.prototype.getItemFromData = function ( data ) {
  *
  * @method
  * @param {ve.ui.OptionWidget} [item] Item to highlight, omit to deselect all
- * @emits highlight
+ * @fires highlight
  * @chainable
  */
 ve.ui.SelectWidget.prototype.highlightItem = function ( item ) {
@@ -270,7 +270,7 @@ ve.ui.SelectWidget.prototype.highlightItem = function ( item ) {
  *
  * @method
  * @param {ve.ui.OptionWidget} [item] Item to select, omit to deselect all
- * @emits select
+ * @fires select
  * @chainable
  */
 ve.ui.SelectWidget.prototype.selectItem = function ( item ) {
@@ -366,7 +366,7 @@ ve.ui.SelectWidget.prototype.getFirstSelectableItem = function () {
  * @method
  * @param {ve.ui.OptionWidget[]} items Items to add
  * @param {number} [index] Index to insert items after
- * @emits add
+ * @fires add
  * @chainable
  */
 ve.ui.SelectWidget.prototype.addItems = function ( items, index ) {
@@ -398,7 +398,7 @@ ve.ui.SelectWidget.prototype.addItems = function ( items, index ) {
  *
  * @method
  * @param {ve.ui.OptionWidget[]} items Items to remove
- * @emits remove
+ * @fires remove
  * @chainable
  */
 ve.ui.SelectWidget.prototype.removeItems = function ( items ) {
@@ -428,7 +428,7 @@ ve.ui.SelectWidget.prototype.removeItems = function ( items ) {
  * Items will be detached, not removed, so they can be used later.
  *
  * @method
- * @emits remove
+ * @fires remove
  * @chainable
  */
 ve.ui.SelectWidget.prototype.clearItems = function () {

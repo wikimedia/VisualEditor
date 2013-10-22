@@ -103,7 +103,7 @@ ve.ui.SurfaceToolbar.prototype.onWindowScroll = function () {
  * Toolbar will stick to the top of the screen unless it would be over or under the last visible
  * branch node in the root of the document being edited, at which point it will stop just above it.
  *
- * @emits position
+ * @fires position
  * @param {jQuery.Event} e Window scroll event
  */
 ve.ui.SurfaceToolbar.prototype.onWindowResize = function () {
@@ -157,7 +157,7 @@ ve.ui.SurfaceToolbar.prototype.getSurface = function () {
 /**
  * Handle context changes on the surface.
  *
- * @emits updateState
+ * @fires updateState
  */
 ve.ui.SurfaceToolbar.prototype.onContextChange = function () {
 	var i, len, leafNodes,
@@ -220,7 +220,7 @@ ve.ui.SurfaceToolbar.prototype.destroy = function () {
 /**
  * Float the toolbar.
  *
- * @emits position
+ * @fires position
  */
 ve.ui.SurfaceToolbar.prototype.float = function () {
 	var update;
@@ -244,7 +244,7 @@ ve.ui.SurfaceToolbar.prototype.float = function () {
 /**
  * Reset the toolbar to it's default non-floating position.
  *
- * @emits position
+ * @fires position
  */
 ve.ui.SurfaceToolbar.prototype.unfloat = function () {
 	if ( this.floating ) {

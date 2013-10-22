@@ -351,7 +351,7 @@ ve.dm.InternalList.prototype.markGroupAsChanged = function ( groupName ) {
 
 /**
  * Handle document transaction events
- * @emits update
+ * @fires update
  */
 ve.dm.InternalList.prototype.onTransact = function () {
 	var i;

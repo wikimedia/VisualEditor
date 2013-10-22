@@ -141,8 +141,8 @@ ve.ce.SurfaceObserver.prototype.stopTimerLoop = function () {
  * with a mouse.
  *
  * @method
- * @emits contentChange
- * @emits selectionChange
+ * @fires contentChange
+ * @fires selectionChange
  */
 ve.ce.SurfaceObserver.prototype.pollOnce = function () {
 	this.pollOnceInternal( true );
@@ -169,8 +169,8 @@ ve.ce.SurfaceObserver.prototype.pollOnceNoEmit = function () {
  * @method
  * @private
  * @param {boolean} emitChanges Emit change events if selection changed
- * @emits contentChange
- * @emits selectionChange
+ * @fires contentChange
+ * @fires selectionChange
  */
 ve.ce.SurfaceObserver.prototype.pollOnceInternal = function ( emitChanges ) {
 	var $nodeOrSlug, node, text, hash, range, rangyRange;

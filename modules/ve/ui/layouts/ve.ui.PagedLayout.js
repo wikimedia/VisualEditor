@@ -70,7 +70,7 @@ OO.inheritClass( ve.ui.PagedLayout, ve.ui.Layout );
  * @param {Object} [config] Condifugration options
  * @param {number} [config.index] Specific index to insert page at
  * @param {jQuery} [config.$content] Page content
- * @emits add
+ * @fires add
  * @chainable
  */
 ve.ui.PagedLayout.prototype.addPage = function ( name, config ) {
@@ -93,7 +93,7 @@ ve.ui.PagedLayout.prototype.addPage = function ( name, config ) {
  * Clear all pages from the layout.
  *
  * @method
- * @emits remove
+ * @fires remove
  * @chainable
  */
 ve.ui.PagedLayout.prototype.clearPages = function () {
@@ -133,7 +133,7 @@ ve.ui.PagedLayout.prototype.getPageName = function () {
  * Remove a page from the layout.
  *
  * @method
- * @emits remove
+ * @fires remove
  * @chainable
  */
 ve.ui.PagedLayout.prototype.removePage = function ( name ) {
@@ -153,7 +153,7 @@ ve.ui.PagedLayout.prototype.removePage = function ( name ) {
  * Set the current page by name.
  *
  * @method
- * @emits set
+ * @fires set
  * @param {string} name Symbolic name of page
  */
 ve.ui.PagedLayout.prototype.setPage = function ( name ) {

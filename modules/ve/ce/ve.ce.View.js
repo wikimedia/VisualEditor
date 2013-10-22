@@ -133,9 +133,9 @@ ve.ce.View.prototype.isLive = function () {
  *
  * @method
  * @param {boolean} live The view has been attached to the live DOM (use false on detach)
- * @emits live
- * @emits setup
- * @emits teardown
+ * @fires live
+ * @fires setup
+ * @fires teardown
  */
 ve.ce.View.prototype.setLive = function ( live ) {
 	this.live = live;

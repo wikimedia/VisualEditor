@@ -67,7 +67,7 @@ ve.ui.MWParameterSearchWidget.prototype.onQueryChange = function () {
  *
  * @method
  * @param {ve.ui.OptionWidget} item Selected item
- * @emits select
+ * @fires select
  */
 ve.ui.MWParameterSearchWidget.prototype.onResultsSelect = function ( item ) {
 	this.emit( 'select', item && item.getData() ? item.getData().name : null );

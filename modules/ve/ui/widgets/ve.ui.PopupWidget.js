@@ -173,7 +173,7 @@ ve.ui.PopupWidget.prototype.hasTail = function () {
  * Show the context.
  *
  * @method
- * @emits show
+ * @fires show
  * @chainable
  */
 ve.ui.PopupWidget.prototype.show = function () {
@@ -192,7 +192,7 @@ ve.ui.PopupWidget.prototype.show = function () {
  * Hide the context.
  *
  * @method
- * @emits hide
+ * @fires hide
  * @chainable
  */
 ve.ui.PopupWidget.prototype.hide = function () {

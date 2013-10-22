@@ -115,8 +115,8 @@ ve.ui.Dialog.prototype.onFrameDocumentKeyDown = function ( e ) {
  * Wraps the parent open method. Disables native top-level window scrolling behavior.
  *
  * @method
- * @emits setup
- * @emits open
+ * @fires setup
+ * @fires open
  */
 ve.ui.Dialog.prototype.open = function () {
 	ve.ui.Window.prototype.open.call( this );
@@ -133,7 +133,7 @@ ve.ui.Dialog.prototype.open = function () {
  *
  * @method
  * @param {boolean} action Action that caused the window to be closed
- * @emits close
+ * @fires close
  */
 ve.ui.Dialog.prototype.close = function ( action ) {
 	if ( !this.closing ) {

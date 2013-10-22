@@ -104,7 +104,7 @@ ve.ui.ButtonWidget.prototype.onMouseUp = function () {
  *
  * @method
  * @param {jQuery.Event} e Mouse click event
- * @emits click
+ * @fires click
  */
 ve.ui.ButtonWidget.prototype.onClick = function () {
 	if ( !this.disabled ) {
@@ -121,7 +121,7 @@ ve.ui.ButtonWidget.prototype.onClick = function () {
  *
  * @method
  * @param {jQuery.Event} e Keypress event
- * @emits click
+ * @fires click
  */
 ve.ui.ButtonWidget.prototype.onKeyPress = function ( e ) {
 	if ( !this.disabled && e.which === ve.Keys.SPACE ) {

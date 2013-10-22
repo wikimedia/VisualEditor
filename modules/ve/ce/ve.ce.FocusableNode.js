@@ -144,8 +144,8 @@ ve.ce.FocusableNode.prototype.isFocused = function () {
  *
  * @method
  * @param {boolean} value Node is focused
- * @emits focus
- * @emits blur
+ * @fires focus
+ * @fires blur
  */
 ve.ce.FocusableNode.prototype.setFocused = function ( value ) {
 	value = !!value;

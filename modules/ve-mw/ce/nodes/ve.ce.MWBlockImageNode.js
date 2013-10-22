@@ -173,7 +173,7 @@ ve.ce.MWBlockImageNode.prototype.onSetup = function ( ) {
  * @param {string} key Attribute key
  * @param {string} from Old value
  * @param {string} to New value
- * @emits setup
+ * @fires setup
  */
 ve.ce.MWBlockImageNode.prototype.onAttributeChange = function ( key, from, to ) {
 	var $element, type;
