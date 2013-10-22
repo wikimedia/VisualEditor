@@ -1,12 +1,12 @@
 /*!
- * Object Oriented JavaScript Library v1.0.2
+ * Object Oriented JavaScript Library v1.0.4
  * https://github.com/trevorparscal/oojs
  *
  * Copyright 2011-2013 OOJS Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: Thu Jul 25 04:28:57 2013 GMT+0200 (CEST)
+ * Date: Fri Oct 11 2013 02:49:44 GMT+0200 (CEST)
  */
 ( function ( global ) {
 
@@ -307,10 +307,64 @@ oo.copy = function ( source, callback ) {
 
 	return destination;
 };
+
+/**
+ * Generates a hash of an object based on its name and data.
+ * Performance optimization: http://jsperf.com/ve-gethash-201208#/toJson_fnReplacerIfAoForElse
+ *
+ * To avoid two objects with the same values generating different hashes, we utilize the replacer
+ * argument of JSON.stringify and sort the object by key as it's being serialized. This may or may
+ * not be the fastest way to do this; we should investigate this further.
+ *
+ * Objects and arrays are hashed recursively. When hashing an object that has a .getHash()
+ * function, we call that function and use its return value rather than hashing the object
+ * ourselves. This allows classes to define custom hashing.
+ *
+ * @param {Object} val Object to generate hash for
+ * @returns {string} Hash of object
+ */
+oo.getHash = function ( val ) {
+	return JSON.stringify( val, oo.getHash.keySortReplacer );
+};
+
+/**
+ * Helper function for oo.getHash which sorts objects by key.
+ *
+ * This is a callback passed into JSON.stringify.
+ *
+ * @param {string} key Property name of value being replaced
+ * @param {Mixed} val Property value to replace
+ * @returns {Mixed} Replacement value
+ */
+oo.getHash.keySortReplacer = function ( key, val ) {
+	var normalized, keys, i, len;
+	if ( val && typeof val.getHashObject === 'function' ) {
+		// This object has its own custom hash function, use it
+		val = val.getHashObject();
+	}
+	if ( !Array.isArray( val ) && Object( val ) === val ) {
+		// Only normalize objects when the key-order is ambiguous
+		// (e.g. any object not an array).
+		normalized = {};
+		keys = Object.keys( val ).sort();
+		i = 0;
+		len = keys.length;
+		for ( ; i < len; i += 1 ) {
+			normalized[keys[i]] = val[keys[i]];
+		}
+		return normalized;
+
+	// Primitive values and arrays get stable hashes
+	// by default. Lets those be stringified as-is.
+	} else {
+		return val;
+	}
+};
 /**
  * Event emitter.
  *
  * @class OO.EventEmitter
+ *
  * @constructor
  * @property {Object} bindings
  */
@@ -324,6 +378,8 @@ oo.EventEmitter = function OoEventEmitter() {
 /**
  * Add a listener to events of a specific event.
  *
+ * If the callback/context are already bound to the event, they will not be bound again.
+ *
  * @method
  * @param {string} event Type of event to listen to
  * @param {Function} callback Function to call when event occurs
@@ -333,21 +389,35 @@ oo.EventEmitter = function OoEventEmitter() {
  * @chainable
  */
 oo.EventEmitter.prototype.on = function ( event, callback, args, context ) {
+	var i, bindings, binding;
+
 	// Validate callback
 	if ( typeof callback !== 'function' ) {
 		throw new Error( 'Invalid callback. Function or method name expected.' );
 	}
-
-	// Auto-initialize binding
-	if ( !( event in this.bindings ) ) {
-		this.bindings[event] = [];
+	// Fallback to null context
+	if ( arguments.length < 4 ) {
+		context = null;
 	}
-
+	if ( this.bindings.hasOwnProperty( event ) ) {
+		// Check for duplicate callback and context for this event
+		bindings = this.bindings[event];
+		i = bindings.length;
+		while ( i-- ) {
+			binding = bindings[i];
+			if ( bindings.callback === callback && bindings.context === context ) {
+				return this;
+			}
+		}
+	} else {
+		// Auto-initialize bindings list
+		bindings = this.bindings[event] = [];
+	}
 	// Add binding
-	this.bindings[event].push( {
+	bindings.push( {
 		'callback': callback,
 		'args': args,
-		'context': context || null
+		'context': context
 	} );
 	return this;
 };
@@ -374,10 +444,11 @@ oo.EventEmitter.prototype.once = function ( event, listener ) {
  * @method
  * @param {string} event Type of event to remove listener from
  * @param {Function} [callback] Listener to remove, omit to remove all
+ * @param {Object} [context=null] Object used context for callback function or method
  * @chainable
  * @throws {Error} Listener argument is not a function
  */
-oo.EventEmitter.prototype.off = function ( event, callback ) {
+oo.EventEmitter.prototype.off = function ( event, callback, context ) {
 	var i, bindings;
 
 	if ( arguments.length === 1 ) {
@@ -393,11 +464,15 @@ oo.EventEmitter.prototype.off = function ( event, callback ) {
 			// No matching bindings
 			return this;
 		}
+		// Fallback to null context
+		if ( arguments.length < 3 ) {
+			context = null;
+		}
 		// Remove matching handlers
 		bindings = this.bindings[event];
 		i = bindings.length;
 		while ( i-- ) {
-			if ( bindings[i].callback === callback ) {
+			if ( bindings[i].callback === callback && bindings[i].context === context ) {
 				bindings.splice( i, 1 );
 			}
 		}
@@ -491,6 +566,7 @@ oo.EventEmitter.prototype.disconnect = function ( context, methods ) {
 	var i, method, callback, event, bindings;
 
 	if ( methods ) {
+		// Remove specific connections to the context
 		for ( event in methods ) {
 			method = methods[event];
 			if ( typeof method === 'string' ) {
@@ -503,33 +579,177 @@ oo.EventEmitter.prototype.disconnect = function ( context, methods ) {
 			} else {
 				callback = method;
 			}
-			bindings = this.bindings[event];
-			i = bindings.length;
-			while ( i-- ) {
-				if ( bindings[i].context === context && bindings[i].callback === callback ) {
-					bindings.splice( i, 1 );
-				}
-			}
-			if ( bindings.length === 0 ) {
-				delete this.bindings[event];
-			}
+			this.off( event, callback, context );
 		}
 	} else {
+		// Remove all connections to the context
 		for ( event in this.bindings ) {
 			bindings = this.bindings[event];
 			i = bindings.length;
 			while ( i-- ) {
 				if ( bindings[i].context === context ) {
-					bindings.splice( i, 1 );
+					this.off( event, bindings[i].callback, context );
 				}
-			}
-			if ( bindings.length === 0 ) {
-				delete this.bindings[event];
 			}
 		}
 	}
 
 	return this;
+};
+/**
+ * Data registry.
+ *
+ * @class OO.Registry
+ * @mixins OO.EventEmitter
+ *
+ * @constructor
+ */
+oo.Registry = function OoRegistry() {
+	// Mixin constructors
+	oo.EventEmitter.call( this );
+
+	// Properties
+	this.registry = {};
+};
+
+/* Inheritance */
+
+oo.mixinClass( oo.Registry, oo.EventEmitter );
+
+/* Events */
+
+/**
+ * @event register
+ * @param {string} name
+ * @param {Mixed} data
+ */
+
+/* Methods */
+
+/**
+ * Associate one or more symbolic names with some data.
+ *
+ * Only the base name will be registered, overriding any existing entry with the same base name.
+ *
+ * @method
+ * @param {string|string[]} name Symbolic name or list of symbolic names
+ * @param {Mixed} data Data to associate with symbolic name
+ * @fires register
+ * @throws {Error} Name argument must be a string or array
+ */
+oo.Registry.prototype.register = function ( name, data ) {
+	if ( typeof name !== 'string' && !Array.isArray( name ) ) {
+		throw new Error( 'Name argument must be a string or array, cannot be a ' + typeof name );
+	}
+	var i, len;
+	if ( Array.isArray( name ) ) {
+		for ( i = 0, len = name.length; i < len; i++ ) {
+			this.register( name[i], data );
+		}
+	} else if ( typeof name === 'string' ) {
+		this.registry[name] = data;
+		this.emit( 'register', name, data );
+	} else {
+		throw new Error( 'Name must be a string or array of strings, cannot be a ' + typeof name );
+	}
+};
+
+/**
+ * Gets data for a given symbolic name.
+ *
+ * Lookups are done using the base name.
+ *
+ * @method
+ * @param {string} name Symbolic name
+ * @returns {Mixed|undefined} Data associated with symbolic name
+ */
+oo.Registry.prototype.lookup = function ( name ) {
+	return this.registry[name];
+};
+/**
+ * Object factory.
+ *
+ * @class OO.Factory
+ * @extends OO.Registry
+ *
+ * @constructor
+ */
+oo.Factory = function OoFactory() {
+	// Parent constructor
+	oo.Registry.call( this );
+
+	// Properties
+	this.entries = [];
+};
+
+/* Inheritance */
+
+oo.inheritClass( oo.Factory, oo.Registry );
+
+/* Methods */
+
+/**
+ * Register a constructor with the factory.
+ *
+ * Classes must have a static `name` property to be registered.
+ *
+ *     @example
+ *     function MyClass() {};
+ *     // Adds a static property to the class defining a symbolic name
+ *     MyClass.static = { 'name': 'mine' };
+ *     // Registers class with factory, available via symbolic name 'mine'
+ *     factory.register( MyClass );
+ *
+ * @method
+ * @param {Function} constructor Constructor to use when creating object
+ * @throws {Error} Name must be a string and must not be empty
+ * @throws {Error} Constructor must be a function
+ */
+oo.Factory.prototype.register = function ( constructor ) {
+	var name;
+
+	if ( typeof constructor !== 'function' ) {
+		throw new Error( 'constructor must be a function, cannot be a ' + typeof constructor );
+	}
+	name = constructor.static && constructor.static.name;
+	if ( typeof name !== 'string' || name === '' ) {
+		throw new Error( 'Name must be a string and must not be empty' );
+	}
+	this.entries.push( name );
+	oo.Registry.prototype.register.call( this, name, constructor );
+};
+
+/**
+ * Create an object based on a name.
+ *
+ * Name is used to look up the constructor to use, while all additional arguments are passed to the
+ * constructor directly, so leaving one out will pass an undefined to the constructor.
+ *
+ * @method
+ * @param {string} name Object name
+ * @param {Mixed...} [args] Arguments to pass to the constructor
+ * @returns {Object} The new object
+ * @throws {Error} Unknown object name
+ */
+oo.Factory.prototype.create = function ( name ) {
+	var args, obj, constructor;
+
+	if ( !this.registry.hasOwnProperty( name ) ) {
+		throw new Error( 'No class registered by that name: ' + name );
+	}
+	constructor = this.registry[name];
+
+	// Convert arguments to array and shift the first argument (name) off
+	args = Array.prototype.slice.call( arguments, 1 );
+
+	// We can't use the "new" operator with .apply directly because apply needs a
+	// context. So instead just do what "new" does: create an object that inherits from
+	// the constructor's prototype (which also makes it an "instanceof" the constructor),
+	// then invoke the constructor with the object as context, and return it (ignoring
+	// the constructor's return value).
+	obj = Object.create( constructor.prototype );
+	constructor.apply( obj, args );
+	return obj;
 };
 /*jshint node:true */
 if ( typeof module !== 'undefined' && module.exports ) {
