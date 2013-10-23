@@ -26,6 +26,7 @@ $wgExtensionCredits['other'][] = array(
 		'Timo Tijhof',
 		'Ed Sanders',
 		'David Chan',
+		'Moriel Schottlender',
 	),
 	'version' => '0.1.0',
 	'url' => 'https://www.mediawiki.org/wiki/Extension:VisualEditor',
