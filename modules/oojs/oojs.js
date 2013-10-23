@@ -1,12 +1,12 @@
 /*!
- * Object Oriented JavaScript Library v1.0.4
+ * Object Oriented JavaScript Library v1.0.5
  * https://github.com/trevorparscal/oojs
  *
  * Copyright 2011-2013 OOJS Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: Fri Oct 11 2013 02:49:44 GMT+0200 (CEST)
+ * Date: Wed Oct 23 2013 02:22:02 GMT+0200 (CEST)
  */
 ( function ( global ) {
 
@@ -107,9 +107,6 @@ oo.inheritClass = function ( targetFn, originFn ) {
 	// Extend static properties - always initialize both sides
 	originFn.static = originFn.static || {};
 	targetFn.static = Object.create( originFn.static );
-
-	// Copy mixin tracking
-	targetFn.mixins = originFn.mixins ? originFn.mixins.slice( 0 ) : [];
 };
 
 /**
@@ -359,6 +356,96 @@ oo.getHash.keySortReplacer = function ( key, val ) {
 	} else {
 		return val;
 	}
+};
+
+/**
+ * Compute the union (duplicate-free merge) of a set of arrays.
+ *
+ * Arrays values must be convertable to object keys (strings)
+ *
+ * By building an object (with the values for keys) in parallel with
+ * the array, a new item's existence in the union can be computed faster
+ *
+ * @param {Array...} arrays Arrays to union
+ * @returns {Array} Union of the arrays
+ */
+oo.simpleArrayUnion = function () {
+	var i, ilen, arr, j, jlen,
+		obj = {},
+		result = [];
+
+	for ( i = 0, ilen = arguments.length; i < ilen; i++ ) {
+		arr = arguments[i];
+		for ( j = 0, jlen = arr.length; j < jlen; j++ ) {
+			if ( !obj[ arr[j] ] ) {
+				obj[ arr[j] ] = true;
+				result.push( arr[j] );
+			}
+		}
+	}
+
+	return result;
+};
+
+/**
+ * Combine arrays (intersection or difference).
+ *
+ * An intersection checks the item exists in 'b' while difference checks it doesn't.
+ *
+ * Arrays values must be convertable to object keys (strings)
+ *
+ * By building an object (with the values for keys) of 'b' we can
+ * compute the result faster
+ *
+ * @private
+ * @param {Array} a First array
+ * @param {Array} b Second array
+ * @param {boolean} includeB Whether to items in 'b'
+ * @returns {Array} Combination (intersection or difference) of arrays
+ */
+function simpleArrayCombine( a, b, includeB ) {
+	var i, ilen, isInB,
+		bObj = {},
+		result = [];
+
+	for ( i = 0, ilen = b.length; i < ilen; i++ ) {
+		bObj[ b[i] ] = true;
+	}
+
+	for ( i = 0, ilen = a.length; i < ilen; i++ ) {
+		isInB = !!bObj[ a[i] ];
+		if ( isInB === includeB ) {
+			result.push( a[i] );
+		}
+	}
+
+	return result;
+}
+
+/**
+ * Compute the intersection of two arrays (items in both arrays).
+ *
+ * Arrays values must be convertable to object keys (strings)
+ *
+ * @param {Array} a First array
+ * @param {Array} b Second array
+ * @returns {Array} Intersection of arrays
+ */
+oo.simpleArrayIntersection = function ( a, b ) {
+	return simpleArrayCombine( a, b, true );
+};
+
+/**
+ * Compute the difference of two arrays (items in 'a' but not 'b').
+ *
+ * Arrays values must be convertable to object keys (strings)
+ *
+ * @param {Array} a First array
+ * @param {Array} b Second array
+ * @returns {Array} Intersection of arrays
+ */
+oo.simpleArrayDifference = function ( a, b ) {
+	return simpleArrayCombine( a, b, false );
 };
 /**
  * Event emitter.
