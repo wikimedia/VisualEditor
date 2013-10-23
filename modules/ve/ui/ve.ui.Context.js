@@ -24,6 +24,7 @@ ve.ui.Context = function VeUiContext( surface, config ) {
 	this.inspectors = {};
 	this.visible = false;
 	this.showing = false;
+	this.hiding = false;
 	this.selecting = false;
 	this.relocating = false;
 	this.embedded = false;
@@ -382,16 +383,17 @@ ve.ui.Context.prototype.show = function ( transition, repositionOnly ) {
 ve.ui.Context.prototype.hide = function () {
 	var inspector = this.inspectors.getCurrent();
 
-	if ( inspector ) {
-		// This will recurse, but inspector will be undefined next time
-		inspector.close( 'hide' );
-		return this;
+	// Guard against recursion: closing the inspector causes onInspectorClose to call us again
+	if ( !this.hiding ) {
+		this.hiding = true;
+		if ( inspector ) {
+			inspector.close( 'hide' );
+		}
+		this.popup.hide();
+		this.$.hide();
+		this.visible = false;
+		this.hiding = false;
 	}
-
-	this.popup.hide();
-	this.$.hide();
-	this.visible = false;
-
 	return this;
 };
 
