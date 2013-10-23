@@ -212,9 +212,11 @@ ve.ui.Context.prototype.destroy = function () {
  * Updates the context menu.
  *
  * @method
+ * @param {boolean} [transition=false] Use a smooth transition
+ * @param {boolean} [repositionOnly=false] The context is only being moved so don't fade in
  * @chainable
  */
-ve.ui.Context.prototype.update = function () {
+ve.ui.Context.prototype.update = function ( transition, repositionOnly ) {
 	var i, nodes, tools, tool,
 		fragment = this.surface.getModel().getFragment( null, false ),
 		selection = fragment.getRange(),
@@ -222,7 +224,7 @@ ve.ui.Context.prototype.update = function () {
 
 	if ( inspector && selection.equals( this.selection ) ) {
 		// There's an inspector, and the selection hasn't changed, update the position
-		this.show();
+		this.show( transition, repositionOnly );
 	} else {
 		// No inspector is open, or the selection has changed, show a menu of available inspectors
 		tools = ve.ui.toolFactory.getToolsForAnnotations( fragment.getAnnotations() );
@@ -248,7 +250,7 @@ ve.ui.Context.prototype.update = function () {
 			this.toolbar = new ve.ui.SurfaceToolbar( this.surface );
 			this.toolbar.setup( [ { 'include' : tools } ] );
 			this.$menu.append( this.toolbar.$ );
-			this.show();
+			this.show( transition, repositionOnly );
 			this.toolbar.initialize();
 		} else if ( this.visible ) {
 			// Nothing to inspect
