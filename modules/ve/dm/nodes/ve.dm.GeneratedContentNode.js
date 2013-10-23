@@ -23,6 +23,7 @@ ve.dm.GeneratedContentNode.static = {};
 
 /**
  * Store HTML of DOM elements, hashed on data element
+ * @static
  * @param {Object} dataElement Data element
  * @param {Object|string|Array} generatedContents Generated contents
  * @param {ve.dm.IndexValueStore} store Index-value store
