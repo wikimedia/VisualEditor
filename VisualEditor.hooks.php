@@ -242,7 +242,7 @@ class VisualEditorHooks {
 			'info-link' => false,
 			// TODO: use message 'visualeditor-preference-core-discussion-link'
 			'discussion-link' => false,
-			'screenshot' => $wgExtensionAssetsPath . '/VisualEditor/logo.png',
+			'screenshot' => $wgExtensionAssetsPath . '/VisualEditor/logo.svg',
 			'requirements' => array(
 				'javascript' => true,
 				'blacklist' => $wgVisualEditorBrowserBlacklist,
@@ -258,7 +258,7 @@ class VisualEditorHooks {
 			'info-link' => false,
 			// TODO: use message 'visualeditor-preference-experimental-discussion-link'
 			'discussion-link' => false,
-			'screenshot' => $wgExtensionAssetsPath . '/VisualEditor/logo-experimental.png',
+			'screenshot' => $wgExtensionAssetsPath . '/VisualEditor/logo-experimental.svg',
 			'requirements' => array(
 				'betafeatures' => array(
 					'visualeditor-enable',
