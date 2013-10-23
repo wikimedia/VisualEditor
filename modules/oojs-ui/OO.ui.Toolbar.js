@@ -124,6 +124,13 @@ OO.ui.Toolbar.prototype.setup = function ( groups ) {
 			'menu': OO.ui.MenuToolGroup
 		};
 
+	// Cleanup previous groups
+	for ( i = 0, len = this.items.length; i < len; i++ ) {
+		this.items[i].destroy();
+	}
+	this.clearItems();
+
+	// Build out new groups
 	for ( i = 0, len = groups.length; i < len; i++ ) {
 		group = groups[i];
 		if ( group.include === '*' ) {
@@ -136,7 +143,9 @@ OO.ui.Toolbar.prototype.setup = function ( groups ) {
 			}
 		}
 		type = constructors[group.type] ? group.type : defaultType;
-		items.push( new constructors[type]( this, OO.ui.extendObject( { '$$': this.$$ }, group ) ) );
+		items.push(
+			new constructors[type]( this, OO.ui.extendObject( { '$$': this.$$ }, group ) )
+		);
 	}
 	this.addItems( items );
 };
@@ -149,21 +158,49 @@ OO.ui.Toolbar.prototype.setup = function ( groups ) {
 OO.ui.Toolbar.prototype.destroy = function () {
 	var i, len;
 
-	this.clearItems();
 	for ( i = 0, len = this.items.length; i < len; i++ ) {
 		this.items[i].destroy();
 	}
+	this.clearItems();
 	this.$.remove();
 };
 
+/**
+ * Check if tool has not been used yet.
+ *
+ * @param {string} name Symbolic name of tool
+ * @return {boolean} Tool is available
+ */
 OO.ui.Toolbar.prototype.isToolAvailable = function ( name ) {
 	return !this.tools[name];
 };
 
-OO.ui.Toolbar.prototype.reserveTool = function ( name ) {
-	this.tools[name] = true;
+/**
+ * Prevent tool from being used again.
+ *
+ * @param {OO.ui.Tool} tool Tool to reserve
+ */
+OO.ui.Toolbar.prototype.reserveTool = function ( tool ) {
+	this.tools[tool.getName()] = tool;
 };
 
-OO.ui.Toolbar.prototype.releaseTool = function ( name ) {
-	delete this.tools[name];
+/**
+ * Allow tool to be used again.
+ *
+ * @param {OO.ui.Tool} tool Tool to release
+ */
+OO.ui.Toolbar.prototype.releaseTool = function ( tool ) {
+	delete this.tools[tool.getName()];
+};
+
+/**
+ * Get accelerator label for tool.
+ *
+ * This is a stub that should be overridden to provide access to accelerator information.
+ *
+ * @param {string} name Symbolic name of tool
+ * @returns {string|undefined} Tool accelerator label if available
+ */
+OO.ui.Toolbar.prototype.getToolAccelerator = function () {
+	return undefined;
 };

@@ -11,11 +11,11 @@
  * @class
  * @extends ve.ui.DialogTool
  * @constructor
- * @param {ve.ui.SurfaceToolbar} toolbar
+ * @param {OO.ui.ToolGroup} toolGroup
  * @param {Object} [config] Configuration options
  */
-ve.ui.MWMediaEditDialogTool = function VeUiMWMediaEditDialogTool( toolbar, config ) {
-	ve.ui.DialogTool.call( this, toolbar, config );
+ve.ui.MWMediaEditDialogTool = function VeUiMWMediaEditDialogTool( toolGroup, config ) {
+	ve.ui.DialogTool.call( this, toolGroup, config );
 };
 OO.inheritClass( ve.ui.MWMediaEditDialogTool, ve.ui.DialogTool );
 ve.ui.MWMediaEditDialogTool.static.name = 'mediaEdit';
@@ -34,11 +34,11 @@ ve.ui.toolFactory.register( ve.ui.MWMediaEditDialogTool );
  * @extends ve.ui.DialogTool
  *
  * @constructor
- * @param {ve.ui.SurfaceToolbar} toolbar
+ * @param {OO.ui.ToolGroup} toolGroup
  * @param {Object} [config] Configuration options
  */
-ve.ui.MWMediaInsertDialogTool = function VeUiMWMediaInsertDialogTool( toolbar, config ) {
-	ve.ui.DialogTool.call( this, toolbar, config );
+ve.ui.MWMediaInsertDialogTool = function VeUiMWMediaInsertDialogTool( toolGroup, config ) {
+	ve.ui.DialogTool.call( this, toolGroup, config );
 };
 OO.inheritClass( ve.ui.MWMediaInsertDialogTool, ve.ui.DialogTool );
 ve.ui.MWMediaInsertDialogTool.static.name = 'mediaInsert';
@@ -55,11 +55,11 @@ ve.ui.toolFactory.register( ve.ui.MWMediaInsertDialogTool );
  * @extends ve.ui.DialogTool
  *
  * @constructor
- * @param {ve.ui.SurfaceToolbar} toolbar
+ * @param {OO.ui.ToolGroup} toolGroup
  * @param {Object} [config] Configuration options
  */
-ve.ui.MWReferenceDialogTool = function VeUiMWReferenceDialogTool( toolbar, config ) {
-	ve.ui.DialogTool.call( this, toolbar, config );
+ve.ui.MWReferenceDialogTool = function VeUiMWReferenceDialogTool( toolGroup, config ) {
+	ve.ui.DialogTool.call( this, toolGroup, config );
 };
 OO.inheritClass( ve.ui.MWReferenceDialogTool, ve.ui.DialogTool );
 ve.ui.MWReferenceDialogTool.static.name = 'reference';
@@ -76,11 +76,11 @@ ve.ui.toolFactory.register( ve.ui.MWReferenceDialogTool );
  * @class
  * @extends ve.ui.DialogTool
  * @constructor
- * @param {ve.ui.SurfaceToolbar} toolbar
+ * @param {OO.ui.ToolGroup} toolGroup
  * @param {Object} [config] Configuration options
  */
-ve.ui.MWReferenceListDialogTool = function VeUiMWReferenceListDialogTool( toolbar, config ) {
-	ve.ui.DialogTool.call( this, toolbar, config );
+ve.ui.MWReferenceListDialogTool = function VeUiMWReferenceListDialogTool( toolGroup, config ) {
+	ve.ui.DialogTool.call( this, toolGroup, config );
 };
 OO.inheritClass( ve.ui.MWReferenceListDialogTool, ve.ui.DialogTool );
 ve.ui.MWReferenceListDialogTool.static.name = 'referenceList';
@@ -98,11 +98,11 @@ ve.ui.toolFactory.register( ve.ui.MWReferenceListDialogTool );
  * @class
  * @extends ve.ui.DialogTool
  * @constructor
- * @param {ve.ui.SurfaceToolbar} toolbar
+ * @param {OO.ui.ToolGroup} toolGroup
  * @param {Object} [config] Configuration options
  */
-ve.ui.MWTransclusionDialogTool = function VeUiMWTransclusionDialogTool( toolbar, config ) {
-	ve.ui.DialogTool.call( this, toolbar, config );
+ve.ui.MWTransclusionDialogTool = function VeUiMWTransclusionDialogTool( toolGroup, config ) {
+	ve.ui.DialogTool.call( this, toolGroup, config );
 };
 OO.inheritClass( ve.ui.MWTransclusionDialogTool, ve.ui.DialogTool );
 ve.ui.MWTransclusionDialogTool.static.name = 'transclusion';

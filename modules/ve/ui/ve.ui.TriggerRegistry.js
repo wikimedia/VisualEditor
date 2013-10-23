@@ -39,9 +39,6 @@ ve.ui.TriggerRegistry.prototype.register = function ( name, trigger ) {
 		platformKey = platform === 'mac' ? 'mac' : 'pc';
 
 	// Validate arguments
-	if ( typeof name !== 'string' && !ve.isArray( name ) ) {
-		throw new Error( 'name must be a string or array, cannot be a ' + typeof name );
-	}
 	if ( !( trigger instanceof ve.ui.Trigger ) && !ve.isPlainObject( trigger ) ) {
 		throw new Error(
 			'trigger must be an instance of ve.ui.Trigger or an object containing instances of ' +
@@ -64,6 +61,8 @@ ve.ui.TriggerRegistry.prototype.register = function ( name, trigger ) {
 
 ve.ui.triggerRegistry = new ve.ui.TriggerRegistry();
 
+/* Registrations */
+
 ve.ui.triggerRegistry.register(
 	'bold', { 'mac': new ve.ui.Trigger( 'cmd+b' ), 'pc': new ve.ui.Trigger( 'ctrl+b' ) }
 );
@@ -73,8 +72,12 @@ ve.ui.triggerRegistry.register(
 ve.ui.triggerRegistry.register(
 	'clear', { 'mac': new ve.ui.Trigger( 'cmd+\\' ), 'pc': new ve.ui.Trigger( 'ctrl+\\' ) }
 );
-ve.ui.triggerRegistry.register( 'indent', new ve.ui.Trigger( 'tab' ) );
-ve.ui.triggerRegistry.register( 'outdent', new ve.ui.Trigger( 'shift+tab' ) );
+ve.ui.triggerRegistry.register(
+	'indent', new ve.ui.Trigger( 'tab' )
+);
+ve.ui.triggerRegistry.register(
+	'outdent', new ve.ui.Trigger( 'shift+tab' )
+);
 ve.ui.triggerRegistry.register(
 	'link', { 'mac': new ve.ui.Trigger( 'cmd+k' ), 'pc': new ve.ui.Trigger( 'ctrl+k' ) }
 );

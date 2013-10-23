@@ -62,15 +62,6 @@ OO.ui.LabeledElement.prototype.setLabel = function ( value ) {
 };
 
 /**
- * Get label value as plain text.
- *
- * @return {string} Label text
- */
-OO.ui.LabeledElement.prototype.getLabelText = function () {
-	return this.$label.text();
-};
-
-/**
  * Fit the label.
  *
  * @method

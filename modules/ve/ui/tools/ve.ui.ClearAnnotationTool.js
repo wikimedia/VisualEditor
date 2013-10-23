@@ -11,12 +11,12 @@
  * @class
  * @extends OO.ui.Tool
  * @constructor
- * @param {ve.ui.SurfaceToolbar} toolbar
+ * @param {OO.ui.ToolGroup} toolGroup
  * @param {Object} [config] Configuration options
  */
-ve.ui.ClearAnnotationTool = function VeUiClearAnnotationTool( toolbar, config ) {
+ve.ui.ClearAnnotationTool = function VeUiClearAnnotationTool( toolGroup, config ) {
 	// Parent constructor
-	OO.ui.Tool.call( this, toolbar, config );
+	OO.ui.Tool.call( this, toolGroup, config );
 
 	// Initialization
 	this.setDisabled( true );

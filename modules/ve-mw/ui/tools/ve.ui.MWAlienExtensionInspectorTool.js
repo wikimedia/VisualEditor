@@ -11,11 +11,11 @@
  * @class
  * @extends ve.ui.InspectorTool
  * @constructor
- * @param {ve.ui.SurfaceToolbar} toolbar
+ * @param {OO.ui.ToolGroup} toolGroup
  * @param {Object} [config] Configuration options
  */
-ve.ui.MWAlienExtensionInspectorTool = function VeUiMWAlienExtensionInspectorTool( toolbar, config ) {
-	ve.ui.InspectorTool.call( this, toolbar, config );
+ve.ui.MWAlienExtensionInspectorTool = function VeUiMWAlienExtensionInspectorTool( toolGroup, config ) {
+	ve.ui.InspectorTool.call( this, toolGroup, config );
 };
 OO.inheritClass( ve.ui.MWAlienExtensionInspectorTool, ve.ui.InspectorTool );
 ve.ui.MWAlienExtensionInspectorTool.static.name = 'alienExtension';

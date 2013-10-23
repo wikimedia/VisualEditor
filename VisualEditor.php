@@ -520,6 +520,7 @@ $wgResourceModules += array(
 			've/ui/ve.ui.SurfaceToolbar.js',
 			've/ui/ve.ui.TargetToolbar.js',
 			've/ui/ve.ui.ToolFactory.js',
+			've/ui/ve.ui.Command.js',
 			've/ui/ve.ui.CommandRegistry.js',
 			've/ui/ve.ui.Trigger.js',
 			've/ui/ve.ui.TriggerRegistry.js',

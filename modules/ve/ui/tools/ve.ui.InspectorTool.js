@@ -12,12 +12,12 @@
  * @class
  * @extends OO.ui.Tool
  * @constructor
- * @param {ve.ui.SurfaceToolbar} toolbar
+ * @param {OO.ui.ToolGroup} toolGroup
  * @param {Object} [config] Configuration options
  */
-ve.ui.InspectorTool = function VeUiInspectorTool( toolbar, config ) {
+ve.ui.InspectorTool = function VeUiInspectorTool( toolGroup, config ) {
 	// Parent constructor
-	OO.ui.Tool.call( this, toolbar, config );
+	OO.ui.Tool.call( this, toolGroup, config );
 };
 
 /* Inheritance */
@@ -85,11 +85,11 @@ ve.ui.InspectorTool.prototype.onUpdateState = function ( nodes, full ) {
  * @class
  * @extends ve.ui.InspectorTool
  * @constructor
- * @param {ve.ui.SurfaceToolbar} toolbar
+ * @param {OO.ui.ToolGroup} toolGroup
  * @param {Object} [config] Configuration options
  */
-ve.ui.LinkInspectorTool = function VeUiLinkInspectorTool( toolbar, config ) {
-	ve.ui.InspectorTool.call( this, toolbar, config );
+ve.ui.LinkInspectorTool = function VeUiLinkInspectorTool( toolGroup, config ) {
+	ve.ui.InspectorTool.call( this, toolGroup, config );
 };
 OO.inheritClass( ve.ui.LinkInspectorTool, ve.ui.InspectorTool );
 ve.ui.LinkInspectorTool.static.name = 'link';

@@ -11,11 +11,11 @@
  * @class
  * @extends ve.ui.InspectorTool
  * @constructor
- * @param {ve.ui.SurfaceToolbar} toolbar
+ * @param {OO.ui.ToolGroup} toolGroup
  * @param {Object} [config] Configuration options
  */
-ve.ui.LanguageInspectorTool = function VeUiLanguageInspectorTool( toolbar, config ) {
-	ve.ui.InspectorTool.call( this, toolbar, config );
+ve.ui.LanguageInspectorTool = function VeUiLanguageInspectorTool( toolGroup, config ) {
+	ve.ui.InspectorTool.call( this, toolGroup, config );
 };
 OO.inheritClass( ve.ui.LanguageInspectorTool, ve.ui.InspectorTool );
 ve.ui.LanguageInspectorTool.static.name = 'language';
