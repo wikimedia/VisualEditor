@@ -125,7 +125,7 @@ ve.dm.MWInlineImageNode.static.toDataElement = function ( domElements, converter
 	}
 
 	// Store unrecognized classes so we can restore them on the way out
-	attributes.unrecognizedClasses = ve.simpleArrayDifference( classes, recognizedClasses );
+	attributes.unrecognizedClasses = OO.simpleArrayDifference( classes, recognizedClasses );
 
 	dataElement = { 'type': this.name, 'attributes': attributes };
 
@@ -166,7 +166,7 @@ ve.dm.MWInlineImageNode.static.toDomElements = function ( data, doc ) {
 	}
 
 	if ( data.attributes.unrecognizedClasses ) {
-		classes = ve.simpleArrayUnion( classes, data.attributes.unrecognizedClasses );
+		classes = OO.simpleArrayUnion( classes, data.attributes.unrecognizedClasses );
 	}
 
 	if (

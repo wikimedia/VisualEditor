@@ -242,7 +242,7 @@ ve.dm.ModelRegistry.prototype.matchElement = function ( element, forceAboutGroup
 			// Queue string matches and regexp matches separately
 			queue = queue.concat( ve.getProp( reg.modelsByTypeAndTag, 1, types[i], tag ) || [] );
 			if ( excludeTypes ) {
-				queue = ve.simpleArrayDifference( queue, excludeTypes );
+				queue = OO.simpleArrayDifference( queue, excludeTypes );
 			}
 			queue2 = queue2.concat( matchTypeRegExps( types[i], tag, true ) );
 		}
@@ -282,7 +282,7 @@ ve.dm.ModelRegistry.prototype.matchElement = function ( element, forceAboutGroup
 			// Queue string and regexp matches separately
 			queue = queue.concat( ve.getProp( reg.modelsByTypeAndTag, 0, types[i], tag ) || [] );
 			if ( excludeTypes ) {
-				queue = ve.simpleArrayDifference( queue, excludeTypes );
+				queue = OO.simpleArrayDifference( queue, excludeTypes );
 			}
 			queue2 = queue2.concat( matchTypeRegExps( types[i], tag, false ) );
 		}

@@ -29,7 +29,7 @@ ve.ui.ToolFactory.prototype.getTools = function ( include, exclude, promote, dem
 		used = {};
 
 	// Collect included and not excluded tools
-	included = ve.simpleArrayDifference( this.extract( include ), this.extract( exclude ) );
+	included = OO.simpleArrayDifference( this.extract( include ), this.extract( exclude ) );
 
 	// Promotion
 	promoted = this.extract( promote, used );

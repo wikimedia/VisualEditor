@@ -361,7 +361,7 @@ ve.dm.AnnotationSet.prototype.add = function ( annotation, offset ) {
  * @param {ve.dm.AnnotationSet} set Set to add to the set
  */
 ve.dm.AnnotationSet.prototype.addSet = function ( set ) {
-	this.storeIndexes = ve.simpleArrayUnion( this.getIndexes(), set.getIndexes() );
+	this.storeIndexes = OO.simpleArrayUnion( this.getIndexes(), set.getIndexes() );
 };
 
 /**
@@ -449,7 +449,7 @@ ve.dm.AnnotationSet.prototype.removeAll = function () {
  * @param {ve.dm.AnnotationSet} set Set to remove from the set
  */
 ve.dm.AnnotationSet.prototype.removeSet = function ( set ) {
-	this.storeIndexes = ve.simpleArrayDifference( this.getIndexes(), set.getIndexes() );
+	this.storeIndexes = OO.simpleArrayDifference( this.getIndexes(), set.getIndexes() );
 };
 
 /**
@@ -459,7 +459,7 @@ ve.dm.AnnotationSet.prototype.removeSet = function ( set ) {
  * @param {ve.dm.AnnotationSet} set Set to intersect with the set
  */
 ve.dm.AnnotationSet.prototype.removeNotInSet = function ( set ) {
-	this.storeIndexes = ve.simpleArrayIntersection( this.getIndexes(), set.getIndexes() );
+	this.storeIndexes = OO.simpleArrayIntersection( this.getIndexes(), set.getIndexes() );
 };
 
 /**
