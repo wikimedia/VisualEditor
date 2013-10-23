@@ -5651,6 +5651,7 @@ $messages['fo'] = array(
  * @author Linedwell
  * @author Ltrlg
  * @author Metroitendo
+ * @author NemesisIII
  * @author Nicolas NALLET
  * @author Npettiaux
  * @author Rastus Vernon
@@ -5700,7 +5701,7 @@ $messages['fr'] = array(
 	'visualeditor-dialog-action-goback' => 'Retour',
 	'visualeditor-dialog-beta-welcome-action-continue' => 'Continuer',
 	'visualeditor-dialog-beta-welcome-content' => "Ceci est notre nouvelle façon, plus simple, de faire des modifications. Elle est encore au stade bêta, ce qui veut dire que vous pouvez trouver des parties de la page que vous ne pouvez pas modifier ou rencontrer des problèmes qui doivent être corrigés. Nous vous invitons à relire vos modifications et nous vous encourageons à signaler tout problème que vous rencontrez en utilisant ÉditeurVisuel (cliquez sur le bouton '{{int:visualeditor-beta-label}}' pour envoyer un avis). Vous pouvez toujours utiliser l’éditeur wikitexte en cliquant sur l’onglet « $1 » à la place — les modifications non enregistrées seront perdues.",
-	'visualeditor-dialog-beta-welcome-title' => '{{GENDER:$1|Bienvenue}} dans VisualEditor',
+	'visualeditor-dialog-beta-welcome-title' => '{{GENDER:$1|Bienvenue}} dans l’ÉditeurVisuel.',
 	'visualeditor-dialog-media-content-section' => 'Légende',
 	'visualeditor-dialog-media-insert-button' => 'Insérer le média',
 	'visualeditor-dialog-media-insert-title' => 'Insérer un média',
@@ -5752,7 +5753,7 @@ $messages['fr'] = array(
 	'visualeditor-editnotices-tool' => '$1 avertissement{{PLURAL:$1||s}}',
 	'visualeditor-editsummary' => 'Décrivez ce que vous avez modifié',
 	'visualeditor-feedback-link' => 'Project:ÉditeurVisuel/Avis',
-	'visualeditor-feedback-tool' => 'Laisser un avis',
+	'visualeditor-feedback-tool' => 'Laisser un avis à propos de l’ÉditeurVisuel.',
 	'visualeditor-formatdropdown-format-heading1' => 'Titre 1',
 	'visualeditor-formatdropdown-format-heading2' => 'Titre 2',
 	'visualeditor-formatdropdown-format-heading3' => 'Titre 3',
@@ -6845,6 +6846,8 @@ $messages['hi'] = array(
  * @author SpeedyGonsales
  */
 $messages['hr'] = array(
+	'tag-visualeditor' => '[[{{MediaWiki:visualeditor-descriptionpagelink}}|VisualEditor]]',
+	'tag-visualeditor-description' => 'Uređivanje napravljeno [[{{MediaWiki:visualeditor-descriptionpagelink}}|VisualEditorom]]',
 	'tooltip-ca-ve-edit' => 'Uredi stranicu VisualEditorom',
 	'visualeditor-aliennode-tooltip' => 'Žao nam je, ali ovaj element se za sada ne može uređivati u VisualEditoru, već na stari način.',
 	'visualeditor-annotationbutton-bold-tooltip' => 'Podebljano',
@@ -6875,17 +6878,21 @@ $messages['hr'] = array(
 	'visualeditor-dialog-meta-categories-data-label' => 'Kategorije',
 	'visualeditor-dialog-meta-categories-defaultsort-label' => 'Zadano sortiraj ovaj članak kao',
 	'visualeditor-dialog-meta-categories-input-matchingcategorieslabel' => 'Podudarne kategorije',
+	'visualeditor-dialog-meta-categories-input-newcategorylabel' => 'Nova kategorija',
 	'visualeditor-dialog-meta-categories-input-placeholder' => 'Dodaj kategoriju',
 	'visualeditor-dialog-meta-categories-options' => 'Mogućnosti',
 	'visualeditor-dialog-meta-categories-section' => 'Kategorije',
 	'visualeditor-dialog-meta-categories-sortkey-label' => 'Sortiraj ovaj članak kao',
+	'visualeditor-dialog-meta-languages-code-label' => 'Jezični kôd',
 	'visualeditor-dialog-meta-languages-label' => 'Jezici',
 	'visualeditor-dialog-meta-languages-link-label' => 'Povezani članak',
 	'visualeditor-dialog-meta-languages-readonlynote' => 'Ovo je popis članaka na drugim jezicima koji su povezani s ovim. Za sada, uređivanje nije moguće u VisualEditoru, već na stari način.',
 	'visualeditor-dialog-meta-languages-section' => 'Jezici',
 	'visualeditor-dialog-meta-title' => 'Postavke stranice',
 	'visualeditor-dialog-reference-insert-button' => 'Umetni izvor',
+	'visualeditor-dialog-reference-insert-title' => 'Umetni izvor',
 	'visualeditor-dialog-reference-options-group-label' => 'Koristi ovu grupu',
+	'visualeditor-dialog-reference-options-name-label' => 'Ponovno koristi pod ovim imenom',
 	'visualeditor-dialog-reference-options-section' => 'Mogućnosti',
 	'visualeditor-dialog-reference-title' => 'Izvori',
 	'visualeditor-dialog-reference-useexisting-label' => 'Koristi postojeći izvor',
@@ -6896,6 +6903,7 @@ $messages['hr'] = array(
 	'visualeditor-dialog-transclusion-content' => 'Sadržaj',
 	'visualeditor-dialog-transclusion-options' => 'Mogućnosti',
 	'visualeditor-dialog-transclusion-placeholder' => 'Novi predložak',
+	'visualeditor-dialog-transclusion-remove-content' => 'Ukloni sadržaj',
 	'visualeditor-dialog-transclusion-remove-param' => 'Ukloni parametar',
 	'visualeditor-dialog-transclusion-remove-template' => 'Ukloni predložak',
 	'visualeditor-dialog-transclusion-title' => 'Uključivanje',
@@ -6904,8 +6912,10 @@ $messages['hr'] = array(
 	'visualeditor-dialogbutton-reference-tooltip' => 'Izvor',
 	'visualeditor-dialogbutton-referencelist-tooltip' => 'Popis izvora',
 	'visualeditor-dialogbutton-transclusion-tooltip' => 'Uključivanje',
+	'visualeditor-editconflict' => 'Vaše izmjene ne mogu se sačuvati zbog sukoba uređivanja. Želite li problem riješiti ručno?',
+	'visualeditor-editnotices-tool' => '$1 {{PLURAL:$1|napomena|napomene}}',
 	'visualeditor-editsummary' => 'Opišite izmjene koje ste napravili',
-	'visualeditor-feedback-tool' => 'Ostavite komentar',
+	'visualeditor-feedback-tool' => 'Napišite povratnu informaciju',
 	'visualeditor-formatdropdown-format-heading1' => 'Naslov 1',
 	'visualeditor-formatdropdown-format-heading2' => 'Naslov 2',
 	'visualeditor-formatdropdown-format-heading3' => 'Naslov 3',
@@ -7961,6 +7971,7 @@ $messages['is'] = array(
  * @author Darth Kule
  * @author Doc.mari
  * @author Eleonora negri
+ * @author Elitre
  * @author F. Cosoleto
  * @author Gianfranco
  * @author Minerva Titani
@@ -8057,7 +8068,7 @@ $messages['it'] = array(
 	'visualeditor-editnotices-tool' => '$1 {{PLURAL:$1|notifica|notifiche}}',
 	'visualeditor-editsummary' => 'Descrivi cosa hai cambiato',
 	'visualeditor-feedback-link' => 'Project:VisualEditor/Commenti',
-	'visualeditor-feedback-tool' => 'Lascia un commento',
+	'visualeditor-feedback-tool' => 'Lascia un commento sulla nuova interfaccia',
 	'visualeditor-formatdropdown-format-heading1' => 'Titolo 1',
 	'visualeditor-formatdropdown-format-heading2' => 'Titolo 2',
 	'visualeditor-formatdropdown-format-heading3' => 'Titolo 3',
