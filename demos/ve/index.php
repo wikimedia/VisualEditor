@@ -305,12 +305,12 @@ $html = file_get_contents( $page );
 		<script src="../../modules/jquery.uls/src/jquery.uls.lcd.js"></script>
 		<script src="../../modules/jquery.uls/src/jquery.uls.languagefilter.js"></script>
 		<script src="../../modules/jquery.uls/src/jquery.uls.regionfilter.js"></script>
-		<!-- ext.visualEditor.experimental -->
+		<!-- ext.visualEditor.language -->
 		<script src="../../modules/ve/dm/annotations/ve.dm.LanguageAnnotation.js"></script>
 		<script src="../../modules/ve/ce/annotations/ve.ce.LanguageAnnotation.js"></script>
 		<script src="../../modules/ve/ui/inspectors/ve.ui.LanguageInspector.js"></script>
+		<script src="../../modules/ve/ui/tools/ve.ui.LanguageInspectorTool.js"></script>
 		<script src="../../modules/ve/ui/widgets/ve.ui.LanguageInputWidget.js"></script>
-		<script src="../../modules/ve/ui/tools/ve.ui.ExperimentalTool.js"></script>
 
 		<!-- demo -->
 		<script>

@@ -153,7 +153,7 @@ class MakeStaticLoader extends Maintenance {
 			'jquery.uls.data',
 			'jquery.uls.compact',
 			'jquery.uls',
-			'ext.visualEditor.experimental',
+			'ext.visualEditor.language',
 		);
 
 		foreach ( $modules as $module ) {
