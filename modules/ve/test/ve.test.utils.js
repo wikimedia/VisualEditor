@@ -26,24 +26,23 @@ ve.test.utils.runIsolateTest = function ( assert, type, range, expected, label )
 };
 
 ve.test.utils.runFormatConverterTest = function ( assert, range, type, attributes, expectedSelection, expectedData, msg ) {
-	var selection,
-		surface = ve.test.utils.createSurfaceFromHtml( ve.dm.example.isolationHtml ),
+	var surface = ve.test.utils.createSurfaceFromHtml( ve.dm.example.isolationHtml ),
 		formatAction = new ve.ui.FormatAction( surface ),
 		data = ve.copy( surface.getModel().getDocument().getFullData() ),
 		originalData = ve.copy( data );
 
 	expectedData( data );
 
-	surface.getModel().change( null, range );
+	surface.getModel().setSelection( range );
 	formatAction.convert( type, attributes );
 
 	assert.deepEqual( surface.getModel().getDocument().getFullData(), data, msg + ': data models match' );
 	assert.deepEqual( surface.getModel().getSelection(), expectedSelection, msg + ': selections match' );
 
-	selection = surface.getModel().undo();
+	surface.getModel().undo();
 
 	assert.deepEqual( surface.getModel().getDocument().getFullData(), originalData, msg + ' (undo): data models match' );
-	assert.deepEqual( selection, range, msg + ' (undo): selections match' );
+	assert.deepEqual( surface.getModel().getSelection(), range, msg + ' (undo): selections match' );
 
 	surface.destroy();
 };

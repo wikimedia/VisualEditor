@@ -24,7 +24,6 @@ ve.ce.SurfaceObserver = function VeCeSurfaceObserver( documentView ) {
 	this.documentView = documentView;
 	this.domDocument = null;
 	this.polling = false;
-	this.locked = false;
 	this.timeoutId = null;
 	this.frequency = 250; // ms
 
@@ -112,7 +111,7 @@ ve.ce.SurfaceObserver.prototype.timerLoop = function ( firstTime ) {
 		clearTimeout( this.timeoutId );
 		this.timeoutId = null;
 	}
-	if ( !firstTime && !this.locked ) {
+	if ( !firstTime ) {
 		this.pollOnce();
 	}
 	// only reach this point if pollOnce does not throw an exception
