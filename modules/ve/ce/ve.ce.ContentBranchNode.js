@@ -165,6 +165,10 @@ ve.ce.ContentBranchNode.prototype.renderContents = function () {
 		return;
 	}
 
+	if ( this.root instanceof ve.ce.DocumentNode ) {
+		this.root.getSurface().setContentBranchNodeChanged( true );
+	}
+
 	// Detach all child nodes from this.$
 	for ( i = 0, len = this.$.length; i < len; i++ ) {
 		node = this.$[i];

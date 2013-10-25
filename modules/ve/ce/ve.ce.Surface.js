@@ -45,6 +45,7 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 	this.dragging = false;
 	this.relocating = false;
 	this.selecting = false;
+	this.contentBranchNodeChanged = false;
 	this.$phantoms = this.$$( '<div>' );
 	this.$highlights = this.$$( '<div>' );
 	this.$pasteTarget = this.$$( '<div>' );
@@ -938,6 +939,8 @@ ve.ce.Surface.prototype.onModelSelect = function ( selection ) {
 		next = null,
 		previous = this.focusedNode;
 
+	this.contentBranchNodeChanged = false;
+
 	// Detect when only a single inline element is selected
 	if ( !selection.isCollapsed() ) {
 		start = this.documentView.getDocumentNode().getNodeFromOffset( selection.start + 1 );
@@ -993,6 +996,10 @@ ve.ce.Surface.prototype.onModelSelect = function ( selection ) {
  * @param {ve.dm.Transaction} transaction Transaction that was processed
  */
 ve.ce.Surface.prototype.onModelDocumentUpdate = function () {
+	if ( this.contentBranchNodeChanged ) {
+		// Update the selection state from model
+		this.onModelSelect( this.surface.getModel().selection );
+	}
 	// Update the state of the SurfaceObserver
 	this.surfaceObserver.pollOnceNoEmit();
 };
@@ -1907,4 +1914,8 @@ ve.ce.Surface.prototype.changeModel = function ( transaction, range ) {
 	} finally {
 		this.newModelSelection = null;
 	}
+};
+
+ve.ce.Surface.prototype.setContentBranchNodeChanged = function ( isChanged ) {
+	this.contentBranchNodeChanged = isChanged;
 };
