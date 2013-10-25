@@ -309,7 +309,8 @@ ve.ui.MWReferenceDialog.prototype.useReference = function ( ref ) {
 	);
 
 	// Event handlers
-	this.referenceSurface.getSurface().getModel().connect( this, { 'change': 'onSurfaceChange' } );
+	this.referenceSurface.getSurface().getModel().getDocument()
+		.connect( this, { 'transact': 'onDocumentTransact' } );
 
 	// Initialization
 	this.referenceGroupInput.setValue( refGroup );
@@ -322,7 +323,7 @@ ve.ui.MWReferenceDialog.prototype.useReference = function ( ref ) {
 /**
  * Handle reference surface change events
  */
-ve.ui.MWReferenceDialog.prototype.onSurfaceChange = function () {
+ve.ui.MWReferenceDialog.prototype.onDocumentTransact = function () {
 	var data = this.referenceSurface.getContent(),
 		// TODO: Check for other types of empty, e.g. only whitespace?
 		disabled = data.length <= 4;

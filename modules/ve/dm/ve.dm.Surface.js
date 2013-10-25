@@ -47,7 +47,7 @@ OO.mixinClass( ve.dm.Surface, OO.EventEmitter );
 
 /**
  * @event select
- * @param {ve.ui.MenuItemWidget} item Menu item
+ * @param {ve.Range} selection
  */
 
 /**
@@ -315,7 +315,7 @@ ve.dm.Surface.prototype.change = function ( transactions, selection ) {
 	}
 	var i, len, left, right, leftAnnotations, rightAnnotations, insertionAnnotations,
 		selectedNodes = {},
-		selectionChange = false,
+		oldSelection = this.selection,
 		contextChange = false,
 		dataModelData = this.documentModel.data;
 
@@ -342,10 +342,6 @@ ve.dm.Surface.prototype.change = function ( transactions, selection ) {
 	}
 
 	if ( selection ) {
-		// Detect if selection range changed
-		if ( !this.selection || !this.selection.equals( selection ) ) {
-			selectionChange = true;
-		}
 		// Detect if selected nodes changed
 		selectedNodes.start = this.documentModel.getNodeFromOffset( selection.start );
 		if ( selection.getLength() ) {
@@ -358,10 +354,12 @@ ve.dm.Surface.prototype.change = function ( transactions, selection ) {
 			contextChange = true;
 		}
 		this.selectedNodes = selectedNodes;
-		if ( selectionChange ) {
-			this.emit( 'select', this.selection.clone() );
-		}
 		this.selection = selection;
+	}
+
+	// Emit select event if selection range changed
+	if ( !oldSelection || !oldSelection.equals( this.selection ) ) {
+		this.emit( 'select', this.selection.clone() );
 	}
 
 	// Only emit a transact event if transactions were actually processed

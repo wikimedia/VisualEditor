@@ -31,7 +31,7 @@ ve.ui.Context = function VeUiContext( surface, config ) {
 	this.embedded = false;
 	this.selection = null;
 	this.toolbar = null;
-	this.afterChangeTimeout = null;
+	this.afterModelSelectTimeout = null;
 	this.popup = new ve.ui.PopupWidget( { '$$': this.$$, '$container': this.surface.getView().$ } );
 	this.$menu = this.$$( '<div>' );
 	this.inspectors = new ve.ui.SurfaceWindowSet( surface, ve.ui.inspectorFactory );
@@ -45,7 +45,7 @@ ve.ui.Context = function VeUiContext( surface, config ) {
 	);
 
 	// Events
-	this.surface.getModel().connect( this, { 'change': 'onChange' } );
+	this.surface.getModel().connect( this, { 'select': 'onModelSelect' } );
 	this.surface.getView().connect( this, {
 		'selectionStart': 'onSelectionStart',
 		'selectionEnd': 'onSelectionEnd',
@@ -81,29 +81,25 @@ OO.inheritClass( ve.ui.Context, ve.Element );
  *
  * The response to selection changes is deferred to prevent close handlers that process
  * changes from causing this function to recurse. These responses are also batched for efficiency,
- * so that if there are three selection changes in the same tick, afterChange() only runs once.
+ * so that if there are three selection changes in the same tick, afterModelSelect() only runs once.
  *
  * @method
- * @see #afterChange
- * @param {ve.dm.Transaction[]} transactions Change transactions
- * @param {ve.Range} selection Change selection
+ * @see #afterModelSelect
  */
-ve.ui.Context.prototype.onChange = function ( transactions, selection ) {
-	if ( selection && !this.openingInspector && !this.hiding ) {
-		if ( this.afterChangeTimeout === null ) {
-			this.afterChangeTimeout = setTimeout( ve.bind( this.afterChange, this ) );
-		}
+ve.ui.Context.prototype.onModelSelect = function () {
+	if ( !this.openingInspector && !this.hiding && this.afterModelSelectTimeout === null ) {
+		this.afterModelSelectTimeout = setTimeout( ve.bind( this.afterModelSelect, this ) );
 	}
 };
 
 /**
- * Deferred response to one or more selection changes.
+ * Deferred response to one or more select events.
  *
  * Update the context menu for the new selection, except if the user is selecting or relocating
  * content. If the popup is open, close it, even while selecting or relocating.
  */
-ve.ui.Context.prototype.afterChange = function () {
-	this.afterChangeTimeout = null;
+ve.ui.Context.prototype.afterModelSelect = function () {
+	this.afterModelSelectTimeout = null;
 	if ( this.popup.isVisible() ) {
 		this.hide();
 		this.update();

@@ -76,8 +76,6 @@ ve.ce.ProtectedNode.prototype.onProtectedSetup = function () {
 
 	// Events
 	this.$.on( 'mouseenter.ve-ce-protectedNode', ve.bind( this.onProtectedMouseEnter, this ) );
-	this.getRoot().getSurface().getModel()
-		.connect( this, { 'change': 'onSurfaceModelChange' } );
 	this.getRoot().getSurface().getSurface()
 		.connect( this, { 'position': 'positionPhantoms' } );
 
@@ -119,8 +117,6 @@ ve.ce.ProtectedNode.prototype.onProtectedTeardown = function () {
 
 	// Events
 	this.$.off( '.ve-ce-protectedNode' );
-	this.root.getSurface().getModel()
-		.disconnect( this, { 'change': 'onSurfaceModelChange' } );
 	this.getRoot().getSurface().getSurface()
 		.disconnect( this, { 'position': 'positionPhantoms' } );
 
@@ -201,17 +197,6 @@ ve.ce.ProtectedNode.prototype.onSurfaceMouseOut = function ( e ) {
 };
 
 /**
- * Handle surface model change events
- *
- * @method
- */
-ve.ce.ProtectedNode.prototype.onSurfaceModelChange = function () {
-	if ( this.$phantoms.length ) {
-		this.positionPhantoms();
-	}
-};
-
-/**
  * Handle resize start events.
  *
  * @method
@@ -243,6 +228,7 @@ ve.ce.ProtectedNode.prototype.createPhantoms = function () {
 		'mousemove.ve-ce-protectedNode': ve.bind( this.onSurfaceMouseMove, this ),
 		'mouseout.ve-ce-protectedNode': ve.bind( this.onSurfaceMouseOut, this )
 	} );
+	surface.getModel().getDocument().connect( this, { 'transact': 'positionPhantoms' } );
 };
 
 /**
@@ -277,5 +263,6 @@ ve.ce.ProtectedNode.prototype.clearPhantoms = function () {
 	var surface = this.root.getSurface();
 	surface.replacePhantoms( null );
 	surface.$.unbind( '.ve-ce-protectedNode' );
+	surface.getModel().getDocument().disconnect( this, { 'transact': 'positionPhantoms' } );
 	this.$phantoms = $( [] );
 };
