@@ -3092,6 +3092,7 @@ $messages['co'] = array(
  * @author Juandev
  * @author Koo6
  * @author Littledogboy
+ * @author Michaelbrabec
  * @author Mormegil
  * @author Polda18
  * @author ශ්වෙත
@@ -3231,9 +3232,9 @@ $messages['cs'] = array(
 	'visualeditor-mwalienextensioninspector-title' => 'Rozšíření MediaWiki',
 	'visualeditor-mwhieroinspector-title' => 'Hieroglyfy',
 	'visualeditor-mwmathinspector-title' => 'LaTeX',
-	'visualeditor-notification-created' => 'Stránka „$1“ byla založena.',
+	'visualeditor-notification-created' => 'Stránka „$1“ byla vytvořena.',
 	'visualeditor-notification-restored' => 'Stránka „$1“ byla obnovena.',
-	'visualeditor-notification-saved' => 'Vaše změny ve stránce „$1“ byly uloženy.',
+	'visualeditor-notification-saved' => 'Vaše změny na stránce „$1“ byly uloženy.',
 	'visualeditor-outline-control-move-down' => 'Přesunout položku dolů',
 	'visualeditor-outline-control-move-up' => 'Přesunout položku nahoru',
 	'visualeditor-parameter-input-placeholder' => 'Jméno parametru',
@@ -8227,7 +8228,7 @@ $messages['ja'] = array(
 	'visualeditor-dialog-action-close' => '閉じる',
 	'visualeditor-dialog-action-goback' => '戻る',
 	'visualeditor-dialog-beta-welcome-action-continue' => '続行',
-	'visualeditor-dialog-beta-welcome-content' => 'これは私たちの新しい、今までより簡単な編集方法です。これはまだ「ベータ版」であるため、ページの一部に編集できない部分が見つかるかもしれませんし、修正が必要な問題に遭遇するかもしれません。あなたが加えた変更内容を確認（review）することをお勧めします、またビジュアルエディター使用中に発生したどんな問題でも報告してくださることを歓迎します。(フィードバックするには\'{{int:visualeditor-beta-label}}\'ボタンをクリックしてください)。"$1"タブをクリックすると、従来通りのウィキテキストエディターに切り替えることもできます（ただし未保存の編集内容は失われます）。',
+	'visualeditor-dialog-beta-welcome-content' => 'これは私たちの新しい、今までより簡単な編集方法です。これはまだベータ版であるため、ページの一部に編集できない部分が見つかるかもしれませんし、修正が必要な問題に遭遇するかもしれません。あなたが加えた変更内容を確認することをお勧めします、またビジュアルエディター使用中に発生したどんな問題でも報告してくださることを歓迎します。(フィードバックするには「{{int:visualeditor-beta-label}}」ボタンをクリックしてください)。「$1」タブをクリックすると、従来通りのウィキテキスト エディターに切り替えることもできます (ただし未保存の編集内容は失われます)。',
 	'visualeditor-dialog-beta-welcome-title' => 'ビジュアルエディターへ{{GENDER:$1|ようこそ}}',
 	'visualeditor-dialog-media-content-section' => 'キャプション',
 	'visualeditor-dialog-media-insert-button' => 'メディアを挿入',
@@ -8358,7 +8359,7 @@ $messages['ja'] = array(
 	'visualeditor-savedialog-label-save' => 'ページを保存',
 	'visualeditor-savedialog-label-warning' => '警告',
 	'visualeditor-savedialog-title-conflict' => '競合',
-	'visualeditor-savedialog-title-nochanges' => 'レビューすべき変更点なし',
+	'visualeditor-savedialog-title-nochanges' => '確認すべき変更点なし',
 	'visualeditor-savedialog-title-review' => '変更内容の確認',
 	'visualeditor-savedialog-title-save' => '変更内容の保存',
 	'visualeditor-savedialog-warning-dirty' => '編集内容が競合しているそれがあります - 保存する前に確認してください。',
