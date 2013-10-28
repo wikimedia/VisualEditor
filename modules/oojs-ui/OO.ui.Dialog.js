@@ -16,6 +16,7 @@
  * @param {OO.ui.WindowSet} windowSet Window set this dialog is part of
  * @param {Object} [config] Configuration options
  * @cfg {boolean} [footless] Hide foot
+ * @cfg {boolean} [small] Make the dialog small
  */
 OO.ui.Dialog = function OoUiDialog( windowSet, config ) {
 	// Configuration initialization
