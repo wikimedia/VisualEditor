@@ -539,17 +539,17 @@ ve.init.mw.Target.prototype.load = function () {
 		'timeout': 100000,
 		'cache': 'false'
 	} )
+		.then( function ( data, status, jqxhr ) {
+			ve.track( 'performance.domLoad', {
+				'bytes': $.byteLength( jqxhr.responseText ),
+				'duration': ve.now() - start,
+				'cacheHit': /hit/i.test( jqxhr.getResponseHeader( 'X-Cache' ) ),
+				'parsoid': jqxhr.getResponseHeader( 'X-Parsoid-Performance' )
+			} );
+			return jqxhr;
+		} )
 		.done( ve.bind( ve.init.mw.Target.onLoad, this ) )
 		.fail( ve.bind( ve.init.mw.Target.onLoadError, this ) );
-
-	this.loading.done( function ( data, status, jqxhr ) {
-		ve.track( 'performance.domLoad', {
-			'bytes': $.byteLength( jqxhr.responseText ),
-			'duration': ve.now() - start,
-			'cacheHit': /hit/i.test( jqxhr.getResponseHeader( 'X-Cache' ) ),
-			'parsoid': jqxhr.getResponseHeader( 'X-Parsoid-Performance' )
-		} );
-	} );
 
 	return true;
 };
@@ -598,16 +598,16 @@ ve.init.mw.Target.prototype.save = function ( doc, options ) {
 		// Wait up to 100 seconds before giving up
 		'timeout': 100000
 	} )
+		.then( function ( data, status, jqxhr ) {
+			ve.track( 'performance.domSave', {
+				'bytes': $.byteLength( jqxhr.responseText ),
+				'duration': ve.now() - start,
+				'parsoid': jqxhr.getResponseHeader( 'X-Parsoid-Performance' )
+			} );
+			return jqxhr;
+		} )
 		.done( ve.bind( ve.init.mw.Target.onSave, this ) )
 		.fail( ve.bind( ve.init.mw.Target.onSaveError, this ) );
-
-	this.saving.done( function ( data, status, jqxhr ) {
-		ve.track( 'performance.domSave', {
-			'bytes': $.byteLength( jqxhr.responseText ),
-			'duration': ve.now() - start,
-			'parsoid': jqxhr.getResponseHeader( 'X-Parsoid-Performance' )
-		} );
-	} );
 
 	return true;
 };
