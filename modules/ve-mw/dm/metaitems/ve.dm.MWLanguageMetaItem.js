@@ -39,14 +39,15 @@ ve.dm.MWLanguageMetaItem.static.toDataElement = function ( domElements ) {
 	return {
 		'type': 'mwLanguage',
 		'attributes': {
-			'href': href
+			'href': href,
+			'origRel': firstDomElement.getAttribute( 'rel' )
 		}
 	};
 };
 
 ve.dm.MWLanguageMetaItem.static.toDomElements = function ( dataElement, doc ) {
 	var domElement = doc.createElement( 'link' );
-	domElement.setAttribute( 'rel', 'mw:WikiLink/Language' );
+	domElement.setAttribute( 'rel', dataElement.attributes.origRel || 'mw:PageProp/Language' );
 	domElement.setAttribute( 'href', dataElement.attributes.href );
 	return [ domElement ];
 };

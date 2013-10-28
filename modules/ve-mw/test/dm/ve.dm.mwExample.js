@@ -255,9 +255,10 @@ ve.dm.mwExample.withMeta = [
 			'category': 'Category:Bar',
 			'origCategory': 'Category:Bar',
 			'sortkey': '',
-			'origSortkey': ''
+			'origSortkey': '',
+			'origRel': 'mw:PageProp/Category'
 		},
-		'htmlAttributes': [ { 'values': { 'rel': 'mw:WikiLink/Category', 'href': './Category:Bar' } } ]
+		'htmlAttributes': [ { 'values': { 'rel': 'mw:PageProp/Category', 'href': './Category:Bar' } } ]
 	},
 	{ 'type': '/mwCategory' },
 	'B',
@@ -302,10 +303,11 @@ ve.dm.mwExample.withMeta = [
 			'category': 'Category:Foo foo',
 			'origCategory': 'Category:Foo_foo',
 			'sortkey': 'Bar baz#quux',
-			'origSortkey': 'Bar baz%23quux'
+			'origSortkey': 'Bar baz%23quux',
+			'origRel': 'mw:PageProp/Category'
 		},
 		'htmlAttributes': [ { 'values':  {
-			'rel': 'mw:WikiLink/Category',
+			'rel': 'mw:PageProp/Category',
 			'href': './Category:Foo_foo#Bar baz%23quux'
 		} } ]
 	},
@@ -1434,7 +1436,7 @@ ve.dm.mwExample.domToDataCases = {
 	'whitespace preservation with wrapped comments and language links': {
 		'html': '<body>Foo\n' +
 			'<link rel="mw:WikiLink/Language" href="http://de.wikipedia.org/wiki/Foo">\n' +
-			'<link rel="mw:WikiLink/Language" href="http://fr.wikipedia.org/wiki/Foo"></body>',
+			'<link rel="mw:PageProp/Language" href="http://fr.wikipedia.org/wiki/Foo"></body>',
 		'data': [
 			{
 				'type': 'paragraph',
@@ -1450,7 +1452,8 @@ ve.dm.mwExample.domToDataCases = {
 			{
 				'type': 'mwLanguage',
 				'attributes': {
-					'href': 'http://de.wikipedia.org/wiki/Foo'
+					'href': 'http://de.wikipedia.org/wiki/Foo',
+					'origRel': 'mw:WikiLink/Language'
 				},
 				'htmlAttributes': [ { 'values': {
 					'href': 'http://de.wikipedia.org/wiki/Foo',
@@ -1462,11 +1465,12 @@ ve.dm.mwExample.domToDataCases = {
 			{
 				'type': 'mwLanguage',
 				'attributes': {
-					'href': 'http://fr.wikipedia.org/wiki/Foo'
+					'href': 'http://fr.wikipedia.org/wiki/Foo',
+					'origRel': 'mw:PageProp/Language'
 				 },
 				 'htmlAttributes': [ { 'values': {
 					'href': 'http://fr.wikipedia.org/wiki/Foo',
-					'rel': 'mw:WikiLink/Language'
+					'rel': 'mw:PageProp/Language'
 				} } ],
 				'internal': { 'whitespace': [ '\n' ] }
 			},
@@ -1477,10 +1481,10 @@ ve.dm.mwExample.domToDataCases = {
 	},
 	'document with meta elements': {
 		'html': '<body><!-- No content conversion --><meta property="mw:PageProp/nocc" /><p>Foo' +
-			'<link rel="mw:WikiLink/Category" href="./Category:Bar" />Bar' +
+			'<link rel="mw:PageProp/Category" href="./Category:Bar" />Bar' +
 			'<meta property="mw:foo" content="bar" />Ba<!-- inline -->z</p>' +
 			'<meta property="mw:bar" content="baz" /><!--barbaz-->' +
-			'<link rel="mw:WikiLink/Category" href="./Category:Foo_foo#Bar baz%23quux" />' +
+			'<link rel="mw:PageProp/Category" href="./Category:Foo_foo#Bar baz%23quux" />' +
 			'<meta typeof="mw:Placeholder" data-parsoid="foobar" /></body>',
 		'data': ve.dm.mwExample.withMeta
 	},
