@@ -163,7 +163,13 @@ ve.dm.example.createDomElement = function ( type, attributes ) {
 
 ve.dm.example.testDir = window.VE_TESTDIR || '.';
 
+ve.dm.example.fullUrl = function ( href ) {
+	return $( '<a>' ).attr( 'href', href )[0].href;
+};
+
 ve.dm.example.imgSrc = ve.dm.example.testDir + '/example.png';
+
+ve.dm.example.fullImgSrc = ve.dm.example.fullUrl( ve.dm.example.imgSrc );
 
 ve.dm.example.image = {
 	html: '<img src="' + ve.dm.example.imgSrc + '" alt="Example" width="100" height="50">',
@@ -175,12 +181,17 @@ ve.dm.example.image = {
 			'width': 100,
 			'height': 50
 		},
-		'htmlAttributes': [ { 'values': {
-			'src': ve.dm.example.imgSrc,
-			'alt': 'Example',
-			'width': '100',
-			'height': '50'
-		} } ]
+		'htmlAttributes': [
+			{
+				'values': {
+					'src': ve.dm.example.imgSrc,
+					'alt': 'Example',
+					'width': '100',
+					'height': '50'
+				},
+				'computed': { 'src': ve.dm.example.fullImgSrc }
+			}
+		]
 	}
 };
 
@@ -1570,6 +1581,7 @@ ve.dm.example.domToDataCases = {
 	},
 	'list item with space followed by link': {
 		'html': '<body><ul><li><p> <a href="Foobar">bar</a></p></li></ul></body>',
+		'head': '<base href="http://example.com/Foo" />',
 		'data': [
 			{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
 			{ 'type': 'listItem' },
@@ -1581,9 +1593,10 @@ ve.dm.example.domToDataCases = {
 					'attributes': {
 						'href': 'Foobar'
 					},
-					'htmlAttributes': [ { 'values': {
-						'href': 'Foobar'
-					} } ]
+					'htmlAttributes': [ {
+						'values': { 'href': 'Foobar' },
+						'computed': { 'href': 'http://example.com/Foobar' }
+					} ]
 				} ]
 			],
 			[
@@ -1593,9 +1606,10 @@ ve.dm.example.domToDataCases = {
 					'attributes': {
 						'href': 'Foobar'
 					},
-					'htmlAttributes': [ { 'values': {
-						'href': 'Foobar'
-					} } ]
+					'htmlAttributes': [ {
+						'values': { 'href': 'Foobar' },
+						'computed': { 'href': 'http://example.com/Foobar' }
+					} ]
 				} ]
 			],
 			[
@@ -1605,9 +1619,10 @@ ve.dm.example.domToDataCases = {
 					'attributes': {
 						'href': 'Foobar'
 					},
-					'htmlAttributes': [ { 'values': {
-						'href': 'Foobar'
-					} } ]
+					'htmlAttributes': [ {
+						'values': { 'href': 'Foobar' },
+						'computed': { 'href': 'http://example.com/Foobar' }
+					} ]
 				} ]
 			],
 			{ 'type': '/paragraph' },
@@ -2374,6 +2389,7 @@ ve.dm.example.domToDataCases = {
 	},
 	'nested annotations are closed and reopened in the correct order': {
 		'html': '<body><p><a href="Foo">F<b>o<i>o</i></b><i>b</i></a><i>a<b>r</b>b<u>a</u>z</i></p></body>',
+		'head': '<base href="http://example.com/Bar/Baz" />',
 		'data': [
 			{ 'type': 'paragraph' },
 			[
@@ -2384,9 +2400,10 @@ ve.dm.example.domToDataCases = {
 						'attributes': {
 							'href': 'Foo'
 						},
-						'htmlAttributes': [ { 'values': {
-							'href': 'Foo'
-						} } ]
+						'htmlAttributes': [ {
+							'values': { 'href': 'Foo' },
+							'computed': { 'href': 'http://example.com/Bar/Foo' }
+						} ]
 					}
 				]
 			],
@@ -2398,9 +2415,10 @@ ve.dm.example.domToDataCases = {
 						'attributes': {
 							'href': 'Foo'
 						},
-						'htmlAttributes': [ { 'values': {
-							'href': 'Foo'
-						} } ]
+						'htmlAttributes': [ {
+							'values': { 'href': 'Foo' },
+							'computed': { 'href': 'http://example.com/Bar/Foo' }
+						} ]
 					},
 					ve.dm.example.bold
 				]
@@ -2413,9 +2431,10 @@ ve.dm.example.domToDataCases = {
 						'attributes': {
 							'href': 'Foo'
 						},
-						'htmlAttributes': [ { 'values': {
-							'href': 'Foo'
-						} } ]
+						'htmlAttributes': [ {
+							'values': { 'href': 'Foo' },
+							'computed': { 'href': 'http://example.com/Bar/Foo' }
+						} ]
 					},
 					ve.dm.example.bold,
 					ve.dm.example.italic
@@ -2429,9 +2448,10 @@ ve.dm.example.domToDataCases = {
 						'attributes': {
 							'href': 'Foo'
 						},
-						'htmlAttributes': [ { 'values': {
-							'href': 'Foo'
-						} } ]
+						'htmlAttributes': [ {
+							'values': { 'href': 'Foo' },
+							'computed': { 'href': 'http://example.com/Bar/Foo' }
+						} ]
 					},
 					ve.dm.example.italic
 				]

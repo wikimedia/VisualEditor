@@ -85,6 +85,50 @@ ve.ce.GeneratedContentNode.prototype.onGeneratedContentNodeUpdate = function () 
 };
 
 /**
+ * Make an array of DOM elements suitable for rendering.
+ *
+ * Subclasses can override this to provide their own cleanup steps. This function takes an
+ * array of DOM elements cloned within the source document and returns an array of DOM elements
+ * cloned into the target document. If it's important that the DOM elements still be associated
+ * with the original document, you should modify domElements before calling the parent
+ * implementation, otherwise you should call the parent implementation first and modify its
+ * return value.
+ *
+ * @param {HTMLElement[]} domElements Clones of the DOM elements from the store
+ * @returns {HTMLElement[]} Clones of the DOM elements in the right document, with modifications
+ */
+ve.ce.GeneratedContentNode.prototype.getRenderedDomElements = function ( domElements ) {
+	var i, len, attr, $rendering,
+		doc = this.getElementDocument();
+
+	/**
+	 * Callback for jQuery.fn.each that resolves the value of attr to the computed
+	 * property value. Called in the context of an HTMLElement.
+	 * @private
+	 */
+	function resolveAttribute() {
+		this.setAttribute( attr, this[attr] );
+	}
+
+	// Copy domElements so we can modify the elements
+	// Filter out link, meta and style tags for bug 50043
+	$rendering = $( domElements ).not( 'link, meta, style' );
+	// Also remove link, meta and style tags nested inside other tags
+	$rendering.find( 'link, meta, style' ).remove();
+
+	// Render the computed values of some attributes
+	for ( i = 0, len = ve.dm.Converter.computedAttributes.length; i < len; i++ ) {
+		attr = ve.dm.Converter.computedAttributes[i];
+		$rendering.find( '[' + attr + ']' )
+			.add( $rendering.filter( '[' + attr + ']' ) )
+			.each( resolveAttribute );
+	}
+
+	// Clone the elements into the target document
+	return ve.copyDomElements( $rendering.toArray(), doc );
+};
+
+/**
  * Rerender the contents of this node.
  *
  * @param {Object|string|Array} generatedContents Generated contents, in the default case an HTMLElement array
@@ -92,15 +136,10 @@ ve.ce.GeneratedContentNode.prototype.onGeneratedContentNodeUpdate = function () 
  * @fires teardown
  */
 ve.ce.GeneratedContentNode.prototype.render = function ( generatedContents ) {
-	var $rendering, doc = this.getElementDocument();
 	if ( this.live ) {
 		this.emit( 'teardown' );
 	}
-	// Filter out link, meta and style tags for bug 50043
-	$rendering = $( ve.copyDomElements( generatedContents, doc ) ).not( 'link, meta, style' );
-	// Also remove link, meta and style tags nested inside other tags
-	$rendering.find( 'link, meta, style' ).remove();
-	this.$.empty().append( $rendering );
+	this.$.empty().append( this.getRenderedDomElements( ve.copyDomElements( generatedContents ) ) );
 	if ( this.live ) {
 		this.emit( 'setup' );
 		this.afterRender( generatedContents );

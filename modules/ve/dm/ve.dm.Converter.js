@@ -29,6 +29,14 @@ ve.dm.Converter = function VeDmConverter( modelRegistry, nodeFactory, annotation
 	this.contextStack = null;
 };
 
+/* Static Properties */
+
+/**
+ * List of HTML attribute names that {#buildHtmlAttributeList} should store computed values for.
+ * @type {string[]}
+ */
+ve.dm.Converter.computedAttributes = [ 'href', 'src' ];
+
 /* Static Methods */
 
 /**
@@ -124,8 +132,9 @@ ve.dm.Converter.openAndCloseAnnotations = function ( currentSet, targetSet, open
  * Build an HTML attribute list for attribute preservation.
  *
  * The attribute list is an array of objects, one for each DOM element. Each object contains a
- * map with attribute keys and values in .values, an (ordered) array of attribute keys in .keys,
- * and an array of attribute lists for the child nodes in .children .
+ * map with attribute keys and values in .values, a map with a subset of the attribute keys and
+ * their computed values in .computed (see {#computedAttributes}), and an array of attribute lists
+ * for the child nodes in .children .
  *
  * @static
  * @param {HTMLElement[]} domElements Array of DOM elements to build attribute list for
@@ -135,14 +144,22 @@ ve.dm.Converter.openAndCloseAnnotations = function ( currentSet, targetSet, open
  * @returns {Object[]|undefined} Attribute list, or undefined if empty
  */
 ve.dm.Converter.buildHtmlAttributeList = function ( domElements, spec, deep, attributeList ) {
-	var i, ilen, j, jlen, domAttributes, childList, empty = true;
+	var i, ilen, j, jlen, domAttributes, childList, attrName,
+		empty = true;
 	attributeList = attributeList || [];
 	for ( i = 0, ilen = domElements.length; i < ilen; i++ ) {
 		domAttributes = domElements[i].attributes || [];
 		attributeList[i] = { 'values': {} };
 		for ( j = 0, jlen = domAttributes.length; j < jlen; j++ ) {
-			if ( ve.dm.Model.matchesAttributeSpec( domAttributes[j].name, spec ) ) {
-				attributeList[i].values[domAttributes[j].name] = domAttributes[j].value;
+			attrName = domAttributes[j].name;
+			if ( ve.dm.Model.matchesAttributeSpec( attrName, spec ) ) {
+				attributeList[i].values[attrName] = domAttributes[j].value;
+				if ( ve.indexOf( attrName, this.computedAttributes ) !== -1 ) {
+					if ( !attributeList[i].computed ) {
+						attributeList[i].computed = {};
+					}
+					attributeList[i].computed[attrName] = domElements[i][attrName];
+				}
 				empty = false;
 			}
 		}
@@ -174,10 +191,11 @@ ve.dm.Converter.buildHtmlAttributeList = function ( domElements, spec, deep, att
  * @param {Object[]} attributeList Attribute list, see buildHtmlAttributeList()
  * @param {HTMLElement[]} domElements Array of DOM elements to render onto
  * @param {boolean|string|RegExp|Array|Object} [spec=true] Attribute specification, see ve.dm.Model
+ * @param {boolean} [computed=false] If true, use the computed values of attributes where available
  * @param {boolean} [overwrite=false] If true, overwrite attributes that are already set
  */
-ve.dm.Converter.renderHtmlAttributeList = function ( attributeList, domElements, spec, overwrite ) {
-	var i, ilen, key, values;
+ve.dm.Converter.renderHtmlAttributeList = function ( attributeList, domElements, spec, computed, overwrite ) {
+	var i, ilen, key, values, value;
 	if ( spec === undefined ) {
 		spec = true;
 	}
@@ -191,16 +209,17 @@ ve.dm.Converter.renderHtmlAttributeList = function ( attributeList, domElements,
 		values = attributeList[i].values;
 		for ( key in values ) {
 			if ( ve.dm.Model.matchesAttributeSpec( key, spec ) ) {
-				if ( values[key] === undefined ) {
+				value = computed && attributeList[i].computed && attributeList[i].computed[key] || values[key];
+				if ( value === undefined ) {
 					domElements[i].removeAttribute( key );
 				} else if ( overwrite || !domElements[i].hasAttribute( key ) ) {
-					domElements[i].setAttribute( key, values[key] );
+					domElements[i].setAttribute( key, value );
 				}
 			}
 		}
 		if ( attributeList[i].children ) {
 			ve.dm.Converter.renderHtmlAttributeList(
-				attributeList[i].children, domElements[i].children, spec
+				attributeList[i].children, domElements[i].children, spec, computed, overwrite
 			);
 		}
 	}
@@ -382,7 +401,7 @@ ve.dm.Converter.prototype.getDataFromDom = function ( doc, store, internalList )
 		store,
 		this.getDataFromDomRecursion( doc.body )
 	);
-	refData = this.internalList.convertToData( this );
+	refData = this.internalList.convertToData( this, doc );
 	linearData.batchSplice( linearData.getLength(), 0, refData );
 
 	// Clear the state
