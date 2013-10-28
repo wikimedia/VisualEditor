@@ -274,7 +274,6 @@ QUnit.test( 'onContentChange', function ( assert ) {
 // TODO: ve.ce.Surface#getDir
 
 /* Methods without return values */
-// TODO: ve.ce.Surface.static.textPattern
 // TODO: ve.ce.Surface#getSelectionRect
 // TODO: ve.ce.Surface#initialize
 // TODO: ve.ce.Surface#enable
