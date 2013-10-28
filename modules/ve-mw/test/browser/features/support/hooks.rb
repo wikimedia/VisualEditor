@@ -14,7 +14,7 @@ end
 
 #This is for the bullets test and the indent-outdent test
 Before('@make_selectable_line') do
-  if !$make_selectable_line or !(ENV['REUSE_BROWSER'] == 'true')
+  if (!$make_selectable_line or !(ENV['REUSE_BROWSER'] == 'true')) and @browser
     step 'I am logged in'
     step 'I am at my user page'
     step 'I click Edit for VisualEditor'
