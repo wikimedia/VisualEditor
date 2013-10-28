@@ -17,7 +17,9 @@
  */
 ve.ce.Document = function VeCeDocument( model, surface ) {
 	// Parent constructor
-	ve.Document.call( this, new ve.ce.DocumentNode( model.getDocumentNode(), surface ) );
+	ve.Document.call( this, new ve.ce.DocumentNode(
+		model.getDocumentNode(), surface, { '$$': surface.$$ }
+	) );
 
 	// Properties
 	this.model = model;

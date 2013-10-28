@@ -957,7 +957,7 @@ ve.init.mw.ViewPageTarget.prototype.setUpSurface = function ( doc, callback ) {
 			data = ve.dm.converter.getDataFromDom( doc, store, internalList );
 		setTimeout( function () {
 			// Build DM tree
-			var dmDoc = new ve.dm.Document( data, undefined, internalList );
+			var dmDoc = new ve.dm.Document( data, doc, undefined, internalList );
 			setTimeout( function () {
 				// Create ui.Surface (also creates ce.Surface and dm.Surface and builds CE tree)
 				target.surface = new ve.ui.Surface( dmDoc, target.surfaceOptions );
@@ -1027,7 +1027,7 @@ ve.init.mw.ViewPageTarget.prototype.startSanityCheck = function () {
 		// <body> were ignored in the conversion. So compare each child separately.
 		var i,
 			len = oldDom.body.childNodes.length,
-			newDoc = new ve.dm.Document( data, undefined, doc.getInternalList() ),
+			newDoc = new ve.dm.Document( data, oldDom, undefined, doc.getInternalList() ),
 			newDom = ve.dm.converter.getDomFromData( newDoc.getFullData(), newDoc.getStore(), newDoc.getInternalList() );
 
 		// Explicitly unlink our full copy of the original version of the document data

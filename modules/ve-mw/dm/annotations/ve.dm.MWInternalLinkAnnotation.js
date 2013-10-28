@@ -54,8 +54,13 @@ ve.dm.MWInternalLinkAnnotation.static.toDataElement = function ( domElements ) {
 };
 
 ve.dm.MWInternalLinkAnnotation.static.toDomElements = function ( dataElement, doc ) {
+	var parentResult = ve.dm.LinkAnnotation.static.toDomElements.call( this, dataElement, doc );
+	parentResult[0].setAttribute( 'rel', 'mw:WikiLink' );
+	return parentResult;
+};
+
+ve.dm.MWInternalLinkAnnotation.static.getHref = function ( dataElement ) {
 	var href,
-		domElement = doc.createElement( 'a' ),
 		title = dataElement.attributes.title,
 		origTitle = dataElement.attributes.origTitle;
 	if ( origTitle && decodeURIComponent( origTitle ).replace( /_/g, ' ' ) === title ) {
@@ -68,9 +73,7 @@ ve.dm.MWInternalLinkAnnotation.static.toDomElements = function ( dataElement, do
 	} else {
 		href = encodeURIComponent( title );
 	}
-	domElement.setAttribute( 'href', href );
-	domElement.setAttribute( 'rel', 'mw:WikiLink' );
-	return [ domElement ];
+	return href;
 };
 
 /**

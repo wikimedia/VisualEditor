@@ -12,15 +12,16 @@
  * @extends ve.ce.Annotation
  * @constructor
  * @param {ve.dm.LinkAnnotation} model Model to observe
+ * @param {ve.ce.ContentBranchNode} [parentNode] Node rendering this annotation
  * @param {Object} [config] Configuration options
  */
-ve.ce.LinkAnnotation = function VeCeLinkAnnotation( model, config ) {
+ve.ce.LinkAnnotation = function VeCeLinkAnnotation( model, parentNode, config ) {
 	// Parent constructor
-	ve.ce.Annotation.call( this, model, config );
+	ve.ce.Annotation.call( this, model, parentNode, config );
 
 	// DOM changes
 	this.$.addClass( 've-ce-LinkAnnotation' );
-	this.$.attr( 'href', model.getAttribute( 'href' ) );
+	this.$.attr( 'href', ve.resolveUrl( this.model.getHref(), this.getModelHtmlDocument() ) );
 };
 
 /* Inheritance */

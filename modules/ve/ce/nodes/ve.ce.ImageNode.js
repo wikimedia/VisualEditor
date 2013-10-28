@@ -39,7 +39,7 @@ ve.ce.ImageNode = function VeCeImageNode( model, config ) {
 		.addClass( 've-ce-imageNode' )
 		.attr( {
 			'alt': this.model.getAttribute( 'alt' ),
-			'src': this.model.getAttribute( 'src' )
+			'src': this.getResolvedAttribute( 'src' )
 		} )
 		.css( {
 			'width': this.model.getAttribute( 'width' ),
@@ -74,7 +74,7 @@ ve.ce.ImageNode.static.tagName = 'img';
 ve.ce.ImageNode.prototype.onAttributeChange = function ( key, from, to ) {
 	if ( from !== to ) {
 		if ( key === 'src' ) {
-			this.$image.attr( 'src', to );
+			this.$image.attr( 'src', this.getResolvedAttribute( 'src' ) );
 		}
 		if ( key === 'width' || key === 'height' ) {
 			this.$image.css( key, to );

@@ -71,12 +71,7 @@ ve.test.utils.runGetDataFromDomTests = function( assert, cases ) {
 			store = doc.getStore();
 			internalList = doc.getInternalList();
 
-			html = '';
-			if ( cases[msg].head ) {
-				html = '<head>' + cases[msg].head + '</head>';
-			}
-			html += cases[msg].html;
-
+			html = '<head>' + ( cases[msg].head || '' ) + '</head><body>' + cases[msg].body + '</body>';
 			data = ve.dm.converter.getDataFromDom(
 				ve.createDocumentFromHtml( html ), store, internalList
 			).getData();
@@ -98,7 +93,7 @@ ve.test.utils.runGetDataFromDomTests = function( assert, cases ) {
 };
 
 ve.test.utils.runGetDomFromDataTests = function( assert, cases ) {
-	var msg, originalData, doc, store, i, length, n = 0;
+	var msg, originalData, doc, store, i, length, html, n = 0;
 
 	for ( msg in cases ) {
 		n++;
@@ -118,9 +113,10 @@ ve.test.utils.runGetDomFromDataTests = function( assert, cases ) {
 		}
 		doc = new ve.dm.Document( ve.dm.example.preprocessAnnotations( cases[msg].data, store ) );
 		originalData = ve.copy( doc.getFullData() );
+		html = '<body>' + ( cases[msg].normalizedBody || cases[msg].body ) + '</body>';
 		assert.equalDomElement(
 			ve.dm.converter.getDomFromData( doc.getFullData(), doc.getStore(), doc.getInternalList() ),
-			ve.createDocumentFromHtml( cases[msg].normalizedHtml || cases[msg].html ),
+			ve.createDocumentFromHtml( html ),
 			msg
 		);
 		assert.deepEqualWithDomElements( doc.getFullData(), originalData, msg + ' (data hasn\'t changed)' );
@@ -134,6 +130,15 @@ ve.test.utils.runGetDomFromDataTests = function( assert, cases ) {
  * @returns {ve.ui.Surface} UI surface
  */
 ve.test.utils.createSurfaceFromHtml = function ( html ) {
-	var target = new ve.init.sa.Target( $( '#qunit-fixture' ), ve.createDocumentFromHtml( html ) );
+	return this.createSurfaceFromDocument( ve.createDocumentFromHtml( html ) );
+};
+
+/**
+ * Create a UI surface from a document
+ * @param {ve.dm.Document|HTMLDocument} doc Document
+ * @returns {ve.ui.Surface} UI surface
+ */
+ve.test.utils.createSurfaceFromDocument = function ( doc ) {
+	var target = new ve.init.sa.Target( $( '#qunit-fixture' ), doc );
 	return target.surface;
 };
