@@ -88,7 +88,7 @@ ve.ce.MWTransclusionNode.prototype.generateContents = function ( config ) {
  * @param {Object} response Response data
  */
 ve.ce.MWTransclusionNode.prototype.onParseSuccess = function ( deferred, response ) {
-	var contentNodes;
+	var contentNodes, $placeHolder;
 
 	if ( !response || response.error || !response.visualeditor || response.visualeditor.result !== 'success' ) {
 		return this.onParseError.call( this, deferred );
@@ -100,6 +100,19 @@ ve.ce.MWTransclusionNode.prototype.onParseSuccess = function ( deferred, respons
 	// will render strangely when wrapped in <p>s.
 	if ( contentNodes.length === 1 && contentNodes[0].nodeName.toLowerCase() === 'p' ) {
 		contentNodes = Array.prototype.slice.apply( contentNodes[0].childNodes );
+	}
+
+	// Check if the final result of the imported template is empty.
+	// If it is empty, put an inline placeholder inside it so that it can
+	// be accessible to users (either to remove or edit)
+	if ( contentNodes.length === 0 ) {
+		$placeHolder = $( '<span>' )
+			.css( { 'display': 'block' } )
+			// adapted from ve.ce.BranchNode.$blockSlugTemplate
+			// IE support may require using &nbsp;
+			.html( '&#xFEFF;' );
+
+		contentNodes.push( $placeHolder[0] );
 	}
 	deferred.resolve( contentNodes );
 };
