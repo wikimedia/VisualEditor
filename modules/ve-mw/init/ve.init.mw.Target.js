@@ -233,7 +233,6 @@ ve.init.mw.Target.onNoticesReady = function () {
 
 	for ( i = 0, len = noticeHtmls.length; i < len; i++ ) {
 		el = $( '<div>' )
-			.addClass( 've-init-mw-viewPageTarget-editNotices-notice' )
 			.html( noticeHtmls[i] )
 			.get( 0 );
 
@@ -727,4 +726,13 @@ ve.init.mw.Target.prototype.serialize = function ( doc, callback ) {
 		.done( ve.bind( ve.init.mw.Target.onSerialize, this ) )
 		.fail( ve.bind( ve.init.mw.Target.onSerializeError, this ) );
 	return true;
+};
+
+/**
+ * Get list of edit notices.
+ *
+ * @returns {Object|null} List of edit notices or null if none are loaded
+ */
+ve.init.mw.Target.prototype.getEditNotices = function () {
+	return this.editNotices;
 };

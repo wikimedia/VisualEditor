@@ -20,14 +20,17 @@
 	line-height: 1em;
 }
 
+.oo-ui-toolbar-bar .oo-ui-toolbar-bar {
+	border: none;
+	background: none;
+}
+
 .oo-ui-toolbar-bottom .oo-ui-toolbar-bar {
 	position: absolute;
 }
 
 .oo-ui-toolbar-actions {
 	float: right;
-	padding: 0.25em;
-	font-size: 0.8em;
 }
 
 .oo-ui-toolbar-tools {
