@@ -52,6 +52,7 @@ ve.ui.SurfaceToolbar = function VeUiSurfaceToolbar( surface, options ) {
 
 	// Events
 	this.surface.getModel().connect( this, { 'contextChange': 'onContextChange' } );
+	this.surface.connect( this, { 'addCommand': 'onSurfaceAddCommand' } );
 };
 
 /* Inheritance */
@@ -146,15 +147,6 @@ ve.ui.SurfaceToolbar.prototype.onSurfaceViewKeyUp = function () {
 };
 
 /**
- * Gets the surface which the toolbar controls.
- *
- * @returns {ve.ui.Surface} Surface being controlled
- */
-ve.ui.SurfaceToolbar.prototype.getSurface = function () {
-	return this.surface;
-};
-
-/**
  * Handle context changes on the surface.
  *
  * @fires updateState
@@ -173,6 +165,37 @@ ve.ui.SurfaceToolbar.prototype.onContextChange = function () {
 	this.emit( 'updateState', nodes, fragment.getAnnotations(), fragment.getAnnotations( true ) );
 };
 
+/**
+ * Handle command being added to surface.
+ *
+ * If a matching tool is present, it's label will be updated.
+ *
+ * @param {string} name Symbolic name of command and trigger
+ * @param {ve.ui.Command} command Command that's been registered
+ * @param {ve.ui.Trigger} trigger Trigger to associate with command
+ */
+ve.ui.SurfaceToolbar.prototype.onSurfaceAddCommand = function ( name ) {
+	if ( this.tools[name] ) {
+		this.tools[name].updateLabel();
+	}
+};
+
+/**
+ * @inheritdoc
+ */
+ve.ui.SurfaceToolbar.prototype.getToolAccelerator = function ( name ) {
+	var trigger = this.surface.getTriggers()[name];
+	return trigger instanceof ve.ui.Trigger ? trigger.getMessage() : undefined;
+};
+
+/**
+ * Gets the surface which the toolbar controls.
+ *
+ * @returns {ve.ui.Surface} Surface being controlled
+ */
+ve.ui.SurfaceToolbar.prototype.getSurface = function () {
+	return this.surface;
+};
 
 /**
  * Sets up handles and preloads required information for the toolbar to work.

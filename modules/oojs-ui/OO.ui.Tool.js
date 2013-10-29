@@ -15,12 +15,10 @@
  * @mixins OO.ui.LabeledElement
  *
  * @constructor
- * @param {OO.ui.Toolbar} toolbar
+ * @param {OO.ui.ToolGroup} toolGroup
  * @param {Object} [config] Configuration options
  */
-OO.ui.Tool = function OoUiTool( toolbar, config ) {
-	var titleMessage = this.constructor.static.titleMessage;
-
+OO.ui.Tool = function OoUiTool( toolGroup, config ) {
 	// Parent constructor
 	OO.ui.Widget.call( this, config );
 
@@ -29,7 +27,8 @@ OO.ui.Tool = function OoUiTool( toolbar, config ) {
 	OO.ui.LabeledElement.call( this, this.$$( '<span>' ) );
 
 	// Properties
-	this.toolbar = toolbar;
+	this.toolGroup = toolGroup;
+	this.toolbar = this.toolGroup.getToolbar();
 	this.active = false;
 
 	// Events
@@ -43,8 +42,8 @@ OO.ui.Tool = function OoUiTool( toolbar, config ) {
 			this.constructor.static.name.replace( /^([^\/]+)\/([^\/]+).*$/, '$1-$2' )
 		)
 		.append( this.$icon, this.$label );
-	this.setLabel( titleMessage ? OO.ui.msg( titleMessage ) : '' );
 	this.setIcon( this.constructor.static.icon );
+	this.updateLabel();
 };
 
 /* Inheritance */
@@ -118,7 +117,7 @@ OO.ui.Tool.static.icon = '';
 OO.ui.Tool.static.titleMessage = '';
 
 /**
- * Tool can be automatically added to toolgroups.
+ * Tool can be automatically added to tool groups.
  *
  * @static
  * @property {boolean}
@@ -195,19 +194,50 @@ OO.ui.Tool.prototype.setActive = function ( state ) {
 };
 
 /**
- * Sets the tool title attribute in the DOM.
+ * Get the tool's symbolic name.
  *
  * @method
- * @param {string} [title] Title text, omit to remove title
- * @chainable
+ * @returns {string} Symbolic name of tool
  */
-OO.ui.Tool.prototype.setTitle = function ( title ) {
-	if ( typeof title === 'string' && title.length ) {
-		this.$.attr( 'title', title );
+OO.ui.Tool.prototype.getName = function () {
+	return this.constructor.static.name;
+};
+
+/**
+ * Update the label.
+ *
+ * @method
+ */
+OO.ui.Tool.prototype.updateLabel = function () {
+	var titleMessage = this.constructor.static.titleMessage,
+		labelTooltips = this.toolGroup.constructor.static.labelTooltips,
+		accelTooltips = this.toolGroup.constructor.static.accelTooltips,
+		title = titleMessage ? OO.ui.msg( titleMessage ) : '',
+		accel = this.toolbar.getToolAccelerator( this.constructor.static.name ),
+		tooltipParts = [];
+
+	this.setLabel(
+		this.$$( '<span>' )
+			.addClass( 'oo-ui-tool-title' )
+			.text( title )
+			.add(
+				this.$$( '<span>' )
+					.addClass( 'oo-ui-tool-accel' )
+					.text( accel )
+			)
+	);
+
+	if ( labelTooltips && typeof title === 'string' && title.length ) {
+		tooltipParts.push( title );
+	}
+	if ( accelTooltips && typeof accel === 'string' && accel.length ) {
+		tooltipParts.push( accel );
+	}
+	if ( tooltipParts.length ) {
+		this.$.attr( 'title', tooltipParts.join( ' ' ) );
 	} else {
 		this.$.removeAttr( 'title' );
 	}
-	return this;
 };
 
 /**

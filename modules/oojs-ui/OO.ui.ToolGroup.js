@@ -54,7 +54,6 @@ OO.ui.ToolGroup = function OoUiToolGroup( toolbar, config ) {
 		'mouseout': OO.ui.bind( this.onMouseOut, this )
 	} );
 	this.toolbar.getToolFactory().connect( this, { 'register': 'onToolFactoryRegister' } );
-	ve.ui.triggerRegistry.connect( this, { 'register': 'onTriggerRegistryRegister' } );
 
 	// Initialization
 	this.$group.addClass( 'oo-ui-toolGroup-tools' );
@@ -79,22 +78,22 @@ OO.mixinClass( OO.ui.ToolGroup, OO.ui.GroupElement );
 /* Static Properties */
 
 /**
- * Show title in tooltip.
+ * Show labels in tooltips.
  *
  * @static
- * @property {string}
+ * @property {boolean}
  * @inheritable
  */
-OO.ui.ToolGroup.static.showTitle = false;
+OO.ui.ToolGroup.static.labelTooltips = false;
 
 /**
- * Show trigger in tooltip.
+ * Show acceleration labels in tooltips.
  *
  * @static
- * @property {string}
+ * @property {boolean}
  * @inheritable
  */
-OO.ui.ToolGroup.static.showTrigger = false;
+OO.ui.ToolGroup.static.accelTooltips = false;
 
 /* Methods */
 
@@ -204,51 +203,6 @@ OO.ui.ToolGroup.prototype.onToolFactoryRegister = function () {
 };
 
 /**
- * Handle trigger registry register events.
- *
- * If a trigger is registered after the tool is loaded, this handler will ensure matching tools'
- * titles are updated to reflect the available key command for the tool.
- *
- * @param {string} name Symbolic name of trigger
- */
-OO.ui.ToolGroup.prototype.onTriggerRegistryRegister = function ( name ) {
-	if ( this.tools[name] ) {
-		this.updateToolTitle( name );
-	}
-};
-
-/**
- * Update the title of a tool.
- *
- * @param {string} name Tool name
- * @chainable
- */
-OO.ui.ToolGroup.prototype.updateToolTitle = function ( name ) {
-	var tool, trigger, labelMessage, labelText,
-		showTitle = this.constructor.static.showTitle,
-		showTrigger = this.constructor.static.showTrigger;
-
-	tool = this.tools[name];
-	if ( tool ) {
-		labelText = '';
-		if ( showTitle ) {
-			labelMessage = tool.constructor.static.titleMessage;
-			if ( labelMessage ) {
-				labelText += OO.ui.msg( labelMessage );
-			}
-		}
-		if ( showTrigger ) {
-			trigger = ve.ui.triggerRegistry.lookup( tool.constructor.static.name );
-			if ( trigger ) {
-				labelText += ' [' + trigger.getMessage() + ']';
-			}
-		}
-		tool.setTitle( labelText );
-	}
-	return this;
-};
-
-/**
  * Get the toolbar this group is in.
  *
  * @return {OO.ui.Toolbar} Toolbar of group
@@ -279,10 +233,10 @@ OO.ui.ToolGroup.prototype.populate = function () {
 			if ( !tool ) {
 				// Auto-initialize tools on first use
 				this.tools[name] = tool =
-					this.toolbar.getToolFactory().create( name, this.toolbar );
-				this.updateToolTitle( name );
+					this.toolbar.getToolFactory().create( name, this );
+				tool.updateLabel();
 			}
-			this.toolbar.reserveTool( name );
+			this.toolbar.reserveTool( tool );
 			add.push( tool );
 			names[name] = true;
 		}
@@ -291,7 +245,7 @@ OO.ui.ToolGroup.prototype.populate = function () {
 	for ( name in this.tools ) {
 		if ( !names[name] ) {
 			this.tools[name].destroy();
-			this.toolbar.releaseTool( name );
+			this.toolbar.releaseTool( this.tools[name] );
 			remove.push( this.tools[name] );
 			delete this.tools[name];
 		}
@@ -320,7 +274,7 @@ OO.ui.ToolGroup.prototype.destroy = function () {
 	this.clearItems();
 	this.toolbar.getToolFactory().disconnect( this );
 	for ( name in this.tools ) {
-		this.toolbar.releaseTool( name );
+		this.toolbar.releaseTool( this.tools[name] );
 		this.tools[name].disconnect( this ).destroy();
 		delete this.tools[name];
 	}

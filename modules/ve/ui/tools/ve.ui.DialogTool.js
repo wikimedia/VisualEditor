@@ -12,12 +12,12 @@
  * @class
  * @extends OO.ui.Tool
  * @constructor
- * @param {ve.ui.SurfaceToolbar} toolbar
+ * @param {OO.ui.ToolGroup} toolGroup
  * @param {Object} [config] Configuration options
  */
-ve.ui.DialogTool = function VeUiDialogTool( toolbar, config ) {
+ve.ui.DialogTool = function VeUiDialogTool( toolGroup, config ) {
 	// Parent constructor
-	OO.ui.Tool.call( this, toolbar, config );
+	OO.ui.Tool.call( this, toolGroup, config );
 };
 
 /* Inheritance */

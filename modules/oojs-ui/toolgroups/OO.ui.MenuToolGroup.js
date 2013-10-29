@@ -33,7 +33,7 @@ OO.inheritClass( OO.ui.MenuToolGroup, OO.ui.PopupToolGroup );
 
 /* Static Properties */
 
-OO.ui.MenuToolGroup.static.showTrigger = true;
+OO.ui.MenuToolGroup.static.accelTooltips = true;
 
 /* Methods */
 
@@ -51,7 +51,7 @@ OO.ui.MenuToolGroup.prototype.onUpdateState = function () {
 
 	for ( name in this.tools ) {
 		if ( this.tools[name].isActive() ) {
-			labelTexts.push( this.tools[name].getLabelText() );
+			labelTexts.push( this.tools[name].$label.find( '.oo-ui-tool-title' ).text() );
 		}
 	}
 

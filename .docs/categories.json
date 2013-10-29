@@ -103,7 +103,8 @@
 					"ve.ui.TargetToolbar",
 					"ve.ui.SurfaceWindowSet",
 					"ve.ui.Action",
-					"ve.ui.Trigger"
+					"ve.ui.Trigger",
+					"ve.ui.Command"
 				]
 			},
 			{

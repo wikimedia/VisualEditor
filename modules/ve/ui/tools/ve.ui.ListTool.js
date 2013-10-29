@@ -12,12 +12,12 @@
  * @class
  * @extends OO.ui.Tool
  * @constructor
- * @param {ve.ui.SurfaceToolbar} toolbar
+ * @param {OO.ui.ToolGroup} toolGroup
  * @param {Object} [config] Configuration options
  */
-ve.ui.ListTool = function VeUiListTool( toolbar, config ) {
+ve.ui.ListTool = function VeUiListTool( toolGroup, config ) {
 	// Parent constructor
-	OO.ui.Tool.call( this, toolbar, config );
+	OO.ui.Tool.call( this, toolGroup, config );
 
 	// Properties
 	this.method = null;
@@ -81,11 +81,11 @@ ve.ui.ListTool.prototype.onUpdateState = function ( nodes ) {
  * @class
  * @extends ve.ui.ListTool
  * @constructor
- * @param {ve.ui.SurfaceToolbar} toolbar
+ * @param {OO.ui.ToolGroup} toolGroup
  * @param {Object} [config] Configuration options
  */
-ve.ui.BulletListTool = function VeUiBulletListTool( toolbar, config ) {
-	ve.ui.ListTool.call( this, toolbar, config );
+ve.ui.BulletListTool = function VeUiBulletListTool( toolGroup, config ) {
+	ve.ui.ListTool.call( this, toolGroup, config );
 };
 OO.inheritClass( ve.ui.BulletListTool, ve.ui.ListTool );
 ve.ui.BulletListTool.static.name = 'bullet';
@@ -101,11 +101,11 @@ ve.ui.toolFactory.register( ve.ui.BulletListTool );
  * @class
  * @extends ve.ui.ListTool
  * @constructor
- * @param {ve.ui.SurfaceToolbar} toolbar
+ * @param {OO.ui.ToolGroup} toolGroup
  * @param {Object} [config] Configuration options
  */
-ve.ui.NumberListTool = function VeUiNumberListTool( toolbar, config ) {
-	ve.ui.ListTool.call( this, toolbar, config );
+ve.ui.NumberListTool = function VeUiNumberListTool( toolGroup, config ) {
+	ve.ui.ListTool.call( this, toolGroup, config );
 };
 OO.inheritClass( ve.ui.NumberListTool, ve.ui.ListTool );
 ve.ui.NumberListTool.static.name = 'number';

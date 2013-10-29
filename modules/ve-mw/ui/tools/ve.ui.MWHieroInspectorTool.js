@@ -11,11 +11,11 @@
  * @class
  * @extends ve.ui.InspectorTool
  * @constructor
- * @param {ve.ui.SurfaceToolbar} toolbar
+ * @param {OO.ui.ToolGroup} toolGroup
  * @param {Object} [config] Configuration options
  */
-ve.ui.MWHieroInspectorTool = function VeUiMWHieroInspectorTool( toolbar, config ) {
-	ve.ui.InspectorTool.call( this, toolbar, config );
+ve.ui.MWHieroInspectorTool = function VeUiMWHieroInspectorTool( toolGroup, config ) {
+	ve.ui.InspectorTool.call( this, toolGroup, config );
 };
 OO.inheritClass( ve.ui.MWHieroInspectorTool, ve.ui.InspectorTool );
 ve.ui.MWHieroInspectorTool.static.name = 'hiero';

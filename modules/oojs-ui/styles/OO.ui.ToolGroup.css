@@ -107,6 +107,11 @@
 	opacity: 1;
 }
 
+.oo-ui-barToolGroup .oo-ui-tool-title,
+.oo-ui-barToolGroup .oo-ui-tool-accel {
+	display: none;
+}
+
 /* OO.ui.PopupToolGroup */
 
 .oo-ui-popupToolGroup {
@@ -179,6 +184,10 @@
 	vertical-align: middle;
 	line-height: 2em;
 	font-size: 0.8em;
+}
+
+.oo-ui-popupToolGroup .oo-ui-tool-accel {
+	display: none;
 }
 
 /* OO.ui.ListToolGroup */

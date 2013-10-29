@@ -35,6 +35,7 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 	this.context = new ve.ui.Context( this, { '$$': this.$$ } );
 	this.dialogs = new ve.ui.SurfaceWindowSet( this, ve.ui.dialogFactory, { '$$': this.$$ } );
 	this.commands = {};
+	this.triggers = {};
 	this.enabled = true;
 
 	// Initialization
@@ -71,9 +72,22 @@ OO.mixinClass( ve.ui.Surface, OO.EventEmitter );
  * @event position
  */
 
+/**
+ * When a command is added to the surface.
+ *
+ * @event addCommand
+ * @param {string} name Symbolic name of command and trigger
+ * @param {ve.ui.Command} command Command that's been registered
+ * @param {ve.ui.Trigger} trigger Trigger to associate with command
+ */
+
 /* Methods */
 
-/** */
+/**
+ * Initialize surface.
+ *
+ * This must be called after the surface has been attached to the DOM.
+ */
 ve.ui.Surface.prototype.initialize = function () {
 	this.view.$.after( this.$localOverlay );
 	$( 'body' ).append( this.$globalOverlay );
@@ -137,13 +151,23 @@ ve.ui.Surface.prototype.getDialogs = function () {
 };
 
 /**
- * Get the context menu.
+ * Get list of commands keyed by trigger string.
  *
  * @method
- * @returns {ve.ui.Context} Context user interface
+ * @returns {Object.<string,ve.ui.Command>} Commands
  */
 ve.ui.Surface.prototype.getCommands = function () {
 	return this.commands;
+};
+
+/**
+ * Get list of triggers keyed by symbolic name.
+ *
+ * @method
+ * @returns {Object.<string,ve.ui.Trigger>} Triggers
+ */
+ve.ui.Surface.prototype.getTriggers = function () {
+	return this.triggers;
 };
 
 /**
@@ -199,9 +223,11 @@ ve.ui.Surface.prototype.execute = function ( action, method ) {
 	}
 
 	if ( action instanceof ve.ui.Trigger ) {
+		// Lookup command by trigger
 		trigger = action.toString();
 		if ( trigger in this.commands ) {
-			return this.execute.apply( this, this.commands[trigger] );
+			// Have command call execute with action arguments
+			return this.commands[trigger].execute( this );
 		}
 	} else if ( typeof action === 'string' && typeof method === 'string' ) {
 		// Validate method
@@ -218,39 +244,35 @@ ve.ui.Surface.prototype.execute = function ( action, method ) {
 /**
  * Add all commands from initialization options.
  *
- * @method
- * @param {string[]|Object[]} commands List of symbolic names of commands in the command registry
- */
-ve.ui.Surface.prototype.addCommands = function ( commands ) {
-	var i, len, command;
-
-	for ( i = 0, len = commands.length; i < len; i++ ) {
-		command = ve.ui.commandRegistry.lookup( commands[i] );
-		if ( !command ) {
-			throw new Error( 'No command registered by that name: ' + commands[i] );
-		}
-		this.addTriggers( [ve.ui.triggerRegistry.lookup( commands[i] )], command );
-	}
-};
-
-/**
- * Add triggers to surface.
+ * Commands and triggers must be registered under the same name prior to adding them to the surface.
  *
  * @method
- * @param {ve.ui.Trigger[]} triggers Triggers to associate with command
- * @param {Object} command Command to trigger
+ * @param {string[]} names List of symbolic names of commands in the command registry
+ * @throws {Error} If command has not been registered
+ * @throws {Error} If trigger has not been registered
+ * @throws {Error} If trigger is not complete
  */
-ve.ui.Surface.prototype.addTriggers = function ( triggers, command ) {
-	var i, len, trigger;
+ve.ui.Surface.prototype.addCommands = function ( names ) {
+	var i, len, key, command, trigger;
 
-	for ( i = 0, len = triggers.length; i < len; i++ ) {
-		// Normalize
-		trigger = triggers[i].toString();
-		// Validate
-		if ( trigger.length === 0 ) {
-			throw new Error( 'Incomplete trigger: ' + triggers[i] );
+	for ( i = 0, len = names.length; i < len; i++ ) {
+		command = ve.ui.commandRegistry.lookup( names[i] );
+		if ( !command ) {
+			throw new Error( 'No command registered by that name: ' + names[i] );
 		}
-		this.commands[trigger] = command.action;
+		// Normalize trigger key
+		trigger = ve.ui.triggerRegistry.lookup( names[i] );
+		if ( !trigger ) {
+			throw new Error( 'No trigger registered by that name: ' + names[i] );
+		}
+		key = trigger.toString();
+		// Validate trigger
+		if ( key.length === 0 ) {
+			throw new Error( 'Incomplete trigger: ' + trigger );
+		}
+		this.commands[key] = command;
+		this.triggers[names[i]] = trigger;
+		this.emit( 'addCommand', names[i], command, trigger );
 	}
 };
 

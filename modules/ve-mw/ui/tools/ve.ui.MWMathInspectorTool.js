@@ -11,11 +11,11 @@
  * @class
  * @extends ve.ui.InspectorTool
  * @constructor
- * @param {ve.ui.SurfaceToolbar} toolbar
+ * @param {OO.ui.ToolGroup} toolGroup
  * @param {Object} [config] Configuration options
  */
-ve.ui.MWMathInspectorTool = function VeUiMWMathInspectorTool( toolbar, config ) {
-	ve.ui.InspectorTool.call( this, toolbar, config );
+ve.ui.MWMathInspectorTool = function VeUiMWMathInspectorTool( toolGroup, config ) {
+	ve.ui.InspectorTool.call( this, toolGroup, config );
 };
 OO.inheritClass( ve.ui.MWMathInspectorTool, ve.ui.InspectorTool );
 ve.ui.MWMathInspectorTool.static.name = 'math';
