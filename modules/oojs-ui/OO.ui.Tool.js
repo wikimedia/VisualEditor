@@ -30,18 +30,22 @@ OO.ui.Tool = function OoUiTool( toolGroup, config ) {
 	this.toolGroup = toolGroup;
 	this.toolbar = this.toolGroup.getToolbar();
 	this.active = false;
+	this.$link = this.$$( '<a>' );
 
 	// Events
 	this.toolbar.connect( this, { 'updateState': 'onUpdateState' } );
 
 	// Initialization
+	this.$link
+		.addClass( 'oo-ui-tool-link' )
+		.append( this.$icon, this.$label );
 	this.$
 		.data( 'oo-ui-tool', this )
 		.addClass(
-			'oo-ui-tool oo-ui-tool-' +
+			'oo-ui-tool ' + 'oo-ui-tool-name-' +
 			this.constructor.static.name.replace( /^([^\/]+)\/([^\/]+).*$/, '$1-$2' )
 		)
-		.append( this.$icon, this.$label );
+		.append( this.$link );
 	this.setIcon( this.constructor.static.icon );
 	this.updateLabel();
 };
@@ -61,7 +65,7 @@ OO.mixinClass( OO.ui.Tool, OO.ui.LabeledElement );
 
 /* Static Properties */
 
-OO.ui.Tool.static.tagName = 'a';
+OO.ui.Tool.static.tagName = 'span';
 
 /**
  * Symbolic name of tool.
@@ -234,9 +238,9 @@ OO.ui.Tool.prototype.updateLabel = function () {
 		tooltipParts.push( accel );
 	}
 	if ( tooltipParts.length ) {
-		this.$.attr( 'title', tooltipParts.join( ' ' ) );
+		this.$link.attr( 'title', tooltipParts.join( ' ' ) );
 	} else {
-		this.$.removeAttr( 'title' );
+		this.$link.removeAttr( 'title' );
 	}
 };
 
