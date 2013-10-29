@@ -234,6 +234,7 @@
 		<script src="../../ve/ui/ve.ui.ActionFactory.js"></script>
 		<script src="../../ve/ui/actions/ve.ui.AnnotationAction.js"></script>
 		<script src="../../ve/ui/actions/ve.ui.ContentAction.js"></script>
+		<script src="../../ve/ui/actions/ve.ui.DialogAction.js"></script>
 		<script src="../../ve/ui/actions/ve.ui.FormatAction.js"></script>
 		<script src="../../ve/ui/actions/ve.ui.HistoryAction.js"></script>
 		<script src="../../ve/ui/actions/ve.ui.IndentationAction.js"></script>

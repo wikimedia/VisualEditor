@@ -47,6 +47,7 @@ $messages['en'] = array(
 	'visualeditor-beta-label' => 'beta',
 	'visualeditor-beta-warning' => 'VisualEditor is in \'beta\'. You may encounter software issues, and you may not be able to edit parts of the page. Click "{{int:visualeditor-ca-editsource}}" to switch to wikitext mode – unsaved changes will be lost.',
 	'visualeditor-browserwarning' => 'You are using a browser which is not officially supported by VisualEditor.',
+	'visualeditor-categories-tool' => 'Categories',
 	'visualeditor-ca-createsource' => 'Create source',
 	'visualeditor-ca-editsource' => 'Edit source',
 	'visualeditor-ca-editsource-section' => 'edit source',
@@ -137,6 +138,7 @@ $messages['en'] = array(
 	'visualeditor-historybutton-undo-tooltip' => 'Undo',
 	'visualeditor-indentationbutton-indent-tooltip' => 'Increase indentation',
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Decrease indentation',
+	'visualeditor-languages-tool' => 'Languages',
 	'visualeditor-languageinspector-block-tooltip' => 'Language block: $1',
 	'visualeditor-languageinspector-block-tooltip-rtldirection' => ': Right to Left',
 	'visualeditor-languageinspector-title' => 'Language',
@@ -310,6 +312,7 @@ See also:
 
 Refers to {{msg-mw|Visualeditor-ca-editsource}}.",
 	'visualeditor-browserwarning' => 'Edit notice shown when VisualEditor loads, warning users that their browser is not officially supported',
+	'visualeditor-categories-tool' => 'Tool for opening the categories section of the meta dialog.',
 	'visualeditor-ca-createsource' => 'Text for the create source link in the tab dropdown, if the page doesn\'t exist. It\'s shown next to the message {{msg-mw|vector-view-create}}, so they should be similar (for example, use a similar translation for "Create").
 
 If the page exists, the following link text is used: {{msg-mw|Visualeditor-ca-editsource}}',
@@ -483,6 +486,7 @@ Parameters:
 {{Identical|Undo}}',
 	'visualeditor-indentationbutton-indent-tooltip' => 'Tooltip text for list indent button',
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Tooltip text for list outdent button',
+	'visualeditor-languages-tool' => 'Tool for opening the languages links section of the meta dialog.',
 	'visualeditor-languageinspector-block-tooltip' => 'Tooltip identifying language block properties inside VisualEditor.
 
 A "language block" is an element that is written in a language that is different from the surrounding language. For example, it can be the Belarusian name of a Belarusian person in the French Wikipedia.

@@ -60,17 +60,15 @@ OO.mixinClass( OO.ui.Window, OO.EventEmitter );
 
 /**
  * @event setup
- * @param {OO.ui.Window} win Window that's been setup
+ * @param {Object} config Configuration options for window setup
  */
 
 /**
  * @event open
- * @param {OO.ui.Window} win Window that's been opened
  */
 
 /**
  * @event close
- * @param {OO.ui.Window} win Window that's been closed
  * @param {string} action Action that caused the window to be closed
  */
 
@@ -141,6 +139,7 @@ OO.ui.Window.prototype.initialize = function () {
  * To be notified after this method is called, listen to the `setup` event.
  *
  * @method
+ * @param {Object} [config] Configuration options for window setup
  */
 OO.ui.Window.prototype.onSetup = function () {
 	// This is a stub, override functionality in child classes
@@ -281,14 +280,15 @@ OO.ui.Window.prototype.setPosition = function ( left, top ) {
  * Open window.
  *
  * @method
+ * @param {Object} [config] Configuration options for window setup
  * @fires setup
  * @fires open
  */
-OO.ui.Window.prototype.open = function () {
+OO.ui.Window.prototype.open = function ( config ) {
 	if ( !this.opening ) {
 		this.opening = true;
-		this.onSetup();
-		this.emit( 'setup' );
+		this.onSetup( config );
+		this.emit( 'setup', config );
 		this.$.show();
 		this.visible = true;
 		this.frame.$.focus();

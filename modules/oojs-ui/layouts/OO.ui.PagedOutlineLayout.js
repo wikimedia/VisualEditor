@@ -157,7 +157,7 @@ OO.ui.PagedOutlineLayout.prototype.onPagedLayoutSet = function ( page ) {
  */
 OO.ui.PagedOutlineLayout.prototype.onPageOutlineSelect = function ( item ) {
 	if ( item ) {
-		this.setPage( item.getData() );
+		OO.ui.PagedLayout.prototype.setPage.call( this, item.getData() );
 	}
 };
 
@@ -192,4 +192,13 @@ OO.ui.PagedOutlineLayout.prototype.updateOutlineWidget = function () {
 	}
 
 	return this;
+};
+
+/**
+ * @inheritdoc
+ */
+OO.ui.PagedOutlineLayout.prototype.setPage = function ( name ) {
+	if ( name !== this.outlineWidget.getSelectedItem().getData() ) {
+		this.outlineWidget.selectItem( this.outlineWidget.getItemFromData( name ) );
+	}
 };

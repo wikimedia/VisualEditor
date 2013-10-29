@@ -52,14 +52,15 @@ ve.ui.AnnotationInspector.static.modelClasses = [];
  * - Selection covering annotated text -> expand selection to cover annotation
  *
  * @method
+ * @param {Object} [config] Configuration options for inspector setup
  */
-ve.ui.AnnotationInspector.prototype.onSetup = function () {
+ve.ui.AnnotationInspector.prototype.onSetup = function ( config ) {
 	var expandedFragment, trimmedFragment, truncatedFragment,
 		fragment = this.surface.getModel().getFragment( null, true ),
 		annotation = this.getMatchingAnnotations( fragment, true ).get( 0 );
 
 	// Parent method
-	ve.ui.SurfaceInspector.prototype.onSetup.call( this );
+	ve.ui.SurfaceInspector.prototype.onSetup.call( this, config );
 	// Initialize range
 	if ( !annotation ) {
 		if ( fragment.getRange().isCollapsed() && !this.surface.view.hasSlugAtOffset( fragment.getRange().start ) ) {

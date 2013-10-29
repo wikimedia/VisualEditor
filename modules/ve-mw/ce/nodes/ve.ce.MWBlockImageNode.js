@@ -154,7 +154,7 @@ ve.ce.MWBlockImageNode.prototype.getCssClass = function ( type, alignment ) {
  *
  * @method
  */
-ve.ce.MWBlockImageNode.prototype.onSetup = function ( ) {
+ve.ce.MWBlockImageNode.prototype.onSetup = function () {
 	var type = this.model.getAttribute( 'type' );
 
 	ve.ce.BranchNode.prototype.onSetup.call( this );

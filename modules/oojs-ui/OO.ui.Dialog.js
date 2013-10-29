@@ -116,11 +116,12 @@ OO.ui.Dialog.prototype.onFrameDocumentKeyDown = function ( e ) {
  * Wraps the parent open method. Disables native top-level window scrolling behavior.
  *
  * @method
+ * @param {Object} [config] Configuration options for window setup
  * @fires setup
  * @fires open
  */
-OO.ui.Dialog.prototype.open = function () {
-	OO.ui.Window.prototype.open.call( this );
+OO.ui.Dialog.prototype.open = function ( config ) {
+	OO.ui.Window.prototype.open.call( this, config );
 	// Prevent scrolling in top-level window
 	$( window ).on( 'mousewheel', this.onWindowMouseWheelHandler );
 	$( document ).on( 'keydown', this.onDocumentKeyDownHandler );
