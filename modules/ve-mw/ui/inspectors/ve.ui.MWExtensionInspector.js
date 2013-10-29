@@ -44,7 +44,7 @@ ve.ui.MWExtensionInspector.prototype.initialize = function () {
 	// Parent method
 	ve.ui.SurfaceInspector.prototype.initialize.call( this );
 
-	this.input = new ve.ui.TextInputWidget( {
+	this.input = new OO.ui.TextInputWidget( {
 		'$$': this.frame.$$,
 		'overlay': this.surface.$localOverlay,
 		'multiline': true

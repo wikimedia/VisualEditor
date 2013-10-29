@@ -10,7 +10,7 @@
  *
  * @class
  * @abstract
- * @extends ve.ui.Widget
+ * @extends OO.ui.Widget
  *
  * @constructor
  * @param {Object} [config] Configuration options
@@ -21,7 +21,7 @@ ve.ui.MWCategoryItemWidget = function VeUiMWCategoryItemWidget( config ) {
 	config = config || {};
 
 	// Parent constructor
-	ve.ui.Widget.call( this, config );
+	OO.ui.Widget.call( this, config );
 
 	// Properties
 	this.name = config.item.name;
@@ -41,7 +41,7 @@ ve.ui.MWCategoryItemWidget = function VeUiMWCategoryItemWidget( config ) {
 
 	// Initialization
 	this.$label.text( this.value );
-	this.$arrow.addClass( 've-ui-mwCategoryItemControl ve-ui-icon-down' );
+	this.$arrow.addClass( 've-ui-mwCategoryItemControl oo-ui-icon-down' );
 	this.$categoryItem
 		.addClass( 've-ui-mwCategoryItemButton' )
 		.append( this.$label, this.$arrow, this.$$( '<div>' ).css( 'clear', 'both' ) );
@@ -52,7 +52,7 @@ ve.ui.MWCategoryItemWidget = function VeUiMWCategoryItemWidget( config ) {
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.MWCategoryItemWidget, ve.ui.Widget );
+OO.inheritClass( ve.ui.MWCategoryItemWidget, OO.ui.Widget );
 
 /* Events */
 

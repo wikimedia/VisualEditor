@@ -1,0 +1,126 @@
+/*!
+ * ObjectOriented UserInterface raster icon styles.
+ *
+ * @copyright 2011-2013 OOJS Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+
+.oo-ui-icon-add-item {
+	/* @embed */
+	background-image: url(images/icons/add-item.png);
+}
+
+.oo-ui-icon-alert {
+	/* @embed */
+	background-image: url(images/icons/alert.png);
+}
+
+.oo-ui-icon-check {
+	/* @embed */
+	background-image: url(images/icons/check.png);
+}
+
+.oo-ui-icon-clear {
+	/* @embed */
+	background-image: url(images/icons/clear.png);
+}
+
+.oo-ui-icon-close {
+	/* @embed */
+	background-image: url(images/icons/close.png);
+}
+
+.oo-ui-icon-code {
+	/* @embed */
+	background-image: url(images/icons/code.png);
+}
+
+.oo-ui-icon-collapse {
+	/* @embed */
+	background-image: url(images/icons/collapse.png);
+}
+
+.oo-ui-icon-comment {
+	/* @embed */
+	background-image: url(images/icons/comment.png);
+}
+
+.oo-ui-icon-down {
+	/* @embed */
+	background-image: url(images/icons/down.png);
+}
+
+.oo-ui-icon-expand {
+	/* @embed */
+	background-image: url(images/icons/expand.png);
+}
+
+.oo-ui-icon-help {
+	/* @embed */
+	background-image: url(images/icons/help.png);
+}
+
+.oo-ui-icon-link {
+	/* @embed */
+	background-image: url(images/icons/link.png);
+}
+
+.oo-ui-icon-menu {
+	/* @embed */
+	background-image: url(images/icons/menu.png);
+}
+
+.oo-ui-icon-next {
+	/* @embed */
+	background-image: url(images/icons/move-ltr.png);
+}
+
+.oo-ui-icon-picture {
+	/* @embed */
+	background-image: url(images/icons/picture.png);
+}
+
+.oo-ui-icon-previous {
+	/* @embed */
+	background-image: url(images/icons/move-rtl.png);
+}
+
+.oo-ui-icon-redo {
+	/* @embed */
+	background-image: url(images/icons/arched-arrow-ltr.png);
+}
+
+.oo-ui-icon-remove {
+	/* @embed */
+	background-image: url(images/icons/remove.png);
+}
+
+.oo-ui-icon-search {
+	/* @embed */
+	background-image: url(images/icons/search.png);
+}
+
+.oo-ui-icon-settings {
+	/* @embed */
+	background-image: url(images/icons/settings.png);
+}
+
+.oo-ui-icon-tag {
+	/* @embed */
+	background-image: url(images/icons/tag.png);
+}
+
+.oo-ui-icon-undo {
+	/* @embed */
+	background-image: url(images/icons/arched-arrow-rtl.png);
+}
+
+.oo-ui-icon-up {
+	/* @embed */
+	background-image: url(images/icons/up.png);
+}
+
+.oo-ui-icon-window {
+	/* @embed */
+	background-image: url(images/icons/window.png);
+}

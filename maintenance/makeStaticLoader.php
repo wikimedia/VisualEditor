@@ -114,10 +114,14 @@ class MakeStaticLoader extends Maintenance {
 	) {
 		document.write(
 			\'<link rel="stylesheet" \' +
+				\'href="' . $vePath . '/oojs-ui/styles/OO.ui.Icons-vector.css">\' +
+			\'<link rel="stylesheet" \' +
 				\'href="' . $vePath . '/ve/ui/styles/ve.ui.Icons-vector.css">\'
 		);
 	} else {
 		document.write(
+			\'<link rel="stylesheet" \' +
+				\'href="' . $vePath . '/oojs-ui/styles/OO.ui.Icons-raster.css">\' +
 			\'<link rel="stylesheet" \' +
 				\'href="' . $vePath . '/ve/ui/styles/ve.ui.Icons-raster.css">\'
 		);
@@ -147,6 +151,7 @@ class MakeStaticLoader extends Maintenance {
 
 		$modules = array(
 			'Dependencies',
+			'oojs-ui',
 			'ext.visualEditor.base#standalone-init',
 			'ext.visualEditor.core',
 			'jquery.uls.grid',
@@ -158,7 +163,7 @@ class MakeStaticLoader extends Maintenance {
 
 		foreach ( $modules as $module ) {
 			if ( !isset( $wgResourceModules[$module] ) ) {
-				echo "\nError: File group $module\n not found!\n";
+				echo "\nError: Module $module\n not found!\n";
 				exit( 1 );
 			}
 			$registry = $wgResourceModules[$module];

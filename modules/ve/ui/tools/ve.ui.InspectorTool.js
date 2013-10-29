@@ -10,19 +10,19 @@
  *
  * @abstract
  * @class
- * @extends ve.ui.Tool
+ * @extends OO.ui.Tool
  * @constructor
  * @param {ve.ui.SurfaceToolbar} toolbar
  * @param {Object} [config] Configuration options
  */
 ve.ui.InspectorTool = function VeUiInspectorTool( toolbar, config ) {
 	// Parent constructor
-	ve.ui.Tool.call( this, toolbar, config );
+	OO.ui.Tool.call( this, toolbar, config );
 };
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.InspectorTool, ve.ui.Tool );
+OO.inheritClass( ve.ui.InspectorTool, OO.ui.Tool );
 
 /* Static Properties */
 

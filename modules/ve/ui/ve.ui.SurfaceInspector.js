@@ -10,7 +10,7 @@
  *
  * @class
  * @abstract
- * @extends ve.ui.Inspector
+ * @extends OO.ui.Inspector
  *
  * @constructor
  * @param {ve.ui.SurfaceWindowSet} windowSet Window set this inspector is part of
@@ -18,7 +18,7 @@
  */
 ve.ui.SurfaceInspector = function VeUiSurfaceInspector( windowSet, config ) {
 	// Parent constructor
-	ve.ui.Inspector.call( this, windowSet, config );
+	OO.ui.Inspector.call( this, windowSet, config );
 
 	// Properties
 	this.surface = windowSet.getSurface();
@@ -26,7 +26,7 @@ ve.ui.SurfaceInspector = function VeUiSurfaceInspector( windowSet, config ) {
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.SurfaceInspector, ve.ui.Inspector );
+OO.inheritClass( ve.ui.SurfaceInspector, OO.ui.Inspector );
 
 /* Methods */
 

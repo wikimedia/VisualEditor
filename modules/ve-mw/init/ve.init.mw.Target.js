@@ -42,8 +42,8 @@ ve.init.mw.Target = function VeInitMwTarget( $container, pageName, revisionId ) 
 		]
 		.concat(
 			document.createElementNS && document.createElementNS( 'http://www.w3.org/2000/svg', 'svg' ).createSVGRect ?
-				['ext.visualEditor.viewPageTarget.icons-vector', 'ext.visualEditor.icons-vector'] :
-				['ext.visualEditor.viewPageTarget.icons-raster', 'ext.visualEditor.icons-raster']
+				['ext.visualEditor.viewPageTarget.icons-vector', 'ext.visualEditor.icons-vector', 'oojs-ui.icons-vector'] :
+				['ext.visualEditor.viewPageTarget.icons-raster', 'ext.visualEditor.icons-raster', 'oojs-ui.icons-raster']
 		)
 		.concat( conf.pluginModules || [] );
 	for ( i = 0, len = extraModules.length; i < len; i++ ) {

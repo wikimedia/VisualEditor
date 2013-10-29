@@ -14,7 +14,7 @@
 	padding: 0 1.875em; /* 1.5/0.8 */
 }
 
-.ve-init-mw-viewPageTarget-surface .ve-ui-menuWidget {
+.ve-init-mw-viewPageTarget-surface .oo-ui-menuWidget {
 	font-size: 0.8em;
 }
 
@@ -27,7 +27,7 @@
 	position: relative;
 }
 
-.ve-init-mw-viewPageTarget-toolbar .ve-ui-toolbar-bar {
+.ve-init-mw-viewPageTarget-toolbar .oo-ui-toolbar-bar {
 	display: none;
 }
 

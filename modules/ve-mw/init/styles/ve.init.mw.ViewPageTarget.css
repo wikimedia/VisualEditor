@@ -44,19 +44,19 @@
 	margin-right: 1em;
 }
 
-.ve-init-mw-viewPageTarget-toolbar-utilites > .ve-ui-iconButtonWidget {
+.ve-init-mw-viewPageTarget-toolbar-utilites > .oo-ui-iconButtonWidget {
 	margin-right: 0.2em;
 	margin-top: 0.2em;
 }
 
-.ve-init-mw-viewPageTarget-toolbar-actions > .ve-ui-pushButtonWidget {
+.ve-init-mw-viewPageTarget-toolbar-actions > .oo-ui-pushButtonWidget {
 	margin-left: 0.25em;
 	margin-right: 0.25em;
 	margin-top: 0.2em;
 }
 
-/* Needs to override .ve-ui.widget.ve-ui-widget-disabled */
-.ve-ui-toolbar-actions .ve-init-mw-viewPageTarget-waiting.ve-ui-widget.ve-ui-widget-disabled {
+/* Needs to override .oo-ui.widget.oo-ui-widget-disabled */
+.ve-ui-toolbar-actions .ve-init-mw-viewPageTarget-waiting.oo-ui-widget.oo-ui-widget-disabled {
 	cursor: progress;
 }
 
@@ -93,8 +93,8 @@
 	padding: 0.5em 1em;
 }
 
-.ve-init-mw-viewPageTarget-toolbar .ve-ui-popupButtonWidget .ve-ui-popupWidget-popup,
-.ve-init-mw-viewPageTarget-toolbar .ve-ui-popupButtonWidget .ve-ui-popupWidget-tail {
+.ve-init-mw-viewPageTarget-toolbar .oo-ui-popupButtonWidget .oo-ui-popupWidget-popup,
+.ve-init-mw-viewPageTarget-toolbar .oo-ui-popupButtonWidget .oo-ui-popupWidget-tail {
 	z-index: 4;
 }
 
@@ -105,12 +105,12 @@
 	margin-top: 0.8em;
 }
 
-.ve-init-mw-viewPageTarget-betaNotices-notice > .ve-ui-iconButtonWidget {
+.ve-init-mw-viewPageTarget-betaNotices-notice > .oo-ui-iconButtonWidget {
 	display: block;
 	margin: 0.5em 0;
 }
 
-.ve-init-mw-viewPageTarget-betaNotices-notice > .ve-ui-iconButtonWidget:first-child {
+.ve-init-mw-viewPageTarget-betaNotices-notice > .oo-ui-iconButtonWidget:first-child {
 	margin-top: 0;
 }
 

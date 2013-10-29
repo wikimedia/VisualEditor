@@ -56,43 +56,45 @@ ve.ui.MWReferenceDialog.prototype.initialize = function () {
 	ve.ui.MWDialog.prototype.initialize.call( this );
 
 	// Properties
-	this.panels = new ve.ui.StackPanelLayout( { '$$': this.frame.$$ } );
-	this.editPanel = new ve.ui.PanelLayout( {
+	this.panels = new OO.ui.StackPanelLayout( { '$$': this.frame.$$ } );
+	this.editPanel = new OO.ui.PanelLayout( {
 		'$$': this.frame.$$, 'scrollable': true, 'padded': true
 	} );
-	this.searchPanel = new ve.ui.PanelLayout( { '$$': this.frame.$$ } );
-	this.applyButton = new ve.ui.PushButtonWidget( {
+	this.searchPanel = new OO.ui.PanelLayout( { '$$': this.frame.$$ } );
+	this.applyButton = new OO.ui.PushButtonWidget( {
 		'$$': this.frame.$$,
 		'label': ve.msg( 'visualeditor-dialog-action-apply' ),
 		'flags': ['primary']
 	} );
-	this.insertButton = new ve.ui.PushButtonWidget( {
+	this.insertButton = new OO.ui.PushButtonWidget( {
 		'$$': this.frame.$$,
 		'label': ve.msg( 'visualeditor-dialog-reference-insert-button' ),
 		'flags': ['constructive']
 	} );
-	this.selectButton = new ve.ui.PushButtonWidget( {
+	this.selectButton = new OO.ui.PushButtonWidget( {
 		'$$': this.frame.$$,
 		'label': ve.msg ( 'visualeditor-dialog-reference-useexisting-label' )
 	} );
-	this.backButton = new ve.ui.PushButtonWidget( {
+	this.backButton = new OO.ui.PushButtonWidget( {
 		'$$': this.frame.$$,
 		'label': ve.msg( 'visualeditor-dialog-action-goback' )
 	} );
-	this.contentFieldset = new ve.ui.FieldsetLayout( { '$$': this.frame.$$ } );
-	this.optionsFieldset = new ve.ui.FieldsetLayout( {
+	this.contentFieldset = new OO.ui.FieldsetLayout( { '$$': this.frame.$$ } );
+	this.optionsFieldset = new OO.ui.FieldsetLayout( {
 		'$$': this.frame.$$,
 		'label': ve.msg( 'visualeditor-dialog-reference-options-section' ),
 		'icon': 'settings'
 	} );
 	// TODO: Use a drop-down or something, and populate with existing groups instead of free-text
-	this.referenceGroupInput = new ve.ui.TextInputWidget( { '$$': this.frame.$$ } );
-	this.referenceGroupLabel = new ve.ui.InputLabelWidget( {
+	this.referenceGroupInput = new OO.ui.TextInputWidget( { '$$': this.frame.$$ } );
+	this.referenceGroupLabel = new OO.ui.InputLabelWidget( {
 		'$$': this.frame.$$,
 		'input': this.referenceGroupInput,
 		'label': ve.msg( 'visualeditor-dialog-reference-options-group-label' )
 	} );
-	this.search = new ve.ui.MWReferenceSearchWidget( this.surface, { '$$': this.frame.$$ } );
+	this.search = new ve.ui.MWReferenceSearchWidget(
+		this.surface, { '$$': this.frame.$$ }
+	);
 
 	// Events
 	this.applyButton.connect( this, { 'click': [ 'close', 'apply' ] } );

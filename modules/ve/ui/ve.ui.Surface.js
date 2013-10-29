@@ -9,7 +9,7 @@
  * A surface is a top-level object which contains both a surface model and a surface view.
  *
  * @class
- * @extends ve.Element
+ * @extends OO.ui.Element
  *
  * @constructor
  * @param {HTMLDocument|Array|ve.dm.LinearData|ve.dm.Document} dataOrDoc Document data to edit
@@ -17,7 +17,7 @@
  */
 ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 	// Parent constructor
-	ve.Element.call( this, config );
+	OO.ui.Element.call( this, config );
 
 	// Mixin constructor
 	OO.EventEmitter.call( this, config );
@@ -58,7 +58,7 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.Surface, ve.Element );
+OO.inheritClass( ve.ui.Surface, OO.ui.Element );
 
 OO.mixinClass( ve.ui.Surface, OO.EventEmitter );
 
@@ -130,7 +130,7 @@ ve.ui.Surface.prototype.getContext = function () {
  * Get dialogs window set.
  *
  * @method
- * @returns {ve.ui.WindowSet} Dialogs window set
+ * @returns {OO.ui.WindowSet} Dialogs window set
  */
 ve.ui.Surface.prototype.getDialogs = function () {
 	return this.dialogs;

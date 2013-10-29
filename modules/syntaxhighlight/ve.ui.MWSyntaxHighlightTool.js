@@ -40,15 +40,15 @@ ve.ui.toolFactory.register( ve.ui.MWSyntaxHighlightTool );
 /*
  * Factory for SyntaxHighlight tools.
  */
-ve.ui.syntaxHighlightEditorToolFactory = new ve.ui.ToolFactory();
+ve.ui.syntaxHighlightEditorToolFactory = new OO.ui.ToolFactory();
 
 /* SyntaxHighlight Editor Tools */
 
 ve.ui.MWSyntaxHighlightEditorTool = function VeUiMWSyntaxHighlightEditorTool( toolbar, config ) {
 	// Parent constructor
-	ve.ui.Tool.call( this, toolbar, config );
+	OO.ui.Tool.call( this, toolbar, config );
 };
-OO.inheritClass( ve.ui.MWSyntaxHighlightEditorTool, ve.ui.Tool );
+OO.inheritClass( ve.ui.MWSyntaxHighlightEditorTool, OO.ui.Tool );
 
 ve.ui.MWSyntaxHighlightEditorTool.prototype.onSelect = function () {
 	this.toolbar.context[this.constructor.static.method]();

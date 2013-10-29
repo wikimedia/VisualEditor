@@ -105,3 +105,9 @@ ve.init.mw.Platform.prototype.getMediaSources = function () {
 /* Initialization */
 
 ve.init.platform = new ve.init.mw.Platform();
+
+/* Extension */
+
+OO.ui.getUserLanguages = ve.bind( ve.init.platform.getUserLanguages, ve.init.platform );
+
+OO.ui.msg = ve.bind( ve.init.platform.getMessage, ve.init.platform );

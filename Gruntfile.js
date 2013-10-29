@@ -25,10 +25,11 @@ module.exports = function ( grunt ) {
 			options: {
 				csslintrc: '.csslintrc'
 			},
-			all: ['modules/ve/**/*.css']
+			all: 'modules/{oojs-ui,syntaxhighlight,ve,ve-mw}/**/*.css',
 		},
 		qunit: {
-			all: ['modules/ve/test/index-phantomjs-tmp.html']
+			ve: 'modules/ve/test/index-phantomjs-tmp.html',
+			'oojs-ui': 'modules/oojs-ui/test/index.html'
 		},
 		watch: {
 			files: ['<%= jshint.all %>', '<%= csslint.all %>', '<%= qunit.all %>', '.{jshintrc,jshintignore,csslintrc}'],

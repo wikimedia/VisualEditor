@@ -127,7 +127,7 @@ ve.ce.RelocatableNode.prototype.onRelocatableDragEnd = function () {
  * @method
  */
 ve.ce.RelocatableNode.prototype.setRelocatableMarkerSizeAndPosition = function () {
-	var offset = ve.Element.getRelativePosition(
+	var offset = OO.ui.Element.getRelativePosition(
 		this.$relocatable, this.getRoot().getSurface().getSurface().$
 	);
 

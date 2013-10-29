@@ -10,7 +10,7 @@
  *
  * @class
  * @abstract
- * @extends ve.ui.Widget
+ * @extends OO.ui.Widget
  *
  * @constructor
  * @param {ve.dm.ElementLinearData} data Content data
@@ -23,7 +23,7 @@ ve.ui.SurfaceWidget = function VeUiSurfaceWidget( data, config ) {
 	config = config || {};
 
 	// Parent constructor
-	ve.ui.Widget.call( this, config );
+	OO.ui.Widget.call( this, config );
 
 	// Properties
 	this.surface = new ve.ui.Surface( data, { '$$': this.$$ } );
@@ -45,7 +45,7 @@ ve.ui.SurfaceWidget = function VeUiSurfaceWidget( data, config ) {
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.SurfaceWidget, ve.ui.Widget );
+OO.inheritClass( ve.ui.SurfaceWidget, OO.ui.Widget );
 
 /* Methods */
 
@@ -63,7 +63,7 @@ ve.ui.SurfaceWidget.prototype.getSurface = function () {
  * Get toolbar.
  *
  * @method
- * @returns {ve.ui.Toolbar} Toolbar
+ * @returns {OO.ui.Toolbar} Toolbar
  */
 ve.ui.SurfaceWidget.prototype.getToolbar = function () {
 	return this.toolbar;

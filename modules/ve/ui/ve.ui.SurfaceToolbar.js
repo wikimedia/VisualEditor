@@ -9,7 +9,7 @@
  * UserInterface surface toolbar.
  *
  * @class
- * @extends ve.ui.Toolbar
+ * @extends OO.ui.Toolbar
  *
  * @constructor
  * @param {ve.ui.Surface} surface Surface to control
@@ -22,7 +22,7 @@ ve.ui.SurfaceToolbar = function VeUiSurfaceToolbar( surface, options ) {
 	options = options || {};
 
 	// Parent constructor
-	ve.ui.Toolbar.call( this, ve.ui.toolFactory, options );
+	OO.ui.Toolbar.call( this, ve.ui.toolFactory, options );
 
 	// Properties
 	this.surface = surface;
@@ -56,7 +56,7 @@ ve.ui.SurfaceToolbar = function VeUiSurfaceToolbar( surface, options ) {
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.SurfaceToolbar, ve.ui.Toolbar );
+OO.inheritClass( ve.ui.SurfaceToolbar, OO.ui.Toolbar );
 
 /* Events */
 
@@ -180,7 +180,7 @@ ve.ui.SurfaceToolbar.prototype.onContextChange = function () {
  */
 ve.ui.SurfaceToolbar.prototype.initialize = function () {
 	// Parent method
-	ve.ui.Toolbar.prototype.initialize.call( this );
+	OO.ui.Toolbar.prototype.initialize.call( this );
 
 	// Properties
 	this.$window = $( this.getElementWindow() );
@@ -214,7 +214,7 @@ ve.ui.SurfaceToolbar.prototype.destroy = function () {
 	this.surface.getModel().disconnect( this, { 'contextChange': 'onContextChange' } );
 
 	// Parent method
-	ve.ui.Toolbar.prototype.destroy.call( this );
+	OO.ui.Toolbar.prototype.destroy.call( this );
 };
 
 /**

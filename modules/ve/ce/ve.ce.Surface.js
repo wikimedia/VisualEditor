@@ -10,7 +10,7 @@
  * ContentEditable surface.
  *
  * @class
- * @extends ve.Element
+ * @extends OO.ui.Element
  * @mixins OO.EventEmitter
  *
  * @constructor
@@ -22,7 +22,7 @@
 ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 	var $documentNode;
 	// Parent constructor
-	ve.Element.call( this, options );
+	OO.ui.Element.call( this, options );
 
 	// Mixin constructors
 	OO.EventEmitter.call( this );
@@ -123,7 +123,7 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 
 /* Inheritance */
 
-OO.inheritClass( ve.ce.Surface, ve.Element );
+OO.inheritClass( ve.ce.Surface, OO.ui.Element );
 
 OO.mixinClass( ve.ce.Surface, OO.EventEmitter );
 
@@ -303,7 +303,7 @@ ve.ce.Surface.prototype.destroy = function () {
  */
 ve.ce.Surface.prototype.focus = function () {
 	var $document = this.documentView.getDocumentNode().$,
-		$window = $( ve.Element.getWindow( $document ) ),
+		$window = $( OO.ui.Element.getWindow( $document ) ),
 		scrollTop = $window.scrollTop();
 
 	$document[0].focus();
@@ -513,10 +513,10 @@ ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
 		this.decRenderLock();
 	}
 	switch ( e.keyCode ) {
-		case ve.Keys.LEFT:
-		case ve.Keys.RIGHT:
-		case ve.Keys.UP:
-		case ve.Keys.DOWN:
+		case OO.ui.Keys.LEFT:
+		case OO.ui.Keys.RIGHT:
+		case OO.ui.Keys.UP:
+		case OO.ui.Keys.DOWN:
 			if ( !this.dragging && !this.selecting && e.shiftKey ) {
 				this.selecting = true;
 				this.emit( 'selectionStart' );
@@ -528,17 +528,17 @@ ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
 				updateFromModel = true;
 			}
 			break;
-		case ve.Keys.ENTER:
+		case OO.ui.Keys.ENTER:
 			e.preventDefault();
 			this.handleEnter( e );
 			updateFromModel = true;
 			break;
-		case ve.Keys.BACKSPACE:
+		case OO.ui.Keys.BACKSPACE:
 			e.preventDefault();
 			this.handleDelete( e, true );
 			updateFromModel = true;
 			break;
-		case ve.Keys.DELETE:
+		case OO.ui.Keys.DELETE:
 			e.preventDefault();
 			this.handleDelete( e, false );
 			updateFromModel = true;
@@ -618,7 +618,7 @@ ve.ce.Surface.prototype.afterDocumentKeyPress = function () {
  */
 ve.ce.Surface.prototype.onDocumentKeyUp = function ( e ) {
 	// Detect end of selecting by letting go of shift
-	if ( !this.dragging && this.selecting && e.keyCode === ve.Keys.SHIFT ) {
+	if ( !this.dragging && this.selecting && e.keyCode === OO.ui.Keys.SHIFT ) {
 		this.selecting = false;
 		this.emit( 'selectionEnd' );
 	}
@@ -667,7 +667,7 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 		view = this,
 		slice = this.documentView.model.getSlicedLinearData( this.model.getSelection() ),
 		clipboardData = e.originalEvent.clipboardData,
-		$window = $( ve.Element.getWindow( this.$$.context ) );
+		$window = $( OO.ui.Element.getWindow( this.$$.context ) );
 
 	// Clone the elements in the slice
 	slice.cloneElements();
@@ -747,7 +747,7 @@ ve.ce.Surface.prototype.onPaste = function ( e ) {
  */
 ve.ce.Surface.prototype.beforePaste = function ( e ) {
 	var tx,
-		$window = $( ve.Element.getWindow( this.$$.context ) ),
+		$window = $( OO.ui.Element.getWindow( this.$$.context ) ),
 		selection = this.model.getSelection(),
 		clipboardData = e.originalEvent.clipboardData;
 
@@ -783,7 +783,7 @@ ve.ce.Surface.prototype.afterPaste = function () {
 	var clipboardKey, clipboardId, clipboardIndex,
 		$elements, parts, pasteData, slice, tx,
 		beforePasteData = this.beforePasteData || {},
-		$window = $( ve.Element.getWindow( this.$$.context ) ),
+		$window = $( OO.ui.Element.getWindow( this.$$.context ) ),
 		selection = this.model.getSelection();
 
 	if ( beforePasteData.custom ) {
@@ -1237,9 +1237,9 @@ ve.ce.Surface.prototype.handleLeftOrRightArrowKey = function ( e ) {
 	selection = this.model.getSelection();
 	if ( this.$$( e.target ).css( 'direction' ) === 'rtl' ) {
 		// If the language direction is RTL, switch left/right directions:
-		direction = e.keyCode === ve.Keys.LEFT ? 1 : -1;
+		direction = e.keyCode === OO.ui.Keys.LEFT ? 1 : -1;
 	} else {
-		direction = e.keyCode === ve.Keys.LEFT ? -1 : 1;
+		direction = e.keyCode === OO.ui.Keys.LEFT ? -1 : 1;
 	}
 
 	range = this.getDocument().getRelativeRange(

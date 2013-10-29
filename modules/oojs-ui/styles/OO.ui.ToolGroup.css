@@ -1,0 +1,282 @@
+/*!
+ * ObjectOriented UserInterface ToolGroup styles.
+ *
+ * @copyright 2011-2013 OOJS Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+
+/* OO.ui.ToolGroup */
+
+.oo-ui-toolGroup {
+	display: inline-block;
+	margin: 0.3em;
+	vertical-align: middle;
+	border-radius: 0.25em;
+	border: solid 1px transparent;
+	-webkit-transition: border-color 300ms;
+	-moz-transition: border-color 300ms;
+	-o-transition: border-color 300ms;
+	transition: border-color 300ms;
+}
+
+.oo-ui-toolGroup:hover {
+	border-color: rgba(0,0,0,0.1);
+}
+
+.oo-ui-toolGroup-empty {
+	display: none;
+}
+
+.oo-ui-toolGroup .oo-ui-tool .oo-ui-labeledElement-label {
+	color: #000;
+}
+
+.oo-ui-toolGroup .oo-ui-tool .oo-ui-iconedElement-icon {
+	background-position: center center;
+	background-repeat: no-repeat;
+}
+
+/* OO.ui.BarToolGroup */
+
+.oo-ui-barToolGroup > .oo-ui-iconedElement-icon,
+.oo-ui-barToolGroup > .oo-ui-iconedElement-label {
+	display: none;
+}
+
+.oo-ui-barToolGroup .oo-ui-tool {
+	display: inline-block;
+	position: relative;
+	vertical-align: top;
+	height: 1.5em;
+	padding: 0.25em;
+	margin: -1px 0 -1px -1px;
+	border: solid 1px transparent;
+	cursor: pointer;
+}
+
+.oo-ui-barToolGroup
+	.oo-ui-tool-active:not(.oo-ui-widget-disabled) +
+	.oo-ui-tool-active:not(.oo-ui-widget-disabled)
+{
+	border-left-color: rgba(0,0,0,0.1);
+}
+
+.oo-ui-barToolGroup .oo-ui-tool:first-child {
+	border-top-left-radius: 0.25em;
+	border-bottom-left-radius: 0.25em;
+}
+
+.oo-ui-barToolGroup .oo-ui-tool:last-child {
+	margin-right: -1px;
+	border-top-right-radius: 0.25em;
+	border-bottom-right-radius: 0.25em;
+}
+
+.oo-ui-barToolGroup .oo-ui-tool:hover:not(.oo-ui-widget-disabled) {
+	border-color: rgba(0,0,0,0.2);
+}
+
+.oo-ui-barToolGroup .oo-ui-tool-active:not(.oo-ui-widget-disabled) {
+	border-color: rgba(0,0,0,0.2);
+}
+
+.oo-ui-barToolGroup .oo-ui-tool .oo-ui-iconedElement-icon {
+	display: block;
+	height: 1.5em;
+	width: 1.5em;
+	opacity: 0.8;
+}
+
+.oo-ui-barToolGroup .oo-ui-tool .oo-ui-labeledElement-label {
+	display: none;
+}
+
+.oo-ui-barToolGroup .oo-ui-tool.oo-ui-widget-disabled {
+	cursor: default;
+}
+
+.oo-ui-barToolGroup .oo-ui-tool.oo-ui-widget-disabled .oo-ui-iconedElement-icon {
+	opacity: 0.2;
+}
+
+.oo-ui-barToolGroup .oo-ui-tool:not(.oo-ui-widget-disabled) .oo-ui-iconedElement-icon {
+	opacity: 0.8;
+}
+
+.oo-ui-barToolGroup .oo-ui-tool:hover:not(.oo-ui-widget-disabled) .oo-ui-iconedElement-icon {
+	opacity: 1;
+}
+
+/* OO.ui.PopupToolGroup */
+
+.oo-ui-popupToolGroup {
+	position: relative;
+	height: 2em;
+	min-width: 2em;
+}
+
+.oo-ui-popupToolGroup-handle {
+	display: block;
+	cursor: pointer;
+}
+
+.oo-ui-popupToolGroup-handle .oo-ui-iconedElement-icon {
+	position: absolute;
+	top: 0;
+	right: 0;
+	height: 2em;
+	width: 2em;
+	background-position: center center;
+	background-repeat: no-repeat;
+	opacity: 0.8;
+}
+
+.oo-ui-popupToolGroup-handle .oo-ui-labeledElement-label {
+	line-height: 2.6em;
+	font-size: 0.8em;
+	margin: 0 2.25em 0 1em;
+}
+
+.oo-ui-popupToolGroup-handle .oo-ui-labeledElement-empty {
+	display: none;
+}
+
+.oo-ui-popupToolGroup .oo-ui-toolGroup-tools {
+	display: none;
+	position: absolute;
+	top: 2em;
+	left: -1px;
+	z-index: 4;
+	border: solid 1px #ccc;
+	background-color: white;
+	box-shadow: 0 0.25em 1em rgba(0,0,0,0.25);
+}
+
+.oo-ui-popupToolGroup .oo-ui-toolGroup-tools .oo-ui-iconedElement-icon {
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+
+.oo-ui-popupToolGroup-active:not(.oo-ui-widget-disabled) > .oo-ui-toolGroup-tools {
+	display: block;
+}
+
+.oo-ui-popupToolGroup-active:not(.oo-ui-widget-disabled) {
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+.oo-ui-popupToolGroup .oo-ui-tool .oo-ui-iconedElement-icon {
+	display: inline-block;
+	vertical-align: middle;
+	height: 2em;
+	width: 2em;
+	margin-right: 0.5em;
+}
+
+.oo-ui-popupToolGroup .oo-ui-tool .oo-ui-labeledElement-label {
+	display: inline-block;
+	vertical-align: middle;
+	line-height: 2em;
+	font-size: 0.8em;
+}
+
+/* OO.ui.ListToolGroup */
+
+.oo-ui-listToolGroup .oo-ui-toolGroup-tools {
+	padding: 0.5em;
+}
+
+.oo-ui-listToolGroup .oo-ui-tool {
+	display: block;
+	cursor: pointer;
+	white-space: nowrap;
+	border: solid 1px transparent;
+	margin: -1px 0 -1px -1px;
+	padding-right: 0.5em;
+}
+
+.oo-ui-listToolGroup.oo-ui-popupToolGroup-active {
+	border-color: rgba(0,0,0,0.2);
+}
+
+.oo-ui-listToolGroup
+	.oo-ui-tool-active:not(.oo-ui-widget-disabled) +
+	.oo-ui-tool-active:not(.oo-ui-widget-disabled)
+{
+	border-top-color: rgba(0,0,0,0.1);
+}
+
+.oo-ui-listToolGroup .oo-ui-tool:hover:not(.oo-ui-widget-disabled) {
+	border-color: rgba(0,0,0,0.2);
+}
+
+.oo-ui-listToolGroup .oo-ui-tool-active:not(.oo-ui-widget-disabled) {
+	border-color: rgba(0,0,0,0.2);
+}
+
+.oo-ui-listToolGroup .oo-ui-tool.oo-ui-widget-disabled {
+	cursor: default;
+}
+
+.oo-ui-listToolGroup .oo-ui-tool.oo-ui-widget-disabled .oo-ui-iconedElement-icon {
+	opacity: 0.2;
+}
+
+.oo-ui-listToolGroup .oo-ui-tool:not(.oo-ui-widget-disabled) .oo-ui-iconedElement-icon {
+	opacity: 0.8;
+}
+
+.oo-ui-listToolGroup .oo-ui-tool:hover:not(.oo-ui-widget-disabled) .oo-ui-iconedElement-icon {
+	opacity: 1;
+}
+
+/* OO.ui.MenuToolGroup */
+
+.oo-ui-menuToolGroup {
+	border-color: rgba(0,0,0,0.1);
+}
+
+.oo-ui-menuToolGroup:hover {
+	border-color: rgba(0,0,0,0.2);
+}
+
+.oo-ui-menuToolGroup.oo-ui-popupToolGroup-active {
+	border-color: rgba(0,0,0,0.25);
+}
+
+.oo-ui-menuToolGroup .oo-ui-popupToolGroup-handle {
+	min-width: 8em;
+}
+
+.oo-ui-menuToolGroup .oo-ui-tool {
+	display: block;
+	cursor: pointer;
+	white-space: nowrap;
+	padding: 0.25em 1em 0.25em 0.25em;
+}
+
+.oo-ui-menuToolGroup .oo-ui-tool .oo-ui-iconedElement-icon {
+	background-image: none;
+}
+
+.oo-ui-menuToolGroup .oo-ui-tool-active .oo-ui-iconedElement-icon {
+	/* @embed */
+	background-image: url(images/icons/check.png);
+}
+
+.oo-ui-menuToolGroup .oo-ui-tool:hover {
+	background-color: #e1f3ff;
+}
+
+/* Common */
+
+.oo-ui-barToolGroup .oo-ui-tool-active:not(.oo-ui-widget-disabled),
+.oo-ui-listToolGroup .oo-ui-tool-active:not(.oo-ui-widget-disabled),
+.oo-ui-popupToolGroup-active:not(.oo-ui-widget-disabled) {
+	/* @embed */
+	background-image: url(images/fade-down.png);
+	background-position: left top;
+	background-repeat: repeat-x;
+	box-shadow: inset 0 0.07em 0.07em 0 rgba(0, 0, 0, 0.07);
+}

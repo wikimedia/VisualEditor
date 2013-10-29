@@ -9,7 +9,7 @@
  * Creates an ve.ui.MWParameterResultWidget object.
  *
  * @class
- * @extends ve.ui.OptionWidget
+ * @extends OO.ui.OptionWidget
  *
  * @constructor
  * @param {Mixed} data Item data
@@ -20,7 +20,7 @@ ve.ui.MWParameterResultWidget = function VeUiMWParameterResultWidget( data, conf
 	config = ve.extendObject( { 'icon': 'parameter' }, config );
 
 	// Parent constructor
-	ve.ui.OptionWidget.call( this, data, config );
+	OO.ui.OptionWidget.call( this, data, config );
 
 	// Initialization
 	this.$.addClass( 've-ui-mwParameterResultWidget' );
@@ -29,7 +29,7 @@ ve.ui.MWParameterResultWidget = function VeUiMWParameterResultWidget( data, conf
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.MWParameterResultWidget, ve.ui.OptionWidget );
+OO.inheritClass( ve.ui.MWParameterResultWidget, OO.ui.OptionWidget );
 
 /* Methods */
 

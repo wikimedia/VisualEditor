@@ -12,18 +12,18 @@
 	margin-top: -7px;
 }
 
-.ve-ui-mwLinkTargetInputWidget-menu .ve-ui-menuWidget-item {
+.ve-ui-mwLinkTargetInputWidget-menu .oo-ui-menuWidget-item {
 	padding: 0.33em 1.25em;
 	color: #0645AD;
 }
 
-.ve-ui-mwLinkTargetInputWidget-menu .ve-ui-menuItemWidget[rel=newPage] {
+.ve-ui-mwLinkTargetInputWidget-menu .oo-ui-menuItemWidget[rel=newPage] {
 	color: #BA0000;
 }
 
-.ve-ui-mwLinkTargetInputWidget-menu .ve-ui-menuItemWidget[rel=existingPage],
-.ve-ui-mwLinkTargetInputWidget-menu .ve-ui-menuItemWidget[rel=matchingPage],
-.ve-ui-mwLinkTargetInputWidget-menu .ve-ui-menuItemWidget[rel=externalLink] {
+.ve-ui-mwLinkTargetInputWidget-menu .oo-ui-menuItemWidget[rel=existingPage],
+.ve-ui-mwLinkTargetInputWidget-menu .oo-ui-menuItemWidget[rel=matchingPage],
+.ve-ui-mwLinkTargetInputWidget-menu .oo-ui-menuItemWidget[rel=externalLink] {
 	color: #0645AD;
 }
 
@@ -145,7 +145,7 @@
 	padding: 0.75em 0.5em;
 }
 
-.ve-ui-mwCategoryPopupWidget .ve-ui-iconButtonWidget {
+.ve-ui-mwCategoryPopupWidget .oo-ui-iconButtonWidget {
 	display: block;
 	float: left;
 }
@@ -179,7 +179,7 @@
 	display: block;
 }
 
-.ve-ui-mwCategoryPopupWidget-sortKeyForm .ve-ui-inputLabelWidget {
+.ve-ui-mwCategoryPopupWidget-sortKeyForm .oo-ui-inputLabelWidget {
 	padding: 0 0.125em 0.5em 0.125em;
 }
 
@@ -230,11 +230,11 @@
 	box-shadow: inset 0 0 0 1px #a7dcff;
 }
 
-.ve-ui-mwMediaResultWidget.ve-ui-optionWidget-highlighted {
+.ve-ui-mwMediaResultWidget.oo-ui-optionWidget-highlighted {
 	box-shadow: 0 0 0.3em #a7dcff, 0 0 0 white;
 }
 
-.ve-ui-mwMediaResultWidget.ve-ui-optionWidget-selected {
+.ve-ui-mwMediaResultWidget.oo-ui-optionWidget-selected {
 	box-shadow: 0 0 0.3em #a7dcff, 0 0 0 white;
 }
 
@@ -246,7 +246,7 @@
 	background-repeat: no-repeat;
 }
 
-.ve-ui-mwMediaResultWidget .ve-ui-labeledElement-label {
+.ve-ui-mwMediaResultWidget .oo-ui-labeledElement-label {
 	position: absolute;
 	bottom: 0;
 	left: 0;
@@ -260,11 +260,11 @@
 	text-overflow: ellipsis;
 }
 
-.ve-ui-mwMediaResultWidget.ve-ui-optionWidget-highlighted .ve-ui-labeledElement-label {
+.ve-ui-mwMediaResultWidget.oo-ui-optionWidget-highlighted .oo-ui-labeledElement-label {
 	background-color: rgba(0,0,0,0.75);
 }
 
-.ve-ui-mwMediaResultWidget.ve-ui-optionWidget-selected .ve-ui-labeledElement-label {
+.ve-ui-mwMediaResultWidget.oo-ui-optionWidget-selected .oo-ui-labeledElement-label {
 	background-color: #000;
 }
 
@@ -290,7 +290,7 @@
 	border-bottom: solid 1px #eee;
 }
 
-.ve-ui-mwReferenceResultWidget .ve-ui-labeledElement-label {
+.ve-ui-mwReferenceResultWidget .oo-ui-labeledElement-label {
 	white-space: normal;
 }
 
@@ -308,12 +308,12 @@
 
 /* ve.ui.MWParameterSearchWidget */
 
-.ve-ui-mwParameterSearchWidget .ve-ui-selectWidget {
+.ve-ui-mwParameterSearchWidget .oo-ui-selectWidget {
 	position: relative;
 	width: 100%;
 }
 
-.ve-ui-mwParameterSearchWidget .ve-ui-searchWidget-results {
+.ve-ui-mwParameterSearchWidget .oo-ui-searchWidget-results {
 	overflow-y: hidden;
 }
 
@@ -323,12 +323,12 @@
 	padding-right: 0.25em;
 }
 
-.ve-ui-mwParameterResultWidget .ve-ui-optionWidget-icon {
+.ve-ui-mwParameterResultWidget .oo-ui-optionWidget-icon {
 	top: 0.25em;
 	margin-top: 0;
 }
 
-.ve-ui-mwParameterResultWidget.ve-ui-widget-disabled {
+.ve-ui-mwParameterResultWidget.oo-ui-widget-disabled {
 	opacity: 0.5;
 }
 

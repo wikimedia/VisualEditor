@@ -10,8 +10,8 @@
  *
  * @class
  * @abstract
- * @extends ve.ui.Widget
- * @mixin ve.ui.GroupElement
+ * @extends OO.ui.Widget
+ * @mixin OO.ui.GroupElement
  *
  * @constructor
  * @param {Object} [config] Configuration options
@@ -21,10 +21,10 @@ ve.ui.MWCategoryWidget = function VeUiMWCategoryWidget( config ) {
 	config = config || {};
 
 	// Parent constructor
-	ve.ui.Widget.call( this, config );
+	OO.ui.Widget.call( this, config );
 
 	// Mixin constructors
-	ve.ui.GroupElement.call( this, this.$$( '<div>' ), config );
+	OO.ui.GroupElement.call( this, this.$$( '<div>' ), config );
 
 	// Properties
 	this.categories = {};
@@ -57,9 +57,9 @@ ve.ui.MWCategoryWidget = function VeUiMWCategoryWidget( config ) {
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.MWCategoryWidget, ve.ui.Widget );
+OO.inheritClass( ve.ui.MWCategoryWidget, OO.ui.Widget );
 
-OO.mixinClass( ve.ui.MWCategoryWidget, ve.ui.GroupElement );
+OO.mixinClass( ve.ui.MWCategoryWidget, OO.ui.GroupElement );
 
 /* Events */
 
@@ -101,7 +101,7 @@ ve.ui.MWCategoryWidget.prototype.onLookupInputKeyDown = function ( e ) {
  * Handle menu item select event.
  *
  * @method
- * @param {ve.ui.MenuItemWidget} item Selected item
+ * @param {OO.ui.MenuItemWidget} item Selected item
  */
 ve.ui.MWCategoryWidget.prototype.onLookupMenuItemSelect = function ( item ) {
 	var value = item && item.getData();
@@ -216,7 +216,7 @@ ve.ui.MWCategoryWidget.prototype.addItems = function ( items, index ) {
 		categoryItems.push( categoryItem );
 	}
 
-	ve.ui.GroupElement.prototype.addItems.call( this, categoryItems, index );
+	OO.ui.GroupElement.prototype.addItems.call( this, categoryItems, index );
 
 	this.fitInput();
 
@@ -240,7 +240,7 @@ ve.ui.MWCategoryWidget.prototype.removeItems = function ( names ) {
 		delete this.categories[names[i]];
 	}
 
-	ve.ui.GroupElement.prototype.removeItems.call( this, items );
+	OO.ui.GroupElement.prototype.removeItems.call( this, items );
 
 	this.fitInput();
 };

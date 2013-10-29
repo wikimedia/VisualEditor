@@ -15,11 +15,11 @@
 	height: 10em;
 }
 
-.ve-ui-mwTransclusionDialog-addTemplateFieldset .ve-ui-widget {
+.ve-ui-mwTransclusionDialog-addTemplateFieldset .oo-ui-widget {
 	display: inline-block;
 }
 
-.ve-ui-mwTransclusionDialog-addTemplateFieldset .ve-ui-pushButtonWidget {
+.ve-ui-mwTransclusionDialog-addTemplateFieldset .oo-ui-pushButtonWidget {
 	margin-left: 0.5em;
 }
 
@@ -34,7 +34,7 @@
 	margin-bottom: 1em;
 }
 
-.ve-ui-mwTransclusionDialog-addParameterFieldset .ve-ui-searchWidget-results {
+.ve-ui-mwTransclusionDialog-addParameterFieldset .oo-ui-searchWidget-results {
 	position: relative;
 	padding-bottom: 5em;
 }

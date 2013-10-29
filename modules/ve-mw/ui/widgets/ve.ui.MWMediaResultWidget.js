@@ -11,7 +11,7 @@
  * Creates an ve.ui.MWMediaResultWidget object.
  *
  * @class
- * @extends ve.ui.OptionWidget
+ * @extends OO.ui.OptionWidget
  *
  * @constructor
  * @param {Mixed} data Item data
@@ -23,7 +23,7 @@ ve.ui.MWMediaResultWidget = function VeUiMWMediaResultWidget( data, config ) {
 	config = config || {};
 
 	// Parent constructor
-	ve.ui.OptionWidget.call( this, data, config );
+	OO.ui.OptionWidget.call( this, data, config );
 
 	// Properties
 	this.size = config.size || 150;
@@ -41,7 +41,7 @@ ve.ui.MWMediaResultWidget = function VeUiMWMediaResultWidget( data, config ) {
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.MWMediaResultWidget, ve.ui.OptionWidget );
+OO.inheritClass( ve.ui.MWMediaResultWidget, OO.ui.OptionWidget );
 
 /* Methods */
 

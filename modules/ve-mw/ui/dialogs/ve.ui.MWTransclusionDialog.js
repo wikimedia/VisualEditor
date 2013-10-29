@@ -48,10 +48,10 @@ ve.ui.MWTransclusionDialog.prototype.initialize = function () {
 	ve.ui.MWDialog.prototype.initialize.call( this );
 
 	// Properties
-	this.applyButton = new ve.ui.PushButtonWidget( {
+	this.applyButton = new OO.ui.PushButtonWidget( {
 		'$$': this.$$, 'label': ve.msg( 'visualeditor-dialog-action-apply' ), 'flags': ['primary']
 	} );
-	this.pagedOutlineLayout = new ve.ui.PagedOutlineLayout( {
+	this.pagedOutlineLayout = new OO.ui.PagedOutlineLayout( {
 		'$$': this.frame.$$,
 		'editable': true,
 		'adders': [
@@ -356,13 +356,13 @@ ve.ui.MWTransclusionDialog.prototype.getPageIndex = function ( item ) {
 ve.ui.MWTransclusionDialog.prototype.getContentPage = function ( content ) {
 	var valueFieldset, textInput, optionsFieldset, removeButton;
 
-	valueFieldset = new ve.ui.FieldsetLayout( {
+	valueFieldset = new OO.ui.FieldsetLayout( {
 		'$$': this.frame.$$,
 		'label': ve.msg( 'visualeditor-dialog-transclusion-content' ),
 		'icon': 'source'
 	} );
 
-	textInput = new ve.ui.TextInputWidget( { '$$': this.frame.$$, 'multiline': true } );
+	textInput = new OO.ui.TextInputWidget( { '$$': this.frame.$$, 'multiline': true } );
 	textInput.setValue( content.getValue() );
 	textInput.connect( this, { 'change': function () {
 		content.setValue( textInput.getValue() );
@@ -370,13 +370,13 @@ ve.ui.MWTransclusionDialog.prototype.getContentPage = function ( content ) {
 	textInput.$.addClass( 've-ui-mwTransclusionDialog-input' );
 	valueFieldset.$.append( textInput.$ );
 
-	optionsFieldset = new ve.ui.FieldsetLayout( {
+	optionsFieldset = new OO.ui.FieldsetLayout( {
 		'$$': this.frame.$$,
 		'label': ve.msg( 'visualeditor-dialog-transclusion-options' ),
 		'icon': 'settings'
 	} );
 
-	removeButton = new ve.ui.PushButtonWidget( {
+	removeButton = new OO.ui.PushButtonWidget( {
 		'$$': this.frame.$$,
 		'label': ve.msg( 'visualeditor-dialog-transclusion-remove-content' ),
 		'flags': ['destructive']
@@ -418,7 +418,7 @@ ve.ui.MWTransclusionDialog.prototype.getTemplatePage = function ( template ) {
 		}
 	}
 
-	infoFieldset = new ve.ui.FieldsetLayout( {
+	infoFieldset = new OO.ui.FieldsetLayout( {
 		'$$': this.frame.$$,
 		'label': label,
 		'icon': 'template'
@@ -428,7 +428,7 @@ ve.ui.MWTransclusionDialog.prototype.getTemplatePage = function ( template ) {
 		infoFieldset.$.append( this.frame.$$( '<div>' ).text( description ) );
 	}
 
-	addParameterFieldset = new ve.ui.FieldsetLayout( {
+	addParameterFieldset = new OO.ui.FieldsetLayout( {
 		'$$': this.frame.$$,
 		'label': ve.msg( 'visualeditor-dialog-transclusion-add-param' ),
 		'icon': 'parameter'
@@ -438,13 +438,13 @@ ve.ui.MWTransclusionDialog.prototype.getTemplatePage = function ( template ) {
 	addParameterSearch.connect( this, { 'select': addParameter } );
 	addParameterFieldset.$.append( addParameterSearch.$ );
 
-	optionsFieldset = new ve.ui.FieldsetLayout( {
+	optionsFieldset = new OO.ui.FieldsetLayout( {
 		'$$': this.frame.$$,
 		'label': ve.msg( 'visualeditor-dialog-transclusion-options' ),
 		'icon': 'settings'
 	} );
 
-	removeButton = new ve.ui.PushButtonWidget( {
+	removeButton = new OO.ui.PushButtonWidget( {
 		'$$': this.frame.$$,
 		'label': ve.msg( 'visualeditor-dialog-transclusion-remove-template' ),
 		'flags': ['destructive']
@@ -475,14 +475,14 @@ ve.ui.MWTransclusionDialog.prototype.getParameterPage = function ( parameter ) {
 		label = spec.getParameterLabel( name ),
 		description = spec.getParameterDescription( name );
 
-	valueFieldset = new ve.ui.FieldsetLayout( {
+	valueFieldset = new OO.ui.FieldsetLayout( {
 		'$$': this.frame.$$,
 		'label': label,
 		'icon': 'parameter'
 	} );
 
 	if ( description ) {
-		inputLabel = new ve.ui.InputLabelWidget( {
+		inputLabel = new OO.ui.InputLabelWidget( {
 			'$$': this.frame.$$,
 			'input': textInput,
 			'label': description
@@ -490,7 +490,7 @@ ve.ui.MWTransclusionDialog.prototype.getParameterPage = function ( parameter ) {
 		valueFieldset.$.append( inputLabel.$ );
 	}
 
-	textInput = new ve.ui.TextInputWidget( { '$$': this.frame.$$, 'multiline': true } );
+	textInput = new OO.ui.TextInputWidget( { '$$': this.frame.$$, 'multiline': true } );
 	textInput.setValue( parameter.getValue() );
 	textInput.connect( this, { 'change': function () {
 		parameter.setValue( textInput.getValue() );
@@ -498,13 +498,13 @@ ve.ui.MWTransclusionDialog.prototype.getParameterPage = function ( parameter ) {
 	textInput.$.addClass( 've-ui-mwTransclusionDialog-input' );
 	valueFieldset.$.append( textInput.$ );
 
-	optionsFieldset = new ve.ui.FieldsetLayout( {
+	optionsFieldset = new OO.ui.FieldsetLayout( {
 		'$$': this.frame.$$,
 		'label': ve.msg( 'visualeditor-dialog-transclusion-options' ),
 		'icon': 'settings'
 	} );
 
-	removeButton = new ve.ui.PushButtonWidget( {
+	removeButton = new OO.ui.PushButtonWidget( {
 		'$$': this.frame.$$,
 		'label': ve.msg( 'visualeditor-dialog-transclusion-remove-param' ),
 		'flags': ['destructive']
@@ -550,7 +550,7 @@ ve.ui.MWTransclusionDialog.prototype.getPlaceholderPage = function ( placeholder
 		removeButton.setDisabled( true );
 	}
 
-	addTemplateFieldset = new ve.ui.FieldsetLayout( {
+	addTemplateFieldset = new OO.ui.FieldsetLayout( {
 		'$$': this.frame.$$,
 		'label': label,
 		'icon': 'template'
@@ -560,7 +560,7 @@ ve.ui.MWTransclusionDialog.prototype.getPlaceholderPage = function ( placeholder
 	addTemplateInput = new ve.ui.MWTitleInputWidget( {
 		'$$': this.frame.$$, '$overlay': this.$overlay, 'namespace': 10
 	} );
-	addTemplateButton = new ve.ui.PushButtonWidget( {
+	addTemplateButton = new OO.ui.PushButtonWidget( {
 		'$$': this.frame.$$,
 		'label': ve.msg( 'visualeditor-dialog-transclusion-add-template' ),
 		'flags': ['constructive'],
@@ -575,13 +575,13 @@ ve.ui.MWTransclusionDialog.prototype.getPlaceholderPage = function ( placeholder
 	addTemplateButton.connect( this, { 'click': addTemplate } );
 	addTemplateFieldset.$.append( addTemplateInput.$, addTemplateButton.$ );
 
-	optionsFieldset = new ve.ui.FieldsetLayout( {
+	optionsFieldset = new OO.ui.FieldsetLayout( {
 		'$$': this.frame.$$,
 		'label': ve.msg( 'visualeditor-dialog-transclusion-options' ),
 		'icon': 'settings'
 	} );
 
-	removeButton = new ve.ui.PushButtonWidget( {
+	removeButton = new OO.ui.PushButtonWidget( {
 		'$$': this.frame.$$,
 		'label': ve.msg( 'visualeditor-dialog-transclusion-remove-template' ),
 		'flags': ['destructive']

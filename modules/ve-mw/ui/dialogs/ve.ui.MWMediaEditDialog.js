@@ -61,17 +61,17 @@ ve.ui.MWMediaEditDialog.prototype.initialize = function () {
 	ve.ui.MWDialog.prototype.initialize.call( this );
 
 	// Properties
-	this.editPanel = new ve.ui.PanelLayout( {
+	this.editPanel = new OO.ui.PanelLayout( {
 		'$$': this.frame.$$,
 		'padded': true,
 		'scrollable': true
 	} );
-	this.captionFieldset = new ve.ui.FieldsetLayout( {
+	this.captionFieldset = new OO.ui.FieldsetLayout( {
 		'$$': this.frame.$$,
 		'label': ve.msg( 'visualeditor-dialog-media-content-section' ),
 		'icon': 'parameter'
 	} );
-	this.applyButton = new ve.ui.PushButtonWidget( {
+	this.applyButton = new OO.ui.PushButtonWidget( {
 		'$$': this.$$,
 		'label': ve.msg( 'visualeditor-dialog-action-apply' ),
 		'flags': ['primary']
