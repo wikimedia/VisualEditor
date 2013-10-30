@@ -37,7 +37,7 @@ class VisualEditorPage
   span(:ve_references, text: 'Reference')
   span(:ve_numbering, class: 'oo-ui-iconedElement-icon oo-ui-icon-number-list')
   div(:visual_editor_toolbar, class: 'oo-ui-toolbar-tools')
-  span(:transclusion, text: 'Transclusion')
+  span(:transclusion, class: 'oo-ui-iconedElement-icon oo-ui-icon-template')
 
   in_frame(:index => 0) do |frame|
     text_area(:describe_change, index: 0, frame: frame)
