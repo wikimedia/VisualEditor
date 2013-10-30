@@ -125,10 +125,7 @@ OO.ui.Toolbar.prototype.setup = function ( groups ) {
 		};
 
 	// Cleanup previous groups
-	for ( i = 0, len = this.items.length; i < len; i++ ) {
-		this.items[i].destroy();
-	}
-	this.clearItems();
+	this.reset();
 
 	// Build out new groups
 	for ( i = 0, len = groups.length; i < len; i++ ) {
@@ -151,17 +148,26 @@ OO.ui.Toolbar.prototype.setup = function ( groups ) {
 };
 
 /**
+ * Remove all tools and groups from the toolbar.
+ */
+OO.ui.Toolbar.prototype.reset = function () {
+	var i, len;
+
+	this.groups = [];
+	this.tools = {};
+	for ( i = 0, len = this.items.length; i < len; i++ ) {
+		this.items[i].destroy();
+	}
+	this.clearItems();
+};
+
+/**
  * Destroys toolbar, removing event handlers and DOM elements.
  *
  * Call this whenever you are done using a toolbar.
  */
 OO.ui.Toolbar.prototype.destroy = function () {
-	var i, len;
-
-	for ( i = 0, len = this.items.length; i < len; i++ ) {
-		this.items[i].destroy();
-	}
-	this.clearItems();
+	this.reset();
 	this.$.remove();
 };
 
