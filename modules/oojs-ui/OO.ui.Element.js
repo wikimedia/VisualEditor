@@ -14,13 +14,24 @@
  * @constructor
  * @param {Object} [config] Configuration options
  * @cfg {Function} [$$] jQuery for the frame the widget is in
+ * @cfg {string[]} [classes] CSS class names
+ * @cfg {jQuery} [$content] Content elements to append
  */
 OO.ui.Element = function OoUiElement( config ) {
-	// Initialize config
+	// Configuration initialization
 	config = config || {};
+
 	// Properties
 	this.$$ = config.$$ || OO.ui.Element.get$$( document );
 	this.$ = this.$$( this.$$.context.createElement( this.getTagName() ) );
+
+	// Initialization
+	if ( Array.isArray( config.classes ) ) {
+		this.$.addClass( config.classes.join( ' ' ) );
+	}
+	if ( config.$content ) {
+		this.$.append( config.$content );
+	}
 };
 
 /* Static Properties */
