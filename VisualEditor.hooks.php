@@ -238,12 +238,10 @@ class VisualEditorHooks {
 			'version' => '1.0',
 			'label-message' => 'visualeditor-preference-core-label',
 			'desc-message' => 'visualeditor-preference-core-description',
-			// TODO: use message 'visualeditor-preference-core-info-link'
-			'info-link' => false,
-			// TODO: use message 'visualeditor-preference-core-discussion-link'
-			'discussion-link' => false,
 			'screenshot' => $wgExtensionAssetsPath .
 				'/VisualEditor/betafeatures-icon-VisualEditor.svg',
+			'info-message' => 'visualeditor-preference-core-info-link',
+			'discussion-message' => 'visualeditor-preference-core-discussion-link',
 			'requirements' => array(
 				'javascript' => true,
 				'blacklist' => $wgVisualEditorBrowserBlacklist,
@@ -256,12 +254,10 @@ class VisualEditorHooks {
 			'version' => '1.0',
 			'label-message' => 'visualeditor-preference-language-label',
 			'desc-message' => 'visualeditor-preference-language-description',
-			// TODO: use message 'visualeditor-preference-language-info-link'
-			'info-link' => false,
-			// TODO: use message 'visualeditor-preference-language-discussion-link'
-			'discussion-link' => false,
 			'screenshot' => $wgExtensionAssetsPath .
 				'/VisualEditor/betafeatures-icon-VisualEditor-language.svg',
+			'info-message' => 'visualeditor-preference-experimental-info-link',
+			'discussion-message' => 'visualeditor-preference-experimental-discussion-link',
 			'requirements' => array(
 				'betafeatures' => array(
 					'visualeditor-enable',
@@ -275,12 +271,10 @@ class VisualEditorHooks {
 			'version' => '1.0',
 			'label-message' => 'visualeditor-preference-mwalienextension-label',
 			'desc-message' => 'visualeditor-preference-mwalienextension-description',
-			// TODO: use message 'visualeditor-preference-mwalienextension-info-link'
-			'info-link' => false,
-			// TODO: use message 'visualeditor-preference-mwalienextension-discussion-link'
-			'discussion-link' => false,
 			'screenshot' => $wgExtensionAssetsPath .
 				'/VisualEditor/betafeatures-icon-VisualEditor-alien.svg',
+			'info-message' => 'visualeditor-preference-mwalienextension-info-link',
+			'discussion-message' => 'visualeditor-preference-mwalienextension-discussion-link',
 			'requirements' => array(
 				'betafeatures' => array(
 					'visualeditor-enable',
@@ -293,12 +287,10 @@ class VisualEditorHooks {
 			'version' => '1.0',
 			'label-message' => 'visualeditor-preference-mwmath-label',
 			'desc-message' => 'visualeditor-preference-mwmath-description',
-			// TODO: use message 'visualeditor-preference-mwmath-info-link'
-			'info-link' => false,
-			// TODO: use message 'visualeditor-preference-mwmath-discussion-link'
-			'discussion-link' => false,
 			'screenshot' => $wgExtensionAssetsPath .
 				'/VisualEditor/betafeatures-icon-VisualEditor-formulae.svg',
+			'info-message' => 'visualeditor-preference-mwmath-info-link',
+			'discussion-message' => 'visualeditor-preference-mwmath-discussion-link',
 			'requirements' => array(
 				'betafeatures' => array(
 					'visualeditor-enable',
@@ -311,12 +303,10 @@ class VisualEditorHooks {
 			'version' => '1.0',
 			'label-message' => 'visualeditor-preference-mwhiero-label',
 			'desc-message' => 'visualeditor-preference-mwhiero-description',
-			// TODO: use message 'visualeditor-preference-mwhiero-info-link'
-			'info-link' => false,
-			// TODO: use message 'visualeditor-preference-mwhiero-discussion-link'
-			'discussion-link' => false,
 			'screenshot' => $wgExtensionAssetsPath .
 				'/VisualEditor/betafeatures-icon-VisualEditor-hieroglyphics.svg',
+			'info-message' => 'visualeditor-preference-mwhiero-info-link',
+			'discussion-message' => 'visualeditor-preference-mwhiero-discussion-link',
 			'requirements' => array(
 				'betafeatures' => array(
 					'visualeditor-enable',
@@ -330,12 +320,10 @@ class VisualEditorHooks {
 			'version' => '1.0',
 			'label-message' => 'visualeditor-preference-mwsyntaxHighlight-label',
 			'desc-message' => 'visualeditor-preference-mwsyntaxHighlight-description',
-			// TODO: use message 'visualeditor-preference-mwsyntaxHighlight-info-link'
-			'info-link' => false,
-			// TODO: use message 'visualeditor-preference-mwsyntaxHighlight-discussion-link'
-			'discussion-link' => false,
 			'screenshot' => $wgExtensionAssetsPath .
 				'/VisualEditor/betafeatures-icon-VisualEditor-syntaxHighlight.svg',
+			'info-message' => 'visualeditor-preference-mwsyntaxHighlight-info-link',
+			'discussion-message' => 'visualeditor-preference-mwsyntaxHighlight-discussion-link',
 			'requirements' => array(
 				'betafeatures' => array(
 					'visualeditor-enable',

@@ -169,15 +169,25 @@ $messages['en'] = array(
 	'visualeditor-parameter-search-unknown' => 'Unknown parameter',
 	'visualeditor-preference-betatempdisable' => 'Temporarily disable VisualEditor while it is in beta',
 	'visualeditor-preference-core-description' => 'Enable VisualEditor. It will not be available on talk pages and some other namespaces.',
+	'visualeditor-preference-core-discussion-link' => '//mediawiki.org/wiki/Special:MyLanguage/Talk:VisualEditor/Beta_Features/General',
+	'visualeditor-preference-core-info-link' => '//mediawiki.org/wiki/Special:MyLanguage/VisualEditor/Beta_Features/General',
 	'visualeditor-preference-core-label' => 'VisualEditor',
 	'visualeditor-preference-enable' => 'Enable VisualEditor. It will not be available on talk pages and some other namespaces.',
 	'visualeditor-preference-language-description' => 'Add experimental tools to VisualEditor for marking multi-lingual and bi-directional for testing, ahead of general release. Please remember to always review your changes before saving when using experimental features.',
+	'visualeditor-preference-language-discussion-link' => '//mediawiki.org/wiki/Special:MyLanguage/Talk:VisualEditor/Beta_Features/Language',
+	'visualeditor-preference-language-info-link' => '//mediawiki.org/wiki/Special:MyLanguage/VisualEditor/Beta_Features/Language',
 	'visualeditor-preference-language-label' => 'VisualEditor language tools',
 	'visualeditor-preference-mwalienextension-description' => 'Add experimental basic support to VisualEditor for editing extension tags (like galleries or source code blocks), ahead of individual tools being available. Please remember to always review your changes before saving when using experimental features.',
+	'visualeditor-preference-mwalienextension-discussion-link' => '//mediawiki.org/wiki/Special:MyLanguage/Talk:VisualEditor/Beta_Features/Generic',
+	'visualeditor-preference-mwalienextension-info-link' => '//mediawiki.org/wiki/Special:MyLanguage/VisualEditor/Beta_Features/Generic',
 	'visualeditor-preference-mwalienextension-label' => 'VisualEditor extension tag editing',
 	'visualeditor-preference-mwhiero-description' => 'Add experimental support to VisualEditor for creating and editing hieroglyphics for testing, ahead of general release. Please remember to always review your changes before saving when using experimental features.',
+	'visualeditor-preference-mwhiero-discussion-link' => '//mediawiki.org/wiki/Special:MyLanguage/Talk:VisualEditor/Beta_Features/Hieroglyphics',
+	'visualeditor-preference-mwhiero-info-link' => '//mediawiki.org/wiki/Special:MyLanguage/VisualEditor/Beta_Features/Hieroglyphics',
 	'visualeditor-preference-mwhiero-label' => 'VisualEditor hieroglyphics editing',
 	'visualeditor-preference-mwmath-description' => 'Add experimental support to VisualEditor for creating and editing of mathematical formulae for testing, ahead of general release. Please remember to always review your changes before saving when using experimental features.',
+	'visualeditor-preference-mwmath-discussion-link' => '//mediawiki.org/wiki/Special:MyLanguage/Talk:VisualEditor/Beta_Features/Formulae',
+	'visualeditor-preference-mwmath-info-link' => '//mediawiki.org/wiki/Special:MyLanguage/VisualEditor/Beta_Features/Formulae',
 	'visualeditor-preference-mwmath-label' => 'VisualEditor formulae editing',
 	'visualeditor-reference-input-placeholder' => 'What do you want to reference?',
 	'visualeditor-referencelist-isempty' => 'There are no references with the group "$1" on this page to include in this list.',
@@ -560,6 +570,8 @@ The label for this checkbox is {{msg-mw|Visualeditor-preference-core-label}}.
 
 See also:
 * {{msg-mw|Visualeditor-preference-enable}}',
+	'visualeditor-preference-core-discussion-link' => '{{optional|Used on [[Special:Preferences]] as a link to a page where users can discuss this Beta Feature. Defaults to a page on MediaWiki.org.}}',
+	'visualeditor-preference-core-info-link' => '{{optional|Used on [[Special:Preferences]] as a link to a page where users can learn about this Beta Feature. Defaults to a page on MediaWiki.org.}}',
 	'visualeditor-preference-core-label' => 'Used in [[Special:Preferences]].
 
 Used as label for checkbox to enable VisualEditor.
@@ -577,6 +589,8 @@ See also:
 Used as description for the checkbox to enable language tools in VisualEditor.
 
 The label for this checkbox is {{msg-mw|Visualeditor-preference-language-label}}.',
+	'visualeditor-preference-language-discussion-link' => '{{optional|Used on [[Special:Preferences]] as a link to a page where users can discuss this Beta Feature. Defaults to a page on MediaWiki.org.}}',
+	'visualeditor-preference-language-info-link' => '{{optional|Used on [[Special:Preferences]] as a link to a page where users can learn about this Beta Feature. Defaults to a page on MediaWiki.org.}}',
 	'visualeditor-preference-language-label' => 'Used in [[Special:Preferences]].
 
 Used as label for checkbox to enable language tools in VisualEditor.
@@ -588,6 +602,8 @@ The description for this checkbox is:
 Used as description for the checkbox to enable editing of extension tags in VisualEditor.
 
 The label for this checkbox is {{msg-mw|Visualeditor-preference-mwalienextension-label}}.',
+	'visualeditor-preference-mwalienextension-discussion-link' => '{{optional|Used on [[Special:Preferences]] as a link to a page where users can discuss this Beta Feature. Defaults to a page on MediaWiki.org.}}',
+	'visualeditor-preference-mwalienextension-info-link' => '{{optional|Used on [[Special:Preferences]] as a link to a page where users can learn about this Beta Feature. Defaults to a page on MediaWiki.org.}}',
 	'visualeditor-preference-mwalienextension-label' => 'Used in [[Special:Preferences]].
 
 Used as label for checkbox to enable editing of extension tags in VisualEditor.
@@ -599,6 +615,8 @@ The description for this checkbox is:
 Used as description for the checkbox to enable editing of hieroglyphics in VisualEditor.
 
 The label for this checkbox is {{msg-mw|Visualeditor-preference-mwhiero-label}}.',
+	'visualeditor-preference-mwhiero-discussion-link' => '{{optional|Used on [[Special:Preferences]] as a link to a page where users can discuss this Beta Feature. Defaults to a page on MediaWiki.org.}}',
+	'visualeditor-preference-mwhiero-info-link' => '{{optional|Used on [[Special:Preferences]] as a link to a page where users can learn about this Beta Feature. Defaults to a page on MediaWiki.org.}}',
 	'visualeditor-preference-mwhiero-label' => 'Used in [[Special:Preferences]].
 
 Used as label for checkbox to enable editing of hieroglyphics in VisualEditor.
@@ -610,6 +628,8 @@ The description for this checkbox is:
 Used as description for the checkbox to enable editing of mathematical formulae in VisualEditor.
 
 The label for this checkbox is {{msg-mw|Visualeditor-preference-mwmath-label}}.',
+	'visualeditor-preference-mwmath-discussion-link' => '{{optional|Used on [[Special:Preferences]] as a link to a page where users can discuss this Beta Feature. Defaults to a page on MediaWiki.org.}}',
+	'visualeditor-preference-mwmath-info-link' => '{{optional|Used on [[Special:Preferences]] as a link to a page where users can learn about this Beta Feature. Defaults to a page on MediaWiki.org.}}',
 	'visualeditor-preference-mwmath-label' => 'Used in [[Special:Preferences]].
 
 Used as label for checkbox to enable editing of mathematical formulae in VisualEditor.
