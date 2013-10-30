@@ -298,7 +298,7 @@ class VisualEditorHooks {
 			// TODO: use message 'visualeditor-preference-mwmath-discussion-link'
 			'discussion-link' => false,
 			'screenshot' => $wgExtensionAssetsPath .
-				'/VisualEditor/betafeatures-icon-VisualEditor-formulæ.svg',
+				'/VisualEditor/betafeatures-icon-VisualEditor-formulae.svg',
 			'requirements' => array(
 				'betafeatures' => array(
 					'visualeditor-enable',
