@@ -34,7 +34,7 @@ class VisualEditorPage
   span(:ve_bullets, class: 'oo-ui-iconedElement-icon oo-ui-icon-bullet-list')
   div(:ve_heading_menu, class: 'oo-ui-iconedElement-icon oo-ui-icon-down')
   span(:ve_link_icon, class: 'oo-ui-iconedElement-icon oo-ui-icon-link')
-  span(:ve_references, text: 'Reference')
+  span(:ve_references, class: 'oo-ui-iconedElement-icon oo-ui-icon-reference')
   span(:ve_numbering, class: 'oo-ui-iconedElement-icon oo-ui-icon-number-list')
   div(:visual_editor_toolbar, class: 'oo-ui-toolbar-tools')
   span(:transclusion, text: 'Transclusion')
