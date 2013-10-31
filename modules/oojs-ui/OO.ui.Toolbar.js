@@ -141,7 +141,7 @@ OO.ui.Toolbar.prototype.setup = function ( groups ) {
 		}
 		type = constructors[group.type] ? group.type : defaultType;
 		items.push(
-			new constructors[type]( this, OO.ui.extendObject( { '$$': this.$$ }, group ) )
+			new constructors[type]( this, $.extend( { '$$': this.$$ }, group ) )
 		);
 	}
 	this.addItems( items );

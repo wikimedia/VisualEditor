@@ -18,7 +18,7 @@
  */
 OO.ui.StackPanelLayout = function OoUiStackPanelLayout( config ) {
 	// Config initialization
-	config = OO.ui.extendObject( { 'scrollable': true }, config );
+	config = $.extend( { 'scrollable': true }, config );
 
 	// Parent constructor
 	OO.ui.PanelLayout.call( this, config );

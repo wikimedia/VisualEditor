@@ -15,10 +15,6 @@ OO.ui = {};
 
 OO.ui.bind = $.proxy;
 
-OO.ui.extendObject = $.extend;
-
-OO.ui.indexOf = $.inArray;
-
 OO.ui.getUserLanguages = function () {
 	return [ 'en' ];
 };

@@ -20,7 +20,7 @@
  */
 OO.ui.InputLabelWidget = function OoUiInputLabelWidget( config ) {
 	// Config intialization
-	config = OO.ui.extendObject( { 'input': null }, config );
+	config = $.extend( { 'input': null }, config );
 
 	// Parent constructor
 	OO.ui.Widget.call( this, config );

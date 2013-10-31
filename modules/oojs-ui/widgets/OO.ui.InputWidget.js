@@ -20,7 +20,7 @@
  */
 OO.ui.InputWidget = function OoUiInputWidget( config ) {
 	// Config intialization
-	config = OO.ui.extendObject( { 'readOnly': false }, config );
+	config = $.extend( { 'readOnly': false }, config );
 
 	// Parent constructor
 	OO.ui.Widget.call( this, config );

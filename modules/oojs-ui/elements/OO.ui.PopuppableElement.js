@@ -19,10 +19,10 @@
  */
 OO.ui.PopuppableElement = function OoUiPopuppableElement( config ) {
 	// Configuration initialization
-	config = OO.ui.extendObject( { 'popupWidth': 320 }, config );
+	config = $.extend( { 'popupWidth': 320 }, config );
 
 	// Properties
-	this.popup = new OO.ui.PopupWidget( OO.ui.extendObject(
+	this.popup = new OO.ui.PopupWidget( $.extend(
 		{ 'align': 'center', 'autoClose': true },
 		config.popup,
 		{ '$$': this.$$, '$autoCloseIgnore': this.$ }

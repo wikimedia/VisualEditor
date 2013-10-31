@@ -23,7 +23,7 @@
  */
 OO.ui.ButtonWidget = function OoUiButtonWidget( config ) {
 	// Configuration initialization
-	config = OO.ui.extendObject( { 'target': '_blank' }, config );
+	config = $.extend( { 'target': '_blank' }, config );
 
 	// Parent constructor
 	OO.ui.Widget.call( this, config );

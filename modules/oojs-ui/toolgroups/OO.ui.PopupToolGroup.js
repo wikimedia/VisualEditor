@@ -21,7 +21,7 @@
  */
 OO.ui.PopupToolGroup = function OoUiPopupToolGroup( toolbar, config ) {
 	// Configuration initialization
-	config = OO.ui.extendObject( { 'icon': 'down' }, config );
+	config = $.extend( { 'icon': 'down' }, config );
 
 	// Parent constructor
 	OO.ui.ToolGroup.call( this, toolbar, config );
