@@ -115,7 +115,7 @@ ve.init.sa.Platform.prototype.getUserLanguages = function () {
 		langParts = lang.split( '-' ),
 		langs = [ lang ];
 
-	if ( langParts.length > 0 ) {
+	if ( langParts.length > 1 ) {
 		langs.push( langParts[0] );
 	}
 
