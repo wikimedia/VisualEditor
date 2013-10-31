@@ -14,7 +14,8 @@
  * @constructor
  * @param {jQuery} $icon Icon node, assigned to #$icon
  * @param {Object} [config] Configuration options
- * @cfg {Object|string} [icon=''] Symbolic icon name, or map of icon names keyed by language ID
+ * @cfg {Object|string} [icon=''] Symbolic icon name, or map of icon names keyed by language ID;
+ *  use the 'default' key to specify the icon to be used when there is no icon in the user's language.
  */
 OO.ui.IconedElement = function OoUiIconedElement( $icon, config ) {
 	// Config intialization
@@ -35,7 +36,7 @@ OO.ui.IconedElement = function OoUiIconedElement( $icon, config ) {
  * Set the icon.
  *
  * @method
- * @param {string} [value] Symbolic name of icon to use
+ * @param {Object|string} [value] Symbolic name of icon to use
  * @chainable
  */
 OO.ui.IconedElement.prototype.setIcon = function ( value ) {
