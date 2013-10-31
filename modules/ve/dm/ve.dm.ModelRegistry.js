@@ -9,7 +9,7 @@
 /**
  * Registry for models.
  *
- * To register a new model type, call ve.dm.modelRegistry.register()
+ * To register a new model type, call #register.
  *
  * @extends OO.Registry
  * @constructor
@@ -45,13 +45,17 @@ OO.inheritClass( ve.dm.ModelRegistry, OO.Registry );
  * Objects and arrays are created if needed. You can specify one or more keys and a value.
  *
  * Specifically:
- * addType( obj, keyA, value ) does obj[keyA].unshift( value );
- * addType( obj, keyA, keyB, value ) does obj[keyA][keyB].unshift( value );
- * etc.
  *
- * @param {Object} obj Object to add to
+ * - `addType( obj, keyA, value )` does `obj[keyA].unshift( value );`
+ * - `addType( obj, keyA, keyB, value )` does `obj[keyA][keyB].unshift( value )`;
+ * - etc.
+ *
+ * @private
+ * @param {Object} obj Object the array resides in
+ * @param {string...} keys
+ * @param {Mixed} value
  */
-function addType( obj /*, ...*/ ) {
+function addType( obj ) {
 	var i, len, o = obj;
 	for ( i = 1, len = arguments.length - 2; i < len; i++ ) {
 		if ( o[arguments[i]] === undefined ) {
@@ -160,16 +164,20 @@ ve.dm.ModelRegistry.prototype.isExtensionSpecificType = function ( type ) {
  * Determine which model best matches the given element
  *
  * Model matching works as follows:
+ *
  * Get all models whose tag and rdfaType rules match
+ *
  * Rank them in order of specificity:
- * * tag, rdfaType and func specified
- * * rdfaType and func specified
- * * tag and func specified
- * * func specified
- * * tag and rdfaType specified
- * * rdfaType specified
- * * tag specified
- * * nothing specified
+ *
+ * - tag, rdfaType and func specified
+ * - rdfaType and func specified
+ * - tag and func specified
+ * - func specified
+ * - tag and rdfaType specified
+ * - rdfaType specified
+ * - tag specified
+ * - nothing specified
+ *
  * If there are multiple candidates with the same specificity, they are ranked in reverse order of
  * registration (i.e. if A was registered before B, B will rank above A).
  * The highest-ranking model whose test function does not return false, wins.
