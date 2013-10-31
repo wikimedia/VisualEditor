@@ -227,6 +227,8 @@
 		<script src="../../ve/ui/ve.ui.SurfaceDialog.js"></script>
 		<script src="../../ve/ui/ve.ui.SurfaceToolbar.js"></script>
 		<script src="../../ve/ui/ve.ui.TargetToolbar.js"></script>
+		<script src="../../ve/ui/ve.ui.ToolFactory.js"></script>
+		<script src="../../ve/ui/ve.ui.Command.js"></script>
 		<script src="../../ve/ui/ve.ui.CommandRegistry.js"></script>
 		<script src="../../ve/ui/ve.ui.Trigger.js"></script>
 		<script src="../../ve/ui/ve.ui.TriggerRegistry.js"></script>
