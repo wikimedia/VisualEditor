@@ -573,6 +573,7 @@ $wgResourceModules += array(
 			've/ui/tools/ve.ui.InspectorTool.js',
 			've/ui/tools/ve.ui.ListTool.js',
 
+			've-mw/ui/tools/ve.ui.MWEditModeTool.js',
 			've-mw/ui/tools/ve.ui.MWFormatTool.js',
 			've-mw/ui/tools/ve.ui.MWDialogTool.js',
 			've-mw/ui/tools/ve.ui.MWPopupTool.js',
@@ -706,6 +707,8 @@ $wgResourceModules += array(
 			'visualeditor-listbutton-number-tooltip',
 			'visualeditor-media-input-placeholder',
 			'visualeditor-meta-tool',
+			'visualeditor-mweditmodesource-title',
+			'visualeditor-mweditmodesource-warning',
 			'visualeditor-parameter-input-placeholder',
 			'visualeditor-parameter-search-no-unused',
 			'visualeditor-parameter-search-unknown',

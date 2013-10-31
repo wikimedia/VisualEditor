@@ -159,6 +159,10 @@ $messages['en'] = array(
 	'visualeditor-media-input-placeholder' => 'Search for media',
 	'visualeditor-meta-tool' => 'Page settings',
 	'visualeditor-mwalienextensioninspector-title' => 'MediaWiki extension',
+	'visualeditor-mweditmodesource-title' => 'Switch to source editing',
+	'visualeditor-mweditmodesource-warning' => 'You are about to switch to source editing.
+Any changes you\'ve made to this document will be kept, but you will not be able switch back to VisualEditor without saving or reloading the page.
+Do you want to continue?',
 	'visualeditor-mwhieroinspector-title' => 'Hieroglyphics',
 	'visualeditor-mwmathinspector-title' => 'LaTeX',
 	'visualeditor-notification-created' => '"$1" has been created.',
@@ -547,6 +551,8 @@ Parameters:
 {{Identical|Page settings}}',
 	'visualeditor-mwalienextensioninspector-title' => 'Used as title for unknown MediaWiki extensions.
 {{Identical|MediaWiki extension}}',
+	'visualeditor-mweditmodesource-title' => 'Label for changing edit mode to source editing.',
+	'visualeditor-mweditmodesource-warning' => 'Warning message show before changing edit mode to source editing.',
 	'visualeditor-mwhieroinspector-title' => 'Used as title for hieroglyphics inspector.',
 	'visualeditor-mwmathinspector-title' => 'Used as title for MathInspector.
 
