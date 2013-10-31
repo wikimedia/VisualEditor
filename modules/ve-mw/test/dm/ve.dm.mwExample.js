@@ -675,7 +675,7 @@ ve.dm.mwExample.complexInternalData = [
 		'about': '#mwt1',
 		'listIndex': 0,
 		'listGroup': 'mwReference/',
-		'listKey': null,
+		'listKey': 'auto/0',
 		'refGroup': '',
 		'contentsUsed': true
 	} },

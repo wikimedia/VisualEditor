@@ -21,7 +21,7 @@ QUnit.test( 'newFromDocumentReplace with references', function ( assert ) {
 				'about': '#mwt4',
 				'listIndex': 0,
 				'listGroup': 'mwReference/',
-				'listKey': null,
+				'listKey': 'auto/1', // FIXME reference insertions should be renumbered correctly
 				'refGroup': '',
 				'contentsUsed': true
 			} },
@@ -55,7 +55,7 @@ QUnit.test( 'newFromDocumentReplace with references', function ( assert ) {
 						'removeMetadata': complexDoc.getMetadata( new ve.Range( 0, 7 ) ),
 						'insertMetadata': complexDoc.getMetadata( new ve.Range( 0, 5 ) )
 							.concat( [ [ comment ] ] )
-							.concat( complexDoc.getMetadata( new ve.Range( 6, 8 ) ) )
+							.concat( complexDoc.getMetadata( new ve.Range( 6, 7 ) ) )
 					},
 					{ 'type': 'retain', 'length': 1 },
 					{
