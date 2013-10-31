@@ -8,9 +8,6 @@
 /**
  * Dialog for inserting and editing MediaWiki transclusions.
  *
- * See https://raw.github.com/wikimedia/mediawiki-extensions-TemplateData/master/spec.templatedata.json
- * for the latest version of the TemplateData specification.
- *
  * @class
  * @extends ve.ui.MWDialog
  *

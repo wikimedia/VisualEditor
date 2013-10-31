@@ -164,7 +164,8 @@ ve.dm.MWTransclusionModel.prototype.fetch = function () {
 		'data': {
 			'format': 'json',
 			'action': 'templatedata',
-			'titles': titles.join( '|' )
+			'titles': titles.join( '|' ),
+			'lang': mw.config.get( 'wgUserLanguage' )
 		}
 	} )
 		.done( function ( data ) {
