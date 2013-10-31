@@ -1787,7 +1787,8 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/list' },
 			{ 'type': 'internalList' },
 			{ 'type': '/internalList' }
-		]
+		],
+		'innerWhitespace': [ '\n', '\t\n\t\n' ]
 	},
 	'outer whitespace preservation in a list with bare text and a sublist': {
 		'body': '<ul>\n<li>\n\nBa re\n\n\n<ul>\n\n\n\n<li> <p>  P   </p>    </li>\t</ul>\t\t</li>\t\t\t</ul>',
@@ -1855,7 +1856,8 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/paragraph' },
 			{ 'type': 'internalList' },
 			{ 'type': '/internalList' }
-		]
+		],
+		'innerWhitespace': [ undefined, '   ' ]
 	},
 	'whitespace preservation with non-edge content whitespace with nested annotations': {
 		'body': '<p> A  B   <b>    C\t<i>\t\tD\t\t\t</i>\t\t\t\tE\n</b>\n\nF\n\n\n</p>',
@@ -2026,7 +2028,8 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/alienBlock' },
 			{ 'type': 'internalList' },
 			{ 'type': '/internalList' }
-		]
+		],
+		'innerWhitespace': [ ' ', ' \n ' ]
 	},
 	'whitespace preservation not triggered inside <pre>': {
 		'body': '\n<pre>\n\n\nFoo\n\n\nBar\n\n\n\n</pre>\n\n\n\n\n',
@@ -2050,7 +2053,8 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/preformatted' },
 			{ 'type': 'internalList' },
 			{ 'type': '/internalList' }
-		]
+		],
+		'innerWhitespace': [ '\n', '\n\n\n\n\n' ]
 	},
 	'whitespace preservation in table cell starting with text and ending with annotation': {
 		'body': '<table><tbody><tr><td>Foo <b>Bar</b></td></tr></tbody></table>',
@@ -2343,7 +2347,8 @@ ve.dm.example.domToDataCases = {
 			{ 'type': 'internalList' },
 			{ 'type': '/internalList' }
 		],
-		'normalizedBody': ' <ul><li><p>\tA\n</p>  <p>B</p></li></ul>    '
+		'innerWhitespace': [ '\t', '\n' ],
+		'normalizedBody': '<ul><li><p>\tA\n</p>  <p>B</p></li></ul>'
 	},
 	'order of nested annotations is preserved': {
 		'body': '<p><b><u><i>Foo</i></u></b></p>',
@@ -2556,7 +2561,8 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/alienBlock' },
 			{ 'type': 'internalList' },
 			{ 'type': '/internalList' }
-		]
+		],
+		'innerWhitespace': [ ' ', '    ' ]
 	},
 	'block node inside annotation node is alienated': {
 		'body': '<span>\n<p>Bar</p></span>',

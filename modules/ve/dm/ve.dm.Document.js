@@ -23,8 +23,9 @@
  *  ignored.
  * @param {ve.dm.Document} [parentDocument] Document to use as root for created nodes
  * @param {ve.dm.InternalList} [internalList] Internal list to clone; passed when creating a document slice
+ * @param {Array} [innerWhitespace] Inner whitespace to clone; passed when creating a document slice
  */
-ve.dm.Document = function VeDmDocument( data, htmlDocument, parentDocument, internalList ) {
+ve.dm.Document = function VeDmDocument( data, htmlDocument, parentDocument, internalList, innerWhitespace ) {
 	// Parent constructor
 	ve.Document.call( this, new ve.dm.DocumentNode() );
 
@@ -37,6 +38,7 @@ ve.dm.Document = function VeDmDocument( data, htmlDocument, parentDocument, inte
 	this.documentNode.setRoot( root );
 	this.documentNode.setDocument( doc );
 	this.internalList = internalList ? internalList.clone( this ) : new ve.dm.InternalList( this );
+	this.innerWhitespace = innerWhitespace ? ve.copy( innerWhitespace ) : new Array( 2 );
 
 	// Properties
 	this.parentDocument = parentDocument;
@@ -51,7 +53,7 @@ ve.dm.Document = function VeDmDocument( data, htmlDocument, parentDocument, inte
 		fullData = data;
 	} else if ( !ve.isArray( data ) && typeof data === 'object' ) {
 		// HTMLDocument
-		fullData = ve.dm.converter.getDataFromDom( data, new ve.dm.IndexValueStore(), this.getInternalList() );
+		fullData = ve.dm.converter.getDataFromDom( data, new ve.dm.IndexValueStore(), this.getInternalList(), this.getInnerWhitespace() );
 		htmlDocument = data;
 	} else {
 		// Raw linear model data
@@ -350,6 +352,14 @@ ve.dm.Document.prototype.getStore = function () {
  */
 ve.dm.Document.prototype.getInternalList = function () {
 	return this.internalList;
+};
+
+/**
+ * Get the document's inner whitespace
+ * @returns {Array} The document's inner whitespace
+ */
+ve.dm.Document.prototype.getInnerWhitespace = function () {
+	return this.innerWhitespace;
 };
 
 /**

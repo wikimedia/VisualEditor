@@ -48,7 +48,7 @@ ve.test.utils.runFormatConverterTest = function ( assert, range, type, attribute
 };
 
 ve.test.utils.runGetDataFromDomTests = function( assert, cases ) {
-	var msg, doc, store, internalList, i, length, hash, data, html, n = 0;
+	var msg, doc, store, i, length, hash, data, html, n = 0;
 
 	// TODO: this is a hack to make normal heading/preformatted
 	// nodes the most recently registered, instead of the MW versions
@@ -57,7 +57,7 @@ ve.test.utils.runGetDataFromDomTests = function( assert, cases ) {
 
 	for ( msg in cases ) {
 		if ( cases[msg].head !== undefined || cases[msg].body !== undefined ) {
-			n++;
+			n += 2;
 			if ( cases[msg].storeItems ) {
 				n += cases[msg].storeItems.length;
 			}
@@ -69,14 +69,14 @@ ve.test.utils.runGetDataFromDomTests = function( assert, cases ) {
 		if ( cases[msg].head !== undefined || cases[msg].body !== undefined ) {
 			doc = new ve.dm.Document( [] );
 			store = doc.getStore();
-			internalList = doc.getInternalList();
 
 			html = '<head>' + ( cases[msg].head || '' ) + '</head><body>' + cases[msg].body + '</body>';
 			data = ve.dm.converter.getDataFromDom(
-				ve.createDocumentFromHtml( html ), store, internalList
-			).getData();
+				ve.createDocumentFromHtml( html ), store, doc.getInternalList(), doc.getInnerWhitespace()
+			);
 			ve.dm.example.preprocessAnnotations( cases[msg].data, store );
-			assert.deepEqualWithDomElements( data, cases[msg].data, msg );
+			assert.deepEqualWithDomElements( data.getData(), cases[msg].data, msg + ': data' );
+			assert.deepEqual( doc.getInnerWhitespace(), cases[msg].innerWhitespace || new Array( 2 ), msg + ': inner whitespace' );
 			// check storeItems have been added to store
 			if ( cases[msg].storeItems ) {
 				for ( i = 0, length = cases[msg].storeItems.length; i < length; i++ ) {
@@ -112,10 +112,11 @@ ve.test.utils.runGetDomFromDataTests = function( assert, cases ) {
 			cases[msg].modify( cases[msg].data );
 		}
 		doc = new ve.dm.Document( ve.dm.example.preprocessAnnotations( cases[msg].data, store ) );
+		doc.innerWhitespace = cases[msg].innerWhitespace ? ve.copy( cases[msg].innerWhitespace ) : new Array( 2 );
 		originalData = ve.copy( doc.getFullData() );
 		html = '<body>' + ( cases[msg].normalizedBody || cases[msg].body ) + '</body>';
 		assert.equalDomElement(
-			ve.dm.converter.getDomFromData( doc.getFullData(), doc.getStore(), doc.getInternalList() ),
+			ve.dm.converter.getDomFromData( doc.getFullData(), doc.getStore(), doc.getInternalList(), doc.getInnerWhitespace() ),
 			ve.createDocumentFromHtml( html ),
 			msg
 		);

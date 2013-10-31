@@ -736,11 +736,11 @@ ve.init.mw.ViewPageTarget.prototype.onSaveDialogReview = function () {
 		if ( this.pageExists ) {
 			// Has no callback, handled via target.onShowChanges
 			this.showChanges(
-				ve.dm.converter.getDomFromData( doc.getFullData(), doc.getStore(), doc.getInternalList() )
+				ve.dm.converter.getDomFromData( doc.getFullData(), doc.getStore(), doc.getInternalList(), doc.getInnerWhitespace() )
 			);
 		} else {
 			this.serialize(
-				ve.dm.converter.getDomFromData( doc.getFullData(), doc.getStore(), doc.getInternalList() ),
+				ve.dm.converter.getDomFromData( doc.getFullData(), doc.getStore(), doc.getInternalList(), doc.getInnerWhitespace() ),
 				ve.bind( this.onSerialize, this )
 			);
 		}
@@ -786,7 +786,7 @@ ve.init.mw.ViewPageTarget.prototype.saveDocument = function () {
 		this.saveDialog.saveButton.setDisabled( true );
 		this.saveDialog.$loadingIcon.show();
 		this.save(
-			ve.dm.converter.getDomFromData( doc.getFullData(), doc.getStore(), doc.getInternalList() ),
+			ve.dm.converter.getDomFromData( doc.getFullData(), doc.getStore(), doc.getInternalList(), doc.getInnerWhitespace() ),
 			saveOptions
 		);
 	}
@@ -856,10 +856,11 @@ ve.init.mw.ViewPageTarget.prototype.setUpSurface = function ( doc, callback ) {
 		// Build linmod
 		var store = new ve.dm.IndexValueStore(),
 			internalList = new ve.dm.InternalList(),
-			data = ve.dm.converter.getDataFromDom( doc, store, internalList );
+			innerWhitespace = new Array( 2 ),
+			data = ve.dm.converter.getDataFromDom( doc, store, internalList, innerWhitespace );
 		setTimeout( function () {
 			// Build DM tree
-			var dmDoc = new ve.dm.Document( data, doc, undefined, internalList );
+			var dmDoc = new ve.dm.Document( data, doc, undefined, internalList, innerWhitespace );
 			setTimeout( function () {
 				// Create ui.Surface (also creates ce.Surface and dm.Surface and builds CE tree)
 				target.surface = new ve.ui.Surface( dmDoc, target.surfaceOptions );
@@ -929,8 +930,8 @@ ve.init.mw.ViewPageTarget.prototype.startSanityCheck = function () {
 		// <body> were ignored in the conversion. So compare each child separately.
 		var i,
 			len = oldDom.body.childNodes.length,
-			newDoc = new ve.dm.Document( data, oldDom, undefined, doc.getInternalList() ),
-			newDom = ve.dm.converter.getDomFromData( newDoc.getFullData(), newDoc.getStore(), newDoc.getInternalList() );
+			newDoc = new ve.dm.Document( data, oldDom, undefined, doc.getInternalList(), doc.getInnerWhitespace() ),
+			newDom = ve.dm.converter.getDomFromData( newDoc.getFullData(), newDoc.getStore(), newDoc.getInternalList(), newDoc.getInnerWhitespace() );
 
 		// Explicitly unlink our full copy of the original version of the document data
 		data = undefined;
