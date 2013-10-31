@@ -56,7 +56,7 @@ ve.test.utils.runGetDataFromDomTests = function( assert, cases ) {
 	ve.dm.modelRegistry.register( ve.dm.PreformattedNode );
 
 	for ( msg in cases ) {
-		if ( cases[msg].html !== undefined ) {
+		if ( cases[msg].head !== undefined || cases[msg].body !== undefined ) {
 			n++;
 			if ( cases[msg].storeItems ) {
 				n += cases[msg].storeItems.length;
@@ -66,7 +66,7 @@ ve.test.utils.runGetDataFromDomTests = function( assert, cases ) {
 	QUnit.expect( n );
 
 	for ( msg in cases ) {
-		if ( cases[msg].html !== undefined ) {
+		if ( cases[msg].head !== undefined || cases[msg].body !== undefined ) {
 			doc = new ve.dm.Document( [] );
 			store = doc.getStore();
 			internalList = doc.getInternalList();
