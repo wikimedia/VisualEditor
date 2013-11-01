@@ -34,7 +34,7 @@ OO.ui.PanelLayout = function OoUiPanelLayout( config ) {
 	}
 
 	// Add directionality class:
-	this.$element.addClass( 'oo-ui-' + this.$.frame.dir );
+	this.$element.addClass( 'oo-ui-' + OO.ui.Element.getDir( this.$.context ) );
 };
 
 /* Inheritance */
