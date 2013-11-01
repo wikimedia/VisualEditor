@@ -111,6 +111,7 @@ OO.ui.ToolGroup.prototype.onMouseDown = function ( e ) {
 			this.getElementDocument().addEventListener(
 				'mouseup', this.onCapturedMouseUpHandler, true
 			);
+			return false;
 		}
 	}
 };
