@@ -95,14 +95,14 @@ ve.ui.MWMediaInsertDialog.prototype.initialize = function () {
 	ve.ui.MWDialog.prototype.initialize.call( this );
 
 	// Properties
-	this.search = new ve.ui.MWMediaSearchWidget( { '$$': this.frame.$$ } );
+	this.search = new ve.ui.MWMediaSearchWidget( { '$': this.$ } );
 
 	// Events
 	this.search.connect( this, { 'select': 'onSearchSelect' } );
 
 	// Initialization
-	this.search.$.addClass( 've-ui-mwMediaInsertDialog-select' );
-	this.$body.append( this.search.$ );
+	this.search.$element.addClass( 've-ui-mwMediaInsertDialog-select' );
+	this.$body.append( this.search.$element );
 };
 
 /* Registration */

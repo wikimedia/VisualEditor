@@ -19,7 +19,7 @@ ve.ce.MWNowikiAnnotation = function VeCeMWInternalLinkAnnotation( model, config 
 	ve.ce.Annotation.call( this, model, config );
 
 	// DOM changes
-	this.$.addClass( 've-ce-mwNowikiAnnotation' );
+	this.$element.addClass( 've-ce-mwNowikiAnnotation' );
 };
 
 /* Inheritance */

@@ -20,7 +20,7 @@ OO.ui.MenuSectionItemWidget = function OoUiMenuSectionItemWidget( data, config )
 	OO.ui.OptionWidget.call( this, data, config );
 
 	// Initialization
-	this.$.addClass( 'oo-ui-menuSectionItemWidget' );
+	this.$element.addClass( 'oo-ui-menuSectionItemWidget' );
 };
 
 /* Inheritance */

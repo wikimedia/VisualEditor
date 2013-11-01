@@ -24,17 +24,17 @@ ve.ui.MWCategoryWidget = function VeUiMWCategoryWidget( config ) {
 	OO.ui.Widget.call( this, config );
 
 	// Mixin constructors
-	OO.ui.GroupElement.call( this, this.$$( '<div>' ), config );
+	OO.ui.GroupElement.call( this, this.$( '<div>' ), config );
 
 	// Properties
 	this.categories = {};
 	this.popupState = false;
 	this.savedPopupState = false;
 	this.popup = new ve.ui.MWCategoryPopupWidget( {
-		'$$': this.$$, '$overlay': config.$overlay
+		'$': this.$, '$overlay': config.$overlay
 	} );
 	this.input = new ve.ui.MWCategoryInputWidget( this, {
-		'$$': this.$$, '$overlay': config.$overlay
+		'$': this.$, '$overlay': config.$overlay
 	} );
 
 	// Events
@@ -47,11 +47,11 @@ ve.ui.MWCategoryWidget = function VeUiMWCategoryWidget( config ) {
 	} );
 
 	// Initialization
-	this.$.addClass( 've-ui-mwCategoryWidget' )
+	this.$element.addClass( 've-ui-mwCategoryWidget' )
 		.append(
 			this.$group.addClass( 've-ui-mwCategoryWidget-items' ),
-			this.input.$,
-			this.$$( '<div>' ).css( 'clear', 'both' )
+			this.input.$element,
+			this.$( '<div>' ).css( 'clear', 'both' )
 		);
 };
 
@@ -200,7 +200,7 @@ ve.ui.MWCategoryWidget.prototype.addItems = function ( items, index ) {
 		item = items[i];
 
 		// Create a widget using the item data
-		categoryItem = new ve.ui.MWCategoryItemWidget( { '$$': this.$$, 'item': item } );
+		categoryItem = new ve.ui.MWCategoryItemWidget( { '$': this.$, 'item': item } );
 		categoryItem.connect( this, {
 			'savePopupState': 'onSavePopupState',
 			'togglePopupMenu': 'onTogglePopupMenu'
@@ -252,7 +252,7 @@ ve.ui.MWCategoryWidget.prototype.removeItems = function ( names ) {
  */
 ve.ui.MWCategoryWidget.prototype.fitInput = function () {
 	var gap, min, $lastItem,
-		$input = this.input.$;
+		$input = this.input.$element;
 
 	if ( !$input.is( ':visible') ) {
 		return;
@@ -262,7 +262,7 @@ ve.ui.MWCategoryWidget.prototype.fitInput = function () {
 	min = $input.outerWidth();
 
 	$input.css( { 'width': '100%' } );
-	$lastItem = this.$.find( '.ve-ui-mwCategoryItemWidget:last' );
+	$lastItem = this.$element.find( '.ve-ui-mwCategoryItemWidget:last' );
 	if ( $lastItem.length ) {
 		// Try to fit to the right of the last item
 		gap = ( $input.offset().left + $input.outerWidth() ) -

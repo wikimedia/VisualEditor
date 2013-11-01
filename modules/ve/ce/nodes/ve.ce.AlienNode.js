@@ -27,7 +27,7 @@ ve.ce.AlienNode = function VeCeAlienNode( model, config ) {
 	ve.ce.GeneratedContentNode.call( this );
 
 	// DOM changes
-	this.$.addClass( 've-ce-alienNode' );
+	this.$element.addClass( 've-ce-alienNode' );
 };
 
 /* Inheritance */
@@ -69,7 +69,7 @@ ve.ce.AlienBlockNode = function VeCeAlienBlockNode( model ) {
 	ve.ce.AlienNode.call( this, model );
 
 	// DOM changes
-	this.$.addClass( 've-ce-alienBlockNode' );
+	this.$element.addClass( 've-ce-alienBlockNode' );
 };
 
 /* Inheritance */
@@ -93,7 +93,7 @@ ve.ce.AlienInlineNode = function VeCeAlienInlineNode( model ) {
 	ve.ce.AlienNode.call( this, model );
 
 	// DOM changes
-	this.$.addClass( 've-ce-alienInlineNode' );
+	this.$element.addClass( 've-ce-alienInlineNode' );
 };
 
 /* Inheritance */

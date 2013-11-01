@@ -41,33 +41,33 @@ ve.ui.MWReferenceListDialog.prototype.initialize = function () {
 
 	// Properties
 	this.editPanel = new OO.ui.PanelLayout( {
-		'$$': this.frame.$$, 'scrollable': true, 'padded': true
+		'$': this.$, 'scrollable': true, 'padded': true
 	} );
 	this.optionsFieldset = new OO.ui.FieldsetLayout( {
-		'$$': this.frame.$$,
+		'$': this.$,
 		'label': ve.msg( 'visualeditor-dialog-reference-options-section' ),
 		'icon': 'settings'
 	} );
 
-	this.groupInput = new OO.ui.TextInputWidget( { '$$': this.frame.$$ } );
+	this.groupInput = new OO.ui.TextInputWidget( { '$': this.$ } );
 	this.groupLabel = new OO.ui.InputLabelWidget( {
-		'$$': this.frame.$$,
+		'$': this.$,
 		'input': this.groupInput,
 		'label': ve.msg( 'visualeditor-dialog-reference-options-group-label' )
 	} );
 
 	this.applyButton = new OO.ui.PushButtonWidget( {
-		'$$': this.$$, 'label': ve.msg( 'visualeditor-dialog-action-apply' ), 'flags': ['primary']
+		'$': this.$, 'label': ve.msg( 'visualeditor-dialog-action-apply' ), 'flags': ['primary']
 	} );
 
 	// Events
 	this.applyButton.connect( this, { 'click': [ 'close', 'apply' ] } );
 
 	// Initialization
-	this.optionsFieldset.$.append( this.groupLabel.$, this.groupInput.$ );
-	this.editPanel.$.append( this.optionsFieldset.$ );
-	this.$body.append( this.editPanel.$ );
-	this.$foot.append( this.applyButton.$ );
+	this.optionsFieldset.$element.append( this.groupLabel.$element, this.groupInput.$element );
+	this.editPanel.$element.append( this.optionsFieldset.$element );
+	this.$body.append( this.editPanel.$element );
+	this.$foot.append( this.applyButton.$element );
 };
 
 /** */

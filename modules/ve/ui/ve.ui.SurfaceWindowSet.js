@@ -24,7 +24,7 @@ ve.ui.SurfaceWindowSet = function VeUiSurfaceWindowSet( surface, factory, config
 	this.surface = surface;
 
 	// Initialization
-	this.$.addClass( 've-ui-surfaceWindowSet' );
+	this.$element.addClass( 've-ui-surfaceWindowSet' );
 };
 
 /* Inheritance */

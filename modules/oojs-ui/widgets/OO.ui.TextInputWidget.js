@@ -31,11 +31,11 @@ OO.ui.TextInputWidget = function OoUiTextInputWidget( config ) {
 	this.$input.on( 'keypress', OO.ui.bind( this.onKeyPress, this ) );
 
 	// Initialization
-	this.$.addClass( 'oo-ui-textInputWidget' );
+	this.$element.addClass( 'oo-ui-textInputWidget' );
 	if ( config.icon ) {
-		this.$.addClass( 'oo-ui-textInputWidget-decorated' );
-		this.$.append(
-			$( '<span>' )
+		this.$element.addClass( 'oo-ui-textInputWidget-decorated' );
+		this.$element.append(
+			this.$( '<span>' )
 				.addClass( 'oo-ui-textInputWidget-icon oo-ui-icon-' + config.icon )
 				.mousedown( OO.ui.bind( function () {
 					this.$input.focus();
@@ -84,7 +84,7 @@ OO.ui.TextInputWidget.prototype.onKeyPress = function ( e ) {
  * @returns {jQuery} Input element
  */
 OO.ui.TextInputWidget.prototype.getInputElement = function ( config ) {
-	return config.multiline ? this.$$( '<textarea>' ) : this.$$( '<input>' ).attr( 'type', 'text' );
+	return config.multiline ? this.$( '<textarea>' ) : this.$( '<input>' ).attr( 'type', 'text' );
 };
 
 /* Methods */
@@ -107,7 +107,7 @@ OO.ui.TextInputWidget.prototype.isPending = function () {
  */
 OO.ui.TextInputWidget.prototype.pushPending = function () {
 	this.pending++;
-	this.$.addClass( 'oo-ui-textInputWidget-pending' );
+	this.$element.addClass( 'oo-ui-textInputWidget-pending' );
 	this.$input.addClass( 'oo-ui-texture-pending' );
 	return this;
 };
@@ -123,7 +123,7 @@ OO.ui.TextInputWidget.prototype.pushPending = function () {
 OO.ui.TextInputWidget.prototype.popPending = function () {
 	this.pending = Math.max( 0, this.pending - 1 );
 	if ( !this.pending ) {
-		this.$.removeClass( 'oo-ui-textInputWidget-pending' );
+		this.$element.removeClass( 'oo-ui-textInputWidget-pending' );
 		this.$input.removeClass( 'oo-ui-texture-pending' );
 	}
 	return this;

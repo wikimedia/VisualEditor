@@ -29,9 +29,9 @@ ve.ce.MWReferenceListNode = function VeCeMWReferenceListNode( model, config ) {
 	this.listNode = null;
 
 	// DOM changes
-	this.$.addClass( 've-ce-mwReferenceListNode', 'reference' );
-	this.$reflist = $( '<ol class="references"></ol>' );
-	this.$refmsg = $( '<p>' )
+	this.$element.addClass( 've-ce-mwReferenceListNode', 'reference' );
+	this.$reflist = this.$( '<ol class="references"></ol>' );
+	this.$refmsg = this.$( '<p>' )
 		.addClass( 've-ce-mwReferenceListNode-muted' );
 
 	// Events
@@ -150,7 +150,7 @@ ve.ce.MWReferenceListNode.prototype.update = function () {
 		} else {
 			this.$refmsg.text( ve.msg( 'visualeditor-referencelist-isempty-default' ) );
 		}
-		this.$.append( this.$refmsg );
+		this.$element.append( this.$refmsg );
 	} else {
 		for ( i = 0, iLen = nodes.indexOrder.length; i < iLen; i++ ) {
 			index = nodes.indexOrder[i];
@@ -173,13 +173,13 @@ ve.ce.MWReferenceListNode.prototype.update = function () {
 				continue;
 			}
 
-			$li = $( '<li>' );
+			$li = this.$( '<li>' );
 
 			if ( keyedNodes.length > 1 ) {
 				for ( j = 0, jLen = keyedNodes.length; j < jLen; j++ ) {
 					$li.append(
-						$( '<sup>' ).append(
-							$( '<a>' ).text( ( i + 1 ) + '.' + j )
+						this.$( '<sup>' ).append(
+							this.$( '<a>' ).text( ( i + 1 ) + '.' + j )
 						)
 					).append( ' ' );
 				}
@@ -190,19 +190,19 @@ ve.ce.MWReferenceListNode.prototype.update = function () {
 			if ( modelNode.length ) {
 				viewNode = new ve.ce.InternalItemNode( modelNode );
 				// HACK: PHP parser doesn't wrap single lines in a paragraph
-				if ( viewNode.$.children().length === 1 && viewNode.$.children( 'p' ).length === 1 ) {
+				if ( viewNode.$element.children().length === 1 && viewNode.$element.children( 'p' ).length === 1 ) {
 					// unwrap inner
-					viewNode.$.children().replaceWith( viewNode.$.children().contents() );
+					viewNode.$element.children().replaceWith( viewNode.$element.children().contents() );
 				}
 				$li.append(
-					$( '<span>' )
+					this.$( '<span>' )
 						.addClass( 'reference-text' )
-						.append( viewNode.$.clone().show() )
+						.append( viewNode.$element.clone().show() )
 				);
 				viewNode.destroy();
 			} else {
 				$li.append(
-					$( '<span>' )
+					this.$( '<span>' )
 						.addClass( 've-ce-mwReferenceListNode-muted' )
 						.text( ve.msg( 'visualeditor-referencelist-missingref' ) )
 				);
@@ -210,7 +210,7 @@ ve.ce.MWReferenceListNode.prototype.update = function () {
 
 			this.$reflist.append( $li );
 		}
-		this.$.append( this.$reflist );
+		this.$element.append( this.$reflist );
 	}
 };
 

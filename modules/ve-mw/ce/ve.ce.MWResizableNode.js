@@ -13,7 +13,7 @@
  * @extends {ve.ce.ResizableNode}
  *
  * @constructor
- * @param {jQuery} [$resizable=this.$] Resizable DOM element
+ * @param {jQuery} [$resizable=this.$element] Resizable DOM element
  * @param {Object} [config] Configuration options
  */
 ve.ce.MWResizableNode = function VeCeMWResizableNode( $resizable, config ) {

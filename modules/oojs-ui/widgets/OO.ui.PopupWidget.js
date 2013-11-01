@@ -29,21 +29,21 @@ OO.ui.PopupWidget = function OoUiPopupWidget( config ) {
 	OO.ui.Widget.call( this, config );
 
 	// Mixin constructors
-	OO.ui.LabeledElement.call( this, this.$$( '<div>' ), config );
+	OO.ui.LabeledElement.call( this, this.$( '<div>' ), config );
 
 	// Properties
 	this.visible = false;
-	this.$popup = this.$$( '<div>' );
-	this.$head = this.$$( '<div>' );
-	this.$body = this.$$( '<div>' );
-	this.$tail = this.$$( '<div>' );
-	this.$container = config.$container || this.$$( 'body' );
+	this.$popup = this.$( '<div>' );
+	this.$head = this.$( '<div>' );
+	this.$body = this.$( '<div>' );
+	this.$tail = this.$( '<div>' );
+	this.$container = config.$container || this.$( 'body' );
 	this.autoClose = !!config.autoClose;
 	this.$autoCloseIgnore = config.$autoCloseIgnore;
 	this.transitionTimeout = null;
 	this.tail = false;
 	this.align = config.align || 'center';
-	this.closeButton = new OO.ui.IconButtonWidget( { '$$': this.$$, 'icon': 'close' } );
+	this.closeButton = new OO.ui.IconButtonWidget( { '$': this.$, 'icon': 'close' } );
 	this.onMouseDownHandler = OO.ui.bind( this.onMouseDown, this );
 
 	// Events
@@ -55,14 +55,14 @@ OO.ui.PopupWidget = function OoUiPopupWidget( config ) {
 	this.$tail.addClass( 'oo-ui-popupWidget-tail' );
 	this.$head
 		.addClass( 'oo-ui-popupWidget-head' )
-		.append( this.$label, this.closeButton.$ );
+		.append( this.$label, this.closeButton.$element );
 	if ( !config.head ) {
 		this.$head.hide();
 	}
 	this.$popup
 		.addClass( 'oo-ui-popupWidget-popup' )
 		.append( this.$head, this.$body );
-	this.$.hide()
+	this.$element.hide()
 		.addClass( 'oo-ui-popupWidget' )
 		.append( this.$popup, this.$tail );
 };
@@ -94,7 +94,7 @@ OO.mixinClass( OO.ui.PopupWidget, OO.ui.LabeledElement );
 OO.ui.PopupWidget.prototype.onMouseDown = function ( e ) {
 	if (
 		this.visible &&
-		!$.contains( this.$[0], e.target ) &&
+		!$.contains( this.$element[0], e.target ) &&
 		( !this.$autoCloseIgnore || !this.$autoCloseIgnore.has( e.target ).length )
 	) {
 		this.hide();
@@ -152,9 +152,9 @@ OO.ui.PopupWidget.prototype.useTail = function ( value ) {
 	if ( this.tail !== value ) {
 		this.tail = value;
 		if ( value ) {
-			this.$.addClass( 'oo-ui-popupWidget-tailed' );
+			this.$element.addClass( 'oo-ui-popupWidget-tailed' );
 		} else {
-			this.$.removeClass( 'oo-ui-popupWidget-tailed' );
+			this.$element.removeClass( 'oo-ui-popupWidget-tailed' );
 		}
 	}
 };
@@ -178,7 +178,7 @@ OO.ui.PopupWidget.prototype.hasTail = function () {
  */
 OO.ui.PopupWidget.prototype.show = function () {
 	if ( !this.visible ) {
-		this.$.show();
+		this.$element.show();
 		this.visible = true;
 		this.emit( 'show' );
 		if ( this.autoClose ) {
@@ -197,7 +197,7 @@ OO.ui.PopupWidget.prototype.show = function () {
  */
 OO.ui.PopupWidget.prototype.hide = function () {
 	if ( this.visible ) {
-		this.$.hide();
+		this.$element.hide();
 		this.visible = false;
 		this.emit( 'hide' );
 		if ( this.autoClose ) {
@@ -218,7 +218,7 @@ OO.ui.PopupWidget.prototype.hide = function () {
  */
 OO.ui.PopupWidget.prototype.display = function ( width, height, transition ) {
 	var padding = 10,
-		originOffset = Math.round( this.$.offset().left ),
+		originOffset = Math.round( this.$element.offset().left ),
 		containerLeft = Math.round( this.$container.offset().left ),
 		containerWidth = this.$container.innerWidth(),
 		containerRight = containerLeft + containerWidth,
@@ -232,7 +232,7 @@ OO.ui.PopupWidget.prototype.display = function ( width, height, transition ) {
 	clearTimeout( this.transitionTimeout );
 	if ( transition ) {
 		// Enable transition
-		this.$.addClass( 'oo-ui-popupWidget-transitioning' );
+		this.$element.addClass( 'oo-ui-popupWidget-transitioning' );
 	}
 
 	if ( overlapRight < 0 ) {
@@ -251,11 +251,11 @@ OO.ui.PopupWidget.prototype.display = function ( width, height, transition ) {
 	if ( transition ) {
 		// Prevent transitioning after transition is complete
 		this.transitionTimeout = setTimeout( OO.ui.bind( function () {
-			this.$.removeClass( 'oo-ui-popupWidget-transitioning' );
+			this.$element.removeClass( 'oo-ui-popupWidget-transitioning' );
 		}, this ), 200 );
 	} else {
 		// Prevent transitioning immediately
-		this.$.removeClass( 'oo-ui-popupWidget-transitioning' );
+		this.$element.removeClass( 'oo-ui-popupWidget-transitioning' );
 	}
 
 	return this;

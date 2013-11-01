@@ -19,7 +19,7 @@ OO.ui.PushButtonWidget = function OoUiPushButtonWidget( config ) {
 	OO.ui.ButtonWidget.call( this, config );
 
 	// Initialization
-	this.$.addClass( 'oo-ui-pushButtonWidget' );
+	this.$element.addClass( 'oo-ui-pushButtonWidget' );
 };
 
 /* Inheritance */

@@ -66,18 +66,18 @@ OO.ui.FlaggableElement.prototype.setFlags = function ( flags ) {
 			flag = flags[i];
 			// Set
 			this.flags[flag] = true;
-			this.$.addClass( classPrefix + flag );
+			this.$element.addClass( classPrefix + flag );
 		}
 	} else if ( OO.isPlainObject( flags ) ) {
 		for ( flag in flags ) {
 			if ( flags[flags] ) {
 				// Set
 				this.flags[flag] = true;
-				this.$.addClass( classPrefix + flag );
+				this.$element.addClass( classPrefix + flag );
 			} else {
 				// Remove
 				delete this.flags[flag];
-				this.$.removeClass( classPrefix + flag );
+				this.$element.removeClass( classPrefix + flag );
 			}
 		}
 	}

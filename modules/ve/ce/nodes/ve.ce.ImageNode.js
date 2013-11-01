@@ -28,10 +28,10 @@ ve.ce.ImageNode = function VeCeImageNode( model, config ) {
 	ve.ce.ResizableNode.call( this );
 
 	// Properties
-	this.$image = this.$;
+	this.$image = this.$element;
 
 	// Events
-	this.$.on( 'click', ve.bind( this.onClick, this ) );
+	this.$element.on( 'click', ve.bind( this.onClick, this ) );
 	this.model.connect( this, { 'attributeChange': 'onAttributeChange' } );
 
 	// Initialization

@@ -62,17 +62,17 @@ ve.ui.MWMediaEditDialog.prototype.initialize = function () {
 
 	// Properties
 	this.editPanel = new OO.ui.PanelLayout( {
-		'$$': this.frame.$$,
+		'$': this.$,
 		'padded': true,
 		'scrollable': true
 	} );
 	this.captionFieldset = new OO.ui.FieldsetLayout( {
-		'$$': this.frame.$$,
+		'$': this.$,
 		'label': ve.msg( 'visualeditor-dialog-media-content-section' ),
 		'icon': 'parameter'
 	} );
 	this.applyButton = new OO.ui.PushButtonWidget( {
-		'$$': this.$$,
+		'$': this.$,
 		'label': ve.msg( 'visualeditor-dialog-action-apply' ),
 		'flags': ['primary']
 	} );
@@ -81,9 +81,9 @@ ve.ui.MWMediaEditDialog.prototype.initialize = function () {
 	this.applyButton.connect( this, { 'click': [ 'close', 'apply' ] } );
 
 	// Initialization
-	this.editPanel.$.append( this.captionFieldset.$ );
-	this.$body.append( this.editPanel.$ );
-	this.$foot.append( this.applyButton.$ );
+	this.editPanel.$element.append( this.captionFieldset.$element );
+	this.$body.append( this.editPanel.$element );
+	this.$foot.append( this.applyButton.$element );
 };
 
 /** */
@@ -110,14 +110,14 @@ ve.ui.MWMediaEditDialog.prototype.onOpen = function () {
 	this.captionSurface = new ve.ui.SurfaceWidget(
 		newDoc,
 		{
-			'$$': this.frame.$$,
+			'$': this.$,
 			'tools': this.constructor.static.toolbarGroups,
 			'commands': this.constructor.static.surfaceCommands
 		}
 	);
 
 	// Initialization
-	this.captionFieldset.$.append( this.captionSurface.$ );
+	this.captionFieldset.$element.append( this.captionSurface.$element );
 	this.captionSurface.initialize();
 };
 

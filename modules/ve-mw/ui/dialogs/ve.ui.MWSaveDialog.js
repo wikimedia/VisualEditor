@@ -52,22 +52,22 @@ ve.ui.MWSaveDialog.prototype.initialize = function () {
 	ve.ui.MWDialog.prototype.initialize.call( this );
 
 	// Properties
-	this.savePanel = new OO.ui.PanelLayout( { '$$': this.frame.$$, 'scrollable': true } );
+	this.savePanel = new OO.ui.PanelLayout( { '$': this.$, 'scrollable': true } );
 
 	// Save panel
-	this.$editSummaryLabel = this.frame.$$( '<div>' ).addClass( 've-ui-mwSaveDialog-summaryLabel' )
+	this.$editSummaryLabel = this.$( '<div>' ).addClass( 've-ui-mwSaveDialog-summaryLabel' )
 		.html( ve.init.platform.getParsedMessage( 'summary' ) );
 	this.editSummaryInput = new OO.ui.TextInputWidget(
-		{ '$$': this.frame.$$, 'multiline': true, 'placeholder': ve.msg( 'visualeditor-editsummary' ) }
+		{ '$': this.$, 'multiline': true, 'placeholder': ve.msg( 'visualeditor-editsummary' ) }
 	);
-	this.editSummaryInput.$.addClass( 've-ui-mwSaveDialog-summary' );
+	this.editSummaryInput.$element.addClass( 've-ui-mwSaveDialog-summary' );
 	this.editSummaryInput.$input
 		.placeholder()
 		.byteLimit( this.editSummaryByteLimit )
 		.prop( 'tabIndex', 0 );
 	this.editSummaryInput.on( 'change', ve.bind( function () {
 		var $textarea = this.editSummaryInput.$input,
-			$editSummaryCount = this.savePanel.$.find( '.ve-ui-mwSaveDialog-editSummary-count' );
+			$editSummaryCount = this.savePanel.$element.find( '.ve-ui-mwSaveDialog-editSummary-count' );
 		// TODO: This looks a bit weird, there is no unit in the UI, just numbers
 		// Users likely assume characters but then it seems to count down quicker
 		// than expected. Facing users with the word "byte" is bad? (bug 40035)
@@ -78,22 +78,22 @@ ve.ui.MWSaveDialog.prototype.initialize = function () {
 		} );
 	}, this ) );
 
-	this.$saveOptions = this.frame.$$( '<div>' ).addClass( 've-ui-mwSaveDialog-options' ).append(
-		this.frame.$$( '<div>' ).addClass( 've-ui-mwSaveDialog-checkboxes' ),
-		new OO.ui.InputLabelWidget( { '$$': this.frame.$$, 'label': 'text' } ).$
+	this.$saveOptions = this.$( '<div>' ).addClass( 've-ui-mwSaveDialog-options' ).append(
+		this.$( '<div>' ).addClass( 've-ui-mwSaveDialog-checkboxes' ),
+		new OO.ui.InputLabelWidget( { '$': this.$, 'label': 'text' } ).$element
 			.addClass( 've-ui-mwSaveDialog-editSummary-count' ).text( this.editSummaryByteLimit )
 	);
-	this.$saveMessages = this.frame.$$( '<div>' );
-	this.$saveActions = this.frame.$$( '<div>' ).append(
-		this.frame.$$( '<div>' ).addClass( 've-ui-mwSaveDialog-dirtymsg' )
+	this.$saveMessages = this.$( '<div>' );
+	this.$saveActions = this.$( '<div>' ).append(
+		this.$( '<div>' ).addClass( 've-ui-mwSaveDialog-dirtymsg' )
 	);
-	this.$saveFoot = this.frame.$$( '<div>' ).addClass( 've-ui-mwSaveDialog-foot' ).append(
-		this.frame.$$( '<p>' ).addClass( 've-ui-mwSaveDialog-license' )
+	this.$saveFoot = this.$( '<div>' ).addClass( 've-ui-mwSaveDialog-foot' ).append(
+		this.$( '<p>' ).addClass( 've-ui-mwSaveDialog-license' )
 			.html( ve.init.platform.getParsedMessage( 'copyrightwarning' ) )
 	);
-	this.savePanel.$.append(
+	this.savePanel.$element.append(
 		this.$editSummaryLabel,
-		this.editSummaryInput.$,
+		this.editSummaryInput.$element,
 		this.$saveOptions,
 		this.$saveMessages,
 		this.$saveActions,
@@ -101,26 +101,26 @@ ve.ui.MWSaveDialog.prototype.initialize = function () {
 	);
 
 	// Review panel
-	this.reviewPanel = new OO.ui.PanelLayout( { '$$': this.frame.$$, 'scrollable': true } );
-	this.$reviewViewer = this.frame.$$( '<div>' ).addClass( 've-ui-mwSaveDialog-viewer' );
-	this.$reviewActions = this.frame.$$( '<div>' ).addClass( 've-ui-mwSaveDialog-actions' );
-	this.reviewPanel.$.append( this.$reviewViewer, this.$reviewActions );
+	this.reviewPanel = new OO.ui.PanelLayout( { '$': this.$, 'scrollable': true } );
+	this.$reviewViewer = this.$( '<div>' ).addClass( 've-ui-mwSaveDialog-viewer' );
+	this.$reviewActions = this.$( '<div>' ).addClass( 've-ui-mwSaveDialog-actions' );
+	this.reviewPanel.$element.append( this.$reviewViewer, this.$reviewActions );
 
 	// Conflict panel
-	this.conflictPanel = new OO.ui.PanelLayout( { '$$': this.frame.$$, 'scrollable': true } );
-	this.$conflict = this.frame.$$( '<div>' ).addClass( 've-ui-mwSaveDialog-conflict' )
+	this.conflictPanel = new OO.ui.PanelLayout( { '$': this.$, 'scrollable': true } );
+	this.$conflict = this.$( '<div>' ).addClass( 've-ui-mwSaveDialog-conflict' )
 		.html( ve.init.platform.getParsedMessage( 'visualeditor-editconflict' ) );
-	this.conflictPanel.$.append( this.$conflict );
+	this.conflictPanel.$element.append( this.$conflict );
 
 	// No changes panel
-	this.nochangesPanel = new OO.ui.PanelLayout( { '$$': this.frame.$$, 'scrollable': true } );
-	this.$noChanges = this.frame.$$( '<div>' ).addClass( 've-ui-mwSaveDialog-nochanges' )
+	this.nochangesPanel = new OO.ui.PanelLayout( { '$': this.$, 'scrollable': true } );
+	this.$noChanges = this.$( '<div>' ).addClass( 've-ui-mwSaveDialog-nochanges' )
 		.html( ve.init.platform.getParsedMessage( 'visualeditor-diff-nochanges' ) );
-	this.nochangesPanel.$.append( this.$noChanges );
+	this.nochangesPanel.$element.append( this.$noChanges );
 
 	// Panel stack
-	this.panel = new OO.ui.StackPanelLayout( { '$$': this.frame.$$, 'scrollable': true } );
-	this.panel.$.addClass( 've-ui-mwSaveDialog-panel' );
+	this.panel = new OO.ui.StackPanelLayout( { '$': this.$, 'scrollable': true } );
+	this.panel.$element.addClass( 've-ui-mwSaveDialog-panel' );
 	this.panel.addItems( [this.savePanel, this.reviewPanel, this.conflictPanel, this.nochangesPanel], 0 );
 
 	/* Buttons */
@@ -154,15 +154,15 @@ ve.ui.MWSaveDialog.prototype.initialize = function () {
 	} );
 	this.resolveConflictButton.connect( this, { 'click': 'onResolveConflictButtonClick' } );
 
-	this.$loadingIcon = this.frame.$$( '<div>' ).addClass( 've-ui-mwSaveDialog-working' );
+	this.$loadingIcon = this.$( '<div>' ).addClass( 've-ui-mwSaveDialog-working' );
 
 	// Initialization
-	this.$body.append( this.panel.$ );
+	this.$body.append( this.panel.$element );
 	this.$foot.append(
-		this.reviewButton.$,
-		this.saveButton.$,
-		this.reviewGoodButton.$,
-		this.resolveConflictButton.$,
+		this.reviewButton.$element,
+		this.saveButton.$element,
+		this.reviewGoodButton.$element,
+		this.resolveConflictButton.$element,
 		this.$loadingIcon
 	);
 };
@@ -212,10 +212,10 @@ ve.ui.MWSaveDialog.prototype.swapPanel = function ( panel ) {
 			if ( !this.sanityCheckVerified ) {
 				this.showMessage( 'dirtywarning', mw.msg( 'visualeditor-savedialog-warning-dirty' ) );
 			}
-			this.saveButton.$.show();
-			this.reviewButton.$.show();
-			this.reviewGoodButton.$.hide();
-			this.resolveConflictButton.$.hide();
+			this.saveButton.$element.show();
+			this.reviewButton.$element.show();
+			this.reviewGoodButton.$element.hide();
+			this.resolveConflictButton.$element.hide();
 			setTimeout( function () {
 				// fix input reference
 				var $textarea = dialog.editSummaryInput.$input;
@@ -227,20 +227,20 @@ ve.ui.MWSaveDialog.prototype.swapPanel = function ( panel ) {
 			} );
 			break;
 		case 'conflict':
-			this.saveButton.$.hide();
-			this.reviewButton.$.hide();
-			this.reviewGoodButton.$.hide();
-			this.resolveConflictButton.$.show();
+			this.saveButton.$element.hide();
+			this.reviewButton.$element.hide();
+			this.reviewGoodButton.$element.hide();
+			this.resolveConflictButton.$element.show();
 			break;
 		case 'review':
 			// Make room for the diff by transitioning to a non-small window
 			this.$frame.removeClass( 've-ui-window-frame-small' );
 			/* falls through */
 		case 'nochanges':
-			this.saveButton.$.hide();
-			this.reviewButton.$.hide();
-			this.reviewGoodButton.$.show();
-			this.resolveConflictButton.$.hide();
+			this.saveButton.$element.hide();
+			this.reviewButton.$element.hide();
+			this.reviewGoodButton.$element.show();
+			this.resolveConflictButton.$element.hide();
 			break;
 	}
 
@@ -274,12 +274,12 @@ ve.ui.MWSaveDialog.prototype.showMessage = function ( name, message, options ) {
 		if ( options.wrap === undefined ) {
 			options.wrap = 'warning';
 		}
-		$message = $( '<div class="ve-ui-mwSaveDialog-message"></div>' );
+		$message = this.$( '<div class="ve-ui-mwSaveDialog-message"></div>' );
 		if ( options.wrap !== false ) {
-			$message.append( $( '<p>').append(
+			$message.append( this.$( '<p>').append(
 				 // visualeditor-savedialog-label-error
 				 // visualeditor-savedialog-label-warning
-				$( '<strong>' ).text( mw.msg( 'visualeditor-savedialog-label-' + options.wrap ) ),
+				this.$( '<strong>' ).text( mw.msg( 'visualeditor-savedialog-label-' + options.wrap ) ),
 				document.createTextNode( mw.msg( 'colon-separator' ) ),
 				message
 			) );

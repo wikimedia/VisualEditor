@@ -30,10 +30,10 @@ OO.ui.ButtonWidget = function OoUiButtonWidget( config ) {
 
 	// Mixin constructors
 	OO.ui.FlaggableElement.call( this, config );
-	OO.ui.LabeledElement.call( this, this.$$( '<span>' ), config );
+	OO.ui.LabeledElement.call( this, this.$( '<span>' ), config );
 
 	// Properties
-	this.$button = this.$$( '<a>' );
+	this.$button = this.$( '<a>' );
 	this.isHyperlink = typeof config.href === 'string';
 	this.tabIndex = null;
 
@@ -56,7 +56,7 @@ OO.ui.ButtonWidget = function OoUiButtonWidget( config ) {
 			'target': config.target
 		} )
 		.prop( 'tabIndex', config.tabIndex || 0 );
-	this.$
+	this.$element
 		.addClass( 'oo-ui-buttonWidget' )
 		.append( this.$button );
 };

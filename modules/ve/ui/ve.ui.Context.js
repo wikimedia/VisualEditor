@@ -32,16 +32,16 @@ ve.ui.Context = function VeUiContext( surface, config ) {
 	this.selection = null;
 	this.toolbar = null;
 	this.afterModelSelectTimeout = null;
-	this.popup = new OO.ui.PopupWidget( { '$$': this.$$, '$container': this.surface.getView().$ } );
-	this.$menu = this.$$( '<div>' );
+	this.popup = new OO.ui.PopupWidget( { '$': this.$, '$container': this.surface.getView().$element } );
+	this.$menu = this.$( '<div>' );
 	this.inspectors = new ve.ui.SurfaceWindowSet( surface, ve.ui.inspectorFactory );
 
 	// Initialization
-	this.$.addClass( 've-ui-context' ).append( this.popup.$ );
-	this.inspectors.$.addClass( 've-ui-context-inspectors' );
+	this.$element.addClass( 've-ui-context' ).append( this.popup.$element );
+	this.inspectors.$element.addClass( 've-ui-context-inspectors' );
 	this.popup.$body.append(
 		this.$menu.addClass( 've-ui-context-menu' ),
-		this.inspectors.$.addClass( 've-ui-context-inspectors' )
+		this.inspectors.$element.addClass( 've-ui-context-inspectors' )
 	);
 
 	// Events
@@ -58,10 +58,10 @@ ve.ui.Context = function VeUiContext( surface, config ) {
 		'close': 'onInspectorClose'
 	} );
 
-	this.$$( this.getElementWindow() ).on( {
+	this.$( this.getElementWindow() ).on( {
 		'resize': ve.bind( this.update, this )
 	} );
-	this.$.add( this.$menu )
+	this.$element.add( this.$menu )
 		.on( 'mousedown', false );
 };
 
@@ -200,7 +200,7 @@ ve.ui.Context.prototype.getSurface = function () {
  * @chainable
  */
 ve.ui.Context.prototype.destroy = function () {
-	this.$.remove();
+	this.$element.remove();
 	return this;
 };
 
@@ -245,7 +245,7 @@ ve.ui.Context.prototype.update = function ( transition, repositionOnly ) {
 			}
 			this.toolbar = new ve.ui.SurfaceToolbar( this.surface );
 			this.toolbar.setup( [ { 'include' : tools } ] );
-			this.$menu.append( this.toolbar.$ );
+			this.$menu.append( this.toolbar.$element );
 			this.show( transition, repositionOnly );
 			this.toolbar.initialize();
 		} else if ( this.visible ) {
@@ -273,17 +273,17 @@ ve.ui.Context.prototype.updateDimensions = function ( transition ) {
 		surface = this.surface.getView(),
 		inspector = this.inspectors.getCurrent(),
 		focusedNode = surface.getFocusedNode(),
-		surfaceOffset = surface.$.offset(),
+		surfaceOffset = surface.$element.offset(),
 		rtl = this.surface.view.getDir() === 'rtl';
 
-	$container = inspector ? this.inspectors.$ : this.$menu;
+	$container = inspector ? this.inspectors.$element : this.$menu;
 	if ( focusedNode ) {
 		// We're on top of a node
-		$node = focusedNode.$focusable || focusedNode.$;
+		$node = focusedNode.$focusable || focusedNode.$element;
 		if ( this.embedded ) {
 			// Get the position relative to the surface it is embedded in
 			focusableOffset = OO.ui.Element.getRelativePosition(
-				$node, this.surface.$
+				$node, this.surface.$element
 			);
 			position = { 'y': focusableOffset.top };
 			// When context is embedded in RTL, it requires adjustments to the relative
@@ -298,7 +298,7 @@ ve.ui.Context.prototype.updateDimensions = function ( transition ) {
 			}
 		} else {
 			// The focused node may be in a wrapper, so calculate the offset relative to the document
-			documentOffset = surface.getDocument().documentNode.$.offset();
+			documentOffset = surface.getDocument().documentNode.$element.offset();
 			nodeOffset = $node.offset();
 			nodePosition = {
 				top: nodeOffset.top - documentOffset.top,
@@ -333,7 +333,7 @@ ve.ui.Context.prototype.updateDimensions = function ( transition ) {
 		this.popup.align = 'center';
 	}
 
-	this.$.css( { 'left': position.x, 'top': position.y } );
+	this.$element.css( { 'left': position.x, 'top': position.y } );
 
 	this.popup.display(
 		$container.outerWidth( true ),
@@ -359,24 +359,24 @@ ve.ui.Context.prototype.show = function ( transition, repositionOnly ) {
 	if ( !this.showing ) {
 		this.showing = true;
 
-		this.$.show();
+		this.$element.show();
 		this.popup.show();
 
 		// Show either inspector or menu
 		if ( inspector ) {
 			this.$menu.hide();
-			this.inspectors.$.show();
+			this.inspectors.$element.show();
 			if ( !repositionOnly ) {
-				inspector.$.css( 'opacity', 0 );
+				inspector.$element.css( 'opacity', 0 );
 			}
 			// Update size and fade the inspector in after animation is complete
 			setTimeout( ve.bind( function () {
 				inspector.fitHeightToContents();
 				this.updateDimensions( transition );
-				inspector.$.css( 'opacity', 1 );
+				inspector.$element.css( 'opacity', 1 );
 			}, this ), 200 );
 		} else {
-			this.inspectors.$.hide();
+			this.inspectors.$element.hide();
 			this.embedded = (
 				focusedNode &&
 				focusedNode.$focusable.outerHeight() > this.$menu.outerHeight() * 2 &&
@@ -411,7 +411,7 @@ ve.ui.Context.prototype.hide = function () {
 			inspector.close( 'hide' );
 		}
 		this.popup.hide();
-		this.$.hide();
+		this.$element.hide();
 		this.visible = false;
 		this.hiding = false;
 	}

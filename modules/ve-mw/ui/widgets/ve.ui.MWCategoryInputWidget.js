@@ -36,8 +36,8 @@ ve.ui.MWCategoryInputWidget = function VeUiMWCategoryInputWidget( categoryWidget
 	this.categoryPrefix = mw.config.get( 'wgFormattedNamespaces' )['14'] + ':';
 
 	// Initialization
-	this.$.addClass( 've-ui-mwCategoryInputWidget' );
-	this.lookupMenu.$.addClass( 've-ui-mwCategoryInputWidget-menu' );
+	this.$element.addClass( 've-ui-mwCategoryInputWidget' );
+	this.lookupMenu.$element.addClass( 've-ui-mwCategoryInputWidget-menu' );
 };
 
 /* Inheritance */
@@ -100,7 +100,7 @@ ve.ui.MWCategoryInputWidget.prototype.getLookupMenuItemsFromData = function ( da
 		existingCategoryItems = [],
 		matchingCategoryItems = [],
 		items = [],
-		menu$$ = this.lookupMenu.$$,
+		menu$ = this.lookupMenu.$,
 		category = this.getCategoryItemFromValue( this.value ),
 		existingCategories = this.categoryWidget.getCategories(),
 		matchingCategories = data || [];
@@ -137,29 +137,29 @@ ve.ui.MWCategoryInputWidget.prototype.getLookupMenuItemsFromData = function ( da
 	// Add sections for non-empty groups
 	if ( newCategoryItems.length ) {
 		items.push( new OO.ui.MenuSectionItemWidget(
-			'newCategory', { '$$': menu$$, 'label': ve.msg( 'visualeditor-dialog-meta-categories-input-newcategorylabel' ) }
+			'newCategory', { '$': menu$, 'label': ve.msg( 'visualeditor-dialog-meta-categories-input-newcategorylabel' ) }
 		) );
 		for ( i = 0, len = newCategoryItems.length; i < len; i++ ) {
 			item = newCategoryItems[i];
-			items.push( new OO.ui.MenuItemWidget( item, { '$$': menu$$, 'label': item } ) );
+			items.push( new OO.ui.MenuItemWidget( item, { '$': menu$, 'label': item } ) );
 		}
 	}
 	if ( existingCategoryItems.length ) {
 		items.push( new OO.ui.MenuSectionItemWidget(
-			'inArticle', { '$$': menu$$, 'label': ve.msg( 'visualeditor-dialog-meta-categories-input-movecategorylabel' ) }
+			'inArticle', { '$': menu$, 'label': ve.msg( 'visualeditor-dialog-meta-categories-input-movecategorylabel' ) }
 		) );
 		for ( i = 0, len = existingCategoryItems.length; i < len; i++ ) {
 			item = existingCategoryItems[i];
-			items.push( new OO.ui.MenuItemWidget( item, { '$$': menu$$, 'label': item } ) );
+			items.push( new OO.ui.MenuItemWidget( item, { '$': menu$, 'label': item } ) );
 		}
 	}
 	if ( matchingCategoryItems.length ) {
 		items.push( new OO.ui.MenuSectionItemWidget(
-			'matchingCategories', { '$$': menu$$, 'label': ve.msg( 'visualeditor-dialog-meta-categories-input-matchingcategorieslabel' ) }
+			'matchingCategories', { '$': menu$, 'label': ve.msg( 'visualeditor-dialog-meta-categories-input-matchingcategorieslabel' ) }
 		) );
 		for ( i = 0, len = matchingCategoryItems.length; i < len; i++ ) {
 			item = matchingCategoryItems[i];
-			items.push( new OO.ui.MenuItemWidget( item, { '$$': menu$$, 'label': item } ) );
+			items.push( new OO.ui.MenuItemWidget( item, { '$': menu$, 'label': item } ) );
 		}
 	}
 

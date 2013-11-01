@@ -23,12 +23,12 @@ ve.ce.MWNumberedExternalLinkNode = function VeCeMWNumberedExternalLinkNode( mode
 	ve.ce.FocusableNode.call( this );
 
 	// DOM changes
-	this.$.addClass( 've-ce-mwNumberedExternalLinkNode' );
+	this.$element.addClass( 've-ce-mwNumberedExternalLinkNode' );
 	// Need CE=false to prevent selection issues
-	this.$.prop( 'contentEditable', 'false' );
+	this.$element.prop( 'contentEditable', 'false' );
 
 	// Add link
-	this.$link = this.$$( '<a>' ).appendTo( this.$ );
+	this.$link = this.$( '<a>' ).appendTo( this.$element );
 
 	// Events
 	this.model.connect( this, { 'update': 'onUpdate' } );

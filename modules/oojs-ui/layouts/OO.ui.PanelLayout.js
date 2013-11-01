@@ -24,17 +24,17 @@ OO.ui.PanelLayout = function OoUiPanelLayout( config ) {
 	OO.ui.Layout.call( this, config );
 
 	// Initialization
-	this.$.addClass( 'oo-ui-panelLayout' );
+	this.$element.addClass( 'oo-ui-panelLayout' );
 	if ( config.scrollable ) {
-		this.$.addClass( 'oo-ui-panelLayout-scrollable' );
+		this.$element.addClass( 'oo-ui-panelLayout-scrollable' );
 	}
 
 	if ( config.padded ) {
-		this.$.addClass( 'oo-ui-panelLayout-padded' );
+		this.$element.addClass( 'oo-ui-panelLayout-padded' );
 	}
 
 	// Add directionality class:
-	this.$.addClass( 'oo-ui-' + this.$$.frame.dir );
+	this.$element.addClass( 'oo-ui-' + this.$.frame.dir );
 };
 
 /* Inheritance */

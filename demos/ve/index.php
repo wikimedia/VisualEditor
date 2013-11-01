@@ -378,15 +378,15 @@ $html = file_get_contents( $page );
 
 			// Initialization
 			$( '.ve-demo-utilities-commands' ).append(
-				getRangeButton.$,
-				startTextInputLabel.$,
-				startTextInput.$,
-				endTextInputLabel.$,
-				endTextInput.$,
-				logRangeButton.$,
+				getRangeButton.$element,
+				startTextInputLabel.$element,
+				startTextInput.$element,
+				endTextInputLabel.$element,
+				endTextInput.$element,
+				logRangeButton.$element,
 				$( '<span class="ve-demo-utilities-commands-divider">&nbsp;</span>' ),
-				dumpModelButton.$,
-				validateButton.$
+				dumpModelButton.$element,
+				validateButton.$element
 			);
 
 			// Events
@@ -485,7 +485,7 @@ $html = file_get_contents( $page );
 						var nodeRange = view.model.getRange();
 						var textModel = ve.instances[0]
 							.view.model.getDocument().getText( nodeRange );
-						var textDom = ve.ce.getDomText( view.$[0] );
+						var textDom = ve.ce.getDomText( view.$element[0] );
 						if ( textModel !== textDom ) {
 							failed = true;
 							console.log( 'Inconsistent data', {

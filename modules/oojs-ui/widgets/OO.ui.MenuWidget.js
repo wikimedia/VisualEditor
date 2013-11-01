@@ -35,7 +35,7 @@ OO.ui.MenuWidget = function OoUiMenuWidget( config ) {
 	this.onKeyDownHandler = OO.ui.bind( this.onKeyDown, this );
 
 	// Initialization
-	this.$.hide().addClass( 'oo-ui-menuWidget' );
+	this.$element.hide().addClass( 'oo-ui-menuWidget' );
 };
 
 /* Inheritance */
@@ -200,13 +200,13 @@ OO.ui.MenuWidget.prototype.show = function () {
 	var i, len;
 
 	if ( this.items.length ) {
-		this.$.show();
+		this.$element.show();
 		this.visible = true;
 		this.bindKeyDownListener();
 
 		// Change focus to enable keyboard navigation
 		if ( this.isolated && this.$input && !this.$input.is( ':focus' ) ) {
-			this.$previousFocus = this.$$( ':focus' );
+			this.$previousFocus = this.$( ':focus' );
 			this.$input.focus();
 		}
 		if ( this.newItems.length ) {
@@ -229,7 +229,7 @@ OO.ui.MenuWidget.prototype.show = function () {
  * @chainable
  */
 OO.ui.MenuWidget.prototype.hide = function () {
-	this.$.hide();
+	this.$element.hide();
 	this.visible = false;
 	this.unbindKeyDownListener();
 

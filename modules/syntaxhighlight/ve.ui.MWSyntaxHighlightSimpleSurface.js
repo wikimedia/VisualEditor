@@ -61,42 +61,42 @@ ve.ui.MWSyntaxHighlightSimpleSurface = function VeUiMWSyntaxHighlightSimpleSurfa
 
 	// Element properties
 	// Toolbar
-	this.$toolbarLayer = this.$$( '<div>' );
-	this.$toolbar = this.$$( '<div>' );
-	this.$buttonUndo = this.$$( '<a>' );
-	this.$buttonRedo = this.$$( '<a>' );
-	this.$buttonIndent = this.$$( '<a>' );
-	this.$buttonBeautify = this.$$( '<a>' );
-	this.$langDropdown = this.$$( '<select>' );
+	this.$toolbarLayer = this.$( '<div>' );
+	this.$toolbar = this.$( '<div>' );
+	this.$buttonUndo = this.$( '<a>' );
+	this.$buttonRedo = this.$( '<a>' );
+	this.$buttonIndent = this.$( '<a>' );
+	this.$buttonBeautify = this.$( '<a>' );
+	this.$langDropdown = this.$( '<select>' );
 	// Editbox
-	this.$editboxLayer = this.$$( '<div>' );
-	this.$lineNumberLayer = this.$$( '<div>' );
-	this.$lineNumber = this.$$( '<div>' );
-	this.$textLayer = this.$$( '<div>' );
-	this.$text = this.$$( '<div>' );
-	this.$lineWrap = this.$$( '<div>' );
+	this.$editboxLayer = this.$( '<div>' );
+	this.$lineNumberLayer = this.$( '<div>' );
+	this.$lineNumber = this.$( '<div>' );
+	this.$textLayer = this.$( '<div>' );
+	this.$text = this.$( '<div>' );
+	this.$lineWrap = this.$( '<div>' );
 	// Cursor
-	this.$cursorLineOverlay = this.$$( '<div>' );
-	this.$cursor = this.$$( '<div>' );
+	this.$cursorLineOverlay = this.$( '<div>' );
+	this.$cursor = this.$( '<div>' );
 	// Selection & clipboard
-	this.$selectionOverlay = this.$$( '<div>' );
-	this.$selectionTextarea = this.$$( '<textarea>' );
+	this.$selectionOverlay = this.$( '<div>' );
+	this.$selectionTextarea = this.$( '<textarea>' );
 	// Search & replace
-	this.$searchContainer = this.$$( '<div>' );
-	this.$searchBox = this.$$( '<input>' );
-	this.$replaceBox = this.$$( '<input>' );
-	this.$buttonSearch = this.$$( '<a>' );
-	this.$buttonReplace = this.$$( '<a>' );
+	this.$searchContainer = this.$( '<div>' );
+	this.$searchBox = this.$( '<input>' );
+	this.$replaceBox = this.$( '<input>' );
+	this.$buttonSearch = this.$( '<a>' );
+	this.$buttonReplace = this.$( '<a>' );
 	this.searchRegex = null;
 	this.searchHasResult = false;
 
-	this.toolbar = new OO.ui.Toolbar( ve.ui.syntaxHighlightEditorToolFactory, { '$$': this.$$ });
+	this.toolbar = new OO.ui.Toolbar( ve.ui.syntaxHighlightEditorToolFactory, { '$': this.$ });
 	this.toolbar.setup([{
 		'include':[ 'synhiUndo', 'synhiRedo', 'synhiIndent', 'synhiBeautify' ]
 	}]);
 	this.toolbar.context = this;
 	// Initialization
-	this.$
+	this.$element
 		.addClass( 've-ui-simplesurface' );
 	this.$toolbarLayer
 		.addClass( 've-ui-simplesurface-container-toolbar' )
@@ -104,7 +104,7 @@ ve.ui.MWSyntaxHighlightSimpleSurface = function VeUiMWSyntaxHighlightSimpleSurfa
 			this.$toolbar
 				.addClass( 've-ui-simplesurface-toolbar' )/*
 				.append(
-					this.$buttonUndo.$
+					this.$buttonUndo.$element
 						.addClass('ve-ui-simplesurface-toolbar-button')
 						.addClass('oo-ui-icon-undo') )
 				)
@@ -183,7 +183,7 @@ ve.ui.MWSyntaxHighlightSimpleSurface.prototype.initialize = function () {
 	// Check language support
 	if ( this.highlighter.isSupportedLanguage() ){
 		if ( !this.highlighter.isEnabledLanguage() ){
-			this.$.append( this.$$( '<div>' ).text( 'Cannot edit: ' + this.highlighter.getLanguageName() + '\nSupport has been disabled.' ) );
+			this.$element.append( this.$( '<div>' ).text( 'Cannot edit: ' + this.highlighter.getLanguageName() + '\nSupport has been disabled.' ) );
 		} else {
 			var langList = this.highlighter.getSupportedLanguages(), key, options = '',
 				self;
@@ -197,9 +197,9 @@ ve.ui.MWSyntaxHighlightSimpleSurface.prototype.initialize = function () {
 			}
 			this.$langDropdown.html(options);
 			// Main editor interface
-			this.$
+			this.$element
 				.append( this.$toolbarLayer )
-				.append( this.toolbar.$ )
+				.append( this.toolbar.$element )
 				.append( this.$editboxLayer.append( this.$searchContainer ) );
 			// Event handlers
 			this.$textLayer
@@ -257,7 +257,8 @@ ve.ui.MWSyntaxHighlightSimpleSurface.prototype.initialize = function () {
 			this.$buttonSearch.on( 'click', ve.bind(this.searchStep, this) );
 			this.$buttonReplace.on( 'click', ve.bind(this.searchReplace, this) );
 			this.$selectionTextarea.on( 'copy paste cut', ve.bind(this.onClipboard, this) );
-			$(window).bind('resize', ve.bind(this.cacheUpdate, this));	// Used to update cached css values
+			// Used to update cached css values
+			this.$( this.getElementWindow() ).bind('resize', ve.bind(this.cacheUpdate, this));
 
 			// Initialize helpers
 			this.highlighter.initialize();
@@ -282,7 +283,7 @@ ve.ui.MWSyntaxHighlightSimpleSurface.prototype.initialize = function () {
 			this.createSelection();
 		}
 	} else {
-		this.$.append( this.$$( '<div>' ).text( 'Cannot edit: ' + this.lang + '\nLanguage not supported.') );
+		this.$element.append( this.$( '<div>' ).text( 'Cannot edit: ' + this.lang + '\nLanguage not supported.') );
 	}
 };
 
@@ -307,9 +308,9 @@ ve.ui.MWSyntaxHighlightSimpleSurface.prototype.destroy = function () {
 	this.$buttonSearch.off( 'click' );
 	this.$buttonReplace.off( 'click' );
 	this.$selectionTextarea.off( 'copy paste cut' );
-	$(window).unbind('resize', this.cacheUpdate);
+	this.$( this.getElementWindow() ).unbind('resize', this.cacheUpdate);
 	// Clean up
-	this.$.empty();
+	this.$element.empty();
 	this.stopBlinkCursor();
 };
 
@@ -1167,7 +1168,7 @@ ve.ui.MWSyntaxHighlightSimpleSurface.prototype.showSelection = function () {
 		}
 		this.$selectionOverlay
 			.append(
-				this.$$('<div>').addClass('ve-ui-simplesurface-text-selected')
+				this.$('<div>').addClass('ve-ui-simplesurface-text-selected')
 				.css({
 					'left':startCharIdx * this.charDimension.width,
 					'top':startLineIdx * this.charDimension.height,
@@ -1182,7 +1183,7 @@ ve.ui.MWSyntaxHighlightSimpleSurface.prototype.showSelection = function () {
 		// First & last line
 		this.$selectionOverlay
 			.append(
-				this.$$('<div>').addClass('ve-ui-simplesurface-text-selected')
+				this.$('<div>').addClass('ve-ui-simplesurface-text-selected')
 				.css({
 					'left':startCharIdx * this.charDimension.width,
 					'top':startLineIdx * this.charDimension.height,
@@ -1192,7 +1193,7 @@ ve.ui.MWSyntaxHighlightSimpleSurface.prototype.showSelection = function () {
 					'height':this.charDimension.height
 				}) )
 			.append(
-				this.$$('<div>').addClass('ve-ui-simplesurface-text-selected')
+				this.$('<div>').addClass('ve-ui-simplesurface-text-selected')
 				.css({
 					'left':0,
 					'top':endLineIdx * this.charDimension.height,
@@ -1203,7 +1204,7 @@ ve.ui.MWSyntaxHighlightSimpleSurface.prototype.showSelection = function () {
 		for ( i = startLineIdx + 1; i < endLineIdx; i++ ){
 			this.$selectionOverlay
 				.append(
-					this.$$('<div>').addClass('ve-ui-simplesurface-text-selected')
+					this.$('<div>').addClass('ve-ui-simplesurface-text-selected')
 					.css({
 						'left': 0,
 						'top': i * this.charDimension.height,

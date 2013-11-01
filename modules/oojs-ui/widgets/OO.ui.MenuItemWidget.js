@@ -23,7 +23,7 @@ OO.ui.MenuItemWidget = function OoUiMenuItemWidget( data, config ) {
 	OO.ui.OptionWidget.call( this, data, config );
 
 	// Initialization
-	this.$.addClass( 'oo-ui-menuItemWidget' );
+	this.$element.addClass( 'oo-ui-menuItemWidget' );
 };
 
 /* Inheritance */

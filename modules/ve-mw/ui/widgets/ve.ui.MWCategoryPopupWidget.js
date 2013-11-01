@@ -25,17 +25,17 @@ ve.ui.MWCategoryPopupWidget = function VeUiMWCategoryPopupWidget ( config ) {
 	this.category = null;
 	this.origSortkey = null;
 	this.removed = false;
-	this.$title = this.$$( '<label>' );
-	this.$menu = this.$$( '<div>' );
+	this.$title = this.$( '<label>' );
+	this.$menu = this.$( '<div>' );
 	this.removeButton = new OO.ui.IconButtonWidget( {
-		'$$': this.$$, 'icon': 'remove', 'title': ve.msg( 'visualeditor-inspector-remove-tooltip' )
+		'$': this.$, 'icon': 'remove', 'title': ve.msg( 'visualeditor-inspector-remove-tooltip' )
 	} );
-	this.sortKeyInput = new OO.ui.TextInputWidget( { '$$': this.$$ } );
+	this.sortKeyInput = new OO.ui.TextInputWidget( { '$': this.$ } );
 	this.sortKeyLabel = new OO.ui.InputLabelWidget(
-		{ '$$': this.$$, '$input': this.sortKeyInput, 'label': ve.msg ( 'visualeditor-dialog-meta-categories-sortkey-label' ) }
+		{ '$': this.$, '$input': this.sortKeyInput, 'label': ve.msg ( 'visualeditor-dialog-meta-categories-sortkey-label' ) }
 	);
-	this.$sortKeyForm = this.$$( '<form>' ).addClass( 've-ui-mwCategoryPopupWidget-sortKeyForm' )
-		.append( this.sortKeyLabel.$, this.sortKeyInput.$ );
+	this.$sortKeyForm = this.$( '<form>' ).addClass( 've-ui-mwCategoryPopupWidget-sortKeyForm' )
+		.append( this.sortKeyLabel.$element, this.sortKeyInput.$element );
 
 	// Events
 	this.connect( this, { 'hide': 'onHide' } );
@@ -43,7 +43,7 @@ ve.ui.MWCategoryPopupWidget = function VeUiMWCategoryPopupWidget ( config ) {
 	this.$sortKeyForm.on( 'submit', ve.bind( this.onSortKeySubmit, this ) );
 
 	// Initialization
-	this.$.addClass( 've-ui-mwCategoryPopupWidget' ).hide();
+	this.$element.addClass( 've-ui-mwCategoryPopupWidget' ).hide();
 	this.$title
 		.addClass( 've-ui-mwCategoryPopupWidget-title oo-ui-icon-tag' )
 		.text( ve.msg( 'visualeditor-dialog-meta-categories-category' ) );
@@ -51,11 +51,11 @@ ve.ui.MWCategoryPopupWidget = function VeUiMWCategoryPopupWidget ( config ) {
 		.addClass( 've-ui-mwCategoryPopupWidget-content' )
 		.append(
 			this.$title,
-			this.removeButton.$.addClass( 've-ui-mwCategoryPopupWidget-removeButton' ),
+			this.removeButton.$element.addClass( 've-ui-mwCategoryPopupWidget-removeButton' ),
 			this.$sortKeyForm
 		);
 	this.$body.append( this.$menu );
-	config.$overlay.append( this.$ );
+	config.$overlay.append( this.$element );
 };
 
 /* Inheritance */
@@ -173,12 +173,12 @@ ve.ui.MWCategoryPopupWidget.prototype.setPopup = function ( item ) {
 	// Flip for RTL:
 	if ( this.$container.attr( 'dir' ) === 'rtl' ) {
 		// flip me, I'm a mirror:
-		this.$.css( {
+		this.$element.css( {
 			'right': this.$container.outerWidth( true ) - left,
 			'top': top
 		} );
 	} else {
-		this.$.css( { 'left': left, 'top': top } );
+		this.$element.css( { 'left': left, 'top': top } );
 	}
 
 	this.display( width, height );

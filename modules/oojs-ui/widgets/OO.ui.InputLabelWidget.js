@@ -26,16 +26,16 @@ OO.ui.InputLabelWidget = function OoUiInputLabelWidget( config ) {
 	OO.ui.Widget.call( this, config );
 
 	// Mixin constructors
-	OO.ui.LabeledElement.call( this, this.$, config );
+	OO.ui.LabeledElement.call( this, this.$element, config );
 
 	// Properties
 	this.input = config.input;
 
 	// Events
-	this.$.on( 'click', OO.ui.bind( this.onClick, this ) );
+	this.$element.on( 'click', OO.ui.bind( this.onClick, this ) );
 
 	// Initialization
-	this.$.addClass( 'oo-ui-inputLabelWidget' );
+	this.$element.addClass( 'oo-ui-inputLabelWidget' );
 };
 
 /* Inheritance */

@@ -24,13 +24,13 @@ OO.ui.StackPanelLayout = function OoUiStackPanelLayout( config ) {
 	OO.ui.PanelLayout.call( this, config );
 
 	// Mixin constructors
-	OO.ui.GroupElement.call( this, this.$, config );
+	OO.ui.GroupElement.call( this, this.$element, config );
 
 	// Properties
 	this.currentItem = null;
 
 	// Initialization
-	this.$.addClass( 'oo-ui-stackPanelLayout' );
+	this.$element.addClass( 'oo-ui-stackPanelLayout' );
 };
 
 /* Inheritance */
@@ -58,7 +58,7 @@ OO.ui.StackPanelLayout.prototype.addItems = function ( items, index ) {
 		if ( !this.currentItem ) {
 			this.showItem( items[i] );
 		} else {
-			items[i].$.hide();
+			items[i].$element.hide();
 		}
 	}
 	OO.ui.GroupElement.prototype.addItems.call( this, items, index );
@@ -113,7 +113,7 @@ OO.ui.StackPanelLayout.prototype.clearItems = function () {
  */
 OO.ui.StackPanelLayout.prototype.showItem = function ( item ) {
 	this.$items.hide();
-	item.$.show();
+	item.$element.show();
 	this.currentItem = item;
 
 	return this;

@@ -15,7 +15,7 @@
  * @param {Object} [config] Configuration options
  */
 ve.ui.LanguageInputWidget = function VeUiLanguageInputWidget( config ) {
-	var ulsParams, langInpObj, table;
+	var ulsParams, langInpObj;
 
 	// Parent constructor
 	OO.ui.Widget.call( this, config );
@@ -30,37 +30,38 @@ ve.ui.LanguageInputWidget = function VeUiLanguageInputWidget( config ) {
 	this.dir = '';
 
 	// Create the informational table:
-	table = $( '<table>' ).css( { 'width': '100%' } )
-		.addClass( 've-LanguageInspector-information' )
-		.append( $( '<tr>' )
-			.append( $( '<td>' )
-				.addClass( 've-ui-LanguageInspector-info-title' )
-				.text( ve.msg( 'visualeditor-languageinspector-widget-label-language' ) ) )
-			.append( $( '<td>' )
-				.addClass( 've-ui-LanguageInspector-info-langname' )
-			.append( this.$langNameDisp ) ) )
-		.append( $( '<tr>' )
-			.append( $( '<td>' )
-				.addClass( 've-ui-LanguageInspector-info-title' )
-				.text( ve.msg( 'visualeditor-languageinspector-widget-label-langcode' ) ) )
-			.append( $( '<td>' )
-				.addClass( 've-ui-LanguageInspector-info-langcode' )
-			.append( this.$langCodeDisp ) ) )
-		.append( $( '<tr>' )
-			.append( $( '<td>' )
-				.addClass( 've-ui-LanguageInspector-info-title' )
-				.text( ve.msg( 'visualeditor-languageinspector-widget-label-direction' ) ) )
-			.append( $( '<td>' )
-				.addClass( 've-ui-LanguageInspector-info-dir' )
-			.append( this.$dirDisp ) ) );
-	this.$.append( table );
+	this.$element.append(
+		this.$( '<table>' ).css( { 'width': '100%' } )
+			.addClass( 've-LanguageInspector-information' )
+			.append( this.$( '<tr>' )
+				.append( this.$( '<td>' )
+					.addClass( 've-ui-LanguageInspector-info-title' )
+					.text( ve.msg( 'visualeditor-languageinspector-widget-label-language' ) ) )
+				.append( this.$( '<td>' )
+					.addClass( 've-ui-LanguageInspector-info-langname' )
+				.append( this.$langNameDisp ) ) )
+			.append( this.$( '<tr>' )
+				.append( this.$( '<td>' )
+					.addClass( 've-ui-LanguageInspector-info-title' )
+					.text( ve.msg( 'visualeditor-languageinspector-widget-label-langcode' ) ) )
+				.append( this.$( '<td>' )
+					.addClass( 've-ui-LanguageInspector-info-langcode' )
+				.append( this.$langCodeDisp ) ) )
+			.append( this.$( '<tr>' )
+				.append( this.$( '<td>' )
+					.addClass( 've-ui-LanguageInspector-info-title' )
+					.text( ve.msg( 'visualeditor-languageinspector-widget-label-direction' ) ) )
+				.append( this.$( '<td>' )
+					.addClass( 've-ui-LanguageInspector-info-dir' )
+				.append( this.$dirDisp ) ) )
+	 );
 
 	// Use a different reference than 'this' to avoid scope problems
 	// inside the $.ULS callback:
 	langInpObj = this;
 
 	// Initialization
-	this.$.addClass( 've-ui-LangInputWidget' );
+	this.$element.addClass( 've-ui-LangInputWidget' );
 
 	ulsParams = {
 		onSelect: function( language ) {
@@ -82,9 +83,9 @@ ve.ui.LanguageInputWidget = function VeUiLanguageInputWidget( config ) {
 	});
 
 	// Attach ULS event call
-	this.$button.$.uls( ulsParams );
+	this.$button.$element.uls( ulsParams );
 
-	this.$.append( this.$button.$ );
+	this.$element.append( this.$button.$element );
 };
 
 /* Inheritance */
@@ -104,7 +105,7 @@ OO.inheritClass( ve.ui.LanguageInputWidget, OO.ui.Widget );
  * @returns {jQuery} span element
  */
 ve.ui.LanguageInputWidget.prototype.getDisplayElement = function () {
-	return this.$$( '<span>' );
+	return this.$( '<span>' );
 };
 
 /**

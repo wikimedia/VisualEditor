@@ -25,27 +25,27 @@ ve.ce.MWBlockImageNode = function VeCeMWBlockImageNode( model, config ) {
 	type = this.model.getAttribute( 'type' );
 
 	if ( this.model.getAttribute( 'align' ) === 'center' ) {
-		this.$.addClass( 'center' );
-		this.$thumb = this.$$( '<div>' ).appendTo( this.$ );
+		this.$element.addClass( 'center' );
+		this.$thumb = this.$( '<div>' ).appendTo( this.$element );
 	} else {
-		this.$thumb = this.$;
+		this.$thumb = this.$element;
 	}
 
-	this.$thumbInner = this.$$( '<div>' )
+	this.$thumbInner = this.$( '<div>' )
 		.addClass( 'thumbinner' )
 		.css( 'width', parseInt( this.model.getAttribute( 'width' ), 10 ) + 2 );
 
-	this.$a = this.$$( '<a>' )
+	this.$a = this.$( '<a>' )
 		.addClass( 'image' )
 		.attr( 'href', this.getResolvedAttribute( 'href' ) );
 
-	this.$image = this.$$( '<img>' )
+	this.$image = this.$( '<img>' )
 		.attr( 'src', this.getResolvedAttribute( 'src' ) )
 		.attr( 'width', this.model.getAttribute( 'width' ) )
 		.attr( 'height', this.model.getAttribute( 'height' ) )
 		.appendTo( this.$a );
 
-	this.$inner = this.$$( '<div>' ).addClass( 've-ce-mwBlockImageNode-inner' );
+	this.$inner = this.$( '<div>' ).addClass( 've-ce-mwBlockImageNode-inner' );
 
 	if ( type === 'none' || type === 'frameless' ) {
 		this.$thumb.addClass(
@@ -83,7 +83,7 @@ ve.ce.MWBlockImageNode = function VeCeMWBlockImageNode( model, config ) {
 		captionModel.connect( this, { 'update': 'onModelUpdate' } );
 		this.children.push( captionView );
 		captionView.attach( this );
-		captionView.$.appendTo( this.$thumbInner );
+		captionView.$element.appendTo( this.$thumbInner );
 		if ( this.live !== captionView.isLive() ) {
 			captionView.setLive( this.live );
 		}
@@ -138,7 +138,7 @@ ve.ce.MWBlockImageNode.prototype.getCssClass = function ( type, alignment ) {
 	// TODO use this.model.getAttribute( 'type' ) etc., see bug 52065
 	// Default is different between RTL and LTR wikis:
 	if ( type === 'default' && alignment === 'default' ) {
-		if ( this.$.css( 'direction' ) === 'rtl' ) {
+		if ( this.$element.css( 'direction' ) === 'rtl' ) {
 			return 'tleft';
 		} else {
 			return 'tright';
@@ -176,7 +176,7 @@ ve.ce.MWBlockImageNode.prototype.onSetup = function () {
  * @fires setup
  */
 ve.ce.MWBlockImageNode.prototype.onAttributeChange = function ( key, from, to ) {
-	var $element, type;
+	var $wrapper, type;
 
 	if ( key === 'height' || key === 'width' ) {
 		to = parseInt( to, 10 );
@@ -188,14 +188,14 @@ ve.ce.MWBlockImageNode.prototype.onAttributeChange = function ( key, from, to ) 
 				if ( to === 'center' || from === 'center' ) {
 					this.emit( 'teardown' );
 					if ( to === 'center' ) {
-						$element = this.$$( '<div>' ).addClass( 'center' );
-						this.$thumb = this.$;
-						this.$.replaceWith( $element );
-						this.$ = $element;
-						this.$.append( this.$thumb );
+						$wrapper = this.$( '<div>' ).addClass( 'center' );
+						this.$thumb = this.$element;
+						this.$element.replaceWith( $wrapper );
+						this.$element = $wrapper;
+						this.$element.append( this.$thumb );
 					} else {
-						this.$.replaceWith( this.$thumb );
-						this.$ = this.$thumb;
+						this.$element.replaceWith( this.$thumb );
+						this.$element = this.$thumb;
 					}
 					this.emit( 'setup' );
 				}

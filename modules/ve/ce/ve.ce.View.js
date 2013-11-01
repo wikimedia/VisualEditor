@@ -109,7 +109,7 @@ ve.ce.View.prototype.getModelHtmlDocument = function () {
  * @method
  */
 ve.ce.View.prototype.onSetup = function () {
-	this.$.data( 'view', this );
+	this.$element.data( 'view', this );
 };
 
 /**
@@ -118,7 +118,7 @@ ve.ce.View.prototype.onSetup = function () {
  * @method
  */
 ve.ce.View.prototype.onTeardown = function () {
-	this.$.removeData( 'view' );
+	this.$element.removeData( 'view' );
 };
 
 /**
@@ -161,7 +161,7 @@ ve.ce.View.prototype.setLive = function ( live ) {
 };
 
 /**
- * Render an HTML attribute list onto this.$
+ * Render an HTML attribute list onto this.$element
  *
  * If no attributeList is given, the attribute list stored in the linear model will be used.
  *
@@ -170,7 +170,7 @@ ve.ce.View.prototype.setLive = function ( live ) {
 ve.ce.View.prototype.renderAttributes = function ( attributeList ) {
 	ve.dm.Converter.renderHtmlAttributeList(
 		attributeList || this.model.getHtmlAttributes(),
-		this.$,
+		this.$element,
 		this.constructor.static.renderHtmlAttributes,
 		true // computed attributes
 	);

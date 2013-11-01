@@ -509,7 +509,7 @@ ve.init.mw.ViewPageTarget.prototype.onSaveError = function ( jqXHR, status, data
 						.filter( 'a' ).attr( 'target', '_blank ' ).end()
 				),
 				$( '<img>' ).attr( 'src', editApi.captcha.url ),
-				this.captcha.input.$
+				this.captcha.input.$element
 			),
 			{
 				wrap: false
@@ -692,7 +692,7 @@ ve.init.mw.ViewPageTarget.prototype.checkForWikitextWarning = function () {
 	if ( !( node instanceof ve.ce.ContentBranchNode ) ) {
 		return;
 	}
-	text = ve.ce.getDomText( node.$[0] );
+	text = ve.ce.getDomText( node.$element[0] );
 
 	if ( text.match( /\[\[|\{\{|''|<nowiki|~~~|^==|^\*|^\#/ ) ) {
 		mw.notify(
@@ -717,7 +717,7 @@ ve.init.mw.ViewPageTarget.prototype.updateToolbarSaveButtonState = function () {
 	this.edited = this.surface.getModel().hasPastState();
 	// Disable the save button if we have no history or if the sanity check is not finished
 	this.toolbarSaveButton.setDisabled( ( !this.edited && !this.restoring ) || !this.sanityCheckFinished );
-	this.toolbarSaveButton.$.toggleClass( 've-init-mw-viewPageTarget-waiting', !this.sanityCheckFinished );
+	this.toolbarSaveButton.$element.toggleClass( 've-init-mw-viewPageTarget-waiting', !this.sanityCheckFinished );
 };
 
 /**
@@ -904,11 +904,11 @@ ve.init.mw.ViewPageTarget.prototype.setUpSurface = function ( doc, callback ) {
 			setTimeout( function () {
 				// Create ui.Surface (also creates ce.Surface and dm.Surface and builds CE tree)
 				target.surface = new ve.ui.Surface( dmDoc, target.surfaceOptions );
-				target.surface.$.addClass( 've-init-mw-viewPageTarget-surface' );
+				target.surface.$element.addClass( 've-init-mw-viewPageTarget-surface' );
 				setTimeout( function () {
 					// Initialize surface
 					target.surface.getContext().hide();
-					target.$document = target.surface.$.find( '.ve-ce-documentNode' );
+					target.$document = target.surface.$element.find( '.ve-ce-documentNode' );
 					target.surface.getModel().getDocument().connect( target, {
 						'transact': 'clearSaveDialogDiff'
 					} );
@@ -916,7 +916,7 @@ ve.init.mw.ViewPageTarget.prototype.setUpSurface = function ( doc, callback ) {
 						'documentUpdate': 'checkForWikitextWarning',
 						'history': 'updateToolbarSaveButtonState'
 					} );
-					target.$.append( target.surface.$ );
+					target.$element.append( target.surface.$element );
 					target.setUpToolbar();
 					target.transformPageTitle();
 					target.changeDocumentTitle();
@@ -931,7 +931,7 @@ ve.init.mw.ViewPageTarget.prototype.setUpSurface = function ( doc, callback ) {
 					} );
 
 					// Add appropriately mw-content-ltr or mw-content-rtl class
-					target.surface.view.$.addClass(
+					target.surface.view.$element.addClass(
 						'mw-content-' + mw.config.get( 'wgVisualEditor' ).pageLanguageDir
 					);
 
@@ -1097,7 +1097,7 @@ ve.init.mw.ViewPageTarget.prototype.setupSectionEditLinks = null;
  */
 ve.init.mw.ViewPageTarget.prototype.setupToolbarButtons = function () {
 	this.toolbarCancelButton = new OO.ui.PushButtonWidget( { 'label': ve.msg( 'visualeditor-toolbar-cancel' ) } );
-	this.toolbarCancelButton.$.addClass( 've-ui-toolbar-cancelButton' );
+	this.toolbarCancelButton.$element.addClass( 've-ui-toolbar-cancelButton' );
 	this.toolbarSaveButton = new OO.ui.PushButtonWidget( {
 		'label': ve.msg( 'visualeditor-toolbar-savedialog' ),
 		'flags': ['constructive'],
@@ -1105,7 +1105,7 @@ ve.init.mw.ViewPageTarget.prototype.setupToolbarButtons = function () {
 	} );
 	// TODO (mattflaschen, 2013-06-27): it would be useful to do this in a more general way, such
 	// as in the ButtonWidget constructor.
-	this.toolbarSaveButton.$.addClass( 've-ui-toolbar-saveButton' );
+	this.toolbarSaveButton.$element.addClass( 've-ui-toolbar-saveButton' );
 	this.updateToolbarSaveButtonState();
 
 	this.toolbarCancelButton.connect( this, { 'click': 'onToolbarCancelButtonClick' } );
@@ -1142,13 +1142,13 @@ ve.init.mw.ViewPageTarget.prototype.attachToolbarButtons = function () {
 
 	$actionTools
 		.addClass( 've-init-mw-viewPageTarget-toolbar-utilites' )
-		.append( actions.$ );
+		.append( actions.$element );
 
 	$pushButtons
 		.addClass( 've-init-mw-viewPageTarget-toolbar-actions' )
 		.append(
-			this.toolbarCancelButton.$,
-			this.toolbarSaveButton.$
+			this.toolbarCancelButton.$element,
+			this.toolbarSaveButton.$element
 		);
 
 	this.toolbar.$actions.append( $actionTools, $pushButtons );
@@ -1160,8 +1160,8 @@ ve.init.mw.ViewPageTarget.prototype.attachToolbarButtons = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.detachToolbarButtons = function () {
-	this.toolbarCancelButton.$.detach();
-	this.toolbarSaveButton.$.detach();
+	this.toolbarCancelButton.$element.detach();
+	this.toolbarSaveButton.$element.detach();
 	this.toolbar.$actions.empty();
 };
 
@@ -1321,7 +1321,7 @@ ve.init.mw.ViewPageTarget.prototype.setUpToolbar = function () {
 	if ( !this.isMobileDevice ) {
 		this.toolbar.enableFloatable();
 	}
-	this.toolbar.$
+	this.toolbar.$element
 		.addClass( 've-init-mw-viewPageTarget-toolbar' )
 		.insertBefore( '#firstHeading' );
 	this.toolbar.$bar.slideDown( 'fast', ve.bind( function () {
@@ -1561,8 +1561,8 @@ ve.init.mw.ViewPageTarget.prototype.restoreEditSection = function () {
 				// Scroll to heading:
 				// Wait for toolbar to animate in so we can account for its height
 				setTimeout( function () {
-					var $window = $( OO.ui.Element.getWindow( target.$ ) );
-					$window.scrollTop( headingNode.$.offset().top - target.toolbar.$.height() );
+					var $window = $( OO.ui.Element.getWindow( target.$element ) );
+					$window.scrollTop( headingNode.$element.offset().top - target.toolbar.$element.height() );
 				}, 200 );
 			}
 		} );

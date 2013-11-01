@@ -57,35 +57,35 @@ ve.ui.MWMetaDialog.prototype.initialize = function () {
 	ve.ui.MWDialog.prototype.initialize.call( this );
 
 	// Properties
-	this.pagedOutlineLayout = new OO.ui.PagedOutlineLayout( { '$$': this.frame.$$ } );
+	this.pagedOutlineLayout = new OO.ui.PagedOutlineLayout( { '$': this.$ } );
 	this.categoriesFieldset = new OO.ui.FieldsetLayout( {
-		'$$': this.frame.$$,
+		'$': this.$,
 		'label': ve.msg( 'visualeditor-dialog-meta-categories-data-label' ),
 		'icon': 'tag'
 	} );
 	this.categoryOptionsFieldset = new OO.ui.FieldsetLayout( {
-		'$$': this.frame.$$,
+		'$': this.$,
 		'label': ve.msg( 'visualeditor-dialog-meta-categories-options' ),
 		'icon': 'settings'
 	} );
 	this.categoryWidget = new ve.ui.MWCategoryWidget( {
-		'$$': this.frame.$$, '$overlay': this.$overlay
+		'$': this.$, '$overlay': this.$overlay
 	} );
 	this.defaultSortInput = new OO.ui.TextInputWidget( {
-		'$$': this.frame.$$, 'placeholder': this.fallbackDefaultSortKey
+		'$': this.$, 'placeholder': this.fallbackDefaultSortKey
 	} );
 	this.defaultSortLabel = new OO.ui.InputLabelWidget( {
-		'$$': this.frame.$$,
+		'$': this.$,
 		'input': this.defaultSortInput,
 		'label': ve.msg( 'visualeditor-dialog-meta-categories-defaultsort-label' )
 	} );
 	this.languagesFieldset = new OO.ui.FieldsetLayout( {
-		'$$': this.frame.$$,
+		'$': this.$,
 		'label': ve.msg( 'visualeditor-dialog-meta-languages-label' ),
 		'icon': 'language'
 	} );
 	this.applyButton = new OO.ui.PushButtonWidget( {
-		'$$': this.$$, 'label': ve.msg( 'visualeditor-dialog-action-apply' ), 'flags': ['primary']
+		'$': this.$, 'label': ve.msg( 'visualeditor-dialog-action-apply' ), 'flags': ['primary']
 	} );
 
 	// Events
@@ -101,39 +101,39 @@ ve.ui.MWMetaDialog.prototype.initialize = function () {
 	// Initialization
 	this.categoryWidget.addItems( this.getCategoryItems() );
 
-	this.$body.append( this.pagedOutlineLayout.$ );
-	this.$foot.append( this.applyButton.$ );
+	this.$body.append( this.pagedOutlineLayout.$element );
+	this.$foot.append( this.applyButton.$element );
 
 	this.pagedOutlineLayout.addPage( 'categories', {
-		'$content': [ this.categoriesFieldset.$, this.categoryOptionsFieldset.$ ],
+		'$content': [ this.categoriesFieldset.$element, this.categoryOptionsFieldset.$element ],
 		'label': ve.msg( 'visualeditor-dialog-meta-categories-section' ),
 		'icon': 'tag'
 	} ).addPage( 'languages', {
-		'$content': this.languagesFieldset.$,
+		'$content': this.languagesFieldset.$element,
 		'label': ve.msg( 'visualeditor-dialog-meta-languages-section' ),
 		'icon': 'language'
 	} );
 
-	this.categoriesFieldset.$.append( this.categoryWidget.$ );
-	this.categoryOptionsFieldset.$.append( this.defaultSortLabel.$, this.defaultSortInput.$ );
-	this.languagesFieldset.$.append(
-		this.frame.$$( '<span>' )
+	this.categoriesFieldset.$element.append( this.categoryWidget.$element );
+	this.categoryOptionsFieldset.$element.append( this.defaultSortLabel.$element, this.defaultSortInput.$element );
+	this.languagesFieldset.$element.append(
+		this.$( '<span>' )
 			.text( ve.msg( 'visualeditor-dialog-meta-languages-readonlynote' ) )
 	);
 
 	languagePromise = this.getAllLanguageItems();
 	languagePromise.done( ve.bind( function ( languages ) {
-		var i, $languagesTable = this.frame.$$( '<table>' ), languageslength = languages.length;
+		var i, $languagesTable = this.$( '<table>' ), languageslength = languages.length;
 
 		$languagesTable
 			.addClass( 've-ui-mwMetaDialog-languages-table' )
-			.append( this.frame.$$( '<tr>' )
+			.append( this.$( '<tr>' )
 				.append(
-					this.frame.$$( '<th>' )
+					this.$( '<th>' )
 						.append( ve.msg( 'visualeditor-dialog-meta-languages-code-label' ) )
 				)
 				.append(
-					this.frame.$$( '<th>' )
+					this.$( '<th>' )
 						.append( ve.msg( 'visualeditor-dialog-meta-languages-link-label' ) )
 				)
 			);
@@ -148,15 +148,15 @@ ve.ui.MWMetaDialog.prototype.initialize = function () {
 				languages[i].dir = $.uls.data.getDir( languages[i].safelang );
 			}
 			$languagesTable
-				.append( this.frame.$$( '<tr>' )
-					.append( this.frame.$$( '<td>' ).append( languages[i].lang ) )
-					.append( this.frame.$$( '<td>' ).append( languages[i].title )
+				.append( this.$( '<tr>' )
+					.append( this.$( '<td>' ).append( languages[i].lang ) )
+					.append( this.$( '<td>' ).append( languages[i].title )
 						.attr( 'lang', languages[i].safelang )
 						.attr( 'dir', languages[i].dir ) )
 				);
 		}
 
-		this.languagesFieldset.$.append( $languagesTable );
+		this.languagesFieldset.$element.append( $languagesTable );
 	}, this ) );
 };
 

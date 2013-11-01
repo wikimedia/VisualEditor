@@ -34,7 +34,7 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 	this.documentView = new ve.ce.Document( model.getDocument(), this );
 	this.surfaceObserver = new ve.ce.SurfaceObserver( this.documentView );
 	this.selectionTimeout = null;
-	this.$document = $( this.getElementDocument() );
+	this.$document = this.$( this.getElementDocument() );
 	this.eventSequencer = new ve.EventSequencer( [
 		'keydown', 'keypress', 'keyup', 'mousedown', 'mouseup',
 		'mousemove', 'compositionstart', 'compositionend'
@@ -46,9 +46,9 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 	this.relocating = false;
 	this.selecting = false;
 	this.contentBranchNodeChanged = false;
-	this.$phantoms = this.$$( '<div>' );
-	this.$highlights = this.$$( '<div>' );
-	this.$pasteTarget = this.$$( '<div>' );
+	this.$phantoms = this.$( '<div>' );
+	this.$highlights = this.$( '<div>' );
+	this.$pasteTarget = this.$( '<div>' );
 	this.pasting = false;
 	this.clickHistory = [];
 	this.focusedNode = null;
@@ -64,7 +64,7 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 		{ 'select': 'onModelSelect', 'documentUpdate': 'onModelDocumentUpdate' }
 	);
 
-	$documentNode = this.documentView.getDocumentNode().$;
+	$documentNode = this.documentView.getDocumentNode().$element;
 	$documentNode.on( {
 		'cut': ve.bind( this.onCut, this ),
 		'copy': ve.bind( this.onCopy, this )
@@ -89,7 +89,7 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 		$documentNode.focus();
 	} );
 
-	this.$.on( {
+	this.$element.on( {
 		'dragover': ve.bind( this.onDocumentDragOver, this ),
 		'drop': ve.bind( this.onDocumentDrop, this )
 	} );
@@ -111,13 +111,13 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 	} );
 
 	// Initialization
-	this.$.addClass( 've-ce-surface' );
+	this.$element.addClass( 've-ce-surface' );
 	this.$phantoms.addClass( 've-ce-surface-phantoms' );
 	this.$highlights.addClass( 've-ce-surface-highlights' );
 	this.$pasteTarget.addClass( 've-ce-surface-paste' ).prop( 'contentEditable', 'true' );
 
 	// Add elements to the DOM
-	this.$.append( this.documentView.getDocumentNode().$, this.$pasteTarget );
+	this.$element.append( this.documentView.getDocumentNode().$element, this.$pasteTarget );
 	this.surface.$localOverlayBlockers.append( this.$phantoms, this.$highlights );
 };
 
@@ -177,15 +177,15 @@ ve.ce.Surface.prototype.getSelectionRect = function () {
 	var sel, rect, $span, lineHeight, startRange, startOffset, endRange, endOffset, focusedOffset;
 
 	if ( this.focusedNode ) {
-		focusedOffset = this.focusedNode.$.offset();
+		focusedOffset = this.focusedNode.$element.offset();
 		return {
 			'start': {
 				'x': focusedOffset.left,
 				'y': focusedOffset.top
 			},
 			'end': {
-				'x': focusedOffset.left + this.focusedNode.$.width(),
-				'y': focusedOffset.top + this.focusedNode.$.height()
+				'x': focusedOffset.left + this.focusedNode.$element.width(),
+				'y': focusedOffset.top + this.focusedNode.$element.height()
 			}
 		};
 	}
@@ -209,7 +209,7 @@ ve.ce.Surface.prototype.getSelectionRect = function () {
 	if ( rect.top === 0 || rect.bottom === 0 || rect.left === 0 || rect.right === 0 ) {
 		// Calculate starting range position
 		startRange = sel.getRangeAt( 0 );
-		$span = $( '<span>|</span>', startRange.startContainer.ownerDocument );
+		$span = this.$( '<span>|</span>', startRange.startContainer.ownerDocument );
 		startRange.insertNode( $span[0] );
 		startOffset = $span.offset();
 		$span.detach();
@@ -292,7 +292,7 @@ ve.ce.Surface.prototype.disable = function () {
 ve.ce.Surface.prototype.destroy = function () {
 	this.surfaceObserver.detach();
 	this.documentView.getDocumentNode().setLive( false );
-	this.$.remove();
+	this.$element.remove();
 	this.$phantoms.remove();
 };
 
@@ -302,8 +302,8 @@ ve.ce.Surface.prototype.destroy = function () {
  * This is used when switching between surfaces, e.g. when closing a dialog window.
  */
 ve.ce.Surface.prototype.focus = function () {
-	var $document = this.documentView.getDocumentNode().$,
-		$window = $( OO.ui.Element.getWindow( $document ) ),
+	var $document = this.documentView.getDocumentNode().$element,
+		$window = this.$( OO.ui.Element.getWindow( $document ) ),
 		scrollTop = $window.scrollTop();
 
 	$document[0].focus();
@@ -322,7 +322,7 @@ ve.ce.Surface.prototype.focus = function () {
  * @param {Event} e Focus event (native event, NOT a jQuery event!)
  */
 ve.ce.Surface.prototype.documentOnFocus = function () {
-	this.eventSequencer.attach( this.$ );
+	this.eventSequencer.attach( this.$element );
 	this.surfaceObserver.startTimerLoop();
 };
 
@@ -352,7 +352,7 @@ ve.ce.Surface.prototype.onDocumentMouseDown = function ( e ) {
 	this.dragging = true;
 
 	// Old code to figure out if user clicked inside the document or not - leave it here for now
-	// this.$$( e.target ).closest( '.ve-ce-documentNode' ).length === 0
+	// this.$( e.target ).closest( '.ve-ce-documentNode' ).length === 0
 
 	if ( e.which === 1 ) {
 		this.surfaceObserver.stopTimerLoop();
@@ -645,7 +645,7 @@ ve.ce.Surface.prototype.onCut = function ( e ) {
 		tx = ve.dm.Transaction.newFromRemoval( this.documentView.model, selection );
 
 		// Document may not have had real focus (e.g. with a FocusableNode)
-		this.documentView.documentNode.$[0].focus();
+		this.documentView.documentNode.$element[0].focus();
 
 		this.model.change( tx, new ve.Range( selection.start ) );
 		this.surfaceObserver.clear();
@@ -667,7 +667,7 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 		view = this,
 		slice = this.documentView.model.getSlicedLinearData( this.model.getSelection() ),
 		clipboardData = e.originalEvent.clipboardData,
-		$window = $( OO.ui.Element.getWindow( this.$$.context ) );
+		$window = this.$( OO.ui.Element.getWindow( this.$.context ) );
 
 	// Clone the elements in the slice
 	slice.cloneElements();
@@ -696,7 +696,7 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 		clipboardData.setData( 'text/plain', this.$pasteTarget.text() );
 	} else {
 		this.$pasteTarget.prepend(
-			$( '<span>' ).attr( 'data-ve-clipboard-key', this.clipboardId + '-' + clipboardIndex )
+			this.$( '<span>' ).attr( 'data-ve-clipboard-key', this.clipboardId + '-' + clipboardIndex )
 		);
 		clipboardItem.hash = this.constructor.static.getClipboardHash( this.$pasteTarget.contents() );
 		// If direct clipboard editing is not allowed, we must use the pasteTarget to
@@ -717,7 +717,7 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 		setTimeout( function () {
 			sel = rangy.getSelection( view.getElementDocument() );
 			sel.removeAllRanges();
-			view.documentView.documentNode.$[0].focus();
+			view.documentView.documentNode.$element[0].focus();
 			sel.addRange( originalRange );
 
 			$window.scrollTop( scrollTop );
@@ -747,7 +747,7 @@ ve.ce.Surface.prototype.onPaste = function ( e ) {
  */
 ve.ce.Surface.prototype.beforePaste = function ( e ) {
 	var tx,
-		$window = $( OO.ui.Element.getWindow( this.$$.context ) ),
+		$window = this.$( OO.ui.Element.getWindow( this.$.context ) ),
 		selection = this.model.getSelection(),
 		clipboardData = e.originalEvent.clipboardData;
 
@@ -783,13 +783,13 @@ ve.ce.Surface.prototype.afterPaste = function () {
 	var clipboardKey, clipboardId, clipboardIndex,
 		$elements, parts, pasteData, slice, tx,
 		beforePasteData = this.beforePasteData || {},
-		$window = $( OO.ui.Element.getWindow( this.$$.context ) ),
+		$window = this.$( OO.ui.Element.getWindow( this.$.context ) ),
 		selection = this.model.getSelection();
 
 	if ( beforePasteData.custom ) {
 		clipboardKey = beforePasteData.custom;
 	} else {
-		$elements = beforePasteData.html ? $( $.parseHTML( beforePasteData.html ) ) : this.$pasteTarget.contents();
+		$elements = beforePasteData.html ? this.$( $.parseHTML( beforePasteData.html ) ) : this.$pasteTarget.contents();
 
 		// Try to find the clipboard key hidden in the HTML
 		$elements.each( function () {
@@ -864,7 +864,7 @@ ve.ce.Surface.prototype.afterPaste = function () {
 	}
 
 	// Restore focus and scroll position
-	this.documentView.documentNode.$[0].focus();
+	this.documentView.documentNode.$element[0].focus();
 	$window.scrollTop( beforePasteData.scrollTop );
 
 	selection = tx.translateRange( selection );
@@ -1235,7 +1235,7 @@ ve.ce.Surface.prototype.handleLeftOrRightArrowKey = function ( e ) {
 		this.decRenderLock();
 	}
 	selection = this.model.getSelection();
-	if ( this.$$( e.target ).css( 'direction' ) === 'rtl' ) {
+	if ( this.$( e.target ).css( 'direction' ) === 'rtl' ) {
 		// If the language direction is RTL, switch left/right directions:
 		direction = e.keyCode === OO.ui.Keys.LEFT ? 1 : -1;
 	} else {
@@ -1278,9 +1278,9 @@ ve.ce.Surface.prototype.handleUpOrDownArrowKey = function ( e ) {
 	// Perform programatic handling only for selection that is expanded and backwards according to
 	// model data but not according to browser data.
 	if ( !selection.isCollapsed() && selection.isBackwards() && !rangySelection.isBackwards() ) {
-		$element = $( this.documentView.getSlugAtOffset( selection.to ) );
+		$element = this.$( this.documentView.getSlugAtOffset( selection.to ) );
 		if ( !$element ) {
-			$element = this.$$( '<span>' )
+			$element = this.$( '<span>' )
 				.html( ' ' )
 				.css( { 'width' : '0px', 'display' : 'none' } );
 			rangySelection.anchorNode.splitText( rangySelection.anchorOffset );
@@ -1874,7 +1874,7 @@ ve.ce.Surface.prototype.decRenderLock = function () {
  * @returns {string} 'ltr' or 'rtl'
  */
 ve.ce.Surface.prototype.getDir = function () {
-	return this.$.css( 'direction' );
+	return this.$element.css( 'direction' );
 };
 
 /**

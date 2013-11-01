@@ -12,7 +12,7 @@
  * @abstract
  *
  * @constructor
- * @param {jQuery} [$resizable=this.$] Resizable DOM element
+ * @param {jQuery} [$resizable=this.$element] Resizable DOM element
  * @param {Object} [config] Configuration options
  * @param {number|null} [config.snapToGrid=10] Snap to a grid of size X when the shift key is held. Null disables.
  * @param {boolean} [config.outline=false] Resize using an outline of the element only, don't live preview.
@@ -20,15 +20,15 @@
  */
 ve.ce.ResizableNode = function VeCeResizableNode( $resizable, config ) {
 	// Properties
-	this.$resizable = $resizable || this.$;
+	this.$resizable = $resizable || this.$element;
 	this.ratio = this.model.getAttribute( 'width' ) / this.model.getAttribute( 'height' );
 	this.resizing = false;
-	this.$resizeHandles = this.$$( '<div>' );
+	this.$resizeHandles = this.$( '<div>' );
 	this.snapToGrid = ( config && config.snapToGrid !== undefined ) ? config.snapToGrid : 10;
 	this.outline = !!( config && config.outline );
 	if ( !config || config.showSizeLabel !== false ) {
-		this.$sizeText = this.$$( '<span>' ).addClass( 've-ce-resizableNode-sizeText' );
-		this.$sizeLabel = this.$$( '<div>' ).addClass( 've-ce-resizableNode-sizeLabel' ).append( this.$sizeText );
+		this.$sizeText = this.$( '<span>' ).addClass( 've-ce-resizableNode-sizeText' );
+		this.$sizeLabel = this.$( '<div>' ).addClass( 've-ce-resizableNode-sizeLabel' ).append( this.$sizeText );
 	}
 	this.resizableOffset = null;
 
@@ -44,10 +44,10 @@ ve.ce.ResizableNode = function VeCeResizableNode( $resizable, config ) {
 	// Initialization
 	this.$resizeHandles
 		.addClass( 've-ce-resizableNode-handles' )
-		.append( this.$$( '<div>' ).addClass( 've-ce-resizableNode-nwHandle' ) )
-		.append( this.$$( '<div>' ).addClass( 've-ce-resizableNode-neHandle' ) )
-		.append( this.$$( '<div>' ).addClass( 've-ce-resizableNode-seHandle' ) )
-		.append( this.$$( '<div>' ).addClass( 've-ce-resizableNode-swHandle' ) );
+		.append( this.$( '<div>' ).addClass( 've-ce-resizableNode-nwHandle' ) )
+		.append( this.$( '<div>' ).addClass( 've-ce-resizableNode-neHandle' ) )
+		.append( this.$( '<div>' ).addClass( 've-ce-resizableNode-seHandle' ) )
+		.append( this.$( '<div>' ).addClass( 've-ce-resizableNode-swHandle' ) );
 };
 
 /* Events */
@@ -80,7 +80,7 @@ ve.ce.ResizableNode.static = {};
 ve.ce.ResizableNode.prototype.getResizableOffset = function () {
 	if ( !this.resizableOffset ) {
 		this.resizableOffset = OO.ui.Element.getRelativePosition(
-			this.$resizable, this.getRoot().getSurface().getSurface().$
+			this.$resizable, this.getRoot().getSurface().getSurface().$element
 		);
 	}
 	return this.resizableOffset;
@@ -247,7 +247,7 @@ ve.ce.ResizableNode.prototype.onResizeHandlesCornerMouseDown = function ( e ) {
 	// Bind resize events
 	this.resizing = true;
 	this.updateSizeLabel( this.resizeInfo );
-	$( this.getElementDocument() ).on( {
+	this.$( this.getElementDocument() ).on( {
 		'mousemove.ve-ce-resizableNode': ve.bind( this.onDocumentMouseMove, this ),
 		'mouseup.ve-ce-resizableNode': ve.bind( this.onDocumentMouseUp, this )
 	} );
@@ -404,7 +404,7 @@ ve.ce.ResizableNode.prototype.onDocumentMouseUp = function () {
 		selection = surfaceModel.getSelection();
 
 	this.$resizeHandles.removeClass( 've-ce-resizableNode-handles-resizing' );
-	$( this.getElementDocument() ).off( '.ve-ce-resizableNode' );
+	this.$( this.getElementDocument() ).off( '.ve-ce-resizableNode' );
 	this.resizing = false;
 	this.updateSizeLabel();
 

@@ -41,7 +41,7 @@ ve.ui.MWAlienExtensionInspector.prototype.initialize = function () {
 	// Parent method
 	ve.ui.MWExtensionInspector.prototype.initialize.call( this );
 
-	this.input.$.addClass( 've-ui-mwAlienExtensionInspector-input' );
+	this.input.$element.addClass( 've-ui-mwAlienExtensionInspector-input' );
 };
 
 ve.ui.MWAlienExtensionInspector.prototype.getTitle = function () {

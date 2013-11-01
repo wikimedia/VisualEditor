@@ -14,13 +14,13 @@
  * @abstract
  *
  * @constructor
- * @param {jQuery} [$relocatable=this.$] Element which can be relocated
+ * @param {jQuery} [$relocatable=this.$element] Element which can be relocated
  */
 ve.ce.RelocatableNode = function VeCeRelocatableNode( $relocatable ) {
 	// Properties
 	this.relocatingSurface = null;
-	this.$relocatable = $relocatable || this.$;
-	this.$relocatableMarker = this.$$( '<img>' );
+	this.$relocatable = $relocatable || this.$element;
+	this.$relocatableMarker = this.$( '<img>' );
 
 	// Events
 	this.connect( this, {
@@ -128,7 +128,7 @@ ve.ce.RelocatableNode.prototype.onRelocatableDragEnd = function () {
  */
 ve.ce.RelocatableNode.prototype.setRelocatableMarkerSizeAndPosition = function () {
 	var offset = OO.ui.Element.getRelativePosition(
-		this.$relocatable, this.getRoot().getSurface().getSurface().$
+		this.$relocatable, this.getRoot().getSurface().getSurface().$element
 	);
 
 	this.$relocatableMarker.css( {

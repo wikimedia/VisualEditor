@@ -31,7 +31,7 @@ ve.ui.MWParameterSearchWidget = function VeUiMWParameterSearchWidget( template, 
 	this.template.connect( this, { 'add': 'buildIndex', 'remove': 'buildIndex' } );
 
 	// Initialization
-	this.$.addClass( 've-ui-mwParameterSearchWidget' );
+	this.$element.addClass( 've-ui-mwParameterSearchWidget' );
 	this.buildIndex();
 };
 
@@ -123,7 +123,7 @@ ve.ui.MWParameterSearchWidget.prototype.addResults = function () {
 	for ( i = 0, len = this.index.length; i < len; i++ ) {
 		item = this.index[i];
 		if ( item.text.indexOf( query ) >= 0 ) {
-			items.push( new ve.ui.MWParameterResultWidget( item, { '$$': this.$$ } ) );
+			items.push( new ve.ui.MWParameterResultWidget( item, { '$': this.$ } ) );
 			if ( item.name === value || ve.indexOf( value, item.aliases ) !== -1 ) {
 				exactMatch = true;
 			}
@@ -136,7 +136,7 @@ ve.ui.MWParameterSearchWidget.prototype.addResults = function () {
 			'label': value,
 			'aliases': [],
 			'description': ve.msg( 'visualeditor-parameter-search-unknown' )
-		}, { '$$': this.$$ } ) );
+		}, { '$': this.$ } ) );
 	}
 
 	if ( !items.length ) {
@@ -147,7 +147,7 @@ ve.ui.MWParameterSearchWidget.prototype.addResults = function () {
 				'aliases': [],
 				'description': ve.msg( 'visualeditor-parameter-search-no-unused' )
 			},
-			{ '$$': this.$$, 'disabled': true }
+			{ '$': this.$, 'disabled': true }
 		) );
 	}
 

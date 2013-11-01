@@ -14,7 +14,7 @@
  * @constructor
  * @param {OO.ui.TextInputWidget} input Text input widget to provide menu for
  * @param {Object} [config] Configuration options
- * @cfg {jQuery} [$container=input.$] Element to render menu under
+ * @cfg {jQuery} [$container=input.$element] Element to render menu under
  */
 OO.ui.TextInputMenuWidget = function OoUiTextInputMenuWidget( input, config ) {
 	// Parent constructor
@@ -22,11 +22,11 @@ OO.ui.TextInputMenuWidget = function OoUiTextInputMenuWidget( input, config ) {
 
 	// Properties
 	this.input = input;
-	this.$container = config.$container || this.input.$;
+	this.$container = config.$container || this.input.$element;
 	this.onWindowResizeHandler = OO.ui.bind( this.onWindowResize, this );
 
 	// Initialization
-	this.$.addClass( 'oo-ui-textInputMenuWidget' );
+	this.$element.addClass( 'oo-ui-textInputMenuWidget' );
 };
 
 /* Inheritance */
@@ -56,7 +56,7 @@ OO.ui.TextInputMenuWidget.prototype.show = function () {
 	OO.ui.MenuWidget.prototype.show.call( this );
 
 	this.position();
-	$( this.getElementWindow() ).on( 'resize', this.onWindowResizeHandler );
+	this.$( this.getElementWindow() ).on( 'resize', this.onWindowResizeHandler );
 	return this;
 };
 
@@ -70,7 +70,7 @@ OO.ui.TextInputMenuWidget.prototype.hide = function () {
 	// Parent method
 	OO.ui.MenuWidget.prototype.hide.call( this );
 
-	$( this.getElementWindow() ).off( 'resize', this.onWindowResizeHandler );
+	this.$( this.getElementWindow() ).off( 'resize', this.onWindowResizeHandler );
 	return this;
 };
 
@@ -90,21 +90,21 @@ OO.ui.TextInputMenuWidget.prototype.position = function () {
 	dimensions.width = $container.width();
 
 	// Compensate for frame position if in a differnt frame
-	if ( this.input.$$.frame && this.input.$$.context !== this.$[0].ownerDocument ) {
+	if ( this.input.$.frame && this.input.$.context !== this.$element[0].ownerDocument ) {
 		frameOffset = OO.ui.Element.getRelativePosition(
-			this.input.$$.frame.$, this.$.offsetParent()
+			this.input.$.frame.$element, this.$element.offsetParent()
 		);
 		dimensions.left += frameOffset.left;
 		dimensions.top += frameOffset.top;
 	} else {
 		// Fix for RTL (for some reason, no need to fix if the frameoffset is set)
-		if ( this.$.css( 'direction' ) === 'rtl' ) {
-			dimensions.right = this.$.parent().position().left - dimensions.width - dimensions.left;
+		if ( this.$element.css( 'direction' ) === 'rtl' ) {
+			dimensions.right = this.$element.parent().position().left - dimensions.width - dimensions.left;
 			// Erase the value for 'left':
 			delete dimensions.left;
 		}
 	}
 
-	this.$.css( dimensions );
+	this.$element.css( dimensions );
 	return this;
 };

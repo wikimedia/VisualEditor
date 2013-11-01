@@ -29,7 +29,7 @@ OO.ui.OutlineItemWidget = function OoUiOutlineItemWidget( data, config ) {
 	this.moveable = !!config.moveable;
 
 	// Initialization
-	this.$.addClass( 'oo-ui-outlineItemWidget' );
+	this.$element.addClass( 'oo-ui-outlineItemWidget' );
 	this.setLevel( config.level );
 };
 
@@ -84,9 +84,9 @@ OO.ui.OutlineItemWidget.prototype.setLevel = function ( level ) {
 	this.level = level ? Math.max( 0, Math.min( levels - 1, level ) ) : 0;
 	while ( i-- ) {
 		if ( this.level === i ) {
-			this.$.addClass( levelClass + i );
+			this.$element.addClass( levelClass + i );
 		} else {
-			this.$.removeClass( levelClass + i );
+			this.$element.removeClass( levelClass + i );
 		}
 	}
 

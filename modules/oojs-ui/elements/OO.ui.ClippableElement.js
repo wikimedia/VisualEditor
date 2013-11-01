@@ -44,14 +44,14 @@ OO.ui.ClippableElement.prototype.setClipping = function ( value ) {
 	if ( this.clipping !== value ) {
 		this.clipping = value;
 		if ( this.clipping ) {
-			this.$clippableContainer = this.$$( this.getClosestScrollableElementContainer() );
+			this.$clippableContainer = this.$( this.getClosestScrollableElementContainer() );
 			// If the clippable container is the body, we have to listen to scroll events and check
 			// jQuery.scrollTop on the window because of browser inconsistencies
 			this.$clippableScroller = this.$clippableContainer.is( 'body' ) ?
-				this.$$( OO.ui.Element.getWindow( this.$clippableContainer ) ) :
+				this.$( OO.ui.Element.getWindow( this.$clippableContainer ) ) :
 				this.$clippableContainer;
 			this.$clippableScroller.on( 'scroll', this.onClippableContainerScrollHandler );
-			this.$clippableWindow = this.$$( this.getElementWindow() )
+			this.$clippableWindow = this.$( this.getElementWindow() )
 				.on( 'resize', this.onClippableWindowResizeHandler );
 			// Initial clip after visible
 			setTimeout( OO.ui.bind( this.clip, this ) );

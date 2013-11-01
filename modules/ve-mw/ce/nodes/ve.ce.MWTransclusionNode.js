@@ -33,7 +33,7 @@ ve.ce.MWTransclusionNode = function VeCeMWTransclusionNode( model, config ) {
 	ve.ce.GeneratedContentNode.call( this );
 
 	// DOM changes
-	this.$.addClass( 've-ce-mwTransclusionNode' );
+	this.$element.addClass( 've-ce-mwTransclusionNode' );
 };
 
 /* Inheritance */
@@ -94,7 +94,7 @@ ve.ce.MWTransclusionNode.prototype.onParseSuccess = function ( deferred, respons
 		return this.onParseError.call( this, deferred );
 	}
 
-	contentNodes = $( response.visualeditor.content ).get();
+	contentNodes = this.$( response.visualeditor.content ).get();
 	// HACK: if $content consists of a single paragraph, unwrap it.
 	// We have to do this because the PHP parser wraps everything in <p>s, and inline templates
 	// will render strangely when wrapped in <p>s.
@@ -106,7 +106,7 @@ ve.ce.MWTransclusionNode.prototype.onParseSuccess = function ( deferred, respons
 	// If it is empty, put an inline placeholder inside it so that it can
 	// be accessible to users (either to remove or edit)
 	if ( contentNodes.length === 0 ) {
-		$placeHolder = $( '<span>' )
+		$placeHolder = this.$( '<span>' )
 			.css( { 'display': 'block' } )
 			// adapted from ve.ce.BranchNode.$blockSlugTemplate
 			// IE support may require using &nbsp;
@@ -142,7 +142,7 @@ ve.ce.MWTransclusionBlockNode = function VeCeMWTransclusionBlockNode( model ) {
 	ve.ce.MWTransclusionNode.call( this, model );
 
 	// DOM changes
-	this.$.addClass( 've-ce-mwTransclusionBlockNode' );
+	this.$element.addClass( 've-ce-mwTransclusionBlockNode' );
 };
 
 /* Inheritance */
@@ -168,7 +168,7 @@ ve.ce.MWTransclusionInlineNode = function VeCeMWTransclusionInlineNode( model ) 
 	ve.ce.MWTransclusionNode.call( this, model );
 
 	// DOM changes
-	this.$.addClass( 've-ce-mwTransclusionInlineNode' );
+	this.$element.addClass( 've-ce-mwTransclusionInlineNode' );
 };
 
 /* Inheritance */

@@ -20,8 +20,8 @@ ve.ce.MWInternalLinkAnnotation = function VeCeMWInternalLinkAnnotation( model, p
 	ve.ce.LinkAnnotation.call( this, model, parentNode, config );
 
 	// DOM changes
-	this.$.addClass( 've-ce-mwInternalLinkAnnotation' );
-	this.$.attr( 'title', model.getAttribute( 'title' ) );
+	this.$element.addClass( 've-ce-mwInternalLinkAnnotation' );
+	this.$element.attr( 'title', model.getAttribute( 'title' ) );
 };
 
 /* Inheritance */

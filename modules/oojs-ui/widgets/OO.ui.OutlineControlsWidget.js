@@ -26,14 +26,14 @@ OO.ui.OutlineControlsWidget = function OoUiOutlineControlsWidget( outline, confi
 	// Properties
 	this.outline = outline;
 	this.adders = {};
-	this.$adders = this.$$( '<div>' );
-	this.$movers = this.$$( '<div>' );
-	this.addButton = new OO.ui.IconButtonWidget( { '$$': this.$$, 'icon': 'add-item' } );
+	this.$adders = this.$( '<div>' );
+	this.$movers = this.$( '<div>' );
+	this.addButton = new OO.ui.IconButtonWidget( { '$': this.$, 'icon': 'add-item' } );
 	this.upButton = new OO.ui.IconButtonWidget( {
-		'$$': this.$$, 'icon': 'collapse', 'title': OO.ui.msg( 'ooui-outline-control-move-up' )
+		'$': this.$, 'icon': 'collapse', 'title': OO.ui.msg( 'ooui-outline-control-move-up' )
 	} );
 	this.downButton = new OO.ui.IconButtonWidget( {
-		'$$': this.$$, 'icon': 'expand', 'title': OO.ui.msg( 'ooui-outline-control-move-down' )
+		'$': this.$, 'icon': 'expand', 'title': OO.ui.msg( 'ooui-outline-control-move-down' )
 	} );
 
 	// Events
@@ -46,12 +46,12 @@ OO.ui.OutlineControlsWidget = function OoUiOutlineControlsWidget( outline, confi
 	this.downButton.connect( this, { 'click': ['emit', 'move', 1] } );
 
 	// Initialization
-	this.$.addClass( 'oo-ui-outlineControlsWidget' );
+	this.$element.addClass( 'oo-ui-outlineControlsWidget' );
 	this.$adders.addClass( 'oo-ui-outlineControlsWidget-adders' );
 	this.$movers
 		.addClass( 'oo-ui-outlineControlsWidget-movers' )
-		.append( this.upButton.$, this.downButton.$ );
-	this.$.append( this.$adders, this.$movers );
+		.append( this.upButton.$element, this.downButton.$element );
+	this.$element.append( this.$adders, this.$movers );
 	if ( config.adders && config.adders.length ) {
 		this.setupAdders( config.adders );
 	}
@@ -112,17 +112,17 @@ OO.ui.OutlineControlsWidget.prototype.onOutlineChange = function () {
  */
 OO.ui.OutlineControlsWidget.prototype.setupAdders = function ( adders ) {
 	var i, len, addition, button,
-		$buttons = this.$$( [] );
+		$buttons = this.$( [] );
 
-	this.$adders.append( this.addButton.$ );
+	this.$adders.append( this.addButton.$element );
 	for ( i = 0, len = adders.length; i < len; i++ ) {
 		addition = adders[i];
 		button = new OO.ui.IconButtonWidget( {
-			'$$': this.$$, 'icon': addition.icon, 'title': addition.title
+			'$': this.$, 'icon': addition.icon, 'title': addition.title
 		} );
 		button.connect( this, { 'click': ['emit', 'add', addition.name] } );
 		this.adders[addition.name] = button;
-		this.$adders.append( button.$ );
-		$buttons = $buttons.add( button.$ );
+		this.$adders.append( button.$element );
+		$buttons = $buttons.add( button.$element );
 	}
 };

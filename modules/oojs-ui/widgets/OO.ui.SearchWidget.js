@@ -25,14 +25,14 @@ OO.ui.SearchWidget = function OoUiSearchWidget( config ) {
 
 	// Properties
 	this.query = new OO.ui.TextInputWidget( {
-		'$$': this.$$,
+		'$': this.$,
 		'icon': 'search',
 		'placeholder': config.placeholder,
 		'value': config.value
 	} );
-	this.results = new OO.ui.SelectWidget( { '$$': this.$$ } );
-	this.$query = this.$$( '<div>' );
-	this.$results = this.$$( '<div>' );
+	this.results = new OO.ui.SelectWidget( { '$': this.$ } );
+	this.$query = this.$( '<div>' );
+	this.$results = this.$( '<div>' );
 
 	// Events
 	this.query.connect( this, {
@@ -48,11 +48,11 @@ OO.ui.SearchWidget = function OoUiSearchWidget( config ) {
 	// Initialization
 	this.$query
 		.addClass( 'oo-ui-searchWidget-query' )
-		.append( this.query.$ );
+		.append( this.query.$element );
 	this.$results
 		.addClass( 'oo-ui-searchWidget-results' )
-		.append( this.results.$ );
-	this.$
+		.append( this.results.$element );
+	this.$element
 		.addClass( 'oo-ui-searchWidget' )
 		.append( this.$results, this.$query );
 };

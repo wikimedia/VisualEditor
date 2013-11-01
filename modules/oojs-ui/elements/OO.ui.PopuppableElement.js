@@ -25,7 +25,7 @@ OO.ui.PopuppableElement = function OoUiPopuppableElement( config ) {
 	this.popup = new OO.ui.PopupWidget( $.extend(
 		{ 'align': 'center', 'autoClose': true },
 		config.popup,
-		{ '$$': this.$$, '$autoCloseIgnore': this.$ }
+		{ '$': this.$, '$autoCloseIgnore': this.$element }
 	) );
 	this.popupWidth = config.popupWidth;
 	this.popupHeight = config.popupHeight;

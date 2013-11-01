@@ -30,7 +30,7 @@ OO.ui.OptionWidget = function OoUiOptionWidget( data, config ) {
 	OO.ui.Widget.call( this, config );
 
 	// Mixin constructors
-	OO.ui.LabeledElement.call( this, this.$$( '<span>' ), config );
+	OO.ui.LabeledElement.call( this, this.$( '<span>' ), config );
 
 	// Properties
 	this.data = data;
@@ -38,7 +38,7 @@ OO.ui.OptionWidget = function OoUiOptionWidget( data, config ) {
 	this.highlighted = false;
 
 	// Initialization
-	this.$
+	this.$element
 		.data( 'oo-ui-optionWidget', this )
 		.attr( 'rel', config.rel )
 		.addClass( 'oo-ui-optionWidget' )
@@ -48,9 +48,9 @@ OO.ui.OptionWidget = function OoUiOptionWidget( data, config ) {
 
 	// Options
 	if ( config.icon ) {
-		this.$icon = this.$$( '<div>' )
+		this.$icon = this.$( '<div>' )
 			.addClass( 'oo-ui-optionWidget-icon oo-ui-icon-' + config.icon )
-			.appendTo( this.$ );
+			.appendTo( this.$element );
 	}
 };
 
@@ -123,12 +123,12 @@ OO.ui.OptionWidget.prototype.setSelected = function ( state ) {
 	if ( !this.disabled && this.constructor.static.selectable ) {
 		this.selected = !!state;
 		if ( this.selected ) {
-			this.$.addClass( 'oo-ui-optionWidget-selected' );
+			this.$element.addClass( 'oo-ui-optionWidget-selected' );
 			if ( this.constructor.static.scrollIntoViewOnSelect ) {
 				this.scrollElementIntoView();
 			}
 		} else {
-			this.$.removeClass( 'oo-ui-optionWidget-selected' );
+			this.$element.removeClass( 'oo-ui-optionWidget-selected' );
 		}
 	}
 	return this;
@@ -145,9 +145,9 @@ OO.ui.OptionWidget.prototype.setHighlighted = function ( state ) {
 	if ( !this.disabled && this.constructor.static.highlightable ) {
 		this.highlighted = !!state;
 		if ( this.highlighted ) {
-			this.$.addClass( 'oo-ui-optionWidget-highlighted' );
+			this.$element.addClass( 'oo-ui-optionWidget-highlighted' );
 		} else {
-			this.$.removeClass( 'oo-ui-optionWidget-highlighted' );
+			this.$element.removeClass( 'oo-ui-optionWidget-highlighted' );
 		}
 	}
 	return this;
@@ -160,7 +160,7 @@ OO.ui.OptionWidget.prototype.setHighlighted = function ( state ) {
  * @param {Function} [done] Callback to execute when flash effect is complete.
  */
 OO.ui.OptionWidget.prototype.flash = function ( done ) {
-	var $this = this.$;
+	var $this = this.$element;
 
 	if ( !this.disabled && this.constructor.static.highlightable ) {
 		$this.removeClass( 'oo-ui-optionWidget-highlighted' );

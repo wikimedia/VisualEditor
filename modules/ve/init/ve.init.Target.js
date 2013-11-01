@@ -20,7 +20,7 @@ ve.init.Target = function VeInitTarget( $container ) {
 	OO.EventEmitter.call( this );
 
 	// Properties
-	this.$ = $container;
+	this.$element = $container;
 };
 
 /* Inheritance */

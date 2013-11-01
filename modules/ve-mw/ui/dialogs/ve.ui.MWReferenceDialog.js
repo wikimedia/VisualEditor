@@ -56,76 +56,76 @@ ve.ui.MWReferenceDialog.prototype.initialize = function () {
 	ve.ui.MWDialog.prototype.initialize.call( this );
 
 	// Properties
-	this.panels = new OO.ui.StackPanelLayout( { '$$': this.frame.$$ } );
+	this.panels = new OO.ui.StackPanelLayout( { '$': this.$ } );
 	this.editPanel = new OO.ui.PanelLayout( {
-		'$$': this.frame.$$, 'scrollable': true, 'padded': true
+		'$': this.$, 'scrollable': true, 'padded': true
 	} );
-	this.searchPanel = new OO.ui.PanelLayout( { '$$': this.frame.$$ } );
+	this.searchPanel = new OO.ui.PanelLayout( { '$': this.$ } );
 	this.applyButton = new OO.ui.PushButtonWidget( {
-		'$$': this.frame.$$,
+		'$': this.$,
 		'label': ve.msg( 'visualeditor-dialog-action-apply' ),
 		'flags': ['primary']
 	} );
 	this.insertButton = new OO.ui.PushButtonWidget( {
-		'$$': this.frame.$$,
+		'$': this.$,
 		'label': ve.msg( 'visualeditor-dialog-reference-insert-button' ),
 		'flags': ['constructive']
 	} );
 	this.selectButton = new OO.ui.PushButtonWidget( {
-		'$$': this.frame.$$,
+		'$': this.$,
 		'label': ve.msg ( 'visualeditor-dialog-reference-useexisting-label' )
 	} );
 	this.backButton = new OO.ui.PushButtonWidget( {
-		'$$': this.frame.$$,
+		'$': this.$,
 		'label': ve.msg( 'visualeditor-dialog-action-goback' )
 	} );
-	this.contentFieldset = new OO.ui.FieldsetLayout( { '$$': this.frame.$$ } );
+	this.contentFieldset = new OO.ui.FieldsetLayout( { '$': this.$ } );
 	this.optionsFieldset = new OO.ui.FieldsetLayout( {
-		'$$': this.frame.$$,
+		'$': this.$,
 		'label': ve.msg( 'visualeditor-dialog-reference-options-section' ),
 		'icon': 'settings'
 	} );
 	// TODO: Use a drop-down or something, and populate with existing groups instead of free-text
-	this.referenceGroupInput = new OO.ui.TextInputWidget( { '$$': this.frame.$$ } );
+	this.referenceGroupInput = new OO.ui.TextInputWidget( { '$': this.$ } );
 	this.referenceGroupLabel = new OO.ui.InputLabelWidget( {
-		'$$': this.frame.$$,
+		'$': this.$,
 		'input': this.referenceGroupInput,
 		'label': ve.msg( 'visualeditor-dialog-reference-options-group-label' )
 	} );
 	this.search = new ve.ui.MWReferenceSearchWidget(
-		this.surface, { '$$': this.frame.$$ }
+		this.surface, { '$': this.$ }
 	);
 
 	// Events
 	this.applyButton.connect( this, { 'click': [ 'close', 'apply' ] } );
 	this.insertButton.connect( this, { 'click': [ 'close', 'insert' ] } );
 	this.selectButton.connect( this, { 'click': function () {
-		this.backButton.$.show();
-		this.insertButton.$.hide();
-		this.selectButton.$.hide();
+		this.backButton.$element.show();
+		this.insertButton.$element.hide();
+		this.selectButton.$element.hide();
 		this.panels.showItem( this.searchPanel );
 		this.search.getQuery().$input.focus().select();
 	} } );
 	this.backButton.connect( this, { 'click': function () {
-		this.backButton.$.hide();
-		this.insertButton.$.show();
-		this.selectButton.$.show();
+		this.backButton.$element.hide();
+		this.insertButton.$element.show();
+		this.selectButton.$element.show();
 		this.panels.showItem( this.editPanel );
-		this.editPanel.$.find( '.ve-ce-documentNode' ).focus();
+		this.editPanel.$element.find( '.ve-ce-documentNode' ).focus();
 	} } );
 	this.search.connect( this, { 'select': 'onSearchSelect' } );
 
 	// Initialization
 	this.panels.addItems( [ this.editPanel, this.searchPanel ] );
-	this.editPanel.$.append( this.contentFieldset.$, this.optionsFieldset.$ );
-	this.optionsFieldset.$.append( this.referenceGroupLabel.$, this.referenceGroupInput.$ );
-	this.searchPanel.$.append( this.search.$ );
-	this.$body.append( this.panels.$ );
+	this.editPanel.$element.append( this.contentFieldset.$element, this.optionsFieldset.$element );
+	this.optionsFieldset.$element.append( this.referenceGroupLabel.$element, this.referenceGroupInput.$element );
+	this.searchPanel.$element.append( this.search.$element );
+	this.$body.append( this.panels.$element );
 	this.$foot.append(
-		this.applyButton.$,
-		this.insertButton.$,
-		this.selectButton.$,
-		this.backButton.$
+		this.applyButton.$element,
+		this.insertButton.$element,
+		this.selectButton.$element,
+		this.backButton.$element
 	);
 };
 
@@ -153,15 +153,15 @@ ve.ui.MWReferenceDialog.prototype.onOpen = function () {
 
 	if ( focusedNode instanceof ve.ce.MWReferenceNode ) {
 		ref = focusedNode.getModel().getAttributes();
-		this.applyButton.$.show();
-		this.insertButton.$.hide();
-		this.selectButton.$.hide();
+		this.applyButton.$element.show();
+		this.insertButton.$element.hide();
+		this.selectButton.$element.hide();
 	} else {
-		this.applyButton.$.hide();
-		this.insertButton.$.show();
-		this.selectButton.$.show();
+		this.applyButton.$element.hide();
+		this.insertButton.$element.show();
+		this.selectButton.$element.show();
 	}
-	this.backButton.$.hide();
+	this.backButton.$element.hide();
 	this.panels.showItem( this.editPanel );
 	this.useReference( ref );
 	this.search.buildIndex();
@@ -304,7 +304,7 @@ ve.ui.MWReferenceDialog.prototype.useReference = function ( ref ) {
 	this.referenceSurface = new ve.ui.SurfaceWidget(
 		newDoc,
 		{
-			'$$': this.frame.$$,
+			'$': this.$,
 			'tools': this.constructor.static.toolbarGroups,
 			'commands': this.constructor.static.surfaceCommands
 		}
@@ -316,7 +316,7 @@ ve.ui.MWReferenceDialog.prototype.useReference = function ( ref ) {
 
 	// Initialization
 	this.referenceGroupInput.setValue( refGroup );
-	this.contentFieldset.$.append( this.referenceSurface.$ );
+	this.contentFieldset.$element.append( this.referenceSurface.$element );
 	this.referenceSurface.initialize();
 
 	return this;
