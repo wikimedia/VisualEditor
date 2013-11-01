@@ -17,81 +17,75 @@
  * @param {Object} [config] Configuration options
  */
 ve.ce.MWBlockImageNode = function VeCeMWBlockImageNode( model, config ) {
-	var captionModel, captionView, type;
 
 	// Parent constructor
 	ve.ce.BranchNode.call( this, model, config );
 
-	type = this.model.getAttribute( 'type' );
+	this.$element.addClass( 've-ce-mwBlockImageNode ' );
 
-	if ( this.model.getAttribute( 'align' ) === 'center' ) {
-		this.$element.addClass( 'center' );
-		this.$thumb = this.$( '<div>' ).appendTo( this.$element );
-	} else {
-		this.$thumb = this.$element;
-	}
+	// Properties
+	this.type = this.model.getAttribute( 'type' );
+	this.alignment = this.model.getAttribute( 'align' );
+	this.size = {
+		'width': this.model.getAttribute( 'width' ),
+		'height': this.model.getAttribute( 'height' )
+	};
 
-	this.$thumbInner = this.$( '<div>' )
-		.addClass( 'thumbinner' )
-		.css( 'width', parseInt( this.model.getAttribute( 'width' ), 10 ) + 2 );
+	this.typeToRdfa = this.getTypeToRdfa();
 
+	// DOM Hierarchy for BlockImageNode:
+	// <div> this.$element
+	// - <figure> this.$figure ( ve-ce-mwBlockImageNode-type (thumb) (tright/tleft/etc) )
+	// 	- <a> this.$a
+	// 		- <img> this.$image (thumbimage)
+	//  - <figcaption> this.$figcaption ( thumbcaption )
+
+	// Build DOM:
 	this.$a = this.$( '<a>' )
 		.addClass( 'image' )
 		.attr( 'href', this.getResolvedAttribute( 'href' ) );
 
 	this.$image = this.$( '<img>' )
 		.attr( 'src', this.getResolvedAttribute( 'src' ) )
-		.attr( 'width', this.model.getAttribute( 'width' ) )
-		.attr( 'height', this.model.getAttribute( 'height' ) )
+		.attr( 'width', this.size.width )
+		.attr( 'height', this.size.height )
 		.appendTo( this.$a );
 
-	this.$inner = this.$( '<div>' ).addClass( 've-ce-mwBlockImageNode-inner' );
+	this.$figure = this.$( '<figure>' )
+		.appendTo( this.$element )
+		.append( this.$a )
+		.addClass( 've-ce-mwBlockImageNode-type-' + this.type )
+		// 'typeof' should appear with the proper Parsoid-generated
+		// type. The model deals with converting it
+		.attr( 'typeof', this.typeToRdfa[ this.type ] );
 
-	if ( type === 'none' || type === 'frameless' ) {
-		this.$thumb.addClass(
-			this.getCssClass( 'none', this.model.getAttribute( 'align' ) )
-		);
-		this.$a.appendTo( this.$thumb );
+	this.$element
+		.addClass( 've-ce-mwBlockImageNode-align-' + this.alignment );
 
-		// For centered images, this.$thumb is full width, so wrap
-		// this.$image in another div and use that for selection
-		this.$inner
-			.append( this.$image )
-			.appendTo( this.$a );
-	} else {
-		// Type "frame", "thumb" and the default
-		this.$image.addClass( 'thumbimage' );
-		this.$thumb
-			.addClass( 'thumb' );
-		this.$a.appendTo( this.$thumbInner );
-		this.$thumbInner.appendTo( this.$thumb );
-
-		// For centered images, this.$thumb is full width, so wrap
-		// this.$thumbInner in another div and use that for selection
-		this.$inner
-			.append( this.$thumbInner )
-			.appendTo( this.$thumb );
-	}
+	// Update size:
+	this.updateSize( this.size.height, this.size.width );
 
 	// Mixin constructors
-	ve.ce.MWImageNode.call( this, this.$inner, this.$image );
+	ve.ce.MWImageNode.call( this, this.$figure, this.$image );
 
 	// I smell a caption!
-	if ( type !== 'none' && type !== 'frameless' && this.model.children.length === 1 ) {
-		captionModel = this.model.children[0];
-		captionView = ve.ce.nodeFactory.create( captionModel.getType(), captionModel );
-		captionModel.connect( this, { 'update': 'onModelUpdate' } );
-		this.children.push( captionView );
-		captionView.attach( this );
-		captionView.$element.appendTo( this.$thumbInner );
-		if ( this.live !== captionView.isLive() ) {
-			captionView.setLive( this.live );
-		}
+	this.$figcaption = this.$( '<figcaption> ');
+
+	// attach the figcaption always (to prepare for option of adding one):
+	this.$figcaption.appendTo( this.$figure );
+
+	this.caption = {};
+	if ( this.type !== 'none' && this.type !== 'frameless' && this.model.children.length === 1 ) {
+		this.setCaptionVisible( true );
+	} else {
+		this.setCaptionVisible( false );
 	}
 
 	// Events
 	this.model.connect( this, { 'attributeChange': 'onAttributeChange' } );
+
 };
+
 
 /* Inheritance */
 
@@ -114,23 +108,156 @@ ve.ce.MWBlockImageNode.static.transition = false;
 
 ve.ce.MWBlockImageNode.static.cssClasses = {
 	'default': {
-		'left': 'tleft',
-		'right': 'tright',
-		'center': 'tnone',
-		'none': 'tnone'
+		'left': 'mw-halign-left',
+		'right': 'mw-halign-right',
+		'center': 'mw-halign-center',
+		'none': 'mw-halign-none'
 	},
 	'none': {
-		'left': 'floatleft',
-		'right': 'floatright',
-		'center': 'floatnone',
-		'none': 'floatnone'
+		'left': 'mw-halign-left',
+		'right': 'mw-halign-right',
+		'center': 'mw-halign-center',
+		'none': 'mw-halign-none'
 	}
 };
 
 /* Methods */
 
 /**
+ * Set up an object that converts from the type to rdfa, based
+ *  on the rdfaToType object in the model.
+ * @returns {Object.<string,string>} A type to Rdfa conversion object
+ */
+ve.ce.MWBlockImageNode.prototype.getTypeToRdfa = function() {
+	var rdfa, obj = {};
+
+	for ( rdfa in this.model.constructor.static.rdfaToType ) {
+		obj[ this.model.constructor.static.rdfaToType[rdfa] ] = rdfa;
+	}
+	return obj;
+};
+
+/**
+ * Setup a caption node according to the model
+ */
+ve.ce.MWBlockImageNode.prototype.setupCaption = function () {
+	// only create a new caption if we need it:
+	if ( !this.caption.view ) {
+		this.caption.model = this.model.children[0];
+		this.caption.view = ve.ce.nodeFactory.create( this.caption.model.getType(), this.caption.model );
+		this.caption.model.connect( this, { 'update': 'onModelUpdate' } );
+		this.children.push( this.caption.view );
+		this.caption.view.attach( this );
+		if ( this.live !== this.caption.view.isLive() ) {
+			this.caption.view.setLive( this.live );
+		}
+		// Make it a 'figcaption'
+		this.caption.view.$element.appendTo( this.$figcaption );
+	}
+};
+
+/**
+ * Set caption either visible or invisible
+ *
+ * @param {boolean} isVisible declares whether caption will be visible
+ */
+ve.ce.MWBlockImageNode.prototype.setCaptionVisible = function ( isVisible ) {
+	if ( isVisible ) {
+		// update the caption:
+		this.setupCaption();
+		this.$figcaption.show();
+	} else {
+		// hide the caption:
+		this.$figcaption.hide();
+	}
+	// update caption visibility state:
+	this.caption.visible = isVisible;
+};
+
+/**
+ * Update image alignment, including any style changes that occur
+ *
+ * @param {string} from The old alignment
+ * @param {string} to The new alignment
+ * @param {string} type The type of the image to which to align
+ */
+ve.ce.MWBlockImageNode.prototype.updateAlignment = function( from, to, type ) {
+	if ( from !== to ) {
+		// remove previous alignment:
+		this.$figure
+			.removeClass(
+				this.getCssClass( 'none', from )
+			)
+			.removeClass(
+				this.getCssClass( 'default', from )
+			)
+			.removeClass( 've-ce-mwBlockImageNode-align-' + from )
+			// add new alignment:
+			.addClass( 've-ce-mwBlockImageNode-align-' + to );
+	}
+
+	if ( type !== 'none' && type !== 'frameless' ) {
+		this.$image
+			.addClass( 've-ce-mwBlockImageNode-thumbimage' );
+
+		this.$figure
+			.addClass(
+				this.getCssClass( 'default', to )
+			)
+			.addClass( 've-ce-mwBlockImageNode-borderwrap' );
+	} else {
+		this.$image
+			.removeClass( 've-ce-mwBlockImageNode-thumbimage' );
+		this.$figure
+			.addClass(
+				this.getCssClass( 'none', to )
+			)
+			.removeClass( 've-ce-mwBlockImageNode-borderwrap' );
+	}
+	this.alignment = to;
+	// update dimensions if alignment involved 'center'
+	if ( to === 'center' || from === 'center' ) {
+		this.updateSize( this.size.height, this.size.width );
+	}
+};
+
+/**
+ * Resize the image and its wrappers
+ *
+ * @param {Number} height Height of the image
+ * @param {Number} width Width of the image
+ */
+ve.ce.MWBlockImageNode.prototype.updateSize = function ( height, width ) {
+	this.$image
+		.attr( 'height', height )
+		.attr( 'width', width );
+
+	this.$figure
+		.css( {
+			'width': width + 5
+		} );
+
+	// A image that is centered must have dimensions
+	// to its node div wrapper
+	if ( this.alignment === 'center' ) {
+		this.$element
+			.css( {
+				'width': width
+			} );
+	} else {
+		this.$element.css( { 'width': 'auto' } );
+	}
+
+
+	// update:
+	this.size = {
+		height: height,
+		width: width
+	};
+};
+/**
  * Get the right CSS class to use for alignment
+ *
  * @param {string} type 'none' or 'default'
  * @param {string} alignment 'left', 'right', 'center', 'none' or 'default'
  */
@@ -159,15 +286,16 @@ ve.ce.MWBlockImageNode.prototype.onSetup = function () {
 
 	ve.ce.BranchNode.prototype.onSetup.call( this );
 
-	if ( type !== 'none' && type !== 'frameless' ) {
-		this.$thumb.addClass( this.getCssClass( 'default', this.model.getAttribute( 'align' ) ) );
+	this.updateAlignment( this.alignment, this.alignment, type );
+	if ( type !== 'none' && type !=='frameless' ) {
+		this.$element.addClass( this.getCssClass( 'default', this.model.getAttribute( 'align' ) ) );
 	}
 
 };
 
 /**
- * Update the rendering of the 'align', src', 'width' and 'height' attributes when they change
- * in the model.
+ * Update the rendering of the 'align', src', 'width' and 'height' attributes
+ * when they change in the model.
  *
  * @method
  * @param {string} key Attribute key
@@ -176,8 +304,6 @@ ve.ce.MWBlockImageNode.prototype.onSetup = function () {
  * @fires setup
  */
 ve.ce.MWBlockImageNode.prototype.onAttributeChange = function ( key, from, to ) {
-	var $wrapper, type;
-
 	if ( key === 'height' || key === 'width' ) {
 		to = parseInt( to, 10 );
 	}
@@ -185,38 +311,39 @@ ve.ce.MWBlockImageNode.prototype.onAttributeChange = function ( key, from, to ) 
 	if ( from !== to ) {
 		switch ( key ) {
 			case 'align':
-				if ( to === 'center' || from === 'center' ) {
-					this.emit( 'teardown' );
-					if ( to === 'center' ) {
-						$wrapper = this.$( '<div>' ).addClass( 'center' );
-						this.$thumb = this.$element;
-						this.$element.replaceWith( $wrapper );
-						this.$element = $wrapper;
-						this.$element.append( this.$thumb );
-					} else {
-						this.$element.replaceWith( this.$thumb );
-						this.$element = this.$thumb;
-					}
-					this.emit( 'setup' );
-				}
-				type = this.model.getAttribute( 'type' );
-				if ( type === 'none' || type === 'frameless' ) {
-					this.$thumb.removeClass( this.getCssClass( 'none', from ) );
-					this.$thumb.addClass( this.getCssClass( 'none', to ) );
-				} else {
-					this.$thumb.removeClass( this.getCssClass( 'default', from ) );
-					this.$thumb.addClass( this.getCssClass( 'default', to ) );
-				}
+				this.updateAlignment( from, to, this.type );
 				break;
 			case 'src':
 				this.$image.attr( 'src', this.getResolvedAttribute( 'src' ) );
 				break;
 			case 'width':
-				this.$thumbInner.css( 'width', to + 2 );
-				this.$image.css( 'width', to );
+				this.size.width = to;
+				this.updateSize( this.size.height, this.size.width );
 				break;
 			case 'height':
-				this.$image.css( 'height', to );
+				this.size.height = to;
+				this.updateSize( this.size.height, this.size.width );
+				break;
+			case 'type':
+				this.$element.removeClass( 've-ce-mwBlockImageNode-type-' + from );
+				this.$element.addClass( 've-ce-mwBlockImageNode-type-' + to );
+
+				// Update 'typeof' property
+				this.$figure.attr( 'typeof', this.typeToRdfa[ this.type ] );
+
+				// marking update with same 'to/from' alignment will only update
+				// the alignment based on the new type
+				this.updateAlignment( this.align, this.align, to );
+				// hide/show caption:
+				if ( to !== 'none' && to !== 'frameless' && this.model.children.length === 1 ) {
+					this.setCaptionVisible( true );
+				} else {
+					this.setCaptionVisible( false );
+				}
+				break;
+			// Other image attributes if they exist:
+			case 'alt':
+				this.$image.attr( key, to );
 				break;
 		}
 	}
@@ -226,7 +353,8 @@ ve.ce.MWBlockImageNode.prototype.onAttributeChange = function ( key, from, to ) 
 ve.ce.MWBlockImageNode.prototype.onResizableResizing = function ( dimensions ) {
 	if ( !this.outline ) {
 		ve.ce.ResizableNode.prototype.onResizableResizing.call( this, dimensions );
-		this.$thumbInner.css( 'width', dimensions.width + 2 );
+
+		this.updateSize( dimensions.height, dimensions.width );
 	}
 };
 

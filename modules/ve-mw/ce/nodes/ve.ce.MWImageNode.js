@@ -21,17 +21,17 @@
  * @constructor
  * @param {Object} [config] Configuration options
  */
-ve.ce.MWImageNode = function VeCeMWImageNode( $inner, $image, config ) {
+ve.ce.MWImageNode = function VeCeMWImageNode( $figure, $image, config ) {
 	// Parent constructor
 	ve.ce.GeneratedContentNode.call( this );
 
-	this.$inner = $inner;
+	this.$figure = $figure;
 	this.$image = $image;
 
 	// Mixin constructors
-	ve.ce.ProtectedNode.call( this, this.$inner, config );
-	ve.ce.FocusableNode.call( this, this.$inner, config );
-	ve.ce.RelocatableNode.call( this, this.$inner, config );
+	ve.ce.ProtectedNode.call( this, this.$figure, config );
+	ve.ce.FocusableNode.call( this, this.$figure, config );
+	ve.ce.RelocatableNode.call( this, this.$figure, config );
 	ve.ce.MWResizableNode.call( this, this.$image, config );
 };
 
