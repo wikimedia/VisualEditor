@@ -181,18 +181,18 @@ ve.ui.MWSyntaxHighlightSimpleSurface.prototype.initialize = function () {
 	this.tokenizer = new ve.dm.MWSyntaxHighlightTokenizer();
 	this.highlighter = new ve.ce.MWSyntaxHighlightHighlighter(this.lang);
 	// Check language support
-	if ( this.highlighter.isSupportedLanguage( this.lang ) ){
-		if ( !this.highlighter.isEnabledLanguage( this.lang ) ){
-			this.$.append( this.$$( '<div>' ).text( 'Cannot edit: ' + this.lang + '\nSupport has been disabled.' ) );
+	if ( this.highlighter.isSupportedLanguage() ){
+		if ( !this.highlighter.isEnabledLanguage() ){
+			this.$.append( this.$$( '<div>' ).text( 'Cannot edit: ' + this.highlighter.getLanguageName() + '\nSupport has been disabled.' ) );
 		} else {
 			var langList = this.highlighter.getSupportedLanguages(), key, options = '',
 				self;
 			// Language dropdown
 			for (key in langList){
 				if (key === this.lang){
-					options += '<option value="'+key+'" selected>'+key.charAt(0).toUpperCase() + key.slice(1)+'</option>';
+					options += '<option value="'+key+'" selected>'+this.highlighter.getLanguageName()+'</option>';
 				} else {
-					options += '<option value="'+key+'">'+key.charAt(0).toUpperCase() + key.slice(1)+'</option>';
+					options += '<option value="'+key+'">'+this.highlighter.getLanguageName( key )+'</option>';
 				}
 			}
 			this.$langDropdown.html(options);
