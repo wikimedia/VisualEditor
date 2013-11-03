@@ -2888,6 +2888,7 @@ $messages['ce'] = array(
 	'visualeditor-annotationbutton-superscript-tooltip' => 'МогӀана тӀера индекс',
 	'visualeditor-annotationbutton-underline-tooltip' => 'Бухахь сиз хьаькхна',
 	'visualeditor-beta-label' => 'бета',
+	'visualeditor-beta-warning' => 'VisualEditor хӀинца а бета-верси ю цундела програмийн гӀалаташ хила там бу тӀакха агӀона цхьадолу даккъашна хийцам ба лур бац. ТӀетаӀ йе «{{int:visualeditor-ca-editsource}}» тадар чохь хийцамаш бан. ДӀазбина боцу хийцамаш дӀабаьра бу. .',
 	'visualeditor-ca-createsource' => 'Кхолла дӀадолалун йоза санна',
 	'visualeditor-ca-editsource' => 'Нисйé чухулара',
 	'visualeditor-ca-editsource-section' => 'нисйé чухулара',
@@ -2898,6 +2899,9 @@ $messages['ce'] = array(
 	'visualeditor-dialog-action-apply' => 'ДӀаязбе хийцам',
 	'visualeditor-dialog-action-cancel' => 'Цаоьшу',
 	'visualeditor-dialog-action-goback' => 'Юха',
+	'visualeditor-dialog-beta-welcome-content' => 'ХӀара агӀонаш нийсяран атто кеп ю. ХӀинца а хьара бета-верси ю и бохург ду цхьайолу даккъашна хийцам ба ца луш хила там бу я нисдан диза гӀалаташ хила там бу. Дехар до хьой бина хийцамашка хьажа кхин гӀалаташ делаш тхоьга хаам бе (тӀетеӀа йе \'{{int:visualeditor-beta-label}}\', хааман тхоьга баита). Хьан йиш хира ю кхуза "$1" ТӀетаӀӀина хьалха сана тадар дан - 
+дӀазбина боцу хийцамаш дӀабаьра бу.',
+	'visualeditor-dialog-beta-welcome-title' => '{{GENDER:$1|Марша догӀийла}} Визуальни тадар чу',
 	'visualeditor-dialog-media-insert-title' => 'Медиа-файл чуйилар',
 	'visualeditor-dialog-meta-categories-data-label' => 'Категореш',
 	'visualeditor-dialog-meta-categories-defaultsort-label' => 'Лахахь йолчуьнца къаста хӀара агӀо Ӏад йитарца',
@@ -2932,6 +2936,7 @@ $messages['ce'] = array(
 	'visualeditor-dialogbutton-transclusion-tooltip' => 'Юкъатохар',
 	'visualeditor-editnotices-tool' => '$1 {{PLURAL:$1|хаам|хаамаш}}',
 	'visualeditor-editsummary' => 'ДӀаязде хьой динарг',
+	'visualeditor-feedback-tool' => 'Язде хьайна хетарг',
 	'visualeditor-formatdropdown-format-heading1' => 'Корта 1',
 	'visualeditor-formatdropdown-format-heading2' => 'Корта 2',
 	'visualeditor-formatdropdown-format-heading3' => 'Корта 3',
@@ -2946,6 +2951,7 @@ $messages['ce'] = array(
 	'visualeditor-formatdropdown-format-mw-heading6' => 'Корталг 4',
 	'visualeditor-formatdropdown-format-preformatted' => 'БáрамхӀоттор',
 	'visualeditor-formatdropdown-title' => 'Хийца барам',
+	'visualeditor-help-tool' => 'ГӀо',
 	'visualeditor-historybutton-redo-tooltip' => 'Юхаерзор',
 	'visualeditor-historybutton-undo-tooltip' => 'Цаоьшу',
 	'visualeditor-indentationbutton-indent-tooltip' => 'Дукха дан',
@@ -3173,6 +3179,7 @@ $messages['co'] = array(
  * @author Michaelbrabec
  * @author Mormegil
  * @author Polda18
+ * @author Tchoř
  * @author ශ්වෙත
  */
 $messages['cs'] = array(
@@ -3338,7 +3345,7 @@ Chcete pokračovat?',
 	'visualeditor-preference-mwhiero-description' => 'Přidá do VisualEditoru experimentální podporu tvorby a editace hieroglyfů kvůli testování před zveřejněním této funkce. Při užívání experimentálních funkcí prosím nezapomeňte vždy zkontrolovat provedené změny.',
 	'visualeditor-preference-mwhiero-label' => 'Editace hieroglyfů VisualEditorem',
 	'visualeditor-preference-mwmath-description' => 'Přidá do VisualEditoru experimentální podporu tvorby a editace matematických vzorců kvůli testování před zveřejněním této funkce. Při užívání experimentálních funkcí prosím nezapomeňte vždy zkontrolovat provedené změny.',
-	'visualeditor-preference-mwmath-label' => 'Editací vzorců VisualEditorem',
+	'visualeditor-preference-mwmath-label' => 'Editace vzorců VisualEditorem',
 	'visualeditor-reference-input-placeholder' => 'Jakou chcete vložit referenci?',
 	'visualeditor-referencelist-isempty' => 'Na této stránce nejsou žádné reference se skupinou „$1“, které by se v tomto seznamu zobrazily.',
 	'visualeditor-referencelist-isempty-default' => 'Na této stránce nejsou žádné reference, které by se v tomto seznamu zobrazily.',
@@ -3567,6 +3574,10 @@ $messages['cy'] = array(
 	'visualeditor-media-input-placeholder' => 'Chwilio am ffeil gyfrwng',
 	'visualeditor-meta-tool' => "Gosodiadau'r dudalen",
 	'visualeditor-mwalienextensioninspector-title' => 'Estyniad MediaWiki',
+	'visualeditor-mweditmodesource-title' => "Newid i olygu'r côd",
+	'visualeditor-mweditmodesource-warning' => "Rydych ar fin newid y modd golygu i olygu'r côd.
+Caiff unrhyw newidiadau yr ydych wedi eu gwneud i'r ddogfen hon eu cadw, ond ni fyddwch yn gallu newid nôl i'r Golygdd Gweledol heb gadw'r dudalen neu ei hadnewyddu.
+Ydych chi am barhau?",
 	'visualeditor-mwhieroinspector-title' => 'Hieroglyffigau',
 	'visualeditor-mwmathinspector-title' => 'LaTeX',
 	'visualeditor-notification-created' => 'Gosodwyd "$1".',
@@ -6066,12 +6077,12 @@ $messages['frp'] = array(
  * @author Murma174
  */
 $messages['frr'] = array(
-	'ooui-dialog-action-close' => 'Slütj', # Fuzzy
-	'ooui-inspector-close-tooltip' => 'Slütj', # Fuzzy
-	'ooui-inspector-remove-tooltip' => 'Wechnem', # Fuzzy
-	'ooui-outline-control-move-down' => 'Element efter onern sküüw', # Fuzzy
-	'ooui-outline-control-move-up' => 'Element efter boownen sküüw', # Fuzzy
-	'ooui-toolbar-more' => 'Muar', # Fuzzy
+	'ooui-dialog-action-close' => 'Slütj',
+	'ooui-inspector-close-tooltip' => 'Slütj',
+	'ooui-inspector-remove-tooltip' => 'Wechnem',
+	'ooui-outline-control-move-down' => 'Element efter onern sküüw',
+	'ooui-outline-control-move-up' => 'Element efter boowen sküüw',
+	'ooui-toolbar-more' => 'Muar',
 	'tag-visualeditor' => '[[{{MediaWiki:visualeditor-descriptionpagelink}}|VisualEditor]]',
 	'tag-visualeditor-description' => 'Bewerket mä [[{{MediaWiki:visualeditor-descriptionpagelink}}|VisualEditor]]',
 	'tag-visualeditor-needcheck' => '[[{{MediaWiki:visualeditor-descriptionpagelink}}|VisualEditor: Preew]]',
@@ -6094,6 +6105,7 @@ $messages['frr'] = array(
 	'visualeditor-beta-label' => 'Beta',
 	'visualeditor-beta-warning' => "VisualEditor werket noch uun 'Beta'. Det ment, diar lääpt noch ei ales trinj. Trak üüb „{{int:visualeditor-ca-editsource}}“, do komst dü tu det Wikitext-muude. Wat noch ei seekert wurden as, gongt ferleesen.",
 	'visualeditor-browserwarning' => 'Dü brükst en browser, diar ei faan VisualEditor gudkäänd as.',
+	'visualeditor-categories-tool' => 'Kategoriin',
 	'visualeditor-ca-createsource' => 'Kweltekst skriiw',
 	'visualeditor-ca-editsource' => 'Kweltekst bewerke',
 	'visualeditor-ca-editsource-section' => 'kweltekst bewerke',
@@ -6183,6 +6195,7 @@ $messages['frr'] = array(
 	'visualeditor-historybutton-undo-tooltip' => 'Turag',
 	'visualeditor-indentationbutton-indent-tooltip' => 'Iinsuch grater maage',
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Iinsuch letjer maage',
+	'visualeditor-languages-tool' => 'Spriaken',
 	'visualeditor-languageinspector-block-tooltip' => 'Spriakblook: $1',
 	'visualeditor-languageinspector-block-tooltip-rtldirection' => ': RTL (faan rochts tu lachts)',
 	'visualeditor-languageinspector-title' => 'Spriak',
@@ -6203,6 +6216,8 @@ $messages['frr'] = array(
 	'visualeditor-media-input-placeholder' => 'Efter meedien schük',
 	'visualeditor-meta-tool' => 'Iinstelangen för det sidj',
 	'visualeditor-mwalienextensioninspector-title' => 'MediaWiki-ütjwidjang',
+	'visualeditor-mweditmodesource-title' => "Waksle tu't bewerkin faan di kweltekst",
+	'visualeditor-mweditmodesource-warning' => "Dü wakselst nü auer tu't bewerkin faan di kweltekst. Din feranrangen bliiw erhäälen. Man dü könst ei turag tu VisualEditor, wan dü det sidj ei seekerst an nei loosest. Wel dü widjer maage?",
 	'visualeditor-mwhieroinspector-title' => 'Hieroglyphen',
 	'visualeditor-mwmathinspector-title' => 'LaTeX',
 	'visualeditor-notification-created' => '"$1" as skrewen wurden.',
@@ -6212,9 +6227,17 @@ $messages['frr'] = array(
 	'visualeditor-parameter-search-no-unused' => 'Nian parametern, diar ei brükt wurd',
 	'visualeditor-parameter-search-unknown' => 'Ünbekäänd parameter',
 	'visualeditor-preference-betatempdisable' => "VisualEditor tidjwiis ufknipse, so loong det noch uun 'Beta' as.",
-	'visualeditor-preference-core-description' => 'VisualEditor aktiwiare (bluas uun a artiikel- an brüker-nöömrüm).', # Fuzzy
+	'visualeditor-preference-core-description' => "VisualEditor aktiwiare. Didiar editor werket noch ei üüb't diskuschuunssidj an uun enkelt ööder nöömrümer.",
 	'visualeditor-preference-core-label' => 'VisualEditor',
-	'visualeditor-preference-enable' => 'VisualEditor aktiwiare (bluas uun a [[{{MediaWiki:visualeditor-mainnamespacepagelink}}|artiikel-]] an [[{{MediaWiki:visualeditor-usernamespacepagelink}}|brüker-]] nöömrümer)', # Fuzzy
+	'visualeditor-preference-enable' => "VisualEditor aktiwiare. Didiar editor werket noch ei üüb't diskuschuunssidj an uun enkelt ööder nöömrümer. (bedraapt Firefox, Chrome an Safari)",
+	'visualeditor-preference-language-description' => "Diar kem eksperimentel werktjüügen tu, am en tekst üs muarspriakag tu kääntiaknin, iar jodiar werktjüügen för aaltumaal tu brüken san. Kontroliare din feranrangen föör't seekrin arke tooch, wan dü eksperimentel werktjüügen brükt heest.",
+	'visualeditor-preference-language-label' => 'VisualEditor spriak-werktjüügen',
+	'visualeditor-preference-mwalienextension-description' => "Diar kem eksperimentel werktjüügen tu (för galeriin of kweltekstkirwer), iar jodiar werktjüügen för arken tu brüken san. Kontroliare din feranrangen föör't seekrin arke tooch, wan dü eksperimentel werktjüügen brükt heest.",
+	'visualeditor-preference-mwalienextension-label' => 'Bewerkin faan VisualEditor ütjwidjangen',
+	'visualeditor-preference-mwhiero-description' => "Diar kem eksperimentel werktjüügen tu, am hieroglyphen tu bewerkin, iar jodiar werktjüügen för aaltumaal tu brüken san. Kontroliare din feranrangen föör't seekrin arke tooch, wan dü eksperimentel werktjüügen brükt heest.",
+	'visualeditor-preference-mwhiero-label' => 'VisualEditor bewerkin faan hieroglyphen',
+	'visualeditor-preference-mwmath-description' => "Diar kem eksperimentel werktjüügen tu, am matemaatisk formeln tu bewerkin, iar jodiar werktjüügen för aaltumaal tu brüken san. Kontroliare din feranrangen föör't seekrin arke tooch, wan dü eksperimentel werktjüügen brükt heest.",
+	'visualeditor-preference-mwmath-label' => 'VisualEditor bewerkin faan formeln',
 	'visualeditor-reference-input-placeholder' => 'Wat wel dü referensiare?',
 	'visualeditor-referencelist-isempty' => 'Diar san nian futnuuten mä det skööl "$1" üüb detdiar sidj tu uunwisin uun detdiar list.',
 	'visualeditor-referencelist-isempty-default' => 'Üüb detdiar sidj san nian futnuuten tu uunwisin uun detdiar list.',
@@ -13463,6 +13486,7 @@ $messages['roa-tara'] = array(
  * @author Putnik
  * @author Sunpriat
  * @author Yury Katkov
+ * @author Умар
  */
 $messages['ru'] = array(
 	'ooui-dialog-action-close' => 'Закрыть',
@@ -13576,7 +13600,7 @@ $messages['ru'] = array(
 	'visualeditor-formatdropdown-format-paragraph' => 'Абзац',
 	'visualeditor-formatdropdown-format-preformatted' => 'Преформатированный',
 	'visualeditor-formatdropdown-title' => 'Изменить формат',
-	'visualeditor-help-label' => 'Прочтите руководство пользователя',
+	'visualeditor-help-label' => 'Деша декъашхочун куьигалла дар',
 	'visualeditor-help-title' => 'Руководство пользователя по использованию редактора',
 	'visualeditor-help-tool' => 'Справка',
 	'visualeditor-historybutton-redo-tooltip' => 'Вернуть',
@@ -14965,12 +14989,12 @@ $messages['sr-el'] = array(
  * @author WikiPhoenix
  */
 $messages['sv'] = array(
-	'ooui-dialog-action-close' => 'Stäng', # Fuzzy
-	'ooui-inspector-close-tooltip' => 'Stäng', # Fuzzy
-	'ooui-inspector-remove-tooltip' => 'Ta bort', # Fuzzy
-	'ooui-outline-control-move-down' => 'Flytta ned objekt', # Fuzzy
-	'ooui-outline-control-move-up' => 'Flytta upp objekt', # Fuzzy
-	'ooui-toolbar-more' => 'Mer', # Fuzzy
+	'ooui-dialog-action-close' => 'Stäng',
+	'ooui-inspector-close-tooltip' => 'Stäng',
+	'ooui-inspector-remove-tooltip' => 'Ta bort',
+	'ooui-outline-control-move-down' => 'Flytta ned objekt',
+	'ooui-outline-control-move-up' => 'Flytta upp objekt',
+	'ooui-toolbar-more' => 'Mer',
 	'tag-visualeditor' => '[[{{MediaWiki:visualeditor-descriptionpagelink}}|VisualEditor]]',
 	'tag-visualeditor-description' => 'Redigering gjord med hjälp av [[{{MediaWiki:visualeditor-descriptionpagelink}}|VisualEditor]]',
 	'tag-visualeditor-needcheck' => '[[{{MediaWiki:visualeditor-descriptionpagelink}}|VisualEditor: Kontrollera]]',
@@ -14993,6 +15017,7 @@ $messages['sv'] = array(
 	'visualeditor-beta-label' => 'beta',
 	'visualeditor-beta-warning' => 'VisualEditor befinner sig i "betaversion". Du kan därför stöta på en del programvaruproblem och du kan kanske inte redigera delar av sidan. Klicka på "{{int:visualeditor-ca-editsource}}" för att byta till wikitext-läge – ändringar som inte sparats går förlorade.',
 	'visualeditor-browserwarning' => 'Du använder en webbläsare som inte stöds officiellt av VisualEditor.',
+	'visualeditor-categories-tool' => 'Kategorier',
 	'visualeditor-ca-createsource' => 'Skapa wikitext',
 	'visualeditor-ca-editsource' => 'Redigera wikitext',
 	'visualeditor-ca-editsource-section' => 'redigera wikitext',
@@ -15082,6 +15107,7 @@ $messages['sv'] = array(
 	'visualeditor-historybutton-undo-tooltip' => 'Ångra',
 	'visualeditor-indentationbutton-indent-tooltip' => 'Öka indrag',
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Minska indrag',
+	'visualeditor-languages-tool' => 'Språk',
 	'visualeditor-languageinspector-block-tooltip' => 'Språkavsnitt: $1',
 	'visualeditor-languageinspector-block-tooltip-rtldirection' => ': Höger till vänster',
 	'visualeditor-languageinspector-title' => 'Språk',
@@ -15102,6 +15128,10 @@ $messages['sv'] = array(
 	'visualeditor-media-input-placeholder' => 'Sök media',
 	'visualeditor-meta-tool' => 'Sidinställningar',
 	'visualeditor-mwalienextensioninspector-title' => 'MediaWiki-tillägg',
+	'visualeditor-mweditmodesource-title' => 'Byt till källkodsredigering',
+	'visualeditor-mweditmodesource-warning' => 'Du håller på att byta till källkodsredigering.
+Alla ändringar du gjort i detta dokument kommer att behållas, men du kommer inte att kunna växla tillbaka till VisualEditor utan att spara eller ladda om sidan.
+Vill du fortsätta?',
 	'visualeditor-mwhieroinspector-title' => 'Hieroglyfer',
 	'visualeditor-mwmathinspector-title' => 'LaTeX',
 	'visualeditor-notification-created' => '"$1" har skapats.',
@@ -15111,9 +15141,14 @@ $messages['sv'] = array(
 	'visualeditor-parameter-search-no-unused' => 'Inga oanvända parametrar',
 	'visualeditor-parameter-search-unknown' => 'Okänd parameter',
 	'visualeditor-preference-betatempdisable' => 'Avaktivera VisualEditor tillfälligt medan den är i beta',
-	'visualeditor-preference-core-description' => 'Aktivera VisualEditor (endast i huvud- och användarnamnrymderna).', # Fuzzy
+	'visualeditor-preference-core-description' => 'Aktivera VisualEditor. Den kommer inte vara tillgänglig på diskussionssidor och vissa andra namnrymder.',
 	'visualeditor-preference-core-label' => 'VisualEditor',
-	'visualeditor-preference-enable' => 'Aktivera VisualEditor (endast i  [[{{MediaWiki:visualeditor-mainnamespacepagelink}}|huvud-]] och [[{{MediaWiki:visualeditor-usernamespacepagelink}}|användar]]namnrymderna)', # Fuzzy
+	'visualeditor-preference-enable' => 'Aktivera VisualEditor. Den kommer inte vara tillgänglig på diskussionssidor och vissa andra namnrymder.',
+	'visualeditor-preference-language-description' => 'Lägg till experimentella verktyg till VisualEditor för att markera flerspråkighet och dubbelriktningar för testning, före allmän utsättning. Kom ihåg att alltid granska dina ändringar innan du sparar när du använder experimentella funktioner.', # Fuzzy
+	'visualeditor-preference-language-label' => 'Språkverktyg för VisualEditor',
+	'visualeditor-preference-mwalienextension-label' => 'VisualEditor-tillägg för taggredigering',
+	'visualeditor-preference-mwhiero-label' => 'VisualEditor hieroglyfredigering',
+	'visualeditor-preference-mwmath-label' => 'VisualEditor formelredigering',
 	'visualeditor-reference-input-placeholder' => 'Vad vill du referera till?',
 	'visualeditor-referencelist-isempty' => 'Det finns inga referenser med gruppen "$1" på denna sida att inkludera i denna lista.',
 	'visualeditor-referencelist-isempty-default' => 'Det finns inga referenser på denna sida att inkludera i denna lista.',
