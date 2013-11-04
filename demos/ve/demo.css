@@ -46,13 +46,13 @@ body {
 	box-shadow: 0 0.25em 1.5em 0 #ddd;
 }
 
-.ve-demo-utilities-commands .ve-ui-widget,
+.ve-demo-utilities-commands .oo-ui-widget,
 .ve-demo-utilities-commands-divider {
 	display: inline-block;
 	margin-right: 1em;
 }
 
-.ve-demo-utilities-commands .ve-ui-textInputWidget {
+.ve-demo-utilities-commands .oo-ui-textInputWidget {
 	width: 4em;
 }
 
@@ -156,7 +156,7 @@ body {
 	border-top-left-radius: 0.25em;
 }
 
-.ve-init-sa-target-toolbar.ve-ui-toolbar-floating .oo-ui-toolbar-bar {
+.ve-init-sa-target-toolbar.ve-ui-surfaceToolbar-floating .oo-ui-toolbar-bar {
 	border-top: none;
 	border-radius: 0;
 }
