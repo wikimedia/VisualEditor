@@ -82,22 +82,22 @@ OO.ui.Element.getJQuery = function ( context, frame ) {
  * Get the document of an element.
  *
  * @static
- * @param {jQuery|HTMLElement|HTMLDocument|Window} context Context to bind the function to
+ * @param {jQuery|HTMLElement|HTMLDocument|Window} obj Object to get the document for
  * @returns {HTMLDocument} Document object
  * @throws {Error} If context is invalid
  */
-OO.ui.Element.getDocument = function ( context ) {
+OO.ui.Element.getDocument = function ( obj ) {
 	var doc =
 		// jQuery - selections created "offscreen" won't have a context, so .context isn't reliable
-		( context[0] && context[0].ownerDocument ) ||
+		( obj[0] && obj[0].ownerDocument ) ||
 		// Empty jQuery selections might have a context
-		context.context ||
+		obj.context ||
 		// HTMLElement
-		context.ownerDocument ||
+		obj.ownerDocument ||
 		// Window
-		context.document ||
+		obj.document ||
 		// HTMLDocument
-		( context.nodeType === 9 && context );
+		( obj.nodeType === 9 && obj );
 
 	if ( doc ) {
 		return doc;
@@ -110,12 +110,36 @@ OO.ui.Element.getDocument = function ( context ) {
  * Get the window of an element or document.
  *
  * @static
- * @param {jQuery|HTMLElement|HTMLDocument|Window} context Context to bind the function to
+ * @param {jQuery|HTMLElement|HTMLDocument|Window} obj Context to get the window for
  * @returns {Window} Window object
  */
-OO.ui.Element.getWindow = function ( context ) {
-	var doc = this.getDocument( context );
+OO.ui.Element.getWindow = function ( obj ) {
+	var doc = this.getDocument( obj );
 	return doc.parentWindow || doc.defaultView;
+};
+
+/**
+ * Get the direction of an element or document.
+ *
+ * @static
+ * @param {jQuery|HTMLElement|HTMLDocument|Window} obj Context to get the direction for
+ * @returns {string} Text direction, either `ltr` or `rtl`
+ */
+OO.ui.Element.getDir = function ( obj ) {
+	var isDoc, isWin;
+
+	if ( obj instanceof jQuery ) {
+		obj = obj[0];
+	}
+	isDoc = obj.nodeType === 9;
+	isWin = obj.document !== undefined;
+	if ( isDoc || isWin ) {
+		if ( isWin ) {
+			obj = obj.document;
+		}
+		obj = obj.body;
+	}
+	return $( obj ).css( 'direction' );
 };
 
 /**
