@@ -125,3 +125,7 @@ ve.init.sa.Platform.prototype.getUserLanguages = function () {
 /* Initialization */
 
 ve.init.platform = new ve.init.sa.Platform();
+
+/* Extension */
+
+OO.ui.msg = ve.bind( ve.init.platform.getMessage, ve.init.platform );
