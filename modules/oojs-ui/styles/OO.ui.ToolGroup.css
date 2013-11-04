@@ -201,7 +201,11 @@
 }
 
 .oo-ui-listToolGroup .oo-ui-tool {
-	display: block;
+	display: inline-block;
+	width: 100%;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
 	border: solid 1px transparent;
 	margin: -1px 0 -1px -1px;
 }
