@@ -35,7 +35,7 @@ When(/^I do not see This is a minor edit$/) do
   on(VisualEditorPage).minor_edit_element.should_not be_visible
 end
 
-When(/^I edit the page with a string$/) do
+When(/^I edit the page with (.+)$/) do |input_string|
   on(VisualEditorPage) do |page|
     page.edit_ve_element.when_present.click
     #This begin/rescue clause dismisses the VE warning message when it exists, and does not fail when it does not exist
@@ -44,7 +44,7 @@ When(/^I edit the page with a string$/) do
     rescue
     end
     page.content_element.fire_event('onfocus')
-    page.content_element.when_present.send_keys("Editing with #{@random_string}")
+    page.content_element.when_present.send_keys(input_string + " #{@random_string} ")
   end
 end
 
@@ -67,6 +67,6 @@ When(/^I see the IP warning signs$/) do
   on(VisualEditorPage).ip_warning.should match Regexp.escape("Your IP address")
 end
 
-Then(/^Page text should contain the string$/) do
-  on(VisualEditorPage).page_text_element.when_present.text.should match Regexp.escape("Editing with #{@random_string}")
+Then(/^Page text should contain (.+)$/) do |output_string|
+  on(VisualEditorPage).page_text_element.when_present.text.should match Regexp.escape(output_string + " #{@random_string}")
 end
