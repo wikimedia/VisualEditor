@@ -23,9 +23,9 @@ OO.ui.PopupButtonWidget = function OoUiPopupButtonWidget( config ) {
 	OO.ui.PopuppableElement.call( this, config );
 
 	// Initialization
-	this.$
+	this.$element
 		.addClass( 'oo-ui-popupButtonWidget' )
-		.append( this.popup.$ );
+		.append( this.popup.$element );
 };
 
 /* Inheritance */
@@ -44,7 +44,7 @@ OO.mixinClass( OO.ui.PopupButtonWidget, OO.ui.PopuppableElement );
  */
 OO.ui.PopupButtonWidget.prototype.onClick = function ( e ) {
 	// Skip clicks within the popup
-	if ( $.contains( this.popup.$[0], e.target ) ) {
+	if ( $.contains( this.popup.$element[0], e.target ) ) {
 		return;
 	}
 

@@ -27,7 +27,7 @@ OO.ui.Layout = function OoUiLayout( config ) {
 	OO.EventEmitter.call( this );
 
 	// Initialization
-	this.$.addClass( 'oo-ui-layout' );
+	this.$element.addClass( 'oo-ui-layout' );
 };
 
 /* Inheritance */

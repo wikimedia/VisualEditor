@@ -24,16 +24,16 @@ OO.ui.FieldsetLayout = function OoUiFieldsetLayout( config ) {
 	OO.ui.Layout.call( this, config );
 
 	// Mixin constructors
-	OO.ui.LabeledElement.call( this, this.$$( '<legend>' ), config );
+	OO.ui.LabeledElement.call( this, this.$( '<legend>' ), config );
 
 	// Initialization
 	if ( config.icon ) {
-		this.$.addClass( 'oo-ui-fieldsetLayout-decorated' );
+		this.$element.addClass( 'oo-ui-fieldsetLayout-decorated' );
 		this.$label.addClass( 'oo-ui-icon-' + config.icon );
 	}
-	this.$.addClass( 'oo-ui-fieldsetLayout' );
+	this.$element.addClass( 'oo-ui-fieldsetLayout' );
 	if ( config.icon || config.label ) {
-		this.$
+		this.$element
 			.addClass( 'oo-ui-fieldsetLayout-labeled' )
 			.append( this.$label );
 	}

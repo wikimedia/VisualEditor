@@ -28,7 +28,7 @@ ve.ce.MWSyntaxHighlightNode = function VeCeMWSyntaxHighlightNode( model, config 
 	ve.ce.GeneratedContentNode.call( this );
 
 	// DOM Changes
-	this.$.addClass( 've-ce-MWSyntaxHighlightNode mwSyntaxHighlight' );
+	this.$element.addClass( 've-ce-MWSyntaxHighlightNode mwSyntaxHighlight' );
 
 	// Helpers
 	this.highlighter = null;
@@ -67,8 +67,8 @@ ve.ce.MWSyntaxHighlightNode.prototype.startGenerating = function () {
 	var lang = this.model.getAttribute( 'lang' );
 
 	// Properties
-	this.$wrapper = this.$$( '<div>' );
-	this.$code = this.$$( '<pre>' );
+	this.$wrapper = this.$( '<div>' );
+	this.$code = this.$( '<pre>' );
 
 	// Initialization
 	this.$wrapper

@@ -28,18 +28,18 @@ OO.ui.Toolbar = function OoUiToolbar( toolFactory, options ) {
 
 	// Mixin constructors
 	OO.EventEmitter.call( this );
-	OO.ui.GroupElement.call( this, this.$$( '<div>' ) );
+	OO.ui.GroupElement.call( this, this.$( '<div>' ) );
 
 	// Properties
 	this.toolFactory = toolFactory;
 	this.groups = [];
 	this.tools = {};
-	this.$bar = this.$$( '<div>' );
-	this.$actions = this.$$( '<div>' );
+	this.$bar = this.$( '<div>' );
+	this.$actions = this.$( '<div>' );
 	this.initialized = false;
 
 	// Events
-	this.$
+	this.$element
 		.add( this.$bar ).add( this.$group ).add( this.$actions )
 		.on( 'mousedown', OO.ui.bind( this.onMouseDown, this ) );
 
@@ -54,7 +54,7 @@ OO.ui.Toolbar = function OoUiToolbar( toolFactory, options ) {
 	if ( options.shadow ) {
 		this.$bar.append( '<div class="oo-ui-toolbar-shadow"></div>' );
 	}
-	this.$.addClass( 'oo-ui-toolbar' ).append( this.$bar );
+	this.$element.addClass( 'oo-ui-toolbar' ).append( this.$bar );
 };
 
 /* Inheritance */
@@ -83,8 +83,8 @@ OO.ui.Toolbar.prototype.getToolFactory = function () {
  * @param {jQuery.Event} e Mouse down event
  */
 OO.ui.Toolbar.prototype.onMouseDown = function ( e ) {
-	var $closestWidgetToEvent = $( e.target ).closest( '.oo-ui-widget' ),
-		$closestWidgetToToolbar = this.$.closest( '.oo-ui-widget' );
+	var $closestWidgetToEvent = this.$( e.target ).closest( '.oo-ui-widget' ),
+		$closestWidgetToToolbar = this.$element.closest( '.oo-ui-widget' );
 	if ( !$closestWidgetToEvent.length || $closestWidgetToEvent[0] === $closestWidgetToToolbar[0] ) {
 		return false;
 	}
@@ -141,7 +141,7 @@ OO.ui.Toolbar.prototype.setup = function ( groups ) {
 		}
 		type = constructors[group.type] ? group.type : defaultType;
 		items.push(
-			new constructors[type]( this, $.extend( { '$$': this.$$ }, group ) )
+			new constructors[type]( this, $.extend( { '$': this.$ }, group ) )
 		);
 	}
 	this.addItems( items );
@@ -168,7 +168,7 @@ OO.ui.Toolbar.prototype.reset = function () {
  */
 OO.ui.Toolbar.prototype.destroy = function () {
 	this.reset();
-	this.$.remove();
+	this.$element.remove();
 };
 
 /**

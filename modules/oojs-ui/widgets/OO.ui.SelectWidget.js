@@ -24,7 +24,7 @@ OO.ui.SelectWidget = function OoUiSelectWidget( config ) {
 	OO.ui.Widget.call( this, config );
 
 	// Mixin constructors
-	OO.ui.GroupElement.call( this, this.$, config );
+	OO.ui.GroupElement.call( this, this.$element, config );
 
 	// Properties
 	this.pressed = false;
@@ -32,7 +32,7 @@ OO.ui.SelectWidget = function OoUiSelectWidget( config ) {
 	this.hashes = {};
 
 	// Events
-	this.$.on( {
+	this.$element.on( {
 		'mousedown': OO.ui.bind( this.onMouseDown, this ),
 		'mouseup': OO.ui.bind( this.onMouseUp, this ),
 		'mousemove': OO.ui.bind( this.onMouseMove, this ),
@@ -41,7 +41,7 @@ OO.ui.SelectWidget = function OoUiSelectWidget( config ) {
 	} );
 
 	// Initialization
-	this.$.addClass( 'oo-ui-selectWidget' );
+	this.$element.addClass( 'oo-ui-selectWidget' );
 };
 
 /* Inheritance */
@@ -95,7 +95,7 @@ OO.ui.SelectWidget.prototype.onMouseDown = function ( e ) {
 		if ( item && item.isSelectable() ) {
 			this.intializeSelection( item );
 			this.selecting = item;
-			$( this.$$.context ).one( 'mouseup', OO.ui.bind( this.onMouseUp, this ) );
+			this.$( this.$.context ).one( 'mouseup', OO.ui.bind( this.onMouseUp, this ) );
 		}
 	}
 	return false;
@@ -186,7 +186,7 @@ OO.ui.SelectWidget.prototype.onMouseLeave = function () {
  * @returns {OO.ui.OptionWidget|null} Outline item widget, `null` if none was found
  */
 OO.ui.SelectWidget.prototype.getTargetItem = function ( e ) {
-	var $item = $( e.target ).closest( '.oo-ui-optionWidget' );
+	var $item = this.$( e.target ).closest( '.oo-ui-optionWidget' );
 	if ( $item.length ) {
 		return $item.data( 'oo-ui-optionWidget' );
 	}

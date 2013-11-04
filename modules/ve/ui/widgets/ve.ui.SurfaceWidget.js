@@ -26,15 +26,15 @@ ve.ui.SurfaceWidget = function VeUiSurfaceWidget( data, config ) {
 	OO.ui.Widget.call( this, config );
 
 	// Properties
-	this.surface = new ve.ui.Surface( data, { '$$': this.$$ } );
-	this.toolbar = new ve.ui.SurfaceToolbar( this.surface, { '$$': this.$$ } );
+	this.surface = new ve.ui.Surface( data, { '$': this.$ } );
+	this.toolbar = new ve.ui.SurfaceToolbar( this.surface, { '$': this.$ } );
 
 	// Initialization
-	this.surface.$.addClass( 've-ui-surfaceWidget-surface' );
-	this.toolbar.$.addClass( 've-ui-surfaceWidget-toolbar' );
-	this.$
+	this.surface.$element.addClass( 've-ui-surfaceWidget-surface' );
+	this.toolbar.$element.addClass( 've-ui-surfaceWidget-toolbar' );
+	this.$element
 		.addClass( 've-ui-surfaceWidget' )
-		.append( this.toolbar.$, this.surface.$ );
+		.append( this.toolbar.$element, this.surface.$element );
 	if ( config.tools ) {
 		this.toolbar.setup( config.tools );
 	}
@@ -89,7 +89,7 @@ ve.ui.SurfaceWidget.prototype.getContent = function () {
 ve.ui.SurfaceWidget.prototype.initialize = function () {
 	this.toolbar.initialize();
 	this.surface.initialize();
-	this.surface.view.documentView.documentNode.$.focus();
+	this.surface.view.documentView.documentNode.$element.focus();
 };
 
 /**
@@ -104,5 +104,5 @@ ve.ui.SurfaceWidget.prototype.destroy = function () {
 	if ( this.toolbar ) {
 		this.toolbar.destroy();
 	}
-	this.$.remove();
+	this.$element.remove();
 };

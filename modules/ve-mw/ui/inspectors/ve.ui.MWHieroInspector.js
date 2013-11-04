@@ -43,7 +43,7 @@ ve.ui.MWHieroInspector.prototype.initialize = function () {
 	// Parent method
 	ve.ui.MWExtensionInspector.prototype.initialize.call( this );
 
-	this.input.$.addClass( 've-ui-mwHieroInspector-input' );
+	this.input.$element.addClass( 've-ui-mwHieroInspector-input' );
 };
 
 /* Registration */

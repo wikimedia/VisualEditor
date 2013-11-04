@@ -24,7 +24,7 @@ OO.ui.Inspector = function OoUiInspector( windowSet, config ) {
 	this.initialSelection = null;
 
 	// Initialization
-	this.$.addClass( 'oo-ui-inspector' );
+	this.$element.addClass( 'oo-ui-inspector' );
 };
 
 /* Inheritance */
@@ -67,13 +67,13 @@ OO.ui.Inspector.prototype.initialize = function () {
 
 	// Initialization
 	this.frame.$content.addClass( 'oo-ui-inspector-content' );
-	this.$form = this.$$( '<form>' );
+	this.$form = this.$( '<form>' );
 	this.closeButton = new OO.ui.IconButtonWidget( {
-		'$$': this.$$, 'icon': 'previous', 'title': OO.ui.msg( 'ooui-inspector-close-tooltip' )
+		'$': this.$, 'icon': 'previous', 'title': OO.ui.msg( 'ooui-inspector-close-tooltip' )
 	} );
 	if ( this.constructor.static.removeable ) {
 		this.removeButton = new OO.ui.IconButtonWidget( {
-			'$$': this.$$, 'icon': 'remove', 'title': OO.ui.msg( 'ooui-inspector-remove-tooltip' )
+			'$': this.$, 'icon': 'remove', 'title': OO.ui.msg( 'ooui-inspector-remove-tooltip' )
 		} );
 	}
 
@@ -88,11 +88,11 @@ OO.ui.Inspector.prototype.initialize = function () {
 	}
 
 	// Initialization
-	this.closeButton.$.addClass( 'oo-ui-inspector-closeButton' );
-	this.$head.prepend( this.closeButton.$ );
+	this.closeButton.$element.addClass( 'oo-ui-inspector-closeButton' );
+	this.$head.prepend( this.closeButton.$element );
 	if ( this.constructor.static.removeable ) {
-		this.removeButton.$.addClass( 'oo-ui-inspector-removeButton' );
-		this.$head.append( this.removeButton.$ );
+		this.removeButton.$element.addClass( 'oo-ui-inspector-removeButton' );
+		this.$head.append( this.removeButton.$element );
 	}
 	this.$body.append( this.$form );
 };

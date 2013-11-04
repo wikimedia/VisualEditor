@@ -19,7 +19,7 @@ ve.ce.TableNode = function VeCeTableNode( model, config ) {
 	ve.ce.BranchNode.call( this, model, config );
 
 	// Initialization
-	this.$.attr( { 'border': 1, 'cellpadding': 5, 'cellspacing': 5 } );
+	this.$element.attr( { 'border': 1, 'cellpadding': 5, 'cellspacing': 5 } );
 };
 
 /* Inheritance */

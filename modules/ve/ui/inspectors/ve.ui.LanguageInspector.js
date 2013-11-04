@@ -60,12 +60,12 @@ ve.ui.LanguageInspector.prototype.initialize = function () {
 
 	// Properties
 	this.targetInput = new ve.ui.LanguageInputWidget( {
-		'$$': this.frame.$$,
+		'$': this.$,
 		'$overlay': this.surface.$localOverlay
 	} );
 
 	// Initialization
-	this.$form.append( this.targetInput.$ );
+	this.$form.append( this.targetInput.$element );
 };
 
 /**
@@ -100,8 +100,8 @@ ve.ui.LanguageInspector.prototype.onSetup = function ( config ) {
 	// This will be called only if the annotation doesn't already exist, setting
 	// the default value as the current language/dir of the selected text.
 	if ( fragDOM ) {
-		this.lang = fragDOM.$.closest( '[lang]' ).attr( 'lang' );
-		this.dir = fragDOM.$.closest( '[dir]' ).css( 'direction' );
+		this.lang = fragDOM.$element.closest( '[lang]' ).attr( 'lang' );
+		this.dir = fragDOM.$element.closest( '[dir]' ).css( 'direction' );
 	}
 
 	// Parent method

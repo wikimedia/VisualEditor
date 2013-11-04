@@ -29,7 +29,7 @@ OO.ui.WindowSet = function OoUiWindowSet( factory, config ) {
 	this.currentWindow = null;
 
 	// Initialization
-	this.$.addClass( 'oo-ui-windowSet' );
+	this.$element.addClass( 'oo-ui-windowSet' );
 };
 
 /* Inheritance */
@@ -121,13 +121,13 @@ OO.ui.WindowSet.prototype.getWindow = function ( name ) {
 		throw new Error( 'Cannot open another window while another one is active' );
 	}
 	if ( !( name in this.windows ) ) {
-		win = this.windows[name] = this.factory.create( name, this, { '$$': this.$$ } );
+		win = this.windows[name] = this.factory.create( name, this, { '$': this.$ } );
 		win.connect( this, {
 			'setup': ['onWindowSetup', win],
 			'open': ['onWindowOpen', win],
 			'close': ['onWindowClose', win]
 		} );
-		this.$.append( win.$ );
+		this.$element.append( win.$element );
 		win.getFrame().load();
 	}
 	return this.windows[name];

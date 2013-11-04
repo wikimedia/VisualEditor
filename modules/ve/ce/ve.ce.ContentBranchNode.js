@@ -98,8 +98,8 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 		}
 		// Create a new DOM node and descend into it
 		ann = ve.ce.annotationFactory.create(
-			annotation.getType(), annotation, node, { '$$': this.$$ }
-		).$[0];
+			annotation.getType(), annotation, node, { '$': node.$ }
+		).$element[0];
 		current.appendChild( ann );
 		current = ann;
 	}
@@ -172,9 +172,9 @@ ve.ce.ContentBranchNode.prototype.renderContents = function () {
 		this.root.getSurface().setContentBranchNodeChanged( true );
 	}
 
-	// Detach all child nodes from this.$
-	for ( i = 0, len = this.$.length; i < len; i++ ) {
-		node = this.$[i];
+	// Detach all child nodes from this.$element
+	for ( i = 0, len = this.$element.length; i < len; i++ ) {
+		node = this.$element[i];
 		while ( node.firstChild ) {
 			node.removeChild( node.firstChild );
 		}
@@ -183,7 +183,7 @@ ve.ce.ContentBranchNode.prototype.renderContents = function () {
 	// Reattach child nodes with the right annotations
 	rendered = this.getRenderedContents();
 	for ( i = 0, len = rendered.length; i < len; i++ ) {
-		this.$[0].appendChild( rendered[i] );
+		this.$element[0].appendChild( rendered[i] );
 	}
 
 	// Add slugs
@@ -191,9 +191,9 @@ ve.ce.ContentBranchNode.prototype.renderContents = function () {
 
 	// Highlight the node in debug mode
 	if ( ve.debug ) {
-		this.$.css( 'backgroundColor', '#F6F6F6' );
+		this.$element.css( 'backgroundColor', '#F6F6F6' );
 		setTimeout( ve.bind( function () {
-			this.$.css( 'backgroundColor', '' );
+			this.$element.css( 'backgroundColor', '' );
 		}, this ), 350 );
 	}
 };

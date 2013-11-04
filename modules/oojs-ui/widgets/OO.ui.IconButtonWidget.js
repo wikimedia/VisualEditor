@@ -20,11 +20,11 @@ OO.ui.IconButtonWidget = function OoUiIconButtonWidget( config ) {
 	OO.ui.ButtonWidget.call( this, config );
 
 	// Mixin constructors
-	OO.ui.IconedElement.call( this, this.$$( '<span>' ), config );
+	OO.ui.IconedElement.call( this, this.$( '<span>' ), config );
 
 	// Initialization
 	this.$button.prepend( this.$icon );
-	this.$.addClass( 'oo-ui-iconButtonWidget' );
+	this.$element.addClass( 'oo-ui-iconButtonWidget' );
 };
 
 /* Inheritance */

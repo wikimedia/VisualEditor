@@ -18,7 +18,7 @@
 ve.ce.Document = function VeCeDocument( model, surface ) {
 	// Parent constructor
 	ve.Document.call( this, new ve.ce.DocumentNode(
-		model.getDocumentNode(), surface, { '$$': surface.$$ }
+		model.getDocumentNode(), surface, { '$': surface.$ }
 	) );
 
 	// Properties
@@ -138,7 +138,7 @@ ve.ce.Document.prototype.getNodeAndOffset = function ( offset ) {
 	}
 	node = this.getNodeFromOffset( offset );
 	startOffset = node.getOffset() + ( ( node.isWrapped() ) ? 1 : 0 );
-	current = [node.$.contents(), 0];
+	current = [node.$element.contents(), 0];
 	stack = [current];
 	while ( stack.length > 0 ) {
 		if ( current[1] >= current[0].length ) {

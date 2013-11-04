@@ -25,9 +25,9 @@ OO.ui.PopupTool = function OoUiPopupTool( toolbar, config ) {
 	OO.ui.PopuppableElement.call( this, config );
 
 	// Initialization
-	this.$
+	this.$element
 		.addClass( 'oo-ui-popupTool' )
-		.append( this.popup.$ );
+		.append( this.popup.$element );
 };
 
 /* Inheritance */

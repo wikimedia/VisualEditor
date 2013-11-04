@@ -13,7 +13,7 @@
  *
  * @constructor
  * @param {Object} [config] Configuration options
- * @cfg {Function} [$$] jQuery for the frame the widget is in
+ * @cfg {Function} [$] jQuery for the frame the widget is in
  * @cfg {string[]} [classes] CSS class names
  * @cfg {jQuery} [$content] Content elements to append
  */
@@ -22,15 +22,15 @@ OO.ui.Element = function OoUiElement( config ) {
 	config = config || {};
 
 	// Properties
-	this.$$ = config.$$ || OO.ui.Element.get$$( document );
-	this.$ = this.$$( this.$$.context.createElement( this.getTagName() ) );
+	this.$ = config.$ || OO.ui.Element.getJQuery( document );
+	this.$element = this.$( this.$.context.createElement( this.getTagName() ) );
 
 	// Initialization
 	if ( Array.isArray( config.classes ) ) {
-		this.$.addClass( config.classes.join( ' ' ) );
+		this.$element.addClass( config.classes.join( ' ' ) );
 	}
 	if ( config.$content ) {
-		this.$.append( config.$content );
+		this.$element.append( config.$content );
 	}
 };
 
@@ -64,7 +64,7 @@ OO.ui.Element.static.tagName = 'div';
  * @param {OO.ui.Frame} [frame] Frame of the document context
  * @returns {Function} Bound jQuery function
  */
-OO.ui.Element.get$$ = function ( context, frame ) {
+OO.ui.Element.getJQuery = function ( context, frame ) {
 	function wrapper( selector ) {
 		return $( selector, wrapper.context );
 	}
@@ -359,7 +359,7 @@ OO.ui.Element.prototype.getTagName = function () {
  * @returns {HTMLDocument} Document object
  */
 OO.ui.Element.prototype.getElementDocument = function () {
-	return OO.ui.Element.getDocument( this.$ );
+	return OO.ui.Element.getDocument( this.$element );
 };
 
 /**
@@ -368,7 +368,7 @@ OO.ui.Element.prototype.getElementDocument = function () {
  * @returns {Window} Window object
  */
 OO.ui.Element.prototype.getElementWindow = function () {
-	return OO.ui.Element.getWindow( this.$ );
+	return OO.ui.Element.getWindow( this.$element );
 };
 
 /**
@@ -378,7 +378,7 @@ OO.ui.Element.prototype.getElementWindow = function () {
  * @see #static-method-getClosestScrollableContainer
  */
 OO.ui.Element.prototype.getClosestScrollableElementContainer = function () {
-	return OO.ui.Element.getClosestScrollableContainer( this.$[0] );
+	return OO.ui.Element.getClosestScrollableContainer( this.$element[0] );
 };
 
 /**
@@ -389,5 +389,5 @@ OO.ui.Element.prototype.getClosestScrollableElementContainer = function () {
  * @param {Object} [config={}]
  */
 OO.ui.Element.prototype.scrollElementIntoView = function ( config ) {
-	return OO.ui.Element.scrollIntoView( this.$[0], config );
+	return OO.ui.Element.scrollIntoView( this.$element[0], config );
 };

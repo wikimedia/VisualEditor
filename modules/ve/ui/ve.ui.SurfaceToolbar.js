@@ -112,7 +112,7 @@ ve.ui.SurfaceToolbar.prototype.onWindowResize = function () {
 		offset = this.elementOffset;
 
 	// Update right offset after resize (see #float)
-	offset.right = this.$window.width() - this.$.outerWidth() - offset.left;
+	offset.right = this.$window.width() - this.$element.outerWidth() - offset.left;
 	update.offset = offset;
 
 	if ( this.floating ) {
@@ -142,7 +142,7 @@ ve.ui.SurfaceToolbar.prototype.onSurfaceViewKeyUp = function () {
 
 	// If toolbar is floating and cursor is obscured, scroll cursor into view
 	if ( obscured && this.floating ) {
-		$( 'html, body' ).animate( { scrollTop: scrollTo }, 0 );
+		this.$( 'html, body' ).animate( { scrollTop: scrollTo }, 0 );
 	}
 };
 
@@ -206,10 +206,10 @@ ve.ui.SurfaceToolbar.prototype.initialize = function () {
 	OO.ui.Toolbar.prototype.initialize.call( this );
 
 	// Properties
-	this.$window = $( this.getElementWindow() );
-	this.$surfaceView = this.surface.getView().$;
-	this.elementOffset = this.$.offset();
-	this.elementOffset.right = this.$window.width() - this.$.outerWidth() - this.elementOffset.left;
+	this.$window = this.$( this.getElementWindow() );
+	this.$surfaceView = this.surface.getView().$element;
+	this.elementOffset = this.$element.offset();
+	this.elementOffset.right = this.$window.width() - this.$element.outerWidth() - this.elementOffset.left;
 
 	// Initial position. Could be invalidated by the first
 	// call to onWindowScroll, but users of this event (e.g toolbarTracking)
@@ -254,8 +254,8 @@ ve.ui.SurfaceToolbar.prototype.float = function () {
 			'css': { 'left': this.elementOffset.left, 'right': this.elementOffset.right },
 			'floating': true
 		};
-		this.$
-			.css( 'height', this.$.height() )
+		this.$element
+			.css( 'height', this.$element.height() )
 			.addClass( 've-ui-surfaceToolbar-floating' );
 		this.$bar.css( update.css );
 		this.floating = true;
@@ -271,7 +271,7 @@ ve.ui.SurfaceToolbar.prototype.float = function () {
  */
 ve.ui.SurfaceToolbar.prototype.unfloat = function () {
 	if ( this.floating ) {
-		this.$
+		this.$element
 			.css( 'height', '' )
 			.removeClass( 've-ui-surfaceToolbar-floating' );
 		this.$bar.css( { 'left': '', 'right': '' } );

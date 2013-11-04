@@ -45,14 +45,14 @@ ve.ui.MWExtensionInspector.prototype.initialize = function () {
 	ve.ui.SurfaceInspector.prototype.initialize.call( this );
 
 	this.input = new OO.ui.TextInputWidget( {
-		'$$': this.frame.$$,
+		'$': this.$,
 		'overlay': this.surface.$localOverlay,
 		'multiline': true
 	} );
-	this.input.$.addClass( 've-ui-mwExtensionInspector-input' );
+	this.input.$element.addClass( 've-ui-mwExtensionInspector-input' );
 
 	// Initialization
-	this.$form.append( this.input.$ );
+	this.$form.append( this.input.$element );
 };
 
 

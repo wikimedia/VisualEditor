@@ -22,13 +22,13 @@
  * @abstract
  *
  * @constructor
- * @param {jQuery} [$focusable=this.$] Primary element user is focusing on
+ * @param {jQuery} [$focusable=this.$element] Primary element user is focusing on
  */
 ve.ce.FocusableNode = function VeCeFocusableNode( $focusable ) {
 	// Properties
 	this.focused = false;
-	this.$focusable = $focusable || this.$;
-	this.$highlights = $( [] );
+	this.$focusable = $focusable || this.$element;
+	this.$highlights = this.$( [] );
 	this.surface = null;
 
 	// Events
@@ -170,19 +170,19 @@ ve.ce.FocusableNode.prototype.setFocused = function ( value ) {
  */
 ve.ce.FocusableNode.prototype.createHighlight = function () {
 	this.$focusable.find( '*' ).add( this.$focusable ).each(
-		ve.bind( function( i, element ) {
-			var offset, $element = $( element );
-			if ( !$element.is( ':visible' ) ) {
+		ve.bind( function( i, el ) {
+			var offset, $el = this.$( el );
+			if ( !$el.is( ':visible' ) ) {
 				return true;
 			}
 			offset = OO.ui.Element.getRelativePosition(
-				$element, this.getRoot().getSurface().getSurface().$
+				$el, this.getRoot().getSurface().getSurface().$element
 			);
 			this.$highlights = this.$highlights.add(
-				$( '<div>' )
+				this.$( '<div>' )
 					.css( {
-						height: $element.height(),
-						width: $element.width(),
+						height: $el.height(),
+						width: $el.width(),
 						top: offset.top,
 						left: offset.left
 					} )
@@ -200,7 +200,7 @@ ve.ce.FocusableNode.prototype.createHighlight = function () {
  * @method
  */
 ve.ce.FocusableNode.prototype.clearHighlight = function () {
-	this.$highlights = $( [] );
+	this.$highlights = this.$( [] );
 	this.surface.replaceHighlight( null );
 };
 

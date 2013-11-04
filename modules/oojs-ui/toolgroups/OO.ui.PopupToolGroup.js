@@ -27,15 +27,15 @@ OO.ui.PopupToolGroup = function OoUiPopupToolGroup( toolbar, config ) {
 	OO.ui.ToolGroup.call( this, toolbar, config );
 
 	// Mixin constructors
-	OO.ui.IconedElement.call( this, this.$$( '<span>' ), config );
-	OO.ui.LabeledElement.call( this, this.$$( '<span>' ) );
+	OO.ui.IconedElement.call( this, this.$( '<span>' ), config );
+	OO.ui.LabeledElement.call( this, this.$( '<span>' ) );
 	OO.ui.ClippableElement.call( this, this.$group );
 
 	// Properties
 	this.active = false;
 	this.dragging = false;
 	this.onBlurHandler = OO.ui.bind( this.onBlur, this );
-	this.$handle = this.$$( '<span>' );
+	this.$handle = this.$( '<span>' );
 
 	// Events
 	this.$handle.on( {
@@ -47,7 +47,7 @@ OO.ui.PopupToolGroup = function OoUiPopupToolGroup( toolbar, config ) {
 	this.$handle
 		.addClass( 'oo-ui-popupToolGroup-handle' )
 		.append( this.$label, this.$icon );
-	this.$
+	this.$element
 		.addClass( 'oo-ui-popupToolGroup' )
 		.prepend( this.$handle );
 	this.setLabel( config.label ? OO.ui.msg( config.label ) : '' );
@@ -75,7 +75,7 @@ OO.mixinClass( OO.ui.PopupToolGroup, OO.ui.ClippableElement );
  */
 OO.ui.PopupToolGroup.prototype.onBlur = function ( e ) {
 	// Only deactivate when clicking outside the dropdown element
-	if ( $( e.target ).closest( '.oo-ui-popupToolGroup' )[0] !== this.$[0] ) {
+	if ( this.$( e.target ).closest( '.oo-ui-popupToolGroup' )[0] !== this.$element[0] ) {
 		this.setActive( false );
 	}
 };
@@ -131,11 +131,11 @@ OO.ui.PopupToolGroup.prototype.setActive = function ( value ) {
 		this.active = value;
 		if ( value ) {
 			this.setClipping( true );
-			this.$.addClass( 'oo-ui-popupToolGroup-active' );
+			this.$element.addClass( 'oo-ui-popupToolGroup-active' );
 			this.getElementDocument().addEventListener( 'mouseup', this.onBlurHandler, true );
 		} else {
 			this.setClipping( false );
-			this.$.removeClass( 'oo-ui-popupToolGroup-active' );
+			this.$element.removeClass( 'oo-ui-popupToolGroup-active' );
 			this.getElementDocument().removeEventListener( 'mouseup', this.onBlurHandler, true );
 		}
 	}

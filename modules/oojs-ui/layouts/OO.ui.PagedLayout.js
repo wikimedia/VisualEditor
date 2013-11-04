@@ -13,7 +13,7 @@
  *
  * @constructor
  * @param {Object} [config] Configuration options
- * @param {boolean} [config.attachPagesPanel] Whether or not to attach pagesPanel to this.$ on
+ * @param {boolean} [config.attachPagesPanel] Whether or not to attach pagesPanel to this.$element on
  *  initialization.
  */
 OO.ui.PagedLayout = function OoUiPagedLayout( config ) {
@@ -27,14 +27,14 @@ OO.ui.PagedLayout = function OoUiPagedLayout( config ) {
 	this.attached = !!config.attachPagesPanel;
 	this.currentPageName = null;
 	this.pages = {};
-	this.pagesPanel = new OO.ui.StackPanelLayout( { '$$': this.$$ } );
+	this.pagesPanel = new OO.ui.StackPanelLayout( { '$': this.$ } );
 
 	// Initialization
-	this.$.addClass( 'oo-ui-pagedLayout' );
-	this.pagesPanel.$.addClass( 'oo-ui-pagedLayout-pagesPanel' );
+	this.$element.addClass( 'oo-ui-pagedLayout' );
+	this.pagesPanel.$element.addClass( 'oo-ui-pagedLayout-pagesPanel' );
 
 	if ( this.attached ) {
-		this.$.append( this.pagesPanel.$ );
+		this.$element.append( this.pagesPanel.$element );
 	}
 };
 
@@ -74,12 +74,12 @@ OO.inheritClass( OO.ui.PagedLayout, OO.ui.Layout );
  * @chainable
  */
 OO.ui.PagedLayout.prototype.addPage = function ( name, config ) {
-	var page = new OO.ui.PanelLayout( { '$$': this.$$, 'scrollable': true } );
+	var page = new OO.ui.PanelLayout( { '$': this.$, 'scrollable': true } );
 
 	config = config || {};
 
 	if ( config.$content ) {
-		page.$.append( config.$content );
+		page.$element.append( config.$content );
 	}
 
 	this.pages[name] = page;

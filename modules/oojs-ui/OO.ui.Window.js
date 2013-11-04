@@ -30,17 +30,19 @@ OO.ui.Window = function OoUiWindow( windowSet, config ) {
 	this.visible = false;
 	this.opening = false;
 	this.closing = false;
-	this.frame = null;
-	this.$frame = this.$$( '<div>' );
+	this.frame = new OO.ui.Frame();
+	this.$frame = this.$( '<div>' );
+	this.$ = function () {
+		throw new Error( 'this.$() cannot be used until the frame has been initialized.' );
+	};
 
 	// Initialization
-	this.$
+	this.$element
 		.addClass( 'oo-ui-window' )
 		.append( this.$frame );
-	this.frame = new OO.ui.Frame();
 	this.$frame
 		.addClass( 'oo-ui-window-frame' )
-		.append( this.frame.$ );
+		.append( this.frame.$element );
 
 	// Events
 	this.frame.connect( this, { 'initialize': 'onFrameInitialize' } );
@@ -111,16 +113,17 @@ OO.ui.Window.prototype.onFrameInitialize = function () {
  */
 OO.ui.Window.prototype.initialize = function () {
 	// Properties
-	this.$title = this.$$( '<div class="oo-ui-window-title"></div>' );
+	this.$ = this.frame.$;
+	this.$title = this.$( '<div class="oo-ui-window-title"></div>' );
 	if ( this.getTitle() ) {
 		this.setTitle();
 	}
-	this.$icon = this.$$( '<div class="oo-ui-window-icon"></div>' )
+	this.$icon = this.$( '<div class="oo-ui-window-icon"></div>' )
 		.addClass( 'oo-ui-icon-' + this.constructor.static.icon );
-	this.$head = this.$$( '<div class="oo-ui-window-head"></div>' );
-	this.$body = this.$$( '<div class="oo-ui-window-body"></div>' );
-	this.$foot = this.$$( '<div class="oo-ui-window-foot"></div>' );
-	this.$overlay = this.$$( '<div class="oo-ui-window-overlay"></div>' );
+	this.$head = this.$( '<div class="oo-ui-window-head"></div>' );
+	this.$body = this.$( '<div class="oo-ui-window-body"></div>' );
+	this.$foot = this.$( '<div class="oo-ui-window-foot"></div>' );
+	this.$overlay = this.$( '<div class="oo-ui-window-overlay"></div>' );
 
 	// Initialization
 	this.frame.$content.append(
@@ -223,7 +226,7 @@ OO.ui.Window.prototype.setSize = function ( width, height ) {
 		return;
 	}
 
-	this.frame.$.css( {
+	this.frame.$element.css( {
 		'width': width === undefined ? 'auto' : width,
 		'height': height === undefined ? 'auto' : height
 	} );
@@ -247,7 +250,7 @@ OO.ui.Window.prototype.setTitle = function ( customTitle ) {
 OO.ui.Window.prototype.fitHeightToContents = function ( min, max ) {
 	var height = this.frame.$content.outerHeight();
 
-	this.frame.$.css(
+	this.frame.$element.css(
 		'height', Math.max( min || 0, max === undefined ? height : Math.min( max, height ) )
 	);
 };
@@ -261,7 +264,7 @@ OO.ui.Window.prototype.fitHeightToContents = function ( min, max ) {
 OO.ui.Window.prototype.fitWidthToContents = function ( min, max ) {
 	var width = this.frame.$content.outerWidth();
 
-	this.frame.$.css(
+	this.frame.$element.css(
 		'width', Math.max( min || 0, max === undefined ? width : Math.min( max, width ) )
 	);
 };
@@ -273,7 +276,7 @@ OO.ui.Window.prototype.fitWidthToContents = function ( min, max ) {
  * @param {string} top Top offset
  */
 OO.ui.Window.prototype.setPosition = function ( left, top ) {
-	this.$.css( { 'left': left, 'top': top } );
+	this.$element.css( { 'left': left, 'top': top } );
 };
 
 /**
@@ -289,9 +292,9 @@ OO.ui.Window.prototype.open = function ( config ) {
 		this.opening = true;
 		this.onSetup( config );
 		this.emit( 'setup', config );
-		this.$.show();
+		this.$element.show();
 		this.visible = true;
-		this.frame.$.focus();
+		this.frame.$element.focus();
 		this.frame.run( OO.ui.bind( function () {
 			this.onOpen();
 			this.opening = false;
@@ -314,7 +317,7 @@ OO.ui.Window.prototype.open = function ( config ) {
 OO.ui.Window.prototype.close = function ( action ) {
 	if ( !this.closing ) {
 		this.closing = true;
-		this.$.hide();
+		this.$element.hide();
 		this.visible = false;
 		this.onClose( action );
 		this.frame.$content.find( ':focus' ).blur();

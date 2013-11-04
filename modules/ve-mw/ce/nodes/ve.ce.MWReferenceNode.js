@@ -28,8 +28,8 @@ ve.ce.MWReferenceNode = function VeCeMWReferenceNode( model, config ) {
 	ve.ce.RelocatableNode.call( this );
 
 	// DOM changes
-	this.$link = $( '<a>' ).attr( 'href', '#' );
-	this.$.addClass( 've-ce-mwReferenceNode', 'reference' ).append( this.$link );
+	this.$link = this.$( '<a>' ).attr( 'href', '#' );
+	this.$element.addClass( 've-ce-mwReferenceNode', 'reference' ).append( this.$link );
 
 	this.index = '';
 	this.internalList = this.model.getDocument().internalList;

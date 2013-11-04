@@ -30,7 +30,7 @@ ve.ui.MWNoticesPopupTool = function VeUiMWNoticesPopupTool( toolGroup, config ) 
 	OO.ui.PopupTool.call( this, toolGroup, config );
 
 	// Properties
-	this.$items = this.$$( '<div>' );
+	this.$items = this.$( '<div>' );
 
 	// Initialization
 	for ( key in items ) {
@@ -50,7 +50,7 @@ ve.ui.MWNoticesPopupTool = function VeUiMWNoticesPopupTool( toolGroup, config ) 
 			this.showPopup();
 		}, this ), 500 );
 	} else {
-		this.$.hide();
+		this.$element.hide();
 	}
 };
 
@@ -103,7 +103,7 @@ ve.ui.MWHelpPopupTool = function VeUiMWHelpPopupTool( toolGroup, config ) {
 	OO.ui.PopupTool.call( this, toolGroup, config );
 
 	// Properties
-	this.$items = this.$$( '<div>' );
+	this.$items = this.$( '<div>' );
 	this.feedback = null;
 	this.helpButton = new OO.ui.IconButtonWidget( {
 		'icon': 'help',
@@ -124,33 +124,33 @@ ve.ui.MWHelpPopupTool = function VeUiMWHelpPopupTool( toolGroup, config ) {
 	this.$items
 		.addClass( 've-ui-mwHelpPopupTool-items' )
 		.append(
-			this.$$( '<div>' )
+			this.$( '<div>' )
 				.addClass( 've-ui-mwHelpPopupTool-item' )
 				.text( ve.msg( 'visualeditor-beta-warning' ) )
 		)
 		.append(
-			this.$$( '<div>' )
+			this.$( '<div>' )
 				.addClass( 've-ui-mwHelpPopupTool-item' )
-				.append( this.helpButton.$ )
-				.append( this.feedbackButton.$ )
+				.append( this.helpButton.$element )
+				.append( this.feedbackButton.$element )
 		);
 	if ( ve.version.id !== false ) {
 		this.$items
-			.append( this.$$( '<div>' )
+			.append( this.$( '<div>' )
 				.addClass( 've-ui-mwHelpPopupTool-item' )
-				.append( this.$$( '<span>' )
+				.append( this.$( '<span>' )
 					.addClass( 've-ui-mwHelpPopupTool-version-label' )
 					.text( ve.msg( 'visualeditor-version-label' ) )
 				)
 				.append( ' ' )
-				.append( this.$$( '<a>' )
+				.append( this.$( '<a>' )
 					.addClass( 've-ui-mwHelpPopupTool-version-link' )
 					.attr( 'target', '_blank' )
 					.attr( 'href', ve.version.url )
 					.text( ve.version.id )
 				)
 				.append( ' ' )
-				.append( this.$$( '<span>' )
+				.append( this.$( '<span>' )
 					.addClass( 've-ui-mwHelpPopupTool-version-date' )
 					.text( ve.version.dateString )
 				)

@@ -34,7 +34,7 @@ OO.ui.ToolGroup = function OoUiToolGroup( toolbar, config ) {
 	OO.ui.Widget.call( this, config );
 
 	// Mixin constructors
-	OO.ui.GroupElement.call( this, this.$$( '<div>' ) );
+	OO.ui.GroupElement.call( this, this.$( '<div>' ) );
 
 	// Properties
 	this.toolbar = toolbar;
@@ -47,7 +47,7 @@ OO.ui.ToolGroup = function OoUiToolGroup( toolbar, config ) {
 	this.onCapturedMouseUpHandler = OO.ui.bind( this.onCapturedMouseUp, this );
 
 	// Events
-	this.$.on( {
+	this.$element.on( {
 		'mousedown': OO.ui.bind( this.onMouseDown, this ),
 		'mouseup': OO.ui.bind( this.onMouseUp, this ),
 		'mouseover': OO.ui.bind( this.onMouseOver, this ),
@@ -57,7 +57,7 @@ OO.ui.ToolGroup = function OoUiToolGroup( toolbar, config ) {
 
 	// Initialization
 	this.$group.addClass( 'oo-ui-toolGroup-tools' );
-	this.$
+	this.$element
 		.addClass( 'oo-ui-toolGroup' )
 		.append( this.$group );
 	this.populate();
@@ -186,7 +186,7 @@ OO.ui.ToolGroup.prototype.onMouseOut = function ( e ) {
  * @returns {OO.ui.Tool|null} Tool, `null` if none was found
  */
 OO.ui.ToolGroup.prototype.getTargetTool = function ( e ) {
-	var $item = $( e.target ).closest( '.oo-ui-tool-link' );
+	var $item = this.$( e.target ).closest( '.oo-ui-tool-link' );
 	if ( $item.length ) {
 		return $item.parent().data( 'oo-ui-tool' );
 	}
@@ -259,9 +259,9 @@ OO.ui.ToolGroup.prototype.populate = function () {
 	}
 	// Update emptiness state
 	if ( add.length ) {
-		this.$.removeClass( 'oo-ui-toolGroup-empty' );
+		this.$element.removeClass( 'oo-ui-toolGroup-empty' );
 	} else {
-		this.$.addClass( 'oo-ui-toolGroup-empty' );
+		this.$element.addClass( 'oo-ui-toolGroup-empty' );
 	}
 	// Re-add tools (moving existing ones to new locations)
 	this.addItems( add );
@@ -282,5 +282,5 @@ OO.ui.ToolGroup.prototype.destroy = function () {
 		this.tools[name].disconnect( this ).destroy();
 		delete this.tools[name];
 	}
-	this.$.remove();
+	this.$element.remove();
 };

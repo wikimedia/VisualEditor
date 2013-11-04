@@ -22,7 +22,7 @@ OO.ui.OutlineWidget = function OoUiOutlineWidget( config ) {
 	OO.ui.SelectWidget.call( this, config );
 
 	// Initialization
-	this.$.addClass( 'oo-ui-outlineWidget' );
+	this.$element.addClass( 'oo-ui-outlineWidget' );
 };
 
 /* Inheritance */

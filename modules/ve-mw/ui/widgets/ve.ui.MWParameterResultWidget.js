@@ -23,7 +23,7 @@ ve.ui.MWParameterResultWidget = function VeUiMWParameterResultWidget( data, conf
 	OO.ui.OptionWidget.call( this, data, config );
 
 	// Initialization
-	this.$.addClass( 've-ui-mwParameterResultWidget' );
+	this.$element.addClass( 've-ui-mwParameterResultWidget' );
 	this.setLabel( this.buildLabel() );
 };
 
@@ -36,25 +36,25 @@ OO.inheritClass( ve.ui.MWParameterResultWidget, OO.ui.OptionWidget );
 /** */
 ve.ui.MWParameterResultWidget.prototype.buildLabel = function () {
 	var i, len,
-		$label = this.$$( '<div>' )
+		$label = this.$( '<div>' )
 			.addClass( 've-ui-mwParameterResultWidget-label' )
 			.text( this.data.label ),
-		$names = this.$$( '<div>' )
+		$names = this.$( '<div>' )
 			.addClass( 've-ui-mwParameterResultWidget-names' ),
-		$description = this.$$( '<div>' )
+		$description = this.$( '<div>' )
 			.addClass( 've-ui-mwParameterResultWidget-description' )
 			.text( this.data.description || '' );
 
 	if ( this.data.name ) {
 		$names.append(
-			this.$$( '<span>' )
+			this.$( '<span>' )
 				.addClass( 've-ui-mwParameterResultWidget-name' )
 				.text( this.data.name )
 		);
 	}
 	for ( i = 0, len = this.data.aliases.length; i < len; i++ ) {
 		$names.append(
-			this.$$( '<span>' )
+			this.$( '<span>' )
 				.addClass( 've-ui-mwParameterResultWidget-name' )
 				.text( this.data.aliases[i] )
 		);

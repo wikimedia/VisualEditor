@@ -55,11 +55,11 @@ ve.ui.LinkInspector.prototype.initialize = function () {
 
 	// Properties
 	this.targetInput = new this.constructor.static.linkTargetInputWidget( {
-		'$$': this.frame.$$, '$overlay': this.surface.$localOverlayMenus
+		'$': this.$, '$overlay': this.surface.$localOverlayMenus
 	} );
 
 	// Initialization
-	this.$form.append( this.targetInput.$ );
+	this.$form.append( this.targetInput.$element );
 };
 
 /**

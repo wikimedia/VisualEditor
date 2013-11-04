@@ -17,7 +17,7 @@
  * @constructor
  * @param {OO.ui.TextInputWidget} input Input widget
  * @param {Object} [config] Configuration options
- * @cfg {jQuery} [$overlay=this.$$( 'body' )] Overlay layer
+ * @cfg {jQuery} [$overlay=this.$( 'body' )] Overlay layer
  */
 OO.ui.LookupInputWidget = function OoUiLookupInputWidget( input, config ) {
 	// Config intialization
@@ -25,9 +25,9 @@ OO.ui.LookupInputWidget = function OoUiLookupInputWidget( input, config ) {
 
 	// Properties
 	this.lookupInput = input;
-	this.$overlay = config.$overlay || this.$$( 'body' );
+	this.$overlay = config.$overlay || this.$( 'body' );
 	this.lookupMenu = new OO.ui.TextInputMenuWidget( this, {
-		'$$': OO.ui.Element.get$$( this.$overlay ),
+		'$': OO.ui.Element.getJQuery( this.$overlay ),
 		'input': this.lookupInput,
 		'$container': config.$container
 	} );
@@ -36,7 +36,7 @@ OO.ui.LookupInputWidget = function OoUiLookupInputWidget( input, config ) {
 	this.lookupRequest = null;
 
 	// Events
-	this.$overlay.append( this.lookupMenu.$ );
+	this.$overlay.append( this.lookupMenu.$element );
 
 	this.lookupInput.$input.on( {
 		'focus': OO.ui.bind( this.onLookupInputFocus, this ),
@@ -46,8 +46,8 @@ OO.ui.LookupInputWidget = function OoUiLookupInputWidget( input, config ) {
 	this.lookupInput.connect( this, { 'change': 'onLookupInputChange' } );
 
 	// Initialization
-	this.$.addClass( 'oo-ui-lookupWidget' );
-	this.lookupMenu.$.addClass( 'oo-ui-lookupWidget-menu' );
+	this.$element.addClass( 'oo-ui-lookupWidget' );
+	this.lookupMenu.$element.addClass( 'oo-ui-lookupWidget-menu' );
 };
 
 /* Methods */

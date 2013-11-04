@@ -23,18 +23,18 @@ ve.ce.MWInlineImageNode = function VeCeMWInlineImageNode( model, config ) {
 	ve.ce.LeafNode.call( this, model, config );
 
 	if ( this.model.getAttribute( 'isLinked' ) ) {
-		this.$ = this.$$( '<a>' ).addClass( 'image' );
-		this.$image = this.$$( '<img>' ).appendTo( this.$ );
+		this.$element = this.$( '<a>' ).addClass( 'image' );
+		this.$image = this.$( '<img>' ).appendTo( this.$element );
 	} else {
 		// For inline images that are not linked (empty linkto=) we intentionally don't match output
 		// of MW Parser, instead we wrap those images in span so selection and hover (based on
 		// shields) can work well. It might change in the future when we improve our selection.
-		this.$ = this.$$( '<span>' );
-		this.$image = this.$$( '<img>' ).appendTo( this.$ );
+		this.$element = this.$( '<span>' );
+		this.$image = this.$( '<img>' ).appendTo( this.$element );
 	}
 
 	// Mixin constructors
-	ve.ce.MWImageNode.call( this, this.$, this.$image );
+	ve.ce.MWImageNode.call( this, this.$element, this.$image );
 
 	this.$image
 		.attr( 'src', this.getResolvedAttribute( 'src' ) )
@@ -51,7 +51,7 @@ ve.ce.MWInlineImageNode = function VeCeMWInlineImageNode( model, config ) {
 	}
 
 	// DOM changes
-	this.$.addClass( 've-ce-mwInlineImageNode' );
+	this.$element.addClass( 've-ce-mwInlineImageNode' );
 
 	// Events
 	this.model.connect( this, { 'attributeChange': 'onAttributeChange' } );

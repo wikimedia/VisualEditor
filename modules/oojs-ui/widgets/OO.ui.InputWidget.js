@@ -36,7 +36,7 @@ OO.ui.InputWidget = function OoUiInputWidget( config ) {
 	// Initialization
 	this.$input.attr( 'name', config.name );
 	this.setReadOnly( config.readOnly );
-	this.$.addClass( 'oo-ui-inputWidget' ).append( this.$input );
+	this.$element.addClass( 'oo-ui-inputWidget' ).append( this.$input );
 	this.setValue( config.value );
 };
 
@@ -61,7 +61,7 @@ OO.inheritClass( OO.ui.InputWidget, OO.ui.Widget );
  * @returns {jQuery} Input element
  */
 OO.ui.InputWidget.prototype.getInputElement = function () {
-	return this.$$( '<input>' );
+	return this.$( '<input>' );
 };
 
 /**

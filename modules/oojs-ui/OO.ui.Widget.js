@@ -31,7 +31,7 @@ OO.ui.Widget = function OoUiWidget( config ) {
 	this.disabled = config.disabled;
 
 	// Initialization
-	this.$.addClass( 'oo-ui-widget' );
+	this.$element.addClass( 'oo-ui-widget' );
 	this.setDisabled( this.disabled );
 };
 
@@ -65,9 +65,9 @@ OO.ui.Widget.prototype.isDisabled = function () {
 OO.ui.Widget.prototype.setDisabled = function ( disabled ) {
 	this.disabled = !!disabled;
 	if ( this.disabled ) {
-		this.$.addClass( 'oo-ui-widget-disabled' );
+		this.$element.addClass( 'oo-ui-widget-disabled' );
 	} else {
-		this.$.removeClass( 'oo-ui-widget-disabled' );
+		this.$element.removeClass( 'oo-ui-widget-disabled' );
 	}
 	return this;
 };

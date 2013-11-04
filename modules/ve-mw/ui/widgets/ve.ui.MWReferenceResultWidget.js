@@ -24,15 +24,15 @@ ve.ui.MWReferenceResultWidget = function VeUiMWReferenceResultWidget( data, conf
 	OO.ui.OptionWidget.call( this, data, config );
 
 	// Properties
-	this.$shield = this.$$( '<div>' );
+	this.$shield = this.$( '<div>' );
 
 	// Initialization
 	this.$shield.addClass( 've-ui-mwReferenceResultWidget-shield' );
-	this.$
+	this.$element
 		.addClass( 've-ui-mwReferenceResultWidget' )
 		.append( this.$shield );
 	if ( config.divider ) {
-		this.$.addClass( 've-ui-mwReferenceResultWidget-divider' );
+		this.$element.addClass( 've-ui-mwReferenceResultWidget-divider' );
 		this.setDisabled( true );
 	}
 };

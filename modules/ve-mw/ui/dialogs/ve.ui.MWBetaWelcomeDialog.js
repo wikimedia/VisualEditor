@@ -47,12 +47,12 @@ ve.ui.MWBetaWelcomeDialog.prototype.initialize = function () {
 
 	// Properties
 	this.contentLayout = new OO.ui.PanelLayout( {
-		'$$': this.frame.$$,
+		'$': this.$,
 		'scrollable': true,
 		'padded': true
 	} );
 	this.continueButton = new OO.ui.PushButtonWidget( {
-		'$$': this.$$,
+		'$': this.$,
 		'label': ve.msg( 'visualeditor-dialog-beta-welcome-action-continue' ),
 		'flags': ['primary']
 	} );
@@ -61,11 +61,11 @@ ve.ui.MWBetaWelcomeDialog.prototype.initialize = function () {
 	this.continueButton.connect( this, { 'click': [ 'close', 'close' ] } );
 
 	// Initialization
-	this.contentLayout.$
+	this.contentLayout.$element
 		.addClass( 've-ui-mwBetaWelcomeDialog-content' )
 		.text( ve.msg( 'visualeditor-dialog-beta-welcome-content', $( '#ca-edit' ).text() ) );
-	this.$body.append( this.contentLayout.$ );
-	this.$foot.append( this.continueButton.$ );
+	this.$body.append( this.contentLayout.$element );
+	this.$foot.append( this.continueButton.$element );
 };
 
 /**

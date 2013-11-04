@@ -32,10 +32,10 @@ OO.ui.GridLayout = function OoUiGridLayout( panels, config ) {
 	this.heights = [];
 
 	// Initialization
-	this.$.addClass( 'oo-ui-gridLayout' );
+	this.$element.addClass( 'oo-ui-gridLayout' );
 	for ( i = 0, len = panels.length; i < len; i++ ) {
 		this.panels.push( panels[i] );
-		this.$.append( panels[i].$ );
+		this.$element.append( panels[i].$element );
 	}
 	if ( config.widths || config.heights ) {
 		this.layout( config.widths || [1], config.heights || [1] );
@@ -139,12 +139,12 @@ OO.ui.GridLayout.prototype.update = function () {
 				'top': Math.round( top * 100 ) + '%'
 			};
 			// If RTL, reverse:
-			if ( this.$$.frame.dir === 'rtl' ) {
+			if ( this.$.frame.dir === 'rtl' ) {
 				dimensions.right = Math.round( left * 100 ) + '%';
 			} else {
 				dimensions.left = Math.round( left * 100 ) + '%';
 			}
-			panel.$.css( dimensions );
+			panel.$element.css( dimensions );
 			i++;
 			left += width;
 		}

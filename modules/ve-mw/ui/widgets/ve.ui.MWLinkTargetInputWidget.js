@@ -31,8 +31,8 @@ ve.ui.MWLinkTargetInputWidget = function VeUiMWLinkTargetInputWidget( config ) {
 	this.lookupMenu.connect( this, { 'select': 'onLookupMenuItemSelect' } );
 
 	// Initialization
-	this.$.addClass( 've-ui-mwLinkTargetInputWidget' );
-	this.lookupMenu.$.addClass( 've-ui-mwLinkTargetInputWidget-menu' );
+	this.$element.addClass( 've-ui-mwLinkTargetInputWidget' );
+	this.lookupMenu.$element.addClass( 've-ui-mwLinkTargetInputWidget-menu' );
 };
 
 /* Inheritance */
@@ -100,7 +100,7 @@ ve.ui.MWLinkTargetInputWidget.prototype.getLookupCacheItemFromData = function ( 
  */
 ve.ui.MWLinkTargetInputWidget.prototype.getLookupMenuItemsFromData = function ( data ) {
 	var i, len, item,
-		menu$$ = this.lookupMenu.$$,
+		menu$ = this.lookupMenu.$,
 		items = [],
 		matchingPages = data,
 		// If not found, run value through mw.Title to avoid treating a match as a
@@ -115,11 +115,11 @@ ve.ui.MWLinkTargetInputWidget.prototype.getLookupMenuItemsFromData = function ( 
 	if ( ve.init.platform.getExternalLinkUrlProtocolsRegExp().test( this.value ) ) {
 		items.push( new OO.ui.MenuSectionItemWidget(
 			'externalLink',
-			{ '$$': menu$$, 'label': ve.msg( 'visualeditor-linkinspector-suggest-external-link' ) }
+			{ '$': menu$, 'label': ve.msg( 'visualeditor-linkinspector-suggest-external-link' ) }
 		) );
 		items.push( new OO.ui.MenuItemWidget(
 			this.getExternalLinkAnnotationFromUrl( this.value ),
-			{ '$$': menu$$, 'rel': 'externalLink', 'label': this.value }
+			{ '$': menu$, 'rel': 'externalLink', 'label': this.value }
 		) );
 	}
 
@@ -128,19 +128,19 @@ ve.ui.MWLinkTargetInputWidget.prototype.getLookupMenuItemsFromData = function ( 
 		if ( titleObj ) {
 			items.push( new OO.ui.MenuSectionItemWidget(
 				'newPage',
-				{ '$$': menu$$, 'label': ve.msg( 'visualeditor-linkinspector-suggest-new-page' ) }
+				{ '$': menu$, 'label': ve.msg( 'visualeditor-linkinspector-suggest-new-page' ) }
 			) );
 			items.push( new OO.ui.MenuItemWidget(
 				this.getInternalLinkAnnotationFromTitle( this.value ),
-				{ '$$': menu$$, 'rel': 'newPage', 'label': this.value }
+				{ '$': menu$, 'rel': 'newPage', 'label': this.value }
 			) );
 		} else {
 			// If no title object could be created, it means the title is illegal
 			item = new OO.ui.MenuSectionItemWidget(
 				'illegalTitle',
-				{ '$$': menu$$, 'label': ve.msg( 'visualeditor-linkinspector-illegal-title' ) }
+				{ '$': menu$, 'label': ve.msg( 'visualeditor-linkinspector-illegal-title' ) }
 			);
-			item.$.addClass( 've-ui-mwLinkTargetInputWidget-warning' );
+			item.$element.addClass( 've-ui-mwLinkTargetInputWidget-warning' );
 			items.push( item );
 		}
 	}
@@ -149,7 +149,7 @@ ve.ui.MWLinkTargetInputWidget.prototype.getLookupMenuItemsFromData = function ( 
 	if ( matchingPages && matchingPages.length ) {
 		items.push( new OO.ui.MenuSectionItemWidget(
 			'matchingPages',
-			{ '$$': menu$$, 'label': ve.msg( 'visualeditor-linkinspector-suggest-matching-page' ) }
+			{ '$': menu$, 'label': ve.msg( 'visualeditor-linkinspector-suggest-matching-page' ) }
 		) );
 		// Offer the exact text as a suggestion if the page exists
 		if ( pageExists && !pageExistsExact ) {
@@ -158,7 +158,7 @@ ve.ui.MWLinkTargetInputWidget.prototype.getLookupMenuItemsFromData = function ( 
 		for ( i = 0, len = matchingPages.length; i < len; i++ ) {
 			items.push( new OO.ui.MenuItemWidget(
 				this.getInternalLinkAnnotationFromTitle( matchingPages[i] ),
-				{ '$$': menu$$, 'rel': 'matchingPage', 'label': matchingPages[i] }
+				{ '$': menu$, 'rel': 'matchingPage', 'label': matchingPages[i] }
 			) );
 		}
 	}

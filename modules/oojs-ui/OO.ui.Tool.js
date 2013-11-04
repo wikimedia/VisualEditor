@@ -23,14 +23,14 @@ OO.ui.Tool = function OoUiTool( toolGroup, config ) {
 	OO.ui.Widget.call( this, config );
 
 	// Mixin constructors
-	OO.ui.IconedElement.call( this, this.$$( '<span>' ) );
-	OO.ui.LabeledElement.call( this, this.$$( '<span>' ) );
+	OO.ui.IconedElement.call( this, this.$( '<span>' ) );
+	OO.ui.LabeledElement.call( this, this.$( '<span>' ) );
 
 	// Properties
 	this.toolGroup = toolGroup;
 	this.toolbar = this.toolGroup.getToolbar();
 	this.active = false;
-	this.$link = this.$$( '<a>' );
+	this.$link = this.$( '<a>' );
 
 	// Events
 	this.toolbar.connect( this, { 'updateState': 'onUpdateState' } );
@@ -39,7 +39,7 @@ OO.ui.Tool = function OoUiTool( toolGroup, config ) {
 	this.$link
 		.addClass( 'oo-ui-tool-link' )
 		.append( this.$icon, this.$label );
-	this.$
+	this.$element
 		.data( 'oo-ui-tool', this )
 		.addClass(
 			'oo-ui-tool ' + 'oo-ui-tool-name-' +
@@ -191,9 +191,9 @@ OO.ui.Tool.prototype.isActive = function () {
 OO.ui.Tool.prototype.setActive = function ( state ) {
 	this.active = !!state;
 	if ( this.active ) {
-		this.$.addClass( 'oo-ui-tool-active' );
+		this.$element.addClass( 'oo-ui-tool-active' );
 	} else {
-		this.$.removeClass( 'oo-ui-tool-active' );
+		this.$element.removeClass( 'oo-ui-tool-active' );
 	}
 };
 
@@ -231,11 +231,11 @@ OO.ui.Tool.prototype.updateLabel = function () {
 		tooltipParts = [];
 
 	this.setLabel(
-		this.$$( '<span>' )
+		this.$( '<span>' )
 			.addClass( 'oo-ui-tool-title' )
 			.text( title )
 			.add(
-				this.$$( '<span>' )
+				this.$( '<span>' )
 					.addClass( 'oo-ui-tool-accel' )
 					.text( accel )
 			)
@@ -261,5 +261,5 @@ OO.ui.Tool.prototype.updateLabel = function () {
  */
 OO.ui.Tool.prototype.destroy = function () {
 	this.toolbar.disconnect( this );
-	this.$.remove();
+	this.$element.remove();
 };

@@ -32,15 +32,15 @@ OO.ui.PagedOutlineLayout = function OoUiPagedOutlineLayout( config ) {
 	this.adders = config.adders || null;
 	this.editable = !!config.editable;
 	this.outlineControlsWidget = null;
-	this.outlinePanel = new OO.ui.PanelLayout( { '$$': this.$$, 'scrollable': true } );
-	this.outlineWidget = new OO.ui.OutlineWidget( { '$$': this.$$ } );
+	this.outlinePanel = new OO.ui.PanelLayout( { '$': this.$, 'scrollable': true } );
+	this.outlineWidget = new OO.ui.OutlineWidget( { '$': this.$ } );
 	this.gridLayout = new OO.ui.GridLayout(
-		[this.outlinePanel, this.pagesPanel], { '$$': this.$$, 'widths': [1, 2] }
+		[this.outlinePanel, this.pagesPanel], { '$': this.$, 'widths': [1, 2] }
 	);
 
 	if ( this.editable ) {
 		this.outlineControlsWidget = new OO.ui.OutlineControlsWidget(
-			this.outlineWidget, { '$$': this.$$, 'adders': this.adders }
+			this.outlineWidget, { '$': this.$, 'adders': this.adders }
 		);
 	}
 
@@ -49,19 +49,19 @@ OO.ui.PagedOutlineLayout = function OoUiPagedOutlineLayout( config ) {
 	this.pagesPanel.connect( this, { 'set': 'onPagedLayoutSet' } );
 
 	// Initialization
-	this.outlinePanel.$
+	this.outlinePanel.$element
 		.addClass( 'oo-ui-pagedOutlineLayout-outlinePanel' )
-		.append( this.outlineWidget.$ );
+		.append( this.outlineWidget.$element );
 
 	if ( this.editable ) {
-		this.outlinePanel.$
+		this.outlinePanel.$element
 			.addClass( 'oo-ui-pagedOutlineLayout-outlinePanel-editable' )
-			.append( this.outlineControlsWidget.$ );
+			.append( this.outlineControlsWidget.$element );
 	}
 
-	this.$
+	this.$element
 		.addClass( 'oo-ui-pagedOutlineLayout' )
-		.append( this.gridLayout.$ );
+		.append( this.gridLayout.$element );
 };
 
 /* Inheritance */
@@ -90,7 +90,7 @@ OO.ui.PagedOutlineLayout.prototype.addPage = function ( name, config ) {
 	this.outlineWidget.addItems(
 		[
 			new OO.ui.OutlineItemWidget( name, {
-				'$$': this.$$,
+				'$': this.$,
 				'label': config.label || name,
 				'level': config.level || 0,
 				'icon': config.icon,
@@ -146,7 +146,7 @@ OO.ui.PagedOutlineLayout.prototype.getOutlineControls = function () {
  * @param {OO.ui.PanelLayout} page The page panel that is now the current panel.
  */
 OO.ui.PagedOutlineLayout.prototype.onPagedLayoutSet = function ( page ) {
-	page.$.find( ':input:first' ).focus();
+	page.$element.find( ':input:first' ).focus();
 };
 
 /**

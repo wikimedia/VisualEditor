@@ -18,7 +18,7 @@ ve.ce.GeneratedContentNode = function VeCeGeneratedContentNode() {
 	this.generatingPromise = null;
 
 	// DOM changes
-	this.$.addClass( 've-ce-generatedContentNode' );
+	this.$element.addClass( 've-ce-generatedContentNode' );
 
 	// Events
 	this.model.connect( this, { 'update': 'onGeneratedContentNodeUpdate' } );
@@ -45,7 +45,7 @@ ve.ce.GeneratedContentNode = function VeCeGeneratedContentNode() {
 
 ve.ce.GeneratedContentNode.static = {};
 
-// this.$ is just a wrapper for the real content, so don't duplicate attributes on it
+// this.$element is just a wrapper for the real content, so don't duplicate attributes on it
 ve.ce.GeneratedContentNode.static.renderHtmlAttributes = false;
 
 /* Abstract methods */
@@ -112,7 +112,7 @@ ve.ce.GeneratedContentNode.prototype.getRenderedDomElements = function ( domElem
 
 	// Copy domElements so we can modify the elements
 	// Filter out link, meta and style tags for bug 50043
-	$rendering = $( domElements ).not( 'link, meta, style' );
+	$rendering = this.$( domElements ).not( 'link, meta, style' );
 	// Also remove link, meta and style tags nested inside other tags
 	$rendering.find( 'link, meta, style' ).remove();
 
@@ -139,7 +139,7 @@ ve.ce.GeneratedContentNode.prototype.render = function ( generatedContents ) {
 	if ( this.live ) {
 		this.emit( 'teardown' );
 	}
-	this.$.empty().append( this.getRenderedDomElements( ve.copyDomElements( generatedContents ) ) );
+	this.$element.empty().append( this.getRenderedDomElements( ve.copyDomElements( generatedContents ) ) );
 	if ( this.live ) {
 		this.emit( 'setup' );
 		this.afterRender( generatedContents );
@@ -221,7 +221,7 @@ ve.ce.GeneratedContentNode.prototype.forceUpdate = function ( config ) {
  * @method
  */
 ve.ce.GeneratedContentNode.prototype.startGenerating = function () {
-	this.$.addClass( 've-ce-generatedContentNode-generating' );
+	this.$element.addClass( 've-ce-generatedContentNode-generating' );
 };
 
 /**
@@ -236,7 +236,7 @@ ve.ce.GeneratedContentNode.prototype.doneGenerating = function ( generatedConten
 		hash = OO.getHash( [ this.model, config ] );
 
 	store.index( generatedContents, hash );
-	this.$.removeClass( 've-ce-generatedContentNode-generating' );
+	this.$element.removeClass( 've-ce-generatedContentNode-generating' );
 	this.generatingPromise = null;
 	this.render( generatedContents );
 };
@@ -247,6 +247,6 @@ ve.ce.GeneratedContentNode.prototype.doneGenerating = function ( generatedConten
  * @method
  */
 ve.ce.GeneratedContentNode.prototype.failGenerating = function () {
-	this.$.removeClass( 've-ce-generatedContentNode-generating' );
+	this.$element.removeClass( 've-ce-generatedContentNode-generating' );
 	this.generatingPromise = null;
 };

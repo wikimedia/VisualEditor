@@ -38,7 +38,7 @@ ve.ui.MWMediaSearchWidget = function VeUiMWMediaSearchWidget( config ) {
 	this.$results.on( 'scroll', ve.bind( this.onResultsScroll, this ) );
 
 	// Initialization
-	this.$.addClass( 've-ui-mwMediaSearchWidget' );
+	this.$element.addClass( 've-ui-mwMediaSearchWidget' );
 	this.queryMediaSources();
 };
 
@@ -77,7 +77,7 @@ ve.ui.MWMediaSearchWidget.prototype.onQueryChange = function () {
  */
 ve.ui.MWMediaSearchWidget.prototype.onResultsScroll = function () {
 	var position = this.$results.scrollTop() + this.$results.outerHeight(),
-		threshold = this.results.$.outerHeight() - this.size;
+		threshold = this.results.$element.outerHeight() - this.size;
 	if ( !this.query.isPending() && position > threshold ) {
 		this.queryMediaSources();
 	}
@@ -177,7 +177,7 @@ ve.ui.MWMediaSearchWidget.prototype.onMediaQueryDone = function ( source, data )
 			items.push(
 				new ve.ui.MWMediaResultWidget(
 					pages[page],
-					{ '$$': this.$$, 'size': this.size }
+					{ '$': this.$, 'size': this.size }
 				)
 			);
 		}

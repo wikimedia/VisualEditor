@@ -29,9 +29,9 @@ ve.ui.MWCategoryItemWidget = function VeUiMWCategoryItemWidget( config ) {
 	this.sortKey = config.item.sortKey || '';
 	this.metaItem = config.item.metaItem;
 	this.menuOpen = false;
-	this.$label = this.$$( '<span>' );
-	this.$arrow = this.$$( '<div>' );
-	this.$categoryItem = this.$$( '<div>' );
+	this.$label = this.$( '<span>' );
+	this.$arrow = this.$( '<div>' );
+	this.$categoryItem = this.$( '<div>' );
 
 	// Events
 	this.$categoryItem.on( {
@@ -44,8 +44,8 @@ ve.ui.MWCategoryItemWidget = function VeUiMWCategoryItemWidget( config ) {
 	this.$arrow.addClass( 've-ui-mwCategoryItemControl oo-ui-icon-down' );
 	this.$categoryItem
 		.addClass( 've-ui-mwCategoryItemButton' )
-		.append( this.$label, this.$arrow, this.$$( '<div>' ).css( 'clear', 'both' ) );
-	this.$
+		.append( this.$label, this.$arrow, this.$( '<div>' ).css( 'clear', 'both' ) );
+	this.$element
 		.addClass( 've-ui-mwCategoryItemWidget' )
 		.append( this.$categoryItem );
 };

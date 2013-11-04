@@ -23,7 +23,7 @@ ve.ce.ParagraphNode = function VeCeParagraphNode( model, config ) {
 		this.model.getElement().internal &&
 		this.model.getElement().internal.generated === 'wrapper'
 	) {
-		this.$.addClass( 've-ce-generated-wrapper' );
+		this.$element.addClass( 've-ce-generated-wrapper' );
 	}
 };
 

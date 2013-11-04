@@ -43,14 +43,14 @@ ve.ui.MWSyntaxHighlightDialog.prototype.initialize = function () {
 	// Call parent method
 	ve.ui.MWDialog.prototype.initialize.call( this );
 	this.editPanel = new OO.ui.PanelLayout( {
-		'$$': this.frame.$$, 'scrollable': false, 'padded': false
+		'$': this.$, 'scrollable': false, 'padded': false
 	} );
 	this.applyButton = new OO.ui.PushButtonWidget( {
-		'$$': this.frame.$$, 'label': ve.msg( 'visualeditor-dialog-action-apply' ), 'flags': ['primary']
+		'$': this.$, 'label': ve.msg( 'visualeditor-dialog-action-apply' ), 'flags': ['primary']
 	} );
 	this.applyButton.connect( this, { 'click': [ 'close', 'apply' ] } );
-	this.$body.append( this.editPanel.$ );
-	this.$foot.append( this.applyButton.$ );
+	this.$body.append( this.editPanel.$element );
+	this.$foot.append( this.applyButton.$element );
 };
 
 /**
@@ -67,7 +67,7 @@ ve.ui.MWSyntaxHighlightDialog.prototype.onOpen = function () {
 	this.sourceLang = this.sourceNode.getModel().getAttribute( 'lang' );
 	this.editSurface = new ve.ui.MWSyntaxHighlightSimpleSurface( this.sourceText, this.sourceLang );
 	// Initialization
-	this.editPanel.$.append( this.editSurface.$ );
+	this.editPanel.$element.append( this.editSurface.$element );
 	this.editSurface.initialize();
 };
 

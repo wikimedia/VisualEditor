@@ -24,7 +24,7 @@ OO.ui.MenuToolGroup = function OoUiMenuToolGroup( toolbar, config ) {
 	this.toolbar.connect( this, { 'updateState': 'onUpdateState' } );
 
 	// Initialization
-	this.$.addClass( 'oo-ui-menuToolGroup' );
+	this.$element.addClass( 'oo-ui-menuToolGroup' );
 };
 
 /* Inheritance */

@@ -27,7 +27,7 @@ OO.ui.Frame = function OoUiFrame( config ) {
 	this.config = config;
 
 	// Initialize
-	this.$
+	this.$element
 		.addClass( 'oo-ui-frame' )
 		.attr( { 'frameborder': 0, 'scrolling': 'no' } );
 
@@ -74,11 +74,11 @@ OO.ui.Frame.static.tagName = 'iframe';
  * @fires initialize
  */
 OO.ui.Frame.prototype.load = function () {
-	var win = this.$.prop( 'contentWindow' ),
+	var win = this.$element.prop( 'contentWindow' ),
 		doc = win.document;
 
 	// Figure out directionality:
-	this.dir = this.$.closest( '[dir]' ).prop( 'dir' ) || 'ltr';
+	this.dir = this.$element.closest( '[dir]' ).prop( 'dir' ) || 'ltr';
 
 	// Initialize contents
 	doc.open();
@@ -93,9 +93,9 @@ OO.ui.Frame.prototype.load = function () {
 	doc.close();
 
 	// Properties
-	this.$$ = OO.ui.Element.get$$( doc, this );
-	this.$content = this.$$( '.oo-ui-frame-content' );
-	this.$document = this.$$( doc );
+	this.$ = OO.ui.Element.getJQuery( doc, this );
+	this.$content = this.$( '.oo-ui-frame-content' );
+	this.$document = this.$( doc );
 
 	this.transplantStyles();
 	this.initialized = true;
@@ -169,6 +169,6 @@ OO.ui.Frame.prototype.run = function ( callback ) {
  * @chainable
  */
 OO.ui.Frame.prototype.setSize = function ( width, height ) {
-	this.$.css( { 'width': width, 'height': height } );
+	this.$element.css( { 'width': width, 'height': height } );
 	return this;
 };

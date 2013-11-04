@@ -95,7 +95,7 @@ QUnit.test( 'getOffsetFrom(Element|Text)Node', function ( assert ) {
 		documentModel = surface.getModel().getDocument();
 		documentView = surface.getView().getDocument();
 
-		testOffsets( documentView.documentNode.$[0], testCases[i], -1 );
+		testOffsets( documentView.documentNode.$element[0], testCases[i], -1 );
 		surface.destroy();
 	}
 } );

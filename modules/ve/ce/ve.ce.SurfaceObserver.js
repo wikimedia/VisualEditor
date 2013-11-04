@@ -200,13 +200,13 @@ ve.ce.SurfaceObserver.prototype.pollOnceInternal = function ( emitChanges ) {
 			this.hash = null;
 			this.node = null;
 		} else {
-			this.text = ve.ce.getDomText( node.$[0] );
-			this.hash = ve.ce.getDomHash( node.$[0] );
+			this.text = ve.ce.getDomText( node.$element[0] );
+			this.hash = ve.ce.getDomHash( node.$element[0] );
 			this.node = node;
 		}
 	} else if ( node !== null ) {
-		text = ve.ce.getDomText( node.$[0] );
-		hash = ve.ce.getDomHash( node.$[0] );
+		text = ve.ce.getDomText( node.$element[0] );
+		hash = ve.ce.getDomHash( node.$element[0] );
 		if ( this.text !== text || this.hash !== hash ) {
 			if ( emitChanges ) {
 				this.emit(

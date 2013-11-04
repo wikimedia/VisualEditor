@@ -20,7 +20,7 @@ ve.ce.MWHieroNode = function VeCeMWHieroNode( model, config ) {
 	ve.ce.MWExtensionNode.call( this, model, config );
 
 	// DOM changes
-	this.$.addClass( 've-ce-mwHieroNode' );
+	this.$element.addClass( 've-ce-mwHieroNode' );
 };
 
 /* Inheritance */

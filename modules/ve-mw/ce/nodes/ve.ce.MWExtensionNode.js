@@ -37,7 +37,7 @@ ve.ce.MWExtensionNode = function VeCeMWExtensionNode( model, config ) {
 	ve.ce.GeneratedContentNode.call( this );
 
 	// DOM changes
-	this.$.addClass( 've-ce-mwExtensionNode' );
+	this.$element.addClass( 've-ce-mwExtensionNode' );
 };
 
 /* Inheritance */
@@ -90,7 +90,7 @@ ve.ce.MWExtensionNode.prototype.generateContents = function ( config ) {
  * @param {Object} response Response data
  */
 ve.ce.MWExtensionNode.prototype.onParseSuccess = function ( deferred, response ) {
-	var data = response.visualeditor, contentNodes = $( data.content ).get();
+	var data = response.visualeditor, contentNodes = this.$( data.content ).get();
 	deferred.resolve( contentNodes );
 };
 
@@ -98,7 +98,7 @@ ve.ce.MWExtensionNode.prototype.onParseSuccess = function ( deferred, response )
 ve.ce.MWExtensionNode.prototype.afterRender = function () {
 	// Rerender after images load
 	// TODO: ignore shields, and count multiple images
-	this.$.find( 'img' ).on( 'load', ve.bind( function () {
+	this.$element.find( 'img' ).on( 'load', ve.bind( function () {
 		this.emit( 'rerender' );
 	}, this ) );
 };

@@ -33,10 +33,10 @@ OO.ui.Dialog = function OoUiDialog( windowSet, config ) {
 	this.onDocumentKeyDownHandler = OO.ui.bind( this.onDocumentKeyDown, this );
 
 	// Events
-	this.$.on( 'mousedown', false );
+	this.$element.on( 'mousedown', false );
 
 	// Initialization
-	this.$.addClass( 'oo-ui-dialog' );
+	this.$element.addClass( 'oo-ui-dialog' );
 };
 
 /* Inheritance */
@@ -123,8 +123,8 @@ OO.ui.Dialog.prototype.onFrameDocumentKeyDown = function ( e ) {
 OO.ui.Dialog.prototype.open = function ( config ) {
 	OO.ui.Window.prototype.open.call( this, config );
 	// Prevent scrolling in top-level window
-	$( window ).on( 'mousewheel', this.onWindowMouseWheelHandler );
-	$( document ).on( 'keydown', this.onDocumentKeyDownHandler );
+	this.$( window ).on( 'mousewheel', this.onWindowMouseWheelHandler );
+	this.$( document ).on( 'keydown', this.onDocumentKeyDownHandler );
 };
 
 /**
@@ -139,14 +139,14 @@ OO.ui.Dialog.prototype.open = function ( config ) {
  */
 OO.ui.Dialog.prototype.close = function ( action ) {
 	if ( !this.closing ) {
-		this.$.addClass( 'oo-ui-dialog-closing' );
+		this.$element.addClass( 'oo-ui-dialog-closing' );
 		setTimeout( OO.ui.bind( function () {
 			OO.ui.Window.prototype.close.call( this, action );
-			this.$.removeClass( 'oo-ui-dialog-closing' );
+			this.$element.removeClass( 'oo-ui-dialog-closing' );
 		}, this ), 250 );
 		// Allow scrolling in top-level window
-		$( window ).off( 'mousewheel', this.onWindowMouseWheelHandler );
-		$( document ).off( 'keydown', this.onDocumentKeyDownHandler );
+		this.$( window ).off( 'mousewheel', this.onWindowMouseWheelHandler );
+		this.$( document ).off( 'keydown', this.onDocumentKeyDownHandler );
 	}
 };
 
@@ -157,7 +157,7 @@ OO.ui.Dialog.prototype.initialize = function () {
 
 	// Properties
 	this.closeButton = new OO.ui.IconButtonWidget( {
-		'$$': this.$$, 'title': OO.ui.msg( 'ooui-dialog-action-close' ), 'icon': 'close'
+		'$': this.$, 'title': OO.ui.msg( 'ooui-dialog-action-close' ), 'icon': 'close'
 	} );
 
 	// Events
@@ -172,6 +172,6 @@ OO.ui.Dialog.prototype.initialize = function () {
 	if ( this.small ) {
 		this.$frame.addClass( 'oo-ui-window-frame-small' );
 	}
-	this.closeButton.$.addClass( 'oo-ui-window-closeButton' );
-	this.$head.append( this.closeButton.$ );
+	this.closeButton.$element.addClass( 'oo-ui-window-closeButton' );
+	this.$head.append( this.closeButton.$element );
 };
