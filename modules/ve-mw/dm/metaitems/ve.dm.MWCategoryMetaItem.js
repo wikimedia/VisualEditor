@@ -74,7 +74,7 @@ ve.dm.MWCategoryMetaItem.static.toDomElements = function ( dataElement, doc ) {
 	} else {
 		category = encodeURIComponent( category );
 	}
-	domElement.setAttribute( 'rel', dataElement.attributes.origRel || 'mw:PageProp/Category' );
+	domElement.setAttribute( 'rel', dataElement.attributes.origRel || 'mw:WikiLink/Category' );
 	href = hrefPrefix + category;
 	if ( sortkey !== '' ) {
 		href += '#' + sortkey;
