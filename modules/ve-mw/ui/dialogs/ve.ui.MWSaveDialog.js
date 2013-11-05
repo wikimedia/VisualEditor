@@ -56,7 +56,8 @@ ve.ui.MWSaveDialog.prototype.initialize = function () {
 
 	// Save panel
 	this.$editSummaryLabel = this.$( '<div>' ).addClass( 've-ui-mwSaveDialog-summaryLabel' )
-		.html( ve.init.platform.getParsedMessage( 'summary' ) );
+		.html( ve.init.platform.getParsedMessage( 'summary' ) )
+		.find( 'a' ).attr( 'target', '_blank' ).end();
 	this.editSummaryInput = new OO.ui.TextInputWidget(
 		{ '$': this.$, 'multiline': true, 'placeholder': ve.msg( 'visualeditor-editsummary' ) }
 	);
@@ -90,7 +91,9 @@ ve.ui.MWSaveDialog.prototype.initialize = function () {
 	this.$saveFoot = this.$( '<div>' ).addClass( 've-ui-mwSaveDialog-foot' ).append(
 		this.$( '<p>' ).addClass( 've-ui-mwSaveDialog-license' )
 			.html( ve.init.platform.getParsedMessage( 'copyrightwarning' ) )
+			.find( 'a' ).attr( 'target', '_blank' ).end()
 	);
+
 	this.savePanel.$element.append(
 		this.$editSummaryLabel,
 		this.editSummaryInput.$element,
@@ -109,13 +112,15 @@ ve.ui.MWSaveDialog.prototype.initialize = function () {
 	// Conflict panel
 	this.conflictPanel = new OO.ui.PanelLayout( { '$': this.$, 'scrollable': true } );
 	this.$conflict = this.$( '<div>' ).addClass( 've-ui-mwSaveDialog-conflict' )
-		.html( ve.init.platform.getParsedMessage( 'visualeditor-editconflict' ) );
+		.html( ve.init.platform.getParsedMessage( 'visualeditor-editconflict' ) )
+		.find( 'a' ).attr( 'target', '_blank' ).end();
 	this.conflictPanel.$element.append( this.$conflict );
 
 	// No changes panel
 	this.nochangesPanel = new OO.ui.PanelLayout( { '$': this.$, 'scrollable': true } );
 	this.$noChanges = this.$( '<div>' ).addClass( 've-ui-mwSaveDialog-nochanges' )
-		.html( ve.init.platform.getParsedMessage( 'visualeditor-diff-nochanges' ) );
+		.html( ve.init.platform.getParsedMessage( 'visualeditor-diff-nochanges' ) )
+		.find( 'a' ).attr( 'target', '_blank' ).end();
 	this.nochangesPanel.$element.append( this.$noChanges );
 
 	// Panel stack
