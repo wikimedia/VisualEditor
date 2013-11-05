@@ -14,7 +14,7 @@
  * @extends ve.ui.LinkInspector
  *
  * @constructor
- * @param {ve.ui.SurfaceWindowSet} windowSet Window set this inspector is part of
+ * @param {ve.ui.WindowSet} windowSet Window set this inspector is part of
  * @param {Object} [config] Configuration options
  */
 ve.ui.MWLinkInspector = function VeUiMWLinkInspector( windowSet, config ) {

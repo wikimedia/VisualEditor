@@ -12,7 +12,7 @@
  * @extends ve.ui.MWDialog
  *
  * @constructor
- * @param {ve.ui.SurfaceWindowSet} windowSet Window set this dialog is part of
+ * @param {ve.ui.WindowSet} windowSet Window set this dialog is part of
  * @param {Object} [config] Configuration options
  */
 ve.ui.MWMediaEditDialog = function VeUiMWMediaEditDialog( windowSet, config ) {
@@ -56,7 +56,9 @@ ve.ui.MWMediaEditDialog.static.surfaceCommands = [
 
 /* Methods */
 
-/** */
+/**
+ * @inheritdoc
+ */
 ve.ui.MWMediaEditDialog.prototype.initialize = function () {
 	// Parent method
 	ve.ui.MWDialog.prototype.initialize.call( this );
@@ -79,7 +81,7 @@ ve.ui.MWMediaEditDialog.prototype.initialize = function () {
 	} );
 
 	// Events
-	this.applyButton.connect( this, { 'click': [ 'close', 'apply' ] } );
+	this.applyButton.connect( this, { 'click': [ 'close', { 'action': 'apply' } ] } );
 
 	// Initialization
 	this.editPanel.$element.append( this.captionFieldset.$element );
@@ -87,12 +89,14 @@ ve.ui.MWMediaEditDialog.prototype.initialize = function () {
 	this.$foot.append( this.applyButton.$element );
 };
 
-/** */
-ve.ui.MWMediaEditDialog.prototype.onOpen = function () {
-	var newDoc, doc = this.surface.getModel().getDocument();
-
+/**
+ * @inheritdoc
+ */
+ve.ui.MWMediaEditDialog.prototype.setup = function ( data ) {
 	// Parent method
-	ve.ui.MWDialog.prototype.onOpen.call( this );
+	ve.ui.MWDialog.prototype.setup.call( this, data );
+
+	var newDoc, doc = this.surface.getModel().getDocument();
 
 	// Properties
 	this.mediaNode = this.surface.getView().getFocusedNode().getModel();
@@ -122,14 +126,17 @@ ve.ui.MWMediaEditDialog.prototype.onOpen = function () {
 	this.captionSurface.initialize();
 };
 
-/** */
-ve.ui.MWMediaEditDialog.prototype.onClose = function ( action ) {
-	var newDoc, doc, surfaceModel = this.surface.getModel();
+/**
+ * @inheritdoc
+ */
+ve.ui.MWMediaEditDialog.prototype.teardown = function ( data ) {
+	var newDoc, doc,
+		surfaceModel = this.surface.getModel();
 
-	// Parent method
-	ve.ui.MWDialog.prototype.onClose.call( this );
+	// Data initialization
+	data = data || {};
 
-	if ( action === 'apply' ) {
+	if ( data.action === 'apply' ) {
 		newDoc = this.captionSurface.getSurface().getModel().getDocument();
 		doc = surfaceModel.getDocument();
 		if ( !this.captionNode ) {
@@ -150,6 +157,9 @@ ve.ui.MWMediaEditDialog.prototype.onClose = function ( action ) {
 	this.captionSurface.destroy();
 	this.captionSurface = null;
 	this.captionNode = null;
+
+	// Parent method
+	ve.ui.MWDialog.prototype.teardown.call( this, data );
 };
 
 /* Registration */

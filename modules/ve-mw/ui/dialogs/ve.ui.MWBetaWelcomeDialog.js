@@ -13,7 +13,7 @@
  * @extends ve.ui.MWDialog
  *
  * @constructor
- * @param {ve.ui.SurfaceWindowSet} windowSet Window set this dialog is part of
+ * @param {ve.ui.WindowSet} windowSet Window set this dialog is part of
  * @param {Object} [config] Configuration options
  */
 ve.ui.MWBetaWelcomeDialog = function VeUiMWBetaWelcomeDialog( windowSet, config ) {
@@ -39,6 +39,20 @@ ve.ui.MWBetaWelcomeDialog.static.icon = 'help';
 /* Methods */
 
 /**
+ * Get the title of the window.
+ *
+ * Send the MediaWiki username along with the message for {{GENDER:}} i18n support
+ * @returns {string} Window title
+ */
+ve.ui.MWBetaWelcomeDialog.prototype.getTitle = function () {
+	var userName = mw.config.get( 'wgUserName' );
+	if ( !userName ) {
+		userName = ''; // Make sure 'null' and 'undefined' are sent as empty string
+	}
+	return ve.msg( this.constructor.static.titleMessage, userName );
+};
+
+/**
  * @inheritdoc
  */
 ve.ui.MWBetaWelcomeDialog.prototype.initialize = function () {
@@ -58,7 +72,7 @@ ve.ui.MWBetaWelcomeDialog.prototype.initialize = function () {
 	} );
 
 	// Events
-	this.continueButton.connect( this, { 'click': [ 'close', 'close' ] } );
+	this.continueButton.connect( this, { 'click': [ 'close', { 'action': 'close' } ] } );
 
 	// Initialization
 	this.contentLayout.$element
@@ -66,20 +80,6 @@ ve.ui.MWBetaWelcomeDialog.prototype.initialize = function () {
 		.text( ve.msg( 'visualeditor-dialog-beta-welcome-content', $( '#ca-edit' ).text() ) );
 	this.$body.append( this.contentLayout.$element );
 	this.$foot.append( this.continueButton.$element );
-};
-
-/**
- * Get the title of the window.
- *
- * Send the MediaWiki username along with the message for {{GENDER:}} i18n support
- * @returns {string} Window title
- */
-ve.ui.MWBetaWelcomeDialog.prototype.getTitle = function () {
-	var userName = mw.config.get( 'wgUserName' );
-	if ( !userName ) {
-		userName = ''; // Make sure 'null' and 'undefined' are sent as empty string
-	}
-	return ve.msg( this.constructor.static.titleMessage, userName );
 };
 
 /* Registration */

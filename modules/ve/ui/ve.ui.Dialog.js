@@ -1,22 +1,22 @@
 /*!
- * VisualEditor UserInterface SurfaceDialog class.
+ * VisualEditor UserInterface Dialog class.
  *
  * @copyright 2011-2013 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * UserInterface surface dialog.
+ * Dialog with an associated surface.
  *
  * @class
  * @abstract
  * @extends OO.ui.Dialog
  *
  * @constructor
- * @param {ve.ui.SurfaceWindowSet} windowSet Window set this dialog is part of
+ * @param {ve.ui.WindowSet} windowSet Window set this dialog is part of
  * @param {Object} [config] Configuration options
  */
-ve.ui.SurfaceDialog = function VeUiSurfaceDialog( windowSet, config ) {
+ve.ui.Dialog = function VeUiDialog( windowSet, config ) {
 	// Parent constructor
 	OO.ui.Dialog.call( this, windowSet, config );
 
@@ -26,4 +26,4 @@ ve.ui.SurfaceDialog = function VeUiSurfaceDialog( windowSet, config ) {
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.SurfaceDialog, OO.ui.Dialog );
+OO.inheritClass( ve.ui.Dialog, OO.ui.Dialog );

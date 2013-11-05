@@ -156,7 +156,7 @@ body {
 	border-top-left-radius: 0.25em;
 }
 
-.ve-init-sa-target-toolbar.ve-ui-surfaceToolbar-floating .oo-ui-toolbar-bar {
+.ve-init-sa-target-toolbar.ve-ui-toolbar-floating .oo-ui-toolbar-bar {
 	border-top: none;
 	border-radius: 0;
 }

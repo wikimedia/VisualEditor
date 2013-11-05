@@ -1,5 +1,5 @@
 /*!
- * VisualEditor UserInterface SurfaceWindowSet class.
+ * VisualEditor UserInterface WindowSet class.
  *
  * @copyright 2011-2013 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
@@ -16,7 +16,7 @@
  * @param {OO.Factory} factory Window factory
  * @param {Object} [config] Configuration options
  */
-ve.ui.SurfaceWindowSet = function VeUiSurfaceWindowSet( surface, factory, config ) {
+ve.ui.WindowSet = function VeUiWindowSet( surface, factory, config ) {
 	// Parent constructor
 	OO.ui.WindowSet.call( this, factory, config );
 
@@ -24,19 +24,19 @@ ve.ui.SurfaceWindowSet = function VeUiSurfaceWindowSet( surface, factory, config
 	this.surface = surface;
 
 	// Initialization
-	this.$element.addClass( 've-ui-surfaceWindowSet' );
+	this.$element.addClass( 've-ui-windowSet' );
 };
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.SurfaceWindowSet, OO.ui.WindowSet );
+OO.inheritClass( ve.ui.WindowSet, OO.ui.WindowSet );
 
 /* Methods */
 
 /**
  * @inheritdoc
  */
-ve.ui.SurfaceWindowSet.prototype.onWindowClose = function ( win, accept ) {
+ve.ui.WindowSet.prototype.onWindowClose = function ( win, accept ) {
 	this.surface.getView().focus();
 	OO.ui.WindowSet.prototype.onWindowClose.call( this, win, accept );
 };
@@ -47,6 +47,6 @@ ve.ui.SurfaceWindowSet.prototype.onWindowClose = function ( win, accept ) {
  * @method
  * @returns {ve.ui.Surface} Surface
  */
-ve.ui.SurfaceWindowSet.prototype.getSurface = function () {
+ve.ui.WindowSet.prototype.getSurface = function () {
 	return this.surface;
 };

@@ -30,7 +30,6 @@ $html = file_get_contents( $page );
 		<link rel=stylesheet href="../../modules/oojs-ui/styles/OO.ui.Dialog.css">
 		<link rel=stylesheet href="../../modules/oojs-ui/styles/OO.ui.Element.css">
 		<link rel=stylesheet href="../../modules/oojs-ui/styles/OO.ui.Frame.css">
-		<link rel=stylesheet href="../../modules/oojs-ui/styles/OO.ui.Inspector.css">
 		<link rel=stylesheet href="../../modules/oojs-ui/styles/OO.ui.Layout.css">
 		<link rel=stylesheet href="../../modules/oojs-ui/styles/OO.ui.Tool.css">
 		<link rel=stylesheet href="../../modules/oojs-ui/styles/OO.ui.Toolbar.css">
@@ -63,9 +62,10 @@ $html = file_get_contents( $page );
 		<link rel=stylesheet href="../../modules/ve/ce/styles/ve.ce.Node.css">
 		<link rel=stylesheet href="../../modules/ve/ce/styles/ve.ce.Surface.css">
 		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.Context.css">
+		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.Inspector.css">
 		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.Surface.css">
 		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.Tool.css">
-		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.SurfaceToolbar.css">
+		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.Toolbar.css">
 		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.Widget.css">
 		<!-- jquery.uls.grid -->
 		<link rel=stylesheet href="../../modules/jquery.uls/css/jquery.uls.grid.css">
@@ -108,13 +108,10 @@ $html = file_get_contents( $page );
 		<!-- oojs-ui -->
 		<script src="../../modules/oojs-ui/OO.ui.js"></script>
 		<script src="../../modules/oojs-ui/OO.ui.Element.js"></script>
+		<script src="../../modules/oojs-ui/OO.ui.Frame.js"></script>
 		<script src="../../modules/oojs-ui/OO.ui.Window.js"></script>
 		<script src="../../modules/oojs-ui/OO.ui.WindowSet.js"></script>
 		<script src="../../modules/oojs-ui/OO.ui.Dialog.js"></script>
-		<script src="../../modules/oojs-ui/OO.ui.DialogFactory.js"></script>
-		<script src="../../modules/oojs-ui/OO.ui.Frame.js"></script>
-		<script src="../../modules/oojs-ui/OO.ui.Inspector.js"></script>
-		<script src="../../modules/oojs-ui/OO.ui.InspectorFactory.js"></script>
 		<script src="../../modules/oojs-ui/OO.ui.Layout.js"></script>
 		<script src="../../modules/oojs-ui/OO.ui.Widget.js"></script>
 		<script src="../../modules/oojs-ui/elements/OO.ui.ClippableElement.js"></script>
@@ -132,6 +129,7 @@ $html = file_get_contents( $page );
 		<script src="../../modules/oojs-ui/layouts/OO.ui.PagedLayout.js"></script>
 		<script src="../../modules/oojs-ui/layouts/OO.ui.PagedOutlineLayout.js"></script>
 		<script src="../../modules/oojs-ui/layouts/OO.ui.PanelLayout.js"></script>
+		<script src="../../modules/oojs-ui/layouts/OO.ui.PageLayout.js"></script>
 		<script src="../../modules/oojs-ui/layouts/OO.ui.StackPanelLayout.js"></script>
 		<script src="../../modules/oojs-ui/tools/OO.ui.PopupTool.js"></script>
 		<script src="../../modules/oojs-ui/toolgroups/OO.ui.BarToolGroup.js"></script>
@@ -278,10 +276,10 @@ $html = file_get_contents( $page );
 		<script src="../../modules/ve/ui/ve.ui.js"></script>
 		<script src="../../modules/ve/ui/ve.ui.Surface.js"></script>
 		<script src="../../modules/ve/ui/ve.ui.Context.js"></script>
-		<script src="../../modules/ve/ui/ve.ui.SurfaceWindowSet.js"></script>
-		<script src="../../modules/ve/ui/ve.ui.SurfaceInspector.js"></script>
-		<script src="../../modules/ve/ui/ve.ui.SurfaceDialog.js"></script>
-		<script src="../../modules/ve/ui/ve.ui.SurfaceToolbar.js"></script>
+		<script src="../../modules/ve/ui/ve.ui.Dialog.js"></script>
+		<script src="../../modules/ve/ui/ve.ui.Inspector.js"></script>
+		<script src="../../modules/ve/ui/ve.ui.WindowSet.js"></script>
+		<script src="../../modules/ve/ui/ve.ui.Toolbar.js"></script>
 		<script src="../../modules/ve/ui/ve.ui.TargetToolbar.js"></script>
 		<script src="../../modules/ve/ui/ve.ui.ToolFactory.js"></script>
 		<script src="../../modules/ve/ui/ve.ui.Command.js"></script>

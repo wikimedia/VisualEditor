@@ -1,5 +1,5 @@
 /*!
- * VisualEditor UserInterface SurfaceToolbar class.
+ * VisualEditor UserInterface Toolbar class.
  *
  * @copyright 2011-2013 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
@@ -15,7 +15,7 @@
  * @param {ve.ui.Surface} surface Surface to control
  * @param {Object} [options] Configuration options
  */
-ve.ui.SurfaceToolbar = function VeUiSurfaceToolbar( surface, options ) {
+ve.ui.Toolbar = function VeUiToolbar( surface, options ) {
 	var toolbar = this;
 
 	// Configuration initialization
@@ -57,7 +57,7 @@ ve.ui.SurfaceToolbar = function VeUiSurfaceToolbar( surface, options ) {
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.SurfaceToolbar, OO.ui.Toolbar );
+OO.inheritClass( ve.ui.Toolbar, OO.ui.Toolbar );
 
 /* Events */
 
@@ -88,7 +88,7 @@ OO.inheritClass( ve.ui.SurfaceToolbar, OO.ui.Toolbar );
  *
  * @param {jQuery.Event} e Window resize event
  */
-ve.ui.SurfaceToolbar.prototype.onWindowScroll = function () {
+ve.ui.Toolbar.prototype.onWindowScroll = function () {
 	var scrollTop = this.$window.scrollTop();
 
 	if ( scrollTop > this.elementOffset.top ) {
@@ -107,7 +107,7 @@ ve.ui.SurfaceToolbar.prototype.onWindowScroll = function () {
  * @fires position
  * @param {jQuery.Event} e Window scroll event
  */
-ve.ui.SurfaceToolbar.prototype.onWindowResize = function () {
+ve.ui.Toolbar.prototype.onWindowResize = function () {
 	var update = {},
 		offset = this.elementOffset;
 
@@ -130,7 +130,7 @@ ve.ui.SurfaceToolbar.prototype.onWindowResize = function () {
  * Method to scroll to the cursor position while toolbar is floating on keyup only if
  * the cursor is obscured by the toolbar.
  */
-ve.ui.SurfaceToolbar.prototype.onSurfaceViewKeyUp = function () {
+ve.ui.Toolbar.prototype.onSurfaceViewKeyUp = function () {
 	var barHeight, scrollTo, obscured, cursorPos = this.surface.view.getSelectionRect();
 	if ( !cursorPos ) {
 		return;
@@ -151,7 +151,7 @@ ve.ui.SurfaceToolbar.prototype.onSurfaceViewKeyUp = function () {
  *
  * @fires updateState
  */
-ve.ui.SurfaceToolbar.prototype.onContextChange = function () {
+ve.ui.Toolbar.prototype.onContextChange = function () {
 	var i, len, leafNodes,
 		fragment = this.surface.getModel().getFragment( null, false ),
 		nodes = [];
@@ -174,7 +174,7 @@ ve.ui.SurfaceToolbar.prototype.onContextChange = function () {
  * @param {ve.ui.Command} command Command that's been registered
  * @param {ve.ui.Trigger} trigger Trigger to associate with command
  */
-ve.ui.SurfaceToolbar.prototype.onSurfaceAddCommand = function ( name ) {
+ve.ui.Toolbar.prototype.onSurfaceAddCommand = function ( name ) {
 	if ( this.tools[name] ) {
 		this.tools[name].updateLabel();
 	}
@@ -183,7 +183,7 @@ ve.ui.SurfaceToolbar.prototype.onSurfaceAddCommand = function ( name ) {
 /**
  * @inheritdoc
  */
-ve.ui.SurfaceToolbar.prototype.getToolAccelerator = function ( name ) {
+ve.ui.Toolbar.prototype.getToolAccelerator = function ( name ) {
 	var trigger = this.surface.getTriggers()[name];
 	return trigger instanceof ve.ui.Trigger ? trigger.getMessage() : undefined;
 };
@@ -193,7 +193,7 @@ ve.ui.SurfaceToolbar.prototype.getToolAccelerator = function ( name ) {
  *
  * @returns {ve.ui.Surface} Surface being controlled
  */
-ve.ui.SurfaceToolbar.prototype.getSurface = function () {
+ve.ui.Toolbar.prototype.getSurface = function () {
 	return this.surface;
 };
 
@@ -201,7 +201,7 @@ ve.ui.SurfaceToolbar.prototype.getSurface = function () {
  * Sets up handles and preloads required information for the toolbar to work.
  * This must be called immediately after it is attached to a visible document.
  */
-ve.ui.SurfaceToolbar.prototype.initialize = function () {
+ve.ui.Toolbar.prototype.initialize = function () {
 	// Parent method
 	OO.ui.Toolbar.prototype.initialize.call( this );
 
@@ -232,7 +232,7 @@ ve.ui.SurfaceToolbar.prototype.initialize = function () {
  *
  * Call this whenever you are done using a toolbar.
  */
-ve.ui.SurfaceToolbar.prototype.destroy = function () {
+ve.ui.Toolbar.prototype.destroy = function () {
 	this.disableFloatable();
 	this.surface.getModel().disconnect( this, { 'contextChange': 'onContextChange' } );
 
@@ -245,7 +245,7 @@ ve.ui.SurfaceToolbar.prototype.destroy = function () {
  *
  * @fires position
  */
-ve.ui.SurfaceToolbar.prototype.float = function () {
+ve.ui.Toolbar.prototype.float = function () {
 	var update;
 	if ( !this.floating ) {
 		// When switching into floating mode, set the height of the wrapper and
@@ -256,7 +256,7 @@ ve.ui.SurfaceToolbar.prototype.float = function () {
 		};
 		this.$element
 			.css( 'height', this.$element.height() )
-			.addClass( 've-ui-surfaceToolbar-floating' );
+			.addClass( 've-ui-toolbar-floating' );
 		this.$bar.css( update.css );
 		this.floating = true;
 
@@ -269,11 +269,11 @@ ve.ui.SurfaceToolbar.prototype.float = function () {
  *
  * @fires position
  */
-ve.ui.SurfaceToolbar.prototype.unfloat = function () {
+ve.ui.Toolbar.prototype.unfloat = function () {
 	if ( this.floating ) {
 		this.$element
 			.css( 'height', '' )
-			.removeClass( 've-ui-surfaceToolbar-floating' );
+			.removeClass( 've-ui-toolbar-floating' );
 		this.$bar.css( { 'left': '', 'right': '' } );
 		this.floating = false;
 
@@ -288,7 +288,7 @@ ve.ui.SurfaceToolbar.prototype.unfloat = function () {
  * This will not make it float, but it will start listening for events that
  * will result in it potentially being floated and defloated accordingly.
  */
-ve.ui.SurfaceToolbar.prototype.enableFloatable = function () {
+ve.ui.Toolbar.prototype.enableFloatable = function () {
 	this.floatable = true;
 
 	if ( this.initialized ) {
@@ -300,7 +300,7 @@ ve.ui.SurfaceToolbar.prototype.enableFloatable = function () {
 /**
  * Remove automatic floating behavior to the toolbar.
  */
-ve.ui.SurfaceToolbar.prototype.disableFloatable = function () {
+ve.ui.Toolbar.prototype.disableFloatable = function () {
 	if ( this.$window ) {
 		this.$window.off( this.windowEvents );
 	}

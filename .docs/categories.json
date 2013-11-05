@@ -99,9 +99,9 @@
 					"ve.ui",
 					"ve.ui.Surface",
 					"ve.ui.Context",
-					"ve.ui.SurfaceToolbar",
+					"ve.ui.Toolbar",
 					"ve.ui.TargetToolbar",
-					"ve.ui.SurfaceWindowSet",
+					"ve.ui.WindowSet",
 					"ve.ui.Action",
 					"ve.ui.Trigger",
 					"ve.ui.Command"
@@ -179,7 +179,6 @@
 					"OO.ui.Toolbar",
 					"OO.ui.Window",
 					"OO.ui.WindowSet",
-					"OO.ui.Inspector",
 					"OO.ui.Dialog"
 				]
 			},

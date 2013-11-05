@@ -20,8 +20,6 @@ $messages['en'] = array(
 	'accesskey-ca-editsource' => 'e',
 	'accesskey-ca-ve-edit' => 'v',
 	'ooui-dialog-action-close' => 'Close',
-	'ooui-inspector-close-tooltip' => 'Close',
-	'ooui-inspector-remove-tooltip' => 'Remove',
 	'ooui-outline-control-move-down' => 'Move item down',
 	'ooui-outline-control-move-up' => 'Move item up',
 	'ooui-toolbar-more' => 'More',
@@ -138,6 +136,8 @@ $messages['en'] = array(
 	'visualeditor-historybutton-undo-tooltip' => 'Undo',
 	'visualeditor-indentationbutton-indent-tooltip' => 'Increase indentation',
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Decrease indentation',
+	'visualeditor-inspector-close-tooltip' => 'Close',
+	'visualeditor-inspector-remove-tooltip' => 'Remove',
 	'visualeditor-languages-tool' => 'Languages',
 	'visualeditor-languageinspector-block-tooltip' => 'Language block: $1',
 	'visualeditor-languageinspector-block-tooltip-rtldirection' => ': Right to Left',
@@ -251,8 +251,6 @@ $messages['qqq'] = array(
 	'ooui-dialog-action-close' => 'Label text for button to exit from dialog.
 
 {{Identical|Close}}',
-	'ooui-inspector-close-tooltip' => '{{Identical|Close}}',
-	'ooui-inspector-remove-tooltip' => 'Tooltip text for the button to remove an annotation in an inspector',
 	'ooui-outline-control-move-down' => 'Tool tip for a button that moves items in a list down one place',
 	'ooui-outline-control-move-up' => 'Tool tip for a button that moves items in a list up one place',
 	'ooui-toolbar-more' => 'Label for the toolbar group that contains a list of all other available tools.
@@ -516,6 +514,8 @@ A "language block" is an element that is written in a language that is different
 
 Parameters:
 * $1 - the language code (for example "be")',
+	'visualeditor-inspector-close-tooltip' => '{{Identical|Close}}',
+	'visualeditor-inspector-remove-tooltip' => 'Tooltip text for the button to remove an annotation in an inspector',
 	'visualeditor-languageinspector-block-tooltip-rtldirection' => 'The label "Right To Left" at the end of the tooltip if the language is RTL.',
 	'visualeditor-languageinspector-title' => 'Title of the language inspector dialog.
 {{Identical|Language}}',

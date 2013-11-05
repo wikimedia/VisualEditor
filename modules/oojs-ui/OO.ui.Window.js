@@ -30,7 +30,7 @@ OO.ui.Window = function OoUiWindow( windowSet, config ) {
 	this.visible = false;
 	this.opening = false;
 	this.closing = false;
-	this.frame = new OO.ui.Frame();
+	this.frame = new OO.ui.Frame( { '$': this.$ } );
 	this.$frame = this.$( '<div>' );
 	this.$ = function () {
 		throw new Error( 'this.$() cannot be used until the frame has been initialized.' );
@@ -45,7 +45,7 @@ OO.ui.Window = function OoUiWindow( windowSet, config ) {
 		.append( this.frame.$element );
 
 	// Events
-	this.frame.connect( this, { 'initialize': 'onFrameInitialize' } );
+	this.frame.connect( this, { 'initialize': 'initialize' } );
 };
 
 /* Inheritance */
@@ -57,21 +57,29 @@ OO.mixinClass( OO.ui.Window, OO.EventEmitter );
 /* Events */
 
 /**
+ * Initialize contents.
+ *
+ * Fired asynchronously after construction when iframe is ready.
+ *
  * @event initialize
  */
 
 /**
- * @event setup
- * @param {Object} config Configuration options for window setup
- */
-
-/**
+ * Open window.
+ *
+ * Fired after window has been opened.
+ *
  * @event open
+ * @param {Object} data Window opening data
  */
 
 /**
+ * Close window.
+ *
+ * Fired after window has been closed.
+ *
  * @event close
- * @param {string} action Action that caused the window to be closed
+ * @param {Object} data Window closing data
  */
 
 /* Static Properties */
@@ -97,85 +105,6 @@ OO.ui.Window.static.titleMessage = null;
 /* Methods */
 
 /**
- * Handle frame initialize event.
- *
- * @method
- */
-OO.ui.Window.prototype.onFrameInitialize = function () {
-	this.initialize();
-	this.emit( 'initialize' );
-};
-
-/**
- * Handle the window being initialized.
- *
- * @method
- */
-OO.ui.Window.prototype.initialize = function () {
-	// Properties
-	this.$ = this.frame.$;
-	this.$title = this.$( '<div class="oo-ui-window-title"></div>' );
-	if ( this.getTitle() ) {
-		this.setTitle();
-	}
-	this.$icon = this.$( '<div class="oo-ui-window-icon"></div>' )
-		.addClass( 'oo-ui-icon-' + this.constructor.static.icon );
-	this.$head = this.$( '<div class="oo-ui-window-head"></div>' );
-	this.$body = this.$( '<div class="oo-ui-window-body"></div>' );
-	this.$foot = this.$( '<div class="oo-ui-window-foot"></div>' );
-	this.$overlay = this.$( '<div class="oo-ui-window-overlay"></div>' );
-
-	// Initialization
-	this.frame.$content.append(
-		this.$head.append( this.$icon, this.$title ),
-		this.$body,
-		this.$foot,
-		this.$overlay
-	);
-};
-
-/**
- * Handle the window being opened.
- *
- * Any changes to the document in that need to be done prior to opening should be made here.
- *
- * To be notified after this method is called, listen to the `setup` event.
- *
- * @method
- * @param {Object} [config] Configuration options for window setup
- */
-OO.ui.Window.prototype.onSetup = function () {
-	// This is a stub, override functionality in child classes
-};
-
-/**
- * Handle the window being opened.
- *
- * Any changes to the window that need to be done prior to opening should be made here.
- *
- * To be notified after this method is called, listen to the `open` event.
- *
- * @method
- */
-OO.ui.Window.prototype.onOpen = function () {
-	// This is a stub, override functionality in child classes
-};
-
-/**
- * Handle the window being closed.
- *
- * Any changes to the document that need to be done prior to closing should be made here.
- *
- * To be notified after this method is called, listen to the `close` event.
- *
- * @method
- * @param {string} action Action that caused the window to be closed
- */
-OO.ui.Window.prototype.onClose = function () {
-	// This is a stub, override functionality in child classes
-};
-
-/**
  * Check if window is visible.
  *
  * @method
@@ -183,6 +112,26 @@ OO.ui.Window.prototype.onClose = function () {
  */
 OO.ui.Window.prototype.isVisible = function () {
 	return this.visible;
+};
+
+/**
+ * Check if window is opening.
+ *
+ * @method
+ * @returns {boolean} Window is opening
+ */
+OO.ui.Window.prototype.isOpening = function () {
+	return this.opening;
+};
+
+/**
+ * Check if window is closing.
+ *
+ * @method
+ * @returns {boolean} Window is closing
+ */
+OO.ui.Window.prototype.isClosing = function () {
+	return this.closing;
 };
 
 /**
@@ -220,6 +169,7 @@ OO.ui.Window.prototype.getTitle = function () {
  *
  * @param {number} [width=auto] Custom width
  * @param {number} [height=auto] Custom height
+ * @chainable
  */
 OO.ui.Window.prototype.setSize = function ( width, height ) {
 	if ( !this.frame.$content ) {
@@ -230,43 +180,19 @@ OO.ui.Window.prototype.setSize = function ( width, height ) {
 		'width': width === undefined ? 'auto' : width,
 		'height': height === undefined ? 'auto' : height
 	} );
+
+	return this;
 };
 
 /**
  * Set the title of the window.
  *
  * @param {string} [customTitle] Custom title, override the static.titleMessage
+ * @chainable
  */
 OO.ui.Window.prototype.setTitle = function ( customTitle ) {
 	this.$title.text( customTitle || this.getTitle() );
-};
-
-/**
- * Set the height of window to fit with contents.
- *
- * @param {number} [min=0] Min height
- * @param {number} [max] Max height (defaults to content's outer height)
- */
-OO.ui.Window.prototype.fitHeightToContents = function ( min, max ) {
-	var height = this.frame.$content.outerHeight();
-
-	this.frame.$element.css(
-		'height', Math.max( min || 0, max === undefined ? height : Math.min( max, height ) )
-	);
-};
-
-/**
- * Set the width of window to fit with contents.
- *
- * @param {number} [min=0] Min height
- * @param {number} [max] Max height (defaults to content's outer width)
- */
-OO.ui.Window.prototype.fitWidthToContents = function ( min, max ) {
-	var width = this.frame.$content.outerWidth();
-
-	this.frame.$element.css(
-		'width', Math.max( min || 0, max === undefined ? width : Math.min( max, width ) )
-	);
+	return this;
 };
 
 /**
@@ -274,55 +200,166 @@ OO.ui.Window.prototype.fitWidthToContents = function ( min, max ) {
  *
  * @param {string} left Left offset
  * @param {string} top Top offset
+ * @chainable
  */
 OO.ui.Window.prototype.setPosition = function ( left, top ) {
 	this.$element.css( { 'left': left, 'top': top } );
+	return this;
+};
+
+/**
+ * Set the height of window to fit with contents.
+ *
+ * @param {number} [min=0] Min height
+ * @param {number} [max] Max height (defaults to content's outer height)
+ * @chainable
+ */
+OO.ui.Window.prototype.fitHeightToContents = function ( min, max ) {
+	var height = this.frame.$content.outerHeight();
+
+	this.frame.$element.css(
+		'height', Math.max( min || 0, max === undefined ? height : Math.min( max, height ) )
+	);
+
+	return this;
+};
+
+/**
+ * Set the width of window to fit with contents.
+ *
+ * @param {number} [min=0] Min height
+ * @param {number} [max] Max height (defaults to content's outer width)
+ * @chainable
+ */
+OO.ui.Window.prototype.fitWidthToContents = function ( min, max ) {
+	var width = this.frame.$content.outerWidth();
+
+	this.frame.$element.css(
+		'width', Math.max( min || 0, max === undefined ? width : Math.min( max, width ) )
+	);
+
+	return this;
+};
+
+/**
+ * Initialize window contents.
+ *
+ * The first time the window is opened, #initialize is called when it's safe to begin populating
+ * its contents. See #setup for a way to make changes each time the window opens.
+ *
+ * Once this method is called, this.$$ can be used to create elements within the frame.
+ *
+ * @method
+ * @fires initialize
+ * @chainable
+ */
+OO.ui.Window.prototype.initialize = function () {
+	// Properties
+	this.$ = this.frame.$;
+	this.$title = this.$( '<div class="oo-ui-window-title"></div>' );
+	if ( this.getTitle() ) {
+		this.setTitle();
+	}
+	this.$icon = this.$( '<div class="oo-ui-window-icon"></div>' )
+		.addClass( 'oo-ui-icon-' + this.constructor.static.icon );
+	this.$head = this.$( '<div class="oo-ui-window-head"></div>' );
+	this.$body = this.$( '<div class="oo-ui-window-body"></div>' );
+	this.$foot = this.$( '<div class="oo-ui-window-foot"></div>' );
+	this.$overlay = this.$( '<div class="oo-ui-window-overlay"></div>' );
+
+	// Initialization
+	this.frame.$content.append(
+		this.$head.append( this.$icon, this.$title ),
+		this.$body,
+		this.$foot,
+		this.$overlay
+	);
+
+	this.emit( 'initialize' );
+
+	return this;
+};
+
+/**
+ * Setup window for use.
+ *
+ * Each time the window is opened, once it's ready to be interacted with, this will set it up for
+ * use in a particular context, based on the `data` argument.
+ *
+ * When you override this method, you must call the parent method at the very beginning.
+ *
+ * @method
+ * @abstract
+ * @param {Object} [data] Window opening data
+ */
+OO.ui.Window.prototype.setup = function () {
+	// Override to do something
+};
+
+/**
+ * Tear down window after use.
+ *
+ * Each time the window is closed, and it's done being interacted with, this will tear it down and
+ * do something with the user's interactions within the window, based on the `data` argument.
+ *
+ * When you override this method, you must call the parent method at the very end.
+ *
+ * @method
+ * @abstract
+ * @param {Object} [data] Window closing data
+ */
+OO.ui.Window.prototype.teardown = function () {
+	// Override to do something
 };
 
 /**
  * Open window.
  *
+ * Do not override this method. See #setup for a way to make changes each time the window opens.
+ *
  * @method
- * @param {Object} [config] Configuration options for window setup
- * @fires setup
+ * @param {Object} [data] Window opening data
  * @fires open
+ * @chainable
  */
-OO.ui.Window.prototype.open = function ( config ) {
-	if ( !this.opening ) {
+OO.ui.Window.prototype.open = function ( data ) {
+	if ( !this.opening && !this.closing && !this.visible ) {
 		this.opening = true;
-		this.onSetup( config );
-		this.emit( 'setup', config );
 		this.$element.show();
 		this.visible = true;
-		this.frame.$element.focus();
 		this.frame.run( OO.ui.bind( function () {
-			this.onOpen();
+			this.frame.$element.focus();
+			this.emit( 'opening', data );
+			this.setup( data );
+			this.emit( 'open', data );
 			this.opening = false;
-			this.emit( 'open' );
 		}, this ) );
 	}
+
+	return this;
 };
 
 /**
  * Close window.
  *
- * This method guards against recursive calling internally. This protects against changes made while
- * closing the window which themselves would cause the window to be closed from causing an infinate
- * loop.
+ * See #teardown for a way to do something each time the window closes.
  *
  * @method
- * @param {string} action Action that caused the window to be closed
+ * @param {Object} [data] Window closing data
  * @fires close
+ * @chainable
  */
-OO.ui.Window.prototype.close = function ( action ) {
-	if ( !this.closing ) {
+OO.ui.Window.prototype.close = function ( data ) {
+	if ( !this.opening && !this.closing && this.visible ) {
+		this.frame.$content.find( ':focus' ).blur();
 		this.closing = true;
 		this.$element.hide();
 		this.visible = false;
-		this.onClose( action );
-		this.frame.$content.find( ':focus' ).blur();
-		this.emit( 'close', action );
-		// This is at the bottom in case handlers of the close event try to close the window again
+		this.emit( 'closing', data );
+		this.teardown( data );
+		this.emit( 'close', data );
 		this.closing = false;
 	}
+
+	return this;
 };

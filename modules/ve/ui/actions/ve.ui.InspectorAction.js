@@ -44,7 +44,7 @@ ve.ui.InspectorAction.static.methods = [ 'open' ];
  * @param {Object} [config] Configuration options for inspector setup
  */
 ve.ui.InspectorAction.prototype.open = function ( name, config ) {
-	this.surface.getContext().openInspector( name, config );
+	this.surface.getContext().getInspector( name ).open( config );
 };
 
 /* Registration */

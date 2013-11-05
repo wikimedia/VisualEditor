@@ -682,7 +682,7 @@ ve.init.mw.ViewPageTarget.prototype.onToolbarCancelButtonClick = function () {
  * @param {jQuery.Event} e Mouse click event
  */
 ve.init.mw.ViewPageTarget.prototype.onToolbarMetaButtonClick = function () {
-	this.surface.getDialogs().open( 'meta' );
+	this.surface.getDialogs().getWindow( 'meta' ).open();
 };
 
 /**
@@ -1051,7 +1051,7 @@ ve.init.mw.ViewPageTarget.prototype.startSanityCheck = function () {
 };
 
 /**
- * @see ve.ui.SurfaceToolbar#position
+ * @see ve.ui.Toolbar#position
  * @param {jQuery} $bar
  * @param {Object} update
  */
@@ -1251,7 +1251,7 @@ ve.init.mw.ViewPageTarget.prototype.setupSaveDialog = function () {
 ve.init.mw.ViewPageTarget.prototype.showSaveDialog = function () {
 	this.saveDialog.setSanityCheck( this.sanityCheckVerified );
 	this.saveDialog.swapPanel( 'save' );
-	this.surface.getDialogs().open( 'mwSave' );
+	this.surface.getDialogs().getWindow( 'mwSave' ).open();
 	this.timings.saveDialogOpen = ve.now();
 	ve.track( 'behavior.lastTransactionTillSaveDialogOpen', {
 		'duration': this.timings.saveDialogOpen - this.timings.lastTransaction
@@ -1676,7 +1676,7 @@ ve.init.mw.ViewPageTarget.prototype.tearDownBeforeUnloadHandler = function () {
  */
 ve.init.mw.ViewPageTarget.prototype.showBetaWelcome = function () {
 	if ( $.cookie( 've-beta-welcome-dialog' ) === null ) {
-		this.surface.getDialogs().open( 'betaWelcome' );
+		this.surface.getDialogs().getWindow( 'betaWelcome' ).open();
 	}
 	$.cookie( 've-beta-welcome-dialog', 1, { 'path': '/', 'expires': 30 } );
 };
