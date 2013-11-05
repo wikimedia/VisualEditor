@@ -880,6 +880,19 @@ $wgVisualEditorParsoidURL = 'http://localhost:8000';
 // Parsoid will be called as $url/$prefix/$pagename
 $wgVisualEditorParsoidPrefix = 'localhost';
 
+// Forward users' Cookie: headers to Parsoid. Required for private wikis (login required to read).
+// If the wiki is not private (i.e. $wgGroupPermissions['*']['read'] is true) this configuration
+// variable will be ignored.
+//
+// This feature requires a non-locking session store. The default session store will not work and
+// will cause deadlocks when trying to use this feature. If you experience deadlock issues, enable
+// $wgSessionsInObjectCache.
+//
+// WARNING: ONLY enable this on private wikis and ONLY IF you understand the SECURITY IMPLICATIONS
+// of sending Cookie headers to Parsoid over HTTP. For security reasons, it is strongly recommended
+// that $wgVisualEditorParsoidURL be pointed to localhost if this setting is enabled.
+$wgVisualEditorParsoidForwardCookies = false;
+
 // Timeout for HTTP requests to Parsoid in seconds
 $wgVisualEditorParsoidTimeout = 100;
 
