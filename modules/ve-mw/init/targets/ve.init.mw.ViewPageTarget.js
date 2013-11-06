@@ -506,7 +506,7 @@ ve.init.mw.ViewPageTarget.prototype.onSaveError = function ( jqXHR, status, data
 					$( '<strong>' ).text( mw.msg( 'captcha-label' ) ),
 					document.createTextNode( mw.msg( 'colon-separator' ) ),
 					$( $.parseHTML( mw.message( 'fancycaptcha-edit' ).parse() ) )
-						.filter( 'a' ).attr( 'target', '_blank ' ).end()
+						.filter( 'a' ).attr( 'target', '_blank' ).end()
 				),
 				$( '<img>' ).attr( 'src', editApi.captcha.url ),
 				this.captcha.input.$element
@@ -697,7 +697,7 @@ ve.init.mw.ViewPageTarget.prototype.checkForWikitextWarning = function () {
 	if ( text.match( /\[\[|\{\{|''|<nowiki|~~~|^==|^\*|^\#/ ) ) {
 		mw.notify(
 			$( $.parseHTML( ve.init.platform.getParsedMessage( 'visualeditor-wikitext-warning' ) ) )
-				.filter( 'a' ).attr( 'target', '_blank ' ).end(),
+				.filter( 'a' ).attr( 'target', '_blank' ).end(),
 			{
 				'title': ve.msg( 'visualeditor-wikitext-warning-title' ),
 				'tag': 'visualeditor-wikitext-warning',
