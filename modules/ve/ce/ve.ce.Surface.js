@@ -297,20 +297,16 @@ ve.ce.Surface.prototype.destroy = function () {
 };
 
 /**
- * Give focus to the surface, preserving the previous selection.
+ * Give focus to the surface, reapplying the model selection.
  *
  * This is used when switching between surfaces, e.g. when closing a dialog window.
+ *
+ * If the surface is already focused, this does nothing. In particular, the selection won't be
+ * reapplied.
  */
 ve.ce.Surface.prototype.focus = function () {
-	var $document = this.documentView.getDocumentNode().$element,
-		$window = this.$( OO.ui.Element.getWindow( $document ) ),
-		scrollTop = $window.scrollTop();
-
-	$document[0].focus();
-	// Calling focus sets the cursor to zero offset, so we need to restore scrollTop
-	$window.scrollTop( scrollTop );
-	this.focusedNode = null;
-	this.onModelSelect( this.surface.getModel().selection );
+	this.documentView.getDocumentNode().$element[0].focus();
+	// documentOnFocus takes care of the rest
 };
 
 /*! Native Browser Events */
@@ -321,7 +317,12 @@ ve.ce.Surface.prototype.focus = function () {
  * @method
  * @param {Event} e Focus event (native event, NOT a jQuery event!)
  */
-ve.ce.Surface.prototype.documentOnFocus = function () {
+ve.ce.Surface.prototype.documentOnFocus = function ( e ) {
+	if ( e.target === this.documentView.getDocumentNode().$element[0] ) {
+		// The document node was focused (as opposed to the paste target)
+		// Restore the selection
+		this.onModelSelect( this.surface.getModel().getSelection() );
+	}
 	this.eventSequencer.attach( this.$element );
 	this.surfaceObserver.startTimerLoop();
 };
