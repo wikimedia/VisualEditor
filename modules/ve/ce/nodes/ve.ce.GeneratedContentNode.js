@@ -22,6 +22,7 @@ ve.ce.GeneratedContentNode = function VeCeGeneratedContentNode() {
 
 	// Events
 	this.model.connect( this, { 'update': 'onGeneratedContentNodeUpdate' } );
+	this.connect( this, { 'teardown': 'abortGenerating' } );
 
 	// Initialization
 	this.update();
@@ -181,17 +182,12 @@ ve.ce.GeneratedContentNode.prototype.update = function ( config ) {
  */
 ve.ce.GeneratedContentNode.prototype.forceUpdate = function ( config ) {
 	var promise, node = this;
+
 	if ( this.generatingPromise ) {
 		// Abort the currently pending generation process if possible
-		// Unset this.generatingPromise first so that if the promise is resolved or rejected
-		// when we abort, this is ignored as it should be
-		promise = this.generatingPromise;
-		this.generatingPromise = null;
-		if ( $.isFunction( promise.abort ) ) {
-			promise.abort();
-		}
+		this.abortGenerating();
 	} else {
-		// Only call startGenerating() if we weren't generating before
+		// Only call startGenerating if we weren't generating before
 		this.startGenerating();
 	}
 
@@ -225,6 +221,25 @@ ve.ce.GeneratedContentNode.prototype.startGenerating = function () {
 };
 
 /**
+ * Abort the currently pending generation, if any, and remove the generating CSS class.
+ *
+ * This invokes .abort() on the pending promise if the promise has that method. It also ensures
+ * that if the promise does get resolved or rejected later, this is ignored.
+ */
+ve.ce.GeneratedContentNode.prototype.abortGenerating = function () {
+	var promise = this.generatingPromise;
+	if ( promise ) {
+		// Unset this.generatingPromise first so that if the promise is resolved or rejected
+		// from within .abort(), this is ignored as it should be
+		this.generatingPromise = null;
+		if ( $.isFunction( promise.abort ) ) {
+			promise.abort();
+		}
+	}
+	this.$element.removeClass( 've-ce-generatedContentNode-generating' );
+};
+
+/**
  * Called when the node successfully finishes generating new content.
  *
  * @method
@@ -232,10 +247,16 @@ ve.ce.GeneratedContentNode.prototype.startGenerating = function () {
  * @param {Object} [config] Config object passed to forceUpdate()
  */
 ve.ce.GeneratedContentNode.prototype.doneGenerating = function ( generatedContents, config ) {
-	var store = this.model.doc.getStore(),
-		hash = OO.getHash( [ this.model, config ] );
+	var store, hash;
 
-	store.index( generatedContents, hash );
+	// Because doneGenerating is invoked asynchronously, the model node may have become detached
+	// in the meantime. Handle this gracefully.
+	if ( this.model.doc ) {
+		store = this.model.doc.getStore();
+		hash = OO.getHash( [ this.model, config ] );
+		store.index( generatedContents, hash );
+	}
+
 	this.$element.removeClass( 've-ce-generatedContentNode-generating' );
 	this.generatingPromise = null;
 	this.render( generatedContents );
