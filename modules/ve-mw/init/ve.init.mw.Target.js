@@ -58,8 +58,10 @@ ve.init.mw.Target = function VeInitMwTarget( $container, pageName, revisionId ) 
 
 	this.pluginCallbacks = [];
 	this.modulesReady = $.Deferred();
+	this.preparedCacheKeyPromise = null;
 	this.loading = false;
 	this.saving = false;
+	this.diffing = false;
 	this.serializing = false;
 	this.submitting = false;
 	this.baseTimeStamp = null;
@@ -346,6 +348,7 @@ ve.init.mw.Target.onSaveError = function ( jqXHR, status, data ) {
  */
 ve.init.mw.Target.onShowChanges = function ( response ) {
 	var data = response.visualeditor;
+	this.diffing = false;
 	if ( !data && !response.error ) {
 		ve.init.mw.Target.onShowChangesError.call( this, null, 'Invalid response from server', null );
 	} else if ( response.error ) {
@@ -366,7 +369,7 @@ ve.init.mw.Target.onShowChanges = function ( response ) {
 };
 
 /**
- * Handle errors during saveChanges action.
+ * Handle errors during showChanges action.
  *
  * @static
  * @method
@@ -377,7 +380,7 @@ ve.init.mw.Target.onShowChanges = function ( response ) {
  * @fires showChangesError
  */
 ve.init.mw.Target.onShowChangesError = function ( jqXHR, status, error ) {
-	this.saving = false;
+	this.diffing = false;
 	this.emit( 'showChangesError', jqXHR, status, error );
 };
 
@@ -530,14 +533,14 @@ ve.init.mw.Target.prototype.load = function () {
 	start = ve.now();
 
 	this.loading = $.ajax( {
-		'url': this.apiUrl,
-		'data': data,
-		'dataType': 'json',
-		'type': 'POST',
-		// Wait up to 100 seconds before giving up
-		'timeout': 100000,
-		'cache': 'false'
-	} )
+			'url': this.apiUrl,
+			'data': data,
+			'dataType': 'json',
+			'type': 'POST',
+			// Wait up to 100 seconds before giving up
+			'timeout': 100000,
+			'cache': 'false'
+		} )
 		.then( function ( data, status, jqxhr ) {
 			ve.track( 'performance.system.domLoad', {
 				'bytes': $.byteLength( jqxhr.responseText ),
@@ -551,6 +554,162 @@ ve.init.mw.Target.prototype.load = function () {
 		.fail( ve.bind( ve.init.mw.Target.onLoadError, this ) );
 
 	return true;
+};
+
+/**
+ * Serialize the current document and store the result in the serialization cache on the server.
+ *
+ * This function returns a promise that is resolved once serialization is complete, with the
+ * cache key passed as the first parameter.
+ *
+ * If there's already a request pending for the same (reference-identical) HTMLDocument, this
+ * function will not initiate a new request but will return the promise for the pending request.
+ * If a request for the same document has already been completed, this function will keep returning
+ * the same promise (which will already have been resolved) until clearPreparedCacheKey() is called.
+ *
+ * @param {HTMLDocument} doc Document to serialize
+ * @returns {jQuery.Promise} Abortable promise, resolved with the cache key.
+ */
+ve.init.mw.Target.prototype.prepareCacheKey = function ( doc ) {
+	var xhr, html, start = ve.now(), deferred = $.Deferred();
+
+	if ( this.preparedCacheKeyPromise && this.preparedCacheKeyPromise.doc === doc ) {
+		return this.preparedCacheKeyPromise;
+	}
+	this.clearPreparedCacheKey();
+
+	html = this.getHtml( doc );
+	xhr = $.ajax( {
+			'url': this.apiUrl,
+			'data': {
+				'action': 'visualeditor',
+				'paction': 'serializeforcache',
+				'html': html,
+				'page': this.pageName,
+				'oldid': this.revid,
+				'format': 'json'
+			},
+			'dataType': 'json',
+			'type': 'POST',
+			// Wait up to 100 seconds before giving up
+			'timeout': 100000,
+			'cache': 'false'
+		} )
+		.done( function ( response ) {
+			var trackData = { 'duration': ve.now() - start };
+			if ( response.visualeditor && typeof response.visualeditor.cachekey === 'string' ) {
+				ve.track( 'performance.system.serializeforcache', trackData );
+				deferred.resolve( response.visualeditor.cachekey );
+			} else {
+				ve.track( 'performance.system.serializeforcache.nocachekey', trackData );
+				deferred.reject();
+			}
+		} )
+		.fail( function () {
+			ve.track( 'performance.system.serializeforcache.fail', { 'duration': ve.now() - start } );
+			deferred.reject();
+		} );
+
+	this.preparedCacheKeyPromise = deferred.promise( {
+		'abort': xhr.abort,
+		'html': html,
+		'doc': doc
+	} );
+	return this.preparedCacheKeyPromise;
+};
+
+/**
+ * Get the prepared wikitext, if any. Same as prepareWikitext() but does not initiate a request
+ * if one isn't already pending or finished. Instead, it returns a rejected promise in that case.
+ *
+ * @param {HTMLDocument} doc Document to serialize
+ * @returns {jQuery.Promise} Abortable promise, resolved with the cache key.
+ */
+ve.init.mw.Target.prototype.getPreparedCacheKey = function ( doc ) {
+	var deferred;
+	if ( this.preparedCacheKeyPromise && this.preparedCacheKeyPromise.doc === doc ) {
+		return this.preparedCacheKeyPromise;
+	}
+	deferred = $.Deferred();
+	deferred.reject();
+	return deferred.promise();
+};
+
+/**
+ * Clear the promise for the prepared wikitext cache key, and abort it if it's still in progress.
+ */
+ve.init.mw.Target.prototype.clearPreparedCacheKey = function () {
+	if ( this.preparedCacheKeyPromise ) {
+		this.preparedCacheKeyPromise.abort();
+		this.preparedCacheKeyPromise = null;
+	}
+};
+
+/**
+ * Try submitting an API request with a cache key for prepared wikitext, falling back to submitting
+ * HTML directly if there is no cache key present or pending, or if the request for the cache key
+ * fails, or if using the cache key fails with a badcachekey error.
+ *
+ * @param {HTMLDocument} doc Document to submit
+ * @param {Object} options POST parameters to send. Do not include 'html', 'cachekey' or 'format'.
+ * @param {string} [eventName] If set, log an event when the request completes successfully. The
+ *  full event name used will be 'performance.system.{eventName}.withCacheKey' or .withoutCacheKey
+ *  depending on whether or not a cache key was used.
+ * @returns {jQuery.Promise}
+ */
+ve.init.mw.Target.prototype.tryWithPreparedCacheKey = function ( doc, options, eventName ) {
+	var data, preparedCacheKey = this.getPreparedCacheKey( doc ), target = this;
+	data = $.extend( {}, options, { 'format': 'json' } );
+
+	function ajaxRequest( cachekey ) {
+		var start = ve.now();
+		if ( typeof cachekey === 'string' ) {
+			data.cachekey = cachekey;
+		} else {
+			// Getting a cache key failed, fall back to sending the HTML
+			data.html = preparedCacheKey && preparedCacheKey.html || target.getHtml( doc );
+			// If using the cache key fails, we'll come back here with cachekey still set
+			delete data.cachekey;
+		}
+		return $.ajax( {
+				'url': target.apiUrl,
+				'data': data,
+				'dataType': 'json',
+				'type': 'POST',
+				// Wait up to 100 seconds before giving up
+				'timeout': 100000
+			} )
+			.then( function ( response, status, jqxhr ) {
+				var fullEventName, eventData = {
+					'bytes': $.byteLength( jqxhr.responseText ),
+					'duration': ve.now() - start,
+					'parsoid': jqxhr.getResponseHeader( 'X-Parsoid-Performance' )
+				};
+				if ( response.error && response.error.code === 'badcachekey' ) {
+					// Log the failure if eventName was set
+					if ( eventName ) {
+						fullEventName = 'performance.system.' + eventName + '.badCacheKey';
+						ve.track( fullEventName, eventData );
+					}
+					// This cache key is evidently bad, clear it
+					target.clearPreparedCacheKey();
+					// Try again without a cache key
+					return ajaxRequest( null );
+				}
+
+				// Log data about the request if eventName was set
+				if ( eventName ) {
+					fullEventName = 'performance.system.' + eventName +
+						( typeof cachekey === 'string' ? '.withCacheKey' : '.withoutCacheKey' );
+					ve.track( fullEventName, eventData );
+				}
+				return jqxhr;
+			} );
+	}
+
+	// If we successfully get prepared wikitext, then invoke ajaxRequest() with the cache key,
+	// otherwise invoke it without.
+	return preparedCacheKey.then( ajaxRequest, ajaxRequest );
 };
 
 /**
@@ -569,42 +728,22 @@ ve.init.mw.Target.prototype.load = function () {
  * @returns {boolean} Saving has been started
 */
 ve.init.mw.Target.prototype.save = function ( doc, options ) {
-	var data, start;
+	var data;
 	// Prevent duplicate requests
 	if ( this.saving ) {
 		return false;
 	}
 
 	data = $.extend( {}, options, {
-		'format': 'json',
 		'action': 'visualeditoredit',
 		'page': this.pageName,
 		'oldid': this.revid,
 		'basetimestamp': this.baseTimeStamp,
 		'starttimestamp': this.startTimeStamp,
-		'html': this.getHtml( doc ),
 		'token': this.editToken
 	} );
 
-	// Save DOM
-	start = ve.now();
-
-	this.saving = $.ajax( {
-		'url': this.apiUrl,
-		'data': data,
-		'dataType': 'json',
-		'type': 'POST',
-		// Wait up to 100 seconds before giving up
-		'timeout': 100000
-	} )
-		.then( function ( data, status, jqxhr ) {
-			ve.track( 'performance.system.domSave', {
-				'bytes': $.byteLength( jqxhr.responseText ),
-				'duration': ve.now() - start,
-				'parsoid': jqxhr.getResponseHeader( 'X-Parsoid-Performance' )
-			} );
-			return jqxhr;
-		} )
+	this.saving = this.tryWithPreparedCacheKey( doc, data, 'save' )
 		.done( ve.bind( ve.init.mw.Target.onSave, this ) )
 		.fail( ve.bind( ve.init.mw.Target.onSaveError, this ) );
 
@@ -612,38 +751,26 @@ ve.init.mw.Target.prototype.save = function ( doc, options ) {
 };
 
 /**
- * Post DOM data to the Parsoid API to retreive wikitext diff.
+ * Post DOM data to the Parsoid API to retrieve wikitext diff.
  *
  * @method
  * @param {HTMLDocument} doc Document to compare against (via wikitext)
+ * @returns {boolean} Diffing has been started
 */
 ve.init.mw.Target.prototype.showChanges = function ( doc ) {
-	var start = ve.now();
-	$.ajax( {
-		'url': this.apiUrl,
-		'data': {
-			'format': 'json',
-			'action': 'visualeditor',
-			'paction': 'diff',
-			'page': this.pageName,
-			'oldid': this.revid,
-			'html': this.getHtml( doc )
-		},
-		'dataType': 'json',
-		'type': 'POST',
-		// Wait up to 100 seconds before giving up
-		'timeout': 100000
-	} )
-		.then( function ( data, status, jqxhr ) {
-			ve.track( 'performance.system.domDiff', {
-				'bytes': $.byteLength( jqxhr.responseText ),
-				'duration': ve.now() - start,
-				'parsoid': jqxhr.getResponseHeader( 'X-Parsoid-Performance' )
-			} );
-			return jqxhr;
-		} )
+	if ( this.diffing ) {
+		return false;
+	}
+	this.diffing = this.tryWithPreparedCacheKey( doc, {
+		'action': 'visualeditor',
+		'paction': 'diff',
+		'page': this.pageName,
+		'oldid': this.revid,
+	}, 'diff' )
 		.done( ve.bind( ve.init.mw.Target.onShowChanges, this ) )
 		.fail( ve.bind( ve.init.mw.Target.onShowChangesError, this ) );
+
+	return true;
 };
 
 /**
@@ -706,41 +833,20 @@ ve.init.mw.Target.prototype.submit = function ( wikitext, options ) {
  * @method
  * @param {HTMLDocument} doc Document to serialize
  * @param {Function} callback Function to call when complete, accepts error and wikitext arguments
- * @returns {boolean} Serializing has beeen started
+ * @returns {boolean} Serializing has been started
 */
 ve.init.mw.Target.prototype.serialize = function ( doc, callback ) {
-	var start = ve.now();
 	// Prevent duplicate requests
 	if ( this.serializing ) {
 		return false;
 	}
-	// Load DOM
-	this.serializing = true;
 	this.serializeCallback = callback;
-	$.ajax( {
-		'url': this.apiUrl,
-		'data': {
-			'action': 'visualeditor',
-			'paction': 'serialize',
-			'html': this.getHtml( doc ),
-			'page': this.pageName,
-			'oldid': this.revid,
-			'format': 'json'
-		},
-		'dataType': 'json',
-		'type': 'POST',
-		// Wait up to 100 seconds before giving up
-		'timeout': 100000,
-		'cache': 'false'
-	} )
-		.then( function ( data, status, jqxhr ) {
-			ve.track( 'performance.system.domSerialize', {
-				'bytes': $.byteLength( jqxhr.responseText ),
-				'duration': ve.now() - start,
-				'parsoid': jqxhr.getResponseHeader( 'X-Parsoid-Performance' )
-			} );
-			return jqxhr;
-		} )
+	this.serializing = this.tryWithPreparedCacheKey( doc, {
+		'action': 'visualeditor',
+		'paction': 'serialize',
+		'page': this.pageName,
+		'oldid': this.revid
+	}, 'serialize' )
 		.done( ve.bind( ve.init.mw.Target.onSerialize, this ) )
 		.fail( ve.bind( ve.init.mw.Target.onSerializeError, this ) );
 	return true;
