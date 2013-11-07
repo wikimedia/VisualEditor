@@ -54,7 +54,7 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 	this.sectionPositionRestored = false;
 	this.sectionTitleRestored = false;
 	this.namespaceName = mw.config.get( 'wgCanonicalNamespace' );
-	this.viewUri = new mw.Uri( mw.util.wikiGetlink( this.pageName ) );
+	this.viewUri = new mw.Uri( mw.util.getUrl( this.pageName ) );
 	this.veEditUri = this.viewUri.clone().extend( { 'veaction': 'edit' } );
 	this.isViewPage = (
 		mw.config.get( 'wgAction' ) === 'view' &&
