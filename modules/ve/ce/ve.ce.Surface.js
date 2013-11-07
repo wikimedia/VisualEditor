@@ -794,19 +794,19 @@ ve.ce.Surface.prototype.beforePaste = function ( e ) {
 		// If there is content to the left of the cursor, put a placeholder
 		// character to the left of the cursor
 		if ( selection.start > range.start ) {
-			leftText = 'A';
+			leftText = '☀';
 			context.push( leftText );
 			textStart = textEnd = 1;
 		}
 		// If there is content to the right of the cursor, put a placeholder
 		// character to the right of the cursor
 		if ( selection.end < range.end ) {
-			rightText = 'B';
+			rightText = '☂';
 			context.push( rightText );
 		}
 		// If there is no text context, select some text to be replaced
 		if ( !leftText && !rightText ) {
-			context.push( 'C' );
+			context.push( '☁' );
 			textEnd = 1;
 		}
 		context.push( { 'type': '/' + context[0].type } );

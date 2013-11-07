@@ -445,14 +445,14 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 			},
 			{
 				'range': new ve.Range( 4 ),
-				'pasteTargetHtml': 'BfooA',
+				'pasteTargetHtml': '☂foo☀',
 				'expectedRange': new ve.Range( 9 ),
 				'expectedOps': [
 					[
 						{ 'type': 'retain', 'length': 4 },
 						{
 							'type': 'replace',
-							'insert': [ 'B', 'f', 'o', 'o', 'A' ],
+							'insert': [ '☂', 'f', 'o', 'o', '☀' ],
 							'remove': []
 						},
 						{ 'type': 'retain', 'length': 5 }
