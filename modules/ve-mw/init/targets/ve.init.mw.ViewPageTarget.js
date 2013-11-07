@@ -37,6 +37,7 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 	this.saveDialog = null;
 	this.onBeforeUnloadFallback = null;
 	this.onBeforeUnloadHandler = null;
+	this.timings = {};
 	this.active = false;
 	this.edited = false;
 	this.sanityCheckFinished = false;
@@ -149,6 +150,7 @@ ve.init.mw.ViewPageTarget.compatibility = {
 ve.init.mw.ViewPageTarget.prototype.activate = function () {
 	if ( !this.active && !this.activating ) {
 		this.activating = true;
+		this.timings.activationStart = ve.now();
 
 		// User interface changes
 		this.transformPage();
@@ -238,6 +240,7 @@ ve.init.mw.ViewPageTarget.prototype.onLoad = function ( doc ) {
 			if ( mw.config.get( 'wgVisualEditorConfig' ).showBetaWelcome ) {
 				this.showBetaWelcome();
 			}
+			ve.track( 'performance.system.activation', { 'duration': ve.now() - this.timings.activationStart } );
 			mw.hook( 've.activationComplete' ).fire();
 		}, this ) );
 	}
@@ -288,6 +291,7 @@ ve.init.mw.ViewPageTarget.prototype.onTokenError = function ( response, status )
  * @param {number} [newid] New revision id, undefined if unchanged
  */
 ve.init.mw.ViewPageTarget.prototype.onSave = function ( html, newid ) {
+	ve.track( 'performance.user.saveComplete', { 'duration': ve.now() - this.timings.saveDialogSave } );
 	if ( !this.pageExists || this.restoring ) {
 		// This is a page creation or restoration, refresh the page
 		this.tearDownBeforeUnloadHandler();
@@ -345,6 +349,10 @@ ve.init.mw.ViewPageTarget.prototype.onSave = function ( html, newid ) {
   */
 ve.init.mw.ViewPageTarget.prototype.onSaveError = function ( jqXHR, status, data ) {
 	var api, editApi,
+		trackData = {
+			'duration': ve.now() - this.timings.saveDialogSave,
+			'retries': this.timings.saveRetries
+		},
 		viewPage = this;
 
 	this.saveDialog.saveButton.setDisabled( false );
@@ -354,6 +362,7 @@ ve.init.mw.ViewPageTarget.prototype.onSaveError = function ( jqXHR, status, data
 
 	// Handle empty response
 	if ( !data ) {
+		ve.track( 'performance.user.saveError.empty', trackData );
 		this.saveDialog.showMessage(
 			'api-save-error',
 			ve.msg( 'visualeditor-saveerror', 'Empty server response' ),
@@ -369,6 +378,7 @@ ve.init.mw.ViewPageTarget.prototype.onSaveError = function ( jqXHR, status, data
 
 	// Handle spam blacklist error (either from core or from Extension:SpamBlacklist)
 	if ( editApi && editApi.spamblacklist ) {
+		ve.track( 'performance.user.saveError.spamblacklist', trackData );
 		this.saveDialog.showMessage(
 			'api-save-error',
 			// TODO: Use mediawiki.language equivalant of Language.php::listToText once it exists
@@ -384,6 +394,7 @@ ve.init.mw.ViewPageTarget.prototype.onSaveError = function ( jqXHR, status, data
 	// Handle warnings/errors from Extension:AbuseFilter
 	// TODO: Move this to a plugin
 	if ( editApi && editApi.info && editApi.info.indexOf( 'Hit AbuseFilter:' ) === 0 && editApi.warning ) {
+		ve.track( 'performance.user.saveError.abusefilter', trackData );
 		this.saveDialog.showMessage(
 			'api-save-error',
 			$.parseHTML( editApi.warning ),
@@ -433,9 +444,11 @@ ve.init.mw.ViewPageTarget.prototype.onSaveError = function ( jqXHR, status, data
 							mw.config.get( 'wgUserId' ) === userInfo.id
 					) {
 						// New session is the same user still
+						this.timings.saveRetries++;
 						viewPage.saveDocument();
 					} else {
 						// The now current session is a different user
+						ve.track( 'performance.user.saveError.badtoken', trackData );
 						viewPage.saveDialog.saveButton.setDisabled( false );
 
 						// Trailing space is to separate from the other message.
@@ -494,6 +507,7 @@ ve.init.mw.ViewPageTarget.prototype.onSaveError = function ( jqXHR, status, data
 	// API for different things in the UI. At this point we only support the FancyCaptha which we
 	// very intuitively detect by the presence of a "url" property.
 	if ( editApi && editApi.captcha && editApi.captcha.url ) {
+		ve.track( 'performance.user.saveError.captcha', trackData );
 		this.captcha = {
 			input: new OO.ui.TextInputWidget(),
 			id: editApi.captcha.id
@@ -519,6 +533,7 @@ ve.init.mw.ViewPageTarget.prototype.onSaveError = function ( jqXHR, status, data
 	}
 
 	// Handle (other) unknown and/or unrecoverable errors
+	ve.track( 'performance.user.saveError.unknown', trackData );
 	this.saveDialog.showMessage(
 		'api-save-error',
 		document.createTextNode(
@@ -542,6 +557,7 @@ ve.init.mw.ViewPageTarget.prototype.onSaveError = function ( jqXHR, status, data
  * @param {string} diffHtml
  */
 ve.init.mw.ViewPageTarget.prototype.onShowChanges = function ( diffHtml ) {
+	ve.track( 'performance.user.reviewComplete', { 'duration': ve.now() - this.timings.saveDialogReview } );
 	// Invalidate the viewer diff on next change
 	this.surface.getModel().getDocument().connect( this, { 'transact': 'clearSaveDialogDiff' } );
 	this.saveDialog.setDiffAndReview( diffHtml );
@@ -554,6 +570,7 @@ ve.init.mw.ViewPageTarget.prototype.onShowChanges = function ( diffHtml ) {
  * @param {string} wikitext
  */
 ve.init.mw.ViewPageTarget.prototype.onSerialize = function ( wikitext ) {
+	ve.track( 'performance.user.reviewComplete', { 'duration': ve.now() - this.timings.saveDialogReview } );
 	// Invalidate the viewer wikitext on next change
 	this.surface.getModel().getDocument().connect( this, { 'transact': 'clearSaveDialogDiff' } );
 	this.saveDialog.setDiffAndReview( $( '<pre>' ).text( wikitext ) );
@@ -567,6 +584,7 @@ ve.init.mw.ViewPageTarget.prototype.onSerialize = function ( wikitext ) {
  * @param {string} status Text status message
  */
 ve.init.mw.ViewPageTarget.prototype.onShowChangesError = function ( jqXHR, status ) {
+	ve.track( 'performance.user.reviewError', { 'duration': ve.now() - this.timings.saveDialogReview } );
 	alert( ve.msg( 'visualeditor-differror', status ) );
 	this.saveDialog.$loadingIcon.hide();
 };
@@ -579,6 +597,11 @@ ve.init.mw.ViewPageTarget.prototype.onShowChangesError = function ( jqXHR, statu
  * @param {string} status Text status message
  */
 ve.init.mw.ViewPageTarget.prototype.onSerializeError = function ( jqXHR, status ) {
+	if ( this.timings.saveDialogOpen ) {
+		// This function can be called by the switch to wikitext button as well, so only log
+		// reviewError if we actually got here from the save dialog
+		ve.track( 'performance.user.reviewError', { 'duration': ve.now() - this.timings.saveDialogReview } );
+	}
 	alert( ve.msg( 'visualeditor-serializeerror', status ) );
 	this.saveDialog.$loadingIcon.hide();
 };
@@ -589,6 +612,10 @@ ve.init.mw.ViewPageTarget.prototype.onSerializeError = function ( jqXHR, status 
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.onEditConflict = function () {
+	ve.track( 'performance.user.saveError.editconflict', {
+		'duration': ve.now() - this.timings.saveDialogSave,
+		'retries': this.timings.saveRetries
+	} );
 	this.saveDialog.$loadingIcon.hide();
 	this.saveDialog.swapPanel( 'conflict' );
 };
@@ -599,6 +626,7 @@ ve.init.mw.ViewPageTarget.prototype.onEditConflict = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.onNoChanges = function () {
+	ve.track( 'performance.user.reviewComplete', { 'duration': ve.now() - this.timings.saveDialogReview } );
 	this.saveDialog.$loadingIcon.hide();
 	this.saveDialog.swapPanel( 'nochanges' );
 	this.saveDialog.reviewGoodButton.setDisabled( false );
@@ -674,6 +702,13 @@ ve.init.mw.ViewPageTarget.prototype.clearSaveDialogDiff = function () {
 };
 
 /**
+ * Record the time of the last transaction in response to a 'transact' event on the document.
+ */
+ve.init.mw.ViewPageTarget.prototype.recordLastTransactionTime = function () {
+	this.timings.lastTransaction = ve.now();
+};
+
+/**
  * Check if the user is entering wikitext, and show a notification if they are.
  *
  * This check is fairly simplistic: it checks whether the content branch node the selection is in
@@ -731,6 +766,11 @@ ve.init.mw.ViewPageTarget.prototype.onSaveDialogReview = function () {
 	this.saveDialog.setSanityCheck( this.sanityCheckVerified );
 
 	if ( !this.saveDialog.$reviewViewer.find( 'table, pre' ).length ) {
+		this.timings.saveDialogReview = ve.now();
+		ve.track( 'behavior.saveDialogOpenTillReview', {
+			'duration': this.timings.saveDialogReview - this.timings.saveDialogOpen
+		} );
+
 		this.saveDialog.reviewGoodButton.setDisabled( true );
 		this.saveDialog.$loadingIcon.show();
 		if ( this.pageExists ) {
@@ -755,6 +795,11 @@ ve.init.mw.ViewPageTarget.prototype.onSaveDialogReview = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.onSaveDialogSave = function () {
+	this.timings.saveDialogSave = ve.now();
+	this.timings.saveRetries = 0;
+	ve.track( 'behavior.saveDialogOpenTillSave', {
+		'duration': this.timings.saveDialogSave - this.timings.saveDialogOpen
+	} );
 	this.saveDocument();
 };
 
@@ -911,6 +956,9 @@ ve.init.mw.ViewPageTarget.prototype.setUpSurface = function ( doc, callback ) {
 					target.$document = target.surface.$element.find( '.ve-ce-documentNode' );
 					target.surface.getModel().getDocument().connect( target, {
 						'transact': 'clearSaveDialogDiff'
+					} );
+					target.surface.getModel().getDocument().connect( target, {
+						'transact': 'recordLastTransactionTime'
 					} );
 					target.surface.getModel().connect( target, {
 						'documentUpdate': 'checkForWikitextWarning',
@@ -1188,7 +1236,8 @@ ve.init.mw.ViewPageTarget.prototype.setupSaveDialog = function () {
 	viewPage.saveDialog.connect( this, {
 		'save': 'onSaveDialogSave',
 		'review': 'onSaveDialogReview',
-		'resolve': 'onSaveDialogResolveConflict'
+		'resolve': 'onSaveDialogResolveConflict',
+		'close': 'onSaveDialogClose'
 	} );
 	// Setup checkboxes
 	viewPage.saveDialog.setupCheckboxes( ve.getObjectValues( viewPage.checkboxes ).join( '\n' ) );
@@ -1203,6 +1252,18 @@ ve.init.mw.ViewPageTarget.prototype.showSaveDialog = function () {
 	this.saveDialog.setSanityCheck( this.sanityCheckVerified );
 	this.saveDialog.swapPanel( 'save' );
 	this.surface.getDialogs().open( 'mwSave' );
+	this.timings.saveDialogOpen = ve.now();
+	ve.track( 'behavior.lastTransactionTillSaveDialogOpen', {
+		'duration': this.timings.saveDialogOpen - this.timings.lastTransaction
+	} );
+};
+
+ /**
+ * Respond to the save dialog being closed.
+ */
+ve.init.mw.ViewPageTarget.prototype.onSaveDialogClose = function () {
+	ve.track( 'behavior.saveDialogClose', { 'duration': ve.now() - this.timings.saveDialogOpen } );
+	this.timings.saveDialogOpen = null;
 };
 
 /**
