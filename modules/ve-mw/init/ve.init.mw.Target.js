@@ -539,7 +539,7 @@ ve.init.mw.Target.prototype.load = function () {
 		'cache': 'false'
 	} )
 		.then( function ( data, status, jqxhr ) {
-			ve.track( 'performance.domLoad', {
+			ve.track( 'performance.system.domLoad', {
 				'bytes': $.byteLength( jqxhr.responseText ),
 				'duration': ve.now() - start,
 				'cacheHit': /hit/i.test( jqxhr.getResponseHeader( 'X-Cache' ) ),
@@ -598,7 +598,7 @@ ve.init.mw.Target.prototype.save = function ( doc, options ) {
 		'timeout': 100000
 	} )
 		.then( function ( data, status, jqxhr ) {
-			ve.track( 'performance.domSave', {
+			ve.track( 'performance.system.domSave', {
 				'bytes': $.byteLength( jqxhr.responseText ),
 				'duration': ve.now() - start,
 				'parsoid': jqxhr.getResponseHeader( 'X-Parsoid-Performance' )
@@ -618,6 +618,7 @@ ve.init.mw.Target.prototype.save = function ( doc, options ) {
  * @param {HTMLDocument} doc Document to compare against (via wikitext)
 */
 ve.init.mw.Target.prototype.showChanges = function ( doc ) {
+	var start = ve.now();
 	$.ajax( {
 		'url': this.apiUrl,
 		'data': {
@@ -633,6 +634,14 @@ ve.init.mw.Target.prototype.showChanges = function ( doc ) {
 		// Wait up to 100 seconds before giving up
 		'timeout': 100000
 	} )
+		.then( function ( data, status, jqxhr ) {
+			ve.track( 'performance.system.domDiff', {
+				'bytes': $.byteLength( jqxhr.responseText ),
+				'duration': ve.now() - start,
+				'parsoid': jqxhr.getResponseHeader( 'X-Parsoid-Performance' )
+			} );
+			return jqxhr;
+		} )
 		.done( ve.bind( ve.init.mw.Target.onShowChanges, this ) )
 		.fail( ve.bind( ve.init.mw.Target.onShowChangesError, this ) );
 };
@@ -700,6 +709,7 @@ ve.init.mw.Target.prototype.submit = function ( wikitext, options ) {
  * @returns {boolean} Serializing has beeen started
 */
 ve.init.mw.Target.prototype.serialize = function ( doc, callback ) {
+	var start = ve.now();
 	// Prevent duplicate requests
 	if ( this.serializing ) {
 		return false;
@@ -723,6 +733,14 @@ ve.init.mw.Target.prototype.serialize = function ( doc, callback ) {
 		'timeout': 100000,
 		'cache': 'false'
 	} )
+		.then( function ( data, status, jqxhr ) {
+			ve.track( 'performance.system.domSerialize', {
+				'bytes': $.byteLength( jqxhr.responseText ),
+				'duration': ve.now() - start,
+				'parsoid': jqxhr.getResponseHeader( 'X-Parsoid-Performance' )
+			} );
+			return jqxhr;
+		} )
 		.done( ve.bind( ve.init.mw.Target.onSerialize, this ) )
 		.fail( ve.bind( ve.init.mw.Target.onSerializeError, this ) );
 	return true;
