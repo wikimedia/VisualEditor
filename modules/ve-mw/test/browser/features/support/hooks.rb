@@ -7,7 +7,7 @@ Before('@edit_user_page') do
   if (!$edit_user_page or !(ENV['REUSE_BROWSER'] == 'true')) and @browser
     step 'I am logged in'
     step 'I am at my user page'
-    step 'I edit the page with a string'
+    step 'I edit the page with Editing with'
     $edit_user_page=true
   end
 end
