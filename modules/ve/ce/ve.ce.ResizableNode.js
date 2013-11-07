@@ -184,9 +184,9 @@ ve.ce.ResizableNode.prototype.onResizableLive = function () {
 	var surfaceModel = this.getRoot().getSurface().getModel();
 
 	if ( this.live ) {
-		surfaceModel.connect( this, { 'history': 'setResizableHandlesSizeAndPosition' } );
+		surfaceModel.getDocument().connect( this, { 'transact': 'setResizableHandlesSizeAndPosition' } );
 	} else {
-		surfaceModel.disconnect( this, { 'history': 'setResizableHandlesSizeAndPosition' } );
+		surfaceModel.getDocument().disconnect( this, { 'transact': 'setResizableHandlesSizeAndPosition' } );
 		this.onResizableBlur();
 	}
 };
@@ -264,6 +264,9 @@ ve.ce.ResizableNode.prototype.onResizeHandlesCornerMouseDown = function ( e ) {
 ve.ce.ResizableNode.prototype.setResizableHandlesSizeAndPosition = function () {
 	var width = this.$resizable.width(),
 		height = this.$resizable.height();
+
+	// Clear cached resizable offset position as it may have changed
+	this.resizableOffset = null;
 
 	this.setResizableHandlesPosition();
 
