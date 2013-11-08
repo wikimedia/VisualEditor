@@ -64,28 +64,37 @@ ve.ui.triggerRegistry = new ve.ui.TriggerRegistry();
 /* Registrations */
 
 ve.ui.triggerRegistry.register(
+	'undo', { 'mac': new ve.ui.Trigger( 'cmd+z' ), 'pc': new ve.ui.Trigger( 'ctrl+z' ) }
+);
+ve.ui.triggerRegistry.register(
+	'redo', { 'mac': new ve.ui.Trigger( 'cmd+shift+z' ), 'pc': new ve.ui.Trigger( 'ctrl+shift+z' ) }
+);
+ve.ui.triggerRegistry.register(
 	'bold', { 'mac': new ve.ui.Trigger( 'cmd+b' ), 'pc': new ve.ui.Trigger( 'ctrl+b' ) }
 );
 ve.ui.triggerRegistry.register(
 	'italic', { 'mac': new ve.ui.Trigger( 'cmd+i' ), 'pc': new ve.ui.Trigger( 'ctrl+i' ) }
 );
 ve.ui.triggerRegistry.register(
+	'link', { 'mac': new ve.ui.Trigger( 'cmd+k' ), 'pc': new ve.ui.Trigger( 'ctrl+k' ) }
+);
+ve.ui.triggerRegistry.register(
 	'clear', { 'mac': new ve.ui.Trigger( 'cmd+\\' ), 'pc': new ve.ui.Trigger( 'ctrl+\\' ) }
+);
+ve.ui.triggerRegistry.register(
+	'underline', { 'mac': new ve.ui.Trigger( 'cmd+u' ), 'pc': new ve.ui.Trigger( 'ctrl+u' ) }
+);
+ve.ui.triggerRegistry.register(
+	'subscript', { 'mac': new ve.ui.Trigger( 'cmd+,' ), 'pc': new ve.ui.Trigger( 'ctrl+,' ) }
+);
+ve.ui.triggerRegistry.register(
+	'superscript', { 'mac': new ve.ui.Trigger( 'cmd+.' ), 'pc': new ve.ui.Trigger( 'ctrl+.' ) }
 );
 ve.ui.triggerRegistry.register(
 	'indent', new ve.ui.Trigger( 'tab' )
 );
 ve.ui.triggerRegistry.register(
 	'outdent', new ve.ui.Trigger( 'shift+tab' )
-);
-ve.ui.triggerRegistry.register(
-	'link', { 'mac': new ve.ui.Trigger( 'cmd+k' ), 'pc': new ve.ui.Trigger( 'ctrl+k' ) }
-);
-ve.ui.triggerRegistry.register(
-	'redo', { 'mac': new ve.ui.Trigger( 'cmd+shift+z' ), 'pc': new ve.ui.Trigger( 'ctrl+shift+z' ) }
-);
-ve.ui.triggerRegistry.register(
-	'undo', { 'mac': new ve.ui.Trigger( 'cmd+z' ), 'pc': new ve.ui.Trigger( 'ctrl+z' ) }
 );
 // Ctrl+0-7 below are not mapped to Cmd+0-7 on Mac because Chrome reserves those for switching tabs
 ve.ui.triggerRegistry.register(
