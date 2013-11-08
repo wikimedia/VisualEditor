@@ -4,7 +4,7 @@ Feature: VisualEditor
   @login
   Scenario: Basic edit
     Given I am at my user page
-    When I edit the page with a string
+    When I edit the page with Editing with
       And I see the IP warning signs
       And I click Save page
       And I do not see This is a minor edit
