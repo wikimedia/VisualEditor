@@ -12,4 +12,4 @@ Feature: VisualEditor
       And I click Return to save form
       And I edit the description of the change
       And I click Save page the second time
-    Then Page text should contain the string
+    Then Page text should contain Editing with
