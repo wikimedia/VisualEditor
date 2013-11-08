@@ -71,6 +71,11 @@ ve.ui.MWExtensionInspector.prototype.onOpen = function () {
 		extsrc = this.node.getModel().getAttribute( 'mw' ).body.extsrc;
 	}
 
+	// Direction of the input textarea should correspond to the
+	// direction of the surrounding content of the node itself
+	// rather than the GUI direction:
+	this.input.setRTL( this.node.$element.css( 'direction' ) === 'rtl' );
+
 	// Wait for animation to complete
 	setTimeout( ve.bind( function () {
 		// Setup input text
