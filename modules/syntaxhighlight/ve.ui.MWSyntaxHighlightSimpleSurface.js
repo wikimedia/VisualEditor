@@ -126,6 +126,7 @@ ve.ui.MWSyntaxHighlightSimpleSurface = function VeUiMWSyntaxHighlightSimpleSurfa
 		);
 	this.$editboxLayer
 		.addClass( 've-ui-simplesurface-container-editbox' )
+		.addClass( 'oo-ui-ltr' )
 		.append( this.$lineNumberLayer
 				.addClass( 've-ui-simplesurface-container-editbox-lineNumber' )
 				.append( this.$lineNumber

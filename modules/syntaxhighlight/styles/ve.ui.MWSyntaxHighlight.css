@@ -90,7 +90,9 @@
 	bottom: 0;
 }
 
+/* @noflip */
 .ve-ui-simplesurface-container-editbox {
+	direction: ltr;
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
 	-khtml-user-select: none;
@@ -107,6 +109,7 @@
 	cursor: text;
 }
 
+/* @noflip */
 .ve-ui-simplesurface-textarea {
 	display:inline-block;
 	overflow: hidden;
@@ -116,6 +119,8 @@
 	left: -10px;
 	top: 0;
 }
+
+/* @noflip */
 .ve-ui-simplesurface-container-editbox pre {
 	border: none;
 	background-color: transparent;
@@ -132,12 +137,14 @@
 	font-size: 1.25em;
 }
 
+/* @noflip */
 .ve-ui-simplesurface-container-editbox-lineNumber {
 	display: inline-block;
 	float: left;
 	height: 100%;
 }
 
+/* @noflip */
 .ve-ui-simplesurface-container-editbox-text {
 	display: inline-block;
 	position: absolute;
