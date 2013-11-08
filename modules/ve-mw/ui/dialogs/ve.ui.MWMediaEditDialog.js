@@ -50,7 +50,8 @@ ve.ui.MWMediaEditDialog.static.toolbarGroups = [
 ];
 
 ve.ui.MWMediaEditDialog.static.surfaceCommands = [
-	'undo', 'redo', 'bold', 'italic', 'link', 'clear'
+	'undo', 'redo', 'bold', 'italic', 'link', 'clear',
+	'underline', 'subscript', 'superscript'
 ];
 
 /* Methods */
