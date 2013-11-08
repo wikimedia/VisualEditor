@@ -82,6 +82,10 @@ ve.ui.MWMathInspector.prototype.onOpen = function () {
 
 	// Parent method
 	ve.ui.MWExtensionInspector.prototype.onOpen.call( this );
+
+	// Override directionality settings, inspector's input
+	// should always be LTR:
+	this.input.setRTL( false );
 };
 
 /**
