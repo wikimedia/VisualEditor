@@ -729,7 +729,7 @@ ve.init.mw.ViewPageTarget.prototype.checkForWikitextWarning = function () {
 	}
 	text = ve.ce.getDomText( node.$element[0] );
 
-	if ( text.match( /\[\[|\{\{|''|<nowiki|~~~|^==|^\*|^\#/ ) ) {
+	if ( text.match( /\[\[|\{\{|''|<nowiki|<ref|~~~|^==|^\*|^\#/ ) ) {
 		mw.notify(
 			$( $.parseHTML( ve.init.platform.getParsedMessage( 'visualeditor-wikitext-warning' ) ) )
 				.filter( 'a' ).attr( 'target', '_blank' ).end(),
