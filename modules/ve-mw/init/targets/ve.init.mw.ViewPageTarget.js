@@ -855,12 +855,13 @@ ve.init.mw.ViewPageTarget.prototype.editSource = function () {
 	this.serialize(
 		ve.dm.converter.getDomFromData( doc.getFullData(), doc.getStore(), doc.getInternalList() ),
 		ve.bind( function ( wikitext ) {
-			var options = this.getSaveOptions(),
+			var $form,
+				options = this.getSaveOptions(),
 				action = new mw.Uri( mw.util.wikiScript() ).extend( { title: this.pageName, action: 'edit' } ).toString();
 
 			this.submitting = true;
 
-			$( '<form method="post" enctype="multipart/form-data"></form>' )
+			$form = $( '<form method="post" enctype="multipart/form-data" style="display: none;"></form>' )
 				.attr( 'action', action )
 				.append( $( '<textarea name="wpTextbox1"></textarea>' ).val( wikitext ) )
 				.append( $( '<input type="checkbox" name="wpMinoredit" value="1">' ).prop( 'checked', options.minor ) )
@@ -872,8 +873,10 @@ ve.init.mw.ViewPageTarget.prototype.editSource = function () {
 				.append( $( '<input type="hidden" name="model" value="wikitext">' ) )
 				.append( $( '<input type="hidden" name="format" value="text/x-wiki">' ) )
 				.append( $( '<input type="hidden" name="wpEdittime">' ) )
-				.submit()
 			;
+			// Firefox requires the form to be attached
+			$( 'body' ).append( $form );
+			$form.submit();
 		}, this )
 	);
 };
@@ -914,6 +917,9 @@ ve.init.mw.ViewPageTarget.prototype.getSaveOptions = function () {
 	}
 	if ( this.saveDialog.$saveOptions.find( '#wpWatchthis' ).prop( 'checked' ) ) {
 		options.watch = 1;
+	} else {
+		// Firefox has Object.prototype.watch
+		options.watch = undefined;
 	}
 	this.saveDialog.$saveOptions
 		.find( '.ve-ui-mwSaveDialog-checkboxes' )
