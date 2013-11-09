@@ -52,13 +52,10 @@
 		<!-- oojs-ui -->
 		<script src="../../oojs-ui/OO.ui.js"></script>
 		<script src="../../oojs-ui/OO.ui.Element.js"></script>
+		<script src="../../oojs-ui/OO.ui.Frame.js"></script>
 		<script src="../../oojs-ui/OO.ui.Window.js"></script>
 		<script src="../../oojs-ui/OO.ui.WindowSet.js"></script>
 		<script src="../../oojs-ui/OO.ui.Dialog.js"></script>
-		<script src="../../oojs-ui/OO.ui.DialogFactory.js"></script>
-		<script src="../../oojs-ui/OO.ui.Frame.js"></script>
-		<script src="../../oojs-ui/OO.ui.Inspector.js"></script>
-		<script src="../../oojs-ui/OO.ui.InspectorFactory.js"></script>
 		<script src="../../oojs-ui/OO.ui.Layout.js"></script>
 		<script src="../../oojs-ui/OO.ui.Widget.js"></script>
 		<script src="../../oojs-ui/elements/OO.ui.ClippableElement.js"></script>
@@ -76,6 +73,7 @@
 		<script src="../../oojs-ui/layouts/OO.ui.PagedLayout.js"></script>
 		<script src="../../oojs-ui/layouts/OO.ui.PagedOutlineLayout.js"></script>
 		<script src="../../oojs-ui/layouts/OO.ui.PanelLayout.js"></script>
+		<script src="../../oojs-ui/layouts/OO.ui.PageLayout.js"></script>
 		<script src="../../oojs-ui/layouts/OO.ui.StackPanelLayout.js"></script>
 		<script src="../../oojs-ui/tools/OO.ui.PopupTool.js"></script>
 		<script src="../../oojs-ui/toolgroups/OO.ui.BarToolGroup.js"></script>
@@ -222,10 +220,10 @@
 		<script src="../../ve/ui/ve.ui.js"></script>
 		<script src="../../ve/ui/ve.ui.Surface.js"></script>
 		<script src="../../ve/ui/ve.ui.Context.js"></script>
-		<script src="../../ve/ui/ve.ui.SurfaceWindowSet.js"></script>
-		<script src="../../ve/ui/ve.ui.SurfaceInspector.js"></script>
-		<script src="../../ve/ui/ve.ui.SurfaceDialog.js"></script>
-		<script src="../../ve/ui/ve.ui.SurfaceToolbar.js"></script>
+		<script src="../../ve/ui/ve.ui.Dialog.js"></script>
+		<script src="../../ve/ui/ve.ui.Inspector.js"></script>
+		<script src="../../ve/ui/ve.ui.WindowSet.js"></script>
+		<script src="../../ve/ui/ve.ui.Toolbar.js"></script>
 		<script src="../../ve/ui/ve.ui.TargetToolbar.js"></script>
 		<script src="../../ve/ui/ve.ui.ToolFactory.js"></script>
 		<script src="../../ve/ui/ve.ui.Command.js"></script>

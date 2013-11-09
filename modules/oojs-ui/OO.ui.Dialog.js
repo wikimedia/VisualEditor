@@ -63,7 +63,7 @@ OO.ui.Dialog.static.name = '';
  * @method
  */
 OO.ui.Dialog.prototype.onCloseButtonClick = function () {
-	this.close( 'cancel' );
+	this.close( { 'action': 'cancel' } );
 };
 
 /**
@@ -105,52 +105,14 @@ OO.ui.Dialog.prototype.onDocumentKeyDown = function ( e ) {
  */
 OO.ui.Dialog.prototype.onFrameDocumentKeyDown = function ( e ) {
 	if ( e.which === OO.ui.Keys.ESCAPE ) {
-		this.close( 'cancel' );
+		this.close( { 'action': 'cancel' } );
 		return false;
 	}
 };
 
 /**
- * Open window.
- *
- * Wraps the parent open method. Disables native top-level window scrolling behavior.
- *
- * @method
- * @param {Object} [config] Configuration options for window setup
- * @fires setup
- * @fires open
+ * @inheritdoc
  */
-OO.ui.Dialog.prototype.open = function ( config ) {
-	OO.ui.Window.prototype.open.call( this, config );
-	// Prevent scrolling in top-level window
-	this.$( window ).on( 'mousewheel', this.onWindowMouseWheelHandler );
-	this.$( document ).on( 'keydown', this.onDocumentKeyDownHandler );
-};
-
-/**
- * Close dialog.
- *
- * Wraps the parent close method. Allows animation by delaying parent close call, while still
- * providing the same recursion blocking. Restores native top-level window scrolling behavior.
- *
- * @method
- * @param {boolean} action Action that caused the window to be closed
- * @fires close
- */
-OO.ui.Dialog.prototype.close = function ( action ) {
-	if ( !this.closing ) {
-		this.$element.addClass( 'oo-ui-dialog-closing' );
-		setTimeout( OO.ui.bind( function () {
-			OO.ui.Window.prototype.close.call( this, action );
-			this.$element.removeClass( 'oo-ui-dialog-closing' );
-		}, this ), 250 );
-		// Allow scrolling in top-level window
-		this.$( window ).off( 'mousewheel', this.onWindowMouseWheelHandler );
-		this.$( document ).off( 'keydown', this.onDocumentKeyDownHandler );
-	}
-};
-
-/** */
 OO.ui.Dialog.prototype.initialize = function () {
 	// Parent method
 	OO.ui.Window.prototype.initialize.call( this );
@@ -174,4 +136,44 @@ OO.ui.Dialog.prototype.initialize = function () {
 	}
 	this.closeButton.$element.addClass( 'oo-ui-window-closeButton' );
 	this.$head.append( this.closeButton.$element );
+};
+
+/**
+ * @inheritdoc
+ */
+OO.ui.Dialog.prototype.setup = function ( data ) {
+	// Parent method
+	OO.ui.Window.prototype.setup.call( this, data );
+
+	// Prevent scrolling in top-level window
+	this.$( window ).on( 'mousewheel', this.onWindowMouseWheelHandler );
+	this.$( document ).on( 'keydown', this.onDocumentKeyDownHandler );
+};
+
+/**
+ * @inheritdoc
+ */
+OO.ui.Dialog.prototype.teardown = function ( data ) {
+	// Parent method
+	OO.ui.Window.prototype.teardown.call( this, data );
+
+	// Allow scrolling in top-level window
+	this.$( window ).off( 'mousewheel', this.onWindowMouseWheelHandler );
+	this.$( document ).off( 'keydown', this.onDocumentKeyDownHandler );
+};
+
+/**
+ * @inheritdoc
+ */
+OO.ui.Dialog.prototype.close = function ( data ) {
+	if ( !this.opening && !this.closing && this.visible ) {
+		// Trigger transition
+		this.$element.addClass( 'oo-ui-dialog-closing' );
+		// Allow transition to complete before actually closing
+		setTimeout( OO.ui.bind( function () {
+			this.$element.removeClass( 'oo-ui-dialog-closing' );
+			// Parent method
+			OO.ui.Window.prototype.close.call( this, data );
+		}, this ), 250 );
+	}
 };

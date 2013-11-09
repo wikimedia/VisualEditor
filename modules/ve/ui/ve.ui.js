@@ -16,6 +16,6 @@ ve.ui = {
 	//'commandRegistry' instantiated in ve.ui.CommandRegistry.js
 	//'triggerRegistry' instantiated in ve.ui.TriggerRegistry.js
 	//'toolFactory' instantiated in ve.ui.ToolFactory.js
-	'dialogFactory': new OO.ui.DialogFactory(),
-	'inspectorFactory': new OO.ui.InspectorFactory()
+	'dialogFactory': new OO.Factory(),
+	'inspectorFactory': new OO.Factory()
 };

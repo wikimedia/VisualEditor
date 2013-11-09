@@ -10,20 +10,20 @@
  *
  * @class
  * @abstract
- * @extends ve.ui.SurfaceInspector
+ * @extends ve.ui.Inspector
  *
  * @constructor
- * @param {ve.ui.SurfaceWindowSet} windowSet Window set this inspector is part of
+ * @param {ve.ui.WindowSet} windowSet Window set this inspector is part of
  * @param {Object} [config] Configuration options
  */
 ve.ui.MWExtensionInspector = function VeUiMWExtensionInspector( windowSet, config ) {
 	// Parent constructor
-	ve.ui.SurfaceInspector.call( this, windowSet, config );
+	ve.ui.Inspector.call( this, windowSet, config );
 };
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.MWExtensionInspector, ve.ui.SurfaceInspector );
+OO.inheritClass( ve.ui.MWExtensionInspector, ve.ui.Inspector );
 
 /* Static properties */
 
@@ -42,7 +42,7 @@ ve.ui.MWExtensionInspector.static.removeable = false;
  */
 ve.ui.MWExtensionInspector.prototype.initialize = function () {
 	// Parent method
-	ve.ui.SurfaceInspector.prototype.initialize.call( this );
+	ve.ui.Inspector.prototype.initialize.call( this );
 
 	this.input = new OO.ui.TextInputWidget( {
 		'$': this.$,
@@ -55,46 +55,40 @@ ve.ui.MWExtensionInspector.prototype.initialize = function () {
 	this.$form.append( this.input.$element );
 };
 
-
 /**
- * Handle the inspector being opened.
+ * @inheritdoc
  */
-ve.ui.MWExtensionInspector.prototype.onOpen = function () {
-	var extsrc = '';
-
+ve.ui.MWExtensionInspector.prototype.setup = function ( data ) {
 	// Parent method
-	ve.ui.SurfaceInspector.prototype.onOpen.call( this );
+	ve.ui.Inspector.prototype.setup.call( this, data );
 
+	// Initialization
 	this.node = this.surface.getView().getFocusedNode();
-
-	if ( this.node ) {
-		extsrc = this.node.getModel().getAttribute( 'mw' ).body.extsrc;
-	}
+	this.input.setValue( this.node ? this.node.getModel().getAttribute( 'mw' ).body.extsrc : '' );
 
 	// Direction of the input textarea should correspond to the
 	// direction of the surrounding content of the node itself
 	// rather than the GUI direction:
 	this.input.setRTL( this.node.$element.css( 'direction' ) === 'rtl' );
-
-	// Wait for animation to complete
-	setTimeout( ve.bind( function () {
-		// Setup input text
-		this.input.setValue( extsrc );
-		this.input.$input.focus().select();
-	}, this ), 200 );
 };
 
 /**
- * Handle the inspector being closed.
- *
- * @param {string} action Action that caused the window to be closed
+ * @inheritdoc
  */
-ve.ui.MWExtensionInspector.prototype.onClose = function ( action ) {
+ve.ui.MWExtensionInspector.prototype.ready = function () {
+	// Parent method
+	ve.ui.Inspector.prototype.ready.call( this );
+
+	// Focus the input
+	this.input.$input.focus().select();
+};
+
+/**
+ * @inheritdoc
+ */
+ve.ui.MWExtensionInspector.prototype.teardown = function ( data ) {
 	var mwData,
 		surfaceModel = this.surface.getModel();
-
-	// Parent method
-	ve.ui.SurfaceInspector.prototype.onClose.call( this, action );
 
 	if ( this.node instanceof this.constructor.static.nodeView ) {
 		mwData = ve.copy( this.node.getModel().getAttribute( 'mw' ) );
@@ -122,4 +116,7 @@ ve.ui.MWExtensionInspector.prototype.onClose = function ( action ) {
 			{ 'type': '/' + this.constructor.static.nodeModel.static.name }
 		] );
 	}
+
+	// Parent method
+	ve.ui.Inspector.prototype.teardown.call( this, data );
 };

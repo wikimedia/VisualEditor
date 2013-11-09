@@ -41,58 +41,82 @@ OO.mixinClass( OO.ui.WindowSet, OO.EventEmitter );
 /* Events */
 
 /**
- * @event setup
- * @param {OO.ui.Window} win Window that's been setup
+ * @event opening
+ * @param {OO.ui.Window} win Window that's being opened
+ * @param {Object} config Window opening information
  */
 
 /**
  * @event open
  * @param {OO.ui.Window} win Window that's been opened
+ * @param {Object} config Window opening information
+ */
+
+/**
+ * @event closing
+ * @param {OO.ui.Window} win Window that's being closed
+ * @param {Object} config Window closing information
  */
 
 /**
  * @event close
  * @param {OO.ui.Window} win Window that's been closed
- * @param {string} action Action that caused the window to be closed
+ * @param {Object} config Window closing information
  */
 
 /* Methods */
 
 /**
- * Handle a window being setup.
+ * Handle a window that's being opened.
  *
  * @method
- * @param {OO.ui.Window} win Window that's been setup
- * @param {Object} [config] Configuration options for window setup
- * @fires setup
+ * @param {OO.ui.Window} win Window that's being opened
+ * @param {Object} [config] Window opening information
+ * @fires opening
  */
-OO.ui.WindowSet.prototype.onWindowSetup = function ( win, config ) {
-	this.emit( 'setup', win, config );
+OO.ui.WindowSet.prototype.onWindowOpening = function ( win, config ) {
+	if ( this.currentWindow && this.currentWindow !== win ) {
+		this.currentWindow.close();
+	}
+	this.currentWindow = win;
+	this.emit( 'opening', win, config );
 };
 
 /**
- * Handle a window being opened.
+ * Handle a window that's been opened.
  *
  * @method
  * @param {OO.ui.Window} win Window that's been opened
+ * @param {Object} [config] Window opening information
  * @fires open
  */
-OO.ui.WindowSet.prototype.onWindowOpen = function ( win ) {
-	this.currentWindow = win;
-	this.emit( 'open', win );
+OO.ui.WindowSet.prototype.onWindowOpen = function ( win, config ) {
+	this.emit( 'open', win, config );
 };
 
 /**
- * Handle a window being closed.
+ * Handle a window that's being closed.
  *
  * @method
- * @param {OO.ui.Window} win Window that's been opened
- * @param {boolean} accept Changes have been accepted
+ * @param {OO.ui.Window} win Window that's being closed
+ * @param {Object} [config] Window closing information
+ * @fires closing
+ */
+OO.ui.WindowSet.prototype.onWindowClosing = function ( win, config ) {
+	this.currentWindow = null;
+	this.emit( 'closing', win, config );
+};
+
+/**
+ * Handle a window that's been closed.
+ *
+ * @method
+ * @param {OO.ui.Window} win Window that's been closed
+ * @param {Object} [config] Window closing information
  * @fires close
  */
-OO.ui.WindowSet.prototype.onWindowClose = function ( win, accept ) {
-	this.currentWindow = null;
-	this.emit( 'close', win, accept );
+OO.ui.WindowSet.prototype.onWindowClose = function ( win, config ) {
+	this.emit( 'close', win, config );
 };
 
 /**
@@ -101,7 +125,7 @@ OO.ui.WindowSet.prototype.onWindowClose = function ( win, accept ) {
  * @method
  * @returns {OO.ui.Window} Current window
  */
-OO.ui.WindowSet.prototype.getCurrent = function () {
+OO.ui.WindowSet.prototype.getCurrentWindow = function () {
 	return this.currentWindow;
 };
 
@@ -117,32 +141,16 @@ OO.ui.WindowSet.prototype.getWindow = function ( name ) {
 	if ( !this.factory.lookup( name ) ) {
 		throw new Error( 'Unknown window: ' + name );
 	}
-	if ( this.currentWindow ) {
-		throw new Error( 'Cannot open another window while another one is active' );
-	}
 	if ( !( name in this.windows ) ) {
 		win = this.windows[name] = this.factory.create( name, this, { '$': this.$ } );
 		win.connect( this, {
-			'setup': ['onWindowSetup', win],
-			'open': ['onWindowOpen', win],
-			'close': ['onWindowClose', win]
+			'opening': [ 'onWindowOpening', win ],
+			'open': [ 'onWindowOpen', win ],
+			'closing': [ 'onWindowClosing', win ],
+			'close': [ 'onWindowClose', win ]
 		} );
 		this.$element.append( win.$element );
 		win.getFrame().load();
 	}
 	return this.windows[name];
-};
-
-/**
- * Opens a given window.
- *
- * Any already open dialog will be closed.
- *
- * @param {string} name Symbolic name of window
- * @param {Object} [config] Configuration options for window setup
- * @chainable
- */
-OO.ui.WindowSet.prototype.open = function ( name, config ) {
-	this.getWindow( name ).open( config );
-	return this;
 };

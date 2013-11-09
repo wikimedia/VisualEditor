@@ -23,7 +23,6 @@ ve.ui.MWNoticesPopupTool = function VeUiMWNoticesPopupTool( toolGroup, config ) 
 		title = ve.msg( 'visualeditor-editnotices-tool', count );
 
 	// Configuration initialization
-
 	config = ve.extendObject( true, { 'popup': { 'head': true, 'label': title } }, config );
 
 	// Parent constructor

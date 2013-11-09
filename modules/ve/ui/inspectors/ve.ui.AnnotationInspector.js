@@ -10,26 +10,28 @@
  *
  * @class
  * @abstract
- * @extends ve.ui.SurfaceInspector
+ * @extends ve.ui.Inspector
  *
  * @constructor
- * @param {ve.ui.SurfaceWindowSet} windowSet Window set this inspector is part of
+ * @param {ve.ui.WindowSet} windowSet Window set this inspector is part of
  * @param {Object} [config] Configuration options
  */
 ve.ui.AnnotationInspector = function VeUiAnnotationInspector( windowSet, config ) {
 	// Parent constructor
-	ve.ui.SurfaceInspector.call( this, windowSet, config );
+	ve.ui.Inspector.call( this, windowSet, config );
 
 	// Properties
+	this.previousSelection = null;
+	this.initialSelection = null;
 	this.initialAnnotation = null;
 	this.initialAnnotationHash = null;
-	this.initialText = null;
+	this.initialText = '';
 	this.isNewAnnotation = false;
 };
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.AnnotationInspector, ve.ui.SurfaceInspector );
+OO.inheritClass( ve.ui.AnnotationInspector, ve.ui.Inspector );
 
 /**
  * Annotation models this inspector can edit.
@@ -43,6 +45,37 @@ ve.ui.AnnotationInspector.static.modelClasses = [];
 /* Methods */
 
 /**
+ * Get an annotation object from text.
+ *
+ * @method
+ * @abstract
+ * @param {string} text Content text
+ * @returns {ve.dm.Annotation}
+ * @throws {Error} If not overriden in a subclass
+ */
+ve.ui.AnnotationInspector.prototype.getAnnotationFromText = function () {
+	throw new Error(
+		've.ui.AnnotationInspector.getAnnotationFromText not implemented in subclass'
+	);
+};
+
+/**
+ * Get matching annotations within a fragment.
+ *
+ * @method
+ * @param {ve.dm.SurfaceFragment} fragment Fragment to get matching annotations within
+ * @param {boolean} [all] Get annotations which only cover some of the fragment
+ * @returns {ve.dm.AnnotationSet} Matching annotations
+ */
+ve.ui.AnnotationInspector.prototype.getMatchingAnnotations = function ( fragment, all ) {
+	var modelClasses = this.constructor.static.modelClasses;
+
+	return fragment.getAnnotations( all ).filter( function ( annnotation ) {
+		return ve.isInstanceOfAny( annnotation, modelClasses );
+	} );
+};
+
+/**
  * Handle the inspector being setup.
  *
  * There are 4 scenarios:
@@ -52,15 +85,19 @@ ve.ui.AnnotationInspector.static.modelClasses = [];
  * - Selection covering annotated text -> expand selection to cover annotation
  *
  * @method
- * @param {Object} [config] Configuration options for inspector setup
+ * @param {Object} [data] Inspector opening data
  */
-ve.ui.AnnotationInspector.prototype.onSetup = function ( config ) {
+ve.ui.AnnotationInspector.prototype.setup = function ( data ) {
+	// Parent method
+	ve.ui.Inspector.prototype.setup.call( this, data );
+
 	var expandedFragment, trimmedFragment, truncatedFragment,
 		fragment = this.surface.getModel().getFragment( null, true ),
 		annotation = this.getMatchingAnnotations( fragment, true ).get( 0 );
 
-	// Parent method
-	ve.ui.SurfaceInspector.prototype.onSetup.call( this, config );
+	this.previousSelection = this.surface.getModel().getSelection();
+	this.initialText = '';
+
 	// Initialize range
 	if ( !annotation ) {
 		if ( fragment.getRange().isCollapsed() && !this.surface.view.hasSlugAtOffset( fragment.getRange().start ) ) {
@@ -91,33 +128,20 @@ ve.ui.AnnotationInspector.prototype.onSetup = function ( config ) {
 
 	// Update selection
 	fragment.select();
+	this.initialSelection = fragment.getRange();
+
+	// Note we don't set the 'all' flag here - any non-annotated content will be annotated on close
+	this.initialAnnotation = this.getMatchingAnnotations( fragment ).get( 0 );
+	this.initialAnnotationHash = this.initialAnnotation ?
+		OO.getHash( this.initialAnnotation ) : null;
 };
 
 /**
- * Handle the inspector being opened.
+ * @inheritdoc
  */
-ve.ui.AnnotationInspector.prototype.onOpen = function () {
-	var fragment = this.surface.getModel().getFragment( null, true ),
-		// Note that we don't set the 'all' flag here so that any
-		// non-annotated content is annotated on close
-		initialAnnotation = this.getMatchingAnnotations( fragment ).get( 0 );
-
-	// Parent method
-	ve.ui.SurfaceInspector.prototype.onOpen.call( this );
-
-	// Initialization
-	this.initialAnnotation = initialAnnotation;
-	this.initialAnnotationHash = initialAnnotation ? OO.getHash( initialAnnotation ) : null;
-};
-
-/**
- * Handle the inspector being closed.
- *
- * @param {string} action Action that caused the window to be closed
- */
-ve.ui.AnnotationInspector.prototype.onClose = function ( action ) {
-	// Parent method
-	ve.ui.SurfaceInspector.prototype.onClose.call( this, action );
+ve.ui.AnnotationInspector.prototype.teardown = function ( data ) {
+	// Configuration initialization
+	data = data || {};
 
 	var i, len, annotations,
 		insert = false,
@@ -126,7 +150,7 @@ ve.ui.AnnotationInspector.prototype.onClose = function ( action ) {
 		set = false,
 		target = this.targetInput.getValue(),
 		annotation = this.getAnnotation(),
-		remove = target === '' || ( action === 'remove' && !!annotation ),
+		remove = target === '' || ( data.action === 'remove' && !!annotation ),
 		surfaceModel = this.surface.getModel(),
 		fragment = surfaceModel.getFragment( this.initialSelection, false ),
 		selection = surfaceModel.getSelection();
@@ -167,42 +191,14 @@ ve.ui.AnnotationInspector.prototype.onClose = function ( action ) {
 		// Apply new annotation
 		fragment.annotateContent( 'set', annotation );
 	}
-	if ( action === 'back' || insert ) {
+	if ( data.action === 'back' || insert ) {
 		// Restore selection to what it was before we expanded it
 		selection = this.previousSelection;
 	}
 	this.surface.execute( 'content', 'select', selection );
 	// Reset state
 	this.isNewAnnotation = false;
-};
 
-/**
- * Get an annotation object from text.
- *
- * @method
- * @abstract
- * @param {string} text Content text
- * @returns {ve.dm.Annotation}
- * @throws {Error} If not overriden in a subclass
- */
-ve.ui.AnnotationInspector.prototype.getAnnotationFromText = function () {
-	throw new Error(
-		've.ui.AnnotationInspector.getAnnotationFromText not implemented in subclass'
-	);
-};
-
-/**
- * Get matching annotations within a fragment.
- *
- * @method
- * @param {ve.dm.SurfaceFragment} fragment Fragment to get matching annotations within
- * @param {boolean} [all] Get annotations which only cover some of the fragment
- * @returns {ve.dm.AnnotationSet} Matching annotations
- */
-ve.ui.AnnotationInspector.prototype.getMatchingAnnotations = function ( fragment, all ) {
-	var modelClasses = this.constructor.static.modelClasses;
-
-	return fragment.getAnnotations( all ).filter( function ( annnotation ) {
-		return ve.isInstanceOfAny( annnotation, modelClasses );
-	} );
+	// Parent method
+	ve.ui.Inspector.prototype.teardown.call( this, data );
 };

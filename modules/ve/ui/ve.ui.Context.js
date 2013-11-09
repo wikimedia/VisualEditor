@@ -25,16 +25,20 @@ ve.ui.Context = function VeUiContext( surface, config ) {
 	this.visible = false;
 	this.showing = false;
 	this.hiding = false;
-	this.openingInspector = false;
 	this.selecting = false;
+	this.inspectorOpening = false;
+	this.inspectorClosing = false;
 	this.relocating = false;
 	this.embedded = false;
 	this.selection = null;
 	this.toolbar = null;
 	this.afterModelSelectTimeout = null;
-	this.popup = new OO.ui.PopupWidget( { '$': this.$, '$container': this.surface.getView().$element } );
+	this.popup = new OO.ui.PopupWidget( {
+		'$': this.$,
+		'$container': this.surface.getView().$element
+	} );
 	this.$menu = this.$( '<div>' );
-	this.inspectors = new ve.ui.SurfaceWindowSet( surface, ve.ui.inspectorFactory );
+	this.inspectors = new ve.ui.WindowSet( surface, ve.ui.inspectorFactory );
 
 	// Initialization
 	this.$element.addClass( 've-ui-context' ).append( this.popup.$element );
@@ -53,8 +57,9 @@ ve.ui.Context = function VeUiContext( surface, config ) {
 		'relocationEnd': 'onRelocationEnd'
 	} );
 	this.inspectors.connect( this, {
-		'setup': 'onInspectorSetup',
+		'opening': 'onInspectorOpening',
 		'open': 'onInspectorOpen',
+		'closing': 'onInspectorClosing',
 		'close': 'onInspectorClose'
 	} );
 
@@ -87,8 +92,12 @@ OO.inheritClass( ve.ui.Context, OO.ui.Element );
  * @see #afterModelSelect
  */
 ve.ui.Context.prototype.onModelSelect = function () {
-	if ( !this.openingInspector && !this.hiding && this.afterModelSelectTimeout === null ) {
-		this.afterModelSelectTimeout = setTimeout( ve.bind( this.afterModelSelect, this ) );
+	if ( this.showing || this.hiding || this.inspectorOpening || this.inspectorClosing ) {
+		clearTimeout( this.afterModelSelectTimeout );
+	} else {
+		if ( this.afterModelSelectTimeout === null ) {
+			this.afterModelSelectTimeout = setTimeout( ve.bind( this.afterModelSelect, this ) );
+		}
 	}
 };
 
@@ -102,10 +111,12 @@ ve.ui.Context.prototype.afterModelSelect = function () {
 	this.afterModelSelectTimeout = null;
 	if ( this.popup.isVisible() ) {
 		this.hide();
-		this.update();
-	} else if ( !this.selecting && !this.relocating ) {
-		this.update();
 	}
+	// Bypass while dragging
+	if ( this.selecting || this.relocating ) {
+		return;
+	}
+	this.update();
 };
 
 /**
@@ -151,34 +162,49 @@ ve.ui.Context.prototype.onRelocationEnd = function () {
 };
 
 /**
- * Handle an inspector being setup.
+ * Handle an inspector that's being opened.
  *
  * @method
- * @param {ve.ui.SurfaceInspector} inspector Inspector that's been setup
+ * @param {ve.ui.Inspector} inspector Inspector that's being opened
+ * @param {Object} [config] Inspector opening information
  */
-ve.ui.Context.prototype.onInspectorSetup = function () {
+ve.ui.Context.prototype.onInspectorOpening = function () {
 	this.selection = this.surface.getModel().getSelection();
+	this.inspectorOpening = true;
 };
 
 /**
- * Handle an inspector being opened.
+ * Handle an inspector that's been opened.
  *
  * @method
- * @param {ve.ui.SurfaceInspector} inspector Inspector that's been opened
+ * @param {ve.ui.Inspector} inspector Inspector that's been opened
+ * @param {Object} [config] Inspector opening information
  */
 ve.ui.Context.prototype.onInspectorOpen = function () {
-	// Transition between menu and inspector
+	this.inspectorOpening = false;
 	this.show( true );
 };
 
 /**
- * Handle an inspector being closed.
+ * Handle an inspector that's being closed.
  *
  * @method
- * @param {ve.ui.SurfaceInspector} inspector Inspector that's been opened
- * @param {boolean} accept Changes have been accepted
+ * @param {ve.ui.Inspector} inspector Inspector that's being closed
+ * @param {Object} [config] Inspector closing information
+ */
+ve.ui.Context.prototype.onInspectorClosing = function () {
+	this.inspectorClosing = true;
+};
+
+/**
+ * Handle an inspector that's been closed.
+ *
+ * @method
+ * @param {ve.ui.Inspector} inspector Inspector that's been closed
+ * @param {Object} [config] Inspector closing information
  */
 ve.ui.Context.prototype.onInspectorClose = function () {
+	this.inspectorClosing = false;
 	this.update();
 };
 
@@ -190,6 +216,17 @@ ve.ui.Context.prototype.onInspectorClose = function () {
  */
 ve.ui.Context.prototype.getSurface = function () {
 	return this.surface;
+};
+
+/**
+ * Gets an inspector.
+ *
+ * @method
+ * @param {string} Symbolic name of inspector
+ * @returns {ve.ui.Inspector|undefined} Inspector or undefined if none exists by that name
+ */
+ve.ui.Context.prototype.getInspector = function ( name ) {
+	return this.inspectors.getWindow( name );
 };
 
 /**
@@ -216,7 +253,7 @@ ve.ui.Context.prototype.update = function ( transition, repositionOnly ) {
 	var i, nodes, tools, tool,
 		fragment = this.surface.getModel().getFragment( null, false ),
 		selection = fragment.getRange(),
-		inspector = this.inspectors.getCurrent();
+		inspector = this.inspectors.getCurrentWindow();
 
 	if ( inspector && selection.equals( this.selection ) ) {
 		// There's an inspector, and the selection hasn't changed, update the position
@@ -243,7 +280,7 @@ ve.ui.Context.prototype.update = function ( transition, repositionOnly ) {
 			if ( this.toolbar ) {
 				this.toolbar.destroy();
 			}
-			this.toolbar = new ve.ui.SurfaceToolbar( this.surface );
+			this.toolbar = new ve.ui.Toolbar( this.surface );
 			this.toolbar.setup( [ { 'include' : tools } ] );
 			this.$menu.append( this.toolbar.$element );
 			this.show( transition, repositionOnly );
@@ -271,7 +308,7 @@ ve.ui.Context.prototype.updateDimensions = function ( transition ) {
 	var $node, $container, focusableOffset, focusableWidth, nodePosition, cursorPosition, position,
 		documentOffset, nodeOffset,
 		surface = this.surface.getView(),
-		inspector = this.inspectors.getCurrent(),
+		inspector = this.inspectors.getCurrentWindow(),
 		focusedNode = surface.getFocusedNode(),
 		surfaceOffset = surface.$element.offset(),
 		rtl = this.surface.view.getDir() === 'rtl';
@@ -353,10 +390,10 @@ ve.ui.Context.prototype.updateDimensions = function ( transition ) {
  * @chainable
  */
 ve.ui.Context.prototype.show = function ( transition, repositionOnly ) {
-	var inspector = this.inspectors.getCurrent(),
+	var inspector = this.inspectors.getCurrentWindow(),
 		focusedNode = this.surface.getView().getFocusedNode();
 
-	if ( !this.showing ) {
+	if ( !this.showing && !this.hiding ) {
 		this.showing = true;
 
 		this.$element.show();
@@ -402,35 +439,17 @@ ve.ui.Context.prototype.show = function ( transition, repositionOnly ) {
  * @chainable
  */
 ve.ui.Context.prototype.hide = function () {
-	var inspector = this.inspectors.getCurrent();
+	var inspector = this.inspectors.getCurrentWindow();
 
-	// Guard against recursion: closing the inspector causes onInspectorClose to call us again
-	if ( !this.hiding ) {
+	if ( !this.hiding && !this.showing ) {
 		this.hiding = true;
 		if ( inspector ) {
-			inspector.close( 'hide' );
+			inspector.close( { 'action': 'hide' } );
 		}
 		this.popup.hide();
 		this.$element.hide();
 		this.visible = false;
 		this.hiding = false;
-	}
-	return this;
-};
-
-/**
- * Opens a given inspector.
- *
- * @method
- * @param {string} name Symbolic name of inspector
- * @param {Object} [config] Configuration options to be sent to the inspector class constructor
- * @chainable
- */
-ve.ui.Context.prototype.openInspector = function ( name, config ) {
-	if ( !this.inspectors.currentWindow ) {
-		this.openingInspector = true;
-		this.inspectors.open( name, config );
-		this.openingInspector = false;
 	}
 	return this;
 };

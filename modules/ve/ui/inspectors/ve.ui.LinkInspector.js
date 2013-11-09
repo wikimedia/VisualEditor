@@ -12,7 +12,7 @@
  * @extends ve.ui.AnnotationInspector
  *
  * @constructor
- * @param {ve.ui.SurfaceWindowSet} windowSet Window set this inspector is part of
+ * @param {ve.ui.WindowSet} windowSet Window set this inspector is part of
  * @param {Object} [config] Configuration options
  */
 ve.ui.LinkInspector = function VeUiLinkInspector( windowSet, config ) {
@@ -45,9 +45,27 @@ ve.ui.LinkInspector.static.modelClasses = [ ve.dm.LinkAnnotation ];
 /* Methods */
 
 /**
- * Handle frame ready events.
+ * Get the annotation from the input.
+ *
+ * This override allows AnnotationInspector to request the value from the inspector rather
+ * than the widget.
  *
  * @method
+ * @returns {ve.dm.LinkAnnotation} Link annotation
+ */
+ve.ui.LinkInspector.prototype.getAnnotation = function () {
+	return this.targetInput.annotation;
+};
+
+/**
+ * @inheritdoc
+ */
+ve.ui.LinkInspector.prototype.getAnnotationFromText = function ( text ) {
+	return new ve.dm.LinkAnnotation( { 'type': 'link', 'attributes': { 'href': text } } );
+};
+
+/**
+ * @inheritdoc
  */
 ve.ui.LinkInspector.prototype.initialize = function () {
 	// Parent method
@@ -63,45 +81,35 @@ ve.ui.LinkInspector.prototype.initialize = function () {
 };
 
 /**
- * Handle the inspector being opened.
+ * @inheritdoc
  */
-ve.ui.LinkInspector.prototype.onOpen = function () {
+ve.ui.LinkInspector.prototype.setup = function ( data ) {
 	// Parent method
-	ve.ui.AnnotationInspector.prototype.onOpen.call( this );
+	ve.ui.AnnotationInspector.prototype.setup.call( this, data );
 
 	// Wait for animation to complete
 	this.surface.disable();
-	setTimeout( ve.bind( function () {
-		// Note: Focus input prior to setting target annotation
-		this.targetInput.$input.focus();
-		// Setup annotation
-		if ( this.initialAnnotation ) {
-			this.targetInput.setAnnotation( this.initialAnnotation );
-		} else {
-			// If an initial annotation couldn't be created (e.g. the text was invalid),
-			// just populate the text we tried to create the annotation from
-			this.targetInput.setValue( this.initialText );
-		}
-		this.targetInput.$input.select();
-		this.surface.enable();
-	}, this ), 200 );
-};
-
-/**
- * Get the annotation from the input (so AnnotationInspector can request the value
- * from the inspector rather than the widget)
- * @method
- * @returns {ve.dm.LinkAnnotation} Link annotation
- */
-ve.ui.LinkInspector.prototype.getAnnotation = function () {
-	return this.targetInput.annotation;
 };
 
 /**
  * @inheritdoc
  */
-ve.ui.LinkInspector.prototype.getAnnotationFromText = function ( text ) {
-	return new ve.dm.LinkAnnotation( { 'type': 'link', 'attributes': { 'href': text } } );
+ve.ui.LinkInspector.prototype.ready = function () {
+	// Parent method
+	ve.ui.AnnotationInspector.prototype.ready.call( this );
+
+	// Note: Focus input prior to setting target annotation
+	this.targetInput.$input.focus();
+	// Setup annotation
+	if ( this.initialAnnotation ) {
+		this.targetInput.setAnnotation( this.initialAnnotation );
+	} else {
+		// If an initial annotation couldn't be created (e.g. the text was invalid),
+		// just populate the text we tried to create the annotation from
+		this.targetInput.setValue( this.initialText );
+	}
+	this.targetInput.$input.select();
+	this.surface.enable();
 };
 
 /* Registration */

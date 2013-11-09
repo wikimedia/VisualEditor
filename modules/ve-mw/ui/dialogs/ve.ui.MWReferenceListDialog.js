@@ -12,7 +12,7 @@
  * @extends ve.ui.MWDialog
  *
  * @constructor
- * @param {ve.ui.SurfaceWindowSet} windowSet Window set this dialog is part of
+ * @param {ve.ui.WindowSet} windowSet Window set this dialog is part of
  * @param {Object} [config] Configuration options
  */
 ve.ui.MWReferenceListDialog = function VeUiMWReferenceListDialog( windowSet, config ) {
@@ -34,7 +34,9 @@ ve.ui.MWReferenceListDialog.static.icon = 'references';
 
 /* Methods */
 
-/** */
+/**
+ * @inheritdoc
+ */
 ve.ui.MWReferenceListDialog.prototype.initialize = function () {
 	// Parent method
 	ve.ui.MWDialog.prototype.initialize.call( this );
@@ -57,11 +59,13 @@ ve.ui.MWReferenceListDialog.prototype.initialize = function () {
 	} );
 
 	this.applyButton = new OO.ui.PushButtonWidget( {
-		'$': this.$, 'label': ve.msg( 'visualeditor-dialog-action-apply' ), 'flags': ['primary']
+		'$': this.$,
+		'label': ve.msg( 'visualeditor-dialog-action-apply' ),
+		'flags': ['primary']
 	} );
 
 	// Events
-	this.applyButton.connect( this, { 'click': [ 'close', 'apply' ] } );
+	this.applyButton.connect( this, { 'click': [ 'close', { 'action': 'apply' } ] } );
 
 	// Initialization
 	this.optionsFieldset.$element.append( this.groupLabel.$element, this.groupInput.$element );
@@ -70,12 +74,14 @@ ve.ui.MWReferenceListDialog.prototype.initialize = function () {
 	this.$foot.append( this.applyButton.$element );
 };
 
-/** */
-ve.ui.MWReferenceListDialog.prototype.onOpen = function () {
-	var node, refGroup;
-
+/**
+ * @inheritdoc
+ */
+ve.ui.MWReferenceListDialog.prototype.setup = function ( data ) {
 	// Parent method
-	ve.ui.MWDialog.prototype.onOpen.call( this );
+	ve.ui.MWDialog.prototype.setup.call( this, data );
+
+	var node, refGroup;
 
 	// Prepopulate from existing node if we're editing a node
 	// instead of inserting a new one
@@ -99,16 +105,19 @@ ve.ui.MWReferenceListDialog.prototype.onOpen = function () {
 };
 
 /**
- * @param {string} action Action that caused the window to be closed
+ * @inheritdoc
  */
-ve.ui.MWReferenceListDialog.prototype.onClose = function ( action ) {
+ve.ui.MWReferenceListDialog.prototype.teardown = function ( data ) {
 	var refGroup, listGroup, oldListGroup, attrChanges,
 		doc, model,
 		surfaceModel = this.surface.getModel(),
 		node = this.node;
 
+	// Data initialization
+	data = data || {};
+
 	// Save changes
-	if ( action === 'apply' ) {
+	if ( data.action === 'apply' ) {
 		refGroup = this.groupInput.getValue();
 		listGroup = 'mwReference/' + refGroup;
 
@@ -145,7 +154,7 @@ ve.ui.MWReferenceListDialog.prototype.onClose = function ( action ) {
 	}
 
 	// Parent method
-	ve.ui.MWDialog.prototype.onClose.call( this );
+	ve.ui.MWDialog.prototype.teardown.call( this, data );
 };
 
 /* Registration */

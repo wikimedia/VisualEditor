@@ -12,7 +12,7 @@
  * @extends ve.ui.MWDialog
  *
  * @constructor
- * @param {ve.ui.SurfaceWindowSet} windowSet Window set this dialog is part of
+ * @param {ve.ui.WindowSet} windowSet Window set this dialog is part of
  * @param {Object} [config] Configuration options
  */
 ve.ui.MWMediaInsertDialog = function VeUiMWMediaInsertDialog( windowSet, config ) {
@@ -40,18 +40,42 @@ ve.ui.MWMediaInsertDialog.static.icon = 'picture';
 
 /* Methods */
 
-/** */
+/**
+ * Handle search result selection.
+ *
+ * @param {ve.ui.MWMediaResultWidget|null} item Selected item
+ */
 ve.ui.MWMediaInsertDialog.prototype.onSearchSelect = function ( item ) {
 	this.item = item;
 	if ( item ) {
-		this.close( 'insert' );
+		this.close( { 'action': 'insert' } );
 	}
 };
 
-/** */
-ve.ui.MWMediaInsertDialog.prototype.onOpen = function () {
+/**
+ * @inheritdoc
+ */
+ve.ui.MWMediaInsertDialog.prototype.initialize = function () {
 	// Parent method
-	ve.ui.MWDialog.prototype.onOpen.call( this );
+	ve.ui.MWDialog.prototype.initialize.call( this );
+
+	// Properties
+	this.search = new ve.ui.MWMediaSearchWidget( { '$': this.$ } );
+
+	// Events
+	this.search.connect( this, { 'select': 'onSearchSelect' } );
+
+	// Initialization
+	this.search.$element.addClass( 've-ui-mwMediaInsertDialog-select' );
+	this.$body.append( this.search.$element );
+};
+
+/**
+ * @inheritdoc
+ */
+ve.ui.MWMediaInsertDialog.prototype.setup = function ( data ) {
+	// Parent method
+	ve.ui.MWDialog.prototype.setup.call( this, data );
 
 	// Initialization
 	this.search.getQuery().$input.focus().select();
@@ -59,14 +83,16 @@ ve.ui.MWMediaInsertDialog.prototype.onOpen = function () {
 	this.search.getResults().highlightItem();
 };
 
-/** */
-ve.ui.MWMediaInsertDialog.prototype.onClose = function ( action ) {
+/**
+ * @inheritdoc
+ */
+ve.ui.MWMediaInsertDialog.prototype.teardown = function ( data ) {
 	var info;
 
-	// Parent method
-	ve.ui.MWDialog.prototype.onClose.call( this );
+	// Data initialization
+	data = data || {};
 
-	if ( action === 'insert' ) {
+	if ( data.action === 'insert' ) {
 		info = this.item.imageinfo[0];
 		this.surface.getModel().getFragment().collapseRangeToEnd().insertContent( [
 			{
@@ -87,22 +113,9 @@ ve.ui.MWMediaInsertDialog.prototype.onClose = function ( action ) {
 			{ 'type': '/mwBlockImage' }
 		] );
 	}
-};
 
-/** */
-ve.ui.MWMediaInsertDialog.prototype.initialize = function () {
 	// Parent method
-	ve.ui.MWDialog.prototype.initialize.call( this );
-
-	// Properties
-	this.search = new ve.ui.MWMediaSearchWidget( { '$': this.$ } );
-
-	// Events
-	this.search.connect( this, { 'select': 'onSearchSelect' } );
-
-	// Initialization
-	this.search.$element.addClass( 've-ui-mwMediaInsertDialog-select' );
-	this.$body.append( this.search.$element );
+	ve.ui.MWDialog.prototype.teardown.call( this, data );
 };
 
 /* Registration */
