@@ -66,7 +66,6 @@ ve.ce.MWTransclusionNode.prototype.generateContents = function ( config ) {
 			'paction': 'parsefragment',
 			'page': mw.config.get( 'wgRelevantPageName' ),
 			'wikitext': ( config && config.wikitext ) || this.model.getWikitext(),
-			'token': mw.user.tokens.get( 'editToken' ),
 			'format': 'json'
 		},
 		'dataType': 'json',
