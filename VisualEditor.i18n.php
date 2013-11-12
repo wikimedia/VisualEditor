@@ -22,6 +22,8 @@ $messages['en'] = array(
 	'ooui-dialog-action-close' => 'Close',
 	'ooui-outline-control-move-down' => 'Move item down',
 	'ooui-outline-control-move-up' => 'Move item up',
+	'ooui-toggle-on' => 'On',
+	'ooui-toggle-off' => 'Off',
 	'ooui-toolbar-more' => 'More',
 	'tag-visualeditor' => '[[{{MediaWiki:visualeditor-descriptionpagelink}}|VisualEditor]]',
 	'tag-visualeditor-description' => 'Edit made using the [[{{MediaWiki:visualeditor-descriptionpagelink}}|VisualEditor]]',
@@ -253,6 +255,8 @@ $messages['qqq'] = array(
 {{Identical|Close}}',
 	'ooui-outline-control-move-down' => 'Tool tip for a button that moves items in a list down one place',
 	'ooui-outline-control-move-up' => 'Tool tip for a button that moves items in a list up one place',
+	'ooui-toggle-on' => 'Label for toggle on state',
+	'ooui-toggle-off' => 'Label for toggle off state',
 	'ooui-toolbar-more' => 'Label for the toolbar group that contains a list of all other available tools.
 {{Identical|More}}',
 	'tag-visualeditor' => 'Short description of the visualeditor tag.

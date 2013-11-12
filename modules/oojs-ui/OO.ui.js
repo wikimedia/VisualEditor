@@ -49,6 +49,10 @@ var messages = {
 	'ooui-outline-control-move-down': 'Move item down',
 	// Tool tip for a button that moves items in a list up one place
 	'ooui-outline-control-move-up': 'Move item up',
+	// Label for toggle on state
+	'ooui-toggle-on': 'On',
+	// Label for toggle off state
+	'ooui-toggle-off': 'Off',
 	// Label for the toolbar group that contains a list of all other available tools
 	'ooui-toolbar-more': 'More'
 };
