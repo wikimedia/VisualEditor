@@ -207,8 +207,10 @@ ve.dm.Node.static.remapStoreIndexes = function ( /*dataElement, mapping*/ ) {
  * @inheritable
  * @param {Object} dataElement Data element (opening) to remap. Will be modified.
  * @param {Object} mapping Object mapping old internal list indexes to new internal list indexes
+ * @param {ve.dm.InternalList} internalList Internal list the indexes are being mapped into.
+ *  Used for refreshing attribute values that were computed with getNextUniqueNumber().
  */
-ve.dm.Node.static.remapInternalListIndexes = function ( /*dataElement, mapping*/ ) {
+ve.dm.Node.static.remapInternalListIndexes = function ( /*dataElement, mapping, internalList*/ ) {
 };
 
 /**

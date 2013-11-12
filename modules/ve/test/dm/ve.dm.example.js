@@ -132,6 +132,9 @@ ve.dm.example.createExampleDocumentFromObject = function ( name, store, object )
 			);
 		}
 	}
+	if ( object[name].internalListNextUniqueNumber ) {
+		doc.internalList.nextUniqueNumber = object[name].internalListNextUniqueNumber;
+	}
 	return doc;
 };
 

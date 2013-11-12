@@ -41,6 +41,14 @@ ve.dm.MWReferenceNode.static.isContent = true;
 
 ve.dm.MWReferenceNode.static.blacklistedAnnotationTypes = [ 'link' ];
 
+/**
+ * Regular expression for parsing the listKey attribute
+ * @static
+ * @property {RegExp}
+ * @inheritable
+ */
+ve.dm.MWReferenceNode.static.listKeyRegex = /^(auto|literal)\/(.*)$/;
+
 ve.dm.MWReferenceNode.static.toDataElement = function ( domElements, converter ) {
 	var dataElement,
 		mwDataJSON = domElements[0].getAttribute( 'data-mw' ),
@@ -135,7 +143,7 @@ ve.dm.MWReferenceNode.static.toDomElements = function ( dataElement, doc, conver
 	}
 
 	// Generate name
-	listKeyParts = dataElement.attributes.listKey.match( /^(auto|literal)\/(.*)$/ );
+	listKeyParts = dataElement.attributes.listKey.match( this.listKeyRegex );
 	if ( listKeyParts[1] === 'auto' ) {
 		// Only render a name if this key was reused
 		if ( keyedNodes.length > 1 ) {
@@ -183,8 +191,16 @@ ve.dm.MWReferenceNode.static.toDomElements = function ( dataElement, doc, conver
 	return [ el ];
 };
 
-ve.dm.MWReferenceNode.static.remapInternalListIndexes = function ( dataElement, mapping ) {
+ve.dm.MWReferenceNode.static.remapInternalListIndexes = function ( dataElement, mapping, internalList ) {
+	var listKeyParts;
+	// Remap listIndex
 	dataElement.attributes.listIndex = mapping[dataElement.attributes.listIndex];
+
+	// Remap listKey if it was automatically generated
+	listKeyParts = dataElement.attributes.listKey.match( this.listKeyRegex );
+	if ( listKeyParts[1] === 'auto' ) {
+		dataElement.attributes.listKey = 'auto/' + internalList.getNextUniqueNumber();
+	}
 };
 
 /* Methods */

@@ -726,6 +726,8 @@ ve.dm.mwExample.complexInternalData.internalItems = [
 	{ 'group': 'mwReference', 'key': 'foo', 'body': 'Table in ref: <table><tr><td>because I can</td></tr></table>' }
 ];
 
+ve.dm.mwExample.complexInternalData.internalListNextUniqueNumber = 1;
+
 ve.dm.mwExample.domToDataCases = {
 	'adjacent annotations': {
 		'body':
