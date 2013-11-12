@@ -308,7 +308,7 @@ ve.dm.Model.prototype.getAttribute = function ( key ) {
  * Values are by reference if array or object, similar to using the getAttribute method.
  *
  * @method
- * @param {string} prefix Only return attributes with this prefix, and remove the prefix from them
+ * @param {string} [prefix] Only return attributes with this prefix, and remove the prefix from them
  * @returns {Object} Attributes
  */
 ve.dm.Model.prototype.getAttributes = function ( prefix ) {
