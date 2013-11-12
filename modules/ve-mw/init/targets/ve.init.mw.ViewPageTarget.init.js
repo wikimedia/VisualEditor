@@ -57,7 +57,7 @@
 	// BUG 49000: For special pages, no information about page existence is
 	// exposed to mw.config (see BUG 53774), so we assume it exists.
 	pageExists = !!mw.config.get( 'wgArticleId' ) || mw.config.get( 'wgNamespaceNumber' ) < 0;
-	viewUri = new mw.Uri( mw.util.wikiGetlink( mw.config.get( 'wgRelevantPageName' ) ) );
+	viewUri = new mw.Uri( mw.util.getUrl( mw.config.get( 'wgRelevantPageName' ) ) );
 	veEditUri = viewUri.clone().extend( { 'veaction': 'edit' } );
 	isViewPage = (
 		mw.config.get( 'wgIsArticle' ) &&
