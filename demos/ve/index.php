@@ -129,7 +129,6 @@ $html = file_get_contents( $page );
 		<script src="../../modules/oojs-ui/layouts/OO.ui.PagedLayout.js"></script>
 		<script src="../../modules/oojs-ui/layouts/OO.ui.PagedOutlineLayout.js"></script>
 		<script src="../../modules/oojs-ui/layouts/OO.ui.PanelLayout.js"></script>
-		<script src="../../modules/oojs-ui/layouts/OO.ui.PageLayout.js"></script>
 		<script src="../../modules/oojs-ui/layouts/OO.ui.StackPanelLayout.js"></script>
 		<script src="../../modules/oojs-ui/tools/OO.ui.PopupTool.js"></script>
 		<script src="../../modules/oojs-ui/toolgroups/OO.ui.BarToolGroup.js"></script>
