@@ -236,8 +236,12 @@
 	border-color: rgba(0,0,0,0.2);
 }
 
-.oo-ui-listToolGroup .oo-ui-tool.oo-ui-widget-disabled {
+.oo-ui-listToolGroup .oo-ui-tool.oo-ui-widget-disabled .oo-ui-tool-link {
 	cursor: default;
+}
+
+.oo-ui-listToolGroup .oo-ui-tool.oo-ui-widget-disabled .oo-ui-tool-link .oo-ui-labeledElement-label {
+	color: #ccc;
 }
 
 .oo-ui-listToolGroup .oo-ui-tool.oo-ui-widget-disabled .oo-ui-tool-link .oo-ui-iconedElement-icon {

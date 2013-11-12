@@ -186,11 +186,14 @@ OO.ui.ToolGroup.prototype.onMouseOut = function ( e ) {
  * @returns {OO.ui.Tool|null} Tool, `null` if none was found
  */
 OO.ui.ToolGroup.prototype.getTargetTool = function ( e ) {
-	var $item = this.$( e.target ).closest( '.oo-ui-tool-link' );
+	var tool,
+		$item = this.$( e.target ).closest( '.oo-ui-tool-link' );
+
 	if ( $item.length ) {
-		return $item.parent().data( 'oo-ui-tool' );
+		tool = $item.parent().data( 'oo-ui-tool' );
 	}
-	return null;
+
+	return tool && !tool.isDisabled() ? tool : null;
 };
 
 /**
