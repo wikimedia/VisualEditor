@@ -727,7 +727,7 @@ ve.dm.ElementLinearData.prototype.remapStoreIndexes = function ( mapping ) {
  * @method
  * @param {Object} mapping Mapping from internal list indexes to internal list indexes
  */
-ve.dm.ElementLinearData.prototype.remapInteralListIndexes = function ( mapping ) {
+ve.dm.ElementLinearData.prototype.remapInternalListIndexes = function ( mapping ) {
 	var i, ilen, nodeClass;
 	for ( i = 0, ilen = this.data.length; i < ilen; i++ ) {
 		if ( this.isOpenElementData( i ) ) {
