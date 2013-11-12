@@ -45,6 +45,7 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 	this.dragging = false;
 	this.relocating = false;
 	this.selecting = false;
+	this.resizing = false;
 	this.contentBranchNodeChanged = false;
 	this.$phantoms = this.$( '<div>' );
 	this.$highlights = this.$( '<div>' );
