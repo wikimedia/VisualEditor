@@ -78,7 +78,7 @@ ve.ui.InspectorTool.prototype.onSelect = function () {
 		this.constructor.static.inspector,
 		this.constructor.static.config
 	);
-	this.setActive( false );
+	this.setActive( true );
 };
 
 /**
@@ -90,8 +90,13 @@ ve.ui.InspectorTool.prototype.onSelect = function () {
  * @param {ve.dm.AnnotationSet} partial Annotations that cover some or all of the current selection
  */
 ve.ui.InspectorTool.prototype.onUpdateState = function ( nodes, full ) {
-	var toolFactory = this.toolbar.getToolFactory();
-	this.setActive( toolFactory.getToolsForAnnotations( full ).indexOf( this.constructor ) !== -1 );
+	var toolFactory = this.toolbar.getToolFactory(),
+		tools = toolFactory.getToolsForAnnotations( full );
+
+	this.setActive(
+		// This tool is compatible with one of the annotations
+		tools.indexOf( this.constructor.static.name ) !== -1
+	);
 };
 
 /**
