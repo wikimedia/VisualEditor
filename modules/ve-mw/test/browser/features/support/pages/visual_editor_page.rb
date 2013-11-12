@@ -43,7 +43,7 @@ class VisualEditorPage
     text_area(:describe_change, index: 0, frame: frame)
     div(:diff_view, class: 've-ui-mwSaveDialog-viewer', frame: frame)
     a(:ex, title: 'Close', frame: frame)
-    a(:leftarrowclose, title: 'Close', frame: frame)
+    span(:leftarrowclose, class: 'oo-ui-iconedElement-icon oo-ui-icon-previous', frame: frame)
     text_field(:link_textfield, index: 0, frame: frame)
     checkbox(:minor_edit, id: 'wpMinoredit', frame: frame)
     span(:return_to_save, class: 'oo-ui-labeledElement-label', text: 'Return to save form', frame: frame)
