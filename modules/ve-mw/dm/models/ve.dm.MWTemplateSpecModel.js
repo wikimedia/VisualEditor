@@ -141,10 +141,12 @@ ve.dm.MWTemplateSpecModel.prototype.getLabel = function () {
  * Get template description.
  *
  * @method
+ * @param {string} [lang] Language to get description in
  * @returns {string|null} Template description or null if not available
  */
-ve.dm.MWTemplateSpecModel.prototype.getDescription = function () {
-	return this.description;
+ve.dm.MWTemplateSpecModel.prototype.getDescription = function ( lang ) {
+	var value = this.description;
+	return ve.isPlainObject( value ) ? OO.ui.getLocalValue( value, lang ) : value;
 };
 
 /**
@@ -176,10 +178,12 @@ ve.dm.MWTemplateSpecModel.prototype.isParameterAlias = function ( name ) {
  *
  * @method
  * @param {string} name Parameter name
+ * @param {string} [lang] Language to get label in
  * @returns {string} Parameter label
  */
-ve.dm.MWTemplateSpecModel.prototype.getParameterLabel = function ( name ) {
-	return this.params[name].label || name;
+ve.dm.MWTemplateSpecModel.prototype.getParameterLabel = function ( name, lang ) {
+	var value = this.params[name].label;
+	return ve.isPlainObject( value ) ? OO.ui.getLocalValue( value, lang ) : value;
 };
 
 /**
@@ -187,10 +191,12 @@ ve.dm.MWTemplateSpecModel.prototype.getParameterLabel = function ( name ) {
  *
  * @method
  * @param {string} name Parameter name
+ * @param {string} [lang] Language to get description
  * @returns {string|null} Parameter description
  */
-ve.dm.MWTemplateSpecModel.prototype.getParameterDescription = function ( name ) {
-	return this.params[name].description;
+ve.dm.MWTemplateSpecModel.prototype.getParameterDescription = function ( name, lang ) {
+	var value = this.params[name].description;
+	return ve.isPlainObject( value ) ? OO.ui.getLocalValue( value, lang ) : value;
 };
 
 /**

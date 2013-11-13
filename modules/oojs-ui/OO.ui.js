@@ -16,8 +16,9 @@ OO.ui = {};
 OO.ui.bind = $.proxy;
 
 /**
- * Get the user's language and any fallback languages. These language codes are used by
- * OO.ui.IconedElement to select localized icons in the user's language.
+ * Get the user's language and any fallback languages.
+ *
+ * These language codes are used to localize user interface elements in the user's language.
  *
  * In environments that provide a localization system, this function should be overridden to
  * return the user's language(s). The default implementation returns English (en) only.
@@ -26,6 +27,41 @@ OO.ui.bind = $.proxy;
  */
 OO.ui.getUserLanguages = function () {
 	return [ 'en' ];
+};
+
+/**
+ * Get a value in an object keyed by language code.
+ *
+ * @param {Object.<string,Mixed>} obj Object keyed by language code
+ * @param {string|null} [lang] Language code, if omitted or null defaults to any user language
+ * @param {string} [fallback] Fallback code, used if no matching language can be found
+ * @returns {Mixed} Local value
+ */
+OO.ui.getLocalValue = function ( obj, lang, fallback ) {
+	var i, len, langs;
+
+	// Requested language
+	if ( obj[lang] ) {
+		return obj[lang];
+	}
+	// Known user language
+	langs = OO.ui.getUserLanguages();
+	for ( i = 0, len = langs.length; i < len; i++ ) {
+		lang = langs[i];
+		if ( obj[lang] ) {
+			return obj[lang];
+		}
+	}
+	// Fallback language
+	if ( obj[fallback] ) {
+		return obj[fallback];
+	}
+	// First existing language
+	for ( lang in obj ) {
+		return obj[lang];
+	}
+
+	return undefined;
 };
 
 ( function () {
