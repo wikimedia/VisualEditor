@@ -40,21 +40,7 @@ OO.ui.IconedElement = function OoUiIconedElement( $icon, config ) {
  * @chainable
  */
 OO.ui.IconedElement.prototype.setIcon = function ( value ) {
-	var i, len, icon, lang,
-		langs = OO.ui.getUserLanguages();
-
-	if ( OO.isPlainObject( value ) ) {
-		icon = value['default'];
-		for ( i = 0, len = langs.length; i < len; i++ ) {
-			lang = langs[i];
-			if ( value[lang] ) {
-				icon = value[lang];
-				break;
-			}
-		}
-	} else {
-		icon = value;
-	}
+	var icon = OO.isPlainObject( value ) ? OO.ui.getLocalValue( value, null, 'default' ) : value;
 
 	if ( this.icon ) {
 		this.$icon.removeClass( 'oo-ui-icon-' + this.icon );
