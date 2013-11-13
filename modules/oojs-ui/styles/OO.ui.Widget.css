@@ -553,3 +553,121 @@ a.oo-ui-buttonWidget-button {
 	overflow-y: auto;
 	line-height: 0;
 }
+
+/* OO.ui.ToggleWidget */
+
+.oo-ui-toggleWidget {
+	position: relative;
+	display: inline-block;
+	vertical-align: middle;
+	height: 2em;
+	width: 6em;
+	border-radius: 0.5em;
+	overflow: hidden;
+	box-shadow: 0 0 0 white, inset 0 0.1em 0.2em #ddd;
+	border: solid 1px #ccc;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	cursor: pointer;
+	-webkit-transition: background-color 200ms;
+	-moz-transition: background-color 200ms;
+	-o-transition: background-color 200ms;
+	transition: background-color 200ms;
+}
+
+.oo-ui-toggleWidget-slide {
+	position: absolute;
+	top: 0;
+	display: block;
+	height: 2em;
+	width: 10em;
+	-webkit-transition: left 200ms ease-in-out, margin-left 200ms ease-in-out;
+	-moz-transition: left 200ms ease-in-out, margin-left 200ms ease-in-out;
+	-o-transition: left 200ms ease-in-out, margin-left 200ms ease-in-out;
+	transition: left 200ms ease-in-out, margin-left 200ms ease-in-out;
+}
+
+.oo-ui-toggleWidget-dragging .oo-ui-toggleWidget-slide {
+	-webkit-transition: left 200ms ease-in-out;
+	-moz-transition: left 200ms ease-in-out;
+	-o-transition: left 200ms ease-in-out;
+	transition: left 200ms ease-in-out;
+}
+
+.oo-ui-toggleWidget-on .oo-ui-toggleWidget-slide {
+	left: 0;
+}
+
+.oo-ui-toggleWidget-off .oo-ui-toggleWidget-slide {
+	left: -4em;
+}
+
+.oo-ui-toggleWidget-grip {
+	position: absolute;
+	top: 0;
+	left: 4em;
+	display: block;
+	width: 2em;
+	height: 2em;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	margin: -1px;
+	box-shadow: 0 0.1em 0.25em rgba(0, 0, 0, 0.1);
+	border-radius: 0.5em;
+
+	/* Gray */
+	border: 1px #c9c9c9 solid;
+	background-color: #ffffff;
+	filter: progid:DXImageTransform.Microsoft.gradient(
+		GradientType=0,startColorstr=#ffffff, endColorstr=#f0f0f0
+	);
+	background-image: -webkit-gradient(
+		linear, right top, right bottom, color-stop(0%,#ffffff), color-stop(100%,#f0f0f0)
+	);
+	background-image: -webkit-linear-gradient(top, #ffffff 0%, #f0f0f0 100%);
+	background-image: -moz-linear-gradient(top, #ffffff 0%, #f0f0f0 100%);
+	background-image: -ms-linear-gradient(top, #ffffff 0%, #f0f0f0 100%);
+	background-image: -o-linear-gradient(top, #ffffff 0%, #f0f0f0 100%);
+	background-image: linear-gradient(top, #ffffff 0%, #f0f0f0 100%);
+}
+
+.oo-ui-toggleWidget:hover,
+.oo-ui-toggleWidget-dragging,
+.oo-ui-toggleWidget:hover .oo-ui-toggleWidget-grip,
+.oo-ui-toggleWidget-dragging .oo-ui-toggleWidget-grip {
+	border-color: #aaa;
+}
+
+.oo-ui-toggleWidget-label {
+	position: absolute;
+	top: 0;
+	display: block;
+	width: 5em;
+	height: 2em;
+	line-height: 2em;
+	color: black;
+	text-align: center;
+	cursor: pointer;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.oo-ui-toggleWidget-label-on {
+	left: -0.5em;
+	padding: 0 0.5em 0 0.75em;
+	background-color: rgba(0,255,0,0.25);
+}
+
+.oo-ui-toggleWidget-label-off {
+	left: 5.5em;
+	padding: 0 0.75em 0 0.5em;
+	background-color: rgba(128,128,128,0.25);
+}

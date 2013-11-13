@@ -154,6 +154,7 @@ $html = file_get_contents( $page );
 		<script src="../../modules/oojs-ui/widgets/OO.ui.SearchWidget.js"></script>
 		<script src="../../modules/oojs-ui/widgets/OO.ui.TextInputWidget.js"></script>
 		<script src="../../modules/oojs-ui/widgets/OO.ui.TextInputMenuWidget.js"></script>
+		<script src="../../modules/oojs-ui/widgets/OO.ui.ToggleWidget.js"></script>
 		<!-- ext.visualEditor.base#standalone-init -->
 		<script src="../../modules/ve/ve.js"></script>
 		<script src="../../modules/ve/ve.track.js"></script>

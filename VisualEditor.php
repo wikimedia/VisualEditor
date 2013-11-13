@@ -145,6 +145,7 @@ $wgResourceModules += array(
 			'oojs-ui/widgets/OO.ui.SearchWidget.js',
 			'oojs-ui/widgets/OO.ui.TextInputWidget.js',
 			'oojs-ui/widgets/OO.ui.TextInputMenuWidget.js',
+			'oojs-ui/widgets/OO.ui.ToggleWidget.js',
 		),
 		'styles' => array(
 			'oojs-ui/styles/OO.ui.css',
@@ -162,6 +163,8 @@ $wgResourceModules += array(
 			'ooui-dialog-action-close',
 			'ooui-outline-control-move-down',
 			'ooui-outline-control-move-up',
+			'ooui-toggle-on',
+			'ooui-toggle-off',
 			'ooui-toolbar-more',
 		),
 		'dependencies' => array(
