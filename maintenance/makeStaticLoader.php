@@ -114,14 +114,10 @@ class MakeStaticLoader extends Maintenance {
 	) {
 		document.write(
 			\'<link rel="stylesheet" \' +
-				\'href="' . $vePath . '/oojs-ui/styles/OO.ui.Icons-vector.css">\' +
-			\'<link rel="stylesheet" \' +
 				\'href="' . $vePath . '/ve/ui/styles/ve.ui.Icons-vector.css">\'
 		);
 	} else {
 		document.write(
-			\'<link rel="stylesheet" \' +
-				\'href="' . $vePath . '/oojs-ui/styles/OO.ui.Icons-raster.css">\' +
 			\'<link rel="stylesheet" \' +
 				\'href="' . $vePath . '/ve/ui/styles/ve.ui.Icons-raster.css">\'
 		);

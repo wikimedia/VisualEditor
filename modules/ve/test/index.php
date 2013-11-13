@@ -20,14 +20,10 @@
 			) {
 				document.write(
 					'<link rel="stylesheet" ' +
-						'href="../../oojs-ui/styles/OO.ui.Icons-vector.css">' +
-					'<link rel="stylesheet" ' +
 						'href="../../ve/ui/styles/ve.ui.Icons-vector.css">'
 				);
 			} else {
 				document.write(
-					'<link rel="stylesheet" ' +
-						'href="../../oojs-ui/styles/OO.ui.Icons-raster.css">' +
 					'<link rel="stylesheet" ' +
 						'href="../../ve/ui/styles/ve.ui.Icons-raster.css">'
 				);
@@ -50,55 +46,7 @@
 		<script src="../../unicodejs/unicodejs.wordbreakproperties.js"></script>
 		<script src="../../unicodejs/unicodejs.wordbreak.js"></script>
 		<!-- oojs-ui -->
-		<script src="../../oojs-ui/OO.ui.js"></script>
-		<script src="../../oojs-ui/OO.ui.Element.js"></script>
-		<script src="../../oojs-ui/OO.ui.Frame.js"></script>
-		<script src="../../oojs-ui/OO.ui.Window.js"></script>
-		<script src="../../oojs-ui/OO.ui.WindowSet.js"></script>
-		<script src="../../oojs-ui/OO.ui.Dialog.js"></script>
-		<script src="../../oojs-ui/OO.ui.Layout.js"></script>
-		<script src="../../oojs-ui/OO.ui.Widget.js"></script>
-		<script src="../../oojs-ui/elements/OO.ui.ClippableElement.js"></script>
-		<script src="../../oojs-ui/elements/OO.ui.FlaggableElement.js"></script>
-		<script src="../../oojs-ui/elements/OO.ui.GroupElement.js"></script>
-		<script src="../../oojs-ui/elements/OO.ui.IconedElement.js"></script>
-		<script src="../../oojs-ui/elements/OO.ui.LabeledElement.js"></script>
-		<script src="../../oojs-ui/elements/OO.ui.PopuppableElement.js"></script>
-		<script src="../../oojs-ui/OO.ui.Tool.js"></script>
-		<script src="../../oojs-ui/OO.ui.Toolbar.js"></script>
-		<script src="../../oojs-ui/OO.ui.ToolFactory.js"></script>
-		<script src="../../oojs-ui/OO.ui.ToolGroup.js"></script>
-		<script src="../../oojs-ui/layouts/OO.ui.FieldsetLayout.js"></script>
-		<script src="../../oojs-ui/layouts/OO.ui.GridLayout.js"></script>
-		<script src="../../oojs-ui/layouts/OO.ui.PagedLayout.js"></script>
-		<script src="../../oojs-ui/layouts/OO.ui.PagedOutlineLayout.js"></script>
-		<script src="../../oojs-ui/layouts/OO.ui.PanelLayout.js"></script>
-		<script src="../../oojs-ui/layouts/OO.ui.StackPanelLayout.js"></script>
-		<script src="../../oojs-ui/tools/OO.ui.PopupTool.js"></script>
-		<script src="../../oojs-ui/toolgroups/OO.ui.BarToolGroup.js"></script>
-		<script src="../../oojs-ui/toolgroups/OO.ui.PopupToolGroup.js"></script>
-		<script src="../../oojs-ui/toolgroups/OO.ui.ListToolGroup.js"></script>
-		<script src="../../oojs-ui/toolgroups/OO.ui.MenuToolGroup.js"></script>
-		<script src="../../oojs-ui/widgets/OO.ui.ButtonWidget.js"></script>
-		<script src="../../oojs-ui/widgets/OO.ui.IconButtonWidget.js"></script>
-		<script src="../../oojs-ui/widgets/OO.ui.InputWidget.js"></script>
-		<script src="../../oojs-ui/widgets/OO.ui.InputLabelWidget.js"></script>
-		<script src="../../oojs-ui/widgets/OO.ui.LookupInputWidget.js"></script>
-		<script src="../../oojs-ui/widgets/OO.ui.OptionWidget.js"></script>
-		<script src="../../oojs-ui/widgets/OO.ui.SelectWidget.js"></script>
-		<script src="../../oojs-ui/widgets/OO.ui.MenuItemWidget.js"></script>
-		<script src="../../oojs-ui/widgets/OO.ui.MenuWidget.js"></script>
-		<script src="../../oojs-ui/widgets/OO.ui.MenuSectionItemWidget.js"></script>
-		<script src="../../oojs-ui/widgets/OO.ui.OutlineWidget.js"></script>
-		<script src="../../oojs-ui/widgets/OO.ui.OutlineControlsWidget.js"></script>
-		<script src="../../oojs-ui/widgets/OO.ui.OutlineItemWidget.js"></script>
-		<script src="../../oojs-ui/widgets/OO.ui.PopupWidget.js"></script>
-		<script src="../../oojs-ui/widgets/OO.ui.PopupButtonWidget.js"></script>
-		<script src="../../oojs-ui/widgets/OO.ui.PushButtonWidget.js"></script>
-		<script src="../../oojs-ui/widgets/OO.ui.SearchWidget.js"></script>
-		<script src="../../oojs-ui/widgets/OO.ui.TextInputWidget.js"></script>
-		<script src="../../oojs-ui/widgets/OO.ui.TextInputMenuWidget.js"></script>
-		<script src="../../oojs-ui/widgets/OO.ui.ToggleWidget.js"></script>
+		<script src="../../oojs-ui/oojs-ui.js"></script>
 		<!-- ext.visualEditor.base#standalone-init -->
 		<script src="../../ve/ve.js"></script>
 		<script src="../../ve/ve.track.js"></script>

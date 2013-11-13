@@ -423,8 +423,6 @@ class VisualEditorHooks {
 				'unicodejs/test/unicodejs.test.js',
 				'unicodejs/test/unicodejs.graphemebreak.test.js',
 				'unicodejs/test/unicodejs.wordbreak.test.js',
-				// OOJS UI Tests
-				'oojs-ui/test/OO.ui.Element.test.js',
 				// VisualEditor Tests
 				've/test/ve.test.utils.js',
 				've/test/ve.test.js',
