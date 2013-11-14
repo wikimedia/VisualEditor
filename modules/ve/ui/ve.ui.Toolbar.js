@@ -49,7 +49,11 @@ ve.ui.Toolbar = function VeUiToolbar( surface, options ) {
 			return toolbar.onSurfaceViewKeyUp.apply( toolbar, arguments );
 		}
 	};
-
+	// default directions:
+	this.contextDirection = { 'inline': 'ltr', 'block': 'ltr' };
+	this.$element
+		.addClass( 've-ui-dir-inline-' + this.contextDirection.inline )
+		.addClass( 've-ui-dir-block-' + this.contextDirection.block );
 	// Events
 	this.surface.getModel().connect( this, { 'contextChange': 'onContextChange' } );
 	this.surface.connect( this, { 'addCommand': 'onSurfaceAddCommand' } );
@@ -151,8 +155,15 @@ ve.ui.Toolbar.prototype.onSurfaceViewKeyUp = function () {
  * @fires updateState
  */
 ve.ui.Toolbar.prototype.onContextChange = function () {
-	var i, len, leafNodes,
+	var i, len, leafNodes, dirInline, dirBlock, fragmentAnnotation,
+		currentNodes = {
+			fragNodes: null,
+			fragAnnotations: null,
+			'dm': {},
+			'ce': {}
+		},
 		fragment = this.surface.getModel().getFragment( null, false ),
+		doc = this.surface.getView().getDocument(),
 		nodes = [];
 
 	leafNodes = fragment.getLeafNodes();
@@ -160,6 +171,38 @@ ve.ui.Toolbar.prototype.onContextChange = function () {
 		if ( len === 1 || !leafNodes[i].range || leafNodes[i].range.getLength() ) {
 			nodes.push( leafNodes[i].node );
 		}
+	}
+	// Update context direction for button icons UI:
+
+	// block direction (direction of the current node)
+	currentNodes.fragNodes = fragment.getCoveredNodes();
+	if ( currentNodes.fragNodes.length > 1 ) {
+		// selection of multiple nodes
+		currentNodes.dm.block = fragment.getSiblingNodes()[0].node.parent;
+	} else {
+		// selection of a single node
+		currentNodes.dm.block = currentNodes.fragNodes[0].node;
+	}
+	// get the direction of the block:
+	currentNodes.ce.block = doc.getNodeFromOffset( currentNodes.dm.block.getRange().start );
+	dirBlock = currentNodes.ce.block.$element.css( 'direction' );
+	// by default, inline and block are the same, unless there's an inline-specific direction
+	dirInline = dirBlock;
+	// 'inline' direction is set by language annotation:
+	fragmentAnnotation = fragment.getAnnotations();
+	if ( fragmentAnnotation.hasAnnotationWithName( 'meta/language' ) ) {
+		dirInline = fragmentAnnotation.getAnnotationsByName( 'meta/language' ).get( 0 ).getAttribute( 'dir' );
+	}
+	if ( dirInline !== this.contextDirection.inline ) {
+		// remove previous class:
+		this.$element.removeClass( 've-ui-dir-inline-rtl ve-ui-dir-inline-ltr' );
+		this.$element.addClass( 've-ui-dir-inline-' + dirInline );
+		this.contextDirection.inline = dirInline;
+	}
+	if ( dirBlock !== this.contextDirection.block ) {
+		this.$element.removeClass( 've-ui-dir-block-rtl ve-ui-dir-block-ltr' );
+		this.$element.addClass( 've-ui-dir-block-' + dirBlock );
+		this.contextDirection.block = dirBlock;
 	}
 	this.emit( 'updateState', nodes, fragment.getAnnotations(), fragment.getAnnotations( true ) );
 };

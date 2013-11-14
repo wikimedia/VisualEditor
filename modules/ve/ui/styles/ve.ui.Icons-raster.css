@@ -4,6 +4,7 @@
  * @copyright 2011-2013 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
+/*csslint duplicate-background-images:false */
 
 .oo-ui-icon-bold-a {
 	/* @embed */
@@ -65,7 +66,31 @@
 	background-image: url(images/icons/bullet-list-ltr.png);
 }
 
+/* @noflip */
+.ve-ui-dir-block-rtl .oo-ui-icon-bullet-list {
+	/* @embed */
+	background-image: url(images/icons/bullet-list-rtl.png);
+}
+
+/* @noflip */
+.ve-ui-dir-block-ltr .oo-ui-icon-bullet-list {
+	/* @embed */
+	background-image: url(images/icons/bullet-list-ltr.png);
+}
+
 .oo-ui-icon-indent-list {
+	/* @embed */
+	background-image: url(images/icons/indent-list-ltr.png);
+}
+
+/* @noflip */
+.ve-ui-dir-block-rtl .oo-ui-icon-indent-list {
+	/* @embed */
+	background-image: url(images/icons/indent-list-rtl.png);
+}
+
+/* @noflip */
+.ve-ui-dir-block-ltr .oo-ui-icon-indent-list {
 	/* @embed */
 	background-image: url(images/icons/indent-list-ltr.png);
 }
@@ -116,7 +141,31 @@
 	background-image: url(images/icons/number-list-ltr.png);
 }
 
+/* @noflip */
+.ve-ui-dir-block-rtl .oo-ui-icon-number-list {
+	/* @embed */
+	background-image: url(images/icons/number-list-rtl.png);
+}
+
+/* @noflip */
+.ve-ui-dir-block-ltr .oo-ui-icon-number-list {
+	/* @embed */
+	background-image: url(images/icons/number-list-ltr.png);
+}
+
 .oo-ui-icon-outdent-list {
+	/* @embed */
+	background-image: url(images/icons/outdent-list-ltr.png);
+}
+
+/* @noflip */
+.ve-ui-dir-block-rtl .oo-ui-icon-outdent-list {
+	/* @embed */
+	background-image: url(images/icons/outdent-list-rtl.png);
+}
+
+/* @noflip */
+.ve-ui-dir-block-ltr .oo-ui-icon-outdent-list {
 	/* @embed */
 	background-image: url(images/icons/outdent-list-ltr.png);
 }
