@@ -565,7 +565,9 @@ ve.init.mw.ViewPageTarget.prototype.onSaveError = function ( jqXHR, status, data
 ve.init.mw.ViewPageTarget.prototype.onShowChanges = function ( diffHtml ) {
 	ve.track( 'performance.user.reviewComplete', { 'duration': ve.now() - this.timings.saveDialogReview } );
 	// Invalidate the viewer diff on next change
-	this.surface.getModel().getDocument().connect( this, { 'transact': 'clearSaveDialogDiff' } );
+	this.surface.getModel().getDocument().once( 'transact',
+		ve.bind( this.saveDialog.clearDiff, this.saveDialog )
+	);
 	this.saveDialog.setDiffAndReview( diffHtml );
 };
 
@@ -578,7 +580,9 @@ ve.init.mw.ViewPageTarget.prototype.onShowChanges = function ( diffHtml ) {
 ve.init.mw.ViewPageTarget.prototype.onSerialize = function ( wikitext ) {
 	ve.track( 'performance.user.reviewComplete', { 'duration': ve.now() - this.timings.saveDialogReview } );
 	// Invalidate the viewer wikitext on next change
-	this.surface.getModel().getDocument().connect( this, { 'transact': 'clearSaveDialogDiff' } );
+	this.surface.getModel().getDocument().once( 'transact',
+		ve.bind( this.saveDialog.clearDiff, this.saveDialog )
+	);
 	this.saveDialog.setDiffAndReview( $( '<pre>' ).text( wikitext ) );
 };
 
@@ -689,22 +693,6 @@ ve.init.mw.ViewPageTarget.prototype.onToolbarCancelButtonClick = function () {
  */
 ve.init.mw.ViewPageTarget.prototype.onToolbarMetaButtonClick = function () {
 	this.surface.getDialogs().getWindow( 'meta' ).open();
-};
-
-/**
- * Clear the diff in the save dialog.
- *
- * This method is bound to the 'transact' event on the document model, and unbinds itself the first
- * time it runs. It's bound when the surface is set up and rebound every time a diff is loaded into
- * the save dialog.
- *
- * @method
- * @param {ve.dm.Transaction} tx Processed transaction
- */
-ve.init.mw.ViewPageTarget.prototype.clearSaveDialogDiff = function () {
-	// Clear the diff
-	this.saveDialog.$reviewViewer.empty();
-	this.surface.getModel().getDocument().disconnect( this, { 'transact': 'clearSaveDialogDiff' } );
 };
 
 /**
@@ -967,9 +955,6 @@ ve.init.mw.ViewPageTarget.prototype.setUpSurface = function ( doc, callback ) {
 					// Initialize surface
 					target.surface.getContext().hide();
 					target.$document = target.surface.$element.find( '.ve-ce-documentNode' );
-					target.surface.getModel().getDocument().connect( target, {
-						'transact': 'clearSaveDialogDiff'
-					} );
 					target.surface.getModel().getDocument().connect( target, {
 						'transact': 'recordLastTransactionTime'
 					} );
@@ -1239,7 +1224,7 @@ ve.init.mw.ViewPageTarget.prototype.setupSaveDialog = function () {
 	if ( this.section ) {
 		sectionTitle = this.$document.find( 'h1, h2, h3, h4, h5, h6' ).eq( this.section - 1 ).text();
 		sectionTitle = '/* ' + ve.graphemeSafeSubstring( sectionTitle, 0, 244 ) + ' */ ';
-		this.saveDialog.editSummaryInput.$input.val( sectionTitle );
+		this.saveDialog.setEditSummary( sectionTitle );
 		this.sectionTitleRestored = true;
 		if ( this.sectionPositionRestored ) {
 			this.onSectionRestored();
@@ -1263,7 +1248,6 @@ ve.init.mw.ViewPageTarget.prototype.setupSaveDialog = function () {
  */
 ve.init.mw.ViewPageTarget.prototype.showSaveDialog = function () {
 	this.saveDialog.setSanityCheck( this.sanityCheckVerified );
-	this.saveDialog.swapPanel( 'save' );
 	this.surface.getDialogs().getWindow( 'mwSave' ).open();
 	this.timings.saveDialogOpen = ve.now();
 	ve.track( 'behavior.lastTransactionTillSaveDialogOpen', {
