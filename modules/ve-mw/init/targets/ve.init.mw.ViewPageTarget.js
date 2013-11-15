@@ -1231,28 +1231,28 @@ ve.init.mw.ViewPageTarget.prototype.detachToolbarButtons = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.setupSaveDialog = function () {
-	var sectionTitle = '', viewPage = this;
+	var sectionTitle = '';
 
-	viewPage.saveDialog = this.surface.getDialogs().getWindow( 'mwSave' );
+	this.saveDialog = this.surface.getDialogs().getWindow( 'mwSave' );
 
-	if ( viewPage.section ) {
-		sectionTitle = viewPage.$document.find( 'h1, h2, h3, h4, h5, h6' ).eq( viewPage.section - 1 ).text();
+	if ( this.section ) {
+		sectionTitle = this.$document.find( 'h1, h2, h3, h4, h5, h6' ).eq( this.section - 1 ).text();
 		sectionTitle = '/* ' + ve.graphemeSafeSubstring( sectionTitle, 0, 244 ) + ' */ ';
-		viewPage.saveDialog.editSummaryInput.$input.val( sectionTitle );
-		viewPage.sectionTitleRestored = true;
-		if ( viewPage.sectionPositionRestored ) {
-			viewPage.onSectionRestored();
+		this.saveDialog.editSummaryInput.$input.val( sectionTitle );
+		this.sectionTitleRestored = true;
+		if ( this.sectionPositionRestored ) {
+			this.onSectionRestored();
 		}
 	}
 	// Connect to save dialog
-	viewPage.saveDialog.connect( this, {
+	this.saveDialog.connect( this, {
 		'save': 'onSaveDialogSave',
 		'review': 'onSaveDialogReview',
 		'resolve': 'onSaveDialogResolveConflict',
 		'close': 'onSaveDialogClose'
 	} );
 	// Setup checkboxes
-	viewPage.saveDialog.setupCheckboxes( ve.getObjectValues( viewPage.checkboxes ).join( '\n' ) );
+	this.saveDialog.setupCheckboxes( ve.getObjectValues( this.checkboxes ).join( '\n' ) );
 };
 
 /**
@@ -1606,39 +1606,38 @@ ve.init.mw.ViewPageTarget.prototype.saveEditSection = function ( heading ) {
  */
 ve.init.mw.ViewPageTarget.prototype.restoreEditSection = function () {
 	if ( this.section !== null ) {
-		var offset,
+		var offset, offsetNode, nextNode,
 			target = this,
 			surfaceView = this.surface.getView(),
-			surfaceModel = surfaceView.getModel();
-		this.$document.find( 'h1, h2, h3, h4, h5, h6' ).eq( this.section - 1 ).each( function () {
-			var offsetNode, nextNode,
-				headingNode = $( this ).data( 'view' ),
-				lastHeadingLevel = -1;
+			surfaceModel = surfaceView.getModel(),
+			$section = this.$document.find( 'h1, h2, h3, h4, h5, h6' ).eq( this.section - 1 ),
+			headingNode = $section.data( 'view' ),
+			lastHeadingLevel = -1;
 
-			if ( headingNode ) {
-				// Find next sibling which isn't a heading
-				offsetNode = headingNode;
-				while ( offsetNode instanceof ve.ce.HeadingNode && offsetNode.getModel().getAttribute( 'level' ) > lastHeadingLevel ) {
-					lastHeadingLevel = offsetNode.getModel().getAttribute( 'level' );
-					// Next sibling
-					nextNode = offsetNode.parent.children[ve.indexOf( offsetNode, offsetNode.parent.children ) + 1];
-					if ( !nextNode ) {
-						break;
-					}
-					offsetNode = nextNode;
+		if ( headingNode ) {
+			// Find next sibling which isn't a heading
+			offsetNode = headingNode;
+			while ( offsetNode instanceof ve.ce.HeadingNode && offsetNode.getModel().getAttribute( 'level' ) > lastHeadingLevel ) {
+				lastHeadingLevel = offsetNode.getModel().getAttribute( 'level' );
+				// Next sibling
+				nextNode = offsetNode.parent.children[ve.indexOf( offsetNode, offsetNode.parent.children ) + 1];
+				if ( !nextNode ) {
+					break;
 				}
-				offset = surfaceModel.getDocument().data.getNearestContentOffset(
-					offsetNode.getModel().getOffset(), 1
-				);
-				surfaceModel.setSelection( new ve.Range( offset ) );
-				// Scroll to heading:
-				// Wait for toolbar to animate in so we can account for its height
-				setTimeout( function () {
-					var $window = $( OO.ui.Element.getWindow( target.$element ) );
-					$window.scrollTop( headingNode.$element.offset().top - target.toolbar.$element.height() );
-				}, 200 );
+				offsetNode = nextNode;
 			}
-		} );
+			offset = surfaceModel.getDocument().data.getNearestContentOffset(
+				offsetNode.getModel().getOffset(), 1
+			);
+			surfaceModel.setSelection( new ve.Range( offset ) );
+			// Scroll to heading:
+			// Wait for toolbar to animate in so we can account for its height
+			setTimeout( function () {
+				var $window = $( OO.ui.Element.getWindow( target.$element ) );
+				$window.scrollTop( headingNode.$element.offset().top - target.toolbar.$element.height() );
+			}, 200 );
+		}
+
 		this.sectionPositionRestored = true;
 		if ( this.sectionTitleRestored ) {
 			this.onSectionRestored();
