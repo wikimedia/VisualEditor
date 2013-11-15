@@ -240,27 +240,18 @@ ve.ui.MWSaveDialog.prototype.reset = function () {
  *
  * This method is safe to call even when the dialog hasn't been initialized yet.
  *
- * @param {string} checkboxes Multiline HTML
+ * @param {jQuery} $checkboxes jQuery collection of checkboxes
  */
-ve.ui.MWSaveDialog.prototype.setupCheckboxes = function ( checkboxes ) {
+ve.ui.MWSaveDialog.prototype.setupCheckboxes = function ( $checkboxes ) {
 	var saveDialog = this;
 	this.setupDeferred.done( function () {
 		saveDialog.$saveOptions.find( '.ve-ui-mwSaveDialog-checkboxes' )
-			.html( checkboxes )
+			.html( $checkboxes )
 			.find( 'a' )
 				.attr( 'target', '_blank' )
 				.end()
-			.find( '#wpMinoredit' )
-				.prop( 'checked', mw.user.options.get( 'minordefault' ) )
-				.prop( 'tabIndex', 0 )
-				.end()
-			.find( '#wpWatchthis' )
-				.prop( 'checked',
-					mw.user.options.get( 'watchdefault' ) ||
-					( mw.user.options.get( 'watchcreations' ) && !this.pageExists ) ||
-					mw.config.get( 'wgVisualEditor' ).isPageWatched
-				).prop( 'tabIndex', 0 );
-		// TODO: Need to set all checkboxes provided by api tabindex to 0 for proper accessibility
+			.find( 'input' )
+				.prop( 'tabIndex', 0 );
 	} );
 };
 

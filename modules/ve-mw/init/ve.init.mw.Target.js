@@ -68,7 +68,7 @@ ve.init.mw.Target = function VeInitMwTarget( $container, pageName, revisionId ) 
 	this.startTimeStamp = null;
 	this.doc = null;
 	this.editNotices = null;
-	this.checkboxes = null;
+	this.$checkboxes = null;
 	this.remoteNotices = [];
 	this.localNoticeMessages = [];
 	this.isMobileDevice = (
@@ -190,7 +190,18 @@ ve.init.mw.Target.onLoad = function ( response ) {
 		this.doc = ve.createDocumentFromHtml( this.originalHtml );
 
 		this.remoteNotices = ve.getObjectValues( data.notices );
-		this.checkboxes = data.checkboxes;
+		this.$checkboxes = $( ve.getObjectValues( data.checkboxes ).join( '' ) );
+		// Populate checkboxes with default values for minor and watch
+		this.$checkboxes
+			.filter( '#wpMinoredit' )
+				.prop( 'checked', mw.user.options.get( 'minordefault' ) )
+			.end()
+			.filter( '#wpWatchthis' )
+				.prop( 'checked',
+					mw.user.options.get( 'watchdefault' ) ||
+					( mw.user.options.get( 'watchcreations' ) && !this.pageExists ) ||
+					mw.config.get( 'wgVisualEditor' ).isPageWatched
+				);
 
 		this.baseTimeStamp = data.basetimestamp;
 		this.startTimeStamp = data.starttimestamp;
