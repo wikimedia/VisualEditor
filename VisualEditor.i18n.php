@@ -8748,6 +8748,14 @@ $messages['ja'] = array(
 	'visualeditor-window-title' => '調査',
 );
 
+/** Lojban (Lojban)
+ * @author Gleki
+ */
+$messages['jbo'] = array(
+	'visualeditor-ca-editsource' => 'stika lo krasi',
+	'visualeditor-ca-editsource-section' => 'stika lo krasi',
+);
+
 /** Javanese (Basa Jawa)
  * @author NoiX180
  */
@@ -9123,6 +9131,8 @@ $messages['ko'] = array(
 	'ooui-dialog-action-close' => '닫기',
 	'ooui-outline-control-move-down' => '항목을 아래로 옮기기',
 	'ooui-outline-control-move-up' => '항목을 위로 옮기기',
+	'ooui-toggle-on' => '사용',
+	'ooui-toggle-off' => '해제',
 	'ooui-toolbar-more' => '더 보기',
 	'tag-visualeditor' => '[[{{MediaWiki:visualeditor-descriptionpagelink}}|시각편집기]]',
 	'tag-visualeditor-description' => '[[{{MediaWiki:visualeditor-descriptionpagelink}}|시각편집기]]를 사용한 편집',
@@ -15243,6 +15253,8 @@ $messages['sv'] = array(
 	'ooui-dialog-action-close' => 'Stäng',
 	'ooui-outline-control-move-down' => 'Flytta ned objekt',
 	'ooui-outline-control-move-up' => 'Flytta upp objekt',
+	'ooui-toggle-on' => 'På',
+	'ooui-toggle-off' => 'Av',
 	'ooui-toolbar-more' => 'Mer',
 	'tag-visualeditor' => '[[{{MediaWiki:visualeditor-descriptionpagelink}}|VisualEditor]]',
 	'tag-visualeditor-description' => 'Redigering gjord med hjälp av [[{{MediaWiki:visualeditor-descriptionpagelink}}|VisualEditor]]',
@@ -17816,6 +17828,8 @@ $messages['zh-hant'] = array(
 	'ooui-dialog-action-close' => '關閉',
 	'ooui-outline-control-move-down' => '向下移項',
 	'ooui-outline-control-move-up' => '向上移項',
+	'ooui-toggle-on' => '開',
+	'ooui-toggle-off' => '關',
 	'ooui-toolbar-more' => '更多',
 	'tag-visualeditor' => '[[{{MediaWiki:visualeditor-descriptionpagelink}}|視覺化編輯器]]',
 	'tag-visualeditor-description' => '使用[[{{MediaWiki:visualeditor-descriptionpagelink}}|視覺化編輯器]]做出的編輯',
@@ -17929,8 +17943,8 @@ $messages['zh-hant'] = array(
 	'visualeditor-historybutton-undo-tooltip' => '復原',
 	'visualeditor-indentationbutton-indent-tooltip' => '增加縮排',
 	'visualeditor-indentationbutton-outdent-tooltip' => '減少縮排',
-	'visualeditor-inspector-close-tooltip' => '關閉', # Fuzzy
-	'visualeditor-inspector-remove-tooltip' => '移除', # Fuzzy
+	'visualeditor-inspector-close-tooltip' => '關閉',
+	'visualeditor-inspector-remove-tooltip' => '移除',
 	'visualeditor-languages-tool' => '語言',
 	'visualeditor-languageinspector-block-tooltip' => '語言區塊: $1',
 	'visualeditor-languageinspector-block-tooltip-rtldirection' => '：從右到左',
@@ -17971,6 +17985,7 @@ $messages['zh-hant'] = array(
 	'visualeditor-preference-language-label' => '可眎化編輯器語言工具',
 	'visualeditor-preference-mwalienextension-label' => '可眎化編輯器拓展標籤編輯',
 	'visualeditor-preference-mwhiero-label' => '可眎化編輯器表意字元編輯',
+	'visualeditor-preference-mwmath-label' => '可眎化編輯器公式編輯',
 	'visualeditor-reference-input-placeholder' => '您想要引用什麼內容？',
 	'visualeditor-referencelist-isempty' => '本頁面找不到「$1」組的參考來源。', # Fuzzy
 	'visualeditor-referencelist-missingref' => '該參考來源已定義在模板或其他區域上，而目前只能透過原始碼模式來編輯這些引用。',
