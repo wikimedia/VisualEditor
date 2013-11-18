@@ -62,7 +62,9 @@ ve.dm.MetaItem.prototype.remove = function () {
 /**
  * Replace item with another in-place.
  *
- * @param {ve.dm.MetaItem} item Item to replace this item with
+ * Pass a plain object rather than a MetaItem into this function unless you know what you're doing.
+ *
+ * @param {Object|ve.dm.MetaItem} item Item to replace this item with
  */
 ve.dm.MetaItem.prototype.replaceWith = function ( item ) {
 	var offset = this.getOffset(),

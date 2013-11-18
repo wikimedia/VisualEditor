@@ -334,6 +334,8 @@ ve.dm.MetaList.prototype.getAllItems = function () {
 /**
  * Insert new metadata into the document. This builds and processes a transaction that inserts
  * metadata into the document.
+ *
+ * Pass a plain object rather than a MetaItem into this function unless you know what you're doing.
  * @param {Object|ve.dm.MetaItem} meta Metadata element (or MetaItem) to insert
  * @param {Number} [offset] Offset to insert the new metadata, or undefined to add to the end
  * @param {Number} [index] Index to insert the new metadata, or undefined to add to the end
