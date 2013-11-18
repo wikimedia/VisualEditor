@@ -218,21 +218,24 @@ ve.EventSequencer.prototype.afterLoopOne = function ( listeners ) {
  * @param {jQuery.Event} ev The browser event
  */
 ve.EventSequencer.prototype.onEvent = function ( eventName, ev ) {
-	var i, len, onListener, pendingCall, me, id;
+	var i, len, onListener, onListeners, pendingCall, me, id;
 	this.runPendingCalls();
 	if ( !this.doneOnLoop ) {
 		this.doneOnLoop = true;
 		this.doOnLoop();
 	}
+
+	onListeners = this.onListenersForEvent[ eventName ] || [];
+
 	// Length cache 'len' is required, as an onListener could add another onListener
-	for ( i = 0, len = this.onListenersForEvent[eventName].length; i < len; i++ ) {
-		onListener = this.onListenersForEvent[eventName][i];
+	for ( i = 0, len = onListeners.length; i < len; i++ ) {
+		onListener = onListeners[i];
 		onListener( ev );
 	}
 	// Queue a call to afterEvent only if there are some
 	// afterListeners/afterOneListeners/afterLoopListeners
-	if ( this.afterListenersForEvent[eventName].length > 0 ||
-		this.afterOneListenersForEvent[eventName].length > 0 ||
+	if ( ( this.afterListenersForEvent[eventName] || [] ).length > 0 ||
+		( this.afterOneListenersForEvent[eventName] || [] ).length > 0 ||
 		this.afterLoopListeners.length > 0 ) {
 		// Create a cancellable pending call
 		// - Create the pendingCall object first
@@ -266,9 +269,9 @@ ve.EventSequencer.prototype.afterEvent = function ( eventName, ev ) {
 
 	// Snapshot the listener lists, and blank *OneListener list.
 	// This ensures reasonable behaviour if a function called adds another listener.
-        afterListeners = this.afterListenersForEvent[eventName].slice();
-	afterOneListeners = this.afterOneListenersForEvent[eventName].slice();
-	this.afterOneListenersForEvent[eventName].length = 0;
+        afterListeners = ( this.afterListenersForEvent[eventName] || [] ).slice();
+	afterOneListeners = ( this.afterOneListenersForEvent[eventName] || [] ).slice();
+	( this.afterOneListenersForEvent[eventName] || [] ).length = 0;
 
 	for ( i = 0, len = afterListeners.length; i < len; i++ ) {
 		afterListeners[i]( ev );
