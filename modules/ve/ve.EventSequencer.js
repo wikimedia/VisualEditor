@@ -269,7 +269,7 @@ ve.EventSequencer.prototype.afterEvent = function ( eventName, ev ) {
 
 	// Snapshot the listener lists, and blank *OneListener list.
 	// This ensures reasonable behaviour if a function called adds another listener.
-        afterListeners = ( this.afterListenersForEvent[eventName] || [] ).slice();
+	afterListeners = ( this.afterListenersForEvent[eventName] || [] ).slice();
 	afterOneListeners = ( this.afterOneListenersForEvent[eventName] || [] ).slice();
 	( this.afterOneListenersForEvent[eventName] || [] ).length = 0;
 
