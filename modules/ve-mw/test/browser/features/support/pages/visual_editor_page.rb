@@ -32,6 +32,7 @@ class VisualEditorPage
   span(:subheading3, text: 'Sub-heading 3')
   span(:subheading4, text: 'Sub-heading 4')
   span(:ve_bullets, class: 'oo-ui-iconedElement-icon oo-ui-icon-bullet-list')
+  span(:ve_computer_code, class: 'oo-ui-iconedElement-icon oo-ui-icon-code')
   div(:ve_heading_menu, class: 'oo-ui-iconedElement-icon oo-ui-icon-down')
   span(:ve_link_icon, class: 'oo-ui-iconedElement-icon oo-ui-icon-link')
   span(:ve_references, class: 'oo-ui-iconedElement-icon oo-ui-icon-reference')
