@@ -23,7 +23,7 @@ ve.ui.MWMetaDialog = function VeUiMWMetaDialog( windowSet, config ) {
 
 	// Properties
 	this.metaList = this.surface.getModel().metaList;
-	this.defaultSortKeyChanged = false;
+	this.defaultSortKeyTouched = false;
 	this.fallbackDefaultSortKey = mw.config.get( 'wgTitle' );
 
 	// Events
@@ -78,7 +78,7 @@ ve.ui.MWMetaDialog.prototype.onAllLanuageItemsError = function () {};
  */
 ve.ui.MWMetaDialog.prototype.onDefaultSortChange = function ( value ) {
 	this.categoryWidget.setDefaultSortKey( value === '' ? this.fallbackDefaultSortKey : value );
-	this.defaultSortKeyChanged = true;
+	this.defaultSortKeyTouched = true;
 };
 
 /**
@@ -415,7 +415,7 @@ ve.ui.MWMetaDialog.prototype.setup = function ( data ) {
 	this.defaultSortInput.setValue(
 		defaultSortKeyItem ? defaultSortKeyItem.getAttribute( 'content' ) : ''
 	);
-	this.defaultSortKeyChanged = false;
+	this.defaultSortKeyTouched = false;
 
 	// Force all previous transactions to be separate from this history state
 	surfaceModel.breakpoint();
@@ -434,9 +434,16 @@ ve.ui.MWMetaDialog.prototype.teardown = function ( data ) {
 	// Data initialization
 	data = data || {};
 
-	var hasTransactions, newDefaultSortKeyItem, newDefaultSortKeyItemData,
+	var hasTransactions,
 		surfaceModel = this.surface.getModel(),
-		currentDefaultSortKeyItem = this.getDefaultSortKeyItem();
+
+		// Category sort key items
+		currentDefaultSortKeyItem = this.getDefaultSortKeyItem(),
+		newDefaultSortKey = this.defaultSortInput.getValue(),
+		newDefaultSortKeyData = {
+			'type': 'mwDefaultSort',
+			'attributes': { 'content': newDefaultSortKey }
+		};
 
 	// Place transactions made while dialog was open in a common history state
 	hasTransactions = surfaceModel.breakpoint();
@@ -447,23 +454,23 @@ ve.ui.MWMetaDialog.prototype.teardown = function ( data ) {
 		surfaceModel.truncateUndoStack();
 	}
 
-	if ( this.defaultSortKeyChanged ) {
-		if ( this.defaultSortInput.getValue() !== '' ) {
-			newDefaultSortKeyItemData = {
-				'type': 'mwDefaultSort',
-				'attributes': { 'content': this.defaultSortInput.getValue() }
-			};
+	// Alter the default sort key iff it's been touched & is actually different
+	if ( this.defaultSortKeyTouched ) {
+		if ( newDefaultSortKey === '' ) {
 			if ( currentDefaultSortKeyItem ) {
-				newDefaultSortKeyItem = new ve.dm.MWDefaultSortMetaItem(
-					ve.extendObject( {}, currentDefaultSortKeyItem.getElement(), newDefaultSortKeyItemData )
-				);
-				currentDefaultSortKeyItem.replaceWith( newDefaultSortKeyItem );
-			} else {
-				newDefaultSortKeyItem = new ve.dm.MWDefaultSortMetaItem( newDefaultSortKeyItemData );
-				this.metaList.insertMeta( newDefaultSortKeyItem );
+				currentDefaultSortKeyItem.remove();
 			}
-		} else if ( currentDefaultSortKeyItem ) {
-			currentDefaultSortKeyItem.remove();
+		} else {
+			if ( !currentDefaultSortKeyItem ) {
+				this.metaList.insertMeta( newDefaultSortKeyData );
+			} else if ( currentDefaultSortKeyItem.getValue() !== newDefaultSortKey ) {
+				currentDefaultSortKeyItem.replaceWith(
+					ve.extendObject( true, {},
+						currentDefaultSortKeyItem.getElement(),
+						newDefaultSortKeyData
+					)
+				);
+			}
 		}
 	}
 
