@@ -362,7 +362,8 @@ ve.init.mw.ViewPageTarget.prototype.onSaveError = function ( jqXHR, status, data
 
 	// Handle empty response
 	if ( !data ) {
-		ve.track( 'performance.user.saveError.empty', trackData );
+		trackData.type = 'empty';
+		ve.track( 'performance.user.saveError', trackData );
 		this.saveDialog.showMessage(
 			'api-save-error',
 			ve.msg( 'visualeditor-saveerror', 'Empty server response' ),
@@ -378,7 +379,8 @@ ve.init.mw.ViewPageTarget.prototype.onSaveError = function ( jqXHR, status, data
 
 	// Handle spam blacklist error (either from core or from Extension:SpamBlacklist)
 	if ( editApi && editApi.spamblacklist ) {
-		ve.track( 'performance.user.saveError.spamblacklist', trackData );
+		trackData.type = 'spamblacklist';
+		ve.track( 'performance.user.saveError', trackData );
 		this.saveDialog.showMessage(
 			'api-save-error',
 			// TODO: Use mediawiki.language equivalant of Language.php::listToText once it exists
@@ -394,7 +396,8 @@ ve.init.mw.ViewPageTarget.prototype.onSaveError = function ( jqXHR, status, data
 	// Handle warnings/errors from Extension:AbuseFilter
 	// TODO: Move this to a plugin
 	if ( editApi && editApi.info && editApi.info.indexOf( 'Hit AbuseFilter:' ) === 0 && editApi.warning ) {
-		ve.track( 'performance.user.saveError.abusefilter', trackData );
+		trackData.type = 'abusefilter';
+		ve.track( 'performance.user.saveError', trackData );
 		this.saveDialog.showMessage(
 			'api-save-error',
 			$.parseHTML( editApi.warning ),
@@ -448,7 +451,8 @@ ve.init.mw.ViewPageTarget.prototype.onSaveError = function ( jqXHR, status, data
 						viewPage.saveDocument();
 					} else {
 						// The now current session is a different user
-						ve.track( 'performance.user.saveError.badtoken', trackData );
+						trackData.type = 'badtoken';
+						ve.track( 'performance.user.saveError', trackData );
 						viewPage.saveDialog.saveButton.setDisabled( false );
 
 						// Trailing space is to separate from the other message.
@@ -507,7 +511,8 @@ ve.init.mw.ViewPageTarget.prototype.onSaveError = function ( jqXHR, status, data
 	// API for different things in the UI. At this point we only support the FancyCaptha which we
 	// very intuitively detect by the presence of a "url" property.
 	if ( editApi && editApi.captcha && editApi.captcha.url ) {
-		ve.track( 'performance.user.saveError.captcha', trackData );
+		trackData.type = 'captcha';
+		ve.track( 'performance.user.saveError', trackData );
 		this.captcha = {
 			input: new OO.ui.TextInputWidget(),
 			id: editApi.captcha.id
@@ -533,7 +538,8 @@ ve.init.mw.ViewPageTarget.prototype.onSaveError = function ( jqXHR, status, data
 	}
 
 	// Handle (other) unknown and/or unrecoverable errors
-	ve.track( 'performance.user.saveError.unknown', trackData );
+	trackData.type = 'unknown';
+	ve.track( 'performance.user.saveError', trackData );
 	this.saveDialog.showMessage(
 		'api-save-error',
 		document.createTextNode(
