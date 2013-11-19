@@ -12,7 +12,7 @@ Before('@edit_user_page') do
   end
 end
 
-#This is for the bullets test and the indent-outdent test
+#This is for the bullets, indent-outdent, and the General Markup tests
 Before('@make_selectable_line') do
   if (!$make_selectable_line or !(ENV['REUSE_BROWSER'] == 'true')) and @browser
     step 'I am logged in'

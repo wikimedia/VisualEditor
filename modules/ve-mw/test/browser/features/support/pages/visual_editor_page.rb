@@ -37,6 +37,10 @@ class VisualEditorPage
   span(:ve_link_icon, class: 'oo-ui-iconedElement-icon oo-ui-icon-link')
   span(:ve_references, class: 'oo-ui-iconedElement-icon oo-ui-icon-reference')
   span(:ve_numbering, class: 'oo-ui-iconedElement-icon oo-ui-icon-number-list')
+  span(:ve_strikethrough, class: 'oo-ui-iconedElement-icon oo-ui-icon-strikethrough-s')
+  span(:ve_subscript, class: 'oo-ui-iconedElement-icon oo-ui-icon-subscript')
+  span(:ve_superscript, class: 'oo-ui-iconedElement-icon oo-ui-icon-superscript')
+  span(:ve_underline, class: 'oo-ui-iconedElement-icon oo-ui-icon-underline-u')
   div(:visual_editor_toolbar, class: 'oo-ui-toolbar-tools')
   span(:transclusion, class: 'oo-ui-iconedElement-icon oo-ui-icon-template')
 
