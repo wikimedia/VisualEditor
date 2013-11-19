@@ -39,6 +39,8 @@ ve.dm.MWReferenceNode.static.matchRdfaTypes = [ 'mw:Extension/ref' ];
 
 ve.dm.MWReferenceNode.static.isContent = true;
 
+ve.dm.MWReferenceNode.static.blacklistedAnnotationTypes = [ 'link' ];
+
 ve.dm.MWReferenceNode.static.toDataElement = function ( domElements, converter ) {
 	var dataElement,
 		mwDataJSON = domElements[0].getAttribute( 'data-mw' ),
