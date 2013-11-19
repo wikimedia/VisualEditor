@@ -402,7 +402,8 @@ See also:
 
 See also:
 * {{msg-mw|Visualeditor-beta-label}}',
-	'visualeditor-dialog-beta-welcome-title' => 'Title of the beta welcome dialog',
+	'visualeditor-dialog-beta-welcome-title' => 'Title of the beta welcome dialog. Parameters:
+* $1 - username or empty string, for GENDER support',
 	'visualeditor-dialog-media-content-section' => 'Label for the image content sub-section.
 {{Identical|Caption}}',
 	'visualeditor-dialog-media-insert-button' => 'Used as label for the button.
@@ -734,6 +735,8 @@ Used in:
  */
 $messages['ace'] = array(
 	'ooui-dialog-action-close' => 'Tôp',
+	'ooui-inspector-close-tooltip' => 'Tôp',
+	'ooui-inspector-remove-tooltip' => 'Sampôh',
 	'ooui-outline-control-move-down' => 'Pinah item u yup',
 	'ooui-outline-control-move-up' => 'Pinah item u ateuëh',
 	'ooui-toggle-on' => 'Udép',
@@ -758,6 +761,7 @@ $messages['ace'] = array(
 	'visualeditor-annotationbutton-underline-tooltip' => 'Garéh yup',
 	'visualeditor-beta-appendix' => 'beta',
 	'visualeditor-beta-label' => 'beta',
+	'visualeditor-browserwarning' => "Droëneuh neungui ''browser'' nyang hana jidukông raseumi lé VisualEditor",
 	'visualeditor-categories-tool' => 'Kawan',
 	'visualeditor-ca-createsource' => 'Peugöt nè',
 	'visualeditor-ca-editsource' => 'Andam nè',
@@ -768,6 +772,7 @@ $messages['ace'] = array(
 	'visualeditor-clearbutton-tooltip' => 'Peugadöh format',
 	'visualeditor-desc' => 'Ngön andam visual keu MediaWiki',
 	'visualeditor-descriptionpagelink' => 'Project:VisualEditor',
+	'visualeditor-dialog-action-apply' => 'Gantoë',
 	'visualeditor-dialog-action-cancel' => 'Pubateuë',
 	'visualeditor-dialog-action-goback' => 'Riwang',
 	'visualeditor-dialog-beta-welcome-action-continue' => 'Lanjut',
@@ -775,6 +780,11 @@ $messages['ace'] = array(
 	'visualeditor-dialog-media-content-section' => 'Hareutoë',
 	'visualeditor-dialog-media-insert-button' => 'Pasoë media',
 	'visualeditor-dialog-media-insert-title' => 'Pasoë media',
+	'visualeditor-dialog-media-title' => 'Atô mèdia',
+	'visualeditor-dialog-meta-categories-category' => 'Kawan',
+	'visualeditor-dialog-meta-categories-data-label' => 'Kawan',
+	'visualeditor-dialog-meta-categories-defaultsort-label' => 'Susôn laman nyoë seucara baku seubagoë',
+	'visualeditor-dialog-meta-categories-input-matchingcategorieslabel' => 'Kawan nyang seusuai',
 );
 
 /** Afrikaans (Afrikaans)
@@ -8507,6 +8517,8 @@ $messages['is'] = array(
  */
 $messages['it'] = array(
 	'ooui-dialog-action-close' => 'Chiudi',
+	'ooui-inspector-close-tooltip' => 'Chiudi',
+	'ooui-inspector-remove-tooltip' => 'Rimuovi',
 	'ooui-outline-control-move-down' => 'Sposta in basso',
 	'ooui-outline-control-move-up' => 'Sposta in alto',
 	'ooui-toggle-on' => 'Attivo',
@@ -9833,8 +9845,12 @@ $messages['la'] = array(
  */
 $messages['lb'] = array(
 	'ooui-dialog-action-close' => 'Zoumaachen',
+	'ooui-inspector-close-tooltip' => 'Zoumaachen',
+	'ooui-inspector-remove-tooltip' => 'Ewechhuelen',
 	'ooui-outline-control-move-down' => 'Element erof réckelen',
 	'ooui-outline-control-move-up' => 'Element erop réckelen',
+	'ooui-toggle-on' => 'Un',
+	'ooui-toggle-off' => 'Aus',
 	'ooui-toolbar-more' => 'Méi',
 	'tag-visualeditor' => '[[{{MediaWiki:visualeditor-descriptionpagelink}}|VisualEditor]]',
 	'tag-visualeditor-description' => 'Ännerung mam [[{{MediaWiki:visualeditor-descriptionpagelink}}|VisualEditor]] gemaach',
@@ -9947,8 +9963,8 @@ Klickt "Quelltext änneren" fir op Wikitextmodus ze wiesselen - dobäi ginn déi
 	'visualeditor-historybutton-undo-tooltip' => 'Réckgängeg maachen',
 	'visualeditor-indentationbutton-indent-tooltip' => 'Identéierung vergréisseren',
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Identéierung verklengeren',
-	'visualeditor-inspector-close-tooltip' => 'Zoumaachen', # Fuzzy
-	'visualeditor-inspector-remove-tooltip' => 'Ewechhuelen', # Fuzzy
+	'visualeditor-inspector-close-tooltip' => 'Zoumaachen',
+	'visualeditor-inspector-remove-tooltip' => 'Ewechhuelen',
 	'visualeditor-languages-tool' => 'Sproochen',
 	'visualeditor-languageinspector-block-tooltip' => 'Spär vun de Sproochen:$1',
 	'visualeditor-languageinspector-block-tooltip-rtldirection' => ': Vu riets no Lénks',
@@ -9981,6 +9997,7 @@ Klickt "Quelltext änneren" fir op Wikitextmodus ze wiesselen - dobäi ginn déi
 	'visualeditor-preference-core-description' => 'VisualEditor aschalten. Et ass net op Diskussiounssäiten an an e puer anere Nummraaim disponibel.',
 	'visualeditor-preference-core-label' => 'VisualEditor',
 	'visualeditor-preference-enable' => 'VisualEditor aktivéieren. Et ass net op Diskussiounssäiten an e puer anere Nummraim disponibel.',
+	'visualeditor-preference-language-label' => 'VisualEditor Sprooch-Tools',
 	'visualeditor-reference-input-placeholder' => 'Wat wëllt Dir referenzéieren?',
 	'visualeditor-referencelist-isempty-default' => 'Et gëtt keng Referenzen op dëser Säit fir an dës Lëscht opzehuelen.',
 	'visualeditor-savedialog-error-badtoken' => "Mir konnten Är Ännerung net verschaffe well d'Sessioun net méi valabel war.",
@@ -10006,6 +10023,7 @@ Klickt "Quelltext änneren" fir op Wikitextmodus ze wiesselen - dobäi ginn déi
 	'visualeditor-toolbar-savedialog' => 'Säit späicheren',
 	'visualeditor-usernamespacepagelink' => 'Project:Benotzernummraum',
 	'visualeditor-version-label' => 'Versioun',
+	'visualeditor-viewpage-savewarning' => 'Sidd Dir sécher datt Dir dës Säit elo nach just kucke wëllt ouni virdrun ze späicheren?',
 	'visualeditor-wikitext-warning' => 'Dir benotzt VisualEditor -  [[{{MediaWiki:visualeditor-wikitext-warning-link}}|Wikitext]] funktionéiert hei net. Klickt  "{{int:visualeditor-ca-editsource}}" fir d\'Säit am Wikitext-Modus z\'änneren - net gespäichert Ännerunge gi verluer.',
 	'visualeditor-window-title' => 'Inspizéieren',
 );
@@ -10905,7 +10923,7 @@ $messages['ml'] = array(
 	'visualeditor-dialog-action-cancel' => 'റദ്ദാക്കുക',
 	'visualeditor-dialog-action-goback' => 'പഴയ താളിലേയ്ക്ക് മടങ്ങുക',
 	'visualeditor-dialog-beta-welcome-action-continue' => 'തുടരുക',
-	'visualeditor-dialog-beta-welcome-content' => 'ഇതാണ് നമ്മുടെ പുതിയ എളുപ്പത്തിലുള്ള തിരുത്താനുള്ള മാർഗ്ഗം. ഇതിപ്പോഴും പരീക്ഷണ ഘട്ടത്തിലാണ് (ബീറ്റ) എന്ന് പറയാതെ വയ്യ, അതിനർത്ഥം താളിൽ ഇതുപയോഗിച്ച് തിരുത്താനാവാത്ത ഭാഗങ്ങൾ താങ്കൾ നേരിടേണ്ടി വന്നേക്കാം, അല്ലെങ്കിൽ ശരിയാക്കേണ്ട മറ്റ് പ്രശ്നങ്ങൾ നേരിട്ടേക്കാം എന്നാണ്. പ്രശ്നങ്ങൾ ഒഴിവാക്കാൻ താങ്കൾ ചെയ്യുന്ന മാറ്റങ്ങൾ താങ്കൾ തന്നെ സംശോധനം ചെയ്യണമെന്നും ഒപ്പം കണ്ടുതിരുത്തൽ സൗകര്യത്തിൽ താങ്കൾ നേരിടുന്ന എന്ത് പ്രശ്നവും ഞങ്ങളെ അറിയിക്കാനും താത്പര്യപ്പെടുന്നു  (പ്രതികരണങ്ങൾ അറിയിക്കാൻ \'{{int:visualeditor-help-tool}}\' എന്ന ബട്ടൺ അമർത്തുക).  സാധാരണരീതിയിലുള്ള വിക്കി എഴുത്തുകൾ ഉപയോഗിച്ചുള്ള തിരുത്തലുകൾ നടത്താൻ "$1" എന്ന റ്റാബ് ഉപയോഗിച്ചാൽ മതിയാവും - അങ്ങനെ ചെയ്താൽ ഇപ്പോൾ സേവ് ചെയ്യാത്ത മാറ്റങ്ങൾ നഷ്ടമാകുന്നതാണ്.',
+	'visualeditor-dialog-beta-welcome-content' => 'ഇതാണ് നമ്മുടെ പുതിയ എളുപ്പത്തിലുള്ള തിരുത്താനുള്ള മാർഗ്ഗം. ഇതിപ്പോഴും പരീക്ഷണ ഘട്ടത്തിലാണ് (ബീറ്റ), അതിനർത്ഥം താളിൽ ഇതുപയോഗിച്ച് തിരുത്താനാവാത്ത ഭാഗങ്ങൾ താങ്കൾ നേരിടേണ്ടി വന്നേക്കാം, അല്ലെങ്കിൽ ശരിയാക്കേണ്ട മറ്റ് പ്രശ്നങ്ങളെ നേരിട്ടേക്കാം എന്നാണ്. പ്രശ്നങ്ങൾ ഒഴിവാക്കാൻ താങ്കൾ ചെയ്യുന്ന മാറ്റങ്ങൾ താങ്കൾ തന്നെ സംശോധനം ചെയ്യണമെന്നും ഒപ്പം കണ്ടുതിരുത്തൽ സൗകര്യത്തിൽ താങ്കൾ നേരിടുന്ന എന്ത് പ്രശ്നവും ഞങ്ങളെ അറിയിക്കാനും താത്പര്യപ്പെടുന്നു  (പ്രതികരണങ്ങൾ അറിയിക്കാൻ \'{{int:visualeditor-help-tool}}\' എന്ന ബട്ടൺ അമർത്തുക).  സാധാരണരീതിയിലുള്ള വിക്കി എഴുത്തുകൾ ഉപയോഗിച്ചുള്ള തിരുത്തലുകൾ നടത്താൻ "$1" എന്ന റ്റാബ് ഉപയോഗിച്ചാൽ മതിയാവും - അങ്ങനെ ചെയ്യുമ്പോൾ സേവ് ചെയ്യാത്ത മാറ്റങ്ങൾ നഷ്ടമാകുന്നതാണ്.',
 	'visualeditor-dialog-beta-welcome-title' => 'കണ്ടുതിരുത്തൽ സൗകര്യത്തിലേയ്ക്ക് {{GENDER:$1|സ്വാഗതം}}',
 	'visualeditor-dialog-media-content-section' => 'തലവാചകം',
 	'visualeditor-dialog-media-insert-button' => 'മീഡിയ ചേർക്കുക',
@@ -12101,8 +12119,8 @@ $messages['nl'] = array(
 	'visualeditor-historybutton-undo-tooltip' => 'Ongedaan maken',
 	'visualeditor-indentationbutton-indent-tooltip' => 'Inspringing vergroten',
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Inspringing verkleinen',
-	'visualeditor-inspector-close-tooltip' => 'Sluiten', # Fuzzy
-	'visualeditor-inspector-remove-tooltip' => 'Verwijderen', # Fuzzy
+	'visualeditor-inspector-close-tooltip' => 'Sluiten',
+	'visualeditor-inspector-remove-tooltip' => 'Verwijderen',
 	'visualeditor-languages-tool' => 'Talen',
 	'visualeditor-languageinspector-block-tooltip' => 'Taalblok: $1',
 	'visualeditor-languageinspector-block-tooltip-rtldirection' => ': rechts naar links',
@@ -12770,6 +12788,8 @@ $messages['pl'] = array(
  */
 $messages['pms'] = array(
 	'ooui-dialog-action-close' => 'Saré',
+	'ooui-inspector-close-tooltip' => 'Saré',
+	'ooui-inspector-remove-tooltip' => 'Gavé',
 	'ooui-outline-control-move-down' => "Fé calé giù l'element",
 	'ooui-outline-control-move-up' => "Fé monté l'element",
 	'ooui-toggle-on' => 'Anvisché',
@@ -13125,8 +13145,12 @@ $messages['ps'] = array(
  */
 $messages['pt'] = array(
 	'ooui-dialog-action-close' => 'Fechar',
+	'ooui-inspector-close-tooltip' => 'Fechar',
+	'ooui-inspector-remove-tooltip' => 'Remover',
 	'ooui-outline-control-move-down' => 'Mover item para baixo',
 	'ooui-outline-control-move-up' => 'Mover item para cima',
+	'ooui-toggle-on' => 'Ligado',
+	'ooui-toggle-off' => 'Desligado',
 	'ooui-toolbar-more' => 'Mais',
 	'tag-visualeditor' => '[[{{MediaWiki:visualeditor-descriptionpagelink}}|Editor Visual]]',
 	'tag-visualeditor-description' => 'Edição realizada utilizando o [[{{MediaWiki:visualeditor-descriptionpagelink}}|Editor Visual]]',
@@ -13316,6 +13340,7 @@ Deseja continuar?',
 
 /** Brazilian Portuguese (português do Brasil)
  * @author Cainamarques
+ * @author Dianakc
  * @author Fúlvio
  * @author Helder.wiki
  * @author Jaideraf
@@ -13324,19 +13349,23 @@ Deseja continuar?',
  * @author 555
  */
 $messages['pt-br'] = array(
-	'ooui-dialog-action-close' => 'Fechar', # Fuzzy
-	'ooui-outline-control-move-down' => 'Mover item para baixo', # Fuzzy
-	'ooui-outline-control-move-up' => 'Mover item para cima', # Fuzzy
-	'ooui-toolbar-more' => 'Mais', # Fuzzy
-	'tag-visualeditor' => '[[{{MediaWiki:visualeditor-descriptionpagelink}}|Editor Visual]]',
-	'tag-visualeditor-description' => 'Edição realizada utilizando o [[{{MediaWiki:visualeditor-descriptionpagelink}}|Editor Visual]]',
-	'tag-visualeditor-needcheck' => '[[{{MediaWiki:visualeditor-descriptionpagelink}}|Editor Visual: Verificar]]',
+	'ooui-dialog-action-close' => 'Fechar',
+	'ooui-inspector-close-tooltip' => 'Fechar',
+	'ooui-inspector-remove-tooltip' => 'Remover',
+	'ooui-outline-control-move-down' => 'Mover item para baixo',
+	'ooui-outline-control-move-up' => 'Mover item para cima',
+	'ooui-toggle-on' => 'Ligado',
+	'ooui-toggle-off' => 'Desligado',
+	'ooui-toolbar-more' => 'Mais',
+	'tag-visualeditor' => '[[{{MediaWiki:visualeditor-descriptionpagelink}}|VisualEditor]]',
+	'tag-visualeditor-description' => 'Edição realizada utilizando o [[{{MediaWiki:visualeditor-descriptionpagelink}}|VisualEditor]]',
+	'tag-visualeditor-needcheck' => '[[{{MediaWiki:visualeditor-descriptionpagelink}}|VisualEditor: Verificar]]',
 	'tag-visualeditor-needcheck-description' => 'Edição realizada com o [[{{MediaWiki:visualeditor-descriptionpagelink}}|Editor Visual]] em que o sistema detectou que o wikitexto possivelmente possui mudanças não planejadas.',
-	'tooltip-ca-createsource' => 'Criar o código fonte desta página',
-	'tooltip-ca-editsource' => 'Editar o código fonte desta página',
+	'tooltip-ca-createsource' => 'Criar o código-fonte desta página',
+	'tooltip-ca-editsource' => 'Editar o código-fonte desta página',
 	'tooltip-ca-ve-edit' => 'Editar esta página com o VisualEditor',
 	'visualeditor' => 'VisualEditor',
-	'visualeditor-aliennode-tooltip' => 'Desculpe, por enquanto esse elemento só pode ser editado no modo de código fonte.',
+	'visualeditor-aliennode-tooltip' => 'Desculpe, por enquanto esse elemento só pode ser editado no código-fonte.',
 	'visualeditor-annotationbutton-bold-tooltip' => 'Negrito',
 	'visualeditor-annotationbutton-code-tooltip' => 'Código de computador',
 	'visualeditor-annotationbutton-italic-tooltip' => 'Itálico',
@@ -13348,23 +13377,24 @@ $messages['pt-br'] = array(
 	'visualeditor-annotationbutton-underline-tooltip' => 'Sublinhado',
 	'visualeditor-beta-appendix' => 'beta',
 	'visualeditor-beta-label' => 'beta',
-	'visualeditor-beta-warning' => 'O Editor Visual está em fase \'beta\'. Você pode se deparar com problemas no software, e não ser capaz de editar algumas partes da página. Clique em "{{int:visualeditor-ca-editsource}}" para mudar para o modo de código wiki – as alterações não salvas serão perdidas.',
-	'visualeditor-browserwarning' => 'Você está usando um navegador que ainda não é oficialmente suportado pelo Editor Visual.',
-	'visualeditor-ca-createsource' => 'Criar código fonte',
+	'visualeditor-beta-warning' => "O VisualEditor está em fase 'beta'. Você pode encontrar problemas no ''software'' e não ser capaz de editar algumas partes da página. Clique em \"{{int:visualeditor-ca-editsource}}\" para mudar para o modo de código wiki – as alterações não salvas serão perdidas.",
+	'visualeditor-browserwarning' => 'Você está usando um navegador que ainda não é oficialmente suportado pelo VisualEditor.',
+	'visualeditor-categories-tool' => 'Categorias',
+	'visualeditor-ca-createsource' => 'Criar código-fonte',
 	'visualeditor-ca-editsource' => 'Editar código-fonte',
 	'visualeditor-ca-editsource-section' => 'editar código-fonte',
-	'visualeditor-ca-ve-create' => 'Editor visual',
+	'visualeditor-ca-ve-create' => 'VisualEditor',
 	'visualeditor-ca-ve-edit' => 'Editor visual',
 	'visualeditor-ca-ve-edit-section' => 'Editor Visual',
 	'visualeditor-clearbutton-tooltip' => 'Limpar formatação',
 	'visualeditor-desc' => 'Editor visual para o MediaWiki',
-	'visualeditor-descriptionpagelink' => 'Project:Editor Visual',
-	'visualeditor-dialog-action-apply' => 'Aplicar alterações',
+	'visualeditor-descriptionpagelink' => 'Project:VisualEditor',
+	'visualeditor-dialog-action-apply' => 'Aplicar mudanças',
 	'visualeditor-dialog-action-cancel' => 'Cancelar',
 	'visualeditor-dialog-action-goback' => 'Voltar',
 	'visualeditor-dialog-beta-welcome-action-continue' => 'Continuar',
-	'visualeditor-dialog-beta-welcome-content' => 'Esta é a nossa nova maneira de editar, mais fácil. Ele ainda está em fase Beta, o que significa que você pode encontrar partes da página que não pode editar, ou encontrar problemas que precisam ser corrigidos. Nós encorajamos você a rever suas alterações, e são bem-vindos relatórios sobre problemas que possam vir a surgir durante o uso do Editor Visual (clique no botão \'{{int:visualeditor-help-tool}}\' para enviar o relatório). Você ainda pode utilizar o editor de wikitexto clicando no botão "$1" - as alterações não salvas serão perdidas.',
-	'visualeditor-dialog-beta-welcome-title' => 'Bem-vindo(a) ao Editor Visual', # Fuzzy
+	'visualeditor-dialog-beta-welcome-content' => 'Esta é a nossa nova maneira de editar, mais fácil. Ele ainda está em fase Beta, o que significa que você pode encontrar partes da página que não pode editar, ou encontrar problemas que precisam ser corrigidos. Nós encorajamos você a rever suas alterações, e são bem-vindos relatórios sobre problemas que possam vir a surgir durante o uso do Editor Visual (clique no botão \'{{int:visualeditor-help-tool}}\' para enviar um relato). Você ainda pode usar o editor de wikitexto clicando na aba "$1" - as alterações não salvas serão perdidas.$1$1',
+	'visualeditor-dialog-beta-welcome-title' => '{{GENDER:$1|Bem-vindo}} ao VisualEditor',
 	'visualeditor-dialog-media-content-section' => 'Legenda',
 	'visualeditor-dialog-media-insert-button' => 'Inserir mídia',
 	'visualeditor-dialog-media-insert-title' => 'Inserir mídia',
@@ -13381,18 +13411,19 @@ $messages['pt-br'] = array(
 	'visualeditor-dialog-meta-categories-sortkey-label' => 'Ordenar esta página como',
 	'visualeditor-dialog-meta-languages-code-label' => 'código do idioma',
 	'visualeditor-dialog-meta-languages-label' => 'Idiomas',
-	'visualeditor-dialog-meta-languages-link-label' => 'Página linkada',
-	'visualeditor-dialog-meta-languages-readonlynote' => 'Esta é uma lista de páginas em outros idiomas que estão ligadas a esta. por enquanto, ela só pode ser editada no modo de código fonte.',
+	'visualeditor-dialog-meta-languages-link-label' => 'Página ligada',
+	'visualeditor-dialog-meta-languages-readonlynote' => 'Esta é uma lista de páginas em outros idiomas que estão ligadas a esta. por enquanto, ela só pode ser editada no modo de código-fonte.',
 	'visualeditor-dialog-meta-languages-section' => 'Idiomas',
 	'visualeditor-dialog-meta-title' => 'Configurações de página',
 	'visualeditor-dialog-reference-insert-button' => 'Inserir referência',
 	'visualeditor-dialog-reference-insert-title' => 'Inserir referência',
-	'visualeditor-dialog-reference-options-group-label' => 'Utilizar este grupo',
+	'visualeditor-dialog-reference-options-group-label' => 'Usar este grupo',
 	'visualeditor-dialog-reference-options-name-label' => 'Reutilizar por este nome',
 	'visualeditor-dialog-reference-options-section' => 'Opções',
 	'visualeditor-dialog-reference-title' => 'Referência',
-	'visualeditor-dialog-reference-useexisting-label' => 'Utilizar uma referência existente',
+	'visualeditor-dialog-reference-useexisting-label' => 'Usar uma referência existente',
 	'visualeditor-dialog-referencelist-title' => 'Lista de referências',
+	'visualeditor-dialog-syntaxhighlight-title' => 'Código-fonte (sintaxe destacada)',
 	'visualeditor-dialog-transclusion-add-content' => 'Adicionar conteúdo',
 	'visualeditor-dialog-transclusion-add-param' => 'Adicionar um parâmetro',
 	'visualeditor-dialog-transclusion-add-template' => 'Adicionar predefinição',
@@ -13432,12 +13463,14 @@ $messages['pt-br'] = array(
 	'visualeditor-formatdropdown-title' => 'Alterar o formato',
 	'visualeditor-help-label' => 'Ler o guia do usuário',
 	'visualeditor-help-title' => 'Guia do usuário para saber como usar o editor',
+	'visualeditor-help-tool' => 'Ajuda',
 	'visualeditor-historybutton-redo-tooltip' => 'Refazer',
 	'visualeditor-historybutton-undo-tooltip' => 'Desfazer',
 	'visualeditor-indentationbutton-indent-tooltip' => 'Aumentar recuo',
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Diminuir recuo',
-	'visualeditor-inspector-close-tooltip' => 'Fechar', # Fuzzy
-	'visualeditor-inspector-remove-tooltip' => 'Remover', # Fuzzy
+	'visualeditor-inspector-close-tooltip' => 'Fechar',
+	'visualeditor-inspector-remove-tooltip' => 'Remover',
+	'visualeditor-languages-tool' => 'Idiomas',
 	'visualeditor-languageinspector-block-tooltip' => 'Bloco de Idioma: $1',
 	'visualeditor-languageinspector-block-tooltip-rtldirection' => ': Da direita para a esquerda',
 	'visualeditor-languageinspector-title' => 'Idioma',
@@ -13458,19 +13491,21 @@ $messages['pt-br'] = array(
 	'visualeditor-media-input-placeholder' => 'Procurar por mídia',
 	'visualeditor-meta-tool' => 'Configurações de página',
 	'visualeditor-mwalienextensioninspector-title' => 'Extensão MediaWiki',
+	'visualeditor-mweditmodesource-title' => 'Trocar para editor de fonte',
 	'visualeditor-mwhieroinspector-title' => 'Hieróglifos',
 	'visualeditor-mwmathinspector-title' => 'LaTeX',
 	'visualeditor-notification-created' => 'A página $1 foi criada.', # Fuzzy
 	'visualeditor-notification-restored' => '$1 foi restaurado.', # Fuzzy
 	'visualeditor-notification-saved' => 'Suas alterações para $1 foram salvas.', # Fuzzy
 	'visualeditor-parameter-input-placeholder' => 'Nome do parâmetro',
-	'visualeditor-parameter-search-no-unused' => 'Sem parâmetros não utilizados',
+	'visualeditor-parameter-search-no-unused' => 'Sem parâmetros não-utilizados',
 	'visualeditor-parameter-search-unknown' => 'Parâmetro desconhecido',
 	'visualeditor-preference-betatempdisable' => 'Desabilitar temporariamente o Editor Visual enquanto ele está em beta',
+	'visualeditor-preference-core-label' => 'VisualEditor',
 	'visualeditor-preference-enable' => 'Ativar o Editor Visual (apenas nos espaços nominais  [[{{MediaWiki:visualeditor-mainnamespacepagelink}}|principal]] e de [[{{MediaWiki:visualeditor-usernamespacepagelink}}|usuário]])', # Fuzzy
 	'visualeditor-reference-input-placeholder' => 'O que você pretende referenciar?',
 	'visualeditor-referencelist-isempty' => 'Não há qualquer referência com o grupo "$1" nesta página.', # Fuzzy
-	'visualeditor-referencelist-missingref' => 'Esta referência está definida em uma predefinição ou em um outro bloco gerado e, por enquanto só pode ser editada no modo de código fonte.',
+	'visualeditor-referencelist-missingref' => 'Esta referência está definida em uma predefinição ou em um outro bloco gerado e, por enquanto só pode ser editada no código-fonte.',
 	'visualeditor-savedialog-error-badtoken' => 'Não foi possível processar sua edição porque a sessão já não era válida.',
 	'visualeditor-savedialog-identify-anon' => 'Deseja salvar esta página como um usuário anônimo em vez disso? O seu endereço de IP será registrado no histórico de edições desta página.',
 	'visualeditor-savedialog-identify-user' => 'Agora você está conectado como [[User:$1|$1]]. Sua edição será associada a esta conta se você salvar esta edição.',
@@ -13484,7 +13519,7 @@ $messages['pt-br'] = array(
 	'visualeditor-savedialog-label-save' => 'Salvar página',
 	'visualeditor-savedialog-label-warning' => 'Aviso',
 	'visualeditor-savedialog-title-conflict' => 'Conflito',
-	'visualeditor-savedialog-title-nochanges' => 'Sem alterações', # Fuzzy
+	'visualeditor-savedialog-title-nochanges' => 'Não há mudanças para revisar',
 	'visualeditor-savedialog-title-review' => 'Revisar suas alterações',
 	'visualeditor-savedialog-title-save' => 'Salvar as suas alterações',
 	'visualeditor-savedialog-warning-dirty' => 'Sua edição pode ter sido corrompida – por favor revise antes de salvar.',
@@ -13494,8 +13529,8 @@ $messages['pt-br'] = array(
 	'visualeditor-toolbar-savedialog' => 'Salvar página',
 	'visualeditor-usernamespacepagelink' => 'Project:Página de usuário',
 	'visualeditor-version-label' => 'Versão',
-	'visualeditor-viewpage-savewarning' => 'Tem certeza que deseja voltar para a página sem querer salvar a edição?',
-	'visualeditor-wikitext-warning' => 'Você está utilizando o Editor Visual - [[{{MediaWiki:visualeditor-wikitext-warning-link}}|código wiki]] não funciona aqui. Clique "{{MediaWiki:visualeditor-ca-editsource}}" para editar a página no modo de código wiki – alterações não salvas serão perdidas.',
+	'visualeditor-viewpage-savewarning' => 'Tem certeza que deseja voltar para a página sem salvar a edição?',
+	'visualeditor-wikitext-warning' => 'Você está usando o VisualEditor - [[{{MediaWiki:visualeditor-wikitext-warning-link}}|código wiki]] não funciona aqui. Clique "{{MediaWiki:visualeditor-ca-editsource}}" para editar a página no modo de código wiki – as alterações não-salvas serão perdidas.',
 	'visualeditor-wikitext-warning-link' => 'Help:Marcação wiki',
 	'visualeditor-wikitext-warning-title' => 'Código de wikitexto detectado',
 	'visualeditor-window-title' => 'Inspecionar',
@@ -16769,6 +16804,14 @@ $messages['tt-cyrl'] = array(
 	'visualeditor-wikitext-warning-link' => 'Help:Вики-разметка',
 	'visualeditor-wikitext-warning-title' => 'Вики-билгеләр табылды',
 	'visualeditor-window-title' => 'Тикшерү',
+);
+
+/** Central Atlas Tamazight (ⵜⴰⵎⴰⵣⵉⵖⵜ)
+ * @author Tifinaghes
+ */
+$messages['tzm'] = array(
+	'visualeditor-dialog-meta-categories-options' => 'ⵉⵎⵙⴳⵉⴷⴷⴰ',
+	'visualeditor-languageinspector-title' => 'ⵜⵓⵜⵍⴰⵢⵜ',
 );
 
 /** Uyghur (Arabic script) (ئۇيغۇرچە)
