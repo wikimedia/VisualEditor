@@ -65,7 +65,7 @@ OO.mixinClass( ve.ce.View, OO.EventEmitter );
 /* Static members */
 
 /**
- * Allowed attributes for DOM elements, in the same format as ve.dm.Model#static.storeHtmlAttributes
+ * Allowed attributes for DOM elements, in the same format as ve.dm.Model#storeHtmlAttributes
  *
  * This list includes attributes that are generally safe to include in HTML loaded from a
  * foreign source and displaying it inside the browser. It doesn't include any event attributes,
@@ -76,7 +76,7 @@ OO.mixinClass( ve.ce.View, OO.EventEmitter );
  * sense for that view in particular.
  *
  * @static
- * @property {boolean|string|RegExp|Array|Object} static.renderHtmlAttributes
+ * @property {boolean|string|RegExp|Array|Object}
  * @inheritable
  */
 ve.ce.View.static.renderHtmlAttributes = [
