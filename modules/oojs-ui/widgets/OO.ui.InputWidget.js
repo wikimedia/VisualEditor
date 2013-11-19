@@ -114,15 +114,15 @@ OO.ui.InputWidget.prototype.setRTL = function ( isRTL ) {
  * @chainable
  */
 OO.ui.InputWidget.prototype.setValue = function ( value ) {
-	var domValue = this.$input.val();
 	value = this.sanitizeValue( value );
 	if ( this.value !== value ) {
 		this.value = value;
-		// Only update the DOM if we must
-		if ( domValue !== this.value ) {
-			this.$input.val( value );
-		}
 		this.emit( 'change', this.value );
+	}
+	// Update the DOM if it has changed. Note that with sanitizeValue, it
+	// is possible for the DOM value to change without this.value changing.
+	if ( this.$input.val() !== this.value ) {
+		this.$input.val( this.value );
 	}
 	return this;
 };
