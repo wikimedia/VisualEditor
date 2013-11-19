@@ -157,7 +157,7 @@ OO.ui.Window.prototype.getWindowSet = function () {
 /**
  * Get the title of the window.
  *
- * Use .static.titleMessage to set this unless you need to do something fancy.
+ * Use #titleMessage to set this unless you need to do something fancy.
  * @returns {string} Window title
  */
 OO.ui.Window.prototype.getTitle = function () {
@@ -187,7 +187,7 @@ OO.ui.Window.prototype.setSize = function ( width, height ) {
 /**
  * Set the title of the window.
  *
- * @param {string} [customTitle] Custom title, override the static.titleMessage
+ * @param {string} [customTitle] Custom title, override the #titleMessage
  * @chainable
  */
 OO.ui.Window.prototype.setTitle = function ( customTitle ) {

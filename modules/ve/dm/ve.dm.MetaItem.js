@@ -41,7 +41,7 @@ OO.mixinClass( ve.dm.MetaItem, OO.EventEmitter );
  * Symbolic name for the group this meta item type will be grouped in in ve.dm.MetaList.
  *
  * @static
- * @property {string} [static.group='misc']
+ * @property
  * @inheritable
  */
 ve.dm.MetaItem.static.group = 'misc';
@@ -77,7 +77,7 @@ ve.dm.MetaItem.prototype.replaceWith = function ( item ) {
 
 /**
  * Get the group this meta item belongs to.
- * @see ve.dm.MetaItem#static.group
+ * @see #static-group
  * @returns {string} Group
  */
 ve.dm.MetaItem.prototype.getGroup = function () {

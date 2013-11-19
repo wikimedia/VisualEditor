@@ -63,7 +63,7 @@ OO.mixinClass( ve.dm.Node, OO.EventEmitter );
  * If .static.childNodeTypes is set to [], this property is ignored and will be assumed to be true.
  *
  * @static
- * @property {boolean} static.handlesOwnChildren
+ * @property {boolean}
  * @inheritable
  */
 ve.dm.Node.static.handlesOwnChildren = false;
@@ -72,7 +72,7 @@ ve.dm.Node.static.handlesOwnChildren = false;
  * Whether this node type is internal. Internal node types are ignored by the converter.
  *
  * @static
- * @property {boolean} static.isInternal
+ * @property {boolean}
  * @inheritable
  */
 ve.dm.Node.static.isInternal = false;
@@ -82,7 +82,7 @@ ve.dm.Node.static.isInternal = false;
  * only special node types are not wrapped.
  *
  * @static
- * @property {boolean} static.isWrapped
+ * @property {boolean}
  * @inheritable
  */
 ve.dm.Node.static.isWrapped = true;
@@ -93,7 +93,7 @@ ve.dm.Node.static.isWrapped = true;
  * also known as inline nodes.
  *
  * @static
- * @property {boolean} static.isContent
+ * @property {boolean}
  * @inheritable
  */
 ve.dm.Node.static.isContent = false;
@@ -103,7 +103,7 @@ ve.dm.Node.static.isContent = false;
  * content nodes.
  *
  * @static
- * @property {boolean} static.canContainContent
+ * @property {boolean}
  * @inheritable
  */
 ve.dm.Node.static.canContainContent = false;
@@ -116,7 +116,7 @@ ve.dm.Node.static.canContainContent = false;
  * stripping and preservation.
  *
  * @static
- * @property {boolean} static.hasSignificantWhitespace
+ * @property {boolean}
  * @inheritable
  */
 ve.dm.Node.static.hasSignificantWhitespace = false;
@@ -127,7 +127,7 @@ ve.dm.Node.static.hasSignificantWhitespace = false;
  * An empty array means no children are allowed. null means any node type is allowed as a child.
  *
  * @static
- * @property {string[]|null} static.childNodeTypes
+ * @property {string[]|null}
  * @inheritable
  */
 ve.dm.Node.static.childNodeTypes = null;
@@ -139,7 +139,7 @@ ve.dm.Node.static.childNodeTypes = null;
  * can be the child of any node type.
  *
  * @static
- * @property {string[]|null} static.parentNodeTypes
+ * @property {string[]|null}
  * @inheritable
  */
 ve.dm.Node.static.parentNodeTypes = null;
@@ -153,7 +153,7 @@ ve.dm.Node.static.parentNodeTypes = null;
  * can be the child of any node type.
  *
  * @static
- * @property {string[]|null} static.suggestedParentNodeTypes
+ * @property {string[]|null}
  * @inheritable
  */
 ve.dm.Node.static.suggestedParentNodeTypes = null;
@@ -162,7 +162,7 @@ ve.dm.Node.static.suggestedParentNodeTypes = null;
  * Array of annotation types which can't be applied to this node
  *
  * @static
- * @property {string[]} static.blacklistedAnnotationTypes
+ * @property {string[]}
  * @inheritable
  */
 ve.dm.Node.static.blacklistedAnnotationTypes = [];
@@ -176,7 +176,7 @@ ve.dm.Node.static.blacklistedAnnotationTypes = [];
  * Attributes may be omitted, in which case they'll simply be undefined.
  *
  * @static
- * @property {Object} static.defaultAttributes
+ * @property {Object}
  * @inheritable
  */
 ve.dm.Node.static.defaultAttributes = {};

@@ -43,7 +43,7 @@ ve.dm.MWExtensionNode.static.tagName = null;
 /**
  * Name of the extension and the parser tag name.
  * @static
- * @property {string} static.extensionName
+ * @property {string}
  * @inheritable
  */
 ve.dm.MWExtensionNode.static.extensionName = null;

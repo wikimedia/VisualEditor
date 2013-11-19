@@ -42,7 +42,7 @@ OO.mixinClass( ve.ce.Node, ve.Node );
  * if splittable, and continue traversing up the tree and stop at the first non-splittable node.
  *
  * @static
- * @property static.canBeSplit
+ * @property
  * @inheritable
  */
 ve.ce.Node.static.canBeSplit = false;
@@ -51,11 +51,12 @@ ve.ce.Node.static.canBeSplit = false;
  * Whether this node type can be focused.
  *
  * If this is set to true on a node, it should implement:
+ *
  *     setFocused( boolean val )
  *     boolean isFocused()
  *
  * @static
- * @property static.isFocusable
+ * @property
  * @inheritable
  */
 ve.ce.Node.static.isFocusable = false;
@@ -67,7 +68,6 @@ ve.ce.Node.static.isFocusable = false;
  *
  * This method passes through to the model.
  *
- * @method
  * @returns {string[]|null} List of node types allowed as children or null if any type is allowed
  */
 ve.ce.Node.prototype.getChildNodeTypes = function () {
@@ -79,7 +79,6 @@ ve.ce.Node.prototype.getChildNodeTypes = function () {
  *
  * This method passes through to the model.
  *
- * @method
  * @returns {string[]|null} List of node types allowed as parents or null if any type is allowed
  */
 ve.ce.Node.prototype.getParentNodeTypes = function () {
@@ -91,7 +90,6 @@ ve.ce.Node.prototype.getParentNodeTypes = function () {
  *
  * This method passes through to the model.
  *
- * @method
  * @returns {boolean} Model node can have children
  */
 ve.ce.Node.prototype.canHaveChildren = function () {
@@ -103,7 +101,6 @@ ve.ce.Node.prototype.canHaveChildren = function () {
  *
  * This method passes through to the model.
  *
- * @method
  * @returns {boolean} Model node can have children but not content nor be content
  */
 ve.ce.Node.prototype.canHaveChildrenNotContent = function () {
@@ -115,7 +112,6 @@ ve.ce.Node.prototype.canHaveChildrenNotContent = function () {
  *
  * This method passes through to the model.
  *
- * @method
  * @returns {boolean} Model node is a wrapped element
  */
 ve.ce.Node.prototype.isWrapped = function () {
@@ -127,7 +123,6 @@ ve.ce.Node.prototype.isWrapped = function () {
  *
  * This method passes through to the model.
  *
- * @method
  * @returns {boolean} Node can contain content
  */
 ve.ce.Node.prototype.canContainContent = function () {
@@ -139,7 +134,6 @@ ve.ce.Node.prototype.canContainContent = function () {
  *
  * This method passes through to the model.
  *
- * @method
  * @returns {boolean} Node is content
  */
 ve.ce.Node.prototype.isContent = function () {
@@ -149,7 +143,7 @@ ve.ce.Node.prototype.isContent = function () {
 /**
  * Check if the node is focusable
  *
- * @see #static.isFocusable
+ * @see #static-isFocusable
  * @returns {boolean} Node is focusable
  */
 ve.ce.Node.prototype.isFocusable = function () {
@@ -161,7 +155,6 @@ ve.ce.Node.prototype.isFocusable = function () {
  *
  * TODO: Figure out a way to remove the hard-coding for text nodes here.
  *
- * @static
  * @method
  * @returns {boolean} Whether the node can have a slug before it
  */
@@ -175,7 +168,6 @@ ve.ce.Node.prototype.canHaveSlugBefore = function () {
 /**
  * Check if the node can have a slug after it.
  *
- * @static
  * @method
  * @returns {boolean} Whether the node can have a slug after it
  */
@@ -186,7 +178,6 @@ ve.ce.Node.prototype.canHaveSlugAfter = ve.ce.Node.prototype.canHaveSlugBefore;
  *
  * This method passes through to the model.
  *
- * @method
  * @returns {number} Model length
  */
 ve.ce.Node.prototype.getLength = function () {
@@ -198,7 +189,6 @@ ve.ce.Node.prototype.getLength = function () {
  *
  * This method passes through to the model.
  *
- * @method
  * @returns {number} Model outer length
  */
 ve.ce.Node.prototype.getOuterLength = function () {
@@ -218,7 +208,6 @@ ve.ce.Node.prototype.getOffset = function () {
 /**
  * Check if the node can be split.
  *
- * @method
  * @returns {boolean} Node can be split
  */
 ve.ce.Node.prototype.canBeSplit = function () {
@@ -228,7 +217,6 @@ ve.ce.Node.prototype.canBeSplit = function () {
 /**
  * Get the closest splittable node upstream.
  *
- * @method
  * @returns {ve.ce.Node} Closest splittable node
  */
 ve.ce.Node.getSplitableNode = function ( node ) {
@@ -248,8 +236,6 @@ ve.ce.Node.getSplitableNode = function ( node ) {
 
 /**
  * Release all memory.
- *
- * @method
  */
 ve.ce.Node.prototype.destroy = function () {
 	this.parent = null;
