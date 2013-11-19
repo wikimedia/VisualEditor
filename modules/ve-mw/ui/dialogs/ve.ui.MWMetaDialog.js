@@ -84,7 +84,6 @@ ve.ui.MWMetaDialog.prototype.onDefaultSortChange = function ( value ) {
 /**
  * Inserts new category into meta list
  *
- * @method
  * @param {Object} item
  */
 ve.ui.MWMetaDialog.prototype.onNewCategory = function ( item ) {
@@ -95,7 +94,6 @@ ve.ui.MWMetaDialog.prototype.onNewCategory = function ( item ) {
 /**
  * Removes and re-inserts updated category widget item
  *
- * @method
  * @param {Object} item
  */
 ve.ui.MWMetaDialog.prototype.onUpdateSortKey = function ( item ) {
@@ -106,8 +104,7 @@ ve.ui.MWMetaDialog.prototype.onUpdateSortKey = function ( item ) {
 /**
  * Bound to MetaList insert event for adding meta dialog components.
  *
- * @method
- * @param {Object} ve.dm.MetaItem
+ * @param {ve.dm.MetaItem} metaItem
  */
 ve.ui.MWMetaDialog.prototype.onMetaListInsert = function ( metaItem ) {
 	// Responsible for adding UI components
@@ -122,8 +119,7 @@ ve.ui.MWMetaDialog.prototype.onMetaListInsert = function ( metaItem ) {
 /**
  * Bound to MetaList insert event for removing meta dialog components.
  *
- * @method
- * @param {Object} ve.dm.MetaItem
+ * @param {ve.dm.MetaItem} metaItem
  */
 ve.ui.MWMetaDialog.prototype.onMetaListRemove = function ( metaItem ) {
 	var item;
@@ -147,7 +143,6 @@ ve.ui.MWMetaDialog.prototype.getDefaultSortKeyItem = function () {
 /**
  * Get array of category items from meta list
  *
- * @method
  * @returns {Object[]} items
  */
 ve.ui.MWMetaDialog.prototype.getCategoryItems = function () {
@@ -165,8 +160,7 @@ ve.ui.MWMetaDialog.prototype.getCategoryItems = function () {
 /**
  * Gets category item from meta list item
  *
- * @method
- * @param {Object} ve.dm.MWCategoryMetaItem
+ * @param {ve.dm.MWCategoryMetaItem} metaItem
  * @returns {Object} item
  */
 ve.ui.MWMetaDialog.prototype.getCategoryItemFromMetaListItem = function ( metaItem ) {
@@ -185,7 +179,6 @@ ve.ui.MWMetaDialog.prototype.getCategoryItemFromMetaListItem = function ( metaIt
 /**
  * Get metaList like object to insert from item
  *
- * @method
  * @param {Object} item category widget item
  * @param {Object} [oldData] Metadata object that was previously associated with this item, if any
  * @returns {Object} metaBase
@@ -204,8 +197,7 @@ ve.ui.MWMetaDialog.prototype.getCategoryItemForInsertion = function ( item, oldD
 /**
  * Gets language item from meta list item
  *
- * @method
- * @param {Object} ve.dm.MWLanguageMetaItem
+ * @param {ve.dm.MWLanguageMetaItem} metaItem
  * @returns {Object} item
  */
 ve.ui.MWMetaDialog.prototype.getLanguageItemFromMetaListItem = function ( metaItem ) {
@@ -220,7 +212,6 @@ ve.ui.MWMetaDialog.prototype.getLanguageItemFromMetaListItem = function ( metaIt
 /**
  * Get array of language items from meta list
  *
- * @method
  * @returns {Object[]} items
  */
 ve.ui.MWMetaDialog.prototype.getLocalLanguageItems = function () {
@@ -240,7 +231,6 @@ ve.ui.MWMetaDialog.prototype.getLocalLanguageItems = function () {
 /**
  * Get array of language items from meta list
  *
- * @method
  * @returns {jQuery.Promise}
  */
 ve.ui.MWMetaDialog.prototype.getAllLanguageItems = function () {
