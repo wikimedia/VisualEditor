@@ -1,12 +1,12 @@
 /*!
- * OOJS UI v0.1.0-pre (0267100ab3)
+ * OOJS UI v0.1.0-pre (e5ef1e5b28)
  * https://www.mediawiki.org/wiki/OOJS
  *
  * Copyright 2011-2013 OOJS Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: Wed Nov 20 2013 10:23:02 GMT+0530 (IST)
+ * Date: Mon Nov 25 2013 10:40:32 GMT+0000 (GMT)
  */
 ( function () {
 
@@ -606,6 +606,76 @@ OO.ui.Frame.static.tagName = 'iframe';
  * @event initialize
  */
 
+/* Static Methods */
+
+/**
+ * Transplant the CSS styles from as parent document to a frame's document.
+ *
+ * This loops over the style sheets in the parent document, and copies their nodes to the
+ * frame's document. It then polls the document to see when all styles have loaded, and once they
+ * have, invokes the callback.
+ *
+ * For details of how we arrived at the strategy used in this function, see #load.
+ *
+ * @static
+ * @method
+ * @inheritable
+ * @param {HTMLDocument} parentDoc Document to transplant styles from
+ * @param {HTMLDocument} frameDoc Document to transplant styles to
+ * @param {Function} [callback] Callback to execute once styles have loaded
+ */
+OO.ui.Frame.static.transplantStyles = function ( parentDoc, frameDoc, callback ) {
+	var i, numSheets, styleNode, newNode, timeout, pollNodeId, $pendingPollNodes,
+		$pollNodes = $( [] ),
+		// Fake font-family value
+		fontFamily = 'oo-ui-frame-transplantStyles-loaded';
+
+	for ( i = 0, numSheets = parentDoc.styleSheets.length; i < numSheets; i++ ) {
+		styleNode = parentDoc.styleSheets[i].ownerNode;
+		if ( callback && styleNode.nodeName.toLowerCase() === 'link' ) {
+			// External stylesheet
+			// Create a node with a unique ID that we're going to monitor to see when the CSS
+			// has loaded
+			pollNodeId = 'oo-ui-frame-transplantStyles-loaded-' + i;
+			$pollNodes = $pollNodes.add( $( '<div>', frameDoc )
+				.attr( 'id', pollNodeId )
+				.appendTo( frameDoc.body )
+			);
+
+			// Add <style>@import url(...); #pollNodeId { font-family: ... }</style>
+			// The font-family rule will only take effect once the @import finishes
+			newNode = frameDoc.createElement( 'style' );
+			newNode.textContent = '@import url(' + styleNode.href + ');\n' +
+				'#' + pollNodeId + ' { font-family: ' + fontFamily + '; }';
+		} else {
+			// Not an external stylesheet, or no polling required; just copy the node over
+			newNode = frameDoc.importNode( styleNode, true );
+		}
+		frameDoc.head.appendChild( newNode );
+	}
+
+	if ( callback ) {
+		// Poll every 100ms until all external stylesheets have loaded
+		$pendingPollNodes = $pollNodes;
+		timeout = setTimeout( function pollExternalStylesheets() {
+			while (
+				$pendingPollNodes.length > 0 &&
+				$pendingPollNodes.eq( 0 ).css( 'font-family' ) === fontFamily
+			) {
+				$pendingPollNodes = $pendingPollNodes.slice( 1 );
+			}
+
+			if ( $pendingPollNodes.length === 0 ) {
+				// We're done!
+				$pollNodes.remove();
+				callback();
+			} else {
+				timeout = setTimeout( pollExternalStylesheets, 100 );
+			}
+		}, 100 );
+	}
+};
+
 /* Methods */
 
 /**
@@ -619,20 +689,32 @@ OO.ui.Frame.static.tagName = 'iframe';
  * iframe is triggered when you call close, and there's no further load event to indicate that
  * everything is actually loaded.
  *
- * By dynamically adding stylesheet links, we can detect when each link is loaded by testing if we
- * have access to each of their `sheet.cssRules` properties. Every 10ms we poll to see if we have
- * access to the style's `sheet.cssRules` property yet.
+ * In Chrome, stylesheets don't show up in document.styleSheets until they have loaded, so we could
+ * just poll that array and wait for it to have the right length. However, in Firefox, stylesheets
+ * are added to document.styleSheets immediately, and the only way you can determine whether they've
+ * loaded is to attempt to access .cssRules and wait for that to stop throwing an exception. But
+ * cross-domain stylesheets never allow .cssRules to be accessed even after they have loaded.
  *
- * However, because of security issues, we never have such access if the stylesheet came from a
- * different site. Thus, we are left with linking to the stylesheets through a style element with
- * multiple `@import` statements - which ends up being simpler anyway. Since we created that style,
- * we always have access, and its contents are only available when everything is done loading.
+ * The workaround is to change all `<link href="...">` tags to `<style>@import url(...)</style>` tags.
+ * Because `@import` is blocking, Chrome won't add the stylesheet to document.styleSheets until
+ * the `@import` has finished, and Firefox won't allow .cssRules to be accessed until the `@import`
+ * has finished. And because the contents of the `<style>` tag are from the same origin, accessing
+ * .cssRules is allowed.
+ *
+ * However, now that we control the styles we're injecting, we might as well do away with
+ * browser-specific polling hacks like document.styleSheets and .cssRules, and instead inject
+ * `<style>@import url(...); #foo { font-family: someValue; }</style>`, then create `<div id="foo">`
+ * and wait for its font-family to change to someValue. Because `@import` is blocking, the font-family
+ * rule is not applied until after the `@import` finishes.
+ *
+ * All this stylesheet injection and polling magic is in #transplantStyles.
  *
  * @fires initialize
  */
 OO.ui.Frame.prototype.load = function () {
 	var win = this.$element.prop( 'contentWindow' ),
-		doc = win.document;
+		doc = win.document,
+		frame = this;
 
 	// Figure out directionality:
 	this.dir = this.$element.closest( '[dir]' ).prop( 'dir' ) || 'ltr';
@@ -654,54 +736,12 @@ OO.ui.Frame.prototype.load = function () {
 	this.$content = this.$( '.oo-ui-frame-content' );
 	this.$document = this.$( doc );
 
-	this.transplantStyles();
-	this.initialized = true;
-	this.emit( 'initialize' );
-};
-
-/**
- * Transplant the CSS styles from the frame's parent document to the frame's document.
- *
- * This loops over the style sheets in the parent document, and copies their tags to the
- * frame's document. `<link>` tags pointing to same-origin style sheets are inlined as `<style>` tags;
- * `<link>` tags pointing to foreign URLs and `<style>` tags are copied verbatim.
- */
-OO.ui.Frame.prototype.transplantStyles = function () {
-	var i, ilen, j, jlen, sheet, rules, cssText, styleNode,
-		newDoc = this.$document[0],
-		parentDoc = this.getElementDocument();
-	for ( i = 0, ilen = parentDoc.styleSheets.length; i < ilen; i++ ) {
-		sheet = parentDoc.styleSheets[i];
-		styleNode = undefined;
-		try {
-			rules = sheet.cssRules;
-		} catch ( e ) { }
-		if ( sheet.ownerNode.nodeName.toLowerCase() === 'link' && rules ) {
-			// This is a <link> tag pointing to a same-origin style sheet. Rebuild it as a
-			// <style> tag. This needs to be in a try-catch because it sometimes fails in Firefox.
-			try {
-				cssText = '';
-				for ( j = 0, jlen = rules.length; j < jlen; j++ ) {
-					if ( typeof rules[j].cssText !== 'string' ) {
-						// WTF; abort and fall back to cloning the node
-						throw new Error( 'sheet.cssRules[' + j + '].cssText is not a string' );
-					}
-					cssText += rules[j].cssText + '\n';
-				}
-				cssText += '/* Transplanted styles from ' + sheet.href + ' */\n';
-				styleNode = newDoc.createElement( 'style' );
-				styleNode.textContent = cssText;
-			} catch ( e ) {
-				styleNode = undefined;
-			}
+	this.constructor.static.transplantStyles( this.getElementDocument(), this.$document[0],
+		function () {
+			frame.initialized = true;
+			frame.emit( 'initialize' );
 		}
-		if ( !styleNode ) {
-			// It's either a <style> tag or a <link> tag pointing to a foreign URL; just copy
-			// it to the new document
-			styleNode = newDoc.importNode( sheet.ownerNode, true );
-		}
-		newDoc.body.appendChild( styleNode );
-	}
+	);
 };
 
 /**
@@ -763,6 +803,9 @@ OO.ui.Window = function OoUiWindow( windowSet, config ) {
 	// Initialization
 	this.$element
 		.addClass( 'oo-ui-window' )
+		// Hide the window using visibility: hidden; while the iframe is still loading
+		// Can't use display: none; because that prevents the iframe from loading in Firefox
+		.css( 'visibility', 'hidden' )
 		.append( this.$frame );
 	this.$frame
 		.addClass( 'oo-ui-window-frame' )
@@ -999,6 +1042,10 @@ OO.ui.Window.prototype.initialize = function () {
 		this.$overlay
 	);
 
+	// Undo the visibility: hidden; hack from the constructor and apply display: none;
+	// We can do this safely now that the iframe has initialized
+	this.$element.hide().css( 'visibility', '' );
+
 	this.emit( 'initialize' );
 
 	return this;
@@ -1049,9 +1096,9 @@ OO.ui.Window.prototype.teardown = function () {
 OO.ui.Window.prototype.open = function ( data ) {
 	if ( !this.opening && !this.closing && !this.visible ) {
 		this.opening = true;
-		this.$element.show();
-		this.visible = true;
 		this.frame.run( OO.ui.bind( function () {
+			this.$element.show();
+			this.visible = true;
 			this.frame.$element.focus();
 			this.emit( 'opening', data );
 			this.setup( data );

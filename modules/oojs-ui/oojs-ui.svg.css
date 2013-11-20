@@ -1,12 +1,12 @@
 /*!
- * OOJS UI v0.1.0-pre-svg (0267100ab3)
+ * OOJS UI v0.1.0-pre-svg (e5ef1e5b28)
  * https://www.mediawiki.org/wiki/OOJS
  *
  * Copyright 2011-2013 OOJS Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: Wed Nov 20 2013 10:23:02 GMT+0530 (IST)
+ * Date: Mon Nov 25 2013 10:40:32 GMT+0000 (GMT)
  */
 /*csslint vendor-prefix:false */
 
@@ -1354,10 +1354,6 @@ a.oo-ui-buttonWidget-button {
 	padding: 0 0.75em 0 0.5em;
 	background-color: rgba(128,128,128,0.25);
 }
-.oo-ui-window {
-	display: none;
-}
-
 .oo-ui-window-head {
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
