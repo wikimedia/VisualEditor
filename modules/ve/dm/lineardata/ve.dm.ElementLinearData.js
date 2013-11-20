@@ -726,13 +726,15 @@ ve.dm.ElementLinearData.prototype.remapStoreIndexes = function ( mapping ) {
  *
  * @method
  * @param {Object} mapping Mapping from internal list indexes to internal list indexes
+ * @param {ve.dm.InternalList} internalList Internal list the indexes are being mapped into.
+ *  Used for refreshing attribute values that were computed with getNextUniqueNumber().
  */
-ve.dm.ElementLinearData.prototype.remapInternalListIndexes = function ( mapping ) {
+ve.dm.ElementLinearData.prototype.remapInternalListIndexes = function ( mapping, internalList ) {
 	var i, ilen, nodeClass;
 	for ( i = 0, ilen = this.data.length; i < ilen; i++ ) {
 		if ( this.isOpenElementData( i ) ) {
 			nodeClass = ve.dm.nodeFactory.lookup( this.getType( i ) );
-			nodeClass.static.remapInternalListIndexes( this.data[i], mapping );
+			nodeClass.static.remapInternalListIndexes( this.data[i], mapping, internalList );
 		}
 	}
 };

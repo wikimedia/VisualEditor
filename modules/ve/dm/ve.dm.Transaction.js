@@ -204,7 +204,7 @@ ve.dm.Transaction.newFromDocumentReplace = function ( doc, removeNodeOrRange, ne
 
 	merge = doc.internalList.merge( newDoc.internalList, newDoc.origInternalListLength || 0 );
 	// Remap the indexes in the data
-	data.remapInternalListIndexes( merge.mapping );
+	data.remapInternalListIndexes( merge.mapping, doc.internalList );
 	// Get data for the new internal list
 	if ( newDoc.origDoc === doc ) {
 		// newDoc is a document slice based on doc, so all the internal list items present in doc
