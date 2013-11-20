@@ -489,7 +489,7 @@ class VisualEditorHooks {
 				'ext.visualEditor.viewPageTarget.init',
 				'ext.visualEditor.viewPageTarget',
 			),
-			'localBasePath' => dirname( __FILE__ ) . '/modules',
+			'localBasePath' => __DIR__ . '/modules',
 			'remoteExtPath' => 'VisualEditor/modules',
 		);
 

@@ -33,7 +33,7 @@ $wgExtensionCredits['other'][] = array(
 	'descriptionmsg' => 'visualeditor-desc',
 );
 
-$dir = dirname( __FILE__ ) . '/';
+$dir = __DIR__ . '/';
 
 // Register files
 $wgAutoloadClasses['ApiVisualEditor'] = $dir . 'ApiVisualEditor.php';
@@ -70,7 +70,7 @@ $wgDefaultUserOptions['visualeditor-betatempdisable'] = 0;
 // Register resource modules
 
 $wgVisualEditorResourceTemplate = array(
-	'localBasePath' => dirname( __FILE__ ) . '/modules',
+	'localBasePath' => __DIR__ . '/modules',
 	'remoteExtPath' => 'VisualEditor/modules',
 );
 
