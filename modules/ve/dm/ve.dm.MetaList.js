@@ -374,7 +374,7 @@ ve.dm.MetaList.prototype.removeMeta = function ( item ) {
  * Insert an item at a given offset and index in response to a transaction.
  *
  * This function is for internal usage by onTransact(). To actually insert an item, use
- * insertItem().
+ * insertMeta().
  *
  * @param {number} offset Offset in the linear model of the new item
  * @param {number} index Index of the new item in the metadata array at offset
