@@ -35,6 +35,7 @@ class VisualEditorPage
   span(:ve_computer_code, class: 'oo-ui-iconedElement-icon oo-ui-icon-code')
   div(:ve_heading_menu, class: 'oo-ui-iconedElement-icon oo-ui-icon-down')
   span(:ve_link_icon, class: 'oo-ui-iconedElement-icon oo-ui-icon-link')
+  span(:ve_media_menu, class: 'oo-ui-iconedElement-icon oo-ui-icon-picture')
   span(:ve_references, class: 'oo-ui-iconedElement-icon oo-ui-icon-reference')
   span(:ve_numbering, class: 'oo-ui-iconedElement-icon oo-ui-icon-number-list')
   span(:ve_strikethrough, class: 'oo-ui-iconedElement-icon oo-ui-icon-strikethrough-s')
@@ -59,9 +60,11 @@ class VisualEditorPage
     span(:apply_changes, text: 'Apply changes', frame: frame)
     div(:content_box, class: 've-ce-documentNode ve-ce-branchNode', frame: frame)
     text_area(:describe_change, index: 0, frame: frame)
-    div(:diff_view, class: 've-ui-mwSaveDialog-viewer', frame: frame)
     a(:ex, title: 'Close', frame: frame)
     span(:insert_reference, text: 'Insert reference', frame: frame)
+    div(:media_diff_view, class: 've-ui-mwSaveDialog-viewer', frame: frame)
+    text_field(:media_search, placeholder: 'Search for media', frame: frame)
+    div(:media_select, class: 've-ui-mwMediaResultWidget-overlay', frame: frame)
     checkbox(:minor_edit, id: 'wpMinoredit', frame: frame)
     text_field(:parameter_box, index: 0, frame: frame)
     span(:remove_parameter, text: 'Remove parameter', frame: frame)
@@ -78,5 +81,7 @@ class VisualEditorPage
   in_frame(:index => 2) do |frame|
     div(:links_diff_view, class: 've-ui-mwSaveDialog-viewer', frame: frame)
     span(:links_review_changes, class: 'oo-ui-labeledElement-label', text: 'Review your changes', frame: frame)
+    div(:media_diff_view, class: 've-ui-mwSaveDialog-viewer', frame: frame)
+    a(:media_exit, title: 'Close', frame: frame)
   end
 end
