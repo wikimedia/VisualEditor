@@ -385,9 +385,10 @@ ve.dm.Converter.prototype.getDomElementFromDataAnnotation = function ( dataAnnot
  * @param {HTMLDocument} doc HTML document to convert
  * @param {ve.dm.IndexValueStore} store Index-value store
  * @param {ve.dm.InternalList} internalList Internal list
+ * @param {Array} innerWhitespace Inner whitespace
  * @returns {ve.dm.FlatLinearData} Linear model data
  */
-ve.dm.Converter.prototype.getDataFromDom = function ( doc, store, internalList ) {
+ve.dm.Converter.prototype.getDataFromDom = function ( doc, store, internalList, innerWhitespace ) {
 	var linearData, refData;
 
 	// Set up the converter state
@@ -403,6 +404,8 @@ ve.dm.Converter.prototype.getDataFromDom = function ( doc, store, internalList )
 	);
 	refData = this.internalList.convertToData( this, doc );
 	linearData.batchSplice( linearData.getLength(), 0, refData );
+
+	this.setInnerWhitespace( innerWhitespace, linearData );
 
 	// Clear the state
 	this.doc = null;
@@ -977,6 +980,39 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, wrapp
 };
 
 /**
+ * Set inner whitespace from linear data
+ *
+ * @param {Array} innerWhitespace Inner whitespace
+ * @param {ve.dm.FlatLinearData} data Linear model data
+ */
+ve.dm.Converter.prototype.setInnerWhitespace = function ( innerWhitespace, data ) {
+	var whitespace,
+		stack = 0,
+		last = data.getLength() - 1;
+
+	if ( data.isOpenElementData( 0 ) ) {
+		whitespace = ve.getProp( data.getData( 0 ), 'internal', 'whitespace' );
+		innerWhitespace[0] = whitespace ? whitespace[0] : undefined;
+	}
+	if ( data.isCloseElementData( last ) ) {
+		// Find matching opening tag of the last close tag
+		stack++;
+		while ( --last ) {
+			if ( data.isCloseElementData( last ) ) {
+				stack++;
+			} else if ( data.isOpenElementData( last ) ) {
+				stack--;
+				if ( stack === 0 && data.getType( last ) !== 'internalList' ) {
+					break;
+				}
+			}
+		}
+		whitespace = ve.getProp( data.getData( last ), 'internal', 'whitespace' );
+		innerWhitespace[1] = whitespace ? whitespace[3] : undefined;
+	}
+};
+
+/**
  * Check if all the domElements provided are metadata or whitespace.
  *
  * A list of model names to exclude when matching can optionally be passed.
@@ -1031,9 +1067,10 @@ ve.dm.Converter.prototype.isDomAllMetaOrWhitespace = function ( domElements, exc
  * @param {Array} documentData Linear model data
  * @param {ve.dm.IndexValueStore} store Index-value store
  * @param {ve.dm.InternalList} internalList Internal list
+ * @param {Array} innerWhitespace Inner whitespace
  * @returns {HTMLDocument} Document containing the resulting HTML
  */
-ve.dm.Converter.prototype.getDomFromData = function ( documentData, store, internalList ) {
+ve.dm.Converter.prototype.getDomFromData = function ( documentData, store, internalList, innerWhitespace ) {
 	var doc = ve.createDocumentFromHtml( '' );
 
 	// Set up the converter state
@@ -1041,7 +1078,7 @@ ve.dm.Converter.prototype.getDomFromData = function ( documentData, store, inter
 	this.store = store;
 	this.internalList = internalList;
 
-	this.getDomSubtreeFromData( documentData, doc.body );
+	this.getDomSubtreeFromData( documentData, doc.body, innerWhitespace );
 
 	// Clear the state
 	this.documentData = null;
@@ -1056,9 +1093,10 @@ ve.dm.Converter.prototype.getDomFromData = function ( documentData, store, inter
  *
  * @param {Array} data Linear model data
  * @param {HTMLElement} container DOM element to add the generated elements to. Should be empty.
+ * @param {Array} [innerWhitespace] Inner whitespace if the container is the body
  * @throws Unbalanced data: looking for closing /type
  */
-ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container ) {
+ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, innerWhitespace ) {
 	var text, i, j, isStart, annotations, dataElement, dataElementOrSlice,
 		childDomElements, pre, ours, theirs, parentDomElement, lastChild, isContentNode, sibling,
 		previousSiblings, doUnwrap, textNode, type, annotatedDomElementStack, annotatedDomElements,
@@ -1440,9 +1478,8 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container ) {
 							// Get previous sibling's outerPost
 							theirs = parentDomElement.lastOuterPost;
 						} else if ( parentDomElement === container ) {
-							// outerPre of the very first node in the document, this one
-							// has no duplicate
-							theirs = ours;
+							// outerPre of the very first node in the document, check against body innerWhitespace
+							theirs = innerWhitespace ? innerWhitespace[0] : ours;
 						} else {
 							// First child, get parent's innerPre
 							if (
@@ -1473,8 +1510,11 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container ) {
 			}
 		}
 	}
-	// Process the outerPost whitespace of the very last node
-	if ( container.lastOuterPost !== undefined ) {
+	// Check outerPost whitespace of the very last node against body innerWhitespace
+	if (
+		container.lastOuterPost !== undefined &&
+		( !innerWhitespace || container.lastOuterPost === innerWhitespace[1] )
+	) {
 		if ( container.lastChild && container.lastChild.nodeType === Node.TEXT_NODE ) {
 			// Last child is a TextNode, append to it
 			container.lastChild.appendData( container.lastOuterPost );
