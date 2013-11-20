@@ -45,11 +45,7 @@ ve.ui.MWBetaWelcomeDialog.static.icon = 'help';
  * @returns {string} Window title
  */
 ve.ui.MWBetaWelcomeDialog.prototype.getTitle = function () {
-	var userName = mw.config.get( 'wgUserName' );
-	if ( !userName ) {
-		userName = ''; // Make sure 'null' and 'undefined' are sent as empty string
-	}
-	return ve.msg( this.constructor.static.titleMessage, userName );
+	return ve.msg( this.constructor.static.titleMessage, mw.user );
 };
 
 /**

@@ -538,6 +538,7 @@ $wgResourceModules += array(
 			'ext.visualEditor.base',
 			'mediawiki.Title',
 			'mediawiki.action.history.diff',
+			'mediawiki.user',
 			'jquery.autoEllipsis',
 		),
 		'messages' => array(
