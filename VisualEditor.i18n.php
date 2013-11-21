@@ -382,7 +382,8 @@ Used in:
 
 See also:
 * {{msg-mw|Visualeditor-dialog-action-cancel}}
-* {{msg-mw|Visualeditor-dialog-action-goback}}',
+* {{msg-mw|Visualeditor-dialog-action-goback}}
+{{Identical|Apply change}}',
 	'visualeditor-dialog-action-cancel' => 'Label text for button to exit from dialog without making changes.
 
 See also:
@@ -685,7 +686,8 @@ Parameters:
 {{Identical|Error}}',
 	'visualeditor-savedialog-label-report' => 'Label for button to trigger report',
 	'visualeditor-savedialog-label-resolve-conflict' => 'Label for button to start resoliving an edit conflict',
-	'visualeditor-savedialog-label-restore' => 'Label text for save button when the user is editing a previous revision',
+	'visualeditor-savedialog-label-restore' => 'Label text for save button when the user is editing a previous revision.
+{{Identical|Restore page}}',
 	'visualeditor-savedialog-label-review' => 'Label for button to go to the review dialog to review the diff',
 	'visualeditor-savedialog-label-review-good' => 'Label for button to go back to the save form',
 	'visualeditor-savedialog-label-save' => 'Label text for save button when the user is editing a current revision of an extant page.
@@ -12399,6 +12401,158 @@ $messages['oc'] = array(
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Demesir l’indentacion',
 );
 
+/** Oromo (Oromoo)
+ * @author Tumsaa
+ */
+$messages['om'] = array(
+	'ooui-dialog-action-close' => 'Cufi',
+	'ooui-inspector-close-tooltip' => 'Cufi',
+	'ooui-inspector-remove-tooltip' => 'Balleessi',
+	'ooui-outline-control-move-down' => 'Gad buusi',
+	'ooui-outline-control-move-up' => 'Ol baasi',
+	'ooui-toggle-on' => 'Banaa',
+	'ooui-toggle-off' => 'Dhaama',
+	'ooui-toolbar-more' => 'Dabalata',
+	'tooltip-ca-createsource' => 'Fuula kanaaf lakkadda maddaa uumi',
+	'tooltip-ca-editsource' => 'Lakkadda maddaa fuula kanaa jijjiiri',
+	'tooltip-ca-ve-edit' => "Fuula kana Viizyuwaal'Ediiteriin jijjiiri",
+	'visualeditor' => "Viizyuwaal'Ediiterii",
+	'visualeditor-aliennode-tooltip' => "Dhiifama, kana ammaaf lakkaddaan qofa jijjiirun danda'ama.",
+	'visualeditor-annotationbutton-bold-tooltip' => 'Yabbuu',
+	'visualeditor-annotationbutton-code-tooltip' => 'Lakkaddaa Kompitaraa',
+	'visualeditor-annotationbutton-italic-tooltip' => 'Mirgada',
+	'visualeditor-annotationbutton-language-tooltip' => 'Afaan',
+	'visualeditor-annotationbutton-link-tooltip' => 'Liinkii',
+	'visualeditor-annotationbutton-strikethrough-tooltip' => 'Sarara gidduu',
+	'visualeditor-annotationbutton-subscript-tooltip' => 'Jalarfii',
+	'visualeditor-annotationbutton-superscript-tooltip' => 'Irrarfii',
+	'visualeditor-annotationbutton-underline-tooltip' => 'Jala Muruu',
+	'visualeditor-beta-appendix' => 'Beetaa',
+	'visualeditor-beta-label' => 'Moosaajin kun amma yaalii lammataarra jira',
+	'visualeditor-browserwarning' => "Biraawuzerii(Browser) ati itti fayyadamaa jirturratti Viizyuwaal'Ediiteriin hin ammaaf hin hojjatu",
+	'visualeditor-categories-tool' => 'Gareewwan',
+	'visualeditor-ca-createsource' => 'Lakkaddaa uumi',
+	'visualeditor-ca-editsource' => 'Lakkaddaa jijjiiri',
+	'visualeditor-ca-editsource-section' => 'Lakkaddaa jijjiiri',
+	'visualeditor-ca-ve-create' => "Viizyuwaal'Ediiterii",
+	'visualeditor-ca-ve-edit' => "Viizyuwaal'Ediiterii",
+	'visualeditor-ca-ve-edit-section' => "Viizyuwaal'Ediiterii",
+	'visualeditor-clearbutton-tooltip' => 'Dhangii balleessi',
+	'visualeditor-descriptionpagelink' => "Project:Viizyuwaal'Ediiterii",
+	'visualeditor-dialog-action-apply' => 'Jijjiirrama hojiirra oolchi',
+	'visualeditor-dialog-action-cancel' => 'Dhiisi',
+	'visualeditor-dialog-action-goback' => "Duubatti deebi'i",
+	'visualeditor-dialog-beta-welcome-action-continue' => 'Itti fufi',
+	'visualeditor-dialog-beta-welcome-content' => "Kun karaa ittin barreeffama jijjirru isa haaraadha. Amma yaalii beetaa irra jira, kanaafu kutaalee adda addaa fuula tokko kan ittin jijjiirun hin danda'amne jiraachuu danda'a, akkasumas wantoonni sirreeffamu qaban si mudachuu danda'u.", # Fuzzy
+	'visualeditor-dialog-beta-welcome-title' => "{{GENDER:$1|Welcome}} Gara Viizyuwaal'Ediiterii baga nagaan dhuftan.",
+	'visualeditor-dialog-media-insert-button' => 'Miidiyaa galchi',
+	'visualeditor-dialog-media-insert-title' => 'Miidiyaa galchi',
+	'visualeditor-dialog-media-title' => 'Filannoo miidiyaa',
+	'visualeditor-dialog-meta-categories-category' => 'Garee',
+	'visualeditor-dialog-meta-categories-data-label' => 'Gareewwan',
+	'visualeditor-dialog-meta-categories-input-matchingcategorieslabel' => 'Garee walfakkaatu',
+	'visualeditor-dialog-meta-categories-input-newcategorylabel' => 'Garee haaraa',
+	'visualeditor-dialog-meta-categories-input-placeholder' => 'Garee Dabali',
+	'visualeditor-dialog-meta-categories-options' => 'Filannoo',
+	'visualeditor-dialog-meta-categories-section' => 'Gareewwan',
+	'visualeditor-dialog-meta-languages-code-label' => 'Koodii Afaanii',
+	'visualeditor-dialog-meta-languages-label' => 'Afaan',
+	'visualeditor-dialog-meta-languages-section' => 'Afaan',
+	'visualeditor-dialog-meta-title' => "Qindaa'ina fuulaa",
+	'visualeditor-dialog-reference-insert-button' => 'Wabii galchi',
+	'visualeditor-dialog-reference-insert-title' => 'Wabii galchi',
+	'visualeditor-dialog-reference-options-group-label' => 'Garee kana fayyadami',
+	'visualeditor-dialog-reference-options-section' => 'Filannoo',
+	'visualeditor-dialog-reference-title' => 'Wabii',
+	'visualeditor-dialog-reference-useexisting-label' => 'Wabii duraan jirutti fayyadami',
+	'visualeditor-dialog-referencelist-title' => 'Tareeffama wabiiwwanii',
+	'visualeditor-dialog-transclusion-add-content' => 'Qabiyyee galchi',
+	'visualeditor-dialog-transclusion-add-template' => 'Tempileetii galchi',
+	'visualeditor-dialog-transclusion-content' => 'Qabiyyee',
+	'visualeditor-dialog-transclusion-options' => 'Filannoo',
+	'visualeditor-dialog-transclusion-placeholder' => 'Tempileetii haaraa',
+	'visualeditor-dialog-transclusion-remove-content' => 'Qabiyyee balleessi',
+	'visualeditor-dialog-transclusion-remove-template' => 'Teempileetii balleessi',
+	'visualeditor-dialogbutton-media-tooltip' => 'Miidiyaa',
+	'visualeditor-dialogbutton-meta-tooltip' => "Qindaa'ina fuulaa",
+	'visualeditor-dialogbutton-reference-tooltip' => 'Wabii',
+	'visualeditor-dialogbutton-referencelist-tooltip' => 'Tareeffama wabiiwwanii',
+	'visualeditor-differror' => 'Yeroo serveriirraa deetaa fiduuf yaalu dogongorri uummame: $1',
+	'visualeditor-editconflict' => "Jijjiirrama kee, sababa walitti bu'iinsa jijjiirratiin, olkaawun hin danda'amne. Maloo, walitti bu'iinsa kana sirreessuu dandeessaa?",
+	'visualeditor-editsummary' => 'Waan jijjiirte ibsi',
+	'visualeditor-feedback-link' => "Project:Viizyuwaal'Ediiterii/Yaada",
+	'visualeditor-feedback-tool' => 'Yaada kenni',
+	'visualeditor-formatdropdown-format-heading1' => 'Mataduree 1',
+	'visualeditor-formatdropdown-format-heading2' => 'Mataduree 2',
+	'visualeditor-formatdropdown-format-heading3' => 'Mataduree 3',
+	'visualeditor-formatdropdown-format-heading4' => 'Mataduree 4',
+	'visualeditor-formatdropdown-format-heading5' => 'Mataduree 5',
+	'visualeditor-formatdropdown-format-heading6' => 'Mataduree 6',
+	'visualeditor-formatdropdown-format-mw-heading1' => 'Mataduree Fuulaa',
+	'visualeditor-formatdropdown-format-mw-heading2' => 'Mataduree',
+	'visualeditor-formatdropdown-format-paragraph' => 'Keeyyata',
+	'visualeditor-formatdropdown-format-preformatted' => "Kan dura dhangaa'e",
+	'visualeditor-formatdropdown-title' => "Dhangi'ii jijjiiri",
+	'visualeditor-help-label' => 'Qajeelfama fayyadamaa dubbisi',
+	'visualeditor-help-tool' => 'Gargaarsa',
+	'visualeditor-historybutton-undo-tooltip' => 'Gaabbii',
+	'visualeditor-indentationbutton-indent-tooltip' => 'Galumsa dabali',
+	'visualeditor-indentationbutton-outdent-tooltip' => 'Galumsa hirrisi',
+	'visualeditor-inspector-close-tooltip' => 'Cufi',
+	'visualeditor-inspector-remove-tooltip' => 'Balleessi',
+	'visualeditor-languages-tool' => 'Afaan',
+	'visualeditor-languageinspector-block-tooltip-rtldirection' => ':Mirgaa gara bitaa',
+	'visualeditor-languageinspector-title' => 'Afaan',
+	'visualeditor-languageinspector-widget-changelang' => 'Afaan jijjiiri',
+	'visualeditor-languageinspector-widget-label-direction' => 'Kallattii',
+	'visualeditor-languageinspector-widget-label-langcode' => 'Koodii Afaanii',
+	'visualeditor-languageinspector-widget-label-language' => 'Afaan',
+	'visualeditor-linkinspector-illegal-title' => 'Matadureen kun sirrii miti',
+	'visualeditor-linkinspector-suggest-external-link' => 'Liinkii alaa',
+	'visualeditor-linkinspector-suggest-matching-page' => 'Fuula walfakkaatu',
+	'visualeditor-linkinspector-suggest-new-page' => 'Fuula haaraa',
+	'visualeditor-listbutton-bullet-tooltip' => 'Tarree rasaasaa',
+	'visualeditor-listbutton-number-tooltip' => 'Tarree lakkoofsaa',
+	'visualeditor-media-input-placeholder' => 'Miidiyaa barbaadi',
+	'visualeditor-meta-tool' => "Qindaa'ina fuulaa",
+	'visualeditor-mweditmodesource-title' => 'Gara lakkaddaa jijjiirutti geeddari',
+	'visualeditor-mweditmodesource-warning' => "Gara lakkaddaa jijjirutti geeddaruuf jirta. Jijjiiramni ati fuula kanarratti hojjatte ni olkaawwama, garuu booda gara Viizyuwaal'Ediiterii deebi'uuf, fuulaa sana odoo hin olkaayin ykn deebitee hin banin hin dandeessu. 
+
+Itti fufuu barbaaddaa?",
+	'visualeditor-mwmathinspector-title' => 'LaTeX',
+	'visualeditor-notification-created' => '"$1" ummameera.',
+	'visualeditor-notification-restored' => '"$1"n olkaawwameera.',
+	'visualeditor-notification-saved' => 'Jijjiirraan kee kan "$1" olkaawwameera.',
+	'visualeditor-preference-betatempdisable' => "Viizyuwaal'Ediiterii yeroodhaaf, amma inni beetaa ta'ee jirutti, akka hin hojjanne godhi.",
+	'visualeditor-preference-core-label' => "Viizyuwaal'Ediiterii",
+	'visualeditor-preference-language-label' => "Meeshaa Afaanii kan Viizyuwaal'Ediiterii",
+	'visualeditor-preference-mwmath-label' => "Viizyuwaal'Ediiteriin foormulaa jijjiiruu",
+	'visualeditor-reference-input-placeholder' => 'Maal wabii godhachuu barbaadda?',
+	'visualeditor-referencelist-isempty-default' => 'Fuula kanarra wabiin tarree keessati mullifamu hin jiru.',
+	'visualeditor-savedialog-error-badtoken' => 'Seeshiniin yeroon isaa waan darbeef, jijjiirama kee fudhachuu hin dandeenye.',
+	'visualeditor-savedialog-label-create' => 'Fuula haaraa uumi',
+	'visualeditor-savedialog-label-error' => 'Dogongora',
+	'visualeditor-savedialog-label-report' => 'Rakkoo gabaasi',
+	'visualeditor-savedialog-label-resolve-conflict' => 'Faallaa furi',
+	'visualeditor-savedialog-label-restore' => 'Fuula deebissi',
+	'visualeditor-savedialog-label-review' => 'Jijjiirama kee gulaali',
+	'visualeditor-savedialog-label-review-good' => "Gara unka olkaayyaatti deebi'i",
+	'visualeditor-savedialog-label-save' => 'Fuula olkaayi',
+	'visualeditor-savedialog-label-warning' => 'Akeekkachiisa',
+	'visualeditor-savedialog-title-conflict' => 'Wal faallessa',
+	'visualeditor-savedialog-title-nochanges' => 'Jijjiirramni gulaallamu hin jiru',
+	'visualeditor-savedialog-title-review' => 'Jijjiirrama kee gulaali',
+	'visualeditor-savedialog-title-save' => 'Jijjiirama kee olkaayi',
+	'visualeditor-savedialog-warning-dirty' => 'Jijjiiramni kee faalamuu hin oolle - maaloo, olkaawuu dura gulaali.',
+	'visualeditor-saveerror' => 'Yeroo serveriirraa deetaa olkaawuf yaalu dogongorri uummame: $1',
+	'visualeditor-serializeerror' => 'Yeroo serveriirraa deetaa fiduuf yaalu dogongorri uummame: $1',
+	'visualeditor-toolbar-cancel' => 'Dhiisi',
+	'visualeditor-toolbar-savedialog' => 'Fuula olkaayi',
+	'visualeditor-version-label' => "Fooyya'aa",
+	'visualeditor-viewpage-savewarning' => "Odoo jijjiiraa hin olkaayin gara fuula dubbisaatti deebi'uu barbaaddaa?",
+	'visualeditor-window-title' => 'Qoradhu',
+);
+
 /** Oriya (ଓଡ଼ିଆ)
  * @author Odisha1
  * @author Psubhashish
@@ -13652,6 +13806,8 @@ $messages['qu'] = array(
  */
 $messages['ro'] = array(
 	'ooui-dialog-action-close' => 'Închide',
+	'ooui-inspector-close-tooltip' => 'Închide',
+	'ooui-inspector-remove-tooltip' => 'Elimină',
 	'ooui-outline-control-move-down' => 'Mută elementul mai jos',
 	'ooui-outline-control-move-up' => 'Mută elementul mai sus',
 	'ooui-toggle-on' => 'Activat',
@@ -15903,22 +16059,23 @@ $messages['sw'] = array(
 );
 
 /** Tamil (தமிழ்)
+ * @author Jayarathina
  * @author Sank
  * @author Shanmugamp7
  * @author மதனாஹரன்
  */
 $messages['ta'] = array(
+	'ooui-dialog-action-close' => 'மூடுக', # Fuzzy
 	'visualeditor-annotationbutton-bold-tooltip' => 'தடித்த', # Fuzzy
 	'visualeditor-annotationbutton-italic-tooltip' => 'சாய்ந்த',
 	'visualeditor-annotationbutton-language-tooltip' => 'மொழி',
 	'visualeditor-annotationbutton-link-tooltip' => 'இணைப்பு',
 	'visualeditor-beta-appendix' => 'பீட்டா',
 	'visualeditor-beta-label' => 'பீட்டா',
-	'visualeditor-ca-editsource' => 'மூலத்தை தொகு',
-	'visualeditor-ca-editsource-section' => 'மூலத்தை தொகு',
+	'visualeditor-ca-editsource' => 'மூலத்தைத் தொகு',
+	'visualeditor-ca-editsource-section' => 'மூலத்தைத் தொகு',
 	'visualeditor-clearbutton-tooltip' => 'வடிவமைத்தலை வெறுமையாக்கு',
 	'visualeditor-dialog-action-cancel' => 'விட்டுவிடு',
-	'visualeditor-dialog-action-close' => 'மூடுக',
 	'visualeditor-dialog-action-goback' => 'பின் செல்',
 	'visualeditor-dialog-beta-welcome-action-continue' => 'தொடரவும்',
 	'visualeditor-dialog-media-insert-button' => 'ஊடகத்தைச் செருகு',
@@ -15963,8 +16120,8 @@ $messages['ta'] = array(
 	'visualeditor-historybutton-undo-tooltip' => 'செயல்தவிர்',
 	'visualeditor-indentationbutton-indent-tooltip' => 'உள்தள்ளலை அதிகரிக்கவும்', # Fuzzy
 	'visualeditor-indentationbutton-outdent-tooltip' => 'உள்தள்ளலை குறைக்கவும்', # Fuzzy
-	'visualeditor-inspector-close-tooltip' => 'மூடுக',
-	'visualeditor-inspector-remove-tooltip' => 'நீக்குக',
+	'visualeditor-inspector-close-tooltip' => 'மூடுக', # Fuzzy
+	'visualeditor-inspector-remove-tooltip' => 'நீக்குக', # Fuzzy
 	'visualeditor-languageinspector-block-tooltip-rtldirection' => 'வலமிருந்து இடம்',
 	'visualeditor-languageinspector-title' => 'மொழி',
 	'visualeditor-languageinspector-widget-changelang' => 'மொழியை மாற்று',
@@ -17444,6 +17601,8 @@ $messages['vec'] = array(
  */
 $messages['vi'] = array(
 	'ooui-dialog-action-close' => 'Đóng',
+	'ooui-inspector-close-tooltip' => 'Đóng',
+	'ooui-inspector-remove-tooltip' => 'Loại bỏ',
 	'ooui-outline-control-move-down' => 'Chuyển mục xuống',
 	'ooui-outline-control-move-up' => 'Chuyển mục lên',
 	'ooui-toggle-on' => 'Bật',
