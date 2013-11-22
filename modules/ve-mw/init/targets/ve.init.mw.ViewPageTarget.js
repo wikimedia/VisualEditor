@@ -29,9 +29,6 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 	// Properties
 	this.$document = null;
 	this.$spinner = $( '<div class="ve-init-mw-viewPageTarget-loading"></div>' );
-	this.$toolbarTracker = $( '<div class="ve-init-mw-viewPageTarget-toolbarTracker"></div>' );
-	this.toolbarTrackerFloating = null;
-	this.toolbarOffset = null;
 	this.toolbarCancelButton = null;
 	this.toolbarSaveButton = null;
 	this.saveDialog = null;
@@ -1042,50 +1039,6 @@ ve.init.mw.ViewPageTarget.prototype.startSanityCheck = function () {
 };
 
 /**
- * @see ve.ui.Toolbar#position
- * @param {jQuery} $bar
- * @param {Object} update
- */
-ve.init.mw.ViewPageTarget.prototype.onToolbarPosition = function ( $bar, update ) {
-	// It's important that the toolbar tracker always has 0 height, otherwise it will block events
-	// on the toolbar (e.g. clicking "Save page") as it would overlap that space. The save dialog
-	// will remain visible for the same reason elsewhere: As long as we don't have overflow:hidden,
-	// the save dialog will stick out of the tracker in the right place without the tracker itself
-	// blocking the toolbar.
-
-	if ( !this.toolbarTrackerFloating && update.floating === true ) {
-		// When switching to floating, undo the 'top' position set earlier
-		this.$toolbarTracker.css( 'top', '' );
-	}
-
-	if ( update.offset ) {
-		this.toolbarOffset = update.offset;
-	}
-
-	if ( typeof update.floating === 'boolean' ) {
-		this.$toolbarTracker.toggleClass(
-			've-init-mw-viewPageTarget-toolbarTracker-floating',
-			update.floating
-		);
-		this.toolbarTrackerFloating = update.floating;
-	}
-
-	// Switching to non-floating or offset update when already in non-floating
-	if ( update.floating === false || this.toolbarTrackerFloating === false && update.offset ) {
-		// Don't use update.css in this case since the toolbar is now in its non-floating
-		// position (static, in-flow). So make the tracker absolutely postioned matching the
-		// offset of the toolbar.
-		this.$toolbarTracker.css( {
-			'top': this.toolbarOffset.top,
-			'left': this.toolbarOffset.left,
-			'right': this.toolbarOffset.right
-		} );
-	} else if ( update.css ) {
-		this.$toolbarTracker.css( update.css );
-	}
-};
-
-/**
  * Switch to viewing mode.
  *
  * @method
@@ -1379,7 +1332,6 @@ ve.init.mw.ViewPageTarget.prototype.hideTableOfContents = function () {
  */
 ve.init.mw.ViewPageTarget.prototype.setUpToolbar = function () {
 	this.toolbar = new ve.ui.TargetToolbar( this, this.surface, { 'shadow': true, 'actions': true } );
-	this.toolbar.connect( this, { 'position': 'onToolbarPosition' } );
 	this.toolbar.setup( this.constructor.static.toolbarGroups );
 	this.surface.addCommands( this.constructor.static.surfaceCommands );
 	if ( !this.isMobileDevice ) {

@@ -122,7 +122,6 @@ ve.ui.Toolbar.prototype.onWindowResize = function () {
 
 	// If we're not floating, toolbar position didn't change.
 	// But the dimensions did naturally change on resize, as did the right offset.
-	// Which e.g. mw.ViewPageTarget's toolbarTracker needs.
 	this.emit( 'position', this.$bar, update );
 };
 
