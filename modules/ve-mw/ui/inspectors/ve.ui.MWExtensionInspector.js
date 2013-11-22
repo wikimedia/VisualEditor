@@ -66,10 +66,12 @@ ve.ui.MWExtensionInspector.prototype.setup = function ( data ) {
 	this.node = this.surface.getView().getFocusedNode();
 	this.input.setValue( this.node ? this.node.getModel().getAttribute( 'mw' ).body.extsrc : '' );
 
-	// Direction of the input textarea should correspond to the
-	// direction of the surrounding content of the node itself
-	// rather than the GUI direction:
-	this.input.setRTL( this.node.$element.css( 'direction' ) === 'rtl' );
+	if ( this.node ) {
+		// Direction of the input textarea should correspond to the
+		// direction of the surrounding content of the node itself
+		// rather than the GUI direction:
+		this.input.setRTL( this.node.$element.css( 'direction' ) === 'rtl' );
+	}
 };
 
 /**
