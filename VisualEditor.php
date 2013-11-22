@@ -832,6 +832,9 @@ $wgVisualEditorParsoidForwardCookies = false;
 // Timeout for HTTP requests to Parsoid in seconds
 $wgVisualEditorParsoidTimeout = 100;
 
+// Serialization cache timeout, in seconds
+$wgVisualEditorSerializationCacheTimeout = 3600;
+
 // Namespaces to enable VisualEditor in
 $wgVisualEditorNamespaces = $wgContentNamespaces;
 

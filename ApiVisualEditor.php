@@ -99,6 +99,24 @@ class ApiVisualEditor extends ApiBase {
 		);
 	}
 
+	protected function storeInSerializationCache( $title, $oldid, $html ) {
+		global $wgMemc, $wgVisualEditorSerializationCacheTimeout;
+		$content = $this->postHTML( $title, $html, array( 'oldid' => $oldid ) );
+		if ( $content === false ) {
+			return false;
+		}
+		$hash = md5( $content );
+		$key = wfMemcKey( 'visualeditor', 'serialization', $hash );
+		$wgMemc->set( $key, $content, $wgVisualEditorSerializationCacheTimeout );
+		return $hash;
+	}
+
+	protected function trySerializationCache( $hash ) {
+		global $wgMemc;
+		$key = wfMemcKey( 'visualeditor', 'serialization', $hash );
+		return $wgMemc->get( $key );
+	}
+
 	protected function postHTML( $title, $html, $parserParams ) {
 		global $wgVisualEditorParsoidURL, $wgVisualEditorParsoidPrefix,
 			$wgVisualEditorParsoidTimeout, $wgVisualEditorParsoidForwardCookies;
@@ -312,21 +330,34 @@ class ApiVisualEditor extends ApiBase {
 				}
 				break;
 			case 'serialize':
-				if ( $params['html'] === null ) {
-					$this->dieUsageMsg( 'missingparam', 'html' );
-				}
-				$content = $this->postHTML( $page, $params['html'], $parserParams );
-				if ( $content === false ) {
-					$this->dieUsage( 'Error contacting the Parsoid server', 'parsoidserver' );
+				if ( $params['cachekey'] !== null ) {
+					$content = $this->trySerializationCache( $params['cachekey'] );
+					if ( !is_string( $content ) ) {
+						$this->dieUsage( 'No cached serialization found with that key', 'badcachekey' );
+					}
 				} else {
-					$result = array( 'result' => 'success', 'content' => $content );
+					if ( $params['html'] === null ) {
+						$this->dieUsageMsg( 'missingparam', 'html' );
+					}
+					$html = $params['html'];
+					$content = $this->postHTML( $page, $html, $parserParams );
+					if ( $content === false ) {
+						$this->dieUsage( 'Error contacting the Parsoid server', 'parsoidserver' );
+					}
 				}
+				$result = array( 'result' => 'success', 'content' => $content );
 				break;
 			case 'diff':
-				$wikitext = $this->postHTML( $page, $params['html'], $parserParams );
-
-				if ( $wikitext === false ) {
-					$this->dieUsage( 'Error contacting the Parsoid server', 'parsoidserver' );
+				if ( $params['cachekey'] !== null ) {
+					$wikitext = $this->trySerializationCache( $params['cachekey'] );
+					if ( !is_string( $wikitext ) ) {
+						$this->dieUsage( 'No cached serialization found with that key', 'badcachekey' );
+					}
+				} else {
+					$wikitext = $this->postHTML( $page, $params['html'], $parserParams );
+					if ( $wikitext === false ) {
+						$this->dieUsage( 'Error contacting the Parsoid server', 'parsoidserver' );
+					}
 				}
 
 				$diff = $this->diffWikitext( $page, $wikitext );
@@ -335,6 +366,10 @@ class ApiVisualEditor extends ApiBase {
 				}
 				$result = $diff;
 
+				break;
+			case 'serializeforcache':
+				$key = $this->storeInSerializationCache( $page, $parserParams['oldid'], $params['html'] );
+				$result = array( 'result' => 'success', 'cachekey' => $key );
 				break;
 		}
 
@@ -348,13 +383,16 @@ class ApiVisualEditor extends ApiBase {
 			),
 			'paction' => array(
 				ApiBase::PARAM_REQUIRED => true,
-				ApiBase::PARAM_TYPE => array( 'parse', 'parsefragment', 'serialize', 'diff' ),
+				ApiBase::PARAM_TYPE => array(
+					'parse', 'parsefragment', 'serializeforcache', 'serialize', 'diff'
+				),
 			),
 			'wikitext' => null,
 			'basetimestamp' => null,
 			'starttimestamp' => null,
 			'oldid' => null,
 			'html' => null,
+			'cachekey' => null,
 		);
 	}
 
@@ -381,9 +419,11 @@ class ApiVisualEditor extends ApiBase {
 			'oldid' => 'The revision number to use (defaults to latest version).',
 			'html' => 'HTML to send to parsoid in exchange for wikitext',
 			'basetimestamp' => 'When saving, set this to the timestamp of the revision that was'
-				.' edited. Used to detect edit conflicts.',
+				. ' edited. Used to detect edit conflicts.',
 			'starttimestamp' => 'When saving, set this to the timestamp of when the page was loaded.'
-				.' Used to detect edit conflicts.',
+				. ' Used to detect edit conflicts.',
+			'cachekey' => 'For serialize or diff, use the result of a previous serializeforcache'
+				. ' request with this key. Overrides html.',
 		);
 	}
 

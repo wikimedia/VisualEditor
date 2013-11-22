@@ -71,10 +71,16 @@ class ApiVisualEditorEdit extends ApiVisualEditor {
 			$parserParams['oldid'] = $params['oldid'];
 		}
 
-		$wikitext = $this->postHTML( $page, $params['html'], $parserParams );
-
-		if ( $wikitext === false ) {
-			$this->dieUsage( 'Error contacting the Parsoid server', 'parsoidserver' );
+		if ( $params['cachekey'] !== null ) {
+			$wikitext = $this->trySerializationCache( $params['cachekey'] );
+			if ( !is_string( $wikitext ) ) {
+				$this->dieUsage( 'No cached serialization found with that key', 'badcachekey' );
+			}
+		} else {
+			$wikitext = $this->postHTML( $page, $params['html'], $parserParams );
+			if ( $wikitext === false ) {
+				$this->dieUsage( 'Error contacting the Parsoid server', 'parsoidserver' );
+			}
 		}
 
 		$saveresult = $this->saveWikitext( $page, $wikitext, $params );
@@ -140,6 +146,7 @@ class ApiVisualEditorEdit extends ApiVisualEditor {
 			'summary' => null,
 			'captchaid' => null,
 			'captchaword' => null,
+			'cachekey' => null,
 		);
 	}
 
@@ -175,6 +182,8 @@ class ApiVisualEditorEdit extends ApiVisualEditor {
 				. ' problems. This will result in the edit being tagged.',
 			'captchaid' => 'Captcha ID (when saving with a captcha response).',
 			'captchaword' => 'Answer to the captcha (when saving with a captcha response).',
+			'cachekey' => 'Use the result of a previous serializeforcache request with this key.'
+				. 'Overrides html.',
 		);
 	}
 
