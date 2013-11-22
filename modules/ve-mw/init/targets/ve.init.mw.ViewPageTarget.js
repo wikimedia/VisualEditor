@@ -755,7 +755,6 @@ ve.init.mw.ViewPageTarget.prototype.updateToolbarSaveButtonState = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.onSaveDialogReview = function () {
-	var doc = this.surface.getModel().getDocument();
 	this.sanityCheckVerified = true;
 	this.saveDialog.setSanityCheck( this.sanityCheckVerified );
 
@@ -769,14 +768,9 @@ ve.init.mw.ViewPageTarget.prototype.onSaveDialogReview = function () {
 		this.saveDialog.$loadingIcon.show();
 		if ( this.pageExists ) {
 			// Has no callback, handled via target.onShowChanges
-			this.showChanges(
-				ve.dm.converter.getDomFromData( doc.getFullData(), doc.getStore(), doc.getInternalList(), doc.getInnerWhitespace() )
-			);
+			this.showChanges( this.docToSave );
 		} else {
-			this.serialize(
-				ve.dm.converter.getDomFromData( doc.getFullData(), doc.getStore(), doc.getInternalList(), doc.getInnerWhitespace() ),
-				ve.bind( this.onSerialize, this )
-			);
+			this.serialize( this.docToSave, ve.bind( this.onSerialize, this ) );
 		}
 	} else {
 		this.saveDialog.swapPanel( 'review' );
@@ -801,8 +795,7 @@ ve.init.mw.ViewPageTarget.prototype.onSaveDialogSave = function () {
  * Try to save the current document.
  */
 ve.init.mw.ViewPageTarget.prototype.saveDocument = function () {
-	var doc = this.surface.getModel().getDocument(),
-		saveOptions = this.getSaveOptions();
+	var saveOptions = this.getSaveOptions();
 
 	// Reset any old captcha data
 	if ( this.captcha ) {
@@ -824,10 +817,7 @@ ve.init.mw.ViewPageTarget.prototype.saveDocument = function () {
 	} else {
 		this.saveDialog.saveButton.setDisabled( true );
 		this.saveDialog.$loadingIcon.show();
-		this.save(
-			ve.dm.converter.getDomFromData( doc.getFullData(), doc.getStore(), doc.getInternalList(), doc.getInnerWhitespace() ),
-			saveOptions
-		);
+		this.save( this.docToSave, saveOptions );
 	}
 };
 
@@ -847,7 +837,7 @@ ve.init.mw.ViewPageTarget.prototype.editSource = function () {
 	}
 	// Get Wikitext from the DOM
 	this.serialize(
-		ve.dm.converter.getDomFromData( doc.getFullData(), doc.getStore(), doc.getInternalList() ),
+		this.docToSave || ve.dm.converter.getDomFromData( doc.getFullData(), doc.getStore(), doc.getInternalList() ),
 		ve.bind( function ( wikitext ) {
 			var $form,
 				options = this.getSaveOptions(),
@@ -880,11 +870,10 @@ ve.init.mw.ViewPageTarget.prototype.editSource = function () {
  *
  * @method
  */
-ve.init.mw.ViewPageTarget.prototype.onSaveDialogResolveConflict= function () {
-	var doc = this.surface.getModel().getDocument();
+ve.init.mw.ViewPageTarget.prototype.onSaveDialogResolveConflict = function () {
 	// Get Wikitext from the DOM, and set up a submit call when it's done
 	this.serialize(
-		ve.dm.converter.getDomFromData( doc.getFullData(), doc.getStore(), doc.getInternalList() ),
+		this.docToSave,
 		ve.bind( function ( wikitext ) {
 			this.submit( wikitext, this.getSaveOptions() );
 		}, this )
@@ -1247,6 +1236,15 @@ ve.init.mw.ViewPageTarget.prototype.setupSaveDialog = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.showSaveDialog = function () {
+	// Preload the serialization
+	var doc = this.surface.getModel().getDocument();
+	if ( !this.docToSave ) {
+		this.docToSave = ve.dm.converter.getDomFromData(
+			doc.getFullData(), doc.getStore(), doc.getInternalList(), doc.getInnerWhitespace()
+		);
+	}
+	this.prepareCacheKey( this.docToSave );
+
 	this.saveDialog.setSanityCheck( this.sanityCheckVerified );
 	this.surface.getDialogs().getWindow( 'mwSave' ).open();
 	this.timings.saveDialogOpen = ve.now();
@@ -1259,6 +1257,17 @@ ve.init.mw.ViewPageTarget.prototype.showSaveDialog = function () {
  * Respond to the save dialog being closed.
  */
 ve.init.mw.ViewPageTarget.prototype.onSaveDialogClose = function () {
+	// Clear the cached HTML and cache key once the document changes
+	var clear = ve.bind( function () {
+		this.docToSave = null;
+		this.clearPreparedCacheKey();
+	}, this );
+	if ( this.surface ) {
+		this.surface.getModel().getDocument().once( 'transact', clear );
+	} else {
+		clear();
+	}
+
 	ve.track( 'behavior.saveDialogClose', { 'duration': ve.now() - this.timings.saveDialogOpen } );
 	this.timings.saveDialogOpen = null;
 };
