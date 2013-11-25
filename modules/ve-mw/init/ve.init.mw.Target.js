@@ -1158,7 +1158,7 @@ ve.init.mw.Target.prototype.startSanityCheck = function () {
 		var i,
 			len = oldDom.body.childNodes.length,
 			newDoc = new ve.dm.Document( data, oldDom, undefined, doc.getInternalList(), doc.getInnerWhitespace() ),
-			newDom = ve.dm.converter.getDomFromData( newDoc.getFullData(), newDoc.getStore(), newDoc.getInternalList(), newDoc.getInnerWhitespace() );
+			newDom = ve.dm.converter.getDomFromModel( newDoc );
 
 		// Explicitly unlink our full copy of the original version of the document data
 		data = undefined;
