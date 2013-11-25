@@ -51,8 +51,6 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 	this.scrollTop = null;
 	this.currentUri = currentUri;
 	this.section = currentUri.query.vesection || null;
-	this.sectionPositionRestored = false;
-	this.sectionTitleRestored = false;
 	this.namespaceName = mw.config.get( 'wgCanonicalNamespace' );
 	this.viewUri = new mw.Uri( mw.util.getUrl( this.pageName ) );
 	this.veEditUri = this.viewUri.clone().extend( { 'veaction': 'edit' } );
@@ -230,10 +228,10 @@ ve.init.mw.ViewPageTarget.prototype.onLoad = function ( doc ) {
 		this.setUpSurface( doc, ve.bind( function() {
 			this.startSanityCheck();
 			this.setupToolbarButtons();
-			this.setupSaveDialog();
 			this.attachToolbarButtons();
 			this.restoreScrollPosition();
 			this.restoreEditSection();
+			this.setupSaveDialog();
 			this.setupBeforeUnloadHandler();
 			this.$document[0].focus();
 			this.activating = false;
@@ -1211,19 +1209,7 @@ ve.init.mw.ViewPageTarget.prototype.detachToolbarButtons = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.setupSaveDialog = function () {
-	var sectionTitle = '';
-
 	this.saveDialog = this.surface.getDialogs().getWindow( 'mwSave' );
-
-	if ( this.section ) {
-		sectionTitle = this.$document.find( 'h1, h2, h3, h4, h5, h6' ).eq( this.section - 1 ).text();
-		sectionTitle = '/* ' + ve.graphemeSafeSubstring( sectionTitle, 0, 244 ) + ' */ ';
-		this.saveDialog.setEditSummary( sectionTitle );
-		this.sectionTitleRestored = true;
-		if ( this.sectionPositionRestored ) {
-			this.onSectionRestored();
-		}
-	}
 	// Connect to save dialog
 	this.saveDialog.connect( this, {
 		'save': 'onSaveDialogSave',
@@ -1231,7 +1217,8 @@ ve.init.mw.ViewPageTarget.prototype.setupSaveDialog = function () {
 		'resolve': 'onSaveDialogResolveConflict',
 		'close': 'onSaveDialogClose'
 	} );
-	// Setup checkboxes
+	// Setup edit summary and checkboxes
+	this.saveDialog.setEditSummary( this.initialEditSummary );
 	this.saveDialog.setupCheckboxes( ve.getObjectValues( this.checkboxes ).join( '\n' ) );
 };
 
@@ -1613,6 +1600,11 @@ ve.init.mw.ViewPageTarget.prototype.restoreEditSection = function () {
 			headingNode = $section.data( 'view' ),
 			lastHeadingLevel = -1;
 
+		if ( $section.length ) {
+			this.initialEditSummary = '/* ' +
+				ve.graphemeSafeSubstring( $section.text(), 0, 244 ) + ' */ ';
+		}
+
 		if ( headingNode ) {
 			// Find next sibling which isn't a heading
 			offsetNode = headingNode;
@@ -1637,20 +1629,8 @@ ve.init.mw.ViewPageTarget.prototype.restoreEditSection = function () {
 			}, 200 );
 		}
 
-		this.sectionPositionRestored = true;
-		if ( this.sectionTitleRestored ) {
-			this.onSectionRestored();
-		}
+		this.section = null;
 	}
-};
-
-/**
- * Handle restoration of section editing position and title
- */
-ve.init.mw.ViewPageTarget.prototype.onSectionRestored = function () {
-	this.section = null;
-	this.sectionPositionRestored = false;
-	this.sectionTitleRestored = false;
 };
 
 /**
