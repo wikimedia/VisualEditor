@@ -4,7 +4,7 @@
 	"--eg-iframe": "../.docs/eg-iframe.html",
 	"--warnings": ["-no_doc"],
 	"--builtin-classes": true,
-	"--external": "HTMLDocument,Window",
+	"--external": "HTMLDocument,Window,Node",
 	"--output": "../docs",
 	"--": [
 		"./external.js",
