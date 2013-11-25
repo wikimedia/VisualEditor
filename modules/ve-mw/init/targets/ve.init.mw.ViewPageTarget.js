@@ -907,9 +907,8 @@ ve.init.mw.ViewPageTarget.prototype.getSaveOptions = function () {
 		// Firefox has Object.prototype.watch
 		options.watch = undefined;
 	}
-	this.saveDialog.$saveOptions
-		.find( '.ve-ui-mwSaveDialog-checkboxes' )
-		.find( 'input:not(#wpMinoredit, #wpWatchthis)' )
+	this.$checkboxes
+		.not( '#wpMinoredit, #wpWatchthis' )
 		.each( function () {
 			var $this = $( this );
 			// We can't just use $this.val() because .val() always returns the value attribute of
@@ -1219,7 +1218,7 @@ ve.init.mw.ViewPageTarget.prototype.setupSaveDialog = function () {
 	} );
 	// Setup edit summary and checkboxes
 	this.saveDialog.setEditSummary( this.initialEditSummary );
-	this.saveDialog.setupCheckboxes( ve.getObjectValues( this.checkboxes ).join( '\n' ) );
+	this.saveDialog.setupCheckboxes( this.$checkboxes );
 };
 
 /**
