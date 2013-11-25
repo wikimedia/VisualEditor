@@ -837,7 +837,12 @@ ve.init.mw.ViewPageTarget.prototype.editSource = function () {
 	}
 	// Get Wikitext from the DOM
 	this.serialize(
-		this.docToSave || ve.dm.converter.getDomFromData( doc.getFullData(), doc.getStore(), doc.getInternalList() ),
+		this.docToSave || ve.dm.converter.getDomFromData(
+			doc.getFullData(),
+			doc.getStore(),
+			doc.getInternalList(),
+			doc.getInnerWhitespace()
+		),
 		ve.bind( function ( wikitext ) {
 			var $form,
 				options = this.getSaveOptions(),
