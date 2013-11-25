@@ -979,6 +979,8 @@ $messages['am'] = array(
  */
 $messages['ar'] = array(
 	'ooui-dialog-action-close' => 'أغلق',
+	'ooui-inspector-close-tooltip' => 'إغلاق',
+	'ooui-inspector-remove-tooltip' => 'إزالة',
 	'ooui-outline-control-move-down' => 'انقل العنصر للأسفل',
 	'ooui-outline-control-move-up' => 'انقل العنصر للأعلى',
 	'ooui-toolbar-more' => 'مزيد',
@@ -1131,10 +1133,13 @@ $messages['ar'] = array(
 	'visualeditor-preference-core-description' => 'تمكين المحرر المرئي. لن يكون متوفرًا في صفحات النقاش ونطاقات أخرى.',
 	'visualeditor-preference-core-label' => 'المحرر المرئي',
 	'visualeditor-preference-enable' => 'تمكين المحرر المرئي. لن يكون متوفرًا في صفحات النقاش ونطاقات أخرى.',
+	'visualeditor-preference-language-description' => 'إضافة أدوات تجريبية للمحرر المرئي لتعليم النصوص المكتوبة بلغات مختلفة واتجاه مختلف لاختبارها قبل الإطلاق العام. الرجاء تذكر مراجعة تعديلاتك دائمًا قبل الحفظ عند استخدام المزايا التجريبية.',
+	'visualeditor-preference-language-label' => 'أدوات اللغة المحرر المرئي',
 	'visualeditor-preference-mwmath-description' => 'إضافة دعم تجريبي للمحرر المرئي لإنشاء وتحرير الصيغ الرياضية لاختبارها قبل الإطلاق العام. الرجاء تذكر مراجعة تعديلاتك دائمًا قبل الحفظ عند استخدام المزايا التجريبية.',
 	'visualeditor-preference-mwmath-label' => 'المحرر المرئي تحرير الصيغ',
 	'visualeditor-reference-input-placeholder' => 'ما الذي تريد أن تضيف له مرجعا؟',
-	'visualeditor-referencelist-isempty' => 'ما من مراجع من المجموعة "$1" في هذه الصفحة.', # Fuzzy
+	'visualeditor-referencelist-isempty' => 'ما من مراجع من المجموعة "$1" في هذه الصفحة لتضمينها في هذه القائمة.',
+	'visualeditor-referencelist-isempty-default' => 'ما من مراجع على هذه الصفحة لتضمينها في هذه القائمة.',
 	'visualeditor-referencelist-missingref' => 'هذا المرجع موجود في قالب أو نحوه ولا يمكن تعديله حاليا إلا من المصدر.',
 	'visualeditor-savedialog-error-badtoken' => 'لم نتمكن من معالجة تعديلك لأن الجلسة لم تعد صالحة.',
 	'visualeditor-savedialog-identify-anon' => 'هل تود عوضا عن ذلك حفظ هذه الصفحة على أنك مستخدم مجهول؟ سيتم تسجيل عنوان الآي بي الخاص بك في تاريخ تعديلات الصفحة.',
@@ -8591,6 +8596,7 @@ $messages['is'] = array(
  * @author Eleonora negri
  * @author Elitre
  * @author F. Cosoleto
+ * @author FRacco
  * @author Gianfranco
  * @author Minerva Titani
  * @author Raoli
@@ -8613,7 +8619,7 @@ $messages['it'] = array(
 	'tooltip-ca-editsource' => 'Modifica il codice sorgente di questa pagina',
 	'tooltip-ca-ve-edit' => 'Modifica questa pagina con VisualEditor',
 	'visualeditor' => 'VisualEditor',
-	'visualeditor-aliennode-tooltip' => 'Spiacenti, questo elemento ancora può essere modificato solo in modalità sorgente per ora.',
+	'visualeditor-aliennode-tooltip' => 'Spiacenti, questo elemento può essere modificato solo in modalità sorgente per ora.',
 	'visualeditor-annotationbutton-bold-tooltip' => 'Grassetto',
 	'visualeditor-annotationbutton-code-tooltip' => 'Codice di computer',
 	'visualeditor-annotationbutton-italic-tooltip' => 'Corsivo',
@@ -8641,7 +8647,7 @@ $messages['it'] = array(
 	'visualeditor-dialog-action-cancel' => 'Annulla',
 	'visualeditor-dialog-action-goback' => 'Indietro',
 	'visualeditor-dialog-beta-welcome-action-continue' => 'Continua',
-	'visualeditor-dialog-beta-welcome-content' => 'Questo è il nuovo, semplice strumento per modificare. È ancora in versione di prova, per cui puoi trovare parti della pagina non modificabili, o incontrare errori che dovranno essere corretti. Ti invitiamo a rivedere le modifiche apportate, e a segnalarci eventuali problemi che potresti incontrare usando VisualEditor (clicca su \'{{int:visualeditor-help-tool}}\' per lasciare un tuo messaggio). Puoi continuare a usare l\'editor in wikitext cliccando sulla scheda "$1" (le modifiche non salvate andranno perse).',
+	'visualeditor-dialog-beta-welcome-content' => 'Questo è il nuovo, semplice strumento per modificare. È ancora in versione di prova, per cui puoi trovare parti della pagina non modificabili, o incontrare errori che dovranno essere corretti. Ti invitiamo a rivedere le modifiche apportate, e a segnalarci eventuali problemi che potresti incontrare usando VisualEditor (clicca su \'{{int:visualeditor-help-tool}}\' per lasciare un tuo messaggio). Puoi continuare a usare l\'editor in wikitesto cliccando sulla scheda "$1" (le modifiche non salvate andranno perse).',
 	'visualeditor-dialog-beta-welcome-title' => '{{GENDER:$1|Benvenuto|Benvenuta|Benvenuto/a}} in VisualEditor',
 	'visualeditor-dialog-media-content-section' => 'Didascalia',
 	'visualeditor-dialog-media-insert-button' => 'Inserisci file multimediale',
@@ -8792,7 +8798,7 @@ Vuoi continuare?',
 	'visualeditor-usernamespacepagelink' => 'Project:Namespace utente',
 	'visualeditor-version-label' => 'Versione',
 	'visualeditor-viewpage-savewarning' => 'Tornare alla modalità visualizzazione senza salvare prima?',
-	'visualeditor-wikitext-warning' => 'Stai usando VisualEditor - il [[{{MediaWiki:visualeditor-wikitext-warning-link}}|wikitesto]] non funziona qui. Clicca "{{MediaWiki:visualeditor-ca-editsource}}" per modificare la pagina usando wikitesto (le modifiche non salvate andranno perse).',
+	'visualeditor-wikitext-warning' => 'Stai usando VisualEditor - il [[{{MediaWiki:visualeditor-wikitext-warning-link}}|wikitesto]] non funziona qui. Clicca su "{{int:visualeditor-ca-editsource}}" per modificare la pagina in modalità wikitesto – le modifiche non salvate andranno perse.',
 	'visualeditor-wikitext-warning-link' => 'Help:Markup',
 	'visualeditor-wikitext-warning-title' => 'Rilevato wikitesto',
 	'visualeditor-window-title' => 'Ispeziona',
