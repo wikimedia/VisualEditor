@@ -231,7 +231,6 @@ ve.init.mw.ViewPageTarget.prototype.onLoad = function ( doc ) {
 			this.attachToolbarButtons();
 			this.restoreScrollPosition();
 			this.restoreEditSection();
-			this.setupSaveDialog();
 			this.setupBeforeUnloadHandler();
 			this.$document[0].focus();
 			this.activating = false;
@@ -611,7 +610,12 @@ ve.init.mw.ViewPageTarget.prototype.onSerializeError = function ( jqXHR, status 
 		ve.track( 'performance.user.reviewError', { 'duration': ve.now() - this.timings.saveDialogReview } );
 	}
 	alert( ve.msg( 'visualeditor-serializeerror', status ) );
-	this.saveDialog.$loadingIcon.hide();
+
+	// It's possible to get here while the save dialog has never been opened (if the user uses
+	// the switch to source mode option)
+	if ( this.saveDialog ) {
+		this.saveDialog.$loadingIcon.hide();
+	}
 };
 
 /**
@@ -1235,8 +1239,12 @@ ve.init.mw.ViewPageTarget.prototype.showSaveDialog = function () {
 	}
 	this.prepareCacheKey( this.docToSave );
 
+	if ( !this.saveDialog ) {
+		this.setupSaveDialog();
+	}
+
 	this.saveDialog.setSanityCheck( this.sanityCheckVerified );
-	this.surface.getDialogs().getWindow( 'mwSave' ).open();
+	this.saveDialog.open();
 	this.timings.saveDialogOpen = ve.now();
 	ve.track( 'behavior.lastTransactionTillSaveDialogOpen', {
 		'duration': this.timings.saveDialogOpen - this.timings.lastTransaction
