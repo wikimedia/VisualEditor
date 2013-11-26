@@ -1,5 +1,5 @@
 Given(/^I can see the References User Interface$/) do
-  on(VisualEditorPage).title.should match 'Reference'
+  on(VisualEditorPage).title.should match "Reference"
 end
 
 When(/^I click Insert reference$/) do
@@ -14,7 +14,7 @@ When(/^I click Edit for VisualEditor$/) do
       page.beta_warning_element.when_present.click
     rescue
     end
-    page.content_element.fire_event('onfocus')
+    page.content_element.fire_event("onfocus")
   end
 end
 

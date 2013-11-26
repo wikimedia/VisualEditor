@@ -11,11 +11,11 @@ Feature: VisualEditor Headings
       And I can click the X on the save box
   Examples:
     | headings_interface_name | headings_string  |
-    | Paragraph               | '^Editing'       |
-    | Heading                 | '^==Editing'     |
-    | Subheading1             | '^===Editing'    |
-    | Subheading2             | '^====Editing'   |
-    | Subheading3             | '^=====Editing'  |
-    | Subheading4             | '^======Editing' |
-    | Preformatted            | ' Editing'       |
-    | Page title              | '^=Editing'      |
+    | Paragraph               | "^Editing"       |
+    | Heading                 | "^==Editing"     |
+    | Subheading1             | "^===Editing"    |
+    | Subheading2             | "^====Editing"   |
+    | Subheading3             | "^=====Editing"  |
+    | Subheading4             | "^======Editing" |
+    | Preformatted            | " Editing"       |
+    | Page title              | "^=Editing"      |
