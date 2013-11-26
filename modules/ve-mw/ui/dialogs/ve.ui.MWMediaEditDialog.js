@@ -149,7 +149,10 @@ ve.ui.MWMediaEditDialog.prototype.teardown = function ( data ) {
 		}
 		// Replace the contents of the caption
 		surfaceModel.change(
-			ve.dm.Transaction.newFromDocumentReplace( doc, this.captionNode, newDoc )
+			ve.dm.Transaction.newFromRemoval( doc, this.captionNode.getRange(), true )
+		);
+		surfaceModel.change(
+			ve.dm.Transaction.newFromDocumentInsertion( doc, this.captionNode.getRange().start, newDoc )
 		);
 	}
 

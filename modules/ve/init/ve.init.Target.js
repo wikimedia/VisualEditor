@@ -30,7 +30,6 @@ OO.mixinClass( ve.init.Target, OO.EventEmitter );
 /* Static Properties */
 
 ve.init.Target.static.toolbarGroups = [
-
 	{ 'include': [ 'undo', 'redo' ] },
 	{
 		'type': 'menu',
@@ -62,5 +61,17 @@ ve.init.Target.static.surfaceCommands = [
 	'heading4',
 	'heading5',
 	'heading6',
-	'preformatted'
+	'preformatted',
+	'pasteSpecial'
 ];
+
+ve.init.Target.static.pasteRules = {
+	'blacklist': [
+		// Annotations
+		// TODO: allow spans
+		'textStyle/span',
+		// Nodes
+		'alienInline', 'alienBlock'
+	],
+	'removeHtmlAttributes': false
+};

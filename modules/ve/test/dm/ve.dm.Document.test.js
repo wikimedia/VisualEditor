@@ -282,22 +282,21 @@ QUnit.test( 'selectNodes', function ( assert ) {
 	}
 } );
 
-QUnit.test( 'getSlice', function ( assert ) {
-	var i, expectedData, doc = ve.dm.example.createExampleDocument(),
+QUnit.test( 'cloneSliceFromRange', function ( assert ) {
+	var i, expectedData, slice, range,
+		doc = ve.dm.example.createExampleDocument(),
 		cases = [
 		{
 			'msg': 'empty range',
 			'range': new ve.Range( 2, 2 ),
-			'expected': [],
-			'expectedRange': new ve.Range( 0 )
+			'expected': []
 		},
 		{
 			'msg': 'range with one character',
 			'range': new ve.Range( 2, 3 ),
 			'expected': [
 				['b', [ ve.dm.example.bold ]]
-			],
-			'expectedRange': new ve.Range( 0, 1 )
+			]
 		},
 		{
 			'msg': 'range with two characters',
@@ -305,8 +304,7 @@ QUnit.test( 'getSlice', function ( assert ) {
 			'expected': [
 				['b', [ ve.dm.example.bold ]],
 				['c', [ ve.dm.example.italic ]]
-			],
-			'expectedRange': new ve.Range( 0, 2 )
+			]
 		},
 		{
 			'msg': 'range with two characters and a header closing',
@@ -317,7 +315,7 @@ QUnit.test( 'getSlice', function ( assert ) {
 				['c', [ ve.dm.example.italic ]],
 				{ 'type': '/heading' }
 			],
-			'expectedRange': new ve.Range( 1, 4 )
+			'originalRange': new ve.Range( 1, 4 )
 		},
 		{
 			'msg': 'range with one character, a header closing and a table opening',
@@ -329,7 +327,7 @@ QUnit.test( 'getSlice', function ( assert ) {
 				{ 'type': 'table' },
 				{ 'type': '/table' }
 			],
-			'expectedRange': new ve.Range( 1, 4 )
+			'originalRange': new ve.Range( 1, 4 )
 		},
 		{
 			'msg': 'range from a paragraph into a list',
@@ -346,7 +344,7 @@ QUnit.test( 'getSlice', function ( assert ) {
 				{ 'type': '/listItem' },
 				{ 'type': '/list' }
 			],
-			'expectedRange': new ve.Range( 1, 7 )
+			'originalRange': new ve.Range( 1, 7 )
 		},
 		{
 			'msg': 'range from a paragraph inside a nested list into the next list',
@@ -366,7 +364,7 @@ QUnit.test( 'getSlice', function ( assert ) {
 				{ 'type': 'list', 'attributes': { 'style': 'number' } },
 				{ 'type': '/list' }
 			],
-			'expectedRange': new ve.Range( 5, 12 )
+			'originalRange': new ve.Range( 5, 12 )
 		},
 		{
 			'msg': 'range from a paragraph inside a nested list out of both lists',
@@ -384,12 +382,13 @@ QUnit.test( 'getSlice', function ( assert ) {
 				{ 'type': '/listItem' },
 				{ 'type': '/list' }
 			],
-			'expectedRange': new ve.Range( 5, 11 )
+			'originalRange': new ve.Range( 5, 11 )
 		},
 		{
 			'msg': 'range from a paragraph inside a nested list out of the outer listItem',
 			'range': new ve.Range( 20, 25 ),
 			'expected': [
+				{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
 				{ 'type': 'listItem' },
 				{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
 				{ 'type': 'listItem' },
@@ -398,23 +397,76 @@ QUnit.test( 'getSlice', function ( assert ) {
 				{ 'type': '/paragraph' },
 				{ 'type': '/listItem' },
 				{ 'type': '/list' },
-				{ 'type': '/listItem' }
+				{ 'type': '/listItem' },
+				{ 'type': '/list' }
 			],
-			'expectedRange': new ve.Range( 4, 9 )
+			'originalRange': new ve.Range( 5, 10 ),
+			'balancedRange': new ve.Range( 1, 10 )
+		},
+		{
+			'msg': 'table cell',
+			'range': new ve.Range( 8, 34 ),
+			'expected': [
+				{ 'type': 'table' },
+				{ 'type': 'tableSection', 'attributes': { 'style': 'body' } },
+				{ 'type': 'tableRow' },
+				{ 'type': 'tableCell', 'attributes': { 'style': 'data' } },
+				{ 'type': 'paragraph' },
+				'd',
+				{ 'type': '/paragraph' },
+				{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
+				{ 'type': 'listItem' },
+				{ 'type': 'paragraph' },
+				'e',
+				{ 'type': '/paragraph' },
+				{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
+				{ 'type': 'listItem' },
+				{ 'type': 'paragraph' },
+				'f',
+				{ 'type': '/paragraph' },
+				{ 'type': '/listItem' },
+				{ 'type': '/list' },
+				{ 'type': '/listItem' },
+				{ 'type': '/list' },
+				{ 'type': 'list', 'attributes': { 'style': 'number' } },
+				{ 'type': 'listItem' },
+				{ 'type': 'paragraph' },
+				'g',
+				{ 'type': '/paragraph' },
+				{ 'type': '/listItem' },
+				{ 'type': '/list' },
+				{ 'type': '/tableCell' },
+				{ 'type': '/tableRow' },
+				{ 'type': '/tableSection' },
+				{ 'type': '/table' }
+			],
+			'originalRange': new ve.Range( 3, 29 ),
+			'balancedRange': new ve.Range( 3, 29 )
 		}
 	];
-	QUnit.expect( 2 * cases.length );
+	QUnit.expect( 3 * cases.length );
 	for ( i = 0; i < cases.length; i++ ) {
 		expectedData = ve.dm.example.preprocessAnnotations( cases[i].expected.slice(), doc.getStore() ).getData();
+		range = new ve.Range( 0, cases[i].expected.length );
+		expectedData = expectedData.concat( [
+			{ 'type': 'internalList' },
+			{ 'type': '/internalList' },
+		] );
+		slice = doc.cloneSliceFromRange( cases[i].range );
 		assert.deepEqual(
-			doc.getSlicedLinearData( cases[i].range ).getData(),
+			slice.getData(),
 			expectedData,
-			cases[i].msg + ': balanced data'
+			cases[i].msg + ': data'
 		);
 		assert.deepEqual(
-			doc.getSlicedLinearData( cases[i].range ).getRange(),
-			cases[i].expectedRange,
-			cases[i].msg + ': range'
+			slice.originalRange,
+			cases[i].originalRange || range,
+			cases[i].msg + ': original range'
+		);
+		assert.deepEqual(
+			slice.balancedRange,
+			cases[i].balancedRange || range,
+			cases[i].msg + ': balanced range'
 		);
 	}
 } );

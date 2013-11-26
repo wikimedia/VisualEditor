@@ -61,7 +61,7 @@
 			},
 			{
 				"name": "Nodes",
-				"classes": ["ve.dm.Document", "ve.dm.*Node"]
+				"classes": ["ve.dm.Document*", "ve.dm.*Node"]
 			},
 			{
 				"name": "Linear data",

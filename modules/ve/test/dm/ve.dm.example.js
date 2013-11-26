@@ -319,7 +319,7 @@ ve.dm.example.data = [
 	{ 'type': '/paragraph' },
 	// 31 - End of item
 	{ 'type': '/listItem' },
-	// 32 - End of lis t
+	// 32 - End of list
 	{ 'type': '/list' },
 	// 33 - End of cell
 	{ 'type': '/tableCell' },
@@ -413,24 +413,35 @@ ve.dm.example.alienData = [
 ];
 
 ve.dm.example.internalData = [
+	// 0
 	{ 'type': 'paragraph' },
 	'F', 'o', 'o',
 	{ 'type': '/paragraph' },
+	// 5
 	{ 'type': 'internalList' },
+	// 6
 	{ 'type': 'internalItem' },
+	// 7
 	{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
 	'B', 'a', 'r',
 	{ 'type': '/paragraph' },
+	// 12
 	{ 'type': '/internalItem' },
+	// 13
 	{ 'type': 'internalItem' },
+	// 14
 	{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
 	'B', 'a', 'z',
 	{ 'type': '/paragraph' },
+	// 19
 	{ 'type': '/internalItem' },
+	// 20
 	{ 'type': '/internalList' },
+	// 21
 	{ 'type': 'paragraph' },
 	'Q', 'u', 'u', 'x',
 	{ 'type': '/paragraph' }
+	// 27
 ];
 
 ve.dm.example.internalData.internalItems = [

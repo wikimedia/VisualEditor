@@ -363,6 +363,129 @@ ve.dm.Document.prototype.getInnerWhitespace = function () {
 };
 
 /**
+ * Clone a sub-document from a data slice of this document.
+ *
+ * The new document's internal list will be only contain references to data within the slice.
+ *
+ * @param {ve.Range} range Range of data to slice
+ * @returns {ve.dm.DocumentSlice} New document
+ */
+ve.dm.Document.prototype.cloneSliceFromRange = function ( range ) {
+	var i, first, last, firstNode, lastNode,
+		data, slice, originalRange, balancedRange,
+		balancedNodes, needsContext,
+		node = this.getNodeFromOffset( range.start ),
+		selection = this.selectNodes( range, 'siblings' ),
+		balanceOpenings = [],
+		balanceClosings = [],
+		contextOpenings = [],
+		contextClosings = [];
+
+	if ( selection.length === 0 ) {
+		// Nothing selected
+		data = new ve.dm.ElementLinearData( this.getStore(), [] );
+		originalRange = balancedRange = new ve.Range( 0 );
+	} else if ( selection.length === 1 && selection[0].range && selection[0].range.equalsSelection( range ) ) {
+		// Nothing to fix up
+		data = new ve.dm.ElementLinearData( this.getStore(), this.data.slice( range.start, range.end ) );
+		originalRange = balancedRange = new ve.Range( 0, data.getLength() );
+	} else {
+		first = selection[0];
+		last = selection[selection.length - 1];
+		firstNode = first.node;
+		lastNode = last.node;
+		while ( !firstNode.isWrapped() ) {
+			firstNode = firstNode.getParent();
+		}
+		while ( !lastNode.isWrapped() ) {
+			lastNode = lastNode.getParent();
+		}
+
+		if ( first.range ) {
+			while ( true ) {
+				while ( !node.isWrapped() ) {
+					node = node.getParent();
+				}
+				balanceOpenings.push( node.getClonedElement() );
+				if ( node === firstNode ) {
+					break;
+				}
+				node = node.getParent();
+			}
+		}
+
+		node = this.getNodeFromOffset( range.end );
+		if ( last !== first && last.range ) {
+			while ( true ) {
+				while ( !node.isWrapped() ) {
+					node = node.getParent();
+				}
+				balanceClosings.push( { 'type': '/' + node.getType() } );
+				if ( node === lastNode ) {
+					break;
+				}
+				node = node.getParent();
+			}
+		}
+
+		balancedNodes = this.selectNodes(
+			new ve.Range( firstNode.getOuterRange().start, lastNode.getOuterRange().end ),
+			'covered'
+		);
+
+		// Check if any of the balanced siblings need more context for insertion anywhere
+		needsContext = false;
+		for ( i = balancedNodes.length - 1; i >= 0; i-- ) {
+			if ( balancedNodes[i].node.getParentNodeTypes() !== null ) {
+				needsContext = true;
+				break;
+			}
+		}
+
+		if ( needsContext ) {
+			node = balancedNodes[0].node;
+			// Keep wrapping until the outer node can be inserted anywhere
+			while ( node.getParent() && node.getParentNodeTypes() !== null ) {
+				node = node.getParent();
+				contextOpenings.push( node.getClonedElement() );
+				contextClosings.push( { 'type': '/' + node.getType() } );
+			}
+		}
+
+		// Final data:
+		//  contextOpenings + balanceOpenings + data slice + balanceClosings + contextClosings
+		data = new ve.dm.ElementLinearData(
+			this.getStore(),
+			contextOpenings.reverse()
+				.concat( balanceOpenings.reverse() )
+				.concat( this.data.slice( range.start, range.end ) )
+				.concat( balanceClosings )
+				.concat( contextClosings )
+		);
+		originalRange = new ve.Range(
+			contextOpenings.length + balanceOpenings.length,
+			contextOpenings.length + balanceOpenings.length + range.getLength()
+		);
+		balancedRange = new ve.Range(
+			contextOpenings.length,
+			contextOpenings.length + balanceOpenings.length + range.getLength() + balanceClosings.length
+		);
+	}
+
+	// Copy over the internal list
+	ve.batchSplice(
+		data.data, data.getLength(), 0,
+		this.getData( this.getInternalList().getListNode().getOuterRange(), true )
+	);
+
+	// The internalList is rebuilt by the document constructor
+	slice = new ve.dm.DocumentSlice(
+		data, undefined, undefined, this.getInternalList().clone(), originalRange, balancedRange
+	);
+	return slice;
+};
+
+/**
  * Clone a sub-document from a range in this document. The new document's store and internal list will be
  * clones of the ones in this document.
  *
@@ -878,76 +1001,6 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 		data: newData,
 		remove: remove
 	};
-};
-
-/**
- * Get the document data for a range.
- *
- * Data will be fixed up so that unopened closings and unclosed openings in the
- * linear data slice are balanced.
- *
- * @param {ve.Range} range Range to get contents of
- * @returns {ve.dm.ElementLinearDataSlice} Balanced slice of linear model data
- */
-ve.dm.Document.prototype.getSlicedLinearData = function ( range ) {
-	var first, last, firstNode, lastNode,
-		node = this.getNodeFromOffset( range.start ),
-		selection = this.selectNodes( range, 'siblings' ),
-		addOpenings = [],
-		addClosings = [];
-	if ( selection.length === 0 ) {
-		return new ve.dm.ElementLinearDataSlice( this.getStore(), [] );
-	}
-	if ( selection.length === 1 && selection[0].range && selection[0].range.equalsSelection( range ) ) {
-		// Nothing to fix up
-		return new ve.dm.ElementLinearDataSlice( this.getStore(), this.data.slice( range.start, range.end ) );
-	}
-
-	first = selection[0];
-	last = selection[selection.length - 1];
-	firstNode = first.node;
-	lastNode = last.node;
-	while ( !firstNode.isWrapped() ) {
-		firstNode = firstNode.getParent();
-	}
-	while ( !lastNode.isWrapped() ) {
-		lastNode = lastNode.getParent();
-	}
-
-	if ( first.range ) {
-		while ( true ) {
-			while ( !node.isWrapped() ) {
-				node = node.getParent();
-			}
-			addOpenings.push( node.getClonedElement() );
-			if ( node === firstNode ) {
-				break;
-			}
-			node = node.getParent();
-		}
-	}
-
-	node = this.getNodeFromOffset( range.end );
-	if ( last !== first && last.range ) {
-		while ( true ) {
-			while ( !node.isWrapped() ) {
-				node = node.getParent();
-			}
-			addClosings.push( { 'type': '/' + node.getType() } );
-			if ( node === lastNode ) {
-				break;
-			}
-			node = node.getParent();
-		}
-	}
-
-	return new ve.dm.ElementLinearDataSlice(
-		this.getStore(),
-		addOpenings.reverse()
-			.concat( this.data.slice( range.start, range.end ) )
-			.concat( addClosings ),
-		new ve.Range( addOpenings.length, addOpenings.length + range.getLength() )
-	);
 };
 
 /**

@@ -314,12 +314,12 @@ $wgResourceModules += array(
 			've/dm/ve.dm.SurfaceFragment.js',
 			've/dm/ve.dm.DataString.js',
 			've/dm/ve.dm.Document.js',
+			've/dm/ve.dm.DocumentSlice.js',
 			've/dm/ve.dm.LinearData.js',
 			've/dm/ve.dm.DocumentSynchronizer.js',
 			've/dm/ve.dm.IndexValueStore.js',
 			've/dm/ve.dm.Converter.js',
 
-			've/dm/lineardata/ve.dm.SlicedLinearData.js',
 			've/dm/lineardata/ve.dm.FlatLinearData.js',
 			've/dm/lineardata/ve.dm.ElementLinearData.js',
 			've/dm/lineardata/ve.dm.MetaLinearData.js',
