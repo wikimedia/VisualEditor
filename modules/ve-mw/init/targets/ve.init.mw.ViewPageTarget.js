@@ -841,30 +841,7 @@ ve.init.mw.ViewPageTarget.prototype.editSource = function () {
 			doc.getInternalList(),
 			doc.getInnerWhitespace()
 		),
-		ve.bind( function ( wikitext ) {
-			var $form,
-				options = this.getSaveOptions(),
-				action = new mw.Uri( mw.util.wikiScript() ).extend( { title: this.pageName, action: 'edit' } ).toString();
-
-			this.submitting = true;
-
-			$form = $( '<form method="post" enctype="multipart/form-data" style="display: none;"></form>' )
-				.attr( 'action', action )
-				.append( $( '<textarea name="wpTextbox1"></textarea>' ).val( wikitext ) )
-				.append( $( '<input type="checkbox" name="wpMinoredit" value="1">' ).prop( 'checked', options.minor ) )
-				.append( $( '<input type="checkbox" name="wpWatchthis" value="1">' ).prop( 'checked', options.watch ) )
-				.append( $( '<input type="hidden" name="wpSummary">' ).val( options.summary ) )
-				.append( $( '<input type="hidden" name="wpStarttime">' ).val( this.startTimeStamp ) )
-				.append( $( '<input type="hidden" name="wpEditToken">' ).val( this.editToken ) )
-				.append( $( '<input type="hidden" name="wpDiff" value="1">' ) )
-				.append( $( '<input type="hidden" name="model" value="wikitext">' ) )
-				.append( $( '<input type="hidden" name="format" value="text/x-wiki">' ) )
-				.append( $( '<input type="hidden" name="wpEdittime">' ) )
-			;
-			// Firefox requires the form to be attached
-			$( 'body' ).append( $form );
-			$form.submit();
-		}, this )
+		ve.bind( this.submitWithSaveFields, this, { 'wpDiff': 1 } )
 	);
 };
 
@@ -877,46 +854,68 @@ ve.init.mw.ViewPageTarget.prototype.onSaveDialogResolveConflict = function () {
 	// Get Wikitext from the DOM, and set up a submit call when it's done
 	this.serialize(
 		this.docToSave,
-		ve.bind( function ( wikitext ) {
-			this.submit( wikitext, this.getSaveOptions() );
-		}, this )
+		ve.bind( this.submitWithSaveFields, this, { 'wpSave': 1 } )
 	);
 };
 
 /**
- * Get save options from the save dialog form.
- *
- * @method
- * @returns {Object} Save options, including summary, minor and watch properties
+ * Get save form fields from the save dialog form.
+ * @returns {Object} Form data for submission to the MediaWiki action=edit UI
  */
-ve.init.mw.ViewPageTarget.prototype.getSaveOptions = function () {
-	var options = {
-		'summary': this.saveDialog.editSummaryInput.$input.val(),
-		'captchaid': this.captcha && this.captcha.id,
-		'captchaword': this.captcha && this.captcha.input.getValue()
-	};
-	if ( this.sanityCheckPromise.state() === 'rejected' ) {
-		options.needcheck = 1;
-	}
-	if ( this.saveDialog.$saveOptions.find( '#wpMinoredit' ).prop( 'checked' ) ) {
-		options.minor = 1;
-	}
-	if ( this.saveDialog.$saveOptions.find( '#wpWatchthis' ).prop( 'checked' ) ) {
-		options.watch = 1;
-	} else {
-		// Firefox has Object.prototype.watch
-		options.watch = undefined;
-	}
+ve.init.mw.ViewPageTarget.prototype.getSaveFields = function () {
+	var fields = {};
 	this.$checkboxes
-		.not( '#wpMinoredit, #wpWatchthis' )
 		.each( function () {
 			var $this = $( this );
 			// We can't just use $this.val() because .val() always returns the value attribute of
 			// a checkbox even when it's unchecked
-			if ( $this.prop( 'type') !== 'checkbox' || $this.prop( 'checked' ) ) {
-				options[$this.prop( 'name' )] = $this.val();
+			if ( $this.prop( 'type' ) !== 'checkbox' || $this.prop( 'checked' ) ) {
+				fields[$this.prop( 'name' )] = $this.val();
 			}
 		} );
+	$.extend( fields, {
+		'wpSummary': this.saveDialog.editSummaryInput.getValue(),
+		'wpCaptchaId': this.captcha && this.captcha.id,
+		'wpCaptchaWord': this.captcha && this.captcha.input.getValue()
+	} );
+	return fields;
+};
+
+/**
+ * Invoke #submit with the data from #getSaveFields
+ * @param {Object} fields Fields to add in addition to those from #getSaveFields
+ * @param {string} wikitext Wikitext to submit
+ * @returns {boolean} Whether submission was started
+ */
+ve.init.mw.ViewPageTarget.prototype.submitWithSaveFields = function ( fields, wikitext ) {
+	return this.submit( wikitext, $.extend( this.getSaveFields(), fields ) );
+};
+
+/**
+ * Get edit API options from the save dialog form.
+ * @returns {Object} Save options for submission to the MediaWiki API
+ */
+ve.init.mw.ViewPageTarget.prototype.getSaveOptions = function () {
+	var key, options = this.getSaveFields(),
+		fieldMap = {
+			'wpSummary': 'summary',
+			'wpMinoredit': 'minor',
+			'wpWatchthis': 'watch',
+			'wpCaptchaId': 'captchaid',
+			'wpCaptchaWord': 'captchaword'
+		};
+
+	for ( key in fieldMap ) {
+		if ( options[key] !== undefined ) {
+			options[fieldMap[key]] = options[key];
+			delete options[key];
+		}
+	}
+
+	if ( this.sanityCheckPromise.state() === 'rejected' ) {
+		options.needcheck = 1;
+	}
+
 	return options;
 };
 

@@ -785,21 +785,19 @@ ve.init.mw.Target.prototype.showChanges = function ( doc ) {
 };
 
 /**
- * Post DOM data to the Parsoid API.
+ * Post wikitext to MediaWiki.
  *
  * This method performs a synchronous action and will take the user to a new page when complete.
  *
- *     target.submit( wikitext, { 'summary': 'test', 'minor': true, 'watch': false } );
+ *     target.submit( wikitext, { 'wpSummary': 'test', 'wpMinorEdit': 1, 'wpSave': 1 } );
  *
  * @method
  * @param {string} wikitext Wikitext to submit
- * @param {Object} options Saving options
- *  - {string} summary Edit summary
- *  - {boolean} minor Edit is a minor edit
- *  - {boolean} watch Watch the page
+ * @param {Object} fields Other form fields to add (e.g. wpSummary, wpWatchthis, etc.). To actually
+ *  save the wikitext, add { 'wpSave': 1 }. To go to the diff view, add { 'wpDiff': 1 }.
  * @returns {boolean} Submitting has been started
 */
-ve.init.mw.Target.prototype.submit = function ( wikitext, options ) {
+ve.init.mw.Target.prototype.submit = function ( wikitext, fields ) {
 	// Prevent duplicate requests
 	if ( this.submitting ) {
 		return false;
@@ -807,24 +805,22 @@ ve.init.mw.Target.prototype.submit = function ( wikitext, options ) {
 	// Save DOM
 	this.submitting = true;
 	var key,
-		$form = $( '<form method="post" enctype="multipart/form-data"></form>' ),
-		params = {
+		$form = $( '<form method="post" enctype="multipart/form-data" style="display: none;"></form>' ),
+		params = $.extend( {
 			'format': 'text/x-wiki',
+			'model': 'wikitext',
 			'oldid': this.revid,
 			'wpStarttime': this.baseTimeStamp,
 			'wpEdittime': this.startTimeStamp,
 			'wpTextbox1': wikitext,
-			'wpSummary': options.summary,
-			'wpWatchthis': Number( options.watch ),
-			'wpMinoredit': Number( options.minor ),
-			'wpEditToken': this.editToken,
-			'wpSave': 1
-		};
+			'wpEditToken': this.editToken
+		}, fields );
 	// Add params as hidden fields
 	for ( key in params ) {
-		$form.append( $( '<input type="hidden">' ).attr( { 'name': key, 'value': params[key] } ) );
+		$form.append( $( '<input>' ).attr( { 'type': 'hidden', 'name': key, 'value': params[key] } ) );
 	}
 	// Submit the form, mimicking a traditional edit
+	// Firefox requires the form to be attached
 	$form.attr( 'action', this.submitUrl ).appendTo( 'body' ).submit();
 	return true;
 };
