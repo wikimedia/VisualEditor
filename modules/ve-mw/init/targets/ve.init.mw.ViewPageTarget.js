@@ -1438,6 +1438,9 @@ ve.init.mw.ViewPageTarget.prototype.transformPage = function () {
 		.addClass( 've-hide' )
 		.slideUp( 'fast' );
 
+	// Add class to document
+	$( 'html' ).addClass( 've-activated' );
+
 	// Push veaction=edit url in history (if not already. If we got here by a veaction=edit
 	// permalink then it will be there already and the constructor called #activate)
 	if ( !this.actFromPopState && window.history.pushState && this.currentUri.query.veaction !== 'edit' ) {
@@ -1463,10 +1466,12 @@ ve.init.mw.ViewPageTarget.prototype.restorePage = function () {
 		.find( 'li.selected' ).removeClass( 'selected' );
 	$( '#ca-view' ).addClass( 'selected' );
 
-
 	// Make site notice visible again (if present)
 	$( '#siteNotice.ve-hide' )
 		.slideDown( 'fast' );
+
+	// Remove class from document
+	$( 'html' ).removeClass( 've-activated' );
 
 	// Push non-veaction=edit url in history
 	if ( !this.actFromPopState && window.history.pushState ) {
