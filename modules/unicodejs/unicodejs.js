@@ -179,7 +179,6 @@
 				throw new Error( 'range includes surrogates: ' +
 					min.toString( 16 ) + '-' + max.toString( 16 ) );
 			}
-
 			if ( max <= 0xFFFF ) {
 				// interval is entirely BMP
 				characterClass.push( codeUnitRange( min, max ) );

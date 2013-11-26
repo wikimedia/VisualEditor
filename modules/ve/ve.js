@@ -403,12 +403,14 @@
 		return ve.init.platform.getMessage.apply( ve.init.platform, arguments );
 	};
 
-    /**
-     * @method
-     * @inheritdoc unicodeJS.graphemebreak#splitClusters
-     * @see unicodeJS.graphemebreak#splitClusters
-     */
-	ve.splitClusters = unicodeJS.graphemebreak.splitClusters;
+	/**
+	 * Compatibility method. We no longer split into clusters at this level.
+	 *
+	 * TODO: strip out calls to splitClusters then delete this method.
+	 */
+	ve.splitClusters = function ( text ) {
+		return text.split( '' );
+	};
 
 	/**
 	 * Determine if the text consists of only unattached combining marks.
@@ -428,7 +430,8 @@
 	 * @returns {number} Byte offset
 	 */
 	ve.getByteOffset = function ( text, clusterOffset ) {
-		return ve.splitClusters( text ).slice( 0, clusterOffset ).join( '' ).length;
+		return unicodeJS.graphemebreak.splitClusters( text ).slice( 0, clusterOffset
+			).join( '' ).length;
 	};
 
 	/**
@@ -439,7 +442,8 @@
 	 * @returns {number} Grapheme cluster offset
 	 */
 	ve.getClusterOffset = function ( text, byteOffset ) {
-		return ve.splitClusters( text.substring( 0, byteOffset ) ).length;
+		return unicodeJS.graphemebreak.splitClusters( text.substring( 0, byteOffset
+			) ).length;
 	};
 
 	/**

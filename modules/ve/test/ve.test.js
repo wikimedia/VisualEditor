@@ -260,13 +260,11 @@ QUnit.test( 'createDocumentFromHtml', function ( assert ) {
 	}
 } );
 
-// ve.splitClusters: Tested upstream (UnicodeJS)
-
 // TODO: ve.isUnattachedCombiningMark
 
 // TODO: ve.getByteOffset
 
-// TODO: ve.getCharacterOffset
+// TODO: ve.getClusterOffset
 
 QUnit.test( 'graphemeSafeSubstring', function ( assert ) {
 	var i, text = '12\ud860\udee245\ud860\udee2789\ud860\udee2bc', cases = [
