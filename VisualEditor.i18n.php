@@ -266,8 +266,14 @@ Preceded by the Close button which has tooltip {{msg-mw|Ooui-inspector-close-too
 	'ooui-outline-control-move-down' => 'Tool tip for a button that moves items in a list down one place',
 	'ooui-outline-control-move-up' => 'Tool tip for a button that moves items in a list up one place',
 	'ooui-toggle-on' => 'Label for toggle on state.
+
+See also:
+* {{msg-mw|Ooui-toggle-off}}
 {{Identical|On}}',
 	'ooui-toggle-off' => 'Label for toggle off state.
+
+See also:
+* {{msg-mw|Ooui-toggle-on}}
 {{Identical|Off}}',
 	'ooui-toolbar-more' => 'Label for the toolbar group that contains a list of all other available tools.
 {{Identical|More}}',
@@ -9350,11 +9356,11 @@ $messages['kk-cyrl'] = array(
 	'visualeditor-parameter-search-no-unused' => 'Қолданылмаған параметрлер жоқ',
 	'visualeditor-parameter-search-unknown' => 'Белгісіз параметр',
 	'visualeditor-preference-betatempdisable' => 'VisualEditor бета нұсқада болғандықтан уақытша өшіру',
-	'visualeditor-preference-core-description' => '[[УП:VE|VisualEditor‎]]-ды қосу. Ол талқылау беттері мен кейбір басқа есім кеңістіктерінде жұмыс істемейді.',
-	'visualeditor-preference-core-label' => 'VisualEditor',
+	'visualeditor-preference-core-description' => 'VisualEditor‎-ды қосу. Ол талқылау беттері мен кейбір басқа есім кеңістіктерінде жұмыс істемейді.',
+	'visualeditor-preference-core-label' => '[[Уикипедия:VisualEditor|VisualEditor]]',
 	'visualeditor-preference-enable' => '[[УП:VE|VisualEditor‎]]-ды қосу. Ол талқылау беттері мен кейбір басқа есім кеңістіктерінде жұмыс істемейді.',
 	'visualeditor-preference-language-label' => 'VisualEditor тіл құралдары',
-	'visualeditor-preference-mwmath-label' => '[[УП:VE|VisualEditor‎]]мен формула өңдеу',
+	'visualeditor-preference-mwmath-label' => '[[Уикипедия:VisualEditor|VisualEditor‎]]мен формула өңдеу',
 	'visualeditor-reference-input-placeholder' => 'Дереккөз істегіңіз келе ме?',
 	'visualeditor-referencelist-isempty' => 'Мұнда бұл беттегі "$1" тобындағы дереккөздер жоқ.', # Fuzzy
 	'visualeditor-referencelist-isempty-default' => 'Бұл бетте бұл тізімге кірген дереккөздер жоқ.',
