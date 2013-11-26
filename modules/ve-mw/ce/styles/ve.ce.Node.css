@@ -75,7 +75,7 @@
     counter-reset: ve-ce-mwNumberedExternalLinkNode;
 }
 
-.ve-ce-mwNumberedExternalLinkNode a:empty:after {
+a[rel~="mw:ExtLink"]:empty:after {
     content: "[" counter(ve-ce-mwNumberedExternalLinkNode) "]";
     counter-increment: ve-ce-mwNumberedExternalLinkNode;
 }
