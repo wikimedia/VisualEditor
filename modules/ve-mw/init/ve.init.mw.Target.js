@@ -105,6 +105,53 @@ ve.init.mw.Target = function VeInitMwTarget( $container, pageName, revisionId ) 
  */
 
 /**
+ * @event saveAsyncBegin
+ * Fired when we're waiting for network
+ */
+
+/**
+ * @event saveAsyncComplete
+ * Fired when we're no longer waiting for network
+ */
+
+/**
+ * @event saveErrorEmpty
+ * Fired when save API returns no data object
+ */
+
+/**
+ * @event saveErrorSpamBlacklist
+ * Fired when save is considered spam or blacklisted
+ * @param {Object} editApi
+ */
+
+/**
+ * @event saveErrorAbuseFilter
+ * Fired when AbuseFilter throws warnings
+ * @param {Object} editApi
+ */
+
+/**
+ * @event saveErrorNewUser
+ * Fired when user is logged in as a new user
+ * @param {boolean|undefined} isAnon Is newly logged in user anonymous. If
+ *  undefined, user is logged in
+ */
+
+/**
+ * @event saveErrorCaptcha
+ * Fired when saveError indicates captcha field is required
+ * @param {Object} editApi
+ */
+
+/**
+ * @event saveErrorUnknown
+ * Fired for any other type of save error
+ * @param {Object} editApi
+ * @param {Object|null} data API response data
+ */
+
+/**
  * @event loadError
  * @param {jqXHR|null} jqXHR
  * @param {string} status Text status message
@@ -319,23 +366,18 @@ ve.init.mw.Target.onSave = function ( response ) {
 	this.saving = false;
 	var data = response.visualeditoredit;
 	if ( !data && !response.error ) {
-		ve.init.mw.Target.onSaveError.call( this, null, 'Invalid response from server', response );
+		this.onSaveError( null, 'Invalid response from server', response );
 	} else if ( response.error ) {
 		if ( response.error.code === 'editconflict' ) {
 			this.emit( 'editConflict' );
 		} else {
-			ve.init.mw.Target.onSaveError.call( this, null, 'Save failure', response );
+			this.onSaveError( null, 'Save failure', response );
 		}
 	} else if ( data.result !== 'success' ) {
 		// Note, this could be any of db failure, hookabort, badtoken or even a captcha
-		ve.init.mw.Target.onSaveError.call( this, null, 'Save failure', response );
+		this.onSaveError( null, 'Save failure', response );
 	} else if ( typeof data.content !== 'string' ) {
-		ve.init.mw.Target.onSaveError.call(
-			this,
-			null,
-			'Invalid HTML content in response from server',
-			response
-		);
+		this.onSaveError( null, 'Invalid HTML content in response from server', response );
 	} else {
 		this.emit( 'save', data.content, data.newrevid );
 	}
@@ -344,17 +386,145 @@ ve.init.mw.Target.onSave = function ( response ) {
 /**
  * Handle an unsuccessful save request.
  *
- * @static
  * @method
- * @this ve.init.mw.Target
  * @param {Object} jqXHR
  * @param {string} status Text status message
  * @param {Object|null} data API response data
- * @fires saveError
+ * @fires saveAsyncBegin
+ * @fires saveAsyncComplete
+ * @fires saveErrorEmpty
+ * @fires saveErrorSpamBlacklist
+ * @fires saveErrorAbuseFilter
+ * @fires saveErrorNewUser
+ * @fires saveErrorCaptcha
+ * @fires saveErrorUnknown
  */
-ve.init.mw.Target.onSaveError = function ( jqXHR, status, data ) {
+ve.init.mw.Target.prototype.onSaveError = function ( jqXHR, status, data ) {
+	var api, editApi,
+		trackData = {
+			'duration': ve.now() - this.timings.saveDialogSave,
+			'retries': this.timings.saveRetries
+		},
+		viewPage = this;
 	this.saving = false;
-	this.emit( 'saveError', jqXHR, status, data );
+	this.emit( 'saveAsyncComplete' );
+
+	// Handle empty response
+	if ( !data ) {
+		trackData.type = 'empty';
+		ve.track( 'performance.user.saveError', trackData );
+		this.emit( 'saveErrorEmpty' );
+		return;
+	}
+	editApi = data && data.visualeditoredit && data.visualeditoredit.edit;
+
+	// Handle spam blacklist error (either from core or from Extension:SpamBlacklist)
+	if ( editApi && editApi.spamblacklist ) {
+		trackData.type = 'spamblacklist';
+		ve.track( 'performance.user.saveError', trackData );
+		this.emit( 'saveErrorSpamBlacklist', editApi );
+		return;
+	}
+
+	// Handle warnings/errors from Extension:AbuseFilter
+	// TODO: Move this to a plugin
+	if ( editApi && editApi.info && editApi.info.indexOf( 'Hit AbuseFilter:' ) === 0 && editApi.warning ) {
+		trackData.type = 'abusefilter';
+		ve.track( 'performance.user.saveError', trackData );
+		this.emit( 'saveErrorAbuseFilter', editApi );
+		return;
+	}
+
+	// Handle token errors
+	if ( data.error && data.error.code === 'badtoken' ) {
+		api = new mw.Api();
+		this.emit( 'saveAsyncBegin' );
+		api.get( {
+			// action=query&meta=userinfo and action=tokens&type=edit can't be combined
+			// but action=query&meta=userinfo and action=query&prop=info can, however
+			// that means we have to give it titles and deal with page ids.
+			'action': 'query',
+			'meta': 'userinfo',
+			'prop': 'info',
+			// Try to send the normalised form so that it is less likely we get extra data like
+			// data.normalised back that we don't need.
+			'titles': new mw.Title( viewPage.pageName ).toText(),
+			'indexpageids': '',
+			'intoken': 'edit'
+		} )
+			.always( function () {
+				viewPage.emit( 'saveAsyncComplete' );
+			} )
+			.done( function ( data ) {
+				var userMsg,
+					userInfo = data.query && data.query.userinfo,
+					pageInfo = data.query && data.query.pages && data.query.pageids &&
+						data.query.pageids[0] && data.query.pages[ data.query.pageids[0] ],
+					editToken = pageInfo && pageInfo.edittoken,
+					isAnon = mw.user.isAnon();
+
+				if ( userInfo && editToken ) {
+					viewPage.editToken = editToken;
+
+					if (
+						( isAnon && userInfo.anon !== undefined ) ||
+							// Comparing id instead of name to pretect against possible
+							// normalisation and against case where the user got renamed.
+							mw.config.get( 'wgUserId' ) === userInfo.id
+					) {
+						// New session is the same user still
+						this.timings.saveRetries++;
+						viewPage.saveDocument();
+					} else {
+						// The now current session is a different user
+						trackData.type = 'badtoken';
+						ve.track( 'performance.user.saveError', trackData );
+						if ( isAnon ) {
+							// New session is an anonymous user
+							mw.config.set( {
+								// wgUserId is unset for anonymous users, not set to null
+								'wgUserId': undefined,
+								// wgUserName is explicitly set to null for anonymous users,
+								// functions like mw.user.isAnon rely on this.
+								'wgUserName': null
+							} );
+						} else {
+							// New session is a different user
+							mw.config.set( { 'wgUserId': userInfo.id, 'wgUserName': userInfo.name } );
+							userMsg = 'visualeditor-savedialog-identify-user---' + userInfo.name;
+							mw.messages.set(
+								userMsg,
+								mw.messages.get( 'visualeditor-savedialog-identify-user' )
+									.replace( /\$1/g, userInfo.name )
+							);
+						}
+						viewPage.emit( 'saveErrorNewUser', isAnon );
+					}
+
+				}
+			} );
+		return;
+	}
+
+	// Handle captcha
+	// Captcha "errors" usually aren't errors. We simply don't know about them ahead of time,
+	// so we save once, then (if required) we get an error with a captcha back and try again after
+	// the user solved the captcha.
+	// TODO: ConfirmEdit API is horrible, there is no reliable way to know whether it is a "math",
+	// "question" or "fancy" type of captcha. They all expose differently named properties in the
+	// API for different things in the UI. At this point we only support the FancyCaptha which we
+	// very intuitively detect by the presence of a "url" property.
+	if ( editApi && editApi.captcha && editApi.captcha.url ) {
+		trackData.type = 'captcha';
+		ve.track( 'performance.user.saveError', trackData );
+		this.emit( 'saveErrorCaptcha', editApi );
+		return;
+	}
+
+	// Handle (other) unknown and/or unrecoverable errors
+	trackData.type = 'unknown';
+	ve.track( 'performance.user.saveError', trackData );
+	this.emit( 'saveErrorUnknown', editApi, data );
 };
 
 
@@ -768,7 +938,7 @@ ve.init.mw.Target.prototype.save = function ( doc, options ) {
 
 	this.saving = this.tryWithPreparedCacheKey( doc, data, 'save' )
 		.done( ve.bind( ve.init.mw.Target.onSave, this ) )
-		.fail( ve.bind( ve.init.mw.Target.onSaveError, this ) );
+		.fail( ve.bind( this.onSaveError, this ) );
 
 	return true;
 };
@@ -788,7 +958,7 @@ ve.init.mw.Target.prototype.showChanges = function ( doc ) {
 		'action': 'visualeditor',
 		'paction': 'diff',
 		'page': this.pageName,
-		'oldid': this.revid,
+		'oldid': this.revid
 	}, 'diff' )
 		.done( ve.bind( ve.init.mw.Target.onShowChanges, this ) )
 		.fail( ve.bind( ve.init.mw.Target.onShowChangesError, this ) );
