@@ -59,7 +59,6 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 		currentUri.query.diff === undefined
 	);
 	this.originalDocumentTitle = document.title;
-	this.editSummaryByteLimit = 255;
 	this.tabLayout = mw.config.get( 'wgVisualEditorConfig' ).tabLayout;
 
 	/**

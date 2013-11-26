@@ -289,21 +289,16 @@ ve.ui.MWSaveDialog.prototype.initialize = function () {
 	);
 	this.editSummaryInput.$element.addClass( 've-ui-mwSaveDialog-summary' );
 	this.editSummaryInput.$input
-		.placeholder()
 		.byteLimit( this.editSummaryByteLimit )
 		.prop( 'tabIndex', 0 );
-	this.editSummaryInput.on( 'change', ve.bind( function () {
-		var $textarea = this.editSummaryInput.$input,
-			$editSummaryCount = this.savePanel.$element.find( '.ve-ui-mwSaveDialog-editSummary-count' );
+	this.editSummaryInput.on( 'change', function () {
 		// TODO: This looks a bit weird, there is no unit in the UI, just numbers
 		// Users likely assume characters but then it seems to count down quicker
 		// than expected. Facing users with the word "byte" is bad? (bug 40035)
-		setTimeout( function () {
-			$editSummaryCount.text(
-				saveDialog.editSummaryByteLimit - $.byteLength( $textarea.val() )
-			);
-		} );
-	}, this ) );
+		saveDialog.savePanel.$element.find( '.ve-ui-mwSaveDialog-editSummary-count' ).text(
+			saveDialog.editSummaryByteLimit - $.byteLength( saveDialog.editSummaryInput.getValue() )
+		);
+	} );
 
 	this.$saveOptions = this.$( '<div>' ).addClass( 've-ui-mwSaveDialog-options' ).append(
 		this.$( '<div>' ).addClass( 've-ui-mwSaveDialog-checkboxes' ),
