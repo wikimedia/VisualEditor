@@ -133,7 +133,7 @@ ve.ui.AnnotationInspector.prototype.setup = function ( data ) {
 	// Note we don't set the 'all' flag here - any non-annotated content will be annotated on close
 	this.initialAnnotation = this.getMatchingAnnotations( fragment ).get( 0 );
 	this.initialAnnotationHash = this.initialAnnotation ?
-		OO.getHash( this.initialAnnotation ) : null;
+		OO.getHash( this.initialAnnotation.getComparableObject() ) : null;
 };
 
 /**
@@ -161,7 +161,7 @@ ve.ui.AnnotationInspector.prototype.teardown = function ( data ) {
 		if ( this.initialSelection.isCollapsed() ) {
 			insert = true;
 		}
-		if ( OO.getHash( annotation ) !== this.initialAnnotationHash ) {
+		if ( OO.getHash( annotation.getComparableObject() ) !== this.initialAnnotationHash ) {
 			if ( this.isNewAnnotation ) {
 				undo = true;
 			} else {
