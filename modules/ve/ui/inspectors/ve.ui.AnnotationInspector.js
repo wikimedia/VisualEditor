@@ -167,7 +167,7 @@ ve.ui.AnnotationInspector.prototype.teardown = function ( data ) {
 		set = false,
 		target = this.targetInput.getValue(),
 		annotation = this.getAnnotation(),
-		remove = target === '' || ( data.action === 'remove' && !!annotation ),
+		remove = target === '' || data.action === 'remove',
 		surfaceModel = this.surface.getModel(),
 		fragment = surfaceModel.getFragment( this.initialSelection, false ),
 		selection = surfaceModel.getSelection();
