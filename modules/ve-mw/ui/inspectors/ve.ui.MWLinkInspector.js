@@ -31,7 +31,9 @@ OO.inheritClass( ve.ui.MWLinkInspector, ve.ui.LinkInspector );
 ve.ui.MWLinkInspector.static.name = 'link';
 
 ve.ui.MWLinkInspector.static.modelClasses = [
-	ve.dm.MWExternalLinkAnnotation, ve.dm.MWInternalLinkAnnotation
+	ve.dm.MWExternalLinkAnnotation,
+	ve.dm.MWInternalLinkAnnotation,
+	ve.dm.MWNumberedExternalLinkNode
 ];
 
 ve.ui.MWLinkInspector.static.linkTargetInputWidget = ve.ui.MWLinkTargetInputWidget;
@@ -83,6 +85,27 @@ ve.ui.MWLinkInspector.prototype.getAnnotationFromText = function ( target ) {
 		// for an internal link.
 		return null;
 	}
+};
+
+/**
+ * @inheritdoc
+ */
+ve.ui.MWLinkInspector.prototype.getNodeChanges = function () {
+	var annotations, data,
+		doc = this.linkNode.getDocument(),
+		annotation = this.getAnnotation();
+	if ( annotation instanceof ve.dm.MWInternalLinkAnnotation ) {
+		// We're inspecting a numbered external link node and attempting to set its target
+		// to an internal link. Replace the numbered link node with an internal link annotation,
+		// with the link target as the text.
+		annotations = doc.data.getAnnotationsFromOffset( this.linkNode.getOffset() ).clone();
+		annotations.push( annotation );
+		data = ve.splitClusters( annotation.getAttribute( 'title' ) );
+		ve.dm.Document.static.addAnnotationsToData( data, annotations );
+		return data;
+	}
+	// Parent method
+	return ve.ui.LinkInspector.prototype.getNodeChanges.call( this );
 };
 
 /* Registration */
