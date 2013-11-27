@@ -240,7 +240,7 @@ ve.dm.MetaList.prototype.onTransact = function ( tx ) {
 		if ( newItems[i].item.isAttached() ) {
 			if ( newItems[i].offset !== newItems[i].item.offset || newItems[i].index !== newItems[i].item.index ) {
 				this.deleteRemovedItem( newItems[i].item.offset, newItems[i].item.index );
-				this.addInsertedItem( newItems[i].offset, newItems[i].index, newItems[i].item );
+				newItems[i].preExisting = true;
 			}
 		}
 	}
@@ -249,7 +249,9 @@ ve.dm.MetaList.prototype.onTransact = function ( tx ) {
 	for ( i = 0, ilen = newItems.length; i < ilen; i++ ) {
 		if ( !newItems[i].item.isAttached() ) {
 			this.addInsertedItem( newItems[i].offset, newItems[i].index, newItems[i].item );
-			events.push( [ 'insert', newItems[i].item ] );
+			if ( !newItems[i].preExisting ) {
+				events.push( [ 'insert', newItems[i].item ] );
+			}
 		}
 	}
 
