@@ -45,6 +45,23 @@ ve.ui.AnnotationInspector.static.modelClasses = [];
 /* Methods */
 
 /**
+ * Get the annotation object to apply.
+ *
+ * This method is called when the inspector is closing, and should return the annotation to apply
+ * to the text. If this method returns a falsey value like null, no annotation will be applied,
+ * but existing annotations won't be removed either.
+ *
+ * @abstract
+ * @returns {ve.dm.Annotation} Annotation to apply
+ * @throws {Error} If not overridden in subclass
+ */
+ve.ui.AnnotationInspector.prototype.getAnnotation = function () {
+	throw new Error(
+		've.ui.AnnotationInspector.getAnnotation not implemented in subclass'
+	);
+};
+
+/**
  * Get an annotation object from text.
  *
  * @method
