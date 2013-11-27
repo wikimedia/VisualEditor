@@ -45,6 +45,8 @@ class VisualEditorPage
   span(:transclusion, class: 'oo-ui-iconedElement-icon oo-ui-icon-template')
 
   in_frame(:index => 0) do |frame|
+    div(:content_box, class: 've-ce-documentNode ve-ce-branchNode', frame: frame)
+    a(:beta_warning, title: 'Close', frame: frame)
     text_area(:describe_change, index: 0, frame: frame)
     div(:diff_view, class: 've-ui-mwSaveDialog-viewer', frame: frame)
     a(:ex, title: 'Close', frame: frame)
@@ -59,13 +61,6 @@ class VisualEditorPage
   end
 
   in_frame(:index => 1) do |frame|
-    a(:beta_warning, title: 'Close', frame: frame)
-    div(:content_box, class: 've-ce-documentNode ve-ce-branchNode', frame: frame)
-    div(:links_diff_view, class: 've-ui-mwSaveDialog-viewer', frame: frame)
-    span(:links_review_changes, class: 'oo-ui-labeledElement-label', text: 'Review your changes', frame: frame)
-  end
-
-  in_frame(:index => 2) do |frame|
     span(:add_parameter, class: 've-ui-mwParameterResultWidget-name', frame: frame)
     span(:add_template, text: 'Add template', frame: frame)
     span(:apply_changes, text: 'Apply changes', frame: frame)
@@ -78,5 +73,10 @@ class VisualEditorPage
     div(:title, class: 'oo-ui-window-title', frame: frame)
     text_area(:transclusion_textarea, index: 0, frame: frame)
     text_field(:transclusion_textfield, index: 0, frame: frame)
+  end
+
+  in_frame(:index => 2) do |frame|
+    div(:links_diff_view, class: 've-ui-mwSaveDialog-viewer', frame: frame)
+    span(:links_review_changes, class: 'oo-ui-labeledElement-label', text: 'Review your changes', frame: frame)
   end
 end
