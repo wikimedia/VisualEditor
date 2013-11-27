@@ -122,7 +122,7 @@ ve.ui.MWCategoryPopupWidget.prototype.openPopup = function ( item ) {
  */
 ve.ui.MWCategoryPopupWidget.prototype.onHide = function() {
 	var newSortkey = this.sortKeyInput.$input.val();
-	if ( !this.removed && newSortkey !== this.origSortkey ) {
+	if ( !this.removed && newSortkey !== ( this.origSortkey || '' ) ) {
 		this.emit( 'updateSortkey', this.category, this.sortKeyInput.$input.val() );
 	}
 };
