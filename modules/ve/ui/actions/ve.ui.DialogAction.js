@@ -37,7 +37,7 @@ ve.ui.DialogAction.static.methods = [ 'open' ];
 /* Methods */
 
 /**
- * Open an Dialog.
+ * Open a Dialog.
  *
  * @method
  * @param {string} name Symbolic name of Dialog to open
