@@ -509,6 +509,7 @@ $wgResourceModules += array(
 			've-mw/ui/tools/ve.ui.MWFormatTool.js',
 			've-mw/ui/tools/ve.ui.MWDialogTool.js',
 			've-mw/ui/tools/ve.ui.MWPopupTool.js',
+			've-mw/ui/tools/ve.ui.MWInspectorTool.js',
 
 			've/ui/inspectors/ve.ui.AnnotationInspector.js',
 			've/ui/inspectors/ve.ui.LinkInspector.js',
