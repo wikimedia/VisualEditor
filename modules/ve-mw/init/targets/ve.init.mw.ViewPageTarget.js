@@ -195,11 +195,6 @@ ve.init.mw.ViewPageTarget.prototype.deactivate = function ( override ) {
 				this.detachToolbarButtons();
 			}
 
-			if ( this.saveDialog ) {
-				// If we got as far as setting up the save dialog, tear it down
-				this.saveDialog.reset();
-				this.saveDialog.close();
-			}
 			// Check we got as far as setting up the surface
 			if ( this.active ) {
 				// If we got as far as setting up the surface, tear that down
@@ -1062,6 +1057,12 @@ ve.init.mw.ViewPageTarget.prototype.tearDownSurface = function () {
 	}
 	this.tearDownToolbar();
 	this.restoreDocumentTitle();
+	if ( this.saveDialog ) {
+		// If we got as far as setting up the save dialog, tear it down
+		this.saveDialog.close();
+		this.saveDialog.teardown();
+		this.saveDialog = null;
+	}
 	// Destroy surface
 	if ( this.surface ) {
 		this.surface.destroy();
