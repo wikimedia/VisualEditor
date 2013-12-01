@@ -58,8 +58,10 @@ ve.ce.MWExtensionNode.prototype.generateContents = function ( config ) {
 		mwData = this.getModel().getAttribute( 'mw' ),
 		extsrc = config && config.extsrc !== undefined ? config.extsrc : mwData.body.extsrc,
 		attrs = config && config.attrs || mwData.attrs,
-		extensionNode = $( document.createElement( this.getModel().getExtensionName() ) )
-			.attr( attrs ).text( extsrc );
+		xmlDoc = ( new DOMParser() ).parseFromString( '<' + this.getModel().getExtensionName() + '/>', 'text/xml' ),
+		wikitext = ( new XMLSerializer() ).serializeToString(
+			$( xmlDoc.documentElement ).attr( attrs ).text( extsrc )[0]
+		);
 
 	xhr = $.ajax( {
 		'url': mw.util.wikiScript( 'api' ),
@@ -67,7 +69,7 @@ ve.ce.MWExtensionNode.prototype.generateContents = function ( config ) {
 			'action': 'visualeditor',
 			'paction': 'parsefragment',
 			'page': mw.config.get( 'wgRelevantPageName' ),
-			'wikitext': extensionNode[0].outerHTML,
+			'wikitext': wikitext,
 			'token': mw.user.tokens.get( 'editToken' ),
 			'format': 'json'
 		},
