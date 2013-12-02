@@ -16,7 +16,9 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, html, range, o
 			'backspace': [ 'handleDelete', {}, true ],
 			'delete': [ 'handleDelete', {}, false ],
 			'modifiedBackspace': [ 'handleDelete', { 'ctrlKey': true }, true ],
-			'modifiedDelete': [ 'handleDelete', { 'ctrlKey': true }, false ]
+			'modifiedDelete': [ 'handleDelete', { 'ctrlKey': true }, false ],
+			'enter': [ 'handleEnter', {}, true ],
+			'modifiedEnter': [ 'handleEnter', { 'shiftKey': true }, false ]
 		},
 		surface = ve.test.utils.createSurfaceFromHtml( html || ve.dm.example.html ),
 		view = surface.getView(),
@@ -132,6 +134,184 @@ QUnit.test( 'handleDelete', function ( assert ) {
 				},
 				'expectedRange': new ve.Range( 39 ),
 				'msg': 'Focusable node deleted if selected first'
+			}
+		];
+
+	QUnit.expect( cases.length * 2 );
+
+	for ( i = 0; i < cases.length; i++ ) {
+		ve.test.utils.runSurfaceHandleSpecialKeyTest(
+			assert, cases[i].html, cases[i].range, cases[i].operations,
+			cases[i].expectedData, cases[i].expectedRange, cases[i].msg
+		);
+	}
+} );
+
+QUnit.test( 'handleEnter', function ( assert ) {
+	var i,
+		emptyList = '<ul><li><p></p></li></ul>',
+		cases = [
+			{
+				'range': new ve.Range( 57 ),
+				'operations': ['enter'],
+				'expectedData': function ( data ) {
+					data.splice(
+						57, 0,
+						{ 'type': '/paragraph' },
+						{ 'type': 'paragraph' }
+					);
+				},
+				'expectedRange': new ve.Range( 59 ),
+				'msg': 'End of paragraph split by enter'
+			},
+			{
+				'range': new ve.Range( 57 ),
+				'operations': ['modifiedEnter'],
+				'expectedData': function ( data ) {
+					data.splice(
+						57, 0,
+						{ 'type': '/paragraph' },
+						{ 'type': 'paragraph' }
+					);
+				},
+				'expectedRange': new ve.Range( 59 ),
+				'msg': 'End of paragraph split by modified enter'
+			},
+			{
+				'range': new ve.Range( 56 ),
+				'operations': ['enter'],
+				'expectedData': function ( data ) {
+					data.splice(
+						56, 0,
+						{ 'type': '/paragraph' },
+						{ 'type': 'paragraph' }
+					);
+				},
+				'expectedRange': new ve.Range( 58 ),
+				'msg': 'Start of paragraph split by enter'
+			},
+			{
+				'range': new ve.Range( 3 ),
+				'operations': ['enter'],
+				'expectedData': function ( data ) {
+					data.splice(
+						3, 0,
+						{ 'type': '/heading' },
+						{ 'type': 'heading', 'attributes': { 'level': 1 } }
+					);
+				},
+				'expectedRange': new ve.Range( 5 ),
+				'msg': 'Heading split by enter'
+			},
+			{
+				'range': new ve.Range( 2, 3 ),
+				'operations': ['enter'],
+				'expectedData': function ( data ) {
+					data.splice(
+						2, 1,
+						{ 'type': '/heading' },
+						{ 'type': 'heading', 'attributes': { 'level': 1 } }
+					);
+				},
+				'expectedRange': new ve.Range( 4 ),
+				'msg': 'Selection in heading removed, then split by enter'
+			},
+			{
+				'range': new ve.Range( 1 ),
+				'operations': ['enter'],
+				'expectedData': function ( data ) {
+					data.splice(
+						0, 0,
+						{ 'type': 'paragraph' },
+						{ 'type': '/paragraph' }
+					);
+				},
+				'expectedRange': new ve.Range( 3 ),
+				'msg': 'Start of heading split into a plain paragraph'
+			},
+			{
+				'range': new ve.Range( 4 ),
+				'operations': ['enter'],
+				'expectedData': function ( data ) {
+					data.splice(
+						5, 0,
+						{ 'type': 'paragraph' },
+						{ 'type': '/paragraph' }
+					);
+				},
+				'expectedRange': new ve.Range( 6 ),
+				'msg': 'End of heading split into a plain paragraph'
+			},
+			{
+				'range': new ve.Range( 16 ),
+				'operations': ['enter'],
+				'expectedData': function ( data ) {
+					data.splice(
+						16, 0,
+						{ 'type': '/paragraph' },
+						{ 'type': '/listItem' },
+						{ 'type': 'listItem' },
+						{ 'type': 'paragraph' }
+					);
+				},
+				'expectedRange': new ve.Range( 20 ),
+				'msg': 'List item split by enter'
+			},
+			{
+				'range': new ve.Range( 16 ),
+				'operations': ['modifiedEnter'],
+				'expectedData': function ( data ) {
+					data.splice(
+						16, 0,
+						{ 'type': '/paragraph' },
+						{ 'type': 'paragraph' }
+					);
+				},
+				'expectedRange': new ve.Range( 18 ),
+				'msg': 'List item not split by modified enter'
+			},
+			{
+				'range': new ve.Range( 21 ),
+				'operations': ['enter', 'enter'],
+				'expectedData': function ( data ) {
+					data.splice(
+						24, 0,
+						{ 'type': 'paragraph' },
+						{ 'type': '/paragraph' }
+					);
+				},
+				'expectedRange': new ve.Range( 25 ),
+				'msg': 'Two enters breaks out of a list and starts a new paragraph'
+			},
+			{
+				'html': '<p>foo</p>' + emptyList + '<p>bar</p>',
+				'range': new ve.Range( 8 ),
+				'operations': ['enter'],
+				'expectedData': function ( data ) {
+					data.splice( 5, 6 );
+				},
+				'expectedRange': new ve.Range( 6 ),
+				'msg': 'Enter in an empty list destroys it and moves to next paragraph'
+			},
+			{
+				'html': '<p>foo</p>' + emptyList,
+				'range': new ve.Range( 8 ),
+				'operations': ['enter'],
+				'expectedData': function ( data ) {
+					data.splice( 5, 6 );
+				},
+				'expectedRange': new ve.Range( 4 ),
+				'msg': 'Enter in an empty list at end of document destroys it and moves to previous paragraph'
+			},
+			{
+				'html': emptyList + '<p>bar</p>',
+				'range': new ve.Range( 3 ),
+				'operations': ['enter'],
+				'expectedData': function ( data ) {
+					data.splice( 0, 6 );
+				},
+				'expectedRange': new ve.Range( 1 ),
+				'msg': 'Enter in an empty list at start of document destroys it and moves to next paragraph'
 			}
 		];
 
@@ -604,7 +784,6 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 // TODO: ve.ce.Surface#handleLeftOrRightArrowKey
 // TODO: ve.ce.Surface#handleUpOrDownArrowKey
 // TODO: ve.ce.Surface#handleInsertion
-// TODO: ve.ce.Surface#handleEnter
 // TODO: ve.ce.Surface#showSelection
 // TODO: ve.ce.Surface#replacePhantoms
 // TODO: ve.ce.Surface#replaceHighlight
