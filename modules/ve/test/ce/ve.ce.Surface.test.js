@@ -312,6 +312,20 @@ QUnit.test( 'handleEnter', function ( assert ) {
 				},
 				'expectedRange': new ve.Range( 1 ),
 				'msg': 'Enter in an empty list at start of document destroys it and moves to next paragraph'
+			},
+			{
+				'html': emptyList,
+				'range': new ve.Range( 3 ),
+				'operations': ['enter'],
+				'expectedData': function ( data ) {
+					data.splice(
+						0, 6,
+						{ 'type': 'paragraph' },
+						{ 'type': '/paragraph' }
+					);
+				},
+				'expectedRange': new ve.Range( 1 ),
+				'msg': 'Enter in an empty list with no adjacent content destroys it and creates a paragraph'
 			}
 		];
 

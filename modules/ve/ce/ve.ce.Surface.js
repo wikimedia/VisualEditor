@@ -1658,13 +1658,20 @@ ve.ce.Surface.prototype.handleEnter = function ( e ) {
 
 	// Now we can move the cursor forward
 	if ( advanceCursor ) {
-		this.model.setSelection(
-			new ve.Range( documentModel.data.getRelativeContentOffset( selection.from, 1 ) )
-		);
+		cursor = documentModel.data.getRelativeContentOffset( selection.from, 1 );
 	} else {
-		this.model.setSelection(
-			new ve.Range( documentModel.data.getNearestContentOffset( selection.from ) )
+		cursor = documentModel.data.getNearestContentOffset( selection.from );
+	}
+	if ( cursor === -1 ) {
+		// Cursor couldn't be placed in a nearby content node, so create an empty paragraph
+		this.model.change(
+			ve.dm.Transaction.newFromInsertion(
+				documentModel, selection.from, emptyParagraph
+			)
 		);
+		this.model.setSelection( new ve.Range( selection.from + 1 ) );
+	} else {
+		this.model.setSelection( new ve.Range( cursor ) );
 	}
 	// Reset and resume polling
 	this.surfaceObserver.clear();
