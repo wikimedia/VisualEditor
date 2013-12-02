@@ -402,7 +402,9 @@ ve.ui.Context.prototype.show = function ( transition, repositionOnly ) {
 		// Show either inspector or menu
 		if ( inspector ) {
 			this.$menu.hide();
-			this.inspectors.$element.show();
+			// Use visibility instead of .show()/.hide() so Firefox won't refuse to load the iframe
+			// inside the inspector (bug 57568)
+			this.inspectors.$element.css( 'visibility', '' );
 			if ( !repositionOnly ) {
 				inspector.$element.css( 'opacity', 0 );
 			}
@@ -413,7 +415,9 @@ ve.ui.Context.prototype.show = function ( transition, repositionOnly ) {
 				inspector.$element.css( 'opacity', 1 );
 			}, this ), 200 );
 		} else {
-			this.inspectors.$element.hide();
+			// Use visibility instead of .show()/.hide() so Firefox won't refuse to load the iframe
+			// inside the inspector (bug 57568)
+			this.inspectors.$element.css( 'visibility', 'hidden' );
 			this.embedded = (
 				focusedNode &&
 				focusedNode.$focusable.outerHeight() > this.$menu.outerHeight() * 2 &&
