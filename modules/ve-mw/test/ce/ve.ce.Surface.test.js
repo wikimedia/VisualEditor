@@ -52,7 +52,7 @@ QUnit.test( 'handleDelete', function ( assert ) {
 	QUnit.expect( cases.length * 2 );
 
 	for ( i = 0; i < cases.length; i++ ) {
-		ve.test.utils.runSurfaceHandleDeleteTest(
+		ve.test.utils.runSurfaceHandleSpecialKeyTest(
 			assert, cases[i].html, cases[i].range, cases[i].operations,
 			cases[i].expectedData, cases[i].expectedRange, cases[i].msg
 		);

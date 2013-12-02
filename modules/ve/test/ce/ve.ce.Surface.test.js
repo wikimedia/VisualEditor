@@ -9,14 +9,14 @@ QUnit.module( 've.ce.Surface' );
 
 /* Tests */
 
-ve.test.utils.runSurfaceHandleDeleteTest = function ( assert, html, range, operations, expectedData, expectedRange, msg ) {
-	var i, args,
+ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, html, range, operations, expectedData, expectedRange, msg ) {
+	var i, method, args,
 		selection,
-		deleteArgs = {
-			'backspace': [ {}, true ],
-			'delete': [ {}, false ],
-			'modifiedBackspace': [ { 'ctrlKey': true }, true ],
-			'modifiedDelete': [ { 'ctrlKey': true }, false ]
+		actions = {
+			'backspace': [ 'handleDelete', {}, true ],
+			'delete': [ 'handleDelete', {}, false ],
+			'modifiedBackspace': [ 'handleDelete', { 'ctrlKey': true }, true ],
+			'modifiedDelete': [ 'handleDelete', { 'ctrlKey': true }, false ]
 		},
 		surface = ve.test.utils.createSurfaceFromHtml( html || ve.dm.example.html ),
 		view = surface.getView(),
@@ -33,8 +33,9 @@ ve.test.utils.runSurfaceHandleDeleteTest = function ( assert, html, range, opera
 
 	model.setSelection( range );
 	for ( i = 0; i < operations.length; i++ ) {
-		args = deleteArgs[operations[i]];
-		view.handleDelete( args[0], args[1] );
+		method = actions[operations[i]][0];
+		args = actions[operations[i]].slice( 1 );
+		view[method].apply( view, args );
 	}
 	expectedData( data );
 
@@ -137,7 +138,7 @@ QUnit.test( 'handleDelete', function ( assert ) {
 	QUnit.expect( cases.length * 2 );
 
 	for ( i = 0; i < cases.length; i++ ) {
-		ve.test.utils.runSurfaceHandleDeleteTest(
+		ve.test.utils.runSurfaceHandleSpecialKeyTest(
 			assert, cases[i].html, cases[i].range, cases[i].operations,
 			cases[i].expectedData, cases[i].expectedRange, cases[i].msg
 		);
@@ -604,7 +605,6 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 // TODO: ve.ce.Surface#handleUpOrDownArrowKey
 // TODO: ve.ce.Surface#handleInsertion
 // TODO: ve.ce.Surface#handleEnter
-// TODO: ve.ce.Surface#handleDelete
 // TODO: ve.ce.Surface#showSelection
 // TODO: ve.ce.Surface#replacePhantoms
 // TODO: ve.ce.Surface#replaceHighlight
