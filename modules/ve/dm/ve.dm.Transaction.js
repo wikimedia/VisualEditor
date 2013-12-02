@@ -167,7 +167,8 @@ ve.dm.Transaction.newFromRemoval = function ( doc, range, removeMetadata ) {
  * @returns {ve.dm.Transaction} Transaction that inserts the nodes and updates the internal list
  */
 ve.dm.Transaction.newFromDocumentInsertion = function ( doc, offset, newDoc, newDocRange ) {
-	var i, len, merge, data, metadata, listData, listMetadata, oldEndOffset, newEndOffset, tx, insertion, range,
+	var i, len, merge, data, metadata, listData, listMetadata, oldEndOffset, newEndOffset, tx,
+		insertion, spliceItemRange, spliceListNodeRange,
 		listNode = doc.internalList.getListNode(),
 		listNodeRange = listNode.getRange(),
 		newListNode = newDoc.internalList.getListNode(),
@@ -265,18 +266,25 @@ ve.dm.Transaction.newFromDocumentInsertion = function ( doc, offset, newDoc, new
 		i = 0;
 		// Find item node in doc
 		while (
-			( range = doc.internalList.getItemNode( i ).getRange() ) &&
-			offset > range.end
+			( spliceItemRange = doc.internalList.getItemNode( i ).getRange() ) &&
+			offset > spliceItemRange.end
 		) {
 			i++;
 		}
-		// Get range from newDoc
-		range = newDoc.internalList.getItemNode( i ).getRange();
 
-		ve.batchSplice( listData, range.start - newListNodeRange.start,
-			range.end - range.start, data.data );
-		ve.batchSplice( listMetadata, range.start - newListNodeRange.start,
-			range.end - range.start, metadata.data );
+		if ( newDoc.origDoc === doc ) {
+			// Get spliceItemRange from newDoc
+			spliceItemRange = newDoc.internalList.getItemNode( i ).getRange();
+			spliceListNodeRange = newListNodeRange;
+		} else {
+			// Get spliceItemRange from doc; the while loop has already set it
+			spliceListNodeRange = listNodeRange;
+		}
+		ve.batchSplice( listData, spliceItemRange.start - spliceListNodeRange.start,
+			spliceItemRange.end - spliceItemRange.start, data.data );
+		ve.batchSplice( listMetadata, spliceItemRange.start - spliceListNodeRange.start,
+			spliceItemRange.end - spliceItemRange.start, metadata.data );
+
 		tx.pushRetain( listNodeRange.start );
 		tx.pushReplace( doc, listNodeRange.start, listNodeRange.end - listNodeRange.start,
 			listData, listMetadata

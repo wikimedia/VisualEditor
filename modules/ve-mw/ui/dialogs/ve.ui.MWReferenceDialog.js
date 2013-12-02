@@ -244,7 +244,7 @@ ve.ui.MWReferenceDialog.prototype.setup = function ( data ) {
  * @inheritdoc
  */
 ve.ui.MWReferenceDialog.prototype.teardown = function ( data ) {
-	var i, len, txs, item, newDoc, group, refGroup, listGroup, keyIndex, refNodes,
+	var i, len, txs, item, newDoc, group, refGroup, listGroup, keyIndex, refNodes, itemNodeRange,
 		surfaceModel = this.surface.getModel(),
 		// Store the original selection browsers may reset it after
 		// the first model change.
@@ -296,15 +296,10 @@ ve.ui.MWReferenceDialog.prototype.teardown = function ( data ) {
 				this.ref.refGroup = refGroup;
 			}
 			// Update internal node content
+			itemNodeRange = internalList.getItemNode( this.ref.listIndex ).getRange();
+			surfaceModel.change( ve.dm.Transaction.newFromRemoval( doc, itemNodeRange, true ) );
 			surfaceModel.change(
-				ve.dm.Transaction.newFromRemoval(
-					doc, internalList.getItemNode( this.ref.listIndex ).getRange()
-				)
-			);
-			surfaceModel.change(
-				ve.dm.Transaction.newFromDocumentInsertion(
-					doc, internalList.getItemNode( this.ref.listIndex ).getRange().start, newDoc
-				)
+				ve.dm.Transaction.newFromDocumentInsertion( doc, itemNodeRange.start, newDoc )
 			);
 		}
 
@@ -322,15 +317,9 @@ ve.ui.MWReferenceDialog.prototype.teardown = function ( data ) {
 				item = internalList.getItemInsertion( this.ref.listGroup, this.ref.listKey, [] );
 				surfaceModel.change( item.transaction );
 				this.ref.listIndex = item.index;
+				itemNodeRange = internalList.getItemNode( this.ref.listIndex ).getRange();
 				surfaceModel.change(
-					ve.dm.Transaction.newFromRemoval(
-						doc, internalList.getItemNode( this.ref.listIndex ), newDoc, true
-					)
-				);
-				surfaceModel.change(
-					ve.dm.Transaction.newFromDocumentInsertion(
-						doc, internalList.getItemNode( this.ref.listIndex ), newDoc
-					)
+					ve.dm.Transaction.newFromDocumentInsertion( doc, itemNodeRange.start, newDoc )
 				);
 			}
 			// Add reference at cursor
