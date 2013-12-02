@@ -356,8 +356,6 @@
 	init.isAvailable = (
 		support.visualEditor &&
 
-		userPrefEnabled &&
-
 		// Disable on redirect pages until redirects are editable (bug 47328)
 		// Property wgIsRedirect is relatively new in core, many cached pages
 		// don't have it yet. We do a best-effort approach using the url query
@@ -391,7 +389,7 @@
 	// on this page. See above for why it may be false.
 	mw.libs.ve = init;
 
-	if ( init.isAvailable ) {
+	if ( init.isAvailable && userPrefEnabled ) {
 		$( 'html' ).addClass( 've-available' );
 	} else {
 		$( 'html' ).addClass( 've-not-available' );
@@ -399,22 +397,17 @@
 		// for e.g. "Edit" > "Edit source" even when VE is not available.
 	}
 
-	if ( !userPrefEnabled ) {
-		// However if ve is not available because of user preferences (as opposed
-		// to because of the page, namespace, browser etc.) then we do want to
-		// return early as in that case even transformation of edit source should
-		// not be done.
-		return;
-	}
-
 	$( function () {
-		if ( init.isAvailable && isViewPage ) {
-			if ( uri.query.veaction === 'edit' ) {
+		if ( init.isAvailable ) {
+			if ( isViewPage && uri.query.veaction === 'edit' ) {
 				getTarget().done( function ( target ) {
 					target.activate();
 				} );
 			}
 		}
-		init.setupSkin();
+
+		if ( userPrefEnabled ) {
+			init.setupSkin();
+		}
 	} );
 }() );
