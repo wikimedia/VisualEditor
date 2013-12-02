@@ -396,7 +396,11 @@ ve.ui.Context.prototype.show = function ( transition, repositionOnly ) {
 	if ( !this.showing && !this.hiding ) {
 		this.showing = true;
 
-		this.$element.show();
+		// HACK: make the context and popup visibility: hidden; instead of display: none; because
+		// they contain inspector iframes, and applying display: none; to those causes them to
+		// not load in Firefox
+		this.$element.css( 'visibility', '' );
+		this.popup.$element.css( 'visibility', '' );
 		this.popup.show();
 
 		// Show either inspector or menu
@@ -444,8 +448,12 @@ ve.ui.Context.prototype.hide = function () {
 		if ( inspector ) {
 			inspector.close( { 'action': 'hide' } );
 		}
+		// HACK: make the context and popup visibility: hidden; instead of display: none; because
+		// they contain inspector iframes, and applying display: none; to those causes them to
+		// not load in Firefox
 		this.popup.hide();
-		this.$element.hide();
+		this.popup.$element.show().css( 'visibility', 'hidden' );
+		this.$element.css( 'visibility', 'hidden' );
 		this.visible = false;
 		this.hiding = false;
 	}
