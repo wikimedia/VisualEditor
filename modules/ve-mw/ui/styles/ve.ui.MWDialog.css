@@ -27,6 +27,16 @@
 	font-style: italic;
 }
 
+.oo-ui-fieldsetLayout + .ve-ui-mwTransclusionDialog-addParameterFieldset {
+	margin-top: 0;
+}
+
+.ve-ui-mwTransclusionDialog-addParameterFieldset > legend.oo-ui-labeledElement-label {
+	font-size: 1.25em;
+	padding-left: 2em;
+	line-height: 2em;
+}
+
 .ve-ui-mwTransclusionDialog-addParameterFieldset .ve-ui-mwParameterSearchWidget {
 	position: relative;
 	overflow: hidden;
@@ -37,6 +47,12 @@
 .ve-ui-mwTransclusionDialog-addParameterFieldset .oo-ui-searchWidget-results {
 	position: relative;
 	padding-bottom: 5em;
+}
+
+.ve-ui-mwTransclusionDialog-removeButton {
+	position: absolute;
+	right: 1.5em;
+	top: 1em;
 }
 
 /* ve.ui.MWMetaDialog */

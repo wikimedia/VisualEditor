@@ -134,6 +134,10 @@
 			{
 				"name": "Dialogs",
 				"classes": ["ve.ui.*Dialog"]
+			},
+			{
+				"name": "Pages",
+				"classes": ["ve.ui.*Page"]
 			}
 		]
 	},

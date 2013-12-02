@@ -37,13 +37,9 @@ OO.mixinClass( ve.dm.MWTransclusionModel, OO.EventEmitter );
 /* Events */
 
 /**
- * @event add
- * @param {ve.dm.MWTransclusionPartModel} part Added part
- */
-
-/**
- * @event remove
- * @param {ve.dm.MWTransclusionPartModel} part Removed part
+ * @event replace
+ * @param {ve.dm.MWTransclusionPartModel|null} removed Removed part
+ * @param {ve.dm.MWTransclusionPartModel|null} added Added part
  */
 
 /* Methods */
@@ -51,12 +47,12 @@ OO.mixinClass( ve.dm.MWTransclusionModel, OO.EventEmitter );
 /**
  * Load from transclusion data, and fetch spec from server.
  *
- * @method
  * @param {Object} data Transclusion data
  * @returns {jQuery.Promise} Promise, resolved when spec is loaded
  */
 ve.dm.MWTransclusionModel.prototype.load = function ( data ) {
-	var i, len, part;
+	var i, len, part, deferred,
+		promises = [];
 
 	// Convert single part format to multi-part format
 	// Parsoid doesn't use this format any more, but we accept it for backwards compatibility
@@ -68,48 +64,66 @@ ve.dm.MWTransclusionModel.prototype.load = function ( data ) {
 		for ( i = 0, len = data.parts.length; i < len; i++ ) {
 			part = data.parts[i];
 			if ( part.template ) {
-				this.queue.push(
-					{ 'part': ve.dm.MWTemplateModel.newFromData( this, part.template ) }
-				);
+				deferred = $.Deferred();
+				promises.push( deferred.promise() );
+				this.queue.push( {
+					'add': ve.dm.MWTemplateModel.newFromData( this, part.template ),
+					'deferred': deferred
+				} );
 			} else if ( typeof part === 'string' ) {
-				this.queue.push(
-					{ 'part': new ve.dm.MWTransclusionContentModel( this, part, 'data' ) }
-				);
+				deferred = $.Deferred();
+				promises.push( deferred.promise() );
+				this.queue.push( {
+					'add': new ve.dm.MWTransclusionContentModel( this, part, 'data' ),
+					'deferred': deferred
+				} );
 			}
 		}
 		setTimeout( ve.bind( this.fetch, this ) );
 	}
+
+	return $.when.apply( $, promises );
 };
 
 /**
  * Process one or more queue items.
  *
- * @method
  * @param {Object[]} queue List of objects containing parts to add and optionally indexes to add
  *  them at, if no index is given parts will be added at the end
- * @fires add For each item added
+ * @fires replace For each item added
  */
 ve.dm.MWTransclusionModel.prototype.process = function ( queue ) {
-	var i, len, item, title, index;
+	var i, len, item, title, index,
+		remove = 0;
 
 	for ( i = 0, len = queue.length; i < len; i++ ) {
 		item = queue[i];
-		if ( item.part instanceof ve.dm.MWTemplateModel ) {
-			title = item.part.getTitle();
+		if ( item.add instanceof ve.dm.MWTemplateModel ) {
+			title = item.add.getTitle();
 			if ( hasOwn.call( specCache, title ) && specCache[title] ) {
-				item.part.getSpec().extend( specCache[title] );
+				item.add.getSpec().extend( specCache[title] );
 			}
 		}
 		// Auto-remove if already existing
-		index = ve.indexOf( item.part, this.parts );
+		index = ve.indexOf( item.add, this.parts );
 		if ( index !== -1 ) {
 			this.parts.splice( index, 1 );
-			this.emit( 'remove', item.part );
+			this.emit( 'replace', item.add, null );
 		}
 		// Add at index, or end if none was given
-		index = item.index === undefined ? this.parts.length : item.index;
-		this.parts.splice( index, 0, item.part );
-		this.emit( 'add', item.part );
+		if ( item.index !== undefined ) {
+			index = item.index;
+		} else if ( item.remove ) {
+			index = ve.indexOf( item.remove, this.parts );
+			if ( index !== -1 ) {
+				remove = 1;
+			}
+		}
+		if ( index === undefined || index === -1 ) {
+			index = this.parts.length;
+		}
+		this.parts.splice( index, remove, item.add );
+		this.emit( 'replace', item.remove || null, item.add );
 		// Resolve promises
 		if ( item.deferred ) {
 			item.deferred.resolve();
@@ -134,8 +148,8 @@ ve.dm.MWTransclusionModel.prototype.fetch = function () {
 	// Get unique list of template titles that aren't already loaded
 	for ( i = 0, len = queue.length; i < len; i++ ) {
 		item = queue[i];
-		if ( item.part instanceof ve.dm.MWTemplateModel ) {
-			title = item.part.getTitle();
+		if ( item.add instanceof ve.dm.MWTemplateModel ) {
+			title = item.add.getTitle();
 			if (
 				// Skip titles that don't have a resolvable href
 				title &&
@@ -227,7 +241,6 @@ ve.dm.MWTransclusionModel.prototype.abortRequests = function () {
 /**
  * Get plain object representation of template transclusion.
  *
- * @method
  * @returns {Object|null} Plain object representation, or null if empty
  */
 ve.dm.MWTransclusionModel.prototype.getPlainObject = function () {
@@ -254,7 +267,6 @@ ve.dm.MWTransclusionModel.prototype.getPlainObject = function () {
  *
  * This is used to give parts unique IDs, and returns a different value each time it's called.
  *
- * @method
  * @returns {number} Unique ID
  */
 ve.dm.MWTransclusionModel.prototype.getUniquePartId = function () {
@@ -262,11 +274,38 @@ ve.dm.MWTransclusionModel.prototype.getUniquePartId = function () {
 };
 
 /**
+ * Replace part.
+ *
+ * Replace asynchonously.
+ *
+ * @param {ve.dm.MWTransclusionPartModel} remove Part to remove
+ * @param {ve.dm.MWTransclusionPartModel} add Part to add
+ * @throws {Error} If part to remove is not valid
+ * @throws {Error} If part to add is not valid
+ * @returns {jQuery.Promise} Promise, resolved when part is added
+ */
+ve.dm.MWTransclusionModel.prototype.replacePart = function ( remove, add ) {
+	var deferred = $.Deferred();
+	if (
+		!( remove instanceof ve.dm.MWTransclusionPartModel ) ||
+		!( add instanceof ve.dm.MWTransclusionPartModel )
+	) {
+		throw new Error( 'Invalid transclusion part' );
+	}
+	this.queue.push( { 'remove': remove, 'add': add, 'deferred': deferred } );
+
+	// Fetch on next yield to process items in the queue together, subsequent calls to fetch will
+	// have no effect because the queue will be clear
+	setTimeout( ve.bind( this.fetch, this ) );
+
+	return deferred.promise();
+};
+
+/**
  * Add part.
  *
  * Added asynchronously, but order is preserved.
  *
- * @method
  * @param {ve.dm.MWTransclusionPartModel} part Part to add
  * @param {number} [index] Specific index to add content at, defaults to the end
  * @throws {Error} If part is not valid
@@ -277,7 +316,7 @@ ve.dm.MWTransclusionModel.prototype.addPart = function ( part, index ) {
 	if ( !( part instanceof ve.dm.MWTransclusionPartModel ) ) {
 		throw new Error( 'Invalid transclusion part' );
 	}
-	this.queue.push( { 'part': part, 'index': index, 'deferred': deferred } );
+	this.queue.push( { 'add': part, 'index': index, 'deferred': deferred } );
 
 	// Fetch on next yield to process items in the queue together, subsequent calls to fetch will
 	// have no effect because the queue will be clear
@@ -289,22 +328,20 @@ ve.dm.MWTransclusionModel.prototype.addPart = function ( part, index ) {
 /**
  * Remove a part.
  *
- * @method
  * @param {ve.dm.MWTransclusionPartModel} part Part to remove
- * @fires remove
+ * @fires replace
  */
 ve.dm.MWTransclusionModel.prototype.removePart = function ( part ) {
 	var index = ve.indexOf( part, this.parts );
 	if ( index !== -1 ) {
 		this.parts.splice( index, 1 );
-		this.emit( 'remove', part );
+		this.emit( 'replace', part, null );
 	}
 };
 
 /**
  * Get all parts.
  *
- * @method
  * @returns {ve.dm.MWTransclusionPartModel[]} Parts in transclusion
  */
 ve.dm.MWTransclusionModel.prototype.getParts = function () {
@@ -316,7 +353,6 @@ ve.dm.MWTransclusionModel.prototype.getParts = function () {
  *
  * Matching is performed against the first section of the `id`, delimited by a '/'.
  *
- * @method
  * @param {string} id Part ID
  * @returns {ve.dm.MWTransclusionPartModel|null} Part with matching ID, if found
  */
@@ -332,6 +368,38 @@ ve.dm.MWTransclusionModel.prototype.getPartFromId = function ( id ) {
 		}
 	}
 	return null;
+};
+
+/**
+ * Get the index of a part or parameter.
+ *
+ * Indexes are linear depth-first addresses in the transclusion tree.
+ *
+ * @param {ve.dm.MWTransclusionPartModel|ve.dm.MWTemplateParameterModel} model Part or parameter
+ * @returns {number} Page index of model
+ */
+ve.dm.MWTransclusionModel.prototype.getIndex = function ( model ) {
+	var i, iLen, j, jLen, part, names,
+		parts = this.parts,
+		index = 0;
+
+	for ( i = 0, iLen = parts.length; i < iLen; i++ ) {
+		part = parts[i];
+		if ( part === model ) {
+			return index;
+		}
+		index++;
+		if ( part instanceof ve.dm.MWTemplateModel ) {
+			names = part.getParameterNames();
+			for ( j = 0, jLen = names.length; j < jLen; j++ ) {
+				if ( part.getParameter( names[j] ) === model ) {
+					return index;
+				}
+				index++;
+			}
+		}
+	}
+	return -1;
 };
 
 }() );
