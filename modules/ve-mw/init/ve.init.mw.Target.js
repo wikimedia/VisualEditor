@@ -60,20 +60,7 @@ ve.init.mw.Target = function VeInitMwTarget( $container, pageName, revisionId ) 
 	this.pluginCallbacks = [];
 	this.modulesReady = $.Deferred();
 	this.preparedCacheKeyPromise = null;
-	this.loading = false;
-	this.saving = false;
-	this.diffing = false;
-	this.serializing = false;
-	this.submitting = false;
-	this.baseTimeStamp = null;
-	this.startTimeStamp = null;
-	this.doc = null;
-	this.editNotices = null;
-	this.$checkboxes = null;
-	this.remoteNotices = [];
-	this.localNoticeMessages = [];
-	this.sanityCheckFinished = false;
-	this.sanityCheckVerified = false;
+	this.clearState();
 	this.isMobileDevice = (
 		'ontouchstart' in window ||
 			( window.DocumentTouch && document instanceof window.DocumentTouch )
@@ -742,6 +729,28 @@ ve.init.mw.Target.prototype.load = function ( additionalModules ) {
 		.fail( ve.bind( ve.init.mw.Target.onLoadError, this ) );
 
 	return true;
+};
+
+/**
+ * Clear the state of this target, preparing it to be reactivated later.
+ */
+ve.init.mw.Target.prototype.clearState = function () {
+	this.clearPreparedCacheKey();
+	this.loading = false;
+	this.saving = false;
+	this.diffing = false;
+	this.serializing = false;
+	this.submitting = false;
+	this.baseTimeStamp = null;
+	this.startTimeStamp = null;
+	this.doc = null;
+	this.originalHtml = null;
+	this.editNotices = null;
+	this.$checkboxes = null;
+	this.remoteNotices = [];
+	this.localNoticeMessages = [];
+	this.sanityCheckFinished = false;
+	this.sanityCheckVerified = false;
 };
 
 /**

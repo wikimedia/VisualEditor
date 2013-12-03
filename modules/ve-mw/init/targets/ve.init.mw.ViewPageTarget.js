@@ -215,6 +215,9 @@ ve.init.mw.ViewPageTarget.prototype.deactivate = function ( override ) {
 				this.loading.abort();
 			}
 
+			this.clearState();
+			this.docToSave = null;
+
 			this.deactivating = false;
 			mw.hook( 've.deactivationComplete' ).fire();
 		}
