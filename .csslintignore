@@ -1,0 +1,6 @@
+docs/**
+modules/jquery.uls/**
+modules/jsdifflib/**
+modules/oojs-ui/**
+modules/qunit/**
+node_modules/**
