@@ -509,10 +509,12 @@ ve.dm.ElementLinearData.prototype.trimOuterSpaceFromRange = function ( range ) {
  */
 ve.dm.ElementLinearData.prototype.getRelativeOffset = function ( offset, distance, callback ) {
 	var i, direction,
+		dataOffset,
 		args = Array.prototype.slice.call( arguments, 3 ),
 		start = offset,
 		steps = 0,
-		turnedAround = false;
+		turnedAround = false,
+		inHandlesOwnChildren = false;
 	// If offset is already a structural offset and distance is zero than no further work is needed,
 	// otherwise distance should be 1 so that we can get out of the invalid starting offset
 	if ( distance === 0 ) {
@@ -535,11 +537,26 @@ ve.dm.ElementLinearData.prototype.getRelativeOffset = function ( offset, distanc
 	offset = -1;
 	// Iteration
 	while ( i >= 0 && i <= this.getLength() ) {
+		// Detect when the search for a valid offset enters a node which handles its own
+		// children, and don't return an offset inside such a node. This clearly won't work
+		// if you start inside such a node, but you shouldn't be doing that to being with
+		dataOffset = i + ( direction > 0 ? -1 : 0 );
+		if (
+			this.isElementData( dataOffset ) &&
+			ve.dm.nodeFactory.doesNodeHandleOwnChildren( this.getType( dataOffset ) )
+		) {
+			// We have entered a node if we step right over an open, or left over a close
+			inHandlesOwnChildren =
+				( direction > 0 && this.isOpenElementData( dataOffset ) ) ||
+				( direction < 0 && this.isCloseElementData( dataOffset ) );
+		}
 		if ( callback.apply( this, [i].concat( args ) ) ) {
-			steps++;
-			offset = i;
-			if ( distance === steps ) {
-				return offset;
+			if ( !inHandlesOwnChildren ) {
+				steps++;
+				offset = i;
+				if ( distance === steps ) {
+					return offset;
+				}
 			}
 		} else if (
 			// Don't keep turning around over and over
@@ -559,6 +576,7 @@ ve.dm.ElementLinearData.prototype.getRelativeOffset = function ( offset, distanc
 			i = start;
 			distance = 1;
 			turnedAround = true;
+			inHandlesOwnChildren = false;
 		}
 		i += direction;
 	}
