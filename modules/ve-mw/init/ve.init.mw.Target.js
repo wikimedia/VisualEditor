@@ -74,8 +74,6 @@ ve.init.mw.Target = function VeInitMwTarget( $container, pageName, revisionId ) 
 	this.localNoticeMessages = [];
 	this.sanityCheckFinished = false;
 	this.sanityCheckVerified = false;
-	this.activating = false;
-	this.deactivating = false;
 	this.isMobileDevice = (
 		'ontouchstart' in window ||
 			( window.DocumentTouch && document instanceof window.DocumentTouch )
@@ -322,15 +320,12 @@ ve.init.mw.Target.prototype.onReady = function () {
 	// We need to wait until onReady as local notices may require special messages
 	this.onNoticesReady();
 	this.loading = false;
-	if ( this.activating ) {
-		this.edited = false;
-		this.setUpSurface( this.doc, ve.bind( function() {
-			this.startSanityCheck();
-			this.$document[0].focus();
-			this.activating = false;
-			this.emit( 'surfaceReady' );
-		}, this ) );
-	}
+	this.edited = false;
+	this.setUpSurface( this.doc, ve.bind( function() {
+		this.startSanityCheck();
+		this.$document[0].focus();
+		this.emit( 'surfaceReady' );
+	}, this ) );
 };
 
 /**

@@ -36,6 +36,8 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 	this.onBeforeUnloadHandler = null;
 	this.timings = {};
 	this.active = false;
+	this.activating = false;
+	this.deactivating = false;
 	this.edited = false;
 	// If this is true then #transformPage / #restorePage will not call pushState
 	// This is to avoid adding a new history entry for the url we just got from onpopstate
@@ -244,6 +246,7 @@ ve.init.mw.ViewPageTarget.prototype.onLoadError = function ( response, status ) 
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.onSurfaceReady = function () {
+	this.activating = false;
 	this.surface.getModel().getDocument().connect( this, {
 		'transact': 'recordLastTransactionTime'
 	} );
