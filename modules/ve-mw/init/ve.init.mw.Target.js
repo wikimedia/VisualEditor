@@ -21,6 +21,7 @@
  */
 ve.init.mw.Target = function VeInitMwTarget( $container, pageName, revisionId ) {
 	var i, len, prefName, prefValue, conf = mw.config.get( 'wgVisualEditorConfig' ),
+		// language, mwalienextension and mwhiero are commented out in VisualEditorHooks::onGetBetaPreferences()
 		extraModules = [ 'experimental'/* , 'language'*//*, 'mwalienextension'*/, 'mwmath'/*, 'mwhiero'*/ ];
 
 	// Parent constructor
@@ -71,6 +72,10 @@ ve.init.mw.Target = function VeInitMwTarget( $container, pageName, revisionId ) 
 	this.$checkboxes = null;
 	this.remoteNotices = [];
 	this.localNoticeMessages = [];
+	this.sanityCheckFinished = false;
+	this.sanityCheckVerified = false;
+	this.activating = false;
+	this.deactivating = false;
 	this.isMobileDevice = (
 		'ontouchstart' in window ||
 			( window.DocumentTouch && document instanceof window.DocumentTouch )
@@ -78,8 +83,7 @@ ve.init.mw.Target = function VeInitMwTarget( $container, pageName, revisionId ) 
 };
 
 /**
- * @event load
- * @param {HTMLDocument} dom
+ * @event surfaceReady
  */
 
 /**
@@ -98,6 +102,53 @@ ve.init.mw.Target = function VeInitMwTarget( $container, pageName, revisionId ) 
 
 /**
  * @event noChanges
+ */
+
+/**
+ * @event saveAsyncBegin
+ * Fired when we're waiting for network
+ */
+
+/**
+ * @event saveAsyncComplete
+ * Fired when we're no longer waiting for network
+ */
+
+/**
+ * @event saveErrorEmpty
+ * Fired when save API returns no data object
+ */
+
+/**
+ * @event saveErrorSpamBlacklist
+ * Fired when save is considered spam or blacklisted
+ * @param {Object} editApi
+ */
+
+/**
+ * @event saveErrorAbuseFilter
+ * Fired when AbuseFilter throws warnings
+ * @param {Object} editApi
+ */
+
+/**
+ * @event saveErrorNewUser
+ * Fired when user is logged in as a new user
+ * @param {boolean|undefined} isAnon Is newly logged in user anonymous. If
+ *  undefined, user is logged in
+ */
+
+/**
+ * @event saveErrorCaptcha
+ * Fired when saveError indicates captcha field is required
+ * @param {Object} editApi
+ */
+
+/**
+ * @event saveErrorUnknown
+ * Fired for any other type of save error
+ * @param {Object} editApi
+ * @param {Object|null} data API response data
  */
 
 /**
@@ -126,6 +177,10 @@ ve.init.mw.Target = function VeInitMwTarget( $container, pageName, revisionId ) 
  * @param {jqXHR|null} jqXHR
  * @param {string} status Text status message
  * @param {Mixed|null} error HTTP status text
+ */
+
+/**
+ * @event sanityCheckComplete
  */
 
 /* Inheritance */
@@ -160,8 +215,8 @@ ve.init.mw.Target.onModulesReady = function () {
  * Handle response to a successful load request.
  *
  * This method is called within the context of a target instance. If successful the DOM from the
- * server will be parsed, stored in {this.doc} and then {ve.init.mw.Target.onReady} will be called once
- * the modules are ready.
+ * server will be parsed, stored in {this.doc} and then {this.onReady} will be called once modules
+ * are ready.
  *
  * @static
  * @method
@@ -207,17 +262,16 @@ ve.init.mw.Target.onLoad = function ( response ) {
 		this.startTimeStamp = data.starttimestamp;
 		this.revid = data.oldid;
 		// Everything worked, the page was loaded, continue as soon as the modules are loaded
-		this.modulesReady.done( ve.bind( ve.init.mw.Target.onReady, this ) );
+		this.modulesReady.done( ve.bind( this.onReady, this ) );
 	}
 };
 
 /**
  * Handle the edit notices being ready for rendering.
  *
- * @static
  * @method
  */
-ve.init.mw.Target.onNoticesReady = function () {
+ve.init.mw.Target.prototype.onNoticesReady = function () {
 	var i, len, noticeHtmls, tmp, el;
 
 	// Since we're going to parse them, we might as well save these nodes
@@ -261,18 +315,22 @@ ve.init.mw.Target.onNoticesReady = function () {
 /**
  * Handle both DOM and modules being loaded and ready.
  *
- * This method is called within the context of a target instance.
- *
- * @static
  * @method
- * @fires load
+ * @fires surfaceReady
  */
-ve.init.mw.Target.onReady = function () {
+ve.init.mw.Target.prototype.onReady = function () {
 	// We need to wait until onReady as local notices may require special messages
-	ve.init.mw.Target.onNoticesReady.call( this );
-
+	this.onNoticesReady();
 	this.loading = false;
-	this.emit( 'load', this.doc );
+	if ( this.activating ) {
+		this.edited = false;
+		this.setUpSurface( this.doc, ve.bind( function() {
+			this.startSanityCheck();
+			this.$document[0].focus();
+			this.activating = false;
+			this.emit( 'surfaceReady' );
+		}, this ) );
+	}
 };
 
 /**
@@ -308,23 +366,18 @@ ve.init.mw.Target.onSave = function ( response ) {
 	this.saving = false;
 	var data = response.visualeditoredit;
 	if ( !data && !response.error ) {
-		ve.init.mw.Target.onSaveError.call( this, null, 'Invalid response from server', response );
+		this.onSaveError( null, 'Invalid response from server', response );
 	} else if ( response.error ) {
 		if ( response.error.code === 'editconflict' ) {
 			this.emit( 'editConflict' );
 		} else {
-			ve.init.mw.Target.onSaveError.call( this, null, 'Save failure', response );
+			this.onSaveError( null, 'Save failure', response );
 		}
 	} else if ( data.result !== 'success' ) {
 		// Note, this could be any of db failure, hookabort, badtoken or even a captcha
-		ve.init.mw.Target.onSaveError.call( this, null, 'Save failure', response );
+		this.onSaveError( null, 'Save failure', response );
 	} else if ( typeof data.content !== 'string' ) {
-		ve.init.mw.Target.onSaveError.call(
-			this,
-			null,
-			'Invalid HTML content in response from server',
-			response
-		);
+		this.onSaveError( null, 'Invalid HTML content in response from server', response );
 	} else {
 		this.emit( 'save', data.content, data.newrevid );
 	}
@@ -333,17 +386,145 @@ ve.init.mw.Target.onSave = function ( response ) {
 /**
  * Handle an unsuccessful save request.
  *
- * @static
  * @method
- * @this ve.init.mw.Target
  * @param {Object} jqXHR
  * @param {string} status Text status message
  * @param {Object|null} data API response data
- * @fires saveError
+ * @fires saveAsyncBegin
+ * @fires saveAsyncComplete
+ * @fires saveErrorEmpty
+ * @fires saveErrorSpamBlacklist
+ * @fires saveErrorAbuseFilter
+ * @fires saveErrorNewUser
+ * @fires saveErrorCaptcha
+ * @fires saveErrorUnknown
  */
-ve.init.mw.Target.onSaveError = function ( jqXHR, status, data ) {
+ve.init.mw.Target.prototype.onSaveError = function ( jqXHR, status, data ) {
+	var api, editApi,
+		trackData = {
+			'duration': ve.now() - this.timings.saveDialogSave,
+			'retries': this.timings.saveRetries
+		},
+		viewPage = this;
 	this.saving = false;
-	this.emit( 'saveError', jqXHR, status, data );
+	this.emit( 'saveAsyncComplete' );
+
+	// Handle empty response
+	if ( !data ) {
+		trackData.type = 'empty';
+		ve.track( 'performance.user.saveError', trackData );
+		this.emit( 'saveErrorEmpty' );
+		return;
+	}
+	editApi = data && data.visualeditoredit && data.visualeditoredit.edit;
+
+	// Handle spam blacklist error (either from core or from Extension:SpamBlacklist)
+	if ( editApi && editApi.spamblacklist ) {
+		trackData.type = 'spamblacklist';
+		ve.track( 'performance.user.saveError', trackData );
+		this.emit( 'saveErrorSpamBlacklist', editApi );
+		return;
+	}
+
+	// Handle warnings/errors from Extension:AbuseFilter
+	// TODO: Move this to a plugin
+	if ( editApi && editApi.info && editApi.info.indexOf( 'Hit AbuseFilter:' ) === 0 && editApi.warning ) {
+		trackData.type = 'abusefilter';
+		ve.track( 'performance.user.saveError', trackData );
+		this.emit( 'saveErrorAbuseFilter', editApi );
+		return;
+	}
+
+	// Handle token errors
+	if ( data.error && data.error.code === 'badtoken' ) {
+		api = new mw.Api();
+		this.emit( 'saveAsyncBegin' );
+		api.get( {
+			// action=query&meta=userinfo and action=tokens&type=edit can't be combined
+			// but action=query&meta=userinfo and action=query&prop=info can, however
+			// that means we have to give it titles and deal with page ids.
+			'action': 'query',
+			'meta': 'userinfo',
+			'prop': 'info',
+			// Try to send the normalised form so that it is less likely we get extra data like
+			// data.normalised back that we don't need.
+			'titles': new mw.Title( viewPage.pageName ).toText(),
+			'indexpageids': '',
+			'intoken': 'edit'
+		} )
+			.always( function () {
+				viewPage.emit( 'saveAsyncComplete' );
+			} )
+			.done( function ( data ) {
+				var userMsg,
+					userInfo = data.query && data.query.userinfo,
+					pageInfo = data.query && data.query.pages && data.query.pageids &&
+						data.query.pageids[0] && data.query.pages[ data.query.pageids[0] ],
+					editToken = pageInfo && pageInfo.edittoken,
+					isAnon = mw.user.isAnon();
+
+				if ( userInfo && editToken ) {
+					viewPage.editToken = editToken;
+
+					if (
+						( isAnon && userInfo.anon !== undefined ) ||
+							// Comparing id instead of name to pretect against possible
+							// normalisation and against case where the user got renamed.
+							mw.config.get( 'wgUserId' ) === userInfo.id
+					) {
+						// New session is the same user still
+						this.timings.saveRetries++;
+						viewPage.saveDocument();
+					} else {
+						// The now current session is a different user
+						trackData.type = 'badtoken';
+						ve.track( 'performance.user.saveError', trackData );
+						if ( isAnon ) {
+							// New session is an anonymous user
+							mw.config.set( {
+								// wgUserId is unset for anonymous users, not set to null
+								'wgUserId': undefined,
+								// wgUserName is explicitly set to null for anonymous users,
+								// functions like mw.user.isAnon rely on this.
+								'wgUserName': null
+							} );
+						} else {
+							// New session is a different user
+							mw.config.set( { 'wgUserId': userInfo.id, 'wgUserName': userInfo.name } );
+							userMsg = 'visualeditor-savedialog-identify-user---' + userInfo.name;
+							mw.messages.set(
+								userMsg,
+								mw.messages.get( 'visualeditor-savedialog-identify-user' )
+									.replace( /\$1/g, userInfo.name )
+							);
+						}
+						viewPage.emit( 'saveErrorNewUser', isAnon );
+					}
+
+				}
+			} );
+		return;
+	}
+
+	// Handle captcha
+	// Captcha "errors" usually aren't errors. We simply don't know about them ahead of time,
+	// so we save once, then (if required) we get an error with a captcha back and try again after
+	// the user solved the captcha.
+	// TODO: ConfirmEdit API is horrible, there is no reliable way to know whether it is a "math",
+	// "question" or "fancy" type of captcha. They all expose differently named properties in the
+	// API for different things in the UI. At this point we only support the FancyCaptha which we
+	// very intuitively detect by the presence of a "url" property.
+	if ( editApi && editApi.captcha && editApi.captcha.url ) {
+		trackData.type = 'captcha';
+		ve.track( 'performance.user.saveError', trackData );
+		this.emit( 'saveErrorCaptcha', editApi );
+		return;
+	}
+
+	// Handle (other) unknown and/or unrecoverable errors
+	trackData.type = 'unknown';
+	ve.track( 'performance.user.saveError', trackData );
+	this.emit( 'saveErrorUnknown', editApi, data );
 };
 
 
@@ -510,9 +691,10 @@ ve.init.mw.Target.prototype.getHtml = function ( newDoc ) {
  * A side-effect of calling this method is that it requests {this.modules} be loaded.
  *
  * @method
+ * @param {string[]} [additionalModules=[]] Resource loader modules
  * @returns {boolean} Loading has been started
 */
-ve.init.mw.Target.prototype.load = function () {
+ve.init.mw.Target.prototype.load = function ( additionalModules ) {
 	var data, start;
 	// Prevent duplicate requests
 	if ( this.loading ) {
@@ -521,7 +703,7 @@ ve.init.mw.Target.prototype.load = function () {
 	// Start loading the module immediately
 	mw.loader.using(
 		// Wait for site and user JS before running plugins
-		this.modules.concat( [ 'site', 'user' ] ),
+		this.modules.concat( additionalModules || [] ),
 		ve.bind( ve.init.mw.Target.onModulesReady, this )
 	);
 
@@ -756,7 +938,7 @@ ve.init.mw.Target.prototype.save = function ( doc, options ) {
 
 	this.saving = this.tryWithPreparedCacheKey( doc, data, 'save' )
 		.done( ve.bind( ve.init.mw.Target.onSave, this ) )
-		.fail( ve.bind( ve.init.mw.Target.onSaveError, this ) );
+		.fail( ve.bind( this.onSaveError, this ) );
 
 	return true;
 };
@@ -776,7 +958,7 @@ ve.init.mw.Target.prototype.showChanges = function ( doc ) {
 		'action': 'visualeditor',
 		'paction': 'diff',
 		'page': this.pageName,
-		'oldid': this.revid,
+		'oldid': this.revid
 	}, 'diff' )
 		.done( ve.bind( ve.init.mw.Target.onShowChanges, this ) )
 		.fail( ve.bind( ve.init.mw.Target.onShowChangesError, this ) );
@@ -866,4 +1048,139 @@ ve.init.mw.Target.prototype.serialize = function ( doc, callback ) {
  */
 ve.init.mw.Target.prototype.getEditNotices = function () {
 	return this.editNotices;
+};
+
+// FIXME: split out view specific functionality, emit to subclass
+
+/**
+ * Switch to editing mode.
+ *
+ * @method
+ * @param {HTMLDocument} doc HTML DOM to edit
+ * @param {Function} [callback] Callback to call when done
+ */
+ve.init.mw.Target.prototype.setUpSurface = function ( doc, callback ) {
+	var target = this;
+	setTimeout( function () {
+		// Build linmod
+		var store = new ve.dm.IndexValueStore(),
+			internalList = new ve.dm.InternalList(),
+			innerWhitespace = new Array( 2 ),
+			data = ve.dm.converter.getDataFromDom( doc, store, internalList, innerWhitespace );
+		setTimeout( function () {
+			// Build DM tree
+			var dmDoc = new ve.dm.Document( data, doc, undefined, internalList, innerWhitespace );
+			setTimeout( function () {
+				// Create ui.Surface (also creates ce.Surface and dm.Surface and builds CE tree)
+				target.surface = new ve.ui.Surface( dmDoc, target.surfaceOptions );
+				target.surface.$element.addClass( 've-init-mw-viewPageTarget-surface' );
+				setTimeout( function () {
+					// Initialize surface
+					target.surface.getContext().hide();
+					target.$document = target.surface.$element.find( '.ve-ce-documentNode' );
+					target.$element.append( target.surface.$element );
+					target.setUpToolbar();
+					target.$document.attr( {
+						'lang': mw.config.get( 'wgVisualEditor' ).pageLanguageCode,
+						'dir': mw.config.get( 'wgVisualEditor' ).pageLanguageDir
+					} );
+					// Add appropriately mw-content-ltr or mw-content-rtl class
+					target.surface.view.$element.addClass(
+						'mw-content-' + mw.config.get( 'wgVisualEditor' ).pageLanguageDir
+					);
+					target.active = true;
+					// Now that the surface is attached to the document and ready,
+					// let it initialize itself
+					target.surface.initialize();
+					setTimeout( callback );
+				} );
+			} );
+		} );
+	} );
+};
+
+/**
+ * Show the toolbar.
+ *
+ * This also transplants the toolbar to a new location.
+ *
+ * @method
+ */
+ve.init.mw.Target.prototype.setUpToolbar = function () {
+	this.toolbar = new ve.ui.TargetToolbar( this, this.surface, { 'shadow': true, 'actions': true } );
+	this.toolbar.setup( this.constructor.static.toolbarGroups );
+	this.surface.addCommands( this.constructor.static.surfaceCommands );
+	if ( !this.isMobileDevice ) {
+		this.toolbar.enableFloatable();
+	}
+	this.toolbar.$element
+		.addClass( 've-init-mw-viewPageTarget-toolbar' )
+		.insertBefore( $( '#firstHeading' ).length > 0 ? '#firstHeading' : this.surface.$element );
+	this.toolbar.$bar.slideDown( 'fast', ve.bind( function () {
+		// Check the surface wasn't torn down while the toolbar was animating
+		if ( this.surface ) {
+			this.toolbar.initialize();
+			this.surface.emit( 'position' );
+			this.surface.getContext().update();
+		}
+	}, this ) );
+};
+
+/**
+ * Fire off the sanity check. Must be called before the surface is activated.
+ *
+ * To access the result, check whether #sanityCheckPromise has been resolved or rejected
+ * (it's asynchronous, so it may still be pending when you check).
+ *
+ * @method
+ * @fires sanityCheckComplete
+ */
+ve.init.mw.Target.prototype.startSanityCheck = function () {
+	// We have to get a copy of the data now, before we unlock the surface and let the user edit,
+	// but we can defer the actual conversion and comparison
+	var viewPage = this,
+		doc = viewPage.surface.getModel().getDocument(),
+		data = new ve.dm.FlatLinearData( doc.getStore().clone(), ve.copy( doc.getFullData() ) ),
+		oldDom = viewPage.doc,
+		d = $.Deferred();
+
+	// Reset
+	viewPage.sanityCheckFinished = false;
+	viewPage.sanityCheckVerified = false;
+
+	setTimeout( function () {
+		// We can't compare oldDom.body and newDom.body directly, because the attributes on the
+		// <body> were ignored in the conversion. So compare each child separately.
+		var i,
+			len = oldDom.body.childNodes.length,
+			newDoc = new ve.dm.Document( data, oldDom, undefined, doc.getInternalList(), doc.getInnerWhitespace() ),
+			newDom = ve.dm.converter.getDomFromData( newDoc.getFullData(), newDoc.getStore(), newDoc.getInternalList(), newDoc.getInnerWhitespace() );
+
+		// Explicitly unlink our full copy of the original version of the document data
+		data = undefined;
+
+		if ( len !== newDom.body.childNodes.length ) {
+			// Different number of children, so they're definitely different
+			d.reject();
+			return;
+		}
+		for ( i = 0; i < len; i++ ) {
+			if ( !oldDom.body.childNodes[i].isEqualNode( newDom.body.childNodes[i] ) ) {
+				d.reject();
+				return;
+			}
+		}
+		d.resolve();
+	} );
+
+	viewPage.sanityCheckPromise = d.promise()
+		.done( function () {
+			// If we detect no roundtrip errors,
+			// don't emphasize "review changes" to the user.
+			viewPage.sanityCheckVerified = true;
+		})
+		.always( function () {
+			viewPage.sanityCheckFinished = true;
+			viewPage.emit( 'sanityCheckComplete' );
+		} );
 };

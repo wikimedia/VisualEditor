@@ -15,6 +15,7 @@ class VisualEditorDataModule extends ResourceLoaderModule {
 	protected $origin = self::ORIGIN_USER_SITEWIDE;
 	protected $gitInfo;
 	protected $gitHeadHash;
+	protected $targets = array( 'desktop', 'mobile' );
 
 	/* Methods */
 
