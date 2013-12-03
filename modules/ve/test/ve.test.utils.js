@@ -12,6 +12,11 @@
  */
 ve.test = { 'utils': {} };
 
+// TODO: this is a hack to make normal heading/preformatted
+// nodes the most recently registered, instead of the MW versions
+ve.dm.modelRegistry.register( ve.dm.HeadingNode );
+ve.dm.modelRegistry.register( ve.dm.PreformattedNode );
+
 ve.test.utils.runIsolateTest = function ( assert, type, range, expected, label ) {
 	var doc = ve.dm.example.createExampleDocument( 'isolationData' ),
 		surface = new ve.dm.Surface( doc ),
@@ -49,11 +54,6 @@ ve.test.utils.runFormatConverterTest = function ( assert, range, type, attribute
 
 ve.test.utils.runGetDataFromDomTests = function( assert, cases ) {
 	var msg, doc, store, i, length, hash, data, html, n = 0;
-
-	// TODO: this is a hack to make normal heading/preformatted
-	// nodes the most recently registered, instead of the MW versions
-	ve.dm.modelRegistry.register( ve.dm.HeadingNode );
-	ve.dm.modelRegistry.register( ve.dm.PreformattedNode );
 
 	for ( msg in cases ) {
 		if ( cases[msg].head !== undefined || cases[msg].body !== undefined ) {
