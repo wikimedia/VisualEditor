@@ -875,7 +875,8 @@ $wgVisualEditorBrowserBlacklist = array(
 	// IE9 and IE10 generally work but fail in ajax handling when making POST
 	// requests to the VisualEditor/Parsoid API which is causing silent failures
 	// when trying to save a page (bug 49187)
-	'msie' => array( array( '<=', 10 ) ),
+	// Also, IE11 doesn't work either right now
+	'msie' => null,
 	// Android 2.x and below "support" CE but don't trigger keyboard input
 	'android' => array( array( '<', 3 ) ),
 	// Firefox issues in versions 12 and below (bug 50780)
