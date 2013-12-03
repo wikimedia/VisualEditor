@@ -246,6 +246,7 @@ ve.ce.ResizableNode.prototype.onResizeHandlesCornerMouseDown = function ( e ) {
 
 	// Bind resize events
 	this.resizing = true;
+	this.root.getSurface().resizing = true;
 	this.updateSizeLabel( this.resizeInfo );
 	this.$( this.getElementDocument() ).on( {
 		'mousemove.ve-ce-resizableNode': ve.bind( this.onDocumentMouseMove, this ),
@@ -409,6 +410,7 @@ ve.ce.ResizableNode.prototype.onDocumentMouseUp = function () {
 	this.$resizeHandles.removeClass( 've-ce-resizableNode-handles-resizing' );
 	this.$( this.getElementDocument() ).off( '.ve-ce-resizableNode' );
 	this.resizing = false;
+	this.root.getSurface().resizing = false;
 	this.updateSizeLabel();
 
 	// Apply changes to the model

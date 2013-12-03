@@ -163,7 +163,7 @@ ve.ce.ProtectedNode.prototype.onPhantomMouseDown = function ( e ) {
  * @method
  */
 ve.ce.ProtectedNode.prototype.onProtectedMouseEnter = function () {
-	if ( !this.root.getSurface().dragging && !this.resizing ) {
+	if ( !this.root.getSurface().dragging && !this.root.getSurface().resizing ) {
 		this.createPhantoms();
 	}
 };
