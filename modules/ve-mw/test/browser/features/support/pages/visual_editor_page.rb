@@ -62,7 +62,7 @@ class VisualEditorPage
     text_area(:describe_change, index: 0, frame: frame)
     a(:ex, title: 'Close', frame: frame)
     span(:insert_reference, text: 'Insert reference', frame: frame)
-    div(:media_diff_view, class: 've-ui-mwSaveDialog-viewer', frame: frame)
+    div(:diff_view, class: 've-ui-mwSaveDialog-viewer', frame: frame)
     text_field(:media_search, placeholder: 'Search for media', frame: frame)
     div(:media_select, class: 've-ui-mwMediaResultWidget-overlay', frame: frame)
     checkbox(:minor_edit, id: 'wpMinoredit', frame: frame)
