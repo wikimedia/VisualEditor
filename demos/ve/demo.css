@@ -59,13 +59,12 @@ body {
 .ve-demo-utilities-commands-divider {
 	border-right: solid 1px #ddd;
 	padding-left: 0.2em;
-	width: 0px;
+	width: 0;
 }
 
 .ve-demo-dump {
 	margin: 2em 0 1.5em 0;
 	display: none;
-	border: none;
 	background-color: #f3f3f3;
 	width: 100%;
 	font-size: 0.9em;
