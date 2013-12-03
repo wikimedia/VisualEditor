@@ -46,6 +46,7 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 	this.scrollTop = null;
 	this.currentUri = currentUri;
 	this.section = currentUri.query.vesection || null;
+	this.initialEditSummary = '';
 	this.namespaceName = mw.config.get( 'wgCanonicalNamespace' );
 	this.viewUri = new mw.Uri( mw.util.getUrl( this.pageName ) );
 	this.veEditUri = this.viewUri.clone().extend( { 'veaction': 'edit' } );
@@ -217,6 +218,7 @@ ve.init.mw.ViewPageTarget.prototype.deactivate = function ( override ) {
 
 			this.clearState();
 			this.docToSave = null;
+			this.initialEditSummary = '';
 
 			this.deactivating = false;
 			mw.hook( 've.deactivationComplete' ).fire();
@@ -796,7 +798,7 @@ ve.init.mw.ViewPageTarget.prototype.getSaveFields = function () {
 			}
 		} );
 	$.extend( fields, {
-		'wpSummary': this.saveDialog.editSummaryInput.getValue(),
+		'wpSummary': this.saveDialog ? this.saveDialog.editSummaryInput.getValue() : this.initialEditSummary,
 		'wpCaptchaId': this.captcha && this.captcha.id,
 		'wpCaptchaWord': this.captcha && this.captcha.input.getValue()
 	} );
