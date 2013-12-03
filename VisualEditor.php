@@ -107,8 +107,6 @@ $wgResourceModules += array(
 		),
 		'messages' => array(
 			'ooui-dialog-action-close',
-			'ooui-inspector-close-tooltip',
-			'ooui-inspector-remove-tooltip',
 			'ooui-outline-control-move-down',
 			'ooui-outline-control-move-up',
 			'ooui-toggle-on',
