@@ -253,14 +253,6 @@ $messages['qqq'] = array(
 	'ooui-dialog-action-close' => 'Label text for button to exit from dialog.
 
 {{Identical|Close}}',
-	'ooui-inspector-close-tooltip' => 'Used as tooltip for the Close button.
-
-Followed by the Remove button which has tooltip {{msg-mw|Ooui-inspector-remove-tooltip}}.
-{{Identical|Close}}',
-	'ooui-inspector-remove-tooltip' => 'Used as tooltip for the Remove button.
-
-Preceded by the Close button which has tooltip {{msg-mw|Ooui-inspector-close-tooltip}}.
-{{Identical|Remove}}',
 	'ooui-outline-control-move-down' => 'Tool tip for a button that moves items in a list down one place',
 	'ooui-outline-control-move-up' => 'Tool tip for a button that moves items in a list up one place',
 	'ooui-toggle-on' => 'Label for toggle on state.
@@ -983,8 +975,6 @@ $messages['am'] = array(
  */
 $messages['ar'] = array(
 	'ooui-dialog-action-close' => 'أغلق',
-	'ooui-inspector-close-tooltip' => 'إغلاق',
-	'ooui-inspector-remove-tooltip' => 'إزالة',
 	'ooui-outline-control-move-down' => 'انقل العنصر للأسفل',
 	'ooui-outline-control-move-up' => 'انقل العنصر للأعلى',
 	'ooui-toolbar-more' => 'مزيد',
@@ -1232,8 +1222,6 @@ $messages['as'] = array(
  */
 $messages['ast'] = array(
 	'ooui-dialog-action-close' => 'Zarrar',
-	'ooui-inspector-close-tooltip' => 'Zarrar',
-	'ooui-inspector-remove-tooltip' => 'Desaniciar',
 	'ooui-outline-control-move-down' => "Mover abaxo l'elementu",
 	'ooui-outline-control-move-up' => "Mover arriba l'elementu",
 	'ooui-toggle-on' => 'Activáu',
@@ -3787,8 +3775,6 @@ Ydych chi am barhau?",
  */
 $messages['da'] = array(
 	'ooui-dialog-action-close' => 'Luk',
-	'ooui-inspector-close-tooltip' => 'Luk',
-	'ooui-inspector-remove-tooltip' => 'Fjern',
 	'ooui-outline-control-move-down' => 'Flyt ned',
 	'ooui-outline-control-move-up' => 'Flyt op',
 	'ooui-toggle-on' => 'Til',
@@ -3989,8 +3975,6 @@ $messages['da'] = array(
  */
 $messages['de'] = array(
 	'ooui-dialog-action-close' => 'Schließen',
-	'ooui-inspector-close-tooltip' => 'Schließen',
-	'ooui-inspector-remove-tooltip' => 'Entfernen',
 	'ooui-outline-control-move-down' => 'Element nach unten verschieben',
 	'ooui-outline-control-move-up' => 'Element nach oben verschieben',
 	'ooui-toggle-on' => 'An',
@@ -4208,8 +4192,6 @@ $messages['de-formal'] = array(
  */
 $messages['diq'] = array(
 	'ooui-dialog-action-close' => 'Racnê',
-	'ooui-inspector-close-tooltip' => 'Racnê',
-	'ooui-inspector-remove-tooltip' => 'Hewad',
 	'ooui-outline-control-move-down' => 'çi ber ceyr',
 	'ooui-outline-control-move-up' => 'çi ber cor',
 	'ooui-toggle-on' => 'Ake',
@@ -4379,8 +4361,6 @@ $messages['diq'] = array(
  */
 $messages['dsb'] = array(
 	'ooui-dialog-action-close' => 'Zacyniś',
-	'ooui-inspector-close-tooltip' => 'Zacyniś',
-	'ooui-inspector-remove-tooltip' => 'Wótpóraś',
 	'ooui-outline-control-move-down' => 'Element dołoj pśesunuś',
 	'ooui-outline-control-move-up' => 'Element górjej pśesunuś',
 	'ooui-toggle-on' => 'Zašaltowany',
@@ -4750,8 +4730,6 @@ $messages['el'] = array(
  */
 $messages['eml'] = array(
 	'ooui-dialog-action-close' => 'Sarèr',
-	'ooui-inspector-close-tooltip' => 'Sarèr',
-	'ooui-inspector-remove-tooltip' => 'Tōr vìa',
 	'ooui-outline-control-move-down' => "Fer gnìr śò l' elemèint",
 	'ooui-outline-control-move-up' => "Mandèr sù l' elemèint",
 	'ooui-toggle-on' => 'Impiê',
@@ -4963,8 +4941,6 @@ $messages['en-gb'] = array(
  */
 $messages['eo'] = array(
 	'ooui-dialog-action-close' => 'Fermi',
-	'ooui-inspector-close-tooltip' => 'Fermi',
-	'ooui-inspector-remove-tooltip' => 'Forviŝi',
 	'ooui-outline-control-move-down' => 'Movi eron suben',
 	'ooui-outline-control-move-up' => 'Movi eron supren',
 	'ooui-toolbar-more' => 'Pli',
@@ -5329,8 +5305,6 @@ Cualquier cambio que hayas hecho se mantendrá, pero no se podrá volver al edit
  */
 $messages['et'] = array(
 	'ooui-dialog-action-close' => 'Sule',
-	'ooui-inspector-close-tooltip' => 'Sule',
-	'ooui-inspector-remove-tooltip' => 'Eemalda',
 	'ooui-outline-control-move-down' => 'Liiguta üksust allapoole',
 	'ooui-outline-control-move-up' => 'Liiguta üksust ülespoole',
 	'ooui-toolbar-more' => 'Veel',
@@ -5690,8 +5664,6 @@ $messages['eu'] = array(
  */
 $messages['fa'] = array(
 	'ooui-dialog-action-close' => 'بستن',
-	'ooui-inspector-close-tooltip' => 'بستن',
-	'ooui-inspector-remove-tooltip' => 'حذف',
 	'ooui-outline-control-move-down' => 'انتقال مورد به پایین',
 	'ooui-outline-control-move-up' => 'انتقال مورد به بالا',
 	'ooui-toggle-on' => 'روشن',
@@ -6333,8 +6305,6 @@ Ynskir tú at halda fram?',
  */
 $messages['fr'] = array(
 	'ooui-dialog-action-close' => 'Fermer',
-	'ooui-inspector-close-tooltip' => 'Fermer',
-	'ooui-inspector-remove-tooltip' => 'Supprimer',
 	'ooui-outline-control-move-down' => 'Faire descendre l’élément',
 	'ooui-outline-control-move-up' => 'Faire monter l’élément',
 	'ooui-toggle-on' => 'Activé',
@@ -6791,8 +6761,6 @@ $messages['frr'] = array(
  */
 $messages['fur'] = array(
 	'ooui-dialog-action-close' => 'Siere',
-	'ooui-inspector-close-tooltip' => 'Siere',
-	'ooui-inspector-remove-tooltip' => 'Gjave',
 	'ooui-outline-control-move-down' => 'sposte sot',
 	'ooui-outline-control-move-up' => 'sposte in su',
 	'ooui-toggle-on' => 'Ativât',
@@ -6934,8 +6902,6 @@ $messages['ga'] = array(
  */
 $messages['gl'] = array(
 	'ooui-dialog-action-close' => 'Pechar',
-	'ooui-inspector-close-tooltip' => 'Pechar',
-	'ooui-inspector-remove-tooltip' => 'Eliminar',
 	'ooui-outline-control-move-down' => 'Mover o elemento abaixo',
 	'ooui-outline-control-move-up' => 'Mover o elemento arriba',
 	'ooui-toggle-on' => 'Activado',
@@ -7351,8 +7317,6 @@ $messages['gv'] = array(
  */
 $messages['he'] = array(
 	'ooui-dialog-action-close' => 'סגירה',
-	'ooui-inspector-close-tooltip' => 'סגירה',
-	'ooui-inspector-remove-tooltip' => 'הסרה',
 	'ooui-outline-control-move-down' => 'להזיז את הפריט מטה',
 	'ooui-outline-control-move-up' => 'להזיז את הפריט מעלה',
 	'ooui-toggle-on' => 'דלוק',
@@ -8373,8 +8337,6 @@ $messages['ia'] = array(
  */
 $messages['id'] = array(
 	'ooui-dialog-action-close' => 'Tutup',
-	'ooui-inspector-close-tooltip' => 'Tutup',
-	'ooui-inspector-remove-tooltip' => 'Hapus',
 	'ooui-outline-control-move-down' => 'Pindahkan butir ke bawah',
 	'ooui-outline-control-move-up' => 'Pindahkan butir ke atas',
 	'ooui-toggle-on' => 'Aktif',
@@ -8589,8 +8551,6 @@ Apakah Anda ingin melanjutkan?',
  */
 $messages['ie'] = array(
 	'ooui-dialog-action-close' => 'Terminar',
-	'ooui-inspector-close-tooltip' => 'Terminar',
-	'ooui-inspector-remove-tooltip' => 'Remover',
 	'ooui-outline-control-move-down' => 'Mover element a infra',
 	'ooui-outline-control-move-up' => 'Mover element a supra',
 	'ooui-toggle-on' => 'Activ',
@@ -9193,8 +9153,6 @@ $messages['is'] = array(
  */
 $messages['it'] = array(
 	'ooui-dialog-action-close' => 'Chiudi',
-	'ooui-inspector-close-tooltip' => 'Chiudi',
-	'ooui-inspector-remove-tooltip' => 'Rimuovi',
 	'ooui-outline-control-move-down' => 'Sposta in basso',
 	'ooui-outline-control-move-up' => 'Sposta in alto',
 	'ooui-toggle-on' => 'Attivo',
@@ -9401,8 +9359,6 @@ Vuoi continuare?',
  */
 $messages['ja'] = array(
 	'ooui-dialog-action-close' => '閉じる',
-	'ooui-inspector-close-tooltip' => '閉じる',
-	'ooui-inspector-remove-tooltip' => '除去',
 	'ooui-outline-control-move-down' => '項目を下に移動させる',
 	'ooui-outline-control-move-up' => '項目を上に移動させる',
 	'ooui-toggle-on' => 'ON',
@@ -9790,8 +9746,6 @@ $messages['ka'] = array(
  */
 $messages['kk-cyrl'] = array(
 	'ooui-dialog-action-close' => 'Жабу',
-	'ooui-inspector-close-tooltip' => 'Жабу',
-	'ooui-inspector-remove-tooltip' => 'Аластау',
 	'ooui-outline-control-move-down' => 'Элементті төмен жылжыту',
 	'ooui-outline-control-move-up' => 'Элементті жоғары жылжыту',
 	'ooui-toggle-on' => 'Қосу',
@@ -9987,8 +9941,6 @@ $messages['kk-cyrl'] = array(
  */
 $messages['ko'] = array(
 	'ooui-dialog-action-close' => '닫기',
-	'ooui-inspector-close-tooltip' => '닫기',
-	'ooui-inspector-remove-tooltip' => '제거',
 	'ooui-outline-control-move-down' => '항목을 아래로 옮기기',
 	'ooui-outline-control-move-up' => '항목을 위로 옮기기',
 	'ooui-toggle-on' => '사용',
@@ -10532,8 +10484,6 @@ $messages['la'] = array(
  */
 $messages['lb'] = array(
 	'ooui-dialog-action-close' => 'Zoumaachen',
-	'ooui-inspector-close-tooltip' => 'Zoumaachen',
-	'ooui-inspector-remove-tooltip' => 'Ewechhuelen',
 	'ooui-outline-control-move-down' => 'Element erof réckelen',
 	'ooui-outline-control-move-up' => 'Element erop réckelen',
 	'ooui-toggle-on' => 'Un',
@@ -10720,8 +10670,6 @@ Klickt "Quelltext änneren" fir op Wikitextmodus ze wiesselen - dobäi ginn déi
  */
 $messages['lmo'] = array(
 	'ooui-dialog-action-close' => 'Sèra',
-	'ooui-inspector-close-tooltip' => 'Sèra',
-	'ooui-inspector-remove-tooltip' => 'Scancèla',
 	'ooui-outline-control-move-down' => "Spòsta 'n zó",
 	'ooui-outline-control-move-up' => "Spòsta 'n sö",
 	'ooui-toggle-on' => 'Atìf',
@@ -11387,8 +11335,6 @@ $messages['min'] = array(
  */
 $messages['mk'] = array(
 	'ooui-dialog-action-close' => 'Затвори',
-	'ooui-inspector-close-tooltip' => 'Затвори',
-	'ooui-inspector-remove-tooltip' => 'Отстрани',
 	'ooui-outline-control-move-down' => 'Помести надолу',
 	'ooui-outline-control-move-up' => 'Помести нагоре',
 	'ooui-toggle-on' => 'Вкл.',
@@ -11597,6 +11543,8 @@ $messages['ml'] = array(
 	'ooui-dialog-action-close' => 'അടയ്ക്കുക',
 	'ooui-outline-control-move-down' => 'ഇനം താഴേയ്ക്ക് മാറ്റുക',
 	'ooui-outline-control-move-up' => 'ഇനം മുകളിലേയ്ക്ക് മാറ്റുക',
+	'ooui-toggle-on' => 'സജ്ജം',
+	'ooui-toggle-off' => 'രഹിതം',
 	'ooui-toolbar-more' => 'കൂടുതൽ',
 	'tag-visualeditor' => '[[{{MediaWiki:visualeditor-descriptionpagelink}}|കണ്ടുതിരുത്തൽസൗകര്യം]]',
 	'tag-visualeditor-description' => '[[{{MediaWiki:visualeditor-descriptionpagelink}}|കണ്ടുതിരുത്തൽ സൗകര്യമുപയോഗിച്ച്]] നടത്തിയ തിരുത്തൽ',
@@ -11653,7 +11601,7 @@ $messages['ml'] = array(
 	'visualeditor-dialog-meta-languages-code-label' => 'ഭാഷയുടെ കോഡ്',
 	'visualeditor-dialog-meta-languages-label' => 'ഭാഷകൾ',
 	'visualeditor-dialog-meta-languages-link-label' => 'കണ്ണിചേർത്തിട്ടുള്ള താൾ',
-	'visualeditor-dialog-meta-languages-readonlynote' => 'ഇതുമായി കണ്ണിചേർക്കപ്പെട്ടിട്ടുള്ള മറ്റുഭാഷാ താളുകളുടെ പട്ടികയാണിത്; ഇവ ഇപ്പോൾ മൂലരൂപത്തിൽ മാത്രമേ തിരുത്താനാവൂ.',
+	'visualeditor-dialog-meta-languages-readonlynote' => 'ഇതുമായി കണ്ണിചേർക്കപ്പെട്ടിട്ടുള്ള ഇതരഭാഷാ താളുകളുടെ പട്ടികയാണിത്; ഇവ ഇപ്പോൾ മൂലരൂപത്തിൽ അല്ലെങ്കിൽ വിക്കിഡേറ്റയിൽ മാത്രമേ തിരുത്താനാവൂ.',
 	'visualeditor-dialog-meta-languages-section' => 'ഭാഷകൾ',
 	'visualeditor-dialog-meta-title' => 'താളിന്റെ സജ്ജീകരണങ്ങൾ',
 	'visualeditor-dialog-reference-insert-button' => 'അവലംബം ചേർക്കുക',
@@ -11710,8 +11658,8 @@ $messages['ml'] = array(
 	'visualeditor-historybutton-undo-tooltip' => 'തിരസ്കരിക്കുക',
 	'visualeditor-indentationbutton-indent-tooltip' => 'അരികിലെ ഇട കൂട്ടുക',
 	'visualeditor-indentationbutton-outdent-tooltip' => 'അരികിലെ ഇട കുറയ്ക്കുക',
-	'visualeditor-inspector-close-tooltip' => 'അടയ്ക്കുക', # Fuzzy
-	'visualeditor-inspector-remove-tooltip' => 'നീക്കം ചെയ്യുക', # Fuzzy
+	'visualeditor-inspector-close-tooltip' => 'അടയ്ക്കുക',
+	'visualeditor-inspector-remove-tooltip' => 'നീക്കം ചെയ്യുക',
 	'visualeditor-languages-tool' => 'ഭാഷകൾ',
 	'visualeditor-languageinspector-block-tooltip' => 'ഭാഷാഖണ്ഡം: $1',
 	'visualeditor-languageinspector-block-tooltip-rtldirection' => ':വലത്തുനിന്ന് ഇടത്തോട്ട്',
@@ -11748,7 +11696,7 @@ $messages['ml'] = array(
 	'visualeditor-preference-core-description' => 'കണ്ടുതിരുത്തൽ സൗകര്യം സജ്ജമാക്കുക. സംവാദത്താളുകളിലും മറ്റേതാനം നാമമേഖലകളിലും ലഭ്യമായിരിക്കില്ല.',
 	'visualeditor-preference-core-label' => 'കണ്ടുതിരുത്തൽ സൗകര്യം',
 	'visualeditor-preference-enable' => 'കണ്ടുതിരുത്തൽ സൗകര്യം സജ്ജമാക്കുക. സംവാദത്താളുകളിലും മറ്റേതാനം നാമമേഖലകളിലും ലഭ്യമായിരിക്കില്ല.',
-	'visualeditor-preference-language-description' => 'സാർവ്വജനികമായി ലഭ്യമാവുന്നതിനു മുമ്പേ, കണ്ടുതിരുത്തൽ സൗകര്യത്തിലുള്ള ഉപകരണങ്ങൾ പരീക്ഷണങ്ങൾക്കായി ബഹുഭാഷാ, ദ്വിദിശാ പിന്തുണയുള്ളതാവണമെന്ന് അടയാളപ്പെടുത്തുക. പരീക്ഷണാടിസ്ഥാനത്തിലുള്ള സവിശേഷതകൾ ഉപയോഗിക്കുമ്പോൾ താങ്കളുടെ തിരുത്തുകൾ സംശോധനം ചെയ്ത് മാത്രം സേവ് ചെയ്യാൻ ഓർമ്മിക്കുക.', # Fuzzy
+	'visualeditor-preference-language-description' => 'സാർവ്വജനികമായി ലഭ്യമാവുന്നതിനു മുമ്പേ, കണ്ടുതിരുത്തൽ സൗകര്യത്തിലുള്ള ഉപകരണങ്ങൾ പരീക്ഷണങ്ങൾക്കായി ബഹുഭാഷാ, ദ്വിദിശാ പിന്തുണയുള്ളതാവണമെന്ന് അടയാളപ്പെടുത്തുക. പരീക്ഷണാടിസ്ഥാനത്തിലുള്ള സവിശേഷതകൾ ഉപയോഗിക്കുമ്പോൾ താങ്കളുടെ തിരുത്തുകൾ സംശോധനം ചെയ്ത് മാത്രം സേവ് ചെയ്യാൻ ഓർമ്മിക്കുക.',
 	'visualeditor-preference-language-label' => 'കണ്ടുതിരുത്തൽ ഭാഷാ ഉപകരണങ്ങൾ',
 	'visualeditor-preference-mwalienextension-description' => 'സാർവ്വജനികമായി ലഭ്യമാവുന്നതിനു മുമ്പേ, അനുബന്ധ ടാഗുകൾ (ചിത്രശാലകളും കോഡിങ് ഭാഗങ്ങളും പോലുള്ളവ) ചേർക്കുന്നതിനുള്ള പരീക്ഷണാടിസ്ഥാനത്തിലുള്ള അടിസ്ഥാന പിന്തുണ ചേർക്കുക,  പരീക്ഷണാടിസ്ഥാനത്തിലുള്ള സവിശേഷതകൾ ഉപയോഗിക്കുമ്പോൾ താങ്കളുടെ തിരുത്തുകൾ സംശോധനം ചെയ്ത് മാത്രം സേവ് ചെയ്യാൻ ഓർമ്മിക്കുക.',
 	'visualeditor-preference-mwalienextension-label' => 'കണ്ടുതിരുത്തൽ സൗകര്യത്തിലെ അനുബന്ധ ടാഗ് തിരുത്തൽ',
@@ -11800,8 +11748,6 @@ $messages['ml'] = array(
  */
 $messages['mr'] = array(
 	'ooui-dialog-action-close' => 'बंद करा',
-	'ooui-inspector-close-tooltip' => 'बंद करा',
-	'ooui-inspector-remove-tooltip' => 'वगळा',
 	'ooui-outline-control-move-down' => 'घटक (आयटम) खाली सरकवा', # Fuzzy
 	'ooui-outline-control-move-up' => 'घटक (आयटम) वर सरकवा', # Fuzzy
 	'ooui-toggle-on' => 'चालू करा',
@@ -12521,8 +12467,6 @@ $messages['nb'] = array(
  */
 $messages['nds'] = array(
 	'ooui-dialog-action-close' => 'Dichtmaken',
-	'ooui-inspector-close-tooltip' => 'Dichtmaken',
-	'ooui-inspector-remove-tooltip' => 'Wegmaken',
 	'ooui-outline-control-move-down' => 'Element na ünnen schuven',
 	'ooui-outline-control-move-up' => 'Element na baven schuven',
 	'ooui-toggle-on' => 'An',
@@ -12866,8 +12810,6 @@ $messages['ne'] = array(
  */
 $messages['nl'] = array(
 	'ooui-dialog-action-close' => 'Sluiten',
-	'ooui-inspector-close-tooltip' => 'Sluiten',
-	'ooui-inspector-remove-tooltip' => 'Verwijderen',
 	'ooui-outline-control-move-down' => 'Item omlaag verplaatsen',
 	'ooui-outline-control-move-up' => 'Item omhoog verplaatsen',
 	'ooui-toggle-on' => 'Aan',
@@ -13841,8 +13783,6 @@ $messages['pl'] = array(
  */
 $messages['pms'] = array(
 	'ooui-dialog-action-close' => 'Saré',
-	'ooui-inspector-close-tooltip' => 'Saré',
-	'ooui-inspector-remove-tooltip' => 'Gavé',
 	'ooui-outline-control-move-down' => "Fé calé giù l'element",
 	'ooui-outline-control-move-up' => "Fé monté l'element",
 	'ooui-toggle-on' => 'Anvisché',
@@ -14046,8 +13986,6 @@ Veul-lo andé anans?",
  */
 $messages['ps'] = array(
 	'ooui-dialog-action-close' => 'تړل',
-	'ooui-inspector-close-tooltip' => 'تړل',
-	'ooui-inspector-remove-tooltip' => 'غورځول',
 	'ooui-outline-control-move-down' => 'توکی ښکته راوړل',
 	'ooui-outline-control-move-up' => 'توکی پورته راوړل',
 	'ooui-toggle-on' => 'بل',
@@ -14423,8 +14361,6 @@ Deseja continuar?',
  */
 $messages['pt-br'] = array(
 	'ooui-dialog-action-close' => 'Fechar',
-	'ooui-inspector-close-tooltip' => 'Fechar',
-	'ooui-inspector-remove-tooltip' => 'Remover',
 	'ooui-outline-control-move-down' => 'Mover item para baixo',
 	'ooui-outline-control-move-up' => 'Mover item para cima',
 	'ooui-toggle-on' => 'Ligado',
@@ -14711,8 +14647,6 @@ $messages['qu'] = array(
  */
 $messages['ro'] = array(
 	'ooui-dialog-action-close' => 'Închide',
-	'ooui-inspector-close-tooltip' => 'Închide',
-	'ooui-inspector-remove-tooltip' => 'Elimină',
 	'ooui-outline-control-move-down' => 'Mută elementul mai jos',
 	'ooui-outline-control-move-up' => 'Mută elementul mai sus',
 	'ooui-toggle-on' => 'Activat',
@@ -15111,8 +15045,6 @@ $messages['roa-tara'] = array(
  */
 $messages['ru'] = array(
 	'ooui-dialog-action-close' => 'Закрыть',
-	'ooui-inspector-close-tooltip' => 'Закрыть',
-	'ooui-inspector-remove-tooltip' => 'Удалить',
 	'ooui-outline-control-move-down' => 'Переместить элемент вниз',
 	'ooui-outline-control-move-up' => 'Переместить элемент вверх',
 	'ooui-toggle-on' => 'вкл.',
@@ -16463,8 +16395,6 @@ Dëshironi të vazhdoni?',
  */
 $messages['sr-ec'] = array(
 	'ooui-dialog-action-close' => 'Затвори',
-	'ooui-inspector-close-tooltip' => 'Затвори',
-	'ooui-inspector-remove-tooltip' => 'Уклони',
 	'ooui-outline-control-move-down' => 'Премести ставку на доле',
 	'ooui-outline-control-move-up' => 'Премести ставку на горе',
 	'ooui-toggle-on' => 'Укључено',
@@ -16664,8 +16594,6 @@ $messages['sr-el'] = array(
  */
 $messages['sv'] = array(
 	'ooui-dialog-action-close' => 'Stäng',
-	'ooui-inspector-close-tooltip' => 'Stäng',
-	'ooui-inspector-remove-tooltip' => 'Ta bort',
 	'ooui-outline-control-move-down' => 'Flytta ned objekt',
 	'ooui-outline-control-move-up' => 'Flytta upp objekt',
 	'ooui-toggle-on' => 'På',
@@ -17989,8 +17917,6 @@ $messages['ug-arab'] = array(
  */
 $messages['uk'] = array(
 	'ooui-dialog-action-close' => 'Закрити',
-	'ooui-inspector-close-tooltip' => 'Закрити',
-	'ooui-inspector-remove-tooltip' => 'Вилучити',
 	'ooui-outline-control-move-down' => 'Перемістити елемент униз',
 	'ooui-outline-control-move-up' => 'Перемістити елемент вгору',
 	'ooui-toggle-on' => 'Увімк.',
@@ -19036,8 +18962,6 @@ $messages['yi'] = array(
  */
 $messages['yo'] = array(
 	'ooui-dialog-action-close' => 'Ìpadé',
-	'ooui-inspector-close-tooltip' => 'Ìpadé',
-	'ooui-inspector-remove-tooltip' => 'Ìmúkúrò',
 	'ooui-outline-control-move-down' => 'Sún onítòún sí sàlẹ̀',
 	'ooui-outline-control-move-up' => "Sún onítòún s'ókè",
 	'ooui-toggle-on' => 'Títàn',
@@ -19065,8 +18989,6 @@ $messages['yo'] = array(
  */
 $messages['zh-hans'] = array(
 	'ooui-dialog-action-close' => '关闭',
-	'ooui-inspector-close-tooltip' => '关闭',
-	'ooui-inspector-remove-tooltip' => '移除',
 	'ooui-outline-control-move-down' => '下移项',
 	'ooui-outline-control-move-up' => '上移项',
 	'ooui-toggle-on' => '开',
@@ -19279,8 +19201,6 @@ $messages['zh-hans'] = array(
  */
 $messages['zh-hant'] = array(
 	'ooui-dialog-action-close' => '關閉',
-	'ooui-inspector-close-tooltip' => '關閉',
-	'ooui-inspector-remove-tooltip' => '移除',
 	'ooui-outline-control-move-down' => '向下移項',
 	'ooui-outline-control-move-up' => '向上移項',
 	'ooui-toggle-on' => '開',
