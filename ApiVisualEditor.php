@@ -240,6 +240,36 @@ class ApiVisualEditor extends ApiBase {
 		}
 	}
 
+	protected function getLangLinks( $title ) {
+		$apiParams = array(
+			'action' => 'query',
+			'prop' => 'langlinks',
+			'lllimit' => 500,
+			'titles' => $title->getPrefixedDBkey(),
+			'indexpageids' => 1,
+		);
+		$api = new ApiMain(
+			new DerivativeRequest(
+				$this->getRequest(),
+				$apiParams,
+				false // was posted?
+			),
+			true // enable write?
+		);
+
+		$api->execute();
+		$result = $api->getResultData();
+		if ( !isset( $result['query']['pages'][$title->getArticleID()]['langlinks'] ) ) {
+			return false;
+		}
+		$langlinks = $result['query']['pages'][$title->getArticleID()]['langlinks'];
+		$langnames = Language::fetchLanguageNames();
+		foreach ( $langlinks as $i => $lang ) {
+			$langlinks[$i]['langname'] = $langnames[$langlinks[$i]['lang']];
+		}
+		return $langlinks;
+	}
+
 	public function execute() {
 		global $wgVisualEditorNamespaces, $wgVisualEditorEditNotices;
 
@@ -318,6 +348,7 @@ class ApiVisualEditor extends ApiBase {
 					);
 				}
 				break;
+
 			case 'parsefragment':
 				$content = $this->parseWikitextFragment( $params['wikitext'], $page->getText() );
 				if ( $content === false ) {
@@ -329,6 +360,7 @@ class ApiVisualEditor extends ApiBase {
 					);
 				}
 				break;
+
 			case 'serialize':
 				if ( $params['cachekey'] !== null ) {
 					$content = $this->trySerializationCache( $params['cachekey'] );
@@ -347,6 +379,7 @@ class ApiVisualEditor extends ApiBase {
 				}
 				$result = array( 'result' => 'success', 'content' => $content );
 				break;
+
 			case 'diff':
 				if ( $params['cachekey'] !== null ) {
 					$wikitext = $this->trySerializationCache( $params['cachekey'] );
@@ -367,9 +400,19 @@ class ApiVisualEditor extends ApiBase {
 				$result = $diff;
 
 				break;
+
 			case 'serializeforcache':
 				$key = $this->storeInSerializationCache( $page, $parserParams['oldid'], $params['html'] );
 				$result = array( 'result' => 'success', 'cachekey' => $key );
+				break;
+
+			case 'getlanglinks':
+				$langlinks = $this->getLangLinks( $page );
+				if ( $langlinks === false ) {
+					$this->dieUsage( 'Error querying MediaWiki API', 'parsoidserver' );
+				} else {
+					$result = array( 'result' => 'success', 'langlinks' => $langlinks );
+				}
 				break;
 		}
 
@@ -384,7 +427,7 @@ class ApiVisualEditor extends ApiBase {
 			'paction' => array(
 				ApiBase::PARAM_REQUIRED => true,
 				ApiBase::PARAM_TYPE => array(
-					'parse', 'parsefragment', 'serializeforcache', 'serialize', 'diff'
+					'parse', 'parsefragment', 'serializeforcache', 'serialize', 'diff', 'getlanglinks',
 				),
 			),
 			'wikitext' => null,
@@ -401,7 +444,7 @@ class ApiVisualEditor extends ApiBase {
 	}
 
 	public function mustBePosted() {
-		return true;
+		return false;
 	}
 
 	public function isWriteMode() {
