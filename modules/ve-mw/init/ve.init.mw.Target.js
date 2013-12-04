@@ -1066,38 +1066,31 @@ ve.init.mw.Target.prototype.getEditNotices = function () {
 ve.init.mw.Target.prototype.setUpSurface = function ( doc, callback ) {
 	var target = this;
 	setTimeout( function () {
-		// Build linmod
-		var store = new ve.dm.IndexValueStore(),
-			internalList = new ve.dm.InternalList(),
-			innerWhitespace = new Array( 2 ),
-			data = ve.dm.converter.getDataFromDom( doc, store, internalList, innerWhitespace );
+		// Build model
+		var dmDoc = ve.dm.converter.getModelFromDom( doc );
 		setTimeout( function () {
-			// Build DM tree
-			var dmDoc = new ve.dm.Document( data, doc, undefined, internalList, innerWhitespace );
+			// Create ui.Surface (also creates ce.Surface and dm.Surface and builds CE tree)
+			target.surface = new ve.ui.Surface( dmDoc, target.surfaceOptions );
+			target.surface.$element.addClass( 've-init-mw-viewPageTarget-surface' );
 			setTimeout( function () {
-				// Create ui.Surface (also creates ce.Surface and dm.Surface and builds CE tree)
-				target.surface = new ve.ui.Surface( dmDoc, target.surfaceOptions );
-				target.surface.$element.addClass( 've-init-mw-viewPageTarget-surface' );
-				setTimeout( function () {
-					// Initialize surface
-					target.surface.getContext().hide();
-					target.$document = target.surface.$element.find( '.ve-ce-documentNode' );
-					target.$element.append( target.surface.$element );
-					target.setUpToolbar();
-					target.$document.attr( {
-						'lang': mw.config.get( 'wgVisualEditor' ).pageLanguageCode,
-						'dir': mw.config.get( 'wgVisualEditor' ).pageLanguageDir
-					} );
-					// Add appropriately mw-content-ltr or mw-content-rtl class
-					target.surface.view.$element.addClass(
-						'mw-content-' + mw.config.get( 'wgVisualEditor' ).pageLanguageDir
-					);
-					target.active = true;
-					// Now that the surface is attached to the document and ready,
-					// let it initialize itself
-					target.surface.initialize();
-					setTimeout( callback );
+				// Initialize surface
+				target.surface.getContext().hide();
+				target.$document = target.surface.$element.find( '.ve-ce-documentNode' );
+				target.$element.append( target.surface.$element );
+				target.setUpToolbar();
+				target.$document.attr( {
+					'lang': mw.config.get( 'wgVisualEditor' ).pageLanguageCode,
+					'dir': mw.config.get( 'wgVisualEditor' ).pageLanguageDir
 				} );
+				// Add appropriately mw-content-ltr or mw-content-rtl class
+				target.surface.view.$element.addClass(
+					'mw-content-' + mw.config.get( 'wgVisualEditor' ).pageLanguageDir
+				);
+				target.active = true;
+				// Now that the surface is attached to the document and ready,
+				// let it initialize itself
+				target.surface.initialize();
+				setTimeout( callback );
 			} );
 		} );
 	} );

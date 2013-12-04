@@ -16,8 +16,8 @@
  * @class
  * @extends ve.Document
  * @constructor
- * @param {HTMLDocument|Array|ve.dm.ElementLinearData|ve.dm.FlatLinearData} data HTML document,
- *  raw linear model data, ElementLinearData or FlatLinearData to be split
+ * @param {Array|ve.dm.ElementLinearData|ve.dm.FlatLinearData} data Raw linear model data,
+ *  ElementLinearData or FlatLinearData to be split
  * @param {HTMLDocument} [htmlDocument] HTML document the data was converted from, if any.
  *  If omitted, a new document will be created. If data is an HTMLDocument, this parameter is
  *  ignored.
@@ -51,10 +51,6 @@ ve.dm.Document = function VeDmDocument( data, htmlDocument, parentDocument, inte
 	} else if ( data instanceof ve.dm.FlatLinearData ) {
 		// Element + Meta linear data
 		fullData = data;
-	} else if ( !ve.isArray( data ) && typeof data === 'object' ) {
-		// HTMLDocument
-		fullData = ve.dm.converter.getDataFromDom( data, new ve.dm.IndexValueStore(), this.getInternalList(), this.getInnerWhitespace() );
-		htmlDocument = data;
 	} else {
 		// Raw linear model data
 		fullData = new ve.dm.FlatLinearData(

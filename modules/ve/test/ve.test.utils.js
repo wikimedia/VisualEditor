@@ -52,8 +52,8 @@ ve.test.utils.runFormatConverterTest = function ( assert, range, type, attribute
 	surface.destroy();
 };
 
-ve.test.utils.runGetDataFromDomTests = function( assert, cases ) {
-	var msg, doc, store, i, length, hash, data, html, n = 0;
+ve.test.utils.runGetModelFromDomTests = function( assert, cases ) {
+	var msg, model, i, length, hash, html, n = 0;
 
 	for ( msg in cases ) {
 		if ( cases[msg].head !== undefined || cases[msg].body !== undefined ) {
@@ -67,22 +67,17 @@ ve.test.utils.runGetDataFromDomTests = function( assert, cases ) {
 
 	for ( msg in cases ) {
 		if ( cases[msg].head !== undefined || cases[msg].body !== undefined ) {
-			doc = new ve.dm.Document( [] );
-			store = doc.getStore();
-
 			html = '<head>' + ( cases[msg].head || '' ) + '</head><body>' + cases[msg].body + '</body>';
-			data = ve.dm.converter.getDataFromDom(
-				ve.createDocumentFromHtml( html ), store, doc.getInternalList(), doc.getInnerWhitespace()
-			);
-			ve.dm.example.preprocessAnnotations( cases[msg].data, store );
-			assert.deepEqualWithDomElements( data.getData(), cases[msg].data, msg + ': data' );
-			assert.deepEqual( doc.getInnerWhitespace(), cases[msg].innerWhitespace || new Array( 2 ), msg + ': inner whitespace' );
+			model = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( html ) );
+			ve.dm.example.preprocessAnnotations( cases[msg].data, model.getStore() );
+			assert.deepEqualWithDomElements( model.getFullData(), cases[msg].data, msg + ': data' );
+			assert.deepEqual( model.getInnerWhitespace(), cases[msg].innerWhitespace || new Array( 2 ), msg + ': inner whitespace' );
 			// check storeItems have been added to store
 			if ( cases[msg].storeItems ) {
 				for ( i = 0, length = cases[msg].storeItems.length; i < length; i++ ) {
 					hash = cases[msg].storeItems[i].hash || OO.getHash( cases[msg].storeItems[i].value );
 					assert.deepEqualWithDomElements(
-						store.value( store.indexOfHash( hash ) ) || {},
+						model.getStore().value( model.getStore().indexOfHash( hash ) ) || {},
 						cases[msg].storeItems[i].value,
 						msg + ': store item ' + i + ' found'
 					);

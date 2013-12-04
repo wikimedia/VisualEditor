@@ -9,8 +9,8 @@ QUnit.module( 've.dm.MWConverter' );
 
 /* Tests */
 
-QUnit.test( 'getDataFromDom', function ( assert ) {
-	ve.test.utils.runGetDataFromDomTests( assert, ve.copy( ve.dm.mwExample.domToDataCases ) );
+QUnit.test( 'getModelFromDom', function ( assert ) {
+	ve.test.utils.runGetModelFromDomTests( assert, ve.copy( ve.dm.mwExample.domToDataCases ) );
 } );
 
 QUnit.test( 'getDomFromModel', function ( assert ) {

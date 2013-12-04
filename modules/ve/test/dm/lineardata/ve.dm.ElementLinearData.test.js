@@ -1367,8 +1367,7 @@ QUnit.test( 'getNearestWordRange', function ( assert ) {
 } );
 
 QUnit.test( 'sanitize', function ( assert ) {
-	var i, fullData, result, data,
-		store, internalList, innerWhitespace,
+	var i, model, data,
 		count = 0,
 		bold = new ve.dm.TextStyleBoldAnnotation( { 'type': 'textStyle/bold', 'attributes': { 'nodeName': 'b' } } ),
 		cases = [
@@ -1434,13 +1433,8 @@ QUnit.test( 'sanitize', function ( assert ) {
 	QUnit.expect( count );
 
 	for ( i = 0; i < cases.length; i++ ) {
-		store = new ve.dm.IndexValueStore();
-		internalList = new ve.dm.InternalList();
-		innerWhitespace = new Array( 2 );
-
-		fullData = ve.dm.converter.getDataFromDom( ve.createDocumentFromHtml( cases[i].html ), store, internalList, innerWhitespace );
-		result = ve.dm.Document.static.splitData( fullData, true );
-		data = result.elementData;
+		model = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( cases[i].html ) );
+		data = model.data;
 		data.sanitize( cases[i].rules || {}, cases[i].plainText );
 		assert.deepEqualWithDomElements( data.data, cases[i].data, cases[i].msg + ': data' );
 		if ( cases[i].store ) {

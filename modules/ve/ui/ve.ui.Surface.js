@@ -16,6 +16,8 @@
  * @param {Object} [config] Configuration options
  */
 ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
+	var documentModel;
+
 	// Parent constructor
 	OO.ui.Element.call( this, config );
 
@@ -28,9 +30,17 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 	this.$localOverlayBlockers = this.$( '<div>' );
 	this.$localOverlayControls = this.$( '<div>' );
 	this.$localOverlayMenus = this.$( '<div>' );
-	this.model = new ve.dm.Surface(
-		dataOrDoc instanceof ve.dm.Document ? dataOrDoc : new ve.dm.Document( dataOrDoc )
-	);
+	if ( dataOrDoc instanceof ve.dm.Document ) {
+		// ve.dm.Document
+		documentModel = dataOrDoc;
+	} else if ( dataOrDoc instanceof ve.dm.LinearData || ve.isArray( dataOrDoc ) ) {
+		// LinearData or raw linear data
+		documentModel = new ve.dm.Document( dataOrDoc );
+	} else {
+		// HTMLDocument
+		documentModel = ve.dm.converter.getModelFromDom( dataOrDoc );
+	}
+	this.model = new ve.dm.Surface( documentModel );
 	this.view = new ve.ce.Surface( this.model, this, { '$': this.$ } );
 	this.context = new ve.ui.Context( this, { '$': this.$ } );
 	this.dialogs = new ve.ui.WindowSet( this, ve.ui.dialogFactory, { '$': this.$ } );

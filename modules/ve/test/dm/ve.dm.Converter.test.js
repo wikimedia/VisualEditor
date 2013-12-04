@@ -39,8 +39,8 @@ QUnit.test( 'getDomElementsFromDataElement', 20, function ( assert ) {
 	}
 } );
 
-QUnit.test( 'getDataFromDom', function ( assert ) {
-	ve.test.utils.runGetDataFromDomTests( assert, ve.copy( ve.dm.example.domToDataCases ) );
+QUnit.test( 'getModelFromDom', function ( assert ) {
+	ve.test.utils.runGetModelFromDomTests( assert, ve.copy( ve.dm.example.domToDataCases ) );
 } );
 
 QUnit.test( 'getDomFromModel', function ( assert ) {

@@ -1002,7 +1002,7 @@ ve.ce.Surface.prototype.afterPaste = function () {
 		if ( beforePasteData.context ) {
 			internalListRange = doc.getInternalList().getListNode().getOuterRange();
 			context = new ve.dm.ElementLinearData(
-				store,
+				doc.getStore(),
 				ve.copy( beforePasteData.context )
 			);
 			if ( this.pasteSpecial ) {

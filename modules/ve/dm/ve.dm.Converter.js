@@ -381,6 +381,20 @@ ve.dm.Converter.prototype.getDomElementFromDataAnnotation = function ( dataAnnot
 };
 
 /**
+ * Convert an HTML document to a document model.
+ * @param {HTMLDocument} doc HTML document to convert
+ * @returns {ve.dm.Document} Document model
+ */
+ve.dm.Converter.prototype.getModelFromDom = function ( doc ) {
+	var internalList = new ve.dm.InternalList(),
+		innerWhitespace = new Array( 2 ),
+		data = this.getDataFromDom( doc, new ve.dm.IndexValueStore(), internalList, innerWhitespace ),
+		model = new ve.dm.Document( data, doc, undefined, internalList, innerWhitespace );
+
+	return model;
+};
+
+/**
  * Convert an HTML document to a linear model.
  * @param {HTMLDocument} doc HTML document to convert
  * @param {ve.dm.IndexValueStore} store Index-value store
