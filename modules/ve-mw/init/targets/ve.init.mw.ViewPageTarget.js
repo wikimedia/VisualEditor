@@ -259,6 +259,7 @@ ve.init.mw.ViewPageTarget.prototype.onSurfaceReady = function () {
 		'documentUpdate': 'checkForWikitextWarning',
 		'history': 'updateToolbarSaveButtonState'
 	} );
+	this.surface.setPasteRules( this.constructor.static.pasteRules );
 	// Update UI
 	this.transformPageTitle();
 	this.changeDocumentTitle();
@@ -836,70 +837,6 @@ ve.init.mw.ViewPageTarget.prototype.getSaveOptions = function () {
 	}
 
 	return options;
-};
-
-/**
- * Switch to editing mode.
- *
- * @method
- * @param {HTMLDocument} doc HTML DOM to edit
- * @param {Function} [callback] Callback to call when done
- */
-ve.init.mw.ViewPageTarget.prototype.setUpSurface = function ( doc, callback ) {
-	var target = this;
-	setTimeout( function () {
-		// Build linmod
-		var store = new ve.dm.IndexValueStore(),
-			internalList = new ve.dm.InternalList(),
-			innerWhitespace = new Array( 2 ),
-			data = ve.dm.converter.getDataFromDom( doc, store, internalList, innerWhitespace );
-		setTimeout( function () {
-			// Build DM tree
-			var dmDoc = new ve.dm.Document( data, doc, undefined, internalList, innerWhitespace );
-			setTimeout( function () {
-				// Create ui.Surface (also creates ce.Surface and dm.Surface and builds CE tree)
-				target.surface = new ve.ui.Surface( dmDoc );
-				target.surface.$element.addClass( 've-init-mw-viewPageTarget-surface' );
-				setTimeout( function () {
-					// Initialize surface
-					target.surface.getContext().hide();
-					target.$document = target.surface.$element.find( '.ve-ce-documentNode' );
-					target.surface.getModel().getDocument().connect( target, {
-						'transact': 'recordLastTransactionTime'
-					} );
-					target.surface.getModel().connect( target, {
-						'documentUpdate': 'checkForWikitextWarning',
-						'history': 'updateToolbarSaveButtonState'
-					} );
-					target.surface.setPasteRules( target.constructor.static.pasteRules );
-					target.$element.append( target.surface.$element );
-					target.setUpToolbar();
-					target.transformPageTitle();
-					target.changeDocumentTitle();
-
-					// Update UI
-					target.hidePageContent();
-					target.hideSpinner();
-					target.active = true;
-					target.$document.attr( {
-						'lang': mw.config.get( 'wgVisualEditor' ).pageLanguageCode,
-						'dir': mw.config.get( 'wgVisualEditor' ).pageLanguageDir
-					} );
-
-					// Add appropriately mw-content-ltr or mw-content-rtl class
-					target.surface.view.$element.addClass(
-						'mw-content-' + mw.config.get( 'wgVisualEditor' ).pageLanguageDir
-					);
-
-					// Now that the surface is attached to the document and ready,
-					// let it initialize itself
-					target.surface.initialize();
-
-					setTimeout( callback );
-				} );
-			} );
-		} );
-	} );
 };
 
 /**
