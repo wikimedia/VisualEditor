@@ -157,7 +157,7 @@ ve.ui.MWMediaSearchWidget.prototype.onMediaQueryDone = function ( source, data )
 		return;
 	}
 
-	var	page, title,
+	var page, title,
 		items = [],
 		pages = data.query.pages,
 		value = this.query.getValue();

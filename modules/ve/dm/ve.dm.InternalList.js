@@ -243,7 +243,7 @@ ve.dm.InternalList.prototype.convertToData = function ( converter, doc ) {
  * and the new item's index within the list
  */
 ve.dm.InternalList.prototype.getItemInsertion = function ( groupName, key, data ) {
-	var	tx, itemData,
+	var tx, itemData,
 		index = this.getKeyIndex( groupName, key );
 
 	if ( index === undefined ) {
