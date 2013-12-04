@@ -1,12 +1,12 @@
 /*!
- * OOJS UI v0.1.0-pre (d047752ccc)
+ * OOJS UI v0.1.0-pre (e5ef1e5b28)
  * https://www.mediawiki.org/wiki/OOJS
  *
  * Copyright 2011-2013 OOJS Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: Wed Dec 04 2013 04:03:24 GMT+0100 (CET)
+ * Date: Mon Nov 25 2013 10:40:32 GMT+0000 (GMT)
  */
 ( function () {
 
@@ -83,6 +83,10 @@ OO.ui.getLocalValue = function ( obj, lang, fallback ) {
 var messages = {
 	// Label text for button to exit from dialog
 	'ooui-dialog-action-close': 'Close',
+	// TODO remove me
+	'ooui-inspector-close-tooltip': 'Close',
+	// TODO remove me
+	'ooui-inspector-remove-tooltip': 'Remove',
 	// Tool tip for a button that moves items in a list down one place
 	'ooui-outline-control-move-down': 'Move item down',
 	// Tool tip for a button that moves items in a list up one place
@@ -611,10 +615,6 @@ OO.ui.Frame.static.tagName = 'iframe';
  * frame's document. It then polls the document to see when all styles have loaded, and once they
  * have, invokes the callback.
  *
- * If the styles still haven't loaded after a long time (5 seconds by default), we give up waiting
- * and invoke the callback anyway. This protects against cases like a display: none; iframe in
- * Firefox, where the styles won't load until the iframe becomes visible.
- *
  * For details of how we arrived at the strategy used in this function, see #load.
  *
  * @static
@@ -623,10 +623,9 @@ OO.ui.Frame.static.tagName = 'iframe';
  * @param {HTMLDocument} parentDoc Document to transplant styles from
  * @param {HTMLDocument} frameDoc Document to transplant styles to
  * @param {Function} [callback] Callback to execute once styles have loaded
- * @param {number} [timeout=5000] How long to wait before giving up (in ms). If 0, never give up.
  */
-OO.ui.Frame.static.transplantStyles = function ( parentDoc, frameDoc, callback, timeout ) {
-	var i, numSheets, styleNode, newNode, timeoutID, pollNodeId, $pendingPollNodes,
+OO.ui.Frame.static.transplantStyles = function ( parentDoc, frameDoc, callback ) {
+	var i, numSheets, styleNode, newNode, timeout, pollNodeId, $pendingPollNodes,
 		$pollNodes = $( [] ),
 		// Fake font-family value
 		fontFamily = 'oo-ui-frame-transplantStyles-loaded';
@@ -658,7 +657,7 @@ OO.ui.Frame.static.transplantStyles = function ( parentDoc, frameDoc, callback, 
 	if ( callback ) {
 		// Poll every 100ms until all external stylesheets have loaded
 		$pendingPollNodes = $pollNodes;
-		timeoutID = setTimeout( function pollExternalStylesheets() {
+		timeout = setTimeout( function pollExternalStylesheets() {
 			while (
 				$pendingPollNodes.length > 0 &&
 				$pendingPollNodes.eq( 0 ).css( 'font-family' ) === fontFamily
@@ -668,26 +667,12 @@ OO.ui.Frame.static.transplantStyles = function ( parentDoc, frameDoc, callback, 
 
 			if ( $pendingPollNodes.length === 0 ) {
 				// We're done!
-				if ( timeoutID !== null ) {
-					timeoutID = null;
-					$pollNodes.remove();
-					callback();
-				}
+				$pollNodes.remove();
+				callback();
 			} else {
-				timeoutID = setTimeout( pollExternalStylesheets, 100 );
+				timeout = setTimeout( pollExternalStylesheets, 100 );
 			}
 		}, 100 );
-		// ...but give up after a while
-		if ( timeout !== 0 ) {
-			setTimeout( function () {
-				if ( timeoutID ) {
-					clearTimeout( timeoutID );
-					timeoutID = null;
-					$pollNodes.remove();
-					callback();
-				}
-			}, timeout || 5000 );
-		}
 	}
 };
 
@@ -3124,12 +3109,10 @@ OO.ui.GridLayout.prototype.getPanel = function ( x, y ) {
  *
  * @constructor
  * @param {Object} [config] Configuration options
- * @cfg {boolean} [autoFocus=false] Focus on the first focusable element when changing to a page
- * @cfg {boolean} [outlined=false] Show an outline
- * @cfg {boolean} [editable=false] Show controls for adding, removing and reordering pages
- * @cfg {Object[]} [adders List of adders for controls, each with name, icon and title properties
+ * @param {boolean} [config.attachPagesPanel] Whether or not to attach pagesPanel to this.$element on
+ *  initialization.
  */
-OO.ui.BookletLayout = function OoUiBookletLayout( config ) {
+OO.ui.PagedLayout = function OoUiPagedLayout( config ) {
 	// Initialize configuration
 	config = config || {};
 
@@ -3137,274 +3120,67 @@ OO.ui.BookletLayout = function OoUiBookletLayout( config ) {
 	OO.ui.Layout.call( this, config );
 
 	// Properties
+	this.attached = !!config.attachPagesPanel;
 	this.currentPageName = null;
 	this.pages = {};
-	this.scrolling = false;
-	this.selecting = false;
-	this.stackLayout = new OO.ui.StackLayout( { '$': this.$, 'continuous': true } );
-	this.scrollingTimeout = null;
-	this.onStackLayoutDebouncedScrollHandler =
-		OO.ui.bind( this.onStackLayoutDebouncedScroll, this );
-	this.autoFocus = !!config.autoFocus;
-	this.outlined = !!config.outlined;
-	if ( this.outlined ) {
-		this.editable = !!config.editable;
-		this.adders = config.adders || null;
-		this.outlineControlsWidget = null;
-		this.outlineWidget = new OO.ui.OutlineWidget( { '$': this.$ } );
-		this.outlinePanel = new OO.ui.PanelLayout( { '$': this.$, 'scrollable': true } );
-		this.gridLayout = new OO.ui.GridLayout(
-			[this.outlinePanel, this.stackLayout], { '$': this.$, 'widths': [1, 2] }
-		);
-		if ( this.editable ) {
-			this.outlineControlsWidget = new OO.ui.OutlineControlsWidget(
-				this.outlineWidget, { '$': this.$, 'adders': this.adders }
-			);
-		}
-	}
-
-	// Events
-	this.stackLayout.connect( this, { 'set': 'onStackLayoutSet' } );
-	if ( this.outlined ) {
-		this.outlineWidget.connect( this, { 'select': 'onOutlineWidgetSelect' } );
-		this.stackLayout.$element.on( 'scroll', OO.ui.bind( this.onStackLayoutScroll, this ) );
-	}
+	this.pagesPanel = new OO.ui.StackPanelLayout( { '$': this.$ } );
 
 	// Initialization
-	this.$element.addClass( 'oo-ui-bookletLayout' );
-	this.stackLayout.$element.addClass( 'oo-ui-bookletLayout-stackLayout' );
-	if ( this.outlined ) {
-		this.outlinePanel.$element
-			.addClass( 'oo-ui-bookletLayout-outlinePanel' )
-			.append( this.outlineWidget.$element );
-		if ( this.editable ) {
-			this.outlinePanel.$element
-				.addClass( 'oo-ui-bookletLayout-outlinePanel-editable' )
-				.append( this.outlineControlsWidget.$element );
-		}
-		this.$element.append( this.gridLayout.$element );
-	} else {
-		this.$element.append( this.stackLayout.$element );
+	this.$element.addClass( 'oo-ui-pagedLayout' );
+	this.pagesPanel.$element.addClass( 'oo-ui-pagedLayout-pagesPanel' );
+
+	if ( this.attached ) {
+		this.$element.append( this.pagesPanel.$element );
 	}
 };
 
 /* Inheritance */
 
-OO.inheritClass( OO.ui.BookletLayout, OO.ui.Layout );
+OO.inheritClass( OO.ui.PagedLayout, OO.ui.Layout );
 
 /* Events */
 
 /**
  * @event add
  * @param {string} name The name of the page added.
- * @param {OO.ui.PageLayout} page The page panel.
+ * @param {OO.ui.PanelLayout} page The page panel.
  */
 
 /**
  * @event remove
- * @param {OO.ui.PageLayout[]} pages An array of page panels that were removed.
+ * @param {OO.ui.PanelLayout[]} pages An array of page panels that were removed.
  */
 
 /**
  * @event set
- * @param {OO.ui.PageLayout} page The page panel that is now the current page.
+ * @param {OO.ui.PanelLayout} page The page panel that is now the current page.
  */
 
 /* Methods */
-
-/**
- * Handle stack layout scroll events.
- *
- * @method
- * @param {jQuery.Event} e Scroll event
- */
-OO.ui.BookletLayout.prototype.onStackLayoutScroll = function () {
-	if ( !this.selecting ) {
-		this.scrolling = true;
-		if ( !this.scrollingTimeout ) {
-			this.scrollingTimeout = setTimeout( this.onStackLayoutDebouncedScrollHandler, 100 );
-		}
-	}
-};
-
-OO.ui.BookletLayout.prototype.onStackLayoutDebouncedScroll = function () {
-	var i, len, name, top, height, $item, visible,
-		items = this.stackLayout.getItems(),
-		middle = this.stackLayout.$element.height() / 2;
-
-	for ( i = 0, len = items.length; i < len; i++ ) {
-		$item = items[i].$element;
-		top = $item.position().top;
-		height = $item.height();
-		if ( top < middle && top + height > middle ) {
-			visible = items[i];
-			break;
-		}
-	}
-	if ( visible ) {
-		for ( name in this.pages ) {
-			if ( this.pages[name] === items[i] ) {
-				break;
-			}
-		}
-		if ( name !== this.currentPageName ) {
-			this.setPage( name );
-		}
-	}
-	this.scrolling = false;
-	this.scrollingTimeout = null;
-};
-
-/**
- * Handle stack layout set events.
- *
- * @method
- * @param {OO.ui.PanelLayout|null} page The page panel that is now the current panel
- */
-OO.ui.BookletLayout.prototype.onStackLayoutSet = function ( page ) {
-	if ( page ) {
-		this.selecting = true;
-		if ( this.scrolling ) {
-			if ( this.autoFocus ) {
-				page.$element.find( ':input:first' ).focus();
-			}
-			this.selecting = false;
-		} else {
-			page.scrollElementIntoView( { 'complete': OO.ui.bind( function () {
-				if ( this.autoFocus ) {
-					page.$element.find( ':input:first' ).focus();
-				}
-				this.selecting = false;
-			}, this ) } );
-		}
-	}
-};
-
-/**
- * Handle outline widget select events.
- *
- * @method
- * @param {OO.ui.OptionWidget|null} item Selected item
- */
-OO.ui.BookletLayout.prototype.onOutlineWidgetSelect = function ( item ) {
-	if ( item && !this.scrolling ) {
-		this.setPage( item.getData() );
-	}
-};
-
-/**
- * Check if booklet has an outline.
- *
- * @method
- * @returns {boolean} Booklet is outlined
- */
-OO.ui.BookletLayout.prototype.isOutlined = function () {
-	return this.outlined;
-};
-
-/**
- * Check if booklet has editing controls.
- *
- * @method
- * @returns {boolean} Booklet is outlined
- */
-OO.ui.BookletLayout.prototype.isEditable = function () {
-	return this.editable;
-};
-
-/**
- * Get the outline widget.
- *
- * @method
- * @returns {OO.ui.OutlineWidget} Outline widget
- */
-OO.ui.BookletLayout.prototype.getOutline = function () {
-	return this.outlineWidget;
-};
-
-/**
- * Get the outline controls widget. If the outline is not editable, null is returned.
- *
- * @method
- * @returns {OO.ui.OutlineControlsWidget|null} The outline controls widget.
- */
-OO.ui.BookletLayout.prototype.getOutlineControls = function () {
-	return this.outlineControlsWidget;
-};
-
-/**
- * Get a page by name.
- *
- * @method
- * @param {string} name Symbolic name of page
- * @returns {OO.ui.PageLayout|undefined} Page, if found
- */
-OO.ui.BookletLayout.prototype.getPage = function ( name ) {
-	return this.pages[name];
-};
-
-/**
- * Get the current page name.
- *
- * @method
- * @returns {string|null} Current page name
- */
-OO.ui.BookletLayout.prototype.getPageName = function () {
-	return this.currentPageName;
-};
 
 /**
  * Add a page to the layout.
  *
  * @method
  * @param {string} name Symbolic name of page
- * @param {OO.ui.PageLayout} page Page to add
- * @param {number} index Specific index to insert page at
+ * @param {Object} [config] Condifugration options
+ * @param {number} [config.index] Specific index to insert page at
+ * @param {jQuery} [config.$content] Page content
  * @fires add
  * @chainable
  */
-OO.ui.BookletLayout.prototype.addPage = function ( name, page, index ) {
-	if ( this.outlined ) {
-		this.outlineWidget.addItems(
-			[
-				new OO.ui.OutlineItemWidget( name, {
-					'$': this.$,
-					'label': page.getLabel() || name,
-					'level': page.getLevel(),
-					'icon': page.getIcon(),
-					'moveable': page.isMovable()
-				} )
-			],
-			index
-		);
-		this.updateOutlineWidget();
+OO.ui.PagedLayout.prototype.addPage = function ( name, config ) {
+	var page = new OO.ui.PanelLayout( { '$': this.$, 'scrollable': true } );
+
+	config = config || {};
+
+	if ( config.$content ) {
+		page.$element.append( config.$content );
 	}
+
 	this.pages[name] = page;
-	this.stackLayout.addItems( [ page ], index );
+	this.pagesPanel.addItems( [ page ], config.index );
 	this.emit( 'add', name, page );
-	return this;
-};
-
-/**
- * Remove a page from the layout.
- *
- * @method
- * @fires remove
- * @chainable
- */
-OO.ui.BookletLayout.prototype.removePage = function ( name ) {
-	var page = this.pages[name];
-
-	if ( page ) {
-		if ( this.outlined ) {
-			this.outlineWidget.removeItems( [ this.outlineWidget.getItemFromData( name ) ] );
-			this.updateOutlineWidget();
-		}
-		page = [ page ];
-		delete this.pages[name];
-		this.stackLayout.removeItems( page );
-		this.emit( 'remove', page );
-	}
 
 	return this;
 };
@@ -3416,16 +3192,55 @@ OO.ui.BookletLayout.prototype.removePage = function ( name ) {
  * @fires remove
  * @chainable
  */
-OO.ui.BookletLayout.prototype.clearPages = function () {
-	var pages = this.stackLayout.getItems();
+OO.ui.PagedLayout.prototype.clearPages = function () {
+	var pages = this.pagesPanel.getItems();
 
-	if ( this.outlined ) {
-		this.outlineWidget.clearItems();
-	}
 	this.currentPageName = null;
 	this.pages = {};
-	this.stackLayout.clearItems();
+	this.pagesPanel.clearItems();
 	this.emit( 'remove', pages );
+
+	return this;
+};
+
+/**
+ * Get a page by name.
+ *
+ * @method
+ * @param {string} name Symbolic name of page
+ * @returns {OO.ui.PanelLayout|undefined} Page, if found
+ */
+OO.ui.PagedLayout.prototype.getPage = function ( name ) {
+	return this.pages[name];
+};
+
+
+/**
+ * Get the current page name.
+ *
+ * @method
+ * @returns {string|null} Current page name
+ */
+OO.ui.PagedLayout.prototype.getPageName = function () {
+	return this.currentPageName;
+};
+
+/**
+ * Remove a page from the layout.
+ *
+ * @method
+ * @fires remove
+ * @chainable
+ */
+OO.ui.PagedLayout.prototype.removePage = function ( name ) {
+	var page = this.pages[name];
+
+	if ( page ) {
+		page = [ page ];
+		delete this.pages[name];
+		this.pagesPanel.removeItems( page );
+		this.emit( 'remove', page );
+	}
 
 	return this;
 };
@@ -3437,17 +3252,187 @@ OO.ui.BookletLayout.prototype.clearPages = function () {
  * @fires set
  * @param {string} name Symbolic name of page
  */
-OO.ui.BookletLayout.prototype.setPage = function ( name ) {
+OO.ui.PagedLayout.prototype.setPage = function ( name ) {
 	var page = this.pages[name];
 
-	if ( this.outlined && name !== this.outlineWidget.getSelectedItem().getData() ) {
-		this.outlineWidget.selectItem( this.outlineWidget.getItemFromData( name ) );
-	}
 	if ( page ) {
 		this.currentPageName = name;
-		this.stackLayout.setItem( page );
+		this.pagesPanel.showItem( page );
 		this.emit( 'set', page );
 	}
+};
+/**
+ * Layout containing a series of pages and an outline controlling their visibility.
+ *
+ * The outline takes up the left third, the pages taking up the remaining two-thirds on the right.
+ *
+ * @class
+ * @extends OO.ui.PagedLayout
+ *
+ * @constructor
+ * @param {Object} [config] Configuration options
+ * @param {boolean} [config.editable] Show controls for adding, removing and reordering items in
+ *  the outline
+ * @param {Object[]} [config.adders] List of adders for controls, each an object with name, icon
+ *  and title properties
+ */
+OO.ui.PagedOutlineLayout = function OoUiPagedOutlineLayout( config ) {
+	// Initialize configuration
+	config = config || {};
+	config.attachPagesPanel = false;
+
+	// Parent constructor
+	OO.ui.PagedLayout.call( this, config );
+
+	// Properties
+	this.adders = config.adders || null;
+	this.editable = !!config.editable;
+	this.outlineControlsWidget = null;
+	this.outlinePanel = new OO.ui.PanelLayout( { '$': this.$, 'scrollable': true } );
+	this.outlineWidget = new OO.ui.OutlineWidget( { '$': this.$ } );
+	this.gridLayout = new OO.ui.GridLayout(
+		[this.outlinePanel, this.pagesPanel], { '$': this.$, 'widths': [1, 2] }
+	);
+
+	if ( this.editable ) {
+		this.outlineControlsWidget = new OO.ui.OutlineControlsWidget(
+			this.outlineWidget, { '$': this.$, 'adders': this.adders }
+		);
+	}
+
+	// Events
+	this.outlineWidget.connect( this, { 'select': 'onPageOutlineSelect' } );
+	this.pagesPanel.connect( this, { 'set': 'onPagedLayoutSet' } );
+
+	// Initialization
+	this.outlinePanel.$element
+		.addClass( 'oo-ui-pagedOutlineLayout-outlinePanel' )
+		.append( this.outlineWidget.$element );
+
+	if ( this.editable ) {
+		this.outlinePanel.$element
+			.addClass( 'oo-ui-pagedOutlineLayout-outlinePanel-editable' )
+			.append( this.outlineControlsWidget.$element );
+	}
+
+	this.$element
+		.addClass( 'oo-ui-pagedOutlineLayout' )
+		.append( this.gridLayout.$element );
+};
+
+/* Inheritance */
+
+OO.inheritClass( OO.ui.PagedOutlineLayout, OO.ui.PagedLayout );
+
+/* Methods */
+
+/**
+ * Add a page to the layout.
+ *
+ * @method
+ * @param {string} name Symbolic name of page
+ * @param {Object} [config] Condifugration options
+ * @param {jQuery|string} [config.label=name] Page label
+ * @param {string} [config.icon] Symbolic name of icon
+ * @param {number} [config.level=0] Indentation level
+ * @param {number} [config.index] Specific index to insert page at
+ * @param {jQuery} [config.$content] Page content
+ * @param {jQuery} [config.moveable] Allow page to be moved in the outline
+ * @chainable
+ */
+OO.ui.PagedOutlineLayout.prototype.addPage = function ( name, config ) {
+	config = config || {};
+
+	this.outlineWidget.addItems(
+		[
+			new OO.ui.OutlineItemWidget( name, {
+				'$': this.$,
+				'label': config.label || name,
+				'level': config.level || 0,
+				'icon': config.icon,
+				'moveable': config.moveable
+			} )
+		],
+		config.index
+	);
+
+	this.updateOutlineWidget();
+
+	// Parent method
+	return OO.ui.PagedLayout.prototype.addPage.call( this, name, config );
+};
+
+/**
+ * Clear all pages.
+ *
+ * @method
+ * @chainable
+ */
+OO.ui.PagedOutlineLayout.prototype.clearPages = function () {
+	this.outlineWidget.clearItems();
+
+	// Parent method
+	return OO.ui.PagedLayout.prototype.clearPages.call( this );
+};
+
+/**
+ * Get the outline widget.
+ *
+ * @method
+ * @returns {OO.ui.OutlineWidget} The outline widget.
+ */
+OO.ui.PagedOutlineLayout.prototype.getOutline = function () {
+	return this.outlineWidget;
+};
+
+/**
+ * Get the outline controls widget. If the outline is not editable, null is returned.
+ *
+ * @method
+ * @returns {OO.ui.OutlineControlsWidget|null} The outline controls widget.
+ */
+OO.ui.PagedOutlineLayout.prototype.getOutlineControls = function () {
+	return this.outlineControlsWidget;
+};
+
+/**
+ * Handle PagedLayout set events.
+ *
+ * @method
+ * @param {OO.ui.PanelLayout} page The page panel that is now the current panel.
+ */
+OO.ui.PagedOutlineLayout.prototype.onPagedLayoutSet = function ( page ) {
+	page.$element.find( ':input:first' ).focus();
+};
+
+/**
+ * Handle outline select events.
+ *
+ * @method
+ * @param {OO.ui.OptionWidget} item Selected item
+ */
+OO.ui.PagedOutlineLayout.prototype.onPageOutlineSelect = function ( item ) {
+	if ( item ) {
+		OO.ui.PagedLayout.prototype.setPage.call( this, item.getData() );
+	}
+};
+
+/**
+ * Remove a page.
+ *
+ * @method
+ * @chainable
+ */
+OO.ui.PagedOutlineLayout.prototype.removePage = function ( name ) {
+	var page = this.pages[name];
+
+	if ( page ) {
+		this.outlineWidget.removeItems( [ this.outlineWidget.getItemFromData( name ) ] );
+		this.updateOutlineWidget();
+	}
+
+	// Parent method
+	return OO.ui.PagedLayout.prototype.removePage.call( this, name );
 };
 
 /**
@@ -3456,13 +3441,22 @@ OO.ui.BookletLayout.prototype.setPage = function ( name ) {
  * @method
  * @chainable
  */
-OO.ui.BookletLayout.prototype.updateOutlineWidget = function () {
+OO.ui.PagedOutlineLayout.prototype.updateOutlineWidget = function () {
 	// Auto-select first item when nothing is selected anymore
 	if ( !this.outlineWidget.getSelectedItem() ) {
 		this.outlineWidget.selectItem( this.outlineWidget.getFirstSelectableItem() );
 	}
 
 	return this;
+};
+
+/**
+ * @inheritdoc
+ */
+OO.ui.PagedOutlineLayout.prototype.setPage = function ( name ) {
+	if ( name !== this.outlineWidget.getSelectedItem().getData() ) {
+		this.outlineWidget.selectItem( this.outlineWidget.getItemFromData( name ) );
+	}
 };
 /**
  * Layout that expands to cover the entire area of its parent, with optional scrolling and padding.
@@ -3500,74 +3494,6 @@ OO.ui.PanelLayout = function OoUiPanelLayout( config ) {
 
 OO.inheritClass( OO.ui.PanelLayout, OO.ui.Layout );
 /**
- * Page within an OO.ui.BookletLayout.
- *
- * @class
- * @extends OO.ui.PanelLayout
- *
- * @constructor
- * @param {Object} [config] Configuration options
- * @param {string} [icon=''] Symbolic name of icon to display in outline
- * @param {string} [label=''] Label to display in outline
- * @param {number} [level=0] Indentation level of item in outline
- * @param {boolean} [movable=false] Page should be movable using outline controls
- */
-OO.ui.PageLayout = function OoUiPageLayout( config ) {
-	// Configuration initialization
-	config = $.extend( { 'scrollable': true }, config );
-
-	// Parent constructor
-	OO.ui.PanelLayout.call( this, config );
-
-	// Properties
-	this.icon = config.icon || '';
-	this.label = config.label || '';
-	this.level = config.level || 0;
-	this.movable = !!config.movable;
-};
-
-/* Inheritance */
-
-OO.inheritClass( OO.ui.PageLayout, OO.ui.PanelLayout );
-
-/* Methods */
-
-/**
- * Get page icon.
- *
- * @returns {string} Symbolic name of icon
- */
-OO.ui.PageLayout.prototype.getIcon = function () {
-	return this.icon;
-};
-
-/**
- * Get page label.
- *
- * @returns {string} Label text
- */
-OO.ui.PageLayout.prototype.getLabel = function () {
-	return this.label;
-};
-
-/**
- * Get outline item indentation level.
- *
- * @returns {number} Indentation level
- */
-OO.ui.PageLayout.prototype.getLevel = function () {
-	return this.level;
-};
-
-/**
- * Check if page is movable using outline controls.
- *
- * @returns {boolean} Page is movable
- */
-OO.ui.PageLayout.prototype.isMovable = function () {
-	return this.movable;
-};
-/**
  * Layout containing a series of mutually exclusive pages.
  *
  * @class
@@ -3576,10 +3502,9 @@ OO.ui.PageLayout.prototype.isMovable = function () {
  *
  * @constructor
  * @param {Object} [config] Configuration options
- * @cfg {boolean} [continuous=false] Show all pages, one after another
  * @cfg {string} [icon=''] Symbolic icon name
  */
-OO.ui.StackLayout = function OoUiStackLayout( config ) {
+OO.ui.StackPanelLayout = function OoUiStackPanelLayout( config ) {
 	// Config initialization
 	config = $.extend( { 'scrollable': true }, config );
 
@@ -3591,27 +3516,16 @@ OO.ui.StackLayout = function OoUiStackLayout( config ) {
 
 	// Properties
 	this.currentItem = null;
-	this.continuous = !!config.continuous;
 
 	// Initialization
-	this.$element.addClass( 'oo-ui-stackLayout' );
-	if ( this.continuous ) {
-		this.$element.addClass( 'oo-ui-stackLayout-continuous' );
-	}
+	this.$element.addClass( 'oo-ui-stackPanelLayout' );
 };
 
 /* Inheritance */
 
-OO.inheritClass( OO.ui.StackLayout, OO.ui.PanelLayout );
+OO.inheritClass( OO.ui.StackPanelLayout, OO.ui.PanelLayout );
 
-OO.mixinClass( OO.ui.StackLayout, OO.ui.GroupElement );
-
-/* Events */
-
-/**
- * @event set
- * @param {OO.ui.PanelLayout|null} [item] Current item
- */
+OO.mixinClass( OO.ui.StackPanelLayout, OO.ui.GroupElement );
 
 /* Methods */
 
@@ -3625,13 +3539,13 @@ OO.mixinClass( OO.ui.StackLayout, OO.ui.GroupElement );
  * @param {number} [index] Index to insert items after
  * @chainable
  */
-OO.ui.StackLayout.prototype.addItems = function ( items, index ) {
+OO.ui.StackPanelLayout.prototype.addItems = function ( items, index ) {
 	var i, len;
 
 	for ( i = 0, len = items.length; i < len; i++ ) {
 		if ( !this.currentItem ) {
-			this.setItem( items[i] );
-		} else if ( !this.continuous ) {
+			this.showItem( items[i] );
+		} else {
 			items[i].$element.hide();
 		}
 	}
@@ -3649,12 +3563,12 @@ OO.ui.StackLayout.prototype.addItems = function ( items, index ) {
  * @param {OO.ui.PanelLayout[]} items Items to remove
  * @chainable
  */
-OO.ui.StackLayout.prototype.removeItems = function ( items ) {
+OO.ui.StackPanelLayout.prototype.removeItems = function ( items ) {
 	OO.ui.GroupElement.prototype.removeItems.call( this, items );
 	if ( items.indexOf( this.currentItem ) !== -1 ) {
 		this.currentItem = null;
 		if ( !this.currentItem && this.items.length ) {
-			this.setItem( this.items[0] );
+			this.showItem( this.items[0] );
 		}
 	}
 
@@ -3669,7 +3583,7 @@ OO.ui.StackLayout.prototype.removeItems = function ( items ) {
  * @method
  * @chainable
  */
-OO.ui.StackLayout.prototype.clearItems = function () {
+OO.ui.StackPanelLayout.prototype.clearItems = function () {
 	this.currentItem = null;
 	OO.ui.GroupElement.prototype.clearItems.call( this );
 
@@ -3685,17 +3599,10 @@ OO.ui.StackLayout.prototype.clearItems = function () {
  * @param {OO.ui.PanelLayout} item Item to show
  * @chainable
  */
-OO.ui.StackLayout.prototype.setItem = function ( item ) {
-	if ( this.items.indexOf( item ) !== -1 ) {
-		if ( !this.continuous ) {
-			this.$items.hide();
-			item.$element.show();
-		}
-	} else {
-		item = null;
-	}
+OO.ui.StackPanelLayout.prototype.showItem = function ( item ) {
+	this.$items.hide();
+	item.$element.show();
 	this.currentItem = item;
-	this.emit( 'set', item );
 
 	return this;
 };
@@ -4180,16 +4087,14 @@ OO.ui.InputWidget = function OoUiInputWidget( config ) {
 	// Properties
 	this.$input = this.getInputElement( config );
 	this.value = '';
-	this.readOnly = false;
+	this.readonly = false;
 	this.inputFilter = config.inputFilter;
 
 	// Events
 	this.$input.on( 'keydown mouseup cut paste change input select', OO.ui.bind( this.onEdit, this ) );
 
 	// Initialization
-	this.$input
-		.attr( 'name', config.name )
-		.prop( 'disabled', this.disabled );
+	this.$input.attr( 'name', config.name );
 	this.setReadOnly( config.readOnly );
 	this.$element.addClass( 'oo-ui-inputWidget' ).append( this.$input );
 	this.setValue( config.value );
@@ -4325,112 +4230,6 @@ OO.ui.InputWidget.prototype.setReadOnly = function ( state ) {
 	this.$input.prop( 'readonly', this.readOnly );
 	return this;
 };
-
-/**
- * @inheritdoc
- */
-OO.ui.InputWidget.prototype.setDisabled = function ( state ) {
-	OO.ui.Widget.prototype.setDisabled.call( this, state );
-	if ( this.$input ) {
-		this.$input.prop( 'disabled', this.disabled );
-	}
-	return this;
-};/**
- * Creates an OO.ui.CheckboxInputWidget object.
- *
- * @class
- * @extends OO.ui.InputWidget
- *
- * @constructor
- * @param {Object} [config] Configuration options
- */
-OO.ui.CheckboxInputWidget = function OoUiCheckboxInputWidget( config ) {
-	config = config || {};
-
-	// Parent constructor
-	OO.ui.InputWidget.call( this, config );
-
-	this.value = false;
-
-	// Initialization
-	this.$element.addClass( 'oo-ui-checkboxInputWidget' );
-};
-
-/* Inheritance */
-
-OO.inheritClass( OO.ui.CheckboxInputWidget, OO.ui.InputWidget );
-
-/* Events */
-
-/* Methods */
-
-/**
- * Get input element.
- *
- * @returns {jQuery} Input element
- */
-OO.ui.CheckboxInputWidget.prototype.getInputElement = function () {
-	return this.$( '<input type="checkbox" />' );
-};
-
-/**
- * Get checked state of the checkbox
- *
- * @returns {boolean} If the checkbox is checked
- */
-OO.ui.CheckboxInputWidget.prototype.getValue = function () {
-	return this.value;
-};
-
-/**
- * Set value
- */
-OO.ui.CheckboxInputWidget.prototype.setValue = function ( value ) {
-	if ( this.value !== value ) {
-		this.value = !!value;
-		this.$element.attr( 'checked', this.value );
-		this.emit( 'change', this.value );
-	}
-};
-
-/**
- * @inheritdoc
- */
-OO.ui.CheckboxInputWidget.prototype.onEdit = function () {
-	if ( !this.disabled ) {
-		// Allow the stack to clear so the value will be updated
-		setTimeout( OO.ui.bind( function () {
-			this.setValue( this.$input.attr( 'checked' ) );
-		}, this ) );
-	}
-};/**
- * Creates an OO.ui.CheckboxWidget object.
- *
- * @class
- * @extends OO.ui.CheckboxInputWidget
- * @mixins OO.ui.LabeledElement
- *
- * @constructor
- * @param {Object} [config] Configuration options
- * @cfg {string} [label=''] Label
- */
-OO.ui.CheckboxWidget = function OoUiCheckboxWidget( config ) {
-	config = config || {};
-
-	// Parent constructors
-	OO.ui.CheckboxInputWidget.call( this, config );
-	OO.ui.LabeledElement.call( this, this.$( '<span>' ) , config );
-
-	this.$( '<label>' ).append( this.$input, this.$label ).appendTo( this.$element );
-
-	// Initialization
-	this.$element.addClass( 'oo-ui-checkboxWidget' );
-};
-
-/* Inheritance */
-
-OO.inheritClass( OO.ui.CheckboxWidget, OO.ui.CheckboxInputWidget );
-OO.mixinClass( OO.ui.CheckboxWidget, OO.ui.LabeledElement );
 /**
  * Creates an OO.ui.InputLabelWidget object.
  *
@@ -6404,7 +6203,7 @@ OO.ui.TextInputWidget.prototype.onKeyPress = function ( e ) {
  * @returns {jQuery} Input element
  */
 OO.ui.TextInputWidget.prototype.getInputElement = function ( config ) {
-	return config.multiline ? this.$( '<textarea>' ) : this.$( '<input type="text" />' );
+	return config.multiline ? this.$( '<textarea>' ) : this.$( '<input>' ).attr( 'type', 'text' );
 };
 
 /* Methods */
