@@ -92,7 +92,7 @@ ve.test.utils.runGetDataFromDomTests = function( assert, cases ) {
 	}
 };
 
-ve.test.utils.runGetDomFromDataTests = function( assert, cases ) {
+ve.test.utils.runGetDomFromModelTests = function( assert, cases ) {
 	var msg, originalData, doc, store, i, length, html, n = 0;
 
 	for ( msg in cases ) {
@@ -116,7 +116,7 @@ ve.test.utils.runGetDomFromDataTests = function( assert, cases ) {
 		originalData = ve.copy( doc.getFullData() );
 		html = '<body>' + ( cases[msg].normalizedBody || cases[msg].body ) + '</body>';
 		assert.equalDomElement(
-			ve.dm.converter.getDomFromData( doc.getFullData(), doc.getStore(), doc.getInternalList(), doc.getInnerWhitespace() ),
+			ve.dm.converter.getDomFromModel( doc ),
 			ve.createDocumentFromHtml( html ),
 			msg
 		);

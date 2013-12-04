@@ -1061,24 +1061,21 @@ ve.dm.Converter.prototype.isDomAllMetaOrWhitespace = function ( domElements, exc
 };
 
 /**
- * Convert linear model data to an HTML DOM
+ * Convert document model to an HTML DOM
  *
  * @method
- * @param {Array} documentData Linear model data
- * @param {ve.dm.IndexValueStore} store Index-value store
- * @param {ve.dm.InternalList} internalList Internal list
- * @param {Array} innerWhitespace Inner whitespace
+ * @param {ve.dm.Document} model Document model
  * @returns {HTMLDocument} Document containing the resulting HTML
  */
-ve.dm.Converter.prototype.getDomFromData = function ( documentData, store, internalList, innerWhitespace ) {
+ve.dm.Converter.prototype.getDomFromModel = function ( model ) {
 	var doc = ve.createDocumentFromHtml( '' );
 
 	// Set up the converter state
-	this.documentData = documentData;
-	this.store = store;
-	this.internalList = internalList;
+	this.documentData = model.getFullData();
+	this.store = model.getStore();
+	this.internalList = model.getInternalList();
 
-	this.getDomSubtreeFromData( documentData, doc.body, innerWhitespace );
+	this.getDomSubtreeFromData( this.documentData, doc.body, model.getInnerWhitespace() );
 
 	// Clear the state
 	this.documentData = null;

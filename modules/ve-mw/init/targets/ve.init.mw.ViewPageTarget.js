@@ -759,12 +759,7 @@ ve.init.mw.ViewPageTarget.prototype.editSource = function () {
 	}
 	// Get Wikitext from the DOM
 	this.serialize(
-		this.docToSave || ve.dm.converter.getDomFromData(
-			doc.getFullData(),
-			doc.getStore(),
-			doc.getInternalList(),
-			doc.getInnerWhitespace()
-		),
+		this.docToSave || ve.dm.converter.getDomFromModel( doc ),
 		ve.bind( this.submitWithSaveFields, this, { 'wpDiff': 1 } )
 	);
 };
@@ -932,7 +927,7 @@ ve.init.mw.ViewPageTarget.prototype.startSanityCheck = function () {
 		var i,
 			len = oldDom.body.childNodes.length,
 			newDoc = new ve.dm.Document( data, oldDom, undefined, doc.getInternalList(), doc.getInnerWhitespace() ),
-			newDom = ve.dm.converter.getDomFromData( newDoc.getFullData(), newDoc.getStore(), newDoc.getInternalList(), newDoc.getInnerWhitespace() );
+			newDom = ve.dm.converter.getDomFromModel( newDoc );
 
 		// Explicitly unlink our full copy of the original version of the document data
 		data = undefined;
@@ -1116,9 +1111,7 @@ ve.init.mw.ViewPageTarget.prototype.showSaveDialog = function () {
 	// Preload the serialization
 	var doc = this.surface.getModel().getDocument();
 	if ( !this.docToSave ) {
-		this.docToSave = ve.dm.converter.getDomFromData(
-			doc.getFullData(), doc.getStore(), doc.getInternalList(), doc.getInnerWhitespace()
-		);
+		this.docToSave = ve.dm.converter.getDomFromModel( doc );
 	}
 	this.prepareCacheKey( this.docToSave );
 

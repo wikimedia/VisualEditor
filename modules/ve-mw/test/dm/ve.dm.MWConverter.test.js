@@ -13,6 +13,6 @@ QUnit.test( 'getDataFromDom', function ( assert ) {
 	ve.test.utils.runGetDataFromDomTests( assert, ve.copy( ve.dm.mwExample.domToDataCases ) );
 } );
 
-QUnit.test( 'getDomFromData', function ( assert ) {
-	ve.test.utils.runGetDomFromDataTests( assert, ve.copy( ve.dm.mwExample.domToDataCases ) );
+QUnit.test( 'getDomFromModel', function ( assert ) {
+	ve.test.utils.runGetDomFromModelTests( assert, ve.copy( ve.dm.mwExample.domToDataCases ) );
 } );
