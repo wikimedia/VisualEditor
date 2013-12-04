@@ -39,7 +39,7 @@ OO.inheritClass( ve.ce.Document, ve.Document );
  * @returns {ve.ce.Node} Node at offset
  */
 ve.ce.Document.prototype.getNodeFromOffset = function ( offset ) {
-	var node = this.documentNode.getNodeFromOffset( offset );
+	var node = this.getDocumentNode().getNodeFromOffset( offset );
 	if ( node && !node.canHaveChildren() ) {
 		node = node.getParent();
 	}
@@ -225,7 +225,7 @@ ve.ce.Document.prototype.getNearestFocusableNode = function ( offset, direction,
 		limit
 	);
 	if ( coveredOffset ) {
-		return this.documentNode.getNodeFromOffset( coveredOffset );
+		return this.getDocumentNode().getNodeFromOffset( coveredOffset );
 	} else {
 		return null;
 	}
@@ -252,9 +252,9 @@ ve.ce.Document.prototype.getRelativeRange = function ( range, direction, unit, e
 		return new ve.Range( range.from, contentOrSlugOffset );
 	}
 
-	node = this.documentNode.getNodeFromOffset( range.start + 1 );
+	node = this.getDocumentNode().getNodeFromOffset( range.start + 1 );
 	if ( node && node.isFocusable() ) {
-		if ( node === this.documentNode.getNodeFromOffset( range.end - 1 ) ) {
+		if ( node === this.getDocumentNode().getNodeFromOffset( range.end - 1 ) ) {
 			if ( this.model.data.isContentOffset( range.to ) || !!this.getSlugAtOffset( range.to ) ) {
 				return new ve.Range( direction === 1 ? range.end : range.start );
 			}

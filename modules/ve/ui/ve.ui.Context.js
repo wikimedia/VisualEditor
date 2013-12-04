@@ -357,7 +357,7 @@ ve.ui.Context.prototype.updateDimensions = function ( transition ) {
 			}
 		} else {
 			// The focused node may be in a wrapper, so calculate the offset relative to the document
-			documentOffset = surface.getDocument().documentNode.$element.offset();
+			documentOffset = surface.getDocument().getDocumentNode().$element.offset();
 			nodeOffset = $node.offset();
 			nodePosition = {
 				top: nodeOffset.top - documentOffset.top,

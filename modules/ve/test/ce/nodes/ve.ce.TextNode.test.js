@@ -138,7 +138,7 @@ QUnit.test( 'getAnnotatedHtml', function ( assert ) {
 		doc = new ve.dm.Document( ve.dm.example.preprocessAnnotations( cases[i].data, store ) );
 		ve.dm.example.preprocessAnnotations( cases[i].html, store );
 		assert.deepEqual(
-			( new ve.ce.TextNode( doc.documentNode.getChildren()[0].getChildren()[0] ) ).getAnnotatedHtml(),
+			( new ve.ce.TextNode( doc.getDocumentNode().getChildren()[0].getChildren()[0] ) ).getAnnotatedHtml(),
 			cases[i].html
 		);
 	}

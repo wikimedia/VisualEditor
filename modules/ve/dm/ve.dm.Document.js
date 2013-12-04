@@ -578,7 +578,7 @@ ve.dm.Document.prototype.getNodeFromOffset = function ( offset ) {
 	if ( offset < 0 || offset > this.data.getLength() ) {
 		throw new Error( 've.dm.Document.getNodeFromOffset(): offset ' + offset + ' is out of bounds' );
 	}
-	var node = this.documentNode.getNodeFromOffset( offset );
+	var node = this.getDocumentNode().getNodeFromOffset( offset );
 	if ( !node.canHaveChildren() ) {
 		node = node.getParent();
 	}

@@ -406,10 +406,10 @@ $html = file_get_contents( $page );
 					return $ol;
 				}
 				$( '#ve-model-tree-dump' ).html(
-					getKids( ve.instances[0].model.documentModel.documentNode )
+					getKids( ve.instances[0].model.documentModel.getDocumentNode() )
 				);
 				$( '#ve-view-tree-dump' ).html(
-					getKids( ve.instances[0].view.documentView.documentNode )
+					getKids( ve.instances[0].view.documentView.getDocumentNode() )
 				);
 				$( '#ve-dump' ).show();
 			} );

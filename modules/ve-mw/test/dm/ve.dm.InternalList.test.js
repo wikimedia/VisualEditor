@@ -13,12 +13,12 @@ QUnit.test( 'addNode/removeNode', 6, function ( assert ) {
 	var doc = ve.dm.mwExample.createExampleDocument( 'references' ),
 		newInternalList = new ve.dm.InternalList( doc ),
 		referenceNodes = [
-			doc.documentNode.children[0].children[0],
-			doc.documentNode.children[1].children[1],
-			doc.documentNode.children[1].children[3],
-			doc.documentNode.children[1].children[5],
-			doc.documentNode.children[2].children[0],
-			doc.documentNode.children[2].children[1]
+			doc.getDocumentNode().children[0].children[0],
+			doc.getDocumentNode().children[1].children[1],
+			doc.getDocumentNode().children[1].children[3],
+			doc.getDocumentNode().children[1].children[5],
+			doc.getDocumentNode().children[2].children[0],
+			doc.getDocumentNode().children[2].children[1]
 		],
 		expectedNodes = {
 			'mwReference/': {

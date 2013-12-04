@@ -336,7 +336,7 @@ QUnit.test( 'getRenderedContents', function ( assert ) {
 	QUnit.expect( cases.length );
 	for ( i = 0, len = cases.length; i < len; i++ ) {
 		doc = new ve.dm.Document( ve.dm.example.preprocessAnnotations( cases[i].data ) );
-		$rendered = ( new ve.ce.ParagraphNode( doc.documentNode.getChildren()[0] ) ).getRenderedContents();
+		$rendered = ( new ve.ce.ParagraphNode( doc.getDocumentNode().getChildren()[0] ) ).getRenderedContents();
 		$wrapper = $( '<div>' ).append( $rendered );
 		// HACK strip out all the class="ve-ce-TextStyleAnnotation ve-ce-TextStyleBoldAnnotation" crap
 		$wrapper.find( '.ve-ce-TextStyleAnnotation' ).removeAttr( 'class' );

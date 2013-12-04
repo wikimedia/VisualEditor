@@ -71,7 +71,7 @@ ve.Document.prototype.getDocumentNode = function () {
  * @throws {Error} Range.end is out of range
  */
 ve.Document.prototype.selectNodes = function ( range, mode ) {
-	var doc = this.documentNode,
+	var doc = this.getDocumentNode(),
 		retval = [],
 		start = range.start,
 		end = range.end,

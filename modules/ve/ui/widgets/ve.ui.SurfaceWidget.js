@@ -89,7 +89,7 @@ ve.ui.SurfaceWidget.prototype.getContent = function () {
 ve.ui.SurfaceWidget.prototype.initialize = function () {
 	this.toolbar.initialize();
 	this.surface.initialize();
-	this.surface.view.documentView.documentNode.$element.focus();
+	this.surface.view.documentView.getDocumentNode().$element.focus();
 };
 
 /**
