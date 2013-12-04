@@ -19,6 +19,7 @@ QUnit.test( 'constructor', 11, function ( assert ) {
 				{ 'type': '/paragraph' },
 				{ 'type': 'paragraph' }
 			] );
+			doc.buildNodeTree();
 		},
 		Error,
 		'unbalanced input causes exception'

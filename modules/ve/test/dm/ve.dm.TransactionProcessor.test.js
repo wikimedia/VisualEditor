@@ -568,9 +568,11 @@ QUnit.test( 'commit', function ( assert ) {
 		originalDoc = new ve.dm.Document(
 			ve.dm.example.preprocessAnnotations( ve.copy( originalData ), store )
 		);
+		originalDoc.buildNodeTree();
 		testDoc = new ve.dm.Document(
 			ve.dm.example.preprocessAnnotations( ve.copy( originalData ), store )
 		);
+		testDoc.buildNodeTree();
 
 		tx = new ve.dm.Transaction();
 		for ( i = 0; i < cases[msg].calls.length; i++ ) {
@@ -593,6 +595,7 @@ QUnit.test( 'commit', function ( assert ) {
 			expectedDoc = new ve.dm.Document(
 				ve.dm.example.preprocessAnnotations( expectedData, store )
 			);
+			expectedDoc.buildNodeTree();
 			// Commit
 			testDoc.commit( tx );
 			assert.deepEqualWithDomElements( testDoc.getFullData(), expectedDoc.getFullData(), 'commit (data): ' + msg );
