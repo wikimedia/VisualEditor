@@ -1,9 +1,9 @@
 Given(/^I can see the Transclusion User Interface$/) do
   on(VisualEditorPage) do |page|
     page.wait_until(10) do
-      page.title.include? 'Transclusion'
+      page.title.include? "Transclusion"
     end
-    page.title.should match 'Transclusion'
+    page.title.should match "Transclusion"
   end
 end
 

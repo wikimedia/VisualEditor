@@ -43,7 +43,7 @@ When(/^I edit the page with (.+)$/) do |input_string|
       page.beta_warning_element.when_present.click
     rescue
     end
-    page.content_element.fire_event('onfocus')
+    page.content_element.fire_event("onfocus")
     page.content_element.when_present.send_keys(input_string + " #{@random_string} ")
   end
 end
