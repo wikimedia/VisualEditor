@@ -228,7 +228,7 @@ ve.dm.Converter.renderHtmlAttributeList = function ( attributeList, domElements,
 /* Methods */
 
 /**
- * Check whether this converter instance is currently inside a getDataFromDom() conversion.
+ * Check whether this converter instance is currently inside a getModelFromDom() conversion.
  *
  * @method
  * @returns {boolean} Whether we're converting
@@ -258,7 +258,7 @@ ve.dm.Converter.prototype.getHtmlDocument = function () {
 };
 
 /**
- * Get the current conversion context. This is the recursion state of getDataFromDomRecursion().
+ * Get the current conversion context. This is the recursion state of getDataFromDom().
  *
  * @method
  * @returns {Object|null} Context object, or null if not converting
@@ -386,24 +386,9 @@ ve.dm.Converter.prototype.getDomElementFromDataAnnotation = function ( dataAnnot
  * @returns {ve.dm.Document} Document model
  */
 ve.dm.Converter.prototype.getModelFromDom = function ( doc ) {
-	var internalList = new ve.dm.InternalList(),
-		innerWhitespace = new Array( 2 ),
-		data = this.getDataFromDom( doc, new ve.dm.IndexValueStore(), internalList, innerWhitespace ),
-		model = new ve.dm.Document( data, doc, undefined, internalList, innerWhitespace );
-
-	return model;
-};
-
-/**
- * Convert an HTML document to a linear model.
- * @param {HTMLDocument} doc HTML document to convert
- * @param {ve.dm.IndexValueStore} store Index-value store
- * @param {ve.dm.InternalList} internalList Internal list
- * @param {Array} innerWhitespace Inner whitespace
- * @returns {ve.dm.FlatLinearData} Linear model data
- */
-ve.dm.Converter.prototype.getDataFromDom = function ( doc, store, internalList, innerWhitespace ) {
-	var linearData, refData;
+	var linearData, refData, innerWhitespace,
+		store = new ve.dm.IndexValueStore(),
+		internalList = new ve.dm.InternalList();
 
 	// Set up the converter state
 	this.doc = doc;
@@ -412,25 +397,26 @@ ve.dm.Converter.prototype.getDataFromDom = function ( doc, store, internalList, 
 	this.contextStack = [];
 	// Possibly do things with doc and the head in the future
 
+	// Generate data
 	linearData = new ve.dm.FlatLinearData(
 		store,
-		this.getDataFromDomRecursion( doc.body )
+		this.getDataFromDom( doc.body )
 	);
 	refData = this.internalList.convertToData( this, doc );
 	linearData.batchSplice( linearData.getLength(), 0, refData );
-
-	this.setInnerWhitespace( innerWhitespace, linearData );
+	innerWhitespace = this.getInnerWhitespace( linearData );
 
 	// Clear the state
 	this.doc = null;
 	this.store = null;
 	this.internalList = null;
 	this.contextStack = null;
-	return linearData;
+
+	return new ve.dm.Document( linearData, doc, undefined, internalList, innerWhitespace );
 };
 
 /**
- * Wrapper for getDataFromDomRecursion which resets contextStack before the call
+ * Wrapper for getDataFromDom which resets contextStack before the call
  * and then set it back after the call.
  *
  * TODO: This is kind of a hack, better implementation would be more appropriate in near future.
@@ -441,17 +427,17 @@ ve.dm.Converter.prototype.getDataFromDom = function ( doc, store, internalList, 
  * @param {ve.dm.AnnotationSet} [annotationSet] Override the set of annotations to use
  * @returns {Array} Linear model data
  */
-ve.dm.Converter.prototype.getDataFromDomRecursionClean = function ( domElement, wrapperElement, annotationSet ) {
+ve.dm.Converter.prototype.getDataFromDomClean = function ( domElement, wrapperElement, annotationSet ) {
 	var result, contextStack = this.contextStack;
 	this.contextStack = [];
-	result = this.getDataFromDomRecursion( domElement, wrapperElement, annotationSet );
+	result = this.getDataFromDom( domElement, wrapperElement, annotationSet );
 	this.contextStack = contextStack;
 	return result;
 };
 
 /**
- * Recursive implementation of getDataFromDom(). For internal use, and for use in
- * ve.dm.Model.static.toDataElement() implementations.
+ * Get linear model data from a DOM node. Called recursively. For internal use
+ * and ve.dm.Model.static.toDataElement() implementations.
  *
  * @method
  * @param {HTMLElement} domElement HTML element to convert
@@ -459,7 +445,7 @@ ve.dm.Converter.prototype.getDataFromDomRecursionClean = function ( domElement, 
  * @param {ve.dm.AnnotationSet} [annotationSet] Override the set of annotations to use
  * @returns {Array} Linear model data
  */
-ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, wrapperElement, annotationSet ) {
+ve.dm.Converter.prototype.getDataFromDom = function ( domElement, wrapperElement, annotationSet ) {
 	/**
 	 * Add whitespace to an element at a specific offset.
 	 *
@@ -668,7 +654,7 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, wrapp
 					childAnnotations = context.annotations.clone();
 					childAnnotations.push( annotation );
 
-					childDataElements = this.getDataFromDomRecursion( childDomElement, undefined, childAnnotations );
+					childDataElements = this.getDataFromDom( childDomElement, undefined, childAnnotations );
 					if ( !childDataElements.length || isAllInstanceOf( childDataElements, ve.dm.AlienMetaItem ) ) {
 						// Empty annotation, create a meta item
 						childDataElements = this.createDataElements( ve.dm.AlienMetaItem, childDomElements );
@@ -768,7 +754,7 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, wrapp
 						// Opening and closing elements are added by the recursion too
 						outputWrappedMetaItems( 'restore' );
 						data = data.concat(
-							this.getDataFromDomRecursion( childDomElement, childDataElements[0],
+							this.getDataFromDom( childDomElement, childDataElements[0],
 								new ve.dm.AnnotationSet( this.store )
 							)
 						);
@@ -994,13 +980,14 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, wrapp
 };
 
 /**
- * Set inner whitespace from linear data
+ * Get inner whitespace from linear data
  *
- * @param {Array} innerWhitespace Inner whitespace
  * @param {ve.dm.FlatLinearData} data Linear model data
+ * @returns {Array} innerWhitespace Inner whitespace
  */
-ve.dm.Converter.prototype.setInnerWhitespace = function ( innerWhitespace, data ) {
+ve.dm.Converter.prototype.getInnerWhitespace = function ( data ) {
 	var whitespace,
+		innerWhitespace = new Array( 2 ),
 		stack = 0,
 		last = data.getLength() - 1;
 
@@ -1024,6 +1011,7 @@ ve.dm.Converter.prototype.setInnerWhitespace = function ( innerWhitespace, data 
 		whitespace = ve.getProp( data.getData( last ), 'internal', 'whitespace' );
 		innerWhitespace[1] = whitespace ? whitespace[3] : undefined;
 	}
+	return innerWhitespace;
 };
 
 /**
