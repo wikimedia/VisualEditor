@@ -56,6 +56,7 @@ $wgHooks['GetPreferences'][] = 'VisualEditorHooks::onGetPreferences';
 $wgHooks['ListDefinedTags'][] = 'VisualEditorHooks::onListDefinedTags';
 $wgHooks['MakeGlobalVariablesScript'][] = 'VisualEditorHooks::onMakeGlobalVariablesScript';
 $wgHooks['ResourceLoaderGetConfigVars'][] = 'VisualEditorHooks::onResourceLoaderGetConfigVars';
+$wgHooks['ResourceLoaderRegisterModules'][] = 'VisualEditorHooks::onResourceLoaderRegisterModules';
 $wgHooks['ResourceLoaderTestModules'][] = 'VisualEditorHooks::onResourceLoaderTestModules';
 $wgHooks['SkinTemplateNavigation'][] = 'VisualEditorHooks::onSkinTemplateNavigation';
 $wgHooks['ParserTestGlobals'][] = 'VisualEditorHooks::onParserTestGlobals';
@@ -87,34 +88,6 @@ $wgResourceModules += array(
 	'jquery.visibleText' => $wgVisualEditorResourceTemplate + array(
 		'scripts' => array(
 			'jquery/jquery.visibleText.js',
-		),
-		'targets' => array( 'desktop', 'mobile' ),
-	),
-
-	'oojs' => $wgVisualEditorResourceTemplate + array(
-		'scripts' => array(
-			'oojs/oojs.js',
-		),
-		'targets' => array( 'desktop', 'mobile' ),
-	),
-
-	'oojs-ui' => $wgVisualEditorResourceTemplate + array(
-		'scripts' => array(
-			'oojs-ui/oojs-ui.js',
-		),
-		'styles' => array(
-			'oojs-ui/oojs-ui.svg.css',
-		),
-		'messages' => array(
-			'ooui-dialog-action-close',
-			'ooui-outline-control-move-down',
-			'ooui-outline-control-move-up',
-			'ooui-toggle-on',
-			'ooui-toggle-off',
-			'ooui-toolbar-more',
-		),
-		'dependencies' => array(
-			'oojs'
 		),
 		'targets' => array( 'desktop', 'mobile' ),
 	),

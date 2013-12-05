@@ -402,6 +402,48 @@ class VisualEditorHooks {
 		return true;
 	}
 
+	/**
+	 * Conditionally register the oojs and oojs-ui modules, in case they've already been registered
+	 * by a more recent version of MediaWiki core.
+	 * @param ResourceLoader $resourceLoader
+	 * @returns boolean true
+	 */
+	public static function onResourceLoaderRegisterModules( ResourceLoader &$resourceLoader ) {
+		global $wgResourceModules, $wgVisualEditorResourceTemplate;
+		if ( !isset( $wgResourceModules['oojs'] ) && !$resourceLoader->getModule( 'oojs' ) ) {
+			$resourceLoader->register( 'oojs', $wgVisualEditorResourceTemplate + array(
+				'scripts' => array(
+					'oojs/oojs.js',
+				),
+				'targets' => array( 'desktop', 'mobile' ),
+			) );
+		}
+
+		if ( !isset( $wgResourceModules['oojs-ui'] ) && !$resourceLoader->getModule( 'oojs-ui' ) ) {
+			$resourceLoader->register( 'oojs-ui', $wgVisualEditorResourceTemplate + array(
+				'scripts' => array(
+					'oojs-ui/oojs-ui.js',
+				),
+				'styles' => array(
+					'oojs-ui/oojs-ui.svg.css',
+				),
+				'messages' => array(
+					'ooui-dialog-action-close',
+					'ooui-outline-control-move-down',
+					'ooui-outline-control-move-up',
+					'ooui-toggle-on',
+					'ooui-toggle-off',
+					'ooui-toolbar-more',
+				),
+				'dependencies' => array(
+					'oojs'
+				),
+				'targets' => array( 'desktop', 'mobile' ),
+			) );
+		}
+		return true;
+	}
+
 	public static function onResourceLoaderTestModules(
 		array &$testModules,
 		ResourceLoader &$resourceLoader
