@@ -51,7 +51,7 @@ class VisualEditorPage
     span(:leftarrowclose, class: 'oo-ui-iconedElement-icon oo-ui-icon-previous', frame: frame)
     text_field(:link_textfield, index: 0, frame: frame)
     list_item(:template_list_item, text: 'S', frame: frame)
-    div(:ve_link_ui, class: 'oo-ui-window-head', frame: frame)
+    div(:ve_link_ui, class: 'oo-ui-window-title', frame: frame)
   end
 
   in_frame(:index => 1) do |frame|

@@ -1,4 +1,5 @@
 When(/^I click the Link button$/) do
+  sleep 1 #Chrome seems to not honor when_present correctly as of 5 Dec 2013
   on(VisualEditorPage).ve_link_icon_element.when_present.click
 end
 
