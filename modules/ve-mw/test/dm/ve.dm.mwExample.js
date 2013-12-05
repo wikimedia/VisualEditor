@@ -24,14 +24,14 @@ ve.dm.mwExample.MWTransclusion = {
 	'inlineOpenModified': '<span about="#mwt1" typeof="mw:Transclusion" data-mw="{&quot;id&quot;:&quot;mwt1&quot;,&quot;target&quot;:{&quot;wt&quot;:&quot;Inline&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;5,678&quot;}}}" data-parsoid="{&quot;tsr&quot;:[18,34],&quot;src&quot;:&quot;{{Inline|1,234}}&quot;,&quot;dsr&quot;:[18,34,null,null]}">',
 	'inlineContent': '$1,234.00',
 	'inlineClose': '</span>',
-	'mixed': '<link about="#mwt1" rel="mw:WikiLink/Category" typeof="mw:Transclusion" data-mw="{&quot;id&quot;:&quot;mwt1&quot;,&quot;target&quot;:{&quot;wt&quot;:&quot;Inline&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;5,678&quot;}}}"><span about="#mwt1">Foo</span>',
+	'mixed': '<link about="#mwt1" rel="mw:PageProp/Category" typeof="mw:Transclusion" data-mw="{&quot;id&quot;:&quot;mwt1&quot;,&quot;target&quot;:{&quot;wt&quot;:&quot;Inline&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;5,678&quot;}}}"><span about="#mwt1">Foo</span>',
 	'pairOne': '<p about="#mwt1" typeof="mw:Transclusion" data-mw="{&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;foo&quot;}}}" data-parsoid="1">foo</p>',
 	'pairTwo': '<p about="#mwt2" typeof="mw:Transclusion" data-mw="{&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;foo&quot;}}}" data-parsoid="2">foo</p>',
 	'meta':
-		'<link rel="mw:WikiLink/Category" href="./Category:Page" about="#mwt1" typeof="mw:Transclusion" ' +
+		'<link rel="mw:PageProp/Category" href="./Category:Page" about="#mwt1" typeof="mw:Transclusion" ' +
 			'data-mw="{&quot;target&quot;:{&quot;wt&quot;:&quot;Template:Echo&quot;,&quot;href&quot;:&quot;./Template:Echo&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;[[Category:Page]]\\n[[Category:Book]]&quot;}},&quot;i&quot;:0}">' +
 		'<span about="#mwt1" data-parsoid="{}">\n</span>' +
-		'<link rel="mw:WikiLink/Category" href="./Category:Book" about="#mwt1">'
+		'<link rel="mw:PageProp/Category" href="./Category:Book" about="#mwt1">'
 };
 ve.dm.mwExample.MWTransclusion.blockData = {
 	'type': 'mwTransclusionBlock',
@@ -98,7 +98,7 @@ ve.dm.mwExample.MWTransclusion.mixedDataOpen = {
 	'htmlAttributes': [
 		{ 'values': {
 			'about': '#mwt1',
-			'rel': 'mw:WikiLink/Category',
+			'rel': 'mw:PageProp/Category',
 			'typeof': 'mw:Transclusion',
 			'data-mw': '{\"id\":\"mwt1\",\"target\":{\"wt\":\"Inline\"},\"params\":{\"1\":{\"wt\":\"5,678\"}}}'
 		} },
@@ -255,8 +255,7 @@ ve.dm.mwExample.withMeta = [
 			'category': 'Category:Bar',
 			'origCategory': 'Category:Bar',
 			'sortkey': '',
-			'origSortkey': '',
-			'origRel': 'mw:PageProp/Category'
+			'origSortkey': ''
 		},
 		'htmlAttributes': [
 			{
@@ -313,8 +312,7 @@ ve.dm.mwExample.withMeta = [
 			'category': 'Category:Foo foo',
 			'origCategory': 'Category:Foo_foo',
 			'sortkey': 'Bar baz#quux',
-			'origSortkey': 'Bar baz%23quux',
-			'origRel': 'mw:PageProp/Category'
+			'origSortkey': 'Bar baz%23quux'
 		},
 
 		'htmlAttributes': [
@@ -388,7 +386,7 @@ ve.dm.mwExample.withMetaMetaData = [
 			'htmlAttributes': [
 				{
 					'values': {
-						'rel': 'mw:WikiLink/Category',
+						'rel': 'mw:PageProp/Category',
 						'href': './Category:Bar'
 					},
 					'computed': {
@@ -441,7 +439,7 @@ ve.dm.mwExample.withMetaMetaData = [
 				'origSortkey': 'Bar baz%23quux'
 			},
 			'htmlAttributes': [ { 'values': {
-				'rel': 'mw:WikiLink/Category',
+				'rel': 'mw:PageProp/Category',
 				'href': './Category:Foo_foo#Bar baz%23quux'
 			} } ]
 		},
@@ -1553,7 +1551,7 @@ ve.dm.mwExample.domToDataCases = {
 	},
 	'whitespace preservation with wrapped comments and language links': {
 		'body': 'Foo\n' +
-			'<link rel="mw:WikiLink/Language" href="http://de.wikipedia.org/wiki/Foo">\n' +
+			'<link rel="mw:PageProp/Language" href="http://de.wikipedia.org/wiki/Foo">\n' +
 			'<link rel="mw:PageProp/Language" href="http://fr.wikipedia.org/wiki/Foo">',
 		'data': [
 			{
@@ -1570,14 +1568,13 @@ ve.dm.mwExample.domToDataCases = {
 			{
 				'type': 'mwLanguage',
 				'attributes': {
-					'href': 'http://de.wikipedia.org/wiki/Foo',
-					'origRel': 'mw:WikiLink/Language'
+					'href': 'http://de.wikipedia.org/wiki/Foo'
 				},
 				'htmlAttributes': [
 					{
 						'values': {
 							'href': 'http://de.wikipedia.org/wiki/Foo',
-							'rel': 'mw:WikiLink/Language'
+							'rel': 'mw:PageProp/Language'
 						},
 						'computed': {
 							'href': 'http://de.wikipedia.org/wiki/Foo'
@@ -1590,8 +1587,7 @@ ve.dm.mwExample.domToDataCases = {
 			{
 				'type': 'mwLanguage',
 				'attributes': {
-					'href': 'http://fr.wikipedia.org/wiki/Foo',
-					'origRel': 'mw:PageProp/Language'
+					'href': 'http://fr.wikipedia.org/wiki/Foo'
 				 },
 				'htmlAttributes': [
 					{
