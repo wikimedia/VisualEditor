@@ -28,42 +28,6 @@ class VisualEditorHooks {
 				$wgResourceModules['ext.visualEditor.viewPageTarget.init']['messages'][] = $msg;
 			}
 		}
-
-		// Only load jquery.ULS if ULS Extension isn't already installed:
-		if ( !class_exists( 'UniversalLanguageSelectorHooks' ) ) {
-			$wgResourceModules['jquery.uls'] = $wgVisualEditorResourceTemplate + array(
-				'scripts' => array(
-					'jquery.uls/src/jquery.uls.core.js',
-					'jquery.uls/src/jquery.uls.lcd.js',
-					'jquery.uls/src/jquery.uls.languagefilter.js',
-					'jquery.uls/src/jquery.uls.regionfilter.js',
-				),
-				'styles' => array(
-					'jquery.uls/css/jquery.uls.css',
-					'jquery.uls/css/jquery.uls.lcd.css',
-				),
-				'dependencies' => array(
-					'jquery.uls.grid',
-					'jquery.uls.data',
-					'jquery.uls.compact',
-				),
-			);
-			$wgResourceModules['jquery.uls.data'] = $wgVisualEditorResourceTemplate + array(
-				'scripts' => array(
-					'jquery.uls/src/jquery.uls.data.js',
-					'jquery.uls/src/jquery.uls.data.utils.js',
-				),
-				'position' => 'top',
-			);
-			$wgResourceModules['jquery.uls.grid'] = $wgVisualEditorResourceTemplate + array(
-				'styles' => 'jquery.uls/css/jquery.uls.grid.css',
-				'position' => 'top',
-			);
-			$wgResourceModules['jquery.uls.compact'] = $wgVisualEditorResourceTemplate + array(
-				'styles' => 'jquery.uls/css/jquery.uls.compact.css',
-				'position' => 'top',
-			);
-		}
 	}
 
 	/**
@@ -405,6 +369,10 @@ class VisualEditorHooks {
 	/**
 	 * Conditionally register the oojs and oojs-ui modules, in case they've already been registered
 	 * by a more recent version of MediaWiki core.
+	 *
+	 * Also conditionally register the jquery.uls modules, in case they've already been registered
+	 * by the UniversalLanguageSelector extension.
+	 *
 	 * @param ResourceLoader $resourceLoader
 	 * @returns boolean true
 	 */
@@ -441,6 +409,60 @@ class VisualEditorHooks {
 				'targets' => array( 'desktop', 'mobile' ),
 			) );
 		}
+
+		if ( !isset( $wgResourceModules['jquery.uls'] ) && !$resourceLoader->getModule( 'jquery.uls' ) ) {
+			$resourceLoader->register( 'jquery.uls', $wgVisualEditorResourceTemplate + array(
+				'scripts' => array(
+					'jquery.uls/src/jquery.uls.core.js',
+					'jquery.uls/src/jquery.uls.lcd.js',
+					'jquery.uls/src/jquery.uls.languagefilter.js',
+					'jquery.uls/src/jquery.uls.regionfilter.js',
+				),
+				'styles' => array(
+					'jquery.uls/css/jquery.uls.css',
+					'jquery.uls/css/jquery.uls.lcd.css',
+				),
+				'dependencies' => array(
+					'jquery.uls.grid',
+					'jquery.uls.data',
+					'jquery.uls.compact',
+				),
+			) );
+		}
+
+		if (
+			!isset( $wgResourceModules['jquery.uls.data'] ) &&
+			!$resourceLoader->getModule( 'jquery.uls.data' )
+		) {
+			$resourceLoader->register( 'jquery.uls.data', $wgVisualEditorResourceTemplate + array(
+				'scripts' => array(
+					'jquery.uls/src/jquery.uls.data.js',
+					'jquery.uls/src/jquery.uls.data.utils.js',
+				),
+				'position' => 'top',
+			) );
+		}
+
+		if (
+			!isset( $wgResourceModules['jquery.uls.grid'] ) &&
+			!$resourceLoader->getModule( 'jquery.uls.grid' )
+		) {
+			$resourceLoader->register( 'jquery.uls.grid', $wgVisualEditorResourceTemplate + array(
+				'styles' => 'jquery.uls/css/jquery.uls.grid.css',
+				'position' => 'top',
+			) );
+		}
+
+		if (
+			!isset( $wgResourceModules['jquery.uls.compact'] ) &&
+			!$resourceLoader->getModule( 'jquery.uls.compact' )
+		) {
+			$resourceLoader->register( 'jquery.uls.compact', $wgVisualEditorResourceTemplate + array(
+				'styles' => 'jquery.uls/css/jquery.uls.compact.css',
+				'position' => 'top',
+			) );
+		}
+
 		return true;
 	}
 
