@@ -865,7 +865,7 @@ ve.ce.Surface.prototype.beforePaste = function ( e ) {
 ve.ce.Surface.prototype.afterPaste = function () {
 	var clipboardKey, clipboardId, clipboardIndex,
 		$elements, parts, pasteData, slice, tx, internalListRange,
-		store, internalList, innerWhitespace, result, fullData, data, doc, html,
+		data, doc, html,
 		context, left, right, contextRange,
 		beforePasteData = this.beforePasteData || {},
 		$window = this.$( OO.ui.Element.getWindow( this.$.context ) ),
@@ -980,12 +980,10 @@ ve.ce.Surface.prototype.afterPaste = function () {
 			html = this.$pasteTarget.html();
 		}
 		// External paste
-		store = new ve.dm.IndexValueStore();
-		internalList = new ve.dm.InternalList();
-		innerWhitespace = new Array( 2 );
-		fullData = ve.dm.converter.getDataFromDom( ve.createDocumentFromHtml( html ), store, internalList, innerWhitespace );
-		result = ve.dm.Document.static.splitData( fullData, true );
-		data = result.elementData;
+		doc = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( html ) );
+		data = doc.data;
+		// Clear metadata
+		doc.metadata = new ve.dm.MetaLinearData( doc.getStore(), new Array( 1 + data.getLength() ) );
 		// If the clipboardKey is set (paste from other VE instance), and it's a non-special paste, skip sanitization
 		if ( !clipboardKey || this.pasteSpecial ) {
 			data.sanitize( this.getSurface().getPasteRules(), this.pasteSpecial );
@@ -997,7 +995,9 @@ ve.ce.Surface.prototype.afterPaste = function () {
 		}
 		data.remapInternalListKeys( this.model.getDocument().getInternalList() );
 
-		doc = new ve.dm.Document( data, this.getElementDocument(), undefined, internalList, innerWhitespace );
+		// Initialize node tree
+		doc.buildNodeTree();
+
 		// If the paste was given context, calculate the range of the inserted data
 		if ( beforePasteData.context ) {
 			internalListRange = doc.getInternalList().getListNode().getOuterRange();
