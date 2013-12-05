@@ -218,7 +218,7 @@ ve.dm.InternalList.prototype.convertToData = function ( converter, doc ) {
 	list.push( { 'type': 'internalList' } );
 	for ( i = 0, length = itemHtmlQueue.length; i < length; i++ ) {
 		if ( itemHtmlQueue[i] !== '' ) {
-			itemData = converter.getDataFromDomRecursion( $( '<div>', doc ).html( itemHtmlQueue[i] )[0] );
+			itemData = converter.getDataFromDom( $( '<div>', doc ).html( itemHtmlQueue[i] )[0] );
 			list = list.concat(
 				[{ 'type': 'internalItem' }],
 				itemData,

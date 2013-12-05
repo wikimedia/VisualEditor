@@ -124,7 +124,7 @@ ve.dm.MWBlockImageNode.static.toDataElement = function ( domElements, converter 
 		];
 	} else {
 		return [ dataElement ].
-			concat( converter.getDataFromDomRecursionClean( $caption[0], { 'type': 'mwImageCaption' } ) ).
+			concat( converter.getDataFromDomClean( $caption[0], { 'type': 'mwImageCaption' } ) ).
 			concat( [ { 'type': '/' + this.name } ] );
 	}
 };
