@@ -159,7 +159,7 @@ ve.ui.MWSaveDialog.prototype.swapPanel = function ( panel ) {
 	}
 
 	// Show the target panel
-	this.panel.setItem( panelObj );
+	this.panel.showItem( panelObj );
 
 	mw.hook( 've.saveDialog.stateChanged' ).fire();
 
@@ -344,7 +344,7 @@ ve.ui.MWSaveDialog.prototype.initialize = function () {
 	this.nochangesPanel.$element.append( this.$noChanges );
 
 	// Panel stack
-	this.panel = new OO.ui.StackLayout( { '$': this.$, 'scrollable': true } );
+	this.panel = new OO.ui.StackPanelLayout( { '$': this.$, 'scrollable': true } );
 	this.panel.$element.addClass( 've-ui-mwSaveDialog-panel' );
 	this.panel.addItems( [this.savePanel, this.reviewPanel, this.conflictPanel, this.nochangesPanel], 0 );
 

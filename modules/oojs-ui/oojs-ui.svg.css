@@ -1,12 +1,12 @@
 /*!
- * OOJS UI v0.1.0-pre-svg (d047752ccc)
+ * OOJS UI v0.1.0-pre-svg (e5ef1e5b28)
  * https://www.mediawiki.org/wiki/OOJS
  *
  * Copyright 2011-2013 OOJS Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: Wed Dec 04 2013 04:03:24 GMT+0100 (CET)
+ * Date: Mon Nov 25 2013 10:40:32 GMT+0000 (GMT)
  */
 /*csslint vendor-prefix:false */
 
@@ -199,6 +199,46 @@
 	margin: 0.25em 0.25em;
 }
 
+/* OO.ui.PagedLayout */
+
+.oo-ui-pagedLayout-pagesPanel .oo-ui-panelLayout {
+	padding: 1.5em;
+	width: 100%;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.oo-ui-pagedLayout-pagesPanel .oo-ui-panelLayout-scrollable {
+	overflow-y: auto;
+}
+
+.oo-ui-pagedLayout-pagesPanel .oo-ui-panelLayout-padded {
+	padding: 2em;
+}
+
+/* OO.ui.PagedOutlineLayout */
+
+.oo-ui-pagedOutlineLayout-outlinePanel {
+	border-right: solid 1px #ddd;
+}
+
+.oo-ui-pagedOutlineLayout-outlinePanel-editable .oo-ui-outlineWidget {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 3em;
+	overflow-y: auto;
+}
+
+.oo-ui-pagedOutlineLayout-outlinePanel .oo-ui-outlineControlsWidget {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	box-shadow: 0 0 0.25em rgba(0,0,0,0.25);
+}
 /* OO.ui.LabeledElement */
 
 .oo-ui-labeledElement-label {
@@ -249,12 +289,8 @@
 
 .oo-ui-fieldsetLayout {
 	border: none;
-	margin: 0;
+	margin: 0 0 1.75em 0;
 	padding: 0;
-}
-
-.oo-ui-fieldsetLayout + .oo-ui-fieldsetLayout {
-	margin-top: 2em;
 }
 
 .oo-ui-fieldsetLayout-labeled {
@@ -270,55 +306,6 @@
 	padding-left: 1.75em;
 	background-position: left center;
 	background-repeat: no-repeat;
-}
-
-/* OO.ui.BookletLayout */
-
-.oo-ui-bookletLayout-stackLayout .oo-ui-panelLayout {
-	padding: 1.5em;
-	width: 100%;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-
-.oo-ui-bookletLayout-stackLayout .oo-ui-panelLayout-scrollable {
-	overflow-y: auto;
-}
-
-.oo-ui-bookletLayout-stackLayout .oo-ui-panelLayout-padded {
-	padding: 2em;
-}
-
-.oo-ui-bookletLayout-outlinePanel {
-	border-right: solid 1px #ddd;
-}
-
-.oo-ui-bookletLayout-outlinePanel-editable .oo-ui-outlineWidget {
-	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 3em;
-	overflow-y: auto;
-}
-
-.oo-ui-bookletLayout-outlinePanel .oo-ui-outlineControlsWidget {
-	position: absolute;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	box-shadow: 0 0 0.25em rgba(0,0,0,0.25);
-}
-
-.oo-ui-stackLayout-continuous > .oo-ui-panelLayout {
-	position: relative;
-	margin-bottom: 1em;
-	box-shadow: 0 0 0.5em rgba(0,0,0,0.25);
-}
-
-.oo-ui-stackLayout-continuous > .oo-ui-panelLayout:last-child {
-	margin-bottom: 0;
 }
 /* OO.ui.PopupTool */
 
@@ -1105,16 +1092,6 @@ a.oo-ui-buttonWidget-button {
 	height: 100%;
 	background-position: right center;
 	background-repeat: no-repeat;
-}
-
-/* OO.ui.CheckboxWidget */
-.oo-ui-checkboxWidget .oo-ui-labeledElement-label {
-	display: inline-block;
-	vertical-align: middle;
-}
-
-.oo-ui-checkboxWidget input {
-	vertical-align: middle;
 }
 
 /* OO.ui.MenuWidget */
