@@ -170,6 +170,11 @@
 	background-image: url(images/icons/outdent-list-ltr.png);
 }
 
+.oo-ui-icon-special-character {
+	/* @embed */
+	background-image: url(images/icons/special-character.png);
+}
+
 .oo-ui-icon-strikethrough-a {
 	/* @embed */
 	background-image: url(images/icons/strikethrough-a.png);
