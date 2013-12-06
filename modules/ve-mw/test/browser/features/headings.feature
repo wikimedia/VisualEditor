@@ -10,12 +10,12 @@ Feature: VisualEditor Headings
     Then <headings_string> should appear in the diff view
       And I can click the X on the save box
   Examples:
-    | headings_interface_name | headings_string  |
-    | Paragraph               | "^Editing"       |
-    | Heading                 | "^==Editing"     |
-    | Subheading1             | "^===Editing"    |
-    | Subheading2             | "^====Editing"   |
-    | Subheading3             | "^=====Editing"  |
-    | Subheading4             | "^======Editing" |
-    | Preformatted            | " Editing"       |
-    | Page title              | "^=Editing"      |
+    | headings_interface_name | headings_string   |
+    | Paragraph               | "^Editing"        |
+    | Heading                 | "^== Editing"     |
+    | Subheading1             | "^=== Editing"    |
+    | Subheading2             | "^==== Editing"   |
+    | Subheading3             | "^===== Editing"  |
+    | Subheading4             | "^====== Editing" |
+    | Preformatted            | " Editing"        |
+    | Page title              | "^= Editing"      |
