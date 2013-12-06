@@ -18,7 +18,7 @@
  */
 ve.ui.MWTransclusionContentPage = function VeUiMWTransclusionContent( content, name, config ) {
 	// Configuration initialization
-	config = ve.extendObject( config, { 'icon': 'source', 'moveable': true, 'level': 0 } );
+	config = ve.extendObject( { 'icon': 'source', 'movable': true }, config );
 
 	// Parent constructor
 	OO.ui.PageLayout.call( this, name, config );
@@ -33,9 +33,10 @@ ve.ui.MWTransclusionContentPage = function VeUiMWTransclusionContent( content, n
 		} )
 		.setValue( this.content.getValue() )
 		.connect( this, { 'change': 'onTextInputChange' } );
-	this.removeButton = new OO.ui.PushButtonWidget( {
+	this.removeButton = new OO.ui.IconButtonWidget( {
 			'$': this.$,
-			'label': ve.msg( 'visualeditor-dialog-transclusion-remove-content' ),
+			'icon': 'remove',
+			'title': ve.msg( 'visualeditor-dialog-transclusion-remove-content' ),
 			'flags': [ 'destructive' ],
 			'classes': [ 've-ui-mwTransclusionDialog-removeButton' ]
 		} )

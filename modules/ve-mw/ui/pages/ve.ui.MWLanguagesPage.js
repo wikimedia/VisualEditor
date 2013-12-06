@@ -19,7 +19,7 @@
  */
 ve.ui.MWLanguagesPage = function VeUiMWLanguagesPage( name, config ) {
 	// Configuration initialization
-	config = ve.extendObject( config, { 'icon': 'language' } );
+	config = ve.extendObject( { 'icon': 'language' }, config );
 
 	// Parent constructor
 	OO.ui.PageLayout.call( this, name, config );

@@ -52,7 +52,7 @@ ve.ui.Inspector.static.name = '';
  * @inheritable
  * @property {boolean}
  */
-ve.ui.Inspector.static.removeable = true;
+ve.ui.Inspector.static.removable = true;
 
 /* Methods */
 
@@ -112,7 +112,7 @@ ve.ui.Inspector.prototype.initialize = function () {
 	this.closeButton = new OO.ui.IconButtonWidget( {
 		'$': this.$, 'icon': 'previous', 'title': ve.msg( 'visualeditor-inspector-close-tooltip' )
 	} );
-	if ( this.constructor.static.removeable ) {
+	if ( this.constructor.static.removable ) {
 		this.removeButton = new OO.ui.IconButtonWidget( {
 			'$': this.$, 'icon': 'remove', 'title': ve.msg( 'visualeditor-inspector-remove-tooltip' )
 		} );
@@ -124,14 +124,14 @@ ve.ui.Inspector.prototype.initialize = function () {
 		'keydown': OO.ui.bind( this.onFormKeyDown, this )
 	} );
 	this.closeButton.connect( this, { 'click': 'onCloseButtonClick' } );
-	if ( this.constructor.static.removeable ) {
+	if ( this.constructor.static.removable ) {
 		this.removeButton.connect( this, { 'click': 'onRemoveButtonClick' } );
 	}
 
 	// Initialization
 	this.closeButton.$element.addClass( 've-ui-inspector-closeButton' );
 	this.$head.prepend( this.closeButton.$element );
-	if ( this.constructor.static.removeable ) {
+	if ( this.constructor.static.removable ) {
 		this.removeButton.$element.addClass( 've-ui-inspector-removeButton' );
 		this.$head.append( this.removeButton.$element );
 	}

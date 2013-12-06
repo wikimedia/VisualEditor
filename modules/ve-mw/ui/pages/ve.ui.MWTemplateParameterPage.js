@@ -18,7 +18,7 @@
  */
 ve.ui.MWTemplateParameterPage = function VeUiMWTemplateParameter( parameter, name, config ) {
 	// Configuration initialization
-	config = ve.extendObject( config, { 'icon': 'parameter', 'moveable': false, 'level': 1 } );
+	config = ve.extendObject( { 'icon': 'parameter', 'movable': false, 'level': 1 }, config );
 
 	// Parent constructor
 	OO.ui.PageLayout.call( this, name, config );
@@ -39,9 +39,10 @@ ve.ui.MWTemplateParameterPage = function VeUiMWTemplateParameter( parameter, nam
 		'input': this.textInput,
 		'label': this.spec.getParameterDescription( this.parameter.getName() ) || ''
 	} );
-	this.removeButton = new OO.ui.PushButtonWidget( {
+	this.removeButton = new OO.ui.IconButtonWidget( {
 			'$': this.$,
-			'label': ve.msg( 'visualeditor-dialog-transclusion-remove-param' ),
+			'icon': 'remove',
+			'title': ve.msg( 'visualeditor-dialog-transclusion-remove-param' ),
 			'flags': ['destructive'],
 			'classes': [ 've-ui-mwTransclusionDialog-removeButton' ]
 		} )

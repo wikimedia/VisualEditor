@@ -1,12 +1,12 @@
 /*!
- * OOJS UI v0.1.0-pre (592e1d6401)
- * https://www.mediawiki.org/wiki/OOJS
+ * OOjs UI v0.1.0-pre (5ffe63d088)
+ * https://www.mediawiki.org/wiki/OOjs_UI
  *
- * Copyright 2011-2013 OOJS Team and other contributors.
+ * Copyright 2011-2013 OOjs Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: Thu Dec 05 2013 16:06:17 GMT-0800 (PST)
+ * Date: Fri Dec 06 2013 12:23:15 GMT-0800 (PST)
  */
 ( function () {
 
@@ -3410,7 +3410,7 @@ OO.ui.BookletLayout.prototype.addPages = function ( pages, index ) {
 					'label': page.getLabel() || name,
 					'level': page.getLevel(),
 					'icon': page.getIcon(),
-					'moveable': page.isMovable()
+					'movable': page.isMovable()
 				} )
 			);
 		}
@@ -5769,31 +5769,31 @@ OO.inheritClass( OO.ui.OutlineControlsWidget, OO.ui.Widget );
  * @method
  */
 OO.ui.OutlineControlsWidget.prototype.onOutlineChange = function () {
-	var i, len, firstMoveable, lastMoveable,
-		moveable = false,
+	var i, len, firstMovable, lastMovable,
+		movable = false,
 		items = this.outline.getItems(),
 		selectedItem = this.outline.getSelectedItem();
 
-	if ( selectedItem && selectedItem.isMoveable() ) {
-		moveable = true;
+	if ( selectedItem && selectedItem.isMovable() ) {
+		movable = true;
 		i = -1;
 		len = items.length;
 		while ( ++i < len ) {
-			if ( items[i].isMoveable() ) {
-				firstMoveable = items[i];
+			if ( items[i].isMovable() ) {
+				firstMovable = items[i];
 				break;
 			}
 		}
 		i = len;
 		while ( i-- ) {
-			if ( items[i].isMoveable() ) {
-				lastMoveable = items[i];
+			if ( items[i].isMovable() ) {
+				lastMovable = items[i];
 				break;
 			}
 		}
 	}
-	this.upButton.setDisabled( !moveable || selectedItem === firstMoveable );
-	this.downButton.setDisabled( !moveable || selectedItem === lastMoveable );
+	this.upButton.setDisabled( !movable || selectedItem === firstMovable );
+	this.downButton.setDisabled( !movable || selectedItem === lastMovable );
 };
 
 /**
@@ -5829,7 +5829,7 @@ OO.ui.OutlineControlsWidget.prototype.setupAdders = function ( adders ) {
  * @param {Mixed} data Item data
  * @param {Object} [config] Configuration options
  * @cfg {number} [level] Indentation level
- * @cfg {boolean} [moveable] Allow modification from outline controls
+ * @cfg {boolean} [movable] Allow modification from outline controls
  */
 OO.ui.OutlineItemWidget = function OoUiOutlineItemWidget( data, config ) {
 	// Config intialization
@@ -5840,7 +5840,7 @@ OO.ui.OutlineItemWidget = function OoUiOutlineItemWidget( data, config ) {
 
 	// Properties
 	this.level = 0;
-	this.moveable = !!config.moveable;
+	this.movable = !!config.movable;
 
 	// Initialization
 	this.$element.addClass( 'oo-ui-outlineItemWidget' );
@@ -5864,14 +5864,14 @@ OO.ui.OutlineItemWidget.static.levels = 3;
 /* Methods */
 
 /**
- * Check if item is moveable.
+ * Check if item is movable.
  *
  * Moveablilty is used by outline controls.
  *
- * @returns {boolean} Item is moveable
+ * @returns {boolean} Item is movable
  */
-OO.ui.OutlineItemWidget.prototype.isMoveable = function () {
-	return this.moveable;
+OO.ui.OutlineItemWidget.prototype.isMovable = function () {
+	return this.movable;
 };
 
 /**

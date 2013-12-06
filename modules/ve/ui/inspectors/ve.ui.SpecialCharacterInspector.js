@@ -79,7 +79,7 @@ ve.ui.SpecialCharacterInspector.static.icon = 'specialcharacter';
 
 ve.ui.SpecialCharacterInspector.static.titleMessage = 'visualeditor-specialcharacterinspector-title';
 
-ve.ui.SpecialCharacterInspector.static.removeable = false;
+ve.ui.SpecialCharacterInspector.static.removable = false;
 
 /* Methods */
 
