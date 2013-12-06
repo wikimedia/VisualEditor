@@ -22,6 +22,11 @@ ve.init.mw.MobileViewTarget = function VeInitMwMobileViewTarget( $el ) {
 	ve.init.mw.Target.call(
 		this, $el, mw.config.get( 'wgRelevantPageName' ), currentUri.query.oldid
 	);
+
+	// Events
+	this.connect( this, {
+		'surfaceReady': 'onSurfaceReady'
+	} );
 };
 
 /* Inheritance */
@@ -64,3 +69,12 @@ ve.init.mw.MobileViewTarget.static.surfaceCommands = [
 	'heading6',
 	'preformatted'
 ];
+
+/* Methods */
+
+/**
+ * Once surface is ready ready, init UI.
+ */
+ve.init.mw.MobileViewTarget.prototype.onSurfaceReady = function () {
+	this.$document[0].focus();
+};

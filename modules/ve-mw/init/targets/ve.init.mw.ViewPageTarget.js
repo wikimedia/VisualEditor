@@ -260,11 +260,15 @@ ve.init.mw.ViewPageTarget.prototype.onSurfaceReady = function () {
 		'history': 'updateToolbarSaveButtonState'
 	} );
 	this.surface.setPasteRules( this.constructor.static.pasteRules );
+
 	// Update UI
 	this.transformPageTitle();
 	this.changeDocumentTitle();
 	this.hidePageContent();
 	this.hideSpinner();
+
+	this.$document[0].focus();
+
 	this.setupToolbarButtons();
 	this.attachToolbarButtons();
 	this.restoreScrollPosition();
