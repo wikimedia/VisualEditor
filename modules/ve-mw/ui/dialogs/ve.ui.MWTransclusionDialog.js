@@ -55,7 +55,7 @@ ve.ui.MWTransclusionDialog.prototype.onReplacePart = function ( removed, added )
 			}
 			removed.disconnect( this );
 		}
-		if ( this.outlined ) {
+		if ( this.bookletLayout.isOutlined() ) {
 			// Auto-select new part if placeholder is still selected
 			selected = this.bookletLayout.getOutline().getSelectedItem();
 			if ( selected && removed.getId() === selected.getData() ) {
@@ -124,7 +124,7 @@ ve.ui.MWTransclusionDialog.prototype.onRemoveParameter = function ( param ) {
 };
 
 /**
- * Get an outlined booklet layout widget.
+ * Get a booklet layout widget.
  *
  * @return {OO.ui.BookletLayout} Configured widget
  */
@@ -140,7 +140,7 @@ ve.ui.MWTransclusionDialog.prototype.getBookletLayout = function () {
  * @param {string} name Page name
  */
 ve.ui.MWTransclusionDialog.prototype.setPageByName = function ( name ) {
-	if ( this.outlined ) {
+	if ( this.bookletLayout.isOutlined() ) {
 		this.bookletLayout.getOutline().selectItem(
 			this.bookletLayout.getOutline().getItemFromData( name )
 		);

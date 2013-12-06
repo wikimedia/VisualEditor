@@ -1,12 +1,12 @@
 /*!
- * OOJS UI v0.1.0-pre-svg (592e1d6401)
- * https://www.mediawiki.org/wiki/OOJS
+ * OOjs UI v0.1.0-pre-svg (5ffe63d088)
+ * https://www.mediawiki.org/wiki/OOjs_UI
  *
- * Copyright 2011-2013 OOJS Team and other contributors.
+ * Copyright 2011-2013 OOjs Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: Thu Dec 05 2013 16:06:17 GMT-0800 (PST)
+ * Date: Fri Dec 06 2013 12:23:15 GMT-0800 (PST)
  */
 /*csslint vendor-prefix:false */
 
@@ -1018,11 +1018,8 @@ a.oo-ui-buttonWidget-button {
 	float: right;
 }
 
-.oo-ui-outlineControlsWidget-adders:not(:hover) .oo-ui-iconButtonWidget:not(:first-child) {
-	opacity: 0;
-}
-
-.oo-ui-outlineControlsWidget-adders:hover .oo-ui-iconButtonWidget:first-child {
+.oo-ui-outlineControlsWidget-adders .oo-ui-iconButtonWidget:first-child,
+.oo-ui-outlineControlsWidget-adders .oo-ui-iconButtonWidget:first-child:hover {
 	opacity: 0.25;
 	cursor: default;
 }

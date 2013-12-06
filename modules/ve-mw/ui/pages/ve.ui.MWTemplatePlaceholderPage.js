@@ -18,7 +18,7 @@
  */
 ve.ui.MWTemplatePlaceholderPage = function VeUiMWTemplatePlaceholder( placeholder, name, config ) {
 	// Configuration initialization
-	config = ve.extendObject( config, { 'icon': 'template', 'moveable': true, 'level': 0 } );
+	config = ve.extendObject( { 'icon': 'template', 'movable': true }, config );
 
 	// Parent constructor
 	OO.ui.PageLayout.call( this, name, config );
@@ -42,9 +42,10 @@ ve.ui.MWTemplatePlaceholderPage = function VeUiMWTemplatePlaceholder( placeholde
 			'disabled': true
 		} )
 		.connect( this, { 'click': 'onAddTemplate' } );
-	this.removeButton = new OO.ui.PushButtonWidget( {
+	this.removeButton = new OO.ui.IconButtonWidget( {
 			'$': this.$,
-			'label': ve.msg( 'visualeditor-dialog-transclusion-remove-template' ),
+			'icon': 'remove',
+			'title': ve.msg( 'visualeditor-dialog-transclusion-remove-template' ),
 			'flags': ['destructive'],
 			'classes': [ 've-ui-mwTransclusionDialog-removeButton' ]
 		} )

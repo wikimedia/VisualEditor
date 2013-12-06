@@ -21,7 +21,7 @@
  */
 ve.ui.MWCategoriesPage = function VeUiMWCategoriesPage( surface, name, config ) {
 	// Configuration initialization
-	config = ve.extendObject( config, { 'icon': 'tag' } );
+	config = ve.extendObject( { 'icon': 'tag' }, config );
 
 	// Parent constructor
 	OO.ui.PageLayout.call( this, name, config );

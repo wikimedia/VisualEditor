@@ -31,7 +31,7 @@ ve.ui.MWExtensionInspector.static.nodeView = null;
 
 ve.ui.MWExtensionInspector.static.nodeModel = null;
 
-ve.ui.MWExtensionInspector.static.removeable = false;
+ve.ui.MWExtensionInspector.static.removable = false;
 
 /* Methods */
 
