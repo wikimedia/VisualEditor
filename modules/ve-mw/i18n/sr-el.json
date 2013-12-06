@@ -1,0 +1,11 @@
+{
+	"@metadata": {
+		"authors": [
+			"Milicevic01"
+		]
+	},
+	"visualeditor-categories-tool": "Kategorije",
+	"visualeditor-preference-core-description": "Uključuje VisualEditor. Neće biti dostupan na stranicama za razgovor i nekim drugim imenskim prostorima.",
+	"visualeditor-preference-enable": "Uključuje VisualEditor. Neće biti dostupan na stranicama za razgovor i nekim drugim imenskim prostorima.",
+	"visualeditor-toolbar-cancel": "Otkaži"
+}

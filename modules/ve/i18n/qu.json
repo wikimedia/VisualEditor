@@ -1,0 +1,22 @@
+{
+	"@metadata": {
+		"authors": [
+			"AlimanRuna"
+		]
+	},
+	"visualeditor": "VisualEditor",
+	"visualeditor-aliennode-tooltip": "Achachaw, kunanqa kay qallawata pukyu qillqa hinallapim llamk'apuyta atinki.",
+	"visualeditor-annotationbutton-bold-tooltip": "Yanasapa",
+	"visualeditor-annotationbutton-code-tooltip": "Antañiqiqpaq tiksi qillqa",
+	"visualeditor-annotationbutton-italic-tooltip": "Wiksu",
+	"visualeditor-annotationbutton-language-tooltip": "Rimay",
+	"visualeditor-annotationbutton-link-tooltip": "T'inki",
+	"visualeditor-annotationbutton-strikethrough-tooltip": "Siq'inchampuy",
+	"visualeditor-annotationbutton-subscript-tooltip": "Uraychasqa",
+	"visualeditor-annotationbutton-superscript-tooltip": "Huqarisqa",
+	"visualeditor-annotationbutton-underline-tooltip": "Uranrikwiy",
+	"visualeditor-clearbutton-tooltip": "Rikch'akuychasqata ch'usaqchay",
+	"visualeditor-dialog-action-apply": "Hukchasqakunata llamk'achiy",
+	"visualeditor-dialog-action-cancel": "Ama niy",
+	"visualeditor-dialog-action-goback": "Kutimuy"
+}

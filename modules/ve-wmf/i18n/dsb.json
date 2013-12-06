@@ -1,0 +1,14 @@
+{
+	"@metadata": {
+		"authors": [
+			"Michawiki"
+		]
+	},
+	"tag-visualeditor": "[[{{MediaWiki:visualeditor-descriptionpagelink}}|VisualEditor]]",
+	"tag-visualeditor-description": "Z pomocu [[{{MediaWiki:visualeditor-descriptionpagelink}}|VisualEditora]] wobźěłany",
+	"tag-visualeditor-needcheck": "[[{{MediaWiki:visualeditor-descriptionpagelink}}|VisualEditor: Pśeglědanje]]",
+	"visualeditor-feedback-link": "Project:VisualEditor\/Komentary",
+	"visualeditor-feedback-tool": "Komentar zawóstajiś",
+	"visualeditor-help-label": "Cytaj pśirucku za wužywarja",
+	"visualeditor-help-title": "Pśirucka za wužywarja za wužywanje editora"
+}
