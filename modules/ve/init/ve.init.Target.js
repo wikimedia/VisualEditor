@@ -30,16 +30,36 @@ OO.mixinClass( ve.init.Target, OO.EventEmitter );
 /* Static Properties */
 
 ve.init.Target.static.toolbarGroups = [
+	// History
 	{ 'include': [ 'undo', 'redo' ] },
+	// Format
 	{
 		'type': 'menu',
 		'include': [ { 'group': 'format' } ],
 		'promote': [ 'paragraph' ],
 		'demote': [ 'preformatted', 'heading1' ]
 	},
-	{ 'include': [ 'bold', 'italic', 'link', 'clear' ] },
-	{ 'include': [ 'number', 'bullet', 'outdent', 'indent' ] },
-	{ 'include': '*', 'demote': [ 'specialcharacter' ] }
+	// Style
+	{
+		'type': 'list',
+		'icon': 'text-style',
+		'include': [ { 'group': 'textStyle' }, 'clear' ],
+		'promote': [ 'bold', 'italic' ],
+		'demote': [ 'strikethrough', 'code',  'underline', 'clear' ]
+	},
+	// Link
+	{ 'include': [ 'link' ] },
+	// Structure
+	{
+		'type': 'bar',
+		'include': [ 'number', 'bullet', 'outdent', 'indent' ]
+	},
+	// Insert
+	{
+		'include': '*',
+		'label': 'visualeditor-toolbar-insert',
+		'demote': [ 'specialcharacter' ]
+	}
 
 ];
 

@@ -162,6 +162,7 @@
 	"visualeditor-saveerror": "Error saving data to server: $1.",
 	"visualeditor-serializeerror": "Error loading data from server: $1.",
 	"visualeditor-toolbar-cancel": "Cancel",
+	"visualeditor-toolbar-insert": "Insert",
 	"visualeditor-toolbar-savedialog": "Save page",
 	"visualeditor-usernamespacepagelink": "Project:User namespace",
 	"visualeditor-viewpage-savewarning": "Are you sure you want to go back to view mode without saving first?",

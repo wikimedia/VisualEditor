@@ -675,6 +675,7 @@ $wgResourceModules += array(
 			'visualeditor-specialcharacterinspector-title',
 			'visualeditor-specialcharinspector-characterlist-insert',
 			'visualeditor-toolbar-cancel',
+			'visualeditor-toolbar-insert',
 			'visualeditor-toolbar-savedialog',
 			'visualeditor-version-label',
 			'visualeditor-viewpage-savewarning',

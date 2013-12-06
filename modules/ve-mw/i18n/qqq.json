@@ -165,6 +165,7 @@
     "visualeditor-saveerror": "Text shown when the editor fails to save properly.\n\nParameters:\n* $1 is an error message, in English.",
     "visualeditor-serializeerror": "Text shown when the editor fails to load the wikitext for saving.\n\nParameters:\n* $1 is an error message, in English.",
     "visualeditor-toolbar-cancel": "Label text for button to exit from VisualEditor.\n{{Identical|Cancel}}",
+    "visualeditor-toolbar-insert": "Label text for insert menu in toolbar.",
     "visualeditor-toolbar-savedialog": "Label text for button to open save dialog.\n\nUsed in:\n* {{msg-mw|Guidedtour-tour-gettingstartedtasktoolbarve-click-save-description}}.\n{{Identical|Save page}}",
     "visualeditor-usernamespacepagelink": "Name of a page describing the user namespace (NS2) in this project.\n{{doc-important|Do not translate \"Project\"; it is automatically converted to the wiki's project namespace.}}",
     "visualeditor-viewpage-savewarning": "Text shown when the user tries to leave the editor without saving their changes",
