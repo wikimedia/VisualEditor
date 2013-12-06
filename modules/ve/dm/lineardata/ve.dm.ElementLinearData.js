@@ -33,7 +33,7 @@ OO.inheritClass( ve.dm.ElementLinearData, ve.dm.FlatLinearData );
  * @param {Object|Array|string} b Second element
  * @returns {boolean} Elements are comparable
  */
-ve.dm.ElementLinearData.static.compareUnannotated = function( a, b ) {
+ve.dm.ElementLinearData.static.compareUnannotated = function ( a, b ) {
 	if ( a === undefined || b === undefined ) {
 		return false;
 	}
@@ -396,7 +396,6 @@ ve.dm.ElementLinearData.prototype.getAnnotatedRangeFromOffset = function ( offse
 	}
 	return new ve.Range( start, end );
 };
-
 
 /**
  * Get the range of an annotation found within a range.

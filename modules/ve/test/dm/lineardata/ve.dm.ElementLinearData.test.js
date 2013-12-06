@@ -45,8 +45,8 @@ QUnit.test( 'getAnnotationsFromOffset', 1, function ( assert ) {
 					'a',
 					[
 						{ 'type': 'textStyle/bold' },
-						{ 'type': 'textStyle/italic'},
-						{ 'type': 'textStyle/underline'}
+						{ 'type': 'textStyle/italic' },
+						{ 'type': 'textStyle/underline' }
 					]
 				]
 			],
@@ -54,8 +54,8 @@ QUnit.test( 'getAnnotationsFromOffset', 1, function ( assert ) {
 				[
 					[
 						{ 'type': 'textStyle/bold' },
-						{ 'type': 'textStyle/italic'},
-						{ 'type': 'textStyle/underline'}
+						{ 'type': 'textStyle/italic' },
+						{ 'type': 'textStyle/underline' }
 					]
 				]
 		}
@@ -100,7 +100,7 @@ QUnit.test( 'getAnnotationsFromRange', 1, function ( assert ) {
 					'a',
 					[
 						{ 'type': 'textStyle/bold' },
-						{ 'type': 'textStyle/italic'}
+						{ 'type': 'textStyle/italic' }
 					]
 				],
 				[

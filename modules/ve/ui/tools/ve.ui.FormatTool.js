@@ -93,7 +93,7 @@ OO.inheritClass( ve.ui.ParagraphFormatTool, ve.ui.FormatTool );
 ve.ui.ParagraphFormatTool.static.name = 'paragraph';
 ve.ui.ParagraphFormatTool.static.group = 'format';
 ve.ui.ParagraphFormatTool.static.titleMessage = 'visualeditor-formatdropdown-format-paragraph';
-ve.ui.ParagraphFormatTool.static.format = { 'type' : 'paragraph' };
+ve.ui.ParagraphFormatTool.static.format = { 'type': 'paragraph' };
 ve.ui.toolFactory.register( ve.ui.ParagraphFormatTool );
 
 /**
@@ -112,7 +112,7 @@ OO.inheritClass( ve.ui.Heading1FormatTool, ve.ui.FormatTool );
 ve.ui.Heading1FormatTool.static.name = 'heading1';
 ve.ui.Heading1FormatTool.static.group = 'format';
 ve.ui.Heading1FormatTool.static.titleMessage = 'visualeditor-formatdropdown-format-heading1';
-ve.ui.Heading1FormatTool.static.format = { 'type' : 'heading', 'attributes': { 'level': 1 } };
+ve.ui.Heading1FormatTool.static.format = { 'type': 'heading', 'attributes': { 'level': 1 } };
 ve.ui.toolFactory.register( ve.ui.Heading1FormatTool );
 
 /**
@@ -131,7 +131,7 @@ OO.inheritClass( ve.ui.Heading2FormatTool, ve.ui.FormatTool );
 ve.ui.Heading2FormatTool.static.name = 'heading2';
 ve.ui.Heading2FormatTool.static.group = 'format';
 ve.ui.Heading2FormatTool.static.titleMessage = 'visualeditor-formatdropdown-format-heading2';
-ve.ui.Heading2FormatTool.static.format = { 'type' : 'heading', 'attributes': { 'level': 2 } };
+ve.ui.Heading2FormatTool.static.format = { 'type': 'heading', 'attributes': { 'level': 2 } };
 ve.ui.toolFactory.register( ve.ui.Heading2FormatTool );
 
 /**
@@ -150,7 +150,7 @@ OO.inheritClass( ve.ui.Heading3FormatTool, ve.ui.FormatTool );
 ve.ui.Heading3FormatTool.static.name = 'heading3';
 ve.ui.Heading3FormatTool.static.group = 'format';
 ve.ui.Heading3FormatTool.static.titleMessage = 'visualeditor-formatdropdown-format-heading3';
-ve.ui.Heading3FormatTool.static.format = { 'type' : 'heading', 'attributes': { 'level': 3 } };
+ve.ui.Heading3FormatTool.static.format = { 'type': 'heading', 'attributes': { 'level': 3 } };
 ve.ui.toolFactory.register( ve.ui.Heading3FormatTool );
 
 /**
@@ -169,7 +169,7 @@ OO.inheritClass( ve.ui.Heading4FormatTool, ve.ui.FormatTool );
 ve.ui.Heading4FormatTool.static.name = 'heading4';
 ve.ui.Heading4FormatTool.static.group = 'format';
 ve.ui.Heading4FormatTool.static.titleMessage = 'visualeditor-formatdropdown-format-heading4';
-ve.ui.Heading4FormatTool.static.format = { 'type' : 'heading', 'attributes': { 'level': 4 } };
+ve.ui.Heading4FormatTool.static.format = { 'type': 'heading', 'attributes': { 'level': 4 } };
 ve.ui.toolFactory.register( ve.ui.Heading4FormatTool );
 
 /**
@@ -188,7 +188,7 @@ OO.inheritClass( ve.ui.Heading5FormatTool, ve.ui.FormatTool );
 ve.ui.Heading5FormatTool.static.name = 'heading5';
 ve.ui.Heading5FormatTool.static.group = 'format';
 ve.ui.Heading5FormatTool.static.titleMessage = 'visualeditor-formatdropdown-format-heading5';
-ve.ui.Heading5FormatTool.static.format = { 'type' : 'heading', 'attributes': { 'level': 5 } };
+ve.ui.Heading5FormatTool.static.format = { 'type': 'heading', 'attributes': { 'level': 5 } };
 ve.ui.toolFactory.register( ve.ui.Heading5FormatTool );
 
 /**
@@ -207,7 +207,7 @@ OO.inheritClass( ve.ui.Heading6FormatTool, ve.ui.FormatTool );
 ve.ui.Heading6FormatTool.static.name = 'heading6';
 ve.ui.Heading6FormatTool.static.group = 'format';
 ve.ui.Heading6FormatTool.static.titleMessage = 'visualeditor-formatdropdown-format-heading6';
-ve.ui.Heading6FormatTool.static.format = { 'type' : 'heading', 'attributes': { 'level': 6 } };
+ve.ui.Heading6FormatTool.static.format = { 'type': 'heading', 'attributes': { 'level': 6 } };
 ve.ui.toolFactory.register( ve.ui.Heading6FormatTool );
 
 /**
@@ -227,5 +227,5 @@ ve.ui.PreformattedFormatTool.static.name = 'preformatted';
 ve.ui.PreformattedFormatTool.static.group = 'format';
 ve.ui.PreformattedFormatTool.static.titleMessage =
 	'visualeditor-formatdropdown-format-preformatted';
-ve.ui.PreformattedFormatTool.static.format = { 'type' : 'preformatted' };
+ve.ui.PreformattedFormatTool.static.format = { 'type': 'preformatted' };
 ve.ui.toolFactory.register( ve.ui.PreformattedFormatTool );

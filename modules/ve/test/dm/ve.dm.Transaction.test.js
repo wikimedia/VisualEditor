@@ -96,7 +96,7 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 					{
 						'type': 'replace',
 						'remove': [],
-						'insert': [{'type': '/heading' }, { 'type': 'paragraph' } , 'F', 'O', 'O', { 'type': '/paragraph' }, { 'type': 'heading', 'attributes': { 'level': 1 } }]
+						'insert': [{ 'type': '/heading' }, { 'type': 'paragraph' }, 'F', 'O', 'O', { 'type': '/paragraph' }, { 'type': 'heading', 'attributes': { 'level': 1 } }]
 					},
 					{ 'type': 'retain', 'length': 61 }
 				]
@@ -108,7 +108,7 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 					{
 						'type': 'replace',
 						'remove': [],
-						'insert': [{ 'type': 'paragraph' } , 'F', 'O', 'O', { 'type': '/paragraph' }]
+						'insert': [{ 'type': 'paragraph' }, 'F', 'O', 'O', { 'type': '/paragraph' }]
 					},
 					{ 'type': 'retain', 'length': 51 }
 				]
@@ -304,7 +304,7 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 						'insert': [
 							{ 'type': '/tableRow' }, { 'type': '/tableSection' }, { 'type': '/table' },
 							{ 'type': 'paragraph' }, 'B', 'A', 'R', { 'type': '/paragraph' },
-							{ 'type': 'table' }, { 'type': 'tableSection', 'attributes' : { 'style': 'body' } }, { 'type': 'tableRow' }
+							{ 'type': 'table' }, { 'type': 'tableSection', 'attributes': { 'style': 'body' } }, { 'type': 'tableRow' }
 						]
 					},
 					{ 'type': 'retain', 'length': 13 }
@@ -890,7 +890,7 @@ QUnit.test( 'newFromAttributeChanges', function ( assert ) {
 				]
 			},
 			'middle element': {
-				'args': [doc, 17, { 'style': 'number'} ],
+				'args': [doc, 17, { 'style': 'number' } ],
 				'ops': [
 					{ 'type': 'retain', 'length': 17 },
 					{
@@ -1292,7 +1292,7 @@ QUnit.test( 'newFromWrap', function ( assert ) {
 				]
 			},
 			'unwraps a multiple-item list': {
-				'args': [listDoc, new ve.Range( 1, 11 ), [ { 'type': 'list' } ], [], [ { 'type': 'listItem', 'attributes': {'styles': ['bullet']} } ], [] ],
+				'args': [listDoc, new ve.Range( 1, 11 ), [ { 'type': 'list' } ], [], [ { 'type': 'listItem', 'attributes': { 'styles': ['bullet'] } } ], [] ],
 				'ops': [
 					{ 'type': 'replace',
 					  'remove': [ { 'type': 'list' }, { 'type': 'listItem', 'attributes': { 'styles': ['bullet'] } } ],
@@ -1374,7 +1374,7 @@ QUnit.test( 'newFromWrap', function ( assert ) {
 				]
 			},
 			'metadata is preserved on unwrap': {
-				'args': [listMetaDoc, new ve.Range( 1, 11 ), [ { 'type': 'list' } ], [], [ { 'type': 'listItem', 'attributes': {'styles': ['bullet']} } ], [] ],
+				'args': [listMetaDoc, new ve.Range( 1, 11 ), [ { 'type': 'list' } ], [], [ { 'type': 'listItem', 'attributes': { 'styles': ['bullet'] } } ], [] ],
 				'ops': [
 					{ 'type': 'replace',
 					  'remove': [ { 'type': 'list' }, { 'type': 'listItem', 'attributes': { 'styles': ['bullet'] } } ],
@@ -1476,7 +1476,7 @@ QUnit.test( 'translateOffset', function ( assert ) {
 		15: [18, 21],
 		16: 22
 	};
-	QUnit.expect( 2*ve.getObjectKeys( mapping ).length );
+	QUnit.expect( 2 * ve.getObjectKeys( mapping ).length );
 	for ( offset in mapping ) {
 		expected = ve.isArray( mapping[offset] ) ? mapping[offset] : [ mapping[offset], mapping[offset] ];
 		assert.strictEqual( tx.translateOffset( Number( offset ) ), expected[1], offset );
@@ -1652,7 +1652,7 @@ QUnit.test( 'pushReplace', function ( assert ) {
 				'diff': 0
 			}
 		};
-	QUnit.expect( 2*ve.getObjectKeys( cases ).length );
+	QUnit.expect( 2 * ve.getObjectKeys( cases ).length );
 	runBuilderTests( assert, cases );
 } );
 
@@ -1694,7 +1694,7 @@ QUnit.test( 'pushReplaceElementAttribute', function ( assert ) {
 			'diff': 0
 		}
 	};
-	QUnit.expect( 2*ve.getObjectKeys( cases ).length );
+	QUnit.expect( 2 * ve.getObjectKeys( cases ).length );
 	runBuilderTests( assert, cases );
 } );
 
@@ -1771,7 +1771,7 @@ QUnit.test( 'push*Annotating', function ( assert ) {
 			'diff': 0
 		}
 	};
-	QUnit.expect( 2*ve.getObjectKeys( cases ).length );
+	QUnit.expect( 2 * ve.getObjectKeys( cases ).length );
 	runBuilderTests( assert, cases );
 } );
 

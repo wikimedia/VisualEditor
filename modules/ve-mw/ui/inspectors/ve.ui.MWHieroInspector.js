@@ -36,7 +36,6 @@ ve.ui.MWHieroInspector.static.nodeView = ve.ce.MWHieroNode;
 
 ve.ui.MWHieroInspector.static.nodeModel = ve.dm.MWHieroNode;
 
-
 /* Methods */
 
 ve.ui.MWHieroInspector.prototype.initialize = function () {

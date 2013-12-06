@@ -110,13 +110,13 @@ ve.ui.SpecialCharacterInspector.prototype.setup = function ( data ) {
 	// after we're done adding
 	this.initialSelection = this.surface.getModel().getSelection();
 
-	this.getCharList().done( ve.bind( function() {
+	this.getCharList().done( ve.bind( function () {
 		// Now we can rebuild our button list
 		// We only want to rebuild the list if we don't already have it
 		if ( !this.$buttonDomList ) {
 			// Start with the spinner showing
 			this.$spinner.show();
-			this.buildButtonList().done( ve.bind( function() {
+			this.buildButtonList().done( ve.bind( function () {
 				// Append the new button list
 				this.$form.append( this.$buttonDomList );
 				// Done, hide the spinner

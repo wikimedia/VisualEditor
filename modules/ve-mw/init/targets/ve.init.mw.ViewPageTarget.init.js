@@ -127,7 +127,7 @@
 		 *
 		 * @param {string|Function} plugin Module name or callback that optionally returns a promise
 		 */
-		addPlugin: function( plugin ) {
+		addPlugin: function ( plugin ) {
 			plugins.push( plugin );
 		},
 

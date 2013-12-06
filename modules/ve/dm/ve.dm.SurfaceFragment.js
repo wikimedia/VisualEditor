@@ -782,7 +782,7 @@ ve.dm.SurfaceFragment.prototype.wrapAllNodes = function ( wrapper ) {
  *
  * Example:
  *     // fragment is a selection of: <h1><p>a</p><p>b</p></h1>
- *     fragment.rewrapAllNodes( 1, { 'type': 'heading', 'attributes' : { 'level' : 2 } } );
+ *     fragment.rewrapAllNodes( 1, { 'type': 'heading', 'attributes': { 'level': 2 } } );
  *     // fragment is now a selection of: <h2><p>a</p><p>b</p></h2>
  *
  * @method

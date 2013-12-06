@@ -154,7 +154,6 @@ ve.dm.NodeFactory.prototype.canNodeContainContent = function ( type ) {
 	throw new Error( 'Unknown node type: ' + type );
 };
 
-
 /**
  * Check if node can take annotations of a specific type.
  *

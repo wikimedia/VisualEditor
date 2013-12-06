@@ -165,7 +165,6 @@ QUnit.test( 'newFromDocumentInsertion with references', function ( assert ) {
 			removalOps = tx.getOperations();
 		}
 
-
 		assert.deepEqualWithDomElements( removalOps, cases[i].removalOps, cases[i].msg + ': removal' );
 
 		tx = ve.dm.Transaction.newFromDocumentInsertion( doc, cases[i].offset, doc2 );

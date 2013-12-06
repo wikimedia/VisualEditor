@@ -1208,9 +1208,9 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 			// Text
 			text = '';
 			isStart = i > 0 &&
-				ve.dm.LinearData.static.isOpenElementData( data[i-1] ) &&
+				ve.dm.LinearData.static.isOpenElementData( data[i - 1] ) &&
 				!ve.dm.nodeFactory.doesNodeHaveSignificantWhitespace(
-					ve.dm.LinearData.static.getType( data[i-1] )
+					ve.dm.LinearData.static.getType( data[i - 1] )
 				);
 			// Continue forward as far as the plain text goes
 			while ( typeof data[i] === 'string' ) {

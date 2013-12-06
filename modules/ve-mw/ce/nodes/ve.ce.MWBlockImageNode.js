@@ -116,14 +116,14 @@ ve.ce.MWBlockImageNode.static.cssClasses = {
 	'default': {
 		'left': 'tleft',
 		'right': 'tright',
-		'center' : 'tnone',
-		'none' : 'tnone'
+		'center': 'tnone',
+		'none': 'tnone'
 	},
 	'none': {
 		'left': 'floatleft',
 		'right': 'floatright',
-		'center' : 'floatnone',
-		'none' : 'floatnone'
+		'center': 'floatnone',
+		'none': 'floatnone'
 	}
 };
 
@@ -159,7 +159,7 @@ ve.ce.MWBlockImageNode.prototype.onSetup = function () {
 
 	ve.ce.BranchNode.prototype.onSetup.call( this );
 
-	if ( type !== 'none' && type !=='frameless' ) {
+	if ( type !== 'none' && type !== 'frameless' ) {
 		this.$thumb.addClass( this.getCssClass( 'default', this.model.getAttribute( 'align' ) ) );
 	}
 

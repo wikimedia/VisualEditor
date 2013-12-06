@@ -116,7 +116,7 @@ ve.ui.MWSaveDialog.prototype.swapPanel = function ( panel ) {
 	// Reset save button if we disabled it for e.g. unrecoverable spam error
 	this.saveButton.setDisabled( false );
 
-	switch( panel ) {
+	switch ( panel ) {
 		case 'save':
 			if ( !this.sanityCheckVerified ) {
 				this.showMessage( 'dirtywarning', mw.msg( 'visualeditor-savedialog-warning-dirty' ) );

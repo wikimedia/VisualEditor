@@ -199,7 +199,7 @@ QUnit.test( 'fakeImes', function ( assert ) {
 	QUnit.expect( count );
 
 	// TODO: make this function actually affect the events triggered
-	fakePreventDefault = function() {};
+	fakePreventDefault = function () {};
 
 	for ( i = 0, ilen = ve.ce.imetests.length; i < ilen; i++ ) {
 		testName = ve.ce.imetests[i][0];

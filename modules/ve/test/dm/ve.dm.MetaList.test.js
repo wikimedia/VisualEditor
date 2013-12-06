@@ -32,7 +32,7 @@ QUnit.test( 'constructor', function ( assert ) {
 		surface = new ve.dm.Surface( doc ),
 		list = new ve.dm.MetaList( surface ),
 		metadata = doc.metadata;
-	QUnit.expect( 4*metadata.getTotalDataLength() + 1 );
+	QUnit.expect( 4 * metadata.getTotalDataLength() + 1 );
 	assertItemsMatchMetadata( assert, metadata, list, 'Constructor', true );
 } );
 
@@ -131,7 +131,7 @@ QUnit.test( 'onTransact', function ( assert ) {
 	];
 	// HACK: This works because most transactions above don't change the document length, and the
 	// ones that do change it cancel out
-	QUnit.expect( cases.length*( 8*doc.metadata.getTotalDataLength() + 2 ) );
+	QUnit.expect( cases.length * ( 8 * doc.metadata.getTotalDataLength() + 2 ) );
 
 	for ( i = 0; i < cases.length; i++ ) {
 		tx = new ve.dm.Transaction();
@@ -165,7 +165,7 @@ QUnit.test( 'findItem', function ( assert ) {
 			}
 		}
 	}
-	QUnit.expect( 2*( metadata.getLength() + metadata.getTotalDataLength() )*groups.length );
+	QUnit.expect( 2 * ( metadata.getLength() + metadata.getTotalDataLength() ) * groups.length );
 
 	for ( g = 0; g < groups.length; g++ ) {
 		groupDesc = groups[g] === null ? 'all items' : groups[g];

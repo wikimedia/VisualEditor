@@ -146,7 +146,6 @@ ve.EventSequencer.prototype.detach = function () {
 	this.$node = null;
 };
 
-
 /**
  * Add listeners to be fired at the start of the Javascript event loop iteration
  * @method

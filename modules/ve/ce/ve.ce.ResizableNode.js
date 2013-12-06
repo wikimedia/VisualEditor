@@ -65,7 +65,6 @@ ve.ce.ResizableNode = function VeCeResizableNode( $resizable, config ) {
  * @event resizeEnd
  */
 
-
 /* Static Properties */
 
 ve.ce.ResizableNode.static = {};

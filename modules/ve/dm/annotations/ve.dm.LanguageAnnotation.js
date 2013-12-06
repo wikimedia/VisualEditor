@@ -30,7 +30,7 @@ ve.dm.LanguageAnnotation.static.name = 'meta/language';
 
 ve.dm.LanguageAnnotation.static.matchTagNames = [ 'span' ];
 
-ve.dm.LanguageAnnotation.static.matchFunction = function( domElement ) {
+ve.dm.LanguageAnnotation.static.matchFunction = function ( domElement ) {
 	return ( domElement.getAttribute( 'lang' ) || domElement.getAttribute( 'dir' ) );
 };
 

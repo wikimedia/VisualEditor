@@ -45,7 +45,6 @@ ve.dm.ListNode.static.toDomElements = function ( dataElement, doc ) {
 	return [ doc.createElement( tag ) ];
 };
 
-
 /* Registration */
 
 ve.dm.modelRegistry.register( ve.dm.ListNode );

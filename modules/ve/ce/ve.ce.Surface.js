@@ -180,7 +180,6 @@ ve.ce.Surface.static.getClipboardHash = function ( $elements ) {
 	return hash.replace( /\s/gm, '' );
 };
 
-
 /* Methods */
 
 /**
@@ -1472,7 +1471,7 @@ ve.ce.Surface.prototype.handleUpOrDownArrowKey = function ( e ) {
 		if ( !$element ) {
 			$element = this.$( '<span>' )
 				.html( ' ' )
-				.css( { 'width' : '0px', 'display' : 'none' } );
+				.css( { 'width': '0px', 'display': 'none' } );
 			rangySelection.anchorNode.splitText( rangySelection.anchorOffset );
 			rangySelection.anchorNode.parentNode.insertBefore(
 				$element[0],
@@ -1541,7 +1540,7 @@ ve.ce.Surface.prototype.handleInsertion = function () {
 			// is this a slug and if so, is this a block slug?
 			if ( slug && documentModel.data.isStructuralOffset( selection.start ) ) {
 				range = new ve.Range( selection.start + 1, selection.start + 2 );
-				data = [{ 'type' : 'paragraph' }, placeholder, { 'type' : '/paragraph' }];
+				data = [{ 'type': 'paragraph' }, placeholder, { 'type': '/paragraph' }];
 			} else {
 				range = new ve.Range( selection.start, selection.start + 1 );
 				data = [placeholder];

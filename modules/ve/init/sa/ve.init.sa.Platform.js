@@ -49,7 +49,6 @@ ve.init.sa.Platform.prototype.getModulesUrl = function () {
 	return this.modulesUrl;
 };
 
-
 /** @inheritdoc */
 ve.init.sa.Platform.prototype.addMessages = function ( messages ) {
 	for ( var key in messages ) {

@@ -22,7 +22,13 @@
 ve.init.mw.Target = function VeInitMwTarget( $container, pageName, revisionId ) {
 	var i, len, prefName, prefValue, conf = mw.config.get( 'wgVisualEditorConfig' ),
 		// language, mwalienextension and mwhiero are commented out in VisualEditorHooks::onGetBetaPreferences()
-		extraModules = [ 'experimental'/* , 'language'*//*, 'mwalienextension'*/, 'mwmath'/*, 'mwhiero'*/ ];
+		extraModules = [
+			'experimental',
+			// 'language',
+			// 'mwalienextension',
+			// 'mwhiero',
+			'mwmath'
+		];
 
 	// Parent constructor
 	ve.init.Target.call( this, $container );
@@ -308,7 +314,7 @@ ve.init.mw.Target.prototype.onReady = function () {
 	this.onNoticesReady();
 	this.loading = false;
 	this.edited = false;
-	this.setUpSurface( this.doc, ve.bind( function() {
+	this.setUpSurface( this.doc, ve.bind( function () {
 		this.startSanityCheck();
 		this.$document[0].focus();
 		this.emit( 'surfaceReady' );
@@ -508,7 +514,6 @@ ve.init.mw.Target.prototype.onSaveError = function ( jqXHR, status, data ) {
 	ve.track( 'performance.user.saveError', trackData );
 	this.emit( 'saveErrorUnknown', editApi, data );
 };
-
 
 /**
  * Handle a successful show changes request.

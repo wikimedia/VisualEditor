@@ -61,5 +61,3 @@ QUnit.test( 'value(s)', 5, function ( assert ) {
 	object1.a = 3;
 	assert.deepEqual( store.value( 0 ), { 'a': 1, 'b': 2 }, 'Value 0 is still first stored object after original has been modified' );
 } );
-
-

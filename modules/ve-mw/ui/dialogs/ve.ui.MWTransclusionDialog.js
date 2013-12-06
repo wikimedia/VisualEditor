@@ -243,4 +243,3 @@ ve.ui.MWTransclusionDialog.prototype.teardown = function ( data ) {
 	// Parent method
 	ve.ui.MWDialog.prototype.teardown.call( this, data );
 };
-

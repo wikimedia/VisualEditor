@@ -38,7 +38,7 @@ ve.dm.mwExample.MWTransclusion.blockData = {
 	'attributes': {
 		'mw': {
 			'id': 'mwt1',
-			'target': { 'wt' : 'Test' },
+			'target': { 'wt': 'Test' },
 			'params': {
 				'1': { 'wt': 'Hello, world!' }
 			}
@@ -65,7 +65,7 @@ ve.dm.mwExample.MWTransclusion.inlineData = {
 	'attributes': {
 		'mw': {
 			'id': 'mwt1',
-			'target': { 'wt' : 'Inline' },
+			'target': { 'wt': 'Inline' },
 			'params': {
 				'1': { 'wt': '1,234' }
 			}
@@ -648,17 +648,17 @@ ve.dm.mwExample.references = [
 	{ 'type': '/paragraph' },
 	{ 'type': '/internalItem' },
 	{ 'type': 'internalItem' },
-	{ 'type' : 'paragraph' },
+	{ 'type': 'paragraph' },
 	'Q', 'u', 'u', 'x',
 	{ 'type': '/paragraph' },
 	{ 'type': '/internalItem' },
 	{ 'type': 'internalItem' },
-	{ 'type' : 'paragraph' },
+	{ 'type': 'paragraph' },
 	'N', 'o', ' ', 'n', 'a', 'm', 'e', ' ', '2',
 	{ 'type': '/paragraph' },
 	{ 'type': '/internalItem' },
 	{ 'type': 'internalItem' },
-	{ 'type' : 'paragraph' },
+	{ 'type': 'paragraph' },
 	'N', 'o', ' ', 'n', 'a', 'm', 'e', ' ', '3',
 	{ 'type': '/paragraph' },
 	{ 'type': '/internalItem' },

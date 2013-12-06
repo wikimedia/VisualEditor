@@ -170,7 +170,7 @@ ve.ce.FocusableNode.prototype.setFocused = function ( value ) {
  */
 ve.ce.FocusableNode.prototype.createHighlight = function () {
 	this.$focusable.find( '*' ).add( this.$focusable ).each(
-		ve.bind( function( i, el ) {
+		ve.bind( function ( i, el ) {
 			var offset, $el = this.$( el );
 			if ( !$el.is( ':visible' ) ) {
 				return true;

@@ -167,7 +167,7 @@ QUnit.test( 'getOpeningHtmlTag', 5, function ( assert ) {
 			);
 		} );
 
-		QUnit.test( 'setProp( ' + type + ' )' , 7, function ( assert ) {
+		QUnit.test( 'setProp( ' + type + ' )', 7, function ( assert ) {
 			ve.setProp( obj, 'foo', 4 );
 			assert.deepEqual( 4, obj.foo, 'setting an existing key with depth 1' );
 
@@ -250,7 +250,7 @@ QUnit.test( 'createDocumentFromHtml', function ( assert ) {
 				'body': ''
 			}
 		];
-	QUnit.expect( cases.length*2 );
+	QUnit.expect( cases.length * 2 );
 	for ( key in cases ) {
 		doc = ve.createDocumentFromHtml( cases[key].html );
 		expectedHead = $( '<head>' ).html( cases[key].head ).get( 0 );

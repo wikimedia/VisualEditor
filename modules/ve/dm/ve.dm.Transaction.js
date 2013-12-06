@@ -218,7 +218,7 @@ ve.dm.Transaction.newFromDocumentInsertion = function ( doc, offset, newDoc, new
 		listData = newDoc.getData( new ve.Range( newListNodeRange.start, newEndOffset ), true )
 			.concat( doc.getData( new ve.Range( oldEndOffset, listNodeRange.end ), true ) );
 		listMetadata = newDoc.getMetadata( new ve.Range( newListNodeRange.start, newEndOffset ), true )
-			.concat( doc.getMetadata( new ve.Range( oldEndOffset, listNodeRange.end ) , true ) );
+			.concat( doc.getMetadata( new ve.Range( oldEndOffset, listNodeRange.end ), true ) );
 	} else {
 		// newDoc is brand new, so use doc's internal list as a base
 		listData = doc.getData( listNodeRange, true );
@@ -424,7 +424,6 @@ ve.dm.Transaction.newFromAnnotation = function ( doc, range, method, annotation 
 	return tx;
 };
 
-
 /**
  * Generate a transaction that inserts metadata elements.
  *
@@ -455,7 +454,6 @@ ve.dm.Transaction.newFromMetadataInsertion = function ( doc, offset, index, newE
 	tx.pushFinalRetain( doc, offset, elements.length );
 	return tx;
 };
-
 
 /**
  * Generate a transaction that removes metadata elements.

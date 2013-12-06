@@ -66,7 +66,7 @@
 	 * @param {boolean} [onlyAlphaNumeric=false] When set, ignores a break if the previous character is not alphaNumeric
 	 * @returns {number} Returns the next offset which is a word break
 	 */
-	wordbreak.nextBreakOffset = function( string, pos, onlyAlphaNumeric ) {
+	wordbreak.nextBreakOffset = function ( string, pos, onlyAlphaNumeric ) {
 		return wordbreak.moveBreakOffset( 1, string, pos, onlyAlphaNumeric );
 	};
 
@@ -77,7 +77,7 @@
 	 * @param {boolean} [onlyAlphaNumeric=false] When set, ignores a break if the previous character is not alphaNumeric
 	 * @returns {number} Returns the previous offset which is a word break
 	 */
-	wordbreak.prevBreakOffset = function( string, pos, onlyAlphaNumeric ) {
+	wordbreak.prevBreakOffset = function ( string, pos, onlyAlphaNumeric ) {
 		return wordbreak.moveBreakOffset( -1, string, pos, onlyAlphaNumeric );
 	};
 
@@ -89,7 +89,7 @@
 	 * @param {boolean} [onlyAlphaNumeric=false] When set, ignores a break if the previous character is not alphaNumeric
 	 * @returns {number} Returns the previous offset which is word break
 	 */
-	wordbreak.moveBreakOffset = function( direction, string, pos, onlyAlphaNumeric ) {
+	wordbreak.moveBreakOffset = function ( direction, string, pos, onlyAlphaNumeric ) {
 		var lastProperty, i = pos,
 			// when moving backwards, use the character to the left of the cursor
 			readCharOffset = direction > 0 ? 0 : -1;
@@ -163,7 +163,6 @@
 			}
 			lft[lft.length - 1] = getProperty( string.read( pos - l - 1 ) );
 		}
-
 
 		// Do not break between most letters.
 		// WB5: ALetter × ALetter

@@ -79,7 +79,6 @@ QUnit.test( 'addNode/removeNode', 6, function ( assert ) {
 	newInternalList.addNode( 'mwReference/', 'auto/0', 0, referenceNodes[0] );
 	newInternalList.onTransact();
 
-
 	assert.deepEqualWithNodeTree(
 		newInternalList.nodes,
 		expectedNodes,

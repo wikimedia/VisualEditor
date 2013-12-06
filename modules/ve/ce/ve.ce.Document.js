@@ -171,7 +171,7 @@ ve.ce.Document.prototype.getNodeAndOffset = function ( offset ) {
 				if ( offset >= startOffset && offset < startOffset + length ) {
 					stack.push( [$item.contents(), 0] );
 					current[1]++;
-					current = stack[stack.length-1];
+					current = stack[stack.length - 1];
 					continue;
 				} else {
 					startOffset += length;
@@ -179,7 +179,7 @@ ve.ce.Document.prototype.getNodeAndOffset = function ( offset ) {
 			} else {
 				stack.push( [$item.contents(), 0] );
 				current[1]++;
-				current = stack[stack.length-1];
+				current = stack[stack.length - 1];
 				continue;
 			}
 		}

@@ -13,6 +13,7 @@ module.exports = function ( grunt ) {
 	grunt.loadNpmTasks( 'grunt-contrib-csslint' );
 	grunt.loadNpmTasks( 'grunt-contrib-qunit' );
 	grunt.loadNpmTasks( 'grunt-contrib-watch' );
+	grunt.loadNpmTasks( 'grunt-jscs-checker' );
 
 	grunt.initConfig( {
 		pkg: grunt.file.readJSON( 'package.json' ),
@@ -20,6 +21,13 @@ module.exports = function ( grunt ) {
 			options: JSON.parse( grunt.file.read( '.jshintrc' )
 				.replace( /\/\*(?:(?!\*\/)[\s\S])*\*\//g, '' ).replace( /\/\/[^\n\r]*/g, '' ) ),
 			all: ['*.js', 'modules/{syntaxhighlight,unicodejs,ve,ve-mw}/**/*.js']
+		},
+		jscs: {
+			src: [
+				'<%= jshint.all %>',
+				'!modules/syntaxhighlight/**/*.js',
+				'!modules/ve/test/ce/imetests/*.js'
+			]
 		},
 		csslint: {
 			options: {
@@ -55,7 +63,7 @@ module.exports = function ( grunt ) {
 		fs.unlinkSync( __dirname + '/modules/ve/test/index-phantomjs-tmp.html' );
 	} );
 
-	grunt.registerTask( 'lint', ['jshint', 'csslint'] );
+	grunt.registerTask( 'lint', ['jshint', 'jscs', 'csslint'] );
 	grunt.registerTask( 'unit', ['pre-qunit', 'qunit'] );
 	grunt.registerTask( 'test', ['lint', 'unit'] );
 	grunt.registerTask( 'default', 'test' );

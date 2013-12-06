@@ -135,7 +135,7 @@
 	 * @param {Array} ranges Array of ranges, each of which is a character or an interval
 	 * @returns {string} Regexp string for the disjunction of the ranges.
 	 */
-	unicodeJS.charRangeArrayRegexp = function( ranges ) {
+	unicodeJS.charRangeArrayRegexp = function ( ranges ) {
 		var i, j, min, max, hi, lo, range, box, boxes,
 			characterClass = [], // list of (\uXXXX code unit or interval), for BMP
 			disjunction = []; // list of regex strings, to be joined with '|'
@@ -202,7 +202,7 @@
 		}
 
 		// prepend BMP character class to the disjunction
-		if ( characterClass.length === 1 && ! characterClass[0].match(/-/) ) {
+		if ( characterClass.length === 1 && !characterClass[0].match(/-/) ) {
 			disjunction.unshift( characterClass[0] ); // single character
 		} else if ( characterClass.length > 0 ) {
 			disjunction.unshift( '[' + characterClass.join( '' ) + ']' );

@@ -304,7 +304,7 @@
 	 * @param {Mixed...} [keys]
 	 * @param {Mixed} [value]
 	 */
-	ve.setProp = function ( obj /*, keys ... , value */ ) {
+	ve.setProp = function ( obj ) {
 		var i, prop = obj;
 		if ( Object( obj ) !== obj ) {
 			return;
@@ -833,7 +833,7 @@
 		// Workaround for bug 42469: if a `<pre>` starts with a newline, that means .innerHTML will
 		// screw up and stringify it with one fewer newline. Work around this by adding a newline.
 		// If we don't see a leading newline, we still don't know if the original HTML was
-		// `<pre>Foo</pre>` or `<pre>\nFoo</pre>` , but that's a syntactic difference, not a
+		// `<pre>Foo</pre>` or `<pre>\nFoo</pre>`, but that's a syntactic difference, not a
 		// semantic one, and handling that is Parsoid's job.
 		$element = $( element ).clone();
 		$element.find( 'pre, textarea, listing' ).each( function () {

@@ -303,7 +303,7 @@ ve.ui.Context.prototype.update = function ( transition, repositionOnly ) {
 				this.toolbar.destroy();
 			}
 			this.toolbar = new ve.ui.Toolbar( this.surface );
-			this.toolbar.setup( [ { 'include' : tools } ] );
+			this.toolbar.setup( [ { 'include': tools } ] );
 			this.$menu.append( this.toolbar.$element );
 			this.show( transition, repositionOnly );
 			this.toolbar.initialize();

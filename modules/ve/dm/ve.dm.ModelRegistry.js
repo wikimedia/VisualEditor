@@ -198,7 +198,9 @@ ve.dm.ModelRegistry.prototype.matchElement = function ( element, forceAboutGroup
 	}
 
 	function matchTypeRegExps( type, tag, withFunc ) {
-		var i, j, types, matches = [], models = reg.modelsWithTypeRegExps[+!!withFunc];
+		var i, j, types,
+			matches = [],
+			models = reg.modelsWithTypeRegExps[ +withFunc ];
 		for ( i = 0; i < models.length; i++ ) {
 			if ( excludeTypes && ve.indexOf( models[i], excludeTypes ) !== -1 ) {
 				continue;

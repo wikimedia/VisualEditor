@@ -175,7 +175,7 @@ ve.dm.example.image = {
 	html: '<img src="' + ve.dm.example.imgSrc + '" alt="Example" width="100" height="50">',
 	data: {
 		'type': 'image',
-		'attributes' : {
+		'attributes': {
 			'src': ve.dm.example.imgSrc,
 			'alt': 'Example',
 			'width': 100,
@@ -225,7 +225,7 @@ ve.dm.example.html =
 			'</td>' +
 		'</tr>' +
 	'</table>' +
-	'<pre>h' + ve.dm.example.image.html + 'i</pre>'+
+	'<pre>h' + ve.dm.example.image.html + 'i</pre>' +
 	'<dl>' +
 		'<dt>' +
 			'<p>j</p>' +
@@ -621,7 +621,6 @@ ve.dm.example.withMetaMetaData = [
 	undefined
 ];
 
-
 ve.dm.example.listWithMeta = [
 	//  0 - Beginning of list
 	{
@@ -740,7 +739,6 @@ ve.dm.example.listWithMeta = [
 	},
 	{ 'type': '/alienMeta' }
 ];
-
 
 ve.dm.example.complexTableHtml = '<table><caption>Foo</caption><thead><tr><th>Bar</th></tr></thead>' +
 	'<tfoot><tr><td>Baz</td></tr></tfoot><tbody><tr><td>Quux</td><td>Whee</td></tr></tbody></table>';
@@ -1082,7 +1080,7 @@ ve.dm.example.domToDataCases = {
 		'data': [
 			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
 			ve.dm.example.image.data,
-			{ 'type' : '/image' },
+			{ 'type': '/image' },
 			{ 'type': '/paragraph' },
 			{ 'type': 'internalList' },
 			{ 'type': '/internalList' }
@@ -1731,7 +1729,7 @@ ve.dm.example.domToDataCases = {
 			'o',
 			{ 'type': '/paragraph' },
 			{ 'type': '/listItem' },
-			{ 'type': 'listItem', 'internal': { 'whitespace': [ undefined, ' ' ]} },
+			{ 'type': 'listItem', 'internal': { 'whitespace': [ undefined, ' ' ] } },
 			{ 'type': 'paragraph', 'internal': { 'whitespace': [ ' ' ], 'generated': 'wrapper' } },
 			'B',
 			'a',

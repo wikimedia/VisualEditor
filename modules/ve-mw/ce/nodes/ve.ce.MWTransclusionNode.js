@@ -77,7 +77,7 @@ ve.ce.MWTransclusionNode.prototype.generateContents = function ( config ) {
 		.done( ve.bind( this.onParseSuccess, this, deferred ) )
 		.fail( ve.bind( this.onParseError, this, deferred ) );
 
-	return deferred.promise( { abort: xhr.abort} );
+	return deferred.promise( { abort: xhr.abort } );
 };
 
 /**

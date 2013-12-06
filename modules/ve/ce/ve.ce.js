@@ -140,7 +140,7 @@ ve.ce.getOffsetFromTextNode = function ( domNode, domOffset ) {
 		return nodeModel.getOffset() + nodeModel.getOuterLength();
 	}
 
-	if ( ! $node.hasClass( 've-ce-branchNode' ) ) {
+	if ( !$node.hasClass( 've-ce-branchNode' ) ) {
 		return nodeModel.getOffset();
 	}
 

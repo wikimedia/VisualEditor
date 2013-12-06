@@ -52,7 +52,7 @@ ve.test.utils.runFormatConverterTest = function ( assert, range, type, attribute
 	surface.destroy();
 };
 
-ve.test.utils.runGetModelFromDomTests = function( assert, cases ) {
+ve.test.utils.runGetModelFromDomTests = function ( assert, cases ) {
 	var msg, model, i, length, hash, html, n = 0;
 
 	for ( msg in cases ) {
@@ -87,13 +87,13 @@ ve.test.utils.runGetModelFromDomTests = function( assert, cases ) {
 	}
 };
 
-ve.test.utils.runGetDomFromModelTests = function( assert, cases ) {
+ve.test.utils.runGetDomFromModelTests = function ( assert, cases ) {
 	var msg, originalData, doc, store, i, length, html, n = 0;
 
 	for ( msg in cases ) {
 		n++;
 	}
-	QUnit.expect( 2*n );
+	QUnit.expect( 2 * n );
 
 	for ( msg in cases ) {
 		store = new ve.dm.IndexValueStore();

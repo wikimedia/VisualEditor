@@ -128,7 +128,7 @@ QUnit.test( 'expandRange (word)', 1, function ( assert ) {
 			msg: 'zero-length range'
 		}
 	];
-	QUnit.expect( cases.length*2 );
+	QUnit.expect( cases.length * 2 );
 	for ( i = 0; i < cases.length; i++ ) {
 		doc = new ve.dm.Document( cases[i].phrase.split( '' ) );
 		surface = new ve.dm.Surface( doc );
@@ -179,7 +179,7 @@ QUnit.test( 'removeContent', 6, function ( assert ) {
 		doc.getData( new ve.Range( 0, 2 ) ),
 		[
 			{ 'type': 'heading', 'attributes': { 'level': 1 } },
-			{ 'type': '/heading'}
+			{ 'type': '/heading' }
 		],
 		'removing content empties node'
 	);

@@ -57,7 +57,6 @@ OO.inheritClass( ve.ui.MWTransclusionContentPage, OO.ui.PageLayout );
 
 /* Methods */
 
-
 ve.ui.MWTransclusionContentPage.prototype.onTextInputChange = function () {
 	this.content.setValue( this.textInput.getValue() );
 };

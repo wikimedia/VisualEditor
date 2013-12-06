@@ -92,7 +92,7 @@ ve.dm.Document.static = {};
  * @param {ve.dm.FlatLinearData} fullData Full data from converter
  * @returns {Object} Object containing element linear data and meta linear data (if processed)
  */
-ve.dm.Document.static.splitData = function( fullData ) {
+ve.dm.Document.static.splitData = function ( fullData ) {
 	var i, len, offset, meta, elementData, metaData;
 
 	elementData = new ve.dm.ElementLinearData( fullData.getStore() );

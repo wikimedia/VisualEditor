@@ -40,5 +40,5 @@ QUnit.test( 'getAnnotations', 3, function ( assert ) {
 	assert.deepEqual( node.getAnnotations(), [], 'undefined .annotations returns empty set' );
 	assert.equal( element.annotations, undefined, 'no .annotations property added' );
 	element.annotations = [0];
-	assert.deepEqual( node.getAnnotations(), [0] , 'annotations retrieve indexes when set' );
+	assert.deepEqual( node.getAnnotations(), [0], 'annotations retrieve indexes when set' );
 } );

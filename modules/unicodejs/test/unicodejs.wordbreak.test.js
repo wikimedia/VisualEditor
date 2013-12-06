@@ -64,7 +64,7 @@ QUnit.test( 'nextBreakOffset/prevBreakOffset', function ( assert ) {
 		textString = new unicodeJS.TextString( text ),
 		breaks = [ 0, 0, 3, 4, 9, 10, 15, 16, 19, 19 ];
 
-	QUnit.expect( 2*(breaks.length - 2) );
+	QUnit.expect( 2 * (breaks.length - 2) );
 
 	for ( i = 2; i < breaks.length; i++ ) {
 		offset = unicodeJS.wordbreak.nextBreakOffset( textString, offset );

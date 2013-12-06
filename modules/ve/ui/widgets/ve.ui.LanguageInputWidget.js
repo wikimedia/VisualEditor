@@ -64,7 +64,7 @@ ve.ui.LanguageInputWidget = function VeUiLanguageInputWidget( config ) {
 	this.$element.addClass( 've-ui-LangInputWidget' );
 
 	ulsParams = {
-		onSelect: function( language ) {
+		onSelect: function ( language ) {
 			// Save the attributes:
 			langInpObj.setAttributes( language, $.uls.data.getDir( language ) );
 		},

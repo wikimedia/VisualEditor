@@ -173,10 +173,10 @@ QUnit.test( 'commit', function ( assert ) {
 			'inserting mixed content': {
 				'calls': [
 					['pushRetain', 1],
-					['pushReplace', 1, 1, ['F', 'O', 'O', {'type':'image'}, {'type':'/image'}, 'B', 'A', 'R']]
+					['pushReplace', 1, 1, ['F', 'O', 'O', { 'type': 'image' }, { 'type': '/image' }, 'B', 'A', 'R']]
 				],
 				'expected': function ( data ) {
-					data.splice( 1, 1, 'F', 'O', 'O', {'type':'image'}, {'type':'/image'}, 'B', 'A', 'R' );
+					data.splice( 1, 1, 'F', 'O', 'O', { 'type': 'image' }, { 'type': '/image' }, 'B', 'A', 'R' );
 				}
 			},
 			'converting an element': {
@@ -473,7 +473,7 @@ QUnit.test( 'commit', function ( assert ) {
 				'calls': [
 					[ 'newFromWrap', new ve.Range( 1, 11 ),
 					  [ { 'type': 'list' } ], [],
-					  [ { 'type': 'listItem', 'attributes': {'styles': ['bullet']} } ], [] ]
+					  [ { 'type': 'listItem', 'attributes': { 'styles': ['bullet'] } } ], [] ]
 				],
 				'expected': function ( data ) {
 					data.splice( 35, 1 ); // remove '/list'

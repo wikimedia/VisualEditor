@@ -29,7 +29,7 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, html, range, o
 	// changed but appears to behave differently depending on the browser.
 	// The selection from the select event is still consistent.
 	selection = range;
-	model.on( 'select', function( s ) {
+	model.on( 'select', function ( s ) {
 		selection = s;
 	} );
 
@@ -477,7 +477,7 @@ QUnit.test( 'onCopy', function ( assert ) {
 					}
 				}
 			},
-			'preventDefault': function() {}
+			'preventDefault': function () {}
 		},
 		cases = [
 			{
@@ -548,7 +548,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 					}
 				}
 			};
-			this.preventDefault = function() {};
+			this.preventDefault = function () {};
 		},
 		cases = [
 			{
