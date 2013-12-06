@@ -1,5 +1,6 @@
 docs
 modules/jquery
+modules/jquery.i18n
 modules/jquery.uls
 modules/jsdifflib
 modules/oojs

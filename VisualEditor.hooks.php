@@ -370,8 +370,8 @@ class VisualEditorHooks {
 	 * Conditionally register the oojs and oojs-ui modules, in case they've already been registered
 	 * by a more recent version of MediaWiki core.
 	 *
-	 * Also conditionally register the jquery.uls modules, in case they've already been registered
-	 * by the UniversalLanguageSelector extension.
+	 * Also conditionally register the jquery.uls and jquery.i18n modules, in case they've already
+	 * been registered by the UniversalLanguageSelector extension.
 	 *
 	 * @param ResourceLoader $resourceLoader
 	 * @returns boolean true
@@ -463,6 +463,37 @@ class VisualEditorHooks {
 			) );
 		}
 
+		if (
+			!isset( $wgResourceModules['jquery.i18n'] ) &&
+			!$resourceLoader->getModule( 'jquery.i18n' )
+		) {
+			$resourceLoader->register( 'jquery.i18n', $wgVisualEditorResourceTemplate + array(
+				'scripts' => array(
+					'jquery.i18n/src/jquery.i18n.js',
+					'jquery.i18n/src/jquery.i18n.messages.js',
+					'jquery.i18n/src/jquery.i18n.parser.js',
+					'jquery.i18n/src/jquery.i18n.emitter.js',
+					'jquery.i18n/src/jquery.i18n.language.js',
+				),
+				'dependencies' => 'mediawiki.libs.pluralruleparser',
+				'languageScripts' => array(
+					'bs' => 'jquery.i18n/src/languages/bs.js',
+					'dsb' => 'jquery.i18n/src/languages/dsb.js',
+					'fi' => 'jquery.i18n/src/languages/fi.js',
+					'ga' => 'jquery.i18n/src/languages/ga.js',
+					'he' => 'jquery.i18n/src/languages/he.js',
+					'hsb' => 'jquery.i18n/src/languages/hsb.js',
+					'hu' => 'jquery.i18n/src/languages/hu.js',
+					'hy' => 'jquery.i18n/src/languages/hy.js',
+					'la' => 'jquery.i18n/src/languages/la.js',
+					'ml' => 'jquery.i18n/src/languages/ml.js',
+					'os' => 'jquery.i18n/src/languages/os.js',
+					'ru' => 'jquery.i18n/src/languages/ru.js',
+					'sl' => 'jquery.i18n/src/languages/sl.js',
+					'uk' => 'jquery.i18n/src/languages/uk.js',
+				),
+			) );
+		}
 		return true;
 	}
 
