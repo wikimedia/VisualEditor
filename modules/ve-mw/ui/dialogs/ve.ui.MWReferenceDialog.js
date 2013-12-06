@@ -140,7 +140,7 @@ ve.ui.MWReferenceDialog.prototype.initialize = function () {
 	ve.ui.MWDialog.prototype.initialize.call( this );
 
 	// Properties
-	this.panels = new OO.ui.StackPanelLayout( { '$': this.$ } );
+	this.panels = new OO.ui.StackLayout( { '$': this.$ } );
 	this.editPanel = new OO.ui.PanelLayout( {
 		'$': this.$, 'scrollable': true, 'padded': true
 	} );
@@ -187,14 +187,14 @@ ve.ui.MWReferenceDialog.prototype.initialize = function () {
 		this.backButton.$element.show();
 		this.insertButton.$element.hide();
 		this.selectButton.$element.hide();
-		this.panels.showItem( this.searchPanel );
+		this.panels.setItem( this.searchPanel );
 		this.search.getQuery().$input.focus().select();
 	} } );
 	this.backButton.connect( this, { 'click': function () {
 		this.backButton.$element.hide();
 		this.insertButton.$element.show();
 		this.selectButton.$element.show();
-		this.panels.showItem( this.editPanel );
+		this.panels.setItem( this.editPanel );
 		this.editPanel.$element.find( '.ve-ce-documentNode' ).focus();
 	} } );
 	this.search.connect( this, { 'select': 'onSearchSelect' } );
@@ -234,7 +234,7 @@ ve.ui.MWReferenceDialog.prototype.setup = function ( data ) {
 		this.selectButton.$element.show();
 	}
 	this.backButton.$element.hide();
-	this.panels.showItem( this.editPanel );
+	this.panels.setItem( this.editPanel );
 	this.useReference( ref );
 	this.search.buildIndex();
 	this.selectButton.setDisabled( !this.search.getResults().getItems().length );

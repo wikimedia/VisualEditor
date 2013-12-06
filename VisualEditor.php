@@ -474,12 +474,21 @@ $wgResourceModules += array(
 			've-mw/ui/widgets/ve.ui.MWReferenceResultWidget.js',
 			've-mw/ui/widgets/ve.ui.MWTitleInputWidget.js',
 
+			've-mw/ui/pages/ve.ui.MWCategoriesPage.js',
+			've-mw/ui/pages/ve.ui.MWLanguagesPage.js',
+			've-mw/ui/pages/ve.ui.MWTemplatePage.js',
+			've-mw/ui/pages/ve.ui.MWTemplateParameterPage.js',
+			've-mw/ui/pages/ve.ui.MWTemplatePlaceholderPage.js',
+			've-mw/ui/pages/ve.ui.MWTransclusionContentPage.js',
+
 			've-mw/ui/dialogs/ve.ui.MWSaveDialog.js',
 			've-mw/ui/dialogs/ve.ui.MWMetaDialog.js',
 			've-mw/ui/dialogs/ve.ui.MWBetaWelcomeDialog.js',
 			've-mw/ui/dialogs/ve.ui.MWMediaInsertDialog.js',
 			've-mw/ui/dialogs/ve.ui.MWMediaEditDialog.js',
 			've-mw/ui/dialogs/ve.ui.MWTransclusionDialog.js',
+			've-mw/ui/dialogs/ve.ui.MWTemplateDialog.js',
+			've-mw/ui/dialogs/ve.ui.MWAdvancedTransclusionDialog.js',
 			've-mw/ui/dialogs/ve.ui.MWReferenceListDialog.js',
 			've-mw/ui/dialogs/ve.ui.MWReferenceDialog.js',
 

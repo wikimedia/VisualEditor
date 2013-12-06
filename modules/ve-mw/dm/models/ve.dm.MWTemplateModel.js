@@ -18,15 +18,13 @@
  * @param {Object} target Template target
  * @param {string} target.wt Original wikitext of target
  * @param {string} [target.href] Hypertext reference to target
- * @param {string} [origin] Origin of part, e.g. 'data' or 'user'
  */
-ve.dm.MWTemplateModel = function VeDmMWTemplateModel( transclusion, target, origin ) {
+ve.dm.MWTemplateModel = function VeDmMWTemplateModel( transclusion, target ) {
 	// Parent constructor
 	ve.dm.MWTransclusionPartModel.call( this, transclusion );
 
 	// Properties
 	this.target = target;
-	this.origin = origin;
 
 	// TODO: Either here or in uses of this constructor we need to validate the title
 	this.title = ( target.href && target.href.replace( /^(\.\.?\/)*/, '' ) ) || null;
@@ -106,7 +104,6 @@ ve.dm.MWTemplateModel.newFromName = function ( transclusion, name ) {
 /**
  * Get template target.
  *
- * @method
  * @returns {Object} Template target
  */
 ve.dm.MWTemplateModel.prototype.getTarget = function () {
@@ -114,18 +111,8 @@ ve.dm.MWTemplateModel.prototype.getTarget = function () {
 };
 
 /**
- * Get template origin, e.g. 'user' or 'data'.
- *
- * @returns {string} Origin
- */
-ve.dm.MWTemplateModel.prototype.getOrigin = function () {
-	return this.origin;
-};
-
-/**
  * Get template title.
  *
- * @method
  * @returns {string|null} Template title, if available
  */
 ve.dm.MWTemplateModel.prototype.getTitle = function () {
@@ -135,7 +122,6 @@ ve.dm.MWTemplateModel.prototype.getTitle = function () {
 /**
  * Get template specification.
  *
- * @method
  * @returns {ve.dm.MWTemplateSpecModel} Template specification
  */
 ve.dm.MWTemplateModel.prototype.getSpec = function () {
@@ -145,7 +131,6 @@ ve.dm.MWTemplateModel.prototype.getSpec = function () {
 /**
  * Get all params.
  *
- * @method
  * @returns {Object.<string,ve.dm.MWTemplateParameterModel>} Parameters keyed by name
  */
 ve.dm.MWTemplateModel.prototype.getParameters = function () {
@@ -155,7 +140,6 @@ ve.dm.MWTemplateModel.prototype.getParameters = function () {
 /**
  * Get a parameter.
  *
- * @method
  * @param {string} name Parameter name
  * @returns {ve.dm.MWTemplateParameterModel} Parameter
  */
@@ -166,7 +150,6 @@ ve.dm.MWTemplateModel.prototype.getParameter = function ( name ) {
 /**
  * Check if a parameter exists.
  *
- * @method
  * @param {string} name Parameter name
  * @returns {boolean} Parameter exists
  */
@@ -203,7 +186,6 @@ ve.dm.MWTemplateModel.prototype.hasParameter = function ( name ) {
  * Numeric names, whether strings or real numbers, are placed at the begining, followed by
  * alphabetically sorted names.
  *
- * @method
  * @returns {string[]} List of parameter names
  */
 ve.dm.MWTemplateModel.prototype.getParameterNames = function () {
@@ -233,7 +215,6 @@ ve.dm.MWTemplateModel.prototype.getParameterNames = function () {
 /**
  * Add a parameter to template.
  *
- * @method
  * @param {ve.dm.MWTemplateParameterModel} param Parameter to add
  * @fires add
  */
@@ -248,7 +229,6 @@ ve.dm.MWTemplateModel.prototype.addParameter = function ( param ) {
 /**
  * Remove parameter from template.
  *
- * @method
  * @param {ve.dm.MWTemplateParameterModel} param Parameter to remove
  * @fires remove
  */
@@ -261,9 +241,25 @@ ve.dm.MWTemplateModel.prototype.removeParameter = function ( param ) {
 };
 
 /**
- * Set original data, to be used as a base for serialization.
+ * Add all non-existing required parameters, if any.
  *
  * @method
+ */
+ve.dm.MWTemplateModel.prototype.addRequiredParameters = function () {
+	var i, len,
+		spec = this.getSpec(),
+		names = spec.getParameterNames();
+
+	for ( i = 0, len = names.length; i < len; i++ ) {
+		if ( !this.params[name] && spec.isParameterRequired( names[i] ) ) {
+			this.addParameter( new ve.dm.MWTemplateParameterModel( this, names[i] ) );
+		}
+	}
+};
+
+/**
+ * Set original data, to be used as a base for serialization.
+ *
  * @returns {Object} Template data
  */
 ve.dm.MWTemplateModel.prototype.setOriginalData = function ( data ) {
