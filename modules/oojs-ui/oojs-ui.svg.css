@@ -1,12 +1,12 @@
 /*!
- * OOjs UI v0.1.0-pre-svg (5ffe63d088)
+ * OOjs UI v0.1.0-pre-svg (04754daaa9)
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011-2013 OOjs Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: Fri Dec 06 2013 12:23:15 GMT-0800 (PST)
+ * Date: Thu Dec 19 2013 20:18:08 GMT+0100 (CET)
  */
 /*csslint vendor-prefix:false */
 
@@ -804,18 +804,18 @@ a.oo-ui-buttonWidget-button {
 
 	/* Gray */
 	border: 1px #c9c9c9 solid;
-	background-color: #ffffff;
+	background-color: #dddddd;
 	filter: progid:DXImageTransform.Microsoft.gradient(
-		GradientType=0,startColorstr=#ffffff, endColorstr=#f0f0f0
+		GradientType=0,startColorstr=#ffffff, endColorstr=#dddddd
 	);
 	background-image: -webkit-gradient(
-		linear, right top, right bottom, color-stop(0%,#ffffff), color-stop(100%,#f0f0f0)
+		linear, right top, right bottom, color-stop(0%,#ffffff), color-stop(100%,#dddddd)
 	);
-	background-image: -webkit-linear-gradient(top, #ffffff 0%, #f0f0f0 100%);
-	background-image: -moz-linear-gradient(top, #ffffff 0%, #f0f0f0 100%);
-	background-image: -ms-linear-gradient(top, #ffffff 0%, #f0f0f0 100%);
-	background-image: -o-linear-gradient(top, #ffffff 0%, #f0f0f0 100%);
-	background-image: linear-gradient(top, #ffffff 0%, #f0f0f0 100%);
+	background-image: -webkit-linear-gradient(top, #ffffff 0%, #dddddd 100%);
+	background-image: -moz-linear-gradient(top, #ffffff 0%, #dddddd 100%);
+	background-image: -ms-linear-gradient(top, #ffffff 0%, #dddddd 100%);
+	background-image: -o-linear-gradient(top, #ffffff 0%, #dddddd 100%);
+	background-image: linear-gradient(top, #ffffff 0%, #dddddd 100%);
 }
 
 .oo-ui-pushButtonWidget .oo-ui-buttonWidget-button:hover,
@@ -896,6 +896,24 @@ a.oo-ui-buttonWidget-button {
 .oo-ui-pushButtonWidget.oo-ui-flaggableElement-primary .oo-ui-buttonWidget-button:hover,
 .oo-ui-pushButtonWidget.oo-ui-flaggableElement-primary .oo-ui-buttonWidget-button:focus {
 	border-color: #84b9d4;
+}
+
+/* OO.ui.ButtonGroupWidget */
+
+.oo-ui-buttonGroupWidget .oo-ui-pushButtonWidget .oo-ui-buttonWidget-button {
+	border-radius: 0;
+	margin-left: -1px;
+}
+
+.oo-ui-buttonGroupWidget .oo-ui-pushButtonWidget:first-child .oo-ui-buttonWidget-button {
+	border-bottom-left-radius: 0.3em;
+	border-top-left-radius: 0.3em;
+	margin-left: 0;
+}
+
+.oo-ui-buttonGroupWidget .oo-ui-pushButtonWidget:last-child .oo-ui-buttonWidget-button {
+	border-bottom-right-radius: 0.3em;
+	border-top-right-radius: 0.3em;
 }
 
 /* OO.ui.SelectWidget */
@@ -1267,9 +1285,9 @@ a.oo-ui-buttonWidget-button {
 	line-height: 0;
 }
 
-/* OO.ui.ToggleWidget */
+/* OO.ui.ToggleSwitchWidget */
 
-.oo-ui-toggleWidget {
+.oo-ui-toggleSwitchWidget {
 	position: relative;
 	display: inline-block;
 	vertical-align: middle;
@@ -1289,11 +1307,11 @@ a.oo-ui-buttonWidget-button {
 	transition: background-color 200ms;
 }
 
-.oo-ui-toggleWidget.oo-ui-widget-disabled {
+.oo-ui-toggleSwitchWidget.oo-ui-widget-disabled {
 	opacity: 0.5;
 }
 
-.oo-ui-toggleWidget-slide {
+.oo-ui-toggleSwitchWidget-slide {
 	position: absolute;
 	top: 0;
 	display: block;
@@ -1305,22 +1323,22 @@ a.oo-ui-buttonWidget-button {
 	transition: left 200ms ease-in-out, margin-left 200ms ease-in-out;
 }
 
-.oo-ui-toggleWidget-dragging .oo-ui-toggleWidget-slide {
+.oo-ui-toggleSwitchWidget-dragging .oo-ui-toggleSwitchWidget-slide {
 	-webkit-transition: left 200ms ease-in-out;
 	-moz-transition: left 200ms ease-in-out;
 	-o-transition: left 200ms ease-in-out;
 	transition: left 200ms ease-in-out;
 }
 
-.oo-ui-toggleWidget-on .oo-ui-toggleWidget-slide {
+.oo-ui-toggleWidget-on .oo-ui-toggleSwitchWidget-slide {
 	left: 0;
 }
 
-.oo-ui-toggleWidget-off .oo-ui-toggleWidget-slide {
+.oo-ui-toggleWidget-off .oo-ui-toggleSwitchWidget-slide {
 	left: -4em;
 }
 
-.oo-ui-toggleWidget-grip {
+.oo-ui-toggleSwitchWidget-grip {
 	position: absolute;
 	top: 0;
 	left: 4em;
@@ -1338,26 +1356,26 @@ a.oo-ui-buttonWidget-button {
 	border: 1px #c9c9c9 solid;
 	background-color: #ffffff;
 	filter: progid:DXImageTransform.Microsoft.gradient(
-		GradientType=0,startColorstr=#ffffff, endColorstr=#f0f0f0
+		GradientType=0,startColorstr=#ffffff, endColorstr=#dddddd
 	);
 	background-image: -webkit-gradient(
-		linear, right top, right bottom, color-stop(0%,#ffffff), color-stop(100%,#f0f0f0)
+		linear, right top, right bottom, color-stop(0%,#ffffff), color-stop(100%,#dddddd)
 	);
-	background-image: -webkit-linear-gradient(top, #ffffff 0%, #f0f0f0 100%);
-	background-image: -moz-linear-gradient(top, #ffffff 0%, #f0f0f0 100%);
-	background-image: -ms-linear-gradient(top, #ffffff 0%, #f0f0f0 100%);
-	background-image: -o-linear-gradient(top, #ffffff 0%, #f0f0f0 100%);
-	background-image: linear-gradient(top, #ffffff 0%, #f0f0f0 100%);
+	background-image: -webkit-linear-gradient(top, #ffffff 0%, #dddddd 100%);
+	background-image: -moz-linear-gradient(top, #ffffff 0%, #dddddd 100%);
+	background-image: -ms-linear-gradient(top, #ffffff 0%, #dddddd 100%);
+	background-image: -o-linear-gradient(top, #ffffff 0%, #dddddd 100%);
+	background-image: linear-gradient(top, #ffffff 0%, #dddddd 100%);
 }
 
-.oo-ui-toggleWidget:not(.oo-ui-widget-disabled):hover,
-.oo-ui-toggleWidget-dragging,
-.oo-ui-toggleWidget:hover .oo-ui-toggleWidget-grip,
-.oo-ui-toggleWidget-dragging .oo-ui-toggleWidget-grip {
+.oo-ui-toggleSwitchWidget:not(.oo-ui-widget-disabled):hover,
+.oo-ui-toggleSwitchWidget-dragging,
+.oo-ui-toggleSwitchWidget:not(.oo-ui-widget-disabled):hover .oo-ui-toggleSwitchWidget-grip,
+.oo-ui-toggleSwitchWidget-dragging .oo-ui-toggleSwitchWidget-grip {
 	border-color: #aaa;
 }
 
-.oo-ui-toggleWidget-label {
+.oo-ui-toggleSwitchWidget .oo-ui-toggleWidget-label {
 	position: absolute;
 	top: 0;
 	display: block;
@@ -1365,6 +1383,7 @@ a.oo-ui-buttonWidget-button {
 	height: 2em;
 	line-height: 2em;
 	color: black;
+	box-shadow: inset 0 1px 4px 0 rgba(0, 0, 0, 0.07);
 	text-align: center;
 	cursor: pointer;
 	-webkit-touch-callout: none;
@@ -1377,16 +1396,100 @@ a.oo-ui-buttonWidget-button {
 	box-sizing: border-box;
 }
 
-.oo-ui-toggleWidget-label-on {
+.oo-ui-toggleSwitchWidget .oo-ui-toggleWidget-label-on {
 	left: -0.5em;
 	padding: 0 0.5em 0 0.75em;
-	background-color: rgba(0,255,0,0.25);
+
+	/* Green */
+	background-color: #c3e59a;
+	filter: progid:DXImageTransform.Microsoft.gradient(
+		GradientType=0,startColorstr=#c3e59a, endColorstr=#f0fbe1
+	);
+	background-image: -webkit-gradient(
+		linear, right top, right bottom, color-stop(0%,#c3e59a), color-stop(100%,#f0fbe1)
+	);
+	background-image: -webkit-linear-gradient(top, #c3e59a 0%, #f0fbe1 100%);
+	background-image: -moz-linear-gradient(top, #c3e59a 0%, #f0fbe1 100%);
+	background-image: -ms-linear-gradient(top, #c3e59a 0%, #f0fbe1 100%);
+	background-image: -o-linear-gradient(top, #c3e59a 0%, #f0fbe1 100%);
+	background-image: linear-gradient(top, #c3e59a 0%, #f0fbe1 100%);
 }
 
-.oo-ui-toggleWidget-label-off {
+.oo-ui-toggleSwitchWidget .oo-ui-toggleWidget-label-off {
 	left: 5.5em;
 	padding: 0 0.75em 0 0.5em;
-	background-color: rgba(128,128,128,0.25);
+
+	/* Gray */
+	background-color: #dddddd;
+	filter: progid:DXImageTransform.Microsoft.gradient(
+		GradientType=0,startColorstr=#dddddd, endColorstr=#ffffff
+	);
+	background-image: -webkit-gradient(
+		linear, right top, right bottom, color-stop(0%,#dddddd), color-stop(100%,#ffffff)
+	);
+	background-image: -webkit-linear-gradient(top, #dddddd 0%, #ffffff 100%);
+	background-image: -moz-linear-gradient(top, #dddddd 0%, #ffffff 100%);
+	background-image: -ms-linear-gradient(top, #dddddd 0%, #ffffff 100%);
+	background-image: -o-linear-gradient(top, #dddddd 0%, #ffffff 100%);
+	background-image: linear-gradient(top, #dddddd 0%, #ffffff 100%);
+}
+
+/* OO.ui.ToggleButtonWidget */
+
+.oo-ui-toggleButtonWidget .oo-ui-buttonWidget-button:active,
+.oo-ui-toggleButtonWidget.oo-ui-toggleWidget-on .oo-ui-buttonWidget-button {
+	box-shadow: inset 0 1px 4px 0 rgba(0, 0, 0, 0.07);
+
+	/* Gray */
+	border-color: #c9c9c9;
+	background-color: #dddddd;
+	filter: progid:DXImageTransform.Microsoft.gradient(
+		GradientType=0,startColorstr=#dddddd, endColorstr=#ffffff
+	);
+	background-image: -webkit-gradient(
+		linear, right top, right bottom, color-stop(0%,#dddddd), color-stop(100%,#ffffff)
+	);
+	background-image: -webkit-linear-gradient(top, #dddddd 0%, #ffffff 100%);
+	background-image: -moz-linear-gradient(top, #dddddd 0%, #ffffff 100%);
+	background-image: -ms-linear-gradient(top, #dddddd 0%, #ffffff 100%);
+	background-image: -o-linear-gradient(top, #dddddd 0%, #ffffff 100%);
+	background-image: linear-gradient(top, #dddddd 0%, #ffffff 100%);
+}
+
+.oo-ui-toggleButtonWidget.oo-ui-flaggableElement-constructive .oo-ui-buttonWidget-button:active,
+.oo-ui-toggleButtonWidget.oo-ui-toggleWidget-on.oo-ui-flaggableElement-constructive .oo-ui-buttonWidget-button {
+	/* Green */
+	border: solid 1px #c3e59a;
+	background-color: #c3e59a;
+	filter: progid:DXImageTransform.Microsoft.gradient(
+		GradientType=0,startColorstr=#c3e59a, endColorstr=#f0fbe1
+	);
+	background-image: -webkit-gradient(
+		linear, right top, right bottom, color-stop(0%,#c3e59a), color-stop(100%,#f0fbe1)
+	);
+	background-image: -webkit-linear-gradient(top, #c3e59a 0%, #f0fbe1 100%);
+	background-image: -moz-linear-gradient(top, #c3e59a 0%, #f0fbe1 100%);
+	background-image: -ms-linear-gradient(top, #c3e59a 0%, #f0fbe1 100%);
+	background-image: -o-linear-gradient(top, #c3e59a 0%, #f0fbe1 100%);
+	background-image: linear-gradient(top, #c3e59a 0%, #f0fbe1 100%);
+}
+
+.oo-ui-toggleButtonWidget.oo-ui-flaggableElement-primary .oo-ui-buttonWidget-button:active,
+.oo-ui-toggleButtonWidget.oo-ui-toggleWidget-on.oo-ui-flaggableElement-primary .oo-ui-buttonWidget-button {
+	/* Blue */
+	border: solid 1px #b0d9ee;
+	background-color: #b0d9ee;
+	filter: progid:DXImageTransform.Microsoft.gradient(
+		GradientType=0,startColorstr=#b0d9ee, endColorstr=#eaf4fa
+	);
+	background-image: -webkit-gradient(
+		linear, right top, right bottom, color-stop(0%,#b0d9ee), color-stop(100%,#eaf4fa)
+	);
+	background-image: -webkit-linear-gradient(top, #b0d9ee 0%, #eaf4fa 100%);
+	background-image: -moz-linear-gradient(top, #b0d9ee 0%, #eaf4fa 100%);
+	background-image: -ms-linear-gradient(top, #b0d9ee 0%, #eaf4fa 100%);
+	background-image: -o-linear-gradient(top, #b0d9ee 0%, #eaf4fa 100%);
+	background-image: linear-gradient(top, #b0d9ee 0%, #eaf4fa 100%);
 }
 .oo-ui-window-head {
 	-webkit-touch-callout: none;

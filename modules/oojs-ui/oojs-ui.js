@@ -1,12 +1,12 @@
 /*!
- * OOjs UI v0.1.0-pre (5ffe63d088)
+ * OOjs UI v0.1.0-pre (04754daaa9)
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011-2013 OOjs Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: Fri Dec 06 2013 12:23:15 GMT-0800 (PST)
+ * Date: Thu Dec 19 2013 20:18:08 GMT+0100 (CET)
  */
 ( function () {
 
@@ -347,6 +347,7 @@ OO.ui.Element.getRelativePosition = function ( $from, $to ) {
 /**
  * Get element border sizes.
  *
+ * @static
  * @param {HTMLElement} el Element to measure
  * @return {Object} Dimensions object with `top`, `left`, `bottom` and `right` properties
  */
@@ -373,6 +374,7 @@ OO.ui.Element.getBorders = function ( el ) {
 /**
  * Get dimensions of an element or window.
  *
+ * @static
  * @param {HTMLElement|Window} el Element to measure
  * @return {Object} Dimensions object with `borders`, `scroll`, `scrollbar` and `rect` properties
  */
@@ -558,6 +560,89 @@ OO.ui.Element.prototype.getClosestScrollableElementContainer = function () {
 OO.ui.Element.prototype.scrollElementIntoView = function ( config ) {
 	return OO.ui.Element.scrollIntoView( this.$element[0], config );
 };
+
+( function () {
+	// Static
+	var specialFocusin;
+
+	function handler( e ) {
+		jQuery.event.simulate( 'focusin', e.target, jQuery.event.fix( e ), /* bubble = */ true );
+	}
+
+	specialFocusin = {
+		setup: function () {
+			var doc = this.ownerDocument || this,
+				attaches = $.data( doc, 'ooui-focusin-attaches' );
+			if ( !attaches ) {
+				doc.addEventListener( 'focus', handler, true );
+			}
+			$.data( doc, 'ooui-focusin-attaches', ( attaches || 0 ) + 1 );
+		},
+		teardown: function () {
+			var doc = this.ownerDocument || this,
+				attaches = $.data( doc, 'ooui-focusin-attaches' ) - 1;
+			if ( !attaches ) {
+				doc.removeEventListener( 'focus', handler, true );
+				$.removeData( doc, 'ooui-focusin-attaches' );
+			} else {
+				$.data( doc, 'ooui-focusin-attaches', attaches );
+			}
+		}
+	};
+
+	/**
+	 * Bind a handler for an event on the DOM element.
+	 *
+	 * Uses jQuery internally for everything except for events which are
+	 * known to have issues in the browser or in jQuery. This method
+	 * should become obsolete eventually.
+	 *
+	 * @param {string} event
+	 * @param {Function} callback
+	 */
+	OO.ui.Element.prototype.onDOMEvent = function ( event, callback ) {
+		var orig;
+
+		if ( event === 'focusin' ) {
+			// jQuery 1.8.3 has a bug with handling focusin events inside iframes.
+			// Firefox doesn't support focusin at all, so we listen for 'focus' on the
+			// document, and simulate a 'focusin' event on the target element and make
+			// it bubble from there.
+			//
+			// - http://jsfiddle.net/sw3hr/
+			// - http://bugs.jquery.com/ticket/14180
+			// - https://github.com/jquery/jquery/commit/1cecf64e5aa4153
+
+			// Replace jQuery's override with our own
+			orig = $.event.special.focusin;
+			$.event.special.focusin = specialFocusin;
+
+			this.$element.on( event, callback );
+
+			// Restore
+			$.event.special.focusin = orig;
+
+		} else {
+			this.$element.on( event, callback );
+		}
+	};
+
+	/**
+	 * @param {string} event
+	 * @param {Function} callback
+	 */
+	OO.ui.Element.prototype.offDOMEvent = function ( event, callback ) {
+		var orig;
+		if ( event === 'focusin' ) {
+			orig = $.event.special.focusin;
+			$.event.special.focusin = specialFocusin;
+			this.$element.off( event, callback );
+			$.event.special.focusin = orig;
+		} else {
+			this.$element.off( event, callback );
+		}
+	};
+}() );
 /**
  * Embedded iframe with the same styles as its parent.
  *
@@ -3164,12 +3249,8 @@ OO.ui.BookletLayout = function OoUiBookletLayout( config ) {
 	// Properties
 	this.currentPageName = null;
 	this.pages = {};
-	this.scrolling = false;
-	this.selecting = false;
+	this.ignoreFocus = false;
 	this.stackLayout = new OO.ui.StackLayout( { '$': this.$, 'continuous': !!config.continuous } );
-	this.scrollingTimeout = null;
-	this.onStackLayoutDebouncedScrollHandler =
-		OO.ui.bind( this.onStackLayoutDebouncedScroll, this );
 	this.autoFocus = !!config.autoFocus;
 	this.outlined = !!config.outlined;
 	if ( this.outlined ) {
@@ -3183,7 +3264,8 @@ OO.ui.BookletLayout = function OoUiBookletLayout( config ) {
 		);
 		if ( this.editable ) {
 			this.outlineControlsWidget = new OO.ui.OutlineControlsWidget(
-				this.outlineWidget, { '$': this.$, 'adders': this.adders }
+				this.outlineWidget,
+				{ '$': this.$, 'adders': this.adders }
 			);
 		}
 	}
@@ -3192,7 +3274,8 @@ OO.ui.BookletLayout = function OoUiBookletLayout( config ) {
 	this.stackLayout.connect( this, { 'set': 'onStackLayoutSet' } );
 	if ( this.outlined ) {
 		this.outlineWidget.connect( this, { 'select': 'onOutlineWidgetSelect' } );
-		this.stackLayout.$element.on( 'scroll', OO.ui.bind( this.onStackLayoutScroll, this ) );
+		// Event 'focus' does not bubble, but 'focusin' does
+		this.stackLayout.onDOMEvent( 'focusin', OO.ui.bind( this.onStackLayoutFocus, this ) );
 	}
 
 	// Initialization
@@ -3238,46 +3321,26 @@ OO.inheritClass( OO.ui.BookletLayout, OO.ui.Layout );
 /* Methods */
 
 /**
- * Handle stack layout scroll events.
+ * Handle stack layout focus.
  *
  * @method
- * @param {jQuery.Event} e Scroll event
+ * @param {jQuery.Event} e Focusin event
  */
-OO.ui.BookletLayout.prototype.onStackLayoutScroll = function () {
-	if ( !this.selecting ) {
-		this.scrolling = true;
-		if ( !this.scrollingTimeout ) {
-			this.scrollingTimeout = setTimeout( this.onStackLayoutDebouncedScrollHandler, 100 );
-		}
+OO.ui.BookletLayout.prototype.onStackLayoutFocus = function ( e ) {
+	var name, $target;
+
+	if ( this.ignoreFocus ) {
+		// Avoid recursion from programmatic focus trigger in #onStackLayoutSet
+		return;
 	}
-};
 
-OO.ui.BookletLayout.prototype.onStackLayoutDebouncedScroll = function () {
-	var i, len, name, top, height, $item, visible,
-		items = this.stackLayout.getItems(),
-		middle = this.stackLayout.$element.height() / 2;
-
-	for ( i = 0, len = items.length; i < len; i++ ) {
-		$item = items[i].$element;
-		top = $item.position().top;
-		height = $item.height();
-		if ( top < middle && top + height > middle ) {
-			visible = items[i];
+	$target = $( e.target ).closest( '.oo-ui-pageLayout' );
+	for ( name in this.pages ) {
+		if ( this.pages[ name ].$element[0] === $target[0] ) {
+			this.setPage( name );
 			break;
 		}
 	}
-	if ( visible ) {
-		for ( name in this.pages ) {
-			if ( this.pages[name] === items[i] ) {
-				break;
-			}
-		}
-		if ( name !== this.currentPageName ) {
-			this.setPage( name );
-		}
-	}
-	this.scrolling = false;
-	this.scrollingTimeout = null;
 };
 
 /**
@@ -3288,20 +3351,13 @@ OO.ui.BookletLayout.prototype.onStackLayoutDebouncedScroll = function () {
  */
 OO.ui.BookletLayout.prototype.onStackLayoutSet = function ( page ) {
 	if ( page ) {
-		this.selecting = true;
-		if ( this.scrolling ) {
+		page.scrollElementIntoView( { 'complete': OO.ui.bind( function () {
+			this.ignoreFocus = true;
 			if ( this.autoFocus ) {
 				page.$element.find( ':input:first' ).focus();
 			}
-			this.selecting = false;
-		} else {
-			page.scrollElementIntoView( { 'complete': OO.ui.bind( function () {
-				if ( this.autoFocus ) {
-					page.$element.find( ':input:first' ).focus();
-				}
-				this.selecting = false;
-			}, this ) } );
-		}
+			this.ignoreFocus = false;
+		}, this ) } );
 	}
 };
 
@@ -3312,7 +3368,7 @@ OO.ui.BookletLayout.prototype.onStackLayoutSet = function ( page ) {
  * @param {OO.ui.OptionWidget|null} item Selected item
  */
 OO.ui.BookletLayout.prototype.onOutlineWidgetSelect = function ( item ) {
-	if ( item && !this.scrolling ) {
+	if ( item ) {
 		this.setPage( item.getData() );
 	}
 };
@@ -3581,6 +3637,9 @@ OO.ui.PageLayout = function OoUiPageLayout( name, config ) {
 	this.label = config.label || '';
 	this.level = config.level || 0;
 	this.movable = !!config.movable;
+
+	// Initialization
+	this.$element.addClass( 'oo-ui-pageLayout' );
 };
 
 /* Inheritance */
@@ -4062,6 +4121,26 @@ OO.ui.PopupTool.prototype.onUpdateState = function () {
 	this.setActive( false );
 };
 /**
+ * Container for multiple related buttons.
+ *
+ * @class
+ * @extends OO.ui.Widget
+ *
+ * @constructor
+ * @param {Object} [config] Configuration options
+ */
+OO.ui.ButtonGroupWidget = function OoUiButtonGroupWidget( config ) {
+	// Parent constructor
+	OO.ui.Widget.call( this, config );
+
+	// Initialization
+	this.$element.addClass( 'oo-ui-buttonGroupWidget' );
+};
+
+/* Inheritance */
+
+OO.inheritClass( OO.ui.ButtonGroupWidget, OO.ui.Widget );
+/**
  * Creates an OO.ui.ButtonWidget object.
  *
  * @class
@@ -4408,12 +4487,8 @@ OO.ui.InputWidget.prototype.setDisabled = function ( state ) {
  * @param {Object} [config] Configuration options
  */
 OO.ui.CheckboxInputWidget = function OoUiCheckboxInputWidget( config ) {
-	config = config || {};
-
 	// Parent constructor
 	OO.ui.InputWidget.call( this, config );
-
-	this.value = false;
 
 	// Initialization
 	this.$element.addClass( 'oo-ui-checkboxInputWidget' );
@@ -4449,9 +4524,10 @@ OO.ui.CheckboxInputWidget.prototype.getValue = function () {
  * Set value
  */
 OO.ui.CheckboxInputWidget.prototype.setValue = function ( value ) {
+	value = !!value;
 	if ( this.value !== value ) {
-		this.value = !!value;
-		this.$element.attr( 'checked', this.value );
+		this.value = value;
+		this.$input.prop( 'checked', this.value );
 		this.emit( 'change', this.value );
 	}
 };
@@ -4463,10 +4539,11 @@ OO.ui.CheckboxInputWidget.prototype.onEdit = function () {
 	if ( !this.disabled ) {
 		// Allow the stack to clear so the value will be updated
 		setTimeout( OO.ui.bind( function () {
-			this.setValue( this.$input.attr( 'checked' ) );
+			this.setValue( this.$input.prop( 'checked' ) );
 		}, this ) );
 	}
-};/**
+};
+/**
  * Creates an OO.ui.CheckboxWidget object.
  *
  * @class
@@ -4478,21 +4555,25 @@ OO.ui.CheckboxInputWidget.prototype.onEdit = function () {
  * @cfg {string} [label=''] Label
  */
 OO.ui.CheckboxWidget = function OoUiCheckboxWidget( config ) {
+	// Configuration initialization
 	config = config || {};
 
-	// Parent constructors
+	// Parent constructor
 	OO.ui.CheckboxInputWidget.call( this, config );
+
+	// Mixin constructors
 	OO.ui.LabeledElement.call( this, this.$( '<span>' ) , config );
 
-	this.$( '<label>' ).append( this.$input, this.$label ).appendTo( this.$element );
-
 	// Initialization
-	this.$element.addClass( 'oo-ui-checkboxWidget' );
+	this.$element
+		.addClass( 'oo-ui-checkboxWidget' )
+		.append( this.$( '<label>' ).append( this.$input, this.$label ) );
 };
 
 /* Inheritance */
 
 OO.inheritClass( OO.ui.CheckboxWidget, OO.ui.CheckboxInputWidget );
+
 OO.mixinClass( OO.ui.CheckboxWidget, OO.ui.LabeledElement );
 /**
  * Creates an OO.ui.InputLabelWidget object.
@@ -5431,7 +5512,7 @@ OO.ui.MenuWidget = function OoUiMenuWidget( config ) {
 	// Parent constructor
 	OO.ui.SelectWidget.call( this, config );
 
-	// Mixin constructor
+	// Mixin constructors
 	OO.ui.ClippableElement.call( this, this.$group );
 
 	// Properties
@@ -6619,15 +6700,14 @@ OO.ui.TextInputMenuWidget.prototype.position = function () {
 	return this;
 };
 /**
- * Creates an OO.ui.ToggleWidget object.
+ * Mixin for widgets with a boolean state.
  *
  * @class
  * @abstract
- * @extends OO.ui.Widget
  *
  * @constructor
- * @param {Object} [config] Configuration options
  * @cfg {boolean} [value=false] Initial value
+ * @cfg {string} [label] Label for on and off states
  * @cfg {string} [onLabel='On'] Label for on state
  * @cfg {string} [offLabel='Off'] Label for off state
  */
@@ -6638,44 +6718,21 @@ OO.ui.ToggleWidget = function OoUiToggleWidget( config ) {
 		'offLabel': OO.ui.msg( 'ooui-toggle-off' )
 	}, config );
 
-	// Parent constructor
-	OO.ui.Widget.call( this, config );
-
 	// Properties
 	this.value = null;
-	this.dragging = false;
-	this.dragStart = null;
-	this.sliding = false;
-	this.$slide = this.$( '<span>' );
-	this.$grip = this.$( '<span>' );
 	this.$onLabel = this.$( '<span>' );
 	this.$offLabel = this.$( '<span>' );
-	this.onDocumentMouseMoveHandler = OO.ui.bind( this.onDocumentMouseMove, this );
-	this.onDocumentMouseUpHandler = OO.ui.bind( this.onDocumentMouseUp, this );
-
-	// Events
-	this.$slide.on( 'mousedown', OO.ui.bind( this.onMouseDown, this ) );
 
 	// Initialization
-	this.$grip.addClass( 'oo-ui-toggleWidget-grip' );
+	this.$element.addClass( 'oo-ui-toggleWidget' );
 	this.$onLabel
 		.addClass( 'oo-ui-toggleWidget-label oo-ui-toggleWidget-label-on' )
-		.text( config.onLabel || '' );
+		.text( config.label || config.onLabel || '' );
 	this.$offLabel
 		.addClass( 'oo-ui-toggleWidget-label oo-ui-toggleWidget-label-off' )
-		.text( config.offLabel || '' );
-	this.$slide
-		.addClass( 'oo-ui-toggleWidget-slide' )
-		.append( this.$onLabel, this.$offLabel, this.$grip );
-	this.$element
-		.addClass( 'oo-ui-toggleWidget' )
-		.append( this.$slide );
+		.text( config.label || config.offLabel || '' );
 	this.setValue( !!config.value );
 };
-
-/* Inheritance */
-
-OO.inheritClass( OO.ui.ToggleWidget, OO.ui.Widget );
 
 /* Events */
 
@@ -6687,12 +6744,144 @@ OO.inheritClass( OO.ui.ToggleWidget, OO.ui.Widget );
 /* Methods */
 
 /**
+ * Get the value of the toggle.
+ *
+ * @method
+ * @returns {boolean} Toggle value
+ */
+OO.ui.ToggleWidget.prototype.getValue = function () {
+	return this.value;
+};
+
+/**
+ * Set the value of the toggle.
+ *
+ * @method
+ * @param {boolean} value New value
+ * @fires change
+ * @chainable
+ */
+OO.ui.ToggleWidget.prototype.setValue = function ( value ) {
+	value = !!value;
+	if ( this.value !== value ) {
+		this.value = value;
+		this.$element
+			.toggleClass( 'oo-ui-toggleWidget-on', value )
+			.toggleClass( 'oo-ui-toggleWidget-off', !value );
+		this.emit( 'change', value );
+	}
+	return this;
+};
+/**
+ * @class
+ * @extends OO.ui.PushButtonWidget
+ * @mixins OO.ui.ToggleWidget
+ *
+ * @constructor
+ * @param {Object} [config] Configuration options
+ * @cfg {boolean} [value=false] Initial value
+ * @cfg {string} [onLabel='On'] Label for on state
+ * @cfg {string} [offLabel='Off'] Label for off state
+ */
+OO.ui.ToggleButtonWidget = function OoUiToggleButtonWidget( config ) {
+	// Parent constructor
+	OO.ui.PushButtonWidget.call( this, config );
+
+	// Mixin constructors
+	OO.ui.ToggleWidget.call( this, config );
+
+	// Initialization
+	this.$element.addClass( 'oo-ui-toggleButtonWidget' );
+};
+
+/* Inheritance */
+
+OO.inheritClass( OO.ui.ToggleButtonWidget, OO.ui.PushButtonWidget );
+
+OO.mixinClass( OO.ui.ToggleButtonWidget, OO.ui.ToggleWidget );
+
+/* Methods */
+
+/**
+ * @inheritdoc
+ */
+OO.ui.ToggleButtonWidget.prototype.onClick = function () {
+	if ( !this.disabled ) {
+		this.setValue( !this.value );
+	}
+
+	// Parent method
+	return OO.ui.ButtonWidget.prototype.onClick.call( this );
+};
+
+/**
+ * @inheritdoc
+ */
+OO.ui.ToggleButtonWidget.prototype.setValue = function ( value ) {
+	value = !!value;
+	if ( value !== this.value ) {
+		this.setLabel( value ? this.$onLabel : this.$offLabel );
+	}
+
+	// Parent method
+	OO.ui.ToggleWidget.prototype.setValue.call( this, value );
+
+	return this;
+};
+/**
+ * @class
+ * @abstract
+ * @extends OO.ui.Widget
+ * @mixins OO.ui.ToggleWidget
+ *
+ * @constructor
+ * @param {Object} [config] Configuration options
+ * @cfg {boolean} [value=false] Initial value
+ */
+OO.ui.ToggleSwitchWidget = function OoUiToggleSwitchWidget( config ) {
+	// Parent constructor
+	OO.ui.Widget.call( this, config );
+
+	// Mixin constructors
+	OO.ui.ToggleWidget.call( this, config );
+
+	// Properties
+	this.dragging = false;
+	this.dragStart = null;
+	this.sliding = false;
+	this.$slide = this.$( '<span>' );
+	this.$grip = this.$( '<span>' );
+	this.onDocumentMouseMoveHandler = OO.ui.bind( this.onDocumentMouseMove, this );
+	this.onDocumentMouseUpHandler = OO.ui.bind( this.onDocumentMouseUp, this );
+
+	// Events
+	this.$slide.on( 'mousedown', OO.ui.bind( this.onMouseDown, this ) );
+
+	// Initialization
+	this.$grip.addClass( 'oo-ui-toggleSwitchWidget-grip' );
+	this.$slide
+		.addClass( 'oo-ui-toggleSwitchWidget-slide' )
+		.append( this.$onLabel, this.$offLabel, this.$grip );
+	this.$element
+		.addClass( 'oo-ui-toggleSwitchWidget' )
+		.append( this.$slide );
+};
+
+/* Inheritance */
+
+OO.inheritClass( OO.ui.ToggleSwitchWidget, OO.ui.Widget );
+
+OO.mixinClass( OO.ui.ToggleSwitchWidget, OO.ui.ToggleWidget );
+
+/* Methods */
+
+/**
  * Handles mouse down events.
  *
  * @method
  * @param {jQuery.Event} e Mouse down event
  */
-OO.ui.ToggleWidget.prototype.onMouseDown = function ( e ) {
+OO.ui.ToggleSwitchWidget.prototype.onMouseDown = function ( e ) {
 	if ( !this.disabled && e.which === 1 ) {
 		this.dragging = true;
 		this.dragStart = e.pageX;
@@ -6700,7 +6889,7 @@ OO.ui.ToggleWidget.prototype.onMouseDown = function ( e ) {
 			'mousemove': this.onDocumentMouseMoveHandler,
 			'mouseup': this.onDocumentMouseUpHandler
 		} );
-		this.$element.addClass( 'oo-ui-toggleWidget-dragging' );
+		this.$element.addClass( 'oo-ui-toggleSwitchWidget-dragging' );
 		return false;
 	}
 };
@@ -6711,11 +6900,11 @@ OO.ui.ToggleWidget.prototype.onMouseDown = function ( e ) {
  * @method
  * @param {jQuery.Event} e Mouse up event
  */
-OO.ui.ToggleWidget.prototype.onDocumentMouseUp = function ( e ) {
+OO.ui.ToggleSwitchWidget.prototype.onDocumentMouseUp = function ( e ) {
 	var overlap, dragOffset;
 
 	if ( e.which === 1 ) {
-		this.$element.removeClass( 'oo-ui-toggleWidget-dragging' );
+		this.$element.removeClass( 'oo-ui-toggleSwitchWidget-dragging' );
 
 		if ( !this.sliding ) {
 			this.setValue( !this.value );
@@ -6742,7 +6931,7 @@ OO.ui.ToggleWidget.prototype.onDocumentMouseUp = function ( e ) {
  * @method
  * @param {jQuery.Event} e Mouse move event
  */
-OO.ui.ToggleWidget.prototype.onDocumentMouseMove = function ( e ) {
+OO.ui.ToggleSwitchWidget.prototype.onDocumentMouseMove = function ( e ) {
 	var overlap, dragOffset, left;
 
 	if ( this.dragging ) {
@@ -6756,34 +6945,5 @@ OO.ui.ToggleWidget.prototype.onDocumentMouseMove = function ( e ) {
 			this.$slide.css( 'margin-left', left );
 		}
 	}
-};
-
-/**
- * Get the value of the toggle.
- *
- * @method
- * @returns {boolean} Toggle value
- */
-OO.ui.ToggleWidget.prototype.getValue = function () {
-	return this.value;
-};
-
-/**
- * Set the value of the toggle.
- *
- * @method
- * @param {boolean} value New value
- * @fires change
- * @chainable
- */
-OO.ui.ToggleWidget.prototype.setValue = function ( value ) {
-	if ( this.value !== value ) {
-		this.value = value;
-		this.$element
-			.toggleClass( 'oo-ui-toggleWidget-on', value )
-			.toggleClass( 'oo-ui-toggleWidget-off', !value );
-		this.emit( 'change', this.value );
-	}
-	return this;
 };
 }() );
