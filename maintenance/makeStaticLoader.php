@@ -157,12 +157,15 @@ class MakeStaticLoader extends Maintenance {
 			'ext.visualEditor.language',
 		);
 
+		$resourceLoader = new ResourceLoader();
 		foreach ( $modules as $module ) {
-			if ( !isset( $wgResourceModules[$module] ) ) {
+			$moduleObj = $resourceLoader->getModule( $module );
+			if ( !$moduleObj ) {
 				echo "\nError: Module $module\n not found!\n";
 				exit( 1 );
 			}
-			$registry = $wgResourceModules[$module];
+			$registry = isset( $wgResourceModules[$module] ) ? $wgResourceModules[$module] :
+				$moduleObj->getDefinitionSummary( ResourceLoaderContext::newDummyContext() );
 
 			$headAdd = $bodyAdd = '';
 
