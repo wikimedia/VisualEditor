@@ -990,7 +990,7 @@ ve.ce.Surface.prototype.afterPaste = function () {
 			// ...except not quite - contentEditable can't be trusted not
 			// to add styles, so for now remove them
 			// TODO: store original styles in data
-			data.sanitize( { 'removeHtmlAttributes': true } );
+			data.sanitize( { 'removeStyles': true } );
 		}
 		data.remapInternalListKeys( this.model.getDocument().getInternalList() );
 

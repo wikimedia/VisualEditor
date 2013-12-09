@@ -73,6 +73,5 @@ ve.init.Target.static.pasteRules = {
 		'textStyle/span',
 		// Nodes
 		'alienInline', 'alienBlock'
-	],
-	'removeHtmlAttributes': false
+	]
 };

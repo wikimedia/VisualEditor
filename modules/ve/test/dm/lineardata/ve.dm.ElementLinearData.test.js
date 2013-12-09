@@ -1370,9 +1370,16 @@ QUnit.test( 'sanitize', function ( assert ) {
 	var i, model, data,
 		count = 0,
 		bold = new ve.dm.TextStyleBoldAnnotation( { 'type': 'textStyle/bold', 'attributes': { 'nodeName': 'b' } } ),
+		boldWithClass = new ve.dm.TextStyleBoldAnnotation( {
+			'type': 'textStyle/bold',
+			'attributes': { 'nodeName': 'b' },
+			'htmlAttributes': [ {
+				'values': { 'class': 'bar' }
+			} ]
+		} ),
 		cases = [
 			{
-				'html': '<p style="text-shadow: 0 0 1px #000;">F<b>o</b>o</p>',
+				'html': '<p style="text-shadow: 0 0 1px #000;">F<b style="color:blue;">o</b>o</p>',
 				'data': [
 					{ 'type': 'paragraph' },
 					'F', ['o', [0]], 'o',
@@ -1421,6 +1428,37 @@ QUnit.test( 'sanitize', function ( assert ) {
 					{ 'type': '/internalList' }
 				],
 				'msg': 'Empty content nodes are stripped'
+			},
+			{
+				'html': '<p style="font-size: 2em;"><b style="color:red;">Foo</b></p>',
+				'data': [
+					{ 'type': 'paragraph' },
+					['F',[0]], ['o',[0]], ['o',[0]],
+					{ 'type': '/paragraph' },
+					{ 'type': 'internalList' },
+					{ 'type': '/internalList' }
+				],
+				'store': [ bold ],
+				'rules': { 'removeStyles': true },
+				'msg': 'Style attribute removed and htmlAttributes unset'
+			},
+			{
+				'html': '<p style="font-size: 2em;" class="foo"><b style="color:red;" class="bar">Foo</b></p>',
+				'data': [
+					{
+						'type': 'paragraph',
+						'htmlAttributes': [ {
+							'values': { 'class': 'foo' }
+						} ]
+					},
+					['F',[0]], ['o',[0]], ['o',[0]],
+					{ 'type': '/paragraph' },
+					{ 'type': 'internalList' },
+					{ 'type': '/internalList' }
+				],
+				'store': [ boldWithClass ],
+				'rules': { 'removeStyles': true },
+				'msg': 'Style attribute removed and other attributes preserved'
 			}
 		];
 
