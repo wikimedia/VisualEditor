@@ -26,10 +26,10 @@ class VisualEditorDataModule extends ResourceLoaderModule {
 	public function getScript( ResourceLoaderContext $context ) {
 		// Messages
 		$msgInfo = $this->getMessageInfo();
-		$parsedMesssages = array();
+		$parsedMessages = array();
 		$messages = array();
 		foreach ( $msgInfo['args'] as $msgKey => $msgArgs ) {
-			$parsedMesssages[ $msgKey ] = call_user_func_array( 'wfMessage', $msgArgs )
+			$parsedMessages[ $msgKey ] = call_user_func_array( 'wfMessage', $msgArgs )
 				->inLanguage( $context->getLanguage() )
 				->parse();
 		}
@@ -48,7 +48,7 @@ class VisualEditorDataModule extends ResourceLoaderModule {
 
 		return
 			've.init.platform.addParsedMessages(' . FormatJson::encode(
-				$parsedMesssages,
+				$parsedMessages,
 				ResourceLoader::inDebugMode()
 			) . ');'.
 			've.init.platform.addMessages(' . FormatJson::encode(
