@@ -261,6 +261,9 @@ $wgResourceModules += array(
 			've/init/sa/ve.init.sa.Platform.js',
 			've/init/sa/ve.init.sa.Target.js',
 		),
+		'styles' => array(
+			've/init/sa/styles/ve.init.sa.css'
+		),
 		'dependencies' => array(
 			'ext.visualEditor.base',
 		),
@@ -532,7 +535,6 @@ $wgResourceModules += array(
 			've-mw/ui/styles/ve.ui.MWDialog.css',
 		),
 		'dependencies' => array(
-			'jquery',
 			'rangy',
 			'unicodejs.wordbreak',
 			'ext.visualEditor.base',

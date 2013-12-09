@@ -80,34 +80,68 @@ class MakeStaticLoader extends Maintenance {
 			'../..'
 		);
 
-		$wgResourceModules['Dependencies'] = array(
-			'scripts' => array(
-				'jquery/jquery.js',
-				'jquery/jquery.client.js',
-				'oojs/oojs.js',
-				'rangy/rangy-core-1.3.js',
-				'rangy/rangy-position-1.3.js',
-				'unicodejs/unicodejs.js',
-				'unicodejs/unicodejs.textstring.js',
-				'unicodejs/unicodejs.graphemebreakproperties.js',
-				'unicodejs/unicodejs.graphemebreak.js',
-				'unicodejs/unicodejs.wordbreakproperties.js',
-				'unicodejs/unicodejs.wordbreak.js',
-			),
-		);
-
 		// If we're running this script from STDIN,
 		// hardcode the full path
 		$i18nScript = $this->getOption( 'fixdir' ) ?
 			dirname( __DIR__ ) . '/VisualEditor.i18n.php' :
 			$vePath . '/../VisualEditor.i18n.php';
 
-		// Customized version to init standalone instead of mediawiki platform.
-		$wgResourceModules['ext.visualEditor.base#standalone-init'] = array(
-			'styles' => array(
-				've/init/sa/styles/ve.init.sa.css',
+		$self = isset( $_SERVER['PHP_SELF'] ) ? $_SERVER['PHP_SELF'] : ( lcfirst( __CLASS__ ) . '.php' );
+
+		$fakeModules = array(
+			// These are dependencies that exist in MediaWiki core (such as jquery.js), but we
+			// can't reference those modules as there is no reliable url to access them from
+			// standalone. This must also include dependencies like oojs and jquery.uls which
+			// are only registered by VisualEditor if they aren't registered by MediaWiki).
+			'jquery' => array(
+				'scripts' => array(
+					'jquery/jquery.js',
+				),
 			),
-			'headAdd' => '<script>
+			'jquery.client' => array(
+				'scripts' => array(
+					'jquery/jquery.client.js',
+				),
+			),
+			'oojs' => array(
+				'scripts' => array(
+					'oojs/oojs.js',
+				),
+			),
+			'oojs-ui' => array(
+				'scripts' => array(
+					'oojs-ui/oojs-ui.js',
+				),
+				'styles' => array(
+					'oojs-ui/oojs-ui.svg.css',
+				),
+			),
+			'jquery.uls.grid' =>  array(
+				'styles' => 'jquery.uls/css/jquery.uls.grid.css',
+			),
+			'jquery.uls.data' => array(
+				'scripts' => array(
+					'jquery.uls/src/jquery.uls.data.js',
+					'jquery.uls/src/jquery.uls.data.utils.js',
+				)
+			),
+			'jquery.uls.compact' => array(
+				'styles' => 'jquery.uls/css/jquery.uls.compact.css',
+			),
+			'jquery.uls' => array(
+				'scripts' => array(
+					'jquery.uls/src/jquery.uls.core.js',
+					'jquery.uls/src/jquery.uls.lcd.js',
+					'jquery.uls/src/jquery.uls.languagefilter.js',
+					'jquery.uls/src/jquery.uls.regionfilter.js',
+				),
+				'styles' => array(
+					'jquery.uls/css/jquery.uls.css',
+					'jquery.uls/css/jquery.uls.lcd.css',
+				),
+			),
+			'Standalone init' => array(
+				'headAdd' => '<script>
 	if (
 		document.createElementNS &&
 		document.createElementNS( \'http://www.w3.org/2000/svg\', \'svg\' ).createSVGRect
@@ -123,32 +157,29 @@ class MakeStaticLoader extends Maintenance {
 		);
 	}
 </script>',
-			'bodyAdd' => '<script>
+				'bodyAdd' => '<script>
 	<?php
 		require ' . var_export( $i18nScript, true ) . ';
 		echo \'ve.init.platform.addMessages( \' . json_encode( $messages[\'en\'] ) . " );\n";
 	?>
 	ve.init.platform.setModulesUrl( \'' . $vePath . '\' );
 </script>'
-		) + $wgResourceModules['ext.visualEditor.base'];
-		$baseScripts = &$wgResourceModules['ext.visualEditor.base#standalone-init']['scripts'];
-		$baseScripts = array_filter( $baseScripts, function ( $script ) {
-			return strpos( $script, 've/init/mw/ve.init.mw' ) === false;
-		} );
-		$baseScripts = array_merge( $baseScripts, array(
-			've/init/sa/ve.init.sa.js',
-			've/init/sa/ve.init.sa.Platform.js',
-			've/init/sa/ve.init.sa.Target.js',
-		) );
-
-		$self = isset( $_SERVER['PHP_SELF'] ) ? $_SERVER['PHP_SELF'] : ( lcfirst( __CLASS__ ) . '.php' );
-
-		$head = $body = '';
+			),
+		);
 
 		$modules = array(
-			'Dependencies',
+			// Dependencies for ext.visualEditor.base:
+			'jquery',
+			'oojs',
 			'oojs-ui',
-			'ext.visualEditor.base#standalone-init',
+			'unicodejs.wordbreak',
+			// Dependencies for ext.visualEditor.standalone:
+			'ext.visualEditor.base',
+			'ext.visualEditor.standalone',
+			'Standalone init',
+			// Dependencies for ext.visualEditor.core:
+			'rangy',
+			// Dependencies for ext.visualEditor.language
 			'ext.visualEditor.core',
 			'jquery.uls.grid',
 			'jquery.uls.data',
@@ -157,15 +188,23 @@ class MakeStaticLoader extends Maintenance {
 			'ext.visualEditor.language',
 		);
 
+		$head = $body = '';
+
 		$resourceLoader = new ResourceLoader();
+
 		foreach ( $modules as $module ) {
-			$moduleObj = $resourceLoader->getModule( $module );
-			if ( !$moduleObj ) {
-				echo "\nError: Module $module\n not found!\n";
-				exit( 1 );
+			if ( isset( $fakeModules[ $module ] ) ) {
+				$registry = $fakeModules[ $module ];
+			} else {
+				$moduleObj = $resourceLoader->getModule( $module );
+				if ( !$moduleObj ) {
+					echo "\nError: Module $module\n not found!\n";
+					exit( 1 );
+				}
+				$registry = isset( $wgResourceModules[$module] ) ?
+					$wgResourceModules[$module] :
+					$moduleObj->getDefinitionSummary( ResourceLoaderContext::newDummyContext() );
 			}
-			$registry = isset( $wgResourceModules[$module] ) ? $wgResourceModules[$module] :
-				$moduleObj->getDefinitionSummary( ResourceLoaderContext::newDummyContext() );
 
 			$headAdd = $bodyAdd = '';
 
@@ -180,6 +219,7 @@ class MakeStaticLoader extends Maintenance {
 					) ) . "\n";
 				}
 			}
+
 			if ( isset( $registry['scripts'] ) ) {
 				foreach ( (array)$registry['scripts'] as $path ) {
 					if ( strpos( $path, 've-mw/' ) === 0 ) {
@@ -188,6 +228,7 @@ class MakeStaticLoader extends Maintenance {
 					$bodyAdd .= $indent . Html::element( 'script', array( 'src' => "$vePath/$path" ) ) . "\n";
 				}
 			}
+
 			if ( isset( $registry['debugScripts'] ) ) {
 				foreach ( (array)$registry['debugScripts'] as $path ) {
 					if ( strpos( $path, 've-mw/' ) === 0 ) {
@@ -196,9 +237,11 @@ class MakeStaticLoader extends Maintenance {
 					$bodyAdd .= $indent . Html::element( 'script', array( 'src' => "$vePath/$path" ) ) . "\n";
 				}
 			}
+
 			if ( isset( $registry['headAdd'] ) ) {
 				$headAdd .= $indent . implode( "\n$indent", explode( "\n", $registry['headAdd'] ) ) . "\n";
 			}
+
 			if ( isset( $registry['bodyAdd'] ) ) {
 				$bodyAdd .= $indent . implode( "\n$indent", explode( "\n", $registry['bodyAdd'] ) ) . "\n";
 			}
@@ -206,6 +249,7 @@ class MakeStaticLoader extends Maintenance {
 			if ( $headAdd ) {
 				$head .= "$indent<!-- $module -->\n$headAdd";
 			}
+
 			if ( $bodyAdd ) {
 				$body .= "$indent<!-- $module -->\n$bodyAdd";
 			}
