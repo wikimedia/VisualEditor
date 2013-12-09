@@ -1,15 +1,15 @@
 {
-	"@metadata": {
-		"authors": [
-			"Iwan Novirion",
-			"Bjankuloski06",
-			"Brest"
-		]
-	},
-	"ooui-dialog-action-close": "Затвори",
-	"ooui-outline-control-move-down": "Помести надолу",
-	"ooui-outline-control-move-up": "Помести нагоре",
-	"ooui-toggle-on": "Вкл.",
-	"ooui-toggle-off": "Искл.",
-	"ooui-toolbar-more": "Повеќе"
+    "@metadata": {
+        "authors": [
+            "Bjankuloski06",
+            "Brest",
+            "Iwan Novirion"
+        ]
+    },
+    "ooui-dialog-action-close": "Затвори",
+    "ooui-outline-control-move-down": "Помести надолу",
+    "ooui-outline-control-move-up": "Помести нагоре",
+    "ooui-toggle-on": "Вкл.",
+    "ooui-toggle-off": "Искл.",
+    "ooui-toolbar-more": "Повеќе"
 }

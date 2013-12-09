@@ -1,12 +1,12 @@
 {
-	"@metadata": {
-		"authors": [
-			"J budissin",
-			"Michawiki"
-		]
-	},
-	"tag-visualeditor": "[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]",
-	"tag-visualeditor-description": "Z pomocu [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditora]] wobdźěłany",
-	"visualeditor-feedback-link": "Project:VisualEditor\/Komentary",
-	"visualeditor-feedback-tool": "Komentar zawostajić"
+    "@metadata": {
+        "authors": [
+            "J budissin",
+            "Michawiki"
+        ]
+    },
+    "tag-visualeditor": "[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]",
+    "tag-visualeditor-description": "Z pomocu [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditora]] wobdźěłany",
+    "visualeditor-feedback-link": "Project:VisualEditor/Komentary",
+    "visualeditor-feedback-tool": "Komentar zawostajić"
 }

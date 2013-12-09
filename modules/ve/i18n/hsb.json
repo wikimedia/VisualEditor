@@ -1,34 +1,34 @@
 {
-	"@metadata": {
-		"authors": [
-			"J budissin",
-			"Michawiki"
-		]
-	},
-	"visualeditor": "VisualEditor",
-	"visualeditor-aliennode-tooltip": "Tutón element da so bohužel tuchwilu jenož w žórłowym modusu wobdźěłać.",
-	"visualeditor-annotationbutton-bold-tooltip": "Tučny",
-	"visualeditor-annotationbutton-italic-tooltip": "Kursiwny",
-	"visualeditor-annotationbutton-link-tooltip": "Wotkaz",
-	"visualeditor-clearbutton-tooltip": "Formatowanje wotstronić",
-	"visualeditor-dialog-action-apply": "Změny nałožić",
-	"visualeditor-dialog-action-cancel": "Přetorhnyć",
-	"visualeditor-formatdropdown-format-heading1": "Nadpis 1",
-	"visualeditor-formatdropdown-format-heading2": "Nadpis 2",
-	"visualeditor-formatdropdown-format-heading3": "Nadpis 3",
-	"visualeditor-formatdropdown-format-heading4": "Nadpis 4",
-	"visualeditor-formatdropdown-format-heading5": "Nadpis 5",
-	"visualeditor-formatdropdown-format-heading6": "Nadpis 6",
-	"visualeditor-formatdropdown-format-paragraph": "Wotstawk",
-	"visualeditor-formatdropdown-format-preformatted": "Předformatowany",
-	"visualeditor-formatdropdown-title": "Format změnić",
-	"visualeditor-historybutton-redo-tooltip": "Wospjetować",
-	"visualeditor-historybutton-undo-tooltip": "Cofnyć",
-	"visualeditor-indentationbutton-indent-tooltip": "Zasunjenje powjetšić",
-	"visualeditor-indentationbutton-outdent-tooltip": "Zasunjenje pomjeńšić",
-	"visualeditor-inspector-close-tooltip": "Začinić",
-	"visualeditor-inspector-remove-tooltip": "Wotstronić",
-	"visualeditor-linkinspector-title": "Wotkaz",
-	"visualeditor-listbutton-bullet-tooltip": "Nalicenje",
-	"visualeditor-listbutton-number-tooltip": "Čisłowana lisćina"
+    "@metadata": {
+        "authors": [
+            "J budissin",
+            "Michawiki"
+        ]
+    },
+    "visualeditor": "VisualEditor",
+    "visualeditor-aliennode-tooltip": "Tutón element da so bohužel tuchwilu jenož w žórłowym modusu wobdźěłać.",
+    "visualeditor-annotationbutton-bold-tooltip": "Tučny",
+    "visualeditor-annotationbutton-italic-tooltip": "Kursiwny",
+    "visualeditor-annotationbutton-link-tooltip": "Wotkaz",
+    "visualeditor-clearbutton-tooltip": "Formatowanje wotstronić",
+    "visualeditor-dialog-action-apply": "Změny nałožić",
+    "visualeditor-dialog-action-cancel": "Přetorhnyć",
+    "visualeditor-formatdropdown-format-heading1": "Nadpis 1",
+    "visualeditor-formatdropdown-format-heading2": "Nadpis 2",
+    "visualeditor-formatdropdown-format-heading3": "Nadpis 3",
+    "visualeditor-formatdropdown-format-heading4": "Nadpis 4",
+    "visualeditor-formatdropdown-format-heading5": "Nadpis 5",
+    "visualeditor-formatdropdown-format-heading6": "Nadpis 6",
+    "visualeditor-formatdropdown-format-paragraph": "Wotstawk",
+    "visualeditor-formatdropdown-format-preformatted": "Předformatowany",
+    "visualeditor-formatdropdown-title": "Format změnić",
+    "visualeditor-historybutton-redo-tooltip": "Wospjetować",
+    "visualeditor-historybutton-undo-tooltip": "Cofnyć",
+    "visualeditor-indentationbutton-indent-tooltip": "Zasunjenje powjetšić",
+    "visualeditor-indentationbutton-outdent-tooltip": "Zasunjenje pomjeńšić",
+    "visualeditor-inspector-close-tooltip": "Začinić",
+    "visualeditor-inspector-remove-tooltip": "Wotstronić",
+    "visualeditor-linkinspector-title": "Wotkaz",
+    "visualeditor-listbutton-bullet-tooltip": "Nalicenje",
+    "visualeditor-listbutton-number-tooltip": "Čisłowana lisćina"
 }

@@ -1,9 +1,9 @@
 {
-	"@metadata": {
-		"authors": [
-			"Audriusa",
-			"Eitvys200"
-		]
-	},
-	"ooui-dialog-action-close": "Uždaryti"
+    "@metadata": {
+        "authors": [
+            "Audriusa",
+            "Eitvys200"
+        ]
+    },
+    "ooui-dialog-action-close": "Uždaryti"
 }

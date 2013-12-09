@@ -1,24 +1,24 @@
 {
-	"@metadata": {
-		"authors": [
-			"Paulu"
-		]
-	},
-	"visualeditor": "VisualEditor",
-	"visualeditor-annotationbutton-code-tooltip": "Codice di ordinatore",
-	"visualeditor-annotationbutton-language-tooltip": "Linguaghju",
-	"visualeditor-annotationbutton-link-tooltip": "Ligame",
-	"visualeditor-dialog-action-apply": "Applicà i cambiamenti",
-	"visualeditor-dialog-action-cancel": "Cancellà",
-	"visualeditor-dialog-action-goback": "Vultà à daretu",
-	"visualeditor-formatdropdown-format-paragraph": "Paragrafu",
-	"visualeditor-formatdropdown-title": "Cambià u furmatu",
-	"visualeditor-historybutton-redo-tooltip": "Rifà",
-	"visualeditor-historybutton-undo-tooltip": "Sfà",
-	"visualeditor-inspector-close-tooltip": "Chjude",
-	"visualeditor-inspector-remove-tooltip": "Caccià",
-	"visualeditor-languageinspector-title": "Linguaghju",
-	"visualeditor-languageinspector-widget-label-direction": "Direzzione",
-	"visualeditor-languageinspector-widget-label-langcode": "Codice di linguaghju",
-	"visualeditor-languageinspector-block-tooltip-rtldirection": ": Da dritta à manca"
+    "@metadata": {
+        "authors": [
+            "Paulu"
+        ]
+    },
+    "visualeditor": "VisualEditor",
+    "visualeditor-annotationbutton-code-tooltip": "Codice di ordinatore",
+    "visualeditor-annotationbutton-language-tooltip": "Linguaghju",
+    "visualeditor-annotationbutton-link-tooltip": "Ligame",
+    "visualeditor-dialog-action-apply": "Applicà i cambiamenti",
+    "visualeditor-dialog-action-cancel": "Cancellà",
+    "visualeditor-dialog-action-goback": "Vultà à daretu",
+    "visualeditor-formatdropdown-format-paragraph": "Paragrafu",
+    "visualeditor-formatdropdown-title": "Cambià u furmatu",
+    "visualeditor-historybutton-redo-tooltip": "Rifà",
+    "visualeditor-historybutton-undo-tooltip": "Sfà",
+    "visualeditor-inspector-close-tooltip": "Chjude",
+    "visualeditor-inspector-remove-tooltip": "Caccià",
+    "visualeditor-languageinspector-title": "Linguaghju",
+    "visualeditor-languageinspector-widget-label-direction": "Direzzione",
+    "visualeditor-languageinspector-widget-label-langcode": "Codice di linguaghju",
+    "visualeditor-languageinspector-block-tooltip-rtldirection": ": Da dritta à manca"
 }

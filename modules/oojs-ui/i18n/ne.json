@@ -1,10 +1,10 @@
 {
-	"@metadata": {
-		"authors": [
-			"RajeshPandey",
-			"सरोज कुमार ढकाल"
-		]
-	},
-	"ooui-toggle-on": "खुला",
-	"ooui-toggle-off": "बन्द"
+    "@metadata": {
+        "authors": [
+            "RajeshPandey",
+            "सरोज कुमार ढकाल"
+        ]
+    },
+    "ooui-toggle-on": "खुला",
+    "ooui-toggle-off": "बन्द"
 }

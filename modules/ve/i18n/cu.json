@@ -1,12 +1,12 @@
 {
-	"@metadata": {
-		"authors": [
-			"ОйЛ"
-		]
-	},
-	"visualeditor-annotationbutton-language-tooltip": "ѩꙁꙑкъ",
-	"visualeditor-annotationbutton-link-tooltip": "съвѧꙁь",
-	"visualeditor-formatdropdown-format-paragraph": "параграфъ",
-	"visualeditor-inspector-close-tooltip": "ꙁакрꙑи",
-	"visualeditor-linkinspector-title": "ѷпєрсъвѧꙁь"
+    "@metadata": {
+        "authors": [
+            "ОйЛ"
+        ]
+    },
+    "visualeditor-annotationbutton-language-tooltip": "ѩꙁꙑкъ",
+    "visualeditor-annotationbutton-link-tooltip": "съвѧꙁь",
+    "visualeditor-formatdropdown-format-paragraph": "параграфъ",
+    "visualeditor-inspector-close-tooltip": "ꙁакрꙑи",
+    "visualeditor-linkinspector-title": "ѷпєрсъвѧꙁь"
 }

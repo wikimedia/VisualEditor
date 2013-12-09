@@ -1,15 +1,15 @@
 {
-	"@metadata": {
-		"authors": [
-			"Alison",
-			"Kscanne",
-			"Toliño"
-		]
-	},
-	"ooui-dialog-action-close": "Pechar",
-	"ooui-outline-control-move-down": "Mover o elemento abaixo",
-	"ooui-outline-control-move-up": "Mover o elemento arriba",
-	"ooui-toggle-on": "Activado",
-	"ooui-toggle-off": "Desactivado",
-	"ooui-toolbar-more": "Máis"
+    "@metadata": {
+        "authors": [
+            "Alison",
+            "Kscanne",
+            "Toliño"
+        ]
+    },
+    "ooui-dialog-action-close": "Pechar",
+    "ooui-outline-control-move-down": "Mover o elemento abaixo",
+    "ooui-outline-control-move-up": "Mover o elemento arriba",
+    "ooui-toggle-on": "Activado",
+    "ooui-toggle-off": "Desactivado",
+    "ooui-toolbar-more": "Máis"
 }

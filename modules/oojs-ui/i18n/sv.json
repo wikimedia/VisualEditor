@@ -1,22 +1,22 @@
 {
-	"@metadata": {
-		"authors": [
-			"Milicevic01",
-			"Ainali",
-			"Haxpett",
-			"Jopparn",
-			"Knuckles",
-			"Magol",
-			"Per",
-			"Sendelbach",
-			"Skalman",
-			"WikiPhoenix"
-		]
-	},
-	"ooui-dialog-action-close": "Stäng",
-	"ooui-outline-control-move-down": "Flytta ned objekt",
-	"ooui-outline-control-move-up": "Flytta upp objekt",
-	"ooui-toggle-on": "På",
-	"ooui-toggle-off": "Av",
-	"ooui-toolbar-more": "Mer"
+    "@metadata": {
+        "authors": [
+            "Ainali",
+            "Haxpett",
+            "Jopparn",
+            "Knuckles",
+            "Magol",
+            "Milicevic01",
+            "Per",
+            "Sendelbach",
+            "Skalman",
+            "WikiPhoenix"
+        ]
+    },
+    "ooui-dialog-action-close": "Stäng",
+    "ooui-outline-control-move-down": "Flytta ned objekt",
+    "ooui-outline-control-move-up": "Flytta upp objekt",
+    "ooui-toggle-on": "På",
+    "ooui-toggle-off": "Av",
+    "ooui-toolbar-more": "Mer"
 }

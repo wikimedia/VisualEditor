@@ -1,14 +1,14 @@
 {
-	"@metadata": {
-		"authors": [
-			"Cedric31"
-		]
-	},
-	"visualeditor-annotationbutton-bold-tooltip": "Gras",
-	"visualeditor-annotationbutton-italic-tooltip": "Italica",
-	"visualeditor-annotationbutton-link-tooltip": "Ligam",
-	"visualeditor-historybutton-redo-tooltip": "Refar",
-	"visualeditor-historybutton-undo-tooltip": "Anullar",
-	"visualeditor-indentationbutton-indent-tooltip": "Aumentar l’indentacion",
-	"visualeditor-indentationbutton-outdent-tooltip": "Demesir l’indentacion"
+    "@metadata": {
+        "authors": [
+            "Cedric31"
+        ]
+    },
+    "visualeditor-annotationbutton-bold-tooltip": "Gras",
+    "visualeditor-annotationbutton-italic-tooltip": "Italica",
+    "visualeditor-annotationbutton-link-tooltip": "Ligam",
+    "visualeditor-historybutton-redo-tooltip": "Refar",
+    "visualeditor-historybutton-undo-tooltip": "Anullar",
+    "visualeditor-indentationbutton-indent-tooltip": "Aumentar l’indentacion",
+    "visualeditor-indentationbutton-outdent-tooltip": "Demesir l’indentacion"
 }

@@ -1,16 +1,16 @@
 {
-	"@metadata": {
-		"authors": [
-			"Gloria sah",
-			"Lévi"
-		]
-	},
-	"tag-visualeditor": "[[{{MediaWiki:visualeditor-descriptionpagelink}}|EditōrVisuèl]]",
-	"tag-visualeditor-description": "Cambiamèint fât cun l' [[{{MediaWiki:visualeditor-descriptionpagelink}}|EditōrVisuèl]]",
-	"tag-visualeditor-needcheck": "[[{{MediaWiki:visualeditor-descriptionpagelink}}|VisualEditor: Da verifichèr]]",
-	"tag-visualeditor-needcheck-description": "Cambiamèint fat druènd al [[{{MediaWiki:visualeditor-descriptionpagelink}}|VisualEditor]], in dû al sistêma 'l à catê che 'l wikitext fórsi al gh' à di cambiamèint mìa vlû.",
-	"visualeditor-feedback-link": "Project:VisualEditor\/I parér",
-	"visualeditor-feedback-tool": "Mèter al vòster parér",
-	"visualeditor-help-label": "Léś la guìda 'dl utèint",
-	"visualeditor-help-title": "Guìda 'dl utèint per druèr 'l editōr"
+    "@metadata": {
+        "authors": [
+            "Gloria sah",
+            "Lévi"
+        ]
+    },
+    "tag-visualeditor": "[[{{MediaWiki:visualeditor-descriptionpagelink}}|EditōrVisuèl]]",
+    "tag-visualeditor-description": "Cambiamèint fât cun l' [[{{MediaWiki:visualeditor-descriptionpagelink}}|EditōrVisuèl]]",
+    "tag-visualeditor-needcheck": "[[{{MediaWiki:visualeditor-descriptionpagelink}}|VisualEditor: Da controlêr]]",
+    "tag-visualeditor-needcheck-description": "Cambiamèint fat druènd al [[{{MediaWiki:visualeditor-descriptionpagelink}}|VisualEditor]], in dû al sistêma 'l à catê che 'l wikitext fórsi al gh' à di cambiamèint mìa vlû.",
+    "visualeditor-feedback-link": "Project:VisualEditor/I parér",
+    "visualeditor-feedback-tool": "Mèter al vòster parér",
+    "visualeditor-help-label": "Léś la guìda 'dl utèint",
+    "visualeditor-help-title": "Guìda 'dl utèint per druèr 'l editōr"
 }

@@ -1,11 +1,11 @@
 {
-	"@metadata": {
-		"authors": [
-			"Tifinaghes",
-			"Sahran",
-			"Tel'et"
-		]
-	},
-	"ooui-toggle-on": "ئوچۇق",
-	"ooui-toggle-off": "تاقاق"
+    "@metadata": {
+        "authors": [
+            "Sahran",
+            "Tel'et",
+            "Tifinaghes"
+        ]
+    },
+    "ooui-toggle-on": "ئوچۇق",
+    "ooui-toggle-off": "تاقاق"
 }

@@ -1,30 +1,30 @@
 {
-	"@metadata": {
-		"authors": [
-			"Vacio",
-			"Xelgen"
-		]
-	},
-	"visualeditor": "ՎիզուալԽմբագրիչ",
-	"visualeditor-aliennode-tooltip": "Ցավում եմ, այս տարրը կարելի է խմբագրել միայն ելատեքստում։",
-	"visualeditor-annotationbutton-bold-tooltip": "Թավատառ",
-	"visualeditor-annotationbutton-italic-tooltip": "Շեղատառ",
-	"visualeditor-annotationbutton-link-tooltip": "Հղում",
-	"visualeditor-clearbutton-tooltip": "Մաքրել ձևավորումը",
-	"visualeditor-dialog-action-apply": "Կիրառել փոփոխությունները",
-	"visualeditor-dialog-action-cancel": "Չեղարկել",
-	"visualeditor-formatdropdown-format-heading1": "Վերնագիր 1",
-	"visualeditor-formatdropdown-format-heading2": "Վերնագիր 2",
-	"visualeditor-formatdropdown-format-heading3": "Վերնագիր 3",
-	"visualeditor-formatdropdown-format-heading4": "Վերնագիր 4",
-	"visualeditor-formatdropdown-format-heading5": "Վերնագիր 5",
-	"visualeditor-formatdropdown-format-heading6": "Վերնագիր 6",
-	"visualeditor-formatdropdown-format-paragraph": "Պարբերություն",
-	"visualeditor-formatdropdown-title": "Փոխել ձևաչափը",
-	"visualeditor-historybutton-undo-tooltip": "Հետ շրջել",
-	"visualeditor-inspector-close-tooltip": "Փակել",
-	"visualeditor-inspector-remove-tooltip": "Հեռացնել",
-	"visualeditor-linkinspector-title": "Հիպերհղում",
-	"visualeditor-listbutton-bullet-tooltip": "Չհամարակալված ցանկ",
-	"visualeditor-listbutton-number-tooltip": "Համարակալված ցանկ"
+    "@metadata": {
+        "authors": [
+            "Vacio",
+            "Xelgen"
+        ]
+    },
+    "visualeditor": "ՎիզուալԽմբագրիչ",
+    "visualeditor-aliennode-tooltip": "Ցավում եմ, այս տարրը կարելի է խմբագրել միայն ելատեքստում։",
+    "visualeditor-annotationbutton-bold-tooltip": "Թավատառ",
+    "visualeditor-annotationbutton-italic-tooltip": "Շեղատառ",
+    "visualeditor-annotationbutton-link-tooltip": "Հղում",
+    "visualeditor-clearbutton-tooltip": "Մաքրել ձևավորումը",
+    "visualeditor-dialog-action-apply": "Կիրառել փոփոխությունները",
+    "visualeditor-dialog-action-cancel": "Չեղարկել",
+    "visualeditor-formatdropdown-format-heading1": "Վերնագիր 1",
+    "visualeditor-formatdropdown-format-heading2": "Վերնագիր 2",
+    "visualeditor-formatdropdown-format-heading3": "Վերնագիր 3",
+    "visualeditor-formatdropdown-format-heading4": "Վերնագիր 4",
+    "visualeditor-formatdropdown-format-heading5": "Վերնագիր 5",
+    "visualeditor-formatdropdown-format-heading6": "Վերնագիր 6",
+    "visualeditor-formatdropdown-format-paragraph": "Պարբերություն",
+    "visualeditor-formatdropdown-title": "Փոխել ձևաչափը",
+    "visualeditor-historybutton-undo-tooltip": "Հետ շրջել",
+    "visualeditor-inspector-close-tooltip": "Փակել",
+    "visualeditor-inspector-remove-tooltip": "Հեռացնել",
+    "visualeditor-linkinspector-title": "Հիպերհղում",
+    "visualeditor-listbutton-bullet-tooltip": "Չհամարակալված ցանկ",
+    "visualeditor-listbutton-number-tooltip": "Համարակալված ցանկ"
 }

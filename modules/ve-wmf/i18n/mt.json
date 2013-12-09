@@ -1,9 +1,9 @@
 {
-	"@metadata": {
-		"authors": [
-			"Chrisportelli"
-		]
-	},
-	"tag-visualeditor": "[[{{MediaWiki:visualeditor-descriptionpagelink}}|VisualEditor]]",
-	"tag-visualeditor-description": "Modifika magħmula permezz tal-[[{{MediaWiki:visualeditor-descriptionpagelink}}|VisualEditor]]"
+    "@metadata": {
+        "authors": [
+            "Chrisportelli"
+        ]
+    },
+    "tag-visualeditor": "[[{{MediaWiki:visualeditor-descriptionpagelink}}|VisualEditor]]",
+    "tag-visualeditor-description": "Modifika magħmula permezz tal-[[{{MediaWiki:visualeditor-descriptionpagelink}}|VisualEditor]]"
 }

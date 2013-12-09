@@ -1,0 +1,34 @@
+{
+    "@metadata": {
+        "authors": [
+            "Ch.Andrew",
+            "Shizhao"
+        ]
+    },
+    "visualeditor": "VisualEditor",
+    "visualeditor-aliennode-tooltip": "抱歉，此部份無法使用 VisualEditor 進行編輯",
+    "visualeditor-annotationbutton-bold-tooltip": "粗體",
+    "visualeditor-annotationbutton-italic-tooltip": "斜體",
+    "visualeditor-annotationbutton-link-tooltip": "連結",
+    "visualeditor-clearbutton-tooltip": "清除格式",
+    "visualeditor-dialog-action-apply": "套用變更",
+    "visualeditor-dialog-action-cancel": "取消",
+    "visualeditor-formatdropdown-format-heading1": "標題 1",
+    "visualeditor-formatdropdown-format-heading2": "標題 2",
+    "visualeditor-formatdropdown-format-heading3": "標題 3",
+    "visualeditor-formatdropdown-format-heading4": "標題 4",
+    "visualeditor-formatdropdown-format-heading5": "標題 5",
+    "visualeditor-formatdropdown-format-heading6": "標題 6",
+    "visualeditor-formatdropdown-format-paragraph": "段落",
+    "visualeditor-formatdropdown-format-preformatted": "預先格式化",
+    "visualeditor-formatdropdown-title": "變更格式",
+    "visualeditor-historybutton-redo-tooltip": "重做",
+    "visualeditor-historybutton-undo-tooltip": "復原",
+    "visualeditor-indentationbutton-indent-tooltip": "增加縮排",
+    "visualeditor-indentationbutton-outdent-tooltip": "減少縮排",
+    "visualeditor-inspector-close-tooltip": "關閉",
+    "visualeditor-inspector-remove-tooltip": "移除",
+    "visualeditor-linkinspector-title": "超連結",
+    "visualeditor-listbutton-bullet-tooltip": "無序列表",
+    "visualeditor-listbutton-number-tooltip": "有序列表"
+}
