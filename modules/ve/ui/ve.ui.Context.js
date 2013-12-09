@@ -132,11 +132,14 @@ ve.ui.Context.prototype.afterModelSelect = function () {
  * already moving somewhere else. We deliberately don't call #update to avoid drawing the context
  * in a place that the selection is about to move away from.
  *
+ * However, we only do this when clicking out of an inspector. Hiding the context when the document
+ * is focused through other means than closing an inspector is actually harmful.
+ *
  * We don't have to defer the response to this event because there is no danger that inspectors'
  * close handlers will end up invoking this handler again.
  */
 ve.ui.Context.prototype.onSurfaceFocus = function () {
-	if ( this.popup.isVisible() ) {
+	if ( this.inspectors.getCurrentWindow() ) {
 		this.hide();
 	}
 };
