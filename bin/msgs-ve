@@ -37,4 +37,7 @@ visualeditor-languageinspector-block-tooltip-rtldirection
 visualeditor-linkinspector-title
 visualeditor-listbutton-bullet-tooltip
 visualeditor-listbutton-number-tooltip
+visualeditor-specialcharacter-button-tooltip
+visualeditor-specialcharacterinspector-title
+visualeditor-specialcharinspector-characterlist-insert
 visualeditor-version-label

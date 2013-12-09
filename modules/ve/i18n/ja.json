@@ -46,5 +46,8 @@
 	"visualeditor-linkinspector-title": "ハイパーリンク",
 	"visualeditor-listbutton-bullet-tooltip": "番号なし箇条書き",
 	"visualeditor-listbutton-number-tooltip": "番号付き箇条書き",
+	"visualeditor-specialcharacter-button-tooltip": "特殊文字",
+	"visualeditor-specialcharacterinspector-title": "特殊文字",
+	"visualeditor-specialcharinspector-characterlist-insert": "{\n\t\"symbols\": {\n\t\t\"−\": \"−\",\n\t\t\"—\": \"—\",\n\t\t\"°\": \"°\",\n\t\t\"″\": \"″\",\n\t\t\"′\": \"′\",\n\t\t\"←\": \"←\",\n\t\t\"→\": \"→\",\n\t\t\"·\": \"·\",\n\t\t\"§\": \"§\"\n\t},\n\t\"accents\": {\n\t\t\"à\": \"à\",\n\t\t\"á\": \"á\",\n\t\t\"â\": \"â\",\n\t\t\"ä\": \"ä\",\n\t\t\"ç\": \"ç\",\n\t\t\"è\": \"è\",\n\t\t\"é\": \"é\",\n\t\t\"ê\": \"ê\",\n\t\t\"ë\": \"ë\",\n\t\t\"ì\": \"ì\",\n\t\t\"í\": \"í\",\n\t\t\"î\": \"î\",\n\t\t\"ï\": \"ï\",\n\t\t\"ò\": \"ò\",\n\t\t\"ó\": \"ó\",\n\t\t\"ô\": \"ô\",\n\t\t\"ö\": \"ö\",\n\t\t\"ø\": \"ø\",\n\t\t\"ù\": \"ù\",\n\t\t\"ú\": \"ú\",\n\t\t\"û\": \"û\",\n\t\t\"ü\": \"ü\"\n\t},\n\t\"math\": {\n\t\t\"−\": \"−\",\n\t\t\"×\": \"×\",\n\t\t\"÷\": \"÷\",\n\t\t\"≈\": \"≈\",\n\t\t\"≠\": \"≠\",\n\t\t\"≤\": \"≤\",\n\t\t\"≥\": \"≥\",\n\t\t\"±\": \"±\"\n\t}\n}",
 	"visualeditor-version-label": "バージョン"
 }

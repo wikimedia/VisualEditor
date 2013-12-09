@@ -46,5 +46,7 @@
 	"visualeditor-linkinspector-title": "Hiperlegătură",
 	"visualeditor-listbutton-bullet-tooltip": "Listă cu puncte",
 	"visualeditor-listbutton-number-tooltip": "Listă numerotată",
+	"visualeditor-specialcharacter-button-tooltip": "Caracter special",
+	"visualeditor-specialcharacterinspector-title": "Caracter special",
 	"visualeditor-version-label": "Versiune"
 }

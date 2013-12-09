@@ -56,5 +56,7 @@
 	"visualeditor-linkinspector-title": "Гіперпосилання",
 	"visualeditor-listbutton-bullet-tooltip": "Маркований список",
 	"visualeditor-listbutton-number-tooltip": "Нумерований список",
+	"visualeditor-specialcharacter-button-tooltip": "Спеціальний символ",
+	"visualeditor-specialcharacterinspector-title": "Спеціальний символ",
 	"visualeditor-version-label": "Версія"
 }

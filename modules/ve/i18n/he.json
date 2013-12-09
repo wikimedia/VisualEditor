@@ -54,5 +54,7 @@
 	"visualeditor-linkinspector-title": "היפר־קישור",
 	"visualeditor-listbutton-bullet-tooltip": "רשימת תבליטים",
 	"visualeditor-listbutton-number-tooltip": "רשימה ממוספרת",
+	"visualeditor-specialcharacter-button-tooltip": "תו מיוחד",
+	"visualeditor-specialcharacterinspector-title": "תו מיוחד",
 	"visualeditor-version-label": "גרסה"
 }

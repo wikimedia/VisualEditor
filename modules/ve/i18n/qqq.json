@@ -58,5 +58,8 @@
 	"visualeditor-linkinspector-title": "Title of the link inspector dialog.\n{{Identical|Hyperlink}}",
 	"visualeditor-listbutton-bullet-tooltip": "Tooltip text for the bullet list button",
 	"visualeditor-listbutton-number-tooltip": "Tooltip text for the numbered list button",
+	"visualeditor-specialcharacter-button-tooltip": "Tooltip text for the insert character button.\n{{Identical|Special character}}",
+	"visualeditor-specialcharacterinspector-title": "Used as title for special character inspector.\n{{Identical|Special character}}",
+	"visualeditor-specialcharinspector-characterlist-insert": "This is a JSON string defining the special characters that can be inserted using the special character insertion tool.\n{{doc-important|Please make sure it is a valid JSON string.}}\n{{Optional}}",
 	"visualeditor-version-label": "Label text for version number\n{{Identical|Version}}"
 }

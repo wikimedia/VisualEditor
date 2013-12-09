@@ -52,5 +52,7 @@
 	"visualeditor-linkinspector-title": "Link",
 	"visualeditor-listbutton-bullet-tooltip": "Aufzählungszeichen",
 	"visualeditor-listbutton-number-tooltip": "Nummerierte Liste",
+	"visualeditor-specialcharacter-button-tooltip": "Sonderzeichen",
+	"visualeditor-specialcharacterinspector-title": "Sonderzeichen",
 	"visualeditor-version-label": "Version"
 }

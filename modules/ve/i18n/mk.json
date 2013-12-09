@@ -45,5 +45,7 @@
 	"visualeditor-linkinspector-title": "Врска",
 	"visualeditor-listbutton-bullet-tooltip": "Список со потточки",
 	"visualeditor-listbutton-number-tooltip": "Список со редни броеви",
+	"visualeditor-specialcharacter-button-tooltip": "Специјален знак",
+	"visualeditor-specialcharacterinspector-title": "Специјален знак",
 	"visualeditor-version-label": "Верзија"
 }

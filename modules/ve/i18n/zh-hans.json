@@ -57,5 +57,7 @@
 	"visualeditor-linkinspector-title": "超链接",
 	"visualeditor-listbutton-bullet-tooltip": "无序列表",
 	"visualeditor-listbutton-number-tooltip": "有序列表",
+	"visualeditor-specialcharacter-button-tooltip": "特殊字符",
+	"visualeditor-specialcharacterinspector-title": "特殊字符",
 	"visualeditor-version-label": "版本"
 }

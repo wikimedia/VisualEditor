@@ -45,5 +45,7 @@
 	"visualeditor-linkinspector-title": "Liura ipertestual",
 	"visualeditor-listbutton-bullet-tooltip": "Lista pontà",
 	"visualeditor-listbutton-number-tooltip": "Lista numerà",
+	"visualeditor-specialcharacter-button-tooltip": "Caràter ëspecial",
+	"visualeditor-specialcharacterinspector-title": "Caràter ëspecial",
 	"visualeditor-version-label": "Version"
 }

@@ -44,5 +44,7 @@
 	"visualeditor-linkinspector-title": "Superligàm",
 	"visualeditor-listbutton-bullet-tooltip": "Lista puntèda",
 	"visualeditor-listbutton-number-tooltip": "Lista numerèda",
+	"visualeditor-specialcharacter-button-tooltip": "Carâter specêl",
+	"visualeditor-specialcharacterinspector-title": "Carâter specêl",
 	"visualeditor-version-label": "Versiòun"
 }
