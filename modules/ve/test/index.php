@@ -188,9 +188,8 @@
 		<script src="../../ve/ui/actions/ve.ui.IndentationAction.js"></script>
 		<script src="../../ve/ui/actions/ve.ui.InspectorAction.js"></script>
 		<script src="../../ve/ui/actions/ve.ui.ListAction.js"></script>
-		<script src="../../ve/ui/widgets/ve.ui.GroupButtonWidget.js"></script>
-		<script src="../../ve/ui/widgets/ve.ui.LinkTargetInputWidget.js"></script>
 		<script src="../../ve/ui/widgets/ve.ui.SurfaceWidget.js"></script>
+		<script src="../../ve/ui/widgets/ve.ui.LinkTargetInputWidget.js"></script>
 		<script src="../../ve/ui/tools/ve.ui.AnnotationTool.js"></script>
 		<script src="../../ve/ui/tools/ve.ui.ClearAnnotationTool.js"></script>
 		<script src="../../ve/ui/tools/ve.ui.DialogTool.js"></script>
@@ -201,6 +200,7 @@
 		<script src="../../ve/ui/tools/ve.ui.ListTool.js"></script>
 		<script src="../../ve/ui/inspectors/ve.ui.AnnotationInspector.js"></script>
 		<script src="../../ve/ui/inspectors/ve.ui.LinkInspector.js"></script>
+		<script src="../../ve/ui/widgets/ve.ui.GroupButtonWidget.js"></script>
 		<script src="../../ve/ui/inspectors/ve.ui.SpecialCharacterInspector.js"></script>
 		<!-- jquery.uls.data -->
 		<script src="../../jquery.uls/src/jquery.uls.data.js"></script>
