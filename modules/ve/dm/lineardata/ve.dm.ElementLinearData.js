@@ -816,13 +816,33 @@ ve.dm.ElementLinearData.prototype.remapInternalListKeys = function ( internalLis
  *
  * @param {Object} rules Sanitization rules
  * @param {string[]} [rules.blacklist] Blacklist of model types which aren't allowed
- * @param {boolean} [rules.removeHtmlAttributes] Remove all left over HTML attributes and any empty spans it creates
+ * @param {boolean} [rules.removeHtmlAttributes] Remove all left over HTML attributes
+ * @param {boolean} [rules.removeStyles] Remove HTML style attributes
  * @param {boolean} [plainText=false] Remove all formatting for plain text paste
  * @param {boolean} [keepEmptyContentBranches=false] Preserve empty content branch nodes
  */
 ve.dm.ElementLinearData.prototype.sanitize = function ( rules, plainText, keepEmptyContentBranches ) {
 	var i, len, annotations, emptySet, setToRemove, type,
 		allAnnotations = this.getAnnotationsFromRange( new ve.Range( 0, this.getLength() ), true );
+
+	function removeHtmlAttribute( element, attribute ) {
+		var i;
+		if ( element.htmlAttributes ) {
+			for ( i = 0; i < element.htmlAttributes.length; i++ ) {
+				delete element.htmlAttributes[i].values[attribute];
+				if ( ve.isEmptyObject( element.htmlAttributes[i].values ) ) {
+					delete element.htmlAttributes[i].values;
+				}
+				if ( ve.isEmptyObject( element.htmlAttributes[i] ) ) {
+					element.htmlAttributes.splice( i, 1 );
+					i--;
+				}
+			}
+			if ( !element.htmlAttributes.length ) {
+				delete element.htmlAttributes;
+			}
+		}
+	}
 
 	if ( plainText ) {
 		emptySet = new ve.dm.AnnotationSet( this.getStore() );
@@ -831,6 +851,12 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules, plainText, keepEm
 			// Remove HTML attributes from annotations
 			for ( i = 0, len = allAnnotations.getLength(); i < len; i++ ) {
 				delete allAnnotations.get( i ).element.htmlAttributes;
+			}
+		}
+		if ( rules.removeStyles ) {
+			for ( i = 0, len = allAnnotations.getLength(); i < len; i++ ) {
+				// Remove inline style attributes from annotations
+				removeHtmlAttribute( allAnnotations.get( i ).element, 'style' );
 			}
 		}
 
@@ -878,15 +904,21 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules, plainText, keepEm
 		if ( !annotations.isEmpty() ) {
 			if ( plainText ) {
 				this.setAnnotationsAtOffset( i, emptySet );
-			} else {
+			} else if ( setToRemove.getLength() ) {
 				// Remove blacklisted annotations
 				annotations.removeSet( setToRemove );
 				this.setAnnotationsAtOffset( i, annotations );
 			}
 		}
-		if ( rules.removeHtmlAttributes && this.isOpenElementData( i ) ) {
-			// Remove HTML attributes from nodes
-			delete this.getData( i ).htmlAttributes;
+		if ( this.isOpenElementData( i ) ) {
+			if ( rules.removeHtmlAttributes ) {
+				// Remove HTML attributes from nodes
+				delete this.getData( i ).htmlAttributes;
+			}
+			if ( rules.removeStyles ) {
+				// Remove inline style attributes from nodes
+				removeHtmlAttribute( this.getData( i ), 'style' );
+			}
 		}
 	}
 };

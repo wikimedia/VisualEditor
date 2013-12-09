@@ -299,9 +299,8 @@ ve.ui.Surface.prototype.getPasteRules = function () {
 /**
  * Set sanitization rules for rich paste
  *
+ * @see ve.dm.ElementLinearData#sanitize
  * @param {Object} pasteRules Paste rules
- * @param {string[]} [pasteRules.blacklist] Blacklist of model types which aren't allowed
- * @param {boolean} [pasteRules.removeHtmlAttributes] Remove all left over HTML attributes
  */
 ve.ui.Surface.prototype.setPasteRules = function ( pasteRules ) {
 	this.pasteRules = pasteRules;
