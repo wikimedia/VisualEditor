@@ -20,7 +20,6 @@ ve.init.sa.Platform = function VeInitSaPlatform() {
 	// Properties
 	this.externalLinkUrlProtocolsRegExp = /^https?\:\/\//;
 	this.modulesUrl = 'extensions/VisualEditor/modules';
-	this.messages = {};
 	this.parsedMessages = {};
 };
 
@@ -51,23 +50,14 @@ ve.init.sa.Platform.prototype.getModulesUrl = function () {
 
 /** @inheritdoc */
 ve.init.sa.Platform.prototype.addMessages = function ( messages ) {
-	for ( var key in messages ) {
-		this.messages[key] = messages[key];
-	}
+	$.i18n().load( messages, $.i18n().locale );
 };
 
-/** @inheritdoc */
-ve.init.sa.Platform.prototype.getMessage = function ( key ) {
-	if ( key in this.messages ) {
-		// Simple message parser, does $N replacement and nothing else.
-		var parameters = Array.prototype.slice.call( arguments, 1 );
-		return this.messages[key].replace( /\$(\d+)/g, function ( str, match ) {
-			var index = parseInt( match, 10 ) - 1;
-			return parameters[index] !== undefined ? parameters[index] : '$' + match;
-		} );
-	}
-	return '<' + key + '>';
-};
+/**
+ * @method
+ * @inheritdoc
+ */
+ve.init.sa.Platform.prototype.getMessage = $.i18n;
 
 /** @inheritdoc */
 ve.init.sa.Platform.prototype.addParsedMessages = function ( messages ) {
@@ -119,6 +109,52 @@ ve.init.sa.Platform.prototype.getUserLanguages = function () {
 	}
 
 	return langs;
+};
+
+ve.init.sa.Platform.prototype.initialize = function () {
+	var i, len, partialLocale, localeParts, deferred,
+		path = this.getModulesUrl(),
+		locale = $.i18n().locale,
+		languages = [ locale, 'en' ], // Always use 'en' as the final fallback
+		languagesCovered = {},
+		promises = [],
+		fallbacks = $.i18n.fallbacks[locale];
+
+	if ( !fallbacks ) {
+		// Try to find something that has fallbacks (which means it's a language we know about)
+		// by stripping things from the end. But collect all the intermediate ones in case we
+		// go past languages that don't have fallbacks but do exist.
+		localeParts = locale.split( '-' );
+		localeParts.pop();
+		while ( localeParts.length && !fallbacks ) {
+			partialLocale = localeParts.join( '-' );
+			languages.push( partialLocale );
+			fallbacks = $.i18n.fallbacks[partialLocale];
+			localeParts.pop();
+		}
+	}
+
+	if ( fallbacks ) {
+		languages = languages.concat( fallbacks );
+	}
+
+	for ( i = 0, len = languages.length; i < len; i++ ) {
+		if ( languagesCovered[languages[i]] ) {
+			continue;
+		}
+		languagesCovered[languages[i]] = true;
+
+		deferred = $.Deferred();
+		$.i18n().load( path + '/ve/i18n/' + languages[i] + '.json', languages[i] )
+			.always( deferred.resolve );
+		promises.push( deferred.promise() );
+
+		deferred = $.Deferred();
+		$.i18n().load( path + '/oojs-ui/i18n/' + languages[i] + '.json', languages[i] )
+			.always( deferred.resolve );
+		promises.push( deferred.promise() );
+	}
+	return $.when.apply( $, promises );
 };
 
 /* Initialization */

@@ -53,16 +53,33 @@
 		<script src="../../ve/init/ve.init.Platform.js"></script>
 		<script src="../../ve/init/ve.init.Target.js"></script>
 		<script src="../../ve/ve.debug.js"></script>
+		<!-- jquery.i18n -->
+		<script src="../../jquery.i18n/src/jquery.i18n.js"></script>
+		<script src="../../jquery.i18n/src/jquery.i18n.messagestore.js"></script>
+		<script src="../../jquery.i18n/src/jquery.i18n.parser.js"></script>
+		<script src="../../jquery.i18n/src/jquery.i18n.emitter.js"></script>
+		<script src="../../jquery.i18n/src/jquery.i18n.language.js"></script>
+		<script src="../../jquery.i18n/src/jquery.i18n.fallbacks.js"></script>
+		<script src="../../jquery.i18n/src/languages/bs.js"></script>
+		<script src="../../jquery.i18n/src/languages/dsb.js"></script>
+		<script src="../../jquery.i18n/src/languages/fi.js"></script>
+		<script src="../../jquery.i18n/src/languages/ga.js"></script>
+		<script src="../../jquery.i18n/src/languages/he.js"></script>
+		<script src="../../jquery.i18n/src/languages/hsb.js"></script>
+		<script src="../../jquery.i18n/src/languages/hu.js"></script>
+		<script src="../../jquery.i18n/src/languages/hy.js"></script>
+		<script src="../../jquery.i18n/src/languages/la.js"></script>
+		<script src="../../jquery.i18n/src/languages/ml.js"></script>
+		<script src="../../jquery.i18n/src/languages/os.js"></script>
+		<script src="../../jquery.i18n/src/languages/ru.js"></script>
+		<script src="../../jquery.i18n/src/languages/sl.js"></script>
+		<script src="../../jquery.i18n/src/languages/uk.js"></script>
 		<!-- ext.visualEditor.standalone -->
 		<script src="../../ve/init/sa/ve.init.sa.js"></script>
 		<script src="../../ve/init/sa/ve.init.sa.Platform.js"></script>
 		<script src="../../ve/init/sa/ve.init.sa.Target.js"></script>
 		<!-- Standalone init -->
 		<script>
-			<?php
-				require '../../../VisualEditor.i18n.php';
-				echo 've.init.platform.addMessages( ' . json_encode( $messages['en'] ) . " );\n";
-			?>
 			ve.init.platform.setModulesUrl( '../..' );
 		</script>
 		<!-- rangy -->

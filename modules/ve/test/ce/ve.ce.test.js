@@ -171,7 +171,7 @@ QUnit.test( 'resolveTestOffset', function ( assert ) {
 } );
 
 QUnit.test( 'fakeImes', function ( assert ) {
-	var i, ilen, j, jlen, dom, target, testRunner, testName, testActions, seq, testInfo,
+	var i, ilen, j, jlen, surface, testRunner, testName, testActions, seq, testInfo,
 		action, args, count, foundEndLoop, fakePreventDefault;
 
 	// count tests
@@ -211,9 +211,8 @@ QUnit.test( 'fakeImes', function ( assert ) {
 		foundEndLoop = false;
 		// First element is the testInfo
 		testInfo = testActions[0];
-		dom = ve.createDocumentFromHtml( testInfo.startDom || '' );
-		target = new ve.init.sa.Target( $( '<div>' ).appendTo( '#qunit-fixture' ), dom );
-		testRunner = new ve.ce.TestRunner( target.surface );
+		surface = ve.test.utils.createSurfaceFromHtml( testInfo.startDom || '' );
+		testRunner = new ve.ce.TestRunner( surface );
 		// start at 1 to omit the testInfo
 		for ( j = 1, jlen = testActions.length; j < jlen; j++ ) {
 			action = testActions[j].action;
@@ -233,6 +232,6 @@ QUnit.test( 'fakeImes', function ( assert ) {
 		}
 		// Test that there is at least one endLoop
 		assert.equal( foundEndLoop, true, testName + ' found at least one endLoop' );
-		target.surface.destroy();
+		surface.destroy();
 	}
 } );
