@@ -111,7 +111,7 @@ ve.ui.MWMediaInsertDialog.prototype.teardown = function ( data ) {
 			{ 'type': 'mwImageCaption' },
 			{ 'type': '/mwImageCaption' },
 			{ 'type': '/mwBlockImage' }
-		] );
+		] ).collapseRangeToEnd().select();
 	}
 
 	// Parent method

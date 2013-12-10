@@ -325,7 +325,7 @@ ve.ui.MWReferenceDialog.prototype.teardown = function ( data ) {
 			// Add reference at cursor
 			surfaceModel.getFragment( selection ).collapseRangeToEnd().insertContent( [
 				{ 'type': 'mwReference', 'attributes': this.ref }, { 'type': '/mwReference' }
-			] );
+			] ).collapseRangeToEnd().select();
 		}
 	}
 

@@ -149,7 +149,7 @@ ve.ui.MWReferenceListDialog.prototype.teardown = function ( data ) {
 					}
 				},
 				{ 'type': '/mwReferenceList' }
-			] );
+			] ).collapseRangeToEnd().select();
 		}
 	}
 
