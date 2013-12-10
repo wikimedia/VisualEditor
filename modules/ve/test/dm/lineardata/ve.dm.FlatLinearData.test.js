@@ -9,6 +9,25 @@ QUnit.module( 've.dm.FlatLinearData' );
 
 /* Tests */
 
+QUnit.test( 'getType/isOpenElementData/isCloseElementData', function ( assert ) {
+	var i,
+		data = new ve.dm.FlatLinearData( new ve.dm.IndexValueStore(), [
+			{ 'type': 'paragraph' },
+			'a', ['b',[0]],
+			{ 'type': '/paragraph' },
+		] ),
+		types = ['paragraph', undefined, undefined, 'paragraph'],
+		isOpen = [0],
+		isClose = [3];
+
+	QUnit.expect( data.getLength() * 3 );
+	for ( i = 0; i < data.getLength(); i++ ) {
+		assert.equal( data.getType( i ), types[i], 'Type at offset ' + i );
+		assert.equal( data.isOpenElementData( i ), ve.indexOf( i, isOpen ) !== -1, 'isOpen ' + i );
+		assert.equal( data.isCloseElementData( i ), ve.indexOf( i, isClose ) !== -1, 'isClose ' + i );
+	}
+} );
+
 QUnit.test( 'isElementData', 1, function ( assert ) {
 	var i,
 		data = new ve.dm.FlatLinearData( new ve.dm.IndexValueStore(), [
@@ -92,7 +111,3 @@ QUnit.test( 'containsElementData', 1, function ( assert ) {
 		);
 	}
 } );
-
-// TODO: ve.dm.FlatLinearData#getType
-// TODO: ve.dm.FlatLinearData#isOpenElementData
-// TODO: ve.dm.FlatLinearData#isCloseElementData
