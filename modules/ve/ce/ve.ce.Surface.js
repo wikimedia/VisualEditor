@@ -839,6 +839,10 @@ ve.ce.Surface.prototype.beforePaste = function ( e ) {
 		ve.dm.converter.internalList = doc.getInternalList();
 		ve.dm.converter.getDomSubtreeFromData( context, this.$pasteTarget[0] );
 
+		// Giving the paste target focus too late can cause problems in FF (!?)
+		// so do it up here.
+		this.$pasteTarget[0].focus();
+
 		rangyRange = rangy.createRange( this.getElementDocument() );
 		// Assume that the DM node only generated one child
 		textNode = this.$pasteTarget.children().contents()[0];
@@ -847,7 +851,6 @@ ve.ce.Surface.prototype.beforePaste = function ( e ) {
 		rangyRange.setEnd( textNode, textEnd );
 		sel = rangy.getSelection( this.getElementDocument() );
 		sel.removeAllRanges();
-		this.$pasteTarget[0].focus();
 		sel.addRange( rangyRange, false );
 
 		this.beforePasteData.context = context;
