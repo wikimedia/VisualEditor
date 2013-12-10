@@ -259,7 +259,7 @@ ve.dm.ElementLinearData.prototype.containsElementData = function () {
 };
 
 /**
- * Check for non-content elements in document data.
+ * Check for non-content elements in data.
  *
  * This method assumes that any value that has a type property that's a string is an element object.
  * Elements are discovered by iterating through the entire data array.
@@ -318,7 +318,7 @@ ve.dm.ElementLinearData.prototype.getAnnotationIndexesFromOffset = function ( of
 /**
  * Get annotations covered by an offset.
  *
- * The returned AnnotationSet is a clone of the one in the document data.
+ * The returned AnnotationSet is a clone of the one in the data.
  *
  * @method
  * @param {number} offset Offset to get annotations for
@@ -496,7 +496,7 @@ ve.dm.ElementLinearData.prototype.trimOuterSpaceFromRange = function ( range ) {
  * - If {offset} is after the last valid offset and {distance} is >= 1, or if {offset} if
  *   before the first valid offset and {distance} <= 1 than the result will be the nearest
  *   valid offset in the opposite direction.
- * - If the document does not contain a single valid offset the result will be -1
+ * - If the data does not contain a single valid offset the result will be -1
  *
  * @method
  * @param {number} offset Offset to start from
@@ -504,7 +504,7 @@ ve.dm.ElementLinearData.prototype.trimOuterSpaceFromRange = function ( range ) {
  * @param {Function} callback Function to call to check if an offset is valid which will be
  * given initial argument of offset
  * @param {Mixed...} [args] Additional arguments to pass to the callback
- * @returns {number} Relative valid offset or -1 if there are no valid offsets in document
+ * @returns {number} Relative valid offset or -1 if there are no valid offsets in data
  */
 ve.dm.ElementLinearData.prototype.getRelativeOffset = function ( offset, distance, callback ) {
 	var i, direction,
@@ -585,13 +585,13 @@ ve.dm.ElementLinearData.prototype.getRelativeOffset = function ( offset, distanc
 /**
  * Get a content offset at a distance from an offset.
  *
- * This method is a wrapper around {getRelativeOffset}, using {ve.dm.Document.isContentOffset} as
+ * This method is a wrapper around {getRelativeOffset}, using {isContentOffset} as
  * the offset validation callback.
  *
  * @method
  * @param {number} offset Offset to start from
  * @param {number} distance Number of content offsets to move
- * @returns {number} Relative content offset or -1 if there are no valid offsets in document
+ * @returns {number} Relative content offset or -1 if there are no valid offsets in data
  */
 ve.dm.ElementLinearData.prototype.getRelativeContentOffset = function ( offset, distance ) {
 	return this.getRelativeOffset( offset, distance, this.constructor.prototype.isContentOffset );
@@ -612,7 +612,7 @@ ve.dm.ElementLinearData.prototype.getRelativeContentOffset = function ( offset, 
  * @method
  * @param {number} offset Offset to start from
  * @param {number} [direction] Direction to prefer matching offset in, -1 for left and 1 for right
- * @returns {number} Nearest content offset or -1 if there are no valid offsets in document
+ * @returns {number} Nearest content offset or -1 if there are no valid offsets in data
  */
 ve.dm.ElementLinearData.prototype.getNearestContentOffset = function ( offset, direction ) {
 	if ( this.isContentOffset( offset ) ) {
