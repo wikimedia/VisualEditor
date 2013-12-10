@@ -875,6 +875,11 @@ ve.ce.Surface.prototype.afterPaste = function () {
 		$window = this.$( OO.ui.Element.getWindow( this.$.context ) ),
 		selection = this.model.getSelection();
 
+	// If the selection doesn't collapse after paste then nothing was inserted
+	if ( !rangy.getSelection( this.getElementDocument() ).isCollapsed ) {
+		return;
+	}
+
 	// Remove the pasteProtect class. See #onCopy.
 	this.$pasteTarget.find( 'span' ).removeClass( 've-pasteProtect' );
 
