@@ -217,7 +217,7 @@ ve.dm.LinearData.prototype.batchSpliceObject = function ( offset, remove, data )
  * @method
  * @param {ve.Range} [range] Range of data to get, all data will be given by default
  * @param {boolean} [deep=false] Whether to return a deep copy (WARNING! This may be very slow)
- * @returns {Array} Slice or copy of document data
+ * @returns {Array} Slice or copy of data
  */
 ve.dm.LinearData.prototype.getDataSlice = function ( range, deep ) {
 	var end, data,
