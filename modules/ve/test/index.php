@@ -248,6 +248,7 @@
 		<script src="dm/ve.dm.ModelRegistry.test.js"></script>
 		<script src="dm/ve.dm.MetaList.test.js"></script>
 		<script src="dm/ve.dm.Model.test.js"></script>
+		<script src="dm/lineardata/ve.dm.FlatLinearData.test.js"></script>
 		<script src="dm/lineardata/ve.dm.ElementLinearData.test.js"></script>
 		<script src="dm/lineardata/ve.dm.MetaLinearData.test.js"></script>
 		<script src="ce/ve.ce.test.js"></script>

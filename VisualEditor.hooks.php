@@ -550,6 +550,7 @@ class VisualEditorHooks {
 				've/test/dm/ve.dm.ModelRegistry.test.js',
 				've/test/dm/ve.dm.MetaList.test.js',
 				've/test/dm/ve.dm.Model.test.js',
+				've/test/dm/lineardata/ve.dm.FlatLinearData.test.js',
 				've/test/dm/lineardata/ve.dm.ElementLinearData.test.js',
 				've/test/dm/lineardata/ve.dm.MetaLinearData.test.js',
 				've-mw/test/dm/ve.dm.mwExample.js',
