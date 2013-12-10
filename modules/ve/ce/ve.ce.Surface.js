@@ -872,7 +872,7 @@ ve.ce.Surface.prototype.beforePaste = function ( e ) {
 ve.ce.Surface.prototype.afterPaste = function () {
 	var clipboardKey, clipboardId, clipboardIndex,
 		$elements, parts, pasteData, slice, tx, internalListRange,
-		data, doc, html,
+		data, doc, htmlDoc,
 		context, left, right, contextRange,
 		beforePasteData = this.beforePasteData || {},
 		$window = this.$( OO.ui.Element.getWindow( this.$.context ) ),
@@ -980,19 +980,21 @@ ve.ce.Surface.prototype.afterPaste = function () {
 				this.$pasteTarget.filter('span[id],span[typeof],span[rel]').length === 0
 			) {
 				// CE destroyed an important span, so revert to using clipboard data
-				html = beforePasteData.html;
+				htmlDoc = ve.createDocumentFromHtml( beforePasteData.html );
+				// Remove the pasteProtect class. See #onCopy.
+				$( htmlDoc ).find( 'span' ).removeClass( 've-pasteProtect' );
 				beforePasteData.context = null;
 			}
 		}
-		if ( !html ) {
+		if ( !htmlDoc ) {
 			// If there were no problems, let CE do its sanitizing as it may
 			// contain all sorts of horrible metadata (head tags etc.)
 			// TODO: IE will always take this path, and so may have bugs with span unwapping
 			// in edge cases (e.g. pasting a single MWReference)
-			html = this.$pasteTarget.html();
+			htmlDoc = ve.createDocumentFromHtml( this.$pasteTarget.html() );
 		}
 		// External paste
-		doc = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( html ) );
+		doc = ve.dm.converter.getModelFromDom( htmlDoc );
 		data = doc.data;
 		// Clear metadata
 		doc.metadata = new ve.dm.MetaLinearData( doc.getStore(), new Array( 1 + data.getLength() ) );
