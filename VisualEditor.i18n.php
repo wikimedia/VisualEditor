@@ -77,9 +77,9 @@ $messages['en'] = array(
 	'visualeditor-dialog-meta-categories-options' => 'Options',
 	'visualeditor-dialog-meta-categories-section' => 'Categories',
 	'visualeditor-dialog-meta-categories-sortkey-label' => 'Sort this page as',
-	'visualeditor-dialog-meta-languages-code-label' => 'Language code',
 	'visualeditor-dialog-meta-languages-label' => 'Languages',
 	'visualeditor-dialog-meta-languages-link-label' => 'Linked page',
+	'visualeditor-dialog-meta-languages-name-label' => 'Language',
 	'visualeditor-dialog-meta-languages-readonlynote' => 'This is a list of pages in other languages that are linked to this one; for now, it can only be edited in source mode or on Wikidata.',
 	'visualeditor-dialog-meta-languages-section' => 'Languages',
 	'visualeditor-dialog-meta-title' => 'Page settings',
@@ -473,11 +473,10 @@ Parameters:
 	'visualeditor-dialog-meta-categories-section' => 'Label for the categories dialog section.
 {{Identical|Category}}',
 	'visualeditor-dialog-meta-categories-sortkey-label' => "Label for setting the page's sort key for a given category",
-	'visualeditor-dialog-meta-languages-code-label' => 'Column header for the language links table, giving the language code of the remote wiki
-	{{Identical|Language code}}',
 	'visualeditor-dialog-meta-languages-label' => '{{Identical|Language}}',
 	'visualeditor-dialog-meta-languages-link-label' => 'Column header for the language links table, giving the name of the remote page.
 {{Identical|Linked page}}',
+	'visualeditor-dialog-meta-languages-name-label' => 'Column header for the language links table, giving the language name of the remote wiki',
 	'visualeditor-dialog-meta-languages-readonlynote' => 'Text of a note informing users that the language links cannot yet be edited.
 
 See also:

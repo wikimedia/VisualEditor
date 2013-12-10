@@ -56,7 +56,7 @@ ve.ui.MWLanguagesPage.prototype.onLoadLanguageData = function ( languages ) {
 		.append( this.$( '<tr>' )
 			.append(
 				this.$( '<th>' )
-					.append( ve.msg( 'visualeditor-dialog-meta-languages-code-label' ) )
+					.append( ve.msg( 'visualeditor-dialog-meta-languages-name-label' ) )
 			)
 			.append(
 				this.$( '<th>' )
@@ -75,8 +75,8 @@ ve.ui.MWLanguagesPage.prototype.onLoadLanguageData = function ( languages ) {
 		}
 		$languagesTable
 			.append( this.$( '<tr>' )
-				.append( this.$( '<td>' ).append( languages[i].lang ) )
-				.append( this.$( '<td>' ).append( languages[i].title )
+				.append( this.$( '<td>' ).text( languages[i].langname ) )
+				.append( this.$( '<td>' ).text( languages[i].title )
 					.attr( 'lang', languages[i].safelang )
 					.attr( 'dir', languages[i].dir ) )
 			);
@@ -88,12 +88,13 @@ ve.ui.MWLanguagesPage.prototype.onLoadLanguageData = function ( languages ) {
 /**
  * Handle language items being loaded.
  */
-ve.ui.MWLanguagesPage.prototype.onAllLanuageItemsSuccess = function ( deferred, response ) {
-	var i, iLen, languages = [], langlinks = response.query.pages[response.query.pageids[0]].langlinks;
+ve.ui.MWLanguagesPage.prototype.onAllLanguageItemsSuccess = function ( deferred, response ) {
+	var i, iLen, languages = [], langlinks = response.visualeditor.langlinks;
 	if ( langlinks ) {
 		for ( i = 0, iLen = langlinks.length; i < iLen; i++ ) {
 			languages.push( {
 				'lang': langlinks[i].lang,
+				'langname': langlinks[i].langname,
 				'title': langlinks[i]['*'],
 				'metaItem': null
 			} );
@@ -112,6 +113,7 @@ ve.ui.MWLanguagesPage.prototype.getLanguageItemFromMetaListItem = function ( met
 	// TODO: get real values from metaItem once Parsoid actually provides them - bug 48970
 	return {
 		'lang': 'lang',
+		'langname': 'langname',
 		'title': 'title',
 		'metaItem': metaItem
 	};
@@ -147,11 +149,9 @@ ve.ui.MWLanguagesPage.prototype.getAllLanguageItems = function () {
 	$.ajax( {
 		'url': mw.util.wikiScript( 'api' ),
 		'data': {
-			'action': 'query',
-			'prop': 'langlinks',
-			'lllimit': 500,
-			'titles': mw.config.get( 'wgTitle' ),
-			'indexpageids': 1,
+			'action': 'visualeditor',
+			'paction': 'getlanglinks',
+			'page': mw.config.get( 'wgTitle' ),
 			'format': 'json'
 		},
 		'dataType': 'json',
@@ -160,8 +160,8 @@ ve.ui.MWLanguagesPage.prototype.getAllLanguageItems = function () {
 		'timeout': 100000,
 		'cache': 'false'
 	} )
-		.done( ve.bind( this.onAllLanuageItemsSuccess, this, deferred ) )
-		.fail( ve.bind( this.onAllLanuageItemsError, this, deferred ) );
+		.done( ve.bind( this.onAllLanguageItemsSuccess, this, deferred ) )
+		.fail( ve.bind( this.onAllLanguageItemsError, this, deferred ) );
 	return deferred.promise();
 };
 
@@ -170,4 +170,4 @@ ve.ui.MWLanguagesPage.prototype.getAllLanguageItems = function () {
  *
  * TODO: This error function should probably not be empty.
  */
-ve.ui.MWLanguagesPage.prototype.onAllLanuageItemsError = function () {};
+ve.ui.MWLanguagesPage.prototype.onAllLanguageItemsError = function () {};
