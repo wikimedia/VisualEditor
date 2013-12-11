@@ -54,6 +54,7 @@
     "visualeditor-dialog-meta-categories-options": "Label for the category options sub-section.\n{{Identical|Options}}",
     "visualeditor-dialog-meta-categories-section": "Label for the categories dialog section.\n{{Identical|Category}}",
     "visualeditor-dialog-meta-categories-sortkey-label": "Label for setting the page's sort key for a given category",
+    "visualeditor-dialog-meta-languages-code-label": "Column header for the language links table, giving the language code of the remote wiki\n\t{{Identical|Language code}}",
     "visualeditor-dialog-meta-languages-label": "{{Identical|Language}}",
     "visualeditor-dialog-meta-languages-link-label": "Column header for the language links table, giving the name of the remote page.\n{{Identical|Linked page}}",
     "visualeditor-dialog-meta-languages-name-label": "Column header for the language links table, giving the language name of the remote wiki",

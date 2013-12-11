@@ -56,6 +56,10 @@ ve.ui.MWLanguagesPage.prototype.onLoadLanguageData = function ( languages ) {
 		.append( this.$( '<tr>' )
 			.append(
 				this.$( '<th>' )
+					.append( ve.msg( 'visualeditor-dialog-meta-languages-code-label' ) )
+			)
+			.append(
+				this.$( '<th>' )
 					.append( ve.msg( 'visualeditor-dialog-meta-languages-name-label' ) )
 			)
 			.append(
@@ -75,8 +79,10 @@ ve.ui.MWLanguagesPage.prototype.onLoadLanguageData = function ( languages ) {
 		}
 		$languagesTable
 			.append( this.$( '<tr>' )
-				.append( this.$( '<td>' ).text( languages[i].langname ) )
-				.append( this.$( '<td>' ).text( languages[i].title )
+				.append( this.$( '<td>' ).text( languages[i].lang ) )
+				.append( this.$( '<td>' ).text( languages[i].langname ).add(
+						this.$( '<td>' ).text( languages[i].title )
+					)
 					.attr( 'lang', languages[i].safelang )
 					.attr( 'dir', languages[i].dir ) )
 			);
