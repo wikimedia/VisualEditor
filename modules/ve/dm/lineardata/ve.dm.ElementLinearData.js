@@ -843,9 +843,11 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules, plainText, keepEm
 
 		// Create annotation set to remove from blacklist
 		setToRemove = allAnnotations.filter( function ( annotation ) {
-			return ve.indexOf( annotation.name, rules.blacklist ) !== -1 ||
-				// If HTML attributes are stripped and you are left with an empty span, remove it
-				( rules.removeHtmlAttributes && annotation.name === 'textStyle/span' && !annotation.element.htmlAttributes );
+			return ve.indexOf( annotation.name, rules.blacklist ) !== -1 || (
+					// If HTML attributes or styles are stripped and you are left with an empty span, remove it
+					annotation.name === 'textStyle/span' && !annotation.element.htmlAttributes &&
+					( rules.removeHtmlAttributes || rules.removeStyles )
+				);
 		} );
 	}
 
