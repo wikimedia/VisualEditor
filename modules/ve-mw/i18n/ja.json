@@ -43,6 +43,7 @@
     "visualeditor-dialog-meta-languages-code-label": "言語コード",
     "visualeditor-dialog-meta-languages-label": "言語",
     "visualeditor-dialog-meta-languages-link-label": "リンクされているページ",
+    "visualeditor-dialog-meta-languages-name-label": "言語",
     "visualeditor-dialog-meta-languages-readonlynote": "この記事にリンクしている他の言語の記事の一覧です。現時点ではソース モードとウィキデータ上でのみ編集できます。",
     "visualeditor-dialog-meta-languages-section": "言語",
     "visualeditor-dialog-meta-title": "ページの設定",

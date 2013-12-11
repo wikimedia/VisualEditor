@@ -45,5 +45,7 @@
     "visualeditor-linkinspector-title": "Hiperligazón",
     "visualeditor-listbutton-bullet-tooltip": "Lista con asteriscos",
     "visualeditor-listbutton-number-tooltip": "Lista numerada",
+    "visualeditor-specialcharacter-button-tooltip": "Carácter especial",
+    "visualeditor-specialcharacterinspector-title": "Carácter especial",
     "visualeditor-version-label": "Versión"
 }
