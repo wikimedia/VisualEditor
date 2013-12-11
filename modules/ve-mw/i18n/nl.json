@@ -14,6 +14,7 @@
             "SPQRobin",
             "Saruman",
             "Siebrand",
+            "Sjoerddebruin",
             "Southparkfan",
             "सरोज कुमार ढकाल"
         ]
@@ -54,6 +55,7 @@
     "visualeditor-dialog-meta-languages-code-label": "Taalcode",
     "visualeditor-dialog-meta-languages-label": "Talen",
     "visualeditor-dialog-meta-languages-link-label": "Gekoppelde pagina",
+    "visualeditor-dialog-meta-languages-name-label": "Taal",
     "visualeditor-dialog-meta-languages-readonlynote": "Dit is een lijst met pagina's in andere talen die gekoppeld zijn aan deze pagina. Deze lijst alleen in de broncodemodus of op Wikidata bewerkt worden.",
     "visualeditor-dialog-meta-languages-section": "Talen",
     "visualeditor-dialog-meta-title": "Pagina-instellingen",

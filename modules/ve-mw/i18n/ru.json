@@ -54,6 +54,7 @@
     "visualeditor-dialog-meta-languages-code-label": "Код языка",
     "visualeditor-dialog-meta-languages-label": "Языки",
     "visualeditor-dialog-meta-languages-link-label": "Связанная страница",
+    "visualeditor-dialog-meta-languages-name-label": "Язык",
     "visualeditor-dialog-meta-languages-readonlynote": "Это список связанных страниц на других языках; на данный момент он может быть отредактирован только в режиме исходного текста или в Викиданных.",
     "visualeditor-dialog-meta-languages-section": "Языки",
     "visualeditor-dialog-meta-title": "Параметры страницы",

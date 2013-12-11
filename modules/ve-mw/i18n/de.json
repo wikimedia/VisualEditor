@@ -49,6 +49,7 @@
     "visualeditor-dialog-meta-languages-code-label": "Sprachcode",
     "visualeditor-dialog-meta-languages-label": "Sprachen",
     "visualeditor-dialog-meta-languages-link-label": "Verlinkte Seite",
+    "visualeditor-dialog-meta-languages-name-label": "Sprache",
     "visualeditor-dialog-meta-languages-readonlynote": "Dies ist eine Liste der Seiten in anderen Sprachen, die auf diese Seite verlinkt sind. Sie können derzeit nur im Quelltextmodus oder auf Wikidata bearbeitet werden.",
     "visualeditor-dialog-meta-languages-section": "Sprachen",
     "visualeditor-dialog-meta-title": "Seiteneinstellungen",

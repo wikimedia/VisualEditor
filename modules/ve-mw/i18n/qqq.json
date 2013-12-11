@@ -57,7 +57,7 @@
     "visualeditor-dialog-meta-languages-code-label": "Column header for the language links table, giving the language code of the remote wiki\n\t{{Identical|Language code}}",
     "visualeditor-dialog-meta-languages-label": "{{Identical|Language}}",
     "visualeditor-dialog-meta-languages-link-label": "Column header for the language links table, giving the name of the remote page.\n{{Identical|Linked page}}",
-    "visualeditor-dialog-meta-languages-name-label": "Column header for the language links table, giving the language name of the remote wiki",
+    "visualeditor-dialog-meta-languages-name-label": "Column header for the language links table, giving the language name of the remote wiki.\n{{Identical|Language}}",
     "visualeditor-dialog-meta-languages-readonlynote": "Text of a note informing users that the language links cannot yet be edited.\n\nSee also:\n* {{msg-mw|Visualeditor-referencelist-missingref}}",
     "visualeditor-dialog-meta-languages-section": "Label for the language links dialog section.\n{{Identical|Language}}",
     "visualeditor-dialog-meta-title": "MetaData dialog title text.\n{{Identical|Page settings}}",
