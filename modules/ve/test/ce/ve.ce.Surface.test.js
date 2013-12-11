@@ -714,6 +714,42 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 					]
 				],
 				'msg': 'List at end of paragraph (moves insertion point)'
+			},
+			{
+				'range': new ve.Range( 4 ),
+				'pasteTargetHtml': '<table><caption>Foo</caption><tr><td>Bar</td></tr></table>',
+				'expectedRange': new ve.Range( 26 ),
+				'expectedOps': [
+					[
+						{ 'type': 'retain', 'length': 4 },
+						{
+							'type': 'replace',
+							'insert': [
+								{ 'type': '/paragraph' },
+								{ 'type': 'table' },
+								{ 'type': 'tableCaption' },
+								{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+								'F', 'o', 'o',
+								{ 'type': '/paragraph' },
+								{ 'type': '/tableCaption' },
+								{ 'type': 'tableSection', 'attributes': { 'style': 'body' } },
+								{ 'type': 'tableRow' },
+								{ 'type': 'tableCell', 'attributes': { 'style': 'data' } },
+								{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+								'B', 'a', 'r',
+								{ 'type': '/paragraph' },
+								{ 'type': '/tableCell' },
+								{ 'type': '/tableRow' },
+								{ 'type': '/tableSection' },
+								{ 'type': '/table' },
+								{ 'type': 'paragraph' },
+							],
+							'remove': []
+						},
+						{ 'type': 'retain', 'length': 5 }
+					]
+				],
+				'msg': 'Table with caption into paragraph'
 			}
 		];
 

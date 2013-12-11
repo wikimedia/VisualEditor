@@ -27,7 +27,7 @@ OO.inheritClass( ve.dm.TableNode, ve.dm.BranchNode );
 
 ve.dm.TableNode.static.name = 'table';
 
-ve.dm.TableNode.static.childNodeTypes = [ 'tableSection' ];
+ve.dm.TableNode.static.childNodeTypes = [ 'tableSection', 'tableCaption' ];
 
 ve.dm.TableNode.static.matchTagNames = [ 'table' ];
 
