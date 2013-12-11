@@ -750,12 +750,30 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 					]
 				],
 				'msg': 'Table with caption into paragraph'
+			},
+			{
+				'range': new ve.Range( 4 ),
+				'pasteTargetHtml': '<span style="font-size: 1em;" class="foo">Foo</span>',
+				'clipboardKey': true,
+				'expectedRange': new ve.Range( 7 ),
+				'expectedOps': [
+					[
+						{ 'type': 'retain', 'length': 4 },
+						{
+							'type': 'replace',
+							'insert': [ 'F', 'o', 'o' ],
+							'remove': []
+						},
+						{ 'type': 'retain', 'length': 5 }
+					]
+				],
+				'msg': 'Span empty after stlyle attributes removed is ignored'
 			}
 		];
 
 	QUnit.expect( cases.length * 2 );
 
-	function testRunner( documentHtml, pasteTargetHtml, clipboardHtml, range, expectedOps, pasteSpecial, expectedRange, msg ) {
+	function testRunner( documentHtml, pasteTargetHtml, clipboardKey, range, expectedOps, pasteSpecial, expectedRange, msg ) {
 		var i, txs, ops,
 			surface = ve.test.utils.createSurfaceFromHtml( documentHtml || exampleDoc ),
 			view = surface.getView(),
@@ -764,12 +782,12 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 		// Paste sequence
 		model.setSelection( range );
 		view.pasteSpecial = pasteSpecial;
-		if ( pasteTargetHtml ) {
-			view.beforePaste( { 'originalEvent': {} } );
-			document.execCommand( 'insertHTML', false, pasteTargetHtml ) ;
+		if ( clipboardKey ) {
+			view.beforePaste( new TestEvent( { 'text/xcustom': '0.123-0' } ) );
 		} else {
-			view.beforePaste( new TestEvent( { 'text/xcustom': '0.123-0', 'text/html': clipboardHtml } ) );
+			view.beforePaste( { 'originalEvent': {} } );
 		}
+		document.execCommand( 'insertHTML', false, pasteTargetHtml ) ;
 		view.afterPaste();
 
 		txs = model.getHistory()[0].transactions;
@@ -785,7 +803,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 
 	for ( i = 0; i < cases.length; i++ ) {
 		testRunner(
-			cases[i].documentHtml, cases[i].pasteTargetHtml, cases[i].clipboardHtml,
+			cases[i].documentHtml, cases[i].pasteTargetHtml, cases[i].clipboardKey,
 			cases[i].range, cases[i].expectedOps, cases[i].pasteSpecial, cases[i].expectedRange, cases[i].msg
 		);
 	}

@@ -1375,6 +1375,30 @@ QUnit.test( 'sanitize', function ( assert ) {
 				'store': [ boldWithClass ],
 				'rules': { 'removeStyles': true },
 				'msg': 'Style attribute removed and other attributes preserved'
+			},
+			{
+				'html': '<p><span style="color:red;" class="red">Foo</span></p>',
+				'data': [
+					{ 'type': 'paragraph' },
+					'F', 'o', 'o',
+					{ 'type': '/paragraph' },
+					{ 'type': 'internalList' },
+					{ 'type': '/internalList' }
+				],
+				'rules': { 'removeHtmlAttributes': true },
+				'msg': 'Span empty after HTML attributes removed is stripped'
+			},
+			{
+				'html': '<p><span style="color:red;">Foo</span></p>',
+				'data': [
+					{ 'type': 'paragraph' },
+					'F', 'o', 'o',
+					{ 'type': '/paragraph' },
+					{ 'type': 'internalList' },
+					{ 'type': '/internalList' }
+				],
+				'rules': { 'removeStyles': true },
+				'msg': 'Span empty after styles removed is stripped'
 			}
 		];
 
