@@ -244,7 +244,7 @@ ve.dm.Model.matchesAttributeSpec = function ( attribute, spec ) {
 };
 
 /**
- * Get hash object of a linear model data element
+ * Get hash object of a linear model data element.
  *
  * @static
  * @param {Object} dataElement Data element
@@ -260,6 +260,7 @@ ve.dm.Model.static.getHashObject = function ( dataElement ) {
 
 /**
  * Array of RDFa types that this model should be a match candidate for.
+ *
  * @static
  * @returns {Array} Array of strings or regular expressions
  */
@@ -267,10 +268,38 @@ ve.dm.Model.static.getMatchRdfaTypes = function () {
 	return this.matchRdfaTypes;
 };
 
+/**
+ * Remove a specified HTML attribute from all DOM elements in the model.
+ *
+ * TODO: recurse into children
+ *
+ * @static
+ * @param {Object} dataElement Data element
+ * @param {string} attribute Attribute name
+ */
+ve.dm.Model.static.removeHtmlAttribute = function ( dataElement, attribute ) {
+	var i, htmlAttributes = dataElement.htmlAttributes;
+	if ( htmlAttributes ) {
+		for ( i = 0; i < htmlAttributes.length; i++ ) {
+			delete htmlAttributes[i].values[attribute];
+			if ( ve.isEmptyObject( htmlAttributes[i].values ) ) {
+				delete htmlAttributes[i].values;
+			}
+			if ( ve.isEmptyObject( htmlAttributes[i] ) ) {
+				htmlAttributes.splice( i, 1 );
+				i--;
+			}
+		}
+		if ( !htmlAttributes.length ) {
+			delete dataElement.htmlAttributes;
+		}
+	}
+};
+
 /* Methods */
 
 /**
- * Get a reference to the linear model element
+ * Get a reference to the linear model element.
  *
  * @method
  * @returns {Object} Linear model element passed to the constructor, by reference
@@ -280,7 +309,7 @@ ve.dm.Model.prototype.getElement = function () {
 };
 
 /**
- * Get the symbolic name of this model's type
+ * Get the symbolic name of this model's type.
  *
  * @method
  * @returns {string} Type name

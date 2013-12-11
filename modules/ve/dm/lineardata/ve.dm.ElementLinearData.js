@@ -806,25 +806,6 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules, plainText, keepEm
 	var i, len, annotations, emptySet, setToRemove, type,
 		allAnnotations = this.getAnnotationsFromRange( new ve.Range( 0, this.getLength() ), true );
 
-	function removeHtmlAttribute( element, attribute ) {
-		var i;
-		if ( element.htmlAttributes ) {
-			for ( i = 0; i < element.htmlAttributes.length; i++ ) {
-				delete element.htmlAttributes[i].values[attribute];
-				if ( ve.isEmptyObject( element.htmlAttributes[i].values ) ) {
-					delete element.htmlAttributes[i].values;
-				}
-				if ( ve.isEmptyObject( element.htmlAttributes[i] ) ) {
-					element.htmlAttributes.splice( i, 1 );
-					i--;
-				}
-			}
-			if ( !element.htmlAttributes.length ) {
-				delete element.htmlAttributes;
-			}
-		}
-	}
-
 	if ( plainText ) {
 		emptySet = new ve.dm.AnnotationSet( this.getStore() );
 	} else {
@@ -837,7 +818,7 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules, plainText, keepEm
 		if ( rules.removeStyles ) {
 			for ( i = 0, len = allAnnotations.getLength(); i < len; i++ ) {
 				// Remove inline style attributes from annotations
-				removeHtmlAttribute( allAnnotations.get( i ).element, 'style' );
+				ve.dm.Model.static.removeHtmlAttribute( allAnnotations.get( i ).element, 'style' );
 			}
 		}
 
@@ -898,7 +879,7 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules, plainText, keepEm
 			}
 			if ( rules.removeStyles ) {
 				// Remove inline style attributes from nodes
-				removeHtmlAttribute( this.getData( i ), 'style' );
+				ve.dm.Model.static.removeHtmlAttribute( this.getData( i ), 'style' );
 			}
 		}
 	}
