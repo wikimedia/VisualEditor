@@ -579,6 +579,7 @@ $wgResourceModules += array(
 			'visualeditor-dialog-meta-categories-options',
 			'visualeditor-dialog-meta-categories-section',
 			'visualeditor-dialog-meta-categories-sortkey-label',
+			'visualeditor-dialog-meta-languages-code-label',
 			'visualeditor-dialog-meta-languages-label',
 			'visualeditor-dialog-meta-languages-link-label',
 			'visualeditor-dialog-meta-languages-name-label',

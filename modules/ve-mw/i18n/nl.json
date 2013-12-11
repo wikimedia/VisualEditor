@@ -51,6 +51,7 @@
     "visualeditor-dialog-meta-categories-options": "Instellingen",
     "visualeditor-dialog-meta-categories-section": "Categorieën",
     "visualeditor-dialog-meta-categories-sortkey-label": "Pagina sorteren als",
+    "visualeditor-dialog-meta-languages-code-label": "Taalcode",
     "visualeditor-dialog-meta-languages-label": "Talen",
     "visualeditor-dialog-meta-languages-link-label": "Gekoppelde pagina",
     "visualeditor-dialog-meta-languages-readonlynote": "Dit is een lijst met pagina's in andere talen die gekoppeld zijn aan deze pagina. Deze lijst alleen in de broncodemodus of op Wikidata bewerkt worden.",
