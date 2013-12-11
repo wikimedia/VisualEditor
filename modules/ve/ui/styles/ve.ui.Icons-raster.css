@@ -195,6 +195,11 @@
 	background-image: url(images/icons/superscript.png);
 }
 
+.oo-ui-icon-text-style {
+	/* @embed */
+	background-image: url(images/icons/text-style.png);
+}
+
 .oo-ui-icon-underline-a {
 	/* @embed */
 	background-image: url(images/icons/underline-a.png);
