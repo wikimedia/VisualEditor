@@ -17,19 +17,47 @@ ve.dm.mwExample.createExampleDocument = function ( name, store ) {
 };
 
 ve.dm.mwExample.MWTransclusion = {
-	'blockOpen':         '<div about="#mwt1" typeof="mw:Transclusion" data-mw="{&quot;target&quot;:{&quot;wt&quot;:&quot;Test&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;Hello, world!&quot;}},&quot;id&quot;:&quot;mwt1&quot;}" data-parsoid="{&quot;tsr&quot;:[18,40],&quot;src&quot;:&quot;{{Test|Hello, world!}}&quot;,&quot;dsr&quot;:[18,40,null,null]}"></div>',
-	'blockOpenModified': '<div about="#mwt1" typeof="mw:Transclusion" data-mw="{&quot;id&quot;:&quot;mwt1&quot;,&quot;target&quot;:{&quot;wt&quot;:&quot;Test&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;Hello, globe!&quot;}}}" data-parsoid="{&quot;tsr&quot;:[18,40],&quot;src&quot;:&quot;{{Test|Hello, world!}}&quot;,&quot;dsr&quot;:[18,40,null,null]}"></div>',
+	'blockOpen':
+		'<div about="#mwt1" typeof="mw:Transclusion"' +
+			' data-mw="{&quot;target&quot;:{&quot;wt&quot;:&quot;Test&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;Hello, world!&quot;}},&quot;id&quot;:&quot;mwt1&quot;}"' +
+			' data-parsoid="{&quot;tsr&quot;:[18,40],&quot;src&quot;:&quot;{{Test|Hello, world!}}&quot;,&quot;dsr&quot;:[18,40,null,null]}"' +
+		'>' +
+		'</div>',
+	'blockOpenModified':
+		'<div about="#mwt1" typeof="mw:Transclusion"' +
+			' data-mw="{&quot;id&quot;:&quot;mwt1&quot;,&quot;target&quot;:{&quot;wt&quot;:&quot;Test&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;Hello, globe!&quot;}}}"' +
+			' data-parsoid="{&quot;tsr&quot;:[18,40],&quot;src&quot;:&quot;{{Test|Hello, world!}}&quot;,&quot;dsr&quot;:[18,40,null,null]}"' +
+		'>' +
+		'</div>',
 	'blockContent': '<p about="#mwt1" data-parsoid="{}">Hello, world!</p>',
-	'inlineOpen':         '<span about="#mwt1" typeof="mw:Transclusion" data-mw="{&quot;id&quot;:&quot;mwt1&quot;,&quot;target&quot;:{&quot;wt&quot;:&quot;Inline&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;1,234&quot;}}}" data-parsoid="{&quot;tsr&quot;:[18,34],&quot;src&quot;:&quot;{{Inline|1,234}}&quot;,&quot;dsr&quot;:[18,34,null,null]}">',
-	'inlineOpenModified': '<span about="#mwt1" typeof="mw:Transclusion" data-mw="{&quot;id&quot;:&quot;mwt1&quot;,&quot;target&quot;:{&quot;wt&quot;:&quot;Inline&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;5,678&quot;}}}" data-parsoid="{&quot;tsr&quot;:[18,34],&quot;src&quot;:&quot;{{Inline|1,234}}&quot;,&quot;dsr&quot;:[18,34,null,null]}">',
+	'inlineOpen':
+		'<span about="#mwt1" typeof="mw:Transclusion"' +
+			' data-mw="{&quot;id&quot;:&quot;mwt1&quot;,&quot;target&quot;:{&quot;wt&quot;:&quot;Inline&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;1,234&quot;}}}"' +
+			' data-parsoid="{&quot;tsr&quot;:[18,34],&quot;src&quot;:&quot;{{Inline|1,234}}&quot;,&quot;dsr&quot;:[18,34,null,null]}"' +
+		'>',
+	'inlineOpenModified':
+		'<span about="#mwt1" typeof="mw:Transclusion"' +
+			' data-mw="{&quot;id&quot;:&quot;mwt1&quot;,&quot;target&quot;:{&quot;wt&quot;:&quot;Inline&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;5,678&quot;}}}"' +
+			' data-parsoid="{&quot;tsr&quot;:[18,34],&quot;src&quot;:&quot;{{Inline|1,234}}&quot;,&quot;dsr&quot;:[18,34,null,null]}"' +
+		'>',
 	'inlineContent': '$1,234.00',
 	'inlineClose': '</span>',
-	'mixed': '<link about="#mwt1" rel="mw:PageProp/Category" typeof="mw:Transclusion" data-mw="{&quot;id&quot;:&quot;mwt1&quot;,&quot;target&quot;:{&quot;wt&quot;:&quot;Inline&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;5,678&quot;}}}"><span about="#mwt1">Foo</span>',
-	'pairOne': '<p about="#mwt1" typeof="mw:Transclusion" data-mw="{&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;foo&quot;}}}" data-parsoid="1">foo</p>',
-	'pairTwo': '<p about="#mwt2" typeof="mw:Transclusion" data-mw="{&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;foo&quot;}}}" data-parsoid="2">foo</p>',
+	'mixed':
+		'<link about="#mwt1" rel="mw:PageProp/Category" typeof="mw:Transclusion"' +
+			' data-mw="{&quot;id&quot;:&quot;mwt1&quot;,&quot;target&quot;:{&quot;wt&quot;:&quot;Inline&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;5,678&quot;}}}"' +
+		'>' +
+		'<span about="#mwt1">Foo</span>',
+	'pairOne':
+		'<p about="#mwt1" typeof="mw:Transclusion"' +
+			' data-mw="{&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;foo&quot;}}}" data-parsoid="1"' +
+		'>foo</p>',
+	'pairTwo':
+		'<p about="#mwt2" typeof="mw:Transclusion"' +
+			' data-mw="{&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;foo&quot;}}}" data-parsoid="2"' +
+		'>foo</p>',
 	'meta':
-		'<link rel="mw:PageProp/Category" href="./Category:Page" about="#mwt1" typeof="mw:Transclusion" ' +
-			'data-mw="{&quot;target&quot;:{&quot;wt&quot;:&quot;Template:Echo&quot;,&quot;href&quot;:&quot;./Template:Echo&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;[[Category:Page]]\\n[[Category:Book]]&quot;}},&quot;i&quot;:0}">' +
+		'<link rel="mw:PageProp/Category" href="./Category:Page" about="#mwt1" typeof="mw:Transclusion"' +
+			' data-mw="{&quot;target&quot;:{&quot;wt&quot;:&quot;Template:Echo&quot;,&quot;href&quot;:&quot;./Template:Echo&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;[[Category:Page]]\\n[[Category:Book]]&quot;}},&quot;i&quot;:0}">' +
 		'<span about="#mwt1" data-parsoid="{}">\n</span>' +
 		'<link rel="mw:PageProp/Category" href="./Category:Book" about="#mwt1">'
 };
