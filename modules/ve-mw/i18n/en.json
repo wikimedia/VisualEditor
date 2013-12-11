@@ -109,7 +109,7 @@
 	"visualeditor-mweditmodesource-title": "Switch to source editing",
 	"visualeditor-mweditmodesource-warning": "You are about to switch to source editing.\nAny changes you've made to this document will be kept, but you will not be able switch back to VisualEditor without saving or reloading the page.\nDo you want to continue?",
 	"visualeditor-mwhieroinspector-title": "Hieroglyphics",
-	"visualeditor-mwmathinspector-title": "LaTeX",
+	"visualeditor-mwmathinspector-title": "Formula",
 	"visualeditor-notification-created": "\"$1\" has been created.",
 	"visualeditor-notification-restored": "\"$1\" has been restored.",
 	"visualeditor-notification-saved": "Your changes to \"$1\" have been saved.",
