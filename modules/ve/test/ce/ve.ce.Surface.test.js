@@ -436,7 +436,7 @@ QUnit.test( 'onContentChange', function ( assert ) {
 			};
 
 		surface.getView().onContentChange( view, prev, next );
-		txs = surface.getModel().getHistory()[0].stack;
+		txs = surface.getModel().getHistory()[0].transactions;
 		ops = [];
 		for ( i = 0; i < txs.length; i++ ) {
 			ops.push( txs[i].getOperations() );
@@ -736,7 +736,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 		}
 		view.afterPaste();
 
-		txs = model.getHistory()[0].stack;
+		txs = model.getHistory()[0].transactions;
 		ops = [];
 		for ( i = 0; i < txs.length; i++ ) {
 			ops.push( txs[i].getOperations() );

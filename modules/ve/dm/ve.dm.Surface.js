@@ -23,8 +23,8 @@ ve.dm.Surface = function VeDmSurface( doc ) {
 	this.metaList = new ve.dm.MetaList( this );
 	this.selection = new ve.Range( 1, 1 );
 	this.selectedNodes = {};
-	this.smallStack = [];
-	this.bigStack = [];
+	this.newTransactions = [];
+	this.undoStack = [];
 	this.undoIndex = 0;
 	this.historyTrackingInterval = null;
 	this.insertionAnnotations = new ve.dm.AnnotationSet( this.documentModel.getStore() );
@@ -132,8 +132,8 @@ ve.dm.Surface.prototype.purgeHistory = function () {
 		return;
 	}
 	this.selection = new ve.Range( 0, 0 );
-	this.smallStack = [];
-	this.bigStack = [];
+	this.newTransactions = [];
+	this.undoStack = [];
 	this.undoIndex = 0;
 };
 
@@ -144,10 +144,10 @@ ve.dm.Surface.prototype.purgeHistory = function () {
  * @returns {Object[]} List of transaction stacks
  */
 ve.dm.Surface.prototype.getHistory = function () {
-	if ( this.smallStack.length > 0 ) {
-		return this.bigStack.slice( 0 ).concat( [{ 'stack': this.smallStack.slice( 0 ) }] );
+	if ( this.newTransactions.length > 0 ) {
+		return this.undoStack.slice( 0 ).concat( [{ 'transactions': this.newTransactions.slice( 0 ) }] );
 	} else {
-		return this.bigStack.slice( 0 );
+		return this.undoStack.slice( 0 );
 	}
 };
 
@@ -238,7 +238,7 @@ ve.dm.Surface.prototype.hasFutureState = function () {
  * @returns {boolean} Has a past state
  */
 ve.dm.Surface.prototype.hasPastState = function () {
-	return this.bigStack.length - this.undoIndex > 0 || !!this.smallStack.length;
+	return this.undoStack.length - this.undoIndex > 0 || !!this.newTransactions.length;
 };
 
 /**
@@ -290,7 +290,7 @@ ve.dm.Surface.prototype.getFragment = function ( range, noAutoSelect ) {
  */
 ve.dm.Surface.prototype.truncateUndoStack = function () {
 	if ( this.undoIndex ) {
-		this.bigStack = this.bigStack.slice( 0, this.bigStack.length - this.undoIndex );
+		this.undoStack = this.undoStack.slice( 0, this.undoStack.length - this.undoIndex );
 		this.undoIndex = 0;
 		this.emit( 'history' );
 	}
@@ -478,7 +478,7 @@ ve.dm.Surface.prototype.changeInternal = function ( transactions, selection, ski
 			if ( !transactions[i].isNoOp() ) {
 				if ( !skipUndoStack ) {
 					this.truncateUndoStack();
-					this.smallStack.push( transactions[i] );
+					this.newTransactions.push( transactions[i] );
 				}
 				// The .commit() call below indirectly invokes setSelection()
 				this.documentModel.commit( transactions[i] );
@@ -525,12 +525,12 @@ ve.dm.Surface.prototype.breakpoint = function ( selection ) {
 	if ( !this.enabled ) {
 		return false;
 	}
-	if ( this.smallStack.length > 0 ) {
-		this.bigStack.push( {
-			stack: this.smallStack,
-			selection: selection || this.selection.clone()
+	if ( this.newTransactions.length > 0 ) {
+		this.undoStack.push( {
+			'transactions': this.newTransactions,
+			'selection': selection || this.selection.clone()
 		} );
-		this.smallStack = [];
+		this.newTransactions = [];
 		this.emit( 'history' );
 		return true;
 	}
@@ -552,12 +552,12 @@ ve.dm.Surface.prototype.undo = function () {
 	this.breakpoint();
 	this.undoIndex++;
 
-	item = this.bigStack[this.bigStack.length - this.undoIndex];
+	item = this.undoStack[this.undoStack.length - this.undoIndex];
 	if ( item ) {
 		// Apply reversed transactions in reversed order, and translate the selection accordingly
 		selection = item.selection;
-		for ( i = item.stack.length - 1; i >= 0; i-- ) {
-			transaction = item.stack[i].reversed();
+		for ( i = item.transactions.length - 1; i >= 0; i-- ) {
+			transaction = item.transactions[i].reversed();
 			selection = transaction.translateRange( selection );
 			transactions.push( transaction );
 		}
@@ -580,10 +580,10 @@ ve.dm.Surface.prototype.redo = function () {
 
 	this.breakpoint();
 
-	item = this.bigStack[this.bigStack.length - this.undoIndex];
+	item = this.undoStack[this.undoStack.length - this.undoIndex];
 	if ( item ) {
-		// ve.copy( item.stack ) invokes .clone() on each transaction in item.stack
-		this.changeInternal( ve.copy( item.stack ), item.selection, true );
+		// ve.copy( item.transactions ) invokes .clone() on each transaction in item.transactions
+		this.changeInternal( ve.copy( item.transactions ), item.selection, true );
 		this.undoIndex--;
 		this.emit( 'history' );
 	}

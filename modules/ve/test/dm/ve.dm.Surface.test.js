@@ -64,17 +64,25 @@ QUnit.test( 'breakpoint', 7, function ( assert ) {
 	assert.equal( surface.breakpoint(), false, 'Returns false if no transactions applied' );
 
 	surface.change( tx, selection );
-	assert.deepEqual( surface.bigStack, [], 'Big stack data matches before breakpoint' );
-	assert.deepEqual( surface.smallStack, [tx], 'Small stack data matches before breakpoint' );
+	assert.deepEqual( surface.undoStack, [], 'Undo stack data matches before breakpoint' );
+	assert.deepEqual( surface.newTransactions, [tx], 'New transactions match before breakpoint' );
 
 	assert.equal( surface.breakpoint(), true, 'Returns true after transaction applied' );
 	assert.equal( surface.breakpoint(), false, 'Returns false if no transactions applied since last breakpoint' );
 
-	assert.deepEqual( surface.bigStack, [ {
-			'stack': [tx],
+	assert.deepEqual( surface.undoStack, [ {
+			'transactions': [tx],
 			'selection': selection
 		} ],
-		'Big stack data matches after breakpoint'
+		'Undo stack data matches after breakpoint'
 	);
-	assert.deepEqual( surface.smallStack, [], 'Small stack data matches after breakpoint' );
+	assert.deepEqual( surface.newTransactions, [], 'New transactions match after breakpoint' );
 } );
+
+// TODO: ve.dm.Surface#getHistory
+// TODO: ve.dm.Surface#purgeHistory
+// TODO: ve.dm.Surface#hasFutureState
+// TODO: ve.dm.Surface#hasPastState
+// TODO: ve.dm.Surface#truncateUndoStack
+// TODO: ve.dm.Surface#undo
+// TODO: ve.dm.Surface#redo
