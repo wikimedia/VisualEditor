@@ -229,7 +229,7 @@ ve.ui.MWTransclusionDialog.prototype.teardown = function ( data ) {
 					}
 				},
 				{ 'type': '/mwTransclusionInline' }
-			] );
+			] ).collapseRangeToEnd().select();
 		}
 	}
 
