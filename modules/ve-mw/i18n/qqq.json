@@ -112,7 +112,7 @@
     "visualeditor-mweditmodesource-title": "Label for changing edit mode to source editing.",
     "visualeditor-mweditmodesource-warning": "Warning message show before changing edit mode to source editing.",
     "visualeditor-mwhieroinspector-title": "Used as title for hieroglyphics inspector.",
-    "visualeditor-mwmathinspector-title": "Used as title for MathInspector.\n\nSee [[w:LaTeX]].",
+    "visualeditor-mwmathinspector-title": "Title for the inspector to edit <nowiki><math></nowiki> formula blocks.",
     "visualeditor-notification-created": "Shown after a user creates a new page. Parameters:\n* $1 - a page name",
     "visualeditor-notification-restored": "Shown after a user restores a page to a previous revision. Parameters:\n* $1 is a page name.",
     "visualeditor-notification-saved": "Shown after a user saves a page. Parameters:\n* $1 - a page name",
