@@ -187,7 +187,7 @@ ve.ce.MWReferenceListNode.prototype.update = function () {
 
 			// Generate reference HTML from first item in key
 			modelNode = internalList.getItemNode( firstNode.getAttribute( 'listIndex' ) );
-			if ( modelNode.length ) {
+			if ( modelNode && modelNode.length ) {
 				viewNode = new ve.ce.InternalItemNode( modelNode );
 				// HACK: PHP parser doesn't wrap single lines in a paragraph
 				if ( viewNode.$element.children().length === 1 && viewNode.$element.children( 'p' ).length === 1 ) {
