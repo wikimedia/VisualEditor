@@ -701,9 +701,7 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 	// Clone the elements in the slice
 	slice.data.cloneElements();
 
-	ve.dm.converter.store = slice.getStore();
-	ve.dm.converter.internalList = slice.getInternalList();
-	ve.dm.converter.getDomSubtreeFromData( slice.getData(), this.$pasteTarget[0] );
+	ve.dm.converter.getDomSubtreeFromModel( slice, this.$pasteTarget[0] );
 
 	// Some browsers strip out spans when they match the styling of the
 	// paste target (e.g. plain spans) so we must protect against this
@@ -842,9 +840,13 @@ ve.ce.Surface.prototype.beforePaste = function ( e ) {
 		}
 		context.push( { 'type': '/' + context[0].type } );
 
-		ve.dm.converter.store = doc.getStore();
-		ve.dm.converter.internalList = doc.getInternalList();
-		ve.dm.converter.getDomSubtreeFromData( context, this.$pasteTarget[0] );
+		ve.dm.converter.getDomSubtreeFromModel(
+			new ve.dm.Document(
+				new ve.dm.ElementLinearData( doc.getStore(), context ),
+				doc.getHtmlDocument(), undefined, doc.getInternalList()
+			),
+			this.$pasteTarget[0]
+		);
 
 		// Giving the paste target focus too late can cause problems in FF (!?)
 		// so do it up here.
