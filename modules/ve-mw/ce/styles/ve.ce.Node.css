@@ -51,6 +51,7 @@
 	margin: 5px;
 }
 
+/* @noflip */
 figure[typeof*='mw:Image'].mw-halign-right {
 	clear: right;
 	float: right;
@@ -61,6 +62,7 @@ figure[typeof*='mw:Image'].mw-halign-center {
 	margin-right: auto;
 }
 
+/* @noflip */
 figure[typeof*='mw:Image'].mw-halign-left {
 	clear: left;
 	float: left;

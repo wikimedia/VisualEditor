@@ -237,18 +237,6 @@ ve.ce.MWBlockImageNode.prototype.updateSize = function ( height, width ) {
 			'width': width + 5
 		} );
 
-	// A image that is centered must have dimensions
-	// to its node div wrapper
-	if ( this.alignment === 'center' ) {
-		this.$element
-			.css( {
-				'width': width
-			} );
-	} else {
-		this.$element.css( { 'width': 'auto' } );
-	}
-
-
 	// update:
 	this.size = {
 		height: height,
@@ -266,9 +254,9 @@ ve.ce.MWBlockImageNode.prototype.getCssClass = function ( type, alignment ) {
 	// Default is different between RTL and LTR wikis:
 	if ( type === 'default' && alignment === 'default' ) {
 		if ( this.$element.css( 'direction' ) === 'rtl' ) {
-			return 'tleft';
+			return 'mw-halign-left';
 		} else {
-			return 'tright';
+			return 'mw-halign-right';
 		}
 	} else {
 		return this.constructor.static.cssClasses[type][alignment];
