@@ -108,7 +108,7 @@
     "visualeditor-mweditmodesource-title": "切换至源代码编辑",
     "visualeditor-mweditmodesource-warning": "您将要切换到代码编辑。\n将保留对此文档所做的任何更改，但您将不能在不保存或重新加载的情况下切换回可视化编辑器。\n您要继续吗？",
     "visualeditor-mwhieroinspector-title": "埃及象形文",
-    "visualeditor-mwmathinspector-title": "LaTeX",
+    "visualeditor-mwmathinspector-title": "公式",
     "visualeditor-notification-created": "“$1”已创建。",
     "visualeditor-notification-restored": "“$1”已恢复。",
     "visualeditor-notification-saved": "您对“$1”的修改已保存。",

@@ -7,7 +7,8 @@
             "Shanmugamp7",
             "Veeven",
             "Visdaviva",
-            "மதனாஹரன்"
+            "மதனாஹரன்",
+            "రహ్మానుద్దీన్"
         ]
     },
     "tooltip-ca-createsource": "ఈ పేజీ మూలపాఠ్యము సృష్టించు",
@@ -45,6 +46,7 @@
     "visualeditor-dialog-meta-languages-code-label": "భాష సంకేతం",
     "visualeditor-dialog-meta-languages-label": "భాషలు",
     "visualeditor-dialog-meta-languages-link-label": "లింకు చేసిన పేజీ",
+    "visualeditor-dialog-meta-languages-name-label": "భాష",
     "visualeditor-dialog-meta-languages-readonlynote": "ఈ పేజీకి లింకుచేసిన ఇతర భాషల పేజీల జాబితా. ప్రస్తుతము దీనిని మూలరూపంలోమాత్రమే సవరించవచ్చు",
     "visualeditor-dialog-meta-languages-section": "భాషలు",
     "visualeditor-dialog-meta-title": "పేజీ అమరికలు",
@@ -86,6 +88,7 @@
     "visualeditor-linkinspector-suggest-new-page": "కొత్త పేజీ",
     "visualeditor-media-input-placeholder": "మీడియాకై వెతకండి",
     "visualeditor-meta-tool": "పేజీ అమరికలు",
+    "visualeditor-mwmathinspector-title": "సూత్రము",
     "visualeditor-savedialog-label-save": "పేజీని భద్రపరచు",
     "visualeditor-savedialog-label-warning": "హెచ్చరిక",
     "visualeditor-savedialog-title-conflict": "సంఘర్షణ",
@@ -93,6 +96,7 @@
     "visualeditor-savedialog-title-review": "మీ మార్పులను సమీక్షించండి",
     "visualeditor-savedialog-title-save": "మీ మార్పులను భద్రపరచండి",
     "visualeditor-toolbar-cancel": "రద్దుచేయి",
+    "visualeditor-toolbar-insert": "చొప్పించు",
     "visualeditor-toolbar-savedialog": "పేజీని భద్రపరచు",
     "visualeditor-wikitext-warning-link": "సహాయం: వికీ మార్కప్"
 }

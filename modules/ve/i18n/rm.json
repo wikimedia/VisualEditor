@@ -1,0 +1,17 @@
+{
+    "@metadata": {
+        "authors": [
+            "Kazu89"
+        ]
+    },
+    "visualeditor": "VisualEditor",
+    "visualeditor-annotationbutton-bold-tooltip": "Grass",
+    "visualeditor-annotationbutton-italic-tooltip": "Cursiv",
+    "visualeditor-annotationbutton-language-tooltip": "Lingua",
+    "visualeditor-annotationbutton-link-tooltip": "Colliaziun",
+    "visualeditor-annotationbutton-strikethrough-tooltip": "Stritgà",
+    "visualeditor-annotationbutton-underline-tooltip": "Suttastritgà",
+    "visualeditor-clearbutton-tooltip": "Allontanar las formataziuns",
+    "visualeditor-dialog-action-cancel": "Interrumper",
+    "visualeditor-dialog-action-goback": "Ir enavos"
+}
