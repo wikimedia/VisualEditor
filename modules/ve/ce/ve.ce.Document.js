@@ -268,3 +268,34 @@ ve.ce.Document.prototype.getRelativeRange = function ( range, direction, unit, e
 		return new ve.Range( contentOrSlugOffset );
 	}
 };
+
+/**
+ * Get the directionality of some range.
+ *
+ * @method
+ * @param {ve.Range} range Selection range
+ * @returns {String} 'rtl' or 'ltr' as response
+ */
+ve.ce.Document.prototype.getDirectionFromRange = function ( range ) {
+	var effectiveNode,
+		selectedNodes = this.selectNodes( range, 'covered' );
+
+	if ( selectedNodes.length > 1 ) {
+		// Selection of multiple nodes
+		// Get the common parent node
+		effectiveNode = this.selectNodes( range, 'siblings' )[0].node.getParent();
+	} else {
+		// selection of a single node
+		effectiveNode = selectedNodes[0].node;
+
+		while ( effectiveNode.isContent() ) {
+			// This means that we're in a leaf node, like TextNode
+			// those don't read the directionality properly, we will
+			// have to climb up the parentage chain until we find a
+			// wrapping node like paragraph or list item, etc.
+			effectiveNode = effectiveNode.parent;
+		}
+	}
+
+	return effectiveNode.$element.css( 'direction' );
+};
