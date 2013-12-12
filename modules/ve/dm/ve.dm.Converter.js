@@ -1072,19 +1072,30 @@ ve.dm.Converter.prototype.isDomAllMetaOrWhitespace = function ( domElements, exc
 ve.dm.Converter.prototype.getDomFromModel = function ( model ) {
 	var doc = ve.createDocumentFromHtml( '' );
 
+	this.getDomSubtreeFromModel( model, doc.body );
+
+	return doc;
+};
+
+/**
+ * Convert document model to an HTML DOM subtree and add it to a container element.
+ *
+ * @method
+ * @param {ve.dm.Document} model Document model
+ * @param {HTMLElement} container DOM element to add the generated elements to. Should be empty.
+ */
+ve.dm.Converter.prototype.getDomSubtreeFromModel = function ( model, container ) {
 	// Set up the converter state
 	this.documentData = model.getFullData();
 	this.store = model.getStore();
 	this.internalList = model.getInternalList();
 
-	this.getDomSubtreeFromData( this.documentData, doc.body, model.getInnerWhitespace() );
+	this.getDomSubtreeFromData( this.documentData, container, model.getInnerWhitespace() );
 
 	// Clear the state
 	this.documentData = null;
 	this.store = null;
 	this.internalList = null;
-
-	return doc;
 };
 
 /**
