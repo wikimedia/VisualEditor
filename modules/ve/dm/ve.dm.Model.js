@@ -117,7 +117,7 @@ ve.dm.Model.static.matchFunction = null;
  *
  * This function may return a single linear model element, or an array of balanced linear model
  * data. If this function needs to recursively convert a DOM node (e.g. a child of one of the
- * DOM elements passed in), it can call converter.getDataFromDom( domElement ). Note that
+ * DOM elements passed in), it can call converter.getDataFromDomSubtree( domElement ). Note that
  * if an array is returned, the converter will not descend into the DOM node's children; the model
  * will be assumed to have handled those children.
  *
