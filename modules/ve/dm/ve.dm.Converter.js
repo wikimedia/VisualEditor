@@ -258,7 +258,7 @@ ve.dm.Converter.prototype.getHtmlDocument = function () {
 };
 
 /**
- * Get the current conversion context. This is the recursion state of getDataFromDom().
+ * Get the current conversion context. This is the recursion state of getDataFromDomSubtree().
  *
  * @method
  * @returns {Object|null} Context object, or null if not converting
@@ -400,7 +400,7 @@ ve.dm.Converter.prototype.getModelFromDom = function ( doc ) {
 	// Generate data
 	linearData = new ve.dm.FlatLinearData(
 		store,
-		this.getDataFromDom( doc.body )
+		this.getDataFromDomSubtree( doc.body )
 	);
 	refData = this.internalList.convertToData( this, doc );
 	linearData.batchSplice( linearData.getLength(), 0, refData );
@@ -430,7 +430,7 @@ ve.dm.Converter.prototype.getModelFromDom = function ( doc ) {
 ve.dm.Converter.prototype.getDataFromDomClean = function ( domElement, wrapperElement, annotationSet ) {
 	var result, contextStack = this.contextStack;
 	this.contextStack = [];
-	result = this.getDataFromDom( domElement, wrapperElement, annotationSet );
+	result = this.getDataFromDomSubtree( domElement, wrapperElement, annotationSet );
 	this.contextStack = contextStack;
 	return result;
 };
@@ -445,7 +445,7 @@ ve.dm.Converter.prototype.getDataFromDomClean = function ( domElement, wrapperEl
  * @param {ve.dm.AnnotationSet} [annotationSet] Override the set of annotations to use
  * @returns {Array} Linear model data
  */
-ve.dm.Converter.prototype.getDataFromDom = function ( domElement, wrapperElement, annotationSet ) {
+ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapperElement, annotationSet ) {
 	/**
 	 * Add whitespace to an element at a specific offset.
 	 *
@@ -654,7 +654,7 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, wrapperElement
 					childAnnotations = context.annotations.clone();
 					childAnnotations.push( annotation );
 
-					childDataElements = this.getDataFromDom( childDomElement, undefined, childAnnotations );
+					childDataElements = this.getDataFromDomSubtree( childDomElement, undefined, childAnnotations );
 					if ( !childDataElements.length || isAllInstanceOf( childDataElements, ve.dm.AlienMetaItem ) ) {
 						// Empty annotation, create a meta item
 						childDataElements = this.createDataElements( ve.dm.AlienMetaItem, childDomElements );
@@ -754,7 +754,7 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, wrapperElement
 						// Opening and closing elements are added by the recursion too
 						outputWrappedMetaItems( 'restore' );
 						data = data.concat(
-							this.getDataFromDom( childDomElement, childDataElements[0],
+							this.getDataFromDomSubtree( childDomElement, childDataElements[0],
 								new ve.dm.AnnotationSet( this.store )
 							)
 						);
