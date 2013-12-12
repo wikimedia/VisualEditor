@@ -1,4 +1,11 @@
 <?php
+/**
+ * VisualEditor i18n shim file to load the JSON equivalents.
+ *
+ * See https://www.mediawiki.org/wiki/Requests_for_comment/Localisation_format
+ *
+ * @file
+ */
 $messages = array();
 array_map( function ( $dir ) use ( &$messages ) {
 	$files = glob( __DIR__ . "/$dir/*.json" );
