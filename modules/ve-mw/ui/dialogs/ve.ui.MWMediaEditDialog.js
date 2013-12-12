@@ -37,21 +37,51 @@ ve.ui.MWMediaEditDialog.static.titleMessage = 'visualeditor-dialog-media-title';
 ve.ui.MWMediaEditDialog.static.icon = 'picture';
 
 ve.ui.MWMediaEditDialog.static.toolbarGroups = [
+	// History
 	{ 'include': [ 'undo', 'redo' ] },
-	{ 'include': [ 'bold', 'italic', 'link', 'clear' ] },
+	// No formatting
+	/* {
+		'type': 'menu',
+		'include': [ { 'group': 'format' } ],
+		'promote': [ 'paragraph' ],
+		'demote': [ 'preformatted', 'heading1' ]
+	},*/
+	// Style
+	{
+		'type': 'list',
+		'icon': 'text-style',
+		'include': [ { 'group': 'textStyle' }, 'clear' ],
+		'promote': [ 'bold', 'italic' ],
+		'demote': [ 'strikethrough', 'code',  'underline', 'clear' ]
+	},
+	// Link
+	{ 'include': [ 'link' ] },
+	// No structure
+	/* {
+		'type': 'bar',
+		'include': [ 'number', 'bullet', 'outdent', 'indent' ]
+	},*/
+	// Insert
 	{
 		'include': '*',
-		'exclude': [
-			{ 'group': 'format' },
-			{ 'group': 'structure' },
-			'referenceList'
-		]
+		'exclude': [ { 'group': 'format' }, { 'group': 'structure' }, 'referenceList' ],
+		'label': 'visualeditor-toolbar-insert',
+		'demote': [ 'specialcharacter' ]
 	}
 ];
 
+
 ve.ui.MWMediaEditDialog.static.surfaceCommands = [
-	'undo', 'redo', 'bold', 'italic', 'link', 'clear',
-	'underline', 'subscript', 'superscript'
+	'undo',
+	'redo',
+	'bold',
+	'italic',
+	'link',
+	'clear',
+	'underline',
+	'subscript',
+	'superscript',
+	'pasteSpecial'
 ];
 
 /* Methods */
