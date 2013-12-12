@@ -698,6 +698,9 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 
 	pasteData = slice.data.clone();
 
+	// Clone the elements in the slice
+	slice.data.cloneElements();
+
 	ve.dm.converter.store = slice.getStore();
 	ve.dm.converter.internalList = slice.getInternalList();
 	ve.dm.converter.getDomSubtreeFromData( slice.getData(), this.$pasteTarget[0] );
@@ -706,9 +709,6 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 	// paste target (e.g. plain spans) so we must protect against this
 	// by adding a dummy class, which we can remove after paste.
 	this.$pasteTarget.find( 'span' ).addClass( 've-pasteProtect' );
-
-	// Clone the elements in the slice, but only after the DM HTML has been built
-	slice.data.cloneElements();
 
 	clipboardItem = { 'slice': slice, 'hash': null };
 	clipboardIndex = this.clipboard.push( clipboardItem ) - 1;

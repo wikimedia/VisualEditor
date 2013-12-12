@@ -80,8 +80,10 @@ ve.dm.MWTransclusionNode.static.toDataElement = function ( domElements, converte
 		}
 	};
 
-	index = this.storeGeneratedContents( dataElement, domElements, converter.getStore() );
-	dataElement.attributes.originalIndex = index;
+	if ( !domElements[0].getAttribute( 'data-ve-no-generated-contents' ) ) {
+		index = this.storeGeneratedContents( dataElement, domElements, converter.getStore() );
+		dataElement.attributes.originalIndex = index;
+	}
 
 	return dataElement;
 };
@@ -109,6 +111,11 @@ ve.dm.MWTransclusionNode.static.toDomElements = function ( dataElement, doc, con
 		// reconstructed data-mw property.
 		el.setAttribute( 'typeof', 'mw:Transclusion' );
 		el.setAttribute( 'data-mw', JSON.stringify( dataElement.attributes.mw ) );
+		// Mark the element as not having a generated contents with it in case it is
+		// inserted into another editor (e.g. via paste).
+		el.setAttribute( 'data-ve-no-generated-contents', true );
+		// TODO: Include last-known generated contents in the output for rich
+		// paste into a non-VE editor
 		return [ el ];
 	}
 };
@@ -210,6 +217,16 @@ ve.dm.MWTransclusionNode.prototype.getWikitext = function () {
 		}
 	}
 	return wikitext;
+};
+
+/** */
+ve.dm.MWTransclusionNode.prototype.getClonedElement = function () {
+	var clone = ve.dm.LeafNode.prototype.getClonedElement.call( this );
+	delete clone.attributes.originalMw;
+	delete clone.attributes.originalDomElements;
+	// Remove about attribute to prevent about grouping of duplicated transclusions
+	this.constructor.static.removeHtmlAttribute( clone, 'about' );
+	return clone;
 };
 
 /* Concrete subclasses */

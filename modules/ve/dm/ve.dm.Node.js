@@ -286,7 +286,7 @@ ve.dm.Node.prototype.getClonedElement = function () {
 			delete clone.internal;
 		}
 	}
-	delete clone.htmlAttributes;
+	this.constructor.static.removeHtmlAttribute( clone, 'data-parsoid' );
 	return clone;
 };
 
