@@ -20,7 +20,7 @@ end
 
 When(/^I click Reference$/) do
   on(VisualEditorPage) do |page|
-    page.more_menu_element.when_present.click
+    page.insert_menu_element.when_present.click
     page.ve_references_element.when_present.click
   end
 end
@@ -36,6 +36,6 @@ Then(/^I should see Insert reference button enabled$/) do
   on(VisualEditorPage).insert_reference_element.should be_visible
 end
 
-Then(/^link to More menu should be visible$/) do
-  on(VisualEditorPage).more_menu_element.should be_visible
+Then(/^link to Insert menu should be visible$/) do
+  on(VisualEditorPage).insert_menu_element.should be_visible
 end

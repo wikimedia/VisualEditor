@@ -1,6 +1,6 @@
 When(/^I click Media$/) do
   on(VisualEditorPage) do |page|
-    page.more_menu_element.when_present.click
+    page.insert_menu_element.when_present.click
     page.ve_media_menu_element.when_present.click
   end
 end
