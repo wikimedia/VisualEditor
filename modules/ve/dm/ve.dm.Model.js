@@ -271,26 +271,34 @@ ve.dm.Model.static.getMatchRdfaTypes = function () {
 /**
  * Remove a specified HTML attribute from all DOM elements in the model.
  *
- * TODO: recurse into children
- *
  * @static
  * @param {Object} dataElement Data element
  * @param {string} attribute Attribute name
  */
 ve.dm.Model.static.removeHtmlAttribute = function ( dataElement, attribute ) {
-	var i, htmlAttributes = dataElement.htmlAttributes;
-	if ( htmlAttributes ) {
-		for ( i = 0; i < htmlAttributes.length; i++ ) {
-			delete htmlAttributes[i].values[attribute];
-			if ( ve.isEmptyObject( htmlAttributes[i].values ) ) {
-				delete htmlAttributes[i].values;
+	function removeAttributeRecursive( children ) {
+		var i;
+		for ( i = 0; i < children.length; i++ ) {
+			delete children[i].values[attribute];
+			if ( ve.isEmptyObject( children[i].values ) ) {
+				delete children[i].values;
 			}
-			if ( ve.isEmptyObject( htmlAttributes[i] ) ) {
-				htmlAttributes.splice( i, 1 );
+			if ( children[i].children ) {
+				removeAttributeRecursive( children[i].children );
+				if ( !children[i].children.length ) {
+					delete children[i].children;
+				}
+			}
+			if ( ve.isEmptyObject( children[i] ) ) {
+				children.splice( i, 1 );
 				i--;
 			}
 		}
-		if ( !htmlAttributes.length ) {
+	}
+
+	if ( dataElement.htmlAttributes ) {
+		removeAttributeRecursive( dataElement.htmlAttributes );
+		if ( !dataElement.htmlAttributes.length ) {
 			delete dataElement.htmlAttributes;
 		}
 	}
