@@ -36,15 +36,52 @@ ve.ui.MWReferenceDialog.static.titleMessage = 'visualeditor-dialog-reference-tit
 ve.ui.MWReferenceDialog.static.icon = 'reference';
 
 ve.ui.MWReferenceDialog.static.toolbarGroups = [
+	// History
 	{ 'include': [ 'undo', 'redo' ] },
-	{ 'include': [ 'bold', 'italic', 'link', 'clear' ] },
-	{ 'include': [ 'number', 'bullet', 'outdent', 'indent' ] },
-	{ 'include': '*', 'exclude': [ { 'group': 'format' }, 'reference', 'referenceList' ] }
+	// No formatting
+	/* {
+		'type': 'menu',
+		'include': [ { 'group': 'format' } ],
+		'promote': [ 'paragraph' ],
+		'demote': [ 'preformatted', 'heading1' ]
+	},*/
+	// Style
+	{
+		'type': 'list',
+		'icon': 'text-style',
+		'include': [ { 'group': 'textStyle' }, 'clear' ],
+		'promote': [ 'bold', 'italic' ],
+		'demote': [ 'strikethrough', 'code',  'underline', 'clear' ]
+	},
+	// Link
+	{ 'include': [ 'link' ] },
+	// Structure
+	{
+		'type': 'bar',
+		'include': [ 'number', 'bullet', 'outdent', 'indent' ]
+	},
+	// Insert
+	{
+		'include': '*',
+		'exclude': [ { 'group': 'format' }, 'reference', 'referenceList' ],
+		'label': 'visualeditor-toolbar-insert',
+		'demote': [ 'specialcharacter' ]
+	}
 ];
 
 ve.ui.MWReferenceDialog.static.surfaceCommands = [
-	'undo', 'redo', 'bold', 'italic', 'link', 'clear',
-	'underline', 'subscript', 'superscript'
+	'undo',
+	'redo',
+	'bold',
+	'italic',
+	'link',
+	'clear',
+	'underline',
+	'subscript',
+	'superscript',
+	'indent',
+	'outdent',
+	'pasteSpecial'
 ];
 
 /* Methods */
