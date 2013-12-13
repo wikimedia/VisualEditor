@@ -31,8 +31,10 @@ visualeditor-inspector-close-tooltip
 visualeditor-inspector-remove-tooltip
 visualeditor-languages-tool
 visualeditor-languageinspector-title
+visualeditor-languageinspector-widget-changelang
 visualeditor-languageinspector-widget-label-direction
 visualeditor-languageinspector-widget-label-langcode
+visualeditor-languageinspector-widget-label-language
 visualeditor-languageinspector-block-tooltip-rtldirection
 visualeditor-linkinspector-title
 visualeditor-listbutton-bullet-tooltip

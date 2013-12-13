@@ -83,8 +83,6 @@
     "visualeditor-formatdropdown-format-mw-heading4": "2단계 하위 문단 제목",
     "visualeditor-formatdropdown-format-mw-heading5": "3단계 하위 문단 제목",
     "visualeditor-formatdropdown-format-mw-heading6": "4단계 하위 문단 제목",
-    "visualeditor-languageinspector-widget-changelang": "언어 바꾸기",
-    "visualeditor-languageinspector-widget-label-language": "언어",
     "visualeditor-linkinspector-illegal-title": "잘못된 문서 제목",
     "visualeditor-linkinspector-suggest-external-link": "바깥 링크",
     "visualeditor-linkinspector-suggest-matching-page": "일치하는 문서",

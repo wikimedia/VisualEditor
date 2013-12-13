@@ -27,8 +27,10 @@
     "visualeditor-inspector-close-tooltip": "Uždaryti",
     "visualeditor-inspector-remove-tooltip": "Pašalinti",
     "visualeditor-languageinspector-title": "Kalba",
+    "visualeditor-languageinspector-widget-changelang": "Keisti kalbą",
     "visualeditor-languageinspector-widget-label-direction": "Kryptis",
     "visualeditor-languageinspector-widget-label-langcode": "Kalbos kodas",
+    "visualeditor-languageinspector-widget-label-language": "Kalba",
     "visualeditor-languageinspector-block-tooltip-rtldirection": ": Dešinės į kairę",
     "visualeditor-linkinspector-title": "Nuoroda"
 }

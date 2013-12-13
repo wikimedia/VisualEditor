@@ -23,5 +23,6 @@
     "visualeditor-historybutton-undo-tooltip": "Hamoana ny fanovana",
     "visualeditor-inspector-close-tooltip": "Hidiana",
     "visualeditor-inspector-remove-tooltip": "Hanala",
-    "visualeditor-languageinspector-title": "Fiteny"
+    "visualeditor-languageinspector-title": "Fiteny",
+    "visualeditor-languageinspector-widget-label-language": "Fiteny"
 }
