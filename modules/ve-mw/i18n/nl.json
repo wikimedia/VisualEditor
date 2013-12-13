@@ -153,7 +153,6 @@
     "visualeditor-saveerror": "Fout tijdens het opslaan van gegevens naar de server: $1.",
     "visualeditor-serializeerror": "Fout tijdens het laden van gegevens van de server: $1",
     "visualeditor-toolbar-cancel": "Annuleren",
-    "visualeditor-toolbar-insert": "Invoegen",
     "visualeditor-toolbar-savedialog": "Pagina opslaan",
     "visualeditor-usernamespacepagelink": "Project:Gebruikersnaamruimte",
     "visualeditor-viewpage-savewarning": "Weet u zeker dat u wilt teruggaan naar de modus bekijken zonder eerst op te slaan?",

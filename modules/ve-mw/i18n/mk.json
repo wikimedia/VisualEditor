@@ -140,7 +140,6 @@
     "visualeditor-saveerror": "Грешка при зачувување на податоците во опслужувачот: $1.",
     "visualeditor-serializeerror": "Грешка при вчитувањето на податоците од опслужувачот: $1.",
     "visualeditor-toolbar-cancel": "Откажи",
-    "visualeditor-toolbar-insert": "Вметни",
     "visualeditor-toolbar-savedialog": "Зачувај страница",
     "visualeditor-usernamespacepagelink": "Project:Главен именски простор",
     "visualeditor-viewpage-savewarning": "Дали сте сигурни дека сакате да се вратите на прегледниот режим без да ги зачувате измените?",

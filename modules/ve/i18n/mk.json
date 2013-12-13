@@ -47,5 +47,6 @@
     "visualeditor-listbutton-number-tooltip": "Список со редни броеви",
     "visualeditor-specialcharacter-button-tooltip": "Специјален знак",
     "visualeditor-specialcharacterinspector-title": "Специјален знак",
-    "visualeditor-version-label": "Верзија"
+    "visualeditor-version-label": "Верзија",
+    "visualeditor-toolbar-insert": "Вметни"
 }

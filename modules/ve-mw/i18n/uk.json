@@ -151,7 +151,6 @@
     "visualeditor-saveerror": "Помилка при збереженні даних на сервер: $1.",
     "visualeditor-serializeerror": "Помилка при завантаженні даних із сервера: $1.",
     "visualeditor-toolbar-cancel": "Скасувати",
-    "visualeditor-toolbar-insert": "Вставити",
     "visualeditor-toolbar-savedialog": "Зберегти сторінку",
     "visualeditor-usernamespacepagelink": "Project:Простір назв користувача",
     "visualeditor-viewpage-savewarning": "Ви дійсно хочете повернутися до режиму перегляду без збереження змін?",

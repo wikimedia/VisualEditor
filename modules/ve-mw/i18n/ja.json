@@ -138,7 +138,6 @@
     "visualeditor-saveerror": "サーバーにデータを保存する際にエラーが発生しました: $1",
     "visualeditor-serializeerror": "サーバーからデータを読み込む際にエラーが発生しました: $1",
     "visualeditor-toolbar-cancel": "キャンセル",
-    "visualeditor-toolbar-insert": "挿入",
     "visualeditor-toolbar-savedialog": "ページを保存",
     "visualeditor-usernamespacepagelink": "Project:利用者名前空間",
     "visualeditor-viewpage-savewarning": "まだ保存していませんが、閲覧モードに本当に戻りますか?",

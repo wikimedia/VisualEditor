@@ -153,7 +153,6 @@
     "visualeditor-saveerror": "Ошибка при сохранении данных: $1.",
     "visualeditor-serializeerror": "Ошибка при загрузке данных с сервера: $1",
     "visualeditor-toolbar-cancel": "Отмена",
-    "visualeditor-toolbar-insert": "Вставить",
     "visualeditor-toolbar-savedialog": "Записать страницу",
     "visualeditor-usernamespacepagelink": "Project:Личное пространство",
     "visualeditor-viewpage-savewarning": "Вы точно хотите вернуться в режим просмотра, не сохранив изменения?",
