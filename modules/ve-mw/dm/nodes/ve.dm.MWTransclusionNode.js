@@ -90,14 +90,16 @@ ve.dm.MWTransclusionNode.static.toDataElement = function ( domElements, converte
 
 ve.dm.MWTransclusionNode.static.toDomElements = function ( dataElement, doc, converter ) {
 	var el,
-		index = converter.getStore().indexOfHash( OO.getHash( this.getHashObject( dataElement ) ) ),
+		index = converter.getStore().indexOfHash( OO.getHash( [ this.getHashObject( dataElement ), undefined ] ) ),
 		originalMw = dataElement.attributes.originalMw;
 
 	// If the transclusion is unchanged just send back the
 	// original DOM elements so selser can skip over it
 	if (
-		index === dataElement.attributes.originalIndex ||
-		( originalMw && ve.compare( dataElement.attributes.mw, JSON.parse( originalMw ) ) )
+		dataElement.attributes.originalDomElements && (
+			index === dataElement.attributes.originalIndex ||
+			( originalMw && ve.compare( dataElement.attributes.mw, JSON.parse( originalMw ) ) )
+		)
 	) {
 		// The object in the store is also used for CE rendering so return a copy
 		return ve.copyDomElements( dataElement.attributes.originalDomElements, doc );
