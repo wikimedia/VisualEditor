@@ -189,6 +189,42 @@ ve.init.mw.Target = function VeInitMwTarget( $container, pageName, revisionId ) 
 
 OO.inheritClass( ve.init.mw.Target, ve.init.Target );
 
+/* Static Properties */
+
+ve.init.mw.Target.static.toolbarGroups = [
+	// History
+	{ 'include': [ 'undo', 'redo' ] },
+	// Format
+	{
+		'type': 'menu',
+		'include': [ { 'group': 'format' } ],
+		'promote': [ 'paragraph' ],
+		'demote': [ 'preformatted', 'heading1' ]
+	},
+	// Style
+	{
+		'type': 'list',
+		'icon': 'text-style',
+		'include': [ { 'group': 'textStyle' }, 'clear' ],
+		'promote': [ 'bold', 'italic' ],
+		'demote': [ 'strikethrough', 'code',  'underline', 'clear' ]
+	},
+	// Link
+	{ 'include': [ 'link' ] },
+	// Structure
+	{
+		'type': 'bar',
+		'include': [ 'number', 'bullet', 'outdent', 'indent' ]
+	},
+	// Insert
+	{
+		'include': '*',
+		'label': 'visualeditor-toolbar-insert',
+		'demote': [ 'specialcharacter' ]
+	}
+
+];
+
 /* Static Methods */
 
 /**
