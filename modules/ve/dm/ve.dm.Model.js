@@ -279,9 +279,11 @@ ve.dm.Model.static.removeHtmlAttribute = function ( dataElement, attribute ) {
 	function removeAttributeRecursive( children ) {
 		var i;
 		for ( i = 0; i < children.length; i++ ) {
-			delete children[i].values[attribute];
-			if ( ve.isEmptyObject( children[i].values ) ) {
-				delete children[i].values;
+			if ( children[i].values ) {
+				delete children[i].values[attribute];
+				if ( ve.isEmptyObject( children[i].values ) ) {
+					delete children[i].values;
+				}
 			}
 			if ( children[i].children ) {
 				removeAttributeRecursive( children[i].children );
