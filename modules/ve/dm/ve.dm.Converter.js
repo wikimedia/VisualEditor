@@ -613,6 +613,9 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 		childDomElement = domElement.childNodes[i];
 		switch ( childDomElement.nodeType ) {
 			case Node.ELEMENT_NODE:
+				if ( childDomElement.getAttribute( 'data-ve-ignore' ) ) {
+					continue;
+				}
 				aboutGroup = getAboutGroup( childDomElement );
 				modelName = this.modelRegistry.matchElement( childDomElement, aboutGroup.length > 1 );
 				modelClass = this.modelRegistry.lookup( modelName ) || ve.dm.AlienNode;
