@@ -67,13 +67,10 @@ do
 				do
 					grep "\"$msg\"" $f
 				done
-			)	| sed '${s/,$//}' \
-				| sed 's/^            /			/g' \
-				| sed 's/^        /		/g' \
-				| sed 's/^    /	/g'
-			echo '}'
+			) | sed '${s/,$//}'
+			echo -n '}'
 		) > modules/$group/$f
-		if grep '^	"[^@]' modules/$group/$f > /dev/null
+		if grep '^    "[^@]' modules/$group/$f > /dev/null
 		then
 			echo modules/$group/$f >&2
 		else
