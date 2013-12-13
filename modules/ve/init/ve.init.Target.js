@@ -37,7 +37,7 @@ ve.init.Target.static.toolbarGroups = [
 		'type': 'menu',
 		'include': [ { 'group': 'format' } ],
 		'promote': [ 'paragraph' ],
-		'demote': [ 'preformatted', 'heading1' ]
+		'demote': [ 'preformatted' ]
 	},
 	// Style
 	{
