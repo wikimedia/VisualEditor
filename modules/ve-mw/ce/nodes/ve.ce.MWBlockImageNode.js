@@ -83,9 +83,7 @@ ve.ce.MWBlockImageNode = function VeCeMWBlockImageNode( model, config ) {
 
 	// Events
 	this.model.connect( this, { 'attributeChange': 'onAttributeChange' } );
-
 };
-
 
 /* Inheritance */
 
@@ -128,7 +126,7 @@ ve.ce.MWBlockImageNode.static.cssClasses = {
  *  on the rdfaToType object in the model.
  * @returns {Object.<string,string>} A type to Rdfa conversion object
  */
-ve.ce.MWBlockImageNode.prototype.getTypeToRdfa = function() {
+ve.ce.MWBlockImageNode.prototype.getTypeToRdfa = function () {
 	var rdfa, obj = {};
 
 	for ( rdfa in this.model.constructor.static.rdfaToType ) {
@@ -181,7 +179,7 @@ ve.ce.MWBlockImageNode.prototype.setCaptionVisible = function ( isVisible ) {
  * @param {string} to The new alignment
  * @param {string} type The type of the image to which to align
  */
-ve.ce.MWBlockImageNode.prototype.updateAlignment = function( from, to, type ) {
+ve.ce.MWBlockImageNode.prototype.updateAlignment = function ( from, to, type ) {
 	if ( from !== to ) {
 		// remove previous alignment:
 		this.$figure
@@ -275,10 +273,9 @@ ve.ce.MWBlockImageNode.prototype.onSetup = function () {
 	ve.ce.BranchNode.prototype.onSetup.call( this );
 
 	this.updateAlignment( this.alignment, this.alignment, type );
-	if ( type !== 'none' && type !=='frameless' ) {
+	if ( type !== 'none' && type !== 'frameless' ) {
 		this.$element.addClass( this.getCssClass( 'default', this.model.getAttribute( 'align' ) ) );
 	}
-
 };
 
 /**

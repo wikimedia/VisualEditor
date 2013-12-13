@@ -70,7 +70,6 @@ ve.ui.MWMediaEditDialog.static.toolbarGroups = [
 	}
 ];
 
-
 ve.ui.MWMediaEditDialog.static.surfaceCommands = [
 	'undo',
 	'redo',
