@@ -51,8 +51,6 @@
     "visualeditor-differror": "Klaida įkeliant duomenis iš serverio:  $1 .",
     "visualeditor-editconflict": "Jūsų pakeitimai negali būti įrašyti dėl redagavimo konflikto. Ar norite išspręsti konfliktą rankiniu būdu?",
     "visualeditor-editsummary": "Aprašykite ką pakeitėte",
-    "visualeditor-languageinspector-widget-changelang": "Keisti kalbą",
-    "visualeditor-languageinspector-widget-label-language": "Kalba",
     "visualeditor-linkinspector-illegal-title": "Neleistinas puslapio pavadinimas",
     "visualeditor-linkinspector-suggest-external-link": "Išorinė nuoroda",
     "visualeditor-linkinspector-suggest-matching-page": "Atitinkantis puslapis",
