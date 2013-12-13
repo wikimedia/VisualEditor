@@ -39,14 +39,15 @@
     "visualeditor-inspector-close-tooltip": "Închide",
     "visualeditor-inspector-remove-tooltip": "Elimină",
     "visualeditor-languages-tool": "Limbi",
+    "visualeditor-languageinspector-block-tooltip-rtldirection": ": De la dreapta la stânga",
     "visualeditor-languageinspector-title": "Limbă",
     "visualeditor-languageinspector-widget-label-direction": "Direcție",
     "visualeditor-languageinspector-widget-label-langcode": "Cod de limbă",
-    "visualeditor-languageinspector-block-tooltip-rtldirection": ": De la dreapta la stânga",
     "visualeditor-linkinspector-title": "Hiperlegătură",
     "visualeditor-listbutton-bullet-tooltip": "Listă cu puncte",
     "visualeditor-listbutton-number-tooltip": "Listă numerotată",
     "visualeditor-specialcharacter-button-tooltip": "Caracter special",
     "visualeditor-specialcharacterinspector-title": "Caracter special",
+    "visualeditor-toolbar-insert": "Inserare",
     "visualeditor-version-label": "Versiune"
 }

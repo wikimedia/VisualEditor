@@ -38,15 +38,15 @@
     "visualeditor-inspector-close-tooltip": "Затвори",
     "visualeditor-inspector-remove-tooltip": "Отстрани",
     "visualeditor-languages-tool": "Јазици",
+    "visualeditor-languageinspector-block-tooltip-rtldirection": ": Од десно налево",
     "visualeditor-languageinspector-title": "Јазик",
     "visualeditor-languageinspector-widget-label-direction": "Насока",
     "visualeditor-languageinspector-widget-label-langcode": "Јазичен код",
-    "visualeditor-languageinspector-block-tooltip-rtldirection": ": Од десно налево",
     "visualeditor-linkinspector-title": "Врска",
     "visualeditor-listbutton-bullet-tooltip": "Список со потточки",
     "visualeditor-listbutton-number-tooltip": "Список со редни броеви",
     "visualeditor-specialcharacter-button-tooltip": "Специјален знак",
     "visualeditor-specialcharacterinspector-title": "Специјален знак",
-    "visualeditor-version-label": "Верзија",
-    "visualeditor-toolbar-insert": "Вметни"
+    "visualeditor-toolbar-insert": "Вметни",
+    "visualeditor-version-label": "Верзија"
 }

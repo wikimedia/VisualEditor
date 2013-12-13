@@ -53,7 +53,7 @@
     "visualeditor-dialog-meta-categories-sortkey-label": "对此页面进行排序",
     "visualeditor-dialog-meta-languages-code-label": "语言代码",
     "visualeditor-dialog-meta-languages-label": "语言",
-    "visualeditor-dialog-meta-languages-link-label": "已链接的页面",
+    "visualeditor-dialog-meta-languages-link-label": "链接的页面",
     "visualeditor-dialog-meta-languages-readonlynote": "这是一个列明连接至此页面的其他语言版本的列表；目前而言，只能通过源码模式或在维基数据编辑。",
     "visualeditor-dialog-meta-languages-section": "语言",
     "visualeditor-dialog-meta-title": "页面设置",

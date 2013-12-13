@@ -60,14 +60,15 @@
     "visualeditor-inspector-close-tooltip": "Fermer",
     "visualeditor-inspector-remove-tooltip": "Supprimer",
     "visualeditor-languages-tool": "Langues",
+    "visualeditor-languageinspector-block-tooltip-rtldirection": ": de la droite vers la gauche",
     "visualeditor-languageinspector-title": "Langue",
     "visualeditor-languageinspector-widget-label-direction": "Direction",
     "visualeditor-languageinspector-widget-label-langcode": "Code de langue",
-    "visualeditor-languageinspector-block-tooltip-rtldirection": ": de la droite vers la gauche",
     "visualeditor-linkinspector-title": "Hyperlien",
     "visualeditor-listbutton-bullet-tooltip": "Liste à puces",
     "visualeditor-listbutton-number-tooltip": "Liste numérotée",
     "visualeditor-specialcharacter-button-tooltip": "Caractère spécial",
     "visualeditor-specialcharacterinspector-title": "Caractère spécial",
+    "visualeditor-toolbar-insert": "Insérer",
     "visualeditor-version-label": "Version"
 }

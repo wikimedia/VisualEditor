@@ -7,7 +7,8 @@
             "Shanmugamp7",
             "Veeven",
             "Visdaviva",
-            "மதனாஹரன்"
+            "மதனாஹரன்",
+            "రహ్మానుద్దీన్"
         ]
     },
     "visualeditor": "విజువల్ ఎడిటర్",
@@ -33,10 +34,10 @@
     "visualeditor-formatdropdown-format-heading6": "శీర్షిక 6",
     "visualeditor-inspector-close-tooltip": "మూసివేయి",
     "visualeditor-inspector-remove-tooltip": "తొలగించు",
+    "visualeditor-languageinspector-block-tooltip-rtldirection": ": కుడి నుండి ఎడమకి",
     "visualeditor-languageinspector-title": "భాష",
     "visualeditor-languageinspector-widget-label-direction": "దిశ",
     "visualeditor-languageinspector-widget-label-langcode": "భాష సంకేతం",
-    "visualeditor-languageinspector-block-tooltip-rtldirection": ": కుడి నుండి ఎడమకి",
     "visualeditor-linkinspector-title": "అధిలంకె",
     "visualeditor-listbutton-bullet-tooltip": "బిందు జాబితా",
     "visualeditor-listbutton-number-tooltip": "సంఖ్యా జాబితా",

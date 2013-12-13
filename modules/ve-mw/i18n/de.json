@@ -27,7 +27,7 @@
     "visualeditor-ca-ve-edit": "VisualEditor",
     "visualeditor-ca-ve-edit-section": "VisualEditor",
     "visualeditor-categories-tool": "Kategorien",
-    "visualeditor-desc": "Visueller Editor für MediaWiki",
+    "visualeditor-desc": "Stellt den WYSIWYG-Editor „VisualEditor“ bereit",
     "visualeditor-descriptionpagelink": "Project:VisualEditor",
     "visualeditor-dialog-beta-welcome-action-continue": "Fortfahren",
     "visualeditor-dialog-beta-welcome-content": "Dies ist unser neuer einfacherer Weg zum Bearbeiten. Er ist noch in der Beta-Phase. Du kannst Teile der Seite finden, die du nicht bearbeiten kannst oder auf Fehler stoßen, die behoben werden müssen. Wir empfehlen dir, die Änderungen zu überprüfen und bitten dich um Fehlerberichte. Klicke auf die Schaltfläche „{{int:visualeditor-help-tool}}“, um Rückmeldungen zu hinterlassen. Du kannst stattdessen weiterhin den Wikitext-Editor verwenden, indem du den Reiter „$1“ anklickst. Ungespeicherte Änderungen gehen dabei verloren.",

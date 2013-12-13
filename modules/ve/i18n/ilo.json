@@ -36,12 +36,15 @@
     "visualeditor-inspector-close-tooltip": "Irekep",
     "visualeditor-inspector-remove-tooltip": "Ikkaten",
     "visualeditor-languages-tool": "Dagiti pagsasao",
+    "visualeditor-languageinspector-block-tooltip-rtldirection": ": Kanawan nga Agpakanigid",
     "visualeditor-languageinspector-title": "Pagsasao",
     "visualeditor-languageinspector-widget-label-direction": "Turong",
     "visualeditor-languageinspector-widget-label-langcode": "Kodigo ti pagsasao",
-    "visualeditor-languageinspector-block-tooltip-rtldirection": ": Kanawan nga Agpakanigid",
     "visualeditor-linkinspector-title": "Hyperlink",
     "visualeditor-listbutton-bullet-tooltip": "Punglo a listaan",
     "visualeditor-listbutton-number-tooltip": "Nabilangan a listaan",
+    "visualeditor-specialcharacter-button-tooltip": "Naipangpangruna a karakter",
+    "visualeditor-specialcharacterinspector-title": "Naipangpangruna a karakter",
+    "visualeditor-toolbar-insert": "Isengngat",
     "visualeditor-version-label": "Bersion"
 }

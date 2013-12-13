@@ -45,12 +45,13 @@
     "visualeditor-inspector-close-tooltip": "Zavřít",
     "visualeditor-inspector-remove-tooltip": "Odebrat",
     "visualeditor-languages-tool": "Jazyky",
+    "visualeditor-languageinspector-block-tooltip-rtldirection": ": zprava doleva",
     "visualeditor-languageinspector-title": "Jazyk",
     "visualeditor-languageinspector-widget-label-direction": "Směr",
     "visualeditor-languageinspector-widget-label-langcode": "Kód jazyka",
-    "visualeditor-languageinspector-block-tooltip-rtldirection": ": zprava doleva",
     "visualeditor-linkinspector-title": "Hypertextový odkaz",
     "visualeditor-listbutton-bullet-tooltip": "Seznam s odrážkami",
     "visualeditor-listbutton-number-tooltip": "Číslovaný seznam",
+    "visualeditor-toolbar-insert": "Vložit",
     "visualeditor-version-label": "Verze"
 }

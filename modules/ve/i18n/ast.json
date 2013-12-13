@@ -38,12 +38,15 @@
     "visualeditor-inspector-close-tooltip": "Zarrar",
     "visualeditor-inspector-remove-tooltip": "Desaniciar",
     "visualeditor-languages-tool": "Llingües",
+    "visualeditor-languageinspector-block-tooltip-rtldirection": ": Drecha a izquierda",
     "visualeditor-languageinspector-title": "Llingua",
     "visualeditor-languageinspector-widget-label-direction": "Direición",
     "visualeditor-languageinspector-widget-label-langcode": "Códigu de llingua",
-    "visualeditor-languageinspector-block-tooltip-rtldirection": ": Drecha a izquierda",
     "visualeditor-linkinspector-title": "Hiperenllaz",
     "visualeditor-listbutton-bullet-tooltip": "Llista con viñetes",
     "visualeditor-listbutton-number-tooltip": "Llista numberada",
+    "visualeditor-specialcharacter-button-tooltip": "Caráuter especial",
+    "visualeditor-specialcharacterinspector-title": "Caráuter especial",
+    "visualeditor-toolbar-insert": "Inxertar",
     "visualeditor-version-label": "Versión"
 }

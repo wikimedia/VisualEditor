@@ -120,7 +120,7 @@
     "visualeditor-mweditmodesource-title": "Basculer vers la modification du code",
     "visualeditor-mweditmodesource-warning": "Vous êtes sur le point de basculer vers l’édition du code.\nToutes les modifications que vous avez faites sur cette page seront conservées, mais vous ne pourrez pas retourner à l’Éditeur Visuel sans enregistrer ou recharger la page.\nVoulez-vous continuer ?",
     "visualeditor-mwhieroinspector-title": "Hiéroglyphes",
-    "visualeditor-mwmathinspector-title": "LaTeX",
+    "visualeditor-mwmathinspector-title": "Formule",
     "visualeditor-notification-created": "« $1 » a été créée.",
     "visualeditor-notification-restored": "« $1 » a été restaurée.",
     "visualeditor-notification-saved": "Vos modifications sur « $1 » ont été enregistrées.",
