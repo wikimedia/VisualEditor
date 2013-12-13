@@ -59,6 +59,9 @@ ve.ui.MWExtensionInspector.prototype.initialize = function () {
  * @inheritdoc
  */
 ve.ui.MWExtensionInspector.prototype.setup = function ( data ) {
+	var dir,
+		fragment = this.surface.getModel().getFragment( null, true );
+
 	// Parent method
 	ve.ui.Inspector.prototype.setup.call( this, data );
 
@@ -66,12 +69,16 @@ ve.ui.MWExtensionInspector.prototype.setup = function ( data ) {
 	this.node = this.surface.getView().getFocusedNode();
 	this.input.setValue( this.node ? this.node.getModel().getAttribute( 'mw' ).body.extsrc : '' );
 
+	// By default, the direction of the input element should be the same
+	// as the direction of the content it applies to
 	if ( this.node ) {
-		// Direction of the input textarea should correspond to the
-		// direction of the surrounding content of the node itself
-		// rather than the GUI direction:
-		this.input.setRTL( this.node.$element.css( 'direction' ) === 'rtl' );
+		// The node is being edited
+		dir = this.node.$element.css( 'direction' );
+	} else {
+		// New insertion, base direction on the fragment range
+		dir = this.surface.getView().documentView.getDirectionFromRange( fragment.getRange() );
 	}
+	this.input.setRTL( dir === 'rtl' );
 };
 
 /**

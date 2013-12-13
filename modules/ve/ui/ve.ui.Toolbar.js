@@ -156,14 +156,7 @@ ve.ui.Toolbar.prototype.onSurfaceViewKeyUp = function () {
  */
 ve.ui.Toolbar.prototype.onContextChange = function () {
 	var i, len, leafNodes, dirInline, dirBlock, fragmentAnnotation,
-		currentNodes = {
-			fragNodes: null,
-			fragAnnotations: null,
-			'dm': {},
-			'ce': {}
-		},
 		fragment = this.surface.getModel().getFragment( null, false ),
-		doc = this.surface.getView().getDocument(),
 		nodes = [];
 
 	leafNodes = fragment.getLeafNodes();
@@ -172,27 +165,17 @@ ve.ui.Toolbar.prototype.onContextChange = function () {
 			nodes.push( leafNodes[i].node );
 		}
 	}
-	// Update context direction for button icons UI:
+	// Update context direction for button icons UI
 
-	// block direction (direction of the current node)
-	currentNodes.fragNodes = fragment.getCoveredNodes();
-	if ( currentNodes.fragNodes.length > 1 ) {
-		// selection of multiple nodes
-		currentNodes.dm.block = fragment.getSiblingNodes()[0].node.parent;
-	} else {
-		// selection of a single node
-		currentNodes.dm.block = currentNodes.fragNodes[0].node;
-	}
-	// get the direction of the block:
-	currentNodes.ce.block = doc.getNodeFromOffset( currentNodes.dm.block.getRange().start );
-	dirBlock = currentNodes.ce.block.$element.css( 'direction' );
-	// by default, inline and block are the same, unless there's an inline-specific direction
-	dirInline = dirBlock;
-	// 'inline' direction is set by language annotation:
+	// by default, inline and block directions are the same
+	dirInline = dirBlock = this.surface.getView().documentView.getDirectionFromRange( fragment.getRange() );
+
+	// 'inline' direction is different only if we are inside a language annotation
 	fragmentAnnotation = fragment.getAnnotations();
 	if ( fragmentAnnotation.hasAnnotationWithName( 'meta/language' ) ) {
 		dirInline = fragmentAnnotation.getAnnotationsByName( 'meta/language' ).get( 0 ).getAttribute( 'dir' );
 	}
+
 	if ( dirInline !== this.contextDirection.inline ) {
 		// remove previous class:
 		this.$element.removeClass( 've-ui-dir-inline-rtl ve-ui-dir-inline-ltr' );
