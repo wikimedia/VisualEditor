@@ -152,7 +152,7 @@ ve.EventSequencer.prototype.detach = function () {
  * @param {Function[]} listeners Listeners that take no arguments
  */
 ve.EventSequencer.prototype.onLoop = function ( listeners ) {
-	this.onLoopListeners.push.apply( this.onLoopListeners, listeners );
+	Array.prototype.push.apply( this.onLoopListeners, listeners );
 };
 
 /**
