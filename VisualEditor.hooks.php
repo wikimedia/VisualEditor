@@ -471,7 +471,7 @@ class VisualEditorHooks {
 			$modules['jquery.i18n'] = $wgVisualEditorResourceTemplate + array(
 				'scripts' => array(
 					'jquery.i18n/src/jquery.i18n.js',
-					'jquery.i18n/src/jquery.i18n.messages.js',
+					'jquery.i18n/src/jquery.i18n.messagestore.js',
 					'jquery.i18n/src/jquery.i18n.parser.js',
 					'jquery.i18n/src/jquery.i18n.emitter.js',
 					'jquery.i18n/src/jquery.i18n.language.js',
