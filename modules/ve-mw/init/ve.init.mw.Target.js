@@ -49,7 +49,7 @@ ve.init.mw.Target = function VeInitMwTarget( $container, pageName, revisionId ) 
 	this.surface = null;
 
 	this.modules = [
-			'ext.visualEditor.core',
+			'ext.visualEditor.mwcore',
 			'ext.visualEditor.data'
 		]
 		.concat(
