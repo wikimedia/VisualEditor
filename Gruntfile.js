@@ -7,16 +7,41 @@
 /*jshint node:true */
 module.exports = function ( grunt ) {
 	var fs = require( 'fs' ),
-		exec = require( 'child_process' ).exec;
+		exec = require( 'child_process' ).exec,
+		modules = grunt.file.readJSON( 'build/modules.json' );
 
 	grunt.loadNpmTasks( 'grunt-contrib-jshint' );
 	grunt.loadNpmTasks( 'grunt-contrib-csslint' );
 	grunt.loadNpmTasks( 'grunt-contrib-qunit' );
 	grunt.loadNpmTasks( 'grunt-contrib-watch' );
 	grunt.loadNpmTasks( 'grunt-jscs-checker' );
+	grunt.loadTasks( 'build/tasks' );
 
 	grunt.initConfig( {
 		pkg: grunt.file.readJSON( 'package.json' ),
+		buildloader: {
+			demo: {
+				src: 'demos/ve/index.php.template',
+				dest: 'demos/ve/index.php',
+				modules: modules,
+				pathPrefix: '../../',
+				indent: '\t\t'
+			},
+			test: {
+				src: 'modules/ve/test/index.php.template',
+				dest: 'modules/ve/test/index.php',
+				modules: modules,
+				pathPrefix: '../../../',
+				indent: '\t\t'
+			},
+			iframe: {
+				src: '.docs/eg-iframe.html.template',
+				dest: '.docs/eg-iframe.html',
+				modules: modules,
+				pathPrefix: '../',
+				indent: '\t'
+			}
+		},
 		jshint: {
 			options: JSON.parse( grunt.file.read( '.jshintrc' )
 				.replace( /\/\*(?:(?!\*\/)[\s\S])*\*\//g, '' ).replace( /\/\/[^\n\r]*/g, '' ) ),
@@ -66,5 +91,6 @@ module.exports = function ( grunt ) {
 	grunt.registerTask( 'lint', ['jshint', 'jscs', 'csslint'] );
 	grunt.registerTask( 'unit', ['pre-qunit', 'qunit'] );
 	grunt.registerTask( 'test', ['lint', 'unit'] );
-	grunt.registerTask( 'default', 'test' );
+	grunt.registerTask( 'build', ['buildloader'] );
+	grunt.registerTask( 'default', ['build', 'test'] );
 };
