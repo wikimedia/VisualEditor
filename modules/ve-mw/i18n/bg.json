@@ -3,6 +3,7 @@
         "authors": [
             "DCLXVI",
             "Hristofor.mirchev",
+            "MegaAlex",
             "පසිඳු කාවින්ද"
         ]
     },
@@ -57,7 +58,7 @@
     "visualeditor-meta-tool": "Настройки на страницата",
     "visualeditor-mwalienextensioninspector-title": "разширение за МедияУики",
     "visualeditor-mwhieroinspector-title": "Йероглифи",
-    "visualeditor-mwmathinspector-title": "LaTex",
+    "visualeditor-mwmathinspector-title": "Формула",
     "visualeditor-savedialog-label-error": "Грешка",
     "visualeditor-savedialog-label-save": "Съхраняване на страницата",
     "visualeditor-savedialog-label-warning": "Предупреждение",

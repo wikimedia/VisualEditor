@@ -113,6 +113,7 @@
     "visualeditor-preference-core-description": "Uaktywnij VisualEditora.",
     "visualeditor-preference-core-label": "VisualEditor",
     "visualeditor-preference-enable": "Uaktywnij VisualEditora.",
+    "visualeditor-preference-mwmath-description": "Eksperymentalna funkcja umożliwiająca edytowanie i dodawanie wzorów matematycznych w VisualEditorze. Obecnie w fazie testowej; oczekuje na wdrożenie dla wszystkich użytkowników. Pamiętaj, aby zawsze sprawdzać podgląd strony przed zapisaniem.",
     "visualeditor-preference-mwmath-label": "Edycja wzorów matematycznych za pomocą VisualEditora",
     "visualeditor-reference-input-placeholder": "Jaki przypis chcesz wstawić?",
     "visualeditor-referencelist-isempty": "Na tej stronie nie ma przypisów z grupy \"$1\", aby uwzględnić je na tej liście.",

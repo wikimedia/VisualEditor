@@ -35,14 +35,17 @@
     "visualeditor-indentationbutton-outdent-tooltip": "Rapatkan inden",
     "visualeditor-inspector-close-tooltip": "Tutup",
     "visualeditor-inspector-remove-tooltip": "Buang",
+    "visualeditor-languageinspector-block-tooltip-rtldirection": ": Kanan ke Kiri",
     "visualeditor-languageinspector-title": "Bahasa",
     "visualeditor-languageinspector-widget-changelang": "Tukar bahasa",
     "visualeditor-languageinspector-widget-label-direction": "Arah",
     "visualeditor-languageinspector-widget-label-langcode": "Kod bahasa",
     "visualeditor-languageinspector-widget-label-language": "Bahasa",
-    "visualeditor-languageinspector-block-tooltip-rtldirection": ": Kanan ke Kiri",
     "visualeditor-linkinspector-title": "Hiperpautan",
     "visualeditor-listbutton-bullet-tooltip": "Senarai berbulet",
     "visualeditor-listbutton-number-tooltip": "Senarai bernombor",
+    "visualeditor-specialcharacter-button-tooltip": "Aksara khas",
+    "visualeditor-specialcharacterinspector-title": "Aksara khas",
+    "visualeditor-toolbar-insert": "Sisipkan",
     "visualeditor-version-label": "Versi"
 }
