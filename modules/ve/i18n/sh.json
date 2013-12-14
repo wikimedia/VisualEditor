@@ -30,12 +30,12 @@
     "visualeditor-indentationbutton-outdent-tooltip": "Smanji uvlačenje",
     "visualeditor-inspector-close-tooltip": "Zatvori",
     "visualeditor-inspector-remove-tooltip": "Ukloni",
+    "visualeditor-languageinspector-block-tooltip-rtldirection": ": Zdesna nalijevo",
     "visualeditor-languageinspector-title": "Jezik",
     "visualeditor-languageinspector-widget-changelang": "Promijeni jezik",
     "visualeditor-languageinspector-widget-label-direction": "Smjer",
     "visualeditor-languageinspector-widget-label-langcode": "Kod jezika",
     "visualeditor-languageinspector-widget-label-language": "Jezik",
-    "visualeditor-languageinspector-block-tooltip-rtldirection": ": Zdesna nalijevo",
     "visualeditor-linkinspector-title": "Hiperveza",
     "visualeditor-listbutton-bullet-tooltip": "Spisak s grafičkim oznakama",
     "visualeditor-listbutton-number-tooltip": "Numerisani spisak"

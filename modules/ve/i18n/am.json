@@ -8,9 +8,9 @@
     "visualeditor-annotationbutton-language-tooltip": "ቋንቋ",
     "visualeditor-annotationbutton-link-tooltip": "መያያዣ",
     "visualeditor-dialog-action-goback": "ተመለስ",
+    "visualeditor-languageinspector-block-tooltip-rtldirection": ": ከቀኝ ወደ ግራ",
     "visualeditor-languageinspector-title": "ቋንቋ",
     "visualeditor-languageinspector-widget-label-direction": "አቅጣጫ",
     "visualeditor-languageinspector-widget-label-langcode": "የቋንቋ ኮድ",
-    "visualeditor-languageinspector-widget-label-language": "ቋንቋ",
-    "visualeditor-languageinspector-block-tooltip-rtldirection": ": ከቀኝ ወደ ግራ"
+    "visualeditor-languageinspector-widget-label-language": "ቋንቋ"
 }
