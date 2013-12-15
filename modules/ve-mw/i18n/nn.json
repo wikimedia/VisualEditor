@@ -12,7 +12,7 @@
     "visualeditor-beta-label": "beta",
     "visualeditor-beta-warning": "VisualEditor er i «beta». Du kan støyta på feil i programvara og det kan vera delar av sida som ikkje kan endrast. Klikk på «{{int:visualeditor-ca-editsource}}» for å endra sida som wikitekst – ulagra endringar gjorde med VisualEditor vil då verta tapte.",
     "visualeditor-browserwarning": "Du nyttar ein nettlesar som ikkje er offisielt stødd av VisualEditor.",
-    "visualeditor-ca-createsource": "Opprett kjelde",
+    "visualeditor-ca-createsource": "Opprett wikitekst",
     "visualeditor-ca-editsource": "Endre wikiteksten",
     "visualeditor-ca-editsource-section": "endre wikiteksten",
     "visualeditor-ca-ve-create": "VisualEditor",

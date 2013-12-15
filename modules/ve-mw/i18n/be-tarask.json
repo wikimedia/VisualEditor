@@ -2,6 +2,7 @@
     "@metadata": {
         "authors": [
             "EugeneZelenko",
+            "Red Winged Duck",
             "Wizardist",
             "Чаховіч Уладзіслаў"
         ]
@@ -89,7 +90,7 @@
     "visualeditor-meta-tool": "Налады старонкі",
     "visualeditor-mwalienextensioninspector-title": "Пашырэньне MediaWiki",
     "visualeditor-mwhieroinspector-title": "Герогліфы",
-    "visualeditor-mwmathinspector-title": "LaTeX",
+    "visualeditor-mwmathinspector-title": "Формула",
     "visualeditor-notification-created": "Старонка «$1» створаная.",
     "visualeditor-notification-restored": "«$1» адноўлена.",
     "visualeditor-notification-saved": "Вашыя зьмены ў «$1» захаваныя.",

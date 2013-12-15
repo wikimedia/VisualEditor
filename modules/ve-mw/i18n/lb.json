@@ -15,7 +15,7 @@
     "tooltip-ca-ve-edit": "Dës Säit mam VisualEditor änneren",
     "visualeditor-beta-appendix": "Beta",
     "visualeditor-beta-label": "Beta",
-    "visualeditor-beta-warning": "VisualEditor ass eng Betaversioun. Dir kéint Softwareproblemer begéinen an Dir kënnt vläicht net all Deeler vun der Säit änneren.\n\nKlickt \"Quelltext änneren\" fir op Wikitextmodus ze wiesselen - dobäi ginn déi net gespäichert Ännerunge verluer.",
+    "visualeditor-beta-warning": "VisualEditor ass eng Betaversioun. Dir kéint Softwareproblemer begéinen an Dir kënnt vläicht net all Deeler vun der Säit änneren.\n\nKlickt \"{{int:visualeditor-ca-editsource}}\" fir op de Wikitextmodus ze wiesselen - déi net gespäichert Ännerunge gi bei där Aktioun verluer.",
     "visualeditor-browserwarning": "Dir benotzt e Browser deen net offiziell vum VisualEditor ënnerstëtzt gëtt.",
     "visualeditor-ca-createsource": "Quell uleeën",
     "visualeditor-ca-editsource": "Quelltext änneren",

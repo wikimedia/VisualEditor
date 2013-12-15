@@ -36,14 +36,17 @@
     "visualeditor-inspector-close-tooltip": "Zacyniś",
     "visualeditor-inspector-remove-tooltip": "Wótpóraś",
     "visualeditor-languages-tool": "Rěcy",
+    "visualeditor-languageinspector-block-tooltip-rtldirection": ": Wótpšawa nalěwo",
     "visualeditor-languageinspector-title": "Rěc",
     "visualeditor-languageinspector-widget-changelang": "Rěc změniś",
     "visualeditor-languageinspector-widget-label-direction": "Směr",
     "visualeditor-languageinspector-widget-label-langcode": "Rěcny kod",
     "visualeditor-languageinspector-widget-label-language": "Rěc",
-    "visualeditor-languageinspector-block-tooltip-rtldirection": ": Wótpšawa nalěwo",
     "visualeditor-linkinspector-title": "Wótkaz",
     "visualeditor-listbutton-bullet-tooltip": "Naliceńska lisćina",
     "visualeditor-listbutton-number-tooltip": "Numerěrowana lisćina",
+    "visualeditor-specialcharacter-button-tooltip": "Wósebne znamuško",
+    "visualeditor-specialcharacterinspector-title": "Wósebne znamuško",
+    "visualeditor-toolbar-insert": "Zasajźiś",
     "visualeditor-version-label": "Wersija"
 }
