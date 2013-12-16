@@ -92,12 +92,7 @@ ve.ce.MWReferenceNode.prototype.onInternalListUpdate = function ( groupsChanged 
  * @method
  */
 ve.ce.MWReferenceNode.prototype.update = function () {
-	var listIndex = this.model.getAttribute( 'listIndex' ),
-		listGroup = this.model.getAttribute( 'listGroup' ),
-		refGroup = this.model.getAttribute( 'refGroup' ),
-		position = this.internalList.getIndexPosition( listGroup, listIndex );
-
-	this.$link.text( '[' + ( refGroup ? refGroup + ' ' : '' ) + ( position + 1 ) + ']' );
+	this.$link.text( this.model.getIndexLabel() );
 };
 
 /** */

@@ -215,6 +215,22 @@ ve.dm.MWReferenceNode.static.remapInternalListKeys = function ( dataElement, int
 	}
 };
 
+/**
+ * Gets the index label for the reference
+ * @static
+ * @param {Object} dataElement Element data
+ * @param {ve.dm.InternalList} internalList Internal list
+ * @returns {string} Reference label
+ */
+ve.dm.MWReferenceNode.static.getIndexLabel = function ( dataElement, internalList ) {
+	var listIndex = dataElement.attributes.listIndex,
+		listGroup = dataElement.attributes.listGroup,
+		refGroup = dataElement.attributes.refGroup,
+		position = internalList.getIndexPosition( listGroup, listIndex );
+
+	return '[' + ( refGroup ? refGroup + ' ' : '' ) + ( position + 1 ) + ']';
+};
+
 /* Methods */
 
 /**
@@ -234,6 +250,15 @@ ve.dm.MWReferenceNode.prototype.isInspectable = function () {
  */
 ve.dm.MWReferenceNode.prototype.getInternalItem = function () {
 	return this.getDocument().getInternalList().getItemNode( this.getAttribute( 'listIndex' ) );
+};
+
+/**
+ * Gets the index label for the reference
+ * @method
+ * @returns {string} Reference label
+ */
+ve.dm.MWReferenceNode.prototype.getIndexLabel = function () {
+	return this.constructor.static.getIndexLabel( this.element, this.getDocument().getInternalList() );
 };
 
 /**
