@@ -1,6 +1,7 @@
 {
     "@metadata": {
         "authors": [
+            "Cymrodor",
             "Lloffiwr",
             "Robin Owain",
             "ОйЛ"
@@ -105,7 +106,7 @@
     "visualeditor-preference-core-description": "Galluogi'r Golygydd Gweledol. Ni fydd ar gael ar dudalennau sgwrs nac ar rai parthau eraill.",
     "visualeditor-preference-core-label": "Y Golygydd Gweledol",
     "visualeditor-preference-enable": "Galluogi'r Golygydd Gweledol. Ni fydd ar gael ar y tudalennau sgwrs nac ar rai parthau eraill.",
-    "visualeditor-preference-language-description": "Ychwanegu offer arbrofol i'r Golygydd Gweledol sy'n marcio testun a ysgrifenwyd mewn iaith gwahanol neu mewn cyfeiriad gwahanol, er mwyn arbrofi cyn iddo gael ei lawn ryddhau. Cofiwch adolygu'ch newidiadau cyn eu cadw wrth ddefnyddio offer arbrofol.",
+    "visualeditor-preference-language-description": "Ychwanegu offer arbrofol i'r Golygydd Gweledol sy'n marcio testun a ysgrifenwyd mewn iaith wahanol neu mewn cyfeiriad gwahanol, er mwyn arbrofi cyn iddo gael ei lawn ryddhau. Cofiwch adolygu'ch newidiadau cyn eu cadw wrth ddefnyddio offer arbrofol.",
     "visualeditor-preference-language-label": "Offer ieithyddol y Golygydd Gweledol",
     "visualeditor-preference-mwhiero-label": "Golygu hieroglyffau drwy'r Golygydd Gweledol",
     "visualeditor-reference-input-placeholder": "At ba ffynhonnell yr hoffech gyfeirio?",
@@ -130,7 +131,7 @@
     "visualeditor-savedialog-warning-dirty": "Efallai bod eich golygiad wedi ei lygru - byddwch gystal â'i adolygu cyn ei roi ar gadw.",
     "visualeditor-saveerror": "Cafwyd gwall wrth gadw'r data ar y gweinydd: $1",
     "visualeditor-serializeerror": "Cafwyd gwall wrth lwytho data o'r gweinydd: $1",
-    "visualeditor-toolbar-cancel": "Rhodder heibio",
+    "visualeditor-toolbar-cancel": "Diddymu",
     "visualeditor-toolbar-savedialog": "Cadw'r dudalen",
     "visualeditor-usernamespacepagelink": "Project:Parth y defnyddwyr",
     "visualeditor-viewpage-savewarning": "Ydych chi wir am gamu'n ôl i edrych ar y dudalen heb roi eich newidiadau ar gadw?",

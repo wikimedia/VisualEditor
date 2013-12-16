@@ -40,14 +40,17 @@
     "visualeditor-inspector-close-tooltip": "닫기",
     "visualeditor-inspector-remove-tooltip": "제거",
     "visualeditor-languages-tool": "언어",
+    "visualeditor-languageinspector-block-tooltip-rtldirection": ": 우횡서(오른쪽에서 왼쪽으로)",
     "visualeditor-languageinspector-title": "언어",
     "visualeditor-languageinspector-widget-changelang": "언어 바꾸기",
     "visualeditor-languageinspector-widget-label-direction": "입력 방향",
     "visualeditor-languageinspector-widget-label-langcode": "언어 코드",
     "visualeditor-languageinspector-widget-label-language": "언어",
-    "visualeditor-languageinspector-block-tooltip-rtldirection": ": 우횡서(오른쪽에서 왼쪽으로)",
     "visualeditor-linkinspector-title": "하이퍼링크",
     "visualeditor-listbutton-bullet-tooltip": "점 목록",
     "visualeditor-listbutton-number-tooltip": "숫자 목록",
+    "visualeditor-specialcharacter-button-tooltip": "특수 문자",
+    "visualeditor-specialcharacterinspector-title": "특수 문자",
+    "visualeditor-toolbar-insert": "넣기",
     "visualeditor-version-label": "버전"
 }

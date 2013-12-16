@@ -104,7 +104,7 @@
     "visualeditor-preference-language-label": "VisualEditor тіл құралдары",
     "visualeditor-preference-mwmath-label": "[[Уикипедия:VisualEditor|VisualEditor‎]]мен формула өңдеу",
     "visualeditor-reference-input-placeholder": "Дереккөз істегіңіз келе ме?",
-    "visualeditor-referencelist-isempty": "Мұнда бұл беттегі \"$1\" тобындағы дереккөздер жоқ.",
+    "visualeditor-referencelist-isempty": "Мұнда бұл бетте бұл тізімге кірген \"$1\" тобындағы дереккөздер жоқ.",
     "visualeditor-referencelist-isempty-default": "Бұл бетте бұл тізімге кірген дереккөздер жоқ.",
     "visualeditor-referencelist-missingref": "Бұл дереккөз үлгі немесе басқа себептен құлыпталған, және тек қайнары арқылы өңдей аласыз.",
     "visualeditor-savedialog-error-badtoken": "Біз сіздің өңдемеңізді іске асыра алмадық, себебі, бұл сессия енді жарамсыз.",

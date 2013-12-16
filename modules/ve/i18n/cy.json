@@ -1,6 +1,7 @@
 {
     "@metadata": {
         "authors": [
+            "Cymrodor",
             "Lloffiwr",
             "Robin Owain",
             "ОйЛ"
@@ -19,7 +20,7 @@
     "visualeditor-annotationbutton-underline-tooltip": "Tanlinellu",
     "visualeditor-clearbutton-tooltip": "Yn clirio'r fformatio",
     "visualeditor-dialog-action-apply": "Gweithreder y newidiadau",
-    "visualeditor-dialog-action-cancel": "Rhodder heibio",
+    "visualeditor-dialog-action-cancel": "Diddymu",
     "visualeditor-dialog-action-goback": "Yn ôl",
     "visualeditor-formatdropdown-format-heading1": "Pennawd 1",
     "visualeditor-formatdropdown-format-heading2": "Pennawd 2",
