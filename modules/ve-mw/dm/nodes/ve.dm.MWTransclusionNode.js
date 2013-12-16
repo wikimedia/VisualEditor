@@ -89,7 +89,7 @@ ve.dm.MWTransclusionNode.static.toDataElement = function ( domElements, converte
 };
 
 ve.dm.MWTransclusionNode.static.toDomElements = function ( dataElement, doc, converter ) {
-	var el,
+	var els, currentDom, i, len,
 		index = converter.getStore().indexOfHash( OO.getHash( [ this.getHashObject( dataElement ), undefined ] ) ),
 		originalMw = dataElement.attributes.originalMw;
 
@@ -105,20 +105,31 @@ ve.dm.MWTransclusionNode.static.toDomElements = function ( dataElement, doc, con
 		return ve.copyDomElements( dataElement.attributes.originalDomElements, doc );
 	} else {
 		if ( dataElement.attributes.originalDomElements ) {
-			el = doc.createElement( dataElement.attributes.originalDomElements[0].nodeName );
+			els = [ doc.createElement( dataElement.attributes.originalDomElements[0].nodeName ) ];
 		} else {
-			el = doc.createElement( 'span' );
+			els = [ doc.createElement( 'span' ) ];
+			// For the clipboard use the current DOM contents but mark is ignored
+			// for the converter
+			currentDom = converter.getStore().value( index );
+			if ( currentDom ) {
+				currentDom = ve.copyDomElements( currentDom, doc );
+				// i = 0 is the span
+				for ( i = 1, len = currentDom.length; i < len; i++ ) {
+					currentDom[i].setAttribute( 'data-ve-ignore', 'true' );
+					els.push( currentDom[i] );
+				}
+			}
 		}
 		// All we need to send back to Parsoid is the original transclusion marker, with a
 		// reconstructed data-mw property.
-		el.setAttribute( 'typeof', 'mw:Transclusion' );
-		el.setAttribute( 'data-mw', JSON.stringify( dataElement.attributes.mw ) );
-		// Mark the element as not having a generated contents with it in case it is
+		els[0].setAttribute( 'typeof', 'mw:Transclusion' );
+		els[0].setAttribute( 'data-mw', JSON.stringify( dataElement.attributes.mw ) );
+		// Mark the element as not having valid generated contents with it in case it is
 		// inserted into another editor (e.g. via paste).
-		el.setAttribute( 'data-ve-no-generated-contents', true );
+		els[0].setAttribute( 'data-ve-no-generated-contents', true );
 		// TODO: Include last-known generated contents in the output for rich
 		// paste into a non-VE editor
-		return [ el ];
+		return els;
 	}
 };
 

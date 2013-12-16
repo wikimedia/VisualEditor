@@ -187,6 +187,10 @@ ve.dm.MWReferenceNode.static.toDomElements = function ( dataElement, doc, conver
 		}
 	} else {
 		el.setAttribute( 'data-mw', JSON.stringify( mwData ) );
+		// HTML for the external clipboard, it will be ignored by the converter
+		$( el ).append(
+			$( '<sup>', doc ).text( this.getIndexLabel( dataElement, converter.internalList ) )
+		);
 	}
 
 	return [ el ];
