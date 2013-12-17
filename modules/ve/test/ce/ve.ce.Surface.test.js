@@ -553,7 +553,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 		cases = [
 			{
 				'range': new ve.Range( 1 ),
-				'pasteTargetHtml': 'Foo',
+				'pasteHtml': 'Foo',
 				'expectedRange': new ve.Range( 4 ),
 				'expectedOps': [
 					[
@@ -572,7 +572,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 			},
 			{
 				'range': new ve.Range( 4 ),
-				'pasteTargetHtml': 'Bar',
+				'pasteHtml': 'Bar',
 				'expectedRange': new ve.Range( 7 ),
 				'expectedOps': [
 					[
@@ -589,7 +589,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 			},
 			{
 				'range': new ve.Range( 4 ),
-				'pasteTargetHtml': '<cite>Foo</cite><b>B</b>a<!-- comment --><b>r</b>',
+				'pasteHtml': '<cite>Foo</cite><b>B</b>a<!-- comment --><b>r</b>',
 				'expectedRange': new ve.Range( 7 ),
 				'expectedOps': [
 					[
@@ -606,7 +606,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 			},
 			{
 				'range': new ve.Range( 4 ),
-				'pasteTargetHtml': '<cite>Foo</cite><b>B</b>a<!-- comment --><b>r</b>',
+				'pasteHtml': '<cite>Foo</cite><b>B</b>a<!-- comment --><b>r</b>',
 				'pasteSpecial': true,
 				'expectedRange': new ve.Range( 7 ),
 				'expectedOps': [
@@ -624,7 +624,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 			},
 			{
 				'range': new ve.Range( 4 ),
-				'pasteTargetHtml': '<p>Bar</p>',
+				'pasteHtml': '<p>Bar</p>',
 				'expectedRange': new ve.Range( 7 ),
 				'expectedOps': [
 					[
@@ -641,7 +641,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 			},
 			{
 				'range': new ve.Range( 6 ),
-				'pasteTargetHtml': '<p>Bar</p>',
+				'pasteHtml': '<p>Bar</p>',
 				'expectedRange': new ve.Range( 9 ),
 				'expectedOps': [
 					[
@@ -658,7 +658,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 			},
 			{
 				'range': new ve.Range( 3 ),
-				'pasteTargetHtml': '<p>Bar</p>',
+				'pasteHtml': '<p>Bar</p>',
 				'expectedRange': new ve.Range( 6 ),
 				'expectedOps': [
 					[
@@ -675,7 +675,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 			},
 			{
 				'range': new ve.Range( 4 ),
-				'pasteTargetHtml': '☂foo☀',
+				'pasteHtml': '☂foo☀',
 				'expectedRange': new ve.Range( 9 ),
 				'expectedOps': [
 					[
@@ -692,7 +692,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 			},
 			{
 				'range': new ve.Range( 6 ),
-				'pasteTargetHtml': '<ul><li>Foo</li></ul>',
+				'pasteHtml': '<ul><li>Foo</li></ul>',
 				'expectedRange': new ve.Range( 6 ),
 				'expectedOps': [
 					[
@@ -717,7 +717,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 			},
 			{
 				'range': new ve.Range( 4 ),
-				'pasteTargetHtml': '<table><caption>Foo</caption><tr><td>Bar</td></tr></table>',
+				'pasteHtml': '<table><caption>Foo</caption><tr><td>Bar</td></tr></table>',
 				'expectedRange': new ve.Range( 26 ),
 				'expectedOps': [
 					[
@@ -753,28 +753,63 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 			},
 			{
 				'range': new ve.Range( 4 ),
-				'pasteTargetHtml': '<span style="font-size: 1em;" class="foo">Foo</span>',
-				'clipboardKey': true,
-				'expectedRange': new ve.Range( 7 ),
+				'pasteHtml': '<span style="font-size: 1em;">Foo</span>',
+				// Test this in clipboard data mode as document.execCommand
+				// doesn't work reliably with complex attributes
+				'useClipboardData': true,
+				'expectedRange': new ve.Range( 11 ),
 				'expectedOps': [
 					[
 						{ 'type': 'retain', 'length': 4 },
 						{
 							'type': 'replace',
-							'insert': [ 'F', 'o', 'o' ],
+							'insert': [
+								{ 'type': '/paragraph' },
+								{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+								'F', 'o', 'o',
+								{ 'type': '/paragraph' },
+								{ 'type': 'paragraph' }
+							],
 							'remove': []
 						},
 						{ 'type': 'retain', 'length': 5 }
 					]
 				],
-				'msg': 'Span empty after stlyle attributes removed is ignored'
+				'msg': 'Span empty after style attribute removed is ignored'
+			},
+			{
+				'range': new ve.Range( 4 ),
+				'pasteHtml': '<span style="font-size: 1em;" class="foo">Foo</span>',
+				// Test this in clipboard data mode as document.execCommand
+				// doesn't work reliably with complex attributes
+				'useClipboardData': true,
+				'expectedRange': new ve.Range( 11 ),
+				'expectedOps': [
+					[
+						{ 'type': 'retain', 'length': 4 },
+						{
+							'type': 'replace',
+							'insert': [
+								{ 'type': '/paragraph' },
+								{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+								['F',[0]], ['o',[0]], ['o',[0]],
+								{ 'type': '/paragraph' },
+								{ 'type': 'paragraph' }
+							],
+							'remove': []
+						},
+						{ 'type': 'retain', 'length': 5 }
+					]
+				],
+				'msg': 'Span not empty after style attribute removed is kept'
 			}
 		];
 
 	QUnit.expect( cases.length * 2 );
 
-	function testRunner( documentHtml, pasteTargetHtml, clipboardKey, range, expectedOps, pasteSpecial, expectedRange, msg ) {
+	function testRunner( documentHtml, pasteHtml, fromVe, useClipboardData, range, expectedOps, pasteSpecial, expectedRange, msg ) {
 		var i, txs, ops,
+			e = {},
 			surface = ve.test.utils.createSurfaceFromHtml( documentHtml || exampleDoc ),
 			view = surface.getView(),
 			model = surface.getModel();
@@ -782,12 +817,14 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 		// Paste sequence
 		model.setSelection( range );
 		view.pasteSpecial = pasteSpecial;
-		if ( clipboardKey ) {
-			view.beforePaste( new TestEvent( { 'text/xcustom': '0.123-0' } ) );
-		} else {
-			view.beforePaste( { 'originalEvent': {} } );
+		if ( useClipboardData ) {
+			e['text/html'] = pasteHtml;
+			e['text/xcustom'] = 'useClipboardData-0';
+		} else if ( fromVe ) {
+			e['text/xcustom'] = '0.123-0';
 		}
-		document.execCommand( 'insertHTML', false, pasteTargetHtml ) ;
+		view.beforePaste( new TestEvent( e ) );
+		document.execCommand( 'insertHTML', false, pasteHtml );
 		view.afterPaste();
 
 		txs = model.getHistory()[0].transactions;
@@ -803,7 +840,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 
 	for ( i = 0; i < cases.length; i++ ) {
 		testRunner(
-			cases[i].documentHtml, cases[i].pasteTargetHtml, cases[i].clipboardKey,
+			cases[i].documentHtml, cases[i].pasteHtml, cases[i].fromVe, cases[i].useClipboardData,
 			cases[i].range, cases[i].expectedOps, cases[i].pasteSpecial, cases[i].expectedRange, cases[i].msg
 		);
 	}

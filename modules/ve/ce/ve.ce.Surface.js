@@ -985,8 +985,11 @@ ve.ce.Surface.prototype.afterPaste = function () {
 				$elements = this.$( $.parseHTML( beforePasteData.html ) );
 			}
 			if (
-				$elements.filter( 'span[id],span[typeof],span[rel]' ).length > 0 &&
-				this.$pasteTarget.filter('span[id],span[typeof],span[rel]').length === 0
+				// HACK: Allow the test runner to force the use of clipboardData
+				clipboardKey === 'useClipboardData-0' || (
+					$elements.filter( 'span[id],span[typeof],span[rel]' ).length > 0 &&
+					this.$pasteTarget.filter('span[id],span[typeof],span[rel]').length === 0
+				)
 			) {
 				// CE destroyed an important span, so revert to using clipboard data
 				htmlDoc = ve.createDocumentFromHtml( beforePasteData.html );
