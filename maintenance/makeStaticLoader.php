@@ -234,9 +234,6 @@ class MakeStaticLoader extends Maintenance {
 
 			if ( isset( $registry['styles'] ) && $target !== 'test' ){
 				foreach ( (array)$registry['styles'] as $path ) {
-					if ( strpos( $path, 've-mw/' ) === 0 ) {
-						continue;
-					}
 					$headAdd .= $indent . Html::element( 'link', array(
 						'rel' => 'stylesheet',
 						'href' => "$vePath/$path",
@@ -246,18 +243,12 @@ class MakeStaticLoader extends Maintenance {
 
 			if ( isset( $registry['scripts'] ) ) {
 				foreach ( (array)$registry['scripts'] as $path ) {
-					if ( strpos( $path, 've-mw/' ) === 0 ) {
-						continue;
-					}
 					$bodyAdd .= $indent . Html::element( 'script', array( 'src' => "$vePath/$path" ) ) . "\n";
 				}
 			}
 
 			if ( isset( $registry['debugScripts'] ) ) {
 				foreach ( (array)$registry['debugScripts'] as $path ) {
-					if ( strpos( $path, 've-mw/' ) === 0 ) {
-						continue;
-					}
 					$bodyAdd .= $indent . Html::element( 'script', array( 'src' => "$vePath/$path" ) ) . "\n";
 				}
 			}
