@@ -102,7 +102,7 @@
     "visualeditor-mweditmodesource-title": "Byt till källkodsredigering",
     "visualeditor-mweditmodesource-warning": "Du håller på att byta till källkodsredigering.\nAlla ändringar du gjort i detta dokument kommer att behållas, men du kommer inte att kunna växla tillbaka till VisualEditor utan att spara eller ladda om sidan.\nVill du fortsätta?",
     "visualeditor-mwhieroinspector-title": "Hieroglyfer",
-    "visualeditor-mwmathinspector-title": "LaTeX",
+    "visualeditor-mwmathinspector-title": "Formel",
     "visualeditor-notification-created": "\"$1\" har skapats.",
     "visualeditor-notification-restored": "\"$1\" har återställts.",
     "visualeditor-notification-saved": "Dina ändringar i \"$1\" har sparats.",
