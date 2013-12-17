@@ -1058,6 +1058,10 @@ ve.ce.Surface.prototype.afterPaste = function () {
 				right--;
 				context.splice( context.getLength() - 1, 1 );
 			}
+			// HACK: Strip trailing linebreaks probably introduced by Chrome bug
+			while ( data.getType( right - 1 ) === 'break' ) {
+				right--;
+			}
 			contextRange = new ve.Range( left, right );
 		}
 
