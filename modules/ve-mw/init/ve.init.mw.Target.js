@@ -244,6 +244,8 @@ ve.init.mw.Target.onModulesReady = function () {
 	}
 	// Dereference the callbacks
 	this.pluginCallbacks = [];
+	// Add the platform promise to the list
+	promises.push( ve.init.platform.getInitializedPromise() );
 	// Create a master promise tracking all the promises we got, and wait for it
 	// to be resolved
 	$.when.apply( $, promises ).done( this.modulesReady.resolve ).fail( this.modulesReady.reject );

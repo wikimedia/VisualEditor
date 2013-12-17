@@ -127,3 +127,29 @@ ve.init.Platform.prototype.getUserLanguages = function () {
 ve.init.Platform.prototype.getMediaSources = function () {
 	throw new Error( 've.init.Platform.getMediaSources must be overridden in subclass' );
 };
+
+/**
+ * Initialize the platform. The default implementation is to do nothing and return a resolved
+ * promise. Subclasses should override this if they have asynchronous initialization work to do.
+ *
+ * External callers should not call this. Instead, call #getInitializedPromise.
+ *
+ * @private
+ * @returns {jQuery.Promise} Promise that will be resolved once initialization is done
+ */
+ve.init.Platform.prototype.initialize = function () {
+	return $.Deferred().resolve().promise();
+};
+
+/**
+ * Get a promise to track when the platform has initialized. The platform won't be ready for use
+ * until this promise is resolved.
+ *
+ * @returns {jQuery.Promise} Promise that will be resolved once the platform is ready
+ */
+ve.init.Platform.prototype.getInitializedPromise = function () {
+	if ( !this.initialized ) {
+		this.initialized = this.initialize();
+	}
+	return this.initialized;
+};
