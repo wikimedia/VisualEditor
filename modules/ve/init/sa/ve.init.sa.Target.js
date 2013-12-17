@@ -24,8 +24,25 @@ ve.init.sa.Target = function VeInitSaTarget( $container, doc ) {
 	// Parent constructor
 	ve.init.Target.call( this, $container );
 
+	this.document = doc;
+
+	ve.init.platform.getInitializedPromise().done( ve.bind( this.setup, this ) );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.init.sa.Target, ve.init.Target );
+
+/* Methods */
+
+ve.init.sa.Target.prototype.setup = function () {
+	if ( this.setupDone ) {
+		return;
+	}
+
 	// Properties
-	this.surface = new ve.ui.Surface( doc );
+	this.setupDone = true;
+	this.surface = new ve.ui.Surface( this.document );
 	this.toolbar = new ve.ui.TargetToolbar( this, this.surface, { 'shadow': true } );
 
 	// Initialization
@@ -40,7 +57,3 @@ ve.init.sa.Target = function VeInitSaTarget( $container, doc ) {
 	this.surface.setPasteRules( this.constructor.static.pasteRules );
 	this.surface.initialize();
 };
-
-/* Inheritance */
-
-OO.inheritClass( ve.init.sa.Target, ve.init.Target );

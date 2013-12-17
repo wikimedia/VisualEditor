@@ -266,6 +266,7 @@ $wgResourceModules += array(
 		),
 		'dependencies' => array(
 			'ext.visualEditor.base',
+			'jquery.i18n',
 		),
 	),
 

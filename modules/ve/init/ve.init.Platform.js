@@ -64,7 +64,7 @@ ve.init.Platform.prototype.addMessages = function () {
  * @abstract
  * @param {string} key Message key
  * @param {Mixed...} [args] List of arguments which will be injected at $1, $2, etc. in the messaage
- * @returns {string} Localized message
+ * @returns {string} Localized message, or key or '<' + key + '>' if message not found
  */
 ve.init.Platform.prototype.getMessage = function () {
 	throw new Error( 've.init.Platform.getMessage must be overridden in subclass' );

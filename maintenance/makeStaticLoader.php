@@ -158,13 +158,36 @@ class MakeStaticLoader extends Maintenance {
 	}
 </script>',
 				'bodyAdd' => '<script>
-	<?php
-		require ' . var_export( $i18nScript, true ) . ';
-		echo \'ve.init.platform.addMessages( \' . json_encode( $messages[\'en\'] ) . " );\n";
-	?>
 	ve.init.platform.setModulesUrl( \'' . $vePath . '\' );
 </script>'
 			),
+			'jquery.i18n' => array(
+				'scripts' => array(
+					'jquery.i18n/src/jquery.i18n.js',
+					'jquery.i18n/src/jquery.i18n.messagestore.js',
+					'jquery.i18n/src/jquery.i18n.parser.js',
+					'jquery.i18n/src/jquery.i18n.emitter.js',
+					'jquery.i18n/src/jquery.i18n.language.js',
+					// fallbacks.js is not in the real RL module, but we need it in the standalone
+					'jquery.i18n/src/jquery.i18n.fallbacks.js',
+					// We can't use languageScripts here because we don't know what the language
+					// will be in advance, so just include all of them
+					'jquery.i18n/src/languages/bs.js',
+					'jquery.i18n/src/languages/dsb.js',
+					'jquery.i18n/src/languages/fi.js',
+					'jquery.i18n/src/languages/ga.js',
+					'jquery.i18n/src/languages/he.js',
+					'jquery.i18n/src/languages/hsb.js',
+					'jquery.i18n/src/languages/hu.js',
+					'jquery.i18n/src/languages/hy.js',
+					'jquery.i18n/src/languages/la.js',
+					'jquery.i18n/src/languages/ml.js',
+					'jquery.i18n/src/languages/os.js',
+					'jquery.i18n/src/languages/ru.js',
+					'jquery.i18n/src/languages/sl.js',
+					'jquery.i18n/src/languages/uk.js',
+				),
+			)
 		);
 
 		$modules = array(
@@ -175,6 +198,7 @@ class MakeStaticLoader extends Maintenance {
 			'unicodejs.wordbreak',
 			// Dependencies for ext.visualEditor.standalone:
 			'ext.visualEditor.base',
+			'jquery.i18n',
 			'ext.visualEditor.standalone',
 			'Standalone init',
 			// Dependencies for ext.visualEditor.core:
