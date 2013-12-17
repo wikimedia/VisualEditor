@@ -9,13 +9,13 @@ Feature: VisualEditor Transclusion
 
   Scenario: Add template
     Given I can see the Transclusion User Interface
-    When I enter S into transclusion Content box
+    When I enter N into transclusion Content box
     Then I should see a list of template suggestions
       And I should be able to click the Add template button
 
   Scenario: Add parameter to template
     Given I can see the Transclusion User Interface
-      And I enter S into transclusion Content box
+      And I enter N into transclusion Content box
       And I should see a list of template suggestions
       And  I should be able to click the Add template button
     When I enter x in the parameter box
@@ -25,7 +25,7 @@ Feature: VisualEditor Transclusion
 
   Scenario: Remove parameter
     Given I can see the Transclusion User Interface
-      And I enter S into transclusion Content box
+      And I enter N into transclusion Content box
       And I should see a list of template suggestions
       And I should be able to click the Add template button
       And I enter x in the parameter box
