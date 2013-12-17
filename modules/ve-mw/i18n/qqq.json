@@ -97,6 +97,7 @@
     "visualeditor-formatdropdown-format-mw-heading4": "Item in the MediaWiki formatting dropdown for a level 4 heading (sub-section)",
     "visualeditor-formatdropdown-format-mw-heading5": "Item in the MediaWiki formatting dropdown for a level 5 heading (sub-section)",
     "visualeditor-formatdropdown-format-mw-heading6": "Item in the MediaWiki formatting dropdown for a level 6 heading (sub-section)",
+    "visualeditor-languages-tool": "Tool for opening the languages links section of the meta dialog.\n{{Identical|Language}}",
     "visualeditor-linkinspector-illegal-title": "Warning that the entered text is not a valid page title.",
     "visualeditor-linkinspector-suggest-external-link": "Label for an external (Web) link in the link inspector.\n{{Identical|External link}}",
     "visualeditor-linkinspector-suggest-matching-page": "Label for suggested matching local wiki page or pages in the link inspector",
