@@ -178,6 +178,7 @@ $wgResourceModules += array(
 			'jquery.placeholder',
 			'mediawiki.feedback',
 			'mediawiki.jqueryMsg',
+			'mediawiki.util',
 		),
 		'messages' => array(
 			// MW core messages
@@ -225,7 +226,6 @@ $wgResourceModules += array(
 			'oojs',
 			'oojs-ui',
 			'unicodejs.wordbreak',
-			'mediawiki.util',
 		),
 		'targets' => array( 'desktop', 'mobile' ),
 	),
@@ -247,6 +247,7 @@ $wgResourceModules += array(
 			'mediawiki.Title',
 			'mediawiki.Uri',
 			'mediawiki.user',
+			'mediawiki.util',
 			'user.options',
 			'user.tokens',
 			'ext.visualEditor.base',
@@ -602,6 +603,7 @@ $wgResourceModules += array(
 			'mediawiki.Title',
 			'mediawiki.action.history.diff',
 			'mediawiki.user',
+			'mediawiki.util',
 			'jquery.autoEllipsis',
 			'jquery.byteLimit',
 		),
