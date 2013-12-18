@@ -81,10 +81,6 @@
 				"classes": ["ve.init", "ve.init.Platform", "ve.init.Target"]
 			},
 			{
-				"name": "MediaWiki integration",
-				"classes": ["ve.init.mw*", "ve.version"]
-			},
-			{
 				"name": "Stand-alone",
 				"classes": ["ve.init.sa*"]
 			}
@@ -134,10 +130,6 @@
 			{
 				"name": "Dialogs",
 				"classes": ["ve.ui.*Dialog"]
-			},
-			{
-				"name": "Pages",
-				"classes": ["ve.ui.*Page"]
 			}
 		]
 	},
