@@ -47,14 +47,21 @@
 }
 
 /* ve.ce.MWBlockImageNode */
-.ve-ce-mwBlockImageNode {
-	margin: 5px;
+
+figure[typeof*='mw:Image'] {
+	margin: 0;
 }
 
+figure[typeof*='mw:Image'] a {
+	border: 0;
+}
+
+/* TODO: Merge with div.tright styles */
 /* @noflip */
 figure[typeof*='mw:Image'].mw-halign-right {
 	clear: right;
 	float: right;
+	margin: .5em 0 1.3em 1.4em;
 }
 
 figure[typeof*='mw:Image'].mw-halign-center {
@@ -62,31 +69,27 @@ figure[typeof*='mw:Image'].mw-halign-center {
 	margin-right: auto;
 }
 
+/* TODO: Merge with div.tleft styles */
 /* @noflip */
 figure[typeof*='mw:Image'].mw-halign-left {
 	clear: left;
 	float: left;
+	margin: .5em 1.4em 1.3em 0;
 }
 
+/* TODO: Merge with div.thumbinner styles */
 figure[typeof='mw:Image/Thumb'], figure[typeof='mw:Image/Frame'] {
-    background-color: #f9f9f9;
-    border: 1px solid #cccccc;
-    padding: 3px !important;
-    overflow: hidden;
-    font-size: 94%;
-    text-align: center;
-}
-
-figure[typeof*='mw:Image'] figcaption {
-	border: medium none;
-	font-size: 94%;
-	line-height: 1.4em;
-	padding: 3px !important;
-}
-
-figure[typeof*='mw:Image'] img {
+	background-color: #f9f9f9;
 	border: 1px solid #cccccc;
-	vertical-align: middle;
+	padding: 3px !important;
+	overflow: hidden;
+	font-size: 94%;
+	text-align: center;
+}
+
+/* TODO: Merge with .thumbimage styles */
+figure[typeof*='mw:Image'] .ve-ce-mwBlockImageNode-thumbimage {
+	border: 1px solid #cccccc;
 }
 
 /* ve.ce.MWAlienExtensionNode */
@@ -110,10 +113,10 @@ figure[typeof*='mw:Image'] img {
 /* ve.ce.MWNumberedExternalLinkNode */
 
 .ve-ce-surface {
-    counter-reset: ve-ce-mwNumberedExternalLinkNode;
+	counter-reset: ve-ce-mwNumberedExternalLinkNode;
 }
 
 a[rel~="mw:ExtLink"]:empty:after {
-    content: "[" counter(ve-ce-mwNumberedExternalLinkNode) "]";
-    counter-increment: ve-ce-mwNumberedExternalLinkNode;
+	content: "[" counter(ve-ce-mwNumberedExternalLinkNode) "]";
+	counter-increment: ve-ce-mwNumberedExternalLinkNode;
 }

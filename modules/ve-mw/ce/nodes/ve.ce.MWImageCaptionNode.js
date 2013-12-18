@@ -32,7 +32,7 @@ OO.inheritClass( ve.ce.MWImageCaptionNode, ve.ce.BranchNode );
 
 ve.ce.MWImageCaptionNode.static.name = 'mwImageCaption';
 
-ve.ce.MWImageCaptionNode.static.tagName = 'div';
+ve.ce.MWImageCaptionNode.static.tagName = 'figcaption';
 
 /* Methods */
 
