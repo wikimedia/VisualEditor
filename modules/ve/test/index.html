@@ -1,19 +1,22 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta charset="UTF-8">
+		<meta charset="utf-8">
 		<title>VisualEditor Tests</title>
 
 		<!-- Load test framework -->
 		<link rel="stylesheet" href="../../jsdifflib/diffview.css">
+		<link rel="stylesheet" href="../../qunit/qunit.css">
 		<script src="../../jsdifflib/diffview.js"></script>
 		<script src="../../jsdifflib/difflib.js"></script>
-		<link rel="stylesheet" href="../../qunit/qunit.css">
 		<script src="../../qunit/qunit.js"></script>
 
 		<!-- No need for VisualEditor styles here -->
 	</head>
 	<body>
+		<div id="qunit"></div>
+		<div id="qunit-fixture">test markup</div>
+
 		<!-- jquery -->
 		<script src="../../../modules/jquery/jquery.js"></script>
 
@@ -302,8 +305,5 @@
 		<script src="ce/imetests/leftarrow-chromium-ubuntu-none.js"></script>
 		<script src="ce/imetests/leftarrow-firefox-ubuntu-none.js"></script>
 		<script src="ce/imetests/leftarrow-ie-win-none.js"></script>
-
-		<div id="qunit"></div>
-		<div id="qunit-fixture">test markup</div>
 	</body>
 </html>
