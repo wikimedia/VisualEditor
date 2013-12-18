@@ -55,5 +55,8 @@
     "visualeditor-linkinspector-title": "Hiperłącze",
     "visualeditor-listbutton-bullet-tooltip": "Lista wypunktowana",
     "visualeditor-listbutton-number-tooltip": "Lista numerowana",
+    "visualeditor-specialcharacter-button-tooltip": "Znak specjalny",
+    "visualeditor-specialcharacterinspector-title": "Znak specjalny",
+    "visualeditor-toolbar-insert": "Wstaw",
     "visualeditor-version-label": "Wersja"
 }
