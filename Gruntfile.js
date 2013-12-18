@@ -6,9 +6,7 @@
 
 /*jshint node:true */
 module.exports = function ( grunt ) {
-	var fs = require( 'fs' ),
-		exec = require( 'child_process' ).exec,
-		modules = grunt.file.readJSON( 'build/modules.json' );
+	var modules = grunt.file.readJSON( 'build/modules.json' );
 
 	grunt.loadNpmTasks( 'grunt-contrib-jshint' );
 	grunt.loadNpmTasks( 'grunt-contrib-csslint' );
@@ -20,6 +18,13 @@ module.exports = function ( grunt ) {
 	grunt.initConfig( {
 		pkg: grunt.file.readJSON( 'package.json' ),
 		buildloader: {
+			iframe: {
+				src: '.docs/eg-iframe.html.template',
+				dest: '.docs/eg-iframe.html',
+				modules: modules,
+				pathPrefix: '../',
+				indent: '\t\t'
+			},
 			demo: {
 				src: 'demos/ve/index.php.template',
 				dest: 'demos/ve/index.php',
@@ -28,25 +33,24 @@ module.exports = function ( grunt ) {
 				indent: '\t\t'
 			},
 			test: {
-				src: 'modules/ve/test/index.php.template',
-				dest: 'modules/ve/test/index.php',
+				src: 'modules/ve/test/index.html.template',
+				dest: 'modules/ve/test/index.html',
 				modules: modules,
 				pathPrefix: '../../../',
 				indent: '\t\t'
-			},
-			iframe: {
-				src: '.docs/eg-iframe.html.template',
-				dest: '.docs/eg-iframe.html',
-				modules: modules,
-				pathPrefix: '../',
-				indent: '\t'
 			}
 		},
 		jshint: {
 			options: {
 				jshintrc: '.jshintrc'
 			},
-			all: ['*.js', 'modules/{syntaxhighlight,unicodejs,ve,ve-mw}/**/*.js']
+			all: [
+				'*.js',
+				'{.docs,build,demos}/**/*.js',
+				// Shouldn't have to whitelist subdirectories since we have .jshintignore
+				// but, upstream bug https://github.com/gruntjs/grunt-contrib-jshint/issues/126
+				'modules/{syntaxhighlight,unicodejs,ve,ve-mw,ve-wmf}/**/*.js'
+			]
 		},
 		jscs: {
 			src: [
@@ -59,38 +63,30 @@ module.exports = function ( grunt ) {
 			options: {
 				csslintrc: '.csslintrc'
 			},
-			// TODO: modules/syntaxhighlight should be included, but is failing.
-			all: ['demos/**/*.css', 'modules/{ve,ve-mw}/**/*.css'],
+			all: [
+				'demos/**/*.css',
+				// TODO: modules/syntaxhighlight should be included, but is failing.
+				'modules/{ve,ve-mw}/**/*.css'
+			],
 		},
 		qunit: {
-			ve: 'modules/ve/test/index-phantomjs-tmp.html'
+			ve: 'modules/ve/test/index.html',
+			unicodejs: 'modules/unicodejs/index.html'
 		},
 		watch: {
-			files: ['<%= jshint.all %>', '<%= csslint.all %>', '<%= qunit.ve %>', '.{jshintrc,jshintignore,csslintrc}'],
+			files: [
+				'.{jshintrc,jscs.json,jshintignore,csslintrc}',
+				'<%= jshint.all %>',
+				'<%= csslint.all %>',
+				'<%= qunit.ve %>',
+				'<%= qunit.unicodejs %>'
+			],
 			tasks: ['test']
 		}
 	} );
 
-	grunt.registerTask( 'pre-qunit', function () {
-		var done = this.async();
-		grunt.file.setBase( __dirname + '/modules/ve/test' );
-		exec( 'php index.php > index-phantomjs-tmp.html', function ( err, stdout, stderr ) {
-			if ( err || stderr ) {
-				grunt.log.error( err || stderr );
-				done( false );
-			} else {
-				grunt.file.setBase( __dirname );
-				done( true );
-			}
-		} );
-	} );
-
-	grunt.event.on( 'qunit.done', function () {
-		fs.unlinkSync( __dirname + '/modules/ve/test/index-phantomjs-tmp.html' );
-	} );
-
 	grunt.registerTask( 'lint', ['jshint', 'jscs', 'csslint'] );
-	grunt.registerTask( 'unit', ['pre-qunit', 'qunit'] );
+	grunt.registerTask( 'unit', ['qunit'] );
 	grunt.registerTask( 'test', ['lint', 'unit'] );
 	grunt.registerTask( 'build', ['buildloader'] );
 	grunt.registerTask( 'default', ['build', 'test'] );

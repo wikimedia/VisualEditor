@@ -44,8 +44,8 @@ module.exports = function ( grunt ) {
 		styles = styles.slice( 0, -2 );
 
 		text = text
-			.replace( /^\s*<!-- STYLES -->[^\S\n]*$/m, styles )
-			.replace( /^\s*<!-- SCRIPTS -->[^\S\n]*$/m, scripts );
+			.replace( /^[^\S\n]*<!-- STYLES -->[^\S\n]*$/m, styles )
+			.replace( /^[^\S\n]*<!-- SCRIPTS -->[^\S\n]*$/m, scripts );
 
 		grunt.file.write( dest, text );
 		grunt.log.ok( 'File "' + dest + '" written.' );
