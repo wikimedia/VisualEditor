@@ -817,7 +817,7 @@ ve.init.mw.ViewPageTarget.prototype.getSaveFields = function () {
 			var $this = $( this );
 			// We can't just use $this.val() because .val() always returns the value attribute of
 			// a checkbox even when it's unchecked
-			if ( $this.prop( 'type' ) !== 'checkbox' || $this.prop( 'checked' ) ) {
+			if ( $this.prop ( 'name' ) && ( $this.prop( 'type' ) !== 'checkbox' || $this.prop( 'checked' ) ) ) {
 				fields[$this.prop( 'name' )] = $this.val();
 			}
 		} );
