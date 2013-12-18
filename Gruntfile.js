@@ -43,8 +43,9 @@ module.exports = function ( grunt ) {
 			}
 		},
 		jshint: {
-			options: JSON.parse( grunt.file.read( '.jshintrc' )
-				.replace( /\/\*(?:(?!\*\/)[\s\S])*\*\//g, '' ).replace( /\/\/[^\n\r]*/g, '' ) ),
+			options: {
+				jshintrc: '.jshintrc'
+			},
 			all: ['*.js', 'modules/{syntaxhighlight,unicodejs,ve,ve-mw}/**/*.js']
 		},
 		jscs: {
