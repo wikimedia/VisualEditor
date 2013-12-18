@@ -2,7 +2,7 @@ class VisualEditorPage
   include PageObject
 
   include URL
-  page_url URL.url("User:" + ENV["MEDIAWIKI_USER"])
+  page_url URL.url("User:#{ENV['MEDIAWIKI_USER']}")
 
   div(:container_disabled, class: 'oo-ui-widget oo-ui-widget-disabled oo-ui-flaggableElement-constructive oo-ui-pushButtonWidget')
   div(:content, class: 've-ce-documentNode ve-ce-branchNode')
