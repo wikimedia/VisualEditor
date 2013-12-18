@@ -20,15 +20,7 @@
  *  revision id here. Defaults to loading the latest version (see #load).
  */
 ve.init.mw.Target = function VeInitMwTarget( $container, pageName, revisionId ) {
-	var i, len, prefName, prefValue, conf = mw.config.get( 'wgVisualEditorConfig' ),
-		// language, mwalienextension and mwhiero are commented out in VisualEditorHooks::onGetBetaPreferences()
-		extraModules = [
-			'experimental',
-			// 'language',
-			// 'mwalienextension',
-			// 'mwhiero',
-			'mwmath'
-		];
+	var conf = mw.config.get( 'wgVisualEditorConfig' );
 
 	// Parent constructor
 	ve.init.Target.call( this, $container );
@@ -58,15 +50,6 @@ ve.init.mw.Target = function VeInitMwTarget( $container, pageName, revisionId ) 
 				['ext.visualEditor.viewPageTarget.icons-raster', 'ext.visualEditor.icons-raster']
 		)
 		.concat( conf.pluginModules || [] );
-	for ( i = 0, len = extraModules.length; i < len; i++ ) {
-		prefName = 'visualeditor-enable-' + extraModules[i];
-		prefValue = mw.config.get( 'wgUserName' ) === null ?
-			conf.defaultUserOptions[prefName] :
-			mw.user.options.get( prefName, conf.defaultUserOptions[prefName] );
-		if ( prefValue && prefValue !== '0' ) {
-			this.modules.push( 'ext.visualEditor.' + extraModules[i] );
-		}
-	}
 
 	this.pluginCallbacks = [];
 	this.modulesReady = $.Deferred();

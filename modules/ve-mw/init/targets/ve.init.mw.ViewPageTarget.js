@@ -16,8 +16,21 @@
  * @constructor
  */
 ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
-	var browserWhitelisted,
-		currentUri = new mw.Uri();
+	var i,
+		len,
+		prefName,
+		prefValue,
+		browserWhitelisted,
+		currentUri = new mw.Uri(),
+		conf = mw.config.get( 'wgVisualEditorConfig' ),
+		// language, mwalienextension and mwhiero are commented out in VisualEditorHooks::onGetBetaPreferences()
+		extraModules = [
+			'experimental',
+			// 'language',
+			// 'mwalienextension',
+			// 'mwhiero',
+			'mwmath'
+		];
 
 	// Parent constructor
 	ve.init.mw.Target.call(
@@ -61,6 +74,17 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 	 * @property {jQuery.Promise|null}
 	 */
 	this.sanityCheckPromise = null;
+
+	// Load additional modules
+	for ( i = 0, len = extraModules.length; i < len; i++ ) {
+		prefName = 'visualeditor-enable-' + extraModules[i];
+		prefValue = mw.config.get( 'wgUserName' ) === null ?
+			conf.defaultUserOptions[prefName] :
+			mw.user.options.get( prefName, conf.defaultUserOptions[prefName] );
+		if ( prefValue && prefValue !== '0' ) {
+			this.modules.push( 'ext.visualEditor.' + extraModules[i] );
+		}
+	}
 
 	browserWhitelisted = (
 		'vewhitelist' in currentUri.query ||
