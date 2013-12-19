@@ -175,7 +175,9 @@ ve.ce.MWBlockImageNode.prototype.updateClasses = function ( oldAlign ) {
 /**
  * Redraw the image and its wrappers at the specified dimensions
  *
- * @param {Number} [dimensions] Dimensions to update to, uses the model values if undefined
+ * The current dimensions from the model are used if none are specified.
+ *
+ * @param {Object} [dimensions] Dimension object containing width & height
  */
 ve.ce.MWBlockImageNode.prototype.updateSize = function ( dimensions ) {
 	if ( !dimensions ) {
