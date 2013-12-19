@@ -10,6 +10,7 @@ $( function () {
 
 	var currentTarget,
 		$targetContainer = $( '.ve-demo-editor' ).eq( 0 ),
+		$errorbox = $( '.ve-demo-error' ),
 
 		// Widgets
 		startTextInput = new OO.ui.TextInputWidget( { 'readOnly': true } ),
@@ -41,13 +42,14 @@ $( function () {
 		validateButton.$element
 	);
 
-	$( '.ve-demo-menu' ).on( 'click', 'li a', function () {
-		var src = $( this ).data( 'pageSrc' );
-
+	function loadPage( src ) {
+		$errorbox.empty();
 		$.ajax( {
 			url: src,
 			dataType: 'text'
 		} ).done( function ( pageHtml ) {
+			location.hash = '#!/src/' + src;
+
 			$targetContainer.slideUp();
 
 			var target = new ve.init.sa.Target(
@@ -73,7 +75,22 @@ $( function () {
 
 			} );
 
+		} ).fail( function () {
+			$errorbox.text( 'Failed loading page ' + src );
 		} );
+	}
+
+	// Open initial page
+
+	if ( /^#!\/src\/.+$/.test( location.hash ) ) {
+		loadPage( location.hash.slice( 7 ) );
+	} else {
+		loadPage( $( '.ve-demo-menu li a' ).data( 'pageSrc' ) );
+	}
+
+	$( '.ve-demo-menu' ).on( 'click', 'li a', function ( e ) {
+		loadPage( $( this ).data( 'pageSrc' ) );
+		e.preventDefault();
 	} );
 
 	// Events

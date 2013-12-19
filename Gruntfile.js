@@ -39,7 +39,7 @@ module.exports = function ( grunt ) {
 							file = file.replace( /^.*(pages\/.+.html)$/, '$1' );
 							var name = file.slice( 6, -5 );
 							html.push(
-								'\t\t\t<li><a href="./#!/page/' + name + '" data-page-src="' + file +
+								'\t\t\t<li><a href="./#!/src/' + file + '" data-page-src="' + file +
 									'">' + name + '</a></li>'
 							);
 						} );
