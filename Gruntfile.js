@@ -62,9 +62,7 @@ module.exports = function ( grunt ) {
 			all: [
 				'*.js',
 				'{.docs,build,demos}/**/*.js',
-				// Shouldn't have to whitelist subdirectories since we have .jshintignore
-				// but, upstream bug https://github.com/gruntjs/grunt-contrib-jshint/issues/126
-				'modules/{syntaxhighlight,unicodejs,ve,ve-mw,ve-wmf}/**/*.js'
+				'modules/**/*.js'
 			]
 		},
 		jscs: {

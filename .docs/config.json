@@ -8,8 +8,8 @@
 	"--output": "../docs",
 	"--": [
 		"./external.js",
-		"../modules/oojs",
-		"../modules/oojs-ui",
+		"../lib/oojs",
+		"../lib/oojs-ui",
 		"../modules/unicodejs",
 		"../modules/ve",
 		"../modules/ve-mw"

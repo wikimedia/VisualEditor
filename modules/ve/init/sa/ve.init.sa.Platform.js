@@ -150,7 +150,7 @@ ve.init.sa.Platform.prototype.initialize = function () {
 		promises.push( deferred.promise() );
 
 		deferred = $.Deferred();
-		$.i18n().load( path + '/oojs-ui/i18n/' + languages[i] + '.json', languages[i] )
+		$.i18n().load( path + '/../lib/oojs-ui/i18n/' + languages[i] + '.json', languages[i] )
 			.always( deferred.resolve );
 		promises.push( deferred.promise() );
 	}

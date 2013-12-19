@@ -1,27 +1,27 @@
 {
 	"jquery": {
 		"scripts": [
-			"modules/jquery/jquery.js"
+			"lib/jquery/jquery.js"
 		]
 	},
 	"oojs": {
 		"scripts": [
-			"modules/oojs/oojs.js"
+			"lib/oojs/oojs.js"
 		]
 	},
 	"oojs-ui": {
 		"scripts": [
-			"modules/oojs-ui/oojs-ui.js"
+			"lib/oojs-ui/oojs-ui.js"
 		],
 		"styles": [
-			"modules/oojs-ui/oojs-ui.svg.css"
+			"lib/oojs-ui/oojs-ui.svg.css"
 		]
 	},
 	"rangy": {
 		"scripts": [
-			"modules/rangy/rangy-core-1.3.js",
-			"modules/rangy/rangy-position-1.3.js",
-			"modules/rangy/rangy-export.js"
+			"lib/rangy/rangy-core-1.3.js",
+			"lib/rangy/rangy-position-1.3.js",
+			"lib/rangy/rangy-export.js"
 		]
 	},
 	"unicodejs": {
@@ -36,54 +36,54 @@
 	},
 	"jquery.uls.grid": {
 		"styles": [
-			"modules/jquery.uls/css/jquery.uls.grid.css"
+			"lib/jquery.uls/css/jquery.uls.grid.css"
 		]
 	},
 	"jquery.uls.data": {
 		"scripts": [
-			"modules/jquery.uls/src/jquery.uls.data.js",
-			"modules/jquery.uls/src/jquery.uls.data.utils.js"
+			"lib/jquery.uls/src/jquery.uls.data.js",
+			"lib/jquery.uls/src/jquery.uls.data.utils.js"
 		]
 	},
 	"jquery.uls.compact": {
 		"styles": [
-			"modules/jquery.uls/css/jquery.uls.compact.css"
+			"lib/jquery.uls/css/jquery.uls.compact.css"
 		]
 	},
 	"jquery.uls": {
 		"scripts": [
-			"modules/jquery.uls/src/jquery.uls.core.js",
-			"modules/jquery.uls/src/jquery.uls.lcd.js",
-			"modules/jquery.uls/src/jquery.uls.languagefilter.js",
-			"modules/jquery.uls/src/jquery.uls.regionfilter.js"
+			"lib/jquery.uls/src/jquery.uls.core.js",
+			"lib/jquery.uls/src/jquery.uls.lcd.js",
+			"lib/jquery.uls/src/jquery.uls.languagefilter.js",
+			"lib/jquery.uls/src/jquery.uls.regionfilter.js"
 		],
 		"styles": [
-			"modules/jquery.uls/css/jquery.uls.css",
-			"modules/jquery.uls/css/jquery.uls.lcd.css"
+			"lib/jquery.uls/css/jquery.uls.css",
+			"lib/jquery.uls/css/jquery.uls.lcd.css"
 		]
 	},
 	"jquery.i18n": {
 		"scripts": [
-			"modules/jquery.i18n/src/jquery.i18n.js",
-			"modules/jquery.i18n/src/jquery.i18n.messagestore.js",
-			"modules/jquery.i18n/src/jquery.i18n.parser.js",
-			"modules/jquery.i18n/src/jquery.i18n.emitter.js",
-			"modules/jquery.i18n/src/jquery.i18n.language.js",
-			"modules/jquery.i18n/src/jquery.i18n.fallbacks.js",
-			"modules/jquery.i18n/src/languages/bs.js",
-			"modules/jquery.i18n/src/languages/dsb.js",
-			"modules/jquery.i18n/src/languages/fi.js",
-			"modules/jquery.i18n/src/languages/ga.js",
-			"modules/jquery.i18n/src/languages/he.js",
-			"modules/jquery.i18n/src/languages/hsb.js",
-			"modules/jquery.i18n/src/languages/hu.js",
-			"modules/jquery.i18n/src/languages/hy.js",
-			"modules/jquery.i18n/src/languages/la.js",
-			"modules/jquery.i18n/src/languages/ml.js",
-			"modules/jquery.i18n/src/languages/os.js",
-			"modules/jquery.i18n/src/languages/ru.js",
-			"modules/jquery.i18n/src/languages/sl.js",
-			"modules/jquery.i18n/src/languages/uk.js"
+			"lib/jquery.i18n/src/jquery.i18n.js",
+			"lib/jquery.i18n/src/jquery.i18n.messagestore.js",
+			"lib/jquery.i18n/src/jquery.i18n.parser.js",
+			"lib/jquery.i18n/src/jquery.i18n.emitter.js",
+			"lib/jquery.i18n/src/jquery.i18n.language.js",
+			"lib/jquery.i18n/src/jquery.i18n.fallbacks.js",
+			"lib/jquery.i18n/src/languages/bs.js",
+			"lib/jquery.i18n/src/languages/dsb.js",
+			"lib/jquery.i18n/src/languages/fi.js",
+			"lib/jquery.i18n/src/languages/ga.js",
+			"lib/jquery.i18n/src/languages/he.js",
+			"lib/jquery.i18n/src/languages/hsb.js",
+			"lib/jquery.i18n/src/languages/hu.js",
+			"lib/jquery.i18n/src/languages/hy.js",
+			"lib/jquery.i18n/src/languages/la.js",
+			"lib/jquery.i18n/src/languages/ml.js",
+			"lib/jquery.i18n/src/languages/os.js",
+			"lib/jquery.i18n/src/languages/ru.js",
+			"lib/jquery.i18n/src/languages/sl.js",
+			"lib/jquery.i18n/src/languages/uk.js"
 		]
 	},
 	"visualEditor.base": {

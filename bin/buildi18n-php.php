@@ -11,7 +11,7 @@ array_map( function ( $dir ) use ( &$messages ) {
 			$data;
 	}
 }, array(
-	'modules/oojs-ui/i18n',
+	'lib/oojs-ui/i18n',
 	'modules/ve/i18n',
 	'modules/ve-mw/i18n',
 	'modules/ve-wmf/i18n'
