@@ -14,7 +14,9 @@ module.exports = function ( grunt ) {
 			pathPrefix = this.data.pathPrefix || '',
 			indent = this.data.indent || '',
 			modules = this.data.modules,
-			text = grunt.file.read( __dirname + '/../../' + src );
+			placeholders = this.data.placeholders || {},
+			text = grunt.file.read( __dirname + '/../../' + src ),
+			done = this.async();
 
 		function scriptTag( file ) {
 			return indent + '<script src="' + pathPrefix + file + '"></script>';
@@ -22,6 +24,20 @@ module.exports = function ( grunt ) {
 
 		function styleTag( file ) {
 			return indent + '<link rel=stylesheet href="' + pathPrefix + file + '">';
+		}
+
+		function placeholder( input, id, replacement, callback ) {
+			var output,
+				rComment = new RegExp( '^[^\\S\\n]*<!-- ' + id + ' -->[^\\S\\n]*$', 'm' );
+			if ( typeof replacement === 'function' ) {
+				replacement( function ( response ) {
+					output = input.replace( rComment, response );
+					callback( output );
+				} );
+			} else {
+				output = input.replace( rComment, replacement );
+				callback( output );
+			}
 		}
 
 		for ( module in modules ) {
@@ -43,12 +59,25 @@ module.exports = function ( grunt ) {
 		// Strip last 2 line breaks since we only want them between sections
 		styles = styles.slice( 0, -2 );
 
-		text = text
-			.replace( /^[^\S\n]*<!-- STYLES -->[^\S\n]*$/m, styles )
-			.replace( /^[^\S\n]*<!-- SCRIPTS -->[^\S\n]*$/m, scripts );
+		placeholders.styles = styles;
+		placeholders.scripts = scripts;
 
-		grunt.file.write( dest, text );
-		grunt.log.ok( 'File "' + dest + '" written.' );
+		grunt.util.async.forEachSeries(
+			Object.keys(placeholders),
+			function ( id, next ) {
+				placeholder( text, id.toUpperCase(), placeholders[id], function ( newText ) {
+					text = newText;
+					next();
+				} );
+			},
+			function () {
+				grunt.file.write( dest, text );
+				grunt.log.ok( 'File "' + dest + '" written.' );
+
+				done();
+			}
+		);
+
 	} );
 
 };

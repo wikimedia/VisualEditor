@@ -15,13 +15,13 @@ body {
 
 /* Demo */
 
-.ve-demo-docs {
+.ve-demo-menu {
 	list-style: none;
 	margin: 0 0 1em 0;
 	display: inline-block;
 }
 
-.ve-demo-docs li {
+.ve-demo-menu li {
 	list-style: none;
 	margin: 0 0.75em 0 0;
 	padding: 0;

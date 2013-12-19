@@ -35,7 +35,10 @@ OO.inheritClass( ve.init.sa.Target, ve.init.Target );
 
 /* Methods */
 
+/** */
 ve.init.sa.Target.prototype.setup = function () {
+	var target = this;
+
 	if ( this.setupDone ) {
 		return;
 	}
@@ -56,4 +59,12 @@ ve.init.sa.Target.prototype.setup = function () {
 	this.surface.addCommands( this.constructor.static.surfaceCommands );
 	this.surface.setPasteRules( this.constructor.static.pasteRules );
 	this.surface.initialize();
+
+	// This must be emitted asynchronous because ve.init.Platform#initialize
+	// is synchronous, and if we emit it right away, then users will be
+	// unable to listen to this event as it will have been emitted before the
+	// constructor returns.
+	setTimeout( function () {
+		target.emit( 'surfaceReady' );
+	} );
 };

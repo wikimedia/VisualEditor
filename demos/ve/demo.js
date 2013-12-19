@@ -8,8 +8,11 @@
 /*global console, alert */
 $( function () {
 
-	// Widgets
-	var startTextInput = new OO.ui.TextInputWidget( { 'readOnly': true } ),
+	var currentTarget,
+		$targetContainer = $( '.ve-demo-editor' ).eq( 0 ),
+
+		// Widgets
+		startTextInput = new OO.ui.TextInputWidget( { 'readOnly': true } ),
 		endTextInput = new OO.ui.TextInputWidget( { 'readOnly': true } ),
 		startTextInputLabel = new OO.ui.InputLabelWidget(
 			{ 'label': 'Start', 'input': startTextInput }
@@ -25,6 +28,7 @@ $( function () {
 		validateButton = new OO.ui.PushButtonWidget( { 'label': 'Validate view and model' } );
 
 	// Initialization
+
 	$( '.ve-demo-utilities-commands' ).append(
 		getRangeButton.$element,
 		startTextInputLabel.$element,
@@ -37,19 +41,57 @@ $( function () {
 		validateButton.$element
 	);
 
+	$( '.ve-demo-menu' ).on( 'click', 'li a', function () {
+		var src = $( this ).data( 'pageSrc' );
+
+		$.ajax( {
+			url: src,
+			dataType: 'text'
+		} ).done( function ( pageHtml ) {
+			$targetContainer.slideUp();
+
+			var target = new ve.init.sa.Target(
+				$( '<div>' ),
+				ve.createDocumentFromHtml( pageHtml )
+			);
+
+			target.on( 'surfaceReady', function () {
+				// TODO: Target should have a way to tear itself down (should include removing
+				// elements outside target.$element, such as global overlays).
+				$targetContainer.promise().done( function () {
+					if ( currentTarget ) {
+						currentTarget.$element.remove();
+					}
+					$targetContainer
+						.append( target.$element )
+						.slideDown()
+						.promise().done( function () {
+							target.surface.$element.find( '.ve-ce-documentNode' ).focus();
+							currentTarget = target;
+						} );
+				} );
+
+			} );
+
+		} );
+	} );
+
 	// Events
+
 	getRangeButton.on( 'click', function () {
 		var range = ve.instances[0].view.model.getSelection();
 		startTextInput.setValue( range.start );
 		endTextInput.setValue( range.end );
 		logRangeButton.setDisabled( false );
 	} );
+
 	logRangeButton.on( 'click', function () {
 		var	start = startTextInput.getValue(),
 			end = endTextInput.getValue();
 		// TODO: Validate input
 		console.dir( ve.instances[0].view.documentView.model.data.slice( start, end ) );
 	} );
+
 	dumpModelButton.on( 'click', function () {
 		/*jshint loopfunc:true */
 		// linear model dump
@@ -124,6 +166,7 @@ $( function () {
 		);
 		$( '#ve-dump' ).show();
 	} );
+
 	validateButton.on( 'click', function () {
 		var failed = false;
 		$( '.ve-ce-branchNode' ).each( function ( index, element ) {

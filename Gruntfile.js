@@ -26,11 +26,26 @@ module.exports = function ( grunt ) {
 				indent: '\t\t'
 			},
 			demo: {
-				src: 'demos/ve/index.php.template',
-				dest: 'demos/ve/index.php',
+				src: 'demos/ve/index.html.template',
+				dest: 'demos/ve/index.html',
 				modules: modules,
 				pathPrefix: '../../',
-				indent: '\t\t'
+				indent: '\t\t',
+				placeholders: {
+					menu: function ( callback ) {
+						var html = [],
+							files = grunt.file.expand( 'demos/ve/pages/*.html' );
+						files.forEach( function ( file ) {
+							file = file.replace( /^.*(pages\/.+.html)$/, '$1' );
+							var name = file.slice( 6, -5 );
+							html.push(
+								'\t\t\t<li><a href="./#!/page/' + name + '" data-page-src="' + file +
+									'">' + name + '</a></li>'
+							);
+						} );
+						callback( html.join( '\n' ) );
+					}
+				}
 			},
 			test: {
 				src: 'modules/ve/test/index.html.template',

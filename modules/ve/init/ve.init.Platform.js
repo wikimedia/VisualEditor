@@ -145,6 +145,11 @@ ve.init.Platform.prototype.initialize = function () {
  * Get a promise to track when the platform has initialized. The platform won't be ready for use
  * until this promise is resolved.
  *
+ * Since the initialization only happens once, and the same (resolved) promise
+ * is returned when called again, and since the Platform instance is global
+ * (shared between different Target instances) it is important not to rely
+ * on this promise being asynchronous.
+ *
  * @returns {jQuery.Promise} Promise that will be resolved once the platform is ready
  */
 ve.init.Platform.prototype.getInitializedPromise = function () {

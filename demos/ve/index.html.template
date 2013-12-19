@@ -1,26 +1,11 @@
-<?php
-/**
+<!--
+/*!
  * VisualEditor standalone demo
  *
- * @file
  * @copyright 2011-2013 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
-
-// Find all .html files in the pages directory
-$path = __DIR__ . '/pages';
-$pages = glob( $path . '/*.html' );
-$page = current( $pages );
-
-// If the ?page= parameter is set, and that page exists, load it
-if ( isset( $_GET['page'] ) && in_array( $path . '/' . $_GET['page'] . '.html', $pages ) ) {
-	$page = $path . '/' . $_GET['page'] . '.html';
-}
-$html = file_get_contents( $page );
-
-// TODO: get rid of the PHP-based loading system and make the demo purely HTML+JS
-
-?>
+-->
 <!DOCTYPE html>
 <html>
 	<head>
@@ -33,17 +18,8 @@ $html = file_get_contents( $page );
 		<link rel="stylesheet" href="demo.css">
 	</head>
 	<body>
-		<ul class="ve-demo-docs">
-			<?php
-				foreach ( $pages as $page ): ?>
-				<li>
-					<a href="./?page=<?php echo basename( $page, '.html' ); ?>">
-						<?php echo basename( $page, '.html' ); ?>
-					</a>
-				</li>
-			<?php
-				endforeach;
-			?>
+		<ul class="ve-demo-menu">
+				<!-- MENU -->
 		</ul>
 		<div class="ve-demo-editor"></div>
 		<div class="ve-demo-utilities">
@@ -69,15 +45,6 @@ $html = file_get_contents( $page );
 		<!-- SCRIPTS -->
 
 		<!-- demo scripts -->
-		<script>
-			$( function () {
-				new ve.init.sa.Target(
-					$( '.ve-demo-editor' ),
-					ve.createDocumentFromHtml( <?php echo json_encode( $html ); ?> )
-				);
-				$( '.ve-ce-documentNode' ).focus();
-			} );
-		</script>
 		<script src="demo.js"></script>
 	</body>
 </html>
