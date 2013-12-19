@@ -5,11 +5,11 @@
 		<title>VisualEditor Tests</title>
 
 		<!-- Load test framework -->
-		<link rel="stylesheet" href="../../jsdifflib/diffview.css">
-		<link rel="stylesheet" href="../../qunit/qunit.css">
-		<script src="../../jsdifflib/diffview.js"></script>
-		<script src="../../jsdifflib/difflib.js"></script>
-		<script src="../../qunit/qunit.js"></script>
+		<link rel="stylesheet" href="../../../lib/jsdifflib/diffview.css">
+		<link rel="stylesheet" href="../../../lib/qunit/qunit.css">
+		<script src="../../../lib/jsdifflib/diffview.js"></script>
+		<script src="../../../lib/jsdifflib/difflib.js"></script>
+		<script src="../../../lib/qunit/qunit.js"></script>
 
 		<!-- No need for VisualEditor styles here -->
 	</head>
