@@ -66,7 +66,7 @@ $( function () {
 						.append( target.$element )
 						.slideDown()
 						.promise().done( function () {
-							target.surface.$element.find( '.ve-ce-documentNode' ).focus();
+							target.$document[0].focus();
 							currentTarget = target;
 						} );
 				} );

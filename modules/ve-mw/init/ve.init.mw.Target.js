@@ -35,11 +35,6 @@ ve.init.mw.Target = function VeInitMwTarget( $container, pageName, revisionId ) 
 	this.submitUrl = ( new mw.Uri( mw.util.getUrl( this.pageName ) ) )
 		.extend( { 'action': 'submit' } );
 
-	/**
-	 * @property {ve.ui.Surface}
-	 */
-	this.surface = null;
-
 	this.modules = [
 			'ext.visualEditor.mwcore',
 			'ext.visualEditor.data'
@@ -61,15 +56,7 @@ ve.init.mw.Target = function VeInitMwTarget( $container, pageName, revisionId ) 
 	);
 };
 
-/**
- * Fired when the #surface is ready.
- *
- * By default the surface document is not focussed. If the target wants
- * the browsers' focus to be in the surface (ready for typing and cursoring)
- * call `this.$document[0].focus();` in a handler for this event.
- *
- * @event surfaceReady
- */
+/* Events */
 
 /**
  * @event editConflict

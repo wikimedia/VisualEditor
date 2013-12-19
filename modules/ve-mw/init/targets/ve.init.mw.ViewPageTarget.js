@@ -40,7 +40,6 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 	);
 
 	// Properties
-	this.$document = null;
 	this.$spinner = $( '<div class="ve-init-mw-viewPageTarget-loading"></div>' );
 	this.toolbarCancelButton = null;
 	this.toolbarSaveButton = null;

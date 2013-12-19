@@ -21,7 +21,34 @@ ve.init.Target = function VeInitTarget( $container ) {
 
 	// Properties
 	this.$element = $container;
+
+	/**
+	 * @property {ve.ui.Surface}
+	 */
+	this.surface = null;
+
+	/**
+	 * @property {jQuery} The ve-ce-documentNode of #surface
+	 */
+	this.$document = null;
+
+	/**
+	 * @property {ve.ui.TargetToolbar}
+	 */
+	this.toolbar = null;
 };
+
+/* Events */
+
+/**
+ * Fired when the #surface is ready.
+ *
+ * By default the surface document is not focussed. If the target wants
+ * the browsers' focus to be in the surface (ready for typing and cursoring)
+ * call `this.$document[0].focus();` in a handler for this event.
+ *
+ * @event surfaceReady
+ */
 
 /* Inheritance */
 

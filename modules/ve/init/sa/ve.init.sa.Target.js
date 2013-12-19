@@ -25,6 +25,7 @@ ve.init.sa.Target = function VeInitSaTarget( $container, doc ) {
 	ve.init.Target.call( this, $container );
 
 	this.document = doc;
+	this.setupDone = false;
 
 	ve.init.platform.getInitializedPromise().done( ve.bind( this.setup, this ) );
 };
@@ -35,7 +36,9 @@ OO.inheritClass( ve.init.sa.Target, ve.init.Target );
 
 /* Methods */
 
-/** */
+/**
+ * @fires surfaceReady
+ */
 ve.init.sa.Target.prototype.setup = function () {
 	var target = this;
 
@@ -46,6 +49,7 @@ ve.init.sa.Target.prototype.setup = function () {
 	// Properties
 	this.setupDone = true;
 	this.surface = new ve.ui.Surface( this.document );
+	this.$document = this.surface.$element.find( '.ve-ce-documentNode' );
 	this.toolbar = new ve.ui.TargetToolbar( this, this.surface, { 'shadow': true } );
 
 	// Initialization
