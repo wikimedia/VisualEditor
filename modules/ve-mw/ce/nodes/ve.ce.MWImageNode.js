@@ -19,6 +19,8 @@
  * @mixins ve.ce.MWResizableNode
  *
  * @constructor
+ * @param {jQuery} $figure Figure element
+ * @param {jQuery} $image Image element
  * @param {Object} [config] Configuration options
  */
 ve.ce.MWImageNode = function VeCeMWImageNode( $figure, $image, config ) {
