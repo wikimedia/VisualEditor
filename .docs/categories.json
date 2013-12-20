@@ -1,26 +1,27 @@
 [
 	{
-		"name": "ContentEditable",
+		"name": "General",
 		"groups": [
 			{
-				"name": "General",
-				"classes": [
-					"ve.ce",
-					"ve.ce.View",
-					"ve.ce.AnnotationFactory",
-					"ve.ce.NodeFactory",
-					"ve.ce.Surface",
-					"ve.ce.SurfaceObserver",
-					"ve.ce.DomRange"
-				]
-			},
-			{
-				"name": "Annotations",
-				"classes": ["ve.ce.*Annotation"]
+				"name": "Utilities",
+				"classes": ["ve", "ve.Range", "ve.EventSequencer"]
 			},
 			{
 				"name": "Nodes",
-				"classes": ["ve.ce.Document", "ve.ce.*Node"]
+				"classes": ["ve.Node", "ve.BranchNode", "ve.LeafNode", "ve.Document"]
+			}
+		]
+	},
+	{
+		"name": "Initialization",
+		"groups": [
+			{
+				"name": "General",
+				"classes": ["ve.init", "ve.init.Platform", "ve.init.Target"]
+			},
+			{
+				"name": "Stand-alone",
+				"classes": ["ve.init.sa*"]
 			}
 		]
 	},
@@ -74,15 +75,27 @@
 		]
 	},
 	{
-		"name": "Initialization",
+		"name": "ContentEditable",
 		"groups": [
 			{
 				"name": "General",
-				"classes": ["ve.init", "ve.init.Platform", "ve.init.Target"]
+				"classes": [
+					"ve.ce",
+					"ve.ce.View",
+					"ve.ce.AnnotationFactory",
+					"ve.ce.NodeFactory",
+					"ve.ce.Surface",
+					"ve.ce.SurfaceObserver",
+					"ve.ce.DomRange"
+				]
 			},
 			{
-				"name": "Stand-alone",
-				"classes": ["ve.init.sa*"]
+				"name": "Annotations",
+				"classes": ["ve.ce.*Annotation"]
+			},
+			{
+				"name": "Nodes",
+				"classes": ["ve.ce.Document", "ve.ce.*Node"]
 			}
 		]
 	},
@@ -137,6 +150,10 @@
 		"name": "Tests",
 		"groups": [
 			{
+				"name": "QUnit",
+				"classes": ["ve.QUnit", "ve.QUnit.assert"]
+			},
+			{
 				"name": "IME",
 				"classes": [
 					"ve.ce.TestOffset",
@@ -146,31 +163,15 @@
 		]
 	},
 	{
-		"name": "General",
-		"groups": [
-			{
-				"name": "Utilities",
-				"classes": [
-					"ve", "ve.Range", "ve.EventSequencer"
-				]
-			},
-			{
-				"name": "Nodes",
-				"classes": ["ve.Node", "ve.BranchNode", "ve.LeafNode", "ve.Document"]
-			},
-			{
-				"name": "Test",
-				"classes": ["ve.QUnit", "ve.QUnit.assert"]
-			}
-		]
-	},
-	{
 		"name": "UnicodeJS",
 		"groups": [
 			{
 				"name": "UnicodeJS",
 				"classes": [
-					"unicodeJS", "unicodeJS.TextString", "unicodeJS.wordbreak", "unicodeJS.graphemebreak"
+					"unicodeJS",
+					"unicodeJS.TextString",
+					"unicodeJS.wordbreak",
+					"unicodeJS.graphemebreak"
 				]
 			}
 		]
@@ -217,17 +218,12 @@
 		]
 	},
 	{
-		"name": "OOJS",
-		"groups": [
-			{
-				"name": "General",
-				"classes": [ "OO", "OO.EventEmitter", "OO.Factory", "OO.Registry" ]
-			}
-		]
-	},
-	{
 		"name": "Upstream",
 		"groups": [
+			{
+				"name": "OOJS",
+				"classes": ["OO", "OO.EventEmitter", "OO.Factory", "OO.Registry"]
+			},
 			{
 				"name": "jQuery",
 				"classes": ["jQuery", "jQuery.Event", "jQuery.Promise", "jQuery.Deferred", "jQuery.jqXHR", "QUnit"]
@@ -235,7 +231,14 @@
 			{
 				"name": "JavaScript",
 				"classes": [
-					"Array", "Boolean", "Date", "Function", "Number", "Object", "RegExp", "String"
+					"Array",
+					"Boolean",
+					"Date",
+					"Function",
+					"Number",
+					"Object",
+					"RegExp",
+					"String"
 				]
 			}
 		]
