@@ -41,6 +41,15 @@ ve.ui.CommandRegistry.prototype.register = function ( command ) {
 	OO.Registry.prototype.register.call( this, command.getName(), command );
 };
 
+/**
+ * Returns command for node by name
+ * @param {ve.ce.Node} node Node to get command for
+ * @returns {ve.ui.Command}
+ */
+ve.ui.CommandRegistry.prototype.getCommandForNode = function ( node ) {
+	return this.lookup( node.constructor.static.primaryCommandName );
+};
+
 /* Initialization */
 
 ve.ui.commandRegistry = new ve.ui.CommandRegistry();

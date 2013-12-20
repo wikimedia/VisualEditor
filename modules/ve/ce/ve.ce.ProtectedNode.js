@@ -97,7 +97,11 @@ ve.ce.ProtectedNode.prototype.onProtectedSetup = function () {
 			) {
 				return;
 			}
-			$shield = node.$( node.$.context.importNode( $shieldTemplate[0], true ) ).appendTo( $this );
+			$shield = node.$( node.$.context.importNode( $shieldTemplate[0], true ) )
+				.appendTo( $this )
+				.on( 'dblclick', function () {
+					node.emit( 'dblclick' );
+				} );
 			node.$shields = node.$shields.add( $shield );
 		}
 	} );
@@ -213,13 +217,17 @@ ve.ce.ProtectedNode.prototype.onProtectedResizeStart = function () {
  */
 ve.ce.ProtectedNode.prototype.createPhantoms = function () {
 	var $phantomTemplate = this.constructor.static.$phantomTemplate,
-		surface = this.root.getSurface();
+		surface = this.root.getSurface(),
+		node = this;
 
 	this.$phantomable.find( '.ve-ce-protectedNode-shield:visible' ).each(
 		ve.bind( function () {
 			this.$phantoms = this.$phantoms.add(
 				this.$( this.$.context.importNode( $phantomTemplate[0], true ) )
 					.on( 'mousedown', ve.bind( this.onPhantomMouseDown, this ) )
+					.on( 'dblclick', function () {
+						node.emit( 'dblclick' );
+					} )
 			);
 		}, this )
 	);
