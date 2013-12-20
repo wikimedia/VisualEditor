@@ -9,13 +9,12 @@ module.exports = function ( grunt ) {
 		var module,
 			styles = '',
 			scripts = '',
-			dest = this.data.dest,
-			src = this.data.src,
+			target = this.data.target,
 			pathPrefix = this.data.pathPrefix || '',
 			indent = this.data.indent || '',
 			modules = this.data.modules,
 			placeholders = this.data.placeholders || {},
-			text = grunt.file.read( __dirname + '/../../' + src ),
+			text = grunt.file.read( this.data.template ),
 			done = this.async();
 
 		function scriptTag( file ) {
@@ -71,8 +70,8 @@ module.exports = function ( grunt ) {
 				} );
 			},
 			function () {
-				grunt.file.write( dest, text );
-				grunt.log.ok( 'File "' + dest + '" written.' );
+				grunt.file.write( target, text );
+				grunt.log.ok( 'File "' + target + '" written.' );
 
 				done();
 			}

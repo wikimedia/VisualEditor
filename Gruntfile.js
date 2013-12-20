@@ -19,15 +19,15 @@ module.exports = function ( grunt ) {
 		pkg: grunt.file.readJSON( 'package.json' ),
 		buildloader: {
 			iframe: {
-				src: '.docs/eg-iframe.html.template',
-				dest: '.docs/eg-iframe.html',
+				target: '.docs/eg-iframe.html',
+				template: '.docs/eg-iframe.html.template',
 				modules: modules,
 				pathPrefix: '../',
 				indent: '\t\t'
 			},
 			demo: {
-				src: 'demos/ve/index.html.template',
-				dest: 'demos/ve/index.html',
+				target: 'demos/ve/index.html',
+				template: 'demos/ve/index.html.template',
 				modules: modules,
 				pathPrefix: '../../',
 				indent: '\t\t',
@@ -48,8 +48,8 @@ module.exports = function ( grunt ) {
 				}
 			},
 			test: {
-				src: 'modules/ve/test/index.html.template',
-				dest: 'modules/ve/test/index.html',
+				target: 'modules/ve/test/index.html',
+				template: 'modules/ve/test/index.html.template',
 				modules: modules,
 				pathPrefix: '../../../',
 				indent: '\t\t'
