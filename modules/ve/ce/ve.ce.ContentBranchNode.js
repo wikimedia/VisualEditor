@@ -161,7 +161,7 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
  * @method
  */
 ve.ce.ContentBranchNode.prototype.renderContents = function () {
-	var i, len, node, rendered;
+	var i, len, node, rendered, oldWrapper, newWrapper;
 	if (
 		this.root instanceof ve.ce.DocumentNode &&
 		this.root.getSurface().isRenderingLocked()
@@ -173,6 +173,23 @@ ve.ce.ContentBranchNode.prototype.renderContents = function () {
 		this.root.getSurface().setContentBranchNodeChanged( true );
 	}
 
+	rendered = this.getRenderedContents();
+
+	// Return if unchanged. Test by building the new version and checking DOM-equality.
+	// However we have to normalize to cope with consecutive text nodes. We can't normalize
+	// the attached version, because that would close IMEs.
+
+	oldWrapper = this.$element[0].cloneNode( true );
+	newWrapper = this.$element[0].cloneNode( false );
+	for ( i = 0, len = rendered.length; i < len; i++ ) {
+		newWrapper.appendChild( rendered[i] );
+	}
+	oldWrapper.normalize();
+	newWrapper.normalize();
+	if ( newWrapper.isEqualNode( oldWrapper ) ) {
+		return;
+	}
+
 	// Detach all child nodes from this.$element
 	for ( i = 0, len = this.$element.length; i < len; i++ ) {
 		node = this.$element[i];
@@ -182,7 +199,6 @@ ve.ce.ContentBranchNode.prototype.renderContents = function () {
 	}
 
 	// Reattach child nodes with the right annotations
-	rendered = this.getRenderedContents();
 	for ( i = 0, len = rendered.length; i < len; i++ ) {
 		this.$element[0].appendChild( rendered[i] );
 	}
