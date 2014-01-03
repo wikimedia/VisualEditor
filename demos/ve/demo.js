@@ -11,6 +11,7 @@ $( function () {
 	var currentTarget,
 		$targetContainer = $( '.ve-demo-editor' ).eq( 0 ),
 		$errorbox = $( '.ve-demo-error' ),
+		dumpModelLoopTimeoutId = null,
 
 		// Widgets
 		startTextInput = new OO.ui.TextInputWidget( { 'readOnly': true } ),
@@ -25,7 +26,8 @@ $( function () {
 		logRangeButton = new OO.ui.PushButtonWidget(
 			{ 'label': 'Log to console', 'disabled': true }
 		),
-		dumpModelButton = new OO.ui.PushButtonWidget( { 'label': 'Dump model' } ),
+		dumpModelOnceButton = new OO.ui.PushButtonWidget( { 'label': 'Dump model once' } ),
+		dumpModelLoopToggle = new OO.ui.ToggleButtonWidget( { 'label': 'Dump model every 500ms' } ),
 		validateButton = new OO.ui.PushButtonWidget( { 'label': 'Validate view and model' } );
 
 	// Initialization
@@ -38,7 +40,8 @@ $( function () {
 		endTextInput.$element,
 		logRangeButton.$element,
 		$( '<span class="ve-demo-utilities-commands-divider">&nbsp;</span>' ),
-		dumpModelButton.$element,
+		dumpModelOnceButton.$element,
+		dumpModelLoopToggle.$element,
 		validateButton.$element
 	);
 
@@ -80,36 +83,7 @@ $( function () {
 		} );
 	}
 
-	// Open initial page
-
-	if ( /^#!\/src\/.+$/.test( location.hash ) ) {
-		loadPage( location.hash.slice( 7 ) );
-	} else {
-		loadPage( $( '.ve-demo-menu li a' ).data( 'pageSrc' ) );
-	}
-
-	$( '.ve-demo-menu' ).on( 'click', 'li a', function ( e ) {
-		loadPage( $( this ).data( 'pageSrc' ) );
-		e.preventDefault();
-	} );
-
-	// Events
-
-	getRangeButton.on( 'click', function () {
-		var range = ve.instances[0].view.model.getSelection();
-		startTextInput.setValue( range.start );
-		endTextInput.setValue( range.end );
-		logRangeButton.setDisabled( false );
-	} );
-
-	logRangeButton.on( 'click', function () {
-		var	start = startTextInput.getValue(),
-			end = endTextInput.getValue();
-		// TODO: Validate input
-		console.dir( ve.instances[0].view.documentView.model.data.slice( start, end ) );
-	} );
-
-	dumpModelButton.on( 'click', function () {
+	function dumpModelOnce () {
 		/*jshint loopfunc:true */
 		// linear model dump
 		var i, $li, $label, element, text, annotations, getKids,
@@ -182,6 +156,64 @@ $( function () {
 			getKids( ve.instances[0].view.documentView.getDocumentNode() )
 		);
 		$( '#ve-dump' ).show();
+	}
+
+	function dumpModelLoop () {
+		cancelDumpModelLoop();
+		dumpModelOnce();
+		dumpModelLoopTimeoutId = setTimeout( function () {
+			if ( dumpModelLoopTimeoutId === null ) {
+				// Don't trust browser clearTimeout (e.g. for IE)
+				return;
+			}
+			dumpModelLoop();
+		}, 500 );
+	}
+
+	function cancelDumpModelLoop () {
+		if ( dumpModelLoopTimeoutId === null ) {
+			return;
+		}
+		clearTimeout( dumpModelLoopTimeoutId );
+		dumpModelLoopTimeoutId = null;
+	}
+
+	// Open initial page
+
+	if ( /^#!\/src\/.+$/.test( location.hash ) ) {
+		loadPage( location.hash.slice( 7 ) );
+	} else {
+		loadPage( $( '.ve-demo-menu li a' ).data( 'pageSrc' ) );
+	}
+
+	$( '.ve-demo-menu' ).on( 'click', 'li a', function ( e ) {
+		loadPage( $( this ).data( 'pageSrc' ) );
+		e.preventDefault();
+	} );
+
+	// Events
+
+	getRangeButton.on( 'click', function () {
+		var range = ve.instances[0].view.model.getSelection();
+		startTextInput.setValue( range.start );
+		endTextInput.setValue( range.end );
+		logRangeButton.setDisabled( false );
+	} );
+
+	logRangeButton.on( 'click', function () {
+		var start = startTextInput.getValue(),
+			end = endTextInput.getValue();
+		// TODO: Validate input
+		console.dir( ve.instances[0].view.documentView.model.data.slice( start, end ) );
+	} );
+
+	dumpModelOnceButton.on( 'click', dumpModelOnce );
+	dumpModelLoopToggle.on( 'click', function () {
+		if ( dumpModelLoopToggle.value ) {
+			dumpModelLoop();
+		} else {
+			cancelDumpModelLoop();
+		}
 	} );
 
 	validateButton.on( 'click', function () {
