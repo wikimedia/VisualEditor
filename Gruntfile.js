@@ -29,6 +29,9 @@ module.exports = function ( grunt ) {
 				target: 'demos/ve/index.html',
 				template: 'demos/ve/index.html.template',
 				modules: modules,
+				env: {
+					debug: true
+				},
 				pathPrefix: '../../',
 				indent: '\t\t',
 				placeholders: {
