@@ -4,7 +4,7 @@
  * Implementation of Unicode's Default Word Boundaries
  * http://www.unicode.org/reports/tr29/#Default_Word_Boundaries
  *
- * @copyright 2013 UnicodeJS team and others; see AUTHORS.txt
+ * @copyright 2013–2014 UnicodeJS team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 ( function () {
