@@ -13,16 +13,29 @@ module.exports = function ( grunt ) {
 			pathPrefix = this.data.pathPrefix || '',
 			indent = this.data.indent || '',
 			modules = this.data.modules,
+			env = this.data.env || {},
 			placeholders = this.data.placeholders || {},
 			text = grunt.file.read( this.data.template ),
 			done = this.async();
 
-		function scriptTag( file ) {
-			return indent + '<script src="' + pathPrefix + file + '"></script>';
+		function scriptTag( src ) {
+			return indent + '<script src="' + pathPrefix + src.file + '"></script>';
 		}
 
-		function styleTag( file ) {
-			return indent + '<link rel=stylesheet href="' + pathPrefix + file + '">';
+		function styleTag( src ) {
+			return indent + '<link rel=stylesheet href="' + pathPrefix + src.file + '">';
+		}
+
+		function expand( src ) {
+			return typeof src === 'string' ? { file: src } : src;
+		}
+
+		function filter( src ) {
+			if ( src.debug && !env.debug ) {
+				return false;
+			}
+
+			return true;
 		}
 
 		function placeholder( input, id, replacement, callback ) {
@@ -42,12 +55,16 @@ module.exports = function ( grunt ) {
 		for ( module in modules ) {
 			if ( modules[module].scripts ) {
 				scripts += indent + '<!-- ' + module + ' -->\n';
-				scripts += modules[module].scripts.map( scriptTag ).join( '\n' ) + '\n';
+				scripts += modules[module].scripts
+					.map( expand ).filter( filter ).map( scriptTag )
+					.join( '\n' ) + '\n';
 				scripts += '\n';
 			}
 			if ( modules[module].styles ) {
 				styles += indent + '<!-- ' + module + ' -->\n';
-				styles += modules[module].styles.map( styleTag ).join( '\n' ) + '\n';
+				styles += modules[module].styles
+					.map( expand ).filter( filter ).map( styleTag )
+					.join( '\n' ) + '\n';
 				styles += '\n';
 			}
 		}

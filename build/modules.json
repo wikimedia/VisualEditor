@@ -89,6 +89,7 @@
 	"visualEditor.base": {
 		"scripts": [
 			"modules/ve/ve.js",
+			{ "file": "modules/ve/ve.debug.js", "debug": true },
 			"modules/ve/ve.track.js",
 			"modules/ve/init/ve.init.js",
 			"modules/ve/init/ve.init.Platform.js",
