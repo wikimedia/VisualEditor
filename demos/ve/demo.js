@@ -11,6 +11,7 @@ $( function () {
 	var currentTarget,
 		$targetContainer = $( '.ve-demo-editor' ).eq( 0 ),
 		$errorbox = $( '.ve-demo-error' ),
+		initialPage,
 
 		// Widgets
 		startTextInput = new OO.ui.TextInputWidget( { 'readOnly': true } ),
@@ -50,8 +51,6 @@ $( function () {
 			url: src,
 			dataType: 'text'
 		} ).done( function ( pageHtml ) {
-			location.hash = '#!/src/' + src;
-
 			$targetContainer.slideUp();
 
 			var target = new ve.init.sa.Target(
@@ -83,7 +82,7 @@ $( function () {
 		} );
 	}
 
-	function dumpModel () {
+	function dumpModel() {
 		/*jshint loopfunc:true */
 		// linear model dump
 		var i, $li, $label, element, text, annotations, getKids,
@@ -163,12 +162,16 @@ $( function () {
 	if ( /^#!\/src\/.+$/.test( location.hash ) ) {
 		loadPage( location.hash.slice( 7 ) );
 	} else {
-		loadPage( $( '.ve-demo-menu li a' ).data( 'pageSrc' ) );
+		initialPage = $( '.ve-demo-menu li a' ).data( 'pageSrc' );
+		window.history.replaceState( null, document.title, '#!/src/' + initialPage );
+		// Per W3 spec, history.replaceState does not fire hashchange
+		loadPage( initialPage );
 	}
 
-	$( '.ve-demo-menu' ).on( 'click', 'li a', function ( e ) {
-		loadPage( $( this ).data( 'pageSrc' ) );
-		e.preventDefault();
+	window.addEventListener( 'hashchange', function () {
+		if ( /^#!\/src\/.+$/.test( location.hash ) ) {
+			loadPage( location.hash.slice( 7 ) );
+		}
 	} );
 
 	// Events
