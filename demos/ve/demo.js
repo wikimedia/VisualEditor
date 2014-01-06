@@ -11,7 +11,6 @@ $( function () {
 	var currentTarget,
 		$targetContainer = $( '.ve-demo-editor' ).eq( 0 ),
 		$errorbox = $( '.ve-demo-error' ),
-		dumpModelLoopTimeoutId = null,
 
 		// Widgets
 		startTextInput = new OO.ui.TextInputWidget( { 'readOnly': true } ),
@@ -26,8 +25,8 @@ $( function () {
 		logRangeButton = new OO.ui.PushButtonWidget(
 			{ 'label': 'Log to console', 'disabled': true }
 		),
-		dumpModelOnceButton = new OO.ui.PushButtonWidget( { 'label': 'Dump model once' } ),
-		dumpModelLoopToggle = new OO.ui.ToggleButtonWidget( { 'label': 'Dump model every 500ms' } ),
+		dumpModelButton = new OO.ui.PushButtonWidget( { 'label': 'Dump model once' } ),
+		dumpModelChangeToggle = new OO.ui.ToggleButtonWidget( { 'label': 'Dump model on change' } ),
 		validateButton = new OO.ui.PushButtonWidget( { 'label': 'Validate view and model' } );
 
 	// Initialization
@@ -40,8 +39,8 @@ $( function () {
 		endTextInput.$element,
 		logRangeButton.$element,
 		$( '<span class="ve-demo-utilities-commands-divider">&nbsp;</span>' ),
-		dumpModelOnceButton.$element,
-		dumpModelLoopToggle.$element,
+		dumpModelButton.$element,
+		dumpModelChangeToggle.$element,
 		validateButton.$element
 	);
 
@@ -73,6 +72,7 @@ $( function () {
 						.promise().done( function () {
 							target.$document[0].focus();
 							currentTarget = target;
+							dumpModelChangeToggle.emit( 'click' );
 						} );
 				} );
 
@@ -83,7 +83,7 @@ $( function () {
 		} );
 	}
 
-	function dumpModelOnce () {
+	function dumpModel () {
 		/*jshint loopfunc:true */
 		// linear model dump
 		var i, $li, $label, element, text, annotations, getKids,
@@ -158,26 +158,6 @@ $( function () {
 		$( '#ve-dump' ).show();
 	}
 
-	function dumpModelLoop () {
-		cancelDumpModelLoop();
-		dumpModelOnce();
-		dumpModelLoopTimeoutId = setTimeout( function () {
-			if ( dumpModelLoopTimeoutId === null ) {
-				// Don't trust browser clearTimeout (e.g. for IE)
-				return;
-			}
-			dumpModelLoop();
-		}, 500 );
-	}
-
-	function cancelDumpModelLoop () {
-		if ( dumpModelLoopTimeoutId === null ) {
-			return;
-		}
-		clearTimeout( dumpModelLoopTimeoutId );
-		dumpModelLoopTimeoutId = null;
-	}
-
 	// Open initial page
 
 	if ( /^#!\/src\/.+$/.test( location.hash ) ) {
@@ -204,15 +184,16 @@ $( function () {
 		var start = startTextInput.getValue(),
 			end = endTextInput.getValue();
 		// TODO: Validate input
-		console.dir( ve.instances[0].view.documentView.model.data.slice( start, end ) );
+		console.dir( currentTarget.surface.view.documentView.model.data.slice( start, end ) );
 	} );
 
-	dumpModelOnceButton.on( 'click', dumpModelOnce );
-	dumpModelLoopToggle.on( 'click', function () {
-		if ( dumpModelLoopToggle.value ) {
-			dumpModelLoop();
+	dumpModelButton.on( 'click', dumpModel );
+	dumpModelChangeToggle.on( 'click', function () {
+		if ( dumpModelChangeToggle.getValue() ) {
+			dumpModel();
+			currentTarget.surface.model.on( 'documentUpdate', dumpModel );
 		} else {
-			cancelDumpModelLoop();
+			currentTarget.surface.model.off( 'documentUpdate', dumpModel );
 		}
 	} );
 
