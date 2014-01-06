@@ -89,10 +89,10 @@ $( function () {
 		var i, $li, $label, element, text, annotations, getKids,
 			$ol = $( '<ol start="0"></ol>' );
 
-		for ( i = 0; i < ve.instances[0].model.documentModel.data.getLength(); i++ ) {
+		for ( i = 0; i < currentTarget.surface.model.documentModel.data.getLength(); i++ ) {
 			$li = $( '<li>' );
 			$label = $( '<span>' );
-			element = ve.instances[0].model.documentModel.data.getData( i );
+			element = currentTarget.surface.model.documentModel.data.getData( i );
 			if ( element.type ) {
 				$label.addClass( 've-demo-dump-element' );
 				text = element.type;
@@ -110,7 +110,7 @@ $( function () {
 			if ( annotations ) {
 				$label.append(
 					$( '<span>' ).text(
-						'[' + ve.instances[0].model.documentModel.store.values( annotations ).map( function ( ann ) {
+						'[' + currentTarget.surface.model.documentModel.store.values( annotations ).map( function ( ann ) {
 							return ann.name;
 						} ).join( ', ' ) + ']'
 					)
@@ -150,10 +150,10 @@ $( function () {
 			return $ol;
 		};
 		$( '#ve-model-tree-dump' ).html(
-			getKids( ve.instances[0].model.documentModel.getDocumentNode() )
+			getKids( currentTarget.surface.model.documentModel.getDocumentNode() )
 		);
 		$( '#ve-view-tree-dump' ).html(
-			getKids( ve.instances[0].view.documentView.getDocumentNode() )
+			getKids( currentTarget.surface.view.documentView.getDocumentNode() )
 		);
 		$( '#ve-dump' ).show();
 	}
@@ -194,7 +194,7 @@ $( function () {
 	// Events
 
 	getRangeButton.on( 'click', function () {
-		var range = ve.instances[0].view.model.getSelection();
+		var range = currentTarget.surface.view.model.getSelection();
 		startTextInput.setValue( range.start );
 		endTextInput.setValue( range.end );
 		logRangeButton.setDisabled( false );
@@ -224,7 +224,7 @@ $( function () {
 				view = $element.data( 'view' );
 			if ( view.canContainContent() ) {
 				nodeRange = view.model.getRange();
-				textModel = ve.instances[0].view.model.getDocument().getText( nodeRange );
+				textModel = currentTarget.surface.view.model.getDocument().getText( nodeRange );
 				textDom = ve.ce.getDomText( view.$element[0] );
 				if ( textModel !== textDom ) {
 					failed = true;
