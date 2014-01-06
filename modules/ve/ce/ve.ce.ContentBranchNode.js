@@ -86,14 +86,15 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 		store = this.model.doc.getStore(),
 		annotationStack = new ve.dm.AnnotationSet( store ),
 		annotatedHtml = [],
-		wrapper = document.createElement( 'div' ),
+		doc = this.getElementDocument(),
+		wrapper = doc.createElement( 'div' ),
 		current = wrapper,
 		buffer = '',
 		node = this;
 
 	function openAnnotation( annotation ) {
 		if ( buffer !== '' ) {
-			current.appendChild( document.createTextNode( buffer ) );
+			current.appendChild( doc.createTextNode( buffer ) );
 			buffer = '';
 		}
 		// Create a new DOM node and descend into it
@@ -106,7 +107,7 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 
 	function closeAnnotation() {
 		if ( buffer !== '' ) {
-			current.appendChild( document.createTextNode( buffer ) );
+			current.appendChild( doc.createTextNode( buffer ) );
 			buffer = '';
 		}
 		// Traverse up
@@ -137,7 +138,7 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 			buffer += item;
 		} else {
 			if ( buffer !== '' ) {
-				current.appendChild( document.createTextNode( buffer ) );
+				current.appendChild( doc.createTextNode( buffer ) );
 				buffer = '';
 			}
 			// DOM equivalent of $( current ).append( itemHtml );
@@ -147,7 +148,7 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 		}
 	}
 	if ( buffer !== '' ) {
-		current.appendChild( document.createTextNode( buffer ) );
+		current.appendChild( doc.createTextNode( buffer ) );
 		buffer = '';
 	}
 	return Array.prototype.slice.apply( wrapper.childNodes );
