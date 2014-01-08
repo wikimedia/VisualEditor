@@ -38,6 +38,22 @@ ve.init.Target = function VeInitTarget( $container ) {
 	this.toolbar = null;
 };
 
+/**
+ * Destroy the target
+ */
+ve.init.Target.prototype.destroy = function () {
+	this.$document = null;
+	if ( this.surface ) {
+		this.surface.destroy();
+	}
+	if ( this.toolbar ) {
+		this.toolbar.destroy();
+	}
+	if ( this.$element ) {
+		this.$element.remove();
+	}
+};
+
 /* Events */
 
 /**

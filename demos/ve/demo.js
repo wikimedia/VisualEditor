@@ -59,11 +59,9 @@ $( function () {
 			);
 
 			target.on( 'surfaceReady', function () {
-				// TODO: Target should have a way to tear itself down (should include removing
-				// elements outside target.$element, such as global overlays).
 				$targetContainer.promise().done( function () {
 					if ( currentTarget ) {
-						currentTarget.$element.remove();
+						currentTarget.destroy();
 					}
 					$targetContainer
 						.append( target.$element )
