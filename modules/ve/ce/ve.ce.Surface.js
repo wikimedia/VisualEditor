@@ -743,13 +743,16 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 		sel.removeAllRanges();
 		this.$pasteTarget[0].focus();
 		sel.addRange( rangyRange, false );
+		// Restore scroll position after changing focus
+		$window.scrollTop( scrollTop );
 
 		setTimeout( function () {
+			// Change focus back
 			sel = rangy.getSelection( view.getElementDocument() );
 			sel.removeAllRanges();
 			view.documentView.getDocumentNode().$element[0].focus();
 			sel.addRange( originalRange );
-
+			// Restore scroll position
 			$window.scrollTop( scrollTop );
 		} );
 	}
@@ -870,6 +873,9 @@ ve.ce.Surface.prototype.beforePaste = function ( e ) {
 		// anything clever with paste context
 		this.$pasteTarget[0].focus();
 	}
+
+	// Restore scroll position after focusing the paste target
+	$window.scrollTop( this.beforePasteData.scrollTop );
 
 };
 
