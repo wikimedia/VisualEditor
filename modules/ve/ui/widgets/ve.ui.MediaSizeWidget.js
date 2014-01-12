@@ -70,7 +70,7 @@ ve.ui.MediaSizeWidget = function VeUiMediaSizeWidget( config ) {
 	} );
 
 	// Define buttons
-	this.originalDimensionsButton = new OO.ui.PushButtonWidget( {
+	this.originalDimensionsButton = new OO.ui.ButtonWidget( {
 		'$': this.$,
 		'label': ve.msg( 'visualeditor-mediasizewidget-button-originaldimensions' )
 	} );
