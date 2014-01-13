@@ -100,15 +100,17 @@ OO.mixinClass( ve.ui.Surface, OO.EventEmitter );
  * This must be called after the surface has been attached to the DOM.
  */
 ve.ui.Surface.prototype.initialize = function () {
-	this.view.$element.after( this.$localOverlay );
+	var firstOffset;
+	this.getView().$element.after( this.$localOverlay );
 	this.$( 'body' ).append( this.$globalOverlay );
 
-	this.view.initialize();
-	// By re-asserting the current selection and forcing a poll we force selection to be something
-	// reasonable - otherwise in Firefox, the initial selection is (0,0), causing bug 42277
-	this.model.getFragment().select();
-	this.view.surfaceObserver.pollOnce();
-	this.model.startHistoryTracking();
+	this.getView().initialize();
+	// Go to the first content offset, or offset 1 if not found (returns -1)
+	firstOffset = this.getModel().getDocument().data.getNearestContentOffset( 0, 1 );
+	this.getModel().setSelection(
+		new ve.Range( firstOffset !== -1 ? firstOffset : 1 )
+	);
+	this.getModel().startHistoryTracking();
 };
 
 /**
