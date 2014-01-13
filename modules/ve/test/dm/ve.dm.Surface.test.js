@@ -32,7 +32,7 @@ QUnit.test( 'getSelection', 1, function ( assert ) {
 	assert.strictEqual( surface.getSelection(), surface.selection );
 } );
 
-QUnit.test( 'change', 3, function ( assert ) {
+QUnit.test( 'change/setSelection events', 3, function ( assert ) {
 	var tx, surface = new ve.dm.SurfaceStub(),
 		events = {
 			'documentUpdate': 0,
@@ -49,11 +49,11 @@ QUnit.test( 'change', 3, function ( assert ) {
 		events.select++;
 	} );
 	surface.change( tx.clone() );
-	assert.deepEqual( events, { 'documentUpdate': 1, 'select': 0 }, 'transaction without selection' );
+	assert.deepEqual( events, { 'documentUpdate': 1, 'select': 0 }, 'change with transaction only' );
 	surface.setSelection( new ve.Range( 2, 2 ) );
-	assert.deepEqual( events, { 'documentUpdate': 1, 'select': 1 }, 'selection without transaction' );
+	assert.deepEqual( events, { 'documentUpdate': 1, 'select': 1 }, 'setSelection' );
 	surface.change( tx.clone(), new ve.Range( 3, 3 ) );
-	assert.deepEqual( events, { 'documentUpdate': 2, 'select': 2 }, 'transaction and selection' );
+	assert.deepEqual( events, { 'documentUpdate': 2, 'select': 2 }, 'change with transaction and selection' );
 } );
 
 QUnit.test( 'breakpoint', 7, function ( assert ) {
