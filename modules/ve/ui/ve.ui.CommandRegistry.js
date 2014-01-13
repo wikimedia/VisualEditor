@@ -81,6 +81,9 @@ ve.ui.commandRegistry.register(
 	new ve.ui.Command( 'outdent', 'indentation', 'decrease' )
 );
 ve.ui.commandRegistry.register(
+	new ve.ui.Command( 'commandHelp', 'dialog', 'open', 'commandHelp' )
+);
+ve.ui.commandRegistry.register(
 	new ve.ui.Command( 'code', 'annotation', 'toggle', 'textStyle/code' )
 );
 ve.ui.commandRegistry.register(

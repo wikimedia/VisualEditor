@@ -1,0 +1,44 @@
+/*!
+ * VisualEditor UserInterface Dialog styles.
+ *
+ * @copyright 2011-2014 VisualEditor Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+
+/* ve.ui.CommandHelpDialog */
+
+.ve-ui-commandHelpDialog-container {
+	-ms-column-count: 2;
+	-moz-column-count: 2;
+	-webkit-column-count: 2;
+	column-count: 2;
+	margin-top: 2em;
+	margin: 2em 5em;
+}
+
+.ve-ui-commandHelpDialog-section {
+	/* Prevent column wrapping within a section */
+	display: inline-block;
+	width: 100%;
+}
+
+.ve-ui-commandHelpDialog-section h3 {
+	margin-bottom: 0;
+}
+
+.ve-ui-commandHelpDialog-list dl {
+	margin: 1em 0;
+}
+
+.ve-ui-commandHelpDialog-list dd {
+	line-height: 200%;
+}
+
+.ve-ui-commandHelpDialog-list dt {
+	float: left;
+	width: 35%;
+	text-align: right;
+	margin-right: 1em;
+	font-weight: bold;
+	line-height: 200%;
+}

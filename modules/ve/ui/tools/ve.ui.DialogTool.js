@@ -96,3 +96,22 @@ ve.ui.DialogTool.prototype.onUpdateState = function ( nodes ) {
 		);
 	}
 };
+
+/**
+ * @class
+ * @extends ve.ui.DialogTool
+ * @constructor
+ * @param {OO.ui.ToolGroup} toolGroup
+ * @param {Object} [config] Configuration options
+ */
+ve.ui.CommandHelpDialogTool = function VeUiCommandHelpDialogTool( toolGroup, config ) {
+	ve.ui.DialogTool.call( this, toolGroup, config );
+};
+OO.inheritClass( ve.ui.CommandHelpDialogTool, ve.ui.DialogTool );
+ve.ui.CommandHelpDialogTool.static.name = 'commandHelp';
+ve.ui.CommandHelpDialogTool.static.group = 'dialog';
+ve.ui.CommandHelpDialogTool.static.icon = 'help';
+ve.ui.CommandHelpDialogTool.static.titleMessage = 'visualeditor-dialogbutton-command-help-tooltip';
+ve.ui.CommandHelpDialogTool.static.dialog = 'commandHelp';
+ve.ui.CommandHelpDialogTool.static.autoAdd = false;
+ve.ui.toolFactory.register( ve.ui.CommandHelpDialogTool );

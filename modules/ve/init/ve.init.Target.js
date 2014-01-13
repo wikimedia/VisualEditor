@@ -118,6 +118,7 @@ ve.init.Target.static.surfaceCommands = [
 	'superscript',
 	'indent',
 	'outdent',
+	'commandHelp',
 	'paragraph',
 	'heading1',
 	'heading2',
