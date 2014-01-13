@@ -17,16 +17,17 @@ $( function () {
 		startTextInput = new OO.ui.TextInputWidget( { 'readOnly': true } ),
 		endTextInput = new OO.ui.TextInputWidget( { 'readOnly': true } ),
 		startTextInputLabel = new OO.ui.InputLabelWidget(
-			{ 'label': 'Start', 'input': startTextInput }
+			{ 'label': 'Range', 'input': startTextInput }
 		),
 		endTextInputLabel = new OO.ui.InputLabelWidget(
-			{ 'label': 'End', 'input': endTextInput }
+			{ 'label': '-', 'input': endTextInput }
 		),
-		getRangeButton = new OO.ui.PushButtonWidget( { 'label': 'Get selected range' } ),
+		getRangeButton = new OO.ui.PushButtonWidget( { 'label': 'Get range' } ),
+		getRangeChangeToggle = new OO.ui.ToggleButtonWidget( { 'label': 'Get range on change' } ),
 		logRangeButton = new OO.ui.PushButtonWidget(
 			{ 'label': 'Log to console', 'disabled': true }
 		),
-		dumpModelButton = new OO.ui.PushButtonWidget( { 'label': 'Dump model once' } ),
+		dumpModelButton = new OO.ui.PushButtonWidget( { 'label': 'Dump model' } ),
 		dumpModelChangeToggle = new OO.ui.ToggleButtonWidget( { 'label': 'Dump model on change' } ),
 		validateButton = new OO.ui.PushButtonWidget( { 'label': 'Validate view and model' } );
 
@@ -34,6 +35,7 @@ $( function () {
 
 	$( '.ve-demo-utilities-commands' ).append(
 		getRangeButton.$element,
+		getRangeChangeToggle.$element,
 		startTextInputLabel.$element,
 		startTextInput.$element,
 		endTextInputLabel.$element,
@@ -69,6 +71,7 @@ $( function () {
 						.promise().done( function () {
 							target.$document[0].focus();
 							currentTarget = target;
+							getRangeChangeToggle.emit( 'click' );
 							dumpModelChangeToggle.emit( 'click' );
 						} );
 				} );
@@ -155,6 +158,13 @@ $( function () {
 		$( '#ve-dump' ).show();
 	}
 
+	function getRange() {
+		var range = currentTarget.surface.view.model.getSelection();
+		startTextInput.setValue( range.start );
+		endTextInput.setValue( range.end );
+		logRangeButton.setDisabled( false );
+	}
+
 	// Open initial page
 
 	if ( /^#!\/src\/.+$/.test( location.hash ) ) {
@@ -174,11 +184,14 @@ $( function () {
 
 	// Events
 
-	getRangeButton.on( 'click', function () {
-		var range = currentTarget.surface.view.model.getSelection();
-		startTextInput.setValue( range.start );
-		endTextInput.setValue( range.end );
-		logRangeButton.setDisabled( false );
+	getRangeButton.on( 'click', getRange );
+	getRangeChangeToggle.on( 'click', function () {
+		if ( getRangeChangeToggle.getValue() ) {
+			getRange();
+			currentTarget.surface.model.on( 'select', getRange );
+		} else {
+			currentTarget.surface.model.off( 'select', getRange );
+		}
 	} );
 
 	logRangeButton.on( 'click', function () {
