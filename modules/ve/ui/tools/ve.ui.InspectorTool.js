@@ -37,6 +37,15 @@ OO.inheritClass( ve.ui.InspectorTool, OO.ui.Tool );
 ve.ui.InspectorTool.static.inspector = '';
 
 /**
+ * Tool remains pressed when selected. 
+ *
+ * @static
+ * @property {boolean}
+ * @inheritable
+ */
+ve.ui.InspectorTool.static.isSticky = true;
+
+/**
  * Configuration options for setting up inspector.
  *
  * @abstract
@@ -78,7 +87,7 @@ ve.ui.InspectorTool.prototype.onSelect = function () {
 		this.constructor.static.inspector,
 		this.constructor.static.config
 	);
-	this.setActive( true );
+	this.setActive( this.constructor.static.isSticky );
 };
 
 /**
@@ -138,4 +147,5 @@ ve.ui.InsertCharacterInspectorTool.static.group = 'insert';
 ve.ui.InsertCharacterInspectorTool.static.icon = 'special-character';
 ve.ui.InsertCharacterInspectorTool.static.titleMessage = 'visualeditor-specialcharacter-button-tooltip';
 ve.ui.InsertCharacterInspectorTool.static.inspector = 'specialcharacter';
+ve.ui.InsertCharacterInspectorTool.static.isSticky = false;
 ve.ui.toolFactory.register( ve.ui.InsertCharacterInspectorTool );
