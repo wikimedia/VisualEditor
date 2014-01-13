@@ -411,11 +411,15 @@ ve.dm.Surface.prototype.setSelection = function ( selection ) {
 		// Include annotations on the left that should be added to appended content, or ones that
 		// are on both the left and the right that should not
 		leftAnnotations = dataModelData.getAnnotationsFromOffset( left );
-		rightAnnotations = dataModelData.getAnnotationsFromOffset( right );
-		insertionAnnotations = leftAnnotations.filter( function ( annotation ) {
-			return annotation.constructor.static.applyToAppendedContent ||
-				rightAnnotations.containsComparable( annotation );
-		} );
+		if ( right !== -1 ) {
+			rightAnnotations = dataModelData.getAnnotationsFromOffset( right );
+			insertionAnnotations = leftAnnotations.filter( function ( annotation ) {
+				return annotation.constructor.static.applyToAppendedContent ||
+					rightAnnotations.containsComparable( annotation );
+			} );
+		} else {
+			insertionAnnotations = leftAnnotations;
+		}
 	}
 
 	// Only emit an annotations change event if there's a meaningful difference
