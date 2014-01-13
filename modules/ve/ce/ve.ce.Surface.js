@@ -720,8 +720,15 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 		// Webkit allows us to directly edit the clipboard
 		// Disable the default event so we can override the data
 		e.preventDefault();
+
+		// Because we have to write HTML to the clipboard directly (clipboardData.setData)
+		// href absolutization doesn't occur, so do it manually.
+		this.$pasteTarget.find( 'a' ).attr( 'href', function () { return this.href; } );
+
 		clipboardData.setData( 'text/xcustom', this.clipboardId + '-' + clipboardIndex );
 		// As we've disabled the default event we need to set the normal clipboard data
+		// It is apparently impossible to set text/xcustom without setting the other
+		// types manually too.
 		clipboardData.setData( 'text/html', this.$pasteTarget.html() );
 		clipboardData.setData( 'text/plain', this.$pasteTarget.text() );
 	} else {
