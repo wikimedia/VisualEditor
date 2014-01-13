@@ -43,7 +43,7 @@ ve.ce.LinearDeleteKeyDownHandler.static.supportedSelections = [ 'linear' ];
  */
 ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 	var docLength, startNode, tableEditingRange, position, skipNode, pairNode, linkNode, range,
-		documentModelSelectedNodes, i, node, nodeOuterRange, matrix,
+		documentModelSelectedNodes, i, node, nodeRange, nodeOuterRange, matrix,
 		direction = e.keyCode === OO.ui.Keys.DELETE ? 1 : -1,
 		unit = ( e.altKey === true || e.ctrlKey === true ) ? 'word' : 'character',
 		offset = 0,
@@ -200,9 +200,9 @@ ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 		}
 
 		offset = rangeToRemove.start;
-		docLength = data.getLength();
-		if ( offset < docLength ) {
-			while ( offset < docLength && data.isCloseElementData( offset ) ) {
+		docLength = documentModel.getInternalList().getListNode().getOuterRange().start;
+		if ( offset < docLength - 1 ) {
+			while ( offset < docLength - 1 && data.isCloseElementData( offset ) ) {
 				offset++;
 			}
 			// If the user tries to delete a focusable node from a collapsed selection,
@@ -216,8 +216,18 @@ ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 		}
 		if ( rangeToRemove.isCollapsed() ) {
 			// For instance beginning or end of the document.
-			e.preventDefault();
-			return;
+			startNode = documentModel.getDocumentNode().getNodeFromOffset( offset - 1 );
+			nodeRange = startNode.getOuterRange();
+			if (
+				startNode.canContainContent() &&
+				( nodeRange.start === 0 || nodeRange.end === docLength )
+			) {
+				// Content node at start or end of document, do nothing.
+				e.preventDefault();
+				return;
+			} else {
+				rangeToRemove = new ve.Range( nodeRange.start, rangeToRemove.start - 1 );
+			}
 		}
 	}
 

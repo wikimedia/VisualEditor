@@ -725,7 +725,7 @@ ve.dm.ElementLinearData.prototype.getRelativeOffset = function ( offset, distanc
 			// Only turn around if not a single step could be taken
 			steps === 0 &&
 			// Only turn around if we're about to reach the edge
-			( ( direction < 0 && i === 0 ) || ( direction > 0 && i === this.getLength() ) )
+			( ( direction < 0 && i === 0 ) || ( direction > 0 && ( i === this.getLength() || this.getType( i - 1 ) === 'internalList' ) ) )
 		) {
 			// Before we turn around, let's see if we are at a valid position
 			if ( callback.apply( this, [ start ].concat( args ) ) ) {
