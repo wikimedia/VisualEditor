@@ -1,12 +1,12 @@
 /*!
- * OOjs UI v0.1.0-pre-svg (49cf241725)
+ * OOjs UI v0.1.0-pre-svg (af97c1caec)
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2014 OOjs Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: Mon Jan 13 2014 18:25:05 GMT-0800 (PST)
+ * Date: Tue Jan 14 2014 18:09:35 GMT-0800 (PST)
  */
 /*csslint vendor-prefix:false */
 
@@ -975,15 +975,23 @@ a.oo-ui-buttonWidget-button {
 	cursor: default;
 }
 
-.oo-ui-optionWidget .oo-ui-optionWidget-icon {
+.oo-ui-optionWidget .oo-ui-iconedElement-icon,
+.oo-ui-optionWidget .oo-ui-indicatedElement-indicator {
 	position: absolute;
 	top: 50%;
-	left: 0.5em;
 	width: 2em;
 	height: 2em;
 	margin-top: -1em;
 	background-repeat: no-repeat;
 	background-position: center center;
+}
+
+.oo-ui-optionWidget .oo-ui-iconedElement-icon {
+	left: 0.5em;
+}
+
+.oo-ui-optionWidget .oo-ui-indicatedElement-indicator {
+	right: 0.5em;
 }
 
 /* OO.ui.OutlineItemWidget */
@@ -1012,15 +1020,15 @@ a.oo-ui-buttonWidget-button {
 	text-shadow: 0 1px 1px rgba(255,255,255,0.5);
 }
 
-.oo-ui-outlineItemWidget-level-0 .oo-ui-optionWidget-icon {
+.oo-ui-outlineItemWidget-level-0 .oo-ui-iconedElement-icon {
 	left: 1em;
 }
 
-.oo-ui-outlineItemWidget-level-1 .oo-ui-optionWidget-icon {
+.oo-ui-outlineItemWidget-level-1 .oo-ui-iconedElement-icon {
 	left: 2.5em;
 }
 
-.oo-ui-outlineItemWidget-level-2 .oo-ui-optionWidget-icon {
+.oo-ui-outlineItemWidget-level-2 .oo-ui-iconedElement-icon {
 	left: 4em;
 }
 
@@ -1187,11 +1195,11 @@ a.oo-ui-buttonWidget-button {
 	position: relative;
 }
 
-.oo-ui-menuItemWidget .oo-ui-optionWidget-icon {
+.oo-ui-menuItemWidget .oo-ui-iconedElement-icon {
 	display: none;
 }
 
-.oo-ui-menuItemWidget.oo-ui-optionWidget-selected .oo-ui-optionWidget-icon {
+.oo-ui-menuItemWidget.oo-ui-optionWidget-selected .oo-ui-iconedElement-icon {
 	display: block;
 }
 
@@ -1668,6 +1676,11 @@ a.oo-ui-buttonWidget-button {
 	background-image: url(images/indicators/down.png);
 }
 
+.oo-ui-indicator-required {
+	/* @embed */
+	background-image: url(images/indicators/required.png);
+}
+
 .oo-ui-indicator-up {
 	/* @embed */
 	background-image: url(images/indicators/up.png);
@@ -1789,6 +1802,11 @@ a.oo-ui-buttonWidget-button {
 .oo-ui-indicator-down {
 	/* @embed */
 	background-image: url(images/indicators/down.svg);
+}
+
+.oo-ui-indicator-required {
+	/* @embed */
+	background-image: url(images/indicators/required.svg);
 }
 
 .oo-ui-indicator-up {
