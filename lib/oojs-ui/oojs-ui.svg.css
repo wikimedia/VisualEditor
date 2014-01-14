@@ -1,12 +1,12 @@
 /*!
- * OOjs UI v0.1.0-pre-svg (04754daaa9)
+ * OOjs UI v0.1.0-pre-svg (49cf241725)
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
- * Copyright 2011-2013 OOjs Team and other contributors.
+ * Copyright 2011–2014 OOjs Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: Thu Dec 19 2013 20:18:08 GMT+0100 (CET)
+ * Date: Mon Jan 13 2014 18:25:05 GMT-0800 (PST)
  */
 /*csslint vendor-prefix:false */
 
@@ -518,7 +518,11 @@
 .oo-ui-popupToolGroup {
 	position: relative;
 	height: 2em;
-	min-width: 2em;
+	min-width: 2.5em;
+}
+
+.oo-ui-popupToolGroup.oo-ui-indicatedElement.oo-ui-iconedElement {
+	min-width: 3.5em;
 }
 
 .oo-ui-popupToolGroup-handle {
@@ -526,21 +530,37 @@
 	cursor: pointer;
 }
 
+.oo-ui-popupToolGroup-handle .oo-ui-indicatedElement-indicator,
 .oo-ui-popupToolGroup-handle .oo-ui-iconedElement-icon {
 	position: absolute;
 	top: 0;
-	right: 0;
-	height: 2em;
 	width: 2em;
+	height: 2em;
 	background-position: center center;
 	background-repeat: no-repeat;
 	opacity: 0.8;
 }
 
+.oo-ui-popupToolGroup-handle .oo-ui-indicatedElement-indicator {
+	right: 0;
+}
+
+.oo-ui-popupToolGroup-handle .oo-ui-iconedElement-icon {
+	left: 0.25em;
+}
+
 .oo-ui-popupToolGroup-handle .oo-ui-labeledElement-label {
 	line-height: 2.6em;
 	font-size: 0.8em;
-	margin: 0 2.25em 0 1em;
+	margin: 0 1em;
+}
+
+.oo-ui-popupToolGroup.oo-ui-iconedElement .oo-ui-popupToolGroup-handle .oo-ui-labeledElement-label {
+	margin-left: 3.25em;
+}
+
+.oo-ui-popupToolGroup.oo-ui-indicatedElement .oo-ui-popupToolGroup-handle .oo-ui-labeledElement-label {
+	margin-right: 2.25em;
 }
 
 .oo-ui-popupToolGroup-handle .oo-ui-labeledElement-empty {
@@ -594,7 +614,7 @@
 /* OO.ui.ListToolGroup */
 
 .oo-ui-listToolGroup .oo-ui-toolGroup-tools {
-	padding: 0.5em;
+	padding: 0.25em;
 }
 
 .oo-ui-listToolGroup .oo-ui-tool {
@@ -604,7 +624,7 @@
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 	border: solid 1px transparent;
-	margin: -1px 0 -1px -1px;
+	margin: -1px 0;
 }
 
 .oo-ui-listToolGroup .oo-ui-tool-link {
@@ -1529,6 +1549,8 @@ a.oo-ui-buttonWidget-button {
 	top: 0;
 	left: 0;
 }
+/* Icons */
+
 .oo-ui-icon-add-item {
 	/* @embed */
 	background-image: url(images/icons/add-item.png);
@@ -1567,11 +1589,6 @@ a.oo-ui-buttonWidget-button {
 .oo-ui-icon-comment {
 	/* @embed */
 	background-image: url(images/icons/comment.png);
-}
-
-.oo-ui-icon-down {
-	/* @embed */
-	background-image: url(images/icons/down.png);
 }
 
 .oo-ui-icon-expand {
@@ -1639,15 +1656,24 @@ a.oo-ui-buttonWidget-button {
 	background-image: url(images/icons/arched-arrow-rtl.png);
 }
 
-.oo-ui-icon-up {
-	/* @embed */
-	background-image: url(images/icons/up.png);
-}
-
 .oo-ui-icon-window {
 	/* @embed */
 	background-image: url(images/icons/window.png);
 }
+
+/* Indicators */
+
+.oo-ui-indicator-down {
+	/* @embed */
+	background-image: url(images/indicators/down.png);
+}
+
+.oo-ui-indicator-up {
+	/* @embed */
+	background-image: url(images/indicators/up.png);
+}
+/* Icons */
+
 .oo-ui-icon-add-item {
 	/* @embed */
 	background-image: url(images/icons/add-item.svg);
@@ -1686,11 +1712,6 @@ a.oo-ui-buttonWidget-button {
 .oo-ui-icon-comment {
 	/* @embed */
 	background-image: url(images/icons/comment.svg);
-}
-
-.oo-ui-icon-down {
-	/* @embed */
-	background-image: url(images/icons/down.svg);
 }
 
 .oo-ui-icon-expand {
@@ -1758,12 +1779,19 @@ a.oo-ui-buttonWidget-button {
 	background-image: url(images/icons/arched-arrow-rtl.svg);
 }
 
-.oo-ui-icon-up {
-	/* @embed */
-	background-image: url(images/icons/up.svg);
-}
-
 .oo-ui-icon-window {
 	/* @embed */
 	background-image: url(images/icons/window.svg);
+}
+
+/* Indicators */
+
+.oo-ui-indicator-down {
+	/* @embed */
+	background-image: url(images/indicators/down.svg);
+}
+
+.oo-ui-indicator-up {
+	/* @embed */
+	background-image: url(images/indicators/up.svg);
 }
