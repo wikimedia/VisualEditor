@@ -19,14 +19,15 @@
  * @param {boolean} [config.showSizeLabel=true] Show a label with the current dimensions while resizing
  */
 ve.ce.ResizableNode = function VeCeResizableNode( $resizable, config ) {
+	config = config || {};
 	// Properties
 	this.$resizable = $resizable || this.$element;
 	this.ratio = this.model.getAttribute( 'width' ) / this.model.getAttribute( 'height' );
 	this.resizing = false;
 	this.$resizeHandles = this.$( '<div>' );
-	this.snapToGrid = ( config && config.snapToGrid !== undefined ) ? config.snapToGrid : 10;
-	this.outline = !!( config && config.outline );
-	if ( !config || config.showSizeLabel !== false ) {
+	this.snapToGrid = config.snapToGrid !== undefined ? config.snapToGrid : 10;
+	this.outline = !!config.outline;
+	if ( config.showSizeLabel !== false ) {
 		this.$sizeText = this.$( '<span>' ).addClass( 've-ce-resizableNode-sizeText' );
 		this.$sizeLabel = this.$( '<div>' ).addClass( 've-ce-resizableNode-sizeLabel' ).append( this.$sizeText );
 	}
