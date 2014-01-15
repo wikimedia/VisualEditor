@@ -134,6 +134,24 @@ ve.ce.ResizableNode.prototype.updateSizeLabel = function ( dimensions ) {
 };
 
 /**
+ * Show specific resize handles
+ *
+ * @param {string[]} [handles] List of handles to show: 'nw', 'ne', 'sw', 'se'. Show all if undefined.
+ */
+ve.ce.ResizableNode.prototype.showHandles = function ( handles ) {
+	var i;
+
+	if ( handles === undefined ) {
+		this.$resizeHandles.find( 'div' ).show();
+	} else {
+		this.$resizeHandles.find( 'div' ).hide();
+		for ( i = handles.length; i >= 0; i-- ) {
+			this.$resizeHandles.find( '.ve-ce-resizableNode-' + handles[i] + 'Handle' ).show();
+		}
+	}
+};
+
+/**
  * Handle node focus.
  *
  * @method
