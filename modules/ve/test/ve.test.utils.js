@@ -52,9 +52,8 @@ ve.test.utils.runFormatConverterTest = function ( assert, range, type, attribute
 	surface.destroy();
 };
 
-ve.test.utils.runGetModelFromDomTests = function ( assert, cases ) {
-	var msg, model, i, length, hash, html, n = 0;
-
+ve.test.utils.countGetModelFromDomTests = function ( cases ) {
+	var msg, n = 0;
 	for ( msg in cases ) {
 		if ( cases[msg].head !== undefined || cases[msg].body !== undefined ) {
 			n += 2;
@@ -63,60 +62,55 @@ ve.test.utils.runGetModelFromDomTests = function ( assert, cases ) {
 			}
 		}
 	}
-	QUnit.expect( n );
+	return n;
+};
 
-	for ( msg in cases ) {
-		if ( cases[msg].head !== undefined || cases[msg].body !== undefined ) {
-			html = '<head>' + ( cases[msg].head || '' ) + '</head><body>' + cases[msg].body + '</body>';
-			model = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( html ) );
-			ve.dm.example.preprocessAnnotations( cases[msg].data, model.getStore() );
-			assert.deepEqualWithDomElements( model.getFullData(), cases[msg].data, msg + ': data' );
-			assert.deepEqual( model.getInnerWhitespace(), cases[msg].innerWhitespace || new Array( 2 ), msg + ': inner whitespace' );
-			// check storeItems have been added to store
-			if ( cases[msg].storeItems ) {
-				for ( i = 0, length = cases[msg].storeItems.length; i < length; i++ ) {
-					hash = cases[msg].storeItems[i].hash || OO.getHash( cases[msg].storeItems[i].value );
-					assert.deepEqualWithDomElements(
-						model.getStore().value( model.getStore().indexOfHash( hash ) ) || {},
-						cases[msg].storeItems[i].value,
-						msg + ': store item ' + i + ' found'
-					);
-				}
+ve.test.utils.runGetModelFromDomTest = function ( assert, caseItem ) {
+	var msg, model, i, length, hash, html;
+
+	if ( caseItem.head !== undefined || caseItem.body !== undefined ) {
+		html = '<head>' + ( caseItem.head || '' ) + '</head><body>' + caseItem.body + '</body>';
+		model = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( html ) );
+		ve.dm.example.preprocessAnnotations( caseItem.data, model.getStore() );
+		assert.deepEqualWithDomElements( model.getFullData(), caseItem.data, msg + ': data' );
+		assert.deepEqual( model.getInnerWhitespace(), caseItem.innerWhitespace || new Array( 2 ), msg + ': inner whitespace' );
+		// check storeItems have been added to store
+		if ( caseItem.storeItems ) {
+			for ( i = 0, length = caseItem.storeItems.length; i < length; i++ ) {
+				hash = caseItem.storeItems[i].hash || OO.getHash( caseItem.storeItems[i].value );
+				assert.deepEqualWithDomElements(
+					model.getStore().value( model.getStore().indexOfHash( hash ) ) || {},
+					caseItem.storeItems[i].value,
+					msg + ': store item ' + i + ' found'
+				);
 			}
 		}
 	}
 };
 
-ve.test.utils.runGetDomFromModelTests = function ( assert, cases ) {
-	var msg, originalData, doc, store, i, length, html, n = 0;
+ve.test.utils.runGetDomFromModelTest = function ( assert, caseItem ) {
+	var msg, originalData, doc, store, i, length, html;
 
-	for ( msg in cases ) {
-		n++;
-	}
-	QUnit.expect( 2 * n );
-
-	for ( msg in cases ) {
-		store = new ve.dm.IndexValueStore();
-		// Load storeItems into store
-		if ( cases[msg].storeItems ) {
-			for ( i = 0, length = cases[msg].storeItems.length; i < length; i++ ) {
-				store.index( cases[msg].storeItems[i].value, cases[msg].storeItems[i].hash );
-			}
+	store = new ve.dm.IndexValueStore();
+	// Load storeItems into store
+	if ( caseItem.storeItems ) {
+		for ( i = 0, length = caseItem.storeItems.length; i < length; i++ ) {
+			store.index( caseItem.storeItems[i].value, caseItem.storeItems[i].hash );
 		}
-		if ( cases[msg].modify ) {
-			cases[msg].modify( cases[msg].data );
-		}
-		doc = new ve.dm.Document( ve.dm.example.preprocessAnnotations( cases[msg].data, store ) );
-		doc.innerWhitespace = cases[msg].innerWhitespace ? ve.copy( cases[msg].innerWhitespace ) : new Array( 2 );
-		originalData = ve.copy( doc.getFullData() );
-		html = '<body>' + ( cases[msg].normalizedBody || cases[msg].body ) + '</body>';
-		assert.equalDomElement(
-			ve.dm.converter.getDomFromModel( doc ),
-			ve.createDocumentFromHtml( html ),
-			msg
-		);
-		assert.deepEqualWithDomElements( doc.getFullData(), originalData, msg + ' (data hasn\'t changed)' );
 	}
+	if ( caseItem.modify ) {
+		caseItem.modify( caseItem.data );
+	}
+	doc = new ve.dm.Document( ve.dm.example.preprocessAnnotations( caseItem.data, store ) );
+	doc.innerWhitespace = caseItem.innerWhitespace ? ve.copy( caseItem.innerWhitespace ) : new Array( 2 );
+	originalData = ve.copy( doc.getFullData() );
+	html = '<body>' + ( caseItem.normalizedBody || caseItem.body ) + '</body>';
+	assert.equalDomElement(
+		ve.dm.converter.getDomFromModel( doc ),
+		ve.createDocumentFromHtml( html ),
+		msg
+	);
+	assert.deepEqualWithDomElements( doc.getFullData(), originalData, msg + ' (data hasn\'t changed)' );
 };
 
 /**
