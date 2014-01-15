@@ -17,6 +17,8 @@
  * @param {number|null} [config.snapToGrid=10] Snap to a grid of size X when the shift key is held. Null disables.
  * @param {boolean} [config.outline=false] Resize using an outline of the element only, don't live preview.
  * @param {boolean} [config.showSizeLabel=true] Show a label with the current dimensions while resizing
+ * @param {boolean} [config.min=1] Minimum size of longest edge
+ * @param {boolean} [config.max=Infinity] Maximum size or longest edge
  */
 ve.ce.ResizableNode = function VeCeResizableNode( $resizable, config ) {
 	config = config || {};
@@ -32,6 +34,9 @@ ve.ce.ResizableNode = function VeCeResizableNode( $resizable, config ) {
 		this.$sizeLabel = this.$( '<div>' ).addClass( 've-ce-resizableNode-sizeLabel' ).append( this.$sizeText );
 	}
 	this.resizableOffset = null;
+
+	this.min = config.min !== undefined ? config.min : 1;
+	this.max = config.max !== undefined ? config.max : Infinity;
 
 	// Events
 	this.connect( this, {
@@ -312,9 +317,6 @@ ve.ce.ResizableNode.prototype.setResizableHandlesPosition = function () {
  */
 ve.ce.ResizableNode.prototype.onDocumentMouseMove = function ( e ) {
 	var newWidth, newHeight, newRatio, snapMin, snapMax, snap,
-		// TODO: Make these configurable
-		min = 1,
-		max = 1000,
 		diff = {},
 		dimensions = {
 			'width': 0,
@@ -345,12 +347,12 @@ ve.ce.ResizableNode.prototype.onDocumentMouseMove = function ( e ) {
 		}
 
 		// Unconstrained dimensions and ratio
-		newWidth = Math.max( Math.min( this.resizeInfo.width + diff.x, max ), min );
-		newHeight = Math.max( Math.min( this.resizeInfo.height + diff.y, max ), min );
+		newWidth = Math.max( Math.min( this.resizeInfo.width + diff.x, this.max ), this.min );
+		newHeight = Math.max( Math.min( this.resizeInfo.height + diff.y, this.max ), this.min );
 		newRatio = newWidth / newHeight;
 
 		// Fix the ratio
-		if ( this.ratio > newRatio ) {
+		if ( newRatio < this.ratio ) {
 			dimensions.width = newWidth;
 			dimensions.height = this.resizeInfo.height +
 				( newWidth - this.resizeInfo.width ) / this.ratio;
@@ -361,8 +363,8 @@ ve.ce.ResizableNode.prototype.onDocumentMouseMove = function ( e ) {
 		}
 
 		if ( this.snapToGrid && e.shiftKey ) {
-			snapMin = Math.ceil( min / this.snapToGrid );
-			snapMax = Math.floor( max / this.snapToGrid );
+			snapMin = Math.ceil( this.min / this.snapToGrid );
+			snapMax = Math.floor( this.max / this.snapToGrid );
 			snap = Math.round( dimensions.width / this.snapToGrid );
 			dimensions.width = Math.max( Math.min( snap, snapMax ), snapMin ) * this.snapToGrid;
 			dimensions.height = dimensions.width / this.ratio;
