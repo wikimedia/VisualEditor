@@ -28,7 +28,8 @@ ve.init.Target = function VeInitTarget( $container ) {
 	this.surface = null;
 
 	/**
-	 * @property {jQuery} The ve-ce-documentNode of #surface
+	 * The ve-ce-documentNode of #surface
+	 * @property {jQuery}
 	 */
 	this.$document = null;
 
