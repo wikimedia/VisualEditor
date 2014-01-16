@@ -37,16 +37,7 @@ For other grunt tasks, see:
 $ grunt --help
 ```
 
-To run the tests in a web browser, make sure your MediaWiki install is
-[configured](https://www.mediawiki.org/wiki/Manual:JavaScript_unit_testing) to
-allow running of tests. Set in `LocalSettings.php`:
-```php
-// https://www.mediawiki.org/wiki/Manual:JavaScript_unit_testing
-$wgEnableJavaScriptTest = true;
-```
-
-Then open `http://URL_OF_MEDIAWIKI/index.php/Special:JavaScriptTest/qunit`
-(for example, <http://localhost/w/index.php/Special:JavaScriptTest/qunit>).
+To run the tests in a web browser, open `modules/ve/test/index.html`.
 
 ## Building documentation
 
@@ -79,19 +70,14 @@ $ gem install --user-install jsduck
 Creating the documentation is easy:
 ```sh
 $ cd VisualEditor
-$ .docs/generate.sh
+$ bin/generateDocs.sh
 ```
 
-You may need to set `MW_INSTALL_PATH` in your environment to the location of
-your mediawiki installation if VisualEditor is not checked out directly in the
-mediawiki extensions folder (for example, if you're using a symlink).
-
 The generated documentation is in the `docs/` subdirectory.  View the
-documentation at
-`http://URL_OF_MEDIAWIKI/extensions/VisualEditor/docs/`
-(for example, <http://localhost/w/extensions/VisualEditor/docs>).
+documentation in a web browser by opening `docs/index.html`.
 
-Note that `jsduck` doesn't support browsing vis the `file:` protocol.
+Note that `jsduck` doesn't support live previews when browsing using the
+`file:` protocol; this only works when using HTTP/HTTPS.
 
 ## VisualEditor Code Guidelines
 
@@ -131,7 +117,7 @@ here, for consistency. See [JSDuck/Tags](https://github.com/senchalabs/jsduck/wi
 * @context {Type} Optional text.
 * @inheritable
 * @param {Type} name Optional text.
-* @emits name
+* @fires name
 * @returns {Type} Optional text.
 * @chainable
 * @throws {Type}
@@ -168,13 +154,9 @@ When a new javascript class is added, the file must be referenced in a number of
 before it can be used.
 
 Test files:
-* VisualEditor.hooks.php in onResourceLoaderTestModules
+* modules/ve/test/index.html.template
 
 Regular files:
 * .docs/categories.json in General->Utilities (or somewhere more specific)
-* VisualEditor.php in ext.visualEditor.core (or somewhere more specific)
-* Run `php maintenance/makeStaticLoader.php --target demo --write-file demos/ve/index.php`
-* Run `php maintenance/makeStaticLoader.php --target test --write-file modules/ve/test/index.php`
-
-makeStaticLoader.php is a maintenance script to automatically generate an HTML document fragment
-containing script tags in dependency order (for standalone environments without ResourceLoader).
+* modules.json in visualEditor.core (or somewhere more specific)
+* Run `grunt build`
