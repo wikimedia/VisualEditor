@@ -34,7 +34,7 @@ ve.dm.LanguageAnnotation.static.matchFunction = function ( domElement ) {
 	return ( domElement.getAttribute( 'lang' ) || domElement.getAttribute( 'dir' ) );
 };
 
-ve.dm.LanguageAnnotation.static.applyToAppendedContent = false;
+ve.dm.LanguageAnnotation.static.applyToAppendedContent = true;
 
 ve.dm.LanguageAnnotation.static.toDataElement = function ( domElements ) {
 	return {
@@ -66,7 +66,8 @@ ve.dm.LanguageAnnotation.static.toDomElements = function ( dataElement, doc ) {
 ve.dm.LanguageAnnotation.prototype.getComparableObject = function () {
 	return {
 		'type': 'meta/language',
-		'lang': this.getAttribute( 'lang' )
+		'lang': this.getAttribute( 'lang' ),
+		'dir': this.getAttribute( 'dir' )
 	};
 };
 

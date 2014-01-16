@@ -56,7 +56,7 @@
     "visualeditor-indentationbutton-outdent-tooltip": "Tooltip text for list outdent button",
     "visualeditor-inspector-close-tooltip": "{{Identical|Close}}",
     "visualeditor-inspector-remove-tooltip": "Tooltip text for the button to remove an annotation in an inspector.\n{{Identical|Remove}}",
-    "visualeditor-languageinspector-block-tooltip-rtldirection": "The label \"Right To Left\" at the end of the tooltip if the language is RTL.",
+    "visualeditor-languageinspector-block-tooltip": "Tooltip text for the language annotation.",
     "visualeditor-languageinspector-title": "Title of the language inspector dialog.\n{{Identical|Language}}",
     "visualeditor-languageinspector-widget-changelang": "Used as label for the button which is used to change the language of the given block in the language inspector.\n{{Identical|Change language}}",
     "visualeditor-languageinspector-widget-label-direction": "Label for the language inspector widget, to denote the text direction of the current element (left-to-right or right-to-left).\n{{Identical|Direction}}",

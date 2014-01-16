@@ -37,38 +37,39 @@ ve.ui.LinkInspector.static.titleMessage = 'visualeditor-linkinspector-title';
 
 ve.ui.LinkInspector.static.linkTargetInputWidget = ve.ui.LinkTargetInputWidget;
 
-/**
- * Models this inspector can edit.
- *
- * These models may be either annotations or nodes. When nodes are inspected, #getNodeChanges
- * is used instead of #getAnnotation to determine what changes to save when the inspector is
- * closed.
- *
- * @static
- * @property {Function[]}
- */
 ve.ui.LinkInspector.static.modelClasses = [ ve.dm.LinkAnnotation ];
 
 /* Methods */
 
 /**
- * Get the annotation from the input.
- *
- * This override allows AnnotationInspector to request the value from the inspector rather
- * than the widget.
- *
- * @method
- * @returns {ve.dm.LinkAnnotation} Link annotation
+ * @inheritdoc
  */
-ve.ui.LinkInspector.prototype.getAnnotation = function () {
-	return this.targetInput.annotation;
+ve.ui.LinkInspector.prototype.shouldRemoveAnnotation = function () {
+	return !this.targetInput.getValue().length;
 };
 
 /**
  * @inheritdoc
  */
-ve.ui.LinkInspector.prototype.getAnnotationFromText = function ( text ) {
-	return new ve.dm.LinkAnnotation( { 'type': 'link', 'attributes': { 'href': text } } );
+ve.ui.LinkInspector.prototype.getInsertionText = function () {
+	return this.targetInput.getValue();
+};
+
+/**
+ * @inheritdoc
+ */
+ve.ui.LinkInspector.prototype.getAnnotation = function () {
+	return this.targetInput.getAnnotation();
+};
+
+/**
+ * @inheritdoc
+ */
+ve.ui.LinkInspector.prototype.getAnnotationFromFragment = function ( fragment ) {
+	return new ve.dm.LinkAnnotation( {
+		'type': 'link',
+		'attributes': { 'href': fragment.getText() }
+	} );
 };
 
 /**
@@ -106,9 +107,12 @@ ve.ui.LinkInspector.prototype.initialize = function () {
  */
 ve.ui.LinkInspector.prototype.setup = function ( data ) {
 	var focusedNode = this.surface.getView().getFocusedNode();
-	if ( focusedNode && ve.isInstanceOfAny( focusedNode.getModel(), this.constructor.static.modelClasses ) ) {
-		this.linkNode = focusedNode.getModel();
 
+	if (
+		focusedNode &&
+		ve.isInstanceOfAny( focusedNode.getModel(), this.constructor.static.modelClasses )
+	) {
+		this.linkNode = focusedNode.getModel();
 		// Call grandparent method, skipping AnnotationInspector
 		ve.ui.Inspector.prototype.setup.call( this, data );
 	} else {
@@ -125,21 +129,21 @@ ve.ui.LinkInspector.prototype.setup = function ( data ) {
  * @inheritdoc
  */
 ve.ui.LinkInspector.prototype.ready = function () {
+	var href;
+
 	// Parent method
 	ve.ui.AnnotationInspector.prototype.ready.call( this );
 
 	// Note: Focus input prior to setting target annotation
 	this.targetInput.$input.focus();
-	// Setup targetInput contents
+
 	if ( this.linkNode ) {
-		// FIXME this assumes the linkNode will always have an href attribute
-		this.targetInput.setValue( this.linkNode.getAttribute( 'href' ) );
-	} else if ( this.initialAnnotation ) {
-		this.targetInput.setAnnotation( this.initialAnnotation );
+		href = this.linkNode.getAttribute( 'href' );
+		if ( typeof href === 'string' && href.length ) {
+			this.targetInput.setValue( href );
+		}
 	} else {
-		// If an initial annotation couldn't be created (e.g. the text was invalid),
-		// just populate the text we tried to create the annotation from
-		this.targetInput.setValue( this.initialText );
+		this.targetInput.setAnnotation( this.initialAnnotation );
 	}
 	this.targetInput.$input.select();
 	this.surface.enable();
@@ -156,7 +160,7 @@ ve.ui.LinkInspector.prototype.teardown = function ( data ) {
 		replace = ve.isArray( changes );
 		// FIXME figure out a better way to do the "if input is empty, remove" thing,
 		// not duplicating it here from AnnotationInspector (where it doesn't even belong)
-		remove = data.action === 'remove' || this.targetInput.getValue() === '';
+		remove = data.action === 'remove' || this.shouldRemoveAnnotation();
 		if ( remove || replace ) {
 			surfaceModel.change(
 				ve.dm.Transaction.newFromRemoval(
