@@ -109,12 +109,18 @@ ve.ui.Inspector.prototype.initialize = function () {
 	// Initialization
 	this.frame.$content.addClass( 've-ui-inspector-content' );
 	this.$form = this.$( '<form>' );
-	this.closeButton = new OO.ui.IconButtonWidget( {
-		'$': this.$, 'icon': 'previous', 'title': ve.msg( 'visualeditor-inspector-close-tooltip' )
+	this.closeButton = new OO.ui.ButtonWidget( {
+		'$': this.$,
+		'frameless': true,
+		'icon': 'previous',
+		'title': ve.msg( 'visualeditor-inspector-close-tooltip' )
 	} );
 	if ( this.constructor.static.removable ) {
-		this.removeButton = new OO.ui.IconButtonWidget( {
-			'$': this.$, 'icon': 'remove', 'title': ve.msg( 'visualeditor-inspector-remove-tooltip' )
+		this.removeButton = new OO.ui.ButtonWidget( {
+			'$': this.$,
+			'frameless': true,
+			'icon': 'remove',
+			'title': ve.msg( 'visualeditor-inspector-remove-tooltip' )
 		} );
 	}
 

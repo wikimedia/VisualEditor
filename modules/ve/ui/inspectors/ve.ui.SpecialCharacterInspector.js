@@ -197,7 +197,7 @@ ve.ui.SpecialCharacterInspector.prototype.buildButtonList = function () {
  * Handle the click event on the button groups. The value of the selection will be inserted
  * into the text
  *
- * @param {OO.ui.PushButtonWidget} button The value attached to the clicked button
+ * @param {OO.ui.ButtonWidget} button The value attached to the clicked button
  */
 ve.ui.SpecialCharacterInspector.prototype.onSpecialCharAdd = function ( button ) {
 	var fragment = this.surface.getModel().getFragment( null, true ),

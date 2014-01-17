@@ -22,14 +22,14 @@ $( function () {
 		endTextInputLabel = new OO.ui.InputLabelWidget(
 			{ 'label': '-', 'input': endTextInput }
 		),
-		getRangeButton = new OO.ui.PushButtonWidget( { 'label': 'Get range' } ),
+		getRangeButton = new OO.ui.ButtonWidget( { 'label': 'Get range' } ),
 		getRangeChangeToggle = new OO.ui.ToggleButtonWidget( { 'label': 'Get range on change' } ),
-		logRangeButton = new OO.ui.PushButtonWidget(
+		logRangeButton = new OO.ui.ButtonWidget(
 			{ 'label': 'Log to console', 'disabled': true }
 		),
-		dumpModelButton = new OO.ui.PushButtonWidget( { 'label': 'Dump model' } ),
+		dumpModelButton = new OO.ui.ButtonWidget( { 'label': 'Dump model' } ),
 		dumpModelChangeToggle = new OO.ui.ToggleButtonWidget( { 'label': 'Dump model on change' } ),
-		validateButton = new OO.ui.PushButtonWidget( { 'label': 'Validate view and model' } );
+		validateButton = new OO.ui.ButtonWidget( { 'label': 'Validate view and model' } );
 
 	// Initialization
 

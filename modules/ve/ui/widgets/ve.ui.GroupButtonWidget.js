@@ -30,7 +30,7 @@ ve.ui.GroupButtonWidget = function VeUiGroupButtonWidget( config ) {
 	this.buttons = {};
 	// Set up the buttons
 	for ( item in this.group ) {
-		button = new OO.ui.PushButtonWidget( {
+		button = new OO.ui.ButtonWidget( {
 			'label': item,
 		} );
 		// store value
