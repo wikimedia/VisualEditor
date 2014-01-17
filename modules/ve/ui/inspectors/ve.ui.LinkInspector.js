@@ -82,7 +82,11 @@ ve.ui.LinkInspector.prototype.getAnnotationFromText = function ( text ) {
  * @returns {Object|Array} Object with attribute changes, or linear model array
  */
 ve.ui.LinkInspector.prototype.getNodeChanges = function () {
-	return { 'href': this.targetInput.annotation.getAttribute( 'href' ) };
+	var annotation = this.targetInput.getAnnotation();
+	if ( annotation ) {
+		return { 'href': this.targetInput.getAnnotation().getAttribute( 'href' ) };
+	}
+	return {};
 };
 
 /**
