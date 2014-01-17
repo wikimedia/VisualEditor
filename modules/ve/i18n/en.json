@@ -53,7 +53,7 @@
     "visualeditor-indentationbutton-outdent-tooltip": "Decrease indentation",
     "visualeditor-inspector-close-tooltip": "Close",
     "visualeditor-inspector-remove-tooltip": "Remove",
-    "visualeditor-languageinspector-block-tooltip-rtldirection": ": Right to Left",
+    "visualeditor-languageinspector-block-tooltip": "Language block",
     "visualeditor-languageinspector-title": "Language",
     "visualeditor-languageinspector-widget-changelang": "Change language",
     "visualeditor-languageinspector-widget-label-direction": "Direction",

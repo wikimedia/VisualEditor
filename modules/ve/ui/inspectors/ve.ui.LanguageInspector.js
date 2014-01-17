@@ -18,13 +18,6 @@
 ve.ui.LanguageInspector = function VeUiLanguageInspector( windowSet, config ) {
 	// Parent constructor
 	ve.ui.AnnotationInspector.call( this, windowSet, config );
-
-	// Placeholder for the dm properties:
-	this.lang = '';
-	this.dir = '';
-
-	// Placeholder for the annotation:
-	this.annotation = null;
 };
 
 /* Inheritance */
@@ -39,110 +32,42 @@ ve.ui.LanguageInspector.static.icon = 'language';
 
 ve.ui.LanguageInspector.static.titleMessage = 'visualeditor-languageinspector-title';
 
-/**
- * Annotation models this inspector can edit.
- *
- * @static
- * @property {Function[]}
- */
+ve.ui.LanguageInspector.static.languageInputWidget = ve.ui.LanguageInputWidget;
+
 ve.ui.LanguageInspector.static.modelClasses = [ ve.dm.LanguageAnnotation ];
 
 /* Methods */
 
 /**
- * Get the annotation.
- *
- * @method
- * @returns {ve.dm.LanguageAnnotation} Language annotation
+ * @inheritdoc
  */
 ve.ui.LanguageInspector.prototype.getAnnotation = function () {
-	return this.annotation;
+	return this.languageInput.getAnnotation();
 };
 
 /**
  * @inheritdoc
  */
-ve.ui.LanguageInspector.prototype.getAnnotationFromText = function () {
-	return new ve.dm.LanguageAnnotation( {
-		'type': 'meta/language',
-		'attributes': {
-			'lang': this.lang,
-			'dir': this.dir
-		}
-	} );
-};
+ve.ui.LanguageInspector.prototype.getAnnotationFromFragment = function ( fragment ) {
+	var offset = fragment.getRange( true ).start,
+		node = this.surface.getView().documentView.getNodeFromOffset( offset ),
+		attr = {};
 
-/**
- * Gets a language from the annotation.
- *
- * @method
- * @param {ve.dm.LanguageAnnotation} annotation Language annotation
- * @returns {string} Language
- */
-ve.ui.LanguageInspector.prototype.getLanguageFromAnnotation = function ( annotation ) {
-	if ( annotation instanceof ve.dm.LanguageAnnotation ) {
-		return annotation.getAttribute( 'lang' );
-	}
-	return '';
-};
-
-/**
- * Set the annotation.
- *
- * Form values will be updated from information within the annotation.
- *
- * @param {ve.dm.LanguageAnnotation} annotation Annotation to set
- * @chainable
- */
-ve.ui.LanguageInspector.prototype.setAnnotation = function ( annotation ) {
-	var langCode, langDir, annData;
-
-	// Validate the given annotation:
-	if ( annotation ) {
-		// Give precedence to dir value if it already exists
-		// in the annotation:
-		langDir = annotation.getAttribute( 'dir' );
-
-		// Set language according to the one in the given annotation
-		// or leave blank if element has no language set
-		langCode = annotation.getAttribute( 'lang' );
-	} else {
-		// No annotation (empty text or collapsed fragment on empty line)
-		langCode = this.lang;
-		langDir = this.dir;
+	// Set initial parameters according to parent of the DOM object.
+	// This will be called only if the annotation doesn't already exist, setting the default value
+	// as the current language/dir of the selected text.
+	if ( node ) {
+		attr.lang = node.$element.closest( '[lang]' ).attr( 'lang' );
+		attr.dir = node.$element.css( 'direction' );
 	}
 
-	// If language exists, but dir is undefined/null,
-	// fix the dir in terms of language:
-	if ( langCode && !langDir && $.uls ) {
-		langDir = $.uls.data.getDir( langCode );
+	if ( !attr.lang ) {
+		// This means there was no lang/dir defined anywhere. Get the default en/ltr:
+		attr.lang = 'en';
+		attr.dir = 'ltr';
 	}
 
-	// Set the annotation data:
-	annData = {
-		'type': 'meta/language',
-		'attributes': {}
-	};
-
-	if ( langCode ) {
-		annData.attributes.lang = langCode;
-	}
-
-	if ( langDir ) {
-		annData.attributes.dir = langDir;
-	}
-
-	// Update the widget:
-	this.targetInput.setAttributes( langCode, langDir );
-
-	// Update inspector properties:
-	this.lang = langCode;
-	this.dir = langDir;
-
-	// Set up the annotation:
-	this.annotation = new ve.dm.LanguageAnnotation( annData );
-
-	return this;
+	return new ve.dm.LanguageAnnotation( { 'type': 'meta/language', 'attributes': attr } );
 };
 
 /**
@@ -153,13 +78,12 @@ ve.ui.LanguageInspector.prototype.initialize = function () {
 	ve.ui.AnnotationInspector.prototype.initialize.call( this );
 
 	// Properties
-	this.targetInput = new ve.ui.LanguageInputWidget( {
-		'$': this.$,
-		'$overlay': this.surface.$localOverlay
+	this.languageInput = new this.constructor.static.languageInputWidget( {
+		'$': this.$, '$overlay': this.surface.$localOverlay
 	} );
 
 	// Initialization
-	this.$form.append( this.targetInput.$element );
+	this.$form.append( this.languageInput.$element );
 };
 
 /**
@@ -169,47 +93,7 @@ ve.ui.LanguageInspector.prototype.setup = function ( data ) {
 	// Parent method
 	ve.ui.AnnotationInspector.prototype.setup.call( this, data );
 
-	var fragDOM,
-		fragment = this.surface.getModel().getFragment( null, true );
-
-	// Get the fragment documentView object (the real DOM object):
-	fragDOM = this.surface.getView().documentView.getNodeFromOffset( fragment.getRange( true ).start );
-
-	// Set initial parameters according to parent of the DOM object.
-	// This will be called only if the annotation doesn't already exist, setting
-	// the default value as the current language/dir of the selected text.
-	if ( fragDOM ) {
-		this.lang = fragDOM.$element.closest( '[lang]' ).attr( 'lang' );
-		this.dir = fragDOM.$element.closest( '[dir]' ).css( 'direction' );
-	}
-};
-
-/**
- * @inheritdoc
- */
-ve.ui.LanguageInspector.prototype.ready = function () {
-	// Parent method
-	ve.ui.AnnotationInspector.prototype.ready.call( this );
-
-	// Initialization
-	this.setAnnotation( this.initialAnnotation );
-};
-
-/**
- * @inheritdoc
- */
-ve.ui.LanguageInspector.prototype.teardown = function ( data ) {
-	// Read the annotation values from the widget:
-	var attrs = this.targetInput.getAttributes();
-
-	// Set the annotation with the new attributes:
-	this.annotation = new ve.dm.LanguageAnnotation( {
-		'type': 'meta/language',
-		'attributes': attrs
-	} );
-
-	// Parent method
-	ve.ui.AnnotationInspector.prototype.teardown.call( this, data );
+	this.languageInput.setAnnotation( this.initialAnnotation );
 };
 
 /* Registration */

@@ -34,34 +34,6 @@
 			"modules/unicodejs/unicodejs.wordbreak.js"
 		]
 	},
-	"jquery.uls.grid": {
-		"styles": [
-			"lib/jquery.uls/css/jquery.uls.grid.css"
-		]
-	},
-	"jquery.uls.data": {
-		"scripts": [
-			"lib/jquery.uls/src/jquery.uls.data.js",
-			"lib/jquery.uls/src/jquery.uls.data.utils.js"
-		]
-	},
-	"jquery.uls.compact": {
-		"styles": [
-			"lib/jquery.uls/css/jquery.uls.compact.css"
-		]
-	},
-	"jquery.uls": {
-		"scripts": [
-			"lib/jquery.uls/src/jquery.uls.core.js",
-			"lib/jquery.uls/src/jquery.uls.lcd.js",
-			"lib/jquery.uls/src/jquery.uls.languagefilter.js",
-			"lib/jquery.uls/src/jquery.uls.regionfilter.js"
-		],
-		"styles": [
-			"lib/jquery.uls/css/jquery.uls.css",
-			"lib/jquery.uls/css/jquery.uls.lcd.css"
-		]
-	},
 	"jquery.i18n": {
 		"scripts": [
 			"lib/jquery.i18n/src/jquery.i18n.js",

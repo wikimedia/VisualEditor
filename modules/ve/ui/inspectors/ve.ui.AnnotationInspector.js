@@ -25,7 +25,6 @@ ve.ui.AnnotationInspector = function VeUiAnnotationInspector( windowSet, config 
 	this.initialSelection = null;
 	this.initialAnnotation = null;
 	this.initialAnnotationHash = null;
-	this.initialText = '';
 	this.isNewAnnotation = false;
 };
 
@@ -45,6 +44,27 @@ ve.ui.AnnotationInspector.static.modelClasses = [];
 /* Methods */
 
 /**
+ * Check if form is empty, which if saved should result in removing the annotation.
+ *
+ * Only override this if the form provides the user a way to blank out primary information, allowing
+ * them to remove the annotation by clearing the form.
+ *
+ * @returns {boolean} Form is empty
+ */
+ve.ui.AnnotationInspector.prototype.shouldRemoveAnnotation = function () {
+	return false;
+};
+
+/**
+ * Get text to insert if no text was selected when the inspector opened.
+ *
+ * @returns {string} Text to insert
+ */
+ve.ui.AnnotationInspector.prototype.getInsertionText = function () {
+	return '';
+};
+
+/**
  * Get the annotation object to apply.
  *
  * This method is called when the inspector is closing, and should return the annotation to apply
@@ -62,17 +82,17 @@ ve.ui.AnnotationInspector.prototype.getAnnotation = function () {
 };
 
 /**
- * Get an annotation object from text.
+ * Get an annotation object from a fragment.
  *
  * @method
  * @abstract
- * @param {string} text Content text
- * @returns {ve.dm.Annotation}
+ * @param {ve.dm.SurfaceFragment} fragment Surface fragment
+ * @returns {ve.dm.Annotation} Annotation
  * @throws {Error} If not overriden in a subclass
  */
-ve.ui.AnnotationInspector.prototype.getAnnotationFromText = function () {
+ve.ui.AnnotationInspector.prototype.getAnnotationFromFragment = function () {
 	throw new Error(
-		've.ui.AnnotationInspector.getAnnotationFromText not implemented in subclass'
+		've.ui.AnnotationInspector.getAnnotationFromFragment not implemented in subclass'
 	);
 };
 
@@ -113,11 +133,13 @@ ve.ui.AnnotationInspector.prototype.setup = function ( data ) {
 		annotation = this.getMatchingAnnotations( fragment, true ).get( 0 );
 
 	this.previousSelection = this.surface.getModel().getSelection();
-	this.initialText = '';
 
 	// Initialize range
 	if ( !annotation ) {
-		if ( fragment.getRange().isCollapsed() && !this.surface.view.hasSlugAtOffset( fragment.getRange().start ) ) {
+		if (
+			fragment.getRange().isCollapsed() &&
+			!this.surface.view.hasSlugAtOffset( fragment.getRange().start )
+		) {
 			// Expand to nearest word
 			expandedFragment = fragment.expandRange( 'word' );
 			fragment = expandedFragment;
@@ -130,8 +152,7 @@ ve.ui.AnnotationInspector.prototype.setup = function ( data ) {
 			// Create annotation from selection
 			truncatedFragment = fragment.truncateRange( 255 );
 			fragment = truncatedFragment;
-			this.initialText = fragment.getText();
-			annotation = this.getAnnotationFromText( this.initialText );
+			annotation = this.getAnnotationFromFragment( fragment );
 			if ( annotation ) {
 				fragment.annotateContent( 'set', annotation );
 			}
@@ -149,6 +170,10 @@ ve.ui.AnnotationInspector.prototype.setup = function ( data ) {
 
 	// Note we don't set the 'all' flag here - any non-annotated content will be annotated on close
 	this.initialAnnotation = this.getMatchingAnnotations( fragment ).get( 0 );
+	// Fallback to a default annotation
+	if ( !this.initialAnnotation ) {
+		this.initialAnnotation = this.getAnnotationFromFragment( fragment );
+	}
 	this.initialAnnotationHash = this.initialAnnotation ?
 		OO.getHash( this.initialAnnotation.getComparableObject() ) : null;
 };
@@ -160,14 +185,14 @@ ve.ui.AnnotationInspector.prototype.teardown = function ( data ) {
 	// Configuration initialization
 	data = data || {};
 
-	var i, len, annotations,
+	var i, len, annotations, insertion,
+		add = false,
 		insert = false,
 		undo = false,
 		clear = false,
 		set = false,
-		target = this.targetInput.getValue(),
 		annotation = this.getAnnotation(),
-		remove = target === '' || data.action === 'remove',
+		remove = this.shouldRemoveAnnotation() || data.action === 'remove',
 		surfaceModel = this.surface.getModel(),
 		fragment = surfaceModel.getFragment( this.initialSelection, false ),
 		selection = surfaceModel.getSelection();
@@ -188,10 +213,13 @@ ve.ui.AnnotationInspector.prototype.teardown = function ( data ) {
 		}
 	}
 	if ( insert ) {
-		fragment.insertContent( target, false );
-
-		// Move cursor to the end of the inserted content, even if back button is used
-		this.previousSelection = new ve.Range( this.initialSelection.start + target.length );
+		insertion = this.getInsertionText();
+		if ( insertion.length ) {
+			fragment.insertContent( insertion, false );
+			// Move cursor to the end of the inserted content, even if back button is used
+			fragment.adjustRange( -insertion.length, 0 );
+			this.previousSelection = new ve.Range( this.initialSelection.start + insertion.length );
+		}
 	}
 	if ( undo ) {
 		// Go back to before we added an annotation
@@ -206,13 +234,22 @@ ve.ui.AnnotationInspector.prototype.teardown = function ( data ) {
 	}
 	if ( set && annotation ) {
 		// Apply new annotation
-		fragment.annotateContent( 'set', annotation );
+		if ( fragment.getRange().isCollapsed() ) {
+			add = true;
+		} else {
+			fragment.annotateContent( 'set', annotation );
+		}
 	}
 	if ( data.action === 'back' || insert ) {
 		// Restore selection to what it was before we expanded it
 		selection = this.previousSelection;
 	}
 	this.surface.execute( 'content', 'select', selection );
+
+	if ( add ) {
+		surfaceModel.addInsertionAnnotations( annotation );
+	}
+
 	// Reset state
 	this.isNewAnnotation = false;
 

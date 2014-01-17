@@ -195,6 +195,18 @@
 	background-image: url(images/icons/superscript.svg);
 }
 
+/* @noflip */
+.oo-ui-icon-text-dir-ltr {
+	/* @embed */
+	background-image: url(images/icons/text-dir-ltr.svg);
+}
+
+/* @noflip */
+.oo-ui-icon-text-dir-rtl {
+	/* @embed */
+	background-image: url(images/icons/text-dir-rtl.svg);
+}
+
 .oo-ui-icon-text-style {
 	/* @embed */
 	background-image: url(images/icons/text-style.svg);
