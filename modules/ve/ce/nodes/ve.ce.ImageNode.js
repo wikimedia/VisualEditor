@@ -72,13 +72,11 @@ ve.ce.ImageNode.static.tagName = 'img';
  * @param {string} to New value
  */
 ve.ce.ImageNode.prototype.onAttributeChange = function ( key, from, to ) {
-	if ( from !== to ) {
-		if ( key === 'src' ) {
-			this.$image.attr( 'src', this.getResolvedAttribute( 'src' ) );
-		}
-		if ( key === 'width' || key === 'height' ) {
-			this.$image.css( key, to );
-		}
+	if ( key === 'src' ) {
+		this.$image.attr( 'src', this.getResolvedAttribute( 'src' ) );
+	}
+	if ( key === 'width' || key === 'height' ) {
+		this.$image.css( key, to );
 	}
 };
 

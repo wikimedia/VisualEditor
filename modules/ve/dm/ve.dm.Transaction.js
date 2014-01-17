@@ -309,6 +309,7 @@ ve.dm.Transaction.newFromDocumentInsertion = function ( doc, offset, newDoc, new
  */
 ve.dm.Transaction.newFromAttributeChanges = function ( doc, offset, attr ) {
 	var key,
+		oldValue,
 		tx = new ve.dm.Transaction(),
 		data = doc.getData();
 	// Verify element exists at offset
@@ -323,9 +324,10 @@ ve.dm.Transaction.newFromAttributeChanges = function ( doc, offset, attr ) {
 	tx.pushRetain( offset );
 	// Change attribute
 	for ( key in attr ) {
-		tx.pushReplaceElementAttribute(
-			key, 'attributes' in data[offset] ? data[offset].attributes[key] : undefined, attr[key]
-		);
+		oldValue = 'attributes' in data[offset] ? data[offset].attributes[key] : undefined;
+		if ( oldValue !== attr[key] ) {
+			tx.pushReplaceElementAttribute( key, oldValue, attr[key] );
+		}
 	}
 	// Retain to end of document
 	tx.pushFinalRetain( doc, offset );
