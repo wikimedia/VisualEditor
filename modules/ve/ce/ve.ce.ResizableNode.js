@@ -54,10 +54,18 @@ ve.ce.ResizableNode = function VeCeResizableNode( $resizable, config ) {
 	// Initialization
 	this.$resizeHandles
 		.addClass( 've-ce-resizableNode-handles' )
-		.append( this.$( '<div>' ).addClass( 've-ce-resizableNode-nwHandle' ) )
-		.append( this.$( '<div>' ).addClass( 've-ce-resizableNode-neHandle' ) )
-		.append( this.$( '<div>' ).addClass( 've-ce-resizableNode-seHandle' ) )
-		.append( this.$( '<div>' ).addClass( 've-ce-resizableNode-swHandle' ) );
+		.append( this.$( '<div>' )
+			.addClass( 've-ce-resizableNode-nwHandle ve-ui-icon-resize-nw-se' )
+			.data( 'handle', 'nw' ) )
+		.append( this.$( '<div>' )
+			.addClass( 've-ce-resizableNode-neHandle ve-ui-icon-resize-ne-sw' )
+			.data( 'handle', 'ne' ) )
+		.append( this.$( '<div>' )
+			.addClass( 've-ce-resizableNode-seHandle ve-ui-icon-resize-nw-se' )
+			.data( 'handle', 'se' ) )
+		.append( this.$( '<div>' )
+			.addClass( 've-ce-resizableNode-swHandle ve-ui-icon-resize-ne-sw' )
+			.data( 'handle', 'sw' ) );
 
 	this.setCurrentDimensions( {
 		'width': this.model.getAttribute( 'width' ),
@@ -306,7 +314,7 @@ ve.ce.ResizableNode.prototype.onResizeHandlesCornerMouseDown = function ( e ) {
 		'left': this.$resizeHandles.position().left,
 		'height': this.$resizeHandles.height(),
 		'width': this.$resizeHandles.width(),
-		'handle': e.target.className
+		'handle': $( e.target ).data( 'handle' )
 	};
 
 	// Bind resize events
@@ -391,19 +399,19 @@ ve.ce.ResizableNode.prototype.onDocumentMouseMove = function ( e ) {
 	if ( this.resizing ) {
 		// X and Y diff
 		switch ( this.resizeInfo.handle ) {
-			case 've-ce-resizableNode-seHandle':
+			case 'se':
 				diff.x = e.screenX - this.resizeInfo.mouseX;
 				diff.y = e.screenY - this.resizeInfo.mouseY;
 				break;
-			case 've-ce-resizableNode-nwHandle':
+			case 'nw':
 				diff.x = this.resizeInfo.mouseX - e.screenX;
 				diff.y = this.resizeInfo.mouseY - e.screenY;
 				break;
-			case 've-ce-resizableNode-neHandle':
+			case 'ne':
 				diff.x = e.screenX - this.resizeInfo.mouseX;
 				diff.y = this.resizeInfo.mouseY - e.screenY;
 				break;
-			case 've-ce-resizableNode-swHandle':
+			case 'sw':
 				diff.x = this.resizeInfo.mouseX - e.screenX;
 				diff.y = e.screenY - this.resizeInfo.mouseY;
 				break;
@@ -416,15 +424,15 @@ ve.ce.ResizableNode.prototype.onDocumentMouseMove = function ( e ) {
 
 		// Fix the position
 		switch ( this.resizeInfo.handle ) {
-			case 've-ce-resizableNode-neHandle':
+			case 'ne':
 				dimensions.top = this.resizeInfo.top +
 					( this.resizeInfo.height - dimensions.height );
 				break;
-			case 've-ce-resizableNode-swHandle':
+			case 'sw':
 				dimensions.left = this.resizeInfo.left +
 					( this.resizeInfo.width - dimensions.width );
 				break;
-			case 've-ce-resizableNode-nwHandle':
+			case 'nw':
 				dimensions.top = this.resizeInfo.top +
 					( this.resizeInfo.height - dimensions.height );
 				dimensions.left = this.resizeInfo.left +
