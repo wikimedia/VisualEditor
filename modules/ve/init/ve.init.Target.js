@@ -79,6 +79,7 @@ ve.init.Target.static.toolbarGroups = [
 	// Format
 	{
 		'type': 'menu',
+		'indicator': 'down',
 		'include': [ { 'group': 'format' } ],
 		'promote': [ 'paragraph' ],
 		'demote': [ 'preformatted' ]
@@ -86,6 +87,7 @@ ve.init.Target.static.toolbarGroups = [
 	// Style
 	{
 		'type': 'list',
+		'indicator': 'down',
 		'icon': 'text-style',
 		'include': [ { 'group': 'textStyle' }, 'clear' ],
 		'promote': [ 'bold', 'italic' ],
@@ -101,6 +103,7 @@ ve.init.Target.static.toolbarGroups = [
 	// Insert
 	{
 		'include': '*',
+		'indicator': 'down',
 		'label': 'visualeditor-toolbar-insert',
 		'demote': [ 'specialcharacter' ]
 	}
