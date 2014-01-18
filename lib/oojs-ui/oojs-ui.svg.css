@@ -1,12 +1,12 @@
 /*!
- * OOjs UI v0.1.0-pre-svg (9e797d3dac)
+ * OOjs UI v0.1.0-pre-svg (11632fcada)
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2014 OOjs Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: Thu Jan 16 2014 15:51:57 GMT-0800 (PST)
+ * Date: Fri Jan 17 2014 18:17:27 GMT-0800 (PST)
  */
 /*csslint vendor-prefix:false */
 
@@ -355,7 +355,7 @@ a.oo-ui-buttonedElement-button {
 
 .oo-ui-buttonedElement-framed.oo-ui-flaggableElement-constructive .oo-ui-buttonedElement-button {
 	/* Green */
-	border: solid 1px #c3e59a;
+	border: solid 1px #b8d892;
 	background-color: #f0fbe1;
 	filter: progid:DXImageTransform.Microsoft.gradient(
 		GradientType=0,startColorstr=#f0fbe1, endColorstr=#c3e59a
@@ -372,13 +372,13 @@ a.oo-ui-buttonedElement-button {
 
 .oo-ui-buttonedElement-framed.oo-ui-flaggableElement-constructive .oo-ui-buttonedElement-button:hover,
 .oo-ui-buttonedElement-framed.oo-ui-flaggableElement-constructive .oo-ui-buttonedElement-button:focus {
-	border-color: #a6cf74;
+	border-color: #adcb89;
 }
 
 .oo-ui-buttonedElement-framed.oo-ui-flaggableElement-constructive .oo-ui-buttonedElement-button:active,
 .oo-ui-buttonedElement-framed.oo-ui-buttonedElement-active.oo-ui-flaggableElement-constructive .oo-ui-buttonedElement-button {
 	/* Green */
-	border: solid 1px #c3e59a;
+	border: solid 1px #b8d892;
 	background-color: #c3e59a;
 	filter: progid:DXImageTransform.Microsoft.gradient(
 		GradientType=0,startColorstr=#c3e59a, endColorstr=#f0fbe1
@@ -395,7 +395,7 @@ a.oo-ui-buttonedElement-button {
 
 .oo-ui-buttonedElement-framed.oo-ui-flaggableElement-primary .oo-ui-buttonedElement-button {
 	/* Blue */
-	border: solid 1px #b0d9ee;
+	border: solid 1px #a6cee1;
 	background-color: #eaf4fa;
 	filter: progid:DXImageTransform.Microsoft.gradient(
 		GradientType=0,startColorstr=#eaf4fa, endColorstr=#b0d9ee
@@ -412,13 +412,13 @@ a.oo-ui-buttonedElement-button {
 
 .oo-ui-buttonedElement-framed.oo-ui-flaggableElement-primary .oo-ui-buttonedElement-button:hover,
 .oo-ui-buttonedElement-framed.oo-ui-flaggableElement-primary .oo-ui-buttonedElement-button:focus {
-	border-color: #84b9d4;
+	border-color: #9dc2d4;
 }
 
 .oo-ui-buttonedElement-framed.oo-ui-flaggableElement-primary .oo-ui-buttonedElement-button:active,
 .oo-ui-buttonedElement-framed.oo-ui-buttonedElement-active.oo-ui-flaggableElement-primary .oo-ui-buttonedElement-button {
 	/* Blue */
-	border: solid 1px #b0d9ee;
+	border: solid 1px #a6cee1;
 	background-color: #b0d9ee;
 	filter: progid:DXImageTransform.Microsoft.gradient(
 		GradientType=0,startColorstr=#b0d9ee, endColorstr=#eaf4fa
@@ -995,11 +995,15 @@ a.oo-ui-buttonedElement-button {
 
 .oo-ui-buttonGroupWidget {
 	display: inline-block;
+	border-radius: 0.3em;
+	box-shadow: 0 0.1em 0.25em rgba(0, 0, 0, 0.1);
 }
 
 .oo-ui-buttonGroupWidget .oo-ui-buttonedElement-framed .oo-ui-buttonedElement-button {
 	border-radius: 0;
+	margin-bottom: -1px;
 	margin-left: -1px;
+	box-shadow: none;
 }
 
 .oo-ui-buttonGroupWidget .oo-ui-buttonedElement-framed:first-child .oo-ui-buttonedElement-button {
@@ -1300,11 +1304,14 @@ a.oo-ui-buttonedElement-button {
 
 .oo-ui-buttonSelectWidget {
 	display: inline-block;
+	border-radius: 0.3em;
+	box-shadow: 0 0.1em 0.25em rgba(0, 0, 0, 0.1);
 }
 
 .oo-ui-buttonSelectWidget .oo-ui-buttonOptionWidget .oo-ui-buttonedElement-button {
 	border-radius: 0;
 	margin-left: -1px;
+	box-shadow: none;
 }
 
 .oo-ui-buttonSelectWidget .oo-ui-buttonOptionWidget:first-child .oo-ui-buttonedElement-button {
@@ -1546,19 +1553,19 @@ a.oo-ui-buttonedElement-button {
 	-o-transition: opacity 200ms ease-in-out;
 	transition: opacity 200ms ease-in-out;
 
-	/* Green */
-	background-color: #c3e59a;
+	/* Blue */
+	background-color: #eaf4fa;
 	filter: progid:DXImageTransform.Microsoft.gradient(
-		GradientType=0,startColorstr=#c3e59a, endColorstr=#f0fbe1
+		GradientType=0,startColorstr=#b0d9ee, endColorstr=#eaf4fa
 	);
 	background-image: -webkit-gradient(
-		linear, right top, right bottom, color-stop(0%,#c3e59a), color-stop(100%,#f0fbe1)
+		linear, right top, right bottom, color-stop(0%,#b0d9ee), color-stop(100%,#eaf4fa)
 	);
-	background-image: -webkit-linear-gradient(top, #c3e59a 0%, #f0fbe1 100%);
-	background-image: -moz-linear-gradient(top, #c3e59a 0%, #f0fbe1 100%);
-	background-image: -ms-linear-gradient(top, #c3e59a 0%, #f0fbe1 100%);
-	background-image: -o-linear-gradient(top, #c3e59a 0%, #f0fbe1 100%);
-	background-image: linear-gradient(top, #c3e59a 0%, #f0fbe1 100%);
+	background-image: -webkit-linear-gradient(top, #b0d9ee 0%, #eaf4fa 100%);
+	background-image: -moz-linear-gradient(top, #b0d9ee 0%, #eaf4fa 100%);
+	background-image: -ms-linear-gradient(top, #b0d9ee 0%, #eaf4fa 100%);
+	background-image: -o-linear-gradient(top, #b0d9ee 0%, #eaf4fa 100%);
+	background-image: linear-gradient(top, #b0d9ee 0%, #eaf4fa 100%);
 }
 
 .oo-ui-toggleWidget-on .oo-ui-toggleSwitchWidget-on {
