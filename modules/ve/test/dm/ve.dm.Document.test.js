@@ -282,8 +282,7 @@ QUnit.test( 'selectNodes', function ( assert ) {
 } );
 
 QUnit.test( 'cloneSliceFromRange', function ( assert ) {
-	var i, expectedData, slice, range,
-		doc = ve.dm.example.createExampleDocument(),
+	var i, expectedData, slice, range, doc,
 		cases = [
 		{
 			'msg': 'empty range',
@@ -441,10 +440,33 @@ QUnit.test( 'cloneSliceFromRange', function ( assert ) {
 			],
 			'originalRange': new ve.Range( 3, 29 ),
 			'balancedRange': new ve.Range( 3, 29 )
+		},
+		{
+			'doc': 'inlineAtEdges',
+			'msg': 'inline node at start',
+			'range': new ve.Range( 1, 3 ),
+			'expected': [
+				ve.dm.example.image.data,
+				{ 'type': '/image' }
+			],
+			'originalRange': new ve.Range( 0, 2 ),
+			'balancedRange': new ve.Range( 0, 2 )
+		},
+		{
+			'doc': 'inlineAtEdges',
+			'msg': 'inline node at end',
+			'range': new ve.Range( 6, 8 ),
+			'expected': [
+				{ 'type': 'alienInline', 'attributes': { 'domElements': $( '<foobar />' ).toArray() } },
+				{ 'type': '/alienInline' }
+			],
+			'originalRange': new ve.Range( 0, 2 ),
+			'balancedRange': new ve.Range( 0, 2 )
 		}
 	];
 	QUnit.expect( 3 * cases.length );
 	for ( i = 0; i < cases.length; i++ ) {
+		doc = ve.dm.example.createExampleDocument( cases[i].doc );
 		expectedData = ve.dm.example.preprocessAnnotations( cases[i].expected.slice(), doc.getStore() ).getData();
 		range = new ve.Range( 0, cases[i].expected.length );
 		expectedData = expectedData.concat( [
@@ -452,7 +474,7 @@ QUnit.test( 'cloneSliceFromRange', function ( assert ) {
 			{ 'type': '/internalList' },
 		] );
 		slice = doc.cloneSliceFromRange( cases[i].range );
-		assert.deepEqual(
+		assert.deepEqualWithDomElements(
 			slice.getData(),
 			expectedData,
 			cases[i].msg + ': data'

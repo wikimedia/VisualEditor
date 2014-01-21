@@ -381,11 +381,23 @@ ve.dm.Document.prototype.cloneSliceFromRange = function ( range ) {
 		contextOpenings = [],
 		contextClosings = [];
 
+	// Fix up selection to remove empty items in unwrapped nodes
+	// TODO: fix this is selectNodes
+	while ( selection[0] && selection[0].range && selection[0].range.isCollapsed() && !selection[0].node.isWrapped() ) {
+		selection.shift();
+	}
+
+	i = selection.length - 1;
+	while ( selection[i] && selection[i].range && selection[i].range.isCollapsed() && !selection[i].node.isWrapped() ) {
+		selection.pop();
+		i--;
+	}
+
 	if ( selection.length === 0 ) {
 		// Nothing selected
 		data = new ve.dm.ElementLinearData( this.getStore(), [] );
 		originalRange = balancedRange = new ve.Range( 0 );
-	} else if ( selection.length === 1 && selection[0].range && selection[0].range.equalsSelection( range ) ) {
+	} else if ( selection.length === 1 && range.equalsSelection( selection[0].range || selection[0].nodeRange ) ) {
 		// Nothing to fix up
 		data = new ve.dm.ElementLinearData( this.getStore(), this.data.slice( range.start, range.end ) );
 		originalRange = balancedRange = new ve.Range( 0, data.getLength() );
