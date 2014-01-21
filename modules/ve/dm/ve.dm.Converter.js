@@ -1161,16 +1161,14 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 	}
 
 	function findEndOfNode( i ) {
-		var j = i + 1, depth = 1;
-		while ( j < dataLen && depth > 0 ) {
+		var j, depth;
+		for ( j = i + 1, depth = 1; j < dataLen && depth > 0; j++ ) {
 			if ( data[j].type ) {
 				depth += data[j].type.charAt( 0 ) === '/' ? -1 : 1;
 			}
-			j++;
 		}
 		if ( depth !== 0 ) {
-			throw new Error( 'Unbalanced data: looking for closing /' +
-				dataElement.type );
+			throw new Error( 'Unbalanced data: ' + depth + ' element(s) left open.' );
 		}
 		return j;
 	}
