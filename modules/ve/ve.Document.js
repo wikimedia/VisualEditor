@@ -67,8 +67,10 @@ ve.Document.prototype.getDocumentNode = function () {
  * - `parentOuterRange`: Outer range of node's parent. Missing if there is no parent
  *   or if indexInNode is set.
  *
- * @throws {Error} Range.start is out of range
- * @throws {Error} Range.end is out of range
+ * @throws {Error} Invalid mode
+ * @throws {Error} Invalid start offset
+ * @throws {Error} Invalid end offset
+ * @throws {Error} Failed to select any nodes
  */
 ve.Document.prototype.selectNodes = function ( range, mode ) {
 	var doc = this.getDocumentNode(),
@@ -483,7 +485,7 @@ ve.Document.prototype.selectNodes = function ( range, mode ) {
 		}
 	} while ( end >= left - 1 );
 	if ( retval.length === 0 ) {
-		throw new Error( 'selectNodes epic fail' );
+		throw new Error( 'Failed to select any nodes' );
 	}
 	return retval;
 };
