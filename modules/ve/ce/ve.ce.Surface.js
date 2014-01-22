@@ -161,6 +161,28 @@ OO.mixinClass( ve.ce.Surface, OO.EventEmitter );
  * a pair of blur-focus events is emitted anyway.
  */
 
+/* Static properties */
+
+/**
+ * Attributes considered 'unsafe' for copy/paste
+ *
+ * These attributes may be dropped by the browser during copy/paste, so
+ * any element containing these attributes will have them JSON encoded into
+ * data-ve-attributes on copy.
+ *
+ * @type {string[]}
+ */
+ve.ce.Surface.static.unsafeAttributes = [
+	'about',
+	'content',
+	'datatype',
+	'property',
+	'rel',
+	'resource',
+	'rev',
+	'typeof'
+];
+
 /* Static methods */
 
 /**
@@ -688,7 +710,7 @@ ve.ce.Surface.prototype.onCut = function ( e ) {
 ve.ce.Surface.prototype.onCopy = function ( e ) {
 	var rangyRange, sel, originalRange,
 		clipboardIndex, clipboardItem, pasteData,
-		scrollTop,
+		scrollTop, unsafeSelector,
 		view = this,
 		slice = this.model.documentModel.cloneSliceFromRange( this.model.getSelection() ),
 		clipboardData = e.originalEvent.clipboardData,
@@ -707,6 +729,22 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 	// paste target (e.g. plain spans) so we must protect against this
 	// by adding a dummy class, which we can remove after paste.
 	this.$pasteTarget.find( 'span' ).addClass( 've-pasteProtect' );
+
+	// Some attributes (e.g RDFa attributes in Firefox) aren't preserved by copy
+	unsafeSelector = '[' + ve.ce.Surface.static.unsafeAttributes.join( '],[') + ']';
+	this.$pasteTarget.find( unsafeSelector ).each( function () {
+		var i, val,
+			attrs = {}, ua = ve.ce.Surface.static.unsafeAttributes;
+
+		i = ua.length - 1;
+		while ( i-- ) {
+			val = this.getAttribute( ua[i] );
+			if ( val !== null ) {
+				attrs[ua[i]] = val;
+			}
+		}
+		this.setAttribute( 'data-ve-attributes', JSON.stringify( attrs ) );
+	} );
 
 	clipboardItem = { 'slice': slice, 'hash': null };
 	clipboardIndex = this.clipboard.push( clipboardItem ) - 1;
@@ -907,6 +945,19 @@ ve.ce.Surface.prototype.afterPaste = function () {
 
 	// Remove the pasteProtect class. See #onCopy.
 	this.$pasteTarget.find( 'span' ).removeClass( 've-pasteProtect' );
+
+	// Restore attributes. See #onCopy.
+	this.$pasteTarget.find( '[data-ve-attributes]' ).each( function () {
+		var attrs;
+		try {
+			attrs = JSON.parse( this.getAttribute( 'data-ve-attributes' ) );
+		} catch ( e ) {
+			// Invalid JSON
+			return;
+		}
+		$( this ).attr( attrs );
+		this.removeAttribute( 'data-ve-attributes' );
+	} );
 
 	// Find the clipboard key
 	if ( beforePasteData.custom ) {
