@@ -1158,7 +1158,8 @@ QUnit.test( 'newFromContentBranchConversion', function ( assert ) {
 						'type': 'replace',
 						'remove': [{ 'type': '/paragraph' }],
 						'insert': [{ 'type': '/heading' }]
-					}
+					},
+					{ 'type': 'retain', 'length': 2 }
 				]
 			},
 			'zero-length range inside inline node at the start': {
@@ -1174,7 +1175,8 @@ QUnit.test( 'newFromContentBranchConversion', function ( assert ) {
 						'type': 'replace',
 						'remove': [{ 'type': '/paragraph' }],
 						'insert': [{ 'type': '/heading' }]
-					}
+					},
+					{ 'type': 'retain', 'length': 2 }
 				]
 			},
 			'zero-length range after inline node at the start': {
@@ -1190,7 +1192,8 @@ QUnit.test( 'newFromContentBranchConversion', function ( assert ) {
 						'type': 'replace',
 						'remove': [{ 'type': '/paragraph' }],
 						'insert': [{ 'type': '/heading' }]
-					}
+					},
+					{ 'type': 'retain', 'length': 2 }
 				]
 			},
 			'zero-length range before inline node at the end': {
@@ -1206,7 +1209,8 @@ QUnit.test( 'newFromContentBranchConversion', function ( assert ) {
 						'type': 'replace',
 						'remove': [{ 'type': '/paragraph' }],
 						'insert': [{ 'type': '/heading' }]
-					}
+					},
+					{ 'type': 'retain', 'length': 2 }
 				]
 			},
 			'zero-length range inside inline node at the end': {
@@ -1222,7 +1226,8 @@ QUnit.test( 'newFromContentBranchConversion', function ( assert ) {
 						'type': 'replace',
 						'remove': [{ 'type': '/paragraph' }],
 						'insert': [{ 'type': '/heading' }]
-					}
+					},
+					{ 'type': 'retain', 'length': 2 }
 				]
 			},
 			'zero-length range after inline node at the end': {
@@ -1238,7 +1243,8 @@ QUnit.test( 'newFromContentBranchConversion', function ( assert ) {
 						'type': 'replace',
 						'remove': [{ 'type': '/paragraph' }],
 						'insert': [{ 'type': '/heading' }]
-					}
+					},
+					{ 'type': 'retain', 'length': 2 }
 				]
 			}
 		};

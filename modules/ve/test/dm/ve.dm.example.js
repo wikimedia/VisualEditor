@@ -808,12 +808,16 @@ ve.dm.example.inlineAtEdges = [
 	'o',
 	{ 'type': 'alienInline', 'attributes': { 'domElements': $( '<foobar />' ).toArray() } },
 	{ 'type': '/alienInline' },
-	{ 'type': '/paragraph' }
+	{ 'type': '/paragraph' },
+	{ 'type': 'internalList' },
+	{ 'type': '/internalList' }
 ];
 
 ve.dm.example.emptyBranch = [
 	{ 'type': 'table' },
-	{ 'type': '/table' }
+	{ 'type': '/table' },
+	{ 'type': 'internalList' },
+	{ 'type': '/internalList' }
 ];
 
 /**
@@ -3388,7 +3392,7 @@ ve.dm.example.selectNodesCases = [
 				'indexInNode': 0,
 				'nodeRange': new ve.Range( 1, 1 ),
 				'nodeOuterRange': new ve.Range( 0, 2 ),
-				'parentOuterRange': new ve.Range( 0, 2 )
+				'parentOuterRange': new ve.Range( 0, 4 )
 			}
 		],
 		'msg': 'Zero-length range in empty branch node'
