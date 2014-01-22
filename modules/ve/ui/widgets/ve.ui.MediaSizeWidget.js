@@ -42,18 +42,18 @@ ve.ui.MediaSizeWidget = function VeUiMediaSizeWidget( config ) {
 	} );
 
 	// Define dimension labels
-	widthLabel = new OO.ui.InputLabelWidget( {
+	widthLabel = new OO.ui.LabelWidget( {
 		'$': this.$,
 		'input': this.widthInput,
 		'label': ve.msg( 'visualeditor-mediasizewidget-label-width' )
 	} );
-	heightLabel = new OO.ui.InputLabelWidget( {
+	heightLabel = new OO.ui.LabelWidget( {
 		'$': this.$,
 		'input': this.heightInput,
 		'label': ve.msg( 'visualeditor-mediasizewidget-label-height' )
 	} );
 	// Error label
-	this.errorLabel = new OO.ui.InputLabelWidget( {
+	this.errorLabel = new OO.ui.LabelWidget( {
 		'$': this.$,
 		'label': ve.msg( 'visualeditor-mediasizewidget-label-defaulterror' )
 	} );

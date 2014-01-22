@@ -158,12 +158,12 @@ ve.ui.LanguageInputWidget.prototype.initialize = function () {
 		new OO.ui.ButtonOptionWidget( 'ltr', { '$': this.$, 'icon': 'text-dir-ltr' } )
 	] );
 
-	this.languageTextInputLabel = new OO.ui.InputLabelWidget( {
+	this.languageTextInputLabel = new OO.ui.LabelWidget( {
 		'$': this.$,
 		'label': ve.msg( 'visualeditor-languageinspector-widget-label-langcode' ),
 		'input': this.languageTextInput
 	} );
-	this.directionSelectLabel = new OO.ui.InputLabelWidget( {
+	this.directionSelectLabel = new OO.ui.LabelWidget( {
 		'$': this.$,
 		'label': ve.msg( 'visualeditor-languageinspector-widget-label-direction' )
 	} );
