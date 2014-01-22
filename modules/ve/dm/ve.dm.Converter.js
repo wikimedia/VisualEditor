@@ -258,6 +258,16 @@ ve.dm.Converter.prototype.getHtmlDocument = function () {
 };
 
 /**
+ * Get the HTML document we are converting data for
+ *
+ * @method
+ * @returns {HTMLDocument|null} HTML document being converted for, or null if not converting
+ */
+ve.dm.Converter.prototype.getTargetHtmlDocument = function () {
+	return this.targetDoc;
+};
+
+/**
  * Get the current conversion context. This is the recursion state of getDataFromDomSubtree().
  *
  * @method
@@ -383,15 +393,19 @@ ve.dm.Converter.prototype.getDomElementFromDataAnnotation = function ( dataAnnot
 /**
  * Convert an HTML document to a document model.
  * @param {HTMLDocument} doc HTML document to convert
+ * @param {HTMLDocument} [targetDoc=doc] Target HTML document we are converting for, if different from doc
  * @returns {ve.dm.Document} Document model
  */
-ve.dm.Converter.prototype.getModelFromDom = function ( doc ) {
+ve.dm.Converter.prototype.getModelFromDom = function ( doc, targetDoc ) {
 	var linearData, refData, innerWhitespace,
 		store = new ve.dm.IndexValueStore(),
 		internalList = new ve.dm.InternalList();
 
+	targetDoc = targetDoc || doc;
+
 	// Set up the converter state
 	this.doc = doc;
+	this.targetDoc = targetDoc;
 	this.store = store;
 	this.internalList = internalList;
 	this.contextStack = [];
@@ -408,6 +422,7 @@ ve.dm.Converter.prototype.getModelFromDom = function ( doc ) {
 
 	// Clear the state
 	this.doc = null;
+	this.targetDoc = null;
 	this.store = null;
 	this.internalList = null;
 	this.contextStack = null;
