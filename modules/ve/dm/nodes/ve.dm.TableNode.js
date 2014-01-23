@@ -31,10 +31,6 @@ ve.dm.TableNode.static.childNodeTypes = [ 'tableSection', 'tableCaption' ];
 
 ve.dm.TableNode.static.matchTagNames = [ 'table' ];
 
-ve.dm.TableNode.static.toDataElement = function () {
-	return { 'type': 'table' };
-};
-
 ve.dm.TableNode.static.toDomElements = function ( dataElement, doc ) {
 	return [ doc.createElement( 'table' ) ];
 };

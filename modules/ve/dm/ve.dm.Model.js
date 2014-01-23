@@ -129,7 +129,7 @@ ve.dm.Model.static.matchFunction = null;
  * @returns {Object|Array|null} Linear model element, or array with linear model data, or null to alienate
  */
 ve.dm.Model.static.toDataElement = function ( /*domElements, converter*/ ) {
-	throw new Error( 've.dm.Model subclass must implement toDataElement' );
+	return { 'type': this.name };
 };
 
 /**

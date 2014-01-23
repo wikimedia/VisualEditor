@@ -38,7 +38,7 @@ ve.dm.ImageNode.static.toDataElement = function ( domElements ) {
 		height = $node.attr( 'height' );
 
 	return {
-		'type': 'image',
+		'type': this.name,
 		'attributes': {
 			'src': $node.attr( 'src' ),
 			'alt': alt !== undefined ? alt : null,

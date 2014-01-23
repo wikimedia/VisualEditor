@@ -33,10 +33,6 @@ ve.dm.PreformattedNode.static.hasSignificantWhitespace = true;
 
 ve.dm.PreformattedNode.static.matchTagNames = [ 'pre' ];
 
-ve.dm.PreformattedNode.static.toDataElement = function () {
-	return { 'type': 'preformatted' };
-};
-
 ve.dm.PreformattedNode.static.toDomElements = function ( dataElement, doc ) {
 	return [ doc.createElement( 'pre' ) ];
 };
