@@ -745,7 +745,7 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 		var i, val,
 			attrs = {}, ua = ve.ce.Surface.static.unsafeAttributes;
 
-		i = ua.length - 1;
+		i = ua.length;
 		while ( i-- ) {
 			val = this.getAttribute( ua[i] );
 			if ( val !== null ) {
