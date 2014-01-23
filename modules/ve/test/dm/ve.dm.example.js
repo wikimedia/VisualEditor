@@ -2875,6 +2875,30 @@ ve.dm.example.isolationData = [
 	// 246
 ];
 
+ve.dm.example.RDFa = [
+	{
+		'type': 'paragraph',
+		'htmlAttributes': [ {
+			'values': {
+				'about': 'a',
+				'content': 'b',
+				'datatype': 'c',
+				'property': 'd',
+				'rel': 'e',
+				'resource': 'f',
+				'rev': 'g',
+				'typeof': 'h',
+				// Non-RDFa attribute
+				'class': 'i'
+			}
+		} ]
+	},
+	'F', 'o', 'o',
+	{ 'type': '/paragraph' },
+	{ 'type': 'internalList' },
+	{ 'type': '/internalList' }
+];
+
 ve.dm.example.UnboldableNode = function ( lenght, element ) {
 	// Parent constructor
 	ve.dm.LeafNode.call( this, 0, element );
