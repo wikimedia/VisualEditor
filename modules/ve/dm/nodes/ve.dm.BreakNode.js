@@ -31,10 +31,6 @@ ve.dm.BreakNode.static.isContent = true;
 
 ve.dm.BreakNode.static.matchTagNames = [ 'br' ];
 
-ve.dm.BreakNode.static.toDomElements = function ( dataElement, doc ) {
-	return [ doc.createElement( 'br' ) ];
-};
-
 /* Registration */
 
 ve.dm.modelRegistry.register( ve.dm.BreakNode );

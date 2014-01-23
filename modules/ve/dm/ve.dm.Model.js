@@ -153,8 +153,11 @@ ve.dm.Model.static.toDataElement = function ( /*domElements, converter*/ ) {
  * @param {ve.dm.Converter} converter Converter object to optionally call .getDomSubtreeFromData() on
  * @returns {HTMLElement[]} DOM elements
  */
-ve.dm.Model.static.toDomElements = function ( /*dataElement, doc, converter*/ ) {
-	throw new Error( 've.dm.Model subclass must implement toDomElements' );
+ve.dm.Model.static.toDomElements = function ( dataElement, doc ) {
+	if ( this.matchTagNames && this.matchTagNames.length === 1 ) {
+		return [ doc.createElement( this.matchTagNames[0] ) ];
+	}
+	throw new Error( 've.dm.Model subclass must match a single tag name or implement toDomElements' );
 };
 
 /**
