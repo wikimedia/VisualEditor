@@ -190,8 +190,18 @@ ve.ce.SurfaceObserver.prototype.pollOnceInternal = function ( emitChanges ) {
 		$nodeOrSlug = $( rangyRange.anchorNode ).closest( '.ve-ce-branchNode, .ve-ce-branchNode-slug' );
 		if ( $nodeOrSlug.length ) {
 			range = rangyRange.getRange();
+			if ( this.$slugWrapper ) {
+				this.$slugWrapper
+					.addClass( 've-ce-branchNode-blockSlugWrapper-unfocussed' )
+					.removeClass( 've-ce-branchNode-blockSlugWrapper-focussed' );
+				this.$slugWrapper = null;
+			}
 			if ( !$nodeOrSlug.hasClass( 've-ce-branchNode-slug' ) ) {
 				node = $nodeOrSlug.data( 'view' );
+			} else {
+				this.$slugWrapper = $nodeOrSlug.closest( '.ve-ce-branchNode-blockSlugWrapper' )
+					.addClass( 've-ce-branchNode-blockSlugWrapper-focussed' )
+					.removeClass( 've-ce-branchNode-blockSlugWrapper-unfocussed' );
 			}
 		}
 	}
