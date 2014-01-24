@@ -16,6 +16,9 @@
  * @param {Object} [config] Configuration options
  */
 ve.ui.CommandHelpDialog = function VeUiCommandHelpDialog( windowSet, config ) {
+	// Configuration initialization
+	config = ve.extendObject( { 'footless': true }, config );
+
 	// Parent constructor
 	ve.ui.Dialog.call( this, windowSet, config );
 };
