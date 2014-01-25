@@ -13,11 +13,16 @@
  * @mixins OO.EventEmitter
  *
  * @constructor
- * @param {jQuery} $container Conainter to render target into
+ * @param {jQuery} $container Conainter to render target into, must be attached to the DOM
+ * @throws {Error} Container must be attached to the DOM
  */
 ve.init.Target = function VeInitTarget( $container ) {
 	// Mixin constructors
 	OO.EventEmitter.call( this );
+
+	if ( !$.contains( document, $container[0] ) ) {
+		throw new Error( 'Container must be attached to the DOM' );
+	}
 
 	// Properties
 	this.$element = $container;

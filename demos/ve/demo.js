@@ -53,10 +53,15 @@ $( function () {
 			url: src,
 			dataType: 'text'
 		} ).done( function ( pageHtml ) {
-			$targetContainer.slideUp();
+			var target, container = $( '<div>' );
 
-			var target = new ve.init.sa.Target(
-				$( '<div>' ),
+			$targetContainer.slideUp();
+			// The container must be attached to the DOM before
+			// the target is initialised
+			$targetContainer.append( container );
+
+			target = new ve.init.sa.Target(
+				container,
 				ve.createDocumentFromHtml( pageHtml )
 			);
 
@@ -66,7 +71,6 @@ $( function () {
 						currentTarget.destroy();
 					}
 					$targetContainer
-						.append( target.$element )
 						.slideDown()
 						.promise().done( function () {
 							target.$document[0].focus();
