@@ -47,7 +47,7 @@
     "visualeditor-indentationbutton-outdent-tooltip": "Vähennä sisennystä",
     "visualeditor-inspector-close-tooltip": "Sulje",
     "visualeditor-inspector-remove-tooltip": "Poista",
-    "visualeditor-languageinspector-block-tooltip-rtldirection": ": Oikealta vasemmalle",
+    "visualeditor-languageinspector-block-tooltip": "Kieliryhmä",
     "visualeditor-languageinspector-title": "Kieli",
     "visualeditor-languageinspector-widget-changelang": "Vaihda kieltä",
     "visualeditor-languageinspector-widget-label-direction": "Suunta",
@@ -56,5 +56,8 @@
     "visualeditor-linkinspector-title": "Hyperlinkki",
     "visualeditor-listbutton-bullet-tooltip": "Luettelo",
     "visualeditor-listbutton-number-tooltip": "Numeroitu luettelo",
+    "visualeditor-specialcharacter-button-tooltip": "Erikoismerkit",
+    "visualeditor-specialcharacterinspector-title": "Erikoismerkit",
+    "visualeditor-toolbar-insert": "Aseta",
     "visualeditor-version-label": "Versio"
 }

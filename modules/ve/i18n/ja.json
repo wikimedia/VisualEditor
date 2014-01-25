@@ -38,7 +38,7 @@
     "visualeditor-indentationbutton-outdent-tooltip": "インデント解除",
     "visualeditor-inspector-close-tooltip": "閉じる",
     "visualeditor-inspector-remove-tooltip": "除去",
-    "visualeditor-languageinspector-block-tooltip-rtldirection": ": 右横書き",
+    "visualeditor-languageinspector-block-tooltip": "言語ブロック",
     "visualeditor-languageinspector-title": "言語",
     "visualeditor-languageinspector-widget-changelang": "言語を変更",
     "visualeditor-languageinspector-widget-label-direction": "書字方向",

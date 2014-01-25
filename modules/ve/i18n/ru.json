@@ -49,7 +49,7 @@
     "visualeditor-indentationbutton-outdent-tooltip": "Уменьшить отступ",
     "visualeditor-inspector-close-tooltip": "Закрыть",
     "visualeditor-inspector-remove-tooltip": "Убрать",
-    "visualeditor-languageinspector-block-tooltip-rtldirection": ": Справа налево",
+    "visualeditor-languageinspector-block-tooltip": "Языковой блок",
     "visualeditor-languageinspector-title": "Язык",
     "visualeditor-languageinspector-widget-changelang": "Изменить язык",
     "visualeditor-languageinspector-widget-label-direction": "Направление",

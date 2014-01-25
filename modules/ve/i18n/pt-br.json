@@ -43,7 +43,7 @@
     "visualeditor-indentationbutton-outdent-tooltip": "Diminuir recuo",
     "visualeditor-inspector-close-tooltip": "Fechar",
     "visualeditor-inspector-remove-tooltip": "Remover",
-    "visualeditor-languageinspector-block-tooltip-rtldirection": ": Da direita para a esquerda",
+    "visualeditor-languageinspector-block-tooltip": "Bloco de Idioma",
     "visualeditor-languageinspector-title": "Idioma",
     "visualeditor-languageinspector-widget-changelang": "Alterar o idioma",
     "visualeditor-languageinspector-widget-label-direction": "Direção",
@@ -52,5 +52,6 @@
     "visualeditor-linkinspector-title": "Link",
     "visualeditor-listbutton-bullet-tooltip": "Lista com marcadores",
     "visualeditor-listbutton-number-tooltip": "Lista numerada",
+    "visualeditor-toolbar-insert": "Inserir",
     "visualeditor-version-label": "Versão"
 }

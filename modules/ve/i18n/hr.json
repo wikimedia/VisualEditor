@@ -35,5 +35,8 @@
     "visualeditor-inspector-remove-tooltip": "Ukloni",
     "visualeditor-linkinspector-title": "Poveznica",
     "visualeditor-listbutton-bullet-tooltip": "Popis s grafičkim oznakama",
-    "visualeditor-listbutton-number-tooltip": "Numerirani popis"
+    "visualeditor-listbutton-number-tooltip": "Numerirani popis",
+    "visualeditor-specialcharacter-button-tooltip": "Posebni znak",
+    "visualeditor-specialcharacterinspector-title": "Posebni znak",
+    "visualeditor-toolbar-insert": "Umetni"
 }

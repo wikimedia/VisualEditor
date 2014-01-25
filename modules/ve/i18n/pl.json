@@ -46,7 +46,7 @@
     "visualeditor-indentationbutton-outdent-tooltip": "Zmniejsz wcięcie",
     "visualeditor-inspector-close-tooltip": "Zamknij",
     "visualeditor-inspector-remove-tooltip": "Usuń",
-    "visualeditor-languageinspector-block-tooltip-rtldirection": ": od prawej do lewej",
+    "visualeditor-languageinspector-block-tooltip": "Blok językowy",
     "visualeditor-languageinspector-title": "Język",
     "visualeditor-languageinspector-widget-changelang": "Zmień język",
     "visualeditor-languageinspector-widget-label-direction": "Kierunek",
@@ -57,6 +57,7 @@
     "visualeditor-listbutton-number-tooltip": "Lista numerowana",
     "visualeditor-specialcharacter-button-tooltip": "Znak specjalny",
     "visualeditor-specialcharacterinspector-title": "Znak specjalny",
+    "visualeditor-specialcharinspector-characterlist-insert": "{\n\t\"Symbole\": {\n\t\t\"−\": \"−\",\n\t\t\"—\": \"—\",\n\t\t\"°\": \"°\",\n\t\t\"„\": \"„\",\n\t\t\"”\": \"”\",\n\t\t\"″\": \"″\",\n\t\t\"′\": \"′\",\n\t\t\"←\": \"←\",\n\t\t\"→\": \"→\",\n\t\t\"·\": \"·\",\n\t\t\"§\": \"§\"\n\t},\n\t\"Litery diakrytyzowane\": {\n\t\t\"à\": \"à\",\n\t\t\"á\": \"á\",\n\t\t\"â\": \"â\",\n\t\t\"ä\": \"ä\",\n\t\t\"ç\": \"ç\",\n\t\t\"è\": \"è\",\n\t\t\"é\": \"é\",\n\t\t\"ê\": \"ê\",\n\t\t\"ë\": \"ë\",\n\t\t\"ì\": \"ì\",\n\t\t\"í\": \"í\",\n\t\t\"î\": \"î\",\n\t\t\"ï\": \"ï\",\n\t\t\"ò\": \"ò\",\n\t\t\"ó\": \"ó\",\n\t\t\"ô\": \"ô\",\n\t\t\"ö\": \"ö\",\n\t\t\"ø\": \"ø\",\n\t\t\"ù\": \"ù\",\n\t\t\"ú\": \"ú\",\n\t\t\"û\": \"û\",\n\t\t\"ü\": \"ü\"\n\t},\n\t\"Znaki matematyczne\": {\n\t\t\"−\": \"−\",\n\t\t\"×\": \"×\",\n\t\t\"÷\": \"÷\",\n\t\t\"≈\": \"≈\",\n\t\t\"≠\": \"≠\",\n\t\t\"≤\": \"≤\",\n\t\t\"≥\": \"≥\",\n\t\t\"±\": \"±\"\n\t}\n}",
     "visualeditor-toolbar-insert": "Wstaw",
     "visualeditor-version-label": "Wersja"
 }

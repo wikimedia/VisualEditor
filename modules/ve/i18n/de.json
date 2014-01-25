@@ -44,7 +44,7 @@
     "visualeditor-indentationbutton-outdent-tooltip": "Einzug verkleinern",
     "visualeditor-inspector-close-tooltip": "Schließen",
     "visualeditor-inspector-remove-tooltip": "Entfernen",
-    "visualeditor-languageinspector-block-tooltip-rtldirection": ": Rechts nach links",
+    "visualeditor-languageinspector-block-tooltip": "Sprachblock",
     "visualeditor-languageinspector-title": "Sprache",
     "visualeditor-languageinspector-widget-changelang": "Sprache ändern",
     "visualeditor-languageinspector-widget-label-direction": "Richtung",

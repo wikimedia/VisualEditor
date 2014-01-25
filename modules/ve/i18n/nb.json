@@ -39,7 +39,7 @@
     "visualeditor-indentationbutton-outdent-tooltip": "Reduser innrykk",
     "visualeditor-inspector-close-tooltip": "Lukk",
     "visualeditor-inspector-remove-tooltip": "Fjern",
-    "visualeditor-languageinspector-block-tooltip-rtldirection": ": høyre mot venstre",
+    "visualeditor-languageinspector-block-tooltip": "Språkblokk",
     "visualeditor-languageinspector-title": "Språk",
     "visualeditor-languageinspector-widget-changelang": "Endre språk",
     "visualeditor-languageinspector-widget-label-direction": "Retning",
@@ -48,5 +48,8 @@
     "visualeditor-linkinspector-title": "Hyperlenke",
     "visualeditor-listbutton-bullet-tooltip": "Punktliste",
     "visualeditor-listbutton-number-tooltip": "Nummerert liste",
+    "visualeditor-specialcharacter-button-tooltip": "Spesialtegn",
+    "visualeditor-specialcharacterinspector-title": "Spesialtegn",
+    "visualeditor-toolbar-insert": "Sett inn",
     "visualeditor-version-label": "Versjon"
 }

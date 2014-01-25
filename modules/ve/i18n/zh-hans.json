@@ -49,7 +49,7 @@
     "visualeditor-indentationbutton-outdent-tooltip": "减少缩进",
     "visualeditor-inspector-close-tooltip": "关闭",
     "visualeditor-inspector-remove-tooltip": "移除",
-    "visualeditor-languageinspector-block-tooltip-rtldirection": ": 从右到左",
+    "visualeditor-languageinspector-block-tooltip": "语言区",
     "visualeditor-languageinspector-title": "语言",
     "visualeditor-languageinspector-widget-changelang": "更改语言",
     "visualeditor-languageinspector-widget-label-direction": "文字方向",

@@ -42,7 +42,7 @@
     "visualeditor-indentationbutton-outdent-tooltip": "إنقاص الإزاحة",
     "visualeditor-inspector-close-tooltip": "أغلق",
     "visualeditor-inspector-remove-tooltip": "أزل",
-    "visualeditor-languageinspector-block-tooltip-rtldirection": ": من اليمين لليسار",
+    "visualeditor-languageinspector-block-tooltip": "نص بلغة أخرى",
     "visualeditor-languageinspector-title": "اللغة",
     "visualeditor-languageinspector-widget-changelang": "تغيير اللغة",
     "visualeditor-languageinspector-widget-label-direction": "الاتجاه",
@@ -51,5 +51,7 @@
     "visualeditor-linkinspector-title": "وصلة",
     "visualeditor-listbutton-bullet-tooltip": "قائمة منقطة",
     "visualeditor-listbutton-number-tooltip": "قائمة مرقمة",
+    "visualeditor-specialcharacter-button-tooltip": "رموز",
+    "visualeditor-toolbar-insert": "إدراج",
     "visualeditor-version-label": "نسخة"
 }

@@ -44,5 +44,8 @@
     "visualeditor-linkinspector-title": "Hüperlink",
     "visualeditor-listbutton-bullet-tooltip": "Täpploend",
     "visualeditor-listbutton-number-tooltip": "Numberloend",
+    "visualeditor-specialcharacter-button-tooltip": "Erimärk",
+    "visualeditor-specialcharacterinspector-title": "Erimärk",
+    "visualeditor-toolbar-insert": "Lisa",
     "visualeditor-version-label": "Versioon"
 }

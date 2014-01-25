@@ -10,7 +10,8 @@
             "Per",
             "Sendelbach",
             "Skalman",
-            "WikiPhoenix"
+            "WikiPhoenix",
+            "Lokal Profil"
         ]
     },
     "visualeditor": "VisualEditor",
@@ -44,7 +45,7 @@
     "visualeditor-indentationbutton-outdent-tooltip": "Minska indrag",
     "visualeditor-inspector-close-tooltip": "Stäng",
     "visualeditor-inspector-remove-tooltip": "Ta bort",
-    "visualeditor-languageinspector-block-tooltip-rtldirection": ": Höger till vänster",
+    "visualeditor-languageinspector-block-tooltip": "Språkavsnitt",
     "visualeditor-languageinspector-title": "Språk",
     "visualeditor-languageinspector-widget-changelang": "Ändra språk",
     "visualeditor-languageinspector-widget-label-direction": "Riktning",
@@ -53,5 +54,9 @@
     "visualeditor-linkinspector-title": "Hyperlänk",
     "visualeditor-listbutton-bullet-tooltip": "Punktlista",
     "visualeditor-listbutton-number-tooltip": "Numrerad lista",
+    "visualeditor-specialcharacter-button-tooltip": "Specialtecken",
+    "visualeditor-specialcharacterinspector-title": "Specialtecken",
+    "visualeditor-specialcharinspector-characterlist-insert": "{\n\t\"symboler\": {\n\t\t\"−\": \"−\",\n\t\t\"—\": \"—\",\n\t\t\"°\": \"°\",\n\t\t\"″\": \"″\",\n\t\t\"′\": \"′\",\n\t\t\"←\": \"←\",\n\t\t\"→\": \"→\",\n\t\t\"·\": \"·\",\n\t\t\"§\": \"§\"\n\t},\n\t\"accenter\": {\n\t\t\"à\": \"à\",\n\t\t\"á\": \"á\",\n\t\t\"â\": \"â\",\n\t\t\"ä\": \"ä\",\n\t\t\"å\": \"å\",\n\t\t\"ç\": \"ç\",\n\t\t\"è\": \"è\",\n\t\t\"é\": \"é\",\n\t\t\"ê\": \"ê\",\n\t\t\"ë\": \"ë\",\n\t\t\"ì\": \"ì\",\n\t\t\"í\": \"í\",\n\t\t\"î\": \"î\",\n\t\t\"ï\": \"ï\",\n\t\t\"ò\": \"ò\",\n\t\t\"ó\": \"ó\",\n\t\t\"ô\": \"ô\",\n\t\t\"ö\": \"ö\",\n\t\t\"ø\": \"ø\",\n\t\t\"ù\": \"ù\",\n\t\t\"ú\": \"ú\",\n\t\t\"û\": \"û\",\n\t\t\"ü\": \"ü\"\n\t},\n\t\"matematiska\": {\n\t\t\"−\": \"−\",\n\t\t\"×\": \"×\",\n\t\t\"÷\": \"÷\",\n\t\t\"≈\": \"≈\",\n\t\t\"≠\": \"≠\",\n\t\t\"≤\": \"≤\",\n\t\t\"≥\": \"≥\",\n\t\t\"±\": \"±\"\n\t}\n}",
+    "visualeditor-toolbar-insert": "Infoga",
     "visualeditor-version-label": "Version"
 }

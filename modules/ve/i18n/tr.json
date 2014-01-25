@@ -7,7 +7,8 @@
             "Maidis",
             "Rapsar",
             "Talha Samil Cakir",
-            "TurkishStyles"
+            "TurkishStyles",
+            "Meelo"
         ]
     },
     "visualeditor": "Görsel Düzenleyici",
@@ -34,13 +35,14 @@
     "visualeditor-formatdropdown-format-paragraph": "Paragraf",
     "visualeditor-formatdropdown-format-preformatted": "Ön biçimlenmiş",
     "visualeditor-formatdropdown-title": "Biçimi değiştir",
+    "visualeditor-help-tool": "Yardım",
     "visualeditor-historybutton-redo-tooltip": "Yinele",
     "visualeditor-historybutton-undo-tooltip": "Geri al",
     "visualeditor-indentationbutton-indent-tooltip": "Girinti arttır",
     "visualeditor-indentationbutton-outdent-tooltip": "Girinti azalt",
     "visualeditor-inspector-close-tooltip": "Kapat",
     "visualeditor-inspector-remove-tooltip": "Kaldır",
-    "visualeditor-languageinspector-block-tooltip-rtldirection": ": Sağdan sola",
+    "visualeditor-languageinspector-block-tooltip": "Dil Bloğu",
     "visualeditor-languageinspector-title": "Dil",
     "visualeditor-languageinspector-widget-changelang": "Sayfa dilini değiştir",
     "visualeditor-languageinspector-widget-label-direction": "Yön",
@@ -49,5 +51,7 @@
     "visualeditor-linkinspector-title": "Bağ",
     "visualeditor-listbutton-bullet-tooltip": "Madde imli liste",
     "visualeditor-listbutton-number-tooltip": "Numaralı liste",
+    "visualeditor-specialcharacter-button-tooltip": "Özel karakter",
+    "visualeditor-specialcharacterinspector-title": "Özel karakter",
     "visualeditor-version-label": "Sürüm"
 }

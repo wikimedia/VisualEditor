@@ -36,7 +36,7 @@
     "visualeditor-indentationbutton-outdent-tooltip": "Mindre innrykk",
     "visualeditor-inspector-close-tooltip": "Lat att",
     "visualeditor-inspector-remove-tooltip": "Fjern",
-    "visualeditor-languageinspector-block-tooltip-rtldirection": ": Høgre til venstre",
+    "visualeditor-languageinspector-block-tooltip": "Språkblokk",
     "visualeditor-languageinspector-title": "Språk",
     "visualeditor-languageinspector-widget-changelang": "Byt språk",
     "visualeditor-languageinspector-widget-label-direction": "Retning",
@@ -45,5 +45,6 @@
     "visualeditor-linkinspector-title": "Nettlenkje",
     "visualeditor-listbutton-bullet-tooltip": "Punktliste",
     "visualeditor-listbutton-number-tooltip": "Nummerert liste",
+    "visualeditor-specialcharacter-button-tooltip": "Spesialeteikn",
     "visualeditor-version-label": "Versjon"
 }
