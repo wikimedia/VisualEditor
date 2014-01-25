@@ -374,7 +374,8 @@ ve.dm.Document.prototype.cloneSliceFromRange = function ( range ) {
 	var i, first, last, firstNode, lastNode,
 		data, slice, originalRange, balancedRange,
 		balancedNodes, needsContext,
-		node = this.getNodeFromOffset( range.start ),
+		startNode = this.getNodeFromOffset( range.start ),
+		endNode = this.getNodeFromOffset( range.end ),
 		selection = this.selectNodes( range, 'siblings' ),
 		balanceOpenings = [],
 		balanceClosings = [],
@@ -397,11 +398,11 @@ ve.dm.Document.prototype.cloneSliceFromRange = function ( range ) {
 		// Nothing selected
 		data = new ve.dm.ElementLinearData( this.getStore(), [] );
 		originalRange = balancedRange = new ve.Range( 0 );
-	} else if ( selection.length === 1 && range.equalsSelection( selection[0].range || selection[0].nodeRange ) ) {
-		// Nothing to fix up
-		data = new ve.dm.ElementLinearData( this.getStore(), this.data.slice( range.start, range.end ) );
-		originalRange = balancedRange = new ve.Range( 0, data.getLength() );
+	} else if ( startNode === endNode ) {
+		// Nothing to balance
+		balancedNodes = selection;
 	} else {
+		// Selection is not balanced
 		first = selection[0];
 		last = selection[selection.length - 1];
 		firstNode = first.node;
@@ -415,28 +416,27 @@ ve.dm.Document.prototype.cloneSliceFromRange = function ( range ) {
 
 		if ( first.range ) {
 			while ( true ) {
-				while ( !node.isWrapped() ) {
-					node = node.getParent();
+				while ( !startNode.isWrapped() ) {
+					startNode = startNode.getParent();
 				}
-				balanceOpenings.push( node.getClonedElement() );
-				if ( node === firstNode ) {
+				balanceOpenings.push( startNode.getClonedElement() );
+				if ( startNode === firstNode ) {
 					break;
 				}
-				node = node.getParent();
+				startNode = startNode.getParent();
 			}
 		}
 
-		node = this.getNodeFromOffset( range.end );
 		if ( last !== first && last.range ) {
 			while ( true ) {
-				while ( !node.isWrapped() ) {
-					node = node.getParent();
+				while ( !endNode.isWrapped() ) {
+					endNode = endNode.getParent();
 				}
-				balanceClosings.push( { 'type': '/' + node.getType() } );
-				if ( node === lastNode ) {
+				balanceClosings.push( { 'type': '/' + endNode.getType() } );
+				if ( endNode === lastNode ) {
 					break;
 				}
-				node = node.getParent();
+				endNode = endNode.getParent();
 			}
 		}
 
@@ -444,7 +444,9 @@ ve.dm.Document.prototype.cloneSliceFromRange = function ( range ) {
 			new ve.Range( firstNode.getOuterRange().start, lastNode.getOuterRange().end ),
 			'covered'
 		);
+	}
 
+	if ( !balancedRange ) {
 		// Check if any of the balanced siblings need more context for insertion anywhere
 		needsContext = false;
 		for ( i = balancedNodes.length - 1; i >= 0; i-- ) {
@@ -455,12 +457,12 @@ ve.dm.Document.prototype.cloneSliceFromRange = function ( range ) {
 		}
 
 		if ( needsContext ) {
-			node = balancedNodes[0].node;
+			startNode = balancedNodes[0].node;
 			// Keep wrapping until the outer node can be inserted anywhere
-			while ( node.getParent() && node.getParentNodeTypes() !== null ) {
-				node = node.getParent();
-				contextOpenings.push( node.getClonedElement() );
-				contextClosings.push( { 'type': '/' + node.getType() } );
+			while ( startNode.getParent() && startNode.getParentNodeTypes() !== null ) {
+				startNode = startNode.getParent();
+				contextOpenings.push( startNode.getClonedElement() );
+				contextClosings.push( { 'type': '/' + startNode.getType() } );
 			}
 		}
 

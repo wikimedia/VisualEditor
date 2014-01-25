@@ -462,6 +462,30 @@ QUnit.test( 'cloneSliceFromRange', function ( assert ) {
 			],
 			'originalRange': new ve.Range( 0, 2 ),
 			'balancedRange': new ve.Range( 0, 2 )
+		},
+		{
+			'doc': 'inlineAtEdges',
+			'msg': 'inline node at start with text',
+			'range': new ve.Range( 1, 5 ),
+			'expected': [
+				ve.dm.example.image.data,
+				{ 'type': '/image' },
+				'F', 'o'
+			],
+			'originalRange': new ve.Range( 0, 4 ),
+			'balancedRange': new ve.Range( 0, 4 )
+		},
+		{
+			'doc': 'inlineAtEdges',
+			'msg': 'inline node at end with text',
+			'range': new ve.Range( 4, 8 ),
+			'expected': [
+				'o', 'o',
+				{ 'type': 'alienInline', 'attributes': { 'domElements': $( '<foobar />' ).toArray() } },
+				{ 'type': '/alienInline' }
+			],
+			'originalRange': new ve.Range( 0, 4 ),
+			'balancedRange': new ve.Range( 0, 4 )
 		}
 	];
 	QUnit.expect( 3 * cases.length );

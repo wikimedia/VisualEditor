@@ -800,15 +800,21 @@ ve.dm.example.complexTable = [
 ];
 
 ve.dm.example.inlineAtEdges = [
+	// 0
 	{ 'type': 'paragraph' },
+	// 1
 	ve.dm.example.image.data,
+	// 2
 	{ 'type': '/image' },
-	'F',
-	'o',
-	'o',
+	// 3
+	'F', 'o', 'o',
+	// 6
 	{ 'type': 'alienInline', 'attributes': { 'domElements': $( '<foobar />' ).toArray() } },
+	// 7
 	{ 'type': '/alienInline' },
+	// 8
 	{ 'type': '/paragraph' },
+	// 9
 	{ 'type': 'internalList' },
 	{ 'type': '/internalList' }
 ];
