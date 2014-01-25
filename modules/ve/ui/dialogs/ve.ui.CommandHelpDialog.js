@@ -47,6 +47,11 @@ ve.ui.CommandHelpDialog.prototype.initialize = function () {
 
 	var i, j, jLen, shortcut, commands, $list,
 		commandGroups = this.constructor.static.getCommandGroups(),
+		contentLayout = new OO.ui.PanelLayout( {
+			'$': this.$,
+			'scrollable': true,
+			'padded': true
+		} ),
 		$container = this.$( '<div>' ).addClass( 've-ui-commandHelpDialog-container' ),
 		triggers = this.surface.getTriggers();
 
@@ -70,7 +75,8 @@ ve.ui.CommandHelpDialog.prototype.initialize = function () {
 		);
 	}
 
-	this.$body.append( $container );
+	contentLayout.$element.append( $container );
+	this.$body.append( contentLayout.$element );
 };
 
 /* Static methods */
