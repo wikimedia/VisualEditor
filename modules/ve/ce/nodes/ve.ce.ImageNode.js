@@ -19,13 +19,17 @@
  * @param {Object} [config] Configuration options
  */
 ve.ce.ImageNode = function VeCeImageNode( model, config ) {
+	config = ve.extendObject( {
+		'minDimensions': { 'width': 1, 'height': 1 }
+	}, config );
+
 	// Parent constructor
 	ve.ce.LeafNode.call( this, model, config );
 
 	// Mixin constructors
 	ve.ce.FocusableNode.call( this );
 	ve.ce.RelocatableNode.call( this );
-	ve.ce.ResizableNode.call( this );
+	ve.ce.ResizableNode.call( this, null, config );
 
 	// Properties
 	this.$image = this.$element;

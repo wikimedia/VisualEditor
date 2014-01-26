@@ -81,6 +81,7 @@
 	"visualEditor.core": {
 		"scripts": [
 			"modules/ve/ve.Range.js",
+			"modules/ve/ve.Scalable.js",
 			"modules/ve/ve.Node.js",
 			"modules/ve/ve.BranchNode.js",
 			"modules/ve/ve.LeafNode.js",

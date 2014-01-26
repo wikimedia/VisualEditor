@@ -9,6 +9,7 @@
  * ContentEditable resizable node.
  *
  * @class
+ * @mixins ve.Scalable
  * @abstract
  *
  * @constructor
@@ -18,14 +19,15 @@
  * @param {boolean} [config.outline=false] Resize using an outline of the element only, don't live preview.
  * @param {boolean} [config.showSizeLabel=true] Show a label with the current dimensions while resizing
  * @param {boolean} [config.showScaleLabel=true] Show a label with the current scale while resizing
- * @param {boolean} [config.min=1] Minimum size of longest edge
- * @param {boolean} [config.max=Infinity] Maximum size or longest edge
  */
 ve.ce.ResizableNode = function VeCeResizableNode( $resizable, config ) {
 	config = config || {};
+
+	// Mixin constructors
+	ve.Scalable.call( this, config );
+
 	// Properties
 	this.$resizable = $resizable || this.$element;
-	this.ratio = this.model.getAttribute( 'width' ) / this.model.getAttribute( 'height' );
 	this.resizing = false;
 	this.$resizeHandles = this.$( '<div>' );
 	this.snapToGrid = config.snapToGrid !== undefined ? config.snapToGrid : 10;
@@ -39,10 +41,6 @@ ve.ce.ResizableNode = function VeCeResizableNode( $resizable, config ) {
 		this.$sizeLabel = this.$( '<div>' ).addClass( 've-ce-resizableNode-sizeLabel' ).append( this.$sizeText );
 	}
 	this.resizableOffset = null;
-	this.originalDimensions = null;
-
-	this.min = config.min !== undefined ? config.min : 1;
-	this.max = config.max !== undefined ? config.max : Infinity;
 
 	// Events
 	this.connect( this, {
@@ -60,7 +58,16 @@ ve.ce.ResizableNode = function VeCeResizableNode( $resizable, config ) {
 		.append( this.$( '<div>' ).addClass( 've-ce-resizableNode-neHandle' ) )
 		.append( this.$( '<div>' ).addClass( 've-ce-resizableNode-seHandle' ) )
 		.append( this.$( '<div>' ).addClass( 've-ce-resizableNode-swHandle' ) );
+
+	this.setCurrentDimensions( {
+		'width': this.model.getAttribute( 'width' ),
+		'height': this.model.getAttribute( 'height' )
+	} );
 };
+
+/* Inheritance */
+
+OO.mixinClass( ve.ce.ResizableNode, ve.Scalable );
 
 /* Events */
 
@@ -97,70 +104,70 @@ ve.ce.ResizableNode.prototype.getResizableOffset = function () {
 	return this.resizableOffset;
 };
 
-/**
- * Set the orignal dimensions of an image
- *
- * @param {Object} dimensions Dimensions object with width & height
- */
+/** */
 ve.ce.ResizableNode.prototype.setOriginalDimensions = function ( dimensions ) {
-	this.originalDimensions = ve.copy( dimensions );
+	// Parent method
+	ve.Scalable.prototype.setOriginalDimensions.call( this, dimensions );
 	// If dimensions are valid and the scale label is desired, enable it
-	this.canShowScaleLabel = this.showScaleLabel && this.originalDimensions.width && this.originalDimensions.height;
+	this.canShowScaleLabel = this.showScaleLabel && this.getOriginalDimensions().width && this.getOriginalDimensions().height;
+};
+
+/**
+ * Hide the size label
+ */
+ve.ce.ResizableNode.prototype.hideSizeLabel = function () {
+	var node = this;
+	// Defer the removal of this class otherwise other DOM changes may cause
+	// the opacity transition to not play out smoothly
+	setTimeout( function () {
+		node.$sizeLabel.removeClass( 've-ce-resizableNode-sizeLabel-resizing' );
+	} );
 };
 
 /**
  * Update the contents and position of the size label
- *
- * Omitting the dimensions object will hide the size label.
- *
- * @param {Object} [dimensions] Dimensions object with width, height, top & left, or undefined to hide
  */
-ve.ce.ResizableNode.prototype.updateSizeLabel = function ( dimensions ) {
+ve.ce.ResizableNode.prototype.updateSizeLabel = function () {
 	if ( !this.showSizeLabel && !this.canShowScaleLabel ) {
 		return;
 	}
-	var offset, node, top, height, minWidth;
-	if ( dimensions ) {
-		offset = this.getResizableOffset();
+
+	var top, height,
+		dimensions = this.getCurrentDimensions(),
+		offset = this.getResizableOffset(),
 		minWidth = ( this.showSizeLabel ? 100 : 0 ) + ( this.showScaleLabel ? 30 : 0 );
-		// Put the label on the outside when too narrow
-		if ( dimensions.width < minWidth ) {
-			top = offset.top + dimensions.height;
-			height = 30;
-		} else {
-			top = offset.top;
-			height = dimensions.height;
-		}
-		this.$sizeLabel
-			.addClass( 've-ce-resizableNode-sizeLabel-resizing' )
-			.css( {
-				'top': top,
-				'left': offset.left,
-				'width': dimensions.width,
-				'height': height,
-				'lineHeight': height + 'px'
-			} );
-		this.$sizeText.empty();
-		if ( this.showSizeLabel ) {
-			this.$sizeText.append( this.$( '<span>' )
-				.addClass( 've-ce-resizableNode-sizeText-size' )
-				.text( Math.round( dimensions.width ) + ' × ' + Math.round( dimensions.height ) )
-			);
-		}
-		if ( this.canShowScaleLabel ) {
-			this.$sizeText.append( this.$( '<span>' )
-				.addClass( 've-ce-resizableNode-sizeText-scale' )
-				.text( Math.round( 100 * dimensions.width / this.originalDimensions.width ) + '%' )
-			);
-		}
+
+	// Put the label on the outside when too narrow
+	if ( dimensions.width < minWidth ) {
+		top = offset.top + dimensions.height;
+		height = 30;
 	} else {
-		node = this;
-		// Defer the removal of this class otherwise other DOM changes may cause
-		// the opacity transition to not play out smoothly
-		setTimeout( function () {
-			node.$sizeLabel.removeClass( 've-ce-resizableNode-sizeLabel-resizing' );
-		} );
+		top = offset.top;
+		height = dimensions.height;
 	}
+	this.$sizeLabel
+		.addClass( 've-ce-resizableNode-sizeLabel-resizing' )
+		.css( {
+			'top': top,
+			'left': offset.left,
+			'width': dimensions.width,
+			'height': height,
+			'lineHeight': height + 'px'
+		} );
+	this.$sizeText.empty();
+	if ( this.showSizeLabel ) {
+		this.$sizeText.append( this.$( '<span>' )
+			.addClass( 've-ce-resizableNode-sizeText-size' )
+			.text( Math.round( dimensions.width ) + ' × ' + Math.round( dimensions.height ) )
+		);
+	}
+	if ( this.canShowScaleLabel ) {
+		this.$sizeText.append( this.$( '<span>' )
+			.addClass( 've-ce-resizableNode-sizeText-scale' )
+			.text( Math.round( 100 * this.getCurrentScale() ) + '%' )
+		);
+	}
+	this.$sizeText.toggleClass( 've-ce-resizableNode-sizeText-warning', this.isTooSmall() || this.isTooLarge() );
 };
 
 /**
@@ -253,14 +260,12 @@ ve.ce.ResizableNode.prototype.onResizableLive = function () {
 ve.ce.ResizableNode.prototype.onResizableResizing = function ( dimensions ) {
 	// Clear cached resizable offset position as it may have changed
 	this.resizableOffset = null;
+	this.setCurrentDimensions( dimensions );
 	if ( !this.outline ) {
-		this.$resizable.css( {
-			'width': dimensions.width,
-			'height': dimensions.height
-		} );
+		this.$resizable.css( this.getCurrentDimensions() );
 		this.setResizableHandlesPosition();
 	}
-	this.updateSizeLabel( dimensions );
+	this.updateSizeLabel();
 };
 
 /**
@@ -300,7 +305,11 @@ ve.ce.ResizableNode.prototype.onResizeHandlesCornerMouseDown = function ( e ) {
 	// Bind resize events
 	this.resizing = true;
 	this.root.getSurface().resizing = true;
-	this.updateSizeLabel( this.resizeInfo );
+	this.setCurrentDimensions( {
+		'width': this.resizeInfo.width,
+		'height': this.resizeInfo.height
+	} );
+	this.updateSizeLabel();
 	this.$( this.getElementDocument() ).on( {
 		'mousemove.ve-ce-resizableNode': ve.bind( this.onDocumentMouseMove, this ),
 		'mouseup.ve-ce-resizableNode': ve.bind( this.onDocumentMouseUp, this )
@@ -364,8 +373,7 @@ ve.ce.ResizableNode.prototype.setResizableHandlesPosition = function () {
  * @fires resizing
  */
 ve.ce.ResizableNode.prototype.onDocumentMouseMove = function ( e ) {
-	var newWidth, newHeight, newRatio, snapMin, snapMax, snap,
-		diff = {},
+	var diff = {},
 		dimensions = {
 			'width': 0,
 			'height': 0,
@@ -394,29 +402,10 @@ ve.ce.ResizableNode.prototype.onDocumentMouseMove = function ( e ) {
 				break;
 		}
 
-		// Unconstrained dimensions and ratio
-		newWidth = Math.max( Math.min( this.resizeInfo.width + diff.x, this.max ), this.min );
-		newHeight = Math.max( Math.min( this.resizeInfo.height + diff.y, this.max ), this.min );
-		newRatio = newWidth / newHeight;
-
-		// Fix the ratio
-		if ( newRatio < this.ratio ) {
-			dimensions.width = newWidth;
-			dimensions.height = this.resizeInfo.height +
-				( newWidth - this.resizeInfo.width ) / this.ratio;
-		} else {
-			dimensions.width = this.resizeInfo.width +
-				( newHeight - this.resizeInfo.height ) * this.ratio;
-			dimensions.height = newHeight;
-		}
-
-		if ( this.snapToGrid && e.shiftKey ) {
-			snapMin = Math.ceil( this.min / this.snapToGrid );
-			snapMax = Math.floor( this.max / this.snapToGrid );
-			snap = Math.round( dimensions.width / this.snapToGrid );
-			dimensions.width = Math.max( Math.min( snap, snapMax ), snapMin ) * this.snapToGrid;
-			dimensions.height = dimensions.width / this.ratio;
-		}
+		dimensions = this.getBoundedDimensions( {
+			'width': this.resizeInfo.width + diff.x,
+			'height': this.resizeInfo.height + diff.y
+		}, e.shiftKey && this.snapToGrid );
 
 		// Fix the position
 		switch ( this.resizeInfo.handle ) {
@@ -438,7 +427,10 @@ ve.ce.ResizableNode.prototype.onDocumentMouseMove = function ( e ) {
 
 		// Update bounding box
 		this.$resizeHandles.css( dimensions );
-		this.emit( 'resizing', dimensions );
+		this.emit( 'resizing', {
+			'width': dimensions.width,
+			'height': dimensions.height
+		} );
 	}
 };
 
@@ -461,7 +453,7 @@ ve.ce.ResizableNode.prototype.onDocumentMouseUp = function () {
 	this.$( this.getElementDocument() ).off( '.ve-ce-resizableNode' );
 	this.resizing = false;
 	this.root.getSurface().resizing = false;
-	this.updateSizeLabel();
+	this.hideSizeLabel();
 
 	// Apply changes to the model
 	attrChanges = this.getAttributeChanges( width, height );
