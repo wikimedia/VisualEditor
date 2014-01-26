@@ -35,8 +35,8 @@ ve.ui.MediaSizeWidget = function VeUiMediaSizeWidget( config ) {
 
 	this.width = config.width || '';
 	this.height = config.height || '';
-	this.originalDimensions = config.originalDimensions || {};
-	this.maxDimensions = config.maxDimensions || {};
+	this.originalDimensions = null;
+	this.maxDimensions = null;
 
 	// Cache for the aspect ratio, which is set by setOriginalDimensions()
 	this.aspectRatio = null;
@@ -107,8 +107,12 @@ ve.ui.MediaSizeWidget = function VeUiMediaSizeWidget( config ) {
 
 	// Initialization
 	this.$element.addClass( 've-ui-mediaSizeWidget' );
-	this.setOriginalDimensions( this.originalDimensions );
-	this.setMaxDimensions( this.maxDimensions );
+	if ( config.originalDimensions ) {
+		this.setOriginalDimensions( config.originalDimensions );
+	}
+	if ( config.maxDimensions ) {
+		this.setMaxDimensions( config.maxDimensions );
+	}
 };
 
 /* Inheritance */
@@ -217,10 +221,7 @@ ve.ui.MediaSizeWidget.prototype.getMaxDimensions = function () {
  * @param {number} [dimensions.height] Maximum height
  */
 ve.ui.MediaSizeWidget.prototype.setMaxDimensions = function ( dimensions ) {
-	this.maxDimensions = {
-		'width': dimensions.width,
-		'height': dimensions.height
-	};
+	this.maxDimensions = ve.copy( dimensions );
 };
 
 /**
@@ -240,10 +241,7 @@ ve.ui.MediaSizeWidget.prototype.getOriginalDimensions = function () {
  * @param {number} dimensions.height Original height
  */
 ve.ui.MediaSizeWidget.prototype.setOriginalDimensions = function ( dimensions ) {
-	this.originalDimensions = {
-		'width': dimensions.width,
-		'height': dimensions.height
-	};
+	this.originalDimensions = ve.copy( dimensions );
 	// Cache the aspect ratio
 	this.aspectRatio = this.originalDimensions.width / this.originalDimensions.height;
 	// Enable the 'original dimensions' button
@@ -285,9 +283,11 @@ ve.ui.MediaSizeWidget.prototype.validateDimensions = function () {
 		// TODO use a separate error message for this case,
 		// and put the max dimensions in the error message
 		(
+			this.maxDimensions &&
 			$.isNumeric( this.maxDimensions.width ) &&
 			Number( this.width ) > this.maxDimensions.width
 		) || (
+			this.maxDimensions &&
 			$.isNumeric( this.maxDimensions.height ) &&
 			Number( this.height ) > this.maxDimensions.height
 		)
