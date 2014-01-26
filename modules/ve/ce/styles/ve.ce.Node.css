@@ -144,6 +144,12 @@
 	white-space: nowrap;
 }
 
+.ve-ce-resizableNode-sizeText span:not(:first-child) {
+	margin-left: 0.4em;
+	padding-left: 0.4em;
+	border-left: solid 1px #ccc;
+}
+
 /* ve.ce.RelocatableNode */
 
 .ve-ce-relocatableNode-marker {

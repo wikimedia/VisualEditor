@@ -17,6 +17,7 @@
  * @param {number|null} [config.snapToGrid=10] Snap to a grid of size X when the shift key is held. Null disables.
  * @param {boolean} [config.outline=false] Resize using an outline of the element only, don't live preview.
  * @param {boolean} [config.showSizeLabel=true] Show a label with the current dimensions while resizing
+ * @param {boolean} [config.showScaleLabel=true] Show a label with the current scale while resizing
  * @param {boolean} [config.min=1] Minimum size of longest edge
  * @param {boolean} [config.max=Infinity] Maximum size or longest edge
  */
@@ -29,11 +30,16 @@ ve.ce.ResizableNode = function VeCeResizableNode( $resizable, config ) {
 	this.$resizeHandles = this.$( '<div>' );
 	this.snapToGrid = config.snapToGrid !== undefined ? config.snapToGrid : 10;
 	this.outline = !!config.outline;
-	if ( config.showSizeLabel !== false ) {
+	this.showSizeLabel = config.showSizeLabel !== false;
+	this.showScaleLabel = config.showScaleLabel !== false;
+	// Only gets enabled when the original dimensions are provided
+	this.canShowScaleLabel = false;
+	if ( this.showSizeLabel || this.showScaleLabel ) {
 		this.$sizeText = this.$( '<span>' ).addClass( 've-ce-resizableNode-sizeText' );
 		this.$sizeLabel = this.$( '<div>' ).addClass( 've-ce-resizableNode-sizeLabel' ).append( this.$sizeText );
 	}
 	this.resizableOffset = null;
+	this.originalDimensions = null;
 
 	this.min = config.min !== undefined ? config.min : 1;
 	this.max = config.max !== undefined ? config.max : Infinity;
@@ -92,6 +98,17 @@ ve.ce.ResizableNode.prototype.getResizableOffset = function () {
 };
 
 /**
+ * Set the orignal dimensions of an image
+ *
+ * @param {Object} dimensions Dimensions object with width & height
+ */
+ve.ce.ResizableNode.prototype.setOriginalDimensions = function ( dimensions ) {
+	this.originalDimensions = ve.copy( dimensions );
+	// If dimensions are valid and the scale label is desired, enable it
+	this.canShowScaleLabel = this.showScaleLabel && this.originalDimensions.width && this.originalDimensions.height;
+};
+
+/**
  * Update the contents and position of the size label
  *
  * Omitting the dimensions object will hide the size label.
@@ -99,14 +116,15 @@ ve.ce.ResizableNode.prototype.getResizableOffset = function () {
  * @param {Object} [dimensions] Dimensions object with width, height, top & left, or undefined to hide
  */
 ve.ce.ResizableNode.prototype.updateSizeLabel = function ( dimensions ) {
-	if ( !this.$sizeLabel ) {
+	if ( !this.showSizeLabel && !this.canShowScaleLabel ) {
 		return;
 	}
-	var offset, node, top, height;
+	var offset, node, top, height, minWidth;
 	if ( dimensions ) {
 		offset = this.getResizableOffset();
-		// Things get a bit tight below 100px, so put the label on the outside
-		if ( dimensions.width < 100 ) {
+		minWidth = ( this.showSizeLabel ? 100 : 0 ) + ( this.showScaleLabel ? 30 : 0 );
+		// Put the label on the outside when too narrow
+		if ( dimensions.width < minWidth ) {
 			top = offset.top + dimensions.height;
 			height = 30;
 		} else {
@@ -122,7 +140,19 @@ ve.ce.ResizableNode.prototype.updateSizeLabel = function ( dimensions ) {
 				'height': height,
 				'lineHeight': height + 'px'
 			} );
-		this.$sizeText.text( Math.round( dimensions.width ) + ' × ' + Math.round( dimensions.height ) );
+		this.$sizeText.empty();
+		if ( this.showSizeLabel ) {
+			this.$sizeText.append( this.$( '<span>' )
+				.addClass( 've-ce-resizableNode-sizeText-size' )
+				.text( Math.round( dimensions.width ) + ' × ' + Math.round( dimensions.height ) )
+			);
+		}
+		if ( this.canShowScaleLabel ) {
+			this.$sizeText.append( this.$( '<span>' )
+				.addClass( 've-ce-resizableNode-sizeText-scale' )
+				.text( Math.round( 100 * dimensions.width / this.originalDimensions.width ) + '%' )
+			);
+		}
 	} else {
 		node = this;
 		// Defer the removal of this class otherwise other DOM changes may cause
