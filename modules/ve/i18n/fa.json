@@ -9,7 +9,8 @@
             "Nojan Madinehi",
             "Reza1615",
             "Taha",
-            "درفش کاویانی"
+            "درفش کاویانی",
+            "Fatemi127"
         ]
     },
     "visualeditor": "ویرایشگر دیداری",
@@ -24,9 +25,12 @@
     "visualeditor-annotationbutton-superscript-tooltip": "بالانویس",
     "visualeditor-annotationbutton-underline-tooltip": "زیر خط",
     "visualeditor-clearbutton-tooltip": "پاک‌سازی قالب‌بندی",
+    "visualeditor-clipboard-copy": "رونوشت",
+    "visualeditor-clipboard-cut": "برش",
     "visualeditor-dialog-action-apply": "اعمال تغییرات",
     "visualeditor-dialog-action-cancel": "لغو",
     "visualeditor-dialog-action-goback": "بازگشت به عقب",
+    "visualeditor-dialog-command-help-title": "میانبرهای صفحه‌کلید",
     "visualeditor-formatdropdown-format-heading1": "سرعنوان ۱",
     "visualeditor-formatdropdown-format-heading2": "سرعنوان ۲",
     "visualeditor-formatdropdown-format-heading3": "سرعنوان ۳",
@@ -52,5 +56,8 @@
     "visualeditor-linkinspector-title": "اَبَرپیوند",
     "visualeditor-listbutton-bullet-tooltip": "فهرست گلوله‌ای",
     "visualeditor-listbutton-number-tooltip": "فهرست شماره‌دار",
+    "visualeditor-shortcuts-clipboard": "کلیپ بورد",
+    "visualeditor-shortcuts-history": "تاریخچه",
+    "visualeditor-shortcuts-other": "دیگر",
     "visualeditor-version-label": "نسخه"
 }
