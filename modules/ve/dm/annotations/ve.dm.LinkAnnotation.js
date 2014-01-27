@@ -34,7 +34,7 @@ ve.dm.LinkAnnotation.static.splitOnWordbreak = true;
 
 ve.dm.LinkAnnotation.static.toDataElement = function ( domElements ) {
 	return {
-		'type': 'link',
+		'type': this.name,
 		'attributes': {
 			'href': domElements[0].getAttribute( 'href' )
 		}

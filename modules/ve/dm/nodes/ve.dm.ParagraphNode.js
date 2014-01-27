@@ -31,10 +31,6 @@ ve.dm.ParagraphNode.static.canContainContent = true;
 
 ve.dm.ParagraphNode.static.matchTagNames = [ 'p' ];
 
-ve.dm.ParagraphNode.static.toDataElement = function () {
-	return { 'type': 'paragraph' };
-};
-
 ve.dm.ParagraphNode.static.toDomElements = function ( dataElement, doc ) {
 	return [ doc.createElement( 'p' ) ];
 };

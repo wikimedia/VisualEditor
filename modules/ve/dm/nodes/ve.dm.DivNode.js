@@ -29,10 +29,6 @@ ve.dm.DivNode.static.name = 'div';
 
 ve.dm.DivNode.static.matchTagNames = [ 'div' ];
 
-ve.dm.DivNode.static.toDataElement = function () {
-	return { 'type': 'div' };
-};
-
 ve.dm.DivNode.static.toDomElements = function ( dataElement, doc ) {
 	return [ doc.createElement( 'div' ) ];
 };

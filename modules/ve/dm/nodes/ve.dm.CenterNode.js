@@ -29,10 +29,6 @@ ve.dm.CenterNode.static.name = 'center';
 
 ve.dm.CenterNode.static.matchTagNames = [ 'center' ];
 
-ve.dm.CenterNode.static.toDataElement = function () {
-	return { 'type': 'center' };
-};
-
 ve.dm.CenterNode.static.toDomElements = function ( dataElement, doc ) {
 	return [ doc.createElement( 'center' ) ];
 };

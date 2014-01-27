@@ -45,7 +45,7 @@ ve.dm.HeadingNode.static.toDataElement = function ( domElements ) {
 			'h6': 6
 		},
 		level = levels[domElements[0].nodeName.toLowerCase()];
-	return { 'type': 'heading', 'attributes': { 'level': level } };
+	return { 'type': this.name, 'attributes': { 'level': level } };
 };
 
 ve.dm.HeadingNode.static.toDomElements = function ( dataElement, doc ) {
