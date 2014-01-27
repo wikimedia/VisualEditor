@@ -495,16 +495,32 @@ QUnit.test( 'onCopy', function ( assert ) {
 				],
 				'expectedOriginalRange': new ve.Range( 1, 6 ),
 				'expectedBalancedRange': new ve.Range( 1, 6 ),
+				'expectedHtml': '<ol><li><p>g</p></li></ol>',
 				'msg': 'Copy list item'
+			},
+			{
+				'doc': 'RDFa',
+				'range': new ve.Range( 0, 5 ),
+				'expectedData': ve.dm.example.RDFa,
+				'expectedOriginalRange': new ve.Range( 0, 5 ),
+				'expectedBalancedRange': new ve.Range( 0, 5 ),
+				'expectedHtml':
+					'<p about="a" content="b" datatype="c" property="d" rel="e" resource="f" rev="g" typeof="h" class="i" ' +
+						'data-ve-attributes="{&quot;typeof&quot;:&quot;h&quot;,&quot;rev&quot;:&quot;g&quot;,' +
+						'&quot;resource&quot;:&quot;f&quot;,&quot;rel&quot;:&quot;e&quot;,&quot;property&quot;:&quot;d&quot;,' +
+						'&quot;datatype&quot;:&quot;c&quot;,&quot;content&quot;:&quot;b&quot;,&quot;about&quot;:&quot;a&quot;}">' +
+						'Foo' +
+					'</p>',
+				'msg': 'RDFa attributes encoded into data-ve-attributes'
 			}
 		];
 
-	QUnit.expect( cases.length * 4 );
+	QUnit.expect( cases.length * 5 );
 
-	function testRunner( doc, range, expectedData, expectedOriginalRange, expectedBalancedRange, msg ) {
+	function testRunner( doc, range, expectedData, expectedOriginalRange, expectedBalancedRange, expectedHtml, msg ) {
 		var clipboardKey, parts, clipboardIndex, slice,
 			surface = ve.test.utils.createSurfaceFromDocument(
-				doc || ve.dm.example.createExampleDocument()
+				ve.dm.example.createExampleDocument( doc )
 			),
 			view = surface.getView(),
 			model = surface.getModel();
@@ -525,6 +541,7 @@ QUnit.test( 'onCopy', function ( assert ) {
 		assert.deepEqual( slice.data.data, expectedData, msg + ': data' );
 		assert.deepEqual( slice.originalRange, expectedOriginalRange, msg + ': originalRange' );
 		assert.deepEqual( slice.balancedRange, expectedBalancedRange, msg + ': balancedRange' );
+		assert.deepEqual( view.$pasteTarget.html(), expectedHtml, msg + ': balancedRange' );
 
 		surface.destroy();
 	}
@@ -532,7 +549,8 @@ QUnit.test( 'onCopy', function ( assert ) {
 	for ( i = 0; i < cases.length; i++ ) {
 		testRunner(
 			cases[i].doc, cases[i].range, cases[i].expectedData,
-			cases[i].expectedOriginalRange, cases[i].expectedBalancedRange, cases[i].msg
+			cases[i].expectedOriginalRange, cases[i].expectedBalancedRange,
+			cases[i].expectedHtml, cases[i].msg
 		);
 	}
 
@@ -802,6 +820,28 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 					]
 				],
 				'msg': 'Span not empty after style attribute removed is kept'
+			},
+			{
+				'range': new ve.Range( 0 ),
+				'pasteHtml':
+					'<p about="ignored" class="i" ' +
+						'data-ve-attributes="{&quot;typeof&quot;:&quot;h&quot;,&quot;rev&quot;:&quot;g&quot;,' +
+						'&quot;resource&quot;:&quot;f&quot;,&quot;rel&quot;:&quot;e&quot;,&quot;property&quot;:&quot;d&quot;,' +
+						'&quot;datatype&quot;:&quot;c&quot;,&quot;content&quot;:&quot;b&quot;,&quot;about&quot;:&quot;a&quot;}">' +
+						'Foo' +
+					'</p>',
+				'expectedRange': new ve.Range( 5 ),
+				'expectedOps': [
+					[
+						{
+							'type': 'replace',
+							'insert': ve.dm.example.RDFa.slice( 0, 5 ),
+							'remove': []
+						},
+						{ 'type': 'retain', 'length': 9 }
+					]
+				],
+				'msg': 'RDFa attributes restored/overwritten from data-ve-attributes'
 			}
 		];
 
