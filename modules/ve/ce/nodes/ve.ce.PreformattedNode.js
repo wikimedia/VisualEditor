@@ -29,8 +29,6 @@ ve.ce.PreformattedNode.static.name = 'preformatted';
 
 ve.ce.PreformattedNode.static.tagName = 'pre';
 
-ve.ce.PreformattedNode.static.canBeSplit = true;
-
 /* Registration */
 
 ve.ce.nodeFactory.register( ve.ce.PreformattedNode );

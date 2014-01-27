@@ -24,15 +24,15 @@ OO.inheritClass( ve.ce.NodeFactory, OO.Factory );
 /* Methods */
 
 /**
- * Check if a node type can be split.
+ * Check if a node type splits on Enter
  *
  * @param {string} type Node type
  * @returns {boolean} The node can have grandchildren
  * @throws {Error} Unknown node type
  */
-ve.ce.NodeFactory.prototype.canNodeBeSplit = function ( type ) {
+ve.ce.NodeFactory.prototype.splitNodeOnEnter = function ( type ) {
 	if ( type in this.registry ) {
-		return this.registry[type].static.canBeSplit;
+		return this.registry[type].static.splitOnEnter;
 	}
 	throw new Error( 'Unknown node type: ' + type );
 };

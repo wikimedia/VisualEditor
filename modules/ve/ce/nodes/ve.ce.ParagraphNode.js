@@ -37,8 +37,6 @@ ve.ce.ParagraphNode.static.name = 'paragraph';
 
 ve.ce.ParagraphNode.static.tagName = 'p';
 
-ve.ce.ParagraphNode.static.canBeSplit = true;
-
 /* Registration */
 
 ve.ce.nodeFactory.register( ve.ce.ParagraphNode );

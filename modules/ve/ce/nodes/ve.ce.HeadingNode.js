@@ -30,10 +30,6 @@ OO.inheritClass( ve.ce.HeadingNode, ve.ce.ContentBranchNode );
 
 ve.ce.HeadingNode.static.name = 'heading';
 
-/* Static Properties */
-
-ve.ce.HeadingNode.static.canBeSplit = true;
-
 /* Methods */
 
 /**

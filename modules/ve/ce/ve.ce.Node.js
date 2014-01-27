@@ -36,7 +36,7 @@ OO.mixinClass( ve.ce.Node, ve.Node );
 /* Static Members */
 
 /**
- * Whether this node type can be split.
+ * Whether Enter splits this node type.
  *
  * When the user presses Enter, we split the node they're in (if splittable), then split its parent
  * if splittable, and continue traversing up the tree and stop at the first non-splittable node.
@@ -45,7 +45,7 @@ OO.mixinClass( ve.ce.Node, ve.Node );
  * @property
  * @inheritable
  */
-ve.ce.Node.static.canBeSplit = false;
+ve.ce.Node.static.splitOnEnter = false;
 
 /**
  * Whether this node type can be focused.
@@ -221,28 +221,8 @@ ve.ce.Node.prototype.getOffset = function () {
  *
  * @returns {boolean} Node can be split
  */
-ve.ce.Node.prototype.canBeSplit = function () {
-	return this.constructor.static.canBeSplit;
-};
-
-/**
- * Get the closest splittable node upstream.
- *
- * @returns {ve.ce.Node} Closest splittable node
- */
-ve.ce.Node.getSplitableNode = function ( node ) {
-	var splitableNode = null;
-
-	node.traverseUpstream( function ( node ) {
-		if ( node.canBeSplit() ) {
-			splitableNode = node;
-			return true;
-		} else {
-			return false;
-		}
-	} );
-
-	return splitableNode;
+ve.ce.Node.prototype.splitOnEnter = function () {
+	return this.constructor.static.splitOnEnter;
 };
 
 /**
