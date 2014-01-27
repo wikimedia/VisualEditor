@@ -31,10 +31,6 @@ ve.dm.ListItemNode.static.parentNodeTypes = [ 'list' ];
 
 ve.dm.ListItemNode.static.matchTagNames = [ 'li' ];
 
-ve.dm.ListItemNode.static.toDomElements = function ( dataElement, doc ) {
-	return [ doc.createElement( 'li' ) ];
-};
-
 /* Registration */
 
 ve.dm.modelRegistry.register( ve.dm.ListItemNode );

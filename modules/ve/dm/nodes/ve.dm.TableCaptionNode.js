@@ -31,10 +31,6 @@ ve.dm.TableCaptionNode.static.parentNodeTypes = [ 'table' ];
 
 ve.dm.TableCaptionNode.static.matchTagNames = [ 'caption' ];
 
-ve.dm.TableCaptionNode.static.toDomElements = function ( dataElement, doc ) {
-	return [ doc.createElement( 'caption' ) ];
-};
-
 /* Registration */
 
 ve.dm.modelRegistry.register( ve.dm.TableCaptionNode );

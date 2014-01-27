@@ -33,10 +33,6 @@ ve.dm.TableRowNode.static.parentNodeTypes = [ 'tableSection' ];
 
 ve.dm.TableRowNode.static.matchTagNames = [ 'tr' ];
 
-ve.dm.TableRowNode.static.toDomElements = function ( dataElement, doc ) {
-	return [ doc.createElement( 'tr' ) ];
-};
-
 /* Registration */
 
 ve.dm.modelRegistry.register( ve.dm.TableRowNode );

@@ -31,10 +31,6 @@ ve.dm.DefinitionListNode.static.childNodeTypes = [ 'definitionListItem' ];
 
 ve.dm.DefinitionListNode.static.matchTagNames = [ 'dl' ];
 
-ve.dm.DefinitionListNode.static.toDomElements = function ( dataElement, doc ) {
-	return [ doc.createElement( 'dl' ) ];
-};
-
 /* Registration */
 
 ve.dm.modelRegistry.register( ve.dm.DefinitionListNode );
