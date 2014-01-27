@@ -541,7 +541,7 @@ QUnit.test( 'onCopy', function ( assert ) {
 		assert.deepEqual( slice.data.data, expectedData, msg + ': data' );
 		assert.deepEqual( slice.originalRange, expectedOriginalRange, msg + ': originalRange' );
 		assert.deepEqual( slice.balancedRange, expectedBalancedRange, msg + ': balancedRange' );
-		assert.deepEqual( view.$pasteTarget.html(), expectedHtml, msg + ': balancedRange' );
+		assert.deepEqual( view.$pasteTarget.html(), expectedHtml, msg + ': html' );
 
 		surface.destroy();
 	}
