@@ -193,7 +193,7 @@ ve.dm.Node.static.defaultAttributes = {};
  * @param {Object} dataElement Data element (opening) to remap. Will be modified.
  * @param {Object} mapping Object mapping old store indexes to new store indexes
  */
-ve.dm.Node.static.remapStoreIndexes = function ( /*dataElement, mapping*/ ) {
+ve.dm.Node.static.remapStoreIndexes = function () {
 };
 
 /**
@@ -210,7 +210,7 @@ ve.dm.Node.static.remapStoreIndexes = function ( /*dataElement, mapping*/ ) {
  * @param {ve.dm.InternalList} internalList Internal list the indexes are being mapped into.
  *  Used for refreshing attribute values that were computed with getNextUniqueNumber().
  */
-ve.dm.Node.static.remapInternalListIndexes = function ( /*dataElement, mapping, internalList*/ ) {
+ve.dm.Node.static.remapInternalListIndexes = function () {
 };
 
 /**
@@ -224,7 +224,7 @@ ve.dm.Node.static.remapInternalListIndexes = function ( /*dataElement, mapping, 
  * @param {Object} dataElement Data element (opening) to remap. Will be modified.
  * @param {ve.dm.InternalList} internalList Internal list the keys are being mapped into.
  */
-ve.dm.Node.static.remapInternalListKeys = function ( /*dataElement, internalList*/ ) {
+ve.dm.Node.static.remapInternalListKeys = function () {
 };
 
 /**

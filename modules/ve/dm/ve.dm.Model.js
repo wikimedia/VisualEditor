@@ -128,7 +128,7 @@ ve.dm.Model.static.matchFunction = null;
  * @param {ve.dm.Converter} converter Converter object
  * @returns {Object|Array|null} Linear model element, or array with linear model data, or null to alienate
  */
-ve.dm.Model.static.toDataElement = function ( /*domElements, converter*/ ) {
+ve.dm.Model.static.toDataElement = function () {
 	return { 'type': this.name };
 };
 
@@ -136,10 +136,10 @@ ve.dm.Model.static.toDataElement = function ( /*domElements, converter*/ ) {
  * Static function to convert a linear model data element for this model type back to one or more
  * DOM elements.
  *
- * If this model is a node with .handlesOwnChildren set to true, dataElement will be an array of
+ * If this model is a node with handlesOwnChildren set to true, dataElement will be an array of
  * the linear model data of this node and all of its children, rather than a single element.
  * In this case, this function way want to recursively convert linear model data to DOM, which can
- * be done with converter#getDomSubtreeFromData.
+ * be done with ve.dm.Converter#getDomSubtreeFromData.
  *
  * NOTE: If this function returns multiple DOM elements, the DOM elements produced by the children
  * of this model (if it's a node and has children) will be attached to the first DOM element in the array.
@@ -150,7 +150,7 @@ ve.dm.Model.static.toDataElement = function ( /*domElements, converter*/ ) {
  * @method
  * @param {Object|Array} dataElement Linear model element or array of linear model data
  * @param {HTMLDocument} doc HTML document for creating elements
- * @param {ve.dm.Converter} converter Converter object to optionally call .getDomSubtreeFromData() on
+ * @param {ve.dm.Converter} converter Converter object to optionally call `getDomSubtreeFromData` on
  * @returns {HTMLElement[]} DOM elements
  */
 ve.dm.Model.static.toDomElements = function ( dataElement, doc ) {
@@ -163,7 +163,7 @@ ve.dm.Model.static.toDomElements = function ( dataElement, doc ) {
 /**
  * Whether this model supports about grouping. When a DOM element matches a model type that has
  * about grouping enabled, the converter will look for adjacent siblings with the same value for
- * the about attribute, and ask toDataElement() to produce a single data element for all of those
+ * the about attribute, and ask #toDataElement to produce a single data element for all of those
  * DOM nodes combined.
  *
  * The converter doesn't descend into about groups, i.e. it doesn't convert the children of the
@@ -182,7 +182,7 @@ ve.dm.Model.static.enableAboutGrouping = false;
  * attributes will be stored in the .htmlAttributes property of the linear model element.
  *
  * When converting back to DOM, these HTML attributes will be restored except for attributes that
- * were already set by toDomElements().
+ * were already set by #toDomElements.
  *
  * The value of this property can be one of the following:
  *
@@ -431,7 +431,7 @@ ve.dm.Model.prototype.getClonedElement = function () {
  * The actual logic is in a static function as this needs
  * to be accessible from ve.dm.Converter
  *
- * This is a custom hash function for oo#getHash.
+ * This is a custom hash function for OO#getHash.
  *
  * @method
  * @returns {Object} Hash object

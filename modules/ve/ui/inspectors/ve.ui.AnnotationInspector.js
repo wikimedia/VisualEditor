@@ -84,7 +84,6 @@ ve.ui.AnnotationInspector.prototype.getAnnotation = function () {
 /**
  * Get an annotation object from a fragment.
  *
- * @method
  * @abstract
  * @param {ve.dm.SurfaceFragment} fragment Surface fragment
  * @returns {ve.dm.Annotation} Annotation
@@ -116,6 +115,7 @@ ve.ui.AnnotationInspector.prototype.getMatchingAnnotations = function ( fragment
  * Handle the inspector being setup.
  *
  * There are 4 scenarios:
+ *
  * - Zero-length selection not near a word -> no change, text will be inserted on close
  * - Zero-length selection inside or adjacent to a word -> expand selection to cover word
  * - Selection covering non-annotated text -> trim selection to remove leading/trailing whitespace
