@@ -15,7 +15,7 @@
  * only override static properties and functions.
  *
  * @class
- * @extends {ve.dm.Model}
+ * @extends ve.dm.Model
  * @constructor
  * @param {Object} element Linear model annotation
  */
@@ -64,6 +64,7 @@ ve.dm.Annotation.static.splitOnWordbreak = false;
  * indicate that the annotation should produce no output. In that case, the child DOM elements will
  * not be wrapped in anything and will be inserted directly into this annotation's parent.
  *
+ * @abstract
  * @static
  * @inheritable
  * @method
@@ -73,7 +74,7 @@ ve.dm.Annotation.static.splitOnWordbreak = false;
  * @param {HTMLElement[]} childDomElements Children that will be appended to the returned element
  * @returns {HTMLElement[]} Array of DOM elements; only the first element is used; may be empty
  */
-ve.dm.Annotation.static.toDomElements = function ( /*dataElement, doc, converter, childDomElements*/ ) {
+ve.dm.Annotation.static.toDomElements = function () {
 	throw new Error( 've.dm.Annotation subclass must implement toDomElements' );
 };
 
@@ -126,7 +127,7 @@ ve.dm.Annotation.prototype.getComparableHtmlAttributes = function () {
  * HACK: This method adds in HTML attributes so comparable objects aren't serialized
  * together if they have different HTML attributes.
  *
- * This method needs to be different from getComparableObject which is
+ * This method needs to be different from #getComparableObject which is
  * still used for editing annotations.
  *
  * @returns {Object} An object containing a subset of the annotation's properties and HTML attributes
@@ -156,7 +157,7 @@ ve.dm.Annotation.prototype.isGenerated = function () {
 /**
  * HACK: Compare to another annotation for serialization
  *
- * Compares two annotations using getComparableObjectForSerialization, unless
+ * Compares two annotations using #getComparableObjectForSerialization, unless
  * they are both generated annotations, in which case they must be identical.
  *
  * @param {ve.dm.Annotation} annotation Annotation to compare to
