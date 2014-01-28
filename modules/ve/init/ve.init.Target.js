@@ -20,7 +20,7 @@ ve.init.Target = function VeInitTarget( $container ) {
 	// Mixin constructors
 	OO.EventEmitter.call( this );
 
-	if ( !$.contains( document, $container[0] ) ) {
+	if ( !$.contains( $container[0].ownerDocument, $container[0] ) ) {
 		throw new Error( 'Container must be attached to the DOM' );
 	}
 
