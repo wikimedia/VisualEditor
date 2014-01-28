@@ -32,6 +32,7 @@ ve.ce.ImageNode = function VeCeImageNode( model, config ) {
 
 	// Events
 	this.$element.on( 'click', ve.bind( this.onClick, this ) );
+	this.$image.on( 'load', ve.bind( this.onLoad, this ) );
 	this.model.connect( this, { 'attributeChange': 'onAttributeChange' } );
 
 	// Initialization
@@ -98,6 +99,19 @@ ve.ce.ImageNode.prototype.onClick = function ( e ) {
 			) :
 			nodeRange
 	).select();
+};
+
+/**
+ * Handle the image load
+ *
+ * @method
+ * @param {jQuery.Event} e Load event
+ */
+ve.ce.ImageNode.prototype.onLoad = function () {
+	this.setOriginalDimensions( {
+		'width': this.$image.prop( 'naturalWidth' ),
+		'height': this.$image.prop( 'naturalHeight' )
+	} );
 };
 
 /* Registration */
