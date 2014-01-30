@@ -1,8 +1,7 @@
 /*!
- * UnicodeJS Graphemebreak module
+ * UnicodeJS Grapheme Break module
  *
- * Implementation of grapheme cluster boundary detection, based on
- * Unicode UAX #29 Default Grapheme Cluster Boundary Specification; see
+ * Implementation of Unicode 6.3.0 Default Grapheme Cluster Boundary Specification
  * http://www.unicode.org/reports/tr29/#Default_Grapheme_Cluster_Table
  *
  * @copyright 2013–2014 UnicodeJS team and others; see AUTHORS.txt
@@ -28,15 +27,23 @@
 	// build disjunction for grapheme cluster split
 	// See http://www.unicode.org/reports/tr29/ at "Grapheme Cluster Boundary Rules"
 	disjunction = [
+		// Break at the start and end of text.
+		// GB1: sot ÷
+		// GB2: ÷ eot
 		// GB1 and GB2 are trivially satisfied
 
-		// GB3
+		// Do not break between a CR and LF. Otherwise, break before and after controls.
+		// GB3: CR × LF
 		'\\r\\n',
 
-		// GB4, GB5
+		// GB4: ( Control | CR | LF ) ÷
+		// GB5: ÷ ( Control | CR | LF )
 		patterns.Control,
 
-		// GB6, GB7, GB8
+		// Do not break Hangul syllable sequences.
+		// GB6: L × ( L | V | LV | LVT )
+		// GB7: ( LV | V ) × ( V | T )
+		// GB8: ( LVT | T ) × T
 		'(?:' + patterns.L + ')*' +
 		'(?:' + patterns.V + ')+' +
 		'(?:' + patterns.T + ')*',
@@ -54,20 +61,29 @@
 
 		'(?:' + patterns.T + ')+',
 
-		// GB8a
+		// Do not break between regional indicator symbols.
+		// GB8a: Regional_Indicator × Regional_Indicator
 		/*jshint camelcase:false */
 		'(?:' + patterns.Regional_Indicator + ')+',
 		/*jshint camelcase:true */
 
-		// GB9, GB9a
-		// (GB9b: As of Unicode 6.2, no characters are "Prepend")
+		// Do not break before extending characters.
+		// GB9: × Extend
+
+		// Only for extended grapheme clusters:
+		// Do not break before SpacingMarks, or after Prepend characters.
+		// GB9a: × SpacingMark
+		// GB9b: Prepend ×
+		// As of Unicode 6.3.0, no characters are "Prepend"
 		// TODO: this will break if the extended thing is not oneCharacter
 		// e.g. hangul jamo L+V+T. Does it matter?
 		'(?:' + oneCharacter + ')' +
 		'(?:' + patterns.Extend + '|' +
 		patterns.SpacingMark + ')+',
 
-		// GB10 (taking care not to split surrogates)
+		// Otherwise, break everywhere.
+		// GB10: Any ÷ Any
+		// Taking care not to split surrogates
 		oneCharacter
 	];
 	graphemeBreakRegexp = new RegExp( '(' + disjunction.join( '|' ) + ')' );

@@ -1,8 +1,8 @@
 /*!
  * UnicodeJS Word Break module
  *
- * Implementation of Unicode's Default Word Boundaries
- * http://www.unicode.org/reports/tr29/#Default_Word_Boundaries
+ * Implementation of Unicode 6.3.0 Default Word Boundary Specification
+ * http://www.unicode.org/reports/tr29/#Default_Grapheme_Cluster_Table
  *
  * @copyright 2013–2014 UnicodeJS team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
@@ -165,8 +165,11 @@
 		}
 
 		// Do not break between most letters.
-		// WB5: ALetter × ALetter
-		if ( lft[0] === 'ALetter' && rgt[0] === 'ALetter' ) {
+		// WB5: (ALetter | Hebrew_Letter) × (ALetter | Hebrew_Letter)
+		if (
+			( lft[0] === 'ALetter' || lft[0] === 'Hebrew_Letter' ) &&
+			( rgt[0] === 'ALetter' || rgt[0] === 'Hebrew_Letter' )
+		) {
 			return false;
 		}
 
@@ -178,30 +181,37 @@
 
 		switch ( true ) {
 			// Do not break letters across certain punctuation.
-			// WB6: ALetter × (MidLetter | MidNumLet) ALetter
-			case lft[0] === 'ALetter' && rgt[1] === 'ALetter' &&
-				( rgt[0] === 'MidLetter' || rgt[0] === 'MidNumLet' ):
-			// WB7: ALetter (MidLetter | MidNumLet) × ALetter
-			case rgt[0] === 'ALetter' && lft[1] === 'ALetter' &&
-				( lft[0] === 'MidLetter' || lft[0] === 'MidNumLet' ):
-				return false;
+			// WB6: (ALetter | Hebrew_Letter) × (MidLetter | MidNumLet | Single_Quote) (ALetter | Hebrew_Letter)
+			case ( lft[0] === 'ALetter' || lft[0] === 'Hebrew_Letter' ) &&
+				( rgt[1] === 'ALetter' || rgt[1] === 'Hebrew_Letter' ) &&
+				( rgt[0] === 'MidLetter' || rgt[0] === 'MidNumLet' || rgt[0] === 'Single_Quote' ):
+			// WB7: (ALetter | Hebrew_Letter) (MidLetter | MidNumLet | Single_Quote) × (ALetter | Hebrew_Letter)
+			case ( rgt[0] === 'ALetter' || rgt[0] === 'Hebrew_Letter' ) &&
+				( lft[1] === 'ALetter' || lft[1] === 'Hebrew_Letter' ) &&
+				( lft[0] === 'MidLetter' || lft[0] === 'MidNumLet' || lft[0] === 'Single_Quote' ):
+			// WB7a: Hebrew_Letter × Single_Quote
+			case lft[0] === 'Hebrew_Letter' && rgt[0] === 'Single_Quote':
+			// WB7b: Hebrew_Letter × Double_Quote Hebrew_Letter
+			case lft[0] === 'Hebrew_Letter' && rgt[0] === 'Double_Quote' && rgt[1] === 'Hebrew_Letter':
+			// WB7c: Hebrew_Letter Double_Quote × Hebrew_Letter
+			case lft[1] === 'Hebrew_Letter' && lft[0] === 'Double_Quote' && rgt[0] === 'Hebrew_Letter':
 
 			// Do not break within sequences of digits, or digits adjacent to letters (“3a”, or “A3”).
 			// WB8: Numeric × Numeric
 			case lft[0] === 'Numeric' && rgt[0] === 'Numeric':
-			// WB9: ALetter × Numeric
-			case lft[0] === 'ALetter' && rgt[0] === 'Numeric':
-			// WB10: Numeric × ALetter
-			case lft[0] === 'Numeric' && rgt[0] === 'ALetter':
+			// WB9: (ALetter | Hebrew_Letter) × Numeric
+			case ( lft[0] === 'ALetter' || lft[0] === 'Hebrew_Letter' ) && rgt[0] === 'Numeric':
+			// WB10: Numeric × (ALetter | Hebrew_Letter)
+			case lft[0] === 'Numeric' && ( rgt[0] === 'ALetter' || rgt[0] === 'Hebrew_Letter' ):
 				return false;
 
 			// Do not break within sequences, such as “3.2” or “3,456.789”.
-			// WB11: Numeric (MidNum | MidNumLet) × Numeric
+			// WB11: Numeric (MidNum | MidNumLet | Single_Quote) × Numeric
 			case rgt[0] === 'Numeric' && lft[1] === 'Numeric' &&
-				( lft[0] === 'MidNum' || lft[0] === 'MidNumLet' ):
-			// WB12: Numeric × (MidNum | MidNumLet) Numeric
+				( lft[0] === 'MidNum' || lft[0] === 'MidNumLet' || lft[0] === 'Single_Quote' ):
+			// WB12: Numeric × (MidNum | MidNumLet | Single_Quote) Numeric
 			case lft[0] === 'Numeric' && rgt[1] === 'Numeric' &&
-				( rgt[0] === 'MidNum' || rgt[0] === 'MidNumLet' ):
+				( rgt[0] === 'MidNum' || rgt[0] === 'MidNumLet' || rgt[0] === 'Single_Quote' ):
 				return false;
 
 			// Do not break between Katakana.
@@ -210,12 +220,12 @@
 				return false;
 
 			// Do not break from extenders.
-			// WB13a: (ALetter | Numeric | Katakana | ExtendNumLet) × ExtendNumLet
+			// WB13a: (ALetter | Hebrew_Letter | Numeric | Katakana | ExtendNumLet) × ExtendNumLet
 			case rgt[0] === 'ExtendNumLet' &&
-				( lft[0] === 'ALetter' || lft[0] === 'Numeric' || lft[0] === 'Katakana' || lft[0] === 'ExtendNumLet' ):
-			// WB13b: ExtendNumLet × (ALetter | Numeric | Katakana)
+				( lft[0] === 'ALetter' || lft[0] === 'Hebrew_Letter' || lft[0] === 'Numeric' || lft[0] === 'Katakana' || lft[0] === 'ExtendNumLet' ):
+			// WB13b: ExtendNumLet × (ALetter | Hebrew_Letter | Numeric | Katakana)
 			case lft[0] === 'ExtendNumLet' &&
-				( rgt[0] === 'ALetter' || rgt[0] === 'Numeric' || rgt[0] === 'Katakana' ):
+				( rgt[0] === 'ALetter' || rgt[0] === 'Hebrew_Letter' || rgt[0] === 'Numeric' || rgt[0] === 'Katakana' ):
 				return false;
 
 			// Do not break between regional indicator symbols.
