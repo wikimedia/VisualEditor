@@ -64,7 +64,7 @@ QUnit.test( '(un)wrap', function ( assert ) {
 						{ 'type': 'listItem' },
 						{ 'type': 'list', 'attributes': { 'style': 'number' } },
 						{ 'type': 'listItem' }
-					 );
+					);
 				},
 				'expectedOriginalData': function ( data ) {
 					// generated: 'wrapper' is removed by the action and not restored by undo

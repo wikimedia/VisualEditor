@@ -28,7 +28,7 @@ function assertItemsMatchMetadata( assert, metadata, list, msg, full ) {
 }
 
 QUnit.test( 'constructor', function ( assert ) {
-	 var doc = ve.dm.example.createExampleDocument( 'withMeta' ),
+	var doc = ve.dm.example.createExampleDocument( 'withMeta' ),
 		surface = new ve.dm.Surface( doc ),
 		list = new ve.dm.MetaList( surface ),
 		metadata = doc.metadata;

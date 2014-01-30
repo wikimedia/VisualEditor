@@ -1301,18 +1301,18 @@ QUnit.test( 'newFromWrap', function ( assert ) {
 				'args': [listDoc, new ve.Range( 1, 11 ), [ { 'type': 'list' } ], [], [ { 'type': 'listItem', 'attributes': { 'styles': ['bullet'] } } ], [] ],
 				'ops': [
 					{ 'type': 'replace',
-					  'remove': [ { 'type': 'list' }, { 'type': 'listItem', 'attributes': { 'styles': ['bullet'] } } ],
-					  'insert': []
+						'remove': [ { 'type': 'list' }, { 'type': 'listItem', 'attributes': { 'styles': ['bullet'] } } ],
+						'insert': []
 					},
 					{ 'type': 'retain', 'length': 3 },
 					{ 'type': 'replace',
-					  'remove': [ { 'type': '/listItem' }, { 'type': 'listItem', 'attributes': { 'styles': ['bullet'] } } ],
-					  'insert': []
+						'remove': [ { 'type': '/listItem' }, { 'type': 'listItem', 'attributes': { 'styles': ['bullet'] } } ],
+						'insert': []
 					},
 					{ 'type': 'retain', 'length': 3 },
 					{ 'type': 'replace',
-					  'remove': [ { 'type': '/listItem' }, { 'type': '/list' } ],
-					  'insert': []
+						'remove': [ { 'type': '/listItem' }, { 'type': '/list' } ],
+						'insert': []
 					}
 				]
 			},
@@ -1366,15 +1366,15 @@ QUnit.test( 'newFromWrap', function ( assert ) {
 				'args': [metaDoc, new ve.Range( 1, 10 ), [ { 'type': 'paragraph' } ], [ { 'type': 'heading', 'level': 1 } ], [], [] ],
 				'ops': [
 					{ 'type': 'replace',
-					  'remove': [ { 'type': 'paragraph' } ],
-					  'insert': [ { 'type': 'heading', 'level': 1 } ],
-					  'insertMetadata': metaDoc.getMetadata().slice(0, 1),
-					  'removeMetadata': metaDoc.getMetadata().slice(0, 1)
+						'remove': [ { 'type': 'paragraph' } ],
+						'insert': [ { 'type': 'heading', 'level': 1 } ],
+						'insertMetadata': metaDoc.getMetadata().slice(0, 1),
+						'removeMetadata': metaDoc.getMetadata().slice(0, 1)
 					},
 					{ 'type': 'retain', 'length': 9 },
 					{ 'type': 'replace',
-					  'remove': [ { 'type': '/paragraph' } ],
-					  'insert': [ { 'type': '/heading' } ]
+						'remove': [ { 'type': '/paragraph' } ],
+						'insert': [ { 'type': '/heading' } ]
 					},
 					{ 'type': 'retain', 'length': 2 }
 				]
@@ -1383,36 +1383,36 @@ QUnit.test( 'newFromWrap', function ( assert ) {
 				'args': [listMetaDoc, new ve.Range( 1, 11 ), [ { 'type': 'list' } ], [], [ { 'type': 'listItem', 'attributes': { 'styles': ['bullet'] } } ], [] ],
 				'ops': [
 					{ 'type': 'replace',
-					  'remove': [ { 'type': 'list' }, { 'type': 'listItem', 'attributes': { 'styles': ['bullet'] } } ],
-					  'insert': [],
-					  'insertMetadata': [],
-					  'removeMetadata': listMetaDoc.getMetadata().slice(0, 2)
+						'remove': [ { 'type': 'list' }, { 'type': 'listItem', 'attributes': { 'styles': ['bullet'] } } ],
+						'insert': [],
+						'insertMetadata': [],
+						'removeMetadata': listMetaDoc.getMetadata().slice(0, 2)
 					},
 					{ 'type': 'replaceMetadata',
-					  'insert': ve.dm.MetaLinearData.static.merge( listMetaDoc.getMetadata().slice(0, 2) )[0],
-					  'remove': []
+						'insert': ve.dm.MetaLinearData.static.merge( listMetaDoc.getMetadata().slice(0, 2) )[0],
+						'remove': []
 					},
 					{ 'type': 'retain', 'length': 3 },
 					{ 'type': 'replace',
-					  'remove': [ { 'type': '/listItem' }, { 'type': 'listItem', 'attributes': { 'styles': ['bullet'] } } ],
-					  'insert': [],
-					  'insertMetadata': [],
-					  'removeMetadata': listMetaDoc.getMetadata().slice(5, 7)
+						'remove': [ { 'type': '/listItem' }, { 'type': 'listItem', 'attributes': { 'styles': ['bullet'] } } ],
+						'insert': [],
+						'insertMetadata': [],
+						'removeMetadata': listMetaDoc.getMetadata().slice(5, 7)
 					},
 					{ 'type': 'replaceMetadata',
-					  'insert': ve.dm.MetaLinearData.static.merge( listMetaDoc.getMetadata().slice(5, 7) )[0],
-					  'remove': []
+						'insert': ve.dm.MetaLinearData.static.merge( listMetaDoc.getMetadata().slice(5, 7) )[0],
+						'remove': []
 					},
 					{ 'type': 'retain', 'length': 3 },
 					{ 'type': 'replace',
-					  'remove': [ { 'type': '/listItem' }, { 'type': '/list' } ],
-					  'insert': [],
-					  'insertMetadata': [],
-					  'removeMetadata': listMetaDoc.getMetadata().slice(10, 12)
+						'remove': [ { 'type': '/listItem' }, { 'type': '/list' } ],
+						'insert': [],
+						'insertMetadata': [],
+						'removeMetadata': listMetaDoc.getMetadata().slice(10, 12)
 					},
 					{ 'type': 'replaceMetadata',
-					  'insert': ve.dm.MetaLinearData.static.merge( listMetaDoc.getMetadata().slice(10, 12) )[0],
-					  'remove': []
+						'insert': ve.dm.MetaLinearData.static.merge( listMetaDoc.getMetadata().slice(10, 12) )[0],
+						'remove': []
 					},
 					{ 'type': 'retainMetadata', 'length': 1 }
 				]

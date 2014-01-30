@@ -63,9 +63,7 @@
 
 		// Do not break between regional indicator symbols.
 		// GB8a: Regional_Indicator × Regional_Indicator
-		/*jshint camelcase:false */
-		'(?:' + patterns.Regional_Indicator + ')+',
-		/*jshint camelcase:true */
+		'(?:' + patterns.RegionalIndicator + ')+',
 
 		// Do not break before extending characters.
 		// GB9: × Extend

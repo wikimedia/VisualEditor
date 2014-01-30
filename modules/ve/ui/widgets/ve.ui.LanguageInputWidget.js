@@ -149,8 +149,8 @@ ve.ui.LanguageInputWidget.prototype.initialize = function () {
 		'classes': [ 've-ui-langInputWidget-languageTextInput' ]
 	} );
 	this.directionSelect = new OO.ui.ButtonSelectWidget( {
-		 '$': this.$,
-		 'classes': [ 've-ui-langInputWidget-directionSelect' ],
+		'$': this.$,
+		'classes': [ 've-ui-langInputWidget-directionSelect' ],
 	} );
 	this.directionSelect.addItems( [
 		new OO.ui.ButtonOptionWidget( 'rtl', { '$': this.$, 'icon': 'text-dir-rtl' } ),

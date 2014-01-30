@@ -37,7 +37,7 @@ OO.inheritClass( ve.ui.InspectorTool, OO.ui.Tool );
 ve.ui.InspectorTool.static.inspector = '';
 
 /**
- * Tool remains pressed when selected. 
+ * Tool remains pressed when selected.
  *
  * @static
  * @property {boolean}

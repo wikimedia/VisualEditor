@@ -472,8 +472,8 @@ QUnit.test( 'commit', function ( assert ) {
 				'data': ve.dm.example.listWithMeta,
 				'calls': [
 					[ 'newFromWrap', new ve.Range( 1, 11 ),
-					  [ { 'type': 'list' } ], [],
-					  [ { 'type': 'listItem', 'attributes': { 'styles': ['bullet'] } } ], [] ]
+						[ { 'type': 'list' } ], [],
+						[ { 'type': 'listItem', 'attributes': { 'styles': ['bullet'] } } ], [] ]
 				],
 				'expected': function ( data ) {
 					data.splice( 35, 1 ); // remove '/list'

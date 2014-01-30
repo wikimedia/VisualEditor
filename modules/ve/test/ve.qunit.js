@@ -230,8 +230,9 @@ QUnit.diff = function ( o, n ) {
 	var oLines = difflib.stringAsLines( unescapeText( o ) ),
 		nLines = difflib.stringAsLines( unescapeText( n ) ),
 		sm = new difflib.SequenceMatcher( oLines, nLines ),
-		/*jshint camelcase:false */
-		opcodes = sm.get_opcodes(),
+		// XXX: Sorry... https://github.com/mdevils/node-jscs/issues/20
+		method = 'get_opcodes',
+		opcodes = sm[ method ](),
 		$div = $( '<div>' );
 
 	$div.append( diffview.buildView( {
