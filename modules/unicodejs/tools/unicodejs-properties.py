@@ -2,7 +2,7 @@
 
 """Generates unicodejs.*properties.js from Unicode data"""
 
-import re, urllib2
+import re, urllib2, os
 
 for breaktype in ['Grapheme', 'Word']:
 	# a list of property name strings like "Extend", "Format" etc
@@ -48,6 +48,6 @@ for breaktype in ['Grapheme', 'Word']:
 	js += "unicodeJS." + breaktype.lower() + "breakproperties = {\n\t"
 	js += ",\n\t".join( fragments )
 	js += "\n};\n"
-	jsFilename = "../unicodejs." + breaktype.lower() + "breakproperties.js"
+	jsFilename = os.path.dirname( os.path.realpath( __file__ ) ) + "/../unicodejs." + breaktype.lower() + "breakproperties.js"
 	open( jsFilename, "w" ).write( js )
 	print "wrote " + jsFilename
