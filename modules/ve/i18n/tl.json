@@ -2,7 +2,8 @@
     "@metadata": {
         "authors": [
             "AnakngAraw",
-            "Sky Harbor"
+            "Sky Harbor",
+            "Jewel457"
         ]
     },
     "visualeditor": "VisualEditor",
@@ -36,7 +37,7 @@
     "visualeditor-indentationbutton-outdent-tooltip": "Bawasan ang palugit",
     "visualeditor-inspector-close-tooltip": "Isara",
     "visualeditor-inspector-remove-tooltip": "Alisin",
-    "visualeditor-languageinspector-block-tooltip": "Bloke ng teksto",
+    "visualeditor-languageinspector-block-tooltip": "Bulto ng mga salita",
     "visualeditor-languageinspector-title": "Wika",
     "visualeditor-languageinspector-widget-changelang": "Palitan ang wika",
     "visualeditor-languageinspector-widget-label-direction": "Direksiyon",
