@@ -17,6 +17,7 @@
  * @param {Object} [config] Configuration options
  * @cfg {Object[]} [tools] Toolbar configuration
  * @cfg {string[]} [commands] List of supported commands
+ * @cfg {Object} [pasteRules] Paste rules
  */
 ve.ui.SurfaceWidget = function VeUiSurfaceWidget( data, config ) {
 	// Config intialization
@@ -40,6 +41,9 @@ ve.ui.SurfaceWidget = function VeUiSurfaceWidget( data, config ) {
 	}
 	if ( config.commands ) {
 		this.surface.addCommands( config.commands );
+	}
+	if ( config.pasteRules ) {
+		this.surface.setPasteRules( config.pasteRules );
 	}
 };
 
