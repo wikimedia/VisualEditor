@@ -50,7 +50,7 @@
     "visualeditor-languageinspector-widget-label-langcode": "Јазичен код",
     "visualeditor-languageinspector-widget-label-language": "Јазик",
     "visualeditor-linkinspector-title": "Врска",
-    "visualeditor-mediasizewidget-button-originaldimensions": "Стави во изворна големина",
+    "visualeditor-mediasizewidget-button-originaldimensions": "Направи во полна големина",
     "visualeditor-mediasizewidget-label-defaulterror": "Вредностите за големина се неважечки.",
     "visualeditor-mediasizewidget-label-height": "Висина",
     "visualeditor-mediasizewidget-label-width": "Ширина",
@@ -63,6 +63,7 @@
     "visualeditor-shortcuts-text-style": "Форматирање на текстот",
     "visualeditor-specialcharacter-button-tooltip": "Специјален знак",
     "visualeditor-specialcharacterinspector-title": "Специјален знак",
+    "visualeditor-specialcharinspector-characterlist-insert": "{\n\t\"симболи\": {\n\t\t\"−\": \"−\",\n\t\t\"—\": \"—\",\n\t\t\"°\": \"°\",\n\t\t\"″\": \"″\",\n\t\t\"′\": \"′\",\n\t\t\"←\": \"←\",\n\t\t\"→\": \"→\",\n\t\t\"·\": \"·\",\n\t\t\"§\": \"§\"\n\t},\n\t\"акценти\": {\n\t\t\"à\": \"à\",\n\t\t\"á\": \"á\",\n\t\t\"â\": \"â\",\n\t\t\"ä\": \"ä\",\n\t\t\"ç\": \"ç\",\n\t\t\"è\": \"è\",\n\t\t\"é\": \"é\",\n\t\t\"ê\": \"ê\",\n\t\t\"ë\": \"ë\",\n\t\t\"ì\": \"ì\",\n\t\t\"í\": \"í\",\n\t\t\"î\": \"î\",\n\t\t\"ï\": \"ï\",\n\t\t\"ò\": \"ò\",\n\t\t\"ó\": \"ó\",\n\t\t\"ô\": \"ô\",\n\t\t\"ö\": \"ö\",\n\t\t\"ø\": \"ø\",\n\t\t\"ù\": \"ù\",\n\t\t\"ú\": \"ú\",\n\t\t\"û\": \"û\",\n\t\t\"ü\": \"ü\"\n\t},\n\t\"математика\": {\n\t\t\"−\": \"−\",\n\t\t\"×\": \"×\",\n\t\t\"÷\": \"÷\",\n\t\t\"≈\": \"≈\",\n\t\t\"≠\": \"≠\",\n\t\t\"≤\": \"≤\",\n\t\t\"≥\": \"≥\",\n\t\t\"±\": \"±\"\n\t}\n}",
     "visualeditor-toolbar-insert": "Вметни",
     "visualeditor-version-label": "Верзија"
 }
