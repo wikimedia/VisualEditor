@@ -10,7 +10,8 @@
             "Reza1615",
             "Taha",
             "درفش کاویانی",
-            "Fatemi127"
+            "Fatemi127",
+            "Armin1392"
         ]
     },
     "visualeditor": "ویرایشگر دیداری",
@@ -31,6 +32,7 @@
     "visualeditor-dialog-action-cancel": "لغو",
     "visualeditor-dialog-action-goback": "بازگشت به عقب",
     "visualeditor-dialog-command-help-title": "میانبرهای صفحه‌کلید",
+    "visualeditor-formatdropdown-format-heading-label": "سرفصل (1-6)",
     "visualeditor-formatdropdown-format-heading1": "سرعنوان ۱",
     "visualeditor-formatdropdown-format-heading2": "سرعنوان ۲",
     "visualeditor-formatdropdown-format-heading3": "سرعنوان ۳",
@@ -54,10 +56,19 @@
     "visualeditor-languageinspector-widget-label-langcode": "کد زبانی",
     "visualeditor-languageinspector-widget-label-language": "زبان‌ها",
     "visualeditor-linkinspector-title": "اَبَرپیوند",
+    "visualeditor-mediasizewidget-button-originaldimensions": "تنظیم به ابعاد اصلی",
+    "visualeditor-mediasizewidget-label-defaulterror": "مقادیر اندازه نامعتبر هستند.",
+    "visualeditor-mediasizewidget-label-height": "ارتفاع",
+    "visualeditor-mediasizewidget-label-width": "عرض",
     "visualeditor-listbutton-bullet-tooltip": "فهرست گلوله‌ای",
     "visualeditor-listbutton-number-tooltip": "فهرست شماره‌دار",
     "visualeditor-shortcuts-clipboard": "کلیپ بورد",
+    "visualeditor-shortcuts-formatting": "شکل‌بندی پاراگراف",
     "visualeditor-shortcuts-history": "تاریخچه",
     "visualeditor-shortcuts-other": "دیگر",
+    "visualeditor-shortcuts-text-style": "شکل‌بندی متن",
+    "visualeditor-specialcharacter-button-tooltip": "مشخصهٔ ویژه",
+    "visualeditor-specialcharacterinspector-title": "مشخصهٔ ویژه",
+    "visualeditor-toolbar-insert": "درج کردن",
     "visualeditor-version-label": "نسخه"
 }
