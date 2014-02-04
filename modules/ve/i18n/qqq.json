@@ -63,7 +63,7 @@
     "visualeditor-languageinspector-widget-label-langcode": "Label for the language inspector widget, to denote the current block language code.\n{{Identical|Language code}}",
     "visualeditor-languageinspector-widget-label-language": "Label for the language inspector widget, to denote the current block language.\n{{Identical|Language}}",
     "visualeditor-linkinspector-title": "Title of the link inspector dialog.\n{{Identical|Hyperlink}}",
-    "visualeditor-mediasizewidget-button-originaldimensions": "Label for the button that sets media to its original dimensions (width and height).",
+    "visualeditor-mediasizewidget-button-originaldimensions": "Label for the button that resizes a media item to its full original size (width and height).",
     "visualeditor-mediasizewidget-label-defaulterror": "An error label notifying the user the size inputs are invalid.",
     "visualeditor-mediasizewidget-label-height": "Label for the height input.\n{{Identical|Height}}",
     "visualeditor-mediasizewidget-label-width": "Label for the width input.\n{{Identical|Width}}",
