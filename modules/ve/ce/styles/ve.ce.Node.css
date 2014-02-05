@@ -150,6 +150,11 @@
 	border-left: solid 1px #ccc;
 }
 
+.ve-ce-resizableNode-sizeText-warning {
+	background-color: #ecc;
+	border-color: #caa;
+}
+
 /* ve.ce.RelocatableNode */
 
 .ve-ce-relocatableNode-marker {
