@@ -939,6 +939,8 @@ ve.ce.Surface.prototype.afterPaste = function () {
 		$elements, parts, pasteData, slice, tx, internalListRange,
 		data, doc, htmlDoc,
 		context, left, right, contextRange,
+		allSourcesPasteRules,
+		pasteRules = this.getSurface().getPasteRules(),
 		beforePasteData = this.beforePasteData || {},
 		$window = this.$( OO.ui.Element.getWindow( this.$.context ) ),
 		selection = this.model.getSelection();
@@ -1011,8 +1013,8 @@ ve.ce.Surface.prototype.afterPaste = function () {
 				ve.copy( slice.getOriginalData() )
 			);
 
-			if ( this.pasteSpecial ) {
-				pasteData.sanitize( this.getSurface().getPasteRules(), true );
+			if ( pasteRules.all || this.pasteSpecial ) {
+				pasteData.sanitize( pasteRules.all || {}, this.pasteSpecial );
 			}
 
 			// Annotate
@@ -1032,8 +1034,8 @@ ve.ce.Surface.prototype.afterPaste = function () {
 				ve.copy( slice.getBalancedData() )
 			);
 
-			if ( this.pasteSpecial ) {
-				pasteData.sanitize( this.getSurface().getPasteRules(), true );
+			if ( pasteRules.all || this.pasteSpecial ) {
+				pasteData.sanitize( pasteRules.all || {}, this.pasteSpecial );
 			}
 
 			// Annotate
@@ -1079,14 +1081,19 @@ ve.ce.Surface.prototype.afterPaste = function () {
 		data = doc.data;
 		// Clear metadata
 		doc.metadata = new ve.dm.MetaLinearData( doc.getStore(), new Array( 1 + data.getLength() ) );
-		// If the clipboardKey is set (paste from other VE instance), and it's a non-special paste, skip sanitization
-		if ( !clipboardKey || this.pasteSpecial ) {
-			data.sanitize( this.getSurface().getPasteRules(), this.pasteSpecial );
+		// If the clipboardKey isn't set (paste from non-VE instance) use external paste rules
+		if ( !clipboardKey ) {
+			data.sanitize( pasteRules.external, this.pasteSpecial );
+			if ( pasteRules.all ) {
+				data.sanitize( pasteRules.all );
+			}
 		} else {
-			// ...except not quite - contentEditable can't be trusted not
-			// to add styles, so for now remove them
+			// contentEditable can't be trusted not to add styles, so for now remove them as well
 			// TODO: store original styles in data
-			data.sanitize( { 'removeStyles': true } );
+			allSourcesPasteRules = ve.extendObject( pasteRules.all, {
+				'removeStyles': true
+			} );
+			data.sanitize( allSourcesPasteRules, this.pasteSpecial );
 		}
 		data.remapInternalListKeys( this.model.getDocument().getInternalList() );
 
@@ -1102,7 +1109,7 @@ ve.ce.Surface.prototype.afterPaste = function () {
 			);
 			if ( this.pasteSpecial ) {
 				// The context may have been sanitized, so sanitize here as well for comparison
-				context.sanitize( this.getSurface().getPasteRules(), this.pasteSpecial, true );
+				context.sanitize( pasteRules, this.pasteSpecial, true );
 			}
 
 			// Remove matching context from the left

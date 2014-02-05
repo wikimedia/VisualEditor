@@ -139,12 +139,23 @@ ve.init.Target.static.surfaceCommands = [
 	'pasteSpecial'
 ];
 
+/**
+ * Surface paste rules
+ *
+ * One set for external (non-VE) paste sources and one for all paste sources.
+ *
+ * @see ve.dm.ElementLinearData#sanitize
+ * @type {Object}
+ */
 ve.init.Target.static.pasteRules = {
-	'blacklist': [
-		// Annotations
-		// TODO: allow spans
-		'textStyle/span',
-		// Nodes
-		'alienInline', 'alienBlock'
-	]
+	'external': {
+		'blacklist': [
+			// Annotations
+			// TODO: allow spans
+			'textStyle/span',
+			// Nodes
+			'alienInline', 'alienBlock'
+		]
+	},
+	'all': null
 };
