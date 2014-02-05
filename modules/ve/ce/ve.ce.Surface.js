@@ -724,7 +724,7 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 	// Clone the elements in the slice
 	slice.data.cloneElements();
 
-	ve.dm.converter.getDomSubtreeFromModel( slice, this.$pasteTarget[0] );
+	ve.dm.converter.getDomSubtreeFromModel( slice, this.$pasteTarget[0], true );
 
 	// Some browsers strip out spans when they match the styling of the
 	// paste target (e.g. plain spans) so we must protect against this

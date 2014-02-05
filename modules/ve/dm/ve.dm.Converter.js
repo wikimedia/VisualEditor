@@ -26,6 +26,7 @@ ve.dm.Converter = function VeDmConverter( modelRegistry, nodeFactory, annotation
 	this.documentData = null;
 	this.store = null;
 	this.internalList = null;
+	this.forClipboard = null;
 	this.contextStack = null;
 };
 
@@ -265,6 +266,16 @@ ve.dm.Converter.prototype.getHtmlDocument = function () {
  */
 ve.dm.Converter.prototype.getTargetHtmlDocument = function () {
 	return this.targetDoc;
+};
+
+/**
+ * Is the current conversion for the clipboard
+ *
+ * @method
+ * @returns {boolean|null} The conversion is for the clipboard, or null if not converting
+ */
+ve.dm.Converter.prototype.isForClipboard = function () {
+	return this.forClipboard;
 };
 
 /**
@@ -1085,12 +1096,13 @@ ve.dm.Converter.prototype.isDomAllMetaOrWhitespace = function ( domElements, exc
  *
  * @method
  * @param {ve.dm.Document} model Document model
+ * @param {boolean} [forClipboard=false] Conversion is for clipboard
  * @returns {HTMLDocument} Document containing the resulting HTML
  */
-ve.dm.Converter.prototype.getDomFromModel = function ( model ) {
+ve.dm.Converter.prototype.getDomFromModel = function ( model, forClipboard ) {
 	var doc = ve.createDocumentFromHtml( '' );
 
-	this.getDomSubtreeFromModel( model, doc.body );
+	this.getDomSubtreeFromModel( model, doc.body, forClipboard );
 
 	return doc;
 };
@@ -1101,12 +1113,14 @@ ve.dm.Converter.prototype.getDomFromModel = function ( model ) {
  * @method
  * @param {ve.dm.Document} model Document model
  * @param {HTMLElement} container DOM element to add the generated elements to. Should be empty.
+ * @param {boolean} [forClipboard=false] Conversion is for clipboard
  */
-ve.dm.Converter.prototype.getDomSubtreeFromModel = function ( model, container ) {
+ve.dm.Converter.prototype.getDomSubtreeFromModel = function ( model, container, forClipboard ) {
 	// Set up the converter state
 	this.documentData = model.getFullData();
 	this.store = model.getStore();
 	this.internalList = model.getInternalList();
+	this.forClipboard = !!forClipboard;
 
 	this.getDomSubtreeFromData( this.documentData, container, model.getInnerWhitespace() );
 
@@ -1114,6 +1128,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromModel = function ( model, container )
 	this.documentData = null;
 	this.store = null;
 	this.internalList = null;
+	this.forClipboard = null;
 };
 
 /**
