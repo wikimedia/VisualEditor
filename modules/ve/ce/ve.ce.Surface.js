@@ -173,6 +173,7 @@ OO.mixinClass( ve.ce.Surface, OO.EventEmitter );
  * @type {string[]}
  */
 ve.ce.Surface.static.unsafeAttributes = [
+	// RDFa: Firefox ignores these
 	'about',
 	'content',
 	'datatype',
@@ -180,7 +181,9 @@ ve.ce.Surface.static.unsafeAttributes = [
 	'rel',
 	'resource',
 	'rev',
-	'typeof'
+	'typeof',
+	// CSS: Values are often added or modified
+	'style'
 ];
 
 /* Static methods */
@@ -939,7 +942,6 @@ ve.ce.Surface.prototype.afterPaste = function () {
 		$elements, parts, pasteData, slice, tx, internalListRange,
 		data, doc, htmlDoc,
 		context, left, right, contextRange,
-		allSourcesPasteRules,
 		pasteRules = this.getSurface().getPasteRules(),
 		beforePasteData = this.beforePasteData || {},
 		$window = this.$( OO.ui.Element.getWindow( this.$.context ) ),
@@ -952,6 +954,9 @@ ve.ce.Surface.prototype.afterPaste = function () {
 
 	// Remove the pasteProtect class. See #onCopy.
 	this.$pasteTarget.find( 'span' ).removeClass( 've-pasteProtect' );
+
+	// Remove style attributes. Any valid styles will be restored by data-ve-attributes.
+	this.$pasteTarget.find( '[style]' ).removeAttr( 'style' );
 
 	// Restore attributes. See #onCopy.
 	this.$pasteTarget.find( '[data-ve-attributes]' ).each( function () {
@@ -1087,13 +1092,8 @@ ve.ce.Surface.prototype.afterPaste = function () {
 			if ( pasteRules.all ) {
 				data.sanitize( pasteRules.all );
 			}
-		} else {
-			// contentEditable can't be trusted not to add styles, so for now remove them as well
-			// TODO: store original styles in data
-			allSourcesPasteRules = ve.extendObject( pasteRules.all, {
-				'removeStyles': true
-			} );
-			data.sanitize( allSourcesPasteRules, this.pasteSpecial );
+		} else if ( pasteRules.all || this.pasteSpecial ) {
+			data.sanitize( pasteRules.all || {}, this.pasteSpecial );
 		}
 		data.remapInternalListKeys( this.model.getDocument().getInternalList() );
 
