@@ -770,58 +770,6 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 				'msg': 'Table with caption into paragraph'
 			},
 			{
-				'range': new ve.Range( 4 ),
-				'pasteHtml': '<span style="font-size: 1em;">Foo</span>',
-				// Test this in clipboard data mode as document.execCommand
-				// doesn't work reliably with complex attributes
-				'useClipboardData': true,
-				'expectedRange': new ve.Range( 11 ),
-				'expectedOps': [
-					[
-						{ 'type': 'retain', 'length': 4 },
-						{
-							'type': 'replace',
-							'insert': [
-								{ 'type': '/paragraph' },
-								{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
-								'F', 'o', 'o',
-								{ 'type': '/paragraph' },
-								{ 'type': 'paragraph' }
-							],
-							'remove': []
-						},
-						{ 'type': 'retain', 'length': 5 }
-					]
-				],
-				'msg': 'Span empty after style attribute removed is ignored'
-			},
-			{
-				'range': new ve.Range( 4 ),
-				'pasteHtml': '<span style="font-size: 1em;" class="foo">Foo</span>',
-				// Test this in clipboard data mode as document.execCommand
-				// doesn't work reliably with complex attributes
-				'useClipboardData': true,
-				'expectedRange': new ve.Range( 11 ),
-				'expectedOps': [
-					[
-						{ 'type': 'retain', 'length': 4 },
-						{
-							'type': 'replace',
-							'insert': [
-								{ 'type': '/paragraph' },
-								{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
-								['F',[0]], ['o',[0]], ['o',[0]],
-								{ 'type': '/paragraph' },
-								{ 'type': 'paragraph' }
-							],
-							'remove': []
-						},
-						{ 'type': 'retain', 'length': 5 }
-					]
-				],
-				'msg': 'Span not empty after style attribute removed is kept'
-			},
-			{
 				'range': new ve.Range( 0 ),
 				'pasteHtml':
 					'<p about="ignored" class="i" ' +
