@@ -13,13 +13,13 @@
  * @extends OO.ui.Widget
  *
  * @constructor
- * @param {ve.dm.ElementLinearData} data Content data
+ * @param {ve.dm.Document} doc Document model
  * @param {Object} [config] Configuration options
  * @cfg {Object[]} [tools] Toolbar configuration
  * @cfg {string[]} [commands] List of supported commands
  * @cfg {Object} [pasteRules] Paste rules
  */
-ve.ui.SurfaceWidget = function VeUiSurfaceWidget( data, config ) {
+ve.ui.SurfaceWidget = function VeUiSurfaceWidget( doc, config ) {
 	// Config intialization
 	config = config || {};
 
@@ -27,7 +27,7 @@ ve.ui.SurfaceWidget = function VeUiSurfaceWidget( data, config ) {
 	OO.ui.Widget.call( this, config );
 
 	// Properties
-	this.surface = new ve.ui.Surface( data, { '$': this.$ } );
+	this.surface = new ve.ui.Surface( doc, { '$': this.$ } );
 	this.toolbar = new ve.ui.Toolbar( this.surface, { '$': this.$ } );
 
 	// Initialization
