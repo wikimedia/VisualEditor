@@ -73,7 +73,11 @@ ve.Document.prototype.getDocumentNode = function () {
  * @throws {Error} Failed to select any nodes
  */
 ve.Document.prototype.selectNodes = function ( range, mode ) {
-	var doc = this.getDocumentNode(),
+	var node, prevNode, nextNode, left, right, parentFrame,
+		startInside, endInside, startBetween, endBetween,
+		nodeRange, parentRange,
+		isWrapped, isPrevUnwrapped, isNextUnwrapped, isEmptyBranch,
+		doc = this.getDocumentNode(),
 		retval = [],
 		start = range.start,
 		end = range.end,
@@ -86,24 +90,8 @@ ve.Document.prototype.selectNodes = function ( range, mode ) {
 			// First offset inside node
 			'startOffset': 0
 		} ],
-		node,
-		prevNode,
-		nextNode,
-		left,
-		right,
 		currentFrame = stack[0],
-		parentFrame,
-		startInside,
-		endInside,
-		startBetween,
-		endBetween,
-		startFound = false,
-		nodeRange,
-		parentRange,
-		isWrapped,
-		isPrevUnwrapped,
-		isNextUnwrapped,
-		isEmptyBranch;
+		startFound = false;
 
 	mode = mode || 'leaves';
 	if ( mode !== 'leaves' && mode !== 'branches' && mode !== 'covered' && mode !== 'siblings' ) {
