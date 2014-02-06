@@ -141,6 +141,17 @@ ve.ce.Node.prototype.isContent = function () {
 };
 
 /**
+ * Check if the node handles its own children
+ *
+ * This method passes through to the model.
+ *
+ * @returns {boolean} Node handles its own children
+ */
+ve.ce.Node.prototype.handlesOwnChildren = function () {
+	return this.model.handlesOwnChildren();
+};
+
+/**
  * Check if the node is focusable
  *
  * @see #static-isFocusable
