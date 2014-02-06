@@ -102,7 +102,8 @@ OO.mixinClass( ve.ui.Surface, OO.EventEmitter );
 ve.ui.Surface.prototype.initialize = function () {
 	var firstOffset;
 	this.getView().$element.after( this.$localOverlay );
-	this.$( 'body' ).append( this.$globalOverlay );
+	// Attach globalOverlay to the global <body>, not the local frame's <body>
+	$( 'body' ).append( this.$globalOverlay );
 
 	this.getView().initialize();
 	// Go to the first content offset, or offset 1 if not found (returns -1)
