@@ -3425,6 +3425,22 @@ ve.dm.example.selectNodesCases = [
 				'parentOuterRange': new ve.Range( 0, 4 )
 			}
 		],
-		'msg': 'Zero-length range in empty branch node'
-	}
+		'msg': 'zero-length range in empty branch node'
+	},
+	{
+		'doc': 'internalData',
+		'range': new ve.Range( 6, 13 ),
+		'mode': 'leaves',
+		'expected': [
+			// internal item
+			{
+				'node': [ 1, 0 ],
+				'index': 0,
+				'nodeRange': new ve.Range( 7, 12 ),
+				'nodeOuterRange': new ve.Range( 6, 13 ),
+				'parentOuterRange': new ve.Range( 5, 21 )
+			}
+		],
+		'msg': 'range covering handlesOwnChildren node doesn\'t descend'
+	},
 ];

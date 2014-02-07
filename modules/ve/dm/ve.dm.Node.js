@@ -383,6 +383,15 @@ ve.dm.Node.prototype.hasSignificantWhitespace = function () {
 };
 
 /**
+ * Check if the node handles its own children
+ *
+ * @returns {boolean} Node handles its own children
+ */
+ve.dm.Node.prototype.handlesOwnChildren = function () {
+	return this.constructor.static.handlesOwnChildren;
+};
+
+/**
  * Check if the node has an ancestor with matching type and attribute values.
  *
  * @method
