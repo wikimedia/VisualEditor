@@ -99,7 +99,8 @@ OO.inheritClass( ve.ui.UndoHistoryTool, ve.ui.HistoryTool );
 ve.ui.UndoHistoryTool.static.name = 'undo';
 ve.ui.UndoHistoryTool.static.group = 'history';
 ve.ui.UndoHistoryTool.static.icon = 'undo';
-ve.ui.UndoHistoryTool.static.titleMessage = 'visualeditor-historybutton-undo-tooltip';
+ve.ui.UndoHistoryTool.static.title =
+	OO.ui.deferMsg( 'visualeditor-historybutton-undo-tooltip' );
 ve.ui.UndoHistoryTool.static.method = 'undo';
 ve.ui.UndoHistoryTool.static.check = 'hasPastState';
 ve.ui.toolFactory.register( ve.ui.UndoHistoryTool );
@@ -120,7 +121,8 @@ OO.inheritClass( ve.ui.RedoHistoryTool, ve.ui.HistoryTool );
 ve.ui.RedoHistoryTool.static.name = 'redo';
 ve.ui.RedoHistoryTool.static.group = 'history';
 ve.ui.RedoHistoryTool.static.icon = 'redo';
-ve.ui.RedoHistoryTool.static.titleMessage = 'visualeditor-historybutton-redo-tooltip';
+ve.ui.RedoHistoryTool.static.title =
+	OO.ui.deferMsg( 'visualeditor-historybutton-redo-tooltip' );
 ve.ui.RedoHistoryTool.static.method = 'redo';
 ve.ui.RedoHistoryTool.static.check = 'hasFutureState';
 ve.ui.toolFactory.register( ve.ui.RedoHistoryTool );

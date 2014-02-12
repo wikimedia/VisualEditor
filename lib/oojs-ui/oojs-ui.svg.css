@@ -1,12 +1,12 @@
 /*!
- * OOjs UI v0.1.0-pre-svg (11632fcada)
+ * OOjs UI v0.1.0-pre-svg (a290673bbd)
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2014 OOjs Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: Fri Jan 17 2014 18:17:27 GMT-0800 (PST)
+ * Date: Wed Feb 12 2014 13:40:12 GMT-0800 (PST)
  */
 /*csslint vendor-prefix:false */
 
@@ -674,7 +674,7 @@ a.oo-ui-buttonedElement-button {
 	display: none;
 }
 
-.oo-ui-toolGroup .oo-ui-tool-link .oo-ui-labeledElement-label {
+.oo-ui-toolGroup .oo-ui-tool-link .oo-ui-tool-title {
 	color: #000;
 }
 
@@ -738,7 +738,7 @@ a.oo-ui-buttonedElement-button {
 	opacity: 0.8;
 }
 
-.oo-ui-barToolGroup .oo-ui-tool-link .oo-ui-labeledElement-label {
+.oo-ui-barToolGroup .oo-ui-tool-link .oo-ui-tool-title {
 	display: none;
 }
 
@@ -758,8 +758,7 @@ a.oo-ui-buttonedElement-button {
 	opacity: 1;
 }
 
-.oo-ui-barToolGroup .oo-ui-tool-title,
-.oo-ui-barToolGroup .oo-ui-tool-accel {
+.oo-ui-barToolGroup .oo-ui-tool-title {
 	display: none;
 }
 
@@ -846,7 +845,7 @@ a.oo-ui-buttonedElement-button {
 	margin-right: 0.5em;
 }
 
-.oo-ui-popupToolGroup .oo-ui-tool-link .oo-ui-labeledElement-label {
+.oo-ui-popupToolGroup .oo-ui-tool-link .oo-ui-tool-title {
 	display: inline-block;
 	vertical-align: middle;
 	line-height: 2em;
@@ -903,7 +902,7 @@ a.oo-ui-buttonedElement-button {
 	cursor: default;
 }
 
-.oo-ui-listToolGroup .oo-ui-tool.oo-ui-widget-disabled .oo-ui-tool-link .oo-ui-labeledElement-label {
+.oo-ui-listToolGroup .oo-ui-tool.oo-ui-widget-disabled .oo-ui-tool-link .oo-ui-tool-title {
 	color: #ccc;
 }
 
@@ -1620,6 +1619,11 @@ a.oo-ui-buttonedElement-button {
 	background-image: url(images/icons/add-item.png);
 }
 
+.oo-ui-icon-advanced {
+	/* @embed */
+	background-image: url(images/icons/advanced.png);
+}
+
 .oo-ui-icon-alert {
 	/* @embed */
 	background-image: url(images/icons/alert.png);
@@ -1746,6 +1750,11 @@ a.oo-ui-buttonedElement-button {
 .oo-ui-icon-add-item {
 	/* @embed */
 	background-image: url(images/icons/add-item.svg);
+}
+
+.oo-ui-icon-advanced {
+	/* @embed */
+	background-image: url(images/icons/advanced.svg);
 }
 
 .oo-ui-icon-alert {

@@ -124,7 +124,8 @@ OO.inheritClass( ve.ui.LinkInspectorTool, ve.ui.InspectorTool );
 ve.ui.LinkInspectorTool.static.name = 'link';
 ve.ui.LinkInspectorTool.static.group = 'meta';
 ve.ui.LinkInspectorTool.static.icon = 'link';
-ve.ui.LinkInspectorTool.static.titleMessage = 'visualeditor-annotationbutton-link-tooltip';
+ve.ui.LinkInspectorTool.static.title =
+	OO.ui.deferMsg( 'visualeditor-annotationbutton-link-tooltip' );
 ve.ui.LinkInspectorTool.static.inspector = 'link';
 ve.ui.LinkInspectorTool.static.modelClasses = [ ve.dm.LinkAnnotation ];
 ve.ui.toolFactory.register( ve.ui.LinkInspectorTool );
@@ -145,7 +146,8 @@ OO.inheritClass( ve.ui.InsertCharacterInspectorTool, ve.ui.InspectorTool );
 ve.ui.InsertCharacterInspectorTool.static.name = 'specialcharacter';
 ve.ui.InsertCharacterInspectorTool.static.group = 'insert';
 ve.ui.InsertCharacterInspectorTool.static.icon = 'special-character';
-ve.ui.InsertCharacterInspectorTool.static.titleMessage = 'visualeditor-specialcharacter-button-tooltip';
+ve.ui.InsertCharacterInspectorTool.static.title =
+	OO.ui.deferMsg( 'visualeditor-specialcharacter-button-tooltip' );
 ve.ui.InsertCharacterInspectorTool.static.inspector = 'specialcharacter';
 ve.ui.InsertCharacterInspectorTool.static.isSticky = false;
 ve.ui.toolFactory.register( ve.ui.InsertCharacterInspectorTool );
