@@ -33,7 +33,7 @@ ve.ui.LinkInspector.static.name = 'link';
 
 ve.ui.LinkInspector.static.icon = 'link';
 
-ve.ui.LinkInspector.static.titleMessage = 'visualeditor-linkinspector-title';
+ve.ui.LinkInspector.static.title = OO.ui.deferMsg( 'visualeditor-linkinspector-title' );
 
 ve.ui.LinkInspector.static.linkTargetInputWidget = ve.ui.LinkTargetInputWidget;
 

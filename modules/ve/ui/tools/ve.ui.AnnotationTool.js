@@ -103,7 +103,8 @@ ve.ui.BoldAnnotationTool.static.icon = {
 	'ru': 'bold-cyrl-zhe',
 	'sv': 'bold-f'
 };
-ve.ui.BoldAnnotationTool.static.titleMessage = 'visualeditor-annotationbutton-bold-tooltip';
+ve.ui.BoldAnnotationTool.static.title =
+	OO.ui.deferMsg( 'visualeditor-annotationbutton-bold-tooltip' );
 ve.ui.BoldAnnotationTool.static.annotation = { 'name': 'textStyle/bold' };
 ve.ui.toolFactory.register( ve.ui.BoldAnnotationTool );
 
@@ -148,7 +149,8 @@ ve.ui.ItalicAnnotationTool.static.icon = {
 	'ru': 'italic-cyrl-ka',
 	'sv': 'italic-k'
 };
-ve.ui.ItalicAnnotationTool.static.titleMessage = 'visualeditor-annotationbutton-italic-tooltip';
+ve.ui.ItalicAnnotationTool.static.title =
+	OO.ui.deferMsg( 'visualeditor-annotationbutton-italic-tooltip' );
 ve.ui.ItalicAnnotationTool.static.annotation = { 'name': 'textStyle/italic' };
 ve.ui.toolFactory.register( ve.ui.ItalicAnnotationTool );
 
@@ -168,7 +170,8 @@ OO.inheritClass( ve.ui.CodeAnnotationTool, ve.ui.AnnotationTool );
 ve.ui.CodeAnnotationTool.static.name = 'code';
 ve.ui.CodeAnnotationTool.static.group = 'textStyle';
 ve.ui.CodeAnnotationTool.static.icon = 'code';
-ve.ui.CodeAnnotationTool.static.titleMessage = 'visualeditor-annotationbutton-code-tooltip';
+ve.ui.CodeAnnotationTool.static.title =
+	OO.ui.deferMsg( 'visualeditor-annotationbutton-code-tooltip' );
 ve.ui.CodeAnnotationTool.static.annotation = { 'name': 'textStyle/code' };
 ve.ui.toolFactory.register( ve.ui.CodeAnnotationTool );
 
@@ -191,8 +194,8 @@ ve.ui.StrikethroughAnnotationTool.static.icon = {
 	'default': 'strikethrough-a',
 	'en': 'strikethrough-s'
 };
-ve.ui.StrikethroughAnnotationTool.static.titleMessage =
-	'visualeditor-annotationbutton-strikethrough-tooltip';
+ve.ui.StrikethroughAnnotationTool.static.title =
+	OO.ui.deferMsg( 'visualeditor-annotationbutton-strikethrough-tooltip' );
 ve.ui.StrikethroughAnnotationTool.static.annotation = { 'name': 'textStyle/strike' };
 ve.ui.toolFactory.register( ve.ui.StrikethroughAnnotationTool );
 
@@ -215,8 +218,8 @@ ve.ui.UnderlineAnnotationTool.static.icon = {
 	'default': 'underline-a',
 	'en': 'underline-u'
 };
-ve.ui.UnderlineAnnotationTool.static.titleMessage =
-	'visualeditor-annotationbutton-underline-tooltip';
+ve.ui.UnderlineAnnotationTool.static.title =
+	OO.ui.deferMsg( 'visualeditor-annotationbutton-underline-tooltip' );
 ve.ui.UnderlineAnnotationTool.static.annotation = { 'name': 'textStyle/underline' };
 ve.ui.toolFactory.register( ve.ui.UnderlineAnnotationTool );
 
@@ -236,8 +239,8 @@ OO.inheritClass( ve.ui.SubscriptAnnotationTool, ve.ui.AnnotationTool );
 ve.ui.SubscriptAnnotationTool.static.name = 'subscript';
 ve.ui.SubscriptAnnotationTool.static.group = 'textStyle';
 ve.ui.SubscriptAnnotationTool.static.icon = 'subscript';
-ve.ui.SubscriptAnnotationTool.static.titleMessage =
-	'visualeditor-annotationbutton-subscript-tooltip';
+ve.ui.SubscriptAnnotationTool.static.title =
+	OO.ui.deferMsg( 'visualeditor-annotationbutton-subscript-tooltip' );
 ve.ui.SubscriptAnnotationTool.static.annotation = { 'name': 'textStyle/subscript' };
 ve.ui.toolFactory.register( ve.ui.SubscriptAnnotationTool );
 
@@ -257,7 +260,7 @@ OO.inheritClass( ve.ui.SuperscriptAnnotationTool, ve.ui.AnnotationTool );
 ve.ui.SuperscriptAnnotationTool.static.name = 'superscript';
 ve.ui.SuperscriptAnnotationTool.static.group = 'textStyle';
 ve.ui.SuperscriptAnnotationTool.static.icon = 'superscript';
-ve.ui.SuperscriptAnnotationTool.static.titleMessage =
-	'visualeditor-annotationbutton-superscript-tooltip';
+ve.ui.SuperscriptAnnotationTool.static.title =
+	OO.ui.deferMsg( 'visualeditor-annotationbutton-superscript-tooltip' );
 ve.ui.SuperscriptAnnotationTool.static.annotation = { 'name': 'textStyle/superscript' };
 ve.ui.toolFactory.register( ve.ui.SuperscriptAnnotationTool );

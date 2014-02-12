@@ -7,40 +7,40 @@
 
 /* ve.ui.FormatTool */
 
-.oo-ui-menuToolGroup .oo-ui-tool-name-paragraph .oo-ui-labeledElement-label {
+.oo-ui-menuToolGroup .oo-ui-tool-name-paragraph .oo-ui-tool-title {
 	font-weight: normal;
 }
 
-.oo-ui-menuToolGroup .oo-ui-tool-name-heading1 .oo-ui-labeledElement-label {
+.oo-ui-menuToolGroup .oo-ui-tool-name-heading1 .oo-ui-tool-title {
 	font-size: 150%;
 	font-weight: normal;
 }
 
-.oo-ui-menuToolGroup .oo-ui-tool-name-heading2 .oo-ui-labeledElement-label {
+.oo-ui-menuToolGroup .oo-ui-tool-name-heading2 .oo-ui-tool-title {
 	font-size: 120%;
 	font-weight: normal;
 }
 
-.oo-ui-menuToolGroup .oo-ui-tool-name-heading3 .oo-ui-labeledElement-label {
+.oo-ui-menuToolGroup .oo-ui-tool-name-heading3 .oo-ui-tool-title {
 	font-size: 105%;
 	font-weight: bold;
 }
 
-.oo-ui-menuToolGroup .oo-ui-tool-name-heading4 .oo-ui-labeledElement-label {
+.oo-ui-menuToolGroup .oo-ui-tool-name-heading4 .oo-ui-tool-title {
 	font-size: 92%;
 	font-weight: bold;
 }
 
-.oo-ui-menuToolGroup .oo-ui-tool-name-heading5 .oo-ui-labeledElement-label {
+.oo-ui-menuToolGroup .oo-ui-tool-name-heading5 .oo-ui-tool-title {
 	font-size: 80%;
 	font-weight: bold;
 }
 
-.oo-ui-menuToolGroup .oo-ui-tool-name-heading6 .oo-ui-labeledElement-label {
+.oo-ui-menuToolGroup .oo-ui-tool-name-heading6 .oo-ui-tool-title {
 	font-size: 64%;
 	font-weight: bold;
 }
 
-.oo-ui-menuToolGroup .oo-ui-tool-name-preformatted .oo-ui-labeledElement-label {
+.oo-ui-menuToolGroup .oo-ui-tool-name-preformatted .oo-ui-tool-title {
 	font-family: monospace, "Courier New";
 }

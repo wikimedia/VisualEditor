@@ -31,7 +31,8 @@ OO.inheritClass( ve.ui.CommandHelpDialog, ve.ui.Dialog );
 
 ve.ui.CommandHelpDialog.static.name = 'commandHelp';
 
-ve.ui.CommandHelpDialog.static.titleMessage = 'visualeditor-dialog-command-help-title';
+ve.ui.CommandHelpDialog.static.title =
+	OO.ui.deferMsg( 'visualeditor-dialog-command-help-title' );
 
 ve.ui.CommandHelpDialog.static.icon = 'help';
 

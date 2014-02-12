@@ -30,7 +30,8 @@ ve.ui.LanguageInspector.static.name = 'language';
 
 ve.ui.LanguageInspector.static.icon = 'language';
 
-ve.ui.LanguageInspector.static.titleMessage = 'visualeditor-languageinspector-title';
+ve.ui.LanguageInspector.static.title =
+	OO.ui.deferMsg( 'visualeditor-languageinspector-title' );
 
 ve.ui.LanguageInspector.static.languageInputWidget = ve.ui.LanguageInputWidget;
 

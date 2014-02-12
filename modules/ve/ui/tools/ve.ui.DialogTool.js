@@ -111,7 +111,8 @@ OO.inheritClass( ve.ui.CommandHelpDialogTool, ve.ui.DialogTool );
 ve.ui.CommandHelpDialogTool.static.name = 'commandHelp';
 ve.ui.CommandHelpDialogTool.static.group = 'dialog';
 ve.ui.CommandHelpDialogTool.static.icon = 'help';
-ve.ui.CommandHelpDialogTool.static.titleMessage = 'visualeditor-dialogbutton-command-help-tooltip';
+ve.ui.CommandHelpDialogTool.static.title =
+	OO.ui.deferMsg( 'visualeditor-dialogbutton-command-help-tooltip' );
 ve.ui.CommandHelpDialogTool.static.dialog = 'commandHelp';
 ve.ui.CommandHelpDialogTool.static.autoAdd = false;
 ve.ui.toolFactory.register( ve.ui.CommandHelpDialogTool );

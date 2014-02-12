@@ -201,7 +201,7 @@ ve.ui.Toolbar.prototype.onContextChange = function () {
  */
 ve.ui.Toolbar.prototype.onSurfaceAddCommand = function ( name ) {
 	if ( this.tools[name] ) {
-		this.tools[name].updateLabel();
+		this.tools[name].updateTitle();
 	}
 };
 

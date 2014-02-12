@@ -77,7 +77,8 @@ ve.ui.SpecialCharacterInspector.static.name = 'specialcharacter';
 
 ve.ui.SpecialCharacterInspector.static.icon = 'specialcharacter';
 
-ve.ui.SpecialCharacterInspector.static.titleMessage = 'visualeditor-specialcharacterinspector-title';
+ve.ui.SpecialCharacterInspector.static.title =
+	OO.ui.deferMsg( 'visualeditor-specialcharacterinspector-title' );
 
 ve.ui.SpecialCharacterInspector.static.removable = false;
 
