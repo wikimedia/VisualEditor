@@ -45,58 +45,12 @@ ve.ui.CommandHelpDialog.prototype.initialize = function () {
 	// Parent method
 	ve.ui.Dialog.prototype.initialize.call( this );
 
-	var i, iLen, j, jLen, shortcut, commands,
-		$list,
-		commandGroups = [
-			{
-				'title': 'visualeditor-shortcuts-text-style',
-				'commands': [
-					{ 'name': 'bold', 'msg': 'visualeditor-annotationbutton-bold-tooltip' },
-					{ 'name': 'italic', 'msg': 'visualeditor-annotationbutton-italic-tooltip' },
-					{ 'name': 'link', 'msg': 'visualeditor-annotationbutton-link-tooltip' },
-					{ 'name': 'subscript', 'msg': 'visualeditor-annotationbutton-subscript-tooltip' },
-					{ 'name': 'superscript', 'msg': 'visualeditor-annotationbutton-superscript-tooltip' },
-					{ 'name': 'underline', 'msg': 'visualeditor-annotationbutton-underline-tooltip' },
-					{ 'name': 'clear', 'msg': 'visualeditor-clearbutton-tooltip' }
-				]
-			},
-			{
-				'title': 'visualeditor-shortcuts-formatting',
-				'commands': [
-					{ 'name': 'paragraph', 'msg': 'visualeditor-formatdropdown-format-paragraph' },
-					{ 'shortcut': 'CTRL+(1-6)', 'msg': 'visualeditor-formatdropdown-format-heading-label' },
-					{ 'name': 'preformatted', 'msg': 'visualeditor-formatdropdown-format-preformatted' },
-					{ 'name': 'indent', 'msg': 'visualeditor-indentationbutton-indent-tooltip' },
-					{ 'name': 'outdent', 'msg': 'visualeditor-indentationbutton-outdent-tooltip' }
-				]
-			},
-			{
-				'title': 'visualeditor-shortcuts-history',
-				'commands': [
-					{ 'name': 'undo', 'msg': 'visualeditor-historybutton-undo-tooltip' },
-					{ 'name': 'redo', 'msg': 'visualeditor-historybutton-redo-tooltip' }
-				]
-			},
-			{
-				'title': 'visualeditor-shortcuts-clipboard',
-				'commands': [
-					{ 'shortcut': 'CTRL+X', 'msg': 'visualeditor-clipboard-cut' },
-					{ 'shortcut': 'CTRL+C', 'msg': 'visualeditor-clipboard-copy' },
-					{ 'shortcut': 'CTRL+V', 'msg': 'visualeditor-clipboard-paste' },
-					{ 'name': 'pasteSpecial', 'msg': 'visualeditor-clipboard-paste-special' }
-				]
-			},
-			{
-				'title': 'visualeditor-shortcuts-other',
-				'commands': [
-					{ 'name': 'commandHelp', 'msg': 'visualeditor-dialog-command-help-title' }
-				]
-			},
-		],
+	var i, j, jLen, shortcut, commands, $list,
+		commandGroups = this.constructor.static.getCommandGroups(),
 		$container = this.$( '<div>' ).addClass( 've-ui-commandHelpDialog-container' ),
 		triggers = this.surface.getTriggers();
 
-	for ( i = 0, iLen = commandGroups.length; i < iLen; i++ ) {
+	for ( i in commandGroups ) {
 		commands = commandGroups[i].commands;
 		$list = this.$( '<dl>' ).addClass( 've-ui-commandHelpDialog-list' );
 		for ( j = 0, jLen = commands.length; j < jLen; j++ ) {
@@ -117,6 +71,63 @@ ve.ui.CommandHelpDialog.prototype.initialize = function () {
 	}
 
 	this.$body.append( $container );
+};
+
+/* Static methods */
+
+/**
+ * Get the list of commands, grouped by type
+ *
+ * @static
+ * @returns {Object} Object containing command groups, consiste of a title message and array of commands
+ */
+ve.ui.CommandHelpDialog.static.getCommandGroups = function () {
+	return {
+		'textStyle': {
+			'title': 'visualeditor-shortcuts-text-style',
+			'commands': [
+				{ 'name': 'bold', 'msg': 'visualeditor-annotationbutton-bold-tooltip' },
+				{ 'name': 'italic', 'msg': 'visualeditor-annotationbutton-italic-tooltip' },
+				{ 'name': 'link', 'msg': 'visualeditor-annotationbutton-link-tooltip' },
+				{ 'name': 'subscript', 'msg': 'visualeditor-annotationbutton-subscript-tooltip' },
+				{ 'name': 'superscript', 'msg': 'visualeditor-annotationbutton-superscript-tooltip' },
+				{ 'name': 'underline', 'msg': 'visualeditor-annotationbutton-underline-tooltip' },
+				{ 'name': 'clear', 'msg': 'visualeditor-clearbutton-tooltip' }
+			]
+		},
+		'formatting': {
+			'title': 'visualeditor-shortcuts-formatting',
+			'commands': [
+				{ 'name': 'paragraph', 'msg': 'visualeditor-formatdropdown-format-paragraph' },
+				{ 'shortcut': 'CTRL+(1-6)', 'msg': 'visualeditor-formatdropdown-format-heading-label' },
+				{ 'name': 'preformatted', 'msg': 'visualeditor-formatdropdown-format-preformatted' },
+				{ 'name': 'indent', 'msg': 'visualeditor-indentationbutton-indent-tooltip' },
+				{ 'name': 'outdent', 'msg': 'visualeditor-indentationbutton-outdent-tooltip' }
+			]
+		},
+		'history': {
+			'title': 'visualeditor-shortcuts-history',
+			'commands': [
+				{ 'name': 'undo', 'msg': 'visualeditor-historybutton-undo-tooltip' },
+				{ 'name': 'redo', 'msg': 'visualeditor-historybutton-redo-tooltip' }
+			]
+		},
+		'clipboard': {
+			'title': 'visualeditor-shortcuts-clipboard',
+			'commands': [
+				{ 'shortcut': 'CTRL+X', 'msg': 'visualeditor-clipboard-cut' },
+				{ 'shortcut': 'CTRL+C', 'msg': 'visualeditor-clipboard-copy' },
+				{ 'shortcut': 'CTRL+V', 'msg': 'visualeditor-clipboard-paste' },
+				{ 'name': 'pasteSpecial', 'msg': 'visualeditor-clipboard-paste-special' }
+			]
+		},
+		'other': {
+			'title': 'visualeditor-shortcuts-other',
+			'commands': [
+				{ 'name': 'commandHelp', 'msg': 'visualeditor-dialog-command-help-title' }
+			]
+		},
+	};
 };
 
 /* Registration */
