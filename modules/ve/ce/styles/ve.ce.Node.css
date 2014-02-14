@@ -168,6 +168,16 @@
 
 /* ve.ce.GeneratedContentNode */
 
+/* Prevent GeneratedContentNode wrappers from being interacted with  */
+.ve-ce-generatedContentNode {
+	pointer-events: none;
+}
+
+/* Allow GeneratedContentNode content to be interacted with  */
+.ve-ce-generatedContentNode .ve-ce-protectedNode-shield {
+	pointer-events: all;
+}
+
 .ve-ce-generatedContentNode-generating {
 	opacity: 0.5;
 }
