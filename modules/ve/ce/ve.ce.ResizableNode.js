@@ -109,7 +109,9 @@ ve.ce.ResizableNode.prototype.setOriginalDimensions = function ( dimensions ) {
 	// Parent method
 	ve.Scalable.prototype.setOriginalDimensions.call( this, dimensions );
 	// If dimensions are valid and the scale label is desired, enable it
-	this.canShowScaleLabel = this.showScaleLabel && this.getOriginalDimensions().width && this.getOriginalDimensions().height;
+	this.canShowScaleLabel = this.showScaleLabel &&
+		this.getOriginalDimensions().width &&
+		this.getOriginalDimensions().height;
 };
 
 /**
@@ -122,6 +124,10 @@ ve.ce.ResizableNode.prototype.hideSizeLabel = function () {
 	setTimeout( function () {
 		node.$sizeLabel.removeClass( 've-ce-resizableNode-sizeLabel-resizing' );
 	} );
+	// Actually hide the size label after it's done animating
+	setTimeout( function () {
+		node.$sizeLabel.hide();
+	}, 200 );
 };
 
 /**
@@ -146,6 +152,7 @@ ve.ce.ResizableNode.prototype.updateSizeLabel = function () {
 		height = dimensions.height;
 	}
 	this.$sizeLabel
+		.show()
 		.addClass( 've-ce-resizableNode-sizeLabel-resizing' )
 		.css( {
 			'top': top,
