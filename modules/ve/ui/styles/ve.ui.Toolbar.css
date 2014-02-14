@@ -5,11 +5,15 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
+.oo-ui-toolbar-bar {
+	position: relative;
+}
+
 .ve-ui-toolbar-floating > .oo-ui-toolbar-bar {
 	position: fixed;
 	top: 0;
 	z-index: 100;
-	border-top: none; /* TODO: Do we need this? What does it reset? */
+	border-top: none;
 }
 
 .ve-ui-toolbar-floating .oo-ui-toolbar-shadow {
