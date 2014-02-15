@@ -8,7 +8,8 @@
             "Mido",
             "OsamaK",
             "زكريا",
-            "مشعل الحربي"
+            "مشعل الحربي",
+            "Asaifm"
         ]
     },
     "visualeditor": "المحرر المرئي",
@@ -55,7 +56,7 @@
     "visualeditor-languageinspector-widget-label-langcode": "رمز اللغة",
     "visualeditor-languageinspector-widget-label-language": "اللغة",
     "visualeditor-linkinspector-title": "وصلة",
-    "visualeditor-mediasizewidget-button-originaldimensions": "الإعادة إلى الأبعاد الأصلية",
+    "visualeditor-mediasizewidget-button-originaldimensions": "إعادة أبعاد الملف إلى الحجم الفعلي",
     "visualeditor-mediasizewidget-label-defaulterror": "قيم حجم غير صحيحة.",
     "visualeditor-mediasizewidget-label-height": "ارتفاع",
     "visualeditor-mediasizewidget-label-width": "عرض",
