@@ -267,10 +267,11 @@ ve.dm.ElementLinearData.prototype.isContentData = function () {
  *
  * @method
  * @param {number} offset Offset to get annotations for
+ * @param {boolean} [ignoreClose] Ignore annotations on close elements
  * @returns {number[]} An array of annotation store indexes the offset is covered by
  * @throws {Error} offset out of bounds
  */
-ve.dm.ElementLinearData.prototype.getAnnotationIndexesFromOffset = function ( offset ) {
+ve.dm.ElementLinearData.prototype.getAnnotationIndexesFromOffset = function ( offset, ignoreClose ) {
 	if ( offset < 0 || offset > this.getLength() ) {
 		throw new Error( 'offset ' + offset + ' out of bounds' );
 	}
@@ -278,6 +279,7 @@ ve.dm.ElementLinearData.prototype.getAnnotationIndexesFromOffset = function ( of
 	// Since annotations are not stored on a closing leaf node,
 	// rewind offset by 1 to return annotations for that structure
 	if (
+		!ignoreClose &&
 		ve.isPlainObject( element ) && // structural offset
 		element.hasOwnProperty( 'type' ) && // just in case
 		element.type.charAt( 0 ) === '/' && // closing offset
@@ -303,11 +305,12 @@ ve.dm.ElementLinearData.prototype.getAnnotationIndexesFromOffset = function ( of
  *
  * @method
  * @param {number} offset Offset to get annotations for
+ * @param {boolean} [ignoreClose] Ignore annotations on close elements
  * @returns {ve.dm.AnnotationSet} A set of all annotation objects offset is covered by
  * @throws {Error} offset out of bounds
  */
-ve.dm.ElementLinearData.prototype.getAnnotationsFromOffset = function ( offset ) {
-	return new ve.dm.AnnotationSet( this.getStore(), this.getAnnotationIndexesFromOffset( offset ) );
+ve.dm.ElementLinearData.prototype.getAnnotationsFromOffset = function ( offset, ignoreClose ) {
+	return new ve.dm.AnnotationSet( this.getStore(), this.getAnnotationIndexesFromOffset( offset, ignoreClose ) );
 };
 
 /**
@@ -717,7 +720,8 @@ ve.dm.ElementLinearData.prototype.getUsedStoreValues = function () {
 	i = this.getLength();
 	while ( i-- ) {
 		// Annotations
-		indexes = this.getAnnotationIndexesFromOffset( i );
+		// Use ignoreClose to save time; no need to count every element annotation twice
+		indexes = this.getAnnotationIndexesFromOffset( i, true );
 		j = indexes.length;
 		while ( j-- ) {
 			// Just flag item as in use for now - we will add its value
@@ -743,7 +747,9 @@ ve.dm.ElementLinearData.prototype.getUsedStoreValues = function () {
 ve.dm.ElementLinearData.prototype.remapStoreIndexes = function ( mapping ) {
 	var i, ilen, j, jlen, indexes, nodeClass;
 	for ( i = 0, ilen = this.data.length; i < ilen; i++ ) {
-		indexes = this.getAnnotationIndexesFromOffset( i ); // returns by reference
+		// Returns annotation indexes by reference. Use ignoreClose
+		// to avoid mapping the annotations twice.
+		indexes = this.getAnnotationIndexesFromOffset( i, true );
 		for ( j = 0, jlen = indexes.length; j < jlen; j++ ) {
 			indexes[j] = mapping[indexes[j]];
 		}
@@ -869,7 +875,7 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules, plainText, keepEm
 				continue;
 			}
 		}
-		annotations = this.getAnnotationsFromOffset( i );
+		annotations = this.getAnnotationsFromOffset( i, true );
 		if ( !annotations.isEmpty() ) {
 			if ( plainText ) {
 				this.setAnnotationsAtOffset( i, emptySet );
