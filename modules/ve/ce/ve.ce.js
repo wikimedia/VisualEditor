@@ -190,11 +190,11 @@ ve.ce.getOffsetFromTextNode = function ( domNode, domOffset ) {
  * @method
  * @param {HTMLElement} domNode DOM node
  * @param {number} domOffset DOM offset within the DOM Element
- * @param {number} [firstRecursionDirection] Which direction the first recursive call went in (+/-1)
+ * @param {number} [direction] Which direction we are searching in (+/-1), not changed by recursive calls
  * @returns {number} Linear model offset
  */
-ve.ce.getOffsetFromElementNode = function ( domNode, domOffset, firstRecursionDirection ) {
-	var direction, nodeModel, node,
+ve.ce.getOffsetFromElementNode = function ( domNode, domOffset, direction ) {
+	var nodeModel, node,
 		$domNode = $( domNode );
 
 	if ( $domNode.hasClass( 've-ce-branchNode-slug' ) ) {
@@ -209,39 +209,44 @@ ve.ce.getOffsetFromElementNode = function ( domNode, domOffset, firstRecursionDi
 	}
 
 	// IE sometimes puts the cursor in a text node inside ce="false". BAD!
-	if ( !firstRecursionDirection && !domNode.isContentEditable ) {
+	if ( !direction && !domNode.isContentEditable ) {
 		nodeModel = $domNode.closest( '.ve-ce-branchNode, .ve-ce-leafNode' ).data( 'view' ).getModel();
 		return nodeModel.getOffset() + nodeModel.getOuterLength();
 	}
 
-	if ( domOffset === 0 ) {
+	if ( domOffset === 0 || domOffset === domNode.childNodes.length ) {
 		node = $domNode.data( 'view' );
 		if ( node && node instanceof ve.ce.Node ) {
 			nodeModel = $domNode.data( 'view' ).getModel();
-			if ( firstRecursionDirection === -1 ) {
+			if ( direction === -1 ) {
 				return nodeModel.getOffset() + nodeModel.getOuterLength();
-			} else if ( firstRecursionDirection === 1 ) {
+			} else if ( direction === 1 ) {
 				return nodeModel.getOffset();
 			} else {
-				return nodeModel.getOffset() + ( nodeModel.isWrapped() ? 1 : 0 );
+				if ( domOffset === 0 ) {
+					return nodeModel.getOffset() + ( nodeModel.isWrapped() ? 1 : 0 );
+				} else {
+					return nodeModel.getOffset() + nodeModel.getOuterLength() - ( nodeModel.isWrapped() ? 1 : 0 );
+				}
 			}
 		} else {
-			node = $domNode.contents().last()[0];
-			if ( !firstRecursionDirection ) {
-				direction = 1;
+			if ( domOffset === 0 ) {
+				node = $domNode.contents().first()[0];
+				direction = direction || 1;
+			} else {
+				node = $domNode.contents().last()[0];
+				direction = direction || -1;
 			}
 		}
 	} else {
 		node = $domNode.contents()[ domOffset - 1 ];
-		if ( !firstRecursionDirection ) {
-			direction = -1;
-		}
+		direction = direction || -1;
 	}
 
 	if ( node.nodeType === Node.TEXT_NODE ) {
-		return ve.ce.getOffsetFromTextNode( node, node.length );
+		return ve.ce.getOffsetFromTextNode( node, direction > 0 ? 0 : node.length );
 	} else {
-		return ve.ce.getOffsetFromElementNode( node, 0, direction );
+		return ve.ce.getOffsetFromElementNode( node, direction > 0 ? 0 : node.childNodes.length, direction );
 	}
 };
 

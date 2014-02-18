@@ -35,6 +35,36 @@ QUnit.test( 'getOffsetFrom(Element|Text)Node', function ( assert ) {
 		expected = 0,
 		testCases = [
 			{
+				'msg': 'Annotations',
+				'html': '<p><i><b>Foo</b></i></p>',
+				'expected': [
+					0,
+					1, 1, 1, 1,
+					2,
+					3,
+					4, 4, 4, 4,
+					7
+				]
+			},
+			{
+				'msg': 'Multiple siblings',
+				'html': '<p><b><i>Foo</i><s><u>Bar</u><span>Baz</span></s></b></p>',
+				'expected': [
+					0,
+					1, 1, 1, 1,
+					2,
+					3,
+					4, 4, 4, 4, 4, 4,
+					5,
+					6,
+					7, 7, 7, 7, 7,
+					8,
+					9,
+					10, 10, 10, 10, 10,
+					13
+				]
+			},
+			{
 				'msg': 'Annotated alien',
 				'html': '<p>Foo<b><cite>Bar</cite></b>Baz</p>',
 				// CE html summary;
@@ -49,7 +79,7 @@ QUnit.test( 'getOffsetFrom(Element|Text)Node', function ( assert ) {
 					7,
 					8,
 					9, 9,
-					10
+					12
 				]
 			}
 		];
