@@ -16,10 +16,10 @@ $( function () {
 		// Widgets
 		startTextInput = new OO.ui.TextInputWidget( { 'readOnly': true } ),
 		endTextInput = new OO.ui.TextInputWidget( { 'readOnly': true } ),
-		startTextInputLabel = new OO.ui.InputLabelWidget(
+		startTextInputLabel = new OO.ui.LabelWidget(
 			{ 'label': 'Range', 'input': startTextInput }
 		),
-		endTextInputLabel = new OO.ui.InputLabelWidget(
+		endTextInputLabel = new OO.ui.LabelWidget(
 			{ 'label': '-', 'input': endTextInput }
 		),
 		getRangeButton = new OO.ui.ButtonWidget( { 'label': 'Get range' } ),
