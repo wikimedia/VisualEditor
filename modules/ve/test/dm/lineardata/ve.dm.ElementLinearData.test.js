@@ -16,51 +16,86 @@ QUnit.test( 'getAnnotationsFromOffset', 1, function ( assert ) {
 		annotations,
 		expectCount = 0,
 		cases = [
-		{
-			'msg': ['bold #1', 'bold #2'],
-			'data': [
-				['a', [ { 'type': 'textStyle/bold' } ]],
-				['b', [ { 'type': 'textStyle/bold' } ]]
-			],
-			'expected': [
-				[ { 'type': 'textStyle/bold' } ],
-				[ { 'type': 'textStyle/bold' } ]
-			]
-		},
-		{
-			'msg': ['bold #3', 'italic #1'],
-			'data': [
-				['a', [ { 'type': 'textStyle/bold' } ]],
-				['b', [ { 'type': 'textStyle/italic' } ]]
-			],
-			'expected': [
-				[ { 'type': 'textStyle/bold' } ],
-				[ { 'type': 'textStyle/italic' } ]
-			]
-		},
-		{
-			'msg': ['bold, italic & underline'],
-			'data': [
-				[
-					'a',
+			{
+				'msg': ['bold #1', 'bold #2'],
+				'data': [
+					['a', [ { 'type': 'textStyle/bold' } ]],
+					['b', [ { 'type': 'textStyle/bold' } ]]
+				],
+				'expected': [
+					[ { 'type': 'textStyle/bold' } ],
+					[ { 'type': 'textStyle/bold' } ]
+				]
+			},
+			{
+				'msg': ['bold #3', 'italic #1'],
+				'data': [
+					['a', [ { 'type': 'textStyle/bold' } ]],
+					['b', [ { 'type': 'textStyle/italic' } ]]
+				],
+				'expected': [
+					[ { 'type': 'textStyle/bold' } ],
+					[ { 'type': 'textStyle/italic' } ]
+				]
+			},
+			{
+				'msg': ['bold, italic & underline'],
+				'data': [
+					[
+						'a',
+						[
+							{ 'type': 'textStyle/bold' },
+							{ 'type': 'textStyle/italic' },
+							{ 'type': 'textStyle/underline' }
+						]
+					]
+				],
+				'expected': [
 					[
 						{ 'type': 'textStyle/bold' },
 						{ 'type': 'textStyle/italic' },
 						{ 'type': 'textStyle/underline' }
 					]
 				]
-			],
-			'expected':
-				[
+			},
+			{
+				'msg': ['unannotated element', 'annotated element', 'annotated close element', 'unannotated element'],
+				'data': [
+					{ 'type': 'paragraph' },
+					{ 'type': 'break', 'annotations': [ { 'type': 'textStyle/bold' } ] },
+					{ 'type': '/break' },
+					{ 'type': '/paragraph' }
+				],
+				'expected': [
+					[],
 					[
-						{ 'type': 'textStyle/bold' },
-						{ 'type': 'textStyle/italic' },
-						{ 'type': 'textStyle/underline' }
-					]
+						{ 'type': 'textStyle/bold' }
+					],
+					[
+						{ 'type': 'textStyle/bold' }
+					],
+					[]
 				]
-		}
-
-	];
+			},
+			{
+				'msg': ['unannotated element', 'annotated element', 'annotated close element (ignored)', 'unannotated element'],
+				'ignoreClose': true,
+				'data': [
+					{ 'type': 'paragraph' },
+					{ 'type': 'break', 'annotations': [ { 'type': 'textStyle/bold' } ] },
+					{ 'type': '/break' },
+					{ 'type': '/paragraph' }
+				],
+				'expected': [
+					[],
+					[
+						{ 'type': 'textStyle/bold' }
+					],
+					[],
+					[]
+				]
+			}
+		];
 
 	// Calculate expected assertion count
 	for ( c = 0; c < cases.length; c++ ) {
@@ -73,7 +108,7 @@ QUnit.test( 'getAnnotationsFromOffset', 1, function ( assert ) {
 		data = ve.dm.example.preprocessAnnotations( cases[i].data );
 		doc = new ve.dm.Document( data );
 		for ( j = 0; j < doc.getData().length; j++ ) {
-			annotations = doc.data.getAnnotationsFromOffset( j );
+			annotations = doc.data.getAnnotationsFromOffset( j, cases[i].ignoreClose );
 			assert.deepEqual( annotations,
 				ve.dm.example.createAnnotationSet( doc.getStore(), cases[i].expected[j] ),
 				cases[i].msg[j]
