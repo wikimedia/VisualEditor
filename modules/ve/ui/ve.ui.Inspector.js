@@ -33,10 +33,8 @@ OO.inheritClass( ve.ui.Inspector, OO.ui.Window );
 
 /* Static Properties */
 
-ve.ui.Inspector.static.title = OO.ui.deferMsg( 've-ui-inspector-title' );
-
 /**
- * Symbolic name of dialog.
+ * Symbolic name of inspector.
  *
  * @abstract
  * @static
