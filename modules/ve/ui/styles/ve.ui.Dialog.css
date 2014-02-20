@@ -13,7 +13,7 @@
 	-webkit-column-count: 2;
 	column-count: 2;
 	margin: 0 3em;
-	/**
+	/*
 	 * Hack 1.1: The height isn't calculated correctly with the inline-block
 	 * hack so fix it to prevent unnecessary scroll bars.
 	 */
@@ -21,7 +21,7 @@
 }
 
 .ve-ui-commandHelpDialog-section {
-	/**
+	/*
 	 * Hack 1: Prevent splitting over columns. This should be done with
 	 * column-break-inside but it's not well supported yet.
 	 */
