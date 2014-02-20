@@ -7,23 +7,12 @@
 
 /* ve.ui.LanguageInputWidget */
 
-.ve-ui-langInputWidget-field {
-	padding-bottom: 0.5em;
+.ve-ui-languageInputWidget-languageTextInput {
+	width: 10em;
 }
 
-.ve-ui-langInputWidget-languageTextInput {
-	display: inline-block;
-	width: 50%;
-}
-
-.ve-ui-langInputWidget .oo-ui-labelWidget {
-	display: inline-block;
-	width: 50%;
-}
-
-.ve-ui-langInputWidget-directionSelect {
-	display: inline-block;
-	width: 50%;
+.ve-ui-languageInputWidget-directionSelect {
+	margin-bottom: 0.5em;
 }
 
 /* ve.ui.SurfaceWidget.js */
