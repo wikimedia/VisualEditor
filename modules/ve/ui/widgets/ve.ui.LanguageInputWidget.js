@@ -94,7 +94,7 @@ ve.ui.LanguageInputWidget.prototype.onChange = function () {
  * The inputs value will automatically be updated.
  *
  * @param {ve.dm.LanguageAnnotation|null} annotation Language annotation or null to clear
- * @emits change
+ * @fires change
  */
 ve.ui.LanguageInputWidget.prototype.setAnnotation = function ( annotation ) {
 	if ( annotation && this.annotation && this.annotation.compareTo( annotation ) ) {
