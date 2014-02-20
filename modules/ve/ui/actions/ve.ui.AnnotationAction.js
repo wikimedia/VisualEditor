@@ -44,7 +44,15 @@ ve.ui.AnnotationAction.static.methods = [ 'set', 'clear', 'toggle', 'clearAll' ]
  * @param {Object} [data] Additional annotation data
  */
 ve.ui.AnnotationAction.prototype.set = function ( name, data ) {
-	this.surface.getModel().getFragment().annotateContent( 'set', name, data );
+	var i,
+		fragment = this.surface.getModel().getFragment(),
+		annotationClass = ve.dm.annotationFactory.lookup( name ),
+		removes = annotationClass.static.removes;
+
+	for ( i = removes.length - 1; i >= 0; i-- ) {
+		fragment.annotateContent( 'clear', removes[i] );
+	}
+	fragment.annotateContent( 'set', name, data );
 };
 
 /**
@@ -69,19 +77,29 @@ ve.ui.AnnotationAction.prototype.clear = function ( name, data ) {
  * @param {Object} [data] Additional annotation data
  */
 ve.ui.AnnotationAction.prototype.toggle = function ( name, data ) {
-	var existingAnnotations,
+	var i, existingAnnotations, insertionAnnotations, removesAnnotations,
 		surfaceModel = this.surface.getModel(),
 		fragment = surfaceModel.getFragment(),
-		annotation = ve.dm.annotationFactory.create( name, data );
+		annotation = ve.dm.annotationFactory.create( name, data ),
+		removes = annotation.constructor.static.removes;
 
 	if ( !fragment.getRange().isCollapsed() ) {
-		fragment.annotateContent(
-			fragment.getAnnotations().containsComparable( annotation ) ? 'clear' : 'set', name, data
-		);
+		if ( !fragment.getAnnotations().containsComparable( annotation ) ) {
+			for ( i = removes.length - 1; i >= 0; i-- ) {
+				fragment.annotateContent( 'clear', removes[i] );
+			}
+			fragment.annotateContent( 'set', name, data );
+		} else {
+			fragment.annotateContent( 'clear', name );
+		}
 	} else {
-		existingAnnotations = surfaceModel
-			.getInsertionAnnotations().getAnnotationsByName( annotation.name );
+		insertionAnnotations = surfaceModel.getInsertionAnnotations();
+		existingAnnotations = insertionAnnotations.getAnnotationsByName( annotation.name );
 		if ( existingAnnotations.isEmpty() ) {
+			removesAnnotations = insertionAnnotations.filter( function ( annotation ) {
+				return ve.indexOf( annotation.name, removes ) !== -1;
+			} );
+			surfaceModel.removeInsertionAnnotations( removesAnnotations );
 			surfaceModel.addInsertionAnnotations( annotation );
 		} else {
 			surfaceModel.removeInsertionAnnotations( existingAnnotations );

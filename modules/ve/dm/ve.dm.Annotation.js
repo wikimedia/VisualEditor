@@ -56,6 +56,13 @@ ve.dm.Annotation.static.applyToAppendedContent = true;
 ve.dm.Annotation.static.splitOnWordbreak = false;
 
 /**
+ * Annotations which are removed when this one is applied
+ *
+ * @type {string[]}
+ */
+ve.dm.Annotation.static.removes = [];
+
+/**
  * Static function to convert a linear model data element for this annotation type back to
  * a DOM element.
  *
