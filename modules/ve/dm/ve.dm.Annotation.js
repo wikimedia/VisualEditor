@@ -155,6 +155,16 @@ ve.dm.Annotation.prototype.isGenerated = function () {
 };
 
 /**
+ * Compare two annotations using #getComparableObject
+ */
+ve.dm.Annotation.prototype.compareTo = function ( annotation ) {
+	return ve.compare(
+		this.getComparableObject(),
+		annotation.getComparableObject()
+	);
+};
+
+/**
  * HACK: Compare to another annotation for serialization
  *
  * Compares two annotations using #getComparableObjectForSerialization, unless

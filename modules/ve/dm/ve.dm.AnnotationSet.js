@@ -260,10 +260,7 @@ ve.dm.AnnotationSet.prototype.filter = function ( callback, returnBool ) {
  */
 ve.dm.AnnotationSet.prototype.containsComparable = function ( annotation ) {
 	return this.filter( function ( a ) {
-		return ve.compare(
-			annotation.getComparableObject(),
-			a.getComparableObject()
-		);
+		return annotation.compareTo( a );
 	}, true );
 };
 
