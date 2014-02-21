@@ -1,6 +1,7 @@
 {
 	"--title": "VisualEditor Code Documentation",
 	"--categories": "../.docs/categories.json",
+	"--meta-tags": "./MetaTags.rb",
 	"--eg-iframe": "../.docs/eg-iframe.html",
 	"--warnings": ["-no_doc"],
 	"--builtin-classes": true,
