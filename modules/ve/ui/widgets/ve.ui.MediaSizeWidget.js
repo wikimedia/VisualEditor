@@ -113,6 +113,43 @@ OO.mixinClass( ve.ui.MediaSizeWidget, ve.Scalable );
 /* Methods */
 
 /**
+ * Set placeholder dimensions in case the widget is empty or set to 0 values
+ * @param {Object} dimensions Height and width placeholders
+ */
+ve.ui.MediaSizeWidget.prototype.setPlaceholderDimensions = function ( dimensions ) {
+	dimensions = dimensions || {};
+
+	if ( !dimensions.height && this.getRatio() !== null && $.isNumeric( dimensions.width ) ) {
+		dimensions.height = Math.round( dimensions.width / this.getRatio() );
+	}
+	if ( !dimensions.width && this.getRatio() !== null && $.isNumeric( dimensions.height ) ) {
+		dimensions.width = Math.round( dimensions.height * this.getRatio() );
+	}
+
+	this.placeholders = dimensions;
+
+	// Set the inputs' placeholders
+	this.widthInput.$input.attr( 'placeholder', this.placeholders.width );
+	this.heightInput.$input.attr( 'placeholder', this.placeholders.height );
+};
+
+/**
+ * Return the values of the placeholder dimensions.
+ * @returns {Object} The width and height of the placeholder values
+ */
+ve.ui.MediaSizeWidget.prototype.getPlaceholderDimensions = function () {
+	return this.placeholders;
+};
+
+/**
+ * Check if both inputs are empty, so to use their placeholders
+ * @returns {Boolean}
+ */
+ve.ui.MediaSizeWidget.prototype.isEmpty = function () {
+	return ( this.widthInput.getValue() === '' && this.heightInput.getValue() === '' );
+};
+
+/**
  * Overridden from ve.Scalable to allow one dimension to be set
  * at a time, write values back to inputs and show any errors.
  */
@@ -133,9 +170,20 @@ ve.ui.MediaSizeWidget.prototype.setCurrentDimensions = function ( dimensions ) {
 
 	ve.Scalable.prototype.setCurrentDimensions.call( this, dimensions );
 
-	// This will only update if the value has changed
-	this.widthInput.setValue( this.getCurrentDimensions().width );
-	this.heightInput.setValue( this.getCurrentDimensions().height );
+	if (
+		// If placeholders are set and dimensions are 0x0, erase input values
+		// so placeholders are visible
+		this.getPlaceholderDimensions() &&
+		( dimensions.height === 0 || dimensions.width === 0 )
+	) {
+		// Use placeholders
+		this.widthInput.setValue( '' );
+		this.heightInput.setValue( '' );
+	} else {
+		// This will only update if the value has changed
+		this.widthInput.setValue( this.getCurrentDimensions().width );
+		this.heightInput.setValue( this.getCurrentDimensions().height );
+	}
 
 	this.errorLabel.$element.toggle( !this.isCurrentDimensionsValid() );
 	this.$element.toggleClass( 've-ui-mediaSizeWidget-input-hasError', !this.isCurrentDimensionsValid() );
@@ -174,4 +222,22 @@ ve.ui.MediaSizeWidget.prototype.onHeightChange = function () {
  */
 ve.ui.MediaSizeWidget.prototype.onButtonOriginalDimensionsClick = function () {
 	this.setCurrentDimensions( this.getOriginalDimensions() );
+};
+
+/**
+ * Expand on Scalable's method of checking for valid dimensions. Allow for
+ * empty dimensions if the placeholders are set.
+ * @returns {Boolean}
+ */
+ve.ui.MediaSizeWidget.prototype.isCurrentDimensionsValid = function () {
+	if (
+		this.placeholders &&
+		this.heightInput.getValue() === '' &&
+		this.widthInput.getValue() === ''
+	) {
+		return true;
+	} else {
+		// Parent method
+		return ve.Scalable.prototype.isCurrentDimensionsValid.call( this );
+	}
 };
