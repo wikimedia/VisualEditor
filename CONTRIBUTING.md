@@ -90,63 +90,26 @@ Git commit messages should follow the conventions described in
 
 ### Documentation comments
 
-* End sentences in a full stop.
-* Continue sentences belonging to an annotation on the next line, indented with an
-  additional space.
-* Types in documentation comments should be separated by a pipe character. Use types
-  that are listed in the Types section of this document, otherwise use the identifier
-  (full path from the global scope) of the constructor function (e.g. `{ve.dm.BranchNode}`).
+In addition to the [MediaWiki conventions for JSDuck](https://www.mediawiki.org/wiki/Manual:Coding_conventions/JavaScript#Documentation):
 
-### Annotations
+We have the following custom tags:
 
-We use the following annotations. They should be used in the order as they are described
-here, for consistency. See [JSDuck/Tags](https://github.com/senchalabs/jsduck/wiki/Tags) for more elaborate documentation.
+* @until Text: Optional text.
+* @source Text
+* @context {Type} Optional text.
+* @fires name
 
-* @class Name (optional, guessed)
-* @abstract
-* @extends ClassName
-* @mixins ClassName
-* @constructor
-* @private
-* @static
-* @method name (optional, guessed)
-* @template
-* @property name (optional, guessed)
+They should be used in the order as they are described here. Here's a slightly more complete list
+indicating their order between the standard tags.
+
+* @property
 * @until Text: Optional text.
 * @source Text
 * @context {Type} Optional text.
 * @inheritable
-* @param {Type} name Optional text.
+* @param
 * @fires name
-* @returns {Type} Optional text.
-* @chainable
-* @throws {Type}
-
-### Types
-
-Special values:
-* undefined
-* null
-* this
-
-Primitive types:
-* boolean
-* number
-* string
-
-Built-in classes:
-* Array
-* Date
-* Function
-* RegExp
-* Object
-
-Browser classes:
-* HTMLElement
-
-jQuery classes:
-* jQuery
-* jQuery.Event
+* @returns
 
 ## Add a new javascript class
 
