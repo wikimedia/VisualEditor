@@ -1,12 +1,12 @@
 /*!
- * OOjs UI v0.1.0-pre-svg (520b00acb3)
+ * OOjs UI v0.1.0-pre-svg (68c91ae065)
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2014 OOjs Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: Thu Feb 20 2014 13:32:37 GMT-0800 (PST)
+ * Date: Fri Feb 21 2014 16:48:07 GMT-0800 (PST)
  */
 /*csslint vendor-prefix:false */
 
@@ -20,48 +20,6 @@
 .oo-ui-texture-transparency {
 	/* @embed */
 	background-image: url(images/textures/transparency.png);
-}
-
-/* Animation */
-
-@-webkit-keyframes oo-ui-zoom-in {
-	from { -webkit-transform: scale(0.5); }
-	to { -webkit-transform: scale(1); }
-}
-
-@-moz-keyframes oo-ui-zoom-in {
-	from { -moz-transform: scale(0.5); }
-	to { -moz-transform: scale(1); }
-}
-
-@-o-keyframes oo-ui-zoom-in {
-	from { -o-transform: scale(0.5); }
-	to { -o-transform: scale(1); }
-}
-
-@keyframes oo-ui-zoom-in {
-	from { transform: scale(0.5); }
-	to { transform: scale(1); }
-}
-
-@-webkit-keyframes oo-ui-fade-in {
-	from { opacity: 0; }
-	to { opacity: 1; }
-}
-
-@-moz-keyframes oo-ui-fade-in {
-	from { opacity: 0; }
-	to { opacity: 1; }
-}
-
-@-o-keyframes oo-ui-fade-in {
-	from { opacity: 0; }
-	to { opacity: 1; }
-}
-
-@keyframes oo-ui-fade-in {
-	from { opacity: 0; }
-	to { opacity: 1; }
 }
 
 /* RTL Definitions */
@@ -84,17 +42,13 @@
 	line-height: 1em;
 	background-color: #fff;
 	background-color: rgba(255,255,255,0.5);
-	-webkit-animation: oo-ui-fade-in 250ms ease-in-out 0 1 normal;
-	-moz-animation: oo-ui-fade-in 250ms ease-in-out 0 1 normal;
-	-o-animation: oo-ui-fade-in 250ms ease-in-out 0 1 normal;
-	animation: oo-ui-fade-in 250ms ease-in-out 0 1 normal;
-}
 
-.oo-ui-dialog-closing {
-	-webkit-animation: oo-ui-fade-in 250ms ease-in-out 0 1 reverse;
-	-moz-animation: oo-ui-fade-in 250ms ease-in-out 0 1 reverse;
-	-o-animation: oo-ui-fade-in 250ms ease-in-out 0 1 reverse;
-	animation: oo-ui-fade-in 250ms ease-in-out 0 1 reverse;
+	opacity: 0;
+
+	-webkit-transition: all 250ms ease-in-out;
+	-moz-transition: all 250ms ease-in-out;
+	-o-transition: all 250ms ease-in-out;
+	transition: all 250ms ease-in-out;
 }
 
 .oo-ui-dialog .oo-ui-window-frame {
@@ -112,22 +66,34 @@
 	border-radius: 0.5em;
 	box-shadow: 0 0.2em 1em rgba(0, 0, 0, 0.3);
 	overflow: hidden;
-	-webkit-animation: oo-ui-zoom-in 250ms ease-in-out 0 1 normal;
-	-moz-animation: oo-ui-zoom-in 250ms ease-in-out 0 1 normal;
-	-o-animation: oo-ui-zoom-in 250ms ease-in-out 0 1 normal;
-	animation: oo-ui-zoom-in 250ms ease-in-out 0 1 normal;
+
+	-webkit-transform: scale(0.5);
+	-moz-transform: scale(0.5);
+	-ms-transform: scale(0.5);
+	-o-transform: scale(0.5);
+	transform: scale(0.5);
+
+	-webkit-transition: all 250ms ease-in-out;
+	-moz-transition: all 250ms ease-in-out;
+	-o-transition: all 250ms ease-in-out;
+	transition: all 250ms ease-in-out;
+}
+
+.oo-ui-dialog-open {
+	opacity: 1;
+}
+
+.oo-ui-dialog-open .oo-ui-window-frame  {
+	-webkit-transform: scale(1);
+	-moz-transform: scale(1);
+	-ms-transform: scale(1);
+	-o-transform: scale(1);
+	transform: scale(1);
 }
 
 .oo-ui-dialog .oo-ui-window-frame.oo-ui-window-frame-small {
 	max-width: 600px;
 	max-height: 400px;
-}
-
-.oo-ui-dialog-closing .oo-ui-window-frame {
-	-webkit-animation: oo-ui-zoom-in 250ms ease-in-out 0 1 reverse;
-	-moz-animation: oo-ui-zoom-in 250ms ease-in-out 0 1 reverse;
-	-o-animation: oo-ui-zoom-in 250ms ease-in-out 0 1 reverse;
-	animation: oo-ui-zoom-in 250ms ease-in-out 0 1 reverse;
 }
 
 .oo-ui-dialog .oo-ui-frame {

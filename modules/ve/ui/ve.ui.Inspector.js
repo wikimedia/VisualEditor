@@ -18,7 +18,7 @@
  */
 ve.ui.Inspector = function VeUiInspector( windowSet, config ) {
 	// Parent constructor
-	OO.ui.Window.call( this, windowSet, config );
+	OO.ui.Window.call( this, config );
 
 	// Properties
 	this.surface = windowSet.getSurface();

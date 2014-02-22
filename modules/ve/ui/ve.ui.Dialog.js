@@ -18,7 +18,7 @@
  */
 ve.ui.Dialog = function VeUiDialog( windowSet, config ) {
 	// Parent constructor
-	OO.ui.Dialog.call( this, windowSet, config );
+	OO.ui.Dialog.call( this, config );
 
 	// Properties
 	this.surface = windowSet.getSurface();
