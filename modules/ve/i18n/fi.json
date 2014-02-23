@@ -13,7 +13,8 @@
             "Silvonen",
             "Skalman",
             "Stryn",
-            "VezonThunder"
+            "VezonThunder",
+            "Elseweyr"
         ]
     },
     "visualeditor": "Visuaalinen muokkain",
@@ -59,7 +60,7 @@
     "visualeditor-languageinspector-widget-label-langcode": "Kielikoodi",
     "visualeditor-languageinspector-widget-label-language": "Kieli",
     "visualeditor-linkinspector-title": "Hyperlinkki",
-    "visualeditor-mediasizewidget-button-originaldimensions": "Täysikokoinen",
+    "visualeditor-mediasizewidget-button-originaldimensions": "Täysikokoisena",
     "visualeditor-mediasizewidget-label-defaulterror": "Koon arvot ovat virheellisiä.",
     "visualeditor-mediasizewidget-label-height": "Korkeus",
     "visualeditor-mediasizewidget-label-width": "Leveys",
