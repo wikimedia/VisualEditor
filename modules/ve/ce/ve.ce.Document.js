@@ -274,7 +274,7 @@ ve.ce.Document.prototype.getRelativeRange = function ( range, direction, unit, e
  *
  * @method
  * @param {ve.Range} range Selection range
- * @returns {String} 'rtl' or 'ltr' as response
+ * @returns {string} 'rtl' or 'ltr' as response
  */
 ve.ce.Document.prototype.getDirectionFromRange = function ( range ) {
 	var effectiveNode,

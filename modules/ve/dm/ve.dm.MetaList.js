@@ -61,8 +61,8 @@ OO.mixinClass( ve.dm.MetaList, OO.EventEmitter );
 /**
  * @event remove
  * @param {ve.dm.MetaItem} item Item that was removed
- * @param {Number} offset Linear model offset that the item was at
- * @param {Number} index Index within that offset the item was at
+ * @param {number} offset Linear model offset that the item was at
+ * @param {number} index Index within that offset the item was at
  */
 
 /* Methods */
@@ -339,8 +339,8 @@ ve.dm.MetaList.prototype.getAllItems = function () {
  *
  * Pass a plain object rather than a MetaItem into this function unless you know what you're doing.
  * @param {Object|ve.dm.MetaItem} meta Metadata element (or MetaItem) to insert
- * @param {Number} [offset] Offset to insert the new metadata, or undefined to add to the end
- * @param {Number} [index] Index to insert the new metadata, or undefined to add to the end
+ * @param {number} [offset] Offset to insert the new metadata, or undefined to add to the end
+ * @param {number} [index] Index to insert the new metadata, or undefined to add to the end
  */
 ve.dm.MetaList.prototype.insertMeta = function ( meta, offset, index ) {
 	var tx;
