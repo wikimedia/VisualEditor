@@ -221,3 +221,11 @@
 	/* @embed */
 	background-image: url(images/icons/underline-u.svg);
 }
+
+.ve-ui-icon-resize-nw-se {
+	background-image: url(images/resize-nw-se.svg);
+}
+
+.ve-ui-icon-resize-ne-sw {
+	background-image: url(images/resize-ne-sw.svg);
+}
