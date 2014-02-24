@@ -195,6 +195,26 @@ ve.Scalable.prototype.isEnforcedMax = function () {
 };
 
 /**
+ * Set enforcement of minimum dimensions
+ *
+ * @param {boolean} enforceMin Enforces the minimum dimensions
+ */
+ve.Scalable.prototype.setEnforcedMin = function ( enforceMin ) {
+	this.valid = null;
+	this.enforceMin = enforceMin;
+};
+
+/**
+ * Set enforcement of maximum dimensions
+ *
+ * @param {boolean} enforceMax Enforces the maximum dimensions
+ */
+ve.Scalable.prototype.setEnforcedMax = function ( enforceMax ) {
+	this.valid = null;
+	this.enforceMax = enforceMax;
+};
+
+/**
  * Get the fixed aspect ratio (width/height)
  *
  * @returns {number} Aspect ratio
