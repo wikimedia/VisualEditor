@@ -120,6 +120,11 @@
 	background-image: url(images/icons/italic-e.svg);
 }
 
+.oo-ui-icon-italic-s {
+	/* @embed */
+	background-image: url(images/icons/italic-s.svg);
+}
+
 .oo-ui-icon-italic-arab-meem {
 	/* @embed */
 	background-image: url(images/icons/italic-arab-meem.svg);
