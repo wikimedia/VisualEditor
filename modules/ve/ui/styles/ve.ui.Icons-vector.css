@@ -200,6 +200,11 @@
 	background-image: url(images/icons/strikethrough-s.svg);
 }
 
+.oo-ui-icon-strikethrough-y {
+	/* @embed */
+	background-image: url(images/icons/strikethrough-y.svg);
+}
+
 .oo-ui-icon-subscript {
 	/* @embed */
 	background-image: url(images/icons/subscript.svg);
