@@ -16,6 +16,11 @@
 	background-image: url(images/icons/bold-b.png);
 }
 
+.oo-ui-icon-bold-arab-ain {
+	/* @embed */
+	background-image: url(images/icons/bold-arab-ain.png);
+}
+
 .oo-ui-icon-bold-cyrl-be {
 	/* @embed */
 	background-image: url(images/icons/bold-cyrl-be.png);
@@ -113,6 +118,11 @@
 .oo-ui-icon-italic-e {
 	/* @embed */
 	background-image: url(images/icons/italic-e.png);
+}
+
+.oo-ui-icon-italic-arab-meem {
+	/* @embed */
+	background-image: url(images/icons/italic-arab-meem.png);
 }
 
 .oo-ui-icon-italic-geor-kan {
