@@ -72,6 +72,7 @@ ve.ui.FormatAction.prototype.convert = function ( type, attributes ) {
 
 	txs = ve.dm.Transaction.newFromContentBranchConversion( doc, selection, type, attributes );
 	surfaceModel.change( txs, selection );
+	this.surface.getView().focus();
 };
 
 /* Registration */

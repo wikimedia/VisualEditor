@@ -43,6 +43,7 @@ ve.ui.HistoryAction.static.methods = [ 'undo', 'redo' ];
  */
 ve.ui.HistoryAction.prototype.undo = function () {
 	this.surface.getModel().undo();
+	this.surface.getView().focus();
 };
 
 /**
@@ -52,6 +53,7 @@ ve.ui.HistoryAction.prototype.undo = function () {
  */
 ve.ui.HistoryAction.prototype.redo = function () {
 	this.surface.getModel().redo();
+	this.surface.getView().focus();
 };
 
 /* Registration */

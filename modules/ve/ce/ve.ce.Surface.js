@@ -350,6 +350,9 @@ ve.ce.Surface.prototype.focus = function () {
 		this.$pasteTarget[0].focus();
 	} else {
 		this.documentView.getDocumentNode().$element[0].focus();
+		// If we are calling focus after replacing a node the selection may be gone
+		// but documentOnFocus won't fire so restore the selection here too.
+		this.onModelSelect( this.surface.getModel().getSelection() );
 	}
 	// documentOnFocus takes care of the rest
 };
