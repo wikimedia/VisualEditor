@@ -97,7 +97,12 @@ ve.ui.IndentationAction.prototype.decrease = function () {
 		if ( group.grandparent && group.grandparent.getType() === 'list' ) {
 			fragments.push( surfaceModel.getFragment( group.parent.getRange(), true ) );
 			decreased = true;
+		} else if ( group.parent && group.parent.getType() === 'list' ) {
+			// In a slug, the node will be the listItem.
+			fragments.push( surfaceModel.getFragment( group.nodes[0].getRange(), true ) );
+			decreased = true;
 		}
+
 	}
 
 	// Process each fragment (their ranges are automatically adjusted on change)
