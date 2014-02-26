@@ -21,6 +21,11 @@
 	background-image: url(images/icons/bold-arab-ain.png);
 }
 
+.oo-ui-icon-bold-arab-dad {
+	/* @embed */
+	background-image: url(images/icons/bold-arab-dad.png);
+}
+
 .oo-ui-icon-bold-cyrl-be {
 	/* @embed */
 	background-image: url(images/icons/bold-cyrl-be.png);
@@ -128,6 +133,11 @@
 .oo-ui-icon-italic-arab-meem {
 	/* @embed */
 	background-image: url(images/icons/italic-arab-meem.png);
+}
+
+.oo-ui-icon-italic-arab-keheh-jeem {
+	/* @embed */
+	background-image: url(images/icons/italic-arab-keheh-jeem.png);
 }
 
 .oo-ui-icon-italic-geor-kan {
