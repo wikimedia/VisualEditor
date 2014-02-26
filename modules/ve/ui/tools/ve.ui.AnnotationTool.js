@@ -79,6 +79,7 @@ ve.ui.BoldAnnotationTool.static.name = 'bold';
 ve.ui.BoldAnnotationTool.static.group = 'textStyle';
 ve.ui.BoldAnnotationTool.static.icon = {
 	'default': 'bold-a',
+	'ar': 'bold-arab-ain',
 	'be': 'bold-cyrl-te',
 	'cs': 'bold-b',
 	'da': 'bold-f',
@@ -125,6 +126,7 @@ ve.ui.ItalicAnnotationTool.static.name = 'italic';
 ve.ui.ItalicAnnotationTool.static.group = 'textStyle';
 ve.ui.ItalicAnnotationTool.static.icon = {
 	'default': 'italic-a',
+	'ar': 'italic-arab-meem',
 	'be': 'italic-cyrl-ka',
 	'cs': 'italic-i',
 	'da': 'italic-k',
