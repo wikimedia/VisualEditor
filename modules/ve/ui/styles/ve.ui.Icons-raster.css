@@ -6,6 +6,21 @@
  */
 /*csslint duplicate-background-images:false */
 
+.oo-ui-icon-align-center {
+	/* @embed */
+	background-image: url(images/icons/align-center.png);
+}
+
+.oo-ui-icon-align-float-left {
+	/* @embed */
+	background-image: url(images/icons/align-float-left.png);
+}
+
+.oo-ui-icon-align-float-right {
+	/* @embed */
+	background-image: url(images/icons/align-float-right.png);
+}
+
 .oo-ui-icon-bold-a {
 	/* @embed */
 	background-image: url(images/icons/bold-a.png);
