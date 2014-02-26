@@ -254,6 +254,7 @@ ve.dm.TextStyleSuperscriptAnnotation = function VeDmTextStyleSuperscriptAnnotati
 OO.inheritClass( ve.dm.TextStyleSuperscriptAnnotation, ve.dm.TextStyleAnnotation );
 ve.dm.TextStyleSuperscriptAnnotation.static.name = 'textStyle/superscript';
 ve.dm.TextStyleSuperscriptAnnotation.static.matchTagNames = ['sup'];
+ve.dm.TextStyleSuperscriptAnnotation.static.removes = ['textStyle/subscript'];
 ve.dm.modelRegistry.register( ve.dm.TextStyleSuperscriptAnnotation );
 
 /**
@@ -270,6 +271,7 @@ ve.dm.TextStyleSubscriptAnnotation = function VeDmTextStyleSubscriptAnnotation( 
 OO.inheritClass( ve.dm.TextStyleSubscriptAnnotation, ve.dm.TextStyleAnnotation );
 ve.dm.TextStyleSubscriptAnnotation.static.name = 'textStyle/subscript';
 ve.dm.TextStyleSubscriptAnnotation.static.matchTagNames = ['sub'];
+ve.dm.TextStyleSubscriptAnnotation.static.removes = ['textStyle/superscript'];
 ve.dm.modelRegistry.register( ve.dm.TextStyleSubscriptAnnotation );
 
 /**
