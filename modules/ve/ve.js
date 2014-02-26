@@ -6,28 +6,21 @@
  */
 
 ( function () {
-	var ve, hasOwn;
-
 	/**
 	 * Namespace for all VisualEditor classes, static methods and static properties.
 	 * @class
 	 * @singleton
 	 */
-	ve = {
+	var ve = {
 		// List of instances of ve.ui.Surface
 		'instances': []
 	};
-
-	/* Utility Functions */
-
-	hasOwn = Object.prototype.hasOwnProperty;
 
 	/* Static Methods */
 
 	/**
 	 * Checks if an object is an instance of one or more classes.
 	 *
-	 * @method
 	 * @param {Object} subject Object to check
 	 * @param {Function[]} classes Classes to compare with
 	 * @returns {boolean} Object inherits from one or more of the classes
