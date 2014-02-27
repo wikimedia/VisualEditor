@@ -149,7 +149,7 @@ ve.ui.MediaSizeWidget.prototype.getPlaceholderDimensions = function () {
 
 /**
  * Check if both inputs are empty, so to use their placeholders
- * @returns {Boolean}
+ * @returns {boolean}
  */
 ve.ui.MediaSizeWidget.prototype.isEmpty = function () {
 	return ( this.widthInput.getValue() === '' && this.heightInput.getValue() === '' );
@@ -253,7 +253,7 @@ ve.ui.MediaSizeWidget.prototype.onButtonOriginalDimensionsClick = function () {
 /**
  * Expand on Scalable's method of checking for valid dimensions. Allow for
  * empty dimensions if the placeholders are set.
- * @returns {Boolean}
+ * @returns {boolean}
  */
 ve.ui.MediaSizeWidget.prototype.isCurrentDimensionsValid = function () {
 	if (
