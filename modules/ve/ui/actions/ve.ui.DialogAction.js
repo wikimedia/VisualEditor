@@ -44,6 +44,7 @@ ve.ui.DialogAction.static.methods = [ 'open' ];
  * @param {Object} [config] Configuration options for dialog setup
  */
 ve.ui.DialogAction.prototype.open = function ( name, config ) {
+	this.surface.getView().getDocument().getDocumentNode().$element[0].blur();
 	this.surface.getDialogs().getWindow( name ).open( config );
 };
 
