@@ -2001,6 +2001,7 @@ ve.ce.Surface.prototype.replaceHighlight = function ( $highlights ) {
  * @method
  * @param {number} offset Offset to start looking at
  * @param {number} [direction=-1] Direction to look in, +1 or -1
+ * @returns {number} Nearest offset a cursor can be placed at
  */
 ve.ce.Surface.prototype.getNearestCorrectOffset = function ( offset, direction ) {
 	var contentOffset, structuralOffset;
@@ -2017,7 +2018,7 @@ ve.ce.Surface.prototype.getNearestCorrectOffset = function ( offset, direction )
 	structuralOffset =
 		this.documentView.model.data.getNearestStructuralOffset( offset, direction, true );
 
-	if ( !this.hasSlugAtOffset( structuralOffset ) ) {
+	if ( !this.hasSlugAtOffset( structuralOffset ) && contentOffset !== -1 ) {
 		return contentOffset;
 	}
 
