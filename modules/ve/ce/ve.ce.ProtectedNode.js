@@ -214,7 +214,7 @@ ve.ce.ProtectedNode.prototype.createPhantoms = function () {
 	var $phantomTemplate = this.constructor.static.$phantomTemplate,
 		surface = this.root.getSurface();
 
-	this.$phantomable.find( '.ve-ce-protectedNode-shield' ).each(
+	this.$phantomable.find( '.ve-ce-protectedNode-shield:visible' ).each(
 		ve.bind( function () {
 			this.$phantoms = this.$phantoms.add(
 				this.$( this.$.context.importNode( $phantomTemplate[0], true ) )
@@ -238,7 +238,7 @@ ve.ce.ProtectedNode.prototype.createPhantoms = function () {
  * @method
  */
 ve.ce.ProtectedNode.prototype.positionPhantoms = function () {
-	this.$phantomable.find( '.ve-ce-protectedNode-shield' ).each(
+	this.$phantomable.find( '.ve-ce-protectedNode-shield:visible' ).each(
 		ve.bind( function ( i, element ) {
 			var $shield = this.$( element ),
 				offset = OO.ui.Element.getRelativePosition(
