@@ -22,9 +22,9 @@ ve.ce.nodeFactory.register( ve.ce.LeafNodeStub );
 
 /* Tests */
 
-QUnit.test( 'canBeSplit', 1, function ( assert ) {
+QUnit.test( 'splitOnEnter', 1, function ( assert ) {
 	var node = new ve.ce.LeafNodeStub( new ve.dm.LeafNodeStub() );
-	assert.equal( node.canBeSplit(), false );
+	assert.equal( node.splitOnEnter(), false );
 } );
 
 QUnit.test( 'canHaveChildren', 1, function ( assert ) {

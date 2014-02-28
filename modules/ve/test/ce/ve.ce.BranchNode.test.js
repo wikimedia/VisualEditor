@@ -18,7 +18,7 @@ OO.inheritClass( ve.ce.BranchNodeStub, ve.ce.BranchNode );
 
 ve.ce.BranchNodeStub.static.name = 'branch-stub';
 
-ve.ce.BranchNodeStub.static.canBeSplit = true;
+ve.ce.BranchNodeStub.static.splitOnEnter = true;
 
 ve.ce.BranchNodeStub.prototype.getTagName = function () {
 	var style = this.model.getAttribute( 'style' ),
@@ -31,10 +31,10 @@ ve.ce.nodeFactory.register( ve.ce.BranchNodeStub );
 
 /* Tests */
 
-QUnit.test( 'canBeSplit', 1, function ( assert ) {
+QUnit.test( 'splitOnEnter', 1, function ( assert ) {
 	var node = new ve.ce.BranchNodeStub( new ve.dm.BranchNodeStub() );
 
-	assert.equal( node.canBeSplit(), true );
+	assert.equal( node.splitOnEnter(), true );
 } );
 
 QUnit.test( 'canHaveChildren', 1, function ( assert ) {

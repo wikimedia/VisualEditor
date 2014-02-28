@@ -30,7 +30,7 @@ OO.inheritClass( ve.ce.DefinitionListItemNode, ve.ce.BranchNode );
 
 ve.ce.DefinitionListItemNode.static.name = 'definitionListItem';
 
-ve.ce.DefinitionListItemNode.static.canBeSplit = true;
+ve.ce.DefinitionListItemNode.static.splitOnEnter = true;
 
 /* Methods */
 

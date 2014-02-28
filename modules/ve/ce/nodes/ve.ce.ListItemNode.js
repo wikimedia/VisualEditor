@@ -29,7 +29,7 @@ ve.ce.ListItemNode.static.name = 'listItem';
 
 ve.ce.ListItemNode.static.tagName = 'li';
 
-ve.ce.ListItemNode.static.canBeSplit = true;
+ve.ce.ListItemNode.static.splitOnEnter = true;
 
 /* Registration */
 

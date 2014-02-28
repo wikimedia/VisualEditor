@@ -27,7 +27,7 @@ OO.inheritClass( ve.ce.TextNode, ve.ce.LeafNode );
 
 ve.ce.TextNode.static.name = 'text';
 
-ve.ce.TextNode.static.canBeSplit = true;
+ve.ce.TextNode.static.splitOnEnter = true;
 
 ve.ce.TextNode.whitespaceHtmlCharacters = {
 	'\n': '\u21b5', // &crarr; / ↵
