@@ -17,6 +17,8 @@
     "visualeditor-annotationbutton-italic-tooltip": "კურსივი",
     "visualeditor-annotationbutton-language-tooltip": "ენა",
     "visualeditor-annotationbutton-link-tooltip": "ბმული",
+    "visualeditor-annotationbutton-subscript-tooltip": "ქვეხაზური",
+    "visualeditor-annotationbutton-superscript-tooltip": "ზეხაზური",
     "visualeditor-annotationbutton-underline-tooltip": "ხაზის გასმა",
     "visualeditor-clearbutton-tooltip": "ფორმატირების გასუფთავება",
     "visualeditor-clipboard-copy": "კოპირება",
