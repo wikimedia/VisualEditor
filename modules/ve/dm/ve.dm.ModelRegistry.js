@@ -439,6 +439,5 @@ ve.dm.ModelRegistry.prototype.matchElement = function ( element, forceAboutGroup
 /* Initialization */
 
 ve.dm.modelRegistry = new ve.dm.ModelRegistry();
-ve.dm.modelRegistry.registerExtensionSpecificType( /^mw:/ );
 
 } )( ve );
