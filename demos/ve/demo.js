@@ -16,10 +16,10 @@ $( function () {
 		// Widgets
 		startTextInput = new OO.ui.TextInputWidget( { 'readOnly': true } ),
 		endTextInput = new OO.ui.TextInputWidget( { 'readOnly': true } ),
-		startTextInputLabel = new OO.ui.LabelWidget(
+		startLabel = new OO.ui.LabelWidget(
 			{ 'label': 'Range', 'input': startTextInput }
 		),
-		endTextInputLabel = new OO.ui.LabelWidget(
+		endLabel = new OO.ui.LabelWidget(
 			{ 'label': '-', 'input': endTextInput }
 		),
 		getRangeButton = new OO.ui.ButtonWidget( { 'label': 'Get range' } ),
@@ -29,22 +29,27 @@ $( function () {
 		),
 		dumpModelButton = new OO.ui.ButtonWidget( { 'label': 'Dump model' } ),
 		dumpModelChangeToggle = new OO.ui.ToggleButtonWidget( { 'label': 'Dump model on change' } ),
-		validateButton = new OO.ui.ButtonWidget( { 'label': 'Validate view and model' } );
+		validateButton = new OO.ui.ButtonWidget( { 'label': 'Validate view and model' } ),
+		languageTextInput = new OO.ui.TextInputWidget( { 'value': $.i18n().locale } ),
+		languageButton  = new OO.ui.ButtonWidget( { 'label': 'Set UI language' } );
 
 	// Initialization
 
 	$( '.ve-demo-utilities-commands' ).append(
 		getRangeButton.$element,
 		getRangeChangeToggle.$element,
-		startTextInputLabel.$element,
+		startLabel.$element,
 		startTextInput.$element,
-		endTextInputLabel.$element,
+		endLabel.$element,
 		endTextInput.$element,
 		logRangeButton.$element,
 		$( '<span class="ve-demo-utilities-commands-divider">&nbsp;</span>' ),
 		dumpModelButton.$element,
 		dumpModelChangeToggle.$element,
-		validateButton.$element
+		validateButton.$element,
+		$( '<span class="ve-demo-utilities-commands-divider">&nbsp;</span>' ),
+		languageTextInput.$element,
+		languageButton.$element
 	);
 
 	function loadPage( src ) {
@@ -240,5 +245,27 @@ $( function () {
 		} else {
 			alert( 'Valid' );
 		}
+	} );
+
+	languageButton.on( 'click', function () {
+		var lang = languageTextInput.getValue();
+
+		$.i18n().locale = lang;
+
+		// HACK: Override/restore message functions for qqx mode
+		if ( lang === 'qqx' ) {
+			ve.init.platform.getMessage = function ( key ) { return key; };
+		} else {
+			ve.init.platform.getMessage = ve.init.sa.Platform.prototype.getMessage;
+		}
+
+		// Re-bind as getMessage may have changed
+		OO.ui.msg = ve.bind( ve.init.platform.getMessage, ve.init.platform );
+
+		// HACK: Re-initialize page to load message files
+		ve.init.platform.initialize().done( function () {
+			loadPage( location.hash.slice( 7 ) );
+		} );
+
 	} );
 } );
