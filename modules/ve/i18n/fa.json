@@ -28,6 +28,8 @@
     "visualeditor-clearbutton-tooltip": "پاک‌سازی قالب‌بندی",
     "visualeditor-clipboard-copy": "رونوشت",
     "visualeditor-clipboard-cut": "برش",
+    "visualeditor-clipboard-paste": "چسباندن",
+    "visualeditor-clipboard-paste-special": "چسباندن به عنوان متن ساده",
     "visualeditor-dialog-action-apply": "اعمال تغییرات",
     "visualeditor-dialog-action-cancel": "لغو",
     "visualeditor-dialog-action-goback": "بازگشت به عقب",
