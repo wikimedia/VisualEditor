@@ -222,7 +222,6 @@
 			"modules/ve/ui/inspectors/ve.ui.LinkInspector.js",
 			"modules/ve/ui/widgets/ve.ui.LanguageInputWidget.js",
 			"modules/ve/ui/inspectors/ve.ui.LanguageInspector.js",
-			"modules/ve/ui/widgets/ve.ui.GroupButtonWidget.js",
 			"modules/ve/ui/inspectors/ve.ui.SpecialCharacterInspector.js"
 		],
 		"styles": [
