@@ -21,6 +21,7 @@ ve.init.sa.Platform = function VeInitSaPlatform() {
 	this.externalLinkUrlProtocolsRegExp = /^https?\:\/\//;
 	this.modulesUrl = 'extensions/VisualEditor/modules';
 	this.parsedMessages = {};
+	this.userLanguages = ['en'];
 };
 
 /* Inheritance */
@@ -99,16 +100,7 @@ ve.init.sa.Platform.prototype.getSystemPlatform = function () {
 
 /** @inheritdoc */
 ve.init.sa.Platform.prototype.getUserLanguages = function () {
-	// IE or Firefox Safari Opera
-	var lang = window.navigator.userLanguage || window.navigator.language,
-		langParts = lang.split( '-' ),
-		langs = [ lang ];
-
-	if ( langParts.length > 1 ) {
-		langs.push( langParts[0] );
-	}
-
-	return langs;
+	return this.userLanguages;
 };
 
 ve.init.sa.Platform.prototype.initialize = function () {
@@ -138,6 +130,8 @@ ve.init.sa.Platform.prototype.initialize = function () {
 		languages = languages.concat( fallbacks );
 	}
 
+	this.userLanguages = languages;
+
 	for ( i = 0, len = languages.length; i < len; i++ ) {
 		if ( languagesCovered[languages[i]] ) {
 			continue;
@@ -162,5 +156,7 @@ ve.init.sa.Platform.prototype.initialize = function () {
 ve.init.platform = new ve.init.sa.Platform();
 
 /* Extension */
+
+OO.ui.getUserLanguages = ve.bind( ve.init.platform.getUserLanguages, ve.init.platform );
 
 OO.ui.msg = ve.bind( ve.init.platform.getMessage, ve.init.platform );
