@@ -11,6 +11,9 @@
  * @class
  * @extends OO.ui.WindowSet
  *
+ * This window set must be used with ve.ui.Inspector and ve.ui.Dialog because it assumes that window
+ * constructors accept a surface argument before the config object.
+ *
  * @constructor
  * @param {ve.ui.Surface} surface
  * @param {OO.Factory} factory Window factory
@@ -49,4 +52,11 @@ ve.ui.WindowSet.prototype.onWindowClose = function ( win, accept ) {
  */
 ve.ui.WindowSet.prototype.getSurface = function () {
 	return this.surface;
+};
+
+/**
+ * @inheritdoc
+ */
+ve.ui.WindowSet.prototype.createWindow = function ( name ) {
+	return this.factory.create( name, this.surface, { '$': this.$ } );
 };
