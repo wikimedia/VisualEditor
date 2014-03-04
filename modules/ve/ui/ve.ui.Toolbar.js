@@ -209,8 +209,16 @@ ve.ui.Toolbar.prototype.onSurfaceAddCommand = function ( name ) {
  * @inheritdoc
  */
 ve.ui.Toolbar.prototype.getToolAccelerator = function ( name ) {
-	var trigger = this.surface.getTriggers()[name];
-	return trigger instanceof ve.ui.Trigger ? trigger.getMessage() : undefined;
+	var i, l, triggers = this.surface.getTriggers( name ), shortcuts = [];
+
+	if ( triggers ) {
+		for ( i = 0, l = triggers.length; i < l; i++ ) {
+			shortcuts.push( triggers[i].getMessage() );
+		}
+		return shortcuts.join( ', ' );
+	} else {
+		return undefined;
+	}
 };
 
 /**

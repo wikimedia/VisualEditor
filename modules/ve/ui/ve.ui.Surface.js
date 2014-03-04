@@ -89,7 +89,7 @@ OO.mixinClass( ve.ui.Surface, OO.EventEmitter );
  * @event addCommand
  * @param {string} name Symbolic name of command and trigger
  * @param {ve.ui.Command} command Command that's been registered
- * @param {ve.ui.Trigger} trigger Trigger to associate with command
+ * @param {ve.ui.Trigger[]} triggers Triggers to associate with command
  */
 
 /* Methods */
@@ -165,23 +165,25 @@ ve.ui.Surface.prototype.getDialogs = function () {
 };
 
 /**
- * Get list of commands keyed by trigger string.
+ * Get command associated with trigger string.
  *
  * @method
- * @returns {Object.<string,ve.ui.Command>} Commands
+ * @param {string} trigger Trigger string
+ * @returns {ve.ui.Command|undefined} Command
  */
-ve.ui.Surface.prototype.getCommands = function () {
-	return this.commands;
+ve.ui.Surface.prototype.getCommand = function ( trigger ) {
+	return this.commands[trigger];
 };
 
 /**
- * Get list of triggers keyed by symbolic name.
+ * Get triggers for a specified name.
  *
  * @method
- * @returns {Object.<string,ve.ui.Trigger>} Triggers
+ * @param {string} name Trigger name
+ * @returns {ve.ui.Trigger[]} Triggers
  */
-ve.ui.Surface.prototype.getTriggers = function () {
-	return this.triggers;
+ve.ui.Surface.prototype.getTriggers = function ( name ) {
+	return this.triggers[name];
 };
 
 /**
@@ -265,9 +267,10 @@ ve.ui.Surface.prototype.execute = function ( action, method ) {
  * @throws {Error} If command has not been registered
  * @throws {Error} If trigger has not been registered
  * @throws {Error} If trigger is not complete
+ * @fires addCommand
  */
 ve.ui.Surface.prototype.addCommands = function ( names ) {
-	var i, len, key, command, trigger;
+	var i, j, len, key, command, triggers, trigger;
 
 	for ( i = 0, len = names.length; i < len; i++ ) {
 		command = ve.ui.commandRegistry.lookup( names[i] );
@@ -275,18 +278,21 @@ ve.ui.Surface.prototype.addCommands = function ( names ) {
 			throw new Error( 'No command registered by that name: ' + names[i] );
 		}
 		// Normalize trigger key
-		trigger = ve.ui.triggerRegistry.lookup( names[i] );
-		if ( !trigger ) {
-			throw new Error( 'No trigger registered by that name: ' + names[i] );
+		triggers = ve.ui.triggerRegistry.lookup( names[i] );
+		if ( !triggers ) {
+			throw new Error( 'No triggers registered by that name: ' + names[i] );
 		}
-		key = trigger.toString();
-		// Validate trigger
-		if ( key.length === 0 ) {
-			throw new Error( 'Incomplete trigger: ' + trigger );
+		for ( j = triggers.length - 1; j >= 0; j-- ) {
+			trigger = triggers[j];
+			key = trigger.toString();
+			// Validate trigger
+			if ( key.length === 0 ) {
+				throw new Error( 'Incomplete trigger: ' + trigger );
+			}
+			this.commands[key] = command;
 		}
-		this.commands[key] = command;
-		this.triggers[names[i]] = trigger;
-		this.emit( 'addCommand', names[i], command, trigger );
+		this.triggers[names[i]] = triggers;
+		this.emit( 'addCommand', names[i], command, triggers );
 	}
 };
 

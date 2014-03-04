@@ -45,9 +45,10 @@ ve.ui.CommandHelpDialog.prototype.initialize = function () {
 	// Parent method
 	ve.ui.Dialog.prototype.initialize.call( this );
 
-	var i, j, jLen, trigger, commands, $list,
+	var i, j, jLen, k, kLen, triggerList, commands, shortcut,
 		platform = ve.init.platform.getSystemPlatform(),
 		platformKey = platform === 'mac' ? 'mac' : 'pc',
+		$list, $shortcut,
 		commandGroups = this.constructor.static.getCommandGroups(),
 		contentLayout = new OO.ui.PanelLayout( {
 			'$': this.$,
@@ -60,16 +61,28 @@ ve.ui.CommandHelpDialog.prototype.initialize = function () {
 		commands = commandGroups[i].commands;
 		$list = this.$( '<dl>' ).addClass( 've-ui-commandHelpDialog-list' );
 		for ( j = 0, jLen = commands.length; j < jLen; j++ ) {
-			if ( commands[j].name ) {
-				trigger = ve.ui.triggerRegistry.lookup( commands[j].name );
+			if ( commands[j].trigger ) {
+				triggerList = ve.ui.triggerRegistry.lookup( commands[j].trigger );
 			} else {
-				trigger = new ve.ui.Trigger(
-					ve.isPlainObject( commands[j].shortcut ) ? commands[j].shortcut[platformKey] : commands[j].shortcut,
-					true
-				);
+				triggerList = [];
+				for ( k = 0, kLen = commands[j].shortcuts.length; k < kLen; k++ ) {
+					shortcut = commands[j].shortcuts[k];
+					triggerList.push(
+						new ve.ui.Trigger(
+							ve.isPlainObject( shortcut ) ? shortcut[platformKey] : shortcut,
+							true
+						)
+					);
+				}
+			}
+			$shortcut = this.$( '<dt>' );
+			for ( k = 0, kLen = triggerList.length; k < kLen; k++ ) {
+				$shortcut.append( this.$( '<div>' ).text(
+					triggerList[k].getMessage().replace( /\+/g, ' + ' )
+				) );
 			}
 			$list.append(
-				this.$( '<dt>' ).text( trigger.getMessage().replace( /\+/g, ' + ' ) ),
+				$shortcut,
 				this.$( '<dd>' ).text( ve.msg( commands[j].msg ) )
 			);
 		}
@@ -100,69 +113,69 @@ ve.ui.CommandHelpDialog.static.getCommandGroups = function () {
 		'textStyle': {
 			'title': 'visualeditor-shortcuts-text-style',
 			'commands': [
-				{ 'name': 'bold', 'msg': 'visualeditor-annotationbutton-bold-tooltip' },
-				{ 'name': 'italic', 'msg': 'visualeditor-annotationbutton-italic-tooltip' },
-				{ 'name': 'link', 'msg': 'visualeditor-annotationbutton-link-tooltip' },
-				{ 'name': 'subscript', 'msg': 'visualeditor-annotationbutton-subscript-tooltip' },
-				{ 'name': 'superscript', 'msg': 'visualeditor-annotationbutton-superscript-tooltip' },
-				{ 'name': 'underline', 'msg': 'visualeditor-annotationbutton-underline-tooltip' },
-				{ 'name': 'clear', 'msg': 'visualeditor-clearbutton-tooltip' }
+				{ 'trigger': 'bold', 'msg': 'visualeditor-annotationbutton-bold-tooltip' },
+				{ 'trigger': 'italic', 'msg': 'visualeditor-annotationbutton-italic-tooltip' },
+				{ 'trigger': 'link', 'msg': 'visualeditor-annotationbutton-link-tooltip' },
+				{ 'trigger': 'subscript', 'msg': 'visualeditor-annotationbutton-subscript-tooltip' },
+				{ 'trigger': 'superscript', 'msg': 'visualeditor-annotationbutton-superscript-tooltip' },
+				{ 'trigger': 'underline', 'msg': 'visualeditor-annotationbutton-underline-tooltip' },
+				{ 'trigger': 'clear', 'msg': 'visualeditor-clearbutton-tooltip' }
 			]
 		},
 		'formatting': {
 			'title': 'visualeditor-shortcuts-formatting',
 			'commands': [
-				{ 'name': 'paragraph', 'msg': 'visualeditor-formatdropdown-format-paragraph' },
+				{ 'trigger': 'paragraph', 'msg': 'visualeditor-formatdropdown-format-paragraph' },
 				{
-					'shortcut': {
+					'shortcuts': [ {
 						'mac': 'cmd+(1-6)',
 						'pc': 'ctrl+(1-6)'
-					},
+					} ],
 					'msg': 'visualeditor-formatdropdown-format-heading-label'
 				},
-				{ 'name': 'preformatted', 'msg': 'visualeditor-formatdropdown-format-preformatted' },
-				{ 'name': 'indent', 'msg': 'visualeditor-indentationbutton-indent-tooltip' },
-				{ 'name': 'outdent', 'msg': 'visualeditor-indentationbutton-outdent-tooltip' }
+				{ 'trigger': 'preformatted', 'msg': 'visualeditor-formatdropdown-format-preformatted' },
+				{ 'trigger': 'indent', 'msg': 'visualeditor-indentationbutton-indent-tooltip' },
+				{ 'trigger': 'outdent', 'msg': 'visualeditor-indentationbutton-outdent-tooltip' }
 			]
 		},
 		'history': {
 			'title': 'visualeditor-shortcuts-history',
 			'commands': [
-				{ 'name': 'undo', 'msg': 'visualeditor-historybutton-undo-tooltip' },
-				{ 'name': 'redo', 'msg': 'visualeditor-historybutton-redo-tooltip' }
+				{ 'trigger': 'undo', 'msg': 'visualeditor-historybutton-undo-tooltip' },
+				{ 'trigger': 'redo', 'msg': 'visualeditor-historybutton-redo-tooltip' }
 			]
 		},
 		'clipboard': {
 			'title': 'visualeditor-shortcuts-clipboard',
 			'commands': [
 				{
-					'shortcut': {
+					'shortcuts': [ {
 						'mac': 'cmd+x',
 						'pc': 'ctrl+x'
-					},
+					} ],
 					'msg': 'visualeditor-clipboard-cut'
 				},
 				{
-					'shortcut': {
+					'shortcuts': [ {
 						'mac': 'cmd+c',
 						'pc': 'ctrl+c'
-					},
+					} ],
 					'msg': 'visualeditor-clipboard-copy'
 				},
 				{
-					'shortcut': {
+					'shortcuts': [ {
 						'mac': 'cmd+v',
 						'pc': 'ctrl+v'
-					},
+					} ],
 					'msg': 'visualeditor-clipboard-paste'
 				},
-				{ 'name': 'pasteSpecial', 'msg': 'visualeditor-clipboard-paste-special' }
+				{ 'trigger': 'pasteSpecial', 'msg': 'visualeditor-clipboard-paste-special' }
 			]
 		},
 		'other': {
 			'title': 'visualeditor-shortcuts-other',
 			'commands': [
-				{ 'name': 'commandHelp', 'msg': 'visualeditor-dialog-command-help-title' }
+				{ 'trigger': 'commandHelp', 'msg': 'visualeditor-dialog-command-help-title' }
 			]
 		}
 	};

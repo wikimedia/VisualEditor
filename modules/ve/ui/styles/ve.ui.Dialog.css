@@ -39,7 +39,9 @@
 }
 
 .ve-ui-commandHelpDialog-list dd {
-	line-height: 200%;
+	float: left;
+	width: 45%;
+	margin: 0;
 }
 
 .ve-ui-commandHelpDialog-list dt {
@@ -48,5 +50,11 @@
 	text-align: right;
 	margin-right: 1em;
 	font-weight: bold;
-	line-height: 200%;
+}
+
+.ve-ui-commandHelpDialog-list dd,
+.ve-ui-commandHelpDialog-list dt {
+	line-height: 110%;
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
 }
