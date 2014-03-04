@@ -12,8 +12,9 @@
  *
  * @constructor
  * @param {jQuery.Event|string} [e] Event or string to create trigger from
+ * @param {boolean} [allowInvalidPrimary] Allow invalid primary keys
  */
-ve.ui.Trigger = function VeUiTrigger( e ) {
+ve.ui.Trigger = function VeUiTrigger( e, allowInvalidPrimary ) {
 	// Properties
 	this.modifiers = {
 		'meta': false,
@@ -47,7 +48,7 @@ ve.ui.Trigger = function VeUiTrigger( e ) {
 			if ( key in this.modifiers ) {
 				// Modifier key
 				this.modifiers[key] = true;
-			} else if ( primaryKeys.indexOf( key ) !== -1 ) {
+			} else if ( primaryKeys.indexOf( key ) !== -1 || allowInvalidPrimary ) {
 				// WARNING: Only the last primary key will be used
 				this.primary = key;
 			}
