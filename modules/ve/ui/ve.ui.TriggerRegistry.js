@@ -70,7 +70,16 @@ ve.ui.triggerRegistry.register(
 	'undo', { 'mac': new ve.ui.Trigger( 'cmd+z' ), 'pc': new ve.ui.Trigger( 'ctrl+z' ) }
 );
 ve.ui.triggerRegistry.register(
-	'redo', { 'mac': new ve.ui.Trigger( 'cmd+shift+z' ), 'pc': new ve.ui.Trigger( 'ctrl+shift+z' ) }
+	'redo', {
+		'mac': [
+			new ve.ui.Trigger( 'cmd+shift+z' ),
+			new ve.ui.Trigger( 'cmd+y' )
+		],
+		'pc': [
+			new ve.ui.Trigger( 'ctrl+shift+z' ),
+			new ve.ui.Trigger( 'ctrl+y' )
+		]
+	}
 );
 ve.ui.triggerRegistry.register(
 	'bold', { 'mac': new ve.ui.Trigger( 'cmd+b' ), 'pc': new ve.ui.Trigger( 'ctrl+b' ) }
