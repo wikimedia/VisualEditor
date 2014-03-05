@@ -46,6 +46,7 @@
 
 .ve-ui-commandHelpDialog-list dt {
 	float: left;
+	clear: left;
 	width: 40%;
 	text-align: right;
 	margin-right: 1em;
