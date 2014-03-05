@@ -62,7 +62,7 @@
 
 .ve-ce-protectedNode-phantom {
 	position: absolute;
-	background-color: rgba(104,171,255,0.1);
+	background-color: rgba(104, 171, 255, 0.1);
 	box-shadow: inset 0 0 0 1px #68abff;
 	cursor: default;
 }
@@ -78,7 +78,7 @@
 
 .ve-ce-resizableNode-handles {
 	position: absolute;
-	box-shadow: inset 0 0 0 1px rgba(0,0,0,.25);
+	box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.25);
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
@@ -157,7 +157,7 @@
 }
 
 .ve-ce-relocatableNode-marker.relocating {
-	background: rgba(0,0,0,1);
+	background: rgba(0, 0, 0, 1);
 }
 
 /* ve.ce.GeneratedContentNode */
