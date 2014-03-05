@@ -104,6 +104,7 @@ ve.ui.SpecialCharacterInspector.prototype.initialize = function () {
  * @param {Object} [data] Inspector opening data
  */
 ve.ui.SpecialCharacterInspector.prototype.setup = function ( data ) {
+	var inspector = this;
 	// Parent method
 	ve.ui.Inspector.prototype.setup.call( this, data );
 
@@ -111,69 +112,52 @@ ve.ui.SpecialCharacterInspector.prototype.setup = function ( data ) {
 	// after we're done adding
 	this.initialSelection = this.surface.getModel().getSelection();
 
-	this.getCharList().done( ve.bind( function () {
-		// Now we can rebuild our button list
-		// We only want to rebuild the list if we don't already have it
-		if ( !this.$buttonDomList ) {
-			// Start with the spinner showing
-			this.$spinner.show();
-			this.buildButtonList().done( ve.bind( function () {
-				// Append the new button list
-				this.$form.append( this.$buttonDomList );
-				// Done, hide the spinner
-				this.$spinner.hide();
-
-			}, this ) );
-		}
-	}, this ) );
-
+	// Don't request the character list again if we already have it
+	if ( !this.characters ) {
+		this.$spinner.show();
+		this.fetchCharList().done( function () {
+			inspector.buildButtonList();
+		} ).always( function () {
+			inspector.$spinner.hide();
+		} );
+		// TODO: show error message on fetchCharList().fail
+	}
 };
 
 /**
- * Get the special character list object
- * This can also be an AJAX call with default fallback
+ * Fetch the special character list object
+ *
+ * Returns a promise which resolves when this.characters has been populated
  *
  * @returns {jQuery.Promise}
  */
-ve.ui.SpecialCharacterInspector.prototype.getCharList = function () {
-	var charslist, charobj,
-		deferred = $.Deferred();
+ve.ui.SpecialCharacterInspector.prototype.fetchCharList = function () {
+	var charsList, charsObj;
 
-	// Don't request the character list again if we already have it
-	if ( !this.characters ) {
-
-		// Get the character list
-		charslist = ve.msg( 'visualeditor-specialcharinspector-characterlist-insert' );
-		try {
-			charobj = $.parseJSON( charslist );
-		} catch ( err ) {
-			// There was no character list found, or the character list message is
-			// invalid json string. Force a fallback to the minimal character list
-			charobj = this.minimalCharacterList;
-			ve.log( 've.ui.SpecialCharacterInspector: Could not parse the Special Character list; using default.');
-			ve.log( err.message );
-		} finally {
-			this.characters = charobj;
-			deferred.resolve();
-		}
+	// Get the character list
+	charsList = ve.msg( 'visualeditor-specialcharinspector-characterlist-insert' );
+	try {
+		charsObj = $.parseJSON( charsList );
+	} catch ( err ) {
+		// There was no character list found, or the character list message is
+		// invalid json string. Force a fallback to the minimal character list
+		charsObj = this.minimalCharacterList;
+		ve.log( 've.ui.SpecialCharacterInspector: Could not parse the Special Character list; using default.');
+		ve.log( err.message );
+	} finally {
+		this.characters = charsObj;
 	}
 
-	return deferred.promise();
+	// This implementation always resolves instantly
+	return $.Deferred().resolve().promise();
 };
 
 /**
  * Builds the button DOM list based on the character list
- *
- * @returns {jQuery.Promise}
  */
 ve.ui.SpecialCharacterInspector.prototype.buildButtonList = function () {
 	var category, categoryButtons,
-		deferred = $.Deferred(),
 		$widgetOutput = this.$( '<div>' ).addClass( 've-specialchar-list' );
-
-	if ( !this.characters ) {
-		deferred.reject();
-	}
 
 	for ( category in this.characters ) {
 		categoryButtons = new ve.ui.GroupButtonWidget( {
@@ -189,9 +173,7 @@ ve.ui.SpecialCharacterInspector.prototype.buildButtonList = function () {
 			.append( categoryButtons.$element );
 	}
 
-	this.$buttonDomList = $widgetOutput;
-	deferred.resolve();
-	return deferred.promise();
+	this.$form.append( $widgetOutput );
 };
 
 /**
@@ -222,7 +204,7 @@ ve.ui.SpecialCharacterInspector.prototype.teardown = function ( data ) {
 		selection = new ve.Range( this.initialSelection.start + this.addedChar.length );
 		this.surface.execute( 'content', 'select', selection );
 	}
-	// reset
+	// Reset
 	this.addedChar = null;
 	// Parent method
 	ve.ui.Inspector.prototype.teardown.call( this, data );
