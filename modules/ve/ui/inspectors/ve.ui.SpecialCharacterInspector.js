@@ -27,8 +27,7 @@ ve.ui.SpecialCharacterInspector = function VeUiSpecialCharacterInspector( window
 	this.categories = null;
 
 	// Fallback character list in case no list is found anywhere
-	this.minimalCharacterList =
-	{
+	this.minimalCharacterList = {
 		'accents': {
 			'à': 'à',
 			'á': 'á',
@@ -156,41 +155,41 @@ ve.ui.SpecialCharacterInspector.prototype.fetchCharList = function () {
  * Builds the button DOM list based on the character list
  */
 ve.ui.SpecialCharacterInspector.prototype.buildButtonList = function () {
-	var category, categoryButtons,
-		$widgetOutput = this.$( '<div>' ).addClass( 've-specialchar-list' );
+	var category, character, characters, $categoryButtons,
+		$list = this.$( '<div>' ).addClass( 've-specialchar-list' );
 
 	for ( category in this.characters ) {
-		categoryButtons = new ve.ui.GroupButtonWidget( {
-			'groupName': category,
-			'group': this.characters[category],
-			'aggregations': { 'click': 'click' }
-		} );
+		characters = this.characters[category];
+		$categoryButtons = $( '<div>' ).addClass( 've-specialchar-list-group' );
+		for ( character in characters ) {
+			$categoryButtons.append(
+				$( '<div>' )
+					.addClass( 've-specialchar-list-character' )
+					.data( 'character', characters[character] )
+					.text( character )
+			);
+		}
 
-		categoryButtons.connect( this, { 'click': 'onSpecialCharAdd' } );
-
-		$widgetOutput
-			.append( this.$( '<h2>').text( category ) )
-			.append( categoryButtons.$element );
+		$list
+			.append( this.$( '<h3>').text( category ) )
+			.append( $categoryButtons );
 	}
 
-	this.$form.append( $widgetOutput );
+	$list.on( 'click', ve.bind( this.onListClick, this ) );
+
+	this.$form.append( $list );
 };
 
 /**
- * Handle the click event on the button groups. The value of the selection will be inserted
- * into the text
- *
- * @param {OO.ui.ButtonWidget} button The value attached to the clicked button
+ * Handle the click event on the list
  */
-ve.ui.SpecialCharacterInspector.prototype.onSpecialCharAdd = function ( button ) {
-	var fragment = this.surface.getModel().getFragment( null, true ),
-		value = button.returnValue;
+ve.ui.SpecialCharacterInspector.prototype.onListClick = function ( e ) {
+	var fragment, character = $( e.target ).data( 'character' );
 
-	// Insert the character
-	if ( value !== undefined ) {
-		// get the insertion value (it could be in any category)
-		this.addedChar = value;
-		fragment.insertContent( value, false );
+	if ( character !== undefined ) {
+		fragment = this.surface.getModel().getFragment( null, true );
+		fragment.insertContent( character, false );
+		this.addedChar = character;
 	}
 };
 

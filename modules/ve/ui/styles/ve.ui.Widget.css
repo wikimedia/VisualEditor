@@ -40,12 +40,6 @@
 	border-bottom-width: 0;
 }
 
-/* ve.ui.GroupButtonWidget.js */
-
-.ve-ui-groupButtonWidget {
-	white-space: normal;
-}
-
 /* ve.ui.MediaSizeWidget */
 .ve-ui-mediaSizeWidget-input-hasError input[type="text"] {
 	background: #ffc2c2;

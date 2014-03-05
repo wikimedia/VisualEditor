@@ -54,7 +54,31 @@
 	margin-right: auto;
 }
 
-.ve-specialchar-list h2 {
+.ve-specialchar-list h3 {
 	font-size: 1em;
 	text-transform: capitalize;
+}
+
+.ve-specialchar-list-group {
+	white-space: normal;
+}
+
+.ve-specialchar-list-character {
+	cursor: pointer;
+	font-size: 1.5em;
+	line-height: 1.5em;
+	width: 1.5em;
+	height: 1.5em;
+	text-align: center;
+	display: inline-block;
+	margin: 0 1px 1px 0;
+	border: 1px solid #e6e6e6;
+	-webkit-transition: border-color 100ms;
+	-moz-transition: border-color 100ms;
+	-o-transition: border-color 100ms;
+	transition: border-color 100ms;
+}
+
+.ve-specialchar-list-character:hover {
+	border-color: #ccc;
 }
