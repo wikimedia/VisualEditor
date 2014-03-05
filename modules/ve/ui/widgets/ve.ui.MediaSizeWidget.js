@@ -27,6 +27,7 @@ ve.ui.MediaSizeWidget = function VeUiMediaSizeWidget( config ) {
 	// Configuration
 	config = config || {};
 
+	this.showOriginalDimensionsButton = !!config.showOriginalDimensionsButton;
 	// Parent constructor
 	OO.ui.Widget.call( this, config );
 
@@ -77,19 +78,26 @@ ve.ui.MediaSizeWidget = function VeUiMediaSizeWidget( config ) {
 			.append( [
 				heightLabel.$element,
 				this.heightInput.$element
-			] ),
-		this.$( '<div>' )
-			.addClass( 've-ui-mediaSizeWidget-button-originalSize' )
-			.append( this.originalDimensionsButton.$element ),
+			] )
+	] );
+	// Optionally append the original size button
+	if ( this.showOriginalDimensionsButton ) {
+		this.$element.append(
+			this.$( '<div>' )
+				.addClass( 've-ui-mediaSizeWidget-button-originalSize' )
+				.append( this.originalDimensionsButton.$element )
+		);
+		this.originalDimensionsButton.setDisabled( true );
+		// Events
+		this.originalDimensionsButton.connect( this, { 'click': 'onButtonOriginalDimensionsClick' } );
+	}
+
+	// Append error message
+	this.$element.append(
 		this.$( '<div>' )
 			.addClass( 've-ui-mediaSizeWidget-label-error' )
-			.append( this.errorLabel.$element ),
-	] );
-
-	this.originalDimensionsButton.setDisabled( true );
-
-	// Events
-	this.originalDimensionsButton.connect( this, { 'click': 'onButtonOriginalDimensionsClick' } );
+			.append( this.errorLabel.$element )
+	);
 
 	this.widthInput.connect( this, { 'change': 'onWidthChange' } );
 	this.heightInput.connect( this, { 'change': 'onHeightChange' } );
@@ -221,8 +229,11 @@ ve.ui.MediaSizeWidget.prototype.validateDimensions = function () {
 ve.ui.MediaSizeWidget.prototype.setOriginalDimensions = function ( dimensions ) {
 	// Parent method
 	ve.Scalable.prototype.setOriginalDimensions.call( this, dimensions );
+
 	// Enable the 'original dimensions' button
-	this.originalDimensionsButton.setDisabled( false );
+	if ( this.showOriginalDimensionsButton ) {
+		this.originalDimensionsButton.setDisabled( false );
+	}
 };
 
 /**
