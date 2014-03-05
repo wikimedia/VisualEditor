@@ -31,30 +31,33 @@ OO.inheritClass( ve.ui.TriggerRegistry, OO.Registry );
  *
  * @method
  * @param {string|string[]} name Symbolic name or list of symbolic names
- * @param {ve.ui.Trigger|Object} trigger Trigger object, or map of trigger objects keyed by
+ * @param {ve.ui.Trigger[]|Object} triggers Trigger object(s) or map of trigger object(s) keyed by
  * platform name e.g. 'mac' or 'pc'
+ * @throws {Error} Trigger must be an instance of ve.ui.Trigger
  */
-ve.ui.TriggerRegistry.prototype.register = function ( name, trigger ) {
-	var platform = ve.init.platform.getSystemPlatform(),
+ve.ui.TriggerRegistry.prototype.register = function ( name, triggers ) {
+	var i, l, triggerList,
+		platform = ve.init.platform.getSystemPlatform(),
 		platformKey = platform === 'mac' ? 'mac' : 'pc';
 
-	// Validate arguments
-	if ( !( trigger instanceof ve.ui.Trigger ) && !ve.isPlainObject( trigger ) ) {
-		throw new Error(
-			'trigger must be an instance of ve.ui.Trigger or an object containing instances of ' +
-				've.ui.Trigger, cannot be a ' + typeof trigger
-		);
-	}
-
-	// Check for platform-specific trigger
-	if ( ve.isPlainObject( trigger ) ) {
-		// Only register if the current platform is supported
-		if ( platformKey in trigger ) {
-			OO.Registry.prototype.register.call( this, name, trigger[platformKey] );
+	if ( ve.isPlainObject( triggers ) ) {
+		if ( platformKey in triggers ) {
+			triggerList = ve.isArray( triggers[platformKey] ) ? triggers[platformKey] : [ triggers[platformKey] ];
+		} else {
+			return;
 		}
 	} else {
-		OO.Registry.prototype.register.call( this, name, trigger );
+		triggerList = ve.isArray( triggers ) ? triggers : [ triggers ];
 	}
+
+	// Validate arguments
+	for ( i = 0, l = triggerList.length; i < l; i++ ) {
+		if ( !( triggerList[i] instanceof ve.ui.Trigger ) ) {
+			throw new Error( 'Trigger must be an instance of ve.ui.Trigger' );
+		}
+	}
+
+	OO.Registry.prototype.register.call( this, name, triggerList );
 };
 
 /* Initialization */
