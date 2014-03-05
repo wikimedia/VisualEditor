@@ -45,23 +45,31 @@ ve.ui.CommandHelpDialog.prototype.initialize = function () {
 	// Parent method
 	ve.ui.Dialog.prototype.initialize.call( this );
 
-	var i, j, jLen, shortcut, commands, $list,
+	var i, j, jLen, trigger, commands, $list,
+		platform = ve.init.platform.getSystemPlatform(),
+		platformKey = platform === 'mac' ? 'mac' : 'pc',
 		commandGroups = this.constructor.static.getCommandGroups(),
 		contentLayout = new OO.ui.PanelLayout( {
 			'$': this.$,
 			'scrollable': true,
 			'padded': true
 		} ),
-		$container = this.$( '<div>' ).addClass( 've-ui-commandHelpDialog-container' ),
-		triggers = this.surface.getTriggers();
+		$container = this.$( '<div>' ).addClass( 've-ui-commandHelpDialog-container' );
 
 	for ( i in commandGroups ) {
 		commands = commandGroups[i].commands;
 		$list = this.$( '<dl>' ).addClass( 've-ui-commandHelpDialog-list' );
 		for ( j = 0, jLen = commands.length; j < jLen; j++ ) {
-			shortcut = commands[j].shortcut ? commands[j].shortcut : triggers[commands[j].name].getMessage();
+			if ( commands[j].name ) {
+				trigger = ve.ui.triggerRegistry.lookup( commands[j].name );
+			} else {
+				trigger = new ve.ui.Trigger(
+					ve.isPlainObject( commands[j].shortcut ) ? commands[j].shortcut[platformKey] : commands[j].shortcut,
+					true
+				);
+			}
 			$list.append(
-				this.$( '<dt>' ).text( shortcut.replace( /\+/g, ' + ' ) ),
+				this.$( '<dt>' ).text( trigger.getMessage().replace( /\+/g, ' + ' ) ),
 				this.$( '<dd>' ).text( ve.msg( commands[j].msg ) )
 			);
 		}
@@ -105,7 +113,13 @@ ve.ui.CommandHelpDialog.static.getCommandGroups = function () {
 			'title': 'visualeditor-shortcuts-formatting',
 			'commands': [
 				{ 'name': 'paragraph', 'msg': 'visualeditor-formatdropdown-format-paragraph' },
-				{ 'shortcut': 'CTRL+(1-6)', 'msg': 'visualeditor-formatdropdown-format-heading-label' },
+				{
+					'shortcut': {
+						'mac': 'cmd+(1-6)',
+						'pc': 'ctrl+(1-6)'
+					},
+					'msg': 'visualeditor-formatdropdown-format-heading-label'
+				},
 				{ 'name': 'preformatted', 'msg': 'visualeditor-formatdropdown-format-preformatted' },
 				{ 'name': 'indent', 'msg': 'visualeditor-indentationbutton-indent-tooltip' },
 				{ 'name': 'outdent', 'msg': 'visualeditor-indentationbutton-outdent-tooltip' }
@@ -121,9 +135,27 @@ ve.ui.CommandHelpDialog.static.getCommandGroups = function () {
 		'clipboard': {
 			'title': 'visualeditor-shortcuts-clipboard',
 			'commands': [
-				{ 'shortcut': 'CTRL+X', 'msg': 'visualeditor-clipboard-cut' },
-				{ 'shortcut': 'CTRL+C', 'msg': 'visualeditor-clipboard-copy' },
-				{ 'shortcut': 'CTRL+V', 'msg': 'visualeditor-clipboard-paste' },
+				{
+					'shortcut': {
+						'mac': 'cmd+x',
+						'pc': 'ctrl+x'
+					},
+					'msg': 'visualeditor-clipboard-cut'
+				},
+				{
+					'shortcut': {
+						'mac': 'cmd+c',
+						'pc': 'ctrl+c'
+					},
+					'msg': 'visualeditor-clipboard-copy'
+				},
+				{
+					'shortcut': {
+						'mac': 'cmd+v',
+						'pc': 'ctrl+v'
+					},
+					'msg': 'visualeditor-clipboard-paste'
+				},
 				{ 'name': 'pasteSpecial', 'msg': 'visualeditor-clipboard-paste-special' }
 			]
 		},
@@ -132,7 +164,7 @@ ve.ui.CommandHelpDialog.static.getCommandGroups = function () {
 			'commands': [
 				{ 'name': 'commandHelp', 'msg': 'visualeditor-dialog-command-help-title' }
 			]
-		},
+		}
 	};
 };
 
