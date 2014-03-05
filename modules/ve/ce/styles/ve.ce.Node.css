@@ -230,18 +230,16 @@
 }
 
 .ve-ce-branchNode-blockSlugWrapper-unfocussed .ve-ce-branchNode-blockSlug {
-	height: 1em;
-	font-size: 0.7em;
+	font-size: 0.8em;
 	margin: 0.2em 0;
-	padding: 0.25em 0;
 }
 
 .ve-ce-branchNode-blockSlugWrapper .ve-ce-branchNode-blockSlug {
 	overflow: hidden;
-	-webkit-transition: height 200ms ease-out, font-size 200ms ease-out, margin 200ms ease-out, padding 200ms ease-out;
-	-moz-transition: height 200ms ease-out, font-size 200ms ease-out, margin 200ms ease-out, padding 200ms ease-out;
-	-o-transition: height 200ms ease-out, font-size 200ms ease-out, margin 200ms ease-out, padding 200ms ease-out;
-	transition: height 200ms ease-out, font-size 200ms ease-out, margin 200ms ease-out, padding 200ms ease-out;
+	-webkit-transition: font-size 200ms ease-out, margin 200ms ease-out;
+	-moz-transition: font-size 200ms ease-out, margin 200ms ease-out;
+	-o-transition: font-size 200ms ease-out, margin 200ms ease-out;
+	transition: font-size 200ms ease-out, margin 200ms ease-out;
 }
 
 /* ve.ce.PreformattedNode */
