@@ -91,7 +91,16 @@ ve.ui.triggerRegistry.register(
 	'link', { 'mac': new ve.ui.Trigger( 'cmd+k' ), 'pc': new ve.ui.Trigger( 'ctrl+k' ) }
 );
 ve.ui.triggerRegistry.register(
-	'clear', { 'mac': new ve.ui.Trigger( 'cmd+\\' ), 'pc': new ve.ui.Trigger( 'ctrl+\\' ) }
+	'clear', {
+		'mac': [
+			new ve.ui.Trigger( 'cmd+\\' ),
+			new ve.ui.Trigger( 'cmd+m' )
+		],
+		'pc': [
+			new ve.ui.Trigger( 'ctrl+\\' ),
+			new ve.ui.Trigger( 'ctrl+m' )
+		]
+	}
 );
 ve.ui.triggerRegistry.register(
 	'underline', { 'mac': new ve.ui.Trigger( 'cmd+u' ), 'pc': new ve.ui.Trigger( 'ctrl+u' ) }
