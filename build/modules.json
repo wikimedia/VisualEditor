@@ -14,7 +14,8 @@
 			"lib/oojs-ui/oojs-ui.js"
 		],
 		"styles": [
-			"lib/oojs-ui/oojs-ui.svg.css"
+			"lib/oojs-ui/oojs-ui.svg.css",
+			"lib/oojs-ui/oojs-ui-apex.css"
 		]
 	},
 	"rangy": {
