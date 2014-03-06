@@ -12,13 +12,13 @@
  * @extends ve.ui.Inspector
  *
  * @constructor
- * @param {ve.ui.WindowSet} windowSet Window set this inspector is part of
+ * @param {ve.ui.Surface} surface Surface inspector is for
  * @param {Object} [config] Configuration options
  */
-ve.ui.SpecialCharacterInspector = function VeUiSpecialCharacterInspector( windowSet, config ) {
+ve.ui.SpecialCharacterInspector = function VeUiSpecialCharacterInspector( surface, config ) {
 
 	// Parent constructor
-	ve.ui.Inspector.call( this, windowSet, config );
+	ve.ui.Inspector.call( this, surface, config );
 
 	this.characters = null;
 	this.$buttonDomList = null;

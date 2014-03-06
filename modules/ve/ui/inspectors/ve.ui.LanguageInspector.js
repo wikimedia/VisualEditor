@@ -12,12 +12,12 @@
  * @extends ve.ui.AnnotationInspector
  *
  * @constructor
- * @param {ve.ui.WindowSet} windowSet Window set this inspector is part of
+ * @param {ve.ui.Surface} surface Surface inspector is for
  * @param {Object} [config] Configuration options
  */
-ve.ui.LanguageInspector = function VeUiLanguageInspector( windowSet, config ) {
+ve.ui.LanguageInspector = function VeUiLanguageInspector( surface, config ) {
 	// Parent constructor
-	ve.ui.AnnotationInspector.call( this, windowSet, config );
+	ve.ui.AnnotationInspector.call( this, surface, config );
 };
 
 /* Inheritance */

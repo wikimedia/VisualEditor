@@ -13,12 +13,12 @@
  * @extends ve.ui.Inspector
  *
  * @constructor
- * @param {ve.ui.WindowSet} windowSet Window set this inspector is part of
+ * @param {ve.ui.Surface} surface Surface inspector is for
  * @param {Object} [config] Configuration options
  */
-ve.ui.AnnotationInspector = function VeUiAnnotationInspector( windowSet, config ) {
+ve.ui.AnnotationInspector = function VeUiAnnotationInspector( surface, config ) {
 	// Parent constructor
-	ve.ui.Inspector.call( this, windowSet, config );
+	ve.ui.Inspector.call( this, surface, config );
 
 	// Properties
 	this.previousSelection = null;
