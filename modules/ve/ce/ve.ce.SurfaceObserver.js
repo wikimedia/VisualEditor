@@ -174,7 +174,7 @@ ve.ce.SurfaceObserver.prototype.pollOnceNoEmit = function () {
  * @fires selectionChange
  */
 ve.ce.SurfaceObserver.prototype.pollOnceInternal = function ( emitChanges ) {
-	var $nodeOrSlug, node, text, hash, range, rangyRange, inSlug;
+	var $nodeOrSlug, node, text, hash, range, rangyRange, inSlug, observer = this;
 
 	if ( !this.domDocument ) {
 		return;
@@ -209,6 +209,13 @@ ve.ce.SurfaceObserver.prototype.pollOnceInternal = function ( emitChanges ) {
 				.addClass( 've-ce-branchNode-blockSlugWrapper-unfocussed' )
 				.removeClass( 've-ce-branchNode-blockSlugWrapper-focussed' );
 			this.$slugWrapper = null;
+			// If the surface focuses a node, emit a rerender after the animation completes
+			setTimeout( function () {
+				var focusedNode = ve.getProp( observer.documentView, 'documentNode', 'surface', 'focusedNode' );
+				if ( focusedNode ) {
+					focusedNode.emit( 'rerender' );
+				}
+			}, 200 );
 		}
 	}
 
