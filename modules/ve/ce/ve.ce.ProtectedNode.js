@@ -25,7 +25,8 @@ ve.ce.ProtectedNode = function VeCeProtectedNode( $phantomable ) {
 	this.connect( this, {
 		'setup': 'onProtectedSetup',
 		'teardown': 'onProtectedTeardown',
-		'resizeStart': 'onProtectedResizeStart'
+		'resizeStart': 'onProtectedResizeStart',
+		'rerender': 'positionPhantoms'
 	} );
 };
 
