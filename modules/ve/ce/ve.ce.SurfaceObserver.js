@@ -200,14 +200,14 @@ ve.ce.SurfaceObserver.prototype.pollOnceInternal = function ( emitChanges ) {
 
 		if ( inSlug && !this.$slugWrapper ) {
 			this.$slugWrapper = $nodeOrSlug.closest( '.ve-ce-branchNode-blockSlugWrapper' )
-				.addClass( 've-ce-branchNode-blockSlugWrapper-focussed' )
-				.removeClass( 've-ce-branchNode-blockSlugWrapper-unfocussed' );
+				.addClass( 've-ce-branchNode-blockSlugWrapper-focused' )
+				.removeClass( 've-ce-branchNode-blockSlugWrapper-unfocused' );
 		}
 
 		if ( !inSlug && this.$slugWrapper ) {
 			this.$slugWrapper
-				.addClass( 've-ce-branchNode-blockSlugWrapper-unfocussed' )
-				.removeClass( 've-ce-branchNode-blockSlugWrapper-focussed' );
+				.addClass( 've-ce-branchNode-blockSlugWrapper-unfocused' )
+				.removeClass( 've-ce-branchNode-blockSlugWrapper-focused' );
 			this.$slugWrapper = null;
 			// If the surface focuses a node, emit a rerender after the animation completes
 			setTimeout( function () {

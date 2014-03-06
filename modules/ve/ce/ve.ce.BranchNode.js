@@ -73,7 +73,7 @@ ve.ce.BranchNode.$inlineSlugTemplate = $( '<span>' )
  * @property {jQuery}
  */
 ve.ce.BranchNode.$blockSlugTemplate = $( '<div>' )
-	.addClass( 've-ce-branchNode-blockSlugWrapper ve-ce-branchNode-blockSlugWrapper-unfocussed' )
+	.addClass( 've-ce-branchNode-blockSlugWrapper ve-ce-branchNode-blockSlugWrapper-unfocused' )
 	.append(
 		$( '<p>' )
 			.addClass( 've-ce-branchNode-slug ve-ce-branchNode-blockSlug' )
