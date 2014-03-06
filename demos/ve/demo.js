@@ -31,9 +31,17 @@ $( function () {
 		dumpModelChangeToggle = new OO.ui.ToggleButtonWidget( { 'label': 'Dump model on change' } ),
 		validateButton = new OO.ui.ButtonWidget( { 'label': 'Validate view and model' } ),
 		languageTextInput = new OO.ui.TextInputWidget( { 'value': $.i18n().locale } ),
-		languageButton  = new OO.ui.ButtonWidget( { 'label': 'Set UI language' } );
+		languageDirectionButton = new OO.ui.ButtonWidget( { 'label': 'Set language & direction' } ),
+		directionSelect = new OO.ui.ButtonSelectWidget().addItems( [
+			new OO.ui.ButtonOptionWidget( 'rtl', { '$': this.$, 'icon': 'text-dir-rtl' } ),
+			new OO.ui.ButtonOptionWidget( 'ltr', { '$': this.$, 'icon': 'text-dir-ltr' } )
+		] );
 
 	// Initialization
+
+	directionSelect.selectItem(
+		directionSelect.getItemFromData( $targetContainer.css( 'direction' ) || 'ltr' )
+	);
 
 	$( '.ve-demo-utilities-commands' ).append(
 		getRangeButton.$element,
@@ -49,7 +57,8 @@ $( function () {
 		validateButton.$element,
 		$( '<span class="ve-demo-utilities-commands-divider">&nbsp;</span>' ),
 		languageTextInput.$element,
-		languageButton.$element
+		directionSelect.$element,
+		languageDirectionButton.$element
 	);
 
 	function loadPage( src ) {
@@ -60,31 +69,41 @@ $( function () {
 		} ).done( function ( pageHtml ) {
 			var target, container = $( '<div>' );
 
-			$targetContainer.slideUp();
-			// The container must be attached to the DOM before
-			// the target is initialised
-			$targetContainer.append( container );
+			$targetContainer.slideUp().promise().done( function () {
+				// Container needs to be visually hidden, but not display:none
+				// so that the toolbar can be measured
+				$targetContainer.empty().show().css( {
+					'height': 0,
+					'overflow': 'hidden'
+				} );
 
-			target = new ve.init.sa.Target(
-				container,
-				ve.createDocumentFromHtml( pageHtml )
-			);
+				$targetContainer.css( 'direction', directionSelect.getSelectedItem().getData() );
 
-			target.on( 'surfaceReady', function () {
-				$targetContainer.promise().done( function () {
+				// The container must be attached to the DOM before
+				// the target is initialised
+				$targetContainer.append( container );
+
+				$targetContainer.show();
+				target = new ve.init.sa.Target(
+					container,
+					ve.createDocumentFromHtml( pageHtml )
+				);
+
+				target.on( 'surfaceReady', function () {
+					// Container must be properly hidden before slideDown animation
+					$targetContainer.removeAttr( 'style' ).hide();
+
 					if ( currentTarget ) {
 						currentTarget.destroy();
 					}
-					$targetContainer
-						.slideDown()
-						.promise().done( function () {
-							target.$document[0].focus();
-							currentTarget = target;
-							getRangeChangeToggle.emit( 'click' );
-							dumpModelChangeToggle.emit( 'click' );
-						} );
-				} );
 
+					$targetContainer.slideDown().promise().done( function () {
+						target.$document[0].focus();
+						currentTarget = target;
+						getRangeChangeToggle.emit( 'click' );
+						dumpModelChangeToggle.emit( 'click' );
+					} );
+				} );
 			} );
 
 		} ).fail( function () {
@@ -247,7 +266,7 @@ $( function () {
 		}
 	} );
 
-	languageButton.on( 'click', function () {
+	languageDirectionButton.on( 'click', function () {
 		var lang = languageTextInput.getValue();
 
 		$.i18n().locale = lang;

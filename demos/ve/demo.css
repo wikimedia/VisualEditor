@@ -59,9 +59,10 @@ body {
 	box-shadow: 0 0.25em 1.5em 0 #ddd;
 }
 
-.ve-demo-utilities-commands .oo-ui-widget,
+.ve-demo-utilities-commands > .oo-ui-widget,
 .ve-demo-utilities-commands-divider {
 	display: inline-block;
+	vertical-align: middle;
 	margin-right: 1em;
 }
 
