@@ -3,18 +3,19 @@
         "authors": [
             "Euriditi",
             "Amire80",
-            "Kushtrim"
+            "Kushtrim",
+            "Elioqoshi"
         ]
     },
     "visualeditor": "VisualEditor",
     "visualeditor-aliennode-tooltip": "Na vjen keq, ky element mund të redaktohet vetëm duke përdorur tekstin burimor.",
-    "visualeditor-annotationbutton-bold-tooltip": "Trashë",
+    "visualeditor-annotationbutton-bold-tooltip": "Bold",
     "visualeditor-annotationbutton-code-tooltip": "Kodi i kompjuterit",
-    "visualeditor-annotationbutton-italic-tooltip": "Pjerrët",
+    "visualeditor-annotationbutton-italic-tooltip": "Italic",
     "visualeditor-annotationbutton-language-tooltip": "Gjuha",
     "visualeditor-annotationbutton-link-tooltip": "Lidhje",
-    "visualeditor-annotationbutton-strikethrough-tooltip": "Me vijë në mes",
-    "visualeditor-annotationbutton-subscript-tooltip": "Poshtëshkrim",
+    "visualeditor-annotationbutton-strikethrough-tooltip": "Mesvizuar",
+    "visualeditor-annotationbutton-subscript-tooltip": "Poshtshkrim",
     "visualeditor-annotationbutton-superscript-tooltip": "Lartshkrim",
     "visualeditor-annotationbutton-underline-tooltip": "I nënvijëzuar",
     "visualeditor-clearbutton-tooltip": "Pastro formatimin",
