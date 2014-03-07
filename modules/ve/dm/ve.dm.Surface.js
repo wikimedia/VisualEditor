@@ -277,6 +277,7 @@ ve.dm.Surface.prototype.getSelection = function () {
  * @method
  * @param {ve.Range} [range] Range within target document, current selection used by default
  * @param {boolean} [noAutoSelect] Don't update the surface's selection when making changes
+ * @returns {ve.dm.SurfaceFragment} Surface fragment
  */
 ve.dm.Surface.prototype.getFragment = function ( range, noAutoSelect ) {
 	return new ve.dm.SurfaceFragment( this, range || this.selection, noAutoSelect );
