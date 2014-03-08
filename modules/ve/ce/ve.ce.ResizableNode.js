@@ -48,7 +48,8 @@ ve.ce.ResizableNode = function VeCeResizableNode( $resizable, config ) {
 		'blur': 'onResizableBlur',
 		'live': 'onResizableLive',
 		'resizing': 'onResizableResizing',
-		'resizeEnd': 'onResizableFocus'
+		'resizeEnd': 'onResizableFocus',
+		'rerender': 'onResizableFocus'
 	} );
 
 	// Initialization
