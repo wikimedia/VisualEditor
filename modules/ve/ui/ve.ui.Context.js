@@ -21,7 +21,6 @@ ve.ui.Context = function VeUiContext( surface, config ) {
 
 	// Properties
 	this.surface = surface;
-	this.inspectors = {};
 	this.visible = false;
 	this.showing = false;
 	this.hiding = false;
