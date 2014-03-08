@@ -211,7 +211,7 @@
 
 /* ve.ce.BranchNode */
 
-.ve-ce-branchNode-blockSlugWrapper-unfocussed {
+.ve-ce-branchNode-blockSlugWrapper-unfocused {
 	margin: 0 0 -0.2em 0;
 }
 
@@ -224,12 +224,12 @@
 	transition: outline-color 400ms ease-out, background-color 400ms ease-out;
 }
 
-.ve-ce-branchNode-blockSlugWrapper-unfocussed:hover {
+.ve-ce-branchNode-blockSlugWrapper-unfocused:hover {
 	outline-color: #bbb;
 	background-color: rgba(0, 0, 0, 0.035);
 }
 
-.ve-ce-branchNode-blockSlugWrapper-unfocussed .ve-ce-branchNode-blockSlug {
+.ve-ce-branchNode-blockSlugWrapper-unfocused .ve-ce-branchNode-blockSlug {
 	font-size: 0.8em;
 	margin: 0.2em 0;
 }

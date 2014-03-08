@@ -65,7 +65,7 @@ ve.init.Target.prototype.destroy = function () {
 /**
  * Fired when the #surface is ready.
  *
- * By default the surface document is not focussed. If the target wants
+ * By default the surface document is not focused. If the target wants
  * the browsers' focus to be in the surface (ready for typing and cursoring)
  * call `this.$document[0].focus();` in a handler for this event.
  *
