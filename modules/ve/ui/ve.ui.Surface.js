@@ -116,6 +116,7 @@ ve.ui.Surface.prototype.initialize = function () {
  *
  * @method
  * @abstract
+ * @throws {Error} If this method is not overridden in a concrete subclass
  */
 ve.ui.Surface.prototype.setupContext = function () {
 	throw new Error( 've.ui.Surface.setupContext must be overridden in subclass' );

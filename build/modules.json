@@ -189,6 +189,7 @@
 			"modules/ve/ui/ve.ui.Surface.js",
 			"modules/ve/ui/ve.ui.DesktopSurface.js",
 			"modules/ve/ui/ve.ui.Context.js",
+			"modules/ve/ui/ve.ui.DesktopContext.js",
 			"modules/ve/ui/ve.ui.Dialog.js",
 			"modules/ve/ui/ve.ui.Inspector.js",
 			"modules/ve/ui/ve.ui.WindowSet.js",
@@ -230,7 +231,7 @@
 		"styles": [
 			"modules/ve/ce/styles/ve.ce.Node.css",
 			"modules/ve/ce/styles/ve.ce.Surface.css",
-			"modules/ve/ui/styles/ve.ui.Context.css",
+			"modules/ve/ui/styles/ve.ui.DesktopContext.css",
 			"modules/ve/ui/styles/ve.ui.Dialog.css",
 			"modules/ve/ui/styles/ve.ui.Inspector.css",
 			"modules/ve/ui/styles/ve.ui.Surface.css",
@@ -242,7 +243,8 @@
 	},
 	"visualEditor.mobile": {
 		"scripts": [
-			"modules/ve/ui/ve.ui.MobileSurface.js"
+			"modules/ve/ui/ve.ui.MobileSurface.js",
+			"modules/ve/ui/ve.ui.MobileContext.js"
 		]
 	}
 }

@@ -31,9 +31,9 @@ OO.inheritClass( ve.ui.MobileSurface, ve.ui.Surface );
  * Set up a context.
  *
  * @method
- * @returns {ve.ui.Context} Context instance
+ * @returns {ve.ui.MobileContext} Context instance
  */
 ve.ui.MobileSurface.prototype.setupContext = function () {
-	this.context = new ve.ui.Context( this, { '$': this.$ } );
+	this.context = new ve.ui.MobileContext( this, { '$': this.$ } );
 	this.$globalOverlay.append( this.context.$element );
 };
