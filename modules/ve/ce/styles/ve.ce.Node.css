@@ -211,28 +211,14 @@
 
 /* ve.ce.BranchNode */
 
-.ve-ce-branchNode-blockSlugWrapper-unfocused {
-	margin: 0 0 -0.2em 0;
-}
-
 .ve-ce-branchNode-blockSlugWrapper {
 	background-color: transparent;
 	outline: transparent dashed 1px;
-	-webkit-transition: outline-color 400ms ease-out, background-color 400ms ease-out;
-	-moz-transition: outline-color 400ms ease-out, background-color 400ms ease-out;
-	-o-transition: outline-color 400ms ease-out, background-color 400ms ease-out;
-	transition: outline-color 400ms ease-out, background-color 400ms ease-out;
-}
-
-.ve-ce-branchNode-blockSlugWrapper-unfocused:hover {
-	outline-color: #ccc;
-	/* rgba(#f1f7fb, 0.5) */
-	background-color: rgba(241, 247, 251, 0.5);
-}
-
-.ve-ce-branchNode-blockSlugWrapper-unfocused .ve-ce-branchNode-blockSlug {
-	font-size: 0.8em;
-	margin: 0.2em 0;
+	outline-offset: 10px;
+	-webkit-transition: background-color 400ms ease-out, outline-color 400ms ease-out, outline-offset 400ms ease-out;
+	-moz-transition: background-color 400ms ease-out, outline-color 400ms ease-out, outline-offset 400ms ease-out;
+	-o-transition: background-color 400ms ease-out, outline-color 400ms ease-out, outline-offset 400ms ease-out;
+	transition: background-color 400ms ease-out, outline-color 400ms ease-out, outline-offset 400ms ease-out;
 }
 
 .ve-ce-branchNode-blockSlugWrapper .ve-ce-branchNode-blockSlug {
@@ -241,6 +227,22 @@
 	-moz-transition: font-size 200ms ease-out, margin 200ms ease-out;
 	-o-transition: font-size 200ms ease-out, margin 200ms ease-out;
 	transition: font-size 200ms ease-out, margin 200ms ease-out;
+}
+
+.ve-ce-branchNode-blockSlugWrapper-unfocused {
+	margin: 0 0 -0.2em 0;
+	outline-offset: 0;
+}
+
+.ve-ce-branchNode-blockSlugWrapper-unfocused:hover {
+	outline-color: #ccc;
+	/* rgba(#f1f7fb, 0.5) */
+	background-color: rgba(241, 247, 251, 0.75);
+}
+
+.ve-ce-branchNode-blockSlugWrapper-unfocused .ve-ce-branchNode-blockSlug {
+	font-size: 0.8em;
+	margin: 0.2em 0;
 }
 
 /* ve.ce.PreformattedNode */
