@@ -225,8 +225,9 @@
 }
 
 .ve-ce-branchNode-blockSlugWrapper-unfocused:hover {
-	outline-color: #bbb;
-	background-color: rgba(0, 0, 0, 0.035);
+	outline-color: #ccc;
+	/* rgba(#f1f7fb, 0.5) */
+	background-color: rgba(241, 247, 251, 0.5);
 }
 
 .ve-ce-branchNode-blockSlugWrapper-unfocused .ve-ce-branchNode-blockSlug {
