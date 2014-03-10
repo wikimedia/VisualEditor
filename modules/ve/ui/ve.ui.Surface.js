@@ -9,6 +9,7 @@
  * A surface is a top-level object which contains both a surface model and a surface view.
  *
  * @class
+ * @abstract
  * @extends OO.ui.Element
  *
  * @constructor
@@ -29,7 +30,6 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 	this.$localOverlay = this.$( '<div>' );
 	this.$localOverlayBlockers = this.$( '<div>' );
 	this.$localOverlayControls = this.$( '<div>' );
-	this.$localOverlayMenus = this.$( '<div>' );
 	if ( dataOrDoc instanceof ve.dm.Document ) {
 		// ve.dm.Document
 		documentModel = dataOrDoc;
@@ -42,7 +42,6 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 	}
 	this.model = new ve.dm.Surface( documentModel );
 	this.view = new ve.ce.Surface( this.model, this, { '$': this.$ } );
-	this.context = new ve.ui.Context( this, { '$': this.$ } );
 	this.dialogs = new ve.ui.WindowSet( this, ve.ui.dialogFactory, { '$': this.$ } );
 	this.commands = {};
 	this.triggers = {};
@@ -50,16 +49,14 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 	this.enabled = true;
 
 	// Initialization
+	this.setupContext();
 	this.$element
 		.addClass( 've-ui-surface' )
 		.append( this.view.$element );
 	this.$localOverlay
 		.addClass( 've-ui-surface-overlay ve-ui-surface-overlay-local' )
 		.append( this.$localOverlayBlockers )
-		.append( this.$localOverlayControls )
-		.append( this.$localOverlayMenus );
-	this.$localOverlayMenus
-		.append( this.context.$element );
+		.append( this.$localOverlayControls );
 	this.$globalOverlay
 		.addClass( 've-ui-surface-overlay ve-ui-surface-overlay-global' )
 		.append( this.dialogs.$element );
@@ -112,6 +109,16 @@ ve.ui.Surface.prototype.initialize = function () {
 		new ve.Range( firstOffset !== -1 ? firstOffset : 1 )
 	);
 	this.getModel().startHistoryTracking();
+};
+
+/**
+ * Set up a context.
+ *
+ * @method
+ * @abstract
+ */
+ve.ui.Surface.prototype.setupContext = function () {
+	throw new Error( 've.ui.Surface.setupContext must be overridden in subclass' );
 };
 
 /**

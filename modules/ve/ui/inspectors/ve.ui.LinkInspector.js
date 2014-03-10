@@ -99,7 +99,7 @@ ve.ui.LinkInspector.prototype.initialize = function () {
 
 	// Properties
 	this.targetInput = new this.constructor.static.linkTargetInputWidget( {
-		'$': this.$, '$overlay': this.surface.$localOverlayMenus
+		'$': this.$, '$overlay': this.surface.context.$element
 	} );
 
 	// Initialization

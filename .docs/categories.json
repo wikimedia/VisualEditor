@@ -107,6 +107,8 @@
 				"classes": [
 					"ve.ui",
 					"ve.ui.Surface",
+					"ve.ui.DesktopSurface",
+					"ve.ui.MobileSurface",
 					"ve.ui.Context",
 					"ve.ui.Toolbar",
 					"ve.ui.TargetToolbar",

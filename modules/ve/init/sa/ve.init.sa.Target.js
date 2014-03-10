@@ -48,7 +48,7 @@ ve.init.sa.Target.prototype.setup = function () {
 
 	// Properties
 	this.setupDone = true;
-	this.surface = new ve.ui.Surface( this.document );
+	this.surface = new ve.ui.DesktopSurface( this.document );
 	this.$document = this.surface.$element.find( '.ve-ce-documentNode' );
 	this.toolbar = new ve.ui.TargetToolbar( this, this.surface, { 'shadow': true } );
 

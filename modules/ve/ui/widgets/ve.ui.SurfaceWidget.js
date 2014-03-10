@@ -27,7 +27,7 @@ ve.ui.SurfaceWidget = function VeUiSurfaceWidget( doc, config ) {
 	OO.ui.Widget.call( this, config );
 
 	// Properties
-	this.surface = new ve.ui.Surface( doc, { '$': this.$ } );
+	this.surface = new ve.ui.DesktopSurface( doc, { '$': this.$ } );
 	this.toolbar = new ve.ui.Toolbar( this.surface, { '$': this.$ } );
 
 	// Initialization
