@@ -45,7 +45,7 @@ QUnit.test( 'getModelFromDom', function ( assert ) {
 	QUnit.expect( ve.test.utils.countGetModelFromDomTests( cases ) );
 
 	for ( msg in cases ) {
-		ve.test.utils.runGetModelFromDomTest( assert, ve.copy( cases[msg] ) );
+		ve.test.utils.runGetModelFromDomTest( assert, ve.copy( cases[msg] ), msg );
 	}
 } );
 
@@ -55,6 +55,6 @@ QUnit.test( 'getDomFromModel', function ( assert ) {
 	QUnit.expect( 2 * ve.getObjectKeys( cases ).length );
 
 	for ( msg in cases ) {
-		ve.test.utils.runGetDomFromModelTest( assert, ve.copy( cases[msg] ) );
+		ve.test.utils.runGetDomFromModelTest( assert, ve.copy( cases[msg] ), msg );
 	}
 } );
