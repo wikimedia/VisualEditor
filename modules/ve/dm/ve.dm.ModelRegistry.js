@@ -182,7 +182,7 @@ ve.dm.ModelRegistry.prototype.isExtensionSpecificType = function ( type ) {
  * registration (i.e. if A was registered before B, B will rank above A).
  * The highest-ranking model whose test function does not return false, wins.
  *
- * @param {HTMLElement} element Element to match
+ * @param {Node} element Element to match (usually an HTMLElement but can be a comment node)
  * @param {boolean} [forceAboutGrouping] If true, only match models with about grouping enabled
  * @param {string[]} [excludeTypes] Model names to exclude when matching
  * @returns {string|null} Model type, or null if none found
@@ -328,14 +328,16 @@ ve.dm.ModelRegistry.prototype.matchElement = function ( element, forceAboutGroup
 	}
 
 	types = [];
-	if ( element.getAttribute( 'rel' ) ) {
-		types = types.concat( element.getAttribute( 'rel' ).split( ' ' ) );
-	}
-	if ( element.getAttribute( 'typeof' ) ) {
-		types = types.concat( element.getAttribute( 'typeof' ).split( ' ' ) );
-	}
-	if ( element.getAttribute( 'property' ) ) {
-		types = types.concat( element.getAttribute( 'property' ).split( ' ' ) );
+	if ( element.getAttribute ) {
+		if ( element.getAttribute( 'rel' ) ) {
+			types = types.concat( element.getAttribute( 'rel' ).split( ' ' ) );
+		}
+		if ( element.getAttribute( 'typeof' ) ) {
+			types = types.concat( element.getAttribute( 'typeof' ).split( ' ' ) );
+		}
+		if ( element.getAttribute( 'property' ) ) {
+			types = types.concat( element.getAttribute( 'property' ).split( ' ' ) );
+		}
 	}
 	elementExtSpecificTypes = types.filter( ve.bind( this.isExtensionSpecificType, this ) );
 	hasExtSpecificTypes = elementExtSpecificTypes.length !== 0;
