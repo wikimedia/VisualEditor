@@ -21,6 +21,7 @@
 		<ul class="ve-demo-menu">
 				<!-- MENU -->
 		</ul>
+		<div class="ve-demo-error"></div>
 		<div class="ve-demo-editor"></div>
 		<div class="ve-demo-utilities">
 			<p>

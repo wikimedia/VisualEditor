@@ -28,13 +28,27 @@ body {
 	display: inline-block;
 }
 
+.ve-demo-error,
+.ve-demo-utilities {
+	margin: 1em 2.5em;
+	border: solid 1px #ccc;
+	border-radius: 0.5em;
+	padding: 1em 2em;
+	font-size: 0.8em;
+	box-shadow: 0 0.25em 1.5em 0 #ddd;
+}
+
 .ve-demo-error {
-	margin: 1em 2em;
-	padding: 0.2em 0.8em;
-	background: #ddd;
-	border: 1px solid #c9c9c9;
-	border-radius: 1em;
 	color: #d45353;
+	margin-bottom: 0;
+	-webkit-border-bottom-right-radius: 0;
+	-moz-border-bottom-right-radius: 0;
+	-o-border-bottom-right-radius: 0;
+	border-bottom-right-radius: 0;
+	-webkit-border-bottom-left-radius: 0;
+	-moz-border-bottom-left-radius: 0;
+	-o-border-bottom-left-radius: 0;
+	border-bottom-left-radius: 0;
 }
 
 .ve-demo-error:empty {
@@ -42,10 +56,8 @@ body {
 }
 
 .ve-demo-utilities {
-	margin: 0 2.5em 1em 2.5em;
-	border: solid 1px #ccc;
+	margin-top: 0;
 	border-top-width: 0;
-	border-radius: 0.5em;
 	-webkit-border-top-right-radius: 0;
 	-moz-border-top-right-radius: 0;
 	-o-border-top-right-radius: 0;
@@ -54,9 +66,6 @@ body {
 	-moz-border-top-left-radius: 0;
 	-o-border-top-left-radius: 0;
 	border-top-left-radius: 0;
-	padding: 1em 2em;
-	font-size: 0.8em;
-	box-shadow: 0 0.25em 1.5em 0 #ddd;
 }
 
 .ve-demo-utilities-commands .oo-ui-widget,
