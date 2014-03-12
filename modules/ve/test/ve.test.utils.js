@@ -65,8 +65,8 @@ ve.test.utils.countGetModelFromDomTests = function ( cases ) {
 	return n;
 };
 
-ve.test.utils.runGetModelFromDomTest = function ( assert, caseItem ) {
-	var msg, model, i, length, hash, html;
+ve.test.utils.runGetModelFromDomTest = function ( assert, caseItem, msg ) {
+	var model, i, length, hash, html;
 
 	if ( caseItem.head !== undefined || caseItem.body !== undefined ) {
 		html = '<head>' + ( caseItem.head || '' ) + '</head><body>' + caseItem.body + '</body>';
@@ -88,8 +88,8 @@ ve.test.utils.runGetModelFromDomTest = function ( assert, caseItem ) {
 	}
 };
 
-ve.test.utils.runGetDomFromModelTest = function ( assert, caseItem ) {
-	var msg, originalData, doc, store, i, length, html;
+ve.test.utils.runGetDomFromModelTest = function ( assert, caseItem, msg ) {
+	var originalData, doc, store, i, length, html;
 
 	store = new ve.dm.IndexValueStore();
 	// Load storeItems into store
