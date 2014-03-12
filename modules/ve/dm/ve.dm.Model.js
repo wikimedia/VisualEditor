@@ -58,7 +58,7 @@ ve.dm.Model.static.matchRdfaTypes = null;
 
 /**
  * Optional function to determine whether this model should match a given element.
- * Takes an HTMLElement and returns true or false.
+ * Takes a Node and returns true or false.
  * This function is only called if this model has a chance of "winning"; see
  * ve.dm.ModelRegistry for more information about element matching.
  * If set to null, this property is ignored. Setting this to null is not the same as unconditionally
@@ -124,7 +124,7 @@ ve.dm.Model.static.matchFunction = null;
  * @static
  * @inheritable
  * @method
- * @param {HTMLElement[]} domElements DOM elements to convert. Usually only one element
+ * @param {Node[]} domElements DOM elements to convert. Usually only one element
  * @param {ve.dm.Converter} converter Converter object
  * @returns {Object|Array|null} Linear model element, or array with linear model data, or null to alienate
  */
@@ -151,7 +151,7 @@ ve.dm.Model.static.toDataElement = function () {
  * @param {Object|Array} dataElement Linear model element or array of linear model data
  * @param {HTMLDocument} doc HTML document for creating elements
  * @param {ve.dm.Converter} converter Converter object to optionally call `getDomSubtreeFromData` on
- * @returns {HTMLElement[]} DOM elements
+ * @returns {Node[]} DOM elements
  */
 ve.dm.Model.static.toDomElements = function ( dataElement, doc ) {
 	if ( this.matchTagNames && this.matchTagNames.length === 1 ) {
