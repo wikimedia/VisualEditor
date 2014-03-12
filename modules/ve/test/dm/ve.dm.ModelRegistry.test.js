@@ -8,8 +8,8 @@
 QUnit.module( 've.dm.ModelRegistry' );
 
 /* Stubs */
-function checkForPickMe( element ) {
-	return element.hasAttribute && element.hasAttribute( 'pickme' );
+function checkForPickMe( node ) {
+	return node.hasAttribute && node.hasAttribute( 'pickme' );
 }
 
 ve.dm.StubNothingSetAnnotation = function VeDmStubNothingSetAnnotation( element ) {

@@ -161,7 +161,7 @@ ve.dm.ModelRegistry.prototype.isExtensionSpecificType = function ( type ) {
 };
 
 /**
- * Determine which model best matches the given element
+ * Determine which model best matches the given node
  *
  * Model matching works as follows:
  *
@@ -182,15 +182,15 @@ ve.dm.ModelRegistry.prototype.isExtensionSpecificType = function ( type ) {
  * registration (i.e. if A was registered before B, B will rank above A).
  * The highest-ranking model whose test function does not return false, wins.
  *
- * @param {Node} element Element to match (usually an HTMLElement but can be a comment node)
+ * @param {Node} node Node to match (usually an HTMLElement but can also be a Comment node)
  * @param {boolean} [forceAboutGrouping] If true, only match models with about grouping enabled
  * @param {string[]} [excludeTypes] Model names to exclude when matching
  * @returns {string|null} Model type, or null if none found
  */
-ve.dm.ModelRegistry.prototype.matchElement = function ( element, forceAboutGrouping, excludeTypes ) {
+ve.dm.ModelRegistry.prototype.matchElement = function ( node, forceAboutGrouping, excludeTypes ) {
 	var i, name, model, matches, winner, types, elementExtSpecificTypes, matchTypes,
 		hasExtSpecificTypes,
-		tag = element.nodeName.toLowerCase(),
+		tag = node.nodeName.toLowerCase(),
 		reg = this;
 
 	function byRegistrationOrderDesc( a, b ) {
@@ -279,7 +279,7 @@ ve.dm.ModelRegistry.prototype.matchElement = function ( element, forceAboutGroup
 		queue2.sort( byRegistrationOrderDesc );
 		queue = queue.concat( queue2 );
 		for ( i = 0; i < queue.length; i++ ) {
-			if ( reg.registry[queue[i]].static.matchFunction( element ) ) {
+			if ( reg.registry[queue[i]].static.matchFunction( node ) ) {
 				return queue[i];
 			}
 		}
@@ -328,15 +328,15 @@ ve.dm.ModelRegistry.prototype.matchElement = function ( element, forceAboutGroup
 	}
 
 	types = [];
-	if ( element.getAttribute ) {
-		if ( element.getAttribute( 'rel' ) ) {
-			types = types.concat( element.getAttribute( 'rel' ).split( ' ' ) );
+	if ( node.getAttribute ) {
+		if ( node.getAttribute( 'rel' ) ) {
+			types = types.concat( node.getAttribute( 'rel' ).split( ' ' ) );
 		}
-		if ( element.getAttribute( 'typeof' ) ) {
-			types = types.concat( element.getAttribute( 'typeof' ).split( ' ' ) );
+		if ( node.getAttribute( 'typeof' ) ) {
+			types = types.concat( node.getAttribute( 'typeof' ).split( ' ' ) );
 		}
-		if ( element.getAttribute( 'property' ) ) {
-			types = types.concat( element.getAttribute( 'property' ).split( ' ' ) );
+		if ( node.getAttribute( 'property' ) ) {
+			types = types.concat( node.getAttribute( 'property' ).split( ' ' ) );
 		}
 	}
 	elementExtSpecificTypes = types.filter( ve.bind( this.isExtensionSpecificType, this ) );
@@ -372,7 +372,7 @@ ve.dm.ModelRegistry.prototype.matchElement = function ( element, forceAboutGroup
 			// Only process this one if it doesn't specify types
 			// If it does specify types, then we've either already processed it in the
 			// func+tag+type step above, or its type rule doesn't match
-			if ( model.static.getMatchRdfaTypes() === null && model.static.matchFunction( element ) ) {
+			if ( model.static.getMatchRdfaTypes() === null && model.static.matchFunction( node ) ) {
 				return matches[i];
 			}
 		}
@@ -380,12 +380,12 @@ ve.dm.ModelRegistry.prototype.matchElement = function ( element, forceAboutGroup
 		// func only
 		// We only need to get the [''][''] array because the other arrays were either
 		// already processed during the steps above, or have a type or tag rule that doesn't
-		// match this element.
+		// match this node.
 		// No need to sort because individual arrays in modelsByTypeAndTag are already sorted
 		// correctly
 		matches = ve.getProp( this.modelsByTypeAndTag, 1, '', '' ) || [];
 		for ( i = 0; i < matches.length; i++ ) {
-			if ( this.registry[matches[i]].static.matchFunction( element ) ) {
+			if ( this.registry[matches[i]].static.matchFunction( node ) ) {
 				return matches[i];
 			}
 		}
