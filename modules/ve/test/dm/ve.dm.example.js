@@ -1166,24 +1166,24 @@ ve.dm.example.domToDataCases = {
 		'data': [
 			{ 'type': 'paragraph' },
 			{
-				'type': 'alienMeta',
+				'type': 'comment',
 				'annotations': [ ve.dm.example.bold ],
 				'attributes': {
-					'domElements': $( '<!--foo-->' ).toArray()
+					'text': 'foo'
 				}
 			},
-			{ 'type': '/alienMeta' },
+			{ 'type': '/comment' },
 			[ 'b', [ ve.dm.example.bold ] ],
 			[ 'a', [ ve.dm.example.bold ] ],
 			[ 'r', [ ve.dm.example.bold ] ],
 			{
-				'type': 'alienMeta',
+				'type': 'comment',
 				'annotations': [ ve.dm.example.bold ],
 				'attributes': {
-					'domElements': $( '<!--baz-->' ).toArray()
+					'text': 'baz'
 				}
 			},
-			{ 'type': '/alienMeta' },
+			{ 'type': '/comment' },
 			{ 'type': '/paragraph' },
 			{ 'type': 'internalList' },
 			{ 'type': '/internalList' }
@@ -1194,36 +1194,36 @@ ve.dm.example.domToDataCases = {
 		'data': [
 			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
 			{
-				'type': 'alienMeta',
+				'type': 'comment',
 				'annotations': [ ve.dm.example.bold ],
 				'attributes': {
-					'domElements': $( '<!--foo-->' ).toArray()
+					'text': 'foo'
 				}
 			},
-			{ 'type': '/alienMeta' },
+			{ 'type': '/comment' },
 			[ 'b', [ ve.dm.example.bold ] ],
 			[ 'a', [ ve.dm.example.bold ] ],
 			[ 'r', [ ve.dm.example.bold ] ],
 			{
-				'type': 'alienMeta',
+				'type': 'comment',
 				'annotations': [ ve.dm.example.bold ],
 				'attributes': {
-					'domElements': $( '<!--baz-->' ).toArray()
+					'text': 'baz'
 				}
 			},
-			{ 'type': '/alienMeta' },
+			{ 'type': '/comment' },
 			[ 'q', [ ve.dm.example.bold ] ],
 			[ 'u', [ ve.dm.example.bold ] ],
 			[ 'u', [ ve.dm.example.bold ] ],
 			[ 'x', [ ve.dm.example.bold ] ],
 			{
-				'type': 'alienMeta',
+				'type': 'comment',
 				'annotations': [ ve.dm.example.bold ],
 				'attributes': {
-					'domElements': $( '<!--whee-->' ).toArray()
+					'text': 'whee'
 				}
 			},
-			{ 'type': '/alienMeta' },
+			{ 'type': '/comment' },
 			{ 'type': '/paragraph' },
 			{ 'type': 'internalList' },
 			{ 'type': '/internalList' }
@@ -1265,12 +1265,12 @@ ve.dm.example.domToDataCases = {
 			'o',
 			'o',
 			{
-				'type': 'alienMeta',
+				'type': 'comment',
 				'attributes': {
-					'domElements': $( '<!--bar-->' ).toArray()
+					'text': 'bar'
 				}
 			},
-			{ 'type': '/alienMeta' },
+			{ 'type': '/comment' },
 			[ 'B', [ ve.dm.example.bold ] ],
 			[ 'a', [ ve.dm.example.bold ] ],
 			[ 'z', [ ve.dm.example.bold ] ],
@@ -1462,12 +1462,12 @@ ve.dm.example.domToDataCases = {
 		'body': '<!-- comment -->',
 		'data': [
 			{
-				'type': 'alienMeta',
+				'type': 'comment',
 				'attributes': {
-					'domElements': $( '<!-- comment -->' ).toArray()
+					'text': ' comment '
 				}
 			},
-			{ 'type': '/alienMeta' },
+			{ 'type': '/comment' },
 			{ 'type': 'paragraph', 'internal': { 'generated': 'empty' } },
 			{ 'type': '/paragraph' },
 			{ 'type': 'internalList' },
@@ -1586,12 +1586,13 @@ ve.dm.example.domToDataCases = {
 			{ 'type': 'paragraph' },
 			'F', 'o', 'o',
 			{
-				'type': 'alienMeta',
+				'type': 'comment',
+				'annotations': [ ve.dm.example.bold ],
 				'attributes': {
-					'domElements': $( '<b><!-- Bar --></b>' ).toArray()
+					'text': ' Bar '
 				}
 			},
-			{ 'type': '/alienMeta' },
+			{ 'type': '/comment' },
 			'B', 'a', 'z',
 			{ 'type': '/paragraph' },
 			{ 'type': 'internalList' },
@@ -2107,21 +2108,21 @@ ve.dm.example.domToDataCases = {
 		'body': '<!-- Foo --> <!-- Bar -->\nFoo',
 		'data': [
 			{
-				'type': 'alienMeta',
+				'type': 'comment',
 				'internal': { 'whitespace': [ undefined, undefined, undefined, ' ' ] },
 				'attributes': {
-					'domElements': $( '<!-- Foo -->' ).toArray()
+					'text': ' Foo '
 				}
 			},
-			{ 'type': '/alienMeta' },
+			{ 'type': '/comment' },
 			{
-				'type': 'alienMeta',
+				'type': 'comment',
 				'internal': { 'whitespace': [ ' ', undefined, undefined, '\n' ] },
 				'attributes': {
-					'domElements': $( '<!-- Bar -->' ).toArray()
+					'text': ' Bar '
 				}
 			},
-			{ 'type': '/alienMeta' },
+			{ 'type': '/comment' },
 			{
 				'type': 'paragraph',
 				'internal': {
@@ -2165,12 +2166,12 @@ ve.dm.example.domToDataCases = {
 			},
 			'b', 'a', 'r',
 			{
-				'type': 'alienMeta',
+				'type': 'comment',
 				'attributes': {
-					'domElements': $( '<!-- baz -->' ).toArray()
+					'text': ' baz '
 				}
 			},
-			{ 'type': '/alienMeta' },
+			{ 'type': '/comment' },
 			'q', 'u', 'u', 'x',
 			{ 'type': '/paragraph' },
 			{ 'type': '/listItem' },
@@ -2205,9 +2206,9 @@ ve.dm.example.domToDataCases = {
 			'b', 'a', 'r',
 			{ 'type': '/paragraph' },
 			{
-				'type': 'alienMeta',
+				'type': 'comment',
 				'attributes': {
-					'domElements': $( '<!-- baz -->' ).toArray()
+					'text': ' baz '
 				},
 				'internal': {
 					'whitespace': [
@@ -2218,7 +2219,7 @@ ve.dm.example.domToDataCases = {
 					]
 				}
 			},
-			{ 'type': '/alienMeta' },
+			{ 'type': '/comment' },
 			{ 'type': '/listItem' },
 			{ 'type': '/list' },
 			{ 'type': 'internalList' },
@@ -2254,9 +2255,9 @@ ve.dm.example.domToDataCases = {
 			'f', 'o', 'o',
 			{ 'type': '/paragraph' },
 			{
-				'type': 'alienMeta',
+				'type': 'comment',
 				'attributes': {
-					'domElements': $( '<!-- bar -->' ).toArray()
+					'text': ' bar '
 				},
 				'internal': {
 					'whitespace': [
@@ -2267,11 +2268,11 @@ ve.dm.example.domToDataCases = {
 					]
 				}
 			},
-			{ 'type': '/alienMeta' },
+			{ 'type': '/comment' },
 			{
-				'type': 'alienMeta',
+				'type': 'comment',
 				'attributes': {
-					'domElements': $( '<!-- baz -->' ).toArray()
+					'text': ' baz '
 				},
 				'internal': {
 					'whitespace': [
@@ -2282,7 +2283,7 @@ ve.dm.example.domToDataCases = {
 					]
 				}
 			},
-			{ 'type': '/alienMeta' },
+			{ 'type': '/comment' },
 			{ 'type': '/listItem' },
 			{ 'type': '/list' },
 			{ 'type': 'internalList' },
@@ -2303,20 +2304,20 @@ ve.dm.example.domToDataCases = {
 				}
 			},
 			{
-				'type': 'alienMeta',
+				'type': 'comment',
 				'attributes': {
-					'domElements': $( '<!-- foo -->' ).toArray()
+					'text': ' foo '
 				}
 			},
-			{ 'type': '/alienMeta' },
+			{ 'type': '/comment' },
 			'b', 'a', 'r',
 			{
-				'type': 'alienMeta',
+				'type': 'comment',
 				'attributes': {
-					'domElements': $( '<!-- baz -->' ).toArray()
+					'text': ' baz '
 				}
 			},
-			{ 'type': '/alienMeta' },
+			{ 'type': '/comment' },
 			{ 'type': '/paragraph' },
 			{ 'type': 'internalList' },
 			{ 'type': '/internalList' }
@@ -2331,12 +2332,12 @@ ve.dm.example.domToDataCases = {
 			[ 'o', [ ve.dm.example.bold ] ],
 			' ',
 			{
-				'type': 'alienMeta',
+				'type': 'comment',
 				'attributes': {
-					'domElements': $( '<!-- comment -->' ).toArray()
+					'text': ' comment '
 				}
 			},
-			{ 'type': '/alienMeta' },
+			{ 'type': '/comment' },
 			'\n',
 			[ 'B', [ ve.dm.example.italic ] ],
 			[ 'a', [ ve.dm.example.italic ] ],

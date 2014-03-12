@@ -142,6 +142,7 @@
 			"modules/ve/dm/annotations/ve.dm.LinkAnnotation.js",
 			"modules/ve/dm/annotations/ve.dm.TextStyleAnnotation.js",
 			"modules/ve/dm/metaitems/ve.dm.AlienMetaItem.js",
+			"modules/ve/dm/metaitems/ve.dm.CommentMetaItem.js",
 			"modules/ve/ce/ve.ce.js",
 			"modules/ve/ce/ve.ce.DomRange.js",
 			"modules/ve/ce/ve.ce.AnnotationFactory.js",
