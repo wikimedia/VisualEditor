@@ -245,6 +245,9 @@
 		"scripts": [
 			"modules/ve/ui/ve.ui.MobileSurface.js",
 			"modules/ve/ui/ve.ui.MobileContext.js"
+		],
+		"styles": [
+			"modules/ve/ui/styles/ve.ui.MobileContext.css"
 		]
 	}
 }
