@@ -371,15 +371,6 @@ QUnit.test( 'onContentChange', function ( assert ) {
 						{
 							'type': 'replace',
 							'insert': [ 'B' ],
-							'remove': []
-						},
-						{ 'type': 'retain', 'length': 4 }
-					],
-					[
-						{ 'type': 'retain', 'length': 2 },
-						{
-							'type': 'replace',
-							'insert': [],
 							'remove': [ 'A' ]
 						},
 						{ 'type': 'retain', 'length': 3 }
@@ -398,15 +389,6 @@ QUnit.test( 'onContentChange', function ( assert ) {
 						{
 							'type': 'replace',
 							'insert': [ ['B', [1]] ],
-							'remove': []
-						},
-						{ 'type': 'retain', 'length': 5 }
-					],
-					[
-						{ 'type': 'retain', 'length': 6 },
-						{
-							'type': 'replace',
-							'insert': [],
 							'remove': [ ['X', [1]] ]
 						},
 						{ 'type': 'retain', 'length': 4 }
