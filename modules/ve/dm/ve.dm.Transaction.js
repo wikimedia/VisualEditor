@@ -20,6 +20,25 @@ ve.dm.Transaction = function VeDmTransaction() {
 /* Static Methods */
 
 /**
+ * Generate a transaction that replaces data in a range.
+ *
+ * @method
+ * @param {ve.dm.Document} doc Document to create transaction for
+ * @param {ve.Range} range Range of data to remove
+ * @param {Array} data Data to insert
+ * @param {boolean} [removeMetadata=false] Remove metadata instead of collapsing it
+ * @returns {ve.dm.Transaction} Transaction that replaces data
+ * @throws {Error} Invalid range
+ */
+ve.dm.Transaction.newFromReplacement = function ( doc, range, data, removeMetadata ) {
+	var endOffset, tx = new ve.dm.Transaction();
+	endOffset = tx.pushRemoval( doc, 0, range, removeMetadata );
+	endOffset = tx.pushInsertion( doc, endOffset, endOffset, data );
+	tx.pushFinalRetain( doc, endOffset );
+	return tx;
+};
+
+/**
  * Generate a transaction that inserts data at an offset.
  *
  * @static
@@ -30,15 +49,10 @@ ve.dm.Transaction = function VeDmTransaction() {
  * @returns {ve.dm.Transaction} Transaction that inserts data
  */
 ve.dm.Transaction.newFromInsertion = function ( doc, offset, data ) {
-	var insertion, tx = new ve.dm.Transaction();
-	// Fix up the insertion
-	insertion = doc.fixupInsertion( data, offset );
-	// Retain up to insertion point, if needed
-	tx.pushRetain( insertion.offset );
-	// Insert data
-	tx.pushReplace( doc, insertion.offset, insertion.remove, insertion.data );
+	var tx = new ve.dm.Transaction(),
+		endOffset = tx.pushInsertion( doc, 0, offset, data );
 	// Retain to end of document, if needed (for completeness)
-	tx.pushFinalRetain( doc, insertion.offset + insertion.remove );
+	tx.pushFinalRetain( doc, endOffset );
 	return tx;
 };
 
@@ -68,87 +82,10 @@ ve.dm.Transaction.newFromInsertion = function ( doc, offset, data ) {
  * @throws {Error} Invalid range
  */
 ve.dm.Transaction.newFromRemoval = function ( doc, range, removeMetadata ) {
-	var i, selection, first, last, nodeStart, nodeEnd,
-		offset = 0,
-		removeStart = null,
-		removeEnd = null,
-		tx = new ve.dm.Transaction();
-	// Validate range
-	if ( range.isCollapsed() ) {
-		// Empty range, nothing to remove, retain up to the end of the document (for completeness)
-		tx.pushFinalRetain( doc, 0 );
-		return tx;
-	}
-	// Select nodes and validate selection
-	selection = doc.selectNodes( range, 'covered' );
-	if ( selection.length === 0 ) {
-		// Empty selection? Something is wrong!
-		throw new Error( 'Invalid range, cannot remove from ' + range.start + ' to ' + range.end );
-	}
-	first = selection[0];
-	last = selection[selection.length - 1];
-	// If the first and last node are mergeable, merge them
-	if ( first.node.canBeMergedWith( last.node ) ) {
-		if ( !first.range && !last.range ) {
-			// First and last node are both completely covered, remove them
-			removeStart = first.nodeOuterRange.start;
-			removeEnd = last.nodeOuterRange.end;
-		} else {
-			// Either the first node or the last node is partially covered, so remove
-			// the selected content
-			removeStart = ( first.range || first.nodeRange ).start;
-			removeEnd = ( last.range || last.nodeRange ).end;
-		}
-		tx.pushRetain( removeStart );
-		tx.addSafeRemoveOps( doc, removeStart, removeEnd, removeMetadata );
-		tx.pushFinalRetain( doc, removeEnd );
-		// All done
-		return tx;
-	}
-
-	// The selection wasn't mergeable, so remove nodes that are completely covered, and strip
-	// nodes that aren't
-	for ( i = 0; i < selection.length; i++ ) {
-		if ( !selection[i].range ) {
-			// Entire node is covered, remove it
-			nodeStart = selection[i].nodeOuterRange.start;
-			nodeEnd = selection[i].nodeOuterRange.end;
-		} else {
-			// Part of the node is covered, remove that range
-			nodeStart = selection[i].range.start;
-			nodeEnd = selection[i].range.end;
-		}
-
-		// Merge contiguous removals. Only apply a removal when a gap appears, or at the
-		// end of the loop
-		if ( removeEnd === null ) {
-			// First removal
-			removeStart = nodeStart;
-			removeEnd = nodeEnd;
-		} else if ( removeEnd === nodeStart ) {
-			// Merge this removal into the previous one
-			removeEnd = nodeEnd;
-		} else {
-			// There is a gap between the previous removal and this one
-
-			// Push the previous removal first
-			tx.pushRetain( removeStart - offset );
-			tx.addSafeRemoveOps( doc, removeStart, removeEnd, removeMetadata );
-			offset = removeEnd;
-
-			// Now start this removal
-			removeStart = nodeStart;
-			removeEnd = nodeEnd;
-		}
-	}
-	// Apply the last removal, if any
-	if ( removeEnd !== null ) {
-		tx.pushRetain( removeStart - offset );
-		tx.addSafeRemoveOps( doc, removeStart, removeEnd, removeMetadata );
-		offset = removeEnd;
-	}
-	// Retain up to the end of the document
-	tx.pushFinalRetain( doc, offset );
+	var tx = new ve.dm.Transaction(),
+		endOffset = tx.pushRemoval( doc, 0, range, removeMetadata );
+	// Retain to end of document, if needed (for completeness)
+	tx.pushFinalRetain( doc, endOffset );
 	return tx;
 };
 
@@ -1262,4 +1199,116 @@ ve.dm.Transaction.prototype.pushStopAnnotating = function ( method, annotation )
 		'bias': 'stop',
 		'annotation': annotation
 	} );
+};
+
+/**
+ * Internal helper method for newFromInsertion and newFromReplacement.
+ * Adds an insertion to an existing transaction object.
+ *
+ * @private
+ * @param {ve.dm.Document} doc Document to create transaction for
+ * @param {number} currentOffset Offset up to which the transaction has gone already
+ * @param {number} insertOffset Offset to insert at
+ * @param {Array} data Linear model data to insert
+ * @returns {number} End offset of the insertion
+ */
+ve.dm.Transaction.prototype.pushInsertion = function ( doc, currentOffset, insertOffset, data ) {
+	// Fix up the insertion
+	var insertion = doc.fixupInsertion( data, insertOffset );
+	// Retain up to insertion point, if needed
+	this.pushRetain( insertion.offset - currentOffset );
+	// Insert data
+	this.pushReplace( doc, insertion.offset, insertion.remove, insertion.data );
+	return insertion.offset + insertion.remove;
+};
+
+/**
+ * Internal helper method for newFromRemoval and newFromReplacement.
+ * Adds a removal to an existing transaction object.
+ *
+ * @private
+ * @param {ve.dm.Document} doc Document to create transaction for
+ * @param {number} currentOffset Offset up to which the transaction has gone already
+ * @param {ve.Range} range Range to remove
+ * @param {boolean} [removeMetadata=false] Remove metadata instead of collapsing it
+ * @returns {number} End offset of the removal
+ */
+ve.dm.Transaction.prototype.pushRemoval = function ( doc, currentOffset, range, removeMetadata ) {
+	var i, selection, first, last, nodeStart, nodeEnd,
+		offset = currentOffset,
+		removeStart = null,
+		removeEnd = null;
+	// Validate range
+	if ( range.isCollapsed() ) {
+		// Empty range, nothing to remove
+		return currentOffset;
+	}
+	// Select nodes and validate selection
+	selection = doc.selectNodes( range, 'covered' );
+	if ( selection.length === 0 ) {
+		// Empty selection? Something is wrong!
+		throw new Error( 'Invalid range, cannot remove from ' + range.start + ' to ' + range.end );
+	}
+	first = selection[0];
+	last = selection[selection.length - 1];
+	// If the first and last node are mergeable, merge them
+	if ( first.node.canBeMergedWith( last.node ) ) {
+		if ( !first.range && !last.range ) {
+			// First and last node are both completely covered, remove them
+			removeStart = first.nodeOuterRange.start;
+			removeEnd = last.nodeOuterRange.end;
+		} else {
+			// Either the first node or the last node is partially covered, so remove
+			// the selected content
+			removeStart = ( first.range || first.nodeRange ).start;
+			removeEnd = ( last.range || last.nodeRange ).end;
+		}
+		this.pushRetain( removeStart - currentOffset );
+		this.addSafeRemoveOps( doc, removeStart, removeEnd, removeMetadata );
+		// All done
+		return removeEnd;
+	}
+
+	// The selection wasn't mergeable, so remove nodes that are completely covered, and strip
+	// nodes that aren't
+	for ( i = 0; i < selection.length; i++ ) {
+		if ( !selection[i].range ) {
+			// Entire node is covered, remove it
+			nodeStart = selection[i].nodeOuterRange.start;
+			nodeEnd = selection[i].nodeOuterRange.end;
+		} else {
+			// Part of the node is covered, remove that range
+			nodeStart = selection[i].range.start;
+			nodeEnd = selection[i].range.end;
+		}
+
+		// Merge contiguous removals. Only apply a removal when a gap appears, or at the
+		// end of the loop
+		if ( removeEnd === null ) {
+			// First removal
+			removeStart = nodeStart;
+			removeEnd = nodeEnd;
+		} else if ( removeEnd === nodeStart ) {
+			// Merge this removal into the previous one
+			removeEnd = nodeEnd;
+		} else {
+			// There is a gap between the previous removal and this one
+
+			// Push the previous removal first
+			this.pushRetain( removeStart - offset );
+			this.addSafeRemoveOps( doc, removeStart, removeEnd, removeMetadata );
+			offset = removeEnd;
+
+			// Now start this removal
+			removeStart = nodeStart;
+			removeEnd = nodeEnd;
+		}
+	}
+	// Apply the last removal, if any
+	if ( removeEnd !== null ) {
+		this.pushRetain( removeStart - offset );
+		this.addSafeRemoveOps( doc, removeStart, removeEnd, removeMetadata );
+		offset = removeEnd;
+	}
+	return offset;
 };
