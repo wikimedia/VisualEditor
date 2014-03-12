@@ -57,7 +57,45 @@ QUnit.test( 'setDomAttributes', 3, function ( assert ) {
 	assert.ok( !element.hasAttribute( 'onclick' ), 'event attributes are blocked when sanitizing' );
 } );
 
-QUnit.test( 'getOpeningHtmlTag', 5, function ( assert ) {
+QUnit.test( 'getHtmlAttributes', 7, function ( assert ) {
+	assert.deepEqual(
+		ve.getHtmlAttributes(),
+		'',
+		'no attributes argument'
+	);
+	assert.deepEqual(
+		ve.getHtmlAttributes( NaN + 'px' ),
+		'',
+		'invalid attributes argument'
+	);
+	assert.deepEqual(
+		ve.getHtmlAttributes( {} ),
+		'',
+		'empty attributes argument'
+	);
+	assert.deepEqual(
+		ve.getHtmlAttributes( { 'src': 'foo' } ),
+		'src="foo"',
+		'one attribute'
+	);
+	assert.deepEqual(
+		ve.getHtmlAttributes( { 'href': 'foo', 'rel': 'bar' } ),
+		'href="foo" rel="bar"',
+		'two attributes'
+	);
+	assert.deepEqual(
+		ve.getHtmlAttributes( { 'selected': true, 'blah': false, 'value': 3 } ),
+		'selected="selected" value="3"',
+		'handling of booleans and numbers'
+	);
+	assert.deepEqual(
+		ve.getHtmlAttributes( { 'placeholder': '<foo>&"bar"&\'baz\'' } ),
+		'placeholder="&lt;foo&gt;&amp;&quot;bar&quot;&amp;&#039;baz&#039;"',
+		'escaping of attribute values'
+	);
+} );
+
+QUnit.test( 'getOpeningHtmlTag', 3, function ( assert ) {
 	assert.deepEqual(
 		ve.getOpeningHtmlTag( 'code', {} ),
 		'<code>',
@@ -72,16 +110,6 @@ QUnit.test( 'getOpeningHtmlTag', 5, function ( assert ) {
 		ve.getOpeningHtmlTag( 'a', { 'href': 'foo', 'rel': 'bar' } ),
 		'<a href="foo" rel="bar">',
 		'tag with two attributes'
-	);
-	assert.deepEqual(
-		ve.getOpeningHtmlTag( 'option', { 'selected': true, 'blah': false, 'value': 3 } ),
-		'<option selected="selected" value="3">',
-		'handling of booleans and numbers'
-	);
-	assert.deepEqual(
-		ve.getOpeningHtmlTag( 'input', { 'placeholder': '<foo>&"bar"&\'baz\'' } ),
-		'<input placeholder="&lt;foo&gt;&amp;&quot;bar&quot;&amp;&#039;baz&#039;">',
-		'escaping of attribute values'
 	);
 } );
 
