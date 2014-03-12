@@ -40,12 +40,16 @@ ve.ce.whitespacePattern = /[\u0020\u00A0]/g;
  * @returns {string} Plain text of DOM element
  */
 ve.ce.getDomText = function ( element ) {
+	// Inspired by jQuery.text / Sizzle.getText
 	var func = function ( element ) {
 		var nodeType = element.nodeType,
 			text = '',
 			numChars,
 			$element = $( element );
 
+		// Node.ELEMENT_NODE = 1
+		// Node.DOCUMENT_NODE = 9
+		// Node.DOCUMENT_FRAGMENT_NODE = 11
 		if ( nodeType === 1 || nodeType === 9 || nodeType === 11 ) {
 			if ( $element.hasClass( 've-ce-branchNode-slug' ) ) {
 				// Slugs are not represented in the model at all, but they do
@@ -63,8 +67,10 @@ ve.ce.getDomText = function ( element ) {
 					text += func( element );
 				}
 			}
+		// Node.TEXT_NODE = 3
+		// Node.CDATA_SECTION_NODE = 4 (historical, unused in HTML5)
 		} else if ( nodeType === 3 || nodeType === 4 ) {
-			return element.nodeValue;
+			return element.data;
 		}
 		return text;
 	};
