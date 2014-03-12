@@ -68,9 +68,10 @@ body {
 	border-top-left-radius: 0;
 }
 
-.ve-demo-utilities-commands .oo-ui-widget,
+.ve-demo-utilities-commands > .oo-ui-widget,
 .ve-demo-utilities-commands-divider {
 	display: inline-block;
+	vertical-align: middle;
 	margin-right: 1em;
 }
 
