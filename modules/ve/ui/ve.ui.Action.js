@@ -23,11 +23,6 @@ ve.ui.Action = function VeUiAction( surface ) {
 
 /* Static Properties */
 
-/**
- * @static
- * @property
- * @inheritable
- */
 ve.ui.Action.static = {};
 
 /**
@@ -44,5 +39,6 @@ ve.ui.Action.static = {};
  *
  * @static
  * @property
+ * @inheritable
  */
 ve.ui.Action.static.methods = [];
