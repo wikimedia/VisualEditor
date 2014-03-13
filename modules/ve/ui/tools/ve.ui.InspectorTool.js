@@ -53,7 +53,7 @@ ve.ui.InspectorTool.static.isSticky = true;
  * @property {Object}
  * @inheritable
  */
-ve.ui.InspectorTool.static.config = {};
+ve.ui.InspectorTool.static.inspectorData = {};
 
 /**
  * Annotation or node models this tool is related to.
@@ -76,27 +76,20 @@ ve.ui.InspectorTool.static.isCompatibleWith = function ( model ) {
 /* Methods */
 
 /**
- * Handle the tool being selected.
- *
- * @method
+ * @inheritdoc
  */
 ve.ui.InspectorTool.prototype.onSelect = function () {
 	this.toolbar.getSurface().execute(
 		'inspector',
 		'open',
 		this.constructor.static.inspector,
-		this.constructor.static.config
+		this.constructor.static.inspectorData
 	);
 	this.setActive( this.constructor.static.isSticky );
 };
 
 /**
- * Handle the toolbar state being updated.
- *
- * @method
- * @param {ve.dm.Node[]} nodes List of nodes covered by the current selection
- * @param {ve.dm.AnnotationSet} full Annotations that cover all of the current selection
- * @param {ve.dm.AnnotationSet} partial Annotations that cover some or all of the current selection
+ * @inheritdoc
  */
 ve.ui.InspectorTool.prototype.onUpdateState = function ( nodes, full ) {
 	var toolFactory = this.toolbar.getToolFactory(),

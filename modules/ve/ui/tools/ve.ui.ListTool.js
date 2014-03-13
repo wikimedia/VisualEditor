@@ -40,9 +40,7 @@ ve.ui.ListTool.static.style = '';
 /* Methods */
 
 /**
- * Handle the tool being selected.
- *
- * @method
+ * @inheritdoc
  */
 ve.ui.ListTool.prototype.onSelect = function () {
 	if ( this.method === 'wrap' ) {
@@ -53,12 +51,7 @@ ve.ui.ListTool.prototype.onSelect = function () {
 };
 
 /**
- * Handle the toolbar state being updated.
- *
- * @method
- * @param {ve.dm.Node[]} nodes List of nodes covered by the current selection
- * @param {ve.dm.AnnotationSet} full Annotations that cover all of the current selection
- * @param {ve.dm.AnnotationSet} partial Annotations that cover some or all of the current selection
+ * @inheritdoc
  */
 ve.ui.ListTool.prototype.onUpdateState = function ( nodes ) {
 	var i, len,

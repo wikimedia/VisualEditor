@@ -40,21 +40,14 @@ ve.ui.ClearAnnotationTool.static.title =
 /* Methods */
 
 /**
- * Handle the tool being selected.
- *
- * @method
+ * @inheritdoc
  */
 ve.ui.ClearAnnotationTool.prototype.onSelect = function () {
 	this.toolbar.getSurface().execute( 'annotation', 'clearAll' );
 };
 
 /**
- * Handle the toolbar state being updated.
- *
- * @method
- * @param {ve.dm.Node[]} nodes List of nodes covered by the current selection
- * @param {ve.dm.AnnotationSet} full Annotations that cover all of the current selection
- * @param {ve.dm.AnnotationSet} partial Annotations that cover some or all of the current selection
+ * @inheritdoc
  */
 ve.ui.ClearAnnotationTool.prototype.onUpdateState = function ( nodes, full, partial ) {
 	this.setDisabled( partial.isEmpty() );
