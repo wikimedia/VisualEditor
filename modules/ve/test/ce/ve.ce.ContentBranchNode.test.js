@@ -10,7 +10,7 @@ QUnit.module( 've.ce.ContentBranchNode' );
 /* Tests */
 
 QUnit.test( 'getRenderedContents', function ( assert ) {
-	var i, len, doc, $rendered, $wrapper,
+	var i, len, doc, $wrapper,
 		cases = [
 		{
 			'msg': 'Plain text without annotations',
@@ -336,8 +336,7 @@ QUnit.test( 'getRenderedContents', function ( assert ) {
 	QUnit.expect( cases.length );
 	for ( i = 0, len = cases.length; i < len; i++ ) {
 		doc = new ve.dm.Document( ve.dm.example.preprocessAnnotations( cases[i].data ) );
-		$rendered = ( new ve.ce.ParagraphNode( doc.getDocumentNode().getChildren()[0] ) ).getRenderedContents();
-		$wrapper = $( '<div>' ).append( $rendered );
+		$wrapper = $( new ve.ce.ParagraphNode( doc.getDocumentNode().getChildren()[0] ).getRenderedContents() );
 		// HACK strip out all the class="ve-ce-TextStyleAnnotation ve-ce-TextStyleBoldAnnotation" crap
 		$wrapper.find( '.ve-ce-TextStyleAnnotation' ).removeAttr( 'class' );
 		assert.equalDomElement( $wrapper[0], $( '<div>' ).html( cases[i].html )[0], cases[i].msg );

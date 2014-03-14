@@ -44,6 +44,34 @@ OO.inheritClass( ve.ce.ContentBranchNode, ve.ce.BranchNode );
  */
 ve.ce.ContentBranchNode.static.splitOnEnter = true;
 
+/* Static Methods */
+
+/**
+ * Append the return value of #getRenderedContents to a DOM element.
+ *
+ * @param {HTMLElement} container DOM element
+ * @param {HTMLElement} wrapper Wrapper returned by #getRenderedContents
+ */
+ve.ce.ContentBranchNode.static.appendRenderedContents = function ( container, wrapper ) {
+	function resolveOriginals( domElement ) {
+		var i, len, child;
+		for ( i = 0, len = domElement.childNodes.length; i < len; i++ ) {
+			child = domElement.childNodes[i];
+			if ( child.veOrigNode ) {
+				domElement.replaceChild( child.veOrigNode, child );
+			} else if ( child.childNodes && child.childNodes.length ) {
+				resolveOriginals( child );
+			}
+		}
+	}
+
+	/* Resolve references to the original nodes. */
+	resolveOriginals( wrapper );
+	while ( wrapper.firstChild ) {
+		container.appendChild( wrapper.firstChild );
+	}
+};
+
 /* Methods */
 
 /**
@@ -91,11 +119,15 @@ ve.ce.ContentBranchNode.prototype.onSplice = function () {
 /**
  * Get an HTML rendering of the contents.
  *
+ * If you are actually going to append the result to a DOM, you need to
+ * do this with #appendRenderedContents, which resolves the cloned
+ * nodes returned by this function back to their originals.
+ *
  * @method
- * @returns {HTMLElement[]}
+ * @returns {HTMLElement} Wrapper containing rendered contents
  */
 ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
-	var i, ilen, j, jlen, item, itemAnnotations, ann,
+	var i, ilen, j, jlen, item, itemAnnotations, ann, clone,
 		store = this.model.doc.getStore(),
 		annotationStack = new ve.dm.AnnotationSet( store ),
 		annotatedHtml = [],
@@ -154,9 +186,13 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 				current.appendChild( doc.createTextNode( buffer ) );
 				buffer = '';
 			}
-			// DOM equivalent of $( current ).append( itemHtml );
+			// DOM equivalent of $( current ).append( item.clone() );
 			for ( j = 0, jlen = item.length; j < jlen; j++ ) {
-				current.appendChild( item[j] );
+				// Append a clone so as to not relocate the original node
+				clone = item[j].cloneNode( true );
+				// Store a reference to the original node in a property
+				clone.veOrigNode = item[j];
+				current.appendChild( clone );
 			}
 		}
 	}
@@ -164,7 +200,7 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 		current.appendChild( doc.createTextNode( buffer ) );
 		buffer = '';
 	}
-	return Array.prototype.slice.apply( wrapper.childNodes );
+	return wrapper;
 
 };
 
@@ -194,8 +230,8 @@ ve.ce.ContentBranchNode.prototype.renderContents = function () {
 
 	oldWrapper = this.$element[0].cloneNode( true );
 	newWrapper = this.$element[0].cloneNode( false );
-	for ( i = 0, len = rendered.length; i < len; i++ ) {
-		newWrapper.appendChild( rendered[i] );
+	while ( rendered.firstChild ) {
+		newWrapper.appendChild( rendered.firstChild );
 	}
 	oldWrapper.normalize();
 	newWrapper.normalize();
@@ -211,10 +247,8 @@ ve.ce.ContentBranchNode.prototype.renderContents = function () {
 		}
 	}
 
-	// Reattach child nodes with the right annotations
-	for ( i = 0, len = rendered.length; i < len; i++ ) {
-		this.$element[0].appendChild( rendered[i] );
-	}
+	// Reattach nodes
+	this.constructor.static.appendRenderedContents( this.$element[0], newWrapper );
 
 	// Add slugs
 	this.setupSlugs();
