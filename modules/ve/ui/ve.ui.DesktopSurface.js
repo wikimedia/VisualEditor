@@ -33,6 +33,6 @@ OO.inheritClass( ve.ui.DesktopSurface, ve.ui.Surface );
  * @method
  */
 ve.ui.DesktopSurface.prototype.setupContext = function () {
-	this.context = new ve.ui.Context( this, { '$': this.$ } );
+	this.context = new ve.ui.DesktopContext( this, { '$': this.$ } );
 	this.$localOverlay.append( this.context.$element );
 };
