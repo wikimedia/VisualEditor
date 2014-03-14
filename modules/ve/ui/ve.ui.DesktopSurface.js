@@ -19,6 +19,13 @@
 ve.ui.DesktopSurface = function VeUiDesktopSurface() {
 	// Parent constructor
 	ve.ui.Surface.apply( this, arguments );
+
+	// Properties
+	this.$localOverlayMenus = this.$( '<div>' );
+
+	// Initialization
+	this.$localOverlay.append( this.$localOverlayMenus );
+	this.$localOverlayMenus.append( this.context.$element );
 };
 
 /* Inheritance */
@@ -34,5 +41,4 @@ OO.inheritClass( ve.ui.DesktopSurface, ve.ui.Surface );
  */
 ve.ui.DesktopSurface.prototype.setupContext = function () {
 	this.context = new ve.ui.DesktopContext( this, { '$': this.$ } );
-	this.$localOverlay.append( this.context.$element );
 };

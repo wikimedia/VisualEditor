@@ -19,6 +19,9 @@
 ve.ui.MobileSurface = function VeUiMobileSurface() {
 	// Parent constructor
 	ve.ui.Surface.apply( this, arguments );
+
+	// Initialization
+	this.$globalOverlay.append( this.context.$element );
 };
 
 /* Inheritance */
@@ -35,5 +38,4 @@ OO.inheritClass( ve.ui.MobileSurface, ve.ui.Surface );
  */
 ve.ui.MobileSurface.prototype.setupContext = function () {
 	this.context = new ve.ui.MobileContext( this, { '$': this.$ } );
-	this.$globalOverlay.append( this.context.$element );
 };
