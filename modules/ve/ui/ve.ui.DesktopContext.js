@@ -32,6 +32,11 @@ ve.ui.DesktopContext = function VeUiDesktopContext( surface, config ) {
 	this.selection = null;
 	this.toolbar = null;
 	this.afterModelSelectTimeout = null;
+	this.$menu = this.$( '<div>' );
+	this.popup = new OO.ui.PopupWidget( {
+		'$': this.$,
+		'$container': this.surface.getView().$element
+	} );
 
 	// Events
 	this.surface.getModel().connect( this, { 'select': 'onModelSelect' } );
@@ -54,13 +59,6 @@ ve.ui.DesktopContext = function VeUiDesktopContext( surface, config ) {
 	} );
 	this.$element.add( this.$menu )
 		.on( 'mousedown', false );
-
-	// Properties
-	this.$menu = this.$( '<div>' );
-	this.popup = new OO.ui.PopupWidget( {
-		'$': this.$,
-		'$container': this.surface.getView().$element
-	} );
 
 	// Initialization
 	this.$element.addClass( 've-ui-desktopContext' ).append( this.popup.$element );
