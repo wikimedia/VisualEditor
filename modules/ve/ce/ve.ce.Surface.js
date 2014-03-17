@@ -1616,7 +1616,7 @@ ve.ce.Surface.prototype.handleInsertion = function () {
 		annotations = documentModel.data.getAnnotationsFromRange(
 			new ve.Range( selection.start, selection.start + 1 )
 		);
-		if ( !this.selectionInsideOneBranchNode( selection ) ) {
+		if ( !this.selectionInsideOneLeafNode( selection ) ) {
 			this.model.change(
 				ve.dm.Transaction.newFromRemoval(
 					this.documentView.model,
@@ -1667,15 +1667,13 @@ ve.ce.Surface.prototype.handleInsertion = function () {
 };
 
 /**
- * Test whether selection lies within a single branch node
+ * Test whether selection lies within a single leaf node
  * @param {ve.Range} selection The selection to test
- * @returns {boolean} Whether the selection lies within a single branch node
+ * @returns {boolean} Whether the selection lies within a single node
  */
-ve.ce.Surface.prototype.selectionInsideOneBranchNode = function ( selection ) {
-	var startNode, endNode;
-	startNode = this.documentView.getDocumentNode().getNodeFromOffset( selection.start );
-	endNode = this.documentView.getDocumentNode().getNodeFromOffset( selection.end );
-	return startNode === endNode;
+ve.ce.Surface.prototype.selectionInsideOneLeafNode = function ( selection ) {
+	var selected = this.documentView.selectNodes( selection, 'leaves' );
+	return selected.length === 1;
 };
 
 /**
