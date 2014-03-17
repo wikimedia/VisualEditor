@@ -21,11 +21,6 @@ ve.dm.Model = function VeDmModel( element ) {
 
 /* Static Properties */
 
-/**
- * @static
- * @property
- * @inheritable
- */
 ve.dm.Model.static = {};
 
 /**

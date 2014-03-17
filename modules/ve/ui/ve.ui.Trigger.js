@@ -58,11 +58,6 @@ ve.ui.Trigger = function VeUiTrigger( e, allowInvalidPrimary ) {
 
 /* Static Properties */
 
-/**
- * @static
- * @property
- * @inheritable
- */
 ve.ui.Trigger.static = {};
 
 /**

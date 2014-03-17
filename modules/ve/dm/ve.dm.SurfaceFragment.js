@@ -43,11 +43,6 @@ ve.dm.SurfaceFragment = function VeDmSurfaceFragment( surface, range, noAutoSele
 
 /* Static Properties */
 
-/**
- * @static
- * @property
- * @inheritable
- */
 ve.dm.SurfaceFragment.static = {};
 
 /* Methods */
