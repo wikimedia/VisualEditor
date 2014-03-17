@@ -39,21 +39,14 @@ ve.ui.IndentationTool.static.method = '';
 /* Methods */
 
 /**
- * Handle the tool being selected.
- *
- * @method
+ * @inheritdoc
  */
 ve.ui.IndentationTool.prototype.onSelect = function () {
 	this.toolbar.getSurface().execute( 'indentation', this.constructor.static.method );
 };
 
 /**
- * Handle the toolbar state being updated.
- *
- * @method
- * @param {ve.dm.Node[]} nodes List of nodes covered by the current selection
- * @param {ve.dm.AnnotationSet} full Annotations that cover all of the current selection
- * @param {ve.dm.AnnotationSet} partial Annotations that cover some or all of the current selection
+ * @inheritdoc
  */
 ve.ui.IndentationTool.prototype.onUpdateState = function ( nodes ) {
 	var i, len,

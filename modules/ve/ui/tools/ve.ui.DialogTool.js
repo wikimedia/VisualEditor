@@ -44,7 +44,7 @@ ve.ui.DialogTool.static.dialog = '';
  * @property {Object}
  * @inheritable
  */
-ve.ui.DialogTool.static.config = {};
+ve.ui.DialogTool.static.dialogData = {};
 
 /**
  * Annotation or node models this tool is related to.
@@ -67,34 +67,24 @@ ve.ui.DialogTool.static.isCompatibleWith = function ( model ) {
 /* Methods */
 
 /**
- * Handle the tool being selected.
- *
- * @method
+ * @inheritdoc
  */
 ve.ui.DialogTool.prototype.onSelect = function () {
 	this.toolbar.getSurface().execute(
 		'dialog',
 		'open',
 		this.constructor.static.dialog,
-		this.constructor.static.config
+		this.constructor.static.dialogData
 	);
 	this.setActive( false );
 };
 
 /**
- * Handle the toolbar state being updated.
- *
- * @method
- * @param {ve.dm.Node[]} nodes List of nodes covered by the current selection
- * @param {ve.dm.AnnotationSet} full Annotations that cover all of the current selection
- * @param {ve.dm.AnnotationSet} partial Annotations that cover some or all of the current selection
+ * @inheritdoc
  */
-ve.ui.DialogTool.prototype.onUpdateState = function ( nodes ) {
-	if ( nodes.length ) {
-		this.setActive(
-			this.toolbar.getToolFactory().getToolForNode( nodes[0] ) === this.constructor
-		);
-	}
+ve.ui.DialogTool.prototype.onUpdateState = function () {
+	// Never show the tool as active
+	this.setActive( false );
 };
 
 /**

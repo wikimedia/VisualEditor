@@ -40,9 +40,7 @@ ve.ui.AnnotationTool.static.annotation = { 'name': '' };
 /* Methods */
 
 /**
- * Handle the tool being selected.
- *
- * @method
+ * @inheritdoc
  */
 ve.ui.AnnotationTool.prototype.onSelect = function () {
 	this.toolbar.getSurface().execute(
@@ -51,12 +49,7 @@ ve.ui.AnnotationTool.prototype.onSelect = function () {
 };
 
 /**
- * Handle the toolbar state being updated.
- *
- * @method
- * @param {ve.dm.Node[]} nodes List of nodes covered by the current selection
- * @param {ve.dm.AnnotationSet} full Annotations that cover all of the current selection
- * @param {ve.dm.AnnotationSet} partial Annotations that cover some or all of the current selection
+ * @inheritdoc
  */
 ve.ui.AnnotationTool.prototype.onUpdateState = function ( nodes, full ) {
 	this.setActive( full.hasAnnotationWithName( this.constructor.static.annotation.name ) );

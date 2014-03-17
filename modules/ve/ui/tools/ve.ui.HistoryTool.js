@@ -54,9 +54,7 @@ ve.ui.HistoryTool.static.check = '';
 /* Methods */
 
 /**
- * Handle the tool being selected.
- *
- * @method
+ * @inheritdoc
  */
 ve.ui.HistoryTool.prototype.onSelect = function () {
 	this.toolbar.getSurface().execute( 'history', this.constructor.static.method );
@@ -64,12 +62,7 @@ ve.ui.HistoryTool.prototype.onSelect = function () {
 };
 
 /**
- * Handle the toolbar state being updated.
- *
- * @method
- * @param {ve.dm.Node[]} nodes List of nodes covered by the current selection
- * @param {ve.dm.AnnotationSet} full Annotations that cover all of the current selection
- * @param {ve.dm.AnnotationSet} partial Annotations that cover some or all of the current selection
+ * @inheritdoc
  */
 ve.ui.HistoryTool.prototype.onUpdateState = function () {
 	this.setDisabled( !this.toolbar.getSurface().getModel()[this.constructor.static.check]() );
