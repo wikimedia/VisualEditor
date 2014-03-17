@@ -507,6 +507,9 @@ ve.Document.prototype.getCoveredSiblingGroups = function ( selection ) {
 			node = node.getParent();
 		}
 		parentNode = node.getParent();
+		if ( !parentNode ) {
+			break;
+		}
 		// Group this with its covered siblings
 		groups.push( {
 			'parent': parentNode,
