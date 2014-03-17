@@ -215,7 +215,8 @@ ve.ce.BranchNode.prototype.onSplice = function ( index ) {
  * @method
  */
 ve.ce.BranchNode.prototype.setupSlugs = function () {
-	var key, slug, i, len, first, last, doc = this.getElementDocument();
+	var key, slug, i, len, first, last, childTypes,
+		doc = this.getElementDocument();
 
 	// Remove all slugs in this branch
 	for ( key in this.slugs ) {
@@ -236,8 +237,12 @@ ve.ce.BranchNode.prototype.setupSlugs = function () {
 	// completely empty, so this ensures DocumentNode gets a slug.
 	// Can't use this.getLength() because the internal list adds to the length but doesn't render.
 	if ( this.$element.contents().length === 0 ) {
-		this.slugs[0] = doc.importNode( slug, true );
-		this.$element[0].appendChild( this.slugs[0] );
+		childTypes = this.getChildNodeTypes();
+		// Only insert a slug where paragraphs are allowed
+		if ( childTypes === null || ve.indexOf( 'paragraph', childTypes ) !== -1 ) {
+			this.slugs[0] = doc.importNode( slug, true );
+			this.$element[0].appendChild( this.slugs[0] );
+		}
 	} else {
 		// Iterate over all children of this branch and add slugs in appropriate places
 		for ( i = 0, len = this.children.length; i < len; i++ ) {
