@@ -44,17 +44,23 @@ OO.inheritClass( ve.ui.MobileContext, ve.ui.Context );
  * @chainable
  */
 ve.ui.MobileContext.prototype.show = function () {
-	this.$element.addClass( 've-ui-mobileContext-visible' );
 	this.scrollPos = $( 'body' ).scrollTop();
 	// overflow: hidden on 'body' alone is not enough for iOS Safari
 	$( 'html, body' ).addClass( 've-ui-mobileContext-enabled' );
+	this.$element.addClass( 've-ui-mobileContext-visible' );
 };
 
 /**
  * @inheritdoc
  */
 ve.ui.MobileContext.prototype.hide = function () {
-	$( 'html, body' ).removeClass( 've-ui-mobileContext-enabled' );
-	$( 'body' ).scrollTop( this.scrollPos );
+	var self = this;
+
 	this.$element.removeClass( 've-ui-mobileContext-visible' );
+	// Make sure that the global overlay is hidden only after the transition
+	// of MobileContext finishes (see ve.ui.MobileContext.css).
+	setTimeout( function () {
+		$( 'html, body' ).removeClass( 've-ui-mobileContext-enabled' );
+		$( 'body' ).scrollTop( self.scrollPos );
+	}, 300 );
 };
