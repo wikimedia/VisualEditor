@@ -174,7 +174,7 @@ ve.ce.SurfaceObserver.prototype.pollOnceNoEmit = function () {
  * @fires selectionChange
  */
 ve.ce.SurfaceObserver.prototype.pollOnceInternal = function ( emitChanges ) {
-	var $nodeOrSlug, node, text, hash, range, rangyRange, inSlug, observer = this;
+	var $nodeOrSlug, node, text, hash, range, rangyRange, $slugWrapper, observer = this;
 
 	if ( !this.domDocument ) {
 		return;
@@ -190,21 +190,14 @@ ve.ce.SurfaceObserver.prototype.pollOnceInternal = function ( emitChanges ) {
 		$nodeOrSlug = $( rangyRange.anchorNode ).closest( '.ve-ce-branchNode, .ve-ce-branchNode-slug' );
 		if ( $nodeOrSlug.length ) {
 			range = rangyRange.getRange();
-			inSlug = $nodeOrSlug.hasClass( 've-ce-branchNode-slug' );
-			if ( !inSlug ) {
+			if ( $nodeOrSlug.hasClass( 've-ce-branchNode-slug' ) ) {
+				$slugWrapper = $nodeOrSlug.closest( '.ve-ce-branchNode-blockSlugWrapper' );
+			} else {
 				node = $nodeOrSlug.data( 'view' );
 			}
-		} else {
-			inSlug = false;
 		}
 
-		if ( inSlug && !this.$slugWrapper ) {
-			this.$slugWrapper = $nodeOrSlug.closest( '.ve-ce-branchNode-blockSlugWrapper' )
-				.addClass( 've-ce-branchNode-blockSlugWrapper-focused' )
-				.removeClass( 've-ce-branchNode-blockSlugWrapper-unfocused' );
-		}
-
-		if ( !inSlug && this.$slugWrapper ) {
+		if ( this.$slugWrapper && !this.$slugWrapper.is( $slugWrapper ) ) {
 			this.$slugWrapper
 				.addClass( 've-ce-branchNode-blockSlugWrapper-unfocused' )
 				.removeClass( 've-ce-branchNode-blockSlugWrapper-focused' );
@@ -217,6 +210,13 @@ ve.ce.SurfaceObserver.prototype.pollOnceInternal = function ( emitChanges ) {
 				}
 			}, 200 );
 		}
+
+		if ( $slugWrapper && !$slugWrapper.is( this.$slugWrapper) ) {
+			this.$slugWrapper = $slugWrapper
+				.addClass( 've-ce-branchNode-blockSlugWrapper-focused' )
+				.removeClass( 've-ce-branchNode-blockSlugWrapper-unfocused' );
+		}
+
 	}
 
 	if ( this.node !== node ) {
