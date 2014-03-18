@@ -330,7 +330,7 @@ ve.dm.Transaction.newFromAnnotation = function ( doc, range, method, annotation 
 			if ( data.isElementData( i ) ) {
 				insideContentNode = true;
 			}
-			covered = data.getAnnotationsFromOffset( i ).contains( annotation );
+			covered = data.getAnnotationsFromOffset( i ).containsComparable( annotation );
 			if ( ( covered && method === 'set' ) || ( !covered && method === 'clear' ) ) {
 				// Skip annotated content
 				if ( on ) {

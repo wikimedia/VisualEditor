@@ -936,6 +936,9 @@ QUnit.test( 'newFromAttributeChanges', function ( assert ) {
 
 QUnit.test( 'newFromAnnotation', function ( assert ) {
 	var bold = ve.dm.example.createAnnotation( ve.dm.example.bold ),
+		strong = ve.dm.example.createAnnotation(
+			{ 'type': 'textStyle/bold', 'attributes': { 'nodeName': 'strong' } }
+		),
 		doc = ve.dm.example.createExampleDocument(),
 		annotationDoc = ve.dm.example.createExampleDocument( 'annotationData' ),
 		cases = {
@@ -959,7 +962,7 @@ QUnit.test( 'newFromAnnotation', function ( assert ) {
 					{ 'type': 'retain', 'length': 61 }
 				]
 			},
-			'over annotated text': {
+			'over partially annotated text': {
 				'args': [doc, new ve.Range( 1, 4 ), 'set', bold],
 				'ops': [
 					{ 'type': 'retain', 'length': 1 },
@@ -989,6 +992,40 @@ QUnit.test( 'newFromAnnotation', function ( assert ) {
 						'method': 'set',
 						'bias': 'stop',
 						'annotation': bold
+					},
+					{ 'type': 'retain', 'length': 59 }
+				]
+			},
+			'comparable annotation over partially annotated text': {
+				'args': [doc, new ve.Range( 1, 4 ), 'set', strong],
+				'ops': [
+					{ 'type': 'retain', 'length': 1 },
+					{
+						'type': 'annotate',
+						'method': 'set',
+						'bias': 'start',
+						'annotation': strong
+					},
+					{ 'type': 'retain', 'length': 1 },
+					{
+						'type': 'annotate',
+						'method': 'set',
+						'bias': 'stop',
+						'annotation': strong
+					},
+					{ 'type': 'retain', 'length': 1 },
+					{
+						'type': 'annotate',
+						'method': 'set',
+						'bias': 'start',
+						'annotation': strong
+					},
+					{ 'type': 'retain', 'length': 1 },
+					{
+						'type': 'annotate',
+						'method': 'set',
+						'bias': 'stop',
+						'annotation': strong
 					},
 					{ 'type': 'retain', 'length': 59 }
 				]
