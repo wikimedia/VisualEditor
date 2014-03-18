@@ -31,7 +31,7 @@ ve.ui.DesktopContext = function VeUiDesktopContext( surface, config ) {
 	this.embedded = false;
 	this.selection = null;
 	this.toolbar = null;
-	this.afterModelSelectTimeout = null;
+	this.afterModelChangeTimeout = null;
 	this.$menu = this.$( '<div>' );
 	this.popup = new OO.ui.PopupWidget( {
 		'$': this.$,
@@ -39,7 +39,10 @@ ve.ui.DesktopContext = function VeUiDesktopContext( surface, config ) {
 	} );
 
 	// Events
-	this.surface.getModel().connect( this, { 'select': 'onModelSelect' } );
+	this.surface.getModel().connect( this, {
+		'documentUpdate': 'onModelChange',
+		'select': 'onModelChange',
+	} );
 	this.surface.getView().connect( this, {
 		'selectionStart': 'onSelectionStart',
 		'selectionEnd': 'onSelectionEnd',
@@ -84,17 +87,17 @@ OO.inheritClass( ve.ui.DesktopContext, ve.ui.Context );
  *
  * The response to selection changes is deferred to prevent close handlers that process
  * changes from causing this function to recurse. These responses are also batched for efficiency,
- * so that if there are three selection changes in the same tick, afterModelSelect() only runs once.
+ * so that if there are three selection changes in the same tick, afterModelChange() only runs once.
  *
  * @method
- * @see #afterModelSelect
+ * @see #afterModelChange
  */
-ve.ui.DesktopContext.prototype.onModelSelect = function () {
+ve.ui.DesktopContext.prototype.onModelChange = function () {
 	if ( this.showing || this.hiding || this.inspectorOpening || this.inspectorClosing ) {
-		clearTimeout( this.afterModelSelectTimeout );
+		clearTimeout( this.afterModelChangeTimeout );
 	} else {
-		if ( this.afterModelSelectTimeout === null ) {
-			this.afterModelSelectTimeout = setTimeout( ve.bind( this.afterModelSelect, this ) );
+		if ( this.afterModelChangeTimeout === null ) {
+			this.afterModelChangeTimeout = setTimeout( ve.bind( this.afterModelChange, this ) );
 		}
 	}
 };
@@ -105,8 +108,8 @@ ve.ui.DesktopContext.prototype.onModelSelect = function () {
  * Update the context menu for the new selection, except if the user is selecting or relocating
  * content. If the popup is open, close it, even while selecting or relocating.
  */
-ve.ui.DesktopContext.prototype.afterModelSelect = function () {
-	this.afterModelSelectTimeout = null;
+ve.ui.DesktopContext.prototype.afterModelChange = function () {
+	this.afterModelChangeTimeout = null;
 	if ( this.popup.isVisible() ) {
 		this.hide();
 	}
@@ -122,7 +125,7 @@ ve.ui.DesktopContext.prototype.afterModelSelect = function () {
  *
  * If there's an inspector open and the user manages to drop the cursor in the surface such that
  * the selection doesn't change (i.e. the resulting model selection is equal to the previous model
- * selection), then #onModelSelect won't cause the inspector to be closed, so we do that here.
+ * selection), then #onModelChange won't cause the inspector to be closed, so we do that here.
  *
  * Hiding the context immediately on focus also avoids flickering phenomena where the inspector
  * remains open or the context remains visible in the wrong place while the selection is visually
