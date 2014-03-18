@@ -10,6 +10,8 @@
  *
  * @class
  * @extends ve.dm.LeafNode
+ * @mixins ve.dm.ResizableNode
+ *
  * @constructor
  * @param {number} [length] Length of content data in document
  * @param {Object} [element] Reference to element in linear model
@@ -17,11 +19,15 @@
 ve.dm.ImageNode = function VeDmImageNode( length, element ) {
 	// Parent constructor
 	ve.dm.LeafNode.call( this, 0, element );
+	// Mixin constructor
+	ve.dm.ResizableNode.call( this );
 };
 
 /* Inheritance */
 
 OO.inheritClass( ve.dm.ImageNode, ve.dm.LeafNode );
+
+OO.mixinClass( ve.dm.ImageNode, ve.dm.ResizableNode );
 
 /* Static Properties */
 
@@ -52,6 +58,22 @@ ve.dm.ImageNode.static.toDomElements = function ( dataElement, doc ) {
 	var domElement = doc.createElement( 'img' );
 	ve.setDomAttributes( domElement, dataElement.attributes, [ 'alt', 'src', 'width', 'height' ] );
 	return [ domElement ];
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.ImageNode.prototype.createScalable = function () {
+	return new ve.dm.Scalable( {
+		'currentDimensions': {
+			'width': this.getAttribute( 'width' ),
+			'height': this.getAttribute( 'height' )
+		},
+		'minDimensions': {
+			'width': 1,
+			'height': 1,
+		}
+	} );
 };
 
 /* Registration */

@@ -4,7 +4,7 @@
 		"groups": [
 			{
 				"name": "Utilities",
-				"classes": ["ve", "ve.Range", "ve.EventSequencer", "ve.Scalable"]
+				"classes": ["ve", "ve.Range", "ve.EventSequencer"]
 			},
 			{
 				"name": "Nodes",
@@ -40,6 +40,7 @@
 					"ve.dm.DataString",
 					"ve.dm.DocumentSynchronizer",
 					"ve.dm.IndexValueStore",
+					"ve.dm.Scalable",
 					"ve.dm.NodeFactory",
 					"ve.dm.Surface",
 					"ve.dm.SurfaceFragment",
