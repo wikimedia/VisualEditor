@@ -49,11 +49,6 @@ OO.mixinClass( ve.dm.Surface, OO.EventEmitter );
  */
 
 /**
- * @event transact
- * @param {ve.dm.Transaction[]} transactions Transactions that have just been processed
- */
-
-/**
  * @event documentUpdate
  *
  * Emitted when a transaction has been processed on the document and the selection has been
@@ -462,6 +457,7 @@ ve.dm.Surface.prototype.change = function ( transactions, selection ) {
  * @param {ve.dm.Transaction|ve.dm.Transaction[]|null} transactions
  * @param {ve.Range} [selection] [selection]
  * @param {boolean} [skipUndoStack=false] If true, do not modify the undo stack. Used by undo/redo
+ * @fires select
  * @fires contextChange
  */
 ve.dm.Surface.prototype.changeInternal = function ( transactions, selection, skipUndoStack ) {
