@@ -17,6 +17,8 @@
 ve.ce.InternalItemNode = function VeCeInternalItemNode( model, config ) {
 	// Parent constructor
 	ve.ce.BranchNode.call( this, model, config );
+
+	this.$element.addClass( 've-ce-internalItemNode' );
 };
 
 /* Inheritance */
