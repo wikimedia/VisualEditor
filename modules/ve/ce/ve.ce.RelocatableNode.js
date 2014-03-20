@@ -37,7 +37,10 @@ ve.ce.RelocatableNode = function VeCeRelocatableNode( $relocatable ) {
 		.attr( 'src', 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==' )
 		.on( {
 			'dragstart': ve.bind( this.onRelocatableDragStart, this ),
-			'dragend': ve.bind( this.onRelocatableDragEnd, this )
+			'dragend': ve.bind( this.onRelocatableDragEnd, this ),
+			'dblclick': ve.bind( function () {
+				this.emit( 'dblclick' );
+			}, this )
 		} );
 };
 

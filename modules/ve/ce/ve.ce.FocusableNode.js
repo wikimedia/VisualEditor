@@ -169,6 +169,7 @@ ve.ce.FocusableNode.prototype.setFocused = function ( value ) {
  * @method
  */
 ve.ce.FocusableNode.prototype.createHighlight = function () {
+	var node = this;
 	this.$focusable.find( '*' ).add( this.$focusable ).each(
 		ve.bind( function ( i, el ) {
 			var offset, $el = this.$( el );
@@ -187,6 +188,9 @@ ve.ce.FocusableNode.prototype.createHighlight = function () {
 						left: offset.left
 					} )
 					.addClass( 've-ce-focusableNode-highlight' )
+					.on( 'dblclick', function () {
+						node.emit( 'dblclick' );
+					} )
 			);
 		}, this )
 	);
