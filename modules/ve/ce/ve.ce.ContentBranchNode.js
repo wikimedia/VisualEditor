@@ -21,7 +21,7 @@ ve.ce.ContentBranchNode = function VeCeContentBranchNode( model, config ) {
 	ve.ce.BranchNode.call( this, model, config );
 
 	// Properties
-	this.surfaceModelState = null;
+	this.lastTransaction = null;
 
 	// Events
 	this.connect( this, { 'childUpdate': 'onChildUpdate' } );
@@ -88,14 +88,9 @@ ve.ce.ContentBranchNode.static.appendRenderedContents = function ( container, wr
  * @method
  */
 ve.ce.ContentBranchNode.prototype.onChildUpdate = function ( transaction ) {
-	var surfaceModel = this.getRoot().getSurface().getModel(),
-		surfaceModelState = surfaceModel.getDocument().getCompleteHistoryLength();
-
-	if ( transaction instanceof ve.dm.Transaction ) {
-		if ( surfaceModelState === this.surfaceModelState ) {
-			return;
-		}
-		this.surfaceModelState = surfaceModelState;
+	if ( transaction === null || transaction === this.lastTransaction ) {
+		this.lastTransaction = transaction;
+		return;
 	}
 	this.renderContents();
 };
