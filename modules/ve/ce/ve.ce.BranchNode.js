@@ -307,3 +307,15 @@ ve.ce.BranchNode.prototype.setLive = function ( live ) {
 		this.children[i].setLive( live );
 	}
 };
+
+/**
+ * Release all memory.
+ */
+ve.ce.BranchNode.prototype.destroy = function () {
+	var i, len;
+	for ( i = 0, len = this.children.length; i < len; i++ ) {
+		this.children[i].destroy();
+	}
+
+	ve.ce.Node.prototype.destroy.call( this );
+};
