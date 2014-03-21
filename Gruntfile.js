@@ -64,8 +64,7 @@ module.exports = function ( grunt ) {
 			},
 			all: [
 				'*.js',
-				'{.docs,build,demos}/**/*.js',
-				'modules/**/*.js'
+				'{.docs,build,demos,modules}/**/*.js'
 			]
 		},
 		jscs: {
@@ -79,8 +78,7 @@ module.exports = function ( grunt ) {
 				csslintrc: '.csslintrc'
 			},
 			all: [
-				'demos/**/*.css',
-				'modules/{ve,ve-mw}/**/*.css'
+				'{.docs,build,demos,modules}/**/*.css'
 			],
 		},
 		qunit: {
