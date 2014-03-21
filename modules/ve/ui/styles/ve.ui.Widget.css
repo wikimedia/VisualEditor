@@ -18,7 +18,7 @@
 /* ve.ui.SurfaceWidget.js */
 
 .ve-ui-surfaceWidget-surface {
-	border: solid 1px #ddd;
+	border: 1px solid #ddd;
 	border-radius: 0.25em;
 	border-top-right-radius: 0;
 	border-top-left-radius: 0;
@@ -33,7 +33,7 @@
 }
 
 .ve-ui-surfaceWidget-toolbar > .oo-ui-toolbar-bar {
-	border: solid 1px #ddd;
+	border: 1px solid #ddd;
 	border-radius: 0.25em;
 	border-bottom-right-radius: 0;
 	border-bottom-left-radius: 0;

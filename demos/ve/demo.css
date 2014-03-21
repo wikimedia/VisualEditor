@@ -31,7 +31,7 @@ body {
 .ve-demo-error,
 .ve-demo-utilities {
 	margin: 1em 2.5em;
-	border: solid 1px #ccc;
+	border: 1px solid #ccc;
 	border-radius: 0.5em;
 	padding: 1em 2em;
 	font-size: 0.8em;
@@ -79,7 +79,7 @@ body {
 	background-color: #f3f3f3;
 	width: 100%;
 	font-size: 0.9em;
-	border: solid 1px #ddd;
+	border: 1px solid #ddd;
 	border-radius: 0;
 	border-top-right-radius: 0.25em;
 	border-top-left-radius: 0.25em;
@@ -138,7 +138,7 @@ body {
 }
 
 .ve-ce-documentNode {
-	border: solid 1px #ccc;
+	border: 1px solid #ccc;
 	border-top: none;
 	padding: 0.75em 1.5em;
 }
@@ -148,7 +148,7 @@ body {
 }
 
 .ve-init-sa-target-toolbar .oo-ui-toolbar-bar {
-	border: solid 1px #ccc;
+	border: 1px solid #ccc;
 	border-radius: 0;
 	border-top-right-radius: 0.25em;
 	border-top-left-radius: 0.25em;
