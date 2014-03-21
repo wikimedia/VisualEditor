@@ -41,13 +41,7 @@ body {
 .ve-demo-error {
 	color: #d45353;
 	margin-bottom: 0;
-	-webkit-border-bottom-right-radius: 0;
-	-moz-border-bottom-right-radius: 0;
-	-o-border-bottom-right-radius: 0;
 	border-bottom-right-radius: 0;
-	-webkit-border-bottom-left-radius: 0;
-	-moz-border-bottom-left-radius: 0;
-	-o-border-bottom-left-radius: 0;
 	border-bottom-left-radius: 0;
 }
 
@@ -58,13 +52,7 @@ body {
 .ve-demo-utilities {
 	margin-top: 0;
 	border-top-width: 0;
-	-webkit-border-top-right-radius: 0;
-	-moz-border-top-right-radius: 0;
-	-o-border-top-right-radius: 0;
 	border-top-right-radius: 0;
-	-webkit-border-top-left-radius: 0;
-	-moz-border-top-left-radius: 0;
-	-o-border-top-left-radius: 0;
 	border-top-left-radius: 0;
 }
 
@@ -93,13 +81,7 @@ body {
 	font-size: 0.9em;
 	border: solid 1px #ddd;
 	border-radius: 0;
-	-webkit-border-top-right-radius: 0.25em;
-	-moz-border-top-right-radius: 0.25em;
-	-o-border-top-right-radius: 0.25em;
 	border-top-right-radius: 0.25em;
-	-webkit-border-top-left-radius: 0.25em;
-	-moz-border-top-left-radius: 0.25em;
-	-o-border-top-left-radius: 0.25em;
 	border-top-left-radius: 0.25em;
 }
 
@@ -168,13 +150,7 @@ body {
 .ve-init-sa-target-toolbar .oo-ui-toolbar-bar {
 	border: solid 1px #ccc;
 	border-radius: 0;
-	-webkit-border-top-right-radius: 0.25em;
-	-moz-border-top-right-radius: 0.25em;
-	-o-border-top-right-radius: 0.25em;
 	border-top-right-radius: 0.25em;
-	-webkit-border-top-left-radius: 0.25em;
-	-moz-border-top-left-radius: 0.25em;
-	-o-border-top-left-radius: 0.25em;
 	border-top-left-radius: 0.25em;
 }
 
