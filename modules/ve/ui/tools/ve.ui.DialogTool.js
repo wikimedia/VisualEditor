@@ -104,5 +104,6 @@ ve.ui.CommandHelpDialogTool.static.icon = 'help';
 ve.ui.CommandHelpDialogTool.static.title =
 	OO.ui.deferMsg( 'visualeditor-dialogbutton-command-help-tooltip' );
 ve.ui.CommandHelpDialogTool.static.dialog = 'commandHelp';
-ve.ui.CommandHelpDialogTool.static.autoAdd = false;
+ve.ui.CommandHelpDialogTool.static.autoAddToCatchall = false;
+ve.ui.CommandHelpDialogTool.static.autoAddToGroup = false;
 ve.ui.toolFactory.register( ve.ui.CommandHelpDialogTool );
