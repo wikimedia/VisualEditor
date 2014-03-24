@@ -157,7 +157,7 @@
 	 * @param {boolean} [recursive=false]
 	 * @param {Mixed} [target] Object that will receive the new properties
 	 * @param {Mixed...} [sources] Variadic list of objects containing properties
-	 * to be merged into the targe.
+	 * to be merged into the target.
 	 * @returns {Mixed} Modified version of first or second argument
 	 */
 	ve.extendObject = $.extend;
