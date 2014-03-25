@@ -794,7 +794,9 @@
 
 		node = doc.createElement( 'a' );
 		node.setAttribute( 'href', url );
-		return node.href;
+		// If doc.baseURI isn't set, node.href will be an empty string
+		// This is crazy, returning the original URL is better
+		return node.href || url;
 	};
 
 	/**
