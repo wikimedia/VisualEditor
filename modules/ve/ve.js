@@ -713,16 +713,23 @@
 	 * @returns {HTMLDocument} Document constructed from the HTML string
 	 */
 	ve.createDocumentFromHtml = function ( html ) {
-		// Here's how this function should look:
+		// Try using DOMParser if available. This only works in Firefox 12+ and very modern
+		// versions of other browsers (Chrome 30+, Opera 17+, IE10+)
+		var newDocument, $iframe, iframe;
+		try {
+			newDocument = new DOMParser().parseFromString( html, 'text/html' );
+			if ( newDocument ) {
+				return newDocument;
+			}
+		} catch ( e ) { }
+
+		// Here's what this fallback code should look like:
 		//
 		//     var newDocument = document.implementation.createHtmlDocument( '' );
 		//     newDocument.open();
 		//     newDocument.write( html );
 		//     newDocument.close();
 		//     return newDocument;
-		//
-		// (Or possibly something involving DOMParser.prototype.parseFromString, but that's Firefox-only
-		// for now.)
 		//
 		// Sadly, it's impossible:
 		// * On IE 9, calling open()/write() on such a document throws an "Unspecified error" (sic).
@@ -743,8 +750,8 @@
 		// object...), so we're detecting that and using the innerHTML hack described above.
 
 		// Create an invisible iframe
-		var newDocument, $iframe = $( '<iframe frameborder="0" width="0" height="0" />'),
-			iframe = $iframe.get( 0 );
+		$iframe = $( '<iframe frameborder="0" width="0" height="0" />' );
+		iframe = $iframe.get( 0 );
 		// Attach it to the document. We have to do this to get a new document out of it
 		document.documentElement.appendChild( iframe );
 		// Write the HTML to it
