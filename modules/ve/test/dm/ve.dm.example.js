@@ -1088,7 +1088,6 @@ ve.dm.example.domToDataCases = {
 		'normalizedBody': '<p>foo</p><p>bar</p><h2>baz</h2><pre> \tquux</pre>'
 	},
 	'image': {
-		'head': '<base href="' + ve.dm.example.base + '">',
 		'body': ve.dm.example.image.html,
 		'data': [
 			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
@@ -1308,7 +1307,6 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'wrapping of bare content starting with inline node': {
-		'head': '<base href="' + ve.dm.example.base + '">',
 		'body': ve.dm.example.image.html + '12',
 		'data': [
 			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
@@ -1507,7 +1505,6 @@ ve.dm.example.domToDataCases = {
 		'normalizedBody': '<ul><li><p>Foo</p></li></ul>'
 	},
 	'example document': {
-		'head': '<base href="' + ve.dm.example.base + '">',
 		'body': ve.dm.example.html,
 		'data': ve.dm.example.data
 	},
