@@ -66,10 +66,12 @@ ve.test.utils.countGetModelFromDomTests = function ( cases ) {
 };
 
 ve.test.utils.runGetModelFromDomTest = function ( assert, caseItem, msg ) {
-	var model, i, length, hash, html;
+	var model, i, length, hash, html,
+		// Make sure we've always got a <base> tag
+		defaultHead = '<base href="' + ve.dm.example.base + '">';
 
 	if ( caseItem.head !== undefined || caseItem.body !== undefined ) {
-		html = '<head>' + ( caseItem.head || '' ) + '</head><body>' + caseItem.body + '</body>';
+		html = '<head>' + ( caseItem.head || defaultHead ) + '</head><body>' + caseItem.body + '</body>';
 		model = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( html ) );
 		ve.dm.example.preprocessAnnotations( caseItem.data, model.getStore() );
 		assert.deepEqualWithDomElements( model.getFullData(), caseItem.data, msg + ': data' );
