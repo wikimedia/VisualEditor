@@ -78,7 +78,7 @@ NEWCHANGESDISPLAY=$(git log $OLDVERSION.. --oneline --no-merges --reverse --colo
 cd -
 
 # Copy files from dist/ to lib/oojs-ui
-cp -a $1/dist/{oojs-ui.js,oojs-ui.svg.css,oojs-ui-apex.css,images,i18n} lib/oojs-ui/
+cp -a $1/dist/{oojs-ui.js,oojs-ui.svg.css,oojs-ui-apex.css,oojs-ui-agora.css,images,i18n} lib/oojs-ui/
 # Figure out what the new version is
 NEWVERSION=$(oojsuiversion)
 # Generate commit summary
