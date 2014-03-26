@@ -169,7 +169,9 @@ ve.dm.example.testDir = window.VE_TESTDIR || '.';
 
 ve.dm.example.imgSrc = ve.dm.example.testDir + '/example.png';
 
-ve.dm.example.fullImgSrc = ve.resolveUrl( ve.dm.example.imgSrc, document );
+ve.dm.example.base = 'http://example.org';
+
+ve.dm.example.fullImgSrc = ve.resolveUrl( ve.dm.example.imgSrc, ve.dm.example.base );
 
 ve.dm.example.image = {
 	html: '<img src="' + ve.dm.example.imgSrc + '" alt="Example" width="100" height="50">',
@@ -1086,6 +1088,7 @@ ve.dm.example.domToDataCases = {
 		'normalizedBody': '<p>foo</p><p>bar</p><h2>baz</h2><pre> \tquux</pre>'
 	},
 	'image': {
+		'head': '<base href="' + ve.dm.example.base + '">',
 		'body': ve.dm.example.image.html,
 		'data': [
 			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
@@ -1305,6 +1308,7 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'wrapping of bare content starting with inline node': {
+		'head': '<base href="' + ve.dm.example.base + '">',
 		'body': ve.dm.example.image.html + '12',
 		'data': [
 			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
@@ -1503,6 +1507,7 @@ ve.dm.example.domToDataCases = {
 		'normalizedBody': '<ul><li><p>Foo</p></li></ul>'
 	},
 	'example document': {
+		'head': '<base href="' + ve.dm.example.base + '">',
 		'body': ve.dm.example.html,
 		'data': ve.dm.example.data
 	},
