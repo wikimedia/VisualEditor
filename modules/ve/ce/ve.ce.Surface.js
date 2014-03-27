@@ -538,8 +538,7 @@ ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
  * @fires selectionStart
  */
 ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
-	var trigger,
-		command,
+	var trigger, command, focusedNode,
 		updateFromModel = false;
 
 	// Ignore keydowns while in IME mode but do not preventDefault them (so text actually appear on
@@ -584,8 +583,9 @@ ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
 			break;
 		case OO.ui.Keys.ENTER:
 			e.preventDefault();
-			if ( this.getFocusedNode() ) {
-				command = ve.ui.commandRegistry.getCommandForNode( this.getFocusedNode() );
+			focusedNode = this.getFocusedNode();
+			if ( focusedNode ) {
+				command = ve.ui.commandRegistry.getCommandForNode( focusedNode );
 				if ( command ) {
 					command.execute( this.surface );
 				}

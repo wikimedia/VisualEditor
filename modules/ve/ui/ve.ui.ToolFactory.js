@@ -72,12 +72,20 @@ ve.ui.ToolFactory.prototype.getToolsForNode = function ( node ) {
 		return [];
 	}
 
-	var i, len, tools,
-		matches = [];
+	var i, len, tools, primary,
+		matches = [],
+		primaryCommandName = ve.ce.nodeFactory.getNodePrimaryCommandName( node.getType() );
 
 	tools = this.collectCompatibleTools( node );
 	for ( i = 0, len = tools.length; i < len; i++ ) {
-		matches.push( tools[i].static.name );
+		if ( tools[i].static.getCommandName() === primaryCommandName ) {
+			primary = tools[i].static.name;
+		} else {
+			matches.push( tools[i].static.name );
+		}
+	}
+	if ( primary ) {
+		matches.unshift( primary );
 	}
 
 	return matches;
