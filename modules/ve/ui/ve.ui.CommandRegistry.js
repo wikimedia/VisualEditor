@@ -42,7 +42,8 @@ ve.ui.CommandRegistry.prototype.register = function ( command ) {
 };
 
 /**
- * Returns command for node by name
+ * Returns the primary command for for node.
+ *
  * @param {ve.ce.Node} node Node to get command for
  * @returns {ve.ui.Command}
  */
@@ -69,10 +70,10 @@ ve.ui.commandRegistry.register(
 	new ve.ui.Command( 'italic', 'annotation', 'toggle', 'textStyle/italic' )
 );
 ve.ui.commandRegistry.register(
-	new ve.ui.Command( 'link', 'inspector', 'open', 'link' )
+	new ve.ui.Command( 'code', 'annotation', 'toggle', 'textStyle/code' )
 );
 ve.ui.commandRegistry.register(
-	new ve.ui.Command( 'clear', 'annotation', 'clearAll' )
+	new ve.ui.Command( 'strike', 'annotation', 'toggle', 'textStyle/strike' )
 );
 ve.ui.commandRegistry.register(
 	new ve.ui.Command( 'underline', 'annotation', 'toggle', 'textStyle/underline' )
@@ -84,10 +85,25 @@ ve.ui.commandRegistry.register(
 	new ve.ui.Command( 'superscript', 'annotation', 'toggle', 'textStyle/superscript' )
 );
 ve.ui.commandRegistry.register(
+	new ve.ui.Command( 'link', 'inspector', 'open', 'link' )
+);
+ve.ui.commandRegistry.register(
+	new ve.ui.Command( 'specialcharacter', 'inspector', 'open', 'specialcharacter' )
+);
+ve.ui.commandRegistry.register(
+	new ve.ui.Command( 'clear', 'annotation', 'clearAll' )
+);
+ve.ui.commandRegistry.register(
 	new ve.ui.Command( 'indent', 'indentation', 'increase' )
 );
 ve.ui.commandRegistry.register(
 	new ve.ui.Command( 'outdent', 'indentation', 'decrease' )
+);
+ve.ui.commandRegistry.register(
+	new ve.ui.Command( 'number', 'list', 'toggle', 'number' )
+);
+ve.ui.commandRegistry.register(
+	new ve.ui.Command( 'bullet', 'list', 'toggle', 'bullet' )
 );
 ve.ui.commandRegistry.register(
 	new ve.ui.Command( 'commandHelp', 'dialog', 'open', 'commandHelp' )

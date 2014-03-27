@@ -41,18 +41,9 @@ ve.ui.ListTool.static.style = '';
 
 ve.ui.ListTool.static.requiresRange = true;
 
-/* Methods */
+ve.ui.ListTool.static.deactivateOnSelect = false;
 
-/**
- * @inheritdoc
- */
-ve.ui.ListTool.prototype.onSelect = function () {
-	if ( this.method === 'wrap' ) {
-		this.toolbar.surface.execute( 'list', 'wrap', this.constructor.static.style );
-	} else if ( this.method === 'unwrap' ) {
-		this.toolbar.surface.execute( 'list', 'unwrap' );
-	}
-};
+/* Methods */
 
 /**
  * @inheritdoc
@@ -71,7 +62,6 @@ ve.ui.ListTool.prototype.onUpdateState = function ( nodes ) {
 			break;
 		}
 	}
-	this.method = all ? 'unwrap' : 'wrap';
 	this.setActive( all );
 };
 
@@ -94,6 +84,7 @@ ve.ui.BulletListTool.static.icon = 'bullet-list';
 ve.ui.BulletListTool.static.title =
 	OO.ui.deferMsg( 'visualeditor-listbutton-bullet-tooltip' );
 ve.ui.BulletListTool.static.style = 'bullet';
+ve.ui.BulletListTool.static.commandName = 'bullet';
 ve.ui.toolFactory.register( ve.ui.BulletListTool );
 
 /**
@@ -115,4 +106,5 @@ ve.ui.NumberListTool.static.icon = 'number-list';
 ve.ui.NumberListTool.static.title =
 	OO.ui.deferMsg( 'visualeditor-listbutton-number-tooltip' );
 ve.ui.NumberListTool.static.style = 'number';
+ve.ui.NumberListTool.static.commandName = 'number';
 ve.ui.toolFactory.register( ve.ui.NumberListTool );

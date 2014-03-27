@@ -33,6 +33,36 @@ OO.inheritClass( ve.ui.Tool, OO.ui.Tool );
  */
 ve.ui.Tool.static.requiresRange = false;
 
+/**
+ * Command to execute when tool is selected.
+ *
+ * @static
+ * @property {string|null}
+ * @inheritable
+ */
+ve.ui.Tool.static.commandName = null;
+
+/**
+ * Deactivate tool after it's been selected.
+ *
+ * Use this for tools which don't display as active when relevant content is selected, such as
+ * insertion-only tools.
+ *
+ * @static
+ * @property {boolean}
+ * @inheritable
+ */
+ve.ui.Tool.static.deactivateOnSelect = true;
+
+/**
+ * Get the symbolic command name for this tool.
+ *
+ * @return {ve.ui.Command}
+ */
+ve.ui.Tool.static.getCommandName = function () {
+	return this.commandName;
+};
+
 /* Methods */
 
 /**
@@ -46,4 +76,26 @@ ve.ui.Tool.static.requiresRange = false;
  */
 ve.ui.Tool.prototype.onUpdateState = function ( nodes, full, partial, range ) {
 	this.setDisabled( this.constructor.static.requiresRange && !range );
+};
+
+/**
+ * @inheritdoc
+ */
+ve.ui.Tool.prototype.onSelect = function () {
+	var command = this.getCommand();
+	if ( command instanceof ve.ui.Command ) {
+		command.execute( this.toolbar.getSurface() );
+	}
+	if ( this.constructor.static.deactivateOnSelect ) {
+		this.setActive( false );
+	}
+};
+
+/**
+ * Get the command for this tool.
+ *
+ * @return {ve.ui.Command}
+ */
+ve.ui.Tool.prototype.getCommand = function () {
+	return ve.ui.commandRegistry.lookup( this.constructor.static.commandName );
 };
