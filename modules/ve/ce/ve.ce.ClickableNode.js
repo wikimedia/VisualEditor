@@ -21,7 +21,7 @@ ve.ce.ClickableNode = function VeCeClickableNode() {
 };
 
 /**
- * Finds and opens the tool for the double clicked node
+ * Finds and opens the tool for the double clicked node.
  */
 ve.ce.ClickableNode.prototype.onDblClick = function () {
 	var command = ve.ui.commandRegistry.getCommandForNode( this );
