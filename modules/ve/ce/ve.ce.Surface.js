@@ -46,6 +46,7 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 	this.relocating = false;
 	this.selecting = false;
 	this.resizing = false;
+	this.focused = false;
 	this.contentBranchNodeChanged = false;
 	this.$phantoms = this.$( '<div>' );
 	this.$highlights = this.$( '<div>' );
@@ -71,18 +72,15 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 		'cut': ve.bind( this.onCut, this ),
 		'copy': ve.bind( this.onCopy, this )
 	} );
+
+	$( this.getElementDocument() ).on( {
+		'focusin focusout': ve.bind( this.onFocusChange, this )
+	} );
+
 	this.$pasteTarget.on( {
 		'cut': ve.bind( this.onCut, this ),
 		'copy': ve.bind( this.onCopy, this )
 	} );
-
-	// blur and focus fire in the wrong order in jQuery 1.8 . Bind to the native events which do
-	// fire in the correct order.
-	$documentNode[0].addEventListener( 'focus', ve.bind( this.documentOnFocus, this ) );
-	$documentNode[0].addEventListener( 'blur', ve.bind( this.documentOnBlur, this ) );
-	// $pasteTarget is focused when selecting a FocusableNode
-	this.$pasteTarget[0].addEventListener( 'focus', ve.bind( this.documentOnFocus, this ) );
-	this.$pasteTarget[0].addEventListener( 'blur', ve.bind( this.documentOnBlur, this ) );
 
 	$documentNode.on( $.browser.msie ? 'beforepaste' : 'paste', ve.bind( this.onPaste, this ) );
 	$documentNode.on( 'focus', 'a', function () {
@@ -357,23 +355,41 @@ ve.ce.Surface.prototype.focus = function () {
 	// documentOnFocus takes care of the rest
 };
 
-/*! Native Browser Events */
+/**
+ * Handle global focus change.
+ *
+ * @param {jQuery.Event} e focusin or focusout event
+ */
+ve.ce.Surface.prototype.onFocusChange = function () {
+	// Defer to let the selection update
+	setTimeout( ve.bind( function () {
+		var hasFocus = $.contains(
+				this.documentView.getDocumentNode().$element[0],
+				rangy.getSelection( this.getElementDocument() ).anchorNode
+			) || $.contains(
+				this.$pasteTarget[0],
+				rangy.getSelection( this.getElementDocument() ).anchorNode
+			);
+
+		if ( hasFocus && !this.isFocused() ) {
+			this.documentOnFocus();
+		}
+		if ( !hasFocus && this.isFocused() ) {
+			this.documentOnBlur();
+		}
+	}, this ) );
+};
 
 /**
  * Handle document focus events.
  *
  * @method
- * @param {Event} e Focus event (native event, NOT a jQuery event!)
  * @fires focus
  */
-ve.ce.Surface.prototype.documentOnFocus = function ( e ) {
-	if ( e.target === this.documentView.getDocumentNode().$element[0] && !this.focusedNode ) {
-		// The document node was focused (as opposed to the paste target)
-		// Restore the selection
-		this.onModelSelect( this.surface.getModel().getSelection() );
-	}
+ve.ce.Surface.prototype.documentOnFocus = function () {
 	this.eventSequencer.attach( this.$element );
 	this.surfaceObserver.startTimerLoop();
+	this.focused = true;
 	this.emit( 'focus' );
 };
 
@@ -381,7 +397,6 @@ ve.ce.Surface.prototype.documentOnFocus = function ( e ) {
  * Handle document blur events.
  *
  * @method
- * @param {Event} e Blur event (native event, NOT a jQuery event!)
  * @fires blur
  */
 ve.ce.Surface.prototype.documentOnBlur = function () {
@@ -389,7 +404,18 @@ ve.ce.Surface.prototype.documentOnBlur = function () {
 	this.surfaceObserver.stopTimerLoop();
 	this.surfaceObserver.pollOnce();
 	this.dragging = false;
+	this.focused = false;
+	this.model.setSelection( null );
 	this.emit( 'blur' );
+};
+
+/**
+ * Check if surface is focused.
+ *
+ * @returns {boolean} Surface is focused
+ */
+ve.ce.Surface.prototype.isFocused = function () {
+	return this.focused;
 };
 
 /**
@@ -1212,7 +1238,7 @@ ve.ce.Surface.prototype.onDocumentCompositionEnd = function () {
  * @see ve.dm.Surface#method-change
  *
  * @method
- * @param {ve.Range} selection
+ * @param {ve.Range|null} selection
  */
 ve.ce.Surface.prototype.onModelSelect = function ( selection ) {
 	var start, end, rangySel, rangyRange,
@@ -1220,6 +1246,10 @@ ve.ce.Surface.prototype.onModelSelect = function ( selection ) {
 		previous = this.focusedNode;
 
 	this.contentBranchNodeChanged = false;
+
+	if ( !selection ) {
+		return;
+	}
 
 	// Detect when only a single inline element is selected
 	if ( !selection.isCollapsed() ) {
@@ -1300,11 +1330,11 @@ ve.ce.Surface.prototype.onModelDocumentUpdate = function () {
  * @see ve.ce.SurfaceObserver#pollOnce
  *
  * @method
- * @param {ve.Range} oldRange
- * @param {ve.Range} newRange
+ * @param {ve.Range|null} oldRange
+ * @param {ve.Range|null} newRange
  */
 ve.ce.Surface.prototype.onSelectionChange = function ( oldRange, newRange ) {
-	if ( oldRange && newRange.flip().equals( oldRange ) ) {
+	if ( oldRange && newRange && newRange.flip().equals( oldRange ) ) {
 		// Ignore when the newRange is just a flipped oldRange
 		return;
 	}

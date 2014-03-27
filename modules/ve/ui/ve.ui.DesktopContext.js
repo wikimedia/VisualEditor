@@ -247,7 +247,7 @@ ve.ui.DesktopContext.prototype.update = function ( transition, repositionOnly ) 
 		selection = fragment.getRange(),
 		inspector = this.inspectors.getCurrentWindow();
 
-	if ( inspector && selection.equals( this.selection ) ) {
+	if ( inspector && selection && selection.equals( this.selection ) ) {
 		// There's an inspector, and the selection hasn't changed, update the position
 		this.show( transition, repositionOnly );
 	} else {
@@ -281,7 +281,7 @@ ve.ui.DesktopContext.prototype.update = function ( transition, repositionOnly ) 
 	}
 
 	// Remember selection for next time
-	this.selection = selection.clone();
+	this.selection = selection && selection.clone();
 
 	return this;
 };
