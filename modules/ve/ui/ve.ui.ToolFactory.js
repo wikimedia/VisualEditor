@@ -119,3 +119,5 @@ ve.ui.ToolFactory.prototype.collectCompatibleTools = function ( subject ) {
 /* Initialization */
 
 ve.ui.toolFactory = new ve.ui.ToolFactory();
+
+ve.ui.toolGroupFactory = new OO.ui.ToolGroupFactory();
