@@ -71,6 +71,7 @@ OO.inheritClass( ve.ui.Toolbar, OO.ui.Toolbar );
  * @param {ve.dm.Node[]} nodes List of nodes covered by the current selection
  * @param {ve.dm.AnnotationSet} full Annotations that cover all of the current selection
  * @param {ve.dm.AnnotationSet} partial Annotations that cover some or all of the current selection
+ * @param {ve.Range|null} range The surface range
  */
 
 /**
@@ -189,7 +190,7 @@ ve.ui.Toolbar.prototype.onContextChange = function () {
 			this.contextDirection.block = dirBlock;
 		}
 	}
-	this.emit( 'updateState', nodes, fragment.getAnnotations(), fragment.getAnnotations( true ) );
+	this.emit( 'updateState', nodes, fragment.getAnnotations(), fragment.getAnnotations( true ), fragment.getRange() );
 };
 
 /**

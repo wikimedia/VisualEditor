@@ -66,6 +66,8 @@ ve.ui.InspectorTool.static.inspectorData = {};
  */
 ve.ui.InspectorTool.static.modelClasses = [];
 
+ve.ui.InspectorTool.static.requiresRange = true;
+
 /**
  * @inheritdoc
  */
@@ -92,6 +94,9 @@ ve.ui.InspectorTool.prototype.onSelect = function () {
  * @inheritdoc
  */
 ve.ui.InspectorTool.prototype.onUpdateState = function ( nodes, full ) {
+	// Parent method
+	ve.ui.Tool.prototype.onUpdateState.apply( this, arguments );
+
 	var toolFactory = this.toolbar.getToolFactory(),
 		tools = toolFactory.getToolsForAnnotations( full );
 

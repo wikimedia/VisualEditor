@@ -48,7 +48,8 @@ ve.ui.DesktopContext = function VeUiDesktopContext( surface, config ) {
 		'selectionEnd': 'onSelectionEnd',
 		'relocationStart': 'onRelocationStart',
 		'relocationEnd': 'onRelocationEnd',
-		'focus': 'onSurfaceFocus'
+		'focus': 'onSurfaceFocus',
+		'blur': 'onSurfaceBlur'
 	} );
 	this.inspectors.connect( this, {
 		'opening': 'onInspectorOpening',
@@ -140,6 +141,15 @@ ve.ui.DesktopContext.prototype.afterModelChange = function () {
  */
 ve.ui.DesktopContext.prototype.onSurfaceFocus = function () {
 	if ( this.inspectors.getCurrentWindow() ) {
+		this.hide();
+	}
+};
+
+/**
+ * Response to blur events on the surface.
+ */
+ve.ui.DesktopContext.prototype.onSurfaceBlur = function () {
+	if ( !this.inspectors.getCurrentWindow() ) {
 		this.hide();
 	}
 };

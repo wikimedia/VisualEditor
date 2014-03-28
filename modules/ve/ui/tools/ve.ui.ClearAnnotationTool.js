@@ -37,6 +37,8 @@ ve.ui.ClearAnnotationTool.static.icon = 'clear';
 ve.ui.ClearAnnotationTool.static.title =
 	OO.ui.deferMsg( 'visualeditor-clearbutton-tooltip' );
 
+ve.ui.ClearAnnotationTool.static.requiresRange = true;
+
 /* Methods */
 
 /**
@@ -50,7 +52,12 @@ ve.ui.ClearAnnotationTool.prototype.onSelect = function () {
  * @inheritdoc
  */
 ve.ui.ClearAnnotationTool.prototype.onUpdateState = function ( nodes, full, partial ) {
-	this.setDisabled( partial.isEmpty() );
+	// Parent method
+	ve.ui.Tool.prototype.onUpdateState.apply( this, arguments );
+
+	if ( !this.isDisabled() ) {
+		this.setDisabled( partial.isEmpty() );
+	}
 };
 
 /* Registration */

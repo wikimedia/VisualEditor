@@ -39,6 +39,8 @@ OO.inheritClass( ve.ui.ListTool, ve.ui.Tool );
  */
 ve.ui.ListTool.static.style = '';
 
+ve.ui.ListTool.static.requiresRange = true;
+
 /* Methods */
 
 /**
@@ -56,6 +58,9 @@ ve.ui.ListTool.prototype.onSelect = function () {
  * @inheritdoc
  */
 ve.ui.ListTool.prototype.onUpdateState = function ( nodes ) {
+	// Parent method
+	ve.ui.Tool.prototype.onUpdateState.apply( this, arguments );
+
 	var i, len,
 		style = this.constructor.static.style,
 		all = !!nodes.length;
