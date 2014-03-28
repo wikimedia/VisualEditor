@@ -254,6 +254,11 @@
 			"modules/ve/ui/styles/ve.ui.Icons-vector.css"
 		]
 	},
+	"visualEditor.desktop": {
+		"styles": [
+			"modules/ve/ui/themes/apex/ve.ui.Inspector.css"
+		]
+	},
 	"visualEditor.mobile": {
 		"scripts": [
 			"modules/ve/ui/ve.ui.MobileSurface.js",

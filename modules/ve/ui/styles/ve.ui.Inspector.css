@@ -12,22 +12,6 @@
 	transition: opacity 100ms;
 }
 
-.ve-ui-inspector .oo-ui-frame {
-	width: 17.25em;
-	height: 3em;
-}
-
-.ve-ui-inspector-content .oo-ui-window-head {
-	height: 2em;
-	padding: 0.5em;
-}
-
-.ve-ui-inspector-content .oo-ui-window-icon {
-	padding-left: 0.5em;
-	margin-left: 0.25em;
-	border-left: solid 1px #eee;
-}
-
 .ve-ui-inspector-content .ve-ui-inspector-closeButton {
 	float: left;
 }
