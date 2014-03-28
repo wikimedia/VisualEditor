@@ -214,6 +214,7 @@
 			"modules/ve/ui/dialogs/ve.ui.CommandHelpDialog.js",
 			"modules/ve/ui/widgets/ve.ui.SurfaceWidget.js",
 			"modules/ve/ui/widgets/ve.ui.LinkTargetInputWidget.js",
+			"modules/ve/ui/ve.ui.Tool.js",
 			"modules/ve/ui/tools/ve.ui.AnnotationTool.js",
 			"modules/ve/ui/tools/ve.ui.ClearAnnotationTool.js",
 			"modules/ve/ui/tools/ve.ui.DialogTool.js",

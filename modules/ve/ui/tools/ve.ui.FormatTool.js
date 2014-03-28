@@ -10,14 +10,14 @@
  *
  * @abstract
  * @class
- * @extends OO.ui.Tool
+ * @extends ve.ui.Tool
  * @constructor
  * @param {OO.ui.ToolGroup} toolGroup
  * @param {Object} [config] Configuration options
  */
 ve.ui.FormatTool = function VeUiFormatTool( toolGroup, config ) {
 	// Parent constructor
-	OO.ui.Tool.call( this, toolGroup, config );
+	ve.ui.Tool.call( this, toolGroup, config );
 
 	// Properties
 	this.convertible = false;
@@ -25,7 +25,9 @@ ve.ui.FormatTool = function VeUiFormatTool( toolGroup, config ) {
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.FormatTool, OO.ui.Tool );
+OO.inheritClass( ve.ui.FormatTool, ve.ui.Tool );
+
+/* Static Properties */
 
 /**
  * Format the tool applies.
