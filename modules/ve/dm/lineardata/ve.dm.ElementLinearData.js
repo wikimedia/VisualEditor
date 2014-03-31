@@ -590,9 +590,6 @@ ve.dm.ElementLinearData.prototype.getRelativeContentOffset = function ( offset, 
  * is 0 or undefined than nearest offsets will be found to the left and right and the one with the
  * shortest distance will be used.
  *
- * This method is a wrapper around {getRelativeOffset}, using {this.isContentOffset} as
- * the offset validation callback.
- *
  * @method
  * @param {number} offset Offset to start from
  * @param {number} [direction] Direction to prefer matching offset in, -1 for left and 1 for right
@@ -603,13 +600,11 @@ ve.dm.ElementLinearData.prototype.getNearestContentOffset = function ( offset, d
 		return offset;
 	}
 	if ( direction === undefined ) {
-		var left = this.getRelativeOffset( offset, -1, this.constructor.prototype.isContentOffset ),
-			right = this.getRelativeOffset( offset, 1, this.constructor.prototype.isContentOffset );
+		var left = this.getRelativeContentOffset( offset, -1 ),
+			right = this.getRelativeContentOffset( offset, 1 );
 		return offset - left < right - offset ? left : right;
 	} else {
-		return this.getRelativeOffset(
-			offset, direction > 0 ? 1 : -1, this.constructor.prototype.isContentOffset
-		);
+		return this.getRelativeContentOffset( offset, direction > 0 ? 1 : -1 );
 	}
 };
 
@@ -644,9 +639,6 @@ ve.dm.ElementLinearData.prototype.getRelativeStructuralOffset = function ( offse
  * is 0 or undefined than nearest offsets will be found to the left and right and the one with the
  * shortest distance will be used.
  *
- * This method is a wrapper around {getRelativeOffset}, using {this.isStructuralOffset} as
- * the offset validation callback.
- *
  * @method
  * @param {number} offset Offset to start from
  * @param {number} [direction] Direction to prefer matching offset in, -1 for left and 1 for right
@@ -658,17 +650,11 @@ ve.dm.ElementLinearData.prototype.getNearestStructuralOffset = function ( offset
 		return offset;
 	}
 	if ( !direction ) {
-		var left = this.getRelativeOffset(
-				offset, -1, this.constructor.prototype.isStructuralOffset, unrestricted
-			),
-			right = this.getRelativeOffset(
-				offset, 1, this.constructor.prototype.isStructuralOffset, unrestricted
-			);
+		var left = this.getRelativeStructuralOffset( offset, -1, unrestricted ),
+			right = this.getRelativeStructuralOffset( offset, 1, unrestricted );
 		return offset - left < right - offset ? left : right;
 	} else {
-		return this.getRelativeOffset(
-			offset, direction > 0 ? 1 : -1, this.constructor.prototype.isStructuralOffset, unrestricted
-		);
+		return this.getRelativeStructuralOffset( offset, direction > 0 ? 1 : -1, unrestricted );
 	}
 };
 
