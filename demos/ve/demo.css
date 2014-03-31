@@ -28,7 +28,6 @@ body {
 	display: inline-block;
 }
 
-.ve-demo-error,
 .ve-demo-utilities {
 	margin: 1em 2.5em;
 	border: 1px solid #ccc;
@@ -36,17 +35,6 @@ body {
 	padding: 1em 2em;
 	font-size: 0.8em;
 	box-shadow: 0 0.25em 1.5em 0 #ddd;
-}
-
-.ve-demo-error {
-	color: #d45353;
-	margin-bottom: 0;
-	border-bottom-right-radius: 0;
-	border-bottom-left-radius: 0;
-}
-
-.ve-demo-error:empty {
-	display: none;
 }
 
 .ve-demo-utilities {

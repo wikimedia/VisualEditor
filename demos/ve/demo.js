@@ -10,7 +10,6 @@ $( function () {
 
 	var currentTarget,
 		$targetContainer = $( '.ve-demo-editor' ).eq( 0 ),
-		$errorbox = $( '.ve-demo-error' ),
 		initialPage,
 
 		// Widgets
@@ -62,12 +61,17 @@ $( function () {
 	);
 
 	function loadPage( src ) {
-		$errorbox.empty();
 		$.ajax( {
 			url: src,
 			dataType: 'text'
-		} ).done( function ( pageHtml ) {
-			var target, container = $( '<div>' );
+		} ).always( function ( result, status ) {
+			var target, pageHtml, container = $( '<div>' );
+
+			if ( status === 'error' ) {
+				pageHtml = '<p><i>Failed loading page ' + $( '<span>' ).text( src ).html() + '</i></p>';
+			} else {
+				pageHtml = result;
+			}
 
 			$targetContainer.slideUp().promise().done( function () {
 				// Container needs to be visually hidden, but not display:none
@@ -106,8 +110,6 @@ $( function () {
 				} );
 			} );
 
-		} ).fail( function () {
-			$errorbox.text( 'Failed loading page ' + src );
 		} );
 	}
 
