@@ -888,8 +888,7 @@ QUnit.test( 'getRelativeContentOffset', function ( assert ) {
 } );
 
 QUnit.test( 'getNearestContentOffset', function ( assert ) {
-	var i,
-		doc = ve.dm.example.createExampleDocument(),
+	var i, doc,
 		cases = [
 		{
 			'msg': 'unspecified direction results in shortest distance',
@@ -931,10 +930,19 @@ QUnit.test( 'getNearestContentOffset', function ( assert ) {
 			'offset': 1,
 			'direction': -1,
 			'expected': 1
+		},
+		{
+			'doc': 'internalData',
+			'msg': 'internalList ignored as it is handlesOwnChildren',
+			'offset': 5,
+			'direction': 1,
+			'expected': 22
 		}
+		// TODO: Test nested handlesOwnChildren nodes
 	];
 	QUnit.expect( cases.length );
 	for ( i = 0; i < cases.length; i++ ) {
+		doc = ve.dm.example.createExampleDocument( cases[i].doc );
 		assert.strictEqual(
 			doc.data.getNearestContentOffset( cases[i].offset, cases[i].direction ),
 			cases[i].expected,
