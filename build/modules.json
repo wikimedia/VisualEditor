@@ -66,7 +66,8 @@
 			"modules/ve/ve.track.js",
 			"modules/ve/init/ve.init.js",
 			"modules/ve/init/ve.init.Platform.js",
-			"modules/ve/init/ve.init.Target.js"
+			"modules/ve/init/ve.init.Target.js",
+			{ "file": "modules/ve/init/ve.init.DebugBar.js", "debug": true }
 		]
 	},
 	"visualEditor.standalone": {
@@ -76,7 +77,8 @@
 			"modules/ve/init/sa/ve.init.sa.Target.js"
 		],
 		"styles": [
-			"modules/ve/init/sa/styles/ve.init.sa.css"
+			"modules/ve/init/sa/styles/ve.init.sa.css",
+			{ "file": "modules/ve/init/styles/ve.init.DebugBar.css", "debug": true }
 		]
 	},
 	"visualEditor.core": {

@@ -89,6 +89,12 @@ OO.mixinClass( ve.ui.Surface, OO.EventEmitter );
  * @param {ve.ui.Trigger[]} triggers Triggers to associate with command
  */
 
+/**
+ * When a surface is destroyed.
+ *
+ * @event destroy
+ */
+
 /* Methods */
 
 /**
@@ -199,6 +205,7 @@ ve.ui.Surface.prototype.getTriggers = function ( name ) {
  *
  * @method
  * @returns {ve.ui.Context} Context user interface
+ * @fires destroy
  */
 ve.ui.Surface.prototype.destroy = function () {
 	ve.instances.splice( ve.instances.indexOf( this ), 1 );
@@ -206,6 +213,7 @@ ve.ui.Surface.prototype.destroy = function () {
 	this.$element.remove();
 	this.$globalOverlay.remove();
 	this.$localOverlay.remove();
+	this.emit( 'destroy' );
 };
 
 /**
