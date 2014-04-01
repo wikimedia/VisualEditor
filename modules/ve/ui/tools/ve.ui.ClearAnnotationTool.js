@@ -9,14 +9,14 @@
  * UserInterface clear tool.
  *
  * @class
- * @extends OO.ui.Tool
+ * @extends ve.ui.Tool
  * @constructor
  * @param {OO.ui.ToolGroup} toolGroup
  * @param {Object} [config] Configuration options
  */
 ve.ui.ClearAnnotationTool = function VeUiClearAnnotationTool( toolGroup, config ) {
 	// Parent constructor
-	OO.ui.Tool.call( this, toolGroup, config );
+	ve.ui.Tool.call( this, toolGroup, config );
 
 	// Initialization
 	this.setDisabled( true );
@@ -24,7 +24,7 @@ ve.ui.ClearAnnotationTool = function VeUiClearAnnotationTool( toolGroup, config 
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.ClearAnnotationTool, OO.ui.Tool );
+OO.inheritClass( ve.ui.ClearAnnotationTool, ve.ui.Tool );
 
 /* Static Properties */
 

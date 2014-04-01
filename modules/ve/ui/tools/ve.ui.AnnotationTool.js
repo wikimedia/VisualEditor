@@ -10,20 +10,19 @@
  *
  * @class
  * @abstract
- * @extends OO.ui.Tool
- *
+ * @extends ve.ui.Tool
  * @constructor
  * @param {OO.ui.ToolGroup} toolGroup
  * @param {Object} [config] Configuration options
  */
 ve.ui.AnnotationTool = function VeUiAnnotationTool( toolGroup, config ) {
 	// Parent constructor
-	OO.ui.Tool.call( this, toolGroup, config );
+	ve.ui.Tool.call( this, toolGroup, config );
 };
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.AnnotationTool, OO.ui.Tool );
+OO.inheritClass( ve.ui.AnnotationTool, ve.ui.Tool );
 
 /* Static Properties */
 

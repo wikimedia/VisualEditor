@@ -10,14 +10,14 @@
  *
  * @abstract
  * @class
- * @extends OO.ui.Tool
+ * @extends ve.ui.Tool
  * @constructor
  * @param {OO.ui.ToolGroup} toolGroup
  * @param {Object} [config] Configuration options
  */
 ve.ui.ListTool = function VeUiListTool( toolGroup, config ) {
 	// Parent constructor
-	OO.ui.Tool.call( this, toolGroup, config );
+	ve.ui.Tool.call( this, toolGroup, config );
 
 	// Properties
 	this.method = null;
@@ -25,7 +25,9 @@ ve.ui.ListTool = function VeUiListTool( toolGroup, config ) {
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.ListTool, OO.ui.Tool );
+OO.inheritClass( ve.ui.ListTool, ve.ui.Tool );
+
+/* Static Properties */
 
 /**
  * List style the tool applies.
