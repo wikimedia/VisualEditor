@@ -52,6 +52,21 @@ ve.ce.NodeFactory.prototype.isNodeFocusable = function ( type ) {
 	throw new Error( 'Unknown node type: ' + type );
 };
 
+/**
+ * Get primary command for node type.
+ *
+ * @method
+ * @param {string} type Node type
+ * @returns {string|null} Primary command name
+ * @throws {Error} Unknown node type
+ */
+ve.ce.NodeFactory.prototype.getNodePrimaryCommandName = function ( type ) {
+	if ( type in this.registry ) {
+		return this.registry[type].static.primaryCommandName;
+	}
+	throw new Error( 'Unknown node type: ' + type );
+};
+
 /* Initialization */
 
 // TODO: Move instantiation to a different file
