@@ -13,12 +13,11 @@
  * @extends ve.ui.Inspector
  *
  * @constructor
- * @param {ve.ui.Surface} surface Surface inspector is for
  * @param {Object} [config] Configuration options
  */
-ve.ui.AnnotationInspector = function VeUiAnnotationInspector( surface, config ) {
+ve.ui.AnnotationInspector = function VeUiAnnotationInspector( config ) {
 	// Parent constructor
-	ve.ui.Inspector.call( this, surface, config );
+	ve.ui.Inspector.call( this, config );
 
 	// Properties
 	this.previousSelection = null;
@@ -129,7 +128,7 @@ ve.ui.AnnotationInspector.prototype.setup = function ( data ) {
 	ve.ui.Inspector.prototype.setup.call( this, data );
 
 	var expandedFragment, trimmedFragment, truncatedFragment, initialCoveringAnnotation,
-		fragment = this.surface.getModel().getFragment( null, true ),
+		fragment = this.getFragment(),
 		annotation = this.getMatchingAnnotations( fragment, true ).get( 0 );
 
 	this.previousSelection = fragment.getRange();
@@ -195,9 +194,9 @@ ve.ui.AnnotationInspector.prototype.teardown = function ( data ) {
 		set = false,
 		annotation = this.getAnnotation(),
 		remove = this.shouldRemoveAnnotation() || data.action === 'remove',
-		surfaceModel = this.surface.getModel(),
+		surfaceModel = this.getFragment().getSurface(),
 		fragment = surfaceModel.getFragment( this.initialSelection, false ),
-		selection = surfaceModel.getSelection();
+		selection = this.getFragment().getRange();
 
 	if ( remove ) {
 		clear = true;
@@ -228,7 +227,7 @@ ve.ui.AnnotationInspector.prototype.teardown = function ( data ) {
 	}
 	if ( undo ) {
 		// Go back to before we added an annotation
-		this.surface.execute( 'history', 'undo' );
+		surfaceModel.undo();
 	}
 	if ( clear ) {
 		// Clear all existing annotations
@@ -249,7 +248,7 @@ ve.ui.AnnotationInspector.prototype.teardown = function ( data ) {
 		// Restore selection to what it was before we expanded it
 		selection = this.previousSelection;
 	}
-	this.surface.execute( 'content', 'select', selection );
+	surfaceModel.setSelection( selection );
 
 	if ( add ) {
 		surfaceModel.addInsertionAnnotations( annotation );

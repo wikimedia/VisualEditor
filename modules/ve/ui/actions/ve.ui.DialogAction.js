@@ -40,12 +40,18 @@ ve.ui.DialogAction.static.methods = [ 'open' ];
  * Open a Dialog.
  *
  * @method
- * @param {string} name Symbolic name of Dialog to open
- * @param {Object} [config] Configuration options for dialog setup
+ * @param {string} name Symbolic name of dialog to open
+ * @param {Object} [data] Dialog opening data
  */
-ve.ui.DialogAction.prototype.open = function ( name, config ) {
+ve.ui.DialogAction.prototype.open = function ( name, data ) {
+	var fragment = this.surface.getModel().getFragment( null, true );
+
+	data = ve.extendObject( {
+			'dir':  this.surface.getView().documentView.getDirectionFromRange( fragment.getRange() ),
+		}, data );
+
 	this.surface.getView().getDocument().getDocumentNode().$element[0].blur();
-	this.surface.getDialogs().getWindow( name ).open( config );
+	this.surface.getDialogs().getWindow( name ).open( fragment, data );
 };
 
 /* Registration */
