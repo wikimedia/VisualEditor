@@ -59,8 +59,8 @@ OO.mixinClass( ve.ce.SurfaceObserver, OO.EventEmitter );
  * is emitted (before the properties are updated).
  *
  * @event selectionChange
- * @param {ve.Range|null} oldRange
- * @param {ve.Range|null} newRange
+ * @param {ve.Range} oldRange
+ * @param {ve.Range} newRange
  */
 
 /* Methods */

@@ -122,21 +122,21 @@ ve.Range.prototype.flip = function () {
 /**
  * Check if two ranges are equal, taking direction into account.
  *
- * @param {ve.Range|null} other
+ * @param {ve.Range} other
  * @returns {boolean}
  */
 ve.Range.prototype.equals = function ( other ) {
-	return other && this.from === other.from && this.to === other.to;
+	return this.from === other.from && this.to === other.to;
 };
 
 /**
  * Check if two ranges are equal, ignoring direction.
  *
- * @param {ve.Range|null} other
+ * @param {ve.Range} other
  * @returns {boolean}
  */
 ve.Range.prototype.equalsSelection = function ( other ) {
-	return other && this.end === other.end && this.start === other.start;
+	return this.end === other.end && this.start === other.start;
 };
 
 /**
