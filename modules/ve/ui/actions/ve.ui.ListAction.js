@@ -32,9 +32,32 @@ ve.ui.ListAction.static.name = 'list';
  * @static
  * @property
  */
-ve.ui.ListAction.static.methods = [ 'wrap', 'unwrap' ];
+ve.ui.ListAction.static.methods = [ 'wrap', 'unwrap', 'toggle' ];
 
 /* Methods */
+
+/**
+ * Toggle a list around content.
+ *
+ * @method
+ * @param {string} style List style, e.g. 'number' or 'bullet'
+ */
+ve.ui.ListAction.prototype.toggle = function ( style ) {
+	var i, len,
+		nodes = this.surface.getModel().getFragment().getLeafNodes(),
+		all = !!nodes.length;
+
+	for ( i = 0, len = nodes.length; i < len; i++ ) {
+		if (
+			( len === 1 || !nodes[i].range || nodes[i].range.getLength() ) &&
+			!nodes[i].node.hasMatchingAncestor( 'list', { 'style': style } )
+		) {
+			all = false;
+			break;
+		}
+	}
+	this[all ? 'unwrap' : 'wrap']( style );
+};
 
 /**
  * Add a list around content.

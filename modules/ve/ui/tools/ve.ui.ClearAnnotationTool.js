@@ -39,14 +39,9 @@ ve.ui.ClearAnnotationTool.static.title =
 
 ve.ui.ClearAnnotationTool.static.requiresRange = true;
 
-/* Methods */
+ve.ui.ClearAnnotationTool.static.commandName = 'clear';
 
-/**
- * @inheritdoc
- */
-ve.ui.ClearAnnotationTool.prototype.onSelect = function () {
-	this.toolbar.getSurface().execute( 'annotation', 'clearAll' );
-};
+/* Methods */
 
 /**
  * @inheritdoc
