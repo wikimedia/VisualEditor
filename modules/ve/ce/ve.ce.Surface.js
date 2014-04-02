@@ -910,7 +910,8 @@ ve.ce.Surface.prototype.beforePaste = function ( e ) {
 		ve.dm.converter.getDomSubtreeFromModel(
 			new ve.dm.Document(
 				new ve.dm.ElementLinearData( doc.getStore(), context ),
-				doc.getHtmlDocument(), undefined, doc.getInternalList()
+				doc.getHtmlDocument(), undefined, doc.getInternalList(),
+				doc.getLang(), doc.getDir()
 			),
 			this.$pasteTarget[0]
 		);
@@ -2235,14 +2236,6 @@ ve.ce.Surface.prototype.incRenderLock = function () {
  */
 ve.ce.Surface.prototype.decRenderLock = function () {
 	this.renderLocks--;
-};
-
-/**
- * Surface 'dir' property (Content-Level Direction)
- * @returns {string} 'ltr' or 'rtl'
- */
-ve.ce.Surface.prototype.getDir = function () {
-	return this.$element.css( 'direction' );
 };
 
 /**

@@ -311,7 +311,7 @@ ve.ui.DesktopContext.prototype.updateDimensions = function ( transition ) {
 		inspector = this.inspectors.getCurrentWindow(),
 		focusedNode = surface.getFocusedNode(),
 		surfaceOffset = surface.$element.offset(),
-		rtl = this.surface.view.getDir() === 'rtl';
+		rtl = this.surface.getModel().getDocument().getDir() === 'rtl';
 
 	$container = inspector ? this.inspectors.$element : this.$menu;
 	if ( focusedNode ) {

@@ -21,6 +21,11 @@ ve.ce.Document = function VeCeDocument( model, surface ) {
 		model.getDocumentNode(), surface, { '$': surface.$ }
 	) );
 
+	this.getDocumentNode().$element.attr( {
+		'lang': model.getLang(),
+		'dir': model.getDir()
+	} );
+
 	// Properties
 	this.model = model;
 };

@@ -24,8 +24,10 @@
  * @param {ve.dm.Document} [parentDocument] Document to use as root for created nodes
  * @param {ve.dm.InternalList} [internalList] Internal list to clone; passed when creating a document slice
  * @param {Array} [innerWhitespace] Inner whitespace to clone; passed when creating a document slice
+ * @param {string} [lang] Language code
+ * @param {string} [dir='ltr'] Directionality (ltr/rtl)
  */
-ve.dm.Document = function VeDmDocument( data, htmlDocument, parentDocument, internalList, innerWhitespace ) {
+ve.dm.Document = function VeDmDocument( data, htmlDocument, parentDocument, internalList, innerWhitespace, lang, dir ) {
 	// Parent constructor
 	ve.Document.call( this, new ve.dm.DocumentNode() );
 
@@ -34,6 +36,9 @@ ve.dm.Document = function VeDmDocument( data, htmlDocument, parentDocument, inte
 		split = true,
 		doc = parentDocument || this,
 		root = this.documentNode;
+
+	this.lang = lang;
+	this.dir = dir || 'ltr';
 
 	this.documentNode.setRoot( root );
 	this.documentNode.setDocument( doc );
@@ -508,8 +513,8 @@ ve.dm.Document.prototype.cloneSliceFromRange = function ( range ) {
  */
 ve.dm.Document.prototype.cloneFromRange = function ( range ) {
 	var data, newDoc,
-		store = this.store.clone(),
-		listRange = this.internalList.getListNode().getOuterRange();
+		store = this.getStore().clone(),
+		listRange = this.getInternalList().getListNode().getOuterRange();
 
 	data = ve.copy( this.getFullData( range, true ) );
 	if ( range.start > listRange.start || range.end < listRange.end ) {
@@ -518,7 +523,8 @@ ve.dm.Document.prototype.cloneFromRange = function ( range ) {
 	}
 	newDoc = new this.constructor(
 		new ve.dm.FlatLinearData( store, data ),
-		this.htmlDocument, undefined, this.internalList
+		this.getHtmlDocument(), undefined, this.getInternalList(), undefined,
+		this.getLang(), this.getDir()
 	);
 	// Record the length of the internal list at the time the slice was created so we can
 	// reconcile additions properly
@@ -1033,4 +1039,20 @@ ve.dm.Document.prototype.getCompleteHistoryLength = function () {
  */
 ve.dm.Document.prototype.getCompleteHistorySince = function ( pointer ) {
 	return this.completeHistory.slice( pointer );
+};
+
+/**
+ * Get the content language
+ * @returns {string} Language code
+ */
+ve.dm.Document.prototype.getLang = function () {
+	return this.lang;
+};
+
+/**
+ * Get the content directionality
+ * @returns {string} Directionality (ltr/rtl)
+ */
+ve.dm.Document.prototype.getDir = function () {
+	return this.dir;
 };

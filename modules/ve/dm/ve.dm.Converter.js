@@ -405,9 +405,11 @@ ve.dm.Converter.prototype.getDomElementFromDataAnnotation = function ( dataAnnot
  * Convert an HTML document to a document model.
  * @param {HTMLDocument} doc HTML document to convert
  * @param {HTMLDocument} [targetDoc=doc] Target HTML document we are converting for, if different from doc
+ * @param {string} [lang] Document language code
+ * @param {string} [dir] Document directionality (ltr/rtl)
  * @returns {ve.dm.Document} Document model
  */
-ve.dm.Converter.prototype.getModelFromDom = function ( doc, targetDoc ) {
+ve.dm.Converter.prototype.getModelFromDom = function ( doc, targetDoc, lang, dir ) {
 	var linearData, refData, innerWhitespace,
 		store = new ve.dm.IndexValueStore(),
 		internalList = new ve.dm.InternalList();
@@ -438,7 +440,7 @@ ve.dm.Converter.prototype.getModelFromDom = function ( doc, targetDoc ) {
 	this.internalList = null;
 	this.contextStack = null;
 
-	return new ve.dm.Document( linearData, doc, undefined, internalList, innerWhitespace );
+	return new ve.dm.Document( linearData, doc, undefined, internalList, innerWhitespace, lang, dir );
 };
 
 /**
