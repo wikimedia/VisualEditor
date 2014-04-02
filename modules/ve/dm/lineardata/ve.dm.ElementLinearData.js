@@ -497,9 +497,7 @@ ve.dm.ElementLinearData.prototype.getRelativeOffset = function ( offset, distanc
 		start = offset,
 		steps = 0,
 		turnedAround = false,
-		// Note that we are assuming you don't start inside a handles own children node
-		handlesOwnChildrenDepth = 0;
-
+		inHandlesOwnChildren = false;
 	// If offset is already a structural offset and distance is zero than no further work is needed,
 	// otherwise distance should be 1 so that we can get out of the invalid starting offset
 	if ( distance === 0 ) {
@@ -531,22 +529,12 @@ ve.dm.ElementLinearData.prototype.getRelativeOffset = function ( offset, distanc
 			ve.dm.nodeFactory.doesNodeHandleOwnChildren( this.getType( dataOffset ) )
 		) {
 			// We have entered a node if we step right over an open, or left over a close
-			if (
+			inHandlesOwnChildren =
 				( direction > 0 && this.isOpenElementData( dataOffset ) ) ||
-				( direction < 0 && this.isCloseElementData( dataOffset ) )
-			) {
-				handlesOwnChildrenDepth++;
-			}
-			// We have left a node if we step right over a close, or left over an open
-			if (
-				( direction > 0 && this.isCloseElementData( dataOffset ) ) ||
-				( direction < 0 && this.isOpenElementData( dataOffset ) )
-			) {
-				handlesOwnChildrenDepth--;
-			}
+				( direction < 0 && this.isCloseElementData( dataOffset ) );
 		}
 		if ( callback.apply( this, [i].concat( args ) ) ) {
-			if ( !handlesOwnChildrenDepth ) {
+			if ( !inHandlesOwnChildren ) {
 				steps++;
 				offset = i;
 				if ( distance === steps ) {
@@ -571,7 +559,7 @@ ve.dm.ElementLinearData.prototype.getRelativeOffset = function ( offset, distanc
 			i = start;
 			distance = 1;
 			turnedAround = true;
-			handlesOwnChildrenDepth = 0;
+			inHandlesOwnChildren = false;
 		}
 		i += direction;
 	}
