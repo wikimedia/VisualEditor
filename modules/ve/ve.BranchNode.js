@@ -103,7 +103,7 @@ ve.BranchNode.prototype.setDocument = function ( doc ) {
  * @method
  * @param {number} offset Offset get node for
  * @param {boolean} [shallow] Do not iterate into child nodes of child nodes
- * @returns {ve.Node|null} Node at offset, or null if non was found
+ * @returns {ve.Node|null} Node at offset, or null if none was found
  */
 ve.BranchNode.prototype.getNodeFromOffset = function ( offset, shallow ) {
 	if ( offset === 0 ) {

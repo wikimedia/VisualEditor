@@ -590,6 +590,7 @@ ve.dm.Document.prototype.getFullData = function ( range, edgeMetadata ) {
  *
  * @method
  * @param offset
+ * @returns {ve.dm.Node} Node at offset
  */
 ve.dm.Document.prototype.getNodeFromOffset = function ( offset ) {
 	// FIXME duplicated from ve.ce.Document
