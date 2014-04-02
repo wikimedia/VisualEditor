@@ -36,6 +36,8 @@ OO.inheritClass( ve.ui.AnnotationTool, ve.ui.Tool );
  */
 ve.ui.AnnotationTool.static.annotation = { 'name': '' };
 
+ve.ui.AnnotationTool.static.requiresRange = true;
+
 /* Methods */
 
 /**
@@ -51,6 +53,9 @@ ve.ui.AnnotationTool.prototype.onSelect = function () {
  * @inheritdoc
  */
 ve.ui.AnnotationTool.prototype.onUpdateState = function ( nodes, full ) {
+	// Parent method
+	ve.ui.Tool.prototype.onUpdateState.apply( this, arguments );
+
 	this.setActive( full.hasAnnotationWithName( this.constructor.static.annotation.name ) );
 };
 

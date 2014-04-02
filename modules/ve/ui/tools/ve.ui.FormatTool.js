@@ -41,6 +41,8 @@ OO.inheritClass( ve.ui.FormatTool, ve.ui.Tool );
  */
 ve.ui.FormatTool.static.format = null;
 
+ve.ui.FormatTool.static.requiresRange = true;
+
 /* Methods */
 
 /**
@@ -58,6 +60,9 @@ ve.ui.FormatTool.prototype.onSelect = function () {
  * @inheritdoc
  */
 ve.ui.FormatTool.prototype.onUpdateState = function ( nodes ) {
+	// Parent method
+	ve.ui.Tool.prototype.onUpdateState.apply( this, arguments );
+
 	var i, len,
 		format = this.constructor.static.format,
 		all = !!nodes.length;

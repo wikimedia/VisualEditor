@@ -65,6 +65,9 @@ ve.ui.HistoryTool.prototype.onSelect = function () {
  * @inheritdoc
  */
 ve.ui.HistoryTool.prototype.onUpdateState = function () {
+	// Parent method
+	ve.ui.Tool.prototype.onUpdateState.apply( this, arguments );
+
 	this.setDisabled( !this.toolbar.getSurface().getModel()[this.constructor.static.check]() );
 };
 

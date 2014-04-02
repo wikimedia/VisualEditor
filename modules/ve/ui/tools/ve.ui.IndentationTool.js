@@ -36,6 +36,8 @@ OO.inheritClass( ve.ui.IndentationTool, ve.ui.Tool );
  */
 ve.ui.IndentationTool.static.method = '';
 
+ve.ui.IndentationTool.static.requiresRange = true;
+
 /* Methods */
 
 /**
@@ -49,15 +51,20 @@ ve.ui.IndentationTool.prototype.onSelect = function () {
  * @inheritdoc
  */
 ve.ui.IndentationTool.prototype.onUpdateState = function ( nodes ) {
-	var i, len,
-		any = false;
-	for ( i = 0, len = nodes.length; i < len; i++ ) {
-		if ( nodes[i].hasMatchingAncestor( 'listItem' ) ) {
-			any = true;
-			break;
+	// Parent method
+	ve.ui.Tool.prototype.onUpdateState.apply( this, arguments );
+
+	if ( !this.isDisabled() ) {
+		var i, len,
+			any = false;
+		for ( i = 0, len = nodes.length; i < len; i++ ) {
+			if ( nodes[i].hasMatchingAncestor( 'listItem' ) ) {
+				any = true;
+				break;
+			}
 		}
+		this.setDisabled( !any );
 	}
-	this.setDisabled( !any );
 };
 
 /**
