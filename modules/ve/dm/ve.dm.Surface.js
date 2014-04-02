@@ -63,6 +63,11 @@ OO.mixinClass( ve.dm.Surface, OO.EventEmitter );
  */
 
 /**
+ * @event insertionAnnotationsChange
+ * @param {ve.dm.AnnotationSet} insertionAnnotations AnnotationSet being inserted
+ */
+
+/**
  * @event history
  */
 
@@ -161,6 +166,7 @@ ve.dm.Surface.prototype.getInsertionAnnotations = function () {
  *
  * @method
  * @param {ve.dm.AnnotationSet|null} Insertion anotations to use or null to disable them
+ * @fires insertionAnnotationsChange
  * @fires contextChange
  */
 ve.dm.Surface.prototype.setInsertionAnnotations = function ( annotations ) {
@@ -171,6 +177,7 @@ ve.dm.Surface.prototype.setInsertionAnnotations = function ( annotations ) {
 		annotations.clone() :
 		new ve.dm.AnnotationSet( this.documentModel.getStore() );
 
+	this.emit( 'insertionAnnotationsChange', this.insertionAnnotations );
 	this.emit( 'contextChange' );
 };
 
@@ -179,6 +186,7 @@ ve.dm.Surface.prototype.setInsertionAnnotations = function ( annotations ) {
  *
  * @method
  * @param {ve.dm.Annotation|ve.dm.AnnotationSet} annotations Insertion annotation to add
+ * @fires insertionAnnotationsChange
  * @fires contextChange
  */
 ve.dm.Surface.prototype.addInsertionAnnotations = function ( annotations ) {
@@ -192,6 +200,8 @@ ve.dm.Surface.prototype.addInsertionAnnotations = function ( annotations ) {
 	} else {
 		throw new Error( 'Invalid annotations' );
 	}
+
+	this.emit( 'insertionAnnotationsChange', this.insertionAnnotations );
 	this.emit( 'contextChange' );
 };
 
@@ -200,6 +210,7 @@ ve.dm.Surface.prototype.addInsertionAnnotations = function ( annotations ) {
  *
  * @method
  * @param {ve.dm.Annotation|ve.dm.AnnotationSet} annotations Insertion annotation to remove
+ * @fires insertionAnnotationsChange
  * @fires contextChange
  */
 ve.dm.Surface.prototype.removeInsertionAnnotations = function ( annotations ) {
@@ -213,6 +224,8 @@ ve.dm.Surface.prototype.removeInsertionAnnotations = function ( annotations ) {
 	} else {
 		throw new Error( 'Invalid annotations' );
 	}
+
+	this.emit( 'insertionAnnotationsChange', this.insertionAnnotations );
 	this.emit( 'contextChange' );
 };
 
