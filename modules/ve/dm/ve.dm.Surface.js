@@ -388,9 +388,9 @@ ve.dm.Surface.prototype.setSelection = function ( selection ) {
 	}
 
 	// Detect if selected nodes changed
-	selectedNodes.start = selection ? this.documentModel.getNodeFromOffset( selection.start ) : null;
-	if ( selection && selection.getLength() ) {
-		selectedNodes.end = selection ? this.documentModel.getNodeFromOffset( selection.end ) : null;
+	selectedNodes.start = this.documentModel.getNodeFromOffset( selection.start );
+	if ( selection.getLength() ) {
+		selectedNodes.end = this.documentModel.getNodeFromOffset( selection.end );
 	}
 	if (
 		selectedNodes.start !== this.selectedNodes.start ||
@@ -403,48 +403,46 @@ ve.dm.Surface.prototype.setSelection = function ( selection ) {
 	this.selectedNodes = selectedNodes;
 	this.selection = selection;
 
-	if ( this.selection ) {
-		// Figure out which annotations to use for insertions
-		if ( this.selection.isCollapsed() ) {
-			// Get annotations from the left of the cursor
-			left = dataModelData.getNearestContentOffset( Math.max( 0, this.selection.start - 1 ), -1 );
-			right = dataModelData.getNearestContentOffset( Math.max( 0, this.selection.start ) );
+	// Figure out which annotations to use for insertions
+	if ( this.selection.isCollapsed() ) {
+		// Get annotations from the left of the cursor
+		left = dataModelData.getNearestContentOffset( Math.max( 0, this.selection.start - 1 ), -1 );
+		right = dataModelData.getNearestContentOffset( Math.max( 0, this.selection.start ) );
+	} else {
+		// Get annotations from the first character of the selection
+		left = dataModelData.getNearestContentOffset( this.selection.start );
+		right = dataModelData.getNearestContentOffset( this.selection.end );
+	}
+	if ( left === -1 ) {
+		// Document is empty, use empty set
+		insertionAnnotations = new ve.dm.AnnotationSet( this.documentModel.getStore() );
+	} else {
+		// Include annotations on the left that should be added to appended content, or ones that
+		// are on both the left and the right that should not
+		leftAnnotations = dataModelData.getAnnotationsFromOffset( left );
+		if ( right !== -1 ) {
+			rightAnnotations = dataModelData.getAnnotationsFromOffset( right );
+			insertionAnnotations = leftAnnotations.filter( function ( annotation ) {
+				return annotation.constructor.static.applyToAppendedContent ||
+					rightAnnotations.containsComparable( annotation );
+			} );
 		} else {
-			// Get annotations from the first character of the selection
-			left = dataModelData.getNearestContentOffset( this.selection.start );
-			right = dataModelData.getNearestContentOffset( this.selection.end );
+			insertionAnnotations = leftAnnotations;
 		}
-		if ( left === -1 ) {
-			// Document is empty, use empty set
-			insertionAnnotations = new ve.dm.AnnotationSet( this.documentModel.getStore() );
-		} else {
-			// Include annotations on the left that should be added to appended content, or ones that
-			// are on both the left and the right that should not
-			leftAnnotations = dataModelData.getAnnotationsFromOffset( left );
-			if ( right !== -1 ) {
-				rightAnnotations = dataModelData.getAnnotationsFromOffset( right );
-				insertionAnnotations = leftAnnotations.filter( function ( annotation ) {
-					return annotation.constructor.static.applyToAppendedContent ||
-						rightAnnotations.containsComparable( annotation );
-				} );
-			} else {
-				insertionAnnotations = leftAnnotations;
-			}
-		}
+	}
 
-		// Only emit an annotations change event if there's a meaningful difference
-		if (
-			!insertionAnnotations.containsAllOf( this.insertionAnnotations ) ||
-			!this.insertionAnnotations.containsAllOf( insertionAnnotations )
-		) {
-			this.setInsertionAnnotations( insertionAnnotations );
-			contextChange = true;
-		}
+	// Only emit an annotations change event if there's a meaningful difference
+	if (
+		!insertionAnnotations.containsAllOf( this.insertionAnnotations ) ||
+		!this.insertionAnnotations.containsAllOf( insertionAnnotations )
+	) {
+		this.setInsertionAnnotations( insertionAnnotations );
+		contextChange = true;
 	}
 
 	// Emit events
 	if ( !oldSelection || !oldSelection.equals( this.selection ) ) {
-		this.emit( 'select', this.selection && this.selection.clone() );
+		this.emit( 'select', this.selection.clone() );
 	}
 	if ( contextChange ) {
 		this.emitContextChange();
@@ -521,10 +519,7 @@ ve.dm.Surface.prototype.changeInternal = function ( transactions, selection, ski
 	// If the selection changed while applying the transactions but not while applying the
 	// selection change, setSelection() won't have emitted a 'select' event. We don't want that
 	// to happen, so emit one anyway.
-	if (
-		( !selectionBefore || !selectionBefore.equals( selectionAfter ) ) &&
-		( selectionAfter && selectionAfter.equals( this.selection ) )
-	) {
+	if ( !selectionBefore.equals( selectionAfter ) && selectionAfter.equals( this.selection ) ) {
 		this.emit( 'select', this.selection.clone() );
 	}
 
@@ -617,8 +612,6 @@ ve.dm.Surface.prototype.redo = function () {
  * @fires documentUpdate
  */
 ve.dm.Surface.prototype.onDocumentTransact = function ( tx ) {
-	if ( this.selection ) {
-		this.setSelection( tx.translateRange( this.selection ) );
-	}
+	this.setSelection( tx.translateRange( this.selection ) );
 	this.emit( 'documentUpdate', tx );
 };
