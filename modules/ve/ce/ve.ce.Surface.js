@@ -361,15 +361,28 @@ ve.ce.Surface.prototype.focus = function () {
  * @param {jQuery.Event} e focusin or focusout event
  */
 ve.ce.Surface.prototype.onFocusChange = function () {
+	/**
+	 * Check if a node is in, or equal to, any of a list of target nodes
+	 * @param {HTMLElement} node Node to find
+	 * @param {HTMLElement[]} targetNodes List of target nodes to search in
+	 * @returns {boolean} The node is in the list of target nodes
+	 */
+	function isInNodes( node, targetNodes ) {
+		var i;
+		for ( i = targetNodes.length - 1; i >= 0; i-- ) {
+			if ( node === targetNodes[i] || $.contains( targetNodes[i], node ) ) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	// Defer to let the selection update
 	setTimeout( ve.bind( function () {
-		var hasFocus = $.contains(
+		var hasFocus = isInNodes( rangy.getSelection( this.getElementDocument() ).anchorNode, [
 				this.documentView.getDocumentNode().$element[0],
-				rangy.getSelection( this.getElementDocument() ).anchorNode
-			) || $.contains(
-				this.$pasteTarget[0],
-				rangy.getSelection( this.getElementDocument() ).anchorNode
-			);
+				this.$pasteTarget[0]
+			] );
 
 		if ( hasFocus && !this.isFocused() ) {
 			this.documentOnFocus();
