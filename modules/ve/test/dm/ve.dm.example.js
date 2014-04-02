@@ -2918,6 +2918,16 @@ ve.dm.example.UnboldableNode.static.blacklistedAnnotationTypes = [ 'textStyle/bo
 ve.dm.example.UnboldableNode.static.matchTagNames = [];
 ve.dm.modelRegistry.register( ve.dm.example.UnboldableNode );
 
+ve.dm.example.HandlesOwnChildrenNode = function ( children, element ) {
+	// Parent constructor
+	ve.dm.BranchNode.call( this, children, element );
+};
+OO.inheritClass( ve.dm.example.HandlesOwnChildrenNode, ve.dm.BranchNode );
+ve.dm.example.HandlesOwnChildrenNode.static.name = 'exampleHandlesOwnChildren';
+ve.dm.example.HandlesOwnChildrenNode.static.handlesOwnChildren = true;
+ve.dm.example.HandlesOwnChildrenNode.static.matchTagNames = [];
+ve.dm.modelRegistry.register( ve.dm.example.HandlesOwnChildrenNode );
+
 ve.dm.example.annotationData = [
 	{ 'type': 'paragraph' },
 	'F',
@@ -2928,6 +2938,22 @@ ve.dm.example.annotationData = [
 	'B',
 	'a',
 	'r',
+	{ 'type': '/paragraph' },
+	{ 'type': 'exampleHandlesOwnChildren' },
+	{ 'type': 'paragraph' },
+	'B',
+	{ 'type': '/paragraph' },
+	{ 'type': 'exampleHandlesOwnChildren' },
+	{ 'type': 'paragraph' },
+	'a',
+	{ 'type': '/paragraph' },
+	{ 'type': '/exampleHandlesOwnChildren' },
+	{ 'type': 'paragraph' },
+	'r',
+	{ 'type': '/paragraph' },
+	{ 'type': '/exampleHandlesOwnChildren' },
+	{ 'type': 'paragraph' },
+	'B', 'a', 'z',
 	{ 'type': '/paragraph' },
 	{ 'type': 'internalList' },
 	{ 'type': '/internalList' }

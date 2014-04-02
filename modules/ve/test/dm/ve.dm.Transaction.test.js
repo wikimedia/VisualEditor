@@ -1142,6 +1142,54 @@ QUnit.test( 'newFromAnnotation', function ( assert ) {
 						'bias': 'stop',
 						'annotation': bold
 					},
+					{ 'type': 'retain', 'length': 21 }
+				]
+			},
+			'over handles own children nodes': {
+				'args': [annotationDoc, new ve.Range( 1, 27 ), 'set', bold],
+				'ops': [
+					{ 'type': 'retain', 'length': 1 },
+					{
+						'type': 'annotate',
+						'method': 'set',
+						'bias': 'start',
+						'annotation': bold
+					},
+					{ 'type': 'retain', 'length': 3 },
+					{
+						'type': 'annotate',
+						'method': 'set',
+						'bias': 'stop',
+						'annotation': bold
+					},
+					{ 'type': 'retain', 'length': 2 },
+					{
+						'type': 'annotate',
+						'method': 'set',
+						'bias': 'start',
+						'annotation': bold
+					},
+					{ 'type': 'retain', 'length': 3 },
+					{
+						'type': 'annotate',
+						'method': 'set',
+						'bias': 'stop',
+						'annotation': bold
+					},
+					{ 'type': 'retain', 'length': 15 },
+					{
+						'type': 'annotate',
+						'method': 'set',
+						'bias': 'start',
+						'annotation': bold
+					},
+					{ 'type': 'retain', 'length': 3 },
+					{
+						'type': 'annotate',
+						'method': 'set',
+						'bias': 'stop',
+						'annotation': bold
+					},
 					{ 'type': 'retain', 'length': 3 }
 				]
 			}
