@@ -21,8 +21,6 @@ $( function () {
 		endLabel = new OO.ui.LabelWidget(
 			{ 'label': '-', 'input': endTextInput }
 		),
-		getRangeButton = new OO.ui.ButtonWidget( { 'label': 'Get range' } ),
-		getRangeChangeToggle = new OO.ui.ToggleButtonWidget( { 'label': 'Get range on change' } ),
 		logRangeButton = new OO.ui.ButtonWidget(
 			{ 'label': 'Log to console', 'disabled': true }
 		),
@@ -43,8 +41,6 @@ $( function () {
 	);
 
 	$( '.ve-demo-utilities-commands' ).append(
-		getRangeButton.$element,
-		getRangeChangeToggle.$element,
 		startLabel.$element,
 		startTextInput.$element,
 		endLabel.$element,
@@ -104,8 +100,8 @@ $( function () {
 					$targetContainer.slideDown().promise().done( function () {
 						target.$document[0].focus();
 						currentTarget = target;
-						getRangeChangeToggle.emit( 'click' );
 						dumpModelChangeToggle.emit( 'click' );
+						currentTarget.surface.model.on( 'select', getRange );
 					} );
 				} );
 			} );
@@ -188,10 +184,13 @@ $( function () {
 		$( '#ve-dump' ).show();
 	}
 
-	function getRange() {
-		var range = currentTarget.surface.view.model.getSelection();
-		startTextInput.setValue( range.start );
-		endTextInput.setValue( range.end );
+	function getRange( range ) {
+		if ( range ) {
+			startTextInput.setValue( range.start );
+			endTextInput.setValue( range.end );
+		}
+		startTextInput.setDisabled( !range );
+		endTextInput.setDisabled( !range );
 		logRangeButton.setDisabled( false );
 	}
 
@@ -213,16 +212,6 @@ $( function () {
 	} );
 
 	// Events
-
-	getRangeButton.on( 'click', getRange );
-	getRangeChangeToggle.on( 'click', function () {
-		if ( getRangeChangeToggle.getValue() ) {
-			getRange();
-			currentTarget.surface.model.on( 'select', getRange );
-		} else {
-			currentTarget.surface.model.off( 'select', getRange );
-		}
-	} );
 
 	logRangeButton.on( 'click', function () {
 		var start = startTextInput.getValue(),
