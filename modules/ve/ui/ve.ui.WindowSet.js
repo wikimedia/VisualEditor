@@ -40,7 +40,6 @@ OO.inheritClass( ve.ui.WindowSet, OO.ui.WindowSet );
  * @inheritdoc
  */
 ve.ui.WindowSet.prototype.onWindowClose = function ( win, accept ) {
-	this.surface.getView().focus();
 	OO.ui.WindowSet.prototype.onWindowClose.call( this, win, accept );
 };
 

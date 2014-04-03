@@ -48,6 +48,9 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 	this.pasteRules = {};
 	this.enabled = true;
 
+	// Events
+	this.dialogs.connect( this, { 'close': 'onDialogClose' } );
+
 	// Initialization
 	this.setupContext();
 	this.$element
@@ -96,6 +99,13 @@ OO.mixinClass( ve.ui.Surface, OO.EventEmitter );
  */
 
 /* Methods */
+
+/**
+ * Handle dialog close events
+ */
+ve.ui.Surface.prototype.onDialogClose = function () {
+	this.getView().focus();
+};
 
 /**
  * Initialize surface.
