@@ -21,27 +21,8 @@
 		<ul class="ve-demo-menu">
 				<!-- MENU -->
 		</ul>
-		<div class="ve-demo-error"></div>
 		<div class="ve-demo-editor"></div>
-		<div class="ve-demo-utilities">
-			<p>
-				<div class="ve-demo-utilities-commands"></div>
-			</p>
-			<table id="ve-dump" class="ve-demo-dump">
-				<thead>
-					<th>Linear model</th>
-					<th>View tree</th>
-					<th>Model tree</th>
-				</thead>
-				<tbody>
-					<tr>
-						<td width="30%" id="ve-linear-model-dump"></td>
-						<td id="ve-view-tree-dump" style="vertical-align: top;"></td>
-						<td id="ve-model-tree-dump" style="vertical-align: top;"></td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
+		<div class="ve-demo-debugBar"></div>
 
 		<!-- SCRIPTS -->
 
