@@ -141,6 +141,7 @@ ve.ui.ListAction.prototype.wrap = function ( style ) {
 		}
 	}
 	surfaceModel.breakpoint();
+	this.surface.getView().focus();
 };
 
 /**
@@ -162,6 +163,7 @@ ve.ui.ListAction.prototype.unwrap = function () {
 	} while ( node.hasMatchingAncestor( 'list' ) && this.surface.execute( 'indentation', 'decrease' ) );
 
 	surfaceModel.breakpoint();
+	this.surface.getView().focus();
 };
 
 /* Registration */
