@@ -99,7 +99,7 @@ module.exports = function ( grunt ) {
 
 	grunt.registerTask( 'lint', ['jshint', 'jscs', 'csslint'] );
 	grunt.registerTask( 'unit', ['qunit'] );
-	grunt.registerTask( 'test', ['lint', 'unit'] );
 	grunt.registerTask( 'build', ['buildloader'] );
-	grunt.registerTask( 'default', ['build', 'test'] );
+	grunt.registerTask( 'test', ['build', 'lint', 'unit'] );
+	grunt.registerTask( 'default', ['test'] );
 };
