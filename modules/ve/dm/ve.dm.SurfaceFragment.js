@@ -830,7 +830,7 @@ ve.dm.SurfaceFragment.prototype.isolateAndUnwrap = function ( isolateForType ) {
 	if ( !this.surface ) {
 		return this;
 	}
-	var nodes, startSplitNode, endSplitNode, tx,
+	var nodes, startSplitNode, endSplitNode,
 		startOffset, endOffset,
 		outerDepth = 0,
 		factory = ve.dm.nodeFactory,
@@ -842,23 +842,22 @@ ve.dm.SurfaceFragment.prototype.isolateAndUnwrap = function ( isolateForType ) {
 		fragment = this;
 
 	function createSplits( splitNodes, insertBefore ) {
-		var i, length,
-			startOffsetChange = 0, endOffsetChange = 0, data = [];
+		var i, length, tx,
+			adjustment = 0, data = [];
 		for ( i = 0, length = splitNodes.length; i < length; i++ ) {
 			data.unshift( { 'type': '/' + splitNodes[i].type } );
 			data.push( splitNodes[i].getClonedElement() );
 
 			if ( insertBefore ) {
-				startOffsetChange += 2;
-				endOffsetChange += 2;
+				adjustment += 2;
 			}
 		}
 
 		tx = ve.dm.Transaction.newFromInsertion( fragment.getDocument(), insertBefore ? startOffset : endOffset, data );
 		fragment.surface.change( tx, !fragment.noAutoSelect && tx.translateRange( fragment.getRange() ) );
 
-		startOffset += startOffsetChange;
-		endOffset += endOffsetChange;
+		startOffset += adjustment;
+		endOffset += adjustment;
 	}
 
 	nodes = this.getDocument().selectNodes( this.getRange(), 'siblings' );
