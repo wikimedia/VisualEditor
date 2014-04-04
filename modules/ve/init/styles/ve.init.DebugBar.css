@@ -28,7 +28,7 @@
 
 .ve-init-debugBar-dump {
 	font-size: 0.7em;
-	margin: 2em 0 1.5em 0;
+	margin-top: 2em;
 	display: none;
 	background-color: #f3f3f3;
 	width: 100%;
