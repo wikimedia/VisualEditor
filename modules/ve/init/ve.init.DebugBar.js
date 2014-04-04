@@ -92,6 +92,8 @@ ve.init.DebugBar.prototype.attachToSurface = function ( surface ) {
 	this.surface = surface;
 	this.dumpModelChangeToggle.emit( 'click' );
 	this.surface.model.connect( this, { 'select':  this.onSurfaceSelect } );
+	// Fire on load
+	this.onSurfaceSelect( this.surface.getModel().getSelection() );
 };
 
 /**
@@ -138,14 +140,16 @@ ve.init.DebugBar.prototype.onLogRangeButtonClick = function () {
 ve.init.DebugBar.prototype.onDumpModelButtonClick = function () {
 	/*jshint loopfunc:true */
 	// linear model dump
-	var i, $li, $label, element, text, annotations, getKids,
+	var i, $li, $label, element, text, annotations,
 		surface = this.getSurface(),
+		documentModel = surface.getModel().getDocument(),
+		documentView = surface.getView().getDocument(),
 		$ol = $( '<ol start="0"></ol>' );
 
-	for ( i = 0; i < surface.model.documentModel.data.getLength(); i++ ) {
+	for ( i = 0; i < documentModel.data.getLength(); i++ ) {
 		$li = $( '<li>' );
 		$label = $( '<span>' );
-		element = surface.model.documentModel.data.getData( i );
+		element = documentModel.data.getData( i );
 		if ( element.type ) {
 			$label.addClass( 've-init-debugBar-dump-element' );
 			text = element.type;
@@ -163,8 +167,8 @@ ve.init.DebugBar.prototype.onDumpModelButtonClick = function () {
 		if ( annotations ) {
 			$label.append(
 				$( '<span>' ).text(
-					'[' + surface.model.documentModel.store.values( annotations ).map( function ( ann ) {
-						return ann.name;
+					'[' + documentModel.store.values( annotations ).map( function ( ann ) {
+						return JSON.stringify( ann.getComparableObject() );
 					} ).join( ', ' ) + ']'
 				)
 			);
@@ -175,38 +179,45 @@ ve.init.DebugBar.prototype.onDumpModelButtonClick = function () {
 	}
 	this.$dumpLinmod.html( $ol );
 
-	// tree dump
-	getKids = function ( obj ) {
+	/**
+	 * Generate an ordered list describing a node
+	 *
+	 * @param {ve.Node} node Node
+	 * @returns {jQuery} Ordered list
+	 */
+	function generateListFromNode( node ) {
 		var $li, i,
 			$ol = $( '<ol start="0"></ol>' );
-		for ( i = 0; i < obj.children.length; i++ ) {
+
+		for ( i = 0; i < node.children.length; i++ ) {
 			$li = $( '<li>' );
 			$label = $( '<span>' ).addClass( 've-init-debugBar-dump-element' );
-			if ( obj.children[i].length !== undefined ) {
+			if ( node.children[i].length !== undefined ) {
 				$li.append(
 					$label
-						.text( obj.children[i].type )
+						.text( node.children[i].type )
 						.append(
-							$( '<span>' ).text( ' (' + obj.children[i].length + ')' )
+							$( '<span>' ).text( ' (' + node.children[i].length + ')' )
 						)
 				);
 			} else {
-				$li.append( $label.text( obj.children[i].type ) );
+				$li.append( $label.text( node.children[i].type ) );
 			}
 
-			if ( obj.children[i].children ) {
-				$li.append( getKids( obj.children[i] ) );
+			if ( node.children[i].children ) {
+				$li.append( generateListFromNode( node.children[i] ) );
 			}
 
 			$ol.append( $li );
 		}
 		return $ol;
-	};
+	}
+
 	this.$dumpModel.html(
-		getKids( surface.model.documentModel.getDocumentNode() )
+		generateListFromNode( documentModel.getDocumentNode() )
 	);
 	this.$dumpView.html(
-		getKids( surface.view.documentView.getDocumentNode() )
+		generateListFromNode( documentView.getDocumentNode() )
 	);
 	this.$dump.show();
 };
