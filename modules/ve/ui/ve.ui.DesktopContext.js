@@ -149,7 +149,7 @@ ve.ui.DesktopContext.prototype.onSurfaceFocus = function () {
  * Response to blur events on the surface.
  */
 ve.ui.DesktopContext.prototype.onSurfaceBlur = function () {
-	if ( !this.inspectors.getCurrentWindow() ) {
+	if ( !this.surface.getModel().getSelection() ) {
 		this.hide();
 	}
 };
