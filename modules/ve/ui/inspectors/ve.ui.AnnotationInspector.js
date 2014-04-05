@@ -24,7 +24,7 @@ ve.ui.AnnotationInspector = function VeUiAnnotationInspector( surface, config ) 
 	this.previousSelection = null;
 	this.initialSelection = null;
 	this.initialAnnotation = null;
-	this.initialAnnotationHash = null;
+	this.initialAnnotationIsCovering = false;
 	this.isNewAnnotation = false;
 };
 
@@ -128,7 +128,7 @@ ve.ui.AnnotationInspector.prototype.setup = function ( data ) {
 	// Parent method
 	ve.ui.Inspector.prototype.setup.call( this, data );
 
-	var expandedFragment, trimmedFragment, truncatedFragment,
+	var expandedFragment, trimmedFragment, truncatedFragment, initialCoveringAnnotation,
 		fragment = this.surface.getModel().getFragment( null, true ),
 		annotation = this.getMatchingAnnotations( fragment, true ).get( 0 );
 
@@ -168,14 +168,17 @@ ve.ui.AnnotationInspector.prototype.setup = function ( data ) {
 	fragment.select();
 	this.initialSelection = fragment.getRange();
 
-	// Note we don't set the 'all' flag here - any non-annotated content will be annotated on close
-	this.initialAnnotation = this.getMatchingAnnotations( fragment ).get( 0 );
+	// The initial annotation is the first matching annotation in the fragment
+	this.initialAnnotation = this.getMatchingAnnotations( fragment, true ).get( 0 );
+	initialCoveringAnnotation = this.getMatchingAnnotations( fragment ).get( 0 );
 	// Fallback to a default annotation
 	if ( !this.initialAnnotation ) {
 		this.initialAnnotation = this.getAnnotationFromFragment( fragment );
+	} else if ( initialCoveringAnnotation && initialCoveringAnnotation.compareTo( this.initialAnnotation ) ) {
+		// If the initial annotation doesn't cover the fragment, record this as we'll need to
+		// forcefully apply it to the rest of the fragment later
+		this.initialAnnotationIsCovering = true;
 	}
-	this.initialAnnotationHash = this.initialAnnotation ?
-		OO.getHash( this.initialAnnotation.getComparableObject() ) : null;
 };
 
 /**
@@ -203,7 +206,10 @@ ve.ui.AnnotationInspector.prototype.teardown = function ( data ) {
 		if ( this.initialSelection.isCollapsed() ) {
 			insert = true;
 		}
-		if ( OO.getHash( annotation.getComparableObject() ) !== this.initialAnnotationHash ) {
+		if (
+			this.initialAnnotationIsCovering ||
+			( this.initialAnnotation && this.initialAnnotation.compareTo( annotation ) )
+		) {
 			if ( this.isNewAnnotation ) {
 				undo = true;
 			} else {
