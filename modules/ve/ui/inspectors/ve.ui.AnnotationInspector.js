@@ -132,13 +132,12 @@ ve.ui.AnnotationInspector.prototype.setup = function ( data ) {
 		fragment = this.surface.getModel().getFragment( null, true ),
 		annotation = this.getMatchingAnnotations( fragment, true ).get( 0 );
 
-	this.previousSelection = this.surface.getModel().getSelection();
+	this.previousSelection = fragment.getRange();
 
 	// Initialize range
 	if ( !annotation ) {
 		if (
-			fragment.getRange().isCollapsed() &&
-			!this.surface.view.hasSlugAtOffset( fragment.getRange().start )
+			fragment.getRange().isCollapsed() && fragment.getDocument().data.isContentOffset( fragment.getRange().start )
 		) {
 			// Expand to nearest word
 			expandedFragment = fragment.expandRange( 'word' );
