@@ -12,6 +12,7 @@ module.exports = function ( grunt ) {
 	grunt.loadNpmTasks( 'grunt-contrib-csslint' );
 	grunt.loadNpmTasks( 'grunt-contrib-qunit' );
 	grunt.loadNpmTasks( 'grunt-contrib-watch' );
+	grunt.loadNpmTasks( 'grunt-banana-checker' );
 	grunt.loadNpmTasks( 'grunt-jscs-checker' );
 	grunt.loadTasks( 'build/tasks' );
 
@@ -81,6 +82,9 @@ module.exports = function ( grunt ) {
 				'{.docs,build,demos,modules}/**/*.css'
 			],
 		},
+		banana: {
+			all: 'modules/ve/i18n/'
+		},
 		qunit: {
 			ve: 'modules/ve/test/index.html',
 			unicodejs: 'modules/unicodejs/index.html'
@@ -97,7 +101,7 @@ module.exports = function ( grunt ) {
 		}
 	} );
 
-	grunt.registerTask( 'lint', ['jshint', 'jscs', 'csslint'] );
+	grunt.registerTask( 'lint', ['jshint', 'jscs', 'csslint', 'banana'] );
 	grunt.registerTask( 'unit', ['qunit'] );
 	grunt.registerTask( 'build', ['buildloader'] );
 	grunt.registerTask( 'test', ['build', 'lint', 'unit'] );
