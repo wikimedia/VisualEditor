@@ -14,8 +14,9 @@
  * @param {ve.dm.Surface} surface Target surface
  * @param {ve.Range} [range] Range within target document, current selection used by default
  * @param {boolean} [noAutoSelect] Update the surface's selection when making changes
+ * @param {boolean} [excludeInsertions] Exclude inserted content at the boundaries when updating range
  */
-ve.dm.SurfaceFragment = function VeDmSurfaceFragment( surface, range, noAutoSelect ) {
+ve.dm.SurfaceFragment = function VeDmSurfaceFragment( surface, range, noAutoSelect, excludeInsertions ) {
 	// Short-circuit for missing-surface null fragment
 	if ( !surface ) {
 		return this;
@@ -30,6 +31,7 @@ ve.dm.SurfaceFragment = function VeDmSurfaceFragment( surface, range, noAutoSele
 	}
 	this.document = surface.getDocument();
 	this.noAutoSelect = !!noAutoSelect;
+	this.excludeInsertions = !!excludeInsertions;
 
 	// Initialization
 	var length = this.document.data.getLength();
@@ -48,7 +50,7 @@ ve.dm.SurfaceFragment.static = {};
 /* Methods */
 
 /**
- * Translate the current range for one or more transactions.
+ * Translate the current range for one or more transactions, using this.excludeInsertions.
  *
  * @param {ve.dm.Transaction|ve.dm.Transaction[]} txs Transaction(s) to translate for
  * @param {boolean} [noUpdate] Use this.range directly rather than trying to update it first
@@ -69,7 +71,7 @@ ve.dm.SurfaceFragment.prototype.getTranslatedRange = function ( txs, noUpdate ) 
 	}
 	range = this.range;
 	for ( i = 0, len = txs.length; i < len; i++ ) {
-		range = txs[i].translateRange( range );
+		range = txs[i].translateRange( range, this.excludeInsertions );
 	}
 	return range;
 };
@@ -177,7 +179,37 @@ ve.dm.SurfaceFragment.prototype.setAutoSelect = function ( autoSelect ) {
  * @returns {ve.dm.SurfaceFragment} Clone of this fragment
  */
 ve.dm.SurfaceFragment.prototype.clone = function ( range ) {
-	return new this.constructor( this.surface, range || this.getRange(), this.noAutoSelect );
+	return new this.constructor(
+		this.surface,
+		range || this.getRange(),
+		this.noAutoSelect,
+		this.excludeInsertions
+	);
+};
+
+/**
+ * Check whether updates to this fragment's range will exclude content inserted at the boundaries.
+ * @returns {boolean} Range updates will exclude insertions
+ */
+ve.dm.SurfaceFragment.prototype.willExcludeInsertions = function () {
+	return this.excludeInsertions;
+};
+
+/**
+ * Tell this fragment whether it should exclude insertions. If this option is enabled, updates to
+ * this fragment's range in response to transactions will not include content inserted at the
+ * boundaries of the range; if it is disabled, insertions will be included.
+ *
+ * @param {boolean} excludeInsertions Whether to exclude insertions
+ */
+ve.dm.SurfaceFragment.prototype.setExcludeInsertions = function ( excludeInsertions ) {
+	excludeInsertions = !!excludeInsertions;
+	if ( this.excludeInsertions !== excludeInsertions ) {
+		// Process any deferred updates with the old value
+		this.update();
+		// Set the new value
+		this.excludeInsertions = excludeInsertions;
+	}
 };
 
 /**
