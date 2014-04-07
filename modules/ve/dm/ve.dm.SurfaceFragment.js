@@ -886,7 +886,7 @@ ve.dm.SurfaceFragment.prototype.isolateAndUnwrap = function ( isolateForType ) {
 		return this;
 	}
 	var nodes, startSplitNode, endSplitNode,
-		startOffset, endOffset,
+		startOffset, endOffset, oldExclude,
 		outerDepth = 0,
 		factory = ve.dm.nodeFactory,
 		allowedParents = factory.getSuggestedParentNodeTypes( isolateForType ),
@@ -948,6 +948,12 @@ ve.dm.SurfaceFragment.prototype.isolateAndUnwrap = function ( isolateForType ) {
 		}
 	}
 
+	// We have to exclude insertions while doing splits, because we want the range to be
+	// exactly what we're isolating, we don't want it to grow to include the separators
+	// we're inserting (which would happen if one of them is immediately adjacent to the range)
+	oldExclude = this.willExcludeInsertions();
+	this.setExcludeInsertions( true );
+
 	if ( startSplitRequired ) {
 		createSplits( startSplitNodes, true );
 	}
@@ -955,6 +961,8 @@ ve.dm.SurfaceFragment.prototype.isolateAndUnwrap = function ( isolateForType ) {
 	if ( endSplitRequired ) {
 		createSplits( endSplitNodes, false );
 	}
+
+	this.setExcludeInsertions( oldExclude );
 
 	this.unwrapNodes( outerDepth, 0 );
 
