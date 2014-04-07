@@ -169,24 +169,26 @@ ve.ui.Toolbar.prototype.onContextChange = function () {
 	// Update context direction for button icons UI
 
 	// by default, inline and block directions are the same
-	dirInline = dirBlock = this.surface.getView().documentView.getDirectionFromRange( fragment.getRange() );
+	if ( !fragment.isNull() ) {
+		dirInline = dirBlock = this.surface.getView().documentView.getDirectionFromRange( fragment.getRange() );
 
-	// 'inline' direction is different only if we are inside a language annotation
-	fragmentAnnotation = fragment.getAnnotations();
-	if ( fragmentAnnotation.hasAnnotationWithName( 'meta/language' ) ) {
-		dirInline = fragmentAnnotation.getAnnotationsByName( 'meta/language' ).get( 0 ).getAttribute( 'dir' );
-	}
+		// 'inline' direction is different only if we are inside a language annotation
+		fragmentAnnotation = fragment.getAnnotations();
+		if ( fragmentAnnotation.hasAnnotationWithName( 'meta/language' ) ) {
+			dirInline = fragmentAnnotation.getAnnotationsByName( 'meta/language' ).get( 0 ).getAttribute( 'dir' );
+		}
 
-	if ( dirInline !== this.contextDirection.inline ) {
-		// remove previous class:
-		this.$element.removeClass( 've-ui-dir-inline-rtl ve-ui-dir-inline-ltr' );
-		this.$element.addClass( 've-ui-dir-inline-' + dirInline );
-		this.contextDirection.inline = dirInline;
-	}
-	if ( dirBlock !== this.contextDirection.block ) {
-		this.$element.removeClass( 've-ui-dir-block-rtl ve-ui-dir-block-ltr' );
-		this.$element.addClass( 've-ui-dir-block-' + dirBlock );
-		this.contextDirection.block = dirBlock;
+		if ( dirInline !== this.contextDirection.inline ) {
+			// remove previous class:
+			this.$element.removeClass( 've-ui-dir-inline-rtl ve-ui-dir-inline-ltr' );
+			this.$element.addClass( 've-ui-dir-inline-' + dirInline );
+			this.contextDirection.inline = dirInline;
+		}
+		if ( dirBlock !== this.contextDirection.block ) {
+			this.$element.removeClass( 've-ui-dir-block-rtl ve-ui-dir-block-ltr' );
+			this.$element.addClass( 've-ui-dir-block-' + dirBlock );
+			this.contextDirection.block = dirBlock;
+		}
 	}
 	this.emit( 'updateState', nodes, fragment.getAnnotations(), fragment.getAnnotations( true ), fragment.getRange() );
 };

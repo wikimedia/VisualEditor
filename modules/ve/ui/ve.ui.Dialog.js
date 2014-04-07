@@ -46,6 +46,9 @@ ve.ui.Dialog.prototype.teardown = function () {
 	// Parent method
 	OO.ui.Dialog.prototype.teardown.apply( this, arguments );
 
+	// Restore selection
+	this.fragment.select();
+
 	this.fragment = null;
 };
 

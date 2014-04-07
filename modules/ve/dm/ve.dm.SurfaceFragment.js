@@ -23,15 +23,16 @@ ve.dm.SurfaceFragment = function VeDmSurfaceFragment( surface, range, noAutoSele
 	}
 
 	// Properties
+	this.document = surface.getDocument();
+	this.noAutoSelect = !!noAutoSelect;
+	this.excludeInsertions = !!excludeInsertions;
 	this.surface = surface;
 	this.range = range && range instanceof ve.Range ? range : surface.getSelection();
+
 	// Short-circuit for invalid range null fragment
 	if ( !this.range ) {
 		return this;
 	}
-	this.document = surface.getDocument();
-	this.noAutoSelect = !!noAutoSelect;
-	this.excludeInsertions = !!excludeInsertions;
 
 	// Initialization
 	var length = this.document.data.getLength();
