@@ -918,11 +918,13 @@ ve.dm.Transaction.prototype.translateOffset = function ( offset, excludeInsertio
  * @method
  * @see #translateOffset
  * @param {ve.Range} range Range in the linear model before the transaction has been processed
+ * @param {boolean} [excludeInsertion] Do not grow the range to cover insertions
+ *  on the boundaries of the range.
  * @returns {ve.Range} Translated range, as it will be after processing transaction
  */
-ve.dm.Transaction.prototype.translateRange = function ( range ) {
-	var start = this.translateOffset( range.start, true ),
-		end = this.translateOffset( range.end, false );
+ve.dm.Transaction.prototype.translateRange = function ( range, excludeInsertion ) {
+	var start = this.translateOffset( range.start, !excludeInsertion ),
+		end = this.translateOffset( range.end, excludeInsertion );
 	return range.isBackwards() ? new ve.Range( end, start ) : new ve.Range( start, end );
 };
 
