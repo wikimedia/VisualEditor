@@ -59,7 +59,7 @@ ve.ui.DesktopContext = function VeUiDesktopContext( surface, config ) {
 	} );
 
 	this.$( this.getElementWindow() ).on( {
-		'resize': ve.bind( this.update, this )
+		'resize': ve.bind( this.onWindowResize, this )
 	} );
 	this.$element.add( this.$menu )
 		.on( 'mousedown', false );
@@ -77,6 +77,14 @@ ve.ui.DesktopContext = function VeUiDesktopContext( surface, config ) {
 OO.inheritClass( ve.ui.DesktopContext, ve.ui.Context );
 
 /* Methods */
+
+/**
+ * Handle window resize events.
+ */
+ve.ui.DesktopContext.prototype.onWindowResize = function () {
+	// Update, no transition, reposition only
+	this.update( false, true );
+};
 
 /**
  * Handle selection changes in the model.
