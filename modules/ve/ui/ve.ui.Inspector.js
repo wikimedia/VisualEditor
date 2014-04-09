@@ -13,16 +13,15 @@
  * @extends OO.ui.Window
  *
  * @constructor
+ * @param {ve.ui.Surface} surface Surface inspector is for
  * @param {Object} [config] Configuration options
- * @cfg {jQuery} [$contextOverlay] Context overlay layer
  */
-ve.ui.Inspector = function VeUiInspector( config ) {
+ve.ui.Inspector = function VeUiInspector( surface, config ) {
 	// Parent constructor
 	OO.ui.Window.call( this, config );
 
 	// Properties
-	this.$contextOverlay = config.$contextOverlay;
-	this.fragment = null;
+	this.surface = surface;
 
 	// Initialization
 	this.$element.addClass( 've-ui-inspector' );
@@ -54,37 +53,6 @@ ve.ui.Inspector.static.name = '';
 ve.ui.Inspector.static.removable = true;
 
 /* Methods */
-
-/**
- * @param {ve.dm.SurfaceFragment} fragment Surface fragment
- * @param {Object} data Inspector opening data
- * @param {string} data.dir Directionality of fragment
- */
-ve.ui.Inspector.prototype.open = function ( fragment, data ) {
-	this.fragment = fragment;
-
-	// Parent method
-	OO.ui.Window.prototype.open.call( this, data );
-};
-
-/**
- * @inheritdoc
- */
-ve.ui.Inspector.prototype.close = function () {
-	// Parent method
-	OO.ui.Window.prototype.close.apply( this, arguments );
-
-	this.fragment = null;
-};
-
-/**
- * Get the surface fragment the inspector is for
- *
- * @returns {ve.dm.SurfaceFragment|null} Surface fragment the inspector is for, null if the inspector is closed
- */
-ve.ui.Inspector.prototype.getFragment = function () {
-	return this.fragment;
-};
 
 /**
  * Handle close button click events.

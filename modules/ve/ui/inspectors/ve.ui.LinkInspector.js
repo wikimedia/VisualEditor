@@ -12,11 +12,12 @@
  * @extends ve.ui.AnnotationInspector
  *
  * @constructor
+ * @param {ve.ui.Surface} surface Surface inspector is for
  * @param {Object} [config] Configuration options
  */
-ve.ui.LinkInspector = function VeUiLinkInspector( config ) {
+ve.ui.LinkInspector = function VeUiLinkInspector( surface, config ) {
 	// Parent constructor
-	ve.ui.AnnotationInspector.call( this, config );
+	ve.ui.AnnotationInspector.call( this, surface, config );
 
 	// Properties
 	this.linkNode = null;
@@ -98,7 +99,7 @@ ve.ui.LinkInspector.prototype.initialize = function () {
 
 	// Properties
 	this.targetInput = new this.constructor.static.linkTargetInputWidget( {
-		'$': this.$, '$overlay': this.$contextOverlay || this.$overlay
+		'$': this.$, '$overlay': this.surface.context.$element
 	} );
 
 	// Initialization
@@ -109,13 +110,13 @@ ve.ui.LinkInspector.prototype.initialize = function () {
  * @inheritdoc
  */
 ve.ui.LinkInspector.prototype.setup = function ( data ) {
-	var focusedNode = this.getFragment().getSelectedNode();
+	var focusedNode = this.surface.getView().getFocusedNode();
 
 	if (
 		focusedNode &&
-		ve.isInstanceOfAny( focusedNode, this.constructor.static.modelClasses )
+		ve.isInstanceOfAny( focusedNode.getModel(), this.constructor.static.modelClasses )
 	) {
-		this.linkNode = focusedNode;
+		this.linkNode = focusedNode.getModel();
 		// Call grandparent method, skipping AnnotationInspector
 		ve.ui.Inspector.prototype.setup.call( this, data );
 	} else {
@@ -125,7 +126,7 @@ ve.ui.LinkInspector.prototype.setup = function ( data ) {
 	}
 
 	// Disable surface until animation is complete; will be reenabled in ready()
-	this.getFragment().getSurface().disable();
+	this.surface.disable();
 };
 
 /**
@@ -149,14 +150,14 @@ ve.ui.LinkInspector.prototype.ready = function () {
 		this.targetInput.setAnnotation( this.initialAnnotation );
 	}
 	this.targetInput.$input.select();
-	this.getFragment().getSurface().enable();
+	this.surface.enable();
 };
 
 /**
  * @inheritdoc
  */
 ve.ui.LinkInspector.prototype.teardown = function ( data ) {
-	var changes, remove, replace, nodeRange, surfaceModel = this.getFragment().getSurface();
+	var changes, remove, replace, nodeRange, surfaceModel = this.surface.getModel();
 	if ( this.linkNode ) {
 		nodeRange = this.linkNode.getOuterRange();
 		changes = this.getNodeChanges();
