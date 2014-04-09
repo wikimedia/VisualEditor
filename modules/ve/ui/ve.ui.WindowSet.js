@@ -15,15 +15,16 @@
  * constructors accept a surface argument before the config object.
  *
  * @constructor
+ * @param {ve.ui.Surface} surface
  * @param {OO.Factory} factory Window factory
  * @param {Object} [config] Configuration options
- * @cfg {jQuery} [$contextOverlay] Context overlay layer
  */
-ve.ui.WindowSet = function VeUiWindowSet( factory, config ) {
+ve.ui.WindowSet = function VeUiWindowSet( surface, factory, config ) {
 	// Parent constructor
 	OO.ui.WindowSet.call( this, factory, config );
 
-	this.$contextOverlay = config.$contextOverlay;
+	// Properties
+	this.surface = surface;
 
 	// Initialization
 	this.$element.addClass( 've-ui-windowSet' );
@@ -38,6 +39,23 @@ OO.inheritClass( ve.ui.WindowSet, OO.ui.WindowSet );
 /**
  * @inheritdoc
  */
+ve.ui.WindowSet.prototype.onWindowClose = function ( win, accept ) {
+	OO.ui.WindowSet.prototype.onWindowClose.call( this, win, accept );
+};
+
+/**
+ * Get the surface.
+ *
+ * @method
+ * @returns {ve.ui.Surface} Surface
+ */
+ve.ui.WindowSet.prototype.getSurface = function () {
+	return this.surface;
+};
+
+/**
+ * @inheritdoc
+ */
 ve.ui.WindowSet.prototype.createWindow = function ( name ) {
-	return this.factory.create( name, { '$': this.$, '$contextOverlay': this.$contextOverlay } );
+	return this.factory.create( name, this.surface, { '$': this.$ } );
 };

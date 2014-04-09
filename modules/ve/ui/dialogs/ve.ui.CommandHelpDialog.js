@@ -12,14 +12,15 @@
  * @extends ve.ui.Dialog
  *
  * @constructor
+ * @param {ve.ui.Surface} surface Surface inspector is for
  * @param {Object} [config] Configuration options
  */
-ve.ui.CommandHelpDialog = function VeUiCommandHelpDialog( config ) {
+ve.ui.CommandHelpDialog = function VeUiCommandHelpDialog( surface, config ) {
 	// Configuration initialization
 	config = ve.extendObject( { 'footless': true }, config );
 
 	// Parent constructor
-	ve.ui.Dialog.call( this, config );
+	ve.ui.Dialog.call( this, surface, config );
 };
 
 /* Inheritance */

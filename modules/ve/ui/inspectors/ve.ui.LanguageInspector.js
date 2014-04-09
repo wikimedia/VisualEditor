@@ -12,11 +12,12 @@
  * @extends ve.ui.AnnotationInspector
  *
  * @constructor
+ * @param {ve.ui.Surface} surface Surface inspector is for
  * @param {Object} [config] Configuration options
  */
-ve.ui.LanguageInspector = function VeUiLanguageInspector( config ) {
+ve.ui.LanguageInspector = function VeUiLanguageInspector( surface, config ) {
 	// Parent constructor
-	ve.ui.AnnotationInspector.call( this, config );
+	ve.ui.AnnotationInspector.call( this, surface, config );
 };
 
 /* Inheritance */

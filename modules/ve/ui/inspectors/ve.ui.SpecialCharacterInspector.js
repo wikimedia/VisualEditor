@@ -12,17 +12,18 @@
  * @extends ve.ui.Inspector
  *
  * @constructor
- * @param {ve.dm.SurfaceFragment} fragment Surface fragment the inspector is for
+ * @param {ve.ui.Surface} surface Surface inspector is for
  * @param {Object} [config] Configuration options
  */
-ve.ui.SpecialCharacterInspector = function VeUiSpecialCharacterInspector( fragment, config ) {
+ve.ui.SpecialCharacterInspector = function VeUiSpecialCharacterInspector( surface, config ) {
 
 	// Parent constructor
-	ve.ui.Inspector.call( this, fragment, config );
+	ve.ui.Inspector.call( this, surface, config );
 
 	this.characters = null;
 	this.$buttonDomList = null;
 	this.initialSelection = null;
+	this.addedChar = null;
 	this.categories = null;
 
 	// Fallback character list in case no list is found anywhere
@@ -108,7 +109,7 @@ ve.ui.SpecialCharacterInspector.prototype.setup = function ( data ) {
 
 	// Preserve initial selection so we can collapse cursor position
 	// after we're done adding
-	this.initialSelection = this.getFragment().getRange();
+	this.initialSelection = this.surface.getModel().getSelection();
 
 	// Don't request the character list again if we already have it
 	if ( !this.characters ) {
@@ -183,11 +184,29 @@ ve.ui.SpecialCharacterInspector.prototype.buildButtonList = function () {
  * Handle the click event on the list
  */
 ve.ui.SpecialCharacterInspector.prototype.onListClick = function ( e ) {
-	var character = $( e.target ).data( 'character' );
+	var fragment, character = $( e.target ).data( 'character' );
 
 	if ( character !== undefined ) {
-		this.getFragment().insertContent( character, false ).collapseRangeToEnd().select();
+		fragment = this.surface.getModel().getFragment( null, true );
+		fragment.insertContent( character, false );
+		this.addedChar = character;
 	}
+};
+
+/**
+ * @inheritdoc
+ */
+ve.ui.SpecialCharacterInspector.prototype.teardown = function ( data ) {
+	var selection;
+	// Collapse selection after the inserted content
+	if ( this.addedChar ) {
+		selection = new ve.Range( this.initialSelection.start + this.addedChar.length );
+		this.surface.execute( 'content', 'select', selection );
+	}
+	// Reset
+	this.addedChar = null;
+	// Parent method
+	ve.ui.Inspector.prototype.teardown.call( this, data );
 };
 
 /* Registration */
