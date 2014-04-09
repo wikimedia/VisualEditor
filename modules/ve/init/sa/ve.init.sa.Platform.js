@@ -104,7 +104,7 @@ ve.init.sa.Platform.prototype.getUserLanguages = function () {
 };
 
 ve.init.sa.Platform.prototype.initialize = function () {
-	var i, len, partialLocale, localeParts, deferred,
+	var i, len, partialLocale, localeParts, filename, deferred,
 		path = this.getModulesUrl(),
 		locale = $.i18n().locale,
 		languages = [ locale, 'en' ], // Always use 'en' as the final fallback
@@ -138,13 +138,17 @@ ve.init.sa.Platform.prototype.initialize = function () {
 		}
 		languagesCovered[languages[i]] = true;
 
+		// Lower-case the language code for the filename. jQuery.i18n does not case-fold
+		// language codes, so we should not case-fold the second argument in #load.
+		filename = languages[i].toLowerCase() + '.json';
+
 		deferred = $.Deferred();
-		$.i18n().load( path + '/ve/i18n/' + languages[i] + '.json', languages[i] )
+		$.i18n().load( path + '/ve/i18n/' + filename, languages[i] )
 			.always( deferred.resolve );
 		promises.push( deferred.promise() );
 
 		deferred = $.Deferred();
-		$.i18n().load( path + '/../lib/oojs-ui/i18n/' + languages[i] + '.json', languages[i] )
+		$.i18n().load( path + '/../lib/oojs-ui/i18n/' + filename, languages[i] )
 			.always( deferred.resolve );
 		promises.push( deferred.promise() );
 	}
