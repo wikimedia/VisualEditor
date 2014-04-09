@@ -380,6 +380,19 @@ ve.dm.SurfaceFragment.prototype.getLeafNodes = function () {
 };
 
 /**
+ * Get the node selected by a range, i.e. the range matches the node's range exactly
+ *
+ * @returns {ve.dm.Node|null} The node selected by the range, or null if a node is not selected
+ */
+ve.dm.SurfaceFragment.prototype.getSelectedNode = function () {
+	var range = this.getRange(),
+		nodes = this.document.selectNodes( range, 'covered' ),
+		node = nodes.length === 1 && nodes[0].node ? nodes[0].node : null;
+
+	return node && node.getOuterRange().equalsSelection( range ) ? node : null;
+};
+
+/**
  * Get nodes covered by the fragment.
  *
  * Does not descend into nodes that are entirely covered by the range. The result is

@@ -41,10 +41,16 @@ ve.ui.InspectorAction.static.methods = [ 'open' ];
  *
  * @method
  * @param {string} name Symbolic name of inspector to open
- * @param {Object} [config] Configuration options for inspector setup
+ * @param {Object} [data] Inspector opening data
  */
-ve.ui.InspectorAction.prototype.open = function ( name, config ) {
-	this.surface.getContext().getInspector( name ).open( config );
+ve.ui.InspectorAction.prototype.open = function ( name, data ) {
+	var fragment = this.surface.getModel().getFragment( null, true );
+
+	data = ve.extendObject( {
+			'dir':  this.surface.getView().documentView.getDirectionFromRange( fragment.getRange() ),
+		}, data );
+
+	this.surface.getContext().getInspector( name ).open( fragment, data );
 };
 
 /* Registration */
