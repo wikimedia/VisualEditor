@@ -205,9 +205,11 @@ ve.ui.AnnotationInspector.prototype.teardown = function ( data ) {
 		if ( this.initialSelection.isCollapsed() ) {
 			insert = true;
 		}
+		// Check if the initial annotation has changed, or didn't cover the whole fragment to begin with
 		if (
-			this.initialAnnotationIsCovering ||
-			( this.initialAnnotation && this.initialAnnotation.compareTo( annotation ) )
+			!this.initialAnnotationIsCovering ||
+			!this.initialAnnotation ||
+			!this.initialAnnotation.compareTo( annotation )
 		) {
 			if ( this.isNewAnnotation ) {
 				undo = true;
@@ -256,6 +258,10 @@ ve.ui.AnnotationInspector.prototype.teardown = function ( data ) {
 	}
 
 	// Reset state
+	this.previousSelection = null;
+	this.initialSelection = null;
+	this.initialAnnotation = null;
+	this.initialAnnotationIsCovering = false;
 	this.isNewAnnotation = false;
 
 	// Parent method
