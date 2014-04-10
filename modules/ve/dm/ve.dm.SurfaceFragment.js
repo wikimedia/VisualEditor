@@ -385,11 +385,15 @@ ve.dm.SurfaceFragment.prototype.getLeafNodes = function () {
  * @returns {ve.dm.Node|null} The node selected by the range, or null if a node is not selected
  */
 ve.dm.SurfaceFragment.prototype.getSelectedNode = function () {
-	var range = this.getRange(),
-		nodes = this.document.selectNodes( range, 'covered' ),
-		node = nodes.length === 1 && nodes[0].node ? nodes[0].node : null;
+	var i, len, range = this.getRange(),
+		nodes = this.document.selectNodes( range, 'covered' );
 
-	return node && node.getOuterRange().equalsSelection( range ) ? node : null;
+	for ( i = 0, len = nodes.length; i < len; i++ ) {
+		if ( nodes[i].nodeOuterRange.equalsSelection( range ) ) {
+			return nodes[i].node;
+		}
+	}
+	return null;
 };
 
 /**
