@@ -9,7 +9,6 @@
  * ContentEditable resizable node.
  *
  * @class
- * @mixins ve.Scalable
  * @abstract
  *
  * @constructor
@@ -22,9 +21,6 @@
  */
 ve.ce.ResizableNode = function VeCeResizableNode( $resizable, config ) {
 	config = config || {};
-
-	// Mixin constructors
-	ve.Scalable.call( this, config );
 
 	// Properties
 	this.$resizable = $resizable || this.$element;
@@ -67,16 +63,9 @@ ve.ce.ResizableNode = function VeCeResizableNode( $resizable, config ) {
 		.append( this.$( '<div>' )
 			.addClass( 've-ce-resizableNode-swHandle ve-ui-icon-resize-ne-sw' )
 			.data( 'handle', 'sw' ) );
-
-	this.setCurrentDimensions( {
-		'width': this.model.getAttribute( 'width' ),
-		'height': this.model.getAttribute( 'height' )
-	} );
 };
 
 /* Inheritance */
-
-OO.mixinClass( ve.ce.ResizableNode, ve.Scalable );
 
 /* Events */
 
@@ -115,12 +104,14 @@ ve.ce.ResizableNode.prototype.getResizableOffset = function () {
 
 /** */
 ve.ce.ResizableNode.prototype.setOriginalDimensions = function ( dimensions ) {
-	// Parent method
-	ve.Scalable.prototype.setOriginalDimensions.call( this, dimensions );
+	var scalable = this.model.getScalable();
+
+	scalable.setOriginalDimensions( dimensions );
+
 	// If dimensions are valid and the scale label is desired, enable it
 	this.canShowScaleLabel = this.showScaleLabel &&
-		this.getOriginalDimensions().width &&
-		this.getOriginalDimensions().height;
+		scalable.getOriginalDimensions().width &&
+		scalable.getOriginalDimensions().height;
 };
 
 /**
@@ -148,7 +139,8 @@ ve.ce.ResizableNode.prototype.updateSizeLabel = function () {
 	}
 
 	var top, height,
-		dimensions = this.getCurrentDimensions(),
+		scalable = this.model.getScalable(),
+		dimensions = scalable.getCurrentDimensions(),
 		offset = this.getResizableOffset(),
 		minWidth = ( this.showSizeLabel ? 100 : 0 ) + ( this.showScaleLabel ? 30 : 0 );
 
@@ -180,10 +172,10 @@ ve.ce.ResizableNode.prototype.updateSizeLabel = function () {
 	if ( this.canShowScaleLabel ) {
 		this.$sizeText.append( this.$( '<span>' )
 			.addClass( 've-ce-resizableNode-sizeText-scale' )
-			.text( Math.round( 100 * this.getCurrentScale() ) + '%' )
+			.text( Math.round( 100 * scalable.getCurrentScale() ) + '%' )
 		);
 	}
-	this.$sizeText.toggleClass( 've-ce-resizableNode-sizeText-warning', this.isTooSmall() || this.isTooLarge() );
+	this.$sizeText.toggleClass( 've-ce-resizableNode-sizeText-warning', scalable.isTooSmall() || scalable.isTooLarge() );
 };
 
 /**
@@ -215,6 +207,9 @@ ve.ce.ResizableNode.prototype.onResizableFocus = function () {
 		this.$sizeLabel.appendTo( this.root.getSurface().getSurface().$localOverlayControls );
 	}
 	this.$resizeHandles.appendTo( this.root.getSurface().getSurface().$localOverlayControls );
+
+	// Call getScalable to pre-fetch the extended data
+	this.model.getScalable();
 
 	this.setResizableHandlesSizeAndPosition();
 
@@ -276,9 +271,9 @@ ve.ce.ResizableNode.prototype.onResizableLive = function () {
 ve.ce.ResizableNode.prototype.onResizableResizing = function ( dimensions ) {
 	// Clear cached resizable offset position as it may have changed
 	this.resizableOffset = null;
-	this.setCurrentDimensions( dimensions );
+	this.model.getScalable().setCurrentDimensions( dimensions );
 	if ( !this.outline ) {
-		this.$resizable.css( this.getCurrentDimensions() );
+		this.$resizable.css( this.model.getScalable().getCurrentDimensions() );
 		this.setResizableHandlesPosition();
 	}
 	this.updateSizeLabel();
@@ -321,7 +316,8 @@ ve.ce.ResizableNode.prototype.onResizeHandlesCornerMouseDown = function ( e ) {
 	// Bind resize events
 	this.resizing = true;
 	this.root.getSurface().resizing = true;
-	this.setCurrentDimensions( {
+
+	this.model.getScalable().setCurrentDimensions( {
 		'width': this.resizeInfo.width,
 		'height': this.resizeInfo.height
 	} );
@@ -418,7 +414,7 @@ ve.ce.ResizableNode.prototype.onDocumentMouseMove = function ( e ) {
 				break;
 		}
 
-		dimensions = this.getBoundedDimensions( {
+		dimensions = this.model.getScalable().getBoundedDimensions( {
 			'width': this.resizeInfo.width + diff.x,
 			'height': this.resizeInfo.height + diff.y
 		}, e.shiftKey && this.snapToGrid );

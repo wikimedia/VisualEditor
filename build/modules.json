@@ -84,7 +84,6 @@
 	"visualEditor.core": {
 		"scripts": [
 			"modules/ve/ve.Range.js",
-			"modules/ve/ve.Scalable.js",
 			"modules/ve/ve.Node.js",
 			"modules/ve/ve.BranchNode.js",
 			"modules/ve/ve.LeafNode.js",
@@ -97,6 +96,8 @@
 			"modules/ve/dm/ve.dm.AnnotationFactory.js",
 			"modules/ve/dm/ve.dm.AnnotationSet.js",
 			"modules/ve/dm/ve.dm.MetaItemFactory.js",
+			"modules/ve/dm/ve.dm.Scalable.js",
+			"modules/ve/dm/ve.dm.ResizableNode.js",
 			"modules/ve/dm/ve.dm.Node.js",
 			"modules/ve/dm/ve.dm.BranchNode.js",
 			"modules/ve/dm/ve.dm.LeafNode.js",
@@ -217,6 +218,8 @@
 			"modules/ve/ui/dialogs/ve.ui.CommandHelpDialog.js",
 			"modules/ve/ui/widgets/ve.ui.SurfaceWidget.js",
 			"modules/ve/ui/widgets/ve.ui.LinkTargetInputWidget.js",
+			"modules/ve/ui/widgets/ve.ui.DimensionsWidget.js",
+			"modules/ve/ui/widgets/ve.ui.MediaSizeWidget.js",
 			"modules/ve/ui/tools/ve.ui.AnnotationTool.js",
 			"modules/ve/ui/tools/ve.ui.ClearAnnotationTool.js",
 			"modules/ve/ui/tools/ve.ui.DialogTool.js",
