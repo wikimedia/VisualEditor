@@ -42,7 +42,7 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 	}
 	this.model = new ve.dm.Surface( documentModel );
 	this.view = new ve.ce.Surface( this.model, this, { '$': this.$ } );
-	this.dialogs = new ve.ui.WindowSet( this, ve.ui.dialogFactory, { '$': this.$ } );
+	this.dialogs = new ve.ui.WindowSet( ve.ui.dialogFactory, { '$': this.$ } );
 	this.commands = {};
 	this.triggers = {};
 	this.pasteRules = {};
