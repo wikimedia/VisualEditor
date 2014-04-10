@@ -51,6 +51,11 @@
 	font-weight: bold;
 }
 
+.ve-ui-commandHelpDialog-list dt kbd {
+	display: block;
+	clear: right;
+}
+
 .ve-ui-commandHelpDialog-list dd,
 .ve-ui-commandHelpDialog-list dt {
 	line-height: 110%;

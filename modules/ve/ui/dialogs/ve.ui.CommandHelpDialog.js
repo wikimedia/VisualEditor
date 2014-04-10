@@ -76,7 +76,7 @@ ve.ui.CommandHelpDialog.prototype.initialize = function () {
 			}
 			$shortcut = this.$( '<dt>' );
 			for ( k = 0, kLen = triggerList.length; k < kLen; k++ ) {
-				$shortcut.append( this.$( '<div>' ).text(
+				$shortcut.append( this.$( '<kbd>' ).text(
 					triggerList[k].getMessage().replace( /\+/g, ' + ' )
 				) );
 			}
