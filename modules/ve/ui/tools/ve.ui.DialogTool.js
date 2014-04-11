@@ -50,6 +50,8 @@ ve.ui.DialogTool.static.isCompatibleWith = function ( model ) {
  * @inheritdoc
  */
 ve.ui.DialogTool.prototype.onUpdateState = function () {
+	// Parent method
+	ve.ui.Tool.prototype.onUpdateState.apply( this, arguments );
 	// Never show the tool as active
 	this.setActive( false );
 };
