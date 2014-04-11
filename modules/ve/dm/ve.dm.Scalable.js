@@ -144,7 +144,7 @@ ve.dm.Scalable.prototype.setOriginalDimensions = function ( dimensions ) {
  * @fires defaultSizeChange
  */
 ve.dm.Scalable.prototype.setDefaultDimensions = function ( dimensions ) {
-	if ( !this.dimensions || !ve.compare( this.dimensions, dimensions ) ) {
+	if ( !this.defaultDimensions || !ve.compare( this.defaultDimensions, dimensions ) ) {
 		this.defaultDimensions = ve.copy( dimensions );
 		this.valid = null;
 		this.emit( 'defaultSizeChange', this.isDefault() );
