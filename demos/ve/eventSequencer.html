@@ -42,10 +42,10 @@
 					addSetTimeoutListeners( badDiv, eventName );
 				}
 
-				eventSequencer = new ve.EventSequencer( eventNames );
-				eventSequencer.on( onEvents );
-				eventSequencer.after( afterEvents );
-				eventSequencer.attach( $( goodDiv ) );
+				eventSequencer = new ve.EventSequencer( eventNames )
+					.on( onEvents )
+					.after( afterEvents )
+					.attach( $( goodDiv ) );
 				goodDiv.focus();
 			}
 

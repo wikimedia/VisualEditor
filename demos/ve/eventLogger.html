@@ -183,15 +183,16 @@
 					logElement = document.getElementById( 've-demo-log' );
 					logElement.value = '';
 
-					eventSequencer = new ve.EventSequencer( eventNames );
-					eventSequencer.attach( $( contentElement ) );
 
 					for ( i = 0, len = eventNames.length; i < len; i++ ) {
 						handlers[ eventNames[i] ] = 
 							makeEventHandler( eventNames[i] );
 					}
-					eventSequencer.on( handlers );
-					eventSequencer.afterLoop( [ makeAfterLoopHandler() ] );
+
+					eventSequencer = new ve.EventSequencer( eventNames )
+						.attach( $( contentElement ) )
+						.on( handlers )
+						.afterLoop( makeAfterLoopHandler() );
 
 					startTime = new Date().getTime();
 

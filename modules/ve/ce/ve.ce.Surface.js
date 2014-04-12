@@ -107,8 +107,7 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 		'mousemove': ve.bind( this.onDocumentMouseMove, this ),
 		'compositionstart': ve.bind( this.onDocumentCompositionStart, this ),
 		'compositionend': ve.bind( this.onDocumentCompositionEnd, this )
-	} );
-	this.eventSequencer.after( {
+	} ).after( {
 		'keypress': ve.bind( this.afterDocumentKeyPress, this )
 	} );
 
