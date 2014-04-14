@@ -37,7 +37,8 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 	this.nativeSelection = this.getElementWindow().getSelection();
 	this.eventSequencer = new ve.EventSequencer( [
 		'keydown', 'keypress', 'keyup',
-		'compositionstart', 'compositionend'
+		'compositionstart', 'compositionend',
+		'input'
 	] );
 	this.clipboard = [];
 	this.clipboardId = String( Math.random() );
@@ -63,6 +64,12 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 	// This is set on entering changeModel, then unset when leaving.
 	// It is used to test whether a reflected change event is emitted.
 	this.newModelSelection = null;
+	// These are set during cursor moves (but not text addions/deletions at the cursor)
+	this.cursorEvent = null;
+	this.cursorStartRange = null;
+	this.unicorningNode = null;
+	this.setUnicorningRecursionGuard = false;
+
 	this.hasSelectionChangeEvents = 'onselectionchange' in this.getElementDocument();
 
 	// Events
@@ -73,7 +80,8 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 	} );
 	this.model.connect( this, {
 		select: 'onModelSelect',
-		documentUpdate: 'onModelDocumentUpdate'
+		documentUpdate: 'onModelDocumentUpdate',
+		insertionAnnotationsChange: 'onInsertionAnnotationsChange'
 	} );
 
 	this.onDocumentMouseUpHandler = ve.bind( this.onDocumentMouseUp, this );
@@ -133,10 +141,9 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 		keydown: ve.bind( this.onDocumentKeyDown, this ),
 		keyup: ve.bind( this.onDocumentKeyUp, this ),
 		keypress: ve.bind( this.onDocumentKeyPress, this ),
-		compositionstart: ve.bind( this.onDocumentCompositionStart, this ),
-		compositionend: ve.bind( this.onDocumentCompositionEnd, this )
+		input: ve.bind( this.onDocumentInput, this )
 	} ).after( {
-		keypress: ve.bind( this.afterDocumentKeyPress, this )
+		keydown: ve.bind( this.afterDocumentKeyDown, this )
 	} );
 
 	// Initialization
@@ -899,7 +906,7 @@ ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
 		updateFromModel = false;
 
 	if ( e.which === 229 ) {
-		// ignore fake IME events (emitted in IE and Chromium)
+		// Ignore fake IME events (emitted in IE and Chromium)
 		return;
 	}
 
@@ -911,6 +918,9 @@ ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
 	} finally {
 		this.decRenderLock();
 	}
+
+	this.storeKeyDownState( e );
+
 	switch ( e.keyCode ) {
 		case OO.ui.Keys.LEFT:
 		case OO.ui.Keys.RIGHT:
@@ -996,11 +1006,95 @@ ve.ce.Surface.prototype.onDocumentKeyPress = function ( e ) {
 };
 
 /**
- * Poll again after the native key press
- * @param {jQuery.Event} e Key press event
+ * @param {jQuery.Event} e keydown event
  */
-ve.ce.Surface.prototype.afterDocumentKeyPress = function () {
-	this.surfaceObserver.pollOnce();
+ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
+	var fixupCursor;
+	if ( e !== this.cursorEvent ) {
+		return;
+	}
+	fixupCursor = (
+		!e.shiftKey &&
+		( e.keyCode === OO.ui.Keys.LEFT || e.keyCode === OO.ui.Keys.RIGHT )
+	);
+	this.incRenderLock();
+	try {
+		this.surfaceObserver.pollOnce();
+	} finally {
+		this.decRenderLock();
+	}
+	this.checkUnicorns( fixupCursor );
+};
+
+/**
+ * Check whether the selection has moved out of the unicorned area (i.e. is not currently between
+ * two unicorns) and if so, destroy the unicorns. If there are no active unicorns, this function
+ * does nothing.
+ *
+ * If the unicorns are destroyed as a consequence of the user moving the cursor across a unicorn
+ * with the arrow keys, the cursor will have to be moved again to produce the cursor movement
+ * the user expected. Set the fixupCursor parameter to true to enable this behavior.
+ *
+ * @param {boolean} fixupCursor If destroying unicorns, fix the cursor position for expected movement
+ */
+ve.ce.Surface.prototype.checkUnicorns = function ( fixupCursor ) {
+	var preUnicorn, postUnicorn, range, node, fixup, ancestor,
+		endCursorPos, preUnicornPos;
+	if ( !this.unicorningNode || !this.unicorningNode.unicorns ) {
+		return;
+	}
+	preUnicorn = this.unicorningNode.unicorns[ 0 ];
+	postUnicorn = this.unicorningNode.unicorns[ 1 ];
+
+	if ( this.nativeSelection.rangeCount === 0 ) {
+		// XXX do we want to clear unicorns in this case?
+		return;
+	}
+	range = this.nativeSelection.getRangeAt( 0 );
+
+	// Test whether the selection endpoint is between unicorns. If so, do nothing.
+	// Unicorns can only contain text, so just move backwards until we hit a non-text node.
+	node = range.endContainer;
+	if ( node.nodeType === Node.ELEMENT_NODE ) {
+		node = range.endOffset > 0 ? node.childNodes[ range.endOffset - 1 ] : null;
+	}
+	while ( node !== null && node.nodeType === Node.TEXT_NODE ) {
+		node = node.previousSibling;
+	}
+	if ( node === preUnicorn ) {
+		return;
+	}
+
+	// Selection endpoint is not between unicorns.
+	// Test whether it is before or after the pre-unicorn (i.e. before/after both unicorns)
+	ancestor = ve.getCommonAncestor( range.endContainer, preUnicorn );
+	if ( ancestor === null ) {
+		throw new Error( 'No common ancestor' );
+	}
+	endCursorPos = ve.getOffsetPath( ancestor, range.endContainer, range.endOffset );
+	preUnicornPos = ve.getOffsetPath(
+		ancestor,
+		preUnicorn.parentNode,
+		Array.prototype.indexOf.call( preUnicorn.parentNode.childNodes, preUnicorn )
+	);
+
+	if ( ve.cmpOffsetPaths( endCursorPos, preUnicornPos ) < 0 ) {
+		// before the pre-unicorn
+		fixup = -1;
+	} else {
+		// at or after the pre-unicorn (actually must be after the post-unicorn)
+		fixup = 1;
+	}
+	if ( fixupCursor ) {
+		this.incRenderLock();
+		try {
+			this.moveModelCursor( fixup );
+		} finally {
+			this.decRenderLock();
+		}
+	}
+	this.renderSelectedContentBranchNode();
+	this.showSelection( this.surface.getModel().getSelection() );
 };
 
 /**
@@ -1509,29 +1603,18 @@ ve.ce.Surface.prototype.afterPaste = function () {
 };
 
 /**
- * Handle document composition start events.
- *
- * @method
- * @param {jQuery.Event} e Composition start event
- */
-ve.ce.Surface.prototype.onDocumentCompositionStart = function () {
-	this.handleInsertion();
-};
-
-/**
  * Handle document composition end events.
  *
  * @method
- * @param {jQuery.Event} e Composition end event
+ * @param {jQuery.Event} e Input event
  */
-ve.ce.Surface.prototype.onDocumentCompositionEnd = function () {
+ve.ce.Surface.prototype.onDocumentInput = function () {
 	this.incRenderLock();
 	try {
 		this.surfaceObserver.pollOnce();
 	} finally {
 		this.decRenderLock();
 	}
-	this.surfaceObserver.startTimerLoop();
 };
 
 /*! Custom Events */
@@ -1590,8 +1673,8 @@ ve.ce.Surface.prototype.onModelSelect = function ( selection ) {
 	// selection object (i.e. if the model is calling us back)
 	if ( !this.focusedNode && !this.isRenderingLocked() && selection !== this.newModelSelection ) {
 		this.showSelection( selection );
+		this.checkUnicorns( false );
 	}
-
 	// Update the selection state in the SurfaceObserver
 	this.surfaceObserver.pollOnceNoEmit();
 	// Check if we moved out of a slug
@@ -1660,6 +1743,42 @@ ve.ce.Surface.prototype.onModelDocumentUpdate = function () {
 };
 
 /**
+ * Handle insertionAnnotationsChange events on the surface model.
+ * @param {ve.dm.AnnotationSet} insertionAnnotations
+ */
+ve.ce.Surface.prototype.onInsertionAnnotationsChange = function () {
+	var changed = this.renderSelectedContentBranchNode();
+	if ( !changed ) {
+		return;
+	}
+	// Must re-apply the selection after re-rendering
+	this.showSelection( this.surface.getModel().getSelection() );
+	this.surfaceObserver.pollOnceNoEmit();
+};
+
+/**
+ * Re-render the ContentBranchNode the selection is currently in.
+ *
+ * @return {boolean} Whether a re-render actually happened
+ */
+ve.ce.Surface.prototype.renderSelectedContentBranchNode = function () {
+	var selection, ceNode;
+	selection = this.model.getSelection();
+	if ( !( selection instanceof ve.dm.LinearSelection ) ) {
+		return false;
+	}
+	ceNode = this.documentView.getBranchNodeFromOffset( selection.getRange().start );
+	if ( ceNode === null ) {
+		return false;
+	}
+	if ( !( ceNode instanceof ve.ce.ContentBranchNode ) ) {
+		// not a content branch node
+		return false;
+	}
+	return ceNode.renderContents();
+};
+
+/**
  * Handle selection change events.
  *
  * @see ve.ce.SurfaceObserver#pollOnce
@@ -1684,6 +1803,7 @@ ve.ce.Surface.prototype.onSurfaceObserverRangeChange = function ( oldRange, newR
 	} finally {
 		this.decRenderLock();
 	}
+	this.checkUnicorns( false );
 };
 
 /**
@@ -1857,11 +1977,12 @@ ve.ce.Surface.prototype.onSurfaceObserverContentChange = function ( node, previo
 		if ( lengthDiff > 0 && offsetDiff === lengthDiff /* && sameLeadingAndTrailing */) {
 			data = ve.splitClusters( next.text ).slice( previousStart, nextStart );
 			// Apply insertion annotations
-			annotations = this.model.getInsertionAnnotations();
+			annotations = node.unicornAnnotations || this.model.getInsertionAnnotations();
 			if ( annotations.getLength() ) {
 				filterForWordbreak( annotations, new ve.Range( previous.range.start ) );
 				ve.dm.Document.static.addAnnotationsToData( data, annotations );
 			}
+
 			this.incRenderLock();
 			try {
 				this.changeModel(
@@ -1918,8 +2039,14 @@ ve.ce.Surface.prototype.onSurfaceObserverContentChange = function ( node, previo
 	);
 	data = nextData.slice( fromLeft, nextData.length - fromRight );
 
-	// Get annotations to the left of new content and apply
-	annotations = this.model.getDocument().data.getAnnotationsFromOffset( replacementRange.start );
+	if ( node.unicornAnnotations ) {
+		// This CBN is unicorned. Use the stored annotations.
+		annotations = node.unicornAnnotations;
+	} else {
+		// Guess that we want to use the annotations from the first changed character
+		// This could be wrong, e.g. slice->slide could happen by changing 'ic' to 'id'
+		annotations = this.model.getDocument().data.getAnnotationsFromOffset( replacementRange.start );
+	}
 	if ( annotations.getLength() ) {
 		filterForWordbreak( annotations, replacementRange );
 		ve.dm.Document.static.addAnnotationsToData( data, annotations );
@@ -1982,6 +2109,41 @@ ve.ce.Surface.prototype.endRelocation = function () {
 /*! Utilities */
 
 /**
+ * Store the current selection range, and a key down event if relevant
+ *
+ * @param {jQuery.Event|null} e Key down event
+ */
+ve.ce.Surface.prototype.storeKeyDownState = function ( e ) {
+	var range;
+	// Store the key event / range, obliterating the old one if necessary.
+	if ( this.nativeSelection.rangeCount === 0 ) {
+		this.cursorEvent = null;
+		this.cursorStartRange = null;
+		return;
+	}
+	range = this.nativeSelection.getRangeAt( 0 );
+
+	this.cursorEvent = e;
+	this.cursorStartRange = range;
+};
+
+/**
+ * Move the DM surface cursor
+ * @param {number} offset Distance to move (negative = toward document start)
+ */
+ve.ce.Surface.prototype.moveModelCursor = function ( offset ) {
+	var selection = this.model.getSelection();
+	if ( selection instanceof ve.dm.LinearSelection ) {
+		this.model.setLinearSelection( this.model.getDocument().getRelativeRange(
+			selection.getRange(),
+			offset,
+			'character',
+			false
+		) );
+	}
+};
+
+/**
  * Handle left or right arrow key events
  *
  * @param {jQuery.Event} e Left or right key down event
@@ -1999,7 +2161,6 @@ ve.ce.Surface.prototype.handleLeftOrRightArrowKey = function ( e ) {
 	if ( e.metaKey ) {
 		return;
 	}
-
 	// Selection is going to be displayed programmatically so prevent default browser behaviour
 	e.preventDefault();
 	// TODO: onDocumentKeyDown did this already
@@ -2165,7 +2326,7 @@ ve.ce.Surface.prototype.handleInsertion = function () {
 	if ( range.isCollapsed() ) {
 		hasSlug = documentModel.hasSlugAtOffset( range.start );
 		// Always pawn in a slug
-		if ( hasSlug || this.needsPawn( range, insertionAnnotations ) ) {
+		if ( hasSlug ) {
 			placeholder = '♙';
 			if ( !insertionAnnotations.isEmpty() ) {
 				placeholder = [placeholder, insertionAnnotations.getIndexes()];
@@ -2784,6 +2945,66 @@ ve.ce.Surface.prototype.changeModel = function ( transaction, selection ) {
 	}
 };
 
-ve.ce.Surface.prototype.setContentBranchNodeChanged = function ( isChanged ) {
-	this.contentBranchNodeChanged = isChanged;
+/**
+ * Inform the surface that one of its ContentBranchNodes' rendering has changed.
+ * @see ve.ce.ContentBranchNode#renderContents
+ */
+ve.ce.Surface.prototype.setContentBranchNodeChanged = function () {
+	this.contentBranchNodeChanged = true;
+	this.cursorEvent = null;
+	this.cursorStartRange = null;
+};
+
+/**
+ * Set the node that has the current unicorn.
+ *
+ * If another node currently has a unicorn, it will be rerendered, which will
+ * cause it to release its unicorn.
+ *
+ * @param {ve.ce.ContentBranchNode} node The node claiming the unicorn
+ */
+ve.ce.Surface.prototype.setUnicorning = function ( node ) {
+	if ( this.setUnicorningRecursionGuard ) {
+		throw new Error( 'setUnicorning recursing' );
+	}
+	if ( this.unicorningNode && this.unicorningNode !== node ) {
+		this.setUnicorningRecursionGuard = true;
+		try {
+			this.unicorningNode.renderContents();
+		} finally {
+			this.setUnicorningRecursionGuard = false;
+		}
+	}
+	this.unicorningNode = node;
+};
+
+/**
+ * Release the current unicorn held by a given node.
+ *
+ * If the node doesn't hold the current unicorn, nothing happens.
+ * This function does not cause any node to be rerendered.
+ *
+ * @param {ve.ce.ContentBranchNode} node The node releasing the unicorn
+ */
+ve.ce.Surface.prototype.setNotUnicorning = function ( node ) {
+	if ( this.unicorningNode === node ) {
+		this.unicorningNode = null;
+	}
+};
+
+/**
+ * Ensure that no node has a unicorn.
+ *
+ * If the given node currently has the unicorn, it will be released and
+ * no rerender will happen. If another node has the unicorn, that node
+ * will be rerendered to get rid of the unicorn.
+ *
+ * @param {ve.ce.ContentBranchNode} node The node releasing the unicorn
+ */
+ve.ce.Surface.prototype.setNotUnicorningAll = function ( node ) {
+	if ( this.unicorningNode === node ) {
+		// Don't call back node.renderContents()
+		this.unicorningNode = null;
+	}
+	this.setUnicorning( null );
 };

@@ -6,7 +6,7 @@
 
 ve.ce.imetests.push( [ 'input-firefox-ubuntu-ibus-malayalam-swanalekha', [
 	/*jshint quotmark:double */
-	{"imeIdentifier":"ibus Malayalam swanalekha m17n","userAgent":"Mozilla/5.0 (X11; Linux i686 on x86_64; rv:24.0) Gecko/20100101 Firefox/24.0","startDom":""},
+	{"imeIdentifier":"ibus Malayalam swanalekha m17n","userAgent":"Mozilla/5.0 (X11; Linux i686 on x86_64; rv:24.0) Gecko/20100101 Firefox/24.0","startDom":"x"},
 	{"seq":0,"time":1.681,"action":"sendEvent","args":["compositionstart",{}]},
 	{"seq":1,"time":1.689,"action":"changeText","args":["ട്"]},
 	{"seq":2,"time":1.689,"action":"changeSel","args":[2,2]},

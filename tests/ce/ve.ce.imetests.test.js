@@ -11,22 +11,24 @@
 ve.ce.imetests = [];
 
 ve.ce.imetestsFailAt = {
+	'backspace-firefox-ubuntu-none': 17,
+	'input-chromium-ubuntu-ibus-malayalam-swanalekha': 181,
+	'input-firefox-ubuntu-ibus-malayalam-swanalekha': 52,
+	'input-ie-win-chinese-traditional-handwriting': 4,
+	'input-ie-win-korean': 4
+};
+
+ve.ce.imetestsPhantomFailAt = {
+	'input-chromium-ubuntu-ibus-chinese-cantonese': 27,
+	'input-chromium-ubuntu-ibus-korean-korean': 35,
+	'input-chromium-ubuntu-ibus-malayalam-swanalekha': 65,
+	'input-firefox-ubuntu-ibus-chinese-cantonese': 22,
+	'input-firefox-ubuntu-ibus-japanese-anthy--hiraganaonly': 8,
+	'input-firefox-ubuntu-ibus-korean-korean': 7,
+	'input-firefox-ubuntu-ibus-malayalam-swanalekha': 8,
 	'backspace-chromium-ubuntu-none': 3,
-	'backspace-firefox-ubuntu-none': 3,
-	'backspace-ie-win-none': 5,
-	'input-chrome-win-chinese-traditional-handwriting': 3,
-	'input-chromium-ubuntu-ibus-chinese-cantonese': 7,
-	'input-chromium-ubuntu-ibus-japanese-anthy--hiraganaonly': 7,
-	'input-chromium-ubuntu-ibus-korean-korean': 7,
-	'input-chromium-ubuntu-ibus-malayalam-swanalekha': 7,
-	'input-firefox-ubuntu-ibus-chinese-cantonese': 4,
-	'input-firefox-ubuntu-ibus-japanese-anthy--hiraganaonly': 4,
-	'input-firefox-ubuntu-ibus-korean-korean': 4,
-	'input-firefox-ubuntu-ibus-malayalam-swanalekha': 4,
-	'input-firefox-win-chinese-traditional-handwriting': 5,
+	'backspace-firefox-ubuntu-none': 17,
 	'input-ie-win-chinese-traditional-handwriting': 4,
 	'input-ie-win-korean': 4,
-	'leftarrow-chromium-ubuntu-none': 3,
-	'leftarrow-firefox-ubuntu-none': 3,
-	'leftarrow-ie-win-none': 4
+	'leftarrow-chromium-ubuntu-none': 3
 };

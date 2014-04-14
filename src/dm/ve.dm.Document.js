@@ -82,7 +82,20 @@ OO.inheritClass( ve.dm.Document, ve.Document );
 /* Events */
 
 /**
+ * @event precommit
+ * Emitted when a transaction is about to be committed.
+ */
+
+/**
+ * @event presynchronize
+ * Emitted when a transaction has been applied to the linear model
+ * but the model tree has not yet been synchronized.
+ * @param {ve.dm.Transaction} tx Transaction that is about to be synchronized
+ */
+
+/**
  * @event transact
+ * Emitted when a transaction has been committed.
  * @param {ve.dm.Transaction} tx Transaction that was just processed
  */
 
@@ -296,10 +309,14 @@ ve.dm.Document.prototype.buildNodeTree = function () {
  * @throws {Error} Cannot commit a transaction that has already been committed
  */
 ve.dm.Document.prototype.commit = function ( transaction ) {
+	var doc = this;
 	if ( transaction.hasBeenApplied() ) {
 		throw new Error( 'Cannot commit a transaction that has already been committed' );
 	}
-	new ve.dm.TransactionProcessor( this, transaction ).process();
+	this.emit( 'precommit' );
+	new ve.dm.TransactionProcessor( this, transaction ).process( function () {
+		doc.emit( 'presynchronize', transaction );
+	} );
 	this.completeHistory.push( transaction );
 	this.emit( 'transact', transaction );
 };

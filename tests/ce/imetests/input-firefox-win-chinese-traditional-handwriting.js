@@ -6,7 +6,7 @@
 
 ve.ce.imetests.push( [ 'input-firefox-win-chinese-traditional-handwriting', [
 	/*jshint quotmark:double */
-	{"imeIdentifier":"Chinese Traditional Handwriting","userAgent":"Mozilla/5.0 (Windows NT 6.1; rv:19.0) Gecko/20100101 Firefox/19.0","startDom":""},
+	{"imeIdentifier":"Chinese Traditional Handwriting","userAgent":"Mozilla/5.0 (Windows NT 6.1; rv:19.0) Gecko/20100101 Firefox/19.0","startDom":"x"},
 	{"seq":0,"time":20.16,"action":"sendEvent","args":["compositionstart",{}]},
 	{"seq":1,"time":20.205,"action":"changeText","args":["中"]},
 	{"seq":2,"time":20.205,"action":"changeSel","args":[1,1]},

@@ -6,7 +6,7 @@
 
 ve.ce.imetests.push( [ 'input-chromium-ubuntu-ibus-chinese-cantonese', [
 	/*jshint quotmark:double */
-	{"imeIdentifier":"ibus Chinese cantonese","userAgent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.22 (KHTML, like Gecko) Ubuntu Chromium/25.0.1364.160 Chrome/25.0.1364.160 Safari/537.22","startDom":""},
+	{"imeIdentifier":"ibus Chinese cantonese","userAgent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.22 (KHTML, like Gecko) Ubuntu Chromium/25.0.1364.160 Chrome/25.0.1364.160 Safari/537.22","startDom":"x"},
 	{"seq":0,"time":24.114,"action":"sendEvent","args":["keydown",{"keyCode":229}]},
 	{"seq":1,"time":24.118,"action":"sendEvent","args":["compositionstart",{}]},
 	{"seq":2,"time":24.131,"action":"changeText","args":["唔"]},

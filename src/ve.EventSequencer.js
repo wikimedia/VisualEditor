@@ -26,6 +26,10 @@
  * Javascript event loop iteration, respectively before and after all the
  * other listeners fire.
  *
+ * There is special handling for sequences (keydown,keypress), where the
+ * keypress handler is called before the native keydown action happens. In
+ * this case, after-keydown handlers fire after on-keypress handlers.
+ *
  * For further event loop / task queue information, see:
  * http://www.whatwg.org/specs/web-apps/current-work/multipage/webappapis.html#event-loops
  *
@@ -239,7 +243,7 @@ ve.EventSequencer.prototype.afterLoopOne = function ( listeners ) {
  */
 ve.EventSequencer.prototype.onEvent = function ( eventName, ev ) {
 	var i, len, onListener, onListeners, pendingCall, eventSequencer, id;
-	this.runPendingCalls();
+	this.runPendingCalls( eventName );
 	if ( !this.doneOnLoop ) {
 		this.doneOnLoop = true;
 		this.doOnLoop();
@@ -365,9 +369,11 @@ ve.EventSequencer.prototype.resetAfterLoopTimeout = function () {
  * Run any pending listeners, and clear the pending queue
  * @private
  * @method
+ * @param {string} eventName The name of the event currently being triggered
  */
-ve.EventSequencer.prototype.runPendingCalls = function () {
-	var i, pendingCall;
+ve.EventSequencer.prototype.runPendingCalls = function ( eventName ) {
+	var i, pendingCall,
+	afterKeyDownCalls = [];
 	for ( i = 0; i < this.pendingCalls.length; i++ ) {
 		// Length cache not possible, as a pending call appends another pending call.
 		// It's important that this list remains mutable, in the case that this
@@ -377,15 +383,21 @@ ve.EventSequencer.prototype.runPendingCalls = function () {
 			// the call has already run
 			continue;
 		}
+		if ( eventName === 'keypress' && pendingCall.eventName === 'keydown' ) {
+			// Delay afterKeyDown till after keypress
+			afterKeyDownCalls.push( pendingCall );
+			continue;
+		}
+
 		this.cancelPostponed( pendingCall.id );
 		pendingCall.id = null;
 		// Force to run now. It's important that we set id to null before running,
 		// so that there's no chance a recursive call will call the listener again.
 		this.afterEvent( pendingCall.eventName, pendingCall.ev );
 	}
-	// This is safe because we only ever appended to the list, so it's definitely exhausted
-	// now.
+	// This is safe: we only ever appended to the list, so it's definitely exhausted now.
 	this.pendingCalls.length = 0;
+	this.pendingCalls.push.apply( this.pendingCalls, afterKeyDownCalls );
 };
 
 /**

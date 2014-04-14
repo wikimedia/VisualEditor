@@ -568,3 +568,51 @@ QUnit.test( 'normalizeNode', function ( assert ) {
 
 	ve.isNormalizeBroken = wasNormalizeBroken;
 } );
+
+QUnit.test( 'getCommonAncestor', function ( assert ) {
+	var doc, nodes, tests, i, len, test, testNodes, ancestorNode;
+	doc = ve.createDocumentFromHtml( '<html><div><p>AA<i><b>BB<img src="#"></b></i>CC</p>DD</div>EE' );
+	tests = [
+		{ nodes: 'b b', ancestor: 'b' },
+		{ nodes: 'b i', ancestor: 'i' },
+		{ nodes: 'textB img', ancestor: 'b' },
+		{ nodes: 'p textD', ancestor: 'div' },
+		{ nodes: 'textC img', ancestor: 'p' },
+		{ nodes: 'textC b', ancestor: 'p' },
+		{ nodes: 'textC textD', ancestor: 'div' },
+		{ nodes: 'textA textB', ancestor: 'p' },
+		{ nodes: 'textA img', ancestor: 'p' },
+		{ nodes: 'img textE', ancestor: 'body' },
+		{ nodes: 'textA textB textC textD', ancestor: 'div' },
+		{ nodes: 'textA i b textC', ancestor: 'p' },
+		{ nodes: 'body div head p', ancestor: 'html' }
+	];
+	nodes = {};
+	nodes.html = doc.documentElement;
+	nodes.head = doc.head;
+	nodes.body = doc.body;
+	nodes.div = doc.getElementsByTagName( 'div' )[0];
+	nodes.p = doc.getElementsByTagName( 'p' )[0];
+	nodes.b = doc.getElementsByTagName( 'b' )[0];
+	nodes.i = doc.getElementsByTagName( 'i' )[0];
+	nodes.img = doc.getElementsByTagName( 'img' )[0];
+	nodes.textA = nodes.p.childNodes[0];
+	nodes.textB = nodes.b.childNodes[0];
+	nodes.textC = nodes.p.childNodes[2];
+	nodes.textD = nodes.div.childNodes[1];
+	nodes.textE = nodes.body.childNodes[1];
+	function getNode( name ) {
+		return nodes[ name ];
+	}
+	QUnit.expect( tests.length );
+	for ( i = 0, len = tests.length; i < len; i++ ) {
+		test = tests[i];
+		testNodes = test.nodes.split( /\s+/ ).map( getNode );
+		ancestorNode = nodes[ test.ancestor ];
+		assert.equal(
+			ve.getCommonAncestor.apply( null, testNodes ),
+			ancestorNode,
+			test.nodes + ' -> ' + test.ancestor
+		);
+	}
+} );

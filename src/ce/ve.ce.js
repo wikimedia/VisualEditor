@@ -25,6 +25,12 @@ ve.ce = {
  */
 ve.ce.whitespacePattern = /[\u0020\u00A0]/g;
 
+/**
+ * Data URI for minimal GIF image.
+ */
+ve.ce.minImgDataUri = 'data:image/gif;base64,R0lGODdhAQABAADcACwAAAAAAQABAAA';
+ve.ce.unicornImgDataUri = 'data:image/gif;base64,R0lGODdhDwATAOf%2FAAAAAAEBAQICAgMDAwQEBAUFBQYGBgcHBwgICAkJCQoKCgsLCwwMDA0NDQ4ODg8PDxAQEBERERISEhMTExQUFBUVFRYWFhcXFxgYGBkZGRoaGhsbGxwcHB0dHR4eHh8fHyAgICEhISIiIiMjIyQkJCUlJSYmJicnJygoKCkpKSoqKisrKywsLC0tLS4uLi8vLzAwMDExMTIyMjMzMzQ0NDU1NTY2Njc3Nzg4ODk5OTo6Ojs7Ozw8PD09PT4%2BPj8%2FP0BAQEFBQUJCQkNDQ0REREVFRUZGRkdHR0hISElJSUpKSktLS0xMTE1NTU5OTk9PT1BQUFFRUVJSUlNTU1RUVFVVVVZWVldXV1hYWFlZWVpaWltbW1xcXF1dXV5eXl9fX2BgYGFhYWJiYmNjY2RkZGVlZWZmZmdnZ2hoaGlpaWpqamtra2xsbG1tbW5ubm9vb3BwcHFxcXJycnNzc3R0dHV1dXZ2dnd3d3h4eHl5eXp6ent7e3x8fH19fX5%2Bfn9%2Ff4CAgIGBgYKCgoODg4SEhIWFhYaGhoeHh4iIiImJiYqKiouLi4yMjI2NjY6Ojo%2BPj5CQkJGRkZKSkpOTk5SUlJWVlZaWlpeXl5iYmJmZmZqampubm5ycnJ2dnZ6enp%2Bfn6CgoKGhoaKioqOjo6SkpKWlpaampqenp6ioqKmpqaqqqqurq6ysrK2tra6urq%2Bvr7CwsLGxsbKysrOzs7S0tLW1tba2tre3t7i4uLm5ubq6uru7u7y8vL29vb6%2Bvr%2B%2Fv8DAwMHBwcLCwsPDw8TExMXFxcbGxsfHx8jIyMnJycrKysvLy8zMzM3Nzc7Ozs%2FPz9DQ0NHR0dLS0tPT09TU1NXV1dbW1tfX19jY2NnZ2dra2tvb29zc3N3d3d7e3t%2Ff3%2BDg4OHh4eLi4uPj4%2BTk5OXl5ebm5ufn5%2Bjo6Onp6erq6uvr6%2Bzs7O3t7e7u7u%2Fv7%2FDw8PHx8fLy8vPz8%2FT09PX19fb29vf39%2Fj4%2BPn5%2Bfr6%2Bvv7%2B%2Fz8%2FP39%2Ff7%2B%2Fv%2F%2F%2FywAAAAADwATAAAIngD%2FCRxIsOC%2BHBq8FVz4Dx0IHAL1MRwILUKef0ZMTRR4KoKwO2D2beTVgISDHPg2AmHA0kSXbwwPicHEkkEWNvEWDukQoSYDM34W4vDJ8kGfZQTzcSDKMssdgtAe1GzQgqWHPuMGBirEhAEPPRJYOnCkamA3I1SUiKrgs9CchY4aEDWzpqAyqUSbvKFHUA5TBkP8hCMY528HItA2MgwIADs%3D';
+
 /* Static Methods */
 
 /**
@@ -117,6 +123,46 @@ ve.ce.getDomHash = function ( element ) {
 };
 
 /**
+ * Get the first cursor offset immediately after a node.
+ *
+ * @param {Node} node DOM node
+ * @returns {Object}
+ * @returns {Node} return.node
+ * @returns {number} return.offset
+ */
+ve.ce.nextCursorOffset = function ( node ) {
+	var nextNode, offset;
+	if ( node.nextSibling !== null && node.nextSibling.nodeType === Node.TEXT_NODE ) {
+		nextNode = node.nextSibling;
+		offset = 0;
+	} else {
+		nextNode = node.parentNode;
+		offset = 1 + Array.prototype.indexOf.call( node.parentNode.childNodes, node );
+	}
+	return { node: nextNode, offset: offset };
+};
+
+/**
+ * Get the first cursor offset immediately before a node.
+ *
+ * @param {Node} node DOM node
+ * @returns {Object}
+ * @returns {Node} return.node
+ * @returns {number} return.offset
+ */
+ve.ce.previousCursorOffset = function ( node ) {
+	var previousNode, offset;
+	if ( node.previousSibling !== null && node.previousSibling.nodeType === Node.TEXT_NODE ) {
+		previousNode = node.previousSibling;
+		offset = previousNode.data.length;
+	} else {
+		previousNode = node.parentNode;
+		offset = Array.prototype.indexOf.call( node.parentNode.childNodes, node );
+	}
+	return { node: previousNode, offset: offset };
+};
+
+/**
  * Gets the linear offset from a given DOM node and offset within it.
  *
  * @method
@@ -128,7 +174,15 @@ ve.ce.getDomHash = function ( element ) {
  * @throws {Error} domNode is not in document
  */
 ve.ce.getOffset = function ( domNode, domOffset ) {
-	var node, view, offset, startNode, maxOffset, lengthSum = 0;
+	var node, view, offset, startNode, maxOffset, lengthSum = 0,
+		$domNode = $( domNode );
+
+	if ( $domNode.hasClass( 've-ce-unicorn' ) ) {
+		if ( domOffset !== 0 ) {
+			throw new Error( 'Non-zero offset in unicorn' );
+		}
+		return $domNode.data( 'dmOffset' );
+	}
 
 	/**
 	 * Move to the previous "traversal node" in "traversal sequence".

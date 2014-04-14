@@ -6,7 +6,7 @@
 
 ve.ce.imetests.push( [ 'input-firefox-ubuntu-ibus-chinese-cantonese', [
 	/*jshint quotmark:double */
-	{"imeIdentifier":"ibus Chinese cantonese","userAgent":"Mozilla/5.0 (X11; Linux i686 on x86_64; rv:24.0) Gecko/20100101 Firefox/24.0","startDom":""},
+	{"imeIdentifier":"ibus Chinese cantonese","userAgent":"Mozilla/5.0 (X11; Linux i686 on x86_64; rv:24.0) Gecko/20100101 Firefox/24.0","startDom":"x"},
 	{"seq":0,"time":12.252,"action":"sendEvent","args":["compositionstart",{}]},
 	{"seq":1,"time":12.26,"action":"changeText","args":["唔"]},
 	{"seq":2,"time":12.26,"action":"changeSel","args":[1,1]},
