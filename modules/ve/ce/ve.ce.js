@@ -105,6 +105,8 @@ ve.ce.getDomHash = function ( element ) {
 			hash += ve.ce.getDomHash( element );
 		}
 		hash += '</' + nodeName + '>';
+		// Merge adjacent text node representations
+		hash = hash.replace( /##+/g, '#' );
 	}
 	return hash;
 };
