@@ -407,6 +407,7 @@ ve.ce.Surface.prototype.documentOnBlur = function () {
 	this.eventSequencer.detach();
 	this.surfaceObserver.stopTimerLoop();
 	this.surfaceObserver.pollOnce();
+	this.surfaceObserver.clear();
 	this.dragging = false;
 	this.focused = false;
 	this.model.setSelection( null );
