@@ -47,7 +47,13 @@ ve.ui.Dialog.prototype.teardown = function () {
 	OO.ui.Dialog.prototype.teardown.apply( this, arguments );
 
 	// Restore selection
-	this.fragment.select();
+	// HACK: Integration is a mess, and to prevent teardown being called multiple times we need to
+	// rethink a whole lot of it, and spend a fair amount of time rewriting it - but instead of
+	// doing all of that, we can just put this band aid (checking if there is a fragment before
+	// calling select on it) and closed bug 63954 for now.
+	if ( this.fragment ) {
+		this.fragment.select();
+	}
 
 	this.fragment = null;
 };
