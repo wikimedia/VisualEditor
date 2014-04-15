@@ -44,12 +44,12 @@ ve.ui.InspectorAction.static.methods = [ 'open' ];
  * @param {Object} [data] Inspector opening data
  */
 ve.ui.InspectorAction.prototype.open = function ( name, data ) {
-	var fragment = this.surface.getModel().getFragment( null, true );
+	var fragment = this.surface.getModel().getFragment( null, true ),
+		dir = fragment.getRange() ?
+			this.surface.getView().getDocument().getDirectionFromRange( fragment.getRange() ) :
+			this.surface.getModel().getDocument().getDir();
 
-	data = ve.extendObject( {
-			'dir':  this.surface.getView().documentView.getDirectionFromRange( fragment.getRange() ),
-		}, data );
-
+	data = ve.extendObject( { 'dir': dir }, data );
 	this.surface.getContext().getInspector( name ).open( fragment, data );
 };
 
