@@ -79,7 +79,7 @@ ve.ui.UndoHistoryTool.static.group = 'history';
 ve.ui.UndoHistoryTool.static.icon = 'undo';
 ve.ui.UndoHistoryTool.static.title =
 	OO.ui.deferMsg( 'visualeditor-historybutton-undo-tooltip' );
-ve.ui.UndoHistoryTool.static.check = 'hasPastState';
+ve.ui.UndoHistoryTool.static.check = 'canUndo';
 ve.ui.UndoHistoryTool.static.commandName = 'undo';
 ve.ui.toolFactory.register( ve.ui.UndoHistoryTool );
 
@@ -101,6 +101,6 @@ ve.ui.RedoHistoryTool.static.group = 'history';
 ve.ui.RedoHistoryTool.static.icon = 'redo';
 ve.ui.RedoHistoryTool.static.title =
 	OO.ui.deferMsg( 'visualeditor-historybutton-redo-tooltip' );
-ve.ui.RedoHistoryTool.static.check = 'hasFutureState';
+ve.ui.RedoHistoryTool.static.check = 'canRedo';
 ve.ui.RedoHistoryTool.static.commandName = 'redo';
 ve.ui.toolFactory.register( ve.ui.RedoHistoryTool );

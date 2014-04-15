@@ -82,8 +82,9 @@ QUnit.test( 'breakpoint', 7, function ( assert ) {
 
 // TODO: ve.dm.Surface#getHistory
 // TODO: ve.dm.Surface#purgeHistory
-// TODO: ve.dm.Surface#hasFutureState
-// TODO: ve.dm.Surface#hasPastState
+// TODO: ve.dm.Surface#canRedo
+// TODO: ve.dm.Surface#canUndo
+// TODO: ve.dm.Surface#hasBeenModified
 // TODO: ve.dm.Surface#truncateUndoStack
 // TODO: ve.dm.Surface#undo
 // TODO: ve.dm.Surface#redo
