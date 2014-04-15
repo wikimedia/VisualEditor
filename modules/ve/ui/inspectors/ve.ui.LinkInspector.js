@@ -202,4 +202,4 @@ ve.ui.LinkInspector.prototype.teardown = function ( data ) {
 
 /* Registration */
 
-ve.ui.inspectorFactory.register( ve.ui.LinkInspector );
+ve.ui.windowFactory.register( ve.ui.LinkInspector );

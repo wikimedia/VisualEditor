@@ -182,4 +182,4 @@ ve.ui.CommandHelpDialog.static.getCommandGroups = function () {
 
 /* Registration */
 
-ve.ui.dialogFactory.register( ve.ui.CommandHelpDialog );
+ve.ui.windowFactory.register( ve.ui.CommandHelpDialog );

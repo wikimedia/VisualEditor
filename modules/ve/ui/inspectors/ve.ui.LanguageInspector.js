@@ -84,4 +84,4 @@ ve.ui.LanguageInspector.prototype.setup = function ( data ) {
 
 /* Registration */
 
-ve.ui.inspectorFactory.register( ve.ui.LanguageInspector );
+ve.ui.windowFactory.register( ve.ui.LanguageInspector );
