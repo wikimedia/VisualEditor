@@ -44,13 +44,16 @@ ve.ui.DialogAction.static.methods = [ 'open' ];
  * @param {Object} [data] Dialog opening data
  */
 ve.ui.DialogAction.prototype.open = function ( name, data ) {
-	var fragment = this.surface.getModel().getFragment( null, true );
+	var fragment = this.surface.getModel().getFragment( null, true ),
+		dir = fragment.getRange() ?
+			this.surface.getView().getDocument().getDirectionFromRange( fragment.getRange() ) :
+			this.surface.getModel().getDocument().getDir();
 
-	data = ve.extendObject( {
-			'dir':  this.surface.getView().documentView.getDirectionFromRange( fragment.getRange() ),
-		}, data );
+	data = ve.extendObject( { 'dir': dir }, data );
 
+	// HACK: This shouldn't be needed, but thar be dragons yonder in the Window class
 	this.surface.getView().getDocument().getDocumentNode().$element[0].blur();
+
 	this.surface.getDialogs().getWindow( name ).open( fragment, data );
 };
 
