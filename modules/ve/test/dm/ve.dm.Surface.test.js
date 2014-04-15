@@ -8,14 +8,15 @@
 QUnit.module( 've.dm.Surface' );
 
 ve.dm.SurfaceStub = function VeDmSurfaceStub( data ) {
+	var doc;
 	if ( data !== undefined ) {
-		this.dm = new ve.dm.Document( data );
+		doc = new ve.dm.Document( data );
 	} else {
-		this.dm = new ve.dm.Document( [{ 'type': 'paragraph' }, 'h', 'i', { 'type': '/paragraph' }] );
+		doc = new ve.dm.Document( [{ 'type': 'paragraph' }, 'h', 'i', { 'type': '/paragraph' }] );
 	}
 
 	// Inheritance
-	ve.dm.Surface.call( this, this.dm );
+	ve.dm.Surface.call( this, doc );
 };
 
 OO.inheritClass( ve.dm.SurfaceStub, ve.dm.Surface );
@@ -33,14 +34,14 @@ QUnit.test( 'getSelection', 1, function ( assert ) {
 } );
 
 QUnit.test( 'change/setSelection events', 3, function ( assert ) {
-	var tx, surface = new ve.dm.SurfaceStub(),
+	var surface = new ve.dm.SurfaceStub(),
+		doc = surface.getDocument(),
+		// docmentUpdate doesn't fire for no-op transactions, so make sure there's something there
+		tx = ve.dm.Transaction.newFromInsertion( doc, 3, [ 'i' ] ),
 		events = {
 			'documentUpdate': 0,
 			'select': 0
 		};
-
-	// docmentUpdate doesn't fire for no-op transactions, so make sure there's something there
-	tx = ve.dm.Transaction.newFromInsertion( surface.getDocument(), 3, [ 'i' ] );
 
 	surface.on( 'documentUpdate', function () {
 		events.documentUpdate++;
@@ -58,7 +59,8 @@ QUnit.test( 'change/setSelection events', 3, function ( assert ) {
 
 QUnit.test( 'breakpoint', 7, function ( assert ) {
 	var surface = new ve.dm.SurfaceStub(),
-		tx = new ve.dm.Transaction.newFromInsertion( surface.dm, 1, ['x'] ),
+		doc = surface.getDocument(),
+		tx = new ve.dm.Transaction.newFromInsertion( doc, 1, ['x'] ),
 		selection = new ve.Range( 1, 1 );
 
 	assert.equal( surface.breakpoint(), false, 'Returns false if no transactions applied' );
@@ -78,6 +80,85 @@ QUnit.test( 'breakpoint', 7, function ( assert ) {
 		'Undo stack data matches after breakpoint'
 	);
 	assert.deepEqual( surface.newTransactions, [], 'New transactions match after breakpoint' );
+} );
+
+QUnit.test( 'staging', 23, function ( assert ) {
+	var tx1, tx2,
+		surface = new ve.dm.SurfaceStub(),
+		fragment = surface.getFragment( new ve.Range( 1, 3 ) ),
+		doc = surface.getDocument();
+
+	assert.equal( surface.isStaging(), false, 'isStaging false when not staging' );
+	assert.equal( surface.getStagingTransactions(), undefined, 'getStagingTransactions undefined when not staging' );
+
+	surface.change( new ve.dm.Transaction.newFromInsertion( doc, 1, ['a'] ) );
+
+	surface.pushStaging();
+	assert.equal( surface.isStaging(), true, 'isStaging true after pushStaging' );
+	assert.deepEqual( surface.getStagingTransactions(), [], 'getStagingTransactions empty array after pushStaging' );
+
+	tx1 = new ve.dm.Transaction.newFromInsertion( doc, 2, ['b'] );
+	surface.change( tx1 );
+
+	assert.equal( fragment.getText(), 'abhi', 'document contents match after first transaction' );
+	assert.deepEqual( surface.getStagingTransactions(), [tx1], 'getStagingTransactions contains first transaction after change' );
+
+	surface.pushStaging();
+	assert.equal( surface.isStaging(), true, 'isStaging true after nested pushStaging' );
+	assert.deepEqual( surface.getStagingTransactions(), [], 'getStagingTransactions empty array after nested pushStaging' );
+
+	tx2 = new ve.dm.Transaction.newFromInsertion( doc, 3, ['c'] );
+	surface.change( tx2 );
+
+	assert.equal( fragment.getText(), 'abchi', 'document contents match after second transaction' );
+	assert.deepEqual( surface.getStagingTransactions(), [tx2], 'getStagingTransactions contains second transaction after change in nested staging' );
+
+	assert.deepEqual( surface.popStaging(), [tx2], 'popStaging returns second transaction list' );
+	assert.equal( surface.isStaging(), true, 'isStaging true after nested popStaging' );
+	assert.equal( fragment.getText(), 'abhi', 'document contents match after nested popStaging' );
+
+	assert.deepEqual( surface.popStaging(), [tx1], 'popStaging returns first transaction list' );
+	assert.equal( surface.isStaging(), false, 'isStaging false after outer popStaging' );
+	assert.equal( fragment.getText(), 'ahi', 'document contents match after outer popStaging' );
+
+	surface.pushStaging();
+	tx1 = new ve.dm.Transaction.newFromInsertion( doc, 2, ['b'] );
+	surface.change( tx1 );
+
+	surface.pushStaging();
+	tx2 = new ve.dm.Transaction.newFromInsertion( doc, 3, ['c'] );
+	surface.change( tx2 );
+
+	assert.deepEqual( surface.popAllStaging(), [tx1, tx2], 'popAllStaging returns full transaction list' );
+	assert.equal( fragment.getText(), 'ahi', 'document contents match after outer clearStaging' );
+
+	surface.pushStaging();
+	tx1 = new ve.dm.Transaction.newFromInsertion( doc, 2, ['b'] );
+	surface.change( tx1 );
+
+	surface.pushStaging();
+	tx2 = new ve.dm.Transaction.newFromInsertion( doc, 3, ['c'] );
+	surface.change( tx2 );
+
+	surface.applyStaging();
+	assert.deepEqual( surface.getStagingTransactions(), [tx1, tx2], 'applyStaging merges transactions' );
+
+	surface.applyStaging();
+	assert.equal( surface.isStaging(), false, 'isStaging false after outer applyStaging' );
+	assert.equal( fragment.getText(), 'abchi', 'document contents changed after applyStaging' );
+
+	surface.pushStaging();
+	tx1 = new ve.dm.Transaction.newFromInsertion( doc, 4, ['d'] );
+	surface.change( tx1 );
+
+	surface.pushStaging();
+	tx2 = new ve.dm.Transaction.newFromInsertion( doc, 5, ['e'] );
+	surface.change( tx2 );
+
+	surface.applyAllStaging();
+	assert.equal( surface.isStaging(), false, 'isStaging false after outer applyAllStaging' );
+	assert.equal( fragment.getText(), 'abcdehi', 'document contents changed after applyAllStaging' );
+
 } );
 
 // TODO: ve.dm.Surface#getHistory
