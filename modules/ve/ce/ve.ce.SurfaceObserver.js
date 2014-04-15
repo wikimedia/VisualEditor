@@ -154,7 +154,6 @@ ve.ce.SurfaceObserver.prototype.pollOnce = function () {
  *
  * @method
  */
-
 ve.ce.SurfaceObserver.prototype.pollOnceNoEmit = function () {
 	this.pollOnceInternal( false );
 };

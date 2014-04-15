@@ -41,7 +41,7 @@ ve.ui.DesktopContext = function VeUiDesktopContext( surface, config ) {
 	// Events
 	this.surface.getModel().connect( this, {
 		'documentUpdate': 'onModelChange',
-		'select': 'onModelChange',
+		'select': 'onModelChange'
 	} );
 	this.surface.getView().connect( this, {
 		'selectionStart': 'onSelectionStart',
