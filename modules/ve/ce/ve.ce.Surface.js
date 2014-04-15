@@ -366,26 +366,23 @@ ve.ce.Surface.prototype.focus = function () {
  *
  * @param {jQuery.Event} e focusin or focusout event
  */
-ve.ce.Surface.prototype.onFocusChange = function () {
-	// Defer to let the selection update
-	setTimeout( ve.bind( function () {
-		var hasFocus = ve.contains(
-				[
-					this.documentView.getDocumentNode().$element[0],
-					this.$pasteTarget[0]
-				],
-				rangy.getSelection( this.getElementDocument() ).anchorNode,
-				true
-			);
+ve.ce.Surface.prototype.onFocusChange = ve.debounce( function () {
+	var hasFocus = ve.contains(
+			[
+				this.documentView.getDocumentNode().$element[0],
+				this.$pasteTarget[0]
+			],
+			rangy.getSelection( this.getElementDocument() ).anchorNode,
+			true
+		);
 
-		if ( hasFocus && !this.isFocused() ) {
-			this.documentOnFocus();
-		}
-		if ( !hasFocus && this.isFocused() ) {
-			this.documentOnBlur();
-		}
-	}, this ) );
-};
+	if ( hasFocus && !this.isFocused() ) {
+		this.documentOnFocus();
+	}
+	if ( !hasFocus && this.isFocused() ) {
+		this.documentOnBlur();
+	}
+} );
 
 /**
  * Handle document focus events.
