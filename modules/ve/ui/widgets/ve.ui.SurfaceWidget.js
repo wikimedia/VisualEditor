@@ -110,3 +110,10 @@ ve.ui.SurfaceWidget.prototype.destroy = function () {
 	}
 	this.$element.remove();
 };
+
+/**
+ * Focus the surface.
+ */
+ve.ui.SurfaceWidget.prototype.focus = function () {
+	this.surface.getView().focus();
+};
