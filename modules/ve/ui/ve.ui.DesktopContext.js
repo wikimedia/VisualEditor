@@ -32,6 +32,7 @@ ve.ui.DesktopContext = function VeUiDesktopContext( surface, config ) {
 	this.selection = null;
 	this.toolbar = null;
 	this.afterModelChangeTimeout = null;
+	this.afterModelChangeRange = null;
 	this.$menu = this.$( '<div>' );
 	this.popup = new OO.ui.PopupWidget( {
 		'$': this.$,
@@ -99,14 +100,20 @@ ve.ui.DesktopContext.prototype.onWindowResize = function () {
  * so that if there are three selection changes in the same tick, afterModelChange() only runs once.
  *
  * @method
+ * @param {ve.Range} range Range if triggered by selection change, null otherwise
  * @see #afterModelChange
  */
-ve.ui.DesktopContext.prototype.onModelChange = function () {
+ve.ui.DesktopContext.prototype.onModelChange = function ( range ) {
 	if ( this.showing || this.hiding || this.inspectorOpening || this.inspectorClosing ) {
 		clearTimeout( this.afterModelChangeTimeout );
+		this.afterModelChangeTimeout = null;
+		this.afterModelChangeRange = null;
 	} else {
 		if ( this.afterModelChangeTimeout === null ) {
 			this.afterModelChangeTimeout = setTimeout( ve.bind( this.afterModelChange, this ) );
+		}
+		if ( range instanceof ve.Range ) {
+			this.afterModelChangeRange = range;
 		}
 	}
 };
@@ -118,15 +125,19 @@ ve.ui.DesktopContext.prototype.onModelChange = function () {
  * content. If the popup is open, close it, even while selecting or relocating.
  */
 ve.ui.DesktopContext.prototype.afterModelChange = function () {
+	var selectionChange = !!this.afterModelChangeRange;
 	this.afterModelChangeTimeout = null;
-	if ( this.popup.isVisible() ) {
+	this.afterModelChangeRange = null;
+
+	if ( this.popup.isVisible() && selectionChange ) {
 		this.hide();
 	}
+
 	// Bypass while dragging
 	if ( this.selecting || this.relocating ) {
 		return;
 	}
-	this.update();
+	this.update( false, !selectionChange );
 };
 
 /**
