@@ -113,18 +113,11 @@ ve.ui.Surface.prototype.onDialogClose = function () {
  * This must be called after the surface has been attached to the DOM.
  */
 ve.ui.Surface.prototype.initialize = function () {
-	var firstOffset;
 	this.getView().$element.after( this.$localOverlay );
 	// Attach globalOverlay to the global <body>, not the local frame's <body>
 	$( 'body' ).append( this.$globalOverlay );
 
 	this.getView().initialize();
-	// Go to the first content offset, or offset 1 if not found (returns -1)
-	firstOffset = this.getModel().getDocument().data.getNearestContentOffset( 0, 1 );
-	this.getModel().setSelection(
-		new ve.Range( firstOffset !== -1 ? firstOffset : 1 )
-	);
-	this.getModel().startHistoryTracking();
 };
 
 /**

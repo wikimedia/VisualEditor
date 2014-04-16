@@ -21,7 +21,7 @@ ve.dm.Surface = function VeDmSurface( doc ) {
 	// Properties
 	this.documentModel = doc;
 	this.metaList = new ve.dm.MetaList( this );
-	this.selection = new ve.Range( 1 );
+	this.selection = null;
 	this.selectedNodes = {};
 	this.newTransactions = [];
 	this.stagingStack = [];
@@ -125,21 +125,6 @@ ve.dm.Surface.prototype.stopHistoryTracking = function () {
 		clearInterval( this.historyTrackingInterval );
 		this.historyTrackingInterval = null;
 	}
-};
-
-/**
- * Remove all states from history.
- *
- * @method
- */
-ve.dm.Surface.prototype.purgeHistory = function () {
-	if ( !this.enabled ) {
-		return;
-	}
-	this.selection = new ve.Range( 1, 1 );
-	this.newTransactions = [];
-	this.undoStack = [];
-	this.undoIndex = 0;
 };
 
 /**
