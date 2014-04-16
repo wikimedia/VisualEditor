@@ -45,6 +45,12 @@ ve.ui.SurfaceWidget = function VeUiSurfaceWidget( doc, config ) {
 	if ( config.pasteRules ) {
 		this.surface.setPasteRules( config.pasteRules );
 	}
+
+	if ( ve.debug ) {
+		var debugBar = new ve.init.DebugBar();
+		debugBar.attachToSurface( this.surface );
+		this.$element.append( debugBar.$element );
+	}
 };
 
 /* Inheritance */

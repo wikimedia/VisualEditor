@@ -7,9 +7,6 @@
 
 .ve-ui-surfaceWidget-surface {
 	border: 1px solid #ddd;
-	border-radius: 0.25em;
-	border-top-right-radius: 0;
-	border-top-left-radius: 0;
 }
 
 .ve-ui-surfaceWidget-surface .ve-ce-documentNode {
@@ -26,4 +23,16 @@
 	border-bottom-right-radius: 0;
 	border-bottom-left-radius: 0;
 	border-bottom-width: 0;
+}
+
+.ve-ui-surfaceWidget > .ve-init-debugBar {
+	border: 1px solid #ddd;
+	border-top-width: 0;
+	margin: 0;
+}
+
+.ve-ui-surfaceWidget > div:last-child {
+	border-radius: 0.25em;
+	border-top-right-radius: 0;
+	border-top-left-radius: 0;
 }
