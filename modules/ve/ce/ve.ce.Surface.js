@@ -36,8 +36,8 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 	this.selectionTimeout = null;
 	this.$document = this.$( this.getElementDocument() );
 	this.eventSequencer = new ve.EventSequencer( [
-		'keydown', 'keypress', 'keyup', 'mousedown', 'mouseup',
-		'mousemove', 'compositionstart', 'compositionend'
+		'keydown', 'keypress', 'keyup',
+		'compositionstart', 'compositionend'
 	] );
 	this.clipboard = [];
 	this.clipboardId = String( Math.random() );
@@ -69,6 +69,11 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 
 	$documentNode = this.documentView.getDocumentNode().$element;
 	$documentNode.on( {
+		// mouse events shouldn't be sequenced as the event sequencer
+		// is detached on blur
+		'mousedown': ve.bind( this.onDocumentMouseDown, this ),
+		'mouseup': ve.bind( this.onDocumentMouseUp, this ),
+		'mousemove': ve.bind( this.onDocumentMouseMove, this ),
 		'cut': ve.bind( this.onCut, this ),
 		'copy': ve.bind( this.onCopy, this )
 	} );
@@ -107,9 +112,6 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 		'keydown': ve.bind( this.onDocumentKeyDown, this ),
 		'keyup': ve.bind( this.onDocumentKeyUp, this ),
 		'keypress': ve.bind( this.onDocumentKeyPress, this ),
-		'mousedown': ve.bind( this.onDocumentMouseDown, this ),
-		'mouseup': ve.bind( this.onDocumentMouseUp, this ),
-		'mousemove': ve.bind( this.onDocumentMouseMove, this ),
 		'compositionstart': ve.bind( this.onDocumentCompositionStart, this ),
 		'compositionend': ve.bind( this.onDocumentCompositionEnd, this )
 	} ).after( {
@@ -391,6 +393,15 @@ ve.ce.Surface.prototype.onFocusChange = ve.debounce( function () {
  * @fires focus
  */
 ve.ce.Surface.prototype.documentOnFocus = function () {
+	if ( !this.dragging ) {
+		// If the document is being focused by a non-mouse event, FF may place
+		// the cursor in a non-content offset (i.e. just after the document div), so
+		// find the first content offset instead.
+		var firstOffset = this.getModel().getDocument().data.getNearestContentOffset( 0, 1 );
+		this.getModel().setSelection(
+			new ve.Range( firstOffset !== -1 ? firstOffset : 1 )
+		);
+	}
 	this.eventSequencer.attach( this.$element );
 	this.surfaceObserver.startTimerLoop();
 	this.focused = true;
@@ -410,7 +421,7 @@ ve.ce.Surface.prototype.documentOnBlur = function () {
 	this.surfaceObserver.clear();
 	this.dragging = false;
 	this.focused = false;
-	this.model.setSelection( null );
+	this.getModel().setSelection( null );
 	this.emit( 'blur' );
 };
 

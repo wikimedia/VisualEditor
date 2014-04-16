@@ -17,6 +17,9 @@ ve.dm.SurfaceStub = function VeDmSurfaceStub( data ) {
 
 	// Inheritance
 	ve.dm.Surface.call( this, doc );
+
+	// Initialize selection to simulate the surface being focused
+	this.setSelection( new ve.Range( 1 ) );
 };
 
 OO.inheritClass( ve.dm.SurfaceStub, ve.dm.Surface );
@@ -162,7 +165,6 @@ QUnit.test( 'staging', 23, function ( assert ) {
 } );
 
 // TODO: ve.dm.Surface#getHistory
-// TODO: ve.dm.Surface#purgeHistory
 // TODO: ve.dm.Surface#canRedo
 // TODO: ve.dm.Surface#canUndo
 // TODO: ve.dm.Surface#hasBeenModified
