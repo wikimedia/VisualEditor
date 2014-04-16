@@ -252,6 +252,7 @@
 			"modules/ve/ui/styles/ve.ui.FormatTool.css",
 			"modules/ve/ui/styles/ve.ui.Inspector.css",
 			"modules/ve/ui/styles/ve.ui.LanguageInputWidget.css",
+			"modules/ve/ui/styles/ve.ui.DimensionsWidget.css",
 			"modules/ve/ui/styles/ve.ui.MediaSizeWidget.css",
 			"modules/ve/ui/styles/ve.ui.SpecialCharacterInspector.css",
 			"modules/ve/ui/styles/ve.ui.Surface.css",
