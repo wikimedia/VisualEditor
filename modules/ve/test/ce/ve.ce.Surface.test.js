@@ -835,8 +835,8 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 // TODO: ve.ce.Surface#disable
 // TODO: ve.ce.Surface#destroy
 // TODO: ve.ce.Surface#focus
-// TODO: ve.ce.Surface#documentOnFocus
-// TODO: ve.ce.Surface#documentOnBlur
+// TODO: ve.ce.Surface#onDocumentFocus
+// TODO: ve.ce.Surface#onDocumentBlur
 // TODO: ve.ce.Surface#onDocumentMouseDown
 // TODO: ve.ce.Surface#onDocumentMouseUp
 // TODO: ve.ce.Surface#onDocumentMouseMove
