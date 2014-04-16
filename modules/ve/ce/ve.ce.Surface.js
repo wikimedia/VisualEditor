@@ -357,10 +357,10 @@ ve.ce.Surface.prototype.focus = function () {
 	} else {
 		this.documentView.getDocumentNode().$element[0].focus();
 		// If we are calling focus after replacing a node the selection may be gone
-		// but documentOnFocus won't fire so restore the selection here too.
+		// but onDocumentFocus won't fire so restore the selection here too.
 		this.onModelSelect( this.surface.getModel().getSelection() );
 	}
-	// documentOnFocus takes care of the rest
+	// onDocumentFocus takes care of the rest
 };
 
 /**
@@ -368,7 +368,7 @@ ve.ce.Surface.prototype.focus = function () {
  *
  * @param {jQuery.Event} e focusin or focusout event
  */
-ve.ce.Surface.prototype.onFocusChange = ve.debounce( function () {
+ve.ce.Surface.prototype.onFocusChange = ve.debounce( function ( e ) {
 	var hasFocus = ve.contains(
 			[
 				this.documentView.getDocumentNode().$element[0],
@@ -379,20 +379,23 @@ ve.ce.Surface.prototype.onFocusChange = ve.debounce( function () {
 		);
 
 	if ( hasFocus && !this.isFocused() ) {
-		this.documentOnFocus();
+		this.onDocumentFocus( e );
 	}
 	if ( !hasFocus && this.isFocused() ) {
-		this.documentOnBlur();
+		this.onDocumentBlur( e );
 	}
 } );
 
 /**
  * Handle document focus events.
  *
+ * This is triggered by a global focusin/focusout event noticing a selection on the document.
+ *
  * @method
+ * @param {jQuery.Event} e focusin or focusout event
  * @fires focus
  */
-ve.ce.Surface.prototype.documentOnFocus = function () {
+ve.ce.Surface.prototype.onDocumentFocus = function () {
 	if ( !this.dragging ) {
 		// If the document is being focused by a non-mouse event, FF may place
 		// the cursor in a non-content offset (i.e. just after the document div), so
@@ -411,10 +414,13 @@ ve.ce.Surface.prototype.documentOnFocus = function () {
 /**
  * Handle document blur events.
  *
+ * This is triggered by a global focusin/focusout event noticing no selection on the document.
+ *
  * @method
+ * @param {jQuery.Event} e focusin or focusout event
  * @fires blur
  */
-ve.ce.Surface.prototype.documentOnBlur = function () {
+ve.ce.Surface.prototype.onDocumentBlur = function () {
 	this.eventSequencer.detach();
 	this.surfaceObserver.stopTimerLoop();
 	this.surfaceObserver.pollOnce();
