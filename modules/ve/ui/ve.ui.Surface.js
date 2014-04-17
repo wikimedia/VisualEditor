@@ -118,6 +118,7 @@ ve.ui.Surface.prototype.initialize = function () {
 	$( 'body' ).append( this.$globalOverlay );
 
 	this.getView().initialize();
+	this.getModel().startHistoryTracking();
 };
 
 /**
