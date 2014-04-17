@@ -70,9 +70,9 @@ ve.ui.Inspector.prototype.open = function ( fragment, data ) {
 /**
  * @inheritdoc
  */
-ve.ui.Inspector.prototype.close = function () {
+ve.ui.Inspector.prototype.teardown = function () {
 	// Parent method
-	OO.ui.Window.prototype.close.apply( this, arguments );
+	OO.ui.Window.prototype.teardown.apply( this, arguments );
 
 	this.fragment = null;
 };
@@ -192,12 +192,4 @@ ve.ui.Inspector.prototype.setup = function ( data ) {
  */
 ve.ui.Inspector.prototype.ready = function () {
 	//
-};
-
-/**
- * @inheritdoc
- */
-ve.ui.Inspector.prototype.teardown = function ( data ) {
-	// Parent method
-	OO.ui.Window.prototype.teardown.call( this, data );
 };
