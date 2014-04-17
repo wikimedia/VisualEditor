@@ -43,6 +43,7 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 	this.clipboardId = String( Math.random() );
 	this.renderLocks = 0;
 	this.dragging = false;
+	this.focusing = false;
 	this.relocating = false;
 	this.selecting = false;
 	this.resizing = false;
@@ -351,6 +352,7 @@ ve.ce.Surface.prototype.destroy = function () {
  * reapplied.
  */
 ve.ce.Surface.prototype.focus = function () {
+	this.focusing = true;
 	// Focus the documentNode for text selections, or the pasteTarget for focusedNode selections
 	if ( this.focusedNode ) {
 		this.$pasteTarget[0].focus();
@@ -360,6 +362,9 @@ ve.ce.Surface.prototype.focus = function () {
 		// but onDocumentFocus won't fire so restore the selection here too.
 		this.onModelSelect( this.surface.getModel().getSelection() );
 	}
+	setTimeout( ve.bind( function () {
+		this.focusing = false;
+	}, this ) );
 	// onDocumentFocus takes care of the rest
 };
 
@@ -396,8 +401,8 @@ ve.ce.Surface.prototype.onFocusChange = ve.debounce( function ( e ) {
  * @fires focus
  */
 ve.ce.Surface.prototype.onDocumentFocus = function () {
-	if ( !this.dragging ) {
-		// If the document is being focused by a non-mouse event, FF may place
+	if ( !this.dragging && !this.focusing ) {
+		// If the document is being focused by a non-mouse user event, FF may place
 		// the cursor in a non-content offset (i.e. just after the document div), so
 		// find the first content offset instead.
 		var firstOffset = this.getModel().getDocument().data.getNearestContentOffset( 0, 1 );
