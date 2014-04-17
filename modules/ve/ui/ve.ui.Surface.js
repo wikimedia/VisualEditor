@@ -212,6 +212,7 @@ ve.ui.Surface.prototype.getTriggers = function ( name ) {
  */
 ve.ui.Surface.prototype.destroy = function () {
 	ve.instances.splice( ve.instances.indexOf( this ), 1 );
+	this.model.stopHistoryTracking();
 	this.view.destroy();
 	this.$element.remove();
 	this.$globalOverlay.remove();
