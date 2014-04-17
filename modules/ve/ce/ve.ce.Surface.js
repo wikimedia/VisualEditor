@@ -2081,19 +2081,19 @@ ve.ce.Surface.prototype.replaceHighlight = function ( $highlights ) {
  * @returns {number} Nearest offset a cursor can be placed at
  */
 ve.ce.Surface.prototype.getNearestCorrectOffset = function ( offset, direction ) {
-	var contentOffset, structuralOffset;
+	var contentOffset, structuralOffset,
+		data = this.getModel().getDocument().data;
 
 	direction = direction > 0 ? 1 : -1;
 	if (
-		this.documentView.model.data.isContentOffset( offset ) ||
+		data.isContentOffset( offset ) ||
 		this.hasSlugAtOffset( offset )
 	) {
 		return offset;
 	}
 
-	contentOffset = this.documentView.model.data.getNearestContentOffset( offset, direction );
-	structuralOffset =
-		this.documentView.model.data.getNearestStructuralOffset( offset, direction, true );
+	contentOffset = data.getNearestContentOffset( offset, direction );
+	structuralOffset = data.getNearestStructuralOffset( offset, direction, true );
 
 	if ( !this.hasSlugAtOffset( structuralOffset ) && contentOffset !== -1 ) {
 		return contentOffset;
