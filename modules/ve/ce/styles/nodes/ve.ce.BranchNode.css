@@ -16,7 +16,6 @@
 }
 
 .ve-ce-branchNode-blockSlugWrapper .ve-ce-branchNode-blockSlug {
-	overflow: hidden;
 	-webkit-transition: font-size 200ms ease-out, margin 200ms ease-out;
 	-moz-transition: font-size 200ms ease-out, margin 200ms ease-out;
 	-o-transition: font-size 200ms ease-out, margin 200ms ease-out;
