@@ -250,7 +250,9 @@ ve.ui.AnnotationInspector.prototype.teardown = function ( data ) {
 		// Restore selection to what it was before we expanded it
 		selection = this.previousSelection;
 	}
-	surfaceModel.setSelection( selection );
+	if ( !data.noSelect ) {
+		surfaceModel.setSelection( selection );
+	}
 
 	if ( add ) {
 		surfaceModel.addInsertionAnnotations( annotation );

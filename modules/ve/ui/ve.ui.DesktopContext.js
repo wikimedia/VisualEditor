@@ -463,7 +463,7 @@ ve.ui.DesktopContext.prototype.hide = function () {
 	if ( !this.hiding && !this.showing ) {
 		this.hiding = true;
 		if ( inspector ) {
-			inspector.close( { 'action': 'back' } );
+			inspector.close( { 'action': 'back', 'noSelect': true } );
 		}
 		// HACK: make the context and popup visibility: hidden; instead of display: none; because
 		// they contain inspector iframes, and applying display: none; to those causes them to
