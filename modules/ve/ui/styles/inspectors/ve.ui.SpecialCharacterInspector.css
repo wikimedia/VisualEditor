@@ -8,7 +8,7 @@
 .ve-specialchar-spinner {
 	/* There might be a better place for a spinner? */
 	/* @embed */
-	background-image: url(images/spinner.gif);
+	background-image: url(../images/spinner.gif);
 	width: 31px;
 	height: 31px;
 	margin-left: auto;
