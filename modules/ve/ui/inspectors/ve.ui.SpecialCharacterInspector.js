@@ -192,4 +192,4 @@ ve.ui.SpecialCharacterInspector.prototype.onListClick = function ( e ) {
 
 /* Registration */
 
-ve.ui.inspectorFactory.register( ve.ui.SpecialCharacterInspector );
+ve.ui.windowFactory.register( ve.ui.SpecialCharacterInspector );
