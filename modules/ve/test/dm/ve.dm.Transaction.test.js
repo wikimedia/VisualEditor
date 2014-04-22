@@ -940,6 +940,7 @@ QUnit.test( 'newFromAnnotation', function ( assert ) {
 			{ 'type': 'textStyle/bold', 'attributes': { 'nodeName': 'strong' } }
 		),
 		doc = ve.dm.example.createExampleDocument(),
+		doc2 = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( '<b>Foo</b><strong>Bar</strong>' ) ),
 		annotationDoc = ve.dm.example.createExampleDocument( 'annotationData' ),
 		cases = {
 			'over plain text': {
@@ -1028,6 +1029,26 @@ QUnit.test( 'newFromAnnotation', function ( assert ) {
 						'annotation': strong
 					},
 					{ 'type': 'retain', 'length': 59 }
+				]
+			},
+			'adjacent comparable annotations not cleared together': {
+				'args': [doc2, new ve.Range( 1, 7 ), 'clear', strong],
+				'ops': [
+					{ 'type': 'retain', 'length': 4 },
+					{
+						'type': 'annotate',
+						'method': 'clear',
+						'bias': 'start',
+						'annotation': strong
+					},
+					{ 'type': 'retain', 'length': 3 },
+					{
+						'type': 'annotate',
+						'method': 'clear',
+						'bias': 'stop',
+						'annotation': strong
+					},
+					{ 'type': 'retain', 'length': 3 }
 				]
 			},
 			'over elements': {
