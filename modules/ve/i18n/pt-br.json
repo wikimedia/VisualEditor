@@ -12,7 +12,7 @@
 			555
 		]
 	},
-	"visualeditor": "VisualEditor",
+	"visualeditor": "Editor Visual",
 	"visualeditor-aliennode-tooltip": "Desculpe, por enquanto esse elemento só pode ser editado no código-fonte.",
 	"visualeditor-annotationbutton-bold-tooltip": "Negrito",
 	"visualeditor-annotationbutton-code-tooltip": "Código de computador",
