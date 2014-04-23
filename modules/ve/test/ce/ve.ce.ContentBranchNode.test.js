@@ -93,9 +93,9 @@ QUnit.test( 'getRenderedContents', function ( assert ) {
 			'msg': 'Strong text',
 			'data': [
 				{ 'type': 'paragraph' },
-				['a', [ { 'type': 'textStyle/strong' } ]],
-				['b', [ { 'type': 'textStyle/strong' } ]],
-				['c', [ { 'type': 'textStyle/strong' } ]],
+				['a', [ { 'type': 'textStyle/bold', 'attributes': { 'nodeName': 'strong' } } ]],
+				['b', [ { 'type': 'textStyle/bold', 'attributes': { 'nodeName': 'strong' } } ]],
+				['c', [ { 'type': 'textStyle/bold', 'attributes': { 'nodeName': 'strong' } } ]],
 				{ 'type': '/paragraph' }
 			],
 			'html': '<strong>abc</strong>'
@@ -104,9 +104,9 @@ QUnit.test( 'getRenderedContents', function ( assert ) {
 			'msg': 'Emphasized text',
 			'data': [
 				{ 'type': 'paragraph' },
-				['a', [ { 'type': 'textStyle/emphasize' } ]],
-				['b', [ { 'type': 'textStyle/emphasize' } ]],
-				['c', [ { 'type': 'textStyle/emphasize' } ]],
+				['a', [ { 'type': 'textStyle/italic', 'attributes': { 'nodeName': 'em' } } ]],
+				['b', [ { 'type': 'textStyle/italic', 'attributes': { 'nodeName': 'em' } } ]],
+				['c', [ { 'type': 'textStyle/italic', 'attributes': { 'nodeName': 'em' } } ]],
 				{ 'type': '/paragraph' }
 			],
 			'html': '<em>abc</em>'
@@ -145,6 +145,17 @@ QUnit.test( 'getRenderedContents', function ( assert ) {
 			'html': '<code>abc</code>'
 		},
 		{
+			'msg': 'Teletype text',
+			'data': [
+				{ 'type': 'paragraph' },
+				['a', [ { 'type': 'textStyle/code', 'attributes': { 'nodeName': 'tt' } } ]],
+				['b', [ { 'type': 'textStyle/code', 'attributes': { 'nodeName': 'tt' } } ]],
+				['c', [ { 'type': 'textStyle/code', 'attributes': { 'nodeName': 'tt' } } ]],
+				{ 'type': '/paragraph' }
+			],
+			'html': '<tt>abc</tt>'
+		},
+		{
 			'msg': 'Bold character, plain character, italic character',
 			'data': [
 				{ 'type': 'paragraph' },
@@ -154,6 +165,16 @@ QUnit.test( 'getRenderedContents', function ( assert ) {
 				{ 'type': '/paragraph' }
 			],
 			'html': '<b>a</b>b<i>c</i>'
+		},
+		{
+			'msg': 'Comparable annotations: strong, bold',
+			'data': [
+				{ 'type': 'paragraph' },
+				['a', [ { 'type': 'textStyle/bold', 'attributes': { 'nodeName': 'strong' } } ]],
+				['b', [ { 'type': 'textStyle/bold' } ]],
+				{ 'type': '/paragraph' }
+			],
+			'html': '<strong>ab</strong>'
 		},
 		{
 			'msg': 'Bold, italic and underlined text (same order)',
