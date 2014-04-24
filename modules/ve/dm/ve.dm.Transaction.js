@@ -337,7 +337,15 @@ ve.dm.Transaction.newFromAnnotation = function ( doc, range, method, annotation 
 			if ( data.isElementData( i ) ) {
 				insideContentNode = true;
 			}
-			covered = data.getAnnotationsFromOffset( i ).containsComparable( annotation );
+			if ( method === 'set' ) {
+				// Don't re-apply matching annotation
+				covered = data.getAnnotationsFromOffset( i ).containsComparable( annotation );
+			} else {
+				// Expect comparable annotations to be removed individually otherwise
+				// we might try to remove more than one annotation per character, which
+				// a single transaction can't do.
+				covered = data.getAnnotationsFromOffset( i ).contains( annotation );
+			}
 			if ( ( covered && method === 'set' ) || ( !covered && method === 'clear' ) ) {
 				// Skip annotated content
 				if ( on ) {

@@ -439,8 +439,8 @@ ve.dm.ElementLinearData.prototype.getAnnotationsFromRange = function ( range, al
 			if ( right.isEmpty() ) {
 				return new ve.dm.AnnotationSet( this.getStore() );
 			}
-			// Exclude annotations that are in left but not right
-			left.removeNotInSet( right );
+			// Exclude comparable annotations that are in left but not right
+			left = left.getComparableAnnotationsFromSet( right );
 			// If we've reduced left down to nothing, just stop looking
 			if ( left.isEmpty() ) {
 				break;
