@@ -38,6 +38,8 @@
 	"visualeditor-dialog-action-apply": "Label text for button to apply changes made in dialog.\n\nSee also:\n* {{msg-mw|Visualeditor-dialog-action-cancel}}\n* {{msg-mw|Visualeditor-dialog-action-goback}}\n{{Identical|Apply change}}",
 	"visualeditor-dialog-action-cancel": "Label text for button to exit from dialog without making changes.\n\nSee also:\n* {{msg-mw|Visualeditor-dialog-action-apply}}\n* {{msg-mw|Visualeditor-dialog-action-goback}}\n{{Identical|Cancel}}",
 	"visualeditor-dialog-action-goback": "Label text for button to go back in a dialog.\n\nSee also:\n* {{msg-mw|Visualeditor-dialog-action-apply}}\n* {{msg-mw|Visualeditor-dialog-action-cancel}}\n{{Identical|Go back}}",
+	"visualeditor-dialog-error": "Title text in a dialog error screen",
+	"visualeditor-dialog-error-dismiss": "Label text for button to dismiss an error message in a dialog.",
 	"visualeditor-dialog-command-help-title": "Title for keyboard shortcuts help dialog.\n{{Identical|Keyboard shortcut}}",
 	"visualeditor-dimensionswidget-px": "{{optional}}\nLabel for the dimensions properties denoting pixel units.",
 	"visualeditor-dimensionswidget-times": "{{optional}}\nLabel for the dimensions properties denoting 'by', as in width x height.",

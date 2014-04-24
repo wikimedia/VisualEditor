@@ -35,6 +35,8 @@
     "visualeditor-dialog-action-apply": "Apply changes",
     "visualeditor-dialog-action-cancel": "Cancel",
     "visualeditor-dialog-action-goback": "Go back",
+    "visualeditor-dialog-error": "Something went wrong…",
+    "visualeditor-dialog-error-dismiss": "Go back",
     "visualeditor-dialog-command-help-title": "Keyboard shortcuts",
     "visualeditor-dimensionswidget-px": "px",
     "visualeditor-dimensionswidget-times": "×",
