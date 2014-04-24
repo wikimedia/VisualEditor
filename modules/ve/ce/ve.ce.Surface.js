@@ -346,10 +346,8 @@ ve.ce.Surface.prototype.destroy = function () {
 /**
  * Give focus to the surface, reapplying the model selection.
  *
- * This is used when switching between surfaces, e.g. when closing a dialog window.
- *
- * If the surface is already focused, this does nothing. In particular, the selection won't be
- * reapplied.
+ * This is used when switching between surfaces, e.g. when closing a dialog window. Calling this
+ * function will also reapply the selection, even if the surface is already focused.
  */
 ve.ce.Surface.prototype.focus = function () {
 	this.focusing = true;
@@ -2020,6 +2018,7 @@ ve.ce.Surface.prototype.handleDelete = function ( e, backspace ) {
 		}
 	}
 	this.model.setSelection( new ve.Range( rangeToRemove.start ) );
+	this.focus(); // Rerender selection even if it didn't change
 	this.surfaceObserver.clear();
 };
 
