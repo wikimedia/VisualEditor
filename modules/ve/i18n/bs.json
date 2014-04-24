@@ -42,6 +42,7 @@
 	"visualeditor-inspector-remove-tooltip": "Ukloni",
 	"visualeditor-languageinspector-block-tooltip": "Jezički blok",
 	"visualeditor-languageinspector-title": "Jezik",
+	"visualeditor-languageinspector-widget-changelang": "Promijeni jezik",
 	"visualeditor-languageinspector-widget-label-direction": "Smjer",
 	"visualeditor-languageinspector-widget-label-langcode": "Kôd jezika",
 	"visualeditor-languageinspector-widget-label-language": "Jezik",

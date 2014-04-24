@@ -37,6 +37,7 @@
 	"visualeditor-inspector-close-tooltip": "Затваряне",
 	"visualeditor-inspector-remove-tooltip": "Премахване",
 	"visualeditor-languageinspector-title": "Език",
+	"visualeditor-languageinspector-widget-changelang": "Промяна на езика",
 	"visualeditor-languageinspector-widget-label-direction": "Посока",
 	"visualeditor-languageinspector-widget-label-langcode": "Езиков код",
 	"visualeditor-languageinspector-widget-label-language": "Език",

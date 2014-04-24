@@ -61,7 +61,7 @@
 	"visualeditor-inspector-remove-tooltip": "Tooltip text for the button to remove an annotation in an inspector.\n{{Identical|Remove}}",
 	"visualeditor-languageinspector-block-tooltip": "Tooltip text for the language annotation.",
 	"visualeditor-languageinspector-title": "Title of the language inspector dialog.\n{{Identical|Language}}",
-	"visualeditor-languageinspector-widget-changelang": "Label for the language change button int eh language inspector widget.",
+	"visualeditor-languageinspector-widget-changelang": "Label for the language change button in the language inspector widget.",
 	"visualeditor-languageinspector-widget-label-direction": "Label for the language inspector widget, to denote the text direction of the current element (left-to-right or right-to-left).\n{{Identical|Direction}}",
 	"visualeditor-languageinspector-widget-label-langcode": "Label for the language inspector widget, to denote the current block language code.\n{{Identical|Language code}}",
 	"visualeditor-languageinspector-widget-label-language": "Label for the language inspector widget, to denote the current block language.\n{{Identical|Language}}",

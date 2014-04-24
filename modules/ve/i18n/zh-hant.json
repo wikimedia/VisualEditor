@@ -54,6 +54,7 @@
 	"visualeditor-inspector-remove-tooltip": "移除",
 	"visualeditor-languageinspector-block-tooltip": "語言區塊",
 	"visualeditor-languageinspector-title": "語言",
+	"visualeditor-languageinspector-widget-changelang": "尋找語言",
 	"visualeditor-languageinspector-widget-label-direction": "文字方向",
 	"visualeditor-languageinspector-widget-label-langcode": "語言代碼",
 	"visualeditor-languageinspector-widget-label-language": "語言",
