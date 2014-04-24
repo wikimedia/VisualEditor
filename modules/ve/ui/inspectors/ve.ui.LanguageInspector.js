@@ -32,8 +32,6 @@ ve.ui.LanguageInspector.static.icon = 'language';
 ve.ui.LanguageInspector.static.title =
 	OO.ui.deferMsg( 'visualeditor-languageinspector-title' );
 
-ve.ui.LanguageInspector.static.languageInputWidget = ve.ui.LanguageInputWidget;
-
 ve.ui.LanguageInspector.static.modelClasses = [ ve.dm.LanguageAnnotation ];
 
 /* Methods */
@@ -66,7 +64,7 @@ ve.ui.LanguageInspector.prototype.initialize = function () {
 	ve.ui.AnnotationInspector.prototype.initialize.call( this );
 
 	// Properties
-	this.languageInput = new this.constructor.static.languageInputWidget( { '$': this.$ } );
+	this.languageInput = new ve.ui.LanguageInputWidget( { '$': this.$ } );
 
 	// Initialization
 	this.$form.append( this.languageInput.$element );
