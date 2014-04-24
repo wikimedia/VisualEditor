@@ -61,11 +61,16 @@ ve.ui.LanguageSearchDialog.prototype.initialize = function () {
 	this.$body.append( this.searchWidget.$element );
 };
 
-ve.ui.LanguageSearchDialog.prototype.onSearchWidgetSelect = function ( lang ) {
+/**
+ * Handle the search widget being selected
+ *
+ * @param {Object} data Data from the selected option widget
+ */
+ve.ui.LanguageSearchDialog.prototype.onSearchWidgetSelect = function ( data ) {
 	this.close( {
 		'action': 'apply',
-		'lang': lang,
-		'dir': $.uls.data.getDir( lang )
+		'lang': data.code,
+		'dir': $.uls.data.getDir( data.code )
 	} );
 };
 
