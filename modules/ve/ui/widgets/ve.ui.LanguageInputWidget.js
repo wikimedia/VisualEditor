@@ -21,7 +21,7 @@ ve.ui.LanguageInputWidget = function VeUiLanguageInputWidget( config ) {
 	// Parent constructor
 	OO.ui.Widget.call( this, config );
 
-	var languageField, directionField;
+	var languageField, directionField, surface, searchDialog, changeButton;
 
 	// Properties
 	this.annotation = null;
@@ -54,13 +54,35 @@ ve.ui.LanguageInputWidget = function VeUiLanguageInputWidget( config ) {
 		}
 	);
 
+	// HACK: Create a new surface so we can create a new global
+	// overlay and open windows.
+	surface = new ve.ui.DesktopSurface( [], { '$': this.$ } );
+	searchDialog = surface.getDialogs().getWindow( 'languageSearch' );
+	changeButton = new OO.ui.ButtonWidget( {
+		'$': this.$,
+		'classes': [ 've-ui-languageInputWidget-changeButton' ],
+		'label': ve.msg( 'visualeditor-languageinspector-widget-changelang' ),
+		'flags': ['primary']
+	} );
+
+	// Skip full Surface initialize and just attach the global overlay
+	$( 'body' ).append( surface.$globalOverlay );
+
+	// TODO: Rethink the layout, maybe integrate the change button into the language field
+	// TODO: Consider using getAutonym to display a nicer language name label somewhere
 	this.$element
 		.addClass( 've-ui-langInputWidget' )
-		.append( languageField.$element, directionField.$element );
+		.append( changeButton.$element, languageField.$element, directionField.$element );
 
 	// Events
 	this.languageTextInput.connect( this, { 'change': 'onChange' } );
 	this.directionSelect.connect( this, { 'select': 'onChange' } );
+	changeButton.connect( searchDialog, { 'click': 'open' } );
+	searchDialog.on( 'close', ve.bind( function ( data ) {
+		if ( data.action === 'apply' ) {
+			this.setAnnotationFromValues( data.lang, data.dir );
+		}
+	}, this ) );
 };
 
 /* Inheritance */

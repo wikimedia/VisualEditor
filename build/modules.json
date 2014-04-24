@@ -59,6 +59,12 @@
 			"lib/jquery.i18n/src/languages/uk.js"
 		]
 	},
+	"jquery.uls.data": {
+		"scripts": [
+			"lib/jquery.uls/src/jquery.uls.data.js",
+			"lib/jquery.uls/src/jquery.uls.data.utils.js"
+		]
+	},
 	"visualEditor.base": {
 		"scripts": [
 			"modules/ve/ve.js",
@@ -215,6 +221,8 @@
 			"modules/ve/ui/actions/ve.ui.ListAction.js",
 			"modules/ve/ui/actions/ve.ui.WindowAction.js",
 			"modules/ve/ui/dialogs/ve.ui.CommandHelpDialog.js",
+			"modules/ve/ui/widgets/ve.ui.LanguageSearchWidget.js",
+			"modules/ve/ui/dialogs/ve.ui.LanguageSearchDialog.js",
 			"modules/ve/ui/widgets/ve.ui.SurfaceWidget.js",
 			"modules/ve/ui/widgets/ve.ui.LinkTargetInputWidget.js",
 			"modules/ve/ui/widgets/ve.ui.DimensionsWidget.js",
