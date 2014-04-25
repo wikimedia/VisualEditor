@@ -28,6 +28,7 @@ ve.dm.SurfaceFragment = function VeDmSurfaceFragment( surface, range, noAutoSele
 	this.excludeInsertions = !!excludeInsertions;
 	this.surface = surface;
 	this.range = range && range instanceof ve.Range ? range : surface.getSelection();
+	this.leafNodes = null;
 
 	// Short-circuit for invalid range null fragment
 	if ( !this.range ) {
@@ -94,6 +95,7 @@ ve.dm.SurfaceFragment.prototype.update = function () {
 		txs = this.document.getCompleteHistorySince( this.historyPointer );
 		this.range = this.getTranslatedRange( txs, true );
 		this.historyPointer += txs.length;
+		this.leafNodes = null;
 	}
 };
 
@@ -445,7 +447,30 @@ ve.dm.SurfaceFragment.prototype.getLeafNodes = function () {
 	if ( this.isNull() ) {
 		return [];
 	}
-	return this.document.selectNodes( this.getRange(), 'leaves' );
+
+	// Update in case the cache needs invalidating
+	this.update();
+	// Cache leafNodes because it's expensive to compute
+	if ( !this.leafNodes ) {
+		this.leafNodes = this.document.selectNodes( this.getRange( true ), 'leaves' );
+	}
+	return this.leafNodes;
+};
+
+/**
+ * Get all leaf nodes excluding nodes where the selection is empty.
+ *
+ * @method
+ * @returns {Array} List of nodes and related information
+ */
+ve.dm.SurfaceFragment.prototype.getSelectedLeafNodes = function () {
+	var i, len, selectedLeafNodes = [], leafNodes = this.getLeafNodes();
+	for ( i = 0, len = leafNodes.length; i < len; i++ ) {
+		if ( len === 1 || !leafNodes[i].range || leafNodes[i].range.getLength() ) {
+			selectedLeafNodes.push( leafNodes[i].node );
+		}
+	}
+	return selectedLeafNodes;
 };
 
 /**

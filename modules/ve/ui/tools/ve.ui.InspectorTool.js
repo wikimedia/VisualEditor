@@ -53,12 +53,12 @@ ve.ui.InspectorTool.static.isCompatibleWith = function ( model ) {
 /**
  * @inheritdoc
  */
-ve.ui.InspectorTool.prototype.onUpdateState = function ( nodes, full ) {
+ve.ui.InspectorTool.prototype.onUpdateState = function ( fragment ) {
 	// Parent method
 	ve.ui.Tool.prototype.onUpdateState.apply( this, arguments );
 
 	var toolFactory = this.toolbar.getToolFactory(),
-		tools = toolFactory.getToolsForAnnotations( full );
+		tools = toolFactory.getToolsForAnnotations( fragment.getAnnotations() );
 
 	this.setActive(
 		// This tool is compatible with one of the annotations

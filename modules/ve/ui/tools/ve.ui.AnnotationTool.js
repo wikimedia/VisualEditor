@@ -45,11 +45,11 @@ ve.ui.AnnotationTool.static.deactivateOnSelect = false;
 /**
  * @inheritdoc
  */
-ve.ui.AnnotationTool.prototype.onUpdateState = function ( nodes, full ) {
+ve.ui.AnnotationTool.prototype.onUpdateState = function ( fragment ) {
 	// Parent method
 	ve.ui.Tool.prototype.onUpdateState.apply( this, arguments );
 
-	this.setActive( full.hasAnnotationWithName( this.constructor.static.annotation.name ) );
+	this.setActive( fragment.getAnnotations().hasAnnotationWithName( this.constructor.static.annotation.name ) );
 };
 
 /**
