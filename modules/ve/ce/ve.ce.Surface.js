@@ -428,6 +428,10 @@ ve.ce.Surface.prototype.onDocumentBlur = function () {
 	this.surfaceObserver.stopTimerLoop();
 	this.surfaceObserver.pollOnce();
 	this.surfaceObserver.clear();
+	if ( this.focusedNode ) {
+		this.focusedNode.setFocused( false );
+		this.focusedNode = null;
+	}
 	this.dragging = false;
 	this.focused = false;
 	this.getModel().setSelection( null );
