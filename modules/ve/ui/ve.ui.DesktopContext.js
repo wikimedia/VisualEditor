@@ -260,7 +260,9 @@ ve.ui.DesktopContext.prototype.onInspectorClosing = function () {
 ve.ui.DesktopContext.prototype.onInspectorClose = function () {
 	this.inspectorClosing = false;
 	this.update();
-	this.getSurface().getView().focus();
+	if ( this.getSurface().getModel().getSelection() ) {
+		this.getSurface().getView().focus();
+	}
 };
 
 /**
