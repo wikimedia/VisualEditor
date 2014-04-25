@@ -79,6 +79,7 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 		'copy': ve.bind( this.onCopy, this )
 	} );
 
+	// Use onDOMEvent to get jQuery focusin/focusout events to work in iframes
 	OO.ui.Element.onDOMEvent(
 		this.getElementDocument(),
 		'focusin',
