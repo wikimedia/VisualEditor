@@ -89,6 +89,13 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 		'focusout',
 		ve.bind( this.onFocusChange, this )
 	);
+	// It is possible for a mousedown to clear the selection
+	// without triggering a focus change event (e.g. if the
+	// document has been programmatically blurred) so trigger
+	// a focus change to check if we still have a selection
+	this.$document.on( {
+		'mousedown': ve.bind( this.onFocusChange, this )
+	} );
 
 	this.$pasteTarget.on( {
 		'cut': ve.bind( this.onCut, this ),
