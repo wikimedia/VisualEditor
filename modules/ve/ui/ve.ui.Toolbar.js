@@ -156,6 +156,13 @@ ve.ui.Toolbar.prototype.onSurfaceViewKeyUp = function () {
  * @fires updateState
  */
 ve.ui.Toolbar.prototype.onContextChange = function () {
+	this.updateToolState();
+};
+
+/**
+ * Update the state of the tools
+ */
+ve.ui.Toolbar.prototype.updateToolState = function () {
 	var i, len, leafNodes, dirInline, dirBlock, fragmentAnnotation,
 		fragment = this.surface.getModel().getFragment( null, false ),
 		nodes = [];
@@ -166,8 +173,8 @@ ve.ui.Toolbar.prototype.onContextChange = function () {
 			nodes.push( leafNodes[i].node );
 		}
 	}
-	// Update context direction for button icons UI
 
+	// Update context direction for button icons UI
 	// by default, inline and block directions are the same
 	if ( !fragment.isNull() ) {
 		dirInline = dirBlock = this.surface.getView().documentView.getDirectionFromRange( fragment.getRange() );
@@ -254,6 +261,8 @@ ve.ui.Toolbar.prototype.initialize = function () {
 		'floating': false,
 		'offset': this.elementOffset
 	} );
+	// Initial state
+	this.updateToolState();
 
 	if ( this.floatable ) {
 		this.$window.on( this.windowEvents );
