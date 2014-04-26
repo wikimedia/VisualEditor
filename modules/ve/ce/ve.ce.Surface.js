@@ -124,7 +124,9 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 	this.$element.addClass( 've-ce-surface' );
 	this.$phantoms.addClass( 've-ce-surface-phantoms' );
 	this.$highlights.addClass( 've-ce-surface-highlights' );
-	this.$pasteTarget.addClass( 've-ce-surface-paste' ).prop( 'contentEditable', 'true' );
+	this.$pasteTarget.addClass( 've-ce-surface-paste' )
+		.attr( 'tabIndex', -1 )
+		.prop( 'contentEditable', 'true' );
 
 	// Add elements to the DOM
 	this.$element.append( this.documentView.getDocumentNode().$element, this.$pasteTarget );
