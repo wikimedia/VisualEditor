@@ -46,12 +46,12 @@ ve.ui.ClearAnnotationTool.static.commandName = 'clear';
 /**
  * @inheritdoc
  */
-ve.ui.ClearAnnotationTool.prototype.onUpdateState = function ( nodes, full, partial ) {
+ve.ui.ClearAnnotationTool.prototype.onUpdateState = function ( fragment ) {
 	// Parent method
 	ve.ui.Tool.prototype.onUpdateState.apply( this, arguments );
 
 	if ( !this.isDisabled() ) {
-		this.setDisabled( partial.isEmpty() );
+		this.setDisabled( fragment.getAnnotations( true ).isEmpty() );
 	}
 };
 
