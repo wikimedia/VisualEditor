@@ -32,6 +32,8 @@
 	"visualeditor-dialog-action-apply": "Änderungen speichern",
 	"visualeditor-dialog-action-cancel": "Abbrechen",
 	"visualeditor-dialog-action-goback": "Zurück",
+	"visualeditor-dialog-error": "Etwas ist schief gelaufen …",
+	"visualeditor-dialog-error-dismiss": "Zurück",
 	"visualeditor-dialog-command-help-title": "Tastaturkürzel",
 	"visualeditor-dialog-language-search-title": "Sprache auswählen",
 	"visualeditor-formatdropdown-format-heading-label": "Überschrift (1–6)",

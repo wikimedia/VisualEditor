@@ -6,7 +6,7 @@
 			"Милан Јелисавчић"
 		]
 	},
-	"visualeditor": "VisualEditor",
+	"visualeditor": "Визуелни уређивач",
 	"visualeditor-aliennode-tooltip": "Жао нам је, овај елемент може за сада да се мењају само у изворном режиму.",
 	"visualeditor-annotationbutton-bold-tooltip": "Подебљано",
 	"visualeditor-annotationbutton-code-tooltip": "Рачунарски код",
@@ -19,6 +19,7 @@
 	"visualeditor-annotationbutton-underline-tooltip": "Подвучено",
 	"visualeditor-clearbutton-tooltip": "Уклони форматирање",
 	"visualeditor-clipboard-copy": "Копирај",
+	"visualeditor-clipboard-cut": "Исеци",
 	"visualeditor-clipboard-paste": "Налепи",
 	"visualeditor-dialog-action-apply": "Примени измене",
 	"visualeditor-dialog-action-cancel": "Откажи",
@@ -58,6 +59,7 @@
 	"visualeditor-mediasizewidget-sizeoptions-custom": "Прилагођено",
 	"visualeditor-mediasizewidget-sizeoptions-default": "Подразумевано",
 	"visualeditor-mediasizewidget-sizeoptions-scale": "Размера",
+	"visualeditor-shortcuts-formatting": "Форматирање параграфа",
 	"visualeditor-shortcuts-history": "Историја",
 	"visualeditor-shortcuts-other": "Остало",
 	"visualeditor-shortcuts-text-style": "Форматирање текста",
