@@ -22,7 +22,7 @@ ve.ui.LanguageSearchDialog = function VeUiLanguageSearchDialog( config ) {
 	ve.ui.Dialog.call( this, config );
 
 	// Events
-	this.connect( this, { 'open': 'onOpen' } );
+	this.connect( this, { 'ready': 'onReady' } );
 };
 
 /* Inheritance */
@@ -79,9 +79,9 @@ ve.ui.LanguageSearchDialog.prototype.setup = function () {
 };
 
 /**
- * Handle dialog open events
+ * Handle window ready events
  */
-ve.ui.LanguageSearchDialog.prototype.onOpen = function () {
+ve.ui.LanguageSearchDialog.prototype.onReady = function () {
 	this.searchWidget.query.$input[0].focus();
 };
 
