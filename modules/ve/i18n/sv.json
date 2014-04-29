@@ -33,6 +33,8 @@
 	"visualeditor-dialog-action-apply": "Verkställ ändringar",
 	"visualeditor-dialog-action-cancel": "Avbryt",
 	"visualeditor-dialog-action-goback": "Tillbaka",
+	"visualeditor-dialog-error": "Något gick fel...",
+	"visualeditor-dialog-error-dismiss": "Gå tillbaka",
 	"visualeditor-dialog-command-help-title": "Kortkommandon",
 	"visualeditor-dialog-language-search-title": "Välj språk",
 	"visualeditor-formatdropdown-format-heading-label": "Rubrik (1-6)",

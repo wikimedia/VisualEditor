@@ -37,6 +37,8 @@
 	"visualeditor-dialog-action-apply": "应用更改",
 	"visualeditor-dialog-action-cancel": "取消",
 	"visualeditor-dialog-action-goback": "返回",
+	"visualeditor-dialog-error": "发生一些错误……",
+	"visualeditor-dialog-error-dismiss": "返回",
 	"visualeditor-dialog-command-help-title": "键盘快捷键",
 	"visualeditor-dialog-language-search-title": "选择语言",
 	"visualeditor-formatdropdown-format-heading-label": "标题（1-6）",

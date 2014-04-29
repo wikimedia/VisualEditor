@@ -50,6 +50,8 @@
 	"visualeditor-dialog-action-apply": "Appliquer les modifications",
 	"visualeditor-dialog-action-cancel": "Annuler",
 	"visualeditor-dialog-action-goback": "Retour",
+	"visualeditor-dialog-error": "Quelque chose s’est mal passé…",
+	"visualeditor-dialog-error-dismiss": "Revenir en arrière",
 	"visualeditor-dialog-command-help-title": "Raccourcis clavier",
 	"visualeditor-dialog-language-search-title": "Sélectionner la langue",
 	"visualeditor-formatdropdown-format-heading-label": "Titre (1-6)",

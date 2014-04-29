@@ -37,6 +37,8 @@
 	"visualeditor-dialog-action-apply": "Применить изменения",
 	"visualeditor-dialog-action-cancel": "Отмена",
 	"visualeditor-dialog-action-goback": "Назад",
+	"visualeditor-dialog-error": "Что-то пошло не так…",
+	"visualeditor-dialog-error-dismiss": "Назад",
 	"visualeditor-dialog-command-help-title": "Сочетания клавиш",
 	"visualeditor-dialog-language-search-title": "Выберите язык",
 	"visualeditor-formatdropdown-format-heading-label": "Заголовок (1-6)",

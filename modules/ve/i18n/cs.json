@@ -32,6 +32,8 @@
 	"visualeditor-dialog-action-apply": "Použít změny",
 	"visualeditor-dialog-action-cancel": "Storno",
 	"visualeditor-dialog-action-goback": "Zpět",
+	"visualeditor-dialog-error": "Něco se pokazilo…",
+	"visualeditor-dialog-error-dismiss": "Zpět",
 	"visualeditor-dialog-command-help-title": "Klávesové zkratky",
 	"visualeditor-dialog-language-search-title": "Vyberte jazyk",
 	"visualeditor-formatdropdown-format-heading-label": "Nadpis (1–6)",
