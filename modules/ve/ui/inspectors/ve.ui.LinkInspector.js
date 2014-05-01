@@ -138,7 +138,7 @@ ve.ui.LinkInspector.prototype.ready = function () {
 	ve.ui.AnnotationInspector.prototype.ready.call( this );
 
 	// Note: Focus input prior to setting target annotation
-	this.targetInput.$input.focus();
+	this.targetInput.focus();
 
 	if ( this.linkNode ) {
 		href = this.linkNode.getAttribute( 'href' );
@@ -148,7 +148,7 @@ ve.ui.LinkInspector.prototype.ready = function () {
 	} else {
 		this.targetInput.setAnnotation( this.initialAnnotation );
 	}
-	this.targetInput.$input.select();
+	this.targetInput.select();
 	this.getFragment().getSurface().enable();
 };
 
