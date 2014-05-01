@@ -24,8 +24,25 @@ ve.ui.LanguageSearchWidget = function VeUiLanguageSearchWidget( config ) {
 	OO.ui.SearchWidget.call( this, config );
 
 	// Properties
-	this.languages = this.getLanguages();
-	this.languageCodes = Object.keys( this.languages ).sort( $.uls.data.sortByAutonym );
+	this.languageResultWidgets = [];
+
+	var i, l, languageCode,
+		languages = this.getLanguages(),
+		languageCodes = Object.keys( languages ).sort();
+
+	for ( i = 0, l = languageCodes.length; i < l; i++ ) {
+		languageCode = languageCodes[i];
+		this.languageResultWidgets.push(
+			new ve.ui.LanguageResultWidget(
+				{
+					'code': languageCode,
+					'name': languages[languageCode],
+					'autonym': $.uls.data.getAutonym( languageCode )
+				},
+				{ '$': this.$ }
+			)
+		);
+	}
 
 	// Initialization
 	this.$element.addClass( 've-ui-languageSearchWidget' );
@@ -61,22 +78,34 @@ ve.ui.LanguageSearchWidget.prototype.getLanguages = function () {
  * Update search results from current query
  */
 ve.ui.LanguageSearchWidget.prototype.addResults = function () {
-	var i, l, langCode, autonym,
+	var i, iLen, j, jLen, languageResult, data, matchedProperty,
+		matchProperties = ['name', 'autonym', 'code'],
 		query = this.query.getValue().trim(),
+		matcher = new RegExp( '^' + this.constructor.static.escapeRegex( query ), 'i' ),
 		hasQuery = !!query.length,
 		items = [];
 
 	this.results.clearItems();
 
-	for ( i = 0, l = this.languageCodes.length; i < l; i++ ) {
-		langCode = this.languageCodes[i];
+	for ( i = 0, iLen = this.languageResultWidgets.length; i < iLen; i++ ) {
+		languageResult = this.languageResultWidgets[i];
+		data = languageResult.getData();
+		matchedProperty = null;
 
-		if ( query === '' || this.languageFilter( langCode, query ) ) {
-			autonym = $.uls.data.getAutonym( langCode ) || this.languages[langCode] || langCode;
+		for ( j = 0, jLen = matchProperties.length; j < jLen; j++ ) {
+			if ( matcher.test( data[matchProperties[j]] ) ) {
+				matchedProperty = matchProperties[j];
+				break;
+			}
+		}
 
-			items.push( new OO.ui.OptionWidget(
-				langCode, { '$': this.$, 'label': autonym }
-			).setSelected( false ) );
+		if ( query === '' || matchedProperty ) {
+			items.push(
+				languageResult
+					.updateLabel( query, matchedProperty )
+					.setSelected( false )
+					.setHighlighted( false )
+			);
 		}
 	}
 
@@ -84,25 +113,6 @@ ve.ui.LanguageSearchWidget.prototype.addResults = function () {
 	if ( hasQuery ) {
 		this.results.highlightItem( this.results.getFirstSelectableItem() );
 	}
-};
-
-/**
- * Match a language against a query.
- *
- * Ported from Languagefilter#filter in jquery.uls.
- *
- * @param {string} langCode Language code
- * @param {string} searchTerm Search term
- * @returns {boolean} Language code matches search term
- */
-ve.ui.LanguageSearchWidget.prototype.languageFilter = function ( langCode, searchTerm ) {
-	var matcher = new RegExp( '^' + this.constructor.static.escapeRegex( searchTerm ), 'i' ),
-		languageName = this.languages[langCode];
-
-	return matcher.test( languageName ) ||
-		matcher.test( $.uls.data.getAutonym( langCode ) ) ||
-		matcher.test( langCode ) ||
-		matcher.test( $.uls.data.getScript( langCode ) );
 };
 
 /**
