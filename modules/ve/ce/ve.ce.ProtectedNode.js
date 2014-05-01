@@ -87,8 +87,8 @@ ve.ce.ProtectedNode.prototype.onProtectedSetup = function () {
 
 	// Shields
 	this.$element.add( this.$element.find( '*' ) ).each( function () {
-		var $this = node.$( this );
 		if ( this.nodeType === Node.ELEMENT_NODE ) {
+			var $this = node.$( this );
 			if (
 				( $this.css( 'float' ) === 'none' || $this.css( 'float' ) === '' ) &&
 				!$this.hasClass( 've-ce-protectedNode' ) &&
@@ -103,6 +103,7 @@ ve.ce.ProtectedNode.prototype.onProtectedSetup = function () {
 					node.emit( 'dblclick' );
 				} );
 			node.$shields = node.$shields.add( $shield );
+			$this.addClass( 've-ce-protectedNode-shielded' );
 		}
 	} );
 
@@ -128,6 +129,8 @@ ve.ce.ProtectedNode.prototype.onProtectedTeardown = function () {
 	// Shields
 	this.$shields.remove();
 	this.$shields = this.$( [] );
+	this.$element.add( this.$element.find( '.ve-ce-protectedNode-shielded' ) )
+		.removeClass( 've-ce-protectedNode-shielded' );
 
 	// Phantoms
 	this.clearPhantoms();
