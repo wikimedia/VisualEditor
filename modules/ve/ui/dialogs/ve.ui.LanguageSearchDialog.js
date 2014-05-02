@@ -87,7 +87,7 @@ ve.ui.LanguageSearchDialog.prototype.setup = function () {
  * Handle window ready events
  */
 ve.ui.LanguageSearchDialog.prototype.onReady = function () {
-	this.searchWidget.query.$input[0].focus();
+	this.searchWidget.getQuery().focus();
 };
 
 /**
@@ -96,7 +96,7 @@ ve.ui.LanguageSearchDialog.prototype.onReady = function () {
 ve.ui.LanguageSearchDialog.prototype.teardown = function () {
 	ve.ui.Dialog.prototype.teardown.apply( this, arguments );
 
-	this.searchWidget.clear();
+	this.searchWidget.getQuery().setValue( '' );
 };
 
 /* Registration */
