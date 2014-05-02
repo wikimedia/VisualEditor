@@ -34,6 +34,8 @@
 	"visualeditor-dialog-action-apply": "Zastosuj",
 	"visualeditor-dialog-action-cancel": "Anuluj",
 	"visualeditor-dialog-action-goback": "Wróć",
+	"visualeditor-dialog-error": "Coś poszło nie tak...",
+	"visualeditor-dialog-error-dismiss": "Wróć",
 	"visualeditor-dialog-command-help-title": "Skróty klawiaturowe",
 	"visualeditor-dialog-language-search-title": "Wybierz język",
 	"visualeditor-formatdropdown-format-heading-label": "Nagłówek (1-6)",

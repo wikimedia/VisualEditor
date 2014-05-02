@@ -26,6 +26,8 @@
 	"visualeditor-dialog-action-apply": "Aplică modificările",
 	"visualeditor-dialog-action-cancel": "Revocare",
 	"visualeditor-dialog-action-goback": "Înapoi",
+	"visualeditor-dialog-error": "Ceva nu a funcționat...",
+	"visualeditor-dialog-error-dismiss": "Înapoi",
 	"visualeditor-dialog-command-help-title": "Scurtături de la tastatură",
 	"visualeditor-dialog-language-search-title": "Selectare limbă",
 	"visualeditor-formatdropdown-format-heading-label": "Titluri (1-6)",
