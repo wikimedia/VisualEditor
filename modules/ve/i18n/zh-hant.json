@@ -13,13 +13,14 @@
 			"Simon Shek",
 			"Spring Roll Conan",
 			"Waihorace",
-			"Cwlin0416"
+			"Cwlin0416",
+			"Vincent Liu"
 		]
 	},
 	"visualeditor": "視覺化編輯器",
 	"visualeditor-aliennode-tooltip": "抱歉，此元素目前只能透過原始碼模式編輯。",
 	"visualeditor-annotationbutton-bold-tooltip": "粗體",
-	"visualeditor-annotationbutton-code-tooltip": "電腦代碼",
+	"visualeditor-annotationbutton-code-tooltip": "程式碼",
 	"visualeditor-annotationbutton-italic-tooltip": "斜體",
 	"visualeditor-annotationbutton-language-tooltip": "語言",
 	"visualeditor-annotationbutton-link-tooltip": "連結",

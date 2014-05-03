@@ -14,7 +14,8 @@
 			"Skalman",
 			"Stryn",
 			"VezonThunder",
-			"Elseweyr"
+			"Elseweyr",
+			"Gloria sah"
 		]
 	},
 	"visualeditor": "Visuaalinen muokkain",
@@ -36,6 +37,7 @@
 	"visualeditor-dialog-action-apply": "Hyväksy muutokset",
 	"visualeditor-dialog-action-cancel": "Peruuta",
 	"visualeditor-dialog-action-goback": "Takaisin",
+	"visualeditor-dialog-error-dismiss": "Takaisin",
 	"visualeditor-dialog-command-help-title": "Pikanäppäimet",
 	"visualeditor-dialog-language-search-title": "Valitse kieli",
 	"visualeditor-formatdropdown-format-heading-label": "Otsikko (1-6)",

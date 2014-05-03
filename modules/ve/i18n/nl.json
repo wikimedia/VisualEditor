@@ -15,10 +15,11 @@
 			"Saruman",
 			"Siebrand",
 			"Southparkfan",
-			"सरोज कुमार ढकाल"
+			"सरोज कुमार ढकाल",
+			"Sjoerddebruin"
 		]
 	},
-	"visualeditor": "Visuele tekstbewerker",
+	"visualeditor": "Visuele tekstverwerker",
 	"visualeditor-aliennode-tooltip": "Dit element kan helaas alleen in de broncodemodus bewerkt worden.",
 	"visualeditor-annotationbutton-bold-tooltip": "Vet",
 	"visualeditor-annotationbutton-code-tooltip": "Computercode",
@@ -57,6 +58,7 @@
 	"visualeditor-inspector-remove-tooltip": "Verwijderen",
 	"visualeditor-languageinspector-block-tooltip": "Taalblok",
 	"visualeditor-languageinspector-title": "Taal",
+	"visualeditor-languageinspector-widget-changelang": "Taal zoeken",
 	"visualeditor-languageinspector-widget-label-direction": "Richting",
 	"visualeditor-languageinspector-widget-label-langcode": "Taalcode",
 	"visualeditor-languageinspector-widget-label-language": "Taal",

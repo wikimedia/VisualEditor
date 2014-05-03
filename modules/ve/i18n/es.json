@@ -16,7 +16,8 @@
 			"Thehelpfulone",
 			"Csbotero",
 			"Carlitosag",
-			"WhatamIdoing"
+			"WhatamIdoing",
+			"Gloria sah"
 		]
 	},
 	"visualeditor": "Editor visual",
@@ -38,7 +39,10 @@
 	"visualeditor-dialog-action-apply": "Aplicar cambios",
 	"visualeditor-dialog-action-cancel": "Cancelar",
 	"visualeditor-dialog-action-goback": "Regresar",
+	"visualeditor-dialog-error": "Algo salió mal...",
+	"visualeditor-dialog-error-dismiss": "Regresar",
 	"visualeditor-dialog-command-help-title": "Atajos de teclado",
+	"visualeditor-dialog-language-search-title": "Seleccionar idioma",
 	"visualeditor-formatdropdown-format-heading-label": "Encabezado (1-6)",
 	"visualeditor-formatdropdown-format-heading1": "Encabezado 1",
 	"visualeditor-formatdropdown-format-heading2": "Encabezado 2",
@@ -62,6 +66,7 @@
 	"visualeditor-languageinspector-widget-label-direction": "Dirección",
 	"visualeditor-languageinspector-widget-label-langcode": "Código de idioma",
 	"visualeditor-languageinspector-widget-label-language": "Idioma",
+	"visualeditor-language-search-input-placeholder": "Buscar por nombre del idioma o código",
 	"visualeditor-linkinspector-title": "Hipervínculo",
 	"visualeditor-listbutton-bullet-tooltip": "Lista con viñetas",
 	"visualeditor-listbutton-number-tooltip": "Lista numerada",

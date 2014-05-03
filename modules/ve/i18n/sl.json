@@ -4,7 +4,8 @@
 			"Dbc334",
 			"Eleassar",
 			"Pinky sl",
-			"Yerpo"
+			"Yerpo",
+			"Gloria sah"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -26,6 +27,8 @@
 	"visualeditor-dialog-action-apply": "Shrani spremembe",
 	"visualeditor-dialog-action-cancel": "Razveljavi",
 	"visualeditor-dialog-action-goback": "Pojdi nazaj",
+	"visualeditor-dialog-error": "Nekaj je šlo narobe ...",
+	"visualeditor-dialog-error-dismiss": "Pojdi nazaj",
 	"visualeditor-dialog-command-help-title": "Bližnjične tipke",
 	"visualeditor-dialog-language-search-title": "Izbira jezika",
 	"visualeditor-formatdropdown-format-heading-label": "Naslov (1–6)",
