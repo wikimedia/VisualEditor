@@ -125,13 +125,7 @@ ve.ui.CommandHelpDialog.static.getCommandGroups = function () {
 			'title': 'visualeditor-shortcuts-formatting',
 			'commands': [
 				{ 'trigger': 'paragraph', 'msg': 'visualeditor-formatdropdown-format-paragraph' },
-				{
-					'shortcuts': [ {
-						'mac': 'cmd+(1-6)',
-						'pc': 'ctrl+(1-6)'
-					} ],
-					'msg': 'visualeditor-formatdropdown-format-heading-label'
-				},
+				{ 'shortcuts': ['ctrl+(1-6)'], 'msg': 'visualeditor-formatdropdown-format-heading-label' },
 				{ 'trigger': 'preformatted', 'msg': 'visualeditor-formatdropdown-format-preformatted' },
 				{ 'trigger': 'indent', 'msg': 'visualeditor-indentationbutton-indent-tooltip' },
 				{ 'trigger': 'outdent', 'msg': 'visualeditor-indentationbutton-outdent-tooltip' }
