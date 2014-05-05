@@ -56,7 +56,7 @@
 	"visualeditor-languageinspector-widget-label-direction": "입력 방향",
 	"visualeditor-languageinspector-widget-label-langcode": "언어 코드",
 	"visualeditor-languageinspector-widget-label-language": "언어",
-	"visualeditor-language-search-input-placeholder": "언어 이름 혹은 코드로 찾기",
+	"visualeditor-language-search-input-placeholder": "언어 이름이나 코드로 검색",
 	"visualeditor-linkinspector-title": "하이퍼링크",
 	"visualeditor-listbutton-bullet-tooltip": "점 목록",
 	"visualeditor-listbutton-number-tooltip": "숫자 목록",
