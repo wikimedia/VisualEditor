@@ -24,6 +24,8 @@
 	"visualeditor-dialog-action-apply": "Примени измене",
 	"visualeditor-dialog-action-cancel": "Откажи",
 	"visualeditor-dialog-action-goback": "Иди назад",
+	"visualeditor-dialog-error": "Нешто је пошло наопако...",
+	"visualeditor-dialog-error-dismiss": "Назад",
 	"visualeditor-dialog-command-help-title": "Пречице на тастатури",
 	"visualeditor-dialog-language-search-title": "Изабери језик",
 	"visualeditor-formatdropdown-format-heading-label": "Наслов (1-6)",
