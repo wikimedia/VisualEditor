@@ -134,6 +134,18 @@ QUnit.test( 'handleDelete', function ( assert ) {
 				},
 				'expectedRange': new ve.Range( 39 ),
 				'msg': 'Focusable node deleted if selected first'
+			},
+			{
+				'range': new ve.Range( 0, 63 ),
+				'operations': ['backspace'],
+				'expectedData': function ( data ) {
+					data.splice( 0, 61,
+							{ 'type': 'paragraph' },
+							{ 'type': '/paragraph' }
+						);
+				},
+				'expectedRange': new ve.Range( 1 ),
+				'msg': 'Backspace after select all spanning entire document creates empty paragraph'
 			}
 		];
 

@@ -1944,7 +1944,8 @@ ve.ce.Surface.prototype.handleEnter = function ( e ) {
  * @param {boolean} backspace Key was a backspace
  */
 ve.ce.Surface.prototype.handleDelete = function ( e, backspace ) {
-	var offset = 0,
+	var rangeAfterRemove, internalListRange,
+		offset = 0,
 		model = this.getModel(),
 		documentModel = model.getDocument(),
 		documentView = this.getDocument(),
@@ -1980,10 +1981,22 @@ ve.ce.Surface.prototype.handleDelete = function ( e, backspace ) {
 			return;
 		}
 	}
-	tx = ve.dm.Transaction.newFromRemoval( documentModel, rangeToRemove );
-	model.change( tx );
-	rangeToRemove = tx.translateRange( rangeToRemove );
-	if ( !rangeToRemove.isCollapsed() ) {
+	// If selection spans entire document (e.g. CTRL+A in Firefox) then
+	// replace with an empty paragraph
+	internalListRange = documentModel.getInternalList().getListNode().getOuterRange();
+	if ( rangeToRemove.start === 0 && rangeToRemove.end >= internalListRange.start ) {
+		tx = ve.dm.Transaction.newFromReplacement( documentModel, new ve.Range( 0, internalListRange.start ), [
+				{ 'type': 'paragraph' },
+				{ 'type': '/paragraph' }
+			] );
+		model.change( tx );
+		rangeAfterRemove = new ve.Range( 1 );
+	} else {
+		tx = ve.dm.Transaction.newFromRemoval( documentModel, rangeToRemove );
+		model.change( tx );
+		rangeAfterRemove = tx.translateRange( rangeToRemove );
+	}
+	if ( !rangeAfterRemove.isCollapsed() ) {
 		// If after processing removal transaction range is not collapsed it means that not
 		// everything got merged nicely (at this moment transaction processor is capable of merging
 		// nodes of the same type and at the same depth level only), so we process with another
@@ -1994,11 +2007,11 @@ ve.ce.Surface.prototype.handleDelete = function ( e, backspace ) {
 		// This prevents content being inserted into empty structure which, e.g. and empty heading
 		// will be deleted, rather than "converting" the paragraph beneath to a heading.
 
-		endNode = documentView.getNodeFromOffset( rangeToRemove.end, false );
+		endNode = documentView.getNodeFromOffset( rangeAfterRemove.end, false );
 
-		// If endNode is within our rangeToRemove, then we shouldn't delete it
-		if ( endNode.getModel().getRange().start >= rangeToRemove.end ) {
-			startNode = documentView.getNodeFromOffset( rangeToRemove.start, false );
+		// If endNode is within our rangeAfterRemove, then we shouldn't delete it
+		if ( endNode.getModel().getRange().start >= rangeAfterRemove.end ) {
+			startNode = documentView.getNodeFromOffset( rangeAfterRemove.start, false );
 			if ( startNode.getModel().getRange().isCollapsed() ) {
 				// Remove startNode
 				model.change( [
@@ -2024,13 +2037,13 @@ ve.ce.Surface.prototype.handleDelete = function ( e, backspace ) {
 						documentModel, nodeToDelete.getModel().getOuterRange()
 					),
 					ve.dm.Transaction.newFromInsertion(
-						documentModel, rangeToRemove.start, endNodeData
+						documentModel, rangeAfterRemove.start, endNodeData
 					)
 				] );
 			}
 		}
 	}
-	model.setSelection( new ve.Range( rangeToRemove.start ) );
+	model.setSelection( new ve.Range( rangeAfterRemove.start ) );
 	this.focus(); // Rerender selection even if it didn't change
 	this.surfaceObserver.clear();
 };
