@@ -1944,30 +1944,34 @@ ve.ce.Surface.prototype.handleEnter = function ( e ) {
  * @param {boolean} backspace Key was a backspace
  */
 ve.ce.Surface.prototype.handleDelete = function ( e, backspace ) {
-	var rangeToRemove = this.model.getSelection(),
-		offset = 0,
+	var offset = 0,
+		model = this.getModel(),
+		documentModel = model.getDocument(),
+		documentView = this.getDocument(),
+		data = documentModel.data,
+		rangeToRemove = model.getSelection(),
 		docLength, tx, startNode, endNode, endNodeData, nodeToDelete;
 
 	if ( rangeToRemove.isCollapsed() ) {
 		// In case when the range is collapsed use the same logic that is used for cursor left and
 		// right movement in order to figure out range to remove.
-		rangeToRemove = this.getDocument().getRelativeRange(
+		rangeToRemove = documentView.getRelativeRange(
 			rangeToRemove,
 			backspace ? -1 : 1,
 			( e.altKey === true || e.ctrlKey === true ) ? 'word' : 'character',
 			true
 		);
 		offset = rangeToRemove.start;
-		docLength = this.model.getDocument().data.getLength();
+		docLength = data.getLength();
 		if ( offset < docLength ) {
-			while ( offset < docLength && this.model.getDocument().data.isCloseElementData( offset ) ) {
+			while ( offset < docLength && data.isCloseElementData( offset ) ) {
 				offset++;
 			}
 			// If the user tries to delete a focusable node from a collapsed selection,
 			// just select the node and cancel the deletion.
-			startNode = this.documentView.getDocumentNode().getNodeFromOffset( offset + 1 );
+			startNode = documentView.getDocumentNode().getNodeFromOffset( offset + 1 );
 			if ( startNode.isFocusable() ) {
-				this.model.setSelection( startNode.getModel().getOuterRange() );
+				model.setSelection( startNode.getModel().getOuterRange() );
 				return;
 			}
 		}
@@ -1976,8 +1980,8 @@ ve.ce.Surface.prototype.handleDelete = function ( e, backspace ) {
 			return;
 		}
 	}
-	tx = ve.dm.Transaction.newFromRemoval( this.documentView.model, rangeToRemove );
-	this.model.change( tx );
+	tx = ve.dm.Transaction.newFromRemoval( documentModel, rangeToRemove );
+	model.change( tx );
 	rangeToRemove = tx.translateRange( rangeToRemove );
 	if ( !rangeToRemove.isCollapsed() ) {
 		// If after processing removal transaction range is not collapsed it means that not
@@ -1990,20 +1994,20 @@ ve.ce.Surface.prototype.handleDelete = function ( e, backspace ) {
 		// This prevents content being inserted into empty structure which, e.g. and empty heading
 		// will be deleted, rather than "converting" the paragraph beneath to a heading.
 
-		endNode = this.documentView.getNodeFromOffset( rangeToRemove.end, false );
+		endNode = documentView.getNodeFromOffset( rangeToRemove.end, false );
 
 		// If endNode is within our rangeToRemove, then we shouldn't delete it
 		if ( endNode.getModel().getRange().start >= rangeToRemove.end ) {
-			startNode = this.documentView.getNodeFromOffset( rangeToRemove.start, false );
+			startNode = documentView.getNodeFromOffset( rangeToRemove.start, false );
 			if ( startNode.getModel().getRange().isCollapsed() ) {
 				// Remove startNode
-				this.model.change( [
+				model.change( [
 					ve.dm.Transaction.newFromRemoval(
-						this.documentView.model, startNode.getModel().getOuterRange()
+						documentModel, startNode.getModel().getOuterRange()
 					)
 				] );
 			} else {
-				endNodeData = this.documentView.model.getData( endNode.getModel().getRange() );
+				endNodeData = documentModel.getData( endNode.getModel().getRange() );
 				nodeToDelete = endNode;
 				nodeToDelete.traverseUpstream( function ( node ) {
 					var parent = node.getParent();
@@ -2015,18 +2019,18 @@ ve.ce.Surface.prototype.handleDelete = function ( e, backspace ) {
 					}
 				} );
 				// Move contents of endNode into startNode, and delete nodeToDelete
-				this.model.change( [
+				model.change( [
 					ve.dm.Transaction.newFromRemoval(
-						this.documentView.model, nodeToDelete.getModel().getOuterRange()
+						documentModel, nodeToDelete.getModel().getOuterRange()
 					),
 					ve.dm.Transaction.newFromInsertion(
-						this.documentView.model, rangeToRemove.start, endNodeData
+						documentModel, rangeToRemove.start, endNodeData
 					)
 				] );
 			}
 		}
 	}
-	this.model.setSelection( new ve.Range( rangeToRemove.start ) );
+	model.setSelection( new ve.Range( rangeToRemove.start ) );
 	this.focus(); // Rerender selection even if it didn't change
 	this.surfaceObserver.clear();
 };
