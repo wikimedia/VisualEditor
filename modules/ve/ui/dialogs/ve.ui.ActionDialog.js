@@ -178,7 +178,7 @@ ve.ui.ActionDialog.prototype.initialize = function () {
 	ve.ui.ActionDialog.super.prototype.initialize.call( this );
 
 	// Properties
-	this.applyButton = new OO.ui.ButtonWidget( { '$': this.$ } );
+	this.applyButton = new OO.ui.ButtonWidget( { '$': this.$, 'icon': 'check' } );
 	this.dismissErrorsButton = new OO.ui.ButtonWidget( {
 		'$': this.$, 'label': ve.msg( 'visualeditor-dialog-error-dismiss' )
 	} );

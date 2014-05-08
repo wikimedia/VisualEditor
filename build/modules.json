@@ -399,7 +399,8 @@
 	},
 	"visualEditor.desktop": {
 		"styles": [
-			"modules/ve/ui/themes/apex/ve.ui.Inspector.css"
+			"modules/ve/ui/themes/apex/ve.ui.Inspector.css",
+			"modules/ve/ui/themes/apex/dialogs/ve.ui.ActionDialog.css"
 		],
 		"dependencies": [
 			"oojs-ui-apex",
