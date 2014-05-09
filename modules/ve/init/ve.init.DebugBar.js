@@ -5,8 +5,6 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-/*global alert */
-
 /**
  * Debug bar
  *
@@ -38,10 +36,9 @@ ve.init.DebugBar = function VeUiDebugBar() {
 	this.startTextInput = new OO.ui.TextInputWidget( { 'readOnly': true } );
 	this.endTextInput = new OO.ui.TextInputWidget( { 'readOnly': true } );
 
-	this.logRangeButton = new OO.ui.ButtonWidget( { 'label': 'Log to console', 'disabled': true } );
+	this.logRangeButton = new OO.ui.ButtonWidget( { 'label': 'Log range', 'disabled': true } );
 	this.dumpModelButton = new OO.ui.ButtonWidget( { 'label': 'Dump model' } );
-	this.dumpModelChangeToggle = new OO.ui.ToggleButtonWidget( { 'label': 'Dump model on change' } );
-	this.validateButton = new OO.ui.ButtonWidget( { 'label': 'Validate view and model' } );
+	this.dumpModelChangeToggle = new OO.ui.ToggleButtonWidget( { 'label': 'Dump on change' } );
 
 	var startLabel = new OO.ui.LabelWidget(
 			{ 'label': 'Range', 'input': this.startTextInput }
@@ -54,7 +51,6 @@ ve.init.DebugBar = function VeUiDebugBar() {
 	this.logRangeButton.on( 'click', ve.bind( this.onLogRangeButtonClick, this ) );
 	this.dumpModelButton.on( 'click', ve.bind( this.onDumpModelButtonClick, this ) );
 	this.dumpModelChangeToggle.on( 'click', ve.bind( this.onDumpModelChangeToggleClick, this ) );
-	this.validateButton.on( 'click', ve.bind( this.onValidateButtonClick, this ) );
 
 	this.$element.append(
 		this.$commands.append(
@@ -65,8 +61,7 @@ ve.init.DebugBar = function VeUiDebugBar() {
 			this.logRangeButton.$element,
 			$( this.constructor.static.dividerTemplate ),
 			this.dumpModelButton.$element,
-			this.dumpModelChangeToggle.$element,
-			this.validateButton.$element
+			this.dumpModelChangeToggle.$element
 		),
 		this.$dump
 	);
@@ -117,7 +112,7 @@ ve.init.DebugBar.prototype.onSurfaceSelect = function ( range ) {
 	}
 	this.startTextInput.setDisabled( !range );
 	this.endTextInput.setDisabled( !range );
-	this.logRangeButton.setDisabled( false );
+	this.logRangeButton.setDisabled( !range || range.isCollapsed() );
 };
 
 /**
@@ -233,38 +228,5 @@ ve.init.DebugBar.prototype.onDumpModelChangeToggleClick = function () {
 		this.getSurface().model.connect( this, { 'documentUpdate': this.onDumpModelButtonClick } );
 	} else {
 		this.getSurface().model.disconnect( this, { 'documentUpdate': this.onDumpModelButtonClick } );
-	}
-};
-
-/**
- * Handle click events on the validate button
- *
- * @param {jQuery.Event} e Event
- */
-ve.init.DebugBar.prototype.onValidateButtonClick = function () {
-	var failed = false, surface = this.getSurface();
-
-	$( '.ve-ce-branchNode' ).each( function ( index, element ) {
-		var nodeRange, textModel, textDom,
-			$element = $( element ),
-			view = $element.data( 'view' );
-		if ( view.canContainContent() ) {
-			nodeRange = view.model.getRange();
-			textModel = surface.view.model.getDocument().getText( nodeRange );
-			textDom = ve.ce.getDomText( view.$element[0] );
-			if ( textModel !== textDom ) {
-				failed = true;
-				ve.log( 'Inconsistent data', {
-					'textModel': textModel,
-					'textDom': textDom,
-					'element': element
-				} );
-			}
-		}
-	} );
-	if ( failed ) {
-		alert( 'Not valid - check JS console for details' );
-	} else {
-		alert( 'Valid' );
 	}
 };
