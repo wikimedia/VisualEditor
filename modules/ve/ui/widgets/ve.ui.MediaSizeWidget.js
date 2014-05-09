@@ -279,6 +279,7 @@ ve.ui.MediaSizeWidget.prototype.setScalable = function ( scalable ) {
 	this.scalable.connect( this, { 'defaultSizeChange': 'onScalableDefaultSizeChange' } );
 	// Reset current dimensions to new scalable object
 	this.setCurrentDimensions( this.scalable.getCurrentDimensions() );
+	this.updateDefaultDimensions();
 
 	// If we don't have original dimensions, disable the full size button
 	if ( !this.scalable.getOriginalDimensions() ) {
