@@ -867,7 +867,6 @@ QUnit.test( 'getNearestCorrectOffset', function ( assert ) {
 
 /* Methods with return values */
 // TODO: ve.ce.Surface#hasSlugAtOffset
-// TODO: ve.ce.Surface#getClickCount
 // TODO: ve.ce.Surface#needsPawn
 // TODO: ve.ce.Surface#getSurface
 // TODO: ve.ce.Surface#getModel

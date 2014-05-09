@@ -53,7 +53,6 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 	this.$pasteTarget = this.$( '<div>' );
 	this.pasting = false;
 	this.pasteSpecial = false;
-	this.clickHistory = [];
 	this.focusedNode = null;
 	// This is set on entering changeModel, then unset when leaving.
 	// It is used to test whether a reflected change event is emitted.
@@ -474,7 +473,7 @@ ve.ce.Surface.prototype.onDocumentMouseDown = function ( e ) {
 	}
 
 	// Handle triple click
-	if ( this.getClickCount( e.originalEvent ) >= 3 ) {
+	if ( e.originalEvent.detail >= 3 ) {
 		// Browser default behaviour for triple click won't behave as we want
 		e.preventDefault();
 
@@ -2155,52 +2154,6 @@ ve.ce.Surface.prototype.getNearestCorrectOffset = function ( offset, direction )
  */
 ve.ce.Surface.prototype.hasSlugAtOffset = function ( offset ) {
 	return !!this.documentView.getSlugAtOffset( offset );
-};
-
-/**
- * Get the number of consecutive clicks the user has performed.
- *
- * This is required for supporting double, tripple, etc. clicking across all browsers.
- *
- * @method
- * @param {Event} e Native event object
- * @returns {number} Number of clicks detected
- */
-ve.ce.Surface.prototype.getClickCount = function ( e ) {
-	if ( !$.browser.msie ) {
-		return e.detail;
-	}
-
-	var i, response = 1;
-
-	// Add select MouseEvent properties to the beginning of the clickHistory
-	this.clickHistory.unshift( {
-		x: e.x,
-		y: e.y,
-		timeStamp: e.timeStamp
-	} );
-
-	// Compare history
-	if ( this.clickHistory.length > 1 ) {
-		for ( i = 0; i < this.clickHistory.length - 1; i++ ) {
-			if (
-				this.clickHistory[i].x === this.clickHistory[i + 1].x &&
-				this.clickHistory[i].y === this.clickHistory[i + 1].y &&
-				this.clickHistory[i].timeStamp - this.clickHistory[i + 1].timeStamp < 500
-			) {
-				response++;
-			} else {
-				break;
-			}
-		}
-	}
-
-	// Trim old history if necessary
-	if ( this.clickHistory.length > 3 ) {
-		this.clickHistory.pop();
-	}
-
-	return response;
 };
 
 /**
