@@ -13,9 +13,11 @@ $( function () {
 		debugBar = new ve.init.DebugBar(),
 
 		$targetContainer = $( '.ve-demo-editor' ).eq( 0 ),
+		lang = $.i18n().locale,
+		dir = $targetContainer.css( 'direction' ) || 'ltr',
 
 		// Widgets
-		languageTextInput = new OO.ui.TextInputWidget( { 'value': $.i18n().locale } ),
+		languageTextInput = new OO.ui.TextInputWidget( { 'value': lang } ),
 		languageDirectionButton = new OO.ui.ButtonWidget( { 'label': 'Set language & direction' } ),
 		directionSelect = new OO.ui.ButtonSelectWidget().addItems( [
 			new OO.ui.ButtonOptionWidget( 'rtl', { '$': this.$, 'icon': 'text-dir-rtl' } ),
@@ -24,9 +26,7 @@ $( function () {
 
 	// Initialization
 
-	directionSelect.selectItem(
-		directionSelect.getItemFromData( $targetContainer.css( 'direction' ) || 'ltr' )
-	);
+	directionSelect.selectItem( directionSelect.getItemFromData( dir ) );
 
 	debugBar.$commands.append(
 		$( ve.init.DebugBar.static.dividerTemplate ),
@@ -37,12 +37,23 @@ $( function () {
 
 	$( '.ve-demo-debugBar' ).append( debugBar.$element );
 
-	function loadPage( src ) {
+	/**
+	 * Load a page into the editor
+	 *
+	 * @private
+	 * @param {string} src Path of html to load
+	 * @param {boolean} [forceDir] Force directionality to its current value, otherwise guess from src
+	 */
+	function loadPage( src, forceDir ) {
+		if ( !forceDir ) {
+			dir = src.match( /rtl\.html$/ ) ? 'rtl' : 'ltr';
+			directionSelect.selectItem( directionSelect.getItemFromData( dir ) );
+		}
 		$.ajax( {
 			url: src,
 			dataType: 'text'
 		} ).always( function ( result, status ) {
-			var target, pageHtml, container = $( '<div>' );
+			var target, pageHtml, $container = $( '<div>' );
 
 			if ( status === 'error' ) {
 				pageHtml = '<p><i>Failed loading page ' + $( '<span>' ).text( src ).html() + '</i></p>';
@@ -58,21 +69,28 @@ $( function () {
 					'overflow': 'hidden'
 				} );
 
-				$targetContainer.css( 'direction', directionSelect.getSelectedItem().getData() );
+				$targetContainer.css( 'direction', dir );
 
 				// The container must be attached to the DOM before
 				// the target is initialised
-				$targetContainer.append( container );
+				$targetContainer.append( $container );
 
 				$targetContainer.show();
 				target = new ve.init.sa.Target(
-					container,
-					ve.createDocumentFromHtml( pageHtml )
+					$container,
+					ve.dm.converter.getModelFromDom(
+						ve.createDocumentFromHtml( pageHtml ),
+						$targetContainer.ownerDocument,
+						lang,
+						dir
+					)
 				);
 
 				target.on( 'surfaceReady', function () {
 					// Container must be properly hidden before slideDown animation
-					$targetContainer.removeAttr( 'style' ).hide();
+					$targetContainer.removeAttr( 'style' ).hide()
+						// Restore directionality
+						.css( 'direction', dir );
 
 					if ( currentTarget ) {
 						currentTarget.destroy();
@@ -109,9 +127,8 @@ $( function () {
 	// Events
 
 	languageDirectionButton.on( 'click', function () {
-		var lang = languageTextInput.getValue();
-
-		$.i18n().locale = lang;
+		$.i18n().locale = lang = languageTextInput.getValue();
+		dir = directionSelect.getSelectedItem().getData();
 
 		// HACK: Override/restore message functions for qqx mode
 		if ( lang === 'qqx' ) {
@@ -125,7 +142,7 @@ $( function () {
 
 		// HACK: Re-initialize page to load message files
 		ve.init.platform.initialize().done( function () {
-			loadPage( location.hash.slice( 7 ) );
+			loadPage( location.hash.slice( 7 ), true );
 		} );
 
 	} );
