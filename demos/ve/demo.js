@@ -17,6 +17,7 @@ $( function () {
 		dir = $targetContainer.css( 'direction' ) || 'ltr',
 
 		// Widgets
+		convertButton = new OO.ui.ButtonWidget( { 'label': 'Log converted HTML' } ),
 		languageTextInput = new OO.ui.TextInputWidget( { 'value': lang } ),
 		languageDirectionButton = new OO.ui.ButtonWidget( { 'label': 'Set language & direction' } ),
 		directionSelect = new OO.ui.ButtonSelectWidget().addItems( [
@@ -26,9 +27,17 @@ $( function () {
 
 	// Initialization
 
+	convertButton.on( 'click', function () {
+		var doc = ve.dm.converter.getDomFromModel( currentTarget.surface.getModel().getDocument() );
+		ve.log( ve.properOuterHtml( doc.documentElement ) );
+		ve.log( doc.documentElement );
+	} );
+
 	directionSelect.selectItem( directionSelect.getItemFromData( dir ) );
 
 	debugBar.$commands.append(
+		$( ve.init.DebugBar.static.dividerTemplate ),
+		convertButton.$element,
 		$( ve.init.DebugBar.static.dividerTemplate ),
 		languageTextInput.$element,
 		directionSelect.$element,
