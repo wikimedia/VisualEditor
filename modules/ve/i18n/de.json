@@ -35,6 +35,7 @@
 	"visualeditor-dialog-error": "Etwas ist schief gelaufen …",
 	"visualeditor-dialog-error-dismiss": "Zurück",
 	"visualeditor-dialog-command-help-title": "Tastaturkürzel",
+	"visualeditor-dialog-language-auto-direction": "Automatisch",
 	"visualeditor-dialog-language-search-title": "Sprache auswählen",
 	"visualeditor-formatdropdown-format-heading-label": "Überschrift (1–6)",
 	"visualeditor-formatdropdown-format-heading1": "Überschrift 1",

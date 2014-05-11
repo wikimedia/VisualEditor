@@ -53,6 +53,7 @@
 	"visualeditor-dialog-error": "Quelque chose s’est mal passé…",
 	"visualeditor-dialog-error-dismiss": "Revenir en arrière",
 	"visualeditor-dialog-command-help-title": "Raccourcis clavier",
+	"visualeditor-dialog-language-auto-direction": "Auto",
 	"visualeditor-dialog-language-search-title": "Sélectionner la langue",
 	"visualeditor-formatdropdown-format-heading-label": "Titre (1-6)",
 	"visualeditor-formatdropdown-format-heading1": "Titre 1",

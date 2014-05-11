@@ -28,6 +28,7 @@
 	"visualeditor-dialog-error": "エラーが発生しました…",
 	"visualeditor-dialog-error-dismiss": "戻る",
 	"visualeditor-dialog-command-help-title": "キーボード ショートカット",
+	"visualeditor-dialog-language-auto-direction": "自動",
 	"visualeditor-formatdropdown-format-heading-label": "見出し (1～6)",
 	"visualeditor-formatdropdown-format-heading1": "見出し 1",
 	"visualeditor-formatdropdown-format-heading2": "見出し 2",

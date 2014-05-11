@@ -39,6 +39,7 @@
 	"visualeditor-dialog-error": "發生不明錯誤...",
 	"visualeditor-dialog-error-dismiss": "返回",
 	"visualeditor-dialog-command-help-title": "鍵盤快捷鍵",
+	"visualeditor-dialog-language-auto-direction": "自動",
 	"visualeditor-dialog-language-search-title": "選擇語言",
 	"visualeditor-formatdropdown-format-heading-label": "標題 (1~6)",
 	"visualeditor-formatdropdown-format-heading1": "標題 1",
