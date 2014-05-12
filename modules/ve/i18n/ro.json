@@ -4,7 +4,8 @@
 			"AlimanRuna",
 			"Firilacroco",
 			"Minisarm",
-			"Stelistcristi"
+			"Stelistcristi",
+			"Ion"
 		]
 	},
 	"visualeditor": "EditorVizual",
@@ -29,6 +30,7 @@
 	"visualeditor-dialog-error": "Ceva nu a funcționat...",
 	"visualeditor-dialog-error-dismiss": "Înapoi",
 	"visualeditor-dialog-command-help-title": "Scurtături de la tastatură",
+	"visualeditor-dialog-language-auto-direction": "auto",
 	"visualeditor-dialog-language-search-title": "Selectare limbă",
 	"visualeditor-formatdropdown-format-heading-label": "Titluri (1-6)",
 	"visualeditor-formatdropdown-format-heading1": "Titlu 1",

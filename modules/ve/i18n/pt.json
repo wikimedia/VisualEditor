@@ -36,6 +36,7 @@
 	"visualeditor-dialog-error": "Algo correu mal...",
 	"visualeditor-dialog-error-dismiss": "Voltar",
 	"visualeditor-dialog-command-help-title": "Atalhos do teclado",
+	"visualeditor-dialog-language-auto-direction": "Automático",
 	"visualeditor-dialog-language-search-title": "Selecionar idioma",
 	"visualeditor-formatdropdown-format-heading-label": "Cabeçalho (1-6)",
 	"visualeditor-formatdropdown-format-heading1": "Cabeçalho 1",
