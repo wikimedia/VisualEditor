@@ -57,8 +57,17 @@ OO.mixinClass( ve.ce.SurfaceObserver, OO.EventEmitter );
  * is emitted (before the properties are updated).
  *
  * @event rangeChange
- * @param {ve.Range|null} oldRange
- * @param {ve.Range|null} newRange
+ * @param {ve.Range|null} oldRange Old range
+ * @param {ve.Range|null} newRange New range
+ */
+
+/**
+ * When #poll observes a change in content or the selection such
+ * that a slug may have to be added or removed, this event is emitted
+ *
+ * @event slugChange
+ * @param {ve.Range|null} range New range
+ * @param {boolean} newSlug The cursor was moved into a slug
  */
 
 /* Methods */
@@ -75,6 +84,7 @@ ve.ce.SurfaceObserver.prototype.clear = function ( range ) {
 	this.node = null;
 	this.text = null;
 	this.hash = null;
+	this.$slugWrapper = null;
 };
 
 /**
@@ -185,9 +195,10 @@ ve.ce.SurfaceObserver.prototype.pollOnceSelection = function () {
  * @param {boolean} selectionOnly Check for selection changes only
  * @fires contentChange
  * @fires rangeChange
+ * @fires slugChange
  */
 ve.ce.SurfaceObserver.prototype.pollOnceInternal = function ( emitChanges, selectionOnly ) {
-	var $nodeOrSlug, node, text, hash, range, domRange, $slugWrapper,
+	var $nodeOrSlug, node, text, hash, range, domRange, $slugWrapper, newSlug,
 		anchorNodeChange = false,
 		slugChange = false,
 		observer = this;
@@ -210,10 +221,10 @@ ve.ce.SurfaceObserver.prototype.pollOnceInternal = function ( emitChanges, selec
 
 	if ( anchorNodeChange ) {
 		node = null;
-		$nodeOrSlug = $( domRange.anchorNode ).closest( '.ve-ce-branchNode, .ve-ce-branchNode-slug' );
+		$nodeOrSlug = $( domRange.anchorNode ).closest( '.ve-ce-branchNode, .ve-ce-branchNode-blockSlugWrapper' );
 		if ( $nodeOrSlug.length ) {
-			if ( $nodeOrSlug.hasClass( 've-ce-branchNode-slug' ) ) {
-				$slugWrapper = $nodeOrSlug.closest( '.ve-ce-branchNode-blockSlugWrapper' );
+			if ( $nodeOrSlug.hasClass( 've-ce-branchNode-blockSlugWrapper' ) ) {
+				$slugWrapper = $nodeOrSlug;
 			} else {
 				node = $nodeOrSlug.data( 'view' );
 				// Check this node belongs to our document
@@ -232,11 +243,12 @@ ve.ce.SurfaceObserver.prototype.pollOnceInternal = function ( emitChanges, selec
 			slugChange = true;
 		}
 
-		if ( $slugWrapper && !$slugWrapper.is( this.$slugWrapper ) ) {
+		if ( $slugWrapper && $slugWrapper.length && !$slugWrapper.is( this.$slugWrapper ) ) {
 			this.$slugWrapper = $slugWrapper
 				.addClass( 've-ce-branchNode-blockSlugWrapper-focused' )
 				.removeClass( 've-ce-branchNode-blockSlugWrapper-unfocused' );
 			slugChange = true;
+			newSlug = true;
 		}
 
 		if ( slugChange ) {
@@ -274,6 +286,7 @@ ve.ce.SurfaceObserver.prototype.pollOnceInternal = function ( emitChanges, selec
 					},
 					{ text: text, hash: hash, range: range }
 				);
+				slugChange = true;
 			}
 			this.text = text;
 			this.hash = hash;
@@ -288,8 +301,13 @@ ve.ce.SurfaceObserver.prototype.pollOnceInternal = function ( emitChanges, selec
 				this.range,
 				range
 			);
+			slugChange = true;
 		}
 		this.range = range;
+	}
+
+	if ( slugChange ) {
+		this.emit( 'slugChange', range, newSlug );
 	}
 };
 

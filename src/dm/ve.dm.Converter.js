@@ -1404,6 +1404,12 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 				doUnwrap = false;
 				if ( domElement.veInternal ) {
 					switch ( domElement.veInternal.generated ) {
+						case 'slug':
+							// 'slug' elements - remove if they are still empty
+							if ( domElement.childNodes.length === 0 ) {
+								doUnwrap = true;
+							}
+							break;
 						case 'empty':
 							// 'empty' elements - first ensure they are actually empty
 							if ( domElement.childNodes.length === 0 && (
