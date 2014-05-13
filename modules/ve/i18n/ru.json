@@ -40,6 +40,7 @@
 	"visualeditor-dialog-error": "Что-то пошло не так…",
 	"visualeditor-dialog-error-dismiss": "Назад",
 	"visualeditor-dialog-command-help-title": "Сочетания клавиш",
+	"visualeditor-dialog-language-auto-direction": "Авто",
 	"visualeditor-dialog-language-search-title": "Выберите язык",
 	"visualeditor-formatdropdown-format-heading-label": "Заголовок (1-6)",
 	"visualeditor-formatdropdown-format-heading1": "Заголовок 1",
