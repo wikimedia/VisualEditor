@@ -7,12 +7,15 @@ module.exports = function ( grunt ) {
 
 	grunt.registerMultiTask( 'buildloader', function () {
 		var module,
+			dependency,
+			dependencies,
 			styles = '',
 			scripts = '',
-			target = this.data.target,
+			targetFile = this.data.targetFile,
 			pathPrefix = this.data.pathPrefix || '',
 			indent = this.data.indent || '',
 			modules = this.data.modules,
+			load = this.data.load,
 			env = this.data.env || {},
 			placeholders = this.data.placeholders || {},
 			text = grunt.file.read( this.data.template ),
@@ -38,6 +41,38 @@ module.exports = function ( grunt ) {
 			return true;
 		}
 
+		function buildDependencyList( modules, load ) {
+			var i, j, k, module, list = [];
+
+			for ( i = 0; i < load.length; i++ ) {
+				module = load[i];
+
+				if ( !modules.hasOwnProperty( module ) ) {
+					throw new Error( 'Dependency ' + module + ' not found' );
+				}
+
+				// Add in any dependencies
+				if ( modules[module].hasOwnProperty( 'dependencies' ) ) {
+					list = buildDependencyList( modules, modules[module].dependencies )
+						.concat( list );
+				}
+
+				// Append target load module to the end of the current list
+				list.push( module );
+			}
+
+			// We always want to retain the first entry of duplicates
+			for ( j = 0; j < list.length; j++ ) {
+				for ( k = j + 1; k < list.length; k++ ) {
+					if ( list[j] === list[k] ) {
+						list.splice( k--, 1 );
+					}
+				}
+			}
+
+			return list;
+		}
+
 		function placeholder( input, id, replacement, callback ) {
 			var output,
 				rComment = new RegExp( '^[^\\S\\n]*<!-- ' + id + ' -->[^\\S\\n]*$', 'm' );
@@ -52,7 +87,9 @@ module.exports = function ( grunt ) {
 			}
 		}
 
-		for ( module in modules ) {
+		dependencies = buildDependencyList( modules, load );
+		for ( dependency in dependencies ) {
+			module = dependencies[dependency];
 			if ( modules[module].scripts ) {
 				scripts += indent + '<!-- ' + module + ' -->\n';
 				scripts += modules[module].scripts
@@ -87,8 +124,8 @@ module.exports = function ( grunt ) {
 				} );
 			},
 			function () {
-				grunt.file.write( target, text );
-				grunt.log.ok( 'File "' + target + '" written.' );
+				grunt.file.write( targetFile, text );
+				grunt.log.ok( 'File "' + targetFile + '" written.' );
 
 				done();
 			}

@@ -20,16 +20,18 @@ module.exports = function ( grunt ) {
 		pkg: grunt.file.readJSON( 'package.json' ),
 		buildloader: {
 			iframe: {
-				target: '.docs/eg-iframe.html',
+				targetFile: '.docs/eg-iframe.html',
 				template: '.docs/eg-iframe.html.template',
 				modules: modules,
+				load: [ 'visualEditor.desktop' ],
 				pathPrefix: '../',
 				indent: '\t\t'
 			},
 			demo: {
-				target: 'demos/ve/index.html',
+				targetFile: 'demos/ve/index.html',
 				template: 'demos/ve/index.html.template',
 				modules: modules,
+				load: [ 'visualEditor.desktop' ],
 				env: {
 					debug: true
 				},
@@ -52,9 +54,10 @@ module.exports = function ( grunt ) {
 				}
 			},
 			test: {
-				target: 'modules/ve/test/index.html',
+				targetFile: 'modules/ve/test/index.html',
 				template: 'modules/ve/test/index.html.template',
 				modules: modules,
+				load: [ 'visualEditor.standalone', 'visualEditor.core' ],
 				pathPrefix: '../../../',
 				indent: '\t\t'
 			}
