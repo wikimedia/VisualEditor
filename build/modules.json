@@ -16,6 +16,10 @@
 		"styles": [
 			"lib/oojs-ui/oojs-ui.svg.css",
 			"lib/oojs-ui/oojs-ui-apex.css"
+		],
+		"dependencies": [
+			"oojs",
+			"jquery"
 		]
 	},
 	"rangy": {
@@ -57,12 +61,18 @@
 			"lib/jquery.i18n/src/languages/ru.js",
 			"lib/jquery.i18n/src/languages/sl.js",
 			"lib/jquery.i18n/src/languages/uk.js"
+		],
+		"dependencies": [
+			"jquery"
 		]
 	},
 	"jquery.uls.data": {
 		"scripts": [
 			"lib/jquery.uls/src/jquery.uls.data.js",
 			"lib/jquery.uls/src/jquery.uls.data.utils.js"
+		],
+		"dependencies": [
+			"jquery"
 		]
 	},
 	"visualEditor.base": {
@@ -74,6 +84,15 @@
 			"modules/ve/init/ve.init.Platform.js",
 			"modules/ve/init/ve.init.Target.js",
 			{ "file": "modules/ve/init/ve.init.DebugBar.js", "debug": true }
+		],
+		"dependencies": [
+			"jquery",
+			"oojs",
+			"oojs-ui",
+			"rangy",
+			"unicodejs",
+			"jquery.i18n",
+			"jquery.uls.data"
 		]
 	},
 	"visualEditor.standalone": {
@@ -85,6 +104,9 @@
 		"styles": [
 			"modules/ve/init/sa/styles/ve.init.sa.css",
 			{ "file": "modules/ve/init/styles/ve.init.DebugBar.css", "debug": true }
+		],
+		"dependencies": [
+			"visualEditor.base"
 		]
 	},
 	"visualEditor.core": {
@@ -271,11 +293,18 @@
 			"modules/ve/ui/styles/widgets/ve.ui.SurfaceWidget.css",
 			"modules/ve/ui/styles/ve.ui.Toolbar.css",
 			"modules/ve/ui/styles/ve.ui.Icons-vector.css"
+		],
+		"dependencies": [
+			"visualEditor.base",
+			"visualEditor.standalone"
 		]
 	},
 	"visualEditor.desktop": {
 		"styles": [
 			"modules/ve/ui/themes/apex/ve.ui.Inspector.css"
+		],
+		"dependencies": [
+			"visualEditor.core"
 		]
 	},
 	"visualEditor.mobile": {
@@ -286,6 +315,15 @@
 		"styles": [
 			"modules/ve/ui/styles/ve.ui.MobileSurface.css",
 			"modules/ve/ui/styles/ve.ui.MobileContext.css"
+		],
+		"dependencies": [
+			"visualEditor.core"
+		]
+	},
+	"visualEditor.standalone.desktop": {
+		"dependencies": [
+			"visualEditor.standalone",
+			"visualEditor.desktop"
 		]
 	}
 }
