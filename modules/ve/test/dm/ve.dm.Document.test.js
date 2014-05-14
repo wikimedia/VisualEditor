@@ -495,7 +495,7 @@ QUnit.test( 'cloneSliceFromRange', function ( assert ) {
 		range = new ve.Range( 0, cases[i].expected.length );
 		expectedData = expectedData.concat( [
 			{ 'type': 'internalList' },
-			{ 'type': '/internalList' },
+			{ 'type': '/internalList' }
 		] );
 		slice = doc.cloneSliceFromRange( cases[i].range );
 		assert.deepEqualWithDomElements(

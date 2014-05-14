@@ -149,7 +149,7 @@ ve.init.DebugBar.prototype.onDumpModelButtonClick = function () {
 			$label.addClass( 've-init-debugBar-dump-element' );
 			text = element.type;
 			annotations = element.annotations;
-		} else if ( ve.isArray( element ) ){
+		} else if ( ve.isArray( element ) ) {
 			$label.addClass( 've-init-debugBar-dump-achar' );
 			text = element[0];
 			annotations = element[1];

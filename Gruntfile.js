@@ -83,7 +83,7 @@ module.exports = function ( grunt ) {
 			},
 			all: [
 				'{.docs,build,demos,modules}/**/*.css'
-			],
+			]
 		},
 		banana: {
 			all: 'modules/ve/i18n/'

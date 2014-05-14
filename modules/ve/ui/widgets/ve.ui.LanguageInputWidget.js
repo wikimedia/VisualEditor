@@ -33,7 +33,7 @@ ve.ui.LanguageInputWidget = function VeUiLanguageInputWidget( config ) {
 
 	this.directionSelect = new OO.ui.ButtonSelectWidget( {
 		'$': this.$,
-		'classes': [ 've-ui-languageInputWidget-directionSelect' ],
+		'classes': [ 've-ui-languageInputWidget-directionSelect' ]
 	} ).addItems( [
 		new OO.ui.ButtonOptionWidget( 'rtl', { '$': this.$, 'icon': 'text-dir-rtl' } ),
 		new OO.ui.ButtonOptionWidget( null, { '$': this.$, 'label': ve.msg( 'visualeditor-dialog-language-auto-direction' ) } ),

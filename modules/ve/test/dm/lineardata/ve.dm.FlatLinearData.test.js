@@ -14,7 +14,7 @@ QUnit.test( 'getType/isOpenElementData/isCloseElementData', function ( assert ) 
 		data = new ve.dm.FlatLinearData( new ve.dm.IndexValueStore(), [
 			{ 'type': 'paragraph' },
 			'a', ['b',[0]],
-			{ 'type': '/paragraph' },
+			{ 'type': '/paragraph' }
 		] ),
 		types = ['paragraph', undefined, undefined, 'paragraph'],
 		isOpen = [0],

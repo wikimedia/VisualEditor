@@ -573,7 +573,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 						{
 							'type': 'replace',
 							'insert': [
-								'F', 'o', 'o',
+								'F', 'o', 'o'
 							],
 							'remove': []
 						},
@@ -754,7 +754,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 								{ 'type': '/tableRow' },
 								{ 'type': '/tableSection' },
 								{ 'type': '/table' },
-								{ 'type': 'paragraph' },
+								{ 'type': 'paragraph' }
 							],
 							'remove': []
 						},

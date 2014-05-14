@@ -71,7 +71,7 @@ ve.dm.ImageNode.prototype.createScalable = function () {
 		},
 		'minDimensions': {
 			'width': 1,
-			'height': 1,
+			'height': 1
 		}
 	} );
 };

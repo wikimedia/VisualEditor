@@ -3445,5 +3445,5 @@ ve.dm.example.selectNodesCases = [
 			}
 		],
 		'msg': 'range covering handlesOwnChildren node doesn\'t descend'
-	},
+	}
 ];
