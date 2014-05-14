@@ -42,7 +42,7 @@ module.exports = function ( grunt ) {
 		}
 
 		function buildDependencyList( modules, load, list ) {
-			var i, j, k, module;
+			var i, module;
 
 			list = list || [];
 
@@ -59,15 +59,8 @@ module.exports = function ( grunt ) {
 				}
 
 				// Append target load module to the end of the current list
-				list.push( module );
-			}
-
-			// We always want to retain the first entry of duplicates
-			for ( j = 0; j < list.length; j++ ) {
-				for ( k = j + 1; k < list.length; k++ ) {
-					if ( list[j] === list[k] ) {
-						list.splice( k--, 1 );
-					}
+				if ( list.indexOf( module ) === -1 ) {
+					list.push( module );
 				}
 			}
 
