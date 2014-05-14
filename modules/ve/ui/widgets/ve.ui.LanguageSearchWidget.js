@@ -55,7 +55,7 @@ OO.inheritClass( ve.ui.LanguageSearchWidget, OO.ui.SearchWidget );
 /* Methods */
 
 /**
- * @inheritDoc
+ * @inheritdoc
  */
 ve.ui.LanguageSearchWidget.prototype.onQueryChange = function () {
 	// Parent method
