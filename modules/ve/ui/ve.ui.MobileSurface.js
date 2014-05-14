@@ -29,7 +29,8 @@ ve.ui.MobileSurface = function VeUiMobileSurface() {
 	} );
 
 	// Initialization
-	this.$globalOverlay.append( this.context.$element );
+	this.$globalOverlay.append( this.context.$element )
+		.addClass( 've-ui-mobileSurface-overlay ve-ui-mobileSurface-overlay-global' );
 };
 
 /* Inheritance */
@@ -55,8 +56,8 @@ ve.ui.MobileSurface.prototype.setupContext = function () {
 ve.ui.MobileSurface.prototype.showGlobalOverlay = function () {
 	this.scrollPos = $( 'body' ).scrollTop();
 	// overflow: hidden on 'body' alone is not enough for iOS Safari
-	$( 'html, body' ).addClass( 've-ui-mobileSurface-globalOverlay-enabled' );
-	this.$globalOverlay.addClass( 've-ui-mobileSurface-globalOverlay-visible' );
+	$( 'html, body' ).addClass( 've-ui-mobileSurface-overlay-global-enabled' );
+	this.$globalOverlay.addClass( 've-ui-mobileSurface-overlay-global-visible' );
 };
 
 /**
@@ -64,7 +65,7 @@ ve.ui.MobileSurface.prototype.showGlobalOverlay = function () {
  * position.
  */
 ve.ui.MobileSurface.prototype.hideGlobalOverlay = function () {
-	this.$globalOverlay.removeClass( 've-ui-mobileSurface-globalOverlay-visible' );
-	$( 'html, body' ).removeClass( 've-ui-mobileSurface-globalOverlay-enabled' );
+	this.$globalOverlay.removeClass( 've-ui-mobileSurface-overlay-global-visible' );
+	$( 'html, body' ).removeClass( 've-ui-mobileSurface-overlay-global-enabled' );
 	$( 'body' ).scrollTop( this.scrollPos );
 };
