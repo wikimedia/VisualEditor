@@ -69,7 +69,10 @@ module.exports = function ( grunt ) {
 				targetFile: 'modules/ve/test/index.html',
 				template: 'modules/ve/test/index.html.template',
 				modules: modules,
-				load: [ 'visualEditor.desktop.standalone' ],
+				env: {
+					test: true
+				},
+				load: [ 'visualEditor.test' ],
 				pathPrefix: '../../../',
 				indent: '\t\t'
 			}

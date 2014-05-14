@@ -9,8 +9,10 @@ module.exports = function ( grunt ) {
 		var module,
 			dependency,
 			dependencies,
-			styles = '',
-			scripts = '',
+			moduleStyles,
+			moduleScripts,
+			styles = [],
+			scripts = [],
 			targetFile = this.data.targetFile,
 			pathPrefix = this.data.pathPrefix || '',
 			indent = this.data.indent || '',
@@ -33,8 +35,11 @@ module.exports = function ( grunt ) {
 			return typeof src === 'string' ? { file: src } : src;
 		}
 
-		function filter( src ) {
+		function filter( type, src ) {
 			if ( src.debug && !env.debug ) {
+				return false;
+			}
+			if ( type === 'styles' && env.test && !src.test ) {
 				return false;
 			}
 
@@ -92,29 +97,28 @@ module.exports = function ( grunt ) {
 		for ( dependency in dependencies ) {
 			module = dependencies[dependency];
 			if ( modules[module].scripts ) {
-				scripts += indent + '<!-- ' + module + ' -->\n';
-				scripts += modules[module].scripts
-					.map( expand ).filter( filter ).map( scriptTag )
-					.join( '\n' ) + '\n';
-				scripts += '\n';
+				moduleScripts = modules[module].scripts
+					.map( expand ).filter( filter.bind( this, 'scripts' ) ).map( scriptTag )
+					.join( '\n' );
+				if ( moduleScripts ) {
+					scripts.push( indent + '<!-- ' + module + ' -->\n' + moduleScripts );
+				}
 			}
 			if ( modules[module].styles ) {
-				styles += indent + '<!-- ' + module + ' -->\n';
-				styles += modules[module].styles
-					.map( expand ).filter( filter ).map( styleTag )
-					.join( '\n' ) + '\n';
-				styles += '\n';
+				moduleStyles = modules[module].styles
+					.map( expand ).filter( filter.bind( this, 'styles' ) ).map( styleTag )
+					.join( '\n' );
+				if ( moduleStyles ) {
+					styles.push( indent + '<!-- ' + module + ' -->\n' + moduleStyles );
+				}
 			}
 		}
 
-		scripts += indent + '<script>ve.init.platform.setModulesUrl( \'' + pathPrefix +
-			'modules\' );</script>';
+		scripts.push( indent + '<script>ve.init.platform.setModulesUrl( \'' + pathPrefix +
+			'modules\' );</script>' );
 
-		// Strip last 2 line breaks since we only want them between sections
-		styles = styles.slice( 0, -2 );
-
-		placeholders.styles = styles;
-		placeholders.scripts = scripts;
+		placeholders.styles = styles.join( '\n\n' );
+		placeholders.scripts = scripts.join( '\n\n' );
 
 		grunt.util.async.forEachSeries(
 			Object.keys(placeholders),
