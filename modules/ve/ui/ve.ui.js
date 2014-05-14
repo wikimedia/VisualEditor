@@ -18,3 +18,5 @@ ve.ui = {
 	//'toolFactory' instantiated in ve.ui.ToolFactory.js
 	'windowFactory': new OO.Factory()
 };
+
+ve.ui.windowFactory.register( OO.ui.ConfirmationDialog );

@@ -193,7 +193,8 @@
 					"OO.ui.Toolbar",
 					"OO.ui.Window",
 					"OO.ui.WindowSet",
-					"OO.ui.Dialog"
+					"OO.ui.Dialog",
+					"OO.ui.ConfirmationDialog"
 				]
 			},
 			{
