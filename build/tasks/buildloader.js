@@ -41,8 +41,10 @@ module.exports = function ( grunt ) {
 			return true;
 		}
 
-		function buildDependencyList( modules, load ) {
-			var i, j, k, module, list = [];
+		function buildDependencyList( modules, load, list ) {
+			var i, j, k, module;
+
+			list = list || [];
 
 			for ( i = 0; i < load.length; i++ ) {
 				module = load[i];
@@ -53,8 +55,7 @@ module.exports = function ( grunt ) {
 
 				// Add in any dependencies
 				if ( modules[module].hasOwnProperty( 'dependencies' ) ) {
-					list = buildDependencyList( modules, modules[module].dependencies )
-						.concat( list );
+					buildDependencyList( modules, modules[module].dependencies, list );
 				}
 
 				// Append target load module to the end of the current list
