@@ -14,12 +14,27 @@
 			"lib/oojs-ui/oojs-ui.js"
 		],
 		"styles": [
-			"lib/oojs-ui/oojs-ui.svg.css",
-			"lib/oojs-ui/oojs-ui-apex.css"
+			"lib/oojs-ui/oojs-ui.svg.css"
 		],
 		"dependencies": [
 			"oojs",
 			"jquery"
+		]
+	},
+	"oojs-ui-apex": {
+		"styles": [
+			"lib/oojs-ui/oojs-ui-apex.css"
+		],
+		"dependencies": [
+			"oojs-ui"
+		]
+	},
+	"oojs-ui-agora": {
+		"styles": [
+			"lib/oojs-ui/oojs-ui-agora.css"
+		],
+		"dependencies": [
+			"oojs-ui"
 		]
 	},
 	"rangy": {
@@ -93,20 +108,6 @@
 			"unicodejs",
 			"jquery.i18n",
 			"jquery.uls.data"
-		]
-	},
-	"visualEditor.standalone": {
-		"scripts": [
-			"modules/ve/init/sa/ve.init.sa.js",
-			"modules/ve/init/sa/ve.init.sa.Platform.js",
-			"modules/ve/init/sa/ve.init.sa.Target.js"
-		],
-		"styles": [
-			"modules/ve/init/sa/styles/ve.init.sa.css",
-			{ "file": "modules/ve/init/styles/ve.init.DebugBar.css", "debug": true }
-		],
-		"dependencies": [
-			"visualEditor.base"
 		]
 	},
 	"visualEditor.core": {
@@ -295,8 +296,7 @@
 			"modules/ve/ui/styles/ve.ui.Icons-vector.css"
 		],
 		"dependencies": [
-			"visualEditor.base",
-			"visualEditor.standalone"
+			"visualEditor.base"
 		]
 	},
 	"visualEditor.desktop": {
@@ -304,6 +304,7 @@
 			"modules/ve/ui/themes/apex/ve.ui.Inspector.css"
 		],
 		"dependencies": [
+			"oojs-ui-apex",
 			"visualEditor.core"
 		]
 	},
@@ -317,13 +318,66 @@
 			"modules/ve/ui/styles/ve.ui.MobileContext.css"
 		],
 		"dependencies": [
+			"oojs-ui-agora",
 			"visualEditor.core"
 		]
 	},
-	"visualEditor.standalone.desktop": {
+	"visualEditor.standalone": {
+		"scripts": [
+			"modules/ve/init/sa/ve.init.sa.js",
+			"modules/ve/init/sa/ve.init.sa.Platform.js",
+			"modules/ve/init/sa/ve.init.sa.Target.js"
+		],
+		"styles": [
+			"modules/ve/init/sa/styles/ve.init.sa.css",
+			{ "file": "modules/ve/init/styles/ve.init.DebugBar.css", "debug": true }
+		],
+		"dependencies": [
+			"visualEditor.base"
+		]
+	},
+	"visualEditor.desktop.standalone": {
 		"dependencies": [
 			"visualEditor.standalone",
 			"visualEditor.desktop"
+		]
+	},
+	"visualEditor.mobile.standalone": {
+		"dependencies": [
+			"visualEditor.standalone",
+			"visualEditor.mobile"
+		]
+	},
+	"visualEditor.standalone.demo": {
+		"scripts": [
+			"demos/ve/demo.js"
+		],
+		"styles": [
+			"demos/ve/demo.css"
+		]
+	},
+	"visualEditor.desktop.standalone.demo": {
+		"scripts": [
+			"demos/ve/demo.desktop.js"
+		],
+		"styles": [
+			"demos/ve/demo.desktop.css"
+		],
+		"dependencies": [
+			"visualEditor.desktop.standalone",
+			"visualEditor.standalone.demo"
+		]
+	},
+	"visualEditor.mobile.standalone.demo": {
+		"scripts": [
+			"demos/ve/demo.mobile.js"
+		],
+		"styles": [
+			"demos/ve/demo.mobile.css"
+		],
+		"dependencies": [
+			"visualEditor.mobile.standalone",
+			"visualEditor.standalone.demo"
 		]
 	}
 }

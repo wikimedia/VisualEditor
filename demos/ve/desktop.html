@@ -10,15 +10,18 @@
 <html>
 	<head>
 		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 		<title>VisualEditor Standalone Demo</title>
 
 		<!-- oojs-ui -->
 		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui.svg.css">
-		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-apex.css">
 
 		<!-- visualEditor.standalone -->
 		<link rel=stylesheet href="../../modules/ve/init/sa/styles/ve.init.sa.css">
 		<link rel=stylesheet href="../../modules/ve/init/styles/ve.init.DebugBar.css">
+
+		<!-- oojs-ui-apex -->
+		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-apex.css">
 
 		<!-- visualEditor.core -->
 		<link rel=stylesheet href="../../modules/ve/ce/styles/nodes/ve.ce.AlienNode.css">
@@ -50,19 +53,23 @@
 		<!-- visualEditor.desktop -->
 		<link rel=stylesheet href="../../modules/ve/ui/themes/apex/ve.ui.Inspector.css">
 
-		<!-- demo styles -->
-		<link rel="stylesheet" href="demo.css">
+		<!-- visualEditor.standalone.demo -->
+		<link rel=stylesheet href="../../demos/ve/demo.css">
+
+		<!-- visualEditor.desktop.standalone.demo -->
+		<link rel=stylesheet href="../../demos/ve/demo.desktop.css">
+
 	</head>
 	<body>
 		<ul class="ve-demo-menu">
-			<li><a href="./#!/src/pages/aliens.html" data-page-src="pages/aliens.html">aliens</a></li>
-			<li><a href="./#!/src/pages/complex.html" data-page-src="pages/complex.html">complex</a></li>
-			<li><a href="./#!/src/pages/empty.html" data-page-src="pages/empty.html">empty</a></li>
-			<li><a href="./#!/src/pages/h1.html" data-page-src="pages/h1.html">h1</a></li>
-			<li><a href="./#!/src/pages/image.html" data-page-src="pages/image.html">image</a></li>
-			<li><a href="./#!/src/pages/isolation.html" data-page-src="pages/isolation.html">isolation</a></li>
-			<li><a href="./#!/src/pages/rtl.html" data-page-src="pages/rtl.html">rtl</a></li>
-			<li><a href="./#!/src/pages/simple.html" data-page-src="pages/simple.html">simple</a></li>
+			<li><a href="#!/src/pages/aliens.html" data-page-src="pages/aliens.html">aliens</a></li>
+			<li><a href="#!/src/pages/complex.html" data-page-src="pages/complex.html">complex</a></li>
+			<li><a href="#!/src/pages/empty.html" data-page-src="pages/empty.html">empty</a></li>
+			<li><a href="#!/src/pages/h1.html" data-page-src="pages/h1.html">h1</a></li>
+			<li><a href="#!/src/pages/image.html" data-page-src="pages/image.html">image</a></li>
+			<li><a href="#!/src/pages/isolation.html" data-page-src="pages/isolation.html">isolation</a></li>
+			<li><a href="#!/src/pages/rtl.html" data-page-src="pages/rtl.html">rtl</a></li>
+			<li><a href="#!/src/pages/simple.html" data-page-src="pages/simple.html">simple</a></li>
 		</ul>
 		<div class="ve-demo-editor"></div>
 		<div class="ve-demo-debugBar"></div>
@@ -286,9 +293,13 @@
 		<script src="../../modules/ve/ui/inspectors/ve.ui.LanguageInspector.js"></script>
 		<script src="../../modules/ve/ui/inspectors/ve.ui.SpecialCharacterInspector.js"></script>
 
+		<!-- visualEditor.standalone.demo -->
+		<script src="../../demos/ve/demo.js"></script>
+
+		<!-- visualEditor.desktop.standalone.demo -->
+		<script src="../../demos/ve/demo.desktop.js"></script>
+
 		<script>ve.init.platform.setModulesUrl( '../../modules' );</script>
 
-		<!-- demo scripts -->
-		<script src="demo.js"></script>
 	</body>
 </html>

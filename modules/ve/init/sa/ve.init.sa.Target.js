@@ -19,12 +19,26 @@
  * @constructor
  * @param {jQuery} $container Container to render target into
  * @param {ve.dm.Document} doc Document model
+ * @param {string} [surfaceType] Type of surface to use, 'desktop' or 'mobile'
+ * @throws {Error} Unknown surfaceType
  */
-ve.init.sa.Target = function VeInitSaTarget( $container, doc ) {
+ve.init.sa.Target = function VeInitSaTarget( $container, doc, surfaceType ) {
 	// Parent constructor
 	ve.init.Target.call( this, $container );
 
+	surfaceType = surfaceType || this.constructor.static.defaultSurfaceType;
+
 	this.document = doc;
+	switch ( surfaceType ) {
+		case 'desktop':
+			this.surfaceClass = ve.ui.DesktopSurface;
+			break;
+		case 'mobile':
+			this.surfaceClass = ve.ui.MobileSurface;
+			break;
+		default:
+			throw new Error( 'Unknown surfaceType: ' + surfaceType );
+	}
 	this.setupDone = false;
 
 	ve.init.platform.getInitializedPromise().done( ve.bind( this.setup, this ) );
@@ -34,9 +48,15 @@ ve.init.sa.Target = function VeInitSaTarget( $container, doc ) {
 
 OO.inheritClass( ve.init.sa.Target, ve.init.Target );
 
+/* Static properties */
+
+ve.init.sa.Target.static.defaultSurfaceType = 'desktop';
+
 /* Methods */
 
 /**
+ * Setup the target
+ *
  * @fires surfaceReady
  */
 ve.init.sa.Target.prototype.setup = function () {
@@ -48,7 +68,7 @@ ve.init.sa.Target.prototype.setup = function () {
 
 	// Properties
 	this.setupDone = true;
-	this.surface = new ve.ui.DesktopSurface( this.document );
+	this.surface = new this.surfaceClass( this.document );
 	this.$document = this.surface.$element.find( '.ve-ce-documentNode' );
 	this.toolbar = new ve.ui.TargetToolbar( this, this.surface, { 'shadow': true } );
 
