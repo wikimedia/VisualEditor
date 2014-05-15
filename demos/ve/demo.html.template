@@ -10,12 +10,11 @@
 <html>
 	<head>
 		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 		<title>VisualEditor Standalone Demo</title>
 
 		<!-- STYLES -->
 
-		<!-- demo styles -->
-		<link rel="stylesheet" href="demo.css">
 	</head>
 	<body>
 		<ul class="ve-demo-menu">
@@ -26,7 +25,5 @@
 
 		<!-- SCRIPTS -->
 
-		<!-- demo scripts -->
-		<script src="demo.js"></script>
 	</body>
 </html>
