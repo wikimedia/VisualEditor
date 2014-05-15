@@ -22,6 +22,7 @@
 	],
 	"requireSpaceBeforeBlockStatements": true,
 	"requireParenthesesAroundIIFE": true,
+	"requireSpacesInConditionalExpression": true,
 	"disallowSpacesInNamedFunctionExpression": {
 		"beforeOpeningRoundBrace": true
 	},
@@ -35,15 +36,6 @@
 	"disallowDanglingUnderscores": true,
 	"disallowSpaceAfterObjectKeys": true,
 	"requireCommaBeforeLineBreak": true,
-	"disallowLeftStickedOperators": [
-		"?",
-		">",
-		">=",
-		"<",
-		"<="
-	],
-	"requireRightStickedOperators": ["!"],
-	"requireLeftStickedOperators": [","],
 	"disallowSpaceAfterPrefixUnaryOperators": [
 		"++",
 		"--",
@@ -56,27 +48,38 @@
 		"++",
 		"--"
 	],
+	"disallowSpaceBeforeBinaryOperators": [
+		","
+	],
 	"requireSpaceBeforeBinaryOperators": [
+		"=",
 		"+",
 		"-",
 		"/",
 		"*",
-		"=",
 		"==",
 		"===",
 		"!=",
-		"!=="
+		"!==",
+		">",
+		">=",
+		"<",
+		"<="
     ],
 	"requireSpaceAfterBinaryOperators": [
+		"=",
 		"+",
 		"-",
 		"/",
 		"*",
-		"=",
 		"==",
 		"===",
 		"!=",
-		"!=="
+		"!==",
+		">",
+		">=",
+		"<",
+		"<="
 	],
 	"requireCamelCaseOrUpperCaseIdentifiers": true,
 	"disallowKeywords": [ "with" ],

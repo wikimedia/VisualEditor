@@ -89,8 +89,8 @@ module.exports = function ( grunt ) {
 			all: 'modules/ve/i18n/'
 		},
 		qunit: {
-			ve: 'modules/ve/test/index.html',
-			unicodejs: 'modules/unicodejs/index.html'
+			unicodejs: 'modules/unicodejs/index.html',
+			ve: 'modules/ve/test/index.html'
 		},
 		watch: {
 			files: [
@@ -100,13 +100,13 @@ module.exports = function ( grunt ) {
 				'<%= qunit.ve %>',
 				'<%= qunit.unicodejs %>'
 			],
-			tasks: ['test']
+			tasks: 'test'
 		}
 	} );
 
-	grunt.registerTask( 'lint', ['jshint', 'jscs', 'csslint', 'banana'] );
-	grunt.registerTask( 'unit', ['qunit'] );
-	grunt.registerTask( 'build', ['buildloader'] );
-	grunt.registerTask( 'test', ['build', 'lint', 'unit'] );
-	grunt.registerTask( 'default', ['test'] );
+	grunt.registerTask( 'lint', [ 'jshint', 'jscs', 'csslint', 'banana' ] );
+	grunt.registerTask( 'unit', 'qunit' );
+	grunt.registerTask( 'build', 'buildloader' );
+	grunt.registerTask( 'test', [ 'build', 'lint', 'unit' ] );
+	grunt.registerTask( 'default', 'test' );
 };

@@ -17,10 +17,10 @@
 	"browser": true,
 	"jquery": true,
 
-	"predef": [
-		"OO",
-		"ve",
-		"unicodeJS",
-		"QUnit"
-	]
+	"globals": {
+		"OO": false,
+		"QUnit": false,
+		"unicodeJS": false,
+		"ve": false
+	}
 }
