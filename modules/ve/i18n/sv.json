@@ -36,6 +36,7 @@
 	"visualeditor-dialog-error": "Något gick fel...",
 	"visualeditor-dialog-error-dismiss": "Gå tillbaka",
 	"visualeditor-dialog-command-help-title": "Kortkommandon",
+	"visualeditor-dialog-language-auto-direction": "Auto",
 	"visualeditor-dialog-language-search-title": "Välj språk",
 	"visualeditor-formatdropdown-format-heading-label": "Rubrik (1-6)",
 	"visualeditor-formatdropdown-format-heading1": "Rubrik 1",
