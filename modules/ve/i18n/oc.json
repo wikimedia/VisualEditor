@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Cedric31"
+			"Cedric31",
+			"Gloria sah"
 		]
 	},
 	"visualeditor": "EditorVisual",
@@ -23,7 +24,10 @@
 	"visualeditor-dialog-action-apply": "Aplicar las modificacions",
 	"visualeditor-dialog-action-cancel": "Anullar",
 	"visualeditor-dialog-action-goback": "Retorn",
+	"visualeditor-dialog-error-dismiss": "Retorn",
 	"visualeditor-dialog-command-help-title": "Acorchis de clavièr",
+	"visualeditor-dialog-language-auto-direction": "Auto",
+	"visualeditor-dialog-language-search-title": "Seleccionar la lenga",
 	"visualeditor-formatdropdown-format-heading-label": "Títol (1-6)",
 	"visualeditor-formatdropdown-format-heading1": "Títol 1",
 	"visualeditor-formatdropdown-format-heading2": "Títol 2",

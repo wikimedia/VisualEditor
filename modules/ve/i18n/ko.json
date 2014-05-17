@@ -7,7 +7,8 @@
 			"LFM",
 			"아라",
 			"Priviet",
-			"Leehoy"
+			"Leehoy",
+			"고기랑"
 		]
 	},
 	"visualeditor": "시각편집기",
@@ -32,6 +33,7 @@
 	"visualeditor-dialog-error": "무언가가 잘못되었습니다…",
 	"visualeditor-dialog-error-dismiss": "돌아가기",
 	"visualeditor-dialog-command-help-title": "단축 키",
+	"visualeditor-dialog-language-auto-direction": "자동",
 	"visualeditor-dialog-language-search-title": "언어 선택",
 	"visualeditor-formatdropdown-format-heading-label": "머릿글 (1-6)",
 	"visualeditor-formatdropdown-format-heading1": "1단계 문단 제목",

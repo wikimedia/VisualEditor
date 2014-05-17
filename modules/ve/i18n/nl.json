@@ -16,7 +16,8 @@
 			"Siebrand",
 			"Southparkfan",
 			"सरोज कुमार ढकाल",
-			"Sjoerddebruin"
+			"Sjoerddebruin",
+			"Gloria sah"
 		]
 	},
 	"visualeditor": "Visuele tekstverwerker",
@@ -38,7 +39,10 @@
 	"visualeditor-dialog-action-apply": "Wijzigingen toepassen",
 	"visualeditor-dialog-action-cancel": "Annuleren",
 	"visualeditor-dialog-action-goback": "Terug",
+	"visualeditor-dialog-error-dismiss": "Terug",
 	"visualeditor-dialog-command-help-title": "Sneltoetsen",
+	"visualeditor-dialog-language-auto-direction": "Automatisch",
+	"visualeditor-dialog-language-search-title": "Taal selecteren",
 	"visualeditor-formatdropdown-format-heading-label": "Kop (1-6)",
 	"visualeditor-formatdropdown-format-heading1": "Kop 1",
 	"visualeditor-formatdropdown-format-heading2": "Kop 2",
