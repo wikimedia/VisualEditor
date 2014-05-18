@@ -17,7 +17,8 @@
 			"Csbotero",
 			"Carlitosag",
 			"WhatamIdoing",
-			"Gloria sah"
+			"Gloria sah",
+			"Wifidel"
 		]
 	},
 	"visualeditor": "Editor visual",
@@ -42,6 +43,7 @@
 	"visualeditor-dialog-error": "Algo salió mal...",
 	"visualeditor-dialog-error-dismiss": "Regresar",
 	"visualeditor-dialog-command-help-title": "Atajos de teclado",
+	"visualeditor-dialog-language-auto-direction": "Automático",
 	"visualeditor-dialog-language-search-title": "Seleccionar idioma",
 	"visualeditor-formatdropdown-format-heading-label": "Encabezado (1-6)",
 	"visualeditor-formatdropdown-format-heading1": "Encabezado 1",
