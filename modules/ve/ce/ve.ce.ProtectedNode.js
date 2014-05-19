@@ -20,12 +20,14 @@ ve.ce.ProtectedNode = function VeCeProtectedNode( $phantomable ) {
 	this.$shields = this.$( [] );
 	this.$phantomable = $phantomable || this.$element;
 	this.isSetup = false;
+	this.isShielded = false;
 
 	// Events
 	this.connect( this, {
 		'setup': 'onProtectedSetup',
 		'teardown': 'onProtectedTeardown',
 		'resizeStart': 'onProtectedResizeStart',
+		'focus': 'onProtectedFocus',
 		'rerender': 'positionPhantoms'
 	} );
 };
@@ -66,23 +68,35 @@ ve.ce.ProtectedNode.prototype.createPhantom = function () {
  * @method
  */
 ve.ce.ProtectedNode.prototype.onProtectedSetup = function () {
-	var $shield,
-		node = this;
-
 	// Exit if already setup or not unattached
 	if ( this.isSetup || !this.root ) {
 		return;
 	}
 
-	// Events
-	this.$element.on( 'mouseenter.ve-ce-protectedNode', ve.bind( this.onProtectedMouseEnter, this ) );
-	this.getRoot().getSurface().getSurface()
-		.connect( this, { 'position': 'positionPhantoms' } );
-
 	// DOM changes
 	this.$element
 		.addClass( 've-ce-protectedNode' )
 		.prop( 'contentEditable', 'false' );
+
+	// Events
+	this.$element.on( {
+		'mouseenter.ve-ce-protectedNode': ve.bind( this.onProtectedMouseEnter, this ),
+		'mousedown.ve-ce-protectedNode': ve.bind( this.onProtectedMouseDown, this )
+	} );
+};
+
+/**
+ * Attach phantoms to the node.
+ *
+ * @method
+ */
+ve.ce.ProtectedNode.prototype.attachPhantoms = function () {
+	var $shield,
+		node = this;
+
+	// Events
+	this.getRoot().getSurface().getSurface()
+		.connect( this, { 'position': 'positionPhantoms' } );
 
 	// Shields
 	this.$element.add( this.$element.find( '*' ) ).each( function () {
@@ -111,7 +125,7 @@ ve.ce.ProtectedNode.prototype.onProtectedSetup = function () {
 		}
 	} );
 
-	this.isSetup = true;
+	this.isShielded = true;
 };
 
 /**
@@ -145,6 +159,7 @@ ve.ce.ProtectedNode.prototype.onProtectedTeardown = function () {
 		.removeProp( 'contentEditable' );
 
 	this.isSetup = false;
+	this.isShielded = false;
 };
 
 /**
@@ -173,11 +188,27 @@ ve.ce.ProtectedNode.prototype.onPhantomMouseDown = function ( e ) {
  * Handle mouse enter events.
  *
  * @method
+ * @param {jQuery.Event} e Mouse enter event
  */
 ve.ce.ProtectedNode.prototype.onProtectedMouseEnter = function () {
+	if ( !this.isShielded ) {
+		this.attachPhantoms();
+	}
 	if ( !this.root.getSurface().dragging && !this.root.getSurface().resizing ) {
 		this.createPhantoms();
 	}
+};
+
+/**
+ * Handle mouse down events.
+ *
+ * @method
+ * @param {jQuery.Event} e Mouse enter event
+ */
+ve.ce.ProtectedNode.prototype.onProtectedMouseDown = function ( e ) {
+	// Abort mousedown events otherwise the surface will go into
+	// dragging mode on touch devices
+	e.stopPropagation();
 };
 
 /**
@@ -218,6 +249,17 @@ ve.ce.ProtectedNode.prototype.onProtectedResizeStart = function () {
 };
 
 /**
+ * Handle focus events.
+ *
+ * @method
+ */
+ve.ce.ProtectedNode.prototype.onProtectedFocus = function () {
+	if ( !this.isShielded ) {
+		this.attachPhantoms();
+	}
+};
+
+/**
  * Creates phantoms
  *
  * @method
@@ -225,6 +267,10 @@ ve.ce.ProtectedNode.prototype.onProtectedResizeStart = function () {
 ve.ce.ProtectedNode.prototype.createPhantoms = function () {
 	var surface = this.root.getSurface(),
 		node = this;
+
+	if ( !this.isShielded ) {
+		this.attachPhantoms();
+	}
 
 	this.$phantomable.find( '.ve-ce-protectedNode-shield:visible' ).each(
 		ve.bind( function () {

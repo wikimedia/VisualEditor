@@ -11,7 +11,7 @@
 }
 
 /* Allow GeneratedContentNode content to be interacted with  */
-.ve-ce-generatedContentNode .ve-ce-protectedNode-shield {
+.ve-ce-generatedContentNode > * {
 	pointer-events: all;
 }
 
