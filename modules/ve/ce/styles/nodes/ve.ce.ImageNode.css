@@ -6,5 +6,11 @@
  */
 
 .ve-ce-imageNode {
+	display: inline-block;
 	cursor: default;
+}
+
+.ve-ce-imageNode > img {
+	/* HACK: Fix height of wrapper span */
+	display: block;
 }

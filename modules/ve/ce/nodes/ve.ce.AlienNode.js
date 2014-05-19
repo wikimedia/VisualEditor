@@ -11,7 +11,7 @@
  * @class
  * @abstract
  * @extends ve.ce.LeafNode
- * @mixins ve.ce.ProtectedNode
+ * @mixins ve.ce.FocusableNode
  * @mixins ve.ce.GeneratedContentNode
  *
  * @constructor
@@ -23,7 +23,7 @@ ve.ce.AlienNode = function VeCeAlienNode() {
 	ve.ce.LeafNode.apply( this, arguments );
 
 	// Mixin constructors
-	ve.ce.ProtectedNode.call( this );
+	ve.ce.FocusableNode.call( this );
 	ve.ce.GeneratedContentNode.call( this );
 
 	// DOM changes
@@ -34,7 +34,7 @@ ve.ce.AlienNode = function VeCeAlienNode() {
 
 OO.inheritClass( ve.ce.AlienNode, ve.ce.LeafNode );
 
-OO.mixinClass( ve.ce.AlienNode, ve.ce.ProtectedNode );
+OO.mixinClass( ve.ce.AlienNode, ve.ce.FocusableNode );
 
 OO.mixinClass( ve.ce.AlienNode, ve.ce.GeneratedContentNode );
 
@@ -47,10 +47,10 @@ ve.ce.AlienNode.static.name = 'alien';
 /**
  * @inheritdoc
  */
-ve.ce.AlienNode.prototype.createPhantom = function () {
+ve.ce.AlienNode.prototype.createHighlight = function () {
 	// Mixin method
-	return ve.ce.ProtectedNode.prototype.createPhantom.call( this )
-		.addClass( 've-ce-alienNode-phantom' )
+	return ve.ce.FocusableNode.prototype.createHighlight.call( this )
+		.addClass( 've-ce-alienNode-highlight' )
 		.attr( 'title', ve.msg( 'visualeditor-aliennode-tooltip' ) );
 };
 

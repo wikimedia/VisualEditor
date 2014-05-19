@@ -79,7 +79,7 @@ QUnit.test( 'getOffset', function ( assert ) {
 				'msg': 'Annotated alien',
 				'html': '<p>Foo<b><cite>Bar</cite></b>Baz</p>',
 				// CE HTML summary;
-				// <p>Foo<b><span [protectedNode]><cite>Bar</cite></span></b>Baz</p>
+				// <p>Foo<b><span [focusableNode]><cite>Bar</cite></span></b>Baz</p>
 				'expected': [
 					0,
 					1, 1,
@@ -122,11 +122,11 @@ QUnit.test( 'getOffset', function ( assert ) {
 			},
 			{
 				'msg': 'Paragraph with inline slugs',
-				'html': '<p><cite>Foo</cite><cite>Bar</cite><img></p>',
+				'html': '<p><cite>Foo</cite><cite>Bar</cite><br></p>',
 				// CE HTML summary:
-				// <p><span [inlineSlug]>&#xFEFF;</span><span [protectedNode]><cite>Foo</cite></span>
-				// <span [inlineSlug]>&#xFEFF;</span><span [protectedNode]><cite>Bar</cite></span>
-				// <span [inlineSlug]>&#xFEFF;</span><img></img><span [inlineSlug]>&#xFEFF;</span></p>
+				// <p><span [inlineSlug]>&#xFEFF;</span><span [focusableNode]><cite>Foo</cite></span>
+				// <span [inlineSlug]>&#xFEFF;</span><span [focusableNode]><cite>Bar</cite></span>
+				// <span [inlineSlug]>&#xFEFF;</span><br></br><span [inlineSlug]>&#xFEFF;</span></p>
 				'expected': [
 					0,
 					1, 1, 1, 1, 1, 1,

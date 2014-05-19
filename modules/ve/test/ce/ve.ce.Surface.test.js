@@ -905,7 +905,6 @@ QUnit.test( 'getNearestCorrectOffset', function ( assert ) {
 // TODO: ve.ce.Surface#handleUpOrDownArrowKey
 // TODO: ve.ce.Surface#handleInsertion
 // TODO: ve.ce.Surface#showSelection
-// TODO: ve.ce.Surface#replacePhantoms
-// TODO: ve.ce.Surface#replaceHighlight
+// TODO: ve.ce.Surface#appendHighlights
 // TODO: ve.ce.Surface#incRenderLock
 // TODO: ve.ce.Surface#decRenderLock

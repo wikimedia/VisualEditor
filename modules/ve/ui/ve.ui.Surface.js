@@ -77,13 +77,6 @@ OO.mixinClass( ve.ui.Surface, OO.EventEmitter );
 /* Events */
 
 /**
- * When the surface changes its position (only if it happens
- * after initialize has already been called).
- *
- * @event position
- */
-
-/**
  * When a command is added to the surface.
  *
  * @event addCommand

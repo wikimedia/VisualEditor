@@ -19,12 +19,12 @@
 	display: inline;
 }
 
-.ve-ce-alienNode-phantom {
-	background-color: #C3E59A;
-	background-image: -ms-repeating-linear-gradient(-45deg, white 0px, white 5px, #C3E59A 5px, #C3E59A 10px );
-	background-image: -webkit-repeating-linear-gradient(-45deg, white 0px, white 5px, #C3E59A 5px, #C3E59A 10px );
-	background-image: -moz-repeating-linear-gradient(-45deg, white 0px, white 5px, #C3E59A 5px, #C3E59A 10px);
-	background-image: repeating-linear-gradient(-45deg, white 0px, white 5px, #C3E59A 5px, #C3E59A 10px );
+.ve-ce-alienNode-highlight {
+	background-color: #95d14f;
+	background-image: -ms-repeating-linear-gradient(-45deg, white 0px, white 5px, #95d14f 5px, #95d14f 10px );
+	background-image: -webkit-repeating-linear-gradient(-45deg, white 0px, white 5px, #95d14f 5px, #95d14f 10px );
+	background-image: -moz-repeating-linear-gradient(-45deg, white 0px, white 5px, #95d14f 5px, #95d14f 10px);
+	background-image: repeating-linear-gradient(-45deg, white 0px, white 5px, #95d14f 5px, #95d14f 10px );
 	background-size: 14px 14px;
 	box-shadow: none;
 	cursor: not-allowed;

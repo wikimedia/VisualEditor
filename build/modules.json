@@ -203,7 +203,6 @@
 			"modules/ve/ce/ve.ce.BranchNode.js",
 			"modules/ve/ce/ve.ce.ContentBranchNode.js",
 			"modules/ve/ce/ve.ce.LeafNode.js",
-			"modules/ve/ce/ve.ce.ProtectedNode.js",
 			"modules/ve/ce/ve.ce.FocusableNode.js",
 			"modules/ve/ce/ve.ce.RelocatableNode.js",
 			"modules/ve/ce/ve.ce.ResizableNode.js",
@@ -286,14 +285,13 @@
 			"modules/ve/ui/inspectors/ve.ui.SpecialCharacterInspector.js"
 		],
 		"styles": [
+			"modules/ve/ce/styles/nodes/ve.ce.FocusableNode.css",
 			"modules/ve/ce/styles/nodes/ve.ce.AlienNode.css",
 			"modules/ve/ce/styles/nodes/ve.ce.BranchNode.css",
 			"modules/ve/ce/styles/nodes/ve.ce.DocumentNode.css",
-			"modules/ve/ce/styles/nodes/ve.ce.FocusableNode.css",
 			"modules/ve/ce/styles/nodes/ve.ce.GeneratedContentNode.css",
 			"modules/ve/ce/styles/nodes/ve.ce.ImageNode.css",
 			"modules/ve/ce/styles/annotations/ve.ce.LanguageAnnotation.css",
-			"modules/ve/ce/styles/nodes/ve.ce.ProtectedNode.css",
 			"modules/ve/ce/styles/nodes/ve.ce.RelocatableNode.css",
 			"modules/ve/ce/styles/nodes/ve.ce.ResizableNode.css",
 			"modules/ve/ce/styles/ve.ce.Surface.css",

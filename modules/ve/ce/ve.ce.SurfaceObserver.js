@@ -206,11 +206,10 @@ ve.ce.SurfaceObserver.prototype.pollOnceInternal = function ( emitChanges ) {
 				.addClass( 've-ce-branchNode-blockSlugWrapper-unfocused' )
 				.removeClass( 've-ce-branchNode-blockSlugWrapper-focused' );
 			this.$slugWrapper = null;
-			// If the surface focuses a node, emit a rerender after the animation completes
+			// Emit 'position' on the surface view after the animation completes
 			setTimeout( function () {
-				var focusedNode = ve.getProp( observer.documentView, 'documentNode', 'surface', 'focusedNode' );
-				if ( focusedNode ) {
-					focusedNode.emit( 'rerender' );
+				if ( observer.documentView ) {
+					observer.documentView.documentNode.surface.emit( 'position' );
 				}
 			}, 200 );
 		}

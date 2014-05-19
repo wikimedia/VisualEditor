@@ -50,7 +50,8 @@ ve.ui.DesktopContext = function VeUiDesktopContext( surface, config ) {
 		'relocationStart': 'onRelocationStart',
 		'relocationEnd': 'onRelocationEnd',
 		'focus': 'onSurfaceFocus',
-		'blur': 'onSurfaceBlur'
+		'blur': 'onSurfaceBlur',
+		'position': 'onSurfacePosition'
 	} );
 	this.inspectors.connect( this, {
 		'opening': 'onInspectorOpening',
@@ -60,8 +61,6 @@ ve.ui.DesktopContext = function VeUiDesktopContext( surface, config ) {
 	} );
 	this.context.connect( this, { 'choose': 'onContextItemChoose' } );
 
-	this.windowResizeHandler = ve.bind( this.onWindowResize, this );
-	this.$( this.getElementWindow() ).on( 'resize', this.windowResizeHandler );
 	this.$element.add( this.$menu )
 		.on( 'mousedown', false );
 
@@ -99,9 +98,6 @@ ve.ui.DesktopContext.prototype.destroy = function () {
 	this.surface.getModel().disconnect( this );
 	this.surface.getView().disconnect( this );
 	this.inspectors.disconnect( this );
-
-	// Disconnect DOM events
-	this.$( this.getElementWindow() ).off( 'resize', this.windowResizeHandler );
 
 	// Stop timers
 	clearTimeout( this.afterModelChangeTimeout );
@@ -202,6 +198,13 @@ ve.ui.DesktopContext.prototype.onSurfaceBlur = function () {
 	if ( !this.surface.getModel().getSelection() ) {
 		this.hide();
 	}
+};
+
+/**
+ * Response to position events on the surface.
+ */
+ve.ui.DesktopContext.prototype.onSurfacePosition = function () {
+	this.update( false, true );
 };
 
 /**
@@ -359,7 +362,7 @@ ve.ui.DesktopContext.prototype.updateDimensions = function ( transition ) {
 	$container = inspector ? this.inspectors.$element : this.$menu;
 	if ( focusedNode ) {
 		// We're on top of a node
-		$node = focusedNode.$focusable || focusedNode.$element;
+		$node = focusedNode.$focusable;
 		if ( this.embedded ) {
 			// Get the position relative to the surface it is embedded in
 			focusableOffset = OO.ui.Element.getRelativePosition(
