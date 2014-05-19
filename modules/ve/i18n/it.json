@@ -11,11 +11,12 @@
 			"Gianfranco",
 			"Minerva Titani",
 			"Raoli",
-			"Una giornata uggiosa '94"
+			"Una giornata uggiosa '94",
+			"Lucas2"
 		]
 	},
 	"visualeditor": "VisualEditor",
-	"visualeditor-aliennode-tooltip": "Spiacenti, questo elemento può essere modificato solo in modalità sorgente per ora.",
+	"visualeditor-aliennode-tooltip": "Spiacenti, questo elemento può essere per il momento modificato solo in modalità sorgente.",
 	"visualeditor-annotationbutton-bold-tooltip": "Grassetto",
 	"visualeditor-annotationbutton-code-tooltip": "Codice di computer",
 	"visualeditor-annotationbutton-italic-tooltip": "Corsivo",
