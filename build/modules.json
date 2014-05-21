@@ -237,9 +237,7 @@
 			"modules/ve/ce/annotations/ve.ce.TextStyleAnnotation.js",
 			"modules/ve/ui/ve.ui.js",
 			"modules/ve/ui/ve.ui.Surface.js",
-			"modules/ve/ui/ve.ui.DesktopSurface.js",
 			"modules/ve/ui/ve.ui.Context.js",
-			"modules/ve/ui/ve.ui.DesktopContext.js",
 			"modules/ve/ui/ve.ui.Dialog.js",
 			"modules/ve/ui/ve.ui.Inspector.js",
 			"modules/ve/ui/ve.ui.WindowSet.js",
@@ -398,6 +396,10 @@
 		]
 	},
 	"visualEditor.desktop": {
+		"scripts": [
+			"modules/ve/ui/ve.ui.DesktopSurface.js",
+			"modules/ve/ui/ve.ui.DesktopContext.js"
+		],
 		"styles": [
 			"modules/ve/ui/themes/apex/ve.ui.Inspector.css"
 		],
