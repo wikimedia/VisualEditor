@@ -34,6 +34,7 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 	this.documentView = new ve.ce.Document( model.getDocument(), this );
 	this.surfaceObserver = new ve.ce.SurfaceObserver( this.documentView );
 	this.selectionTimeout = null;
+	this.$window = this.$( OO.ui.Element.getWindow( this.$.context ) );
 	this.$document = this.$( this.getElementDocument() );
 	this.eventSequencer = new ve.EventSequencer( [
 		'keydown', 'keypress', 'keyup',
@@ -787,8 +788,7 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 		view = this,
 		slice = this.model.documentModel.cloneSliceFromRange( this.model.getSelection() ),
 		htmlDoc = this.getModel().getDocument().getHtmlDocument(),
-		clipboardData = e.originalEvent.clipboardData,
-		$window = this.$( OO.ui.Element.getWindow( this.$.context ) );
+		clipboardData = e.originalEvent.clipboardData;
 
 	this.$pasteTarget.empty();
 
@@ -859,7 +859,7 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 		rangyRange.setEnd( this.$pasteTarget[0], this.$pasteTarget[0].childNodes.length );
 
 		// Save scroll position before changing focus to "offscreen" paste target
-		scrollTop = $window.scrollTop();
+		scrollTop = this.$window.scrollTop();
 
 		sel = rangy.getSelection( this.getElementDocument() );
 		originalRange = sel.getRangeAt( 0 ).cloneRange();
@@ -867,7 +867,7 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 		this.$pasteTarget[0].focus();
 		sel.addRange( rangyRange, false );
 		// Restore scroll position after changing focus
-		$window.scrollTop( scrollTop );
+		this.$window.scrollTop( scrollTop );
 
 		setTimeout( function () {
 			// Change focus back
@@ -876,7 +876,7 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 			view.documentView.getDocumentNode().$element[0].focus();
 			sel.addRange( originalRange );
 			// Restore scroll position
-			$window.scrollTop( scrollTop );
+			view.$window.scrollTop( scrollTop );
 		} );
 	}
 };
@@ -911,7 +911,6 @@ ve.ce.Surface.prototype.onPaste = function ( e ) {
 ve.ce.Surface.prototype.beforePaste = function ( e ) {
 	var tx, node, range, rangyRange, sel,
 		context, leftText, rightText, textNode, textStart, textEnd,
-		$window = this.$( OO.ui.Element.getWindow( this.$.context ) ),
 		selection = this.model.getSelection(),
 		clipboardData = e.originalEvent.clipboardData,
 		doc = this.model.documentModel;
@@ -934,7 +933,7 @@ ve.ce.Surface.prototype.beforePaste = function ( e ) {
 	}
 
 	// Save scroll position before changing focus to "offscreen" paste target
-	this.beforePasteData.scrollTop = $window.scrollTop();
+	this.beforePasteData.scrollTop = this.$window.scrollTop();
 
 	this.$pasteTarget.empty();
 
@@ -999,7 +998,7 @@ ve.ce.Surface.prototype.beforePaste = function ( e ) {
 	}
 
 	// Restore scroll position after focusing the paste target
-	$window.scrollTop( this.beforePasteData.scrollTop );
+	this.$window.scrollTop( this.beforePasteData.scrollTop );
 
 };
 
@@ -1015,7 +1014,6 @@ ve.ce.Surface.prototype.afterPaste = function () {
 		context, left, right, contextRange,
 		pasteRules = this.getSurface().getPasteRules(),
 		beforePasteData = this.beforePasteData || {},
-		$window = this.$( OO.ui.Element.getWindow( this.$.context ) ),
 		selection = this.model.getSelection();
 
 	// If the selection doesn't collapse after paste then nothing was inserted
@@ -1225,7 +1223,7 @@ ve.ce.Surface.prototype.afterPaste = function () {
 
 	// Restore focus and scroll position
 	this.documentView.getDocumentNode().$element[0].focus();
-	$window.scrollTop( beforePasteData.scrollTop );
+	this.$window.scrollTop( beforePasteData.scrollTop );
 
 	selection = tx.translateRange( selection );
 	this.model.change( tx, new ve.Range( selection.start ) );
