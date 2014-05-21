@@ -68,14 +68,14 @@ QUnit.test( 'getOffsetFrom(Element|Text)Node', function ( assert ) {
 				'msg': 'Annotated alien',
 				'html': '<p>Foo<b><cite>Bar</cite></b>Baz</p>',
 				// CE html summary;
-				// <p>Foo<b><span [protectedNode]><cite>Bar</cite><img [shield]></span></b>Baz</p>
+				// <p>Foo<b><span [protectedNode]><cite>Bar</cite></span></b>Baz</p>
 				'expected': [
 					0,
 					1, 1,
 					2,
 					3,
 					4, 4, 4,
-					6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
+					6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
 					7,
 					8,
 					9, 9,

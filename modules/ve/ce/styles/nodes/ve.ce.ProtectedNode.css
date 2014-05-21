@@ -17,8 +17,8 @@
 	user-select: none;
 }
 
-.ve-ce-protectedNode::-moz-selection,
-.ve-ce-protectedNode *::-moz-selection {
+.ve-ce-protectedNode-shielded::-moz-selection,
+.ve-ce-protectedNode-shielded *::-moz-selection {
 	background: transparent;
 }
 
