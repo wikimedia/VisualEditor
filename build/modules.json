@@ -308,7 +308,7 @@
 			"modules/ve/ui/styles/ve.ui.Surface.css",
 			"modules/ve/ui/styles/widgets/ve.ui.SurfaceWidget.css",
 			"modules/ve/ui/styles/ve.ui.Toolbar.css",
-			"modules/ve/ui/styles/ve.ui.Icons-vector.css"
+			"modules/ve/ui/styles/ve.ui.Icons.css"
 		],
 		"dependencies": [
 			"visualEditor.base"

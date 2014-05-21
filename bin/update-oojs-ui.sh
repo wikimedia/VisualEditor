@@ -73,8 +73,8 @@ NEWCHANGES=$(git log $OLDHASH.. --oneline --no-merges --reverse --color=never)
 NEWCHANGESDISPLAY=$(git log $OLDHASH.. --oneline --no-merges --reverse --color=always)
 
 # Copy files
-# - Exclude the default non-svg stylesheet
-rsync --recursive --delete --force --exclude 'oojs-ui.css' ./dist/ $TARGET_REPO/$TARGET_DIR || exit 1
+# - Exclude the default non-svg stylesheet and non-SVG files
+rsync --recursive --delete --force --exclude 'oojs-ui.css' --exclude 'images/*/*.png' ./dist/ $TARGET_REPO/$TARGET_DIR || exit 1
 
 # Read the new version
 NEWVERSION=$(oojsuiversion)
