@@ -194,7 +194,7 @@ QUnit.test( 'removeContent', 6, function ( assert ) {
 	);
 } );
 
-QUnit.test( 'insertContent', 4, function ( assert ) {
+QUnit.test( 'insertContent', 8, function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument(),
 		surface = new ve.dm.Surface( doc ),
 		fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 1, 4 ) );
@@ -225,6 +225,36 @@ QUnit.test( 'insertContent', 4, function ( assert ) {
 		fragment.getRange(),
 		new ve.Range( 4 ),
 		'range restored after undo'
+	);
+
+	fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 1 ) );
+	fragment.insertContent( [ { 'type': 'table' }, { 'type': '/table' } ] );
+	assert.deepEqual(
+		doc.getData( new ve.Range( 0, 2 ) ),
+		[ { 'type': 'table' }, { 'type': '/table' } ],
+		'table insertion at start of heading is moved outside of heading'
+	);
+	assert.deepEqual(
+		fragment.getRange(),
+		new ve.Range( 0, 2 ),
+		'range covers inserted content in moved position (left)'
+	);
+
+	// Set up document and surface from scratch
+	doc = ve.dm.example.createExampleDocument();
+	surface = new ve.dm.Surface( doc );
+
+	fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 4 ) );
+	fragment.insertContent( [ { 'type': 'list' }, { 'type': '/list' } ] );
+	assert.deepEqual(
+		doc.getData( new ve.Range( 5, 7 ) ),
+		[ { 'type': 'list' }, { 'type': '/list' } ],
+		'list insertion at end of heading is moved outside of heading'
+	);
+	assert.deepEqual(
+		fragment.getRange(),
+		new ve.Range( 5, 7 ),
+		'range covers inserted content in moved position (right)'
 	);
 } );
 
