@@ -937,6 +937,44 @@ ve.dm.Transaction.prototype.translateRange = function ( range, excludeInsertion 
 };
 
 /**
+ * Get the range that covers all modifications made by this transaction.
+ *
+ * This range spans from the offset right before the first modification to the
+ * offset right after the last modification: it is the narrowest range that covers
+ * all modifications.
+ *
+ * The returned range is relative to the new state, after the transaction is applied. So for a
+ * simple insertion transaction, the range will cover the newly inserted data, and for a simple
+ * removal transaction it will be a zero-length range.
+ *
+ * @returns {ve.Range|null} Range covering all modifications, or null for a no-op transaction
+ */
+ve.dm.Transaction.prototype.getModifiedRange = function () {
+	var i, len, op, start, end, offset = 0;
+	for ( i = 0, len = this.operations.length; i < len; i++ ) {
+		op = this.operations[i];
+		if ( op.type === 'retain' ) {
+			offset += op.length;
+		} else {
+			if ( start === undefined ) {
+				// This is the first non-retain operation, set start to right before it
+				start = offset;
+			}
+			if ( op.type === 'replace' ) {
+				offset += op.insert.length;
+			}
+			// Set end, so it'll end up being right after the last non-retain operation
+			end = offset;
+		}
+	}
+	if ( start === undefined || end === undefined ) {
+		// No-op transaction
+		return null;
+	}
+	return new ve.Range( start, end );
+};
+
+/**
  * Add a final retain operation to finish off a transaction (internal helper).
  *
  * @private

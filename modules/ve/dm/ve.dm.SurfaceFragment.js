@@ -104,9 +104,16 @@ ve.dm.SurfaceFragment.prototype.update = function () {
  * is auto-selecting.
  *
  * @param {ve.dm.Transaction|ve.dm.Transaction[]} txs Transaction(s) to process
+ * @param {ve.Range} [range] Range to set, if different from translated range
  */
-ve.dm.SurfaceFragment.prototype.change = function ( txs ) {
-	this.surface.change( txs, !this.noAutoSelect && this.getTranslatedRange( txs ) );
+ve.dm.SurfaceFragment.prototype.change = function ( txs, range ) {
+	this.surface.change( txs, !this.noAutoSelect && ( range || this.getTranslatedRange( txs ) ) );
+	if ( range ) {
+		// Let this.range auto-translate for what we just did
+		this.update();
+		// Overwrite it
+		this.range = range;
+	}
 };
 
 /**
@@ -642,7 +649,9 @@ ve.dm.SurfaceFragment.prototype.annotateContent = function ( method, nameOrAnnot
 /**
  * Remove content in the fragment and insert content before it.
  *
- * This will move the fragment's range to the end of the insertion and make it zero-length.
+ * This will move the fragment's range to cover the inserted content. Note that this may be
+ * different from what a normal range translation would do: the insertion might occur
+ * at a different offset if that is needed to make the document balanced.
  *
  * @method
  * @param {string|Array} content Content to insert, can be either a string or array of data
@@ -654,7 +663,7 @@ ve.dm.SurfaceFragment.prototype.insertContent = function ( content, annotate ) {
 	if ( this.isNull() ) {
 		return this;
 	}
-	var annotations;
+	var annotations, tx, newRange;
 	if ( this.getRange( true ).getLength() ) {
 		this.removeContent();
 	}
@@ -669,13 +678,15 @@ ve.dm.SurfaceFragment.prototype.insertContent = function ( content, annotate ) {
 				ve.dm.Document.static.addAnnotationsToData( content, annotations );
 			}
 		}
-		this.change(
-			ve.dm.Transaction.newFromInsertion(
-				this.document,
-				this.getRange( true ).start,
-				content
-			)
+		tx = ve.dm.Transaction.newFromInsertion(
+			this.document,
+			this.getRange( true ).start,
+			content
 		);
+		// Set the range to cover the inserted content; the offset translation will be wrong
+		// if newFromInsertion() decided to move the insertion point
+		newRange = tx.getModifiedRange();
+		this.change( tx, newRange );
 	}
 	return this;
 };

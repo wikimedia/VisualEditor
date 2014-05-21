@@ -1592,6 +1592,106 @@ QUnit.test( 'translateRange', function ( assert ) {
 	}
 } );
 
+QUnit.test( 'getModifiedRange', function ( assert ) {
+	var i, j, len, tx, doc = ve.dm.example.createExampleDocument(),
+		cases = [
+			{
+				'calls': [
+					['pushRetain', 5]
+				],
+				'range': null,
+				'msg': 'no-op transaction returns null'
+			},
+			{
+				'calls': [
+					['pushRetain', 5],
+					['pushReplace', doc, 5, 0, ['a', 'b', 'c']],
+					['pushRetain', 42]
+				],
+				'range': new ve.Range( 5, 8 ),
+				'msg': 'simple insertion returns range covering new content'
+			},
+			{
+				'calls': [
+					['pushRetain', 5],
+					['pushReplace', doc, 5, 13, []],
+					['pushRetain', 42]
+				],
+				'range': new ve.Range( 5, 5 ),
+				'msg': 'simple removal returns zero-length range at removal'
+			},
+			{
+				'calls': [
+					['pushRetain', 5],
+					['pushReplace', doc, 5, 3, ['a', 'b', 'c', 'd']],
+					['pushRetain', 42]
+				],
+				'range': new ve.Range( 5, 9 ),
+				'msg': 'simple replacement returns range covering new content (1)'
+			},
+			{
+				'calls': [
+					['pushRetain', 5],
+					['pushReplace', doc, 5, 13, ['a', 'b', 'c', 'd']],
+					['pushRetain', 42]
+				],
+				'range': new ve.Range( 5, 9 ),
+				'msg': 'simple replacement returns range covering new content (2)'
+			},
+			{
+				'calls': [
+					['pushRetain', 5],
+					['pushReplace', doc, 5, 3, []],
+					['pushRetain', 42],
+					['pushReplace', doc, 50, 0, ['h', 'e', 'l', 'l', 'o']],
+					['pushRetain', 108]
+				],
+				'range': new ve.Range( 5, 52 ),
+				'msg': 'range covers two operations with retain in between'
+			},
+			{
+				'calls': [
+					['pushReplace', doc, 0, 3, []]
+				],
+				'range': new ve.Range( 0, 0 ),
+				'msg': 'removal without retains'
+			},
+			{
+				'calls': [
+					['pushReplace', doc, 0, 0, ['a', 'b', 'c']]
+				],
+				'range': new ve.Range( 0, 3 ),
+				'msg': 'insertion without retains'
+			},
+			{
+				'calls': [
+					['pushRetain', 5],
+					['pushReplaceElementAttribute', 'style', 'bullet', 'number']
+				],
+				'range': new ve.Range( 5,5 ),
+				'msg': 'single attribute change'
+			},
+			{
+				'calls': [
+					['pushReplaceElementAttribute', 'style', 'bullet', 'number'],
+					['pushRetain', 42],
+					['pushReplaceElementAttribute', 'style', 'bullet', 'number']
+				],
+				'range': new ve.Range( 0, 42 ),
+				'msg': 'two attribute changes'
+			}
+		];
+
+	QUnit.expect( cases.length );
+	for ( i = 0, len = cases.length; i < len; i++ ) {
+		tx = new ve.dm.Transaction();
+		for ( j = 0; j < cases[i].calls.length; j++ ) {
+			tx[cases[i].calls[j][0]].apply( tx, cases[i].calls[j].slice( 1 ) );
+		}
+		assert.deepEqual( tx.getModifiedRange(), cases[i].range, cases[i].msg );
+	}
+} );
+
 QUnit.test( 'pushRetain', 4, function ( assert ) {
 	var cases = {
 		'retain': {
