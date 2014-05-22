@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Vikassy",
-			"VASANTH S.N."
+			"VASANTH S.N.",
+			"Nayvik"
 		]
 	},
 	"visualeditor-annotationbutton-bold-tooltip": "ದಪ್ಪ",
@@ -15,6 +16,7 @@
 	"visualeditor-dialog-action-goback": "ಹಿಂದೆ ಹೋಗಿ",
 	"visualeditor-dialog-error": "ಎನೋ ಎಡವಟ್ಟಾಗಿದೆ....",
 	"visualeditor-dialog-error-dismiss": "ಹಿಂದೆ ಹೋಗಿ",
+	"visualeditor-dialog-language-auto-direction": "ಸ್ವಯಂಚಲಿ",
 	"visualeditor-dialog-language-search-title": "ಭಾಷೆಯ ಆಯ್ಕೆ",
 	"visualeditor-help-tool": "ಸಹಾಯ",
 	"visualeditor-inspector-close-tooltip": "ಮುಚು",
