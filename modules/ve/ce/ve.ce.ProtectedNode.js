@@ -326,7 +326,7 @@ ve.ce.ProtectedNode.prototype.positionPhantoms = function () {
 ve.ce.ProtectedNode.prototype.clearPhantoms = function () {
 	var surface = this.root.getSurface();
 	surface.replacePhantoms( null );
-	surface.$element.unbind( '.ve-ce-protectedNode' );
+	surface.$element.off( '.ve-ce-protectedNode' );
 	surface.getModel().getDocument().disconnect( this, { 'transact': 'positionPhantoms' } );
 	this.$phantoms = this.$( [] );
 };
