@@ -160,6 +160,9 @@ ve.ui.triggerRegistry.register(
 	'preformatted', new ve.ui.Trigger ( 'ctrl+7' )
 );
 ve.ui.triggerRegistry.register(
+	'blockquote', new ve.ui.Trigger( 'ctrl+8' )
+);
+ve.ui.triggerRegistry.register(
 	'selectAll', { mac: new ve.ui.Trigger( 'cmd+a' ), pc: new ve.ui.Trigger( 'ctrl+a' ) }
 );
 ve.ui.triggerRegistry.register(

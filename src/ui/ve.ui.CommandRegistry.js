@@ -195,6 +195,12 @@ ve.ui.commandRegistry.register(
 );
 ve.ui.commandRegistry.register(
 	new ve.ui.Command(
+		'blockquote', 'format', 'convert',
+		{ args: ['blockquote'], supportedSelections: ['linear'] }
+	)
+);
+ve.ui.commandRegistry.register(
+	new ve.ui.Command(
 		'pasteSpecial', 'content', 'pasteSpecial',
 		{ supportedSelections: ['linear', 'table'] }
 	)
