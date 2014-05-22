@@ -48,6 +48,10 @@ $( function () {
 				currentTarget.destroy();
 			}
 
+			var oldDir = dir === 'ltr' ? 'rtl' : 'ltr';
+			$( '.stylesheet-' + dir ).prop( 'disabled', false );
+			$( '.stylesheet-' + oldDir ).prop( 'disabled', true );
+
 			// Container needs to be visually hidden, but not display:none
 			// so that the toolbar can be measured
 			$targetContainer.empty().show().css( {

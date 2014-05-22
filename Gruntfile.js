@@ -6,12 +6,13 @@
 
 /*jshint node:true */
 module.exports = function ( grunt ) {
+	grunt.loadNpmTasks( 'grunt-banana-checker' );
 	grunt.loadNpmTasks( 'grunt-contrib-clean' );
 	grunt.loadNpmTasks( 'grunt-contrib-csslint' );
 	grunt.loadNpmTasks( 'grunt-contrib-jshint' );
 	grunt.loadNpmTasks( 'grunt-contrib-qunit' );
 	grunt.loadNpmTasks( 'grunt-contrib-watch' );
-	grunt.loadNpmTasks( 'grunt-banana-checker' );
+	grunt.loadNpmTasks( 'grunt-cssjanus' );
 	grunt.loadNpmTasks( 'grunt-jscs-checker' );
 	grunt.loadTasks( 'build/tasks' );
 
@@ -49,6 +50,12 @@ module.exports = function ( grunt ) {
 				dest: 'dist/visualEditor.css',
 				src: introBuildFiles.styles
 					.concat( coreBuildFiles.styles )
+			}
+		},
+		cssjanus: {
+			dist: {
+				src: 'dist/visualEditor.css',
+				dest: 'dist/visualEditor.rtl.css'
 			}
 		},
 		copy: {
@@ -168,7 +175,7 @@ module.exports = function ( grunt ) {
 
 	grunt.registerTask( 'lint', [ 'jshint', 'jscs', 'csslint', 'banana' ] );
 	grunt.registerTask( 'unit', 'qunit' );
-	grunt.registerTask( 'build', [ 'clean', 'git-build', 'concat', 'copy', 'buildloader' ] );
+	grunt.registerTask( 'build', [ 'clean', 'git-build', 'concat', 'cssjanus', 'copy', 'buildloader' ] );
 	grunt.registerTask( 'test', [ 'build', 'lint', 'unit' ] );
 	grunt.registerTask( 'default', 'test' );
 };
