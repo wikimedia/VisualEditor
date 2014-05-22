@@ -481,7 +481,10 @@ ve.dm.SurfaceFragment.prototype.getSelectedLeafNodes = function () {
 };
 
 /**
- * Get the node selected by a range, i.e. the range matches the node's range exactly
+ * Get the node selected by a range, i.e. the range matches the node's range exactly.
+ *
+ * Note that this method operates on the fragment's range, not the document's current selection.
+ * This fragment does not need to be selected for this method to work.
  *
  * @returns {ve.dm.Node|null} The node selected by the range, or null if a node is not selected
  */
