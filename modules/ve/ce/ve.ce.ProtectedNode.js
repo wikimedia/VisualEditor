@@ -83,6 +83,8 @@ ve.ce.ProtectedNode.prototype.onProtectedSetup = function () {
 		'mouseenter.ve-ce-protectedNode': ve.bind( this.onProtectedMouseEnter, this ),
 		'mousedown.ve-ce-protectedNode': ve.bind( this.onProtectedMouseDown, this )
 	} );
+
+	this.isSetup = true;
 };
 
 /**
