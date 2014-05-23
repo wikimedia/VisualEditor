@@ -68,7 +68,7 @@ ve.init.sa.Target.prototype.setup = function () {
 
 	// Properties
 	this.setupDone = true;
-	this.surface = new this.surfaceClass( this.document );
+	this.surface = this.createSurface( this.document );
 	this.$document = this.surface.$element.find( '.ve-ce-documentNode' );
 	this.toolbar = new ve.ui.TargetToolbar( this, this.surface, { 'shadow': true } );
 
@@ -91,4 +91,11 @@ ve.init.sa.Target.prototype.setup = function () {
 	setTimeout( function () {
 		target.emit( 'surfaceReady' );
 	} );
+};
+
+/**
+ * @inheritdoc
+ */
+ve.init.sa.Target.prototype.createSurface = function ( dmDoc, config ) {
+	return new this.surfaceClass( dmDoc, config );
 };

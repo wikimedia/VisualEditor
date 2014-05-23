@@ -163,3 +163,17 @@ ve.init.Target.static.pasteRules = {
 	},
 	'all': null
 };
+
+/* Methods */
+
+/**
+ * Create a surface.
+ *
+ * @method
+ * @param {ve.dm.Document} dmDoc Document model
+ * @param {Object} [config] Configuration options
+ * @returns {ve.ui.Surface}
+ */
+ve.init.Target.prototype.createSurface = function ( dmDoc, config ) {
+	return new ve.ui.DesktopSurface( dmDoc, config );
+};
