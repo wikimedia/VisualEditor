@@ -106,8 +106,11 @@ ve.init.Target.static.toolbarGroups = [
 	{ 'include': [ 'link' ] },
 	// Structure
 	{
-		'type': 'bar',
-		'include': [ 'number', 'bullet', 'outdent', 'indent' ]
+		'type': 'list',
+		'icon': 'bullet-list',
+		'indicator': 'down',
+		'include': [ { 'group': 'structure' } ],
+		'demote': [ 'outdent', 'indent' ]
 	},
 	// Insert
 	{
