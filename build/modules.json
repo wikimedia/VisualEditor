@@ -401,7 +401,8 @@
 			"modules/ve/ui/ve.ui.DesktopContext.js"
 		],
 		"styles": [
-			"modules/ve/ui/themes/apex/ve.ui.Inspector.css"
+			"modules/ve/ui/themes/apex/ve.ui.Inspector.css",
+			"modules/ve/ui/themes/apex/dialogs/ve.ui.ActionDialog.css"
 		],
 		"dependencies": [
 			"oojs-ui-apex",
