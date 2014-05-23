@@ -42,6 +42,9 @@ ve.init.Target = function VeInitTarget( $container ) {
 	 * @property {ve.ui.TargetToolbar}
 	 */
 	this.toolbar = null;
+
+	// Register
+	ve.init.target = this;
 };
 
 /**
@@ -58,6 +61,7 @@ ve.init.Target.prototype.destroy = function () {
 	if ( this.$element ) {
 		this.$element.remove();
 	}
+	ve.init.target = null;
 };
 
 /* Events */
