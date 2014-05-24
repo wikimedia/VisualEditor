@@ -102,12 +102,14 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 		'copy': ve.bind( this.onCopy, this )
 	} );
 
-	$documentNode.on( $.browser.msie ? 'beforepaste' : 'paste', ve.bind( this.onPaste, this ) );
-	$documentNode.on( 'focus', 'a', function () {
-		// Opera <= 12 triggers 'blur' on document node before any link is
-		// focused and we don't want that
-		$documentNode.focus();
-	} );
+	$documentNode
+		// Bug 65714: MSIE possibly needs `beforepaste` to also be bound; to test.
+		.on( 'paste', ve.bind( this.onPaste, this ) )
+		.on( 'focus', 'a', function () {
+			// Opera <= 12 triggers 'blur' on document node before any link is
+			// focused and we don't want that
+			$documentNode.focus();
+		} );
 
 	this.$element.on( {
 		'dragover': ve.bind( this.onDocumentDragOver, this ),
