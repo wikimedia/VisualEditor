@@ -22,6 +22,7 @@ ve.dm.Surface = function VeDmSurface( doc ) {
 	this.documentModel = doc;
 	this.metaList = new ve.dm.MetaList( this );
 	this.selection = null;
+	this.selectionBefore = null;
 	this.selectedNodes = {};
 	this.newTransactions = [];
 	this.stagingStack = [];
@@ -223,6 +224,7 @@ ve.dm.Surface.prototype.applyStaging = function () {
 		// Move transactions to the next item down in the staging stack
 		Array.prototype.push.apply( this.getStagingTransactions(), transactions );
 	} else {
+		this.truncateUndoStack();
 		// Move transactions to the undo stack
 		this.newTransactions = transactions;
 		this.breakpoint();
@@ -680,6 +682,8 @@ ve.dm.Surface.prototype.breakpoint = function () {
 		this.newTransactions = [];
 		this.emit( 'history' );
 		return true;
+	} else if ( !this.selectionBefore && this.selection ) {
+		this.selectionBefore = this.selection.clone();
 	}
 	return false;
 };
