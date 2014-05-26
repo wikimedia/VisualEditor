@@ -56,7 +56,7 @@
 	"visualeditor-formatdropdown-format-preformatted": "Texto predeterminado",
 	"visualeditor-formatdropdown-title": "Cambiar formato",
 	"visualeditor-help-tool": "Ayuda",
-	"visualeditor-historybutton-redo-tooltip": "Repetir",
+	"visualeditor-historybutton-redo-tooltip": "Rehacer",
 	"visualeditor-historybutton-undo-tooltip": "Deshacer",
 	"visualeditor-indentationbutton-indent-tooltip": "Aumentar sangría",
 	"visualeditor-indentationbutton-outdent-tooltip": "Disminuir sangría",
@@ -85,8 +85,8 @@
 	"visualeditor-shortcuts-history": "Historial",
 	"visualeditor-shortcuts-other": "Otro",
 	"visualeditor-shortcuts-text-style": "Formato de texto",
-	"visualeditor-specialcharacter-button-tooltip": "Caracteres especiales",
-	"visualeditor-specialcharacterinspector-title": "Caracteres especiales",
+	"visualeditor-specialcharacter-button-tooltip": "Carácter especial",
+	"visualeditor-specialcharacterinspector-title": "Carácter especial",
 	"visualeditor-toolbar-insert": "Insertar",
 	"visualeditor-version-label": "Versión"
 }
