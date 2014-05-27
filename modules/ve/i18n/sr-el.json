@@ -19,6 +19,7 @@
 	"visualeditor-clipboard-copy": "Kopiraj",
 	"visualeditor-clipboard-cut": "Iseci",
 	"visualeditor-clipboard-paste": "Nalepi",
+	"visualeditor-clipboard-paste-special": "Nalepi kao običan tekst",
 	"visualeditor-dialog-action-apply": "Primeni izmene",
 	"visualeditor-dialog-action-cancel": "Otkaži",
 	"visualeditor-dialog-action-goback": "Idi nazad",
