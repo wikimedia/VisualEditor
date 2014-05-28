@@ -15,12 +15,12 @@
  * @mixins ve.ce.GeneratedContentNode
  *
  * @constructor
- * @param {ve.dm.AlienNode} model Model to observe
- * @param {Object} [config] Configuration options
+ * @param {ve.dm.AlienNode} model
+ * @param {Object} [config]
  */
-ve.ce.AlienNode = function VeCeAlienNode( model, config ) {
+ve.ce.AlienNode = function VeCeAlienNode() {
 	// Parent constructor
-	ve.ce.LeafNode.call( this, model, config );
+	ve.ce.LeafNode.apply( this, arguments );
 
 	// Mixin constructors
 	ve.ce.ProtectedNode.call( this );
@@ -70,12 +70,14 @@ ve.ce.AlienNode.prototype.generateContents = function ( config )  {
  *
  * @class
  * @extends ve.ce.AlienNode
+ *
  * @constructor
- * @param {ve.dm.AlienBlockNode} model Model to observe
+ * @param {ve.dm.AlienBlockNode} model
+ * @param {Object} [config]
  */
-ve.ce.AlienBlockNode = function VeCeAlienBlockNode( model ) {
+ve.ce.AlienBlockNode = function VeCeAlienBlockNode() {
 	// Parent constructor
-	ve.ce.AlienNode.call( this, model );
+	ve.ce.AlienNode.apply( this, arguments );
 
 	// DOM changes
 	this.$element.addClass( 've-ce-alienBlockNode' );
@@ -94,12 +96,14 @@ ve.ce.AlienBlockNode.static.name = 'alienBlock';
  *
  * @class
  * @extends ve.ce.AlienNode
+ *
  * @constructor
- * @param {ve.dm.AlienInlineNode} model Model to observe
+ * @param {ve.dm.AlienInlineNode} model
+ * @param {Object} [config]
  */
-ve.ce.AlienInlineNode = function VeCeAlienInlineNode( model ) {
+ve.ce.AlienInlineNode = function VeCeAlienInlineNode() {
 	// Parent constructor
-	ve.ce.AlienNode.call( this, model );
+	ve.ce.AlienNode.apply( this, arguments );
 
 	// DOM changes
 	this.$element.addClass( 've-ce-alienInlineNode' );

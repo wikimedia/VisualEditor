@@ -47,7 +47,7 @@ QUnit.test( 'constructor', 11, function ( assert ) {
 	doc = new ve.dm.Document( data );
 	assert.equalNodeTree(
 		doc.getDocumentNode(),
-		new ve.dm.DocumentNode( [ new ve.dm.ParagraphNode( [], { 'type': 'paragraph' } ) ] ),
+		new ve.dm.DocumentNode( [ new ve.dm.ParagraphNode( { 'type': 'paragraph' } ) ] ),
 		'empty paragraph no longer has a text node'
 	);
 	assert.equal( doc.data, data, 'ElementLinearData is stored by reference' );
@@ -62,8 +62,8 @@ QUnit.test( 'constructor', 11, function ( assert ) {
 	assert.equalNodeTree(
 		doc.getDocumentNode(),
 		new ve.dm.DocumentNode( [
-			new ve.dm.ParagraphNode( [ new ve.dm.TextNode( 9 ) ], ve.dm.example.withMetaPlainData[0] ),
-			new ve.dm.InternalListNode( [], ve.dm.example.withMetaPlainData[11] )
+			new ve.dm.ParagraphNode( ve.dm.example.withMetaPlainData[0], [ new ve.dm.TextNode( 9 ) ] ),
+			new ve.dm.InternalListNode( ve.dm.example.withMetaPlainData[11] )
 		] ),
 		'node tree does not contain metadata'
 	);
@@ -247,7 +247,7 @@ QUnit.test( 'rebuildNodes', 2, function ( assert ) {
 	// Replace table with paragraph
 	doc.data.batchSplice( 5, 32, [ { 'type': 'paragraph' }, 'a', 'b', 'c', { 'type': '/paragraph' } ] );
 	tree.splice( 1, 1, new ve.dm.ParagraphNode(
-		[new ve.dm.TextNode( 3 )], doc.data.getData( 5 )
+		doc.data.getData( 5 ), [new ve.dm.TextNode( 3 )]
 	) );
 	// Rebuild with changes
 	doc.rebuildNodes( documentNode, 1, 1, 5, 5 );

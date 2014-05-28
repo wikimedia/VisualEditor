@@ -893,7 +893,7 @@ ve.dm.ElementLinearData.prototype.cloneElements = function () {
 	var i, len, node;
 	for ( i = 0, len = this.getLength(); i < len; i++ ) {
 		if ( this.isOpenElementData( i ) ) {
-			node = ve.dm.nodeFactory.create( this.getType( i ), [], this.getData( i ) );
+			node = ve.dm.nodeFactory.create( this.getType( i ), this.getData( i ) );
 			this.data[i] = node.getClonedElement();
 		}
 	}
