@@ -85,7 +85,7 @@ QUnit.test( 'breakpoint', 7, function ( assert ) {
 	assert.deepEqual( surface.newTransactions, [], 'New transactions match after breakpoint' );
 } );
 
-QUnit.test( 'staging', 23, function ( assert ) {
+QUnit.test( 'staging', 26, function ( assert ) {
 	var tx1, tx2,
 		surface = new ve.dm.SurfaceStub(),
 		fragment = surface.getFragment( new ve.Range( 1, 3 ) ),
@@ -93,12 +93,14 @@ QUnit.test( 'staging', 23, function ( assert ) {
 
 	assert.equal( surface.isStaging(), false, 'isStaging false when not staging' );
 	assert.equal( surface.getStagingTransactions(), undefined, 'getStagingTransactions undefined when not staging' );
+	assert.equal( surface.doesStagingAllowUndo(), undefined, 'doesStagingAllowUndo undefined when not staging' );
 
 	surface.change( new ve.dm.Transaction.newFromInsertion( doc, 1, ['a'] ) );
 
 	surface.pushStaging();
 	assert.equal( surface.isStaging(), true, 'isStaging true after pushStaging' );
 	assert.deepEqual( surface.getStagingTransactions(), [], 'getStagingTransactions empty array after pushStaging' );
+	assert.equal( surface.doesStagingAllowUndo(), false, 'doesStagingAllowUndo false when staging without undo' );
 
 	tx1 = new ve.dm.Transaction.newFromInsertion( doc, 2, ['b'] );
 	surface.change( tx1 );
@@ -106,9 +108,10 @@ QUnit.test( 'staging', 23, function ( assert ) {
 	assert.equal( fragment.getText(), 'abhi', 'document contents match after first transaction' );
 	assert.deepEqual( surface.getStagingTransactions(), [tx1], 'getStagingTransactions contains first transaction after change' );
 
-	surface.pushStaging();
+	surface.pushStaging( true );
 	assert.equal( surface.isStaging(), true, 'isStaging true after nested pushStaging' );
 	assert.deepEqual( surface.getStagingTransactions(), [], 'getStagingTransactions empty array after nested pushStaging' );
+	assert.equal( surface.doesStagingAllowUndo(), true, 'doesStagingAllowUndo true when staging with undo' );
 
 	tx2 = new ve.dm.Transaction.newFromInsertion( doc, 3, ['c'] );
 	surface.change( tx2 );
