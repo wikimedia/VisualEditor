@@ -613,7 +613,7 @@ ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
 	// IME detection have to happen here instead of onDocumentCompositionStart.
 	// TODO: This code and code in onDocumentCompositionStart are very similar, consider moving them
 	// to one method.
-	if ( $.browser.msie === true && e.which === 229 ) {
+	if ( ve.isMsie === true && e.which === 229 ) {
 		this.inIme = true;
 		this.handleInsertion();
 		return;
@@ -699,7 +699,7 @@ ve.ce.Surface.prototype.onDocumentKeyPress = function ( e ) {
 	// Prevent IE from editing Aliens/Entities
 	// This is for cases like <p><div>alien</div></p>, to put the cursor outside
 	// the alien tag.
-	if ( $.browser.msie === true ) {
+	if ( ve.isMsie === true ) {
 		selection = this.model.getSelection();
 		if ( selection.start !== 0 && selection.isCollapsed() ) {
 			prevNode = documentModel.getDocumentNode().getNodeFromOffset( selection.start - 1 );
@@ -1240,7 +1240,7 @@ ve.ce.Surface.prototype.afterPaste = function () {
  * @param {jQuery.Event} e Composition start event
  */
 ve.ce.Surface.prototype.onDocumentCompositionStart = function () {
-	if ( $.browser.msie === true ) {
+	if ( ve.isMsie === true ) {
 		return;
 	}
 	this.inIme = true;
