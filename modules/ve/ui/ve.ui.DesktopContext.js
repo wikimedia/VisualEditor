@@ -351,8 +351,7 @@ ve.ui.DesktopContext.prototype.update = function ( transition, repositionOnly ) 
  * @chainable
  */
 ve.ui.DesktopContext.prototype.updateDimensions = function ( transition ) {
-	var $node, $container, focusableOffset, focusableWidth, nodePosition, cursorPosition, position,
-		documentOffset, nodeOffset,
+	var  $container, focusedOffset, focusedDimensions, cursorPosition, position,
 		surface = this.surface.getView(),
 		inspector = this.inspectors.getCurrentWindow(),
 		focusedNode = surface.getFocusedNode(),
@@ -361,37 +360,26 @@ ve.ui.DesktopContext.prototype.updateDimensions = function ( transition ) {
 
 	$container = inspector ? this.inspectors.$element : this.$menu;
 	if ( focusedNode ) {
-		// We're on top of a node
-		$node = focusedNode.$focusable;
+		// Get the position relative to the surface it is embedded in
+		focusedOffset = focusedNode.getRelativeOffset();
+		focusedDimensions = focusedNode.getDimensions();
 		if ( this.embedded ) {
-			// Get the position relative to the surface it is embedded in
-			focusableOffset = OO.ui.Element.getRelativePosition(
-				$node, this.surface.$element
-			);
-			position = { 'y': focusableOffset.top };
+			position = { 'y': focusedOffset.top };
 			// When context is embedded in RTL, it requires adjustments to the relative
 			// positioning (pop up on the other side):
 			if ( rtl ) {
-				position.x = focusableOffset.left;
+				position.x = focusedOffset.left;
 				this.popup.align = 'left';
 			} else {
-				focusableWidth = $node.outerWidth();
-				position.x = focusableOffset.left + focusableWidth;
+				position.x = focusedOffset.left + focusedDimensions.width;
 				this.popup.align = 'right';
 			}
 		} else {
-			// The focused node may be in a wrapper, so calculate the offset relative to the document
-			documentOffset = surface.getDocument().getDocumentNode().$element.offset();
-			nodeOffset = $node.offset();
-			nodePosition = {
-				top: nodeOffset.top - documentOffset.top,
-				left: nodeOffset.left - documentOffset.left
-			};
 			// Get the position of the focusedNode:
-			position = { 'x': nodePosition.left, 'y': nodePosition.top + $node.outerHeight() };
+			position = { 'x': focusedOffset.left, 'y': focusedOffset.top + focusedDimensions.height };
 			// When the context is displayed in LTR, it should be on the right of the node
 			if ( !rtl ) {
-				position.x += $node.outerWidth();
+				position.x += focusedDimensions.width;
 			}
 			this.popup.align = 'center';
 		}
@@ -437,7 +425,8 @@ ve.ui.DesktopContext.prototype.updateDimensions = function ( transition ) {
  * @chainable
  */
 ve.ui.DesktopContext.prototype.show = function ( transition, repositionOnly ) {
-	var inspector = this.inspectors.getCurrentWindow(),
+	var focusedDimensions,
+		inspector = this.inspectors.getCurrentWindow(),
 		focusedNode = this.surface.getView().getFocusedNode();
 
 	if ( !this.showing && !this.hiding ) {
@@ -463,14 +452,19 @@ ve.ui.DesktopContext.prototype.show = function ( transition, repositionOnly ) {
 				inspector.$element.css( 'opacity', 1 );
 			}, this ), 200 );
 		} else {
-			this.embedded = (
-				focusedNode &&
-				// HACK: 5 and 10 are estimates of what 0.25em and 0.5em (the margins of the menu
-				// when embedded) are in pixels, what needs to actually be done is to take
-				// measurements to find the margins and use those value instead
-				focusedNode.$focusable.outerHeight() > this.$menu.outerHeight() + 5 &&
-				focusedNode.$focusable.outerWidth() > this.$menu.outerWidth() + 10
-			);
+			if ( focusedNode ) {
+				focusedDimensions = focusedNode.getDimensions();
+				this.embedded = (
+					// HACK: 5 and 10 are estimates of what 0.25em and 0.5em (the margins of the menu
+					// when embedded) are in pixels, what needs to actually be done is to take
+					// measurements to find the margins and use those value instead
+					focusedDimensions.height > this.$menu.outerHeight() + 5 &&
+					focusedDimensions.width > this.$menu.outerWidth() + 10
+				);
+			} else {
+				this.embedded = false;
+			}
+
 			this.popup.useTail( !this.embedded );
 			this.$menu.show();
 		}

@@ -477,7 +477,7 @@ ve.ce.FocusableNode.prototype.positionHighlights = function () {
 		$highlight = this.$highlights.children().eq( i );
 
 		offset = OO.ui.Element.getRelativePosition(
-			$shield, this.surface.getSurface().$element
+			$shield, this.surface.$element
 		);
 		width = $shield.width();
 		height = $shield.height();
@@ -498,4 +498,35 @@ ve.ce.FocusableNode.prototype.positionHighlights = function () {
 		}
 	}
 	this.$highlights.children().first().append( this.$relocatableMarker );
+};
+
+/**
+ * Get the offset of the focusable node relative to the surface
+ *
+ * @return {Object} Top and left offsets of the focusable node relative to the surface
+ */
+ve.ce.FocusableNode.prototype.getRelativeOffset = function () {
+	var $node = this.$visibleShields.first();
+	if ( !$node.length ) {
+		$node = this.$element;
+	}
+	return OO.ui.Element.getRelativePosition(
+		$node, this.surface.$element
+	);
+};
+
+/**
+ * Get the dimensions of the focusable node
+ *
+ * @return {Object} Width and height of the focusable node
+ */
+ve.ce.FocusableNode.prototype.getDimensions = function () {
+	var $node = this.$visibleShields.first();
+	if ( !$node.length ) {
+		$node = this.$element;
+	}
+	return {
+		'width': $node.outerWidth(),
+		'height': $node.outerHeight()
+	};
 };
