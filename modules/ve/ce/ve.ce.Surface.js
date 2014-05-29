@@ -406,7 +406,9 @@ ve.ce.Surface.prototype.onFocusChange = ve.debounce( function ( e ) {
  * @fires focus
  */
 ve.ce.Surface.prototype.onDocumentFocus = function () {
-	if ( !this.dragging ) {
+	// this.dragging is set when the mouse is down, but not on focusable
+	// nodes so check this.focusedNode as well
+	if ( !this.dragging && !this.focusedNode ) {
 		// If the document is being focused by a non-mouse user event, FF may place
 		// the cursor in a non-content offset (i.e. just after the document div), so
 		// find the first content offset instead.
