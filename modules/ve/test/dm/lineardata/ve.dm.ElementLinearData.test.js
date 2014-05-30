@@ -1456,6 +1456,45 @@ QUnit.test( 'sanitize', function ( assert ) {
 	}
 } );
 
+QUnit.test( 'countNoninternalElements', function ( assert ) {
+	var i,d, cases = [
+			{
+				'data': [
+					{ 'type': 'paragraph' },
+					'F', ['o', [0]], 'o',
+					{ 'type': '/paragraph' },
+					{ 'type': 'internalList' },
+					{ 'type': '/internalList' }
+				],
+				'expected': 5,
+				'msg': 'Counting non-internal elements - no internal data'
+			},
+			{
+				'data': [
+					{ 'type': 'paragraph' },
+					'F', 'o',
+					{ 'type': '/paragraph' },
+					{ 'type': 'internalList' },
+					{ 'type': 'internalItem' },
+					{ 'type': 'paragraph' },
+					'a',
+					{ 'type': '/paragraph' },
+					{ 'type': '/internalItem' },
+					{ 'type': '/internalList' }
+				],
+				'expected': 4,
+				'msg': 'Counting non-internal elements'
+			}
+		];
+
+	QUnit.expect( cases.length );
+
+	for ( i = 0; i < cases.length; i++ ) {
+		d = new ve.dm.ElementLinearData( new ve.dm.IndexValueStore(), cases[i].data );
+		assert.strictEqual( d.countNoninternalElements(), cases[i].expected, cases[i].msg );
+	}
+} );
+
 // TODO: ve.dm.ElementLinearData.static.compareUnannotated
 // TODO: ve.dm.ElementLinearData#getAnnotationIndexesFromOffset
 // TODO: ve.dm.ElementLinearData#setAnnotationsAtOffset
