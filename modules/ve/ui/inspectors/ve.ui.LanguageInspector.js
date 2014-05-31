@@ -61,7 +61,7 @@ ve.ui.LanguageInspector.prototype.getAnnotationFromFragment = function ( fragmen
  */
 ve.ui.LanguageInspector.prototype.initialize = function () {
 	// Parent method
-	ve.ui.AnnotationInspector.prototype.initialize.call( this );
+	ve.ui.LanguageInspector.super.prototype.initialize.call( this );
 
 	// Properties
 	this.languageInput = new ve.ui.LanguageInputWidget( { '$': this.$ } );
@@ -73,11 +73,11 @@ ve.ui.LanguageInspector.prototype.initialize = function () {
 /**
  * @inheritdoc
  */
-ve.ui.LanguageInspector.prototype.setup = function ( data ) {
-	// Parent method
-	ve.ui.AnnotationInspector.prototype.setup.call( this, data );
-
-	this.languageInput.setAnnotation( this.initialAnnotation );
+ve.ui.LanguageInspector.prototype.getSetupProcess = function ( data ) {
+	return ve.ui.LanguageInspector.super.prototype.getSetupProcess.call( this, data )
+		.next( function () {
+			this.languageInput.setAnnotation( this.initialAnnotation );
+		}, this );
 };
 
 /* Registration */

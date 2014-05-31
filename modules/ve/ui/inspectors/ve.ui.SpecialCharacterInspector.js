@@ -89,7 +89,7 @@ ve.ui.SpecialCharacterInspector.static.removable = false;
  */
 ve.ui.SpecialCharacterInspector.prototype.initialize = function () {
 	// Parent method
-	ve.ui.Inspector.prototype.initialize.call( this );
+	ve.ui.SpecialCharacterInspector.super.prototype.initialize.call( this );
 
 	this.$spinner = this.$( '<div>' ).addClass( 've-specialchar-spinner' );
 	this.$form.append( this.$spinner );
@@ -101,25 +101,27 @@ ve.ui.SpecialCharacterInspector.prototype.initialize = function () {
  * @method
  * @param {Object} [data] Inspector opening data
  */
-ve.ui.SpecialCharacterInspector.prototype.setup = function ( data ) {
-	var inspector = this;
-	// Parent method
-	ve.ui.Inspector.prototype.setup.call( this, data );
+ve.ui.SpecialCharacterInspector.prototype.getSetupProcess = function ( data ) {
+	return ve.ui.SpecialCharacterInspector.super.prototype.getSetupProcess.call( this, data )
+		.next( function () {
+			// Preserve initial selection so we can collapse cursor position
+			// after we're done adding
+			this.initialSelection = this.getFragment().getRange();
 
-	// Preserve initial selection so we can collapse cursor position
-	// after we're done adding
-	this.initialSelection = this.getFragment().getRange();
-
-	// Don't request the character list again if we already have it
-	if ( !this.characters ) {
-		this.$spinner.show();
-		this.fetchCharList().done( function () {
-			inspector.buildButtonList();
-		} ).always( function () {
-			inspector.$spinner.hide();
-		} );
-		// TODO: show error message on fetchCharList().fail
-	}
+			// Don't request the character list again if we already have it
+			if ( !this.characters ) {
+				this.$spinner.show();
+				this.fetchCharList()
+					.done( ve.bind( function () {
+						this.buildButtonList();
+					}, this ) )
+					// TODO: show error message on fetchCharList().fail
+					.always( ve.bind( function () {
+						// TODO: generalize push/pop pending, like we do in Dialog
+						this.$spinner.hide();
+					}, this ) );
+			}
+		}, this );
 };
 
 /**

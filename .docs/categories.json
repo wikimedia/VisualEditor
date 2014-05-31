@@ -189,6 +189,7 @@
 				"classes": [
 					"OO.ui",
 					"OO.ui.Element",
+					"OO.ui.Process",
 					"OO.ui.Frame",
 					"OO.ui.Toolbar",
 					"OO.ui.Window",

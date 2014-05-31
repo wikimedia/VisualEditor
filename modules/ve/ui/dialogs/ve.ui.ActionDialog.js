@@ -210,10 +210,10 @@ ve.ui.ActionDialog.prototype.initialize = function () {
 /**
  * @inheritdoc
  */
-ve.ui.ActionDialog.prototype.setup = function ( data ) {
-	// Parent method
-	ve.ui.ActionDialog.super.prototype.setup.call( this, data );
-
-	this.applyButton.setLabel( this.getApplyButtonLabel() );
-	this.applyButton.clearFlags().setFlags( this.getApplyButtonFlags() );
+ve.ui.ActionDialog.prototype.getSetupProcess = function ( data ) {
+	return ve.ui.ActionDialog.super.prototype.getSetupProcess.call( this, data )
+		.next( function () {
+			this.applyButton.setLabel( this.getApplyButtonLabel() );
+			this.applyButton.clearFlags().setFlags( this.getApplyButtonFlags() );
+		}, this );
 };

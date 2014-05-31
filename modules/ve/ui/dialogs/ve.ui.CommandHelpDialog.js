@@ -42,7 +42,7 @@ ve.ui.CommandHelpDialog.static.icon = 'help';
  */
 ve.ui.CommandHelpDialog.prototype.initialize = function () {
 	// Parent method
-	ve.ui.Dialog.prototype.initialize.call( this );
+	ve.ui.CommandHelpDialog.super.prototype.initialize.call( this );
 
 	var i, j, jLen, k, kLen, triggerList, commands, shortcut,
 		platform = ve.init.platform.getSystemPlatform(),

@@ -75,21 +75,19 @@ ve.ui.NodeDialog.prototype.initialize = function ( data ) {
 /**
  * @inheritdoc
  */
-ve.ui.NodeDialog.prototype.setup = function ( data ) {
-	// Properties
-	this.selectedNode = this.getSelectedNode( data );
-
-	// Parent method
-	ve.ui.NodeDialog.super.prototype.setup.call( this, data );
+ve.ui.NodeDialog.prototype.getSetupProcess = function ( data ) {
+	return ve.ui.NodeDialog.super.prototype.getSetupProcess.call( this, data )
+		.first( function () {
+			this.selectedNode = this.getSelectedNode( data );
+		}, this );
 };
 
 /**
  * @inheritdoc
  */
-ve.ui.NodeDialog.prototype.teardown = function ( data ) {
-	// Parent method
-	ve.ui.NodeDialog.super.prototype.teardown.call( this, data );
-
-	// Properties
-	this.selectedNode = null;
+ve.ui.NodeDialog.prototype.getTeardownProcess = function ( data ) {
+	return ve.ui.NodeDialog.super.prototype.getTeardownProcess.call( this, data )
+		.next( function () {
+			this.selectedNode = null;
+		}, this );
 };

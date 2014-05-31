@@ -56,25 +56,26 @@ ve.ui.Inspector.static.removable = true;
 /* Methods */
 
 /**
- * @param {ve.dm.SurfaceFragment} fragment Surface fragment
- * @param {Object} data Inspector opening data
- * @param {string} data.dir Directionality of fragment
+ * @inheritdoc
  */
 ve.ui.Inspector.prototype.open = function ( fragment, data ) {
 	this.fragment = fragment;
 
 	// Parent method
-	OO.ui.Window.prototype.open.call( this, data );
+	return ve.ui.Inspector.super.prototype.open.call( this, data );
 };
 
 /**
  * @inheritdoc
  */
-ve.ui.Inspector.prototype.teardown = function () {
+ve.ui.Inspector.prototype.close = function ( data ) {
 	// Parent method
-	OO.ui.Window.prototype.teardown.apply( this, arguments );
+	var promise = ve.ui.Inspector.super.prototype.close.call( this, data );
 
+	// Reset
 	this.fragment = null;
+
+	return promise;
 };
 
 /**
@@ -134,7 +135,7 @@ ve.ui.Inspector.prototype.onFormKeyDown = function ( e ) {
  */
 ve.ui.Inspector.prototype.initialize = function () {
 	// Parent method
-	OO.ui.Window.prototype.initialize.call( this );
+	ve.ui.Inspector.super.prototype.initialize.call( this );
 
 	// Initialization
 	this.frame.$content.addClass( 've-ui-inspector-content' );
@@ -177,19 +178,10 @@ ve.ui.Inspector.prototype.initialize = function () {
 /**
  * @inheritdoc
  */
-ve.ui.Inspector.prototype.setup = function ( data ) {
-	// Parent method
-	OO.ui.Window.prototype.setup.call( this, data );
-
-	// Wait for animation to complete
-	setTimeout( ve.bind( function () {
-		this.ready();
-	}, this ), 200 );
-};
-
-/**
- * Inspector is done animating and ready to be interacted with.
- */
-ve.ui.Inspector.prototype.ready = function () {
-	//
+ve.ui.Inspector.prototype.getReadyProcess = function ( data ) {
+	return ve.ui.Inspector.super.prototype.getReadyProcess.call( this, data )
+		.next( function () {
+			// Wait for animation to complete
+			return OO.ui.Process.static.delay( 200 );
+		}, this );
 };

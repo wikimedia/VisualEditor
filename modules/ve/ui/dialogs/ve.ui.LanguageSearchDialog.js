@@ -20,9 +20,6 @@ ve.ui.LanguageSearchDialog = function VeUiLanguageSearchDialog( config ) {
 
 	// Parent constructor
 	ve.ui.Dialog.call( this, config );
-
-	// Events
-	this.connect( this, { 'ready': 'onReady' } );
 };
 
 /* Inheritance */
@@ -53,7 +50,7 @@ ve.ui.LanguageSearchDialog.static.languageSearchWidget = ve.ui.LanguageSearchWid
  * @inheritdoc
  */
 ve.ui.LanguageSearchDialog.prototype.initialize = function () {
-	ve.ui.Dialog.prototype.initialize.apply( this, arguments );
+	ve.ui.LanguageSearchDialog.super.prototype.initialize.apply( this, arguments );
 
 	this.searchWidget = new this.constructor.static.languageSearchWidget( {
 			'$': this.$
@@ -77,26 +74,31 @@ ve.ui.LanguageSearchDialog.prototype.onSearchWidgetSelect = function ( data ) {
 /**
  * @inheritdoc
  */
-ve.ui.LanguageSearchDialog.prototype.setup = function () {
-	ve.ui.Dialog.prototype.setup.apply( this, arguments );
-
-	this.searchWidget.addResults();
-};
-
-/**
- * Handle window ready events
- */
-ve.ui.LanguageSearchDialog.prototype.onReady = function () {
-	this.searchWidget.getQuery().focus();
+ve.ui.LanguageSearchDialog.prototype.getSetupProcess = function ( data ) {
+	return ve.ui.LanguageSearchDialog.super.prototype.getSetupProcess.call( this, data )
+		.next( function () {
+			this.searchWidget.addResults();
+		}, this );
 };
 
 /**
  * @inheritdoc
  */
-ve.ui.LanguageSearchDialog.prototype.teardown = function () {
-	ve.ui.Dialog.prototype.teardown.apply( this, arguments );
+ve.ui.LanguageSearchDialog.prototype.getReadyProcess = function ( data ) {
+	return ve.ui.LanguageSearchDialog.super.prototype.getReadyProcess.call( this, data )
+		.next( function () {
+			this.searchWidget.getQuery().focus();
+		}, this );
+};
 
-	this.searchWidget.getQuery().setValue( '' );
+/**
+ * @inheritdoc
+ */
+ve.ui.LanguageSearchDialog.prototype.getTeardownProcess = function ( data ) {
+	return ve.ui.LanguageSearchDialog.super.prototype.getTeardownProcess.call( this, data )
+		.next( function () {
+			this.searchWidget.getQuery().setValue( '' );
+		}, this );
 };
 
 /* Registration */
