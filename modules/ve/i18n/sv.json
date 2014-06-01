@@ -11,7 +11,8 @@
 			"Sendelbach",
 			"Skalman",
 			"WikiPhoenix",
-			"Lokal Profil"
+			"Lokal Profil",
+			"Josve05a"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -62,7 +63,7 @@
 	"visualeditor-languageinspector-widget-label-langcode": "Språkkod",
 	"visualeditor-languageinspector-widget-label-language": "Språk",
 	"visualeditor-language-search-input-placeholder": "Sök språk efter namn eller kod",
-	"visualeditor-linkinspector-title": "Hyperlänk",
+	"visualeditor-linkinspector-title": "Länk",
 	"visualeditor-listbutton-bullet-tooltip": "Punktlista",
 	"visualeditor-listbutton-number-tooltip": "Numrerad lista",
 	"visualeditor-mediasizewidget-button-originaldimensions": "Göra full storlek",

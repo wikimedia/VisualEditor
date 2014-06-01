@@ -69,7 +69,7 @@
 	"visualeditor-languageinspector-widget-label-langcode": "Label for the language inspector widget, to denote the current block language code.\n{{Identical|Language code}}",
 	"visualeditor-languageinspector-widget-label-language": "Label for the language inspector widget, to denote the current block language.\n{{Identical|Language}}",
 	"visualeditor-language-search-input-placeholder": "Placeholder text for language search widget.",
-	"visualeditor-linkinspector-title": "Title of the link inspector dialog.\n{{Identical|Hyperlink}}",
+	"visualeditor-linkinspector-title": "Title of the link inspector dialog.\n{{Identical|Link}}",
 	"visualeditor-listbutton-bullet-tooltip": "Tooltip text for the bullet list button",
 	"visualeditor-listbutton-number-tooltip": "Tooltip text for the numbered list button",
 	"visualeditor-mediasizewidget-button-originaldimensions": "Label for the button that resizes a media item to its full original size (width and height).",
