@@ -937,34 +937,44 @@ ve.dm.Transaction.prototype.translateRange = function ( range, excludeInsertion 
 };
 
 /**
- * Get the range that covers all modifications made by this transaction.
+ * Get the range that covers modifications made by this transaction.
  *
- * This range spans from the offset right before the first modification to the
- * offset right after the last modification: it is the narrowest range that covers
- * all modifications.
+ * In the case of insertions, the range covers content the user intended to insert.
+ * It ignores wrappers added by ve.dm.Document#fixUpInsertion.
  *
  * The returned range is relative to the new state, after the transaction is applied. So for a
  * simple insertion transaction, the range will cover the newly inserted data, and for a simple
  * removal transaction it will be a zero-length range.
  *
- * @returns {ve.Range|null} Range covering all modifications, or null for a no-op transaction
+ * @returns {ve.Range|null} Range covering modifications, or null for a no-op transaction
  */
 ve.dm.Transaction.prototype.getModifiedRange = function () {
 	var i, len, op, start, end, offset = 0;
 	for ( i = 0, len = this.operations.length; i < len; i++ ) {
 		op = this.operations[i];
-		if ( op.type === 'retain' ) {
-			offset += op.length;
-		} else {
-			if ( start === undefined ) {
-				// This is the first non-retain operation, set start to right before it
-				start = offset;
-			}
-			if ( op.type === 'replace' ) {
-				offset += op.insert.length;
-			}
-			// Set end, so it'll end up being right after the last non-retain operation
-			end = offset;
+		switch ( op.type ) {
+			case 'retainMetadata':
+				continue;
+
+			case 'retain':
+				offset += op.length;
+				break;
+
+			default:
+				if ( start === undefined ) {
+					// This is the first non-retain operation, set start to right before it
+					start = offset + ( op.insertedDataOffset || 0 );
+				}
+				if ( op.type === 'replace' ) {
+					offset += op.insert.length;
+				}
+				// Set end, so it'll end up being right after the last non-retain operation
+				if ( op.insertedDataLength ) {
+					end = start + op.insertedDataLength;
+				} else {
+					end = offset;
+				}
+				break;
 		}
 	}
 	if ( start === undefined || end === undefined ) {
@@ -1102,8 +1112,10 @@ ve.dm.Transaction.prototype.addSafeRemoveOps = function ( doc, removeStart, remo
  * @param {number} removeLength Number of data items to remove
  * @param {Array} insert Data to insert
  * @param {Array} [insertMetadata] Overwrite the metadata with this data, rather than collapsing it
+ * @param {number} [insertedDataOffset] Offset of the originally inserted data in the resulting operation data
+ * @param {number} [insertedDataLength] Length of the originally inserted data in the resulting operation data
  */
-ve.dm.Transaction.prototype.pushReplace = function ( doc, offset, removeLength, insert, insertMetadata ) {
+ve.dm.Transaction.prototype.pushReplace = function ( doc, offset, removeLength, insert, insertMetadata, insertedDataOffset, insertedDataLength ) {
 	if ( removeLength === 0 && insert.length === 0 ) {
 		// Don't push no-ops
 		return;
@@ -1180,6 +1192,10 @@ ve.dm.Transaction.prototype.pushReplace = function ( doc, offset, removeLength, 
 	if ( insertMetadata !== undefined ) {
 		op.removeMetadata = removeMetadata;
 		op.insertMetadata = insertMetadata;
+	}
+	if ( insertedDataOffset !== undefined ) {
+		op.insertedDataOffset = insertedDataOffset;
+		op.insertedDataLength = insertedDataLength;
 	}
 	this.operations.push( op );
 	this.lengthDifference += insert.length - remove.length;
@@ -1273,7 +1289,10 @@ ve.dm.Transaction.prototype.pushInsertion = function ( doc, currentOffset, inser
 	// Retain up to insertion point, if needed
 	this.pushRetain( insertion.offset - currentOffset );
 	// Insert data
-	this.pushReplace( doc, insertion.offset, insertion.remove, insertion.data );
+	this.pushReplace(
+		doc, insertion.offset, insertion.remove, insertion.data, undefined,
+		insertion.insertedDataOffset, insertion.insertedDataLength
+	);
 	return insertion.offset + insertion.remove;
 };
 
