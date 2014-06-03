@@ -11,7 +11,6 @@
  * @class
  * @extends ve.ce.LeafNode
  * @mixins ve.ce.FocusableNode
- * @mixins ve.ce.RelocatableNode
  * @mixins ve.ce.ResizableNode
  *
  * @constructor
@@ -31,7 +30,6 @@ ve.ce.ImageNode = function VeCeImageNode( model, config ) {
 
 	// Mixin constructors
 	ve.ce.FocusableNode.call( this );
-	ve.ce.RelocatableNode.call( this );
 	ve.ce.ResizableNode.call( this, this.$image, config );
 
 	// Events
@@ -57,7 +55,6 @@ ve.ce.ImageNode = function VeCeImageNode( model, config ) {
 OO.inheritClass( ve.ce.ImageNode, ve.ce.LeafNode );
 
 OO.mixinClass( ve.ce.ImageNode, ve.ce.FocusableNode );
-OO.mixinClass( ve.ce.ImageNode, ve.ce.RelocatableNode );
 OO.mixinClass( ve.ce.ImageNode, ve.ce.ResizableNode );
 
 /* Static Properties */

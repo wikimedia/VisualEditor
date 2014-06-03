@@ -36,6 +36,10 @@ ve.ce.FocusableNode = function VeCeFocusableNode( $focusable ) {
 	this.$focusable = $focusable || this.$element;
 	this.surface = null;
 
+	this.$relocatableMarker = this.$( '<img>' )
+		.addClass( 've-ce-focusableNode-highlight-relocatable-marker' )
+		.attr( 'src', 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==' );
+
 	// Events
 	this.connect( this, {
 		'setup': 'onFocusableSetup',
@@ -240,10 +244,39 @@ ve.ce.FocusableNode.prototype.onFocusableMouseDown = function ( e ) {
 			nodeRange
 	).select();
 
-	e.preventDefault();
-	// Abort mousedown events otherwise the surface will go into
-	// dragging mode on touch devices
-	e.stopPropagation();
+	if ( !$( e.target ).hasClass( 've-ce-focusableNode-highlight-relocatable-marker' ) ) {
+		e.preventDefault();
+		// Abort mousedown events otherwise the surface will go into
+		// dragging mode on touch devices
+		e.stopPropagation();
+	}
+};
+
+/**
+ * Handle element drag start.
+ *
+ * @method
+ * @param {jQuery.Event} e Drag start event
+ */
+ve.ce.FocusableNode.prototype.onFocusableDragStart = function () {
+	if ( this.surface ) {
+		// Allow dragging this node in the surface
+		this.surface.startRelocation( this );
+	}
+	this.$relocatableMarker.addClass( 've-ce-focusableNode-highlight-relocating' );
+};
+
+/**
+ * Handle element drag end.
+ *
+ * If a relocation actually takes place the node is destroyed before this events fires.
+ *
+ * @method
+ * @param {jQuery.Event} e Drag end event
+ */
+ve.ce.FocusableNode.prototype.onFocusableDragEnd = function () {
+	// endRelocation is triggered by onDocumentDrop in the surface
+	this.$relocatableMarker.removeClass( 've-ce-focusableNode-highlight-relocating' );
 };
 
 /**
@@ -279,7 +312,7 @@ ve.ce.FocusableNode.prototype.onSurfaceMouseMove = function ( e ) {
  * Handle surface mouse out events.
  *
  * @method
- * @param {jQuery.Event} e
+ * @param {jQuery.Event} e Mouse out event
  */
 ve.ce.FocusableNode.prototype.onSurfaceMouseOut = function ( e ) {
 	if ( e.relatedTarget === null ) {
@@ -380,6 +413,11 @@ ve.ce.FocusableNode.prototype.createHighlights = function () {
 		}
 	} );
 
+	this.$relocatableMarker.on( {
+		'dragstart': ve.bind( this.onFocusableDragStart, this ),
+		'dragend': ve.bind( this.onFocusableDragEnd, this )
+	} );
+
 	this.highlighted = true;
 
 	// Highlights are positioned from shields so this can be done before attaching
@@ -408,6 +446,7 @@ ve.ce.FocusableNode.prototype.clearHighlights = function () {
 	}
 	this.$highlights.remove();
 	this.$highlights = this.$( '<div>' );
+	this.$relocatableMarker.off();
 	this.surface.$element.unbind( '.ve-ce-focusableNode' );
 	this.surface.getModel().getDocument().disconnect( this, { 'transact': 'positionHighlights' } );
 	this.highlighted = false;
@@ -458,4 +497,5 @@ ve.ce.FocusableNode.prototype.positionHighlights = function () {
 			$highlight.remove();
 		}
 	}
+	this.$highlights.children().first().append( this.$relocatableMarker );
 };

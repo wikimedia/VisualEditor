@@ -11,6 +11,16 @@
 	position: absolute;
 }
 
+.ve-ce-focusableNode-highlight-relocatable-marker {
+	width: 100%;
+	height: 100%;
+}
+
+.ve-ce-focusableNode-highlight-relocating .ve-ce-focusableNode-highlight-relocatable-marker {
+	background: #000;
+	background: rgba(0, 0, 0, 1);
+}
+
 .ve-ce-focusableNode-shielded {
 	position: relative !important;
 	top: 0 !important;

@@ -611,6 +611,8 @@ ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
 
 			// Re-insert node at new location and re-select it
 			targetFragment.insertContent( nodeData ).select();
+
+			this.endRelocation();
 		}, this ) );
 	}
 
@@ -1586,7 +1588,7 @@ ve.ce.Surface.prototype.onWindowResize = ve.debounce( function () {
 /**
  * Start a relocation action.
  *
- * @see ve.ce.RelocatableNode
+ * @see ve.ce.FocusableNode
  *
  * @method
  * @param {ve.ce.Node} node Node being relocated
@@ -1599,14 +1601,16 @@ ve.ce.Surface.prototype.startRelocation = function ( node ) {
 /**
  * Complete a relocation action.
  *
- * @see ve.ce.RelocatableNode
+ * @see ve.ce.FocusableNode
  *
  * @method
  * @param {ve.ce.Node} node Node being relocated
  */
 ve.ce.Surface.prototype.endRelocation = function () {
-	this.emit( 'relocationEnd', this.relocating );
-	this.relocating = null;
+	if ( this.relocating ) {
+		this.emit( 'relocationEnd', this.relocating );
+		this.relocating = null;
+	}
 };
 
 /*! Utilities */
