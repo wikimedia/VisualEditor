@@ -308,6 +308,12 @@ ve.ui.MediaSizeWidget.prototype.setScalable = function ( scalable ) {
 	} else {
 		this.fullSizeButton.setDisabled( false );
 		this.sizeTypeSelectWidget.getItemFromData( 'default' ).setDisabled( false );
+		// Call for the set size type according to default or custom settings of the scalable
+		this.setSizeType(
+			this.scalable.isDefault() ?
+			'default' :
+			'custom'
+		);
 	}
 };
 
