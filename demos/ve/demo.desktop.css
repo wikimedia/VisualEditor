@@ -16,20 +16,20 @@
 	border-top: 0;
 }
 
+.ve-demo-editor {
+	margin: 0 2em 2em 2em;
+}
+
+.ve-demo-editor > div > div:last-child {
+	border-radius: 0 0 0.25em 0.25em;
+}
+
 /* Editor */
 
 .ve-ui-surface {
-	margin: 0 2em;
 	box-shadow: 0 0.25em 1.5em 0 #ddd;
-}
-
-.ve-ce-documentNode {
 	border: 1px solid #ccc;
 	border-top: none;
-}
-
-.ve-init-sa-target-toolbar {
-	margin: 0 2em;
 }
 
 .ve-init-sa-target-toolbar .oo-ui-toolbar-bar {
@@ -45,9 +45,7 @@
 }
 
 .ve-ui-debugBar {
-	margin: 0 2em 1em 2em;
 	border: 1px solid #ccc;
 	border-top: 0;
-	border-radius: 0 0 0.5em 0.5em;
 	box-shadow: 0 0.25em 1.5em 0 #ddd;
 }

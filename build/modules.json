@@ -107,7 +107,23 @@
 			"jquery"
 		]
 	},
+	"baselibs": {
+		"dependencies": [
+			"jquery",
+			"oojs",
+			"oojs-ui",
+			"rangy",
+			"jquery.i18n",
+			"jquery.uls.data"
+		]
+	},
 	"visualEditor.base": {
+		"dependencies": [
+			"baselibs",
+			"visualEditor.base.build"
+		]
+	},
+	"visualEditor.base.build": {
 		"scripts": [
 			"modules/ve/ve.js",
 			{ "file": "modules/ve/ve.debug.js", "debug": true },
@@ -117,16 +133,16 @@
 			"modules/ve/init/ve.init.Target.js"
 		],
 		"dependencies": [
-			"jquery",
-			"oojs",
-			"oojs-ui",
-			"rangy",
-			"unicodejs",
-			"jquery.i18n",
-			"jquery.uls.data"
+			"unicodejs"
 		]
 	},
 	"visualEditor.core": {
+		"dependencies": [
+			"visualEditor.base",
+			"visualEditor.core.build"
+		]
+	},
+	"visualEditor.core.build": {
 		"scripts": [
 			"modules/ve/ve.Range.js",
 			"modules/ve/ve.Node.js",
@@ -311,7 +327,7 @@
 			"modules/ve/ui/styles/ve.ui.Icons.css"
 		],
 		"dependencies": [
-			"visualEditor.base"
+			"visualEditor.base.build"
 		]
 	},
 	"visualEditor.test": {
@@ -396,6 +412,13 @@
 		]
 	},
 	"visualEditor.desktop": {
+		"dependencies": [
+			"oojs-ui-apex",
+			"visualEditor.core",
+			"visualEditor.desktop.build"
+		]
+	},
+	"visualEditor.desktop.build": {
 		"scripts": [
 			"modules/ve/ui/ve.ui.DesktopSurface.js",
 			"modules/ve/ui/ve.ui.DesktopContext.js"
@@ -406,11 +429,17 @@
 			"modules/ve/ui/themes/apex/dialogs/ve.ui.ActionDialog.css"
 		],
 		"dependencies": [
-			"oojs-ui-apex",
-			"visualEditor.core"
+			"visualEditor.core.build"
 		]
 	},
 	"visualEditor.mobile": {
+		"dependencies": [
+			"oojs-ui-agora",
+			"visualEditor.core",
+			"visualEditor.mobile.build"
+		]
+	},
+	"visualEditor.mobile.build": {
 		"scripts": [
 			"modules/ve/ui/ve.ui.MobileSurface.js",
 			"modules/ve/ui/ve.ui.MobileContext.js"
@@ -420,11 +449,16 @@
 			"modules/ve/ui/styles/ve.ui.MobileContext.css"
 		],
 		"dependencies": [
-			"oojs-ui-agora",
-			"visualEditor.core"
+			"visualEditor.core.build"
 		]
 	},
 	"visualEditor.standalone": {
+		"dependencies": [
+			"visualEditor.base",
+			"visualEditor.standalone.build"
+		]
+	},
+	"visualEditor.standalone.build": {
 		"scripts": [
 			"modules/ve/init/sa/ve.init.sa.js",
 			"modules/ve/init/sa/ve.init.sa.Platform.js",
@@ -435,7 +469,7 @@
 			{ "file": "modules/ve/ui/styles/ve.ui.DebugBar.css", "debug": true }
 		],
 		"dependencies": [
-			"visualEditor.base"
+			"visualEditor.base.build"
 		]
 	},
 	"visualEditor.desktop.standalone": {
@@ -470,6 +504,20 @@
 			"visualEditor.standalone.demo"
 		]
 	},
+	"visualEditor.desktop.standalone.demo.dist": {
+		"scripts": [
+			"demos/ve/demo.desktop.js"
+		],
+		"styles": [
+			"demos/ve/demo.desktop.css"
+		],
+		"dependencies": [
+			"baselibs",
+			"oojs-ui-apex",
+			"visualEditor.dist",
+			"visualEditor.standalone.demo"
+		]
+	},
 	"visualEditor.mobile.standalone.demo": {
 		"scripts": [
 			"demos/ve/demo.mobile.js"
@@ -480,6 +528,43 @@
 		"dependencies": [
 			"visualEditor.mobile.standalone",
 			"visualEditor.standalone.demo"
+		]
+	},
+	"visualEditor.mobile.standalone.demo.dist": {
+		"scripts": [
+			"demos/ve/demo.mobile.js"
+		],
+		"styles": [
+			"demos/ve/demo.mobile.css"
+		],
+		"dependencies": [
+			"baselibs",
+			"oojs-ui-agora",
+			"visualEditor.dist",
+			"visualEditor.standalone.demo"
+		]
+	},
+	"visualEditor.build": {
+		"dependencies": [
+			"visualEditor.standalone.build",
+			"visualEditor.desktop.build",
+			"visualEditor.mobile.build"
+		]
+	},
+	"visualEditor.buildfiles.intro": {
+		"scripts": [
+			"build/intro.js.txt"
+		],
+		"styles": [
+			"build/intro.css"
+		]
+	},
+	"visualEditor.dist": {
+		"scripts": [
+			"dist/visualEditor.js"
+		],
+		"styles": [
+			"dist/visualEditor.css"
 		]
 	}
 }
