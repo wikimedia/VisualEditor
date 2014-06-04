@@ -42,12 +42,10 @@ ve.ui.Dialog.prototype.open = function ( fragment, data ) {
  */
 ve.ui.Dialog.prototype.close = function ( data ) {
 	// Parent method
-	var promise = ve.ui.Dialog.super.prototype.close.call( this, data );
-
-	// Reset
-	this.fragment = null;
-
-	return promise;
+	return ve.ui.Dialog.super.prototype.close.call( this, data )
+		.then( ve.bind( function () {
+			this.fragment = null;
+		}, this ) );
 };
 
 /**

@@ -70,12 +70,10 @@ ve.ui.Inspector.prototype.open = function ( fragment, data ) {
  */
 ve.ui.Inspector.prototype.close = function ( data ) {
 	// Parent method
-	var promise = ve.ui.Inspector.super.prototype.close.call( this, data );
-
-	// Reset
-	this.fragment = null;
-
-	return promise;
+	return ve.ui.Inspector.super.prototype.close.call( this, data )
+		.then( ve.bind( function () {
+			this.fragment = null;
+		}, this ) );
 };
 
 /**
