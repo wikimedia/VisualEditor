@@ -122,7 +122,9 @@ $( function () {
 		loadPage( location.hash.slice( 7 ) );
 	} else {
 		initialPage = $( '.ve-demo-menu li a' ).data( 'pageSrc' );
-		window.history.replaceState( null, document.title, '#!/src/' + initialPage );
+		if ( window.history.replaceState ) {
+			window.history.replaceState( null, document.title, '#!/src/' + initialPage );
+		}
 		// Per W3 spec, history.replaceState does not fire hashchange
 		loadPage( initialPage );
 	}
