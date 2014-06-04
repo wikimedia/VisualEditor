@@ -22,8 +22,8 @@ module.exports = function ( grunt ) {
 		callback( html.join( '\n' ) );
 	}
 
-	grunt.loadNpmTasks( 'grunt-contrib-jshint' );
 	grunt.loadNpmTasks( 'grunt-contrib-csslint' );
+	grunt.loadNpmTasks( 'grunt-contrib-jshint' );
 	grunt.loadNpmTasks( 'grunt-contrib-qunit' );
 	grunt.loadNpmTasks( 'grunt-contrib-watch' );
 	grunt.loadNpmTasks( 'grunt-banana-checker' );
@@ -79,7 +79,7 @@ module.exports = function ( grunt ) {
 		},
 		jshint: {
 			options: {
-				jshintrc: '.jshintrc'
+				jshintrc: true
 			},
 			all: [
 				'*.js',
@@ -96,9 +96,7 @@ module.exports = function ( grunt ) {
 			options: {
 				csslintrc: '.csslintrc'
 			},
-			all: [
-				'{.docs,build,demos,modules}/**/*.css'
-			]
+			all: '{.docs,build,demos,modules}/**/*.css'
 		},
 		banana: {
 			all: 'modules/ve/i18n/'
