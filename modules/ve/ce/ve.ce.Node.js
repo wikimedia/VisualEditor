@@ -71,6 +71,19 @@ ve.ce.Node.static.isFocusable = false;
  */
 ve.ce.Node.static.primaryCommandName = null;
 
+/* Static Methods */
+
+/**
+ * Get a plain text description.
+ *
+ * @static
+ * @param {ve.dm.Node} node Node model
+ * @returns {string} Description of node
+ */
+ve.ce.Node.static.getDescription = function () {
+	return '';
+};
+
 /* Methods */
 
 /**

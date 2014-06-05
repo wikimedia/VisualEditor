@@ -49,6 +49,19 @@ ve.ce.Annotation.static.tagName = 'span';
  */
 ve.ce.Annotation.static.forceContinuation = false;
 
+/* Static Methods */
+
+/**
+ * Get a plain text description.
+ *
+ * @static
+ * @param {ve.dm.Annotation} annotation Annotation model
+ * @returns {string} Description of annotation
+ */
+ve.ce.Annotation.static.getDescription = function () {
+	return '';
+};
+
 /* Methods */
 
 /**

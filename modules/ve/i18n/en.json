@@ -59,6 +59,8 @@
     "visualeditor-indentationbutton-outdent-tooltip": "Decrease indentation",
     "visualeditor-inspector-close-tooltip": "Close",
     "visualeditor-inspector-remove-tooltip": "Remove",
+    "visualeditor-languageannotation-description": "$1",
+    "visualeditor-languageannotation-description-with-dir": "$1 ($2)",
     "visualeditor-languageinspector-block-tooltip": "Language block",
     "visualeditor-languageinspector-title": "Language",
     "visualeditor-languageinspector-widget-changelang": "Find language",

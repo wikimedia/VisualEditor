@@ -45,6 +45,22 @@ ve.ce.LanguageAnnotation.static.name = 'meta/language';
 
 ve.ce.LanguageAnnotation.static.tagName = 'span';
 
+/* Static Methods */
+
+/**
+ * @inheritdoc
+ */
+ve.ce.LanguageAnnotation.static.getDescription = function ( model ) {
+	var lang = $.uls.data.getAutonym( model.getAttribute( 'lang' ) ),
+		dir = ( model.getAttribute( 'dir' ) || '' ).toUpperCase();
+
+	if ( !dir || dir === $.uls.data.getDir().toUpperCase() ) {
+		return ve.msg( 'visualeditor-languageannotation-description', lang );
+	} else {
+		return ve.msg( 'visualeditor-languageannotation-description-with-dir', lang, dir );
+	}
+};
+
 /* Registration */
 
 ve.ce.annotationFactory.register( ve.ce.LanguageAnnotation );

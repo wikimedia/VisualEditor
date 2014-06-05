@@ -30,7 +30,7 @@ ve.ui.DesktopContext = function VeUiDesktopContext( surface, config ) {
 	this.relocating = false;
 	this.embedded = false;
 	this.selection = null;
-	this.toolbar = null;
+	this.context = new ve.ui.ContextWidget( { '$': this.$ } );
 	this.afterModelChangeTimeout = null;
 	this.afterModelChangeRange = null;
 	this.$menu = this.$( '<div>' );
@@ -58,6 +58,7 @@ ve.ui.DesktopContext = function VeUiDesktopContext( surface, config ) {
 		'closing': 'onInspectorClosing',
 		'close': 'onInspectorClose'
 	} );
+	this.context.connect( this, { 'choose': 'onContextItemChoose' } );
 
 	this.windowResizeHandler = ve.bind( this.onWindowResize, this );
 	this.$( this.getElementWindow() ).on( 'resize', this.windowResizeHandler );
@@ -66,6 +67,7 @@ ve.ui.DesktopContext = function VeUiDesktopContext( surface, config ) {
 
 	// Initialization
 	this.$element.addClass( 've-ui-desktopContext' ).append( this.popup.$element );
+	this.$menu.append( this.context.$element );
 	this.popup.$body.append(
 		this.$menu.addClass( 've-ui-desktopContext-menu' ),
 		this.inspectors.$element.addClass( 've-ui-desktopContext-inspectors' )
@@ -77,6 +79,17 @@ ve.ui.DesktopContext = function VeUiDesktopContext( surface, config ) {
 OO.inheritClass( ve.ui.DesktopContext, ve.ui.Context );
 
 /* Methods */
+
+/**
+ * Handle context item choose events.
+ *
+ * @param {ve.ui.ContextItemWidget} item Chosen item
+ */
+ve.ui.DesktopContext.prototype.onContextItemChoose = function ( item ) {
+	if ( item ) {
+		item.getCommand().execute( this.surface );
+	}
+};
 
 /**
  * @inheritdoc
@@ -292,7 +305,8 @@ ve.ui.DesktopContext.prototype.onInspectorClose = function () {
  * @chainable
  */
 ve.ui.DesktopContext.prototype.update = function ( transition, repositionOnly ) {
-	var i, nodes, tools,
+	var i, len, match, matches,
+		items = [],
 		fragment = this.surface.getModel().getFragment( null, false ),
 		selection = fragment.getRange(),
 		inspector = this.inspectors.getCurrentWindow();
@@ -302,28 +316,18 @@ ve.ui.DesktopContext.prototype.update = function ( transition, repositionOnly ) 
 		this.show( transition, repositionOnly );
 	} else {
 		// No inspector is open, or the selection has changed, show a menu of available inspectors
-		tools = ve.ui.toolFactory.getToolsForAnnotations( fragment.getAnnotations() );
-		nodes = fragment.getCoveredNodes();
-		for ( i = 0; i < nodes.length; i++ ) {
-			if ( nodes[i].range && nodes[i].range.isCollapsed() ) {
-				nodes.splice( i, 1 );
-				i--;
-			}
-		}
-		if ( nodes.length === 1 ) {
-			tools = tools.concat( ve.ui.toolFactory.getToolsForNode( nodes[0].node ) );
-		}
-		if ( tools.length ) {
+		matches = ve.ui.toolFactory.getToolsForFragment( fragment );
+		if ( matches.length ) {
 			// There's at least one inspectable annotation, build a menu and show it
-			this.$menu.empty();
-			if ( this.toolbar ) {
-				this.toolbar.destroy();
+			this.context.clearItems();
+			for ( i = 0, len = matches.length; i < len; i++ ) {
+				match = matches[i];
+				items.push( new ve.ui.ContextItemWidget(
+					match.tool.static.name, match.tool, match.model, { '$': this.$ }
+				) );
 			}
-			this.toolbar = new ve.ui.Toolbar( this.surface );
-			this.toolbar.setup( [ { 'include': tools } ] );
-			this.$menu.append( this.toolbar.$element );
+			this.context.addItems( items );
 			this.show( transition, repositionOnly );
-			this.toolbar.initialize();
 		} else if ( this.visible ) {
 			// Nothing to inspect
 			this.hide();
@@ -458,8 +462,11 @@ ve.ui.DesktopContext.prototype.show = function ( transition, repositionOnly ) {
 		} else {
 			this.embedded = (
 				focusedNode &&
-				focusedNode.$focusable.outerHeight() > this.$menu.outerHeight() * 2 &&
-				focusedNode.$focusable.outerWidth() > this.$menu.outerWidth() * 2
+				// HACK: 5 and 10 are estimates of what 0.25em and 0.5em (the margins of the menu
+				// when embedded) are in pixels, what needs to actually be done is to take
+				// measurements to find the margins and use those value instead
+				focusedNode.$focusable.outerHeight() > this.$menu.outerHeight() + 5 &&
+				focusedNode.$focusable.outerWidth() > this.$menu.outerWidth() + 10
 			);
 			this.popup.useTail( !this.embedded );
 			this.$menu.show();
