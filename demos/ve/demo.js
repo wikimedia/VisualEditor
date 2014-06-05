@@ -10,7 +10,7 @@ $( function () {
 	var currentTarget,
 		initialPage,
 
-		debugBar = new ve.init.DebugBar(),
+		debugBar,
 
 		$targetContainer = $( '.ve-demo-editor' ).eq( 0 ),
 		lang = $.i18n().locale,
@@ -35,16 +35,20 @@ $( function () {
 
 	directionSelect.selectItem( directionSelect.getItemFromData( dir ) );
 
-	debugBar.$commands.append(
-		$( ve.init.DebugBar.static.dividerTemplate ),
-		convertButton.$element,
-		$( ve.init.DebugBar.static.dividerTemplate ),
-		languageTextInput.$element,
-		directionSelect.$element,
-		languageDirectionButton.$element
-	);
-
-	$( '.ve-demo-debugBar' ).append( debugBar.$element );
+	if ( ve.debug ) {
+		debugBar = new ve.init.DebugBar();
+		debugBar.$commands.append(
+			$( ve.init.DebugBar.static.dividerTemplate ),
+			convertButton.$element,
+			$( ve.init.DebugBar.static.dividerTemplate ),
+			languageTextInput.$element,
+			directionSelect.$element,
+			languageDirectionButton.$element
+		);
+		$( '.ve-demo-debugBar' ).append( debugBar.$element );
+	} else {
+		$( '.ve-demo-debugBar' ).remove();
+	}
 
 	/**
 	 * Load a page into the editor
@@ -108,7 +112,9 @@ $( function () {
 					$targetContainer.slideDown().promise().done( function () {
 						target.$document[0].focus();
 						currentTarget = target;
-						debugBar.attachToSurface( currentTarget.surface );
+						if ( ve.debug ) {
+							debugBar.attachToSurface( currentTarget.surface );
+						}
 					} );
 				} );
 			} );
