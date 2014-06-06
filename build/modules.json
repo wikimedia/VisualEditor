@@ -114,8 +114,7 @@
 			"modules/ve/ve.track.js",
 			"modules/ve/init/ve.init.js",
 			"modules/ve/init/ve.init.Platform.js",
-			"modules/ve/init/ve.init.Target.js",
-			{ "file": "modules/ve/init/ve.init.DebugBar.js", "debug": true }
+			"modules/ve/init/ve.init.Target.js"
 		],
 		"dependencies": [
 			"jquery",
@@ -241,6 +240,7 @@
 			"modules/ve/ui/ve.ui.Tool.js",
 			"modules/ve/ui/ve.ui.Toolbar.js",
 			"modules/ve/ui/ve.ui.TargetToolbar.js",
+			{ "file": "modules/ve/ui/ve.ui.DebugBar.js", "debug": true },
 			"modules/ve/ui/ve.ui.ToolFactory.js",
 			"modules/ve/ui/ve.ui.Command.js",
 			"modules/ve/ui/ve.ui.CommandRegistry.js",
@@ -431,7 +431,7 @@
 		],
 		"styles": [
 			"modules/ve/init/sa/styles/ve.init.sa.css",
-			{ "file": "modules/ve/init/styles/ve.init.DebugBar.css", "debug": true }
+			{ "file": "modules/ve/ui/styles/ve.ui.DebugBar.css", "debug": true }
 		],
 		"dependencies": [
 			"visualEditor.base"

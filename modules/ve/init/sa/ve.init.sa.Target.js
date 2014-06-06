@@ -69,17 +69,19 @@ ve.init.sa.Target.prototype.setup = function ( dmDoc ) {
 	// Properties
 	this.setupDone = true;
 	this.surface = this.createSurface( dmDoc );
-	this.toolbar = new ve.ui.TargetToolbar( this, this.surface, { 'shadow': true } );
+	this.surface.addCommands( this.constructor.static.surfaceCommands );
+	this.$element.append( this.surface.$element );
+
+	this.setupToolbar( { 'shadow': true } );
+	if ( ve.debug ) {
+		this.setupDebugBar();
+	}
 
 	// Initialization
 	this.toolbar.$element.addClass( 've-init-sa-target-toolbar' );
-	this.toolbar.setup( this.constructor.static.toolbarGroups );
 	this.toolbar.enableFloatable();
 
-	this.$element.append( this.toolbar.$element, this.surface.$element );
-
 	this.toolbar.initialize();
-	this.surface.addCommands( this.constructor.static.surfaceCommands );
 	this.surface.setPasteRules( this.constructor.static.pasteRules );
 	this.surface.initialize();
 

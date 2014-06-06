@@ -10,45 +10,9 @@ $( function () {
 	var currentTarget,
 		initialPage,
 
-		debugBar,
-
 		$targetContainer = $( '.ve-demo-editor' ).eq( 0 ),
 		lang = $.i18n().locale,
-		dir = $targetContainer.css( 'direction' ) || 'ltr',
-
-		// Widgets
-		convertButton = new OO.ui.ButtonWidget( { 'label': 'Log converted HTML' } ),
-		languageTextInput = new OO.ui.TextInputWidget( { 'value': lang } ),
-		languageDirectionButton = new OO.ui.ButtonWidget( { 'label': 'Set language & direction' } ),
-		directionSelect = new OO.ui.ButtonSelectWidget().addItems( [
-			new OO.ui.ButtonOptionWidget( 'rtl', { '$': this.$, 'icon': 'text-dir-rtl' } ),
-			new OO.ui.ButtonOptionWidget( 'ltr', { '$': this.$, 'icon': 'text-dir-ltr' } )
-		] );
-
-	// Initialization
-
-	convertButton.on( 'click', function () {
-		var doc = ve.dm.converter.getDomFromModel( currentTarget.getSurface().getModel().getDocument() );
-		ve.log( ve.properOuterHtml( doc.documentElement ) );
-		ve.log( doc.documentElement );
-	} );
-
-	directionSelect.selectItem( directionSelect.getItemFromData( dir ) );
-
-	if ( ve.debug ) {
-		debugBar = new ve.init.DebugBar();
-		debugBar.$commands.append(
-			$( ve.init.DebugBar.static.dividerTemplate ),
-			convertButton.$element,
-			$( ve.init.DebugBar.static.dividerTemplate ),
-			languageTextInput.$element,
-			directionSelect.$element,
-			languageDirectionButton.$element
-		);
-		$( '.ve-demo-debugBar' ).append( debugBar.$element );
-	} else {
-		$( '.ve-demo-debugBar' ).remove();
-	}
+		dir = $targetContainer.css( 'direction' ) || 'ltr';
 
 	/**
 	 * Load a page into the editor
@@ -60,7 +24,6 @@ $( function () {
 	function loadPage( src, forceDir ) {
 		if ( !forceDir ) {
 			dir = src.match( /rtl\.html$/ ) ? 'rtl' : 'ltr';
-			directionSelect.selectItem( directionSelect.getItemFromData( dir ) );
 		}
 		$.ajax( {
 			url: src,
@@ -112,7 +75,54 @@ $( function () {
 					$targetContainer.slideDown().promise().done( function () {
 						currentTarget.getSurface().getView().focus();
 						if ( ve.debug ) {
-							debugBar.attachToSurface( currentTarget.getSurface() );
+							// Widgets
+							var convertButton = new OO.ui.ButtonWidget( { '$': this.$, 'label': 'Log converted HTML' } ),
+								languageTextInput = new OO.ui.TextInputWidget( { '$': this.$, 'value': lang } ),
+								languageDirectionButton = new OO.ui.ButtonWidget( { '$': this.$, 'label': 'Set language & direction' } ),
+								directionSelect = new OO.ui.ButtonSelectWidget().addItems( [
+									new OO.ui.ButtonOptionWidget( 'rtl', { '$': this.$, 'icon': 'text-dir-rtl' } ),
+									new OO.ui.ButtonOptionWidget( 'ltr', { '$': this.$, 'icon': 'text-dir-ltr' } )
+								] );
+
+							directionSelect.selectItem( directionSelect.getItemFromData( dir ) );
+
+							// Initialization
+							languageDirectionButton.on( 'click', function () {
+								$.i18n().locale = lang = languageTextInput.getValue();
+								dir = directionSelect.getSelectedItem().getData();
+
+								// HACK: Override/restore message functions for qqx mode
+								if ( lang === 'qqx' ) {
+									ve.init.platform.getMessage = function ( key ) { return key; };
+								} else {
+									ve.init.platform.getMessage = ve.init.sa.Platform.prototype.getMessage;
+								}
+
+								// Re-bind as getMessage may have changed
+								OO.ui.msg = ve.bind( ve.init.platform.getMessage, ve.init.platform );
+
+								// HACK: Re-initialize page to load message files
+								ve.init.platform.initialize().done( function () {
+									loadPage( location.hash.slice( 7 ), true );
+								} );
+							} );
+
+							convertButton.on( 'click', function () {
+								var doc = ve.dm.converter.getDomFromModel( currentTarget.getSurface().getModel().getDocument() );
+								ve.log( ve.properOuterHtml( doc.documentElement ) );
+								ve.log( doc.documentElement );
+							} );
+
+							directionSelect.selectItem( directionSelect.getItemFromData( dir ) );
+
+							currentTarget.debugBar.$commands.append(
+								$( ve.ui.DebugBar.static.dividerTemplate ),
+								convertButton.$element,
+								$( ve.ui.DebugBar.static.dividerTemplate ),
+								languageTextInput.$element,
+								directionSelect.$element,
+								languageDirectionButton.$element
+							);
 						}
 					} );
 				} );
@@ -138,29 +148,6 @@ $( function () {
 		if ( /^#!\/src\/.+$/.test( location.hash ) ) {
 			loadPage( location.hash.slice( 7 ) );
 		}
-	} );
-
-	// Events
-
-	languageDirectionButton.on( 'click', function () {
-		$.i18n().locale = lang = languageTextInput.getValue();
-		dir = directionSelect.getSelectedItem().getData();
-
-		// HACK: Override/restore message functions for qqx mode
-		if ( lang === 'qqx' ) {
-			ve.init.platform.getMessage = function ( key ) { return key; };
-		} else {
-			ve.init.platform.getMessage = ve.init.sa.Platform.prototype.getMessage;
-		}
-
-		// Re-bind as getMessage may have changed
-		OO.ui.msg = ve.bind( ve.init.platform.getMessage, ve.init.platform );
-
-		// HACK: Re-initialize page to load message files
-		ve.init.platform.initialize().done( function () {
-			loadPage( location.hash.slice( 7 ), true );
-		} );
-
 	} );
 
 } );

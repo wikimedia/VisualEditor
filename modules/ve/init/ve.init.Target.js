@@ -28,6 +28,7 @@ ve.init.Target = function VeInitTarget( $container ) {
 	this.$element = $container;
 	this.surface = null;
 	this.toolbar = null;
+	this.debugBar = null;
 
 	// Register
 	ve.init.target = this;
@@ -185,4 +186,43 @@ ve.init.Target.prototype.getSurface = function () {
  */
 ve.init.Target.prototype.getToolbar = function () {
 	return this.toolbar;
+};
+
+/**
+ * Get the target's debug bar
+ *
+ * @return {ve.ui.DebugBar} Toolbar
+ */
+ve.init.Target.prototype.getDebugBar = function () {
+	return this.debugBar;
+};
+
+/**
+ * Set up the toolbar and insert it into the DOM.
+ *
+ * The default implementation inserts it before the surface, but subclasses can override this.
+ *
+ * @param {Object} [config] Configuration options
+ */
+ve.init.Target.prototype.setupToolbar = function ( config ) {
+	if ( !this.surface ) {
+		throw new Error( 'Surface must be setup before Toolbar' );
+	}
+	this.toolbar = new ve.ui.TargetToolbar( this, this.surface, config );
+	this.toolbar.setup( this.constructor.static.toolbarGroups );
+	this.surface.addCommands( this.constructor.static.surfaceCommands );
+	this.toolbar.$element.insertBefore( this.surface.$element );
+};
+
+/**
+ * Set up the debug bar and insert it into the DOM.
+ *
+ * The default implementation inserts it after the surface, but subclasses can override this.
+ */
+ve.init.Target.prototype.setupDebugBar = function () {
+	if ( !this.surface ) {
+		throw new Error( 'Surface must be setup before DebugBar' );
+	}
+	this.debugBar = new ve.ui.DebugBar( this.surface );
+	this.debugBar.$element.insertAfter( this.surface.$element );
 };

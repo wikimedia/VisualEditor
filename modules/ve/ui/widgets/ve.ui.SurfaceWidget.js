@@ -47,8 +47,7 @@ ve.ui.SurfaceWidget = function VeUiSurfaceWidget( doc, config ) {
 	}
 
 	if ( ve.debug ) {
-		var debugBar = new ve.init.DebugBar( { '$': this.$ } );
-		debugBar.attachToSurface( this.surface );
+		var debugBar = new ve.ui.DebugBar( this.surface, { '$': this.$ } );
 		this.$element.append( debugBar.$element );
 	}
 };

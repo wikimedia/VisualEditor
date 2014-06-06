@@ -12,19 +12,22 @@
  * @extends OO.ui.Element
  *
  * @constructor
+ * @param {ve.ui.Surface} surface Surface to debug
  * @param {Object} [config] Configuration options
  */
-ve.init.DebugBar = function VeUiDebugBar( config ) {
+ve.ui.DebugBar = function VeUiDebugBar( surface, config ) {
 	// Parent constructor
 	OO.ui.Element.call( this, config );
 
-	this.$commands = this.$( '<div>' ).addClass( 've-init-debugBar-commands' );
-	this.$dumpLinmod = this.$( '<td>' ).addClass( 've-init-debugBar-dump-linmod' );
-	this.$dumpView = this.$( '<td>' ).addClass( 've-init-debugBar-dump-view' );
-	this.$dumpModel = this.$( '<td>' ).addClass( 've-init-debugBar-dump-model' );
+	this.surface = surface;
+
+	this.$commands = this.$( '<div>' ).addClass( 've-ui-debugBar-commands' );
+	this.$dumpLinmod = this.$( '<td>' ).addClass( 've-ui-debugBar-dump-linmod' );
+	this.$dumpView = this.$( '<td>' ).addClass( 've-ui-debugBar-dump-view' );
+	this.$dumpModel = this.$( '<td>' ).addClass( 've-ui-debugBar-dump-model' );
 
 	this.$dump =
-		this.$( '<table class="ve-init-debugBar-dump"></table>' ).append(
+		this.$( '<table class="ve-ui-debugBar-dump"></table>' ).append(
 			this.$( '<thead><th>Linear model</th><th>View tree</th><th>Model tree</th></thead>' ),
 			this.$( '<tbody>' ).append(
 				this.$( '<tr>' ).append(
@@ -53,7 +56,11 @@ ve.init.DebugBar = function VeUiDebugBar( config ) {
 	this.dumpModelButton.on( 'click', ve.bind( this.onDumpModelButtonClick, this ) );
 	this.dumpModelChangeToggle.on( 'click', ve.bind( this.onDumpModelChangeToggleClick, this ) );
 
-	this.$element.addClass( 've-init-debugBar' );
+	this.onDumpModelChangeToggleClick();
+	this.getSurface().getModel().connect( this, { 'select': this.onSurfaceSelect } );
+	this.onSurfaceSelect( this.getSurface().getModel().getSelection() );
+
+	this.$element.addClass( 've-ui-debugBar' );
 	this.$element.append(
 		this.$commands.append(
 			startLabel.$element,
@@ -73,34 +80,21 @@ ve.init.DebugBar = function VeUiDebugBar( config ) {
 
 /* Inheritance */
 
-OO.inheritClass( ve.init.DebugBar, OO.ui.Element );
+OO.inheritClass( ve.ui.DebugBar, OO.ui.Element );
 
 /**
  * Divider HTML template
  *
  * @property {string}
  */
-ve.init.DebugBar.static.dividerTemplate = '<span class="ve-init-debugBar-commands-divider">&nbsp;</span>';
-
-/**
- * Attach debug bar to a surface
- *
- * @param {ve.ui.Surface} surface Surface
- */
-ve.init.DebugBar.prototype.attachToSurface = function ( surface ) {
-	this.surface = surface;
-	this.dumpModelChangeToggle.emit( 'click' );
-	this.surface.model.connect( this, { 'select':  this.onSurfaceSelect } );
-	// Fire on load
-	this.onSurfaceSelect( this.surface.getModel().getSelection() );
-};
+ve.ui.DebugBar.static.dividerTemplate = '<span class="ve-ui-debugBar-commands-divider">&nbsp;</span>';
 
 /**
  * Get surface the debug bar is attached to
  *
  * @returns {ve.ui.Surface|null} Surface
  */
-ve.init.DebugBar.prototype.getSurface = function () {
+ve.ui.DebugBar.prototype.getSurface = function () {
 	return this.surface;
 };
 
@@ -109,7 +103,7 @@ ve.init.DebugBar.prototype.getSurface = function () {
  *
  * @param {ve.Range} range
  */
-ve.init.DebugBar.prototype.onSurfaceSelect = function ( range ) {
+ve.ui.DebugBar.prototype.onSurfaceSelect = function ( range ) {
 	if ( range ) {
 		this.startTextInput.setValue( range.start );
 		this.endTextInput.setValue( range.end );
@@ -124,7 +118,7 @@ ve.init.DebugBar.prototype.onSurfaceSelect = function ( range ) {
  *
  * @param {jQuery.Event} e Event
  */
-ve.init.DebugBar.prototype.onLogRangeButtonClick = function () {
+ve.ui.DebugBar.prototype.onLogRangeButtonClick = function () {
 	var start = this.startTextInput.getValue(),
 		end = this.endTextInput.getValue();
 	// TODO: Validate input
@@ -136,7 +130,7 @@ ve.init.DebugBar.prototype.onLogRangeButtonClick = function () {
  *
  * @param {jQuery.Event} e Event
  */
-ve.init.DebugBar.prototype.onDumpModelButtonClick = function () {
+ve.ui.DebugBar.prototype.onDumpModelButtonClick = function () {
 	/*jshint loopfunc:true */
 	// linear model dump
 	var i, $li, $label, element, text, annotations,
@@ -150,15 +144,15 @@ ve.init.DebugBar.prototype.onDumpModelButtonClick = function () {
 		$label = this.$( '<span>' );
 		element = documentModel.data.getData( i );
 		if ( element.type ) {
-			$label.addClass( 've-init-debugBar-dump-element' );
+			$label.addClass( 've-ui-debugBar-dump-element' );
 			text = element.type;
 			annotations = element.annotations;
 		} else if ( ve.isArray( element ) ) {
-			$label.addClass( 've-init-debugBar-dump-achar' );
+			$label.addClass( 've-ui-debugBar-dump-achar' );
 			text = element[0];
 			annotations = element[1];
 		} else {
-			$label.addClass( 've-init-debugBar-dump-char' );
+			$label.addClass( 've-ui-debugBar-dump-char' );
 			text = element;
 			annotations = undefined;
 		}
@@ -190,7 +184,7 @@ ve.init.DebugBar.prototype.onDumpModelButtonClick = function () {
 
 		for ( i = 0; i < node.children.length; i++ ) {
 			$li = this.$( '<li>' );
-			$label = this.$( '<span>' ).addClass( 've-init-debugBar-dump-element' );
+			$label = this.$( '<span>' ).addClass( 've-ui-debugBar-dump-element' );
 			if ( node.children[i].length !== undefined ) {
 				$li.append(
 					$label
@@ -226,9 +220,9 @@ ve.init.DebugBar.prototype.onDumpModelButtonClick = function () {
  *
  * @param {jQuery.Event} e Event
  */
-ve.init.DebugBar.prototype.onDumpModelChangeToggleClick = function () {
+ve.ui.DebugBar.prototype.onDumpModelChangeToggleClick = function () {
 	if ( this.dumpModelChangeToggle.getValue() ) {
-		this.dumpModelButton.emit( 'click' );
+		this.onDumpModelButtonClick();
 		this.getSurface().model.connect( this, { 'documentUpdate': this.onDumpModelButtonClick } );
 	} else {
 		this.getSurface().model.disconnect( this, { 'documentUpdate': this.onDumpModelButtonClick } );

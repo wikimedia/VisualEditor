@@ -5,12 +5,6 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-/* Demo */
-
-.ve-demo-debugBar {
-	border-top: 1px solid #ccc;
-}
-
 /* Editor */
 
 .ve-ce-documentNode {
@@ -23,4 +17,9 @@
 
 .ve-init-sa-target-toolbar.ve-ui-toolbar-floating .oo-ui-toolbar-bar {
 	border-top: none;
+}
+
+.ve-ui-debugBar {
+	border-top: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
 }

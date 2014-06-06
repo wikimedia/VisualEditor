@@ -5,28 +5,28 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-.ve-init-debugBar-commands {
+.ve-ui-debugBar-commands {
 	font-size: 0.8em;
 }
 
-.ve-init-debugBar-commands > .oo-ui-widget,
-.ve-init-debugBar-commands-divider {
+.ve-ui-debugBar-commands > .oo-ui-widget,
+.ve-ui-debugBar-commands-divider {
 	display: inline-block;
 	vertical-align: middle;
 	margin-right: 1em;
 }
 
-.ve-init-debugBar-commands .oo-ui-textInputWidget {
+.ve-ui-debugBar-commands .oo-ui-textInputWidget {
 	width: 4em;
 }
 
-.ve-init-debugBar-commands-divider {
+.ve-ui-debugBar-commands-divider {
 	border-right: 1px solid #ddd;
 	padding-left: 0.2em;
 	width: 0;
 }
 
-.ve-init-debugBar-dump {
+.ve-ui-debugBar-dump {
 	font-size: 0.7em;
 	margin-top: 2em;
 	display: none;
@@ -38,28 +38,28 @@
 	border-top-left-radius: 0.25em;
 }
 
-.ve-init-debugBar-dump td {
+.ve-ui-debugBar-dump td {
 	padding: 0.25em 1em;
 	background-color: #fff;
 	vertical-align: top;
 }
 
-.ve-init-debugBar-dump-linmod {
+.ve-ui-debugBar-dump-linmod {
 	width: 30%;
 }
 
-.ve-init-debugBar-dump th {
+.ve-ui-debugBar-dump th {
 	padding: 0.5em 1em;
 	color: #555;
 	text-shadow: 0 1px 1px #fff;
 }
 
-.ve-init-debugBar-dump ol {
+.ve-ui-debugBar-dump ol {
 	padding-left: 1.5em;
 	color: #999;
 }
 
-.ve-init-debugBar-dump li > span {
+.ve-ui-debugBar-dump li > span {
 	display: inline-block;
 	background-color: #f3f3f3;
 	border-radius: 0.3em;
@@ -69,19 +69,19 @@
 	color: #000;
 }
 
-.ve-init-debugBar-dump li > span > span {
+.ve-ui-debugBar-dump li > span > span {
 	color: #aaa;
 	text-shadow: 0 1px 1px #fff;
 }
 
-.ve-init-debugBar-dump li .ve-init-debugBar-dump-element {
+.ve-ui-debugBar-dump li .ve-ui-debugBar-dump-element {
 	background-color: #ddeeff;
 }
 
-.ve-init-debugBar-dump li .ve-init-debugBar-dump-char {
+.ve-ui-debugBar-dump li .ve-ui-debugBar-dump-char {
 	background-color: #ddffee;
 }
 
-.ve-init-debugBar-dump li .ve-init-debugBar-dump-achar {
+.ve-ui-debugBar-dump li .ve-ui-debugBar-dump-achar {
 	background-color: #ffeedd;
 }

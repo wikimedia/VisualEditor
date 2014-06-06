@@ -7,21 +7,15 @@
 
 /* Demo */
 
-.ve-demo-debugBar {
-	margin: 0 2em 1em 2em;
-	border: 1px solid #ccc;
-	border-top: 0;
-	border-radius: 0 0 0.5em 0.5em;
-}
-
-/* Editor */
-
 .ve-demo-menu {
 	margin: 0 2em;
 }
 
+/* Editor */
+
 .ve-ui-surface {
 	margin: 0 2em;
+	box-shadow: 0 0.25em 1.5em 0 #ddd;
 }
 
 .ve-ce-documentNode {
@@ -43,4 +37,12 @@
 .ve-init-sa-target-toolbar.ve-ui-toolbar-floating .oo-ui-toolbar-bar {
 	border-top: none;
 	border-radius: 0;
+}
+
+.ve-ui-debugBar {
+	margin: 0 2em 1em 2em;
+	border: 1px solid #ccc;
+	border-top: 0;
+	border-radius: 0 0 0.5em 0.5em;
+	box-shadow: 0 0.25em 1.5em 0 #ddd;
 }
