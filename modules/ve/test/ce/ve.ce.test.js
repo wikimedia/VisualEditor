@@ -30,7 +30,7 @@ QUnit.test( 'getDomHash', 1, function ( assert ) {
 	);
 } );
 
-QUnit.test( 'getOffsetFrom(Element|Text)Node', function ( assert ) {
+QUnit.test( 'getOffset', function ( assert ) {
 	var i, surface, documentModel, documentView,
 		expected = 0,
 		testCases = [
@@ -43,7 +43,7 @@ QUnit.test( 'getOffsetFrom(Element|Text)Node', function ( assert ) {
 					2,
 					3,
 					4, 4, 4, 4,
-					7
+					5
 				]
 			},
 			{
@@ -61,7 +61,7 @@ QUnit.test( 'getOffsetFrom(Element|Text)Node', function ( assert ) {
 					8,
 					9,
 					10, 10, 10, 10, 10,
-					13
+					11
 				]
 			},
 			{
@@ -75,11 +75,12 @@ QUnit.test( 'getOffsetFrom(Element|Text)Node', function ( assert ) {
 					2,
 					3,
 					4, 4, 4,
-					6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
+					5, 5, 5, 5, 5, 5, 5, 5,
+					6, 6, 6,
 					7,
 					8,
 					9, 9,
-					12
+					10
 				]
 			}
 		];
@@ -97,7 +98,7 @@ QUnit.test( 'getOffsetFrom(Element|Text)Node', function ( assert ) {
 				for ( i = 0; i <= parent.childNodes.length; i++ ) {
 					expectedIndex++;
 					assert.equal(
-						ve.ce.getOffsetFromElementNode( parent, i ),
+						ve.ce.getOffset( parent, i ),
 						testCase.expected[expectedIndex],
 						testCase.msg + ': offset ' + i + ' in <' + parent.nodeName.toLowerCase() + '>'
 					);
@@ -110,7 +111,7 @@ QUnit.test( 'getOffsetFrom(Element|Text)Node', function ( assert ) {
 				for ( i = 0; i <= parent.data.length; i++ ) {
 					expectedIndex++;
 					assert.equal(
-						ve.ce.getOffsetFromTextNode( parent, i ),
+						ve.ce.getOffset( parent, i ),
 						testCase.expected[expectedIndex],
 						testCase.msg + ': offset ' + i + ' in "' + parent.data + '"'
 					);
