@@ -219,7 +219,10 @@ ve.ce.getOffset = function ( domNode, domOffset ) {
 			node = traverse( startNode );
 		}
 	} else {
-		lengthSum += domOffset;
+		// Text inside of a slug doesn't count
+		if ( !$( domNode.parentNode ).hasClass( 've-ce-branchNode-slug' ) ) {
+			lengthSum += domOffset;
+		}
 		startNode = domNode;
 		node = traverse( startNode );
 	}
@@ -237,7 +240,8 @@ ve.ce.getOffset = function ( domNode, domOffset ) {
 			break;
 		}
 
-		if ( node.nodeType === Node.TEXT_NODE ) {
+		// Text inside of a slug doesn't count
+		if ( node.nodeType === Node.TEXT_NODE && !$( node.parentNode ).hasClass( 've-ce-branchNode-slug' ) ) {
 			lengthSum += node.data.length;
 		}
 		// else: non-text nodes that don't have a .data( 'view' ) don't exist in the DM
