@@ -1296,7 +1296,8 @@ ve.dm.Transaction.prototype.pushRemoval = function ( doc, currentOffset, range, 
 	// Validate range
 	if ( range.isCollapsed() ) {
 		// Empty range, nothing to remove
-		return currentOffset;
+		this.pushRetain( range.start - currentOffset );
+		return range.start;
 	}
 	// Select nodes and validate selection
 	selection = doc.selectNodes( range, 'covered' );
