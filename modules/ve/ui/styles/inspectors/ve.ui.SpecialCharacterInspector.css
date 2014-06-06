@@ -5,7 +5,7 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-.ve-specialchar-spinner {
+.ve-ui-specialCharacterInspector-spinner {
 	/* There might be a better place for a spinner? */
 	/* @embed */
 	background-image: url(../images/spinner.gif);
@@ -15,16 +15,16 @@
 	margin-right: auto;
 }
 
-.ve-specialchar-list h3 {
+.ve-ui-specialCharacterInspector-list h3 {
 	font-size: 1em;
 	text-transform: capitalize;
 }
 
-.ve-specialchar-list-group {
+.ve-ui-specialCharacterInspector-list-group {
 	white-space: normal;
 }
 
-.ve-specialchar-list-character {
+.ve-ui-specialCharacterInspector-list-character {
 	cursor: pointer;
 	font-size: 1.5em;
 	line-height: 1.5em;
@@ -40,6 +40,11 @@
 	transition: border-color 100ms;
 }
 
-.ve-specialchar-list-character:hover {
+.ve-ui-specialCharacterInspector-list-character:hover {
 	border-color: #ccc;
+}
+
+/* FIXME: This rule has to be overly specific because the theme files are loaded afterwards */
+.ve-ui-specialCharacterInspector .oo-ui-window-frame .oo-ui-frame {
+	width: 30em;
 }

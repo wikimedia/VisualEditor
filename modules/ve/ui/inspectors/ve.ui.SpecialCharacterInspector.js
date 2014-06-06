@@ -63,6 +63,8 @@ ve.ui.SpecialCharacterInspector = function VeUiSpecialCharacterInspector( fragme
 			'§': '§'
 		}
 	};
+
+	this.$element.addClass( 've-ui-specialCharacterInspector' );
 };
 
 /* Inheritance */
@@ -73,7 +75,7 @@ OO.inheritClass( ve.ui.SpecialCharacterInspector, ve.ui.Inspector );
 
 ve.ui.SpecialCharacterInspector.static.name = 'specialcharacter';
 
-ve.ui.SpecialCharacterInspector.static.icon = 'specialcharacter';
+ve.ui.SpecialCharacterInspector.static.icon = 'special-character';
 
 ve.ui.SpecialCharacterInspector.static.title =
 	OO.ui.deferMsg( 'visualeditor-specialcharacterinspector-title' );
@@ -91,7 +93,7 @@ ve.ui.SpecialCharacterInspector.prototype.initialize = function () {
 	// Parent method
 	ve.ui.SpecialCharacterInspector.super.prototype.initialize.call( this );
 
-	this.$spinner = this.$( '<div>' ).addClass( 've-specialchar-spinner' );
+	this.$spinner = this.$( '<div>' ).addClass( 've-ui-specialCharacterInspector-spinner' );
 	this.$form.append( this.$spinner );
 };
 
@@ -157,15 +159,15 @@ ve.ui.SpecialCharacterInspector.prototype.fetchCharList = function () {
  */
 ve.ui.SpecialCharacterInspector.prototype.buildButtonList = function () {
 	var category, character, characters, $categoryButtons,
-		$list = this.$( '<div>' ).addClass( 've-specialchar-list' );
+		$list = this.$( '<div>' ).addClass( 've-ui-specialCharacterInspector-list' );
 
 	for ( category in this.characters ) {
 		characters = this.characters[category];
-		$categoryButtons = $( '<div>' ).addClass( 've-specialchar-list-group' );
+		$categoryButtons = $( '<div>' ).addClass( 've-ui-specialCharacterInspector-list-group' );
 		for ( character in characters ) {
 			$categoryButtons.append(
 				$( '<div>' )
-					.addClass( 've-specialchar-list-character' )
+					.addClass( 've-ui-specialCharacterInspector-list-character' )
 					.data( 'character', characters[character] )
 					.text( character )
 			);
