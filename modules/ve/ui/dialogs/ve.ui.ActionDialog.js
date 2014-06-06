@@ -126,7 +126,7 @@ ve.ui.ActionDialog.prototype.applyChanges = function () {
  */
 ve.ui.ActionDialog.prototype.showErrors = function ( errors ) {
 	var i, len, $errorDiv,
-		$errors = $( [] );
+		$errors = this.$( [] );
 
 	for ( i = 0, len = errors.length; i < len; i++ ) {
 		$errorDiv = this.$( '<div>' ).addClass( 've-ui-actionDialog-error' );

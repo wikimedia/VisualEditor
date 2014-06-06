@@ -9,24 +9,25 @@
  * Debug bar
  *
  * @class
+ * @extends OO.ui.Element
  *
  * @constructor
  * @param {Object} [config] Configuration options
  */
-ve.init.DebugBar = function VeUiDebugBar() {
+ve.init.DebugBar = function VeUiDebugBar( config ) {
+	// Parent constructor
+	OO.ui.Element.call( this, config );
 
-	this.$element = $( '<div>' ).addClass( 've-init-debugBar' );
-
-	this.$commands = $( '<div>' ).addClass( 've-init-debugBar-commands' );
-	this.$dumpLinmod = $( '<td>' ).addClass( 've-init-debugBar-dump-linmod' );
-	this.$dumpView = $( '<td>' ).addClass( 've-init-debugBar-dump-view' );
-	this.$dumpModel = $( '<td>' ).addClass( 've-init-debugBar-dump-model' );
+	this.$commands = this.$( '<div>' ).addClass( 've-init-debugBar-commands' );
+	this.$dumpLinmod = this.$( '<td>' ).addClass( 've-init-debugBar-dump-linmod' );
+	this.$dumpView = this.$( '<td>' ).addClass( 've-init-debugBar-dump-view' );
+	this.$dumpModel = this.$( '<td>' ).addClass( 've-init-debugBar-dump-model' );
 
 	this.$dump =
-		$( '<table class="ve-init-debugBar-dump"></table>' ).append(
-			$( '<thead><th>Linear model</th><th>View tree</th><th>Model tree</th></thead>' ),
-			$( '<tbody>' ).append(
-				$( '<tr>' ).append(
+		this.$( '<table class="ve-init-debugBar-dump"></table>' ).append(
+			this.$( '<thead><th>Linear model</th><th>View tree</th><th>Model tree</th></thead>' ),
+			this.$( '<tbody>' ).append(
+				this.$( '<tr>' ).append(
 					this.$dumpLinmod, this.$dumpView, this.$dumpModel
 				)
 			)
@@ -52,6 +53,7 @@ ve.init.DebugBar = function VeUiDebugBar() {
 	this.dumpModelButton.on( 'click', ve.bind( this.onDumpModelButtonClick, this ) );
 	this.dumpModelChangeToggle.on( 'click', ve.bind( this.onDumpModelChangeToggleClick, this ) );
 
+	this.$element.addClass( 've-init-debugBar' );
 	this.$element.append(
 		this.$commands.append(
 			startLabel.$element,
@@ -59,7 +61,7 @@ ve.init.DebugBar = function VeUiDebugBar() {
 			endLabel.$element,
 			this.endTextInput.$element,
 			this.logRangeButton.$element,
-			$( this.constructor.static.dividerTemplate ),
+			this.$( this.constructor.static.dividerTemplate ),
 			this.dumpModelButton.$element,
 			this.dumpModelChangeToggle.$element
 		),
@@ -69,7 +71,9 @@ ve.init.DebugBar = function VeUiDebugBar() {
 	this.target = null;
 };
 
-ve.init.DebugBar.static = {};
+/* Inheritance */
+
+OO.inheritClass( ve.init.DebugBar, OO.ui.Element );
 
 /**
  * Divider HTML template
@@ -139,11 +143,11 @@ ve.init.DebugBar.prototype.onDumpModelButtonClick = function () {
 		surface = this.getSurface(),
 		documentModel = surface.getModel().getDocument(),
 		documentView = surface.getView().getDocument(),
-		$ol = $( '<ol start="0"></ol>' );
+		$ol = this.$( '<ol start="0"></ol>' );
 
 	for ( i = 0; i < documentModel.data.getLength(); i++ ) {
-		$li = $( '<li>' );
-		$label = $( '<span>' );
+		$li = this.$( '<li>' );
+		$label = this.$( '<span>' );
 		element = documentModel.data.getData( i );
 		if ( element.type ) {
 			$label.addClass( 've-init-debugBar-dump-element' );
@@ -161,7 +165,7 @@ ve.init.DebugBar.prototype.onDumpModelButtonClick = function () {
 		$label.html( ( text.match( /\S/ ) ? text : '&nbsp;' ) + ' ' );
 		if ( annotations ) {
 			$label.append(
-				$( '<span>' ).text(
+				this.$( '<span>' ).text(
 					'[' + documentModel.store.values( annotations ).map( function ( ann ) {
 						return JSON.stringify( ann.getComparableObject() );
 					} ).join( ', ' ) + ']'
@@ -182,17 +186,17 @@ ve.init.DebugBar.prototype.onDumpModelButtonClick = function () {
 	 */
 	function generateListFromNode( node ) {
 		var $li, i,
-			$ol = $( '<ol start="0"></ol>' );
+			$ol = this.$( '<ol start="0"></ol>' );
 
 		for ( i = 0; i < node.children.length; i++ ) {
-			$li = $( '<li>' );
-			$label = $( '<span>' ).addClass( 've-init-debugBar-dump-element' );
+			$li = this.$( '<li>' );
+			$label = this.$( '<span>' ).addClass( 've-init-debugBar-dump-element' );
 			if ( node.children[i].length !== undefined ) {
 				$li.append(
 					$label
 						.text( node.children[i].type )
 						.append(
-							$( '<span>' ).text( ' (' + node.children[i].length + ')' )
+							this.$( '<span>' ).text( ' (' + node.children[i].length + ')' )
 						)
 				);
 			} else {
