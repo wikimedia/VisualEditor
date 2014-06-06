@@ -59,9 +59,8 @@ ve.ui.DesktopContext = function VeUiDesktopContext( surface, config ) {
 		'close': 'onInspectorClose'
 	} );
 
-	this.$( this.getElementWindow() ).on( {
-		'resize': ve.bind( this.onWindowResize, this )
-	} );
+	this.windowResizeHandler = ve.bind( this.onWindowResize, this );
+	this.$( this.getElementWindow() ).on( 'resize', this.windowResizeHandler );
 	this.$element.add( this.$menu )
 		.on( 'mousedown', false );
 
@@ -78,6 +77,25 @@ ve.ui.DesktopContext = function VeUiDesktopContext( surface, config ) {
 OO.inheritClass( ve.ui.DesktopContext, ve.ui.Context );
 
 /* Methods */
+
+/**
+ * @inheritdoc
+ */
+ve.ui.DesktopContext.prototype.destroy = function () {
+	// Disconnect events
+	this.surface.getModel().disconnect( this );
+	this.surface.getView().disconnect( this );
+	this.inspectors.disconnect( this );
+
+	// Disconnect DOM events
+	this.$( this.getElementWindow() ).off( 'resize', this.windowResizeHandler );
+
+	// Stop timers
+	clearTimeout( this.afterModelChangeTimeout );
+
+	// Parent method
+	return ve.ui.Context.prototype.destroy.call( this );
+};
 
 /**
  * Handle window resize events.

@@ -79,23 +79,15 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 	} );
 
 	// Use onDOMEvent to get jQuery focusin/focusout events to work in iframes
-	OO.ui.Element.onDOMEvent(
-		this.getElementDocument(),
-		'focusin',
-		ve.bind( this.onFocusChange, this )
-	);
-	OO.ui.Element.onDOMEvent(
-		this.getElementDocument(),
-		'focusout',
-		ve.bind( this.onFocusChange, this )
-	);
+	this.documentFocusChangeHandler = ve.bind( this.onFocusChange, this );
+	OO.ui.Element.onDOMEvent( this.getElementDocument(), 'focusin', this.documentFocusChangeHandler );
+	OO.ui.Element.onDOMEvent( this.getElementDocument(), 'focusout', this.documentFocusChangeHandler );
 	// It is possible for a mousedown to clear the selection
 	// without triggering a focus change event (e.g. if the
 	// document has been programmatically blurred) so trigger
 	// a focus change to check if we still have a selection
-	this.$document.on( {
-		'mousedown': ve.bind( this.onFocusChange, this )
-	} );
+	this.documentMousedownHandler = ve.bind( this.onFocusChange, this );
+	this.$document.on( 'mousedown', this.documentMousedownHandler );
 
 	this.$pasteTarget.on( {
 		'cut': ve.bind( this.onCut, this ),
@@ -226,6 +218,34 @@ ve.ce.Surface.static.getClipboardHash = function ( $elements ) {
 /* Methods */
 
 /**
+ * Destroy the surface, removing all DOM elements.
+ *
+ * @method
+ */
+ve.ce.Surface.prototype.destroy = function () {
+	// Detach observer and event sequencer
+	this.surfaceObserver.detach();
+	this.eventSequencer.detach();
+
+	// Make document node not live
+	this.documentView.getDocumentNode().setLive( false );
+
+	// Disconnect events
+	this.surfaceObserver.disconnect( this );
+	this.model.disconnect( this );
+
+	// Disconnect DOM events on the document
+	OO.ui.Element.offDOMEvent( this.getElementDocument(), 'focusin', this.documentFocusChangeHandler );
+	OO.ui.Element.offDOMEvent( this.getElementDocument(), 'focusout', this.documentFocusChangeHandler );
+	this.$document.off( 'mousedown', this.documentMousedownHandler );
+
+	// Remove DOM elements (also disconnects their events)
+	this.$element.remove();
+	this.$phantoms.remove();
+	this.$highlights.remove();
+};
+
+/**
  * Get the coordinates of the selection anchor.
  *
  * @method
@@ -340,18 +360,6 @@ ve.ce.Surface.prototype.enable = function () {
  */
 ve.ce.Surface.prototype.disable = function () {
 	this.documentView.getDocumentNode().disable();
-};
-
-/**
- * Destroy the surface, removing all DOM elements.
- *
- * @method
- */
-ve.ce.Surface.prototype.destroy = function () {
-	this.surfaceObserver.detach();
-	this.documentView.getDocumentNode().setLive( false );
-	this.$element.remove();
-	this.$phantoms.remove();
 };
 
 /**

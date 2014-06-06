@@ -101,6 +101,35 @@ OO.mixinClass( ve.ui.Surface, OO.EventEmitter );
 /* Methods */
 
 /**
+ * Destroy the surface, releasing all memory and removing all DOM elements.
+ *
+ * @method
+ * @fires destroy
+ */
+ve.ui.Surface.prototype.destroy = function () {
+	// Remove instance from global array
+	ve.instances.splice( ve.instances.indexOf( this ), 1 );
+
+	// Stop periodic history tracking in model
+	this.model.stopHistoryTracking();
+
+	// Destroy the ce.Surface and the ui.Context
+	this.view.destroy();
+	this.context.destroy();
+
+	// Disconnect events
+	this.dialogs.disconnect( this );
+
+	// Remove DOM elements
+	this.$element.remove();
+	this.$globalOverlay.remove();
+	this.$localOverlay.remove();
+
+	// Let others know we have been destroyed
+	this.emit( 'destroy' );
+};
+
+/**
  * Handle dialog close events
  */
 ve.ui.Surface.prototype.onDialogClose = function () {
@@ -202,23 +231,6 @@ ve.ui.Surface.prototype.getCommand = function ( trigger ) {
  */
 ve.ui.Surface.prototype.getTriggers = function ( name ) {
 	return this.triggers[name];
-};
-
-/**
- * Destroy the surface, releasing all memory and removing all DOM elements.
- *
- * @method
- * @returns {ve.ui.Context} Context user interface
- * @fires destroy
- */
-ve.ui.Surface.prototype.destroy = function () {
-	ve.instances.splice( ve.instances.indexOf( this ), 1 );
-	this.model.stopHistoryTracking();
-	this.view.destroy();
-	this.$element.remove();
-	this.$globalOverlay.remove();
-	this.$localOverlay.remove();
-	this.emit( 'destroy' );
 };
 
 /**
