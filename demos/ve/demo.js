@@ -75,6 +75,10 @@ $( function () {
 			}
 
 			$targetContainer.slideUp().promise().done( function () {
+				if ( currentTarget ) {
+					currentTarget.destroy();
+				}
+
 				// Container needs to be visually hidden, but not display:none
 				// so that the toolbar can be measured
 				$targetContainer.empty().show().css( {
@@ -104,10 +108,6 @@ $( function () {
 					$targetContainer.removeAttr( 'style' ).hide()
 						// Restore directionality
 						.css( 'direction', dir );
-
-					if ( currentTarget ) {
-						currentTarget.destroy();
-					}
 
 					$targetContainer.slideDown().promise().done( function () {
 						target.$document[0].focus();
