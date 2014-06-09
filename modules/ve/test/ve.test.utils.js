@@ -132,6 +132,6 @@ ve.test.utils.createSurfaceFromHtml = function ( html ) {
  */
 ve.test.utils.createSurfaceFromDocument = function ( doc ) {
 	var target = new ve.init.sa.Target( $( '#qunit-fixture' ), doc );
-	target.setup();
+	target.setup( doc );
 	return target.surface;
 };

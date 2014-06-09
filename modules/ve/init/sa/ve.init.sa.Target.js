@@ -18,17 +18,16 @@
  *
  * @constructor
  * @param {jQuery} $container Container to render target into
- * @param {ve.dm.Document} doc Document model
+ * @param {ve.dm.Document} dmDoc Document model
  * @param {string} [surfaceType] Type of surface to use, 'desktop' or 'mobile'
  * @throws {Error} Unknown surfaceType
  */
-ve.init.sa.Target = function VeInitSaTarget( $container, doc, surfaceType ) {
+ve.init.sa.Target = function VeInitSaTarget( $container, dmDoc, surfaceType ) {
 	// Parent constructor
 	ve.init.Target.call( this, $container );
 
 	surfaceType = surfaceType || this.constructor.static.defaultSurfaceType;
 
-	this.document = doc;
 	switch ( surfaceType ) {
 		case 'desktop':
 			this.surfaceClass = ve.ui.DesktopSurface;
@@ -41,7 +40,7 @@ ve.init.sa.Target = function VeInitSaTarget( $container, doc, surfaceType ) {
 	}
 	this.setupDone = false;
 
-	ve.init.platform.getInitializedPromise().done( ve.bind( this.setup, this ) );
+	ve.init.platform.getInitializedPromise().done( ve.bind( this.setup, this, dmDoc ) );
 };
 
 /* Inheritance */
@@ -57,9 +56,10 @@ ve.init.sa.Target.static.defaultSurfaceType = 'desktop';
 /**
  * Setup the target
  *
+ * @param {ve.dm.Document} dmDoc Document model
  * @fires surfaceReady
  */
-ve.init.sa.Target.prototype.setup = function () {
+ve.init.sa.Target.prototype.setup = function ( dmDoc ) {
 	var target = this;
 
 	if ( this.setupDone ) {
@@ -68,7 +68,7 @@ ve.init.sa.Target.prototype.setup = function () {
 
 	// Properties
 	this.setupDone = true;
-	this.surface = this.createSurface( this.document );
+	this.surface = this.createSurface( dmDoc );
 	this.toolbar = new ve.ui.TargetToolbar( this, this.surface, { 'shadow': true } );
 
 	// Initialization
@@ -83,7 +83,7 @@ ve.init.sa.Target.prototype.setup = function () {
 	this.surface.setPasteRules( this.constructor.static.pasteRules );
 	this.surface.initialize();
 
-	// This must be emitted asynchronous because ve.init.Platform#initialize
+	// This must be emitted asynchronously because ve.init.Platform#initialize
 	// is synchronous, and if we emit it right away, then users will be
 	// unable to listen to this event as it will have been emitted before the
 	// constructor returns.
