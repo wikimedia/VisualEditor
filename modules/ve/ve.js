@@ -662,44 +662,48 @@
 	};
 
 	/**
-	 * Check whether a given DOM element is of a block or inline type.
+	 * Check whether a given DOM element has a block element type.
 	 *
-	 * @param {HTMLElement} element
-	 * @returns {boolean} True if element is block, false if it is inline
+	 * @param {HTMLElement|string} element Element or element name
+	 * @returns {boolean} Element is a block element
 	 */
 	ve.isBlockElement = function ( element ) {
-		return ve.isBlockElementType( element.nodeName.toLowerCase() );
+		var elementName = typeof element === 'string' ? element : element.nodeName;
+		return ve.indexOf( elementName.toLowerCase(), ve.elementTypes.block ) !== -1;
 	};
 
 	/**
-	 * Check whether a given tag name is a block or inline tag.
+	 * Check whether a given DOM element is a void element (can't have children).
 	 *
-	 * @param {string} nodeName All-lowercase HTML tag name
-	 * @returns {boolean} True if block, false if inline
+	 * @param {HTMLElement|string} element Element or element name
+	 * @returns {boolean} Element is a void element
 	 */
-	ve.isBlockElementType = function ( nodeName ) {
-		return ve.indexOf( nodeName, ve.isBlockElementType.blockTypes ) !== -1;
+	ve.isVoidElement = function ( element ) {
+		var elementName = typeof element === 'string' ? element : element.nodeName;
+		return ve.indexOf( elementName.toLowerCase(), ve.elementTypes.void ) !== -1;
 	};
 
-	/**
-	 * Private data for #isBlockElementType.
-	 *
-	 */
-	ve.isBlockElementType.blockTypes = [
-		'div', 'p',
-		// tables
-		'table', 'tbody', 'thead', 'tfoot', 'caption', 'th', 'tr', 'td',
-		// lists
-		'ul', 'ol', 'li', 'dl', 'dt', 'dd',
-		// HTML5 heading content
-		'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hgroup',
-		// HTML5 sectioning content
-		'article', 'aside', 'body', 'nav', 'section', 'footer', 'header', 'figure',
-		'figcaption', 'fieldset', 'details', 'blockquote',
-		// other
-		'hr', 'button', 'canvas', 'center', 'col', 'colgroup', 'embed',
-		'map', 'object', 'pre', 'progress', 'video'
-	];
+	ve.elementTypes = {
+		'block': [
+			'div', 'p',
+			// tables
+			'table', 'tbody', 'thead', 'tfoot', 'caption', 'th', 'tr', 'td',
+			// lists
+			'ul', 'ol', 'li', 'dl', 'dt', 'dd',
+			// HTML5 heading content
+			'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hgroup',
+			// HTML5 sectioning content
+			'article', 'aside', 'body', 'nav', 'section', 'footer', 'header', 'figure',
+			'figcaption', 'fieldset', 'details', 'blockquote',
+			// other
+			'hr', 'button', 'canvas', 'center', 'col', 'colgroup', 'embed',
+			'map', 'object', 'pre', 'progress', 'video'
+		],
+		'void': [
+			'area', 'base', 'br', 'col', 'command', 'embed', 'hr', 'img',
+			'input', 'keygen', 'link', 'meta', 'param', 'source', 'track', 'wbr'
+		]
+	};
 
 	/**
 	 * Create an HTMLDocument from an HTML string.
