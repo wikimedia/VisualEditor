@@ -26,15 +26,7 @@ ve.init.Target = function VeInitTarget( $container ) {
 
 	// Properties
 	this.$element = $container;
-
-	/**
-	 * @property {ve.ui.Surface}
-	 */
 	this.surface = null;
-
-	/**
-	 * @property {ve.ui.TargetToolbar}
-	 */
 	this.toolbar = null;
 
 	// Register
@@ -47,12 +39,15 @@ ve.init.Target = function VeInitTarget( $container ) {
 ve.init.Target.prototype.destroy = function () {
 	if ( this.surface ) {
 		this.surface.destroy();
+		this.surface = null;
 	}
 	if ( this.toolbar ) {
 		this.toolbar.destroy();
+		this.toolbar = null;
 	}
 	if ( this.$element ) {
 		this.$element.remove();
+		this.$element = null;
 	}
 	ve.init.target = null;
 };
@@ -172,4 +167,22 @@ ve.init.Target.static.pasteRules = {
  */
 ve.init.Target.prototype.createSurface = function ( dmDoc, config ) {
 	return new ve.ui.DesktopSurface( dmDoc, config );
+};
+
+/**
+ * Get the target's surface
+ *
+ * @return {ve.ui.Surface} Surface
+ */
+ve.init.Target.prototype.getSurface = function () {
+	return this.surface;
+};
+
+/**
+ * Get the target's toolbar
+ *
+ * @return {ve.ui.TargetToolbar} Toolbar
+ */
+ve.init.Target.prototype.getToolbar = function () {
+	return this.toolbar;
 };

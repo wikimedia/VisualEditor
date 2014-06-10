@@ -28,7 +28,7 @@ $( function () {
 	// Initialization
 
 	convertButton.on( 'click', function () {
-		var doc = ve.dm.converter.getDomFromModel( currentTarget.surface.getModel().getDocument() );
+		var doc = ve.dm.converter.getDomFromModel( currentTarget.getSurface().getModel().getDocument() );
 		ve.log( ve.properOuterHtml( doc.documentElement ) );
 		ve.log( doc.documentElement );
 	} );
@@ -66,7 +66,7 @@ $( function () {
 			url: src,
 			dataType: 'text'
 		} ).always( function ( result, status ) {
-			var target, pageHtml, $container = $( '<div>' );
+			var pageHtml, $container = $( '<div>' );
 
 			if ( status === 'error' ) {
 				pageHtml = '<p><i>Failed loading page ' + $( '<span>' ).text( src ).html() + '</i></p>';
@@ -93,7 +93,7 @@ $( function () {
 				$targetContainer.append( $container );
 
 				$targetContainer.show();
-				target = new ve.init.sa.Target(
+				currentTarget = new ve.init.sa.Target(
 					$container,
 					ve.dm.converter.getModelFromDom(
 						ve.createDocumentFromHtml( pageHtml ),
@@ -103,17 +103,16 @@ $( function () {
 					)
 				);
 
-				target.on( 'surfaceReady', function () {
+				currentTarget.on( 'surfaceReady', function () {
 					// Container must be properly hidden before slideDown animation
 					$targetContainer.removeAttr( 'style' ).hide()
 						// Restore directionality
 						.css( 'direction', dir );
 
 					$targetContainer.slideDown().promise().done( function () {
-						target.surface.getView().focus();
-						currentTarget = target;
+						currentTarget.getSurface().getView().focus();
 						if ( ve.debug ) {
-							debugBar.attachToSurface( currentTarget.surface );
+							debugBar.attachToSurface( currentTarget.getSurface() );
 						}
 					} );
 				} );
