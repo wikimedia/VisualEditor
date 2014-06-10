@@ -6,7 +6,7 @@
  */
 
 .ve-ui-contextItemWidget {
-	padding-right: 1em;
+	padding: 0.25em 1em 0.25em 3em
 }
 
 .ve-ui-contextItemWidget .oo-ui-labeledElement-label {
@@ -15,4 +15,12 @@
 	max-width: 17.6em;
 	text-overflow: ellipsis;
 	overflow: hidden;
+}
+
+.ve-ui-contextItemWidget .oo-ui-iconedElement-icon {
+	opacity: 0.8;
+}
+
+.ve-ui-contextItemWidget.oo-ui-optionWidget-highlighted .oo-ui-iconedElement-icon {
+	opacity: 1;
 }
