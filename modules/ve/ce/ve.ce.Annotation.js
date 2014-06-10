@@ -55,6 +55,7 @@ ve.ce.Annotation.static.forceContinuation = false;
  * Get a plain text description.
  *
  * @static
+ * @inheritable
  * @param {ve.dm.Annotation} annotation Annotation model
  * @returns {string} Description of annotation
  */

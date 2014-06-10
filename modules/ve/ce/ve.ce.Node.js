@@ -77,6 +77,7 @@ ve.ce.Node.static.primaryCommandName = null;
  * Get a plain text description.
  *
  * @static
+ * @inheritable
  * @param {ve.dm.Node} node Node model
  * @returns {string} Description of node
  */
