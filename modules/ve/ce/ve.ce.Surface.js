@@ -79,15 +79,14 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 	} );
 
 	// Use onDOMEvent to get jQuery focusin/focusout events to work in iframes
-	this.documentFocusChangeHandler = ve.bind( this.onFocusChange, this );
+	this.documentFocusChangeHandler = ve.bind( ve.debounce( this.onFocusChange ), this );
 	OO.ui.Element.onDOMEvent( this.getElementDocument(), 'focusin', this.documentFocusChangeHandler );
 	OO.ui.Element.onDOMEvent( this.getElementDocument(), 'focusout', this.documentFocusChangeHandler );
 	// It is possible for a mousedown to clear the selection
 	// without triggering a focus change event (e.g. if the
 	// document has been programmatically blurred) so trigger
 	// a focus change to check if we still have a selection
-	this.documentMousedownHandler = ve.bind( this.onFocusChange, this );
-	this.$document.on( 'mousedown', this.documentMousedownHandler );
+	this.$document.on( 'mousedown', this.documentFocusChangeHandler );
 
 	this.$pasteTarget.on( {
 		'cut': ve.bind( this.onCut, this ),
@@ -237,7 +236,7 @@ ve.ce.Surface.prototype.destroy = function () {
 	// Disconnect DOM events on the document
 	OO.ui.Element.offDOMEvent( this.getElementDocument(), 'focusin', this.documentFocusChangeHandler );
 	OO.ui.Element.offDOMEvent( this.getElementDocument(), 'focusout', this.documentFocusChangeHandler );
-	this.$document.off( 'mousedown', this.documentMousedownHandler );
+	this.$document.off( 'mousedown', this.documentFocusChangeHandler );
 
 	// Remove DOM elements (also disconnects their events)
 	this.$element.remove();
@@ -386,7 +385,7 @@ ve.ce.Surface.prototype.focus = function () {
  *
  * @param {jQuery.Event} e focusin or focusout event
  */
-ve.ce.Surface.prototype.onFocusChange = ve.debounce( function ( e ) {
+ve.ce.Surface.prototype.onFocusChange = function ( e ) {
 	var hasFocus = ve.contains(
 			[
 				this.documentView.getDocumentNode().$element[0],
@@ -402,7 +401,7 @@ ve.ce.Surface.prototype.onFocusChange = ve.debounce( function ( e ) {
 	if ( !hasFocus && this.isFocused() ) {
 		this.onDocumentBlur( e );
 	}
-} );
+};
 
 /**
  * Handle document focus events.

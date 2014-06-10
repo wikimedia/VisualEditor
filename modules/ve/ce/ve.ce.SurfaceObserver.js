@@ -193,6 +193,11 @@ ve.ce.SurfaceObserver.prototype.pollOnceInternal = function ( emitChanges ) {
 				$slugWrapper = $nodeOrSlug.closest( '.ve-ce-branchNode-blockSlugWrapper' );
 			} else {
 				node = $nodeOrSlug.data( 'view' );
+				// Check this node belongs to our document
+				if ( node && node.root !== this.documentView.getDocumentNode() ) {
+					node = null;
+					range = null;
+				}
 			}
 		}
 
