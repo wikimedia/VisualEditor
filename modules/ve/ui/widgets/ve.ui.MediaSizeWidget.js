@@ -297,9 +297,12 @@ ve.ui.MediaSizeWidget.prototype.setScalable = function ( scalable ) {
 		'originalSizeChange': 'onScalableOriginalSizeChange'
 	} );
 
-	// Reset current dimensions to new scalable object
-	this.setCurrentDimensions( this.scalable.getCurrentDimensions() );
 	this.updateDefaultDimensions();
+
+	if ( !this.scalable.isDefault() ) {
+		// Reset current dimensions to new scalable object
+		this.setCurrentDimensions( this.scalable.getCurrentDimensions() );
+	}
 
 	// If we don't have original dimensions, disable the full size button
 	if ( !this.scalable.getOriginalDimensions() ) {
@@ -308,6 +311,7 @@ ve.ui.MediaSizeWidget.prototype.setScalable = function ( scalable ) {
 	} else {
 		this.fullSizeButton.setDisabled( false );
 		this.sizeTypeSelectWidget.getItemFromData( 'default' ).setDisabled( false );
+
 		// Call for the set size type according to default or custom settings of the scalable
 		this.setSizeType(
 			this.scalable.isDefault() ?
