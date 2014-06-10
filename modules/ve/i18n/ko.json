@@ -8,7 +8,8 @@
 			"아라",
 			"Priviet",
 			"Leehoy",
-			"고기랑"
+			"고기랑",
+			"Tyey"
 		]
 	},
 	"visualeditor": "시각편집기",
@@ -59,7 +60,7 @@
 	"visualeditor-languageinspector-widget-label-langcode": "언어 코드",
 	"visualeditor-languageinspector-widget-label-language": "언어",
 	"visualeditor-language-search-input-placeholder": "언어 이름이나 코드로 검색",
-	"visualeditor-linkinspector-title": "하이퍼링크",
+	"visualeditor-linkinspector-title": "링크",
 	"visualeditor-listbutton-bullet-tooltip": "점 목록",
 	"visualeditor-listbutton-number-tooltip": "숫자 목록",
 	"visualeditor-mediasizewidget-button-originaldimensions": "전체 크기로 설정",
