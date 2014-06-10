@@ -110,7 +110,7 @@ $( function () {
 						.css( 'direction', dir );
 
 					$targetContainer.slideDown().promise().done( function () {
-						target.$document[0].focus();
+						target.surface.getView().focus();
 						currentTarget = target;
 						if ( ve.debug ) {
 							debugBar.attachToSurface( currentTarget.surface );

@@ -67,7 +67,7 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 		{ 'select': 'onModelSelect', 'documentUpdate': 'onModelDocumentUpdate' }
 	);
 
-	$documentNode = this.documentView.getDocumentNode().$element;
+	$documentNode = this.getDocument().getDocumentNode().$element;
 	$documentNode.on( {
 		// mouse events shouldn't be sequenced as the event sequencer
 		// is detached on blur

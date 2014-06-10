@@ -33,12 +33,6 @@ ve.init.Target = function VeInitTarget( $container ) {
 	this.surface = null;
 
 	/**
-	 * The ve-ce-documentNode of #surface
-	 * @property {jQuery}
-	 */
-	this.$document = null;
-
-	/**
 	 * @property {ve.ui.TargetToolbar}
 	 */
 	this.toolbar = null;
@@ -51,7 +45,6 @@ ve.init.Target = function VeInitTarget( $container ) {
  * Destroy the target
  */
 ve.init.Target.prototype.destroy = function () {
-	this.$document = null;
 	if ( this.surface ) {
 		this.surface.destroy();
 	}
@@ -69,9 +62,9 @@ ve.init.Target.prototype.destroy = function () {
 /**
  * Fired when the #surface is ready.
  *
- * By default the surface document is not focused. If the target wants
+ * By default the surface's document is not focused. If the target wants
  * the browsers' focus to be in the surface (ready for typing and cursoring)
- * call `this.$document[0].focus();` in a handler for this event.
+ * call `this.surface.getView().focus()` in a handler for this event.
  *
  * @event surfaceReady
  */
