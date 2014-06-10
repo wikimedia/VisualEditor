@@ -386,6 +386,36 @@ ve.ui.MediaSizeWidget.prototype.getCurrentDimensions = function () {
 };
 
 /**
+ * Disable or enable the entire widget
+ * @param {Boolean} isDisabled Disable the widget
+ */
+ve.ui.MediaSizeWidget.prototype.setDisabled = function ( isDisabled ) {
+	// The 'setDisabled' method seems to be called before the widgets
+	// are fully defined. So, before disabling/enabling anything,
+	// make sure the objects exist
+	if ( this.sizeTypeSelectWidget &&
+		this.dimensionsWidget &&
+		this.scalable &&
+		this.fullSizeButton
+	) {
+		// Disable the type select
+		this.sizeTypeSelectWidget.setDisabled( isDisabled );
+
+		// Disable the dimensions widget
+		this.dimensionsWidget.setDisabled( isDisabled );
+
+		// Double negatives aren't never fun!
+		this.fullSizeButton.setDisabled(
+			// Disable if asked to disable
+			isDisabled ||
+			// Only enable if the scalable has
+			// the original dimensions available
+			!this.scalable.getOriginalDimensions()
+		);
+	}
+};
+
+/**
  * Updates the current dimensions in the inputs, either one at a time or both
  *
  * @param {Object} dimensions Dimensions with width and height
