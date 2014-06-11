@@ -52,6 +52,7 @@ ve.ui.ActionDialog.prototype.onDismissErrorsButtonClick = function () {
  */
 ve.ui.ActionDialog.prototype.onApplyButtonClick = function () {
 	this.pushPending();
+	this.applyButton.setDisabled( true );
 	this.applyChanges()
 		.done( ve.bind( this.onApplyChangesDone, this ) )
 		.fail( ve.bind( this.onApplyChangesFail, this ) )
@@ -78,6 +79,7 @@ ve.ui.ActionDialog.prototype.onApplyChangesDone = function ( data ) {
  */
 ve.ui.ActionDialog.prototype.onApplyChangesFail = function ( errors ) {
 	this.showErrors( errors );
+	this.applyButton.setDisabled( false );
 };
 
 /**
@@ -155,26 +157,6 @@ ve.ui.ActionDialog.prototype.dismissErrors = function () {
 /**
  * @inheritdoc
  */
-ve.ui.ActionDialog.prototype.pushPending = function () {
-	// Parent method
-	ve.ui.ActionDialog.super.prototype.pushPending.call( this );
-
-	this.applyButton.setDisabled( this.isPending() );
-};
-
-/**
- * @inheritdoc
- */
-ve.ui.ActionDialog.prototype.popPending = function () {
-	// Parent method
-	ve.ui.ActionDialog.super.prototype.popPending.call( this );
-
-	this.applyButton.setDisabled( this.isPending() );
-};
-
-/**
- * @inheritdoc
- */
 ve.ui.ActionDialog.prototype.initialize = function () {
 	// Parent method
 	ve.ui.ActionDialog.super.prototype.initialize.call( this );
@@ -215,5 +197,15 @@ ve.ui.ActionDialog.prototype.getSetupProcess = function ( data ) {
 		.next( function () {
 			this.applyButton.setLabel( this.getApplyButtonLabel() );
 			this.applyButton.clearFlags().setFlags( this.getApplyButtonFlags() );
+		}, this );
+};
+
+/**
+ * @inheritdoc
+ */
+ve.ui.ActionDialog.prototype.getTeardownProcess = function ( data ) {
+	return ve.ui.ActionDialog.super.prototype.getTeardownProcess.call( this, data )
+		.next( function () {
+			this.applyButton.setDisabled( false );
 		}, this );
 };
