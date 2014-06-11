@@ -376,11 +376,10 @@ ve.ui.DesktopContext.prototype.updateDimensions = function ( transition ) {
 			}
 		} else {
 			// Get the position of the focusedNode:
-			position = { 'x': focusedOffset.left, 'y': focusedOffset.top + focusedDimensions.height };
-			// When the context is displayed in LTR, it should be on the right of the node
-			if ( !rtl ) {
-				position.x += focusedDimensions.width;
-			}
+			position = {
+				'x': focusedOffset.left + focusedDimensions.width / 2,
+				'y': focusedOffset.top + focusedDimensions.height
+			};
 			this.popup.align = 'center';
 		}
 	} else {
