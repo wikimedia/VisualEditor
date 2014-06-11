@@ -78,7 +78,7 @@ ve.ui.LanguageInputWidget = function VeUiLanguageInputWidget( config ) {
 	this.languageTextInput.connect( this, { 'change': 'onChange' } );
 	this.directionSelect.connect( this, { 'select': 'onChange' } );
 	changeButton.connect( searchDialog, { 'click': 'open' } );
-	searchDialog.on( 'close', ve.bind( function ( data ) {
+	searchDialog.on( 'teardown', ve.bind( function ( data ) {
 		if ( data.action === 'apply' ) {
 			this.setAnnotationFromValues( data.lang, data.dir );
 		}

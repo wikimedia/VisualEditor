@@ -22,10 +22,10 @@ ve.ui.MobileSurface = function VeUiMobileSurface() {
 
 	// Events
 	this.dialogs.connect( this, {
-		'open': 'showGlobalOverlay',
+		'setup': 'showGlobalOverlay',
 		// Dialogs emit this with a delay which causes hiding animation to fail
 		// see https://bugzilla.wikimedia.org/show_bug.cgi?id=64775
-		'closing': 'hideGlobalOverlay'
+		'teardown': 'hideGlobalOverlay'
 	} );
 
 	// Initialization

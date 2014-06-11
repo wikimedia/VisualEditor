@@ -49,7 +49,7 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 	this.enabled = true;
 
 	// Events
-	this.dialogs.connect( this, { 'close': 'onDialogClose' } );
+	this.dialogs.connect( this, { 'teardown': 'onDialogTeardown' } );
 
 	// Initialization
 	this.setupContext();
@@ -123,9 +123,9 @@ ve.ui.Surface.prototype.destroy = function () {
 };
 
 /**
- * Handle dialog close events
+ * Handle dialog teardown events
  */
-ve.ui.Surface.prototype.onDialogClose = function () {
+ve.ui.Surface.prototype.onDialogTeardown = function () {
 	this.getView().focus();
 };
 

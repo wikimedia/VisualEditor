@@ -92,6 +92,7 @@ ve.ui.LinkInspector.prototype.getSetupProcess = function ( data ) {
 		.next( function () {
 			// Disable surface until animation is complete; will be reenabled in ready()
 			this.getFragment().getSurface().disable();
+			this.targetInput.setAnnotation( this.initialAnnotation );
 		}, this );
 };
 
@@ -101,10 +102,7 @@ ve.ui.LinkInspector.prototype.getSetupProcess = function ( data ) {
 ve.ui.LinkInspector.prototype.getReadyProcess = function () {
 	return ve.ui.LinkInspector.super.prototype.getReadyProcess.call( this )
 		.next( function () {
-			// Note: Focus input prior to setting target annotation
-			this.targetInput.focus();
-			this.targetInput.setAnnotation( this.initialAnnotation );
-			this.targetInput.select();
+			this.targetInput.focus().select();
 			this.getFragment().getSurface().enable();
 		}, this );
 };

@@ -21,8 +21,8 @@ ve.ui.MobileContext = function VeUiMobileContext( surface, config ) {
 
 	// Events
 	this.inspectors.connect( this, {
-		'open': 'show',
-		'closing': 'hide'
+		'setup': 'show',
+		'teardown': 'hide'
 	} );
 
 	// Initialization

@@ -25,8 +25,6 @@ ve.ui.DesktopContext = function VeUiDesktopContext( surface, config ) {
 	this.showing = false;
 	this.hiding = false;
 	this.selecting = false;
-	this.inspectorOpening = false;
-	this.inspectorClosing = false;
 	this.relocating = false;
 	this.embedded = false;
 	this.selection = null;
@@ -54,10 +52,8 @@ ve.ui.DesktopContext = function VeUiDesktopContext( surface, config ) {
 		'position': 'onSurfacePosition'
 	} );
 	this.inspectors.connect( this, {
-		'opening': 'onInspectorOpening',
-		'open': 'onInspectorOpen',
-		'closing': 'onInspectorClosing',
-		'close': 'onInspectorClose'
+		'setup': 'onInspectorSetup',
+		'teardown': 'onInspectorTeardown'
 	} );
 	this.context.connect( this, { 'choose': 'onContextItemChoose' } );
 
@@ -131,7 +127,9 @@ ve.ui.DesktopContext.prototype.onWindowResize = function () {
  * @see #afterModelChange
  */
 ve.ui.DesktopContext.prototype.onModelChange = function ( range ) {
-	if ( this.showing || this.hiding || this.inspectorOpening || this.inspectorClosing ) {
+	var win = this.inspectors.getCurrentWindow();
+
+	if ( this.showing || this.hiding || ( win && ( win.isOpening() || win.isClosing() ) ) ) {
 		clearTimeout( this.afterModelChangeTimeout );
 		this.afterModelChangeTimeout = null;
 		this.afterModelChangeRange = null;
@@ -152,11 +150,14 @@ ve.ui.DesktopContext.prototype.onModelChange = function ( range ) {
  * content. If the popup is open, close it, even while selecting or relocating.
  */
 ve.ui.DesktopContext.prototype.afterModelChange = function () {
-	var selectionChange = !!this.afterModelChangeRange;
+	var win = this.inspectors.getCurrentWindow(),
+		selectionChange = !!this.afterModelChangeRange,
+		moving = selectionChange && !( win && ( win.isOpening() || win.isClosing() ) );
+
 	this.afterModelChangeTimeout = null;
 	this.afterModelChangeRange = null;
 
-	if ( this.popup.isVisible() && selectionChange ) {
+	if ( this.popup.isVisible() && moving ) {
 		this.hide();
 	}
 
@@ -164,7 +165,8 @@ ve.ui.DesktopContext.prototype.afterModelChange = function () {
 	if ( this.selecting || this.relocating ) {
 		return;
 	}
-	this.update( false, !selectionChange );
+
+	this.update( !moving, !moving );
 };
 
 /**
@@ -250,49 +252,25 @@ ve.ui.DesktopContext.prototype.onRelocationEnd = function () {
 };
 
 /**
- * Handle an inspector that's being opened.
+ * Handle an inspector setup event.
  *
  * @method
- * @param {ve.ui.Inspector} inspector Inspector that's being opened
+ * @param {ve.ui.Inspector} inspector Inspector that's been setup
  * @param {Object} [config] Inspector opening information
  */
-ve.ui.DesktopContext.prototype.onInspectorOpening = function () {
+ve.ui.DesktopContext.prototype.onInspectorSetup = function () {
 	this.selection = this.surface.getModel().getSelection();
-	this.inspectorOpening = true;
-};
-
-/**
- * Handle an inspector that's been opened.
- *
- * @method
- * @param {ve.ui.Inspector} inspector Inspector that's been opened
- * @param {Object} [config] Inspector opening information
- */
-ve.ui.DesktopContext.prototype.onInspectorOpen = function () {
-	this.inspectorOpening = false;
 	this.show( true );
 };
 
 /**
- * Handle an inspector that's being closed.
+ * Handle an inspector teardown event.
  *
  * @method
- * @param {ve.ui.Inspector} inspector Inspector that's being closed
+ * @param {ve.ui.Inspector} inspector Inspector that's been torn down
  * @param {Object} [config] Inspector closing information
  */
-ve.ui.DesktopContext.prototype.onInspectorClosing = function () {
-	this.inspectorClosing = true;
-};
-
-/**
- * Handle an inspector that's been closed.
- *
- * @method
- * @param {ve.ui.Inspector} inspector Inspector that's been closed
- * @param {Object} [config] Inspector closing information
- */
-ve.ui.DesktopContext.prototype.onInspectorClose = function () {
-	this.inspectorClosing = false;
+ve.ui.DesktopContext.prototype.onInspectorTeardown = function () {
 	this.update();
 	if ( this.getSurface().getModel().getSelection() ) {
 		this.getSurface().getView().focus();
@@ -420,10 +398,9 @@ ve.ui.DesktopContext.prototype.updateDimensions = function ( transition ) {
  *
  * @method
  * @param {boolean} [transition=false] Use a smooth transition
- * @param {boolean} [repositionOnly=false] The context is only being moved so don't fade in
  * @chainable
  */
-ve.ui.DesktopContext.prototype.show = function ( transition, repositionOnly ) {
+ve.ui.DesktopContext.prototype.show = function ( transition ) {
 	var focusedDimensions,
 		inspector = this.inspectors.getCurrentWindow(),
 		focusedNode = this.surface.getView().getFocusedNode();
@@ -441,14 +418,10 @@ ve.ui.DesktopContext.prototype.show = function ( transition, repositionOnly ) {
 		// Show either inspector or menu
 		if ( inspector ) {
 			this.$menu.hide();
-			if ( !repositionOnly ) {
-				inspector.$element.css( 'opacity', 0 );
-			}
 			// Update size and fade the inspector in after animation is complete
 			setTimeout( ve.bind( function () {
 				inspector.fitHeightToContents();
 				this.updateDimensions( transition );
-				inspector.$element.css( 'opacity', 1 );
 			}, this ), 200 );
 		} else {
 			if ( focusedNode ) {

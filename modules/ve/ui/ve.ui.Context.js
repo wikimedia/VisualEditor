@@ -22,7 +22,9 @@ ve.ui.Context = function VeUiContext( surface, config ) {
 
 	// Properties
 	this.surface = surface;
-	this.inspectors = new ve.ui.WindowSet( ve.ui.windowFactory, { '$': this.$, '$contextOverlay': this.$element } );
+	this.inspectors = new ve.ui.WindowSet(
+		ve.ui.windowFactory, { '$': this.$, '$contextOverlay': this.$element }
+	);
 };
 
 /* Inheritance */

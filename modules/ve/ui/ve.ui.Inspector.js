@@ -180,6 +180,6 @@ ve.ui.Inspector.prototype.getReadyProcess = function ( data ) {
 	return ve.ui.Inspector.super.prototype.getReadyProcess.call( this, data )
 		.next( function () {
 			// Wait for animation to complete
-			return OO.ui.Process.static.delay( 200 );
+			return OO.ui.Process.static.delay( 260 );
 		}, this );
 };
