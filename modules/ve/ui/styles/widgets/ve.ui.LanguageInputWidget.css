@@ -5,14 +5,15 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-.ve-ui-languageInputWidget-changeButton {
-	display: block;
-	text-align: center;
-	margin-bottom: 0.5em;
+.ve-ui-languageInputWidget-findLanguageButton .oo-ui-buttonedElement-button > .oo-ui-labeledElement-label {
+	width: 8.5em;
+	text-align: left;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
-.ve-ui-languageInputWidget-languageTextInput {
-	width: 10em;
+.ve-ui-languageInputWidget-languageCodeTextInput {
+	width: 7em;
 }
 
 .ve-ui-languageInputWidget-directionSelect {
