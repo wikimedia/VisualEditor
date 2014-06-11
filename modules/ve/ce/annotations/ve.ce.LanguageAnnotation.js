@@ -51,13 +51,14 @@ ve.ce.LanguageAnnotation.static.tagName = 'span';
  * @inheritdoc
  */
 ve.ce.LanguageAnnotation.static.getDescription = function ( model ) {
-	var lang = $.uls.data.getAutonym( model.getAttribute( 'lang' ) ),
+	var lang = model.getAttribute( 'lang' ),
+		autonym = $.uls.data.getAutonym( lang ),
 		dir = ( model.getAttribute( 'dir' ) || '' ).toUpperCase();
 
-	if ( !dir || dir === $.uls.data.getDir().toUpperCase() ) {
-		return ve.msg( 'visualeditor-languageannotation-description', lang );
+	if ( !dir || dir === $.uls.data.getDir( lang ).toUpperCase() ) {
+		return ve.msg( 'visualeditor-languageannotation-description', autonym );
 	} else {
-		return ve.msg( 'visualeditor-languageannotation-description-with-dir', lang, dir );
+		return ve.msg( 'visualeditor-languageannotation-description-with-dir', autonym, dir );
 	}
 };
 
