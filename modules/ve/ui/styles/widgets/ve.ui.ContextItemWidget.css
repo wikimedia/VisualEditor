@@ -6,7 +6,7 @@
  */
 
 .ve-ui-contextItemWidget {
-	padding: 0.25em 1em 0.25em 3em
+	padding: 0.5em 1em 0.5em 3em;
 }
 
 .ve-ui-contextItemWidget .oo-ui-labeledElement-label {
@@ -19,6 +19,12 @@
 
 .ve-ui-contextItemWidget .oo-ui-iconedElement-icon {
 	opacity: 0.8;
+}
+
+.ve-ui-contextItemWidget.oo-ui-optionWidget-highlighted,
+.ve-ui-contextItemWidget.oo-ui-optionWidget-selected,
+.ve-ui-contextItemWidget.oo-ui-optionWidget-pressed {
+	background-color: transparent;
 }
 
 .ve-ui-contextItemWidget.oo-ui-optionWidget-highlighted .oo-ui-iconedElement-icon {
