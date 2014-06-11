@@ -51,7 +51,7 @@ ve.ce.LanguageAnnotation.static.tagName = 'span';
  * @inheritdoc
  */
 ve.ce.LanguageAnnotation.static.getDescription = function ( model ) {
-	var lang = model.getAttribute( 'lang' ),
+	var lang = model.getAttribute( 'lang' ).toLowerCase(),
 		autonym = $.uls.data.getAutonym( lang ),
 		dir = ( model.getAttribute( 'dir' ) || '' ).toUpperCase();
 
