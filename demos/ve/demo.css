@@ -29,6 +29,19 @@ body {
 	display: inline-block;
 }
 
+.ve-demo-source {
+	width: 100%;
+}
+
+.ve-demo-source textarea {
+	font-family: monospace;
+	border: 0;
+}
+
+.ve-demo-source.oo-ui-widget-enabled textarea:focus {
+	box-shadow: none;
+}
+
 /* Editor */
 
 .ve-ce-documentNode {

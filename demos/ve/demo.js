@@ -29,7 +29,7 @@ $( function () {
 			url: src,
 			dataType: 'text'
 		} ).always( function ( result, status ) {
-			var pageHtml, $container = $( '<div>' );
+			var pageHtml;
 
 			if ( status === 'error' ) {
 				pageHtml = '<p><i>Failed loading page ' + $( '<span>' ).text( src ).html() + '</i></p>';
@@ -37,97 +37,128 @@ $( function () {
 				pageHtml = result;
 			}
 
-			$targetContainer.slideUp().promise().done( function () {
-				if ( currentTarget ) {
-					currentTarget.destroy();
-				}
+			loadTarget( pageHtml );
+		} );
+	}
 
-				// Container needs to be visually hidden, but not display:none
-				// so that the toolbar can be measured
-				$targetContainer.empty().show().css( {
-					'height': 0,
-					'overflow': 'hidden'
-				} );
+	function loadTarget( pageHtml ) {
+		var $container = $( '<div>' );
+		$targetContainer.slideUp().promise().done( function () {
+			if ( currentTarget ) {
+				currentTarget.destroy();
+			}
 
-				$targetContainer.css( 'direction', dir );
-
-				// The container must be attached to the DOM before
-				// the target is initialised
-				$targetContainer.append( $container );
-
-				$targetContainer.show();
-				currentTarget = new ve.init.sa.Target(
-					$container,
-					ve.dm.converter.getModelFromDom(
-						ve.createDocumentFromHtml( pageHtml ),
-						$targetContainer.ownerDocument,
-						lang,
-						dir
-					)
-				);
-
-				currentTarget.on( 'surfaceReady', function () {
-					// Container must be properly hidden before slideDown animation
-					$targetContainer.removeAttr( 'style' ).hide()
-						// Restore directionality
-						.css( 'direction', dir );
-
-					$targetContainer.slideDown().promise().done( function () {
-						currentTarget.getSurface().getView().focus();
-						if ( ve.debug ) {
-							// Widgets
-							var convertButton = new OO.ui.ButtonWidget( { '$': this.$, 'label': 'Log converted HTML' } ),
-								languageTextInput = new OO.ui.TextInputWidget( { '$': this.$, 'value': lang } ),
-								languageDirectionButton = new OO.ui.ButtonWidget( { '$': this.$, 'label': 'Set language & direction' } ),
-								directionSelect = new OO.ui.ButtonSelectWidget().addItems( [
-									new OO.ui.ButtonOptionWidget( 'rtl', { '$': this.$, 'icon': 'text-dir-rtl' } ),
-									new OO.ui.ButtonOptionWidget( 'ltr', { '$': this.$, 'icon': 'text-dir-ltr' } )
-								] );
-
-							directionSelect.selectItem( directionSelect.getItemFromData( dir ) );
-
-							// Initialization
-							languageDirectionButton.on( 'click', function () {
-								$.i18n().locale = lang = languageTextInput.getValue();
-								dir = directionSelect.getSelectedItem().getData();
-
-								// HACK: Override/restore message functions for qqx mode
-								if ( lang === 'qqx' ) {
-									ve.init.platform.getMessage = function ( key ) { return key; };
-								} else {
-									ve.init.platform.getMessage = ve.init.sa.Platform.prototype.getMessage;
-								}
-
-								// Re-bind as getMessage may have changed
-								OO.ui.msg = ve.bind( ve.init.platform.getMessage, ve.init.platform );
-
-								// HACK: Re-initialize page to load message files
-								ve.init.platform.initialize().done( function () {
-									loadPage( location.hash.slice( 7 ), true );
-								} );
-							} );
-
-							convertButton.on( 'click', function () {
-								var doc = ve.dm.converter.getDomFromModel( currentTarget.getSurface().getModel().getDocument() );
-								ve.log( ve.properOuterHtml( doc.documentElement ) );
-								ve.log( doc.documentElement );
-							} );
-
-							directionSelect.selectItem( directionSelect.getItemFromData( dir ) );
-
-							currentTarget.debugBar.$commands.append(
-								$( ve.ui.DebugBar.static.dividerTemplate ),
-								convertButton.$element,
-								$( ve.ui.DebugBar.static.dividerTemplate ),
-								languageTextInput.$element,
-								directionSelect.$element,
-								languageDirectionButton.$element
-							);
-						}
-					} );
-				} );
+			// Container needs to be visually hidden, but not display:none
+			// so that the toolbar can be measured
+			$targetContainer.empty().show().css( {
+				'height': 0,
+				'overflow': 'hidden'
 			} );
 
+			$targetContainer.css( 'direction', dir );
+
+			// The container must be attached to the DOM before
+			// the target is initialised
+			$targetContainer.append( $container );
+
+			$targetContainer.show();
+			currentTarget = new ve.init.sa.Target(
+				$container,
+				ve.dm.converter.getModelFromDom(
+					ve.createDocumentFromHtml( pageHtml ),
+					$targetContainer.ownerDocument,
+					lang,
+					dir
+				)
+			);
+
+			currentTarget.on( 'surfaceReady', function () {
+				var surfaceView = currentTarget.getSurface().getView();
+				// Container must be properly hidden before slideDown animation
+				$targetContainer.removeAttr( 'style' ).hide()
+					// Restore directionality
+					.css( 'direction', dir );
+
+				$targetContainer.slideDown().promise().done( function () {
+					surfaceView.focus();
+					if ( ve.debug ) {
+						// Widgets
+						var convertButton = new OO.ui.ButtonWidget( { '$': this.$, 'label': 'Edit HTML' } ),
+							languageTextInput = new OO.ui.TextInputWidget( { '$': this.$, 'value': lang } ),
+							languageDirectionButton = new OO.ui.ButtonWidget( { '$': this.$, 'label': 'Set language & direction' } ),
+							directionSelect = new OO.ui.ButtonSelectWidget().addItems( [
+								new OO.ui.ButtonOptionWidget( 'rtl', { '$': this.$, 'icon': 'text-dir-rtl' } ),
+								new OO.ui.ButtonOptionWidget( 'ltr', { '$': this.$, 'icon': 'text-dir-ltr' } )
+							] ),
+							sourceMode = false,
+							sourceTextInput = new OO.ui.TextInputWidget( {
+								'$': this.$,
+								'multiline': true,
+								'autosize': true,
+								'maxRows': 999,
+								'classes': ['ve-demo-source']
+							} );
+
+						directionSelect.selectItem( directionSelect.getItemFromData( dir ) );
+						surfaceView.$element.append( sourceTextInput.$element.hide() );
+
+						// Initialization
+						languageDirectionButton.on( 'click', function () {
+							$.i18n().locale = lang = languageTextInput.getValue();
+							dir = directionSelect.getSelectedItem().getData();
+
+							// HACK: Override/restore message functions for qqx mode
+							if ( lang === 'qqx' ) {
+								ve.init.platform.getMessage = function ( key ) { return key; };
+							} else {
+								ve.init.platform.getMessage = ve.init.sa.Platform.prototype.getMessage;
+							}
+
+							// Re-bind as getMessage may have changed
+							OO.ui.msg = ve.bind( ve.init.platform.getMessage, ve.init.platform );
+
+							// HACK: Re-initialize page to load message files
+							ve.init.platform.initialize().done( function () {
+								loadPage( location.hash.slice( 7 ), true );
+							} );
+						} );
+
+						convertButton.on( 'click', function () {
+							var doc, html, $documentNode;
+							sourceMode = !sourceMode;
+							if ( sourceMode ) {
+								doc = ve.dm.converter.getDomFromModel( currentTarget.getSurface().getModel().getDocument() );
+								html = ve.properInnerHtml( doc.body );
+								$documentNode = currentTarget.getSurface().getView().getDocument().getDocumentNode().$element;
+
+								sourceTextInput.$element.show();
+								sourceTextInput.setValue( html ).adjustSize();
+								sourceTextInput.$element.hide();
+
+								$documentNode.slideUp().promise().done( function () {
+									convertButton.setLabel( 'VisualEditor' );
+									sourceTextInput.$element.slideDown().promise().done( function () {
+										sourceTextInput.focus();
+									} );
+								} );
+							} else {
+								loadTarget( sourceTextInput.getValue() );
+							}
+						} );
+
+						directionSelect.selectItem( directionSelect.getItemFromData( dir ) );
+
+						currentTarget.debugBar.$commands.append(
+							$( ve.ui.DebugBar.static.dividerTemplate ),
+							convertButton.$element,
+							$( ve.ui.DebugBar.static.dividerTemplate ),
+							languageTextInput.$element,
+							directionSelect.$element,
+							languageDirectionButton.$element
+						);
+					}
+				} );
+			} );
 		} );
 	}
 
