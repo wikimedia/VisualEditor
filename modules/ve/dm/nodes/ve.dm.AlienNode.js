@@ -38,6 +38,8 @@ ve.dm.AlienNode.static.storeHtmlAttributes = false;
 
 ve.dm.AlienNode.static.enableAboutGrouping = true;
 
+ve.dm.AlienNode.static.matchRdfaTypes = [ 've:Alien' ];
+
 ve.dm.AlienNode.static.toDataElement = function ( domElements, converter ) {
 	var isInline = this.isHybridInline( domElements, converter ),
 		type = isInline ? 'alienInline' : 'alienBlock';
