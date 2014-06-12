@@ -136,7 +136,7 @@ ve.ui.LanguageInputWidget.prototype.setAnnotation = function ( annotation ) {
 	if ( annotation ) {
 		this.languageCodeTextInput.setValue( annotation.getAttribute( 'lang' ) );
 		this.findLanguageButton.setLabel(
-			$.uls.data.getAutonym( annotation.getAttribute( 'lang' ).toLowerCase() ) ||
+			ve.init.platform.getLanguageName( annotation.getAttribute( 'lang' ).toLowerCase() ) ||
 			ve.msg( 'visualeditor-languageinspector-widget-changelang' )
 		);
 		this.directionSelect.selectItem(

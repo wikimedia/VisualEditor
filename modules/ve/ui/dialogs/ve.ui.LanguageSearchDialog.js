@@ -67,7 +67,7 @@ ve.ui.LanguageSearchDialog.prototype.onSearchWidgetSelect = function ( data ) {
 	this.close( {
 		'action': 'apply',
 		'lang': data.code,
-		'dir': $.uls.data.getDir( data.code )
+		'dir': ve.init.platform.getLanguageDirection( data.code )
 	} );
 };
 

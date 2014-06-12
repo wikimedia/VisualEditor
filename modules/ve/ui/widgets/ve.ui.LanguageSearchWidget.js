@@ -27,8 +27,7 @@ ve.ui.LanguageSearchWidget = function VeUiLanguageSearchWidget( config ) {
 	this.languageResultWidgets = [];
 
 	var i, l, languageCode,
-		languages = this.getLanguages(),
-		languageCodes = Object.keys( languages ).sort();
+		languageCodes = ve.init.platform.getLanguageCodes().sort();
 
 	for ( i = 0, l = languageCodes.length; i < l; i++ ) {
 		languageCode = languageCodes[i];
@@ -36,8 +35,8 @@ ve.ui.LanguageSearchWidget = function VeUiLanguageSearchWidget( config ) {
 			new ve.ui.LanguageResultWidget(
 				{
 					'code': languageCode,
-					'name': languages[languageCode],
-					'autonym': $.uls.data.getAutonym( languageCode )
+					'name': ve.init.platform.getLanguageName( languageCode ),
+					'autonym': ve.init.platform.getLanguageAutonym( languageCode )
 				},
 				{ '$': this.$ }
 			)
@@ -63,15 +62,6 @@ ve.ui.LanguageSearchWidget.prototype.onQueryChange = function () {
 
 	// Populate
 	this.addResults();
-};
-
-/**
- * Get a list of languages to search
- *
- * @returns {Object} Language names keyed by their codes
- */
-ve.ui.LanguageSearchWidget.prototype.getLanguages = function () {
-	return $.uls.data.getAutonyms();
 };
 
 /**
