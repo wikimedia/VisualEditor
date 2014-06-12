@@ -32,7 +32,7 @@ ve.ce.FocusableNode = function VeCeFocusableNode( $focusable ) {
 	this.isSetup = false;
 	this.$shields = this.$( [] );
 	this.$visibleShields = this.$( [] );
-	this.$highlights = this.$( '<div>' );
+	this.$highlights = this.$( '<div>' ).addClass( 've-ce-focusableNode-highlights' );
 	this.$focusable = $focusable || this.$element;
 	this.surface = null;
 
@@ -457,8 +457,7 @@ ve.ce.FocusableNode.prototype.clearHighlights = function () {
 	if ( !this.highlighted ) {
 		return;
 	}
-	this.$highlights.remove();
-	this.$highlights = this.$( '<div>' );
+	this.$highlights.remove().empty();
 	this.$relocatableMarker.off();
 	this.surface.$element.unbind( '.ve-ce-focusableNode' );
 	this.surface.getModel().getDocument().disconnect( this, { 'transact': 'positionHighlights' } );

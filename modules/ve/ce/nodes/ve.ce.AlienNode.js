@@ -28,6 +28,7 @@ ve.ce.AlienNode = function VeCeAlienNode() {
 
 	// DOM changes
 	this.$element.addClass( 've-ce-alienNode' );
+	this.$highlights.addClass( 've-ce-alienNode-highlights' );
 };
 
 /* Inheritance */
