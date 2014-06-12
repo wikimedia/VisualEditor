@@ -18,7 +18,8 @@
 			"Carlitosag",
 			"WhatamIdoing",
 			"Gloria sah",
-			"Wifidel"
+			"Wifidel",
+			"Macofe"
 		]
 	},
 	"visualeditor": "Editor visual",
@@ -53,7 +54,7 @@
 	"visualeditor-formatdropdown-format-heading5": "Encabezado 5",
 	"visualeditor-formatdropdown-format-heading6": "Encabezado 6",
 	"visualeditor-formatdropdown-format-paragraph": "Párrafo",
-	"visualeditor-formatdropdown-format-preformatted": "Texto predeterminado",
+	"visualeditor-formatdropdown-format-preformatted": "Preformateado",
 	"visualeditor-formatdropdown-title": "Cambiar formato",
 	"visualeditor-help-tool": "Ayuda",
 	"visualeditor-historybutton-redo-tooltip": "Rehacer",
@@ -69,7 +70,7 @@
 	"visualeditor-languageinspector-widget-label-langcode": "Código de idioma",
 	"visualeditor-languageinspector-widget-label-language": "Idioma",
 	"visualeditor-language-search-input-placeholder": "Buscar por nombre del idioma o código",
-	"visualeditor-linkinspector-title": "Hipervínculo",
+	"visualeditor-linkinspector-title": "Enlace",
 	"visualeditor-listbutton-bullet-tooltip": "Lista con viñetas",
 	"visualeditor-listbutton-number-tooltip": "Lista numerada",
 	"visualeditor-mediasizewidget-button-originaldimensions": "Volver al tamaño original",
