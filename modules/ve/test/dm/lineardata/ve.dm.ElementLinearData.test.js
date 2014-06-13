@@ -436,7 +436,7 @@ QUnit.test( 'getAnnotatedRangeFromOffset', 1, function ( assert ) {
 	for ( i = 0; i < cases.length; i++ ) {
 		data = ve.dm.example.preprocessAnnotations( cases[i].data );
 		doc = new ve.dm.Document( data );
-		assert.deepEqual(
+		assert.equalRange(
 			doc.data.getAnnotatedRangeFromOffset( cases[i].offset,
 				ve.dm.example.createAnnotation( cases[i].annotation ) ),
 			cases[i].expected,

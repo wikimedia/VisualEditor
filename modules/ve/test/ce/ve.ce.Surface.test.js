@@ -42,7 +42,7 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, html, range, o
 	expectedData( data );
 
 	assert.deepEqualWithDomElements( model.getDocument().getFullData(), data, msg + ': data' );
-	assert.deepEqual( selection, expectedRange, msg + ': range' );
+	assert.equalRange( selection, expectedRange, msg + ': range' );
 	surface.destroy();
 };
 
@@ -436,7 +436,7 @@ QUnit.test( 'onContentChange', function ( assert ) {
 			ops.push( txs[i].getOperations() );
 		}
 		assert.deepEqual( ops, expectedOps, msg + ': operations' );
-		assert.deepEqual( surface.getModel().getSelection(), expectedRange, msg + ': range' );
+		assert.equalRange( surface.getModel().getSelection(), expectedRange, msg + ': range' );
 
 		surface.destroy();
 	}
@@ -533,8 +533,8 @@ QUnit.test( 'onCopy', function ( assert ) {
 		slice = view.clipboard[clipboardIndex].slice;
 
 		assert.deepEqual( slice.data.data, expectedData, msg + ': data' );
-		assert.deepEqual( slice.originalRange, expectedOriginalRange, msg + ': originalRange' );
-		assert.deepEqual( slice.balancedRange, expectedBalancedRange, msg + ': balancedRange' );
+		assert.equalRange( slice.originalRange, expectedOriginalRange, msg + ': originalRange' );
+		assert.equalRange( slice.balancedRange, expectedBalancedRange, msg + ': balancedRange' );
 		assert.deepEqual( view.$pasteTarget.html(), expectedHtml, msg + ': html' );
 
 		surface.destroy();
@@ -815,7 +815,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 			ops.push( txs[i].getOperations() );
 		}
 		assert.deepEqual( ops, expectedOps, msg + ': operations' );
-		assert.deepEqual( model.getSelection(), expectedRange, msg +  ': range' );
+		assert.equalRange( model.getSelection(), expectedRange, msg +  ': range' );
 
 		surface.destroy();
 	}
