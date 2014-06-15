@@ -292,6 +292,7 @@
 			"modules/ve/ce/styles/nodes/ve.ce.ImageNode.css",
 			"modules/ve/ce/styles/annotations/ve.ce.LanguageAnnotation.css",
 			"modules/ve/ce/styles/nodes/ve.ce.ResizableNode.css",
+			"modules/ve/ce/styles/nodes/ve.ce.TableCellNode.css",
 			"modules/ve/ce/styles/ve.ce.Surface.css",
 			"modules/ve/ui/styles/dialogs/ve.ui.ActionDialog.css",
 			"modules/ve/ui/styles/dialogs/ve.ui.CommandHelpDialog.css",
