@@ -52,6 +52,8 @@
 	left: 0;
 	height: 100%;
 	width: 100%;
+	/* HACK: Clear margins added by unqualified img selectors */
+	margin: 0 !important;
 	background-color: transparent !important;
 	-webkit-user-select: auto;
 	-moz-user-select: element;
