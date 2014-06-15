@@ -423,14 +423,7 @@ ve.ce.FocusableNode.prototype.createHighlights = function () {
 		return;
 	}
 
-	var i;
-
 	this.attachShields();
-
-	this.$visibleShields = this.$shields.filter( ':visible' );
-	for ( i = this.$visibleShields.length - 1; i >= 0; i-- ) {
-		this.$highlights.append( this.createHighlight() );
-	}
 
 	this.$highlights.on( {
 		'mousedown': ve.bind( this.onFocusableMouseDown, this ),
@@ -456,7 +449,6 @@ ve.ce.FocusableNode.prototype.createHighlights = function () {
 		} );
 	}
 	this.surface.getModel().getDocument().connect( this, { 'transact': 'positionHighlights' } );
-
 };
 
 /**
@@ -494,10 +486,13 @@ ve.ce.FocusableNode.prototype.positionHighlights = function () {
 	if ( !this.highlighted ) {
 		return;
 	}
-	var i, l, $shield, $highlight, offset, width, height;
+	var i, l, $shield, offset, width, height;
+
+	this.$visibleShields = this.$shields.filter( ':visible' );
+	this.$highlights.empty();
+
 	for ( i = 0, l = this.$visibleShields.length; i < l; i++ ) {
 		$shield = this.$( this.$visibleShields[i] );
-		$highlight = this.$highlights.children().eq( i );
 
 		offset = OO.ui.Element.getRelativePosition(
 			$shield, this.surface.$element
@@ -506,18 +501,19 @@ ve.ce.FocusableNode.prototype.positionHighlights = function () {
 		height = $shield.height();
 
 		if ( width && height ) {
-			$highlight.show().css( {
-				'top': offset.top,
-				'left': offset.left,
-				'height': height,
-				'width': width,
-				'background-position': -offset.left + 'px ' + -offset.top + 'px'
-			} );
+			this.$highlights.append(
+				this.createHighlight().css( {
+					'top': offset.top,
+					'left': offset.left,
+					'height': height,
+					'width': width,
+					'background-position': -offset.left + 'px ' + -offset.top + 'px'
+				} )
+			);
 		} else {
 			this.$visibleShields.splice( i, 1 );
 			i--;
 			l--;
-			$highlight.remove();
 		}
 	}
 	this.$highlights.children().first().append( this.$relocatableMarker );
