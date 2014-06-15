@@ -175,13 +175,16 @@ ve.ce.FocusableNode.prototype.onFocusableMouseDown = function ( e ) {
 		selectionRange = surfaceModel.getSelection(),
 		nodeRange = this.model.getOuterRange();
 
-	surfaceModel.getFragment(
-		e.shiftKey ?
-			ve.Range.newCoveringRange(
-				[ selectionRange, nodeRange ], selectionRange.from > nodeRange.from
-			) :
-			nodeRange
-	).select();
+	// Wait for native selection to change before correcting
+	setTimeout( function () {
+		surfaceModel.getFragment(
+			e.shiftKey ?
+				ve.Range.newCoveringRange(
+					[ selectionRange, nodeRange ], selectionRange.from > nodeRange.from
+				) :
+				nodeRange
+		).select();
+	} );
 };
 
 /**
