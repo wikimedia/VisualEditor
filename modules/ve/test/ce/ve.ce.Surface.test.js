@@ -601,7 +601,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 			},
 			{
 				'range': new ve.Range( 4 ),
-				'pasteHtml': '<cite>Foo</cite><b>B</b>a<!-- comment --><b>r</b>',
+				'pasteHtml': '<span rel="ve:Alien">Foo</span><b>B</b>a<!-- comment --><b>r</b>',
 				'expectedRange': new ve.Range( 7 ),
 				'expectedOps': [
 					[
@@ -618,7 +618,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 			},
 			{
 				'range': new ve.Range( 4 ),
-				'pasteHtml': '<cite>Foo</cite><b>B</b>a<!-- comment --><b>r</b>',
+				'pasteHtml': '<span rel="ve:Alien">Foo</span><b>B</b>a<!-- comment --><b>r</b>',
 				'pasteSpecial': true,
 				'expectedRange': new ve.Range( 7 ),
 				'expectedOps': [
