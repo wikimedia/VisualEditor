@@ -129,7 +129,7 @@ $( function () {
 							if ( sourceMode ) {
 								doc = ve.dm.converter.getDomFromModel( currentTarget.getSurface().getModel().getDocument() );
 								html = ve.properInnerHtml( doc.body );
-								$documentNode = currentTarget.getSurface().getView().getDocument().getDocumentNode().$element;
+								$documentNode = surfaceView.getDocument().getDocumentNode().$element;
 
 								sourceTextInput.$element.show();
 								sourceTextInput.setValue( html ).adjustSize();
