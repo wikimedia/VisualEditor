@@ -288,7 +288,11 @@ ve.ce.FocusableNode.prototype.onFocusableDragStart = function () {
  * @param {jQuery.Event} e Drag end event
  */
 ve.ce.FocusableNode.prototype.onFocusableDragEnd = function () {
-	// endRelocation is triggered by onDocumentDrop in the surface
+	// endRelocation is usually triggered by onDocumentDrop in the surface, but if it isn't
+	// trigger it here instead
+	if ( this.surface ) {
+		this.surface.endRelocation();
+	}
 	this.$relocatableMarker.removeClass( 've-ce-focusableNode-highlight-relocating' );
 };
 
