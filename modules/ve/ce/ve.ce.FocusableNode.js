@@ -28,17 +28,11 @@ ve.ce.FocusableNode = function VeCeFocusableNode( $focusable ) {
 	// Properties
 	this.focused = false;
 	this.highlighted = false;
-	this.shielded = false;
 	this.isSetup = false;
-	this.$shields = this.$( [] );
-	this.$visibleShields = this.$( [] );
 	this.$highlights = this.$( '<div>' ).addClass( 've-ce-focusableNode-highlights' );
 	this.$focusable = $focusable || this.$element;
 	this.surface = null;
-
-	this.$relocatableMarker = this.$( '<img>' )
-		.addClass( 've-ce-focusableNode-highlight-relocatable-marker' )
-		.attr( 'src', 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==' );
+	this.boundingRect = null;
 
 	// Events
 	this.connect( this, {
@@ -70,19 +64,6 @@ ve.ce.FocusableNode.static.isFocusable = true;
 /* Methods */
 
 /**
- * Create a shield element.
- *
- * Uses data URI to inject a 1x1 transparent GIF image into the DOM.
- *
- * @returns {jQuery} A shield element
- */
-ve.ce.FocusableNode.prototype.createShield = function () {
-	return this.$( '<img>' )
-		.addClass( 've-ce-focusableNode-shield' )
-		.attr( 'src', 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7' );
-};
-
-/**
  * Create a highlight element.
  *
  * @returns {jQuery} A highlight element
@@ -90,7 +71,15 @@ ve.ce.FocusableNode.prototype.createShield = function () {
 ve.ce.FocusableNode.prototype.createHighlight = function () {
 	return this.$( '<div>' )
 		.addClass( 've-ce-focusableNode-highlight' )
-		.attr( 'draggable', false );
+		.attr( 'draggable', false )
+		.append( this.$( '<img>' )
+			.addClass( 've-ce-focusableNode-highlight-relocatable-marker' )
+			.attr( 'src', 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==' )
+			.on( {
+				'dragstart': ve.bind( this.onFocusableDragStart, this ),
+				'dragend': ve.bind( this.onFocusableDragEnd, this )
+			} )
+		);
 };
 
 /**
@@ -108,7 +97,7 @@ ve.ce.FocusableNode.prototype.onFocusableSetup = function () {
 
 	// DOM changes
 	this.$element
-		.addClass( 've-ce-focusableNode ve-ce-focusableNode-requiresShield' )
+		.addClass( 've-ce-focusableNode' )
 		.prop( 'contentEditable', 'false' );
 
 	// Events
@@ -139,61 +128,6 @@ ve.ce.FocusableNode.prototype.onFocusableLive = function () {
 };
 
 /**
- * Attach shields to the node.
- *
- * @method
- */
-ve.ce.FocusableNode.prototype.attachShields = function () {
-	if ( this.shielded ) {
-		return;
-	}
-
-	var shields = [], node = this,
-		unshieldableFilter = function () {
-			return this.nodeType === Node.TEXT_NODE || ve.isVoidElement( this.nodeName );
-		};
-
-	// Events
-	this.surface.connect( this, { 'position': 'positionHighlights' } );
-
-	// Shields
-	this.$element.find( '*' ).addBack().each( function () {
-		if ( this.nodeType === Node.ELEMENT_NODE ) {
-			var cssFloat, $this = node.$( this );
-			// If a generated content wrapper contains only shieldable nodes there's no need to shield it.
-			// Doing so may make the shield larger than it needs to be.
-			if (
-				$this.hasClass( 've-ce-generatedContentNode' ) &&
-				!$this.contents().filter( unshieldableFilter ).length
-			) {
-				// Mark children as requiring shields instead
-				$this.children().addClass( 've-ce-focusableNode-requiresShield' );
-				return;
-			}
-			if (
-				// Always shield the root
-				!$this.hasClass( 've-ce-focusableNode-requiresShield' ) &&
-				// Highlights are built off shields, so make sure $focusable has a shield
-				!$this.is( node.$focusable )
-			) {
-				// .css( 'float' ) is *very* expensive so compute at
-				// last possible opportunity
-				cssFloat = $this.css( 'float' );
-				if ( cssFloat === 'none' || cssFloat === '' ) {
-					return;
-				}
-			}
-			// Use a plain array to preserve order
-			shields.push( node.createShield().appendTo( $this )[0] );
-			$this.addClass( 've-ce-focusableNode-shielded' );
-		}
-	} );
-
-	this.$shields = this.$( shields );
-	this.shielded = true;
-};
-
-/**
  * Handle history event.
  *
  * @method
@@ -217,14 +151,6 @@ ve.ce.FocusableNode.prototype.onFocusableTeardown = function () {
 
 	// Events
 	this.$element.off( '.ve-ce-focusableNode' );
-	this.surface.disconnect( this, { 'position': 'positionHighlights' } );
-
-	// Shields
-	this.$shields.remove();
-	this.$shields = this.$( [] );
-	this.$element.find( '.ve-ce-focusableNode-shielded' ).addBack()
-		.removeClass( 've-ce-focusableNode-shielded' );
-	this.shielded = false;
 
 	// Highlights
 	this.clearHighlights();
@@ -256,13 +182,6 @@ ve.ce.FocusableNode.prototype.onFocusableMouseDown = function ( e ) {
 			) :
 			nodeRange
 	).select();
-
-	if ( !$( e.target ).hasClass( 've-ce-focusableNode-highlight-relocatable-marker' ) ) {
-		e.preventDefault();
-		// Abort mousedown events otherwise the surface will go into
-		// dragging mode on touch devices
-		e.stopPropagation();
-	}
 };
 
 /**
@@ -289,7 +208,7 @@ ve.ce.FocusableNode.prototype.onFocusableDragStart = function () {
 		// Allow dragging this node in the surface
 		this.surface.startRelocation( this );
 	}
-	this.$relocatableMarker.addClass( 've-ce-focusableNode-highlight-relocating' );
+	this.$highlights.addClass( 've-ce-focusableNode-highlights-relocating' );
 };
 
 /**
@@ -306,7 +225,7 @@ ve.ce.FocusableNode.prototype.onFocusableDragEnd = function () {
 	if ( this.surface ) {
 		this.surface.endRelocation();
 	}
-	this.$relocatableMarker.removeClass( 've-ce-focusableNode-highlight-relocating' );
+	this.$highlights.removeClass( 've-ce-focusableNode-highlights-relocating' );
 };
 
 /**
@@ -316,7 +235,6 @@ ve.ce.FocusableNode.prototype.onFocusableDragEnd = function () {
  * @param {jQuery.Event} e Mouse enter event
  */
 ve.ce.FocusableNode.prototype.onFocusableMouseEnter = function () {
-	this.attachShields();
 	if ( !this.root.getSurface().dragging && !this.root.getSurface().resizing ) {
 		this.createHighlights();
 	}
@@ -427,25 +345,18 @@ ve.ce.FocusableNode.prototype.createHighlights = function () {
 		return;
 	}
 
-	this.attachShields();
-
 	this.$highlights.on( {
 		'mousedown': ve.bind( this.onFocusableMouseDown, this ),
 		'dblclick': ve.bind( this.onFocusableDblClick, this )
 	} );
 
-	this.$relocatableMarker.on( {
-		'dragstart': ve.bind( this.onFocusableDragStart, this ),
-		'dragend': ve.bind( this.onFocusableDragEnd, this )
-	} );
-
 	this.highlighted = true;
 
-	// Highlights are positioned from shields so this can be done before attaching
 	this.positionHighlights();
 
 	this.surface.appendHighlights( this.$highlights, this.focused );
 
+	// Events
 	if ( !this.focused ) {
 		this.surface.$element.on( {
 			'mousemove.ve-ce-focusableNode': ve.bind( this.onSurfaceMouseMove, this ),
@@ -453,6 +364,7 @@ ve.ce.FocusableNode.prototype.createHighlights = function () {
 		} );
 	}
 	this.surface.getModel().getDocument().connect( this, { 'transact': 'positionHighlights' } );
+	this.surface.connect( this, { 'position': 'positionHighlights' } );
 };
 
 /**
@@ -465,10 +377,11 @@ ve.ce.FocusableNode.prototype.clearHighlights = function () {
 		return;
 	}
 	this.$highlights.remove().empty();
-	this.$relocatableMarker.off();
-	this.surface.$element.unbind( '.ve-ce-focusableNode' );
+	this.surface.$element.off( '.ve-ce-focusableNode' );
 	this.surface.getModel().getDocument().disconnect( this, { 'transact': 'positionHighlights' } );
+	this.surface.disconnect( this, { 'position': 'positionHighlights' } );
 	this.highlighted = false;
+	this.boundingRect = null;
 };
 
 /**
@@ -490,66 +403,109 @@ ve.ce.FocusableNode.prototype.positionHighlights = function () {
 	if ( !this.highlighted ) {
 		return;
 	}
-	var i, l, $shield, offset, width, height;
 
-	this.$visibleShields = this.$shields.filter( ':visible' );
+	var i, l, top, left, bottom, right,
+		outerRects = [],
+		surfaceOffset = this.surface.getSurface().$element[0].getBoundingClientRect();
+
 	this.$highlights.empty();
 
-	for ( i = 0, l = this.$visibleShields.length; i < l; i++ ) {
-		$shield = this.$( this.$visibleShields[i] );
-
-		offset = OO.ui.Element.getRelativePosition(
-			$shield, this.surface.$element
-		);
-		width = $shield.width();
-		height = $shield.height();
-
-		if ( width && height ) {
-			this.$highlights.append(
-				this.createHighlight().css( {
-					'top': offset.top,
-					'left': offset.left,
-					'height': height,
-					'width': width,
-					'background-position': -offset.left + 'px ' + -offset.top + 'px'
-				} )
-			);
-		} else {
-			this.$visibleShields.splice( i, 1 );
-			i--;
-			l--;
-		}
+	function contains( rect1, rect2 ) {
+		return rect2.left >= rect1.left &&
+			rect2.top >= rect1.top &&
+			rect2.right <= rect1.right &&
+			rect2.bottom <= rect1.bottom;
 	}
-	this.$highlights.children().first().append( this.$relocatableMarker );
+
+	this.$element.find( '*' ).addBack().each( function () {
+		var i, j, il, jl, contained, clientRects;
+
+		if ( $( this ).hasClass( 've-ce-noHighlight' ) ) {
+			return;
+		}
+
+		clientRects = this.getClientRects();
+
+		for ( i = 0, il = clientRects.length; i < il; i++ ) {
+			// Elements with width/height of 0 return a clientRect with
+			// w/h of 1. As elements with an actual w/h of 1 aren't that
+			// useful, just throw away anything that is <= 1
+			if ( clientRects[i].width <= 1 || clientRects[i].height <= 1 ) {
+				continue;
+			}
+			contained = false;
+			for ( j = 0, jl = outerRects.length; j < jl; j++ ) {
+				// This rect is contained by an existing rect, discard
+				if ( contains( outerRects[j], clientRects[i] ) ) {
+					contained = true;
+					break;
+				}
+				// An existing rect is contained by this rect, discard the existing rect
+				if ( contains( clientRects[i], outerRects[j] ) ) {
+					outerRects.splice( j, 1 );
+					j--;
+					jl--;
+				}
+			}
+			if ( !contained ) {
+				outerRects.push( clientRects[i] );
+			}
+		}
+	} );
+
+	this.boundingRect = {
+		'top': Infinity,
+		'left': Infinity,
+		'bottom': -Infinity,
+		'right': -Infinity
+	};
+
+	for ( i = 0, l = outerRects.length; i < l; i++ ) {
+		top = outerRects[i].top - surfaceOffset.top;
+		left = outerRects[i].left - surfaceOffset.left;
+		bottom = outerRects[i].bottom - surfaceOffset.top;
+		right = outerRects[i].right - surfaceOffset.left;
+		this.$highlights.append(
+			this.createHighlight().css( {
+				'top': top,
+				'left': left,
+				'height': outerRects[i].height,
+				'width': outerRects[i].width
+			} )
+		);
+		this.boundingRect.top = Math.min( this.boundingRect.top, top );
+		this.boundingRect.left = Math.min( this.boundingRect.left, left );
+		this.boundingRect.bottom = Math.max( this.boundingRect.bottom, bottom );
+		this.boundingRect.right = Math.max( this.boundingRect.right, right );
+	}
 };
 
 /**
- * Get the offset of the focusable node relative to the surface
+ * Get the offset of the focusable node highight relative to the surface
  *
  * @return {Object} Top and left offsets of the focusable node relative to the surface
  */
 ve.ce.FocusableNode.prototype.getRelativeOffset = function () {
-	var $node = this.$visibleShields.first();
-	if ( !$node.length ) {
-		$node = this.$element;
+	if ( !this.highlighted ) {
+		this.createHighlights();
 	}
-	return OO.ui.Element.getRelativePosition(
-		$node, this.surface.$element
-	);
+	return {
+		'top': this.boundingRect.top,
+		'left': this.boundingRect.left
+	};
 };
 
 /**
- * Get the dimensions of the focusable node
+ * Get the dimensions of the focusable node highight
  *
  * @return {Object} Width and height of the focusable node
  */
 ve.ce.FocusableNode.prototype.getDimensions = function () {
-	var $node = this.$visibleShields.first();
-	if ( !$node.length ) {
-		$node = this.$element;
+	if ( !this.highlighted ) {
+		this.createHighlights();
 	}
 	return {
-		'width': $node.outerWidth(),
-		'height': $node.outerHeight()
+		'width': this.boundingRect.right - this.boundingRect.left,
+		'height': this.boundingRect.bottom - this.boundingRect.top
 	};
 };

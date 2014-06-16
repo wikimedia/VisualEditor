@@ -24,38 +24,12 @@
 	height: 100%;
 }
 
-.ve-ce-focusableNode-highlight-relocating .ve-ce-focusableNode-highlight-relocatable-marker {
+.ve-ce-focusableNode-highlights-relocating .ve-ce-focusableNode-highlight-relocatable-marker {
 	background: #000;
 	background: rgba(0, 0, 0, 1);
 }
 
-.ve-ce-focusableNode-shielded {
-	position: relative !important;
-	top: 0 !important;
-	left: 0 !important;
-	bottom: 0 !important;
-	right: 0 !important;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-}
-
-.ve-ce-focusableNode-shielded::-moz-selection,
-.ve-ce-focusableNode-shielded *::-moz-selection {
+.ve-ce-focusableNode::-moz-selection,
+.ve-ce-focusableNode *::-moz-selection {
 	background: transparent;
-}
-
-.ve-ce-focusableNode-shield {
-	position: absolute !important;
-	top: 0;
-	left: 0;
-	height: 100%;
-	width: 100%;
-	background-color: transparent !important;
-	-webkit-user-select: auto;
-	-moz-user-select: element;
-	-ms-user-select: element;
-	user-select: element;
-	cursor: default;
 }
