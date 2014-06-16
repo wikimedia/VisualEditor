@@ -266,6 +266,19 @@ ve.ce.FocusableNode.prototype.onFocusableMouseDown = function ( e ) {
 };
 
 /**
+ * Handle highlight double click events.
+ *
+ * @method
+ * @param {jQuery.Event} e Double click event
+ */
+ve.ce.FocusableNode.prototype.onFocusableDblClick = function () {
+	var command = ve.ui.commandRegistry.getCommandForNode( this );
+	if ( command ) {
+		command.execute( this.surface.getSurface() );
+	}
+};
+
+/**
  * Handle element drag start.
  *
  * @method
@@ -410,7 +423,7 @@ ve.ce.FocusableNode.prototype.createHighlights = function () {
 		return;
 	}
 
-	var i, node = this;
+	var i;
 
 	this.attachShields();
 
@@ -421,9 +434,7 @@ ve.ce.FocusableNode.prototype.createHighlights = function () {
 
 	this.$highlights.on( {
 		'mousedown': ve.bind( this.onFocusableMouseDown, this ),
-		'dblclick': function () {
-			node.emit( 'dblclick' );
-		}
+		'dblclick': ve.bind( this.onFocusableDblClick, this )
 	} );
 
 	this.$relocatableMarker.on( {

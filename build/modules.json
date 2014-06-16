@@ -205,7 +205,6 @@
 			"modules/ve/ce/ve.ce.LeafNode.js",
 			"modules/ve/ce/ve.ce.FocusableNode.js",
 			"modules/ve/ce/ve.ce.ResizableNode.js",
-			"modules/ve/ce/ve.ce.ClickableNode.js",
 			"modules/ve/ce/ve.ce.Surface.js",
 			"modules/ve/ce/ve.ce.SurfaceObserver.js",
 			"modules/ve/ce/nodes/ve.ce.GeneratedContentNode.js",
