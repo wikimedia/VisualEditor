@@ -503,12 +503,12 @@ QUnit.test( 'cloneSliceFromRange', function ( assert ) {
 			expectedData,
 			cases[i].msg + ': data'
 		);
-		assert.deepEqual(
+		assert.equalRange(
 			slice.originalRange,
 			cases[i].originalRange || range,
 			cases[i].msg + ': original range'
 		);
-		assert.deepEqual(
+		assert.equalRange(
 			slice.balancedRange,
 			cases[i].balancedRange || range,
 			cases[i].msg + ': balanced range'

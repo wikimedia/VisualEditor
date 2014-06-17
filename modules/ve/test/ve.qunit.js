@@ -209,15 +209,11 @@ QUnit.assert.deepEqualWithNodeTree = function ( actual, expected, message ) {
 };
 
 QUnit.assert.equalRange = function ( actual, expected, message ) {
-	actual = {
-		start: actual.start,
-		end: actual.end,
+	actual = actual && {
 		from: actual.from,
 		to: actual.to
 	};
-	expected = {
-		start: expected.start,
-		end: expected.end,
+	expected = expected && {
 		from: expected.from,
 		to: expected.to
 	};

@@ -1587,8 +1587,8 @@ QUnit.test( 'translateRange', function ( assert ) {
 	QUnit.expect( cases.length * 2 );
 
 	for ( i = 0; i < cases.length; i++ ) {
-		assert.deepEqual( tx.translateRange( cases[i].before ), cases[i].after, cases[i].msg );
-		assert.deepEqual( tx.translateRange( cases[i].before.flip() ), cases[i].after.flip(), cases[i].msg + ' (reversed)' );
+		assert.equalRange( tx.translateRange( cases[i].before ), cases[i].after, cases[i].msg );
+		assert.equalRange( tx.translateRange( cases[i].before.flip() ), cases[i].after.flip(), cases[i].msg + ' (reversed)' );
 	}
 } );
 
@@ -1688,7 +1688,7 @@ QUnit.test( 'getModifiedRange', function ( assert ) {
 		for ( j = 0; j < cases[i].calls.length; j++ ) {
 			tx[cases[i].calls[j][0]].apply( tx, cases[i].calls[j].slice( 1 ) );
 		}
-		assert.deepEqual( tx.getModifiedRange(), cases[i].range, cases[i].msg );
+		assert.equalRange( tx.getModifiedRange(), cases[i].range, cases[i].msg );
 	}
 } );
 
