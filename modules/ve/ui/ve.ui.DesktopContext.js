@@ -106,8 +106,8 @@ ve.ui.DesktopContext.prototype.destroy = function () {
  * Handle window resize events.
  */
 ve.ui.DesktopContext.prototype.onWindowResize = function () {
-	// Update, no transition, reposition only
-	this.update( false, true );
+	// Update, no transition
+	this.update( false );
 };
 
 /**
@@ -166,7 +166,7 @@ ve.ui.DesktopContext.prototype.afterModelChange = function () {
 		return;
 	}
 
-	this.update( !moving, !moving );
+	this.update( !moving  );
 };
 
 /**
@@ -206,7 +206,7 @@ ve.ui.DesktopContext.prototype.onSurfaceBlur = function () {
  * Response to position events on the surface.
  */
 ve.ui.DesktopContext.prototype.onSurfacePosition = function () {
-	this.update( false, true );
+	this.update( false );
 };
 
 /**
@@ -282,10 +282,9 @@ ve.ui.DesktopContext.prototype.onInspectorTeardown = function () {
  *
  * @method
  * @param {boolean} [transition=false] Use a smooth transition
- * @param {boolean} [repositionOnly=false] The context is only being moved so don't fade in
  * @chainable
  */
-ve.ui.DesktopContext.prototype.update = function ( transition, repositionOnly ) {
+ve.ui.DesktopContext.prototype.update = function ( transition ) {
 	var i, len, match, matches,
 		items = [],
 		fragment = this.surface.getModel().getFragment( null, false ),
@@ -294,7 +293,7 @@ ve.ui.DesktopContext.prototype.update = function ( transition, repositionOnly ) 
 
 	if ( inspector && selection && selection.equals( this.selection ) ) {
 		// There's an inspector, and the selection hasn't changed, update the position
-		this.show( transition, repositionOnly );
+		this.show( transition );
 	} else {
 		// No inspector is open, or the selection has changed, show a menu of available inspectors
 		matches = ve.ui.toolFactory.getToolsForFragment( fragment );
@@ -308,7 +307,7 @@ ve.ui.DesktopContext.prototype.update = function ( transition, repositionOnly ) 
 				) );
 			}
 			this.context.addItems( items );
-			this.show( transition, repositionOnly );
+			this.show( transition );
 		} else if ( this.visible ) {
 			// Nothing to inspect
 			this.hide();
