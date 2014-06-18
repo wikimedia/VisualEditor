@@ -27,7 +27,6 @@ ve.ce.AlienNode = function VeCeAlienNode() {
 	ve.ce.GeneratedContentNode.call( this );
 
 	// DOM changes
-	this.$element.addClass( 've-ce-alienNode' );
 	this.$highlights.addClass( 've-ce-alienNode-highlights' );
 };
 
@@ -79,9 +78,6 @@ ve.ce.AlienNode.prototype.generateContents = function ( config )  {
 ve.ce.AlienBlockNode = function VeCeAlienBlockNode() {
 	// Parent constructor
 	ve.ce.AlienNode.apply( this, arguments );
-
-	// DOM changes
-	this.$element.addClass( 've-ce-alienBlockNode' );
 };
 
 /* Inheritance */
@@ -105,9 +101,6 @@ ve.ce.AlienBlockNode.static.name = 'alienBlock';
 ve.ce.AlienInlineNode = function VeCeAlienInlineNode() {
 	// Parent constructor
 	ve.ce.AlienNode.apply( this, arguments );
-
-	// DOM changes
-	this.$element.addClass( 've-ce-alienInlineNode' );
 };
 
 /* Inheritance */

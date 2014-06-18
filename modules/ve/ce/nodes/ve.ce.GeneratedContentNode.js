@@ -17,9 +17,6 @@ ve.ce.GeneratedContentNode = function VeCeGeneratedContentNode() {
 	// Properties
 	this.generatingPromise = null;
 
-	// DOM changes
-	this.$element.addClass( 've-ce-generatedContentNode ve-ce-noHighlight' );
-
 	// Events
 	this.model.connect( this, { 'update': 'onGeneratedContentNodeUpdate' } );
 	this.connect( this, { 'teardown': 'abortGenerating' } );
@@ -117,6 +114,17 @@ ve.ce.GeneratedContentNode.prototype.getRenderedDomElements = function ( domElem
 	// Also remove link, meta and style tags nested inside other tags
 	$rendering.find( 'link, meta, style' ).remove();
 
+	if ( $rendering.length ) {
+		// Span wrap root text nodes so they can be measured
+		for ( i = 0, len = $rendering.length; i < len; i++ ) {
+			if ( $rendering[i].nodeType === Node.TEXT_NODE ) {
+				$rendering[i] = this.$( '<span>' ).append( $rendering[i] )[0];
+			}
+		}
+	} else {
+		$rendering = this.$( '<span>' );
+	}
+
 	// Render the computed values of some attributes
 	for ( i = 0, len = ve.dm.Converter.computedAttributes.length; i < len; i++ ) {
 		attr = ve.dm.Converter.computedAttributes[i];
@@ -140,7 +148,16 @@ ve.ce.GeneratedContentNode.prototype.render = function ( generatedContents ) {
 	if ( this.live ) {
 		this.emit( 'teardown' );
 	}
-	this.$element.empty().append( this.getRenderedDomElements( ve.copyDomElements( generatedContents ) ) );
+	var $newElements = this.$( this.getRenderedDomElements( ve.copyDomElements( generatedContents ) ) );
+	if ( !this.$element[0].parentNode ) {
+		// this.$element hasn't been attached yet, so just overwrite it
+		this.$element = $newElements;
+	} else {
+		// Switch out this.$element (which can contain multiple siblings) in place
+		this.$element.first().replaceWith( $newElements );
+		this.$element.remove();
+		this.$element = $newElements;
+	}
 	if ( this.live ) {
 		this.emit( 'setup' );
 		this.afterRender( generatedContents );

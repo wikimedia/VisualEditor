@@ -85,7 +85,7 @@ QUnit.test( 'getOffset', function ( assert ) {
 				'msg': 'Annotated alien',
 				'html': '<p>Foo<b><span rel="ve:Alien">Bar</span></b>Baz</p>',
 				// CE HTML summary;
-				// <p>Foo<b><span [focusableNode]><span [alien]>Bar</span></span></b>Baz</p>
+				// <p>Foo<b><span [alien]>Bar</span></b>Baz</p>
 				// Linmod:
 				// [<p>, F, o, o, <alineinline>, </alineinline>, B, a, z, </p>]
 				'expected': [
@@ -93,7 +93,7 @@ QUnit.test( 'getOffset', function ( assert ) {
 					1, 1,
 					2,
 					3,
-					4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+					4, 4, 4, 4, 4, 4, 4, 4, 4,
 					6, 6, 6,
 					7,
 					8,
@@ -133,15 +133,15 @@ QUnit.test( 'getOffset', function ( assert ) {
 				'msg': 'Paragraph with inline slugs',
 				'html': '<p><span rel="ve:Alien">Foo</span><span rel="ve:Alien">Bar</span><br></p>',
 				// CE HTML summary:
-				// <p><span [inlineSlug]>&#xFEFF;</span><span [focusableNode]><span [alien]>Foo</span></span>
-				// <span [inlineSlug]>&#xFEFF;</span><span [focusableNode]><span [alien]>Bar</span></span>
+				// <p><span [inlineSlug]>&#xFEFF;</span><span [alien]>Foo</span>
+				// <span [inlineSlug]>&#xFEFF;</span><span [alien]>Bar</span>
 				// <span [inlineSlug]>&#xFEFF;</span><br></br><span [inlineSlug]>&#xFEFF;</span></p>
 				// Linmod:
 				// [<p>, <alineinline>, </alineinline>, <alineinline>, </alineinline>, <break>, </break>, </p>]
 				'expected': [
 					0,
-					1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-					3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+					1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+					3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
 					5, 5, 5, 5, 5, 5,
 					6,
 					7, 7, 7, 7, 7, 7,

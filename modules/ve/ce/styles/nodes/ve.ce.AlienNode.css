@@ -5,20 +5,6 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-/* Fix weird Chrome native selection involving floated elements */
-.ve-ce-alienBlockNode:before,
-.ve-ce-alienBlockNode:after {
-	content: '';
-}
-
-.ve-ce-alienBlockNode {
-	display: block;
-}
-
-.ve-ce-alienInlineNode  {
-	display: inline;
-}
-
 .ve-ce-alienNode-highlight {
 	background-color: #95d14f;
 	background-image: -ms-repeating-linear-gradient(-45deg, white 0px, white 5px, #95d14f 5px, #95d14f 10px );
