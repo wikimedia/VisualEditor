@@ -5,16 +5,28 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-.ve-ui-mobileContext-visible {
-	position: absolute;
-	top: 0;
-	width: 100%;
-	height: 100%;
+/* Most vendor prefixes are not needed on mobile devices */
+/*csslint compatible-vendor-prefixes:false */
+
+.ve-ui-mobileContext {
+	top: 3.35em;
 	background: #fff;
+	width: 100%;
+	/* Hide the context by translating it by -200% (of its height). -100% would
+	 * be enough if it wasn't for the way we hide fixed headers on iOS in
+	 * MobileFrontend when scrolling (we fade the headers out so if the context
+	 * was hidden under the main header, they would overlap when
+	 * semitransparent).
+	 */
+	-webkit-transform: translate3d(0, -200%, 0);
+	transform: translate3d(0, -200%, 0);
+
+	-webkit-transition: -webkit-transform .3s;
+	transition: transform .3s;
 }
 
-/* inspector styles */
-
-.ve-ui-mobileContext .oo-ui-frame {
-	width: 100%;
+.ve-ui-mobileContext-visible {
+	/* Remove transform to show the context. */
+	-webkit-transform: none;
+	transform: none;
 }

@@ -29,9 +29,6 @@ ve.ui.DesktopContext = function VeUiDesktopContext( surface, config ) {
 	this.embedded = false;
 	this.containsInspector = false;
 	this.selection = null;
-	this.context = new ve.ui.ContextWidget( { '$': this.$ } );
-	this.afterModelChangeTimeout = null;
-	this.afterModelChangeRange = null;
 	this.$menu = this.$( '<div>' );
 	this.popup = new OO.ui.PopupWidget( {
 		'$': this.$,
@@ -39,10 +36,6 @@ ve.ui.DesktopContext = function VeUiDesktopContext( surface, config ) {
 	} );
 
 	// Events
-	this.surface.getModel().connect( this, {
-		'documentUpdate': 'onModelChange',
-		'select': 'onModelChange'
-	} );
 	this.surface.getView().connect( this, {
 		'selectionStart': 'onSelectionStart',
 		'selectionEnd': 'onSelectionEnd',
@@ -52,11 +45,6 @@ ve.ui.DesktopContext = function VeUiDesktopContext( surface, config ) {
 		'blur': 'onSurfaceBlur',
 		'position': 'onSurfacePosition'
 	} );
-	this.inspectors.connect( this, {
-		'setup': 'onInspectorSetup',
-		'teardown': 'onInspectorTeardown'
-	} );
-	this.context.connect( this, { 'choose': 'onContextItemChoose' } );
 
 	this.$element.add( this.$menu )
 		.on( 'mousedown', false );
@@ -77,71 +65,11 @@ OO.inheritClass( ve.ui.DesktopContext, ve.ui.Context );
 /* Methods */
 
 /**
- * Handle context item choose events.
- *
- * @param {ve.ui.ContextItemWidget} item Chosen item
- */
-ve.ui.DesktopContext.prototype.onContextItemChoose = function ( item ) {
-	if ( item ) {
-		item.getCommand().execute( this.surface );
-	}
-};
-
-/**
- * @inheritdoc
- */
-ve.ui.DesktopContext.prototype.destroy = function () {
-	// Disconnect events
-	this.surface.getModel().disconnect( this );
-	this.surface.getView().disconnect( this );
-	this.inspectors.disconnect( this );
-
-	// Stop timers
-	clearTimeout( this.afterModelChangeTimeout );
-
-	// Parent method
-	return ve.ui.Context.prototype.destroy.call( this );
-};
-
-/**
  * Handle window resize events.
  */
 ve.ui.DesktopContext.prototype.onWindowResize = function () {
 	// Update, no transition
 	this.update( false );
-};
-
-/**
- * Handle selection changes in the model.
- *
- * Changes are ignored while the user is selecting text or relocating content, apart from closing
- * the popup if it's open. While an inspector is opening or closing, all changes are ignored so as
- * to prevent inspectors that change the selection from within their open/close handlers from
- * causing issues.
- *
- * The response to selection changes is deferred to prevent close handlers that process
- * changes from causing this function to recurse. These responses are also batched for efficiency,
- * so that if there are three selection changes in the same tick, afterModelChange() only runs once.
- *
- * @method
- * @param {ve.Range} range Range if triggered by selection change, null otherwise
- * @see #afterModelChange
- */
-ve.ui.DesktopContext.prototype.onModelChange = function ( range ) {
-	var win = this.inspectors.getCurrentWindow();
-
-	if ( this.showing || this.hiding || ( win && ( win.isOpening() || win.isClosing() ) ) ) {
-		clearTimeout( this.afterModelChangeTimeout );
-		this.afterModelChangeTimeout = null;
-		this.afterModelChangeRange = null;
-	} else {
-		if ( this.afterModelChangeTimeout === null ) {
-			this.afterModelChangeTimeout = setTimeout( ve.bind( this.afterModelChange, this ) );
-		}
-		if ( range instanceof ve.Range ) {
-			this.afterModelChangeRange = range;
-		}
-	}
 };
 
 /**
@@ -253,11 +181,7 @@ ve.ui.DesktopContext.prototype.onRelocationEnd = function () {
 };
 
 /**
- * Handle an inspector setup event.
- *
- * @method
- * @param {ve.ui.Inspector} inspector Inspector that's been setup
- * @param {Object} [config] Inspector opening information
+ * @inheritdoc
  */
 ve.ui.DesktopContext.prototype.onInspectorSetup = function () {
 	this.selection = this.surface.getModel().getSelection();
@@ -265,66 +189,13 @@ ve.ui.DesktopContext.prototype.onInspectorSetup = function () {
 };
 
 /**
- * Handle an inspector teardown event.
- *
- * @method
- * @param {ve.ui.Inspector} inspector Inspector that's been torn down
- * @param {Object} [config] Inspector closing information
+ * @inheritdoc
  */
 ve.ui.DesktopContext.prototype.onInspectorTeardown = function () {
 	this.update();
 	if ( this.getSurface().getModel().getSelection() ) {
 		this.getSurface().getView().focus();
 	}
-};
-
-/**
- * Updates the context menu.
- *
- * @method
- * @param {boolean} [transition=false] Use a smooth transition
- * @chainable
- */
-ve.ui.DesktopContext.prototype.update = function ( transition ) {
-	var i, len, match, matches,
-		items = [],
-		fragment = this.surface.getModel().getFragment( null, false ),
-		selection = fragment.getRange(),
-		inspector = this.inspectors.getCurrentWindow();
-
-	if ( inspector && selection && selection.equals( this.selection ) ) {
-		// There's an inspector, and the selection hasn't changed, update the position
-		this.show( transition );
-	} else {
-		// No inspector is open, or the selection has changed, show a menu of available inspectors
-		matches = ve.ui.toolFactory.getToolsForFragment( fragment ).filter( function ( match ) {
-			return match.model.isInspectable();
-		} );
-		if ( matches.length ) {
-			// There's at least one inspectable annotation, build a menu and show it
-			this.context.clearItems();
-			this.containsInspector = false;
-			for ( i = 0, len = matches.length; i < len; i++ ) {
-				match = matches[i];
-				items.push( new ve.ui.ContextItemWidget(
-					match.tool.static.name, match.tool, match.model, { '$': this.$ }
-				) );
-				if ( match.tool.prototype instanceof ve.ui.InspectorTool ) {
-					this.containsInspector = true;
-				}
-			}
-			this.context.addItems( items );
-			this.show( transition );
-		} else if ( this.visible ) {
-			// Nothing to inspect
-			this.hide();
-		}
-	}
-
-	// Remember selection for next time
-	this.selection = selection && selection.clone();
-
-	return this;
 };
 
 /**

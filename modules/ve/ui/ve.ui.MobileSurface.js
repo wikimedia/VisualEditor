@@ -29,8 +29,8 @@ ve.ui.MobileSurface = function VeUiMobileSurface() {
 	} );
 
 	// Initialization
-	this.$globalOverlay.append( this.context.$element )
-		.addClass( 've-ui-mobileSurface-overlay ve-ui-mobileSurface-overlay-global' );
+	this.$globalOverlay.addClass( 've-ui-mobileSurface-overlay ve-ui-mobileSurface-overlay-global' );
+	this.$localOverlay.append( this.context.$element );
 };
 
 /* Inheritance */

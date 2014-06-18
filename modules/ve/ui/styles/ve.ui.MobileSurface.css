@@ -9,6 +9,7 @@
 /*csslint compatible-vendor-prefixes:false */
 
 .ve-ui-mobileSurface-overlay-global {
+	background: #fff;
 	height: 100%;
 	-webkit-transform: translate3d(0, -100%, 0);
 	transform: translate3d(0, -100%, 0);
@@ -25,4 +26,10 @@
 .ve-ui-mobileSurface-overlay-global-enabled {
 	height: 100%;
 	overflow: hidden;
+}
+
+/* inspector styles */
+
+.ve-ui-mobileSurface-overlay-global-visible .oo-ui-frame {
+	width: 100%;
 }
