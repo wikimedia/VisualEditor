@@ -112,6 +112,7 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 		} );
 
 	this.$element.on( {
+		'dragstart': ve.bind( this.onDocumentDragStart, this ),
 		'dragover': ve.bind( this.onDocumentDragOver, this ),
 		'drop': ve.bind( this.onDocumentDrop, this )
 	} );
@@ -552,16 +553,24 @@ ve.ce.Surface.prototype.onDocumentMouseMove = function () {
 };
 
 /**
- * Handle document dragover events.
+ * Handle document dragstart events.
  *
- * Limits native drag and drop behavior.
+ * @method
+ * @param {jQuery.Event} e Drag start event
+ */
+ve.ce.Surface.prototype.onDocumentDragStart = function ( e ) {
+	e.originalEvent.dataTransfer.setData( 'application-x/VisualEditor', this.getModel().getSelection().toJSON() );
+};
+
+/**
+ * Handle document dragover events.
  *
  * @method
  * @param {jQuery.Event} e Drag over event
  */
 ve.ce.Surface.prototype.onDocumentDragOver = function ( e ) {
 	if ( !this.relocating ) {
-		return false;
+		return;
 	}
 	var $target, $dropTarget, node, dropPosition;
 	if ( !this.relocating.getModel().isContent() ) {
@@ -614,25 +623,26 @@ ve.ce.Surface.prototype.onDocumentDragOver = function ( e ) {
  *
  * Limits native drag and drop behavior.
  *
- * TODO: Look into using drag and drop data transfer to embed the dragged element's original range
- * (for dragging within one document) and serialized linear model data (for dragging between
- * multiple documents) and use a special mimetype, like application-x/VisualEditor, to allow
- * dragover and drop events on the surface, removing the need to give the surface explicit
- * instructions to allow and prevent dragging and dropping a certain node.
- *
  * @method
  * @param {jQuery.Event} e Drag drop event
  */
 ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
-	var node = this.relocating;
+	var focusedNode = this.relocating,
+		rangeJSON = e.originalEvent.dataTransfer.getData( 'application-x/VisualEditor' );
 
-	if ( node ) {
-		// Process drop operation after native drop has been prevented below
-		setTimeout( ve.bind( function () {
-			var dropPoint, nodeData, originFragment, targetRange, targetOffset, targetFragment,
-				nodeRange = node.getModel().getOuterRange();
+	// Process drop operation after native drop has been prevented below
+	setTimeout( ve.bind( function () {
+		var dragRange, dropPosition, originFragment, originData, targetRange, targetOffset, targetFragment;
 
-			if ( !node.getModel().isContent() ) {
+		if ( focusedNode ) {
+			dragRange = focusedNode.getModel().getOuterRange();
+		} else if ( rangeJSON ) {
+			dragRange = ve.Range.newFromJSON( rangeJSON );
+		}
+
+		if ( dragRange && !dragRange.isCollapsed() ) {
+			if ( focusedNode && !focusedNode.getModel().isContent() ) {
+				// Block level drag and drop: use the lastDropTarget to get the targetOffset
 				if ( this.$lastDropTarget ) {
 					targetRange = this.$lastDropTarget.data( 'view' ).getModel().getOuterRange();
 					if ( this.lastDropPosition === 'top' ) {
@@ -644,34 +654,33 @@ ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
 					return;
 				}
 			} else {
-				// Get a fragment from the drop point
-				dropPoint = rangy.positionFromPoint(
+				// Calculate the drop point
+				dropPosition = rangy.positionFromPoint(
 					e.originalEvent.pageX - this.$document.scrollLeft(),
 					e.originalEvent.pageY - this.$document.scrollTop()
 				);
-				if ( !dropPoint ) {
-					// Getting position from point supported
-					return false;
+				if ( !dropPosition ) {
+					return;
 				}
-				targetOffset = ve.ce.getOffset( dropPoint.node, dropPoint.offset );
+				targetOffset = ve.ce.getOffset( dropPosition.node, dropPosition.offset );
 			}
-
-			targetFragment = this.model.getFragment( new ve.Range( targetOffset ), false );
+			targetFragment = this.getModel().getFragment( new ve.Range( targetOffset ), false );
 
 			// Get a fragment and data of the node being dragged
-			originFragment = this.model.getFragment( nodeRange, false );
-			nodeData = originFragment.getData();
+			originFragment = this.getModel().getFragment( dragRange, false );
+			originData = originFragment.getData();
 
-			// Remove node from old location (auto-updates targetFragment's range)
+			// Remove node from old location
 			originFragment.removeContent();
 
-			// Re-insert node at new location and re-select it
-			targetFragment.insertContent( nodeData ).select();
+			// Re-insert data at new location and re-select it
+			targetFragment.insertContent( originData ).select();
 
 			this.endRelocation();
-		}, this ) );
-	}
+		}
+	}, this ) );
 
+	// Prevent native drop event from modifying view
 	return false;
 };
 
