@@ -13,6 +13,13 @@
 	opacity: 0.15;
 }
 
+.ve-ce-focusableNode-dropMarker {
+	height: 1px;
+	background: #999;
+	pointer-events: none;
+	position: absolute;
+}
+
 .ve-ce-focusableNode-highlight {
 	background: #6da9f7;
 	box-shadow: inset 0 0 0 1px #4C76ac;

@@ -54,6 +54,9 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 	this.$highlights = this.$( '<div>' ).append(
 		this.$highlightsFocused, this.$highlightsBlurred
 	);
+	this.$dropMarker = this.$( '<div>' ).addClass( 've-ce-focusableNode-dropMarker' );
+	this.$lastDropTarget = null;
+	this.lastDropPosition = null;
 	this.$pasteTarget = this.$( '<div>' );
 	this.pasting = false;
 	this.pasteSpecial = false;
@@ -508,10 +511,10 @@ ve.ce.Surface.prototype.onDocumentMouseDown = function ( e ) {
 		selection = this.model.getSelection();
 		node = this.documentView.getDocumentNode().getNodeFromOffset( selection.start );
 		// Find the nearest non-content node
-		while ( node.parent !== null && node.model.isContent() ) {
+		while ( node.parent !== null && node.getModel().isContent() ) {
 			node = node.parent;
 		}
-		this.model.setSelection( node.model.getRange() );
+		this.model.setSelection( node.getModel().getRange() );
 	}
 };
 
@@ -556,10 +559,50 @@ ve.ce.Surface.prototype.onDocumentMouseMove = function () {
  * @method
  * @param {jQuery.Event} e Drag over event
  */
-ve.ce.Surface.prototype.onDocumentDragOver = function () {
+ve.ce.Surface.prototype.onDocumentDragOver = function ( e ) {
 	if ( !this.relocating ) {
 		return false;
-	} else if ( this.selecting ) {
+	}
+	var $target, $dropTarget, node, dropPosition;
+	if ( !this.relocating.getModel().isContent() ) {
+		e.preventDefault();
+		$target = $( e.target ).closest( '.ve-ce-branchNode, .ve-ce-leafNode' );
+		if ( $target.length ) {
+			// Find the nearest non-content, non-document node
+			node = $target.data( 'view' );
+			while ( node.parent !== null && node.getModel().isContent() ) {
+				node = node.parent;
+			}
+			if ( node.parent ) {
+				$dropTarget = node.$element;
+				dropPosition = e.originalEvent.pageY - $dropTarget.offset().top > $dropTarget.outerHeight() / 2 ? 'bottom' : 'top';
+			} else {
+				$dropTarget = this.$lastDropTarget;
+				dropPosition = this.lastDropPosition;
+			}
+		}
+		if ( this.$lastDropTarget && (
+			!this.$lastDropTarget.is( $dropTarget ) || dropPosition !== this.lastDropPosition
+		) ) {
+			this.$dropMarker.detach();
+			$dropTarget = null;
+		}
+		if ( $dropTarget && (
+			!$dropTarget.is( this.$lastDropTarget ) || dropPosition !== this.lastDropPosition
+		) ) {
+			this.$dropMarker.width( $dropTarget.width() );
+			if ( dropPosition === 'top' ) {
+				this.$dropMarker.insertBefore( $dropTarget );
+			} else {
+				this.$dropMarker.insertAfter( $dropTarget );
+			}
+		}
+		if ( $dropTarget !== undefined ) {
+			this.$lastDropTarget = $dropTarget;
+			this.lastDropPosition = dropPosition;
+		}
+	}
+	if ( this.selecting ) {
 		this.emit( 'selectionEnd' );
 		this.selecting = false;
 		this.dragging = false;
@@ -586,21 +629,34 @@ ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
 	if ( node ) {
 		// Process drop operation after native drop has been prevented below
 		setTimeout( ve.bind( function () {
-			var dropPoint, nodeData, originFragment, targetFragment,
+			var dropPoint, nodeData, originFragment, targetRange, targetOffset, targetFragment,
 				nodeRange = node.getModel().getOuterRange();
 
-			// Get a fragment from the drop point
-			dropPoint = rangy.positionFromPoint(
-				e.originalEvent.pageX - this.$document.scrollLeft(),
-				e.originalEvent.pageY - this.$document.scrollTop()
-			);
-			if ( !dropPoint ) {
-				// Getting position from point supported
-				return false;
+			if ( !node.getModel().isContent() ) {
+				if ( this.$lastDropTarget ) {
+					targetRange = this.$lastDropTarget.data( 'view' ).getModel().getOuterRange();
+					if ( this.lastDropPosition === 'top' ) {
+						targetOffset = targetRange.start;
+					} else {
+						targetOffset = targetRange.end;
+					}
+				} else {
+					return;
+				}
+			} else {
+				// Get a fragment from the drop point
+				dropPoint = rangy.positionFromPoint(
+					e.originalEvent.pageX - this.$document.scrollLeft(),
+					e.originalEvent.pageY - this.$document.scrollTop()
+				);
+				if ( !dropPoint ) {
+					// Getting position from point supported
+					return false;
+				}
+				targetOffset = ve.ce.getOffset( dropPoint.node, dropPoint.offset );
 			}
-			targetFragment = this.model.getFragment(
-				new ve.Range( ve.ce.getOffset( dropPoint.node, dropPoint.offset ) ), false
-			);
+
+			targetFragment = this.model.getFragment( new ve.Range( targetOffset ), false );
 
 			// Get a fragment and data of the node being dragged
 			originFragment = this.model.getFragment( nodeRange, false );
@@ -1605,6 +1661,11 @@ ve.ce.Surface.prototype.endRelocation = function () {
 	if ( this.relocating ) {
 		this.emit( 'relocationEnd', this.relocating );
 		this.relocating = null;
+		if ( this.$lastDropTarget ) {
+			this.$dropMarker.detach();
+			this.$lastDropTarget = null;
+			this.lastDropPosition = null;
+		}
 	}
 };
 
@@ -1885,7 +1946,7 @@ ve.ce.Surface.prototype.handleEnter = function ( e ) {
 				stack.length / 2,
 				0,
 				{ 'type': '/' + node.type },
-				node.model.getClonedElement()
+				node.getModel().getClonedElement()
 			);
 			outermostNode = node;
 			if ( e.shiftKey ) {
@@ -1906,7 +1967,7 @@ ve.ce.Surface.prototype.handleEnter = function ( e ) {
 			// There is one child
 			outermostNode.children.length === 1 &&
 			// The child is empty
-			node.model.length === 0
+			node.getModel().length === 0
 		) {
 			// Enter was pressed in an empty list item.
 			list = outermostNode.getModel().getParent();
