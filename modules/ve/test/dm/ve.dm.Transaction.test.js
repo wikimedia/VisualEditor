@@ -21,7 +21,7 @@ function runBuilderTests( assert, cases ) {
 	}
 }
 
-function runConstructorTests( assert, constructor, cases ) {
+function runConstructorTests( assert, constructor, cases, testRange ) {
 	var msg, tx;
 	for ( msg in cases ) {
 		if ( cases[msg].ops ) {
@@ -29,6 +29,13 @@ function runConstructorTests( assert, constructor, cases ) {
 				ve.dm.Transaction, cases[msg].args
 			);
 			assert.deepEqualWithDomElements( tx.getOperations(), cases[msg].ops, msg + ': operations match' );
+			if ( testRange ) {
+				assert.equalRange(
+					tx.getModifiedRange(),
+					cases[msg].range || new ve.Range( cases[msg].args[1], cases[msg].args[1] + cases[msg].args[2].length ),
+					msg + ': range matches'
+				);
+			}
 		} else if ( cases[msg].exception ) {
 			/*jshint loopfunc:true */
 			assert.throws( function () {
@@ -61,7 +68,9 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 					{
 						'type': 'replace',
 						'remove': [],
-						'insert': [{ 'type': 'paragraph' }, '1', { 'type': '/paragraph' }]
+						'insert': [{ 'type': 'paragraph' }, '1', { 'type': '/paragraph' }],
+						'insertedDataOffset': 0,
+						'insertedDataLength': 3
 					},
 					{ 'type': 'retain', 'length': 63 }
 				]
@@ -73,7 +82,9 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 					{
 						'type': 'replace',
 						'remove': [],
-						'insert': [{ 'type': 'paragraph' }, '1', { 'type': '/paragraph' }]
+						'insert': [{ 'type': 'paragraph' }, '1', { 'type': '/paragraph' }],
+						'insertedDataOffset': 0,
+						'insertedDataLength': 3
 					}
 				]
 			},
@@ -84,7 +95,9 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 					{
 						'type': 'replace',
 						'remove': [],
-						'insert': ['1', { 'type': '/paragraph' }, { 'type': 'paragraph' }]
+						'insert': ['1', { 'type': '/paragraph' }, { 'type': 'paragraph' }],
+						'insertedDataOffset': 0,
+						'insertedDataLength': 3
 					},
 					{ 'type': 'retain', 'length': 53 }
 				]
@@ -96,10 +109,13 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 					{
 						'type': 'replace',
 						'remove': [],
-						'insert': [{ 'type': '/heading' }, { 'type': 'paragraph' }, 'F', 'O', 'O', { 'type': '/paragraph' }, { 'type': 'heading', 'attributes': { 'level': 1 } }]
+						'insert': [{ 'type': '/heading' }, { 'type': 'paragraph' }, 'F', 'O', 'O', { 'type': '/paragraph' }, { 'type': 'heading', 'attributes': { 'level': 1 } }],
+						'insertedDataOffset': 1,
+						'insertedDataLength': 5
 					},
 					{ 'type': 'retain', 'length': 61 }
-				]
+				],
+				'range': new ve.Range( 3, 8 )
 			},
 			'paragraph inside a list moves in front of list': {
 				'args': [doc, 13, [{ 'type': 'paragraph' }, 'F', 'O', 'O', { 'type': '/paragraph' }]],
@@ -108,10 +124,13 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 					{
 						'type': 'replace',
 						'remove': [],
-						'insert': [{ 'type': 'paragraph' }, 'F', 'O', 'O', { 'type': '/paragraph' }]
+						'insert': [{ 'type': 'paragraph' }, 'F', 'O', 'O', { 'type': '/paragraph' }],
+						'insertedDataOffset': 0,
+						'insertedDataLength': 5
 					},
 					{ 'type': 'retain', 'length': 51 }
-				]
+				],
+				'range': new ve.Range( 12, 17 )
 			},
 			'tableCell inside the document is wrapped in a table, tableSection and tableRow': {
 				'args': [doc, 43, [{ 'type': 'tableCell', 'attributes': { 'style': 'data' } }, { 'type': 'paragraph' }, 'F', 'O', 'O', { 'type': '/paragraph' }, { 'type': '/tableCell' }]],
@@ -120,10 +139,13 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 					{
 						'type': 'replace',
 						'remove': [],
-						'insert': [{ 'type': 'table' }, { 'type': 'tableSection', 'attributes': { 'style': 'body' } }, { 'type': 'tableRow' }, { 'type': 'tableCell', 'attributes': { 'style': 'data' } }, { 'type': 'paragraph' }, 'F', 'O', 'O', { 'type': '/paragraph' }, { 'type': '/tableCell' }, { 'type': '/tableRow' }, { 'type': '/tableSection' }, { 'type': '/table' }]
+						'insert': [{ 'type': 'table' }, { 'type': 'tableSection', 'attributes': { 'style': 'body' } }, { 'type': 'tableRow' }, { 'type': 'tableCell', 'attributes': { 'style': 'data' } }, { 'type': 'paragraph' }, 'F', 'O', 'O', { 'type': '/paragraph' }, { 'type': '/tableCell' }, { 'type': '/tableRow' }, { 'type': '/tableSection' }, { 'type': '/table' }],
+						'insertedDataOffset': 3,
+						'insertedDataLength': 7
 					},
 					{ 'type': 'retain', 'length': 20 }
-				]
+				],
+				'range': new ve.Range( 46, 53 )
 			},
 			'tableCell inside a paragraph is wrapped in a table, tableSection and tableRow and moves outside of paragraph': {
 				'args': [doc, 52, [{ 'type': 'tableCell', 'attributes': { 'style': 'data' } }, { 'type': 'paragraph' }, 'F', 'O', 'O', { 'type': '/paragraph' }, { 'type': '/tableCell' }]],
@@ -132,10 +154,13 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 					{
 						'type': 'replace',
 						'remove': [],
-						'insert': [{ 'type': 'table' }, { 'type': 'tableSection', 'attributes': { 'style': 'body' } }, { 'type': 'tableRow' }, { 'type': 'tableCell', 'attributes': { 'style': 'data' } }, { 'type': 'paragraph' }, 'F', 'O', 'O', { 'type': '/paragraph' }, { 'type': '/tableCell' }, { 'type': '/tableRow' }, { 'type': '/tableSection' }, { 'type': '/table' }]
+						'insert': [{ 'type': 'table' }, { 'type': 'tableSection', 'attributes': { 'style': 'body' } }, { 'type': 'tableRow' }, { 'type': 'tableCell', 'attributes': { 'style': 'data' } }, { 'type': 'paragraph' }, 'F', 'O', 'O', { 'type': '/paragraph' }, { 'type': '/tableCell' }, { 'type': '/tableRow' }, { 'type': '/tableSection' }, { 'type': '/table' }],
+						'insertedDataOffset': 3,
+						'insertedDataLength': 7
 					},
 					{ 'type': 'retain', 'length': 10 }
-				]
+				],
+				'range': new ve.Range( 56, 63 )
 			},
 			'text at a structural location in the document is wrapped in a paragraph': {
 				'args': [doc, 0, ['F', 'O', 'O']],
@@ -143,10 +168,13 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 					{
 						'type': 'replace',
 						'remove': [],
-						'insert': [{ 'type': 'paragraph' }, 'F', 'O', 'O', { 'type': '/paragraph' }]
+						'insert': [{ 'type': 'paragraph' }, 'F', 'O', 'O', { 'type': '/paragraph' }],
+						'insertedDataOffset': 1,
+						'insertedDataLength': 3
 					},
 					{ 'type': 'retain', 'length': 63 }
-				]
+				],
+				'range': new ve.Range( 1, 4 )
 			},
 			'text inside a paragraph is not wrapped in a paragraph': {
 				'args': [doc, 16, ['F', 'O', 'O']],
@@ -155,7 +183,9 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 					{
 						'type': 'replace',
 						'remove': [],
-						'insert': ['F', 'O', 'O']
+						'insert': ['F', 'O', 'O'],
+						'insertedDataOffset': 0,
+						'insertedDataLength': 3
 					},
 					{ 'type': 'retain', 'length': 47 }
 				]
@@ -167,10 +197,27 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 					{
 						'type': 'replace',
 						'remove': [],
-						'insert': ['F', 'O', 'O']
+						'insert': ['F', 'O', 'O'],
+						'insertedDataOffset': 0,
+						'insertedDataLength': 3
 					},
 					{ 'type': 'retain', 'length': 61 }
 				]
+			},
+			'paragraph in the middle of an insertion is balanced': {
+				'args': [doc, 16, ['F', { 'type': 'paragraph' }, 'O', { 'type': '/paragraph' }, 'O']],
+				'ops': [
+					{ 'type': 'retain', 'length': 16 },
+					{
+						'type': 'replace',
+						'remove': [],
+						'insert': ['F', { 'type': '/paragraph' }, { 'type': 'paragraph' }, 'O', { 'type': '/paragraph' }, { 'type': 'paragraph' }, 'O'],
+						'insertedDataOffset': 0,
+						'insertedDataLength': 7
+					},
+					{ 'type': 'retain', 'length': 47 }
+				],
+				'range': new ve.Range( 16, 23 )
 			},
 			'text inside a tableSection moves all the way to the end of the table and is wrapped in a paragraph': {
 				'args': [doc, 34, ['F', 'O', 'O']],
@@ -179,10 +226,13 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 					{
 						'type': 'replace',
 						'remove': [],
-						'insert': [{ 'type': 'paragraph' }, 'F', 'O', 'O', { 'type': '/paragraph' }]
+						'insert': [{ 'type': 'paragraph' }, 'F', 'O', 'O', { 'type': '/paragraph' }],
+						'insertedDataOffset': 1,
+						'insertedDataLength': 3
 					},
 					{ 'type': 'retain', 'length': 26 }
-				]
+				],
+				'range': new ve.Range( 38, 41 )
 			},
 			'insert two complete paragraphs into start of paragraph moves insertion point left': {
 				'args': [doc, 10, [{ 'type': 'paragraph' }, 'F', 'O', 'O', { 'type': '/paragraph' }, { 'type': 'paragraph' }, 'B', 'A', 'R', { 'type': '/paragraph' }]],
@@ -191,10 +241,13 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 					{
 						'type': 'replace',
 						'remove': [],
-						'insert': [{ 'type': 'paragraph' }, 'F', 'O', 'O', { 'type': '/paragraph' }, { 'type': 'paragraph' }, 'B', 'A', 'R', { 'type': '/paragraph' }]
+						'insert': [{ 'type': 'paragraph' }, 'F', 'O', 'O', { 'type': '/paragraph' }, { 'type': 'paragraph' }, 'B', 'A', 'R', { 'type': '/paragraph' }],
+						'insertedDataOffset': 0,
+						'insertedDataLength': 10
 					},
 					{ 'type': 'retain', 'length': 54 }
-				]
+				],
+				'range': new ve.Range( 9, 19 )
 			},
 			'insert text, close paragraph and open heading into end of paragraph moves insertion point right': {
 				'args': [doc, 57, ['F', 'O', 'O', { 'type': '/paragraph' }, { 'type': 'heading', 'attributes': { 'level': 1 } }, 'B', 'A', 'R']],
@@ -203,10 +256,13 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 					{
 						'type': 'replace',
 						'remove': [],
-						'insert': [{ 'type': 'paragraph' }, 'F', 'O', 'O', { 'type': '/paragraph' }, { 'type': 'heading', 'attributes': { 'level': 1 } }, 'B', 'A', 'R', { 'type': '/heading' }]
+						'insert': [{ 'type': 'paragraph' }, 'F', 'O', 'O', { 'type': '/paragraph' }, { 'type': 'heading', 'attributes': { 'level': 1 } }, 'B', 'A', 'R', { 'type': '/heading' }],
+						'insertedDataOffset': 1,
+						'insertedDataLength': 8
 					},
 					{ 'type': 'retain', 'length': 5 }
-				]
+				],
+				'range': new ve.Range( 59, 67 )
 			},
 			'insert heading and incomplete paragraph into heading': {
 				'args': [doc, 2, [{ 'type': 'heading', 'attributes': { 'level': 1 } }, 'F', 'O', 'O', { 'type': '/heading' }, { 'type': 'paragraph' }, 'B', 'A', 'R']],
@@ -219,10 +275,13 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 							{ 'type': '/heading' }, { 'type': 'heading', 'attributes': { 'level': 1 } }, 'F', 'O', 'O', { 'type': '/heading' },
 							{ 'type': 'paragraph' }, 'B', 'A', 'R', { 'type': '/paragraph' },
 							{ 'type': 'heading', 'attributes': { 'level': 1 } }
-						]
+						],
+						'insertedDataOffset': 1,
+						'insertedDataLength': 9
 					},
 					{ 'type': 'retain', 'length': 61 }
-				]
+				],
+				'range': new ve.Range( 3, 12 )
 			},
 			'inserting two paragraphs into a document with just an empty paragraph': {
 				'args': [doc2, 1, ['F', 'O', 'O', { 'type': '/paragraph' }, { 'type': 'paragraph' }, 'B', 'A', 'R']],
@@ -231,7 +290,9 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 					{
 						'type': 'replace',
 						'remove': [],
-						'insert': ['F', 'O', 'O', { 'type': '/paragraph' }, { 'type': 'paragraph' }, 'B', 'A', 'R']
+						'insert': ['F', 'O', 'O', { 'type': '/paragraph' }, { 'type': 'paragraph' }, 'B', 'A', 'R'],
+						'insertedDataOffset': 0,
+						'insertedDataLength': 8
 					},
 					{ 'type': 'retain', 'length': 1 }
 				]
@@ -243,7 +304,9 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 					{
 						'type': 'replace',
 						'remove': [],
-						'insert': ['F', 'O', 'O', { 'type': '/paragraph' }, { 'type': 'paragraph' }, 'B', 'A', 'R', { 'type': '/paragraph' }, { 'type': 'paragraph' }, 'B', 'A', 'Z']
+						'insert': ['F', 'O', 'O', { 'type': '/paragraph' }, { 'type': 'paragraph' }, 'B', 'A', 'R', { 'type': '/paragraph' }, { 'type': 'paragraph' }, 'B', 'A', 'Z'],
+						'insertedDataOffset': 0,
+						'insertedDataLength': 13
 					},
 					{ 'type': 'retain', 'length': 1 }
 				]
@@ -254,10 +317,13 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 					{
 						'type': 'replace',
 						'remove': [],
-						'insert': [{ 'type': 'paragraph' }, 'F', 'O', 'O', { 'type': '/paragraph' }]
+						'insert': [{ 'type': 'paragraph' }, 'F', 'O', 'O', { 'type': '/paragraph' }],
+						'insertedDataOffset': 0,
+						'insertedDataLength': 5
 					},
 					{ 'type': 'retain', 'length': 2 }
-				]
+				],
+				'range': new ve.Range( 0, 5 )
 			},
 			'inserting paragraph at end of paragraph moves insertion point forward': {
 				'args': [doc3, 4, [{ 'type': 'paragraph' }, 'B', 'A', 'R', { 'type': '/paragraph' }]],
@@ -266,9 +332,12 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 					{
 						'type': 'replace',
 						'remove': [],
-						'insert': [{ 'type': 'paragraph' }, 'B', 'A', 'R', { 'type': '/paragraph' }]
+						'insert': [{ 'type': 'paragraph' }, 'B', 'A', 'R', { 'type': '/paragraph' }],
+						'insertedDataOffset': 0,
+						'insertedDataLength': 5
 					}
-				]
+				],
+				'range': new ve.Range( 5, 10 )
 			},
 			'inserting paragraph into middle of paragraph splits paragraph': {
 				'args': [doc3, 2, [{ 'type': 'paragraph' }, 'B', 'A', 'R', { 'type': '/paragraph' }]],
@@ -277,10 +346,13 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 					{
 						'type': 'replace',
 						'remove': [],
-						'insert': [{ 'type': '/paragraph' }, { 'type': 'paragraph' }, 'B', 'A', 'R', { 'type': '/paragraph' }, { 'type': 'paragraph' }]
+						'insert': [{ 'type': '/paragraph' }, { 'type': 'paragraph' }, 'B', 'A', 'R', { 'type': '/paragraph' }, { 'type': 'paragraph' }],
+						'insertedDataOffset': 1,
+						'insertedDataLength': 5
 					},
 					{ 'type': 'retain', 'length': 3 }
-				]
+				],
+				'range': new ve.Range( 3, 8 )
 			},
 			'inserting paragraph into middle of list splits list': {
 				'args': [isolationDoc, 11, [{ 'type': 'paragraph' }, 'B', 'A', 'R', { 'type': '/paragraph' }]],
@@ -289,10 +361,13 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 					{
 						'type': 'replace',
 						'remove': [],
-						'insert': [{ 'type': '/list' }, { 'type': 'paragraph' }, 'B', 'A', 'R', { 'type': '/paragraph' }, { 'type': 'list', 'attributes': { 'style': 'bullet' } }]
+						'insert': [{ 'type': '/list' }, { 'type': 'paragraph' }, 'B', 'A', 'R', { 'type': '/paragraph' }, { 'type': 'list', 'attributes': { 'style': 'bullet' } }],
+						'insertedDataOffset': 1,
+						'insertedDataLength': 5
 					},
 					{ 'type': 'retain', 'length': 235 }
-				]
+				],
+				'range': new ve.Range( 12, 17 )
 			},
 			'inserting paragraph between table cells splits table, tableSection and tableRow': {
 				'args': [complexTableDoc, 40, [{ 'type': 'paragraph' }, 'B', 'A', 'R', { 'type': '/paragraph' }]],
@@ -305,10 +380,13 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 							{ 'type': '/tableRow' }, { 'type': '/tableSection' }, { 'type': '/table' },
 							{ 'type': 'paragraph' }, 'B', 'A', 'R', { 'type': '/paragraph' },
 							{ 'type': 'table' }, { 'type': 'tableSection', 'attributes': { 'style': 'body' } }, { 'type': 'tableRow' }
-						]
+						],
+						'insertedDataOffset': 3,
+						'insertedDataLength': 5
 					},
 					{ 'type': 'retain', 'length': 13 }
-				]
+				],
+				'range': new ve.Range( 43, 48 )
 			},
 			'preserving trailing metadata': {
 				'args': [ listWithMetaDoc, 4, [ 'b' ] ],
@@ -317,7 +395,9 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 					{
 						'type': 'replace',
 						'remove': [],
-						'insert': [ 'b' ]
+						'insert': [ 'b' ],
+						'insertedDataOffset': 0,
+						'insertedDataLength': 1
 					},
 					{ 'type': 'retain', 'length': 8 },
 					{ 'type': 'retainMetadata', 'length': 1 }
@@ -327,7 +407,7 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 			// TODO test cases for (currently failing) unopened closings use case
 			// TODO analyze other possible cases (substrings of linmod data)
 		};
-	QUnit.expect( ve.getObjectKeys( cases ).length );
+	QUnit.expect( ve.getObjectKeys( cases ).length * 2 );
 	for ( key in cases ) {
 		for ( i = 0; i < cases[key].ops.length; i++ ) {
 			if ( cases[key].ops[i].remove ) {
@@ -338,7 +418,7 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 			}
 		}
 	}
-	runConstructorTests( assert, ve.dm.Transaction.newFromInsertion, cases );
+	runConstructorTests( assert, ve.dm.Transaction.newFromInsertion, cases, true );
 } );
 
 QUnit.test( 'newFromRemoval', function ( assert ) {

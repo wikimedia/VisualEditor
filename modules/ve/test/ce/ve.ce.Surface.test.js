@@ -365,7 +365,9 @@ QUnit.test( 'onContentChange', function ( assert ) {
 						{
 							'type': 'replace',
 							'insert': [ 'A' ],
-							'remove': []
+							'remove': [],
+							'insertedDataOffset': 0,
+							'insertedDataLength': 1
 						},
 						{ 'type': 'retain', 'length': 3 }
 					]
