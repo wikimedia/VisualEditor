@@ -37,8 +37,10 @@ QUnit.test( 'getOffset', function ( assert ) {
 			{
 				'msg': 'Empty paragraph',
 				'html': '<p></p>',
-				// CE HTML summary;
+				// CE HTML summary:
 				// <p><span [inlineSlug]>&#xFEFF;</span></p>
+				// Linmod:
+				// [<p>, </p>]
 				'expected': [
 					0,
 					1, 1, 1, 1, 1, 1,
@@ -48,6 +50,8 @@ QUnit.test( 'getOffset', function ( assert ) {
 			{
 				'msg': 'Annotations',
 				'html': '<p><i><b>Foo</b></i></p>',
+				// Linmod:
+				// [<p>, F, o, o, </p>]
 				'expected': [
 					0,
 					1, 1, 1, 1,
@@ -60,6 +64,8 @@ QUnit.test( 'getOffset', function ( assert ) {
 			{
 				'msg': 'Multiple siblings',
 				'html': '<p><b><i>Foo</i><s><u>Bar</u><span>Baz</span></s></b></p>',
+				// Linmod:
+				// [<p>, F, o, o, B, a, r, B, a, z, </p>]
 				'expected': [
 					0,
 					1, 1, 1, 1,
@@ -80,13 +86,14 @@ QUnit.test( 'getOffset', function ( assert ) {
 				'html': '<p>Foo<b><span rel="ve:Alien">Bar</span></b>Baz</p>',
 				// CE HTML summary;
 				// <p>Foo<b><span [focusableNode]><span [alien]>Bar</span></span></b>Baz</p>
+				// Linmod:
+				// [<p>, F, o, o, <alineinline>, </alineinline>, B, a, z, </p>]
 				'expected': [
 					0,
 					1, 1,
 					2,
 					3,
-					4, 4, 4,
-					5, 5, 5, 5, 5, 5, 5, 5,
+					4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
 					6, 6, 6,
 					7,
 					8,
@@ -103,6 +110,8 @@ QUnit.test( 'getOffset', function ( assert ) {
 				//  <p>Foo</p>
 				// </td></tr></tbody></table>
 				// <div [slugWrapper]><p [blockSlug]></p></div>
+				// Linmod:
+				// [<table>, <tbody>, <tr>, <td>, <p>, F, o, o, </p>, </td>, </tr>, </tbody>, </table>]
 				'expected': [
 					0, 0, 0, 0, 0, 0, 0, 0,
 					1,
@@ -127,12 +136,12 @@ QUnit.test( 'getOffset', function ( assert ) {
 				// <p><span [inlineSlug]>&#xFEFF;</span><span [focusableNode]><span [alien]>Foo</span></span>
 				// <span [inlineSlug]>&#xFEFF;</span><span [focusableNode]><span [alien]>Bar</span></span>
 				// <span [inlineSlug]>&#xFEFF;</span><br></br><span [inlineSlug]>&#xFEFF;</span></p>
+				// Linmod:
+				// [<p>, <alineinline>, </alineinline>, <alineinline>, </alineinline>, <break>, </break>, </p>]
 				'expected': [
 					0,
-					1, 1, 1, 1, 1, 1,
-					2, 2, 2, 2, 2, 2, 2, 2,
-					3, 3, 3, 3, 3, 3,
-					4, 4, 4, 4, 4, 4, 4, 4,
+					1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+					3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
 					5, 5, 5, 5, 5, 5,
 					6,
 					7, 7, 7, 7, 7, 7,
