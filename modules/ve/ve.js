@@ -721,6 +721,10 @@
 		// versions of other browsers (Chrome 30+, Opera 17+, IE10+)
 		var newDocument, $iframe, iframe;
 		try {
+			if ( html === '' ) {
+				// IE doesn't like empty strings
+				html = '<body></body>';
+			}
 			newDocument = new DOMParser().parseFromString( html, 'text/html' );
 			if ( newDocument ) {
 				return newDocument;
