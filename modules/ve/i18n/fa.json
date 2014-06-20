@@ -11,7 +11,8 @@
 			"Taha",
 			"درفش کاویانی",
 			"Fatemi127",
-			"Armin1392"
+			"Armin1392",
+			"Calak"
 		]
 	},
 	"visualeditor": "ویرایشگر دیداری",
@@ -62,7 +63,7 @@
 	"visualeditor-languageinspector-widget-label-langcode": "کد زبانی",
 	"visualeditor-languageinspector-widget-label-language": "زبان‌ها",
 	"visualeditor-language-search-input-placeholder": "جستجو بر اساس نام زبان یا کد",
-	"visualeditor-linkinspector-title": "اَبَرپیوند",
+	"visualeditor-linkinspector-title": "پیوند",
 	"visualeditor-listbutton-bullet-tooltip": "فهرست گلوله‌ای",
 	"visualeditor-listbutton-number-tooltip": "فهرست شماره‌دار",
 	"visualeditor-mediasizewidget-button-originaldimensions": "ساختن اندازهٔ کامل",
