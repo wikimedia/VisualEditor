@@ -114,13 +114,25 @@ ve.dm.TransactionProcessor.prototype.process = function () {
  * @throws {Error} Annotation to be cleared is not set
  */
 ve.dm.TransactionProcessor.prototype.applyAnnotations = function ( to ) {
-	var item, isElement, annotated, annotations, i, range, selection,
-		store = this.document.getStore();
+	function setAndClear( anns, set, clear ) {
+		if ( anns.containsAnyOf( set ) ) {
+			throw new Error( 'Invalid transaction, annotation to be set is already set' );
+		} else {
+			anns.addSet( set );
+		}
+		if ( !anns.containsAllOf( clear ) ) {
+			throw new Error( 'Invalid transaction, annotation to be cleared is not set' );
+		} else {
+			anns.removeSet( clear );
+		}
+	}
+
+	var isElement, annotations, i, j, jlen, range, selection;
 	if ( this.set.isEmpty() && this.clear.isEmpty() ) {
 		return;
 	}
+	// Set/clear annotations on data
 	for ( i = this.cursor; i < to; i++ ) {
-		item = this.document.data.getData( i );
 		isElement = this.document.data.isElementData( i );
 		if ( isElement ) {
 			if ( !ve.dm.nodeFactory.isNodeContent( this.document.data.getType( i ) ) ) {
@@ -131,24 +143,20 @@ ve.dm.TransactionProcessor.prototype.applyAnnotations = function ( to ) {
 				continue;
 			}
 		}
-		annotated = isElement ? 'annotations' in item : ve.isArray( item );
-		annotations = annotated ?
-			new ve.dm.AnnotationSet( store, isElement ? item.annotations : item[1] ) :
-			new ve.dm.AnnotationSet( store );
-		// Set and clear annotations
-		if ( annotations.containsAnyOf( this.set ) ) {
-			throw new Error( 'Invalid transaction, annotation to be set is already set' );
-		} else {
-			annotations.addSet( this.set );
-		}
-		if ( !annotations.containsAllOf( this.clear ) ) {
-			throw new Error( 'Invalid transaction, annotation to be cleared is not set' );
-		} else {
-			annotations.removeSet( this.clear );
-		}
+		annotations = this.document.data.getAnnotationsFromOffset( i );
+		setAndClear( annotations, this.set, this.clear );
 		// Store annotation indexes in linear model
 		this.document.data.setAnnotationsAtOffset( i, annotations );
 	}
+	// Set/clear annotations on metadata, but not on the edges of the range
+	for ( i = this.cursor + 1; i < to; i++ ) {
+		for ( j = 0, jlen = this.document.metadata.getDataLength( i ); j < jlen; j++ ) {
+			annotations = this.document.metadata.getAnnotationsFromOffsetAndIndex( i, j );
+			setAndClear( annotations, this.set, this.clear );
+			this.document.metadata.setAnnotationsAtOffsetAndIndex( i, j, annotations );
+		}
+	}
+	// Notify the synchronizer
 	if ( this.cursor < to ) {
 		range = new ve.Range( this.cursor, to );
 		selection = this.document.selectNodes(
