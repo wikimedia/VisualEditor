@@ -240,8 +240,11 @@ ve.ce.SurfaceObserver.prototype.pollOnceInternal = function ( emitChanges ) {
 				this.emit(
 					'contentChange',
 					node,
-					{ 'text': this.text, 'hash': this.hash,
-						'range': this.range },
+					{
+						'text': this.text,
+						'hash': this.hash,
+						'range': this.range
+					},
 					{ 'text': text, 'hash': hash, 'range': range }
 				);
 			}

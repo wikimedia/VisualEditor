@@ -2068,9 +2068,9 @@ ve.ce.Surface.prototype.handleDelete = function ( e, backspace ) {
 	internalListRange = documentModel.getInternalList().getListNode().getOuterRange();
 	if ( rangeToRemove.start === 0 && rangeToRemove.end >= internalListRange.start ) {
 		tx = ve.dm.Transaction.newFromReplacement( documentModel, new ve.Range( 0, internalListRange.start ), [
-				{ 'type': 'paragraph' },
-				{ 'type': '/paragraph' }
-			] );
+			{ 'type': 'paragraph' },
+			{ 'type': '/paragraph' }
+		] );
 		model.change( tx );
 		rangeAfterRemove = new ve.Range( 1 );
 	} else {
@@ -2141,10 +2141,10 @@ ve.ce.Surface.prototype.showSelection = function ( range ) {
 		rangySel = rangy.getSelection( this.$document[0] ),
 		rangyRange = rangy.createRange( this.$document[0] );
 
-		range = new ve.Range(
-			this.getNearestCorrectOffset( range.from, -1 ),
-			this.getNearestCorrectOffset( range.to, 1 )
-		);
+	range = new ve.Range(
+		this.getNearestCorrectOffset( range.from, -1 ),
+		this.getNearestCorrectOffset( range.to, 1 )
+	);
 
 	if ( !range.isCollapsed() ) {
 		start = this.documentView.getNodeAndOffset( range.start );
@@ -2269,7 +2269,7 @@ ve.ce.Surface.prototype.needsPawn = function ( selection, insertionAnnotations )
 	// Take annotations from the left
 	// TODO reorganize the logic in this function
 	if ( leftAnnotations && !leftAnnotations.compareTo( insertionAnnotations ) ) {
-			return true;
+		return true;
 	}
 	// At the beginning of a node, take from the right
 	if (

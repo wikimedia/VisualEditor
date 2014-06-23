@@ -607,7 +607,7 @@ ve.dm.example.withMetaMetaData = [
 			}
 		},
 		{
-		'type': 'alienMeta',
+			'type': 'alienMeta',
 			'attributes': {
 				'domElements': $( '<link rel="foofoo" href="barbar" />' ).toArray()
 			}

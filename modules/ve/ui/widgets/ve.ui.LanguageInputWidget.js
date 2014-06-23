@@ -49,23 +49,20 @@ ve.ui.LanguageInputWidget = function VeUiLanguageInputWidget( config ) {
 
 	// Initialization
 	findLanguageField = new OO.ui.FieldLayout( this.findLanguageButton, {
-			'$': this.$,
-			'align': 'left',
-			'label': ve.msg( 'visualeditor-languageinspector-widget-label-language' )
-		}
-	);
+		'$': this.$,
+		'align': 'left',
+		'label': ve.msg( 'visualeditor-languageinspector-widget-label-language' )
+	} );
 	languageCodeField = new OO.ui.FieldLayout( this.languageCodeTextInput, {
-			'$': this.$,
-			'align': 'left',
-			'label': ve.msg( 'visualeditor-languageinspector-widget-label-langcode' )
-		}
-	);
+		'$': this.$,
+		'align': 'left',
+		'label': ve.msg( 'visualeditor-languageinspector-widget-label-langcode' )
+	} );
 	directionField = new OO.ui.FieldLayout( this.directionSelect, {
-			'$': this.$,
-			'align': 'left',
-			'label': ve.msg( 'visualeditor-languageinspector-widget-label-direction' )
-		}
-	);
+		'$': this.$,
+		'align': 'left',
+		'label': ve.msg( 'visualeditor-languageinspector-widget-label-direction' )
+	} );
 
 	// HACK: Create a new surface so we can create a new global
 	// overlay and open windows.

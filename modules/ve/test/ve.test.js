@@ -309,7 +309,9 @@ QUnit.test( 'isBlockElement/isVoidElement', 10, function ( assert ) {
 // TODO: ve.getClusterOffset
 
 QUnit.test( 'graphemeSafeSubstring', function ( assert ) {
-	var i, text = '12\ud860\udee245\ud860\udee2789\ud860\udee2bc', cases = [
+	var i,
+		text = '12\ud860\udee245\ud860\udee2789\ud860\udee2bc',
+		cases = [
 			{
 				'msg': 'start and end inside multibyte',
 				'start': 3,

@@ -2,6 +2,5 @@
 	"preset": "wikimedia",
 
 	"disallowQuotedKeysInObjects": null,
-	"requireSpacesInsideArrayBrackets": null,
-	"validateIndentation": null
+	"requireSpacesInsideArrayBrackets": null
 }
