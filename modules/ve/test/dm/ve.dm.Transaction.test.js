@@ -1639,7 +1639,7 @@ QUnit.test( 'translateOffset', function ( assert ) {
 		doc = new ve.dm.Document( '-----defg---h--'.split( '' ) ),
 		tx = new ve.dm.Transaction();
 
-	tx.pushReplace( doc, 0, 0, ['a','b','c'] );
+	tx.pushReplace( doc, 0, 0, ['a', 'b', 'c'] );
 	tx.pushRetain( 5 );
 	tx.pushReplace( doc, 5, 4, [] );
 	tx.pushRetain( 2 );
@@ -1796,7 +1796,7 @@ QUnit.test( 'getModifiedRange', function ( assert ) {
 					['pushRetain', 5],
 					['pushReplaceElementAttribute', 'style', 'bullet', 'number']
 				],
-				'range': new ve.Range( 5,5 ),
+				'range': new ve.Range( 5, 5 ),
 				'msg': 'single attribute change'
 			},
 			{

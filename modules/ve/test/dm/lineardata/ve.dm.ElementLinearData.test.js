@@ -1351,7 +1351,7 @@ QUnit.test( 'sanitize', function ( assert ) {
 					{ 'type': 'internalList' },
 					{ 'type': '/internalList' }
 				],
-				'rules': { 'blacklist': ['alienInline','image'] },
+				'rules': { 'blacklist': ['alienInline', 'image'] },
 				'msg': 'Blacklisted nodes removed'
 			},
 			{
@@ -1384,7 +1384,7 @@ QUnit.test( 'sanitize', function ( assert ) {
 				'html': '<p style="font-size: 2em;"><b style="color:red;">Foo</b></p>',
 				'data': [
 					{ 'type': 'paragraph' },
-					['F',[0]], ['o',[0]], ['o',[0]],
+					['F', [0]], ['o', [0]], ['o', [0]],
 					{ 'type': '/paragraph' },
 					{ 'type': 'internalList' },
 					{ 'type': '/internalList' }
@@ -1402,7 +1402,7 @@ QUnit.test( 'sanitize', function ( assert ) {
 							'values': { 'class': 'foo' }
 						} ]
 					},
-					['F',[0]], ['o',[0]], ['o',[0]],
+					['F', [0]], ['o', [0]], ['o', [0]],
 					{ 'type': '/paragraph' },
 					{ 'type': 'internalList' },
 					{ 'type': '/internalList' }
@@ -1457,7 +1457,7 @@ QUnit.test( 'sanitize', function ( assert ) {
 } );
 
 QUnit.test( 'countNoninternalElements', function ( assert ) {
-	var i,d, cases = [
+	var i, d, cases = [
 			{
 				'data': [
 					{ 'type': 'paragraph' },

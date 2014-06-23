@@ -892,7 +892,7 @@
 	ve.contains = function ( containers, contained, matchContainers ) {
 		var i;
 		if ( !ve.isArray( containers ) ) {
-			containers = [containers];
+			containers = [ containers ];
 		}
 		for ( i = containers.length - 1; i >= 0; i-- ) {
 			if ( ( matchContainers && contained === containers[i] ) || $.contains( containers[i], contained ) ) {
