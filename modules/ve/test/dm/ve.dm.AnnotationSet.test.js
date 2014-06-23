@@ -12,9 +12,9 @@ QUnit.module( 've.dm.AnnotationSet' );
 QUnit.test( 'Basic usage', 32, function ( assert ) {
 	var annotationSet3,
 		store = new ve.dm.IndexValueStore(),
-		bold = new ve.dm.TextStyleBoldAnnotation(),
-		italic = new ve.dm.TextStyleItalicAnnotation(),
-		underline = new ve.dm.TextStyleUnderlineAnnotation(),
+		bold = new ve.dm.BoldAnnotation(),
+		italic = new ve.dm.ItalicAnnotation(),
+		underline = new ve.dm.UnderlineAnnotation(),
 		annotationSet = new ve.dm.AnnotationSet( store, store.indexes( [ bold, italic ] ) ),
 		annotationSet2 = new ve.dm.AnnotationSet( store, store.indexes( [ italic, underline ] ) ),
 		emptySet = new ve.dm.AnnotationSet( store );
@@ -79,10 +79,10 @@ QUnit.test( 'Basic usage', 32, function ( assert ) {
 QUnit.test( 'Comparable', 7, function ( assert ) {
 	var annotationSet3,
 		store = new ve.dm.IndexValueStore(),
-		bold = new ve.dm.TextStyleBoldAnnotation(),
-		italic = new ve.dm.TextStyleItalicAnnotation(),
-		strong = new ve.dm.TextStyleBoldAnnotation( { 'type': 'textStyle/bold', 'attributes': { 'nodeName': 'strong' } } ),
-		underline = new ve.dm.TextStyleUnderlineAnnotation(),
+		bold = new ve.dm.BoldAnnotation(),
+		italic = new ve.dm.ItalicAnnotation(),
+		strong = new ve.dm.BoldAnnotation( { 'type': 'textStyle/bold', 'attributes': { 'nodeName': 'strong' } } ),
+		underline = new ve.dm.UnderlineAnnotation(),
 		annotationSet = new ve.dm.AnnotationSet( store, store.indexes( [ bold, italic ] ) ),
 		annotationSet2 = new ve.dm.AnnotationSet( store, store.indexes( [ strong, underline ] ) ),
 		emptySet = new ve.dm.AnnotationSet( store );

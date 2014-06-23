@@ -1320,8 +1320,8 @@ QUnit.test( 'getNearestWordRange', function ( assert ) {
 QUnit.test( 'sanitize', function ( assert ) {
 	var i, model, data,
 		count = 0,
-		bold = new ve.dm.TextStyleBoldAnnotation( { 'type': 'textStyle/bold', 'attributes': { 'nodeName': 'b' } } ),
-		boldWithClass = new ve.dm.TextStyleBoldAnnotation( {
+		bold = new ve.dm.BoldAnnotation( { 'type': 'textStyle/bold', 'attributes': { 'nodeName': 'b' } } ),
+		boldWithClass = new ve.dm.BoldAnnotation( {
 			'type': 'textStyle/bold',
 			'attributes': { 'nodeName': 'b' },
 			'htmlAttributes': [ {
@@ -1343,7 +1343,7 @@ QUnit.test( 'sanitize', function ( assert ) {
 				'msg': 'HTML attributes removed'
 			},
 			{
-				'html': '<p>B<abbr>a</abbr>r<img src="Image.jpg"/></p>',
+				'html': '<p>B<span rel="ve:Alien">a</span>r<img src="Image.jpg"/></p>',
 				'data': [
 					{ 'type': 'paragraph' },
 					'B', 'r',

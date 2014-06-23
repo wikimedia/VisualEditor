@@ -60,9 +60,9 @@ QUnit.test( 'getRenderedContents', function ( assert ) {
 				'msg': 'Strikethrough text',
 				'data': [
 					{ 'type': 'paragraph' },
-					['a', [ { 'type': 'textStyle/strike' } ]],
-					['b', [ { 'type': 'textStyle/strike' } ]],
-					['c', [ { 'type': 'textStyle/strike' } ]],
+					['a', [ { 'type': 'textStyle/strikethrough' } ]],
+					['b', [ { 'type': 'textStyle/strikethrough' } ]],
+					['c', [ { 'type': 'textStyle/strikethrough' } ]],
 					{ 'type': '/paragraph' }
 				],
 				'html': '<s>abc</s>'
