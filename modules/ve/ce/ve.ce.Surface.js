@@ -29,7 +29,6 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 
 	// Properties
 	this.surface = surface;
-	this.inIme = false;
 	this.model = model;
 	this.documentView = new ve.ce.Document( model.getDocument(), this );
 	this.surfaceObserver = new ve.ce.SurfaceObserver( this.documentView );
@@ -700,19 +699,8 @@ ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
 	var trigger, command, focusedNode,
 		updateFromModel = false;
 
-	// Ignore keydowns while in IME mode but do not preventDefault them (so text actually appear on
-	// the screen).
-	if ( this.inIme === true ) {
-		return;
-	}
-
-	// When entering IME mode IE first keydown (e.which = 229) before it fires compositionstart, so
-	// IME detection have to happen here instead of onDocumentCompositionStart.
-	// TODO: This code and code in onDocumentCompositionStart are very similar, consider moving them
-	// to one method.
-	if ( ve.isMsie === true && e.which === 229 ) {
-		this.inIme = true;
-		this.handleInsertion();
+	if ( e.which === 229 ) {
+		// ignore fake IME events (emitted in IE and Chromium)
 		return;
 	}
 
@@ -1337,10 +1325,6 @@ ve.ce.Surface.prototype.afterPaste = function () {
  * @param {jQuery.Event} e Composition start event
  */
 ve.ce.Surface.prototype.onDocumentCompositionStart = function () {
-	if ( ve.isMsie === true ) {
-		return;
-	}
-	this.inIme = true;
 	this.handleInsertion();
 };
 
@@ -1351,7 +1335,6 @@ ve.ce.Surface.prototype.onDocumentCompositionStart = function () {
  * @param {jQuery.Event} e Composition end event
  */
 ve.ce.Surface.prototype.onDocumentCompositionEnd = function () {
-	this.inIme = false;
 	this.incRenderLock();
 	try {
 		this.surfaceObserver.pollOnce();
