@@ -110,6 +110,18 @@ ve.ui.commandRegistry.register(
 );
 ve.ui.commandRegistry.register(
 	new ve.ui.Command(
+		'big', 'annotation', 'toggle',
+		{ args: [ 'textStyle/big' ], supportedSelections: [ 'linear', 'table' ] }
+	)
+);
+ve.ui.commandRegistry.register(
+	new ve.ui.Command(
+		'small', 'annotation', 'toggle',
+		{ args: [ 'textStyle/small' ], supportedSelections: [ 'linear', 'table' ] }
+	)
+);
+ve.ui.commandRegistry.register(
+	new ve.ui.Command(
 		'link', 'window', 'open',
 		{ args: [ 'link' ], supportedSelections: [ 'linear' ] }
 	)

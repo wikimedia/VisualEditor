@@ -29,6 +29,8 @@ ve.dm.BigAnnotation.static.name = 'textStyle/big';
 
 ve.dm.BigAnnotation.static.matchTagNames = [ 'big' ];
 
+ve.dm.BigAnnotation.static.removes = [ 'textStyle/small' ];
+
 /* Registration */
 
 ve.dm.modelRegistry.register( ve.dm.BigAnnotation );
