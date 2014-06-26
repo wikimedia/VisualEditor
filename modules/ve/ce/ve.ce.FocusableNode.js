@@ -409,7 +409,7 @@ ve.ce.FocusableNode.prototype.positionHighlights = function () {
 
 	var i, l, top, left, bottom, right,
 		outerRects = [],
-		surfaceOffset = this.surface.getSurface().$element[0].getBoundingClientRect();
+		surfaceOffset = this.surface.getSurface().$element[0].getClientRects()[0];
 
 	this.$highlights.empty();
 
