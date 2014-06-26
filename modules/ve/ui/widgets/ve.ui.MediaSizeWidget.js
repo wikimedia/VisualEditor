@@ -123,7 +123,7 @@ ve.ui.MediaSizeWidget = function VeUiMediaSizeWidget( scalable, config ) {
 	} );
 	// TODO: when upright is supported by Parsoid
 	// this.scaleInput.connect( this, { 'change': 'onScaleChange' } );
-	this.sizeTypeSelectWidget.connect( this, { 'select': 'onSizeTypeSelect' } );
+	this.sizeTypeSelectWidget.connect( this, { 'choose': 'onSizeTypeChoose' } );
 	this.fullSizeButton.connect( this, { 'click': 'onFullSizeButtonClick' } );
 
 };
@@ -213,7 +213,7 @@ ve.ui.MediaSizeWidget.prototype.onScaleChange = function () {
  * @param {OO.ui.OptionWidget} item Selected size type item
  * @fires changeSizeType
  */
-ve.ui.MediaSizeWidget.prototype.onSizeTypeSelect = function ( item ) {
+ve.ui.MediaSizeWidget.prototype.onSizeTypeChoose = function ( item ) {
 	var selectedType = item && item.getData();
 
 	if ( selectedType === 'default' ) {
@@ -267,7 +267,7 @@ ve.ui.MediaSizeWidget.prototype.getScalePlaceholder = function () {
  */
 ve.ui.MediaSizeWidget.prototype.setSizeType = function ( sizeType ) {
 	if ( this.getSizeType() !== sizeType ) {
-		this.sizeTypeSelectWidget.selectItem(
+		this.sizeTypeSelectWidget.chooseItem(
 			this.sizeTypeSelectWidget.getItemFromData( sizeType )
 		);
 	}
@@ -335,11 +335,11 @@ ve.ui.MediaSizeWidget.prototype.getScalable = function () {
  * Set the width/height values to the original media dimensions
  */
 ve.ui.MediaSizeWidget.prototype.onFullSizeButtonClick = function () {
-	this.setCurrentDimensions( this.scalable.getOriginalDimensions() );
-	this.dimensionsWidget.setDisabled( false );
 	this.sizeTypeSelectWidget.selectItem(
 		this.sizeTypeSelectWidget.getItemFromData( 'custom' )
 	);
+	this.setCurrentDimensions( this.scalable.getOriginalDimensions() );
+	this.dimensionsWidget.setDisabled( false );
 };
 
 /**
