@@ -140,6 +140,11 @@ $( function () {
 									sourceTextInput.$element.slideDown().promise().done( function () {
 										sourceTextInput.focus();
 									} );
+									currentTarget.debugBar.dumpModelButton.setDisabled( true );
+									currentTarget.debugBar.dumpModelChangeToggle.setDisabled( true );
+									languageTextInput.setDisabled( true );
+									directionSelect.setDisabled( true );
+									languageDirectionButton.setDisabled( true );
 								} );
 							} else {
 								loadTarget( sourceTextInput.getValue() );
