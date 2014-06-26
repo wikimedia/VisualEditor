@@ -5,6 +5,12 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
+/* Demo */
+
+.ve-demo-source {
+	border-top: 1px solid #ccc;
+}
+
 /* Editor */
 
 .ve-ce-documentNode {

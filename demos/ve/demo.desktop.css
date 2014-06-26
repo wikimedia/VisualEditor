@@ -11,6 +11,11 @@
 	margin: 0 2em;
 }
 
+.ve-demo-source {
+	border: 1px solid #ccc;
+	border-top: 0;
+}
+
 /* Editor */
 
 .ve-ui-surface {
