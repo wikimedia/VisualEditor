@@ -1399,22 +1399,20 @@ ve.ce.Surface.prototype.onModelSelect = function ( selection ) {
 	// this function is called by the focus handler to restore a lost selection state
 	if ( next ) {
 		rangySel = rangy.getSelection( this.getElementDocument() );
-		if ( !ve.contains( this.$pasteTarget[0], rangySel.anchorNode, true ) ) {
-			// As FF won't fire a copy event with nothing selected, make
-			// a dummy selection of one space in the pasteTarget.
-			// onCopy will ignore this native selection and use the DM selection
-			this.$pasteTarget.text( ' ' );
-			rangyRange = rangy.createRange( this.getElementDocument() );
-			rangyRange.setStart( this.$pasteTarget[0], 0 );
-			rangyRange.setEnd( this.$pasteTarget[0], 1 );
-			rangySel.removeAllRanges();
-			this.$pasteTarget[0].focus();
-			rangySel.addRange( rangyRange, false );
-			// Since the selection is no longer in the documentNode, clear the SurfaceObserver's
-			// selection state. Otherwise, if the user places the selection back into the documentNode
-			// in exactly the same place where it was before, the observer won't consider that a change.
-			this.surfaceObserver.clear();
-		}
+		// As FF won't fire a copy event with nothing selected, make
+		// a dummy selection of one space in the pasteTarget.
+		// onCopy will ignore this native selection and use the DM selection
+		this.$pasteTarget.text( ' ' );
+		rangyRange = rangy.createRange( this.getElementDocument() );
+		rangyRange.setStart( this.$pasteTarget[0], 0 );
+		rangyRange.setEnd( this.$pasteTarget[0], 1 );
+		rangySel.removeAllRanges();
+		this.$pasteTarget[0].focus();
+		rangySel.addRange( rangyRange, false );
+		// Since the selection is no longer in the documentNode, clear the SurfaceObserver's
+		// selection state. Otherwise, if the user places the selection back into the documentNode
+		// in exactly the same place where it was before, the observer won't consider that a change.
+		this.surfaceObserver.clear();
 	}
 
 	// If there is no focused node, use native selection, but ignore the selection if
