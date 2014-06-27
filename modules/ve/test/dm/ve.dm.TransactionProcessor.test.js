@@ -25,6 +25,35 @@ QUnit.test( 'commit', function ( assert ) {
 			}
 		},
 		metaElementInsertClose = { 'type': '/alienMeta' },
+		metadataExample = [
+			{ 'type': 'paragraph' },
+			'a', 'b',
+			{
+				'type': 'alienMeta',
+				'attributes': {
+					'domElements': $( '<!-- comment -->' ).toArray()
+				}
+			},
+			{ 'type': '/alienMeta' },
+			'c', 'd',
+			{
+				'type': 'alienMeta',
+				'attributes': {
+					'domElements': $( '<!-- comment -->' ).toArray()
+				}
+			},
+			{ 'type': '/alienMeta' },
+			'e', 'f',
+			{
+				'type': 'alienMeta',
+				'attributes': {
+					'domElements': $( '<!-- comment -->' ).toArray()
+				}
+			},
+			{ 'type': '/alienMeta' },
+			'g', 'h',
+			{ 'type': '/paragraph' }
+		],
 		cases = {
 			'no operations': {
 				'calls': [],
@@ -66,6 +95,66 @@ QUnit.test( 'commit', function ( assert ) {
 					data[38] = ['h', store.indexes( [ bold ] )];
 					data[39].annotations = store.indexes( [ bold ] );
 					data[41] = ['i', store.indexes( [ bold ] )];
+				}
+			},
+			'annotating across metadata': {
+				'data': metadataExample,
+				'calls': [
+					['pushRetain', 2],
+					['pushStartAnnotating', 'set', bold],
+					['pushRetain', 2],
+					['pushStopAnnotating', 'set', bold],
+					['pushRetain', 6]
+				],
+				'expected': function ( data ) {
+					data[2] = ['b', store.indexes( [ bold ] )];
+					data[3].annotations = store.indexes( [ bold ] );
+					data[5] = ['c', store.indexes( [ bold ] )];
+				}
+			},
+			'annotating with metadata at edges': {
+				'data': metadataExample,
+				'calls': [
+					['pushRetain', 3],
+					['pushStartAnnotating', 'set', bold],
+					['pushRetain', 4],
+					['pushStopAnnotating', 'set', bold],
+					['pushRetain', 3]
+				],
+				'expected': function ( data ) {
+					data[7].annotations = store.indexes( [ bold ] );
+					data[5] = ['c', store.indexes( [ bold ] )];
+					data[6] = ['d', store.indexes( [ bold ] )];
+					data[9] = ['e', store.indexes( [ bold ] )];
+					data[10] = ['f', store.indexes( [ bold ] )];
+				}
+			},
+			'unannotating metadata': {
+				'data': [
+					{ 'type': 'paragraph' },
+					'a', ['b', store.indexes( [ bold ] )],
+					{
+						'type': 'alienMeta',
+						'attributes': {
+							'domElements': $( '<!-- comment -->' ).toArray()
+						},
+						'annotations': store.indexes( [ bold ] )
+					},
+					{ 'type': '/alienMeta' },
+					['c', store.indexes( [ bold ] )], 'd',
+					{ 'type': '/paragraph' }
+				],
+				'calls': [
+					['pushRetain', 2],
+					['pushStartAnnotating', 'clear', bold],
+					['pushRetain', 2],
+					['pushStopAnnotating', 'clear', bold],
+					['pushRetain', 6]
+				],
+				'expected': function ( data ) {
+					data[2] = 'b';
+					data[5] = 'c';
+					delete data[3].annotations;
 				}
 			},
 			'using an annotation method other than set or clear throws an exception': {

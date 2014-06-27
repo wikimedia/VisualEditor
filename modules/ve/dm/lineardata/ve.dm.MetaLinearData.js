@@ -106,3 +106,50 @@ ve.dm.MetaLinearData.prototype.getTotalDataLength = function () {
 	}
 	return n;
 };
+
+/**
+ * Get annotations' store indexes covered by an offset and index.
+ *
+ * @method
+ * @param {number} offset Offset to get annotations for
+ * @param {number} index Index to get annotations for
+ * @returns {number[]} An array of annotation store indexes the offset is covered by
+ */
+ve.dm.MetaLinearData.prototype.getAnnotationIndexesFromOffsetAndIndex = function ( offset, index ) {
+	var item = this.getData( offset, index );
+	return item && item.annotations || [];
+};
+
+/**
+ * Get annotations covered by an offset.
+ *
+ * The returned AnnotationSet is a clone of the one in the data.
+ *
+ * @method
+ * @param {number} offset Offset to get annotations for
+ * @param {number} index Index to get annotations for
+ * @returns {ve.dm.AnnotationSet} A set of all annotation objects offset is covered by
+ */
+ve.dm.MetaLinearData.prototype.getAnnotationsFromOffsetAndIndex = function ( offset, index ) {
+	return new ve.dm.AnnotationSet( this.getStore(), this.getAnnotationIndexesFromOffsetAndIndex( offset, index ) );
+};
+
+/**
+ * Set annotations of data at a specified offset.
+ *
+ * Cleans up data structure if annotation set is empty.
+ *
+ * @method
+ * @param {number} offset Offset to set annotations at
+ * @param {number} metadataOffset Index to set annotations at
+ * @param {ve.dm.AnnotationSet} annotations Annotations to set
+ */
+ve.dm.MetaLinearData.prototype.setAnnotationsAtOffsetAndIndex = function ( offset, index, annotations ) {
+	var item = this.getData( offset, index );
+	if ( annotations.isEmpty() ) {
+		// Clean up
+		delete item.annotations;
+	} else {
+		item.annotations = this.getStore().indexes( annotations.get() );
+	}
+};
