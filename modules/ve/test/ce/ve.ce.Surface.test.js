@@ -109,8 +109,8 @@ QUnit.test( 'handleDelete', function ( assert ) {
 				'expectedData': function ( data ) {
 					data.splice( 0, 5 );
 				},
-				'expectedRange': new ve.Range( 1 ),
-				'msg': 'Empty node deleted by delete'
+				'expectedRange': new ve.Range( 5 ),
+				'msg': 'Empty node deleted by delete; selection goes to nearest content offset'
 			},
 			{
 				'range': new ve.Range( 41 ),

@@ -2029,6 +2029,7 @@ ve.ce.Surface.prototype.handleEnter = function ( e ) {
 ve.ce.Surface.prototype.handleDelete = function ( e, backspace ) {
 	var rangeAfterRemove, internalListRange,
 		offset = 0,
+		direction = backspace ? -1 : 1,
 		model = this.getModel(),
 		documentModel = model.getDocument(),
 		documentView = this.getDocument(),
@@ -2041,7 +2042,7 @@ ve.ce.Surface.prototype.handleDelete = function ( e, backspace ) {
 		// right movement in order to figure out range to remove.
 		rangeToRemove = documentView.getRelativeRange(
 			rangeToRemove,
-			backspace ? -1 : 1,
+			direction,
 			( e.altKey === true || e.ctrlKey === true ) ? 'word' : 'character',
 			true
 		);
@@ -2125,8 +2126,16 @@ ve.ce.Surface.prototype.handleDelete = function ( e, backspace ) {
 				] );
 			}
 		}
+		rangeAfterRemove = new ve.Range( rangeAfterRemove.start );
 	}
-	model.setSelection( new ve.Range( rangeAfterRemove.start ) );
+	// rangeAfterRemove is now guaranteed to be collapsed so make sure that it is a content offset
+	if ( !documentModel.data.isContentOffset( rangeAfterRemove.start ) ) {
+		rangeAfterRemove = documentView.getRelativeRange(
+			rangeAfterRemove,
+			direction
+		);
+	}
+	model.setSelection( rangeAfterRemove );
 	this.focus(); // Rerender selection even if it didn't change
 	this.surfaceObserver.clear();
 };
