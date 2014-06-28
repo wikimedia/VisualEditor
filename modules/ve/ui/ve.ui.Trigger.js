@@ -392,5 +392,7 @@ ve.ui.Trigger.prototype.getMessage = function () {
 	if ( platform in platformFilters ) {
 		return platformFilters[platform]( keys );
 	}
-	return keys.join( '+' ).toUpperCase();
+	return keys.map( function ( key ) {
+		return key[0].toUpperCase() + key.substr( 1 ).toLowerCase();
+	} ).join( '+' );
 };

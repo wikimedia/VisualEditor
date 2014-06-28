@@ -56,6 +56,11 @@
 	clear: right;
 }
 
+/* Enlarge vertical spacing in a list of shortcuts for one action */
+.ve-ui-commandHelpDialog-list dt kbd ~ kbd {
+	margin-top: 0.2em;
+}
+
 .ve-ui-commandHelpDialog-list dd,
 .ve-ui-commandHelpDialog-list dt {
 	line-height: 110%;
