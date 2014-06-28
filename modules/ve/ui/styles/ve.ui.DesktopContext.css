@@ -41,12 +41,12 @@
 }
 
 /* @noflip */
-.ltr .ve-ui-desktopContext > .oo-ui-popupWidget:not(.oo-ui-popupWidget-tailed) .oo-ui-popupWidget-popup {
+.ve-ui-surface-dir-ltr .ve-ui-desktopContext > .oo-ui-popupWidget:not(.oo-ui-popupWidget-tailed) .oo-ui-popupWidget-popup {
 	margin-left: -0.5em;
 }
 
 /* @noflip */
-.rtl .ve-ui-desktopContext > .oo-ui-popupWidget:not(.oo-ui-popupWidget-tailed) .oo-ui-popupWidget-popup {
+.ve-ui-surface-dir-rtl .ve-ui-desktopContext > .oo-ui-popupWidget:not(.oo-ui-popupWidget-tailed) .oo-ui-popupWidget-popup {
 	margin-left: 0.5em;
 }
 
