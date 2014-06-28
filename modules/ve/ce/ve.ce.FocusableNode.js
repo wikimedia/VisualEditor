@@ -103,7 +103,7 @@ ve.ce.FocusableNode.prototype.onFocusableSetup = function () {
 	// Events
 	this.$element.on( {
 		'mouseenter.ve-ce-focusableNode': ve.bind( this.onFocusableMouseEnter, this ),
-		'mousedown.ve-ce-focusableNode': ve.bind( this.onFocusableMouseDown, this )
+		'mousedown.ve-ce-focusableNode touchend.ve-ce-focusableNode': ve.bind( this.onFocusableMouseDown, this )
 	} );
 
 	this.isSetup = true;
