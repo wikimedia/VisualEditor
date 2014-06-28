@@ -13,29 +13,6 @@
 	*/
 }
 
-.ve-ce-surface-textarea {
-	position: absolute;
-	z-index: -1;
-	opacity: 0;
-	color: white;
-	background-color: #fff;
-	border: none;
-	padding: 0;
-	margin: 0;
-	width: 1px;
-}
-
-.ve-ce-surface-textarea:focus {
-	outline: none;
-}
-
-.ve-ce-surface-cursor {
-	position: absolute;
-	background-color: #000;
-	width: 1px;
-	display: none;
-}
-
 /* @noflip */
 .ve-ce-surface-highlights {
 	left: 0;
