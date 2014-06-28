@@ -34,7 +34,7 @@ ve.ui.DesktopContext = function VeUiDesktopContext( surface, config ) {
 	this.$menu = this.$( '<div>' );
 	this.popup = new OO.ui.PopupWidget( {
 		'$': this.$,
-		'$container': this.surface.getView().$element
+		'$container': this.surface.$element
 	} );
 
 	// Events

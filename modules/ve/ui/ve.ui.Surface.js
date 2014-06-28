@@ -139,6 +139,8 @@ ve.ui.Surface.prototype.initialize = function () {
 	// Attach globalOverlay to the global <body>, not the local frame's <body>
 	$( 'body' ).append( this.$globalOverlay );
 
+	this.$element.addClass( 've-ui-surface-dir-' + this.getDir() );
+
 	this.getView().initialize();
 	this.getModel().startHistoryTracking();
 };
@@ -343,6 +345,7 @@ ve.ui.Surface.prototype.setPasteRules = function ( pasteRules ) {
 
 /**
  * Surface 'dir' property (GUI/User-Level Direction)
+ *
  * @returns {string} 'ltr' or 'rtl'
  */
 ve.ui.Surface.prototype.getDir = function () {
