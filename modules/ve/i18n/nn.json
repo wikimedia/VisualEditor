@@ -38,6 +38,7 @@
 	"visualeditor-inspector-remove-tooltip": "Fjern",
 	"visualeditor-languageinspector-block-tooltip": "Språkblokk",
 	"visualeditor-languageinspector-title": "Språk",
+	"visualeditor-languageinspector-widget-changelang": "Byt språk",
 	"visualeditor-languageinspector-widget-label-direction": "Retning",
 	"visualeditor-languageinspector-widget-label-langcode": "Språkkode",
 	"visualeditor-languageinspector-widget-label-language": "Språk",
@@ -45,5 +46,6 @@
 	"visualeditor-listbutton-bullet-tooltip": "Punktliste",
 	"visualeditor-listbutton-number-tooltip": "Nummerert liste",
 	"visualeditor-specialcharacter-button-tooltip": "Spesialeteikn",
+	"visualeditor-toolbar-insert": "Set inn",
 	"visualeditor-version-label": "Versjon"
 }
