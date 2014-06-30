@@ -160,7 +160,6 @@ ve.ce.BranchNode.prototype.onSplice = function ( index ) {
 		afterAnchor,
 		node,
 		parentNode,
-		firstChild,
 		removals;
 	// Convert models to views and attach them to this node
 	if ( args.length >= 3 ) {
@@ -193,9 +192,8 @@ ve.ce.BranchNode.prototype.onSplice = function ( index ) {
 			} else {
 				// DOM equivalent of this.$element.prepend( args[j].$element );
 				node = this.$element[0];
-				firstChild = node.firstChild;
 				for ( j = args[i].$element.length - 1; j >= 0; j-- ) {
-					node.insertBefore( args[i].$element[j], firstChild );
+					node.insertBefore( args[i].$element[j], node.firstChild );
 				}
 			}
 			if ( this.live !== args[i].isLive() ) {
