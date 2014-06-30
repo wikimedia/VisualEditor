@@ -200,7 +200,7 @@ ve.ui.StrikethroughAnnotationTool.static.icon = {
 };
 ve.ui.StrikethroughAnnotationTool.static.title =
 	OO.ui.deferMsg( 'visualeditor-annotationbutton-strikethrough-tooltip' );
-ve.ui.StrikethroughAnnotationTool.static.annotation = { 'name': 'textStyle/strike' };
+ve.ui.StrikethroughAnnotationTool.static.annotation = { 'name': 'textStyle/strikethrough' };
 ve.ui.StrikethroughAnnotationTool.static.commandName = 'strikethrough';
 ve.ui.toolFactory.register( ve.ui.StrikethroughAnnotationTool );
 

@@ -73,7 +73,7 @@ ve.ui.commandRegistry.register(
 	new ve.ui.Command( 'code', 'annotation', 'toggle', 'textStyle/code' )
 );
 ve.ui.commandRegistry.register(
-	new ve.ui.Command( 'strike', 'annotation', 'toggle', 'textStyle/strike' )
+	new ve.ui.Command( 'strikethrough', 'annotation', 'toggle', 'textStyle/strikethrough' )
 );
 ve.ui.commandRegistry.register(
 	new ve.ui.Command( 'underline', 'annotation', 'toggle', 'textStyle/underline' )
@@ -112,7 +112,7 @@ ve.ui.commandRegistry.register(
 	new ve.ui.Command( 'code', 'annotation', 'toggle', 'textStyle/code' )
 );
 ve.ui.commandRegistry.register(
-	new ve.ui.Command( 'strikethrough', 'annotation', 'toggle', 'textStyle/strike' )
+	new ve.ui.Command( 'strikethrough', 'annotation', 'toggle', 'textStyle/strikethrough' )
 );
 ve.ui.commandRegistry.register(
 	new ve.ui.Command( 'language', 'window', 'open', 'language' )
