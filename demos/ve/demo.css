@@ -16,17 +16,36 @@ body {
 /* Demo */
 
 .ve-demo-menu {
-	list-style: none;
-	margin: 0;
 	padding: 0.75em 1.5em;
-	display: inline-block;
 }
 
-.ve-demo-menu li {
-	list-style: none;
-	margin: 0 0.75em 0 0;
-	padding: 0;
+.ve-demo-menu .oo-ui-inlineMenuWidget {
+	min-width: 10em;
+}
+
+.ve-demo-menu .oo-ui-inlineMenuWidget .oo-ui-labeledElement-label {
+	text-transform: capitalize;
+}
+
+.ve-demo-menu-commands {
+	font-size: 0.8em;
+}
+
+.ve-demo-menu-commands > .oo-ui-widget,
+.ve-demo-menu-divider {
 	display: inline-block;
+	vertical-align: middle;
+	margin-right: 1em;
+}
+
+.ve-demo-menu .oo-ui-textInputWidget {
+	width: 4em;
+}
+
+.ve-demo-menu-divider {
+	border-right: 1px solid #ddd;
+	padding-left: 0.2em;
+	width: 0;
 }
 
 .ve-demo-source {
@@ -35,12 +54,11 @@ body {
 
 .ve-demo-source textarea {
 	font-family: monospace;
-	border: 0;
 }
 
-.ve-demo-source.oo-ui-widget-enabled textarea:focus {
-	box-shadow: none;
-	outline: none;
+.ve-demo-read {
+	padding: 0.75em 1.5em;
+	font-size: 0.8em;
 }
 
 /* Editor */

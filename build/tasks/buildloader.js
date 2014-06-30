@@ -80,7 +80,7 @@ module.exports = function ( grunt ) {
 
 		function placeholder( input, id, replacement, callback ) {
 			var output,
-				rComment = new RegExp( '^[^\\S\\n]*<!-- ' + id + ' -->[^\\S\\n]*$', 'm' );
+				rComment = new RegExp( '<!-- ' + id + ' -->', 'm' );
 			if ( typeof replacement === 'function' ) {
 				replacement( function ( response ) {
 					output = input.replace( rComment, response );
@@ -120,7 +120,7 @@ module.exports = function ( grunt ) {
 		placeholders.scripts = scripts.join( '\n\n' );
 
 		grunt.util.async.forEachSeries(
-			Object.keys(placeholders),
+			Object.keys( placeholders ),
 			function ( id, next ) {
 				placeholder( text, id.toUpperCase(), placeholders[id], function ( newText ) {
 					text = newText;

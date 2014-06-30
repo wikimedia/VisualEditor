@@ -4,14 +4,14 @@
 		<meta charset="utf-8">
 		<title>VisualEditor Tests</title>
 
-		<!-- STYLES -->
+<!-- STYLES -->
 
 	</head>
 	<body>
 		<div id="qunit"></div>
 		<div id="qunit-fixture">test markup</div>
 
-		<!-- SCRIPTS -->
+<!-- SCRIPTS -->
 
 	</body>
 </html>

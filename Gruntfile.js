@@ -22,17 +22,16 @@ module.exports = function ( grunt ) {
 		coreBuildFiles = moduleUtils.makeBuildList( modules, [ 'visualEditor.build' ] );
 
 	function demoMenu( callback ) {
-		var html = [],
+		var pages = {},
 			files = grunt.file.expand( 'demos/ve/pages/*.html' );
 		files.forEach( function ( file ) {
-			file = file.replace( /^.*(pages\/.+.html)$/, '$1' );
-			var name = file.slice( 6, -5 );
-			html.push(
-				'\t\t\t<li><a href="#!/src/' + file + '" data-page-src="' + file +
-					'">' + name + '</a></li>'
-			);
+			var matches = file.match( /^.*(pages\/(.+).html)$/ ),
+				path = matches[1],
+				name = matches[2];
+
+			pages[name] = path;
 		} );
-		callback( html.join( '\n' ) );
+		callback( JSON.stringify( pages, null, '\t' ).split( '\n' ).join( '\n\t\t' ) );
 	}
 
 	grunt.initConfig( {

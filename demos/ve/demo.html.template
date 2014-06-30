@@ -13,16 +13,18 @@
 		<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 		<title>VisualEditor Standalone Demo</title>
 
-		<!-- STYLES -->
+<!-- STYLES -->
 
 	</head>
 	<body>
-		<ul class="ve-demo-menu">
-				<!-- MENU -->
-		</ul>
+		<div class="ve-demo-menu"></div>
 		<div class="ve-demo-editor"></div>
 
-		<!-- SCRIPTS -->
+<!-- SCRIPTS -->
+
+		<script>
+		ve.demoPages = <!-- MENU -->;
+		</script>
 
 	</body>
 </html>

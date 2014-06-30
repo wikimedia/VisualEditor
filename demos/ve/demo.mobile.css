@@ -5,13 +5,11 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-/* Demo */
-
-.ve-demo-source {
-	border-top: 1px solid #ccc;
-}
-
 /* Editor */
+
+.ve-ui-surface {
+	border-bottom: 1px solid #ccc;
+}
 
 .ve-ce-documentNode {
 	border-top: 1px solid #ccc;
@@ -26,6 +24,5 @@
 }
 
 .ve-ui-debugBar {
-	border-top: 1px solid #ccc;
 	border-bottom: 1px solid #ccc;
 }
