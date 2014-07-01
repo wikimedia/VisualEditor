@@ -296,7 +296,9 @@ ve.ui.DesktopContext.prototype.update = function ( transition ) {
 		this.show( transition );
 	} else {
 		// No inspector is open, or the selection has changed, show a menu of available inspectors
-		matches = ve.ui.toolFactory.getToolsForFragment( fragment );
+		matches = ve.ui.toolFactory.getToolsForFragment( fragment ).filter( function ( match ) {
+			return match.model.isInspectable();
+		} );
 		if ( matches.length ) {
 			// There's at least one inspectable annotation, build a menu and show it
 			this.context.clearItems();

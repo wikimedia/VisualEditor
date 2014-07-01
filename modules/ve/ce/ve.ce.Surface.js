@@ -699,7 +699,7 @@ ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
  * @fires selectionStart
  */
 ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
-	var trigger, command, focusedNode,
+	var trigger, focusedNode,
 		updateFromModel = false;
 
 	if ( e.which === 229 ) {
@@ -735,10 +735,7 @@ ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
 			e.preventDefault();
 			focusedNode = this.getFocusedNode();
 			if ( focusedNode ) {
-				command = ve.ui.commandRegistry.getCommandForNode( focusedNode );
-				if ( command ) {
-					command.execute( this.surface );
-				}
+				focusedNode.executeCommand();
 			} else {
 				this.handleEnter( e );
 				updateFromModel = true;
