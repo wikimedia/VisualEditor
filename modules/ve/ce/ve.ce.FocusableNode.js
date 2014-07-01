@@ -194,6 +194,18 @@ ve.ce.FocusableNode.prototype.onFocusableMouseDown = function ( e ) {
  * @param {jQuery.Event} e Double click event
  */
 ve.ce.FocusableNode.prototype.onFocusableDblClick = function () {
+	this.executeCommand();
+};
+
+/**
+ * Execute the command associated with this node.
+ *
+ * @method
+ */
+ve.ce.FocusableNode.prototype.executeCommand = function () {
+	if ( !this.model.isInspectable() ) {
+		return false;
+	}
 	var command = ve.ui.commandRegistry.getCommandForNode( this );
 	if ( command ) {
 		command.execute( this.surface.getSurface() );

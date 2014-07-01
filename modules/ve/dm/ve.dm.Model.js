@@ -307,6 +307,18 @@ ve.dm.Model.static.removeHtmlAttribute = function ( dataElement, attribute ) {
 /* Methods */
 
 /**
+ * Check whether this node can be inspected by a tool.
+ *
+ * The default implementation always returns true. If your node type is uninspectable in certain
+ * cases, you should override this function.
+ *
+ * @returns {boolean} Whether this node is inspectable
+ */
+ve.dm.Model.prototype.isInspectable = function () {
+	return true;
+};
+
+/**
  * Get a reference to the linear model element.
  *
  * @method
