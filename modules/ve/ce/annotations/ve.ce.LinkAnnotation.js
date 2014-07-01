@@ -20,8 +20,17 @@ ve.ce.LinkAnnotation = function VeCeLinkAnnotation( model, parentNode, config ) 
 	ve.ce.Annotation.call( this, model, parentNode, config );
 
 	// DOM changes
-	this.$element.addClass( 've-ce-LinkAnnotation' );
-	this.$element.attr( 'href', ve.resolveUrl( this.model.getHref(), this.getModelHtmlDocument() ) );
+	this.$element
+		.addClass( 've-ce-LinkAnnotation' )
+		.attr( 'href', ve.resolveUrl( this.model.getHref(), this.getModelHtmlDocument() ) )
+		// Some browsers will try to let links do their thing
+		// (e.g. iOS Safari when the keyboard is closed)
+		.on( 'click', function ( e ) {
+			// Don't prevent a modified click which in some browsers deliberately opens the link
+			if ( !e.altKey && !e.ctrlKey && !e.metaKey && !e.shiftKey ) {
+				e.preventDefault();
+			}
+		} );
 };
 
 /* Inheritance */
