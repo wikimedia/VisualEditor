@@ -27,6 +27,7 @@ ve.ui.DesktopContext = function VeUiDesktopContext( surface, config ) {
 	this.selecting = false;
 	this.relocating = false;
 	this.embedded = false;
+	this.containsInspector = false;
 	this.selection = null;
 	this.context = new ve.ui.ContextWidget( { '$': this.$ } );
 	this.afterModelChangeTimeout = null;
@@ -300,11 +301,15 @@ ve.ui.DesktopContext.prototype.update = function ( transition ) {
 		if ( matches.length ) {
 			// There's at least one inspectable annotation, build a menu and show it
 			this.context.clearItems();
+			this.containsInspector = false;
 			for ( i = 0, len = matches.length; i < len; i++ ) {
 				match = matches[i];
 				items.push( new ve.ui.ContextItemWidget(
 					match.tool.static.name, match.tool, match.model, { '$': this.$ }
 				) );
+				if ( match.tool.prototype instanceof ve.ui.InspectorTool ) {
+					this.containsInspector = true;
+				}
 			}
 			this.context.addItems( items );
 			this.show( transition );
@@ -423,7 +428,7 @@ ve.ui.DesktopContext.prototype.show = function ( transition ) {
 				this.updateDimensions( transition );
 			}, this ), 200 );
 		} else {
-			if ( focusedNode ) {
+			if ( focusedNode && !this.containsInspector ) {
 				focusedDimensions = focusedNode.getDimensions();
 				this.embedded = (
 					// HACK: 5 and 10 are estimates of what 0.25em and 0.5em (the margins of the menu
