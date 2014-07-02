@@ -115,8 +115,8 @@ ve.ui.CommandHelpDialog.static.getCommandGroups = function () {
 				{ 'trigger': 'bold', 'msg': 'visualeditor-annotationbutton-bold-tooltip' },
 				{ 'trigger': 'italic', 'msg': 'visualeditor-annotationbutton-italic-tooltip' },
 				{ 'trigger': 'link', 'msg': 'visualeditor-annotationbutton-link-tooltip' },
-				{ 'trigger': 'subscript', 'msg': 'visualeditor-annotationbutton-subscript-tooltip' },
 				{ 'trigger': 'superscript', 'msg': 'visualeditor-annotationbutton-superscript-tooltip' },
+				{ 'trigger': 'subscript', 'msg': 'visualeditor-annotationbutton-subscript-tooltip' },
 				{ 'trigger': 'underline', 'msg': 'visualeditor-annotationbutton-underline-tooltip' },
 				{ 'trigger': 'clear', 'msg': 'visualeditor-clearbutton-tooltip' }
 			]
