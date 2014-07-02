@@ -23,7 +23,7 @@
 		]
 	},
 	"visualeditor": "Editor visual",
-	"visualeditor-aliennode-tooltip": "Lo sentimos, este elemento solo se puede editar en modo de fuente por ahora.",
+	"visualeditor-aliennode-tooltip": "Este elemento puede editarse solo en el modo de código por ahora.",
 	"visualeditor-annotationbutton-bold-tooltip": "Negrita",
 	"visualeditor-annotationbutton-code-tooltip": "Código de computadora",
 	"visualeditor-annotationbutton-italic-tooltip": "Cursiva",

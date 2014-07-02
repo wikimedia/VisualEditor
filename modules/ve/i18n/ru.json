@@ -30,7 +30,7 @@
 	"visualeditor-annotationbutton-subscript-tooltip": "Подстрочный индекс",
 	"visualeditor-annotationbutton-superscript-tooltip": "Надстрочный индекс",
 	"visualeditor-annotationbutton-underline-tooltip": "Подчёркнутый",
-	"visualeditor-clearbutton-tooltip": "Очистить форматирование",
+	"visualeditor-clearbutton-tooltip": "Очистить стиль",
 	"visualeditor-clipboard-copy": "Копировать",
 	"visualeditor-clipboard-cut": "Вырезать",
 	"visualeditor-clipboard-paste": "Вставить",
