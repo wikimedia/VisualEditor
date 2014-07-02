@@ -230,28 +230,6 @@ ve.ui.UnderlineAnnotationTool.static.commandName = 'underline';
 ve.ui.toolFactory.register( ve.ui.UnderlineAnnotationTool );
 
 /**
- * UserInterface subscript tool.
- *
- * @class
- * @extends ve.ui.AnnotationTool
- * @constructor
- * @param {OO.ui.ToolGroup} toolGroup
- * @param {Object} [config] Configuration options
- */
-ve.ui.SubscriptAnnotationTool = function VeUiSubscriptAnnotationTool( toolGroup, config ) {
-	ve.ui.AnnotationTool.call( this, toolGroup, config );
-};
-OO.inheritClass( ve.ui.SubscriptAnnotationTool, ve.ui.AnnotationTool );
-ve.ui.SubscriptAnnotationTool.static.name = 'subscript';
-ve.ui.SubscriptAnnotationTool.static.group = 'textStyle';
-ve.ui.SubscriptAnnotationTool.static.icon = 'subscript';
-ve.ui.SubscriptAnnotationTool.static.title =
-	OO.ui.deferMsg( 'visualeditor-annotationbutton-subscript-tooltip' );
-ve.ui.SubscriptAnnotationTool.static.annotation = { 'name': 'textStyle/subscript' };
-ve.ui.SubscriptAnnotationTool.static.commandName = 'subscript';
-ve.ui.toolFactory.register( ve.ui.SubscriptAnnotationTool );
-
-/**
  * UserInterface superscript tool.
  *
  * @class
@@ -272,3 +250,25 @@ ve.ui.SuperscriptAnnotationTool.static.title =
 ve.ui.SuperscriptAnnotationTool.static.annotation = { 'name': 'textStyle/superscript' };
 ve.ui.SuperscriptAnnotationTool.static.commandName = 'superscript';
 ve.ui.toolFactory.register( ve.ui.SuperscriptAnnotationTool );
+
+/**
+ * UserInterface subscript tool.
+ *
+ * @class
+ * @extends ve.ui.AnnotationTool
+ * @constructor
+ * @param {OO.ui.ToolGroup} toolGroup
+ * @param {Object} [config] Configuration options
+ */
+ve.ui.SubscriptAnnotationTool = function VeUiSubscriptAnnotationTool( toolGroup, config ) {
+	ve.ui.AnnotationTool.call( this, toolGroup, config );
+};
+OO.inheritClass( ve.ui.SubscriptAnnotationTool, ve.ui.AnnotationTool );
+ve.ui.SubscriptAnnotationTool.static.name = 'subscript';
+ve.ui.SubscriptAnnotationTool.static.group = 'textStyle';
+ve.ui.SubscriptAnnotationTool.static.icon = 'subscript';
+ve.ui.SubscriptAnnotationTool.static.title =
+	OO.ui.deferMsg( 'visualeditor-annotationbutton-subscript-tooltip' );
+ve.ui.SubscriptAnnotationTool.static.annotation = { 'name': 'textStyle/subscript' };
+ve.ui.SubscriptAnnotationTool.static.commandName = 'subscript';
+ve.ui.toolFactory.register( ve.ui.SubscriptAnnotationTool );
