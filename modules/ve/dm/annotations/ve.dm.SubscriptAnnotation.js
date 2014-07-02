@@ -30,6 +30,8 @@ ve.dm.SubscriptAnnotation.static.name = 'textStyle/subscript';
 
 ve.dm.SubscriptAnnotation.static.matchTagNames = [ 'sub' ];
 
+ve.dm.SubscriptAnnotation.static.removes = ['textStyle/superscript'];
+
 /* Registration */
 
 ve.dm.modelRegistry.register( ve.dm.SubscriptAnnotation );
