@@ -7,8 +7,10 @@ sublime-*
 .settings
 
 # Install and build artifacts
-/docs
+docs
 node_modules
+dist
+npm-debug.log
 
 # OS
 .DS_Store
