@@ -19,12 +19,13 @@
   ],
   "devDependencies": {
     "grunt": "0.4.2",
+    "grunt-banana-checker": "0.1.0",
     "grunt-contrib-clean": "0.5.0",
     "grunt-contrib-csslint": "0.2.0",
     "grunt-contrib-jshint": "0.10.0",
     "grunt-contrib-qunit": "0.4.0",
     "grunt-contrib-watch": "0.6.1",
-    "grunt-banana-checker": "0.1.0",
+    "grunt-cssjanus": "0.2.2",
     "grunt-jscs-checker": "0.6.0"
   }
 }

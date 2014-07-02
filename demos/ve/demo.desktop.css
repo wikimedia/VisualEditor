@@ -34,9 +34,7 @@
 
 .ve-init-sa-target-toolbar .oo-ui-toolbar-bar {
 	border: 1px solid #ccc;
-	border-radius: 0;
-	border-top-right-radius: 0.25em;
-	border-top-left-radius: 0.25em;
+	border-radius: 0.25em 0.25em 0 0;
 }
 
 .ve-init-sa-target-toolbar.ve-ui-toolbar-floating .oo-ui-toolbar-bar {

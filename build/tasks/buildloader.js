@@ -28,6 +28,12 @@ module.exports = function ( grunt ) {
 		}
 
 		function styleTag( src ) {
+			var rtlFilepath = src.file.replace( /\.css$/, '.rtl.css' );
+
+			if ( grunt.file.exists( rtlFilepath ) ) {
+				return indent + '<link rel=stylesheet href="' + pathPrefix + src.file + '" class="stylesheet-ltr">\n' +
+					indent + '<link rel=stylesheet href="' + pathPrefix + rtlFilepath + '" class="stylesheet-rtl" disabled="disabled">';
+			}
 			return indent + '<link rel=stylesheet href="' + pathPrefix + src.file + '">';
 		}
 
