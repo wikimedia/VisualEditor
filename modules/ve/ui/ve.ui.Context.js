@@ -15,15 +15,18 @@
  * @constructor
  * @param {ve.ui.Surface} surface
  * @param {Object} [config] Configuration options
+ * @cfg {jQuery} [$contextOverlay=this.$element] Overlay to use for menus in inspectors
  */
 ve.ui.Context = function VeUiContext( surface, config ) {
+	config = $.extend( { '$contextOverlay': this.$element }, config );
+
 	// Parent constructor
 	OO.ui.Element.call( this, config );
 
 	// Properties
 	this.surface = surface;
 	this.inspectors = new ve.ui.WindowSet(
-		ve.ui.windowFactory, { '$': this.$, '$contextOverlay': this.$element }
+		ve.ui.windowFactory, { '$': this.$, '$contextOverlay': config.$contextOverlay }
 	);
 	this.context = new ve.ui.ContextWidget( { '$': this.$ } );
 	this.afterModelChangeTimeout = null;

@@ -16,6 +16,8 @@
  * @param {Object} [config] Configuration options
  */
 ve.ui.MobileContext = function VeUiMobileContext( surface, config ) {
+	config = $.extend( { '$contextOverlay': surface.$globalOverlay }, config );
+
 	// Parent constructor
 	ve.ui.Context.call( this, surface, config );
 
