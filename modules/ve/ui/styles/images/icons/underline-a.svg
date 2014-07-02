@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 width="24px" height="24px" viewBox="0 0 24 24" xml:space="preserve">
-<g id="underline-a" style="opacity:0.75;">
-	<path id="a" d="M 14.424,16 H 16.5 L 13.037,6 H 10.96 L 7.5,16 h 2.077 l 0.627,-2 h 3.604 l 0.616,2 z m -3.921,-3.623 1.496,-4.379 1.511,4.379 h -3 0 z"/>
-	<path id="underline" d="m 7,17 h 10 v 1 H 7 v -1 z"/>
-</g>
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+    <g id="underline-a" opacity=".75">
+        <path id="a" d="M14.424 16h2.076l-3.463-10h-2.077l-3.46 10h2.077l.627-2h3.604l.616 2zm-3.921-3.623l1.496-4.379 1.511 4.379h-3z"/>
+        <path id="underline" d="M7 17h10v1h-10v-1z"/>
+    </g>
 </svg>

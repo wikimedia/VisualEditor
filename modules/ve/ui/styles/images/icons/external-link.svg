@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="12px"
-	 height="12px" viewBox="0 0 12 12" style="enable-background:new 0 0 12 12;" xml:space="preserve">
-<g id="external" style="opacity:0.75;">
-	<polygon id="box" style="fill-rule:evenodd;clip-rule:evenodd;" points="2,2 5,2 5,3 3,3 3,9 9,9 9,7 10,7 10,10 2,10"/>
-	<polygon id="arrow" style="fill-rule:evenodd;clip-rule:evenodd;" points="6.211,2 10,2 10,5.789 8.579,4.368 6.447,6.5 5.5,5.553 7.632,3.421"/>
-</g>
+<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12">
+    <g id="external" opacity=".75" fill-rule="evenodd" clip-rule="evenodd">
+        <path id="box" d="M2 2h3v1h-2v6h6v-2h1v3h-8z"/>
+        <path id="arrow" d="M6.211 2h3.789v3.789l-1.421-1.421-2.132 2.132-.947-.947 2.132-2.132z"/>
+    </g>
 </svg>

@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="24px"
-	 height="24px" viewBox="0 0 24 24" style="enable-background:new 0 0 24 24;" xml:space="preserve">
-<g id="italic-i" style="opacity:0.75;">
-	<polygon id="i" style="fill-rule:evenodd;clip-rule:evenodd;" points="12.5,17.999 12.749,17.005 11.249,17.005 13.758,6.968
-		15.258,6.968 15.5,6.001 10.5,6.001 10.258,6.968 11.758,6.968 9.249,17.005 7.749,17.005 7.5,17.999 		"/>
-</g>
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+    <g id="italic-i" opacity=".75">
+        <path id="i" fill-rule="evenodd" clip-rule="evenodd" d="M12.5 17.999l.249-.994h-1.5l2.509-10.037h1.5l.242-.967h-5l-.242.967h1.5l-2.509 10.037h-1.5l-.249.994z"/>
+    </g>
 </svg>
