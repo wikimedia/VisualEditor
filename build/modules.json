@@ -589,10 +589,10 @@
 	},
 	"visualEditor.buildfiles.intro": {
 		"scripts": [
-			"build/intro.js.txt"
+			"build/intro.txt"
 		],
 		"styles": [
-			"build/intro.css"
+			"build/intro.txt"
 		]
 	},
 	"visualEditor.dist": {
