@@ -30,7 +30,7 @@
 	"visualeditor-annotationbutton-subscript-tooltip": "Tooltip text for subscript button.\n{{Related|Visualeditor-annotationbutton}}",
 	"visualeditor-annotationbutton-superscript-tooltip": "Tooltip text for superscript button.\n{{Related|Visualeditor-annotationbutton}}\n{{Identical|Superscript}}",
 	"visualeditor-annotationbutton-underline-tooltip": "Tooltip text for underline button.\n{{Related|Visualeditor-annotationbutton}}\n{{Identical|Underline}}",
-	"visualeditor-clearbutton-tooltip": "Tooltip text for the clear formatting button",
+	"visualeditor-clearbutton-tooltip": "Tooltip text for the clear styling button. This clears \"styling\" like bold or italics from the current selection, but not \"formatting\" like being a list, a heading or a table.",
 	"visualeditor-clipboard-copy": "Label for copy command.\n{{Identical|Copy}}",
 	"visualeditor-clipboard-cut": "Label for cut command.\n{{Identical|Cut}}",
 	"visualeditor-clipboard-paste": "Label for paste command.\n{{Identical|Paste}}",

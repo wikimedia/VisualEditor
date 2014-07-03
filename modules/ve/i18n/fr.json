@@ -42,7 +42,7 @@
 	"visualeditor-annotationbutton-subscript-tooltip": "Indice",
 	"visualeditor-annotationbutton-superscript-tooltip": "Exposant",
 	"visualeditor-annotationbutton-underline-tooltip": "Souligné",
-	"visualeditor-clearbutton-tooltip": "Effacer la mise en forme",
+	"visualeditor-clearbutton-tooltip": "Effacer le style",
 	"visualeditor-clipboard-copy": "Copier",
 	"visualeditor-clipboard-cut": "Couper",
 	"visualeditor-clipboard-paste": "Coller",
