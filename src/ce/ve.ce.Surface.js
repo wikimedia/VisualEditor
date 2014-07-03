@@ -265,12 +265,14 @@ ve.ce.Surface.static.getClipboardHash = function ( $elements ) {
  * @method
  */
 ve.ce.Surface.prototype.destroy = function () {
+	var documentNode = this.documentView.getDocumentNode();
+
 	// Detach observer and event sequencer
 	this.surfaceObserver.detach();
 	this.eventSequencer.detach();
 
 	// Make document node not live
-	this.documentView.getDocumentNode().setLive( false );
+	documentNode.setLive( false );
 
 	// Disconnect events
 	this.surfaceObserver.disconnect( this );
@@ -283,6 +285,9 @@ ve.ce.Surface.prototype.destroy = function () {
 
 	// Disconnect DOM events on the window
 	this.$window.off( 'resize', this.onWindowResizeHandler );
+
+	// HACK: Blur to make selection/cursor disappear (needed in Firefox in some cases)
+	documentNode.$element[0].blur();
 
 	// Remove DOM elements (also disconnects their events)
 	this.$element.remove();
