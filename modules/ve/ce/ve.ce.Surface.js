@@ -798,11 +798,20 @@ ve.ce.Surface.prototype.onDocumentKeyPress = function ( e ) {
 		}
 	}
 
-	// Filter out non-character keys. If those keys wouldn't be filtered out unexpected content
-	// deletion would occur in case when selection is not collapsed and user press home key for
-	// instance (Firefox fires keypress for home key).
+	// Filter out non-character keys. Doing this prevents:
+	// * Unexpected content deletion when selection is not collapsed and the user presses, for
+	//   example, the Home key (Firefox fires 'keypress' for it)
+	// * Incorrect pawning when selection is collapsed and the user presses a key that is not handled
+	//   elsewhere and doesn't produce any text, for example Escape
 	// TODO: Should be covered with Selenium tests.
-	if ( e.which === 0 || e.charCode === 0 || ve.ce.isShortcutKey( e ) ) {
+	if (
+		// Catches most keys that don't produce output (charCode === 0, thus no character)
+		e.which === 0 || e.charCode === 0 ||
+		// Opera 12 doesn't always adhere to that convention
+		e.keyCode === OO.ui.Keys.TAB || e.keyCode === OO.ui.Keys.ESCAPE ||
+		// Ignore all keypresses with Ctrl / Cmd modifier keys
+		ve.ce.isShortcutKey( e )
+	) {
 		return;
 	}
 
