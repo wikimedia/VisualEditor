@@ -517,7 +517,8 @@ ve.ce.Surface.prototype.onDocumentMouseDown = function ( e ) {
 	}
 
 	// Handle triple click
-	if ( e.originalEvent.detail >= 3 ) {
+	// HACK: do not do triple click handling in IE, because their click counting is broken
+	if ( e.originalEvent.detail >= 3 && !ve.init.platform.isInternetExplorer() ) {
 		// Browser default behaviour for triple click won't behave as we want
 		e.preventDefault();
 
