@@ -737,7 +737,7 @@ QUnit.test( 'getRelativeOffset', function ( assert ) {
 		{
 			'msg': 'document without any valid offsets returns -1',
 			'offset': 0,
-			'distance': 1,
+			'direction': 1,
 			'data': [],
 			'callback': function () {
 				return false;
@@ -745,14 +745,14 @@ QUnit.test( 'getRelativeOffset', function ( assert ) {
 			'expected': -1
 		},
 		{
-			'msg': 'document with all valid offsets returns offset + distance',
+			'msg': 'document with all valid offsets returns offset',
 			'offset': 0,
-			'distance': 2,
+			'direction': 1,
 			'data': ['a', 'b'],
 			'callback': function () {
 				return true;
 			},
-			'expected': 2
+			'expected': 1
 		}
 	];
 	QUnit.expect( cases.length );
@@ -761,7 +761,7 @@ QUnit.test( 'getRelativeOffset', function ( assert ) {
 		assert.strictEqual(
 			data.getRelativeOffset(
 				cases[i].offset,
-				cases[i].distance,
+				cases[i].direction,
 				cases[i].callback
 			),
 			cases[i].expected,
@@ -776,119 +776,83 @@ QUnit.test( 'getRelativeContentOffset', function ( assert ) {
 		annDoc = ve.dm.example.createExampleDocument( 'annotationData' ),
 		cases = [
 			{
-				'msg': 'invalid starting offset with zero distance gets corrected',
+				'msg': 'invalid starting offset with zero direction gets corrected',
 				'offset': 0,
-				'distance': 0,
+				'direction': 0,
 				'expected': 1
 			},
 			{
-				'msg': 'invalid starting offset with zero distance gets corrected',
+				'msg': 'invalid starting offset with zero direction gets corrected',
 				'offset': 61,
-				'distance': 0,
+				'direction': 0,
 				'expected': 60
 			},
 			{
-				'msg': 'valid offset with zero distance returns same offset',
+				'msg': 'valid offset with zero direction returns same offset',
 				'offset': 2,
-				'distance': 0,
+				'direction': 0,
 				'expected': 2
 			},
 			{
 				'msg': 'invalid starting offset gets corrected',
 				'offset': 0,
-				'distance': -1,
+				'direction': -1,
 				'expected': 1
 			},
 			{
 				'msg': 'invalid starting offset gets corrected',
 				'offset': 61,
-				'distance': 1,
+				'direction': 1,
 				'expected': 60
 			},
 			{
 				'msg': 'stop at left edge if already valid',
 				'offset': 1,
-				'distance': -1,
+				'direction': -1,
 				'expected': 1
 			},
 			{
 				'msg': 'stop at right edge if already valid',
 				'offset': 60,
-				'distance': 1,
+				'direction': 1,
 				'expected': 60
 			},
 			{
-				'msg': 'first content offset is farthest left',
-				'offset': 2,
-				'distance': -2,
-				'expected': 1
-			},
-			{
-				'msg': 'last content offset is farthest right',
-				'offset': 59,
-				'distance': 2,
-				'expected': 60
-			},
-			{
-				'msg': '1 right within text',
+				'msg': 'right within text',
 				'offset': 1,
-				'distance': 1,
+				'direction': 1,
 				'expected': 2
 			},
 			{
-				'msg': '2 right within text',
-				'offset': 1,
-				'distance': 2,
-				'expected': 3
-			},
-			{
-				'msg': '1 left within text',
+				'msg': 'left within text',
 				'offset': 2,
-				'distance': -1,
+				'direction': -1,
 				'expected': 1
 			},
 			{
-				'msg': '2 left within text',
-				'offset': 3,
-				'distance': -2,
-				'expected': 1
-			},
-			{
-				'msg': '1 right over elements',
+				'msg': 'right over elements',
 				'offset': 4,
-				'distance': 1,
+				'direction': 1,
 				'expected': 10
 			},
 			{
-				'msg': '2 right over elements',
-				'offset': 4,
-				'distance': 2,
-				'expected': 11
-			},
-			{
-				'msg': '1 left over elements',
+				'msg': 'left over elements',
 				'offset': 10,
-				'distance': -1,
+				'direction': -1,
 				'expected': 4
-			},
-			{
-				'msg': '2 left over elements',
-				'offset': 10,
-				'distance': -2,
-				'expected': 3
 			},
 			{
 				'msg': 'Skips over nested handlesOwnChildren nodes',
 				'doc': annDoc,
 				'offset': 10,
-				'distance': 1,
+				'direction': 1,
 				'expected': 24
 			},
 			{
 				'msg': 'Skips over nested handlesOwnChildren nodes (reverse)',
 				'doc': annDoc,
 				'offset': 23,
-				'distance': -1,
+				'direction': -1,
 				'expected': 9
 			}
 		];
@@ -896,7 +860,7 @@ QUnit.test( 'getRelativeContentOffset', function ( assert ) {
 	for ( i = 0; i < cases.length; i++ ) {
 		doc = cases[i].doc || simpleDoc;
 		assert.strictEqual(
-			doc.data.getRelativeContentOffset( cases[i].offset, cases[i].distance ),
+			doc.data.getRelativeContentOffset( cases[i].offset, cases[i].direction ),
 			cases[i].expected,
 			cases[i].msg
 		);
@@ -964,105 +928,67 @@ QUnit.test( 'getRelativeStructuralOffset', function ( assert ) {
 		doc = ve.dm.example.createExampleDocument(),
 		cases = [
 			{
-				'msg': 'invalid starting offset with zero distance gets corrected',
+				'msg': 'invalid starting offset with zero direction gets corrected',
 				'offset': 1,
-				'distance': 0,
+				'direction': 0,
 				'expected': 5
 			},
 			{
-				'msg': 'invalid starting offset with zero distance gets corrected',
+				'msg': 'invalid starting offset with zero direction gets corrected',
 				'offset': 60,
-				'distance': 0,
+				'direction': 0,
 				'expected': 61
 			},
 			{
-				'msg': 'valid offset with zero distance returns same offset',
+				'msg': 'valid offset with zero direction returns same offset',
 				'offset': 0,
-				'distance': 0,
+				'direction': 0,
 				'expected': 0
 			},
 			{
 				'msg': 'invalid starting offset gets corrected',
 				'offset': 2,
-				'distance': -1,
+				'direction': -1,
 				'expected': 0
 			},
 			{
 				'msg': 'invalid starting offset gets corrected',
 				'offset': 59,
-				'distance': 1,
+				'direction': 1,
 				'expected': 61
 			},
 			{
-				'msg': 'first structural offset is farthest left',
-				'offset': 5,
-				'distance': -2,
-				'expected': 0
-			},
-			{
-				'msg': 'last structural offset is farthest right',
-				'offset': 62,
-				'distance': 2,
-				'expected': 63
-			},
-			{
-				'msg': '1 right',
+				'msg': 'right',
 				'offset': 0,
-				'distance': 1,
+				'direction': 1,
 				'expected': 5
 			},
 			{
-				'msg': '1 right, unrestricted',
+				'msg': 'right, unrestricted',
 				'offset': 5,
-				'distance': 1,
+				'direction': 1,
 				'unrestricted': true,
 				'expected': 9
 			},
 			{
-				'msg': '2 right',
-				'offset': 0,
-				'distance': 2,
-				'expected': 6
-			},
-			{
-				'msg': '2 right, unrestricted',
-				'offset': 0,
-				'distance': 2,
-				'unrestricted': true,
-				'expected': 9
-			},
-			{
-				'msg': '1 left',
+				'msg': 'left',
 				'offset': 61,
-				'distance': -1,
+				'direction': -1,
 				'expected': 58
 			},
 			{
-				'msg': '1 left, unrestricted',
+				'msg': 'left, unrestricted',
 				'offset': 9,
-				'distance': -1,
+				'direction': -1,
 				'unrestricted': true,
 				'expected': 5
-			},
-			{
-				'msg': '2 left',
-				'offset': 61,
-				'distance': -2,
-				'expected': 55
-			},
-			{
-				'msg': '2 left, unrestricted',
-				'offset': 9,
-				'distance': -2,
-				'unrestricted': true,
-				'expected': 0
 			}
 		];
 	QUnit.expect( cases.length );
 	for ( i = 0; i < cases.length; i++ ) {
 		assert.strictEqual(
 			doc.data.getRelativeStructuralOffset(
-				cases[i].offset, cases[i].distance, cases[i].unrestricted
+				cases[i].offset, cases[i].direction, cases[i].unrestricted
 			),
 			cases[i].expected,
 			cases[i].msg
