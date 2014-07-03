@@ -771,8 +771,9 @@ QUnit.test( 'getRelativeOffset', function ( assert ) {
 } );
 
 QUnit.test( 'getRelativeContentOffset', function ( assert ) {
-	var i,
-		doc = ve.dm.example.createExampleDocument(),
+	var i, doc,
+		simpleDoc = ve.dm.example.createExampleDocument(),
+		annDoc = ve.dm.example.createExampleDocument( 'annotationData' ),
 		cases = [
 			{
 				'msg': 'invalid starting offset with zero distance gets corrected',
@@ -875,10 +876,25 @@ QUnit.test( 'getRelativeContentOffset', function ( assert ) {
 				'offset': 10,
 				'distance': -2,
 				'expected': 3
+			},
+			{
+				'msg': 'Skips over nested handlesOwnChildren nodes',
+				'doc': annDoc,
+				'offset': 10,
+				'distance': 1,
+				'expected': 24
+			},
+			{
+				'msg': 'Skips over nested handlesOwnChildren nodes (reverse)',
+				'doc': annDoc,
+				'offset': 23,
+				'distance': -1,
+				'expected': 9
 			}
 		];
 	QUnit.expect( cases.length );
 	for ( i = 0; i < cases.length; i++ ) {
+		doc = cases[i].doc || simpleDoc;
 		assert.strictEqual(
 			doc.data.getRelativeContentOffset( cases[i].offset, cases[i].distance ),
 			cases[i].expected,
