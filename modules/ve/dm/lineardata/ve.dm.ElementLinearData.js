@@ -482,6 +482,9 @@ ve.dm.ElementLinearData.prototype.trimOuterSpaceFromRange = function ( range ) {
  *   valid offset in the opposite direction.
  * - If the data does not contain a single valid offset the result will be -1
  *
+ * Nodes which handle their own children are ignored. Giving a starting offset inside a
+ * handlesOwnChildren node will give unpredictable results.
+ *
  * @method
  * @param {number} offset Offset to start from
  * @param {number} distance Number of valid offsets to move
@@ -489,15 +492,16 @@ ve.dm.ElementLinearData.prototype.trimOuterSpaceFromRange = function ( range ) {
  * given initial argument of offset
  * @param {Mixed...} [args] Additional arguments to pass to the callback
  * @returns {number} Relative valid offset or -1 if there are no valid offsets in data
+ * @throws {Error} offset was inside a handlesOwnChildren node
  */
 ve.dm.ElementLinearData.prototype.getRelativeOffset = function ( offset, distance, callback ) {
 	var i, direction,
-		dataOffset,
+		dataOffset, isOpen,
 		args = Array.prototype.slice.call( arguments, 3 ),
 		start = offset,
 		steps = 0,
 		turnedAround = false,
-		inHandlesOwnChildren = false;
+		handlesOwnChildrenDepth = 0;
 	// If offset is already a structural offset and distance is zero than no further work is needed,
 	// otherwise distance should be 1 so that we can get out of the invalid starting offset
 	if ( distance === 0 ) {
@@ -528,13 +532,20 @@ ve.dm.ElementLinearData.prototype.getRelativeOffset = function ( offset, distanc
 			this.isElementData( dataOffset ) &&
 			ve.dm.nodeFactory.doesNodeHandleOwnChildren( this.getType( dataOffset ) )
 		) {
-			// We have entered a node if we step right over an open, or left over a close
-			inHandlesOwnChildren =
-				( direction > 0 && this.isOpenElementData( dataOffset ) ) ||
-				( direction < 0 && this.isCloseElementData( dataOffset ) );
+			isOpen = this.isOpenElementData( dataOffset );
+			// We have entered a node if we step right over an open, or left over a close.
+			// Otherwise we have left a node
+			if ( ( direction > 0 && isOpen ) || ( direction < 0 && !isOpen ) ) {
+				handlesOwnChildrenDepth++;
+			} else {
+				handlesOwnChildrenDepth--;
+				if ( handlesOwnChildrenDepth < 0 ) {
+					throw new Error( 'offset was inside a handlesOwnChildren node' );
+				}
+			}
 		}
 		if ( callback.apply( this, [i].concat( args ) ) ) {
-			if ( !inHandlesOwnChildren ) {
+			if ( !handlesOwnChildrenDepth ) {
 				steps++;
 				offset = i;
 				if ( distance === steps ) {
@@ -559,7 +570,7 @@ ve.dm.ElementLinearData.prototype.getRelativeOffset = function ( offset, distanc
 			i = start;
 			distance = 1;
 			turnedAround = true;
-			inHandlesOwnChildren = false;
+			handlesOwnChildrenDepth = 0;
 		}
 		i += direction;
 	}
