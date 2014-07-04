@@ -176,6 +176,19 @@ ve.init.Platform.prototype.getLanguageDirection = function () {
 };
 
 /**
+ * Check whether we are running in Internet Explorer.
+ *
+ * HACK: This should not be needed, and it should eventually be removed. If this hasn't died
+ * in a fire by the end of September 2014, Roan has failed.
+ *
+ * @abstract
+ * @returns {boolean} Whether we are in IE
+ */
+ve.init.Platform.prototype.isInternetExplorer = function () {
+	throw new Error( 've.init.Platform.isInternetExplorer must be overridden in subclass' );
+};
+
+/**
  * Initialize the platform. The default implementation is to do nothing and return a resolved
  * promise. Subclasses should override this if they have asynchronous initialization work to do.
  *

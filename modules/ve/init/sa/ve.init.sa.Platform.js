@@ -99,6 +99,11 @@ ve.init.sa.Platform.prototype.getSystemPlatform = function () {
 };
 
 /** @inheritdoc */
+ve.init.sa.Platform.prototype.isInternetExplorer = function () {
+	return navigator.appVersion.indexOf( 'Trident' ) !== -1;
+};
+
+/** @inheritdoc */
 ve.init.sa.Platform.prototype.getLanguageCodes = function () {
 	return Object.keys( $.uls.data.getAutonyms() );
 };
