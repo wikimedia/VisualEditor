@@ -2934,37 +2934,29 @@ ve.dm.example.annotationData = [
 	'o',
 	'o',
 	{ 'type': 'exampleUnboldable' },
-	// 5
 	{ 'type': '/exampleUnboldable' },
 	'B',
 	'a',
 	'r',
 	{ 'type': '/paragraph' },
-	// 10
 	{ 'type': 'exampleHandlesOwnChildren' },
 	{ 'type': 'paragraph' },
 	'B',
 	{ 'type': '/paragraph' },
 	{ 'type': 'exampleHandlesOwnChildren' },
-	// 15
 	{ 'type': 'paragraph' },
 	'a',
 	{ 'type': '/paragraph' },
 	{ 'type': '/exampleHandlesOwnChildren' },
 	{ 'type': 'paragraph' },
-	// 20
 	'r',
 	{ 'type': '/paragraph' },
 	{ 'type': '/exampleHandlesOwnChildren' },
 	{ 'type': 'paragraph' },
-	'B',
-	// 25
-	'a',
-	'z',
+	'B', 'a', 'z',
 	{ 'type': '/paragraph' },
 	{ 'type': 'internalList' },
 	{ 'type': '/internalList' }
-	// 30
 ];
 
 ve.dm.example.selectNodesCases = [
