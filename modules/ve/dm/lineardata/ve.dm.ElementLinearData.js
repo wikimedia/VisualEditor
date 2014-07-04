@@ -475,45 +475,47 @@ ve.dm.ElementLinearData.prototype.trimOuterSpaceFromRange = function ( range ) {
  * - If {offset} is not already valid, one step will be used to move it to a valid one.
  * - If {offset} is already valid and cannot be moved in the direction of {distance} and still be
  *   valid, it will be left where it is
- * - If {initialDirection} is zero the result will either be {offset} if it's already valid or the
+ * - If {distance} is zero the result will either be {offset} if it's already valid or the
  *   nearest valid offset to the right if possible and to the left otherwise.
- * - If {offset} is after the last valid offset and {initialDirection} is 1, or if {offset} is
- *   before the first valid offset and {initialDirection} is -1 then the result will be the nearest
+ * - If {offset} is after the last valid offset and {distance} is >= 1, or if {offset} if
+ *   before the first valid offset and {distance} <= 1 than the result will be the nearest
  *   valid offset in the opposite direction.
  * - If the data does not contain a single valid offset the result will be -1
  *
  * @method
  * @param {number} offset Offset to start from
- * @param {number} initialDirection Initial direction so search in, -1/0/+1
+ * @param {number} distance Number of valid offsets to move
  * @param {Function} callback Function to call to check if an offset is valid which will be
  * given initial argument of offset
  * @param {Mixed...} [args] Additional arguments to pass to the callback
  * @returns {number} Relative valid offset or -1 if there are no valid offsets in data
  */
-ve.dm.ElementLinearData.prototype.getRelativeOffset = function ( offset, initialDirection, callback ) {
+ve.dm.ElementLinearData.prototype.getRelativeOffset = function ( offset, distance, callback ) {
 	var i, direction,
 		dataOffset, isOpen,
 		args = Array.prototype.slice.call( arguments, 3 ),
 		start = offset,
+		steps = 0,
 		turnedAround = false,
 		handlesOwnChildrenDepth = 0;
-	// If offset is already a structural offset and initialDirection is zero than no further work is needed,
-	// otherwise initialDirection should be 1 so that we can get out of the invalid starting offset
-	if ( initialDirection === 0 ) {
+	// If offset is already a structural offset and distance is zero than no further work is needed,
+	// otherwise distance should be 1 so that we can get out of the invalid starting offset
+	if ( distance === 0 ) {
 		if ( callback.apply( this, [offset].concat( args ) ) ) {
 			return offset;
 		} else {
-			initialDirection = 1;
+			distance = 1;
 		}
 	}
 	// Initial values
-	if ( offset <= 0 ) {
-		direction = 1;
-	} else if ( offset >= this.getLength() ) {
-		direction = -1;
-	} else {
-		direction = initialDirection;
-	}
+	direction = (
+		offset <= 0 ? 1 : (
+			offset >= this.getLength() ? -1 : (
+				distance > 0 ? 1 : -1
+			)
+		)
+	);
+	distance = Math.abs( distance );
 	i = start + direction;
 	offset = -1;
 	// Iteration
@@ -537,11 +539,17 @@ ve.dm.ElementLinearData.prototype.getRelativeOffset = function ( offset, initial
 		}
 		if ( callback.apply( this, [i].concat( args ) ) ) {
 			if ( !handlesOwnChildrenDepth ) {
-				return i;
+				steps++;
+				offset = i;
+				if ( distance === steps ) {
+					return offset;
+				}
 			}
 		} else if (
 			// Don't keep turning around over and over
 			!turnedAround &&
+			// Only turn around if not a single step could be taken
+			steps === 0 &&
 			// Only turn around if we're about to reach the edge
 			( ( direction < 0 && i === 0 ) || ( direction > 0 && i === this.getLength() ) )
 		) {
@@ -553,6 +561,7 @@ ve.dm.ElementLinearData.prototype.getRelativeOffset = function ( offset, initial
 			// Start over going in the opposite direction
 			direction *= -1;
 			i = start;
+			distance = 1;
 			turnedAround = true;
 			handlesOwnChildrenDepth = 0;
 		}
@@ -562,18 +571,18 @@ ve.dm.ElementLinearData.prototype.getRelativeOffset = function ( offset, initial
 };
 
 /**
- * Get a content offset in a direction from an offset.
+ * Get a content offset at a distance from an offset.
  *
  * This method is a wrapper around {getRelativeOffset}, using {isContentOffset} as
  * the offset validation callback.
  *
  * @method
  * @param {number} offset Offset to start from
- * @param {number} direction Direction to move, -1/0/1
+ * @param {number} distance Number of content offsets to move
  * @returns {number} Relative content offset or -1 if there are no valid offsets in data
  */
-ve.dm.ElementLinearData.prototype.getRelativeContentOffset = function ( offset, direction ) {
-	return this.getRelativeOffset( offset, direction, this.constructor.prototype.isContentOffset );
+ve.dm.ElementLinearData.prototype.getRelativeContentOffset = function ( offset, distance ) {
+	return this.getRelativeOffset( offset, distance, this.constructor.prototype.isContentOffset );
 };
 
 /**
@@ -604,24 +613,24 @@ ve.dm.ElementLinearData.prototype.getNearestContentOffset = function ( offset, d
 };
 
 /**
- * Get a structural offset in a direction from an offset.
+ * Get a structural offset at a distance from an offset.
  *
  * This method is a wrapper around {getRelativeOffset}, using {this.isStructuralOffset} as
  * the offset validation callback.
  *
  * @method
  * @param {number} offset Offset to start from
- * @param {number} direction Direction to move, -1/0/1
+ * @param {number} distance Number of structural offsets to move
  * @param {boolean} [unrestricted] Only consider offsets where any kind of element can be inserted
  * @returns {number} Relative structural offset
  */
-ve.dm.ElementLinearData.prototype.getRelativeStructuralOffset = function ( offset, direction, unrestricted ) {
+ve.dm.ElementLinearData.prototype.getRelativeStructuralOffset = function ( offset, distance, unrestricted ) {
 	// Optimization: start and end are always unrestricted structural offsets
-	if ( direction === 0 && ( offset === 0 || offset === this.getLength() ) ) {
+	if ( distance === 0 && ( offset === 0 || offset === this.getLength() ) ) {
 		return offset;
 	}
 	return this.getRelativeOffset(
-		offset, direction, this.constructor.prototype.isStructuralOffset, unrestricted
+		offset, distance, this.constructor.prototype.isStructuralOffset, unrestricted
 	);
 };
 
