@@ -37,18 +37,18 @@ ve.ui.DebugBar = function VeUiDebugBar( surface, config ) {
 		);
 
 	// Widgets
-	this.startTextInput = new OO.ui.TextInputWidget( { 'readOnly': true } );
-	this.endTextInput = new OO.ui.TextInputWidget( { 'readOnly': true } );
+	this.fromTextInput = new OO.ui.TextInputWidget( { 'readOnly': true } );
+	this.toTextInput = new OO.ui.TextInputWidget( { 'readOnly': true } );
 
 	this.logRangeButton = new OO.ui.ButtonWidget( { 'label': 'Log range', 'disabled': true } );
 	this.dumpModelButton = new OO.ui.ButtonWidget( { 'label': 'Dump model' } );
 	this.dumpModelChangeToggle = new OO.ui.ToggleButtonWidget( { 'label': 'Dump on change' } );
 
-	var startLabel = new OO.ui.LabelWidget(
-			{ 'label': 'Range', 'input': this.startTextInput }
+	var fromLabel = new OO.ui.LabelWidget(
+			{ 'label': 'Range', 'input': this.fromTextInput }
 		),
-		endLabel = new OO.ui.LabelWidget(
-			{ 'label': '-', 'input': this.endTextInput }
+		toLabel = new OO.ui.LabelWidget(
+			{ 'label': '-', 'input': this.toTextInput }
 		);
 
 	// Events
@@ -63,10 +63,10 @@ ve.ui.DebugBar = function VeUiDebugBar( surface, config ) {
 	this.$element.addClass( 've-ui-debugBar' );
 	this.$element.append(
 		this.$commands.append(
-			startLabel.$element,
-			this.startTextInput.$element,
-			endLabel.$element,
-			this.endTextInput.$element,
+			fromLabel.$element,
+			this.fromTextInput.$element,
+			toLabel.$element,
+			this.toTextInput.$element,
 			this.logRangeButton.$element,
 			this.$( this.constructor.static.dividerTemplate ),
 			this.dumpModelButton.$element,
@@ -105,11 +105,11 @@ ve.ui.DebugBar.prototype.getSurface = function () {
  */
 ve.ui.DebugBar.prototype.onSurfaceSelect = function ( range ) {
 	if ( range ) {
-		this.startTextInput.setValue( range.start );
-		this.endTextInput.setValue( range.end );
+		this.fromTextInput.setValue( range.from );
+		this.toTextInput.setValue( range.to );
 	}
-	this.startTextInput.setDisabled( !range );
-	this.endTextInput.setDisabled( !range );
+	this.fromTextInput.setDisabled( !range );
+	this.toTextInput.setDisabled( !range );
 	this.logRangeButton.setDisabled( !range || range.isCollapsed() );
 };
 
@@ -119,10 +119,10 @@ ve.ui.DebugBar.prototype.onSurfaceSelect = function ( range ) {
  * @param {jQuery.Event} e Event
  */
 ve.ui.DebugBar.prototype.onLogRangeButtonClick = function () {
-	var start = this.startTextInput.getValue(),
-		end = this.endTextInput.getValue();
+	var from = this.fromTextInput.getValue(),
+		to = this.toTextInput.getValue();
 	// TODO: Validate input
-	ve.dir( this.getSurface().view.documentView.model.data.slice( start, end ) );
+	ve.dir( this.getSurface().view.documentView.model.data.slice( from, to ) );
 };
 
 /**
