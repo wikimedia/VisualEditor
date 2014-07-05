@@ -397,9 +397,9 @@ ve.dm.example.alienData = [
 	// 3 - Plain character 'a'
 	'a',
 	// 4 - Open alienInline
-	{ 'type': 'alienBlock' },
+	{ 'type': 'alienInline' },
 	// 5 - Close alienInline
-	{ 'type': '/alienBlock' },
+	{ 'type': '/alienInline' },
 	// 6 - Plain character 'b'
 	'b',
 	// 7 - Close paragraph
