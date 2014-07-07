@@ -303,7 +303,6 @@ ve.ce.BranchNode.prototype.getSlugAtOffset = function ( offset ) {
  *
  * @method
  * @param {boolean} live New live state
- * @fires live
  */
 ve.ce.BranchNode.prototype.setLive = function ( live ) {
 	ve.ce.Node.prototype.setLive.call( this, live );
