@@ -335,7 +335,7 @@ ve.ui.MediaSizeWidget.prototype.getScalable = function () {
  * Set the width/height values to the original media dimensions
  */
 ve.ui.MediaSizeWidget.prototype.onFullSizeButtonClick = function () {
-	this.sizeTypeSelectWidget.selectItem(
+	this.sizeTypeSelectWidget.chooseItem(
 		this.sizeTypeSelectWidget.getItemFromData( 'custom' )
 	);
 	this.setCurrentDimensions( this.scalable.getOriginalDimensions() );
