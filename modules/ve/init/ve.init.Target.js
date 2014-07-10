@@ -73,9 +73,13 @@ OO.mixinClass( ve.init.Target, OO.EventEmitter );
 
 ve.init.Target.static.toolbarGroups = [
 	// History
-	{ 'include': [ 'undo', 'redo' ] },
+	{
+		'header': OO.ui.deferMsg( 'visualeditor-toolbar-history' ),
+		'include': [ 'undo', 'redo' ]
+	},
 	// Format
 	{
+		'header': OO.ui.deferMsg( 'visualeditor-toolbar-paragraph-format' ),
 		'type': 'menu',
 		'indicator': 'down',
 		'include': [ { 'group': 'format' } ],
@@ -84,6 +88,7 @@ ve.init.Target.static.toolbarGroups = [
 	},
 	// Style
 	{
+		'header': OO.ui.deferMsg( 'visualeditor-toolbar-text-style' ),
 		'type': 'list',
 		'indicator': 'down',
 		'icon': 'text-style',
@@ -92,9 +97,13 @@ ve.init.Target.static.toolbarGroups = [
 		'demote': [ 'strikethrough', 'code',  'underline', 'clear' ]
 	},
 	// Link
-	{ 'include': [ 'link' ] },
+	{
+		'header': OO.ui.deferMsg( 'visualeditor-linkinspector-title' ),
+		'include': [ 'link' ]
+	},
 	// Structure
 	{
+		'header': OO.ui.deferMsg( 'visualeditor-toolbar-structure' ),
 		'type': 'list',
 		'icon': 'bullet-list',
 		'indicator': 'down',
@@ -103,6 +112,7 @@ ve.init.Target.static.toolbarGroups = [
 	},
 	// Insert
 	{
+		'header': OO.ui.deferMsg( 'visualeditor-toolbar-insert' ),
 		'include': '*',
 		'indicator': 'down',
 		'label': OO.ui.deferMsg( 'visualeditor-toolbar-insert' ),
