@@ -160,7 +160,7 @@ ve.ce.GeneratedContentNode.prototype.render = function ( generatedContents ) {
 	}
 	if ( this.live ) {
 		this.emit( 'setup' );
-		this.afterRender( generatedContents );
+		this.afterRender();
 	}
 };
 
@@ -169,7 +169,6 @@ ve.ce.GeneratedContentNode.prototype.render = function ( generatedContents ) {
  *
  * Nodes may override this method if the rerender event needs to be deferred (e.g. until images have loaded)
  *
- * @param {Object|string|Array} generatedContents Generated contents
  * @fires rerender
  */
 ve.ce.GeneratedContentNode.prototype.afterRender = function () {
