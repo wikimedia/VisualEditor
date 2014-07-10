@@ -82,6 +82,7 @@ ve.init.Target.static.toolbarGroups = [
 		'header': OO.ui.deferMsg( 'visualeditor-toolbar-paragraph-format' ),
 		'type': 'menu',
 		'indicator': 'down',
+		'title': OO.ui.deferMsg( 'visualeditor-toolbar-format-tooltip' ),
 		'include': [ { 'group': 'format' } ],
 		'promote': [ 'paragraph' ],
 		'demote': [ 'preformatted' ]
@@ -92,6 +93,7 @@ ve.init.Target.static.toolbarGroups = [
 		'type': 'list',
 		'indicator': 'down',
 		'icon': 'text-style',
+		'title': OO.ui.deferMsg( 'visualeditor-toolbar-style-tooltip' ),
 		'include': [ { 'group': 'textStyle' }, 'language', 'clear' ],
 		'promote': [ 'bold', 'italic' ],
 		'demote': [ 'strikethrough', 'code', 'underline', 'language', 'clear' ]
@@ -113,12 +115,14 @@ ve.init.Target.static.toolbarGroups = [
 	// Insert
 	{
 		'header': OO.ui.deferMsg( 'visualeditor-toolbar-insert' ),
-		'include': '*',
+		'type': 'list',
+		'icon': 'insert',
+		'label': '',
+		'title': OO.ui.deferMsg( 'visualeditor-toolbar-insert' ),
 		'indicator': 'down',
-		'label': OO.ui.deferMsg( 'visualeditor-toolbar-insert' ),
+		'include': '*',
 		'demote': [ 'specialcharacter' ]
 	}
-
 ];
 
 ve.init.Target.static.surfaceCommands = [
