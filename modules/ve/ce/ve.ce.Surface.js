@@ -2163,6 +2163,7 @@ ve.ce.Surface.prototype.handleDelete = function ( e, backspace ) {
  */
 ve.ce.Surface.prototype.showSelection = function ( range ) {
 	var start, end,
+		documentElement,
 		rangySel = rangy.getSelection( this.$document[0] ),
 		rangyRange = rangy.createRange( this.$document[0] );
 
@@ -2179,6 +2180,11 @@ ve.ce.Surface.prototype.showSelection = function ( range ) {
 		rangySel.removeAllRanges();
 		rangySel.addRange( rangyRange, range.start !== range.from );
 	} else {
+		documentElement = this.documentView.getDocumentNode().$element[0];
+		// Setting a range doesn't give focus in all browsers so make sure this happens
+		if ( document.activeElement !== documentElement ) {
+			documentElement.focus();
+		}
 		start = this.documentView.getNodeAndOffset( range.start );
 		rangyRange.setStart( start.node, start.offset );
 		rangySel.setSingleRange( rangyRange );
