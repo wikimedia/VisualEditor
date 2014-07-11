@@ -72,7 +72,7 @@ ve.init.sa.Target.prototype.setup = function ( dmDoc ) {
 	this.surface.addCommands( this.constructor.static.surfaceCommands );
 	this.$element.append( this.surface.$element );
 
-	this.setupToolbar( { 'shadow': true } );
+	this.setupToolbar();
 	if ( ve.debug ) {
 		this.setupDebugBar();
 	}
@@ -99,4 +99,19 @@ ve.init.sa.Target.prototype.setup = function ( dmDoc ) {
  */
 ve.init.sa.Target.prototype.createSurface = function ( dmDoc, config ) {
 	return new this.surfaceClass( dmDoc, config );
+};
+
+/**
+ * @inheritdoc
+ */
+ve.init.sa.Target.prototype.setupToolbar = function () {
+	ve.init.sa.Target.super.prototype.setupToolbar.call( this, { 'shadow': true, 'actions': true } );
+
+	var actions = new ve.ui.TargetToolbar( this, this.surface );
+
+	actions.setup( [
+		{ 'include': [ 'commandHelp' ] }
+	] );
+
+	this.toolbar.$actions.append( actions.$element );
 };

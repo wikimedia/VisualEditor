@@ -71,7 +71,7 @@ ve.ui.CommandHelpDialogTool.static.name = 'commandHelp';
 ve.ui.CommandHelpDialogTool.static.group = 'dialog';
 ve.ui.CommandHelpDialogTool.static.icon = 'help';
 ve.ui.CommandHelpDialogTool.static.title =
-	OO.ui.deferMsg( 'visualeditor-dialogbutton-command-help-tooltip' );
+	OO.ui.deferMsg( 'visualeditor-dialog-command-help-title' );
 ve.ui.CommandHelpDialogTool.static.autoAddToCatchall = false;
 ve.ui.CommandHelpDialogTool.static.autoAddToGroup = false;
 ve.ui.CommandHelpDialogTool.static.commandName = 'commandHelp';

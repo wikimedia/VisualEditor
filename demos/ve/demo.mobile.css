@@ -15,11 +15,11 @@
 	border-top: 1px solid #ccc;
 }
 
-.ve-init-sa-target-toolbar .oo-ui-toolbar-bar {
+.ve-init-sa-target-toolbar > .oo-ui-toolbar-bar {
 	border-top: 1px solid #ccc;
 }
 
-.ve-init-sa-target-toolbar.ve-ui-toolbar-floating .oo-ui-toolbar-bar {
+.ve-init-sa-target-toolbar.ve-ui-toolbar-floating > .oo-ui-toolbar-bar {
 	border-top: none;
 }
 
