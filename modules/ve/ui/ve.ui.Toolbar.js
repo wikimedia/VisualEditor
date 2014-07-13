@@ -128,11 +128,18 @@ ve.ui.Toolbar.prototype.onWindowResize = function () {
 };
 
 /**
- * Method to scroll to the cursor position while toolbar is floating on keyup only if
- * the cursor is obscured by the toolbar.
+ * Method to scroll the content editable surface to the cursor position.
+ *
+ * This is for when the cursor is obscured by a floating toolbar.
  */
 ve.ui.Toolbar.prototype.onSurfaceViewKeyUp = function () {
-	var barHeight, scrollTo, obscured, cursorPos = this.surface.view.getSelectionRect();
+	var barHeight, scrollTo, obscured, cursorPos;
+
+	if ( !this.floating ) {
+		return;
+	}
+
+	cursorPos = this.surface.view.getSelectionRect();
 	if ( !cursorPos ) {
 		return;
 	}
@@ -142,8 +149,8 @@ ve.ui.Toolbar.prototype.onSurfaceViewKeyUp = function () {
 	obscured = cursorPos.start.y - this.$window.scrollTop() < barHeight;
 
 	// If toolbar is floating and cursor is obscured, scroll cursor into view
-	if ( obscured && this.floating ) {
-		this.$( 'html, body' ).animate( { scrollTop: scrollTo }, 0 );
+	if ( obscured ) {
+		this.$( 'html, body' ).prop( 'scrollTop', scrollTo );
 	}
 };
 
