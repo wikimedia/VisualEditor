@@ -6,17 +6,18 @@
  */
 
 /**
- * Link inspector.
+ * Inspector for linked content.
  *
  * @class
  * @extends ve.ui.AnnotationInspector
  *
  * @constructor
+ * @param {OO.ui.WindowManager} manager Manager of window
  * @param {Object} [config] Configuration options
  */
-ve.ui.LinkInspector = function VeUiLinkInspector( config ) {
+ve.ui.LinkInspector = function VeUiLinkInspector( manager, config ) {
 	// Parent constructor
-	ve.ui.AnnotationInspector.call( this, config );
+	ve.ui.AnnotationInspector.call( this, manager, config );
 };
 
 /* Inheritance */
@@ -27,15 +28,40 @@ OO.inheritClass( ve.ui.LinkInspector, ve.ui.AnnotationInspector );
 
 ve.ui.LinkInspector.static.name = 'link';
 
-ve.ui.LinkInspector.static.icon = 'link';
-
 ve.ui.LinkInspector.static.title = OO.ui.deferMsg( 'visualeditor-linkinspector-title' );
 
 ve.ui.LinkInspector.static.linkTargetInputWidget = ve.ui.LinkTargetInputWidget;
 
 ve.ui.LinkInspector.static.modelClasses = [ ve.dm.LinkAnnotation ];
 
+ve.ui.LinkInspector.static.actions = ve.ui.LinkInspector.super.static.actions.concat( [
+	{
+		'action': 'open',
+		'label': OO.ui.deferMsg( 'visualeditor-linkinspector-open' )
+	}
+] );
+
 /* Methods */
+
+/**
+ * Handle target input change events.
+ *
+ * Updates the open button's hyperlink location.
+ *
+ * @param {string} value New target input value
+ */
+ve.ui.LinkInspector.prototype.onTargetInputChange = function () {
+	var href = this.targetInput.getHref(),
+		valid = this.targetInput.isValid();
+
+	this.actions.forEach( { 'actions': 'open' }, function ( action ) {
+		action.setHref( href ).setTarget( '_blank' ).setDisabled( !valid );
+		// HACK: Chrome renders a dark outline around the action when it's a link, but causing it to
+		// re-render makes it magically go away; this is incredibly evil and needs further
+		// investigation
+		action.$element.hide().fadeIn( 0 );
+	} );
+};
 
 /**
  * @inheritdoc
@@ -72,16 +98,25 @@ ve.ui.LinkInspector.prototype.getAnnotationFromFragment = function ( fragment ) 
  * @inheritdoc
  */
 ve.ui.LinkInspector.prototype.initialize = function () {
+	var overlay = this.manager.getOverlay();
+
 	// Parent method
 	ve.ui.LinkInspector.super.prototype.initialize.call( this );
 
 	// Properties
 	this.targetInput = new this.constructor.static.linkTargetInputWidget( {
-		'$': this.$, '$overlay': this.$contextOverlay || this.$overlay
+		'$': this.$,
+		'$overlay': overlay ? overlay.$element : this.$frame,
+		'disabled': true,
+		'classes': [ 've-ui-linkInspector-target' ]
 	} );
 
+	// Events
+	this.targetInput.connect( this, { 'change': 'onTargetInputChange' } );
+
 	// Initialization
-	this.$form.append( this.targetInput.$element );
+	this.frame.$content.addClass( 've-ui-linkInspector-content' );
+	this.form.$element.append( this.targetInput.$element );
 };
 
 /**
@@ -99,11 +134,31 @@ ve.ui.LinkInspector.prototype.getSetupProcess = function ( data ) {
 /**
  * @inheritdoc
  */
-ve.ui.LinkInspector.prototype.getReadyProcess = function () {
-	return ve.ui.LinkInspector.super.prototype.getReadyProcess.call( this )
+ve.ui.LinkInspector.prototype.getReadyProcess = function ( data ) {
+	return ve.ui.LinkInspector.super.prototype.getReadyProcess.call( this, data )
 		.next( function () {
-			this.targetInput.focus().select();
+			this.targetInput.setDisabled( false ).focus().select();
 			this.getFragment().getSurface().enable();
+		}, this );
+};
+
+/**
+ * @inheritdoc
+ */
+ve.ui.LinkInspector.prototype.getHoldProcess = function ( data ) {
+	return ve.ui.LinkInspector.super.prototype.getHoldProcess.call( this, data )
+		.next( function () {
+			this.targetInput.setDisabled( true ).blur();
+		}, this );
+};
+
+/**
+ * @inheritdoc
+ */
+ve.ui.LinkInspector.prototype.getTeardownProcess = function ( data ) {
+	return ve.ui.LinkInspector.super.prototype.getTeardownProcess.call( this, data )
+		.next( function () {
+			this.targetInput.setAnnotation( null );
 		}, this );
 };
 

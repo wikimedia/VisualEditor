@@ -43,8 +43,3 @@
 .ve-ui-specialCharacterInspector-list-character:hover {
 	border-color: #ccc;
 }
-
-/* FIXME: This rule has to be overly specific because the theme files are loaded afterwards */
-.ve-ui-specialCharacterInspector .oo-ui-window-frame .oo-ui-frame {
-	width: 30em;
-}

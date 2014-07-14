@@ -310,7 +310,7 @@ ve.ce.FocusableNode.prototype.onFocusableRerender = function () {
 	if ( this.focused ) {
 		this.redrawHighlights();
 		// reposition menu
-		this.surface.getSurface().getContext().update( true, true );
+		this.surface.getSurface().getContext().updateDimensions( true );
 	}
 };
 

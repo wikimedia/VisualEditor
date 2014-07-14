@@ -23,27 +23,26 @@ ve.ui.Context = function VeUiContext( surface, config ) {
 
 	// Properties
 	this.surface = surface;
-	this.inspectors = new ve.ui.WindowSet(
-		ve.ui.windowFactory,
-		{
-			'$': this.$,
-			'$contextOverlay': config.$contextOverlay || this.$element
-		}
-	);
-	this.context = new ve.ui.ContextWidget( { '$': this.$ } );
+	this.visible = false;
+	this.inspector = null;
+	this.inspectors = this.createInspectorWindowManager();
+	this.menu = new ve.ui.ContextMenuWidget( { '$': this.$ } );
 	this.afterModelChangeTimeout = null;
 	this.afterModelChangeRange = null;
+	this.afterModelChangeHandler = ve.bind( this.afterModelChange, this );
 
 	// Events
 	this.surface.getModel().connect( this, {
 		'documentUpdate': 'onModelChange',
 		'select': 'onModelChange'
 	} );
-	this.inspectors.connect( this, {
-		'setup': 'onInspectorSetup',
-		'teardown': 'onInspectorTeardown'
-	} );
-	this.context.connect( this, { 'choose': 'onContextItemChoose' } );
+	this.inspectors.connect( this, { 'opening': 'onInspectorOpening' } );
+	this.menu.connect( this, { 'choose': 'onContextItemChoose' } );
+
+	// Initialization
+	this.$element.addClass( 've-ui-context' );
+	this.menu.toggle( false ).$element.addClass( 've-ui-context-menu' );
+	this.inspectors.$element.addClass( 've-ui-context-inspectors' );
 };
 
 /* Inheritance */
@@ -51,6 +50,132 @@ ve.ui.Context = function VeUiContext( surface, config ) {
 OO.inheritClass( ve.ui.Context, OO.ui.Element );
 
 /* Methods */
+
+/**
+ * Handle model change event.
+ *
+ * While an inspector is opening or closing, all changes are ignored so as to prevent inspectors
+ * that change the selection from within their setup or teardown processes changing context state.
+ *
+ * The response to selection changes is deferred to prevent teardown processes handlers that change
+ * the selection from causing this function to recurse. These responses are also debounced for
+ * efficiency, so that if there are three selection changes in the same tick, #afterModelChange only
+ * runs once.
+ *
+ * @param {ve.Range} range Range if triggered by selection change, null otherwise
+ * @see #afterModelChange
+ */
+ve.ui.Context.prototype.onModelChange = function ( range ) {
+	if ( this.inspector && ( this.inspector.isOpening() || this.inspector.isClosing() ) ) {
+		// Cancel debounced change handler
+		clearTimeout( this.afterModelChangeTimeout );
+		this.afterModelChangeTimeout = null;
+		this.afterModelChangeRange = null;
+	} else {
+		if ( this.afterModelChangeTimeout === null ) {
+			// Ensure change is handled on next cycle
+			this.afterModelChangeTimeout = setTimeout( this.afterModelChangeHandler );
+		}
+		if ( range instanceof ve.Range ) {
+			// Store the latest range
+			this.afterModelChangeRange = range;
+		}
+	}
+	// Purge available tools cache
+	this.availableTools = null;
+};
+
+/**
+ * Handle debounced model change events.
+ */
+ve.ui.Context.prototype.afterModelChange = function () {
+	// Reset debouncing state
+	this.afterModelChangeTimeout = null;
+	this.afterModelChangeRange = null;
+
+	this.onContextChange();
+};
+
+/**
+ * Handle context change events.
+ */
+ve.ui.Context.prototype.onContextChange = function () {
+	var inspectable = this.isInspectable();
+	if ( this.isVisible() ) {
+		if ( this.menu.isVisible() ) {
+			if ( inspectable ) {
+				// Change state: menu -> menu
+				this.populateMenu();
+				this.updateDimensions();
+			} else {
+				// Change state: menu -> closed
+				this.menu.toggle( false );
+				this.toggle( false );
+			}
+		} else if ( this.inspector ) {
+			// Change state: inspector -> (closed|menu)
+			this.inspector.close();
+		}
+	} else {
+		if ( inspectable ) {
+			// Change state: closed -> menu
+			this.menu.toggle( true );
+			this.populateMenu();
+			this.toggle( true );
+		}
+	}
+};
+
+/**
+ * Handle an inspector opening event.
+ *
+ * @param {OO.ui.Window} win Window that's being opened
+ * @param {jQuery.Promise} opening Promise resolved when window is opened; when the promise is
+ *   resolved the first argument will be a promise which will be resolved when the window begins
+ *   closing, the second argument will be the opening data
+ * @param {Object} data Window opening data
+ */
+ve.ui.Context.prototype.onInspectorOpening = function ( win, opening ) {
+	this.inspector = win;
+
+	opening
+		.progress( ve.bind( function ( data ) {
+			if ( data.state === 'setup' ) {
+				if ( this.menu.isVisible() ) {
+					// Change state: menu -> inspector
+					this.menu.toggle( false );
+				} else if ( !this.isVisible() ) {
+					// Change state: closed -> inspector
+					this.toggle( true );
+				}
+			}
+			this.updateDimensions( true );
+		}, this ) )
+		.always( ve.bind( function ( opened ) {
+			opened.always( ve.bind( function ( closed ) {
+				closed.always( ve.bind( function () {
+					var inspectable = !!this.getAvailableTools().length;
+
+					this.inspector = null;
+
+					if ( inspectable ) {
+						// Change state: inspector -> menu
+						this.menu.toggle( true );
+						this.populateMenu();
+						this.updateDimensions();
+					} else {
+						// Change state: inspector -> closed
+						this.toggle( false );
+					}
+
+					// Restore selection
+					if ( this.getSurface().getModel().getSelection() ) {
+						this.getSurface().getView().focus();
+					}
+				}, this ) );
+			}, this ) );
+		}, this ) );
+};
 
 /**
  * Handle context item choose events.
@@ -64,177 +189,142 @@ ve.ui.Context.prototype.onContextItemChoose = function ( item ) {
 };
 
 /**
- * Handle selection changes in the model.
+ * Check if context is visible.
  *
- * Changes are ignored while the user is selecting text or relocating content, apart from closing
- * the popup if it's open. While an inspector is opening or closing, all changes are ignored so as
- * to prevent inspectors that change the selection from within their open/close handlers from
- * causing issues.
- *
- * The response to selection changes is deferred to prevent close handlers that process
- * changes from causing this function to recurse. These responses are also batched for efficiency,
- * so that if there are three selection changes in the same tick, afterModelChange() only runs once.
- *
- * @method
- * @param {ve.Range} range Range if triggered by selection change, null otherwise
- * @see #afterModelChange
+ * @return {boolean} Context is visible
  */
-ve.ui.Context.prototype.onModelChange = function ( range ) {
-	var win = this.inspectors.getCurrentWindow();
+ve.ui.Context.prototype.isVisible = function () {
+	return this.visible;
+};
 
-	if ( this.showing || this.hiding || ( win && ( win.isOpening() || win.isClosing() ) ) ) {
-		clearTimeout( this.afterModelChangeTimeout );
-		this.afterModelChangeTimeout = null;
-		this.afterModelChangeRange = null;
-	} else {
-		if ( this.afterModelChangeTimeout === null ) {
-			this.afterModelChangeTimeout = setTimeout( ve.bind( this.afterModelChange, this ) );
-		}
-		if ( range instanceof ve.Range ) {
-			this.afterModelChangeRange = range;
-		}
+/**
+ * Check if current content is inspectable.
+ *
+ * @return {boolean} Content is inspectable
+ */
+ve.ui.Context.prototype.isInspectable = function () {
+	return !!this.getAvailableTools().length;
+};
+
+/**
+ * Get available tools.
+ *
+ * Result is cached, and cleared when the model or selection changes.
+ *
+ * @returns {Object[]} List of objects containing `tool` and `model` properties, representing each
+ *   compatible tool and the node or annotation it is compatible with
+ */
+ve.ui.Context.prototype.getAvailableTools = function () {
+	if ( !this.availableTools ) {
+		this.availableTools = ve.ui.toolFactory.getToolsForFragment(
+			this.surface.getModel().getFragment( null, false )
+		);
 	}
+	return this.availableTools;
 };
 
 /**
- * Deferred response to one or more select events.
+ * Get the surface the context is being used with.
  *
- * @abstract
- * @method
- */
-ve.ui.Context.prototype.afterModelChange = function () {
-	throw new Error( 've.ui.Context.afterModelChange must be overridden in subclass' );
-};
-
-/**
- * Updates the context menu.
- *
- * @method
- * @param {boolean} [transition=false] Use a smooth transition
- * @chainable
- */
-ve.ui.Context.prototype.update = function ( transition ) {
-	var i, len, match, matches,
-		items = [],
-		fragment = this.surface.getModel().getFragment( null, false ),
-		selection = fragment.getRange(),
-		inspector = this.inspectors.getCurrentWindow();
-
-	if ( inspector && selection && selection.equals( this.selection ) ) {
-		// There's an inspector, and the selection hasn't changed, update the position
-		this.show( transition );
-	} else {
-		// No inspector is open, or the selection has changed, show a menu of available inspectors
-		matches = ve.ui.toolFactory.getToolsForFragment( fragment ).filter( function ( match ) {
-			return match.model.isInspectable();
-		} );
-		if ( matches.length ) {
-			// There's at least one inspectable annotation, build a menu and show it
-			this.context.clearItems();
-			this.containsInspector = false;
-			for ( i = 0, len = matches.length; i < len; i++ ) {
-				match = matches[i];
-				items.push( new ve.ui.ContextItemWidget(
-					match.tool.static.name, match.tool, match.model, { '$': this.$ }
-				) );
-				if ( match.tool.prototype instanceof ve.ui.InspectorTool ) {
-					this.containsInspector = true;
-				}
-			}
-			this.context.addItems( items );
-			this.show( transition );
-		} else if ( this.visible ) {
-			// Nothing to inspect
-			this.hide();
-		}
-	}
-
-	// Remember selection for next time
-	this.selection = selection && selection.clone();
-
-	return this;
-};
-
-/**
- * Get the surface the context is being used in.
- *
- * @method
- * @returns {ve.ui.Surface} Surface of context
+ * @return {ve.ui.Surface}
  */
 ve.ui.Context.prototype.getSurface = function () {
 	return this.surface;
 };
 
 /**
- * Get an inspector.
+ * Get inspector window set.
  *
- * @method
- * @param {string} Symbolic name of inspector
- * @returns {ve.ui.Inspector|undefined} Inspector or undefined if none exists by that name
+ * @return {OO.ui.WindowManager}
  */
-ve.ui.Context.prototype.getInspector = function ( name ) {
-	return this.inspectors.getWindow( name );
+ve.ui.Context.prototype.getInspectors = function () {
+	return this.inspectors;
 };
 
 /**
- * Close the current inspector if there is one.
+ * Get context menu.
+ *
+ * @return {ve.ui.ContextMenuWidget}
+ */
+ve.ui.Context.prototype.getMenu = function () {
+	return this.menu;
+};
+
+/**
+ * Create a inspector window manager.
  *
  * @method
+ * @abstract
+ * @return {ve.ui.WindowManager} Inspector window manager
+ * @throws {Error} If this method is not overridden in a concrete subclass
  */
-ve.ui.Context.prototype.closeCurrentInspector = function () {
-	if ( this.inspectors.getCurrentWindow() ) {
-		this.inspectors.getCurrentWindow().close( { 'action': 'back' } );
+ve.ui.Context.prototype.createInspectorWindowManager = function () {
+	throw new Error( 've.ui.Context.createInspectorWindowManager must be overridden in subclass' );
+};
+
+/**
+ * Update the contents of the menu.
+ *
+ * @chainable
+ */
+ve.ui.Context.prototype.populateMenu = function () {
+	var i, len, tool,
+        items = [],
+        tools = this.getAvailableTools();
+
+	this.menu.clearItems();
+	if ( tools.length ) {
+		for ( i = 0, len = tools.length; i < len; i++ ) {
+			tool = tools[i];
+			items.push( new ve.ui.ContextItemWidget(
+				tool.tool.static.name, tool.tool, tool.model, { '$': this.$ }
+			) );
+		}
+		this.menu.addItems( items );
 	}
+
+	return this;
+};
+
+/**
+ * Toggle the visibility of the context.
+ *
+ * @param {boolean} [show] Show the context, omit to toggle
+ * @return {jQuery.Promise} Promise resolved when context is finished showing/hiding
+ */
+ve.ui.Context.prototype.toggle = function ( show ) {
+	show = show === undefined ? !this.visible : !!show;
+	if ( show !== this.visible ) {
+		this.visible = show;
+		this.$element.toggle();
+	}
+	return $.Deferred().resolve().promise();
+};
+
+/**
+ * Update the size and position of the context.
+ *
+ * @param {boolean} [transition] Smoothly transition from previous size and position
+ * @chainable
+ */
+ve.ui.Context.prototype.updateDimensions = function () {
+	// Override in subclass if context is positioned relative to content
+	return this;
 };
 
 /**
  * Destroy the context, removing all DOM elements.
- *
- * @method
- * @returns {ve.ui.Context} Context UserInterface
- * @chainable
  */
 ve.ui.Context.prototype.destroy = function () {
 	// Disconnect events
 	this.surface.getModel().disconnect( this );
-	this.surface.getView().disconnect( this );
 	this.inspectors.disconnect( this );
+	this.menu.disconnect( this );
 
 	// Stop timers
 	clearTimeout( this.afterModelChangeTimeout );
 
 	this.$element.remove();
+	this.inspectors.$element.remove();
 	return this;
-};
-
-/**
-* Handle an inspector setup event.
-*
-* @abstract
-* @method
-*/
-ve.ui.Context.prototype.onInspectorSetup = function () {
-	throw new Error( 've.ui.Context.onInspectorSetup must be overridden in subclass' );
-};
-
-/**
-* Handle an inspector teardown event.
-*
-* @abstract
-* @method
-*/
-ve.ui.Context.prototype.onInspectorTeardown = function () {
-	throw new Error( 've.ui.Context.onInspectorTeardown must be overridden in subclass' );
-};
-
-/**
- * Hide the context.
- *
- * @method
- * @abstract
- * @chainable
- * @throws {Error} If this method is not overridden in a concrete subclass
- */
-ve.ui.Context.prototype.hide = function () {
-	throw new Error( 've.ui.Context.hide must be overridden in subclass' );
 };

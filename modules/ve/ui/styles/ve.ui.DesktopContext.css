@@ -5,13 +5,12 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-.ve-ui-desktopContext,
-.ve-ui-desktopContext-inspectors,
-.ve-ui-desktopContext-menu {
+.ve-ui-desktopContext {
 	position: absolute;
 }
 
 .ve-ui-desktopContext-menu {
+	position: absolute;
 	font-size: 0.8em;
 }
 
@@ -36,21 +35,21 @@
 	background-image: none;
 }
 
-.ve-ui-desktopContext > .oo-ui-popupWidget:not(.oo-ui-popupWidget-tailed) .oo-ui-popupWidget-popup {
+.ve-ui-desktopContext > .oo-ui-popupWidget:not(.oo-ui-popupWidget-anchored) .oo-ui-popupWidget-popup {
 	margin-top: 0.25em;
 }
 
 /* @noflip */
-.ve-ui-surface-dir-ltr .ve-ui-desktopContext > .oo-ui-popupWidget:not(.oo-ui-popupWidget-tailed) .oo-ui-popupWidget-popup {
+.ve-ui-surface-dir-ltr .ve-ui-desktopContext > .oo-ui-popupWidget:not(.oo-ui-popupWidget-anchored) .oo-ui-popupWidget-popup {
 	margin-left: -0.5em;
 }
 
 /* @noflip */
-.ve-ui-surface-dir-rtl .ve-ui-desktopContext > .oo-ui-popupWidget:not(.oo-ui-popupWidget-tailed) .oo-ui-popupWidget-popup {
+.ve-ui-surface-dir-rtl .ve-ui-desktopContext > .oo-ui-popupWidget:not(.oo-ui-popupWidget-anchored) .oo-ui-popupWidget-popup {
 	margin-left: 0.5em;
 }
 
-.ve-ui-desktopContext > .oo-ui-popupWidget:not(.oo-ui-popupWidget-tailed) .oo-ui-context-menu {
+.ve-ui-desktopContext > .oo-ui-popupWidget:not(.oo-ui-popupWidget-anchored) .oo-ui-context-menu {
 	right: 0;
 }
 

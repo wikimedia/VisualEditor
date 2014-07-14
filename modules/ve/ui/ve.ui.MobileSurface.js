@@ -20,17 +20,17 @@ ve.ui.MobileSurface = function VeUiMobileSurface() {
 	// Parent constructor
 	ve.ui.Surface.apply( this, arguments );
 
+	// Properties
+	this.scrollPosition = null;
+
 	// Events
-	this.dialogs.connect( this, {
-		'setup': 'showGlobalOverlay',
-		// Dialogs emit this with a delay which causes hiding animation to fail
-		// see https://bugzilla.wikimedia.org/show_bug.cgi?id=64775
-		'teardown': 'hideGlobalOverlay'
-	} );
+	this.dialogs.connect( this, { 'opening': 'onWindowOpening' } );
+	this.context.getInspectors().connect( this, { 'opening': 'onWindowOpening' } );
 
 	// Initialization
-	this.$globalOverlay.addClass( 've-ui-mobileSurface-overlay ve-ui-mobileSurface-overlay-global' );
-	this.$localOverlay.append( this.context.$element );
+	this.globalOverlay.$element
+		.addClass( 've-ui-mobileSurface-overlay ve-ui-mobileSurface-overlay-global' );
+	this.localOverlay.$element.append( this.context.$element );
 };
 
 /* Inheritance */
@@ -40,32 +40,48 @@ OO.inheritClass( ve.ui.MobileSurface, ve.ui.Surface );
 /* Methods */
 
 /**
- * Set up a context.
+ * Handle an dialog opening event.
  *
- * @method
- * @returns {ve.ui.MobileContext} Context instance
+ * @param {OO.ui.Window} win Window that's being opened
+ * @param {jQuery.Promise} opening Promise resolved when window is opened; when the promise is
+ *   resolved the first argument will be a promise which will be resolved when the window begins
+ *   closing, the second argument will be the opening data
+ * @param {Object} data Window opening data
  */
-ve.ui.MobileSurface.prototype.setupContext = function () {
-	this.context = new ve.ui.MobileContext( this, { '$': this.$ } );
+ve.ui.MobileSurface.prototype.onWindowOpening = function ( win, opening ) {
+	var $body = $( 'body' ),
+		$globalElements = $( 'html, body' ),
+		$globalOverlay = this.globalOverlay.$element;
+
+	opening
+		.progress( ve.bind( function ( data ) {
+			if ( data.state === 'setup' ) {
+				this.scrollPosition = $body.scrollTop();
+				$globalElements.addClass( 've-ui-mobileSurface-overlay-global-enabled' );
+				$globalOverlay.addClass( 've-ui-mobileSurface-overlay-global-visible' );
+			}
+		}, this ) )
+		.always( ve.bind( function ( opened ) {
+			opened.always( ve.bind( function ( closed ) {
+				closed.always( ve.bind( function () {
+					$body.scrollTop( this.scrollPosition );
+					$globalElements.removeClass( 've-ui-mobileSurface-overlay-global-enabled' );
+					$globalOverlay.removeClass( 've-ui-mobileSurface-overlay-global-visible' );
+				}, this ) );
+			}, this ) );
+		}, this ) );
 };
 
 /**
- * Make global overlay visible and cover the entire screen with it.
- * Also disables scrolling of underlying content.
+ * @inheritdoc
  */
-ve.ui.MobileSurface.prototype.showGlobalOverlay = function () {
-	this.scrollPos = $( 'body' ).scrollTop();
-	// overflow: hidden on 'body' alone is not enough for iOS Safari
-	$( 'html, body' ).addClass( 've-ui-mobileSurface-overlay-global-enabled' );
-	this.$globalOverlay.addClass( 've-ui-mobileSurface-overlay-global-visible' );
+ve.ui.MobileSurface.prototype.createContext = function () {
+	return new ve.ui.MobileContext( this, { '$': this.$ } );
 };
 
 /**
- * Hide the global overlay and return underlying content to previous scroll
- * position.
+ * @inheritdoc
  */
-ve.ui.MobileSurface.prototype.hideGlobalOverlay = function () {
-	this.$globalOverlay.removeClass( 've-ui-mobileSurface-overlay-global-visible' );
-	$( 'html, body' ).removeClass( 've-ui-mobileSurface-overlay-global-enabled' );
-	$( 'body' ).scrollTop( this.scrollPos );
+ve.ui.MobileSurface.prototype.createDialogWindowManager = function () {
+	return new ve.ui.MobileWindowManager( { 'factory': ve.ui.windowFactory } );
 };

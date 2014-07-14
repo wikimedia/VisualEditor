@@ -284,11 +284,9 @@
 			"modules/ve/ce/annotations/ve.ce.UserInputAnnotation.js",
 			"modules/ve/ce/annotations/ve.ce.VariableAnnotation.js",
 			"modules/ve/ui/ve.ui.js",
+			"modules/ve/ui/ve.ui.Overlay.js",
 			"modules/ve/ui/ve.ui.Surface.js",
 			"modules/ve/ui/ve.ui.Context.js",
-			"modules/ve/ui/ve.ui.Dialog.js",
-			"modules/ve/ui/ve.ui.Inspector.js",
-			"modules/ve/ui/ve.ui.WindowSet.js",
 			"modules/ve/ui/ve.ui.Tool.js",
 			"modules/ve/ui/ve.ui.Toolbar.js",
 			"modules/ve/ui/ve.ui.TargetToolbar.js",
@@ -300,6 +298,7 @@
 			"modules/ve/ui/ve.ui.TriggerRegistry.js",
 			"modules/ve/ui/ve.ui.Action.js",
 			"modules/ve/ui/ve.ui.ActionFactory.js",
+			"modules/ve/ui/ve.ui.WindowManager.js",
 			"modules/ve/ui/actions/ve.ui.AnnotationAction.js",
 			"modules/ve/ui/actions/ve.ui.ContentAction.js",
 			"modules/ve/ui/actions/ve.ui.FormatAction.js",
@@ -307,15 +306,16 @@
 			"modules/ve/ui/actions/ve.ui.IndentationAction.js",
 			"modules/ve/ui/actions/ve.ui.ListAction.js",
 			"modules/ve/ui/actions/ve.ui.WindowAction.js",
-			"modules/ve/ui/dialogs/ve.ui.ActionDialog.js",
-			"modules/ve/ui/dialogs/ve.ui.NodeDialog.js",
 			"modules/ve/ui/dialogs/ve.ui.CommandHelpDialog.js",
-			"modules/ve/ui/widgets/ve.ui.LanguageResultWidget.js",
+			"modules/ve/ui/dialogs/ve.ui.FragmentDialog.js",
+			"modules/ve/ui/dialogs/ve.ui.NodeDialog.js",
 			"modules/ve/ui/widgets/ve.ui.LanguageSearchWidget.js",
+			"modules/ve/ui/widgets/ve.ui.LanguageResultWidget.js",
 			"modules/ve/ui/dialogs/ve.ui.LanguageSearchDialog.js",
+			"modules/ve/ui/widgets/ve.ui.LanguageInputWidget.js",
 			"modules/ve/ui/widgets/ve.ui.SurfaceWidget.js",
 			"modules/ve/ui/widgets/ve.ui.LinkTargetInputWidget.js",
-			"modules/ve/ui/widgets/ve.ui.ContextWidget.js",
+			"modules/ve/ui/widgets/ve.ui.ContextMenuWidget.js",
 			"modules/ve/ui/widgets/ve.ui.ContextItemWidget.js",
 			"modules/ve/ui/widgets/ve.ui.DimensionsWidget.js",
 			"modules/ve/ui/widgets/ve.ui.MediaSizeWidget.js",
@@ -328,9 +328,11 @@
 			"modules/ve/ui/tools/ve.ui.InspectorTool.js",
 			"modules/ve/ui/tools/ve.ui.LanguageInspectorTool.js",
 			"modules/ve/ui/tools/ve.ui.ListTool.js",
+			"modules/ve/ui/inspectors/ve.ui.FragmentInspector.js",
 			"modules/ve/ui/inspectors/ve.ui.AnnotationInspector.js",
+			"modules/ve/ui/inspectors/ve.ui.InsertionInspector.js",
+			"modules/ve/ui/inspectors/ve.ui.NodeInspector.js",
 			"modules/ve/ui/inspectors/ve.ui.LinkInspector.js",
-			"modules/ve/ui/widgets/ve.ui.LanguageInputWidget.js",
 			"modules/ve/ui/inspectors/ve.ui.LanguageInspector.js",
 			"modules/ve/ui/inspectors/ve.ui.SpecialCharacterInspector.js"
 		],
@@ -346,17 +348,18 @@
 			"modules/ve/ce/styles/nodes/ve.ce.TableCellNode.css",
 			"modules/ve/ce/styles/nodes/ve.ce.TableNode.css",
 			"modules/ve/ce/styles/ve.ce.Surface.css",
-			"modules/ve/ui/styles/dialogs/ve.ui.ActionDialog.css",
 			"modules/ve/ui/styles/dialogs/ve.ui.CommandHelpDialog.css",
 			"modules/ve/ui/styles/tools/ve.ui.FormatTool.css",
-			"modules/ve/ui/styles/ve.ui.Inspector.css",
 			"modules/ve/ui/styles/widgets/ve.ui.LanguageInputWidget.css",
 			"modules/ve/ui/styles/widgets/ve.ui.LanguageSearchWidget.css",
 			"modules/ve/ui/styles/widgets/ve.ui.ContextItemWidget.css",
-			"modules/ve/ui/styles/widgets/ve.ui.ContextWidget.css",
+			"modules/ve/ui/styles/widgets/ve.ui.ContextMenuWidget.css",
 			"modules/ve/ui/styles/widgets/ve.ui.DimensionsWidget.css",
 			"modules/ve/ui/styles/widgets/ve.ui.MediaSizeWidget.css",
+			"modules/ve/ui/styles/inspectors/ve.ui.FragmentInspector.css",
+			"modules/ve/ui/styles/inspectors/ve.ui.LinkInspector.css",
 			"modules/ve/ui/styles/inspectors/ve.ui.SpecialCharacterInspector.css",
+			"modules/ve/ui/styles/ve.ui.Overlay.css",
 			"modules/ve/ui/styles/ve.ui.Surface.css",
 			"modules/ve/ui/styles/widgets/ve.ui.SurfaceWidget.css",
 			"modules/ve/ui/styles/ve.ui.Toolbar.css",
@@ -457,12 +460,11 @@
 	"visualEditor.desktop.build": {
 		"scripts": [
 			"modules/ve/ui/ve.ui.DesktopSurface.js",
-			"modules/ve/ui/ve.ui.DesktopContext.js"
+			"modules/ve/ui/ve.ui.DesktopContext.js",
+			"modules/ve/ui/ve.ui.DesktopInspectorManager.js"
 		],
 		"styles": [
-			"modules/ve/ui/styles/ve.ui.DesktopContext.css",
-			"modules/ve/ui/themes/apex/ve.ui.Inspector.css",
-			"modules/ve/ui/themes/apex/dialogs/ve.ui.ActionDialog.css"
+			"modules/ve/ui/styles/ve.ui.DesktopContext.css"
 		],
 		"dependencies": [
 			"visualEditor.core.build"
@@ -478,7 +480,8 @@
 	"visualEditor.mobile.build": {
 		"scripts": [
 			"modules/ve/ui/ve.ui.MobileSurface.js",
-			"modules/ve/ui/ve.ui.MobileContext.js"
+			"modules/ve/ui/ve.ui.MobileContext.js",
+			"modules/ve/ui/ve.ui.MobileWindowManager.js"
 		],
 		"styles": [
 			"modules/ve/ui/styles/ve.ui.MobileSurface.css",

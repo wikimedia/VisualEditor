@@ -44,21 +44,21 @@ ve.ui.WindowAction.static.methods = [ 'open' ];
  * @param {Object} [data] Window opening data
  */
 ve.ui.WindowAction.prototype.open = function ( name, data ) {
-	var win,
+	var windowManager,
 		windowClass = ve.ui.windowFactory.lookup( name ),
 		fragment = this.surface.getModel().getFragment( null, true ),
 		dir = fragment.getRange() ?
 			this.surface.getView().getDocument().getDirectionFromRange( fragment.getRange() ) :
 			this.surface.getModel().getDocument().getDir();
 
-	data = ve.extendObject( { 'dir': dir }, data );
+	data = ve.extendObject( { 'dir': dir }, data, { 'fragment': fragment } );
 
-	if ( windowClass.prototype instanceof ve.ui.Dialog ) {
-		win = this.surface.getDialogs().getWindow( name );
-	} else if ( windowClass.prototype instanceof ve.ui.Inspector ) {
-		win = this.surface.getContext().getInspector( name );
+	if ( windowClass.prototype instanceof ve.ui.FragmentInspector ) {
+		windowManager = this.surface.getContext().getInspectors();
+	} else if ( windowClass.prototype instanceof OO.ui.Dialog ) {
+		windowManager = this.surface.getDialogs();
 	}
-	win.open( fragment, data );
+	windowManager.openWindow( name, data );
 };
 
 /* Registration */

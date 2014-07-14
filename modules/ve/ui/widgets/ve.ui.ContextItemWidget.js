@@ -1,10 +1,10 @@
 /**
  * Proxy for a tool, displaying information about the current context.
  *
- * Use with ve.ui.ContextWidget.
+ * Use with ve.ui.ContextMenuWidget.
  *
  * @class
- * @extends OO.ui.OptionWidget
+ * @extends OO.ui.DecoratedOptionWidget
  *
  * @constructor
  * @param {Object} data Item data
@@ -31,7 +31,7 @@ ve.ui.ContextItemWidget = function VeUiContextItemWidget( data, tool, model, con
 
 /* Setup */
 
-OO.inheritClass( ve.ui.ContextItemWidget, OO.ui.OptionWidget );
+OO.inheritClass( ve.ui.ContextItemWidget, OO.ui.DecoratedOptionWidget );
 
 /* Methods */
 

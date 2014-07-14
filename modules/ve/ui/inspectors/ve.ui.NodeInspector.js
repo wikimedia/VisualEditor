@@ -1,23 +1,23 @@
 /*!
- * VisualEditor user interface NodeDialog class.
+ * VisualEditor user interface NodeInspector class.
  *
  * @copyright 2011-2014 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * Dialog for working with a node.
+ * Inspector for working with a node.
  *
  * @class
- * @extends ve.ui.FragmentDialog
+ * @extends ve.ui.FragmentInspector
  *
  * @constructor
  * @param {OO.ui.WindowManager} manager Manager of window
  * @param {Object} [config] Configuration options
  */
-ve.ui.NodeDialog = function VeUiNodeDialog( manager, config ) {
+ve.ui.NodeInspector = function VeUiNodeInspector( manager, config ) {
 	// Parent constructor
-	ve.ui.NodeDialog.super.call( this, manager, config );
+	ve.ui.FragmentInspector.call( this, manager, config );
 
 	// Properties
 	this.selectedNode = null;
@@ -25,7 +25,7 @@ ve.ui.NodeDialog = function VeUiNodeDialog( manager, config ) {
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.NodeDialog, ve.ui.FragmentDialog );
+OO.inheritClass( ve.ui.NodeInspector, ve.ui.FragmentInspector );
 
 /* Static Properties */
 
@@ -36,7 +36,7 @@ OO.inheritClass( ve.ui.NodeDialog, ve.ui.FragmentDialog );
  * @property {Function}
  * @inheritable
  */
-ve.ui.NodeDialog.static.modelClasses = [];
+ve.ui.NodeInspector.static.modelClasses = [];
 
 /* Methods */
 
@@ -46,10 +46,10 @@ ve.ui.NodeDialog.static.modelClasses = [];
  * Should only be called after setup and before teardown.
  * If no node is selected or the selected node is incompatible, null will be returned.
  *
- * @param {Object} [data] Dialog opening data
+ * @param {Object} [data] Inspector opening data
  * @return {ve.dm.Node} Selected node
  */
-ve.ui.NodeDialog.prototype.getSelectedNode = function () {
+ve.ui.NodeInspector.prototype.getSelectedNode = function () {
 	var i, len,
 		modelClasses = this.constructor.static.modelClasses,
 		selectedNode = this.getFragment().getSelectedNode();
@@ -65,19 +65,19 @@ ve.ui.NodeDialog.prototype.getSelectedNode = function () {
 /**
  * @inheritdoc
  */
-ve.ui.NodeDialog.prototype.initialize = function ( data ) {
+ve.ui.NodeInspector.prototype.initialize = function ( data ) {
 	// Parent method
-	ve.ui.NodeDialog.super.prototype.initialize.call( this, data );
+	ve.ui.NodeInspector.super.prototype.initialize.call( this, data );
 
 	// Initialization
-	this.frame.$content.addClass( 've-ui-nodeDialog' );
+	this.frame.$content.addClass( 've-ui-nodeInspector' );
 };
 
 /**
  * @inheritdoc
  */
-ve.ui.NodeDialog.prototype.getSetupProcess = function ( data ) {
-	return ve.ui.NodeDialog.super.prototype.getSetupProcess.call( this, data )
+ve.ui.NodeInspector.prototype.getSetupProcess = function ( data ) {
+	return ve.ui.NodeInspector.super.prototype.getSetupProcess.call( this, data )
 		.next( function () {
 			this.selectedNode = this.getSelectedNode( data );
 		}, this );
@@ -86,9 +86,9 @@ ve.ui.NodeDialog.prototype.getSetupProcess = function ( data ) {
 /**
  * @inheritdoc
  */
-ve.ui.NodeDialog.prototype.getTeardownProcess = function ( data ) {
-	return ve.ui.NodeDialog.super.prototype.getTeardownProcess.call( this, data )
-		.first( function () {
+ve.ui.NodeInspector.prototype.getTeardownProcess = function ( data ) {
+	return ve.ui.NodeInspector.super.prototype.getTeardownProcess.call( this, data )
+		.next( function () {
 			this.selectedNode = null;
 		}, this );
 };

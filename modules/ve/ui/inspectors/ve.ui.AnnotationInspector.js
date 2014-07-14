@@ -6,18 +6,19 @@
  */
 
 /**
- * Annotation inspector.
+ * Inspector for working with content annotations.
  *
  * @class
  * @abstract
- * @extends ve.ui.Inspector
+ * @extends ve.ui.FragmentInspector
  *
  * @constructor
+ * @param {OO.ui.WindowManager} manager Manager of window
  * @param {Object} [config] Configuration options
  */
-ve.ui.AnnotationInspector = function VeUiAnnotationInspector( config ) {
+ve.ui.AnnotationInspector = function VeUiAnnotationInspector( manager, config ) {
 	// Parent constructor
-	ve.ui.Inspector.call( this, config );
+	ve.ui.FragmentInspector.call( this, manager, config );
 
 	// Properties
 	this.previousSelection = null;
@@ -29,7 +30,7 @@ ve.ui.AnnotationInspector = function VeUiAnnotationInspector( config ) {
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.AnnotationInspector, ve.ui.Inspector );
+OO.inheritClass( ve.ui.AnnotationInspector, ve.ui.FragmentInspector );
 
 /**
  * Annotation models this inspector can edit.
@@ -39,6 +40,14 @@ OO.inheritClass( ve.ui.AnnotationInspector, ve.ui.Inspector );
  * @property {Function[]}
  */
 ve.ui.AnnotationInspector.static.modelClasses = [];
+
+ve.ui.AnnotationInspector.static.actions = [
+	{
+		'action': 'remove',
+		'label': OO.ui.deferMsg( 'visualeditor-inspector-remove-tooltip' ),
+		'flags': 'destructive'
+	}
+].concat( ve.ui.FragmentInspector.static.actions );
 
 /* Methods */
 
@@ -108,6 +117,18 @@ ve.ui.AnnotationInspector.prototype.getMatchingAnnotations = function ( fragment
 	return fragment.getAnnotations( all ).filter( function ( annnotation ) {
 		return ve.isInstanceOfAny( annnotation, modelClasses );
 	} );
+};
+
+/**
+ * @inheritdoc
+ */
+ve.ui.AnnotationInspector.prototype.getActionProcess = function ( action ) {
+	if ( action === 'remove' ) {
+		return new OO.ui.Process( function () {
+			this.close( { 'action': 'remove' } );
+		}, this );
+	}
+	return ve.ui.AnnotationInspector.super.prototype.getActionProcess.call( this, action );
 };
 
 /**
@@ -255,11 +276,11 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 					fragment.annotateContent( 'set', annotation );
 				}
 			}
-			if ( data.action === 'back' || insert ) {
+			if ( !data.action || insert ) {
 				// Restore selection to what it was before we expanded it
 				selection = this.previousSelection;
 			}
-			if ( !data.noSelect ) {
+			if ( data.action ) {
 				surfaceModel.setSelection( selection );
 			}
 

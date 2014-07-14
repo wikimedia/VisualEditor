@@ -113,10 +113,10 @@
 					"ve.ui.Context",
 					"ve.ui.DesktopContext",
 					"ve.ui.MobileContext",
+					"ve.ui.Overlay",
 					"ve.ui.Toolbar",
 					"ve.ui.TargetToolbar",
 					"ve.ui.DebugBar",
-					"ve.ui.WindowSet",
 					"ve.ui.Action",
 					"ve.ui.Trigger",
 					"ve.ui.Command"
@@ -147,8 +147,12 @@
 				"classes": ["ve.ui.*Widget"]
 			},
 			{
-				"name": "Dialogs",
-				"classes": ["ve.ui.*Dialog"]
+				"name": "Windows",
+				"classes": [
+					"ve.ui.*WindowManager",
+					"ve.ui.*InspectorManager",
+					"ve.ui.*Dialog"
+				]
 			}
 		]
 	},
@@ -189,35 +193,43 @@
 				"name": "General",
 				"classes": [
 					"OO.ui",
+					"OO.ui.ActionSet",
 					"OO.ui.Element",
-					"OO.ui.Process",
-					"OO.ui.Frame",
-					"OO.ui.Toolbar",
-					"OO.ui.Window",
-					"OO.ui.WindowSet",
-					"OO.ui.Dialog",
-					"OO.ui.ConfirmationDialog"
+						"OO.ui.Frame",
+						"OO.ui.Layout",
+						"OO.ui.Widget",
+						"OO.ui.Window",
+							"OO.ui.Dialog",
+						"OO.ui.WindowManager",
+					"OO.ui.Error",
+					"OO.ui.Process"
 				]
-			},
-			{
-				"name": "Factories",
-				"classes": ["OO.ui.*Factory"]
-			},
-			{
-				"name": "Tools",
-				"classes": ["OO.ui.*Tool"]
 			},
 			{
 				"name": "Elements",
 				"classes": ["OO.ui.*Element"]
 			},
 			{
-				"name": "Layouts",
-				"classes": ["OO.ui.*Layout"]
+				"name": "Tools",
+				"classes": [
+					"OO.ui.*Tool",
+					"OO.ui.Tool*Factory"
+				]
 			},
 			{
-				"name": "Tool groups",
-				"classes": ["OO.ui.*ToolGroup"]
+				"name": "Toolbar and tool groups",
+				"classes": [
+					"OO.ui.Toolbar",
+					"OO.ui.*ToolGroup"
+				]
+			},
+			{
+				"name": "Dialogs",
+				"classes": ["OO.ui.*Dialog"]
+			},
+			{
+				"name": "Layouts",
+				"classes": ["OO.ui.*Layout"]
 			},
 			{
 				"name": "Widgets",

@@ -6,34 +6,38 @@
  */
 
 /**
- * Language search dialog
+ * Dialog for searching for and selecting a language.
  *
  * @class
- * @extends ve.ui.Dialog
+ * @extends OO.ui.ProcessDialog
  *
  * @constructor
+ * @param {OO.ui.WindowManager} manager Manager of window
  * @param {Object} [config] Configuration options
  */
-ve.ui.LanguageSearchDialog = function VeUiLanguageSearchDialog( config ) {
-	// Configuration initialization
-	config = ve.extendObject( { 'footless': true, 'size': 'medium' }, config );
-
+ve.ui.LanguageSearchDialog = function VeUiLanguageSearchDialog( manager, config ) {
 	// Parent constructor
-	ve.ui.Dialog.call( this, config );
+	ve.ui.LanguageSearchDialog.super.call( this, manager, config );
 };
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.LanguageSearchDialog, ve.ui.Dialog );
+OO.inheritClass( ve.ui.LanguageSearchDialog, OO.ui.ProcessDialog );
 
 /* Static Properties */
 
 ve.ui.LanguageSearchDialog.static.name = 'languageSearch';
 
+ve.ui.LanguageSearchDialog.static.size = 'medium';
+
 ve.ui.LanguageSearchDialog.static.title =
 	OO.ui.deferMsg( 'visualeditor-dialog-language-search-title' );
 
-ve.ui.LanguageSearchDialog.static.icon = 'language';
+ve.ui.LanguageSearchDialog.static.actions = [
+	{
+		'label': OO.ui.deferMsg( 'visualeditor-dialog-action-cancel' )
+	}
+];
 
 /**
  * Language search widget class to use.
@@ -96,9 +100,16 @@ ve.ui.LanguageSearchDialog.prototype.getReadyProcess = function ( data ) {
  */
 ve.ui.LanguageSearchDialog.prototype.getTeardownProcess = function ( data ) {
 	return ve.ui.LanguageSearchDialog.super.prototype.getTeardownProcess.call( this, data )
-		.next( function () {
+		.first( function () {
 			this.searchWidget.getQuery().setValue( '' );
 		}, this );
+};
+
+/**
+ * @inheritdoc
+ */
+ve.ui.LanguageSearchDialog.prototype.getBodyHeight = function () {
+	return 300;
 };
 
 /* Registration */

@@ -40,7 +40,7 @@ ve.ui.DebugBar = function VeUiDebugBar( surface, config ) {
 	this.fromTextInput = new OO.ui.TextInputWidget( { 'readOnly': true } );
 	this.toTextInput = new OO.ui.TextInputWidget( { 'readOnly': true } );
 
-	this.logRangeButton = new OO.ui.ButtonWidget( { 'label': 'Log range', 'disabled': true } );
+	this.logRangeButton = new OO.ui.ButtonWidget( { 'label': 'Log', 'disabled': true } );
 	this.dumpModelButton = new OO.ui.ButtonWidget( { 'label': 'Dump model' } );
 	this.dumpModelChangeToggle = new OO.ui.ToggleButtonWidget( { 'label': 'Dump on change' } );
 

@@ -65,6 +65,15 @@ ve.ui.LinkTargetInputWidget.prototype.onEdit = function () {
 };
 
 /**
+ * Checks if the link is valid.
+ *
+ * @return {boolean} Link is valid
+ */
+ve.ui.LinkTargetInputWidget.prototype.isValid = function () {
+	return this.getValue().match( /(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/gi );
+};
+
+/**
  * Set the value of the input.
  *
  * Overrides setValue to keep annotations in sync.
@@ -104,8 +113,7 @@ ve.ui.LinkTargetInputWidget.prototype.setAnnotation = function ( annotation ) {
 
 	// Parent method
 	OO.ui.TextInputWidget.prototype.setValue.call(
-		this,
-		this.getTargetFromAnnotation( annotation )
+		this, this.getTargetFromAnnotation( annotation )
 	);
 
 	return this;
@@ -119,6 +127,15 @@ ve.ui.LinkTargetInputWidget.prototype.setAnnotation = function ( annotation ) {
  */
 ve.ui.LinkTargetInputWidget.prototype.getAnnotation = function () {
 	return this.annotation;
+};
+
+/**
+ * Get the hyperlink location.
+ *
+ * @return {string} Hyperlink location
+ */
+ve.ui.LinkTargetInputWidget.prototype.getHref = function () {
+	return this.getValue();
 };
 
 /**

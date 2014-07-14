@@ -16,18 +16,25 @@
  * @param {Object} [config] Configuration options
  */
 ve.ui.MobileContext = function VeUiMobileContext( surface, config ) {
-	config = $.extend( { '$contextOverlay': surface.$globalOverlay }, config );
-
 	// Parent constructor
-	ve.ui.Context.call( this, surface, config );
+	ve.ui.MobileContext.super.call( this, surface, config );
+
+	// Properties
+	this.transitioning = null;
+
+	// Events
+	this.inspectors.connect( this, {
+		'setup': [ 'toggle', true ],
+		'teardown': [ 'toggle', false ]
+	} );
 
 	// Initialization
 	this.$element
 		.addClass( 've-ui-mobileContext' )
-		.append( this.context.$element );
-
-	this.surface.$globalOverlay
-		.append( this.inspectors.$element );
+		.append( this.menu.$element );
+	this.menu.$element.addClass( 've-ui-mobileContext-menu' );
+	this.inspectors.$element.addClass( 've-ui-mobileContext-inspectors' );
+	this.surface.getGlobalOverlay().$element.append( this.inspectors.$element );
 };
 
 /* Inheritance */
@@ -37,55 +44,28 @@ OO.inheritClass( ve.ui.MobileContext, ve.ui.Context );
 /* Methods */
 
 /**
- * Deferred response to one or more select events.
- * Update the context toolbar for the new selection.
- *
- * @method
+ * @inheritdoc
  */
-ve.ui.MobileContext.prototype.afterModelChange = function () {
-	var win = this.inspectors.getCurrentWindow(),
-		selectionChange = !!this.afterModelChangeRange,
-		moving = selectionChange && !( win && ( win.isOpening() || win.isClosing() ) );
-
-	this.afterModelChangeTimeout = null;
-	this.afterModelChangeRange = null;
-
-	// TODO this is the only big difference between MobileContext and DesktopContext
-	// merge this code somehow?
-	this.hide();
-
-	this.update( !moving  );
+ve.ui.MobileContext.prototype.createInspectorWindowManager = function () {
+	return new ve.ui.MobileWindowManager( { '$': this.$, 'factory': ve.ui.windowFactory } );
 };
 
 /**
  * @inheritdoc
  */
-ve.ui.MobileContext.prototype.onInspectorSetup = function () {
-	this.surface.showGlobalOverlay();
-};
+ve.ui.MobileContext.prototype.toggle = function ( show ) {
+	var deferred = $.Deferred();
 
-/**
- * @inheritdoc
- */
-ve.ui.MobileContext.prototype.onInspectorTeardown = function () {
-	this.surface.hideGlobalOverlay();
-};
+	show = show === undefined ? !this.visible : !!show;
+	if ( show !== this.visible ) {
+		this.visible = show;
+		this.$element.toggleClass( 've-ui-mobileContext-visible', show );
+		setTimeout( function () {
+			deferred.resolve();
+		}, 300 );
+	} else {
+		deferred.resolve();
+	}
 
-/**
- * Shows the context.
- *
- * @method
- * @chainable
- */
-ve.ui.MobileContext.prototype.show = function () {
-	this.$element.addClass( 've-ui-mobileContext-visible' );
-	return this;
-};
-
-/**
- * @inheritdoc
- */
-ve.ui.MobileContext.prototype.hide = function () {
-	this.$element.removeClass( 've-ui-mobileContext-visible' );
-	return this;
+	return deferred.promise();
 };

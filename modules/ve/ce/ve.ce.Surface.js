@@ -139,7 +139,7 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 
 	// Add elements to the DOM
 	this.$element.append( this.documentView.getDocumentNode().$element, this.$pasteTarget );
-	this.surface.$localOverlayBlockers.append( this.$highlights );
+	this.surface.$blockers.append( this.$highlights );
 };
 
 /* Inheritance */

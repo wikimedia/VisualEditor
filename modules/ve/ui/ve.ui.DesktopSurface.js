@@ -21,11 +21,11 @@ ve.ui.DesktopSurface = function VeUiDesktopSurface() {
 	ve.ui.Surface.apply( this, arguments );
 
 	// Properties
-	this.$localOverlayMenus = this.$( '<div>' );
+	this.$menus = this.$( '<div>' );
 
 	// Initialization
-	this.$localOverlay.append( this.$localOverlayMenus );
-	this.$localOverlayMenus.append( this.context.$element );
+	this.localOverlay.$element.append( this.$menus );
+	this.$menus.append( this.context.$element );
 };
 
 /* Inheritance */
@@ -35,10 +35,15 @@ OO.inheritClass( ve.ui.DesktopSurface, ve.ui.Surface );
 /* Methods */
 
 /**
- * Set up a context.
- *
- * @method
+ * @inheritdoc
  */
-ve.ui.DesktopSurface.prototype.setupContext = function () {
-	this.context = new ve.ui.DesktopContext( this, { '$': this.$ } );
+ve.ui.DesktopSurface.prototype.createContext = function () {
+	return new ve.ui.DesktopContext( this, { '$': this.$ } );
+};
+
+/**
+ * @inheritdoc
+ */
+ve.ui.DesktopSurface.prototype.createDialogWindowManager = function () {
+	return new OO.ui.WindowManager( { 'factory': ve.ui.windowFactory } );
 };

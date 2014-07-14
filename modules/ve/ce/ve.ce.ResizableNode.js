@@ -204,9 +204,9 @@ ve.ce.ResizableNode.prototype.showHandles = function ( handles ) {
 ve.ce.ResizableNode.prototype.onResizableFocus = function () {
 	if ( this.$sizeLabel ) {
 		// Attach the size label first so it doesn't mask the resize handles
-		this.$sizeLabel.appendTo( this.root.getSurface().getSurface().$localOverlayControls );
+		this.$sizeLabel.appendTo( this.root.getSurface().getSurface().$controls );
 	}
-	this.$resizeHandles.appendTo( this.root.getSurface().getSurface().$localOverlayControls );
+	this.$resizeHandles.appendTo( this.root.getSurface().getSurface().$controls );
 
 	// Call getScalable to pre-fetch the extended data
 	this.model.getScalable();
@@ -293,7 +293,7 @@ ve.ce.ResizableNode.prototype.onResizeHandlesCornerMouseDown = function ( e ) {
 	// Hide context menu
 	// TODO: Maybe there's a more generic way to handle this sort of thing? For relocation it's
 	// handled in ve.ce.Surface
-	this.root.getSurface().getSurface().getContext().hide();
+	this.root.getSurface().getSurface().getContext().toggle( false );
 
 	// Set bounding box width and undo the handle margins
 	this.$resizeHandles
@@ -481,7 +481,7 @@ ve.ce.ResizableNode.prototype.onDocumentMouseUp = function () {
 
 	// Update the context menu. This usually happens with the redraw, but not if the
 	// user doesn't perform a drag
-	this.root.getSurface().getSurface().getContext().update();
+	this.root.getSurface().getSurface().getContext().updateDimensions();
 
 	this.emit( 'resizeEnd' );
 };

@@ -27,17 +27,18 @@
 		<link rel=stylesheet href="../modules/ve/ce/styles/nodes/ve.ce.TableCellNode.css">
 		<link rel=stylesheet href="../modules/ve/ce/styles/nodes/ve.ce.TableNode.css">
 		<link rel=stylesheet href="../modules/ve/ce/styles/ve.ce.Surface.css">
-		<link rel=stylesheet href="../modules/ve/ui/styles/dialogs/ve.ui.ActionDialog.css">
 		<link rel=stylesheet href="../modules/ve/ui/styles/dialogs/ve.ui.CommandHelpDialog.css">
 		<link rel=stylesheet href="../modules/ve/ui/styles/tools/ve.ui.FormatTool.css">
-		<link rel=stylesheet href="../modules/ve/ui/styles/ve.ui.Inspector.css">
 		<link rel=stylesheet href="../modules/ve/ui/styles/widgets/ve.ui.LanguageInputWidget.css">
 		<link rel=stylesheet href="../modules/ve/ui/styles/widgets/ve.ui.LanguageSearchWidget.css">
 		<link rel=stylesheet href="../modules/ve/ui/styles/widgets/ve.ui.ContextItemWidget.css">
-		<link rel=stylesheet href="../modules/ve/ui/styles/widgets/ve.ui.ContextWidget.css">
+		<link rel=stylesheet href="../modules/ve/ui/styles/widgets/ve.ui.ContextMenuWidget.css">
 		<link rel=stylesheet href="../modules/ve/ui/styles/widgets/ve.ui.DimensionsWidget.css">
 		<link rel=stylesheet href="../modules/ve/ui/styles/widgets/ve.ui.MediaSizeWidget.css">
+		<link rel=stylesheet href="../modules/ve/ui/styles/inspectors/ve.ui.FragmentInspector.css">
+		<link rel=stylesheet href="../modules/ve/ui/styles/inspectors/ve.ui.LinkInspector.css">
 		<link rel=stylesheet href="../modules/ve/ui/styles/inspectors/ve.ui.SpecialCharacterInspector.css">
+		<link rel=stylesheet href="../modules/ve/ui/styles/ve.ui.Overlay.css">
 		<link rel=stylesheet href="../modules/ve/ui/styles/ve.ui.Surface.css">
 		<link rel=stylesheet href="../modules/ve/ui/styles/widgets/ve.ui.SurfaceWidget.css">
 		<link rel=stylesheet href="../modules/ve/ui/styles/ve.ui.Toolbar.css">
@@ -45,8 +46,6 @@
 
 		<!-- visualEditor.desktop.build -->
 		<link rel=stylesheet href="../modules/ve/ui/styles/ve.ui.DesktopContext.css">
-		<link rel=stylesheet href="../modules/ve/ui/themes/apex/ve.ui.Inspector.css">
-		<link rel=stylesheet href="../modules/ve/ui/themes/apex/dialogs/ve.ui.ActionDialog.css">
 
 		<!-- example styles -->
 		<style>
@@ -261,11 +260,9 @@
 		<script src="../modules/ve/ce/annotations/ve.ce.UserInputAnnotation.js"></script>
 		<script src="../modules/ve/ce/annotations/ve.ce.VariableAnnotation.js"></script>
 		<script src="../modules/ve/ui/ve.ui.js"></script>
+		<script src="../modules/ve/ui/ve.ui.Overlay.js"></script>
 		<script src="../modules/ve/ui/ve.ui.Surface.js"></script>
 		<script src="../modules/ve/ui/ve.ui.Context.js"></script>
-		<script src="../modules/ve/ui/ve.ui.Dialog.js"></script>
-		<script src="../modules/ve/ui/ve.ui.Inspector.js"></script>
-		<script src="../modules/ve/ui/ve.ui.WindowSet.js"></script>
 		<script src="../modules/ve/ui/ve.ui.Tool.js"></script>
 		<script src="../modules/ve/ui/ve.ui.Toolbar.js"></script>
 		<script src="../modules/ve/ui/ve.ui.TargetToolbar.js"></script>
@@ -276,6 +273,7 @@
 		<script src="../modules/ve/ui/ve.ui.TriggerRegistry.js"></script>
 		<script src="../modules/ve/ui/ve.ui.Action.js"></script>
 		<script src="../modules/ve/ui/ve.ui.ActionFactory.js"></script>
+		<script src="../modules/ve/ui/ve.ui.WindowManager.js"></script>
 		<script src="../modules/ve/ui/actions/ve.ui.AnnotationAction.js"></script>
 		<script src="../modules/ve/ui/actions/ve.ui.ContentAction.js"></script>
 		<script src="../modules/ve/ui/actions/ve.ui.FormatAction.js"></script>
@@ -283,15 +281,16 @@
 		<script src="../modules/ve/ui/actions/ve.ui.IndentationAction.js"></script>
 		<script src="../modules/ve/ui/actions/ve.ui.ListAction.js"></script>
 		<script src="../modules/ve/ui/actions/ve.ui.WindowAction.js"></script>
-		<script src="../modules/ve/ui/dialogs/ve.ui.ActionDialog.js"></script>
-		<script src="../modules/ve/ui/dialogs/ve.ui.NodeDialog.js"></script>
 		<script src="../modules/ve/ui/dialogs/ve.ui.CommandHelpDialog.js"></script>
-		<script src="../modules/ve/ui/widgets/ve.ui.LanguageResultWidget.js"></script>
+		<script src="../modules/ve/ui/dialogs/ve.ui.FragmentDialog.js"></script>
+		<script src="../modules/ve/ui/dialogs/ve.ui.NodeDialog.js"></script>
 		<script src="../modules/ve/ui/widgets/ve.ui.LanguageSearchWidget.js"></script>
+		<script src="../modules/ve/ui/widgets/ve.ui.LanguageResultWidget.js"></script>
 		<script src="../modules/ve/ui/dialogs/ve.ui.LanguageSearchDialog.js"></script>
+		<script src="../modules/ve/ui/widgets/ve.ui.LanguageInputWidget.js"></script>
 		<script src="../modules/ve/ui/widgets/ve.ui.SurfaceWidget.js"></script>
 		<script src="../modules/ve/ui/widgets/ve.ui.LinkTargetInputWidget.js"></script>
-		<script src="../modules/ve/ui/widgets/ve.ui.ContextWidget.js"></script>
+		<script src="../modules/ve/ui/widgets/ve.ui.ContextMenuWidget.js"></script>
 		<script src="../modules/ve/ui/widgets/ve.ui.ContextItemWidget.js"></script>
 		<script src="../modules/ve/ui/widgets/ve.ui.DimensionsWidget.js"></script>
 		<script src="../modules/ve/ui/widgets/ve.ui.MediaSizeWidget.js"></script>
@@ -304,15 +303,18 @@
 		<script src="../modules/ve/ui/tools/ve.ui.InspectorTool.js"></script>
 		<script src="../modules/ve/ui/tools/ve.ui.LanguageInspectorTool.js"></script>
 		<script src="../modules/ve/ui/tools/ve.ui.ListTool.js"></script>
+		<script src="../modules/ve/ui/inspectors/ve.ui.FragmentInspector.js"></script>
 		<script src="../modules/ve/ui/inspectors/ve.ui.AnnotationInspector.js"></script>
+		<script src="../modules/ve/ui/inspectors/ve.ui.InsertionInspector.js"></script>
+		<script src="../modules/ve/ui/inspectors/ve.ui.NodeInspector.js"></script>
 		<script src="../modules/ve/ui/inspectors/ve.ui.LinkInspector.js"></script>
-		<script src="../modules/ve/ui/widgets/ve.ui.LanguageInputWidget.js"></script>
 		<script src="../modules/ve/ui/inspectors/ve.ui.LanguageInspector.js"></script>
 		<script src="../modules/ve/ui/inspectors/ve.ui.SpecialCharacterInspector.js"></script>
 
 		<!-- visualEditor.desktop.build -->
 		<script src="../modules/ve/ui/ve.ui.DesktopSurface.js"></script>
 		<script src="../modules/ve/ui/ve.ui.DesktopContext.js"></script>
+		<script src="../modules/ve/ui/ve.ui.DesktopInspectorManager.js"></script>
 
 		<script>ve.init.platform.setModulesUrl( '../modules' );</script>
 

@@ -12,7 +12,7 @@
 .ve-ui-contextItemWidget .oo-ui-labeledElement-label {
 	color: #666;
 	/* Size required to match menu and inspector widths */
-	max-width: 17.6em;
+	max-width: 19.4em;
 	text-overflow: ellipsis;
 	overflow: hidden;
 }
