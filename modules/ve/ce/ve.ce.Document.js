@@ -136,7 +136,8 @@ ve.ce.Document.prototype.getRelativeOffset = function ( offset, direction, unit 
  * @throws {Error} Offset could not be translated to a DOM element and offset
  */
 ve.ce.Document.prototype.getNodeAndOffset = function ( offset ) {
-	var node, startOffset, current, stack, item, $item, length,
+	var node, startOffset, current, stack, item, $item, length, model,
+		countedNodes = [],
 		slug = this.getSlugAtOffset( offset );
 	if ( slug ) {
 		return { node: slug, offset: 0 };
@@ -172,14 +173,20 @@ ve.ce.Document.prototype.getNodeAndOffset = function ( offset ) {
 					};
 				}
 			} else if ( $item.is( '.ve-ce-branchNode, .ve-ce-leafNode' ) ) {
-				length = $item.data( 'view' ).model.getOuterLength();
-				if ( offset >= startOffset && offset < startOffset + length ) {
-					stack.push( [$item.contents(), 0] );
-					current[1]++;
-					current = stack[stack.length - 1];
-					continue;
-				} else {
-					startOffset += length;
+				model = $item.data( 'view' ).model;
+				// DM nodes can render as multiple elements in the view, so check
+				// we haven't already counted it.
+				if ( ve.indexOf( model, countedNodes ) === -1 ) {
+					length = model.getOuterLength();
+					countedNodes.push( model );
+					if ( offset >= startOffset && offset < startOffset + length ) {
+						stack.push( [$item.contents(), 0] );
+						current[1]++;
+						current = stack[stack.length - 1];
+						continue;
+					} else {
+						startOffset += length;
+					}
 				}
 			} else {
 				stack.push( [$item.contents(), 0] );
