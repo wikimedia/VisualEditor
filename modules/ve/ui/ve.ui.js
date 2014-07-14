@@ -19,4 +19,4 @@ ve.ui = {
 	'windowFactory': new OO.Factory()
 };
 
-ve.ui.windowFactory.register( OO.ui.ConfirmationDialog );
+ve.ui.windowFactory.register( OO.ui.MessageDialog );
