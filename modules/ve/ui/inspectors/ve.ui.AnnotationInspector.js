@@ -208,11 +208,9 @@ ve.ui.AnnotationInspector.prototype.getSetupProcess = function ( data ) {
  * @inheritdoc
  */
 ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
+	data = data || {};
 	return ve.ui.AnnotationInspector.super.prototype.getTeardownProcess.call( this, data )
 		.first( function () {
-			// Configuration initialization
-			data = data || {};
-
 			var i, len, annotations, insertion,
 				add = false,
 				insert = false,
