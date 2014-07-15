@@ -160,7 +160,7 @@ ve.ui.MediaSizeWidget.prototype.onScalableOriginalSizeChange = function ( dimens
 
 /**
  * Respond to default size or status change in the scalable object.
- * @param {Boolean} isDefault Current default state
+ * @param {boolean} isDefault Current default state
  */
 ve.ui.MediaSizeWidget.prototype.onScalableDefaultSizeChange = function ( isDefault ) {
 	// Update the default size into the dimensions widget
@@ -365,7 +365,7 @@ ve.ui.MediaSizeWidget.prototype.getRatio = function () {
  */
 ve.ui.MediaSizeWidget.prototype.setMaxDimensions = function ( dimensions ) {
 	// Normalize dimensions before setting
-	var maxDimensions = this.scalable.getDimensionsFromValue( dimensions );
+	var maxDimensions = ve.dm.Scalable.static.getDimensionsFromValue( dimensions, this.scalable.getRatio() );
 	this.scalable.setMaxDimensions( maxDimensions );
 };
 
@@ -387,7 +387,7 @@ ve.ui.MediaSizeWidget.prototype.getCurrentDimensions = function () {
 
 /**
  * Disable or enable the entire widget
- * @param {Boolean} isDisabled Disable the widget
+ * @param {boolean} isDisabled Disable the widget
  */
 ve.ui.MediaSizeWidget.prototype.setDisabled = function ( isDisabled ) {
 	// The 'setDisabled' method seems to be called before the widgets
@@ -429,7 +429,7 @@ ve.ui.MediaSizeWidget.prototype.setCurrentDimensions = function ( dimensions ) {
 	this.preventChangeRecursion = true;
 
 	// Normalize the new dimensions
-	this.currentDimensions = this.scalable.getDimensionsFromValue( dimensions );
+	this.currentDimensions = ve.dm.Scalable.static.getDimensionsFromValue( dimensions, this.scalable.getRatio() );
 
 	if ( this.currentDimensions.width || this.currentDimensions.height ) {
 		// This will only update if the value has changed
