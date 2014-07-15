@@ -80,17 +80,19 @@ ve.ce.Document.prototype.getSiblingWordBoundary = function ( offset, direction )
 
 /**
  * Get the relative word or character boundary.
+ *
  * This method is in CE instead of DM because it uses information about slugs about which model
  * does not know at all.
  *
  * @method
  * @param {number} offset Offset to start from
- * @param {number} [direction] Direction to prefer matching offset in, -1 for left and 1 for right
+ * @param {number} direction Direction to prefer matching offset in, -1 for left and 1 for right
  * @param {string} [unit] Unit [word|character]
  * @returns {number} Relative offset
  */
 ve.ce.Document.prototype.getRelativeOffset = function ( offset, direction, unit ) {
-	var bias, relativeContentOffset, relativeStructuralOffset, newOffset;
+	var relativeContentOffset, relativeStructuralOffset, newOffset, adjacentDataOffset, isFocusable,
+		data = this.model.data;
 	if ( unit === 'word' ) { // word
 		// Method getSiblingWordBoundary does not "move/jump" over element data. If passed offset is
 		// an element data offset then the same offset is returned - and in such case this method
@@ -101,17 +103,35 @@ ve.ce.Document.prototype.getRelativeOffset = function ( offset, direction, unit 
 		}
 		return newOffset;
 	} else { // character
-		bias = direction > 0 ? 1 : -1;
-		relativeContentOffset = this.model.data.getRelativeContentOffset( offset, direction );
-		relativeStructuralOffset = this.model.data.getRelativeStructuralOffset( offset + bias, direction, true );
-		// Check if we've moved into a slug
-		if ( !!this.getSlugAtOffset( relativeStructuralOffset ) ) {
+		// Check if we are adjacent to a focusable node
+		adjacentDataOffset = offset + ( direction > 0 ? 0 : -1 );
+		if (
+			data.isElementData( adjacentDataOffset ) &&
+			ve.ce.nodeFactory.isNodeFocusable( data.getType( adjacentDataOffset ) )
+		) {
+			// We are adjacent to a focusableNode, move inside it
+			return offset + direction;
+		}
+		relativeContentOffset = data.getRelativeContentOffset( offset, direction );
+		relativeStructuralOffset = data.getRelativeStructuralOffset( offset, direction, true );
+		// Check the structural offset is not in the wrong direction
+		if ( ( relativeStructuralOffset - offset < 0 ? -1 : 1 ) !== direction ) {
+			relativeStructuralOffset = offset;
+		} else {
+			isFocusable = ( relativeStructuralOffset - offset < 0 ? -1 : 1 ) === direction &&
+				data.isElementData( relativeStructuralOffset + direction ) &&
+				ve.ce.nodeFactory.isNodeFocusable( data.getType( relativeStructuralOffset + direction ) );
+		}
+		// Check if we've moved into a slug or a focusableNode
+		if ( isFocusable || this.getSlugAtOffset( relativeStructuralOffset ) ) {
+			if ( isFocusable ) {
+				relativeStructuralOffset += direction;
+			}
 			// Check if the relative content offset is in the opposite direction we are trying to go
 			if (
 				relativeContentOffset === offset ||
-				( relativeContentOffset - offset < 0 ? -1 : 1 ) !== bias
+				( relativeContentOffset - offset < 0 ? -1 : 1 ) !== direction
 			) {
-				// There's nothing past the slug we are already in, stay in it
 				return relativeStructuralOffset;
 			}
 			// There's a slug neaby, go into it if it's closer
@@ -119,7 +139,10 @@ ve.ce.Document.prototype.getRelativeOffset = function ( offset, direction, unit 
 				Math.min( relativeContentOffset, relativeStructuralOffset ) :
 				Math.max( relativeContentOffset, relativeStructuralOffset );
 		} else {
-			return relativeContentOffset;
+			// Don't allow the offset to move in the wrong direction
+			return direction > 0 ?
+				Math.max( relativeContentOffset, offset ) :
+				Math.min( relativeContentOffset, offset );
 		}
 	}
 };
@@ -216,7 +239,8 @@ ve.ce.Document.prototype.getNearestFocusableNode = function ( offset, direction,
 		offset,
 		direction === 1 ? 0 : -1,
 		function ( index, limit ) {
-			if ( ( index >= limit ? 1 : -1 ) === direction ) {
+			// Our result must be between offset and limit
+			if ( index >= Math.max( offset, limit ) || index < Math.min( offset, limit ) ) {
 				return true;
 			}
 			if (
@@ -256,28 +280,33 @@ ve.ce.Document.prototype.getNearestFocusableNode = function ( offset, direction,
 ve.ce.Document.prototype.getRelativeRange = function ( range, direction, unit, expand ) {
 	var contentOrSlugOffset,
 		focusableNode,
-		node;
+		newOffset,
+		newRange,
+		to = range.to;
 
-	contentOrSlugOffset = this.getRelativeOffset( range.to, direction, unit );
-
-	if ( expand ) {
-		return new ve.Range( range.from, contentOrSlugOffset );
-	}
-
-	node = this.getDocumentNode().getNodeFromOffset( range.start + 1 );
-	if ( node && node.isFocusable() ) {
-		if ( node === this.getDocumentNode().getNodeFromOffset( range.end - 1 ) ) {
-			if ( this.model.data.isContentOffset( range.to ) || !!this.getSlugAtOffset( range.to ) ) {
-				return new ve.Range( direction === 1 ? range.end : range.start );
-			}
+	// If you have a non-collapsed range and you move, collapse to the end
+	// in the direction you moved, provided you end up at a content or slug offset
+	if ( !range.isCollapsed() && !expand ) {
+		newOffset = direction > 0 ? range.end : range.start;
+		if ( this.model.data.isContentOffset( newOffset ) || this.getSlugAtOffset( newOffset ) ) {
+			return new ve.Range( newOffset );
+		} else {
+			to = newOffset;
 		}
 	}
 
-	focusableNode = this.getNearestFocusableNode( range.to, direction, contentOrSlugOffset );
+	contentOrSlugOffset = this.getRelativeOffset( to, direction, unit );
+
+	focusableNode = this.getNearestFocusableNode( to, direction, contentOrSlugOffset );
 	if ( focusableNode ) {
-		return focusableNode.getOuterRange( direction === -1 /* backwards */ );
+		newRange = focusableNode.getOuterRange( direction === -1 );
 	} else {
-		return new ve.Range( contentOrSlugOffset );
+		newRange = new ve.Range( contentOrSlugOffset );
+	}
+	if ( expand ) {
+		return new ve.Range( range.from, newRange.to );
+	} else {
+		return newRange;
 	}
 };
 
