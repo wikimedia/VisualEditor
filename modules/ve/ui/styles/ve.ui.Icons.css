@@ -120,6 +120,11 @@
 	background-image: url(images/icons/indent-list-ltr.svg);
 }
 
+.oo-ui-icon-insert {
+	/* @embed */
+	background-image: url(images/icons/insert.svg);
+}
+
 .oo-ui-icon-italic-a {
 	/* @embed */
 	background-image: url(images/icons/italic-a.svg);
