@@ -12,7 +12,8 @@
 			"درفش کاویانی",
 			"Fatemi127",
 			"Armin1392",
-			"Calak"
+			"Calak",
+			"Oldstoneage"
 		]
 	},
 	"visualeditor": "ویرایشگر دیداری",
@@ -82,5 +83,5 @@
 	"visualeditor-specialcharacter-button-tooltip": "مشخصهٔ ویژه",
 	"visualeditor-specialcharacterinspector-title": "مشخصهٔ ویژه",
 	"visualeditor-toolbar-insert": "درج کردن",
-	"visualeditor-version-label": "نسخه"
+	"visualeditor-version-label": "نسخة"
 }

@@ -8,7 +8,8 @@
 			"QuimGil",
 			"SMP",
 			"Vriullop",
-			"Fitoschido"
+			"Fitoschido",
+			"Toniher"
 		]
 	},
 	"visualeditor": "Editor visual",
@@ -27,6 +28,7 @@
 	"visualeditor-clipboard-paste": "Enganxa",
 	"visualeditor-dialog-action-apply": "Desa els canvis",
 	"visualeditor-dialog-action-cancel": "Canceŀla",
+	"visualeditor-dialog-action-done": "Fet",
 	"visualeditor-dialog-action-goback": "Enrere",
 	"visualeditor-formatdropdown-format-heading1": "Encapçalament 1",
 	"visualeditor-formatdropdown-format-heading2": "Encapçalament 2",
@@ -50,6 +52,7 @@
 	"visualeditor-languageinspector-widget-label-direction": "Direcció",
 	"visualeditor-languageinspector-widget-label-langcode": "Codi d'idioma",
 	"visualeditor-languageinspector-widget-label-language": "Idioma",
+	"visualeditor-linkinspector-open": "Obre",
 	"visualeditor-linkinspector-title": "Enllaç",
 	"visualeditor-listbutton-bullet-tooltip": "Llista puntejada",
 	"visualeditor-listbutton-number-tooltip": "Llista numerada",
