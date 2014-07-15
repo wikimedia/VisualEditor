@@ -92,9 +92,9 @@ ve.init.Target.static.toolbarGroups = [
 		'type': 'list',
 		'indicator': 'down',
 		'icon': 'text-style',
-		'include': [ { 'group': 'textStyle' }, 'clear' ],
+		'include': [ { 'group': 'textStyle' }, 'language', 'clear' ],
 		'promote': [ 'bold', 'italic' ],
-		'demote': [ 'strikethrough', 'code',  'underline', 'clear' ]
+		'demote': [ 'strikethrough', 'code', 'underline', 'language', 'clear' ]
 	},
 	// Link
 	{
