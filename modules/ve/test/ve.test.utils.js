@@ -127,7 +127,7 @@ ve.test.utils.createSurfaceFromHtml = function ( html ) {
 
 /**
  * Create a UI surface from a document
- * @param {ve.dm.Document|HTMLDocument} doc Document
+ * @param {ve.dm.Document} doc Document
  * @returns {ve.ui.Surface} UI surface
  */
 ve.test.utils.createSurfaceFromDocument = function ( doc ) {

@@ -196,7 +196,7 @@
 	};
 
 	/**
-	 * Assert that two objects which may contain dom elements are equal.
+	 * Assert that two objects which may contain node trees are equal.
 	 * @method
 	 * @static
 	 */
