@@ -1742,9 +1742,9 @@ ve.ce.Surface.prototype.handleUpOrDownArrowKey = function ( e ) {
 	rangySelection = rangy.getSelection( this.$document[0] );
 	// Perform programatic handling only for selection that is expanded and backwards according to
 	// model data but not according to browser data.
-	if ( !selection.isCollapsed() && selection.isBackwards() && !rangySelection.isBackwards() ) {
+	if ( !this.focusedNode && !selection.isCollapsed() && selection.isBackwards() && !rangySelection.isBackwards() ) {
 		$element = this.$( this.documentView.getSlugAtOffset( selection.to ) );
-		if ( !$element ) {
+		if ( !$element.length ) {
 			$element = this.$( '<span>' )
 				.html( ' ' )
 				.css( { 'width': '0px', 'display': 'none' } );
