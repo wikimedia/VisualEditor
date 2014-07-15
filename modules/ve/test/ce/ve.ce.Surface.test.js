@@ -867,6 +867,152 @@ QUnit.test( 'getNearestCorrectOffset', function ( assert ) {
 	}
 } );
 
+QUnit.test( 'getSelection', function ( assert ) {
+	var i, j, l, surface, selection, expectedNode, internlListNode, node, msg,
+		expect = 0,
+		cases = [
+			{
+				'msg': 'Grouped aliens',
+				'html': '<p>' +
+					'Foo' +
+					'<span rel="ve:Alien" about="g1">Bar</span>' +
+					'<span rel="ve:Alien" about="g1">Baz</span>' +
+					'<span rel="ve:Alien" about="g1">Quux</span>' +
+					'Whee' +
+				'</p>' +
+				'<p>' +
+					'2<b>n</b>d' +
+				'</p>',
+				'expected': [
+					{ startNode: 'Foo', startOffset: 0 },
+					{ startNode: 'Foo', startOffset: 0 },
+					{ startNode: 'Foo', startOffset: 1 },
+					{ startNode: 'Foo', startOffset: 2 },
+					{ startNode: 'Foo', startOffset: 3 },
+					null, // Focusable
+					{ startNode: 'Whee', startOffset: 0 },
+					{ startNode: 'Whee', startOffset: 1 },
+					{ startNode: 'Whee', startOffset: 2 },
+					{ startNode: 'Whee', startOffset: 3 },
+					{ startNode: 'Whee', startOffset: 4 },
+					{ startNode: 'Whee', startOffset: 4, endNode: '2', endOffset: 0 },
+					{ startNode: '2', startOffset: 0 },
+					{ startNode: '2', startOffset: 1 },
+					{ startNode: 'n', startOffset: 1 },
+					{ startNode: 'd', startOffset: 1 }
+				]
+			},
+			{
+				'msg': 'Simple example doc',
+				'html': ve.dm.example.html,
+				'expected': [
+					{ startNode: 'a', startOffset: 0 },
+					{ startNode: 'a', startOffset: 0 },
+					{ startNode: 'a', startOffset: 1 },
+					{ startNode: 'b', startOffset: 1 },
+					{ startNode: 'c', startOffset: 1 },
+					{ startNode: 'c', startOffset: 1, endNode: 'd', endOffset: 0 },
+					{ startNode: 'c', startOffset: 1, endNode: 'd', endOffset: 0 },
+					{ startNode: 'c', startOffset: 1, endNode: 'd', endOffset: 0 },
+					{ startNode: 'c', startOffset: 1, endNode: 'd', endOffset: 0 },
+					{ startNode: 'c', startOffset: 1, endNode: 'd', endOffset: 0 },
+					// 10
+					{ startNode: 'd', startOffset: 0 },
+					{ startNode: 'd', startOffset: 1 },
+					{ startNode: 'd', startOffset: 1, endNode: 'e', endOffset: 0 },
+					{ startNode: 'd', startOffset: 1, endNode: 'e', endOffset: 0 },
+					{ startNode: 'd', startOffset: 1, endNode: 'e', endOffset: 0 },
+					{ startNode: 'e', startOffset: 0 },
+					{ startNode: 'e', startOffset: 1 },
+					{ startNode: 'e', startOffset: 1, endNode: 'f', endOffset: 0 },
+					{ startNode: 'e', startOffset: 1, endNode: 'f', endOffset: 0 },
+					{ startNode: 'e', startOffset: 1, endNode: 'f', endOffset: 0 },
+					// 20
+					{ startNode: 'f', startOffset: 0 },
+					{ startNode: 'f', startOffset: 1 },
+					{ startNode: 'f', startOffset: 1, endNode: 'g', endOffset: 0 },
+					{ startNode: 'f', startOffset: 1, endNode: 'g', endOffset: 0 },
+					{ startNode: 'f', startOffset: 1, endNode: 'g', endOffset: 0 },
+					{ startNode: 'f', startOffset: 1, endNode: 'g', endOffset: 0 },
+					{ startNode: 'f', startOffset: 1, endNode: 'g', endOffset: 0 },
+					{ startNode: 'f', startOffset: 1, endNode: 'g', endOffset: 0 },
+					{ startNode: 'f', startOffset: 1, endNode: 'g', endOffset: 0 },
+					{ startNode: 'g', startOffset: 0 },
+					// 30
+					{ startNode: 'g', startOffset: 1 },
+					{ startNode: 'g', startOffset: 1, endNode: 'h', endOffset: 0 },
+					{ startNode: 'g', startOffset: 1, endNode: 'h', endOffset: 0 },
+					{ startNode: 'g', startOffset: 1, endNode: 'h', endOffset: 0 },
+					{ startNode: 'g', startOffset: 1, endNode: 'h', endOffset: 0 },
+					{ startNode: 'g', startOffset: 1, endNode: 'h', endOffset: 0 },
+					{ startNode: 'g', startOffset: 1, endNode: 'h', endOffset: 0 },
+					{ startNode: 'g', startOffset: 1, endNode: 'h', endOffset: 0 },
+					{ startNode: 'h', startOffset: 0 },
+					{ startNode: 'h', startOffset: 1 },
+					// 40
+					null, // Focusable
+					{ startNode: 'i', startOffset: 0 },
+					{ startNode: 'i', startOffset: 1 },
+					{ startNode: 'i', startOffset: 1, endNode: 'j', endOffset: 0 },
+					{ startNode: 'i', startOffset: 1, endNode: 'j', endOffset: 0 },
+					{ startNode: 'i', startOffset: 1, endNode: 'j', endOffset: 0 },
+					{ startNode: 'j', startOffset: 0 },
+					{ startNode: 'j', startOffset: 1 },
+					{ startNode: 'j', startOffset: 1, endNode: 'k', endOffset: 0 },
+					{ startNode: 'j', startOffset: 1, endNode: 'k', endOffset: 0 },
+					// 50
+					{ startNode: 'j', startOffset: 1, endNode: 'k', endOffset: 0 },
+					{ startNode: 'k', startOffset: 0 },
+					{ startNode: 'k', startOffset: 1 },
+					{ startNode: 'k', startOffset: 1, endNode: 'l', endOffset: 0 },
+					{ startNode: 'k', startOffset: 1, endNode: 'l', endOffset: 0 },
+					{ startNode: 'k', startOffset: 1, endNode: 'l', endOffset: 0 },
+					{ startNode: 'l', startOffset: 0 },
+					{ startNode: 'l', startOffset: 1 },
+					{ startNode: 'l', startOffset: 1, endNode: 'm', endOffset: 0 },
+					{ startNode: 'm', startOffset: 0 },
+					// 60
+					{ startNode: 'm', startOffset: 1 }
+				]
+			}
+		];
+
+	for ( i = 0; i < cases.length; i++ ) {
+		for ( j = 0; j < cases[i].expected.length; j++ ) {
+			expect += cases[i].expected[j] ? ( cases[i].expected[j].endNode ? 4 : 2 ) : 1;
+		}
+	}
+
+	QUnit.expect( expect );
+
+	for ( i = 0; i < cases.length; i++ ) {
+		surface = ve.test.utils.createSurfaceFromHtml( cases[i].html );
+		internlListNode = surface.getModel().getDocument().getInternalList().getListNode();
+		for ( j = 0, l = internlListNode.getOuterRange().start; j < l; j++ ) {
+			msg = ' at ' + j + ' in ' + cases[i].msg;
+			node = surface.getView().getDocument().getDocumentNode().getNodeFromOffset( j );
+			if ( node.isFocusable() ) {
+				assert.equal( null, cases[i].expected[j], 'Focusable node at ' + j );
+			} else {
+				selection = surface.getView().getSelection( new ve.Range( j ) );
+				if ( selection.end ) {
+					expectedNode = $( '<div>' ).html( cases[i].expected[j].startNode )[0].childNodes[0];
+					assert.equalDomElement( selection.start.node, expectedNode, 'Start node ' + msg );
+					assert.equal( selection.start.offset, cases[i].expected[j].startOffset, 'Start offfset ' + msg );
+					expectedNode = $( '<div>' ).html( cases[i].expected[j].endNode )[0].childNodes[0];
+					assert.equalDomElement( selection.end.node, expectedNode, 'End node ' + msg );
+					assert.equal( selection.end.offset, cases[i].expected[j].endOffset, 'End offfset ' + msg );
+				} else {
+					expectedNode = $( '<div>' ).html( cases[i].expected[j].startNode )[0].childNodes[0];
+					assert.equalDomElement( selection.start.node, expectedNode, 'Node ' + msg );
+					assert.equal( selection.start.offset, cases[i].expected[j].startOffset, 'Offset ' + msg );
+				}
+			}
+		}
+	}
+
+} );
+
 /* Methods with return values */
 // TODO: ve.ce.Surface#hasSlugAtOffset
 // TODO: ve.ce.Surface#needsPawn

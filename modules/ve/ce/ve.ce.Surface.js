@@ -2162,32 +2162,49 @@ ve.ce.Surface.prototype.handleDelete = function ( e, backspace ) {
  * @param {ve.Range} range Range to show selection on
  */
 ve.ce.Surface.prototype.showSelection = function ( range ) {
-	var start, end,
-		documentElement,
+	var documentElement = this.documentView.getDocumentNode().$element[0],
+		selection = this.getSelection( range ),
 		rangySel = rangy.getSelection( this.$document[0] ),
 		rangyRange = rangy.createRange( this.$document[0] );
 
+	// Setting a range doesn't give focus in all browsers so make sure this happens
+	if ( document.activeElement !== documentElement ) {
+		documentElement.focus();
+	}
+	if ( selection.end ) {
+		rangyRange.setStart( selection.start.node, selection.start.offset );
+		rangyRange.setEnd( selection.end.node, selection.end.offset );
+		rangySel.removeAllRanges();
+		rangySel.addRange( rangyRange, selection.isBackwards );
+	} else {
+		rangyRange.setStart( selection.start.node, selection.start.offset );
+		rangySel.setSingleRange( rangyRange );
+	}
+};
+
+/**
+ * Get selection for a range.
+ *
+ * @method
+ * @param {ve.Range} range Range to get selection for
+ * @returns {Object} Object containing start and end node/offset selections, and an isBackwards flag.
+ */
+ve.ce.Surface.prototype.getSelection = function ( range ) {
 	range = new ve.Range(
 		this.getNearestCorrectOffset( range.from, -1 ),
 		this.getNearestCorrectOffset( range.to, 1 )
 	);
 
 	if ( !range.isCollapsed() ) {
-		start = this.documentView.getNodeAndOffset( range.start );
-		end = this.documentView.getNodeAndOffset( range.end );
-		rangyRange.setStart( start.node, start.offset );
-		rangyRange.setEnd( end.node, end.offset );
-		rangySel.removeAllRanges();
-		rangySel.addRange( rangyRange, range.start !== range.from );
+		return {
+			'start': this.documentView.getNodeAndOffset( range.start ),
+			'end': this.documentView.getNodeAndOffset( range.end ),
+			'isBackwards': range.isBackwards()
+		};
 	} else {
-		documentElement = this.documentView.getDocumentNode().$element[0];
-		// Setting a range doesn't give focus in all browsers so make sure this happens
-		if ( document.activeElement !== documentElement ) {
-			documentElement.focus();
-		}
-		start = this.documentView.getNodeAndOffset( range.start );
-		rangyRange.setStart( start.node, start.offset );
-		rangySel.setSingleRange( rangyRange );
+		return {
+			'start': this.documentView.getNodeAndOffset( range.start )
+		};
 	}
 };
 
