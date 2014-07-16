@@ -56,8 +56,12 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 	this.$element
 		.addClass( 've-ui-surface' )
 		.append( this.view.$element );
-	this.localOverlay.$element.append( this.$blockers, this.$controls );
-	this.globalOverlay.$element.append( this.dialogs.$element );
+	this.localOverlay.$element
+		.addClass( 've-ui-surface-localOverlay' )
+		.append( this.$blockers, this.$controls );
+	this.globalOverlay.$element
+		.addClass( 've-ui-surface-globalOverlay' )
+		.append( this.dialogs.$element );
 
 	// Make instance globally accessible for debugging
 	ve.instances.push( this );
