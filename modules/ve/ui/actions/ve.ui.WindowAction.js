@@ -53,12 +53,14 @@ ve.ui.WindowAction.prototype.open = function ( name, data ) {
 
 	data = ve.extendObject( { 'dir': dir }, data, { 'fragment': fragment } );
 
-	if ( windowClass.prototype instanceof ve.ui.FragmentInspector ) {
-		windowManager = this.surface.getContext().getInspectors();
-	} else if ( windowClass.prototype instanceof OO.ui.Dialog ) {
-		windowManager = this.surface.getDialogs();
+	if ( windowClass ) {
+		if ( windowClass.prototype instanceof ve.ui.FragmentInspector ) {
+			windowManager = this.surface.getContext().getInspectors();
+		} else if ( windowClass.prototype instanceof OO.ui.Dialog ) {
+			windowManager = this.surface.getDialogs();
+		}
+		windowManager.openWindow( name, data );
 	}
-	windowManager.openWindow( name, data );
 };
 
 /* Registration */
