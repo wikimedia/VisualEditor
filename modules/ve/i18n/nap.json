@@ -15,6 +15,7 @@
 	"visualeditor-clearbutton-tooltip": "Pulisce furmattazzione",
 	"visualeditor-dialog-action-apply": "Applica càgnamiente",
 	"visualeditor-dialog-action-cancel": "Annulla",
+	"visualeditor-dialog-action-done": "Fatto",
 	"visualeditor-dialog-action-goback": "A vascio",
 	"visualeditor-formatdropdown-format-heading1": "Titulo 1",
 	"visualeditor-formatdropdown-format-heading2": "Titulo 2",
@@ -34,6 +35,11 @@
 	"visualeditor-languageinspector-widget-label-langcode": "Codece lengua",
 	"visualeditor-languageinspector-widget-label-language": "Lengua",
 	"visualeditor-linkinspector-title": "Jonta",
+	"visualeditor-shortcuts-text-style": "Stile testo",
+	"visualeditor-toolbar-history": "Cronologgia",
 	"visualeditor-toolbar-insert": "'Nserisce",
+	"visualeditor-toolbar-paragraph-format": "Furmattazzione",
+	"visualeditor-toolbar-structure": "Struttura",
+	"visualeditor-toolbar-text-style": "Stile",
 	"visualeditor-version-label": "Verzione"
 }

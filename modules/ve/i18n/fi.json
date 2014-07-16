@@ -83,10 +83,14 @@
 	"visualeditor-shortcuts-formatting": "Kappaleen muotoilu",
 	"visualeditor-shortcuts-history": "Historia",
 	"visualeditor-shortcuts-other": "Muut",
-	"visualeditor-shortcuts-text-style": "Tekstin muotoilu",
+	"visualeditor-shortcuts-text-style": "Tekstin tyyli",
 	"visualeditor-specialcharacter-button-tooltip": "Erikoismerkit",
 	"visualeditor-specialcharacterinspector-title": "Erikoismerkit",
 	"visualeditor-specialcharinspector-characterlist-insert": "{\n\t\"symbolit\": {\n\t\t\"−\": \"−\",\n\t\t\"—\": \"—\",\n\t\t\"°\": \"°\",\n\t\t\"″\": \"″\",\n\t\t\"′\": \"′\",\n\t\t\"←\": \"←\",\n\t\t\"→\": \"→\",\n\t\t\"·\": \"·\",\n\t\t\"§\": \"§\"\n\t},\n\t\"aksentit\": {\n\t\t\"à\": \"à\",\n\t\t\"á\": \"á\",\n\t\t\"â\": \"â\",\n\t\t\"å\": \"å\",\n\t\t\"ä\": \"ä\",\n\t\t\"ç\": \"ç\",\n\t\t\"è\": \"è\",\n\t\t\"é\": \"é\",\n\t\t\"ê\": \"ê\",\n\t\t\"ë\": \"ë\",\n\t\t\"ì\": \"ì\",\n\t\t\"í\": \"í\",\n\t\t\"î\": \"î\",\n\t\t\"ï\": \"ï\",\n\t\t\"ò\": \"ò\",\n\t\t\"ó\": \"ó\",\n\t\t\"ô\": \"ô\",\n\t\t\"ö\": \"ö\",\n\t\t\"ø\": \"ø\",\n\t\t\"ù\": \"ù\",\n\t\t\"ú\": \"ú\",\n\t\t\"û\": \"û\",\n\t\t\"ü\": \"ü\"\n\t},\n\t\"matematiikka\": {\n\t\t\"−\": \"−\",\n\t\t\"×\": \"×\",\n\t\t\"÷\": \"÷\",\n\t\t\"≈\": \"≈\",\n\t\t\"≠\": \"≠\",\n\t\t\"≤\": \"≤\",\n\t\t\"≥\": \"≥\",\n\t\t\"±\": \"±\"\n\t}\n}",
+	"visualeditor-toolbar-history": "Historia",
 	"visualeditor-toolbar-insert": "Aseta",
+	"visualeditor-toolbar-paragraph-format": "Muotoilu",
+	"visualeditor-toolbar-structure": "Rakenne",
+	"visualeditor-toolbar-text-style": "Tyyli",
 	"visualeditor-version-label": "Versio"
 }

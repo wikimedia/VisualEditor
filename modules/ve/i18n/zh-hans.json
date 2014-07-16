@@ -83,9 +83,13 @@
 	"visualeditor-shortcuts-formatting": "段落格式",
 	"visualeditor-shortcuts-history": "历史",
 	"visualeditor-shortcuts-other": "其他",
-	"visualeditor-shortcuts-text-style": "文本格式",
+	"visualeditor-shortcuts-text-style": "文本样式",
 	"visualeditor-specialcharacter-button-tooltip": "特殊字符",
 	"visualeditor-specialcharacterinspector-title": "特殊字符",
+	"visualeditor-toolbar-history": "历史",
 	"visualeditor-toolbar-insert": "插入",
+	"visualeditor-toolbar-paragraph-format": "格式化",
+	"visualeditor-toolbar-structure": "结构",
+	"visualeditor-toolbar-text-style": "样式",
 	"visualeditor-version-label": "版本"
 }

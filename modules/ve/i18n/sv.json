@@ -80,10 +80,14 @@
 	"visualeditor-shortcuts-formatting": "Styckesformatering",
 	"visualeditor-shortcuts-history": "Historik",
 	"visualeditor-shortcuts-other": "Andra",
-	"visualeditor-shortcuts-text-style": "Textformatering",
+	"visualeditor-shortcuts-text-style": "Textstil",
 	"visualeditor-specialcharacter-button-tooltip": "Specialtecken",
 	"visualeditor-specialcharacterinspector-title": "Specialtecken",
 	"visualeditor-specialcharinspector-characterlist-insert": "{\n\t\"symboler\": {\n\t\t\"−\": \"−\",\n\t\t\"—\": \"—\",\n\t\t\"°\": \"°\",\n\t\t\"″\": \"″\",\n\t\t\"′\": \"′\",\n\t\t\"←\": \"←\",\n\t\t\"→\": \"→\",\n\t\t\"·\": \"·\",\n\t\t\"§\": \"§\"\n\t},\n\t\"accenter\": {\n\t\t\"à\": \"à\",\n\t\t\"á\": \"á\",\n\t\t\"â\": \"â\",\n\t\t\"ä\": \"ä\",\n\t\t\"å\": \"å\",\n\t\t\"ç\": \"ç\",\n\t\t\"è\": \"è\",\n\t\t\"é\": \"é\",\n\t\t\"ê\": \"ê\",\n\t\t\"ë\": \"ë\",\n\t\t\"ì\": \"ì\",\n\t\t\"í\": \"í\",\n\t\t\"î\": \"î\",\n\t\t\"ï\": \"ï\",\n\t\t\"ò\": \"ò\",\n\t\t\"ó\": \"ó\",\n\t\t\"ô\": \"ô\",\n\t\t\"ö\": \"ö\",\n\t\t\"ø\": \"ø\",\n\t\t\"ù\": \"ù\",\n\t\t\"ú\": \"ú\",\n\t\t\"û\": \"û\",\n\t\t\"ü\": \"ü\"\n\t},\n\t\"matematiska\": {\n\t\t\"−\": \"−\",\n\t\t\"×\": \"×\",\n\t\t\"÷\": \"÷\",\n\t\t\"≈\": \"≈\",\n\t\t\"≠\": \"≠\",\n\t\t\"≤\": \"≤\",\n\t\t\"≥\": \"≥\",\n\t\t\"±\": \"±\"\n\t}\n}",
+	"visualeditor-toolbar-history": "Historik",
 	"visualeditor-toolbar-insert": "Infoga",
+	"visualeditor-toolbar-paragraph-format": "Formatering",
+	"visualeditor-toolbar-structure": "Struktur",
+	"visualeditor-toolbar-text-style": "Formatering",
 	"visualeditor-version-label": "Version"
 }

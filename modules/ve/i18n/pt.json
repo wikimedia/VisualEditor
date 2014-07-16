@@ -62,7 +62,7 @@
 	"visualeditor-languageinspector-widget-label-direction": "Direcção",
 	"visualeditor-languageinspector-widget-label-langcode": "Código do idioma",
 	"visualeditor-languageinspector-widget-label-language": "Idioma",
-	"visualeditor-language-search-input-placeholder": "Busca por nome de idioma ou seu código",
+	"visualeditor-language-search-input-placeholder": "Pesquisa por nome ou código de idioma",
 	"visualeditor-linkinspector-open": "Abrir",
 	"visualeditor-linkinspector-title": "Hiperligação",
 	"visualeditor-listbutton-bullet-tooltip": "Lista com marcadores",
@@ -82,6 +82,10 @@
 	"visualeditor-shortcuts-text-style": "Formatação de texto",
 	"visualeditor-specialcharacter-button-tooltip": "Carácter especial",
 	"visualeditor-specialcharacterinspector-title": "Carácter especial",
+	"visualeditor-toolbar-history": "Histórico",
 	"visualeditor-toolbar-insert": "Inserir",
+	"visualeditor-toolbar-paragraph-format": "Formatação",
+	"visualeditor-toolbar-structure": "Estrutura",
+	"visualeditor-toolbar-text-style": "Estilo",
 	"visualeditor-version-label": "Versão"
 }

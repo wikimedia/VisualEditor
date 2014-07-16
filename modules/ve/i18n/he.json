@@ -83,6 +83,10 @@
 	"visualeditor-shortcuts-text-style": "עיצוב טקסט",
 	"visualeditor-specialcharacter-button-tooltip": "תו מיוחד",
 	"visualeditor-specialcharacterinspector-title": "תו מיוחד",
+	"visualeditor-toolbar-history": "היסטוריה",
 	"visualeditor-toolbar-insert": "הוספה",
+	"visualeditor-toolbar-paragraph-format": "עיצוב פסקה",
+	"visualeditor-toolbar-structure": "מבנה",
+	"visualeditor-toolbar-text-style": "עיצוב תו",
 	"visualeditor-version-label": "גרסה"
 }

@@ -78,9 +78,13 @@
 	"visualeditor-shortcuts-formatting": "Absatzformatierung",
 	"visualeditor-shortcuts-history": "Verlauf",
 	"visualeditor-shortcuts-other": "Andere",
-	"visualeditor-shortcuts-text-style": "Textformatierung",
+	"visualeditor-shortcuts-text-style": "Textgestaltung",
 	"visualeditor-specialcharacter-button-tooltip": "Sonderzeichen",
 	"visualeditor-specialcharacterinspector-title": "Sonderzeichen",
+	"visualeditor-toolbar-history": "Verlauf",
 	"visualeditor-toolbar-insert": "Einfügen",
+	"visualeditor-toolbar-paragraph-format": "Formatierung",
+	"visualeditor-toolbar-structure": "Struktur",
+	"visualeditor-toolbar-text-style": "Gestaltung",
 	"visualeditor-version-label": "Version"
 }

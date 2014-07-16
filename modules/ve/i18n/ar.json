@@ -11,7 +11,8 @@
 			"مشعل الحربي",
 			"Asaifm",
 			"Tarawneh",
-			"Test Create account"
+			"Test Create account",
+			"محمد عصام"
 		]
 	},
 	"visualeditor": "المحرر المرئي",
@@ -72,6 +73,10 @@
 	"visualeditor-specialcharacter-button-tooltip": "رموز",
 	"visualeditor-specialcharacterinspector-title": "علامة",
 	"visualeditor-specialcharinspector-characterlist-insert": "{\n\t\"ترقيم\": {\n\t\t\"−\": \"−\",\n\t\t\"—\": \"—\",\n\t\t\"°\": \"°\",\n\t\t\"″\": \"″\",\n\t\t\"′\": \"′\",\n\t\t\"←\": \"←\",\n\t\t\"→\": \"→\",\n\t\t\"·\": \"·\",\n\t\t\"§\": \"§\"\n\t},\n\t\"تشكيل\": {\n\t\t\"فتح\": \"َ\",\n\t\t\"ضم\": \"ُ\",\n\t\t\"كسر\": \"ِ\",\n\t\t\"تنوين فتح\": \"ً\",\n\t\t\"تنوين ضم\": \"ٌ\",\n\t\t\"تنوين كسر\": \"ٍ\",\n\t\t\"شد\": \"ّ\",\n\t\t\"سكون\": \"ْ\"\n\t},\n\t\"رياضية\": {\n\t\t\"−\": \"−\",\n\t\t\"×\": \"×\",\n\t\t\"÷\": \"÷\",\n\t\t\"≈\": \"≈\",\n\t\t\"≠\": \"≠\",\n\t\t\"≤\": \"≤\",\n\t\t\"≥\": \"≥\",\n\t\t\"±\": \"±\"\n\t}\n}",
+	"visualeditor-toolbar-history": "تاريخ",
 	"visualeditor-toolbar-insert": "إدراج",
+	"visualeditor-toolbar-paragraph-format": "تنسيق",
+	"visualeditor-toolbar-structure": "هيكل",
+	"visualeditor-toolbar-text-style": "التصميم",
 	"visualeditor-version-label": "نسخة"
 }

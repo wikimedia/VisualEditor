@@ -84,9 +84,13 @@
 	"visualeditor-shortcuts-formatting": "Форматирование абзаца",
 	"visualeditor-shortcuts-history": "История",
 	"visualeditor-shortcuts-other": "Прочее",
-	"visualeditor-shortcuts-text-style": "Форматирование текста",
+	"visualeditor-shortcuts-text-style": "Стиль текста",
 	"visualeditor-specialcharacter-button-tooltip": "Специальный символ",
 	"visualeditor-specialcharacterinspector-title": "Специальный символ",
+	"visualeditor-toolbar-history": "История",
 	"visualeditor-toolbar-insert": "Вставить",
+	"visualeditor-toolbar-paragraph-format": "Форматирование",
+	"visualeditor-toolbar-structure": "Структура",
+	"visualeditor-toolbar-text-style": "Стиль",
 	"visualeditor-version-label": "Версия"
 }

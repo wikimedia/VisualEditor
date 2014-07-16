@@ -26,6 +26,7 @@
 	"visualeditor-clipboard-paste-special": "Als Kloertext drasetzen",
 	"visualeditor-dialog-action-apply": "Ännerungen uwennen",
 	"visualeditor-dialog-action-cancel": "Ofbriechen",
+	"visualeditor-dialog-action-done": "Fäerdeg",
 	"visualeditor-dialog-action-goback": "Zréck",
 	"visualeditor-dialog-error": "Et ass eppes schif gaang...",
 	"visualeditor-dialog-error-dismiss": "Zréck goen",
@@ -55,6 +56,7 @@
 	"visualeditor-languageinspector-widget-label-langcode": "Sproochcode",
 	"visualeditor-languageinspector-widget-label-language": "Sprooch",
 	"visualeditor-language-search-input-placeholder": "nom Numm oder nom Code vun der Sprooch sichen",
+	"visualeditor-linkinspector-open": "Opmaachen",
 	"visualeditor-linkinspector-title": "Link",
 	"visualeditor-listbutton-bullet-tooltip": "Lëscht mat Punkten",
 	"visualeditor-listbutton-number-tooltip": "Numeréiert Lëscht",
@@ -70,9 +72,11 @@
 	"visualeditor-shortcuts-formatting": "Abschnitt formatéieren",
 	"visualeditor-shortcuts-history": "Versiounen",
 	"visualeditor-shortcuts-other": "Anerer",
-	"visualeditor-shortcuts-text-style": "Text formatéieren",
+	"visualeditor-shortcuts-text-style": "Textgestaltung",
 	"visualeditor-specialcharacter-button-tooltip": "Spezialzeechen",
 	"visualeditor-specialcharacterinspector-title": "Spezialzeechen",
+	"visualeditor-toolbar-history": "Versiounen",
 	"visualeditor-toolbar-insert": "Drasetzen",
+	"visualeditor-toolbar-structure": "Struktur",
 	"visualeditor-version-label": "Versioun"
 }

@@ -80,9 +80,13 @@
 	"visualeditor-shortcuts-formatting": "Formattazione dei paragrafi",
 	"visualeditor-shortcuts-history": "Cronologia",
 	"visualeditor-shortcuts-other": "Altro",
-	"visualeditor-shortcuts-text-style": "Formattazione del testo",
+	"visualeditor-shortcuts-text-style": "Stile testo",
 	"visualeditor-specialcharacter-button-tooltip": "Carattere speciale",
 	"visualeditor-specialcharacterinspector-title": "Carattere speciale",
+	"visualeditor-toolbar-history": "Cronologia",
 	"visualeditor-toolbar-insert": "Inserisci",
+	"visualeditor-toolbar-paragraph-format": "Formattazione",
+	"visualeditor-toolbar-structure": "Struttura",
+	"visualeditor-toolbar-text-style": "Stile",
 	"visualeditor-version-label": "Versione"
 }
