@@ -1784,9 +1784,15 @@ ve.ce.Surface.prototype.handleUpOrDownArrowKey = function ( e ) {
  * @method
  */
 ve.ce.Surface.prototype.handleInsertion = function () {
+	// Don't allow a user to delete a focusable node just by typing
+	if ( this.focusedNode ) {
+		return;
+	}
+
 	var slug, data, range, annotations, insertionAnnotations, placeholder,
 		hasChanged = false,
-		selection = this.model.getSelection(), documentModel = this.model.getDocument();
+		selection = this.model.getSelection(),
+		documentModel = this.model.getDocument();
 
 	// Handles removing expanded selection before inserting new text
 	if ( !selection.isCollapsed() ) {
