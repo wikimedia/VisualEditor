@@ -33,6 +33,10 @@ ve.dm.Scalable = function VeDmScalable( config ) {
 	// Mixin constructors
 	OO.EventEmitter.call( this );
 
+	// Computed properties
+	this.ratio = null;
+	this.valid = null;
+
 	// Properties
 	this.fixedRatio = config.fixedRatio;
 	if ( config.currentDimensions ) {
@@ -56,10 +60,6 @@ ve.dm.Scalable = function VeDmScalable( config ) {
 
 	this.setEnforcedMin( config.enforceMin );
 	this.setEnforcedMax( config.enforceMax );
-
-	// Computed properties
-	this.ratio = null;
-	this.valid = null;
 };
 
 /* Inheritance */
@@ -96,7 +96,80 @@ OO.mixinClass( ve.dm.Scalable, OO.EventEmitter );
  * @param {Object} Max dimensions width and height
  */
 
+/**
+ * Calculate the dimensions from a given value of either width or height.
+ * This method doesn't take into account any restrictions of minimum or maximum,
+ * it simply calculates the new dimensions according to the aspect ratio in case
+ * it exists.
+ *
+ * If aspect ratio does not exist, or if the original object is empty, or if the
+ * original object is fully specified, the object is returned as-is without
+ * calculations.
+ *
+ * @param {Object} dimensions Dimensions object with either width or height
+ * if both are given, the object will be returned as-is.
+ * @param {number} [dimensions.width] The width of the image
+ * @param {number} [dimensions.height] The height of the image
+ * @param {number} [ratio] The image width/height ratio, if it exists
+ * @returns {Object} Dimensions object with width and height
+ */
+ve.dm.Scalable.static.getDimensionsFromValue = function ( dimensions, ratio ) {
+	dimensions = ve.copy ( dimensions );
+
+	// Normalize for 'empty' values that are specifically given
+	// so if '' is explicitly given, it should be translated to 0
+	if ( dimensions.width === '' ) {
+		dimensions.width = 0;
+	}
+	if ( dimensions.height === '' ) {
+		dimensions.height = 0;
+	}
+
+	// Calculate the opposite size if needed
+	if ( !dimensions.height && ratio !== null && $.isNumeric( dimensions.width ) ) {
+		dimensions.height = Math.round( dimensions.width / ratio );
+	}
+	if ( !dimensions.width && ratio !== null && $.isNumeric( dimensions.height ) ) {
+		dimensions.width = Math.round( dimensions.height * ratio );
+	}
+
+	return dimensions;
+};
+
 /* Methods */
+
+/**
+ * Clone the current scalable object
+ * @returns {ve.dm.Scalable} Cloned scalable object
+ */
+ve.dm.Scalable.prototype.clone = function () {
+	var currentDimensions = this.getCurrentDimensions(),
+		originalDimensions = this.getOriginalDimensions(),
+		defaultDimensions = this.getDefaultDimensions(),
+		minDimensions = this.getMinDimensions(),
+		maxDimensions = this.getMaxDimensions(),
+		config = {
+			isDefault: !!this.isDefault(),
+			enforceMin: !!this.isEnforcedMin(),
+			enforceMax: !!this.isEnforcedMax()
+		};
+	if ( currentDimensions ) {
+		config.currentDimensions = ve.copy( currentDimensions );
+	}
+	if ( originalDimensions ) {
+		config.originalDimensions = ve.copy( originalDimensions );
+	}
+	if ( defaultDimensions ) {
+		config.defaultDimensions = ve.copy( defaultDimensions );
+	}
+	if ( minDimensions ) {
+		config.minDimensions = ve.copy( minDimensions );
+	}
+	if ( maxDimensions ) {
+		config.maxDimensions = ve.copy( maxDimensions );
+	}
+	return new this.constructor( config );
+};
 
 /**
  * Set the fixed aspect ratio from specified dimensions.
@@ -405,45 +478,6 @@ ve.dm.Scalable.prototype.isTooLarge = function () {
 			this.getCurrentDimensions().width > this.getMaxDimensions().width ||
 			this.getCurrentDimensions().height > this.getMaxDimensions().height
 		) );
-};
-
-/**
- * Calculate the dimensions from a given value of either width or height.
- * This method doesn't take into account any restrictions of minimum or maximum,
- * it simply calculates the new dimensions according to the aspect ratio in case
- * it exists.
- *
- * If aspect ratio does not exist, or if the original object is empty, or if the
- * original object is fully specified, the object is returned as-is without
- * calculations.
- *
- * @param {Object} dimensions Dimensions object with either width or height
- * if both are given, the object will be returned as-is.
- * @param {number} [dimensions.width] The width of the image
- * @param {number} [dimensions.height] The height of the image
- * @returns {Object} Dimensions object with width and height
- */
-ve.dm.Scalable.prototype.getDimensionsFromValue = function ( dimensions ) {
-	dimensions = ve.copy ( dimensions );
-
-	// Normalize for 'empty' values that are specifically given
-	// so if '' is explicitly given, it should be translated to 0
-	if ( dimensions.width === '' ) {
-		dimensions.width = 0;
-	}
-	if ( dimensions.height === '' ) {
-		dimensions.height = 0;
-	}
-
-	// Calculate the opposite size if needed
-	if ( !dimensions.height && this.getRatio() !== null && $.isNumeric( dimensions.width ) ) {
-		dimensions.height = Math.round( dimensions.width / this.getRatio() );
-	}
-	if ( !dimensions.width && this.getRatio() !== null && $.isNumeric( dimensions.height ) ) {
-		dimensions.width = Math.round( dimensions.height * this.getRatio() );
-	}
-
-	return dimensions;
 };
 
 /**
