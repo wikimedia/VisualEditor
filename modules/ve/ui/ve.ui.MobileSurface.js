@@ -30,7 +30,6 @@ ve.ui.MobileSurface = function VeUiMobileSurface() {
 	// Initialization
 	this.globalOverlay.$element
 		.addClass( 've-ui-mobileSurface-overlay ve-ui-mobileSurface-overlay-global' );
-	this.localOverlay.$element.append( this.context.$element );
 };
 
 /* Inheritance */
@@ -83,5 +82,8 @@ ve.ui.MobileSurface.prototype.createContext = function () {
  * @inheritdoc
  */
 ve.ui.MobileSurface.prototype.createDialogWindowManager = function () {
-	return new ve.ui.MobileWindowManager( { 'factory': ve.ui.windowFactory } );
+	return new ve.ui.MobileWindowManager( {
+		'factory': ve.ui.windowFactory,
+		'overlay': this.globalOverlay
+	} );
 };
