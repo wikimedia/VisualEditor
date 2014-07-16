@@ -186,6 +186,7 @@ ve.ui.MediaSizeWidget.prototype.onDimensionsChange = function ( type, value ) {
 	if ( value === '' ) {
 		this.setSizeType( 'default' );
 	} else if ( $.isNumeric( value ) ) {
+		this.setSizeType( 'custom' );
 		dimensions[type] = Number( value );
 		this.setCurrentDimensions( dimensions );
 	}
