@@ -15,7 +15,6 @@
  * @constructor
  * @param {ve.ui.Surface} surface
  * @param {Object} [config] Configuration options
- * @cfg {jQuery} [$contextOverlay=this.$element] Overlay to use for menus in inspectors
  */
 ve.ui.Context = function VeUiContext( surface, config ) {
 	// Parent constructor
