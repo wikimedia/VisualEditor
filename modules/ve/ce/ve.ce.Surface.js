@@ -1685,7 +1685,9 @@ ve.ce.Surface.prototype.endRelocation = function () {
 /*! Utilities */
 
 /**
- * @method
+ * Handle left or right arrow key events
+ *
+ * @param {jQuery.Event} e Left or right key down event
  */
 ve.ce.Surface.prototype.handleLeftOrRightArrowKey = function ( e ) {
 	var selection, range, direction;
@@ -1728,10 +1730,12 @@ ve.ce.Surface.prototype.handleLeftOrRightArrowKey = function ( e ) {
 };
 
 /**
- * @method
+ * Handle up or down arrow key events
+ *
+ * @param {jQuery.Event} e Up or down key down event
  */
 ve.ce.Surface.prototype.handleUpOrDownArrowKey = function ( e ) {
-	var selection, rangySelection, rangyRange, range, $element;
+	var selection, rangySelection, rangyRange, range, slug, $cursorHolder;
 
 	// TODO: onDocumentKeyDown did this already
 	this.surfaceObserver.stopTimerLoop();
@@ -1740,42 +1744,49 @@ ve.ce.Surface.prototype.handleUpOrDownArrowKey = function ( e ) {
 
 	selection = this.model.getSelection();
 	rangySelection = rangy.getSelection( this.$document[0] );
-	// Perform programatic handling only for selection that is expanded and backwards according to
-	// model data but not according to browser data.
-	if ( !this.focusedNode && !selection.isCollapsed() && selection.isBackwards() && !rangySelection.isBackwards() ) {
-		$element = this.$( this.documentView.getSlugAtOffset( selection.to ) );
-		if ( !$element.length ) {
-			$element = this.$( '<span>' )
-				.html( ' ' )
-				.css( { 'width': '0px', 'display': 'none' } );
+
+	if ( this.focusedNode ) {
+		$cursorHolder = this.$( '<span class="ve-ce-surface-cursorHolder"> </span>' ).hide();
+		if ( e.keyCode === OO.ui.Keys.UP ) {
+			$cursorHolder.insertBefore( this.focusedNode.$element.first() );
+		} else {
+			$cursorHolder.insertAfter( this.focusedNode.$element.last() );
+		}
+	} else if ( !selection.isCollapsed() && selection.isBackwards() && !rangySelection.isBackwards() ) {
+		// Perform programatic handling for a selection that is expanded and backwards accordig to
+		// model data but not according to browser data.
+		slug = this.documentView.getSlugAtOffset( selection.to );
+		if ( !slug ) {
+			$cursorHolder = this.$( '<span class="ve-ce-surface-cursorHolder"> </span>' ).hide();
 			rangySelection.anchorNode.splitText( rangySelection.anchorOffset );
 			rangySelection.anchorNode.parentNode.insertBefore(
-				$element[0],
+				$cursorHolder[0],
 				rangySelection.anchorNode.nextSibling
 			);
 		}
-		rangyRange = rangy.createRange( this.$document[0] );
-		rangyRange.selectNode( $element[0] );
-		rangySelection.setSingleRange( rangyRange );
-		setTimeout( ve.bind( function () {
-			if ( !$element.hasClass( 've-ce-branchNode-slug' ) ) {
-				$element.remove();
-			}
-			this.surfaceObserver.pollOnce();
-			if ( e.shiftKey === true ) { // expanded range
-				range = new ve.Range( selection.from, this.model.getSelection().to );
-			} else { // collapsed range (just a cursor)
-				range = new ve.Range( this.model.getSelection().to );
-			}
-			this.model.setSelection( range );
-			this.surfaceObserver.pollOnce();
-		}, this ), 0 );
 	} else {
 		// TODO: onDocumentKeyDown does this anyway
 		this.surfaceObserver.startTimerLoop();
-
 		this.surfaceObserver.pollOnce();
+		return;
 	}
+	rangyRange = rangy.createRange( this.$document[0] );
+	rangyRange.selectNode( $cursorHolder ? $cursorHolder[0] : slug );
+	rangySelection.setSingleRange( rangyRange );
+	setTimeout( ve.bind( function () {
+		if ( $cursorHolder ) {
+			$cursorHolder.remove();
+			this.surfaceObserver.clear();
+		}
+		this.surfaceObserver.pollOnce();
+		if ( e.shiftKey === true ) { // expanded range
+			range = new ve.Range( selection.from, this.model.getSelection().to );
+		} else { // collapsed range (just a cursor)
+			range = new ve.Range( this.model.getSelection().to );
+		}
+		this.model.setSelection( range );
+		this.surfaceObserver.pollOnce();
+	}, this ) );
 };
 
 /**
