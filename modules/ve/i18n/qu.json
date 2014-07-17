@@ -22,6 +22,7 @@
 	"visualeditor-clipboard-paste-special": "Qillqallata k'askachiy",
 	"visualeditor-dialog-action-apply": "Hukchasqakunata llamk'achiy",
 	"visualeditor-dialog-action-cancel": "Ama niy",
+	"visualeditor-dialog-action-done": "Rurasqañam",
 	"visualeditor-dialog-action-goback": "Kutimuy",
 	"visualeditor-dialog-error": "Imapas manam allinchu tukurqan…",
 	"visualeditor-dialog-error-dismiss": "Kutimuy",
@@ -52,6 +53,7 @@
 	"visualeditor-languageinspector-widget-label-langcode": "Rimay tuyru",
 	"visualeditor-languageinspector-widget-label-language": "Rimay",
 	"visualeditor-language-search-input-placeholder": "Rimaypa sutinkama icha tuyrukama maskay",
+	"visualeditor-linkinspector-open": "Kichariy",
 	"visualeditor-linkinspector-title": "T'inki",
 	"visualeditor-listbutton-bullet-tooltip": "Muruchayuq sutisuyu",
 	"visualeditor-listbutton-number-tooltip": "Yupayniyuq sutisuyu",
@@ -70,6 +72,10 @@
 	"visualeditor-shortcuts-text-style": "Qillqata rikch'akuychay",
 	"visualeditor-specialcharacter-button-tooltip": "Sapaq sanampa",
 	"visualeditor-specialcharacterinspector-title": "Sapaq sanampa",
+	"visualeditor-toolbar-history": "Wiñay kawsay",
 	"visualeditor-toolbar-insert": "Sat'iy",
+	"visualeditor-toolbar-paragraph-format": "Rikch'akuychaspa",
+	"visualeditor-toolbar-structure": "Kaynin",
+	"visualeditor-toolbar-text-style": "Rikch'akuychay",
 	"visualeditor-version-label": "Musuqchasqa"
 }
