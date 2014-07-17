@@ -296,33 +296,6 @@ ve.ce.getOffsetOfSlug = function ( $node ) {
 };
 
 /**
- * Check if the key code represents a left or right arrow key
- * @param {number} keyCode Key code
- * @returns {boolean} Key code represents a left or right arrow key
- */
-ve.ce.isLeftOrRightArrowKey = function ( keyCode ) {
-	return keyCode === OO.ui.Keys.LEFT || keyCode === OO.ui.Keys.RIGHT;
-};
-
-/**
- * Check if the key code represents an up or down arrow key
- * @param {number} keyCode Key code
- * @returns {boolean} Key code represents an up or down arrow key
- */
-ve.ce.isUpOrDownArrowKey = function ( keyCode ) {
-	return keyCode === OO.ui.Keys.UP || keyCode === OO.ui.Keys.DOWN;
-};
-
-/**
- * Check if the key code represents an arrow key
- * @param {number} keyCode Key code
- * @returns {boolean} Key code represents an arrow key
- */
-ve.ce.isArrowKey = function ( keyCode ) {
-	return ve.ce.isLeftOrRightArrowKey( keyCode ) || ve.ce.isUpOrDownArrowKey( keyCode );
-};
-
-/**
  * Check if keyboard shortcut modifier key is pressed.
  *
  * @method

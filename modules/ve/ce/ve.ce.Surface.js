@@ -733,7 +733,7 @@ ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
 				this.selecting = true;
 				this.emit( 'selectionStart' );
 			}
-			if ( ve.ce.isLeftOrRightArrowKey( e.keyCode ) ) {
+			if ( e.keyCode === OO.ui.Keys.LEFT || e.keyCode === OO.ui.Keys.RIGHT ) {
 				this.handleLeftOrRightArrowKey( e );
 			} else {
 				this.handleUpOrDownArrowKey( e );
