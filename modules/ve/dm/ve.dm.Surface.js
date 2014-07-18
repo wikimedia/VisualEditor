@@ -314,7 +314,9 @@ ve.dm.Surface.prototype.setInsertionAnnotations = function ( annotations ) {
 		new ve.dm.AnnotationSet( this.documentModel.getStore() );
 
 	this.emit( 'insertionAnnotationsChange', this.insertionAnnotations );
-	this.emit( 'contextChange' );
+	if ( !this.isStaging() ) {
+		this.emit( 'contextChange' );
+	}
 };
 
 /**
@@ -338,7 +340,9 @@ ve.dm.Surface.prototype.addInsertionAnnotations = function ( annotations ) {
 	}
 
 	this.emit( 'insertionAnnotationsChange', this.insertionAnnotations );
-	this.emit( 'contextChange' );
+	if ( !this.isStaging() ) {
+		this.emit( 'contextChange' );
+	}
 };
 
 /**
@@ -362,7 +366,9 @@ ve.dm.Surface.prototype.removeInsertionAnnotations = function ( annotations ) {
 	}
 
 	this.emit( 'insertionAnnotationsChange', this.insertionAnnotations );
-	this.emit( 'contextChange' );
+	if ( !this.isStaging() ) {
+		this.emit( 'contextChange' );
+	}
 };
 
 /**
@@ -486,7 +492,7 @@ ve.dm.Surface.prototype.startQueueingContextChanges = function () {
 ve.dm.Surface.prototype.emitContextChange = function () {
 	if ( this.queueingContextChanges ) {
 		this.contextChangeQueued = true;
-	} else {
+	} else if ( !this.isStaging() ) {
 		this.emit( 'contextChange' );
 	}
 };
@@ -505,7 +511,9 @@ ve.dm.Surface.prototype.stopQueueingContextChanges = function () {
 		this.queueingContextChanges = false;
 		if ( this.contextChangeQueued ) {
 			this.contextChangeQueued = false;
-			this.emit( 'contextChange' );
+			if ( !this.isStaging() ) {
+				this.emit( 'contextChange' );
+			}
 		}
 	}
 };
