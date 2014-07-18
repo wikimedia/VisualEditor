@@ -13,7 +13,7 @@ module.exports = function ( grunt ) {
 	grunt.loadNpmTasks( 'grunt-contrib-qunit' );
 	grunt.loadNpmTasks( 'grunt-contrib-watch' );
 	grunt.loadNpmTasks( 'grunt-cssjanus' );
-	grunt.loadNpmTasks( 'grunt-jscs-checker' );
+	grunt.loadNpmTasks( 'grunt-jscs' );
 	grunt.loadTasks( 'build/tasks' );
 
 	var modules = grunt.file.readJSON( 'build/modules.json' ),
