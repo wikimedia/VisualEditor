@@ -121,22 +121,22 @@ ve.ui.commandRegistry.register(
 	new ve.ui.Command( 'paragraph', 'format', 'convert', 'paragraph' )
 );
 ve.ui.commandRegistry.register(
-	new ve.ui.Command( 'heading1', 'format', 'convert', 'heading', { 'level': 1 } )
+	new ve.ui.Command( 'heading1', 'format', 'convert', 'heading', { level: 1 } )
 );
 ve.ui.commandRegistry.register(
-	new ve.ui.Command( 'heading2', 'format', 'convert', 'heading', { 'level': 2 } )
+	new ve.ui.Command( 'heading2', 'format', 'convert', 'heading', { level: 2 } )
 );
 ve.ui.commandRegistry.register(
-	new ve.ui.Command( 'heading3', 'format', 'convert', 'heading', { 'level': 3 } )
+	new ve.ui.Command( 'heading3', 'format', 'convert', 'heading', { level: 3 } )
 );
 ve.ui.commandRegistry.register(
-	new ve.ui.Command( 'heading4', 'format', 'convert', 'heading', { 'level': 4 } )
+	new ve.ui.Command( 'heading4', 'format', 'convert', 'heading', { level: 4 } )
 );
 ve.ui.commandRegistry.register(
-	new ve.ui.Command( 'heading5', 'format', 'convert', 'heading', { 'level': 5 } )
+	new ve.ui.Command( 'heading5', 'format', 'convert', 'heading', { level: 5 } )
 );
 ve.ui.commandRegistry.register(
-	new ve.ui.Command( 'heading6', 'format', 'convert', 'heading', { 'level': 6 } )
+	new ve.ui.Command( 'heading6', 'format', 'convert', 'heading', { level: 6 } )
 );
 ve.ui.commandRegistry.register(
 	new ve.ui.Command( 'preformatted', 'format', 'convert', 'preformatted' )

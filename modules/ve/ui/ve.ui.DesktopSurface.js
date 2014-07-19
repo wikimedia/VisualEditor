@@ -38,12 +38,12 @@ OO.inheritClass( ve.ui.DesktopSurface, ve.ui.Surface );
  * @inheritdoc
  */
 ve.ui.DesktopSurface.prototype.createContext = function () {
-	return new ve.ui.DesktopContext( this, { '$': this.$ } );
+	return new ve.ui.DesktopContext( this, { $: this.$ } );
 };
 
 /**
  * @inheritdoc
  */
 ve.ui.DesktopSurface.prototype.createDialogWindowManager = function () {
-	return new OO.ui.WindowManager( { 'factory': ve.ui.windowFactory } );
+	return new OO.ui.WindowManager( { factory: ve.ui.windowFactory } );
 };

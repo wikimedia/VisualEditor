@@ -159,7 +159,7 @@ ve.ui.IndentationAction.prototype.indentListItem = function ( listItem ) {
 	tx = ve.dm.Transaction.newFromWrap( documentModel,
 		listItemRange,
 		[],
-		[ { 'type': 'listItem' }, { 'type': 'list', 'attributes': { 'style': listType } } ],
+		[ { type: 'listItem' }, { type: 'list', attributes: { style: listType } } ],
 		[],
 		[]
 	);
@@ -239,7 +239,7 @@ ve.ui.IndentationAction.prototype.unindentListItem = function ( listItem ) {
 	if ( documentModel.data.getData( listItemRange.start - 1 ).type !== 'list' ) {
 		// (1a) listItem is not the first child, split the list before listItem
 		tx = ve.dm.Transaction.newFromInsertion( documentModel, listItemRange.start,
-			[ { 'type': '/list' }, listElement ]
+			[ { type: '/list' }, listElement ]
 		);
 		surfaceModel.change( tx );
 		// tx.translateRange( listItemRange ) doesn't do what we want
@@ -248,7 +248,7 @@ ve.ui.IndentationAction.prototype.unindentListItem = function ( listItem ) {
 	if ( documentModel.data.getData( listItemRange.end ).type !== '/list' ) {
 		// (1b) listItem is not the last child, split the list after listItem
 		tx = ve.dm.Transaction.newFromInsertion( documentModel, listItemRange.end,
-			[ { 'type': '/list' }, listElement ]
+			[ { type: '/list' }, listElement ]
 		);
 		surfaceModel.change( tx );
 		// listItemRange is not affected by this transaction
@@ -261,7 +261,7 @@ ve.ui.IndentationAction.prototype.unindentListItem = function ( listItem ) {
 		// into the list's parent
 		tx = ve.dm.Transaction.newFromWrap( documentModel,
 			new ve.Range( listItemRange.start + 1, listItemRange.end - 1 ),
-			[ { 'type': 'list' }, { 'type': 'listItem' } ],
+			[ { type: 'list' }, { type: 'listItem' } ],
 			[],
 			[],
 			[]
@@ -290,7 +290,7 @@ ve.ui.IndentationAction.prototype.unindentListItem = function ( listItem ) {
 		if ( documentModel.data.getData( splitListRange.start - 1 ).type !== 'listItem' ) {
 			// (3a) Split parentListItem before list
 			tx = ve.dm.Transaction.newFromInsertion( documentModel, splitListRange.start,
-				[ { 'type': '/listItem' }, { 'type': 'listItem' } ]
+				[ { type: '/listItem' }, { type: 'listItem' } ]
 			);
 			surfaceModel.change( tx );
 			// tx.translateRange( splitListRange ) doesn't do what we want
@@ -299,7 +299,7 @@ ve.ui.IndentationAction.prototype.unindentListItem = function ( listItem ) {
 		if ( documentModel.data.getData( splitListRange.end ).type !== '/listItem' ) {
 			// (3b) Split parentListItem after list
 			tx = ve.dm.Transaction.newFromInsertion( documentModel, splitListRange.end,
-				[ { 'type': '/listItem' }, { 'type': 'listItem' } ]
+				[ { type: '/listItem' }, { type: 'listItem' } ]
 			);
 			surfaceModel.change( tx );
 			// splitListRange is not affected by this transaction
@@ -308,7 +308,7 @@ ve.ui.IndentationAction.prototype.unindentListItem = function ( listItem ) {
 		// (4) Unwrap the list and its containing listItem
 		tx = ve.dm.Transaction.newFromWrap( documentModel,
 			new ve.Range( splitListRange.start + 1, splitListRange.end - 1 ),
-			[ { 'type': 'listItem' }, { 'type': 'list' } ],
+			[ { type: 'listItem' }, { type: 'list' } ],
 			[],
 			[],
 			[]

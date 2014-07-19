@@ -81,7 +81,7 @@ QUnit.test( 'Comparable', 7, function ( assert ) {
 		store = new ve.dm.IndexValueStore(),
 		bold = new ve.dm.BoldAnnotation(),
 		italic = new ve.dm.ItalicAnnotation(),
-		strong = new ve.dm.BoldAnnotation( { 'type': 'textStyle/bold', 'attributes': { 'nodeName': 'strong' } } ),
+		strong = new ve.dm.BoldAnnotation( { type: 'textStyle/bold', attributes: { nodeName: 'strong' } } ),
 		underline = new ve.dm.UnderlineAnnotation(),
 		annotationSet = new ve.dm.AnnotationSet( store, store.indexes( [ bold, italic ] ) ),
 		annotationSet2 = new ve.dm.AnnotationSet( store, store.indexes( [ strong, underline ] ) ),

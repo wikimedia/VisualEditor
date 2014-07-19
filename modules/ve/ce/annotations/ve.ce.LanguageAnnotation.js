@@ -26,9 +26,9 @@ ve.ce.LanguageAnnotation = function VeCeLanguageAnnotation( model, parentNode, c
 	this.$element
 		.addClass( 've-ce-LanguageAnnotation' )
 		.attr( {
-			'lang': lang,
-			'dir': dir,
-			'title': ve.msg( 'visualeditor-languageinspector-block-tooltip' )
+			lang: lang,
+			dir: dir,
+			title: ve.msg( 'visualeditor-languageinspector-block-tooltip' )
 		} );
 };
 

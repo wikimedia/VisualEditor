@@ -37,26 +37,26 @@ ve.ui.Toolbar = function VeUiToolbar( surface, options ) {
 		// will effectively also unbind toolbarA.windowEvents as they would share a guid.
 		// Though jQuery does not share the reference (both A and B have the correct context
 		// bound), it does unbind them. Use a regular closure instead.
-		'resize': function () {
+		resize: function () {
 			return toolbar.onWindowResize.apply( toolbar, arguments );
 		},
-		'scroll': function () {
+		scroll: function () {
 			return toolbar.onWindowScroll.apply( toolbar, arguments );
 		}
 	};
 	this.surfaceViewEvents = {
-		'keyup': function () {
+		keyup: function () {
 			return toolbar.onSurfaceViewKeyUp.apply( toolbar, arguments );
 		}
 	};
 	// default directions:
-	this.contextDirection = { 'inline': 'ltr', 'block': 'ltr' };
+	this.contextDirection = { inline: 'ltr', block: 'ltr' };
 	this.$element
 		.addClass( 've-ui-dir-inline-' + this.contextDirection.inline )
 		.addClass( 've-ui-dir-block-' + this.contextDirection.block );
 	// Events
-	this.surface.getModel().connect( this, { 'contextChange': 'onContextChange' } );
-	this.surface.connect( this, { 'addCommand': 'onSurfaceAddCommand' } );
+	this.surface.getModel().connect( this, { contextChange: 'onContextChange' } );
+	this.surface.connect( this, { addCommand: 'onSurfaceAddCommand' } );
 };
 
 /* Inheritance */
@@ -118,7 +118,7 @@ ve.ui.Toolbar.prototype.onWindowResize = function () {
 	update.offset = offset;
 
 	if ( this.floating ) {
-		update.css = { 'right': offset.right };
+		update.css = { right: offset.right };
 		this.$bar.css( update.css );
 	}
 
@@ -254,8 +254,8 @@ ve.ui.Toolbar.prototype.initialize = function () {
 	// call to onWindowScroll, but users of this event (e.g toolbarTracking)
 	// need to also now the non-floating position.
 	this.emit( 'position', this.$bar, {
-		'floating': false,
-		'offset': this.elementOffset
+		floating: false,
+		offset: this.elementOffset
 	} );
 	// Initial state
 	this.updateToolState();
@@ -275,7 +275,7 @@ ve.ui.Toolbar.prototype.initialize = function () {
  */
 ve.ui.Toolbar.prototype.destroy = function () {
 	this.disableFloatable();
-	this.surface.getModel().disconnect( this, { 'contextChange': 'onContextChange' } );
+	this.surface.getModel().disconnect( this, { contextChange: 'onContextChange' } );
 
 	// Parent method
 	OO.ui.Toolbar.prototype.destroy.call( this );
@@ -292,8 +292,8 @@ ve.ui.Toolbar.prototype.float = function () {
 		// When switching into floating mode, set the height of the wrapper and
 		// move the bar to the same offset as the in-flow element
 		update = {
-			'css': { 'left': this.elementOffset.left, 'right': this.elementOffset.right },
-			'floating': true
+			css: { left: this.elementOffset.left, right: this.elementOffset.right },
+			floating: true
 		};
 		this.$element
 			.css( 'height', this.$element.height() )
@@ -315,10 +315,10 @@ ve.ui.Toolbar.prototype.unfloat = function () {
 		this.$element
 			.css( 'height', '' )
 			.removeClass( 've-ui-toolbar-floating' );
-		this.$bar.css( { 'left': '', 'right': '' } );
+		this.$bar.css( { left: '', right: '' } );
 		this.floating = false;
 
-		this.emit( 'position', this.$bar, { 'floating': false } );
+		this.emit( 'position', this.$bar, { floating: false } );
 	}
 };
 

@@ -31,9 +31,9 @@ ve.dm.TextStyleAnnotation.static.matchTagNames = [];
 
 ve.dm.TextStyleAnnotation.static.toDataElement = function ( domElements ) {
 	return {
-		'type': this.name,
-		'attributes': {
-			'nodeName': domElements[0].nodeName.toLowerCase()
+		type: this.name,
+		attributes: {
+			nodeName: domElements[0].nodeName.toLowerCase()
 		}
 	};
 };
@@ -50,7 +50,7 @@ ve.dm.TextStyleAnnotation.static.toDomElements = function ( dataElement, doc ) {
  * @returns {Object}
  */
 ve.dm.TextStyleAnnotation.prototype.getComparableObject = function () {
-	return { 'type': this.getType() };
+	return { type: this.getType() };
 };
 
 /* Registration */

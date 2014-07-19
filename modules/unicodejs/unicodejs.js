@@ -100,7 +100,7 @@
 		/* jslint bitwise: false */
 
 		if ( hi1 === hi2 ) {
-			return [ { 'hi': [ hi1, hi2 ], 'lo': [ lo1, lo2 ] } ];
+			return [ { hi: [ hi1, hi2 ], lo: [ lo1, lo2 ] } ];
 		}
 
 		boxes = [];
@@ -113,13 +113,13 @@
 		/* jslint bitwise: false */
 
 		if ( hi1 < hiMinAbove ) {
-			boxes.push( { 'hi': [ hi1, hi1 ], 'lo': [ lo1, loMax ] } );
+			boxes.push( { hi: [ hi1, hi1 ], lo: [ lo1, loMax ] } );
 		}
 		if ( hiMinAbove <= hiMaxBelow ) {
-			boxes.push( { 'hi': [ hiMinAbove, hiMaxBelow ], 'lo': [ loMin, loMax ] } );
+			boxes.push( { hi: [ hiMinAbove, hiMaxBelow ], lo: [ loMin, loMax ] } );
 		}
 		if ( hiMaxBelow < hi2 ) {
-			boxes.push( { 'hi': [ hi2, hi2 ], 'lo': [ loMin, lo2 ] } );
+			boxes.push( { hi: [ hi2, hi2 ], lo: [ loMin, lo2 ] } );
 		}
 		return boxes;
 	}

@@ -34,26 +34,26 @@ QUnit.module( 've' );
 QUnit.test( 'getDomAttributes', 1, function ( assert ) {
 	assert.deepEqual(
 		ve.getDomAttributes( $( '<div foo="bar" baz quux=3></div>' ).get( 0 ) ),
-		{ 'foo': 'bar', 'baz': '', 'quux': '3' },
+		{ foo: 'bar', baz: '', quux: '3' },
 		'getDomAttributes() returns object with correct attributes'
 	);
 } );
 
 QUnit.test( 'setDomAttributes', 3, function ( assert ) {
 	var element = document.createElement( 'div' );
-	ve.setDomAttributes( element, { 'foo': 'bar', 'baz': '', 'quux': 3 } );
+	ve.setDomAttributes( element, { foo: 'bar', baz: '', quux: 3 } );
 	assert.deepEqual(
 		ve.getDomAttributes( element ),
-		{ 'foo': 'bar', 'baz': '', 'quux': '3' },
+		{ foo: 'bar', baz: '', quux: '3' },
 		'setDomAttributes() sets attributes correctly'
 	);
-	ve.setDomAttributes( element, { 'foo': null, 'bar': 1, 'baz': undefined, 'quux': 5, 'whee': 'yay' } );
+	ve.setDomAttributes( element, { foo: null, bar: 1, baz: undefined, quux: 5, whee: 'yay' } );
 	assert.deepEqual(
 		ve.getDomAttributes( element ),
-		{ 'bar': '1', 'quux': '5', 'whee': 'yay' },
+		{ bar: '1', quux: '5', whee: 'yay' },
 		'setDomAttributes() overwrites attributes, removes attributes, and sets new attributes'
 	);
-	ve.setDomAttributes( element, { 'onclick': 'alert(1);' }, ['foo', 'bar', 'baz', 'quux', 'whee'] );
+	ve.setDomAttributes( element, { onclick: 'alert(1);' }, ['foo', 'bar', 'baz', 'quux', 'whee'] );
 	assert.ok( !element.hasAttribute( 'onclick' ), 'event attributes are blocked when sanitizing' );
 } );
 
@@ -74,22 +74,22 @@ QUnit.test( 'getHtmlAttributes', 7, function ( assert ) {
 		'empty attributes argument'
 	);
 	assert.deepEqual(
-		ve.getHtmlAttributes( { 'src': 'foo' } ),
+		ve.getHtmlAttributes( { src: 'foo' } ),
 		'src="foo"',
 		'one attribute'
 	);
 	assert.deepEqual(
-		ve.getHtmlAttributes( { 'href': 'foo', 'rel': 'bar' } ),
+		ve.getHtmlAttributes( { href: 'foo', rel: 'bar' } ),
 		'href="foo" rel="bar"',
 		'two attributes'
 	);
 	assert.deepEqual(
-		ve.getHtmlAttributes( { 'selected': true, 'blah': false, 'value': 3 } ),
+		ve.getHtmlAttributes( { selected: true, blah: false, value: 3 } ),
 		'selected="selected" value="3"',
 		'handling of booleans and numbers'
 	);
 	assert.deepEqual(
-		ve.getHtmlAttributes( { 'placeholder': '<foo>&"bar"&\'baz\'' } ),
+		ve.getHtmlAttributes( { placeholder: '<foo>&"bar"&\'baz\'' } ),
 		'placeholder="&lt;foo&gt;&amp;&quot;bar&quot;&amp;&#039;baz&#039;"',
 		'escaping of attribute values'
 	);
@@ -102,12 +102,12 @@ QUnit.test( 'getOpeningHtmlTag', 3, function ( assert ) {
 		'opening tag without attributes'
 	);
 	assert.deepEqual(
-		ve.getOpeningHtmlTag( 'img', { 'src': 'foo' } ),
+		ve.getOpeningHtmlTag( 'img', { src: 'foo' } ),
 		'<img src="foo">',
 		'opening tag with one attribute'
 	);
 	assert.deepEqual(
-		ve.getOpeningHtmlTag( 'a', { 'href': 'foo', 'rel': 'bar' } ),
+		ve.getOpeningHtmlTag( 'a', { href: 'foo', rel: 'bar' } ),
 		'<a href="foo" rel="bar">',
 		'tag with two attributes'
 	);
@@ -116,35 +116,35 @@ QUnit.test( 'getOpeningHtmlTag', 3, function ( assert ) {
 ( function () {
 	var plainObj, funcObj, arrObj;
 	plainObj = {
-		'foo': 3,
-		'bar': {
-			'baz': null,
-			'quux': {
-				'whee': 'yay'
+		foo: 3,
+		bar: {
+			baz: null,
+			quux: {
+				whee: 'yay'
 			}
 		}
 	};
 	funcObj = function abc( d ) { return d; };
 	funcObj.foo = 3;
 	funcObj.bar = {
-		'baz': null,
-		'quux': {
-			'whee': 'yay'
+		baz: null,
+		quux: {
+			whee: 'yay'
 		}
 	};
 	arrObj = ['a', 'b', 'c'];
 	arrObj.foo = 3;
 	arrObj.bar = {
-		'baz': null,
-		'quux': {
-			'whee': 'yay'
+		baz: null,
+		quux: {
+			whee: 'yay'
 		}
 	};
 
 	$.each( {
-		'Object': plainObj,
-		'Function': funcObj,
-		'Array': arrObj
+		Object: plainObj,
+		Function: funcObj,
+		Array: arrObj
 	}, function ( type, obj ) {
 
 		QUnit.test( 'getProp( ' + type + ' )', 9, function ( assert ) {
@@ -155,7 +155,7 @@ QUnit.test( 'getOpeningHtmlTag', 3, function ( assert ) {
 			);
 			assert.deepEqual(
 				ve.getProp( obj, 'bar' ),
-				{ 'baz': null, 'quux': { 'whee': 'yay' } },
+				{ baz: null, quux: { whee: 'yay' } },
 				'single key, returns object'
 			);
 			assert.deepEqual(
@@ -254,28 +254,28 @@ QUnit.test( 'createDocumentFromHtml', function ( assert ) {
 	var key, doc, expectedHead, expectedBody,
 		cases = [
 			{
-				'msg': 'simple document with doctype, head and body',
-				'html': '<!doctype html><html><head><title>Foo</title></head><body><p>Bar</p></body></html>',
-				'head': '<title>Foo</title>',
-				'body': '<p>Bar</p>'
+				msg: 'simple document with doctype, head and body',
+				html: '<!doctype html><html><head><title>Foo</title></head><body><p>Bar</p></body></html>',
+				head: '<title>Foo</title>',
+				body: '<p>Bar</p>'
 			},
 			{
-				'msg': 'simple document without doctype',
-				'html': '<html><head><title>Foo</title></head><body><p>Bar</p></body></html>',
-				'head': '<title>Foo</title>',
-				'body': '<p>Bar</p>'
+				msg: 'simple document without doctype',
+				html: '<html><head><title>Foo</title></head><body><p>Bar</p></body></html>',
+				head: '<title>Foo</title>',
+				body: '<p>Bar</p>'
 			},
 			{
-				'msg': 'document with missing closing tags and missing <html> tag',
-				'html': '<!doctype html><head><title>Foo</title><base href="yay"><body><p>Bar<b>Baz',
-				'head': '<title>Foo</title><base href="yay" />',
-				'body': '<p>Bar<b>Baz</b></p>'
+				msg: 'document with missing closing tags and missing <html> tag',
+				html: '<!doctype html><head><title>Foo</title><base href="yay"><body><p>Bar<b>Baz',
+				head: '<title>Foo</title><base href="yay" />',
+				body: '<p>Bar<b>Baz</b></p>'
 			},
 			{
-				'msg': 'empty string results in empty document',
-				'html': '',
-				'head': '',
-				'body': ''
+				msg: 'empty string results in empty document',
+				html: '',
+				head: '',
+				body: ''
 			}
 		];
 	QUnit.expect( cases.length * 2 );
@@ -313,28 +313,28 @@ QUnit.test( 'graphemeSafeSubstring', function ( assert ) {
 		text = '12\ud860\udee245\ud860\udee2789\ud860\udee2bc',
 		cases = [
 			{
-				'msg': 'start and end inside multibyte',
-				'start': 3,
-				'end': 12,
-				'expected': [ '\ud860\udee245\ud860\udee2789\ud860\udee2', '45\ud860\udee2789' ]
+				msg: 'start and end inside multibyte',
+				start: 3,
+				end: 12,
+				expected: [ '\ud860\udee245\ud860\udee2789\ud860\udee2', '45\ud860\udee2789' ]
 			},
 			{
-				'msg': 'start and end next to multibyte',
-				'start': 4,
-				'end': 11,
-				'expected': [ '45\ud860\udee2789', '45\ud860\udee2789' ]
+				msg: 'start and end next to multibyte',
+				start: 4,
+				end: 11,
+				expected: [ '45\ud860\udee2789', '45\ud860\udee2789' ]
 			},
 			{
-				'msg': 'complete string',
-				'start': 0,
-				'end': text.length,
-				'expected': [ text, text ]
+				msg: 'complete string',
+				start: 0,
+				end: text.length,
+				expected: [ text, text ]
 			},
 			{
-				'msg': 'collapsed selection inside multibyte',
-				'start': 3,
-				'end': 3,
-				'expected': [ '\ud860\udee2', '' ]
+				msg: 'collapsed selection inside multibyte',
+				start: 3,
+				end: 3,
+				expected: [ '\ud860\udee2', '' ]
 			}
 		];
 	QUnit.expect( cases.length * 2 );

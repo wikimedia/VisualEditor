@@ -171,8 +171,8 @@ ve.dm.DocumentSynchronizer.prototype.getDocument = function () {
  */
 ve.dm.DocumentSynchronizer.prototype.pushAnnotation = function ( range ) {
 	this.actionQueue.push( {
-		'type': 'annotation',
-		'range': range
+		type: 'annotation',
+		range: range
 	} );
 };
 
@@ -189,11 +189,11 @@ ve.dm.DocumentSynchronizer.prototype.pushAnnotation = function ( range ) {
  */
 ve.dm.DocumentSynchronizer.prototype.pushAttributeChange = function ( node, key, from, to ) {
 	this.actionQueue.push( {
-		'type': 'attributeChange',
-		'node': node,
-		'key': key,
-		'from': from,
-		'to': to
+		type: 'attributeChange',
+		node: node,
+		key: key,
+		from: from,
+		to: to
 	} );
 };
 
@@ -208,9 +208,9 @@ ve.dm.DocumentSynchronizer.prototype.pushAttributeChange = function ( node, key,
  */
 ve.dm.DocumentSynchronizer.prototype.pushResize = function ( node, adjustment ) {
 	this.actionQueue.push( {
-		'type': 'resize',
-		'node': node,
-		'adjustment': adjustment
+		type: 'resize',
+		node: node,
+		adjustment: adjustment
 	} );
 };
 
@@ -226,9 +226,9 @@ ve.dm.DocumentSynchronizer.prototype.pushResize = function ( node, adjustment ) 
  */
 ve.dm.DocumentSynchronizer.prototype.pushRebuild = function ( oldRange, newRange ) {
 	this.actionQueue.push( {
-		'type': 'rebuild',
-		'oldRange': oldRange,
-		'newRange': newRange
+		type: 'rebuild',
+		oldRange: oldRange,
+		newRange: newRange
 	} );
 };
 
@@ -257,8 +257,8 @@ ve.dm.DocumentSynchronizer.prototype.queueEvent = function ( node ) {
 	if ( !node.queuedEventHashes[hash] ) {
 		node.queuedEventHashes[hash] = true;
 		this.eventQueue.push( {
-			'node': node,
-			'args': args.concat( this.transaction )
+			node: node,
+			args: args.concat( this.transaction )
 		} );
 	}
 };

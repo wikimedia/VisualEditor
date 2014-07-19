@@ -26,9 +26,9 @@ OO.inheritClass( ve.ui.MobileWindowManager, ve.ui.WindowManager );
 /* Static Properties */
 
 ve.ui.MobileWindowManager.static.sizes = {
-	'full': {
-		'width': '100%',
-		'height': '100%'
+	full: {
+		width: '100%',
+		height: '100%'
 	}
 };
 ve.ui.MobileWindowManager.static.defaultSize = 'full';

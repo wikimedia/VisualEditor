@@ -19,7 +19,7 @@
  */
 ve.ce.ImageNode = function VeCeImageNode( model, config ) {
 	config = ve.extendObject( {
-		'minDimensions': { 'width': 1, 'height': 1 }
+		minDimensions: { width: 1, height: 1 }
 	}, config );
 
 	// Parent constructor
@@ -35,18 +35,18 @@ ve.ce.ImageNode = function VeCeImageNode( model, config ) {
 	// Events
 	this.$element.on( 'click', ve.bind( this.onClick, this ) );
 	this.$image.on( 'load', ve.bind( this.onLoad, this ) );
-	this.model.connect( this, { 'attributeChange': 'onAttributeChange' } );
+	this.model.connect( this, { attributeChange: 'onAttributeChange' } );
 
 	// Initialization
 	this.$element.addClass( 've-ce-imageNode' );
 	this.$image
 		.attr( {
-			'alt': this.model.getAttribute( 'alt' ),
-			'src': this.getResolvedAttribute( 'src' )
+			alt: this.model.getAttribute( 'alt' ),
+			src: this.getResolvedAttribute( 'src' )
 		} )
 		.css( {
-			'width': this.model.getAttribute( 'width' ),
-			'height': this.model.getAttribute( 'height' )
+			width: this.model.getAttribute( 'width' ),
+			height: this.model.getAttribute( 'height' )
 		} );
 };
 
@@ -110,8 +110,8 @@ ve.ce.ImageNode.prototype.onClick = function ( e ) {
  */
 ve.ce.ImageNode.prototype.onLoad = function () {
 	this.setOriginalDimensions( {
-		'width': this.$image.prop( 'naturalWidth' ),
-		'height': this.$image.prop( 'naturalHeight' )
+		width: this.$image.prop( 'naturalWidth' ),
+		height: this.$image.prop( 'naturalHeight' )
 	} );
 };
 

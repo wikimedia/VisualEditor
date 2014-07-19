@@ -34,9 +34,9 @@ ve.dm.LinkAnnotation.static.splitOnWordbreak = true;
 
 ve.dm.LinkAnnotation.static.toDataElement = function ( domElements ) {
 	return {
-		'type': this.name,
-		'attributes': {
-			'href': domElements[0].getAttribute( 'href' )
+		type: this.name,
+		attributes: {
+			href: domElements[0].getAttribute( 'href' )
 		}
 	};
 };
@@ -78,8 +78,8 @@ ve.dm.LinkAnnotation.prototype.getHref = function () {
  */
 ve.dm.LinkAnnotation.prototype.getComparableObject = function () {
 	return {
-		'type': this.getType(),
-		'href': this.getAttribute( 'href' )
+		type: this.getType(),
+		href: this.getAttribute( 'href' )
 	};
 };
 

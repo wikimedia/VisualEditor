@@ -24,8 +24,8 @@ ve.ui.MobileSurface = function VeUiMobileSurface() {
 	this.scrollPosition = null;
 
 	// Events
-	this.dialogs.connect( this, { 'opening': 'onWindowOpening' } );
-	this.context.getInspectors().connect( this, { 'opening': 'onWindowOpening' } );
+	this.dialogs.connect( this, { opening: 'onWindowOpening' } );
+	this.context.getInspectors().connect( this, { opening: 'onWindowOpening' } );
 
 	// Initialization
 	this.globalOverlay.$element
@@ -75,7 +75,7 @@ ve.ui.MobileSurface.prototype.onWindowOpening = function ( win, opening ) {
  * @inheritdoc
  */
 ve.ui.MobileSurface.prototype.createContext = function () {
-	return new ve.ui.MobileContext( this, { '$': this.$ } );
+	return new ve.ui.MobileContext( this, { $: this.$ } );
 };
 
 /**
@@ -83,7 +83,7 @@ ve.ui.MobileSurface.prototype.createContext = function () {
  */
 ve.ui.MobileSurface.prototype.createDialogWindowManager = function () {
 	return new ve.ui.MobileWindowManager( {
-		'factory': ve.ui.windowFactory,
-		'overlay': this.globalOverlay
+		factory: ve.ui.windowFactory,
+		overlay: this.globalOverlay
 	} );
 };

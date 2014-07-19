@@ -13,7 +13,7 @@
 	 */
 	var ve = {
 		// List of instances of ve.ui.Surface
-		'instances': []
+		instances: []
 	};
 
 	/* Static Methods */
@@ -619,10 +619,10 @@
 	ve.getDomElementSummary = function ( element, includeHtml ) {
 		var i,
 			summary = {
-				'type': element.nodeName.toLowerCase(),
-				'text': element.textContent,
-				'attributes': {},
-				'children': []
+				type: element.nodeName.toLowerCase(),
+				text: element.textContent,
+				attributes: {},
+				children: []
 			};
 
 		if ( includeHtml && element.nodeType === Node.ELEMENT_NODE ) {
@@ -684,7 +684,7 @@
 	};
 
 	ve.elementTypes = {
-		'block': [
+		block: [
 			'div', 'p',
 			// tables
 			'table', 'tbody', 'thead', 'tfoot', 'caption', 'th', 'tr', 'td',
@@ -699,7 +699,7 @@
 			'hr', 'button', 'canvas', 'center', 'col', 'colgroup', 'embed',
 			'map', 'object', 'pre', 'progress', 'video'
 		],
-		'void': [
+		void: [
 			'area', 'base', 'br', 'col', 'command', 'embed', 'hr', 'img',
 			'input', 'keygen', 'link', 'meta', 'param', 'source', 'track', 'wbr'
 		]

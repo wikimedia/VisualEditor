@@ -17,7 +17,7 @@
 ve.ui.LanguageSearchWidget = function VeUiLanguageSearchWidget( config ) {
 	// Configuration intialization
 	config = ve.extendObject( {
-		'placeholder': ve.msg( 'visualeditor-language-search-input-placeholder' )
+		placeholder: ve.msg( 'visualeditor-language-search-input-placeholder' )
 	}, config );
 
 	// Parent constructor
@@ -34,11 +34,11 @@ ve.ui.LanguageSearchWidget = function VeUiLanguageSearchWidget( config ) {
 		this.languageResultWidgets.push(
 			new ve.ui.LanguageResultWidget(
 				{
-					'code': languageCode,
-					'name': ve.init.platform.getLanguageName( languageCode ),
-					'autonym': ve.init.platform.getLanguageAutonym( languageCode )
+					code: languageCode,
+					name: ve.init.platform.getLanguageName( languageCode ),
+					autonym: ve.init.platform.getLanguageAutonym( languageCode )
 				},
-				{ '$': this.$ }
+				{ $: this.$ }
 			)
 		);
 	}

@@ -27,7 +27,7 @@ ve.dm.MetaList = function VeDmMetaList( surface ) {
 	this.items = [];
 
 	// Event handlers
-	this.document.connect( this, { 'transact': 'onTransact' } );
+	this.document.connect( this, { transact: 'onTransact' } );
 
 	// Populate from document
 	metadata = this.document.getMetadata();
@@ -107,9 +107,9 @@ ve.dm.MetaList.prototype.onTransact = function ( tx ) {
 				) {
 					// Plan to move this item to the post-transaction offset and index
 					newItems.push( {
-						'item': this.items[itemIndex],
-						'offset': this.items[itemIndex].offset + newOffset - offset,
-						'index': this.items[itemIndex].offset === offset ?
+						item: this.items[itemIndex],
+						offset: this.items[itemIndex].offset + newOffset - offset,
+						index: this.items[itemIndex].offset === offset ?
 							// Adjust index for insertions or removals that happened at this offset
 							newIndex - index + this.items[itemIndex].index :
 							// Offset is retained over completely, don't adjust index
@@ -131,9 +131,9 @@ ve.dm.MetaList.prototype.onTransact = function ( tx ) {
 					itemIndex++
 				) {
 					newItems.push( {
-						'item': this.items[itemIndex],
-						'offset': newOffset,
-						'index': this.items[itemIndex].index + newIndex - index
+						item: this.items[itemIndex],
+						offset: newOffset,
+						index: this.items[itemIndex].index + newIndex - index
 					} );
 				}
 
@@ -163,9 +163,9 @@ ve.dm.MetaList.prototype.onTransact = function ( tx ) {
 							for ( k = 0, klen = insMeta[j].length; k < klen; k++ ) {
 								item = ve.dm.metaItemFactory.createFromElement( insMeta[j][k] );
 								newItems.push( {
-									'item': item,
-									'offset': newOffset + j,
-									'index': k
+									item: item,
+									offset: newOffset + j,
+									index: k
 								} );
 							}
 						}
@@ -179,9 +179,9 @@ ve.dm.MetaList.prototype.onTransact = function ( tx ) {
 							itemIndex++
 					) {
 						newItems.push( {
-							'item': this.items[itemIndex],
-							'offset': this.items[itemIndex].offset + newOffset - offset,
-							'index': this.items[itemIndex].index
+							item: this.items[itemIndex],
+							offset: this.items[itemIndex].offset + newOffset - offset,
+							index: this.items[itemIndex].index
 						} );
 					}
 				}
@@ -206,7 +206,7 @@ ve.dm.MetaList.prototype.onTransact = function ( tx ) {
 				// Process inserted items
 				for ( j = 0, jlen = insMeta.length; j < jlen; j++ ) {
 					item = ve.dm.metaItemFactory.createFromElement( insMeta[j] );
-					newItems.push( { 'item': item, 'offset': newOffset, 'index': newIndex + j } );
+					newItems.push( { item: item, offset: newOffset, index: newIndex + j } );
 				}
 
 				index += rmMeta.length;
@@ -217,9 +217,9 @@ ve.dm.MetaList.prototype.onTransact = function ( tx ) {
 	// Update the remaining items that the transaction didn't touch or retain over
 	for ( ; itemIndex < numItems; itemIndex++ ) {
 		newItems.push( {
-			'item': this.items[itemIndex],
-			'offset': this.items[itemIndex].offset + newOffset - offset,
-			'index': this.items[itemIndex].offset === offset ?
+			item: this.items[itemIndex],
+			offset: this.items[itemIndex].offset + newOffset - offset,
+			index: this.items[itemIndex].offset === offset ?
 				newIndex - index + this.items[itemIndex].index :
 				this.items[itemIndex].index
 		} );

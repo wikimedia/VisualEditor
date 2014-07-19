@@ -18,12 +18,12 @@
 ve.ce.Document = function VeCeDocument( model, surface ) {
 	// Parent constructor
 	ve.Document.call( this, new ve.ce.DocumentNode(
-		model.getDocumentNode(), surface, { '$': surface.$ }
+		model.getDocumentNode(), surface, { $: surface.$ }
 	) );
 
 	this.getDocumentNode().$element.attr( {
-		'lang': model.getLang(),
-		'dir': model.getDir()
+		lang: model.getLang(),
+		dir: model.getDir()
 	} );
 
 	// Properties

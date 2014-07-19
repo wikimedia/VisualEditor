@@ -24,8 +24,8 @@ ve.ui.MobileContext = function VeUiMobileContext( surface, config ) {
 
 	// Events
 	this.inspectors.connect( this, {
-		'setup': [ 'toggle', true ],
-		'teardown': [ 'toggle', false ]
+		setup: [ 'toggle', true ],
+		teardown: [ 'toggle', false ]
 	} );
 
 	// Initialization
@@ -48,8 +48,8 @@ OO.inheritClass( ve.ui.MobileContext, ve.ui.Context );
  */
 ve.ui.MobileContext.prototype.createInspectorWindowManager = function () {
 	return new ve.ui.MobileWindowManager( {
-		'factory': ve.ui.windowFactory,
-		'overlay': this.surface.getGlobalOverlay()
+		factory: ve.ui.windowFactory,
+		overlay: this.surface.getGlobalOverlay()
 	} );
 };
 

@@ -24,7 +24,7 @@ ve.ce.ContentBranchNode = function VeCeContentBranchNode( model, config ) {
 	this.lastTransaction = null;
 
 	// Events
-	this.connect( this, { 'childUpdate': 'onChildUpdate' } );
+	this.connect( this, { childUpdate: 'onChildUpdate' } );
 };
 
 /* Inheritance */
@@ -139,7 +139,7 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 		}
 		// Create a new DOM node and descend into it
 		ann = ve.ce.annotationFactory.create(
-			annotation.getType(), annotation, node, { '$': node.$ }
+			annotation.getType(), annotation, node, { $: node.$ }
 		).$element[0];
 		current.appendChild( ann );
 		current = ann;

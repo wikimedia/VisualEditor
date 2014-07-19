@@ -19,7 +19,7 @@ ve.ui.HistoryTool = function VeUiHistoryTool( toolGroup, config ) {
 	ve.ui.Tool.call( this, toolGroup, config );
 
 	// Events
-	this.toolbar.getSurface().getModel().connect( this, { 'history': 'onUpdateState' } );
+	this.toolbar.getSurface().getModel().connect( this, { history: 'onUpdateState' } );
 
 	// Initialization
 	this.setDisabled( true );

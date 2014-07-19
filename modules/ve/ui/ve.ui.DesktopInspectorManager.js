@@ -27,22 +27,22 @@ OO.inheritClass( ve.ui.DesktopInspectorManager, ve.ui.WindowManager );
 /* Static Properties */
 
 ve.ui.DesktopInspectorManager.static.sizes = {
-	'small': {
-		'width': 200,
-		'maxHeight': '100%'
+	small: {
+		width: 200,
+		maxHeight: '100%'
 	},
-	'medium': {
-		'width': 300,
-		'maxHeight': '100%'
+	medium: {
+		width: 300,
+		maxHeight: '100%'
 	},
-	'large': {
-		'width': 400,
-		'maxHeight': '100%'
+	large: {
+		width: 400,
+		maxHeight: '100%'
 	},
-	'full': {
+	full: {
 		// These can be non-numeric because they are never used in calculations
-		'width': '100%',
-		'height': '100%'
+		width: '100%',
+		height: '100%'
 	}
 };
 

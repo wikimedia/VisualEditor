@@ -35,7 +35,7 @@ QUnit.test( 'canHaveChildrenNotContent', 1, function ( assert ) {
 } );
 
 QUnit.test( 'getAnnotations', 3, function ( assert ) {
-	var element = { 'type': 'leaf-stub' },
+	var element = { type: 'leaf-stub' },
 		node = new ve.dm.LeafNodeStub( element );
 	assert.deepEqual( node.getAnnotations(), [], 'undefined .annotations returns empty set' );
 	assert.equal( element.annotations, undefined, 'no .annotations property added' );

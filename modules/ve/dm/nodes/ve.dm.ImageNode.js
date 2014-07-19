@@ -44,12 +44,12 @@ ve.dm.ImageNode.static.toDataElement = function ( domElements ) {
 		height = $node.attr( 'height' );
 
 	return {
-		'type': this.name,
-		'attributes': {
-			'src': $node.attr( 'src' ),
-			'alt': alt !== undefined ? alt : null,
-			'width': width !== undefined && width !== '' ? Number( width ) : null,
-			'height': height !== undefined && height !== '' ? Number( height ) : null
+		type: this.name,
+		attributes: {
+			src: $node.attr( 'src' ),
+			alt: alt !== undefined ? alt : null,
+			width: width !== undefined && width !== '' ? Number( width ) : null,
+			height: height !== undefined && height !== '' ? Number( height ) : null
 		}
 	};
 };
@@ -65,13 +65,13 @@ ve.dm.ImageNode.static.toDomElements = function ( dataElement, doc ) {
  */
 ve.dm.ImageNode.prototype.createScalable = function () {
 	return new ve.dm.Scalable( {
-		'currentDimensions': {
-			'width': this.getAttribute( 'width' ),
-			'height': this.getAttribute( 'height' )
+		currentDimensions: {
+			width: this.getAttribute( 'width' ),
+			height: this.getAttribute( 'height' )
 		},
-		'minDimensions': {
-			'width': 1,
-			'height': 1
+		minDimensions: {
+			width: 1,
+			height: 1
 		}
 	} );
 };

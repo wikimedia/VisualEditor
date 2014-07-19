@@ -62,13 +62,13 @@ ve.ce.TestOffset.static.findTextOffset = function ( node, n, reversed ) {
 			offset = reversed ? node.textContent.length - n : n;
 			slice = node.textContent.substring( 0, offset ) + '|' +
 				node.textContent.substring( offset );
-			return { 'node': node, 'offset': offset, 'slice': slice };
+			return { node: node, offset: offset, slice: slice };
 		} else {
-			return { 'consumed': node.textContent.length + 1 };
+			return { consumed: node.textContent.length + 1 };
 		}
 	}
 	if ( node.nodeType !== node.ELEMENT_NODE ) {
-		return { 'consumed': 0 };
+		return { consumed: 0 };
 	}
 	// node is an ELEMENT_NODE below here
 	// TODO consecutive text nodes will cause an extra phantom boundary.
@@ -78,9 +78,9 @@ ve.ce.TestOffset.static.findTextOffset = function ( node, n, reversed ) {
 
 	if ( childNodes.length === 0 ) {
 		if ( n === 0 ) {
-			return { 'node': node, 'offset': 0, 'slice': '|' };
+			return { node: node, offset: 0, slice: '|' };
 		}
-		return { 'consumed': 0 };
+		return { consumed: 0 };
 	}
 
 	if ( reversed ) {
@@ -99,12 +99,12 @@ ve.ce.TestOffset.static.findTextOffset = function ( node, n, reversed ) {
 				consumed += 1;
 				if ( consumed === n ) {
 					// TODO: create a reasonable 'slice' string
-					return { 'node': node, 'offset': i + 1, 'slice': 'XXX' };
+					return { node: node, offset: i + 1, slice: 'XXX' };
 				}
 			}
 		}
 	}
-	return { 'consumed': consumed };
+	return { consumed: consumed };
 };
 
 /**
@@ -255,10 +255,10 @@ ve.ce.TestRunner.prototype.changeSel = function ( start, end ) {
 	this.lastSel = [start, end];
 
 	return {
-		'startNode': foundStart.node,
-		'endNode': foundEnd.node,
-		'startOffset': foundStart.offset,
-		'endOffset': foundEnd.offset
+		startNode: foundStart.node,
+		endNode: foundEnd.node,
+		startOffset: foundStart.offset,
+		endOffset: foundEnd.offset
 	};
 };
 

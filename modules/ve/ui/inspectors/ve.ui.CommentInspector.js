@@ -39,22 +39,22 @@ ve.ui.CommentInspector.static.size = 'large';
 
 ve.ui.CommentInspector.static.actions = [
 	{
-		'action': 'done',
-		'label': OO.ui.deferMsg( 'visualeditor-dialog-action-done' ),
-		'flags': 'primary',
-		'modes': 'edit'
+		action: 'done',
+		label: OO.ui.deferMsg( 'visualeditor-dialog-action-done' ),
+		flags: 'primary',
+		modes: 'edit'
 	},
 	{
-		'action': 'insert',
-		'label': OO.ui.deferMsg( 'visualeditor-commentinspector-insert' ),
-		'flags': [ 'constructive', 'primary' ],
-		'modes': 'insert'
+		action: 'insert',
+		label: OO.ui.deferMsg( 'visualeditor-commentinspector-insert' ),
+		flags: [ 'constructive', 'primary' ],
+		modes: 'insert'
 	},
 	{
-		'action': 'remove',
-		'label': OO.ui.deferMsg( 'visualeditor-inspector-remove-tooltip' ),
-		'flags': 'destructive',
-		'modes': 'edit'
+		action: 'remove',
+		label: OO.ui.deferMsg( 'visualeditor-inspector-remove-tooltip' ),
+		flags: 'destructive',
+		modes: 'edit'
 	}
 ];
 
@@ -68,9 +68,9 @@ ve.ui.CommentInspector.prototype.initialize = function () {
 	ve.ui.CommentInspector.super.prototype.initialize.call( this );
 
 	this.editWidget = new OO.ui.TextInputWidget( {
-		'$': this.$,
-		'multiline': true,
-		'autosize': true
+		$: this.$,
+		multiline: true,
+		autosize: true
 	} );
 
 	this.frame.$content.addClass( 've-ui-commentInspector-content' );
@@ -83,7 +83,7 @@ ve.ui.CommentInspector.prototype.initialize = function () {
 ve.ui.CommentInspector.prototype.getActionProcess = function ( action ) {
 	if ( action === 'remove' || action === 'insert' ) {
 		return new OO.ui.Process( function () {
-			this.close( { 'action': action } );
+			this.close( { action: action } );
 		}, this );
 	}
 	return ve.ui.CommentInspector.super.prototype.getActionProcess.call( this, action );
@@ -155,7 +155,7 @@ ve.ui.CommentInspector.prototype.getTeardownProcess = function ( data ) {
 						ve.dm.Transaction.newFromAttributeChanges(
 							surfaceModel.getDocument(),
 							this.commentNode.getOffset(),
-							{ 'text': rawNewValue }
+							{ text: rawNewValue }
 						)
 					);
 				}
@@ -163,10 +163,10 @@ ve.ui.CommentInspector.prototype.getTeardownProcess = function ( data ) {
 				// Insert new comment node
 				this.getFragment().insertContent( [
 					{
-						'type': 'comment',
-						'attributes': { 'text': rawNewValue }
+						type: 'comment',
+						attributes: { text: rawNewValue }
 					},
-					{ 'type': '/comment' }
+					{ type: '/comment' }
 				] );
 			}
 

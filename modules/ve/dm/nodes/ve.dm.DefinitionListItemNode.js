@@ -31,14 +31,14 @@ ve.dm.DefinitionListItemNode.static.name = 'definitionListItem';
 ve.dm.DefinitionListItemNode.static.parentNodeTypes = [ 'definitionList' ];
 
 ve.dm.DefinitionListItemNode.static.defaultAttributes = {
-	'style': 'term'
+	style: 'term'
 };
 
 ve.dm.DefinitionListItemNode.static.matchTagNames = [ 'dt', 'dd' ];
 
 ve.dm.DefinitionListItemNode.static.toDataElement = function ( domElements ) {
 	var style = domElements[0].nodeName.toLowerCase() === 'dt' ? 'term' : 'definition';
-	return { 'type': this.name, 'attributes': { 'style': style } };
+	return { type: this.name, attributes: { style: style } };
 };
 
 ve.dm.DefinitionListItemNode.static.toDomElements = function ( dataElement, doc ) {

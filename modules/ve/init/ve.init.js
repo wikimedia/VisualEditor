@@ -11,5 +11,5 @@
  * @singleton
  */
 ve.init = {
-	//'platform': Initialized in a file containing a subclass of ve.init.Platform
+	//platform: Initialized in a file containing a subclass of ve.init.Platform
 };

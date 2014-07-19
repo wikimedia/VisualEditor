@@ -85,7 +85,7 @@
 					if ( !e || e.keyCode === undefined ) {
 						return {};
 					} else {
-						return { 'keyCode': e.keyCode };
+						return { keyCode: e.keyCode };
 					}
 				}
 
@@ -99,10 +99,10 @@
 
 					if ( oldHtml !== newHtml ) {
 						logWrite( {
-							'seq': log.length,
-							'time': msUtc,
-							'action': 'changeText',
-							'args': [ newHtml ]
+							seq: log.length,
+							time: msUtc,
+							action: 'changeText',
+							args: [ newHtml ]
 						} );
 						oldHtml = newHtml;
 					}
@@ -111,10 +111,10 @@
 						oldEndOffset !== newEndOffset
 					) {
 						logWrite( {
-							'seq': log.length,
-							'time': msUtc,
-							'action': 'changeSel',
-							'args': [
+							seq: log.length,
+							time: msUtc,
+							action: 'changeSel',
+							args: [
 								newStartOffset,
 								newEndOffset
 							]
@@ -128,10 +128,10 @@
 					}
 
 					logWrite( {
-						'seq': log.length,
-						'time': msUtc,
-						'action': methodName,
-						'args': args
+						seq: log.length,
+						time: msUtc,
+						action: methodName,
+						args: args
 					} );
 				}
 
@@ -156,9 +156,9 @@
 					e.preventDefault();
 
 					comments = {
-						'imeIdentifier': haloElement.identifier.value,
-						'userAgent': navigator.userAgent,
-						'startDom': contentElement.innerHTML
+						imeIdentifier: haloElement.identifier.value,
+						userAgent: navigator.userAgent,
+						startDom: contentElement.innerHTML
 					};
 
 					haloElement.style.display = 'none';

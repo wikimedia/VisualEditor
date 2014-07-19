@@ -16,8 +16,8 @@ QUnit.test( 'constructor', function ( assert ) {
 	var i, len,
 		tests = [
 			{
-				'trigger': 'ctrl+b',
-				'event': event( { 'ctrlKey': true, 'which': 66 } )
+				trigger: 'ctrl+b',
+				event: event( { ctrlKey: true, which: 66 } )
 			}
 		];
 	QUnit.expect( 2 * tests.length );

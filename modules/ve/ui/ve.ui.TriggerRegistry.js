@@ -67,49 +67,49 @@ ve.ui.triggerRegistry = new ve.ui.TriggerRegistry();
 /* Registrations */
 
 ve.ui.triggerRegistry.register(
-	'undo', { 'mac': new ve.ui.Trigger( 'cmd+z' ), 'pc': new ve.ui.Trigger( 'ctrl+z' ) }
+	'undo', { mac: new ve.ui.Trigger( 'cmd+z' ), pc: new ve.ui.Trigger( 'ctrl+z' ) }
 );
 ve.ui.triggerRegistry.register(
 	'redo', {
-		'mac': [
+		mac: [
 			new ve.ui.Trigger( 'cmd+shift+z' ),
 			new ve.ui.Trigger( 'cmd+y' )
 		],
-		'pc': [
+		pc: [
 			new ve.ui.Trigger( 'ctrl+shift+z' ),
 			new ve.ui.Trigger( 'ctrl+y' )
 		]
 	}
 );
 ve.ui.triggerRegistry.register(
-	'bold', { 'mac': new ve.ui.Trigger( 'cmd+b' ), 'pc': new ve.ui.Trigger( 'ctrl+b' ) }
+	'bold', { mac: new ve.ui.Trigger( 'cmd+b' ), pc: new ve.ui.Trigger( 'ctrl+b' ) }
 );
 ve.ui.triggerRegistry.register(
-	'italic', { 'mac': new ve.ui.Trigger( 'cmd+i' ), 'pc': new ve.ui.Trigger( 'ctrl+i' ) }
+	'italic', { mac: new ve.ui.Trigger( 'cmd+i' ), pc: new ve.ui.Trigger( 'ctrl+i' ) }
 );
 ve.ui.triggerRegistry.register(
-	'link', { 'mac': new ve.ui.Trigger( 'cmd+k' ), 'pc': new ve.ui.Trigger( 'ctrl+k' ) }
+	'link', { mac: new ve.ui.Trigger( 'cmd+k' ), pc: new ve.ui.Trigger( 'ctrl+k' ) }
 );
 ve.ui.triggerRegistry.register(
 	'clear', {
-		'mac': [
+		mac: [
 			new ve.ui.Trigger( 'cmd+\\' ),
 			new ve.ui.Trigger( 'cmd+m' )
 		],
-		'pc': [
+		pc: [
 			new ve.ui.Trigger( 'ctrl+\\' ),
 			new ve.ui.Trigger( 'ctrl+m' )
 		]
 	}
 );
 ve.ui.triggerRegistry.register(
-	'underline', { 'mac': new ve.ui.Trigger( 'cmd+u' ), 'pc': new ve.ui.Trigger( 'ctrl+u' ) }
+	'underline', { mac: new ve.ui.Trigger( 'cmd+u' ), pc: new ve.ui.Trigger( 'ctrl+u' ) }
 );
 ve.ui.triggerRegistry.register(
-	'subscript', { 'mac': new ve.ui.Trigger( 'cmd+,' ), 'pc': new ve.ui.Trigger( 'ctrl+,' ) }
+	'subscript', { mac: new ve.ui.Trigger( 'cmd+,' ), pc: new ve.ui.Trigger( 'ctrl+,' ) }
 );
 ve.ui.triggerRegistry.register(
-	'superscript', { 'mac': new ve.ui.Trigger( 'cmd+.' ), 'pc': new ve.ui.Trigger( 'ctrl+.' ) }
+	'superscript', { mac: new ve.ui.Trigger( 'cmd+.' ), pc: new ve.ui.Trigger( 'ctrl+.' ) }
 );
 ve.ui.triggerRegistry.register(
 	'indent', new ve.ui.Trigger( 'tab' )
@@ -119,11 +119,11 @@ ve.ui.triggerRegistry.register(
 );
 ve.ui.triggerRegistry.register(
 	'commandHelp', {
-		'mac': [
+		mac: [
 			new ve.ui.Trigger( 'cmd+/' ),
 			new ve.ui.Trigger( 'cmd+shift+/' ) // =cmd+? on most systems, but not all
 		],
-		'pc': [
+		pc: [
 			new ve.ui.Trigger( 'ctrl+/' ),
 			new ve.ui.Trigger( 'ctrl+shift+/' ) // =ctrl+? on most systems, but not all
 		]
@@ -155,5 +155,5 @@ ve.ui.triggerRegistry.register(
 	'preformatted', new ve.ui.Trigger ( 'ctrl+7' )
 );
 ve.ui.triggerRegistry.register(
-	'pasteSpecial', { 'mac': new ve.ui.Trigger( 'cmd+shift+v' ), 'pc': new ve.ui.Trigger ( 'ctrl+shift+v' ) }
+	'pasteSpecial', { mac: new ve.ui.Trigger( 'cmd+shift+v' ), pc: new ve.ui.Trigger ( 'ctrl+shift+v' ) }
 );

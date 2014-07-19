@@ -105,12 +105,12 @@ ve.init.sa.Target.prototype.createSurface = function ( dmDoc, config ) {
  * @inheritdoc
  */
 ve.init.sa.Target.prototype.setupToolbar = function () {
-	ve.init.sa.Target.super.prototype.setupToolbar.call( this, { 'shadow': true, 'actions': true } );
+	ve.init.sa.Target.super.prototype.setupToolbar.call( this, { shadow: true, actions: true } );
 
 	var actions = new ve.ui.TargetToolbar( this, this.surface );
 
 	actions.setup( [
-		{ 'include': [ 'commandHelp' ] }
+		{ include: [ 'commandHelp' ] }
 	] );
 
 	this.toolbar.$actions.append( actions.$element );

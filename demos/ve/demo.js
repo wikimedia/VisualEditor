@@ -11,7 +11,7 @@ $( function () {
 		var name, items = [];
 		for ( name in ve.demoPages ) {
 			items.push(
-				new OO.ui.MenuItemWidget( ve.demoPages[name],  { 'label': name } )
+				new OO.ui.MenuItemWidget( ve.demoPages[name],  { label: name } )
 			);
 		}
 		return items;
@@ -33,31 +33,31 @@ $( function () {
 
 		// Menu widgets
 		pageMenu = new OO.ui.InlineMenuWidget( {
-			'menu': {
-				'items': getDemoPageItems()
+			menu: {
+				items: getDemoPageItems()
 			}
 		} ),
 		pageLabel = new OO.ui.LabelWidget(
-			{ 'label': 'Page', 'input': pageMenu }
+			{ label: 'Page', input: pageMenu }
 		),
 
 		modeSelect = new OO.ui.ButtonSelectWidget().addItems( [
-			new OO.ui.ButtonOptionWidget( 've', { 'label': 'VE' } ),
-			new OO.ui.ButtonOptionWidget( 'edit', { 'label': 'Edit HTML' } ),
-			new OO.ui.ButtonOptionWidget( 'read', { 'label': 'Read' } )
+			new OO.ui.ButtonOptionWidget( 've', { label: 'VE' } ),
+			new OO.ui.ButtonOptionWidget( 'edit', { label: 'Edit HTML' } ),
+			new OO.ui.ButtonOptionWidget( 'read', { label: 'Read' } )
 		] ),
-		languageTextInput = new OO.ui.TextInputWidget( { 'value': lang } ),
-		languageDirectionButton = new OO.ui.ButtonWidget( { 'label': 'Set language & direction' } ),
+		languageTextInput = new OO.ui.TextInputWidget( { value: lang } ),
+		languageDirectionButton = new OO.ui.ButtonWidget( { label: 'Set language & direction' } ),
 		directionSelect = new OO.ui.ButtonSelectWidget().addItems( [
-			new OO.ui.ButtonOptionWidget( 'rtl', { 'icon': 'text-dir-rtl' } ),
-			new OO.ui.ButtonOptionWidget( 'ltr', { 'icon': 'text-dir-ltr' } )
+			new OO.ui.ButtonOptionWidget( 'rtl', { icon: 'text-dir-rtl' } ),
+			new OO.ui.ButtonOptionWidget( 'ltr', { icon: 'text-dir-ltr' } )
 		] ),
 		sourceTextInput = new OO.ui.TextInputWidget( {
-			'$': this.$,
-			'multiline': true,
-			'autosize': true,
-			'maxRows': 999,
-			'classes': ['ve-demo-source']
+			$: this.$,
+			multiline: true,
+			autosize: true,
+			maxRows: 999,
+			classes: ['ve-demo-source']
 		} ),
 		$readView = $( '<div>' ).addClass( 've-demo-read' ).hide();
 
@@ -226,8 +226,8 @@ $( function () {
 		// Container needs to be visually hidden, but not display:none
 		// so that the toolbar can be measured
 		$targetContainer.empty().show().css( {
-			'height': 0,
-			'overflow': 'hidden'
+			height: 0,
+			overflow: 'hidden'
 		} );
 
 		$targetContainer.css( 'direction', dir );

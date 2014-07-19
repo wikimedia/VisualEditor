@@ -39,12 +39,12 @@ QUnit.test( 'constructor', function ( assert ) {
 QUnit.test( 'onTransact', function ( assert ) {
 	var i, j, surface, tx, list,
 		doc = ve.dm.example.createExampleDocument( 'withMeta' ),
-		comment = { 'type': 'alienMeta', 'attributes': { 'style': 'comment', 'text': 'onTransact test' } },
-		heading = { 'type': 'heading', 'attributes': { 'level': 2 } },
+		comment = { type: 'alienMeta', attributes: { style: 'comment', text: 'onTransact test' } },
+		heading = { type: 'heading', attributes: { level: 2 } },
 		cases = [
 			{
 				// delta: 0
-				'calls': [
+				calls: [
 					[ 'pushRetain', 1 ],
 					[ 'pushReplace', doc, 1, 0, [ 'Q', 'u', 'u', 'x' ] ],
 					[ 'pushRetain', 3 ],
@@ -53,10 +53,10 @@ QUnit.test( 'onTransact', function ( assert ) {
 					[ 'pushReplace', doc, 6, 4, [ '!' ] ],
 					[ 'pushRetain', 2 ]
 				],
-				'msg': 'Transaction inserting, replacing and removing text'
+				msg: 'Transaction inserting, replacing and removing text'
 			},
 			{
-				'calls': [
+				calls: [
 					[ 'pushRetain', 1 ],
 					[
 						'pushReplace', doc, 1, 9,
@@ -69,11 +69,11 @@ QUnit.test( 'onTransact', function ( assert ) {
 						]
 					]
 				],
-				'msg': 'Transaction replacing text and metadata at the same time'
+				msg: 'Transaction replacing text and metadata at the same time'
 			},
 			{
 				// delta: 0
-				'calls': [
+				calls: [
 					[ 'pushRetainMetadata', 1 ],
 					[ 'pushReplaceMetadata', [], [ comment ] ],
 					[ 'pushRetain', 4 ],
@@ -86,47 +86,47 @@ QUnit.test( 'onTransact', function ( assert ) {
 					[ 'pushRetainMetadata', 1 ],
 					[ 'pushReplaceMetadata', [], [ comment ] ]
 				],
-				'msg': 'Transaction inserting, replacing and removing metadata'
+				msg: 'Transaction inserting, replacing and removing metadata'
 			},
 			{
 				// delta: 0
-				'calls': [
+				calls: [
 					[ 'pushReplace', doc, 0, 1, [ heading ] ],
 					[ 'pushRetain', 9 ],
-					[ 'pushReplace', doc, 10, 1, [ { 'type': '/heading' } ] ]
+					[ 'pushReplace', doc, 10, 1, [ { type: '/heading' } ] ]
 				],
-				'msg': 'Transaction converting paragraph to heading'
+				msg: 'Transaction converting paragraph to heading'
 			},
 			{
 				// delta: -9
-				'calls': [
+				calls: [
 					[ 'pushRetain', 1 ],
 					[ 'pushReplace', doc, 1, 9, [] ],
 					[ 'pushRetain', 1 ]
 				],
-				'msg': 'Transaction blanking paragraph'
+				msg: 'Transaction blanking paragraph'
 			},
 			{
 				// delta: +11
-				'calls': [
+				calls: [
 					[ 'pushRetain', 11 ],
 					[ 'pushReplace', doc, 11, 0, ve.dm.example.withMetaPlainData ]
 				],
-				'msg': 'Transaction adding second paragraph at the end'
+				msg: 'Transaction adding second paragraph at the end'
 			},
 			{
 				// delta: -2
-				'calls': [
+				calls: [
 					[ 'pushRetain', 1 ],
 					[ 'pushReplace', doc, 1, 7, [] ],
 					[ 'pushRetain', 1 ],
 					[ 'pushReplaceMetadata', [ ve.dm.example.withMetaMetaData[9][0] ], [] ],
 					[ 'pushRetain', 2 ],
 					// The two operations below have to be in this order because of bug 46138
-					[ 'pushReplace', doc, 11, 0, [ { 'type': 'paragraph' }, 'a', 'b', 'c', { 'type': '/paragraph' } ] ],
+					[ 'pushReplace', doc, 11, 0, [ { type: 'paragraph' }, 'a', 'b', 'c', { type: '/paragraph' } ] ],
 					[ 'pushReplaceMetadata', [], [ comment ] ]
 				],
-				'msg': 'Transaction adding and removing text and metadata'
+				msg: 'Transaction adding and removing text and metadata'
 			}
 		];
 	// HACK: This works because most transactions above don't change the document length, and the
@@ -199,10 +199,10 @@ QUnit.test( 'insertMeta', 5, function ( assert ) {
 		surface = new ve.dm.Surface( doc ),
 		list = new ve.dm.MetaList( surface ),
 		insert = {
-			'type': 'alienMeta',
-			'attributes': {
-				'style': 'comment',
-				'text': 'insertMeta test'
+			type: 'alienMeta',
+			attributes: {
+				style: 'comment',
+				text: 'insertMeta test'
 			}
 		};
 

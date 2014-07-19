@@ -88,9 +88,9 @@ ve.ui.LinkTargetInputWidget.prototype.setValue = function ( value ) {
 		this.annotation = null;
 	} else {
 		this.setAnnotation( new ve.dm.LinkAnnotation( {
-			'type': 'link',
-			'attributes': {
-				'href': value
+			type: 'link',
+			attributes: {
+				href: value
 			}
 		} ) );
 	}

@@ -25,9 +25,9 @@
  */
 ve.dm.Scalable = function VeDmScalable( config ) {
 	config = ve.extendObject( {
-		'fixedRatio': true,
-		'enforceMin': true,
-		'enforceMax': true
+		fixedRatio: true,
+		enforceMin: true,
+		enforceMax: true
 	}, config );
 
 	// Mixin constructors

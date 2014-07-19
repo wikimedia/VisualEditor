@@ -25,17 +25,17 @@ ve.ui.Context = function VeUiContext( surface, config ) {
 	this.visible = false;
 	this.inspector = null;
 	this.inspectors = this.createInspectorWindowManager();
-	this.menu = new ve.ui.ContextMenuWidget( { '$': this.$ } );
+	this.menu = new ve.ui.ContextMenuWidget( { $: this.$ } );
 	this.afterContextChangeTimeout = null;
 	this.afterContextChangeHandler = ve.bind( this.afterContextChange, this );
 
 	// Events
 	this.surface.getModel().connect( this, {
-		'contextChange': 'onContextChange',
-		'select': 'onContextChange'
+		contextChange: 'onContextChange',
+		select: 'onContextChange'
 	} );
-	this.inspectors.connect( this, { 'opening': 'onInspectorOpening' } );
-	this.menu.connect( this, { 'choose': 'onContextItemChoose' } );
+	this.inspectors.connect( this, { opening: 'onInspectorOpening' } );
+	this.menu.connect( this, { choose: 'onContextItemChoose' } );
 
 	// Initialization
 	this.$element.addClass( 've-ui-context' );
@@ -260,7 +260,7 @@ ve.ui.Context.prototype.populateMenu = function () {
 		for ( i = 0, len = tools.length; i < len; i++ ) {
 			tool = tools[i];
 			items.push( new ve.ui.ContextItemWidget(
-				tool.tool.static.name, tool.tool, tool.model, { '$': this.$ }
+				tool.tool.static.name, tool.tool, tool.model, { $: this.$ }
 			) );
 		}
 		this.menu.addItems( items );

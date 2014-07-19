@@ -74,54 +74,54 @@ OO.mixinClass( ve.init.Target, OO.EventEmitter );
 ve.init.Target.static.toolbarGroups = [
 	// History
 	{
-		'header': OO.ui.deferMsg( 'visualeditor-toolbar-history' ),
-		'include': [ 'undo', 'redo' ]
+		header: OO.ui.deferMsg( 'visualeditor-toolbar-history' ),
+		include: [ 'undo', 'redo' ]
 	},
 	// Format
 	{
-		'header': OO.ui.deferMsg( 'visualeditor-toolbar-paragraph-format' ),
-		'type': 'menu',
-		'indicator': 'down',
-		'title': OO.ui.deferMsg( 'visualeditor-toolbar-format-tooltip' ),
-		'include': [ { 'group': 'format' } ],
-		'promote': [ 'paragraph' ],
-		'demote': [ 'preformatted' ]
+		header: OO.ui.deferMsg( 'visualeditor-toolbar-paragraph-format' ),
+		type: 'menu',
+		indicator: 'down',
+		title: OO.ui.deferMsg( 'visualeditor-toolbar-format-tooltip' ),
+		include: [ { group: 'format' } ],
+		promote: [ 'paragraph' ],
+		demote: [ 'preformatted' ]
 	},
 	// Style
 	{
-		'header': OO.ui.deferMsg( 'visualeditor-toolbar-text-style' ),
-		'type': 'list',
-		'indicator': 'down',
-		'icon': 'text-style',
-		'title': OO.ui.deferMsg( 'visualeditor-toolbar-style-tooltip' ),
-		'include': [ { 'group': 'textStyle' }, 'language', 'clear' ],
-		'promote': [ 'bold', 'italic' ],
-		'demote': [ 'strikethrough', 'code', 'underline', 'language', 'clear' ]
+		header: OO.ui.deferMsg( 'visualeditor-toolbar-text-style' ),
+		type: 'list',
+		indicator: 'down',
+		icon: 'text-style',
+		title: OO.ui.deferMsg( 'visualeditor-toolbar-style-tooltip' ),
+		include: [ { group: 'textStyle' }, 'language', 'clear' ],
+		promote: [ 'bold', 'italic' ],
+		demote: [ 'strikethrough', 'code', 'underline', 'language', 'clear' ]
 	},
 	// Link
 	{
-		'header': OO.ui.deferMsg( 'visualeditor-linkinspector-title' ),
-		'include': [ 'link' ]
+		header: OO.ui.deferMsg( 'visualeditor-linkinspector-title' ),
+		include: [ 'link' ]
 	},
 	// Structure
 	{
-		'header': OO.ui.deferMsg( 'visualeditor-toolbar-structure' ),
-		'type': 'list',
-		'icon': 'bullet-list',
-		'indicator': 'down',
-		'include': [ { 'group': 'structure' } ],
-		'demote': [ 'outdent', 'indent' ]
+		header: OO.ui.deferMsg( 'visualeditor-toolbar-structure' ),
+		type: 'list',
+		icon: 'bullet-list',
+		indicator: 'down',
+		include: [ { group: 'structure' } ],
+		demote: [ 'outdent', 'indent' ]
 	},
 	// Insert
 	{
-		'header': OO.ui.deferMsg( 'visualeditor-toolbar-insert' ),
-		'type': 'list',
-		'icon': 'insert',
-		'label': '',
-		'title': OO.ui.deferMsg( 'visualeditor-toolbar-insert' ),
-		'indicator': 'down',
-		'include': '*',
-		'demote': [ 'specialcharacter' ]
+		header: OO.ui.deferMsg( 'visualeditor-toolbar-insert' ),
+		type: 'list',
+		icon: 'insert',
+		label: '',
+		title: OO.ui.deferMsg( 'visualeditor-toolbar-insert' ),
+		indicator: 'down',
+		include: '*',
+		demote: [ 'specialcharacter' ]
 	}
 ];
 
@@ -158,8 +158,8 @@ ve.init.Target.static.surfaceCommands = [
  * @type {Object}
  */
 ve.init.Target.static.pasteRules = {
-	'external': {
-		'blacklist': [
+	external: {
+		blacklist: [
 			// Annotations
 			// TODO: allow spans
 			'textStyle/span',
@@ -167,7 +167,7 @@ ve.init.Target.static.pasteRules = {
 			'alienInline', 'alienBlock'
 		]
 	},
-	'all': null
+	all: null
 };
 
 /* Methods */

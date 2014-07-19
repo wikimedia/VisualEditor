@@ -35,24 +35,24 @@ QUnit.test( 'getOffset', function ( assert ) {
 		expected = 0,
 		testCases = [
 			{
-				'msg': 'Empty paragraph',
-				'html': '<p></p>',
+				msg: 'Empty paragraph',
+				html: '<p></p>',
 				// CE HTML summary:
 				// <p><span [inlineSlug]>&#xFEFF;</span></p>
 				// Linmod:
 				// [<p>, </p>]
-				'expected': [
+				expected: [
 					0,
 					1, 1, 1, 1, 1, 1,
 					2
 				]
 			},
 			{
-				'msg': 'Annotations',
-				'html': '<p><i><b>Foo</b></i></p>',
+				msg: 'Annotations',
+				html: '<p><i><b>Foo</b></i></p>',
 				// Linmod:
 				// [<p>, F, o, o, </p>]
-				'expected': [
+				expected: [
 					0,
 					1, 1, 1, 1,
 					2,
@@ -62,11 +62,11 @@ QUnit.test( 'getOffset', function ( assert ) {
 				]
 			},
 			{
-				'msg': 'Multiple siblings',
-				'html': '<p><b><i>Foo</i><s><u>Bar</u><span>Baz</span></s></b></p>',
+				msg: 'Multiple siblings',
+				html: '<p><b><i>Foo</i><s><u>Bar</u><span>Baz</span></s></b></p>',
 				// Linmod:
 				// [<p>, F, o, o, B, a, r, B, a, z, </p>]
-				'expected': [
+				expected: [
 					0,
 					1, 1, 1, 1,
 					2,
@@ -82,13 +82,13 @@ QUnit.test( 'getOffset', function ( assert ) {
 				]
 			},
 			{
-				'msg': 'Annotated alien',
-				'html': '<p>Foo<b><span rel="ve:Alien">Bar</span></b>Baz</p>',
+				msg: 'Annotated alien',
+				html: '<p>Foo<b><span rel="ve:Alien">Bar</span></b>Baz</p>',
 				// CE HTML summary;
 				// <p>Foo<b><span [alien]>Bar</span></b>Baz</p>
 				// Linmod:
 				// [<p>, F, o, o, <alineinline>, </alineinline>, B, a, z, </p>]
-				'expected': [
+				expected: [
 					0,
 					1, 1,
 					2,
@@ -102,8 +102,8 @@ QUnit.test( 'getOffset', function ( assert ) {
 				]
 			},
 			{
-				'msg': 'Table with block slugs',
-				'html': '<table><tr><td>Foo</td></tr></table>',
+				msg: 'Table with block slugs',
+				html: '<table><tr><td>Foo</td></tr></table>',
 				// CE HTML summary;
 				// <div [slugWrapper]><p [blockSlug]></p></div>
 				// <table><tbody><tr><td>
@@ -112,7 +112,7 @@ QUnit.test( 'getOffset', function ( assert ) {
 				// <div [slugWrapper]><p [blockSlug]></p></div>
 				// Linmod:
 				// [<table>, <tbody>, <tr>, <td>, <p>, F, o, o, </p>, </td>, </tr>, </tbody>, </table>]
-				'expected': [
+				expected: [
 					0, 0, 0, 0, 0, 0, 0, 0,
 					1,
 					2,
@@ -130,15 +130,15 @@ QUnit.test( 'getOffset', function ( assert ) {
 				]
 			},
 			{
-				'msg': 'Paragraph with inline slugs',
-				'html': '<p><span rel="ve:Alien">Foo</span><span rel="ve:Alien">Bar</span><br></p>',
+				msg: 'Paragraph with inline slugs',
+				html: '<p><span rel="ve:Alien">Foo</span><span rel="ve:Alien">Bar</span><br></p>',
 				// CE HTML summary:
 				// <p><span [inlineSlug]>&#xFEFF;</span><span [alien]>Foo</span>
 				// <span [inlineSlug]>&#xFEFF;</span><span [alien]>Bar</span>
 				// <span [inlineSlug]>&#xFEFF;</span><br></br><span [inlineSlug]>&#xFEFF;</span></p>
 				// Linmod:
 				// [<p>, <alineinline>, </alineinline>, <alineinline>, </alineinline>, <break>, </break>, </p>]
-				'expected': [
+				expected: [
 					0,
 					1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 					3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
@@ -201,8 +201,8 @@ QUnit.test( 'getOffset', function ( assert ) {
 // TODO: ve.ce.getOffsetOfSlug
 
 QUnit.test( 'isShortcutKey', 3, function ( assert ) {
-	assert.equal( ve.ce.isShortcutKey( { 'ctrlKey': true } ), true, 'ctrlKey' );
-	assert.equal( ve.ce.isShortcutKey( { 'metaKey': true } ), true, 'metaKey' );
+	assert.equal( ve.ce.isShortcutKey( { ctrlKey: true } ), true, 'ctrlKey' );
+	assert.equal( ve.ce.isShortcutKey( { metaKey: true } ), true, 'metaKey' );
 	assert.equal( ve.ce.isShortcutKey( {} ), false, 'Not set' );
 } );
 

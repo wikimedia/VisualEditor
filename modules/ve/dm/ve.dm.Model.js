@@ -16,7 +16,7 @@
  */
 ve.dm.Model = function VeDmModel( element ) {
 	// Properties
-	this.element = element || { 'type': this.constructor.static.name };
+	this.element = element || { type: this.constructor.static.name };
 };
 
 /* Static Properties */
@@ -124,7 +124,7 @@ ve.dm.Model.static.matchFunction = null;
  * @returns {Object|Array|null} Linear model element, or array with linear model data, or null to alienate
  */
 ve.dm.Model.static.toDataElement = function () {
-	return { 'type': this.name };
+	return { type: this.name };
 };
 
 /**
@@ -187,8 +187,8 @@ ve.dm.Model.static.enableAboutGrouping = false;
  * - a regular expression matching attributes that should be preserved
  * - an array of strings or regular expressions
  * - an object with the following keys:
- *   - 'blacklist': specification of attributes not to preserve (boolean|string|RegExp|Array)
- *   - 'whitelist': specification of attributes to preserve
+ *   - blacklist: specification of attributes not to preserve (boolean|string|RegExp|Array)
+ *   - whitelist: specification of attributes to preserve
  *
  * If only a blacklist is specified, all attributes will be preserved except the ones matching
  * the blacklist. If only a whitelist is specified, only those attributes matching the whitelist

@@ -20,7 +20,7 @@ ve.ui.DesktopContext = function VeUiDesktopContext( surface, config ) {
 	ve.ui.DesktopContext.super.call( this, surface, config );
 
 	// Properites
-	this.popup = new OO.ui.PopupWidget( { '$': this.$, '$container': this.surface.$element } );
+	this.popup = new OO.ui.PopupWidget( { $: this.$, $container: this.surface.$element } );
 	this.transitioning = null;
 	this.suppressed = false;
 	this.onWindowResizeHandler = ve.bind( this.onWindowResize, this );
@@ -28,13 +28,13 @@ ve.ui.DesktopContext = function VeUiDesktopContext( surface, config ) {
 
 	// Events
 	this.surface.getView().connect( this, {
-		'selectionStart': 'onSuppress',
-		'selectionEnd': 'onUnsuppress',
-		'relocationStart': 'onSuppress',
-		'relocationEnd': 'onUnsuppress',
-		'blur': 'onSuppress',
-		'focus': 'onUnsuppress',
-		'position': 'onSurfacePosition'
+		selectionStart: 'onSuppress',
+		selectionEnd: 'onUnsuppress',
+		relocationStart: 'onSuppress',
+		relocationEnd: 'onUnsuppress',
+		blur: 'onSuppress',
+		focus: 'onUnsuppress',
+		position: 'onSurfacePosition'
 	} );
 	this.$window.on( 'resize', this.onWindowResizeHandler );
 	this.$element.on( 'mousedown', false );
@@ -50,7 +50,7 @@ ve.ui.DesktopContext = function VeUiDesktopContext( surface, config ) {
 	// HACK: hide the popup with visibility: hidden; rather than display: none;, because
 	// the popup contains inspector iframes, and applying display: none; to those causes them to
 	// not load in Firefox
-	this.popup.$element.css( { 'visibility': 'hidden', 'display': '' } );
+	this.popup.$element.css( { visibility: 'hidden', display: '' } );
 };
 
 /* Inheritance */
@@ -151,10 +151,10 @@ ve.ui.DesktopContext.prototype.isEmbeddable = function () {
  */
 ve.ui.DesktopContext.prototype.createInspectorWindowManager = function () {
 	return new ve.ui.DesktopInspectorManager( {
-		'$': this.$,
-		'factory': ve.ui.windowFactory,
-		'overlay': this.surface.getLocalOverlay(),
-		'modal': false
+		$: this.$,
+		factory: ve.ui.windowFactory,
+		overlay: this.surface.getLocalOverlay(),
+		modal: false
 	} );
 };
 
@@ -181,8 +181,8 @@ ve.ui.DesktopContext.prototype.toggle = function ( show ) {
 	// they contain inspector iframes, and applying display: none; to those causes them to
 	// not load in Firefox
 	this.$element.add( this.popup.$element ).css( {
-		'visibility': show ? '' : 'hidden',
-		'display': ''
+		visibility: show ? '' : 'hidden',
+		display: ''
 	} );
 
 	this.transitioning.resolve();
@@ -219,7 +219,7 @@ ve.ui.DesktopContext.prototype.updateDimensions = function ( transition ) {
 		focusedOffset = focusedNode.getRelativeOffset();
 		focusedDimensions = focusedNode.getDimensions();
 		if ( embeddable ) {
-			position = { 'y': focusedOffset.top };
+			position = { y: focusedOffset.top };
 			// When context is embedded in RTL, it requires adjustments to the relative
 			// positioning (pop up on the other side):
 			if ( rtl ) {
@@ -232,8 +232,8 @@ ve.ui.DesktopContext.prototype.updateDimensions = function ( transition ) {
 		} else {
 			// Get the position of the focusedNode:
 			position = {
-				'x': focusedOffset.left + focusedDimensions.width / 2,
-				'y': focusedOffset.top + focusedDimensions.height
+				x: focusedOffset.left + focusedDimensions.width / 2,
+				y: focusedOffset.top + focusedDimensions.height
 			};
 			this.popup.align = 'center';
 		}
@@ -244,8 +244,8 @@ ve.ui.DesktopContext.prototype.updateDimensions = function ( transition ) {
 		if ( cursorPosition ) {
 			// Correct for surface offset:
 			position = {
-				'x': cursorPosition.end.x - surfaceOffset.left,
-				'y': cursorPosition.end.y - surfaceOffset.top
+				x: cursorPosition.end.x - surfaceOffset.left,
+				y: cursorPosition.end.y - surfaceOffset.top
 			};
 		}
 		// If !cursorPosition, the surface apparently isn't selected, so getSelectionRect()
@@ -258,7 +258,7 @@ ve.ui.DesktopContext.prototype.updateDimensions = function ( transition ) {
 	}
 
 	if ( position ) {
-		this.$element.css( { 'left': position.x, 'top': position.y } );
+		this.$element.css( { left: position.x, top: position.y } );
 	}
 
 	this.popup.setSize(

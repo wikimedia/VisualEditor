@@ -16,8 +16,8 @@ QUnit.test( 'constructor', 11, function ( assert ) {
 	assert.throws(
 		function () {
 			doc = new ve.dm.Document( [
-				{ 'type': '/paragraph' },
-				{ 'type': 'paragraph' }
+				{ type: '/paragraph' },
+				{ type: 'paragraph' }
 			] );
 			doc.buildNodeTree();
 		},
@@ -42,12 +42,12 @@ QUnit.test( 'constructor', 11, function ( assert ) {
 
 	data = new ve.dm.ElementLinearData(
 		new ve.dm.IndexValueStore(),
-		[ { 'type': 'paragraph' }, { 'type': '/paragraph' } ]
+		[ { type: 'paragraph' }, { type: '/paragraph' } ]
 	);
 	doc = new ve.dm.Document( data );
 	assert.equalNodeTree(
 		doc.getDocumentNode(),
-		new ve.dm.DocumentNode( [ new ve.dm.ParagraphNode( { 'type': 'paragraph' } ) ] ),
+		new ve.dm.DocumentNode( [ new ve.dm.ParagraphNode( { type: 'paragraph' } ) ] ),
 		'empty paragraph no longer has a text node'
 	);
 	assert.equal( doc.data, data, 'ElementLinearData is stored by reference' );
@@ -84,28 +84,28 @@ QUnit.test( 'cloneFromRange', function ( assert ) {
 	var i, doc2, doc = ve.dm.example.createExampleDocument( 'internalData' ),
 		cases = [
 			{
-				'msg': 'first internal item',
-				'doc': 'internalData',
-				'range': new ve.Range( 7, 12 ),
-				'expectedData': doc.data.slice( 7, 12 ).concat( doc.data.slice( 5, 21 ) )
+				msg: 'first internal item',
+				doc: 'internalData',
+				range: new ve.Range( 7, 12 ),
+				expectedData: doc.data.slice( 7, 12 ).concat( doc.data.slice( 5, 21 ) )
 			},
 			{
-				'msg': 'second internal item',
-				'doc': 'internalData',
-				'range': doc.getInternalList().getItemNode( 1 ).getRange(),
-				'expectedData': doc.data.slice( 14, 19 ).concat( doc.data.slice( 5, 21 ) )
+				msg: 'second internal item',
+				doc: 'internalData',
+				range: doc.getInternalList().getItemNode( 1 ).getRange(),
+				expectedData: doc.data.slice( 14, 19 ).concat( doc.data.slice( 5, 21 ) )
 			},
 			{
-				'msg': 'paragraph at the start',
-				'doc': 'internalData',
-				'range': new ve.Range( 0, 5 ),
-				'expectedData': doc.data.slice( 0, 21 )
+				msg: 'paragraph at the start',
+				doc: 'internalData',
+				range: new ve.Range( 0, 5 ),
+				expectedData: doc.data.slice( 0, 21 )
 			},
 			{
-				'msg': 'paragraph at the end',
-				'doc': 'internalData',
-				'range': new ve.Range( 21, 27 ),
-				'expectedData': doc.data.slice( 21, 27 ).concat( doc.data.slice( 5, 21 ) )
+				msg: 'paragraph at the end',
+				doc: 'internalData',
+				range: new ve.Range( 21, 27 ),
+				expectedData: doc.data.slice( 21, 27 ).concat( doc.data.slice( 5, 21 ) )
 			}
 		];
 	QUnit.expect( 4 * cases.length );
@@ -245,7 +245,7 @@ QUnit.test( 'rebuildNodes', 2, function ( assert ) {
 	// XXX: Create a new document node tree from the old one
 	tree = new ve.dm.DocumentNode( ve.dm.example.tree.getChildren() );
 	// Replace table with paragraph
-	doc.data.batchSplice( 5, 32, [ { 'type': 'paragraph' }, 'a', 'b', 'c', { 'type': '/paragraph' } ] );
+	doc.data.batchSplice( 5, 32, [ { type: 'paragraph' }, 'a', 'b', 'c', { type: '/paragraph' } ] );
 	tree.splice( 1, 1, new ve.dm.ParagraphNode(
 		doc.data.getData( 5 ), [new ve.dm.TextNode( 3 )]
 	) );
@@ -285,207 +285,207 @@ QUnit.test( 'cloneSliceFromRange', function ( assert ) {
 	var i, expectedData, slice, range, doc,
 		cases = [
 			{
-				'msg': 'empty range',
-				'range': new ve.Range( 2, 2 ),
-				'expected': []
+				msg: 'empty range',
+				range: new ve.Range( 2, 2 ),
+				expected: []
 			},
 			{
-				'msg': 'range with one character',
-				'range': new ve.Range( 2, 3 ),
-				'expected': [
+				msg: 'range with one character',
+				range: new ve.Range( 2, 3 ),
+				expected: [
 					['b', [ ve.dm.example.bold ]]
 				]
 			},
 			{
-				'msg': 'range with two characters',
-				'range': new ve.Range( 2, 4 ),
-				'expected': [
+				msg: 'range with two characters',
+				range: new ve.Range( 2, 4 ),
+				expected: [
 					['b', [ ve.dm.example.bold ]],
 					['c', [ ve.dm.example.italic ]]
 				]
 			},
 			{
-				'msg': 'range with two characters and a header closing',
-				'range': new ve.Range( 2, 5 ),
-				'expected': [
-					{ 'type': 'heading', 'attributes': { 'level': 1 } },
+				msg: 'range with two characters and a header closing',
+				range: new ve.Range( 2, 5 ),
+				expected: [
+					{ type: 'heading', attributes: { level: 1 } },
 					['b', [ ve.dm.example.bold ]],
 					['c', [ ve.dm.example.italic ]],
-					{ 'type': '/heading' }
+					{ type: '/heading' }
 				],
-				'originalRange': new ve.Range( 1, 4 )
+				originalRange: new ve.Range( 1, 4 )
 			},
 			{
-				'msg': 'range with one character, a header closing and a table opening',
-				'range': new ve.Range( 3, 6 ),
-				'expected': [
-					{ 'type': 'heading', 'attributes': { 'level': 1 } },
+				msg: 'range with one character, a header closing and a table opening',
+				range: new ve.Range( 3, 6 ),
+				expected: [
+					{ type: 'heading', attributes: { level: 1 } },
 					['c', [ ve.dm.example.italic ]],
-					{ 'type': '/heading' },
-					{ 'type': 'table' },
-					{ 'type': '/table' }
+					{ type: '/heading' },
+					{ type: 'table' },
+					{ type: '/table' }
 				],
-				'originalRange': new ve.Range( 1, 4 )
+				originalRange: new ve.Range( 1, 4 )
 			},
 			{
-				'msg': 'range from a paragraph into a list',
-				'range': new ve.Range( 15, 21 ),
-				'expected': [
-					{ 'type': 'paragraph' },
+				msg: 'range from a paragraph into a list',
+				range: new ve.Range( 15, 21 ),
+				expected: [
+					{ type: 'paragraph' },
 					'e',
-					{ 'type': '/paragraph' },
-					{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
-					{ 'type': 'listItem' },
-					{ 'type': 'paragraph' },
+					{ type: '/paragraph' },
+					{ type: 'list', attributes: { style: 'bullet' } },
+					{ type: 'listItem' },
+					{ type: 'paragraph' },
 					'f',
-					{ 'type': '/paragraph' },
-					{ 'type': '/listItem' },
-					{ 'type': '/list' }
+					{ type: '/paragraph' },
+					{ type: '/listItem' },
+					{ type: '/list' }
 				],
-				'originalRange': new ve.Range( 1, 7 )
+				originalRange: new ve.Range( 1, 7 )
 			},
 			{
-				'msg': 'range from a paragraph inside a nested list into the next list',
-				'range': new ve.Range( 20, 27 ),
-				'expected': [
-					{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
-					{ 'type': 'listItem' },
-					{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
-					{ 'type': 'listItem' },
-					{ 'type': 'paragraph' },
+				msg: 'range from a paragraph inside a nested list into the next list',
+				range: new ve.Range( 20, 27 ),
+				expected: [
+					{ type: 'list', attributes: { style: 'bullet' } },
+					{ type: 'listItem' },
+					{ type: 'list', attributes: { style: 'bullet' } },
+					{ type: 'listItem' },
+					{ type: 'paragraph' },
 					'f',
-					{ 'type': '/paragraph' },
-					{ 'type': '/listItem' },
-					{ 'type': '/list' },
-					{ 'type': '/listItem' },
-					{ 'type': '/list' },
-					{ 'type': 'list', 'attributes': { 'style': 'number' } },
-					{ 'type': '/list' }
+					{ type: '/paragraph' },
+					{ type: '/listItem' },
+					{ type: '/list' },
+					{ type: '/listItem' },
+					{ type: '/list' },
+					{ type: 'list', attributes: { style: 'number' } },
+					{ type: '/list' }
 				],
-				'originalRange': new ve.Range( 5, 12 )
+				originalRange: new ve.Range( 5, 12 )
 			},
 			{
-				'msg': 'range from a paragraph inside a nested list out of both lists',
-				'range': new ve.Range( 20, 26 ),
-				'expected': [
-					{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
-					{ 'type': 'listItem' },
-					{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
-					{ 'type': 'listItem' },
-					{ 'type': 'paragraph' },
+				msg: 'range from a paragraph inside a nested list out of both lists',
+				range: new ve.Range( 20, 26 ),
+				expected: [
+					{ type: 'list', attributes: { style: 'bullet' } },
+					{ type: 'listItem' },
+					{ type: 'list', attributes: { style: 'bullet' } },
+					{ type: 'listItem' },
+					{ type: 'paragraph' },
 					'f',
-					{ 'type': '/paragraph' },
-					{ 'type': '/listItem' },
-					{ 'type': '/list' },
-					{ 'type': '/listItem' },
-					{ 'type': '/list' }
+					{ type: '/paragraph' },
+					{ type: '/listItem' },
+					{ type: '/list' },
+					{ type: '/listItem' },
+					{ type: '/list' }
 				],
-				'originalRange': new ve.Range( 5, 11 )
+				originalRange: new ve.Range( 5, 11 )
 			},
 			{
-				'msg': 'range from a paragraph inside a nested list out of the outer listItem',
-				'range': new ve.Range( 20, 25 ),
-				'expected': [
-					{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
-					{ 'type': 'listItem' },
-					{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
-					{ 'type': 'listItem' },
-					{ 'type': 'paragraph' },
+				msg: 'range from a paragraph inside a nested list out of the outer listItem',
+				range: new ve.Range( 20, 25 ),
+				expected: [
+					{ type: 'list', attributes: { style: 'bullet' } },
+					{ type: 'listItem' },
+					{ type: 'list', attributes: { style: 'bullet' } },
+					{ type: 'listItem' },
+					{ type: 'paragraph' },
 					'f',
-					{ 'type': '/paragraph' },
-					{ 'type': '/listItem' },
-					{ 'type': '/list' },
-					{ 'type': '/listItem' },
-					{ 'type': '/list' }
+					{ type: '/paragraph' },
+					{ type: '/listItem' },
+					{ type: '/list' },
+					{ type: '/listItem' },
+					{ type: '/list' }
 				],
-				'originalRange': new ve.Range( 5, 10 ),
-				'balancedRange': new ve.Range( 1, 10 )
+				originalRange: new ve.Range( 5, 10 ),
+				balancedRange: new ve.Range( 1, 10 )
 			},
 			{
-				'msg': 'table cell',
-				'range': new ve.Range( 8, 34 ),
-				'expected': [
-					{ 'type': 'table' },
-					{ 'type': 'tableSection', 'attributes': { 'style': 'body' } },
-					{ 'type': 'tableRow' },
-					{ 'type': 'tableCell', 'attributes': { 'style': 'data' } },
-					{ 'type': 'paragraph' },
+				msg: 'table cell',
+				range: new ve.Range( 8, 34 ),
+				expected: [
+					{ type: 'table' },
+					{ type: 'tableSection', attributes: { style: 'body' } },
+					{ type: 'tableRow' },
+					{ type: 'tableCell', attributes: { style: 'data' } },
+					{ type: 'paragraph' },
 					'd',
-					{ 'type': '/paragraph' },
-					{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
-					{ 'type': 'listItem' },
-					{ 'type': 'paragraph' },
+					{ type: '/paragraph' },
+					{ type: 'list', attributes: { style: 'bullet' } },
+					{ type: 'listItem' },
+					{ type: 'paragraph' },
 					'e',
-					{ 'type': '/paragraph' },
-					{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
-					{ 'type': 'listItem' },
-					{ 'type': 'paragraph' },
+					{ type: '/paragraph' },
+					{ type: 'list', attributes: { style: 'bullet' } },
+					{ type: 'listItem' },
+					{ type: 'paragraph' },
 					'f',
-					{ 'type': '/paragraph' },
-					{ 'type': '/listItem' },
-					{ 'type': '/list' },
-					{ 'type': '/listItem' },
-					{ 'type': '/list' },
-					{ 'type': 'list', 'attributes': { 'style': 'number' } },
-					{ 'type': 'listItem' },
-					{ 'type': 'paragraph' },
+					{ type: '/paragraph' },
+					{ type: '/listItem' },
+					{ type: '/list' },
+					{ type: '/listItem' },
+					{ type: '/list' },
+					{ type: 'list', attributes: { style: 'number' } },
+					{ type: 'listItem' },
+					{ type: 'paragraph' },
 					'g',
-					{ 'type': '/paragraph' },
-					{ 'type': '/listItem' },
-					{ 'type': '/list' },
-					{ 'type': '/tableCell' },
-					{ 'type': '/tableRow' },
-					{ 'type': '/tableSection' },
-					{ 'type': '/table' }
+					{ type: '/paragraph' },
+					{ type: '/listItem' },
+					{ type: '/list' },
+					{ type: '/tableCell' },
+					{ type: '/tableRow' },
+					{ type: '/tableSection' },
+					{ type: '/table' }
 				],
-				'originalRange': new ve.Range( 3, 29 ),
-				'balancedRange': new ve.Range( 3, 29 )
+				originalRange: new ve.Range( 3, 29 ),
+				balancedRange: new ve.Range( 3, 29 )
 			},
 			{
-				'doc': 'inlineAtEdges',
-				'msg': 'inline node at start',
-				'range': new ve.Range( 1, 3 ),
-				'expected': [
+				doc: 'inlineAtEdges',
+				msg: 'inline node at start',
+				range: new ve.Range( 1, 3 ),
+				expected: [
 					ve.dm.example.image.data,
-					{ 'type': '/image' }
+					{ type: '/image' }
 				],
-				'originalRange': new ve.Range( 0, 2 ),
-				'balancedRange': new ve.Range( 0, 2 )
+				originalRange: new ve.Range( 0, 2 ),
+				balancedRange: new ve.Range( 0, 2 )
 			},
 			{
-				'doc': 'inlineAtEdges',
-				'msg': 'inline node at end',
-				'range': new ve.Range( 6, 8 ),
-				'expected': [
-					{ 'type': 'alienInline', 'attributes': { 'domElements': $( '<foobar />' ).toArray() } },
-					{ 'type': '/alienInline' }
+				doc: 'inlineAtEdges',
+				msg: 'inline node at end',
+				range: new ve.Range( 6, 8 ),
+				expected: [
+					{ type: 'alienInline', attributes: { domElements: $( '<foobar />' ).toArray() } },
+					{ type: '/alienInline' }
 				],
-				'originalRange': new ve.Range( 0, 2 ),
-				'balancedRange': new ve.Range( 0, 2 )
+				originalRange: new ve.Range( 0, 2 ),
+				balancedRange: new ve.Range( 0, 2 )
 			},
 			{
-				'doc': 'inlineAtEdges',
-				'msg': 'inline node at start with text',
-				'range': new ve.Range( 1, 5 ),
-				'expected': [
+				doc: 'inlineAtEdges',
+				msg: 'inline node at start with text',
+				range: new ve.Range( 1, 5 ),
+				expected: [
 					ve.dm.example.image.data,
-					{ 'type': '/image' },
+					{ type: '/image' },
 					'F', 'o'
 				],
-				'originalRange': new ve.Range( 0, 4 ),
-				'balancedRange': new ve.Range( 0, 4 )
+				originalRange: new ve.Range( 0, 4 ),
+				balancedRange: new ve.Range( 0, 4 )
 			},
 			{
-				'doc': 'inlineAtEdges',
-				'msg': 'inline node at end with text',
-				'range': new ve.Range( 4, 8 ),
-				'expected': [
+				doc: 'inlineAtEdges',
+				msg: 'inline node at end with text',
+				range: new ve.Range( 4, 8 ),
+				expected: [
 					'o', 'o',
-					{ 'type': 'alienInline', 'attributes': { 'domElements': $( '<foobar />' ).toArray() } },
-					{ 'type': '/alienInline' }
+					{ type: 'alienInline', attributes: { domElements: $( '<foobar />' ).toArray() } },
+					{ type: '/alienInline' }
 				],
-				'originalRange': new ve.Range( 0, 4 ),
-				'balancedRange': new ve.Range( 0, 4 )
+				originalRange: new ve.Range( 0, 4 ),
+				balancedRange: new ve.Range( 0, 4 )
 			}
 		];
 	QUnit.expect( 3 * cases.length );
@@ -494,8 +494,8 @@ QUnit.test( 'cloneSliceFromRange', function ( assert ) {
 		expectedData = ve.dm.example.preprocessAnnotations( cases[i].expected.slice(), doc.getStore() ).getData();
 		range = new ve.Range( 0, cases[i].expected.length );
 		expectedData = expectedData.concat( [
-			{ 'type': 'internalList' },
-			{ 'type': '/internalList' }
+			{ type: 'internalList' },
+			{ type: '/internalList' }
 		] );
 		slice = doc.cloneSliceFromRange( cases[i].range );
 		assert.deepEqualWithDomElements(

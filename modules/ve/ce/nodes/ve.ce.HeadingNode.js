@@ -19,7 +19,7 @@ ve.ce.HeadingNode = function VeCeHeadingNode( model, config ) {
 	ve.ce.ContentBranchNode.call( this, model, config );
 
 	// Events
-	this.model.connect( this, { 'update': 'onUpdate' } );
+	this.model.connect( this, { update: 'onUpdate' } );
 };
 
 /* Inheritance */
@@ -42,7 +42,7 @@ ve.ce.HeadingNode.static.name = 'heading';
  */
 ve.ce.HeadingNode.prototype.getTagName = function () {
 	var level = this.model.getAttribute( 'level' ),
-		types = { '1': 'h1', '2': 'h2', '3': 'h3', '4': 'h4', '5': 'h5', '6': 'h6' };
+		types = { 1: 'h1', 2: 'h2', 3: 'h3', 4: 'h4', 5: 'h5', 6: 'h6' };
 
 	if ( !( level in types ) ) {
 		throw new Error( 'Invalid level' );

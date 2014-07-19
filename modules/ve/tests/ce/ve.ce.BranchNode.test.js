@@ -22,7 +22,7 @@ ve.ce.BranchNodeStub.static.splitOnEnter = true;
 
 ve.ce.BranchNodeStub.prototype.getTagName = function () {
 	var style = this.model.getAttribute( 'style' ),
-		types = { 'a': 'a', 'b': 'b' };
+		types = { a: 'a', b: 'b' };
 
 	return types[style];
 };
@@ -50,10 +50,10 @@ QUnit.test( 'canHaveChildrenNotContent', 1, function ( assert ) {
 } );
 
 QUnit.test( 'updateTagName', 4, function ( assert ) {
-	var attributes = { 'style': 'a' },
+	var attributes = { style: 'a' },
 		node = new ve.ce.BranchNodeStub( new ve.dm.BranchNodeStub( {
-			'type': 'branch-stub',
-			'attributes': attributes
+			type: 'branch-stub',
+			attributes: attributes
 		} ) );
 
 	// Add content to the node

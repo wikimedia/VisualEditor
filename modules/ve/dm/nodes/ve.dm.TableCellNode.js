@@ -31,14 +31,14 @@ ve.dm.TableCellNode.static.name = 'tableCell';
 ve.dm.TableCellNode.static.parentNodeTypes = [ 'tableRow' ];
 
 ve.dm.TableCellNode.static.defaultAttributes = {
-	'style': 'data'
+	style: 'data'
 };
 
 ve.dm.TableCellNode.static.matchTagNames = [ 'td', 'th' ];
 
 ve.dm.TableCellNode.static.toDataElement = function ( domElements ) {
 	var style = domElements[0].nodeName.toLowerCase() === 'th' ? 'header' : 'data';
-	return { 'type': this.name, 'attributes': { 'style': style } };
+	return { type: this.name, attributes: { style: style } };
 };
 
 ve.dm.TableCellNode.static.toDomElements = function ( dataElement, doc ) {
