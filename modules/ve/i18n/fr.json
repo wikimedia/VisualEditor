@@ -28,7 +28,8 @@
 			"Verdy p",
 			"Wyz",
 			"Jdforrester",
-			"Fram"
+			"Fram",
+			"Orikrin1998"
 		]
 	},
 	"visualeditor": "ÉditeurVisuel",
@@ -80,7 +81,7 @@
 	"visualeditor-languageinspector-widget-label-langcode": "Code de langue",
 	"visualeditor-languageinspector-widget-label-language": "Langue",
 	"visualeditor-language-search-input-placeholder": "Rechercher par nom ou code de langue",
-	"visualeditor-linkinspector-open": "Ouvert",
+	"visualeditor-linkinspector-open": "Ouvrir",
 	"visualeditor-linkinspector-title": "Lien",
 	"visualeditor-listbutton-bullet-tooltip": "Liste à puces",
 	"visualeditor-listbutton-number-tooltip": "Liste numérotée",
