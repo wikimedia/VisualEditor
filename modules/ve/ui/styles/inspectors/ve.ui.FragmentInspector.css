@@ -10,6 +10,6 @@
 	padding: 0;
 }
 
-.ve-ui-fragmentInspector-content .oo-ui-processDialog-actions-other {
-	padding-top: 0;
+.ve-ui-fragmentInspector-content .oo-ui-processDialog-actions-other .oo-ui-buttonedElement-framed {
+	margin-top: 0;
 }
