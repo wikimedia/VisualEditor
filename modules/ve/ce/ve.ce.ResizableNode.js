@@ -42,7 +42,6 @@ ve.ce.ResizableNode = function VeCeResizableNode( $resizable, config ) {
 	this.connect( this, {
 		'focus': 'onResizableFocus',
 		'blur': 'onResizableBlur',
-		'setup': 'onResizableSetup',
 		'teardown': 'onResizableTeardown',
 		'resizing': 'onResizableResizing',
 		'resizeEnd': 'onResizableFocus',
@@ -203,6 +202,9 @@ ve.ce.ResizableNode.prototype.showHandles = function ( handles ) {
  * @method
  */
 ve.ce.ResizableNode.prototype.onResizableFocus = function () {
+	var surface = this.getRoot().getSurface(),
+		documentModel = surface.getModel().getDocument();
+
 	if ( this.$sizeLabel ) {
 		// Attach the size label first so it doesn't mask the resize handles
 		this.$sizeLabel.appendTo( this.root.getSurface().getSurface().$controls );
@@ -233,6 +235,10 @@ ve.ce.ResizableNode.prototype.onResizableFocus = function () {
 			'mousedown.ve-ce-resizableNode',
 			ve.bind( this.onResizeHandlesCornerMouseDown, this )
 		);
+
+	documentModel.connect( this, { 'transact': 'setResizableHandlesSizeAndPosition' } );
+	surface.connect( this, { 'position': 'setResizableHandlesSizeAndPosition' } );
+
 };
 
 /**
@@ -241,36 +247,30 @@ ve.ce.ResizableNode.prototype.onResizableFocus = function () {
  * @method
  */
 ve.ce.ResizableNode.prototype.onResizableBlur = function () {
+	// Node may have already been torn down, e.g. after delete
+	if ( !this.getRoot() ) {
+		return;
+	}
+
+	var surface = this.getRoot().getSurface(),
+		documentModel = surface.getModel().getDocument();
+
 	this.$resizeHandles.detach();
 	if ( this.$sizeLabel ) {
 		this.$sizeLabel.detach();
 	}
+
+	documentModel.disconnect( this, { 'transact': 'setResizableHandlesSizeAndPosition' } );
+	surface.disconnect( this, { 'position': 'setResizableHandlesSizeAndPosition' } );
+
 };
 
 /**
- * Handle setup event.
- *
- * @method
- */
-ve.ce.ResizableNode.prototype.onResizableSetup = function () {
-	var surface = this.getRoot().getSurface(),
-		documentModel = surface.getModel().getDocument();
-
-	documentModel.connect( this, { 'transact': 'setResizableHandlesSizeAndPosition' } );
-	surface.connect( this, { 'position': 'setResizableHandlesSizeAndPosition' } );
-};
-
-/**
- * Handle setup event.
+ * Handle teardown event.
  *
  * @method
  */
 ve.ce.ResizableNode.prototype.onResizableTeardown = function () {
-	var surface = this.getRoot().getSurface(),
-		documentModel = surface.getModel().getDocument();
-
-	documentModel.disconnect( this, { 'transact': 'setResizableHandlesSizeAndPosition' } );
-	surface.disconnect( this, { 'position': 'setResizableHandlesSizeAndPosition' } );
 	this.onResizableBlur();
 };
 
