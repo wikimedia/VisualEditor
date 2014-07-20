@@ -87,11 +87,6 @@ ve.ce.FocusableNode.prototype.createHighlight = function () {
  * @method
  */
 ve.ce.FocusableNode.prototype.onFocusableSetup = function () {
-	var surface = this.getRoot().getSurface(),
-		surfaceModel = surface.getModel();
-
-	surfaceModel.connect( this, { 'history': 'onFocusableHistory' } );
-
 	// Exit if already setup or not attached
 	if ( this.isSetup || !this.root ) {
 		return;
@@ -119,11 +114,6 @@ ve.ce.FocusableNode.prototype.onFocusableSetup = function () {
  * @method
  */
 ve.ce.FocusableNode.prototype.onFocusableTeardown = function () {
-	var surface = this.getRoot().getSurface(),
-		surfaceModel = surface.getModel();
-
-	surfaceModel.disconnect( this, { 'history': 'onFocusableHistory' } );
-
 	// Exit if not setup or not attached
 	if ( !this.isSetup || !this.root ) {
 		return;
@@ -142,17 +132,6 @@ ve.ce.FocusableNode.prototype.onFocusableTeardown = function () {
 
 	this.isSetup = false;
 	this.surface = null;
-};
-
-/**
- * Handle history event.
- *
- * @method
- */
-ve.ce.FocusableNode.prototype.onFocusableHistory = function () {
-	if ( this.focused ) {
-		this.redrawHighlights();
-	}
 };
 
 /**
