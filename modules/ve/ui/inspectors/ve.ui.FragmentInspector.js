@@ -135,7 +135,7 @@ ve.ui.FragmentInspector.prototype.getReadyProcess = function ( data ) {
  * @inheritdoc
  */
 ve.ui.FragmentInspector.prototype.getBodyHeight = function () {
-	return this.form.$element.outerHeight( true ) + this.$otherActions.outerHeight( true );
+	return Math.ceil( this.form.$element.outerHeight( true ) + this.$otherActions.outerHeight( true ) );
 };
 
 /**
