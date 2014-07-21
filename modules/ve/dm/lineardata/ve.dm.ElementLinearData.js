@@ -275,21 +275,18 @@ ve.dm.ElementLinearData.prototype.getAnnotationIndexesFromOffset = function ( of
 	if ( offset < 0 || offset > this.getLength() ) {
 		throw new Error( 'offset ' + offset + ' out of bounds' );
 	}
-	var element = this.getData( offset );
+
 	// Since annotations are not stored on a closing leaf node,
 	// rewind offset by 1 to return annotations for that structure
 	if (
 		!ignoreClose &&
-		ve.isPlainObject( element ) && // structural offset
-		element.hasOwnProperty( 'type' ) && // just in case
-		element.type.charAt( 0 ) === '/' && // closing offset
-		ve.dm.nodeFactory.canNodeHaveChildren(
-			element.type.substr( 1 )
-		) === false // leaf node
+		this.isCloseElementData( offset ) &&
+		!ve.dm.nodeFactory.canNodeHaveChildren( this.getType( offset ) ) // leaf node
 	) {
 		offset = this.getRelativeContentOffset( offset, -1 );
-		element = this.getData( offset );
 	}
+
+	var element = this.getData( offset );
 
 	if ( element === undefined || typeof element === 'string' ) {
 		return [];
