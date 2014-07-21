@@ -107,7 +107,7 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 		.on( 'focus', 'a', function () {
 			// Opera <= 12 triggers 'blur' on document node before any link is
 			// focused and we don't want that
-			$documentNode.focus();
+			$documentNode[0].focus();
 		} );
 
 	this.$element.on( {
