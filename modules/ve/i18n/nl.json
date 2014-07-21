@@ -38,6 +38,7 @@
 	"visualeditor-clipboard-paste-special": "Plakken als tekst zonder opmaak",
 	"visualeditor-dialog-action-apply": "Wijzigingen toepassen",
 	"visualeditor-dialog-action-cancel": "Annuleren",
+	"visualeditor-dialog-action-done": "Gereed",
 	"visualeditor-dialog-action-goback": "Terug",
 	"visualeditor-dialog-error": "Er ging iets fout...",
 	"visualeditor-dialog-error-dismiss": "Terug",
@@ -68,6 +69,7 @@
 	"visualeditor-languageinspector-widget-label-langcode": "Taalcode",
 	"visualeditor-languageinspector-widget-label-language": "Taal",
 	"visualeditor-language-search-input-placeholder": "Zoek op taalnaam of taalcode",
+	"visualeditor-linkinspector-open": "Open",
 	"visualeditor-linkinspector-title": "Koppeling",
 	"visualeditor-listbutton-bullet-tooltip": "Ongenummerde lijst",
 	"visualeditor-listbutton-number-tooltip": "Genummerde lijst",
@@ -86,6 +88,10 @@
 	"visualeditor-shortcuts-text-style": "Tekstopmaak",
 	"visualeditor-specialcharacter-button-tooltip": "Speciaal teken",
 	"visualeditor-specialcharacterinspector-title": "Speciaal teken",
+	"visualeditor-toolbar-history": "Geschiedenis",
 	"visualeditor-toolbar-insert": "Invoegen",
+	"visualeditor-toolbar-paragraph-format": "Opmaak",
+	"visualeditor-toolbar-structure": "Indeling",
+	"visualeditor-toolbar-text-style": "Opmaak",
 	"visualeditor-version-label": "Versie"
 }
