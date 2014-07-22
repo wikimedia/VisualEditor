@@ -42,7 +42,8 @@ ve.ce.ResizableNode = function VeCeResizableNode( $resizable, config ) {
 	this.connect( this, {
 		'focus': 'onResizableFocus',
 		'blur': 'onResizableBlur',
-		'live': 'onResizableLive',
+		'setup': 'onResizableSetup',
+		'teardown': 'onResizableTeardown',
 		'resizing': 'onResizableResizing',
 		'resizeEnd': 'onResizableFocus',
 		'rerender': 'onResizableFocus'
@@ -247,22 +248,30 @@ ve.ce.ResizableNode.prototype.onResizableBlur = function () {
 };
 
 /**
- * Handle live event.
+ * Handle setup event.
  *
  * @method
  */
-ve.ce.ResizableNode.prototype.onResizableLive = function () {
+ve.ce.ResizableNode.prototype.onResizableSetup = function () {
 	var surface = this.getRoot().getSurface(),
 		documentModel = surface.getModel().getDocument();
 
-	if ( this.live ) {
-		documentModel.connect( this, { 'transact': 'setResizableHandlesSizeAndPosition' } );
-		surface.connect( this, { 'position': 'setResizableHandlesSizeAndPosition' } );
-	} else {
-		documentModel.disconnect( this, { 'transact': 'setResizableHandlesSizeAndPosition' } );
-		surface.disconnect( this, { 'position': 'setResizableHandlesSizeAndPosition' } );
-		this.onResizableBlur();
-	}
+	documentModel.connect( this, { 'transact': 'setResizableHandlesSizeAndPosition' } );
+	surface.connect( this, { 'position': 'setResizableHandlesSizeAndPosition' } );
+};
+
+/**
+ * Handle setup event.
+ *
+ * @method
+ */
+ve.ce.ResizableNode.prototype.onResizableTeardown = function () {
+	var surface = this.getRoot().getSurface(),
+		documentModel = surface.getModel().getDocument();
+
+	documentModel.disconnect( this, { 'transact': 'setResizableHandlesSizeAndPosition' } );
+	surface.disconnect( this, { 'position': 'setResizableHandlesSizeAndPosition' } );
+	this.onResizableBlur();
 };
 
 /**
