@@ -2174,7 +2174,7 @@ ve.ce.Surface.prototype.showSelection = function ( range ) {
 		rangyRange = rangy.createRange( this.$document[0] );
 
 	// Setting a range doesn't give focus in all browsers so make sure this happens
-	if ( document.activeElement !== documentElement ) {
+	if ( this.getElementDocument().activeElement !== documentElement ) {
 		documentElement.focus();
 	}
 	if ( selection.end ) {
