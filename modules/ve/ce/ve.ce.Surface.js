@@ -1735,7 +1735,8 @@ ve.ce.Surface.prototype.handleLeftOrRightArrowKey = function ( e ) {
  * @param {jQuery.Event} e Up or down key down event
  */
 ve.ce.Surface.prototype.handleUpOrDownArrowKey = function ( e ) {
-	var selection, rangySelection, rangyRange, range, slug, $cursorHolder;
+	var selection, rangySelection, rangyRange, slug, $cursorHolder,
+		direction = e.keyCode === OO.ui.Keys.DOWN ? 1 : -1;
 
 	// TODO: onDocumentKeyDown did this already
 	this.surfaceObserver.stopTimerLoop();
@@ -1747,7 +1748,7 @@ ve.ce.Surface.prototype.handleUpOrDownArrowKey = function ( e ) {
 
 	if ( this.focusedNode ) {
 		$cursorHolder = this.$( '<span class="ve-ce-surface-cursorHolder"> </span>' ).hide();
-		if ( e.keyCode === OO.ui.Keys.UP ) {
+		if ( direction === -1 ) {
 			$cursorHolder.insertBefore( this.focusedNode.$element.first() );
 		} else {
 			$cursorHolder.insertAfter( this.focusedNode.$element.last() );
@@ -1764,25 +1765,30 @@ ve.ce.Surface.prototype.handleUpOrDownArrowKey = function ( e ) {
 				rangySelection.anchorNode.nextSibling
 			);
 		}
-	} else {
-		// TODO: onDocumentKeyDown does this anyway
-		this.surfaceObserver.startTimerLoop();
-		this.surfaceObserver.pollOnce();
-		return;
 	}
-	rangyRange = rangy.createRange( this.$document[0] );
-	rangyRange.selectNode( $cursorHolder ? $cursorHolder[0] : slug );
-	rangySelection.setSingleRange( rangyRange );
+	if ( $cursorHolder || slug ) {
+		rangyRange = rangy.createRange( this.$document[0] );
+		rangyRange.selectNode( $cursorHolder ? $cursorHolder[0] : slug );
+		rangySelection.setSingleRange( rangyRange );
+	}
 	setTimeout( ve.bind( function () {
+		var view, range;
 		if ( $cursorHolder ) {
 			$cursorHolder.remove();
 			this.surfaceObserver.clear();
 		}
-		this.surfaceObserver.pollOnce();
-		if ( e.shiftKey === true ) { // expanded range
-			range = new ve.Range( selection.from, this.model.getSelection().to );
-		} else { // collapsed range (just a cursor)
+		rangySelection = rangy.getSelection( this.$document[0] );
+		// Chrome bug lets you cursor into a multi-line contentEditable=false with up/down...
+		view = $( rangySelection.anchorNode ).closest( '.ve-ce-leafNode,.ve-ce-branchNode' ).data( 'view' );
+		if ( view.isFocusable() ) {
+			range = direction === 1 ? view.getOuterRange() : view.getOuterRange().flip();
+		} else {
+			this.surfaceObserver.pollOnce();
 			range = new ve.Range( this.model.getSelection().to );
+		}
+		// Expand range
+		if ( e.shiftKey === true ) {
+			range = new ve.Range( selection.from, range.to );
 		}
 		this.model.setSelection( range );
 		this.surfaceObserver.pollOnce();
