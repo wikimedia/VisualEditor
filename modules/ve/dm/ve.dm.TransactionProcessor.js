@@ -449,8 +449,8 @@ ve.dm.TransactionProcessor.processors.replace = function ( op ) {
 								affectedRanges.push( new ve.Range( scopeStart, scopeEnd ) );
 								// Update scope
 								scope = scope.getParent() || scope;
+								minInsertLevel--;
 							}
-
 						} else {
 							// Opening element
 							insertLevel++;
