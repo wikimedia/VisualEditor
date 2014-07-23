@@ -448,6 +448,22 @@ ve.dm.ElementLinearData.prototype.getAnnotationsFromRange = function ( range, al
 };
 
 /**
+ * Check if the range has any annotations
+ *
+ * @method
+ * @returns {boolean} The range contains at least one annotation
+ */
+ve.dm.ElementLinearData.prototype.hasAnnotationsInRange = function ( range ) {
+	var i;
+	for ( i = range.start; i < range.end; i++ ) {
+		if ( this.getAnnotationIndexesFromOffset( i, true ).length ) {
+			return true;
+		}
+	}
+	return false;
+};
+
+/**
  * Get a range without any whitespace content at the beginning and end.
  *
  * @method

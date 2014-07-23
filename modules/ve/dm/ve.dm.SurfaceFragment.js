@@ -495,6 +495,24 @@ ve.dm.SurfaceFragment.prototype.getAnnotations = function ( all ) {
 };
 
 /**
+ * Check if the fragment has any annotations
+ *
+ * Quicker than doing !fragment.getAnnotations( true ).isEmpty() as
+ * it stops at the first sight of an annotation.
+ *
+ * @method
+ * @returns {boolean} The fragment contains at least one annotation
+ */
+ve.dm.SurfaceFragment.prototype.hasAnnotations = function () {
+	// Handle null fragment
+	if ( this.isNull() ) {
+		return false;
+	}
+
+	return this.getDocument().data.hasAnnotationsInRange( this.getRange( true ) );
+};
+
+/**
  * Get all leaf nodes covered by the fragment.
  *
  * @see ve.Document#selectNodes Used to get the return value

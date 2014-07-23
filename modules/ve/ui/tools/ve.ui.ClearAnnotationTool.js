@@ -51,7 +51,7 @@ ve.ui.ClearAnnotationTool.prototype.onUpdateState = function ( fragment ) {
 	ve.ui.Tool.prototype.onUpdateState.apply( this, arguments );
 
 	if ( !this.isDisabled() ) {
-		this.setDisabled( fragment.getAnnotations( true ).isEmpty() );
+		this.setDisabled( !fragment.hasAnnotations() );
 	}
 };
 
