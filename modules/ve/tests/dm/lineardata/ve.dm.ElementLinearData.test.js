@@ -1472,7 +1472,7 @@ QUnit.test( 'sanitize', function ( assert ) {
 	}
 } );
 
-QUnit.test( 'countNoninternalElements', function ( assert ) {
+QUnit.test( 'countNonInternalElements', function ( assert ) {
 	var i, d,
 		cases = [
 			{
@@ -1508,7 +1508,7 @@ QUnit.test( 'countNoninternalElements', function ( assert ) {
 
 	for ( i = 0; i < cases.length; i++ ) {
 		d = new ve.dm.ElementLinearData( new ve.dm.IndexValueStore(), cases[i].data );
-		assert.strictEqual( d.countNoninternalElements(), cases[i].expected, cases[i].msg );
+		assert.strictEqual( d.countNonInternalElements(), cases[i].expected, cases[i].msg );
 	}
 } );
 

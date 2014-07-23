@@ -925,12 +925,14 @@ ve.dm.ElementLinearData.prototype.cloneElements = function () {
 
 /**
  * Counts all elements that aren't between internalList and /internalList
- * @returns {number} Number of elements that aren't in internalList
+ *
+ * @returns {number} Number of elements that aren't in an internalList
  */
-ve.dm.ElementLinearData.prototype.countNoninternalElements = function () {
-	var i, internalDepth = 0, count = 0;
-	for ( i = 0; i < this.data.length; i++ ) {
-		if ( this.getType( i ) && ve.dm.nodeFactory.isNodeInternal( this.getType( i ) ) ) {
+ve.dm.ElementLinearData.prototype.countNonInternalElements = function () {
+	var i, l, type, internalDepth = 0, count = 0;
+	for ( i = 0, l = this.getLength(); i < l; i++ ) {
+		type = this.getType( i );
+		if ( type && ve.dm.nodeFactory.isNodeInternal( type ) ) {
 			if ( this.isOpenElementData( i ) ) {
 				internalDepth++;
 			} else {
