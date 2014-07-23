@@ -62,23 +62,6 @@ ve.ce.ListNode.prototype.onUpdate = function () {
 };
 
 /**
- * Handle splice events.
- *
- * This is used to solve a rendering bug in Firefox.
- * @see ve.ce.BranchNode#onSplice
- *
- * @method
- */
-ve.ce.ListNode.prototype.onSplice = function () {
-	// Parent method
-	ve.ce.BranchNode.prototype.onSplice.apply( this, arguments );
-
-	// There's a bug in Firefox where numbered lists aren't renumbered after in/outdenting
-	// list items. Force renumbering by requesting the height, which causes a reflow
-	this.$element.css( 'height' );
-};
-
-/**
  * Check if a slug be placed after the node.
  *
  * @method
