@@ -279,3 +279,8 @@
 .ve-ui-icon-resize-ne-sw {
 	background-image: url(images/resize-ne-sw.svg);
 }
+
+.oo-ui-indicator-comment {
+	/* @embed */
+	background-image: url(images/indicators/comment.svg);
+}

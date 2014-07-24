@@ -1463,12 +1463,12 @@ ve.dm.example.domToDataCases = {
 		'body': '<!-- comment -->',
 		'data': [
 			{
-				'type': 'comment',
+				'type': 'commentMeta',
 				'attributes': {
 					'text': ' comment '
 				}
 			},
-			{ 'type': '/comment' },
+			{ 'type': '/commentMeta' },
 			{ 'type': 'paragraph', 'internal': { 'generated': 'empty' } },
 			{ 'type': '/paragraph' },
 			{ 'type': 'internalList' },
@@ -2109,26 +2109,42 @@ ve.dm.example.domToDataCases = {
 		'body': '<!-- Foo --> <!-- Bar -->\nFoo',
 		'data': [
 			{
-				'type': 'comment',
-				'internal': { 'whitespace': [ undefined, undefined, undefined, ' ' ] },
+				'type': 'commentMeta',
+				'internal': {
+					'whitespace': [
+						undefined,
+						undefined,
+						undefined,
+						' '
+					]
+				},
 				'attributes': {
 					'text': ' Foo '
 				}
 			},
-			{ 'type': '/comment' },
+			{ 'type': '/commentMeta' },
 			{
-				'type': 'comment',
-				'internal': { 'whitespace': [ ' ', undefined, undefined, '\n' ] },
+				'type': 'commentMeta',
+				'internal': {
+					'whitespace': [
+						' ',
+						undefined,
+						undefined,
+						'\n'
+					]
+				},
 				'attributes': {
 					'text': ' Bar '
 				}
 			},
-			{ 'type': '/comment' },
+			{ 'type': '/commentMeta' },
 			{
 				'type': 'paragraph',
 				'internal': {
-					'generated': 'wrapper',
-					'whitespace': [ '\n' ]
+					'whitespace': [
+						'\n'
+					],
+					'generated': 'wrapper'
 				}
 			},
 			'F',
@@ -2181,8 +2197,8 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/internalList' }
 		]
 	},
-	'whitespace preservation with comment at end of wrapper paragraph': {
-		'body': '<ul><li> bar<!-- baz --> </li></ul>',
+	'whitespace preservation with meta at end of wrapper paragraph': {
+		'body': '<ul><li> bar<meta /> </li></ul>',
 		'data': [
 			{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
 			{
@@ -2207,9 +2223,9 @@ ve.dm.example.domToDataCases = {
 			'b', 'a', 'r',
 			{ 'type': '/paragraph' },
 			{
-				'type': 'comment',
+				'type': 'alienMeta',
 				'attributes': {
-					'text': ' baz '
+					'domElements': $( '<meta />' ).toArray()
 				},
 				'internal': {
 					'whitespace': [
@@ -2220,15 +2236,15 @@ ve.dm.example.domToDataCases = {
 					]
 				}
 			},
-			{ 'type': '/comment' },
+			{ 'type': '/alienMeta' },
 			{ 'type': '/listItem' },
 			{ 'type': '/list' },
 			{ 'type': 'internalList' },
 			{ 'type': '/internalList' }
 		]
 	},
-	'whitespace preservation with multiple comments at end of wrapper paragraph': {
-		'body': '<ul><li> foo <!-- bar --> <!-- baz --> </li></ul>',
+	'whitespace preservation with multiple metas at end of wrapper paragraph': {
+		'body': '<ul><li> foo <meta /> <meta /> </li></ul>',
 		'data': [
 			{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
 			{
@@ -2256,9 +2272,9 @@ ve.dm.example.domToDataCases = {
 			'f', 'o', 'o',
 			{ 'type': '/paragraph' },
 			{
-				'type': 'comment',
+				'type': 'alienMeta',
 				'attributes': {
-					'text': ' bar '
+					'domElements': $( '<meta />' ).toArray()
 				},
 				'internal': {
 					'whitespace': [
@@ -2269,11 +2285,11 @@ ve.dm.example.domToDataCases = {
 					]
 				}
 			},
-			{ 'type': '/comment' },
+			{ 'type': '/alienMeta' },
 			{
-				'type': 'comment',
+				'type': 'alienMeta',
 				'attributes': {
-					'text': ' baz '
+					'domElements': $( '<meta />' ).toArray()
 				},
 				'internal': {
 					'whitespace': [
@@ -2284,7 +2300,7 @@ ve.dm.example.domToDataCases = {
 					]
 				}
 			},
-			{ 'type': '/comment' },
+			{ 'type': '/alienMeta' },
 			{ 'type': '/listItem' },
 			{ 'type': '/list' },
 			{ 'type': 'internalList' },
