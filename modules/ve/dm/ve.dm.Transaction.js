@@ -506,8 +506,8 @@ ve.dm.Transaction.newFromContentBranchConversion = function ( doc, range, type, 
 	var i, selected, branch, branchOuterRange,
 		tx = new ve.dm.Transaction(),
 		selection = doc.selectNodes( range, 'leaves' ),
-		opening = { 'type': type },
-		closing = { 'type': '/' + type },
+		opening = { type: type },
+		closing = { type: '/' + type },
 		previousBranch,
 		previousBranchOuterRange;
 	// Add attributes to opening if needed
@@ -564,16 +564,16 @@ ve.dm.Transaction.newFromContentBranchConversion = function ( doc, range, type, 
  * valid instructions.
  *
  * Changing a paragraph to a header:
- *     Before: [ {'type': 'paragraph'}, 'a', 'b', 'c', {'type': '/paragraph'} ]
- *     newFromWrap( new ve.Range( 1, 4 ), [ {'type': 'paragraph'} ], [ {'type': 'heading', 'level': 1 } ] );
- *     After: [ {'type': 'heading', 'level': 1 }, 'a', 'b', 'c', {'type': '/heading'} ]
+ *     Before: [ {type: 'paragraph'}, 'a', 'b', 'c', {type: '/paragraph'} ]
+ *     newFromWrap( new ve.Range( 1, 4 ), [ {type: 'paragraph'} ], [ {type: 'heading', level: 1 } ] );
+ *     After: [ {type: 'heading', level: 1 }, 'a', 'b', 'c', {type: '/heading'} ]
  *
  * Changing a set of paragraphs to a list:
- *     Before: [ {'type': 'paragraph'}, 'a', {'type': '/paragraph'}, {'type':'paragraph'}, 'b', {'type':'/paragraph'} ]
- *     newFromWrap( new ve.Range( 0, 6 ), [], [ {'type': 'list' } ], [], [ {'type': 'listItem', 'attributes': {'styles': ['bullet']}} ] );
- *     After: [ {'type': 'list'}, {'type': 'listItem', 'attributes': {'styles': ['bullet']}}, {'type':'paragraph'} 'a',
- *              {'type': '/paragraph'}, {'type': '/listItem'}, {'type': 'listItem', 'attributes': {'styles': ['bullet']}},
- *              {'type': 'paragraph'}, 'b', {'type': '/paragraph'}, {'type': '/listItem'}, {'type': '/list'} ]
+ *     Before: [ {type: 'paragraph'}, 'a', {type: '/paragraph'}, {'type':'paragraph'}, 'b', {'type':'/paragraph'} ]
+ *     newFromWrap( new ve.Range( 0, 6 ), [], [ {type: 'list' } ], [], [ {type: 'listItem', attributes: {styles: ['bullet']}} ] );
+ *     After: [ {type: 'list'}, {type: 'listItem', attributes: {styles: ['bullet']}}, {'type':'paragraph'} 'a',
+ *              {type: '/paragraph'}, {type: '/listItem'}, {type: 'listItem', attributes: {styles: ['bullet']}},
+ *              {type: 'paragraph'}, 'b', {type: '/paragraph'}, {type: '/listItem'}, {type: '/list'} ]
  *
  * @param {ve.dm.Document} doc Document to generate a transaction for
  * @param {ve.Range} range Range to wrap/unwrap/replace around
@@ -592,7 +592,7 @@ ve.dm.Transaction.newFromWrap = function ( doc, range, unwrapOuter, wrapOuter, u
 	function closingArray( openings ) {
 		var closings = [], i, len = openings.length;
 		for ( i = 0; i < len; i++ ) {
-			closings[closings.length] = { 'type': '/' + openings[len - i - 1].type };
+			closings[closings.length] = { type: '/' + openings[len - i - 1].type };
 		}
 		return closings;
 	}
@@ -689,9 +689,9 @@ ve.dm.Transaction.newFromWrap = function ( doc, range, unwrapOuter, wrapOuter, u
  *
  * This object maps operation types to objects, which map property names to reversal instructions.
  * A reversal instruction is either a string (which means the value of that property should be used)
- * or an object (which maps old values to new values). For instance, { 'from': 'to' }
+ * or an object (which maps old values to new values). For instance, { from: 'to' }
  * means that the .from property of the reversed operation should be set to the .to property of the
- * original operation, and { 'method': { 'set': 'clear' } } means that if the .method property of
+ * original operation, and { method: { set: 'clear' } } means that if the .method property of
  * the original operation was 'set', the reversed operation's .method property should be 'clear'.
  *
  * If a property's treatment isn't specified, its value is simply copied without modification.
@@ -700,15 +700,15 @@ ve.dm.Transaction.newFromWrap = function ( doc, range, unwrapOuter, wrapOuter, u
  * @type {Object.<string,Object.<string,string|Object.<string, string>>>}
  */
 ve.dm.Transaction.reversers = {
-	'annotate': { 'method': { 'set': 'clear', 'clear': 'set' } }, // swap 'set' with 'clear'
-	'attribute': { 'from': 'to', 'to': 'from' }, // swap .from with .to
-	'replace': { // swap .insert with .remove and .insertMetadata with .removeMetadata
-		'insert': 'remove',
-		'remove': 'insert',
-		'insertMetadata': 'removeMetadata',
-		'removeMetadata': 'insertMetadata'
+	annotate: { method: { set: 'clear', clear: 'set' } }, // swap 'set' with 'clear'
+	attribute: { from: 'to', to: 'from' }, // swap .from with .to
+	replace: { // swap .insert with .remove and .insertMetadata with .removeMetadata
+		insert: 'remove',
+		remove: 'insert',
+		insertMetadata: 'removeMetadata',
+		removeMetadata: 'insertMetadata'
 	},
-	'replaceMetadata': { 'insert': 'remove', 'remove': 'insert' } // swap .insert with .remove
+	replaceMetadata: { insert: 'remove', remove: 'insert' } // swap .insert with .remove
 };
 
 /* Methods */
@@ -1024,8 +1024,8 @@ ve.dm.Transaction.prototype.pushRetain = function ( length ) {
 			this.operations[end].length += length;
 		} else {
 			this.operations.push( {
-				'type': 'retain',
-				'length': length
+				type: 'retain',
+				length: length
 			} );
 		}
 	}
@@ -1049,8 +1049,8 @@ ve.dm.Transaction.prototype.pushRetainMetadata = function ( length ) {
 			this.operations[end].length += length;
 		} else {
 			this.operations.push( {
-				'type': 'retainMetadata',
-				'length': length
+				type: 'retainMetadata',
+				length: length
 			} );
 		}
 	}
@@ -1185,9 +1185,9 @@ ve.dm.Transaction.prototype.pushReplace = function ( doc, offset, removeLength, 
 	}
 
 	op = {
-		'type': 'replace',
-		'remove': remove,
-		'insert': insert
+		type: 'replace',
+		remove: remove,
+		insert: insert
 	};
 	if ( insertMetadata !== undefined ) {
 		op.removeMetadata = removeMetadata;
@@ -1217,9 +1217,9 @@ ve.dm.Transaction.prototype.pushReplaceMetadata = function ( remove, insert ) {
 		return;
 	}
 	this.operations.push( {
-		'type': 'replaceMetadata',
-		'remove': remove,
-		'insert': insert
+		type: 'replaceMetadata',
+		remove: remove,
+		insert: insert
 	} );
 };
 
@@ -1233,10 +1233,10 @@ ve.dm.Transaction.prototype.pushReplaceMetadata = function ( remove, insert ) {
  */
 ve.dm.Transaction.prototype.pushReplaceElementAttribute = function ( key, from, to ) {
 	this.operations.push( {
-		'type': 'attribute',
-		'key': key,
-		'from': from,
-		'to': to
+		type: 'attribute',
+		key: key,
+		from: from,
+		to: to
 	} );
 };
 
@@ -1249,10 +1249,10 @@ ve.dm.Transaction.prototype.pushReplaceElementAttribute = function ( key, from, 
  */
 ve.dm.Transaction.prototype.pushStartAnnotating = function ( method, annotation ) {
 	this.operations.push( {
-		'type': 'annotate',
-		'method': method,
-		'bias': 'start',
-		'annotation': annotation
+		type: 'annotate',
+		method: method,
+		bias: 'start',
+		annotation: annotation
 	} );
 };
 
@@ -1265,10 +1265,10 @@ ve.dm.Transaction.prototype.pushStartAnnotating = function ( method, annotation 
  */
 ve.dm.Transaction.prototype.pushStopAnnotating = function ( method, annotation ) {
 	this.operations.push( {
-		'type': 'annotate',
-		'method': method,
-		'bias': 'stop',
-		'annotation': annotation
+		type: 'annotate',
+		method: method,
+		bias: 'stop',
+		annotation: annotation
 	} );
 };
 

@@ -38,10 +38,10 @@ ve.dm.LanguageAnnotation.static.applyToAppendedContent = true;
 
 ve.dm.LanguageAnnotation.static.toDataElement = function ( domElements ) {
 	return {
-		'type': this.name,
-		'attributes': {
-			'lang': domElements[0].getAttribute( 'lang' ),
-			'dir': domElements[0].getAttribute( 'dir' )
+		type: this.name,
+		attributes: {
+			lang: domElements[0].getAttribute( 'lang' ),
+			dir: domElements[0].getAttribute( 'dir' )
 		}
 	};
 };
@@ -65,9 +65,9 @@ ve.dm.LanguageAnnotation.static.toDomElements = function ( dataElement, doc ) {
  */
 ve.dm.LanguageAnnotation.prototype.getComparableObject = function () {
 	return {
-		'type': 'meta/language',
-		'lang': this.getAttribute( 'lang' ),
-		'dir': this.getAttribute( 'dir' )
+		type: 'meta/language',
+		lang: this.getAttribute( 'lang' ),
+		dir: this.getAttribute( 'dir' )
 	};
 };
 

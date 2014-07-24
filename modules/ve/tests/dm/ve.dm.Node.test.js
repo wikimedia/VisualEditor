@@ -76,7 +76,7 @@ QUnit.test( 'adjustLength', 1, function ( assert ) {
 } );
 
 QUnit.test( 'getAttribute', 2, function ( assert ) {
-	var node = new ve.dm.NodeStub( { 'type': 'stub', 'attributes': { 'a': 1, 'b': 2 } } );
+	var node = new ve.dm.NodeStub( { type: 'stub', attributes: { a: 1, b: 2 } } );
 	assert.strictEqual( node.getAttribute( 'a' ), 1 );
 	assert.strictEqual( node.getAttribute( 'b' ), 2 );
 } );
@@ -122,96 +122,96 @@ QUnit.test( 'getClonedElement', function ( assert ) {
 	var i, node,
 		cases = [
 			{
-				'original': {
-					'type': 'foo'
+				original: {
+					type: 'foo'
 				},
-				'clone': {
-					'type': 'foo'
+				clone: {
+					type: 'foo'
 				},
-				'msg': 'Simple element is cloned verbatim'
+				msg: 'Simple element is cloned verbatim'
 			},
 			{
-				'original': {
-					'type': 'foo',
-					'attributes': {
-						'bar': 'baz'
+				original: {
+					type: 'foo',
+					attributes: {
+						bar: 'baz'
 					}
 				},
-				'clone': {
-					'type': 'foo',
-					'attributes': {
-						'bar': 'baz'
+				clone: {
+					type: 'foo',
+					attributes: {
+						bar: 'baz'
 					}
 				},
-				'msg': 'Element with simple attributes is cloned verbatim'
+				msg: 'Element with simple attributes is cloned verbatim'
 			},
 			{
-				'original': {
-					'type': 'foo',
-					'internal': {
-						'generated': 'wrapper',
-						'whitespace': [ undefined, ' ' ]
+				original: {
+					type: 'foo',
+					internal: {
+						generated: 'wrapper',
+						whitespace: [ undefined, ' ' ]
 					}
 				},
-				'clone': {
-					'type': 'foo',
-					'internal': {
-						'whitespace': [ undefined, ' ' ]
+				clone: {
+					type: 'foo',
+					internal: {
+						whitespace: [ undefined, ' ' ]
 					}
 				},
-				'msg': 'internal.generated property is removed from clone'
+				msg: 'internal.generated property is removed from clone'
 			},
 			{
-				'original': {
-					'type': 'foo',
-					'internal': {
-						'generated': 'wrapper'
+				original: {
+					type: 'foo',
+					internal: {
+						generated: 'wrapper'
 					}
 				},
-				'clone': {
-					'type': 'foo'
+				clone: {
+					type: 'foo'
 				},
-				'msg': 'internal property is removed if it only contained .generated'
+				msg: 'internal property is removed if it only contained .generated'
 			},
 			{
-				'original': {
-					'type': 'foo',
-					'internal': {
-						'generated': 'wrapper',
-						'whitespace': [ undefined, ' ' ]
+				original: {
+					type: 'foo',
+					internal: {
+						generated: 'wrapper',
+						whitespace: [ undefined, ' ' ]
 					},
-					'attributes': {
-						'bar': 'baz'
+					attributes: {
+						bar: 'baz'
 					},
-					'htmlAttributes': [
+					htmlAttributes: [
 						{
-							'keys': [ 'typeof', 'href' ],
-							'values': {
-								'typeof': 'Foo',
-								'href': 'Bar'
+							keys: [ 'typeof', 'href' ],
+							values: {
+								typeof: 'Foo',
+								href: 'Bar'
 							}
 						}
 					]
 				},
-				'clone': {
-					'type': 'foo',
-					'internal': {
-						'whitespace': [ undefined, ' ' ]
+				clone: {
+					type: 'foo',
+					internal: {
+						whitespace: [ undefined, ' ' ]
 					},
-					'attributes': {
-						'bar': 'baz'
+					attributes: {
+						bar: 'baz'
 					},
-					'htmlAttributes': [
+					htmlAttributes: [
 						{
-							'keys': [ 'typeof', 'href' ],
-							'values': {
-								'typeof': 'Foo',
-								'href': 'Bar'
+							keys: [ 'typeof', 'href' ],
+							values: {
+								typeof: 'Foo',
+								href: 'Bar'
 							}
 						}
 					]
 				},
-				'msg': 'internal.generated is removed but not htmlAttributes'
+				msg: 'internal.generated is removed but not htmlAttributes'
 			}
 		];
 	QUnit.expect( cases.length );

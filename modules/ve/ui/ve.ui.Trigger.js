@@ -17,10 +17,10 @@
 ve.ui.Trigger = function VeUiTrigger( e, allowInvalidPrimary ) {
 	// Properties
 	this.modifiers = {
-		'meta': false,
-		'ctrl': false,
-		'alt': false,
-		'shift': false
+		meta: false,
+		ctrl: false,
+		alt: false,
+		shift: false
 	};
 	this.primary = false;
 
@@ -173,14 +173,14 @@ ve.ui.Trigger.static.primaryKeys = [
  * @inheritable
  */
 ve.ui.Trigger.static.platformFilters = {
-	'mac': ( function () {
+	mac: ( function () {
 		var names = {
-			'meta': '⌘',
-			'shift': '⇧',
-			'backspace': '⌫',
-			'ctrl': '^',
-			'alt': '⎇',
-			'escape': '⎋'
+			meta: '⌘',
+			shift: '⇧',
+			backspace: '⌫',
+			ctrl: '^',
+			alt: '⎇',
+			escape: '⎋'
 		};
 		return function ( keys ) {
 			var i, len;
@@ -201,18 +201,18 @@ ve.ui.Trigger.static.platformFilters = {
  */
 ve.ui.Trigger.static.keyAliases = {
 	// Platform differences
-	'command': 'meta',
-	'apple': 'meta',
-	'windows': 'meta',
-	'option': 'alt',
-	'return': 'enter',
+	command: 'meta',
+	apple: 'meta',
+	windows: 'meta',
+	option: 'alt',
+	return: 'enter',
 	// Shorthand
-	'esc': 'escape',
-	'cmd': 'meta',
-	'del': 'delete',
+	esc: 'escape',
+	cmd: 'meta',
+	del: 'delete',
 	// Longhand
-	'control': 'ctrl',
-	'alternate': 'alt',
+	control: 'ctrl',
+	alternate: 'alt',
 	// Symbols
 	'⌘': 'meta',
 	'⎇': 'alt',

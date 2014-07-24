@@ -36,8 +36,8 @@ ve.ui.LinkInspector.static.modelClasses = [ ve.dm.LinkAnnotation ];
 
 ve.ui.LinkInspector.static.actions = ve.ui.LinkInspector.super.static.actions.concat( [
 	{
-		'action': 'open',
-		'label': OO.ui.deferMsg( 'visualeditor-linkinspector-open' )
+		action: 'open',
+		label: OO.ui.deferMsg( 'visualeditor-linkinspector-open' )
 	}
 ] );
 
@@ -54,7 +54,7 @@ ve.ui.LinkInspector.prototype.onTargetInputChange = function () {
 	var href = this.targetInput.getHref(),
 		valid = this.targetInput.isValid();
 
-	this.actions.forEach( { 'actions': 'open' }, function ( action ) {
+	this.actions.forEach( { actions: 'open' }, function ( action ) {
 		action.setHref( href ).setTarget( '_blank' ).setDisabled( !valid );
 		// HACK: Chrome renders a dark outline around the action when it's a link, but causing it to
 		// re-render makes it magically go away; this is incredibly evil and needs further
@@ -89,8 +89,8 @@ ve.ui.LinkInspector.prototype.getAnnotation = function () {
  */
 ve.ui.LinkInspector.prototype.getAnnotationFromFragment = function ( fragment ) {
 	return new ve.dm.LinkAnnotation( {
-		'type': 'link',
-		'attributes': { 'href': fragment.getText() }
+		type: 'link',
+		attributes: { href: fragment.getText() }
 	} );
 };
 
@@ -105,14 +105,14 @@ ve.ui.LinkInspector.prototype.initialize = function () {
 
 	// Properties
 	this.targetInput = new this.constructor.static.linkTargetInputWidget( {
-		'$': this.$,
-		'$overlay': overlay ? overlay.$element : this.$frame,
-		'disabled': true,
-		'classes': [ 've-ui-linkInspector-target' ]
+		$: this.$,
+		$overlay: overlay ? overlay.$element : this.$frame,
+		disabled: true,
+		classes: [ 've-ui-linkInspector-target' ]
 	} );
 
 	// Events
-	this.targetInput.connect( this, { 'change': 'onTargetInputChange' } );
+	this.targetInput.connect( this, { change: 'onTargetInputChange' } );
 
 	// Initialization
 	this.frame.$content.addClass( 've-ui-linkInspector-content' );

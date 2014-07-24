@@ -19,7 +19,7 @@ ve.ce.ListNode = function VeCeListNode( model, config ) {
 	ve.ce.BranchNode.call( this, model, config );
 
 	// Events
-	this.model.connect( this, { 'update': 'onUpdate' } );
+	this.model.connect( this, { update: 'onUpdate' } );
 };
 
 /* Inheritance */
@@ -42,7 +42,7 @@ ve.ce.ListNode.static.name = 'list';
  */
 ve.ce.ListNode.prototype.getTagName = function () {
 	var style = this.model.getAttribute( 'style' ),
-		types = { 'bullet': 'ul', 'number': 'ol' };
+		types = { bullet: 'ul', number: 'ol' };
 
 	if ( !( style in types ) ) {
 		throw new Error( 'Invalid style' );

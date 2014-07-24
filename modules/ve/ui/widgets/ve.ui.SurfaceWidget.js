@@ -27,8 +27,8 @@ ve.ui.SurfaceWidget = function VeUiSurfaceWidget( doc, config ) {
 	OO.ui.Widget.call( this, config );
 
 	// Properties
-	this.surface = ve.init.target.createSurface( doc, { '$': this.$ } );
-	this.toolbar = new ve.ui.Toolbar( this.surface, { '$': this.$ } );
+	this.surface = ve.init.target.createSurface( doc, { $: this.$ } );
+	this.toolbar = new ve.ui.Toolbar( this.surface, { $: this.$ } );
 
 	// Initialization
 	this.surface.$element.addClass( 've-ui-surfaceWidget-surface' );
@@ -47,7 +47,7 @@ ve.ui.SurfaceWidget = function VeUiSurfaceWidget( doc, config ) {
 	}
 
 	if ( ve.debug ) {
-		var debugBar = new ve.ui.DebugBar( this.surface, { '$': this.$ } );
+		var debugBar = new ve.ui.DebugBar( this.surface, { $: this.$ } );
 		this.$element.append( debugBar.$element );
 	}
 };

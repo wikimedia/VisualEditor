@@ -37,18 +37,18 @@ ve.ui.DebugBar = function VeUiDebugBar( surface, config ) {
 		);
 
 	// Widgets
-	this.fromTextInput = new OO.ui.TextInputWidget( { 'readOnly': true } );
-	this.toTextInput = new OO.ui.TextInputWidget( { 'readOnly': true } );
+	this.fromTextInput = new OO.ui.TextInputWidget( { readOnly: true } );
+	this.toTextInput = new OO.ui.TextInputWidget( { readOnly: true } );
 
-	this.logRangeButton = new OO.ui.ButtonWidget( { 'label': 'Log', 'disabled': true } );
-	this.dumpModelButton = new OO.ui.ButtonWidget( { 'label': 'Dump model' } );
-	this.dumpModelChangeToggle = new OO.ui.ToggleButtonWidget( { 'label': 'Dump on change' } );
+	this.logRangeButton = new OO.ui.ButtonWidget( { label: 'Log', disabled: true } );
+	this.dumpModelButton = new OO.ui.ButtonWidget( { label: 'Dump model' } );
+	this.dumpModelChangeToggle = new OO.ui.ToggleButtonWidget( { label: 'Dump on change' } );
 
 	var fromLabel = new OO.ui.LabelWidget(
-			{ 'label': 'Range', 'input': this.fromTextInput }
+			{ label: 'Range', input: this.fromTextInput }
 		),
 		toLabel = new OO.ui.LabelWidget(
-			{ 'label': '-', 'input': this.toTextInput }
+			{ label: '-', input: this.toTextInput }
 		);
 
 	// Events
@@ -57,7 +57,7 @@ ve.ui.DebugBar = function VeUiDebugBar( surface, config ) {
 	this.dumpModelChangeToggle.on( 'click', ve.bind( this.onDumpModelChangeToggleClick, this ) );
 
 	this.onDumpModelChangeToggleClick();
-	this.getSurface().getModel().connect( this, { 'select': this.onSurfaceSelect } );
+	this.getSurface().getModel().connect( this, { select: this.onSurfaceSelect } );
 	this.onSurfaceSelect( this.getSurface().getModel().getSelection() );
 
 	this.$element.addClass( 've-ui-debugBar' );
@@ -223,8 +223,8 @@ ve.ui.DebugBar.prototype.onDumpModelButtonClick = function () {
 ve.ui.DebugBar.prototype.onDumpModelChangeToggleClick = function () {
 	if ( this.dumpModelChangeToggle.getValue() ) {
 		this.onDumpModelButtonClick();
-		this.getSurface().model.connect( this, { 'documentUpdate': this.onDumpModelButtonClick } );
+		this.getSurface().model.connect( this, { documentUpdate: this.onDumpModelButtonClick } );
 	} else {
-		this.getSurface().model.disconnect( this, { 'documentUpdate': this.onDumpModelButtonClick } );
+		this.getSurface().model.disconnect( this, { documentUpdate: this.onDumpModelButtonClick } );
 	}
 };

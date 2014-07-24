@@ -28,45 +28,45 @@ QUnit.test( 'toggle', function ( assert ) {
 		html = '<p>Foo<b>bar</b><strong>baz</strong><i>quux</i></p>',
 		cases = [
 			{
-				'html': html,
-				'range': new ve.Range( 1, 4 ),
-				'method': 'toggle',
-				'args': ['textStyle/bold'],
-				'expectedData': function ( data ) {
+				html: html,
+				range: new ve.Range( 1, 4 ),
+				method: 'toggle',
+				args: ['textStyle/bold'],
+				expectedData: function ( data ) {
 					data.splice( 1, 3,
 						['F', [3]],
 						['o', [3]],
 						['o', [3]]
 					);
 				},
-				'msg': 'toggle bold on plain text'
+				msg: 'toggle bold on plain text'
 			},
 			{
-				'html': html,
-				'range': new ve.Range( 7, 10 ),
-				'method': 'toggle',
-				'args': ['textStyle/bold'],
-				'expectedData': function ( data ) {
+				html: html,
+				range: new ve.Range( 7, 10 ),
+				method: 'toggle',
+				args: ['textStyle/bold'],
+				expectedData: function ( data ) {
 					data.splice( 7, 3, 'b', 'a', 'z' );
 				},
-				'msg': 'toggle bold on strong text'
+				msg: 'toggle bold on strong text'
 			},
 			{
-				'html': html,
-				'range': new ve.Range( 4, 10 ),
-				'method': 'toggle',
-				'args': ['textStyle/bold'],
-				'expectedData': function ( data ) {
+				html: html,
+				range: new ve.Range( 4, 10 ),
+				method: 'toggle',
+				args: ['textStyle/bold'],
+				expectedData: function ( data ) {
 					data.splice( 4, 6, 'b', 'a', 'r', 'b', 'a', 'z' );
 				},
-				'msg': 'toggle bold on bold then strong text'
+				msg: 'toggle bold on bold then strong text'
 			},
 			{
-				'html': html,
-				'range': new ve.Range( 1, 14 ),
-				'method': 'toggle',
-				'args': ['textStyle/bold'],
-				'expectedData': function ( data ) {
+				html: html,
+				range: new ve.Range( 1, 14 ),
+				method: 'toggle',
+				args: ['textStyle/bold'],
+				expectedData: function ( data ) {
 					data.splice( 1, 3,
 						['F', [3]],
 						['o', [3]],
@@ -79,7 +79,7 @@ QUnit.test( 'toggle', function ( assert ) {
 						['x', [2, 3]]
 					);
 				},
-				'msg': 'toggle bold on plain, bold, strong then underlined text'
+				msg: 'toggle bold on plain, bold, strong then underlined text'
 			}
 		];
 

@@ -36,11 +36,11 @@ ve.ce.FocusableNode = function VeCeFocusableNode( $focusable ) {
 
 	// Events
 	this.connect( this, {
-		'setup': 'onFocusableSetup',
-		'teardown': 'onFocusableTeardown',
-		'resizeStart': 'onFocusableResizeStart',
-		'resizeEnd': 'onFocusableResizeEnd',
-		'rerender': 'onFocusableRerender'
+		setup: 'onFocusableSetup',
+		teardown: 'onFocusableTeardown',
+		resizeStart: 'onFocusableResizeStart',
+		resizeEnd: 'onFocusableResizeEnd',
+		rerender: 'onFocusableRerender'
 	} );
 };
 
@@ -75,8 +75,8 @@ ve.ce.FocusableNode.prototype.createHighlight = function () {
 			.addClass( 've-ce-focusableNode-highlight-relocatable-marker' )
 			.attr( 'src', 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==' )
 			.on( {
-				'dragstart': ve.bind( this.onFocusableDragStart, this ),
-				'dragend': ve.bind( this.onFocusableDragEnd, this )
+				dragstart: ve.bind( this.onFocusableDragStart, this ),
+				dragend: ve.bind( this.onFocusableDragEnd, this )
 			} )
 		);
 };
@@ -331,8 +331,8 @@ ve.ce.FocusableNode.prototype.createHighlights = function () {
 	}
 
 	this.$highlights.on( {
-		'mousedown': ve.bind( this.onFocusableMouseDown, this ),
-		'dblclick': ve.bind( this.onFocusableDblClick, this )
+		mousedown: ve.bind( this.onFocusableMouseDown, this ),
+		dblclick: ve.bind( this.onFocusableDblClick, this )
 	} );
 
 	this.highlighted = true;
@@ -348,8 +348,8 @@ ve.ce.FocusableNode.prototype.createHighlights = function () {
 			'mouseout.ve-ce-focusableNode': ve.bind( this.onSurfaceMouseOut, this )
 		} );
 	}
-	this.surface.getModel().getDocument().connect( this, { 'transact': 'positionHighlights' } );
-	this.surface.connect( this, { 'position': 'positionHighlights' } );
+	this.surface.getModel().getDocument().connect( this, { transact: 'positionHighlights' } );
+	this.surface.connect( this, { position: 'positionHighlights' } );
 };
 
 /**
@@ -363,8 +363,8 @@ ve.ce.FocusableNode.prototype.clearHighlights = function () {
 	}
 	this.$highlights.remove().empty();
 	this.surface.$element.off( '.ve-ce-focusableNode' );
-	this.surface.getModel().getDocument().disconnect( this, { 'transact': 'positionHighlights' } );
-	this.surface.disconnect( this, { 'position': 'positionHighlights' } );
+	this.surface.getModel().getDocument().disconnect( this, { transact: 'positionHighlights' } );
+	this.surface.disconnect( this, { position: 'positionHighlights' } );
 	this.highlighted = false;
 	this.boundingRect = null;
 };
@@ -439,10 +439,10 @@ ve.ce.FocusableNode.prototype.positionHighlights = function () {
 	} );
 
 	this.boundingRect = {
-		'top': Infinity,
-		'left': Infinity,
-		'bottom': -Infinity,
-		'right': -Infinity
+		top: Infinity,
+		left: Infinity,
+		bottom: -Infinity,
+		right: -Infinity
 	};
 
 	for ( i = 0, l = outerRects.length; i < l; i++ ) {
@@ -452,10 +452,10 @@ ve.ce.FocusableNode.prototype.positionHighlights = function () {
 		right = outerRects[i].right - surfaceOffset.left;
 		this.$highlights.append(
 			this.createHighlight().css( {
-				'top': top,
-				'left': left,
-				'height': outerRects[i].height,
-				'width': outerRects[i].width
+				top: top,
+				left: left,
+				height: outerRects[i].height,
+				width: outerRects[i].width
 			} )
 		);
 		this.boundingRect.top = Math.min( this.boundingRect.top, top );
@@ -475,8 +475,8 @@ ve.ce.FocusableNode.prototype.getRelativeOffset = function () {
 		this.createHighlights();
 	}
 	return {
-		'top': this.boundingRect.top,
-		'left': this.boundingRect.left
+		top: this.boundingRect.top,
+		left: this.boundingRect.left
 	};
 };
 
@@ -490,7 +490,7 @@ ve.ce.FocusableNode.prototype.getDimensions = function () {
 		this.createHighlights();
 	}
 	return {
-		'width': this.boundingRect.right - this.boundingRect.left,
-		'height': this.boundingRect.bottom - this.boundingRect.top
+		width: this.boundingRect.right - this.boundingRect.left,
+		height: this.boundingRect.bottom - this.boundingRect.top
 	};
 };

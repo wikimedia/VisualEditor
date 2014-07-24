@@ -47,10 +47,10 @@ ve.ui.LanguageInspector.prototype.getAnnotation = function () {
  */
 ve.ui.LanguageInspector.prototype.getAnnotationFromFragment = function ( fragment ) {
 	return new ve.dm.LanguageAnnotation( {
-		'type': 'meta/language',
-		'attributes': {
-			'lang': fragment.getDocument().getLang(),
-			'dir': fragment.getDocument().getDir()
+		type: 'meta/language',
+		attributes: {
+			lang: fragment.getDocument().getLang(),
+			dir: fragment.getDocument().getDir()
 		}
 	} );
 };
@@ -63,7 +63,7 @@ ve.ui.LanguageInspector.prototype.initialize = function () {
 	ve.ui.LanguageInspector.super.prototype.initialize.call( this );
 
 	// Properties
-	this.languageInput = new ve.ui.LanguageInputWidget( { '$': this.$ } );
+	this.languageInput = new ve.ui.LanguageInputWidget( { $: this.$ } );
 
 	// Initialization
 	this.form.$element.append( this.languageInput.$element );

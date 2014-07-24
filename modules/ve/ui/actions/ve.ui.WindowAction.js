@@ -51,7 +51,7 @@ ve.ui.WindowAction.prototype.open = function ( name, data ) {
 			this.surface.getView().getDocument().getDirectionFromRange( fragment.getRange() ) :
 			this.surface.getModel().getDocument().getDir();
 
-	data = ve.extendObject( { 'dir': dir }, data, { 'fragment': fragment } );
+	data = ve.extendObject( { dir: dir }, data, { fragment: fragment } );
 
 	if ( windowClass ) {
 		if ( windowClass.prototype instanceof ve.ui.FragmentInspector ) {

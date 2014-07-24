@@ -32,9 +32,9 @@ ve.dm.AlienMetaItem.static.storeHtmlAttributes = false;
 
 ve.dm.AlienMetaItem.static.toDataElement = function ( domElements ) {
 	return {
-		'type': this.name,
-		'attributes': {
-			'domElements': ve.copy( domElements )
+		type: this.name,
+		attributes: {
+			domElements: ve.copy( domElements )
 		}
 	};
 };

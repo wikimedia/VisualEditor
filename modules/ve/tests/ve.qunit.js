@@ -33,10 +33,10 @@
 	function getNodeTreeSummary( node, shallow ) {
 		var i,
 			summary = {
-				'getType': node.getType(),
-				'getLength': node.getLength(),
-				'getOuterLength': node.getOuterLength(),
-				'element': node.element
+				getType: node.getType(),
+				getLength: node.getLength(),
+				getOuterLength: node.getOuterLength(),
+				element: node.element
 			},
 			numChildren;
 
@@ -66,20 +66,20 @@
 	function getNodeSelectionSummary( selection ) {
 		var i,
 			summary = {
-				'length': selection.length
+				length: selection.length
 			};
 
 		if ( selection.length ) {
 			summary.results = [];
 			for ( i = 0; i < selection.length; i++ ) {
 				summary.results.push( {
-					'node': getNodeTreeSummary( selection[i].node, true ),
-					'range': selection[i].range,
-					'index': selection[i].index,
-					'indexInNode': selection[i].indexInNode,
-					'nodeRange': selection[i].nodeRange,
-					'nodeOuterRange': selection[i].nodeOuterRange,
-					'parentOuterRange': selection[i].parentOuterRange
+					node: getNodeTreeSummary( selection[i].node, true ),
+					range: selection[i].range,
+					index: selection[i].index,
+					indexInNode: selection[i].indexInNode,
+					nodeRange: selection[i].nodeRange,
+					nodeOuterRange: selection[i].nodeOuterRange,
+					parentOuterRange: selection[i].parentOuterRange
 				} );
 			}
 		}

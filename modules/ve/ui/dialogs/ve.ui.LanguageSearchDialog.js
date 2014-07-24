@@ -35,7 +35,7 @@ ve.ui.LanguageSearchDialog.static.title =
 
 ve.ui.LanguageSearchDialog.static.actions = [
 	{
-		'label': OO.ui.deferMsg( 'visualeditor-dialog-action-cancel' )
+		label: OO.ui.deferMsg( 'visualeditor-dialog-action-cancel' )
 	}
 ];
 
@@ -57,7 +57,7 @@ ve.ui.LanguageSearchDialog.prototype.initialize = function () {
 	ve.ui.LanguageSearchDialog.super.prototype.initialize.apply( this, arguments );
 
 	this.searchWidget = new this.constructor.static.languageSearchWidget( {
-		'$': this.$
+		$: this.$
 	} ).on( 'select', ve.bind( this.onSearchWidgetSelect, this ) );
 	this.$body.append( this.searchWidget.$element );
 };
@@ -69,9 +69,9 @@ ve.ui.LanguageSearchDialog.prototype.initialize = function () {
  */
 ve.ui.LanguageSearchDialog.prototype.onSearchWidgetSelect = function ( data ) {
 	this.close( {
-		'action': 'apply',
-		'lang': data.code,
-		'dir': ve.init.platform.getLanguageDirection( data.code )
+		action: 'apply',
+		lang: data.code,
+		dir: ve.init.platform.getLanguageDirection( data.code )
 	} );
 };
 

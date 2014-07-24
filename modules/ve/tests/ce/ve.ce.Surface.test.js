@@ -13,12 +13,12 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, html, range, o
 	var i, method, args,
 		selection,
 		actions = {
-			'backspace': [ 'handleDelete', {}, true ],
-			'delete': [ 'handleDelete', {}, false ],
-			'modifiedBackspace': [ 'handleDelete', { 'ctrlKey': true }, true ],
-			'modifiedDelete': [ 'handleDelete', { 'ctrlKey': true }, false ],
-			'enter': [ 'handleEnter', {}, true ],
-			'modifiedEnter': [ 'handleEnter', { 'shiftKey': true }, false ]
+			backspace: [ 'handleDelete', {}, true ],
+			delete: [ 'handleDelete', {}, false ],
+			modifiedBackspace: [ 'handleDelete', { ctrlKey: true }, true ],
+			modifiedDelete: [ 'handleDelete', { ctrlKey: true }, false ],
+			enter: [ 'handleEnter', {}, true ],
+			modifiedEnter: [ 'handleEnter', { shiftKey: true }, false ]
 		},
 		surface = ve.test.utils.createSurfaceFromHtml( html || ve.dm.example.html ),
 		view = surface.getView(),
@@ -50,102 +50,102 @@ QUnit.test( 'handleDelete', function ( assert ) {
 	var i,
 		cases = [
 			{
-				'range': new ve.Range( 2 ),
-				'operations': ['backspace'],
-				'expectedData': function ( data ) {
+				range: new ve.Range( 2 ),
+				operations: ['backspace'],
+				expectedData: function ( data ) {
 					data.splice( 1, 1 );
 				},
-				'expectedRange': new ve.Range( 1 ),
-				'msg': 'Character deleted by backspace'
+				expectedRange: new ve.Range( 1 ),
+				msg: 'Character deleted by backspace'
 			},
 			{
-				'range': new ve.Range( 2 ),
-				'operations': ['delete'],
-				'expectedData': function ( data ) {
+				range: new ve.Range( 2 ),
+				operations: ['delete'],
+				expectedData: function ( data ) {
 					data.splice( 2, 1 );
 				},
-				'expectedRange': new ve.Range( 2 ),
-				'msg': 'Character deleted by delete'
+				expectedRange: new ve.Range( 2 ),
+				msg: 'Character deleted by delete'
 			},
 			{
-				'range': new ve.Range( 1, 4 ),
-				'operations': ['backspace'],
-				'expectedData': function ( data ) {
+				range: new ve.Range( 1, 4 ),
+				operations: ['backspace'],
+				expectedData: function ( data ) {
 					data.splice( 1, 3 );
 				},
-				'expectedRange': new ve.Range( 1 ),
-				'msg': 'Selection deleted by backspace'
+				expectedRange: new ve.Range( 1 ),
+				msg: 'Selection deleted by backspace'
 			},
 			{
-				'range': new ve.Range( 1, 4 ),
-				'operations': ['delete'],
-				'expectedData': function ( data ) {
+				range: new ve.Range( 1, 4 ),
+				operations: ['delete'],
+				expectedData: function ( data ) {
 					data.splice( 1, 3 );
 				},
-				'expectedRange': new ve.Range( 1 ),
-				'msg': 'Selection deleted by delete'
+				expectedRange: new ve.Range( 1 ),
+				msg: 'Selection deleted by delete'
 			},
 			{
-				'range': new ve.Range( 4 ),
-				'operations': ['modifiedBackspace'],
-				'expectedData': function ( data ) {
+				range: new ve.Range( 4 ),
+				operations: ['modifiedBackspace'],
+				expectedData: function ( data ) {
 					data.splice( 1, 3 );
 				},
-				'expectedRange': new ve.Range( 1 ),
-				'msg': 'Whole word deleted by modified backspace'
+				expectedRange: new ve.Range( 1 ),
+				msg: 'Whole word deleted by modified backspace'
 			},
 			{
-				'range': new ve.Range( 1 ),
-				'operations': ['modifiedDelete'],
-				'expectedData': function ( data ) {
+				range: new ve.Range( 1 ),
+				operations: ['modifiedDelete'],
+				expectedData: function ( data ) {
 					data.splice( 1, 3 );
 				},
-				'expectedRange': new ve.Range( 1 ),
-				'msg': 'Whole word deleted by modified delete'
+				expectedRange: new ve.Range( 1 ),
+				msg: 'Whole word deleted by modified delete'
 			},
 			{
-				'range': new ve.Range( 1, 4 ),
-				'operations': ['delete', 'delete'],
-				'expectedData': function ( data ) {
+				range: new ve.Range( 1, 4 ),
+				operations: ['delete', 'delete'],
+				expectedData: function ( data ) {
 					data.splice( 0, 5 );
 				},
-				'expectedRange': new ve.Range( 5 ),
-				'msg': 'Empty node deleted by delete; selection goes to nearest content offset'
+				expectedRange: new ve.Range( 5 ),
+				msg: 'Empty node deleted by delete; selection goes to nearest content offset'
 			},
 			{
-				'range': new ve.Range( 41 ),
-				'operations': ['backspace'],
-				'expectedData': function () {},
-				'expectedRange': new ve.Range( 39, 41 ),
-				'msg': 'Focusable node selected but not deleted by backspace'
+				range: new ve.Range( 41 ),
+				operations: ['backspace'],
+				expectedData: function () {},
+				expectedRange: new ve.Range( 39, 41 ),
+				msg: 'Focusable node selected but not deleted by backspace'
 			},
 			{
-				'range': new ve.Range( 39 ),
-				'operations': ['delete'],
-				'expectedData': function () {},
-				'expectedRange': new ve.Range( 39, 41 ),
-				'msg': 'Focusable node selected but not deleted by delete'
+				range: new ve.Range( 39 ),
+				operations: ['delete'],
+				expectedData: function () {},
+				expectedRange: new ve.Range( 39, 41 ),
+				msg: 'Focusable node selected but not deleted by delete'
 			},
 			{
-				'range': new ve.Range( 39, 41 ),
-				'operations': ['delete'],
-				'expectedData': function ( data ) {
+				range: new ve.Range( 39, 41 ),
+				operations: ['delete'],
+				expectedData: function ( data ) {
 					data.splice( 39, 2 );
 				},
-				'expectedRange': new ve.Range( 39 ),
-				'msg': 'Focusable node deleted if selected first'
+				expectedRange: new ve.Range( 39 ),
+				msg: 'Focusable node deleted if selected first'
 			},
 			{
-				'range': new ve.Range( 0, 63 ),
-				'operations': ['backspace'],
-				'expectedData': function ( data ) {
+				range: new ve.Range( 0, 63 ),
+				operations: ['backspace'],
+				expectedData: function ( data ) {
 					data.splice( 0, 61,
-							{ 'type': 'paragraph' },
-							{ 'type': '/paragraph' }
+							{ type: 'paragraph' },
+							{ type: '/paragraph' }
 						);
 				},
-				'expectedRange': new ve.Range( 1 ),
-				'msg': 'Backspace after select all spanning entire document creates empty paragraph'
+				expectedRange: new ve.Range( 1 ),
+				msg: 'Backspace after select all spanning entire document creates empty paragraph'
 			}
 		];
 
@@ -164,180 +164,180 @@ QUnit.test( 'handleEnter', function ( assert ) {
 		emptyList = '<ul><li><p></p></li></ul>',
 		cases = [
 			{
-				'range': new ve.Range( 57 ),
-				'operations': ['enter'],
-				'expectedData': function ( data ) {
+				range: new ve.Range( 57 ),
+				operations: ['enter'],
+				expectedData: function ( data ) {
 					data.splice(
 						57, 0,
-						{ 'type': '/paragraph' },
-						{ 'type': 'paragraph' }
+						{ type: '/paragraph' },
+						{ type: 'paragraph' }
 					);
 				},
-				'expectedRange': new ve.Range( 59 ),
-				'msg': 'End of paragraph split by enter'
+				expectedRange: new ve.Range( 59 ),
+				msg: 'End of paragraph split by enter'
 			},
 			{
-				'range': new ve.Range( 57 ),
-				'operations': ['modifiedEnter'],
-				'expectedData': function ( data ) {
+				range: new ve.Range( 57 ),
+				operations: ['modifiedEnter'],
+				expectedData: function ( data ) {
 					data.splice(
 						57, 0,
-						{ 'type': '/paragraph' },
-						{ 'type': 'paragraph' }
+						{ type: '/paragraph' },
+						{ type: 'paragraph' }
 					);
 				},
-				'expectedRange': new ve.Range( 59 ),
-				'msg': 'End of paragraph split by modified enter'
+				expectedRange: new ve.Range( 59 ),
+				msg: 'End of paragraph split by modified enter'
 			},
 			{
-				'range': new ve.Range( 56 ),
-				'operations': ['enter'],
-				'expectedData': function ( data ) {
+				range: new ve.Range( 56 ),
+				operations: ['enter'],
+				expectedData: function ( data ) {
 					data.splice(
 						56, 0,
-						{ 'type': '/paragraph' },
-						{ 'type': 'paragraph' }
+						{ type: '/paragraph' },
+						{ type: 'paragraph' }
 					);
 				},
-				'expectedRange': new ve.Range( 58 ),
-				'msg': 'Start of paragraph split by enter'
+				expectedRange: new ve.Range( 58 ),
+				msg: 'Start of paragraph split by enter'
 			},
 			{
-				'range': new ve.Range( 3 ),
-				'operations': ['enter'],
-				'expectedData': function ( data ) {
+				range: new ve.Range( 3 ),
+				operations: ['enter'],
+				expectedData: function ( data ) {
 					data.splice(
 						3, 0,
-						{ 'type': '/heading' },
-						{ 'type': 'heading', 'attributes': { 'level': 1 } }
+						{ type: '/heading' },
+						{ type: 'heading', attributes: { level: 1 } }
 					);
 				},
-				'expectedRange': new ve.Range( 5 ),
-				'msg': 'Heading split by enter'
+				expectedRange: new ve.Range( 5 ),
+				msg: 'Heading split by enter'
 			},
 			{
-				'range': new ve.Range( 2, 3 ),
-				'operations': ['enter'],
-				'expectedData': function ( data ) {
+				range: new ve.Range( 2, 3 ),
+				operations: ['enter'],
+				expectedData: function ( data ) {
 					data.splice(
 						2, 1,
-						{ 'type': '/heading' },
-						{ 'type': 'heading', 'attributes': { 'level': 1 } }
+						{ type: '/heading' },
+						{ type: 'heading', attributes: { level: 1 } }
 					);
 				},
-				'expectedRange': new ve.Range( 4 ),
-				'msg': 'Selection in heading removed, then split by enter'
+				expectedRange: new ve.Range( 4 ),
+				msg: 'Selection in heading removed, then split by enter'
 			},
 			{
-				'range': new ve.Range( 1 ),
-				'operations': ['enter'],
-				'expectedData': function ( data ) {
+				range: new ve.Range( 1 ),
+				operations: ['enter'],
+				expectedData: function ( data ) {
 					data.splice(
 						0, 0,
-						{ 'type': 'paragraph' },
-						{ 'type': '/paragraph' }
+						{ type: 'paragraph' },
+						{ type: '/paragraph' }
 					);
 				},
-				'expectedRange': new ve.Range( 3 ),
-				'msg': 'Start of heading split into a plain paragraph'
+				expectedRange: new ve.Range( 3 ),
+				msg: 'Start of heading split into a plain paragraph'
 			},
 			{
-				'range': new ve.Range( 4 ),
-				'operations': ['enter'],
-				'expectedData': function ( data ) {
+				range: new ve.Range( 4 ),
+				operations: ['enter'],
+				expectedData: function ( data ) {
 					data.splice(
 						5, 0,
-						{ 'type': 'paragraph' },
-						{ 'type': '/paragraph' }
+						{ type: 'paragraph' },
+						{ type: '/paragraph' }
 					);
 				},
-				'expectedRange': new ve.Range( 6 ),
-				'msg': 'End of heading split into a plain paragraph'
+				expectedRange: new ve.Range( 6 ),
+				msg: 'End of heading split into a plain paragraph'
 			},
 			{
-				'range': new ve.Range( 16 ),
-				'operations': ['enter'],
-				'expectedData': function ( data ) {
+				range: new ve.Range( 16 ),
+				operations: ['enter'],
+				expectedData: function ( data ) {
 					data.splice(
 						16, 0,
-						{ 'type': '/paragraph' },
-						{ 'type': '/listItem' },
-						{ 'type': 'listItem' },
-						{ 'type': 'paragraph' }
+						{ type: '/paragraph' },
+						{ type: '/listItem' },
+						{ type: 'listItem' },
+						{ type: 'paragraph' }
 					);
 				},
-				'expectedRange': new ve.Range( 20 ),
-				'msg': 'List item split by enter'
+				expectedRange: new ve.Range( 20 ),
+				msg: 'List item split by enter'
 			},
 			{
-				'range': new ve.Range( 16 ),
-				'operations': ['modifiedEnter'],
-				'expectedData': function ( data ) {
+				range: new ve.Range( 16 ),
+				operations: ['modifiedEnter'],
+				expectedData: function ( data ) {
 					data.splice(
 						16, 0,
-						{ 'type': '/paragraph' },
-						{ 'type': 'paragraph' }
+						{ type: '/paragraph' },
+						{ type: 'paragraph' }
 					);
 				},
-				'expectedRange': new ve.Range( 18 ),
-				'msg': 'List item not split by modified enter'
+				expectedRange: new ve.Range( 18 ),
+				msg: 'List item not split by modified enter'
 			},
 			{
-				'range': new ve.Range( 21 ),
-				'operations': ['enter', 'enter'],
-				'expectedData': function ( data ) {
+				range: new ve.Range( 21 ),
+				operations: ['enter', 'enter'],
+				expectedData: function ( data ) {
 					data.splice(
 						24, 0,
-						{ 'type': 'paragraph' },
-						{ 'type': '/paragraph' }
+						{ type: 'paragraph' },
+						{ type: '/paragraph' }
 					);
 				},
-				'expectedRange': new ve.Range( 25 ),
-				'msg': 'Two enters breaks out of a list and starts a new paragraph'
+				expectedRange: new ve.Range( 25 ),
+				msg: 'Two enters breaks out of a list and starts a new paragraph'
 			},
 			{
-				'html': '<p>foo</p>' + emptyList + '<p>bar</p>',
-				'range': new ve.Range( 8 ),
-				'operations': ['enter'],
-				'expectedData': function ( data ) {
+				html: '<p>foo</p>' + emptyList + '<p>bar</p>',
+				range: new ve.Range( 8 ),
+				operations: ['enter'],
+				expectedData: function ( data ) {
 					data.splice( 5, 6 );
 				},
-				'expectedRange': new ve.Range( 6 ),
-				'msg': 'Enter in an empty list destroys it and moves to next paragraph'
+				expectedRange: new ve.Range( 6 ),
+				msg: 'Enter in an empty list destroys it and moves to next paragraph'
 			},
 			{
-				'html': '<p>foo</p>' + emptyList,
-				'range': new ve.Range( 8 ),
-				'operations': ['enter'],
-				'expectedData': function ( data ) {
+				html: '<p>foo</p>' + emptyList,
+				range: new ve.Range( 8 ),
+				operations: ['enter'],
+				expectedData: function ( data ) {
 					data.splice( 5, 6 );
 				},
-				'expectedRange': new ve.Range( 4 ),
-				'msg': 'Enter in an empty list at end of document destroys it and moves to previous paragraph'
+				expectedRange: new ve.Range( 4 ),
+				msg: 'Enter in an empty list at end of document destroys it and moves to previous paragraph'
 			},
 			{
-				'html': emptyList + '<p>bar</p>',
-				'range': new ve.Range( 3 ),
-				'operations': ['enter'],
-				'expectedData': function ( data ) {
+				html: emptyList + '<p>bar</p>',
+				range: new ve.Range( 3 ),
+				operations: ['enter'],
+				expectedData: function ( data ) {
 					data.splice( 0, 6 );
 				},
-				'expectedRange': new ve.Range( 1 ),
-				'msg': 'Enter in an empty list at start of document destroys it and moves to next paragraph'
+				expectedRange: new ve.Range( 1 ),
+				msg: 'Enter in an empty list at start of document destroys it and moves to next paragraph'
 			},
 			{
-				'html': emptyList,
-				'range': new ve.Range( 3 ),
-				'operations': ['enter'],
-				'expectedData': function ( data ) {
+				html: emptyList,
+				range: new ve.Range( 3 ),
+				operations: ['enter'],
+				expectedData: function ( data ) {
 					data.splice(
 						0, 6,
-						{ 'type': 'paragraph' },
-						{ 'type': '/paragraph' }
+						{ type: 'paragraph' },
+						{ type: '/paragraph' }
 					);
 				},
-				'expectedRange': new ve.Range( 1 ),
-				'msg': 'Enter in an empty list with no adjacent content destroys it and creates a paragraph'
+				expectedRange: new ve.Range( 1 ),
+				msg: 'Enter in an empty list with no adjacent content destroys it and creates a paragraph'
 			}
 		];
 
@@ -355,60 +355,60 @@ QUnit.test( 'onContentChange', function ( assert ) {
 	var i,
 		cases = [
 			{
-				'prevHtml': '<p></p>',
-				'prevRange': new ve.Range( 1 ),
-				'nextHtml': '<p>A</p>',
-				'nextRange': new ve.Range( 2 ),
-				'expectedOps': [
+				prevHtml: '<p></p>',
+				prevRange: new ve.Range( 1 ),
+				nextHtml: '<p>A</p>',
+				nextRange: new ve.Range( 2 ),
+				expectedOps: [
 					[
-						{ 'type': 'retain', 'length': 1 },
+						{ type: 'retain', length: 1 },
 						{
-							'type': 'replace',
-							'insert': [ 'A' ],
-							'remove': [],
-							'insertedDataOffset': 0,
-							'insertedDataLength': 1
+							type: 'replace',
+							insert: [ 'A' ],
+							remove: [],
+							insertedDataOffset: 0,
+							insertedDataLength: 1
 						},
-						{ 'type': 'retain', 'length': 3 }
+						{ type: 'retain', length: 3 }
 					]
 				],
-				'msg': 'Simple insertion into empty paragraph'
+				msg: 'Simple insertion into empty paragraph'
 			},
 			{
-				'prevHtml': '<p>A</p>',
-				'prevRange': new ve.Range( 1, 2 ),
-				'nextHtml': '<p>B</p>',
-				'nextRange': new ve.Range( 2 ),
-				'expectedOps': [
+				prevHtml: '<p>A</p>',
+				prevRange: new ve.Range( 1, 2 ),
+				nextHtml: '<p>B</p>',
+				nextRange: new ve.Range( 2 ),
+				expectedOps: [
 					[
-						{ 'type': 'retain', 'length': 1 },
+						{ type: 'retain', length: 1 },
 						{
-							'type': 'replace',
-							'insert': [ 'B' ],
-							'remove': [ 'A' ]
+							type: 'replace',
+							insert: [ 'B' ],
+							remove: [ 'A' ]
 						},
-						{ 'type': 'retain', 'length': 3 }
+						{ type: 'retain', length: 3 }
 					]
 				],
-				'msg': 'Simple replace'
+				msg: 'Simple replace'
 			},
 			{
-				'prevHtml': '<p><a href="Foo">A</a><a href="Bar">FooX?</a></p>',
-				'prevRange': new ve.Range( 5, 6 ),
-				'nextHtml': '<p><a href="Foo">A</a><a href="Bar">FooB?</a></p>',
-				'nextRange': new ve.Range( 6 ),
-				'expectedOps': [
+				prevHtml: '<p><a href="Foo">A</a><a href="Bar">FooX?</a></p>',
+				prevRange: new ve.Range( 5, 6 ),
+				nextHtml: '<p><a href="Foo">A</a><a href="Bar">FooB?</a></p>',
+				nextRange: new ve.Range( 6 ),
+				expectedOps: [
 					[
-						{ 'type': 'retain', 'length': 5 },
+						{ type: 'retain', length: 5 },
 						{
-							'type': 'replace',
-							'insert': [ ['B', [1]] ],
-							'remove': [ ['X', [1]] ]
+							type: 'replace',
+							insert: [ ['B', [1]] ],
+							remove: [ ['X', [1]] ]
 						},
-						{ 'type': 'retain', 'length': 4 }
+						{ type: 'retain', length: 4 }
 					]
 				],
-				'msg': 'Replace into non-zero annotation next to word break'
+				msg: 'Replace into non-zero annotation next to word break'
 			}
 		];
 
@@ -421,14 +421,14 @@ QUnit.test( 'onContentChange', function ( assert ) {
 			prevNode = $( prevHtml )[0],
 			nextNode = $( nextHtml )[0],
 			prev = {
-				'text': ve.ce.getDomText( prevNode ),
-				'hash': ve.ce.getDomHash( prevNode ),
-				'range': prevRange
+				text: ve.ce.getDomText( prevNode ),
+				hash: ve.ce.getDomHash( prevNode ),
+				range: prevRange
 			},
 			next = {
-				'text': ve.ce.getDomText( nextNode ),
-				'hash': ve.ce.getDomHash( nextNode ),
-				'range': nextRange
+				text: ve.ce.getDomText( nextNode ),
+				hash: ve.ce.getDomHash( nextNode ),
+				range: nextRange
 			};
 
 		surface.getView().onContentChange( view, prev, next );
@@ -465,49 +465,49 @@ QUnit.test( 'getClipboardHash', 1, function ( assert ) {
 QUnit.test( 'onCopy', function ( assert ) {
 	var i, testClipboardData,
 		testEvent = {
-			'originalEvent': {
-				'clipboardData': {
-					'setData': function ( prop, val ) {
+			originalEvent: {
+				clipboardData: {
+					setData: function ( prop, val ) {
 						testClipboardData[prop] = val;
 						return true;
 					}
 				}
 			},
-			'preventDefault': function () {}
+			preventDefault: function () {}
 		},
 		cases = [
 			{
-				'range': new ve.Range( 27, 32 ),
-				'expectedData': [
-					{ 'type': 'list', 'attributes': { 'style': 'number' } },
-					{ 'type': 'listItem' },
-					{ 'type': 'paragraph' },
+				range: new ve.Range( 27, 32 ),
+				expectedData: [
+					{ type: 'list', attributes: { style: 'number' } },
+					{ type: 'listItem' },
+					{ type: 'paragraph' },
 					'g',
-					{ 'type': '/paragraph' },
-					{ 'type': '/listItem' },
-					{ 'type': '/list' },
-					{ 'type': 'internalList' },
-					{ 'type': '/internalList' }
+					{ type: '/paragraph' },
+					{ type: '/listItem' },
+					{ type: '/list' },
+					{ type: 'internalList' },
+					{ type: '/internalList' }
 				],
-				'expectedOriginalRange': new ve.Range( 1, 6 ),
-				'expectedBalancedRange': new ve.Range( 1, 6 ),
-				'expectedHtml': '<ol><li><p>g</p></li></ol>',
-				'msg': 'Copy list item'
+				expectedOriginalRange: new ve.Range( 1, 6 ),
+				expectedBalancedRange: new ve.Range( 1, 6 ),
+				expectedHtml: '<ol><li><p>g</p></li></ol>',
+				msg: 'Copy list item'
 			},
 			{
-				'doc': 'RDFa',
-				'range': new ve.Range( 0, 5 ),
-				'expectedData': ve.dm.example.RDFa,
-				'expectedOriginalRange': new ve.Range( 0, 5 ),
-				'expectedBalancedRange': new ve.Range( 0, 5 ),
-				'expectedHtml':
+				doc: 'RDFa',
+				range: new ve.Range( 0, 5 ),
+				expectedData: ve.dm.example.RDFa,
+				expectedOriginalRange: new ve.Range( 0, 5 ),
+				expectedBalancedRange: new ve.Range( 0, 5 ),
+				expectedHtml:
 					'<p about="a" content="b" datatype="c" property="d" rel="e" resource="f" rev="g" typeof="h" class="i" ' +
 						'data-ve-attributes="{&quot;typeof&quot;:&quot;h&quot;,&quot;rev&quot;:&quot;g&quot;,' +
 						'&quot;resource&quot;:&quot;f&quot;,&quot;rel&quot;:&quot;e&quot;,&quot;property&quot;:&quot;d&quot;,' +
 						'&quot;datatype&quot;:&quot;c&quot;,&quot;content&quot;:&quot;b&quot;,&quot;about&quot;:&quot;a&quot;}">' +
 						'Foo' +
 					'</p>',
-				'msg': 'RDFa attributes encoded into data-ve-attributes'
+				msg: 'RDFa attributes encoded into data-ve-attributes'
 			}
 		];
 
@@ -556,8 +556,8 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 	var i, exampleDoc = '<p></p><p>Foo</p>',
 		TestEvent = function ( data ) {
 			this.originalEvent = {
-				'clipboardData': {
-					'getData': function ( prop ) {
+				clipboardData: {
+					getData: function ( prop ) {
 						return data[prop];
 					}
 				}
@@ -566,226 +566,226 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 		},
 		cases = [
 			{
-				'range': new ve.Range( 1 ),
-				'pasteHtml': 'Foo',
-				'expectedRange': new ve.Range( 4 ),
-				'expectedOps': [
+				range: new ve.Range( 1 ),
+				pasteHtml: 'Foo',
+				expectedRange: new ve.Range( 4 ),
+				expectedOps: [
 					[
-						{ 'type': 'retain', 'length': 1 },
+						{ type: 'retain', length: 1 },
 						{
-							'type': 'replace',
-							'insert': [
+							type: 'replace',
+							insert: [
 								'F', 'o', 'o'
 							],
-							'remove': []
+							remove: []
 						},
-						{ 'type': 'retain', 'length': 8 }
+						{ type: 'retain', length: 8 }
 					]
 				],
-				'msg': 'Text into empty paragraph'
+				msg: 'Text into empty paragraph'
 			},
 			{
-				'range': new ve.Range( 4 ),
-				'pasteHtml': 'Bar',
-				'expectedRange': new ve.Range( 7 ),
-				'expectedOps': [
+				range: new ve.Range( 4 ),
+				pasteHtml: 'Bar',
+				expectedRange: new ve.Range( 7 ),
+				expectedOps: [
 					[
-						{ 'type': 'retain', 'length': 4 },
+						{ type: 'retain', length: 4 },
 						{
-							'type': 'replace',
-							'insert': [ 'B', 'a', 'r' ],
-							'remove': []
+							type: 'replace',
+							insert: [ 'B', 'a', 'r' ],
+							remove: []
 						},
-						{ 'type': 'retain', 'length': 5 }
+						{ type: 'retain', length: 5 }
 					]
 				],
-				'msg': 'Text into paragraph'
+				msg: 'Text into paragraph'
 			},
 			{
-				'range': new ve.Range( 4 ),
-				'pasteHtml': '<span rel="ve:Alien">Foo</span><b>B</b>a<!-- comment --><b>r</b>',
-				'expectedRange': new ve.Range( 7 ),
-				'expectedOps': [
+				range: new ve.Range( 4 ),
+				pasteHtml: '<span rel="ve:Alien">Foo</span><b>B</b>a<!-- comment --><b>r</b>',
+				expectedRange: new ve.Range( 7 ),
+				expectedOps: [
 					[
-						{ 'type': 'retain', 'length': 4 },
+						{ type: 'retain', length: 4 },
 						{
-							'type': 'replace',
-							'insert': [ ['B', [0]], 'a', ['r', [0]] ],
-							'remove': []
+							type: 'replace',
+							insert: [ ['B', [0]], 'a', ['r', [0]] ],
+							remove: []
 						},
-						{ 'type': 'retain', 'length': 5 }
+						{ type: 'retain', length: 5 }
 					]
 				],
-				'msg': 'Formatted text into paragraph'
+				msg: 'Formatted text into paragraph'
 			},
 			{
-				'range': new ve.Range( 4 ),
-				'pasteHtml': '<span rel="ve:Alien">Foo</span><b>B</b>a<!-- comment --><b>r</b>',
-				'pasteSpecial': true,
-				'expectedRange': new ve.Range( 7 ),
-				'expectedOps': [
+				range: new ve.Range( 4 ),
+				pasteHtml: '<span rel="ve:Alien">Foo</span><b>B</b>a<!-- comment --><b>r</b>',
+				pasteSpecial: true,
+				expectedRange: new ve.Range( 7 ),
+				expectedOps: [
 					[
-						{ 'type': 'retain', 'length': 4 },
+						{ type: 'retain', length: 4 },
 						{
-							'type': 'replace',
-							'insert': [ 'B', 'a', 'r' ],
-							'remove': []
+							type: 'replace',
+							insert: [ 'B', 'a', 'r' ],
+							remove: []
 						},
-						{ 'type': 'retain', 'length': 5 }
+						{ type: 'retain', length: 5 }
 					]
 				],
-				'msg': 'Formatted text into paragraph with pasteSpecial'
+				msg: 'Formatted text into paragraph with pasteSpecial'
 			},
 			{
-				'range': new ve.Range( 4 ),
-				'pasteHtml': '<p>Bar</p>',
-				'expectedRange': new ve.Range( 7 ),
-				'expectedOps': [
+				range: new ve.Range( 4 ),
+				pasteHtml: '<p>Bar</p>',
+				expectedRange: new ve.Range( 7 ),
+				expectedOps: [
 					[
-						{ 'type': 'retain', 'length': 4 },
+						{ type: 'retain', length: 4 },
 						{
-							'type': 'replace',
-							'insert': [ 'B', 'a', 'r' ],
-							'remove': []
+							type: 'replace',
+							insert: [ 'B', 'a', 'r' ],
+							remove: []
 						},
-						{ 'type': 'retain', 'length': 5 }
+						{ type: 'retain', length: 5 }
 					]
 				],
-				'msg': 'Paragraph into paragraph'
+				msg: 'Paragraph into paragraph'
 			},
 			{
-				'range': new ve.Range( 6 ),
-				'pasteHtml': '<p>Bar</p>',
-				'expectedRange': new ve.Range( 9 ),
-				'expectedOps': [
+				range: new ve.Range( 6 ),
+				pasteHtml: '<p>Bar</p>',
+				expectedRange: new ve.Range( 9 ),
+				expectedOps: [
 					[
-						{ 'type': 'retain', 'length': 6 },
+						{ type: 'retain', length: 6 },
 						{
-							'type': 'replace',
-							'insert': [ 'B', 'a', 'r' ],
-							'remove': []
+							type: 'replace',
+							insert: [ 'B', 'a', 'r' ],
+							remove: []
 						},
-						{ 'type': 'retain', 'length': 3 }
+						{ type: 'retain', length: 3 }
 					]
 				],
-				'msg': 'Paragraph at end of paragraph'
+				msg: 'Paragraph at end of paragraph'
 			},
 			{
-				'range': new ve.Range( 3 ),
-				'pasteHtml': '<p>Bar</p>',
-				'expectedRange': new ve.Range( 6 ),
-				'expectedOps': [
+				range: new ve.Range( 3 ),
+				pasteHtml: '<p>Bar</p>',
+				expectedRange: new ve.Range( 6 ),
+				expectedOps: [
 					[
-						{ 'type': 'retain', 'length': 3 },
+						{ type: 'retain', length: 3 },
 						{
-							'type': 'replace',
-							'insert': [ 'B', 'a', 'r' ],
-							'remove': []
+							type: 'replace',
+							insert: [ 'B', 'a', 'r' ],
+							remove: []
 						},
-						{ 'type': 'retain', 'length': 6 }
+						{ type: 'retain', length: 6 }
 					]
 				],
-				'msg': 'Paragraph at start of paragraph'
+				msg: 'Paragraph at start of paragraph'
 			},
 			{
-				'range': new ve.Range( 4 ),
-				'pasteHtml': '☂foo☀',
-				'expectedRange': new ve.Range( 9 ),
-				'expectedOps': [
+				range: new ve.Range( 4 ),
+				pasteHtml: '☂foo☀',
+				expectedRange: new ve.Range( 9 ),
+				expectedOps: [
 					[
-						{ 'type': 'retain', 'length': 4 },
+						{ type: 'retain', length: 4 },
 						{
-							'type': 'replace',
-							'insert': [ '☂', 'f', 'o', 'o', '☀' ],
-							'remove': []
+							type: 'replace',
+							insert: [ '☂', 'f', 'o', 'o', '☀' ],
+							remove: []
 						},
-						{ 'type': 'retain', 'length': 5 }
+						{ type: 'retain', length: 5 }
 					]
 				],
-				'msg': 'Left/right placeholder characters'
+				msg: 'Left/right placeholder characters'
 			},
 			{
-				'range': new ve.Range( 6 ),
-				'pasteHtml': '<ul><li>Foo</li></ul>',
-				'expectedRange': new ve.Range( 6 ),
-				'expectedOps': [
+				range: new ve.Range( 6 ),
+				pasteHtml: '<ul><li>Foo</li></ul>',
+				expectedRange: new ve.Range( 6 ),
+				expectedOps: [
 					[
-						{ 'type': 'retain', 'length': 7 },
+						{ type: 'retain', length: 7 },
 						{
-							'type': 'replace',
-							'insert': [
-								{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
-								{ 'type': 'listItem' },
-								{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+							type: 'replace',
+							insert: [
+								{ type: 'list', attributes: { style: 'bullet' } },
+								{ type: 'listItem' },
+								{ type: 'paragraph', internal: { generated: 'wrapper' } },
 								'F', 'o', 'o',
-								{ 'type': '/paragraph' },
-								{ 'type': '/listItem' },
-								{ 'type': '/list' }
+								{ type: '/paragraph' },
+								{ type: '/listItem' },
+								{ type: '/list' }
 							],
-							'remove': []
+							remove: []
 						},
-						{ 'type': 'retain', 'length': 2 }
+						{ type: 'retain', length: 2 }
 					]
 				],
-				'msg': 'List at end of paragraph (moves insertion point)'
+				msg: 'List at end of paragraph (moves insertion point)'
 			},
 			{
-				'range': new ve.Range( 4 ),
-				'pasteHtml': '<table><caption>Foo</caption><tr><td>Bar</td></tr></table>',
-				'expectedRange': new ve.Range( 26 ),
-				'expectedOps': [
+				range: new ve.Range( 4 ),
+				pasteHtml: '<table><caption>Foo</caption><tr><td>Bar</td></tr></table>',
+				expectedRange: new ve.Range( 26 ),
+				expectedOps: [
 					[
-						{ 'type': 'retain', 'length': 4 },
+						{ type: 'retain', length: 4 },
 						{
-							'type': 'replace',
-							'insert': [
-								{ 'type': '/paragraph' },
-								{ 'type': 'table' },
-								{ 'type': 'tableCaption' },
-								{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+							type: 'replace',
+							insert: [
+								{ type: '/paragraph' },
+								{ type: 'table' },
+								{ type: 'tableCaption' },
+								{ type: 'paragraph', internal: { generated: 'wrapper' } },
 								'F', 'o', 'o',
-								{ 'type': '/paragraph' },
-								{ 'type': '/tableCaption' },
-								{ 'type': 'tableSection', 'attributes': { 'style': 'body' } },
-								{ 'type': 'tableRow' },
-								{ 'type': 'tableCell', 'attributes': { 'style': 'data' } },
-								{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+								{ type: '/paragraph' },
+								{ type: '/tableCaption' },
+								{ type: 'tableSection', attributes: { style: 'body' } },
+								{ type: 'tableRow' },
+								{ type: 'tableCell', attributes: { style: 'data' } },
+								{ type: 'paragraph', internal: { generated: 'wrapper' } },
 								'B', 'a', 'r',
-								{ 'type': '/paragraph' },
-								{ 'type': '/tableCell' },
-								{ 'type': '/tableRow' },
-								{ 'type': '/tableSection' },
-								{ 'type': '/table' },
-								{ 'type': 'paragraph' }
+								{ type: '/paragraph' },
+								{ type: '/tableCell' },
+								{ type: '/tableRow' },
+								{ type: '/tableSection' },
+								{ type: '/table' },
+								{ type: 'paragraph' }
 							],
-							'remove': []
+							remove: []
 						},
-						{ 'type': 'retain', 'length': 5 }
+						{ type: 'retain', length: 5 }
 					]
 				],
-				'msg': 'Table with caption into paragraph'
+				msg: 'Table with caption into paragraph'
 			},
 			{
-				'range': new ve.Range( 0 ),
-				'pasteHtml':
+				range: new ve.Range( 0 ),
+				pasteHtml:
 					'<p about="ignored" class="i" ' +
 						'data-ve-attributes="{&quot;typeof&quot;:&quot;h&quot;,&quot;rev&quot;:&quot;g&quot;,' +
 						'&quot;resource&quot;:&quot;f&quot;,&quot;rel&quot;:&quot;e&quot;,&quot;property&quot;:&quot;d&quot;,' +
 						'&quot;datatype&quot;:&quot;c&quot;,&quot;content&quot;:&quot;b&quot;,&quot;about&quot;:&quot;a&quot;}">' +
 						'Foo' +
 					'</p>',
-				'expectedRange': new ve.Range( 5 ),
-				'expectedOps': [
+				expectedRange: new ve.Range( 5 ),
+				expectedOps: [
 					[
 						{
-							'type': 'replace',
-							'insert': ve.dm.example.RDFa.slice( 0, 5 ),
-							'remove': []
+							type: 'replace',
+							insert: ve.dm.example.RDFa.slice( 0, 5 ),
+							remove: []
 						},
-						{ 'type': 'retain', 'length': 9 }
+						{ type: 'retain', length: 9 }
 					]
 				],
-				'msg': 'RDFa attributes restored/overwritten from data-ve-attributes'
+				msg: 'RDFa attributes restored/overwritten from data-ve-attributes'
 			}
 		];
 
@@ -847,7 +847,7 @@ QUnit.test( 'getNearestCorrectOffset', function ( assert ) {
 				47, 51, 52, 52, 52, 52, 56, 57, 57, 59,
 				60, 60, 60
 			],
-			'1': [
+			1: [
 				1, 1, 2, 3, 4, 10, 10, 10, 10, 10,
 				10, 11, 15, 15, 15, 15, 16, 20, 20, 20,
 				20, 21, 29, 29, 29, 29, 29, 29, 29, 29,
@@ -872,8 +872,8 @@ QUnit.test( 'getSelection', function ( assert ) {
 		expect = 0,
 		cases = [
 			{
-				'msg': 'Grouped aliens',
-				'html': '<p>' +
+				msg: 'Grouped aliens',
+				html: '<p>' +
 					'Foo' +
 					'<span rel="ve:Alien" about="g1">Bar</span>' +
 					'<span rel="ve:Alien" about="g1">Baz</span>' +
@@ -883,7 +883,7 @@ QUnit.test( 'getSelection', function ( assert ) {
 				'<p>' +
 					'2<b>n</b>d' +
 				'</p>',
-				'expected': [
+				expected: [
 					{ startNode: 'Foo', startOffset: 0 },
 					{ startNode: 'Foo', startOffset: 0 },
 					{ startNode: 'Foo', startOffset: 1 },
@@ -903,9 +903,9 @@ QUnit.test( 'getSelection', function ( assert ) {
 				]
 			},
 			{
-				'msg': 'Simple example doc',
-				'html': ve.dm.example.html,
-				'expected': [
+				msg: 'Simple example doc',
+				html: ve.dm.example.html,
+				expected: [
 					{ startNode: 'a', startOffset: 0 },
 					{ startNode: 'a', startOffset: 0 },
 					{ startNode: 'a', startOffset: 1 },

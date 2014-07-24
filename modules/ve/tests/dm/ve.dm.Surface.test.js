@@ -12,7 +12,7 @@ ve.dm.SurfaceStub = function VeDmSurfaceStub( data ) {
 	if ( data !== undefined ) {
 		doc = new ve.dm.Document( data );
 	} else {
-		doc = new ve.dm.Document( [{ 'type': 'paragraph' }, 'h', 'i', { 'type': '/paragraph' }] );
+		doc = new ve.dm.Document( [{ type: 'paragraph' }, 'h', 'i', { type: '/paragraph' }] );
 	}
 
 	// Inheritance
@@ -42,8 +42,8 @@ QUnit.test( 'change/setSelection events', 3, function ( assert ) {
 		// docmentUpdate doesn't fire for no-op transactions, so make sure there's something there
 		tx = ve.dm.Transaction.newFromInsertion( doc, 3, [ 'i' ] ),
 		events = {
-			'documentUpdate': 0,
-			'select': 0
+			documentUpdate: 0,
+			select: 0
 		};
 
 	surface.on( 'documentUpdate', function () {
@@ -53,11 +53,11 @@ QUnit.test( 'change/setSelection events', 3, function ( assert ) {
 		events.select++;
 	} );
 	surface.change( tx.clone() );
-	assert.deepEqual( events, { 'documentUpdate': 1, 'select': 0 }, 'change with transaction only' );
+	assert.deepEqual( events, { documentUpdate: 1, select: 0 }, 'change with transaction only' );
 	surface.setSelection( new ve.Range( 2, 2 ) );
-	assert.deepEqual( events, { 'documentUpdate': 1, 'select': 1 }, 'setSelection' );
+	assert.deepEqual( events, { documentUpdate: 1, select: 1 }, 'setSelection' );
 	surface.change( tx.clone(), new ve.Range( 3, 3 ) );
-	assert.deepEqual( events, { 'documentUpdate': 2, 'select': 2 }, 'change with transaction and selection' );
+	assert.deepEqual( events, { documentUpdate: 2, select: 2 }, 'change with transaction and selection' );
 } );
 
 QUnit.test( 'breakpoint', 7, function ( assert ) {
@@ -77,9 +77,9 @@ QUnit.test( 'breakpoint', 7, function ( assert ) {
 
 	assert.deepEqual(
 		surface.undoStack, [ {
-			'transactions': [tx],
-			'selection': tx.translateRange( selection ),
-			'selectionBefore': selection
+			transactions: [tx],
+			selection: tx.translateRange( selection ),
+			selectionBefore: selection
 		} ],
 		'Undo stack data matches after breakpoint'
 	);

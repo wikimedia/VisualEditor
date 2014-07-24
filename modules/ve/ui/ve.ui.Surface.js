@@ -27,7 +27,7 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 
 	// Properties
 	this.globalOverlay = new ve.ui.Overlay();
-	this.localOverlay = new ve.ui.Overlay( { '$': this.$ } );
+	this.localOverlay = new ve.ui.Overlay( { $: this.$ } );
 	this.$blockers = this.$( '<div>' );
 	this.$controls = this.$( '<div>' );
 	if ( dataOrDoc instanceof ve.dm.Document ) {
@@ -41,7 +41,7 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 		documentModel = ve.dm.converter.getModelFromDom( dataOrDoc );
 	}
 	this.model = new ve.dm.Surface( documentModel );
-	this.view = new ve.ce.Surface( this.model, this, { '$': this.$ } );
+	this.view = new ve.ce.Surface( this.model, this, { $: this.$ } );
 	this.dialogs = this.createDialogWindowManager();
 	this.commands = {};
 	this.triggers = {};
@@ -50,7 +50,7 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 	this.context = this.createContext();
 
 	// Events
-	this.dialogs.connect( this, { 'closing': 'onDialogClosing' } );
+	this.dialogs.connect( this, { closing: 'onDialogClosing' } );
 
 	// Initialization
 	this.$element

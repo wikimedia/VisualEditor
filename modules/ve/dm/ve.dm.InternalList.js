@@ -30,7 +30,7 @@ ve.dm.InternalList = function VeDmInternalList( doc ) {
 
 	// Event handlers
 	if ( doc ) {
-		doc.connect( this, { 'transact': 'onTransact' } );
+		doc.connect( this, { transact: 'onTransact' } );
 	}
 };
 
@@ -75,8 +75,8 @@ ve.dm.InternalList.prototype.queueItemHtml = function ( groupName, key, html ) {
 		isNew = true;
 	}
 	return {
-		'index': index,
-		'isNew': isNew
+		index: index,
+		isNew: isNew
 	};
 };
 
@@ -215,20 +215,20 @@ ve.dm.InternalList.prototype.convertToData = function ( converter, doc ) {
 	var i, length, itemData,
 		itemHtmlQueue = this.getItemHtmlQueue(), list = [];
 
-	list.push( { 'type': 'internalList' } );
+	list.push( { type: 'internalList' } );
 	for ( i = 0, length = itemHtmlQueue.length; i < length; i++ ) {
 		if ( itemHtmlQueue[i] !== '' ) {
 			itemData = converter.getDataFromDomSubtree( $( '<div>', doc ).html( itemHtmlQueue[i] )[0] );
 			list = list.concat(
-				[{ 'type': 'internalItem' }],
+				[{ type: 'internalItem' }],
 				itemData,
-				[{ 'type': '/internalItem' }]
+				[{ type: '/internalItem' }]
 			);
 		} else {
-			list = list.concat( [ { 'type': 'internalItem' }, { 'type': '/internalItem' } ] );
+			list = list.concat( [ { type: 'internalItem' }, { type: '/internalItem' } ] );
 		}
 	}
-	list.push( { 'type': '/internalList' } );
+	list.push( { type: '/internalList' } );
 	// After conversion we no longer need the HTML
 	this.itemHtmlQueue = [];
 	return list;
@@ -250,7 +250,7 @@ ve.dm.InternalList.prototype.getItemInsertion = function ( groupName, key, data 
 		index = this.getItemNodeCount();
 		this.keyIndexes[groupName + '/' + key] = index;
 
-		itemData = [{ 'type': 'internalItem' }].concat( data,  [{ 'type': '/internalItem' }] );
+		itemData = [{ type: 'internalItem' }].concat( data,  [{ type: '/internalItem' }] );
 		tx = ve.dm.Transaction.newFromInsertion(
 			this.getDocument(),
 			this.getListNode().getRange().end,
@@ -261,8 +261,8 @@ ve.dm.InternalList.prototype.getItemInsertion = function ( groupName, key, data 
 	}
 
 	return {
-		'transaction': tx,
-		'index': index
+		transaction: tx,
+		index: index
 	};
 };
 
@@ -299,11 +299,11 @@ ve.dm.InternalList.prototype.addNode = function ( groupName, key, index, node ) 
 	// The group may not exist yet
 	if ( group === undefined ) {
 		group = this.nodes[groupName] = {
-			'keyedNodes': {},
-			'firstNodes': [],
-			'indexOrder': [],
-			'uniqueListKeys': {},
-			'uniqueListKeysInUse': {}
+			keyedNodes: {},
+			firstNodes: [],
+			indexOrder: [],
+			uniqueListKeys: {},
+			uniqueListKeysInUse: {}
 		};
 	}
 	keyedNodes = group.keyedNodes[key];
@@ -473,7 +473,7 @@ ve.dm.InternalList.prototype.merge = function ( list, commonLength ) {
 		}
 	}
 	return {
-		'mapping': mapping,
-		'newItemRanges': newItemRanges
+		mapping: mapping,
+		newItemRanges: newItemRanges
 	};
 };

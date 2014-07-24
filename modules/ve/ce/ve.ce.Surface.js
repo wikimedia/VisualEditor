@@ -66,21 +66,21 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 
 	// Events
 	this.surfaceObserver.connect(
-		this, { 'contentChange': 'onContentChange', 'selectionChange': 'onSelectionChange' }
+		this, { contentChange: 'onContentChange', selectionChange: 'onSelectionChange' }
 	);
 	this.model.connect( this,
-		{ 'select': 'onModelSelect', 'documentUpdate': 'onModelDocumentUpdate' }
+		{ select: 'onModelSelect', documentUpdate: 'onModelDocumentUpdate' }
 	);
 
 	$documentNode = this.getDocument().getDocumentNode().$element;
 	$documentNode.on( {
 		// mouse events shouldn't be sequenced as the event sequencer
 		// is detached on blur
-		'mousedown': ve.bind( this.onDocumentMouseDown, this ),
-		'mouseup': ve.bind( this.onDocumentMouseUp, this ),
-		'mousemove': ve.bind( this.onDocumentMouseMove, this ),
-		'cut': ve.bind( this.onCut, this ),
-		'copy': ve.bind( this.onCopy, this )
+		mousedown: ve.bind( this.onDocumentMouseDown, this ),
+		mouseup: ve.bind( this.onDocumentMouseUp, this ),
+		mousemove: ve.bind( this.onDocumentMouseMove, this ),
+		cut: ve.bind( this.onCut, this ),
+		copy: ve.bind( this.onCopy, this )
 	} );
 
 	this.onWindowResizeHandler = ve.bind( this.onWindowResize, this );
@@ -97,8 +97,8 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 	this.$document.on( 'mousedown', this.documentFocusChangeHandler );
 
 	this.$pasteTarget.on( {
-		'cut': ve.bind( this.onCut, this ),
-		'copy': ve.bind( this.onCopy, this )
+		cut: ve.bind( this.onCut, this ),
+		copy: ve.bind( this.onCopy, this )
 	} );
 
 	$documentNode
@@ -111,21 +111,21 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 		} );
 
 	this.$element.on( {
-		'dragstart': ve.bind( this.onDocumentDragStart, this ),
-		'dragover': ve.bind( this.onDocumentDragOver, this ),
-		'drop': ve.bind( this.onDocumentDrop, this )
+		dragstart: ve.bind( this.onDocumentDragStart, this ),
+		dragover: ve.bind( this.onDocumentDragOver, this ),
+		drop: ve.bind( this.onDocumentDrop, this )
 	} );
 
 	// Add listeners to the eventSequencer. They won't get called until
 	// eventSequencer.attach(node) has been called.
 	this.eventSequencer.on( {
-		'keydown': ve.bind( this.onDocumentKeyDown, this ),
-		'keyup': ve.bind( this.onDocumentKeyUp, this ),
-		'keypress': ve.bind( this.onDocumentKeyPress, this ),
-		'compositionstart': ve.bind( this.onDocumentCompositionStart, this ),
-		'compositionend': ve.bind( this.onDocumentCompositionEnd, this )
+		keydown: ve.bind( this.onDocumentKeyDown, this ),
+		keyup: ve.bind( this.onDocumentKeyUp, this ),
+		keypress: ve.bind( this.onDocumentKeyPress, this ),
+		compositionstart: ve.bind( this.onDocumentCompositionStart, this ),
+		compositionend: ve.bind( this.onDocumentCompositionEnd, this )
 	} ).after( {
-		'keypress': ve.bind( this.afterDocumentKeyPress, this )
+		keypress: ve.bind( this.afterDocumentKeyPress, this )
 	} );
 
 	// Initialization
@@ -267,7 +267,7 @@ ve.ce.Surface.prototype.destroy = function () {
  * Get the coordinates of the selection anchor.
  *
  * @method
- * @returns {Object|null} { 'start': { 'x': ..., 'y': ... }, 'end': { 'x': ..., 'y': ... } }
+ * @returns {Object|null} { start: { x: ..., y: ... }, end: { x: ..., y: ... } }
  */
 ve.ce.Surface.prototype.getSelectionRect = function () {
 	var sel, rect, $span, lineHeight, startRange, startOffset, endRange, endOffset, focusedOffset;
@@ -275,13 +275,13 @@ ve.ce.Surface.prototype.getSelectionRect = function () {
 	if ( this.focusedNode ) {
 		focusedOffset = this.focusedNode.$element.offset();
 		return {
-			'start': {
-				'x': focusedOffset.left,
-				'y': focusedOffset.top
+			start: {
+				x: focusedOffset.left,
+				y: focusedOffset.top
 			},
-			'end': {
-				'x': focusedOffset.left + this.focusedNode.$element.width(),
-				'y': focusedOffset.top + this.focusedNode.$element.height()
+			end: {
+				x: focusedOffset.left + this.focusedNode.$element.width(),
+				y: focusedOffset.top + this.focusedNode.$element.height()
 			}
 		};
 	}
@@ -323,20 +323,20 @@ ve.ce.Surface.prototype.getSelectionRect = function () {
 
 		// Return the selection bounding rectangle
 		return {
-			'start': {
-				'x': startOffset.left,
-				'y': startOffset.top
+			start: {
+				x: startOffset.left,
+				y: startOffset.top
 			},
-			'end': {
-				'x': endOffset.left,
+			end: {
+				x: endOffset.left,
 				// Adjust the vertical position by the line-height to get the bottom dimension
-				'y': endOffset.top + lineHeight
+				y: endOffset.top + lineHeight
 			}
 		};
 	} else {
 		return {
-			'start': sel.getStartDocumentPos(),
-			'end': sel.getEndDocumentPos()
+			start: sel.getStartDocumentPos(),
+			end: sel.getEndDocumentPos()
 		};
 	}
 };
@@ -933,7 +933,7 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 		this.setAttribute( 'data-ve-attributes', JSON.stringify( attrs ) );
 	} );
 
-	clipboardItem = { 'slice': slice, 'hash': null };
+	clipboardItem = { slice: slice, hash: null };
 	clipboardIndex = this.clipboard.push( clipboardItem ) - 1;
 
 	// Check we have setData and that it actually works (returns true)
@@ -1068,7 +1068,7 @@ ve.ce.Surface.prototype.beforePaste = function ( e ) {
 			context.push( '☁' );
 			textEnd = 1;
 		}
-		context.push( { 'type': '/' + context[0].type } );
+		context.push( { type: '/' + context[0].type } );
 
 		ve.dm.converter.getDomSubtreeFromModel(
 			new ve.dm.Document(
@@ -1851,7 +1851,7 @@ ve.ce.Surface.prototype.handleInsertion = function () {
 			// is this a slug and if so, is this a block slug?
 			if ( slug && documentModel.data.isStructuralOffset( selection.start ) ) {
 				range = new ve.Range( selection.start + 1, selection.start + 2 );
-				data = [{ 'type': 'paragraph' }, placeholder, { 'type': '/paragraph' }];
+				data = [{ type: 'paragraph' }, placeholder, { type: '/paragraph' }];
 			} else {
 				range = new ve.Range( selection.start, selection.start + 1 );
 				data = [placeholder];
@@ -1893,7 +1893,7 @@ ve.ce.Surface.prototype.handleEnter = function ( e ) {
 		insertEmptyParagraph, node,
 		selection = this.model.getSelection(),
 		documentModel = this.model.getDocument(),
-		emptyParagraph = [{ 'type': 'paragraph' }, { 'type': '/paragraph' }],
+		emptyParagraph = [{ type: 'paragraph' }, { type: '/paragraph' }],
 		advanceCursor = true,
 		cursor = selection.from,
 		stack = [],
@@ -1986,7 +1986,7 @@ ve.ce.Surface.prototype.handleEnter = function ( e ) {
 			stack.splice(
 				stack.length / 2,
 				0,
-				{ 'type': '/' + node.type },
+				{ type: '/' + node.type },
 				node.getModel().getClonedElement()
 			);
 			outermostNode = node;
@@ -2113,8 +2113,8 @@ ve.ce.Surface.prototype.handleDelete = function ( e, backspace ) {
 	internalListRange = documentModel.getInternalList().getListNode().getOuterRange();
 	if ( rangeToRemove.start === 0 && rangeToRemove.end >= internalListRange.start ) {
 		tx = ve.dm.Transaction.newFromReplacement( documentModel, new ve.Range( 0, internalListRange.start ), [
-			{ 'type': 'paragraph' },
-			{ 'type': '/paragraph' }
+			{ type: 'paragraph' },
+			{ type: '/paragraph' }
 		] );
 		model.change( tx );
 		rangeAfterRemove = new ve.Range( 1 );
@@ -2225,13 +2225,13 @@ ve.ce.Surface.prototype.getSelection = function ( range ) {
 
 	if ( !range.isCollapsed() ) {
 		return {
-			'start': this.documentView.getNodeAndOffset( range.start ),
-			'end': this.documentView.getNodeAndOffset( range.end ),
-			'isBackwards': range.isBackwards()
+			start: this.documentView.getNodeAndOffset( range.start ),
+			end: this.documentView.getNodeAndOffset( range.end ),
+			isBackwards: range.isBackwards()
 		};
 	} else {
 		return {
-			'start': this.documentView.getNodeAndOffset( range.start )
+			start: this.documentView.getNodeAndOffset( range.start )
 		};
 	}
 };

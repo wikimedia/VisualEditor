@@ -27,7 +27,7 @@ ve.ce.DocumentNode = function VeCeDocumentNode( model, surface, config ) {
 
 	// DOM changes
 	this.$element.addClass( 've-ce-documentNode' );
-	this.$element.prop( { 'contentEditable': 'true', 'spellcheck': true } );
+	this.$element.prop( { contentEditable: 'true', spellcheck: true } );
 };
 
 /* Inheritance */

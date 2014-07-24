@@ -16,7 +16,7 @@ ve.ui.ContextMenuWidget = function VeUiContextMenuWidget( config ) {
 	// Parent constructor
 	ve.ui.ContextMenuWidget.super.call( this, config );
 
-	this.connect( this, { 'choose': 'onChooseItem' } );
+	this.connect( this, { choose: 'onChooseItem' } );
 
 	// Initialization
 	this.$element.addClass( 've-ui-contextMenuWidget' );

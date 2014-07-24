@@ -18,53 +18,53 @@ QUnit.test( 'commit', function ( assert ) {
 		italic = ve.dm.example.createAnnotation( ve.dm.example.italic ),
 		underline = ve.dm.example.createAnnotation( ve.dm.example.underline ),
 		metaElementInsert = {
-			'type': 'alienMeta',
-			'attributes': {
-				'style': 'comment',
-				'text': ' inline '
+			type: 'alienMeta',
+			attributes: {
+				style: 'comment',
+				text: ' inline '
 			}
 		},
-		metaElementInsertClose = { 'type': '/alienMeta' },
+		metaElementInsertClose = { type: '/alienMeta' },
 		metadataExample = [
-			{ 'type': 'paragraph' },
+			{ type: 'paragraph' },
 			'a', 'b',
 			{
-				'type': 'alienMeta',
-				'attributes': {
-					'domElements': $( '<!-- comment -->' ).toArray()
+				type: 'alienMeta',
+				attributes: {
+					domElements: $( '<!-- comment -->' ).toArray()
 				}
 			},
-			{ 'type': '/alienMeta' },
+			{ type: '/alienMeta' },
 			'c', 'd',
 			{
-				'type': 'alienMeta',
-				'attributes': {
-					'domElements': $( '<!-- comment -->' ).toArray()
+				type: 'alienMeta',
+				attributes: {
+					domElements: $( '<!-- comment -->' ).toArray()
 				}
 			},
-			{ 'type': '/alienMeta' },
+			{ type: '/alienMeta' },
 			'e', 'f',
 			{
-				'type': 'alienMeta',
-				'attributes': {
-					'domElements': $( '<!-- comment -->' ).toArray()
+				type: 'alienMeta',
+				attributes: {
+					domElements: $( '<!-- comment -->' ).toArray()
 				}
 			},
-			{ 'type': '/alienMeta' },
+			{ type: '/alienMeta' },
 			'g', 'h',
-			{ 'type': '/paragraph' }
+			{ type: '/paragraph' }
 		],
 		cases = {
 			'no operations': {
-				'calls': [],
-				'expected': function () {}
+				calls: [],
+				expected: function () {}
 			},
-			'retaining': {
-				'calls': [['pushRetain', 38]],
-				'expected': function () {}
+			retaining: {
+				calls: [['pushRetain', 38]],
+				expected: function () {}
 			},
 			'annotating content': {
-				'calls': [
+				calls: [
 					['pushRetain', 1],
 					['pushStartAnnotating', 'set', bold],
 					['pushRetain', 1],
@@ -78,50 +78,50 @@ QUnit.test( 'commit', function ( assert ) {
 					['pushStopAnnotating', 'set', bold],
 					['pushStopAnnotating', 'set', underline]
 				],
-				'expected': function ( data ) {
+				expected: function ( data ) {
 					data[1] = ['a', store.indexes( [ bold ] )];
 					data[2] = ['b', store.indexes( [ bold ] )];
 					data[3] = ['c', store.indexes( [ bold, underline ] )];
 				}
 			},
 			'annotating content and leaf elements': {
-				'calls': [
+				calls: [
 					['pushRetain', 38],
 					['pushStartAnnotating', 'set', bold],
 					['pushRetain', 4],
 					['pushStopAnnotating', 'set', bold]
 				],
-				'expected': function ( data ) {
+				expected: function ( data ) {
 					data[38] = ['h', store.indexes( [ bold ] )];
 					data[39].annotations = store.indexes( [ bold ] );
 					data[41] = ['i', store.indexes( [ bold ] )];
 				}
 			},
 			'annotating across metadata': {
-				'data': metadataExample,
-				'calls': [
+				data: metadataExample,
+				calls: [
 					['pushRetain', 2],
 					['pushStartAnnotating', 'set', bold],
 					['pushRetain', 2],
 					['pushStopAnnotating', 'set', bold],
 					['pushRetain', 6]
 				],
-				'expected': function ( data ) {
+				expected: function ( data ) {
 					data[2] = ['b', store.indexes( [ bold ] )];
 					data[3].annotations = store.indexes( [ bold ] );
 					data[5] = ['c', store.indexes( [ bold ] )];
 				}
 			},
 			'annotating with metadata at edges': {
-				'data': metadataExample,
-				'calls': [
+				data: metadataExample,
+				calls: [
 					['pushRetain', 3],
 					['pushStartAnnotating', 'set', bold],
 					['pushRetain', 4],
 					['pushStopAnnotating', 'set', bold],
 					['pushRetain', 3]
 				],
-				'expected': function ( data ) {
+				expected: function ( data ) {
 					data[7].annotations = store.indexes( [ bold ] );
 					data[5] = ['c', store.indexes( [ bold ] )];
 					data[6] = ['d', store.indexes( [ bold ] )];
@@ -130,78 +130,78 @@ QUnit.test( 'commit', function ( assert ) {
 				}
 			},
 			'unannotating metadata': {
-				'data': [
-					{ 'type': 'paragraph' },
+				data: [
+					{ type: 'paragraph' },
 					'a', ['b', store.indexes( [ bold ] )],
 					{
-						'type': 'alienMeta',
-						'attributes': {
-							'domElements': $( '<!-- comment -->' ).toArray()
+						type: 'alienMeta',
+						attributes: {
+							domElements: $( '<!-- comment -->' ).toArray()
 						},
-						'annotations': store.indexes( [ bold ] )
+						annotations: store.indexes( [ bold ] )
 					},
-					{ 'type': '/alienMeta' },
+					{ type: '/alienMeta' },
 					['c', store.indexes( [ bold ] )], 'd',
-					{ 'type': '/paragraph' }
+					{ type: '/paragraph' }
 				],
-				'calls': [
+				calls: [
 					['pushRetain', 2],
 					['pushStartAnnotating', 'clear', bold],
 					['pushRetain', 2],
 					['pushStopAnnotating', 'clear', bold],
 					['pushRetain', 6]
 				],
-				'expected': function ( data ) {
+				expected: function ( data ) {
 					data[2] = 'b';
 					data[5] = 'c';
 					delete data[3].annotations;
 				}
 			},
 			'using an annotation method other than set or clear throws an exception': {
-				'calls': [
+				calls: [
 					['pushStartAnnotating', 'invalid-method', bold],
 					['pushRetain', 1],
 					['pushStopAnnotating', 'invalid-method', bold]
 				],
-				'exception': Error
+				exception: Error
 			},
 			'annotating branch opening element throws an exception': {
-				'calls': [
+				calls: [
 					['pushStartAnnotating', 'set', bold],
 					['pushRetain', 1],
 					['pushStopAnnotating', 'set', bold]
 				],
-				'exception': Error
+				exception: Error
 			},
 			'annotating branch closing element throws an exception': {
-				'calls': [
+				calls: [
 					['pushRetain', 4],
 					['pushStartAnnotating', 'set', bold],
 					['pushRetain', 1],
 					['pushStopAnnotating', 'set', bold]
 				],
-				'exception': Error
+				exception: Error
 			},
 			'setting duplicate annotations throws an exception': {
-				'calls': [
+				calls: [
 					['pushRetain', 2],
 					['pushStartAnnotating', 'set', bold],
 					['pushRetain', 1],
 					['pushStopAnnotating', 'set', bold]
 				],
-				'exception': Error
+				exception: Error
 			},
 			'removing non-existent annotations throws an exception': {
-				'calls': [
+				calls: [
 					['pushRetain', 1],
 					['pushStartAnnotating', 'clear', bold],
 					['pushRetain', 1],
 					['pushStopAnnotating', 'clear', bold]
 				],
-				'exception': Error
+				exception: Error
 			},
 			'changing, removing and adding attributes': {
-				'calls': [
+				calls: [
 					['pushReplaceElementAttribute', 'level', 1, 2],
 					['pushRetain', 12],
 					['pushReplaceElementAttribute', 'style', 'bullet', 'number'],
@@ -209,7 +209,7 @@ QUnit.test( 'commit', function ( assert ) {
 					['pushRetain', 27],
 					['pushReplaceElementAttribute', 'src', ve.dm.example.imgSrc, undefined]
 				],
-				'expected': function ( data ) {
+				expected: function ( data ) {
 					data[0].attributes.level = 2;
 					data[12].attributes.style = 'number';
 					data[12].attributes.test = 'abcd';
@@ -217,186 +217,186 @@ QUnit.test( 'commit', function ( assert ) {
 				}
 			},
 			'changing attributes on non-element data throws an exception': {
-				'calls': [
+				calls: [
 					['pushRetain', 1],
 					['pushReplaceElementAttribute', 'foo', 23, 42]
 				],
-				'exception': Error
+				exception: Error
 			},
 			'inserting text': {
-				'calls': [
+				calls: [
 					['pushRetain', 1],
 					['pushReplace', 1, 0, ['F', 'O', 'O']]
 				],
-				'expected': function ( data ) {
+				expected: function ( data ) {
 					data.splice( 1, 0, 'F', 'O', 'O' );
 				}
 			},
 			'removing text': {
-				'calls': [
+				calls: [
 					['pushRetain', 1],
 					['pushReplace', 1, 1, []]
 				],
-				'expected': function ( data ) {
+				expected: function ( data ) {
 					data.splice( 1, 1 );
 				}
 			},
 			'replacing text': {
-				'calls': [
+				calls: [
 					['pushRetain', 1],
 					['pushReplace', 1, 1, ['F', 'O', 'O']]
 				],
-				'expected': function ( data ) {
+				expected: function ( data ) {
 					data.splice( 1, 1, 'F', 'O', 'O' );
 				}
 			},
 			'emptying text': {
-				'calls': [
+				calls: [
 					['pushRetain', 10],
 					['pushReplace', 10, 1, []]
 				],
-				'expected': function ( data ) {
+				expected: function ( data ) {
 					data.splice( 10, 1 );
 				}
 			},
 			'inserting mixed content': {
-				'calls': [
+				calls: [
 					['pushRetain', 1],
-					['pushReplace', 1, 1, ['F', 'O', 'O', { 'type': 'image' }, { 'type': '/image' }, 'B', 'A', 'R']]
+					['pushReplace', 1, 1, ['F', 'O', 'O', { type: 'image' }, { type: '/image' }, 'B', 'A', 'R']]
 				],
-				'expected': function ( data ) {
-					data.splice( 1, 1, 'F', 'O', 'O', { 'type': 'image' }, { 'type': '/image' }, 'B', 'A', 'R' );
+				expected: function ( data ) {
+					data.splice( 1, 1, 'F', 'O', 'O', { type: 'image' }, { type: '/image' }, 'B', 'A', 'R' );
 				}
 			},
 			'converting an element': {
-				'calls': [
-					['pushReplace', 0, 1, [{ 'type': 'paragraph' }]],
+				calls: [
+					['pushReplace', 0, 1, [{ type: 'paragraph' }]],
 					['pushRetain', 3],
-					['pushReplace', 4, 1, [{ 'type': '/paragraph' }]]
+					['pushReplace', 4, 1, [{ type: '/paragraph' }]]
 				],
-				'expected': function ( data ) {
+				expected: function ( data ) {
 					data[0].type = 'paragraph';
 					delete data[0].attributes;
 					data[4].type = '/paragraph';
 				}
 			},
 			'splitting an element': {
-				'calls': [
+				calls: [
 					['pushRetain', 2],
 					[
 						'pushReplace', 2, 0,
-						[{ 'type': '/heading' }, { 'type': 'heading', 'attributes': { 'level': 1 } }]
+						[{ type: '/heading' }, { type: 'heading', attributes: { level: 1 } }]
 					]
 				],
-				'expected': function ( data ) {
+				expected: function ( data ) {
 					data.splice(
 						2,
 						0,
-						{ 'type': '/heading' },
-						{ 'type': 'heading', 'attributes': { 'level': 1 } }
+						{ type: '/heading' },
+						{ type: 'heading', attributes: { level: 1 } }
 					);
 				}
 			},
 			'merging an element': {
-				'calls': [
+				calls: [
 					['pushRetain', 57],
 					['pushReplace', 57, 2, []]
 				],
-				'expected': function ( data ) {
+				expected: function ( data ) {
 					data.splice( 57, 2 );
 				}
 			},
 			'stripping elements': {
-				'calls': [
+				calls: [
 					['pushRetain', 3],
 					['pushReplace', 3, 1, []],
 					['pushRetain', 6],
 					['pushReplace', 10, 1, []]
 				],
-				'expected': function ( data ) {
+				expected: function ( data ) {
 					data.splice( 10, 1 );
 					data.splice( 3, 1 );
 				}
 			},
 			'inserting text after alien node at the end': {
-				'data': [
-					{ 'type': 'paragraph' },
+				data: [
+					{ type: 'paragraph' },
 					'a',
-					{ 'type': 'alienInline' },
-					{ 'type': '/alienInline' },
-					{ 'type': '/paragraph' }
+					{ type: 'alienInline' },
+					{ type: '/alienInline' },
+					{ type: '/paragraph' }
 				],
-				'calls': [
+				calls: [
 					['pushRetain', 4],
 					['pushReplace', 4, 0, ['b']]
 				],
-				'expected': function ( data ) {
+				expected: function ( data ) {
 					data.splice( 4, 0, 'b' );
 				}
 			},
 			'inserting metadata element into existing element list': {
-				'data': ve.dm.example.withMeta,
-				'calls': [
+				data: ve.dm.example.withMeta,
+				calls: [
 					['pushRetain', 11 ],
 					['pushRetainMetadata', 2 ],
 					['pushReplaceMetadata', [], [ metaElementInsert ] ],
 					['pushRetainMetadata', 2 ],
 					['pushRetain', 1 ]
 				],
-				'expected': function ( data ) {
+				expected: function ( data ) {
 					data.splice( 25, 0, metaElementInsert, metaElementInsertClose );
 				}
 			},
 			'inserting metadata element into empty list': {
-				'data': ve.dm.example.withMeta,
-				'calls': [
+				data: ve.dm.example.withMeta,
+				calls: [
 					['pushRetain', 3 ],
 					['pushReplaceMetadata', [], [ metaElementInsert ] ],
 					['pushRetain', 9 ]
 				],
-				'expected': function ( data ) {
+				expected: function ( data ) {
 					data.splice( 7, 0, metaElementInsert, metaElementInsertClose );
 				}
 			},
 			'removing all metadata elements from a metadata list': {
-				'data': ve.dm.example.withMeta,
-				'calls': [
+				data: ve.dm.example.withMeta,
+				calls: [
 					['pushRetain', 11 ],
 					['pushReplaceMetadata', ve.dm.example.withMetaMetaData[11], [] ],
 					['pushRetain', 1 ]
 				],
-				'expected': function ( data ) {
+				expected: function ( data ) {
 					data.splice( 21, 8 );
 				}
 			},
 			'removing some metadata elements from metadata list': {
-				'data': ve.dm.example.withMeta,
-				'calls': [
+				data: ve.dm.example.withMeta,
+				calls: [
 					['pushRetain', 11 ],
 					['pushRetainMetadata', 1 ],
 					['pushReplaceMetadata', ve.dm.example.withMetaMetaData[11].slice( 1, 3 ), [] ],
 					['pushRetainMetadata', 1 ],
 					['pushRetain', 1 ]
 				],
-				'expected': function ( data ) {
+				expected: function ( data ) {
 					data.splice( 23, 4 );
 				}
 			},
 			'replacing metadata at end of list': {
-				'data': ve.dm.example.withMeta,
-				'calls': [
+				data: ve.dm.example.withMeta,
+				calls: [
 					['pushRetain', 11 ],
 					['pushRetainMetadata', 3 ],
 					['pushReplaceMetadata', [ ve.dm.example.withMetaMetaData[11][3] ], [ metaElementInsert ] ],
 					['pushRetain', 1 ]
 				],
-				'expected': function ( data ) {
+				expected: function ( data ) {
 					data.splice( 27, 2, metaElementInsert, metaElementInsertClose );
 				}
 			},
 			'replacing metadata twice at the same offset': {
-				'data': ve.dm.example.withMeta,
-				'calls': [
+				data: ve.dm.example.withMeta,
+				calls: [
 					[ 'pushRetain', 11 ],
 					[ 'pushRetainMetadata', 1 ],
 					[ 'pushReplaceMetadata', [ ve.dm.example.withMetaMetaData[11][1] ], [ metaElementInsert ] ],
@@ -404,168 +404,168 @@ QUnit.test( 'commit', function ( assert ) {
 					[ 'pushReplaceMetadata', [ ve.dm.example.withMetaMetaData[11][3] ], [ metaElementInsert ] ],
 					[ 'pushRetain', 1 ]
 				],
-				'expected': function ( data ) {
+				expected: function ( data ) {
 					data.splice( 23, 2, metaElementInsert, metaElementInsertClose );
 					data.splice( 27, 2, metaElementInsert, metaElementInsertClose );
 				}
 			},
 			'removing data from between metadata merges metadata': {
-				'data': ve.dm.example.withMeta,
-				'calls': [
+				data: ve.dm.example.withMeta,
+				calls: [
 					['pushRetain', 7 ],
 					['pushReplace', 7, 2, []],
 					['pushRetain', 2 ]
 				],
-				'expected': function ( data ) {
+				expected: function ( data ) {
 					data.splice( 15, 2 );
 				}
 			},
 			'structural replacement starting at an offset without metadata': {
-				'data': [
-					{ 'type': 'paragraph' },
+				data: [
+					{ type: 'paragraph' },
 					'F',
 					{
-						'type': 'alienMeta',
-						'attributes': {
-							'domElements': $( '<!-- foo -->' ).toArray()
+						type: 'alienMeta',
+						attributes: {
+							domElements: $( '<!-- foo -->' ).toArray()
 						}
 					},
-					{ 'type': '/alienMeta' },
+					{ type: '/alienMeta' },
 					'o', 'o',
-					{ 'type': '/paragraph' }
+					{ type: '/paragraph' }
 				],
-				'calls': [
-					['pushReplace', 0, 5, [ { 'type': 'table' }, { 'type': '/table' } ]]
+				calls: [
+					['pushReplace', 0, 5, [ { type: 'table' }, { type: '/table' } ]]
 				],
-				'expected': function ( data ) {
+				expected: function ( data ) {
 					data.splice( 0, 2 );
-					data.splice( 2, 3, { 'type': 'table' }, { 'type': '/table' } );
+					data.splice( 2, 3, { type: 'table' }, { type: '/table' } );
 				}
 			},
 			'structural replacement starting at an offset with metadata': {
-				'data': [
+				data: [
 					{
-						'type': 'alienMeta',
-						'attributes': {
-							'domElements': $( '<!-- foo -->' ).toArray()
+						type: 'alienMeta',
+						attributes: {
+							domElements: $( '<!-- foo -->' ).toArray()
 						}
 					},
-					{ 'type': '/alienMeta' },
-					{ 'type': 'paragraph' },
+					{ type: '/alienMeta' },
+					{ type: 'paragraph' },
 					'F',
 					{
-						'type': 'alienMeta',
-						'attributes': {
-							'style': 'comment',
-							'text': ' inline '
+						type: 'alienMeta',
+						attributes: {
+							style: 'comment',
+							text: ' inline '
 						}
 					},
-					{ 'type': '/alienMeta' },
+					{ type: '/alienMeta' },
 					'o', 'o',
-					{ 'type': '/paragraph' }
+					{ type: '/paragraph' }
 				],
-				'calls': [
-					['pushReplace', 0, 5, [ { 'type': 'table' }, { 'type': '/table' } ]]
+				calls: [
+					['pushReplace', 0, 5, [ { type: 'table' }, { type: '/table' } ]]
 				],
-				'expected': function ( data ) {
+				expected: function ( data ) {
 					// metadata  is merged.
 					data.splice( 2, 2 );
-					data.splice( 4, 3, { 'type': 'table' }, { 'type': '/table' } );
+					data.splice( 4, 3, { type: 'table' }, { type: '/table' } );
 				}
 			},
 			'structural replacement ending at an offset with metadata': {
-				'data': [
+				data: [
 					{
-						'type': 'alienMeta',
-						'attributes': {
-							'domElements': $( '<!-- foo -->' ).toArray()
+						type: 'alienMeta',
+						attributes: {
+							domElements: $( '<!-- foo -->' ).toArray()
 						}
 					},
-					{ 'type': '/alienMeta' },
-					{ 'type': 'paragraph' },
+					{ type: '/alienMeta' },
+					{ type: 'paragraph' },
 					'F',
 					{
-						'type': 'alienMeta',
-						'attributes': {
-							'style': 'comment',
-							'text': ' inline '
+						type: 'alienMeta',
+						attributes: {
+							style: 'comment',
+							text: ' inline '
 						}
 					},
-					{ 'type': '/alienMeta' },
+					{ type: '/alienMeta' },
 					'o', 'o',
-					{ 'type': '/paragraph' },
+					{ type: '/paragraph' },
 					{
-						'type': 'alienMeta',
-						'attributes': {
-							'domElements': $( '<!-- bar -->' ).toArray()
+						type: 'alienMeta',
+						attributes: {
+							domElements: $( '<!-- bar -->' ).toArray()
 						}
 					},
-					{ 'type': '/alienMeta' },
-					{ 'type': 'paragraph' },
+					{ type: '/alienMeta' },
+					{ type: 'paragraph' },
 					'B', 'a', 'r',
-					{ 'type': '/paragraph' }
+					{ type: '/paragraph' }
 				],
-				'calls': [
-					['pushReplace', 0, 5, [ { 'type': 'table' }, { 'type': '/table' } ]],
+				calls: [
+					['pushReplace', 0, 5, [ { type: 'table' }, { type: '/table' } ]],
 					['pushRetain', 5 ]
 				],
-				'expected': function ( data ) {
+				expected: function ( data ) {
 					// metadata  is merged.
 					data.splice( 2, 2 );
-					data.splice( 4, 3, { 'type': 'table' }, { 'type': '/table' } );
+					data.splice( 4, 3, { type: 'table' }, { type: '/table' } );
 				}
 			},
 			'structural deletion ending at an offset with metadata': {
-				'data': [
+				data: [
 					{
-						'type': 'alienMeta',
-						'attributes': {
-							'domElements': $( '<!-- foo -->' ).toArray()
+						type: 'alienMeta',
+						attributes: {
+							domElements: $( '<!-- foo -->' ).toArray()
 						}
 					},
-					{ 'type': '/alienMeta' },
-					{ 'type': 'paragraph' },
+					{ type: '/alienMeta' },
+					{ type: 'paragraph' },
 					'F',
 					{
-						'type': 'alienMeta',
-						'attributes': {
-							'style': 'comment',
-							'text': ' inline '
+						type: 'alienMeta',
+						attributes: {
+							style: 'comment',
+							text: ' inline '
 						}
 					},
-					{ 'type': '/alienMeta' },
+					{ type: '/alienMeta' },
 					'o', 'o',
-					{ 'type': '/paragraph' },
+					{ type: '/paragraph' },
 					{
-						'type': 'alienMeta',
-						'attributes': {
-							'domElements': $( '<!-- bar -->' ).toArray()
+						type: 'alienMeta',
+						attributes: {
+							domElements: $( '<!-- bar -->' ).toArray()
 						}
 					},
-					{ 'type': '/alienMeta' },
-					{ 'type': 'paragraph' },
+					{ type: '/alienMeta' },
+					{ type: 'paragraph' },
 					'B', 'a', 'r',
-					{ 'type': '/paragraph' }
+					{ type: '/paragraph' }
 				],
-				'calls': [
+				calls: [
 					['pushReplace', 0, 5, [] ],
 					['pushRetain', 5 ]
 				],
-				'expected': function ( data ) {
+				expected: function ( data ) {
 					// metadata  is merged.
 					data.splice( 2, 2 );
 					data.splice( 4, 3 );
 				}
 			},
 			'preserves metadata on unwrap': {
-				'data': ve.dm.example.listWithMeta,
-				'calls': [
+				data: ve.dm.example.listWithMeta,
+				calls: [
 					[ 'newFromWrap', new ve.Range( 1, 11 ),
-						[ { 'type': 'list' } ], [],
-						[ { 'type': 'listItem', 'attributes': { 'styles': ['bullet'] } } ], []
+						[ { type: 'list' } ], [],
+						[ { type: 'listItem', attributes: { styles: ['bullet'] } } ], []
 					]
 				],
-				'expected': function ( data ) {
+				expected: function ( data ) {
 					data.splice( 35, 1 ); // remove '/list'
 					data.splice( 32, 1 ); // remove '/listItem'
 					data.splice( 20, 1 ); // remove 'listItem'
@@ -575,72 +575,72 @@ QUnit.test( 'commit', function ( assert ) {
 				}
 			},
 			'inserting trailing metadata (1)': {
-				'data': ve.dm.example.listWithMeta,
-				'calls': [
+				data: ve.dm.example.listWithMeta,
+				calls: [
 					[ 'newFromMetadataInsertion', 12, 0, [
 						{
-							'type': 'alienMeta',
-							'attributes': {
-								'domElements': $( '<meta property="fourteen" />' ).toArray()
+							type: 'alienMeta',
+							attributes: {
+								domElements: $( '<meta property="fourteen" />' ).toArray()
 							}
 						}
 					] ]
 				],
-				'expected': function ( data ) {
+				expected: function ( data ) {
 					ve.batchSplice( data, data.length - 2, 0, [
 						{
-							'type': 'alienMeta',
-							'attributes': {
-								'domElements': $( '<meta property="fourteen" />' ).toArray()
+							type: 'alienMeta',
+							attributes: {
+								domElements: $( '<meta property="fourteen" />' ).toArray()
 							}
 						},
 						{
-							'type': '/alienMeta'
+							type: '/alienMeta'
 						}
 					] );
 				}
 			},
 			'inserting trailing metadata (2)': {
-				'data': ve.dm.example.listWithMeta,
-				'calls': [
+				data: ve.dm.example.listWithMeta,
+				calls: [
 					[ 'newFromMetadataInsertion', 12, 1, [
 						{
-							'type': 'alienMeta',
-							'attributes': {
-								'domElements': $( '<meta property="fourteen" />' ).toArray()
+							type: 'alienMeta',
+							attributes: {
+								domElements: $( '<meta property="fourteen" />' ).toArray()
 							}
 						}
 					] ]
 				],
-				'expected': function ( data ) {
+				expected: function ( data ) {
 					ve.batchSplice( data, data.length, 0, [
 						{
-							'type': 'alienMeta',
-							'attributes': {
-								'domElements': $( '<meta property="fourteen" />' ).toArray()
+							type: 'alienMeta',
+							attributes: {
+								domElements: $( '<meta property="fourteen" />' ).toArray()
 							}
 						},
 						{
-							'type': '/alienMeta'
+							type: '/alienMeta'
 						}
 					] );
 				}
 			},
 			'removing trailing metadata': {
-				'data': ve.dm.example.listWithMeta,
-				'calls': [
+				data: ve.dm.example.listWithMeta,
+				calls: [
 					[ 'newFromMetadataRemoval', 12, new ve.Range( 0, 1 ) ]
 				],
-				'expected': function ( data ) {
+				expected: function ( data ) {
 					ve.batchSplice( data, data.length - 2, 2, [] );
 				}
 			},
 			'preserves trailing metadata': {
-				'data': ve.dm.example.listWithMeta,
-				'calls': [
+				data: ve.dm.example.listWithMeta,
+				calls: [
 					[ 'newFromInsertion', 4, [ 'b' ] ]
 				],
-				'expected': function ( data ) {
+				expected: function ( data ) {
 					ve.batchSplice( data, 12, 0, [ 'b' ] );
 				}
 			}

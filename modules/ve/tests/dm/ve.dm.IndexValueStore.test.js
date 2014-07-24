@@ -11,8 +11,8 @@ QUnit.module( 've.dm.IndexValueStore' );
 
 QUnit.test( 'index(es)/indexOfHash', 12, function ( assert ) {
 	var index, indexes,
-		object1 = { 'a': 1, 'b': 2 },
-		object2 = { 'c': 3, 'd': 4 },
+		object1 = { a: 1, b: 2 },
+		object2 = { c: 3, d: 4 },
 		store = new ve.dm.IndexValueStore();
 
 	index = store.index( object1 );
@@ -48,8 +48,8 @@ QUnit.test( 'index(es)/indexOfHash', 12, function ( assert ) {
 } );
 
 QUnit.test( 'value(s)', 5, function ( assert ) {
-	var object1 = { 'a': 1, 'b': 2 },
-		object2 = { 'c': 3, 'd': 4 },
+	var object1 = { a: 1, b: 2 },
+		object2 = { c: 3, d: 4 },
 		store = new ve.dm.IndexValueStore();
 
 	store.index( object1 );
@@ -59,5 +59,5 @@ QUnit.test( 'value(s)', 5, function ( assert ) {
 	assert.equal( store.value( 2 ), undefined, 'Value 2 is undefined' );
 	assert.deepEqual( store.values( [1, 0] ), [ object2, object1 ], 'Values [1, 0] are second and first object' );
 	object1.a = 3;
-	assert.deepEqual( store.value( 0 ), { 'a': 1, 'b': 2 }, 'Value 0 is still first stored object after original has been modified' );
+	assert.deepEqual( store.value( 0 ), { a: 1, b: 2 }, 'Value 0 is still first stored object after original has been modified' );
 } );

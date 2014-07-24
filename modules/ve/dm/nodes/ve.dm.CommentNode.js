@@ -34,9 +34,9 @@ ve.dm.CommentNode.static.toDataElement = function ( domElements, converter ) {
 	return {
 		// Only use CommentNode for comments in ContentBranchNodes; otherwise use
 		// CommentMetaItem
-		'type': converter.isExpectingContent() ? this.name : 'commentMeta',
-		'attributes': {
-			'text': domElements[0].data
+		type: converter.isExpectingContent() ? this.name : 'commentMeta',
+		attributes: {
+			text: domElements[0].data
 		}
 	};
 };

@@ -141,8 +141,8 @@ ve.dm.Document.static.splitData = function ( fullData ) {
 	}
 
 	return {
-		'elementData': elementData,
-		'metaData': metaData
+		elementData: elementData,
+		metaData: metaData
 	};
 };
 
@@ -437,7 +437,7 @@ ve.dm.Document.prototype.cloneSliceFromRange = function ( range ) {
 				while ( !endNode.isWrapped() ) {
 					endNode = endNode.getParent();
 				}
-				balanceClosings.push( { 'type': '/' + endNode.getType() } );
+				balanceClosings.push( { type: '/' + endNode.getType() } );
 				if ( endNode === lastNode ) {
 					break;
 				}
@@ -467,7 +467,7 @@ ve.dm.Document.prototype.cloneSliceFromRange = function ( range ) {
 			while ( startNode.getParent() && startNode.getParentNodeTypes() !== null ) {
 				startNode = startNode.getParent();
 				contextOpenings.push( startNode.getClonedElement() );
-				contextClosings.push( { 'type': '/' + startNode.getType() } );
+				contextClosings.push( { type: '/' + startNode.getType() } );
 			}
 		}
 
@@ -580,7 +580,7 @@ ve.dm.Document.prototype.getFullData = function ( range, edgeMetadata ) {
 		if ( this.metadata.getData( i ) && ( edgeMetadata || ( i !== range.start && i !== range.end ) ) ) {
 			for ( j = 0, jLen = this.metadata.getData( i ).length; j < jLen; j++ ) {
 				result.push( this.metadata.getData( i )[j] );
-				result.push( { 'type': '/' + this.metadata.getData( i )[j].type } );
+				result.push( { type: '/' + this.metadata.getData( i )[j].type } );
 			}
 		}
 		if ( i < iLen ) {
@@ -919,7 +919,7 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 					}
 
 					// Close the parent and try one level up
-					closings.push( { 'type': '/' + parentType } );
+					closings.push( { type: '/' + parentType } );
 					if ( openingStack.length > 0 ) {
 						popped = openingStack.pop();
 						parentType = popped.type;
@@ -1021,7 +1021,7 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 		popped = openingStack[openingStack.length - 1];
 		// writeElement() will perform the actual pop() that removes
 		// popped from openingStack
-		writeElement( { 'type': '/' + popped.type }, i );
+		writeElement( { type: '/' + popped.type }, i );
 	}
 	// Re-open closed nodes
 	while ( closingStack.length > 0 ) {
@@ -1032,11 +1032,11 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 	}
 
 	return {
-		'offset': offset,
-		'data': newData,
-		'remove': remove,
-		'insertedDataOffset': insertedDataOffset,
-		'insertedDataLength': insertedDataLength
+		offset: offset,
+		data: newData,
+		remove: remove,
+		insertedDataOffset: insertedDataOffset,
+		insertedDataLength: insertedDataLength
 	};
 };
 

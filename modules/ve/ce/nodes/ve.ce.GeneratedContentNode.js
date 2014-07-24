@@ -18,8 +18,8 @@ ve.ce.GeneratedContentNode = function VeCeGeneratedContentNode() {
 	this.generatingPromise = null;
 
 	// Events
-	this.model.connect( this, { 'update': 'onGeneratedContentNodeUpdate' } );
-	this.connect( this, { 'teardown': 'abortGenerating' } );
+	this.model.connect( this, { update: 'onGeneratedContentNodeUpdate' } );
+	this.connect( this, { teardown: 'abortGenerating' } );
 
 	// Initialization
 	this.update();

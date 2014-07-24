@@ -38,46 +38,46 @@ QUnit.test( 'increase/decrease', 2, function ( assert ) {
 	var i,
 		cases = [
 			{
-				'range': new ve.Range( 14, 16 ),
-				'method': 'decrease',
-				'expectedSelection': new ve.Range( 14, 16 ),
-				'expectedData': function ( data ) {
-					data.splice( 11, 2, { 'type': '/list' }, { 'type': 'paragraph' } );
-					data.splice( 19, 2, { 'type': '/paragraph' }, { 'type': 'list', 'attributes': { 'style': 'bullet' } } );
+				range: new ve.Range( 14, 16 ),
+				method: 'decrease',
+				expectedSelection: new ve.Range( 14, 16 ),
+				expectedData: function ( data ) {
+					data.splice( 11, 2, { type: '/list' }, { type: 'paragraph' } );
+					data.splice( 19, 2, { type: '/paragraph' }, { type: 'list', attributes: { style: 'bullet' } } );
 				},
-				'expectedOriginalData': function ( data ) {
+				expectedOriginalData: function ( data ) {
 					// generated: 'wrapper' is removed by the action and not restored by undo
 					delete data[12].internal;
 				},
-				'msg': 'decrease indentation on partial selection of list item "Item 2"'
+				msg: 'decrease indentation on partial selection of list item "Item 2"'
 			},
 			{
-				'range': new ve.Range( 3, 19 ),
-				'method': 'decrease',
-				'expectedSelection': new ve.Range( 1, 15 ),
-				'expectedData': function ( data ) {
+				range: new ve.Range( 3, 19 ),
+				method: 'decrease',
+				expectedSelection: new ve.Range( 1, 15 ),
+				expectedData: function ( data ) {
 					data.splice( 0, 2 );
 					data.splice( 8, 2 );
-					data.splice( 16, 1, { 'type': 'list', 'attributes': { 'style': 'bullet' } } );
+					data.splice( 16, 1, { type: 'list', attributes: { style: 'bullet' } } );
 					delete data[0].internal;
 					delete data[8].internal;
 				},
-				'expectedOriginalData': function ( data ) {
+				expectedOriginalData: function ( data ) {
 					// generated: 'wrapper' is removed by the action and not restored by undo
 					delete data[2].internal;
 					delete data[12].internal;
 				},
-				'msg': 'decrease indentation on Items 1 & 2'
+				msg: 'decrease indentation on Items 1 & 2'
 			},
 			{
-				'range': new ve.Range( 3, 19 ),
-				'method': 'increase',
-				'expectedSelection': new ve.Range( 5, 21 ),
-				'expectedData': function ( data ) {
-					data.splice( 0, 0, { 'type': 'list', 'attributes': { 'style': 'bullet' } }, { 'type': 'listItem' } );
-					data.splice( 23, 0, { 'type': '/list' }, { 'type': '/listItem' } );
+				range: new ve.Range( 3, 19 ),
+				method: 'increase',
+				expectedSelection: new ve.Range( 5, 21 ),
+				expectedData: function ( data ) {
+					data.splice( 0, 0, { type: 'list', attributes: { style: 'bullet' } }, { type: 'listItem' } );
+					data.splice( 23, 0, { type: '/list' }, { type: '/listItem' } );
 				},
-				'msg': 'increase indentation on Items 1 & 2'
+				msg: 'increase indentation on Items 1 & 2'
 			}
 		];
 

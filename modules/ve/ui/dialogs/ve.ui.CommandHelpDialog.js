@@ -35,8 +35,8 @@ ve.ui.CommandHelpDialog.static.title =
 
 ve.ui.CommandHelpDialog.static.actions = [
 	{
-		'label': OO.ui.deferMsg( 'visualeditor-dialog-action-done' ),
-		'flags': 'safe'
+		label: OO.ui.deferMsg( 'visualeditor-dialog-action-done' ),
+		flags: 'safe'
 	}
 ];
 
@@ -63,9 +63,9 @@ ve.ui.CommandHelpDialog.prototype.initialize = function () {
 		commandGroups = this.constructor.static.getCommandGroups();
 
 	this.contentLayout = new OO.ui.PanelLayout( {
-		'$': this.$,
-		'scrollable': true,
-		'padded': true
+		$: this.$,
+		scrollable: true,
+		padded: true
 	} );
 	this.$container = this.$( '<div>' ).addClass( 've-ui-commandHelpDialog-container' );
 
@@ -122,66 +122,66 @@ ve.ui.CommandHelpDialog.prototype.initialize = function () {
  */
 ve.ui.CommandHelpDialog.static.getCommandGroups = function () {
 	return {
-		'textStyle': {
-			'title': 'visualeditor-shortcuts-text-style',
-			'commands': [
-				{ 'trigger': 'bold', 'msg': 'visualeditor-annotationbutton-bold-tooltip' },
-				{ 'trigger': 'italic', 'msg': 'visualeditor-annotationbutton-italic-tooltip' },
-				{ 'trigger': 'link', 'msg': 'visualeditor-annotationbutton-link-tooltip' },
-				{ 'trigger': 'superscript', 'msg': 'visualeditor-annotationbutton-superscript-tooltip' },
-				{ 'trigger': 'subscript', 'msg': 'visualeditor-annotationbutton-subscript-tooltip' },
-				{ 'trigger': 'underline', 'msg': 'visualeditor-annotationbutton-underline-tooltip' },
-				{ 'trigger': 'clear', 'msg': 'visualeditor-clearbutton-tooltip' }
+		textStyle: {
+			title: 'visualeditor-shortcuts-text-style',
+			commands: [
+				{ trigger: 'bold', msg: 'visualeditor-annotationbutton-bold-tooltip' },
+				{ trigger: 'italic', msg: 'visualeditor-annotationbutton-italic-tooltip' },
+				{ trigger: 'link', msg: 'visualeditor-annotationbutton-link-tooltip' },
+				{ trigger: 'superscript', msg: 'visualeditor-annotationbutton-superscript-tooltip' },
+				{ trigger: 'subscript', msg: 'visualeditor-annotationbutton-subscript-tooltip' },
+				{ trigger: 'underline', msg: 'visualeditor-annotationbutton-underline-tooltip' },
+				{ trigger: 'clear', msg: 'visualeditor-clearbutton-tooltip' }
 			]
 		},
-		'formatting': {
-			'title': 'visualeditor-shortcuts-formatting',
-			'commands': [
-				{ 'trigger': 'paragraph', 'msg': 'visualeditor-formatdropdown-format-paragraph' },
-				{ 'shortcuts': ['ctrl+(1-6)'], 'msg': 'visualeditor-formatdropdown-format-heading-label' },
-				{ 'trigger': 'preformatted', 'msg': 'visualeditor-formatdropdown-format-preformatted' },
-				{ 'trigger': 'indent', 'msg': 'visualeditor-indentationbutton-indent-tooltip' },
-				{ 'trigger': 'outdent', 'msg': 'visualeditor-indentationbutton-outdent-tooltip' }
+		formatting: {
+			title: 'visualeditor-shortcuts-formatting',
+			commands: [
+				{ trigger: 'paragraph', msg: 'visualeditor-formatdropdown-format-paragraph' },
+				{ shortcuts: ['ctrl+(1-6)'], msg: 'visualeditor-formatdropdown-format-heading-label' },
+				{ trigger: 'preformatted', msg: 'visualeditor-formatdropdown-format-preformatted' },
+				{ trigger: 'indent', msg: 'visualeditor-indentationbutton-indent-tooltip' },
+				{ trigger: 'outdent', msg: 'visualeditor-indentationbutton-outdent-tooltip' }
 			]
 		},
-		'history': {
-			'title': 'visualeditor-shortcuts-history',
-			'commands': [
-				{ 'trigger': 'undo', 'msg': 'visualeditor-historybutton-undo-tooltip' },
-				{ 'trigger': 'redo', 'msg': 'visualeditor-historybutton-redo-tooltip' }
+		history: {
+			title: 'visualeditor-shortcuts-history',
+			commands: [
+				{ trigger: 'undo', msg: 'visualeditor-historybutton-undo-tooltip' },
+				{ trigger: 'redo', msg: 'visualeditor-historybutton-redo-tooltip' }
 			]
 		},
-		'clipboard': {
-			'title': 'visualeditor-shortcuts-clipboard',
-			'commands': [
+		clipboard: {
+			title: 'visualeditor-shortcuts-clipboard',
+			commands: [
 				{
-					'shortcuts': [ {
-						'mac': 'cmd+x',
-						'pc': 'ctrl+x'
+					shortcuts: [ {
+						mac: 'cmd+x',
+						pc: 'ctrl+x'
 					} ],
-					'msg': 'visualeditor-clipboard-cut'
+					msg: 'visualeditor-clipboard-cut'
 				},
 				{
-					'shortcuts': [ {
-						'mac': 'cmd+c',
-						'pc': 'ctrl+c'
+					shortcuts: [ {
+						mac: 'cmd+c',
+						pc: 'ctrl+c'
 					} ],
-					'msg': 'visualeditor-clipboard-copy'
+					msg: 'visualeditor-clipboard-copy'
 				},
 				{
-					'shortcuts': [ {
-						'mac': 'cmd+v',
-						'pc': 'ctrl+v'
+					shortcuts: [ {
+						mac: 'cmd+v',
+						pc: 'ctrl+v'
 					} ],
-					'msg': 'visualeditor-clipboard-paste'
+					msg: 'visualeditor-clipboard-paste'
 				},
-				{ 'trigger': 'pasteSpecial', 'msg': 'visualeditor-clipboard-paste-special' }
+				{ trigger: 'pasteSpecial', msg: 'visualeditor-clipboard-paste-special' }
 			]
 		},
-		'other': {
-			'title': 'visualeditor-shortcuts-other',
-			'commands': [
-				{ 'trigger': 'commandHelp', 'msg': 'visualeditor-dialog-command-help-title' }
+		other: {
+			title: 'visualeditor-shortcuts-other',
+			commands: [
+				{ trigger: 'commandHelp', msg: 'visualeditor-dialog-command-help-title' }
 			]
 		}
 	};

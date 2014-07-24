@@ -19,7 +19,7 @@ ve.ce.TableCellNode = function VeCeTableCellNode( model, config ) {
 	ve.ce.BranchNode.call( this, model, config );
 
 	// Events
-	this.model.connect( this, { 'update': 'onUpdate' } );
+	this.model.connect( this, { update: 'onUpdate' } );
 
 	// DOM changes
 	this.$element.addClass( 've-ce-tableCellNode' );
@@ -45,7 +45,7 @@ ve.ce.TableCellNode.static.name = 'tableCell';
  */
 ve.ce.TableCellNode.prototype.getTagName = function () {
 	var style = this.model.getAttribute( 'style' ),
-		types = { 'data': 'td', 'header': 'th' };
+		types = { data: 'td', header: 'th' };
 
 	if ( !( style in types ) ) {
 		throw new Error( 'Invalid style' );

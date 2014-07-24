@@ -813,7 +813,7 @@ ve.dm.ElementLinearData.prototype.remapInternalListKeys = function ( internalLis
  *
  * @param {Object} rules Sanitization rules
  * @param {string[]} [rules.blacklist] Blacklist of model types which aren't allowed
- * @param {Object} [rules.conversions] Model type conversions to apply, e.g. { 'heading': 'paragraph' }
+ * @param {Object} [rules.conversions] Model type conversions to apply, e.g. { heading: 'paragraph' }
  * @param {boolean} [rules.removeHtmlAttributes] Remove all left over HTML attributes
  * @param {boolean} [rules.removeStyles] Remove HTML style attributes
  * @param {boolean} [plainText=false] Remove all formatting for plain text paste

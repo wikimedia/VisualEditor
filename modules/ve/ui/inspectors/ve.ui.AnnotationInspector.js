@@ -43,9 +43,9 @@ ve.ui.AnnotationInspector.static.modelClasses = [];
 
 ve.ui.AnnotationInspector.static.actions = [
 	{
-		'action': 'remove',
-		'label': OO.ui.deferMsg( 'visualeditor-inspector-remove-tooltip' ),
-		'flags': 'destructive'
+		action: 'remove',
+		label: OO.ui.deferMsg( 'visualeditor-inspector-remove-tooltip' ),
+		flags: 'destructive'
 	}
 ].concat( ve.ui.FragmentInspector.static.actions );
 
@@ -125,7 +125,7 @@ ve.ui.AnnotationInspector.prototype.getMatchingAnnotations = function ( fragment
 ve.ui.AnnotationInspector.prototype.getActionProcess = function ( action ) {
 	if ( action === 'remove' ) {
 		return new OO.ui.Process( function () {
-			this.close( { 'action': 'remove' } );
+			this.close( { action: 'remove' } );
 		}, this );
 	}
 	return ve.ui.AnnotationInspector.super.prototype.getActionProcess.call( this, action );

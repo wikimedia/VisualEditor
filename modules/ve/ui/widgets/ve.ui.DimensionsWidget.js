@@ -26,27 +26,27 @@ ve.ui.DimensionsWidget = function VeUiDimensionsWidget( config ) {
 	OO.ui.Widget.call( this, config );
 
 	this.widthInput = new OO.ui.TextInputWidget( {
-		'$': this.$
+		$: this.$
 	} );
 	this.heightInput = new OO.ui.TextInputWidget( {
-		'$': this.$
+		$: this.$
 	} );
 
-	this.defaults = config.defaults || { 'width': '', 'height': '' };
+	this.defaults = config.defaults || { width: '', height: '' };
 	this.renderDefaults();
 
 	labelTimes = new OO.ui.LabelWidget( {
-		'$': this.$,
-		'label': ve.msg( 'visualeditor-dimensionswidget-times' )
+		$: this.$,
+		label: ve.msg( 'visualeditor-dimensionswidget-times' )
 	} );
 	labelPx = new OO.ui.LabelWidget( {
-		'$': this.$,
-		'label': ve.msg( 'visualeditor-dimensionswidget-px' )
+		$: this.$,
+		label: ve.msg( 'visualeditor-dimensionswidget-px' )
 	} );
 
 	// Events
-	this.widthInput.connect( this, { 'change': 'onWidthChange' } );
-	this.heightInput.connect( this, { 'change': 'onHeightChange' } );
+	this.widthInput.connect( this, { change: 'onWidthChange' } );
+	this.heightInput.connect( this, { change: 'onHeightChange' } );
 
 	// Setup
 	this.$element
@@ -128,7 +128,7 @@ ve.ui.DimensionsWidget.prototype.getDefaults = function () {
  * Remove the default dimensions
  */
 ve.ui.DimensionsWidget.prototype.removeDefaults = function () {
-	this.defaults = { 'width': '', 'height': '' };
+	this.defaults = { width: '', height: '' };
 	this.renderDefaults();
 };
 
@@ -182,8 +182,8 @@ ve.ui.DimensionsWidget.prototype.setDimensions = function ( dimensions ) {
  */
 ve.ui.DimensionsWidget.prototype.getDimensions = function () {
 	return {
-		'width': this.widthInput.getValue(),
-		'height': this.heightInput.getValue()
+		width: this.widthInput.getValue(),
+		height: this.heightInput.getValue()
 	};
 };
 

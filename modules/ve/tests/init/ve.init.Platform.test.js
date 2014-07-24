@@ -19,7 +19,7 @@ QUnit.asyncTest( 'messages', 4, function ( assert ) {
 
 		platform.addMessages( {
 			'platformtest-foo': 'Foo & Bar <quux action="followed">by</quux>!',
-			'platformtest-bacon': 'Bacon <&> Ipsum: $1'
+			'platformtest-lorem': 'Lorem <&> Ipsum: $1'
 		} );
 
 		assert.strictEqual(
@@ -29,8 +29,8 @@ QUnit.asyncTest( 'messages', 4, function ( assert ) {
 		);
 
 		assert.strictEqual(
-			platform.getMessage( 'platformtest-bacon', 10 ),
-			'Bacon <&> Ipsum: 10',
+			platform.getMessage( 'platformtest-lorem', 10 ),
+			'Lorem <&> Ipsum: 10',
 			'return plain message with $# replacements'
 		);
 
@@ -53,7 +53,7 @@ QUnit.asyncTest( 'parsedMessage', 3, function ( assert ) {
 
 		platform.addMessages( {
 			'platformtest-foo': 'Foo & Bar <quux action="followed">by</quux>!',
-			'platformtest-bacon': 'Bacon <&> Ipsum: $1'
+			'platformtest-lorem': 'Lorem <&> Ipsum: $1'
 		} );
 
 		platform.addParsedMessages( {
@@ -67,8 +67,8 @@ QUnit.asyncTest( 'parsedMessage', 3, function ( assert ) {
 		);
 
 		assert.strictEqual(
-			platform.getParsedMessage( 'platformtest-bacon', 10 ),
-			'Bacon &lt;&amp;&gt; Ipsum: $1',
+			platform.getParsedMessage( 'platformtest-lorem', 10 ),
+			'Lorem &lt;&amp;&gt; Ipsum: $1',
 			'fall back to html-escaped version of plain message, no $# replacements'
 		);
 	} );

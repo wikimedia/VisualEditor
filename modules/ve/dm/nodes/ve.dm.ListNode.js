@@ -31,14 +31,14 @@ ve.dm.ListNode.static.name = 'list';
 ve.dm.ListNode.static.childNodeTypes = [ 'listItem' ];
 
 ve.dm.ListNode.static.defaultAttributes = {
-	'style': 'bullet'
+	style: 'bullet'
 };
 
 ve.dm.ListNode.static.matchTagNames = [ 'ul', 'ol' ];
 
 ve.dm.ListNode.static.toDataElement = function ( domElements ) {
 	var style = domElements[0].nodeName.toLowerCase() === 'ol' ? 'number' : 'bullet';
-	return { 'type': this.name, 'attributes': { 'style': style } };
+	return { type: this.name, attributes: { style: style } };
 };
 
 ve.dm.ListNode.static.toDomElements = function ( dataElement, doc ) {

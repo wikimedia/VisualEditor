@@ -29,7 +29,7 @@ OO.inheritClass( ve.ui.InsertionInspector, ve.ui.FragmentInspector );
 
 ve.ui.InsertionInspector.static.actions = [
 	{
-		'label': OO.ui.deferMsg( 'visualeditor-dialog-action-cancel' ),
-		'flags': 'safe'
+		label: OO.ui.deferMsg( 'visualeditor-dialog-action-cancel' ),
+		flags: 'safe'
 	}
 ];

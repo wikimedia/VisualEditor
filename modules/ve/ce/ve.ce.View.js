@@ -33,8 +33,8 @@ ve.ce.View = function VeCeView( model, config ) {
 
 	// Events
 	this.connect( this, {
-		'setup': 'onSetup',
-		'teardown': 'onTeardown'
+		setup: 'onSetup',
+		teardown: 'onTeardown'
 	} );
 
 	// Initialization

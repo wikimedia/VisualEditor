@@ -56,14 +56,14 @@ for ( key in keyAliases ) {
 // Events
 
 $( 'body' ).on( {
-	'keydown': function ( e ) {
+	keydown: function ( e ) {
 		$( '.active' ).removeClass( 'active' );
 		setTrigger( new ve.ui.Trigger( e ) );
 		e.preventDefault();
 	}
 } );
 $( '#primary .key, #modifiers .key' ).on( {
-	'mousedown': function ( e ) {
+	mousedown: function ( e ) {
 		var $target = $( e.target );
 		if ( e.which === 1 ) {
 			if ( $target.closest( '#primary' ).length ) {
@@ -74,7 +74,7 @@ $( '#primary .key, #modifiers .key' ).on( {
 			}
 		}
 	},
-	'mouseup': function ( e ) {
+	mouseup: function ( e ) {
 		var parts = [],
 			$target = $( e.target );
 		if ( e.which === 1 ) {

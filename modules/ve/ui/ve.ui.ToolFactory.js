@@ -47,7 +47,7 @@ ve.ui.ToolFactory.prototype.getToolsForFragment = function ( fragment ) {
 		for ( j = 0, jLen = tools.length; j < jLen; j++ ) {
 			name = tools[j].static.name;
 			if ( !names[name] ) {
-				matches.push( { 'tool': tools[j], 'model': model } );
+				matches.push( { tool: tools[j], model: model } );
 			}
 			names[name] = true;
 		}

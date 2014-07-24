@@ -34,9 +34,9 @@ OO.inheritClass( ve.ui.FragmentInspector, OO.ui.ProcessDialog );
 
 ve.ui.FragmentInspector.static.actions = ve.ui.FragmentInspector.super.static.actions.concat( [
 	{
-		'action': 'done',
-		'label': OO.ui.deferMsg( 'visualeditor-dialog-action-done' ),
-		'flags': 'primary'
+		action: 'done',
+		label: OO.ui.deferMsg( 'visualeditor-dialog-action-done' ),
+		flags: 'primary'
 	}
 ] );
 
@@ -48,7 +48,7 @@ ve.ui.FragmentInspector.static.actions = ve.ui.FragmentInspector.super.static.ac
  * @method
  */
 ve.ui.FragmentInspector.prototype.onFormSubmit = function () {
-	this.close( { 'action': 'done' } );
+	this.close( { action: 'done' } );
 };
 
 /**
@@ -70,14 +70,14 @@ ve.ui.FragmentInspector.prototype.initialize = function () {
 
 	// Properties
 	this.container = new OO.ui.PanelLayout( {
-		'$': this.$, 'scrollable': true, 'classes': [ 've-ui-fragmentInspector-container' ]
+		$: this.$, scrollable: true, classes: [ 've-ui-fragmentInspector-container' ]
 	} );
 	this.form = new OO.ui.FormLayout( {
-		'$': this.$, 'classes': [ 've-ui-fragmentInspector-form' ]
+		$: this.$, classes: [ 've-ui-fragmentInspector-form' ]
 	} );
 
 	// Events
-	this.form.connect( this, { 'submit': 'onFormSubmit' } );
+	this.form.connect( this, { submit: 'onFormSubmit' } );
 
 	// Initialization
 	this.frame.$content.addClass( 've-ui-fragmentInspector-content' );
@@ -91,7 +91,7 @@ ve.ui.FragmentInspector.prototype.initialize = function () {
 ve.ui.FragmentInspector.prototype.getActionProcess = function ( action ) {
 	if ( action === 'done' ) {
 		return new OO.ui.Process( function () {
-			this.close( { 'action': 'done' } );
+			this.close( { action: 'done' } );
 		}, this );
 	}
 	return ve.ui.FragmentInspector.super.prototype.getActionProcess.call( this, action );

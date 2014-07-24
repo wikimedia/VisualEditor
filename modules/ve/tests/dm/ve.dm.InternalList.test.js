@@ -20,17 +20,17 @@ QUnit.test( 'queueItemHtml/getItemHtmlQueue', 5, function ( assert ) {
 		internalList = doc.getInternalList();
 	assert.deepEqual(
 		internalList.queueItemHtml( 'reference', 'foo', 'Bar' ),
-		{ 'index': 0, 'isNew': true },
+		{ index: 0, isNew: true },
 		'First queued item returns index 0 and is new'
 	);
 	assert.deepEqual(
 		internalList.queueItemHtml( 'reference', 'foo', 'Baz' ),
-		{ 'index': 0, 'isNew': false },
+		{ index: 0, isNew: false },
 		'Duplicate key returns index 0 and is not new'
 	);
 	assert.deepEqual(
 		internalList.queueItemHtml( 'reference', 'bar', 'Baz' ),
-		{ 'index': 1, 'isNew': true },
+		{ index: 1, isNew: true },
 		'Second queued item returns index 1 and is new'
 	);
 
@@ -38,7 +38,7 @@ QUnit.test( 'queueItemHtml/getItemHtmlQueue', 5, function ( assert ) {
 	internalList.queueItemHtml( 'reference', 'baz', '' );
 	assert.deepEqual(
 		internalList.queueItemHtml( 'reference', 'baz', 'Quux' ),
-		{ 'index': 2, 'isNew': true },
+		{ index: 2, isNew: true },
 		'Third queued item is new because existing data in queue was empty'
 	);
 
@@ -50,18 +50,18 @@ QUnit.test( 'convertToData', 2, function ( assert ) {
 		htmlDoc = doc.getHtmlDocument(),
 		internalList = doc.getInternalList(),
 		expectedData = [
-			{ 'type': 'internalList' },
-			{ 'type': 'internalItem' },
-			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+			{ type: 'internalList' },
+			{ type: 'internalItem' },
+			{ type: 'paragraph', internal: { generated: 'wrapper' } },
 			'B', 'a', 'r',
-			{ 'type': '/paragraph' },
-			{ 'type': '/internalItem' },
-			{ 'type': 'internalItem' },
-			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+			{ type: '/paragraph' },
+			{ type: '/internalItem' },
+			{ type: 'internalItem' },
+			{ type: 'paragraph', internal: { generated: 'wrapper' } },
 			'B', 'a', 'z',
-			{ 'type': '/paragraph' },
-			{ 'type': '/internalItem' },
-			{ 'type': '/internalList' }
+			{ type: '/paragraph' },
+			{ type: '/internalItem' },
+			{ type: '/internalList' }
 		];
 
 	// Mimic convert state setup (as done in ve.dm.Converter#getDataFromDom)

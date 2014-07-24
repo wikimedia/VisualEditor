@@ -19,7 +19,7 @@ ve.ce.DefinitionListItemNode = function VeCeDefinitionListItemNode( model, confi
 	ve.ce.BranchNode.call( this, model, config );
 
 	// Events
-	this.model.connect( this, { 'update': 'onUpdate' } );
+	this.model.connect( this, { update: 'onUpdate' } );
 };
 
 /* Inheritance */
@@ -44,7 +44,7 @@ ve.ce.DefinitionListItemNode.static.splitOnEnter = true;
  */
 ve.ce.DefinitionListItemNode.prototype.getTagName = function () {
 	var style = this.model.getAttribute( 'style' ),
-		types = { 'definition': 'dd', 'term': 'dt' };
+		types = { definition: 'dd', term: 'dt' };
 
 	if ( !( style in types ) ) {
 		throw new Error( 'Invalid style' );

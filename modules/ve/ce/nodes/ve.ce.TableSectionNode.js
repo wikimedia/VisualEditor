@@ -19,7 +19,7 @@ ve.ce.TableSectionNode = function VeCeTableSectionNode( model, config ) {
 	ve.ce.BranchNode.call( this, model, config );
 
 	// Events
-	this.model.connect( this, { 'update': 'onUpdate' } );
+	this.model.connect( this, { update: 'onUpdate' } );
 };
 
 /* Inheritance */
@@ -42,7 +42,7 @@ ve.ce.TableSectionNode.static.name = 'tableSection';
  */
 ve.ce.TableSectionNode.prototype.getTagName = function () {
 	var style = this.model.getAttribute( 'style' ),
-		types = { 'header': 'thead', 'body': 'tbody', 'footer': 'tfoot' };
+		types = { header: 'thead', body: 'tbody', footer: 'tfoot' };
 
 	if ( !( style in types ) ) {
 		throw new Error( 'Invalid style' );

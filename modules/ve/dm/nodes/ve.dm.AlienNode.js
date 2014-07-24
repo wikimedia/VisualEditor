@@ -45,9 +45,9 @@ ve.dm.AlienNode.static.toDataElement = function ( domElements, converter ) {
 		type = isInline ? 'alienInline' : 'alienBlock';
 
 	return {
-		'type': type,
-		'attributes': {
-			'domElements': ve.copy( domElements )
+		type: type,
+		attributes: {
+			domElements: ve.copy( domElements )
 		}
 	};
 };

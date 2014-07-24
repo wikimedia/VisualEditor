@@ -34,72 +34,72 @@ ve.ui.MediaSizeWidget = function VeUiMediaSizeWidget( scalable, config ) {
 
 	// Define button select widget
 	this.sizeTypeSelectWidget = new OO.ui.ButtonSelectWidget( {
-		'$': this.$,
-		'classes': [ 've-ui-mediaSizeWidget-section-sizetype' ]
+		$: this.$,
+		classes: [ 've-ui-mediaSizeWidget-section-sizetype' ]
 	} );
 	this.sizeTypeSelectWidget.addItems( [
 		new OO.ui.ButtonOptionWidget( 'default', {
-			'$': this.$,
-			'label': ve.msg( 'visualeditor-mediasizewidget-sizeoptions-default' )
+			$: this.$,
+			label: ve.msg( 'visualeditor-mediasizewidget-sizeoptions-default' )
 		} ),
 		// TODO: when upright is supported by Parsoid
 		// new OO.ui.ButtonOptionWidget( 'scale', {
-		// '$': this.$,
-		// 'label': ve.msg( 'visualeditor-mediasizewidget-sizeoptions-scale' )
+		// $: this.$,
+		// label: ve.msg( 'visualeditor-mediasizewidget-sizeoptions-scale' )
 		// } ),
 		new OO.ui.ButtonOptionWidget( 'custom', {
-			'$': this.$,
-			'label': ve.msg( 'visualeditor-mediasizewidget-sizeoptions-custom' )
+			$: this.$,
+			label: ve.msg( 'visualeditor-mediasizewidget-sizeoptions-custom' )
 		} )
 	] );
 
 	// Define scale
 	this.scaleInput = new OO.ui.TextInputWidget( {
-		'$': this.$
+		$: this.$
 	} );
 	scalePercentLabel = new OO.ui.LabelWidget( {
-		'$': this.$,
-		'input': this.scaleInput,
-		'label': ve.msg( 'visualeditor-mediasizewidget-label-scale-percent' )
+		$: this.$,
+		input: this.scaleInput,
+		label: ve.msg( 'visualeditor-mediasizewidget-label-scale-percent' )
 	} );
 
 	this.dimensionsWidget = new ve.ui.DimensionsWidget( {
-		'$': this.$
+		$: this.$
 	} );
 
 	// Error label is available globally so it can be displayed and
 	// hidden as needed
 	this.errorLabel = new OO.ui.LabelWidget( {
-		'$': this.$,
-		'label': ve.msg( 'visualeditor-mediasizewidget-label-defaulterror' )
+		$: this.$,
+		label: ve.msg( 'visualeditor-mediasizewidget-label-defaulterror' )
 	} );
 
 	// Field layouts
 	fieldScale = new OO.ui.FieldLayout(
 		this.scaleInput, {
-			'$': this.$,
-			'align': 'right',
+			$: this.$,
+			align: 'right',
 			// TODO: when upright is supported by Parsoid
-			// 'classes': ['ve-ui-mediaSizeWidget-section-scale'],
-			'label': ve.msg( 'visualeditor-mediasizewidget-label-scale' )
+			// classes: ['ve-ui-mediaSizeWidget-section-scale'],
+			label: ve.msg( 'visualeditor-mediasizewidget-label-scale' )
 		}
 	);
 	// TODO: when upright is supported by Parsoid
 	// this.scaleInput.$element.append( scalePercentLabel.$element );
 	fieldCustom = new OO.ui.FieldLayout(
 		this.dimensionsWidget, {
-			'$': this.$,
-			'align': 'right',
-			'label': ve.msg( 'visualeditor-mediasizewidget-label-custom' ),
-			'classes': ['ve-ui-mediaSizeWidget-section-custom']
+			$: this.$,
+			align: 'right',
+			label: ve.msg( 'visualeditor-mediasizewidget-label-custom' ),
+			classes: ['ve-ui-mediaSizeWidget-section-custom']
 		}
 	);
 
 	// Buttons
 	this.fullSizeButton = new OO.ui.ButtonWidget( {
-		'$': this.$,
-		'label': ve.msg( 'visualeditor-mediasizewidget-button-originaldimensions' ),
-		'classes': ['ve-ui-mediaSizeWidget-button-fullsize']
+		$: this.$,
+		label: ve.msg( 'visualeditor-mediasizewidget-button-originaldimensions' ),
+		classes: ['ve-ui-mediaSizeWidget-button-fullsize']
 	} );
 
 	// Build GUI
@@ -118,13 +118,13 @@ ve.ui.MediaSizeWidget = function VeUiMediaSizeWidget( scalable, config ) {
 
 	// Events
 	this.dimensionsWidget.connect( this, {
-		'widthChange': ['onDimensionsChange', 'width'],
-		'heightChange': ['onDimensionsChange', 'height']
+		widthChange: ['onDimensionsChange', 'width'],
+		heightChange: ['onDimensionsChange', 'height']
 	} );
 	// TODO: when upright is supported by Parsoid
-	// this.scaleInput.connect( this, { 'change': 'onScaleChange' } );
-	this.sizeTypeSelectWidget.connect( this, { 'choose': 'onSizeTypeChoose' } );
-	this.fullSizeButton.connect( this, { 'click': 'onFullSizeButtonClick' } );
+	// this.scaleInput.connect( this, { change: 'onScaleChange' } );
+	this.sizeTypeSelectWidget.connect( this, { choose: 'onSizeTypeChoose' } );
+	this.fullSizeButton.connect( this, { click: 'onFullSizeButtonClick' } );
 
 };
 
@@ -294,8 +294,8 @@ ve.ui.MediaSizeWidget.prototype.setScalable = function ( scalable ) {
 	this.scalable = scalable;
 	// Events
 	this.scalable.connect( this, {
-		'defaultSizeChange': 'onScalableDefaultSizeChange',
-		'originalSizeChange': 'onScalableOriginalSizeChange'
+		defaultSizeChange: 'onScalableDefaultSizeChange',
+		originalSizeChange: 'onScalableOriginalSizeChange'
 	} );
 
 	this.updateDefaultDimensions();

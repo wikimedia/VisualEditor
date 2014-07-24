@@ -10,7 +10,7 @@
  * @singleton
  * @ignore
  */
-ve.test = { 'utils': {} };
+ve.test = { utils: {} };
 
 // TODO: this is a hack to make normal heading/preformatted
 // nodes the most recently registered, instead of the MW versions
