@@ -26,14 +26,13 @@ ve.ui.Context = function VeUiContext( surface, config ) {
 	this.inspector = null;
 	this.inspectors = this.createInspectorWindowManager();
 	this.menu = new ve.ui.ContextMenuWidget( { '$': this.$ } );
-	this.afterModelChangeTimeout = null;
-	this.afterModelChangeRange = null;
-	this.afterModelChangeHandler = ve.bind( this.afterModelChange, this );
+	this.afterContextChangeTimeout = null;
+	this.afterContextChangeHandler = ve.bind( this.afterContextChange, this );
 
 	// Events
 	this.surface.getModel().connect( this, {
-		'documentUpdate': 'onModelChange',
-		'select': 'onModelChange'
+		'contextChange': 'onContextChange',
+		'select': 'onContextChange'
 	} );
 	this.inspectors.connect( this, { 'opening': 'onInspectorOpening' } );
 	this.menu.connect( this, { 'choose': 'onContextItemChoose' } );
@@ -51,33 +50,27 @@ OO.inheritClass( ve.ui.Context, OO.ui.Element );
 /* Methods */
 
 /**
- * Handle model change event.
+ * Handle context change event.
  *
  * While an inspector is opening or closing, all changes are ignored so as to prevent inspectors
  * that change the selection from within their setup or teardown processes changing context state.
  *
  * The response to selection changes is deferred to prevent teardown processes handlers that change
  * the selection from causing this function to recurse. These responses are also debounced for
- * efficiency, so that if there are three selection changes in the same tick, #afterModelChange only
+ * efficiency, so that if there are three selection changes in the same tick, #afterContextChange only
  * runs once.
  *
- * @param {ve.Range} range Range if triggered by selection change, null otherwise
- * @see #afterModelChange
+ * @see #afterContextChange
  */
-ve.ui.Context.prototype.onModelChange = function ( range ) {
+ve.ui.Context.prototype.onContextChange = function () {
 	if ( this.inspector && ( this.inspector.isOpening() || this.inspector.isClosing() ) ) {
 		// Cancel debounced change handler
-		clearTimeout( this.afterModelChangeTimeout );
-		this.afterModelChangeTimeout = null;
-		this.afterModelChangeRange = null;
+		clearTimeout( this.afterContextChangeTimeout );
+		this.afterContextChangeTimeout = null;
 	} else {
-		if ( this.afterModelChangeTimeout === null ) {
+		if ( this.afterContextChangeTimeout === null ) {
 			// Ensure change is handled on next cycle
-			this.afterModelChangeTimeout = setTimeout( this.afterModelChangeHandler );
-		}
-		if ( range instanceof ve.Range ) {
-			// Store the latest range
-			this.afterModelChangeRange = range;
+			this.afterContextChangeTimeout = setTimeout( this.afterContextChangeHandler );
 		}
 	}
 	// Purge available tools cache
@@ -85,24 +78,15 @@ ve.ui.Context.prototype.onModelChange = function ( range ) {
 };
 
 /**
- * Handle debounced model change events.
+ * Handle debounced context change events.
  */
-ve.ui.Context.prototype.afterModelChange = function () {
+ve.ui.Context.prototype.afterContextChange = function () {
 	// Reset debouncing state
-	this.afterModelChangeTimeout = null;
-	this.afterModelChangeRange = null;
+	this.afterContextChangeTimeout = null;
 
-	this.onContextChange();
-};
-
-/**
- * Handle context change events.
- */
-ve.ui.Context.prototype.onContextChange = function () {
-	var inspectable = this.isInspectable();
 	if ( this.isVisible() ) {
 		if ( this.menu.isVisible() ) {
-			if ( inspectable ) {
+			if ( this.isInspectable() ) {
 				// Change state: menu -> menu
 				this.populateMenu();
 				this.updateDimensions();
@@ -116,7 +100,7 @@ ve.ui.Context.prototype.onContextChange = function () {
 			this.inspector.close();
 		}
 	} else {
-		if ( inspectable ) {
+		if ( this.isInspectable() ) {
 			// Change state: closed -> menu
 			this.menu.toggle( true );
 			this.populateMenu();
@@ -321,7 +305,7 @@ ve.ui.Context.prototype.destroy = function () {
 	this.menu.disconnect( this );
 
 	// Stop timers
-	clearTimeout( this.afterModelChangeTimeout );
+	clearTimeout( this.afterContextChangeTimeout );
 
 	this.$element.remove();
 	this.inspectors.$element.remove();

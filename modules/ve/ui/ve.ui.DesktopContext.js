@@ -62,13 +62,14 @@ OO.inheritClass( ve.ui.DesktopContext, ve.ui.Context );
 /**
  * @inheritdoc
  */
-ve.ui.DesktopContext.prototype.onContextChange = function () {
+ve.ui.DesktopContext.prototype.afterContextChange = function () {
+	// Parent method
+	ve.ui.DesktopContext.super.prototype.afterContextChange.call( this );
+
 	// Bypass while dragging
 	if ( this.suppressed ) {
 		return;
 	}
-	// Parent method
-	ve.ui.DesktopContext.super.prototype.onContextChange.call( this );
 };
 
 /**
