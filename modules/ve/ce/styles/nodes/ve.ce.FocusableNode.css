@@ -35,8 +35,3 @@
 	background: #000;
 	background: rgba(0, 0, 0, 1);
 }
-
-.ve-ce-focusableNode::-moz-selection,
-.ve-ce-focusableNode *::-moz-selection {
-	background: transparent;
-}
