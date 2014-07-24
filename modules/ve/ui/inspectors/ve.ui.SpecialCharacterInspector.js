@@ -24,45 +24,6 @@ ve.ui.SpecialCharacterInspector = function VeUiSpecialCharacterInspector( manage
 	this.initialSelection = null;
 	this.categories = null;
 
-	// Fallback character list in case no list is found anywhere
-	this.minimalCharacterList = {
-		'accents': {
-			'à': 'à',
-			'á': 'á',
-			'â': 'â',
-			'ä': 'ä',
-			'ç': 'ç',
-			'è': 'è',
-			'é': 'é',
-			'ê': 'ê',
-			'ë': 'ë',
-			'ì': 'ì',
-			'í': 'í',
-			'î': 'î',
-			'ï': 'ï',
-			'ò': 'ò',
-			'ó': 'ó',
-			'ô': 'ô',
-			'ö': 'ö',
-			'ø': 'ø',
-			'ù': 'ù',
-			'ú': 'ú',
-			'û': 'û',
-			'ü': 'ü'
-		},
-		'symbols': {
-			'−': '−',
-			'—': '—',
-			'°': '°',
-			'″': '″',
-			'′': '′',
-			'←': '←',
-			'→': '→',
-			'·': '·',
-			'§': '§'
-		}
-	};
-
 	this.$element.addClass( 've-ui-specialCharacterInspector' );
 };
 
@@ -131,7 +92,8 @@ ve.ui.SpecialCharacterInspector.prototype.getSetupProcess = function ( data ) {
  * @returns {jQuery.Promise}
  */
 ve.ui.SpecialCharacterInspector.prototype.fetchCharList = function () {
-	var charsList, charsObj;
+	var charsList,
+		charsObj = {};
 
 	// Get the character list
 	charsList = ve.msg( 'visualeditor-specialcharinspector-characterlist-insert' );
@@ -140,8 +102,7 @@ ve.ui.SpecialCharacterInspector.prototype.fetchCharList = function () {
 	} catch ( err ) {
 		// There was no character list found, or the character list message is
 		// invalid json string. Force a fallback to the minimal character list
-		charsObj = this.minimalCharacterList;
-		ve.log( 've.ui.SpecialCharacterInspector: Could not parse the Special Character list; using default.');
+		ve.log( 've.ui.SpecialCharacterInspector: Could not parse the Special Character list.');
 		ve.log( err.message );
 	} finally {
 		this.characters = charsObj;
