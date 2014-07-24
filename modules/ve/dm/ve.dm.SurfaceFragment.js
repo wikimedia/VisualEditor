@@ -392,7 +392,7 @@ ve.dm.SurfaceFragment.prototype.expandRange = function ( scope, type ) {
 			}
 			break;
 		case 'root':
-			newRange = new ve.Range( 0, this.document.getData().length );
+			newRange = new ve.Range( 0, this.getDocument().getInternalList().getListNode().getOuterRange().start );
 			break;
 		case 'siblings':
 			// Grow range to cover all siblings
