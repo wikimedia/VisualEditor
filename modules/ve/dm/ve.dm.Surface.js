@@ -58,6 +58,7 @@ OO.mixinClass( ve.dm.Surface, OO.EventEmitter );
  * to access the selection; in most cases, you should use {ve.dm.Document#event-transact}.
  *
  * @param {ve.dm.Transaction} tx Transaction that was processed on the document
+ * @param {boolean} staged The transaction was applied in a staging state
  */
 
 /**
@@ -796,5 +797,5 @@ ve.dm.Surface.prototype.onDocumentTransact = function ( tx ) {
 	if ( this.selection ) {
 		this.setSelection( tx.translateRange( this.selection ) );
 	}
-	this.emit( 'documentUpdate', tx );
+	this.emit( 'documentUpdate', tx, this.isStaging() );
 };

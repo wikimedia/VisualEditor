@@ -1443,9 +1443,14 @@ ve.ce.Surface.prototype.onModelSelect = function ( selection ) {
 
 /**
  * Handle documentUpdate events on the surface model.
- * @param {ve.dm.Transaction} transaction Transaction that was processed
+ * @param {ve.dm.Transaction} tx
+ * @param {boolean} staged
  */
-ve.ce.Surface.prototype.onModelDocumentUpdate = function () {
+ve.ce.Surface.prototype.onModelDocumentUpdate = function ( tx, staged ) {
+	if ( staged ) {
+		// Ignore staged transactions
+		return;
+	}
 	if ( this.contentBranchNodeChanged ) {
 		// Update the selection state from model
 		this.onModelSelect( this.surface.getModel().selection );
