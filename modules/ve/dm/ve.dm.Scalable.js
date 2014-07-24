@@ -36,6 +36,7 @@ ve.dm.Scalable = function VeDmScalable( config ) {
 	// Computed properties
 	this.ratio = null;
 	this.valid = null;
+	this.defaultSize = false;
 
 	// Properties
 	this.fixedRatio = config.fixedRatio;
