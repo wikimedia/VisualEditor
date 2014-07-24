@@ -3,7 +3,8 @@
 		"authors": [
 			"Cekli829",
 			"Interfase",
-			"Jduranboger"
+			"Jduranboger",
+			"Wertuose"
 		]
 	},
 	"visualeditor": "Vizual redaktor",
@@ -45,6 +46,7 @@
 	"visualeditor-inspector-remove-tooltip": "Sil",
 	"visualeditor-languageinspector-block-tooltip": "Dil bloku",
 	"visualeditor-languageinspector-title": "Dil",
+	"visualeditor-languageinspector-widget-changelang": "Dilini tap",
 	"visualeditor-languageinspector-widget-label-direction": "İstiqamət",
 	"visualeditor-languageinspector-widget-label-langcode": "Dil kodu",
 	"visualeditor-languageinspector-widget-label-language": "Dil",
@@ -56,7 +58,7 @@
 	"visualeditor-shortcuts-formatting": "Abzasın formatlaşdırılması",
 	"visualeditor-shortcuts-history": "Tarix",
 	"visualeditor-shortcuts-other": "Digər",
-	"visualeditor-shortcuts-text-style": "Mətnin formatlaşdırılması",
+	"visualeditor-shortcuts-text-style": "Mətnin stili",
 	"visualeditor-specialcharacter-button-tooltip": "Xüsusi işarələr",
 	"visualeditor-specialcharacterinspector-title": "Xüsusi işarələr",
 	"visualeditor-toolbar-insert": "Yerləşdir",

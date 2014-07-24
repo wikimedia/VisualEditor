@@ -17,7 +17,8 @@
 			"Shirayuki",
 			"Siebrand",
 			"Trevor Parscal",
-			"Liuxinyu970226"
+			"Liuxinyu970226",
+			"Robby"
 		]
 	},
 	"visualeditor": "The name of the VisualEditor extension.\n{{Identical|VisualEditor}}",
@@ -38,7 +39,7 @@
 	"visualeditor-clipboard-paste-special": "Label for paste as plain text command",
 	"visualeditor-commentinspector-edit": "Label for the edit button in the comment inspector.",
 	"visualeditor-commentinspector-insert": "Label for the insert button in the comment inspector.",
-	"visualeditor-commentinspector-title": "Title of the comment inspector dialog.",
+	"visualeditor-commentinspector-title": "{{Identical|Comment}}",
 	"visualeditor-commentinspector-tooltip": "Tooltip text for comment button.\n{{Related|Visualeditor-annotationbutton}}",
 	"visualeditor-dialog-action-apply": "Label text for button to apply changes made in dialog.\n\nSee also:\n* {{msg-mw|Visualeditor-dialog-action-cancel}}\n* {{msg-mw|Visualeditor-dialog-action-goback}}\n{{Identical|Apply change}}",
 	"visualeditor-dialog-action-cancel": "Label text for button to exit from dialog without making changes.\n\nSee also:\n* {{msg-mw|Visualeditor-dialog-action-apply}}\n* {{msg-mw|Visualeditor-dialog-action-goback}}\n{{Identical|Cancel}}",
@@ -77,7 +78,6 @@
 	"visualeditor-languageinspector-widget-label-direction": "Label for the language inspector widget, to denote the text direction of the current element (left-to-right or right-to-left).\n{{Identical|Direction}}",
 	"visualeditor-languageinspector-widget-label-langcode": "Label for the language inspector widget, to denote the current block language code.\n{{Identical|Language code}}",
 	"visualeditor-languageinspector-widget-label-language": "Label for the language inspector widget, to denote the current block language.\n{{Identical|Language}}",
-	"visualeditor-language-search-input-placeholder": "Placeholder text for language search widget.",
 	"visualeditor-linkinspector-open": "Label for the button that opens the current link in a new window\n{{Identical|Open}}",
 	"visualeditor-linkinspector-title": "Title of the link inspector dialog.\n{{Identical|Link}}",
 	"visualeditor-listbutton-bullet-tooltip": "Tooltip text for the bullet list button",
