@@ -158,6 +158,15 @@ ve.ce.GeneratedContentNode.prototype.render = function ( generatedContents ) {
 		this.$element.remove();
 		this.$element = $newElements;
 	}
+
+	// Update focusable and resizable elements if necessary
+	if ( this.$focusable ) {
+		this.$focusable = this.getFocusableElement();
+	}
+	if ( this.$resizable ) {
+		this.$resizable = this.getResizableElement();
+	}
+
 	if ( this.live ) {
 		this.emit( 'setup' );
 		this.afterRender();
@@ -286,4 +295,22 @@ ve.ce.GeneratedContentNode.prototype.doneGenerating = function ( generatedConten
 ve.ce.GeneratedContentNode.prototype.failGenerating = function () {
 	this.$element.removeClass( 've-ce-generatedContentNode-generating' );
 	this.generatingPromise = null;
+};
+
+/**
+ * Get the focusable element
+ *
+ * @return {jQuery} Focusable element
+ */
+ve.ce.GeneratedContentNode.prototype.getFocusableElement = function () {
+	return this.$element;
+};
+
+/**
+ * Get the resizable element
+ *
+ * @return {jQuery} Resizable element
+ */
+ve.ce.GeneratedContentNode.prototype.getResizableElement = function () {
+	return this.$element;
 };

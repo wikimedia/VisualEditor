@@ -100,7 +100,7 @@ ve.ce.FocusableNode.prototype.onFocusableSetup = function () {
 		.prop( 'contentEditable', 'false' );
 
 	// Events
-	this.$element.on( {
+	this.$focusable.on( {
 		'mouseenter.ve-ce-focusableNode': ve.bind( this.onFocusableMouseEnter, this ),
 		'mousedown.ve-ce-focusableNode touchend.ve-ce-focusableNode': ve.bind( this.onFocusableMouseDown, this )
 	} );
@@ -120,7 +120,7 @@ ve.ce.FocusableNode.prototype.onFocusableTeardown = function () {
 	}
 
 	// Events
-	this.$element.off( '.ve-ce-focusableNode' );
+	this.$focusable.off( '.ve-ce-focusableNode' );
 
 	// Highlights
 	this.clearHighlights();
@@ -308,13 +308,13 @@ ve.ce.FocusableNode.prototype.setFocused = function ( value ) {
 		this.focused = value;
 		if ( this.focused ) {
 			this.emit( 'focus' );
-			this.$focusable.addClass( 've-ce-node-focused' );
+			this.$element.addClass( 've-ce-focusableNode-focused' );
 			this.createHighlights();
 			this.surface.appendHighlights( this.$highlights, this.focused );
 			this.surface.$element.off( '.ve-ce-focusableNode' );
 		} else {
 			this.emit( 'blur' );
-			this.$focusable.removeClass( 've-ce-node-focused' );
+			this.$element.removeClass( 've-ce-focusableNode-focused' );
 			this.clearHighlights();
 		}
 	}
@@ -402,7 +402,7 @@ ve.ce.FocusableNode.prototype.positionHighlights = function () {
 			rect2.bottom <= rect1.bottom;
 	}
 
-	this.$element.find( '*' ).addBack().each( function () {
+	this.$focusable.find( '*' ).addBack().each( function () {
 		var i, j, il, jl, contained, clientRects;
 
 		if ( $( this ).hasClass( 've-ce-noHighlight' ) ) {
