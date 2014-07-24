@@ -273,10 +273,12 @@
 }
 
 .ve-ui-icon-resize-nw-se {
+	/* @embed */
 	background-image: url(images/resize-nw-se.svg);
 }
 
 .ve-ui-icon-resize-ne-sw {
+	/* @embed */
 	background-image: url(images/resize-ne-sw.svg);
 }
 
