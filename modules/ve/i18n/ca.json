@@ -9,7 +9,8 @@
 			"SMP",
 			"Vriullop",
 			"Fitoschido",
-			"Toniher"
+			"Toniher",
+			"Edustus"
 		]
 	},
 	"visualeditor": "Editor visual",
@@ -26,6 +27,9 @@
 	"visualeditor-clearbutton-tooltip": "Neteja el format",
 	"visualeditor-clipboard-copy": "Copia",
 	"visualeditor-clipboard-paste": "Enganxa",
+	"visualeditor-commentinspector-insert": "Insertar un comentari",
+	"visualeditor-commentinspector-title": "Comentari",
+	"visualeditor-commentinspector-tooltip": "Comentari",
 	"visualeditor-dialog-action-apply": "Desa els canvis",
 	"visualeditor-dialog-action-cancel": "Canceŀla",
 	"visualeditor-dialog-action-done": "Fet",
@@ -60,5 +64,6 @@
 	"visualeditor-specialcharacter-button-tooltip": "Caràcter especial",
 	"visualeditor-specialcharacterinspector-title": "Caràcter especial",
 	"visualeditor-toolbar-insert": "Insereix",
+	"visualeditor-toolbar-structure": "Estructura",
 	"visualeditor-version-label": "Versió"
 }
