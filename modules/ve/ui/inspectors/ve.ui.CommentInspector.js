@@ -107,7 +107,7 @@ ve.ui.CommentInspector.prototype.getSetupProcess = function ( data ) {
 			this.whitespace = [ '', '' ];
 			if ( this.commentNode ) {
 				// Trim leading/trailing whitespace but restore it on save
-				text = this.commentNode.getAttribute( 'text' );
+				text = this.commentNode.getAttribute( 'text' ) || '';
 				this.whitespace[0] = text.match( /^\s*/ )[0];
 				text = text.substring( this.whitespace[0].length );
 				this.whitespace[1] = text.match( /\s*$/ )[0];

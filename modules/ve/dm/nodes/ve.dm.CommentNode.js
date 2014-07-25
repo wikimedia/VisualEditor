@@ -28,12 +28,15 @@ ve.dm.CommentNode.static.isContent = true;
 ve.dm.CommentNode.static.storeHtmlAttributes = false;
 
 ve.dm.CommentNode.static.toDataElement = function ( domElements, converter ) {
+	var text = domElements[0].nodeType === Node.COMMENT_NODE ?
+		domElements[0].data :
+		domElements[0].getAttribute( 'data-ve-comment' );
 	return {
 		// Only use CommentNode for comments in ContentBranchNodes; otherwise use
 		// CommentMetaItem
-		type: converter.isExpectingContent() ? 'comment' : 'commentMeta',
+		type: converter.isExpectingContent() && text !== '' ? 'comment' : 'commentMeta',
 		attributes: {
-			text: domElements[0].nodeType === Node.COMMENT_NODE ? domElements[0].data : domElements[0].getAttribute( 'data-ve-comment' )
+			text: text
 		}
 	};
 };
