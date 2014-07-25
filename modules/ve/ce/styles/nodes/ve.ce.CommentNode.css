@@ -7,11 +7,11 @@
 
 .ve-ce-commentNode {
 	display: inline-block;
-	margin: 0.15em;
+	margin: 0 0.15em;
+
 	width: 1em;
 	height: 1em;
 	background-repeat: no-repeat;
 	background-position: center center;
-	/* @embed */
-	background-image: url(../../../../ve/ui/styles/images/comment.svg);
+	opacity: 0.5;
 }
