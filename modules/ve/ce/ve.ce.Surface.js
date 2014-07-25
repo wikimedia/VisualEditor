@@ -225,7 +225,10 @@ ve.ce.Surface.static.getClipboardHash = function ( $elements ) {
 	var hash = '';
 	// Collect text contents, or just node name for content-less nodes.
 	$elements.each( function () {
-		hash += this.textContent || '<' + this.nodeName + '>';
+		// Only use node types which are know to copy (e.g. not comment nodes)
+		if ( this.nodeType === Node.TEXT_NODE || this.nodeType === Node.ELEMENT_NODE ) {
+			hash += this.textContent || '<' + this.nodeName + '>';
+		}
 	} );
 	// Whitespace may be added/removed, so strip it all
 	return hash.replace( /\s/gm, '' );
