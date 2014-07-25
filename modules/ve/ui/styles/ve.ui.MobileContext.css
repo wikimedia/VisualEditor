@@ -9,7 +9,11 @@
 /*csslint compatible-vendor-prefixes:false */
 
 .ve-ui-mobileContext {
+	position: absolute;
 	top: 3.35em;
+	left: 0;
+	/* bottom border of main toolbar */
+	margin-top: 1px;
 	background: #fff;
 	width: 100%;
 }
