@@ -271,18 +271,3 @@
 	/* @embed */
 	background-image: url(images/icons/underline-u.svg);
 }
-
-.ve-ui-icon-resize-nw-se {
-	/* @embed */
-	background-image: url(images/resize-nw-se.svg);
-}
-
-.ve-ui-icon-resize-ne-sw {
-	/* @embed */
-	background-image: url(images/resize-ne-sw.svg);
-}
-
-.oo-ui-indicator-comment {
-	/* @embed */
-	background-image: url(images/indicators/comment.svg);
-}

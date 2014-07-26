@@ -52,16 +52,16 @@ ve.ce.ResizableNode = function VeCeResizableNode( $resizable, config ) {
 	this.$resizeHandles
 		.addClass( 've-ce-resizableNode-handles' )
 		.append( this.$( '<div>' )
-			.addClass( 've-ce-resizableNode-nwHandle ve-ui-icon-resize-nw-se' )
+			.addClass( 've-ce-resizableNode-nwHandle' )
 			.data( 'handle', 'nw' ) )
 		.append( this.$( '<div>' )
-			.addClass( 've-ce-resizableNode-neHandle ve-ui-icon-resize-ne-sw' )
+			.addClass( 've-ce-resizableNode-neHandle' )
 			.data( 'handle', 'ne' ) )
 		.append( this.$( '<div>' )
-			.addClass( 've-ce-resizableNode-seHandle ve-ui-icon-resize-nw-se' )
+			.addClass( 've-ce-resizableNode-seHandle' )
 			.data( 'handle', 'se' ) )
 		.append( this.$( '<div>' )
-			.addClass( 've-ce-resizableNode-swHandle ve-ui-icon-resize-ne-sw' )
+			.addClass( 've-ce-resizableNode-swHandle' )
 			.data( 'handle', 'sw' ) );
 };
 

@@ -22,7 +22,7 @@ ve.ce.CommentNode = function VeCeCommentNode( model, config ) {
 
 	// DOM changes
 	this.$element
-		.addClass( 've-ce-commentNode oo-ui-indicator-comment' )
+		.addClass( 've-ce-commentNode' )
 		// Add em space for selection highlighting
 		.text( '\u2003' );
 
