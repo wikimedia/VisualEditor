@@ -532,7 +532,7 @@ QUnit.test( 'trimOuterSpaceFromRange', function ( assert ) {
 			{
 				msg: 'All-whitespace range is trimmed to empty range',
 				range: new ve.Range( 5, 9 ),
-				trimmed: new ve.Range( 5, 5 )
+				trimmed: new ve.Range( 5 )
 			}
 		];
 

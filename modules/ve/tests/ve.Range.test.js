@@ -25,7 +25,7 @@ QUnit.test( 'Basic usage (isCollapsed, isBackwards, getLength, equals, equalsSel
 	assert.equal( range.isBackwards(), true );
 	assert.equal( range.getLength(), 100 );
 
-	range = new ve.Range( 100, 100 );
+	range = new ve.Range( 100 );
 	assert.equal( range.isCollapsed(), true );
 	assert.equal( range.isBackwards(), false );
 	assert.equal( range.getLength(), 0 );

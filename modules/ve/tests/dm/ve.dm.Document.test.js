@@ -286,7 +286,7 @@ QUnit.test( 'cloneSliceFromRange', function ( assert ) {
 		cases = [
 			{
 				msg: 'empty range',
-				range: new ve.Range( 2, 2 ),
+				range: new ve.Range( 2 ),
 				expected: []
 			},
 			{

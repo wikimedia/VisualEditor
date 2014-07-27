@@ -54,9 +54,9 @@ QUnit.test( 'change/setSelection events', 3, function ( assert ) {
 	} );
 	surface.change( tx.clone() );
 	assert.deepEqual( events, { documentUpdate: 1, select: 0 }, 'change with transaction only' );
-	surface.setSelection( new ve.Range( 2, 2 ) );
+	surface.setSelection( new ve.Range( 2 ) );
 	assert.deepEqual( events, { documentUpdate: 1, select: 1 }, 'setSelection' );
-	surface.change( tx.clone(), new ve.Range( 3, 3 ) );
+	surface.change( tx.clone(), new ve.Range( 3 ) );
 	assert.deepEqual( events, { documentUpdate: 2, select: 2 }, 'change with transaction and selection' );
 } );
 
@@ -64,7 +64,7 @@ QUnit.test( 'breakpoint', 7, function ( assert ) {
 	var surface = new ve.dm.SurfaceStub(),
 		doc = surface.getDocument(),
 		tx = new ve.dm.Transaction.newFromInsertion( doc, 1, ['x'] ),
-		selection = new ve.Range( 1, 1 );
+		selection = new ve.Range( 1 );
 
 	assert.equal( surface.breakpoint(), false, 'Returns false if no transactions applied' );
 

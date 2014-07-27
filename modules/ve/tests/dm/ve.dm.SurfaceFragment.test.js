@@ -51,7 +51,7 @@ QUnit.test( 'update', 3, function ( assert ) {
 		'fragment range restored after undo'
 	);
 
-	fragment1 = new ve.dm.SurfaceFragment( surface, new ve.Range( 1, 1 ) );
+	fragment1 = new ve.dm.SurfaceFragment( surface, new ve.Range( 1 ) );
 	surface.breakpoint();
 
 	fragment1.insertContent( '01' );
@@ -91,12 +91,12 @@ QUnit.test( 'collapseRangeToStart/End', 6, function ( assert ) {
 		collapsedFragment = fragment.collapseRangeToStart();
 	assert.ok( fragment !== collapsedFragment, 'collapseRangeToStart produces a new fragment' );
 	assert.equalRange( fragment.getRange(), new ve.Range( 20, 21 ), 'old fragment is not changed' );
-	assert.equalRange( collapsedFragment.getRange(), new ve.Range( 20, 20 ), 'new range is used' );
+	assert.equalRange( collapsedFragment.getRange(), new ve.Range( 20 ), 'new range is used' );
 
 	collapsedFragment = fragment.collapseRangeToEnd();
 	assert.ok( fragment !== collapsedFragment, 'collapseRangeToEnd produces a new fragment' );
 	assert.equalRange( fragment.getRange(), new ve.Range( 20, 21 ), 'old fragment is not changed' );
-	assert.equalRange( collapsedFragment.getRange(), new ve.Range( 21, 21 ), 'range is at end when collapseToEnd is set' );
+	assert.equalRange( collapsedFragment.getRange(), new ve.Range( 21 ), 'range is at end when collapseToEnd is set' );
 } );
 
 QUnit.test( 'expandRange (closest)', 1, function ( assert ) {
@@ -127,7 +127,7 @@ QUnit.test( 'expandRange (word)', 1, function ( assert ) {
 		},
 		{
 			phrase: 'the quick brown fox',
-			range: new ve.Range( 7, 7 ),
+			range: new ve.Range( 7 ),
 			expected: 'quick',
 			msg: 'zero-length range'
 		}
@@ -189,7 +189,7 @@ QUnit.test( 'removeContent', 6, function ( assert ) {
 	);
 	assert.equalRange(
 		fragment.getRange(),
-		new ve.Range( 1, 1 ),
+		new ve.Range( 1 ),
 		'removing content collapses range'
 	);
 } );
