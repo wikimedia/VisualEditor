@@ -9,7 +9,8 @@
 			"Talha Samil Cakir",
 			"TurkishStyles",
 			"Meelo",
-			"Trncmvsr"
+			"Trncmvsr",
+			"Sayginer"
 		]
 	},
 	"visualeditor": "Görsel Düzenleyici",
@@ -51,6 +52,7 @@
 	"visualeditor-inspector-remove-tooltip": "Kaldır",
 	"visualeditor-languageinspector-block-tooltip": "Dil Bloğu",
 	"visualeditor-languageinspector-title": "Dil",
+	"visualeditor-languageinspector-widget-changelang": "Sayfa dilini değiştir",
 	"visualeditor-languageinspector-widget-label-direction": "Yön",
 	"visualeditor-languageinspector-widget-label-langcode": "Dil kodu",
 	"visualeditor-languageinspector-widget-label-language": "Dil",
@@ -66,5 +68,7 @@
 	"visualeditor-shortcuts-text-style": "Metin biçimlendirme",
 	"visualeditor-specialcharacter-button-tooltip": "Özel karakter",
 	"visualeditor-specialcharacterinspector-title": "Özel karakter",
+	"visualeditor-toolbar-history": "Geçmiş",
+	"visualeditor-toolbar-paragraph-format": "Biçimlendirme",
 	"visualeditor-version-label": "Sürüm"
 }
