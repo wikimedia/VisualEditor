@@ -191,6 +191,11 @@ ve.ce.ResizableNode.prototype.showHandles = function ( handles ) {
 	} else {
 		this.$resizeHandles.find( 'div' ).hide();
 		for ( i = handles.length; i >= 0; i-- ) {
+			// The following classes can be used here:
+			// ve-ce-resizableNode-nwHandle
+			// ve-ce-resizableNode-neHandle
+			// ve-ce-resizableNode-swHandle
+			// ve-ce-resizableNode-seHandle
 			this.$resizeHandles.find( '.ve-ce-resizableNode-' + handles[i] + 'Handle' ).show();
 		}
 	}
