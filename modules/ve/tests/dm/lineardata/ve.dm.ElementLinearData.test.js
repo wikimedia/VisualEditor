@@ -101,12 +101,19 @@ QUnit.test( 'getAnnotationsFromOffset', 1, function ( assert ) {
 	for ( c = 0; c < cases.length; c++ ) {
 		expectCount += cases[c].data.length;
 	}
-	QUnit.expect( expectCount );
+	QUnit.expect( expectCount + 1 );
 
 	// Run tests
 	for ( i = 0; i < cases.length; i++ ) {
 		data = ve.dm.example.preprocessAnnotations( cases[i].data );
 		doc = new ve.dm.Document( data );
+		if ( i === 0 ) {
+			assert.notEqual(
+				doc.data.getAnnotationsFromOffset( 0, cases[i].ignoreClose ).getIndexes(),
+				doc.data.getAnnotationsFromOffset( 0, cases[i].ignoreClose ).getIndexes(),
+				'annotation set indexes are not equal by reference'
+			);
+		}
 		for ( j = 0; j < doc.getData().length; j++ ) {
 			annotations = doc.data.getAnnotationsFromOffset( j, cases[i].ignoreClose );
 			assert.deepEqual( annotations,
