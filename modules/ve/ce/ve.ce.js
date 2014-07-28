@@ -60,6 +60,7 @@ ve.ce.getDomText = function ( element ) {
 				// For leaf nodes, don't return the content, but return
 				// the right amount of characters so the offsets match up
 				numChars = $element.data( 'view' ).getOuterLength();
+				// \u2603 is the snowman character: ☃
 				return new Array( numChars + 1 ).join( '\u2603' );
 			} else {
 				// Traverse its children
