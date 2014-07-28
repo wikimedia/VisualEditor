@@ -15,7 +15,7 @@
  * @param {OO.ui.WindowManager} manager Manager of window
  * @param {Object} [config] Configuration options
  */
-ve.ui.FragmentInspector = function OoUiInspector( manager, config ) {
+ve.ui.FragmentInspector = function VeUiFragmentInspector( manager, config ) {
 	// Parent constructor
 	ve.ui.FragmentInspector.super.call( this, manager, config );
 
