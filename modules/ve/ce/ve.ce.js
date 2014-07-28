@@ -32,8 +32,8 @@ ve.ce.whitespacePattern = /[\u0020\u00A0]/g;
  * Gets the plain text of a DOM element (that is a node canContainContent === true)
  *
  * In the returned string only the contents of text nodes are included, and the contents of
- * non-editable elements are excluded (but replaced with the appropriate number of characters
- * so the offsets match up with the linear model).
+ * non-editable elements are excluded (but replaced with the appropriate number of snowman
+ * characters so the offsets match up with the linear model).
  *
  * @method
  * @param {HTMLElement} element DOM element to get text of
@@ -42,15 +42,16 @@ ve.ce.whitespacePattern = /[\u0020\u00A0]/g;
 ve.ce.getDomText = function ( element ) {
 	// Inspired by jQuery.text / Sizzle.getText
 	var func = function ( element ) {
-		var nodeType = element.nodeType,
-			text = '',
-			numChars,
-			$element = $( element );
+		var viewNode,
+			nodeType = element.nodeType,
+			$element = $( element ),
+			text = '';
 
-		// Node.ELEMENT_NODE = 1
-		// Node.DOCUMENT_NODE = 9
-		// Node.DOCUMENT_FRAGMENT_NODE = 11
-		if ( nodeType === 1 || nodeType === 9 || nodeType === 11 ) {
+		if (
+			nodeType === Node.ELEMENT_NODE ||
+			nodeType === Node.DOCUMENT_NODE ||
+			nodeType === Node.DOCUMENT_FRAGMENT_NODE
+		) {
 			if ( $element.hasClass( 've-ce-branchNode-slug' ) ) {
 				// Slugs are not represented in the model at all, but they do
 				// contain a single nbsp/FEFF character in the DOM, so make sure
@@ -58,19 +59,23 @@ ve.ce.getDomText = function ( element ) {
 				return '';
 			} else if ( $element.hasClass( 've-ce-leafNode' ) ) {
 				// For leaf nodes, don't return the content, but return
-				// the right amount of characters so the offsets match up
-				numChars = $element.data( 'view' ).getOuterLength();
-				// \u2603 is the snowman character: ☃
-				return new Array( numChars + 1 ).join( '\u2603' );
+				// the right number of placeholder characters so the offsets match up.
+				viewNode = $element.data( 'view' );
+				// Only return snowmen for the first element in a sibling group: otherwise
+				// we'll double-count this node
+				if ( viewNode && element === viewNode.$element[0] ) {
+					// \u2603 is the snowman character: ☃
+					return new Array( viewNode.getOuterLength() + 1 ).join( '\u2603' );
+				}
+				// Second or subsequent sibling, don't double-count
+				return '';
 			} else {
 				// Traverse its children
 				for ( element = element.firstChild; element; element = element.nextSibling ) {
 					text += func( element );
 				}
 			}
-		// Node.TEXT_NODE = 3
-		// Node.CDATA_SECTION_NODE = 4 (historical, unused in HTML5)
-		} else if ( nodeType === 3 || nodeType === 4 ) {
+		} else if ( nodeType === Node.TEXT_NODE ) {
 			return element.data;
 		}
 		return text;
