@@ -68,10 +68,10 @@ ve.ce.TextNode.prototype.getAnnotatedHtml = function () {
 
 	if ( !significantWhitespace ) {
 		// Replace spaces with &nbsp; where needed
+		// \u00a0 == &#160; == &nbsp;
 		if ( data.length > 0 ) {
 			// Leading space
 			if ( getChar( 0, data ) === ' ' ) {
-				// \u00a0 == &#160; == &nbsp;
 				setChar( '\u00a0', 0, data );
 			}
 		}
@@ -81,20 +81,22 @@ ve.ce.TextNode.prototype.getAnnotatedHtml = function () {
 				setChar( '\u00a0', data.length - 1, data );
 			}
 		}
-	}
 
-	for ( i = 0; i < data.length; i++ ) {
-		chr = getChar( i, data );
+		for ( i = 0; i < data.length; i++ ) {
+			chr = getChar( i, data );
 
-		if ( chr === ' ' && !significantWhitespace && data.length > 2 && i !== 0 && i !== data.length - 1 ) {
 			// Replace any sequence of 2+ spaces with an alternating pattern
-			// (space-nbsp-space-nbsp-...)
-			if ( getChar( i + 1, data ) === ' ' ) {
+			// (space-nbsp-space-nbsp-...).
+			// The leading and trailing space, if present, have already been converted
+			// to nbsp, so we know that i is between 1 and data.length - 2.
+			if ( chr === ' ' && getChar( i + 1, data ) === ' ' ) {
 				setChar( '\u00a0', i + 1, data );
 			}
-		}
-		if ( !significantWhitespace && chr in whitespaceHtmlChars ) {
-			setChar( whitespaceHtmlChars[chr], i, data );
+
+			// Show meaningful whitespace characters
+			if ( chr in whitespaceHtmlChars ) {
+				setChar( whitespaceHtmlChars[chr], i, data );
+			}
 		}
 	}
 	return data;
