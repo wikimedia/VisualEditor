@@ -145,6 +145,9 @@ ve.ui.Surface.prototype.initialize = function () {
 	// Attach globalOverlay to the global <body>, not the local frame's <body>
 	$( 'body' ).append( this.globalOverlay.$element );
 
+	// The following classes can be used here:
+	// ve-ui-surface-dir-ltr
+	// ve-ui-surface-dir-rtl
 	this.$element.addClass( 've-ui-surface-dir-' + this.getDir() );
 
 	this.getView().initialize();
