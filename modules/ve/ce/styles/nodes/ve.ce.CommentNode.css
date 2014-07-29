@@ -7,8 +7,9 @@
 
 .ve-ce-commentNode {
 	display: inline-block;
-	margin: 0 0.15em;
-
+	vertical-align: middle;
+	padding: 0.2em;
+	margin: -0.25em 0.15em 0 0.15em;
 	width: 1em;
 	height: 1em;
 	background-repeat: no-repeat;
