@@ -74,7 +74,7 @@ ve.dm.LinkAnnotation.prototype.getHref = function () {
 };
 
 /**
- * @returns {Object}
+ * @inheritdoc
  */
 ve.dm.LinkAnnotation.prototype.getComparableObject = function () {
 	return {

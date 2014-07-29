@@ -28,7 +28,7 @@ ve.ce.LanguageAnnotation = function VeCeLanguageAnnotation( model, parentNode, c
 		.attr( {
 			lang: lang,
 			dir: dir,
-			title: ve.msg( 'visualeditor-languageinspector-block-tooltip' )
+			title: this.constructor.static.getDescription( this.model )
 		} );
 };
 

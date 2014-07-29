@@ -67,7 +67,6 @@
     "visualeditor-language-search-input-placeholder": "Search by language name or code",
     "visualeditor-languageannotation-description": "$1",
     "visualeditor-languageannotation-description-with-dir": "$1 ($2)",
-    "visualeditor-languageinspector-block-tooltip": "Language block",
     "visualeditor-languageinspector-title": "Language",
     "visualeditor-languageinspector-widget-changelang": "Find language",
     "visualeditor-languageinspector-widget-label-direction": "Direction",
