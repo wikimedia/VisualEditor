@@ -44,7 +44,7 @@ ve.ce.CommentNode.static.primaryCommandName = 'comment';
 /* Methods */
 
 /**
-* @inheritdoc ve.ce.Node
+* @inheritdoc
 */
 ve.ce.CommentNode.static.getDescription = function ( model ) {
 	return model.getAttribute( 'text' );
