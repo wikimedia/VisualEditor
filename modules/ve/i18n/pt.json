@@ -32,6 +32,8 @@
 	"visualeditor-clipboard-paste-special": "Inserir como texto simples",
 	"visualeditor-commentinspector-edit": "Editar comentário",
 	"visualeditor-commentinspector-insert": "Inserir comentário",
+	"visualeditor-commentinspector-title": "Comentário",
+	"visualeditor-commentinspector-tooltip": "Comentário",
 	"visualeditor-dialog-action-apply": "Aplicar alterações",
 	"visualeditor-dialog-action-cancel": "Cancelar",
 	"visualeditor-dialog-action-done": "Feito",
