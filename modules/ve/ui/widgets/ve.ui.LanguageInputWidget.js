@@ -23,7 +23,7 @@ ve.ui.LanguageInputWidget = function VeUiLanguageInputWidget( config ) {
 
 	// Properties
 	this.annotation = null;
-	this.overlay = new ve.ui.Overlay();
+	this.overlay = new ve.ui.Overlay( { classes: ['ve-ui-overlay-global'] } );
 	this.dialogs = new OO.ui.WindowManager( { factory: ve.ui.windowFactory } );
 	this.findLanguageButton = new OO.ui.ButtonWidget( {
 		$: this.$,
@@ -77,8 +77,7 @@ ve.ui.LanguageInputWidget = function VeUiLanguageInputWidget( config ) {
 	] );
 	this.overlay.$element.append( this.dialogs.$element );
 	$( 'body' ).append( this.overlay.$element );
-	// TODO: Rethink the layout, maybe integrate the change button into the language field
-	// TODO: Consider using getAutonym to display a nicer language name label somewhere
+
 	this.$element
 		.addClass( 've-ui-langInputWidget' )
 		.append(
