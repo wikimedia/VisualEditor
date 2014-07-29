@@ -184,20 +184,23 @@ ve.ce.ResizableNode.prototype.updateSizeLabel = function () {
  * @param {string[]} [handles] List of handles to show: 'nw', 'ne', 'sw', 'se'. Show all if undefined.
  */
 ve.ce.ResizableNode.prototype.showHandles = function ( handles ) {
-	var i;
+	var i, selectors;
 
 	if ( handles === undefined ) {
 		this.$resizeHandles.find( 'div' ).show();
 	} else {
 		this.$resizeHandles.find( 'div' ).hide();
-		for ( i = handles.length; i >= 0; i-- ) {
+		i = handles.length;
+		selectors = [];
+		while ( i-- ) {
 			// The following classes can be used here:
 			// ve-ce-resizableNode-nwHandle
 			// ve-ce-resizableNode-neHandle
 			// ve-ce-resizableNode-swHandle
 			// ve-ce-resizableNode-seHandle
-			this.$resizeHandles.find( '.ve-ce-resizableNode-' + handles[i] + 'Handle' ).show();
+			selectors.push( '.ve-ce-resizableNode-' + handles[i] + 'Handle' );
 		}
+		this.$resizeHandles.find( selectors.join( ',' ) ).show();
 	}
 };
 
