@@ -37,7 +37,7 @@ ve.dm.Document = function VeDmDocument( data, htmlDocument, parentDocument, inte
 		doc = parentDocument || this,
 		root = this.documentNode;
 
-	this.lang = lang;
+	this.lang = lang || 'en';
 	this.dir = dir || 'ltr';
 
 	this.documentNode.setRoot( root );
