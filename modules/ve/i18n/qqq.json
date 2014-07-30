@@ -72,7 +72,6 @@
 	"visualeditor-language-search-input-placeholder": "Placeholder text for language search widget.",
 	"visualeditor-languageannotation-description": "Description of a language annotation\n\n* $1 - Language autonym",
 	"visualeditor-languageannotation-description-with-dir": "Description of a language annotation with overridden directionality\n\n* $1 - Language autonym\n* $2 - Overridden direction (either LTR or RTL)",
-	"visualeditor-languageinspector-block-tooltip": "Tooltip text for the language annotation.",
 	"visualeditor-languageinspector-title": "Title of the language inspector dialog.\n{{Identical|Language}}",
 	"visualeditor-languageinspector-widget-changelang": "Label for the language change button in the language inspector widget.",
 	"visualeditor-languageinspector-widget-label-direction": "Label for the language inspector widget, to denote the text direction of the current element (left-to-right or right-to-left).\n{{Identical|Direction}}",
