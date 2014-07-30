@@ -321,6 +321,7 @@
 			"modules/ve/ui/widgets/ve.ui.ContextItemWidget.js",
 			"modules/ve/ui/widgets/ve.ui.DimensionsWidget.js",
 			"modules/ve/ui/widgets/ve.ui.MediaSizeWidget.js",
+			"modules/ve/ui/widgets/ve.ui.WhitespacePreservingTextInputWidget.js",
 			"modules/ve/ui/tools/ve.ui.AnnotationTool.js",
 			"modules/ve/ui/tools/ve.ui.ClearAnnotationTool.js",
 			"modules/ve/ui/tools/ve.ui.DialogTool.js",

@@ -67,14 +67,14 @@ ve.ui.CommentInspector.prototype.initialize = function () {
 	// Parent method
 	ve.ui.CommentInspector.super.prototype.initialize.call( this );
 
-	this.editWidget = new OO.ui.TextInputWidget( {
+	this.textWidget = new ve.ui.WhitespaceTextInputWidget( {
 		$: this.$,
 		multiline: true,
 		autosize: true
 	} );
 
 	this.frame.$content.addClass( 've-ui-commentInspector-content' );
-	this.form.$element.append( this.editWidget.$element );
+	this.form.$element.append( this.textWidget.$element );
 };
 
 /**
@@ -98,25 +98,15 @@ ve.ui.CommentInspector.prototype.getActionProcess = function ( action ) {
 ve.ui.CommentInspector.prototype.getSetupProcess = function ( data ) {
 	return ve.ui.CommentInspector.super.prototype.getSetupProcess.call( this, data )
 		.next( function () {
-			var text;
-
 			// Disable surface until animation is complete; will be reenabled in ready()
 			this.getFragment().getSurface().disable();
 
 			this.commentNode = this.getSelectedNode();
-			this.whitespace = [ '', '' ];
 			if ( this.commentNode ) {
-				// Trim leading/trailing whitespace but restore it on save
-				text = this.commentNode.getAttribute( 'text' ) || '';
-				this.whitespace[0] = text.match( /^\s*/ )[0];
-				text = text.substring( this.whitespace[0].length );
-				this.whitespace[1] = text.match( /\s*$/ )[0];
-				text = text.substring( 0, text.length - this.whitespace[1].length );
-
-				this.editWidget.setValue( text );
+				this.textWidget.setValueAndWhitespace( this.commentNode.getAttribute( 'text' ) || '' );
 				this.actions.setMode( 'edit' );
 			} else {
-				this.editWidget.setValue( '' );
+				this.textWidget.setWhitespace( [ ' ', ' ' ] );
 				this.actions.setMode( 'insert' );
 			}
 		}, this );
@@ -129,7 +119,7 @@ ve.ui.CommentInspector.prototype.getReadyProcess = function ( data ) {
 	return ve.ui.CommentInspector.super.prototype.getReadyProcess.call( this, data )
 		.next( function () {
 			this.getFragment().getSurface().enable();
-			this.editWidget.focus();
+			this.textWidget.focus();
 		}, this );
 };
 
@@ -141,11 +131,11 @@ ve.ui.CommentInspector.prototype.getTeardownProcess = function ( data ) {
 	return ve.ui.CommentInspector.super.prototype.getTeardownProcess.call( this, data )
 		.first( function () {
 			var surfaceModel = this.getFragment().getSurface(),
-				newValue = this.editWidget.getValue(),
-				rawNewValue = this.whitespace[0] + newValue + this.whitespace[1];
+				text = this.textWidget.getValue(),
+				innerText = this.textWidget.getInnerValue();
 
 			if ( this.commentNode ) {
-				if ( data.action === 'remove' || newValue === '' ) {
+				if ( data.action === 'remove' || innerText === '' ) {
 					// Remove comment node
 					this.fragment = this.getFragment().clone( this.commentNode.getOuterRange() );
 					this.fragment.removeContent();
@@ -155,22 +145,22 @@ ve.ui.CommentInspector.prototype.getTeardownProcess = function ( data ) {
 						ve.dm.Transaction.newFromAttributeChanges(
 							surfaceModel.getDocument(),
 							this.commentNode.getOffset(),
-							{ text: rawNewValue }
+							{ text: text }
 						)
 					);
 				}
-			} else if ( newValue !== '' ) {
+			} else if ( innerText !== '' ) {
 				// Insert new comment node
 				this.getFragment().insertContent( [
 					{
 						type: 'comment',
-						attributes: { text: rawNewValue }
+						attributes: { text: text }
 					},
 					{ type: '/comment' }
 				] );
 			}
 
-			this.editWidget.setValue( '' );
+			this.textWidget.setValueAndWhitespace( '' );
 		}, this );
 };
 
