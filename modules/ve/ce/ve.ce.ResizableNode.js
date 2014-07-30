@@ -226,15 +226,15 @@ ve.ce.ResizableNode.prototype.onResizableFocus = function () {
 
 	this.$resizeHandles
 		.find( '.ve-ce-resizableNode-neHandle' )
-			.css( { 'margin-right': -this.$resizable.width() } )
+			.css( { marginRight: -this.$resizable.width() } )
 			.end()
 		.find( '.ve-ce-resizableNode-swHandle' )
-			.css( { 'margin-bottom': -this.$resizable.height() } )
+			.css( { marginBottom: -this.$resizable.height() } )
 			.end()
 		.find( '.ve-ce-resizableNode-seHandle' )
 			.css( {
-				'margin-right': -this.$resizable.width(),
-				'margin-bottom': -this.$resizable.height()
+				marginRight: -this.$resizable.width(),
+				marginBottom: -this.$resizable.height()
 			} );
 
 	this.$resizeHandles.children()
@@ -371,15 +371,15 @@ ve.ce.ResizableNode.prototype.setResizableHandlesSizeAndPosition = function () {
 			height: 0
 		} )
 		.find( '.ve-ce-resizableNode-neHandle' )
-			.css( { 'margin-right': -width } )
+			.css( { marginRight: -width } )
 			.end()
 		.find( '.ve-ce-resizableNode-swHandle' )
-			.css( { 'margin-bottom': -height } )
+			.css( { marginBottom: -height } )
 			.end()
 		.find( '.ve-ce-resizableNode-seHandle' )
 			.css( {
-				'margin-right': -width,
-				'margin-bottom': -height
+				marginRight: -width,
+				marginBottom: -height
 			} );
 };
 
