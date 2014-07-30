@@ -223,12 +223,12 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 				fragment = surfaceModel.getFragment( this.initialSelection, false ),
 				selection = this.getFragment().getRange();
 
+			if ( this.initialSelection.isCollapsed() && !remove ) {
+				insert = true;
+			}
 			if ( remove ) {
 				clear = true;
 			} else if ( annotation ) {
-				if ( this.initialSelection.isCollapsed() ) {
-					insert = true;
-				}
 				// Check if the initial annotation has changed, or didn't cover the whole fragment
 				// to begin with
 				if (
