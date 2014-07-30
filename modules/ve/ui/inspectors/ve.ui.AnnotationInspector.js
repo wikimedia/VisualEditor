@@ -147,7 +147,7 @@ ve.ui.AnnotationInspector.prototype.getActionProcess = function ( action ) {
 ve.ui.AnnotationInspector.prototype.getSetupProcess = function ( data ) {
 	return ve.ui.AnnotationInspector.super.prototype.getSetupProcess.call( this, data )
 		.next( function () {
-			var expandedFragment, trimmedFragment, truncatedFragment, initialCoveringAnnotation,
+			var expandedFragment, trimmedFragment, initialCoveringAnnotation,
 				fragment = this.getFragment(),
 				annotation = this.getMatchingAnnotations( fragment, true ).get( 0 );
 
@@ -169,8 +169,6 @@ ve.ui.AnnotationInspector.prototype.getSetupProcess = function ( data ) {
 				}
 				if ( !fragment.getRange().isCollapsed() ) {
 					// Create annotation from selection
-					truncatedFragment = fragment.truncateRange( 255 );
-					fragment = truncatedFragment;
 					annotation = this.getAnnotationFromFragment( fragment );
 					if ( annotation ) {
 						fragment.annotateContent( 'set', annotation );
