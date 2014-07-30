@@ -273,7 +273,7 @@ ve.ce.Surface.prototype.destroy = function () {
  * @returns {Object|null} { start: { x: ..., y: ... }, end: { x: ..., y: ... } }
  */
 ve.ce.Surface.prototype.getSelectionRect = function () {
-	var sel, rect, $span, lineHeight, startRange, startOffset, endRange, endOffset, focusedOffset;
+	var sel, focusedOffset;
 
 	if ( this.focusedNode ) {
 		focusedOffset = this.focusedNode.$element.offset();
@@ -300,47 +300,15 @@ ve.ce.Surface.prototype.getSelectionRect = function () {
 		return null;
 	}
 
-	rect = sel.getBoundingDocumentRect();
-
-	// Sometimes the selection will have invalid bounding rect information, which presents as all
-	// rectangle dimensions being 0 which causes #getStartDocumentPos and #getEndDocumentPos to
-	// throw exceptions
-	if ( rect.top === 0 || rect.bottom === 0 || rect.left === 0 || rect.right === 0 ) {
-		// Calculate starting range position
-		startRange = sel.getRangeAt( 0 );
-		$span = this.$( '<span>|</span>', startRange.startContainer.ownerDocument );
-		startRange.insertNode( $span[0] );
-		startOffset = $span.offset();
-		$span.detach();
-
-		// Calculate ending range position
-		endRange = startRange.cloneRange();
-		endRange.collapse( false );
-		endRange.insertNode( $span[0] );
-		endOffset = $span.offset();
-		lineHeight = $span.height();
-		$span.detach();
-
-		// Restore the selection
-		startRange.refresh();
-
-		// Return the selection bounding rectangle
-		return {
-			start: {
-				x: startOffset.left,
-				y: startOffset.top
-			},
-			end: {
-				x: endOffset.left,
-				// Adjust the vertical position by the line-height to get the bottom dimension
-				y: endOffset.top + lineHeight
-			}
-		};
-	} else {
+	// Calling get(Start|End)DocumentPos() sometimes fails in Firefox on page load
+	// when the address bar is still focused
+	try {
 		return {
 			start: sel.getStartDocumentPos(),
 			end: sel.getEndDocumentPos()
 		};
+	} catch ( e ) {
+		return null;
 	}
 };
 
