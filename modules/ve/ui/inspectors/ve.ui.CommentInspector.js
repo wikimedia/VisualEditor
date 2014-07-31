@@ -67,7 +67,7 @@ ve.ui.CommentInspector.prototype.initialize = function () {
 	// Parent method
 	ve.ui.CommentInspector.super.prototype.initialize.call( this );
 
-	this.textWidget = new ve.ui.WhitespaceTextInputWidget( {
+	this.textWidget = new ve.ui.WhitespacePreservingTextInputWidget( {
 		$: this.$,
 		multiline: true,
 		autosize: true
