@@ -5,7 +5,8 @@
 			"Sank",
 			"Shanmugamp7",
 			"மதனாஹரன்",
-			"Kalyanasundar"
+			"Kalyanasundar",
+			"ElangoRamanujam"
 		]
 	},
 	"visualeditor-annotationbutton-bold-tooltip": "தடித்த",
@@ -13,7 +14,9 @@
 	"visualeditor-annotationbutton-language-tooltip": "மொழி",
 	"visualeditor-annotationbutton-link-tooltip": "இணைப்பு",
 	"visualeditor-clearbutton-tooltip": "வடிவமைத்தலை வெறுமையாக்கு",
+	"visualeditor-commentinspector-title": "கருத்து",
 	"visualeditor-dialog-action-cancel": "விட்டுவிடு",
+	"visualeditor-dialog-action-done": "முடிந்தது",
 	"visualeditor-dialog-action-goback": "பின் செல்",
 	"visualeditor-formatdropdown-format-heading1": "தலைப்பு 1",
 	"visualeditor-formatdropdown-format-heading2": "தலைப்பு 2",
@@ -34,7 +37,10 @@
 	"visualeditor-languageinspector-widget-changelang": "மொழியை கண்டுபிடி",
 	"visualeditor-languageinspector-widget-label-langcode": "மொழிக் குறியீடு:",
 	"visualeditor-languageinspector-widget-label-language": "மொழி",
+	"visualeditor-linkinspector-open": "திறக்கவும்",
 	"visualeditor-linkinspector-title": "இணைப்பு ,தொடுப்பு",
 	"visualeditor-listbutton-bullet-tooltip": "குண்டுக்குறிப் பட்டியல்",
-	"visualeditor-listbutton-number-tooltip": "எண்களுடன் வரிசை"
+	"visualeditor-listbutton-number-tooltip": "எண்களுடன் வரிசை",
+	"visualeditor-toolbar-history": "வரலாறு",
+	"visualeditor-toolbar-structure": "கட்டமைப்பு"
 }

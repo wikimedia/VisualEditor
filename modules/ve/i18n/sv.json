@@ -12,7 +12,8 @@
 			"Skalman",
 			"WikiPhoenix",
 			"Lokal Profil",
-			"Josve05a"
+			"Josve05a",
+			"NH"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -67,7 +68,7 @@
 	"visualeditor-languageinspector-widget-label-direction": "Riktning",
 	"visualeditor-languageinspector-widget-label-langcode": "Språkkod",
 	"visualeditor-languageinspector-widget-label-language": "Språk",
-	"visualeditor-linkinspector-open": "Öppen",
+	"visualeditor-linkinspector-open": "Öppna",
 	"visualeditor-linkinspector-title": "Länk",
 	"visualeditor-listbutton-bullet-tooltip": "Punktlista",
 	"visualeditor-listbutton-number-tooltip": "Numrerad lista",
