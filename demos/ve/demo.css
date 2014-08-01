@@ -27,12 +27,28 @@ body {
 	text-transform: capitalize;
 }
 
+.ve-demo-menu .ve-ui-languageInputWidget > .oo-ui-labeledElement > .oo-ui-labeledElement-label {
+	display: none;
+}
+
+.ve-demo-menu .ve-ui-languageInputWidget-directionSelect {
+	margin: 0;
+}
+
+.ve-demo-menu-commands > .oo-ui-widget > .oo-ui-fieldLayout {
+	display: inline-block;
+	margin: 0;
+}
+
 .ve-demo-menu-commands {
 	font-size: 0.8em;
 }
 
 .ve-demo-menu-commands > .oo-ui-widget,
+.ve-demo-menu-commands > .oo-ui-widget > .oo-ui-fieldLayout > .oo-ui-fieldLayout-field,
 .ve-demo-menu-divider {
+	width: auto;
+	float: none;
 	display: inline-block;
 	vertical-align: middle;
 	margin-right: 1em;

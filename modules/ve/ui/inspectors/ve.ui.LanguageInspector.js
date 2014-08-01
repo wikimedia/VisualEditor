@@ -39,7 +39,18 @@ ve.ui.LanguageInspector.static.modelClasses = [ ve.dm.LanguageAnnotation ];
  * @inheritdoc
  */
 ve.ui.LanguageInspector.prototype.getAnnotation = function () {
-	return this.languageInput.getAnnotation();
+	var lang = this.languageInput.getLang(),
+		dir = this.languageInput.getDir();
+	return ( lang || dir ?
+		new ve.dm.LanguageAnnotation( {
+			type: 'meta/language',
+			attributes: {
+				lang: lang,
+				dir: dir
+			}
+		} ) :
+		null
+	);
 };
 
 /**
@@ -75,7 +86,10 @@ ve.ui.LanguageInspector.prototype.initialize = function () {
 ve.ui.LanguageInspector.prototype.getSetupProcess = function ( data ) {
 	return ve.ui.LanguageInspector.super.prototype.getSetupProcess.call( this, data )
 		.next( function () {
-			this.languageInput.setAnnotation( this.initialAnnotation );
+			this.languageInput.setLangAndDir(
+				this.initialAnnotation.getAttribute( 'lang' ),
+				this.initialAnnotation.getAttribute( 'dir' )
+			);
 		}, this );
 };
 
