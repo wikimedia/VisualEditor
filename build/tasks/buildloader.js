@@ -21,7 +21,8 @@ module.exports = function ( grunt ) {
 			env = this.data.env || {},
 			placeholders = this.data.placeholders || {},
 			text = grunt.file.read( this.data.template ),
-			done = this.async();
+			done = this.async(),
+			moduleUtils = require( '../moduleUtils' );
 
 		function scriptTag( src ) {
 			return indent + '<script src="' + pathPrefix + src.file + '"></script>';
@@ -52,32 +53,6 @@ module.exports = function ( grunt ) {
 			return true;
 		}
 
-		function buildDependencyList( modules, load, list ) {
-			var i, module;
-
-			list = list || [];
-
-			for ( i = 0; i < load.length; i++ ) {
-				module = load[i];
-
-				if ( !modules.hasOwnProperty( module ) ) {
-					throw new Error( 'Dependency ' + module + ' not found' );
-				}
-
-				// Add in any dependencies
-				if ( modules[module].hasOwnProperty( 'dependencies' ) ) {
-					buildDependencyList( modules, modules[module].dependencies, list );
-				}
-
-				// Append target load module to the end of the current list
-				if ( list.indexOf( module ) === -1 ) {
-					list.push( module );
-				}
-			}
-
-			return list;
-		}
-
 		function placeholder( input, id, replacement, callback ) {
 			var output,
 				rComment = new RegExp( '<!-- ' + id + ' -->', 'm' );
@@ -92,7 +67,7 @@ module.exports = function ( grunt ) {
 			}
 		}
 
-		dependencies = buildDependencyList( modules, load );
+		dependencies = moduleUtils.buildDependencyList( modules, load );
 		for ( dependency in dependencies ) {
 			module = dependencies[dependency];
 			if ( modules[module].scripts ) {

@@ -4,14 +4,6 @@
 			"lib/jquery/jquery.js"
 		]
 	},
-	"qunit": {
-		"scripts": [
-			"lib/qunit/qunit.js"
-		],
-		"styles": [
-			{ "file": "lib/qunit/qunit.css", "test": true }
-		]
-	},
 	"jsdifflib": {
 		"scripts": [
 			"lib/jsdifflib/diffview.js",
@@ -453,7 +445,6 @@
 		],
 		"dependencies": [
 			"jsdifflib",
-			"qunit",
 			"visualEditor.desktop.standalone"
 		]
 	},

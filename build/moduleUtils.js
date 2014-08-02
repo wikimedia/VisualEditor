@@ -5,7 +5,8 @@
  */
 
 /*jshint node:true */
-module.exports = {
+
+var self = module.exports = {
 	/**
 	 * Expand an array of file paths and variant-objects into
 	 * a flattened list by variant.
@@ -70,41 +71,6 @@ module.exports = {
 	 */
 	makeBuildList: function ( modules, targets ) {
 		/**
-		* Expands an array of arrays of file paths with dependencies into an ordered
-		* lit of dependencies stemming from one or more given top-level modules.
-		*
-		* @param {Array} modules List of modules and their dependencies
-		* @param {Array} load List of targets to return and their dependencies
-		* @param {Array|null} list Extant flat list of file paths to extend
-		* @return {Array} Flat list of file paths
-		*/
-		function buildDependencyList( modules, load, list ) {
-			var i, module;
-
-			list = list || [];
-
-			for ( i = 0; i < load.length; i++ ) {
-				module = load[i];
-
-				if ( !modules.hasOwnProperty( module ) ) {
-					throw new Error( 'Dependency ' + module + ' not found' );
-				}
-
-				// Add in any dependencies
-				if ( modules[module].hasOwnProperty( 'dependencies' ) ) {
-					buildDependencyList( modules, modules[module].dependencies, list );
-				}
-
-				// Append target load module to the end of the current list
-				if ( list.indexOf( module ) === -1 ) {
-					list.push( module );
-				}
-			}
-
-			return list;
-		}
-
-		/**
 		* Given a list of modules and targets, returns an object splitting the scripts
 		* and styles.
 		*
@@ -140,6 +106,41 @@ module.exports = {
 			return filelist;
 		}
 
-		return expandBuildList( modules, buildDependencyList( modules, targets ) );
+		return expandBuildList( modules, self.buildDependencyList( modules, targets ) );
+	},
+
+	/**
+	 * Expands an array of arrays of file paths with dependencies into an ordered
+	 * lit of dependencies stemming from one or more given top-level modules.
+	 *
+	 * @param {Array} modules List of modules and their dependencies
+	 * @param {Array} load List of targets to return and their dependencies
+	 * @param {Array|null} list Extant flat list of file paths to extend
+	 * @return {Array} Flat list of file paths
+	 */
+	buildDependencyList: function ( modules, load, list ) {
+		var i, module;
+
+		list = list || [];
+
+		for ( i = 0; i < load.length; i++ ) {
+			module = load[i];
+
+			if ( !modules.hasOwnProperty( module ) ) {
+				throw new Error( 'Dependency ' + module + ' not found' );
+			}
+
+			// Add in any dependencies
+			if ( modules[module].hasOwnProperty( 'dependencies' ) ) {
+				self.buildDependencyList( modules, modules[module].dependencies, list );
+			}
+
+			// Append target load module to the end of the current list
+			if ( list.indexOf( module ) === -1 ) {
+				list.push( module );
+			}
+		}
+
+		return list;
 	}
 };

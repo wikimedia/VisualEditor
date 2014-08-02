@@ -10,16 +10,20 @@ module.exports = function ( grunt ) {
 	grunt.loadNpmTasks( 'grunt-contrib-clean' );
 	grunt.loadNpmTasks( 'grunt-contrib-csslint' );
 	grunt.loadNpmTasks( 'grunt-contrib-jshint' );
-	grunt.loadNpmTasks( 'grunt-contrib-qunit' );
 	grunt.loadNpmTasks( 'grunt-contrib-watch' );
 	grunt.loadNpmTasks( 'grunt-cssjanus' );
 	grunt.loadNpmTasks( 'grunt-jscs' );
+	grunt.loadNpmTasks( 'grunt-karma' );
 	grunt.loadTasks( 'build/tasks' );
+
+	// We want to use `grunt watch` to start this and karma watch together.
+	grunt.renameTask( 'watch', 'runwatch' );
 
 	var modules = grunt.file.readJSON( 'build/modules.json' ),
 		moduleUtils = require( './build/moduleUtils' ),
 		introBuildFiles = moduleUtils.makeBuildList( modules, [ 'visualEditor.buildfiles.intro' ] ),
-		coreBuildFiles = moduleUtils.makeBuildList( modules, [ 'visualEditor.build' ] );
+		coreBuildFiles = moduleUtils.makeBuildList( modules, [ 'visualEditor.build' ] ),
+		testFiles = moduleUtils.makeBuildList( modules, [ 'visualEditor.test' ] ).scripts;
 
 	function demoMenu( callback ) {
 		var pages = {},
@@ -37,7 +41,7 @@ module.exports = function ( grunt ) {
 	grunt.initConfig( {
 		pkg: grunt.file.readJSON( 'package.json' ),
 		clean: {
-			dist: [ 'dist/*/', 'dist/*.*' ]
+			dist: [ 'dist/*', 'test-coverage/*' ]
 		},
 		concat: {
 			buildJs: {
@@ -119,17 +123,6 @@ module.exports = function ( grunt ) {
 				pathPrefix: '../../',
 				indent: '\t\t',
 				placeholders: { menu: demoMenu }
-			},
-			test: {
-				targetFile: 'modules/ve/tests/index.html',
-				template: 'modules/ve/tests/index.html.template',
-				modules: modules,
-				env: {
-					test: true
-				},
-				load: [ 'visualEditor.test' ],
-				pathPrefix: '../../../',
-				indent: '\t\t'
 			}
 		},
 		jshint: {
@@ -156,25 +149,82 @@ module.exports = function ( grunt ) {
 		banana: {
 			all: 'modules/ve/i18n/'
 		},
-		qunit: {
-			unicodejs: 'modules/unicodejs/index.html',
-			ve: 'modules/ve/tests/index.html'
+		karma: {
+			options: {
+				frameworks: [ 'qunit' ],
+				reporters: [ 'dots' ],
+				singleRun: true,
+				autoWatch: false
+			},
+			// FIXME: OMG ARGH DIE DIE DIE PLEASE MOVE TO A DIFFERENT REPO
+			unicodejs: {
+				browsers: [ 'PhantomJS' ],
+				options: {
+					files: [
+						'lib/jquery/jquery.js',
+						'modules/unicodejs/unicodejs.js',
+						'modules/unicodejs/unicodejs.textstring.js',
+						'modules/unicodejs/unicodejs.graphemebreakproperties.js',
+						'modules/unicodejs/unicodejs.graphemebreak.js',
+						'modules/unicodejs/unicodejs.wordbreakproperties.js',
+						'modules/unicodejs/unicodejs.wordbreak.js',
+						'modules/unicodejs/tests/unicodejs.test.js',
+						'modules/unicodejs/tests/unicodejs.graphemebreak.test.js',
+						'modules/unicodejs/tests/unicodejs.wordbreak.test.js'
+					]
+				},
+				preprocessors: {
+					'modules/unicodejs/*.js': [ 'coverage' ]
+				},
+				reporters: [ 'dots', 'coverage' ],
+				coverageReporter: { reporters: [
+					{ type: 'html', dir: 'test-coverage/unicodejs' },
+					{ type: 'text-summary', dir: 'test-coverage/unicodejs' }
+				] }
+			},
+			visualeditor: {
+				browsers: [ 'PhantomJS' ],
+				options: {
+					files: testFiles
+				},
+				preprocessors: {
+					'modules/ve/**/*.js': [ 'coverage' ]
+				},
+				reporters: [ 'dots', 'coverage' ],
+				coverageReporter: { reporters: [
+					{ type: 'html', dir: 'test-coverage/visualeditor' },
+					{ type: 'text-summary', dir: 'test-coverage/visualeditor' }
+				] }
+			},
+			local: {
+				options: {
+					files: testFiles
+				},
+				browsers: [ 'Firefox', 'Chrome' ]
+			},
+			bg: {
+				options: {
+					files: testFiles
+				},
+				browsers: [ 'PhantomJS', 'Firefox', 'Chrome' ],
+				singleRun: false,
+				background: true
+			}
 		},
-		watch: {
+		runwatch: {
 			files: [
 				'.{csslintrc,jscsrc,jshintignore,jshintrc}',
 				'<%= jshint.all %>',
-				'<%= csslint.all %>',
-				'<%= qunit.ve %>',
-				'<%= qunit.unicodejs %>'
+				'<%= csslint.all %>'
 			],
-			tasks: 'test'
+			tasks: [ 'test', 'karma:bg:run' ]
 		}
 	} );
 
 	grunt.registerTask( 'lint', [ 'jshint', 'jscs', 'csslint', 'banana' ] );
-	grunt.registerTask( 'unit', 'qunit' );
+	grunt.registerTask( 'unit', [ 'karma:unicodejs', 'karma:visualeditor' ] );
 	grunt.registerTask( 'build', [ 'clean', 'git-build', 'concat', 'cssjanus', 'copy', 'buildloader' ] );
-	grunt.registerTask( 'test', [ 'build', 'lint', 'unit' ] );
+	grunt.registerTask( 'test', [ 'build', 'lint', 'karma:unicodejs', 'karma:visualeditor' ] );
+	grunt.registerTask( 'watch', [ 'karma:bg:start', 'runwatch' ] );
 	grunt.registerTask( 'default', 'test' );
 };

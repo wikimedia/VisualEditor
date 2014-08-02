@@ -8,9 +8,6 @@
 /*global difflib,diffview */
 
 ( function ( QUnit ) {
-
-	QUnit.config.requireExpects = true;
-
 	/**
 	 * Plugin for QUnit.
 	 *
