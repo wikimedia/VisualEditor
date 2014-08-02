@@ -167,7 +167,7 @@ ve.dm.example.createDomElement = function ( type, attributes ) {
 
 ve.dm.example.testDir = window.VE_TESTDIR || '.';
 
-ve.dm.example.imgSrc = ve.dm.example.testDir + '/example.png';
+ve.dm.example.imgSrc = '//upload.wikimedia.org/wikipedia/commons/b/b3/Wikipedia-logo-v2-en.svg';
 
 ve.dm.example.base = 'http://example.org';
 

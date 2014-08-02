@@ -1366,7 +1366,7 @@ QUnit.test( 'sanitize', function ( assert ) {
 				msg: 'HTML attributes removed'
 			},
 			{
-				html: '<p>B<span rel="ve:Alien">a</span>r<img src="Image.jpg"/></p>',
+				html: '<p>B<span rel="ve:Alien">a</span>r<img src="//upload.wikimedia.org/wikipedia/commons/b/b3/Wikipedia-logo-v2-en.svg"/></p>',
 				data: [
 					{ type: 'paragraph' },
 					'B', 'r',
