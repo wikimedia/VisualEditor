@@ -21,6 +21,11 @@
 	border-radius: 0 0 0.25em 0.25em;
 }
 
+.ve-demo-read {
+	border: 1px solid #ccc;
+	box-shadow: 0 0.25em 1.5em 0 #ddd;
+}
+
 /* Editor */
 
 .ve-ui-surface {
