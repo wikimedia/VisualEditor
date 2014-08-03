@@ -22,6 +22,8 @@ ve.dm.NodeFactoryNodeStub.static.isContent = true;
 
 ve.dm.NodeFactoryNodeStub.static.matchTagNames = [];
 
+ve.dm.NodeFactoryNodeStub.static.blacklistedAnnotationTypes = [ 'link', 'textStyle/italic' ];
+
 /* Tests */
 
 QUnit.test( 'getChildNodeTypes', 2, function ( assert ) {
@@ -75,6 +77,33 @@ QUnit.test( 'canNodeHaveChildren', 2, function ( assert ) {
 	);
 } );
 
+QUnit.test( 'canNodeTakeAnnotationType', 4, function ( assert ) {
+	var factory = new ve.dm.NodeFactory();
+	assert.throws(
+		function () {
+			factory.canNodeTakeAnnotationType( 'node-factory-node-stub', 23, { bar: 'baz' } );
+		},
+		Error,
+		'throws an exception when checking if a node of an unregistered type can have children'
+	);
+	factory.register( ve.dm.NodeFactoryNodeStub );
+	assert.strictEqual(
+		factory.canNodeTakeAnnotationType( 'node-factory-node-stub', new ve.dm.LinkAnnotation() ),
+		false,
+		'can\'t take link annotation'
+	);
+	assert.strictEqual(
+		factory.canNodeTakeAnnotationType( 'node-factory-node-stub', new ve.dm.ItalicAnnotation() ),
+		false,
+		'can\'t take italic annotation'
+	);
+	assert.strictEqual(
+		factory.canNodeTakeAnnotationType( 'node-factory-node-stub', new ve.dm.BoldAnnotation() ),
+		true,
+		'can take bold annotation'
+	);
+} );
+
 QUnit.test( 'canNodeHaveChildrenNotContent', 2, function ( assert ) {
 	var factory = new ve.dm.NodeFactory();
 	assert.throws(
@@ -95,3 +124,13 @@ QUnit.test( 'canNodeHaveChildrenNotContent', 2, function ( assert ) {
 QUnit.test( 'initialization', 1, function ( assert ) {
 	assert.ok( ve.dm.nodeFactory instanceof ve.dm.NodeFactory, 'factory is initialized at ve.dm.nodeFactory' );
 } );
+
+// TODO: getDataElement
+// TODO: getSuggestedParentNodeTypes
+// TODO: isNodeWrapped
+// TODO: canNodeContainContent
+// TODO: canNodeTakeAnnotationType
+// TODO: isNodeContent
+// TODO: doesNodeHaveSignificantWhitespace
+// TODO: doesNodeHandleOwnChildren
+// TODO: isNodeInternal

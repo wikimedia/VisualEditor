@@ -171,7 +171,7 @@ ve.dm.NodeFactory.prototype.canNodeTakeAnnotationType = function ( type, annotat
 		blacklist = this.registry[type].static.blacklistedAnnotationTypes;
 
 	for ( i = 0, len = blacklist.length; i < len; i++ ) {
-		if ( annotation instanceof ve.dm.annotationFactory.create( blacklist[i] ).constructor ) {
+		if ( annotation instanceof ve.dm.annotationFactory.lookup( blacklist[i] ) ) {
 			return false;
 		}
 	}
