@@ -2244,3 +2244,62 @@ QUnit.test( 'newFromMetadataElementReplacement', function ( assert ) {
 	QUnit.expect( ve.getObjectKeys( cases ).length );
 	runConstructorTests( assert, ve.dm.Transaction.newFromMetadataElementReplacement, cases );
 } );
+
+QUnit.test( 'isNoOp', function ( assert ) {
+	QUnit.expect( 3 * 8 - 2 );
+	var doc = ve.dm.example.createExampleDocument(),
+		metaDoc = ve.dm.example.createExampleDocument( 'withMeta' ),
+		listMetaDoc = ve.dm.example.createExampleDocument( 'listWithMeta' ),
+		tx;
+	[ doc, metaDoc, listMetaDoc ].forEach( function ( d, i ) {
+		var isDoc = ( i === 0 ),
+			isListMetaDoc = ( i === 2 );
+
+		tx = ve.dm.Transaction.newFromReplacement(
+			d, new ve.Range( 1 ), [], false
+		);
+		assert.equal( tx.isNoOp(), true );
+
+		tx = ve.dm.Transaction.newFromInsertion(
+			d, 1, []
+		);
+		assert.equal( tx.isNoOp(), true );
+
+		tx = ve.dm.Transaction.newFromRemoval(
+			d, new ve.Range(1), false
+		);
+		assert.equal( tx.isNoOp(), true );
+
+		if ( !isListMetaDoc ) {
+			tx = ve.dm.Transaction.newFromDocumentInsertion(
+				d, 1,
+				ve.dm.example.createExampleDocument(), new ve.Range( 0 )
+			);
+			assert.equal( tx.isNoOp(), true );
+		}
+
+		tx = ve.dm.Transaction.newFromAttributeChanges(
+			d, isListMetaDoc ? 1 : 0, {}
+		);
+		assert.equal( tx.isNoOp(), true );
+
+		tx = ve.dm.Transaction.newFromAnnotation(
+			d, new ve.Range( 1 ), 'set', new ve.dm.ItalicAnnotation()
+		);
+		assert.equal( tx.isNoOp(), true );
+
+		tx = ve.dm.Transaction.newFromMetadataInsertion(
+			d, 1, 0, []
+		);
+		assert.equal( tx.isNoOp(), true );
+
+		if ( !isDoc ) {
+			tx = ve.dm.Transaction.newFromMetadataRemoval(
+				d, 0, new ve.Range( 1 )
+			);
+			assert.equal( tx.isNoOp(), true );
+		}
+
+		// metadata replacement never creates no-op
+	} );
+} );
