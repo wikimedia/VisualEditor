@@ -87,7 +87,7 @@ ve.ui.MobileContext.prototype.getAvailableTools = function () {
 		return (
 			tool.model instanceof ve.dm.MWInternalLinkAnnotation ||
 			tool.model instanceof ve.dm.MWExternalLinkAnnotation ||
-			tool.model instanceof ve.dm.MWReferenceNode
+			( tool.model instanceof ve.dm.MWReferenceNode && tool.tool !== ve.ui.MWReferenceDialogTool )
 		);
 	} );
 
