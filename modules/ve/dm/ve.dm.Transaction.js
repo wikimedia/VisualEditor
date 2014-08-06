@@ -394,6 +394,10 @@ ve.dm.Transaction.newFromMetadataInsertion = function ( doc, offset, index, newE
 		data = doc.metadata,
 		elements = data.getData( offset ) || [];
 
+	if ( newElements.length === 0 ) {
+		return tx; // no-op
+	}
+
 	// Retain up to element
 	tx.pushRetain( offset );
 	// Retain up to metadata element (second dimension)
@@ -436,6 +440,10 @@ ve.dm.Transaction.newFromMetadataRemoval = function ( doc, offset, range ) {
 	}
 
 	selection = elements.slice( range.start, range.end );
+
+	if ( selection.length === 0 ) {
+		return tx; // no-op.
+	}
 
 	// Retain up to element
 	tx.pushRetain( offset );
@@ -767,10 +775,16 @@ ve.dm.Transaction.prototype.reversed = function () {
  * @returns {boolean} Transaction is no-op
  */
 ve.dm.Transaction.prototype.isNoOp = function () {
-	return (
-		this.operations.length === 0 ||
-		( this.operations.length === 1 && this.operations[0].type === 'retain' )
-	);
+	if ( this.operations.length === 0 ) {
+		return true;
+	} else if ( this.operations.length === 1 ) {
+		return this.operations[0].type === 'retain';
+	} else if ( this.operations.length === 2 ) {
+		return this.operations[0].type === 'retain' &&
+			this.operations[1].type === 'retainMetadata';
+	} else {
+		return false;
+	}
 };
 
 /**
