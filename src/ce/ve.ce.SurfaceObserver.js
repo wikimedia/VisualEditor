@@ -116,7 +116,10 @@ ve.ce.SurfaceObserver.prototype.timerLoop = function ( firstTime ) {
 	}
 	// only reach this point if pollOnce does not throw an exception
 	if ( this.frequency !== null ) {
-		this.timeoutId = setTimeout( ve.bind( this.timerLoop, this ), this.frequency );
+		this.timeoutId = this.setTimeout(
+			ve.bind( this.timerLoop, this ),
+			this.frequency
+		);
 	}
 };
 
@@ -207,7 +210,7 @@ ve.ce.SurfaceObserver.prototype.pollOnceInternal = function ( emitChanges ) {
 				.removeClass( 've-ce-branchNode-blockSlugWrapper-focused' );
 			this.$slugWrapper = null;
 			// Emit 'position' on the surface view after the animation completes
-			setTimeout( function () {
+			this.setTimeout( function () {
 				if ( observer.documentView ) {
 					observer.documentView.documentNode.surface.emit( 'position' );
 				}
@@ -264,4 +267,14 @@ ve.ce.SurfaceObserver.prototype.pollOnceInternal = function ( emitChanges ) {
 		}
 		this.range = range;
 	}
+};
+
+/**
+ * Wrapper for setTimeout, for ease of debugging
+ *
+ * @param {Function} callback Callback
+ * @param {number} timeout Timeout ms
+ */
+ve.ce.SurfaceObserver.prototype.setTimeout = function ( callback, timeout ) {
+	return setTimeout( callback, timeout );
 };

@@ -251,7 +251,7 @@ ve.EventSequencer.prototype.onEvent = function ( eventName, ev ) {
 	// Length cache 'len' is required, as an onListener could add another onListener
 	for ( i = 0, len = onListeners.length; i < len; i++ ) {
 		onListener = onListeners[i];
-		onListener( ev );
+		this.callListener( 'on', eventName, i, onListener, ev );
 	}
 	// Queue a call to afterEvent only if there are some
 	// afterListeners/afterOneListeners/afterLoopListeners
@@ -295,11 +295,11 @@ ve.EventSequencer.prototype.afterEvent = function ( eventName, ev ) {
 	( this.afterOneListenersForEvent[eventName] || [] ).length = 0;
 
 	for ( i = 0, len = afterListeners.length; i < len; i++ ) {
-		afterListeners[i]( ev );
+		this.callListener( 'after', eventName, i, afterListeners[i], ev );
 	}
 
 	for ( i = 0, len = afterOneListeners.length; i < len; i++ ) {
-		afterOneListeners[i]( ev );
+		this.callListener( 'afterOne', eventName, i, afterOneListeners[i], ev );
 	}
 };
 
@@ -312,7 +312,7 @@ ve.EventSequencer.prototype.doOnLoop = function () {
 	var i, len;
 	// Length cache 'len' is required, as the functions called may add another listener
 	for ( i = 0, len = this.onLoopListeners.length; i < len; i++ ) {
-		this.onLoopListeners[i]();
+		this.callListener( 'onLoop', null, i, this.onLoopListeners[i], null );
 	}
 };
 
@@ -338,11 +338,11 @@ ve.EventSequencer.prototype.doAfterLoop = function ( myTimeoutId ) {
 	this.afterLoopOneListeners.length = 0;
 
 	for ( i = 0, len = this.afterLoopListeners.length; i < len; i++ ) {
-		this.afterLoopListeners[i]();
+		this.callListener( 'afterLoop', null, i, this.afterLoopListeners[i], null );
 	}
 
 	for ( i = 0, len = this.afterLoopOneListeners.length; i < len; i++ ) {
-		this.afterLoopOneListeners[i]();
+		this.callListener( 'afterLoopOne', null, i, this.afterLoopOneListeners[i], null );
 	}
 };
 
@@ -410,4 +410,16 @@ ve.EventSequencer.prototype.postpone = function ( callback ) {
  */
 ve.EventSequencer.prototype.cancelPostponed = function ( timeoutId ) {
 	clearTimeout( timeoutId );
+};
+
+/*
+ * Single method to perform all listener calls, for ease of debugging
+ * @param {string} timing on|after|afterOne|onLoop|afterLoop|afterLoopOne
+ * @param {string} eventName Name of the event
+ * @param {number} i The sequence of the listener
+ * @param {Function} listener The listener to call
+ * @param {jQuery.Event} ev The browser event
+ */
+ve.EventSequencer.prototype.callListener = function ( timing, eventName, i, listener, ev ) {
+	listener( ev );
 };

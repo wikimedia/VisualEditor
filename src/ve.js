@@ -326,6 +326,17 @@
 	};
 
 	/**
+	 * Log error to the console.
+	 *
+	 * This implementation does nothing, to add a real implmementation ve.debug needs to be loaded.
+	 *
+	 * @param {Mixed...} [args] Data to log
+	 */
+	ve.error = function () {
+		// don't do anything, this is just a stub
+	};
+
+	/**
 	 * Log an object to the console.
 	 *
 	 * This implementation does nothing, to add a real implmementation ve.debug needs to be loaded.

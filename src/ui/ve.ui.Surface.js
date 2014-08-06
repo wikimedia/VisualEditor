@@ -4,6 +4,7 @@
  * @copyright 2011-2014 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
+/*global rangy */
 
 /**
  * A surface is a top-level object which contains both a surface model and a surface view.
@@ -48,6 +49,7 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 	this.pasteRules = {};
 	this.enabled = true;
 	this.context = this.createContext();
+	this.filibuster = null;
 
 	// Events
 	this.dialogs.connect( this, { closing: 'onDialogClosing' } );
@@ -392,4 +394,57 @@ ve.ui.Surface.prototype.setPasteRules = function ( pasteRules ) {
  */
 ve.ui.Surface.prototype.getDir = function () {
 	return this.$element.css( 'direction' );
+};
+
+ve.ui.Surface.prototype.initFilibuster = function () {
+	var uiSurface = this;
+	this.filibuster = new ve.Filibuster()
+		.wrapClass( ve.EventSequencer )
+		.wrapNamespace( ve.dm, 've.dm' )
+		.wrapNamespace( ve.ce, 've.ce' )
+		.wrapNamespace( ve.ui, 've.ui', [
+			// blacklist
+			ve.ui.Surface.prototype.startFilibuster,
+			ve.ui.Surface.prototype.stopFilibuster
+		] )
+		.setObserver( 'dm doc', function () {
+			return JSON.stringify( uiSurface.model.documentModel.data.data );
+		} )
+		.setObserver( 'dm range', function () {
+			var selection = uiSurface.model.selection;
+			if ( !selection ) {
+				return null;
+			}
+			return [ selection.from, selection.to ].join( ',' );
+		} )
+		.setObserver( 'DOM doc', function () {
+			return uiSurface.view.$element.html();
+		} )
+		.setObserver( 'DOM selection', function () {
+			var range, sel;
+			sel = rangy.getSelection( uiSurface.view.getElementDocument() );
+			if ( sel.rangeCount === 0 ) {
+				return null;
+			}
+			range = sel.getRangeAt( 0 );
+			return JSON.stringify( {
+				startContainer: range.startContainer.outerHTML,
+				startOffset: range.startOffset,
+				endContainer: range.endContainer.outerHTML,
+				endOffset: range.endOffset
+			} );
+		} );
+};
+
+ve.ui.Surface.prototype.startFilibuster = function () {
+	if ( !this.filibuster ) {
+		this.initFilibuster();
+	} else {
+		this.filibuster.clearLogs();
+	}
+	this.filibuster.start();
+};
+
+ve.ui.Surface.prototype.stopFilibuster = function () {
+	this.filibuster.stop();
 };

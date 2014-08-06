@@ -4,7 +4,7 @@
 		"groups": [
 			{
 				"name": "Utilities",
-				"classes": ["ve", "ve.Range", "ve.EventSequencer"]
+				"classes": ["ve", "ve.Range", "ve.EventSequencer", "ve.Filibuster"]
 			},
 			{
 				"name": "Nodes",
