@@ -1144,7 +1144,8 @@ ve.dm.Transaction.prototype.pushReplace = function ( doc, offset, removeLength, 
 		// ve.compare compares arrays as objects, so no need to check against
 		// an array of the same length for emptiness.
 		isRemoveEmpty = ve.compare( removeMetadata, [] ),
-		isInsertEmpty = insertMetadata && ve.compare( insertMetadata, [] );
+		isInsertEmpty = insertMetadata && ve.compare( insertMetadata, [] ),
+		mergedMetadata = [];
 
 	if ( !insertMetadata && !isRemoveEmpty ) {
 		// if we are removing a range which includes metadata, we need to
@@ -1159,6 +1160,7 @@ ve.dm.Transaction.prototype.pushReplace = function ( doc, offset, removeLength, 
 			// pad out at end so insert metadata is the same length as insert data
 			ve.batchSplice( insertMetadata, 1, 0, new Array( insert.length - 1 ) );
 		}
+		isInsertEmpty = ve.compare( insertMetadata, new Array( insertMetadata.length ) );
 	} else if ( isInsertEmpty && isRemoveEmpty ) {
 		// No metadata changes, don't pollute the transaction with [undefined, undefined, ...]
 		insertMetadata = undefined;
@@ -1167,20 +1169,27 @@ ve.dm.Transaction.prototype.pushReplace = function ( doc, offset, removeLength, 
 	// simple replaces can be combined
 	// (but don't do this if there is metadata to be removed and the previous
 	// replace had a non-zero insertion, because that would shift the metadata
-	// location.)
+	// location.  also skip this if the last replace deliberately removed
+	// metadata instead of merging it.)
 	if (
 		lastOp && lastOp.type === 'replaceMetadata' &&
 		lastOp.insert.length > 0 && lastOp.remove.length === 0 &&
 		penultOp && penultOp.type === 'replace' &&
 		penultOp.insert.length === 0 /* this is always true */
 	) {
+		mergedMetadata = [lastOp.insert];
 		this.operations.pop();
 		lastOp = penultOp;
 		/* fall through */
 	}
+	// merge, where extraMetadata will not be required
 	if (
 		lastOp && lastOp.type === 'replace' &&
-		!( lastOp.insert.length > 0 && insertMetadata !== undefined )
+		!( lastOp.insert.length > 0 && insertMetadata !== undefined ) &&
+		lastOp.insertedDataOffset === undefined && !extraMetadata &&
+		// don't merge if we mergedMetadata and had to insert non-empty
+		// metadata as a result
+		!( mergedMetadata.length > 0 && insertMetadata !== undefined && !isInsertEmpty )
 	) {
 		lastOp = this.operations.pop();
 		this.lengthDifference -= lastOp.insert.length - lastOp.remove.length;
@@ -1188,7 +1197,35 @@ ve.dm.Transaction.prototype.pushReplace = function ( doc, offset, removeLength, 
 			doc,
 			offset - lastOp.remove.length,
 			lastOp.remove.length + removeLength,
-			lastOp.insert.concat( insert )
+			lastOp.insert.concat( insert ),
+			(
+				lastOp.insertMetadata || new Array( lastOp.insert.length )
+			).concat(
+				mergedMetadata
+			).concat(
+				( insertMetadata === undefined || isInsertEmpty ) ?
+				new Array( insert.length - mergedMetadata.length ) :
+				insertMetadata
+			),
+			insertedDataOffset,
+			insertedDataLength
+		);
+		return;
+	}
+	// merge a "remove after remove" (where extraMetadata will be required)
+	if (
+		lastOp && lastOp.type === 'replace' &&
+		lastOp.insert.length === 0 && insert.length === 0 &&
+		( lastOp.removeMetadata === undefined || mergedMetadata.length > 0 ) &&
+		( insertMetadata === undefined || extraMetadata )
+	) {
+		lastOp = this.operations.pop();
+		this.lengthDifference -= lastOp.insert.length - lastOp.remove.length;
+		this.pushReplace(
+			doc,
+			offset - lastOp.remove.length,
+			lastOp.remove.length + removeLength,
+			[]
 		);
 		return;
 	}
