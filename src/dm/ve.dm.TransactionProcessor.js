@@ -127,7 +127,9 @@ ve.dm.TransactionProcessor.prototype.applyAnnotations = function ( to ) {
 		}
 	}
 
-	var isElement, annotations, i, j, jlen, range, selection;
+	var isElement, annotations, i, iLen, j, jlen, range, selection,
+		dataQueue = [],
+		metadataQueue = [];
 	if ( this.set.isEmpty() && this.clear.isEmpty() ) {
 		return;
 	}
@@ -146,14 +148,21 @@ ve.dm.TransactionProcessor.prototype.applyAnnotations = function ( to ) {
 		annotations = this.document.data.getAnnotationsFromOffset( i );
 		setAndClear( annotations, this.set, this.clear );
 		// Store annotation indexes in linear model
-		this.document.data.setAnnotationsAtOffset( i, annotations );
+		dataQueue.push( {
+			offset: i,
+			annotations: annotations
+		} );
 	}
 	// Set/clear annotations on metadata, but not on the edges of the range
 	for ( i = this.cursor + 1; i < to; i++ ) {
 		for ( j = 0, jlen = this.document.metadata.getDataLength( i ); j < jlen; j++ ) {
 			annotations = this.document.metadata.getAnnotationsFromOffsetAndIndex( i, j );
 			setAndClear( annotations, this.set, this.clear );
-			this.document.metadata.setAnnotationsAtOffsetAndIndex( i, j, annotations );
+			metadataQueue.push( {
+				offset: i,
+				index: j,
+				annotations: annotations
+			} );
 		}
 	}
 	// Notify the synchronizer
@@ -167,6 +176,21 @@ ve.dm.TransactionProcessor.prototype.applyAnnotations = function ( to ) {
 			'leaves'
 		);
 		this.synchronizer.pushAnnotation( new ve.Range( this.cursor, to ) );
+	}
+	// Ensure document modification happens last so that exceptions
+	// don't leave the operation partially applied
+	for ( i = 0, iLen = dataQueue.length; i < iLen; i++ ) {
+		this.document.data.setAnnotationsAtOffset(
+			dataQueue[i].offset,
+			dataQueue[i].annotations
+		);
+	}
+	for ( i = 0, iLen = metadataQueue.length; i < iLen; i++ ) {
+		this.document.metadata.setAnnotationsAtOffsetAndIndex(
+			metadataQueue[i].offset,
+			metadataQueue[i].index,
+			metadataQueue[i].annotations
+		);
 	}
 };
 
