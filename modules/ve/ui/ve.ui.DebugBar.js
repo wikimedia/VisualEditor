@@ -22,16 +22,17 @@ ve.ui.DebugBar = function VeUiDebugBar( surface, config ) {
 	this.surface = surface;
 
 	this.$commands = this.$( '<div>' ).addClass( 've-ui-debugBar-commands' );
-	this.$dumpLinmod = this.$( '<td>' ).addClass( 've-ui-debugBar-dump-linmod' );
+	this.$dumpLinmodData = this.$( '<td>' ).addClass( 've-ui-debugBar-dump-linmod-data' );
+	this.$dumpLinmodMetadata = this.$( '<td>' ).addClass( 've-ui-debugBar-dump-linmod-metadata' );
 	this.$dumpView = this.$( '<td>' ).addClass( 've-ui-debugBar-dump-view' );
 	this.$dumpModel = this.$( '<td>' ).addClass( 've-ui-debugBar-dump-model' );
 
 	this.$dump =
 		this.$( '<table class="ve-ui-debugBar-dump"></table>' ).append(
-			this.$( '<thead><th>Linear model</th><th>View tree</th><th>Model tree</th></thead>' ),
+			this.$( '<thead><th>Linear model data</th><th>Linear model metadata</th><th>View tree</th><th>Model tree</th></thead>' ),
 			this.$( '<tbody>' ).append(
 				this.$( '<tr>' ).append(
-					this.$dumpLinmod, this.$dumpView, this.$dumpModel
+					this.$dumpLinmodData, this.$dumpLinmodMetadata, this.$dumpView, this.$dumpModel
 				)
 			)
 		);
@@ -131,46 +132,63 @@ ve.ui.DebugBar.prototype.onLogRangeButtonClick = function () {
  * @param {jQuery.Event} e Event
  */
 ve.ui.DebugBar.prototype.onDumpModelButtonClick = function () {
-	/*jshint loopfunc:true */
-	// linear model dump
-	var i, $li, $label, element, text, annotations,
-		surface = this.getSurface(),
+	var debugBar = this,
+		surface = debugBar.getSurface(),
 		documentModel = surface.getModel().getDocument(),
-		documentView = surface.getView().getDocument(),
-		$ol = this.$( '<ol start="0"></ol>' );
+		documentView = surface.getView().getDocument();
 
-	for ( i = 0; i < documentModel.data.getLength(); i++ ) {
-		$li = this.$( '<li>' );
-		$label = this.$( '<span>' );
-		element = documentModel.data.getData( i );
-		if ( element.type ) {
-			$label.addClass( 've-ui-debugBar-dump-element' );
-			text = element.type;
-			annotations = element.annotations;
-		} else if ( ve.isArray( element ) ) {
-			$label.addClass( 've-ui-debugBar-dump-achar' );
-			text = element[0];
-			annotations = element[1];
-		} else {
-			$label.addClass( 've-ui-debugBar-dump-char' );
-			text = element;
-			annotations = undefined;
-		}
-		$label.html( ( text.match( /\S/ ) ? text : '&nbsp;' ) + ' ' );
-		if ( annotations ) {
-			$label.append(
-				this.$( '<span>' ).text(
-					'[' + documentModel.store.values( annotations ).map( function ( ann ) {
-						return JSON.stringify( ann.getComparableObject() );
-					} ).join( ', ' ) + ']'
-				)
-			);
-		}
+	function dumpLinMod( linearData ) {
+		var i, $li, $label, element, text, annotations, data,
+			$ol = debugBar.$( '<ol start="0"></ol>' );
 
-		$li.append( $label );
-		$ol.append( $li );
+		data = linearData instanceof ve.dm.LinearData ? linearData.data : linearData;
+
+		for ( i = 0; i < data.length; i++ ) {
+			$li = debugBar.$( '<li>' );
+			$label = debugBar.$( '<span>' );
+			element = data[i];
+			annotations = null;
+			if ( linearData instanceof ve.dm.MetaLinearData ) {
+				if ( element && element.length ) {
+					$li.append( dumpLinMod( element ) );
+				} else {
+					$li.append( debugBar.$( '<span>undefined</span>' ).addClass( 've-ui-debugBar-dump-undefined' ) );
+				}
+			} else {
+				if ( element.type ) {
+					$label.addClass( 've-ui-debugBar-dump-element' );
+					text = element.type;
+					annotations = element.annotations;
+				} else if ( ve.isArray( element ) ) {
+					$label.addClass( 've-ui-debugBar-dump-achar' );
+					text = element[0];
+					annotations = element[1];
+				} else {
+					$label.addClass( 've-ui-debugBar-dump-char' );
+					text = element;
+				}
+				$label.html( ( text.match( /\S/ ) ? text : '&nbsp;' ) + ' ' );
+				if ( annotations ) {
+					$label.append(
+						/*jshint loopfunc:true */
+						debugBar.$( '<span>' ).text(
+							'[' + documentModel.store.values( annotations ).map( function ( ann ) {
+								return JSON.stringify( ann.getComparableObject() );
+							} ).join( ', ' ) + ']'
+						)
+					);
+				}
+
+				$li.append( $label );
+			}
+			$ol.append( $li );
+		}
+		return $ol;
 	}
-	this.$dumpLinmod.html( $ol );
+
+	// linear model dump
+	debugBar.$dumpLinmodData.html( dumpLinMod( documentModel.data ) );
+	debugBar.$dumpLinmodMetadata.html( dumpLinMod( documentModel.metadata ) );
 
 	/**
 	 * Generate an ordered list describing a node
@@ -179,18 +197,18 @@ ve.ui.DebugBar.prototype.onDumpModelButtonClick = function () {
 	 * @returns {jQuery} Ordered list
 	 */
 	function generateListFromNode( node ) {
-		var $li, i,
-			$ol = this.$( '<ol start="0"></ol>' );
+		var $li, i, $label,
+			$ol = debugBar.$( '<ol start="0"></ol>' );
 
 		for ( i = 0; i < node.children.length; i++ ) {
-			$li = this.$( '<li>' );
-			$label = this.$( '<span>' ).addClass( 've-ui-debugBar-dump-element' );
+			$li = debugBar.$( '<li>' );
+			$label = debugBar.$( '<span>' ).addClass( 've-ui-debugBar-dump-element' );
 			if ( node.children[i].length !== undefined ) {
 				$li.append(
 					$label
 						.text( node.children[i].type )
 						.append(
-							this.$( '<span>' ).text( ' (' + node.children[i].length + ')' )
+							debugBar.$( '<span>' ).text( ' (' + node.children[i].length + ')' )
 						)
 				);
 			} else {
@@ -206,13 +224,13 @@ ve.ui.DebugBar.prototype.onDumpModelButtonClick = function () {
 		return $ol;
 	}
 
-	this.$dumpModel.html(
+	debugBar.$dumpModel.html(
 		generateListFromNode( documentModel.getDocumentNode() )
 	);
-	this.$dumpView.html(
+	debugBar.$dumpView.html(
 		generateListFromNode( documentView.getDocumentNode() )
 	);
-	this.$dump.show();
+	debugBar.$dump.show();
 };
 
 /**
