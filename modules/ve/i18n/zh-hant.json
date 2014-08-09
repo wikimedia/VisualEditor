@@ -14,7 +14,8 @@
 			"Spring Roll Conan",
 			"Waihorace",
 			"Cwlin0416",
-			"Vincent Liu"
+			"Vincent Liu",
+			"Deryck Chan"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -76,8 +77,8 @@
 	"visualeditor-mediasizewidget-button-originaldimensions": "使用原始大小",
 	"visualeditor-mediasizewidget-label-custom": "自訂",
 	"visualeditor-mediasizewidget-label-defaulterror": "尺寸數值無效。",
-	"visualeditor-mediasizewidget-label-scale": "比例",
-	"visualeditor-mediasizewidget-label-scale-percent": "縮圖大小百分比",
+	"visualeditor-mediasizewidget-label-scale": "比例：縮圖標準大小的",
+	"visualeditor-mediasizewidget-label-scale-percent": "%",
 	"visualeditor-mediasizewidget-sizeoptions-custom": "自訂",
 	"visualeditor-mediasizewidget-sizeoptions-default": "預設",
 	"visualeditor-mediasizewidget-sizeoptions-scale": "比例",
