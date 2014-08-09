@@ -12,7 +12,8 @@
 		"./external.js",
 		"../lib/oojs",
 		"../lib/oojs-ui",
-		"../modules/unicodejs",
-		"../modules/ve"
+		"../lib/unicodejs",
+		"../src",
+		"../tests"
 	]
 }

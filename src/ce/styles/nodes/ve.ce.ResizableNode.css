@@ -51,13 +51,13 @@
 .ve-ce-resizableNode-nwHandle,
 .ve-ce-resizableNode-seHandle {
 	/* @embed */
-	background-image: url(../../../../ve/ui/styles/images/resize-nw-se.svg);
+	background-image: url(../../../ui/styles/images/resize-nw-se.svg);
 }
 
 .ve-ce-resizableNode-neHandle,
 .ve-ce-resizableNode-swHandle {
 	/* @embed */
-	background-image: url(../../../../ve/ui/styles/images/resize-ne-sw.svg);
+	background-image: url(../../../ui/styles/images/resize-ne-sw.svg);
 }
 
 

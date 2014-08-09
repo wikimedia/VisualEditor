@@ -54,11 +54,9 @@
 		<script src="../../lib/oojs/oojs.js"></script>
 		<script src="../../lib/rangy/rangy-core-1.3.js"></script>
 		<script src="../../lib/rangy/rangy-position-1.3.js"></script>
-		<script src="../../modules/unicodejs/unicodejs.js"></script>
-		<script src="../../modules/unicodejs/unicodejs.graphemebreak.js"></script>
-		<script src="../../modules/unicodejs/unicodejs.wordbreak.js"></script>
-		<script src="../../modules/ve/ve.js"></script>
-		<script src="../../modules/ve/ve.EventSequencer.js"></script>
+		<script src="../../lib/unicodejs/unicodejs.js"></script>
+		<script src="../../src/ve.js"></script>
+		<script src="../../src/ve.EventSequencer.js"></script>
 		<script>
 			( function () {
 				var haloElement, contentElement, logElement, startTime, timeoutId,
@@ -184,7 +182,7 @@
 
 
 					for ( i = 0, len = eventNames.length; i < len; i++ ) {
-						handlers[ eventNames[i] ] = 
+						handlers[ eventNames[i] ] =
 							makeEventHandler( eventNames[i] );
 					}
 

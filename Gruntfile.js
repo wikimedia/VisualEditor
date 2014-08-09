@@ -70,8 +70,7 @@ module.exports = function ( grunt ) {
 		},
 		copy: {
 			i18n: {
-				src: 'modules/ve/i18n/*.json',
-				strip: 'modules/ve/',
+				src: 'i18n/*.json',
 				dest: 'dist/'
 			}
 		},
@@ -82,7 +81,7 @@ module.exports = function ( grunt ) {
 				modules: modules,
 				load: [ 'visualEditor.desktop.standalone' ],
 				pathPrefix: '../',
-				i18n: [ 'modules/ve/i18n/', 'lib/oojs-ui/i18n/' ],
+				i18n: [ 'i18n/', 'lib/oojs-ui/i18n/' ],
 				indent: '\t\t'
 			},
 			desktopDemo: {
@@ -94,7 +93,7 @@ module.exports = function ( grunt ) {
 					debug: true
 				},
 				pathPrefix: '../../',
-				i18n: [ 'modules/ve/i18n/', 'lib/oojs-ui/i18n/' ],
+				i18n: [ 'i18n/', 'lib/oojs-ui/i18n/' ],
 				indent: '\t\t',
 				placeholders: { menu: demoMenu }
 			},
@@ -117,7 +116,7 @@ module.exports = function ( grunt ) {
 					debug: true
 				},
 				pathPrefix: '../../',
-				i18n: [ 'modules/ve/i18n/', 'lib/oojs-ui/i18n/' ],
+				i18n: [ 'i18n/', 'lib/oojs-ui/i18n/' ],
 				indent: '\t\t',
 				placeholders: { menu: demoMenu }
 			},
@@ -132,8 +131,8 @@ module.exports = function ( grunt ) {
 				placeholders: { menu: demoMenu }
 			},
 			test: {
-				targetFile: 'modules/ve/tests/index.html',
-				template: 'modules/ve/tests/index.html.template',
+				targetFile: 'tests/index.html',
+				template: 'tests/index.html.template',
 				modules: modules,
 				env: {
 					test: true
@@ -149,64 +148,36 @@ module.exports = function ( grunt ) {
 			},
 			all: [
 				'*.js',
-				'{.docs,build,demos,modules}/**/*.js'
+				'{.docs,build,demos,src,tests}/**/*.js'
 			]
 		},
 		jscs: {
 			src: [
 				'<%= jshint.all %>',
-				'!modules/ve/tests/ce/imetests/*.js'
+				'!tests/ce/imetests/*.js'
 			]
 		},
 		csslint: {
 			options: {
 				csslintrc: '.csslintrc'
 			},
-			all: '{.docs,build,demos,modules}/**/*.css'
+			all: '{.docs,build,demos,src,tests}/**/*.css'
 		},
 		banana: {
-			all: 'modules/ve/i18n/'
+			all: 'i18n/'
 		},
 		karma: {
 			options: {
+				files: testFiles,
 				frameworks: [ 'qunit' ],
 				reporters: [ 'dots' ],
 				singleRun: true,
 				autoWatch: false
 			},
-			// FIXME: OMG ARGH DIE DIE DIE PLEASE MOVE TO A DIFFERENT REPO
-			unicodejs: {
+			phantomjs: {
 				browsers: [ 'PhantomJS' ],
-				options: {
-					files: [
-						'lib/jquery/jquery.js',
-						'modules/unicodejs/unicodejs.js',
-						'modules/unicodejs/unicodejs.textstring.js',
-						'modules/unicodejs/unicodejs.graphemebreakproperties.js',
-						'modules/unicodejs/unicodejs.graphemebreak.js',
-						'modules/unicodejs/unicodejs.wordbreakproperties.js',
-						'modules/unicodejs/unicodejs.wordbreak.js',
-						'modules/unicodejs/tests/unicodejs.test.js',
-						'modules/unicodejs/tests/unicodejs.graphemebreak.test.js',
-						'modules/unicodejs/tests/unicodejs.wordbreak.test.js'
-					]
-				},
 				preprocessors: {
-					'modules/unicodejs/*.js': [ 'coverage' ]
-				},
-				reporters: [ 'dots', 'coverage' ],
-				coverageReporter: { reporters: [
-					{ type: 'html', dir: 'test-coverage/unicodejs' },
-					{ type: 'text-summary', dir: 'test-coverage/unicodejs' }
-				] }
-			},
-			visualeditor: {
-				browsers: [ 'PhantomJS' ],
-				options: {
-					files: testFiles
-				},
-				preprocessors: {
-					'modules/ve/**/*.js': [ 'coverage' ]
+					'src/**/*.js': [ 'coverage' ]
 				},
 				reporters: [ 'dots', 'coverage' ],
 				coverageReporter: { reporters: [
@@ -215,15 +186,9 @@ module.exports = function ( grunt ) {
 				] }
 			},
 			local: {
-				options: {
-					files: testFiles
-				},
 				browsers: [ 'Firefox', 'Chrome' ]
 			},
 			bg: {
-				options: {
-					files: testFiles
-				},
 				browsers: [ 'PhantomJS', 'Firefox', 'Chrome' ],
 				singleRun: false,
 				background: true
@@ -240,9 +205,9 @@ module.exports = function ( grunt ) {
 	} );
 
 	grunt.registerTask( 'lint', [ 'jshint', 'jscs', 'csslint', 'banana' ] );
-	grunt.registerTask( 'unit', [ 'karma:unicodejs', 'karma:visualeditor' ] );
+	grunt.registerTask( 'unit', [ 'karma:phantomjs' ] );
 	grunt.registerTask( 'build', [ 'clean', 'git-build', 'cssUrlEmbed', 'concat', 'cssjanus', 'copy', 'buildloader' ] );
-	grunt.registerTask( 'test', [ 'build', 'lint', 'karma:unicodejs', 'karma:visualeditor' ] );
+	grunt.registerTask( 'test', [ 'build', 'lint', 'unit' ] );
 	grunt.registerTask( 'watch', [ 'karma:bg:start', 'runwatch' ] );
 	grunt.registerTask( 'default', 'test' );
 };
