@@ -156,6 +156,20 @@ ve.ui.MediaSizeWidget.prototype.onScalableOriginalSizeChange = function ( dimens
 	var disabled = !dimensions || $.isEmptyObject( dimensions );
 	this.fullSizeButton.setDisabled( disabled );
 	this.sizeTypeSelectWidget.getItemFromData( 'default' ).setDisabled( disabled );
+	// Revalidate current dimensions
+	this.validateDimensions();
+};
+
+/**
+ * Respond to change in current dimensions in the scalable object.
+ *
+ * @param {Object} dimensions Original dimensions
+ */
+ve.ui.MediaSizeWidget.prototype.onScalableCurrentSizeChange = function ( dimensions ) {
+	if ( !$.isEmptyObject( dimensions ) ) {
+		this.setCurrentDimensions( dimensions );
+		this.validateDimensions();
+	}
 };
 
 /**
@@ -172,6 +186,7 @@ ve.ui.MediaSizeWidget.prototype.onScalableDefaultSizeChange = function ( isDefau
 		'default' :
 		'custom'
 	);
+	this.validateDimensions();
 };
 
 /**
@@ -215,7 +230,10 @@ ve.ui.MediaSizeWidget.prototype.onScaleChange = function () {
  * @fires changeSizeType
  */
 ve.ui.MediaSizeWidget.prototype.onSizeTypeChoose = function ( item ) {
-	var selectedType = item && item.getData();
+	var selectedType = item && item.getData(),
+		wasDefault = this.scalable.isDefault();
+
+	this.scalable.toggleDefault( selectedType === 'default' );
 
 	if ( selectedType === 'default' ) {
 		this.scaleInput.setDisabled( true );
@@ -234,13 +252,11 @@ ve.ui.MediaSizeWidget.prototype.onSizeTypeChoose = function ( item ) {
 		// Disable the scale input
 		this.scaleInput.setDisabled( true );
 		// If we were default size before, set the current dimensions to the default size
-		if ( this.scalable.isDefault() && !$.isEmptyObject( this.dimensionsWidget.getDefaults() ) ) {
+		if ( wasDefault && !$.isEmptyObject( this.dimensionsWidget.getDefaults() ) ) {
 			this.setCurrentDimensions( this.dimensionsWidget.getDefaults() );
 		}
 		this.validateDimensions();
 	}
-
-	this.scalable.toggleDefault( selectedType === 'default' );
 
 	this.emit( 'changeSizeType', selectedType );
 	this.validateDimensions();
@@ -295,7 +311,8 @@ ve.ui.MediaSizeWidget.prototype.setScalable = function ( scalable ) {
 	// Events
 	this.scalable.connect( this, {
 		defaultSizeChange: 'onScalableDefaultSizeChange',
-		originalSizeChange: 'onScalableOriginalSizeChange'
+		originalSizeChange: 'onScalableOriginalSizeChange',
+		currentSizeChange: 'onScalableCurrentSizeChange'
 	} );
 
 	this.updateDefaultDimensions();
@@ -320,6 +337,7 @@ ve.ui.MediaSizeWidget.prototype.setScalable = function ( scalable ) {
 			'custom'
 		);
 	}
+	this.validateDimensions();
 };
 
 /**
@@ -423,6 +441,8 @@ ve.ui.MediaSizeWidget.prototype.setDisabled = function ( isDisabled ) {
  * @fires change
  */
 ve.ui.MediaSizeWidget.prototype.setCurrentDimensions = function ( dimensions ) {
+	var normalizedDimensions;
+
 	// Recursion protection
 	if ( this.preventChangeRecursion ) {
 		return;
@@ -430,22 +450,28 @@ ve.ui.MediaSizeWidget.prototype.setCurrentDimensions = function ( dimensions ) {
 	this.preventChangeRecursion = true;
 
 	// Normalize the new dimensions
-	this.currentDimensions = ve.dm.Scalable.static.getDimensionsFromValue( dimensions, this.scalable.getRatio() );
+	normalizedDimensions = ve.dm.Scalable.static.getDimensionsFromValue( dimensions, this.scalable.getRatio() );
 
-	if ( this.currentDimensions.width || this.currentDimensions.height ) {
+	if (
+		// Update only if the dimensions object is valid
+		this.scalable.isDimensionsObjectValid( normalizedDimensions ) &&
+		// And only if the dimensions object is not default
+		!this.scalable.isDefault()
+	) {
+		this.currentDimensions = normalizedDimensions;
 		// This will only update if the value has changed
 		// Set width & height individually as they may be 0
 		this.dimensionsWidget.setWidth( this.currentDimensions.width );
 		this.dimensionsWidget.setHeight( this.currentDimensions.height );
+
+		// Update scalable object
+		this.scalable.setCurrentDimensions( this.currentDimensions );
+
+		this.validateDimensions();
+
+		// Emit change event
+		this.emit( 'change', this.currentDimensions );
 	}
-
-	// Update scalable object
-	this.scalable.setCurrentDimensions( this.currentDimensions );
-
-	this.validateDimensions();
-
-	// Emit change event
-	this.emit( 'change', this.currentDimensions );
 	this.preventChangeRecursion = false;
 };
 
@@ -479,6 +505,10 @@ ve.ui.MediaSizeWidget.prototype.updateDefaultDimensions = function () {
 	} else {
 		this.dimensionsWidget.removeDefaults();
 	}
+	this.sizeTypeSelectWidget.getItemFromData( 'default' ).setDisabled(
+		$.isEmptyObject( defaultDimensions )
+	);
+	this.validateDimensions();
 };
 
 /**
