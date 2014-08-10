@@ -352,6 +352,7 @@
 			"modules/ve/ce/styles/nodes/ve.ce.ResizableNode.css",
 			"modules/ve/ce/styles/nodes/ve.ce.TableCellNode.css",
 			"modules/ve/ce/styles/nodes/ve.ce.TableNode.css",
+			"modules/ve/ce/styles/ve.ce.css",
 			"modules/ve/ce/styles/ve.ce.Surface.css",
 			"modules/ve/ui/styles/dialogs/ve.ui.CommandHelpDialog.css",
 			"modules/ve/ui/styles/tools/ve.ui.FormatTool.css",
