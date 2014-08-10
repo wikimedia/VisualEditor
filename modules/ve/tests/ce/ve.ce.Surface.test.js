@@ -610,7 +610,11 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 						{ type: 'retain', length: 4 },
 						{
 							type: 'replace',
-							insert: [ ['B', [0]], 'a', ['r', [0]] ],
+							insert: [
+								['B', [ { type: 'textStyle/bold', attributes: { nodeName: 'b' } } ]],
+								'a',
+								['r', [ { type: 'textStyle/bold', attributes: { nodeName: 'b' } } ]]
+							],
 							remove: []
 						},
 						{ type: 'retain', length: 5 }
@@ -792,11 +796,24 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 	QUnit.expect( cases.length * 2 );
 
 	function testRunner( documentHtml, pasteHtml, fromVe, useClipboardData, range, expectedOps, pasteSpecial, expectedRange, msg ) {
-		var i, txs, ops,
+		var i, j, txs, ops,
 			e = {},
 			surface = ve.test.utils.createSurfaceFromHtml( documentHtml || exampleDoc ),
 			view = surface.getView(),
-			model = surface.getModel();
+			model = surface.getModel(),
+			doc = model.getDocument();
+
+		// Preprocess annotations inside expectedOps
+		for ( i = 0; i < expectedOps.length; i++ ) {
+			for ( j = 0; j < expectedOps[i].length; j++ ) {
+				if ( expectedOps[i][j].remove ) {
+					ve.dm.example.preprocessAnnotations( expectedOps[i][j].remove, doc.getStore() );
+				}
+				if ( expectedOps[i][j].insert ) {
+					ve.dm.example.preprocessAnnotations( expectedOps[i][j].insert, doc.getStore() );
+				}
+			}
+		}
 
 		// Paste sequence
 		model.setSelection( range );
