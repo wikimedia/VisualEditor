@@ -44,8 +44,9 @@
 	vertical-align: top;
 }
 
-.ve-ui-debugBar-dump-linmod {
-	width: 30%;
+.ve-ui-debugBar-dump-linmod-data,
+.ve-ui-debugBar-dump-linmod-metadata {
+	width: 27%;
 }
 
 .ve-ui-debugBar-dump th {
@@ -72,6 +73,10 @@
 .ve-ui-debugBar-dump li > span > span {
 	color: #aaa;
 	text-shadow: 0 1px 1px #fff;
+}
+
+.ve-ui-debugBar-dump li .ve-ui-debugBar-dump-undefined {
+	color: #aaa;
 }
 
 .ve-ui-debugBar-dump li .ve-ui-debugBar-dump-element {
