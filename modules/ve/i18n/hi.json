@@ -6,7 +6,8 @@
 			"Rajesh",
 			"Siddhartha Ghai",
 			"Niharika29",
-			"Goelujjwal"
+			"Goelujjwal",
+			"संजीव कुमार"
 		]
 	},
 	"visualeditor": "विज़ुअल सम्पादक",
@@ -25,6 +26,7 @@
 	"visualeditor-clipboard-cut": "कट",
 	"visualeditor-clipboard-paste": "पेस्ट",
 	"visualeditor-clipboard-paste-special": "सामान्य पाठ के रूप में पेस्ट करें",
+	"visualeditor-commentinspector-title": "टिप्पणी",
 	"visualeditor-dialog-action-apply": "परिवर्तन लागू करें",
 	"visualeditor-dialog-action-cancel": "रद्द करें",
 	"visualeditor-dialog-action-goback": "वापिस जाएँ",
@@ -46,8 +48,8 @@
 	"visualeditor-indentationbutton-outdent-tooltip": "इंडेंट घटाएँ",
 	"visualeditor-inspector-close-tooltip": "बंद करें",
 	"visualeditor-inspector-remove-tooltip": "हटायें",
-	"visualeditor-languageinspector-block-tooltip": "भाषा ब्लॉक",
 	"visualeditor-languageinspector-title": "भाषा",
+	"visualeditor-languageinspector-widget-changelang": "भाषा खोजें",
 	"visualeditor-languageinspector-widget-label-direction": "दिशा",
 	"visualeditor-languageinspector-widget-label-langcode": "भाषा कोड",
 	"visualeditor-languageinspector-widget-label-language": "भाषा",
@@ -64,6 +66,7 @@
 	"visualeditor-specialcharacter-button-tooltip": "विशेष अक्षर",
 	"visualeditor-specialcharacterinspector-title": "विशेष अक्षर",
 	"visualeditor-specialcharinspector-characterlist-insert": "{\n\t\"प्रतीक\": {\n\t\t\"−\": \"−\",\n\t\t\"—\": \"—\",\n\t\t\"°\": \"°\",\n\t\t\"″\": \"″\",\n\t\t\"′\": \"′\",\n\t\t\"←\": \"←\",\n\t\t\"→\": \"→\",\n\t\t\"« »\" : \"« »\",\n\t\t\"“”\" : \"“”\",\n\t\t\"#\" : \"#\",\n\t\t\"@\" : \"@\",\n\t\t\"|\" : \"|\",\n\t\t\"~\" : \"~\",\n\t\t\"§\": \"§\",\n\t\t\"•\" : \"•\",\n\t\t\"·\": \"·\",\n\t\t\"…\" : \"…\",\n\t\t\"€\" : \"€\"\n\t},\n\t\"लहजे\": {\n\t\t\"Æ\" : \"Æ\",\n\t\t\"æ\" : \"æ\",\n\t\t\"À\" : \"À\",\n\t\t\"à\" : \"à\",\n\t\t\"Â\" : \"Â\",\n\t\t\"â\" : \"â\",\n\t\t\"Ä\" : \"Ä\",\n\t\t\"ä\" : \"ä\",\n\t\t\"Å\" : \"Å\",\n\t\t\"å\" : \"å\",\n\t\t\"Ç\" : \"Ç\",\n\t\t\"ç\" : \"ç\",\n\t\t\"È\" : \"È\",\n\t\t\"è\" : \"è\",\n\t\t\"É\" : \"É\",\n\t\t\"é\" : \"é\",\n\t\t\"Ê\" : \"Ê\",\n\t\t\"ê\" : \"ê\",\n\t\t\"Ë\" : \"Ë\",\n\t\t\"ë\" : \"ë\",\n\t\t\"Î\" : \"Î\",\n\t\t\"î\" : \"î\",\n\t\t\"Ï\" : \"Ï\",\n\t\t\"ï\" : \"ï\",\n\t\t\"Ô\" : \"Ô\",\n\t\t\"ô\" : \"ô\",\n\t\t\"Ö\" : \"Ö\",\n\t\t\"ö\" : \"ö\",\n\t\t\"Ø\" : \"Ø\",\n\t\t\"ø\" : \"ø\",\n\t\t\"Ù\" : \"Ù\",\n\t\t\"ù\" : \"ù\",\n\t\t\"Û\" : \"Û\",\n\t\t\"û\" : \"û\",\n\t\t\"Ü\" : \"Ü\",\n\t\t\"ü\" : \"ü\",\n\t\t\"Ÿ\" : \"Ÿ\",\n\t\t\"ÿ\" : \"ÿ\",\n\t\t\"Œ\" : \"Œ\",\n\t\t\"œ\" : \"œ\"\n\t},\n\t\"गणितीय\": {\n\t\t\"−\": \"−\",\n\t\t\"×\": \"×\",\n\t\t\"÷\": \"÷\",\n\t\t\"≈\": \"≈\",\n\t\t\"≠\": \"≠\",\n\t\t\"≤\": \"≤\",\n\t\t\"≥\": \"≥\",\n\t\t\"±\": \"±\",\n\t\t\"¹\" : \"¹\",\n\t\t\"²\" : \"²\",\n\t\t\"³\" : \"³\",\n\t\t\"⁴\" : \"⁴\",\n\t\t\"⁵\" : \"⁵\",\n\t\t\"⁶\" : \"⁶\",\n\t\t\"⁷\" : \"⁷\",\n\t\t\"⁸\" : \"⁸\",\n\t\t\"⁹\" : \"⁹\",\n\t\t\"⁰\" : \"⁰\",\n\t\t\"½\" : \"½\"\n\t}\n}",
+	"visualeditor-toolbar-history": "इतिहास",
 	"visualeditor-toolbar-insert": "जोड़ें",
 	"visualeditor-version-label": "अवतरण"
 }
