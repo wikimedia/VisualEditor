@@ -85,7 +85,10 @@
 		<!-- visualEditor.mobile.standalone.demo.dist -->
 		<script src="../../demos/ve/demo.mobile.js"></script>
 
-		<script>ve.init.platform.setModulesUrl( '../../modules' );</script>
+		<script>
+			ve.init.platform.addMessagePath( '../../dist/i18n/' );
+			ve.init.platform.addMessagePath( '../../lib/oojs-ui/i18n/' );
+		</script>
 
 		<script>
 		ve.demoPages = {

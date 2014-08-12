@@ -36,17 +36,6 @@ ve.init.Platform.prototype.getExternalLinkUrlProtocolsRegExp = function () {
 };
 
 /**
- * Get a remotely accessible URL to the modules directory.
- *
- * @method
- * @abstract
- * @returns {string} Remote modules URL
- */
-ve.init.Platform.prototype.getModulesUrl = function () {
-	throw new Error( 've.init.Platform.getModulesUrl must be overridden in subclass' );
-};
-
-/**
  * Add multiple messages to the localization system.
  *
  * @method
