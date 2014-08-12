@@ -105,7 +105,7 @@ ve.ui.MediaSizeWidget = function VeUiMediaSizeWidget( scalable, config ) {
 	// Build GUI
 	this.$element
 		.addClass( 've-ui-mediaSizeWidget' )
-		.append( [
+		.append(
 			this.sizeTypeSelectWidget.$element,
 			// TODO: when upright is supported by Parsoid
 			// fieldScale.$element,
@@ -114,7 +114,7 @@ ve.ui.MediaSizeWidget = function VeUiMediaSizeWidget( scalable, config ) {
 			this.$( '<div>' )
 				.addClass( 've-ui-mediaSizeWidget-label-error' )
 				.append( this.errorLabel.$element )
-		] );
+		);
 
 	// Events
 	this.dimensionsWidget.connect( this, {
