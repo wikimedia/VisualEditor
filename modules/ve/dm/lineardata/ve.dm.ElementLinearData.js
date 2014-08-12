@@ -324,15 +324,28 @@ ve.dm.ElementLinearData.prototype.getAnnotationsFromOffset = function ( offset, 
  * @param {ve.dm.AnnotationSet} annotations Annotations to set
  */
 ve.dm.ElementLinearData.prototype.setAnnotationsAtOffset = function ( offset, annotations ) {
+	this.setAnnotationIndexesAtOffset( offset, this.getStore().indexes( annotations.get() ) );
+};
+
+/**
+ * Set annotations' store indexes at a specified offset.
+ *
+ * Cleans up data structure if indexes array is empty.
+ *
+ * @method
+ * @param {number} offset Offset to set annotation indexes at
+ * @param {number[]} indexes Annotations' store indexes
+ */
+ve.dm.ElementLinearData.prototype.setAnnotationIndexesAtOffset = function ( offset, indexes ) {
 	var character, item = this.getData( offset ), isElement = this.isElementData( offset );
-	if ( !annotations.isEmpty() ) {
+	if ( indexes.length > 0 ) {
 		if ( isElement ) {
 			// New element annotation
-			item.annotations = this.getStore().indexes( annotations.get() );
+			item.annotations = indexes;
 		} else {
 			// New character annotation
 			character = this.getCharacterData( offset );
-			this.setData( offset, [character, this.getStore().indexes( annotations.get() )] );
+			this.setData( offset, [character, indexes] );
 		}
 	} else {
 		if ( isElement ) {
@@ -761,12 +774,11 @@ ve.dm.ElementLinearData.prototype.getUsedStoreValues = function () {
 ve.dm.ElementLinearData.prototype.remapStoreIndexes = function ( mapping ) {
 	var i, ilen, j, jlen, indexes, nodeClass;
 	for ( i = 0, ilen = this.data.length; i < ilen; i++ ) {
-		// Returns annotation indexes by reference. Use ignoreClose
-		// to avoid mapping the annotations twice.
 		indexes = this.getAnnotationIndexesFromOffset( i, true );
 		for ( j = 0, jlen = indexes.length; j < jlen; j++ ) {
 			indexes[j] = mapping[indexes[j]];
 		}
+		this.setAnnotationIndexesAtOffset( i, indexes );
 		if ( this.isOpenElementData( i ) ) {
 			nodeClass = ve.dm.nodeFactory.lookup( this.getType( i ) );
 			nodeClass.static.remapStoreIndexes( this.data[i], mapping );

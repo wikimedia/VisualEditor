@@ -1519,6 +1519,131 @@ QUnit.test( 'countNonInternalElements', function ( assert ) {
 	}
 } );
 
+QUnit.test( 'remapStoreIndexes', function ( assert ) {
+	var i, data,
+		cases = [
+			{
+				before: [
+					['F', [0]],
+					['o', [1]],
+					['o', [2]]
+				],
+				mapping: {
+					0: 1,
+					1: 2,
+					2: 3
+				},
+				after: [
+					['F', [1]],
+					['o', [2]],
+					['o', [3]]
+				],
+				msg: 'Annotated text: increment indexes'
+			},
+			{
+				before: [
+					['F', [0]],
+					['o', [1]],
+					['o', [2]]
+				],
+				mapping: {
+					0: 1,
+					1: 0,
+					2: 2
+				},
+				after: [
+					['F', [1]],
+					['o', [0]],
+					['o', [2]]
+				],
+				msg: 'Annotated text: swap 0 and 1'
+			},
+			{
+				before: [
+					['F', [0, 1]],
+					['o', [1, 2]],
+					['o', [2, 3]]
+				],
+				mapping: {
+					0: 3,
+					1: 2,
+					2: 1,
+					3: 0
+				},
+				after: [
+					['F', [3, 2]],
+					['o', [2, 1]],
+					['o', [1, 0]]
+				],
+				msg: 'Annotated text: multiple annotations mapped, order preserved'
+			},
+			{
+				before: [
+					{ type: 'alienInline', annotations: [0] },
+					{ type: '/alienInline' }
+				],
+				mapping: {
+					0: 1,
+					1: 0
+				},
+				after: [
+					{ type: 'alienInline', annotations: [1] },
+					{ type: '/alienInline' }
+				],
+				msg: 'Annotated node'
+			},
+			{
+				before: [
+					{ type: 'paragraph' },
+					'F',
+					['o', [2, 1, 3]],
+					['o', [4]],
+					{ type: 'alienInline', annotations: [5, 0] },
+					{ type: '/alienInline' },
+					['B', [5, 0]],
+					['a', [7]],
+					'r',
+					{ type: 'alienInline', annotations: [6] },
+					{ type: '/alienInline' },
+					{ type: '/paragraph' }
+				],
+				mapping: {
+					0: 1,
+					1: 4,
+					2: 2,
+					3: 8,
+					4: 5,
+					5: 7,
+					6: 3,
+					7: 6,
+					8: 0
+				},
+				after: [
+					{ type: 'paragraph' },
+					'F',
+					['o', [2, 4, 8]],
+					['o', [5]],
+					{ type: 'alienInline', annotations: [7, 1] },
+					{ type: '/alienInline' },
+					['B', [7, 1]],
+					['a', [6]],
+					'r',
+					{ type: 'alienInline', annotations: [3] },
+					{ type: '/alienInline' },
+					{ type: '/paragraph' }
+				],
+				msg: 'Paragraph with mix of unannotated text, annotated text and annotated nodes'
+			}
+		];
+
+	QUnit.expect( cases.length );
+	for ( i = 0; i < cases.length; i++ ) {
+		data = new ve.dm.ElementLinearData( new ve.dm.IndexValueStore(), cases[i].before );
+		data.remapStoreIndexes( cases[i].mapping );
+		assert.deepEqual( data.data, cases[i].after, cases[i].msg );
+	}
+} );
+
 // TODO: ve.dm.ElementLinearData.static.compareUnannotated
 // TODO: ve.dm.ElementLinearData#getAnnotationIndexesFromOffset
 // TODO: ve.dm.ElementLinearData#setAnnotationsAtOffset
