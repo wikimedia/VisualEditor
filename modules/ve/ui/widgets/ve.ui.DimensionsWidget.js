@@ -51,14 +51,14 @@ ve.ui.DimensionsWidget = function VeUiDimensionsWidget( config ) {
 	// Setup
 	this.$element
 		.addClass( 've-ui-dimensionsWidget' )
-		.append( [
+		.append(
 			this.widthInput.$element,
 			labelTimes.$element
 				.addClass( 've-ui-dimensionsWidget-label-times' ),
 			this.heightInput.$element,
 			labelPx.$element
 				.addClass( 've-ui-dimensionsWidget-label-px' )
-		] );
+		);
 };
 
 /* Inheritance */
