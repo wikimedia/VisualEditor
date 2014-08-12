@@ -6,15 +6,18 @@
 module.exports = function ( grunt ) {
 
 	grunt.registerMultiTask( 'buildloader', function () {
-		var module,
+		var i, len,
+			module,
 			dependency,
 			dependencies,
 			moduleStyles,
 			moduleScripts,
+			i18nScript,
 			styles = [],
 			scripts = [],
 			targetFile = this.data.targetFile,
 			pathPrefix = this.data.pathPrefix || '',
+			i18n = this.data.i18n || [],
 			indent = this.data.indent || '',
 			modules = this.data.modules,
 			load = this.data.load,
@@ -88,8 +91,14 @@ module.exports = function ( grunt ) {
 			}
 		}
 
-		scripts.push( indent + '<script>ve.init.platform.setModulesUrl( \'' + pathPrefix +
-			'modules\' );</script>' );
+		if ( i18n.length ) {
+			i18nScript = indent + '<script>\n';
+			for ( i = 0, len = i18n.length; i < len; i++ ) {
+				i18nScript += indent + '\tve.init.platform.addMessagePath( \'' + pathPrefix + i18n[i] + '\' );\n';
+			}
+			i18nScript += indent + '</script>';
+			scripts.push( i18nScript );
+		}
 
 		placeholders.styles = styles.join( '\n\n' );
 		placeholders.scripts = scripts.join( '\n\n' );

@@ -323,7 +323,10 @@
 		<script src="../modules/ve/ui/ve.ui.DesktopContext.js"></script>
 		<script src="../modules/ve/ui/ve.ui.DesktopInspectorManager.js"></script>
 
-		<script>ve.init.platform.setModulesUrl( '../modules' );</script>
+		<script>
+			ve.init.platform.addMessagePath( '../modules/ve/i18n/' );
+			ve.init.platform.addMessagePath( '../lib/oojs-ui/i18n/' );
+		</script>
 
 		<!-- example scripts -->
 		<script>

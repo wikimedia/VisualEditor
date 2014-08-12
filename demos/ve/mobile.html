@@ -341,7 +341,10 @@
 		<!-- visualEditor.mobile.standalone.demo -->
 		<script src="../../demos/ve/demo.mobile.js"></script>
 
-		<script>ve.init.platform.setModulesUrl( '../../modules' );</script>
+		<script>
+			ve.init.platform.addMessagePath( '../../modules/ve/i18n/' );
+			ve.init.platform.addMessagePath( '../../lib/oojs-ui/i18n/' );
+		</script>
 
 		<script>
 		ve.demoPages = {

@@ -19,7 +19,7 @@ ve.init.sa.Platform = function VeInitSaPlatform() {
 
 	// Properties
 	this.externalLinkUrlProtocolsRegExp = /^https?\:\/\//;
-	this.modulesUrl = 'modules';
+	this.messagePaths = [];
 	this.parsedMessages = {};
 	this.userLanguages = ['en'];
 };
@@ -36,17 +36,21 @@ ve.init.sa.Platform.prototype.getExternalLinkUrlProtocolsRegExp = function () {
 };
 
 /**
- * Set the remotely accessible URL to the modules directory.
+ * Add an i18n message folder path
  *
- * @param {string} url Remote modules URL
+ * @param {string} path Message folder path
  */
-ve.init.sa.Platform.prototype.setModulesUrl = function ( url ) {
-	this.modulesUrl = url;
+ve.init.sa.Platform.prototype.addMessagePath = function ( path ) {
+	this.messagePaths.push( path );
 };
 
-/** @inheritdoc */
-ve.init.sa.Platform.prototype.getModulesUrl = function () {
-	return this.modulesUrl;
+/**
+ * Get message folder paths
+ *
+ * @returns {string[]} Message folder paths
+ */
+ve.init.sa.Platform.prototype.getMessagePaths = function () {
+	return this.messagePaths;
 };
 
 /** @inheritdoc */
@@ -133,8 +137,8 @@ ve.init.sa.Platform.prototype.getUserLanguages = function () {
 
 /** @inheritdoc */
 ve.init.sa.Platform.prototype.initialize = function () {
-	var i, len, partialLocale, localeParts, filename, deferred,
-		path = this.getModulesUrl(),
+	var i, iLen, j, jLen, partialLocale, localeParts, filename, deferred,
+		messagePaths = this.getMessagePaths(),
 		locale = $.i18n().locale,
 		languages = [ locale, 'en' ], // Always use 'en' as the final fallback
 		languagesCovered = {},
@@ -161,7 +165,7 @@ ve.init.sa.Platform.prototype.initialize = function () {
 
 	this.userLanguages = languages;
 
-	for ( i = 0, len = languages.length; i < len; i++ ) {
+	for ( i = 0, iLen = languages.length; i < iLen; i++ ) {
 		if ( languagesCovered[languages[i]] ) {
 			continue;
 		}
@@ -171,15 +175,12 @@ ve.init.sa.Platform.prototype.initialize = function () {
 		// language codes, so we should not case-fold the second argument in #load.
 		filename = languages[i].toLowerCase() + '.json';
 
-		deferred = $.Deferred();
-		$.i18n().load( path + '/ve/i18n/' + filename, languages[i] )
-			.always( deferred.resolve );
-		promises.push( deferred.promise() );
-
-		deferred = $.Deferred();
-		$.i18n().load( path + '/../lib/oojs-ui/i18n/' + filename, languages[i] )
-			.always( deferred.resolve );
-		promises.push( deferred.promise() );
+		for ( j = 0, jLen = messagePaths.length; j < jLen; j++ ) {
+			deferred = $.Deferred();
+			$.i18n().load( messagePaths[j] + filename, languages[i] )
+				.always( deferred.resolve );
+			promises.push( deferred.promise() );
+		}
 	}
 	return $.when.apply( $, promises );
 };
