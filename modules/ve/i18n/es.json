@@ -93,10 +93,12 @@
 	"visualeditor-shortcuts-text-style": "Estilo de texto",
 	"visualeditor-specialcharacter-button-tooltip": "Carácter especial",
 	"visualeditor-specialcharacterinspector-title": "Carácter especial",
+	"visualeditor-toolbar-format-tooltip": "Formato de párrafo",
 	"visualeditor-toolbar-history": "Historial",
 	"visualeditor-toolbar-insert": "Insertar",
 	"visualeditor-toolbar-paragraph-format": "Formato",
 	"visualeditor-toolbar-structure": "Estructura",
+	"visualeditor-toolbar-style-tooltip": "Estilo de texto",
 	"visualeditor-toolbar-text-style": "Estilo",
 	"visualeditor-version-label": "Versión"
 }

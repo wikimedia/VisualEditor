@@ -32,8 +32,8 @@
 	"visualeditor-clipboard-cut": "Wytnij",
 	"visualeditor-clipboard-paste": "Wklej",
 	"visualeditor-clipboard-paste-special": "Wklej jako zwykły tekst",
-	"visualeditor-commentinspector-edit": "Edytuj komentarz",
-	"visualeditor-commentinspector-insert": "Wstaw komentarz",
+	"visualeditor-commentinspector-edit": "Edytuj ukryty komentarz",
+	"visualeditor-commentinspector-insert": "Wstaw ukryty komentarz",
 	"visualeditor-commentinspector-title": "Komentarz",
 	"visualeditor-commentinspector-tooltip": "Komentarz",
 	"visualeditor-dialog-action-apply": "Zastosuj",
@@ -88,10 +88,12 @@
 	"visualeditor-specialcharacter-button-tooltip": "Znak specjalny",
 	"visualeditor-specialcharacterinspector-title": "Znak specjalny",
 	"visualeditor-specialcharinspector-characterlist-insert": "{\n\t\"Symbole\": {\n\t\t\"−\": \"−\",\n\t\t\"—\": \"—\",\n\t\t\"°\": \"°\",\n\t\t\"„\": \"„\",\n\t\t\"”\": \"”\",\n\t\t\"″\": \"″\",\n\t\t\"′\": \"′\",\n\t\t\"←\": \"←\",\n\t\t\"→\": \"→\",\n\t\t\"·\": \"·\",\n\t\t\"…\" : \"…\",\n\t\t\"€\" : \"€\",\n\t\t\"§\": \"§\"\n\t},\n\t\"Diakrytyzowane\": {\n\t\t\"à\": \"à\",\n\t\t\"á\": \"á\",\n\t\t\"â\": \"â\",\n\t\t\"ä\": \"ä\",\n\t\t\"ç\": \"ç\",\n\t\t\"è\": \"è\",\n\t\t\"é\": \"é\",\n\t\t\"ê\": \"ê\",\n\t\t\"ë\": \"ë\",\n\t\t\"ì\": \"ì\",\n\t\t\"í\": \"í\",\n\t\t\"î\": \"î\",\n\t\t\"ï\": \"ï\",\n\t\t\"ò\": \"ò\",\n\t\t\"ó\": \"ó\",\n\t\t\"ô\": \"ô\",\n\t\t\"ö\": \"ö\",\n\t\t\"ø\": \"ø\",\n\t\t\"ù\": \"ù\",\n\t\t\"ú\": \"ú\",\n\t\t\"û\": \"û\",\n\t\t\"ü\": \"ü\"\n\t},\n\t\"Matematyczne\": {\n\t\t\"−\": \"−\",\n\t\t\"×\": \"×\",\n\t\t\"÷\": \"÷\",\n\t\t\"≈\": \"≈\",\n\t\t\"≠\": \"≠\",\n\t\t\"≤\": \"≤\",\n\t\t\"≥\": \"≥\",\n\t\t\"±\": \"±\"\n\t}\n}",
+	"visualeditor-toolbar-format-tooltip": "Formatowanie akapitu",
 	"visualeditor-toolbar-history": "Historia",
 	"visualeditor-toolbar-insert": "Wstaw",
 	"visualeditor-toolbar-paragraph-format": "Formatowanie",
 	"visualeditor-toolbar-structure": "Struktura",
+	"visualeditor-toolbar-style-tooltip": "Styl tekstu",
 	"visualeditor-toolbar-text-style": "Wygląd",
 	"visualeditor-version-label": "Wersja"
 }

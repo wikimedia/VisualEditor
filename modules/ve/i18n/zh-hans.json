@@ -89,10 +89,12 @@
 	"visualeditor-shortcuts-text-style": "文本样式",
 	"visualeditor-specialcharacter-button-tooltip": "特殊字符",
 	"visualeditor-specialcharacterinspector-title": "特殊字符",
+	"visualeditor-toolbar-format-tooltip": "格式段落",
 	"visualeditor-toolbar-history": "历史",
 	"visualeditor-toolbar-insert": "插入",
 	"visualeditor-toolbar-paragraph-format": "格式化",
 	"visualeditor-toolbar-structure": "结构",
+	"visualeditor-toolbar-style-tooltip": "样式文本",
 	"visualeditor-toolbar-text-style": "样式",
 	"visualeditor-version-label": "版本"
 }

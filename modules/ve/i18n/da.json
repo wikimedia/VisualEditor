@@ -82,10 +82,12 @@
 	"visualeditor-shortcuts-text-style": "Tekststil",
 	"visualeditor-specialcharacter-button-tooltip": "Specialtegn",
 	"visualeditor-specialcharacterinspector-title": "Specialtegn",
+	"visualeditor-toolbar-format-tooltip": "Formater afsnit",
 	"visualeditor-toolbar-history": "Historik",
 	"visualeditor-toolbar-insert": "Indsæt",
 	"visualeditor-toolbar-paragraph-format": "Formatering",
 	"visualeditor-toolbar-structure": "Struktur",
+	"visualeditor-toolbar-style-tooltip": "Tekststil",
 	"visualeditor-toolbar-text-style": "Stil",
 	"visualeditor-version-label": "Version"
 }

@@ -88,10 +88,12 @@
 	"visualeditor-shortcuts-text-style": "Стиль тексту",
 	"visualeditor-specialcharacter-button-tooltip": "Спеціальний символ",
 	"visualeditor-specialcharacterinspector-title": "Спеціальний символ",
+	"visualeditor-toolbar-format-tooltip": "Форматувати абзац",
 	"visualeditor-toolbar-history": "Історія",
 	"visualeditor-toolbar-insert": "Вставити",
 	"visualeditor-toolbar-paragraph-format": "Форматування",
 	"visualeditor-toolbar-structure": "Структура",
+	"visualeditor-toolbar-style-tooltip": "Стиль тексту",
 	"visualeditor-toolbar-text-style": "Стиль",
 	"visualeditor-version-label": "Версія"
 }

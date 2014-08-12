@@ -82,10 +82,12 @@
 	"visualeditor-shortcuts-text-style": "Styling κειμένου",
 	"visualeditor-specialcharacter-button-tooltip": "Ειδικοί χαρακτήρες",
 	"visualeditor-specialcharacterinspector-title": "Ειδικός χαρακτήρας",
+	"visualeditor-toolbar-format-tooltip": "Μορφή παραγράφου",
 	"visualeditor-toolbar-history": "Ιστορικό",
 	"visualeditor-toolbar-insert": "Εισαγωγή",
 	"visualeditor-toolbar-paragraph-format": "Μορφοποίηση",
 	"visualeditor-toolbar-structure": "Δομή",
+	"visualeditor-toolbar-style-tooltip": "Στυλ κειμένου",
 	"visualeditor-toolbar-text-style": "Styling",
 	"visualeditor-version-label": "Έκδοση"
 }

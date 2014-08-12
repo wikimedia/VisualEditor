@@ -91,10 +91,12 @@
 	"visualeditor-shortcuts-text-style": "Tekstopmaak",
 	"visualeditor-specialcharacter-button-tooltip": "Speciaal teken",
 	"visualeditor-specialcharacterinspector-title": "Speciaal teken",
+	"visualeditor-toolbar-format-tooltip": "Paragraaf maken",
 	"visualeditor-toolbar-history": "Geschiedenis",
 	"visualeditor-toolbar-insert": "Invoegen",
 	"visualeditor-toolbar-paragraph-format": "Opmaak",
 	"visualeditor-toolbar-structure": "Indeling",
+	"visualeditor-toolbar-style-tooltip": "Tekst opmaken",
 	"visualeditor-toolbar-text-style": "Opmaak",
 	"visualeditor-version-label": "Versie"
 }
