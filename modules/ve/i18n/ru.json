@@ -90,10 +90,12 @@
 	"visualeditor-shortcuts-text-style": "Стиль текста",
 	"visualeditor-specialcharacter-button-tooltip": "Специальный символ",
 	"visualeditor-specialcharacterinspector-title": "Специальный символ",
+	"visualeditor-toolbar-format-tooltip": "Формат абзаца",
 	"visualeditor-toolbar-history": "История",
 	"visualeditor-toolbar-insert": "Вставить",
 	"visualeditor-toolbar-paragraph-format": "Форматирование",
 	"visualeditor-toolbar-structure": "Структура",
+	"visualeditor-toolbar-style-tooltip": "Стиль текста",
 	"visualeditor-toolbar-text-style": "Стиль",
 	"visualeditor-version-label": "Версия"
 }
