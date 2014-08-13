@@ -11,6 +11,7 @@ module.exports = function ( grunt ) {
 	grunt.loadNpmTasks( 'grunt-contrib-csslint' );
 	grunt.loadNpmTasks( 'grunt-contrib-jshint' );
 	grunt.loadNpmTasks( 'grunt-contrib-watch' );
+	grunt.loadNpmTasks( 'grunt-css-url-embed' );
 	grunt.loadNpmTasks( 'grunt-cssjanus' );
 	grunt.loadNpmTasks( 'grunt-jscs' );
 	grunt.loadNpmTasks( 'grunt-karma' );
@@ -43,6 +44,13 @@ module.exports = function ( grunt ) {
 		clean: {
 			dist: [ 'dist/*', 'test-coverage/*' ]
 		},
+		cssUrlEmbed: {
+			dist: {
+				dest: 'dist/visualEditor.css',
+				src: introBuildFiles.styles
+					.concat( coreBuildFiles.styles )
+			}
+		},
 		concat: {
 			buildJs: {
 				dest: 'dist/visualEditor.js',
@@ -51,8 +59,7 @@ module.exports = function ( grunt ) {
 			},
 			buildCss: {
 				dest: 'dist/visualEditor.css',
-				src: introBuildFiles.styles
-					.concat( coreBuildFiles.styles )
+				src: ['dist/visualEditor.css']
 			}
 		},
 		cssjanus: {
@@ -62,11 +69,6 @@ module.exports = function ( grunt ) {
 			}
 		},
 		copy: {
-			images: {
-				src: 'modules/ve/ui/styles/images/**/*.*',
-				strip: 'modules/ve/ui/styles/',
-				dest: 'dist/'
-			},
 			i18n: {
 				src: 'modules/ve/i18n/*.json',
 				strip: 'modules/ve/',
@@ -228,7 +230,7 @@ module.exports = function ( grunt ) {
 
 	grunt.registerTask( 'lint', [ 'jshint', 'jscs', 'csslint', 'banana' ] );
 	grunt.registerTask( 'unit', [ 'karma:unicodejs', 'karma:visualeditor' ] );
-	grunt.registerTask( 'build', [ 'clean', 'git-build', 'concat', 'cssjanus', 'copy', 'buildloader' ] );
+	grunt.registerTask( 'build', [ 'clean', 'git-build', 'cssUrlEmbed', 'concat', 'cssjanus', 'copy', 'buildloader' ] );
 	grunt.registerTask( 'test', [ 'build', 'lint', 'karma:unicodejs', 'karma:visualeditor' ] );
 	grunt.registerTask( 'watch', [ 'karma:bg:start', 'runwatch' ] );
 	grunt.registerTask( 'default', 'test' );
