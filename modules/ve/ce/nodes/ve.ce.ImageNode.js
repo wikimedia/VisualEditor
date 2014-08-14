@@ -78,7 +78,7 @@ ve.ce.ImageNode.prototype.onAttributeChange = function ( key, from, to ) {
 		this.$image.attr( 'src', this.getResolvedAttribute( 'src' ) );
 	}
 	if ( key === 'width' || key === 'height' ) {
-		this.$image.css( key, to );
+		this.$image.css( key, to !== null ? to : '' );
 	}
 };
 
