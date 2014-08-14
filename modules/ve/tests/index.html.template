@@ -9,7 +9,7 @@
 	</head>
 	<body>
 		<div id="qunit"></div>
-		<div id="qunit-fixture">test markup</div>
+		<div id="qunit-fixture">Loading QUnit. Ensure you have run <code>npm install</code>.</div>
 
 <!-- SCRIPTS -->
 
