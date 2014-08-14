@@ -130,6 +130,17 @@ module.exports = function ( grunt ) {
 				i18n: [ 'dist/i18n/', 'lib/oojs-ui/i18n/' ],
 				indent: '\t\t',
 				placeholders: { menu: demoMenu }
+			},
+			test: {
+				targetFile: 'modules/ve/tests/index.html',
+				template: 'modules/ve/tests/index.html.template',
+				modules: modules,
+				env: {
+					test: true
+				},
+				load: [ 'visualEditor.test' ],
+				pathPrefix: '../../../',
+				indent: '\t\t'
 			}
 		},
 		jshint: {
