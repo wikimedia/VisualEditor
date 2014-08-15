@@ -94,20 +94,6 @@ ve.init.sa.Platform.prototype.getParsedMessage = function ( key ) {
 };
 
 /** @inheritdoc */
-ve.init.sa.Platform.prototype.getSystemPlatform = function () {
-	var platforms = ['win', 'mac', 'linux', 'sunos', 'solaris', 'iphone'],
-		match = new RegExp( '(' + platforms.join( '|' ) + ')' ).exec( window.navigator.platform.toLowerCase() );
-	if ( match ) {
-		return match[1];
-	}
-};
-
-/** @inheritdoc */
-ve.init.sa.Platform.prototype.isInternetExplorer = function () {
-	return navigator.appVersion.indexOf( 'Trident' ) !== -1;
-};
-
-/** @inheritdoc */
 ve.init.sa.Platform.prototype.getLanguageCodes = function () {
 	return Object.keys( $.uls.data.getAutonyms() );
 };

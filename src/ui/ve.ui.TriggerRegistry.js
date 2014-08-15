@@ -37,7 +37,7 @@ OO.inheritClass( ve.ui.TriggerRegistry, OO.Registry );
  */
 ve.ui.TriggerRegistry.prototype.register = function ( name, triggers ) {
 	var i, l, triggerList,
-		platform = ve.init.platform.getSystemPlatform(),
+		platform = ve.getSystemPlatform(),
 		platformKey = platform === 'mac' ? 'mac' : 'pc';
 
 	if ( ve.isPlainObject( triggers ) ) {

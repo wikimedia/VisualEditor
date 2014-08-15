@@ -57,7 +57,7 @@ ve.ui.CommandHelpDialog.prototype.initialize = function () {
 	ve.ui.CommandHelpDialog.super.prototype.initialize.call( this );
 
 	var i, j, jLen, k, kLen, triggerList, commands, shortcut,
-		platform = ve.init.platform.getSystemPlatform(),
+		platform = ve.getSystemPlatform(),
 		platformKey = platform === 'mac' ? 'mac' : 'pc',
 		$list, $shortcut,
 		commandGroups = this.constructor.static.getCommandGroups();

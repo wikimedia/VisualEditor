@@ -929,6 +929,21 @@
 	 */
 	ve.isMsie = navigator.userAgent.indexOf( 'MSIE' ) !== -1;
 
+	/**
+	 * Get the client platform string from the browser.
+	 *
+	 * HACK: This is a wrapper for calling getSystemPlatform() on the current platform
+	 * except that if the platform hasn't been constructed yet, it falls back to using
+	 * the base class implementation in {ve.init.Platform}. A proper solution would be
+	 * not to need this information before the platform is constructed.
+	 *
+	 * @see ve.init.Platform#getSystemPlatform
+	 * @returns {string} Client platform string
+	 */
+	ve.getSystemPlatform = function () {
+		return ( ve.init.platform && ve.init.platform.constructor || ve.init.Platform ).static.getSystemPlatform();
+	};
+
 	// Expose
 	window.ve = ve;
 }() );

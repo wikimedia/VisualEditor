@@ -386,7 +386,7 @@ ve.ui.Trigger.prototype.toString = function () {
 ve.ui.Trigger.prototype.getMessage = function () {
 	var keys,
 		platformFilters = ve.ui.Trigger.static.platformFilters,
-		platform = ve.init.platform.getSystemPlatform();
+		platform = ve.getSystemPlatform();
 
 	keys = this.toString().split( '+' );
 	if ( platform in platformFilters ) {
