@@ -138,7 +138,7 @@ module.exports = function ( grunt ) {
 					test: true
 				},
 				load: [ 'visualEditor.test' ],
-				pathPrefix: '../../../',
+				pathPrefix: '../',
 				indent: '\t\t'
 			}
 		},
