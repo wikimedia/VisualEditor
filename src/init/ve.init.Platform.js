@@ -22,6 +22,39 @@ ve.init.Platform = function VeInitPlatform() {
 
 OO.mixinClass( ve.init.Platform, OO.EventEmitter );
 
+/* Static Methods */
+
+/**
+ * Get client platform string from browser.
+ *
+ * @static
+ * @method
+ * @inheritable
+ * @returns {string} Client platform string
+ */
+ve.init.Platform.static.getSystemPlatform = function () {
+	var platforms = ['win', 'mac', 'linux', 'sunos', 'solaris', 'iphone'],
+		match = new RegExp( '(' + platforms.join( '|' ) + ')' ).exec( window.navigator.platform.toLowerCase() );
+	if ( match ) {
+		return match[1];
+	}
+};
+
+/**
+ * Check whether we are running in Internet Explorer.
+ *
+ * HACK: This should not be needed, and it should eventually be removed. If this hasn't died
+ * in a fire by the end of September 2014, Roan has failed.
+ *
+ * @static
+ * @method
+ * @inheritable
+ * @returns {boolean} Whether we are in IE
+ */
+ve.init.Platform.static.isInternetExplorer = function () {
+	return navigator.appVersion.indexOf( 'Trident' ) !== -1;
+};
+
 /* Methods */
 
 /**
@@ -82,17 +115,6 @@ ve.init.Platform.prototype.addParsedMessages = function () {
  */
 ve.init.Platform.prototype.getParsedMessage = function () {
 	throw new Error( 've.init.Platform.getParsedMessage must be overridden in subclass' );
-};
-
-/**
- * Get client platform string from browser.
- *
- * @method
- * @abstract
- * @returns {string} Client platform string
- */
-ve.init.Platform.prototype.getSystemPlatform = function () {
-	throw new Error( 've.init.Platform.getSystemPlatform must be overridden in subclass' );
 };
 
 /**
@@ -162,19 +184,6 @@ ve.init.Platform.prototype.getLanguageAutonym = function () {
  */
 ve.init.Platform.prototype.getLanguageDirection = function () {
 	throw new Error( 've.init.Platform.getLanguageDirection must be overridden in subclass' );
-};
-
-/**
- * Check whether we are running in Internet Explorer.
- *
- * HACK: This should not be needed, and it should eventually be removed. If this hasn't died
- * in a fire by the end of September 2014, Roan has failed.
- *
- * @abstract
- * @returns {boolean} Whether we are in IE
- */
-ve.init.Platform.prototype.isInternetExplorer = function () {
-	throw new Error( 've.init.Platform.isInternetExplorer must be overridden in subclass' );
 };
 
 /**
