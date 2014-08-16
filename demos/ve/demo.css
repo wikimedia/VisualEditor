@@ -15,6 +15,15 @@ body {
 
 /* Demo */
 
+.ve-demo-logo {
+	float: right;
+	margin: -0.4em -0.3em 0 0;
+	background: url('VisualEditor-logo.svg') no-repeat;
+	background-size: contain;
+	width: 8.6em;
+	height: 3em;
+}
+
 .ve-demo-menu {
 	padding: 0.75em 1.5em;
 }
