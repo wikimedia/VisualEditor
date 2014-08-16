@@ -25,21 +25,20 @@ ve.ce.ImageNode = function VeCeImageNode( model, config ) {
 	// Parent constructor
 	ve.ce.LeafNode.call( this, model, config );
 
-	// Properties
-	this.$image = this.$( '<img>' ).appendTo( this.$element );
-
 	// Mixin constructors
 	ve.ce.FocusableNode.call( this );
-	ve.ce.ResizableNode.call( this, this.$image, config );
+	ve.ce.ResizableNode.call( this, this.$element, config );
 
 	// Events
-	this.$element.on( 'click', ve.bind( this.onClick, this ) );
-	this.$image.on( 'load', ve.bind( this.onLoad, this ) );
+	this.$element.on( {
+		click: ve.bind( this.onClick, this ),
+		load: ve.bind( this.onLoad, this )
+	} );
 	this.model.connect( this, { attributeChange: 'onAttributeChange' } );
 
 	// Initialization
-	this.$element.addClass( 've-ce-imageNode' );
-	this.$image
+	this.$element
+		.addClass( 've-ce-imageNode' )
 		.attr( {
 			alt: this.model.getAttribute( 'alt' ),
 			src: this.getResolvedAttribute( 'src' )
@@ -61,7 +60,7 @@ OO.mixinClass( ve.ce.ImageNode, ve.ce.ResizableNode );
 
 ve.ce.ImageNode.static.name = 'image';
 
-ve.ce.ImageNode.static.tagName = 'span';
+ve.ce.ImageNode.static.tagName = 'img';
 
 /* Methods */
 
@@ -75,10 +74,10 @@ ve.ce.ImageNode.static.tagName = 'span';
  */
 ve.ce.ImageNode.prototype.onAttributeChange = function ( key, from, to ) {
 	if ( key === 'src' ) {
-		this.$image.attr( 'src', this.getResolvedAttribute( 'src' ) );
+		this.$element.attr( 'src', this.getResolvedAttribute( 'src' ) );
 	}
 	if ( key === 'width' || key === 'height' ) {
-		this.$image.css( key, to !== null ? to : '' );
+		this.$element.css( key, to !== null ? to : '' );
 	}
 };
 
@@ -110,8 +109,8 @@ ve.ce.ImageNode.prototype.onClick = function ( e ) {
  */
 ve.ce.ImageNode.prototype.onLoad = function () {
 	this.setOriginalDimensions( {
-		width: this.$image.prop( 'naturalWidth' ),
-		height: this.$image.prop( 'naturalHeight' )
+		width: this.$element.prop( 'naturalWidth' ),
+		height: this.$element.prop( 'naturalHeight' )
 	} );
 };
 
