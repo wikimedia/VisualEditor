@@ -176,7 +176,7 @@ ve.dm.example.fullImgSrc = ve.resolveUrl( ve.dm.example.imgSrc, ve.dm.example.ba
 ve.dm.example.image = {
 	html: '<img src="' + ve.dm.example.imgSrc + '" alt="Example" width="100" height="50">',
 	data: {
-		type: 'image',
+		type: 'inlineImage',
 		attributes: {
 			src: ve.dm.example.imgSrc,
 			alt: 'Example',
@@ -339,7 +339,7 @@ ve.dm.example.data = [
 	// 39 - Beginning of inline image
 	ve.dm.example.image.data,
 	// 40 - End of inline image
-	{ type: '/image' },
+	{ type: '/inlineImage' },
 	// 41 - Plain "i"
 	'i',
 	// 42 - End of preformatted
@@ -807,7 +807,7 @@ ve.dm.example.inlineAtEdges = [
 	// 1
 	ve.dm.example.image.data,
 	// 2
-	{ type: '/image' },
+	{ type: '/inlineImage' },
 	// 3
 	'F', 'o', 'o',
 	// 6
@@ -892,7 +892,7 @@ ve.dm.example.tree = new ve.dm.DocumentNode( [
 	// Preformatted with "h[example.png]i"
 	new ve.dm.PreformattedNode( ve.dm.example.data[37], [
 		new ve.dm.TextNode( 1 ),
-		new ve.dm.ImageNode( ve.dm.example.data[39] ),
+		new ve.dm.InlineImageNode( ve.dm.example.data[39] ),
 		new ve.dm.TextNode( 1 )
 	] ),
 	new ve.dm.DefinitionListNode( ve.dm.example.data[43], [
@@ -949,7 +949,7 @@ ve.dm.example.conversions = {
 	},
 	image: {
 		domElement: ve.dm.example.createDomElement( 'img' ),
-		dataElement: { type: 'image' }
+		dataElement: { type: 'inlineImage' }
 	},
 	listItem: {
 		domElement: ve.dm.example.createDomElement( 'li' ),
@@ -1091,7 +1091,7 @@ ve.dm.example.domToDataCases = {
 		data: [
 			{ type: 'paragraph', internal: { generated: 'wrapper' } },
 			ve.dm.example.image.data,
-			{ type: '/image' },
+			{ type: '/inlineImage' },
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
@@ -1310,7 +1310,7 @@ ve.dm.example.domToDataCases = {
 		data: [
 			{ type: 'paragraph', internal: { generated: 'wrapper' } },
 			ve.dm.example.image.data,
-			{ type: '/image' },
+			{ type: '/inlineImage' },
 			'1',
 			'2',
 			{ type: '/paragraph' },

@@ -1,12 +1,12 @@
 /*!
- * VisualEditor ContentEditable ImageNode class.
+ * VisualEditor ContentEditable InlineImageNode class.
  *
  * @copyright 2011-2014 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * ContentEditable image node.
+ * ContentEditable inline image node.
  *
  * @class
  * @extends ve.ce.LeafNode
@@ -14,10 +14,10 @@
  * @mixins ve.ce.ResizableNode
  *
  * @constructor
- * @param {ve.dm.ImageNode} model Model to observe
+ * @param {ve.dm.InlineImageNode} model Model to observe
  * @param {Object} [config] Configuration options
  */
-ve.ce.ImageNode = function VeCeImageNode( model, config ) {
+ve.ce.InlineImageNode = function VeCeInlineImageNode( model, config ) {
 	config = ve.extendObject( {
 		minDimensions: { width: 1, height: 1 }
 	}, config );
@@ -30,10 +30,7 @@ ve.ce.ImageNode = function VeCeImageNode( model, config ) {
 	ve.ce.ResizableNode.call( this, this.$element, config );
 
 	// Events
-	this.$element.on( {
-		click: ve.bind( this.onClick, this ),
-		load: ve.bind( this.onLoad, this )
-	} );
+	this.$element.on( 'load', ve.bind( this.onLoad, this ) );
 	this.model.connect( this, { attributeChange: 'onAttributeChange' } );
 
 	// Initialization
@@ -51,16 +48,16 @@ ve.ce.ImageNode = function VeCeImageNode( model, config ) {
 
 /* Inheritance */
 
-OO.inheritClass( ve.ce.ImageNode, ve.ce.LeafNode );
+OO.inheritClass( ve.ce.InlineImageNode, ve.ce.LeafNode );
 
-OO.mixinClass( ve.ce.ImageNode, ve.ce.FocusableNode );
-OO.mixinClass( ve.ce.ImageNode, ve.ce.ResizableNode );
+OO.mixinClass( ve.ce.InlineImageNode, ve.ce.FocusableNode );
+OO.mixinClass( ve.ce.InlineImageNode, ve.ce.ResizableNode );
 
 /* Static Properties */
 
-ve.ce.ImageNode.static.name = 'image';
+ve.ce.InlineImageNode.static.name = 'inlineImage';
 
-ve.ce.ImageNode.static.tagName = 'img';
+ve.ce.InlineImageNode.static.tagName = 'img';
 
 /* Methods */
 
@@ -72,7 +69,7 @@ ve.ce.ImageNode.static.tagName = 'img';
  * @param {string} from Old value
  * @param {string} to New value
  */
-ve.ce.ImageNode.prototype.onAttributeChange = function ( key, from, to ) {
+ve.ce.InlineImageNode.prototype.onAttributeChange = function ( key, from, to ) {
 	if ( key === 'src' ) {
 		this.$element.attr( 'src', this.getResolvedAttribute( 'src' ) );
 	}
@@ -82,32 +79,12 @@ ve.ce.ImageNode.prototype.onAttributeChange = function ( key, from, to ) {
 };
 
 /**
- * Handle the mouse click.
- *
- * @method
- * @param {jQuery.Event} e Click event
- */
-ve.ce.ImageNode.prototype.onClick = function ( e ) {
-	var surfaceModel = this.getRoot().getSurface().getModel(),
-		selectionRange = surfaceModel.getSelection(),
-		nodeRange = this.model.getOuterRange();
-
-	surfaceModel.getFragment(
-		e.shiftKey ?
-			ve.Range.newCoveringRange(
-				[ selectionRange, nodeRange ], selectionRange.from > nodeRange.from
-			) :
-			nodeRange
-	).select();
-};
-
-/**
  * Handle the image load
  *
  * @method
  * @param {jQuery.Event} e Load event
  */
-ve.ce.ImageNode.prototype.onLoad = function () {
+ve.ce.InlineImageNode.prototype.onLoad = function () {
 	this.setOriginalDimensions( {
 		width: this.$element.prop( 'naturalWidth' ),
 		height: this.$element.prop( 'naturalHeight' )
@@ -116,4 +93,4 @@ ve.ce.ImageNode.prototype.onLoad = function () {
 
 /* Registration */
 
-ve.ce.nodeFactory.register( ve.ce.ImageNode );
+ve.ce.nodeFactory.register( ve.ce.InlineImageNode );

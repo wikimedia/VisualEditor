@@ -447,7 +447,7 @@ QUnit.test( 'cloneSliceFromRange', function ( assert ) {
 				range: new ve.Range( 1, 3 ),
 				expected: [
 					ve.dm.example.image.data,
-					{ type: '/image' }
+					{ type: '/inlineImage' }
 				],
 				originalRange: new ve.Range( 0, 2 ),
 				balancedRange: new ve.Range( 0, 2 )
@@ -469,7 +469,7 @@ QUnit.test( 'cloneSliceFromRange', function ( assert ) {
 				range: new ve.Range( 1, 5 ),
 				expected: [
 					ve.dm.example.image.data,
-					{ type: '/image' },
+					{ type: '/inlineImage' },
 					'F', 'o'
 				],
 				originalRange: new ve.Range( 0, 4 ),

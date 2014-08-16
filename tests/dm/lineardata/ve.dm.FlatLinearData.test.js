@@ -33,16 +33,16 @@ QUnit.test( 'isElementData', 1, function ( assert ) {
 		data = new ve.dm.FlatLinearData( new ve.dm.IndexValueStore(), [
 			{ type: 'heading' },
 			'a',
-			{ type: 'image' },
-			{ type: '/image' },
+			{ type: 'inlineImage' },
+			{ type: '/inlineImage' },
 			'b',
 			'c',
 			{ type: '/heading' },
 			{ type: 'paragraph' },
 			{ type: '/paragraph' },
 			{ type: 'preformatted' },
-			{ type: 'image' },
-			{ type: '/image' },
+			{ type: 'inlineImage' },
+			{ type: '/inlineImage' },
 			{ type: '/preformatted' },
 			{ type: 'list' },
 			{ type: 'listItem' },
@@ -99,7 +99,7 @@ QUnit.test( 'containsElementData', 1, function ( assert ) {
 			},
 			{
 				msg: 'non-text leaf',
-				data: ['a', { type: 'image' }, { type: '/image' }, 'c'],
+				data: ['a', { type: 'inlineImage' }, { type: '/inlineImage' }, 'c'],
 				expected: true
 			}
 		];

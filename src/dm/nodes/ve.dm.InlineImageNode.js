@@ -1,12 +1,12 @@
 /*!
- * VisualEditor DataModel ImageNode class.
+ * VisualEditor DataModel InlineImageNode class.
  *
  * @copyright 2011-2014 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * DataModel image node.
+ * DataModel inline image node.
  *
  * @class
  * @extends ve.dm.LeafNode
@@ -15,7 +15,7 @@
  * @constructor
  * @param {Object} [element] Reference to element in linear model
  */
-ve.dm.ImageNode = function VeDmImageNode() {
+ve.dm.InlineImageNode = function VeDmImageNode() {
 	// Parent constructor
 	ve.dm.LeafNode.apply( this, arguments );
 
@@ -25,19 +25,19 @@ ve.dm.ImageNode = function VeDmImageNode() {
 
 /* Inheritance */
 
-OO.inheritClass( ve.dm.ImageNode, ve.dm.LeafNode );
+OO.inheritClass( ve.dm.InlineImageNode, ve.dm.LeafNode );
 
-OO.mixinClass( ve.dm.ImageNode, ve.dm.ResizableNode );
+OO.mixinClass( ve.dm.InlineImageNode, ve.dm.ResizableNode );
 
 /* Static Properties */
 
-ve.dm.ImageNode.static.name = 'image';
+ve.dm.InlineImageNode.static.name = 'inlineImage';
 
-ve.dm.ImageNode.static.isContent = true;
+ve.dm.InlineImageNode.static.isContent = true;
 
-ve.dm.ImageNode.static.matchTagNames = [ 'img' ];
+ve.dm.InlineImageNode.static.matchTagNames = [ 'img' ];
 
-ve.dm.ImageNode.static.toDataElement = function ( domElements ) {
+ve.dm.InlineImageNode.static.toDataElement = function ( domElements ) {
 	var $node = $( domElements[0] ),
 		alt = $node.attr( 'alt' ),
 		width = $node.attr( 'width' ),
@@ -54,7 +54,7 @@ ve.dm.ImageNode.static.toDataElement = function ( domElements ) {
 	};
 };
 
-ve.dm.ImageNode.static.toDomElements = function ( dataElement, doc ) {
+ve.dm.InlineImageNode.static.toDomElements = function ( dataElement, doc ) {
 	var domElement = doc.createElement( 'img' );
 	ve.setDomAttributes( domElement, dataElement.attributes, [ 'alt', 'src', 'width', 'height' ] );
 	return [ domElement ];
@@ -63,7 +63,7 @@ ve.dm.ImageNode.static.toDomElements = function ( dataElement, doc ) {
 /**
  * @inheritdoc
  */
-ve.dm.ImageNode.prototype.createScalable = function () {
+ve.dm.InlineImageNode.prototype.createScalable = function () {
 	return new ve.dm.Scalable( {
 		currentDimensions: {
 			width: this.getAttribute( 'width' ),
@@ -78,4 +78,4 @@ ve.dm.ImageNode.prototype.createScalable = function () {
 
 /* Registration */
 
-ve.dm.modelRegistry.register( ve.dm.ImageNode );
+ve.dm.modelRegistry.register( ve.dm.InlineImageNode );
