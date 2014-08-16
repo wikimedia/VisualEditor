@@ -1469,23 +1469,75 @@ ve.ce.Surface.prototype.onSelectionChange = function ( oldRange, newRange ) {
  * @param {ve.Range} next.range New selection
  */
 ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
-	var data, range, len, annotations, offsetDiff, lengthDiff, sameLeadingAndTrailing,
-		previousStart, nextStart, newRange,
-		previousData, nextData,
-		i, length, annotation, annotationIndex, dataString,
-		annotationsLeft, annotationsRight,
+	var data, range, len, annotations, offsetDiff, sameLeadingAndTrailing,
+		previousStart, nextStart, newRange, replacementRange,
 		fromLeft = 0,
 		fromRight = 0,
-		nodeOffset = node.getModel().getOffset();
+		nodeOffset = node.getModel().getOffset(),
+		previousData = ve.splitClusters( previous.text ),
+		nextData = ve.splitClusters( next.text ),
+		lengthDiff = next.text.length - previous.text.length,
+		nextDataString = new ve.dm.DataString( nextData ),
+		surface = this;
+
+	/**
+	 * Given a naïvely computed set of annotations to apply to the content we're about to insert,
+	 * this function will check if we're inserting at a word break, check if there are any
+	 * annotations in the set that need to be split at a word break, and remove those.
+	 *
+	 * @private
+	 * @param {ve.dm.AnnotationSet} annotations Annotations to apply. Will be modified.
+	 * @param {ve.Range} range Range covering removed content, or collapsed range at insertion offset.
+	 */
+	function filterForWordbreak( annotations, range ) {
+		var i, length, annotation, annotationIndex, annotationsLeft, annotationsRight,
+			left = range.start,
+			right = range.end,
+			// - nodeOffset - 1 to adjust from absolute to relative
+			// adjustment from prev to next not needed because we're before the replacement
+			breakLeft = unicodeJS.wordbreak.isBreak( nextDataString, left - nodeOffset - 1 ),
+			// - nodeOffset - 1 to adjust from absolute to relative
+			// + lengthDiff to adjust from prev to next
+			breakRight = unicodeJS.wordbreak.isBreak( nextDataString, right + lengthDiff - nodeOffset - 1 );
+
+		if ( !breakLeft && !breakRight ) {
+			// No word breaks either side, so nothing to do
+			return;
+		}
+
+		annotationsLeft = surface.getModel().getDocument().data.getAnnotationsFromOffset( left - 1 );
+		annotationsRight = surface.getModel().getDocument().data.getAnnotationsFromOffset( right );
+
+		for ( i = 0, length = annotations.getLength(); i < length; i++ ) {
+			annotation = annotations.get( i );
+			annotationIndex = annotations.getIndex( i );
+			if (
+				// This annotation splits on wordbreak, and...
+				annotation.constructor.static.splitOnWordbreak &&
+				(
+					// either we're at its right-hand boundary (its end is to our left) and
+					// there's a wordbreak to our left
+					( breakLeft && !annotationsRight.containsIndex( annotationIndex ) ) ||
+					// or we're at its left-hand boundary (its beginning is to our right) and
+					// there's a wordbreak to our right
+					( breakRight && !annotationsLeft.containsIndex( annotationIndex ) )
+				)
+			) {
+				annotations.removeAt( i );
+				i--;
+				length--;
+			}
+		}
+	}
 
 	if ( previous.range && next.range ) {
 		offsetDiff = ( previous.range.isCollapsed() && next.range.isCollapsed() ) ?
 			next.range.start - previous.range.start : null;
-		lengthDiff = next.text.length - previous.text.length;
 		previousStart = previous.range.start - nodeOffset - 1;
 		nextStart = next.range.start - nodeOffset - 1;
 		sameLeadingAndTrailing = offsetDiff !== null && (
 			// TODO: rewrite to static method with tests
+			// TODO: actually start using the result again, or a modified version thereof
 			(
 				lengthDiff > 0 &&
 				previous.text.substring( 0, previousStart ) ===
@@ -1504,14 +1556,12 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 
 		// Simple insertion
 		if ( lengthDiff > 0 && offsetDiff === lengthDiff /* && sameLeadingAndTrailing */) {
-			data = ve.splitClusters( next.text ).slice(
-				previous.range.start - nodeOffset - 1,
-				next.range.start - nodeOffset - 1
-			);
+			data = ve.splitClusters( next.text ).slice( previousStart, nextStart );
 			// Apply insertion annotations
 			annotations = this.model.getInsertionAnnotations();
-			if ( annotations instanceof ve.dm.AnnotationSet ) {
-				ve.dm.Document.static.addAnnotationsToData( data, this.model.getInsertionAnnotations() );
+			if ( annotations.getLength() ) {
+				filterForWordbreak( annotations, new ve.Range( previous.range.start ) );
+				ve.dm.Document.static.addAnnotationsToData( data, annotations );
 			}
 			this.incRenderLock();
 			try {
@@ -1550,8 +1600,6 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 
 	// Complex change
 
-	previousData = ve.splitClusters( previous.text );
-	nextData = ve.splitClusters( next.text );
 	len = Math.min( previousData.length, nextData.length );
 	// Count same characters from left
 	while ( fromLeft < len && previousData[fromLeft] === nextData[fromLeft] ) {
@@ -1565,35 +1613,16 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 	) {
 		++fromRight;
 	}
+	replacementRange = new ve.Range(
+		nodeOffset + 1 + fromLeft,
+		nodeOffset + 1 + previousData.length - fromRight
+	);
 	data = nextData.slice( fromLeft, nextData.length - fromRight );
+
 	// Get annotations to the left of new content and apply
-	annotations = this.model.getDocument().data.getAnnotationsFromOffset( nodeOffset + 1 + fromLeft );
+	annotations = this.model.getDocument().data.getAnnotationsFromOffset( replacementRange.start );
 	if ( annotations.getLength() ) {
-		annotationsLeft = this.model.getDocument().data.getAnnotationsFromOffset( nodeOffset + fromLeft );
-		annotationsRight = this.model.getDocument().data.getAnnotationsFromOffset( nodeOffset + 1 + previousData.length - fromRight );
-		for ( i = 0, length = annotations.getLength(); i < length; i++ ) {
-			annotation = annotations.get( i );
-			annotationIndex = annotations.getIndex( i );
-			if ( annotation.constructor.static.splitOnWordbreak ) {
-				dataString = new ve.dm.DataString( nextData );
-				if (
-					// if no annotation to the right, check for wordbreak
-					(
-						!annotationsRight.containsIndex( annotationIndex ) &&
-						unicodeJS.wordbreak.isBreak( dataString, fromLeft )
-					) ||
-					// if no annotation to the left, check for wordbreak
-					(
-						!annotationsLeft.containsIndex( annotationIndex ) &&
-						unicodeJS.wordbreak.isBreak( dataString, nextData.length - fromRight )
-					)
-				) {
-					annotations.removeAt( i );
-					i--;
-					length--;
-				}
-			}
-		}
+		filterForWordbreak( annotations, replacementRange );
 		ve.dm.Document.static.addAnnotationsToData( data, annotations );
 	}
 	newRange = next.range;
@@ -1602,14 +1631,7 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 	}
 
 	this.changeModel(
-		ve.dm.Transaction.newFromReplacement(
-			this.documentView.model,
-			new ve.Range(
-				nodeOffset + 1 + fromLeft,
-				nodeOffset + 1 + previousData.length - fromRight
-			),
-			data
-		),
+		ve.dm.Transaction.newFromReplacement( this.documentView.model, replacementRange, data ),
 		newRange
 	);
 };
