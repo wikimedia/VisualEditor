@@ -985,7 +985,7 @@ ve.ce.Surface.prototype.onPaste = function ( e ) {
  * @param {jQuery.Event} e Paste event
  */
 ve.ce.Surface.prototype.beforePaste = function ( e ) {
-	var tx, node, range, rangyRange, sel,
+	var tx, node, range, contextElement, rangyRange, sel,
 		context, leftText, rightText, textNode, textStart, textEnd,
 		selection = this.model.getSelection(),
 		clipboardData = e.originalEvent.clipboardData,
@@ -1020,7 +1020,11 @@ ve.ce.Surface.prototype.beforePaste = function ( e ) {
 		// to the paste target to give CE some context.
 		textStart = textEnd = 0;
 		range = node.getRange();
-		context = [ node.getClonedElement() ];
+		contextElement = node.getClonedElement();
+		// Throw away inner whitespace and other internal properties
+		// otherwise our textStart/End offsets may be wrong.
+		delete contextElement.internal;
+		context = [ contextElement ];
 		// If there is content to the left of the cursor, put a placeholder
 		// character to the left of the cursor
 		if ( selection.start > range.start ) {

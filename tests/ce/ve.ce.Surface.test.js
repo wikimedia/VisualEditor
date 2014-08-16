@@ -553,7 +553,9 @@ QUnit.test( 'onCopy', function ( assert ) {
 } );
 
 QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
-	var i, exampleDoc = '<p></p><p>Foo</p>',
+	var i,
+		exampleDoc = '<p></p><p>Foo</p><h2> Baz </h2><table><tbody><tr><td></td></tbody></table>',
+		docLen = 24,
 		TestEvent = function ( data ) {
 			this.originalEvent = {
 				clipboardData: {
@@ -579,7 +581,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 							],
 							remove: []
 						},
-						{ type: 'retain', length: 8 }
+						{ type: 'retain', length: docLen - 1 }
 					]
 				],
 				msg: 'Text into empty paragraph'
@@ -596,7 +598,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 							insert: [ 'B', 'a', 'r' ],
 							remove: []
 						},
-						{ type: 'retain', length: 5 }
+						{ type: 'retain', length: docLen - 4 }
 					]
 				],
 				msg: 'Text into paragraph'
@@ -617,7 +619,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 							],
 							remove: []
 						},
-						{ type: 'retain', length: 5 }
+						{ type: 'retain', length: docLen - 4 }
 					]
 				],
 				msg: 'Formatted text into paragraph'
@@ -635,7 +637,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 							insert: [ 'B', 'a', 'r' ],
 							remove: []
 						},
-						{ type: 'retain', length: 5 }
+						{ type: 'retain', length: docLen - 4 }
 					]
 				],
 				msg: 'Formatted text into paragraph with pasteSpecial'
@@ -652,7 +654,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 							insert: [ 'B', 'a', 'r' ],
 							remove: []
 						},
-						{ type: 'retain', length: 5 }
+						{ type: 'retain', length: docLen - 4 }
 					]
 				],
 				msg: 'Paragraph into paragraph'
@@ -669,7 +671,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 							insert: [ 'B', 'a', 'r' ],
 							remove: []
 						},
-						{ type: 'retain', length: 3 }
+						{ type: 'retain', length: docLen - 6 }
 					]
 				],
 				msg: 'Paragraph at end of paragraph'
@@ -686,10 +688,44 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 							insert: [ 'B', 'a', 'r' ],
 							remove: []
 						},
-						{ type: 'retain', length: 6 }
+						{ type: 'retain', length: docLen - 3 }
 					]
 				],
 				msg: 'Paragraph at start of paragraph'
+			},
+			{
+				range: new ve.Range( 11 ),
+				pasteHtml: '<h2>Quux</h2>',
+				expectedRange: new ve.Range( 15 ),
+				expectedOps: [
+					[
+						{ type: 'retain', length: 11 },
+						{
+							type: 'replace',
+							insert: [ 'Q', 'u', 'u', 'x' ],
+							remove: []
+						},
+						{ type: 'retain', length: docLen - 11 }
+					]
+				],
+				msg: 'Heading into heading with whitespace'
+			},
+			{
+				range: new ve.Range( 17 ),
+				pasteHtml: 'Foo',
+				expectedRange: new ve.Range( 20 ),
+				expectedOps: [
+					[
+						{ type: 'retain', length: 17 },
+						{
+							type: 'replace',
+							insert: [ 'F', 'o', 'o' ],
+							remove: []
+						},
+						{ type: 'retain', length: docLen - 17 }
+					]
+				],
+				msg: 'Text into wrapper paragraph'
 			},
 			{
 				range: new ve.Range( 4 ),
@@ -703,7 +739,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 							insert: [ '☂', 'f', 'o', 'o', '☀' ],
 							remove: []
 						},
-						{ type: 'retain', length: 5 }
+						{ type: 'retain', length: docLen - 4 }
 					]
 				],
 				msg: 'Left/right placeholder characters'
@@ -728,7 +764,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 							],
 							remove: []
 						},
-						{ type: 'retain', length: 2 }
+						{ type: 'retain', length: docLen - 7 }
 					]
 				],
 				msg: 'List at end of paragraph (moves insertion point)'
@@ -764,7 +800,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 							],
 							remove: []
 						},
-						{ type: 'retain', length: 5 }
+						{ type: 'retain', length: docLen - 4 }
 					]
 				],
 				msg: 'Table with caption into paragraph'
@@ -786,7 +822,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 							insert: ve.dm.example.RDFa.slice( 0, 5 ),
 							remove: []
 						},
-						{ type: 'retain', length: 9 }
+						{ type: 'retain', length: docLen }
 					]
 				],
 				msg: 'RDFa attributes restored/overwritten from data-ve-attributes'
