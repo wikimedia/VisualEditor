@@ -10,7 +10,7 @@
  *
  * @class
  * @extends ve.dm.BranchNode
- * @mixins ve.dm.ResizableNode
+ * @mixins ve.dm.ImageNode
  *
  * @constructor
  * @param {Object} [element] Reference to element in linear model
@@ -21,14 +21,14 @@ ve.dm.BlockImageNode = function VeDmBlockImageNode() {
 	ve.dm.BranchNode.apply( this, arguments );
 
 	// Mixin constructor
-	ve.dm.ResizableNode.call( this );
+	ve.dm.ImageNode.call( this );
 };
 
 /* Inheritance */
 
 OO.inheritClass( ve.dm.BlockImageNode, ve.dm.BranchNode );
 
-OO.mixinClass( ve.dm.BlockImageNode, ve.dm.ResizableNode );
+OO.mixinClass( ve.dm.BlockImageNode, ve.dm.ImageNode );
 
 /* Static Properties */
 
@@ -123,22 +123,6 @@ ve.dm.BlockImageNode.static.toDomElements = function ( data, doc, converter ) {
 ve.dm.BlockImageNode.prototype.getCaptionNode = function () {
 	var node = this.children[0];
 	return node instanceof ve.dm.BlockImageCaptionNode ? node : null;
-};
-
-/**
- * @inheritdoc
- */
-ve.dm.BlockImageNode.prototype.createScalable = function () {
-	return new ve.dm.Scalable( {
-		currentDimensions: {
-			width: this.getAttribute( 'width' ),
-			height: this.getAttribute( 'height' )
-		},
-		minDimensions: {
-			width: 1,
-			height: 1
-		}
-	} );
 };
 
 /* Registration */

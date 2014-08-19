@@ -10,8 +10,7 @@
  *
  * @class
  * @extends ve.ce.BranchNode
- * @mixins ve.ce.FocusableNode
- * @mixins ve.ce.ResizableNode
+ * @mixins ve.ce.ImageNode
  *
  * @constructor
  * @param {ve.dm.BlockImageNode} model Model to observe
@@ -31,15 +30,10 @@ ve.ce.BlockImageNode = function VeCeBlockImageNode( model, config ) {
 		.prependTo( this.$element );
 
 	// Mixin constructors
-	ve.ce.FocusableNode.call( this );
-	ve.ce.ResizableNode.call( this, this.$image, config );
-
-	// Events
-	this.$image.on( 'load', ve.bind( this.onLoad, this ) );
-	this.model.connect( this, { attributeChange: 'onAttributeChange' } );
+	ve.ce.ImageNode.call( this, this.$element, this.$image, config );
 
 	// Initialization
-	this.$element.addClass( 've-ce-imageNode' );
+	this.$element.addClass( 've-ce-blockImageNode' );
 	this.$image
 		.attr( {
 			alt: this.model.getAttribute( 'alt' ),
@@ -55,46 +49,13 @@ ve.ce.BlockImageNode = function VeCeBlockImageNode( model, config ) {
 
 OO.inheritClass( ve.ce.BlockImageNode, ve.ce.BranchNode );
 
-OO.mixinClass( ve.ce.BlockImageNode, ve.ce.FocusableNode );
-OO.mixinClass( ve.ce.BlockImageNode, ve.ce.ResizableNode );
+OO.mixinClass( ve.ce.BlockImageNode, ve.ce.ImageNode );
 
 /* Static Properties */
 
 ve.ce.BlockImageNode.static.name = 'blockImage';
 
 ve.ce.BlockImageNode.static.tagName = 'figure';
-
-/* Methods */
-
-/**
- * Update the rendering of the 'src', 'width' and 'height' attributes when they change in the model.
- *
- * @method
- * @param {string} key Attribute key
- * @param {string} from Old value
- * @param {string} to New value
- */
-ve.ce.BlockImageNode.prototype.onAttributeChange = function ( key, from, to ) {
-	if ( key === 'src' ) {
-		this.$image.attr( 'src', this.getResolvedAttribute( 'src' ) );
-	}
-	if ( key === 'width' || key === 'height' ) {
-		this.$image.css( key, to !== null ? to : '' );
-	}
-};
-
-/**
- * Handle the image load
- *
- * @method
- * @param {jQuery.Event} e Load event
- */
-ve.ce.BlockImageNode.prototype.onLoad = function () {
-	this.setOriginalDimensions( {
-		width: this.$image.prop( 'naturalWidth' ),
-		height: this.$image.prop( 'naturalHeight' )
-	} );
-};
 
 /* Registration */
 
