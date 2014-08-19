@@ -39,11 +39,11 @@ ve.dm.Scalable = function VeDmScalable( config ) {
 	this.defaultSize = false;
 
 	// Initialize
-	this.currentDimensions = {};
-	this.defaultDimensions = {};
-	this.originalDimensions = {};
-	this.minDimensions = {};
-	this.maxDimensions = {};
+	this.currentDimensions = null;
+	this.defaultDimensions = null;
+	this.originalDimensions = null;
+	this.minDimensions = null;
+	this.maxDimensions = null;
 
 	// Properties
 	this.fixedRatio = config.fixedRatio;
@@ -207,13 +207,9 @@ ve.dm.Scalable.prototype.setRatioFromDimensions = function ( dimensions ) {
  * @fires currentSizeChange
  */
 ve.dm.Scalable.prototype.setCurrentDimensions = function ( dimensions ) {
-	var oldDimensions = this.getCurrentDimensions();
-
-	// Only update the new value if new dimensions are valid and
-	// is different than the old dimensions
 	if (
 		this.isDimensionsObjectValid( dimensions ) &&
-		!ve.compare( dimensions, oldDimensions )
+		!ve.compare( dimensions, this.getCurrentDimensions() || {} )
 	) {
 		this.currentDimensions = ve.copy( dimensions );
 		// Only use current dimensions for ratio if it isn't set
@@ -235,11 +231,8 @@ ve.dm.Scalable.prototype.setCurrentDimensions = function ( dimensions ) {
  */
 ve.dm.Scalable.prototype.setOriginalDimensions = function ( dimensions ) {
 	if (
-		!this.originalDimensions ||
-		(
-			this.isDimensionsObjectValid( dimensions ) &&
-			!ve.compare( this.originalDimensions, dimensions )
-		)
+		this.isDimensionsObjectValid( dimensions ) &&
+		!ve.compare( dimensions, this.getOriginalDimensions() || {} )
 	) {
 		this.originalDimensions = ve.copy( dimensions );
 		// Always overwrite ratio
@@ -259,11 +252,8 @@ ve.dm.Scalable.prototype.setOriginalDimensions = function ( dimensions ) {
  */
 ve.dm.Scalable.prototype.setDefaultDimensions = function ( dimensions ) {
 	if (
-		!this.defaultDimensions ||
-		(
-			this.isDimensionsObjectValid( dimensions ) &&
-			!ve.compare( this.defaultDimensions, dimensions )
-		)
+		this.isDimensionsObjectValid( dimensions ) &&
+		!ve.compare( dimensions, this.getDefaultDimensions() || {} )
 	) {
 		this.defaultDimensions = ve.copy( dimensions );
 		this.valid = null;
@@ -276,25 +266,9 @@ ve.dm.Scalable.prototype.setDefaultDimensions = function ( dimensions ) {
  * @fires defaultSizeChange
  */
 ve.dm.Scalable.prototype.clearDefaultDimensions = function () {
-	this.defaultDimensions = {};
+	this.defaultDimensions = null;
 	this.valid = null;
 	this.emit( 'defaultSizeChange', this.isDefault() );
-};
-
-/**
- * Reset and remove the max dimensions
- */
-ve.dm.Scalable.prototype.clearMaxDimensions = function () {
-	this.maxDimensions = {};
-	this.valid = null;
-};
-
-/**
- * Reset and remove the min dimensions
- */
-ve.dm.Scalable.prototype.clearMinDimensions = function () {
-	this.minDimensions = {};
-	this.valid = null;
 };
 
 /**
@@ -302,7 +276,7 @@ ve.dm.Scalable.prototype.clearMinDimensions = function () {
  * @fires originalSizeChange
  */
 ve.dm.Scalable.prototype.clearOriginalDimensions = function () {
-	this.originalDimensions = {};
+	this.originalDimensions = null;
 	this.valid = null;
 	this.emit( 'originalSizeChange', this.isDefault() );
 };
@@ -336,11 +310,8 @@ ve.dm.Scalable.prototype.toggleDefault = function ( isDefault ) {
  */
 ve.dm.Scalable.prototype.setMinDimensions = function ( dimensions ) {
 	if (
-		!this.minDimensions ||
-		(
-			this.isDimensionsObjectValid( dimensions ) &&
-			!ve.compare( this.minDimensions, dimensions )
-		)
+		this.isDimensionsObjectValid( dimensions ) &&
+		!ve.compare( dimensions, this.getMinDimensions() || {} )
 	) {
 		this.minDimensions = ve.copy( dimensions );
 		this.valid = null;
@@ -356,11 +327,8 @@ ve.dm.Scalable.prototype.setMinDimensions = function ( dimensions ) {
  */
 ve.dm.Scalable.prototype.setMaxDimensions = function ( dimensions ) {
 	if (
-		!this.maxDimensions ||
-		(
-			this.isDimensionsObjectValid( dimensions ) &&
-			!ve.compare( this.maxDimensions, dimensions )
-		)
+		this.isDimensionsObjectValid( dimensions ) &&
+		!ve.compare( dimensions, this.getMaxDimensions() || {} )
 	) {
 		this.maxDimensions = ve.copy( dimensions );
 		this.emit( 'maxSizeChange', dimensions );
@@ -369,10 +337,10 @@ ve.dm.Scalable.prototype.setMaxDimensions = function ( dimensions ) {
 };
 
 /**
- * Unset the minimum dimensions
+ * Clear the minimum dimensions
  * @fires minSizeChange
  */
-ve.dm.Scalable.prototype.unsetMinDimensions = function () {
+ve.dm.Scalable.prototype.clearMinDimensions = function () {
 	if ( this.minDimensions !== null ) {
 		this.minDimensions = null;
 		this.valid = null;
@@ -381,16 +349,17 @@ ve.dm.Scalable.prototype.unsetMinDimensions = function () {
 };
 
 /**
- * Unset the maximum dimensions
+ * Clear the maximum dimensions
  * @fires maxSizeChange
  */
-ve.dm.Scalable.prototype.unsetMaxDimensions = function () {
+ve.dm.Scalable.prototype.clearMaxDimensions = function () {
 	if ( this.maxDimensions !== null ) {
 		this.maxDimensions = null;
 		this.valid = null;
 		this.emit( 'maxSizeChange', this.maxDimensions );
 	}
 };
+
 /**
  * Get the original dimensions
  *
