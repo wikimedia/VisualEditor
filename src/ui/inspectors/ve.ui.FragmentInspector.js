@@ -126,9 +126,8 @@ ve.ui.FragmentInspector.prototype.getTeardownProcess = function ( data ) {
  */
 ve.ui.FragmentInspector.prototype.getReadyProcess = function ( data ) {
 	return ve.ui.FragmentInspector.super.prototype.getReadyProcess.call( this, data )
-		.first( function () {
-			//return OO.ui.Process.static.delay( 200 );
-		}, this );
+		// Add a 0ms timeout before doing anything. Because... Internet Explorer :(
+		.first( 0 );
 };
 
 /**
