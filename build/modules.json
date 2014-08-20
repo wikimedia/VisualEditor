@@ -145,6 +145,7 @@
 			"src/ve.LeafNode.js",
 			"src/ve.Document.js",
 			"src/ve.EventSequencer.js",
+			"src/ve.Filibuster.js",
 			"src/dm/ve.dm.js",
 			"src/dm/ve.dm.Model.js",
 			"src/dm/ve.dm.ModelRegistry.js",

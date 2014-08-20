@@ -37,6 +37,8 @@ ve.ui.DebugBar = function VeUiDebugBar( surface, config ) {
 			)
 		);
 
+	this.$filibuster = this.$( '<div class="ve-ui-debugBar-filibuster"></div>' );
+
 	// Widgets
 	this.fromTextInput = new OO.ui.TextInputWidget( { readOnly: true } );
 	this.toTextInput = new OO.ui.TextInputWidget( { readOnly: true } );
@@ -44,6 +46,7 @@ ve.ui.DebugBar = function VeUiDebugBar( surface, config ) {
 	this.logRangeButton = new OO.ui.ButtonWidget( { label: 'Log', disabled: true } );
 	this.dumpModelButton = new OO.ui.ButtonWidget( { label: 'Dump model' } );
 	this.dumpModelChangeToggle = new OO.ui.ToggleButtonWidget( { label: 'Dump on change' } );
+	this.filibusterToggle = new OO.ui.ToggleButtonWidget( { label: 'Start Filibuster' } );
 
 	var fromLabel = new OO.ui.LabelWidget(
 			{ label: 'Range', input: this.fromTextInput }
@@ -56,9 +59,10 @@ ve.ui.DebugBar = function VeUiDebugBar( surface, config ) {
 	this.logRangeButton.on( 'click', ve.bind( this.onLogRangeButtonClick, this ) );
 	this.dumpModelButton.on( 'click', ve.bind( this.onDumpModelButtonClick, this ) );
 	this.dumpModelChangeToggle.on( 'click', ve.bind( this.onDumpModelChangeToggleClick, this ) );
+	this.filibusterToggle.on( 'click', ve.bind( this.onFilibusterToggleClick, this ) );
 
 	this.onDumpModelChangeToggleClick();
-	this.getSurface().getModel().connect( this, { select: this.onSurfaceSelect } );
+	this.getSurface().getModel().connect( this, { select: 'onSurfaceSelect' } );
 	this.onSurfaceSelect( this.getSurface().getModel().getSelection() );
 
 	this.$element.addClass( 've-ui-debugBar' );
@@ -71,9 +75,11 @@ ve.ui.DebugBar = function VeUiDebugBar( surface, config ) {
 			this.logRangeButton.$element,
 			this.$( this.constructor.static.dividerTemplate ),
 			this.dumpModelButton.$element,
-			this.dumpModelChangeToggle.$element
+			this.dumpModelChangeToggle.$element,
+			this.filibusterToggle.$element
 		),
-		this.$dump
+		this.$dump,
+		this.$filibuster
 	);
 
 	this.target = null;
@@ -241,8 +247,27 @@ ve.ui.DebugBar.prototype.onDumpModelButtonClick = function () {
 ve.ui.DebugBar.prototype.onDumpModelChangeToggleClick = function () {
 	if ( this.dumpModelChangeToggle.getValue() ) {
 		this.onDumpModelButtonClick();
-		this.getSurface().model.connect( this, { documentUpdate: this.onDumpModelButtonClick } );
+		this.getSurface().model.connect( this, { documentUpdate: 'onDumpModelButtonClick' } );
 	} else {
-		this.getSurface().model.disconnect( this, { documentUpdate: this.onDumpModelButtonClick } );
+		this.getSurface().model.disconnect( this, { documentUpdate: 'onDumpModelButtonClick' } );
+	}
+};
+
+/**
+ * Handle click events on the filibuster toggle button
+ *
+ * @param {jQuery.Event} e Event
+ */
+ve.ui.DebugBar.prototype.onFilibusterToggleClick = function () {
+	if ( this.filibusterToggle.getValue() ) {
+		this.filibusterToggle.setLabel( 'Stop Filibuster' );
+		this.$filibuster.hide();
+		this.$filibuster.empty();
+		this.getSurface().startFilibuster();
+	} else {
+		this.getSurface().stopFilibuster();
+		this.$filibuster.html( this.getSurface().filibuster.getObservationsHtml() );
+		this.$filibuster.show();
+		this.filibusterToggle.setLabel( 'Start Filibuster' );
 	}
 };

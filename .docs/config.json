@@ -6,7 +6,7 @@
 	"--warnings": ["-nodoc(class,public)"],
 	"--builtin-classes": true,
 	"--warnings-exit-nonzero": true,
-	"--external": "HTMLDocument,Window,Node",
+	"--external": "HTMLDocument,Window,Node,Set",
 	"--output": "../docs",
 	"--": [
 		"./external.js",
