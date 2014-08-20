@@ -46,7 +46,7 @@ ve.ui.CommentInspector.static.actions = [
 	},
 	{
 		action: 'insert',
-		label: OO.ui.deferMsg( 'visualeditor-commentinspector-insert' ),
+		label: OO.ui.deferMsg( 'visualeditor-dialog-action-insert' ),
 		flags: [ 'constructive', 'primary' ],
 		modes: 'insert'
 	},
