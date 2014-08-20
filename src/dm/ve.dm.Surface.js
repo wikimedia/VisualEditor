@@ -532,7 +532,7 @@ ve.dm.Surface.prototype.setSelection = function ( selection ) {
 		selectedNodes = {},
 		oldSelection = this.selection,
 		contextChange = false,
-		dataModelData = this.documentModel.data;
+		linearData = this.documentModel.data;
 
 	if ( !this.enabled ) {
 		return;
@@ -563,23 +563,29 @@ ve.dm.Surface.prototype.setSelection = function ( selection ) {
 	if ( this.selection ) {
 		// Figure out which annotations to use for insertions
 		if ( this.selection.isCollapsed() ) {
-			// Get annotations from the left of the cursor
-			left = dataModelData.getNearestContentOffset( Math.max( 0, this.selection.start - 1 ), -1 );
-			right = dataModelData.getNearestContentOffset( Math.max( 0, this.selection.start ) );
+			// Get annotations from either side of the cursor
+			left = Math.max( 0, this.selection.start - 1 );
+			if ( !linearData.isContentOffset( left ) ) {
+				left = -1;
+			}
+			right = Math.max( 0, this.selection.start );
+			if ( !linearData.isContentOffset( right ) ) {
+				right = -1;
+			}
 		} else {
 			// Get annotations from the first character of the selection
-			left = dataModelData.getNearestContentOffset( this.selection.start );
-			right = dataModelData.getNearestContentOffset( this.selection.end );
+			left = linearData.getNearestContentOffset( this.selection.start );
+			right = linearData.getNearestContentOffset( this.selection.end );
 		}
 		if ( left === -1 ) {
-			// Document is empty, use empty set
+			// No content offset to our left, use empty set
 			insertionAnnotations = new ve.dm.AnnotationSet( this.documentModel.getStore() );
 		} else {
 			// Include annotations on the left that should be added to appended content, or ones that
 			// are on both the left and the right that should not
-			leftAnnotations = dataModelData.getAnnotationsFromOffset( left );
+			leftAnnotations = linearData.getAnnotationsFromOffset( left );
 			if ( right !== -1 ) {
-				rightAnnotations = dataModelData.getAnnotationsFromOffset( right );
+				rightAnnotations = linearData.getAnnotationsFromOffset( right );
 				insertionAnnotations = leftAnnotations.filter( function ( annotation ) {
 					return annotation.constructor.static.applyToAppendedContent ||
 						rightAnnotations.containsComparable( annotation );
