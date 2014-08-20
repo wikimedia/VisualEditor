@@ -89,8 +89,6 @@ OO.inheritClass( ve.dm.Document, ve.Document );
 
 /* Static methods */
 
-ve.dm.Document.static = {};
-
 /**
  * Split data into element data and meta data.
  *
