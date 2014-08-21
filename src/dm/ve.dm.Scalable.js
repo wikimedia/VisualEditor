@@ -209,7 +209,7 @@ ve.dm.Scalable.prototype.setRatioFromDimensions = function ( dimensions ) {
 ve.dm.Scalable.prototype.setCurrentDimensions = function ( dimensions ) {
 	if (
 		this.isDimensionsObjectValid( dimensions ) &&
-		!ve.compare( dimensions, this.getCurrentDimensions() || {} )
+		!ve.compare( dimensions, this.getCurrentDimensions() )
 	) {
 		this.currentDimensions = ve.copy( dimensions );
 		// Only use current dimensions for ratio if it isn't set
@@ -232,7 +232,7 @@ ve.dm.Scalable.prototype.setCurrentDimensions = function ( dimensions ) {
 ve.dm.Scalable.prototype.setOriginalDimensions = function ( dimensions ) {
 	if (
 		this.isDimensionsObjectValid( dimensions ) &&
-		!ve.compare( dimensions, this.getOriginalDimensions() || {} )
+		!ve.compare( dimensions, this.getOriginalDimensions() )
 	) {
 		this.originalDimensions = ve.copy( dimensions );
 		// Always overwrite ratio
@@ -253,7 +253,7 @@ ve.dm.Scalable.prototype.setOriginalDimensions = function ( dimensions ) {
 ve.dm.Scalable.prototype.setDefaultDimensions = function ( dimensions ) {
 	if (
 		this.isDimensionsObjectValid( dimensions ) &&
-		!ve.compare( dimensions, this.getDefaultDimensions() || {} )
+		!ve.compare( dimensions, this.getDefaultDimensions() )
 	) {
 		this.defaultDimensions = ve.copy( dimensions );
 		this.valid = null;
@@ -311,7 +311,7 @@ ve.dm.Scalable.prototype.toggleDefault = function ( isDefault ) {
 ve.dm.Scalable.prototype.setMinDimensions = function ( dimensions ) {
 	if (
 		this.isDimensionsObjectValid( dimensions ) &&
-		!ve.compare( dimensions, this.getMinDimensions() || {} )
+		!ve.compare( dimensions, this.getMinDimensions() )
 	) {
 		this.minDimensions = ve.copy( dimensions );
 		this.valid = null;
@@ -328,7 +328,7 @@ ve.dm.Scalable.prototype.setMinDimensions = function ( dimensions ) {
 ve.dm.Scalable.prototype.setMaxDimensions = function ( dimensions ) {
 	if (
 		this.isDimensionsObjectValid( dimensions ) &&
-		!ve.compare( dimensions, this.getMaxDimensions() || {} )
+		!ve.compare( dimensions, this.getMaxDimensions() )
 	) {
 		this.maxDimensions = ve.copy( dimensions );
 		this.emit( 'maxSizeChange', dimensions );
