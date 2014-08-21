@@ -12,12 +12,11 @@
  * @extends OO.ui.ProcessDialog
  *
  * @constructor
- * @param {OO.ui.WindowManager} manager Manager of window
  * @param {Object} [config] Configuration options
  */
-ve.ui.CommandHelpDialog = function VeUiCommandHelpDialog( manager, config ) {
+ve.ui.CommandHelpDialog = function VeUiCommandHelpDialog( config ) {
 	// Parent constructor
-	ve.ui.CommandHelpDialog.super.call( this, manager, config );
+	ve.ui.CommandHelpDialog.super.call( this, config );
 };
 
 /* Inheritance */

@@ -49,7 +49,8 @@ OO.inheritClass( ve.ui.MobileContext, ve.ui.Context );
 ve.ui.MobileContext.prototype.createInspectorWindowManager = function () {
 	return new ve.ui.MobileWindowManager( {
 		factory: ve.ui.windowFactory,
-		overlay: this.surface.getGlobalOverlay()
+		overlay: this.surface.getGlobalOverlay(),
+		isolate: true
 	} );
 };
 

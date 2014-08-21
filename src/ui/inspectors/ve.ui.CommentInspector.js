@@ -12,12 +12,11 @@
  * @extends ve.ui.NodeInspector
  *
  * @constructor
- * @param {OO.ui.WindowManager} manager Manager of window
  * @param {Object} [config] Configuration options
  */
-ve.ui.CommentInspector = function VeUiCommentInspector( manager, config ) {
+ve.ui.CommentInspector = function VeUiCommentInspector( config ) {
 	// Parent constructor
-	ve.ui.NodeInspector.call( this, manager, config );
+	ve.ui.NodeInspector.call( this, config );
 };
 
 /* Inheritance */
@@ -73,7 +72,7 @@ ve.ui.CommentInspector.prototype.initialize = function () {
 		autosize: true
 	} );
 
-	this.frame.$content.addClass( 've-ui-commentInspector-content' );
+	this.$content.addClass( 've-ui-commentInspector-content' );
 	this.form.$element.append( this.textWidget.$element );
 };
 

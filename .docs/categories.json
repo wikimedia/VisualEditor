@@ -195,7 +195,6 @@
 					"OO.ui",
 					"OO.ui.ActionSet",
 					"OO.ui.Element",
-						"OO.ui.Frame",
 						"OO.ui.Layout",
 						"OO.ui.Widget",
 						"OO.ui.Window",

@@ -12,12 +12,11 @@
  * @extends ve.ui.FragmentDialog
  *
  * @constructor
- * @param {OO.ui.WindowManager} manager Manager of window
  * @param {Object} [config] Configuration options
  */
-ve.ui.NodeDialog = function VeUiNodeDialog( manager, config ) {
+ve.ui.NodeDialog = function VeUiNodeDialog( config ) {
 	// Parent constructor
-	ve.ui.NodeDialog.super.call( this, manager, config );
+	ve.ui.NodeDialog.super.call( this, config );
 
 	// Properties
 	this.selectedNode = null;
@@ -70,7 +69,7 @@ ve.ui.NodeDialog.prototype.initialize = function ( data ) {
 	ve.ui.NodeDialog.super.prototype.initialize.call( this, data );
 
 	// Initialization
-	this.frame.$content.addClass( 've-ui-nodeDialog' );
+	this.$content.addClass( 've-ui-nodeDialog' );
 };
 
 /**

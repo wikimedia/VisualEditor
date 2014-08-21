@@ -53,7 +53,7 @@
 	right: 0;
 }
 
-/* HACK: Compensate for oo-ui-frame-content setting the font size to 0.8em */
-.oo-ui-frame-content .ve-ui-desktopContext .oo-ui-popupWidget {
+/* HACK: Compensate for oo-ui-window-content setting the font size to 0.8em */
+.oo-ui-window-content .ve-ui-desktopContext .oo-ui-popupWidget {
 	font-size: 1.25em;
 }

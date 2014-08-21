@@ -30,6 +30,6 @@
 
 /* inspector styles */
 
-.ve-ui-mobileSurface-overlay-global-visible .oo-ui-frame {
+.ve-ui-mobileSurface-overlay-global-visible .oo-ui-window-frame iframe {
 	width: 100%;
 }

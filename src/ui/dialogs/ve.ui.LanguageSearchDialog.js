@@ -12,12 +12,11 @@
  * @extends OO.ui.ProcessDialog
  *
  * @constructor
- * @param {OO.ui.WindowManager} manager Manager of window
  * @param {Object} [config] Configuration options
  */
-ve.ui.LanguageSearchDialog = function VeUiLanguageSearchDialog( manager, config ) {
+ve.ui.LanguageSearchDialog = function VeUiLanguageSearchDialog( config ) {
 	// Parent constructor
-	ve.ui.LanguageSearchDialog.super.call( this, manager, config );
+	ve.ui.LanguageSearchDialog.super.call( this, config );
 };
 
 /* Inheritance */

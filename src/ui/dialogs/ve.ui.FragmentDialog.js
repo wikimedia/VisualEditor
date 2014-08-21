@@ -13,12 +13,11 @@
  * @extends OO.ui.ProcessDialog
  *
  * @constructor
- * @param {OO.ui.WindowManager} manager Manager of window
  * @param {Object} [config] Configuration options
  */
-ve.ui.FragmentDialog = function VeUiFragmentDialog( manager, config ) {
+ve.ui.FragmentDialog = function VeUiFragmentDialog( config ) {
 	// Parent constructor
-	ve.ui.FragmentDialog.super.call( this, manager, config );
+	ve.ui.FragmentDialog.super.call( this, config );
 
 	// Properties
 	this.fragment = null;

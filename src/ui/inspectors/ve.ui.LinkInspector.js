@@ -12,12 +12,11 @@
  * @extends ve.ui.AnnotationInspector
  *
  * @constructor
- * @param {OO.ui.WindowManager} manager Manager of window
  * @param {Object} [config] Configuration options
  */
-ve.ui.LinkInspector = function VeUiLinkInspector( manager, config ) {
+ve.ui.LinkInspector = function VeUiLinkInspector( config ) {
 	// Parent constructor
-	ve.ui.AnnotationInspector.call( this, manager, config );
+	ve.ui.AnnotationInspector.call( this, config );
 };
 
 /* Inheritance */
@@ -115,7 +114,7 @@ ve.ui.LinkInspector.prototype.initialize = function () {
 	this.targetInput.connect( this, { change: 'onTargetInputChange' } );
 
 	// Initialization
-	this.frame.$content.addClass( 've-ui-linkInspector-content' );
+	this.$content.addClass( 've-ui-linkInspector-content' );
 	this.form.$element.append( this.targetInput.$element );
 };
 

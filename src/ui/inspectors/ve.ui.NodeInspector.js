@@ -12,12 +12,11 @@
  * @extends ve.ui.FragmentInspector
  *
  * @constructor
- * @param {OO.ui.WindowManager} manager Manager of window
  * @param {Object} [config] Configuration options
  */
-ve.ui.NodeInspector = function VeUiNodeInspector( manager, config ) {
+ve.ui.NodeInspector = function VeUiNodeInspector( config ) {
 	// Parent constructor
-	ve.ui.FragmentInspector.call( this, manager, config );
+	ve.ui.FragmentInspector.call( this, config );
 
 	// Properties
 	this.selectedNode = null;
@@ -70,7 +69,7 @@ ve.ui.NodeInspector.prototype.initialize = function ( data ) {
 	ve.ui.NodeInspector.super.prototype.initialize.call( this, data );
 
 	// Initialization
-	this.frame.$content.addClass( 've-ui-nodeInspector' );
+	this.$content.addClass( 've-ui-nodeInspector' );
 };
 
 /**

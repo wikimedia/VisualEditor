@@ -84,6 +84,7 @@ ve.ui.MobileSurface.prototype.createContext = function () {
 ve.ui.MobileSurface.prototype.createDialogWindowManager = function () {
 	return new ve.ui.MobileWindowManager( {
 		factory: ve.ui.windowFactory,
-		overlay: this.globalOverlay
+		overlay: this.globalOverlay,
+		isolate: true
 	} );
 };

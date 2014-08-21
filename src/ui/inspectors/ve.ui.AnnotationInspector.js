@@ -13,12 +13,11 @@
  * @extends ve.ui.FragmentInspector
  *
  * @constructor
- * @param {OO.ui.WindowManager} manager Manager of window
  * @param {Object} [config] Configuration options
  */
-ve.ui.AnnotationInspector = function VeUiAnnotationInspector( manager, config ) {
+ve.ui.AnnotationInspector = function VeUiAnnotationInspector( config ) {
 	// Parent constructor
-	ve.ui.FragmentInspector.call( this, manager, config );
+	ve.ui.FragmentInspector.call( this, config );
 
 	// Properties
 	this.previousSelection = null;

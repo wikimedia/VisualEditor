@@ -12,12 +12,11 @@
  * @extends OO.ui.ProcessDialog
  *
  * @constructor
- * @param {OO.ui.WindowManager} manager Manager of window
  * @param {Object} [config] Configuration options
  */
-ve.ui.FragmentInspector = function VeUiFragmentInspector( manager, config ) {
+ve.ui.FragmentInspector = function VeUiFragmentInspector( config ) {
 	// Parent constructor
-	ve.ui.FragmentInspector.super.call( this, manager, config );
+	ve.ui.FragmentInspector.super.call( this, config );
 
 	// Properties
 	this.fragment = null;
@@ -80,7 +79,7 @@ ve.ui.FragmentInspector.prototype.initialize = function () {
 	this.form.connect( this, { submit: 'onFormSubmit' } );
 
 	// Initialization
-	this.frame.$content.addClass( 've-ui-fragmentInspector-content' );
+	this.$content.addClass( 've-ui-fragmentInspector-content' );
 	this.container.$element.append( this.form.$element, this.$otherActions );
 	this.$body.append( this.container.$element );
 };

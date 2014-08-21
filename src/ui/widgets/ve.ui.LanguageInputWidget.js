@@ -26,7 +26,7 @@ ve.ui.LanguageInputWidget = function VeUiLanguageInputWidget( config ) {
 	this.lang = null;
 	this.dir = null;
 	this.overlay = new ve.ui.Overlay( { classes: ['ve-ui-overlay-global'] } );
-	this.dialogs = new OO.ui.WindowManager( { factory: ve.ui.windowFactory } );
+	this.dialogs = new OO.ui.WindowManager( { factory: ve.ui.windowFactory, isolate: true } );
 	this.findLanguageButton = new OO.ui.ButtonWidget( {
 		$: this.$,
 		classes: [ 've-ui-languageInputWidget-findLanguageButton' ],

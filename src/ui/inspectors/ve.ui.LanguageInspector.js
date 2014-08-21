@@ -12,12 +12,11 @@
  * @extends ve.ui.AnnotationInspector
  *
  * @constructor
- * @param {OO.ui.WindowManager} manager Manager of window
  * @param {Object} [config] Configuration options
  */
-ve.ui.LanguageInspector = function VeUiLanguageInspector( manager, config ) {
+ve.ui.LanguageInspector = function VeUiLanguageInspector( config ) {
 	// Parent constructor
-	ve.ui.AnnotationInspector.call( this, manager, config );
+	ve.ui.AnnotationInspector.call( this, config );
 };
 
 /* Inheritance */

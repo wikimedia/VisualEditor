@@ -12,12 +12,11 @@
  * @extends ve.ui.InsertionInspector
  *
  * @constructor
- * @param {OO.ui.WindowManager} manager Manager of window
  * @param {Object} [config] Configuration options
  */
-ve.ui.SpecialCharacterInspector = function VeUiSpecialCharacterInspector( manager, config ) {
+ve.ui.SpecialCharacterInspector = function VeUiSpecialCharacterInspector( config ) {
 	// Parent constructor
-	ve.ui.InsertionInspector.call( this, manager, config );
+	ve.ui.InsertionInspector.call( this, config );
 
 	this.characters = null;
 	this.$buttonDomList = null;
