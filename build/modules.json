@@ -23,7 +23,7 @@
 	},
 	"oojs": {
 		"scripts": [
-			"lib/oojs/oojs.js"
+			"lib/oojs/oojs.jquery.js"
 		]
 	},
 	"oojs-ui": {
