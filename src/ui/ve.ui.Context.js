@@ -304,10 +304,12 @@ ve.ui.Context.prototype.destroy = function () {
 	this.inspectors.disconnect( this );
 	this.menu.disconnect( this );
 
+	// Destroy inspectors WindowManager
+	this.inspectors.destroy();
+
 	// Stop timers
 	clearTimeout( this.afterContextChangeTimeout );
 
 	this.$element.remove();
-	this.inspectors.$element.remove();
 	return this;
 };
