@@ -586,24 +586,46 @@ ve.dm.Document.prototype.shallowCloneFromRange = function ( range ) {
  * @return {ve.dm.Document} New document
  */
 ve.dm.Document.prototype.cloneFromRange = function ( range ) {
-	var data, newDoc,
-		store = this.getStore().clone(),
-		listRange = this.getInternalList().getListNode().getOuterRange();
-
-	data = ve.copy( this.getFullData( range, true ) );
+	var listRange = this.getInternalList().getListNode().getOuterRange(),
+		data = ve.copy( this.getFullData( range, true ) );
 	if ( range.start > listRange.start || range.end < listRange.end ) {
 		// The range does not include the entire internal list, so add it
 		data = data.concat( this.getFullData( listRange ) );
 	}
+	return this.cloneWithData( data, true );
+};
+
+/**
+ * Create a sub-document associated with this document like #cloneFromRange, but without cloning
+ * any data from a range in this document: instead, use the specified data.
+ *
+ * @param {Array} data Linear model data
+ * @param {boolean} [copyInternalList] Copy the internal list
+ * @return {ve.dm.Document} New document
+ */
+ve.dm.Document.prototype.cloneWithData = function ( data, copyInternalList ) {
+	var newDoc,
+		store = this.getStore().clone();
+
 	newDoc = new this.constructor(
 		new ve.dm.FlatLinearData( store, data ),
-		this.getHtmlDocument(), undefined, this.getInternalList(), undefined,
+		// htmlDocument
+		this.getHtmlDocument(),
+		// parentDocument
+		undefined,
+		// internalList
+		copyInternalList ? this.getInternalList() : undefined,
+		// innerWhitespace
+		undefined,
+		// lang+dir
 		this.getLang(), this.getDir()
 	);
-	// Record the length of the internal list at the time the slice was created so we can
-	// reconcile additions properly
-	newDoc.origDoc = this;
-	newDoc.origInternalListLength = this.internalList.getItemNodeCount();
+	if ( copyInternalList ) {
+		// Record the length of the internal list at the time the slice was created so we can
+		// reconcile additions properly
+		newDoc.origDoc = this;
+		newDoc.origInternalListLength = this.internalList.getItemNodeCount();
+	}
 	return newDoc;
 };
 
