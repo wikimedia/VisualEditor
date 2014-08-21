@@ -60,5 +60,5 @@ ve.ui.MobileWindowManager.prototype.getHoldDelay = function () {
  * @inheritdoc
  */
 ve.ui.MobileWindowManager.prototype.getTeardownDelay = function () {
-	return 0;
+	return 300;
 };

@@ -48,24 +48,16 @@ OO.inheritClass( ve.ui.MobileSurface, ve.ui.Surface );
  * @param {Object} data Window opening data
  */
 ve.ui.MobileSurface.prototype.onWindowOpening = function ( win, opening ) {
-	var $body = $( 'body' ),
-		$globalElements = $( 'html, body' ),
-		$globalOverlay = this.globalOverlay.$element;
-
 	opening
 		.progress( ve.bind( function ( data ) {
 			if ( data.state === 'setup' ) {
-				this.scrollPosition = $body.scrollTop();
-				$globalElements.addClass( 've-ui-mobileSurface-overlay-global-enabled' );
-				$globalOverlay.addClass( 've-ui-mobileSurface-overlay-global-visible' );
+				this.toggleGlobalOverlay( true );
 			}
 		}, this ) )
 		.always( ve.bind( function ( opened ) {
 			opened.always( ve.bind( function ( closed ) {
 				closed.always( ve.bind( function () {
-					$body.scrollTop( this.scrollPosition );
-					$globalElements.removeClass( 've-ui-mobileSurface-overlay-global-enabled' );
-					$globalOverlay.removeClass( 've-ui-mobileSurface-overlay-global-visible' );
+					this.toggleGlobalOverlay( false );
 				}, this ) );
 			}, this ) );
 		}, this ) );
@@ -87,4 +79,36 @@ ve.ui.MobileSurface.prototype.createDialogWindowManager = function () {
 		overlay: this.globalOverlay,
 		isolate: true
 	} );
+};
+
+/**
+ * Show or hide global overlay.
+ *
+ * @param {boolean} show If true, show global overlay, otherwise hide it.
+ */
+ve.ui.MobileSurface.prototype.toggleGlobalOverlay = function ( show ) {
+	var $body = $( 'body' );
+
+	// Store current position before we set overflow: hidden on body
+	if ( show ) {
+		this.scrollPosition = $body.scrollTop();
+	}
+
+	$( 'html, body' ).toggleClass( 've-ui-mobileSurface-overlay-global-enabled', show );
+	this.globalOverlay.$element.toggleClass( 've-ui-mobileSurface-overlay-global-visible', show );
+
+	// Restore previous position after we remove overflow: hidden on body
+	if ( !show ) {
+		$body.scrollTop( this.scrollPosition );
+	}
+};
+
+/**
+ * @inheritdoc
+ */
+ve.ui.MobileSurface.prototype.destroy = function () {
+	// Parent method
+	ve.ui.MobileSurface.super.prototype.destroy.call( this );
+
+	this.toggleGlobalOverlay( false );
 };
