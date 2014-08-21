@@ -2341,7 +2341,7 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'whitespace surrounding metadata in a wrapper': {
-		body: '<b>Foo</b> <!-- comment -->\n<i>Bar</i>',
+		body: '<b>Foo</b> <meta />\n<i>Bar</i>',
 		data: [
 			{ type: 'paragraph', internal: { generated: 'wrapper' } },
 			[ 'F', [ ve.dm.example.bold ] ],
@@ -2349,12 +2349,12 @@ ve.dm.example.domToDataCases = {
 			[ 'o', [ ve.dm.example.bold ] ],
 			' ',
 			{
-				type: 'comment',
+				type: 'alienMeta',
 				attributes: {
-					text: ' comment '
+					domElements: $( '<meta />' ).toArray()
 				}
 			},
-			{ type: '/comment' },
+			{ type: '/alienMeta' },
 			'\n',
 			[ 'B', [ ve.dm.example.italic ] ],
 			[ 'a', [ ve.dm.example.italic ] ],
