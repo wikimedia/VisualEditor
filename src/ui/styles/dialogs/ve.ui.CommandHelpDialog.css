@@ -52,6 +52,7 @@
 }
 
 .ve-ui-commandHelpDialog-list dt kbd {
+	font-family: monospace;
 	display: block;
 	clear: right;
 }
