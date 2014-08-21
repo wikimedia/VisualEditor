@@ -273,7 +273,7 @@ ve.ce.Surface.prototype.destroy = function () {
  * @returns {Object|null} { start: { x: ..., y: ... }, end: { x: ..., y: ... } }
  */
 ve.ce.Surface.prototype.getSelectionRect = function () {
-	var sel, boundingRect;
+	var sel, x, rtl, boundingRect;
 
 	if ( this.focusedNode ) {
 		boundingRect = this.focusedNode.getBoundingRect();
@@ -300,15 +300,34 @@ ve.ce.Surface.prototype.getSelectionRect = function () {
 		return null;
 	}
 
-	// Calling get(Start|End)DocumentPos() sometimes fails in Firefox on page load
-	// when the address bar is still focused
+	// Calling get(Start|End)DocumentPos() sometimes fails:
+	// * in Firefox on page load when the address bar is still focused
+	// * in empty paragraphs
 	try {
 		return {
 			start: sel.getStartDocumentPos(),
 			end: sel.getEndDocumentPos()
 		};
 	} catch ( e ) {
-		return null;
+		// When possible, pretend the cursor is the left/right border of the node
+		// (depending on directionality) as a fallback.
+		if ( sel.focusNode && sel.focusNode.nodeType === Node.ELEMENT_NODE ) {
+			boundingRect = sel.focusNode.getBoundingClientRect();
+			rtl = this.getModel().getDocument().getDir() === 'rtl';
+			x = rtl ? boundingRect.right : boundingRect.left;
+			return {
+				start: {
+					x: x,
+					y: boundingRect.top
+				},
+				end: {
+					x: x,
+					y: boundingRect.bottom
+				}
+			};
+		} else {
+			return null;
+		}
 	}
 };
 
