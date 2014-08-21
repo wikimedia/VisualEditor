@@ -273,18 +273,18 @@ ve.ce.Surface.prototype.destroy = function () {
  * @returns {Object|null} { start: { x: ..., y: ... }, end: { x: ..., y: ... } }
  */
 ve.ce.Surface.prototype.getSelectionRect = function () {
-	var sel, focusedOffset;
+	var sel, boundingRect;
 
 	if ( this.focusedNode ) {
-		focusedOffset = this.focusedNode.$element.offset();
+		boundingRect = this.focusedNode.getBoundingRect();
 		return {
 			start: {
-				x: focusedOffset.left,
-				y: focusedOffset.top
+				x: boundingRect.left,
+				y: boundingRect.top
 			},
 			end: {
-				x: focusedOffset.left + this.focusedNode.$element.width(),
-				y: focusedOffset.top + this.focusedNode.$element.height()
+				x: boundingRect.right,
+				y: boundingRect.bottom
 			}
 		};
 	}

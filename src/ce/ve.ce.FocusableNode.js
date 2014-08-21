@@ -467,18 +467,15 @@ ve.ce.FocusableNode.prototype.positionHighlights = function () {
 };
 
 /**
- * Get the offset of the focusable node highight relative to the surface
+ * Get the bounding rectangle of the focusable node highight relative to the surface
  *
- * @return {Object} Top and left offsets of the focusable node relative to the surface
+ * @return {Object} Top, left, bottom & right positions of the focusable node relative to the surface
  */
-ve.ce.FocusableNode.prototype.getRelativeOffset = function () {
+ve.ce.FocusableNode.prototype.getBoundingRect = function () {
 	if ( !this.highlighted ) {
 		this.createHighlights();
 	}
-	return {
-		top: this.boundingRect.top,
-		left: this.boundingRect.left
-	};
+	return this.boundingRect;
 };
 
 /**
@@ -487,11 +484,9 @@ ve.ce.FocusableNode.prototype.getRelativeOffset = function () {
  * @return {Object} Width and height of the focusable node
  */
 ve.ce.FocusableNode.prototype.getDimensions = function () {
-	if ( !this.highlighted ) {
-		this.createHighlights();
-	}
+	var boundingRect = this.getBoundingRect();
 	return {
-		width: this.boundingRect.right - this.boundingRect.left,
-		height: this.boundingRect.bottom - this.boundingRect.top
+		width: boundingRect.right - boundingRect.left,
+		height: boundingRect.bottom - boundingRect.top
 	};
 };

@@ -206,35 +206,30 @@ ve.ui.DesktopContext.prototype.toggle = function ( show ) {
  * @inheritdoc
  */
 ve.ui.DesktopContext.prototype.updateDimensions = function ( transition ) {
-	var $container, focusedOffset, focusedDimensions, cursorPosition, position,
+	var $container, boundingRect, cursorPosition, position, rtl,
 		surface = this.surface.getView(),
 		focusedNode = surface.getFocusedNode(),
 		surfaceOffset = surface.$element.offset(),
-		rtl = this.surface.getModel().getDocument().getDir() === 'rtl',
 		embeddable = this.isEmbeddable();
 
 	$container = this.inspector ? this.inspector.$frame : this.menu.$element;
 	if ( focusedNode ) {
+		rtl = this.surface.getModel().getDocument().getDir() === 'rtl';
 		this.popup.toggleAnchor( !embeddable );
 		// Get the position relative to the surface it is embedded in
-		focusedOffset = focusedNode.getRelativeOffset();
-		focusedDimensions = focusedNode.getDimensions();
+		boundingRect = focusedNode.getBoundingRect();
 		if ( embeddable ) {
-			position = { y: focusedOffset.top };
-			// When context is embedded in RTL, it requires adjustments to the relative
-			// positioning (pop up on the other side):
-			if ( rtl ) {
-				position.x = focusedOffset.left;
-				this.popup.align = 'left';
-			} else {
-				position.x = focusedOffset.left + focusedDimensions.width;
-				this.popup.align = 'right';
-			}
+			// Embedded context position depends on directionality
+			position = {
+				x: rtl ? boundingRect.left : boundingRect.right,
+				y: boundingRect.top
+			};
+			this.popup.align = rtl ? 'left' : 'right';
 		} else {
 			// Get the position of the focusedNode:
 			position = {
-				x: focusedOffset.left + focusedDimensions.width / 2,
-				y: focusedOffset.top + focusedDimensions.height
+				x: ( boundingRect.left + boundingRect.right ) / 2,
+				y: boundingRect.bottom
 			};
 			this.popup.align = 'center';
 		}
