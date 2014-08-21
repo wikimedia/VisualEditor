@@ -2364,6 +2364,34 @@ ve.dm.example.domToDataCases = {
 			{ type: '/internalList' }
 		]
 	},
+	'whitespace surrounding metadata in a wrapper followed by inline node': {
+		body: '<b>Foo</b> <meta />\n<span rel="ve:Alien"></span>',
+		data: [
+			{ type: 'paragraph', internal: { generated: 'wrapper' } },
+			[ 'F', [ ve.dm.example.bold ] ],
+			[ 'o', [ ve.dm.example.bold ] ],
+			[ 'o', [ ve.dm.example.bold ] ],
+			' ',
+			{
+				type: 'alienMeta',
+				attributes: {
+					domElements: $( '<meta />' ).toArray()
+				}
+			},
+			{ type: '/alienMeta' },
+			'\n',
+			{
+				type: 'alienInline',
+				attributes: {
+					domElements: $( '<span rel="ve:Alien"></span>' ).toArray()
+				}
+			},
+			{ type: '/alienInline' },
+			{ type: '/paragraph' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
+		]
+	},
 	'whitespace preservation in empty branch node': {
 		body: '<table>\n\n</table>',
 		data: [

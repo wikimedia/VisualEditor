@@ -762,10 +762,13 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 						}
 					}
 
-					// If we're inserting content into a wrapper, any wrappedWhitespace
-					// up to this point can be considered dealt with
+					// If we're inserting content into a wrapper, any wrapped whitespace and meta
+					// items up until this point are here to stay
 					if ( context.inWrapper && childIsContent ) {
+						outputWrappedMetaItems( 'restore' );
 						wrappedWhitespace = '';
+						// Don't record the wrapped whitespace as the child node's outer whitespace
+						nextWhitespace = '';
 					}
 
 					// Annotate child
