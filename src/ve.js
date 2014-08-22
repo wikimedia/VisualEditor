@@ -934,13 +934,6 @@
 	}() );
 
 	/**
-	 * DEPRECATED: Detect Internet Explorer
-	 *
-	 * Code still using this should be fixed to use specific feature detection.
-	 */
-	ve.isMsie = navigator.userAgent.indexOf( 'MSIE' ) !== -1;
-
-	/**
 	 * Get the client platform string from the browser.
 	 *
 	 * HACK: This is a wrapper for calling getSystemPlatform() on the current platform

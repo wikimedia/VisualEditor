@@ -778,25 +778,6 @@ ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
  * @param {jQuery.Event} e Key press event
  */
 ve.ce.Surface.prototype.onDocumentKeyPress = function ( e ) {
-	var selection, prevNode, documentModel = this.model.getDocument();
-
-	// Prevent IE from editing Aliens/Entities
-	// This is for cases like <p><div>alien</div></p>, to put the cursor outside
-	// the alien tag.
-	if ( ve.isMsie === true ) {
-		selection = this.model.getSelection();
-		if ( selection.start !== 0 && selection.isCollapsed() ) {
-			prevNode = documentModel.getDocumentNode().getNodeFromOffset( selection.start - 1 );
-			if (
-				!this.documentView.getSlugAtOffset( selection.start ) &&
-				prevNode.isContent() &&
-				documentModel.data.isCloseElementData( selection.start - 1 )
-			) {
-				this.model.setSelection( new ve.Range( selection.start ) );
-			}
-		}
-	}
-
 	// Filter out non-character keys. Doing this prevents:
 	// * Unexpected content deletion when selection is not collapsed and the user presses, for
 	//   example, the Home key (Firefox fires 'keypress' for it)
