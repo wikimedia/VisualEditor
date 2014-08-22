@@ -20,7 +20,7 @@ ve.ce.SuperscriptAnnotation = function VeCeSuperscriptAnnotation( model, parentN
 	ve.ce.TextStyleAnnotation.call( this, model, parentNode, config );
 
 	// DOM changes
-	this.$element.addClass( 've-ce-SuperscriptAnnotation' );
+	this.$element.addClass( 've-ce-superscriptAnnotation' );
 };
 
 /* Inheritance */

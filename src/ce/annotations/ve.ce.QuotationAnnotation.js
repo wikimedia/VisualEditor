@@ -20,7 +20,7 @@ ve.ce.QuotationAnnotation = function VeCeQuotationAnnotation( model, parentNode,
 	ve.ce.TextStyleAnnotation.call( this, model, parentNode, config );
 
 	// DOM changes
-	this.$element.addClass( 've-ce-QuotationAnnotation' );
+	this.$element.addClass( 've-ce-quotationAnnotation' );
 };
 
 /* Inheritance */

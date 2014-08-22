@@ -20,7 +20,7 @@ ve.ce.UnderlineAnnotation = function VeCeUnderlineAnnotation( model, parentNode,
 	ve.ce.TextStyleAnnotation.call( this, model, parentNode, config );
 
 	// DOM changes
-	this.$element.addClass( 've-ce-UnderlineAnnotation' );
+	this.$element.addClass( 've-ce-underlineAnnotation' );
 };
 
 /* Inheritance */

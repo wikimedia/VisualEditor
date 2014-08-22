@@ -20,7 +20,7 @@ ve.ce.VariableAnnotation = function VeCeVariableAnnotation( model, parentNode, c
 	ve.ce.TextStyleAnnotation.call( this, model, parentNode, config );
 
 	// DOM changes
-	this.$element.addClass( 've-ce-VariableAnnotation' );
+	this.$element.addClass( 've-ce-variableAnnotation' );
 };
 
 /* Inheritance */

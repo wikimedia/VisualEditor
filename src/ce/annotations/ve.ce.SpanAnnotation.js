@@ -20,7 +20,7 @@ ve.ce.SpanAnnotation = function VeCeSpanAnnotation( model, parentNode, config ) 
 	ve.ce.TextStyleAnnotation.call( this, model, parentNode, config );
 
 	// DOM changes
-	this.$element.addClass( 've-ce-SpanAnnotation' );
+	this.$element.addClass( 've-ce-spanAnnotation' );
 };
 
 /* Inheritance */

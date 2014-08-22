@@ -20,7 +20,7 @@ ve.ce.StrikethroughAnnotation = function VeCeStrikethroughAnnotation( model, par
 	ve.ce.TextStyleAnnotation.call( this, model, parentNode, config );
 
 	// DOM changes
-	this.$element.addClass( 've-ce-StrikethroughAnnotation' );
+	this.$element.addClass( 've-ce-strikethroughAnnotation' );
 };
 
 /* Inheritance */

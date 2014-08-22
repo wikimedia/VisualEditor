@@ -20,7 +20,7 @@ ve.ce.DefinitionAnnotation = function VeCeDefinitionAnnotation( model, parentNod
 	ve.ce.TextStyleAnnotation.call( this, model, parentNode, config );
 
 	// DOM changes
-	this.$element.addClass( 've-ce-DefinitionAnnotation' );
+	this.$element.addClass( 've-ce-definitionAnnotation' );
 };
 
 /* Inheritance */

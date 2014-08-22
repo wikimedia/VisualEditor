@@ -20,7 +20,7 @@ ve.ce.SubscriptAnnotation = function VeCeSubscriptAnnotation( model, parentNode,
 	ve.ce.TextStyleAnnotation.call( this, model, parentNode, config );
 
 	// DOM changes
-	this.$element.addClass( 've-ce-SubscriptAnnotation' );
+	this.$element.addClass( 've-ce-subscriptAnnotation' );
 };
 
 /* Inheritance */

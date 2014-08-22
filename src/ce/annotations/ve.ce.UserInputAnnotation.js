@@ -20,7 +20,7 @@ ve.ce.UserInputAnnotation = function VeCeUserInputAnnotation( model, parentNode,
 	ve.ce.TextStyleAnnotation.call( this, model, parentNode, config );
 
 	// DOM changes
-	this.$element.addClass( 've-ce-UserInputAnnotation' );
+	this.$element.addClass( 've-ce-userInputAnnotation' );
 };
 
 /* Inheritance */

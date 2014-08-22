@@ -20,7 +20,7 @@ ve.ce.DatetimeAnnotation = function VeCeDatetimeAnnotation( model, parentNode, c
 	ve.ce.TextStyleAnnotation.call( this, model, parentNode, config );
 
 	// DOM changes
-	this.$element.addClass( 've-ce-DatetimeAnnotation' );
+	this.$element.addClass( 've-ce-datetimeAnnotation' );
 };
 
 /* Inheritance */

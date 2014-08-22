@@ -20,7 +20,7 @@ ve.ce.SmallAnnotation = function VeCeSmallAnnotation( model, parentNode, config 
 	ve.ce.TextStyleAnnotation.call( this, model, parentNode, config );
 
 	// DOM changes
-	this.$element.addClass( 've-ce-SmallAnnotation' );
+	this.$element.addClass( 've-ce-smallAnnotation' );
 };
 
 /* Inheritance */

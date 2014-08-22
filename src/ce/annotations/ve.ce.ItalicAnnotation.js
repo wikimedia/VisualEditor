@@ -20,7 +20,7 @@ ve.ce.ItalicAnnotation = function VeCeItalicAnnotation( model, parentNode, confi
 	ve.ce.TextStyleAnnotation.call( this, model, parentNode, config );
 
 	// DOM changes
-	this.$element.addClass( 've-ce-ItalicAnnotation' );
+	this.$element.addClass( 've-ce-italicAnnotation' );
 };
 
 /* Inheritance */

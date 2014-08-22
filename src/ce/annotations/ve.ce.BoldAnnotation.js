@@ -20,7 +20,7 @@ ve.ce.BoldAnnotation = function VeCeBoldAnnotation( model, parentNode, config ) 
 	ve.ce.TextStyleAnnotation.call( this, model, parentNode, config );
 
 	// DOM changes
-	this.$element.addClass( 've-ce-BoldAnnotation' );
+	this.$element.addClass( 've-ce-boldAnnotation' );
 };
 
 /* Inheritance */

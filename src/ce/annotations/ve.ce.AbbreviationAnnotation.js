@@ -20,7 +20,7 @@ ve.ce.AbbreviationAnnotation = function VeCeAbbreviationAnnotation( model, paren
 	ve.ce.TextStyleAnnotation.call( this, model, parentNode, config );
 
 	// DOM changes
-	this.$element.addClass( 've-ce-AbbreviationAnnotation' );
+	this.$element.addClass( 've-ce-abbreviationAnnotation' );
 };
 
 /* Inheritance */

@@ -20,7 +20,7 @@ ve.ce.CodeAnnotation = function VeCeCodeAnnotation( model, parentNode, config ) 
 	ve.ce.TextStyleAnnotation.call( this, model, parentNode, config );
 
 	// DOM changes
-	this.$element.addClass( 've-ce-CodeAnnotation' );
+	this.$element.addClass( 've-ce-codeAnnotation' );
 };
 
 /* Inheritance */

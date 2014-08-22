@@ -21,7 +21,7 @@ ve.ce.TextStyleAnnotation = function VeCeTextStyleAnnotation( model, parentNode,
 	ve.ce.Annotation.call( this, model, parentNode, config );
 
 	// DOM changes
-	this.$element.addClass( 've-ce-TextStyleAnnotation' );
+	this.$element.addClass( 've-ce-textStyleAnnotation' );
 };
 
 /* Inheritance */

@@ -21,7 +21,7 @@ ve.ce.LinkAnnotation = function VeCeLinkAnnotation( model, parentNode, config ) 
 
 	// DOM changes
 	this.$element
-		.addClass( 've-ce-LinkAnnotation' )
+		.addClass( 've-ce-linkAnnotation' )
 		.attr( 'href', ve.resolveUrl( this.model.getHref(), this.getModelHtmlDocument() ) )
 		.attr( 'title', this.constructor.static.getDescription( this.model ) )
 		// Some browsers will try to let links do their thing

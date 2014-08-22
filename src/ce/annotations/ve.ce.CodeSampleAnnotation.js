@@ -20,7 +20,7 @@ ve.ce.CodeSampleAnnotation = function VeCeCodeSampleAnnotation( model, parentNod
 	ve.ce.TextStyleAnnotation.call( this, model, parentNode, config );
 
 	// DOM changes
-	this.$element.addClass( 've-ce-CodeSampleAnnotation' );
+	this.$element.addClass( 've-ce-codeSampleAnnotation' );
 };
 
 /* Inheritance */

@@ -20,7 +20,7 @@ ve.ce.HighlightAnnotation = function VeCeHighlightAnnotation( model, parentNode,
 	ve.ce.TextStyleAnnotation.call( this, model, parentNode, config );
 
 	// DOM changes
-	this.$element.addClass( 've-ce-HighlightAnnotation' );
+	this.$element.addClass( 've-ce-highlightAnnotation' );
 };
 
 /* Inheritance */
