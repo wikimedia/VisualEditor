@@ -190,6 +190,21 @@ ve.ui.Context.prototype.isInspectable = function () {
 };
 
 /**
+ * Check if current content is inspectable.
+ *
+ * @return {boolean} Content is inspectable
+ */
+ve.ui.Context.prototype.hasInspector = function () {
+	var i, availableTools = this.availableTools;
+	for ( i = availableTools.length - 1; i >= 0; i-- ) {
+		if ( availableTools[i].tool.prototype instanceof ve.ui.InspectorTool ) {
+			return true;
+		}
+	}
+	return false;
+};
+
+/**
  * Get available tools.
  *
  * Result is cached, and cleared when the model or selection changes.

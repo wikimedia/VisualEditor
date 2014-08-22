@@ -133,7 +133,7 @@ ve.ui.DesktopContext.prototype.isEmbeddable = function () {
 	var dim,
 		node = this.surface.getView().getFocusedNode();
 
-	if ( node && node.isFocusable() ) {
+	if ( node && node.isFocusable() && !this.hasInspector() ) {
 		dim = node.getDimensions();
 		return (
 			// HACK: `5` and `10` are estimates of what `0.25em` and `0.5em` (the margins of the
