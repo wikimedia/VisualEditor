@@ -260,8 +260,8 @@ QUnit.test( 'getAnnotationsFromRange', 1, function ( assert ) {
 				msg: 'no common coverage due to un-annotated content node',
 				data: [
 					['a', [ { type: 'textStyle/bold' } ] ],
-					{ type: 'image' },
-					{ type: '/image' }
+					{ type: 'inlineImage' },
+					{ type: '/inlineImage' }
 				],
 				expected: []
 			},
@@ -419,12 +419,12 @@ QUnit.test( 'getAnnotatedRangeFromOffset', 1, function ( assert ) {
 					['o', [ { type: 'textStyle/bold' } ]],
 					// 3
 					{
-						type: 'image',
+						type: 'inlineImage',
 						attributes: { src: ve.dm.example.imgSrc },
 						annotations: [ { type: 'textStyle/bold' }]
 					},
 					// 4
-					{ type: '/image' },
+					{ type: '/inlineImage' },
 					// 5
 					['l', [ { type: 'textStyle/bold' } ]],
 					// 6
@@ -560,16 +560,16 @@ QUnit.test( 'isContentOffset', function ( assert ) {
 		data = new ve.dm.ElementLinearData( new ve.dm.IndexValueStore(), [
 			{ type: 'heading' },
 			'a',
-			{ type: 'image' },
-			{ type: '/image' },
+			{ type: 'inlineImage' },
+			{ type: '/inlineImage' },
 			'b',
 			'c',
 			{ type: '/heading' },
 			{ type: 'paragraph' },
 			{ type: '/paragraph' },
 			{ type: 'preformatted' },
-			{ type: 'image' },
-			{ type: '/image' },
+			{ type: 'inlineImage' },
+			{ type: '/inlineImage' },
 			{ type: '/preformatted' },
 			{ type: 'list' },
 			{ type: 'listItem' },
@@ -633,16 +633,16 @@ QUnit.test( 'isStructuralOffset', function ( assert ) {
 		data = new ve.dm.ElementLinearData( new ve.dm.IndexValueStore(), [
 			{ type: 'heading' },
 			'a',
-			{ type: 'image' },
-			{ type: '/image' },
+			{ type: 'inlineImage' },
+			{ type: '/inlineImage' },
 			'b',
 			'c',
 			{ type: '/heading' },
 			{ type: 'paragraph' },
 			{ type: '/paragraph' },
 			{ type: 'preformatted' },
-			{ type: 'image' },
-			{ type: '/image' },
+			{ type: 'inlineImage' },
+			{ type: '/inlineImage' },
 			{ type: '/preformatted' },
 			{ type: 'list' },
 			{ type: 'listItem' },
@@ -726,7 +726,7 @@ QUnit.test( 'isContentData', 1, function ( assert ) {
 			},
 			{
 				msg: 'non-text leaf',
-				data: ['a', { type: 'image' }, { type: '/image' }, 'c'],
+				data: ['a', { type: 'inlineImage' }, { type: '/inlineImage' }, 'c'],
 				expected: true
 			}
 		];
@@ -1374,7 +1374,7 @@ QUnit.test( 'sanitize', function ( assert ) {
 					{ type: 'internalList' },
 					{ type: '/internalList' }
 				],
-				rules: { blacklist: ['alienInline', 'image'] },
+				rules: { blacklist: ['alienInline', 'inlineImage'] },
 				msg: 'Blacklisted nodes removed'
 			},
 			{

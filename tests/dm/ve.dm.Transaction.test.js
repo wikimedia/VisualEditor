@@ -481,7 +481,7 @@ QUnit.test( 'newFromRemoval', function ( assert ) {
 						remove: [
 							'h',
 							ve.dm.example.image.data,
-							{ type: '/image' },
+							{ type: '/inlineImage' },
 							'i'
 						],
 						insert: []
