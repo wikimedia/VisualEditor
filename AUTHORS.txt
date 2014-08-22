@@ -21,6 +21,7 @@ Brion Vibber <brion@wikimedia.org>
 Erik Moeller <erik@wikimedia.org>
 Gabriel Wicke <gwicke@wikimedia.org>
 James Forrester  <jforrester@wikimedia.org>
+Juliusz Gonera <jgonera@gmail.com>
 Neil Kandalgaonkar <neilk@brevity.org>
 Mark A. Hershberger <mah@everybody.org>
 Mark Holmquist <mtraceur@member.fsf.org>
