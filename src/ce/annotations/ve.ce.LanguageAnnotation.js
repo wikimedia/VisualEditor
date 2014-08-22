@@ -24,7 +24,7 @@ ve.ce.LanguageAnnotation = function VeCeLanguageAnnotation( model, parentNode, c
 
 	// DOM changes
 	this.$element
-		.addClass( 've-ce-LanguageAnnotation' )
+		.addClass( 've-ce-languageAnnotation' )
 		.addClass( 've-ce-bidi-isolate' )
 		.attr( {
 			lang: lang,
