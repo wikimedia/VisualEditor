@@ -13,6 +13,10 @@
 	opacity: 0.15;
 }
 
+.ve-ce-focusableNode {
+	cursor: default;
+}
+
 .ve-ce-focusableNode-dropMarker {
 	height: 1px;
 	background: #999;

@@ -105,6 +105,15 @@ ve.ce.FocusableNode.prototype.onFocusableSetup = function () {
 		'mouseenter.ve-ce-focusableNode': ve.bind( this.onFocusableMouseEnter, this ),
 		'mousedown.ve-ce-focusableNode touchend.ve-ce-focusableNode': ve.bind( this.onFocusableMouseDown, this )
 	} );
+	// $element is ce=false so make sure nothing happens when you click
+	// on it, just in case the browser decides to do something.
+	// If $element == $focusable then this can be skipped as $focusable already
+	// handles mousedown events.
+	if ( !this.$element.is( this.$focusable ) ) {
+		this.$element.on( {
+			'mousedown.ve-ce-focusableNode': function ( e ) { e.preventDefault(); }
+		} );
+	}
 
 	this.isSetup = true;
 };
@@ -122,6 +131,7 @@ ve.ce.FocusableNode.prototype.onFocusableTeardown = function () {
 
 	// Events
 	this.$focusable.off( '.ve-ce-focusableNode' );
+	this.$element.off( '.ve-ce-focusableNode' );
 
 	// Highlights
 	this.clearHighlights();
