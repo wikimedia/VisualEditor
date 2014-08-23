@@ -28,6 +28,7 @@
 	"visualeditor-dialog-action-apply": "পরিবর্তনসমূহ প্রয়োগ",
 	"visualeditor-dialog-action-cancel": "বাতিল",
 	"visualeditor-dialog-action-goback": "ফিরে যাও",
+	"visualeditor-dialog-action-insert": "যোগ করো",
 	"visualeditor-dialog-command-help-title": "কীবোর্ড শর্টকাট",
 	"visualeditor-dialog-language-auto-direction": "স্বয়ং",
 	"visualeditor-formatdropdown-format-heading-label": "শিরনামা (১-৬)",
@@ -70,6 +71,8 @@
 	"visualeditor-shortcuts-text-style": "লেখা শৈলী",
 	"visualeditor-specialcharacter-button-tooltip": "বিশেষ বর্ণ",
 	"visualeditor-specialcharacterinspector-title": "বিশেষ বর্ণ",
+	"visualeditor-toolbar-format-tooltip": "অনুচ্ছেদ বিন্যাস",
 	"visualeditor-toolbar-insert": "যোগ করো",
+	"visualeditor-toolbar-style-tooltip": "লেখার শৈলী",
 	"visualeditor-version-label": "সংস্করণ"
 }

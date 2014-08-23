@@ -39,7 +39,6 @@
 	"visualeditor-clipboard-paste": "Label for paste command.\n{{Identical|Paste}}",
 	"visualeditor-clipboard-paste-special": "Label for paste as plain text command",
 	"visualeditor-commentinspector-edit": "Label for the edit button in the comment inspector.",
-	"visualeditor-commentinspector-insert": "Label for the insert button in the comment inspector.",
 	"visualeditor-commentinspector-title": "{{Identical|Comment}}",
 	"visualeditor-commentinspector-tooltip": "Tooltip text for comment button.\n{{Related|Visualeditor-annotationbutton}}\n{{Identical|Comment}}",
 	"visualeditor-dialog-action-apply": "Label text for button to apply changes made in dialog.\n\nSee also:\n* {{msg-mw|Visualeditor-dialog-action-cancel}}\n* {{msg-mw|Visualeditor-dialog-action-done}}\n* {{msg-mw|Visualeditor-dialog-action-goback}}\n* {{msg-mw|Visualeditor-dialog-action-insert}}\n{{Identical|Apply change}}",

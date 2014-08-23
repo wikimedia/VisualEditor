@@ -4,7 +4,8 @@
 			"Singhalawap",
 			"පසිඳු කාවින්ද",
 			"ශ්වෙත",
-			"Sahan.ssw"
+			"Sahan.ssw",
+			"Indunil Chamara"
 		]
 	},
 	"visualeditor": "දෘශ්‍යසංස්කාරක",
@@ -18,6 +19,7 @@
 	"visualeditor-dialog-action-apply": "වෙනස්කිරීම් තහවුරුකරන්න",
 	"visualeditor-dialog-action-cancel": "අවලංගු කරන්න",
 	"visualeditor-dialog-action-goback": "ආපසු යන්න",
+	"visualeditor-dialog-action-insert": "ඇතුල් කරන්න",
 	"visualeditor-dialog-language-auto-direction": "ස්වයංක්‍රිය",
 	"visualeditor-formatdropdown-format-heading1": "මාතෘකාව 1",
 	"visualeditor-formatdropdown-format-heading2": "මාතෘකාව 2",

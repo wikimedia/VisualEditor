@@ -16,7 +16,8 @@
 			"Sunpriat",
 			"Yury Katkov",
 			"Умар",
-			"Kaganer"
+			"Kaganer",
+			"Nirovulf"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -36,13 +37,13 @@
 	"visualeditor-clipboard-paste": "Вставить",
 	"visualeditor-clipboard-paste-special": "Вставить как простой текст",
 	"visualeditor-commentinspector-edit": "Редактировать комментарий",
-	"visualeditor-commentinspector-insert": "Вставить комментарий",
 	"visualeditor-commentinspector-title": "Комментарий",
 	"visualeditor-commentinspector-tooltip": "Комментарий",
 	"visualeditor-dialog-action-apply": "Применить изменения",
 	"visualeditor-dialog-action-cancel": "Отмена",
 	"visualeditor-dialog-action-done": "Готово",
 	"visualeditor-dialog-action-goback": "Назад",
+	"visualeditor-dialog-action-insert": "Вставить",
 	"visualeditor-dialog-command-help-title": "Сочетания клавиш",
 	"visualeditor-dialog-error": "Что-то пошло не так…",
 	"visualeditor-dialog-error-dismiss": "Назад",
