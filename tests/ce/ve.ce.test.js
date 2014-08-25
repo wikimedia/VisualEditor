@@ -274,16 +274,12 @@ QUnit.test( 'resolveTestOffset', function ( assert ) {
 
 QUnit.test( 'fakeImes', function ( assert ) {
 	var i, ilen, j, jlen, surface, testRunner, testName, testActions, seq, testInfo,
-		action, args, count, foundEndLoop, fakePreventDefault;
+		action, args, count, foundEndLoop, failAt, died, fakePreventDefault;
 
 	// count tests
 	count = 0;
 	for ( i = 0, ilen = ve.ce.imetests.length; i < ilen; i++ ) {
 		testName = ve.ce.imetests[i][0];
-		if ( ve.ce.imetestsBroken[testName] ) {
-			// Skip broken test for now
-			continue;
-		}
 		testActions = ve.ce.imetests[i][1];
 		// For the test that there is at least one endLoop
 		count++;
@@ -305,10 +301,7 @@ QUnit.test( 'fakeImes', function ( assert ) {
 
 	for ( i = 0, ilen = ve.ce.imetests.length; i < ilen; i++ ) {
 		testName = ve.ce.imetests[i][0];
-		if ( ve.ce.imetestsBroken[testName] ) {
-			// Skip broken test for now
-			continue;
-		}
+		failAt = ve.ce.imetestsFailAt[testName] || null;
 		testActions = ve.ce.imetests[i][1];
 		foundEndLoop = false;
 		// First element is the testInfo
@@ -317,20 +310,44 @@ QUnit.test( 'fakeImes', function ( assert ) {
 		surface.getModel().setSelection( new ve.Range( 1 ) );
 		testRunner = new ve.ce.TestRunner( surface );
 		// start at 1 to omit the testInfo
+		died = false;
 		for ( j = 1, jlen = testActions.length; j < jlen; j++ ) {
 			action = testActions[j].action;
 			args = testActions[j].args;
 			seq = testActions[j].seq;
-			if ( action === 'sendEvent' ) {
-				// TODO: make preventDefault work
-				args[1].preventDefault = fakePreventDefault;
+			if ( !died ) {
+				if ( action === 'sendEvent' ) {
+					// TODO: make preventDefault work
+					args[1].preventDefault = fakePreventDefault;
+				}
+				try {
+					testRunner[action].apply( testRunner, args );
+				} catch ( ex ) {
+					died = ex;
+				}
 			}
-			testRunner[action].apply( testRunner, args );
-			// Check synchronized at the end of each event loop
+			// Check synchronization at the end of each event loop
 			if ( action === 'endLoop' ) {
-				// Test that the model and CE surface are in sync
-				testRunner.testEqual( assert, testName, seq );
 				foundEndLoop = true;
+				if ( failAt === null || seq < failAt ) {
+					// If no expected failure yet, test the code ran and the
+					// model and CE surface are in sync
+					if ( died ) {
+						testRunner.failDied( assert, testName, seq, died );
+					} else {
+						testRunner.testEqual( assert, testName, seq );
+					}
+				} else if ( seq === failAt ) {
+					// If *at* expected failure, check something failed
+					if ( died ) {
+						testRunner.ok( assert, testName, seq );
+					} else {
+						testRunner.testNotEqual( assert, testName, seq );
+					}
+				} else {
+					// If *after* expected failure, allow anything
+					testRunner.ok( assert, testName, seq );
+				}
 			}
 		}
 		// Test that there is at least one endLoop
