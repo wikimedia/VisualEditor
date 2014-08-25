@@ -195,7 +195,7 @@ ve.ui.Context.prototype.isInspectable = function () {
  * @return {boolean} Content is inspectable
  */
 ve.ui.Context.prototype.hasInspector = function () {
-	var i, availableTools = this.availableTools;
+	var i, availableTools = this.getAvailableTools();
 	for ( i = availableTools.length - 1; i >= 0; i-- ) {
 		if ( availableTools[i].tool.prototype instanceof ve.ui.InspectorTool ) {
 			return true;
