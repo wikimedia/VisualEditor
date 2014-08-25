@@ -263,13 +263,34 @@ ve.ce.TestRunner.prototype.changeSel = function ( start, end ) {
 };
 
 /**
- * Call assert.equal to test the IME test has updated the DM correctly
+ * Call assert.equal to check the IME test has updated the DM correctly
  * @param {Object} assert The QUnit assertion object
  * @param {string} testName The name of the test scenario
  * @param {number} sequence The sequence number in the test scenario
  */
 ve.ce.TestRunner.prototype.testEqual = function ( assert, testName, sequence ) {
 	var comment = testName + ' seq=' + sequence + ': "' + this.lastText + '"';
-	// TODO: should we also test this.getP().textContent ?
 	assert.equal( this.model.getDocument().getText(), this.lastText, comment );
+};
+
+/**
+ * Call assert.notEqual to check the IME test has not updated the DM correctly
+ * @param {Object} assert The QUnit assertion object
+ * @param {string} testName The name of the test scenario
+ * @param {number} sequence The sequence number in the test scenario
+ */
+ve.ce.TestRunner.prototype.testNotEqual = function ( assert, testName, sequence ) {
+	var comment = testName + ' seq=' + sequence + ': "' + this.lastText + '"';
+	assert.notEqual( this.model.getDocument().getText(), this.lastText, comment );
+};
+
+ve.ce.TestRunner.prototype.ok = function ( assert, testName, sequence ) {
+	var comment = testName + ' seq=' + sequence + ': "' + this.lastText + '"';
+	assert.ok( true, comment );
+};
+
+ve.ce.TestRunner.prototype.failDied = function ( assert, testName, sequence, ex ) {
+	var comment = testName + ' seq=' + sequence + ': "' + this.lastText +
+		'" ex=' + ex + ' stack=<' + ex.stack + '>';
+	assert.ok( false, comment );
 };
