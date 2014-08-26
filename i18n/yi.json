@@ -26,6 +26,7 @@
 	"visualeditor-dialog-action-cancel": "אַנולירן",
 	"visualeditor-dialog-action-done": "ערליידיקט",
 	"visualeditor-dialog-action-goback": "צוריקגיין",
+	"visualeditor-dialog-action-insert": "צולייגן",
 	"visualeditor-dialog-command-help-title": "קלאוויר פארקירצונגען",
 	"visualeditor-dialog-error": "עפעס איז דורכגעפאלן…",
 	"visualeditor-dialog-error-dismiss": "צוריקגיין",
@@ -49,7 +50,6 @@
 	"visualeditor-inspector-close-tooltip": "פארמאכן",
 	"visualeditor-inspector-remove-tooltip": "אַראָפּנעמען",
 	"visualeditor-language-search-input-placeholder": "זוכן לויט שפראך־נאמען אדער קאד",
-	"visualeditor-languageinspector-block-tooltip": "שפראך־בלאק",
 	"visualeditor-languageinspector-title": "שפראַך",
 	"visualeditor-languageinspector-widget-changelang": "טרעפן שפראך",
 	"visualeditor-languageinspector-widget-label-direction": "ריכטונג",
@@ -74,10 +74,12 @@
 	"visualeditor-shortcuts-text-style": "טעקסט סטיליזירן",
 	"visualeditor-specialcharacter-button-tooltip": "ספעציעלע צייכן",
 	"visualeditor-specialcharacterinspector-title": "ספעציעלער צייכן",
+	"visualeditor-toolbar-format-tooltip": "פארמאטירן פאראגראף",
 	"visualeditor-toolbar-history": "היסטאריע",
 	"visualeditor-toolbar-insert": "צולייגן",
 	"visualeditor-toolbar-paragraph-format": "פֿאָרמאַטירונג",
 	"visualeditor-toolbar-structure": "סטרוקטור",
+	"visualeditor-toolbar-style-tooltip": "סטיליזירן טעקסט",
 	"visualeditor-toolbar-text-style": "סטיליזירן",
 	"visualeditor-version-label": "ווערסיע"
 }

@@ -13,7 +13,8 @@
 			"Fatemi127",
 			"Armin1392",
 			"Calak",
-			"Oldstoneage"
+			"Oldstoneage",
+			"Alirezaaa"
 		]
 	},
 	"visualeditor": "ویرایشگر دیداری",
@@ -32,10 +33,11 @@
 	"visualeditor-clipboard-cut": "برش",
 	"visualeditor-clipboard-paste": "چسباندن",
 	"visualeditor-clipboard-paste-special": "چسباندن به عنوان متن ساده",
-	"visualeditor-commentinspector-tooltip": "توضیح",
+	"visualeditor-commentinspector-tooltip": "دیدگاه",
 	"visualeditor-dialog-action-apply": "اعمال تغییرات",
 	"visualeditor-dialog-action-cancel": "لغو",
 	"visualeditor-dialog-action-goback": "بازگشت به عقب",
+	"visualeditor-dialog-action-insert": "درج",
 	"visualeditor-dialog-command-help-title": "میانبرهای صفحه‌کلید",
 	"visualeditor-dialog-error": "مشکلی وجود دارد...",
 	"visualeditor-dialog-error-dismiss": "بازگشت به عقب",

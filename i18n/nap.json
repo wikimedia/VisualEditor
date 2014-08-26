@@ -3,7 +3,8 @@
 		"authors": [
 			"Chelin",
 			"Chrisportelli",
-			"PiRSquared17"
+			"PiRSquared17",
+			"C.R."
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -17,6 +18,7 @@
 	"visualeditor-dialog-action-cancel": "Annulla",
 	"visualeditor-dialog-action-done": "Fatto",
 	"visualeditor-dialog-action-goback": "A vascio",
+	"visualeditor-dialog-action-insert": "'Nserisce",
 	"visualeditor-formatdropdown-format-heading1": "Titulo 1",
 	"visualeditor-formatdropdown-format-heading2": "Titulo 2",
 	"visualeditor-formatdropdown-format-heading3": "Titulo 3",
@@ -29,7 +31,6 @@
 	"visualeditor-historybutton-undo-tooltip": "Annulla",
 	"visualeditor-inspector-close-tooltip": "Chiure",
 	"visualeditor-inspector-remove-tooltip": "Rimuove",
-	"visualeditor-languageinspector-block-tooltip": "Blocco 'e lengua",
 	"visualeditor-languageinspector-title": "Lengua",
 	"visualeditor-languageinspector-widget-label-direction": "Direzzione",
 	"visualeditor-languageinspector-widget-label-langcode": "Codece lengua",
