@@ -1245,7 +1245,9 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 			// i points to the first non-text thing, go back one so we don't skip this later
 			i--;
 			// Add text
-			domElement.appendChild( doc.createTextNode( text ) );
+			if ( text.length > 0 ) {
+				domElement.appendChild( doc.createTextNode( text ) );
+			}
 		} else if (
 			ve.isArray( data[i] ) ||
 			(
@@ -1538,7 +1540,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 		if ( container.lastChild && container.lastChild.nodeType === Node.TEXT_NODE ) {
 			// Last child is a TextNode, append to it
 			container.lastChild.appendData( container.lastOuterPost );
-		} else {
+		} else if ( container.lastOuterPost.length > 0 ) {
 			// Append a TextNode
 			container.appendChild( doc.createTextNode( container.lastOuterPost ) );
 		}
