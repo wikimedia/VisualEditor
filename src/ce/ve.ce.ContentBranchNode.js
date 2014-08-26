@@ -228,8 +228,8 @@ ve.ce.ContentBranchNode.prototype.renderContents = function () {
 	while ( rendered.firstChild ) {
 		newWrapper.appendChild( rendered.firstChild );
 	}
-	oldWrapper.normalize();
-	newWrapper.normalize();
+	ve.normalizeNode( oldWrapper );
+	ve.normalizeNode( newWrapper );
 	if ( newWrapper.isEqualNode( oldWrapper ) ) {
 		return;
 	}

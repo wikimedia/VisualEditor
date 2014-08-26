@@ -1545,7 +1545,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 		delete container.lastOuterPost;
 	}
 	// Get rid of excess text nodes
-	container.normalize();
+	ve.normalizeNode( container );
 };
 
 /* Initialization */
