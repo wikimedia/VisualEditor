@@ -130,6 +130,27 @@ QUnit.test( 'getOffset', function ( assert ) {
 				]
 			},
 			{
+				msg: 'Block alien',
+				html: '<p>Foo</p><div rel="ve:Alien">Bar</div><p>Baz</p>',
+				// Linmod:
+				// [<p>, F, o, o, </p>, <alienBlock>, </alienBlock>, <p>, B, a, z, </p>]
+				expected: [
+					0,
+					1, 1,
+					2,
+					3,
+					4, 4,
+					5,
+					6, 6, 6, 6, 6, 6,
+					7,
+					8, 8,
+					9,
+					10,
+					11, 11,
+					12
+				]
+			},
+			{
 				msg: 'Table with block slugs',
 				html: '<table><tr><td>Foo</td></tr></table>',
 				// CE HTML summary;

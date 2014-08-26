@@ -261,6 +261,8 @@ ve.ce.getOffset = function ( domNode, domOffset ) {
 		if ( !view.getModel().isContent() ) {
 			// Add 1 to take the opening into account
 			offset += view.getModel().isWrapped() ? 1 : 0;
+		}
+		if ( view.getModel().canContainContent() ) {
 			offset += lengthSum;
 		}
 		// else: we're inside an alienated node: throw away all the text node lengths,
