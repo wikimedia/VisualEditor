@@ -831,8 +831,6 @@ ve.ce.Surface.prototype.onCut = function ( e ) {
 	setTimeout( ve.bind( function () {
 		var selection, tx;
 
-		// We don't like how browsers cut, so let's undo it and do it ourselves.
-		this.$document[0].execCommand( 'undo', false, false );
 		selection = this.model.getSelection();
 
 		// Transact
