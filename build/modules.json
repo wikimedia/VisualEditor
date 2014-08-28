@@ -46,9 +46,9 @@
 			"oojs-ui"
 		]
 	},
-	"oojs-ui-agora": {
+	"oojs-ui-minerva": {
 		"styles": [
-			"lib/oojs-ui/oojs-ui-agora.css"
+			"lib/oojs-ui/oojs-ui-minerva.css"
 		],
 		"dependencies": [
 			"oojs-ui"
@@ -478,7 +478,7 @@
 	},
 	"visualEditor.mobile": {
 		"dependencies": [
-			"oojs-ui-agora",
+			"oojs-ui-minerva",
 			"visualEditor.core",
 			"visualEditor.mobile.build"
 		]
@@ -584,7 +584,7 @@
 		],
 		"dependencies": [
 			"baselibs",
-			"oojs-ui-agora",
+			"oojs-ui-minerva",
 			"visualEditor.dist",
 			"visualEditor.standalone.demo"
 		]
