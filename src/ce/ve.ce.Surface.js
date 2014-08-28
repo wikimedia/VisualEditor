@@ -742,12 +742,12 @@ ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
 			break;
 		case OO.ui.Keys.BACKSPACE:
 			e.preventDefault();
-			this.handleDelete( e, true );
+			this.handleDelete( e, -1 );
 			updateFromModel = true;
 			break;
 		case OO.ui.Keys.DELETE:
 			e.preventDefault();
-			this.handleDelete( e, false );
+			this.handleDelete( e, 1 );
 			updateFromModel = true;
 			break;
 		default:
@@ -828,24 +828,9 @@ ve.ce.Surface.prototype.onDocumentKeyUp = function ( e ) {
  * @param {jQuery.Event} e Cut event
  */
 ve.ce.Surface.prototype.onCut = function ( e ) {
-	// TODO: no pollOnce here: but should we add one?
-	this.surfaceObserver.stopTimerLoop();
 	this.onCopy( e );
 	setTimeout( ve.bind( function () {
-		var selection, tx;
-
-		selection = this.model.getSelection();
-
-		// Transact
-		tx = ve.dm.Transaction.newFromRemoval( this.documentView.model, selection );
-
-		// Document may not have had real focus (e.g. with a FocusableNode)
-		this.documentView.getDocumentNode().$element[0].focus();
-
-		this.model.change( tx, new ve.Range( selection.start ) );
-		this.surfaceObserver.clear();
-		this.surfaceObserver.startTimerLoop();
-		this.surfaceObserver.pollOnce();
+		this.handleDelete( e, 0 );
 	}, this ) );
 };
 
@@ -2062,12 +2047,11 @@ ve.ce.Surface.prototype.handleEnter = function ( e ) {
  *
  * @method
  * @param {jQuery.Event} e Delete key down event
- * @param {boolean} backspace Key was a backspace
+ * @param {number} direction Direction to delete in: 1, -1 or 0 for direction-less cut
  */
-ve.ce.Surface.prototype.handleDelete = function ( e, backspace ) {
+ve.ce.Surface.prototype.handleDelete = function ( e, direction ) {
 	var rangeAfterRemove, internalListRange,
 		offset = 0,
-		direction = backspace ? -1 : 1,
 		model = this.getModel(),
 		documentModel = model.getDocument(),
 		documentView = this.getDocument(),
@@ -2075,7 +2059,7 @@ ve.ce.Surface.prototype.handleDelete = function ( e, backspace ) {
 		rangeToRemove = model.getSelection(),
 		docLength, tx, startNode, endNode, endNodeData, nodeToDelete;
 
-	if ( rangeToRemove.isCollapsed() ) {
+	if ( direction && rangeToRemove.isCollapsed() ) {
 		// In case when the range is collapsed use the same logic that is used for cursor left and
 		// right movement in order to figure out range to remove.
 		rangeToRemove = documentView.getRelativeRange(
@@ -2170,7 +2154,8 @@ ve.ce.Surface.prototype.handleDelete = function ( e, backspace ) {
 	if ( !documentModel.data.isContentOffset( rangeAfterRemove.start ) ) {
 		rangeAfterRemove = documentView.getRelativeRange(
 			rangeAfterRemove,
-			direction
+			// If direction === 0 (cut), default to backwards movement
+			direction || -1
 		);
 	}
 	model.setSelection( rangeAfterRemove );
