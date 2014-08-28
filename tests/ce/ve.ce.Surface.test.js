@@ -13,12 +13,13 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, html, range, o
 	var i, method, args,
 		selection,
 		actions = {
-			backspace: [ 'handleDelete', {}, true ],
-			delete: [ 'handleDelete', {}, false ],
-			modifiedBackspace: [ 'handleDelete', { ctrlKey: true }, true ],
-			modifiedDelete: [ 'handleDelete', { ctrlKey: true }, false ],
-			enter: [ 'handleEnter', {}, true ],
-			modifiedEnter: [ 'handleEnter', { shiftKey: true }, false ]
+			backspace: [ 'handleDelete', {}, -1 ],
+			delete: [ 'handleDelete', {}, 1 ],
+			cut: [ 'handleDelete', {}, 0 ],
+			modifiedBackspace: [ 'handleDelete', { ctrlKey: true }, -1 ],
+			modifiedDelete: [ 'handleDelete', { ctrlKey: true }, 1 ],
+			enter: [ 'handleEnter', {} ],
+			modifiedEnter: [ 'handleEnter', { shiftKey: true } ]
 		},
 		surface = ve.test.utils.createSurfaceFromHtml( html || ve.dm.example.html ),
 		view = surface.getView(),
@@ -134,6 +135,15 @@ QUnit.test( 'handleDelete', function ( assert ) {
 				},
 				expectedRange: new ve.Range( 39 ),
 				msg: 'Focusable node deleted if selected first'
+			},
+			{
+				range: new ve.Range( 39, 41 ),
+				operations: ['cut'],
+				expectedData: function ( data ) {
+					data.splice( 39, 2 );
+				},
+				expectedRange: new ve.Range( 39 ),
+				msg: 'Focusable node deleted by cut'
 			},
 			{
 				range: new ve.Range( 0, 63 ),
