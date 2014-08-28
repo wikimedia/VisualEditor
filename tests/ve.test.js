@@ -351,3 +351,133 @@ QUnit.test( 'graphemeSafeSubstring', function ( assert ) {
 		);
 	}
 } );
+
+QUnit.test( 'normalizeNode', function ( assert ) {
+	var i, actual, expected, wasNormalizeBroken,
+		cases = [
+			{
+				msg: 'Merge two adjacent text nodes',
+				before: {
+					type: 'p',
+					children: [
+						{ type: '#text', text: 'Foo' },
+						{ type: '#text', text: 'Bar' }
+					]
+				},
+				after: {
+					type: 'p',
+					children: [
+						{ type: '#text', text: 'FooBar' }
+					]
+				}
+			},
+			{
+				msg: 'Merge three adjacent text nodes',
+				before: {
+					type: 'p',
+					children: [
+						{ type: '#text', text: 'Foo' },
+						{ type: '#text', text: 'Bar' },
+						{ type: '#text', text: 'Baz' }
+					]
+				},
+				after: {
+					type: 'p',
+					children: [
+						{ type: '#text', text: 'FooBarBaz' }
+					]
+				}
+			},
+			{
+				msg: 'Drop empty text node after single text node',
+				before: {
+					type: 'p',
+					children: [
+						{ type: '#text', text: 'Foo' },
+						{ type: '#text', text: '' }
+					]
+				},
+				after: {
+					type: 'p',
+					children: [
+						{ type: '#text', text: 'Foo' }
+					]
+				}
+			},
+			{
+				msg: 'Drop empty text node after two text nodes',
+				before: {
+					type: 'p',
+					children: [
+						{ type: '#text', text: 'Foo' },
+						{ type: '#text', text: 'Bar' },
+						{ type: '#text', text: '' }
+					]
+				},
+				after: {
+					type: 'p',
+					children: [
+						{ type: '#text', text: 'FooBar' }
+					]
+				}
+			},
+			{
+				msg: 'Normalize recursively',
+				before: {
+					type: 'div',
+					children: [
+						{ type: '#text', text: '' },
+						{
+							type: 'p',
+							children: [
+								{ type: '#text', text: 'Foo' },
+								{ type: '#text', text: 'Bar' }
+							]
+						},
+						{
+							type: 'p',
+							children: [
+								{ type: '#text', text: 'Baz' },
+								{ type: '#text', text: 'Quux' }
+							]
+						},
+						{ type: '#text', text: 'Whee' }
+					]
+				},
+				after: {
+					type: 'div',
+					children: [
+						{
+							type: 'p',
+							children: [
+								{ type: '#text', text: 'FooBar' }
+							]
+						},
+						{
+							type: 'p',
+							children: [
+								{ type: '#text', text: 'BazQuux' }
+							]
+						},
+						{ type: '#text', text: 'Whee' }
+					]
+				}
+			}
+		];
+	QUnit.expect( 2 * cases.length );
+
+	// Force normalizeNode to think native normalization is broken so it uses the manual
+	// normalization code
+	wasNormalizeBroken = ve.isNormalizeBroken;
+	ve.isNormalizeBroken = true;
+
+	for ( i = 0; i < cases.length; i++ ) {
+		actual = ve.test.utils.buildDom( cases[i].before );
+		expected = ve.test.utils.buildDom( cases[i].after );
+		ve.normalizeNode( actual );
+		assert.equalDomElement( actual, expected, cases[i].msg );
+		assert.ok( actual.isEqualNode( expected ), cases[i].msg + ' (isEqualNode)' );
+	}
+
+	ve.isNormalizeBroken = wasNormalizeBroken;
+} );

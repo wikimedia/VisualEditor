@@ -649,9 +649,7 @@
 		// Summarize children
 		if ( element.childNodes ) {
 			for ( i = 0; i < element.childNodes.length; i++ ) {
-				if ( element.childNodes[i].nodeType !== Node.TEXT_NODE ) {
-					summary.children.push( ve.getDomElementSummary( element.childNodes[i], includeHtml ) );
-				}
+				summary.children.push( ve.getDomElementSummary( element.childNodes[i], includeHtml ) );
 			}
 		}
 		return summary;
@@ -891,6 +889,48 @@
 			}
 		} );
 		return $element.get( 0 );
+	};
+
+	ve.normalizeNode = function ( node ) {
+		var p, nodeIterator, textNode;
+		if ( ve.isNormalizeBroken === undefined ) {
+			// Feature-detect IE11's broken .normalize() implementation.
+			// We know that it fails to remove the empty text node at the end
+			// in this example, but for mysterious reasons it also fails to merge
+			// text nodes in other cases and we don't quite know why. So if we detect
+			// that .normalize() is broken, fall back to a completely manual version.
+			p = document.createElement( 'p' );
+			p.appendChild( document.createTextNode( 'Foo' ) );
+			p.appendChild( document.createTextNode( 'Bar' ) );
+			p.appendChild( document.createTextNode( '' ) );
+			p.normalize();
+			ve.isNormalizeBroken = p.childNodes.length !== 1;
+		}
+
+		if ( ve.isNormalizeBroken ) {
+			// Perform normalization manually
+			nodeIterator = node.ownerDocument.createNodeIterator(
+				node,
+				NodeFilter.SHOW_TEXT,
+				function () { return NodeFilter.FILTER_ACCEPT; },
+				false
+			);
+			while ( ( textNode = nodeIterator.nextNode() ) ) {
+				// Remove if empty
+				if ( textNode.data === '' ) {
+					textNode.parentNode.removeChild( textNode );
+					continue;
+				}
+				// Merge in any adjacent text nodes
+				while ( textNode.nextSibling && textNode.nextSibling.nodeType === Node.TEXT_NODE ) {
+					textNode.appendData( textNode.nextSibling.data );
+					textNode.parentNode.removeChild( textNode.nextSibling );
+				}
+			}
+		} else {
+			// Use native implementation
+			node.normalize();
+		}
 	};
 
 	/**

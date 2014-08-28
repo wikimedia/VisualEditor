@@ -169,4 +169,30 @@
 		target.setup( doc );
 		return target.surface;
 	};
+
+	/**
+	 * Build a DOM from a JSON structure.
+	 *
+	 * @param {Object} data JSON structure
+	 * @param {string} data.type Tag name or '#text' or '#comment'
+	 * @param {string} [data.text] Node text, only used if type is '#text' or '#comment'
+	 * @param {Object[]} [data.children] Node's children; array of objects like data
+	 * @returns {Node} DOM node corresponding to data
+	 */
+	ve.test.utils.buildDom = function buildDom( data ) {
+		var i, node;
+		if ( data.type === '#text' ) {
+			return document.createTextNode( data.text );
+		}
+		if ( data.type === '#comment' ) {
+			return document.createComment( data.text );
+		}
+		node = document.createElement( data.type );
+		if ( data.children ) {
+			for ( i = 0; i < data.children.length; i++ ) {
+				node.appendChild( buildDom( data.children[i] ) );
+			}
+		}
+		return node;
+	};
 }() );
