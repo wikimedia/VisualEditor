@@ -69,7 +69,7 @@ $( function () {
 		languageInput.setLangAndDir( currentLang, currentDir );
 
 		languageInput.on( 'change', function ( lang, dir ) {
-			if ( ve.indexOf( lang, ve.init.platform.getLanguageCodes() ) === -1 ) {
+			if ( dir === currentDir && ve.indexOf( lang, ve.init.platform.getLanguageCodes() ) === -1 ) {
 				return;
 			}
 
