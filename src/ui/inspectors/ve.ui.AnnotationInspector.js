@@ -24,7 +24,7 @@ ve.ui.AnnotationInspector = function VeUiAnnotationInspector( config ) {
 	this.initialSelection = null;
 	this.initialAnnotation = null;
 	this.initialAnnotationIsCovering = false;
-	this.isNewAnnotation = false;
+	this.appliedNewAnnotation = false;
 };
 
 /* Inheritance */
@@ -171,8 +171,8 @@ ve.ui.AnnotationInspector.prototype.getSetupProcess = function ( data ) {
 					annotation = this.getAnnotationFromFragment( fragment );
 					if ( annotation ) {
 						fragment.annotateContent( 'set', annotation );
+						this.appliedNewAnnotation = true;
 					}
-					this.isNewAnnotation = true;
 				}
 			} else {
 				// Expand range to cover annotation
@@ -233,12 +233,12 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 					!this.initialAnnotation ||
 					!this.initialAnnotation.compareTo( annotation )
 				) {
-					if ( this.isNewAnnotation ) {
+					set = true;
+					if ( this.appliedNewAnnotation ) {
 						undo = true;
 					} else {
 						clear = true;
 					}
-					set = true;
 				}
 			}
 			if ( insert ) {
@@ -288,6 +288,6 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 			this.initialSelection = null;
 			this.initialAnnotation = null;
 			this.initialAnnotationIsCovering = false;
-			this.isNewAnnotation = false;
+			this.appliedNewAnnotation = false;
 		}, this );
 };
