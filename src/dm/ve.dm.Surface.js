@@ -157,6 +157,7 @@ ve.dm.Surface.prototype.isStaging = function () {
  *
  * @returns {Object|undefined} staging Staging state object, or undefined if not staging
  * @returns {ve.dm.Transaction[]} staging.transactions Staging transactions
+ * @returns {ve.Range} staging.selectionBefore Selection before transactions were applied
  * @returns {boolean} staging.allowUndo Allow undo while staging
  */
 ve.dm.Surface.prototype.getStaging = function () {
@@ -199,7 +200,7 @@ ve.dm.Surface.prototype.pushStaging = function ( allowUndo ) {
 		this.stopHistoryTracking();
 		this.emit( 'history' );
 	}
-	this.stagingStack.push( { transactions: [], allowUndo: !!allowUndo } );
+	this.stagingStack.push( { transactions: [], selectionBefore: null, allowUndo: !!allowUndo } );
 };
 
 /**
@@ -243,16 +244,20 @@ ve.dm.Surface.prototype.applyStaging = function () {
 		return;
 	}
 
-	var staging = this.stagingStack.pop(),
-		transactions = staging.transactions;
+	var staging = this.stagingStack.pop();
 
 	if ( this.isStaging() ) {
-		// Move transactions to the next item down in the staging stack
-		Array.prototype.push.apply( this.getStagingTransactions(), transactions );
+		// Merge popped transactions into the current item in the staging stack
+		Array.prototype.push.apply( this.getStagingTransactions(), staging.transactions );
+		// If the current level has no selectionBefore, copy that over too
+		if ( !this.getStaging().selectionBefore ) {
+			this.getStaging().selectionBefore = staging.selectionBefore;
+		}
 	} else {
 		this.truncateUndoStack();
 		// Move transactions to the undo stack
-		this.newTransactions = transactions;
+		this.newTransactions = staging.transactions;
+		this.selectionBefore = staging.selectionBefore;
 		this.breakpoint();
 	}
 
@@ -649,7 +654,9 @@ ve.dm.Surface.prototype.change = function ( transactions, selection ) {
  * @fires contextChange
  */
 ve.dm.Surface.prototype.changeInternal = function ( transactions, selection, skipUndoStack ) {
-	var i, len, selectionAfter, selectionBefore = this.selection, contextChange = false;
+	var i, len, selectionAfter,
+		selectionBefore = this.selection && this.selection.clone(),
+		contextChange = false;
 
 	if ( !this.enabled ) {
 		return;
@@ -667,6 +674,9 @@ ve.dm.Surface.prototype.changeInternal = function ( transactions, selection, ski
 			if ( !transactions[i].isNoOp() ) {
 				if ( !skipUndoStack ) {
 					if ( this.isStaging() ) {
+						if ( !this.getStagingTransactions().length ) {
+							this.getStaging().selectionBefore = selectionBefore;
+						}
 						this.getStagingTransactions().push( transactions[i] );
 					} else {
 						this.truncateUndoStack();
