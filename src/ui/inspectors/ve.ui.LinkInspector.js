@@ -138,6 +138,7 @@ ve.ui.LinkInspector.prototype.getReadyProcess = function ( data ) {
 		.next( function () {
 			this.targetInput.setDisabled( false ).focus().select();
 			this.getFragment().getSurface().enable();
+			this.onTargetInputChange();
 		}, this );
 };
 
