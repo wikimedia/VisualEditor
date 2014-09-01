@@ -147,7 +147,7 @@ ve.ui.SpecialCharacterInspector.prototype.onListClick = function ( e ) {
 	var character = $( e.target ).data( 'character' );
 
 	if ( character !== undefined ) {
-		this.getFragment().insertContent( character, false ).collapseRangeToEnd().select();
+		this.getFragment().insertContent( character, true ).collapseRangeToEnd().select();
 	}
 };
 
