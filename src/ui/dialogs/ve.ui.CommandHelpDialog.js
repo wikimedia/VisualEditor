@@ -64,7 +64,8 @@ ve.ui.CommandHelpDialog.prototype.initialize = function () {
 	this.contentLayout = new OO.ui.PanelLayout( {
 		$: this.$,
 		scrollable: true,
-		padded: true
+		padded: true,
+		expanded: false
 	} );
 	this.$container = this.$( '<div>' ).addClass( 've-ui-commandHelpDialog-container' );
 
