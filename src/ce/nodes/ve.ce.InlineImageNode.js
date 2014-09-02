@@ -10,7 +10,7 @@
  *
  * @class
  * @extends ve.ce.LeafNode
- * @mixins ve.ce.FocusableNode
+ * @mixins ve.ce.ImageNode
  * @mixins ve.ce.ResizableNode
  *
  * @constructor
@@ -26,16 +26,11 @@ ve.ce.InlineImageNode = function VeCeInlineImageNode( model, config ) {
 	ve.ce.LeafNode.call( this, model, config );
 
 	// Mixin constructors
-	ve.ce.FocusableNode.call( this );
-	ve.ce.ResizableNode.call( this, this.$element, config );
-
-	// Events
-	this.$element.on( 'load', ve.bind( this.onLoad, this ) );
-	this.model.connect( this, { attributeChange: 'onAttributeChange' } );
+	ve.ce.ImageNode.call( this, this.$element, null, config );
 
 	// Initialization
 	this.$element
-		.addClass( 've-ce-imageNode' )
+		.addClass( 've-ce-inlineImageNode' )
 		.attr( {
 			alt: this.model.getAttribute( 'alt' ),
 			src: this.getResolvedAttribute( 'src' )
@@ -50,46 +45,13 @@ ve.ce.InlineImageNode = function VeCeInlineImageNode( model, config ) {
 
 OO.inheritClass( ve.ce.InlineImageNode, ve.ce.LeafNode );
 
-OO.mixinClass( ve.ce.InlineImageNode, ve.ce.FocusableNode );
-OO.mixinClass( ve.ce.InlineImageNode, ve.ce.ResizableNode );
+OO.mixinClass( ve.ce.InlineImageNode, ve.ce.ImageNode );
 
 /* Static Properties */
 
 ve.ce.InlineImageNode.static.name = 'inlineImage';
 
 ve.ce.InlineImageNode.static.tagName = 'img';
-
-/* Methods */
-
-/**
- * Update the rendering of the 'src', 'width' and 'height' attributes when they change in the model.
- *
- * @method
- * @param {string} key Attribute key
- * @param {string} from Old value
- * @param {string} to New value
- */
-ve.ce.InlineImageNode.prototype.onAttributeChange = function ( key, from, to ) {
-	if ( key === 'src' ) {
-		this.$element.attr( 'src', this.getResolvedAttribute( 'src' ) );
-	}
-	if ( key === 'width' || key === 'height' ) {
-		this.$element.css( key, to !== null ? to : '' );
-	}
-};
-
-/**
- * Handle the image load
- *
- * @method
- * @param {jQuery.Event} e Load event
- */
-ve.ce.InlineImageNode.prototype.onLoad = function () {
-	this.setOriginalDimensions( {
-		width: this.$element.prop( 'naturalWidth' ),
-		height: this.$element.prop( 'naturalHeight' )
-	} );
-};
 
 /* Registration */
 
