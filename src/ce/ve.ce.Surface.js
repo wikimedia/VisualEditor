@@ -269,22 +269,26 @@ ve.ce.Surface.prototype.destroy = function () {
 /**
  * Get the coordinates of the selection anchor.
  *
+ * Returned coordinates are absolute (i.e. relative to the document).
+ *
  * @method
  * @returns {Object|null} { start: { x: ..., y: ... }, end: { x: ..., y: ... } }
  */
 ve.ce.Surface.prototype.getSelectionRect = function () {
-	var sel, x, rtl, boundingRect;
+	var sel, x, rtl, boundingRect, offset;
 
 	if ( this.focusedNode ) {
 		boundingRect = this.focusedNode.getBoundingRect();
+		offset = this.getSurface().$element.offset();
+		// Adjust boundingRect for surface offset
 		return {
 			start: {
-				x: boundingRect.left,
-				y: boundingRect.top
+				x: boundingRect.left + offset.left,
+				y: boundingRect.top + offset.top
 			},
 			end: {
-				x: boundingRect.right,
-				y: boundingRect.bottom
+				x: boundingRect.right + offset.left,
+				y: boundingRect.bottom + offset.top
 			}
 		};
 	}
@@ -313,16 +317,18 @@ ve.ce.Surface.prototype.getSelectionRect = function () {
 		// (depending on directionality) as a fallback.
 		if ( sel.focusNode && sel.focusNode.nodeType === Node.ELEMENT_NODE ) {
 			boundingRect = sel.focusNode.getBoundingClientRect();
+			// Use jQuery's offset() to get document coords rather than client coords
+			offset = $( sel.focusNode ).offset();
 			rtl = this.getModel().getDocument().getDir() === 'rtl';
-			x = rtl ? boundingRect.right : boundingRect.left;
+			x = offset.left + ( rtl ? boundingRect.width : 0 );
 			return {
 				start: {
 					x: x,
-					y: boundingRect.top
+					y: offset.top
 				},
 				end: {
 					x: x,
-					y: boundingRect.bottom
+					y: offset.top + boundingRect.height
 				}
 			};
 		} else {
