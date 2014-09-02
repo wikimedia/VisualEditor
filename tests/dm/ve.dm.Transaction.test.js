@@ -748,6 +748,66 @@ QUnit.test( 'newFromRemoval', function ( assert ) {
 	runConstructorTests( assert, ve.dm.Transaction.newFromRemoval, cases );
 } );
 
+QUnit.test( 'newFromReplacement', function ( assert ) {
+	var i, key,
+		doc = ve.dm.example.createExampleDocument(),
+		metaDoc = ve.dm.example.createExampleDocument( 'withMeta' ),
+		cases = {
+			'replace, preserving metadata': {
+				args: [metaDoc, new ve.Range( 1, 9 ), [ 'X', 'Y' ]],
+				ops: [
+					{ type: 'retain', length: 1 },
+					{
+						type: 'replace',
+						insert: [ 'X', 'Y' ],
+						insertMetadata: [
+							metaDoc.getMetadata()[4].concat(
+								metaDoc.getMetadata()[7]
+							),
+							undefined
+						],
+						insertedDataLength: 2,
+						insertedDataOffset: 0,
+						remove: [ 'F', 'o', 'o', 'B', 'a', 'r', 'B', 'a' ],
+						removeMetadata: metaDoc.getMetadata().slice( 1, 9 )
+					},
+					{ type: 'retain', length: 4 }
+				]
+			},
+			'replace, removing metadata': {
+				args: [metaDoc, new ve.Range( 1, 9 ), [ 'X', 'Y' ], true],
+				ops: [
+					{ type: 'retain', length: 1 },
+					{
+						type: 'replace',
+						insert: [ 'X', 'Y' ],
+						insertMetadata: [
+							undefined,
+							undefined
+						],
+						insertedDataLength: 2,
+						insertedDataOffset: 0,
+						remove: [ 'F', 'o', 'o', 'B', 'a', 'r', 'B', 'a' ],
+						removeMetadata: metaDoc.getMetadata().slice( 1, 9 )
+					},
+					{ type: 'retain', length: 4 }
+				]
+			}
+		};
+	QUnit.expect( ve.getObjectKeys( cases ).length );
+	for ( key in cases ) {
+		for ( i = 0; i < cases[key].ops.length; i++ ) {
+			if ( cases[key].ops[i].remove ) {
+				ve.dm.example.preprocessAnnotations( cases[key].ops[i].remove, doc.getStore() );
+			}
+			if ( cases[key].ops[i].insert ) {
+				ve.dm.example.preprocessAnnotations( cases[key].ops[i].insert, doc.getStore() );
+			}
+		}
+	}
+	runConstructorTests( assert, ve.dm.Transaction.newFromReplacement, cases, false );
+} );
+
 QUnit.test( 'newFromDocumentInsertion', function ( assert ) {
 	var i, j, doc2, tx, actualStoreItems, expectedStoreItems, removalOps,
 		doc = ve.dm.example.createExampleDocument( 'internalData' ),
