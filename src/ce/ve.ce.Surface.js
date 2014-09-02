@@ -87,14 +87,15 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 	this.$window.on( 'resize', this.onWindowResizeHandler );
 
 	// Use onDOMEvent to get jQuery focusin/focusout events to work in iframes
-	this.documentFocusChangeHandler = ve.bind( ve.debounce( this.onFocusChange ), this );
-	OO.ui.Element.onDOMEvent( this.getElementDocument(), 'focusin', this.documentFocusChangeHandler );
-	OO.ui.Element.onDOMEvent( this.getElementDocument(), 'focusout', this.documentFocusChangeHandler );
+	this.onDocumentFocusInOutHandler = ve.bind( this.onDocumentFocusInOut, this );
+	OO.ui.Element.onDOMEvent( this.getElementDocument(), 'focusin', this.onDocumentFocusInOutHandler );
+	OO.ui.Element.onDOMEvent( this.getElementDocument(), 'focusout', this.onDocumentFocusInOutHandler );
 	// It is possible for a mousedown to clear the selection
 	// without triggering a focus change event (e.g. if the
 	// document has been programmatically blurred) so trigger
 	// a focus change to check if we still have a selection
-	this.$document.on( 'mousedown', this.documentFocusChangeHandler );
+	this.debounceFocusChange = ve.bind( ve.debounce( this.onFocusChange ), this );
+	this.$document.on( 'mousedown', this.debounceFocusChange );
 
 	this.$pasteTarget.on( {
 		cut: ve.bind( this.onCut, this ),
@@ -254,8 +255,8 @@ ve.ce.Surface.prototype.destroy = function () {
 	this.model.disconnect( this );
 
 	// Disconnect DOM events on the document
-	OO.ui.Element.offDOMEvent( this.getElementDocument(), 'focusin', this.documentFocusChangeHandler );
-	OO.ui.Element.offDOMEvent( this.getElementDocument(), 'focusout', this.documentFocusChangeHandler );
+	OO.ui.Element.offDOMEvent( this.getElementDocument(), 'focusin', this.onDocumentFocusInOutHandler );
+	OO.ui.Element.offDOMEvent( this.getElementDocument(), 'focusout', this.onDocumentFocusInOutHandler );
 	this.$document.off( 'mousedown', this.documentFocusChangeHandler );
 
 	// Disconnect DOM events on the window
@@ -398,6 +399,21 @@ ve.ce.Surface.prototype.focus = function () {
 		}, this ) );
 	}
 	// onDocumentFocus takes care of the rest
+};
+
+/**
+ * Handler for focusin and focusout events. Filters events and debounces to #onFocusChange.
+ * @param {jQuery.Event} e focusin/out event
+ */
+ve.ce.Surface.prototype.onDocumentFocusInOut = function ( e ) {
+	// Filter out focusin/out events on iframes
+	// IE11 emits these when the focus moves into/out of an iframed document,
+	// but these events are misleading because the focus in this document didn't
+	// actually move.
+	if ( e.target.nodeName.toLowerCase() === 'iframe' ) {
+		return;
+	}
+	this.debounceFocusChange();
 };
 
 /**
