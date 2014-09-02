@@ -26,7 +26,7 @@
 	opacity: 0;
 	overflow: hidden;
 	position: fixed;
-	top: 0;
+	top: 1em; /* Hack: Stop the viewport scrolling when the paste target is typed into */
 	width: 1px;
 }
 
