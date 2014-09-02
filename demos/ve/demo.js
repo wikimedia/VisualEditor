@@ -47,7 +47,10 @@ $( function () {
 				new OO.ui.ButtonOptionWidget( 'edit', { label: 'Edit HTML' } ),
 				new OO.ui.ButtonOptionWidget( 'read', { label: 'Read' } )
 			] ),
-			languageInput = new ve.ui.LanguageInputWidget( { requireDir: true } ),
+			languageInput = new ve.ui.LanguageInputWidget( {
+				requireDir: true,
+				dialogManager: new OO.ui.WindowManager( { factory: ve.ui.windowFactory, classes: ['ve-demo-languageSearchDialogManager'] } )
+			} ),
 			sourceTextInput = new OO.ui.TextInputWidget( {
 				$: this.$,
 				multiline: true,

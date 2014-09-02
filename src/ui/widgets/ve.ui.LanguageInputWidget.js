@@ -14,6 +14,7 @@
  * @constructor
  * @param {Object} [config] Configuration options
  * @cfg {boolean} [requireDir] Require directionality to be set (no 'auto' value)
+ * @cfg {OO.ui.WindowManager} [dialogManager] Window manager to launch the language search dialog in
  */
 ve.ui.LanguageInputWidget = function VeUiLanguageInputWidget( config ) {
 	// Configuration initialization
@@ -26,7 +27,7 @@ ve.ui.LanguageInputWidget = function VeUiLanguageInputWidget( config ) {
 	this.lang = null;
 	this.dir = null;
 	this.overlay = new ve.ui.Overlay( { classes: ['ve-ui-overlay-global'] } );
-	this.dialogs = new OO.ui.WindowManager( { factory: ve.ui.windowFactory, isolate: true } );
+	this.dialogs = config.dialogManager || new OO.ui.WindowManager( { factory: ve.ui.windowFactory, isolate: true } );
 	this.findLanguageButton = new OO.ui.ButtonWidget( {
 		$: this.$,
 		classes: [ 've-ui-languageInputWidget-findLanguageButton' ],
