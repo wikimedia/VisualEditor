@@ -33,7 +33,7 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 	this.documentView = new ve.ce.Document( model.getDocument(), this );
 	this.surfaceObserver = new ve.ce.SurfaceObserver( this.documentView );
 	this.selectionTimeout = null;
-	this.$window = this.$( OO.ui.Element.getWindow( this.$.context ) );
+	this.$window = this.$( this.getElementWindow() );
 	this.$document = this.$( this.getElementDocument() );
 	this.eventSequencer = new ve.EventSequencer( [
 		'keydown', 'keypress', 'keyup',
@@ -267,29 +267,28 @@ ve.ce.Surface.prototype.destroy = function () {
 };
 
 /**
- * Get the coordinates of the selection anchor.
+ * Get the coordinates of the selection anchor relative to the viewport.
  *
- * Returned coordinates are absolute (i.e. relative to the document).
+ * Returned coordinates are client coordinates (i.e. relative to the viewport).
+ * For coordinates relative to the surface, use #getRelativeSelectionRect
  *
  * @method
- * @returns {Object|null} { start: { x: ..., y: ... }, end: { x: ..., y: ... } }
+ * @returns {Object|null} Selection rectangle, with keys top, bottom, left, right, width, height
  */
-ve.ce.Surface.prototype.getSelectionRect = function () {
-	var sel, x, rtl, boundingRect, offset;
+ve.ce.Surface.prototype.getClientSelectionRect = function () {
+	var sel, x, rtl, boundingRect, surfaceRect, startPos, endPos;
 
 	if ( this.focusedNode ) {
 		boundingRect = this.focusedNode.getBoundingRect();
-		offset = this.getSurface().$element.offset();
+		surfaceRect = this.getSurface().getBoundingClientRect();
 		// Adjust boundingRect for surface offset
 		return {
-			start: {
-				x: boundingRect.left + offset.left,
-				y: boundingRect.top + offset.top
-			},
-			end: {
-				x: boundingRect.right + offset.left,
-				y: boundingRect.bottom + offset.top
-			}
+			top: boundingRect.top - surfaceRect.top,
+			bottom: boundingRect.bottom - surfaceRect.top,
+			left: boundingRect.left - surfaceRect.left,
+			right: boundingRect.right - surfaceRect.left,
+			width: boundingRect.width,
+			height: boundingRect.height
 		};
 	}
 
@@ -304,37 +303,73 @@ ve.ce.Surface.prototype.getSelectionRect = function () {
 		return null;
 	}
 
-	// Calling get(Start|End)DocumentPos() sometimes fails:
+	// Calling get(Start|End)ClientPos() sometimes fails:
 	// * in Firefox on page load when the address bar is still focused
 	// * in empty paragraphs
 	try {
+		startPos = sel.getStartClientPos();
+		endPos = sel.getEndClientPos();
 		return {
-			start: sel.getStartDocumentPos(),
-			end: sel.getEndDocumentPos()
+			top: startPos.y,
+			bottom: endPos.y,
+			left: startPos.x,
+			right: endPos.x,
+			width: endPos.x - startPos.x,
+			height: endPos.y - startPos.y
 		};
 	} catch ( e ) {
 		// When possible, pretend the cursor is the left/right border of the node
 		// (depending on directionality) as a fallback.
 		if ( sel.focusNode && sel.focusNode.nodeType === Node.ELEMENT_NODE ) {
-			boundingRect = sel.focusNode.getBoundingClientRect();
-			// Use jQuery's offset() to get document coords rather than client coords
-			offset = $( sel.focusNode ).offset();
+			// We would use getBoundingClientRect(), but in iOS7 that's relative to the
+			// document rather than to the viewport
+			boundingRect = sel.focusNode.getClientRects()[0];
 			rtl = this.getModel().getDocument().getDir() === 'rtl';
-			x = offset.left + ( rtl ? boundingRect.width : 0 );
+			x = rtl ? boundingRect.right : boundingRect.left;
 			return {
-				start: {
-					x: x,
-					y: offset.top
-				},
-				end: {
-					x: x,
-					y: offset.top + boundingRect.height
-				}
+				top: boundingRect.top,
+				bottom: boundingRect.bottom,
+				left: x,
+				right: x,
+				width: 0,
+				height: boundingRect.height
 			};
 		} else {
 			return null;
 		}
 	}
+};
+
+/**
+ * Get the coordinates of the selection anchor relative to the surface.
+ *
+ * Returned coordinates are relative to the ve.ui.Surface. For client coordinates,
+ * use #getClientSelectionRect.
+ *
+ * @method
+ * @returns {Object|null} Selection rectangle, with keys top, bottom, left, right, width, height
+ */
+ve.ce.Surface.prototype.getRelativeSelectionRect = function () {
+	var clientRect, surfaceRect;
+	if ( this.focusedNode ) {
+		// This is already relative to the surface, no conversion needed
+		return this.focusedNode.getBoundingRect();
+	}
+
+	clientRect = this.getClientSelectionRect();
+	if ( !clientRect ) {
+		return null;
+	}
+
+	surfaceRect = this.getSurface().getBoundingClientRect();
+	return {
+		top: clientRect.top - surfaceRect.top,
+		bottom: clientRect.bottom - surfaceRect.top,
+		left: clientRect.left - surfaceRect.left,
+		right: clientRect.right - surfaceRect.left,
+		width: clientRect.width,
+		height: clientRect.height
+	};
 };
 
 /*! Initialization */
