@@ -74,12 +74,11 @@ ve.ui.LanguageResultWidget.prototype.highlightQuery = function ( text, query ) {
 		return $result.text( text );
 	}
 	$result.append(
-		document.createTextNode( text.substr( 0, offset ) ),
+		document.createTextNode( text.slice( 0, offset ) ),
 		this.$( '<span>' )
 			.addClass( 've-ui-languageResultWidget-highlight' )
 			.text( text.substr( offset, query.length ) ),
-		document.createTextNode( text.substr( offset + query.length ) )
-
+		document.createTextNode( text.slice( offset + query.length ) )
 	);
 	return $result.contents();
 };

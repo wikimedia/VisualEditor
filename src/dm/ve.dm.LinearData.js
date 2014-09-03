@@ -34,7 +34,7 @@ ve.dm.LinearData.static = {};
  * @returns {string} Type of the element
  */
 ve.dm.LinearData.static.getType = function ( item ) {
-	return this.isCloseElementData( item ) ? item.type.substr( 1 ) : item.type;
+	return this.isCloseElementData( item ) ? item.type.slice( 1 ) : item.type;
 };
 
 /**

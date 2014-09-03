@@ -925,7 +925,7 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 					matches = text.match( /^\s+/ );
 					if ( matches && matches[0] !== '' ) {
 						addWhitespace( wrapperElement, 1, matches[0] );
-						text = text.substring( matches[0].length );
+						text = text.slice( matches[0].length );
 					}
 				}
 				if (
@@ -938,8 +938,7 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 					matches = text.match( /\s+$/ );
 					if ( matches && matches[0] !== '' ) {
 						addWhitespace( wrapperElement, 2, matches[0] );
-						text = text.substring( 0,
-							text.length - matches[0].length );
+						text = text.slice( 0, text.length - matches[0].length );
 					}
 				}
 
@@ -1328,7 +1327,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 			if ( dataElement.type.charAt( 0 ) === '/' ) {
 				// Close element
 				parentDomElement = domElement.parentNode;
-				type = data[i].type.substr( 1 );
+				type = data[i].type.slice( 1 );
 				if ( this.metaItemFactory.lookup( type ) ) {
 					isContentNode = canContainContentStack[canContainContentStack.length - 1];
 				} else {

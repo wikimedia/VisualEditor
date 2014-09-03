@@ -393,6 +393,6 @@ ve.ui.Trigger.prototype.getMessage = function () {
 		return platformFilters[platform]( keys );
 	}
 	return keys.map( function ( key ) {
-		return key[0].toUpperCase() + key.substr( 1 ).toLowerCase();
+		return key[0].toUpperCase() + key.slice( 1 ).toLowerCase();
 	} ).join( '+' );
 };

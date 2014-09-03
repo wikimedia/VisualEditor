@@ -367,7 +367,7 @@ ve.dm.Model.prototype.getAttributes = function ( prefix ) {
 		filtered = {};
 		for ( key in attributes ) {
 			if ( key.indexOf( prefix ) === 0 ) {
-				filtered[key.substr( prefix.length )] = attributes[key];
+				filtered[key.slice( prefix.length )] = attributes[key];
 			}
 		}
 		return filtered;

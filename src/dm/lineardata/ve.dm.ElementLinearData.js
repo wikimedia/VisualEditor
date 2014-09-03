@@ -107,7 +107,7 @@ ve.dm.ElementLinearData.prototype.isContentOffset = function ( offset ) {
 					// Is a closing
 					left.type.charAt( 0 ) === '/' &&
 					// Is a leaf
-					factory.isNodeContent( left.type.substr( 1 ) )
+					factory.isNodeContent( left.type.slice( 1 ) )
 				) ||
 				// Left of a leaf
 				// <paragraph>|<image></image></paragraph>
@@ -190,8 +190,8 @@ ve.dm.ElementLinearData.prototype.isStructuralOffset = function ( offset, unrest
 				left.type.charAt( 0 ) === '/' &&
 				// Is a branch or non-content leaf
 				(
-					factory.canNodeHaveChildren( left.type.substr( 1 ) ) ||
-					!factory.isNodeContent( left.type.substr( 1 ) )
+					factory.canNodeHaveChildren( left.type.slice( 1 ) ) ||
+					!factory.isNodeContent( left.type.slice( 1 ) )
 				) &&
 				(
 					// Only apply this rule in unrestricted mode
@@ -199,7 +199,7 @@ ve.dm.ElementLinearData.prototype.isStructuralOffset = function ( offset, unrest
 					// Right of an unrestricted branch
 					// <list><listItem><paragraph>a</paragraph>|</listItem></list>|
 					// Both are non-content branches that can have any kind of child
-					factory.getParentNodeTypes( left.type.substr( 1 ) ) === null
+					factory.getParentNodeTypes( left.type.slice( 1 ) ) === null
 				)
 			) ||
 			// Left of a branch

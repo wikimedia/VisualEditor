@@ -1524,17 +1524,17 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 			// TODO: actually start using the result again, or a modified version thereof
 			(
 				lengthDiff > 0 &&
-				previous.text.substring( 0, previousStart ) ===
-					next.text.substring( 0, previousStart ) &&
-				previous.text.substring( previousStart ) ===
-					next.text.substring( nextStart )
+				previous.text.slice( 0, previousStart ) ===
+					next.text.slice( 0, previousStart ) &&
+				previous.text.slice( previousStart ) ===
+					next.text.slice( nextStart )
 			) ||
 			(
 				lengthDiff < 0 &&
-				previous.text.substring( 0, nextStart ) ===
-					next.text.substring( 0, nextStart ) &&
-				previous.text.substring( previousStart - lengthDiff + offsetDiff ) ===
-					next.text.substring( nextStart )
+				previous.text.slice( 0, nextStart ) ===
+					next.text.slice( 0, nextStart ) &&
+				previous.text.slice( previousStart - lengthDiff + offsetDiff ) ===
+					next.text.slice( nextStart )
 			)
 		);
 

@@ -448,7 +448,7 @@
 	 * @returns {number} Grapheme cluster offset
 	 */
 	ve.getClusterOffset = function ( text, byteOffset ) {
-		return unicodeJS.graphemebreak.splitClusters( text.substring( 0, byteOffset ) ).length;
+		return unicodeJS.graphemebreak.splitClusters( text.slice( 0, byteOffset ) ).length;
 	};
 
 	/**
@@ -479,7 +479,7 @@
 		if ( unicodeEnd > end && !outer ) {
 			unicodeEnd = ve.getByteOffset( text, ve.getClusterOffset( text, end ) - 1 );
 		}
-		return text.substring( unicodeStart, unicodeEnd );
+		return text.slice( unicodeStart, unicodeEnd );
 	};
 
 	/**

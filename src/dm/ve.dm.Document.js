@@ -837,7 +837,7 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 						(
 							// Only throw an error if the content can't be adopted from one content
 							// branch to another
-							!ve.dm.nodeFactory.canNodeContainContent( element.type.substr( 1 ) ) ||
+							!ve.dm.nodeFactory.canNodeContainContent( element.type.slice( 1 ) ) ||
 							!ve.dm.nodeFactory.canNodeContainContent( expectedType )
 						)
 					) {
