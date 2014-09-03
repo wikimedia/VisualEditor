@@ -11,7 +11,7 @@
 * @class
 * @extends ve.ce.LeafNode
 * @mixins ve.ce.FocusableNode
-* @mixins OO.ui.IndicatedElement
+* @mixins OO.ui.IndicatorElement
 *
 * @constructor
 * @param {ve.dm.CommentNode} model Model to observe
@@ -29,14 +29,16 @@ ve.ce.CommentNode = function VeCeCommentNode( model, config ) {
 
 	// Mixin constructors
 	ve.ce.FocusableNode.call( this, this.$element, config );
-	OO.ui.IndicatedElement.call( this, this.$element, { $: this.$, indicator: 'alert' } );
+	OO.ui.IndicatorElement.call( this, $.extend( {}, config, {
+		$indicator: this.$element, indicator: 'alert'
+	} ) );
 };
 
 /* Inheritance */
 
 OO.inheritClass( ve.ce.CommentNode, ve.ce.LeafNode );
 OO.mixinClass( ve.ce.CommentNode, ve.ce.FocusableNode );
-OO.mixinClass( ve.ce.CommentNode, OO.ui.IndicatedElement );
+OO.mixinClass( ve.ce.CommentNode, OO.ui.IndicatorElement );
 
 /* Static Properties */
 
