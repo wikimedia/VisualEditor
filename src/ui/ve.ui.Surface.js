@@ -178,6 +178,16 @@ ve.ui.Surface.prototype.createDialogWindowManager = function () {
 };
 
 /**
+ * Get the bounding rectangle of the surface, relative to the viewport.
+ * @returns {Object} Object with top, bottom, left, right, width and height properties.
+ */
+ve.ui.Surface.prototype.getBoundingClientRect = function () {
+	// We would use getBoundingClientRect(), but in iOS7 that's relative to the
+	// document rather than to the viewport
+	return this.$element[0].getClientRects()[0];
+};
+
+/**
  * Check if editing is enabled.
  *
  * @method

@@ -136,26 +136,28 @@ ve.ui.Toolbar.prototype.onWindowResize = function () {
  * Method to scroll the content editable surface to the cursor position.
  *
  * This is for when the cursor is obscured by a floating toolbar.
+ *
+ * FIXME: this code should be in a target class or something
  */
 ve.ui.Toolbar.prototype.onSurfaceViewKeyUp = function () {
-	var barHeight, scrollTo, obscured, cursorPos;
+	var clientRect, barHeight, scrollTo, obscured;
 
 	if ( !this.floating ) {
 		return;
 	}
 
-	cursorPos = this.surface.view.getSelectionRect();
-	if ( !cursorPos ) {
+	clientRect = this.getSurface().getView().getClientSelectionRect();
+	if ( !clientRect ) {
 		return;
 	}
 
 	barHeight = this.$bar.height();
-	scrollTo = this.$bar.offset().top - barHeight + ( cursorPos.end.y - cursorPos.start.y );
-	obscured = cursorPos.start.y - this.$window.scrollTop() < barHeight;
+	obscured = clientRect.top < barHeight;
 
 	// If toolbar is floating and cursor is obscured, scroll cursor into view
 	if ( obscured ) {
-		this.$( 'html, body' ).prop( 'scrollTop', scrollTo );
+		scrollTo = this.$window.scrollTop() + clientRect.top - barHeight;
+		this.$window.scrollTop( scrollTo );
 	}
 };
 
