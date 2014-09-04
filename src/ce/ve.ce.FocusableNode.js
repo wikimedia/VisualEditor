@@ -32,7 +32,9 @@ ve.ce.FocusableNode = function VeCeFocusableNode( $focusable ) {
 	this.$highlights = this.$( '<div>' ).addClass( 've-ce-focusableNode-highlights' );
 	this.$focusable = $focusable || this.$element;
 	this.surface = null;
+	this.outerRects = null;
 	this.boundingRect = null;
+	this.inlineRects = null;
 
 	// Events
 	this.connect( this, {
@@ -400,7 +402,7 @@ ve.ce.FocusableNode.prototype.positionHighlights = function () {
 		return;
 	}
 
-	var i, l, top, left, bottom, right,
+	var i, l, relativeOuterRect,
 		outerRects = [],
 		surfaceOffset = this.surface.getSurface().getBoundingClientRect();
 
@@ -449,31 +451,32 @@ ve.ce.FocusableNode.prototype.positionHighlights = function () {
 		}
 	} );
 
-	this.boundingRect = {
-		top: Infinity,
-		left: Infinity,
-		bottom: -Infinity,
-		right: -Infinity
-	};
+	this.outerRects = outerRects;
+	this.boundingRect = null;
+	this.inlineRects = null;
 
-	for ( i = 0, l = outerRects.length; i < l; i++ ) {
-		top = outerRects[i].top - surfaceOffset.top;
-		left = outerRects[i].left - surfaceOffset.left;
-		bottom = outerRects[i].bottom - surfaceOffset.top;
-		right = outerRects[i].right - surfaceOffset.left;
+	for ( i = 0, l = this.outerRects.length; i < l; i++ ) {
+		relativeOuterRect = ve.translateRect( this.outerRects[i], -surfaceOffset.left, -surfaceOffset.top );
 		this.$highlights.append(
 			this.createHighlight().css( {
-				top: top,
-				left: left,
-				height: outerRects[i].height,
-				width: outerRects[i].width
+				top: relativeOuterRect.top,
+				left: relativeOuterRect.left,
+				width: relativeOuterRect.width,
+				height: relativeOuterRect.height
 			} )
 		);
-		this.boundingRect.top = Math.min( this.boundingRect.top, top );
-		this.boundingRect.left = Math.min( this.boundingRect.left, left );
-		this.boundingRect.bottom = Math.max( this.boundingRect.bottom, bottom );
-		this.boundingRect.right = Math.max( this.boundingRect.right, right );
+
+		if ( !this.boundingRect ) {
+			this.boundingRect = ve.copy( relativeOuterRect );
+		} else {
+			this.boundingRect.top = Math.min( this.boundingRect.top, relativeOuterRect.top );
+			this.boundingRect.left = Math.min( this.boundingRect.left, relativeOuterRect.left );
+			this.boundingRect.bottom = Math.max( this.boundingRect.bottom, relativeOuterRect.bottom );
+			this.boundingRect.right = Math.max( this.boundingRect.right, relativeOuterRect.right );
+		}
 	}
+	this.boundingRect.width = this.boundingRect.right - this.boundingRect.left;
+	this.boundingRect.height = this.boundingRect.bottom - this.boundingRect.top;
 };
 
 /**
@@ -489,14 +492,22 @@ ve.ce.FocusableNode.prototype.getBoundingRect = function () {
 };
 
 /**
- * Get the dimensions of the focusable node highight
+ * Get start and end rectangles of an inline focusable node relative to the surface
  *
- * @return {Object} Width and height of the focusable node
+ * @return {Object} Start and end rectangles
  */
-ve.ce.FocusableNode.prototype.getDimensions = function () {
-	var boundingRect = this.getBoundingRect();
-	return {
-		width: boundingRect.right - boundingRect.left,
-		height: boundingRect.bottom - boundingRect.top
-	};
+ve.ce.FocusableNode.prototype.getInlineRects = function () {
+	var inlineRects, surfaceOffset;
+	if ( !this.highlighted ) {
+		this.createHighlights();
+	}
+	if ( !this.inlineRects ) {
+		inlineRects = ve.getStartAndEndRects( this.outerRects );
+		surfaceOffset = this.surface.getSurface().getBoundingClientRect();
+		this.inlineRects = {
+			start: ve.translateRect( inlineRects.start, -surfaceOffset.left, -surfaceOffset.top ),
+			end: ve.translateRect( inlineRects.end, -surfaceOffset.left, -surfaceOffset.top )
+		};
+	}
+	return this.inlineRects;
 };

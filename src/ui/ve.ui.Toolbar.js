@@ -146,7 +146,7 @@ ve.ui.Toolbar.prototype.onSurfaceViewKeyUp = function () {
 		return;
 	}
 
-	clientRect = this.getSurface().getView().getClientSelectionRect();
+	clientRect = this.getSurface().getView().getSelectionBoundingClientRect();
 	if ( !clientRect ) {
 		return;
 	}
