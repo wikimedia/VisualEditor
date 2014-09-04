@@ -325,6 +325,12 @@ ve.ce.Surface.prototype.getClientSelectionRect = function () {
 			// We would use getBoundingClientRect(), but in iOS7 that's relative to the
 			// document rather than to the viewport
 			boundingRect = sel.focusNode.getClientRects()[0];
+			if ( !boundingRect ) {
+				// Oh come on, Firefox
+				// This appears to happen sometimes when sel.focusNode is invisible
+				return null;
+			}
+
 			rtl = this.getModel().getDocument().getDir() === 'rtl';
 			x = rtl ? boundingRect.right : boundingRect.left;
 			return {
