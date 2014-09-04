@@ -24,13 +24,13 @@
 	"visualeditor-clipboard-paste": "Zalijepi",
 	"visualeditor-clipboard-paste-special": "Zalijepi kao običan tekst",
 	"visualeditor-commentinspector-edit": "Uredi komentar",
-	"visualeditor-commentinspector-insert": "Umetni komentar",
 	"visualeditor-commentinspector-title": "Komentar",
 	"visualeditor-commentinspector-tooltip": "Komentar",
 	"visualeditor-dialog-action-apply": "Sačuvaj izmjene",
 	"visualeditor-dialog-action-cancel": "Odustani",
 	"visualeditor-dialog-action-done": "Gotovo",
 	"visualeditor-dialog-action-goback": "Idi natrag",
+	"visualeditor-dialog-action-insert": "Umetni",
 	"visualeditor-dialog-command-help-title": "Tipkovnički prečaci",
 	"visualeditor-dialog-error": "Nešto je pošlo po zlu...",
 	"visualeditor-dialog-error-dismiss": "Idi natrag",
@@ -83,5 +83,7 @@
 	"visualeditor-toolbar-insert": "Umetni",
 	"visualeditor-toolbar-paragraph-format": "Oblikovanje",
 	"visualeditor-toolbar-structure": "Struktura",
-	"visualeditor-toolbar-style-tooltip": "Oblikovanje teksta"
+	"visualeditor-toolbar-style-tooltip": "Oblikovanje teksta",
+	"visualeditor-toolbar-text-style": "Stil",
+	"visualeditor-version-label": "Verzija"
 }
