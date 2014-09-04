@@ -424,10 +424,8 @@ ve.ce.Surface.prototype.onDocumentFocusInOut = function ( e ) {
 
 /**
  * Handle global focus change.
- *
- * @param {jQuery.Event} e focusin or focusout event
  */
-ve.ce.Surface.prototype.onFocusChange = function ( e ) {
+ve.ce.Surface.prototype.onFocusChange = function () {
 	var hasFocus = false;
 
 	// rangy.getSelection can throw an exception in FF
@@ -443,10 +441,10 @@ ve.ce.Surface.prototype.onFocusChange = function ( e ) {
 	} catch ( ex ) {}
 
 	if ( hasFocus && !this.isFocused() ) {
-		this.onDocumentFocus( e );
+		this.onDocumentFocus();
 	}
 	if ( !hasFocus && this.isFocused() ) {
-		this.onDocumentBlur( e );
+		this.onDocumentBlur();
 	}
 };
 
@@ -456,7 +454,6 @@ ve.ce.Surface.prototype.onFocusChange = function ( e ) {
  * This is triggered by a global focusin/focusout event noticing a selection on the document.
  *
  * @method
- * @param {jQuery.Event} e focusin or focusout event
  * @fires focus
  */
 ve.ce.Surface.prototype.onDocumentFocus = function () {
@@ -477,7 +474,6 @@ ve.ce.Surface.prototype.onDocumentFocus = function () {
  * This is triggered by a global focusin/focusout event noticing no selection on the document.
  *
  * @method
- * @param {jQuery.Event} e focusin or focusout event
  * @fires blur
  */
 ve.ce.Surface.prototype.onDocumentBlur = function () {
