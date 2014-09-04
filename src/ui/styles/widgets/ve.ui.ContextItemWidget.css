@@ -9,7 +9,7 @@
 	padding: 0.5em 1em 0.5em 3em;
 }
 
-.ve-ui-contextItemWidget .oo-ui-labeledElement-label {
+.ve-ui-contextItemWidget .oo-ui-labelElement-label {
 	color: #666;
 	/* Size required to match menu and inspector widths */
 	max-width: 19.4em;
@@ -17,7 +17,7 @@
 	overflow: hidden;
 }
 
-.ve-ui-contextItemWidget .oo-ui-iconedElement-icon {
+.ve-ui-contextItemWidget .oo-ui-iconElement-icon {
 	opacity: 0.8;
 }
 
@@ -27,6 +27,6 @@
 	background-color: transparent;
 }
 
-.ve-ui-contextItemWidget.oo-ui-optionWidget-highlighted .oo-ui-iconedElement-icon {
+.ve-ui-contextItemWidget.oo-ui-optionWidget-highlighted .oo-ui-iconElement-icon {
 	opacity: 1;
 }

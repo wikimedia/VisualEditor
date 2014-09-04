@@ -32,11 +32,11 @@ body {
 	min-width: 10em;
 }
 
-.ve-demo-menu .oo-ui-inlineMenuWidget .oo-ui-labeledElement-label {
+.ve-demo-menu .oo-ui-inlineMenuWidget .oo-ui-labelElement-label {
 	text-transform: capitalize;
 }
 
-.ve-demo-menu .ve-ui-languageInputWidget > .oo-ui-labeledElement > .oo-ui-labeledElement-label {
+.ve-demo-menu .ve-ui-languageInputWidget > .oo-ui-labelElement > .oo-ui-labelElement-label {
 	display: none;
 }
 

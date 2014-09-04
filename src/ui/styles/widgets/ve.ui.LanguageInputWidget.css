@@ -5,7 +5,7 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-.ve-ui-languageInputWidget-findLanguageButton .oo-ui-buttonedElement-button > .oo-ui-labeledElement-label {
+.ve-ui-languageInputWidget-findLanguageButton .oo-ui-buttonElement-button > .oo-ui-labelElement-label {
 	width: 8.5em;
 	text-align: left;
 	overflow: hidden;
