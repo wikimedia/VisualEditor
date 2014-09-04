@@ -110,7 +110,9 @@ ve.ui.DesktopContext.prototype.onUnsuppress = function () {
  * Handle surface position event.
  */
 ve.ui.DesktopContext.prototype.onSurfacePosition = function () {
-	this.updateDimensions( true );
+	if ( this.isVisible() ) {
+		this.updateDimensions( true );
+	}
 };
 
 /**
