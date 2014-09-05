@@ -1390,6 +1390,24 @@ QUnit.test( 'sanitize', function ( assert ) {
 				msg: 'Annotations removed in plainText mode'
 			},
 			{
+				html: '<h1>Bar</h1><h2>Baz</h2><p>Quux</p>',
+				data: [
+					{ type: 'paragraph' },
+					'B', 'a', 'r',
+					{ type: '/paragraph' },
+					{ type: 'paragraph' },
+					'B', 'a', 'z',
+					{ type: '/paragraph' },
+					{ type: 'paragraph' },
+					'Q', 'u', 'u', 'x',
+					{ type: '/paragraph' },
+					{ type: 'internalList' },
+					{ type: '/internalList' }
+				],
+				plainText: true,
+				msg: 'Headings converted to paragraph is plainText mode'
+			},
+			{
 				html: '<p>Foo</p><p></p><h1></h1><p>Bar</p>',
 				data: [
 					{ type: 'paragraph' },

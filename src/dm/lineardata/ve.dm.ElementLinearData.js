@@ -870,7 +870,15 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules, plainText, keepEm
 			type = this.getType( i );
 			// Apply type conversions
 			if ( rules.conversions && rules.conversions[type] ) {
-				this.getData( i ).type = ( this.isCloseElementData( i ) ? '/' : '' ) + rules.conversions[type];
+				type = rules.conversions[type];
+				this.getData( i ).type = ( this.isCloseElementData( i ) ? '/' : '' ) + type;
+			}
+			// Convert content-containing non-paragraph nodes to paragraphs in plainText mode
+			if ( plainText && type !== 'paragraph' && ve.dm.nodeFactory.canNodeContainContent( type ) ) {
+				type = 'paragraph';
+				this.setData( i, {
+					type: ( this.isCloseElementData( i ) ? '/' : '' ) + type
+				} );
 			}
 			// Remove blacklisted nodes
 			if (
