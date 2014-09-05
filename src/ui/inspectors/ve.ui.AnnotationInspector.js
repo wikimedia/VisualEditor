@@ -62,7 +62,18 @@ ve.ui.AnnotationInspector.prototype.shouldRemoveAnnotation = function () {
 };
 
 /**
- * Get text to insert if no text was selected when the inspector opened.
+ * Get data to insert if nothing was selected when the inspector opened.
+ *
+ * Defaults to using #getInsertionText.
+ *
+ * @returns {Array} Linear model content to insert
+ */
+ve.ui.AnnotationInspector.prototype.getInsertionData = function () {
+	return ve.splitClusters( this.getInsertionText() );
+};
+
+/**
+ * Get text to insert if nothing was selected when the inspector opened.
  *
  * @returns {string} Text to insert
  */
@@ -242,7 +253,7 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 				surfaceModel.applyStaging();
 			}
 			if ( insertText ) {
-				insertion = this.getInsertionText();
+				insertion = this.getInsertionData();
 				if ( insertion.length ) {
 					fragment.insertContent( insertion, false );
 					// Move cursor to the end of the inserted content, even if back button is used
