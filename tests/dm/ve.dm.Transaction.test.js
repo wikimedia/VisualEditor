@@ -424,6 +424,7 @@ QUnit.test( 'newFromRemoval', function ( assert ) {
 	var i, key, store,
 		doc = ve.dm.example.createExampleDocument( 'data' ),
 		alienDoc = ve.dm.example.createExampleDocument( 'alienData' ),
+		alienWithEmptyDoc = ve.dm.example.createExampleDocument( 'alienWithEmptyData' ),
 		metaDoc = ve.dm.example.createExampleDocument( 'withMeta' ),
 		internalDoc = ve.dm.example.createExampleDocument( 'internalData' ),
 		cases = {
@@ -573,7 +574,7 @@ QUnit.test( 'newFromRemoval', function ( assert ) {
 						remove: ['a'],
 						insert: []
 					},
-					{ type: 'retain', length: 8 }
+					{ type: 'retain', length: alienDoc.data.getLength() - 4 }
 				]
 			},
 			'out of paragraph over last alien': {
@@ -591,7 +592,19 @@ QUnit.test( 'newFromRemoval', function ( assert ) {
 						remove: [{ type: 'alienBlock' }, { type: '/alienBlock' }],
 						insert: []
 					},
-					{ type: 'retain', length: 2 }
+					{ type: 'retain', length: alienDoc.data.getLength() - 10 }
+				]
+			},
+			'out of empty paragraph over last alien': {
+				args: [alienWithEmptyDoc, new ve.Range( 1, 6 )],
+				ops: [
+					{ type: 'retain', length: 1 },
+					{
+						type: 'replace',
+						remove: [{ type: '/paragraph' }, { type: 'paragraph' }, 'a', { type: 'alienInline' }, { type: '/alienInline' }],
+						insert: []
+					},
+					{ type: 'retain', length: alienWithEmptyDoc.data.getLength() - 6 }
 				]
 			},
 			'merging two paragraphs inside definitionListItems': {

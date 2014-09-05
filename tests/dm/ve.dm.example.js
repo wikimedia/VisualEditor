@@ -456,31 +456,41 @@ ve.dm.example.data = [
 ];
 
 ve.dm.example.alienData = [
-	// 0 - Open alienBlock
+	// 0
 	{ type: 'alienBlock' },
-	// 1 - Close alienBlock
 	{ type: '/alienBlock' },
-	// 2 - Open paragraph
+	// 2
 	{ type: 'paragraph' },
-	// 3 - Plain character 'a'
 	'a',
-	// 4 - Open alienInline
+	// 4
 	{ type: 'alienInline' },
-	// 5 - Close alienInline
 	{ type: '/alienInline' },
-	// 6 - Plain character 'b'
+	// 6
 	'b',
-	// 7 - Close paragraph
 	{ type: '/paragraph' },
-	// 8 - Open alienBlock
+	// 8
 	{ type: 'alienBlock' },
-	// 9 - Close alienBlock
 	{ type: '/alienBlock' },
-	// 10 - Beginning of internalList
+	// 10
 	{ type: 'internalList' },
-	// 11 - End of internalList
 	{ type: '/internalList' }
-	// 12 - End of document
+];
+
+ve.dm.example.alienWithEmptyData = [
+	// 0
+	{ type: 'paragraph' },
+	{ type: '/paragraph' },
+	// 2
+	{ type: 'paragraph' },
+	'a',
+	// 4
+	{ type: 'alienInline' },
+	{ type: '/alienInline' },
+	// 6
+	{ type: '/paragraph' },
+	// 7
+	{ type: 'internalList' },
+	{ type: '/internalList' }
 ];
 
 ve.dm.example.internalData = [
