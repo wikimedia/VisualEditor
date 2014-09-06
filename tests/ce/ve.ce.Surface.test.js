@@ -934,7 +934,7 @@ QUnit.test( 'getNearestCorrectOffset', function ( assert ) {
 	}
 } );
 
-QUnit.test( 'getSelection', function ( assert ) {
+QUnit.test( 'getRangeSelection', function ( assert ) {
 	var i, j, l, surface, selection, expectedNode, internlListNode, node, msg,
 		expect = 0,
 		cases = [
@@ -1061,7 +1061,7 @@ QUnit.test( 'getSelection', function ( assert ) {
 			if ( node.isFocusable() ) {
 				assert.equal( null, cases[i].expected[j], 'Focusable node at ' + j );
 			} else {
-				selection = surface.getView().getSelection( new ve.Range( j ) );
+				selection = surface.getView().getRangeSelection( new ve.Range( j ) );
 				if ( selection.end ) {
 					expectedNode = $( '<div>' ).html( cases[i].expected[j].startNode )[0].childNodes[0];
 					assert.equalDomElement( selection.start.node, expectedNode, 'Start node ' + msg );
