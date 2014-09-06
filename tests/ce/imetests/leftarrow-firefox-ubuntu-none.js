@@ -1,3 +1,9 @@
+/*!
+ * VisualEditor IME left arrow test for Firefox on Ubuntu.
+ *
+ * @copyright 2011-2014 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
 ve.ce.imetests.push( [ 'leftarrow-firefox-ubuntu-none', [
 	/*jshint quotmark:double */
 	{"imeIdentifier":"none","userAgent":"Mozilla/5.0 (X11; Linux i686 on x86_64; rv:24.0) Gecko/20100101 Firefox/24.0","startDom":""},

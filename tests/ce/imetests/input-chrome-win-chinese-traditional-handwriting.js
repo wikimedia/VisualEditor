@@ -1,3 +1,9 @@
+/*!
+ * VisualEditor IME test for Chromium on Windows in Traditional Chinese Handwriting.
+ *
+ * @copyright 2011-2014 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
 ve.ce.imetests.push( [ 'input-chrome-win-chinese-traditional-handwriting', [
 	/*jshint quotmark:double */
 	{"imeIdentifier":"Chinese Traditional Handwriting","userAgent":"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.101 Safari/537.36","startDom":""},

@@ -1,3 +1,9 @@
+/*!
+ * VisualEditor Context Menu widget class.
+ *
+ * @copyright 2011-2014 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
 /**
  * Menu of items, each an inspectablec attribute of the current context.
  *

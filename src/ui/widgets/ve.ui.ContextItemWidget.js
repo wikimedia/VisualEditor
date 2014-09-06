@@ -1,3 +1,9 @@
+/*!
+ * VisualEditor Context Item widget class.
+ *
+ * @copyright 2011-2014 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
 /**
  * Proxy for a tool, displaying information about the current context.
  *

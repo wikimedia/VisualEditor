@@ -1,3 +1,9 @@
+/*!
+ * VisualEditor Context widget class.
+ *
+ * @copyright 2011-2014 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
 /**
  * List of context items, displaying information about the current context.
  *

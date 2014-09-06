@@ -1,3 +1,9 @@
+/*!
+ * VisualEditor IME test for Firefox on Windows in Welsh.
+ *
+ * @copyright 2011-2014 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
 ve.ce.imetests.push( [ 'input-firefox-win-welsh', [
 	/*jshint quotmark:double */
 	{"imeIdentifier":"Welsh","userAgent":"Mozilla/5.0 (Windows NT 6.1; rv:19.0) Gecko/20100101 Firefox/19.0","startDom":""},

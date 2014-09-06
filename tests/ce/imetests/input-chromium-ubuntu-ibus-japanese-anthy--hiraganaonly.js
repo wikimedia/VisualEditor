@@ -1,3 +1,9 @@
+/*!
+ * VisualEditor IME test for Chromium on Ubuntu in Japanese using iBus Anthy.
+ *
+ * @copyright 2011-2014 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
 ve.ce.imetests.push( [ 'input-chromium-ubuntu-ibus-japanese-anthy--hiraganaonly', [
 	/*jshint quotmark:double */
 	{"imeIdentifier":"ibus Japanese anthy","userAgent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.22 (KHTML, like Gecko) Ubuntu Chromium/25.0.1364.160 Chrome/25.0.1364.160 Safari/537.22","startDom":""},

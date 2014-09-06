@@ -8,6 +8,7 @@
 module.exports = function ( grunt ) {
 	grunt.loadNpmTasks( 'grunt-banana-checker' );
 	grunt.loadNpmTasks( 'grunt-contrib-clean' );
+	grunt.loadNpmTasks( 'grunt-contrib-concat' );
 	grunt.loadNpmTasks( 'grunt-contrib-csslint' );
 	grunt.loadNpmTasks( 'grunt-contrib-jshint' );
 	grunt.loadNpmTasks( 'grunt-contrib-watch' );
@@ -22,7 +23,6 @@ module.exports = function ( grunt ) {
 
 	var modules = grunt.file.readJSON( 'build/modules.json' ),
 		moduleUtils = require( './build/moduleUtils' ),
-		introBuildFiles = moduleUtils.makeBuildList( modules, [ 'visualEditor.buildfiles.intro' ] ),
 		coreBuildFiles = moduleUtils.makeBuildList( modules, [ 'visualEditor.build' ] ),
 		testFiles = moduleUtils.makeBuildList( modules, [ 'visualEditor.test' ] ).scripts;
 
@@ -47,17 +47,18 @@ module.exports = function ( grunt ) {
 		cssUrlEmbed: {
 			dist: {
 				dest: 'dist/visualEditor.css',
-				src: introBuildFiles.styles
-					.concat( coreBuildFiles.styles )
+				src: coreBuildFiles.styles
 			}
 		},
 		concat: {
-			buildJs: {
-				dest: 'dist/visualEditor.js',
-				src: introBuildFiles.scripts
-					.concat( coreBuildFiles.scripts )
+			options: {
+				banner: grunt.file.read( 'build/banner.txt' )
 			},
-			buildCss: {
+			js: {
+				dest: 'dist/visualEditor.js',
+				src: coreBuildFiles.scripts
+			},
+			css: {
 				dest: 'dist/visualEditor.css',
 				src: ['dist/visualEditor.css']
 			}
@@ -204,10 +205,10 @@ module.exports = function ( grunt ) {
 		}
 	} );
 
+	grunt.registerTask( 'build', [ 'clean', 'cssUrlEmbed', 'concat', 'cssjanus', 'copy', 'buildloader' ] );
 	grunt.registerTask( 'lint', [ 'jshint', 'jscs', 'csslint', 'banana' ] );
 	grunt.registerTask( 'unit', [ 'karma:phantomjs' ] );
-	grunt.registerTask( 'build', [ 'clean', 'git-build', 'cssUrlEmbed', 'concat', 'cssjanus', 'copy', 'buildloader' ] );
-	grunt.registerTask( 'test', [ 'build', 'lint', 'unit' ] );
+	grunt.registerTask( 'test', [ 'git-build', 'build', 'lint', 'unit' ] );
 	grunt.registerTask( 'watch', [ 'karma:bg:start', 'runwatch' ] );
 	grunt.registerTask( 'default', 'test' );
 };

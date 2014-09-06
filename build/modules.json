@@ -591,14 +591,6 @@
 			"visualEditor.mobile.build"
 		]
 	},
-	"visualEditor.buildfiles.intro": {
-		"scripts": [
-			"build/intro.txt"
-		],
-		"styles": [
-			"build/intro.txt"
-		]
-	},
 	"visualEditor.dist": {
 		"scripts": [
 			"dist/visualEditor.js"
