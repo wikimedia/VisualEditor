@@ -16,4 +16,15 @@
 	margin-top: 1px;
 	background: #fff;
 	width: 100%;
+	box-shadow: 0 3px rgba(0, 0, 0, 0.1);
+}
+
+.ve-ui-contextItemWidget .ve-ui-contextItemWidget-label-secondary {
+	display: inline;
+	color: #347bff;
+}
+
+.ve-ui-contextItemWidget .ve-ui-contextItemWidget-label-secondary::before {
+	content: " • ";
+	color: #666;
 }

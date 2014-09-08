@@ -13,6 +13,8 @@
  * @param {Object} [config] Configuration options
  */
 ve.ui.ContextItemWidget = function VeUiContextItemWidget( data, tool, model, config ) {
+	var $label;
+
 	// Config intialization
 	config = config || {};
 
@@ -26,7 +28,16 @@ ve.ui.ContextItemWidget = function VeUiContextItemWidget( data, tool, model, con
 	// Initialization
 	this.$element.addClass( 've-ui-contextItemWidget' );
 	this.setIcon( this.tool.static.icon );
-	this.setLabel( this.getDescription() );
+
+	// FIXME: A hacky way to provide a secondary label/description.
+	// This should be implemented in OOUI if we end up using it in more places.
+	$label = $( '<span>' )
+		.append( this.getDescription() )
+		.append(
+			$( '<span class="ve-ui-contextItemWidget-label-secondary">' )
+				.text( ve.msg( 'visualeditor-contextitemwidget-label-secondary' ) )
+		);
+	this.setLabel( $label );
 };
 
 /* Setup */
