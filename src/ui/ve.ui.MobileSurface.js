@@ -27,6 +27,8 @@ ve.ui.MobileSurface = function VeUiMobileSurface() {
 	this.context.getInspectors().connect( this, { opening: 'onWindowOpening' } );
 
 	// Initialization
+	this.localOverlay.$element
+		.addClass( 've-ui-mobileSurface-overlay ve-ui-mobileSurface-overlay-local' );
 	this.globalOverlay.$element
 		.addClass( 've-ui-mobileSurface-overlay ve-ui-mobileSurface-overlay-global' );
 };

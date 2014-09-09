@@ -18,13 +18,6 @@
 ve.ui.DesktopSurface = function VeUiDesktopSurface() {
 	// Parent constructor
 	ve.ui.Surface.apply( this, arguments );
-
-	// Properties
-	this.$menus = this.$( '<div>' );
-
-	// Initialization
-	this.localOverlay.$element.append( this.$menus );
-	this.$menus.append( this.context.$element );
 };
 
 /* Inheritance */

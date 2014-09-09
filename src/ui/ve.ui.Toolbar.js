@@ -56,6 +56,7 @@ ve.ui.Toolbar = function VeUiToolbar( surface, options ) {
 	// ve-ui-dir-block-ltr
 	// ve-ui-dir-block-rtl
 	this.$element
+		.addClass( 've-ui-toolbar' )
 		.addClass( 've-ui-dir-inline-' + this.contextDirection.inline )
 		.addClass( 've-ui-dir-block-' + this.contextDirection.block );
 	// Events

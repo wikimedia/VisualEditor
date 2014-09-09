@@ -85,8 +85,7 @@ ve.ui.MobileContext.prototype.getAvailableTools = function () {
 	// of citation dialog forces us to load tools that we don't want on mobile.
 	this.availableTools = tools.filter( function ( tool ) {
 		return (
-			tool.model instanceof ve.dm.MWInternalLinkAnnotation ||
-			tool.model instanceof ve.dm.MWExternalLinkAnnotation ||
+			tool.model instanceof ve.dm.LinkAnnotation ||
 			( tool.model instanceof ve.dm.MWReferenceNode && tool.tool !== ve.ui.MWReferenceDialogTool )
 		);
 	} );
