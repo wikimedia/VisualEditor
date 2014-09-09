@@ -843,7 +843,7 @@ ve.dm.SurfaceFragment.prototype.delete = function ( directionAfterDelete ) {
 			directionAfterDelete || -1
 		);
 	}
-	this.update( new ve.dm.LinearSelection( this.getDocument(), rangeAfterRemove ) );
+	this.change( [], new ve.dm.LinearSelection( this.getDocument(), rangeAfterRemove ) );
 
 	return this;
 };
