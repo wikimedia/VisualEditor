@@ -1,0 +1,77 @@
+<h1>Tables</h1>
+
+<h2>Simple table</h2>
+
+<table>
+  <tr>
+    <td>A</td><td>B</td><td>C</td><td>D</td>
+  </tr>
+  <tr>
+    <td>E</td><td>F</td><td>G</td><td>H</td>
+  </tr>
+  <tr>
+    <td>I</td><td>J</td><td>K</td><td>L</td>
+  </tr>
+  <tr>
+    <td>M</td><td>N</td><td>O</td><td>P</td>
+  </tr>
+</table>
+
+<h2>Merged cells</h2>
+
+<table>
+  <tr>
+    <td>1</td><td>2</td><td>3</td><td rowspan='3'>4</td><td>5</td><td>6</td>
+  </tr>
+  <tr>
+    <td>7</td><td colspan='2'>8</td><td rowspan='4'>9</td><td>10</td>
+  </tr>
+  <tr>
+    <td>11</td><td>12</td><td>13</td><td>14</td>
+  </tr>
+  <tr>
+    <td>15</td><td rowspan='3' colspan='3'>16</td><td>17</td>
+  </tr>
+  <tr>
+    <td>18</td><td>19</td>
+  </tr>
+  <tr>
+    <td>20</td><td colspan='2'>21</td>
+  </tr>
+  <tr>
+    <td>22</td><td>23</td><td>24</td><td>25</td><td>26</td><td>27</td>
+  </tr>
+</table>
+
+<h2>Nested tables</h2>
+
+<table>
+  <tr>
+    <td>cell 1 row 1</td>
+    <td>cell 2 row 1</td>
+  </tr>
+  <tr>
+    <td>cell 1 row 2</td>
+    <td><table>
+        <tr>
+          <td>table 2 cell 1 row 1</td>
+          <td>table 2 cell 2 row 1</td>
+        </tr>
+        <tr>
+          <td>table 2 cell 1 row 2</td>
+          <td><table>
+              <tr>
+                <td>table 3 cell 1 row 1</td>
+                <td>table 3 cell 2 row 1</td>
+              </tr>
+              <tr>
+                <td>table 3 cell 1 row 2</td>
+                <td>table 3 cell 2 row 2</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
