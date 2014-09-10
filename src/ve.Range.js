@@ -115,6 +115,16 @@ ve.Range.prototype.containsOffset = function ( offset ) {
 };
 
 /**
+ * Check if another range is within the range.
+ *
+ * @param {ve.Range} offset Range to check
+ * @returns {boolean} If other range is within the range
+ */
+ve.Range.prototype.containsRange = function ( range ) {
+	return range.start >= this.start && range.end < this.end;
+};
+
+/**
  * Get the length of the range.
  *
  * @returns {number} Length of range
