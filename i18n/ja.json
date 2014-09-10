@@ -27,6 +27,7 @@
 	"visualeditor-commentinspector-edit": "コメントを編集",
 	"visualeditor-commentinspector-title": "コメント",
 	"visualeditor-commentinspector-tooltip": "コメント",
+	"visualeditor-contextitemwidget-label-secondary": "編集",
 	"visualeditor-dialog-action-apply": "変更内容を適用",
 	"visualeditor-dialog-action-cancel": "キャンセル",
 	"visualeditor-dialog-action-done": "完了",

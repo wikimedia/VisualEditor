@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Avjoska",
-			"Pikne"
+			"Pikne",
+			"Tormi"
 		]
 	},
 	"visualeditor": "Visuaaltoimetaja",
@@ -24,6 +25,7 @@
 	"visualeditor-commentinspector-edit": "Muuda kommentaari",
 	"visualeditor-commentinspector-title": "Kommentaar",
 	"visualeditor-commentinspector-tooltip": "Kommentaar",
+	"visualeditor-contextitemwidget-label-secondary": "Muuda",
 	"visualeditor-dialog-action-apply": "Rakenda muudatused",
 	"visualeditor-dialog-action-cancel": "Loobu",
 	"visualeditor-dialog-action-done": "Valmis",

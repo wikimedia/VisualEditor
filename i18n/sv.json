@@ -13,7 +13,8 @@
 			"WikiPhoenix",
 			"Lokal Profil",
 			"Josve05a",
-			"NH"
+			"NH",
+			"Platinawolf"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -35,6 +36,7 @@
 	"visualeditor-commentinspector-edit": "Redigera kommentar",
 	"visualeditor-commentinspector-title": "Kommentar",
 	"visualeditor-commentinspector-tooltip": "Kommentar",
+	"visualeditor-contextitemwidget-label-secondary": "Redigera",
 	"visualeditor-dialog-action-apply": "Verkställ ändringar",
 	"visualeditor-dialog-action-cancel": "Avbryt",
 	"visualeditor-dialog-action-done": "Klart",

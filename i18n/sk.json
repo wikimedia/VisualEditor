@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Mimarik",
-			"Teslaton"
+			"Teslaton",
+			"Matthew Greg"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -17,6 +18,7 @@
 	"visualeditor-annotationbutton-superscript-tooltip": "Horný index",
 	"visualeditor-annotationbutton-underline-tooltip": "Podčiarknuť",
 	"visualeditor-clearbutton-tooltip": "Odstrániť formátovanie",
+	"visualeditor-contextitemwidget-label-secondary": "Upraviť",
 	"visualeditor-dialog-action-apply": "Použiť zmeny",
 	"visualeditor-dialog-action-cancel": "Zrušiť",
 	"visualeditor-dialog-action-goback": "Späť",
@@ -35,8 +37,8 @@
 	"visualeditor-indentationbutton-outdent-tooltip": "Zmenšiť odsadenie",
 	"visualeditor-inspector-close-tooltip": "Zatvoriť",
 	"visualeditor-inspector-remove-tooltip": "Odstrániť",
-	"visualeditor-languageinspector-block-tooltip": "Jazykový blok",
 	"visualeditor-languageinspector-title": "Jazyk",
+	"visualeditor-languageinspector-widget-changelang": "Zmeniť jazyk",
 	"visualeditor-languageinspector-widget-label-direction": "Smer",
 	"visualeditor-languageinspector-widget-label-langcode": "Kód jazyka",
 	"visualeditor-languageinspector-widget-label-language": "Jazyk",

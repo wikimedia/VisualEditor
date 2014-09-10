@@ -41,7 +41,7 @@
 	"visualeditor-commentinspector-edit": "Label for the edit button in the comment inspector.",
 	"visualeditor-commentinspector-title": "{{Identical|Comment}}",
 	"visualeditor-commentinspector-tooltip": "Tooltip text for comment button.\n{{Related|Visualeditor-annotationbutton}}\n{{Identical|Comment}}",
-	"visualeditor-contextitemwidget-label-secondary": "Text explaining the action that takes place after clicking on a context item.",
+	"visualeditor-contextitemwidget-label-secondary": "Text explaining the action that takes place after clicking on a context item.\n{{Identical|Edit}}",
 	"visualeditor-dialog-action-apply": "Label text for button to apply changes made in dialog.\n\nSee also:\n* {{msg-mw|Visualeditor-dialog-action-cancel}}\n* {{msg-mw|Visualeditor-dialog-action-done}}\n* {{msg-mw|Visualeditor-dialog-action-goback}}\n* {{msg-mw|Visualeditor-dialog-action-insert}}\n{{Identical|Apply change}}",
 	"visualeditor-dialog-action-cancel": "Label text for button to exit from dialog without making changes.\n\nSee also:\n* {{msg-mw|Visualeditor-dialog-action-apply}}\n* {{msg-mw|Visualeditor-dialog-action-done}}\n* {{msg-mw|Visualeditor-dialog-action-goback}}\n* {{msg-mw|Visualeditor-dialog-action-insert}}\n{{Identical|Cancel}}",
 	"visualeditor-dialog-action-done": "Label text for button to exit from a dialog that has no changes to make.\n\nSee also:\n* {{msg-mw|Visualeditor-dialog-action-apply}}\n* {{msg-mw|Visualeditor-dialog-action-cancel}}\n* {{msg-mw|Visualeditor-dialog-action-goback}}\n* {{msg-mw|Visualeditor-dialog-action-insert}}\n{{Identical|Done}}",
