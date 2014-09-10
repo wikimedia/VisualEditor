@@ -4,7 +4,6 @@
  * @copyright 2011-2014 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
-/*global rangy */
 
 /**
  * ContentEditable surface.
@@ -479,9 +478,6 @@ ve.ce.Surface.prototype.getSelectionBoundingRelativeRect = function () {
  * @method
  */
 ve.ce.Surface.prototype.initialize = function () {
-	if ( !rangy.initialized ) {
-		rangy.init();
-	}
 	this.documentView.getDocumentNode().setLive( true );
 	// Turn off native object editing. This must be tried after the surface has been added to DOM.
 	try {
@@ -1862,8 +1858,7 @@ ve.ce.Surface.prototype.handleLeftOrRightArrowKey = function ( e ) {
  * @param {jQuery.Event} e Up or down key down event
  */
 ve.ce.Surface.prototype.handleUpOrDownArrowKey = function ( e ) {
-	var selection, nativeRange, slug, $cursorHolder,
-		rangySelection = rangy.getSelection( this.getElementDocument() ),
+	var selection, nativeRange, slug, $cursorHolder, endNode, endOffset,
 		direction = e.keyCode === OO.ui.Keys.DOWN ? 1 : -1;
 
 	// TODO: onDocumentKeyDown did this already
@@ -1880,17 +1875,27 @@ ve.ce.Surface.prototype.handleUpOrDownArrowKey = function ( e ) {
 		} else {
 			$cursorHolder.insertAfter( this.focusedNode.$element.last() );
 		}
-	} else if ( !selection.isCollapsed() && selection.isBackwards() && !rangySelection.isBackwards() ) {
-		// TODO: Implement our own isBackwards for native selections so we can kill rangy here
-		// Perform programatic handling for a selection that is expanded and backwards according to
-		// model data but not according to browser data.
+	} else if ( !selection.isCollapsed() ) {
+		// Perform programatic handling for a selection that is expanded because CE
+		// behaviour is inconsistent
 		slug = this.documentView.getSlugAtOffset( selection.to );
 		if ( !slug ) {
+			if ( !this.nativeSelection.extend && selection.isBackwards() ) {
+				// If the browser doesn't support backwards selections, but the dm range
+				// is backwards, then use anchorNode/Offset to copmensate
+				endNode = this.nativeSelection.anchorNode;
+				endOffset = this.nativeSelection.anchorOffset;
+			} else {
+				endNode = this.nativeSelection.focusNode;
+				endOffset = this.nativeSelection.focusOffset;
+			}
 			$cursorHolder = this.$( '<span class="ve-ce-surface-cursorHolder"> </span>' ).hide();
-			this.nativeSelection.anchorNode.splitText( this.nativeSelection.anchorOffset );
-			this.nativeSelection.anchorNode.parentNode.insertBefore(
+			if ( endNode.nodeType === Node.TEXT_NODE ) {
+				endNode.splitText( endOffset );
+			}
+			endNode.parentNode.insertBefore(
 				$cursorHolder[0],
-				this.nativeSelection.anchorNode.nextSibling
+				endNode.nextSibling
 			);
 		}
 	}
@@ -1900,16 +1905,20 @@ ve.ce.Surface.prototype.handleUpOrDownArrowKey = function ( e ) {
 		this.nativeSelection.removeAllRanges();
 		this.nativeSelection.addRange( nativeRange );
 	}
+	if ( $cursorHolder ) {
+		$cursorHolder.remove();
+		this.surfaceObserver.clear();
+	}
+	// If we did text node splitting, try and patch things up
+	if ( endNode && endNode.nodeType === Node.TEXT_NODE ) {
+		ve.normalizeNode( endNode );
+	}
 	setTimeout( ve.bind( function () {
-		var node, range;
-		if ( $cursorHolder ) {
-			$cursorHolder.remove();
-			this.surfaceObserver.clear();
-		}
+		var viewNode, range;
 		// Chrome bug lets you cursor into a multi-line contentEditable=false with up/down...
-		node = $( this.nativeSelection.anchorNode ).closest( '.ve-ce-leafNode,.ve-ce-branchNode' ).data( 'view' );
-		if ( node.isFocusable() ) {
-			range = direction === 1 ? node.getOuterRange() : node.getOuterRange().flip();
+		viewNode = $( this.nativeSelection.anchorNode ).closest( '.ve-ce-leafNode,.ve-ce-branchNode' ).data( 'view' );
+		if ( viewNode.isFocusable() ) {
+			range = direction === 1 ? viewNode.getOuterRange() : viewNode.getOuterRange().flip();
 		} else {
 			this.surfaceObserver.pollOnce();
 			range = new ve.Range( this.model.getSelection().to );
