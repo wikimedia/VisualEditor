@@ -150,8 +150,6 @@ ve.ce.Document.prototype.getRelativeOffset = function ( offset, direction, unit 
 /**
  * Get a DOM node and DOM element offset for a document offset.
  *
- * The results of this function are meant to be used with rangy.
- *
  * @method
  * @param {number} offset Linear model offset
  * @returns {Object} Object containing a node and offset property where node is an HTML element and

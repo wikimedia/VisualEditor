@@ -4,7 +4,6 @@
  * @copyright 2011-2014 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
-/*global rangy */
 
 /**
  * Text offset from start or end of string
@@ -112,19 +111,20 @@ ve.ce.TestOffset.static.findTextOffset = function ( node, n, reversed ) {
  *
  * @class
  * @constructor
- * @param {ve.ui.Surface} uiSurface The UI Surface
+ * @param {ve.ui.Surface} surface The UI Surface
  */
-ve.ce.TestRunner = function VeCeTestRunner( uiSurface ) {
+ve.ce.TestRunner = function VeCeTestRunner( surface ) {
 	var testRunner,
 		callId = 0;
-	this.uiSurface = uiSurface;
-	this.view = uiSurface.view;
-	this.model = uiSurface.model;
-	this.doc = uiSurface.getElementDocument();
+	this.surface = surface;
+	this.view = surface.view;
+	this.model = surface.model;
+	this.doc = surface.getElementDocument();
+	this.nativeSelection = surface.getElementWindow().getSelection();
 	this.postponedCalls = {};
 
 	// Turn off SurfaceObserver setTimeouts
-	uiSurface.view.surfaceObserver.frequency = null;
+	surface.view.surfaceObserver.frequency = null;
 
 	// Take control of eventSequencer 'setTimeouts'
 	testRunner = this;
@@ -146,7 +146,7 @@ ve.ce.TestRunner = function VeCeTestRunner( uiSurface ) {
  * @returns {Node} The paragraph node
  */
 
-ve.ce.TestRunner.prototype.getP = function () {
+ve.ce.TestRunner.prototype.getParagraph = function () {
 	var p = this.view.$element.find( '.ve-ce-documentNode > p' )[0];
 	if ( p === undefined ) {
 		if ( this.view.$element.find( '.ve-ce-documentNode' )[0] === undefined ) {
@@ -196,22 +196,18 @@ ve.ce.TestRunner.prototype.sendEvent = function ( eventName, ev ) {
  */
 ve.ce.TestRunner.prototype.changeText = function ( text ) {
 	var extra,
-		range = null,
-		sel = rangy.getSelection( this.doc ),
-		ranges = sel.getAllRanges();
+		nativeRange = this.nativeSelection.getRangeAt( 0 );
 
-	if ( ranges.length > 0 ) {
-		range = ranges[0];
-	}
 	// TODO: Enable multi-paragraph testing. For now, assuming one paragraph.
-	if ( range && range.startNode && text.startsWith( this.startNode.textContent ) ) {
+	// FIXME: renaming startNode to startContainer revealed failing tests
+	if ( false && nativeRange && nativeRange.startContainer && text.indexOf( nativeRange.startContainer.textContent ) === 0 ) {
 		// We're just appending
-		extra = range.startNode.textContent.substring( range.startNode.textContent.length );
-		// This is fine IF startNode is a TextNode
-		range.startNode.textContent += extra;
+		extra = nativeRange.startContainer.textContent.substring( nativeRange.startContainer.textContent.length );
+		// This is fine IF startContainer is a TextNode
+		nativeRange.startContainer.textContent += extra;
 	} else {
 		// Wipe out the node
-		this.getP().textContent = text;
+		this.getParagraph().textContent = text;
 	}
 	this.lastText = text;
 };
@@ -228,7 +224,7 @@ ve.ce.TestRunner.prototype.changeText = function ( text ) {
  * @returns {number} return.endOffset The endoffset within the node
  */
 ve.ce.TestRunner.prototype.changeSel = function ( start, end ) {
-	var foundStart, foundEnd, rangyRange, sel;
+	var foundStart, foundEnd, nativeRange;
 	if ( typeof start === 'number' ) {
 		start = new ve.ce.TestOffset( 'forward', start );
 	}
@@ -236,8 +232,8 @@ ve.ce.TestRunner.prototype.changeSel = function ( start, end ) {
 		end = new ve.ce.TestOffset( 'forward', end );
 	}
 
-	foundStart = start.resolve( this.getP() );
-	foundEnd = start.resolve( this.getP() );
+	foundStart = start.resolve( this.getParagraph() );
+	foundEnd = start.resolve( this.getParagraph() );
 	if ( !foundStart.node ) {
 		throw new Error( 'Bad start offset: ' + start.offset );
 	}
@@ -245,13 +241,12 @@ ve.ce.TestRunner.prototype.changeSel = function ( start, end ) {
 		throw new Error( 'Bad end offset: ', end.offset );
 	}
 
-	rangyRange = rangy.createRange( this.doc );
-	rangyRange.setStart( foundStart.node, foundStart.offset );
-	rangyRange.setEnd( foundEnd.node, foundEnd.offset );
-	sel = rangy.getSelection( this.doc );
-	sel.removeAllRanges();
-	this.getP().focus();
-	sel.addRange( rangyRange, false );
+	nativeRange = this.doc.createRange();
+	nativeRange.setStart( foundStart.node, foundStart.offset );
+	nativeRange.setEnd( foundEnd.node, foundEnd.offset );
+	this.nativeSelection.removeAllRanges();
+	this.getParagraph().focus();
+	this.nativeSelection.addRange( nativeRange, false );
 	this.lastSel = [start, end];
 
 	return {

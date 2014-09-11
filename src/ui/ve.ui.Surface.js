@@ -4,7 +4,6 @@
  * @copyright 2011-2014 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
-/*global rangy */
 
 /**
  * A surface is a top-level object which contains both a surface model and a surface view.
@@ -408,7 +407,7 @@ ve.ui.Surface.prototype.getDir = function () {
 };
 
 ve.ui.Surface.prototype.initFilibuster = function () {
-	var uiSurface = this;
+	var surface = this;
 	this.filibuster = new ve.Filibuster()
 		.wrapClass( ve.EventSequencer )
 		.wrapNamespace( ve.dm, 've.dm' )
@@ -419,30 +418,30 @@ ve.ui.Surface.prototype.initFilibuster = function () {
 			ve.ui.Surface.prototype.stopFilibuster
 		] )
 		.setObserver( 'dm doc', function () {
-			return JSON.stringify( uiSurface.model.documentModel.data.data );
+			return JSON.stringify( surface.model.documentModel.data.data );
 		} )
 		.setObserver( 'dm range', function () {
-			var selection = uiSurface.model.selection;
+			var selection = surface.model.selection;
 			if ( !selection ) {
 				return null;
 			}
 			return [ selection.from, selection.to ].join( ',' );
 		} )
 		.setObserver( 'DOM doc', function () {
-			return uiSurface.view.$element.html();
+			return surface.view.$element.html();
 		} )
 		.setObserver( 'DOM selection', function () {
-			var range, sel;
-			sel = rangy.getSelection( uiSurface.view.getElementDocument() );
-			if ( sel.rangeCount === 0 ) {
+			var nativeRange,
+				nativeSelection = surface.view.nativeSelection;
+			if ( nativeSelection.rangeCount === 0 ) {
 				return null;
 			}
-			range = sel.getRangeAt( 0 );
+			nativeRange = nativeSelection.getRangeAt( 0 );
 			return JSON.stringify( {
-				startContainer: range.startContainer.outerHTML,
-				startOffset: range.startOffset,
-				endContainer: range.endContainer.outerHTML,
-				endOffset: range.endOffset
+				startContainer: nativeRange.startContainer.outerHTML,
+				startOffset: nativeRange.startOffset,
+				endContainer: nativeRange.endContainer.outerHTML,
+				endOffset: nativeRange.endOffset
 			} );
 		} );
 };

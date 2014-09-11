@@ -1,5 +1,3 @@
-/*global rangy */
-
 /*!
  * VisualEditor ContentEditable Surface class.
  *
@@ -72,7 +70,7 @@ OO.mixinClass( ve.ce.SurfaceObserver, OO.EventEmitter );
  * @param {ve.Range} range Initial range to use
  */
 ve.ce.SurfaceObserver.prototype.clear = function ( range ) {
-	this.rangyRange = null;
+	this.domRange = null;
 	this.range = range || null;
 	this.node = null;
 	this.text = null;
@@ -176,7 +174,7 @@ ve.ce.SurfaceObserver.prototype.pollOnceNoEmit = function () {
  * @fires selectionChange
  */
 ve.ce.SurfaceObserver.prototype.pollOnceInternal = function ( emitChanges ) {
-	var $nodeOrSlug, node, text, hash, range, rangyRange, $slugWrapper, observer = this;
+	var $nodeOrSlug, node, text, hash, range, domRange, $slugWrapper, observer = this;
 
 	if ( !this.domDocument ) {
 		return;
@@ -184,14 +182,14 @@ ve.ce.SurfaceObserver.prototype.pollOnceInternal = function ( emitChanges ) {
 
 	range = this.range;
 	node = this.node;
-	rangyRange = ve.ce.DomRange.newFromDomSelection( rangy.getSelection( this.domDocument ) );
+	domRange = ve.ce.DomRange.newFromDocument( this.domDocument );
 
-	if ( !rangyRange.equals( this.rangyRange ) ) {
-		this.rangyRange = rangyRange;
+	if ( !domRange.equals( this.domRange ) ) {
+		this.domRange = domRange;
 		node = null;
-		$nodeOrSlug = $( rangyRange.anchorNode ).closest( '.ve-ce-branchNode, .ve-ce-branchNode-slug' );
+		$nodeOrSlug = $( domRange.anchorNode ).closest( '.ve-ce-branchNode, .ve-ce-branchNode-slug' );
 		if ( $nodeOrSlug.length ) {
-			range = rangyRange.getRange();
+			range = domRange.getRange();
 			if ( $nodeOrSlug.hasClass( 've-ce-branchNode-slug' ) ) {
 				$slugWrapper = $nodeOrSlug.closest( '.ve-ce-branchNode-blockSlugWrapper' );
 			} else {
