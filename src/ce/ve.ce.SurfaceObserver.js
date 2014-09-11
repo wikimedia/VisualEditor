@@ -23,7 +23,7 @@ ve.ce.SurfaceObserver = function VeCeSurfaceObserver( documentView ) {
 	this.domDocument = null;
 	this.polling = false;
 	this.timeoutId = null;
-	this.frequency = 250; // ms
+	this.pollInterval = 250; // ms
 
 	// Initialization
 	this.clear();
@@ -113,10 +113,10 @@ ve.ce.SurfaceObserver.prototype.timerLoop = function ( firstTime ) {
 		this.pollOnce();
 	}
 	// only reach this point if pollOnce does not throw an exception
-	if ( this.frequency !== null ) {
+	if ( this.pollInterval !== null ) {
 		this.timeoutId = this.setTimeout(
 			ve.bind( this.timerLoop, this ),
-			this.frequency
+			this.pollInterval
 		);
 	}
 };

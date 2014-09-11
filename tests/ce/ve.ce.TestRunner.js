@@ -124,7 +124,7 @@ ve.ce.TestRunner = function VeCeTestRunner( surface ) {
 	this.postponedCalls = {};
 
 	// Turn off SurfaceObserver setTimeouts
-	surface.view.surfaceObserver.frequency = null;
+	surface.view.surfaceObserver.pollInterval = null;
 
 	// Take control of eventSequencer 'setTimeouts'
 	testRunner = this;
