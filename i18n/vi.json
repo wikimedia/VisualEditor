@@ -3,7 +3,8 @@
 		"authors": [
 			"Cheers!",
 			"Jdforrester",
-			"Minh Nguyen"
+			"Minh Nguyen",
+			"Trần Nguyễn Minh Huy"
 		]
 	},
 	"visualeditor": "Trình soạn thảo trực quan",
@@ -23,13 +24,14 @@
 	"visualeditor-clipboard-paste": "Dán",
 	"visualeditor-clipboard-paste-special": "Dán như văn bản thuần",
 	"visualeditor-commentinspector-edit": "Sửa phụ chú",
-	"visualeditor-commentinspector-insert": "Chèn phụ chú",
 	"visualeditor-commentinspector-title": "Phụ chú",
 	"visualeditor-commentinspector-tooltip": "Phụ chú",
+	"visualeditor-contextitemwidget-label-secondary": "Sửa đổi",
 	"visualeditor-dialog-action-apply": "Áp dụng các thay đổi",
 	"visualeditor-dialog-action-cancel": "Hủy bỏ",
 	"visualeditor-dialog-action-done": "Xong",
 	"visualeditor-dialog-action-goback": "Quay lại",
+	"visualeditor-dialog-action-insert": "Chèn",
 	"visualeditor-dialog-command-help-title": "Phím tắt",
 	"visualeditor-dialog-error": "Đã bị trục trặc…",
 	"visualeditor-dialog-error-dismiss": "Quay lại",
@@ -79,10 +81,12 @@
 	"visualeditor-specialcharacter-button-tooltip": "Ký tự đặc biệt",
 	"visualeditor-specialcharacterinspector-title": "Ký tự đặc biệt",
 	"visualeditor-specialcharinspector-characterlist-insert": "{\n\t\"Dấu\": {\n\t\t\"−\": \"−\",\n\t\t\"—\": \"—\",\n\t\t\"…\": \"…\",\n\t\t\"“\": \"“\",\n\t\t\"‘\": \"‘\",\n\t\t\"’\": \"’\",\n\t\t\"”\": \"”\",\n\t\t\"°\": \"°\",\n\t\t\"′\": \"′\",\n\t\t\"″\": \"″\",\n\t\t\"←\": \"←\",\n\t\t\"→\": \"→\",\n\t\t\"·\": \"·\",\n\t\t\"₫\": \"₫\",\n\t\t\"©\": \"©\",\n\t\t\"®\": \"®\",\n\t\t\"™\": \"™\",\n\t\t\"§\": \"§\"\n\t},\n\t\"Toán học\": {\n\t\t\"−\": \"−\",\n\t\t\"×\": \"×\",\n\t\t\"÷\": \"÷\",\n\t\t\"≈\": \"≈\",\n\t\t\"≠\": \"≠\",\n\t\t\"≤\": \"≤\",\n\t\t\"≥\": \"≥\",\n\t\t\"±\": \"±\"\n\t},\n\t\"Chữ có dấu\": {\n\t\t\"à\": \"à\", \"ả\": \"ả\", \"ã\": \"ã\", \"á\": \"á\", \"ạ\": \"ạ\", \"ă\": \"ă\", \"ằ\": \"ằ\", \"ẳ\": \"ẳ\", \"ẵ\": \"ẵ\", \"ắ\": \"ắ\", \"ặ\": \"ặ\", \"â\": \"â\", \"ầ\": \"ầ\", \"ẩ\": \"ẩ\", \"ẫ\": \"ẫ\", \"ấ\": \"ấ\", \"ậ\": \"ậ\", \"đ\": \"đ\", \"è\": \"è\", \"ẻ\": \"ẻ\", \"ẽ\": \"ẽ\", \"é\": \"é\", \"ẹ\": \"ẹ\", \"ê\": \"ê\", \"ề\": \"ề\", \"ể\": \"ể\", \"ễ\": \"ễ\", \"ế\": \"ế\", \"ệ\": \"ệ\", \"ì\": \"ì\", \"ỉ\": \"ỉ\", \"ĩ\": \"ĩ\", \"í\": \"í\", \"ị\": \"ị\", \"ò\": \"ò\", \"ỏ\": \"ỏ\", \"õ\": \"õ\", \"ó\": \"ó\", \"ọ\": \"ọ\", \"ô\": \"ô\", \"ồ\": \"ồ\", \"ổ\": \"ổ\", \"ỗ\": \"ỗ\", \"ố\": \"ố\", \"ộ\": \"ộ\", \"ơ\": \"ơ\", \"ờ\": \"ờ\", \"ở\": \"ở\", \"ỡ\": \"ỡ\", \"ớ\": \"ớ\", \"ợ\": \"ợ\", \"ù\": \"ù\", \"ủ\": \"ủ\", \"ũ\": \"ũ\", \"ú\": \"ú\", \"ụ\": \"ụ\", \"ư\": \"ư\", \"ừ\": \"ừ\", \"ử\": \"ử\", \"ữ\": \"ữ\", \"ứ\": \"ứ\", \"ự\": \"ự\", \"ỳ\": \"ỳ\", \"ỷ\": \"ỷ\", \"ỹ\": \"ỹ\", \"ý\": \"ý\", \"ỵ\": \"ỵ\"\n\t}\n}",
+	"visualeditor-toolbar-format-tooltip": "Kiểu đoạn văn",
 	"visualeditor-toolbar-history": "Lịch sử",
 	"visualeditor-toolbar-insert": "Chèn",
 	"visualeditor-toolbar-paragraph-format": "Định dạng",
 	"visualeditor-toolbar-structure": "Cấu trúc",
+	"visualeditor-toolbar-style-tooltip": "Kiểu văn bản",
 	"visualeditor-toolbar-text-style": "Kiểu",
 	"visualeditor-version-label": "Phiên bản"
 }

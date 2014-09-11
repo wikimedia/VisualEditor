@@ -36,6 +36,7 @@
 	"visualeditor-commentinspector-edit": "ویرایش نظر",
 	"visualeditor-commentinspector-title": "نظر",
 	"visualeditor-commentinspector-tooltip": "دیدگاه",
+	"visualeditor-contextitemwidget-label-secondary": "ویرایش",
 	"visualeditor-dialog-action-apply": "اعمال تغییرات",
 	"visualeditor-dialog-action-cancel": "لغو",
 	"visualeditor-dialog-action-done": "انجام شد",
@@ -95,5 +96,6 @@
 	"visualeditor-toolbar-paragraph-format": "قالب‌بندی",
 	"visualeditor-toolbar-structure": "ساختار",
 	"visualeditor-toolbar-style-tooltip": "سبک متن",
+	"visualeditor-toolbar-text-style": "سبک‌دهی",
 	"visualeditor-version-label": "نسخه"
 }
