@@ -958,6 +958,69 @@
 	};
 
 	/**
+	 * Translate rect by some fixed vector and return a new offset object
+	 * @param {Object} rect Offset object containing all or any of top, left, bottom, right, width & height
+	 * @param {number} x Horizontal translation
+	 * @param {number} y Vertical translation
+	 * @return {Object} Translated rect
+	 */
+	ve.translateRect = function ( rect, x, y ) {
+		var translatedRect = {};
+		if ( rect.top !== undefined ) {
+			translatedRect.top = rect.top + y;
+		}
+		if ( rect.bottom !== undefined ) {
+			translatedRect.bottom = rect.bottom + y;
+		}
+		if ( rect.left !== undefined ) {
+			translatedRect.left = rect.left + x;
+		}
+		if ( rect.right !== undefined ) {
+			translatedRect.right = rect.right + x;
+		}
+		if ( rect.width !== undefined ) {
+			translatedRect.width = rect.width;
+		}
+		if ( rect.height !== undefined ) {
+			translatedRect.height = rect.height;
+		}
+		return translatedRect;
+	};
+
+	/**
+	 * Get the start and end rectangles (in a text flow sense) from a list of rectangles
+	 * @param {Array} rects Full list of rectangles
+	 * @return {Object} Object containing two rectangles: start and end.
+	 */
+	ve.getStartAndEndRects = function ( rects ) {
+		var i, l, startRect, endRect;
+		for ( i = 0, l = rects.length; i < l; i++ ) {
+			if ( !startRect || rects[i].top < startRect.top ) {
+				// Use ve.extendObject as ve.copy copies non-plain objects by reference
+				startRect = ve.extendObject( {}, rects[i] );
+			} else if ( rects[i].top === startRect.top ) {
+				// Merge rects with the same top coordinate
+				startRect.left = Math.min( startRect.left, rects[i].left );
+				startRect.right = Math.max( startRect.right, rects[i].right );
+				startRect.width = startRect.right - startRect.left;
+			}
+			if ( !endRect || rects[i].bottom > endRect.bottom ) {
+				// Use ve.extendObject as ve.copy copies non-plain objects by reference
+				endRect = ve.extendObject( {}, rects[i] );
+			} else if ( rects[i].bottom === endRect.bottom ) {
+				// Merge rects with the same bottom coordinate
+				endRect.left = Math.min( endRect.left, rects[i].left );
+				endRect.right = Math.max( endRect.right, rects[i].right );
+				endRect.width = startRect.right - startRect.left;
+			}
+		}
+		return {
+			start: startRect,
+			end: endRect
+		};
+	};
+
+	/**
 	 * Get the current time, measured in milliseconds since January 1, 1970 (UTC).
 	 *
 	 * On browsers that implement the Navigation Timing API, this function will produce floating-point
