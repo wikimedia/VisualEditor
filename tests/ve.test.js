@@ -289,17 +289,17 @@ QUnit.test( 'createDocumentFromHtml', function ( assert ) {
 } );
 
 QUnit.test( 'isBlockElement/isVoidElement', 10, function ( assert ) {
-	assert.equal( ve.isBlockElement( 'div' ), true, '"div" is a block element' );
-	assert.equal( ve.isBlockElement( 'SPAN' ), false, '"SPAN" is not a block element' );
-	assert.equal( ve.isBlockElement( 'a' ), false, '"a" is not a block element' );
-	assert.equal( ve.isBlockElement( document.createElement( 'div' ) ), true, '<div> is a block element' );
-	assert.equal( ve.isBlockElement( document.createElement( 'span' ) ), false, '<span> is not a block element' );
+	assert.strictEqual( ve.isBlockElement( 'div' ), true, '"div" is a block element' );
+	assert.strictEqual( ve.isBlockElement( 'SPAN' ), false, '"SPAN" is not a block element' );
+	assert.strictEqual( ve.isBlockElement( 'a' ), false, '"a" is not a block element' );
+	assert.strictEqual( ve.isBlockElement( document.createElement( 'div' ) ), true, '<div> is a block element' );
+	assert.strictEqual( ve.isBlockElement( document.createElement( 'span' ) ), false, '<span> is not a block element' );
 
-	assert.equal( ve.isVoidElement( 'img' ), true, '"img" is a void element' );
-	assert.equal( ve.isVoidElement( 'DIV' ), false, '"DIV" is not a void element' );
-	assert.equal( ve.isVoidElement( 'span' ), false, '"span" is not a void element' );
-	assert.equal( ve.isVoidElement( document.createElement( 'img' ) ), true, '<img> is a void element' );
-	assert.equal( ve.isVoidElement( document.createElement( 'div' ) ), false, '<div> is not a void element' );
+	assert.strictEqual( ve.isVoidElement( 'img' ), true, '"img" is a void element' );
+	assert.strictEqual( ve.isVoidElement( 'DIV' ), false, '"DIV" is not a void element' );
+	assert.strictEqual( ve.isVoidElement( 'span' ), false, '"span" is not a void element' );
+	assert.strictEqual( ve.isVoidElement( document.createElement( 'img' ) ), true, '<img> is a void element' );
+	assert.strictEqual( ve.isVoidElement( document.createElement( 'div' ) ), false, '<div> is not a void element' );
 } );
 
 // TODO: ve.isUnattachedCombiningMark
@@ -339,12 +339,12 @@ QUnit.test( 'graphemeSafeSubstring', function ( assert ) {
 		];
 	QUnit.expect( cases.length * 2 );
 	for ( i = 0; i < cases.length; i++ ) {
-		assert.equal(
+		assert.strictEqual(
 			ve.graphemeSafeSubstring( text, cases[i].start, cases[i].end, true ),
 			cases[i].expected[0],
 			cases[i].msg + ' (outer)'
 		);
-		assert.equal(
+		assert.strictEqual(
 			ve.graphemeSafeSubstring( text, cases[i].start, cases[i].end, false ),
 			cases[i].expected[1],
 			cases[i].msg + ' (inner)'

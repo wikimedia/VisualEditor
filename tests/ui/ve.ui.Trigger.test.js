@@ -22,12 +22,12 @@ QUnit.test( 'constructor', function ( assert ) {
 		];
 	QUnit.expect( 2 * tests.length );
 	for ( i = 0, len = tests.length; i < len; i++ ) {
-		assert.equal(
+		assert.strictEqual(
 			new ve.ui.Trigger( tests[i].trigger ).toString(),
 			tests[i].trigger,
 			'trigger is parsed correctly'
 		);
-		assert.equal(
+		assert.strictEqual(
 			new ve.ui.Trigger( tests[i].event ).toString(),
 			tests[i].trigger,
 			'event is parsed correctly'

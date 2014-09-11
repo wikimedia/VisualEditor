@@ -34,11 +34,11 @@ QUnit.test( 'constructor', 11, function ( assert ) {
 	assert.deepEqualWithDomElements( doc.getMetadata(), new Array( 5 ),
 		'sparse metadata array is created'
 	);
-	assert.equal( doc.getHtmlDocument().body.innerHTML, '', 'Empty HTML document is created' );
+	assert.strictEqual( doc.getHtmlDocument().body.innerHTML, '', 'Empty HTML document is created' );
 
 	htmlDoc = ve.createDocumentFromHtml( 'abcd' );
 	doc = new ve.dm.Document( [ 'a', 'b', 'c', 'd' ], htmlDoc );
-	assert.equal( doc.getHtmlDocument(), htmlDoc, 'Provided HTML document is used' );
+	assert.strictEqual( doc.getHtmlDocument(), htmlDoc, 'Provided HTML document is used' );
 
 	data = new ve.dm.ElementLinearData(
 		new ve.dm.IndexValueStore(),
@@ -50,7 +50,7 @@ QUnit.test( 'constructor', 11, function ( assert ) {
 		new ve.dm.DocumentNode( [ new ve.dm.ParagraphNode( { type: 'paragraph' } ) ] ),
 		'empty paragraph no longer has a text node'
 	);
-	assert.equal( doc.data, data, 'ElementLinearData is stored by reference' );
+	assert.strictEqual( doc.data, data, 'ElementLinearData is stored by reference' );
 
 	doc = ve.dm.example.createExampleDocument( 'withMeta' );
 	assert.deepEqualWithDomElements( doc.getData(), ve.dm.example.withMetaPlainData,

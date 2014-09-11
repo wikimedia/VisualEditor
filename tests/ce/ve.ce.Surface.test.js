@@ -467,7 +467,7 @@ QUnit.test( 'onContentChange', function ( assert ) {
 } );
 
 QUnit.test( 'getClipboardHash', 1, function ( assert ) {
-	assert.equal(
+	assert.strictEqual(
 		ve.ce.Surface.static.getClipboardHash(
 			$( $.parseHTML( '  <p class="foo"> Bar </p>\n\t<span class="baz"></span> Quux <h1><span></span>Whee</h1>' ) )
 		),
@@ -542,7 +542,7 @@ QUnit.test( 'onCopy', function ( assert ) {
 
 		clipboardKey = testClipboardData['text/xcustom'];
 
-		assert.equal( clipboardKey, view.clipboardId + '-0', msg + ': clipboardId set' );
+		assert.strictEqual( clipboardKey, view.clipboardId + '-0', msg + ': clipboardId set' );
 
 		parts = clipboardKey.split( '-' );
 		clipboardIndex = parts[1];
@@ -929,7 +929,7 @@ QUnit.test( 'getNearestCorrectOffset', function ( assert ) {
 
 	for ( dir = -1; dir <= 1; dir += 2 ) {
 		for ( i = 0; i < data.getLength(); i++ ) {
-			assert.equal( view.getNearestCorrectOffset( i, dir ), expected[dir][i], 'Direction: ' + dir + ' Offset: ' + i );
+			assert.strictEqual( view.getNearestCorrectOffset( i, dir ), expected[dir][i], 'Direction: ' + dir + ' Offset: ' + i );
 		}
 	}
 } );
@@ -1059,20 +1059,20 @@ QUnit.test( 'getRangeSelection', function ( assert ) {
 			msg = ' at ' + j + ' in ' + cases[i].msg;
 			node = surface.getView().getDocument().getDocumentNode().getNodeFromOffset( j );
 			if ( node.isFocusable() ) {
-				assert.equal( null, cases[i].expected[j], 'Focusable node at ' + j );
+				assert.strictEqual( null, cases[i].expected[j], 'Focusable node at ' + j );
 			} else {
 				selection = surface.getView().getRangeSelection( new ve.Range( j ) );
 				if ( selection.end ) {
 					expectedNode = $( '<div>' ).html( cases[i].expected[j].startNode )[0].childNodes[0];
 					assert.equalDomElement( selection.start.node, expectedNode, 'Start node ' + msg );
-					assert.equal( selection.start.offset, cases[i].expected[j].startOffset, 'Start offfset ' + msg );
+					assert.strictEqual( selection.start.offset, cases[i].expected[j].startOffset, 'Start offfset ' + msg );
 					expectedNode = $( '<div>' ).html( cases[i].expected[j].endNode )[0].childNodes[0];
 					assert.equalDomElement( selection.end.node, expectedNode, 'End node ' + msg );
-					assert.equal( selection.end.offset, cases[i].expected[j].endOffset, 'End offfset ' + msg );
+					assert.strictEqual( selection.end.offset, cases[i].expected[j].endOffset, 'End offfset ' + msg );
 				} else {
 					expectedNode = $( '<div>' ).html( cases[i].expected[j].startNode )[0].childNodes[0];
 					assert.equalDomElement( selection.start.node, expectedNode, 'Node ' + msg );
-					assert.equal( selection.start.offset, cases[i].expected[j].startOffset, 'Offset ' + msg );
+					assert.strictEqual( selection.start.offset, cases[i].expected[j].startOffset, 'Offset ' + msg );
 				}
 			}
 		}

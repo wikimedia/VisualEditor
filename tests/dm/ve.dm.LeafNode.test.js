@@ -26,19 +26,19 @@ ve.dm.nodeFactory.register( ve.dm.LeafNodeStub );
 
 QUnit.test( 'canHaveChildren', 1, function ( assert ) {
 	var node = new ve.dm.LeafNodeStub();
-	assert.equal( node.canHaveChildren(), false );
+	assert.strictEqual( node.canHaveChildren(), false );
 } );
 
 QUnit.test( 'canHaveChildrenNotContent', 1, function ( assert ) {
 	var node = new ve.dm.LeafNodeStub();
-	assert.equal( node.canHaveChildrenNotContent(), false );
+	assert.strictEqual( node.canHaveChildrenNotContent(), false );
 } );
 
 QUnit.test( 'getAnnotations', 3, function ( assert ) {
 	var element = { type: 'leaf-stub' },
 		node = new ve.dm.LeafNodeStub( element );
 	assert.deepEqual( node.getAnnotations(), [], 'undefined .annotations returns empty set' );
-	assert.equal( element.annotations, undefined, 'no .annotations property added' );
+	assert.strictEqual( element.annotations, undefined, 'no .annotations property added' );
 	element.annotations = [0];
 	assert.deepEqual( node.getAnnotations(), [0], 'annotations retrieve indexes when set' );
 } );

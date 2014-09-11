@@ -69,7 +69,7 @@ QUnit.test( 'getRelativeOffset', function ( assert ) {
 		], i, j, expectCount = 0;
 	for ( i = 0; i < tests.length; i++ ) {
 		for ( j = 0; j < tests[i].cases.length; j++ ) {
-			assert.equal(
+			assert.strictEqual(
 				documentView.getRelativeOffset(
 					tests[i].cases[j].input,
 					tests[i].direction,

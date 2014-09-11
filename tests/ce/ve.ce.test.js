@@ -10,10 +10,10 @@ QUnit.module( 've.ce' );
 /* Tests */
 
 QUnit.test( 'whitespacePattern', 4, function ( assert ) {
-	assert.equal( 'a b'.match( ve.ce.whitespacePattern ), ' ', 'matches spaces' );
-	assert.equal( 'a\u00A0b'.match( ve.ce.whitespacePattern ), '\u00A0', 'matches non-breaking spaces' );
-	assert.equal( 'a\tb'.match( ve.ce.whitespacePattern ), null, 'does not match tab' );
-	assert.equal( 'ab'.match( ve.ce.whitespacePattern ), null, 'does not match non-whitespace' );
+	assert.deepEqual( 'a b'.match( ve.ce.whitespacePattern ), [' '], 'matches spaces' );
+	assert.deepEqual( 'a\u00A0b'.match( ve.ce.whitespacePattern ), ['\u00A0'], 'matches non-breaking spaces' );
+	assert.strictEqual( 'a\tb'.match( ve.ce.whitespacePattern ), null, 'does not match tab' );
+	assert.strictEqual( 'ab'.match( ve.ce.whitespacePattern ), null, 'does not match non-whitespace' );
 } );
 
 QUnit.test( 'getDomHash/getDomText', function ( assert ) {
@@ -53,8 +53,8 @@ QUnit.test( 'getDomHash/getDomText', function ( assert ) {
 	for ( i = 0; i < cases.length; i++ ) {
 		surface = ve.test.utils.createSurfaceFromHtml( cases[i].html );
 		documentView = surface.getView().getDocument();
-		assert.equal( ve.ce.getDomHash( documentView.getDocumentNode().$element[0] ), cases[i].hash, 'getDomHash: ' + cases[i].msg );
-		assert.equal( ve.ce.getDomText( documentView.getDocumentNode().$element[0] ), cases[i].text, 'getDomText: ' + cases[i].msg );
+		assert.strictEqual( ve.ce.getDomHash( documentView.getDocumentNode().$element[0] ), cases[i].hash, 'getDomHash: ' + cases[i].msg );
+		assert.strictEqual( ve.ce.getDomText( documentView.getDocumentNode().$element[0] ), cases[i].text, 'getDomText: ' + cases[i].msg );
 	}
 } );
 
@@ -211,7 +211,7 @@ QUnit.test( 'getOffset', function ( assert ) {
 			case Node.ELEMENT_NODE:
 				for ( i = 0; i <= parent.childNodes.length; i++ ) {
 					expectedIndex++;
-					assert.equal(
+					assert.strictEqual(
 						ve.ce.getOffset( parent, i ),
 						testCase.expected[expectedIndex],
 						testCase.msg + ': offset ' + i + ' in <' + parent.nodeName.toLowerCase() + '>'
@@ -224,7 +224,7 @@ QUnit.test( 'getOffset', function ( assert ) {
 			case Node.TEXT_NODE:
 				for ( i = 0; i <= parent.data.length; i++ ) {
 					expectedIndex++;
-					assert.equal(
+					assert.strictEqual(
 						ve.ce.getOffset( parent, i ),
 						testCase.expected[expectedIndex],
 						testCase.msg + ': offset ' + i + ' in "' + parent.data + '"'
@@ -250,9 +250,9 @@ QUnit.test( 'getOffset', function ( assert ) {
 // TODO: ve.ce.getOffsetOfSlug
 
 QUnit.test( 'isShortcutKey', 3, function ( assert ) {
-	assert.equal( ve.ce.isShortcutKey( { ctrlKey: true } ), true, 'ctrlKey' );
-	assert.equal( ve.ce.isShortcutKey( { metaKey: true } ), true, 'metaKey' );
-	assert.equal( ve.ce.isShortcutKey( {} ), false, 'Not set' );
+	assert.strictEqual( ve.ce.isShortcutKey( { ctrlKey: true } ), true, 'ctrlKey' );
+	assert.strictEqual( ve.ce.isShortcutKey( { metaKey: true } ), true, 'metaKey' );
+	assert.strictEqual( ve.ce.isShortcutKey( {} ), false, 'Not set' );
 } );
 
 QUnit.test( 'resolveTestOffset', function ( assert ) {
@@ -278,14 +278,14 @@ QUnit.test( 'resolveTestOffset', function ( assert ) {
 			testOffset = new ve.ce.TestOffset( 'forward', j );
 			pre = test.slice( 0, j ).join( '' );
 			post = test.slice( j ).join( '' );
-			assert.equal(
+			assert.strictEqual(
 				testOffset.resolve( elt ).slice,
 				pre + '|' + post
 			);
 			testOffset = new ve.ce.TestOffset( 'backward', j );
 			pre = test.slice( 0, jlen - j ).join( '' );
 			post = test.slice( jlen - j ).join( '' );
-			assert.equal(
+			assert.strictEqual(
 				testOffset.resolve( elt ).slice,
 				pre + '|' + post
 			);
@@ -372,7 +372,7 @@ QUnit.test( 'fakeImes', function ( assert ) {
 			}
 		}
 		// Test that there is at least one endLoop
-		assert.equal( foundEndLoop, true, testName + ' found at least one endLoop' );
+		assert.strictEqual( foundEndLoop, true, testName + ' found at least one endLoop' );
 		surface.destroy();
 	}
 } );

@@ -2318,46 +2318,46 @@ QUnit.test( 'isNoOp', function ( assert ) {
 		tx = ve.dm.Transaction.newFromReplacement(
 			d, new ve.Range( 1 ), [], false
 		);
-		assert.equal( tx.isNoOp(), true );
+		assert.strictEqual( tx.isNoOp(), true );
 
 		tx = ve.dm.Transaction.newFromInsertion(
 			d, 1, []
 		);
-		assert.equal( tx.isNoOp(), true );
+		assert.strictEqual( tx.isNoOp(), true );
 
 		tx = ve.dm.Transaction.newFromRemoval(
 			d, new ve.Range(1), false
 		);
-		assert.equal( tx.isNoOp(), true );
+		assert.strictEqual( tx.isNoOp(), true );
 
 		if ( !isListMetaDoc ) {
 			tx = ve.dm.Transaction.newFromDocumentInsertion(
 				d, 1,
 				ve.dm.example.createExampleDocument(), new ve.Range( 0 )
 			);
-			assert.equal( tx.isNoOp(), true );
+			assert.strictEqual( tx.isNoOp(), true );
 		}
 
 		tx = ve.dm.Transaction.newFromAttributeChanges(
 			d, isListMetaDoc ? 1 : 0, {}
 		);
-		assert.equal( tx.isNoOp(), true );
+		assert.strictEqual( tx.isNoOp(), true );
 
 		tx = ve.dm.Transaction.newFromAnnotation(
 			d, new ve.Range( 1 ), 'set', new ve.dm.ItalicAnnotation()
 		);
-		assert.equal( tx.isNoOp(), true );
+		assert.strictEqual( tx.isNoOp(), true );
 
 		tx = ve.dm.Transaction.newFromMetadataInsertion(
 			d, 1, 0, []
 		);
-		assert.equal( tx.isNoOp(), true );
+		assert.strictEqual( tx.isNoOp(), true );
 
 		if ( !isDoc ) {
 			tx = ve.dm.Transaction.newFromMetadataRemoval(
 				d, 0, new ve.Range( 1 )
 			);
-			assert.equal( tx.isNoOp(), true );
+			assert.strictEqual( tx.isNoOp(), true );
 		}
 
 		// metadata replacement never creates no-op

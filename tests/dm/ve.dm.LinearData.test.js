@@ -13,15 +13,15 @@ QUnit.test( 'basic usage', 7, function ( assert ) {
 	var store = new ve.dm.IndexValueStore(),
 		data = new ve.dm.LinearData( store, ve.copy( ve.dm.example.data ) );
 
-	assert.equal( data.getData(), data.data, 'getData: with no arguments returns data by reference' );
+	assert.strictEqual( data.getData(), data.data, 'getData: with no arguments returns data by reference' );
 	assert.deepEqual( data.getData(), ve.dm.example.data, 'getData: full array matches source data' );
-	assert.equal( data.getData( 10 ), data.data[10], 'getData: data at offset 10 is same as array[10]' );
-	assert.equal( data.getData( -1 ), data.data[ -1 ], 'getData: data at -1 is undefined' );
+	assert.strictEqual( data.getData( 10 ), data.data[10], 'getData: data at offset 10 is same as array[10]' );
+	assert.strictEqual( data.getData( -1 ), data.data[ -1 ], 'getData: data at -1 is undefined' );
 
 	data.setData( 1, 'x' );
-	assert.equal( data.data[1], 'x', 'setData: data set at offset 1 changed' );
-	assert.equal( data.getLength(), data.data.length, 'getLength: equal to array length' );
-	assert.equal( data.getStore(), store, 'getStore: equal to original store by reference' );
+	assert.strictEqual( data.data[1], 'x', 'setData: data set at offset 1 changed' );
+	assert.strictEqual( data.getLength(), data.data.length, 'getLength: equal to array length' );
+	assert.strictEqual( data.getStore(), store, 'getStore: equal to original store by reference' );
 } );
 
 QUnit.test( 'slice(Object)/splice(Object)/batchSplice', 12, function ( assert ) {
@@ -44,7 +44,7 @@ QUnit.test( 'slice(Object)/splice(Object)/batchSplice', 12, function ( assert ) 
 	assert.deepEqual( dataSlice.getData(), expectedDataSlice.getData(),
 		'slice: matches data built with Array.slice'
 	);
-	assert.equal( dataSlice.getStore(), data.getStore(),
+	assert.strictEqual( dataSlice.getStore(), data.getStore(),
 		'slice: store equal by reference to original object'
 	);
 
@@ -65,7 +65,7 @@ QUnit.test( 'slice(Object)/splice(Object)/batchSplice', 12, function ( assert ) 
 	assert.deepEqual( dataSplice.getData(), expectedDataSplice.getData(),
 		'splice: matches data built with Array.splice'
 	);
-	assert.equal( dataSplice.getStore(), data.getStore(),
+	assert.strictEqual( dataSplice.getStore(), data.getStore(),
 		'splice: store equal by reference to original object'
 	);
 
@@ -87,7 +87,7 @@ QUnit.test( 'slice(Object)/splice(Object)/batchSplice', 12, function ( assert ) 
 	assert.deepEqual( dataSplice.getData(), expectedDataSplice.getData(),
 		'batchSplice: matches data built with ve.batchSplice'
 	);
-	assert.equal( dataSplice.getStore(), data.getStore(),
+	assert.strictEqual( dataSplice.getStore(), data.getStore(),
 		'batchSplice: store equal by reference to original object'
 	);
 

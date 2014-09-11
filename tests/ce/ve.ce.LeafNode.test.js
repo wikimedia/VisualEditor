@@ -24,15 +24,15 @@ ve.ce.nodeFactory.register( ve.ce.LeafNodeStub );
 
 QUnit.test( 'splitOnEnter', 1, function ( assert ) {
 	var node = new ve.ce.LeafNodeStub( new ve.dm.LeafNodeStub() );
-	assert.equal( node.splitOnEnter(), false );
+	assert.strictEqual( node.splitOnEnter(), false );
 } );
 
 QUnit.test( 'canHaveChildren', 1, function ( assert ) {
 	var node = new ve.ce.LeafNodeStub( new ve.dm.LeafNodeStub() );
-	assert.equal( node.canHaveChildren(), false );
+	assert.strictEqual( node.canHaveChildren(), false );
 } );
 
 QUnit.test( 'canHaveChildrenNotContent', 1, function ( assert ) {
 	var node = new ve.ce.LeafNodeStub( new ve.dm.LeafNodeStub() );
-	assert.equal( node.canHaveChildrenNotContent(), false );
+	assert.strictEqual( node.canHaveChildrenNotContent(), false );
 } );

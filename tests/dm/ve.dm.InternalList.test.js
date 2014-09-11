@@ -89,10 +89,10 @@ QUnit.test( 'clone', 5, function ( assert ) {
 	internalListClone2 = internalList.clone( doc2 );
 	internalList.getNextUniqueNumber(); // =2
 
-	assert.equal( internalListClone.getDocument(), internalList.getDocument(), 'Documents match' );
-	assert.equal( internalListClone2.getDocument(), doc2, 'Cloning with document parameter' );
+	assert.strictEqual( internalListClone.getDocument(), internalList.getDocument(), 'Documents match' );
+	assert.strictEqual( internalListClone2.getDocument(), doc2, 'Cloning with document parameter' );
 
-	assert.equal( internalList.getNextUniqueNumber(), 3, 'original internallist has nextUniqueNumber=3' );
-	assert.equal( internalListClone.getNextUniqueNumber(), 1, 'first clone has nextUniqueNumber=1' );
-	assert.equal( internalListClone2.getNextUniqueNumber(), 2, 'second clone has nextUniqueNumber=2' );
+	assert.strictEqual( internalList.getNextUniqueNumber(), 3, 'original internallist has nextUniqueNumber=3' );
+	assert.strictEqual( internalListClone.getNextUniqueNumber(), 1, 'first clone has nextUniqueNumber=1' );
+	assert.strictEqual( internalListClone2.getNextUniqueNumber(), 2, 'second clone has nextUniqueNumber=2' );
 } );

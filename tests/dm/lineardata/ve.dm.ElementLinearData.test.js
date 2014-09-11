@@ -108,7 +108,7 @@ QUnit.test( 'getAnnotationsFromOffset', 1, function ( assert ) {
 		data = ve.dm.example.preprocessAnnotations( cases[i].data );
 		doc = new ve.dm.Document( data );
 		if ( i === 0 ) {
-			assert.notEqual(
+			assert.notStrictEqual(
 				doc.data.getAnnotationsFromOffset( 0, cases[i].ignoreClose ).getIndexes(),
 				doc.data.getAnnotationsFromOffset( 0, cases[i].ignoreClose ).getIndexes(),
 				'annotation set indexes are not equal by reference'

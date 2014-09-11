@@ -62,14 +62,14 @@ QUnit.test( 'breakpoint/undo/redo', 12, function ( assert ) {
 		doc = surface.getDocument(),
 		tx = new ve.dm.Transaction.newFromInsertion( doc, 1, ['x'] );
 
-	assert.equal( surface.breakpoint(), false, 'Returns false if no transactions applied' );
+	assert.strictEqual( surface.breakpoint(), false, 'Returns false if no transactions applied' );
 
 	surface.change( tx );
 	assert.deepEqual( surface.undoStack, [], 'Undo stack data matches before breakpoint' );
 	assert.deepEqual( surface.newTransactions, [tx], 'New transactions match before breakpoint' );
 
-	assert.equal( surface.breakpoint(), true, 'Returns true after transaction applied' );
-	assert.equal( surface.breakpoint(), false, 'Returns false if no transactions applied since last breakpoint' );
+	assert.strictEqual( surface.breakpoint(), true, 'Returns true after transaction applied' );
+	assert.strictEqual( surface.breakpoint(), false, 'Returns false if no transactions applied since last breakpoint' );
 
 	assert.deepEqual(
 		surface.undoStack, [ {
@@ -86,12 +86,12 @@ QUnit.test( 'breakpoint/undo/redo', 12, function ( assert ) {
 	surface.setSelection( new ve.Range( 3 ) );
 	surface.undo();
 	assert.equalRange( surface.getSelection(), selection, 'Selection restored after undo' );
-	assert.equal( fragment.getText(), 'hi', 'Text restored after undo' );
+	assert.strictEqual( fragment.getText(), 'hi', 'Text restored after undo' );
 
 	surface.setSelection( new ve.Range( 3 ) );
 	surface.redo();
 	assert.equalRange( surface.getSelection(), fragment.getRange(), 'Selection changed after redo' );
-	assert.equal( fragment.getText(), 'xhi', 'Text changed after redo' );
+	assert.strictEqual( fragment.getText(), 'xhi', 'Text changed after redo' );
 
 } );
 
@@ -101,45 +101,45 @@ QUnit.test( 'staging', 37, function ( assert ) {
 		fragment = surface.getFragment(),
 		doc = surface.getDocument();
 
-	assert.equal( surface.isStaging(), false, 'isStaging false when not staging' );
-	assert.equal( surface.getStagingTransactions(), undefined, 'getStagingTransactions undefined when not staging' );
-	assert.equal( surface.doesStagingAllowUndo(), undefined, 'doesStagingAllowUndo undefined when not staging' );
+	assert.strictEqual( surface.isStaging(), false, 'isStaging false when not staging' );
+	assert.strictEqual( surface.getStagingTransactions(), undefined, 'getStagingTransactions undefined when not staging' );
+	assert.strictEqual( surface.doesStagingAllowUndo(), undefined, 'doesStagingAllowUndo undefined when not staging' );
 	assert.equalRange( surface.getSelection(), fragment.getRange(), 'Surface selection matches fragment range' );
 
 	surface.change( new ve.dm.Transaction.newFromInsertion( doc, 1, ['a'] ) );
 
 	surface.pushStaging();
-	assert.equal( surface.isStaging(), true, 'isStaging true after pushStaging' );
+	assert.strictEqual( surface.isStaging(), true, 'isStaging true after pushStaging' );
 	assert.deepEqual( surface.getStagingTransactions(), [], 'getStagingTransactions empty array after pushStaging' );
-	assert.equal( surface.doesStagingAllowUndo(), false, 'doesStagingAllowUndo false when staging without undo' );
+	assert.strictEqual( surface.doesStagingAllowUndo(), false, 'doesStagingAllowUndo false when staging without undo' );
 
 	tx1 = new ve.dm.Transaction.newFromInsertion( doc, 2, ['b'] );
 	surface.change( tx1 );
 
-	assert.equal( fragment.getText(), 'abhi', 'document contents match after first transaction' );
+	assert.strictEqual( fragment.getText(), 'abhi', 'document contents match after first transaction' );
 	assert.deepEqual( surface.getStagingTransactions(), [tx1], 'getStagingTransactions contains first transaction after change' );
 	assert.equalRange( surface.getSelection(), fragment.getRange(), 'Surface selection matches fragment range' );
 
 	surface.pushStaging( true );
-	assert.equal( surface.isStaging(), true, 'isStaging true after nested pushStaging' );
+	assert.strictEqual( surface.isStaging(), true, 'isStaging true after nested pushStaging' );
 	assert.deepEqual( surface.getStagingTransactions(), [], 'getStagingTransactions empty array after nested pushStaging' );
-	assert.equal( surface.doesStagingAllowUndo(), true, 'doesStagingAllowUndo true when staging with undo' );
+	assert.strictEqual( surface.doesStagingAllowUndo(), true, 'doesStagingAllowUndo true when staging with undo' );
 	assert.equalRange( surface.getSelection(), fragment.getRange(), 'Surface selection matches fragment range' );
 
 	tx2 = new ve.dm.Transaction.newFromInsertion( doc, 3, ['c'] );
 	surface.change( tx2 );
 
-	assert.equal( fragment.getText(), 'abchi', 'document contents match after second transaction' );
+	assert.strictEqual( fragment.getText(), 'abchi', 'document contents match after second transaction' );
 	assert.deepEqual( surface.getStagingTransactions(), [tx2], 'getStagingTransactions contains second transaction after change in nested staging' );
 
 	assert.deepEqual( surface.popStaging(), [tx2], 'popStaging returns second transaction list' );
-	assert.equal( surface.isStaging(), true, 'isStaging true after nested popStaging' );
-	assert.equal( fragment.getText(), 'abhi', 'document contents match after nested popStaging' );
+	assert.strictEqual( surface.isStaging(), true, 'isStaging true after nested popStaging' );
+	assert.strictEqual( fragment.getText(), 'abhi', 'document contents match after nested popStaging' );
 	assert.equalRange( surface.getSelection(), fragment.getRange(), 'Surface selection matches fragment range' );
 
 	assert.deepEqual( surface.popStaging(), [tx1], 'popStaging returns first transaction list' );
-	assert.equal( surface.isStaging(), false, 'isStaging false after outer popStaging' );
-	assert.equal( fragment.getText(), 'ahi', 'document contents match after outer popStaging' );
+	assert.strictEqual( surface.isStaging(), false, 'isStaging false after outer popStaging' );
+	assert.strictEqual( fragment.getText(), 'ahi', 'document contents match after outer popStaging' );
 	assert.equalRange( surface.getSelection(), fragment.getRange(), 'Surface selection matches fragment range' );
 
 	surface.pushStaging();
@@ -151,7 +151,7 @@ QUnit.test( 'staging', 37, function ( assert ) {
 	surface.change( tx2 );
 
 	assert.deepEqual( surface.popAllStaging(), [tx1, tx2], 'popAllStaging returns full transaction list' );
-	assert.equal( fragment.getText(), 'ahi', 'document contents match after outer clearStaging' );
+	assert.strictEqual( fragment.getText(), 'ahi', 'document contents match after outer clearStaging' );
 	assert.equalRange( surface.getSelection(), fragment.getRange(), 'Surface selection matches fragment range' );
 
 	surface.pushStaging();
@@ -166,8 +166,8 @@ QUnit.test( 'staging', 37, function ( assert ) {
 	assert.deepEqual( surface.getStagingTransactions(), [tx1, tx2], 'applyStaging merges transactions' );
 
 	surface.applyStaging();
-	assert.equal( surface.isStaging(), false, 'isStaging false after outer applyStaging' );
-	assert.equal( fragment.getText(), 'abchi', 'document contents changed after applyStaging' );
+	assert.strictEqual( surface.isStaging(), false, 'isStaging false after outer applyStaging' );
+	assert.strictEqual( fragment.getText(), 'abchi', 'document contents changed after applyStaging' );
 	assert.equalRange( surface.getSelection(), fragment.getRange(), 'Surface selection matches fragment range' );
 
 	surface.pushStaging();
@@ -179,12 +179,12 @@ QUnit.test( 'staging', 37, function ( assert ) {
 	surface.change( tx2 );
 
 	surface.applyAllStaging();
-	assert.equal( surface.isStaging(), false, 'isStaging false after outer applyAllStaging' );
-	assert.equal( fragment.getText(), 'abcdehi', 'document contents changed after applyAllStaging' );
+	assert.strictEqual( surface.isStaging(), false, 'isStaging false after outer applyAllStaging' );
+	assert.strictEqual( fragment.getText(), 'abcdehi', 'document contents changed after applyAllStaging' );
 	assert.equalRange( surface.getSelection(), fragment.getRange(), 'Surface selection matches fragment range' );
 
 	surface.undo();
-	assert.equal( fragment.getText(), 'abchi', 'document contents changed after undo' );
+	assert.strictEqual( fragment.getText(), 'abchi', 'document contents changed after undo' );
 	assert.equalRange( surface.getSelection(), fragment.getRange(), 'Surface selection matches fragment range' );
 
 	surface.pushStaging();
