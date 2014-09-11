@@ -2264,9 +2264,9 @@ ve.ce.Surface.prototype.handleDelete = function ( e, direction ) {
 			}
 			// If the user tries to delete a focusable node from a collapsed selection,
 			// just select the node and cancel the deletion.
-			startNode = documentView.getDocumentNode().getNodeFromOffset( offset + 1 );
+			startNode = documentModel.getDocumentNode().getNodeFromOffset( offset + 1 );
 			if ( startNode.isFocusable() ) {
-				model.setSelection( startNode.getModel().getOuterRange() );
+				model.setSelection( startNode.getOuterRange() );
 				return;
 			}
 		}

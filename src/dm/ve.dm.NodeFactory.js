@@ -194,6 +194,21 @@ ve.dm.NodeFactory.prototype.isNodeContent = function ( type ) {
 };
 
 /**
+ * Check if the node is focusable.
+ *
+ * @method
+ * @param {string} type Node type
+ * @returns {boolean} Whether the node is focusable
+ * @throws {Error} Unknown node type
+ */
+ve.dm.NodeFactory.prototype.isNodeFocusable = function ( type ) {
+	if ( type in this.registry ) {
+		return this.registry[type].static.isFocusable;
+	}
+	throw new Error( 'Unknown node type: ' + type );
+};
+
+/**
  * Check if the node has significant whitespace.
  *
  * Can only be true if canContainContent is also true.
