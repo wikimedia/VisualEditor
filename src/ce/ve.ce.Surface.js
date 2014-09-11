@@ -19,7 +19,6 @@
  * @param {Object} [config] Configuration options
  */
 ve.ce.Surface = function VeCeSurface( model, surface, options ) {
-	var $documentNode;
 	// Parent constructor
 	OO.ui.Element.call( this, options );
 
@@ -34,6 +33,7 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 	this.selectionTimeout = null;
 	this.$window = this.$( this.getElementWindow() );
 	this.$document = this.$( this.getElementDocument() );
+	this.$documentNode = this.getDocument().getDocumentNode().$element;
 	// Window.getSelection returns a live singleton representing the document's selection
 	this.nativeSelection = this.getElementWindow().getSelection();
 	this.eventSequencer = new ve.EventSequencer( [
@@ -66,16 +66,17 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 	this.newModelSelection = null;
 
 	// Events
-	this.surfaceObserver.connect(
-		this, { contentChange: 'onContentChange', selectionChange: 'onSelectionChange' }
-	);
-	this.model.connect( this,
-		{ select: 'onModelSelect', documentUpdate: 'onModelDocumentUpdate' }
-	);
+	this.surfaceObserver.connect( this, {
+		contentChange: 'onContentChange',
+		selectionChange: 'onSelectionChange'
+	} );
+	this.model.connect( this, {
+		select: 'onModelSelect',
+		documentUpdate: 'onModelDocumentUpdate'
+	} );
 
 	this.onDocumentMouseUpHandler = ve.bind( this.onDocumentMouseUp, this );
-	$documentNode = this.getDocument().getDocumentNode().$element;
-	$documentNode.on( {
+	this.$documentNode.on( {
 		// mouse events shouldn't be sequenced as the event sequencer
 		// is detached on blur
 		mousedown: ve.bind( this.onDocumentMouseDown, this ),
@@ -104,13 +105,13 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 		copy: ve.bind( this.onCopy, this )
 	} );
 
-	$documentNode
+	this.$documentNode
 		// Bug 65714: MSIE possibly needs `beforepaste` to also be bound; to test.
 		.on( 'paste', ve.bind( this.onPaste, this ) )
 		.on( 'focus', 'a', function () {
 			// Opera <= 12 triggers 'blur' on document node before any link is
 			// focused and we don't want that
-			$documentNode[0].focus();
+			this.$documentNode[0].focus();
 		} );
 
 	this.$element.on( {
@@ -141,7 +142,7 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 		.prop( 'contentEditable', 'true' );
 
 	// Add elements to the DOM
-	this.$element.append( this.documentView.getDocumentNode().$element, this.$pasteTarget );
+	this.$element.append( this.$documentNode, this.$pasteTarget );
 	this.surface.$blockers.append( this.$highlights );
 };
 
@@ -516,7 +517,7 @@ ve.ce.Surface.prototype.focus = function () {
 	if ( this.focusedNode ) {
 		this.$pasteTarget[0].focus();
 	} else {
-		this.documentView.getDocumentNode().$element[0].focus();
+		this.$documentNode[0].focus();
 		// If we are calling focus after replacing a node the selection may be gone
 		// but onDocumentFocus won't fire so restore the selection here too.
 		this.onModelSelect( this.surface.getModel().getSelection() );
@@ -558,7 +559,7 @@ ve.ce.Surface.prototype.onFocusChange = function () {
 
 	hasFocus = ve.contains(
 		[
-			this.documentView.getDocumentNode().$element[0],
+			this.$documentNode[0],
 			this.$pasteTarget[0]
 		],
 		this.nativeSelection.anchorNode,
@@ -1083,7 +1084,7 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 		setTimeout( function () {
 			// Change focus back
 			view.nativeSelection.removeAllRanges();
-			view.documentView.getDocumentNode().$element[0].focus();
+			view.$documentNode[0].focus();
 			view.nativeSelection.addRange( originalRange );
 			// Restore scroll position
 			view.$window.scrollTop( scrollTop );
@@ -1435,7 +1436,7 @@ ve.ce.Surface.prototype.afterPaste = function () {
 	}
 
 	// Restore focus and scroll position
-	this.documentView.getDocumentNode().$element[0].focus();
+	this.$documentNode[0].focus();
 	this.$window.scrollTop( beforePasteData.scrollTop );
 
 	selection = tx.translateRange( selection );
@@ -2325,7 +2326,6 @@ ve.ce.Surface.prototype.handleDelete = function ( e, direction ) {
  */
 ve.ce.Surface.prototype.showSelection = function ( range ) {
 	var endRange,
-		documentElement = this.documentView.getDocumentNode().$element[0],
 		rangeSelection = this.getRangeSelection( range ),
 		nativeRange = this.getElementDocument().createRange();
 
@@ -2347,8 +2347,8 @@ ve.ce.Surface.prototype.showSelection = function ( range ) {
 	}
 	// Setting a range doesn't give focus in all browsers so make sure this happens
 	// Also set focus after range to prevent scrolling to top
-	if ( this.getElementDocument().activeElement !== documentElement ) {
-		documentElement.focus();
+	if ( this.getElementDocument().activeElement !== this.$documentNode[0] ) {
+		this.$documentNode[0].focus();
 	}
 };
 
