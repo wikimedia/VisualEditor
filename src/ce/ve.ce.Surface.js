@@ -64,6 +64,7 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 	// This is set on entering changeModel, then unset when leaving.
 	// It is used to test whether a reflected change event is emitted.
 	this.newModelSelection = null;
+	this.hasSelectionChangeEvents = 'onselectionchange' in this.getElementDocument();
 
 	// Events
 	this.surfaceObserver.connect( this, {
@@ -113,6 +114,12 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 			// focused and we don't want that
 			this.$documentNode[0].focus();
 		} );
+
+	if ( this.hasSelectionChangeEvents ) {
+		this.$document.on( 'selectionchange', ve.bind( this.onDocumentSelectionChange, this ) );
+	} else {
+		this.$documentNode.on( 'mousemove', ve.bind( this.onDocumentSelectionChange, this ) );
+	}
 
 	this.$element.on( {
 		dragstart: ve.bind( this.onDocumentDragStart, this ),
@@ -633,7 +640,11 @@ ve.ce.Surface.prototype.isFocused = function () {
  * @param {jQuery.Event} e Mouse down event
  */
 ve.ce.Surface.prototype.onDocumentMouseDown = function ( e ) {
-	var selection, node;
+	if ( e.which !== 1 ) {
+		return;
+	}
+
+	var selection, node, view = this;
 
 	// Remember the mouse is down
 	this.dragging = true;
@@ -641,11 +652,12 @@ ve.ce.Surface.prototype.onDocumentMouseDown = function ( e ) {
 	// Bind mouseup to the whole document in case of dragging out of the surface
 	this.$document.on( 'mouseup', this.onDocumentMouseUpHandler );
 
-	if ( e.which === 1 ) {
-		this.surfaceObserver.stopTimerLoop();
+	this.surfaceObserver.stopTimerLoop();
+	setTimeout( function () {
+		// Selection change can happens after mousedown
 		// TODO: guard with incRenderLock?
-		this.surfaceObserver.pollOnce();
-	}
+		view.surfaceObserver.pollOnce();
+	} );
 
 	// Handle triple click
 	// HACK: do not do triple click handling in IE, because their click counting is broken
@@ -698,7 +710,22 @@ ve.ce.Surface.prototype.onDocumentMouseMove = function () {
 };
 
 /**
- * Handle document dragstart events.
+ * Handle document selection change events.
+ *
+ * @method
+ * @param {jQuery.Event} e Selection change event
+ */
+ve.ce.Surface.prototype.onDocumentSelectionChange = function () {
+	if ( !this.dragging ) {
+		// Optimisation
+		return;
+	}
+
+	this.surfaceObserver.pollOnceSelection();
+};
+
+/**
+ * Handle document drag start events.
  *
  * @method
  * @param {jQuery.Event} e Drag start event
@@ -715,7 +742,7 @@ ve.ce.Surface.prototype.onDocumentDragStart = function ( e ) {
 };
 
 /**
- * Handle document dragover events.
+ * Handle document drag over events.
  *
  * @method
  * @param {jQuery.Event} e Drag over event
@@ -776,7 +803,7 @@ ve.ce.Surface.prototype.onDocumentDragOver = function ( e ) {
  * Limits native drag and drop behavior.
  *
  * @method
- * @param {jQuery.Event} e Drag drop event
+ * @param {jQuery.Event} e Drop event
  */
 ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
 	// Properties may be nullified by other events, so cache before setTimeout
