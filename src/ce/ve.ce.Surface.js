@@ -73,12 +73,13 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 		{ select: 'onModelSelect', documentUpdate: 'onModelDocumentUpdate' }
 	);
 
+	this.onDocumentMouseUpHandler = ve.bind( this.onDocumentMouseUp, this );
 	$documentNode = this.getDocument().getDocumentNode().$element;
 	$documentNode.on( {
 		// mouse events shouldn't be sequenced as the event sequencer
 		// is detached on blur
 		mousedown: ve.bind( this.onDocumentMouseDown, this ),
-		mouseup: ve.bind( this.onDocumentMouseUp, this ),
+		// mouseup is bound to the whole document on mousedown
 		mousemove: ve.bind( this.onDocumentMouseMove, this ),
 		cut: ve.bind( this.onCut, this ),
 		copy: ve.bind( this.onCopy, this )
@@ -636,8 +637,8 @@ ve.ce.Surface.prototype.onDocumentMouseDown = function ( e ) {
 	// Remember the mouse is down
 	this.dragging = true;
 
-	// Old code to figure out if user clicked inside the document or not - leave it here for now
-	// this.$( e.target ).closest( '.ve-ce-documentNode' ).length === 0
+	// Bind mouseup to the whole document in case of dragging out of the surface
+	this.$document.on( 'mouseup', this.onDocumentMouseUpHandler );
 
 	if ( e.which === 1 ) {
 		this.surfaceObserver.stopTimerLoop();
@@ -669,6 +670,7 @@ ve.ce.Surface.prototype.onDocumentMouseDown = function ( e ) {
  * @fires selectionEnd
  */
 ve.ce.Surface.prototype.onDocumentMouseUp = function ( e ) {
+	this.$document.off( 'mouseup', this.onDocumentMouseUpHandler );
 	this.surfaceObserver.startTimerLoop();
 	// TODO: guard with incRenderLock?
 	this.surfaceObserver.pollOnce();
