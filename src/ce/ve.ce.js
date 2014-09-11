@@ -126,6 +126,7 @@ ve.ce.getDomHash = function ( element ) {
  * @returns {number} Linear model offset
  * @throws {Error} domOffset is out of bounds
  * @throws {Error} domNode has no ancestor with a .data( 'view' )
+ * @throws {Error} domNode is not in document
  */
 ve.ce.getOffset = function ( domNode, domOffset ) {
 	var node, view, offset, startNode, maxOffset, lengthSum = 0;
@@ -267,7 +268,7 @@ ve.ce.getOffset = function ( domNode, domOffset ) {
 		}
 		// else: we're inside an alienated node: throw away all the text node lengths,
 		// because the alien's content has no DM width
-	} else {
+	} else if ( view.parent ) {
 		// node is not an ancestor of startNode
 		// startNode comes after node, so add node's length
 		offset += view.getOuterLength();
@@ -277,6 +278,8 @@ ve.ce.getOffset = function ( domNode, domOffset ) {
 			// needs to be counted.
 			offset += lengthSum;
 		}
+	} else {
+		throw new Error( 'Node is not in document' );
 	}
 
 	return offset;

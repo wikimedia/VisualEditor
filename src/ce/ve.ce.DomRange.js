@@ -41,6 +41,7 @@ ve.ce.DomRange.newFromDocument = function ( doc ) {
 
 /**
  * Check if a DOM range is equal to another DOM range
+ *
  * @param {ve.ce.DomRange} other DOM range to compare to
  * @return {boolean} The other DOM range is equal to this one
  */
@@ -55,11 +56,15 @@ ve.ce.DomRange.prototype.equals = function ( other ) {
 /**
  * Get a linear model ve.Range for the DOM range
  *
- * @returns {ve.Range}
+ * @returns {ve.Range|null} Linear model range, or null if out of bounds
  */
 ve.ce.DomRange.prototype.getRange = function () {
-	return new ve.Range(
-		ve.ce.getOffset( this.anchorNode, this.anchorOffset ),
-		ve.ce.getOffset( this.focusNode, this.focusOffset )
-	);
+	try {
+		return new ve.Range(
+			ve.ce.getOffset( this.anchorNode, this.anchorOffset ),
+			ve.ce.getOffset( this.focusNode, this.focusOffset )
+		);
+	} catch ( e ) {
+		return null;
+	}
 };

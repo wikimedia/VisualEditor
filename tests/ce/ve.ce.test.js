@@ -245,8 +245,6 @@ QUnit.test( 'getOffset', function ( assert ) {
 	}
 } );
 
-// TODO: ve.ce.getOffset
-
 // TODO: ve.ce.getOffsetOfSlug
 
 QUnit.test( 'isShortcutKey', 3, function ( assert ) {
