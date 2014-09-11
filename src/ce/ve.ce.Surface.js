@@ -270,6 +270,45 @@ ve.ce.Surface.prototype.destroy = function () {
 };
 
 /**
+ * Get linear model offset from absolute coords
+ *
+ * @param {number} x X offset
+ * @param {number} y Y offset
+ * @return {number} Linear model offset, or -1 if coordinates are out of bounds
+ */
+ve.ce.Surface.prototype.getOffsetFromCoords = function ( x, y ) {
+	var offset, caretPosition, range, textRange, $marker,
+		doc = this.getElementDocument();
+
+	try {
+		if ( doc.caretPositionFromPoint ) {
+			// Gecko
+			// http://dev.w3.org/csswg/cssom-view/#extensions-to-the-document-interface
+			caretPosition = document.caretPositionFromPoint( x, y );
+			offset = ve.ce.getOffset( caretPosition.offsetNode, caretPosition.offset );
+		} else if ( doc.caretRangeFromPoint ) {
+			// Webkit
+			// http://www.w3.org/TR/2009/WD-cssom-view-20090804/
+			range = document.caretRangeFromPoint( x, y );
+			offset = ve.ce.getOffset( range.startContainer, range.startOffset );
+		} else if ( document.body.createTextRange ) {
+			// Trident
+			// http://msdn.microsoft.com/en-gb/library/ie/ms536632(v=vs.85).aspx
+			textRange = document.body.createTextRange();
+			textRange.moveToPoint( x, y );
+			textRange.pasteHTML( '<span class="ve-ce-textRange-drop-marker">&nbsp;</span>' );
+			$marker = this.$( '.ve-ce-textRange-drop-marker' );
+			offset = ve.ce.getOffset( $marker.get( 0 ), 0 );
+			$marker.remove();
+		}
+		return offset;
+	} catch ( e ) {
+		// Both ve.ce.getOffset and TextRange.moveToPoint can throw out of bounds exceptions
+		return -1;
+	}
+};
+
+/**
  * Get the inline coordinates of the selection range relative to the viewport.
  *
  * Returned coordinates are client coordinates (i.e. relative to the viewport).
@@ -666,7 +705,14 @@ ve.ce.Surface.prototype.onDocumentMouseMove = function () {
  * @param {jQuery.Event} e Drag start event
  */
 ve.ce.Surface.prototype.onDocumentDragStart = function ( e ) {
-	e.originalEvent.dataTransfer.setData( 'application-x/VisualEditor', this.getModel().getSelection().toJSON() );
+	var dataTransfer = e.originalEvent.dataTransfer;
+	try {
+		dataTransfer.setData( 'application-x/VisualEditor', this.getModel().getSelection().toJSON() );
+	} catch ( err ) {
+		// IE doesn't support custom data types, but overwriting the actual drag data should be avoided
+		// TODO: Do this with an internal state to avoid overwriting drag data even in IE
+		dataTransfer.setData( 'text', this.getModel().getSelection().toJSON() );
+	}
 };
 
 /**
@@ -735,14 +781,21 @@ ve.ce.Surface.prototype.onDocumentDragOver = function ( e ) {
  */
 ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
 	// Properties may be nullified by other events, so cache before setTimeout
-	var focusedNode = this.relocating,
+	var rangeJSON,
+		dataTransfer = e.originalEvent.dataTransfer,
+		focusedNode = this.relocating,
 		$dropTarget = this.$lastDropTarget,
-		dropPosition = this.lastDropPosition,
-		rangeJSON = e.originalEvent.dataTransfer.getData( 'application-x/VisualEditor' );
+		dropPosition = this.lastDropPosition;
+
+	try {
+		rangeJSON = dataTransfer.getData( 'application-x/VisualEditor' );
+	} catch ( err ) {
+		rangeJSON = dataTransfer.getData( 'text' );
+	}
 
 	// Process drop operation after native drop has been prevented below
 	setTimeout( ve.bind( function () {
-		var dragRange, dropNodePosition, originFragment, originData, targetRange, targetOffset, targetFragment;
+		var dragRange, originFragment, originData, targetRange, targetOffset, targetFragment;
 
 		if ( focusedNode ) {
 			dragRange = focusedNode.getModel().getOuterRange();
@@ -764,15 +817,13 @@ ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
 					return;
 				}
 			} else {
-				// Calculate the drop point
-				dropNodePosition = rangy.positionFromPoint(
+				targetOffset = this.getOffsetFromCoords(
 					e.originalEvent.pageX - this.$document.scrollLeft(),
 					e.originalEvent.pageY - this.$document.scrollTop()
 				);
-				if ( !dropNodePosition ) {
+				if ( targetOffset === -1 ) {
 					return;
 				}
-				targetOffset = ve.ce.getOffset( dropNodePosition.node, dropNodePosition.offset );
 			}
 			targetFragment = this.getModel().getFragment( new ve.Range( targetOffset ), false );
 
