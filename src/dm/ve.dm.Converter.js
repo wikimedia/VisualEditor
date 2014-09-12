@@ -666,7 +666,7 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 					modelClass = ve.dm.AlienNode;
 					childNodes = modelClass.static.enableAboutGrouping ?
 						aboutGroup : [ childNode ];
-					childDataElements = this.createDataElement( modelClass, childNodes );
+					childDataElements = this.createDataElements( modelClass, childNodes );
 				} else {
 					// Update modelClass to reflect the type we got back
 					modelClass = this.modelRegistry.lookup( childDataElements[0].type );
