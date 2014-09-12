@@ -990,10 +990,13 @@
 	/**
 	 * Get the start and end rectangles (in a text flow sense) from a list of rectangles
 	 * @param {Array} rects Full list of rectangles
-	 * @return {Object} Object containing two rectangles: start and end.
+	 * @return {Object|null} Object containing two rectangles: start and end, or null if there are no rectangles
 	 */
 	ve.getStartAndEndRects = function ( rects ) {
 		var i, l, startRect, endRect;
+		if ( !rects || !rects.length ) {
+			return null;
+		}
 		for ( i = 0, l = rects.length; i < l; i++ ) {
 			if ( !startRect || rects[i].top < startRect.top ) {
 				// Use ve.extendObject as ve.copy copies non-plain objects by reference
