@@ -391,20 +391,11 @@ ve.ce.FocusableNode.prototype.redrawHighlights = function () {
 };
 
 /**
- * Positions highlights, and remove collapsed ones
- *
- * @method
+ * Calculate position of highlights
  */
-ve.ce.FocusableNode.prototype.positionHighlights = function () {
-	if ( !this.highlighted ) {
-		return;
-	}
-
-	var i, l, relativeOuterRect,
-		outerRects = [],
+ve.ce.FocusableNode.prototype.calculateHighlights = function () {
+	var i, l, outerRects = [],
 		surfaceOffset = this.surface.getSurface().getBoundingClientRect();
-
-	this.$highlights.empty();
 
 	function contains( rect1, rect2 ) {
 		return rect2.left >= rect1.left &&
@@ -449,33 +440,63 @@ ve.ce.FocusableNode.prototype.positionHighlights = function () {
 		}
 	} );
 
-	this.outerRects = outerRects;
 	this.boundingRect = null;
+	// inlineRects is lazily evaluated in getInlineRects from outerRects
 	this.inlineRects = null;
 
-	for ( i = 0, l = this.outerRects.length; i < l; i++ ) {
-		relativeOuterRect = ve.translateRect( this.outerRects[i], -surfaceOffset.left, -surfaceOffset.top );
+	for ( i = 0, l = outerRects.length; i < l; i++ ) {
+		// Translate to relative
+		outerRects[i] = ve.translateRect( outerRects[i], -surfaceOffset.left, -surfaceOffset.top );
 		this.$highlights.append(
 			this.createHighlight().css( {
-				top: relativeOuterRect.top,
-				left: relativeOuterRect.left,
-				width: relativeOuterRect.width,
-				height: relativeOuterRect.height
+				top: outerRects[i].top,
+				left: outerRects[i].left,
+				width: outerRects[i].width,
+				height: outerRects[i].height
 			} )
 		);
 
 		if ( !this.boundingRect ) {
-			this.boundingRect = ve.copy( relativeOuterRect );
+			this.boundingRect = ve.copy( outerRects[i] );
 		} else {
-			this.boundingRect.top = Math.min( this.boundingRect.top, relativeOuterRect.top );
-			this.boundingRect.left = Math.min( this.boundingRect.left, relativeOuterRect.left );
-			this.boundingRect.bottom = Math.max( this.boundingRect.bottom, relativeOuterRect.bottom );
-			this.boundingRect.right = Math.max( this.boundingRect.right, relativeOuterRect.right );
+			this.boundingRect.top = Math.min( this.boundingRect.top, outerRects[i].top );
+			this.boundingRect.left = Math.min( this.boundingRect.left, outerRects[i].left );
+			this.boundingRect.bottom = Math.max( this.boundingRect.bottom, outerRects[i].bottom );
+			this.boundingRect.right = Math.max( this.boundingRect.right, outerRects[i].right );
 		}
 	}
 	if ( this.boundingRect ) {
 		this.boundingRect.width = this.boundingRect.right - this.boundingRect.left;
 		this.boundingRect.height = this.boundingRect.bottom - this.boundingRect.top;
+	}
+
+	this.outerRects = outerRects;
+};
+
+/**
+ * Positions highlights, and remove collapsed ones
+ *
+ * @method
+ */
+ve.ce.FocusableNode.prototype.positionHighlights = function () {
+	if ( !this.highlighted ) {
+		return;
+	}
+
+	var i, l;
+
+	this.calculateHighlights();
+	this.$highlights.empty();
+
+	for ( i = 0, l = this.outerRects.length; i < l; i++ ) {
+		this.$highlights.append(
+			this.createHighlight().css( {
+				top: this.outerRects[i].top,
+				left: this.outerRects[i].left,
+				width: this.outerRects[i].width,
+				height: this.outerRects[i].height
+			} )
+		);
 	}
 };
 
@@ -486,7 +507,7 @@ ve.ce.FocusableNode.prototype.positionHighlights = function () {
  */
 ve.ce.FocusableNode.prototype.getBoundingRect = function () {
 	if ( !this.highlighted ) {
-		this.createHighlights();
+		this.calculateHighlights();
 	}
 	return this.boundingRect;
 };
@@ -497,20 +518,11 @@ ve.ce.FocusableNode.prototype.getBoundingRect = function () {
  * @return {Object|null} Start and end rectangles
  */
 ve.ce.FocusableNode.prototype.getInlineRects = function () {
-	var inlineRects, surfaceOffset;
 	if ( !this.highlighted ) {
-		this.createHighlights();
+		this.calculateHighlights();
 	}
 	if ( !this.inlineRects ) {
-		inlineRects = ve.getStartAndEndRects( this.outerRects );
-		if ( !inlineRects ) {
-			return null;
-		}
-		surfaceOffset = this.surface.getSurface().getBoundingClientRect();
-		this.inlineRects = {
-			start: ve.translateRect( inlineRects.start, -surfaceOffset.left, -surfaceOffset.top ),
-			end: ve.translateRect( inlineRects.end, -surfaceOffset.left, -surfaceOffset.top )
-		};
+		this.inlineRects = ve.getStartAndEndRects( this.outerRects );
 	}
 	return this.inlineRects;
 };
