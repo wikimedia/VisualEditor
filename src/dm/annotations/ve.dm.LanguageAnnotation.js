@@ -31,7 +31,9 @@ ve.dm.LanguageAnnotation.static.name = 'meta/language';
 ve.dm.LanguageAnnotation.static.matchTagNames = [ 'span' ];
 
 ve.dm.LanguageAnnotation.static.matchFunction = function ( domElement ) {
-	return ( domElement.getAttribute( 'lang' ) || domElement.getAttribute( 'dir' ) );
+	var lang = domElement.getAttribute( 'lang' ),
+		dir = domElement.getAttribute( 'dir' );
+	return lang || dir === 'ltr' || dir === 'rtl';
 };
 
 ve.dm.LanguageAnnotation.static.applyToAppendedContent = true;

@@ -159,6 +159,7 @@ ve.ui.LanguageInputWidget.prototype.setLangAndDir = function ( lang, dir ) {
 	// Set state flag while programmatically changing input widget values
 	this.updating = true;
 	if ( lang || dir ) {
+		lang = lang || '';
 		this.languageCodeTextInput.setValue( lang );
 		this.findLanguageButton.setLabel(
 			ve.init.platform.getLanguageName( lang.toLowerCase() ) ||
