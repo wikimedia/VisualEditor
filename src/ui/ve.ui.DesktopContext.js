@@ -23,7 +23,7 @@ ve.ui.DesktopContext = function VeUiDesktopContext( surface, config ) {
 	this.popup = new OO.ui.PopupWidget( { $: this.$, $container: this.surface.$element } );
 	this.transitioning = null;
 	this.suppressed = false;
-	this.onWindowResizeHandler = ve.bind( this.onWindowResize, this );
+	this.onWindowResizeHandler = ve.bind( this.onPosition, this );
 	this.$window = this.$( this.getElementWindow() );
 
 	// Events
@@ -34,7 +34,10 @@ ve.ui.DesktopContext = function VeUiDesktopContext( surface, config ) {
 		relocationEnd: 'onUnsuppress',
 		blur: 'onSuppress',
 		focus: 'onUnsuppress',
-		position: 'onSurfacePosition'
+		position: 'onPosition'
+	} );
+	this.surface.getModel().connect( this, {
+		select: 'onPosition'
 	} );
 	this.$window.on( 'resize', this.onWindowResizeHandler );
 	this.$element.on( 'mousedown', false );
@@ -107,22 +110,11 @@ ve.ui.DesktopContext.prototype.onUnsuppress = function () {
 };
 
 /**
- * Handle surface position event.
+ * Handle cursor position change event.
  */
-ve.ui.DesktopContext.prototype.onSurfacePosition = function () {
+ve.ui.DesktopContext.prototype.onPosition = function () {
 	if ( this.isVisible() ) {
-		this.updateDimensions( true );
-	}
-};
-
-/**
- * Handle window resize events.
- *
- * @param {jQuery.Event} e Window resize event
- */
-ve.ui.DesktopContext.prototype.onWindowResize = function () {
-	if ( this.isVisible() ) {
-		this.updateDimensions();
+		this.updateDimensionsDebounced();
 	}
 };
 
@@ -174,7 +166,7 @@ ve.ui.DesktopContext.prototype.toggle = function ( show ) {
 		if ( this.inspector ) {
 			this.inspectors.updateWindowSize( this.inspector );
 		}
-		this.updateDimensions();
+		this.updateDimensionsDebounced();
 	} else if ( this.inspector ) {
 		this.inspector.close();
 	}
@@ -185,7 +177,7 @@ ve.ui.DesktopContext.prototype.toggle = function ( show ) {
 /**
  * @inheritdoc
  */
-ve.ui.DesktopContext.prototype.updateDimensions = function ( transition ) {
+ve.ui.DesktopContext.prototype.updateDimensions = function () {
 	var $container, inlineRects, position, embeddable, middle,
 		rtl = this.surface.getModel().getDocument().getDir() === 'rtl',
 		surface = this.surface.getView(),
@@ -253,8 +245,7 @@ ve.ui.DesktopContext.prototype.updateDimensions = function ( transition ) {
 
 	this.popup.setSize(
 		$container.outerWidth( true ),
-		$container.outerHeight( true ),
-		false && transition
+		$container.outerHeight( true )
 	);
 
 	return this;
@@ -266,6 +257,7 @@ ve.ui.DesktopContext.prototype.updateDimensions = function ( transition ) {
 ve.ui.DesktopContext.prototype.destroy = function () {
 	// Disconnect
 	this.surface.getView().disconnect( this );
+	this.surface.getModel().disconnect( this );
 	this.$window.off( 'resize', this.onWindowResizeHandler );
 
 	// Parent method

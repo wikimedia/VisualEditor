@@ -210,14 +210,13 @@ ve.ce.ResizableNode.prototype.showHandles = function ( handles ) {
  * @method
  */
 ve.ce.ResizableNode.prototype.onResizableFocus = function () {
-	var surface = this.getRoot().getSurface(),
-		documentModel = surface.getModel().getDocument();
+	var surface = this.getRoot().getSurface();
 
 	if ( this.$sizeLabel ) {
 		// Attach the size label first so it doesn't mask the resize handles
-		this.$sizeLabel.appendTo( this.root.getSurface().getSurface().$controls );
+		this.$sizeLabel.appendTo( surface.getSurface().$controls );
 	}
-	this.$resizeHandles.appendTo( this.root.getSurface().getSurface().$controls );
+	this.$resizeHandles.appendTo( surface.getSurface().$controls );
 
 	// Call getScalable to pre-fetch the extended data
 	this.model.getScalable();
@@ -244,7 +243,6 @@ ve.ce.ResizableNode.prototype.onResizableFocus = function () {
 			ve.bind( this.onResizeHandlesCornerMouseDown, this )
 		);
 
-	documentModel.connect( this, { transact: 'setResizableHandlesSizeAndPosition' } );
 	surface.connect( this, { position: 'setResizableHandlesSizeAndPosition' } );
 
 };
@@ -260,15 +258,13 @@ ve.ce.ResizableNode.prototype.onResizableBlur = function () {
 		return;
 	}
 
-	var surface = this.getRoot().getSurface(),
-		documentModel = surface.getModel().getDocument();
+	var surface = this.getRoot().getSurface();
 
 	this.$resizeHandles.detach();
 	if ( this.$sizeLabel ) {
 		this.$sizeLabel.detach();
 	}
 
-	documentModel.disconnect( this, { transact: 'setResizableHandlesSizeAndPosition' } );
 	surface.disconnect( this, { position: 'setResizableHandlesSizeAndPosition' } );
 
 };
