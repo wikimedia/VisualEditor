@@ -475,14 +475,16 @@ ve.ce.FocusableNode.prototype.positionHighlights = function () {
 			this.boundingRect.right = Math.max( this.boundingRect.right, relativeOuterRect.right );
 		}
 	}
-	this.boundingRect.width = this.boundingRect.right - this.boundingRect.left;
-	this.boundingRect.height = this.boundingRect.bottom - this.boundingRect.top;
+	if ( this.boundingRect ) {
+		this.boundingRect.width = this.boundingRect.right - this.boundingRect.left;
+		this.boundingRect.height = this.boundingRect.bottom - this.boundingRect.top;
+	}
 };
 
 /**
  * Get the bounding rectangle of the focusable node highight relative to the surface
  *
- * @return {Object} Top, left, bottom & right positions of the focusable node relative to the surface
+ * @return {Object|null} Top, left, bottom & right positions of the focusable node relative to the surface
  */
 ve.ce.FocusableNode.prototype.getBoundingRect = function () {
 	if ( !this.highlighted ) {
@@ -494,7 +496,7 @@ ve.ce.FocusableNode.prototype.getBoundingRect = function () {
 /**
  * Get start and end rectangles of an inline focusable node relative to the surface
  *
- * @return {Object} Start and end rectangles
+ * @return {Object|null} Start and end rectangles
  */
 ve.ce.FocusableNode.prototype.getInlineRects = function () {
 	var inlineRects, surfaceOffset;
@@ -503,6 +505,9 @@ ve.ce.FocusableNode.prototype.getInlineRects = function () {
 	}
 	if ( !this.inlineRects ) {
 		inlineRects = ve.getStartAndEndRects( this.outerRects );
+		if ( !inlineRects ) {
+			return null;
+		}
 		surfaceOffset = this.surface.getSurface().getBoundingClientRect();
 		this.inlineRects = {
 			start: ve.translateRect( inlineRects.start, -surfaceOffset.left, -surfaceOffset.top ),
