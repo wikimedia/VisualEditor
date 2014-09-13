@@ -840,6 +840,27 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 					]
 				],
 				msg: 'RDFa attributes restored/overwritten from data-ve-attributes'
+			},
+			{
+				range: new ve.Range( 0 ),
+				pasteHtml: 'foo\n<!-- StartFragment --><p>Bar</p><!--EndFragment-->baz',
+				useClipboardData: true,
+				expectedRange: new ve.Range( 5 ),
+				expectedOps: [
+					[
+						{
+							type: 'replace',
+							insert: [
+								{ type: 'paragraph' },
+								'B', 'a', 'r',
+								{ type: '/paragraph' }
+							],
+							remove: []
+						},
+						{ type: 'retain', length: docLen }
+					]
+				],
+				msg: 'Start/EndFragment comments trimmed from clipboardData'
 			}
 		];
 
