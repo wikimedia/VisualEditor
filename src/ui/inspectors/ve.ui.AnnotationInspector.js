@@ -255,7 +255,7 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 			if ( insertText ) {
 				insertion = this.getInsertionData();
 				if ( insertion.length ) {
-					fragment.insertContent( insertion, false );
+					fragment.insertContent( insertion, true );
 					// Move cursor to the end of the inserted content, even if back button is used
 					fragment.adjustRange( -insertion.length, 0 );
 					this.previousSelection = new ve.Range(
