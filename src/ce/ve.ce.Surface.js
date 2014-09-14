@@ -326,7 +326,7 @@ ve.ce.Surface.prototype.getOffsetFromCoords = function ( x, y ) {
  * @returns {Object|null} Start and end selection rectangles
  */
 ve.ce.Surface.prototype.getSelectionInlineClientRects = function () {
-	var inlineRects, surfaceRect, boundingRect, rtl, x, collapsedRect;
+	var inlineRects, nativeRange, surfaceRect, boundingRect, rtl, x, collapsedRect;
 	if ( this.focusedNode ) {
 		inlineRects = this.focusedNode.getInlineRects();
 		surfaceRect = this.getSurface().getBoundingClientRect();
@@ -340,8 +340,8 @@ ve.ce.Surface.prototype.getSelectionInlineClientRects = function () {
 		};
 	}
 
-	// We can't do anything if there's no selection
-	if ( this.nativeSelection.rangeCount === 0 ) {
+	nativeRange = this.getNativeRange();
+	if ( !nativeRange ) {
 		return null;
 	}
 
@@ -349,7 +349,7 @@ ve.ce.Surface.prototype.getSelectionInlineClientRects = function () {
 	// * in Firefox on page load when the address bar is still focused
 	// * in empty paragraphs
 	try {
-		return ve.getStartAndEndRects( this.nativeSelection.getRangeAt( 0 ).getClientRects() );
+		return ve.getStartAndEndRects( nativeRange.getClientRects() );
 	} catch ( e ) {
 		// When possible, pretend the cursor is the left/right border of the node
 		// (depending on directionality) as a fallback.
@@ -391,7 +391,7 @@ ve.ce.Surface.prototype.getSelectionInlineClientRects = function () {
  * @returns {Object|null} Selection rectangle, with keys top, bottom, left, right, width, height
  */
 ve.ce.Surface.prototype.getSelectionBoundingClientRect = function () {
-	var inlineRects, boundingRect, surfaceRect;
+	var inlineRects, boundingRect, surfaceRect, nativeRange;
 
 	if ( this.focusedNode ) {
 		boundingRect = this.focusedNode.getBoundingRect();
@@ -408,8 +408,13 @@ ve.ce.Surface.prototype.getSelectionBoundingClientRect = function () {
 		return null;
 	}
 
+	nativeRange = this.getNativeRange();
+	if ( !nativeRange ) {
+		return null;
+	}
+
 	try {
-		inlineRects = this.nativeSelection.getRangeAt( 0 ).getClientRects();
+		inlineRects = nativeRange.getClientRects();
 		// Try the zeroth inline rect first as Chrome sometimes returns a rectangle
 		// full of zeros for getBoundingClientRect when the cursor is collapsed.
 		// We could test for this failure and fall back to inline[0], except for the
@@ -419,7 +424,7 @@ ve.ce.Surface.prototype.getSelectionBoundingClientRect = function () {
 		if ( inlineRects.length === 1 ) {
 			return inlineRects[0];
 		}
-		return this.nativeSelection.getRangeAt( 0 ).getBoundingClientRect();
+		return nativeRange.getBoundingClientRect();
 	} catch ( e ) {
 		return null;
 	}
@@ -1101,7 +1106,7 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 		// Save scroll position before changing focus to "offscreen" paste target
 		scrollTop = this.$window.scrollTop();
 
-		originalRange = this.nativeSelection.getRangeAt( 0 ).cloneRange();
+		originalRange = this.getNativeRange().cloneRange();
 		this.nativeSelection.removeAllRanges();
 		this.$pasteTarget[0].focus();
 		this.nativeSelection.addRange( nativeRange );
@@ -2435,6 +2440,36 @@ ve.ce.Surface.prototype.getRangeSelection = function ( range ) {
 			start: this.documentView.getNodeAndOffset( range.start )
 		};
 	}
+};
+
+/**
+ * Get a native range object for a specified range
+ *
+ * Doesn't correct backwards selection so should be used for measurement only.
+ *
+ * @param {ve.Range} [range] Optional range to get the native range for, defaults to current selection
+ * @return {Range|null} Native range object, or null if there is no selection
+ */
+ve.ce.Surface.prototype.getNativeRange = function ( range ) {
+	if ( !range || range.equalsSelection( this.getModel().getSelection() ) ) {
+		if ( this.getModel().getSelection() === null ) {
+			return null;
+		}
+		if ( this.nativeSelection.rangeCount > 0 ) {
+			try {
+				return this.nativeSelection.getRangeAt( 0 );
+			} catch ( e ) {}
+		}
+	}
+
+	var nativeRange = document.createRange(),
+		rangeSelection = this.getRangeSelection( range );
+
+	nativeRange.setStart( rangeSelection.start.node, rangeSelection.start.offset );
+	if ( rangeSelection.end ) {
+		nativeRange.setEnd( rangeSelection.end.node, rangeSelection.end.offset );
+	}
+	return nativeRange;
 };
 
 /**
