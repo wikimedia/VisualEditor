@@ -1157,6 +1157,12 @@ ve.ce.Surface.prototype.beforePaste = function ( e ) {
 	if ( clipboardData ) {
 		this.beforePasteData.custom = clipboardData.getData( 'text/xcustom' );
 		this.beforePasteData.html = clipboardData.getData( 'text/html' );
+		if ( this.beforePasteData.html ) {
+			// http://msdn.microsoft.com/en-US/en-%20us/library/ms649015(VS.85).aspx
+			this.beforePasteData.html = this.beforePasteData.html
+				.replace( /^[\s\S]*<!-- *StartFragment *-->/, '' )
+				.replace( /<!-- *EndFragment *-->[\s\S]*$/, '' );
+		}
 	}
 
 	// TODO: no pollOnce here: but should we add one?
