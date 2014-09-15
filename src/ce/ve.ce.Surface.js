@@ -2095,16 +2095,16 @@ ve.ce.Surface.prototype.handleEnter = function ( e ) {
 		)
 	) {
 		// If we're at the start/end of something that's not a paragraph, insert a paragraph
-		// before/after
-		if ( cursor === nodeModelRange.from ) {
+		// before/after. Insert after for empty nodes (from === to).
+		if ( cursor === nodeModelRange.to ) {
+			txInsert = ve.dm.Transaction.newFromInsertion(
+				documentModel, nodeModel.getOuterRange().to, emptyParagraph
+			);
+		} else if ( cursor === nodeModelRange.from ) {
 			txInsert = ve.dm.Transaction.newFromInsertion(
 				documentModel, nodeModel.getOuterRange().from, emptyParagraph
 			);
 			advanceCursor = false;
-		} else if ( cursor === nodeModelRange.to ) {
-			txInsert = ve.dm.Transaction.newFromInsertion(
-				documentModel, nodeModel.getOuterRange().to, emptyParagraph
-			);
 		}
 	} else if ( e.shiftKey && nodeModel.hasSignificantWhitespace() ) {
 		// Insert newline
