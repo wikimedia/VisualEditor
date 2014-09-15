@@ -320,16 +320,20 @@ ve.ce.Surface.prototype.getOffsetFromCoords = function ( x, y ) {
  * Get the start and end rectangles of the selection range relative to the surface.
  *
  * @method
+ * @param {ve.Range} [range] Optional range to get the selection for, defaults to current selection
  * @returns {Object|null} Start and end selection rectangles
  */
-ve.ce.Surface.prototype.getSelectionStartAndEndRects = function () {
-	var startAndEndRects, nativeRange, surfaceRect, focusNodeRect, rtl, x, collapsedRect;
+ve.ce.Surface.prototype.getSelectionStartAndEndRects = function ( range ) {
+	var startAndEndRects, nativeRange, surfaceRect, focusNodeRect, rtl, x, collapsedRect, focusedNode;
 
-	if ( this.focusedNode ) {
-		return this.focusedNode.getStartAndEndRects();
+	range = range || this.getModel().getSelection();
+	focusedNode = this.getFocusedNode( range );
+
+	if ( focusedNode ) {
+		return focusedNode.getStartAndEndRects();
 	}
 
-	nativeRange = this.getNativeRange();
+	nativeRange = this.getNativeRange( range );
 	if ( !nativeRange ) {
 		return null;
 	}
@@ -385,15 +389,20 @@ ve.ce.Surface.prototype.getSelectionStartAndEndRects = function () {
  * Returned coordinates are relative to the surface.
  *
  * @method
+ * @param {ve.Range} [range] Optional range to get the selection for, defaults to current selection
  * @returns {Object|null} Selection rectangle, with keys top, bottom, left, right, width, height
  */
-ve.ce.Surface.prototype.getSelectionBoundingRect = function () {
-	var nativeRange, boundingRect, surfaceRect;
-	if ( this.focusedNode ) {
+ve.ce.Surface.prototype.getSelectionBoundingRect = function ( range ) {
+	var nativeRange, boundingRect, surfaceRect, focusedNode;
+
+	range = range || this.getModel().getSelection();
+	focusedNode = this.getFocusedNode( range );
+
+	if ( focusedNode ) {
 		return this.focusedNode.getBoundingRect();
 	}
 
-	nativeRange = this.getNativeRange();
+	nativeRange = this.getNativeRange( range );
 	if ( !nativeRange ) {
 		return null;
 	}
