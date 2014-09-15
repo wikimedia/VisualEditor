@@ -1,12 +1,12 @@
 /*!
- * OOjs UI v0.1.0-pre (f9c217dfa4)
+ * OOjs UI v0.1.0-pre (073f37e258)
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2014 OOjs Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2014-09-10T17:24:54Z
+ * Date: 2014-09-15T14:59:29Z
  */
 /*
  * Blank theme mixins.
@@ -167,6 +167,12 @@
 }
 .oo-ui-fieldLayout > .oo-ui-popupButtonWidget > .oo-ui-popupWidget > .oo-ui-popupWidget-popup {
   z-index: 1;
+}
+.oo-ui-fieldLayout .oo-ui-fieldLayout-help {
+  float: left;
+}
+.oo-ui-fieldLayout .oo-ui-fieldLayout-help-content {
+  padding: 0.5em 0.75em;
 }
 .oo-ui-fieldLayout:last-child {
   margin-bottom: 0;
