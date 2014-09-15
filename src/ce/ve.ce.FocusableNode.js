@@ -32,9 +32,9 @@ ve.ce.FocusableNode = function VeCeFocusableNode( $focusable ) {
 	this.$highlights = this.$( '<div>' ).addClass( 've-ce-focusableNode-highlights' );
 	this.$focusable = $focusable || this.$element;
 	this.surface = null;
-	this.outerRects = null;
+	this.rects = null;
 	this.boundingRect = null;
-	this.inlineRects = null;
+	this.startAndEndRects = null;
 
 	// Events
 	this.connect( this, {
@@ -394,7 +394,7 @@ ve.ce.FocusableNode.prototype.redrawHighlights = function () {
  * Calculate position of highlights
  */
 ve.ce.FocusableNode.prototype.calculateHighlights = function () {
-	var i, l, outerRects = [],
+	var i, l, rects = [],
 		surfaceOffset = this.surface.getSurface().getBoundingClientRect();
 
 	function contains( rect1, rect2 ) {
@@ -421,48 +421,48 @@ ve.ce.FocusableNode.prototype.calculateHighlights = function () {
 				continue;
 			}
 			contained = false;
-			for ( j = 0, jl = outerRects.length; j < jl; j++ ) {
+			for ( j = 0, jl = rects.length; j < jl; j++ ) {
 				// This rect is contained by an existing rect, discard
-				if ( contains( outerRects[j], clientRects[i] ) ) {
+				if ( contains( rects[j], clientRects[i] ) ) {
 					contained = true;
 					break;
 				}
 				// An existing rect is contained by this rect, discard the existing rect
-				if ( contains( clientRects[i], outerRects[j] ) ) {
-					outerRects.splice( j, 1 );
+				if ( contains( clientRects[i], rects[j] ) ) {
+					rects.splice( j, 1 );
 					j--;
 					jl--;
 				}
 			}
 			if ( !contained ) {
-				outerRects.push( clientRects[i] );
+				rects.push( clientRects[i] );
 			}
 		}
 	} );
 
 	this.boundingRect = null;
-	// inlineRects is lazily evaluated in getInlineRects from outerRects
-	this.inlineRects = null;
+	// startAndEndRects is lazily evaluated in getStartAndEndRects from rects
+	this.startAndEndRects = null;
 
-	for ( i = 0, l = outerRects.length; i < l; i++ ) {
+	for ( i = 0, l = rects.length; i < l; i++ ) {
 		// Translate to relative
-		outerRects[i] = ve.translateRect( outerRects[i], -surfaceOffset.left, -surfaceOffset.top );
+		rects[i] = ve.translateRect( rects[i], -surfaceOffset.left, -surfaceOffset.top );
 		this.$highlights.append(
 			this.createHighlight().css( {
-				top: outerRects[i].top,
-				left: outerRects[i].left,
-				width: outerRects[i].width,
-				height: outerRects[i].height
+				top: rects[i].top,
+				left: rects[i].left,
+				width: rects[i].width,
+				height: rects[i].height
 			} )
 		);
 
 		if ( !this.boundingRect ) {
-			this.boundingRect = ve.copy( outerRects[i] );
+			this.boundingRect = ve.copy( rects[i] );
 		} else {
-			this.boundingRect.top = Math.min( this.boundingRect.top, outerRects[i].top );
-			this.boundingRect.left = Math.min( this.boundingRect.left, outerRects[i].left );
-			this.boundingRect.bottom = Math.max( this.boundingRect.bottom, outerRects[i].bottom );
-			this.boundingRect.right = Math.max( this.boundingRect.right, outerRects[i].right );
+			this.boundingRect.top = Math.min( this.boundingRect.top, rects[i].top );
+			this.boundingRect.left = Math.min( this.boundingRect.left, rects[i].left );
+			this.boundingRect.bottom = Math.max( this.boundingRect.bottom, rects[i].bottom );
+			this.boundingRect.right = Math.max( this.boundingRect.right, rects[i].right );
 		}
 	}
 	if ( this.boundingRect ) {
@@ -470,7 +470,7 @@ ve.ce.FocusableNode.prototype.calculateHighlights = function () {
 		this.boundingRect.height = this.boundingRect.bottom - this.boundingRect.top;
 	}
 
-	this.outerRects = outerRects;
+	this.rects = rects;
 };
 
 /**
@@ -488,13 +488,13 @@ ve.ce.FocusableNode.prototype.positionHighlights = function () {
 	this.calculateHighlights();
 	this.$highlights.empty();
 
-	for ( i = 0, l = this.outerRects.length; i < l; i++ ) {
+	for ( i = 0, l = this.rects.length; i < l; i++ ) {
 		this.$highlights.append(
 			this.createHighlight().css( {
-				top: this.outerRects[i].top,
-				left: this.outerRects[i].left,
-				width: this.outerRects[i].width,
-				height: this.outerRects[i].height
+				top: this.rects[i].top,
+				left: this.rects[i].left,
+				width: this.rects[i].width,
+				height: this.rects[i].height
 			} )
 		);
 	}
@@ -517,12 +517,12 @@ ve.ce.FocusableNode.prototype.getBoundingRect = function () {
  *
  * @return {Object|null} Start and end rectangles
  */
-ve.ce.FocusableNode.prototype.getInlineRects = function () {
+ve.ce.FocusableNode.prototype.getStartAndEndRects = function () {
 	if ( !this.highlighted ) {
 		this.calculateHighlights();
 	}
-	if ( !this.inlineRects ) {
-		this.inlineRects = ve.getStartAndEndRects( this.outerRects );
+	if ( !this.startAndEndRects ) {
+		this.startAndEndRects = ve.getStartAndEndRects( this.rects );
 	}
-	return this.inlineRects;
+	return this.startAndEndRects;
 };

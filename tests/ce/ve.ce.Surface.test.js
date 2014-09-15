@@ -1110,7 +1110,7 @@ QUnit.test( 'getRangeSelection', function ( assert ) {
 // TODO: ve.ce.Surface#getFocusedNode
 // TODO: ve.ce.Surface#isRenderingLocked
 // TODO: ve.ce.Surface#getSelectionBoundingRect
-// TODO: ve.ce.Surface#getSelectionInlineRects
+// TODO: ve.ce.Surface#getSelectionStartAndEndRects
 
 /* Methods without return values */
 // TODO: ve.ce.Surface#initialize

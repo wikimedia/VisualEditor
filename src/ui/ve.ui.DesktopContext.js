@@ -178,7 +178,7 @@ ve.ui.DesktopContext.prototype.toggle = function ( show ) {
  * @inheritdoc
  */
 ve.ui.DesktopContext.prototype.updateDimensions = function () {
-	var $container, inlineRects, position, embeddable, middle,
+	var $container, startAndEndRects, position, embeddable, middle,
 		rtl = this.surface.getModel().getDocument().getDir() === 'rtl',
 		surface = this.surface.getView(),
 		focusedNode = surface.getFocusedNode(),
@@ -209,12 +209,12 @@ ve.ui.DesktopContext.prototype.updateDimensions = function () {
 		}
 	} else {
 		// The selection is text or an inline focused node
-		inlineRects = surface.getSelectionInlineRects();
-		if ( inlineRects && boundingRect ) {
+		startAndEndRects = surface.getSelectionStartAndEndRects();
+		if ( startAndEndRects && boundingRect ) {
 			middle = ( boundingRect.left + boundingRect.right ) / 2;
 			if (
-				( !rtl && inlineRects.end.right > middle ) ||
-				( rtl && inlineRects.end.left < middle )
+				( !rtl && startAndEndRects.end.right > middle ) ||
+				( rtl && startAndEndRects.end.left < middle )
 			) {
 				// If the middle position is within the end rect, use it
 				position = {
@@ -224,13 +224,13 @@ ve.ui.DesktopContext.prototype.updateDimensions = function () {
 			} else {
 				// ..otherwise use the side of the end rect
 				position = {
-					x: rtl ? inlineRects.end.left : inlineRects.end.right,
-					y: inlineRects.end.bottom
+					x: rtl ? startAndEndRects.end.left : startAndEndRects.end.right,
+					y: startAndEndRects.end.bottom
 				};
 			}
 		}
-		// If !inlineRects, the surface apparently isn't selected, so getSelectionBoundingRect()
-		// returned null. This shouldn't happen because the context is only supposed to be
+		// If !startAndEndRects, the surface apparently isn't selected.
+		// This shouldn't happen because the context is only supposed to be
 		// displayed in response to a selection, but for some reason this does happen when opening
 		// an inspector without changing the selection.
 		// Skip updating the cursor position, but still update the width and height.

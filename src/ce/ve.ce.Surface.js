@@ -317,18 +317,16 @@ ve.ce.Surface.prototype.getOffsetFromCoords = function ( x, y ) {
 };
 
 /**
- * Get the inline coordinates of the selection range relative to the surface.
- *
- * Returned coordinates are relative to the surface.
+ * Get the start and end rectangles of the selection range relative to the surface.
  *
  * @method
  * @returns {Object|null} Start and end selection rectangles
  */
-ve.ce.Surface.prototype.getSelectionInlineRects = function () {
-	var inlineRects, nativeRange, surfaceRect, focusNodeRect, rtl, x, collapsedRect;
+ve.ce.Surface.prototype.getSelectionStartAndEndRects = function () {
+	var startAndEndRects, nativeRange, surfaceRect, focusNodeRect, rtl, x, collapsedRect;
 
 	if ( this.focusedNode ) {
-		return this.focusedNode.getInlineRects();
+		return this.focusedNode.getStartAndEndRects();
 	}
 
 	nativeRange = this.getNativeRange();
@@ -340,7 +338,7 @@ ve.ce.Surface.prototype.getSelectionInlineRects = function () {
 	// * in Firefox on page load when the address bar is still focused
 	// * in empty paragraphs
 	try {
-		inlineRects = ve.getStartAndEndRects( nativeRange.getClientRects() );
+		startAndEndRects = ve.getStartAndEndRects( nativeRange.getClientRects() );
 	} catch ( e ) {
 		// When possible, pretend the cursor is the left/right border of the node
 		// (depending on directionality) as a fallback.
@@ -362,7 +360,7 @@ ve.ce.Surface.prototype.getSelectionInlineRects = function () {
 				width: 0,
 				height: focusNodeRect.height
 			};
-			inlineRects = {
+			startAndEndRects = {
 				start: collapsedRect,
 				end: collapsedRect
 			};
@@ -372,12 +370,12 @@ ve.ce.Surface.prototype.getSelectionInlineRects = function () {
 	}
 
 	surfaceRect = this.getSurface().getBoundingClientRect();
-	if ( !inlineRects || !surfaceRect ) {
+	if ( !startAndEndRects || !surfaceRect ) {
 		return null;
 	}
 	return {
-		start: ve.translateRect( inlineRects.start, -surfaceRect.left, -surfaceRect.top ),
-		end: ve.translateRect( inlineRects.end, -surfaceRect.left, -surfaceRect.top )
+		start: ve.translateRect( startAndEndRects.start, -surfaceRect.left, -surfaceRect.top ),
+		end: ve.translateRect( startAndEndRects.end, -surfaceRect.left, -surfaceRect.top )
 	};
 };
 
@@ -2407,26 +2405,26 @@ ve.ce.Surface.prototype.getNativeRange = function ( range ) {
  * @return {ClientRect|null} Client rectangle of the native selection, or null if there was a problem
  */
 ve.ce.Surface.prototype.getNativeRangeBoundingClientRect = function ( nativeRange ) {
-	var inlineRects;
+	var rects;
 
 	if ( !nativeRange ) {
 		return null;
 	}
 
 	try {
-		inlineRects = nativeRange.getClientRects();
-		if ( inlineRects.length === 0 ) {
-			// If there are no inline rects return null, otherwise we'll fall through to
+		rects = nativeRange.getClientRects();
+		if ( rects.length === 0 ) {
+			// If there are no rects return null, otherwise we'll fall through to
 			// getBoundingClientRect, which in Chrome becomes [0,0,0,0].
 			return null;
-		} else if ( inlineRects.length === 1 ) {
-			// Try the zeroth inline rect first as Chrome sometimes returns a rectangle
+		} else if ( rects.length === 1 ) {
+			// Try the zeroth rect first as Chrome sometimes returns a rectangle
 			// full of zeros for getBoundingClientRect when the cursor is collapsed.
-			// We could test for this failure and fall back to inline[0], except for the
-			// fact that the bounding rect is 1px bigger than inline[0], so cursoring across
+			// We could test for this failure and fall back to rects[0], except for the
+			// fact that the bounding rect is 1px bigger than rects[0], so cursoring across
 			// a link causes a verticle wobble as it alternately breaks and unbreaks.
 			// See https://code.google.com/p/chromium/issues/detail?id=238976
-			return inlineRects[0];
+			return rects[0];
 		} else {
 			// After two browser bugs it's finally safe to try the bounding rect.
 			return nativeRange.getBoundingClientRect();
@@ -2434,6 +2432,7 @@ ve.ce.Surface.prototype.getNativeRangeBoundingClientRect = function ( nativeRang
 	} catch ( e ) {
 		return null;
 	}
+
 };
 
 /**
