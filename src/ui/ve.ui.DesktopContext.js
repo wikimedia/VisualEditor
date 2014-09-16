@@ -182,7 +182,7 @@ ve.ui.DesktopContext.prototype.updateDimensions = function () {
 		rtl = this.surface.getModel().getDocument().getDir() === 'rtl',
 		surface = this.surface.getView(),
 		focusedNode = surface.getFocusedNode(),
-		boundingRect = surface.getSelectionBoundingRelativeRect();
+		boundingRect = surface.getSelectionBoundingRect();
 
 	$container = this.inspector ? this.inspector.$frame : this.menu.$element;
 
@@ -209,7 +209,7 @@ ve.ui.DesktopContext.prototype.updateDimensions = function () {
 		}
 	} else {
 		// The selection is text or an inline focused node
-		inlineRects = surface.getSelectionInlineRelativeRects();
+		inlineRects = surface.getSelectionInlineRects();
 		if ( inlineRects && boundingRect ) {
 			middle = ( boundingRect.left + boundingRect.right ) / 2;
 			if (
@@ -229,7 +229,7 @@ ve.ui.DesktopContext.prototype.updateDimensions = function () {
 				};
 			}
 		}
-		// If !inlineRects, the surface apparently isn't selected, so getSelectionBoundingRelativeRect()
+		// If !inlineRects, the surface apparently isn't selected, so getSelectionBoundingRect()
 		// returned null. This shouldn't happen because the context is only supposed to be
 		// displayed in response to a selection, but for some reason this does happen when opening
 		// an inspector without changing the selection.

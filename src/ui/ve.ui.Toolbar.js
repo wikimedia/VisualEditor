@@ -140,13 +140,20 @@ ve.ui.Toolbar.prototype.onWindowResize = function () {
  * FIXME: this code should be in a target class or something
  */
 ve.ui.Toolbar.prototype.onSurfaceViewKeyUp = function () {
-	var clientRect, barHeight, scrollTo, obscured;
+	var surfaceView, nativeRange, clientRect, barHeight, scrollTo, obscured;
 
 	if ( !this.floating ) {
 		return;
 	}
 
-	clientRect = this.getSurface().getView().getSelectionBoundingClientRect();
+	surfaceView = this.getSurface().getView();
+
+	nativeRange = surfaceView.getNativeRange();
+	if ( !nativeRange ) {
+		return null;
+	}
+
+	clientRect = surfaceView.getNativeRangeBoundingClientRect( nativeRange );
 	if ( !clientRect ) {
 		return;
 	}

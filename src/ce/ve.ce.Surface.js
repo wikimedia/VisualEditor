@@ -317,27 +317,18 @@ ve.ce.Surface.prototype.getOffsetFromCoords = function ( x, y ) {
 };
 
 /**
- * Get the inline coordinates of the selection range relative to the viewport.
+ * Get the inline coordinates of the selection range relative to the surface.
  *
- * Returned coordinates are client coordinates (i.e. relative to the viewport).
- * For coordinates relative to the surface, use #getSelectionInlineRelativeRects
+ * Returned coordinates are relative to the surface.
  *
  * @method
  * @returns {Object|null} Start and end selection rectangles
  */
-ve.ce.Surface.prototype.getSelectionInlineClientRects = function () {
-	var inlineRects, nativeRange, surfaceRect, boundingRect, rtl, x, collapsedRect;
+ve.ce.Surface.prototype.getSelectionInlineRects = function () {
+	var inlineRects, nativeRange, surfaceRect, focusNodeRect, rtl, x, collapsedRect;
+
 	if ( this.focusedNode ) {
-		inlineRects = this.focusedNode.getInlineRects();
-		surfaceRect = this.getSurface().getBoundingClientRect();
-		if ( !inlineRects || !surfaceRect ) {
-			return null;
-		}
-		// Convert surface relative coords to client coords
-		return {
-			start: ve.translateRect( inlineRects.start, surfaceRect.left, surfaceRect.top ),
-			end: ve.translateRect( inlineRects.end, surfaceRect.left, surfaceRect.top )
-		};
+		return this.focusedNode.getInlineRects();
 	}
 
 	nativeRange = this.getNativeRange();
@@ -349,29 +340,29 @@ ve.ce.Surface.prototype.getSelectionInlineClientRects = function () {
 	// * in Firefox on page load when the address bar is still focused
 	// * in empty paragraphs
 	try {
-		return ve.getStartAndEndRects( nativeRange.getClientRects() );
+		inlineRects = ve.getStartAndEndRects( nativeRange.getClientRects() );
 	} catch ( e ) {
 		// When possible, pretend the cursor is the left/right border of the node
 		// (depending on directionality) as a fallback.
 		if ( this.nativeSelection.focusNode && this.nativeSelection.focusNode.nodeType === Node.ELEMENT_NODE ) {
 			// We would use getBoundingClientRect(), but in iOS7 that's relative to the
 			// document rather than to the viewport
-			boundingRect = this.nativeSelection.focusNode.getClientRects()[0];
-			if ( !boundingRect ) {
+			focusNodeRect = this.nativeSelection.focusNode.getClientRects()[0];
+			if ( !focusNodeRect ) {
 				// FF can return null when focusNode is invisible
 				return null;
 			}
 			rtl = this.getModel().getDocument().getDir() === 'rtl';
-			x = rtl ? boundingRect.right : boundingRect.left;
+			x = rtl ? focusNodeRect.right : focusNodeRect.left;
 			collapsedRect = {
-				top: boundingRect.top,
-				bottom: boundingRect.bottom,
+				top: focusNodeRect.top,
+				bottom: focusNodeRect.bottom,
 				left: x,
 				right: x,
 				width: 0,
-				height: boundingRect.height
+				height: focusNodeRect.height
 			};
-			return {
+			inlineRects = {
 				start: collapsedRect,
 				end: collapsedRect
 			};
@@ -379,75 +370,7 @@ ve.ce.Surface.prototype.getSelectionInlineClientRects = function () {
 			return null;
 		}
 	}
-};
 
-/**
- * Get the bounding coordinates of the selection relative to the viewport.
- *
- * Returned coordinates are client coordinates (i.e. relative to the viewport).
- * For coordinates relative to the surface, use #getSelectionBoundingRelativeRect
- *
- * @method
- * @returns {Object|null} Selection rectangle, with keys top, bottom, left, right, width, height
- */
-ve.ce.Surface.prototype.getSelectionBoundingClientRect = function () {
-	var inlineRects, boundingRect, surfaceRect, nativeRange;
-
-	if ( this.focusedNode ) {
-		boundingRect = this.focusedNode.getBoundingRect();
-		surfaceRect = this.getSurface().getBoundingClientRect();
-		if ( !boundingRect || !surfaceRect ) {
-			return;
-		}
-		// Convert surface relative coords to client coords
-		return ve.translateRect( boundingRect, surfaceRect.left, surfaceRect.top );
-	}
-
-	// We can't do anything if there's no selection
-	if ( this.nativeSelection.rangeCount === 0 ) {
-		return null;
-	}
-
-	nativeRange = this.getNativeRange();
-	if ( !nativeRange ) {
-		return null;
-	}
-
-	try {
-		inlineRects = nativeRange.getClientRects();
-		// Try the zeroth inline rect first as Chrome sometimes returns a rectangle
-		// full of zeros for getBoundingClientRect when the cursor is collapsed.
-		// We could test for this failure and fall back to inline[0], except for the
-		// fact that the bounding rect is 1px bigger than inline[0], so cursoring across
-		// a link causes a verticle wobble as it alternately breaks and unbreaks.
-		// See https://code.google.com/p/chromium/issues/detail?id=238976
-		if ( inlineRects.length === 1 ) {
-			return inlineRects[0];
-		}
-		return nativeRange.getBoundingClientRect();
-	} catch ( e ) {
-		return null;
-	}
-};
-
-/**
- * Get the inline coordinates of the selection range relative to the surface.
- *
- * Returned coordinates are relative to the surface. For client coordinates,
- * use #getSelectionInlineClientRects.
- *
- * @method
- * @returns {Object|null} Start and end selection rectangles
- */
-ve.ce.Surface.prototype.getSelectionInlineRelativeRects = function () {
-	var inlineRects, surfaceRect;
-
-	if ( this.focusedNode ) {
-		// We can optimize the focusedNode case as we already have the relative coordinates
-		return this.focusedNode.getInlineRects();
-	}
-
-	inlineRects = this.getSelectionInlineClientRects();
 	surfaceRect = this.getSurface().getBoundingClientRect();
 	if ( !inlineRects || !surfaceRect ) {
 		return null;
@@ -461,20 +384,23 @@ ve.ce.Surface.prototype.getSelectionInlineRelativeRects = function () {
 /**
  * Get the coordinates of the selection anchor relative to the surface.
  *
- * Returned coordinates are relative to the surface. For client coordinates,
- * use #getSelectionBoundingClientRect.
+ * Returned coordinates are relative to the surface.
  *
  * @method
  * @returns {Object|null} Selection rectangle, with keys top, bottom, left, right, width, height
  */
-ve.ce.Surface.prototype.getSelectionBoundingRelativeRect = function () {
-	var boundingRect, surfaceRect;
+ve.ce.Surface.prototype.getSelectionBoundingRect = function () {
+	var nativeRange, boundingRect, surfaceRect;
 	if ( this.focusedNode ) {
-		// We can optimize the focusedNode case as we already have the relative coordinates
 		return this.focusedNode.getBoundingRect();
 	}
 
-	boundingRect = this.getSelectionBoundingClientRect();
+	nativeRange = this.getNativeRange();
+	if ( !nativeRange ) {
+		return null;
+	}
+
+	boundingRect = this.getNativeRangeBoundingClientRect( nativeRange );
 	surfaceRect = this.getSurface().getBoundingClientRect();
 	if ( !boundingRect || !surfaceRect ) {
 		return null;
@@ -2470,6 +2396,44 @@ ve.ce.Surface.prototype.getNativeRange = function ( range ) {
 		nativeRange.setEnd( rangeSelection.end.node, rangeSelection.end.offset );
 	}
 	return nativeRange;
+};
+
+/**
+ * Get bounding client rect of a native range
+ *
+ * Works around some browser bugs in Range#getBoundingClientRect
+ *
+ * @param {Range} nativeRange Native range to get the bounding client rect of
+ * @return {ClientRect|null} Client rectangle of the native selection, or null if there was a problem
+ */
+ve.ce.Surface.prototype.getNativeRangeBoundingClientRect = function ( nativeRange ) {
+	var inlineRects;
+
+	if ( !nativeRange ) {
+		return null;
+	}
+
+	try {
+		inlineRects = nativeRange.getClientRects();
+		if ( inlineRects.length === 0 ) {
+			// If there are no inline rects return null, otherwise we'll fall through to
+			// getBoundingClientRect, which in Chrome becomes [0,0,0,0].
+			return null;
+		} else if ( inlineRects.length === 1 ) {
+			// Try the zeroth inline rect first as Chrome sometimes returns a rectangle
+			// full of zeros for getBoundingClientRect when the cursor is collapsed.
+			// We could test for this failure and fall back to inline[0], except for the
+			// fact that the bounding rect is 1px bigger than inline[0], so cursoring across
+			// a link causes a verticle wobble as it alternately breaks and unbreaks.
+			// See https://code.google.com/p/chromium/issues/detail?id=238976
+			return inlineRects[0];
+		} else {
+			// After two browser bugs it's finally safe to try the bounding rect.
+			return nativeRange.getBoundingClientRect();
+		}
+	} catch ( e ) {
+		return null;
+	}
 };
 
 /**
