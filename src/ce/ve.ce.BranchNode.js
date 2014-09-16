@@ -255,17 +255,17 @@ ve.ce.BranchNode.prototype.setupSlugs = function () {
 				continue;
 			}
 			// First sluggable child (left side)
-			if ( i === 0 && this.children[i].canHaveSlugBefore() ) {
+			if ( i === 0 && this.children[i].getModel().canHaveSlugBefore() ) {
 				this.slugs[i] = doc.importNode( slug, true );
 				first = this.children[i].$element[0];
 				first.parentNode.insertBefore( this.slugs[i], first );
 			}
-			if ( this.children[i].canHaveSlugAfter() ) {
+			if ( this.children[i].getModel().canHaveSlugAfter() ) {
 				if (
 					// Last sluggable child (right side)
 					i === this.children.length - 1 ||
 					// Sluggable child followed by another sluggable child (in between)
-					( this.children[i + 1] && this.children[i + 1].canHaveSlugBefore() )
+					( this.children[i + 1] && this.children[i + 1].getModel().canHaveSlugBefore() )
 				) {
 					this.slugs[i + 1] = doc.importNode( slug, true );
 					last = this.children[i].$element[this.children[i].$element.length - 1];

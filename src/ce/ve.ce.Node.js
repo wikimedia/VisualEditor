@@ -177,29 +177,6 @@ ve.ce.Node.prototype.isFocusable = function () {
 };
 
 /**
- * Check if the node can have a slug before it.
- *
- * TODO: Figure out a way to remove the hard-coding for text nodes here.
- *
- * @method
- * @returns {boolean} Whether the node can have a slug before it
- */
-ve.ce.Node.prototype.canHaveSlugBefore = function () {
-	return !this.canContainContent() &&
-		this.getParentNodeTypes() === null &&
-		this.type !== 'text' &&
-		this.type !== 'list';
-};
-
-/**
- * Check if the node can have a slug after it.
- *
- * @method
- * @returns {boolean} Whether the node can have a slug after it
- */
-ve.ce.Node.prototype.canHaveSlugAfter = ve.ce.Node.prototype.canHaveSlugBefore;
-
-/**
  * Get the length of the node.
  *
  * This method passes through to the model.
