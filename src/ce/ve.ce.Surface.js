@@ -317,20 +317,21 @@ ve.ce.Surface.prototype.getOffsetFromCoords = function ( x, y ) {
 };
 
 /**
- * Get the start and end rectangles of the selection range relative to the surface.
+ * Get the rectangles of the selection range relative to the surface.
  *
  * @method
  * @param {ve.Range} [range] Optional range to get the selection for, defaults to current selection
- * @returns {Object|null} Start and end selection rectangles
+ * @returns {Object[]|null} Selection rectangles
  */
-ve.ce.Surface.prototype.getSelectionStartAndEndRects = function ( range ) {
-	var startAndEndRects, nativeRange, surfaceRect, focusNodeRect, rtl, x, collapsedRect, focusedNode;
+ve.ce.Surface.prototype.getSelectionRects = function ( range ) {
+	var i, l, rects, nativeRange, surfaceRect, focusNodeRect, rtl, x, focusedNode,
+		relativeRects = [];
 
 	range = range || this.getModel().getSelection();
 	focusedNode = this.getFocusedNode( range );
 
 	if ( focusedNode ) {
-		return focusedNode.getStartAndEndRects();
+		return focusedNode.getRects();
 	}
 
 	nativeRange = this.getNativeRange( range );
@@ -342,7 +343,7 @@ ve.ce.Surface.prototype.getSelectionStartAndEndRects = function ( range ) {
 	// * in Firefox on page load when the address bar is still focused
 	// * in empty paragraphs
 	try {
-		startAndEndRects = ve.getStartAndEndRects( nativeRange.getClientRects() );
+		rects = nativeRange.getClientRects();
 	} catch ( e ) {
 		// When possible, pretend the cursor is the left/right border of the node
 		// (depending on directionality) as a fallback.
@@ -356,31 +357,48 @@ ve.ce.Surface.prototype.getSelectionStartAndEndRects = function ( range ) {
 			}
 			rtl = this.getModel().getDocument().getDir() === 'rtl';
 			x = rtl ? focusNodeRect.right : focusNodeRect.left;
-			collapsedRect = {
+			rects = [ {
 				top: focusNodeRect.top,
 				bottom: focusNodeRect.bottom,
 				left: x,
 				right: x,
 				width: 0,
 				height: focusNodeRect.height
-			};
-			startAndEndRects = {
-				start: collapsedRect,
-				end: collapsedRect
-			};
+			} ];
 		} else {
 			return null;
 		}
 	}
 
 	surfaceRect = this.getSurface().getBoundingClientRect();
-	if ( !startAndEndRects || !surfaceRect ) {
+	if ( !rects || !surfaceRect ) {
 		return null;
 	}
-	return {
-		start: ve.translateRect( startAndEndRects.start, -surfaceRect.left, -surfaceRect.top ),
-		end: ve.translateRect( startAndEndRects.end, -surfaceRect.left, -surfaceRect.top )
-	};
+
+	for ( i = 0, l = rects.length; i < l; i++ ) {
+		relativeRects.push( ve.translateRect( rects[i], -surfaceRect.left, -surfaceRect.top ) );
+	}
+	return relativeRects;
+};
+
+/**
+ * Get the start and end rectangles of the selection range relative to the surface.
+ *
+ * @method
+ * @param {ve.Range} [range] Optional range to get the selection for, defaults to current selection
+ * @returns {Object|null} Start and end selection rectangles
+ */
+ve.ce.Surface.prototype.getSelectionStartAndEndRects = function ( range ) {
+	var focusedNode;
+
+	range = range || this.getModel().getSelection();
+	focusedNode = this.getFocusedNode( range );
+
+	if ( focusedNode ) {
+		return focusedNode.getStartAndEndRects();
+	}
+
+	return ve.getStartAndEndRects( this.getSelectionRects() );
 };
 
 /**

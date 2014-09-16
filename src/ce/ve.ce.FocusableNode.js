@@ -501,6 +501,18 @@ ve.ce.FocusableNode.prototype.positionHighlights = function () {
 };
 
 /**
+ * Get list of rectangles outlining the shape of the node relative to the surface
+ *
+ * @return {Object[]} List of rectangle objects
+ */
+ve.ce.FocusableNode.prototype.getRects = function () {
+	if ( !this.highlighted ) {
+		this.calculateHighlights();
+	}
+	return this.rects;
+};
+
+/**
  * Get the bounding rectangle of the focusable node highight relative to the surface
  *
  * @return {Object|null} Top, left, bottom & right positions of the focusable node relative to the surface
