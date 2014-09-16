@@ -41,7 +41,7 @@ OO.inheritClass( ve.ce.Document, ve.Document );
  *
  * @method
  * @param {number} offset Offset to get node at
- * @returns {ve.ce.Node} Node at offset
+ * @returns {ve.ce.Node|null} Node at offset
  */
 ve.ce.Document.prototype.getNodeFromOffset = function ( offset ) {
 	var node = this.getDocumentNode().getNodeFromOffset( offset );

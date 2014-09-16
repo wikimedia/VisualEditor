@@ -200,3 +200,26 @@ ve.dm.BranchNode.prototype.setupSlugs = function () {
 		}
 	}
 };
+
+/**
+ * Check in the branch node has a slug at a particular offset
+ *
+ * @method
+ * @param {number} offset Offset to check for a slug at
+ * @returns {boolean} There is a slug at the offset
+ */
+ve.dm.BranchNode.prototype.hasSlugAtOffset = function ( offset ) {
+	var i,
+		startOffset = this.getOffset() + ( this.isWrapped() ? 1 : 0 );
+
+	if ( offset === startOffset ) {
+		return !!this.slugPositions[0];
+	}
+	for ( i = 0; i < this.children.length; i++ ) {
+		startOffset += this.children[i].getOuterLength();
+		if ( offset === startOffset ) {
+			return !!this.slugPositions[i + 1];
+		}
+	}
+	return false;
+};
