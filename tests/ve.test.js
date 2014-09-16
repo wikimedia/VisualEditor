@@ -352,6 +352,96 @@ QUnit.test( 'graphemeSafeSubstring', function ( assert ) {
 	}
 } );
 
+QUnit.test( 'transformStyleAttributes', function ( assert ) {
+	var i, wasStyleAttributeBroken, oldNormalizeAttributeValue,
+		normalizeColor = function ( name, value ) {
+			if ( name === 'style' && value === 'color:#ffd' ) {
+				return 'color: rgb(255, 255, 221);';
+			}
+			return value;
+		},
+		normalizeBgcolor = function ( name, value ) {
+			if ( name === 'bgcolor' ) {
+				return value && value.toLowerCase();
+			}
+			return value;
+		},
+		cases = [
+			{
+				msg: 'Empty tags are not changed self-closing tags',
+				before: '<html><head></head><body>Hello <a href="foo"></a> world</body></html>'
+			},
+			{
+				msg: 'HTML string with doctype is parsed correctly',
+				before: '<!DOCTYPE html><html><head><title>Foo</title></head><body>Hello</body></html>'
+			},
+			{
+				msg: 'Style attributes are masked then unmasked',
+				before: '<body><div style="color:#ffd">Hello</div></body>',
+				masked: '<body><div style="color:#ffd" data-ve-style="color:#ffd">Hello</div></body>'
+			},
+			{
+				msg: 'Style attributes that differ but normalize the same are overwritten when unmasked',
+				masked: '<body><div style="color: rgb(255, 255, 221);" data-ve-style="color:#ffd">Hello</div></body>',
+				after: '<body><div style="color:#ffd">Hello</div></body>',
+				normalize: normalizeColor
+			},
+			{
+				msg: 'Style attributes that do not normalize the same are not overwritten when unmasked',
+				masked: '<body><div style="color: rgb(0, 0, 0);" data-ve-style="color:#ffd">Hello</div></body>',
+				after: '<body><div style="color: rgb(0, 0, 0);">Hello</div></body>',
+				normalize: normalizeColor
+			},
+			{
+				msg: 'bgcolor attributes are masked then unmasked',
+				before: '<body><table><tr bgcolor="#FFDEAD"></tr></table></body>',
+				masked: '<body><table><tr bgcolor="#FFDEAD" data-ve-bgcolor="#FFDEAD"></tr></table></body>'
+			},
+			{
+				msg: 'bgcolor attributes that differ but normalize the same are overwritten when unmasked',
+				masked: '<body><table><tr bgcolor="#ffdead" data-ve-bgcolor="#FFDEAD"></tr></table></body>',
+				after: '<body><table><tr bgcolor="#FFDEAD"></tr></table></body>',
+				normalize: normalizeBgcolor
+			},
+			{
+				msg: 'bgcolor attributes that do not normalize the same are not overwritten when unmasked',
+				masked: '<body><table><tr bgcolor="#fffffa" data-ve-bgcolor="#FFDEAD"></tr></table></body>',
+				after: '<body><table><tr bgcolor="#fffffa"></tr></table></body>',
+				normalize: normalizeBgcolor
+			}
+		];
+	QUnit.expect( 2 * cases.length );
+
+	// Force transformStyleAttributes to think that we're in a broken browser
+	wasStyleAttributeBroken = ve.isStyleAttributeBroken;
+	ve.isStyleAttributeBroken = true;
+
+	for ( i = 0; i < cases.length; i++ ) {
+		if ( cases[i].normalize ) {
+			oldNormalizeAttributeValue = ve.normalizeAttributeValue;
+			ve.normalizeAttributeValue = cases[i].normalize;
+		}
+		if ( cases[i].before ) {
+			assert.strictEqual(
+				ve.transformStyleAttributes( cases[i].before, false ),
+				cases[i].masked || cases[i].before,
+				cases[i].msg + ' (masking)'
+			);
+		} else {
+			assert.ok( true, cases[i].msg + ' (no masking test)' );
+		}
+		assert.strictEqual(
+			ve.transformStyleAttributes( cases[i].masked || cases[i].before, true ),
+			cases[i].after || cases[i].before,
+			cases[i].msg + ' (unmasking)'
+		);
+
+		if ( cases[i].normalize ) {
+			ve.normalizeAttributeValue = oldNormalizeAttributeValue;
+		}
+	}
+} );
+
 QUnit.test( 'normalizeNode', function ( assert ) {
 	var i, actual, expected, wasNormalizeBroken,
 		cases = [
