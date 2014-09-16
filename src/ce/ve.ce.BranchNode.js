@@ -27,7 +27,7 @@ ve.ce.BranchNode = function VeCeBranchNode( model, config ) {
 
 	// Properties
 	this.tagName = this.$element.get( 0 ).nodeName.toLowerCase();
-	this.slugs = {};
+	this.slugNodes = {};
 
 	// Events
 	this.model.connect( this, { splice: 'onSplice' } );
@@ -58,11 +58,12 @@ OO.mixinClass( ve.ce.BranchNode, ve.BranchNode );
  * TODO: Make iframe safe
  *
  * @static
- * @property {jQuery}
+ * @property {HTMLElement}
  */
-ve.ce.BranchNode.$inlineSlugTemplate = $( '<span>' )
+ve.ce.BranchNode.inlineSlugTemplate = $( '<span>' )
 	.addClass( 've-ce-branchNode-slug ve-ce-branchNode-inlineSlug' )
-	.html( '&#xFEFF;' );
+	.html( '&#xFEFF;' )
+	.get( 0 );
 
 /**
  * Block slug template.
@@ -70,15 +71,16 @@ ve.ce.BranchNode.$inlineSlugTemplate = $( '<span>' )
  * TODO: Make iframe safe
  *
  * @static
- * @property {jQuery}
+ * @property {HTMLElement}
  */
-ve.ce.BranchNode.$blockSlugTemplate = $( '<div>' )
+ve.ce.BranchNode.blockSlugTemplate = $( '<div>' )
 	.addClass( 've-ce-branchNode-blockSlugWrapper ve-ce-branchNode-blockSlugWrapper-unfocused' )
 	.append(
 		$( '<p>' )
 			.addClass( 've-ce-branchNode-slug ve-ce-branchNode-blockSlug' )
 			.html( '&#xFEFF;' )
-	);
+	)
+	.get( 0 );
 
 /* Methods */
 
@@ -213,66 +215,28 @@ ve.ce.BranchNode.prototype.onSplice = function ( index ) {
  * @method
  */
 ve.ce.BranchNode.prototype.setupSlugs = function () {
-	var key, slug, i, len, first, last,
+	var i, slugTemplate, slugNode,
 		isBlock = this.canHaveChildrenNotContent(),
 		doc = this.getElementDocument();
 
-	function canContainParagraph( node ) {
-		var childTypes = node.getChildNodeTypes();
-		return childTypes === null || ve.indexOf( 'paragraph', childTypes ) !== -1;
-	}
-
 	// Remove all slugs in this branch
-	for ( key in this.slugs ) {
-		if ( this.slugs[key].parentNode ) {
-			this.slugs[key].parentNode.removeChild( this.slugs[key] );
+	for ( i in this.slugNodes ) {
+		if ( this.slugNodes[i].parentNode ) {
+			this.slugNodes[i].parentNode.removeChild( this.slugNodes[i] );
 		}
-		delete this.slugs[key];
+		delete this.slugNodes[i];
 	}
 
-	if ( isBlock ) {
-		if ( !canContainParagraph( this ) ) {
-			// Don't put slugs in nodes which can't contain paragraphs
-			return;
-		}
-		slug = ve.ce.BranchNode.$blockSlugTemplate[0];
-	} else {
-		slug = ve.ce.BranchNode.$inlineSlugTemplate[0];
-	}
+	slugTemplate = isBlock ? ve.ce.BranchNode.blockSlugTemplate : ve.ce.BranchNode.inlineSlugTemplate;
 
-	// If this content branch no longer has any rendered children, insert a slug to keep the node
-	// from becoming invisible/unfocusable. In Firefox, backspace after Ctrl-A leaves the document
-	// completely empty, so this ensures DocumentNode gets a slug.
-	// Can't use this.getLength() because the internal list adds to the length but doesn't render.
-	if ( this.$element.contents().length === 0 ) {
-		this.slugs[0] = doc.importNode( slug, true );
-		this.$element[0].appendChild( this.slugs[0] );
-	} else {
-		// Iterate over all children of this branch and add slugs in appropriate places
-		for ( i = 0, len = this.children.length; i < len; i++ ) {
-			// Don't put slugs after internal nodes
-			if ( ve.dm.nodeFactory.isNodeInternal( this.children[i].model.type ) ) {
-				continue;
-			}
-			// First sluggable child (left side)
-			if ( i === 0 && this.children[i].getModel().canHaveSlugBefore() ) {
-				this.slugs[i] = doc.importNode( slug, true );
-				first = this.children[i].$element[0];
-				first.parentNode.insertBefore( this.slugs[i], first );
-			}
-			if ( this.children[i].getModel().canHaveSlugAfter() ) {
-				if (
-					// Last sluggable child (right side)
-					i === this.children.length - 1 ||
-					// Sluggable child followed by another sluggable child (in between)
-					( this.children[i + 1] && this.children[i + 1].getModel().canHaveSlugBefore() )
-				) {
-					this.slugs[i + 1] = doc.importNode( slug, true );
-					last = this.children[i].$element[this.children[i].$element.length - 1];
-					last.parentNode.insertBefore( this.slugs[i + 1], last.nextSibling );
-				}
-			}
+	for ( i in this.getModel().slugPositions ) {
+		slugNode = doc.importNode( slugTemplate, true );
+		if ( this.children[i] ) {
+			this.$element[0].insertBefore( slugNode, this.children[i].$element[0] );
+		} else {
+			this.$element[0].appendChild( slugNode );
 		}
+		this.slugNodes[i] = slugNode;
 	}
 };
 
@@ -288,12 +252,12 @@ ve.ce.BranchNode.prototype.getSlugAtOffset = function ( offset ) {
 		startOffset = this.model.getOffset() + ( this.isWrapped() ? 1 : 0 );
 
 	if ( offset === startOffset ) {
-		return this.slugs[0] || null;
+		return this.slugNodes[0] || null;
 	}
 	for ( i = 0; i < this.children.length; i++ ) {
 		startOffset += this.children[i].model.getOuterLength();
 		if ( offset === startOffset ) {
-			return this.slugs[i + 1] || null;
+			return this.slugNodes[i + 1] || null;
 		}
 	}
 };

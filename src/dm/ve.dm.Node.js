@@ -338,6 +338,16 @@ ve.dm.Node.prototype.canHaveChildrenNotContent = function () {
 };
 
 /**
+ * Check if the node is an internal node
+ *
+ * @method
+ * @returns {boolean} Node is an internal node
+ */
+ve.dm.Node.prototype.isInternal = function () {
+	return this.constructor.static.isInternal;
+};
+
+/**
  * Check if the node has a wrapped element in the document data.
  *
  * @method
