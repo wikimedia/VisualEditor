@@ -1876,7 +1876,7 @@ ve.ce.Surface.prototype.handleLeftOrRightArrowKey = function ( e ) {
 		direction = e.keyCode === OO.ui.Keys.LEFT ? -1 : 1;
 	}
 
-	range = this.getDocument().getRelativeRange(
+	range = this.model.getDocument().getRelativeRange(
 		selection,
 		direction,
 		( e.altKey === true || e.ctrlKey === true ) ? 'word' : 'character',
@@ -2250,7 +2250,7 @@ ve.ce.Surface.prototype.handleDelete = function ( e, direction ) {
 	if ( direction && rangeToRemove.isCollapsed() ) {
 		// In case when the range is collapsed use the same logic that is used for cursor left and
 		// right movement in order to figure out range to remove.
-		rangeToRemove = documentView.getRelativeRange(
+		rangeToRemove = documentModel.getRelativeRange(
 			rangeToRemove,
 			direction,
 			( e.altKey === true || e.ctrlKey === true ) ? 'word' : 'character',
@@ -2340,7 +2340,7 @@ ve.ce.Surface.prototype.handleDelete = function ( e, direction ) {
 	}
 	// rangeAfterRemove is now guaranteed to be collapsed so make sure that it is a content offset
 	if ( !documentModel.data.isContentOffset( rangeAfterRemove.start ) ) {
-		rangeAfterRemove = documentView.getRelativeRange(
+		rangeAfterRemove = documentModel.getRelativeRange(
 			rangeAfterRemove,
 			// If direction === 0 (cut), default to backwards movement
 			direction || -1

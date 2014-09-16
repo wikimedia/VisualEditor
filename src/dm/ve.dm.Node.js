@@ -494,17 +494,6 @@ ve.dm.Node.prototype.getRange = function () {
 };
 
 /**
- * Get the range outside the node.
- *
- * @method
- * @returns {ve.Range} Outer node range
- */
-ve.dm.Node.prototype.getOuterRange = function () {
-	var offset = this.getOffset();
-	return new ve.Range( offset, offset + this.getOuterLength() );
-};
-
-/**
  * Set the inner length of the node.
  *
  * This should only be called after a relevant change to the document data. Calling this method will
