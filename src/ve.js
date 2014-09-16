@@ -918,13 +918,12 @@
 	/**
 	 * Helper function for #parseXhtml and #serializeXhtml.
 	 *
-	 * Detect whether the browser normalizes style attributes (IE does this)
-	 * and if so, map broken attributes to attributes prefixed with data-ve-
+	 * Map attributes that are broken in IE to attributes prefixed with data-ve-
 	 * or vice versa.
 	 *
 	 * @param {string} html HTML string. Must also be valid XML
 	 * @param {boolean} unmask Map the masked attributes back to their originals
-	 * @returns {string} HTML string, possibly modified to mask broken attributes
+	 * @returns {string} HTML string modified to mask/unmask broken attributes
 	 */
 	ve.transformStyleAttributes = function ( html, unmask ) {
 		var xmlDoc, fromAttr, toAttr, i, len,
@@ -932,15 +931,6 @@
 				'style', // IE normalizes 'color:#ffd' to 'color: rgb(255, 255, 221);'
 				'bgcolor' // IE normalizes '#FFDEAD' to '#ffdead'
 			];
-
-		// Feature-detect style attribute breakage in IE
-		if ( ve.isStyleAttributeBroken === undefined ) {
-			ve.isStyleAttributeBroken = ve.normalizeAttributeValue( 'style', 'color:#ffd' ) !== 'color:#ffd';
-		}
-		if ( !ve.isStyleAttributeBroken ) {
-			// Nothing to do
-			return html;
-		}
 
 		// Parse the HTML into an XML DOM
 		xmlDoc = new DOMParser().parseFromString( html, 'text/xml' );
@@ -990,7 +980,14 @@
 	 * @return {HTMLDocument} HTML DOM
 	 */
 	ve.parseXhtml = function ( html ) {
-		return ve.createDocumentFromHtml( ve.transformStyleAttributes( html, false ) );
+		// Feature-detect style attribute breakage in IE
+		if ( ve.isStyleAttributeBroken === undefined ) {
+			ve.isStyleAttributeBroken = ve.normalizeAttributeValue( 'style', 'color:#ffd' ) !== 'color:#ffd';
+		}
+		if ( ve.isStyleAttributeBroken ) {
+			html = ve.transformStyleAttributes( html, false );
+		}
+		return ve.createDocumentFromHtml( html );
 	};
 
 	/**
@@ -1001,7 +998,18 @@
 	 * @return {string} Serialized HTML string
 	 */
 	ve.serializeXhtml = function ( doc ) {
-		var xml = new XMLSerializer().serializeToString( ve.fixupPreBug( doc.documentElement ) );
+		var xml;
+		// Feature-detect style attribute breakage in IE
+		if ( ve.isStyleAttributeBroken === undefined ) {
+			ve.isStyleAttributeBroken = ve.normalizeAttributeValue( 'style', 'color:#ffd' ) !== 'color:#ffd';
+		}
+		if ( !ve.isStyleAttributeBroken ) {
+			// Use outerHTML if possible because in Firefox, XMLSerializer URL-encodes
+			// hrefs but outerHTML doesn't
+			return ve.properOuterHtml( doc.documentElement );
+		}
+
+		xml = new XMLSerializer().serializeToString( ve.fixupPreBug( doc.documentElement ) );
 		// HACK: strip out xmlns
 		xml = xml.replace( '<html xmlns="http://www.w3.org/1999/xhtml"', '<html' );
 		return ve.transformStyleAttributes( xml, true );
