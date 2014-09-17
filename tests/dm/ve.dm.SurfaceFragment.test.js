@@ -193,6 +193,90 @@ QUnit.test( 'removeContent', 6, function ( assert ) {
 	);
 } );
 
+ve.test.utils.runSurfaceFragmentDeleteTest = function ( assert, html, range, directionAfterRemove, expectedData, expectedRange, msg ) {
+	var data, doc, surface, fragment;
+
+	if ( html ) {
+		doc = new ve.dm.Document(
+			ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( html ) )
+		);
+	} else {
+		doc = ve.dm.example.createExampleDocument();
+	}
+	surface = new ve.dm.Surface( doc );
+	fragment = new ve.dm.SurfaceFragment( surface, range );
+
+	data = ve.copy( fragment.getDocument().getFullData() );
+	expectedData( data );
+
+	fragment.delete( directionAfterRemove );
+
+	assert.deepEqualWithDomElements( fragment.getDocument().getFullData(), data, msg + ': data' );
+	assert.equalRange( fragment.getRange(), expectedRange, msg + ': range' );
+};
+
+QUnit.test( 'delete', function ( assert ) {
+	var i,
+		cases = [
+			{
+				range: new ve.Range( 1, 4 ),
+				directionAfterRemove: -1,
+				expectedData: function ( data ) {
+					data.splice( 1, 3 );
+				},
+				expectedRange: new ve.Range( 1 ),
+				msg: 'Selection deleted by backspace'
+			},
+			{
+				range: new ve.Range( 1, 4 ),
+				directionAfterRemove: 1,
+				expectedData: function ( data ) {
+					data.splice( 1, 3 );
+				},
+				expectedRange: new ve.Range( 1 ),
+				msg: 'Selection deleted by delete'
+			},
+			{
+				range: new ve.Range( 39, 41 ),
+				directionAfterRemove: 1,
+				expectedData: function ( data ) {
+					data.splice( 39, 2 );
+				},
+				expectedRange: new ve.Range( 39 ),
+				msg: 'Focusable node deleted if selected first'
+			},
+			{
+				range: new ve.Range( 39, 41 ),
+				expectedData: function ( data ) {
+					data.splice( 39, 2 );
+				},
+				expectedRange: new ve.Range( 39 ),
+				msg: 'Focusable node deleted by cut'
+			},
+			{
+				range: new ve.Range( 0, 63 ),
+				directionAfterRemove: -1,
+				expectedData: function ( data ) {
+					data.splice( 0, 61,
+							{ type: 'paragraph' },
+							{ type: '/paragraph' }
+						);
+				},
+				expectedRange: new ve.Range( 1 ),
+				msg: 'Backspace after select all spanning entire document creates empty paragraph'
+			}
+		];
+
+	QUnit.expect( cases.length * 2 );
+
+	for ( i = 0; i < cases.length; i++ ) {
+		ve.test.utils.runSurfaceFragmentDeleteTest(
+			assert, cases[i].html, cases[i].range, cases[i].directionAfterRemove,
+			cases[i].expectedData, cases[i].expectedRange, cases[i].msg
+		);
+	}
+} );
+
 QUnit.test( 'insertContent', 8, function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument(),
 		surface = new ve.dm.Surface( doc ),

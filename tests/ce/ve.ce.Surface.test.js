@@ -12,11 +12,10 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, html, range, o
 	var i, method, args,
 		selection,
 		actions = {
-			backspace: [ 'handleDelete', {}, -1 ],
-			delete: [ 'handleDelete', {}, 1 ],
-			cut: [ 'handleDelete', {}, 0 ],
-			modifiedBackspace: [ 'handleDelete', { ctrlKey: true }, -1 ],
-			modifiedDelete: [ 'handleDelete', { ctrlKey: true }, 1 ],
+			backspace: [ 'handleDelete', { keyCode: OO.ui.Keys.BACKSPACE } ],
+			delete: [ 'handleDelete', { keyCode: OO.ui.Keys.DELETE } ],
+			modifiedBackspace: [ 'handleDelete', { keyCode: OO.ui.Keys.BACKSPACE, ctrlKey: true } ],
+			modifiedDelete: [ 'handleDelete', { keyCode: OO.ui.Keys.DELETE, ctrlKey: true } ],
 			enter: [ 'handleEnter', {} ],
 			modifiedEnter: [ 'handleEnter', { shiftKey: true } ]
 		},
@@ -134,15 +133,6 @@ QUnit.test( 'handleDelete', function ( assert ) {
 				},
 				expectedRange: new ve.Range( 39 ),
 				msg: 'Focusable node deleted if selected first'
-			},
-			{
-				range: new ve.Range( 39, 41 ),
-				operations: ['cut'],
-				expectedData: function ( data ) {
-					data.splice( 39, 2 );
-				},
-				expectedRange: new ve.Range( 39 ),
-				msg: 'Focusable node deleted by cut'
 			},
 			{
 				range: new ve.Range( 0, 63 ),

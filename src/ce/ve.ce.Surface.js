@@ -922,12 +922,12 @@ ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
 			break;
 		case OO.ui.Keys.BACKSPACE:
 			e.preventDefault();
-			this.handleDelete( e, -1 );
+			this.handleDelete( e );
 			updateFromModel = true;
 			break;
 		case OO.ui.Keys.DELETE:
 			e.preventDefault();
-			this.handleDelete( e, 1 );
+			this.handleDelete( e );
 			updateFromModel = true;
 			break;
 		default:
@@ -1010,7 +1010,7 @@ ve.ce.Surface.prototype.onDocumentKeyUp = function ( e ) {
 ve.ce.Surface.prototype.onCut = function ( e ) {
 	this.onCopy( e );
 	setTimeout( ve.bind( function () {
-		this.handleDelete( e, 0 );
+		this.getModel().getFragment().delete().select();
 	}, this ) );
 };
 
@@ -2115,7 +2115,7 @@ ve.ce.Surface.prototype.handleEnter = function ( e ) {
 		if ( this.hasSlugAtOffset( selection.from ) ) {
 			insertEmptyParagraph = true;
 		} else {
-			prevContentOffset = this.documentView.model.data.getNearestContentOffset(
+			prevContentOffset = documentModel.data.getNearestContentOffset(
 				cursor,
 				-1
 			);
@@ -2234,27 +2234,20 @@ ve.ce.Surface.prototype.handleEnter = function ( e ) {
  *
  * @method
  * @param {jQuery.Event} e Delete key down event
- * @param {number} direction Direction to delete in: 1, -1 or 0 for direction-less cut
  */
-ve.ce.Surface.prototype.handleDelete = function ( e, direction ) {
-	var rangeAfterRemove, internalListRange,
+ve.ce.Surface.prototype.handleDelete = function ( e ) {
+	var docLength, startNode,
+		direction = e.keyCode === OO.ui.Keys.DELETE ? 1 : -1,
+		unit = ( e.altKey === true || e.ctrlKey === true ) ? 'word' : 'character',
 		offset = 0,
-		model = this.getModel(),
-		documentModel = model.getDocument(),
-		documentView = this.getDocument(),
-		data = documentModel.data,
-		rangeToRemove = model.getSelection(),
-		docLength, tx, startNode, endNode, endNodeData, nodeToDelete;
+		rangeToRemove = this.getModel().getSelection(),
+		documentModel = this.getModel().getDocument(),
+		data = documentModel.data;
 
-	if ( direction && rangeToRemove.isCollapsed() ) {
+	if ( rangeToRemove.isCollapsed() ) {
 		// In case when the range is collapsed use the same logic that is used for cursor left and
 		// right movement in order to figure out range to remove.
-		rangeToRemove = documentModel.getRelativeRange(
-			rangeToRemove,
-			direction,
-			( e.altKey === true || e.ctrlKey === true ) ? 'word' : 'character',
-			true
-		);
+		rangeToRemove = documentModel.getRelativeRange( rangeToRemove, direction, unit, true );
 		offset = rangeToRemove.start;
 		docLength = data.getLength();
 		if ( offset < docLength ) {
@@ -2265,7 +2258,7 @@ ve.ce.Surface.prototype.handleDelete = function ( e, direction ) {
 			// just select the node and cancel the deletion.
 			startNode = documentModel.getDocumentNode().getNodeFromOffset( offset + 1 );
 			if ( startNode.isFocusable() ) {
-				model.setSelection( startNode.getOuterRange() );
+				this.getModel().setSelection( startNode.getOuterRange() );
 				return;
 			}
 		}
@@ -2274,79 +2267,11 @@ ve.ce.Surface.prototype.handleDelete = function ( e, direction ) {
 			return;
 		}
 	}
-	// If selection spans entire document (e.g. CTRL+A in Firefox) then
-	// replace with an empty paragraph
-	internalListRange = documentModel.getInternalList().getListNode().getOuterRange();
-	if ( rangeToRemove.start === 0 && rangeToRemove.end >= internalListRange.start ) {
-		tx = ve.dm.Transaction.newFromReplacement( documentModel, new ve.Range( 0, internalListRange.start ), [
-			{ type: 'paragraph' },
-			{ type: '/paragraph' }
-		] );
-		model.change( tx );
-		rangeAfterRemove = new ve.Range( 1 );
-	} else {
-		tx = ve.dm.Transaction.newFromRemoval( documentModel, rangeToRemove );
-		model.change( tx );
-		rangeAfterRemove = tx.translateRange( rangeToRemove );
-	}
-	if ( !rangeAfterRemove.isCollapsed() ) {
-		// If after processing removal transaction range is not collapsed it means that not
-		// everything got merged nicely (at this moment transaction processor is capable of merging
-		// nodes of the same type and at the same depth level only), so we process with another
-		// merging that takes remaing data from endNode and inserts it at the end of startNode,
-		// endNode or recrusivly its parent (if have only one child) gets removed.
-		//
-		// If startNode has no content then we just delete that node instead of merging.
-		// This prevents content being inserted into empty structure which, e.g. and empty heading
-		// will be deleted, rather than "converting" the paragraph beneath to a heading.
 
-		endNode = documentView.getNodeFromOffset( rangeAfterRemove.end, false );
-
-		// If endNode is within our rangeAfterRemove, then we shouldn't delete it
-		if ( endNode.getModel().getRange().start >= rangeAfterRemove.end ) {
-			startNode = documentView.getNodeFromOffset( rangeAfterRemove.start, false );
-			if ( startNode.getModel().getRange().isCollapsed() ) {
-				// Remove startNode
-				model.change( [
-					ve.dm.Transaction.newFromRemoval(
-						documentModel, startNode.getModel().getOuterRange()
-					)
-				] );
-			} else {
-				endNodeData = documentModel.getData( endNode.getModel().getRange() );
-				nodeToDelete = endNode;
-				nodeToDelete.traverseUpstream( function ( node ) {
-					var parent = node.getParent();
-					if ( parent.children.length === 1 ) {
-						nodeToDelete = parent;
-						return true;
-					} else {
-						return false;
-					}
-				} );
-				// Move contents of endNode into startNode, and delete nodeToDelete
-				model.change( [
-					ve.dm.Transaction.newFromRemoval(
-						documentModel, nodeToDelete.getModel().getOuterRange()
-					),
-					ve.dm.Transaction.newFromInsertion(
-						documentModel, rangeAfterRemove.start, endNodeData
-					)
-				] );
-			}
-		}
-		rangeAfterRemove = new ve.Range( rangeAfterRemove.start );
-	}
-	// rangeAfterRemove is now guaranteed to be collapsed so make sure that it is a content offset
-	if ( !documentModel.data.isContentOffset( rangeAfterRemove.start ) ) {
-		rangeAfterRemove = documentModel.getRelativeRange(
-			rangeAfterRemove,
-			// If direction === 0 (cut), default to backwards movement
-			direction || -1
-		);
-	}
-	model.setSelection( rangeAfterRemove );
-	this.focus(); // Rerender selection even if it didn't change
+	this.getModel().getFragment( rangeToRemove ).delete( direction ).select();
+	// Rerender selection even if it didn't change
+	// TODO: is any of this necessary?
+	this.focus();
 	this.surfaceObserver.clear();
 };
 
