@@ -198,12 +198,16 @@ ve.ui.MediaSizeWidget.prototype.onScalableDefaultSizeChange = function ( isDefau
 ve.ui.MediaSizeWidget.prototype.onDimensionsChange = function ( type, value ) {
 	var dimensions = {};
 
-	if ( value === '' ) {
+	if ( Number( value ) === 0 ) {
 		this.setSizeType( 'default' );
-	} else if ( $.isNumeric( value ) ) {
+	} else {
 		this.setSizeType( 'custom' );
-		dimensions[type] = Number( value );
-		this.setCurrentDimensions( dimensions );
+		if ( $.isNumeric( value ) ) {
+			dimensions[type] = Number( value );
+			this.setCurrentDimensions( dimensions );
+		} else {
+			this.validateDimensions();
+		}
 	}
 };
 
@@ -283,7 +287,13 @@ ve.ui.MediaSizeWidget.prototype.getScalePlaceholder = function () {
  * @param {string} sizeType The size type to select
  */
 ve.ui.MediaSizeWidget.prototype.setSizeType = function ( sizeType ) {
-	if ( this.getSizeType() !== sizeType ) {
+	if (
+		this.getSizeType() !== sizeType ||
+		// If the dimensions widget has zeros make sure to
+		// allow for the change in size type
+		Number( this.dimensionsWidget.getWidth() ) === 0 ||
+		Number( this.dimensionsWidget.getHeight() ) === 0
+	) {
 		this.sizeTypeSelectWidget.chooseItem(
 			this.sizeTypeSelectWidget.getItemFromData( sizeType )
 		);
