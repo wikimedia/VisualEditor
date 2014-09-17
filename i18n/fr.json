@@ -51,6 +51,7 @@
 	"visualeditor-commentinspector-edit": "Modifier le commentaire",
 	"visualeditor-commentinspector-title": "Commentaire",
 	"visualeditor-commentinspector-tooltip": "Commentaire",
+	"visualeditor-contextitemwidget-label-secondary": "Modifier",
 	"visualeditor-dialog-action-apply": "Appliquer les modifications",
 	"visualeditor-dialog-action-cancel": "Annuler",
 	"visualeditor-dialog-action-done": "Terminé",
