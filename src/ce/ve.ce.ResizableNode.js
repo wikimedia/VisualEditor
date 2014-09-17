@@ -67,6 +67,8 @@ ve.ce.ResizableNode = function VeCeResizableNode( $resizable, config ) {
 
 /* Inheritance */
 
+OO.initClass( ve.ce.ResizableNode );
+
 /* Events */
 
 /**
@@ -81,10 +83,6 @@ ve.ce.ResizableNode = function VeCeResizableNode( $resizable, config ) {
 /**
  * @event resizeEnd
  */
-
-/* Static Properties */
-
-ve.ce.ResizableNode.static = {};
 
 /* Methods */
 

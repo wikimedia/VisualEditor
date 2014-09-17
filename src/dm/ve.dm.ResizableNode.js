@@ -14,11 +14,13 @@
  * @abstract
  * @constructor
  */
-ve.dm.ResizableNode = function VeDmResizableNode( config ) {
-	config = config || {};
-
+ve.dm.ResizableNode = function VeDmResizableNode() {
 	this.scalable = null;
 };
+
+/* Inheritance */
+
+OO.initClass( ve.dm.ResizableNode );
 
 /**
  * Get a scalable object for this node.

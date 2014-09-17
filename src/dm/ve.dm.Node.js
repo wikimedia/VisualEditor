@@ -99,6 +99,15 @@ ve.dm.Node.static.isWrapped = true;
 ve.dm.Node.static.isContent = false;
 
 /**
+ * Whether this node type can be focused. Focusable nodes react to selections differently.
+ *
+ * @static
+ * @property {boolean}
+ * @inheritable
+ */
+ve.dm.Node.static.isFocusable = false;
+
+/**
  * Whether this node type can contain content. The children of content container nodes must be
  * content nodes.
  *
@@ -356,6 +365,16 @@ ve.dm.Node.prototype.canContainContent = function () {
  */
 ve.dm.Node.prototype.isContent = function () {
 	return this.constructor.static.isContent;
+};
+
+/**
+ * Check if the node is focusable.
+ *
+ * @method
+ * @returns {boolean} Node is focusable
+ */
+ve.dm.Node.prototype.isFocusable = function () {
+	return this.constructor.static.isFocusable;
 };
 
 /**

@@ -107,7 +107,7 @@ ve.ce.Document.prototype.getRelativeOffset = function ( offset, direction, unit 
 		adjacentDataOffset = offset + ( direction > 0 ? 0 : -1 );
 		if (
 			data.isElementData( adjacentDataOffset ) &&
-			ve.ce.nodeFactory.isNodeFocusable( data.getType( adjacentDataOffset ) )
+			ve.dm.nodeFactory.isNodeFocusable( data.getType( adjacentDataOffset ) )
 		) {
 			// We are adjacent to a focusableNode, move inside it
 			return offset + direction;
@@ -120,7 +120,7 @@ ve.ce.Document.prototype.getRelativeOffset = function ( offset, direction, unit 
 		} else {
 			isFocusable = ( relativeStructuralOffset - offset < 0 ? -1 : 1 ) === direction &&
 				data.isElementData( relativeStructuralOffset + direction ) &&
-				ve.ce.nodeFactory.isNodeFocusable( data.getType( relativeStructuralOffset + direction ) );
+				ve.dm.nodeFactory.isNodeFocusable( data.getType( relativeStructuralOffset + direction ) );
 		}
 		// Check if we've moved into a slug or a focusableNode
 		if ( isFocusable || this.getSlugAtOffset( relativeStructuralOffset ) ) {
@@ -243,14 +243,14 @@ ve.ce.Document.prototype.getNearestFocusableNode = function ( offset, direction,
 			}
 			if (
 				this.isOpenElementData( index ) &&
-				ve.ce.nodeFactory.isNodeFocusable( this.getType( index ) )
+				ve.dm.nodeFactory.isNodeFocusable( this.getType( index ) )
 			) {
 				coveredOffset = index + 1;
 				return true;
 			}
 			if (
 				this.isCloseElementData( index ) &&
-				ve.ce.nodeFactory.isNodeFocusable( this.getType( index ) )
+				ve.dm.nodeFactory.isNodeFocusable( this.getType( index ) )
 			) {
 				coveredOffset = index;
 				return true;

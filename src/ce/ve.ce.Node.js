@@ -48,20 +48,6 @@ OO.mixinClass( ve.ce.Node, ve.Node );
 ve.ce.Node.static.splitOnEnter = false;
 
 /**
- * Whether this node type can be focused.
- *
- * If this is set to true on a node, it should implement:
- *
- *     setFocused( boolean val )
- *     boolean isFocused()
- *
- * @static
- * @property
- * @inheritable
- */
-ve.ce.Node.static.isFocusable = false;
-
-/**
  * Command to execute when Enter is pressed while this node is selected, or when the node is double-clicked.
  *
  * @static
@@ -177,11 +163,17 @@ ve.ce.Node.prototype.handlesOwnChildren = function () {
 /**
  * Check if the node is focusable
  *
- * @see #static-isFocusable
+ * This method passes through to the model.
+ *
+ * If this is set to true on a node, it should implement:
+ *
+ *     setFocused( boolean val )
+ *     boolean isFocused()
+ *
  * @returns {boolean} Node is focusable
  */
 ve.ce.Node.prototype.isFocusable = function () {
-	return this.constructor.static.isFocusable;
+	return this.model.isFocusable();
 };
 
 /**
