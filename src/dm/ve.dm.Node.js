@@ -390,16 +390,11 @@ ve.dm.Node.prototype.isFocusable = function () {
 /**
  * Check if the node can have a slug before it.
  *
- * TODO: Figure out a way to remove the hard-coding for text nodes here.
- *
  * @method
  * @returns {boolean} Whether the node can have a slug before it
  */
 ve.dm.Node.prototype.canHaveSlugBefore = function () {
-	return !this.canContainContent() &&
-		this.getParentNodeTypes() === null &&
-		this.type !== 'text' &&
-		this.type !== 'list';
+	return !this.canContainContent() && this.getParentNodeTypes() === null;
 };
 
 /**

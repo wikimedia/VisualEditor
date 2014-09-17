@@ -36,6 +36,16 @@ ve.dm.TextNode.static.isContent = true;
 
 ve.dm.TextNode.static.matchTagNames = [];
 
+/* Methods */
+
+ve.dm.TextNode.prototype.canHaveSlugBefore = function () {
+	return false;
+};
+
+ve.dm.TextNode.prototype.canHaveSlugAfter = function () {
+	return false;
+};
+
 /* Registration */
 
 ve.dm.modelRegistry.register( ve.dm.TextNode );

@@ -46,14 +46,10 @@ ve.dm.ListNode.static.toDomElements = function ( dataElement, doc ) {
 	return [ doc.createElement( tag ) ];
 };
 
+/* Methods */
+
 ve.dm.ListNode.prototype.canHaveSlugAfter = function () {
-	if ( this.getParent().getType() === 'listItem' ) {
-		// Nested lists should not have slugs after them
-		return false;
-	} else {
-		// Parent method
-		return ve.dm.BranchNode.prototype.canHaveSlugAfter.call( this );
-	}
+	return false;
 };
 
 /* Registration */
