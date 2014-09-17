@@ -324,7 +324,9 @@ ve.ce.Surface.prototype.getOffsetFromCoords = function ( x, y ) {
  * @returns {Object[]|null} Selection rectangles
  */
 ve.ce.Surface.prototype.getSelectionRects = function ( range ) {
-	var i, l, rects, nativeRange, surfaceRect, focusNodeRect, rtl, x, focusedNode,
+	var i, l, nativeRange, surfaceRect, focusNodeRect, rtl, x, focusedNode,
+		endContainer, endOffset, partialRange,
+		rects = [],
 		relativeRects = [];
 
 	range = range || this.getModel().getSelection();
@@ -343,7 +345,31 @@ ve.ce.Surface.prototype.getSelectionRects = function ( range ) {
 	// * in Firefox on page load when the address bar is still focused
 	// * in empty paragraphs
 	try {
-		rects = nativeRange.getClientRects();
+		// This block should just be rects = nativeRange.getClientRects(), but
+		// Chrome gets the end container rects wrong when spanning
+		// nodes so we need to traverse up the tree from the endContainer until
+		// we reach the common ancestor, then we can add on from start to where
+		// we got up to
+		// https://code.google.com/p/chromium/issues/detail?id=324437
+		endContainer = nativeRange.endContainer;
+		endOffset = nativeRange.endOffset;
+		partialRange = document.createRange();
+
+		while ( endContainer !== nativeRange.commonAncestorContainer ) {
+			partialRange.setStart( endContainer, 0 );
+			partialRange.setEnd( endContainer, endOffset );
+
+			rects = rects.concat( $.makeArray( partialRange.getClientRects() ) );
+
+			endOffset = ve.indexOf( endContainer, endContainer.parentNode.childNodes );
+			endContainer = endContainer.parentNode;
+		}
+
+		// Once we've reached the common ancestor, add on the range from the
+		// original start position to where we ended up.
+		partialRange = nativeRange.cloneRange();
+		partialRange.setEnd( endContainer, endOffset );
+		rects = rects.concat( $.makeArray( partialRange.getClientRects() ) );
 	} catch ( e ) {
 		// When possible, pretend the cursor is the left/right border of the node
 		// (depending on directionality) as a fallback.
