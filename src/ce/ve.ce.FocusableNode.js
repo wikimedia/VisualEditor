@@ -358,7 +358,6 @@ ve.ce.FocusableNode.prototype.createHighlights = function () {
 			'mouseout.ve-ce-focusableNode': ve.bind( this.onSurfaceMouseOut, this )
 		} );
 	}
-	this.surface.getModel().getDocument().connect( this, { transact: 'positionHighlights' } );
 	this.surface.connect( this, { position: 'positionHighlights' } );
 };
 
@@ -373,7 +372,6 @@ ve.ce.FocusableNode.prototype.clearHighlights = function () {
 	}
 	this.$highlights.remove().empty();
 	this.surface.$element.off( '.ve-ce-focusableNode' );
-	this.surface.getModel().getDocument().disconnect( this, { transact: 'positionHighlights' } );
 	this.surface.disconnect( this, { position: 'positionHighlights' } );
 	this.highlighted = false;
 	this.boundingRect = null;

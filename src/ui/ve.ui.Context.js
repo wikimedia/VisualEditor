@@ -25,14 +25,13 @@ ve.ui.Context = function VeUiContext( surface, config ) {
 	this.inspector = null;
 	this.inspectors = this.createInspectorWindowManager();
 	this.menu = new ve.ui.ContextMenuWidget( { $: this.$ } );
+	this.lastSelectedNode = null;
 	this.afterContextChangeTimeout = null;
 	this.afterContextChangeHandler = ve.bind( this.afterContextChange, this );
+	this.updateDimensionsDebounced = ve.debounce( ve.bind( this.updateDimensions, this ) );
 
 	// Events
-	this.surface.getModel().connect( this, {
-		contextChange: 'onContextChange',
-		select: 'onContextChange'
-	} );
+	this.surface.getModel().connect( this, { contextChange: 'onContextChange' } );
 	this.inspectors.connect( this, { opening: 'onInspectorOpening' } );
 	this.menu.connect( this, { choose: 'onContextItemChoose' } );
 
@@ -80,6 +79,8 @@ ve.ui.Context.prototype.onContextChange = function () {
  * Handle debounced context change events.
  */
 ve.ui.Context.prototype.afterContextChange = function () {
+	var selectedNode = this.surface.getModel().getSelectedNode();
+
 	// Reset debouncing state
 	this.afterContextChangeTimeout = null;
 
@@ -88,14 +89,15 @@ ve.ui.Context.prototype.afterContextChange = function () {
 			if ( this.isInspectable() ) {
 				// Change state: menu -> menu
 				this.populateMenu();
-				this.updateDimensions();
+				this.updateDimensionsDebounced();
 			} else {
 				// Change state: menu -> closed
 				this.menu.toggle( false );
 				this.toggle( false );
 			}
-		} else if ( this.inspector ) {
+		} else if ( this.inspector && ( !selectedNode || ( selectedNode !== this.lastSelectedNode ) ) ) {
 			// Change state: inspector -> (closed|menu)
+			// Unless there is a selectedNode that hasn't changed (e.g. your inspector is editing a node)
 			this.inspector.close();
 		}
 	} else {
@@ -106,6 +108,8 @@ ve.ui.Context.prototype.afterContextChange = function () {
 			this.toggle( true );
 		}
 	}
+
+	this.lastSelectedNode = selectedNode;
 };
 
 /**
@@ -131,7 +135,7 @@ ve.ui.Context.prototype.onInspectorOpening = function ( win, opening ) {
 					this.toggle( true );
 				}
 			}
-			this.updateDimensions( true );
+			this.updateDimensionsDebounced();
 		}, this ) )
 		.always( ve.bind( function ( opened ) {
 			opened.always( ve.bind( function ( closed ) {
@@ -144,7 +148,7 @@ ve.ui.Context.prototype.onInspectorOpening = function ( win, opening ) {
 						// Change state: inspector -> menu
 						this.menu.toggle( true );
 						this.populateMenu();
-						this.updateDimensions();
+						this.updateDimensionsDebounced();
 					} else {
 						// Change state: inspector -> closed
 						this.toggle( false );
@@ -301,7 +305,6 @@ ve.ui.Context.prototype.toggle = function ( show ) {
 /**
  * Update the size and position of the context.
  *
- * @param {boolean} [transition] Smoothly transition from previous size and position
  * @chainable
  */
 ve.ui.Context.prototype.updateDimensions = function () {

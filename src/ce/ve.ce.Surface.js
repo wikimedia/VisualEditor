@@ -1588,6 +1588,7 @@ ve.ce.Surface.prototype.onModelDocumentUpdate = function () {
 	}
 	// Update the state of the SurfaceObserver
 	this.surfaceObserver.pollOnceNoEmit();
+	this.emit( 'position' );
 };
 
 /**
