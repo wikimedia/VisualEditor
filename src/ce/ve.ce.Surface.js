@@ -1978,7 +1978,7 @@ ve.ce.Surface.prototype.handleInsertion = function () {
 		return;
 	}
 
-	var slug, data, range, annotations, insertionAnnotations, placeholder,
+	var hasSlug, data, range, annotations, insertionAnnotations, placeholder,
 		hasChanged = false,
 		selection = this.model.getSelection(),
 		documentModel = this.model.getDocument();
@@ -2008,15 +2008,15 @@ ve.ce.Surface.prototype.handleInsertion = function () {
 		new ve.dm.AnnotationSet( documentModel.getStore() );
 
 	if ( selection.isCollapsed() ) {
-		slug = this.documentView.getSlugAtOffset( selection.start );
+		hasSlug = documentModel.hasSlugAtOffset( selection.start );
 		// Always pawn in a slug
-		if ( slug || this.needsPawn( selection, insertionAnnotations ) ) {
+		if ( hasSlug || this.needsPawn( selection, insertionAnnotations ) ) {
 			placeholder = '♙';
 			if ( !insertionAnnotations.isEmpty() ) {
 				placeholder = [placeholder, insertionAnnotations.getIndexes()];
 			}
-			// is this a slug and if so, is this a block slug?
-			if ( slug && documentModel.data.isStructuralOffset( selection.start ) ) {
+			// Is this a slug and if so, is this a block slug?
+			if ( hasSlug && documentModel.data.isStructuralOffset( selection.start ) ) {
 				range = new ve.Range( selection.start + 1, selection.start + 2 );
 				data = [{ type: 'paragraph' }, placeholder, { type: '/paragraph' }];
 			} else {
@@ -2112,7 +2112,7 @@ ve.ce.Surface.prototype.handleEnter = function ( e ) {
 		// Cannot split, so insert some appropriate node
 
 		insertEmptyParagraph = false;
-		if ( this.hasSlugAtOffset( selection.from ) ) {
+		if ( documentModel.hasSlugAtOffset( selection.from ) ) {
 			insertEmptyParagraph = true;
 		} else {
 			prevContentOffset = this.documentView.model.data.getNearestContentOffset(
@@ -2443,12 +2443,13 @@ ve.ce.Surface.prototype.appendHighlights = function ( $highlights, focused ) {
  */
 ve.ce.Surface.prototype.getNearestCorrectOffset = function ( offset, direction ) {
 	var contentOffset, structuralOffset,
-		data = this.getModel().getDocument().data;
+		documentModel = this.getModel().getDocument(),
+		data = documentModel.data;
 
 	direction = direction > 0 ? 1 : -1;
 	if (
 		data.isContentOffset( offset ) ||
-		this.hasSlugAtOffset( offset )
+		documentModel.hasSlugAtOffset( offset )
 	) {
 		return offset;
 	}
@@ -2456,7 +2457,7 @@ ve.ce.Surface.prototype.getNearestCorrectOffset = function ( offset, direction )
 	contentOffset = data.getNearestContentOffset( offset, direction );
 	structuralOffset = data.getNearestStructuralOffset( offset, direction, true );
 
-	if ( !this.hasSlugAtOffset( structuralOffset ) && contentOffset !== -1 ) {
+	if ( !documentModel.hasSlugAtOffset( structuralOffset ) && contentOffset !== -1 ) {
 		return contentOffset;
 	}
 
@@ -2473,19 +2474,6 @@ ve.ce.Surface.prototype.getNearestCorrectOffset = function ( offset, direction )
 			return Math.max( contentOffset, structuralOffset );
 		}
 	}
-};
-
-/**
- * Check if an offset is inside a slug.
- *
- * TODO: Find a better name and a better place for this method - probably in a document view?
- *
- * @method
- * @param {number} offset Offset to check for a slug at
- * @returns {boolean} A slug exists at the given offset
- */
-ve.ce.Surface.prototype.hasSlugAtOffset = function ( offset ) {
-	return !!this.documentView.getSlugAtOffset( offset );
 };
 
 /**
