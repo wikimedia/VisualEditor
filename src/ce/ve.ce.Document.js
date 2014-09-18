@@ -51,7 +51,7 @@ ve.ce.Document.prototype.getNodeFromOffset = function ( offset ) {
 };
 
 /**
- * Get a slug a an offset.
+ * Get a slug at an offset.
  *
  * @method
  * @param {number} offset Offset to get slug at
