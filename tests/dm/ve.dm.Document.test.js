@@ -200,6 +200,22 @@ QUnit.test( 'getNodeFromOffset', function ( assert ) {
 	}
 } );
 
+QUnit.test( 'hasSlugAtOffset', function ( assert ) {
+	var i, l,
+		expected = {
+			0: true,
+			10: true
+		},
+		doc = ve.dm.example.createExampleDocument( 'alienData' );
+
+	QUnit.expect( doc.data.getLength() + 1 );
+
+	for ( i = 0, l = doc.data.getLength(); i <= l; i++ ) {
+		assert.strictEqual( doc.hasSlugAtOffset( i ), !!expected[i], 'hasSlugAtOffset ' + i + ' = ' + !!expected[i] );
+	}
+
+} );
+
 QUnit.test( 'getDataFromNode', 3, function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument(),
 		expectedData = ve.dm.example.preprocessAnnotations( ve.copy( ve.dm.example.data ) );

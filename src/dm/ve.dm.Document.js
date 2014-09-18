@@ -593,7 +593,7 @@ ve.dm.Document.prototype.getFullData = function ( range, edgeMetadata ) {
  *
  * @method
  * @param offset
- * @returns {ve.dm.Node} Node at offset
+ * @returns {ve.dm.Node|null} Node at offset
  */
 ve.dm.Document.prototype.getNodeFromOffset = function ( offset ) {
 	// FIXME duplicated from ve.ce.Document
@@ -605,6 +605,18 @@ ve.dm.Document.prototype.getNodeFromOffset = function ( offset ) {
 		node = node.getParent();
 	}
 	return node;
+};
+
+/**
+ * Check if there is a slug at an offset.
+ *
+ * @method
+ * @param {number} offset Offset to check for a slug at
+ * @returns {boolean} There is a slug at the offset
+ */
+ve.dm.Document.prototype.hasSlugAtOffset = function ( offset ) {
+	var node = this.getNodeFromOffset( offset );
+	return node ? node.hasSlugAtOffset( offset ) : false;
 };
 
 /**
