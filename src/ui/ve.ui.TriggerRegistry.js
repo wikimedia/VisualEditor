@@ -105,7 +105,7 @@ ve.ui.triggerRegistry.register(
 	'underline', { mac: new ve.ui.Trigger( 'cmd+u' ), pc: new ve.ui.Trigger( 'ctrl+u' ) }
 );
 ve.ui.triggerRegistry.register(
-	'code', { mac: new ve.ui.Trigger( 'cmd+shift+3' ), pc: new ve.ui.Trigger( 'ctrl+shift+3' ) }
+	'code', { mac: new ve.ui.Trigger( 'cmd+shift+6' ), pc: new ve.ui.Trigger( 'ctrl+shift+6' ) }
 );
 ve.ui.triggerRegistry.register(
 	'strikethrough', { mac: new ve.ui.Trigger( 'cmd+shift+5' ), pc: new ve.ui.Trigger( 'ctrl+shift+5' ) }
