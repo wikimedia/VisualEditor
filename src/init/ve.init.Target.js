@@ -135,6 +135,8 @@ ve.init.Target.static.surfaceCommands = [
 	'underline',
 	'subscript',
 	'superscript',
+	'code',
+	'strikethrough',
 	'indent',
 	'outdent',
 	'commandHelp',
