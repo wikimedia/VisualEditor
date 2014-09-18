@@ -6,9 +6,9 @@
  */
 
 function setTrigger( trigger ) {
-	var i, len, key,
-		parts = trigger.split( '+' );
+	var i, len, key, parts;
 	trigger = trigger.toString();
+	parts = trigger.split( '+' );
 	$( '#trigger' ).text( trigger );
 	for ( i = 0, len = parts.length; i < len; i++ ) {
 		key = parts[i].replace( '\\', '\\\\' ).replace( '"', '\\"' );
