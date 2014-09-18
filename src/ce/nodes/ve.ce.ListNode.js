@@ -60,22 +60,6 @@ ve.ce.ListNode.prototype.onUpdate = function () {
 	this.updateTagName();
 };
 
-/**
- * Check if a slug be placed after the node.
- *
- * @method
- * @returns {boolean} A slug can be placed after the node
- */
-ve.ce.ListNode.prototype.canHaveSlugAfter = function () {
-	if ( this.getParent().getType() === 'listItem' ) {
-		// Nested lists should not have slugs after them
-		return false;
-	} else {
-		// Parent method
-		return ve.ce.BranchNode.prototype.canHaveSlugAfter.call( this );
-	}
-};
-
 /* Registration */
 
 ve.ce.nodeFactory.register( ve.ce.ListNode );
