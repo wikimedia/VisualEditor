@@ -81,7 +81,7 @@ ve.ui.ListAction.prototype.wrap = function ( style ) {
 	if (
 		selection.isCollapsed() &&
 		!documentModel.data.isContentOffset( selection.to ) &&
-		this.surface.view.documentView.getSlugAtOffset( selection.to )
+		documentModel.hasSlugAtOffset( selection.to )
 	) {
 		// Inside block level slug
 		surfaceModel.change( ve.dm.Transaction.newFromInsertion(
