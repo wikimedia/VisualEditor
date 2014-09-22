@@ -11,14 +11,15 @@
  * @mixins OO.EventEmitter
  *
  * @constructor
- * @param {ve.ce.Document} documentView Document to observe
+ * @param {ve.ce.Surface} surface Surface to observe
  */
-ve.ce.SurfaceObserver = function VeCeSurfaceObserver( documentView ) {
+ve.ce.SurfaceObserver = function VeCeSurfaceObserver( surface ) {
 	// Mixin constructors
 	OO.EventEmitter.call( this );
 
 	// Properties
-	this.documentView = documentView;
+	this.surface = surface;
+	this.documentView = surface.getDocument();
 	this.domDocument = null;
 	this.polling = false;
 	this.timeoutId = null;
@@ -82,6 +83,7 @@ ve.ce.SurfaceObserver.prototype.clear = function ( range ) {
  * @method
  */
 ve.ce.SurfaceObserver.prototype.detach = function () {
+	this.surface = null;
 	this.documentView = null;
 	this.domDocument = null;
 };
@@ -239,8 +241,8 @@ ve.ce.SurfaceObserver.prototype.pollOnceInternal = function ( emitChanges, selec
 			if ( slugChange ) {
 				// Emit 'position' on the surface view after the animation completes
 				this.setTimeout( function () {
-					if ( observer.documentView ) {
-						observer.documentView.documentNode.surface.emit( 'position' );
+					if ( observer.surface ) {
+						observer.surface.emit( 'position' );
 					}
 				}, 200 );
 			}
