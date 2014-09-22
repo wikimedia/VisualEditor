@@ -8,10 +8,9 @@ QUnit.module( 've.Range' );
 
 /* Tests */
 
-QUnit.test( 'Basic usage (clone, isCollapsed, isBackwards, getLength, equals, equalsSelection, containsOffset, containsRange)', 27, function ( assert ) {
-	var range;
+QUnit.test( 'Basic usage (clone, isCollapsed, isBackwards, getLength, equals, equalsSelection, containsOffset, containsRange)', 26, function ( assert ) {
+	var range = new ve.Range( 100, 200 );
 
-	range = new ve.Range( 100, 200 );
 	assert.strictEqual( range.isCollapsed(), false );
 	assert.strictEqual( range.isBackwards(), false );
 	assert.strictEqual( range.getLength(), 100 );
@@ -38,8 +37,6 @@ QUnit.test( 'Basic usage (clone, isCollapsed, isBackwards, getLength, equals, eq
 	assert.strictEqual( range.containsRange( new ve.Range( 100, 199 ) ), true, 'contains 100, 199' );
 	assert.strictEqual( range.containsRange( new ve.Range( 100, 200 ) ), false, 'doesn\'t contain 100, 200' );
 
-	assert.equalRange( range, range.clone(), 'clone produces an equal range' );
-
 	range = new ve.Range( 100 );
 	assert.strictEqual( range.isCollapsed(), true );
 	assert.strictEqual( range.isBackwards(), false );
@@ -47,9 +44,52 @@ QUnit.test( 'Basic usage (clone, isCollapsed, isBackwards, getLength, equals, eq
 
 } );
 
-// TODO: newFromTranslatedRange
-// TODO: newCoveringRange
-// TODO: newFromJSON
-// TODO: flip
-// TODO: truncate
-// TODO: toJSON
+QUnit.test( 'Modification (flip, truncate, expand, clone)', 15, function ( assert ) {
+	var range = new ve.Range( 100, 200 );
+
+	assert.equalRange( range.flip(), new ve.Range( 200, 100 ), 'flip reverses the range' );
+	assert.equalRange( range.flip().flip(), range, 'double flip does nothing' );
+
+	assert.equalRange( range, range.clone(), 'clone produces an equal range' );
+	assert.equalRange( range.flip().clone(), range.flip(), 'clone produces an equal range backwards' );
+
+	assert.equalRange( range.truncate( 50 ), new ve.Range( 100, 150 ), 'truncate 50' );
+	assert.equalRange( range.truncate( 150 ), range, 'truncate 150 does nothing' );
+	assert.equalRange( range.truncate( -50 ), new ve.Range( 150, 200 ), 'truncate -50' );
+	assert.equalRange( range.truncate( -150 ), range, 'truncate -150 does nothing' );
+
+	assert.equalRange( range.expand( new ve.Range( 150, 250 ) ), new ve.Range( 100, 250 ), 'overlapping expand to right' );
+	assert.equalRange( range.expand( new ve.Range( 250 ) ), new ve.Range( 100, 250 ), 'non-overlapping expand to right' );
+	assert.equalRange( range.expand( new ve.Range( 250, 150 ) ), new ve.Range( 100, 250 ), 'backwards overlapping expand to right' );
+	assert.equalRange( range.expand( new ve.Range( 50, 150 ) ), new ve.Range( 50, 200 ), 'overlapping expand to left' );
+	assert.equalRange( range.expand( new ve.Range( 50 ) ), new ve.Range( 50, 200 ), 'non-overlapping expand to left' );
+	assert.equalRange( range.expand( new ve.Range( 150, 50 ) ), new ve.Range( 50, 200 ), 'backwards overlapping expand to left' );
+
+	assert.strictEqual( range.flip().expand( new ve.Range( 250 ) ).isBackwards(), true, 'expands preserves backwards' );
+
+} );
+
+QUnit.test( 'Factory methods & serialization (newFromTranslatedRange, newCoveringRange, newFromJSON, toJSON)', 8, function ( assert ) {
+	var range = new ve.Range( 100, 200 );
+
+	assert.equalRange( ve.Range.newFromTranslatedRange( range, 10 ), new ve.Range( 110, 210 ), 'translate 10' );
+	assert.equalRange( ve.Range.newFromTranslatedRange( range, -10 ), new ve.Range( 90, 190 ), 'translate -10' );
+
+	assert.equalRange(
+		ve.Range.newCoveringRange( [ range, new ve.Range( 150, 250 ) ] ),
+		new ve.Range( 100, 250 ),
+		'covering range'
+	);
+	assert.equalRange(
+		ve.Range.newCoveringRange( [ range, new ve.Range( 150, 250 ) ], true ),
+		new ve.Range( 250, 100 ),
+		'backwards covering range'
+	);
+
+	assert.strictEqual( range.toJSON(), '[100,200]', 'toJSON' );
+	assert.strictEqual( range.flip().toJSON(), '[200,100]', 'backwards toJSON' );
+
+	assert.equalRange( ve.Range.newFromJSON( range.toJSON() ), range, 'newFromJSON' );
+	assert.equalRange( ve.Range.newFromJSON( range.flip().toJSON() ), range.flip(), 'backwards newFromJSON' );
+
+} );
