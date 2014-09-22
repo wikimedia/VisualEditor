@@ -165,7 +165,7 @@ ve.ui.IndentationAction.prototype.indentListItem = function ( listItem ) {
 	surfaceModel.change( tx );
 	selection = tx.translateRange( selection );
 	// tx.translateRange( innerListItemRange ) doesn't do what we want
-	innerListItemRange = ve.Range.newFromTranslatedRange( listItemRange, 2 );
+	innerListItemRange = listItemRange.translate( 2 );
 	outerListItemRange = new ve.Range( listItemRange.start, listItemRange.end + 2 );
 
 	// (2) Merge the listItem into the previous listItem (if there is one)
@@ -242,7 +242,7 @@ ve.ui.IndentationAction.prototype.unindentListItem = function ( listItem ) {
 		);
 		surfaceModel.change( tx );
 		// tx.translateRange( listItemRange ) doesn't do what we want
-		listItemRange = ve.Range.newFromTranslatedRange( listItemRange, 2 );
+		listItemRange = listItemRange.translate( 2 );
 	}
 	if ( documentModel.data.getData( listItemRange.end ).type !== '/list' ) {
 		// (1b) listItem is not the last child, split the list after listItem
@@ -293,7 +293,7 @@ ve.ui.IndentationAction.prototype.unindentListItem = function ( listItem ) {
 			);
 			surfaceModel.change( tx );
 			// tx.translateRange( splitListRange ) doesn't do what we want
-			splitListRange = ve.Range.newFromTranslatedRange( splitListRange, 2 );
+			splitListRange = splitListRange.translate( 2 );
 		}
 		if ( documentModel.data.getData( splitListRange.end ).type !== '/listItem' ) {
 			// (3b) Split parentListItem after list

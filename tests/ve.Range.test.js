@@ -44,7 +44,7 @@ QUnit.test( 'Basic usage (clone, isCollapsed, isBackwards, getLength, equals, eq
 
 } );
 
-QUnit.test( 'Modification (flip, truncate, expand, clone)', 15, function ( assert ) {
+QUnit.test( 'Modification (flip, truncate, expand, translate, clone)', 17, function ( assert ) {
 	var range = new ve.Range( 100, 200 );
 
 	assert.equalRange( range.flip(), new ve.Range( 200, 100 ), 'flip reverses the range' );
@@ -65,15 +65,15 @@ QUnit.test( 'Modification (flip, truncate, expand, clone)', 15, function ( asser
 	assert.equalRange( range.expand( new ve.Range( 50 ) ), new ve.Range( 50, 200 ), 'non-overlapping expand to left' );
 	assert.equalRange( range.expand( new ve.Range( 150, 50 ) ), new ve.Range( 50, 200 ), 'backwards overlapping expand to left' );
 
+	assert.equalRange( range.translate( 10 ), new ve.Range( 110, 210 ), 'translate 10' );
+	assert.equalRange( range.translate( -10 ), new ve.Range( 90, 190 ), 'translate -10' );
+
 	assert.strictEqual( range.flip().expand( new ve.Range( 250 ) ).isBackwards(), true, 'expands preserves backwards' );
 
 } );
 
-QUnit.test( 'Factory methods & serialization (newFromTranslatedRange, newCoveringRange, newFromJSON, toJSON)', 8, function ( assert ) {
+QUnit.test( 'Factory methods & serialization (newCoveringRange, newFromJSON, toJSON)', 6, function ( assert ) {
 	var range = new ve.Range( 100, 200 );
-
-	assert.equalRange( ve.Range.newFromTranslatedRange( range, 10 ), new ve.Range( 110, 210 ), 'translate 10' );
-	assert.equalRange( ve.Range.newFromTranslatedRange( range, -10 ), new ve.Range( 90, 190 ), 'translate -10' );
 
 	assert.equalRange(
 		ve.Range.newCoveringRange( [ range, new ve.Range( 150, 250 ) ] ),
