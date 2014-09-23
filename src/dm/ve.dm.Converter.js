@@ -358,7 +358,7 @@ ve.dm.Converter.prototype.getDomElementsFromDataElement = function ( dataElement
 		return false;
 	}
 	domElements = nodeClass.static.toDomElements( dataElements, doc, this, childDomElements );
-	if ( ( !domElements || !domElements.length ) && !( nodeClass.prototype instanceof ve.dm.Annotation ) ) {
+	if ( !ve.isArray( domElements ) && !( nodeClass.prototype instanceof ve.dm.Annotation ) ) {
 		throw new Error( 'toDomElements() failed to return an array when converting element of type ' + dataElement.type );
 	}
 	if ( dataElement.htmlAttributes ) {
