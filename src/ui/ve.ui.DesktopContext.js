@@ -185,7 +185,15 @@ ve.ui.DesktopContext.prototype.updateDimensions = function () {
 
 	$container = this.inspector ? this.inspector.$frame : this.menu.$element;
 
-	if ( focusedNode && !focusedNode.isContent() ) {
+	if ( !boundingRect ) {
+		// If !boundingRect, the surface apparently isn't selected.
+		// This shouldn't happen because the context is only supposed to be
+		// displayed in response to a selection, but it sometimes does happen due
+		// to browser weirdness.
+		// Skip updating the cursor position, but still update the width and height.
+		this.popup.toggleAnchor( true );
+		this.popup.align = 'center';
+	} else if ( focusedNode && !focusedNode.isContent() ) {
 		embeddable = !this.hasInspector() &&
 			boundingRect.height > this.menu.$element.outerHeight() + 5 &&
 			boundingRect.width > this.menu.$element.outerWidth() + 10;
@@ -209,7 +217,7 @@ ve.ui.DesktopContext.prototype.updateDimensions = function () {
 	} else {
 		// The selection is text or an inline focused node
 		startAndEndRects = surface.getSelectionStartAndEndRects();
-		if ( startAndEndRects && boundingRect ) {
+		if ( startAndEndRects ) {
 			middle = ( boundingRect.left + boundingRect.right ) / 2;
 			if (
 				( !rtl && startAndEndRects.end.right > middle ) ||
@@ -228,11 +236,6 @@ ve.ui.DesktopContext.prototype.updateDimensions = function () {
 				};
 			}
 		}
-		// If !startAndEndRects, the surface apparently isn't selected.
-		// This shouldn't happen because the context is only supposed to be
-		// displayed in response to a selection, but for some reason this does happen when opening
-		// an inspector without changing the selection.
-		// Skip updating the cursor position, but still update the width and height.
 
 		this.popup.toggleAnchor( true );
 		this.popup.align = 'center';
@@ -242,6 +245,8 @@ ve.ui.DesktopContext.prototype.updateDimensions = function () {
 		this.$element.css( { left: position.x, top: position.y } );
 	}
 
+	// HACK: setSize() has to be called at the end because it reads this.popup.align,
+	// which we set directly in the code above
 	this.popup.setSize(
 		$container.outerWidth( true ),
 		$container.outerHeight( true )
