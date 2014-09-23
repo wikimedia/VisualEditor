@@ -164,7 +164,7 @@ ve.Range.prototype.equalsSelection = function ( other ) {
 /**
  * Create a new range with a limited length.
  *
- * @param {number} length Length of the new range (negative for left-side truncation)
+ * @param {number} length Length of the new range (negative for truncate from right)
  * @returns {ve.Range} A new range
  */
 ve.Range.prototype.truncate = function ( length ) {
@@ -177,6 +177,16 @@ ve.Range.prototype.truncate = function ( length ) {
 			Math.max( this.end + length, this.start ), this.end
 		);
 	}
+};
+
+/**
+ * Expand a range to include another range, preserving direction.
+ *
+ * @param {ve.Range} other Range to expand to include
+ * @return {ve.Range} Range covering this range and other
+ */
+ve.Range.prototype.expand = function ( other ) {
+	return ve.Range.newCoveringRange( [this, other], this.isBackwards() );
 };
 
 /**

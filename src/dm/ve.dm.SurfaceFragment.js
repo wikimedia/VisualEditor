@@ -368,10 +368,7 @@ ve.dm.SurfaceFragment.prototype.expandRange = function ( scope, type ) {
 				newRange = ve.Range.newCoveringRange( [
 					this.document.data.getNearestWordRange( this.getRange( true ).start ),
 					this.document.data.getNearestWordRange( this.getRange( true ).end )
-				] );
-				if ( oldRange.isBackwards() ) {
-					newRange = newRange.flip();
-				}
+				], oldRange.isBackwards() );
 			} else {
 				// optimisation for zero-length ranges
 				newRange = this.document.data.getNearestWordRange( oldRange.start );
