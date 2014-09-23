@@ -209,7 +209,7 @@ ve.EventSequencer.prototype.afterOne = function ( listeners ) {
  * @chainable
  */
 ve.EventSequencer.prototype.afterLoop = function ( listeners ) {
-	if ( !ve.isArray( listeners ) ) {
+	if ( !Array.isArray( listeners ) ) {
 		listeners = [listeners];
 	}
 	Array.prototype.push.apply( this.afterLoopListeners, listeners );
@@ -223,7 +223,7 @@ ve.EventSequencer.prototype.afterLoop = function ( listeners ) {
  * @chainable
  */
 ve.EventSequencer.prototype.afterLoopOne = function ( listeners ) {
-	if ( !ve.isArray( listeners ) ) {
+	if ( !Array.isArray( listeners ) ) {
 		listeners = [listeners];
 	}
 	Array.prototype.push.apply( this.afterLoopOneListeners, listeners );

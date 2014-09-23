@@ -28,7 +28,7 @@ ve.dm.BranchNode = function VeDmBranchNode( element, children ) {
 	this.slugPositions = {};
 
 	// TODO: children is only ever used in tests
-	if ( ve.isArray( children ) && children.length ) {
+	if ( Array.isArray( children ) && children.length ) {
 		this.splice.apply( this, [0, 0].concat( children ) );
 	}
 };

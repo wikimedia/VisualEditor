@@ -19,7 +19,7 @@
  * @param {ve.Node[]} children Array of children to add
  */
 ve.BranchNode = function VeBranchNode( children ) {
-	this.children = ve.isArray( children ) ? children : [];
+	this.children = Array.isArray( children ) ? children : [];
 };
 
 /* Methods */

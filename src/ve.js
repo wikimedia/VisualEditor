@@ -100,13 +100,6 @@
 	ve.isEmptyObject = $.isEmptyObject;
 
 	/**
-	 * @method
-	 * @until ES5: Array#isArray
-	 * @inheritdoc Array#isArray
-	 */
-	ve.isArray = Array.isArray;
-
-	/**
 	 * Wrapper for Function#bind.
 	 *
 	 * Create a function that calls the given function in a certain context.
@@ -222,7 +215,7 @@
 			// cross-browser - 1024 seems to be a safe batch size on all browsers
 			var splice, index = 0, batchSize = 1024, toRemove = remove, spliced, removed = [];
 
-			splice = ve.isArray( arr ) ? arraySplice : arr.splice;
+			splice = Array.isArray( arr ) ? arraySplice : arr.splice;
 
 			if ( data.length === 0 ) {
 				// Special case: data is empty, so we're just doing a removal
@@ -1075,7 +1068,7 @@
 	 */
 	ve.contains = function ( containers, contained, matchContainers ) {
 		var i;
-		if ( !ve.isArray( containers ) ) {
+		if ( !Array.isArray( containers ) ) {
 			containers = [ containers ];
 		}
 		for ( i = containers.length - 1; i >= 0; i-- ) {

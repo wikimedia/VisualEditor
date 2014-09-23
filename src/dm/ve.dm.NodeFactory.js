@@ -101,7 +101,7 @@ ve.dm.NodeFactory.prototype.canNodeHaveChildren = function ( type ) {
 		// If childNodeTypes is null any child is allowed, if it's an array of at least one element
 		// than at least one kind of node is allowed
 		var types = this.registry[type].static.childNodeTypes;
-		return types === null || ( ve.isArray( types ) && types.length > 0 );
+		return types === null || ( Array.isArray( types ) && types.length > 0 );
 	}
 	throw new Error( 'Unknown node type: ' + type );
 };

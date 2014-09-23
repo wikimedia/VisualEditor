@@ -1729,7 +1729,7 @@ QUnit.test( 'translateOffset', function ( assert ) {
 	};
 	QUnit.expect( 2 * ve.getObjectKeys( mapping ).length );
 	for ( offset in mapping ) {
-		expected = ve.isArray( mapping[offset] ) ? mapping[offset] : [ mapping[offset], mapping[offset] ];
+		expected = Array.isArray( mapping[offset] ) ? mapping[offset] : [ mapping[offset], mapping[offset] ];
 		assert.strictEqual( tx.translateOffset( Number( offset ) ), expected[1], offset );
 		assert.strictEqual( tx.translateOffset( Number( offset ), true ), expected[0], offset + ' (excludeInsertion)' );
 	}

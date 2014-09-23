@@ -11,7 +11,7 @@ QUnit.module( 've.dm.MetaList' );
 function assertItemsMatchMetadata( assert, metadata, list, msg, full ) {
 	var i, j, k = 0, items = list.getAllItems();
 	for ( i in metadata.getData() ) {
-		if ( ve.isArray( metadata.getData( i ) ) ) {
+		if ( Array.isArray( metadata.getData( i ) ) ) {
 			for ( j = 0; j < metadata.getData( i ).length; j++ ) {
 				assert.strictEqual( items[k].getOffset(), Number( i ), msg + ' (' + k + ': offset (' + i + ', ' + j + '))' );
 				assert.strictEqual( items[k].getIndex(), j, msg + ' (' + k + ': index(' + i + ', ' + j + '))' );

@@ -39,10 +39,10 @@ ve.dm.ElementLinearData.static.compareUnannotated = function ( a, b ) {
 
 	var aPlain = a, bPlain = b;
 
-	if ( ve.isArray( a ) ) {
+	if ( Array.isArray( a ) ) {
 		aPlain = a[0];
 	}
-	if ( ve.isArray( b ) ) {
+	if ( Array.isArray( b ) ) {
 		bPlain = b[0];
 	}
 	if ( a && a.type ) {
@@ -95,7 +95,7 @@ ve.dm.ElementLinearData.prototype.isContentOffset = function ( offset ) {
 			// <paragraph>|a|</paragraph>
 			( typeof left === 'string' || typeof right === 'string' ) ||
 			// Same checks but for annotated characters - isArray is slower, try it next
-			( ve.isArray( left ) || ve.isArray( right ) ) ||
+			( Array.isArray( left ) || Array.isArray( right ) ) ||
 			// The most expensive test are last, these deal with elements
 			(
 				// Right of a leaf
@@ -361,7 +361,7 @@ ve.dm.ElementLinearData.prototype.setAnnotationIndexesAtOffset = function ( offs
 /** */
 ve.dm.ElementLinearData.prototype.getCharacterData = function ( offset ) {
 	var item = this.getData( offset );
-	return ve.isArray( item ) ? item[0] : item;
+	return Array.isArray( item ) ? item[0] : item;
 };
 
 /**

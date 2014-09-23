@@ -44,7 +44,7 @@ ve.dm.example.preprocessAnnotations = function ( data, store ) {
 	for ( i = 0; i < data.length; i++ ) {
 		key = data[i].annotations ? 'annotations' : 1;
 		// check for shorthand annotation objects in array
-		if ( ve.isArray( data[i][key] ) && data[i][key][0].type ) {
+		if ( Array.isArray( data[i][key] ) && data[i][key][0].type ) {
 			data[i][key] = ve.dm.example.createAnnotationSet( store, data[i][key] ).getIndexes();
 		}
 	}

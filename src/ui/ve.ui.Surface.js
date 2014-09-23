@@ -32,7 +32,7 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 	if ( dataOrDoc instanceof ve.dm.Document ) {
 		// ve.dm.Document
 		documentModel = dataOrDoc;
-	} else if ( dataOrDoc instanceof ve.dm.LinearData || ve.isArray( dataOrDoc ) ) {
+	} else if ( dataOrDoc instanceof ve.dm.LinearData || Array.isArray( dataOrDoc ) ) {
 		// LinearData or raw linear data
 		documentModel = new ve.dm.Document( dataOrDoc );
 	} else {

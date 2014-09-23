@@ -59,7 +59,7 @@ ve.dm.Document = function VeDmDocument( data, htmlDocument, parentDocument, inte
 		// Raw linear model data
 		fullData = new ve.dm.FlatLinearData(
 			new ve.dm.IndexValueStore(),
-			ve.isArray( data ) ? data : []
+			Array.isArray( data ) ? data : []
 		);
 	}
 	this.store = fullData.getStore();
@@ -163,7 +163,7 @@ ve.dm.Document.static.addAnnotationsToData = function ( data, annotationSet ) {
 		if ( data[i].type ) {
 			// Element
 			continue;
-		} else if ( !ve.isArray( data[i] ) ) {
+		} else if ( !Array.isArray( data[i] ) ) {
 			// Wrap in array
 			data[i] = [data[i]];
 			newAnnotationSet = annotationSet.clone();
@@ -820,7 +820,7 @@ ve.dm.Document.prototype.getText = function ( range ) {
 	for ( i = 0; i < data.length; i++ ) {
 		if ( typeof data[i] === 'string' ) {
 			str += data[i];
-		} else if ( ve.isArray( data[i] ) ) {
+		} else if ( Array.isArray( data[i] ) ) {
 			str += data[i][0];
 		}
 	}

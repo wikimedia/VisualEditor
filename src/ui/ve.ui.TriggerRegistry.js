@@ -41,12 +41,12 @@ ve.ui.TriggerRegistry.prototype.register = function ( name, triggers ) {
 
 	if ( ve.isPlainObject( triggers ) ) {
 		if ( platformKey in triggers ) {
-			triggerList = ve.isArray( triggers[platformKey] ) ? triggers[platformKey] : [ triggers[platformKey] ];
+			triggerList = Array.isArray( triggers[platformKey] ) ? triggers[platformKey] : [ triggers[platformKey] ];
 		} else {
 			return;
 		}
 	} else {
-		triggerList = ve.isArray( triggers ) ? triggers : [ triggers ];
+		triggerList = Array.isArray( triggers ) ? triggers : [ triggers ];
 	}
 
 	// Validate arguments
