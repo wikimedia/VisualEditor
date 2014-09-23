@@ -391,7 +391,7 @@ ve.ce.FocusableNode.prototype.redrawHighlights = function () {
  * Calculate position of highlights
  */
 ve.ce.FocusableNode.prototype.calculateHighlights = function () {
-	var i, l, rects = [],
+	var i, l, rects = [], filteredRects = [],
 		surfaceOffset = this.surface.getSurface().getBoundingClientRect();
 
 	function contains( rect1, rect2 ) {
@@ -411,12 +411,6 @@ ve.ce.FocusableNode.prototype.calculateHighlights = function () {
 		clientRects = this.getClientRects();
 
 		for ( i = 0, il = clientRects.length; i < il; i++ ) {
-			// Elements with width/height of 0 return a clientRect with
-			// w/h of 1. As elements with an actual w/h of 1 aren't that
-			// useful, just throw away anything that is <= 1
-			if ( clientRects[i].width <= 1 || clientRects[i].height <= 1 ) {
-				continue;
-			}
 			contained = false;
 			for ( j = 0, jl = rects.length; j < jl; j++ ) {
 				// This rect is contained by an existing rect, discard
@@ -436,6 +430,17 @@ ve.ce.FocusableNode.prototype.calculateHighlights = function () {
 			}
 		}
 	} );
+
+	// Elements with a width/height of 0 return a clientRect with a width/height of 1
+	// As elements with an actual width/height of 1 aren't that useful anyway, just
+	// throw away anything that is <=1
+	filteredRects = rects.filter( function ( rect ) {
+		return rect.width > 1 && rect.height > 1;
+	} );
+	// But if this filtering doesn't leave any rects at all, then we do want to use the 1px rects
+	if ( filteredRects.length > 0 ) {
+		rects = filteredRects;
+	}
 
 	this.boundingRect = null;
 	// startAndEndRects is lazily evaluated in getStartAndEndRects from rects
