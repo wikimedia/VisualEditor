@@ -50,18 +50,6 @@ ve.Range.newFromJSON = function ( json ) {
 };
 
 /**
- * Create a new range that's a translated version of another.
- *
- * @static
- * @param {ve.Range} range Range to base new range on
- * @param {number} distance Distance to move range by
- * @returns {ve.Range} New translated range
- */
-ve.Range.newFromTranslatedRange = function ( range, distance ) {
-	return new ve.Range( range.from + distance, range.to + distance );
-};
-
-/**
  * Create a range object that covers all of the given ranges.
  *
  * @static
@@ -139,6 +127,16 @@ ve.Range.prototype.getLength = function () {
  */
 ve.Range.prototype.flip = function () {
 	return new ve.Range( this.to, this.from );
+};
+
+/**
+ * Get a range that's a translated version of this one.
+ *
+ * @param {number} distance Distance to move range by
+ * @returns {ve.Range} New translated range
+ */
+ve.Range.prototype.translate = function ( distance ) {
+	return new ve.Range( this.from + distance, this.to + distance );
 };
 
 /**

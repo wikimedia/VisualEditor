@@ -58,7 +58,7 @@ ve.dm.DocumentSynchronizer.synchronizers = {};
 ve.dm.DocumentSynchronizer.synchronizers.annotation = function ( action ) {
 	// Queue events for all leaf nodes covered by the range
 	var i,
-		adjustedRange = ve.Range.newFromTranslatedRange( action.range, this.adjustment ),
+		adjustedRange = action.range.translate( this.adjustment ),
 		selection = this.document.selectNodes( adjustedRange, 'leaves' );
 	for ( i = 0; i < selection.length; i++ ) {
 		// No tree synchronization needed
@@ -122,7 +122,7 @@ ve.dm.DocumentSynchronizer.synchronizers.resize = function ( action ) {
 ve.dm.DocumentSynchronizer.synchronizers.rebuild = function ( action ) {
 	var firstNode, parent, index, numNodes,
 		// Find the nodes contained by oldRange
-		adjustedOldRange = ve.Range.newFromTranslatedRange( action.oldRange, this.adjustment ),
+		adjustedOldRange = action.oldRange.translate( this.adjustment ),
 		selection = this.document.selectNodes( adjustedOldRange, 'siblings' );
 
 	// If the document is empty, selection[0].node will be the document (so no parent)
