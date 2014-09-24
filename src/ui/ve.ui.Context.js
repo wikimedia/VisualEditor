@@ -65,6 +65,7 @@ ve.ui.Context.prototype.onContextChange = function () {
 		// Cancel debounced change handler
 		clearTimeout( this.afterContextChangeTimeout );
 		this.afterContextChangeTimeout = null;
+		this.lastSelectedNode = this.surface.getModel().getSelectedNode();
 	} else {
 		if ( this.afterContextChangeTimeout === null ) {
 			// Ensure change is handled on next cycle

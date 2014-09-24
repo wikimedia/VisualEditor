@@ -22,7 +22,8 @@ ve.dm.Surface = function VeDmSurface( doc ) {
 	this.metaList = new ve.dm.MetaList( this );
 	this.selection = null;
 	this.selectionBefore = null;
-	this.selectedNodes = {};
+	this.branchNodes = {};
+	this.selectedNode = null;
 	this.newTransactions = [];
 	this.stagingStack = [];
 	this.undoStack = [];
@@ -524,7 +525,8 @@ ve.dm.Surface.prototype.stopQueueingContextChanges = function () {
  */
 ve.dm.Surface.prototype.setSelection = function ( selection ) {
 	var left, right, leftAnnotations, rightAnnotations, insertionAnnotations,
-		selectedNodes = {},
+		startNode, endNode, selectedNode,
+		branchNodes = {},
 		oldSelection = this.selection,
 		contextChange = false,
 		linearData = this.documentModel.data;
@@ -539,38 +541,44 @@ ve.dm.Surface.prototype.setSelection = function ( selection ) {
 		return;
 	}
 
-	// Detect if selected nodes changed
-	selectedNodes.start = selection ? this.documentModel.getNodeFromOffset( selection.start ) : null;
-	if ( selection && selection.getLength() ) {
-		selectedNodes.end = this.documentModel.getNodeFromOffset( selection.end );
-	}
-	if (
-		selectedNodes.start !== this.selectedNodes.start ||
-		selectedNodes.end !== this.selectedNodes.end
-	) {
-		contextChange = true;
-	}
+	if ( selection ) {
+		// Update branch nodes
+		branchNodes.start = this.documentModel.getNodeFromOffset( selection.start );
+		if ( selection.getLength() ) {
+			branchNodes.end = this.documentModel.getNodeFromOffset( selection.end );
+		}
+		// Update selected node
+		if ( !selection.isCollapsed() ) {
+			startNode = this.documentModel.documentNode.getNodeFromOffset( selection.start + 1 );
+			if ( startNode ) {
+				endNode = this.documentModel.documentNode.getNodeFromOffset( selection.end - 1 );
+				if ( startNode === endNode ) {
+					selectedNode = startNode;
+				}
+			}
+		} else {
+			// Check if the range is inside a focusable node with a collapsed selection
+			startNode = this.documentModel.documentNode.getNodeFromOffset( selection.start );
+			if ( startNode ) {
+				selectedNode = startNode;
+			}
+		}
 
-	// Update state
-	this.selectedNodes = selectedNodes;
-	this.selection = selection;
-
-	if ( this.selection ) {
 		// Figure out which annotations to use for insertions
-		if ( this.selection.isCollapsed() ) {
+		if ( selection.isCollapsed() ) {
 			// Get annotations from either side of the cursor
-			left = Math.max( 0, this.selection.start - 1 );
+			left = Math.max( 0, selection.start - 1 );
 			if ( !linearData.isContentOffset( left ) ) {
 				left = -1;
 			}
-			right = Math.max( 0, this.selection.start );
+			right = Math.max( 0, selection.start );
 			if ( !linearData.isContentOffset( right ) ) {
 				right = -1;
 			}
 		} else {
 			// Get annotations from the first character of the selection
-			left = linearData.getNearestContentOffset( this.selection.start );
-			right = linearData.getNearestContentOffset( this.selection.end );
+			left = linearData.getNearestContentOffset( selection.start );
+			right = linearData.getNearestContentOffset( selection.end );
 		}
 		if ( left === -1 ) {
 			// No content offset to our left, use empty set
@@ -600,6 +608,20 @@ ve.dm.Surface.prototype.setSelection = function ( selection ) {
 		}
 	}
 
+	// If branchNodes or selectedNode changed emit a contextChange
+	if (
+		selectedNode !== this.selectedNode ||
+		branchNodes.start !== this.branchNodes.start ||
+		branchNodes.end !== this.branchNodes.end
+	) {
+		contextChange = true;
+	}
+
+	// Update state
+	this.selection = selection;
+	this.branchNodes = branchNodes;
+	this.selectedNode = selectedNode;
+
 	// Emit events
 	if ( !oldSelection || !oldSelection.equals( this.selection ) ) {
 		this.emit( 'select', this.selection && this.selection.clone() );
@@ -607,6 +629,7 @@ ve.dm.Surface.prototype.setSelection = function ( selection ) {
 	if ( contextChange ) {
 		this.emitContextChange();
 	}
+
 };
 
 /**
@@ -809,8 +832,8 @@ ve.dm.Surface.prototype.onDocumentTransact = function ( tx ) {
 /**
  * Get the selected node covering the current range, or null
  *
- * @return {ve.dm.Node} Selected node
+ * @return {ve.dm.Node|null} Selected node
  */
 ve.dm.Surface.prototype.getSelectedNode = function () {
-	return this.selectedNodes.start === this.selectedNodes.end ? this.selectedNodes.start : null;
+	return this.selectedNode;
 };
