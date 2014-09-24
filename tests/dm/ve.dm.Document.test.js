@@ -389,7 +389,7 @@ QUnit.test( 'getRelativeRange', function ( assert ) {
 	QUnit.expect( expectCount );
 } );
 
-QUnit.test( 'getNodeFromOffset', function ( assert ) {
+QUnit.test( 'getBranchNodeFromOffset', function ( assert ) {
 	var i, j, node,
 		doc = ve.dm.example.createExampleDocument(),
 		root = doc.getDocumentNode().getRoot(),
@@ -463,7 +463,7 @@ QUnit.test( 'getNodeFromOffset', function ( assert ) {
 		for ( j = 0; j < expected[i].length; j++ ) {
 			node = node.children[expected[i][j]];
 		}
-		assert.ok( node === doc.getNodeFromOffset( i ), 'reference at offset ' + i );
+		assert.ok( node === doc.getBranchNodeFromOffset( i ), 'reference at offset ' + i );
 	}
 } );
 

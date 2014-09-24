@@ -36,21 +36,6 @@ OO.inheritClass( ve.ce.Document, ve.Document );
 /* Methods */
 
 /**
- * Get a node a an offset.
- *
- * @method
- * @param {number} offset Offset to get node at
- * @returns {ve.ce.Node|null} Node at offset
- */
-ve.ce.Document.prototype.getNodeFromOffset = function ( offset ) {
-	var node = this.getDocumentNode().getNodeFromOffset( offset );
-	if ( node && !node.canHaveChildren() ) {
-		node = node.getParent();
-	}
-	return node;
-};
-
-/**
  * Get a slug at an offset.
  *
  * @method
@@ -58,7 +43,7 @@ ve.ce.Document.prototype.getNodeFromOffset = function ( offset ) {
  * @returns {HTMLElement} Slug at offset
  */
 ve.ce.Document.prototype.getSlugAtOffset = function ( offset ) {
-	var node = this.getNodeFromOffset( offset );
+	var node = this.getBranchNodeFromOffset( offset );
 	return node ? node.getSlugAtOffset( offset ) : null;
 };
 
@@ -78,7 +63,7 @@ ve.ce.Document.prototype.getNodeAndOffset = function ( offset ) {
 	if ( slug ) {
 		return { node: slug, offset: 0 };
 	}
-	node = this.getNodeFromOffset( offset );
+	node = this.getBranchNodeFromOffset( offset );
 	startOffset = node.getOffset() + ( ( node.isWrapped() ) ? 1 : 0 );
 	current = [node.$element.contents(), 0];
 	stack = [current];

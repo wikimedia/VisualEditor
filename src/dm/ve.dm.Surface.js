@@ -543,9 +543,9 @@ ve.dm.Surface.prototype.setSelection = function ( selection ) {
 
 	if ( selection ) {
 		// Update branch nodes
-		branchNodes.start = this.documentModel.getNodeFromOffset( selection.start );
+		branchNodes.start = this.documentModel.getBranchNodeFromOffset( selection.start );
 		if ( selection.getLength() ) {
-			branchNodes.end = this.documentModel.getNodeFromOffset( selection.end );
+			branchNodes.end = this.documentModel.getBranchNodeFromOffset( selection.end );
 		}
 		// Update selected node
 		if ( !selection.isCollapsed() ) {

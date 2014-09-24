@@ -1163,7 +1163,7 @@ ve.ce.Surface.prototype.beforePaste = function ( e ) {
 	this.$pasteTarget.empty();
 
 	// Get node from cursor position
-	node = doc.getNodeFromOffset( selection.start );
+	node = doc.getBranchNodeFromOffset( selection.start );
 	if ( node.canContainContent() ) {
 		// If this is a content branch node, then add its DM HTML
 		// to the paste target to give CE some context.
@@ -2084,7 +2084,7 @@ ve.ce.Surface.prototype.handleEnter = function ( e ) {
 		this.model.change( txRemove, selection );
 	}
 
-	node = this.documentView.getNodeFromOffset( selection.from );
+	node = this.documentView.getBranchNodeFromOffset( selection.from );
 	if ( node !== null ) {
 		// assertion: node is certainly a contentBranchNode
 		nodeModel = node.getModel();
@@ -2139,7 +2139,7 @@ ve.ce.Surface.prototype.handleEnter = function ( e ) {
 		} else {
 			// Act as if cursor were at previous content offset
 			cursor = prevContentOffset;
-			node = this.documentView.getNodeFromOffset( cursor );
+			node = this.documentView.getBranchNodeFromOffset( cursor );
 			txInsert = undefined;
 			// Continue to traverseUpstream below. That will succeed because all
 			// ContentBranchNodes have splitOnEnter === true.

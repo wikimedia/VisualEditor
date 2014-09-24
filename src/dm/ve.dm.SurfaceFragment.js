@@ -844,11 +844,11 @@ ve.dm.SurfaceFragment.prototype.delete = function ( directionAfterDelete ) {
 		// This prevents content being inserted into empty structure which, e.g. and empty heading
 		// will be deleted, rather than "converting" the paragraph beneath to a heading.
 
-		endNode = this.document.getNodeFromOffset( rangeAfterRemove.end, false );
+		endNode = this.document.getBranchNodeFromOffset( rangeAfterRemove.end, false );
 
 		// If endNode is within our rangeAfterRemove, then we shouldn't delete it
 		if ( endNode.getRange().start >= rangeAfterRemove.end ) {
-			startNode = this.document.getNodeFromOffset( rangeAfterRemove.start, false );
+			startNode = this.document.getBranchNodeFromOffset( rangeAfterRemove.start, false );
 			if ( startNode.getRange().isCollapsed() ) {
 				// Remove startNode
 				this.change( [

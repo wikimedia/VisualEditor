@@ -376,8 +376,8 @@ ve.dm.Document.prototype.cloneSliceFromRange = function ( range ) {
 	var i, first, last, firstNode, lastNode,
 		data, slice, originalRange, balancedRange,
 		balancedNodes, needsContext,
-		startNode = this.getNodeFromOffset( range.start ),
-		endNode = this.getNodeFromOffset( range.end ),
+		startNode = this.getBranchNodeFromOffset( range.start ),
+		endNode = this.getBranchNodeFromOffset( range.end ),
 		selection = this.selectNodes( range, 'siblings' ),
 		balanceOpenings = [],
 		balanceClosings = [],
@@ -755,22 +755,13 @@ ve.dm.Document.prototype.getNearestFocusableNode = function ( offset, direction,
 };
 
 /**
- * Get a node from an offset.
- *
- * @method
- * @param offset
- * @returns {ve.dm.Node|null} Node at offset
+ * @inheritdoc
  */
-ve.dm.Document.prototype.getNodeFromOffset = function ( offset ) {
-	// FIXME duplicated from ve.ce.Document
+ve.dm.Document.prototype.getBranchNodeFromOffset = function ( offset ) {
 	if ( offset < 0 || offset > this.data.getLength() ) {
-		throw new Error( 've.dm.Document.getNodeFromOffset(): offset ' + offset + ' is out of bounds' );
+		throw new Error( 've.dm.Document.getBranchNodeFromOffset(): offset ' + offset + ' is out of bounds' );
 	}
-	var node = this.getDocumentNode().getNodeFromOffset( offset );
-	if ( !node.canHaveChildren() ) {
-		node = node.getParent();
-	}
-	return node;
+	return ve.Document.prototype.getBranchNodeFromOffset.call( this, offset );
 };
 
 /**
@@ -781,7 +772,7 @@ ve.dm.Document.prototype.getNodeFromOffset = function ( offset ) {
  * @returns {boolean} There is a slug at the offset
  */
 ve.dm.Document.prototype.hasSlugAtOffset = function ( offset ) {
-	var node = this.getNodeFromOffset( offset );
+	var node = this.getBranchNodeFromOffset( offset );
 	return node ? node.hasSlugAtOffset( offset ) : false;
 };
 
@@ -1027,7 +1018,7 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 		newData.push( element );
 	}
 
-	parentNode = this.getNodeFromOffset( offset );
+	parentNode = this.getBranchNodeFromOffset( offset );
 	parentType = parentNode.getType();
 	inTextNode = false;
 	isFirstChild = doc.data.isOpenElementData( offset - 1 );

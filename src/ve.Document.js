@@ -38,6 +38,21 @@ ve.Document.prototype.getDocumentNode = function () {
 };
 
 /**
+ * Get a node a an offset.
+ *
+ * @method
+ * @param {number} offset Offset to get node at
+ * @returns {ve.Node|null} Node at offset
+ */
+ve.Document.prototype.getBranchNodeFromOffset = function ( offset ) {
+	var node = this.getDocumentNode().getNodeFromOffset( offset );
+	if ( node && !node.hasChildren() ) {
+		node = node.getParent();
+	}
+	return node;
+};
+
+/**
  * Gets a list of nodes and the ranges within them that a selection of the document covers.
  *
  * @method

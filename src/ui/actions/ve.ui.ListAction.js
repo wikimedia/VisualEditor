@@ -158,7 +158,7 @@ ve.ui.ListAction.prototype.unwrap = function () {
 	surfaceModel.breakpoint();
 
 	do {
-		node = documentModel.getNodeFromOffset( surfaceModel.getSelection().start );
+		node = documentModel.getBranchNodeFromOffset( surfaceModel.getSelection().start );
 	} while ( node.hasMatchingAncestor( 'list' ) && this.surface.execute( 'indentation', 'decrease' ) );
 
 	surfaceModel.breakpoint();
