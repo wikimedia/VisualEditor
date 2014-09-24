@@ -11,7 +11,7 @@
  * @mixins OO.EventEmitter
  *
  * @constructor
- * @param {ve.Node} model Model to observe
+ * @param {ve.Node} documentNode Document node
  */
 ve.Document = function VeDocument( documentNode ) {
 	// Mixin constructors
@@ -53,7 +53,7 @@ ve.Document.prototype.getDocumentNode = function () {
  *   range is in a single node)
  * @returns {Array} List of objects describing nodes in the selection and the ranges therein:
  *
- * - `node`: Reference to a ve.dm.Node
+ * - `node`: Reference to a ve.Node
  * - `range`: ve.Range, missing if the entire node is covered
  * - `index`: Index of the node in its parent, missing if node has no parent
  * - `indexInNode`: If range is a zero-length range between two children of node,
