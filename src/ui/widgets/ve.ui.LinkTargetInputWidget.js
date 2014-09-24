@@ -15,7 +15,9 @@
  */
 ve.ui.LinkTargetInputWidget = function VeUiLinkTargetInputWidget( config ) {
 	// Parent constructor
-	OO.ui.TextInputWidget.call( this, config );
+	OO.ui.TextInputWidget.call( this, $.extend( {
+		validate: /(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/gi
+	}, config ) );
 
 	// Properties
 	this.annotation = null;
@@ -61,15 +63,6 @@ ve.ui.LinkTargetInputWidget.prototype.onEdit = function () {
 			this.setValue( this.$input.val() );
 		}, this ) );
 	}
-};
-
-/**
- * Checks if the link is valid.
- *
- * @return {boolean} Link is valid
- */
-ve.ui.LinkTargetInputWidget.prototype.isValid = function () {
-	return this.getValue().match( /(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/gi );
 };
 
 /**
