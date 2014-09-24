@@ -68,6 +68,10 @@ ve.ui.WhitespacePreservingTextInputWidget.prototype.setWhitespace = function ( w
  * @inheritdoc
  */
 ve.ui.WhitespacePreservingTextInputWidget.prototype.getValue = function () {
+	if ( !this.whitespace ) {
+		// In case getValue() is called from a parent constructor
+		return this.value;
+	}
 	return this.whitespace[0] + this.value + this.whitespace[1];
 };
 
