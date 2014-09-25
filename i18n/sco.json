@@ -69,6 +69,8 @@
 	"visualeditor-shortcuts-text-style": "Tex stylin",
 	"visualeditor-specialcharacter-button-tooltip": "Byordinair chairacter",
 	"visualeditor-specialcharacterinspector-title": "Biordinair chairacter",
+	"visualeditor-toolbar-format-tooltip": "Format paragraph.",
 	"visualeditor-toolbar-insert": "Insert",
+	"visualeditor-toolbar-style-tooltip": "Style tex.",
 	"visualeditor-version-label": "Version"
 }
