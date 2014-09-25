@@ -1516,20 +1516,23 @@ ve.ce.Surface.prototype.onModelSelect = function ( selection ) {
 			focusedNode.setFocused( true );
 			this.focusedNode = focusedNode;
 
-			// As FF won't fire a copy event with nothing selected, make
-			// a dummy selection of one space in the pasteTarget.
-			// onCopy will ignore this native selection and use the DM selection
-			this.$pasteTarget.text( ' ' );
-			nativeRange = this.getElementDocument().createRange();
-			nativeRange.setStart( this.$pasteTarget[0], 0 );
-			nativeRange.setEnd( this.$pasteTarget[0], 1 );
-			this.nativeSelection.removeAllRanges();
-			this.$pasteTarget[0].focus();
-			this.nativeSelection.addRange( nativeRange );
-			// Since the selection is no longer in the documentNode, clear the SurfaceObserver's
-			// selection state. Otherwise, if the user places the selection back into the documentNode
-			// in exactly the same place where it was before, the observer won't consider that a change.
-			this.surfaceObserver.clear();
+			// If dragging, we already have a native selection, so don't mess with it
+			if ( !this.dragging ) {
+				// As FF won't fire a copy event with nothing selected, make
+				// a dummy selection of one space in the pasteTarget.
+				// onCopy will ignore this native selection and use the DM selection
+				this.$pasteTarget.text( ' ' );
+				nativeRange = this.getElementDocument().createRange();
+				nativeRange.setStart( this.$pasteTarget[0], 0 );
+				nativeRange.setEnd( this.$pasteTarget[0], 1 );
+				this.nativeSelection.removeAllRanges();
+				this.$pasteTarget[0].focus();
+				this.nativeSelection.addRange( nativeRange );
+				// Since the selection is no longer in the documentNode, clear the SurfaceObserver's
+				// selection state. Otherwise, if the user places the selection back into the documentNode
+				// in exactly the same place where it was before, the observer won't consider that a change.
+				this.surfaceObserver.clear();
+			}
 		}
 	}
 
