@@ -316,6 +316,47 @@ ve.ce.Surface.prototype.getOffsetFromCoords = function ( x, y ) {
 };
 
 /**
+ * Get a client rect from the selection's focused node
+ *
+ * This function is used internally by getSelectionRects and
+ * getSelectionBoundingRect as a fallback when Range.getClientRects
+ * fails.
+ *
+ * @private
+ * @return {Object} ClientRect-like object
+ */
+ve.ce.Surface.prototype.getClientRectFromNode = function () {
+	var rect, rtl, x,
+		node = this.nativeSelection.focusNode;
+
+	while ( node && node.nodeType !== Node.ELEMENT_NODE ) {
+		node = node.parentNode;
+	}
+	// When possible, pretend the cursor is the left/right border of the node
+	// (depending on directionality) as a fallback.
+	if ( node ) {
+		// We would use getBoundingClientRect(), but in iOS7 that's relative to the
+		// document rather than to the viewport
+		rect = node.getClientRects()[0];
+		if ( !rect ) {
+			// FF can return null when focusNode is invisible
+			return null;
+		}
+		rtl = this.getModel().getDocument().getDir() === 'rtl';
+		x = rtl ? rect.right : rect.left;
+		return {
+			top: rect.top,
+			bottom: rect.bottom,
+			left: x,
+			right: x,
+			width: 0,
+			height: rect.height
+		};
+	}
+	return null;
+};
+
+/**
  * Get the rectangles of the selection range relative to the surface.
  *
  * @method
@@ -323,7 +364,7 @@ ve.ce.Surface.prototype.getOffsetFromCoords = function ( x, y ) {
  * @returns {Object[]|null} Selection rectangles
  */
 ve.ce.Surface.prototype.getSelectionRects = function ( range ) {
-	var i, l, nativeRange, surfaceRect, focusNodeRect, rtl, x, focusedNode,
+	var i, l, nativeRange, surfaceRect, focusedNode,
 		endContainer, endOffset, partialRange,
 		rects = [],
 		relativeRects = [];
@@ -369,30 +410,11 @@ ve.ce.Surface.prototype.getSelectionRects = function ( range ) {
 		partialRange = nativeRange.cloneRange();
 		partialRange.setEnd( endContainer, endOffset );
 		rects = rects.concat( $.makeArray( partialRange.getClientRects() ) );
-	} catch ( e ) {
-		// When possible, pretend the cursor is the left/right border of the node
-		// (depending on directionality) as a fallback.
-		if ( this.nativeSelection.focusNode && this.nativeSelection.focusNode.nodeType === Node.ELEMENT_NODE ) {
-			// We would use getBoundingClientRect(), but in iOS7 that's relative to the
-			// document rather than to the viewport
-			focusNodeRect = this.nativeSelection.focusNode.getClientRects()[0];
-			if ( !focusNodeRect ) {
-				// FF can return null when focusNode is invisible
-				return null;
-			}
-			rtl = this.getModel().getDocument().getDir() === 'rtl';
-			x = rtl ? focusNodeRect.right : focusNodeRect.left;
-			rects = [ {
-				top: focusNodeRect.top,
-				bottom: focusNodeRect.bottom,
-				left: x,
-				right: x,
-				width: 0,
-				height: focusNodeRect.height
-			} ];
-		} else {
-			return null;
+		if ( !rects.length ) {
+			throw new Error( 'getClientRects returned empty list' );
 		}
+	} catch ( e ) {
+		rects = [ this.getClientRectFromNode() ];
 	}
 
 	surfaceRect = this.getSurface().getBoundingClientRect();
@@ -450,7 +472,7 @@ ve.ce.Surface.prototype.getSelectionBoundingRect = function ( range ) {
 		return null;
 	}
 
-	boundingRect = this.getNativeRangeBoundingClientRect( nativeRange );
+	boundingRect = this.getNativeRangeBoundingClientRect( nativeRange ) || this.getClientRectFromNode();
 	surfaceRect = this.getSurface().getBoundingClientRect();
 	if ( !boundingRect || !surfaceRect ) {
 		return null;
