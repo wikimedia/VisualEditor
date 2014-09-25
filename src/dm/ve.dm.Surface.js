@@ -637,9 +637,16 @@ ve.dm.Surface.prototype.setSelection = function ( selection ) {
  */
 ve.dm.Surface.prototype.selectFirstContentOffset = function () {
 	var firstOffset = this.getDocument().data.getNearestContentOffset( 0, 1 );
-	this.setSelection(
-		new ve.Range( firstOffset !== -1 ? firstOffset : 1 )
-	);
+	if ( firstOffset !== -1 ) {
+		// Found a content offset
+		this.setSelection( new ve.Range( firstOffset ) );
+	} else if ( this.getDocument().hasSlugAtOffset( 0 ) ) {
+		// Found a slug at 0
+		this.setSelection( new ve.Range( 0 ) );
+	} else {
+		// Document is full of slugless structural nodes, just give up
+		this.setSelection( null );
+	}
 };
 
 /**
