@@ -1536,6 +1536,53 @@ QUnit.test( 'countNonInternalElements', function ( assert ) {
 	}
 } );
 
+QUnit.test( 'getUsedStoreValuesFromRange', function ( assert ) {
+	var i,
+		bold = new ve.dm.BoldAnnotation( { type: 'textStyle/bold', attributes: { nodeName: 'b' } } ),
+		italic = new ve.dm.ItalicAnnotation( { type: 'textStyle/italic', attributes: { nodeName: 'i' } } ),
+		linearData = ve.dm.example.preprocessAnnotations( ve.copy( ve.dm.example.data ) ),
+		elementData = new ve.dm.ElementLinearData( linearData.getStore(), linearData.getData() ),
+		cases = [
+			{
+				msg: '2-4 contains bold and italic',
+				range: new ve.Range( 2, 4 ),
+				expected: {
+					0: bold,
+					1: italic
+				}
+			},
+			{
+				msg: '2-3 contains bold',
+				range: new ve.Range( 2, 3 ),
+				expected: {
+					0: bold
+				}
+			},
+			{
+				msg: '3-4 contains italic',
+				range: new ve.Range( 3, 4 ),
+				expected: {
+					1: italic
+				}
+			},
+			{
+				msg: '5-10 contains nothing',
+				range: new ve.Range( 5, 10 ),
+				expected: {}
+			}
+		];
+
+	QUnit.expect( cases.length );
+	for ( i = 0; i < cases.length; i++ ) {
+		assert.deepEqual(
+			elementData.getUsedStoreValuesFromRange( cases[i].range ),
+			cases[i].expected,
+			cases[i].msg
+		);
+	}
+
+} );
+
 QUnit.test( 'remapStoreIndexes', function ( assert ) {
 	var i, data,
 		cases = [
@@ -1667,8 +1714,6 @@ QUnit.test( 'remapStoreIndexes', function ( assert ) {
 // TODO: ve.dm.ElementLinearData#getCharacterData
 // TODO: ve.dm.ElementLinearData#getAnnotatedRangeFromSelection
 // TODO: ve.dm.ElementLinearData#getNearestContentOffset
-// TODO: ve.dm.ElementLinearData#getUsedStoreValues
-// TODO: ve.dm.ElementLinearData#remapStoreIndexes
 // TODO: ve.dm.ElementLinearData#remapInternalListIndexes
 // TODO: ve.dm.ElementLinearData#remapInternalListKeys
 // TODO: ve.dm.ElementLinearData#cloneElements

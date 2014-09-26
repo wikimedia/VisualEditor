@@ -739,25 +739,24 @@ ve.dm.ElementLinearData.prototype.getNearestWordRange = function ( offset ) {
  * Currently this is just all annotations still in use.
  *
  * @method
+ * @param {ve.Range} range Range to get store values for
  * @returns {Object} Object containing all store values, indexed by store index
  */
-ve.dm.ElementLinearData.prototype.getUsedStoreValues = function () {
-	var i, indexes, j, valueStore = {};
-	i = this.getLength();
-	while ( i-- ) {
+ve.dm.ElementLinearData.prototype.getUsedStoreValuesFromRange = function ( range ) {
+	var i, index, indexes, j,
+		valueStore = {};
+
+	for ( i = range.start; i < range.end; i++ ) {
 		// Annotations
 		// Use ignoreClose to save time; no need to count every element annotation twice
 		indexes = this.getAnnotationIndexesFromOffset( i, true );
 		j = indexes.length;
 		while ( j-- ) {
-			// Just flag item as in use for now - we will add its value
-			// in a separate loop to avoid multiple store lookups
-			valueStore[indexes[j]] = true;
+			index = indexes[j];
+			if ( !( index in valueStore ) ) {
+				valueStore[index] = this.getStore().value( index );
+			}
 		}
-	}
-	for ( i in valueStore ) {
-		// Fill in actual store values
-		valueStore[i] = this.getStore().value( i );
 	}
 	return valueStore;
 };
