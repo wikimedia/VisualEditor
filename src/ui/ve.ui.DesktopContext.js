@@ -252,6 +252,11 @@ ve.ui.DesktopContext.prototype.updateDimensions = function () {
 		$container.outerHeight( true )
 	);
 
+	// PopupWidget normally is clippable, suppress that to be able to scroll it into view.
+	// Needs to be repeated before every call, as it resets itself when the popup is shown or hidden.
+	this.popup.toggleClipping( false );
+	this.popup.scrollElementIntoView();
+
 	return this;
 };
 
