@@ -18,7 +18,7 @@ ve.ui.DesktopContext = function VeUiDesktopContext( surface, config ) {
 	// Parent constructor
 	ve.ui.DesktopContext.super.call( this, surface, config );
 
-	// Properites
+	// Properties
 	this.popup = new OO.ui.PopupWidget( { $: this.$, $container: this.surface.$element } );
 	this.transitioning = null;
 	this.suppressed = false;
