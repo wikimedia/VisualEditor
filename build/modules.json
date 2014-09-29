@@ -30,25 +30,39 @@
 		"scripts": [
 			"lib/oojs-ui/oojs-ui.js"
 		],
-		"styles": [
-			"lib/oojs-ui/oojs-ui.svg.css"
-		],
 		"dependencies": [
 			"oojs",
 			"jquery"
 		]
 	},
 	"oojs-ui-apex": {
+		"scripts": [
+			"lib/oojs-ui/oojs-ui-apex.js"
+		],
 		"styles": [
-			"lib/oojs-ui/oojs-ui-apex.css"
+			"lib/oojs-ui/oojs-ui-apex.svg.css"
 		],
 		"dependencies": [
 			"oojs-ui"
 		]
 	},
 	"oojs-ui-minerva": {
+		"scripts": [
+			"lib/oojs-ui/oojs-ui-minerva.js"
+		],
 		"styles": [
-			"lib/oojs-ui/oojs-ui-minerva.css"
+			"lib/oojs-ui/oojs-ui-minerva.svg.css"
+		],
+		"dependencies": [
+			"oojs-ui"
+		]
+	},
+	"oojs-ui-mediawiki": {
+		"scripts": [
+			"lib/oojs-ui/oojs-ui-mediawiki.js"
+		],
+		"styles": [
+			"lib/oojs-ui/oojs-ui-mediawiki.svg.css"
 		],
 		"dependencies": [
 			"oojs-ui"
