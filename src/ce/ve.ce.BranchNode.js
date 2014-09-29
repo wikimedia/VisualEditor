@@ -214,7 +214,7 @@ ve.ce.BranchNode.prototype.onSplice = function ( index ) {
  * @method
  */
 ve.ce.BranchNode.prototype.setupSlugs = function () {
-	var i, slugTemplate, slugNode,
+	var i, slugTemplate, slugNode, child,
 		isBlock = this.canHaveChildrenNotContent(),
 		doc = this.getElementDocument();
 
@@ -230,8 +230,12 @@ ve.ce.BranchNode.prototype.setupSlugs = function () {
 
 	for ( i in this.getModel().slugPositions ) {
 		slugNode = doc.importNode( slugTemplate, true );
-		if ( this.children[i] ) {
-			this.$element[0].insertBefore( slugNode, this.children[i].$element[0] );
+		// FIXME: InternalListNode has an empty $element, so we assume that the slug goes at the
+		// end instead. This is a hack and the internal list needs to die in a fire.
+		if ( this.children[i] && this.children[i].$element[0] ) {
+			child = this.children[i].$element[0];
+			// child.parentNode might not be equal to this.$element[0]: e.g. annotated inline nodes
+			child.parentNode.insertBefore( slugNode, child );
 		} else {
 			this.$element[0].appendChild( slugNode );
 		}
