@@ -42,6 +42,7 @@ ve.Filibuster = function VeFilibuster() {
 	this.observations = [];
 	this.callLog = [];
 	this.active = false;
+	this.startTime = null;
 };
 
 OO.initClass( ve.Filibuster );
@@ -81,8 +82,9 @@ ve.Filibuster.prototype.setObserver = function ( name, callback ) {
  * and end of every monitored function call.
  *
  * @param {string} action The function call phase: call|return|throw
+ * @param {number} time Elapsed time since filibuster start
  */
-ve.Filibuster.prototype.observe = function ( action ) {
+ve.Filibuster.prototype.observe = function ( action, time ) {
 	var name, callback, oldState, newState;
 
 	for ( name in this.observers ) {
@@ -104,6 +106,7 @@ ve.Filibuster.prototype.observe = function ( action ) {
 			this.observations.push( {
 				name: name,
 				logCount: this.count,
+				time: time,
 				oldState: oldState,
 				newState: newState,
 				stack: this.stack.slice(),
@@ -122,10 +125,11 @@ ve.Filibuster.prototype.observe = function ( action ) {
  * @param {Array|Mixed} data The call arguments, return value or exception
  */
 ve.Filibuster.prototype.log = function ( funcName, action, data ) {
-	var topFuncName, clonedData;
+	var topFuncName, clonedData, time;
 	if ( !this.active ) {
 		return;
 	}
+	time = ve.now() - this.startTime;
 	// Clone the data, to avoid anachronistic changes and for easy display
 	clonedData = this.clonePlain( data );
 	if ( action === 'call' ) {
@@ -134,9 +138,10 @@ ve.Filibuster.prototype.log = function ( funcName, action, data ) {
 		this.stack.push( { funcName: funcName, data: clonedData } );
 	}
 	this.count++;
-	this.observe( action );
+	this.observe( action, time );
 	this.callLog.push( {
 		count: this.count,
+		time: time,
 		stack: this.stack.slice(),
 		funcName: funcName,
 		action: action,
@@ -260,6 +265,7 @@ ve.Filibuster.prototype.wrapNamespace = function ( ns, nsName, blacklist ) {
  */
 ve.Filibuster.prototype.start = function () {
 	this.active = true;
+	this.startTime = ve.now();
 };
 
 /**
@@ -284,6 +290,7 @@ ve.Filibuster.prototype.getObservationsHtml = function () {
 	function getObservationHtml( observation ) {
 		return ( '<tr><td>' +
 			[
+				observation.time.toString(),
 				observation.name,
 				String( observation.logCount ),
 				String( observation.oldState ),
@@ -297,7 +304,7 @@ ve.Filibuster.prototype.getObservationsHtml = function () {
 	}
 	return (
 		'<table class="ve-filibuster">' +
-		'<tr><th>Type</th><th>Log</th><th>Old State</th><th>New State</th><th>Action</th><th>Stack</th></tr>' +
+		'<tr><th>Time</th><th>Type</th><th>Log</th><th>Old State</th><th>New State</th><th>Action</th><th>Stack</th></tr>' +
 		this.observations.map( getObservationHtml ).join( '' ) +
 		'</table>'
 	);
