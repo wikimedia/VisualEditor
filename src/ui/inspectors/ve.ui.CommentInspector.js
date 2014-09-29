@@ -5,7 +5,7 @@
  */
 
 /**
- * Special character inspector.
+ * Comment inspector.
  *
  * @class
  * @extends ve.ui.NodeInspector
