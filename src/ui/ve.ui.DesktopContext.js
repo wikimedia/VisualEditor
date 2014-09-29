@@ -38,6 +38,9 @@ ve.ui.DesktopContext = function VeUiDesktopContext( surface, config ) {
 	this.surface.getModel().connect( this, {
 		select: 'onPosition'
 	} );
+	this.inspectors.connect( this, {
+		resize: 'setPopupSize'
+	} );
 	this.$window.on( 'resize', this.onWindowResizeHandler );
 	this.$element.on( 'mousedown', false );
 
@@ -177,13 +180,11 @@ ve.ui.DesktopContext.prototype.toggle = function ( show ) {
  * @inheritdoc
  */
 ve.ui.DesktopContext.prototype.updateDimensions = function () {
-	var $container, startAndEndRects, position, embeddable, middle,
+	var startAndEndRects, position, embeddable, middle,
 		rtl = this.surface.getModel().getDocument().getDir() === 'rtl',
 		surface = this.surface.getView(),
 		focusedNode = surface.getFocusedNode(),
 		boundingRect = surface.getSelectionBoundingRect();
-
-	$container = this.inspector ? this.inspector.$frame : this.menu.$element;
 
 	if ( !boundingRect ) {
 		// If !boundingRect, the surface apparently isn't selected.
@@ -245,19 +246,29 @@ ve.ui.DesktopContext.prototype.updateDimensions = function () {
 		this.$element.css( { left: position.x, top: position.y } );
 	}
 
-	// HACK: setSize() has to be called at the end because it reads this.popup.align,
+	// HACK: setPopupSize() has to be called at the end because it reads this.popup.align,
 	// which we set directly in the code above
+	this.setPopupSize();
+
+	return this;
+};
+
+/**
+ * Resize the popup to match the size of its contents (menu or inspector).
+ */
+ve.ui.DesktopContext.prototype.setPopupSize = function () {
+	var $container = this.inspector ? this.inspector.$frame : this.menu.$element;
+
+	// PopupWidget normally is clippable, suppress that to be able to resize and scroll it into view.
+	// Needs to be repeated before every call, as it resets itself when the popup is shown or hidden.
+	this.popup.toggleClipping( false );
+
 	this.popup.setSize(
 		$container.outerWidth( true ),
 		$container.outerHeight( true )
 	);
 
-	// PopupWidget normally is clippable, suppress that to be able to scroll it into view.
-	// Needs to be repeated before every call, as it resets itself when the popup is shown or hidden.
-	this.popup.toggleClipping( false );
 	this.popup.scrollElementIntoView();
-
-	return this;
 };
 
 /**
