@@ -134,15 +134,3 @@ ve.ui.FragmentInspector.prototype.getReadyProcess = function ( data ) {
 ve.ui.FragmentInspector.prototype.getBodyHeight = function () {
 	return Math.ceil( this.form.$element.outerHeight( true ) + this.$otherActions.outerHeight( true ) );
 };
-
-/**
- * Set the width of window to fit with contents.
- *
- * @param {number} [min=0] Min height
- * @param {number} [max] Max height (defaults to content's outer width)
- * @chainable
- */
-ve.ui.FragmentInspector.prototype.setDimensions = function ( dim ) {
-	// Parent method
-	ve.ui.FragmentInspector.super.prototype.setDimensions.call( this, dim );
-};
