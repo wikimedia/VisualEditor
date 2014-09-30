@@ -647,7 +647,7 @@ ve.ce.Surface.prototype.onDocumentMouseDown = function ( e ) {
 		return;
 	}
 
-	var selection, node, view = this;
+	var view = this;
 
 	// Remember the mouse is down
 	this.dragging = true;
@@ -668,13 +668,7 @@ ve.ce.Surface.prototype.onDocumentMouseDown = function ( e ) {
 		// Browser default behaviour for triple click won't behave as we want
 		e.preventDefault();
 
-		selection = this.model.getSelection();
-		node = this.documentView.getDocumentNode().getNodeFromOffset( selection.start );
-		// Find the nearest non-content node
-		while ( node.parent !== null && node.getModel().isContent() ) {
-			node = node.parent;
-		}
-		this.model.setSelection( node.getModel().getRange() );
+		this.getModel().getFragment().expandRange( 'closest', ve.dm.BranchNode ).adjustRange( 1, -1 ).select();
 	}
 };
 

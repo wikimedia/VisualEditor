@@ -351,7 +351,7 @@ ve.dm.SurfaceFragment.prototype.trimRange = function () {
  *  - `annotation`: Expands to cover a given annotation (argument) within the current range
  *  - `root`: Expands to cover the entire document
  *  - `siblings`: Expands to cover all sibling nodes
- *  - `closest`: Expands to cover the closest common ancestor node of a give type (argument)
+ *  - `closest`: Expands to cover the closest common ancestor node of a give type (ve.dm.Node)
  *  - `parent`: Expands to cover the closest common parent node
  * @param {Mixed} [type] Parameter to use with scope method if needed
  * @returns {ve.dm.SurfaceFragment} Expanded fragment
@@ -409,7 +409,7 @@ ve.dm.SurfaceFragment.prototype.expandRange = function ( scope, type ) {
 			// Grow range to cover closest common ancestor node of given type
 			node = this.document.selectNodes( oldRange, 'siblings' )[0].node;
 			parent = node.getParent();
-			while ( parent && parent.getType() !== type ) {
+			while ( parent && !( parent instanceof type ) ) {
 				node = parent;
 				parent = parent.getParent();
 			}

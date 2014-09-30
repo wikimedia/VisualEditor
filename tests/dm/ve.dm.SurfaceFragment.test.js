@@ -102,7 +102,7 @@ QUnit.test( 'expandRange (closest)', 1, function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument(),
 		surface = new ve.dm.Surface( doc ),
 		fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 20, 21 ) ),
-		exapandedFragment = fragment.expandRange( 'closest', 'invalid type' );
+		exapandedFragment = fragment.expandRange( 'closest', function () {} );
 	assert.strictEqual(
 		exapandedFragment.isNull(),
 		true,
