@@ -108,11 +108,11 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 	this.$documentNode
 		// Bug 65714: MSIE possibly needs `beforepaste` to also be bound; to test.
 		.on( 'paste', ve.bind( this.onPaste, this ) )
-		.on( 'focus', 'a', function () {
+		.on( 'focus', 'a', ve.bind( function () {
 			// Opera <= 12 triggers 'blur' on document node before any link is
 			// focused and we don't want that
 			this.$documentNode[0].focus();
-		} );
+		}, this ) );
 
 	if ( this.hasSelectionChangeEvents ) {
 		this.$document.on( 'selectionchange', ve.bind( this.onDocumentSelectionChange, this ) );
