@@ -72,7 +72,7 @@ ve.ui.Tool.static.getCommandName = function () {
  * @param {Object} direction Context direction with 'inline' & 'block' properties
  */
 ve.ui.Tool.prototype.onUpdateState = function ( fragment ) {
-	this.setDisabled( this.constructor.static.requiresRange && !fragment.getRange() );
+	this.setDisabled( this.constructor.static.requiresRange && fragment.isNull() );
 };
 
 /**

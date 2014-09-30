@@ -151,16 +151,22 @@ ve.ce.FocusableNode.prototype.onFocusableTeardown = function () {
  * @param {jQuery.Event} e Mouse down event
  */
 ve.ce.FocusableNode.prototype.onFocusableMouseDown = function ( e ) {
-	var surfaceModel = this.surface.getModel(),
-		selectionRange = surfaceModel.getSelection(),
+	var range,
+		surfaceModel = this.surface.getModel(),
+		selection = surfaceModel.getSelection(),
 		nodeRange = this.model.getOuterRange();
+
+	if ( !( selection instanceof ve.dm.LinearSelection ) ) {
+		return;
+	}
 
 	// Wait for native selection to change before correcting
 	setTimeout( function () {
-		surfaceModel.getFragment(
+		range = selection.getRange();
+		surfaceModel.getLinearFragment(
 			e.shiftKey ?
-				ve.Range.newCoveringRange(
-					[ selectionRange, nodeRange ], selectionRange.from > nodeRange.from
+				ve.Range.static.newCoveringRange(
+					[ range, nodeRange ], range.from > nodeRange.from
 				) :
 				nodeRange
 		).select();

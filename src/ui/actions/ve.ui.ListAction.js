@@ -67,11 +67,17 @@ ve.ui.ListAction.prototype.toggle = function ( style ) {
  * @param {string} style List style, e.g. 'number' or 'bullet'
  */
 ve.ui.ListAction.prototype.wrap = function ( style ) {
-	var tx, i, previousList, groupRange, group,
+	var tx, i, previousList, groupRange, group, range,
 		surfaceModel = this.surface.getModel(),
 		documentModel = surfaceModel.getDocument(),
 		selection = surfaceModel.getSelection(),
 		groups;
+
+	if ( !( selection instanceof ve.dm.LinearSelection ) ) {
+		return;
+	}
+
+	range = selection.getRange();
 
 	surfaceModel.breakpoint();
 
@@ -79,26 +85,29 @@ ve.ui.ListAction.prototype.wrap = function ( style ) {
 	// and not block slug.
 
 	if (
-		selection.isCollapsed() &&
-		!documentModel.data.isContentOffset( selection.to ) &&
-		documentModel.hasSlugAtOffset( selection.to )
+		range.isCollapsed() &&
+		!documentModel.data.isContentOffset( range.to ) &&
+		documentModel.hasSlugAtOffset( range.to )
 	) {
 		// Inside block level slug
-		surfaceModel.change( ve.dm.Transaction.newFromInsertion(
-			documentModel,
-			selection.from,
-			[
-				{ type: 'list', attributes: { style: style } },
-				{ type: 'listItem' },
-				{ type: 'paragraph' },
-				{ type: '/paragraph' },
-				{ type: '/listItem' },
-				{ type: '/list' }
+		surfaceModel.change(
+			ve.dm.Transaction.newFromInsertion(
+				documentModel,
+				range.from,
+				[
+					{ type: 'list', attributes: { style: style } },
+					{ type: 'listItem' },
+					{ type: 'paragraph' },
+					{ type: '/paragraph' },
+					{ type: '/listItem' },
+					{ type: '/list' }
 
-			]
-		), new ve.Range( selection.to + 3 ) );
+				]
+			),
+			new ve.dm.LinearSelection( documentModel, new ve.Range( range.to + 3 ) )
+		);
 	} else {
-		groups = documentModel.getCoveredSiblingGroups( selection );
+		groups = documentModel.getCoveredSiblingGroups( range );
 		for ( i = 0; i < groups.length; i++ ) {
 			group = groups[i];
 			if ( group.grandparent && group.grandparent.getType() === 'list' ) {
@@ -135,7 +144,10 @@ ve.ui.ListAction.prototype.wrap = function ( style ) {
 					[],
 					[{ type: 'listItem' }]
 				);
-				surfaceModel.change( tx, tx.translateRange( selection ) );
+				surfaceModel.change(
+					tx,
+					new ve.dm.LinearSelection( documentModel, tx.translateRange( range ) )
+				);
 			}
 		}
 	}
@@ -155,10 +167,14 @@ ve.ui.ListAction.prototype.unwrap = function () {
 		surfaceModel = this.surface.getModel(),
 		documentModel = surfaceModel.getDocument();
 
+	if ( !( surfaceModel.getSelection() instanceof ve.dm.LinearSelection ) ) {
+		return;
+	}
+
 	surfaceModel.breakpoint();
 
 	do {
-		node = documentModel.getBranchNodeFromOffset( surfaceModel.getSelection().start );
+		node = documentModel.getBranchNodeFromOffset( surfaceModel.getSelection().getRange().start );
 	} while ( node.hasMatchingAncestor( 'list' ) && this.surface.execute( 'indentation', 'decrease' ) );
 
 	surfaceModel.breakpoint();

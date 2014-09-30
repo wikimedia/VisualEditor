@@ -56,7 +56,7 @@ OO.mixinClass( ve.ce.SurfaceObserver, OO.EventEmitter );
  * selection does not equal as the last known selection, this event
  * is emitted (before the properties are updated).
  *
- * @event selectionChange
+ * @event rangeChange
  * @param {ve.Range|null} oldRange
  * @param {ve.Range|null} newRange
  */
@@ -140,12 +140,12 @@ ve.ce.SurfaceObserver.prototype.stopTimerLoop = function () {
  *
  * TODO: fixing selection in certain cases, handling selection across multiple nodes in Firefox
  *
- * FIXME: Does not work well (selectionChange is not emitted) when cursor is placed inside a slug
+ * FIXME: Does not work well (rangeChange is not emitted) when cursor is placed inside a slug
  * with a mouse.
  *
  * @method
  * @fires contentChange
- * @fires selectionChange
+ * @fires rangeChange
  */
 ve.ce.SurfaceObserver.prototype.pollOnce = function () {
 	this.pollOnceInternal( true );
@@ -176,7 +176,7 @@ ve.ce.SurfaceObserver.prototype.pollOnceSelection = function () {
  *
  * TODO: fixing selection in certain cases, handling selection across multiple nodes in Firefox
  *
- * FIXME: Does not work well (selectionChange is not emitted) when cursor is placed inside a slug
+ * FIXME: Does not work well (rangeChange is not emitted) when cursor is placed inside a slug
  * with a mouse.
  *
  * @method
@@ -184,7 +184,7 @@ ve.ce.SurfaceObserver.prototype.pollOnceSelection = function () {
  * @param {boolean} emitChanges Emit change events if selection changed
  * @param {boolean} selectionOnly Check for selection changes only
  * @fires contentChange
- * @fires selectionChange
+ * @fires rangeChange
  */
 ve.ce.SurfaceObserver.prototype.pollOnceInternal = function ( emitChanges, selectionOnly ) {
 	var $nodeOrSlug, node, text, hash, range, domRange, $slugWrapper,
@@ -280,11 +280,11 @@ ve.ce.SurfaceObserver.prototype.pollOnceInternal = function ( emitChanges, selec
 		}
 	}
 
-	// Only emit selectionChange event if there's a meaningful range difference
+	// Only emit rangeChange event if there's a meaningful range difference
 	if ( ( this.range && range ) ? !this.range.equals( range ) : ( this.range !== range ) ) {
 		if ( emitChanges ) {
 			this.emit(
-				'selectionChange',
+				'rangeChange',
 				this.range,
 				range
 			);

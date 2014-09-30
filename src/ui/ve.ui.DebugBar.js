@@ -107,10 +107,12 @@ ve.ui.DebugBar.prototype.getSurface = function () {
 /**
  * Handle select events on the attached surface
  *
- * @param {ve.Range} range
+ * @param {ve.dm.Selection} selection
  */
-ve.ui.DebugBar.prototype.onSurfaceSelect = function ( range ) {
-	if ( range ) {
+ve.ui.DebugBar.prototype.onSurfaceSelect = function ( selection ) {
+	var range;
+	if ( selection instanceof ve.dm.LinearSelection ) {
+		range = selection.getRange();
 		this.fromTextInput.setValue( range.from );
 		this.toTextInput.setValue( range.to );
 	}

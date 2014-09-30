@@ -181,36 +181,36 @@ ve.ui.Toolbar.prototype.onContextChange = function () {
  */
 ve.ui.Toolbar.prototype.updateToolState = function () {
 	var dirInline, dirBlock, fragmentAnnotation,
-		fragment = this.surface.getModel().getFragment( null, false );
+		fragment = this.surface.getModel().getFragment();
 
-	// Update context direction for button icons UI
-	// by default, inline and block directions are the same
-	if ( !fragment.isNull() ) {
-		dirInline = dirBlock = this.surface.getView().documentView.getDirectionFromRange( fragment.getRange() );
+	// Update context direction for button icons UI.
+	// By default, inline and block directions are the same.
+	// If no context direction is available, use document model direction.
+	dirInline = dirBlock = this.surface.getView().documentView.getDirectionFromSelection( fragment.getSelection() ) ||
+		fragment.getDocument().getDir();
 
-		// 'inline' direction is different only if we are inside a language annotation
-		fragmentAnnotation = fragment.getAnnotations();
-		if ( fragmentAnnotation.hasAnnotationWithName( 'meta/language' ) ) {
-			dirInline = fragmentAnnotation.getAnnotationsByName( 'meta/language' ).get( 0 ).getAttribute( 'dir' );
-		}
+	// 'inline' direction is different only if we are inside a language annotation
+	fragmentAnnotation = fragment.getAnnotations();
+	if ( fragmentAnnotation.hasAnnotationWithName( 'meta/language' ) ) {
+		dirInline = fragmentAnnotation.getAnnotationsByName( 'meta/language' ).get( 0 ).getAttribute( 'dir' );
+	}
 
-		if ( dirInline !== this.contextDirection.inline ) {
-			// remove previous class:
-			this.$element.removeClass( 've-ui-dir-inline-rtl ve-ui-dir-inline-ltr' );
-			// The following classes can be used here:
-			// ve-ui-dir-inline-ltr
-			// ve-ui-dir-inline-rtl
-			this.$element.addClass( 've-ui-dir-inline-' + dirInline );
-			this.contextDirection.inline = dirInline;
-		}
-		if ( dirBlock !== this.contextDirection.block ) {
-			this.$element.removeClass( 've-ui-dir-block-rtl ve-ui-dir-block-ltr' );
-			// The following classes can be used here:
-			// ve-ui-dir-block-ltr
-			// ve-ui-dir-block-rtl
-			this.$element.addClass( 've-ui-dir-block-' + dirBlock );
-			this.contextDirection.block = dirBlock;
-		}
+	if ( dirInline !== this.contextDirection.inline ) {
+		// remove previous class:
+		this.$element.removeClass( 've-ui-dir-inline-rtl ve-ui-dir-inline-ltr' );
+		// The following classes can be used here:
+		// ve-ui-dir-inline-ltr
+		// ve-ui-dir-inline-rtl
+		this.$element.addClass( 've-ui-dir-inline-' + dirInline );
+		this.contextDirection.inline = dirInline;
+	}
+	if ( dirBlock !== this.contextDirection.block ) {
+		this.$element.removeClass( 've-ui-dir-block-rtl ve-ui-dir-block-ltr' );
+		// The following classes can be used here:
+		// ve-ui-dir-block-ltr
+		// ve-ui-dir-block-rtl
+		this.$element.addClass( 've-ui-dir-block-' + dirBlock );
+		this.contextDirection.block = dirBlock;
 	}
 	this.emit( 'updateState', fragment, this.contextDirection );
 };

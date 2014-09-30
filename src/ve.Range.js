@@ -18,6 +18,10 @@ ve.Range = function VeRange( from, to ) {
 	this.end = this.from < this.to ? this.to : this.from;
 };
 
+/* Inheritance */
+
+OO.initClass( ve.Range );
+
 /**
  * @property {number} from Starting offset
  */
@@ -44,9 +48,20 @@ ve.Range = function VeRange( from, to ) {
  * @param {string} json JSON serialization
  * @return {ve.Range} New range
  */
-ve.Range.newFromJSON = function ( json ) {
-	var args = JSON.parse( json );
-	return new ve.Range( args[0], args[1] );
+ve.Range.static.newFromJSON = function ( json ) {
+	return this.newFromHash( JSON.parse( json ) );
+};
+
+/**
+ * Create a new range from a range hash object
+ *
+ * @see ve.Range#getHashObject
+ *
+ * @param {Object} hash Hash object
+ * @return {ve.Range} New range
+ */
+ve.Range.static.newFromHash = function ( hash ) {
+	return new ve.Range( hash.from, hash.to );
 };
 
 /**
@@ -57,7 +72,7 @@ ve.Range.newFromJSON = function ( json ) {
  * @param {boolean} backwards Return a backwards range
  * @returns {ve.Range} Range that spans all of the given ranges
  */
-ve.Range.newCoveringRange = function ( ranges, backwards ) {
+ve.Range.static.newCoveringRange = function ( ranges, backwards ) {
 	var minStart, maxEnd, i, range;
 	if ( !ranges || ranges.length === 0 ) {
 		throw new Error( 'newCoveringRange() requires at least one range' );
@@ -88,7 +103,7 @@ ve.Range.newCoveringRange = function ( ranges, backwards ) {
  * @returns {ve.Range} Clone of range
  */
 ve.Range.prototype.clone = function () {
-	return new ve.Range( this.from, this.to );
+	return new this.constructor( this.from, this.to );
 };
 
 /**
@@ -117,7 +132,7 @@ ve.Range.prototype.containsRange = function ( range ) {
  * @returns {number} Length of range
  */
 ve.Range.prototype.getLength = function () {
-	return Math.abs( this.from - this.to );
+	return this.end - this.start;
 };
 
 /**
@@ -184,7 +199,7 @@ ve.Range.prototype.truncate = function ( length ) {
  * @return {ve.Range} Range covering this range and other
  */
 ve.Range.prototype.expand = function ( other ) {
-	return ve.Range.newCoveringRange( [this, other], this.isBackwards() );
+	return ve.Range.static.newCoveringRange( [this, other], this.isBackwards() );
 };
 
 /**
@@ -215,5 +230,17 @@ ve.Range.prototype.isBackwards = function () {
  * @return {string} Serialized range
  */
 ve.Range.prototype.toJSON = function () {
-	return JSON.stringify( [this.from, this.to] );
+	return JSON.stringify( this.getHashObject() );
+};
+
+/**
+ * Get a hash object summarizing the range
+ *
+ * @return {Object} Hash object
+ */
+ve.Range.prototype.getHashObject = function () {
+	return {
+		from: this.from,
+		to: this.to
+	};
 };

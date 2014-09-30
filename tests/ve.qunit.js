@@ -216,6 +216,12 @@
 		QUnit.push( QUnit.equiv(actual, expected), actual, expected, message );
 	};
 
+	QUnit.assert.equalHash = function ( actual, expected, message ) {
+		actual = actual && actual.getHashObject();
+		expected = expected && expected.getHashObject();
+		QUnit.push( QUnit.equiv(actual, expected), actual, expected, message );
+	};
+
 	QUnit.diff = function ( o, n ) {
 		// o and n are partially HTML escaped by QUnit. As difflib does
 		// its own escaping we should unescape them first.

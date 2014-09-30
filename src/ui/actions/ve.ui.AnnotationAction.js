@@ -82,7 +82,7 @@ ve.ui.AnnotationAction.prototype.toggle = function ( name, data ) {
 		annotation = ve.dm.annotationFactory.create( name, data ),
 		removes = annotation.constructor.static.removes;
 
-	if ( !fragment.getRange().isCollapsed() ) {
+	if ( !fragment.getSelection().isCollapsed() ) {
 		if ( !fragment.getAnnotations().containsComparable( annotation ) ) {
 			for ( i = removes.length - 1; i >= 0; i-- ) {
 				fragment.annotateContent( 'clear', removes[i] );

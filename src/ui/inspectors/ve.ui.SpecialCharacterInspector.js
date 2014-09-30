@@ -19,7 +19,6 @@ ve.ui.SpecialCharacterInspector = function VeUiSpecialCharacterInspector( config
 
 	this.characters = null;
 	this.$buttonDomList = null;
-	this.initialSelection = null;
 	this.categories = null;
 
 	this.$element.addClass( 've-ui-specialCharacterInspector' );
@@ -62,10 +61,6 @@ ve.ui.SpecialCharacterInspector.prototype.initialize = function () {
 ve.ui.SpecialCharacterInspector.prototype.getSetupProcess = function ( data ) {
 	return ve.ui.SpecialCharacterInspector.super.prototype.getSetupProcess.call( this, data )
 		.next( function () {
-			// Preserve initial selection so we can collapse cursor position
-			// after we're done adding
-			this.initialSelection = this.getFragment().getRange();
-
 			// Don't request the character list again if we already have it
 			if ( !this.characters ) {
 				this.$spinner.show();
@@ -146,7 +141,7 @@ ve.ui.SpecialCharacterInspector.prototype.onListClick = function ( e ) {
 	var character = $( e.target ).data( 'character' );
 
 	if ( character !== undefined ) {
-		this.getFragment().insertContent( character, true ).collapseRangeToEnd().select();
+		this.getFragment().insertContent( character, true ).collapseToEnd().select();
 	}
 };
 

@@ -59,10 +59,10 @@ ve.ui.ContentAction.prototype.remove = function () {
  * Select content.
  *
  * @method
- * @param {ve.Range} range Range to select
+ * @param {ve.dm.Selection} selection Selection
  */
-ve.ui.ContentAction.prototype.select = function ( range ) {
-	this.surface.getModel().setSelection( range );
+ve.ui.ContentAction.prototype.select = function ( selection ) {
+	this.surface.getModel().setSelection( selection );
 };
 
 /**
