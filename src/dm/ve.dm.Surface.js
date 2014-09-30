@@ -525,7 +525,7 @@ ve.dm.Surface.prototype.stopQueueingContextChanges = function () {
  */
 ve.dm.Surface.prototype.setSelection = function ( selection ) {
 	var left, right, leftAnnotations, rightAnnotations, insertionAnnotations,
-		startNode, endNode, selectedNode,
+		startNode, selectedNode,
 		branchNodes = {},
 		oldSelection = this.selection,
 		contextChange = false,
@@ -550,16 +550,7 @@ ve.dm.Surface.prototype.setSelection = function ( selection ) {
 		// Update selected node
 		if ( !selection.isCollapsed() ) {
 			startNode = this.documentModel.documentNode.getNodeFromOffset( selection.start + 1 );
-			if ( startNode ) {
-				endNode = this.documentModel.documentNode.getNodeFromOffset( selection.end - 1 );
-				if ( startNode === endNode ) {
-					selectedNode = startNode;
-				}
-			}
-		} else {
-			// Check if the range is inside a focusable node with a collapsed selection
-			startNode = this.documentModel.documentNode.getNodeFromOffset( selection.start );
-			if ( startNode ) {
+			if ( startNode && startNode.getOuterRange().equalsSelection( selection ) ) {
 				selectedNode = startNode;
 			}
 		}
