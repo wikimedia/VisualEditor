@@ -188,7 +188,7 @@ ve.ce.SurfaceObserver.prototype.pollOnceSelection = function () {
  */
 ve.ce.SurfaceObserver.prototype.pollOnceInternal = function ( emitChanges, selectionOnly ) {
 	var $nodeOrSlug, node, text, hash, range, domRange, $slugWrapper,
-		domRangeChange = false,
+		anchorNodeChange = false,
 		slugChange = false,
 		observer = this;
 
@@ -201,82 +201,82 @@ ve.ce.SurfaceObserver.prototype.pollOnceInternal = function ( emitChanges, selec
 	domRange = ve.ce.DomRange.newFromDocument( this.domDocument );
 
 	if ( !domRange.equals( this.domRange ) ) {
+		if ( !this.domRange || this.domRange.anchorNode !== domRange.anchorNode ) {
+			anchorNodeChange = true;
+		}
 		range = domRange.getRange();
 		this.domRange = domRange;
-		domRangeChange = true;
 	}
 
-	if ( !selectionOnly ) {
-		if ( domRangeChange ) {
-			node = null;
-			$nodeOrSlug = $( domRange.anchorNode ).closest( '.ve-ce-branchNode, .ve-ce-branchNode-slug' );
-			if ( $nodeOrSlug.length ) {
-				if ( $nodeOrSlug.hasClass( 've-ce-branchNode-slug' ) ) {
-					$slugWrapper = $nodeOrSlug.closest( '.ve-ce-branchNode-blockSlugWrapper' );
-				} else {
-					node = $nodeOrSlug.data( 'view' );
-					// Check this node belongs to our document
-					if ( node && node.root !== this.documentView.getDocumentNode() ) {
-						node = null;
-						range = null;
-					}
+	if ( anchorNodeChange ) {
+		node = null;
+		$nodeOrSlug = $( domRange.anchorNode ).closest( '.ve-ce-branchNode, .ve-ce-branchNode-slug' );
+		if ( $nodeOrSlug.length ) {
+			if ( $nodeOrSlug.hasClass( 've-ce-branchNode-slug' ) ) {
+				$slugWrapper = $nodeOrSlug.closest( '.ve-ce-branchNode-blockSlugWrapper' );
+			} else {
+				node = $nodeOrSlug.data( 'view' );
+				// Check this node belongs to our document
+				if ( node && node.root !== this.documentView.getDocumentNode() ) {
+					node = null;
+					range = null;
 				}
-			}
-
-			if ( this.$slugWrapper && !this.$slugWrapper.is( $slugWrapper ) ) {
-				this.$slugWrapper
-					.addClass( 've-ce-branchNode-blockSlugWrapper-unfocused' )
-					.removeClass( 've-ce-branchNode-blockSlugWrapper-focused' );
-				this.$slugWrapper = null;
-				slugChange = true;
-			}
-
-			if ( $slugWrapper && !$slugWrapper.is( this.$slugWrapper) ) {
-				this.$slugWrapper = $slugWrapper
-					.addClass( 've-ce-branchNode-blockSlugWrapper-focused' )
-					.removeClass( 've-ce-branchNode-blockSlugWrapper-unfocused' );
-				slugChange = true;
-			}
-
-			if ( slugChange ) {
-				// Emit 'position' on the surface view after the animation completes
-				this.setTimeout( function () {
-					if ( observer.surface ) {
-						observer.surface.emit( 'position' );
-					}
-				}, 200 );
 			}
 		}
 
-		if ( this.node !== node ) {
-			if ( node === null ) {
-				this.text = null;
-				this.hash = null;
-				this.node = null;
-			} else {
-				this.text = ve.ce.getDomText( node.$element[0] );
-				this.hash = ve.ce.getDomHash( node.$element[0] );
-				this.node = node;
-			}
-		} else if ( node !== null ) {
-			text = ve.ce.getDomText( node.$element[0] );
-			hash = ve.ce.getDomHash( node.$element[0] );
-			if ( this.text !== text || this.hash !== hash ) {
-				if ( emitChanges ) {
-					this.emit(
-						'contentChange',
-						node,
-						{
-							text: this.text,
-							hash: this.hash,
-							range: this.range
-						},
-						{ text: text, hash: hash, range: range }
-					);
+		if ( this.$slugWrapper && !this.$slugWrapper.is( $slugWrapper ) ) {
+			this.$slugWrapper
+				.addClass( 've-ce-branchNode-blockSlugWrapper-unfocused' )
+				.removeClass( 've-ce-branchNode-blockSlugWrapper-focused' );
+			this.$slugWrapper = null;
+			slugChange = true;
+		}
+
+		if ( $slugWrapper && !$slugWrapper.is( this.$slugWrapper ) ) {
+			this.$slugWrapper = $slugWrapper
+				.addClass( 've-ce-branchNode-blockSlugWrapper-focused' )
+				.removeClass( 've-ce-branchNode-blockSlugWrapper-unfocused' );
+			slugChange = true;
+		}
+
+		if ( slugChange ) {
+			// Emit 'position' on the surface view after the animation completes
+			this.setTimeout( function () {
+				if ( observer.surface ) {
+					observer.surface.emit( 'position' );
 				}
-				this.text = text;
-				this.hash = hash;
+			}, 200 );
+		}
+	}
+
+	if ( this.node !== node ) {
+		if ( node === null ) {
+			this.text = null;
+			this.hash = null;
+			this.node = null;
+		} else {
+			this.text = ve.ce.getDomText( node.$element[0] );
+			this.hash = ve.ce.getDomHash( node.$element[0] );
+			this.node = node;
+		}
+	} else if ( !selectionOnly && node !== null ) {
+		text = ve.ce.getDomText( node.$element[0] );
+		hash = ve.ce.getDomHash( node.$element[0] );
+		if ( this.text !== text || this.hash !== hash ) {
+			if ( emitChanges ) {
+				this.emit(
+					'contentChange',
+					node,
+					{
+						text: this.text,
+						hash: this.hash,
+						range: this.range
+					},
+					{ text: text, hash: hash, range: range }
+				);
 			}
+			this.text = text;
+			this.hash = hash;
 		}
 	}
 
