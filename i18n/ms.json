@@ -22,6 +22,7 @@
 	"visualeditor-clipboard-cut": "Kerat",
 	"visualeditor-clipboard-paste": "Tampal",
 	"visualeditor-clipboard-paste-special": "Tampal sebagai teks biasa",
+	"visualeditor-contextitemwidget-label-secondary": "Sunting",
 	"visualeditor-dialog-action-apply": "Gunakan perubahan",
 	"visualeditor-dialog-action-cancel": "Batalkan",
 	"visualeditor-dialog-action-done": "Siap",
@@ -73,10 +74,12 @@
 	"visualeditor-shortcuts-text-style": "Penggayaan teks",
 	"visualeditor-specialcharacter-button-tooltip": "Aksara khas",
 	"visualeditor-specialcharacterinspector-title": "Aksara khas",
+	"visualeditor-toolbar-format-tooltip": "Formatkan perenggan",
 	"visualeditor-toolbar-history": "Sejarah",
 	"visualeditor-toolbar-insert": "Sisipkan",
 	"visualeditor-toolbar-paragraph-format": "Pemformatan",
 	"visualeditor-toolbar-structure": "Struktur",
+	"visualeditor-toolbar-style-tooltip": "Olah gaya teks",
 	"visualeditor-toolbar-text-style": "Penggayaan",
 	"visualeditor-version-label": "Versi"
 }
