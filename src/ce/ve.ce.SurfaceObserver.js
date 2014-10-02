@@ -62,12 +62,9 @@ OO.mixinClass( ve.ce.SurfaceObserver, OO.EventEmitter );
  */
 
 /**
- * When #poll observes a change in content or the selection such
- * that a slug may have to be added or removed, this event is emitted
+ * When #poll observes that the cursor was moved into a slug
  *
- * @event slugChange
- * @param {ve.Range|null} range New range
- * @param {boolean} newSlug The cursor was moved into a slug
+ * @event slugEnter
  */
 
 /* Methods */
@@ -195,12 +192,13 @@ ve.ce.SurfaceObserver.prototype.pollOnceSelection = function () {
  * @param {boolean} selectionOnly Check for selection changes only
  * @fires contentChange
  * @fires rangeChange
- * @fires slugChange
+ * @fires slugEnter
  */
 ve.ce.SurfaceObserver.prototype.pollOnceInternal = function ( emitChanges, selectionOnly ) {
-	var $nodeOrSlug, node, text, hash, range, domRange, $slugWrapper, newSlug,
+	var $nodeOrSlug, node, text, hash, range, domRange, $slugWrapper,
 		anchorNodeChange = false,
-		slugChange = false,
+		enteredSlug = false,
+		leftSlug = false,
 		observer = this;
 
 	if ( !this.domDocument ) {
@@ -240,18 +238,17 @@ ve.ce.SurfaceObserver.prototype.pollOnceInternal = function ( emitChanges, selec
 				.addClass( 've-ce-branchNode-blockSlugWrapper-unfocused' )
 				.removeClass( 've-ce-branchNode-blockSlugWrapper-focused' );
 			this.$slugWrapper = null;
-			slugChange = true;
+			leftSlug = true;
 		}
 
 		if ( $slugWrapper && $slugWrapper.length && !$slugWrapper.is( this.$slugWrapper ) ) {
 			this.$slugWrapper = $slugWrapper
 				.addClass( 've-ce-branchNode-blockSlugWrapper-focused' )
 				.removeClass( 've-ce-branchNode-blockSlugWrapper-unfocused' );
-			slugChange = true;
-			newSlug = true;
+			enteredSlug = true;
 		}
 
-		if ( slugChange ) {
+		if ( enteredSlug || leftSlug ) {
 			// Emit 'position' on the surface view after the animation completes
 			this.setTimeout( function () {
 				if ( observer.surface ) {
@@ -286,7 +283,6 @@ ve.ce.SurfaceObserver.prototype.pollOnceInternal = function ( emitChanges, selec
 					},
 					{ text: text, hash: hash, range: range }
 				);
-				slugChange = true;
 			}
 			this.text = text;
 			this.hash = hash;
@@ -301,13 +297,12 @@ ve.ce.SurfaceObserver.prototype.pollOnceInternal = function ( emitChanges, selec
 				this.range,
 				range
 			);
-			slugChange = true;
 		}
 		this.range = range;
 	}
 
-	if ( slugChange ) {
-		this.emit( 'slugChange', range, newSlug );
+	if ( emitChanges && enteredSlug ) {
+		this.emit( 'slugEnter' );
 	}
 };
 
