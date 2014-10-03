@@ -2328,8 +2328,6 @@ ve.ce.Surface.prototype.showSelection = function ( range ) {
 	} else {
 		nativeRange.setStart( rangeSelection.start.node, rangeSelection.start.offset );
 		this.nativeSelection.addRange( nativeRange );
-		// Magic workaround for broken Firefox cursoring (bug 70724 / Mozilla bug 1075901)
-		this.nativeSelection.collapseToStart();
 	}
 	// Setting a range doesn't give focus in all browsers so make sure this happens
 	// Also set focus after range to prevent scrolling to top
