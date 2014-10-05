@@ -10,7 +10,8 @@
 			"TurkishStyles",
 			"Meelo",
 			"Trncmvsr",
-			"Sayginer"
+			"Sayginer",
+			"Violetanka"
 		]
 	},
 	"visualeditor": "Görsel Düzenleyici",
@@ -29,6 +30,7 @@
 	"visualeditor-clipboard-cut": "Kes",
 	"visualeditor-clipboard-paste": "Yapıştır",
 	"visualeditor-clipboard-paste-special": "Sade metin olarak yapıştır",
+	"visualeditor-contextitemwidget-label-secondary": "Düzenle",
 	"visualeditor-dialog-action-apply": "Değişiklikleri uygula",
 	"visualeditor-dialog-action-cancel": "İptal et",
 	"visualeditor-dialog-action-goback": "Geri dön",
@@ -67,7 +69,9 @@
 	"visualeditor-shortcuts-text-style": "Metin biçimlendirme",
 	"visualeditor-specialcharacter-button-tooltip": "Özel karakter",
 	"visualeditor-specialcharacterinspector-title": "Özel karakter",
+	"visualeditor-toolbar-format-tooltip": "Paragraf biçimi",
 	"visualeditor-toolbar-history": "Geçmiş",
 	"visualeditor-toolbar-paragraph-format": "Biçimlendirme",
+	"visualeditor-toolbar-style-tooltip": "Metin biçimi",
 	"visualeditor-version-label": "Sürüm"
 }
