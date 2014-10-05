@@ -191,8 +191,18 @@ ve.ui.MediaSizeWidget.prototype.onScalableDefaultSizeChange = function ( isDefau
 /**
  * Respond to width/height input value change. Only update dimensions if
  * the value is numeric. Invoke validation for every change.
+ *
+ * This is triggered every time the dimension widget has its values changed
+ * either by the user or externally. The external call to 'setCurrentDimensions'
+ * will result in this event being evoked if the dimension inputs have changed,
+ * and same with clicking the 'full size' button and changing dimensions type.
+ * The 'change' event for the entire widget is emitted through this method, as
+ * it means that the actual values have changed, regardless of whether they
+ * are valid or not.
+ *
  * @param {string} type The input that was updated, 'width' or 'height'
  * @param {string} value The new value of the input
+ * @fires change
  */
 ve.ui.MediaSizeWidget.prototype.onDimensionsChange = function ( type, value ) {
 	var dimensions = {};
@@ -208,6 +218,9 @@ ve.ui.MediaSizeWidget.prototype.onDimensionsChange = function ( type, value ) {
 			this.validateDimensions();
 		}
 	}
+
+	// Emit change event
+	this.emit( 'change', this.currentDimensions );
 };
 
 /**
@@ -477,9 +490,6 @@ ve.ui.MediaSizeWidget.prototype.setCurrentDimensions = function ( dimensions ) {
 		this.scalable.setCurrentDimensions( this.currentDimensions );
 
 		this.validateDimensions();
-
-		// Emit change event
-		this.emit( 'change', this.currentDimensions );
 	}
 	this.preventChangeRecursion = false;
 };
