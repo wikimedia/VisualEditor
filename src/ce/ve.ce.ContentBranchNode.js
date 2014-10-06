@@ -104,12 +104,35 @@ ve.ce.ContentBranchNode.prototype.onChildUpdate = function ( transaction ) {
  *
  * @method
  */
-ve.ce.ContentBranchNode.prototype.onSplice = function () {
+ve.ce.ContentBranchNode.prototype.onSplice = function ( index, howmany ) {
 	// Parent method
 	ve.ce.BranchNode.prototype.onSplice.apply( this, arguments );
 
+	// HACK: adjust slugNodes indexes if isRenderingLocked. This should be sufficient to
+	// keep this.slugNodes valid - only text changes can occur, which cannot create a
+	// requirement for a new slug (it can make an existing slug redundant, but it is
+	// harmless to leave it there).
+	if (
+		this.root instanceof ve.ce.DocumentNode &&
+		this.root.getSurface().isRenderingLocked
+	) {
+		this.slugNodes.splice.apply( this.slugNodes, [ index, howmany ].concat( new Array( arguments.length - 2 ) ) );
+	}
+
 	// Rerender to make sure annotations are applied correctly
 	this.renderContents();
+};
+
+/** @inheritdoc */
+ve.ce.ContentBranchNode.prototype.setupSlugs = function () {
+	// Respect render lock
+	if (
+		this.root instanceof ve.ce.DocumentNode &&
+		this.root.getSurface().isRenderingLocked()
+	) {
+		return;
+	}
+	ve.ce.BranchNode.prototype.setupSlugs.apply( this, arguments );
 };
 
 /**

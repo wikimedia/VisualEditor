@@ -386,6 +386,13 @@ ve.dm.TransactionProcessor.processors.replace = function ( op ) {
 			// Text-only replacement
 			// Queue a resize for the text node
 			this.synchronizer.pushResize( node, insert.length - remove.length );
+		} else if (
+			!removeHasStructure && !insertHasStructure && remove.length === 0 && insert.length > 0 &&
+			selection.length === 1 && node && node.canContainContent() &&
+			( selection[0].indexInNode !== undefined || node.getLength() === 0 )
+		) {
+			// Text-only addition where a text node didn't exist before. Create one
+			this.synchronizer.pushInsertTextNode( node, selection[0].indexInNode || 0, insert.length - remove.length );
 		} else {
 			// Replacement is not exclusively text
 			// Rebuild all covered nodes
