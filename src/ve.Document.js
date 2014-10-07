@@ -498,16 +498,16 @@ ve.Document.prototype.selectNodes = function ( range, mode ) {
 /**
  * Get groups of sibling nodes covered by the given range.
  *
- * @param {ve.Range} selection Range
+ * @param {ve.Range} range Range
  * @returns {Array} Array of objects. Each object has the following keys:
  *
  *  - nodes: Array of sibling nodes covered by a part of range
  *  - parent: Parent of all of these nodes
  *  - grandparent: parent's parent
  */
-ve.Document.prototype.getCoveredSiblingGroups = function ( selection ) {
+ve.Document.prototype.getCoveredSiblingGroups = function ( range ) {
 	var i, firstCoveredSibling, lastCoveredSibling, node, parentNode, siblingNode,
-		leaves = this.selectNodes( selection, 'leaves' ),
+		leaves = this.selectNodes( range, 'leaves' ),
 		groups = [],
 		lastEndOffset = 0;
 	for ( i = 0; i < leaves.length; i++ ) {

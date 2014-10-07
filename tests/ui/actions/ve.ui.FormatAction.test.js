@@ -15,7 +15,7 @@ QUnit.test( 'convert', function ( assert ) {
 				range: new ve.Range( 14, 16 ),
 				type: 'heading',
 				attributes: { level: 2 },
-				expectedSelection: new ve.Range( 14, 16 ),
+				expectedRange: new ve.Range( 14, 16 ),
 				expectedData: function ( data ) {
 					data.splice( 12, 1, { type: 'heading', attributes: { level: 2 } } );
 					data.splice( 19, 1, { type: '/heading' } );
@@ -26,7 +26,7 @@ QUnit.test( 'convert', function ( assert ) {
 				range: new ve.Range( 15, 50 ),
 				type: 'heading',
 				attributes: { level: 3 },
-				expectedSelection: new ve.Range( 15, 50 ),
+				expectedRange: new ve.Range( 15, 50 ),
 				expectedData: function ( data ) {
 					data.splice( 12, 1, { type: 'heading', attributes: { level: 3 } } );
 					data.splice( 19, 1, { type: '/heading' } );
@@ -43,7 +43,7 @@ QUnit.test( 'convert', function ( assert ) {
 				range: new ve.Range( 4, 28 ),
 				type: 'heading',
 				attributes: { level: 1 },
-				expectedSelection: new ve.Range( 4, 28 ),
+				expectedRange: new ve.Range( 4, 28 ),
 				expectedData: function ( data ) {
 					data.splice( 2, 1, { type: 'heading', attributes: { level: 1 } } );
 					data.splice( 9, 1, { type: '/heading' } );
@@ -58,7 +58,7 @@ QUnit.test( 'convert', function ( assert ) {
 				range: new ve.Range( 5, 26 ),
 				type: 'preformatted',
 				attributes: undefined,
-				expectedSelection: new ve.Range( 5, 26 ),
+				expectedRange: new ve.Range( 5, 26 ),
 				expectedData: function ( data ) {
 					data.splice( 2, 1, { type: 'preformatted' } );
 					data.splice( 9, 1, { type: '/preformatted' } );
@@ -73,7 +73,7 @@ QUnit.test( 'convert', function ( assert ) {
 				range: new ve.Range( 146, 159 ),
 				type: 'paragraph',
 				attributes: undefined,
-				expectedSelection: new ve.Range( 146, 159 ),
+				expectedRange: new ve.Range( 146, 159 ),
 				expectedData: function ( data ) {
 					data.splice( 145, 1, { type: 'paragraph' } );
 					data.splice( 159, 1, { type: '/paragraph' } );
@@ -84,7 +84,7 @@ QUnit.test( 'convert', function ( assert ) {
 				range: new ve.Range( 165, 180 ),
 				type: 'paragraph',
 				attributes: undefined,
-				expectedSelection: new ve.Range( 165, 180 ),
+				expectedRange: new ve.Range( 165, 180 ),
 				expectedData: function ( data ) {
 					data.splice( 162, 1, { type: 'paragraph' } );
 					data.splice( 183, 1, { type: '/paragraph' } );
@@ -95,6 +95,6 @@ QUnit.test( 'convert', function ( assert ) {
 
 	QUnit.expect( cases.length * 4 );
 	for ( i = 0; i < cases.length; i++ ) {
-		ve.test.utils.runFormatConverterTest( assert, cases[i].range, cases[i].type, cases[i].attributes, cases[i].expectedSelection, cases[i].expectedData, cases[i].msg );
+		ve.test.utils.runFormatConverterTest( assert, cases[i].range, cases[i].type, cases[i].attributes, cases[i].expectedRange, cases[i].expectedData, cases[i].msg );
 	}
 } );

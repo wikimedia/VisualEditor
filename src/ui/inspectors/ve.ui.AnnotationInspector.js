@@ -160,24 +160,24 @@ ve.ui.AnnotationInspector.prototype.getSetupProcess = function ( data ) {
 				surfaceModel = fragment.getSurface(),
 				annotation = this.getMatchingAnnotations( fragment, true ).get( 0 );
 
-			this.previousSelection = fragment.getRange();
+			this.previousSelection = fragment.getSelection();
 			surfaceModel.pushStaging();
 
 			// Initialize range
-			if ( !annotation ) {
+			if ( this.previousSelection instanceof ve.dm.LinearSelection && !annotation ) {
 				if (
-					fragment.getRange().isCollapsed() &&
-					fragment.getDocument().data.isContentOffset( fragment.getRange().start )
+					fragment.getSelection().isCollapsed() &&
+					fragment.getDocument().data.isContentOffset( fragment.getSelection().getRange().start )
 				) {
 					// Expand to nearest word
-					expandedFragment = fragment.expandRange( 'word' );
+					expandedFragment = fragment.expandLinearSelection( 'word' );
 					fragment = expandedFragment;
 				} else {
 					// Trim whitespace
-					trimmedFragment = fragment.trimRange();
+					trimmedFragment = fragment.trimLinearSelection();
 					fragment = trimmedFragment;
 				}
-				if ( !fragment.getRange().isCollapsed() ) {
+				if ( !fragment.getSelection().isCollapsed() ) {
 					// Create annotation from selection
 					annotation = this.getAnnotationFromFragment( fragment );
 					if ( annotation ) {
@@ -186,13 +186,13 @@ ve.ui.AnnotationInspector.prototype.getSetupProcess = function ( data ) {
 				}
 			} else {
 				// Expand range to cover annotation
-				expandedFragment = fragment.expandRange( 'annotation', annotation );
+				expandedFragment = fragment.expandLinearSelection( 'annotation', annotation );
 				fragment = expandedFragment;
 			}
 
 			// Update selection
 			fragment.select();
-			this.initialSelection = fragment.getRange();
+			this.initialSelection = fragment.getSelection();
 
 			// The initial annotation is the first matching annotation in the fragment
 			this.initialAnnotation = this.getMatchingAnnotations( fragment, true ).get( 0 );
@@ -226,7 +226,11 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 				remove = this.shouldRemoveAnnotation() || data.action === 'remove',
 				surfaceModel = this.getFragment().getSurface(),
 				fragment = surfaceModel.getFragment( this.initialSelection, false ),
-				selection = this.getFragment().getRange();
+				selection = this.getFragment().getSelection();
+
+			if ( !( selection instanceof ve.dm.LinearSelection ) ) {
+				return;
+			}
 
 			if ( !remove ) {
 				if ( this.initialSelection.isCollapsed() ) {
@@ -256,10 +260,10 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 				if ( insertion.length ) {
 					fragment.insertContent( insertion, true );
 					// Move cursor to the end of the inserted content, even if back button is used
-					fragment.adjustRange( -insertion.length, 0 );
-					this.previousSelection = new ve.Range(
-						this.initialSelection.start + insertion.length
-					);
+					fragment.adjustLinearSelection( -insertion.length, 0 );
+					this.previousSelection = new ve.dm.LinearSelection( fragment.getDocument(), new ve.Range(
+						this.initialSelection.getRange().start + insertion.length
+					) );
 				}
 			}
 			if ( remove || replace ) {
@@ -271,7 +275,7 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 			}
 			if ( replace ) {
 				// Apply new annotation
-				if ( fragment.getRange().isCollapsed() ) {
+				if ( fragment.getSelection().isCollapsed() ) {
 					insertionAnnotation = true;
 				} else {
 					fragment.annotateContent( 'set', annotation );
@@ -288,7 +292,8 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 			if ( insertionAnnotation ) {
 				surfaceModel.addInsertionAnnotations( annotation );
 			}
-
+		}, this )
+		.next( function () {
 			// Reset state
 			this.previousSelection = null;
 			this.initialSelection = null;

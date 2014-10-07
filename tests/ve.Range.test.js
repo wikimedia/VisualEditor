@@ -76,20 +76,23 @@ QUnit.test( 'Factory methods & serialization (newCoveringRange, newFromJSON, toJ
 	var range = new ve.Range( 100, 200 );
 
 	assert.equalRange(
-		ve.Range.newCoveringRange( [ range, new ve.Range( 150, 250 ) ] ),
+		ve.Range.static.newCoveringRange( [ range, new ve.Range( 150, 250 ) ] ),
 		new ve.Range( 100, 250 ),
 		'covering range'
 	);
 	assert.equalRange(
-		ve.Range.newCoveringRange( [ range, new ve.Range( 150, 250 ) ], true ),
+		ve.Range.static.newCoveringRange( [ range, new ve.Range( 150, 250 ) ], true ),
 		new ve.Range( 250, 100 ),
 		'backwards covering range'
 	);
 
-	assert.strictEqual( range.toJSON(), '[100,200]', 'toJSON' );
-	assert.strictEqual( range.flip().toJSON(), '[200,100]', 'backwards toJSON' );
+	assert.strictEqual( range.toJSON(), '{"from":100,"to":200}', 'toJSON' );
+	assert.strictEqual( range.flip().toJSON(), '{"from":200,"to":100}', 'backwards toJSON' );
 
-	assert.equalRange( ve.Range.newFromJSON( range.toJSON() ), range, 'newFromJSON' );
-	assert.equalRange( ve.Range.newFromJSON( range.flip().toJSON() ), range.flip(), 'backwards newFromJSON' );
+	assert.equalRange( ve.Range.static.newFromJSON( range.toJSON() ), range, 'newFromJSON' );
+	assert.equalRange( ve.Range.static.newFromJSON( range.flip().toJSON() ), range.flip(), 'backwards newFromJSON' );
 
 } );
+
+// TODO: newFromHash
+// TODO: getHashObject

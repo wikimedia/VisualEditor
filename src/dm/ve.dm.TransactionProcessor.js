@@ -500,7 +500,7 @@ ve.dm.TransactionProcessor.processors.replace = function ( op ) {
 		}
 		// From all the affected ranges we have gathered, compute a range that covers all
 		// of them, and rebuild that
-		coveringRange = ve.Range.newCoveringRange( affectedRanges );
+		coveringRange = ve.Range.static.newCoveringRange( affectedRanges );
 		this.synchronizer.pushRebuild(
 			coveringRange,
 			new ve.Range(

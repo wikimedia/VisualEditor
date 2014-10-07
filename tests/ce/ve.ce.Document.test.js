@@ -11,4 +11,4 @@ QUnit.module( 've.ce.Document' );
 // TODO: getNodeFromOffset
 // TODO: getSlugAtOffset
 // TODO: getNodeAndOffset
-// TODO: getDirectionFromRange
+// TODO: getDirectionFromSelection

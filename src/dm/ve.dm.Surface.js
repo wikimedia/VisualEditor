@@ -20,8 +20,8 @@ ve.dm.Surface = function VeDmSurface( doc ) {
 	// Properties
 	this.documentModel = doc;
 	this.metaList = new ve.dm.MetaList( this );
-	this.selection = null;
-	this.selectionBefore = null;
+	this.selection = new ve.dm.NullSelection( this.getDocument() );
+	this.selectionBefore = new ve.dm.NullSelection( this.getDocument() );
 	this.branchNodes = {};
 	this.selectedNode = null;
 	this.newTransactions = [];
@@ -29,14 +29,14 @@ ve.dm.Surface = function VeDmSurface( doc ) {
 	this.undoStack = [];
 	this.undoIndex = 0;
 	this.historyTrackingInterval = null;
-	this.insertionAnnotations = new ve.dm.AnnotationSet( this.documentModel.getStore() );
+	this.insertionAnnotations = new ve.dm.AnnotationSet( this.getDocument().getStore() );
 	this.enabled = true;
 	this.transacting = false;
 	this.queueingContextChanges = false;
 	this.contextChangeQueued = false;
 
 	// Events
-	this.documentModel.connect( this, { transact: 'onDocumentTransact' } );
+	this.getDocument().connect( this, { transact: 'onDocumentTransact' } );
 };
 
 /* Inheritance */
@@ -47,7 +47,7 @@ OO.mixinClass( ve.dm.Surface, OO.EventEmitter );
 
 /**
  * @event select
- * @param {ve.Range|null} selection
+ * @param {ve.dm.Selection} selection
  */
 
 /**
@@ -156,7 +156,7 @@ ve.dm.Surface.prototype.isStaging = function () {
  *
  * @returns {Object|undefined} staging Staging state object, or undefined if not staging
  * @returns {ve.dm.Transaction[]} staging.transactions Staging transactions
- * @returns {ve.Range} staging.selectionBefore Selection before transactions were applied
+ * @returns {ve.dm.Selection} staging.selectionBefore Selection before transactions were applied
  * @returns {boolean} staging.allowUndo Allow undo while staging
  */
 ve.dm.Surface.prototype.getStaging = function () {
@@ -199,7 +199,11 @@ ve.dm.Surface.prototype.pushStaging = function ( allowUndo ) {
 		this.stopHistoryTracking();
 		this.emit( 'history' );
 	}
-	this.stagingStack.push( { transactions: [], selectionBefore: null, allowUndo: !!allowUndo } );
+	this.stagingStack.push( {
+		transactions: [],
+		selectionBefore: new ve.dm.NullSelection( this.getDocument() ),
+		allowUndo: !!allowUndo
+	} );
 };
 
 /**
@@ -248,8 +252,8 @@ ve.dm.Surface.prototype.applyStaging = function () {
 	if ( this.isStaging() ) {
 		// Merge popped transactions into the current item in the staging stack
 		Array.prototype.push.apply( this.getStagingTransactions(), staging.transactions );
-		// If the current level has no selectionBefore, copy that over too
-		if ( !this.getStaging().selectionBefore ) {
+		// If the current level has a null selectionBefore, copy that over too
+		if ( this.getStaging().selectionBefore.isNull() ) {
 			this.getStaging().selectionBefore = staging.selectionBefore;
 		}
 	} else {
@@ -316,7 +320,7 @@ ve.dm.Surface.prototype.setInsertionAnnotations = function ( annotations ) {
 	}
 	this.insertionAnnotations = annotations !== null ?
 		annotations.clone() :
-		new ve.dm.AnnotationSet( this.documentModel.getStore() );
+		new ve.dm.AnnotationSet( this.getDocument().getStore() );
 
 	this.emit( 'insertionAnnotationsChange', this.insertionAnnotations );
 	this.emit( 'contextChange' );
@@ -426,22 +430,34 @@ ve.dm.Surface.prototype.getMetaList = function () {
  * Get the selection.
  *
  * @method
- * @returns {ve.Range} Current selection
+ * @returns {ve.dm.Selection} Current selection
  */
 ve.dm.Surface.prototype.getSelection = function () {
 	return this.selection;
 };
 
 /**
- * Get a fragment for a range.
+ * Get a fragment for a selection.
  *
  * @method
- * @param {ve.Range} [range] Range within target document, current selection used by default
+ * @param {ve.dm.Selection} [selection] Selection within target document, current selection used by default
  * @param {boolean} [noAutoSelect] Don't update the surface's selection when making changes
  * @returns {ve.dm.SurfaceFragment} Surface fragment
  */
-ve.dm.Surface.prototype.getFragment = function ( range, noAutoSelect ) {
-	return new ve.dm.SurfaceFragment( this, range || this.selection, noAutoSelect );
+ve.dm.Surface.prototype.getFragment = function ( selection, noAutoSelect ) {
+	return new ve.dm.SurfaceFragment( this, selection || this.selection, noAutoSelect );
+};
+
+/**
+ * Get a fragment for a linear selection's range.
+ *
+ * @method
+ * @param {ve.Range} range Selection's range
+ * @param {boolean} [noAutoSelect] Don't update the surface's selection when making changes
+ * @returns {ve.dm.SurfaceFragment} Surface fragment
+ */
+ve.dm.Surface.prototype.getLinearFragment = function ( range, noAutoSelect ) {
+	return new ve.dm.SurfaceFragment( this, new ve.dm.LinearSelection( this.getDocument(), range ), noAutoSelect );
 };
 
 /**
@@ -516,20 +532,36 @@ ve.dm.Surface.prototype.stopQueueingContextChanges = function () {
 };
 
 /**
+ * Set a linear selection at a specificed range on the model
+ *
+ * @param {ve.Range} range Range to create linear selection at
+ */
+ve.dm.Surface.prototype.setLinearSelection = function ( range ) {
+	this.setSelection( new ve.dm.LinearSelection( this.getDocument(), range ) );
+};
+
+/**
+ * Set a null selection on the model
+ */
+ve.dm.Surface.prototype.setNullSelection = function () {
+	this.setSelection( new ve.dm.NullSelection( this.getDocument() ) );
+};
+
+/**
  * Change the selection
  *
- * @param {ve.Range|null} selection New selection
+ * @param {ve.dm.Selection} selection New selection
  *
  * @fires select
  * @fires contextChange
  */
 ve.dm.Surface.prototype.setSelection = function ( selection ) {
 	var left, right, leftAnnotations, rightAnnotations, insertionAnnotations,
-		startNode, selectedNode,
+		startNode, selectedNode, range,
 		branchNodes = {},
 		oldSelection = this.selection,
 		contextChange = false,
-		linearData = this.documentModel.data;
+		linearData = this.getDocument().data;
 
 	if ( !this.enabled ) {
 		return;
@@ -541,39 +573,40 @@ ve.dm.Surface.prototype.setSelection = function ( selection ) {
 		return;
 	}
 
-	if ( selection ) {
+	if ( selection instanceof ve.dm.LinearSelection ) {
+		range = selection.getRange();
 		// Update branch nodes
-		branchNodes.start = this.documentModel.getBranchNodeFromOffset( selection.start );
-		if ( selection.getLength() ) {
-			branchNodes.end = this.documentModel.getBranchNodeFromOffset( selection.end );
+		branchNodes.start = this.getDocument().getBranchNodeFromOffset( range.start );
+		if ( !range.isCollapsed() ) {
+			branchNodes.end = this.getDocument().getBranchNodeFromOffset( range.end );
 		}
 		// Update selected node
-		if ( !selection.isCollapsed() ) {
-			startNode = this.documentModel.documentNode.getNodeFromOffset( selection.start + 1 );
-			if ( startNode && startNode.getOuterRange().equalsSelection( selection ) ) {
+		if ( !range.isCollapsed() ) {
+			startNode = this.getDocument().documentNode.getNodeFromOffset( range.start + 1 );
+			if ( startNode && startNode.getOuterRange().equalsSelection( range ) ) {
 				selectedNode = startNode;
 			}
 		}
 
 		// Figure out which annotations to use for insertions
-		if ( selection.isCollapsed() ) {
+		if ( range.isCollapsed() ) {
 			// Get annotations from either side of the cursor
-			left = Math.max( 0, selection.start - 1 );
+			left = Math.max( 0, range.start - 1 );
 			if ( !linearData.isContentOffset( left ) ) {
 				left = -1;
 			}
-			right = Math.max( 0, selection.start );
+			right = Math.max( 0, range.start );
 			if ( !linearData.isContentOffset( right ) ) {
 				right = -1;
 			}
 		} else {
-			// Get annotations from the first character of the selection
-			left = linearData.getNearestContentOffset( selection.start );
-			right = linearData.getNearestContentOffset( selection.end );
+			// Get annotations from the first character of the range
+			left = linearData.getNearestContentOffset( range.start );
+			right = linearData.getNearestContentOffset( range.end );
 		}
 		if ( left === -1 ) {
 			// No content offset to our left, use empty set
-			insertionAnnotations = new ve.dm.AnnotationSet( this.documentModel.getStore() );
+			insertionAnnotations = new ve.dm.AnnotationSet( this.getDocument().getStore() );
 		} else {
 			// Include annotations on the left that should be added to appended content, or ones that
 			// are on both the left and the right that should not
@@ -614,8 +647,8 @@ ve.dm.Surface.prototype.setSelection = function ( selection ) {
 	this.selectedNode = selectedNode;
 
 	// Emit events
-	if ( !oldSelection || !oldSelection.equals( this.selection ) ) {
-		this.emit( 'select', this.selection && this.selection.clone() );
+	if ( !oldSelection.equals( this.selection ) ) {
+		this.emit( 'select', this.selection.clone() );
 	}
 	if ( contextChange ) {
 		this.emitContextChange();
@@ -630,13 +663,13 @@ ve.dm.Surface.prototype.selectFirstContentOffset = function () {
 	var firstOffset = this.getDocument().data.getNearestContentOffset( 0, 1 );
 	if ( firstOffset !== -1 ) {
 		// Found a content offset
-		this.setSelection( new ve.Range( firstOffset ) );
+		this.setLinearSelection( new ve.Range( firstOffset ) );
 	} else if ( this.getDocument().hasSlugAtOffset( 0 ) ) {
 		// Found a slug at 0
-		this.setSelection( new ve.Range( 0 ) );
+		this.setLinearSelection( new ve.Range( 0 ) );
 	} else {
 		// Document is full of slugless structural nodes, just give up
-		this.setSelection( null );
+		this.setNullSelection();
 	}
 };
 
@@ -646,7 +679,7 @@ ve.dm.Surface.prototype.selectFirstContentOffset = function () {
  * @method
  * @param {ve.dm.Transaction|ve.dm.Transaction[]|null} transactions One or more transactions to
  *  process, or null to process none
- * @param {ve.Range} [selection] Selection to apply
+ * @param {ve.dm.Selection} [selection] Selection to apply
  * @fires contextChange
  */
 ve.dm.Surface.prototype.change = function ( transactions, selection ) {
@@ -659,14 +692,14 @@ ve.dm.Surface.prototype.change = function ( transactions, selection ) {
  * @private
  * @method
  * @param {ve.dm.Transaction|ve.dm.Transaction[]|null} transactions
- * @param {ve.Range} [selection] [selection]
+ * @param {ve.dm.Selection} [selection] [selection]
  * @param {boolean} [skipUndoStack=false] If true, do not modify the undo stack. Used by undo/redo
  * @fires select
  * @fires contextChange
  */
 ve.dm.Surface.prototype.changeInternal = function ( transactions, selection, skipUndoStack ) {
 	var i, len, selectionAfter,
-		selectionBefore = this.selection && this.selection.clone(),
+		selectionBefore = this.selection.clone(),
 		contextChange = false;
 
 	if ( !this.enabled ) {
@@ -698,7 +731,7 @@ ve.dm.Surface.prototype.changeInternal = function ( transactions, selection, ski
 					}
 				}
 				// The .commit() call below indirectly invokes setSelection()
-				this.documentModel.commit( transactions[i] );
+				this.getDocument().commit( transactions[i] );
 				if ( transactions[i].hasElementAttributeOperations() ) {
 					contextChange = true;
 				}
@@ -720,10 +753,10 @@ ve.dm.Surface.prototype.changeInternal = function ( transactions, selection, ski
 	// selection change, setSelection() won't have emitted a 'select' event. We don't want that
 	// to happen, so emit one anyway.
 	if (
-		( !selectionBefore || !selectionBefore.equals( selectionAfter ) ) &&
-		( selectionAfter && selectionAfter.equals( this.selection ) )
+		!selectionBefore.equals( selectionAfter ) &&
+		selectionAfter.equals( this.selection )
 	) {
-		this.emit( 'select', this.selection && this.selection.clone() );
+		this.emit( 'select', this.selection.clone() );
 	}
 
 	if ( contextChange ) {
@@ -747,13 +780,13 @@ ve.dm.Surface.prototype.breakpoint = function () {
 	if ( this.newTransactions.length > 0 ) {
 		this.undoStack.push( {
 			transactions: this.newTransactions,
-			selection: this.selection && this.selection.clone(),
-			selectionBefore: this.selectionBefore && this.selectionBefore.clone()
+			selection: this.selection.clone(),
+			selectionBefore: this.selectionBefore.clone()
 		} );
 		this.newTransactions = [];
 		this.emit( 'history' );
 		return true;
-	} else if ( !this.selectionBefore && this.selection ) {
+	} else if ( this.selectionBefore.isNull() && !this.selection.isNull() ) {
 		this.selectionBefore = this.selection.clone();
 	}
 	return false;
@@ -821,9 +854,7 @@ ve.dm.Surface.prototype.redo = function () {
  * @fires documentUpdate
  */
 ve.dm.Surface.prototype.onDocumentTransact = function ( tx ) {
-	if ( this.selection ) {
-		this.setSelection( tx.translateRange( this.selection ) );
-	}
+	this.setSelection( this.getSelection().translateByTransaction( tx ) );
 	this.emit( 'documentUpdate', tx );
 };
 

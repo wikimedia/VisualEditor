@@ -8,7 +8,7 @@ QUnit.module( 've.ui.IndentationAction' );
 
 /* Tests */
 
-function runIndentationChangeTest( assert, range, method, expectedSelection, expectedData, expectedOriginalData, msg ) {
+function runIndentationChangeTest( assert, range, method, expectedRange, expectedData, expectedOriginalData, msg ) {
 	var surface = ve.test.utils.createSurfaceFromHtml( ve.dm.example.isolationHtml ),
 		indentationAction = new ve.ui.IndentationAction( surface ),
 		data = ve.copy( surface.getModel().getDocument().getFullData() ),
@@ -19,16 +19,16 @@ function runIndentationChangeTest( assert, range, method, expectedSelection, exp
 		expectedOriginalData( originalData );
 	}
 
-	surface.getModel().setSelection( range );
+	surface.getModel().setLinearSelection( range );
 	indentationAction[method]();
 
 	assert.deepEqual( surface.getModel().getDocument().getFullData(), data, msg + ': data models match' );
-	assert.equalRange( surface.getModel().getSelection(), expectedSelection, msg + ': selections match' );
+	assert.equalRange( surface.getModel().getSelection().getRange(), expectedRange, msg + ': ranges match' );
 
 	surface.getModel().undo();
 
 	assert.deepEqual( surface.getModel().getDocument().getFullData(), originalData, msg + ' (undo): data models match' );
-	assert.equalRange( surface.getModel().getSelection(), range, msg + ' (undo): selections match' );
+	assert.equalRange( surface.getModel().getSelection().getRange(), range, msg + ' (undo): ranges match' );
 
 	surface.destroy();
 }
@@ -39,7 +39,7 @@ QUnit.test( 'increase/decrease', 2, function ( assert ) {
 			{
 				range: new ve.Range( 14, 16 ),
 				method: 'decrease',
-				expectedSelection: new ve.Range( 14, 16 ),
+				expectedRange: new ve.Range( 14, 16 ),
 				expectedData: function ( data ) {
 					data.splice( 11, 2, { type: '/list' }, { type: 'paragraph' } );
 					data.splice( 19, 2, { type: '/paragraph' }, { type: 'list', attributes: { style: 'bullet' } } );
@@ -53,7 +53,7 @@ QUnit.test( 'increase/decrease', 2, function ( assert ) {
 			{
 				range: new ve.Range( 3, 19 ),
 				method: 'decrease',
-				expectedSelection: new ve.Range( 1, 15 ),
+				expectedRange: new ve.Range( 1, 15 ),
 				expectedData: function ( data ) {
 					data.splice( 0, 2 );
 					data.splice( 8, 2 );
@@ -71,7 +71,7 @@ QUnit.test( 'increase/decrease', 2, function ( assert ) {
 			{
 				range: new ve.Range( 3, 19 ),
 				method: 'increase',
-				expectedSelection: new ve.Range( 5, 21 ),
+				expectedRange: new ve.Range( 5, 21 ),
 				expectedData: function ( data ) {
 					data.splice( 0, 0, { type: 'list', attributes: { style: 'bullet' } }, { type: 'listItem' } );
 					data.splice( 23, 0, { type: '/list' }, { type: '/listItem' } );
@@ -82,6 +82,6 @@ QUnit.test( 'increase/decrease', 2, function ( assert ) {
 
 	QUnit.expect( cases.length * 4 );
 	for ( i = 0; i < cases.length; i++ ) {
-		runIndentationChangeTest( assert, cases[i].range, cases[i].method, cases[i].expectedSelection, cases[i].expectedData, cases[i].expectedOriginalData, cases[i].msg );
+		runIndentationChangeTest( assert, cases[i].range, cases[i].method, cases[i].expectedRange, cases[i].expectedData, cases[i].expectedOriginalData, cases[i].msg );
 	}
 } );

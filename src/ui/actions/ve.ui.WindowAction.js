@@ -45,9 +45,8 @@ ve.ui.WindowAction.static.methods = [ 'open' ];
 ve.ui.WindowAction.prototype.open = function ( name, data ) {
 	var windowManager,
 		windowClass = ve.ui.windowFactory.lookup( name ),
-		fragment = this.surface.getModel().getFragment( null, true ),
-		dir = fragment.getRange() ?
-			this.surface.getView().getDocument().getDirectionFromRange( fragment.getRange() ) :
+		fragment = this.surface.getModel().getFragment( undefined, true ),
+		dir = this.surface.getView().getDocument().getDirectionFromSelection( fragment.getSelection() ) ||
 			this.surface.getModel().getDocument().getDir();
 
 	data = ve.extendObject( { dir: dir }, data, { fragment: fragment } );

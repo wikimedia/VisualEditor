@@ -325,7 +325,7 @@ QUnit.test( 'fakeImes', function ( assert ) {
 		// First element is the testInfo
 		testInfo = testActions[0];
 		surface = ve.test.utils.createSurfaceFromHtml( testInfo.startDom || '' );
-		surface.getModel().setSelection( new ve.Range( 1 ) );
+		surface.getModel().setLinearSelection( new ve.Range( 1 ) );
 		testRunner = new ve.ce.TestRunner( surface );
 		// start at 1 to omit the testInfo
 		died = false;

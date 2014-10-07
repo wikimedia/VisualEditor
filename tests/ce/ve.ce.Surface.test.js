@@ -27,12 +27,12 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, html, range, o
 	// TODO: model.getSelection() should be consistent after it has been
 	// changed but appears to behave differently depending on the browser.
 	// The selection from the select event is still consistent.
-	selection = range;
+	selection = new ve.dm.LinearSelection( model.getDocument(), range );
 	model.on( 'select', function ( s ) {
 		selection = s;
 	} );
 
-	model.setSelection( range );
+	model.setSelection( selection );
 	for ( i = 0; i < operations.length; i++ ) {
 		method = actions[operations[i]][0];
 		args = actions[operations[i]].slice( 1 );
@@ -41,7 +41,7 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, html, range, o
 	expectedData( data );
 
 	assert.deepEqualWithDomElements( model.getDocument().getFullData(), data, msg + ': data' );
-	assert.equalRange( selection, expectedRange, msg + ': range' );
+	assert.equalRange( selection.getRange(), expectedRange, msg + ': range' );
 	surface.destroy();
 };
 
@@ -350,7 +350,7 @@ QUnit.test( 'handleEnter', function ( assert ) {
 	}
 } );
 
-QUnit.test( 'onContentChange', function ( assert ) {
+QUnit.test( 'onSurfaceObserverContentChange', function ( assert ) {
 	var i,
 		cases = [
 			{
@@ -434,14 +434,14 @@ QUnit.test( 'onContentChange', function ( assert ) {
 				range: nextRange
 			};
 
-		surface.getView().onContentChange( view, prev, next );
+		surface.getView().onSurfaceObserverContentChange( view, prev, next );
 		txs = surface.getModel().getHistory()[0].transactions;
 		ops = [];
 		for ( i = 0; i < txs.length; i++ ) {
 			ops.push( txs[i].getOperations() );
 		}
 		assert.deepEqual( ops, expectedOps, msg + ': operations' );
-		assert.equalRange( surface.getModel().getSelection(), expectedRange, msg + ': range' );
+		assert.equalRange( surface.getModel().getSelection().getRange(), expectedRange, msg + ': range' );
 
 		surface.destroy();
 	}
@@ -525,7 +525,7 @@ QUnit.test( 'onCopy', function ( assert ) {
 			model = surface.getModel();
 
 		// Paste sequence
-		model.setSelection( range );
+		model.setSelection( new ve.dm.LinearSelection( model.getDocument(), range ) );
 		testClipboardData = {};
 		view.onCopy( testEvent );
 
@@ -876,7 +876,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 		}
 
 		// Paste sequence
-		model.setSelection( range );
+		model.setLinearSelection( range );
 		view.pasteSpecial = pasteSpecial;
 		if ( useClipboardData ) {
 			e['text/html'] = pasteHtml;
@@ -894,7 +894,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 			ops.push( txs[i].getOperations() );
 		}
 		assert.deepEqual( ops, expectedOps, msg + ': operations' );
-		assert.equalRange( model.getSelection(), expectedRange, msg +  ': range' );
+		assert.equalRange( model.getSelection().getRange(), expectedRange, msg +  ': range' );
 
 		surface.destroy();
 	}
@@ -1121,7 +1121,7 @@ QUnit.test( 'getRangeSelection', function ( assert ) {
 // TODO: ve.ce.Surface#onPaste
 // TODO: ve.ce.Surface#onDocumentCompositionEnd
 // TODO: ve.ce.Surface#onChange
-// TODO: ve.ce.Surface#onSelectionChange
+// TODO: ve.ce.Surface#onSurfaceObserverSelectionChange
 // TODO: ve.ce.Surface#onLock
 // TODO: ve.ce.Surface#onUnlock
 // TODO: ve.ce.Surface#startRelocation

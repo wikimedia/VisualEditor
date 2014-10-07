@@ -53,7 +53,7 @@
 	ve.test.utils.runIsolateTest = function ( assert, type, range, expected, label ) {
 		var doc = ve.dm.example.createExampleDocument( 'isolationData' ),
 			surface = new ve.dm.Surface( doc ),
-			fragment = new ve.dm.SurfaceFragment( surface, range ),
+			fragment = surface.getLinearFragment( range ),
 			data;
 
 		data = ve.copy( doc.getFullData() );
@@ -63,7 +63,7 @@
 		assert.deepEqual( doc.getFullData(), data, label );
 	};
 
-	ve.test.utils.runFormatConverterTest = function ( assert, range, type, attributes, expectedSelection, expectedData, msg ) {
+	ve.test.utils.runFormatConverterTest = function ( assert, range, type, attributes, expectedRange, expectedData, msg ) {
 		var surface = ve.test.utils.createSurfaceFromHtml( ve.dm.example.isolationHtml ),
 			formatAction = new ve.ui.FormatAction( surface ),
 			data = ve.copy( surface.getModel().getDocument().getFullData() ),
@@ -71,16 +71,16 @@
 
 		expectedData( data );
 
-		surface.getModel().setSelection( range );
+		surface.getModel().setLinearSelection( range );
 		formatAction.convert( type, attributes );
 
 		assert.deepEqual( surface.getModel().getDocument().getFullData(), data, msg + ': data models match' );
-		assert.equalRange( surface.getModel().getSelection(), expectedSelection, msg + ': selections match' );
+		assert.equalRange( surface.getModel().getSelection().getRange(), expectedRange, msg + ': ranges match' );
 
 		surface.getModel().undo();
 
 		assert.deepEqual( surface.getModel().getDocument().getFullData(), originalData, msg + ' (undo): data models match' );
-		assert.equalRange( surface.getModel().getSelection(), range, msg + ' (undo): selections match' );
+		assert.equalRange( surface.getModel().getSelection().getRange(), range, msg + ' (undo): ranges match' );
 
 		surface.destroy();
 	};

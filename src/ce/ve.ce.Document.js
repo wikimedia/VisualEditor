@@ -122,14 +122,18 @@ ve.ce.Document.prototype.getNodeAndOffset = function ( offset ) {
 };
 
 /**
- * Get the directionality of some range.
+ * Get the directionality of some selection.
  *
  * @method
- * @param {ve.Range} range Selection range
- * @returns {string} 'rtl' or 'ltr' as response
+ * @param {ve.dm.Selection} selection Selection
+ * @returns {string|null} 'rtl', 'ltr' or null if unknown
  */
-ve.ce.Document.prototype.getDirectionFromRange = function ( range ) {
+ve.ce.Document.prototype.getDirectionFromSelection = function ( selection ) {
+	if ( !( selection instanceof ve.dm.LinearSelection ) ) {
+		return null;
+	}
 	var effectiveNode,
+		range = selection.getRange(),
 		selectedNodes = this.selectNodes( range, 'covered' );
 
 	if ( selectedNodes.length > 1 ) {

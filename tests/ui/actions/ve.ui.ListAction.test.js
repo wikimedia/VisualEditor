@@ -8,7 +8,7 @@ QUnit.module( 've.ui.ListAction' );
 
 /* Tests */
 
-function runListConverterTest( assert, html, method, style, range, expectedSelection, expectedData, expectedOriginalData, msg ) {
+function runListConverterTest( assert, html, method, style, range, expectedRange, expectedData, expectedOriginalData, msg ) {
 	var surface = ve.test.utils.createSurfaceFromHtml( html || ve.dm.example.html ),
 		listAction = new ve.ui.ListAction( surface ),
 		data = ve.copy( surface.getModel().getDocument().getFullData() ),
@@ -18,16 +18,16 @@ function runListConverterTest( assert, html, method, style, range, expectedSelec
 	if ( expectedOriginalData ) {
 		expectedOriginalData( originalData );
 	}
-	surface.getModel().setSelection( range );
+	surface.getModel().setLinearSelection( range );
 	listAction[method]( style );
 
 	assert.deepEqual( surface.getModel().getDocument().getFullData(), data, msg + ': data models match' );
-	assert.equalRange( surface.getModel().getSelection(), expectedSelection, msg + ': selections match' );
+	assert.equalRange( surface.getModel().getSelection().getRange(), expectedRange, msg + ': ranges match' );
 
 	surface.getModel().undo();
 
 	assert.deepEqual( surface.getModel().getDocument().getFullData(), originalData, msg + ' (undo): data models match' );
-	assert.equalRange( surface.getModel().getSelection(), range, msg + ' (undo): selections match' );
+	assert.equalRange( surface.getModel().getSelection().getRange(), range, msg + ' (undo): ranges match' );
 
 	surface.destroy();
 }
@@ -39,7 +39,7 @@ QUnit.test( '(un)wrap', function ( assert ) {
 				range: new ve.Range( 56, 60 ),
 				method: 'wrap',
 				style: 'bullet',
-				expectedSelection: new ve.Range( 58, 64 ),
+				expectedRange: new ve.Range( 58, 64 ),
 				expectedData: function ( data ) {
 					data.splice( 55, 0, { type: 'list', attributes: { style: 'bullet' } }, { type: 'listItem' } );
 					data.splice( 60, 0, { type: '/listItem' }, { type: 'listItem' } );
@@ -52,7 +52,7 @@ QUnit.test( '(un)wrap', function ( assert ) {
 				range: new ve.Range( 191, 211 ),
 				method: 'unwrap',
 				style: 'bullet',
-				expectedSelection: new ve.Range( 187, 205 ),
+				expectedRange: new ve.Range( 187, 205 ),
 				expectedData: function ( data ) {
 					delete data[190].internal;
 					delete data[202].internal;
@@ -76,6 +76,6 @@ QUnit.test( '(un)wrap', function ( assert ) {
 
 	QUnit.expect( cases.length * 4 );
 	for ( i = 0; i < cases.length; i++ ) {
-		runListConverterTest( assert, cases[i].html, cases[i].method, cases[i].style, cases[i].range, cases[i].expectedSelection, cases[i].expectedData, cases[i].expectedOriginalData, cases[i].msg );
+		runListConverterTest( assert, cases[i].html, cases[i].method, cases[i].style, cases[i].range, cases[i].expectedRange, cases[i].expectedData, cases[i].expectedOriginalData, cases[i].msg );
 	}
 } );

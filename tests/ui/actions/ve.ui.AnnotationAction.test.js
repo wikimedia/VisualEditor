@@ -14,7 +14,7 @@ function runAnnotationActionTest( assert, html, method, args, range, expectedDat
 		data = ve.copy( surface.getModel().getDocument().getFullData() );
 
 	expectedData( data );
-	surface.getModel().setSelection( range );
+	surface.getModel().setLinearSelection( range );
 	AnnotationAction[method].apply( AnnotationAction, args );
 
 	assert.deepEqual( surface.getModel().getDocument().getFullData(), data, msg + ': data models match' );
