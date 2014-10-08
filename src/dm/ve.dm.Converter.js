@@ -49,7 +49,7 @@ ve.dm.Converter.computedAttributes = [ 'href', 'src' ];
  */
 ve.dm.Converter.getDataContentFromText = function ( text, annotations ) {
 	var i, len,
-		characters = ve.splitClusters( text );
+		characters = text.split( '' );
 
 	if ( !annotations || annotations.isEmpty() ) {
 		return characters;

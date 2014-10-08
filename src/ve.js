@@ -400,15 +400,6 @@
 	};
 
 	/**
-	 * Compatibility method. We no longer split into clusters at this level.
-	 *
-	 * TODO: strip out calls to splitClusters then delete this method.
-	 */
-	ve.splitClusters = function ( text ) {
-		return text.split( '' );
-	};
-
-	/**
 	 * Determine if the text consists of only unattached combining marks.
 	 *
 	 * @param {string} text Text to test

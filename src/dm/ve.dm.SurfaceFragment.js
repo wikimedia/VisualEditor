@@ -709,7 +709,7 @@ ve.dm.SurfaceFragment.prototype.insertContent = function ( content, annotate ) {
 	offset = this.getSelection( true ).getRange().start;
 	// Auto-convert content to array of plain text characters
 	if ( typeof content === 'string' ) {
-		content = ve.splitClusters( content );
+		content = content.split( '' );
 	}
 	if ( content.length ) {
 		if ( annotate ) {

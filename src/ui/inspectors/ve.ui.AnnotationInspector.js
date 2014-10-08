@@ -68,7 +68,7 @@ ve.ui.AnnotationInspector.prototype.shouldRemoveAnnotation = function () {
  * @returns {Array} Linear model content to insert
  */
 ve.ui.AnnotationInspector.prototype.getInsertionData = function () {
-	return ve.splitClusters( this.getInsertionText() );
+	return this.getInsertionText().split( '' );
 };
 
 /**

@@ -1705,8 +1705,8 @@ ve.ce.Surface.prototype.onSurfaceObserverContentChange = function ( node, previo
 		fromLeft = 0,
 		fromRight = 0,
 		nodeOffset = node.getModel().getOffset(),
-		previousData = ve.splitClusters( previous.text ),
-		nextData = ve.splitClusters( next.text ),
+		previousData = previous.text.split( '' ),
+		nextData = next.text.split( '' ),
 		lengthDiff = next.text.length - previous.text.length,
 		nextDataString = new ve.dm.DataString( nextData ),
 		surface = this;
@@ -1787,7 +1787,7 @@ ve.ce.Surface.prototype.onSurfaceObserverContentChange = function ( node, previo
 
 		// Simple insertion
 		if ( lengthDiff > 0 && offsetDiff === lengthDiff /* && sameLeadingAndTrailing */) {
-			data = ve.splitClusters( next.text ).slice( previousStart, nextStart );
+			data = nextData.slice( previousStart, nextStart );
 			// Apply insertion annotations
 			annotations = this.model.getInsertionAnnotations();
 			if ( annotations.getLength() ) {
