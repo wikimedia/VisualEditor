@@ -135,7 +135,9 @@ ve.ui.CommentInspector.prototype.getTeardownProcess = function ( data ) {
 			if ( this.commentNode ) {
 				if ( data.action === 'remove' || innerText === '' ) {
 					// Remove comment node
-					this.fragment = this.getFragment().clone( this.commentNode.getOuterRange() );
+					this.fragment = this.getFragment().clone(
+						new ve.dm.LinearSelection( this.fragment.getDocument(), this.commentNode.getOuterRange() )
+					);
 					this.fragment.removeContent();
 				} else {
 					// Edit comment node
