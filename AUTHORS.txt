@@ -7,6 +7,7 @@ Inez Korczynski <inez@wikia-inc.com>
 Moriel Schottlender <mschottlender@wikimedia.org>
 Roan Kattouw <roan@wikimedia.org>
 Rob Moen <rmoen@wikimedia.org>
+Sucheta Ghoshal <sghoshal@wikimedia.org>
 Timo Tijhof <timo@wikimedia.org>
 Trevor Parscal <trevor@wikimedia.org>
 
