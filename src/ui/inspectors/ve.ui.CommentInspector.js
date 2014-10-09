@@ -70,9 +70,23 @@ ve.ui.CommentInspector.prototype.initialize = function () {
 		multiline: true,
 		autosize: true
 	} );
+	this.previousTextWidgetHeight = 0;
+
+	this.textWidget.connect( this, { change: 'onTextInputWidgetChange' } );
 
 	this.$content.addClass( 've-ui-commentInspector-content' );
 	this.form.$element.append( this.textWidget.$element );
+};
+
+/**
+ * Called when the text input widget value has changed.
+ */
+ve.ui.CommentInspector.prototype.onTextInputWidgetChange = function () {
+	var height = this.textWidget.$element.height();
+	if ( height !== this.previousTextWidgetHeight ) {
+		this.getManager().updateWindowSize( this );
+		this.previousTextWidgetHeight = height;
+	}
 };
 
 /**
