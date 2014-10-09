@@ -29,6 +29,7 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 	this.localOverlay = new ve.ui.Overlay( { $: this.$, classes: ['ve-ui-overlay-local'] } );
 	this.$blockers = this.$( '<div>' );
 	this.$controls = this.$( '<div>' );
+	this.$menus = this.$( '<div>' );
 	if ( dataOrDoc instanceof ve.dm.Document ) {
 		// ve.dm.Document
 		documentModel = dataOrDoc;
@@ -53,10 +54,11 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 	this.dialogs.connect( this, { closing: 'onDialogClosing' } );
 
 	// Initialization
+	this.$menus.append( this.context.$element );
 	this.$element
 		.addClass( 've-ui-surface' )
 		.append( this.view.$element );
-	this.localOverlay.$element.append( this.$blockers, this.$controls );
+	this.localOverlay.$element.append( this.$blockers, this.$controls, this.$menus );
 	this.globalOverlay.$element.append( this.dialogs.$element );
 
 	// Make instance globally accessible for debugging

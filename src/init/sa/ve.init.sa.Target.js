@@ -25,9 +25,9 @@ ve.init.sa.Target = function VeInitSaTarget( $container, dmDoc, surfaceType ) {
 	// Parent constructor
 	ve.init.Target.call( this, $container );
 
-	surfaceType = surfaceType || this.constructor.static.defaultSurfaceType;
+	this.surfaceType = surfaceType || this.constructor.static.defaultSurfaceType;
 
-	switch ( surfaceType ) {
+	switch ( this.surfaceType ) {
 		case 'desktop':
 			this.surfaceClass = ve.ui.DesktopSurface;
 			break;
@@ -35,7 +35,7 @@ ve.init.sa.Target = function VeInitSaTarget( $container, dmDoc, surfaceType ) {
 			this.surfaceClass = ve.ui.MobileSurface;
 			break;
 		default:
-			throw new Error( 'Unknown surfaceType: ' + surfaceType );
+			throw new Error( 'Unknown surfaceType: ' + this.surfaceType );
 	}
 	this.setupDone = false;
 
@@ -77,12 +77,21 @@ ve.init.sa.Target.prototype.setup = function ( dmDoc ) {
 	}
 
 	// Initialization
+	// The following classes can be used here:
+	// ve-init-sa-target-mobile
+	// ve-init-sa-target-desktop
+	this.$element.addClass( 've-init-sa-target ve-init-sa-target-' + this.surfaceType );
 	this.toolbar.$element.addClass( 've-init-sa-target-toolbar' );
 	this.toolbar.enableFloatable();
 
 	this.toolbar.initialize();
 	this.surface.setPasteRules( this.constructor.static.pasteRules );
 	this.surface.initialize();
+
+	// HACK: On mobile place the context inside toolbar.$bar which floats
+	if ( this.surfaceType === 'mobile' ) {
+		this.toolbar.$bar.append( this.surface.context.$element );
+	}
 
 	// This must be emitted asynchronously because ve.init.Platform#initialize
 	// is synchronous, and if we emit it right away, then users will be

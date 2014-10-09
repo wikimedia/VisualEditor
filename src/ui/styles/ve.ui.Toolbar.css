@@ -4,7 +4,12 @@
  * @copyright 2011-2014 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
-.oo-ui-toolbar-bar {
+.ve-ui-toolbar {
+	/* Used by mobile context position hack */
+	position: relative;
+}
+
+.ve-ui-toolbar .oo-ui-toolbar-bar {
 	position: relative;
 }
 

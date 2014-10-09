@@ -29,6 +29,9 @@ ve.init.Target = function VeInitTarget( $container ) {
 	this.toolbar = null;
 	this.debugBar = null;
 
+	// Initialization
+	this.$element.addClass( 've-init-target' );
+
 	// Register
 	ve.init.target = this;
 };
