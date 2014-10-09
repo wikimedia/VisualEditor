@@ -2127,9 +2127,10 @@ ve.ce.Surface.prototype.handleInsertion = function () {
 };
 
 /**
- * Test whether selection lies within a single leaf node
- * @param {ve.Range} range The selection to test
- * @returns {boolean} Whether the selection lies within a single node
+ * Test whether a range lies within a single leaf node
+ *
+ * @param {ve.Range} range The range to test
+ * @returns {boolean} Whether the range lies within a single node
  */
 ve.ce.Surface.prototype.rangeInsideOneLeafNode = function ( range ) {
 	var selected = this.documentView.selectNodes( range, 'leaves' );
