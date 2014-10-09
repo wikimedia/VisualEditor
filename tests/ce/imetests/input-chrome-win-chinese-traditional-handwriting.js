@@ -6,7 +6,7 @@
 
 ve.ce.imetests.push( [ 'input-chrome-win-chinese-traditional-handwriting', [
 	/*jshint quotmark:double */
-	{"imeIdentifier":"Chinese Traditional Handwriting","userAgent":"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.101 Safari/537.36","startDom":""},
+	{"imeIdentifier":"Chinese Traditional Handwriting","userAgent":"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.101 Safari/537.36","startDom":"x"},
 	{"seq":0,"time":8.491,"action":"changeText","args":["中"]},
 	{"seq":1,"time":8.491,"action":"changeSel","args":[1,1]},
 	{"seq":2,"time":8.491,"action":"sendEvent","args":["input",{}]},

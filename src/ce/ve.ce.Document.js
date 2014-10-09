@@ -57,6 +57,79 @@ ve.ce.Document.prototype.getSlugAtOffset = function ( offset ) {
  * @throws {Error} Offset could not be translated to a DOM element and offset
  */
 ve.ce.Document.prototype.getNodeAndOffset = function ( offset ) {
+	var nao, currentNode, nextNode, previousNode;
+	function getNext( node ) {
+		while ( node.nextSibling === null ) {
+			node = node.parentNode;
+			if ( node === null ) {
+				return null;
+			}
+		}
+		node = node.nextSibling;
+		while ( node.firstChild ) {
+			node = node.firstChild;
+		}
+		return node;
+	}
+	function getPrevious( node ) {
+		while ( node.previousSibling === null ) {
+			node = node.parentNode;
+			if ( node === null ) {
+				return null;
+			}
+		}
+		node = node.previousSibling;
+		while ( node.lastChild ) {
+			node = node.lastChild;
+		}
+		return node;
+	}
+
+	nao = this.getNodeAndOffsetUnadjustedForUnicorn( offset );
+	currentNode = nao.node;
+	nextNode = getNext( currentNode );
+	previousNode = getPrevious( currentNode );
+
+	// Adjust for unicorn if necessary, then return
+	if ( currentNode.nodeType === Node.TEXT_NODE &&
+		nao.offset === currentNode.data.length &&
+		nextNode &&
+		nextNode.nodeType === Node.ELEMENT_NODE &&
+		nextNode.classList.contains( 've-ce-pre-unicorn' )
+	) {
+		// At text offset just before the pre unicorn; return the point just after it
+		return ve.ce.nextCursorOffset( nextNode );
+	} else if ( currentNode.nodeType === Node.ELEMENT_NODE &&
+		currentNode.children.length > nao.offset &&
+		currentNode.children[nao.offset].nodeType === Node.ELEMENT_NODE &&
+		currentNode.children[nao.offset].classList.contains( 've-ce-pre-unicorn' )
+	) {
+		// At element offset just before the pre unicorn; return the point just after it
+		return { node: nao.node, offset: nao.offset + 1 };
+	} else if ( currentNode.nodeType === Node.TEXT_NODE &&
+		// At text offset just after the post unicorn; return the point just before it
+		nao.offset === 0 &&
+		previousNode &&
+		previousNode.nodeType === Node.ELEMENT_NODE &&
+		previousNode.classList.contains( 've-ce-post-unicorn' )
+	) {
+		return ve.ce.previousCursorOffset( previousNode );
+	} else if ( currentNode.nodeType === Node.ELEMENT_NODE &&
+		nao.offset > 0 &&
+		currentNode.children[nao.offset - 1].nodeType === Node.ELEMENT_NODE &&
+		currentNode.children[nao.offset - 1].classList.contains( 've-ce-post-unicorn' )
+	) {
+		// At element offset just after the post unicorn; return the point just before it
+		return { node: nao.node, offset: nao.offset - 1 };
+	} else {
+		return nao;
+	}
+};
+
+/**
+ * @private
+ */
+ve.ce.Document.prototype.getNodeAndOffsetUnadjustedForUnicorn = function ( offset ) {
 	var node, startOffset, current, stack, item, $item, length, model,
 		countedNodes = [],
 		slug = this.getSlugAtOffset( offset );
@@ -91,6 +164,13 @@ ve.ce.Document.prototype.getNodeAndOffset = function ( offset ) {
 					return {
 						node: $item[0],
 						offset: 1
+					};
+				}
+			} else if ( $item.hasClass( 've-ce-unicorn' ) ) {
+				if ( offset === startOffset ) {
+					return {
+						node: $item[0].parentNode,
+						offset: offset - startOffset
 					};
 				}
 			} else if ( $item.is( '.ve-ce-branchNode, .ve-ce-leafNode' ) ) {

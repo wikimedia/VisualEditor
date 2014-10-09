@@ -252,6 +252,41 @@ QUnit.test( 'isShortcutKey', 3, function ( assert ) {
 	assert.strictEqual( ve.ce.isShortcutKey( {} ), false, 'Not set' );
 } );
 
+QUnit.test( 'nextCursorOffset', function ( assert ) {
+	var i, len, tests, elt, test, img, nextOffset;
+
+	function dumpnode( node ) {
+		if ( node.nodeType === 3 ) {
+			return '#' + node.data;
+		} else {
+			return node.nodeName.toLowerCase();
+		}
+	}
+
+	tests = [
+		{ html: '<p>foo<img>bar</p>', expected: ['#bar', 0] },
+		{ html: '<p>foo<b><i><img></i></b></p>', expected: ['i', 1] },
+		{ html: '<p><b>foo</b><img>bar</p>', expected: ['#bar', 0] },
+		{ html: '<p>foo<b><i><img></i></b></p>', expected: ['i', 1] },
+		{ html: '<p><b>foo</b><img></p>', expected: ['p', 2] },
+		{ html: '<p><img><b>foo</b></p>', expected: ['p', 1] },
+		{ html: '<p><b>foo</b><img><b>bar</b></p>', expected: ['p', 2] }
+	];
+	QUnit.expect( tests.length );
+	elt = ve.createDocumentFromHtml( '' ).createElement( 'div' );
+	for ( i = 0, len = tests.length; i < len; i++ ) {
+		test = tests[i];
+		elt.innerHTML = test.html;
+		img = elt.getElementsByTagName( 'img' )[0];
+		nextOffset = ve.ce.nextCursorOffset( img );
+		assert.deepEqual(
+			[dumpnode( nextOffset.node ), nextOffset.offset],
+			test.expected,
+			test.html
+		);
+	}
+} );
+
 QUnit.test( 'resolveTestOffset', function ( assert ) {
 	var i, ilen, j, jlen, tests, test, testOffset, elt, pre, post, count, dom;
 	tests = [
@@ -292,7 +327,14 @@ QUnit.test( 'resolveTestOffset', function ( assert ) {
 
 QUnit.test( 'fakeImes', function ( assert ) {
 	var i, ilen, j, jlen, surface, testRunner, testName, testActions, seq, testInfo,
-		action, args, count, foundEndLoop, failAt, died, fakePreventDefault;
+		action, args, count, foundEndLoop, testsFailAt, failAt, died, fakePreventDefault;
+
+	if ( Function.prototype.bind === undefined ) {
+		// Assume we are in PhantomJS (which breaks different tests than a real browser)
+		testsFailAt = ve.ce.imetestsPhantomFailAt;
+	} else {
+		testsFailAt = ve.ce.imetestsFailAt;
+	}
 
 	// count tests
 	count = 0;
@@ -319,7 +361,7 @@ QUnit.test( 'fakeImes', function ( assert ) {
 
 	for ( i = 0, ilen = ve.ce.imetests.length; i < ilen; i++ ) {
 		testName = ve.ce.imetests[i][0];
-		failAt = ve.ce.imetestsFailAt[testName] || null;
+		failAt = testsFailAt[testName] || null;
 		testActions = ve.ce.imetests[i][1];
 		foundEndLoop = false;
 		// First element is the testInfo
@@ -358,9 +400,9 @@ QUnit.test( 'fakeImes', function ( assert ) {
 				} else if ( seq === failAt ) {
 					// If *at* expected failure, check something failed
 					if ( died ) {
-						testRunner.ok( assert, testName, seq );
+						testRunner.ok( assert, testName + ' (fail expected)', seq );
 					} else {
-						testRunner.testNotEqual( assert, testName, seq );
+						testRunner.testNotEqual( assert, testName + ' (fail expected)', seq );
 					}
 				} else {
 					// If *after* expected failure, allow anything

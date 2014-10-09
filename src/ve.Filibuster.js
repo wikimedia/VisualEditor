@@ -281,7 +281,7 @@ ve.Filibuster.prototype.stop = function () {
 ve.Filibuster.prototype.getObservationsHtml = function () {
 	function getStackHtml( stackItem ) {
 		return ve.escapeHtml(
-			stackItem.funcName + '( ' + stackItem.data.map( function ( x ) {
+			'\u2022' + stackItem.funcName + '( ' + stackItem.data.map( function ( x ) {
 				return JSON.stringify( x );
 			} ).join( ', ' ) + ' )'
 		);

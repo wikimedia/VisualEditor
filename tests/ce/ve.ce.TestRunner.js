@@ -195,7 +195,10 @@ ve.ce.TestRunner.prototype.sendEvent = function ( eventName, ev ) {
  */
 ve.ce.TestRunner.prototype.changeText = function ( text ) {
 	var extra,
+		nativeRange = null;
+	if ( this.nativeSelection.rangeCount > 0 ) {
 		nativeRange = this.nativeSelection.getRangeAt( 0 );
+	}
 
 	// TODO: Enable multi-paragraph testing. For now, assuming one paragraph.
 	// FIXME: renaming startNode to startContainer revealed failing tests

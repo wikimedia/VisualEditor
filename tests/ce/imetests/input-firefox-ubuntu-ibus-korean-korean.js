@@ -6,7 +6,7 @@
 
 ve.ce.imetests.push( [ 'input-firefox-ubuntu-ibus-korean-korean', [
 	/*jshint quotmark:double */
-	{"imeIdentifier":"ibus Korean Korean","userAgent":"Mozilla/5.0 (X11; Linux i686 on x86_64; rv:24.0) Gecko/20100101 Firefox/24.0","startDom":""},
+	{"imeIdentifier":"ibus Korean Korean","userAgent":"Mozilla/5.0 (X11; Linux i686 on x86_64; rv:24.0) Gecko/20100101 Firefox/24.0","startDom":"x"},
 	{"seq":0,"time":14.043,"action":"sendEvent","args":["compositionstart",{}]},
 	{"seq":1,"time":14.05,"action":"changeText","args":["ㅎ"]},
 	{"seq":2,"time":14.05,"action":"changeSel","args":[1,1]},

@@ -22,6 +22,7 @@ ve.dm.Surface = function VeDmSurface( doc ) {
 	this.metaList = new ve.dm.MetaList( this );
 	this.selection = new ve.dm.NullSelection( this.getDocument() );
 	this.selectionBefore = new ve.dm.NullSelection( this.getDocument() );
+	this.translatedSelection = null;
 	this.branchNodes = {};
 	this.selectedNode = null;
 	this.newTransactions = [];
@@ -36,7 +37,11 @@ ve.dm.Surface = function VeDmSurface( doc ) {
 	this.contextChangeQueued = false;
 
 	// Events
-	this.getDocument().connect( this, { transact: 'onDocumentTransact' } );
+	this.getDocument().connect( this, {
+		transact: 'onDocumentTransact',
+		precommit: 'onDocumentPreCommit',
+		presynchronize: 'onDocumentPreSynchronize'
+	} );
 };
 
 /* Inheritance */
@@ -437,6 +442,16 @@ ve.dm.Surface.prototype.getSelection = function () {
 };
 
 /**
+ * Get the selection translated for the transaction that's being committed, if any.
+ *
+ * @method
+ * @returns {ve.dm.Selection} Current selection translated for new transaction
+ */
+ve.dm.Surface.prototype.getTranslatedSelection = function () {
+	return this.translatedSelection || this.selection;
+};
+
+/**
  * Get a fragment for a selection.
  *
  * @method
@@ -560,12 +575,15 @@ ve.dm.Surface.prototype.setSelection = function ( selection ) {
 		startNode, selectedNode, range,
 		branchNodes = {},
 		oldSelection = this.selection,
+		oldBranchNodes = this.branchNodes,
+		oldSelectedNode = this.selectedNode,
 		contextChange = false,
 		linearData = this.getDocument().data;
 
 	if ( !this.enabled ) {
 		return;
 	}
+	this.translatedSelection = null;
 
 	if ( this.transacting ) {
 		// Update the selection but don't do any processing
@@ -573,8 +591,14 @@ ve.dm.Surface.prototype.setSelection = function ( selection ) {
 		return;
 	}
 
+	// Update state
+	this.selection = selection;
+	this.branchNodes = branchNodes;
+	this.selectedNode = selectedNode;
+
 	if ( selection instanceof ve.dm.LinearSelection ) {
 		range = selection.getRange();
+
 		// Update branch nodes
 		branchNodes.start = this.getDocument().getBranchNodeFromOffset( range.start );
 		if ( !range.isCollapsed() ) {
@@ -634,17 +658,12 @@ ve.dm.Surface.prototype.setSelection = function ( selection ) {
 
 	// If branchNodes or selectedNode changed emit a contextChange
 	if (
-		selectedNode !== this.selectedNode ||
-		branchNodes.start !== this.branchNodes.start ||
-		branchNodes.end !== this.branchNodes.end
+		selectedNode !== oldSelectedNode ||
+		branchNodes.start !== oldBranchNodes.start ||
+		branchNodes.end !== oldBranchNodes.end
 	) {
 		contextChange = true;
 	}
-
-	// Update state
-	this.selection = selection;
-	this.branchNodes = branchNodes;
-	this.selectedNode = selectedNode;
 
 	// Emit events
 	if ( !oldSelection.equals( this.selection ) ) {
@@ -865,4 +884,26 @@ ve.dm.Surface.prototype.onDocumentTransact = function ( tx ) {
  */
 ve.dm.Surface.prototype.getSelectedNode = function () {
 	return this.selectedNode;
+};
+
+/**
+ * Clone the selection ready for early translation (before synchronization).
+ *
+ * This is so #ve.ce.ContentBranchNode.getRenderedContents can consider the translated
+ * selection for unicorn rendering.
+ */
+ve.dm.Surface.prototype.onDocumentPreCommit = function () {
+	this.translatedSelection = this.selection.clone();
+};
+
+/**
+ * Update translatedSelection early (before synchronization)
+ *
+ * @param {ve.dm.Transaction} tx Transaction that was processed
+ * @fires documentUpdate
+ */
+ve.dm.Surface.prototype.onDocumentPreSynchronize = function ( tx ) {
+	if ( this.translatedSelection ) {
+		this.translatedSelection = this.translatedSelection.translateByTransaction( tx );
+	}
 };
