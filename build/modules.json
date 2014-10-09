@@ -490,7 +490,7 @@
 	},
 	"visualEditor.mobile": {
 		"dependencies": [
-			"oojs-ui-minerva",
+			"oojs-ui-mediawiki",
 			"visualEditor.core",
 			"visualEditor.mobile.build"
 		]
