@@ -1713,6 +1713,7 @@ ve.ce.Surface.prototype.onSurfaceObserverSlugEnter = function () {
 	), new ve.dm.LinearSelection( doc, new ve.Range( offset + 1 ) ) );
 	this.slugFragment = fragment;
 
+	// Fake a slug transition on the new paragraph
 	// Clear wrappers from previous former slugs
 	this.$element.find( '.ve-ce-branchNode-blockSlugWrapper-former' ).remove();
 	// Style paragraph as an unfocused slug, then remove unfocused class to trigger transtion
@@ -1739,7 +1740,7 @@ ve.ce.Surface.prototype.onSurfaceObserverSlugEnter = function () {
  */
 ve.ce.Surface.prototype.updateSlug = function () {
 	if ( this.slugFragment ) {
-		var range,
+		var range, $slug, anchor,
 			slugFragmentRange = this.slugFragment.getSelection().getRange(),
 			model = this.getModel();
 
@@ -1756,6 +1757,25 @@ ve.ce.Surface.prototype.updateSlug = function () {
 				// need to clear it first.
 				this.surfaceObserver.clear();
 				this.surfaceObserver.pollOnceNoEmit();
+
+				// Fake a transition on the slug that came back
+				$slug = $( this.documentView.getSlugAtOffset( this.slugFragment.getSelection().getRange().start ) );
+				anchor = $slug[0].previousSibling;
+				$slug
+					// Remove from the DOM temporarily (needed for Firefox)
+					.detach()
+					// Switch from unfocused to focused (no transition)
+					.removeClass( 've-ce-branchNode-blockSlugWrapper-unfocused' )
+					.addClass( 've-ce-branchNode-blockSlugWrapper-focused' )
+					// Reattach to the DOM
+					.insertAfter( anchor )
+					// Force reflow (needed for Chrome)
+					.height();
+				$slug
+					// Switch from focused to unfocused (with transition)
+					.removeClass( 've-ce-branchNode-blockSlugWrapper-focused' )
+					.addClass( 've-ce-branchNode-blockSlugWrapper-unfocused' );
+
 				this.slugFragment = null;
 			}
 		} else {
