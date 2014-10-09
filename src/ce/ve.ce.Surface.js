@@ -68,7 +68,8 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 	// Events
 	this.surfaceObserver.connect( this, {
 		contentChange: 'onSurfaceObserverContentChange',
-		rangeChange: 'onSurfaceObserverRangeChange'
+		rangeChange: 'onSurfaceObserverRangeChange',
+		slugChange: 'onSurfaceObserverSlugChange'
 	} );
 	this.model.connect( this, {
 		select: 'onModelSelect',
@@ -996,7 +997,7 @@ ve.ce.Surface.prototype.onDocumentKeyPress = function ( e ) {
 
 /**
  * Poll again after the native key press
- * @param {jQuery.Event} ev
+ * @param {jQuery.Event} e Key press event
  */
 ve.ce.Surface.prototype.afterDocumentKeyPress = function () {
 	this.surfaceObserver.pollOnce();
@@ -1505,6 +1506,10 @@ ve.ce.Surface.prototype.afterPaste = function () {
 	this.model.change( tx, selection.collapseToStart() );
 	// Move cursor to end of selection
 	this.model.setSelection( selection.collapseToEnd() );
+
+	// Make sure the surface observer emits slugChange events
+	this.surfaceObserver.clear();
+	this.surfaceObserver.pollOnce();
 };
 
 /**
@@ -1680,6 +1685,54 @@ ve.ce.Surface.prototype.onSurfaceObserverRangeChange = function ( oldRange, newR
 		);
 	} finally {
 		this.decRenderLock();
+	}
+
+};
+
+/**
+ * Handle slug change events.
+ *
+ * @see ve.ce.SurfaceObserver#pollOnce
+ *
+ * @param {ve.Range|null} range
+ * @param {boolean} newSlug
+ */
+ve.ce.Surface.prototype.onSurfaceObserverSlugChange = function ( range, newSlug ) {
+	if ( this.slugFragment || newSlug ) {
+		var slugFragmentRange,
+			model = this.getModel(),
+			doc = model.getDocument(),
+			fragment = model.getLinearFragment( range );
+
+		if ( this.slugFragment ) {
+			slugFragmentRange = this.slugFragment.getSelection().getRange();
+			if ( slugFragmentRange.getLength() === 2 ) {
+				if ( !range || !slugFragmentRange.containsOffset( range.start ) ) {
+					model.popStaging();
+					// After popStaging we may have removed a paragraph before our current
+					// cursor position. Polling with the SurfaceObserver won't notice a change
+					// in the rangy range as our cursor doesn't move within its node so we
+					// need to clear it first.
+					this.surfaceObserver.clear();
+					this.surfaceObserver.pollOnceNoEmit();
+					this.slugFragment = null;
+				}
+			} else {
+				model.applyStaging();
+				this.slugFragment = null;
+			}
+		}
+		if ( newSlug ) {
+			range = fragment.getSelection().getRange();
+			model.pushStaging( true );
+			this.changeModel( ve.dm.Transaction.newFromInsertion(
+				doc, range.start, [
+					{ type: 'paragraph', internal: { generated: 'slug' } },
+					{ type: '/paragraph' }
+				]
+			), new ve.dm.LinearSelection( doc, new ve.Range( range.start + 1 ) ) );
+			this.slugFragment = fragment;
+		}
 	}
 };
 

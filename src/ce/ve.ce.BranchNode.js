@@ -76,6 +76,8 @@ ve.ce.BranchNode.blockSlugTemplate = $( '<div>' )
 	.addClass( 've-ce-branchNode-blockSlugWrapper ve-ce-branchNode-blockSlugWrapper-unfocused' )
 	.append(
 		$( '<p>' )
+			// TODO: work around ce=false IE9 bug
+			.prop( 'contentEditable', 'false' )
 			.addClass( 've-ce-branchNode-slug ve-ce-branchNode-blockSlug' )
 			.html( '&#xFEFF;' )
 	)
