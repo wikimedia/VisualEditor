@@ -2451,14 +2451,15 @@ ve.ce.Surface.prototype.getNativeRange = function ( range ) {
 	var nativeRange, rangeSelection,
 		selection = this.getModel().getSelection();
 
-	if ( !( selection instanceof ve.dm.LinearSelection ) ) {
-		return null;
-	}
-	if ( range && selection.getRange().equalsSelection( range ) ) {
+	if ( range && selection instanceof ve.dm.LinearSelection && selection.getRange().equalsSelection( range ) ) {
 		// Range requested is equivalent to native selection so reset
 		range = null;
 	}
 	if ( !range ) {
+		// Use native range, unless selection is null
+		if ( !( selection instanceof ve.dm.LinearSelection ) ) {
+			return null;
+		}
 		if ( this.nativeSelection.rangeCount > 0 ) {
 			try {
 				return this.nativeSelection.getRangeAt( 0 );
