@@ -175,8 +175,8 @@ module.exports = function ( grunt ) {
 				singleRun: true,
 				autoWatch: false
 			},
-			phantomjs: {
-				browsers: [ 'PhantomJS' ],
+			main: {
+				browsers: [ 'Chrome' ],
 				preprocessors: {
 					'src/**/*.js': [ 'coverage' ]
 				},
@@ -186,11 +186,11 @@ module.exports = function ( grunt ) {
 					{ type: 'text-summary', dir: 'test-coverage/visualeditor' }
 				] }
 			},
-			local: {
-				browsers: [ 'Firefox', 'Chrome' ]
+			others: {
+				browsers: [ 'Firefox' ]
 			},
 			bg: {
-				browsers: [ 'PhantomJS', 'Firefox', 'Chrome' ],
+				browsers: [ 'Chrome', 'Firefox' ],
 				singleRun: false,
 				background: true
 			}
@@ -207,7 +207,7 @@ module.exports = function ( grunt ) {
 
 	grunt.registerTask( 'build', [ 'clean', 'cssUrlEmbed', 'concat', 'cssjanus', 'copy', 'buildloader' ] );
 	grunt.registerTask( 'lint', [ 'jshint', 'jscs', 'csslint', 'banana' ] );
-	grunt.registerTask( 'unit', [ 'karma:phantomjs' ] );
+	grunt.registerTask( 'unit', [ 'karma:main' ] );
 	grunt.registerTask( 'test', [ 'git-build', 'build', 'lint', 'unit' ] );
 	grunt.registerTask( 'watch', [ 'karma:bg:start', 'runwatch' ] );
 	grunt.registerTask( 'default', 'test' );
