@@ -235,7 +235,7 @@
 			"src/dm/metaitems/ve.dm.CommentMetaItem.js",
 			"src/dm/nodes/ve.dm.CommentNode.js",
 			"src/ce/ve.ce.js",
-			"src/ce/ve.ce.DomRange.js",
+			"src/ce/ve.ce.RangeState.js",
 			"src/ce/ve.ce.AnnotationFactory.js",
 			"src/ce/ve.ce.NodeFactory.js",
 			"src/ce/ve.ce.Document.js",
