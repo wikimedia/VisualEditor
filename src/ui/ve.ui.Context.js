@@ -37,7 +37,7 @@ ve.ui.Context = function VeUiContext( surface, config ) {
 
 	// Initialization
 	this.$element.addClass( 've-ui-context' );
-	this.menu.toggle( false ).$element.addClass( 've-ui-context-menu' );
+	this.menu.toggle( false );
 	this.inspectors.$element.addClass( 've-ui-context-inspectors' );
 };
 
