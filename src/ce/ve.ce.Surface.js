@@ -487,7 +487,7 @@ ve.ce.Surface.prototype.getSelectionBoundingRect = function ( selection ) {
 	focusedNode = this.getFocusedNode( range );
 
 	if ( focusedNode ) {
-		return this.focusedNode.getBoundingRect();
+		return focusedNode.getBoundingRect();
 	}
 
 	nativeRange = this.getNativeRange( range );
