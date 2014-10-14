@@ -71,6 +71,20 @@ ve.dm.LinearSelection.prototype.collapseToEnd = function () {
 /**
  * @inheritdoc
  */
+ve.dm.LinearSelection.prototype.collapseToFrom = function () {
+	return new this.constructor( this.getDocument(), new ve.Range( this.getRange().from ) );
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.LinearSelection.prototype.collapseToTo = function () {
+	return new this.constructor( this.getDocument(), new ve.Range( this.getRange().to ) );
+};
+
+/**
+ * @inheritdoc
+ */
 ve.dm.LinearSelection.prototype.isCollapsed = function () {
 	return this.getRange().isCollapsed();
 };

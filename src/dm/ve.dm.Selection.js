@@ -84,7 +84,7 @@ ve.dm.Selection.prototype.clone = function () {
 };
 
 /**
- * Get a new selection at the start of this one
+ * Get a new selection at the start point of this one
  *
  * @returns {ve.dm.Selection} Collapsed selection
  */
@@ -93,12 +93,30 @@ ve.dm.Selection.prototype.collapseToStart = function () {
 };
 
 /**
- * Get a new selection at the end of this one
+ * Get a new selection at the end point of this one
  *
  * @returns {ve.dm.Selection} Collapsed selection
  */
 ve.dm.Selection.prototype.collapseToEnd = function () {
 	throw new Error( 've.dm.Selection subclass must implement collapseToEnd' );
+};
+
+/**
+ * Get a new selection at the 'from' point of this one
+ *
+ * @returns {ve.dm.Selection} Collapsed selection
+ */
+ve.dm.Selection.prototype.collapseToFrom = function () {
+	throw new Error( 've.dm.Selection subclass must implement collapseToFrom' );
+};
+
+/**
+ * Get a new selection at the 'to' point of this one
+ *
+ * @returns {ve.dm.Selection} Collapsed selection
+ */
+ve.dm.Selection.prototype.collapseToTo = function () {
+	throw new Error( 've.dm.Selection subclass must implement collapseToTo' );
 };
 
 /**
