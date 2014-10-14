@@ -53,6 +53,10 @@ ve.dm.NullSelection.prototype.collapseToStart = ve.dm.NullSelection.prototype.cl
 
 ve.dm.NullSelection.prototype.collapseToEnd = ve.dm.NullSelection.prototype.clone;
 
+ve.dm.NullSelection.prototype.collapseToFrom = ve.dm.NullSelection.prototype.clone;
+
+ve.dm.NullSelection.prototype.collapseToTo = ve.dm.NullSelection.prototype.clone;
+
 /**
  * @inheritdoc
  */
