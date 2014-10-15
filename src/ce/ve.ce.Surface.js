@@ -1859,6 +1859,12 @@ ve.ce.Surface.prototype.onSurfaceObserverSlugEnter = function () {
  * or if there is no active slug, do nothing.
  */
 ve.ce.Surface.prototype.updateSlug = function () {
+	// Prevent recursion
+	if ( this.updatingSlug ) {
+		return;
+	}
+	this.updatingSlug = true;
+
 	if ( this.slugFragment ) {
 		var range, $slug, anchor,
 			slugFragmentRange = this.slugFragment.getSelection().getRange(),
@@ -1879,7 +1885,7 @@ ve.ce.Surface.prototype.updateSlug = function () {
 				this.surfaceObserver.pollOnceNoEmit();
 
 				// Fake a transition on the slug that came back
-				$slug = $( this.documentView.getSlugAtOffset( this.slugFragment.getSelection().getRange().start ) );
+				$slug = $( this.documentView.getSlugAtOffset( slugFragmentRange.start ) );
 				anchor = $slug[0].previousSibling;
 				$slug
 					// Remove from the DOM temporarily (needed for Firefox)
@@ -1903,6 +1909,8 @@ ve.ce.Surface.prototype.updateSlug = function () {
 			this.slugFragment = null;
 		}
 	}
+
+	this.updatingSlug = false;
 };
 
 /**
