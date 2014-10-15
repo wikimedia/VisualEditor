@@ -256,7 +256,7 @@ ve.dm.Surface.prototype.applyStaging = function () {
 
 	if ( this.isStaging() ) {
 		// Merge popped transactions into the current item in the staging stack
-		Array.prototype.push.apply( this.getStagingTransactions(), staging.transactions );
+		ve.batchPush( this.getStagingTransactions(), staging.transactions );
 		// If the current level has a null selectionBefore, copy that over too
 		if ( this.getStaging().selectionBefore.isNull() ) {
 			this.getStaging().selectionBefore = staging.selectionBefore;

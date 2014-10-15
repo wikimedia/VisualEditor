@@ -160,7 +160,7 @@ ve.EventSequencer.prototype.detach = function () {
  * @chainable
  */
 ve.EventSequencer.prototype.onLoop = function ( listeners ) {
-	Array.prototype.push.apply( this.onLoopListeners, listeners );
+	ve.batchPush( this.onLoopListeners, listeners );
 	return this;
 };
 
@@ -216,7 +216,7 @@ ve.EventSequencer.prototype.afterLoop = function ( listeners ) {
 	if ( !Array.isArray( listeners ) ) {
 		listeners = [listeners];
 	}
-	Array.prototype.push.apply( this.afterLoopListeners, listeners );
+	ve.batchPush( this.afterLoopListeners, listeners );
 	return this;
 };
 
@@ -230,7 +230,7 @@ ve.EventSequencer.prototype.afterLoopOne = function ( listeners ) {
 	if ( !Array.isArray( listeners ) ) {
 		listeners = [listeners];
 	}
-	Array.prototype.push.apply( this.afterLoopOneListeners, listeners );
+	ve.batchPush( this.afterLoopOneListeners, listeners );
 	return this;
 };
 
