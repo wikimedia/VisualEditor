@@ -654,10 +654,15 @@ ve.dm.Surface.prototype.setSelection = function ( selection ) {
 		if ( !insertionAnnotations.compareTo( this.insertionAnnotations ) ) {
 			this.setInsertionAnnotations( insertionAnnotations );
 		}
-		if ( !coveredAnnotations.compareTo( this.coveredAnnotations ) ) {
-			this.coveredAnnotations = coveredAnnotations;
-			contextChange = true;
-		}
+	}
+
+	if ( selection instanceof ve.dm.TableSelection ) {
+		coveredAnnotations = this.getFragment().getAnnotations();
+	}
+
+	if ( coveredAnnotations && !coveredAnnotations.compareTo( this.coveredAnnotations ) ) {
+		this.coveredAnnotations = coveredAnnotations;
+		contextChange = true;
 	}
 
 	// If branchNodes or selectedNode changed emit a contextChange
