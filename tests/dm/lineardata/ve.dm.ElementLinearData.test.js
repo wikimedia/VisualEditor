@@ -135,6 +135,16 @@ QUnit.test( 'getAnnotationsFromRange', 1, function ( assert ) {
 				expected: [ { type: 'textStyle/bold' } ]
 			},
 			{
+				msg: 'single annotation with non-content data',
+				data: [
+					{ type: 'paragraph' },
+					['a', [ { type: 'textStyle/bold' } ] ],
+					['b', [ { type: 'textStyle/bold' } ] ],
+					{ type: '/paragraph' }
+				],
+				expected: [ { type: 'textStyle/bold' } ]
+			},
+			{
 				msg: 'multiple annotations',
 				data: [
 					[
