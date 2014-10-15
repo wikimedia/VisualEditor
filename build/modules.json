@@ -526,6 +526,8 @@
 			{ "file": "src/ui/styles/ve.ui.DebugBar.css", "debug": true }
 		],
 		"dependencies": [
+      "baselibs",
+      "oojs-ui-apex",
 			"visualEditor.base.build"
 		]
 	},
