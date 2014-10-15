@@ -25,7 +25,7 @@ OO.inheritClass( ve.ui.IndentationTool, ve.ui.Tool );
 
 /* Static Properties */
 
-ve.ui.IndentationTool.static.requiresRange = true;
+ve.ui.IndentationTool.static.requiresSelection = [ 'linear' ];
 
 /* Methods */
 

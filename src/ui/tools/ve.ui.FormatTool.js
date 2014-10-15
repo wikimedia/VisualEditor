@@ -40,7 +40,7 @@ OO.inheritClass( ve.ui.FormatTool, ve.ui.Tool );
  */
 ve.ui.FormatTool.static.format = null;
 
-ve.ui.FormatTool.static.requiresRange = true;
+ve.ui.FormatTool.static.requiresSelection = [ 'linear' ];
 
 /* Methods */
 
