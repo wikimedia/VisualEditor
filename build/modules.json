@@ -46,17 +46,6 @@
 			"oojs-ui"
 		]
 	},
-	"oojs-ui-minerva": {
-		"scripts": [
-			"lib/oojs-ui/oojs-ui-minerva.js"
-		],
-		"styles": [
-			"lib/oojs-ui/oojs-ui-minerva.svg.css"
-		],
-		"dependencies": [
-			"oojs-ui"
-		]
-	},
 	"oojs-ui-mediawiki": {
 		"scripts": [
 			"lib/oojs-ui/oojs-ui-mediawiki.js"
@@ -596,7 +585,7 @@
 		],
 		"dependencies": [
 			"baselibs",
-			"oojs-ui-minerva",
+			"oojs-ui-mediawiki",
 			"visualEditor.dist",
 			"visualEditor.standalone.demo"
 		]
