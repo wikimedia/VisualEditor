@@ -200,7 +200,7 @@ ve.ce.SurfaceObserver.prototype.pollOnceInternal = function ( emitChanges, selec
 		leftSlug = false,
 		observer = this;
 
-	if ( !this.domDocument ) {
+	if ( !this.domDocument || this.surface.pasting ) {
 		return;
 	}
 
