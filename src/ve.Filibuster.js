@@ -4,6 +4,7 @@
  * @copyright 2011-2014 VisualEditor Team and others; see http://ve.mit-license.org
  */
 /*global Set*/
+
 /**
  * A scrupulous event logger that logs state at every function call, and
  * shortlists potentially significant observations for strict scrutiny.
@@ -19,10 +20,8 @@
  * stack, and has a log number that points into the full call log.
  *
  * Function wrapping generally takes place after object initialization.
- * Property lookups that have already happened, e.g. in prior calls to
- * OO.EventEmitter's "connect" function, will not benefit from the wrapping. It
- * is possible to modify "connect" to perform late binding; see ve.Debug.js for
- * an example.
+ * That means property lookups that have already happened (e.g. through
+ * .bind or setTimeout in a constructor) will not pass through the wrapper.
  *
  * This code is inspired by United States v. Carolene Products Company, 304
  * U.S. 144 (1938), Footnote Four.
@@ -35,12 +34,20 @@
  * @param {string[]} eventNames List of event names to listen to
  */
 ve.Filibuster = function VeFilibuster() {
-	this.stack = [];
 	this.count = 0;
 	this.states = {};
 	this.observers = {};
-	this.observations = [];
-	this.callLog = [];
+	// Tree of call frames
+	this.callTree = { children: [] };
+	// Current call frame
+	this.frame = this.callTree;
+	// Path (index offsets) to current call frame
+	this.callPath = [];
+	// Index offset tree: {
+	//	changes: {enter: xxx, exit: xxx }
+	//	children: { index offset tree }
+	// }
+	this.observationTree = { children: {} };
 	this.active = false;
 	this.startTime = null;
 };
@@ -56,8 +63,10 @@ ve.Filibuster.prototype.clearLogs = function () {
 	for ( name in this.states ) {
 		delete this.states[ name ];
 	}
-	this.observations.length = 0;
-	this.callLog.length = 0;
+	this.observationTree.children = {};
+	this.callTree.children.length = 0;
+	this.frame = this.callTree;
+	this.callPath.length = 0;
 };
 
 /**
@@ -82,10 +91,10 @@ ve.Filibuster.prototype.setObserver = function ( name, callback ) {
  * and end of every monitored function call.
  *
  * @param {string} action The function call phase: call|return|throw
- * @param {number} time Elapsed time since filibuster start
  */
-ve.Filibuster.prototype.observe = function ( action, time ) {
-	var name, callback, oldState, newState;
+ve.Filibuster.prototype.observe = function ( action ) {
+	var name, callback, oldState, newState, j, jLen, ptr, offset,
+		changes = {};
 
 	for ( name in this.observers ) {
 		callback = this.observers[ name ];
@@ -101,18 +110,39 @@ ve.Filibuster.prototype.observe = function ( action, time ) {
 			throw new Error( 'Illegal state: ' + newState );
 		}
 
-		if ( oldState !== newState ) {
-			// Write observation
-			this.observations.push( {
-				name: name,
-				logCount: this.count,
-				time: time,
-				oldState: oldState,
-				newState: newState,
-				stack: this.stack.slice(),
-				action: action
-			} );
+		if ( this.states[ name ] !== newState ) {
+			if ( this.states.hasOwnProperty( name ) ) {
+				// State change: write observation
+				changes[ name ] = {
+					oldState: oldState,
+					newState: newState
+				};
+			}
 			this.states[ name ] = newState;
+		}
+	}
+
+	// Save any changes into observations tree
+	if ( Object.keys( changes ).length > 0 ) {
+		// Navigate along tree branch, creating as necessary
+		ptr = this.observationTree;
+		for ( j = 0, jLen = this.callPath.length; j < jLen; j++ ) {
+			offset = this.callPath[ j ];
+			if ( !ptr.children ) {
+				ptr.children = {};
+			}
+			if ( !ptr.children[ offset ] ) {
+				ptr.children[ offset ] = {};
+			}
+			ptr = ptr.children[ offset ];
+		}
+		if ( !ptr.changes ) {
+			ptr.changes = {};
+		}
+		if ( action === 'call' ) {
+			ptr.changes.enter = changes;
+		} else {
+			ptr.changes.exit = changes;
 		}
 	}
 };
@@ -122,43 +152,62 @@ ve.Filibuster.prototype.observe = function ( action, time ) {
  *
  * @param {string} funcName The name of the function
  * @param {string} action The function call phase: call|return|throw
- * @param {Array|Mixed} data The call arguments, return value or exception
+ * @param {Array} [args] The call arguments (if action === 'call')
+ * @param {Mixed} [returned] The return value (if action === 'return')
  */
-ve.Filibuster.prototype.log = function ( funcName, action, data ) {
-	var topFuncName, clonedData, time;
+ve.Filibuster.prototype.log = function ( funcName, action, args, returned ) {
+	var time, parentFrame;
 	if ( !this.active ) {
 		return;
 	}
 	time = ve.now() - this.startTime;
-	// Clone the data, to avoid anachronistic changes and for easy display
-	clonedData = this.clonePlain( data );
 	if ( action === 'call' ) {
-		// Stack only contains clonedData so outside code won't mutate it.
-		// Therefore we'll only need to slice it to preserve a snapshot.
-		this.stack.push( { funcName: funcName, data: clonedData } );
-	}
-	this.count++;
-	this.observe( action, time );
-	this.callLog.push( {
-		count: this.count,
-		time: time,
-		stack: this.stack.slice(),
-		funcName: funcName,
-		action: action,
-		data: clonedData
-	} );
-	if ( action !== 'call' ) {
-		if ( this.stack.length > 0 ) {
-			topFuncName = this.stack[ this.stack.length - 1 ].funcName;
-		} else {
-			topFuncName = '(none)';
+		// Descend down the call tree (adding a new frame)
+		// Store arguments as a cloned plain object, to avoid anachronistic changes and
+		// for easy display.
+		parentFrame = this.frame;
+		if ( !parentFrame.children ) {
+			parentFrame.children = [];
 		}
-		if ( this.stack.length === 0 || topFuncName !== funcName ) {
+		this.callPath.push( parentFrame.children.length );
+		this.frame = {
+			count: this.count++,
+			funcName: funcName,
+			args: this.constructor.static.clonePlain( args ),
+			// returned: xxx,
+			// thrown: xxx
+			start: time,
+			// end: xxx,
+			// children: xxx,
+			parent: parentFrame
+		};
+		parentFrame.children.push( this.frame );
+	}
+
+	this.observe( action, time );
+
+	if ( action === 'return' || action === 'throw' ) {
+		// Check funcName, store values, ascend call tree
+		if ( this.frame.funcName === undefined ) {
 			throw new Error(
-				'Expected funcName "' + topFuncName + '", got "' + funcName + '"'
+				'No call logged, but leaving "' + funcName + '" (' + action + ')'
 			);
 		}
-		this.stack.pop();
+		if ( this.frame.funcName !== funcName ) {
+			throw new Error(
+				'Logged call to "' + this.frame.funcName + '"' +
+				' but leaving "' + funcName + '" (' + action + ')'
+			);
+		}
+		this.frame.end = time;
+		if ( action === 'return' ) {
+			this.frame.returned = this.constructor.static.clonePlain( returned );
+		} else if ( action === 'throw' ) {
+			this.frame.thrown = true;
+		}
+
+		this.frame = this.frame.parent;
+		this.callPath.pop();
 	}
 };
 
@@ -181,16 +230,16 @@ ve.Filibuster.prototype.wrapFunction = function ( container, klassName, fnName )
 	wrapper = function () {
 		var returnVal,
 			fnReturned = false;
-		filibuster.log( fullName, 'call', Array.prototype.slice.call( arguments ) );
+		filibuster.log( fullName, 'call', Array.prototype.slice.call( arguments ), undefined );
 		try {
 			returnVal = fn.apply( this, arguments );
 			fnReturned = true;
+			filibuster.log( fullName, 'return', undefined, returnVal );
 			return returnVal;
 		} finally {
-			if ( fnReturned ) {
-				filibuster.log( fullName, 'return', returnVal );
-			} else {
-				filibuster.log( fullName, 'throw' );
+			if ( !fnReturned ) {
+				// Can't easily get the error without affecting the call stack
+				filibuster.log( fullName, 'throw', undefined, undefined );
 			}
 		}
 	};
@@ -276,39 +325,137 @@ ve.Filibuster.prototype.stop = function () {
 };
 
 /**
- * get an HTML representation of the observations
+ * Get an HTML representation of part of the call tree, opened at each observation
+ *
+ * In general, building HTML fragments like this is ugly; but this turns out to give
+ * better performance if the HTML representation is really large.
+ *
+ * @param {number[]} [branchPath] Path to the part of the tree to represent
+ * @return {string} HTML representation
  */
-ve.Filibuster.prototype.getObservationsHtml = function () {
-	function getStackHtml( stackItem ) {
-		return ve.escapeHtml(
-			'\u2022' + stackItem.funcName + '( ' + stackItem.data.map( function ( x ) {
-				return JSON.stringify( x );
-			} ).join( ', ' ) + ' )'
+ve.Filibuster.prototype.getObservationsHtml = function ( branchPath ) {
+	var i, iLen, callTree, observationTree;
+
+	function showArgs( args ) {
+		return '<b>(</b>' + ve.escapeHtml( args.map( function ( arg ) {
+			return JSON.stringify( arg );
+		} ).join( ', ' ) ) + '<b>)</b>';
+	}
+
+	function showVal( val ) {
+		return ve.escapeHtml( JSON.stringify( val ) );
+	}
+
+	function showChanges( changes, phase ) {
+		return (
+			( phase === 'enter' ? '<hr>' : '' ) +
+			'<div class="ve-filibuster-changes">' +
+			Object.keys( changes ).map( function ( name ) {
+				return (
+					'<b>' + ve.escapeHtml( name + ' old' ) + '</b><br>' +
+					ve.escapeHtml( changes[ name ].oldState ) + '<br>' +
+					'<b>' + ve.escapeHtml( name + ' new' ) + '</b><br>' +
+					ve.escapeHtml( changes[ name ].newState )
+				);
+			} ).join( '<br>' ) +
+			'</div>' +
+			( phase === 'exit' ? '<hr>' : '' )
 		);
 	}
 
-	function getObservationHtml( observation ) {
-		return ( '<tr><td>' +
-			[
-				observation.time.toString(),
-				observation.name,
-				String( observation.logCount ),
-				String( observation.oldState ),
-				String( observation.newState ),
-				String( observation.action )
-			].map( ve.escapeHtml ).join( '</td><td>' ) +
-			'</td><td>' +
-			observation.stack.slice().reverse().map( getStackHtml ).join( '<br>' ) +
-			'</td></tr>'
+	function showCallOpen( frame ) {
+		return (
+			'<b>' + frame.count + '</b> ' +
+			'(' + frame.start.toFixed( 2 ) + 'ms-' + frame.end.toFixed( 2 ) + 'ms) ' +
+			'<b>' + ve.escapeHtml( frame.funcName ) + '</b>' +
+			showArgs( frame.args )
 		);
 	}
-	return (
-		'<table class="ve-filibuster">' +
-		'<tr><th>Time</th><th>Type</th><th>Log</th><th>Old State</th><th>New State</th><th>Action</th><th>Stack</th></tr>' +
-		this.observations.map( getObservationHtml ).join( '' ) +
-		'</table>'
-	);
+
+	function showCallClose( frame ) {
+		return (
+			'<b>exit ' + ve.escapeHtml( frame.funcName ) + '</b>' +
+			'--->' +
+			( frame.thrown ?  'thrown' : showVal( frame.returned ) )
+		);
+	}
+
+	function showCallSkip( frame ) {
+		return (
+			'<b>' + frame.count + '</b> ' +
+			'(' + frame.start.toFixed( 2 ) + 'ms-' + frame.end.toFixed( 2 ) + 'ms) ' +
+			'<b>' + ve.escapeHtml( frame.funcName ) + '</b>' +
+			showArgs( frame.args ) +
+			'<span />' +
+			'--->' +
+			( frame.thrown ? 'thrown' : showVal( frame.returned ) )
+		);
+	}
+
+	function getFragments( frames, observations, path ) {
+		var i, iLen, frame, observation, expandable, expanded,
+			html = [];
+		html.push( '<ul>' );
+		for ( i = 0, iLen = frames.length; i < iLen; i++ ) {
+			frame = frames[ i ];
+			observation = observations[ i ];
+			if ( observation && observation.changes && observation.changes.enter ) {
+				html.push( showChanges( observation.changes.enter, 'enter' ) );
+			}
+			expanded = observation && observation.children;
+			expandable = !expanded && frame.children && frame.children.length > 0;
+			html.push( '<li class="ve-filibuster-frame' );
+			if ( expandable ) {
+				html.push( ' ve-filibuster-frame-expandable' );
+			}
+			html.push(
+				'" data-ve-filibuster-frame="' +
+				ve.escapeHtml( JSON.stringify( path.concat( i ) ) ) + '">'
+			);
+			if ( expanded ) {
+				html.push( showCallOpen( frame ) );
+				html.push.apply( html, getFragments(
+					frame.children,
+					observation.children,
+					path.concat( i )
+				) );
+				html.push( showCallClose( frame ) );
+			} else {
+				html.push( showCallSkip( frame ) );
+			}
+			html.push( '</li>' );
+			if ( observation && observation.changes && observation.changes.exit ) {
+				html.push( showChanges( observation.changes.exit, 'exit' ) );
+			}
+		}
+		html.push( '</ul>' );
+		return html;
+	}
+
+	callTree = this.callTree;
+	observationTree = this.observationTree;
+	// Walk to the specified part of the tree
+	if ( !branchPath ) {
+		branchPath = [];
+	}
+	for ( i = 0, iLen = branchPath.length; i < iLen; i++ ) {
+		callTree = callTree.children[ branchPath[ i ] ];
+		if ( observationTree && observationTree.children ) {
+			observationTree = observationTree.children[ branchPath[ i ] ];
+		} else {
+			// No observations on this branch
+			observationTree = undefined;
+		}
+	}
+
+	return getFragments(
+		callTree.children || [],
+		( observationTree && observationTree.children ) || {},
+		branchPath
+	).join( '' );
 };
+
+/* Static methods */
 
 /**
  * Get a plain-old-data deep clone of val.
@@ -319,9 +466,10 @@ ve.Filibuster.prototype.getObservationsHtml = function () {
  * @param {Set} [seen] Seen objects, for recursion detection
  * @return {Object|string|number|undefined} Plain old data object
  */
-ve.Filibuster.prototype.clonePlain = function ( val, seen ) {
+ve.Filibuster.static.clonePlain = function ( val, seen ) {
 	var plainVal,
-		filibuster = this;
+		filibusterStatic = this;
+
 	if ( seen === undefined ) {
 		seen = new Set();
 	}
@@ -331,10 +479,12 @@ ve.Filibuster.prototype.clonePlain = function ( val, seen ) {
 		}
 		seen.add( val );
 		return val.map( function ( x ) {
-			return filibuster.clonePlain( x, seen );
+			return filibusterStatic.clonePlain( x, seen );
 		} );
 	} else if ( typeof val === 'function' ) {
 		return '(function ' + val.name + ')';
+	} else if ( typeof val === 'undefined' ) {
+		return '(undefined)';
 	} else if ( val === null ) {
 		return null;
 	} else if ( val === window ) {
@@ -345,8 +495,17 @@ ve.Filibuster.prototype.clonePlain = function ( val, seen ) {
 		return { 've.Range': [ val.from, val.to ] };
 	} else if ( val.constructor === ve.dm.Transaction ) {
 		return { 've.dm.Transaction': val.operations.map( function ( op ) {
-			return filibuster.clonePlain( op );
+			return filibusterStatic.clonePlain( op );
 		} ) };
+	} else if ( val instanceof ve.dm.Selection ) {
+		return { 've.dm.Selection': val.getDescription() };
+	} else if ( val.constructor === ve.dm.AnnotationSet ) {
+		return { 've.dm.AnnotationSet':
+				val.getStore().values( val.getIndexes() )
+				.map( function ( annotation ) {
+					return annotation.name;
+				} )
+		};
 	} else if ( val.constructor !== Object ) {
 		// Not a plain old object
 		return '(' + ( val.constructor.name || 'unknown' ) + ')';
@@ -357,7 +516,7 @@ ve.Filibuster.prototype.clonePlain = function ( val, seen ) {
 		seen.add( val );
 		plainVal = {};
 		Object.getOwnPropertyNames( val ).forEach( function ( k ) {
-			plainVal[ k ] = filibuster.clonePlain( val[ k ], seen );
+			plainVal[ k ] = filibusterStatic.clonePlain( val[ k ], seen );
 		} );
 		return plainVal;
 	}
