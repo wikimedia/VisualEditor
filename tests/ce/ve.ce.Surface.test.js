@@ -470,6 +470,7 @@ QUnit.test( 'onCopy', function ( assert ) {
 		testEvent = {
 			originalEvent: {
 				clipboardData: {
+					items: [],
 					setData: function ( prop, val ) {
 						testClipboardData[prop] = val;
 						return true;
