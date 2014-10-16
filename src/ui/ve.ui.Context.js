@@ -27,8 +27,8 @@ ve.ui.Context = function VeUiContext( surface, config ) {
 	this.menu = new ve.ui.ContextMenuWidget( { $: this.$ } );
 	this.lastSelectedNode = null;
 	this.afterContextChangeTimeout = null;
-	this.afterContextChangeHandler = ve.bind( this.afterContextChange, this );
-	this.updateDimensionsDebounced = ve.debounce( ve.bind( this.updateDimensions, this ) );
+	this.afterContextChangeHandler = this.afterContextChange.bind( this );
+	this.updateDimensionsDebounced = ve.debounce( this.updateDimensions.bind( this ) );
 
 	// Events
 	this.surface.getModel().connect( this, { contextChange: 'onContextChange' } );
@@ -126,7 +126,7 @@ ve.ui.Context.prototype.onInspectorOpening = function ( win, opening ) {
 	this.inspector = win;
 
 	opening
-		.progress( ve.bind( function ( data ) {
+		.progress( function ( data ) {
 			if ( data.state === 'setup' ) {
 				if ( this.menu.isVisible() ) {
 					// Change state: menu -> inspector
@@ -137,10 +137,10 @@ ve.ui.Context.prototype.onInspectorOpening = function ( win, opening ) {
 				}
 			}
 			this.updateDimensionsDebounced();
-		}, this ) )
-		.always( ve.bind( function ( opened ) {
-			opened.always( ve.bind( function ( closed ) {
-				closed.always( ve.bind( function () {
+		}.bind( this ) )
+		.always( function ( opened ) {
+			opened.always( function ( closed ) {
+				closed.always( function () {
 					var inspectable = !!this.getAvailableTools().length;
 
 					this.inspector = null;
@@ -159,9 +159,9 @@ ve.ui.Context.prototype.onInspectorOpening = function ( win, opening ) {
 					if ( this.getSurface().getModel().getSelection() ) {
 						this.getSurface().getView().focus();
 					}
-				}, this ) );
-			}, this ) );
-		}, this ) );
+				}.bind( this ) );
+			}.bind( this ) );
+		}.bind( this ) );
 };
 
 /**

@@ -124,14 +124,14 @@ ve.ui.Surface.prototype.destroy = function () {
  * Handle dialog teardown events
  */
 ve.ui.Surface.prototype.onDialogClosing = function ( win, closing ) {
-	closing.progress( ve.bind( function ( data ) {
+	closing.progress( function ( data ) {
 		if ( data.state === 'teardown' ) {
 			// Return focus to view
 			this.getView().focus();
 			// Re-assert selection
 			this.getModel().getFragment().select();
 		}
-	}, this ) );
+	}.bind( this ) );
 };
 
 /**

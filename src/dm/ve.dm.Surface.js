@@ -114,7 +114,7 @@ ve.dm.Surface.prototype.startHistoryTracking = function () {
 		return;
 	}
 	if ( this.historyTrackingInterval === null ) {
-		this.historyTrackingInterval = setInterval( ve.bind( this.breakpoint, this ), 750 );
+		this.historyTrackingInterval = setInterval( this.breakpoint.bind( this ), 750 );
 	}
 };
 

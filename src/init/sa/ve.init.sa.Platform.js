@@ -176,6 +176,6 @@ ve.init.platform = new ve.init.sa.Platform();
 
 /* Extension */
 
-OO.ui.getUserLanguages = ve.bind( ve.init.platform.getUserLanguages, ve.init.platform );
+OO.ui.getUserLanguages = ve.init.platform.getUserLanguages.bind( ve.init.platform );
 
-OO.ui.msg = ve.bind( ve.init.platform.getMessage, ve.init.platform );
+OO.ui.msg = ve.init.platform.getMessage.bind( ve.init.platform );

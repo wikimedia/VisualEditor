@@ -50,18 +50,18 @@ OO.inheritClass( ve.ui.MobileSurface, ve.ui.Surface );
  */
 ve.ui.MobileSurface.prototype.onWindowOpening = function ( win, opening ) {
 	opening
-		.progress( ve.bind( function ( data ) {
+		.progress( function ( data ) {
 			if ( data.state === 'setup' ) {
 				this.toggleGlobalOverlay( true );
 			}
-		}, this ) )
-		.always( ve.bind( function ( opened ) {
-			opened.always( ve.bind( function ( closed ) {
-				closed.always( ve.bind( function () {
+		}.bind( this ) )
+		.always( function ( opened ) {
+			opened.always( function ( closed ) {
+				closed.always( function () {
 					this.toggleGlobalOverlay( false );
-				}, this ) );
-			}, this ) );
-		}, this ) );
+				}.bind( this ) );
+			}.bind( this ) );
+		}.bind( this ) );
 };
 
 /**

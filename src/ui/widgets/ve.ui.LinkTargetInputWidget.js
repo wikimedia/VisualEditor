@@ -50,7 +50,7 @@ ve.ui.LinkTargetInputWidget.prototype.onEdit = function () {
 	if ( !this.disabled ) {
 
 		// Allow the stack to clear so the value will be updated
-		setTimeout( ve.bind( function () {
+		setTimeout( function () {
 			// RTL/LTR check
 			// Has to use global $() instead of this.$() because only the main document's <body> has
 			// the 'rtl' class; inspectors and dialogs have oo-ui-rtl instead.
@@ -61,7 +61,7 @@ ve.ui.LinkTargetInputWidget.prototype.onEdit = function () {
 				this.setRTL( !isExt );
 			}
 			this.setValue( this.$input.val() );
-		}, this ) );
+		}.bind( this ) );
 	}
 };
 

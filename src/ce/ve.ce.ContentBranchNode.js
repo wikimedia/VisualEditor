@@ -364,9 +364,9 @@ ve.ce.ContentBranchNode.prototype.renderContents = function () {
 	// Highlight the node in debug mode
 	if ( ve.debug ) {
 		this.$element.css( 'backgroundColor', '#eee' );
-		setTimeout( ve.bind( function () {
+		setTimeout( function () {
 			this.$element.css( 'backgroundColor', '' );
-		}, this ), 500 );
+		}.bind( this ), 500 );
 	}
 
 	return true;

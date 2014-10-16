@@ -432,7 +432,7 @@
 	 * @param {Mixed...} [params] Message parameters
 	 */
 	ve.msg = function () {
-		// Avoid using ve.bind because ve.init.platform doesn't exist yet.
+		// Avoid using bind because ve.init.platform doesn't exist yet.
 		// TODO: Fix dependency issues between ve.js and ve.init.platform
 		return ve.init.platform.getMessage.apply( ve.init.platform, arguments );
 	};

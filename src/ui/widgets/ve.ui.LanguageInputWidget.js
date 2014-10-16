@@ -113,16 +113,16 @@ OO.inheritClass( ve.ui.LanguageInputWidget, OO.ui.Widget );
  */
 ve.ui.LanguageInputWidget.prototype.onFindLanguageButtonClick = function () {
 	this.dialogs.openWindow( 'languageSearch' )
-		.then( ve.bind( function ( opened ) {
-			opened.then( ve.bind( function ( closing ) {
-				closing.then( ve.bind( function ( data ) {
+		.then( function ( opened ) {
+			opened.then( function ( closing ) {
+				closing.then( function ( data ) {
 					data = data || {};
 					if ( data.action === 'apply' ) {
 						this.setLangAndDir( data.lang, data.dir );
 					}
-				}, this ) );
-			}, this ) );
-		}, this ) );
+				}.bind( this ) );
+			}.bind( this ) );
+		}.bind( this ) );
 };
 
 /**

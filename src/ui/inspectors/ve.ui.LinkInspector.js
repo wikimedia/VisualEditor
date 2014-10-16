@@ -50,7 +50,7 @@ ve.ui.LinkInspector.static.actions = ve.ui.LinkInspector.super.static.actions.co
  */
 ve.ui.LinkInspector.prototype.onTargetInputChange = function () {
 	var href = this.targetInput.getHref();
-	this.targetInput.isValid().done( OO.ui.bind( function ( valid ) {
+	this.targetInput.isValid().done( function ( valid ) {
 		this.actions.forEach( { actions: 'open' }, function ( action ) {
 			action.setHref( href ).setTarget( '_blank' ).setDisabled( !valid );
 			// HACK: Chrome renders a dark outline around the action when it's a link, but causing it to
@@ -58,7 +58,7 @@ ve.ui.LinkInspector.prototype.onTargetInputChange = function () {
 			// investigation
 			action.$element.hide().fadeIn( 0 );
 		} );
-	}, this ) );
+	}.bind( this ) );
 };
 
 /**

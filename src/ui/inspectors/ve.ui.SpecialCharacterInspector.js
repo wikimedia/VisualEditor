@@ -65,14 +65,14 @@ ve.ui.SpecialCharacterInspector.prototype.getSetupProcess = function ( data ) {
 			if ( !this.characters ) {
 				this.$spinner.show();
 				this.fetchCharList()
-					.done( ve.bind( function () {
+					.done( function () {
 						this.buildButtonList();
-					}, this ) )
+					}.bind( this ) )
 					// TODO: show error message on fetchCharList().fail
-					.always( ve.bind( function () {
+					.always( function () {
 						// TODO: generalize push/pop pending, like we do in Dialog
 						this.$spinner.hide();
-					}, this ) );
+					}.bind( this ) );
 			}
 		}, this );
 };
@@ -129,7 +129,7 @@ ve.ui.SpecialCharacterInspector.prototype.buildButtonList = function () {
 			.append( $categoryButtons );
 	}
 
-	$list.on( 'click', ve.bind( this.onListClick, this ) );
+	$list.on( 'click', this.onListClick.bind( this ) );
 
 	this.form.$element.append( $list );
 };

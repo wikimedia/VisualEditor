@@ -47,10 +47,10 @@ ve.ui.DebugBar = function VeUiDebugBar( surface, config ) {
 	this.filibusterToggle = new OO.ui.ToggleButtonWidget( { label: 'Start Filibuster' } );
 
 	// Events
-	this.logRangeButton.on( 'click', ve.bind( this.onLogRangeButtonClick, this ) );
-	this.dumpModelButton.on( 'click', ve.bind( this.onDumpModelButtonClick, this ) );
-	this.dumpModelChangeToggle.on( 'click', ve.bind( this.onDumpModelChangeToggleClick, this ) );
-	this.filibusterToggle.on( 'click', ve.bind( this.onFilibusterToggleClick, this ) );
+	this.logRangeButton.on( 'click', this.onLogRangeButtonClick.bind( this ) );
+	this.dumpModelButton.on( 'click', this.onDumpModelButtonClick.bind( this ) );
+	this.dumpModelChangeToggle.on( 'click', this.onDumpModelChangeToggleClick.bind( this ) );
+	this.filibusterToggle.on( 'click', this.onFilibusterToggleClick.bind( this ) );
 
 	this.onDumpModelChangeToggleClick();
 	this.getSurface().getModel().connect( this, { select: 'onSurfaceSelect' } );
