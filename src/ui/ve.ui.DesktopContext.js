@@ -22,7 +22,7 @@ ve.ui.DesktopContext = function VeUiDesktopContext( surface, config ) {
 	this.popup = new OO.ui.PopupWidget( { $: this.$, $container: this.surface.$element } );
 	this.transitioning = null;
 	this.suppressed = false;
-	this.onWindowResizeHandler = ve.bind( this.onPosition, this );
+	this.onWindowResizeHandler = this.onPosition.bind( this );
 	this.$window = this.$( this.getElementWindow() );
 
 	// Events

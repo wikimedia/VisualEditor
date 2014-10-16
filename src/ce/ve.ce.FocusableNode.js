@@ -75,8 +75,8 @@ ve.ce.FocusableNode.prototype.createHighlight = function () {
 			.addClass( 've-ce-focusableNode-highlight-relocatable-marker' )
 			.attr( 'src', 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==' )
 			.on( {
-				dragstart: ve.bind( this.onFocusableDragStart, this ),
-				dragend: ve.bind( this.onFocusableDragEnd, this )
+				dragstart: this.onFocusableDragStart.bind( this ),
+				dragend: this.onFocusableDragEnd.bind( this )
 			} )
 		);
 };
@@ -101,8 +101,8 @@ ve.ce.FocusableNode.prototype.onFocusableSetup = function () {
 
 	// Events
 	this.$focusable.on( {
-		'mouseenter.ve-ce-focusableNode': ve.bind( this.onFocusableMouseEnter, this ),
-		'mousedown.ve-ce-focusableNode touchend.ve-ce-focusableNode': ve.bind( this.onFocusableMouseDown, this )
+		'mouseenter.ve-ce-focusableNode': this.onFocusableMouseEnter.bind( this ),
+		'mousedown.ve-ce-focusableNode touchend.ve-ce-focusableNode': this.onFocusableMouseDown.bind( this )
 	} );
 	// $element is ce=false so make sure nothing happens when you click
 	// on it, just in case the browser decides to do something.
@@ -347,8 +347,8 @@ ve.ce.FocusableNode.prototype.createHighlights = function () {
 	}
 
 	this.$highlights.on( {
-		mousedown: ve.bind( this.onFocusableMouseDown, this ),
-		dblclick: ve.bind( this.onFocusableDblClick, this )
+		mousedown: this.onFocusableMouseDown.bind( this ),
+		dblclick: this.onFocusableDblClick.bind( this )
 	} );
 
 	this.highlighted = true;
@@ -360,8 +360,8 @@ ve.ce.FocusableNode.prototype.createHighlights = function () {
 	// Events
 	if ( !this.focused ) {
 		this.surface.$element.on( {
-			'mousemove.ve-ce-focusableNode': ve.bind( this.onSurfaceMouseMove, this ),
-			'mouseout.ve-ce-focusableNode': ve.bind( this.onSurfaceMouseOut, this )
+			'mousemove.ve-ce-focusableNode': this.onSurfaceMouseMove.bind( this ),
+			'mouseout.ve-ce-focusableNode': this.onSurfaceMouseOut.bind( this )
 		} );
 	}
 	this.surface.connect( this, { position: 'positionHighlights' } );

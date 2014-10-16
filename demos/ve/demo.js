@@ -86,7 +86,7 @@ $( function () {
 			}
 
 			// Re-bind as getMessage may have changed
-			OO.ui.msg = ve.bind( ve.init.platform.getMessage, ve.init.platform );
+			OO.ui.msg = ve.init.platform.getMessage.bind( ve.init.platform );
 
 			// HACK: Re-initialize page to load message files
 			ve.init.platform.initialize().done( function () {

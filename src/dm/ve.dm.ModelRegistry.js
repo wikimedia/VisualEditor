@@ -338,7 +338,7 @@
 				types = types.concat( node.getAttribute( 'property' ).split( ' ' ) );
 			}
 		}
-		elementExtSpecificTypes = types.filter( ve.bind( this.isExtensionSpecificType, this ) );
+		elementExtSpecificTypes = types.filter( this.isExtensionSpecificType.bind( this ) );
 		hasExtSpecificTypes = elementExtSpecificTypes.length !== 0;
 		// If the element has extension-specific types, only use those for matching and ignore its
 		// other types. If it has no extension-specific types, use all of its types.
