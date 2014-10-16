@@ -14,10 +14,12 @@
  * @constructor
  * @param {jQuery} $container
  * @param {ve.dm.Surface} model Surface model to observe
- * @param {ve.ui.Surface} surface Surface user interface
+ * @param {ve.ui.Surface} ui Surface user interface
  * @param {Object} [config] Configuration options
  */
-ve.ce.Surface = function VeCeSurface( model, surface, options ) {
+ve.ce.Surface = function VeCeSurface( model, ui, options ) {
+	var surface = this;
+
 	// Parent constructor
 	OO.ui.Element.call( this, options );
 
@@ -25,7 +27,7 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 	OO.EventEmitter.call( this );
 
 	// Properties
-	this.surface = surface;
+	this.surface = ui;
 	this.model = model;
 	this.documentView = new ve.ce.Document( model.getDocument(), this );
 	this.surfaceObserver = new ve.ce.SurfaceObserver( this );
@@ -121,8 +123,8 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 		.on( 'focus', 'a', function () {
 			// Opera <= 12 triggers 'blur' on document node before any link is
 			// focused and we don't want that
-			this.$documentNode[0].focus();
-		}.bind( this ) );
+			surface.$documentNode[0].focus();
+		} );
 
 	if ( this.hasSelectionChangeEvents ) {
 		this.$document.on( 'selectionchange', this.onDocumentSelectionChange.bind( this ) );
@@ -547,6 +549,7 @@ ve.ce.Surface.prototype.disable = function () {
  * function will also reapply the selection, even if the surface is already focused.
  */
 ve.ce.Surface.prototype.focus = function () {
+	var surface = this;
 	// Focus the documentNode for text selections, or the pasteTarget for focusedNode selections
 	if ( this.focusedNode ) {
 		this.$pasteTarget[0].focus();
@@ -562,10 +565,10 @@ ve.ce.Surface.prototype.focus = function () {
 			// manually
 			// TODO: rename isFocused and other methods to something which reflects
 			// the fact they actually mean "has a native selection"
-			if ( !this.isFocused() ) {
-				this.getModel().selectFirstContentOffset();
+			if ( !surface.isFocused() ) {
+				surface.getModel().selectFirstContentOffset();
 			}
-		}.bind( this ) );
+		} );
 	}
 	// onDocumentFocus takes care of the rest
 };
@@ -832,7 +835,8 @@ ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
 		dataTransfer = e.originalEvent.dataTransfer,
 		focusedNode = this.relocating,
 		$dropTarget = this.$lastDropTarget,
-		dropPosition = this.lastDropPosition;
+		dropPosition = this.lastDropPosition,
+		surface = this;
 
 	try {
 		selectionJSON = dataTransfer.getData( 'application-x/VisualEditor' );
@@ -847,7 +851,7 @@ ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
 		if ( focusedNode ) {
 			dragRange = focusedNode.getModel().getOuterRange();
 		} else if ( selectionJSON ) {
-			dragSelection = ve.dm.Selection.static.newFromJSON( this.getModel().getDocument(), selectionJSON );
+			dragSelection = ve.dm.Selection.static.newFromJSON( surface.getModel().getDocument(), selectionJSON );
 			if ( dragSelection instanceof ve.dm.LinearSelection ) {
 				dragRange = dragSelection.getRange();
 			}
@@ -867,18 +871,18 @@ ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
 					return;
 				}
 			} else {
-				targetOffset = this.getOffsetFromCoords(
-					e.originalEvent.pageX - this.$document.scrollLeft(),
-					e.originalEvent.pageY - this.$document.scrollTop()
+				targetOffset = surface.getOffsetFromCoords(
+					e.originalEvent.pageX - surface.$document.scrollLeft(),
+					e.originalEvent.pageY - surface.$document.scrollTop()
 				);
 				if ( targetOffset === -1 ) {
 					return;
 				}
 			}
-			targetFragment = this.getModel().getLinearFragment( new ve.Range( targetOffset ), false );
+			targetFragment = surface.getModel().getLinearFragment( new ve.Range( targetOffset ), false );
 
 			// Get a fragment and data of the node being dragged
-			originFragment = this.getModel().getLinearFragment( dragRange, false );
+			originFragment = surface.getModel().getLinearFragment( dragRange, false );
 			originData = originFragment.getData();
 
 			// Remove node from old location
@@ -887,9 +891,9 @@ ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
 			// Re-insert data at new location
 			targetFragment.insertContent( originData );
 
-			this.endRelocation();
+			surface.endRelocation();
 		}
-	}.bind( this ) );
+	} );
 
 	// Prevent native drop event from modifying view
 	return false;
@@ -1120,10 +1124,11 @@ ve.ce.Surface.prototype.onDocumentKeyUp = function ( e ) {
  * @param {jQuery.Event} e Cut event
  */
 ve.ce.Surface.prototype.onCut = function ( e ) {
+	var surface = this;
 	this.onCopy( e );
 	setTimeout( function () {
-		this.getModel().getFragment().delete().select();
-	}.bind( this ) );
+		surface.getModel().getFragment().delete().select();
+	} );
 };
 
 /**
@@ -1237,6 +1242,7 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
  * @param {jQuery.Event} e Paste event
  */
 ve.ce.Surface.prototype.onPaste = function ( e ) {
+	var surface = this;
 	// Prevent pasting until after we are done
 	if ( this.pasting ) {
 		return false;
@@ -1245,15 +1251,15 @@ ve.ce.Surface.prototype.onPaste = function ( e ) {
 	this.pasting = true;
 	this.beforePaste( e );
 	setTimeout( function () {
-		this.afterPaste( e );
-		this.surfaceObserver.clear();
-		this.surfaceObserver.enable();
+		surface.afterPaste( e );
+		surface.surfaceObserver.clear();
+		surface.surfaceObserver.enable();
 
 		// Allow pasting again
-		this.pasting = false;
-		this.pasteSpecial = false;
-		this.beforePasteData = null;
-	}.bind( this ) );
+		surface.pasting = false;
+		surface.pasteSpecial = false;
+		surface.beforePasteData = null;
+	} );
 };
 
 /**
@@ -2236,7 +2242,8 @@ ve.ce.Surface.prototype.handleLeftOrRightArrowKey = function ( e ) {
 ve.ce.Surface.prototype.handleUpOrDownArrowKey = function ( e ) {
 	var nativeRange, slug, $cursorHolder, endNode, endOffset, range,
 		selection = this.model.getSelection(),
-		direction = e.keyCode === OO.ui.Keys.DOWN ? 1 : -1;
+		direction = e.keyCode === OO.ui.Keys.DOWN ? 1 : -1,
+		surface = this;
 
 	if ( !( selection instanceof ve.dm.LinearSelection ) ) {
 		return;
@@ -2297,20 +2304,20 @@ ve.ce.Surface.prototype.handleUpOrDownArrowKey = function ( e ) {
 	setTimeout( function () {
 		var viewNode, newRange;
 		// Chrome bug lets you cursor into a multi-line contentEditable=false with up/down...
-		viewNode = $( this.nativeSelection.anchorNode ).closest( '.ve-ce-leafNode,.ve-ce-branchNode' ).data( 'view' );
+		viewNode = $( surface.nativeSelection.anchorNode ).closest( '.ve-ce-leafNode,.ve-ce-branchNode' ).data( 'view' );
 		if ( viewNode.isFocusable() ) {
 			newRange = direction === 1 ? viewNode.getOuterRange() : viewNode.getOuterRange().flip();
 		} else {
-			this.surfaceObserver.pollOnce();
-			newRange = new ve.Range( this.model.getSelection().getRange().to );
+			surface.surfaceObserver.pollOnce();
+			newRange = new ve.Range( surface.model.getSelection().getRange().to );
 		}
 		// Expand range
 		if ( e.shiftKey === true ) {
 			newRange = new ve.Range( range.from, newRange.to );
 		}
-		this.model.setLinearSelection( newRange );
-		this.surfaceObserver.pollOnce();
-	}.bind( this ) );
+		surface.model.setLinearSelection( newRange );
+		surface.surfaceObserver.pollOnce();
+	} );
 };
 
 /**

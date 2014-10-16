@@ -123,45 +123,46 @@ ve.ui.Context.prototype.afterContextChange = function () {
  * @param {Object} data Window opening data
  */
 ve.ui.Context.prototype.onInspectorOpening = function ( win, opening ) {
+	var context = this;
 	this.inspector = win;
 
 	opening
 		.progress( function ( data ) {
 			if ( data.state === 'setup' ) {
-				if ( this.menu.isVisible() ) {
+				if ( context.menu.isVisible() ) {
 					// Change state: menu -> inspector
-					this.menu.toggle( false );
-				} else if ( !this.isVisible() ) {
+					context.menu.toggle( false );
+				} else if ( !context.isVisible() ) {
 					// Change state: closed -> inspector
-					this.toggle( true );
+					context.toggle( true );
 				}
 			}
-			this.updateDimensionsDebounced();
-		}.bind( this ) )
+			context.updateDimensionsDebounced();
+		} )
 		.always( function ( opened ) {
 			opened.always( function ( closed ) {
 				closed.always( function () {
-					var inspectable = !!this.getAvailableTools().length;
+					var inspectable = !!context.getAvailableTools().length;
 
-					this.inspector = null;
+					context.inspector = null;
 
 					if ( inspectable ) {
 						// Change state: inspector -> menu
-						this.menu.toggle( true );
-						this.populateMenu();
-						this.updateDimensionsDebounced();
+						context.menu.toggle( true );
+						context.populateMenu();
+						context.updateDimensionsDebounced();
 					} else {
 						// Change state: inspector -> closed
-						this.toggle( false );
+						context.toggle( false );
 					}
 
 					// Restore selection
-					if ( this.getSurface().getModel().getSelection() ) {
-						this.getSurface().getView().focus();
+					if ( context.getSurface().getModel().getSelection() ) {
+						context.getSurface().getView().focus();
 					}
-				}.bind( this ) );
-			}.bind( this ) );
-		}.bind( this ) );
+				} );
+			} );
+		} );
 };
 
 /**

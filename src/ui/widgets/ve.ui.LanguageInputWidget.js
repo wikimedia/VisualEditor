@@ -112,17 +112,18 @@ OO.inheritClass( ve.ui.LanguageInputWidget, OO.ui.Widget );
  * Handle find language button click events.
  */
 ve.ui.LanguageInputWidget.prototype.onFindLanguageButtonClick = function () {
+	var widget = this;
 	this.dialogs.openWindow( 'languageSearch' )
 		.then( function ( opened ) {
 			opened.then( function ( closing ) {
 				closing.then( function ( data ) {
 					data = data || {};
 					if ( data.action === 'apply' ) {
-						this.setLangAndDir( data.lang, data.dir );
+						widget.setLangAndDir( data.lang, data.dir );
 					}
-				}.bind( this ) );
-			}.bind( this ) );
-		}.bind( this ) );
+				} );
+			} );
+		} );
 };
 
 /**

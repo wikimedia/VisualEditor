@@ -49,16 +49,17 @@ ve.ui.LinkInspector.static.actions = ve.ui.LinkInspector.super.static.actions.co
  * @param {string} value New target input value
  */
 ve.ui.LinkInspector.prototype.onTargetInputChange = function () {
-	var href = this.targetInput.getHref();
+	var href = this.targetInput.getHref(),
+		inspector = this;
 	this.targetInput.isValid().done( function ( valid ) {
-		this.actions.forEach( { actions: 'open' }, function ( action ) {
+		inspector.actions.forEach( { actions: 'open' }, function ( action ) {
 			action.setHref( href ).setTarget( '_blank' ).setDisabled( !valid );
 			// HACK: Chrome renders a dark outline around the action when it's a link, but causing it to
 			// re-render makes it magically go away; this is incredibly evil and needs further
 			// investigation
 			action.$element.hide().fadeIn( 0 );
 		} );
-	}.bind( this ) );
+	} );
 };
 
 /**

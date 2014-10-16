@@ -301,7 +301,8 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
  * @return {boolean} Whether the contents have changed
  */
 ve.ce.ContentBranchNode.prototype.renderContents = function () {
-	var i, len, node, rendered, unicornInfo, oldWrapper, newWrapper;
+	var i, len, element, rendered, unicornInfo, oldWrapper, newWrapper,
+		node = this;
 	if (
 		this.root instanceof ve.ce.DocumentNode &&
 		this.root.getSurface().isRenderingLocked()
@@ -337,9 +338,9 @@ ve.ce.ContentBranchNode.prototype.renderContents = function () {
 
 	// Detach all child nodes from this.$element
 	for ( i = 0, len = this.$element.length; i < len; i++ ) {
-		node = this.$element[i];
-		while ( node.firstChild ) {
-			node.removeChild( node.firstChild );
+		element = this.$element[i];
+		while ( element.firstChild ) {
+			element.removeChild( element.firstChild );
 		}
 	}
 
@@ -365,8 +366,8 @@ ve.ce.ContentBranchNode.prototype.renderContents = function () {
 	if ( ve.debug ) {
 		this.$element.css( 'backgroundColor', '#eee' );
 		setTimeout( function () {
-			this.$element.css( 'backgroundColor', '' );
-		}.bind( this ), 500 );
+			node.$element.css( 'backgroundColor', '' );
+		}, 500 );
 	}
 
 	return true;

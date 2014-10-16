@@ -47,6 +47,7 @@ OO.inheritClass( ve.ui.LinkTargetInputWidget, OO.ui.TextInputWidget );
  * @method
  */
 ve.ui.LinkTargetInputWidget.prototype.onEdit = function () {
+	var widget = this;
 	if ( !this.disabled ) {
 
 		// Allow the stack to clear so the value will be updated
@@ -56,12 +57,12 @@ ve.ui.LinkTargetInputWidget.prototype.onEdit = function () {
 			// the 'rtl' class; inspectors and dialogs have oo-ui-rtl instead.
 			if ( $( 'body' ).hasClass( 'rtl' ) ) {
 				var isExt = ve.init.platform.getExternalLinkUrlProtocolsRegExp()
-					.test( this.$input.val() );
+					.test( widget.$input.val() );
 				// If URL is external, flip to LTR. Otherwise, set back to RTL
-				this.setRTL( !isExt );
+				widget.setRTL( !isExt );
 			}
-			this.setValue( this.$input.val() );
-		}.bind( this ) );
+			widget.setValue( widget.$input.val() );
+		} );
 	}
 };
 
