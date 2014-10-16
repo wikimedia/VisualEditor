@@ -396,6 +396,20 @@
 	};
 
 	/**
+	 * Select the contents of an element
+	 *
+	 * @param {HTMLElement} element Element
+	 */
+	ve.selectElement = function ( element ) {
+		var nativeRange = OO.ui.Element.getDocument( element ).createRange(),
+			nativeSelection = OO.ui.Element.getWindow( element ).getSelection();
+		nativeRange.setStart( element, 0 );
+		nativeRange.setEnd( element, element.childNodes.length );
+		nativeSelection.removeAllRanges();
+		nativeSelection.addRange( nativeRange );
+	};
+
+	/**
 	 * Move the selection to the end of an input.
 	 *
 	 * @param {HTMLElement} element Input element

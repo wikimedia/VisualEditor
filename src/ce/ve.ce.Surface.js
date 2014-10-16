@@ -1137,7 +1137,7 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 		return;
 	}
 
-	var nativeRange, originalRange,
+	var originalRange,
 		clipboardIndex, clipboardItem, pasteData,
 		scrollTop, unsafeSelector,
 		view = this,
@@ -1211,17 +1211,12 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 		this.surfaceObserver.disable();
 		// If direct clipboard editing is not allowed, we must use the pasteTarget to
 		// select the data we want to go in the clipboard
-		nativeRange = this.getElementDocument().createRange();
-		nativeRange.setStart( this.$pasteTarget[0], 0 );
-		nativeRange.setEnd( this.$pasteTarget[0], this.$pasteTarget[0].childNodes.length );
 
 		// Save scroll position before changing focus to "offscreen" paste target
 		scrollTop = this.$window.scrollTop();
 
 		originalRange = this.getNativeRange().cloneRange();
-		this.nativeSelection.removeAllRanges();
-		this.$pasteTarget[0].focus();
-		this.nativeSelection.addRange( nativeRange );
+		ve.selectElement( this.$pasteTarget[0] );
 		// Restore scroll position after changing focus
 		this.$window.scrollTop( scrollTop );
 
@@ -1633,7 +1628,7 @@ ve.ce.Surface.prototype.onDocumentInput = function () {
  * @param {ve.dm.Selection} selection
  */
 ve.ce.Surface.prototype.onModelSelect = function ( selection ) {
-	var nativeRange, focusedNode;
+	var focusedNode;
 
 	this.contentBranchNodeChanged = false;
 
@@ -1659,12 +1654,8 @@ ve.ce.Surface.prototype.onModelSelect = function ( selection ) {
 				// a dummy selection of one space in the pasteTarget.
 				// onCopy will ignore this native selection and use the DM selection
 				this.$pasteTarget.text( ' ' );
-				nativeRange = this.getElementDocument().createRange();
-				nativeRange.setStart( this.$pasteTarget[0], 0 );
-				nativeRange.setEnd( this.$pasteTarget[0], 1 );
-				this.nativeSelection.removeAllRanges();
+				ve.selectElement( this.$pasteTarget[0] );
 				this.$pasteTarget[0].focus();
-				this.nativeSelection.addRange( nativeRange );
 				// Since the selection is no longer in the documentNode, clear the SurfaceObserver's
 				// selection state. Otherwise, if the user places the selection back into the documentNode
 				// in exactly the same place where it was before, the observer won't consider that a change.
