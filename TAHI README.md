@@ -54,6 +54,8 @@ Copy:
 
 * copy `./lib`, `./modules` and `./i18n` to `[tahi-directory]/public/visual-editor/`
 
+* copy `[tahi-directory]/public/visual-editor/i18n/en.json` to `[tahi-directory]/public/visual-editor/i18n/en-us.json`
+
 * copy `[tahi-directory]/public/visual-editor/lib/oojs-ui/i18n/en.json` to `[tahi-directory]/public/visual-editor/lib/oojs-ui/i18n/en-us.json`
 
 * ~~copy `[tahi-directory]/public/visual-editor/modules/ve/i18n/en.json` to `[tahi-directory]/public/visual-editor/modules/ve/i18n/en-us.json`~~
