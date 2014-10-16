@@ -61,18 +61,19 @@ ve.ui.SpecialCharacterInspector.prototype.initialize = function () {
 ve.ui.SpecialCharacterInspector.prototype.getSetupProcess = function ( data ) {
 	return ve.ui.SpecialCharacterInspector.super.prototype.getSetupProcess.call( this, data )
 		.next( function () {
+			var inspector = this;
 			// Don't request the character list again if we already have it
 			if ( !this.characters ) {
 				this.$spinner.show();
 				this.fetchCharList()
 					.done( function () {
-						this.buildButtonList();
-					}.bind( this ) )
+						inspector.buildButtonList();
+					} )
 					// TODO: show error message on fetchCharList().fail
 					.always( function () {
 						// TODO: generalize push/pop pending, like we do in Dialog
-						this.$spinner.hide();
-					}.bind( this ) );
+						inspector.$spinner.hide();
+					} );
 			}
 		}, this );
 };
