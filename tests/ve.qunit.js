@@ -217,8 +217,8 @@
 	};
 
 	QUnit.assert.equalHash = function ( actual, expected, message ) {
-		actual = actual && actual.getHashObject();
-		expected = expected && expected.getHashObject();
+		actual = actual && actual.toJSON();
+		expected = expected && expected.toJSON();
 		QUnit.push( QUnit.equiv(actual, expected), actual, expected, message );
 	};
 
