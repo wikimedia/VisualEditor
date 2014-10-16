@@ -59,6 +59,7 @@ ve.ce.Surface = function VeCeSurface( model, surface, options ) {
 	this.lastDropPosition = null;
 	this.$pasteTarget = this.$( '<div>' );
 	this.pasting = false;
+	this.copying = false;
 	this.pasteSpecial = false;
 	this.focusedNode = null;
 	// This is set on entering changeModel, then unset when leaving.
@@ -1206,6 +1207,8 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 		this.$pasteTarget.prepend(
 			this.$( '<span>' ).attr( 'data-ve-clipboard-key', this.clipboardId + '-' + clipboardIndex )
 		);
+
+		this.surfaceObserver.disable();
 		// If direct clipboard editing is not allowed, we must use the pasteTarget to
 		// select the data we want to go in the clipboard
 		nativeRange = this.getElementDocument().createRange();
@@ -1224,11 +1227,13 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 
 		setTimeout( function () {
 			// Change focus back
-			view.nativeSelection.removeAllRanges();
 			view.$documentNode[0].focus();
+			view.nativeSelection.removeAllRanges();
 			view.nativeSelection.addRange( originalRange );
 			// Restore scroll position
 			view.$window.scrollTop( scrollTop );
+			view.surfaceObserver.clear();
+			view.surfaceObserver.enable();
 		} );
 	}
 };
@@ -1243,10 +1248,13 @@ ve.ce.Surface.prototype.onPaste = function ( e ) {
 	if ( this.pasting ) {
 		return false;
 	}
+	this.surfaceObserver.disable();
 	this.pasting = true;
 	this.beforePaste( e );
 	setTimeout( ve.bind( function () {
 		this.afterPaste( e );
+		this.surfaceObserver.clear();
+		this.surfaceObserver.enable();
 
 		// Allow pasting again
 		this.pasting = false;
@@ -1282,9 +1290,6 @@ ve.ce.Surface.prototype.beforePaste = function ( e ) {
 				.replace( /<!-- *EndFragment *-->[\s\S]*$/, '' );
 		}
 	}
-
-	// TODO: no pollOnce here: but should we add one?
-	this.surfaceObserver.stopTimerLoop();
 
 	range = selection.getRange();
 	// Pasting into a range? Remove first.

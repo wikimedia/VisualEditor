@@ -22,6 +22,7 @@ ve.ce.SurfaceObserver = function VeCeSurfaceObserver( surface ) {
 	this.documentView = surface.getDocument();
 	this.domDocument = this.documentView.getDocumentNode().getElementDocument();
 	this.polling = false;
+	this.disabled = false;
 	this.timeoutId = null;
 	this.pollInterval = 250; // ms
 
@@ -142,6 +143,20 @@ ve.ce.SurfaceObserver.prototype.stopTimerLoop = function () {
 };
 
 /**
+ * Disable the surface observer
+ */
+ve.ce.SurfaceObserver.prototype.disable = function () {
+	this.disabled = true;
+};
+
+/**
+ * Enable the surface observer
+ */
+ve.ce.SurfaceObserver.prototype.enable = function () {
+	this.disabled = false;
+};
+
+/**
  * Poll for changes.
  *
  * TODO: fixing selection in certain cases, handling selection across multiple nodes in Firefox
@@ -200,7 +215,7 @@ ve.ce.SurfaceObserver.prototype.pollOnceInternal = function ( emitChanges, selec
 		leftSlug = false,
 		observer = this;
 
-	if ( !this.domDocument || this.surface.pasting ) {
+	if ( !this.domDocument || this.disabled ) {
 		return;
 	}
 
