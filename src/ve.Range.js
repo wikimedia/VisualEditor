@@ -55,7 +55,7 @@ ve.Range.static.newFromJSON = function ( json ) {
 /**
  * Create a new range from a range hash object
  *
- * @see ve.Range#getHashObject
+ * @see ve.Range#toJSON
  *
  * @param {Object} hash Hash object
  * @return {ve.Range} New range
@@ -223,23 +223,13 @@ ve.Range.prototype.isBackwards = function () {
 };
 
 /**
- * Serialize range to JSON
+ * Get a object summarizing the range for JSON serialization
  *
- * @see ve.Range#newFromJSON
- *
- * @return {string} Serialized range
+ * @returns {Object} Object for JSON serialization
  */
 ve.Range.prototype.toJSON = function () {
-	return JSON.stringify( this.getHashObject() );
-};
-
-/**
- * Get a hash object summarizing the range
- *
- * @return {Object} Hash object
- */
-ve.Range.prototype.getHashObject = function () {
 	return {
+		type: 'range',
 		from: this.from,
 		to: this.to
 	};

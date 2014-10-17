@@ -805,11 +805,11 @@ ve.ce.Surface.prototype.onDocumentSelectionChange = function () {
 ve.ce.Surface.prototype.onDocumentDragStart = function ( e ) {
 	var dataTransfer = e.originalEvent.dataTransfer;
 	try {
-		dataTransfer.setData( 'application-x/VisualEditor', this.getModel().getSelection().toJSON() );
+		dataTransfer.setData( 'application-x/VisualEditor', JSON.stringify( this.getModel().getSelection() ) );
 	} catch ( err ) {
 		// IE doesn't support custom data types, but overwriting the actual drag data should be avoided
 		// TODO: Do this with an internal state to avoid overwriting drag data even in IE
-		dataTransfer.setData( 'text', this.getModel().getSelection().toJSON() );
+		dataTransfer.setData( 'text', JSON.stringify( this.getModel().getSelection() ) );
 	}
 };
 

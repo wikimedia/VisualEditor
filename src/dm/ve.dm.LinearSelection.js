@@ -40,10 +40,10 @@ ve.dm.LinearSelection.static.newFromHash = function ( doc, hash ) {
 /**
  * @inheritdoc
  */
-ve.dm.LinearSelection.prototype.getHashObject = function () {
+ve.dm.LinearSelection.prototype.toJSON = function () {
 	return {
 		type: this.constructor.static.name,
-		range: this.range.getHashObject()
+		range: this.range
 	};
 };
 
