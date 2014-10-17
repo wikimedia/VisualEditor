@@ -674,8 +674,6 @@ ve.ce.Surface.prototype.onDocumentMouseDown = function ( e ) {
 		return;
 	}
 
-	var view = this;
-
 	// Remember the mouse is down
 	this.dragging = true;
 
@@ -683,11 +681,9 @@ ve.ce.Surface.prototype.onDocumentMouseDown = function ( e ) {
 	this.$document.on( 'mouseup', this.onDocumentMouseUpHandler );
 
 	this.surfaceObserver.stopTimerLoop();
-	setTimeout( function () {
-		// Selection change can happens after mousedown
-		// TODO: guard with incRenderLock?
-		view.surfaceObserver.pollOnce();
-	} );
+	// In some browsers the selection doesn't change until after the event
+	// so poll in the 'after' function
+	setTimeout( this.afterDocumentMouseDown.bind( this, e, this.getModel().getSelection() ) );
 
 	// Handle triple click
 	// HACK: do not do triple click handling in IE, because their click counting is broken
@@ -696,6 +692,20 @@ ve.ce.Surface.prototype.onDocumentMouseDown = function ( e ) {
 		e.preventDefault();
 
 		this.getModel().getFragment().expandLinearSelection( 'closest', ve.dm.BranchNode ).adjustLinearSelection( 1, -1 ).select();
+	}
+};
+
+/**
+ * Deferred until after document mouse down
+ *
+ * @param {jQuery.Event} e Mouse down event
+ * @param {ve.dm.Selection} selectionBefore Selection before the mouse event
+ */
+ve.ce.Surface.prototype.afterDocumentMouseDown = function ( e, selectionBefore ) {
+	// TODO: guard with incRenderLock?
+	this.surfaceObserver.pollOnce();
+	if ( e.shiftKey ) {
+		this.fixShiftClickSelect( selectionBefore );
 	}
 };
 
@@ -709,13 +719,51 @@ ve.ce.Surface.prototype.onDocumentMouseDown = function ( e ) {
 ve.ce.Surface.prototype.onDocumentMouseUp = function ( e ) {
 	this.$document.off( 'mouseup', this.onDocumentMouseUpHandler );
 	this.surfaceObserver.startTimerLoop();
+	// In some browsers the selection doesn't change until after the event
+	// so poll in the 'after' function
+	setTimeout( this.afterDocumentMouseUp.bind( this, e, this.getModel().getSelection() ) );
+};
+
+/**
+ * Deferred until after document mouse up
+ *
+ * @param {jQuery.Event} e Mouse up event
+ * @param {ve.dm.Selection} selectionBefore Selection before the mouse event
+ */
+ve.ce.Surface.prototype.afterDocumentMouseUp = function ( e, selectionBefore ) {
 	// TODO: guard with incRenderLock?
 	this.surfaceObserver.pollOnce();
+	if ( e.shiftKey ) {
+		this.fixShiftClickSelect( selectionBefore );
+	}
 	if ( !e.shiftKey && this.selecting ) {
 		this.emit( 'selectionEnd' );
 		this.selecting = false;
 	}
 	this.dragging = false;
+};
+
+/**
+ * Fix shift-click selection
+ *
+ * When shift-clicking on links Chrome tries to collapse the selection
+ * so check for this and fix manually.
+ *
+ * This can occur on mousedown or, if the existing selection covers the
+ * link, on mouseup.
+ *
+ * https://code.google.com/p/chromium/issues/detail?id=345745
+ *
+ * @param {ve.dm.Selection} selectionBefore Selection before the mouse event
+ */
+ve.ce.Surface.prototype.fixShiftClickSelect = function ( selectionBefore ) {
+	if ( !( selectionBefore instanceof ve.dm.LinearSelection ) ) {
+		return;
+	}
+	var newSelection = this.getModel().getSelection();
+	if ( newSelection.isCollapsed() && !newSelection.equals( selectionBefore ) ) {
+		this.getModel().setLinearSelection( new ve.Range( selectionBefore.getRange().from, newSelection.getRange().to ) );
+	}
 };
 
 /**
@@ -1011,6 +1059,8 @@ ve.ce.Surface.prototype.onDocumentKeyPress = function ( e ) {
 };
 
 /**
+ * Deferred until after document key down event
+ *
  * @param {jQuery.Event} e keydown event
  */
 ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
