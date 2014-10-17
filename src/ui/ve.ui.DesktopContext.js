@@ -34,7 +34,7 @@ ve.ui.DesktopContext = function VeUiDesktopContext( surface, config ) {
 		position: 'onPosition'
 	} );
 	this.surface.getModel().connect( this, {
-		select: 'onPosition'
+		select: 'onModelSelect'
 	} );
 	this.inspectors.connect( this, {
 		resize: 'setPopupSize'
@@ -106,6 +106,18 @@ ve.ui.DesktopContext.prototype.onUnsuppress = function () {
 		this.menu.toggle( true );
 		this.populateMenu();
 		this.toggle( true );
+	}
+};
+
+/**
+ * Handle model select event.
+ */
+ve.ui.DesktopContext.prototype.onModelSelect = function () {
+	if ( this.isVisible() ) {
+		if ( this.inspector && this.inspector.isOpened() ) {
+			this.inspector.close();
+		}
+		this.updateDimensionsDebounced();
 	}
 };
 
