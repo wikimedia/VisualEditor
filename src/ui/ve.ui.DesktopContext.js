@@ -27,8 +27,6 @@ ve.ui.DesktopContext = function VeUiDesktopContext( surface, config ) {
 
 	// Events
 	this.surface.getView().connect( this, {
-		selectionStart: 'onSuppress',
-		selectionEnd: 'onUnsuppress',
 		relocationStart: 'onSuppress',
 		relocationEnd: 'onUnsuppress',
 		blur: 'onSuppress',

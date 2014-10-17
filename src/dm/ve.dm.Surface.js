@@ -31,6 +31,7 @@ ve.dm.Surface = function VeDmSurface( doc ) {
 	this.undoIndex = 0;
 	this.historyTrackingInterval = null;
 	this.insertionAnnotations = new ve.dm.AnnotationSet( this.getDocument().getStore() );
+	this.coveredAnnotations = new ve.dm.AnnotationSet( this.getDocument().getStore() );
 	this.enabled = true;
 	this.transacting = false;
 	this.queueingContextChanges = false;
@@ -572,7 +573,7 @@ ve.dm.Surface.prototype.setNullSelection = function () {
  */
 ve.dm.Surface.prototype.setSelection = function ( selection ) {
 	var left, right, leftAnnotations, rightAnnotations, insertionAnnotations,
-		startNode, selectedNode, range,
+		startNode, selectedNode, range, coveredAnnotations,
 		branchNodes = {},
 		oldSelection = this.selection,
 		oldBranchNodes = this.branchNodes,
@@ -603,6 +604,8 @@ ve.dm.Surface.prototype.setSelection = function ( selection ) {
 		branchNodes.start = this.getDocument().getBranchNodeFromOffset( range.start );
 		if ( !range.isCollapsed() ) {
 			branchNodes.end = this.getDocument().getBranchNodeFromOffset( range.end );
+		} else {
+			branchNodes.end = branchNodes.start;
 		}
 		// Update selected node
 		if ( !range.isCollapsed() ) {
@@ -623,10 +626,12 @@ ve.dm.Surface.prototype.setSelection = function ( selection ) {
 			if ( !linearData.isContentOffset( right ) ) {
 				right = -1;
 			}
+			coveredAnnotations = linearData.getAnnotationsFromOffset( range.start );
 		} else {
 			// Get annotations from the first character of the range
 			left = linearData.getNearestContentOffset( range.start );
 			right = linearData.getNearestContentOffset( range.end );
+			coveredAnnotations = linearData.getAnnotationsFromRange( range );
 		}
 		if ( left === -1 ) {
 			// No content offset to our left, use empty set
@@ -647,11 +652,11 @@ ve.dm.Surface.prototype.setSelection = function ( selection ) {
 		}
 
 		// Only emit an annotations change event if there's a meaningful difference
-		if (
-			!insertionAnnotations.containsAllOf( this.insertionAnnotations ) ||
-			!this.insertionAnnotations.containsAllOf( insertionAnnotations )
-		) {
+		if ( !insertionAnnotations.compareTo( this.insertionAnnotations ) ) {
 			this.setInsertionAnnotations( insertionAnnotations );
+		}
+		if ( !coveredAnnotations.compareTo( this.coveredAnnotations ) ) {
+			this.coveredAnnotations = coveredAnnotations;
 			contextChange = true;
 		}
 	}
