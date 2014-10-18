@@ -252,7 +252,7 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 				img2.className = 've-ce-unicorn ve-ce-post-unicorn';
 				$( img1 ).data( 'dmOffset', ( this.getOffset() + 1 + i ) );
 				$( img2 ).data( 'dmOffset', ( this.getOffset() + 1 + i ) );
-				if ( ve.debug ) {
+				if ( ve.inputDebug ) {
 					img1.setAttribute( 'src', ve.ce.unicornImgDataUri );
 					img2.setAttribute( 'src', ve.ce.unicornImgDataUri );
 				} else {
