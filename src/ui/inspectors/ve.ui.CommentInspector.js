@@ -110,8 +110,7 @@ ve.ui.CommentInspector.prototype.getActionProcess = function ( action ) {
 ve.ui.CommentInspector.prototype.getSetupProcess = function ( data ) {
 	return ve.ui.CommentInspector.super.prototype.getSetupProcess.call( this, data )
 		.next( function () {
-			// Disable surface until animation is complete; will be reenabled in ready()
-			this.getFragment().getSurface().disable();
+			this.getFragment().getSurface().pushStaging();
 
 			this.commentNode = this.getSelectedNode();
 			if ( this.commentNode ) {
@@ -120,6 +119,14 @@ ve.ui.CommentInspector.prototype.getSetupProcess = function ( data ) {
 			} else {
 				this.textWidget.setWhitespace( [ ' ', ' ' ] );
 				this.actions.setMode( 'insert' );
+				this.getFragment().insertContent( [
+					{
+						type: 'comment',
+						attributes: { text: '' }
+					},
+					{ type: '/comment' }
+				] );
+				this.commentNode = this.getSelectedNode();
 			}
 		}, this );
 };
@@ -146,34 +153,23 @@ ve.ui.CommentInspector.prototype.getTeardownProcess = function ( data ) {
 				text = this.textWidget.getValue(),
 				innerText = this.textWidget.getInnerValue();
 
-			if ( this.commentNode ) {
-				if ( data.action === 'remove' || innerText === '' ) {
-					// Remove comment node
-					this.fragment = this.getFragment().clone(
-						new ve.dm.LinearSelection( this.fragment.getDocument(), this.commentNode.getOuterRange() )
-					);
-					this.fragment.removeContent();
-				} else {
-					// Edit comment node
-					surfaceModel.change(
-						ve.dm.Transaction.newFromAttributeChanges(
-							surfaceModel.getDocument(),
-							this.commentNode.getOffset(),
-							{ text: text }
-						)
-					);
-				}
-			} else if ( innerText !== '' ) {
-				// Insert new comment node
-				this.getFragment().insertContent( [
-					{
-						type: 'comment',
-						attributes: { text: text }
-					},
-					{ type: '/comment' }
-				] );
+			if ( data.action === 'remove' || innerText === '' ) {
+				surfaceModel.popStaging();
+				// If popStaging removed the node then this will be a no-op
+				this.getFragment().removeContent();
+			} else {
+				surfaceModel.applyStaging();
+				// Edit comment node
+				surfaceModel.change(
+					ve.dm.Transaction.newFromAttributeChanges(
+						surfaceModel.getDocument(),
+						this.commentNode.getOffset(),
+						{ text: text }
+					)
+				);
 			}
 
+			// Reset inspector
 			this.textWidget.setValueAndWhitespace( '' );
 		}, this );
 };
