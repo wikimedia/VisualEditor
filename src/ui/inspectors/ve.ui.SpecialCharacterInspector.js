@@ -8,14 +8,14 @@
  * Inspector for inserting special characters.
  *
  * @class
- * @extends ve.ui.InsertionInspector
+ * @extends ve.ui.FragmentInspector
  *
  * @constructor
  * @param {Object} [config] Configuration options
  */
 ve.ui.SpecialCharacterInspector = function VeUiSpecialCharacterInspector( config ) {
 	// Parent constructor
-	ve.ui.InsertionInspector.call( this, config );
+	ve.ui.FragmentInspector.call( this, config );
 
 	this.characters = null;
 	this.$buttonDomList = null;
@@ -26,7 +26,7 @@ ve.ui.SpecialCharacterInspector = function VeUiSpecialCharacterInspector( config
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.SpecialCharacterInspector, ve.ui.InsertionInspector );
+OO.inheritClass( ve.ui.SpecialCharacterInspector, ve.ui.FragmentInspector );
 
 /* Static properties */
 
@@ -36,6 +36,14 @@ ve.ui.SpecialCharacterInspector.static.title =
 	OO.ui.deferMsg( 'visualeditor-specialcharacterinspector-title' );
 
 ve.ui.SpecialCharacterInspector.static.size = 'large';
+
+ve.ui.SpecialCharacterInspector.static.actions = [
+	{
+		action: 'cancel',
+		label: OO.ui.deferMsg( 'visualeditor-dialog-action-cancel' ),
+		flags: 'safe'
+	}
+];
 
 /* Methods */
 
@@ -93,6 +101,15 @@ ve.ui.SpecialCharacterInspector.prototype.getTeardownProcess = function ( data )
 				this.getFragment().insertContent( data.character, true ).collapseToEnd().select();
 			}
 		}, this );
+};
+
+/**
+ * @inheritdoc
+ */
+ve.ui.SpecialCharacterInspector.prototype.getActionProcess = function ( action ) {
+	return new OO.ui.Process( function () {
+		this.close( { action: action } );
+	}, this );
 };
 
 /**
