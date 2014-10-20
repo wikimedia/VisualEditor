@@ -35,7 +35,7 @@ OO.inheritClass( ve.ui.AnnotationTool, ve.ui.Tool );
  */
 ve.ui.AnnotationTool.static.annotation = { name: '' };
 
-ve.ui.AnnotationTool.static.requiresRange = true;
+ve.ui.AnnotationTool.static.requiresSelection = [ 'linear' ];
 
 ve.ui.AnnotationTool.static.deactivateOnSelect = false;
 
