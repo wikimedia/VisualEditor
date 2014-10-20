@@ -1433,7 +1433,8 @@ ve.ce.Surface.prototype.afterPaste = function () {
 		context, left, right, contextRange,
 		pasteRules = this.getSurface().getPasteRules(),
 		beforePasteData = this.beforePasteData || {},
-		selection = this.model.getSelection();
+		selection = this.model.getSelection(),
+		view = this;
 
 	// If the selection doesn't collapse after paste then nothing was inserted
 	if ( !this.nativeSelection.isCollapsed ) {
@@ -1648,7 +1649,11 @@ ve.ce.Surface.prototype.afterPaste = function () {
 
 	// Restore focus and scroll position
 	this.$documentNode[0].focus();
-	this.$window.scrollTop( beforePasteData.scrollTop );
+	// Firefox sometimes doesn't change scrollTop immediately when pasting
+	// line breaks so wait until we fix it.
+	setTimeout( function () {
+		view.$window.scrollTop( beforePasteData.scrollTop );
+	} );
 
 	selection = selection.translateByTransaction( tx );
 	this.model.change( tx, selection.collapseToStart() );
