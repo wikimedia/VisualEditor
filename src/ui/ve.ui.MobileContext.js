@@ -72,23 +72,3 @@ ve.ui.MobileContext.prototype.toggle = function ( show ) {
 
 	return deferred.promise();
 };
-
-/**
- * @inheritdoc
- */
-ve.ui.MobileContext.prototype.getAvailableTools = function () {
-	var tools = ve.ui.MobileContext.super.prototype.getAvailableTools.call( this );
-
-	// Filter out tools not supported in mobile mode
-	// FIXME: This is a temporary hack. Ideally, we don't want to load any code
-	// that is not supported on a given platform. However, present implementation
-	// of citation dialog forces us to load tools that we don't want on mobile.
-	this.availableTools = tools.filter( function ( tool ) {
-		return (
-			tool.model instanceof ve.dm.LinkAnnotation ||
-			( tool.model instanceof ve.dm.MWReferenceNode && tool.tool !== ve.ui.MWReferenceDialogTool )
-		);
-	} );
-
-	return this.availableTools;
-};
