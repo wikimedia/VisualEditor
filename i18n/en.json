@@ -104,11 +104,13 @@
     "visualeditor-table-insert-row-after": "Insert below",
     "visualeditor-table-insert-row-before": "Insert above",
     "visualeditor-table-insert-table": "Table",
+    "visualeditor-table-merge-cells": "Merge cells",
     "visualeditor-toolbar-format-tooltip": "Format paragraph",
     "visualeditor-toolbar-history": "History",
     "visualeditor-toolbar-insert": "Insert",
     "visualeditor-toolbar-paragraph-format": "Formatting",
     "visualeditor-toolbar-structure": "Structure",
     "visualeditor-toolbar-style-tooltip": "Style text",
+    "visualeditor-toolbar-table": "Table",
     "visualeditor-toolbar-text-style": "Styling"
 }
