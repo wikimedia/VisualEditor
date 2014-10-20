@@ -114,7 +114,8 @@ ve.ce.Surface = function VeCeSurface( model, ui, options ) {
 
 	this.$pasteTarget.on( {
 		cut: this.onCut.bind( this ),
-		copy: this.onCopy.bind( this )
+		copy: this.onCopy.bind( this ),
+		paste: this.onPaste.bind( this )
 	} );
 
 	this.$documentNode
