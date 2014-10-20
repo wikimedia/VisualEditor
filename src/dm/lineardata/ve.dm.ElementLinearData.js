@@ -431,16 +431,19 @@ ve.dm.ElementLinearData.prototype.getAnnotatedRangeFromSelection = function ( ra
  */
 ve.dm.ElementLinearData.prototype.getAnnotationsFromRange = function ( range, all ) {
 	var i, left, right;
-	// Look at left side of range for annotations
-	left = this.getAnnotationsFromOffset( range.start );
-	// Shortcut for single character and zero-length ranges
-	if ( range.getLength() === 0 || range.getLength() === 1 ) {
-		return left;
-	}
 	// Iterator over the range, looking for annotations, starting at the 2nd character
-	for ( i = range.start + 1; i < range.end; i++ ) {
+	for ( i = range.start; i < range.end; i++ ) {
 		// Skip non-content data
 		if ( this.isElementData( i ) && !ve.dm.nodeFactory.isNodeContent( this.getType( i ) ) ) {
+			continue;
+		}
+		if ( !left ) {
+			// Look at left side of range for annotations
+			left = this.getAnnotationsFromOffset( i );
+			// Shortcut for single character and zero-length ranges
+			if ( range.getLength() === 0 || range.getLength() === 1 ) {
+				return left;
+			}
 			continue;
 		}
 		// Current character annotations
@@ -460,7 +463,7 @@ ve.dm.ElementLinearData.prototype.getAnnotationsFromRange = function ( range, al
 			}
 		}
 	}
-	return left;
+	return left || new ve.dm.AnnotationSet( this.getStore() );
 };
 
 /**
