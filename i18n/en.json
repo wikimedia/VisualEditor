@@ -97,6 +97,8 @@
     "visualeditor-table-delete-col": "Delete column",
     "visualeditor-table-delete-row": "Delete row",
     "visualeditor-table-delete-table": "Delete table",
+    "visualeditor-table-format-data": "Content cell",
+    "visualeditor-table-format-header": "Header cell",
     "visualeditor-table-insert-col-after": "Insert after",
     "visualeditor-table-insert-col-before": "Insert before",
     "visualeditor-table-insert-row-after": "Insert below",

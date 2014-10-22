@@ -429,23 +429,38 @@ ve.dm.Node.prototype.handlesOwnChildren = function () {
  * Check if the node has an ancestor with matching type and attribute values.
  *
  * @method
- * @returns {boolean} Node is content
+ * @returns {boolean} Node has an ancestor with matching type and attribute values
  */
 ve.dm.Node.prototype.hasMatchingAncestor = function ( type, attributes ) {
-	var key,
-		node = this;
+	var node = this;
 	// Traverse up to matching node
-	while ( node && node.getType() !== type ) {
+	while ( node && !node.matches( type, attributes ) ) {
 		node = node.getParent();
-		// Stop at root
+		// Return false if we reach the root without finding anything
 		if ( node === null ) {
 			return false;
 		}
 	}
+	return true;
+};
+
+/**
+ * Check if the node matches type and attribute values.
+ *
+ * @method
+ * @returns {boolean} Node matches type and attribute values
+ */
+ve.dm.Node.prototype.matches = function ( type, attributes ) {
+	var key;
+
+	if ( this.getType() !== type ) {
+		return false;
+	}
+
 	// Check attributes
 	if ( attributes ) {
 		for ( key in attributes ) {
-			if ( node.getAttribute( key ) !== attributes[key] ) {
+			if ( this.getAttribute( key ) !== attributes[key] ) {
 				return false;
 			}
 		}

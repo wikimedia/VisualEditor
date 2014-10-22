@@ -657,7 +657,7 @@ ve.dm.Surface.prototype.setSelection = function ( selection ) {
 	}
 
 	if ( selection instanceof ve.dm.TableSelection ) {
-		coveredAnnotations = this.getFragment().getAnnotations();
+		contextChange = true;
 	}
 
 	if ( coveredAnnotations && !coveredAnnotations.compareTo( this.coveredAnnotations ) ) {
