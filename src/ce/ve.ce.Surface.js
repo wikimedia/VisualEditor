@@ -2794,6 +2794,7 @@ ve.ce.Surface.prototype.getNativeRange = function ( range ) {
 				return this.nativeSelection.getRangeAt( 0 );
 			} catch ( e ) {}
 		}
+		return null;
 	}
 
 	nativeRange = document.createRange();
