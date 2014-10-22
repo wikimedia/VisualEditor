@@ -27,10 +27,13 @@ OO.inheritClass( ve.ui.Tool, OO.ui.Tool );
 /* Static Properties */
 
 /**
- * This tool requires this surface to be focused to work
- * @type {boolean}
+ * Selection types this tool requires.
+ *
+ * If the tool doesn't require a specific selection type, use null.
+ *
+ * @type {string[]|null}
  */
-ve.ui.Tool.static.requiresRange = false;
+ve.ui.Tool.static.requiresSelection = null;
 
 /**
  * Command to execute when tool is selected.
@@ -72,7 +75,10 @@ ve.ui.Tool.static.getCommandName = function () {
  * @param {Object} direction Context direction with 'inline' & 'block' properties
  */
 ve.ui.Tool.prototype.onUpdateState = function ( fragment ) {
-	this.setDisabled( this.constructor.static.requiresRange && fragment.isNull() );
+	this.setDisabled(
+		this.constructor.static.requiresSelection &&
+		ve.indexOf( fragment.getSelection().constructor.static.name, this.constructor.static.requiresSelection ) === -1
+	);
 };
 
 /**

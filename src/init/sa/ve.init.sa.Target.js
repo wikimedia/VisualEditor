@@ -39,7 +39,7 @@ ve.init.sa.Target = function VeInitSaTarget( $container, dmDoc, surfaceType ) {
 	}
 	this.setupDone = false;
 
-	ve.init.platform.getInitializedPromise().done( ve.bind( this.setup, this, dmDoc ) );
+	ve.init.platform.getInitializedPromise().done( this.setup.bind( this, dmDoc ) );
 };
 
 /* Inheritance */

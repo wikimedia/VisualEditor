@@ -237,7 +237,7 @@ ve.ce.ResizableNode.prototype.onResizableFocus = function () {
 		.off( '.ve-ce-resizableNode' )
 		.on(
 			'mousedown.ve-ce-resizableNode',
-			ve.bind( this.onResizeHandlesCornerMouseDown, this )
+			this.onResizeHandlesCornerMouseDown.bind( this )
 		);
 
 	surface.connect( this, { position: 'setResizableHandlesSizeAndPosition' } );
@@ -336,8 +336,8 @@ ve.ce.ResizableNode.prototype.onResizeHandlesCornerMouseDown = function ( e ) {
 	} );
 	this.updateSizeLabel();
 	this.$( this.getElementDocument() ).on( {
-		'mousemove.ve-ce-resizableNode': ve.bind( this.onDocumentMouseMove, this ),
-		'mouseup.ve-ce-resizableNode': ve.bind( this.onDocumentMouseUp, this )
+		'mousemove.ve-ce-resizableNode': this.onDocumentMouseMove.bind( this ),
+		'mouseup.ve-ce-resizableNode': this.onDocumentMouseUp.bind( this )
 	} );
 	this.emit( 'resizeStart' );
 

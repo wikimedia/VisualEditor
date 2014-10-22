@@ -56,7 +56,7 @@ ve.ui.LanguageSearchDialog.prototype.initialize = function () {
 
 	this.searchWidget = new this.constructor.static.languageSearchWidget( {
 		$: this.$
-	} ).on( 'select', ve.bind( this.onSearchWidgetSelect, this ) );
+	} ).on( 'select', this.onSearchWidgetSelect.bind( this ) );
 	this.$body.append( this.searchWidget.$element );
 };
 

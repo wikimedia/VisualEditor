@@ -132,5 +132,5 @@ ve.ui.FragmentInspector.prototype.getReadyProcess = function ( data ) {
  * @inheritdoc
  */
 ve.ui.FragmentInspector.prototype.getBodyHeight = function () {
-	return Math.ceil( this.form.$element.outerHeight( true ) + this.$otherActions.outerHeight( true ) );
+	return Math.ceil( this.container.$element[0].scrollHeight );
 };

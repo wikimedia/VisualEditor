@@ -86,13 +86,12 @@ QUnit.test( 'Factory methods & serialization (newCoveringRange, newFromJSON, toJ
 		'backwards covering range'
 	);
 
-	assert.strictEqual( range.toJSON(), '{"from":100,"to":200}', 'toJSON' );
-	assert.strictEqual( range.flip().toJSON(), '{"from":200,"to":100}', 'backwards toJSON' );
+	assert.deepEqual( range.toJSON(), { type: 'range', from: 100, to: 200 }, 'toJSON' );
+	assert.deepEqual( range.flip().toJSON(), { type: 'range', from: 200, to: 100 }, 'backwards toJSON' );
 
-	assert.equalRange( ve.Range.static.newFromJSON( range.toJSON() ), range, 'newFromJSON' );
-	assert.equalRange( ve.Range.static.newFromJSON( range.flip().toJSON() ), range.flip(), 'backwards newFromJSON' );
+	assert.equalRange( ve.Range.static.newFromJSON( JSON.stringify( range.toJSON() ) ), range, 'newFromJSON' );
+	assert.equalRange( ve.Range.static.newFromJSON( JSON.stringify( range.flip().toJSON() ) ), range.flip(), 'backwards newFromJSON' );
 
 } );
 
 // TODO: newFromHash
-// TODO: getHashObject

@@ -1,12 +1,12 @@
 /*!
- * OOjs UI v0.1.0-pre (d74a46ca6a)
+ * OOjs UI v0.1.0-pre (531d497d3b)
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2014 OOjs Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2014-10-15T00:38:42Z
+ * Date: 2014-10-21T23:52:21Z
  */
 /* @noflip */
 .oo-ui-rtl {
@@ -154,6 +154,7 @@
 .oo-ui-buttonElement-framed > .oo-ui-buttonElement-button:focus {
 	outline: none;
 }
+.oo-ui-buttonElement-framed > input.oo-ui-buttonElement-button,
 .oo-ui-buttonElement-framed > .oo-ui-buttonElement-button > .oo-ui-labelElement-label {
 	line-height: 2.2em;
 }
@@ -417,7 +418,8 @@
 	z-index: 4;
 }
 .oo-ui-popupTool .oo-ui-popupWidget {
-	margin-right: 1.25em;
+	/* @noflip */
+	margin-left: 1.25em;
 	font-size: 0.8em;
 }
 .oo-ui-toolGroup {
@@ -528,11 +530,24 @@
 	vertical-align: middle;
 }
 .oo-ui-popupToolGroup .oo-ui-tool-link .oo-ui-tool-title {
-	display: inline-block;
+	display: inline-table;
 	vertical-align: middle;
+	width: 100%;
+	margin-left: -2.5em;
 }
-.oo-ui-popupToolGroup .oo-ui-tool-accel {
-	display: none;
+.oo-ui-popupToolGroup .oo-ui-tool-link .oo-ui-tool-title .oo-ui-tool-title-text,
+.oo-ui-popupToolGroup .oo-ui-tool-link .oo-ui-tool-title .oo-ui-tool-accel {
+	display: table-cell;
+}
+.oo-ui-popupToolGroup .oo-ui-tool-link .oo-ui-tool-title .oo-ui-tool-title-text {
+	width: 100%;
+}
+.oo-ui-popupToolGroup .oo-ui-tool-link .oo-ui-tool-title .oo-ui-tool-accel {
+	text-align: left;
+	padding-left: 2.5em;
+}
+.oo-ui-popupToolGroup .oo-ui-tool-link .oo-ui-tool-title .oo-ui-tool-accel:not(:empty) {
+	padding-right: 3em;
 }
 .oo-ui-popupToolGroup.oo-ui-indicatorElement.oo-ui-iconElement {
 	min-width: 3.5em;
@@ -981,11 +996,31 @@
 .oo-ui-toggleSwitchWidget.oo-ui-widget-enabled.oo-ui-toggleWidget-off .oo-ui-toggleSwitchWidget-glow {
 	background-color: #ffffff;
 }
+.oo-ui-progressBarWidget {
+	width: 20em;
+	border: solid 1px #cccccc;
+	border-radius: 0.1em;
+}
+.oo-ui-progressBarWidget-bar {
+	height: 1em;
+	border-left: solid 1px #cccccc;
+	background: #0274ff;
+	-webkit-transition: width 200ms;
+	   -moz-transition: width 200ms;
+	    -ms-transition: width 200ms;
+	     -o-transition: width 200ms;
+	        transition: width 200ms;
+}
+.oo-ui-progressBarWidget.oo-ui-widget-disabled {
+	opacity: 0.2;
+}
 .oo-ui-actionWidget.oo-ui-pendingElement-pending {
 	background-image: /* @embed */ url(themes/mediawiki/images/textures/pending.gif);
 }
 .oo-ui-popupWidget {
 	position: absolute;
+	/* @noflip */
+	left: 0;
 }
 .oo-ui-popupWidget-popup {
 	position: relative;
@@ -1000,6 +1035,8 @@
 	display: block;
 	position: absolute;
 	top: 0;
+	/* @noflip */
+	left: 0;
 	background-repeat: no-repeat;
 }
 .oo-ui-popupWidget-head {
@@ -1391,6 +1428,18 @@
 	overflow-x: hidden;
 	overflow-y: auto;
 }
+.oo-ui-searchWidget-query {
+	height: 2.4em;
+	top: 1px;
+}
+.oo-ui-searchWidget-query .oo-ui-textInputWidget input {
+	border-width: 1px 0;
+}
+.oo-ui-searchWidget-results {
+	top: 2.2em;
+	bottom: 0.2em;
+	line-height: 0;
+}
 .oo-ui-window {
 	line-height: 1em;
 }
@@ -1425,7 +1474,8 @@
 .oo-ui-window-inner-overlay {
 	position: absolute;
 	top: 0;
-	right: 0;
+	/* @noflip */
+	left: 0;
 }
 .oo-ui-window-isolated,
 .oo-ui-window-overlay {

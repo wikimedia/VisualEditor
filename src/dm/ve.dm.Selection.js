@@ -47,7 +47,7 @@ ve.dm.Selection.static.newFromJSON = function ( doc, json ) {
  * Create a new selection from a hash object
  *
  * @param {ve.dm.Document} doc Document to create the selection on
- * @param {string} hash Hash object
+ * @param {Object} hash Hash object
  * @returns {ve.dm.Selection} New selection
  */
 ve.dm.Selection.static.newFromHash = function () {
@@ -57,21 +57,12 @@ ve.dm.Selection.static.newFromHash = function () {
 /* Methods */
 
 /**
- * Get a hash object summarizing this selection
- *
- * @returns {Object} Hash object
- */
-ve.dm.Selection.prototype.getHashObject = function () {
-	throw new Error( 've.dm.Selection subclass must implement getHashObject' );
-};
-
-/**
  * Get a JSON serialization of this selection
  *
- * @returns {string} JSON serialization
+ * @returns {Object} Object for JSON serialization
  */
 ve.dm.Selection.prototype.toJSON = function () {
-	return JSON.stringify( this.getHashObject() );
+	throw new Error( 've.dm.Selection subclass must implement toJSON' );
 };
 
 /**

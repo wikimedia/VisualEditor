@@ -36,7 +36,7 @@ OO.inheritClass( ve.ui.InspectorTool, ve.ui.Tool );
  */
 ve.ui.InspectorTool.static.modelClasses = [];
 
-ve.ui.InspectorTool.static.requiresRange = true;
+ve.ui.InspectorTool.static.requiresSelection = [ 'linear' ];
 
 ve.ui.InspectorTool.static.deactivateOnSelect = false;
 

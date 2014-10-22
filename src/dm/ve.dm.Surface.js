@@ -31,6 +31,7 @@ ve.dm.Surface = function VeDmSurface( doc ) {
 	this.undoIndex = 0;
 	this.historyTrackingInterval = null;
 	this.insertionAnnotations = new ve.dm.AnnotationSet( this.getDocument().getStore() );
+	this.coveredAnnotations = new ve.dm.AnnotationSet( this.getDocument().getStore() );
 	this.enabled = true;
 	this.transacting = false;
 	this.queueingContextChanges = false;
@@ -114,7 +115,7 @@ ve.dm.Surface.prototype.startHistoryTracking = function () {
 		return;
 	}
 	if ( this.historyTrackingInterval === null ) {
-		this.historyTrackingInterval = setInterval( ve.bind( this.breakpoint, this ), 750 );
+		this.historyTrackingInterval = setInterval( this.breakpoint.bind( this ), 750 );
 	}
 };
 
@@ -256,7 +257,7 @@ ve.dm.Surface.prototype.applyStaging = function () {
 
 	if ( this.isStaging() ) {
 		// Merge popped transactions into the current item in the staging stack
-		Array.prototype.push.apply( this.getStagingTransactions(), staging.transactions );
+		ve.batchPush( this.getStagingTransactions(), staging.transactions );
 		// If the current level has a null selectionBefore, copy that over too
 		if ( this.getStaging().selectionBefore.isNull() ) {
 			this.getStaging().selectionBefore = staging.selectionBefore;
@@ -572,11 +573,9 @@ ve.dm.Surface.prototype.setNullSelection = function () {
  */
 ve.dm.Surface.prototype.setSelection = function ( selection ) {
 	var left, right, leftAnnotations, rightAnnotations, insertionAnnotations,
-		startNode, selectedNode, range,
+		startNode, selectedNode, range, coveredAnnotations,
 		branchNodes = {},
-		oldSelection = this.selection,
-		oldBranchNodes = this.branchNodes,
-		oldSelectedNode = this.selectedNode,
+		selectionChange = false,
 		contextChange = false,
 		linearData = this.getDocument().data;
 
@@ -591,10 +590,11 @@ ve.dm.Surface.prototype.setSelection = function ( selection ) {
 		return;
 	}
 
-	// Update state
-	this.selection = selection;
-	this.branchNodes = branchNodes;
-	this.selectedNode = selectedNode;
+	// this.selection needs to be updated before we call setInsertionAnnotations
+	if ( !this.selection.equals( selection ) ) {
+		selectionChange = true;
+		this.selection = selection;
+	}
 
 	if ( selection instanceof ve.dm.LinearSelection ) {
 		range = selection.getRange();
@@ -603,6 +603,8 @@ ve.dm.Surface.prototype.setSelection = function ( selection ) {
 		branchNodes.start = this.getDocument().getBranchNodeFromOffset( range.start );
 		if ( !range.isCollapsed() ) {
 			branchNodes.end = this.getDocument().getBranchNodeFromOffset( range.end );
+		} else {
+			branchNodes.end = branchNodes.start;
 		}
 		// Update selected node
 		if ( !range.isCollapsed() ) {
@@ -623,10 +625,12 @@ ve.dm.Surface.prototype.setSelection = function ( selection ) {
 			if ( !linearData.isContentOffset( right ) ) {
 				right = -1;
 			}
+			coveredAnnotations = linearData.getAnnotationsFromOffset( range.start );
 		} else {
 			// Get annotations from the first character of the range
 			left = linearData.getNearestContentOffset( range.start );
 			right = linearData.getNearestContentOffset( range.end );
+			coveredAnnotations = linearData.getAnnotationsFromRange( range );
 		}
 		if ( left === -1 ) {
 			// No content offset to our left, use empty set
@@ -647,28 +651,31 @@ ve.dm.Surface.prototype.setSelection = function ( selection ) {
 		}
 
 		// Only emit an annotations change event if there's a meaningful difference
-		if (
-			!insertionAnnotations.containsAllOf( this.insertionAnnotations ) ||
-			!this.insertionAnnotations.containsAllOf( insertionAnnotations )
-		) {
+		if ( !insertionAnnotations.compareTo( this.insertionAnnotations ) ) {
 			this.setInsertionAnnotations( insertionAnnotations );
+		}
+		if ( !coveredAnnotations.compareTo( this.coveredAnnotations ) ) {
+			this.coveredAnnotations = coveredAnnotations;
 			contextChange = true;
 		}
 	}
 
 	// If branchNodes or selectedNode changed emit a contextChange
 	if (
-		selectedNode !== oldSelectedNode ||
-		branchNodes.start !== oldBranchNodes.start ||
-		branchNodes.end !== oldBranchNodes.end
+		selectedNode !== this.selectedNode ||
+		branchNodes.start !== this.branchNodes.start ||
+		branchNodes.end !== this.branchNodes.end
 	) {
+		this.branchNodes = branchNodes;
+		this.selectedNode = selectedNode;
 		contextChange = true;
 	}
 
-	// Emit events
-	if ( !oldSelection.equals( this.selection ) ) {
+	// If selection changed emit a select
+	if ( selectionChange ) {
 		this.emit( 'select', this.selection.clone() );
 	}
+
 	if ( contextChange ) {
 		this.emitContextChange();
 	}

@@ -252,7 +252,7 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 				img2.className = 've-ce-unicorn ve-ce-post-unicorn';
 				$( img1 ).data( 'dmOffset', ( this.getOffset() + 1 + i ) );
 				$( img2 ).data( 'dmOffset', ( this.getOffset() + 1 + i ) );
-				if ( ve.debug ) {
+				if ( ve.inputDebug ) {
 					img1.setAttribute( 'src', ve.ce.unicornImgDataUri );
 					img2.setAttribute( 'src', ve.ce.unicornImgDataUri );
 				} else {
@@ -301,7 +301,8 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
  * @return {boolean} Whether the contents have changed
  */
 ve.ce.ContentBranchNode.prototype.renderContents = function () {
-	var i, len, node, rendered, unicornInfo, oldWrapper, newWrapper;
+	var i, len, element, rendered, unicornInfo, oldWrapper, newWrapper,
+		node = this;
 	if (
 		this.root instanceof ve.ce.DocumentNode &&
 		this.root.getSurface().isRenderingLocked()
@@ -337,9 +338,9 @@ ve.ce.ContentBranchNode.prototype.renderContents = function () {
 
 	// Detach all child nodes from this.$element
 	for ( i = 0, len = this.$element.length; i < len; i++ ) {
-		node = this.$element[i];
-		while ( node.firstChild ) {
-			node.removeChild( node.firstChild );
+		element = this.$element[i];
+		while ( element.firstChild ) {
+			element.removeChild( element.firstChild );
 		}
 	}
 
@@ -364,9 +365,9 @@ ve.ce.ContentBranchNode.prototype.renderContents = function () {
 	// Highlight the node in debug mode
 	if ( ve.debug ) {
 		this.$element.css( 'backgroundColor', '#eee' );
-		setTimeout( ve.bind( function () {
-			this.$element.css( 'backgroundColor', '' );
-		}, this ), 500 );
+		setTimeout( function () {
+			node.$element.css( 'backgroundColor', '' );
+		}, 500 );
 	}
 
 	return true;

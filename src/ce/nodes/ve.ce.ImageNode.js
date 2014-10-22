@@ -31,7 +31,7 @@ ve.ce.ImageNode = function VeCeImageNode( $figure, $image, config ) {
 	ve.ce.ResizableNode.call( this, this.$image, config );
 
 	// Events
-	this.$image.on( 'load', ve.bind( this.onLoad, this ) );
+	this.$image.on( 'load', this.onLoad.bind( this ) );
 	this.model.connect( this, { attributeChange: 'onAttributeChange' } );
 
 	// Initialization

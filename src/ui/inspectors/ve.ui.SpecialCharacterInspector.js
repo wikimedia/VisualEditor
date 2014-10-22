@@ -61,18 +61,36 @@ ve.ui.SpecialCharacterInspector.prototype.initialize = function () {
 ve.ui.SpecialCharacterInspector.prototype.getSetupProcess = function ( data ) {
 	return ve.ui.SpecialCharacterInspector.super.prototype.getSetupProcess.call( this, data )
 		.next( function () {
+			var inspector = this;
+			// Stage a space to show insertion position
+			this.getFragment().getSurface().pushStaging();
+			this.getFragment().insertContent( ' ' );
 			// Don't request the character list again if we already have it
 			if ( !this.characters ) {
 				this.$spinner.show();
 				this.fetchCharList()
-					.done( ve.bind( function () {
-						this.buildButtonList();
-					}, this ) )
+					.done( function () {
+						inspector.buildButtonList();
+					} )
 					// TODO: show error message on fetchCharList().fail
-					.always( ve.bind( function () {
+					.always( function () {
 						// TODO: generalize push/pop pending, like we do in Dialog
-						this.$spinner.hide();
-					}, this ) );
+						inspector.$spinner.hide();
+					} );
+			}
+		}, this );
+};
+
+/**
+ * @inheritdoc
+ */
+ve.ui.SpecialCharacterInspector.prototype.getTeardownProcess = function ( data ) {
+	data = data || {};
+	return ve.ui.SpecialCharacterInspector.super.prototype.getTeardownProcess.call( this, data )
+		.first( function () {
+			this.getFragment().getSurface().popStaging();
+			if ( data.character ) {
+				this.getFragment().insertContent( data.character, true ).collapseToEnd().select();
 			}
 		}, this );
 };
@@ -129,7 +147,7 @@ ve.ui.SpecialCharacterInspector.prototype.buildButtonList = function () {
 			.append( $categoryButtons );
 	}
 
-	$list.on( 'click', ve.bind( this.onListClick, this ) );
+	$list.on( 'click', this.onListClick.bind( this ) );
 
 	this.form.$element.append( $list );
 };
@@ -138,11 +156,7 @@ ve.ui.SpecialCharacterInspector.prototype.buildButtonList = function () {
  * Handle the click event on the list
  */
 ve.ui.SpecialCharacterInspector.prototype.onListClick = function ( e ) {
-	var character = $( e.target ).data( 'character' );
-
-	if ( character !== undefined ) {
-		this.getFragment().insertContent( character, true ).collapseToEnd().select();
-	}
+	this.close( { character: $( e.target ).data( 'character' ) } );
 };
 
 /* Registration */

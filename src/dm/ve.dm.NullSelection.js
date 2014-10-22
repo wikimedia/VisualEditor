@@ -36,7 +36,7 @@ ve.dm.NullSelection.static.newFromHash = function ( doc ) {
 /**
  * @inheritdoc
  */
-ve.dm.NullSelection.prototype.getHashObject = function () {
+ve.dm.NullSelection.prototype.toJSON = function () {
 	return {
 		type: this.constructor.static.name
 	};

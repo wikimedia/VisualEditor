@@ -240,6 +240,30 @@
 	}() );
 
 	/**
+	 * Push one array into another.
+	 *
+	 * This is the equivalent of arr.push( d1, d2, d3, ... ) except that arguments are
+	 * specified as an array rather than separate parameters.
+	 *
+	 * @param {Array|ve.dm.BranchNode} arr Object supporting .push() to insert at the end of the array. Will be modified
+	 * @param {Array} data Array of items to insert.
+	 * @returns {number} length of the new array
+	 */
+	ve.batchPush = function ( arr, data ) {
+		// We need to push insertion in batches, because of parameter list length limits which vary
+		// cross-browser - 1024 seems to be a safe batch size on all browsers
+		var length, index = 0, batchSize = 1024;
+		while ( index < data.length ) {
+			// Call arr.push( i0, i1, i2, ..., i1023 );
+			length = arr.push.apply(
+				arr, data.slice( index, index + batchSize )
+			);
+			index += batchSize;
+		}
+		return length;
+	};
+
+	/**
 	 * Insert one array into another.
 	 *
 	 * This just a shortcut for `ve.batchSplice( dst, offset, 0, src )`.
@@ -372,6 +396,20 @@
 	};
 
 	/**
+	 * Select the contents of an element
+	 *
+	 * @param {HTMLElement} element Element
+	 */
+	ve.selectElement = function ( element ) {
+		var nativeRange = OO.ui.Element.getDocument( element ).createRange(),
+			nativeSelection = OO.ui.Element.getWindow( element ).getSelection();
+		nativeRange.setStart( element, 0 );
+		nativeRange.setEnd( element, element.childNodes.length );
+		nativeSelection.removeAllRanges();
+		nativeSelection.addRange( nativeRange );
+	};
+
+	/**
 	 * Move the selection to the end of an input.
 	 *
 	 * @param {HTMLElement} element Input element
@@ -394,7 +432,7 @@
 	 * @param {Mixed...} [params] Message parameters
 	 */
 	ve.msg = function () {
-		// Avoid using ve.bind because ve.init.platform doesn't exist yet.
+		// Avoid using bind because ve.init.platform doesn't exist yet.
 		// TODO: Fix dependency issues between ve.js and ve.init.platform
 		return ve.init.platform.getMessage.apply( ve.init.platform, arguments );
 	};

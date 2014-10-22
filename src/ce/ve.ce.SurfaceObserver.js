@@ -22,6 +22,7 @@ ve.ce.SurfaceObserver = function VeCeSurfaceObserver( surface ) {
 	this.documentView = surface.getDocument();
 	this.domDocument = this.documentView.getDocumentNode().getElementDocument();
 	this.polling = false;
+	this.disabled = false;
 	this.timeoutId = null;
 	this.pollInterval = 250; // ms
 
@@ -122,7 +123,7 @@ ve.ce.SurfaceObserver.prototype.timerLoop = function ( firstTime ) {
 	// only reach this point if pollOnce does not throw an exception
 	if ( this.pollInterval !== null ) {
 		this.timeoutId = this.setTimeout(
-			ve.bind( this.timerLoop, this ),
+			this.timerLoop.bind( this ),
 			this.pollInterval
 		);
 	}
@@ -139,6 +140,20 @@ ve.ce.SurfaceObserver.prototype.stopTimerLoop = function () {
 		clearTimeout( this.timeoutId );
 		this.timeoutId = null;
 	}
+};
+
+/**
+ * Disable the surface observer
+ */
+ve.ce.SurfaceObserver.prototype.disable = function () {
+	this.disabled = true;
+};
+
+/**
+ * Enable the surface observer
+ */
+ve.ce.SurfaceObserver.prototype.enable = function () {
+	this.disabled = false;
 };
 
 /**
@@ -200,7 +215,7 @@ ve.ce.SurfaceObserver.prototype.pollOnceInternal = function ( emitChanges, selec
 		leftSlug = false,
 		observer = this;
 
-	if ( !this.domDocument ) {
+	if ( !this.domDocument || this.disabled ) {
 		return;
 	}
 
