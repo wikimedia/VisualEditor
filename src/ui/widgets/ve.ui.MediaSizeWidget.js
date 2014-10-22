@@ -30,6 +30,7 @@ ve.ui.MediaSizeWidget = function VeUiMediaSizeWidget( scalable, config ) {
 	this.ratio = {};
 	this.currentDimensions = {};
 	this.maxDimensions = {};
+	this.valid = null;
 
 	// Define button select widget
 	this.sizeTypeSelectWidget = new OO.ui.ButtonSelectWidget( {
@@ -139,6 +140,11 @@ OO.inheritClass( ve.ui.MediaSizeWidget, OO.ui.Widget );
  */
 
 /**
+ * @event valid
+ * @param {boolean} isValid Current dimensions are valid
+ */
+
+/**
  * @event changeSizeType
  * @param {string} sizeType 'default', 'custom' or 'scale'
  */
@@ -218,9 +224,6 @@ ve.ui.MediaSizeWidget.prototype.onDimensionsChange = function ( type, value ) {
 			this.validateDimensions();
 		}
 	}
-
-	// Emit change event
-	this.emit( 'change', this.currentDimensions );
 };
 
 /**
@@ -490,6 +493,8 @@ ve.ui.MediaSizeWidget.prototype.setCurrentDimensions = function ( dimensions ) {
 		this.scalable.setCurrentDimensions( this.currentDimensions );
 
 		this.validateDimensions();
+		// Emit change event
+		this.emit( 'change', this.currentDimensions );
 	}
 	this.preventChangeRecursion = false;
 };
@@ -505,9 +510,14 @@ ve.ui.MediaSizeWidget.prototype.setCurrentDimensions = function ( dimensions ) {
  */
 ve.ui.MediaSizeWidget.prototype.validateDimensions = function () {
 	var isValid = this.isValid();
-	this.errorLabel.$element.toggle( !isValid );
-	this.$element.toggleClass( 've-ui-mediaSizeWidget-input-hasError', !isValid );
 
+	if ( this.valid !== isValid ) {
+		this.valid = isValid;
+		this.errorLabel.$element.toggle( !isValid );
+		this.$element.toggleClass( 've-ui-mediaSizeWidget-input-hasError', !isValid );
+		// Emit change event
+		this.emit( 'valid', this.valid );
+	}
 	return isValid;
 };
 
