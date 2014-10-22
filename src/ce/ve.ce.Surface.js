@@ -2810,13 +2810,13 @@ ve.ce.Surface.prototype.getNativeRange = function ( range ) {
 /**
  * Get bounding client rect of a native range
  *
- * Works around some browser bugs in Range#getBoundingClientRect
+ * Works around lots of browser bugs in Range#getBoundingClientRect
  *
  * @param {Range} nativeRange Native range to get the bounding client rect of
  * @return {ClientRect|null} Client rectangle of the native selection, or null if there was a problem
  */
 ve.ce.Surface.prototype.getNativeRangeBoundingClientRect = function ( nativeRange ) {
-	var rects;
+	var rects, boundingRect;
 
 	if ( !nativeRange ) {
 		return null;
@@ -2837,8 +2837,22 @@ ve.ce.Surface.prototype.getNativeRangeBoundingClientRect = function ( nativeRang
 			// See https://code.google.com/p/chromium/issues/detail?id=238976
 			return rects[0];
 		} else {
-			// After two browser bugs it's finally safe to try the bounding rect.
-			return nativeRange.getBoundingClientRect();
+			boundingRect = nativeRange.getBoundingClientRect();
+			if ( boundingRect.width === 0 && boundingRect.height === 0 ) {
+				// ... and we save the best bug until last:
+				// When nativeRange is a collapsed cursor at the end of a line or
+				// the start of a line, the bounding rect is [0,0,0,0] in Chrome.
+				// getClientRects returns two rects, one correct, and one at the
+				// end of the next line / start of the previous line. We can't tell
+				// here which one to use so just pick the first. This matches
+				// Firefox's behaviour, which tells you the cursor is at the end
+				// of the previous line when it is at the start of the line.
+				// See https://code.google.com/p/chromium/issues/detail?id=426017
+				return rects[0];
+			} else {
+				// After three browser bugs it's finally safe to try the bounding rect.
+				return boundingRect;
+			}
 		}
 	} catch ( e ) {
 		return null;
