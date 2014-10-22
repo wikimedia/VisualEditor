@@ -15,6 +15,10 @@
 	pointer-events: none;
 }
 
+.ve-ce-tableNodeOverlay .ve-ui-tableContext {
+	pointer-events: auto;
+}
+
 .ve-ce-tableNodeOverlay-selection-box {
 	position: absolute;
 	border: solid 0 #6da9f7;

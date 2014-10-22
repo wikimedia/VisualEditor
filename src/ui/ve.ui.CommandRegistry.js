@@ -146,3 +146,31 @@ ve.ui.commandRegistry.register(
 ve.ui.commandRegistry.register(
 	new ve.ui.Command( 'comment', 'window', 'open', 'comment' )
 );
+ve.ui.commandRegistry.register(
+	new ve.ui.Command( 'insertTable', 'table', 'create', {
+		header: true,
+		rows: 3,
+		cols: 4
+	} )
+);
+ve.ui.commandRegistry.register(
+	new ve.ui.Command( 'deleteTable', 'table', 'delete', 'table' )
+);
+ve.ui.commandRegistry.register(
+	new ve.ui.Command( 'insertRowBefore', 'table', 'insert', 'row', 'before' )
+);
+ve.ui.commandRegistry.register(
+	new ve.ui.Command( 'insertRowAfter', 'table', 'insert', 'row', 'after' )
+);
+ve.ui.commandRegistry.register(
+	new ve.ui.Command( 'deleteRow', 'table', 'delete', 'row' )
+);
+ve.ui.commandRegistry.register(
+	new ve.ui.Command( 'insertColumnBefore', 'table', 'insert', 'col', 'before' )
+);
+ve.ui.commandRegistry.register(
+	new ve.ui.Command( 'insertColumnAfter', 'table', 'insert', 'col', 'after' )
+);
+ve.ui.commandRegistry.register(
+	new ve.ui.Command( 'deleteColumn', 'table', 'delete', 'col' )
+);
