@@ -44,12 +44,14 @@ ve.ui.DebugBar = function VeUiDebugBar( surface, config ) {
 	this.logRangeButton = new OO.ui.ButtonWidget( { label: 'Log', disabled: true } );
 	this.dumpModelButton = new OO.ui.ButtonWidget( { label: 'Dump model' } );
 	this.dumpModelChangeToggle = new OO.ui.ToggleButtonWidget( { label: 'Dump on change' } );
+	this.inputDebuggingToggle = new OO.ui.ToggleButtonWidget( { label: 'Input debugging' } );
 	this.filibusterToggle = new OO.ui.ToggleButtonWidget( { label: 'Start Filibuster' } );
 
 	// Events
 	this.logRangeButton.on( 'click', this.onLogRangeButtonClick.bind( this ) );
 	this.dumpModelButton.on( 'click', this.onDumpModelButtonClick.bind( this ) );
 	this.dumpModelChangeToggle.on( 'click', this.onDumpModelChangeToggleClick.bind( this ) );
+	this.inputDebuggingToggle.on( 'click', this.onInputDebuggingToggleClick.bind( this ) );
 	this.filibusterToggle.on( 'click', this.onFilibusterToggleClick.bind( this ) );
 
 	this.onDumpModelChangeToggleClick();
@@ -64,6 +66,7 @@ ve.ui.DebugBar = function VeUiDebugBar( surface, config ) {
 			this.$( this.constructor.static.dividerTemplate ),
 			this.dumpModelButton.$element,
 			this.dumpModelChangeToggle.$element,
+			this.inputDebuggingToggle.$element,
 			this.filibusterToggle.$element
 		),
 		this.$dump,
@@ -244,6 +247,10 @@ ve.ui.DebugBar.prototype.onDumpModelChangeToggleClick = function () {
 	} else {
 		this.getSurface().model.disconnect( this, { documentUpdate: 'onDumpModelButtonClick' } );
 	}
+};
+
+ve.ui.DebugBar.prototype.onInputDebuggingToggleClick = function () {
+	ve.inputDebug = this.inputDebuggingToggle.getValue();
 };
 
 /**
