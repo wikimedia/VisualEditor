@@ -334,7 +334,6 @@
 			"src/ui/tools/ve.ui.ListTool.js",
 			"src/ui/inspectors/ve.ui.FragmentInspector.js",
 			"src/ui/inspectors/ve.ui.AnnotationInspector.js",
-			"src/ui/inspectors/ve.ui.InsertionInspector.js",
 			"src/ui/inspectors/ve.ui.NodeInspector.js",
 			"src/ui/inspectors/ve.ui.LinkInspector.js",
 			"src/ui/inspectors/ve.ui.CommentInspector.js",
