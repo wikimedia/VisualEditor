@@ -35,13 +35,12 @@
 	"visualeditor-indentationbutton-outdent-tooltip": "Minnka inndrátt",
 	"visualeditor-inspector-close-tooltip": "Loka",
 	"visualeditor-inspector-remove-tooltip": "Fjarlægja",
-	"visualeditor-languageinspector-block-tooltip": "Tungumálahluti",
 	"visualeditor-languageinspector-title": "Tungumál",
+	"visualeditor-languageinspector-widget-changelang": "Skipta um tungumál",
 	"visualeditor-languageinspector-widget-label-direction": "Átt",
 	"visualeditor-languageinspector-widget-label-langcode": "Tungumálakóði",
 	"visualeditor-languageinspector-widget-label-language": "Tungumál",
 	"visualeditor-linkinspector-title": "Tengill",
 	"visualeditor-listbutton-bullet-tooltip": "Punktalisti",
-	"visualeditor-listbutton-number-tooltip": "Tölusettur listi",
-	"visualeditor-version-label": "Útgáfa"
+	"visualeditor-listbutton-number-tooltip": "Tölusettur listi"
 }

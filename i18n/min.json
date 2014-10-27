@@ -24,9 +24,9 @@
 	"visualeditor-dialog-action-apply": "Tetapkan parubahan",
 	"visualeditor-dialog-action-cancel": "Batal",
 	"visualeditor-dialog-action-goback": "Baliak",
+	"visualeditor-dialog-command-help-title": "Tombol pinteh",
 	"visualeditor-dialog-error": "Ado nan indak beres...",
 	"visualeditor-dialog-error-dismiss": "Baliak",
-	"visualeditor-dialog-command-help-title": "Tombol pinteh",
 	"visualeditor-dialog-language-auto-direction": "Otomatih",
 	"visualeditor-dialog-language-search-title": "Piliah bahaso",
 	"visualeditor-formatdropdown-format-heading-label": "Judul bagian (1-6)",
@@ -46,13 +46,12 @@
 	"visualeditor-indentationbutton-outdent-tooltip": "Kurangi inden",
 	"visualeditor-inspector-close-tooltip": "Tutuik",
 	"visualeditor-inspector-remove-tooltip": "Hapuih",
-	"visualeditor-languageinspector-block-tooltip": "Blok bahaso",
+	"visualeditor-language-search-input-placeholder": "Cari jo namo atau kode bahaso",
 	"visualeditor-languageinspector-title": "Bahaso",
 	"visualeditor-languageinspector-widget-changelang": "Cari bahaso",
 	"visualeditor-languageinspector-widget-label-direction": "Arah",
 	"visualeditor-languageinspector-widget-label-langcode": "Kode bahaso",
 	"visualeditor-languageinspector-widget-label-language": "Bahaso",
-	"visualeditor-language-search-input-placeholder": "Cari jo namo atau kode bahaso",
 	"visualeditor-linkinspector-title": "Hyperlink",
 	"visualeditor-listbutton-bullet-tooltip": "Daftar poin",
 	"visualeditor-listbutton-number-tooltip": "Daftar banomor",
@@ -71,6 +70,5 @@
 	"visualeditor-shortcuts-text-style": "Format teks",
 	"visualeditor-specialcharacter-button-tooltip": "Karakter istimewa",
 	"visualeditor-specialcharacterinspector-title": "Karakter istimewa",
-	"visualeditor-toolbar-insert": "Masuakan",
-	"visualeditor-version-label": "Versi"
+	"visualeditor-toolbar-insert": "Masuakan"
 }

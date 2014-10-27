@@ -35,13 +35,12 @@
 	"visualeditor-indentationbutton-outdent-tooltip": "Minu larg indentation",
 	"visualeditor-inspector-close-tooltip": "Terminar",
 	"visualeditor-inspector-remove-tooltip": "Remover",
-	"visualeditor-languageinspector-block-tooltip": "Lingual bloc",
 	"visualeditor-languageinspector-title": "Lingue",
+	"visualeditor-languageinspector-widget-changelang": "Changear lingue",
 	"visualeditor-languageinspector-widget-label-direction": "Direction",
 	"visualeditor-languageinspector-widget-label-langcode": "Lingual code",
 	"visualeditor-languageinspector-widget-label-language": "Lingue",
 	"visualeditor-linkinspector-title": "Hyperlink",
 	"visualeditor-listbutton-bullet-tooltip": "Simplic liste",
-	"visualeditor-listbutton-number-tooltip": "Nummerat liste",
-	"visualeditor-version-label": "Version"
+	"visualeditor-listbutton-number-tooltip": "Nummerat liste"
 }

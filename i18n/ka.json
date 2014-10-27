@@ -46,7 +46,6 @@
 	"visualeditor-indentationbutton-outdent-tooltip": "დაშორების შემცირება",
 	"visualeditor-inspector-close-tooltip": "დახურვა",
 	"visualeditor-inspector-remove-tooltip": "წაშლა",
-	"visualeditor-languageinspector-block-tooltip": "ენის ბლოკი",
 	"visualeditor-languageinspector-title": "ენა",
 	"visualeditor-languageinspector-widget-changelang": "ენის პოვნა",
 	"visualeditor-languageinspector-widget-label-langcode": "ენის კოდი",
@@ -60,6 +59,7 @@
 	"visualeditor-shortcuts-text-style": "ტექსტის ფორმატირება",
 	"visualeditor-specialcharacter-button-tooltip": "სპეციალური სიმბოლოები",
 	"visualeditor-specialcharacterinspector-title": "სპეციალური სიმბოლოები",
+	"visualeditor-toolbar-format-tooltip": "აბზაცის ფორმატირება",
 	"visualeditor-toolbar-insert": "ჩასმა",
-	"visualeditor-version-label": "ვერსია"
+	"visualeditor-toolbar-style-tooltip": "ტექსტის სტილი"
 }

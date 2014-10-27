@@ -9,7 +9,8 @@
 			"Jaideraf",
 			"Luckas",
 			"OTAVIO1981",
-			555
+			555,
+			"He7d3r"
 		]
 	},
 	"visualeditor": "Editor Visual",
@@ -49,7 +50,6 @@
 	"visualeditor-indentationbutton-outdent-tooltip": "Diminuir recuo",
 	"visualeditor-inspector-close-tooltip": "Fechar",
 	"visualeditor-inspector-remove-tooltip": "Remover",
-	"visualeditor-languageinspector-block-tooltip": "Bloco de Idioma",
 	"visualeditor-languageinspector-title": "Idioma",
 	"visualeditor-languageinspector-widget-changelang": "Encontrar idioma",
 	"visualeditor-languageinspector-widget-label-direction": "Direção",
@@ -67,6 +67,7 @@
 	"visualeditor-shortcuts-text-style": "Formatação de texto",
 	"visualeditor-specialcharacter-button-tooltip": "Caracter especial",
 	"visualeditor-specialcharacterinspector-title": "Caracter especial",
+	"visualeditor-toolbar-format-tooltip": "Formatar parágrafo",
 	"visualeditor-toolbar-insert": "Inserir",
-	"visualeditor-version-label": "Versão"
+	"visualeditor-toolbar-style-tooltip": "Estilo do texto"
 }

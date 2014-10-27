@@ -23,9 +23,9 @@
 	"visualeditor-dialog-action-apply": "Ännarunge schbaischare",
 	"visualeditor-dialog-action-cancel": "Abbresche",
 	"visualeditor-dialog-action-goback": "Zrigg",
+	"visualeditor-dialog-command-help-title": "Taschdaduakeazl",
 	"visualeditor-dialog-error": "Ebbes isch schief gonge",
 	"visualeditor-dialog-error-dismiss": "Geh zurigg",
-	"visualeditor-dialog-command-help-title": "Taschdaduakeazl",
 	"visualeditor-dialog-language-search-title": "Schbrooch wehle:",
 	"visualeditor-formatdropdown-format-heading-label": "Iwwaschrifd (1-6)",
 	"visualeditor-formatdropdown-format-heading1": "Iwwaschrifd 1",
@@ -44,13 +44,12 @@
 	"visualeditor-indentationbutton-outdent-tooltip": "Vagleena de Oizuch",
 	"visualeditor-inspector-close-tooltip": "Schließe",
 	"visualeditor-inspector-remove-tooltip": "Wegnemme",
-	"visualeditor-languageinspector-block-tooltip": "Schbrochbauschdää",
+	"visualeditor-language-search-input-placeholder": "Gugg nochde Schbrooch oddam Kood",
 	"visualeditor-languageinspector-title": "Schbrooch",
 	"visualeditor-languageinspector-widget-changelang": "Schbrooch finne",
 	"visualeditor-languageinspector-widget-label-direction": "Rischdung",
 	"visualeditor-languageinspector-widget-label-langcode": "Schbroochcode",
 	"visualeditor-languageinspector-widget-label-language": "Schbrooch",
-	"visualeditor-language-search-input-placeholder": "Gugg nochde Schbrooch oddam Kood",
 	"visualeditor-linkinspector-title": "Link",
 	"visualeditor-listbutton-bullet-tooltip": "Uffzeelungszaische",
 	"visualeditor-listbutton-number-tooltip": "Nummarierdi Lischd",
@@ -69,6 +68,5 @@
 	"visualeditor-shortcuts-text-style": "Formadierung vum Tegschd",
 	"visualeditor-specialcharacter-button-tooltip": "Schbezialzaische",
 	"visualeditor-specialcharacterinspector-title": "Schbezialzaische",
-	"visualeditor-toolbar-insert": "Oifiesche",
-	"visualeditor-version-label": "Ausfiarung"
+	"visualeditor-toolbar-insert": "Oifiesche"
 }

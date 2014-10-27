@@ -45,8 +45,8 @@
 	"visualeditor-indentationbutton-outdent-tooltip": "Dadfewnoli",
 	"visualeditor-inspector-close-tooltip": "Cau",
 	"visualeditor-inspector-remove-tooltip": "Tynnu'r fformatio",
-	"visualeditor-languageinspector-block-tooltip": "Bloc iaith",
 	"visualeditor-languageinspector-title": "Iaith",
+	"visualeditor-languageinspector-widget-changelang": "Canfod iaith",
 	"visualeditor-languageinspector-widget-label-direction": "Cyfeiriad",
 	"visualeditor-languageinspector-widget-label-langcode": "Cod iaith",
 	"visualeditor-languageinspector-widget-label-language": "Iaith",
@@ -68,6 +68,7 @@
 	"visualeditor-shortcuts-text-style": "Fformadu'r testun",
 	"visualeditor-specialcharacter-button-tooltip": "Nodau arbennig",
 	"visualeditor-specialcharacterinspector-title": "Nodau arbennig",
+	"visualeditor-toolbar-format-tooltip": "Fformatio'r paragraff",
 	"visualeditor-toolbar-insert": "Mewnosod",
-	"visualeditor-version-label": "Fersiwn"
+	"visualeditor-toolbar-style-tooltip": "Arddull testun"
 }

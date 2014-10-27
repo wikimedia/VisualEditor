@@ -41,7 +41,6 @@
 	"visualeditor-indentationbutton-outdent-tooltip": "Diminuisce l'idendazione",
 	"visualeditor-inspector-close-tooltip": "Achiude",
 	"visualeditor-inspector-remove-tooltip": "Live",
-	"visualeditor-languageinspector-block-tooltip": "Blocche d'a lènghe",
 	"visualeditor-languageinspector-title": "Lènghe",
 	"visualeditor-languageinspector-widget-changelang": "Iacchie 'a lènghe",
 	"visualeditor-languageinspector-widget-label-direction": "Direzione",
@@ -59,6 +58,5 @@
 	"visualeditor-shortcuts-text-style": "Formattazzione d'u teste",
 	"visualeditor-specialcharacter-button-tooltip": "Carattere speciale",
 	"visualeditor-specialcharacterinspector-title": "Carattere speciale",
-	"visualeditor-toolbar-insert": "'Nzerisce",
-	"visualeditor-version-label": "Versione"
+	"visualeditor-toolbar-insert": "'Nzerisce"
 }

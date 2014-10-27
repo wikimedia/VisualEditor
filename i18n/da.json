@@ -28,7 +28,6 @@
 	"visualeditor-clipboard-paste": "Indsæt",
 	"visualeditor-clipboard-paste-special": "Indsæt som uformateret tekst",
 	"visualeditor-commentinspector-edit": "Redigér kommentar",
-	"visualeditor-commentinspector-insert": "Indsæt kommentar",
 	"visualeditor-commentinspector-title": "Kommentar",
 	"visualeditor-commentinspector-tooltip": "Kommentar",
 	"visualeditor-dialog-action-apply": "Anvend ændringer",
@@ -88,6 +87,5 @@
 	"visualeditor-toolbar-paragraph-format": "Formatering",
 	"visualeditor-toolbar-structure": "Struktur",
 	"visualeditor-toolbar-style-tooltip": "Tekststil",
-	"visualeditor-toolbar-text-style": "Stil",
-	"visualeditor-version-label": "Version"
+	"visualeditor-toolbar-text-style": "Stil"
 }

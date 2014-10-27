@@ -36,12 +36,14 @@
 	"visualeditor-indentationbutton-outdent-tooltip": "Diminuis il rientri",
 	"visualeditor-inspector-close-tooltip": "Siere",
 	"visualeditor-inspector-remove-tooltip": "Gjave",
-	"visualeditor-languageinspector-block-tooltip": "Bloc di lenghe",
 	"visualeditor-languageinspector-title": "Lenghe",
+	"visualeditor-languageinspector-widget-changelang": "Cambie lenghe",
 	"visualeditor-languageinspector-widget-label-direction": "Direzion",
 	"visualeditor-languageinspector-widget-label-langcode": "Codiç de lenghe",
 	"visualeditor-languageinspector-widget-label-language": "Lenghe",
 	"visualeditor-linkinspector-title": "Leam ipertestuâl",
 	"visualeditor-listbutton-bullet-tooltip": "Elenc pontât",
-	"visualeditor-listbutton-number-tooltip": "Elenc numerât"
+	"visualeditor-listbutton-number-tooltip": "Elenc numerât",
+	"visualeditor-toolbar-format-tooltip": "Formât dal paragraf",
+	"visualeditor-toolbar-style-tooltip": "Stîl dal test"
 }

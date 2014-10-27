@@ -43,8 +43,8 @@
 	"visualeditor-indentationbutton-outdent-tooltip": "Diminuì l'andentassion",
 	"visualeditor-inspector-close-tooltip": "Saré",
 	"visualeditor-inspector-remove-tooltip": "Gavé",
-	"visualeditor-languageinspector-block-tooltip": "Blòch ëd lenghe",
 	"visualeditor-languageinspector-title": "Lenga",
+	"visualeditor-languageinspector-widget-changelang": "Trové la lenga",
 	"visualeditor-languageinspector-widget-label-direction": "Diression",
 	"visualeditor-languageinspector-widget-label-langcode": "Còdes ëd lenga",
 	"visualeditor-languageinspector-widget-label-language": "Lenga",
@@ -60,6 +60,7 @@
 	"visualeditor-shortcuts-text-style": "Ampaginassion dël test",
 	"visualeditor-specialcharacter-button-tooltip": "Caràter ëspecial",
 	"visualeditor-specialcharacterinspector-title": "Caràter ëspecial",
+	"visualeditor-toolbar-format-tooltip": "Ampaginassion dël paràgraf",
 	"visualeditor-toolbar-insert": "Anserì",
-	"visualeditor-version-label": "Version"
+	"visualeditor-toolbar-style-tooltip": "Stil dël test"
 }

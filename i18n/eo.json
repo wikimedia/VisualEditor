@@ -39,11 +39,11 @@
 	"visualeditor-inspector-close-tooltip": "Fermi",
 	"visualeditor-inspector-remove-tooltip": "Forviŝi",
 	"visualeditor-languageinspector-title": "Lingvo",
+	"visualeditor-languageinspector-widget-changelang": "Trovi lingvon",
 	"visualeditor-languageinspector-widget-label-direction": "Direkto",
 	"visualeditor-languageinspector-widget-label-langcode": "Lingva kodo",
 	"visualeditor-languageinspector-widget-label-language": "Lingvo",
 	"visualeditor-linkinspector-title": "Hiperligilo",
 	"visualeditor-listbutton-bullet-tooltip": "Bula listo",
-	"visualeditor-listbutton-number-tooltip": "Numera listo",
-	"visualeditor-version-label": "Versio"
+	"visualeditor-listbutton-number-tooltip": "Numera listo"
 }

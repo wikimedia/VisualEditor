@@ -21,7 +21,6 @@
 	"visualeditor-clipboard-paste": "Ipegket",
 	"visualeditor-clipboard-paste-special": "Ipegket a kas naranas a testo",
 	"visualeditor-commentinspector-edit": "Urnosen ti komentario",
-	"visualeditor-commentinspector-insert": "Isengngat ti komentario",
 	"visualeditor-commentinspector-title": "Komentario",
 	"visualeditor-commentinspector-tooltip": "Komentario",
 	"visualeditor-dialog-action-apply": "Ipakat dagiti binalbaliwan",
@@ -75,10 +74,11 @@
 	"visualeditor-shortcuts-text-style": "Pannakaestilo ti testo",
 	"visualeditor-specialcharacter-button-tooltip": "Naipangpangruna a karakter",
 	"visualeditor-specialcharacterinspector-title": "Naipangpangruna a karakter",
+	"visualeditor-toolbar-format-tooltip": "Pormaten ti parapo",
 	"visualeditor-toolbar-history": "Pakasaritaan",
 	"visualeditor-toolbar-insert": "Isengngat",
 	"visualeditor-toolbar-paragraph-format": "Panagporma",
 	"visualeditor-toolbar-structure": "Estruktura",
-	"visualeditor-toolbar-text-style": "Pannakaestilo",
-	"visualeditor-version-label": "Bersion"
+	"visualeditor-toolbar-style-tooltip": "Estiluen ti testo",
+	"visualeditor-toolbar-text-style": "Pannakaestilo"
 }

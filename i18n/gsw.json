@@ -36,6 +36,7 @@
 	"visualeditor-inspector-close-tooltip": "Zuemache",
 	"visualeditor-inspector-remove-tooltip": "Uuseneh",
 	"visualeditor-languageinspector-title": "Sproch",
+	"visualeditor-languageinspector-widget-changelang": "Sproch ändere",
 	"visualeditor-languageinspector-widget-label-direction": "Richtig",
 	"visualeditor-languageinspector-widget-label-langcode": "Sprochcode",
 	"visualeditor-languageinspector-widget-label-language": "Sproch",
@@ -44,6 +45,5 @@
 	"visualeditor-listbutton-number-tooltip": "Nummerierti Lischt",
 	"visualeditor-specialcharacter-button-tooltip": "Sunderzeiche",
 	"visualeditor-specialcharacterinspector-title": "Sunderzeiche",
-	"visualeditor-toolbar-insert": "Yyfiege",
-	"visualeditor-version-label": "Version"
+	"visualeditor-toolbar-insert": "Yyfiege"
 }
