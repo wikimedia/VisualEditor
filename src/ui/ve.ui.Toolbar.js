@@ -76,18 +76,6 @@ OO.inheritClass( ve.ui.Toolbar, OO.ui.Toolbar );
  * @param {Object} direction Context direction with 'inline' & 'block' properties
  */
 
-/**
- * Whenever the toolbar $bar position is updated, the changes that took place.
- *
- * @event position
- * @param {jQuery} $bar Toolbar bar
- * @param {Object} update
- * @param {boolean} [update.floating] Whether the toolbar is in floating mode
- * @param {Object} [update.css] One or more css properties that changed
- * @param {Object} [update.offset] Updated offset object (from jQuery.fn.offset, though
- *  it also includes `offset.right`)
- */
-
 /* Methods */
 
 /**
@@ -111,25 +99,18 @@ ve.ui.Toolbar.prototype.onWindowScroll = function () {
  * Toolbar will stick to the top of the screen unless it would be over or under the last visible
  * branch node in the root of the document being edited, at which point it will stop just above it.
  *
- * @fires position
  * @param {jQuery.Event} e Window scroll event
  */
 ve.ui.Toolbar.prototype.onWindowResize = function () {
-	var update = {},
-		offset = this.elementOffset;
-
-	// Update right offset after resize (see #float)
-	offset.right = this.$window.width() - this.$element.outerWidth() - offset.left;
-	update.offset = offset;
+	// Update offsets after resize (see #float)
+	this.calculateOffset();
 
 	if ( this.floating ) {
-		update.css = { right: offset.right };
-		this.$bar.css( update.css );
+		this.$bar.css( {
+			left: this.elementOffset.left,
+			right: this.elementOffset.right
+		} );
 	}
-
-	// If we're not floating, toolbar position didn't change.
-	// But the dimensions did naturally change on resize, as did the right offset.
-	this.emit( 'position', this.$bar, update );
 };
 
 /**
@@ -267,16 +248,8 @@ ve.ui.Toolbar.prototype.initialize = function () {
 	// Properties
 	this.$window = this.$( this.getElementWindow() );
 	this.$surfaceView = this.surface.getView().$element;
-	this.elementOffset = this.$element.offset();
-	this.elementOffset.right = this.$window.width() - this.$element.outerWidth() - this.elementOffset.left;
+	this.calculateOffset();
 
-	// Initial position. Could be invalidated by the first
-	// call to onWindowScroll, but users of this event (e.g toolbarTracking)
-	// need to also now the non-floating position.
-	this.emit( 'position', this.$bar, {
-		floating: false,
-		offset: this.elementOffset
-	} );
 	// Initial state
 	this.updateToolState();
 
@@ -286,6 +259,14 @@ ve.ui.Toolbar.prototype.initialize = function () {
 		// The page may start with a non-zero scroll position
 		this.onWindowScroll();
 	}
+};
+
+/**
+ * Calculate the left and right offsets of the toolbar
+ */
+ve.ui.Toolbar.prototype.calculateOffset = function () {
+	this.elementOffset = this.$element.offset();
+	this.elementOffset.right = this.$window.width() - this.$element.outerWidth() - this.elementOffset.left;
 };
 
 /**
@@ -303,32 +284,24 @@ ve.ui.Toolbar.prototype.destroy = function () {
 
 /**
  * Float the toolbar.
- *
- * @fires position
  */
 ve.ui.Toolbar.prototype.float = function () {
-	var update;
 	if ( !this.floating ) {
 		// When switching into floating mode, set the height of the wrapper and
 		// move the bar to the same offset as the in-flow element
-		update = {
-			css: { left: this.elementOffset.left, right: this.elementOffset.right },
-			floating: true
-		};
 		this.$element
 			.css( 'height', this.$element.height() )
 			.addClass( 've-ui-toolbar-floating' );
-		this.$bar.css( update.css );
+		this.$bar.css( {
+			left: this.elementOffset.left,
+			right: this.elementOffset.right
+		} );
 		this.floating = true;
-
-		this.emit( 'position', this.$bar, update );
 	}
 };
 
 /**
  * Reset the toolbar to it's default non-floating position.
- *
- * @fires position
  */
 ve.ui.Toolbar.prototype.unfloat = function () {
 	if ( this.floating ) {
@@ -337,8 +310,6 @@ ve.ui.Toolbar.prototype.unfloat = function () {
 			.removeClass( 've-ui-toolbar-floating' );
 		this.$bar.css( { left: '', right: '' } );
 		this.floating = false;
-
-		this.emit( 'position', this.$bar, { floating: false } );
 	}
 };
 
