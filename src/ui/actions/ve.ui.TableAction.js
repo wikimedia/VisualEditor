@@ -43,10 +43,14 @@ ve.ui.TableAction.static.methods = [ 'create', 'insert', 'delete', 'changeCellSt
  * @param {number} [options.cols=4] Number of rows
  * @param {number} [options.rows=3] Number of columns
  * @param {boolean} [options.header] Make the first row a header row
+ * @param {Object} [options.type='table'] Table node type, must inherit from table
+ * @param {Object} [options.attributes] Attributes to give the table
  */
 ve.ui.TableAction.prototype.create = function ( options ) {
 	options = options || {};
 	var i,
+		type = options.type || 'table',
+		tableElement = { type: type },
 		surfaceModel = this.surface.getModel(),
 		fragment = surfaceModel.getFragment(),
 		data = [],
@@ -57,7 +61,11 @@ ve.ui.TableAction.prototype.create = function ( options ) {
 		return;
 	}
 
-	data.push( { type: 'table' } );
+	if ( options.attributes ) {
+		tableElement.attributes = ve.copy( options.attributes );
+	}
+
+	data.push( tableElement );
 	if ( options.header ) {
 		data.push( { type: 'tableSection', attributes: { style: 'header' } } );
 		data = data.concat( ve.dm.TableRowNode.static.createData( { style: 'header', cellCount: numberOfCols } ) );
@@ -68,7 +76,7 @@ ve.ui.TableAction.prototype.create = function ( options ) {
 		data = data.concat( ve.dm.TableRowNode.static.createData( { style: 'data', cellCount: numberOfCols } ) );
 	}
 	data.push( { type: '/tableSection' } );
-	data.push( { type: '/table' } );
+	data.push( { type: '/' + type } );
 
 	fragment.insertContent( data, false );
 	surfaceModel.setSelection( new ve.dm.TableSelection(
