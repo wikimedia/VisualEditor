@@ -123,8 +123,15 @@ ve.ui.Context.prototype.afterContextChange = function () {
  * @param {Object} data Window opening data
  */
 ve.ui.Context.prototype.onInspectorOpening = function ( win, opening ) {
-	var context = this;
+	var context = this,
+		observer = this.surface.getView().surfaceObserver;
 	this.inspector = win;
+
+	// Shut down the SurfaceObserver as soon as possible, so it doesn't get confused
+	// by the selection moving around in IE. Will be reenabled when inspector closes.
+	// FIXME this should be done in a nicer way, managed by the Surface classes
+	observer.pollOnce();
+	observer.stopTimerLoop();
 
 	opening
 		.progress( function ( data ) {
@@ -145,6 +152,9 @@ ve.ui.Context.prototype.onInspectorOpening = function ( win, opening ) {
 					var inspectable = !!context.getAvailableTools().length;
 
 					context.inspector = null;
+
+					// Reenable observer
+					observer.startTimerLoop();
 
 					if ( inspectable ) {
 						// Change state: inspector -> menu
