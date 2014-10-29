@@ -50,6 +50,7 @@ ve.ce.Surface = function VeCeSurface( model, ui, options ) {
 	this.selecting = false;
 	this.resizing = false;
 	this.focused = false;
+	this.tableEditingFragment = null;
 	this.contentBranchNodeChanged = false;
 	this.$highlightsFocused = this.$( '<div>' );
 	this.$highlightsBlurred = this.$( '<div>' );
@@ -550,15 +551,19 @@ ve.ce.Surface.prototype.disable = function () {
  * function will also reapply the selection, even if the surface is already focused.
  */
 ve.ce.Surface.prototype.focus = function () {
-	var surface = this;
+	var node,
+		surface = this,
+		selection = this.getModel().getSelection();
+
 	// Focus the documentNode for text selections, or the pasteTarget for focusedNode selections
-	if ( this.focusedNode ) {
+	if ( this.focusedNode || selection instanceof ve.dm.TableSelection ) {
 		this.$pasteTarget[0].focus();
-	} else {
-		this.$documentNode[0].focus();
+	} else if ( selection instanceof ve.dm.LinearSelection ) {
+		node = this.getDocument().getNodeAndOffset( selection.getRange().start ).node;
+		$( node ).closest( '[contenteditable=true]' )[0].focus();
 		// If we are calling focus after replacing a node the selection may be gone
 		// but onDocumentFocus won't fire so restore the selection here too.
-		this.onModelSelect( this.surface.getModel().getSelection() );
+		this.onModelSelect( selection );
 		setTimeout( function () {
 			// In some browsers (e.g. Chrome) giving the document node focus doesn't
 			// necessarily give you a selection (e.g. if the first child is a <figure>)
@@ -928,10 +933,10 @@ ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
 					return;
 				}
 			}
-			targetFragment = surface.getModel().getLinearFragment( new ve.Range( targetOffset ), false );
+			targetFragment = surface.getModel().getLinearFragment( new ve.Range( targetOffset ) );
 
 			// Get a fragment and data of the node being dragged
-			originFragment = surface.getModel().getLinearFragment( dragRange, false );
+			originFragment = surface.getModel().getLinearFragment( dragRange );
 			originData = originFragment.getData();
 
 			// Remove node from old location
@@ -957,7 +962,12 @@ ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
  */
 ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
 	var trigger, focusedNode,
+		selection = this.getModel().getSelection(),
 		updateFromModel = false;
+
+	if ( selection instanceof ve.dm.NullSelection ) {
+		return;
+	}
 
 	if ( e.which === 229 ) {
 		// Ignore fake IME events (emitted in IE and Chromium)
@@ -984,11 +994,24 @@ ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
 				this.selecting = true;
 				this.emit( 'selectionStart' );
 			}
-			if ( e.keyCode === OO.ui.Keys.LEFT || e.keyCode === OO.ui.Keys.RIGHT ) {
-				this.handleLeftOrRightArrowKey( e );
-			} else {
-				this.handleUpOrDownArrowKey( e );
-				updateFromModel = true;
+
+			if ( selection instanceof ve.dm.LinearSelection ) {
+				if ( e.keyCode === OO.ui.Keys.LEFT || e.keyCode === OO.ui.Keys.RIGHT ) {
+					this.handleLinearLeftOrRightArrowKey( e );
+				} else {
+					this.handleLinearUpOrDownArrowKey( e );
+					updateFromModel = true;
+				}
+			} else if ( selection instanceof ve.dm.TableSelection ) {
+				this.handleTableArrowKey( e );
+			}
+			break;
+		case OO.ui.Keys.END:
+		case OO.ui.Keys.HOME:
+		case OO.ui.Keys.PAGEUP:
+		case OO.ui.Keys.PAGEDOWN:
+			if ( selection instanceof ve.dm.TableSelection ) {
+				this.handleTableArrowKey( e );
 			}
 			break;
 		case OO.ui.Keys.ENTER:
@@ -996,20 +1019,27 @@ ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
 			focusedNode = this.getFocusedNode();
 			if ( focusedNode ) {
 				focusedNode.executeCommand();
-			} else {
-				this.handleEnter( e );
+			} else if ( selection instanceof ve.dm.LinearSelection ) {
+				this.handleLinearEnter( e );
 				updateFromModel = true;
+			} else if ( selection instanceof ve.dm.TableSelection ) {
+				this.handleTableEnter( e );
 			}
 			break;
 		case OO.ui.Keys.BACKSPACE:
-			e.preventDefault();
-			this.handleDelete( e );
-			updateFromModel = true;
-			break;
 		case OO.ui.Keys.DELETE:
 			e.preventDefault();
-			this.handleDelete( e );
-			updateFromModel = true;
+			if ( selection instanceof ve.dm.LinearSelection ) {
+				this.handleLinearDelete( e );
+				updateFromModel = true;
+			} else if ( selection instanceof ve.dm.TableSelection ) {
+				this.handleTableDelete( e );
+			}
+			break;
+		case OO.ui.Keys.ESCAPE:
+			if ( this.tableEditingFragment ) {
+				this.handleTableEditingEscape( e );
+			}
 			break;
 		default:
 			trigger = new ve.ui.Trigger( e );
@@ -1262,28 +1292,36 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 			this.$( '<span>' ).attr( 'data-ve-clipboard-key', this.clipboardId + '-' + clipboardIndex )
 		);
 
-		this.surfaceObserver.disable();
 		// If direct clipboard editing is not allowed, we must use the pasteTarget to
 		// select the data we want to go in the clipboard
 
-		// Save scroll position before changing focus to "offscreen" paste target
-		scrollTop = this.$window.scrollTop();
+		// If we have a range in the document, preserve it so it can restored
+		originalRange = this.getNativeRange();
+		if ( originalRange ) {
+			// Save scroll position before changing focus to "offscreen" paste target
+			scrollTop = this.$window.scrollTop();
 
-		originalRange = this.getNativeRange().cloneRange();
-		ve.selectElement( this.$pasteTarget[0] );
-		// Restore scroll position after changing focus
-		this.$window.scrollTop( scrollTop );
+			// Prevent surface observation due to native range changing
+			this.surfaceObserver.disable();
+			ve.selectElement( this.$pasteTarget[0] );
 
-		setTimeout( function () {
-			// Change focus back
-			view.$documentNode[0].focus();
-			view.nativeSelection.removeAllRanges();
-			view.nativeSelection.addRange( originalRange );
-			// Restore scroll position
-			view.$window.scrollTop( scrollTop );
-			view.surfaceObserver.clear();
-			view.surfaceObserver.enable();
-		} );
+			// Restore scroll position after changing focus
+			this.$window.scrollTop( scrollTop );
+
+			setTimeout( function () {
+				// Change focus back
+				view.$documentNode[0].focus();
+				view.nativeSelection.removeAllRanges();
+				view.nativeSelection.addRange( originalRange.cloneRange() );
+				// Restore scroll position
+				view.$window.scrollTop( scrollTop );
+				view.surfaceObserver.clear();
+				view.surfaceObserver.enable();
+			} );
+		} else {
+			// If nativeRange is null, the pasteTarget *should* already be selected...
+			ve.selectElement( this.$pasteTarget[0] );
+		}
 	}
 };
 
@@ -1692,36 +1730,40 @@ ve.ce.Surface.prototype.onModelSelect = function ( selection ) {
 
 	this.contentBranchNodeChanged = false;
 
-	if ( !( selection instanceof ve.dm.LinearSelection ) ) {
-		return;
-	}
+	if ( selection instanceof ve.dm.LinearSelection ) {
+		focusedNode = this.findFocusedNode( selection.getRange() );
 
-	focusedNode = this.findFocusedNode( selection.getRange() );
+		// If focus has changed, update nodes and this.focusedNode
+		if ( focusedNode !== this.focusedNode ) {
+			if ( this.focusedNode ) {
+				this.focusedNode.setFocused( false );
+				this.focusedNode = null;
+			}
+			if ( focusedNode ) {
+				focusedNode.setFocused( true );
+				this.focusedNode = focusedNode;
 
-	// If focus has changed, update nodes and this.focusedNode
-	if ( focusedNode !== this.focusedNode ) {
-		if ( this.focusedNode ) {
-			this.focusedNode.setFocused( false );
-			this.focusedNode = null;
-		}
-		if ( focusedNode ) {
-			focusedNode.setFocused( true );
-			this.focusedNode = focusedNode;
-
-			// If dragging, we already have a native selection, so don't mess with it
-			if ( !this.dragging ) {
-				// As FF won't fire a copy event with nothing selected, make
-				// a dummy selection of one space in the pasteTarget.
-				// onCopy will ignore this native selection and use the DM selection
-				this.$pasteTarget.text( ' ' );
-				ve.selectElement( this.$pasteTarget[0] );
-				this.$pasteTarget[0].focus();
-				// Since the selection is no longer in the documentNode, clear the SurfaceObserver's
-				// selection state. Otherwise, if the user places the selection back into the documentNode
-				// in exactly the same place where it was before, the observer won't consider that a change.
-				this.surfaceObserver.clear();
+				// If dragging, we already have a native selection, so don't mess with it
+				if ( !this.dragging ) {
+					// As FF won't fire a copy event with nothing selected, make
+					// a dummy selection of one space in the pasteTarget.
+					// onCopy will ignore this native selection and use the DM selection
+					this.$pasteTarget.text( ' ' );
+					ve.selectElement( this.$pasteTarget[0] );
+					this.$pasteTarget[0].focus();
+					// Since the selection is no longer in the documentNode, clear the SurfaceObserver's
+					// selection state. Otherwise, if the user places the selection back into the documentNode
+					// in exactly the same place where it was before, the observer won't consider that a change.
+					this.surfaceObserver.clear();
+				}
 			}
 		}
+	} else if ( selection instanceof ve.dm.TableSelection ) {
+		this.$pasteTarget.text( ' ' );
+		ve.selectElement( this.$pasteTarget[0] );
+		this.focusedNode = null;
+	} else {
+		this.focusedNode = null;
 	}
 
 	// If there is no focused node, use native selection, but ignore the selection if
@@ -2204,6 +2246,27 @@ ve.ce.Surface.prototype.endRelocation = function () {
 	}
 };
 
+/**
+ * Set the table editing surface fragment from a linear selection covering the cell currently being edited
+ *
+ * @param {ve.dm.LinearSelection} tableEditingSelection Selection covering a table cell
+ */
+ve.ce.Surface.prototype.setTableEditing = function ( tableEditingSelection ) {
+	this.tableEditingFragment = tableEditingSelection ? this.getModel().getFragment( tableEditingSelection ) : null;
+};
+
+/**
+ * Get the range of the table cell currently being edited, or null if none
+ *
+ * @return {ve.Range|null} Range of table cell being edited
+ */
+ve.ce.Surface.prototype.getTableEditingRange = function () {
+	if ( !this.tableEditingFragment ) {
+		return null;
+	}
+	return this.tableEditingFragment.getSelection().getRanges()[0];
+};
+
 /*! Utilities */
 
 /**
@@ -2242,16 +2305,12 @@ ve.ce.Surface.prototype.moveModelCursor = function ( offset ) {
 };
 
 /**
- * Handle left or right arrow key events
+ * Handle left or right arrow key events with a linear selection.
  *
  * @param {jQuery.Event} e Left or right key down event
  */
-ve.ce.Surface.prototype.handleLeftOrRightArrowKey = function ( e ) {
-	var range, direction, selection = this.getModel().getSelection();
-
-	if ( !( selection instanceof ve.dm.LinearSelection ) ) {
-		return;
-	}
+ve.ce.Surface.prototype.handleLinearLeftOrRightArrowKey = function ( e ) {
+	var direction, range = this.getModel().getSelection().getRange();
 
 	// On Mac OS pressing Command (metaKey) + Left/Right is same as pressing Home/End.
 	// As we are not able to handle it programmatically (because we don't know at which offsets
@@ -2270,7 +2329,6 @@ ve.ce.Surface.prototype.handleLeftOrRightArrowKey = function ( e ) {
 	} finally {
 		this.decRenderLock();
 	}
-	range = selection.getRange();
 	if ( this.$( e.target ).css( 'direction' ) === 'rtl' ) {
 		// If the language direction is RTL, switch left/right directions:
 		direction = e.keyCode === OO.ui.Keys.LEFT ? 1 : -1;
@@ -2282,7 +2340,8 @@ ve.ce.Surface.prototype.handleLeftOrRightArrowKey = function ( e ) {
 		range,
 		direction,
 		( e.altKey === true || e.ctrlKey === true ) ? 'word' : 'character',
-		e.shiftKey
+		e.shiftKey,
+		this.getTableEditingRange()
 	);
 	this.model.setLinearSelection( range );
 	// TODO: onDocumentKeyDown does this anyway
@@ -2291,21 +2350,16 @@ ve.ce.Surface.prototype.handleLeftOrRightArrowKey = function ( e ) {
 };
 
 /**
- * Handle up or down arrow key events
+ * Handle up or down arrow key events with a linear selection.
  *
  * @param {jQuery.Event} e Up or down key down event
  */
-ve.ce.Surface.prototype.handleUpOrDownArrowKey = function ( e ) {
-	var nativeRange, slug, $cursorHolder, endNode, endOffset, range,
-		selection = this.model.getSelection(),
+ve.ce.Surface.prototype.handleLinearUpOrDownArrowKey = function ( e ) {
+	var nativeRange, slug, $cursorHolder, endNode, endOffset,
+		range = this.model.getSelection().getRange(),
+		tableEditingRange = this.getTableEditingRange(),
 		direction = e.keyCode === OO.ui.Keys.DOWN ? 1 : -1,
 		surface = this;
-
-	if ( !( selection instanceof ve.dm.LinearSelection ) ) {
-		return;
-	}
-
-	range = selection.getRange();
 
 	// TODO: onDocumentKeyDown did this already
 	this.surfaceObserver.stopTimerLoop();
@@ -2364,22 +2418,87 @@ ve.ce.Surface.prototype.handleUpOrDownArrowKey = function ( e ) {
 		if ( viewNode.isFocusable() ) {
 			newRange = direction === 1 ? viewNode.getOuterRange() : viewNode.getOuterRange().flip();
 		} else {
-			surface.surfaceObserver.pollOnce();
-			newRange = new ve.Range( surface.model.getSelection().getRange().to );
+			// Check where the range is about to move to
+			surface.surfaceObserver.pollOnceNoEmit();
+			newRange = new ve.Range( surface.surfaceObserver.getRange().to );
 		}
 		// Expand range
 		if ( e.shiftKey === true ) {
 			newRange = new ve.Range( range.from, newRange.to );
 		}
-		surface.model.setLinearSelection( newRange );
+		if ( tableEditingRange && !tableEditingRange.containsRange( newRange ) ) {
+			// The cursor moved outside the editing cell, move it back
+			surface.showSelection( surface.getModel().getSelection() );
+		} else {
+			surface.getModel().setLinearSelection( newRange );
+		}
 		surface.surfaceObserver.pollOnce();
 	} );
 };
 
 /**
- * Handle insertion of content.
+ * Handle arrow key events with a table selection.
  *
- * @method
+ * @param {jQuery.Event} e Arrow key down event
+ */
+ve.ce.Surface.prototype.handleTableArrowKey = function ( e ) {
+	var tableNode, newSelection,
+		checkDir = false,
+		selection = this.getModel().getSelection(),
+		colOffset = 0,
+		rowOffset = 0;
+
+	switch ( e.keyCode ) {
+		case OO.ui.Keys.LEFT:
+			colOffset = -1;
+			checkDir = true;
+			break;
+		case OO.ui.Keys.RIGHT:
+			colOffset = 1;
+			checkDir = true;
+			break;
+		case OO.ui.Keys.UP:
+			rowOffset = -1;
+			break;
+		case OO.ui.Keys.DOWN:
+			rowOffset = 1;
+			break;
+		case OO.ui.Keys.HOME:
+			colOffset = -Infinity;
+			break;
+		case OO.ui.Keys.END:
+			colOffset = Infinity;
+			break;
+		case OO.ui.Keys.PAGEUP:
+			rowOffset = -Infinity;
+			break;
+		case OO.ui.Keys.PAGEDOWN:
+			rowOffset = Infinity;
+			break;
+	}
+
+	e.preventDefault();
+
+	if ( colOffset && checkDir ) {
+		tableNode = this.documentView.getBranchNodeFromOffset( selection.tableRange.start + 1 );
+		if ( tableNode.$element.css( 'direction' ) !== 'ltr' ) {
+			colOffset *= -1;
+		}
+	}
+	if ( !e.shiftKey && !selection.isSingleCell() ) {
+		selection = selection.collapseToFrom();
+	}
+	newSelection = selection.newFromAdjustment(
+		e.shiftKey ? 0 : colOffset,
+		e.shiftKey ? 0 : rowOffset,
+		colOffset,
+		rowOffset
+	);
+	this.getModel().setSelection( newSelection );
+};
+
+/**
+ * Handle insertion of content.
  */
 ve.ce.Surface.prototype.handleInsertion = function () {
 	// Don't allow a user to delete a focusable node just by typing
@@ -2391,6 +2510,13 @@ ve.ce.Surface.prototype.handleInsertion = function () {
 		hasChanged = false,
 		selection = this.model.getSelection(),
 		documentModel = this.model.getDocument();
+
+	if ( selection instanceof ve.dm.TableSelection ) {
+		this.model.setSelection( selection.collapseToFrom() );
+		this.handleTableDelete();
+		this.documentView.getBranchNodeFromOffset( selection.tableRange.start + 1 ).setEditing( true );
+		selection = this.model.getSelection();
+	}
 
 	if ( !( selection instanceof ve.dm.LinearSelection ) ) {
 		return;
@@ -2455,7 +2581,7 @@ ve.ce.Surface.prototype.handleInsertion = function () {
 };
 
 /**
- * Test whether a range lies within a single leaf node
+ * Test whether a range lies within a single leaf node.
  *
  * @param {ve.Range} range The range to test
  * @returns {boolean} Whether the range lies within a single node
@@ -2466,15 +2592,15 @@ ve.ce.Surface.prototype.rangeInsideOneLeafNode = function ( range ) {
 };
 
 /**
- * Handle enter key down events.
+ * Handle enter key down events with a linear selection.
  *
- * @method
  * @param {jQuery.Event} e Enter key down event
  */
-ve.ce.Surface.prototype.handleEnter = function ( e ) {
+ve.ce.Surface.prototype.handleLinearEnter = function ( e ) {
 	var txRemove, txInsert, outerParent, outerChildrenCount, list, prevContentOffset,
-		insertEmptyParagraph, node, range, cursor,
-		selection = this.model.getSelection(),
+		insertEmptyParagraph, node,
+		range = this.model.getSelection().getRange(),
+		cursor = range.from,
 		documentModel = this.model.getDocument(),
 		emptyParagraph = [{ type: 'paragraph' }, { type: '/paragraph' }],
 		advanceCursor = true,
@@ -2482,13 +2608,6 @@ ve.ce.Surface.prototype.handleEnter = function ( e ) {
 		outermostNode = null,
 		nodeModel = null,
 		nodeModelRange = null;
-
-	if ( !( selection instanceof ve.dm.LinearSelection ) ) {
-		return;
-	}
-
-	range = selection.getRange();
-	cursor = range.from;
 
 	// Handle removal first
 	if ( !range.isCollapsed() ) {
@@ -2652,17 +2771,25 @@ ve.ce.Surface.prototype.handleEnter = function ( e ) {
 };
 
 /**
- * Handle delete and backspace key down events.
+ * Handle enter key down events with a table selection.
  *
- * @method
+ * @param {jQuery.Event} e Enter key down event
+ */
+ve.ce.Surface.prototype.handleTableEnter = function ( e ) {
+	var selection = this.getModel().getSelection(),
+		tableNode = this.documentView.getBranchNodeFromOffset( selection.tableRange.start + 1 );
+
+	e.preventDefault();
+	tableNode.setEditing( true );
+};
+
+/**
+ * Handle delete and backspace key down events with a linear selection.
+ *
  * @param {jQuery.Event} e Delete key down event
  */
-ve.ce.Surface.prototype.handleDelete = function ( e ) {
-	if ( !( this.getModel().getSelection() instanceof ve.dm.LinearSelection ) ) {
-		return;
-	}
-
-	var docLength, startNode,
+ve.ce.Surface.prototype.handleLinearDelete = function ( e ) {
+	var docLength, startNode, tableEditingRange,
 		direction = e.keyCode === OO.ui.Keys.DELETE ? 1 : -1,
 		unit = ( e.altKey === true || e.ctrlKey === true ) ? 'word' : 'character',
 		offset = 0,
@@ -2674,6 +2801,10 @@ ve.ce.Surface.prototype.handleDelete = function ( e ) {
 		// In case when the range is collapsed use the same logic that is used for cursor left and
 		// right movement in order to figure out range to remove.
 		rangeToRemove = documentModel.getRelativeRange( rangeToRemove, direction, unit, true );
+		tableEditingRange = this.getTableEditingRange();
+		if ( tableEditingRange && !tableEditingRange.containsRange( rangeToRemove ) ) {
+			return;
+		}
 		offset = rangeToRemove.start;
 		docLength = data.getLength();
 		if ( offset < docLength ) {
@@ -2694,11 +2825,53 @@ ve.ce.Surface.prototype.handleDelete = function ( e ) {
 		}
 	}
 
-	this.getModel().getLinearFragment( rangeToRemove ).delete( direction ).select();
+	this.getModel().getLinearFragment( rangeToRemove ).delete( direction );
 	// Rerender selection even if it didn't change
 	// TODO: is any of this necessary?
 	this.focus();
 	this.surfaceObserver.clear();
+};
+
+/**
+ * Handle delete and backspace key down events with a table selection.
+ *
+ * Performs a strip-delete removing all the cell contents but not altering the structure.
+ *
+ * @param {jQuery.Event} e Delete key down event
+ */
+ve.ce.Surface.prototype.handleTableDelete = function () {
+	var i, l,
+		surfaceModel = this.getModel(),
+		fragments = [],
+		ranges = surfaceModel.getSelection().getRanges();
+
+	for ( i = 0, l = ranges.length; i < l; i++ ) {
+		// Create auto-updating fragments from ranges
+		fragments.push( surfaceModel.getLinearFragment( ranges[i], true ) );
+	}
+
+	for ( i = 0, l = fragments.length; i < l; i++ ) {
+		// Replace contents with empty wrapper paragraphs
+		fragments[i].insertContent( [
+			{ type: 'paragraph', internal: { generated: 'wrapper' } },
+			{ type: '/paragraph' }
+		] );
+	}
+};
+
+/**
+ * Handle escape key down events with a linear selection while table editing.
+ *
+ * @param {jQuery.Event} e Delete key down event
+ */
+ve.ce.Surface.prototype.handleTableEditingEscape = function ( e ) {
+	var selection = this.tableEditingFragment.getSelection(),
+		tableNode = this.documentView.getBranchNodeFromOffset( selection.tableRange.start + 1 );
+
+	e.preventDefault();
+
+	tableNode.setEditing( false );
+	this.getModel().setSelection( selection );
 };
 
 /**
@@ -2735,8 +2908,8 @@ ve.ce.Surface.prototype.showSelection = function ( selection ) {
 	}
 	// Setting a range doesn't give focus in all browsers so make sure this happens
 	// Also set focus after range to prevent scrolling to top
-	if ( this.getElementDocument().activeElement !== this.$documentNode[0] ) {
-		this.$documentNode[0].focus();
+	if ( !ve.contains( this.getElementDocument().activeElement, rangeSelection.start.node, true ) ) {
+		$( rangeSelection.start.node ).closest( '[contenteditable=true]' )[0].focus();
 	}
 };
 
