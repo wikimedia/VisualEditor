@@ -26,6 +26,11 @@ Open `./build/modules.json` and delete the `scripts` property from the jquery ha
     ]
   }
 ```
+to look like this:
+```
+"jquery": {
+  }
+```
 
 — AND THEN:
 
