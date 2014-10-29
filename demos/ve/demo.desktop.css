@@ -28,19 +28,20 @@
 /* Editor */
 
 .ve-ui-surface {
-	box-shadow: 0 0.25em 1.5em 0 #ddd;
-	border: 1px solid #ccc;
-	border-top: none;
+	/* surface is used for positioning so use an inset-shadow border */
+	box-shadow: 0 0.25em 1.5em 0 #ddd, inset 0 0 0 1px #ccc;
 }
 
 .ve-init-sa-target-toolbar > .oo-ui-toolbar-bar {
 	border: 1px solid #ccc;
 	border-radius: 0.25em 0.25em 0 0;
+	border-bottom-width: 0;
 }
 
 .ve-init-sa-target-toolbar.ve-ui-toolbar-floating > .oo-ui-toolbar-bar {
 	border-top: none;
 	border-radius: 0;
+	border-bottom-width: 1px;
 }
 
 .ve-ui-debugBar {

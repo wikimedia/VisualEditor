@@ -270,3 +270,23 @@
 	/* @embed */
 	background-image: url(images/icons/underline-u.svg);
 }
+
+.oo-ui-icon-table-insert {
+	background-image: /* @embed */ url(images/icons/table-insert.svg);
+}
+
+.oo-ui-icon-table-insert-row-before {
+	background-image: /* @embed */ url(images/icons/table-insert-row-before.svg);
+}
+
+.oo-ui-icon-table-insert-row-after {
+	background-image: /* @embed */ url(images/icons/table-insert-row-after.svg);
+}
+
+.oo-ui-icon-table-insert-column-before {
+	background-image: /* @embed */ url(images/icons/table-insert-column-before.svg);
+}
+
+.oo-ui-icon-table-insert-column-after {
+	background-image: /* @embed */ url(images/icons/table-insert-column-after.svg);
+}

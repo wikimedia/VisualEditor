@@ -50,6 +50,16 @@ ve.ce.TableNode.prototype.onSetup = function () {
 	// Overlay
 	this.$selectionBox = this.$( '<div>' ).addClass( 've-ce-tableNodeOverlay-selection-box' );
 	this.$selectionBoxAnchor = this.$( '<div>' ).addClass( 've-ce-tableNodeOverlay-selection-box-anchor' );
+	this.colContext = new ve.ui.TableContext( this, 'table-col', {
+		$: this.$,
+		classes: ['ve-ui-tableContext-colContext'],
+		indicator: 'down'
+	} );
+	this.rowContext = new ve.ui.TableContext( this, 'table-row', {
+		$: this.$,
+		classes: ['ve-ui-tableContext-rowContext'],
+		indicator: 'next'
+	} );
 
 	this.$overlay = this.$( '<div>' )
 		.hide()
@@ -57,6 +67,8 @@ ve.ce.TableNode.prototype.onSetup = function () {
 		.append( [
 			this.$selectionBox,
 			this.$selectionBoxAnchor,
+			this.colContext.$element,
+			this.rowContext.$element,
 			this.$rowBracket,
 			this.$colBracket
 		] );
@@ -339,6 +351,24 @@ ve.ce.TableNode.prototype.updateOverlay = function () {
 	this.$overlay.css( {
 		top: tableOffset.top - surfaceOffset.top,
 		left: tableOffset.left - surfaceOffset.left
+	} );
+	this.colContext.$element.css( {
+		left: selectionOffset.left
+	} );
+	this.colContext.indicator.$element.css( {
+		width: selectionOffset.width
+	} );
+	this.colContext.popup.$element.css( {
+		'margin-left': selectionOffset.width / 2
+	} );
+	this.rowContext.$element.css( {
+		top: selectionOffset.top
+	} );
+	this.rowContext.indicator.$element.css( {
+		height: selectionOffset.height
+	} );
+	this.rowContext.popup.$element.css( {
+		'margin-top': selectionOffset.height / 2
 	} );
 
 	// Classes
