@@ -109,6 +109,17 @@ ve.ui.DebugBar.prototype.onSurfaceSelect = function ( selection ) {
 			' - ' +
 			selection.getRange().to
 		);
+	} else if ( selection instanceof ve.dm.TableSelection ) {
+		this.selectionLabel.setLabel(
+			'Table: ' +
+			selection.tableRange.from +
+			' - ' +
+			selection.tableRange.to +
+			', ' +
+			'c' + selection.fromCol + ' r' + selection.fromRow +
+			' - ' +
+			'c' + selection.toCol + ' r' + selection.toRow
+		);
 	} else if ( selection instanceof ve.dm.NullSelection ) {
 		this.selectionLabel.setLabel( 'Null' );
 	}

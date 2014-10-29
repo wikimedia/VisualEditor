@@ -17,6 +17,9 @@
 ve.dm.TableSectionNode = function VeDmTableSectionNode() {
 	// Parent constructor
 	ve.dm.BranchNode.apply( this, arguments );
+
+	// Events
+	this.connect( this, { splice: 'onSplice' } );
 };
 
 /* Inheritance */
@@ -31,11 +34,11 @@ ve.dm.TableSectionNode.static.childNodeTypes = [ 'tableRow' ];
 
 ve.dm.TableSectionNode.static.parentNodeTypes = [ 'table' ];
 
-ve.dm.TableSectionNode.static.defaultAttributes = {
-	style: 'body'
-};
+ve.dm.TableSectionNode.static.defaultAttributes = { style: 'body' };
 
 ve.dm.TableSectionNode.static.matchTagNames = [ 'thead', 'tbody', 'tfoot' ];
+
+/* Static Methods */
 
 ve.dm.TableSectionNode.static.toDataElement = function ( domElements ) {
 	var styles = {
@@ -56,6 +59,18 @@ ve.dm.TableSectionNode.static.toDomElements = function ( dataElement, doc ) {
 		tag = tags[dataElement.attributes && dataElement.attributes.style || 'body'];
 	return [ doc.createElement( tag ) ];
 };
+
+/* Methods */
+
+/**
+ * Handle splicing of child nodes
+ */
+ve.dm.TableSectionNode.prototype.onSplice = function () {
+	if ( this.getRoot() ) {
+		this.getParent().getMatrix().invalidate();
+	}
+};
+
 /* Registration */
 
 ve.dm.modelRegistry.register( ve.dm.TableSectionNode );

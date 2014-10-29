@@ -1562,7 +1562,7 @@ QUnit.test( 'newFromWrap', function ( assert ) {
 				]
 			},
 			'replaces a table with a list': {
-				args: [doc, new ve.Range( 9, 33 ), [ { type: 'table' }, { type: 'tableSection', attributes: { style: 'body' } }, { type: 'tableRow' }, { type: 'tableCell' } ], [ { type: 'list' }, { type: 'listItem' } ], [], []],
+				args: [doc, new ve.Range( 9, 33 ), [ { type: 'table' }, { type: 'tableSection', attributes: { style: 'body' } }, { type: 'tableRow' }, { type: 'tableCell', attributes: { style: 'data' } } ], [ { type: 'list' }, { type: 'listItem' } ], [], []],
 				ops: [
 					{ type: 'retain', length: 5 },
 					{ type: 'replace', remove: [ { type: 'table' }, { type: 'tableSection', attributes: { style: 'body' } }, { type: 'tableRow' }, { type: 'tableCell', attributes: { style: 'data' } } ], insert: [ { type: 'list' }, { type: 'listItem' } ] },
