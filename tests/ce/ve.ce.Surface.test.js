@@ -12,12 +12,12 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, html, range, o
 	var i, method, args,
 		selection,
 		actions = {
-			backspace: [ 'handleDelete', { keyCode: OO.ui.Keys.BACKSPACE } ],
-			delete: [ 'handleDelete', { keyCode: OO.ui.Keys.DELETE } ],
-			modifiedBackspace: [ 'handleDelete', { keyCode: OO.ui.Keys.BACKSPACE, ctrlKey: true } ],
-			modifiedDelete: [ 'handleDelete', { keyCode: OO.ui.Keys.DELETE, ctrlKey: true } ],
-			enter: [ 'handleEnter', {} ],
-			modifiedEnter: [ 'handleEnter', { shiftKey: true } ]
+			backspace: [ 'handleLinearDelete', { keyCode: OO.ui.Keys.BACKSPACE } ],
+			delete: [ 'handleLinearDelete', { keyCode: OO.ui.Keys.DELETE } ],
+			modifiedBackspace: [ 'handleLinearDelete', { keyCode: OO.ui.Keys.BACKSPACE, ctrlKey: true } ],
+			modifiedDelete: [ 'handleLinearDelete', { keyCode: OO.ui.Keys.DELETE, ctrlKey: true } ],
+			enter: [ 'handleLinearEnter', {} ],
+			modifiedEnter: [ 'handleLinearEnter', { shiftKey: true } ]
 		},
 		surface = ve.test.utils.createSurfaceFromHtml( html || ve.dm.example.html ),
 		view = surface.getView(),
@@ -45,7 +45,7 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, html, range, o
 	surface.destroy();
 };
 
-QUnit.test( 'handleDelete', function ( assert ) {
+QUnit.test( 'handleLinearDelete', function ( assert ) {
 	var i,
 		cases = [
 			{
@@ -158,7 +158,7 @@ QUnit.test( 'handleDelete', function ( assert ) {
 	}
 } );
 
-QUnit.test( 'handleEnter', function ( assert ) {
+QUnit.test( 'handleLinearEnter', function ( assert ) {
 	var i,
 		emptyList = '<ul><li><p></p></li></ul>',
 		cases = [
@@ -1116,6 +1116,9 @@ QUnit.test( 'getRangeSelection', function ( assert ) {
 // TODO: ve.ce.Surface#onDocumentDrop
 // TODO: ve.ce.Surface#onDocumentKeyDown
 // TODO: ve.ce.Surface#onDocumentKeyPress
+// TODO: ve.ce.Surface#afterDocumentKeyDown
+// TODO: ve.ce.Surface#afterDocumentMouseDown
+// TODO: ve.ce.Surface#afterDocumentMouseUp
 // TODO: ve.ce.Surface#afterDocumentKeyPress
 // TODO: ve.ce.Surface#onDocumentKeyUp
 // TODO: ve.ce.Surface#onCut
@@ -1127,9 +1130,13 @@ QUnit.test( 'getRangeSelection', function ( assert ) {
 // TODO: ve.ce.Surface#onUnlock
 // TODO: ve.ce.Surface#startRelocation
 // TODO: ve.ce.Surface#endRelocation
-// TODO: ve.ce.Surface#handleLeftOrRightArrowKey
-// TODO: ve.ce.Surface#handleUpOrDownArrowKey
 // TODO: ve.ce.Surface#handleInsertion
+// TODO: ve.ce.Surface#handleLinearLeftOrRightArrowKey
+// TODO: ve.ce.Surface#handleLinearUpOrDownArrowKey
+// TODO: ve.ce.Surface#handleTableArrowKey
+// TODO: ve.ce.Surface#handleTableDelete
+// TODO: ve.ce.Surface#handleTableEditingEscape
+// TODO: ve.ce.Surface#handleTableEnter
 // TODO: ve.ce.Surface#showSelection
 // TODO: ve.ce.Surface#appendHighlights
 // TODO: ve.ce.Surface#incRenderLock

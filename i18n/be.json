@@ -25,9 +25,9 @@
 	"visualeditor-dialog-action-apply": "Захаваць змены",
 	"visualeditor-dialog-action-cancel": "Адмена",
 	"visualeditor-dialog-action-goback": "Вярнуцца",
+	"visualeditor-dialog-command-help-title": "Клавіятурныя скароты",
 	"visualeditor-dialog-error": "Штось пайшло не так…",
 	"visualeditor-dialog-error-dismiss": "Вярнуцца",
-	"visualeditor-dialog-command-help-title": "Клавіятурныя скароты",
 	"visualeditor-dialog-language-auto-direction": "Аўта",
 	"visualeditor-dialog-language-search-title": "Выберыце мову",
 	"visualeditor-formatdropdown-format-heading-label": "Загаловак (1-6)",
@@ -47,13 +47,12 @@
 	"visualeditor-indentationbutton-outdent-tooltip": "Паменшыць водступ",
 	"visualeditor-inspector-close-tooltip": "Закрыць",
 	"visualeditor-inspector-remove-tooltip": "Сцерці",
-	"visualeditor-languageinspector-block-tooltip": "Моўны блок",
+	"visualeditor-language-search-input-placeholder": "Шукаць па назве мовы ці яе коду",
 	"visualeditor-languageinspector-title": "Мова",
 	"visualeditor-languageinspector-widget-changelang": "Знайсці мову",
 	"visualeditor-languageinspector-widget-label-direction": "Кірунак",
 	"visualeditor-languageinspector-widget-label-langcode": "Код мовы",
 	"visualeditor-languageinspector-widget-label-language": "Мова",
-	"visualeditor-language-search-input-placeholder": "Шукаць па назве мовы ці яе коду",
 	"visualeditor-linkinspector-title": "Спасылка",
 	"visualeditor-listbutton-bullet-tooltip": "Маркіраваны спіс",
 	"visualeditor-listbutton-number-tooltip": "Нумараваны спіс",
@@ -68,6 +67,5 @@
 	"visualeditor-shortcuts-text-style": "Фарматаванне тэксту",
 	"visualeditor-specialcharacter-button-tooltip": "Спецыяльны сімвал",
 	"visualeditor-specialcharacterinspector-title": "Спецыяльны сімвал",
-	"visualeditor-toolbar-insert": "Уставіць",
-	"visualeditor-version-label": "Версія"
+	"visualeditor-toolbar-insert": "Уставіць"
 }

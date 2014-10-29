@@ -25,8 +25,8 @@
 	"visualeditor-dialog-action-apply": "Salva canbiamenti",
 	"visualeditor-dialog-action-cancel": "Anùla",
 	"visualeditor-dialog-action-goback": "Torna indrìo",
-	"visualeditor-dialog-error-dismiss": "Torna indrìo",
 	"visualeditor-dialog-command-help-title": "Scavesagne da tastiera",
+	"visualeditor-dialog-error-dismiss": "Torna indrìo",
 	"visualeditor-formatdropdown-format-heading-label": "Intestasion (1-6)",
 	"visualeditor-formatdropdown-format-heading1": "Tìtoło 1",
 	"visualeditor-formatdropdown-format-heading2": "Tìtoło 2",
@@ -44,7 +44,6 @@
 	"visualeditor-indentationbutton-outdent-tooltip": "Ridusi indentasion",
 	"visualeditor-inspector-close-tooltip": "Sara",
 	"visualeditor-inspector-remove-tooltip": "Cava",
-	"visualeditor-languageinspector-block-tooltip": "Bloco de lengua",
 	"visualeditor-languageinspector-title": "Lengua",
 	"visualeditor-languageinspector-widget-changelang": "Canbia lengua",
 	"visualeditor-languageinspector-widget-label-direction": "Diresion",
@@ -62,6 +61,5 @@
 	"visualeditor-shortcuts-text-style": "Formatasion del testo",
 	"visualeditor-specialcharacter-button-tooltip": "Carateri speciałi",
 	"visualeditor-specialcharacterinspector-title": "Carateri speciałi",
-	"visualeditor-toolbar-insert": "Inserisi",
-	"visualeditor-version-label": "Version"
+	"visualeditor-toolbar-insert": "Inserisi"
 }

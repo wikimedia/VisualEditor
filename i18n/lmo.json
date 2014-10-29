@@ -41,8 +41,8 @@
 	"visualeditor-indentationbutton-outdent-tooltip": "Càla l'indentasiù",
 	"visualeditor-inspector-close-tooltip": "Sèra",
 	"visualeditor-inspector-remove-tooltip": "Tö vià",
-	"visualeditor-languageinspector-block-tooltip": "Blòch de lèngue",
 	"visualeditor-languageinspector-title": "Lèngua",
+	"visualeditor-languageinspector-widget-changelang": "Càmbia lèngua",
 	"visualeditor-languageinspector-widget-label-direction": "Diresiù",
 	"visualeditor-languageinspector-widget-label-langcode": "Còdes lèngua",
 	"visualeditor-languageinspector-widget-label-language": "Lèngua",
@@ -58,6 +58,5 @@
 	"visualeditor-shortcuts-text-style": "Formatasiù del test",
 	"visualeditor-specialcharacter-button-tooltip": "Caràter speciàl",
 	"visualeditor-specialcharacterinspector-title": "Caràter speciàl",
-	"visualeditor-toolbar-insert": "Enserés",
-	"visualeditor-version-label": "Versiù"
+	"visualeditor-toolbar-insert": "Enserés"
 }

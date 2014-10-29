@@ -42,8 +42,8 @@
 	"visualeditor-indentationbutton-outdent-tooltip": "Zasunjenje pomjeńšić",
 	"visualeditor-inspector-close-tooltip": "Začinić",
 	"visualeditor-inspector-remove-tooltip": "Wotstronić",
-	"visualeditor-languageinspector-block-tooltip": "Rěčny blok",
 	"visualeditor-languageinspector-title": "Rěč",
+	"visualeditor-languageinspector-widget-changelang": "Rěč namakać",
 	"visualeditor-languageinspector-widget-label-direction": "Směr",
 	"visualeditor-languageinspector-widget-label-langcode": "Rěčny kod",
 	"visualeditor-languageinspector-widget-label-language": "Rěč",
@@ -59,6 +59,7 @@
 	"visualeditor-shortcuts-text-style": "Tekstowe formatowanje",
 	"visualeditor-specialcharacter-button-tooltip": "Specialne znamješko",
 	"visualeditor-specialcharacterinspector-title": "Specialne znamješko",
+	"visualeditor-toolbar-format-tooltip": "Wotstawk formatować",
 	"visualeditor-toolbar-insert": "Zasunyć",
-	"visualeditor-version-label": "Wersija"
+	"visualeditor-toolbar-style-tooltip": "Tekst wuhotować"
 }

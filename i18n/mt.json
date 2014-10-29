@@ -25,13 +25,12 @@
 	"visualeditor-help-tool": "Għajnuna",
 	"visualeditor-inspector-close-tooltip": "Agħlaq",
 	"visualeditor-inspector-remove-tooltip": "Neħħi",
-	"visualeditor-languageinspector-block-tooltip": "Blokk ta' lingwa",
+	"visualeditor-language-search-input-placeholder": "Sib lingwa skont l-isem jew il-kodiċi",
 	"visualeditor-languageinspector-title": "Lingwa",
 	"visualeditor-languageinspector-widget-changelang": "Sib lingwa",
 	"visualeditor-languageinspector-widget-label-direction": "Direzzjoni",
 	"visualeditor-languageinspector-widget-label-langcode": "Kodiċi tal-lingwa",
 	"visualeditor-languageinspector-widget-label-language": "Lingwa",
-	"visualeditor-language-search-input-placeholder": "Sib lingwa skont l-isem jew il-kodiċi",
 	"visualeditor-linkinspector-title": "Ħolqa",
 	"visualeditor-mediasizewidget-label-defaulterror": "Il-valuri tad-daqs huma ħżiena.",
 	"visualeditor-mediasizewidget-label-scale": "Skala",
@@ -43,6 +42,5 @@
 	"visualeditor-shortcuts-text-style": "Ifformattjar tat-test",
 	"visualeditor-specialcharacter-button-tooltip": "Karattru speċjali",
 	"visualeditor-specialcharacterinspector-title": "Karattru speċjali",
-	"visualeditor-toolbar-insert": "Daħħal",
-	"visualeditor-version-label": "Verżjoni"
+	"visualeditor-toolbar-insert": "Daħħal"
 }

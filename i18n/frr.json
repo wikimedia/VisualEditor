@@ -42,8 +42,8 @@
 	"visualeditor-indentationbutton-outdent-tooltip": "Iinsuch letjer maage",
 	"visualeditor-inspector-close-tooltip": "Slütj",
 	"visualeditor-inspector-remove-tooltip": "Wechnem",
-	"visualeditor-languageinspector-block-tooltip": "Spriakblook",
 	"visualeditor-languageinspector-title": "Spriak",
+	"visualeditor-languageinspector-widget-changelang": "Spriak finj",
 	"visualeditor-languageinspector-widget-label-direction": "Leeswai (LTR of RTL)",
 	"visualeditor-languageinspector-widget-label-langcode": "Spriak-code",
 	"visualeditor-languageinspector-widget-label-language": "Spriak",
@@ -59,6 +59,7 @@
 	"visualeditor-shortcuts-text-style": "Formatiarang faan tekst",
 	"visualeditor-specialcharacter-button-tooltip": "Aparte tiaken",
 	"visualeditor-specialcharacterinspector-title": "Aparte tiaken",
+	"visualeditor-toolbar-format-tooltip": "Kirew formatiare",
 	"visualeditor-toolbar-insert": "Iinsaat",
-	"visualeditor-version-label": "Werjuun"
+	"visualeditor-toolbar-style-tooltip": "Tekst smoker maage"
 }

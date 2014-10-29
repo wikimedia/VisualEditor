@@ -23,7 +23,6 @@
 	"visualeditor-clipboard-paste": "Pegar",
 	"visualeditor-clipboard-paste-special": "Pegar como texto sen formato",
 	"visualeditor-commentinspector-edit": "Editar o comentario",
-	"visualeditor-commentinspector-insert": "Inserir o comentario",
 	"visualeditor-commentinspector-title": "Comentario",
 	"visualeditor-commentinspector-tooltip": "Comentario",
 	"visualeditor-dialog-action-apply": "Aplicar os cambios",
@@ -77,10 +76,11 @@
 	"visualeditor-shortcuts-text-style": "Estilo do texto",
 	"visualeditor-specialcharacter-button-tooltip": "Carácter especial",
 	"visualeditor-specialcharacterinspector-title": "Carácter especial",
+	"visualeditor-toolbar-format-tooltip": "Formato do parágrafo",
 	"visualeditor-toolbar-history": "Historial",
 	"visualeditor-toolbar-insert": "Inserir",
 	"visualeditor-toolbar-paragraph-format": "Formato",
 	"visualeditor-toolbar-structure": "Estrutura",
-	"visualeditor-toolbar-text-style": "Estilo",
-	"visualeditor-version-label": "Versión"
+	"visualeditor-toolbar-style-tooltip": "Estilo do texto",
+	"visualeditor-toolbar-text-style": "Estilo"
 }

@@ -23,7 +23,6 @@
 	"visualeditor-clipboard-paste": "ಅಂಟಿಸು",
 	"visualeditor-clipboard-paste-special": "ಸರಲ ಲಿಪಿಯಾಗಿ ಅಂಟಿಸು",
 	"visualeditor-commentinspector-edit": "ಟಿಪ್ಪಣಿ ಬದಲಾಯಿಸಿ",
-	"visualeditor-commentinspector-insert": "ಟಿಪ್ಪಣಿ ಹಾಕೀ",
 	"visualeditor-commentinspector-title": "ಟಿಪ್ಪಣಿ",
 	"visualeditor-commentinspector-tooltip": "ಟಿಪ್ಪಣಿ",
 	"visualeditor-dialog-action-apply": "ಬದಲಾವಣಿಗಳನ್ನು ಹಾಕುವದು",
@@ -79,6 +78,5 @@
 	"visualeditor-toolbar-format-tooltip": "ವಾಕ್ಯವೃಂದದ ಹೊ೦ದಾನಿಕೆ",
 	"visualeditor-toolbar-history": "ಇತಿಹಾಸ",
 	"visualeditor-toolbar-insert": "ಸೇರ್ಪಡಿಸು",
-	"visualeditor-toolbar-structure": "ರಚನೆ",
-	"visualeditor-version-label": "ಆವೃತ್ತಿ"
+	"visualeditor-toolbar-structure": "ರಚನೆ"
 }

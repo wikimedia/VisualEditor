@@ -20,6 +20,6 @@
 }
 
 /* Prevent focus outline on editor */
-.ve-ce-documentNode[contenteditable="true"]:focus {
+.ve-ce-documentNode:focus {
 	outline: none;
 }

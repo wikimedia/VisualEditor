@@ -30,13 +30,12 @@
 	"visualeditor-historybutton-undo-tooltip": "ناکړل",
 	"visualeditor-inspector-close-tooltip": "تړل",
 	"visualeditor-inspector-remove-tooltip": "غورځول",
-	"visualeditor-languageinspector-block-tooltip": "ژب بنديز",
 	"visualeditor-languageinspector-title": "ژبه",
+	"visualeditor-languageinspector-widget-changelang": "ژبه بدلول",
 	"visualeditor-languageinspector-widget-label-direction": "لوری",
 	"visualeditor-languageinspector-widget-label-langcode": "د ژبې کوډ",
 	"visualeditor-languageinspector-widget-label-language": "ژبه",
 	"visualeditor-linkinspector-title": "تړنه",
 	"visualeditor-listbutton-bullet-tooltip": "گولۍ داره لړليک",
-	"visualeditor-listbutton-number-tooltip": "شمېرن لړليک",
-	"visualeditor-version-label": "بڼه"
+	"visualeditor-listbutton-number-tooltip": "شمېرن لړليک"
 }

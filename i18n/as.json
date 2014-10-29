@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Basharh",
-			"Bishnu Saikia"
+			"Bishnu Saikia",
+			"Gitartha.bordoloi"
 		]
 	},
 	"visualeditor-annotationbutton-bold-tooltip": "গাঢ়",
@@ -15,5 +16,8 @@
 	"visualeditor-formatdropdown-format-heading5": "শিৰোনাম ৫",
 	"visualeditor-formatdropdown-format-heading6": "শিৰোনাম ৬",
 	"visualeditor-formatdropdown-format-paragraph": "দফা",
-	"visualeditor-historybutton-undo-tooltip": "পূৰ্ববত কৰক"
+	"visualeditor-historybutton-undo-tooltip": "পূৰ্ববত কৰক",
+	"visualeditor-languageinspector-widget-changelang": "ভাষা সন্ধান কৰক",
+	"visualeditor-toolbar-format-tooltip": "পৰিচ্ছেদ সজাওক",
+	"visualeditor-toolbar-style-tooltip": "লিখাৰ শৈলী"
 }

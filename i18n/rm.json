@@ -41,8 +41,8 @@
 	"visualeditor-indentationbutton-outdent-tooltip": "Diminuir l'incisiun",
 	"visualeditor-inspector-close-tooltip": "Serrar",
 	"visualeditor-inspector-remove-tooltip": "Allontanar",
-	"visualeditor-languageinspector-block-tooltip": "Bloc da lingua",
 	"visualeditor-languageinspector-title": "Lingua",
+	"visualeditor-languageinspector-widget-changelang": "Tschertgar lingua",
 	"visualeditor-languageinspector-widget-label-direction": "Direcziun",
 	"visualeditor-languageinspector-widget-label-langcode": "Coda da lingua",
 	"visualeditor-languageinspector-widget-label-language": "Lingua",
@@ -58,6 +58,5 @@
 	"visualeditor-shortcuts-text-style": "Formataziun dal text",
 	"visualeditor-specialcharacter-button-tooltip": "Caracter spezial",
 	"visualeditor-specialcharacterinspector-title": "Caracter spezial",
-	"visualeditor-toolbar-insert": "Inserir",
-	"visualeditor-version-label": "Versiun"
+	"visualeditor-toolbar-insert": "Inserir"
 }

@@ -9,7 +9,8 @@
 			"Visdaviva",
 			"மதனாஹரன்",
 			"రహ్మానుద్దీన్",
-			"Kiranmayee"
+			"Kiranmayee",
+			"Ravichandra"
 		]
 	},
 	"visualeditor": "విజువల్ ఎడిటర్",
@@ -43,5 +44,7 @@
 	"visualeditor-linkinspector-title": "లంకె",
 	"visualeditor-listbutton-bullet-tooltip": "బిందు జాబితా",
 	"visualeditor-listbutton-number-tooltip": "సంఖ్యా జాబితా",
-	"visualeditor-toolbar-insert": "చొప్పించు"
+	"visualeditor-toolbar-format-tooltip": "పేరా ఆకారాన్ని దిద్దు",
+	"visualeditor-toolbar-insert": "చొప్పించు",
+	"visualeditor-toolbar-style-tooltip": "శైలి పాఠ్యం"
 }

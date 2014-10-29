@@ -41,8 +41,8 @@
 	"visualeditor-indentationbutton-outdent-tooltip": "បន្ថយ​ការ​ចូល​បន្ទាត់",
 	"visualeditor-inspector-close-tooltip": "បិទ",
 	"visualeditor-inspector-remove-tooltip": "ដកចេញ",
-	"visualeditor-languageinspector-block-tooltip": "ប្លុក​ភាសា",
 	"visualeditor-languageinspector-title": "ភាសា",
+	"visualeditor-languageinspector-widget-changelang": "ស្វែងរក​ភាសា",
 	"visualeditor-languageinspector-widget-label-direction": "ទិសដៅ",
 	"visualeditor-languageinspector-widget-label-langcode": "កូដ​ភាសា",
 	"visualeditor-languageinspector-widget-label-language": "ភាសា",
@@ -58,6 +58,7 @@
 	"visualeditor-shortcuts-text-style": "ទ្រង់ទ្រាយ​អត្ថបទ",
 	"visualeditor-specialcharacter-button-tooltip": "តួអក្សរ​ពិសេស",
 	"visualeditor-specialcharacterinspector-title": "តួអក្សរ​ពិសេស",
+	"visualeditor-toolbar-format-tooltip": "សម្អាត​ទ្រង់ទ្រាយ​កថាខណ្ឌ",
 	"visualeditor-toolbar-insert": "បញ្ចូល",
-	"visualeditor-version-label": "កំណែ"
+	"visualeditor-toolbar-style-tooltip": "រចនាបទ​អត្ថបទ"
 }

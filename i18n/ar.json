@@ -32,7 +32,6 @@
 	"visualeditor-clipboard-paste": "إلصاق",
 	"visualeditor-clipboard-paste-special": "إلصاق النص الخام",
 	"visualeditor-commentinspector-edit": "عدل التعليق",
-	"visualeditor-commentinspector-insert": "أدرج تعليق",
 	"visualeditor-commentinspector-title": "تعليق",
 	"visualeditor-commentinspector-tooltip": "تعليق",
 	"visualeditor-dialog-action-apply": "طبق التعديلات",
@@ -91,6 +90,5 @@
 	"visualeditor-toolbar-paragraph-format": "تنسيق",
 	"visualeditor-toolbar-structure": "هيكل",
 	"visualeditor-toolbar-style-tooltip": "نمط النص",
-	"visualeditor-toolbar-text-style": "التصميم",
-	"visualeditor-version-label": "نسخة"
+	"visualeditor-toolbar-text-style": "التصميم"
 }

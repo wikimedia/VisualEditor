@@ -47,7 +47,6 @@
 	"visualeditor-inspector-close-tooltip": "Wichq'ay",
 	"visualeditor-inspector-remove-tooltip": "Qichuy",
 	"visualeditor-language-search-input-placeholder": "Rimaypa sutinkama icha tuyrukama maskay",
-	"visualeditor-languageinspector-block-tooltip": "Rimaykunata hark'ay",
 	"visualeditor-languageinspector-title": "Rimay",
 	"visualeditor-languageinspector-widget-changelang": "Rimayta tariy",
 	"visualeditor-languageinspector-widget-label-direction": "Puririy",
@@ -72,10 +71,11 @@
 	"visualeditor-shortcuts-text-style": "Qillqata rikch'akuychay",
 	"visualeditor-specialcharacter-button-tooltip": "Sapaq sanampa",
 	"visualeditor-specialcharacterinspector-title": "Sapaq sanampa",
+	"visualeditor-toolbar-format-tooltip": "Rakirita rik'chakuychay",
 	"visualeditor-toolbar-history": "Wiñay kawsay",
 	"visualeditor-toolbar-insert": "Sat'iy",
 	"visualeditor-toolbar-paragraph-format": "Rikch'akuychaspa",
 	"visualeditor-toolbar-structure": "Kaynin",
-	"visualeditor-toolbar-text-style": "Rikch'akuychay",
-	"visualeditor-version-label": "Musuqchasqa"
+	"visualeditor-toolbar-style-tooltip": "Rikch'achisqa qillqa",
+	"visualeditor-toolbar-text-style": "Rikch'akuychay"
 }

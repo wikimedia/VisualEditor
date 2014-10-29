@@ -49,17 +49,38 @@ ve.ui.FormatTool.static.requiresSelection = [ 'linear' ];
  */
 ve.ui.FormatTool.prototype.onUpdateState = function ( fragment ) {
 	// Parent method
-	ve.ui.Tool.prototype.onUpdateState.apply( this, arguments );
+	ve.ui.FormatTool.super.prototype.onUpdateState.apply( this, arguments );
 
-	var i, len,
-		nodes = fragment.getSelectedLeafNodes(),
-		format = this.constructor.static.format,
+	// Hide and de-activate disabled tools
+	if ( this.isDisabled() ) {
+		this.toggle( false );
+		this.setActive( false );
+		return;
+	}
+
+	this.toggle( true );
+
+	var i, len, nodes, all, cells,
+		selection = fragment.getSelection(),
+		format = this.constructor.static.format;
+
+	if ( selection instanceof ve.dm.LinearSelection ) {
+		nodes = fragment.getSelectedLeafNodes();
 		all = !!nodes.length;
-
-	for ( i = 0, len = nodes.length; i < len; i++ ) {
-		if ( !nodes[i].hasMatchingAncestor( format.type, format.attributes ) ) {
-			all = false;
-			break;
+		for ( i = 0, len = nodes.length; i < len; i++ ) {
+			if ( !nodes[i].hasMatchingAncestor( format.type, format.attributes ) ) {
+				all = false;
+				break;
+			}
+		}
+	} else if ( selection instanceof ve.dm.TableSelection ) {
+		cells = selection.getMatrixCells();
+		all = true;
+		for ( i = cells.length - 1; i >= 0; i-- ) {
+			if ( !cells[i].node.matches( format.type, format.attributes ) ) {
+				all = false;
+				break;
+			}
 		}
 	}
 	this.convertible = !all;
@@ -233,3 +254,47 @@ ve.ui.PreformattedFormatTool.static.title =
 ve.ui.PreformattedFormatTool.static.format = { type: 'preformatted' };
 ve.ui.PreformattedFormatTool.static.commandName = 'preformatted';
 ve.ui.toolFactory.register( ve.ui.PreformattedFormatTool );
+
+/**
+ * UserInterface table cell header tool.
+ *
+ * @class
+ * @extends ve.ui.FormatTool
+ * @constructor
+ * @param {OO.ui.ToolGroup} toolGroup
+ * @param {Object} [config] Configuration options
+ */
+ve.ui.TableCellHeaderFormatTool = function VeUiTableCellHeaderFormatTool( toolGroup, config ) {
+	ve.ui.FormatTool.call( this, toolGroup, config );
+};
+OO.inheritClass( ve.ui.TableCellHeaderFormatTool, ve.ui.FormatTool );
+ve.ui.TableCellHeaderFormatTool.static.name = 'tableCellHeader';
+ve.ui.TableCellHeaderFormatTool.static.group = 'format';
+ve.ui.TableCellHeaderFormatTool.static.title =
+	OO.ui.deferMsg( 'visualeditor-table-format-header' );
+ve.ui.TableCellHeaderFormatTool.static.format = { type: 'tableCell', attributes: { style: 'header' } };
+ve.ui.TableCellHeaderFormatTool.static.commandName = 'tableCellHeader';
+ve.ui.TableCellHeaderFormatTool.static.requiresSelection = [ 'table' ];
+ve.ui.toolFactory.register( ve.ui.TableCellHeaderFormatTool );
+
+/**
+ * UserInterface table cell data tool.
+ *
+ * @class
+ * @extends ve.ui.FormatTool
+ * @constructor
+ * @param {OO.ui.ToolGroup} toolGroup
+ * @param {Object} [config] Configuration options
+ */
+ve.ui.TableCellDataFormatTool = function VeUiTableCellDataFormatTool( toolGroup, config ) {
+	ve.ui.FormatTool.call( this, toolGroup, config );
+};
+OO.inheritClass( ve.ui.TableCellDataFormatTool, ve.ui.FormatTool );
+ve.ui.TableCellDataFormatTool.static.name = 'tableCellData';
+ve.ui.TableCellDataFormatTool.static.group = 'format';
+ve.ui.TableCellDataFormatTool.static.title =
+	OO.ui.deferMsg( 'visualeditor-table-format-data' );
+ve.ui.TableCellDataFormatTool.static.format = { type: 'tableCell', attributes: { style: 'data' } };
+ve.ui.TableCellDataFormatTool.static.commandName = 'tableCellData';
+ve.ui.TableCellDataFormatTool.static.requiresSelection = [ 'table' ];
+ve.ui.toolFactory.register( ve.ui.TableCellDataFormatTool );

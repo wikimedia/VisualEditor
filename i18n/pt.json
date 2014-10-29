@@ -11,7 +11,8 @@
 			"Jdforrester",
 			"Luckas",
 			"Vitorvicentevalente",
-			"Imperadeiro98"
+			"Imperadeiro98",
+			"He7d3r"
 		]
 	},
 	"visualeditor": "Editor Visual",
@@ -92,6 +93,5 @@
 	"visualeditor-toolbar-paragraph-format": "Formatação",
 	"visualeditor-toolbar-structure": "Estrutura",
 	"visualeditor-toolbar-style-tooltip": "Estilo de texto",
-	"visualeditor-toolbar-text-style": "Estilo",
-	"visualeditor-version-label": "Versão"
+	"visualeditor-toolbar-text-style": "Estilo"
 }

@@ -46,7 +46,6 @@
 	"visualeditor-indentationbutton-outdent-tooltip": "समास कमी करा",
 	"visualeditor-inspector-close-tooltip": "बंद करा",
 	"visualeditor-inspector-remove-tooltip": "काढा",
-	"visualeditor-languageinspector-block-tooltip": "भाषा प्रतिबंधन",
 	"visualeditor-languageinspector-title": "भाषा",
 	"visualeditor-languageinspector-widget-changelang": "भाषा बदला",
 	"visualeditor-languageinspector-widget-label-direction": "दिशा",
@@ -60,6 +59,5 @@
 	"visualeditor-shortcuts-formatting": "परिच्छेदाचे प्रारुपण",
 	"visualeditor-shortcuts-history": "इतिहास",
 	"visualeditor-shortcuts-other": "इतर",
-	"visualeditor-shortcuts-text-style": "मजकूराचे प्रारुपण",
-	"visualeditor-version-label": "आवृत्ती"
+	"visualeditor-shortcuts-text-style": "मजकूराचे प्रारुपण"
 }
