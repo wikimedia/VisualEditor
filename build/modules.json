@@ -148,6 +148,7 @@
 			"src/dm/ve.dm.AnnotationFactory.js",
 			"src/dm/ve.dm.AnnotationSet.js",
 			"src/dm/ve.dm.MetaItemFactory.js",
+			"src/dm/ve.dm.ClassAttributeNode.js",
 			"src/dm/ve.dm.FocusableNode.js",
 			"src/dm/ve.dm.Scalable.js",
 			"src/dm/ve.dm.ResizableNode.js",
