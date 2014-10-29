@@ -102,6 +102,8 @@
 	"visualeditor-table-delete-col": "Label for delete column tool",
 	"visualeditor-table-delete-row": "Label for delete row tool",
 	"visualeditor-table-delete-table": "Label for delete table tool",
+	"visualeditor-table-format-data": "Label for table cell data tool",
+	"visualeditor-table-format-header": "Label for table cell header tool",
 	"visualeditor-table-insert-col-after": "Label for insert column after tool",
 	"visualeditor-table-insert-col-before": "Label for insert column before tool",
 	"visualeditor-table-insert-row-after": "Label for insert row below tool",

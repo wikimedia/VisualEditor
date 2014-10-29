@@ -32,7 +32,7 @@ ve.ui.TableAction.static.name = 'table';
  * @static
  * @property
  */
-ve.ui.TableAction.static.methods = [ 'create', 'insert', 'delete' ];
+ve.ui.TableAction.static.methods = [ 'create', 'insert', 'delete', 'changeCellStyle' ];
 
 /* Methods */
 
@@ -141,6 +141,32 @@ ve.ui.TableAction.prototype.delete = function ( mode ) {
 			this.deleteRowsOrColumns( tableNode.matrix, mode, minIndex, maxIndex );
 		}
 	}
+};
+
+/**
+ * Change cell style
+ *
+ * @param {string} style Cell style; 'header' or 'data'
+ */
+ve.ui.TableAction.prototype.changeCellStyle = function ( style ) {
+	var i, ranges,
+		txs = [],
+		surfaceModel = this.surface.getModel(),
+		selection = surfaceModel.getSelection();
+
+	if ( !( selection instanceof ve.dm.TableSelection ) ) {
+		return;
+	}
+
+	ranges = selection.getOuterRanges();
+	for ( i = ranges.length - 1; i >= 0; i-- ) {
+		txs.push(
+			ve.dm.Transaction.newFromAttributeChanges(
+				surfaceModel.getDocument(), ranges[i].start, { style: style }
+			)
+		);
+	}
+	surfaceModel.change( txs );
 };
 
 /* Low-level API */

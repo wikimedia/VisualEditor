@@ -41,3 +41,7 @@
 .oo-ui-menuToolGroup .oo-ui-tool-name-preformatted .oo-ui-tool-title-text {
 	font-family: monospace, "Courier New";
 }
+
+.oo-ui-menuToolGroup .oo-ui-tool-name-tableCellHeader .oo-ui-tool-title-text {
+	font-weight: bold;
+}
