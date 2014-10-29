@@ -1770,11 +1770,14 @@ ve.ce.Surface.prototype.onModelSelect = function ( selection ) {
 				}
 			}
 		}
-	} else if ( selection instanceof ve.dm.TableSelection ) {
-		this.$pasteTarget.text( ' ' );
-		ve.selectElement( this.$pasteTarget[0] );
-		this.focusedNode = null;
 	} else {
+		if ( selection instanceof ve.dm.TableSelection ) {
+			this.$pasteTarget.text( ' ' );
+			ve.selectElement( this.$pasteTarget[0] );
+		}
+		if ( this.focusedNode ) {
+			this.focusedNode.setFocused( false );
+		}
 		this.focusedNode = null;
 	}
 

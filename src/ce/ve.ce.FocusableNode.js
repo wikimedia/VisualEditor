@@ -156,15 +156,11 @@ ve.ce.FocusableNode.prototype.onFocusableMouseDown = function ( e ) {
 		selection = surfaceModel.getSelection(),
 		nodeRange = this.model.getOuterRange();
 
-	if ( !( selection instanceof ve.dm.LinearSelection ) ) {
-		return;
-	}
-
 	// Wait for native selection to change before correcting
 	setTimeout( function () {
-		range = selection.getRange();
+		range = selection instanceof ve.dm.LinearSelection && selection.getRange();
 		surfaceModel.getLinearFragment(
-			e.shiftKey ?
+			e.shiftKey && range ?
 				ve.Range.static.newCoveringRange(
 					[ range, nodeRange ], range.from > nodeRange.from
 				) :
