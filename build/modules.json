@@ -62,6 +62,11 @@
 			"lib/unicodejs/unicodejs.js"
 		]
 	},
+	"rangefix": {
+		"scripts": [
+			"lib/rangefix/rangefix.js"
+		]
+	},
 	"jquery.i18n": {
 		"scripts": [
 			"lib/jquery.i18n/src/jquery.i18n.js",
@@ -123,7 +128,8 @@
 			"src/init/ve.init.Target.js"
 		],
 		"dependencies": [
-			"unicodejs"
+			"unicodejs",
+			"rangefix"
 		]
 	},
 	"visualEditor.core": {

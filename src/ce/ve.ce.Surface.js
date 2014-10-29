@@ -377,7 +377,6 @@ ve.ce.Surface.prototype.getClientRectFromNode = function () {
  */
 ve.ce.Surface.prototype.getSelectionRects = function ( selection ) {
 	var i, l, range, nativeRange, surfaceRect, focusedNode,
-		endContainer, endOffset, partialRange,
 		rects = [],
 		relativeRects = [];
 
@@ -402,31 +401,7 @@ ve.ce.Surface.prototype.getSelectionRects = function ( selection ) {
 	// * in Firefox on page load when the address bar is still focused
 	// * in empty paragraphs
 	try {
-		// This block should just be rects = nativeRange.getClientRects(), but
-		// Chrome gets the end container rects wrong when spanning
-		// nodes so we need to traverse up the tree from the endContainer until
-		// we reach the common ancestor, then we can add on from start to where
-		// we got up to
-		// https://code.google.com/p/chromium/issues/detail?id=324437
-		endContainer = nativeRange.endContainer;
-		endOffset = nativeRange.endOffset;
-		partialRange = document.createRange();
-
-		while ( endContainer !== nativeRange.commonAncestorContainer ) {
-			partialRange.setStart( endContainer, 0 );
-			partialRange.setEnd( endContainer, endOffset );
-
-			rects = rects.concat( $.makeArray( partialRange.getClientRects() ) );
-
-			endOffset = ve.indexOf( endContainer, endContainer.parentNode.childNodes );
-			endContainer = endContainer.parentNode;
-		}
-
-		// Once we've reached the common ancestor, add on the range from the
-		// original start position to where we ended up.
-		partialRange = nativeRange.cloneRange();
-		partialRange.setEnd( endContainer, endOffset );
-		rects = rects.concat( $.makeArray( partialRange.getClientRects() ) );
+		rects = RangeFix.getClientRects( nativeRange );
 		if ( !rects.length ) {
 			throw new Error( 'getClientRects returned empty list' );
 		}
@@ -499,7 +474,15 @@ ve.ce.Surface.prototype.getSelectionBoundingRect = function ( selection ) {
 		return null;
 	}
 
-	boundingRect = this.getNativeRangeBoundingClientRect( nativeRange ) || this.getClientRectFromNode();
+	try {
+		boundingRect = RangeFix.getBoundingClientRect( nativeRange );
+		if ( !boundingRect ) {
+			throw new Error( 'getBoundingClientRect returned null' );
+		}
+	} catch ( e ) {
+		boundingRect = this.getClientRectFromNode();
+	}
+
 	surfaceRect = this.getSurface().getBoundingClientRect();
 	if ( !boundingRect || !surfaceRect ) {
 		return null;
@@ -2805,59 +2788,6 @@ ve.ce.Surface.prototype.getNativeRange = function ( range ) {
 		nativeRange.setEnd( rangeSelection.end.node, rangeSelection.end.offset );
 	}
 	return nativeRange;
-};
-
-/**
- * Get bounding client rect of a native range
- *
- * Works around lots of browser bugs in Range#getBoundingClientRect
- *
- * @param {Range} nativeRange Native range to get the bounding client rect of
- * @return {ClientRect|null} Client rectangle of the native selection, or null if there was a problem
- */
-ve.ce.Surface.prototype.getNativeRangeBoundingClientRect = function ( nativeRange ) {
-	var rects, boundingRect;
-
-	if ( !nativeRange ) {
-		return null;
-	}
-
-	try {
-		rects = nativeRange.getClientRects();
-		if ( rects.length === 0 ) {
-			// If there are no rects return null, otherwise we'll fall through to
-			// getBoundingClientRect, which in Chrome becomes [0,0,0,0].
-			return null;
-		} else if ( rects.length === 1 ) {
-			// Try the zeroth rect first as Chrome sometimes returns a rectangle
-			// full of zeros for getBoundingClientRect when the cursor is collapsed.
-			// We could test for this failure and fall back to rects[0], except for the
-			// fact that the bounding rect is 1px bigger than rects[0], so cursoring across
-			// a link causes a verticle wobble as it alternately breaks and unbreaks.
-			// See https://code.google.com/p/chromium/issues/detail?id=238976
-			return rects[0];
-		} else {
-			boundingRect = nativeRange.getBoundingClientRect();
-			if ( boundingRect.width === 0 && boundingRect.height === 0 ) {
-				// ... and we save the best bug until last:
-				// When nativeRange is a collapsed cursor at the end of a line or
-				// the start of a line, the bounding rect is [0,0,0,0] in Chrome.
-				// getClientRects returns two rects, one correct, and one at the
-				// end of the next line / start of the previous line. We can't tell
-				// here which one to use so just pick the first. This matches
-				// Firefox's behaviour, which tells you the cursor is at the end
-				// of the previous line when it is at the start of the line.
-				// See https://code.google.com/p/chromium/issues/detail?id=426017
-				return rects[0];
-			} else {
-				// After three browser bugs it's finally safe to try the bounding rect.
-				return boundingRect;
-			}
-		}
-	} catch ( e ) {
-		return null;
-	}
-
 };
 
 /**
