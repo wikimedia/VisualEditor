@@ -66,12 +66,10 @@ ve.ui.TableAction.prototype.create = function ( options ) {
 	}
 
 	data.push( tableElement );
-	if ( options.header ) {
-		data.push( { type: 'tableSection', attributes: { style: 'header' } } );
-		data = data.concat( ve.dm.TableRowNode.static.createData( { style: 'header', cellCount: numberOfCols } ) );
-		data.push( { type: '/tableSection' } );
-	}
 	data.push( { type: 'tableSection', attributes: { style: 'body' } } );
+	if ( options.header ) {
+		data = data.concat( ve.dm.TableRowNode.static.createData( { style: 'header', cellCount: numberOfCols } ) );
+	}
 	for ( i = 0; i < numberOfRows; i++ ) {
 		data = data.concat( ve.dm.TableRowNode.static.createData( { style: 'data', cellCount: numberOfCols } ) );
 	}
