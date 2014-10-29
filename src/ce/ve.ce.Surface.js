@@ -1219,17 +1219,23 @@ ve.ce.Surface.prototype.onCut = function ( e ) {
  * @param {jQuery.Event} e Copy event
  */
 ve.ce.Surface.prototype.onCopy = function ( e ) {
-	if ( !( this.model.getSelection() instanceof ve.dm.LinearSelection ) ) {
+	var originalRange,
+		clipboardIndex, clipboardItem, pasteData,
+		scrollTop, unsafeSelector, range, slice,
+		selection = this.getModel().getSelection(),
+		view = this,
+		htmlDoc = this.getModel().getDocument().getHtmlDocument(),
+		clipboardData = e.originalEvent.clipboardData;
+
+	if ( selection instanceof ve.dm.LinearSelection ||
+		( selection instanceof ve.dm.TableSelection && selection.isSingleCell() )
+	) {
+		range = selection.getRanges()[0];
+	} else {
 		return;
 	}
 
-	var originalRange,
-		clipboardIndex, clipboardItem, pasteData,
-		scrollTop, unsafeSelector,
-		view = this,
-		slice = this.model.documentModel.cloneSliceFromRange( this.model.getSelection().getRange() ),
-		htmlDoc = this.getModel().getDocument().getHtmlDocument(),
-		clipboardData = e.originalEvent.clipboardData;
+	slice = this.model.documentModel.cloneSliceFromRange( range );
 
 	this.$pasteTarget.empty();
 
@@ -1357,13 +1363,17 @@ ve.ce.Surface.prototype.onPaste = function ( e ) {
  * @param {jQuery.Event} e Paste event
  */
 ve.ce.Surface.prototype.beforePaste = function ( e ) {
-	var tx, node, range, contextElement, nativeRange,
+	var tx, range, node, nodeRange, contextElement, nativeRange,
 		context, leftText, rightText, textNode, textStart, textEnd,
 		selection = this.getModel().getSelection(),
 		clipboardData = e.originalEvent.clipboardData,
 		doc = this.getModel().getDocument();
 
-	if ( !( selection instanceof ve.dm.LinearSelection ) ) {
+	if ( selection instanceof ve.dm.LinearSelection ||
+		( selection instanceof ve.dm.TableSelection && selection.isSingleCell() )
+	) {
+		range = selection.getRanges()[0];
+	} else {
 		return;
 	}
 
@@ -1379,12 +1389,12 @@ ve.ce.Surface.prototype.beforePaste = function ( e ) {
 		}
 	}
 
-	range = selection.getRange();
 	// Pasting into a range? Remove first.
-	if ( !selection.isCollapsed() ) {
-		tx = ve.dm.Transaction.newFromRemoval( doc, selection.getRange() );
+	if ( !range.isCollapsed() ) {
+		tx = ve.dm.Transaction.newFromRemoval( doc, range );
 		selection = selection.translateByTransaction( tx );
 		this.model.change( tx, selection );
+		range = selection.getRanges()[0];
 	}
 
 	// Save scroll position before changing focus to "offscreen" paste target
@@ -1393,12 +1403,12 @@ ve.ce.Surface.prototype.beforePaste = function ( e ) {
 	this.$pasteTarget.empty();
 
 	// Get node from cursor position
-	node = doc.getBranchNodeFromOffset( selection.getRange().start );
+	node = doc.getBranchNodeFromOffset( range.start );
 	if ( node.canContainContent() ) {
 		// If this is a content branch node, then add its DM HTML
 		// to the paste target to give CE some context.
 		textStart = textEnd = 0;
-		range = node.getRange();
+		nodeRange = node.getRange();
 		contextElement = node.getClonedElement();
 		// Throw away inner whitespace and other internal properties
 		// otherwise our textStart/End offsets may be wrong.
@@ -1406,14 +1416,14 @@ ve.ce.Surface.prototype.beforePaste = function ( e ) {
 		context = [ contextElement ];
 		// If there is content to the left of the cursor, put a placeholder
 		// character to the left of the cursor
-		if ( selection.getRange().start > range.start ) {
+		if ( range.start > nodeRange.start ) {
 			leftText = '☀';
 			context.push( leftText );
 			textStart = textEnd = 1;
 		}
 		// If there is content to the right of the cursor, put a placeholder
 		// character to the right of the cursor
-		if ( selection.getRange().end < range.end ) {
+		if ( range.end < nodeRange.end ) {
 			rightText = '☂';
 			context.push( rightText );
 		}
@@ -1480,11 +1490,13 @@ ve.ce.Surface.prototype.afterPaste = function () {
 		return;
 	}
 
-	if ( !( selection instanceof ve.dm.LinearSelection ) ) {
+	if ( selection instanceof ve.dm.LinearSelection ||
+		( selection instanceof ve.dm.TableSelection && selection.isSingleCell() )
+	) {
+		range = selection.getRanges()[0];
+	} else {
 		return;
 	}
-
-	range = selection.getRange();
 
 	// Remove the pasteProtect class. See #onCopy.
 	this.$pasteTarget.find( 'span' ).removeClass( 've-pasteProtect' );
