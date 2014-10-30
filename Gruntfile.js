@@ -202,7 +202,22 @@ module.exports = function ( grunt ) {
 				'<%= csslint.all %>'
 			],
 			tasks: [ 'test', 'karma:bg:run' ]
-		}
+		},
+
+    // TAHI:
+    uglify: {
+      dist: {
+        files: {
+          'dist/visualEditor.min.js': ['dist/visualEditor.js']
+        }
+      }
+    },
+    cssmin: {
+      css:{
+        src: 'dist/visualEditor.tahi.css.erb',
+        dest: 'dist/visualEditor.tahi.min.css.erb'
+      }
+    }
 	} );
 
 	grunt.registerTask( 'build', [ 'clean', 'cssUrlEmbed', 'concat', 'cssjanus', 'copy', 'buildloader' ] );
@@ -211,4 +226,22 @@ module.exports = function ( grunt ) {
 	grunt.registerTask( 'test', [ 'git-build', 'build', 'lint', 'unit' ] );
 	grunt.registerTask( 'watch', [ 'karma:bg:start', 'runwatch' ] );
 	grunt.registerTask( 'default', 'test' );
+
+  // TAHI:
+  grunt.loadNpmTasks( 'grunt-contrib-uglify' );
+  grunt.loadNpmTasks( 'grunt-css' );
+  grunt.registerTask( 'tahi', ['build', 'fix-css-image-paths', 'uglify', 'cssmin'] );
+  //grunt.registerTask( 'tahi', ['build', 'fix-css-image-paths', 'cssmin'] );
+  grunt.registerTask( 'fix-css-image-paths', 'replace url with asset_path', function() {
+    var replaceAssetPaths = function(match, path) {
+      if(path.match(/^'data:/)) { return match; }
+
+      var newPath = path.replace(/^(\.\.\/)+/, '').replace(/images\//, '').replace(/ve\/ui\/styles\//, '');
+      return "url(<%= asset_path 'visual-editor/" + newPath + "' %>)";
+    };
+
+    grunt.file.write(
+      'dist/visualEditor.tahi.css.erb', grunt.file.read('dist/visualEditor.css')//.replace(/url\((.+?)\)/g, replaceAssetPaths)
+    );
+  });
 };
