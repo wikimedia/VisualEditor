@@ -32,14 +32,15 @@ $( function () {
 			currentDir = $targetContainer.css( 'direction' ) || 'ltr',
 
 			// Menu widgets
-			pageMenu = new OO.ui.InlineMenuWidget( {
+			pageDropdown = new OO.ui.DropdownWidget( {
 				menu: {
 					items: getDemoPageItems()
 				}
 			} ),
 			pageLabel = new OO.ui.LabelWidget(
-				{ label: 'Page', input: pageMenu }
+				{ label: 'Page', input: pageDropdown }
 			),
+			pageMenu = pageDropdown.getMenu(),
 
 			modeSelect = new OO.ui.ButtonSelectWidget().addItems( [
 				new OO.ui.ButtonOptionWidget( 've', { label: 'VE' } ),
@@ -60,7 +61,7 @@ $( function () {
 			$readView = $( '<div>' ).addClass( 've-demo-read' ).hide();
 
 		// Initialization
-		pageMenu.getMenu().on( 'select', function ( item ) {
+		pageMenu.on( 'select', function ( item ) {
 			var page = item.getData();
 			if ( window.history.replaceState ) {
 				window.history.replaceState( null, document.title, '#!/src/' + page );
@@ -174,7 +175,7 @@ $( function () {
 		$menu.append(
 			$( '<div>' ).addClass( 've-demo-menu-commands' ).append(
 				pageLabel.$element,
-				pageMenu.$element,
+				pageDropdown.$element,
 				$( '<span class="ve-demo-menu-divider">&nbsp;</span>' ),
 				modeSelect.$element,
 				$( '<span class="ve-demo-menu-divider">&nbsp;</span>' ),
@@ -266,14 +267,14 @@ $( function () {
 		if ( /^#!\/src\/.+$/.test( location.hash ) ) {
 			initialPage = location.hash.slice( 7 );
 		} else {
-			initialPage = pageMenu.getMenu().getFirstSelectableItem().getData();
+			initialPage = pageMenu.getFirstSelectableItem().getData();
 			// Per W3 spec, history.replaceState does not fire hashchange
 		}
-		pageMenu.getMenu().selectItem( pageMenu.getMenu().getItemFromData( initialPage ) );
+		pageMenu.selectItem( pageMenu.getItemFromData( initialPage ) );
 
 		window.addEventListener( 'hashchange', function () {
 			if ( /^#!\/src\/.+$/.test( location.hash ) ) {
-				pageMenu.getMenu().selectItem( pageMenu.getMenu().getItemFromData( location.hash.slice( 7 ) ) );
+				pageMenu.selectItem( pageMenu.getItemFromData( location.hash.slice( 7 ) ) );
 			}
 		} );
 
