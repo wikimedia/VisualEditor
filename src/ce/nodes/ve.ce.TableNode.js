@@ -20,7 +20,7 @@ ve.ce.TableNode = function VeCeTableNode( model, config ) {
 	this.surface = null;
 	this.active = false;
 	this.startCell = null;
-	this.editingSelection = null;
+	this.editingFragment = null;
 };
 
 /* Inheritance */
@@ -112,7 +112,9 @@ ve.ce.TableNode.prototype.onTableDblClick = function ( e ) {
 		// Nested table, ignore event
 		return;
 	}
-	this.setEditing( true );
+	if ( this.surface.getModel().getSelection() instanceof ve.dm.TableSelection ) {
+		this.setEditing( true );
+	}
 };
 
 /**
@@ -156,12 +158,12 @@ ve.ce.TableNode.prototype.onTableMouseDown = function ( e ) {
 		endCell.row,
 		true
 	);
-	if ( this.editingSelection ) {
-		if ( newSelection.equals( this.editingSelection ) ) {
+	if ( this.editingFragment ) {
+		if ( newSelection.equals( this.editingFragment.getSelection() ) ) {
 			// Clicking on the editing cell, don't prevent default
 			return;
 		} else {
-			this.setEditing( false );
+			this.setEditing( false, true );
 		}
 	}
 	this.surface.getModel().setSelection( newSelection );
@@ -229,26 +231,50 @@ ve.ce.TableNode.prototype.onTableMouseUp = function () {
  * Set the editing state of the table
  *
  * @param {boolean} isEditing The table is being edited
+ * @param {boolean} noSelect Don't change the selection
  */
-ve.ce.TableNode.prototype.setEditing = function ( isEditing ) {
+ve.ce.TableNode.prototype.setEditing = function ( isEditing, noSelect ) {
 	if ( isEditing ) {
 		var cell, selection = this.surface.getModel().getSelection();
 		if ( !selection.isSingleCell() ) {
 			selection = selection.collapseToFrom();
 			this.surface.getModel().setSelection( selection );
 		}
-		this.editingSelection = selection;
+		this.editingFragment = this.surface.getModel().getFragment( selection );
 		cell = this.getCellNodesFromSelection( selection )[0];
 		cell.setEditing( true );
+		if ( !noSelect ) {
 		// TODO: Find content offset/slug offset within cell
-		this.surface.getModel().setLinearSelection( new ve.Range( cell.getModel().getRange().end - 1 ) );
-	} else if ( this.editingSelection ) {
-		this.getCellNodesFromSelection( this.editingSelection )[0].setEditing( false );
-		this.editingSelection = null;
+			this.surface.getModel().setLinearSelection( new ve.Range( cell.getModel().getRange().end - 1 ) );
+		}
+	} else if ( this.editingFragment ) {
+		this.getCellNodesFromSelection( this.editingFragment.getSelection() )[0].setEditing( false );
+		if ( !noSelect ) {
+			this.surface.getModel().setSelection( this.editingFragment.getSelection() );
+		}
+		this.editingFragment = null;
 	}
 	this.$element.toggleClass( 've-ce-tableNode-editing', isEditing );
 	this.$overlay.toggleClass( 've-ce-tableNodeOverlay-editing', isEditing );
-	this.surface.setTableEditing( this.editingSelection );
+};
+
+/**
+ * Get fragment with table selection covering cell being edited
+ *
+ * @return {ve.dm.SurfaceFragment} Fragment, or null if not cell editing
+ */
+ve.ce.TableNode.prototype.getEditingFragment = function () {
+	return this.editingFragment;
+};
+
+/**
+ * Get range of cell being edited from editing fragment
+ *
+ * @return {ve.Range} Range, or null if not cell editing
+ */
+ve.ce.TableNode.prototype.getEditingRange = function () {
+	var fragment = this.getEditingFragment();
+	return fragment ? fragment.getSelection().getRanges()[0] : null;
 };
 
 /**
@@ -260,7 +286,7 @@ ve.ce.TableNode.prototype.onSurfaceModelSelect = function ( selection ) {
 	// The table is active if it is a linear selection inside a cell being edited
 	// or a table selection matching this table.
 	var active = (
-			this.editingSelection !== null &&
+			this.editingFragment !== null &&
 			selection instanceof ve.dm.LinearSelection &&
 			this.getModel().getOuterRange().containsRange( selection.getRange() )
 		) ||
@@ -271,17 +297,20 @@ ve.ce.TableNode.prototype.onSurfaceModelSelect = function ( selection ) {
 
 	if ( active ) {
 		if ( !this.active ) {
-			this.active = true;
 			this.$overlay.show();
 			// Only register touchstart event after table has become active to prevent
 			// accidental focusing of the table while scrolling
 			this.$element.on( 'touchstart.ve-ce-tableNode', this.onTableMouseDown.bind( this ) );
 		}
+		this.surface.setActiveTableNode( this );
 		this.updateOverlayDebounced();
 	} else if ( !active && this.active ) {
 		this.$overlay.hide();
-		if ( this.editingSelection ) {
-			this.setEditing( false );
+		if ( this.editingFragment ) {
+			this.setEditing( false, true );
+		}
+		if ( this.surface.getActiveTableNode() === this ) {
+			this.surface.setActiveTableNode( null );
 		}
 		this.$element.off( 'touchstart.ve-ce-tableNode' );
 	}
@@ -299,7 +328,9 @@ ve.ce.TableNode.prototype.updateOverlay = function () {
 
 	var i, l, nodes, cellOffset, anchorNode, anchorOffset, selectionOffset,
 		top, left, bottom, right,
-		selection = this.editingSelection || this.surface.getModel().getSelection(),
+		selection = this.editingFragment ?
+			this.editingFragment.getSelection() :
+			this.surface.getModel().getSelection(),
 		// getBoundingClientRect is more accurate but must be used consistently
 		// due to the iOS7 bug where it is relative to the document.
 		tableOffset = this.$element[0].getBoundingClientRect(),
