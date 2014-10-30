@@ -195,6 +195,9 @@ ve.dm.TableSelection.prototype.getMatrixCells = function ( includePlaceholders )
 	for ( row = this.startRow; row <= this.endRow; row++ ) {
 		for ( col = this.startCol; col <= this.endCol; col++ ) {
 			cell = matrix.getCell( row, col );
+			if ( !cell ) {
+				continue;
+			}
 			if ( !includePlaceholders && cell.isPlaceholder() ) {
 				cell = cell.owner;
 			}
