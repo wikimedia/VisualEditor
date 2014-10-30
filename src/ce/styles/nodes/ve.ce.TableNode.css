@@ -10,6 +10,14 @@
 	cursor: default;
 }
 
+.ve-ce-tableCaptionNode:focus {
+	outline: none;
+}
+
+.ve-ce-tableCaptionNode {
+	cursor: text;
+}
+
 .ve-ce-tableNodeOverlay {
 	position: absolute;
 	pointer-events: none;
