@@ -31,6 +31,10 @@ ve.dm.TableSelection = function VeDmTableSelection( doc, tableRange, fromCol, fr
 	this.startRow = fromRow < toRow ? fromRow : toRow;
 	this.endCol = fromCol < toCol ? toCol : fromCol;
 	this.endRow = fromRow < toRow ? toRow : fromRow;
+	this.intendedFromCol = this.fromCol;
+	this.intendedFromRow = this.fromRow;
+	this.intendedToCol = this.toCol;
+	this.intendedToRow = this.toRow;
 
 	if ( expand ) {
 		this.expand();
@@ -302,7 +306,7 @@ ve.dm.TableSelection.prototype.newFromAdjustment = function ( fromColOffset, fro
 		return cell;
 	}
 
-	fromCell = matrix.getCell( this.fromRow, this.fromCol );
+	fromCell = matrix.getCell( this.intendedFromRow, this.intendedFromCol );
 	if ( fromColOffset ) {
 		fromCell = adjust( 'col', fromCell, fromColOffset );
 	}
@@ -310,7 +314,7 @@ ve.dm.TableSelection.prototype.newFromAdjustment = function ( fromColOffset, fro
 		fromCell = adjust( 'row', fromCell, fromRowOffset );
 	}
 
-	toCell = matrix.getCell( this.toRow, this.toCol );
+	toCell = matrix.getCell( this.intendedToRow, this.intendedToCol );
 	if ( toColOffset ) {
 		toCell = adjust( 'col', toCell, toColOffset );
 	}
