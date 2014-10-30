@@ -252,7 +252,7 @@ ve.ui.TableAction.prototype.caption = function () {
 			{ type: '/tableCaption' }
 		], false );
 
-		fragment.collapseToStart().adjustLinearSelection( 2 ).select();
+		fragment.collapseToStart().adjustLinearSelection( 2, 2 ).select();
 	}
 };
 
