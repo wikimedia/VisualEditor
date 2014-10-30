@@ -99,6 +99,7 @@
 	"visualeditor-specialcharacter-button-tooltip": "Tooltip text for the insert character button.\n{{Identical|Special character}}",
 	"visualeditor-specialcharacterinspector-title": "Used as title for special character inspector.\n{{Identical|Special character}}",
 	"visualeditor-specialcharinspector-characterlist-insert": "This is a JSON string defining the special characters that can be inserted using the special character insertion tool.\n{{doc-important|Please make sure it is a valid JSON string.}}\n{{Optional}}",
+	"visualeditor-table-caption": "Label for table caption tool",
 	"visualeditor-table-delete-col": "Label for delete column tool",
 	"visualeditor-table-delete-row": "Label for delete row tool",
 	"visualeditor-table-delete-table": "Label for delete table tool",

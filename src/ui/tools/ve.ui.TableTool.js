@@ -147,5 +147,30 @@ ve.ui.MergeCellsTool.prototype.onUpdateState = function ( fragment ) {
 		}
 	}
 };
-
 ve.ui.toolFactory.register( ve.ui.MergeCellsTool );
+
+ve.ui.TableCaptionTool = function VeUiTableCaptionTool( toolGroup, config ) {
+	ve.ui.Tool.call( this, toolGroup, config );
+};
+OO.inheritClass( ve.ui.TableCaptionTool, ve.ui.Tool );
+ve.ui.TableCaptionTool.static.name = 'tableCaption';
+ve.ui.TableCaptionTool.static.group = 'table';
+ve.ui.TableCaptionTool.static.autoAddToCatchall = false;
+ve.ui.TableCaptionTool.static.icon = 'table-caption';
+ve.ui.TableCaptionTool.static.title =
+	OO.ui.deferMsg( 'visualeditor-table-caption' );
+ve.ui.TableCaptionTool.static.commandName = 'tableCaption';
+ve.ui.TableCaptionTool.static.requiresSelection = [ 'table' ];
+ve.ui.TableCaptionTool.static.deactivateOnSelect = false;
+
+ve.ui.TableCaptionTool.prototype.onUpdateState = function ( fragment ) {
+	// Parent method
+	ve.ui.TableCaptionTool.super.prototype.onUpdateState.apply( this, arguments );
+
+	var selection = fragment.getSelection();
+
+	if ( selection instanceof ve.dm.TableSelection ) {
+		this.setActive( !!selection.getTableNode().getCaptionNode() );
+	}
+};
+ve.ui.toolFactory.register( ve.ui.TableCaptionTool );

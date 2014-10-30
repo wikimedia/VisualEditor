@@ -32,7 +32,7 @@ ve.ui.TableAction.static.name = 'table';
  * @static
  * @property
  */
-ve.ui.TableAction.static.methods = [ 'create', 'insert', 'delete', 'changeCellStyle', 'mergeCells' ];
+ve.ui.TableAction.static.methods = [ 'create', 'insert', 'delete', 'changeCellStyle', 'mergeCells', 'caption' ];
 
 /* Methods */
 
@@ -223,6 +223,37 @@ ve.ui.TableAction.prototype.mergeCells = function () {
 		}
 	}
 	surfaceModel.change( txs );
+};
+
+/**
+ * Toggle the existence of a caption node on the table
+ */
+ve.ui.TableAction.prototype.caption = function () {
+	var fragment, captionNode,
+		surfaceModel = this.surface.getModel(),
+		selection = surfaceModel.getSelection();
+
+	if ( !( selection instanceof ve.dm.TableSelection ) ) {
+		return;
+	}
+
+	captionNode = selection.getTableNode().getCaptionNode();
+
+	if ( captionNode ) {
+		fragment = surfaceModel.getLinearFragment( captionNode.getOuterRange(), true );
+		fragment.removeContent();
+	} else {
+		fragment = surfaceModel.getLinearFragment( new ve.Range( selection.tableRange.start + 1 ), true );
+
+		fragment.insertContent( [
+			{ type: 'tableCaption' },
+			{ type: 'paragraph', internal: { generated: 'wrapper' } },
+			{ type: '/paragraph' },
+			{ type: '/tableCaption' }
+		], false );
+
+		fragment.collapseToStart().adjustLinearSelection( 2 ).select();
+	}
 };
 
 /* Low-level API */

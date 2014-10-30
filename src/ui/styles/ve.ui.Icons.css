@@ -294,3 +294,7 @@
 .oo-ui-icon-table-merge-cells {
 	background-image: /* @embed */ url(images/icons/table-merge-cells.svg);
 }
+
+.oo-ui-icon-table-caption {
+	background-image: /* @embed */ url(images/icons/table-caption.svg);
+}

@@ -56,6 +56,21 @@ ve.dm.TableNode.prototype.getMatrix = function () {
 };
 
 /**
+ * Get the table's caption node, if it exists
+ *
+ * @return {ve.dm.TableCaptionNode|null} The table's caption node, or null if not found
+ */
+ve.dm.TableNode.prototype.getCaptionNode = function () {
+	var i, l;
+	for ( i = 0, l = this.children.length; i < l; i++ ) {
+		if ( this.children[i] instanceof ve.dm.TableCaptionNode ) {
+			return this.children[i];
+		}
+	}
+	return null;
+};
+
+/**
  * Provides a cell iterator that allows convenient traversal regardless of
  * the structure with respect to sections.
  *
