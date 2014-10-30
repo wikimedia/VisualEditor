@@ -107,9 +107,7 @@ ve.ce.TableNode.prototype.onTeardown = function () {
  * @param {jQuery.Event} e Double click event
  */
 ve.ce.TableNode.prototype.onTableDblClick = function ( e ) {
-	var tableNode = $( e.target ).closest( 'table' ).data( 'view' );
-	if ( tableNode !== this ) {
-		// Nested table, ignore event
+	if ( !this.getCellNodeFromTarget( e.target ) ) {
 		return;
 	}
 	if ( this.surface.getModel().getSelection() instanceof ve.dm.TableSelection ) {
@@ -123,25 +121,18 @@ ve.ce.TableNode.prototype.onTableDblClick = function ( e ) {
  * @param {jQuery.Event} e Mouse down or touch start event
  */
 ve.ce.TableNode.prototype.onTableMouseDown = function ( e ) {
-	var cellNode, startCell, endCell, selection, newSelection, tableNode;
+	var cellNode, startCell, endCell, selection, newSelection;
 
 	if ( e.type === 'touchstart' && e.originalEvent.touches.length > 1 ) {
 		// Ignore multi-touch
 		return;
 	}
 
-	tableNode = $( e.target ).closest( 'table' ).data( 'view' );
-
-	if ( tableNode !== this ) {
-		// Nested table, ignore event
-		return;
-	}
-
-	cellNode = $( e.target ).closest( 'td, th' ).data( 'view' );
+	cellNode = this.getCellNodeFromTarget( e.target );
 	if ( !cellNode ) {
-		e.preventDefault();
 		return;
 	}
+
 	endCell = this.getModel().getMatrix().lookupCell( cellNode.getModel() );
 	if ( !endCell ) {
 		e.preventDefault();
@@ -176,12 +167,30 @@ ve.ce.TableNode.prototype.onTableMouseDown = function ( e ) {
 };
 
 /**
+ * Get the table and cell node from an event target
+ *
+ * @param {HTMLElement} target Element target to find nearest cell node to
+ * @return {ve.ce.TableCellNode|null} Table cell node, or null if none found
+ */
+ve.ce.TableNode.prototype.getCellNodeFromTarget = function ( target ) {
+	var $target = $( target ),
+		$table = $target.closest( 'table' );
+
+	// Nested table, ignore
+	if ( !this.$element.is( $table ) ) {
+		return null;
+	}
+
+	return $target.closest( 'td, th' ).data( 'view' );
+};
+
+/**
  * Handle mouse/touch move events
  *
  * @param {jQuery.Event} e Mouse/touch move event
  */
 ve.ce.TableNode.prototype.onTableMouseMove = function ( e ) {
-	var cell, selection, touch, target, node;
+	var cell, selection, touch, target, cellNode;
 
 	// 'touchmove' doesn't give a correct e.target, so calculate it from coordinates
 	if ( e.type === 'touchmove' ) {
@@ -195,12 +204,12 @@ ve.ce.TableNode.prototype.onTableMouseMove = function ( e ) {
 		target = e.target;
 	}
 
-	node = $( target ).closest( 'td, th' ).data( 'view' );
-	if ( !node ) {
+	cellNode = this.getCellNodeFromTarget( target );
+	if ( !cellNode ) {
 		return;
 	}
 
-	cell = this.getModel().matrix.lookupCell( node.getModel() );
+	cell = this.getModel().matrix.lookupCell( cellNode.getModel() );
 	if ( !cell ) {
 		return;
 	}
@@ -288,7 +297,7 @@ ve.ce.TableNode.prototype.onSurfaceModelSelect = function ( selection ) {
 	var active = (
 			this.editingFragment !== null &&
 			selection instanceof ve.dm.LinearSelection &&
-			this.getModel().getOuterRange().containsRange( selection.getRange() )
+			this.editingFragment.getSelection().getRanges()[0].containsRange( selection.getRange() )
 		) ||
 		(
 			selection instanceof ve.dm.TableSelection &&
