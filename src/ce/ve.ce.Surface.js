@@ -50,7 +50,7 @@ ve.ce.Surface = function VeCeSurface( model, ui, options ) {
 	this.selecting = false;
 	this.resizing = false;
 	this.focused = false;
-	this.tableEditingFragment = null;
+	this.activeTableNode = null;
 	this.contentBranchNodeChanged = false;
 	this.$highlightsFocused = this.$( '<div>' );
 	this.$highlightsBlurred = this.$( '<div>' );
@@ -1037,7 +1037,7 @@ ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
 			}
 			break;
 		case OO.ui.Keys.ESCAPE:
-			if ( this.tableEditingFragment ) {
+			if ( this.getActiveTableNode() ) {
 				this.handleTableEditingEscape( e );
 			}
 			break;
@@ -2262,24 +2262,21 @@ ve.ce.Surface.prototype.endRelocation = function () {
 };
 
 /**
- * Set the table editing surface fragment from a linear selection covering the cell currently being edited
+ * Set the active table node
  *
- * @param {ve.dm.LinearSelection} tableEditingSelection Selection covering a table cell
+ * @param {ve.ce.TableNode|null} tableNode Table node
  */
-ve.ce.Surface.prototype.setTableEditing = function ( tableEditingSelection ) {
-	this.tableEditingFragment = tableEditingSelection ? this.getModel().getFragment( tableEditingSelection ) : null;
+ve.ce.Surface.prototype.setActiveTableNode = function ( tableNode ) {
+	this.activeTableNode = tableNode;
 };
 
 /**
- * Get the range of the table cell currently being edited, or null if none
+ * Get the active table node
  *
- * @return {ve.Range|null} Range of table cell being edited
+ * @return {ve.ce.TableNode|null} Table node
  */
-ve.ce.Surface.prototype.getTableEditingRange = function () {
-	if ( !this.tableEditingFragment ) {
-		return null;
-	}
-	return this.tableEditingFragment.getSelection().getRanges()[0];
+ve.ce.Surface.prototype.getActiveTableNode = function () {
+	return this.activeTableNode;
 };
 
 /*! Utilities */
@@ -2356,7 +2353,7 @@ ve.ce.Surface.prototype.handleLinearLeftOrRightArrowKey = function ( e ) {
 		direction,
 		( e.altKey === true || e.ctrlKey === true ) ? 'word' : 'character',
 		e.shiftKey,
-		this.getTableEditingRange()
+		this.getActiveTableNode() ? this.getActiveTableNode().getEditingRange() : null
 	);
 	this.model.setLinearSelection( range );
 	// TODO: onDocumentKeyDown does this anyway
@@ -2372,7 +2369,7 @@ ve.ce.Surface.prototype.handleLinearLeftOrRightArrowKey = function ( e ) {
 ve.ce.Surface.prototype.handleLinearUpOrDownArrowKey = function ( e ) {
 	var nativeRange, slug, $cursorHolder, endNode, endOffset,
 		range = this.model.getSelection().getRange(),
-		tableEditingRange = this.getTableEditingRange(),
+		tableEditingRange = this.getActiveTableNode() ? this.getActiveTableNode().getEditingRange() : null,
 		direction = e.keyCode === OO.ui.Keys.DOWN ? 1 : -1,
 		surface = this;
 
@@ -2816,7 +2813,7 @@ ve.ce.Surface.prototype.handleLinearDelete = function ( e ) {
 		// In case when the range is collapsed use the same logic that is used for cursor left and
 		// right movement in order to figure out range to remove.
 		rangeToRemove = documentModel.getRelativeRange( rangeToRemove, direction, unit, true );
-		tableEditingRange = this.getTableEditingRange();
+		tableEditingRange = this.getActiveTableNode() ? this.getActiveTableNode().getEditingRange() : null;
 		if ( tableEditingRange && !tableEditingRange.containsRange( rangeToRemove ) ) {
 			return;
 		}
@@ -2880,13 +2877,8 @@ ve.ce.Surface.prototype.handleTableDelete = function () {
  * @param {jQuery.Event} e Delete key down event
  */
 ve.ce.Surface.prototype.handleTableEditingEscape = function ( e ) {
-	var selection = this.tableEditingFragment.getSelection(),
-		tableNode = this.documentView.getBranchNodeFromOffset( selection.tableRange.start + 1 );
-
 	e.preventDefault();
-
-	tableNode.setEditing( false );
-	this.getModel().setSelection( selection );
+	this.getActiveTableNode().setEditing( false );
 };
 
 /**
