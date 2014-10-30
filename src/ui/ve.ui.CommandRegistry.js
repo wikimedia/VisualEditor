@@ -183,3 +183,6 @@ ve.ui.commandRegistry.register(
 ve.ui.commandRegistry.register(
 	new ve.ui.Command( 'mergeCells', 'table', 'mergeCells' )
 );
+ve.ui.commandRegistry.register(
+	new ve.ui.Command( 'tableCaption', 'table', 'caption' )
+);
