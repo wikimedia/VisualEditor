@@ -482,11 +482,14 @@ ve.dm.SurfaceFragment.prototype.getAnnotations = function ( all ) {
  * @returns {boolean} The fragment contains at least one annotation
  */
 ve.dm.SurfaceFragment.prototype.hasAnnotations = function () {
-	if ( !( this.selection instanceof ve.dm.LinearSelection ) ) {
-		return false;
-	}
+	var i, l, ranges = this.getSelection().getRanges();
 
-	return this.getDocument().data.hasAnnotationsInRange( this.getSelection( true ).getRange() );
+	for ( i = 0, l = ranges.length; i < l; i++ ) {
+		if ( this.getDocument().data.hasAnnotationsInRange( ranges[i] ) ) {
+			return true;
+		}
+	}
+	return false;
 };
 
 /**
