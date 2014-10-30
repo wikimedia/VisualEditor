@@ -656,7 +656,7 @@ ve.dm.Surface.prototype.setSelection = function ( selection ) {
 		}
 	}
 
-	if ( selection instanceof ve.dm.TableSelection ) {
+	if ( selection instanceof ve.dm.TableSelection || selection instanceof ve.dm.NullSelection ) {
 		contextChange = true;
 	}
 
