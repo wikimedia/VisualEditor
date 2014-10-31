@@ -47,6 +47,7 @@ ve.ui.FragmentDialog.prototype.getSetupProcess = function ( data ) {
 ve.ui.FragmentDialog.prototype.getTeardownProcess = function ( data ) {
 	return ve.ui.FragmentDialog.super.prototype.getTeardownProcess.apply( this, data )
 		.first( function () {
+			this.fragment.select();
 			this.fragment = null;
 		}, this );
 };

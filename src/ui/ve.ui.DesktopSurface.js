@@ -37,5 +37,5 @@ ve.ui.DesktopSurface.prototype.createContext = function () {
  * @inheritdoc
  */
 ve.ui.DesktopSurface.prototype.createDialogWindowManager = function () {
-	return new OO.ui.WindowManager( { factory: ve.ui.windowFactory, isolate: true } );
+	return new OO.ui.WindowManager( { factory: ve.ui.windowFactory } );
 };
