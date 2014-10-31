@@ -1,10 +1,12 @@
 Principal Authors (major contributors, alphabetically)
 
+Alex Monk <krenair@wikimedia.org>
 Bartosz Dziewoński <matmarex@wikimedia.org>
 Christian Williams <christian@wikia-inc.com>
 David Chan <dchan@wikimedia.org>
 Ed Sanders <esanders@wikimedia.org>
 Inez Korczynski <inez@wikia-inc.com>
+James Forrester  <jforrester@wikimedia.org>
 Moriel Schottlender <mschottlender@wikimedia.org>
 Roan Kattouw <roan@wikimedia.org>
 Rob Moen <rmoen@wikimedia.org>
@@ -19,11 +21,16 @@ Adam Wight <spam@ludd.net>
 Antoine Musso <hashar@free.fr>
 Audrey Tang <audreyt@audreyt.org>
 Brion Vibber <brion@wikimedia.org>
+C. Scott Ananian <cscott@cscott.net>
 Erik Moeller <erik@wikimedia.org>
 Gabriel Wicke <gwicke@wikimedia.org>
-James Forrester  <jforrester@wikimedia.org>
 Juliusz Gonera <jgonera@gmail.com>
-Neil Kandalgaonkar <neilk@brevity.org>
 Mark A. Hershberger <mah@everybody.org>
 Mark Holmquist <mtraceur@member.fsf.org>
+Neil Kandalgaonkar <neilk@brevity.org>
+Niklas Laxström <niklas.laxstrom@gmail.com>
+Oliver Buchtala <oliver.buchtala@gmail.com>
+Peter Coti <petercoti@gmail.com>
+Steven Zhang <cro0016@gmail.com>
 Subramanya Sastry <ssastry@wikimedia.org>
+Thalia Chan <thalia@cantorion.org>
