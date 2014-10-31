@@ -153,6 +153,19 @@ ve.ce.View.prototype.setLive = function ( live ) {
 };
 
 /**
+ * Check if the node is inside a contentEditable node
+ *
+ * @return {boolean} Node is inside a contentEditable node
+ */
+ve.ce.View.prototype.isInContentEditable = function () {
+	var node = this.$element[0].parentNode;
+	while ( node && node.contentEditable === 'inherit' ) {
+		node = node.parentNode;
+	}
+	return !!( node && node.contentEditable === 'true' );
+};
+
+/**
  * Render an HTML attribute list onto this.$element
  *
  * If no attributeList is given, the attribute list stored in the linear model will be used.
