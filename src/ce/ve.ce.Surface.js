@@ -46,7 +46,7 @@ ve.ce.Surface = function VeCeSurface( model, ui, options ) {
 	this.clipboardId = String( Math.random() );
 	this.renderLocks = 0;
 	this.dragging = false;
-	this.relocating = false;
+	this.relocatingNode = false;
 	this.selecting = false;
 	this.resizing = false;
 	this.focused = false;
@@ -815,7 +815,7 @@ ve.ce.Surface.prototype.onDocumentDragStart = function ( e ) {
 	} catch ( err ) {
 		// IE doesn't support custom data types, but overwriting the actual drag data should be avoided
 		// TODO: Do this with an internal state to avoid overwriting drag data even in IE
-		dataTransfer.setData( 'text', JSON.stringify( this.getModel().getSelection() ) );
+		dataTransfer.setData( 'text', '__ve__' + JSON.stringify( this.getModel().getSelection() ) );
 	}
 };
 
@@ -826,11 +826,11 @@ ve.ce.Surface.prototype.onDocumentDragStart = function ( e ) {
  * @param {jQuery.Event} e Drag over event
  */
 ve.ce.Surface.prototype.onDocumentDragOver = function ( e ) {
-	if ( !this.relocating ) {
+	if ( !this.relocatingNode ) {
 		return;
 	}
 	var $target, $dropTarget, node, dropPosition;
-	if ( !this.relocating.getModel().isContent() ) {
+	if ( !this.relocatingNode.getModel().isContent() ) {
 		e.preventDefault();
 		$target = $( e.target ).closest( '.ve-ce-branchNode, .ve-ce-leafNode' );
 		if ( $target.length ) {
@@ -885,72 +885,71 @@ ve.ce.Surface.prototype.onDocumentDragOver = function ( e ) {
  */
 ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
 	// Properties may be nullified by other events, so cache before setTimeout
-	var selectionJSON,
+	var selectionJSON, dragSelection, dragRange, originFragment, originData,
+		targetRange, targetOffset, targetFragment,
 		dataTransfer = e.originalEvent.dataTransfer,
-		focusedNode = this.relocating,
 		$dropTarget = this.$lastDropTarget,
-		dropPosition = this.lastDropPosition,
-		surface = this;
+		dropPosition = this.lastDropPosition;
+
+	// Prevent native drop event from modifying view
+	e.preventDefault();
 
 	try {
 		selectionJSON = dataTransfer.getData( 'application-x/VisualEditor' );
 	} catch ( err ) {
 		selectionJSON = dataTransfer.getData( 'text' );
+		if ( selectionJSON.slice( 0, 6 ) === '__ve__' ) {
+			selectionJSON = selectionJSON.slice( 6 );
+		} else {
+			selectionJSON = null;
+		}
 	}
 
-	// Process drop operation after native drop has been prevented below
-	setTimeout( function () {
-		var dragSelection, dragRange, originFragment, originData, targetRange, targetOffset, targetFragment;
-
-		if ( focusedNode ) {
-			dragRange = focusedNode.getModel().getOuterRange();
-		} else if ( selectionJSON ) {
-			dragSelection = ve.dm.Selection.static.newFromJSON( surface.getModel().getDocument(), selectionJSON );
-			if ( dragSelection instanceof ve.dm.LinearSelection ) {
-				dragRange = dragSelection.getRange();
-			}
+	if ( this.relocatingNode ) {
+		dragRange = this.relocatingNode.getModel().getOuterRange();
+	} else if ( selectionJSON ) {
+		dragSelection = ve.dm.Selection.static.newFromJSON( this.getModel().getDocument(), selectionJSON );
+		if ( dragSelection instanceof ve.dm.LinearSelection ) {
+			dragRange = dragSelection.getRange();
 		}
+	}
 
-		if ( dragRange && !dragRange.isCollapsed() ) {
-			if ( focusedNode && !focusedNode.getModel().isContent() ) {
-				// Block level drag and drop: use the lastDropTarget to get the targetOffset
-				if ( $dropTarget ) {
-					targetRange = $dropTarget.data( 'view' ).getModel().getOuterRange();
-					if ( dropPosition === 'top' ) {
-						targetOffset = targetRange.start;
-					} else {
-						targetOffset = targetRange.end;
-					}
+	if ( dragRange && !dragRange.isCollapsed() ) {
+		if ( this.relocatingNode && !this.relocatingNode.getModel().isContent() ) {
+			// Block level drag and drop: use the lastDropTarget to get the targetOffset
+			if ( $dropTarget ) {
+				targetRange = $dropTarget.data( 'view' ).getModel().getOuterRange();
+				if ( dropPosition === 'top' ) {
+					targetOffset = targetRange.start;
 				} else {
-					return;
+					targetOffset = targetRange.end;
 				}
 			} else {
-				targetOffset = surface.getOffsetFromCoords(
-					e.originalEvent.pageX - surface.$document.scrollLeft(),
-					e.originalEvent.pageY - surface.$document.scrollTop()
-				);
-				if ( targetOffset === -1 ) {
-					return;
-				}
+				return;
 			}
-			targetFragment = surface.getModel().getLinearFragment( new ve.Range( targetOffset ) );
-
-			// Get a fragment and data of the node being dragged
-			originFragment = surface.getModel().getLinearFragment( dragRange );
-			originData = originFragment.getData();
-
-			// Remove node from old location
-			originFragment.removeContent();
-
-			// Re-insert data at new location
-			targetFragment.insertContent( originData );
-
-			surface.endRelocation();
+		} else {
+			targetOffset = this.getOffsetFromCoords(
+				e.originalEvent.pageX - this.$document.scrollLeft(),
+				e.originalEvent.pageY - this.$document.scrollTop()
+			);
+			if ( targetOffset === -1 ) {
+				return;
+			}
 		}
-	} );
+		targetFragment = this.getModel().getLinearFragment( new ve.Range( targetOffset ) );
 
-	// Prevent native drop event from modifying view
-	return false;
+		// Get a fragment and data of the node being dragged
+		originFragment = this.getModel().getLinearFragment( dragRange );
+		originData = originFragment.getData();
+
+		// Remove node from old location
+		originFragment.removeContent();
+
+		// Re-insert data at new location
+		targetFragment.insertContent( originData );
+
+		this.endRelocation();
+	}
 };
 
 /**
@@ -2237,7 +2236,7 @@ ve.ce.Surface.prototype.onWindowResize = ve.debounce( function () {
  * @param {ve.ce.Node} node Node being relocated
  */
 ve.ce.Surface.prototype.startRelocation = function ( node ) {
-	this.relocating = node;
+	this.relocatingNode = node;
 	this.emit( 'relocationStart', node );
 };
 
@@ -2250,9 +2249,9 @@ ve.ce.Surface.prototype.startRelocation = function ( node ) {
  * @param {ve.ce.Node} node Node being relocated
  */
 ve.ce.Surface.prototype.endRelocation = function () {
-	if ( this.relocating ) {
-		this.emit( 'relocationEnd', this.relocating );
-		this.relocating = null;
+	if ( this.relocatingNode ) {
+		this.emit( 'relocationEnd', this.relocatingNode );
+		this.relocatingNode = null;
 		if ( this.$lastDropTarget ) {
 			this.$dropMarker.detach();
 			this.$lastDropTarget = null;
