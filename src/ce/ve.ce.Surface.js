@@ -1774,6 +1774,7 @@ ve.ce.Surface.prototype.onModelSelect = function ( selection ) {
 		if ( selection instanceof ve.dm.TableSelection ) {
 			this.$pasteTarget.text( ' ' );
 			ve.selectElement( this.$pasteTarget[0] );
+			this.$pasteTarget[0].focus();
 		}
 		if ( this.focusedNode ) {
 			this.focusedNode.setFocused( false );
