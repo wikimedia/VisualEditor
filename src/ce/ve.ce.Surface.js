@@ -886,7 +886,8 @@ ve.ce.Surface.prototype.onDocumentDragOver = function ( e ) {
 ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
 	// Properties may be nullified by other events, so cache before setTimeout
 	var selectionJSON, dragSelection, dragRange, originFragment, originData,
-		targetRange, targetOffset, targetFragment,
+		targetRange, targetOffset, targetFragment, dragHtml, dragText,
+		htmlDoc, doc, data, pasteRules,
 		dataTransfer = e.originalEvent.dataTransfer,
 		$dropTarget = this.$lastDropTarget,
 		dropPosition = this.lastDropPosition;
@@ -912,9 +913,18 @@ ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
 		if ( dragSelection instanceof ve.dm.LinearSelection ) {
 			dragRange = dragSelection.getRange();
 		}
+	} else {
+		try {
+			dragHtml = dataTransfer.getData( 'text/html' );
+			if ( !dragHtml ) {
+				dragText = dataTransfer.getData( 'text/plain' );
+			}
+		} catch ( err ) {
+			dragText = dataTransfer.getData( 'text' );
+		}
 	}
 
-	if ( dragRange && !dragRange.isCollapsed() ) {
+	if ( ( dragRange && !dragRange.isCollapsed() ) || dragHtml || dragText ) {
 		if ( this.relocatingNode && !this.relocatingNode.getModel().isContent() ) {
 			// Block level drag and drop: use the lastDropTarget to get the targetOffset
 			if ( $dropTarget ) {
@@ -936,20 +946,43 @@ ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
 				return;
 			}
 		}
+
 		targetFragment = this.getModel().getLinearFragment( new ve.Range( targetOffset ) );
 
-		// Get a fragment and data of the node being dragged
-		originFragment = this.getModel().getLinearFragment( dragRange );
-		originData = originFragment.getData();
+		if ( dragRange ) {
+			// Get a fragment and data of the node being dragged
+			originFragment = this.getModel().getLinearFragment( dragRange );
+			originData = originFragment.getData();
 
-		// Remove node from old location
-		originFragment.removeContent();
+			// Remove node from old location
+			originFragment.removeContent();
 
-		// Re-insert data at new location
-		targetFragment.insertContent( originData );
-
-		this.endRelocation();
+			// Re-insert data at new location
+			targetFragment.insertContent( originData );
+		} else if ( dragHtml ) {
+			pasteRules = this.getSurface().getPasteRules();
+			htmlDoc = ve.createDocumentFromHtml( dragHtml );
+			doc = ve.dm.converter.getModelFromDom( htmlDoc, this.getModel().getDocument().getHtmlDocument() );
+			data = doc.data;
+			// Clear metadata
+			doc.metadata = new ve.dm.MetaLinearData( doc.getStore(), new Array( 1 + data.getLength() ) );
+			data.sanitize( pasteRules.external, this.pasteSpecial );
+			if ( pasteRules.all ) {
+				data.sanitize( pasteRules.all );
+			}
+			data.remapInternalListKeys( this.model.getDocument().getInternalList() );
+			// Initialize node tree
+			doc.buildNodeTree();
+			this.getModel().change( new ve.dm.Transaction.newFromDocumentInsertion(
+				this.getModel().getDocument(),
+				targetOffset,
+				doc
+			) );
+		} else if ( dragText ) {
+			targetFragment.insertContent( dragText );
+		}
 	}
+	this.endRelocation();
 };
 
 /**
