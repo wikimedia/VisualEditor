@@ -15,7 +15,8 @@
 			"Waihorace",
 			"Cwlin0416",
 			"Vincent Liu",
-			"Deryck Chan"
+			"Deryck Chan",
+			"LNDDYL"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -90,11 +91,20 @@
 	"visualeditor-shortcuts-text-style": "文字樣式",
 	"visualeditor-specialcharacter-button-tooltip": "特殊字元",
 	"visualeditor-specialcharacterinspector-title": "特殊字元",
+	"visualeditor-table-caption": "說明",
+	"visualeditor-table-format-data": "內容儲存格",
+	"visualeditor-table-format-header": "行首儲存格",
+	"visualeditor-table-insert-col-before": "前面插入",
+	"visualeditor-table-insert-row-after": "下方插入",
+	"visualeditor-table-insert-row-before": "上方插入",
+	"visualeditor-table-insert-table": "表格",
+	"visualeditor-table-merge-cells": "合併儲存格",
 	"visualeditor-toolbar-format-tooltip": "段落格式",
 	"visualeditor-toolbar-history": "歷史記錄",
 	"visualeditor-toolbar-insert": "插入",
 	"visualeditor-toolbar-paragraph-format": "格式",
 	"visualeditor-toolbar-structure": "結構",
 	"visualeditor-toolbar-style-tooltip": "文字樣式",
+	"visualeditor-toolbar-table": "表格",
 	"visualeditor-toolbar-text-style": "樣式"
 }
