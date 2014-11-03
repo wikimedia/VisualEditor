@@ -2520,14 +2520,18 @@ ve.ce.Surface.prototype.handleInsertion = function () {
 	}
 
 	var hasSlug, data, range, newRange, annotations, insertionAnnotations, placeholder,
+		cellSelection,
 		hasChanged = false,
 		selection = this.model.getSelection(),
 		documentModel = this.model.getDocument();
 
 	if ( selection instanceof ve.dm.TableSelection ) {
-		this.model.setSelection( selection.collapseToFrom() );
+		cellSelection = selection.collapseToFrom();
+		annotations = documentModel.data.getAnnotationsFromRange( cellSelection.getRanges()[0] );
+		this.model.setSelection( cellSelection );
 		this.handleTableDelete();
 		this.documentView.getBranchNodeFromOffset( selection.tableRange.start + 1 ).setEditing( true );
+		this.model.setInsertionAnnotations( annotations );
 		selection = this.model.getSelection();
 	}
 
