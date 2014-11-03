@@ -118,6 +118,7 @@ ve.ui.TableContext.prototype.onDocumentMouseDown = function ( e ) {
 ve.ui.TableContext.prototype.toggle = function ( show ) {
 	this.popup.toggle( show );
 	if ( this.popup.isVisible() ) {
+		this.tableNode.setEditing( false );
 		this.surface.getModel().connect( this, { select: 'toggle' } );
 		this.surface.getView().$document.on( 'mousedown', this.onDocumentMouseDownHandler );
 	} else {
