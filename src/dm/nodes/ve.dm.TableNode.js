@@ -101,12 +101,19 @@ ve.dm.TableNodeCellIterator = function VeCeTableNodeCellIterator( tableNode ) {
 	OO.EventEmitter.call( this );
 
 	this.table = tableNode;
-	this.sectionIndex = -1;
-	this.rowIndex = -1;
-	this.rowNode = null;
-	this.cellIndex = -1;
-	this.cellNode = null;
+
+	this.sectionIndex = 0;
+	this.rowIndex = 0;
+	this.cellIndex = 0;
+
+	this.sectionCount = this.table.children.length;
+	this.rowCount = 0;
+	this.cellCount = 0;
+
 	this.sectionNode = null;
+	this.rowNode = null;
+	this.cellNode = null;
+
 	this.finished = false;
 };
 
@@ -129,20 +136,26 @@ OO.mixinClass( ve.dm.TableNodeCellIterator, OO.EventEmitter );
 /* Methods */
 
 /**
+ * Check if the iterator has finished iterating over the cells of a table node.
+ *
+ * @returns {boolean} Iterator is finished
+ */
+ve.dm.TableNodeCellIterator.prototype.isFinished = function () {
+	return this.finished;
+};
+
+/**
  * Get the next cell node
  *
- * @return {ve.dm.TableCellNode|null} Next cell node, or null if at the end
+ * @return {ve.dm.TableCellNode|null|undefined} Next cell node, null if a not a table cell, or undefined if at the end
+ * @throws {Error} TableNodeCellIterator has no more cells left.
  */
 ve.dm.TableNodeCellIterator.prototype.next = function () {
-	if ( this.finished ) {
+	if ( this.isFinished() ) {
 		throw new Error( 'TableNodeCellIterator has no more cells left.' );
 	}
 	this.nextCell( this );
-	if ( this.finished ) {
-		return null;
-	} else {
-		return this.cellNode;
-	}
+	return this.cellNode;
 };
 
 /**
@@ -151,14 +164,23 @@ ve.dm.TableNodeCellIterator.prototype.next = function () {
  * @fires newSection
  */
 ve.dm.TableNodeCellIterator.prototype.nextSection = function () {
-	this.sectionIndex++;
-	this.sectionNode = this.table.children[this.sectionIndex];
-	if ( !this.sectionNode ) {
+	// If there are no sections left, finish
+	if ( this.sectionIndex >= this.sectionCount ) {
 		this.finished = true;
-	} else if ( this.sectionNode instanceof ve.dm.TableSectionNode ) {
-		this.rowIndex = 0;
-		this.rowNode = this.sectionNode.children[0];
+		this.sectionNode = undefined;
+		return;
+	}
+	// Get the next node and make sure it's a section node (and not an alien node)
+	var sectionNode = this.table.children[this.sectionIndex];
+	this.sectionIndex++;
+	this.rowIndex = 0;
+	if ( sectionNode instanceof ve.dm.TableSectionNode ) {
+		this.sectionNode = sectionNode;
+		this.rowCount = this.sectionNode.children.length;
 		this.emit( 'newSection', this.sectionNode );
+	} else {
+		this.nextSection();
+		return;
 	}
 };
 
@@ -168,17 +190,25 @@ ve.dm.TableNodeCellIterator.prototype.nextSection = function () {
  * @fires newRow
  */
 ve.dm.TableNodeCellIterator.prototype.nextRow = function () {
-	this.rowIndex++;
-	if ( this.sectionNode ) {
-		this.rowNode = this.sectionNode.children[this.rowIndex];
-	}
-	while ( !this.rowNode && !this.finished ) {
+	// If there are no rows left, go to the next section
+	if ( this.rowIndex >= this.rowCount ) {
 		this.nextSection();
+		if ( this.isFinished() ) {
+			this.rowNode = undefined;
+			return;
+		}
 	}
-	if ( this.rowNode ) {
-		this.cellIndex = 0;
-		this.cellNode = this.rowNode.children[0];
+	// Get the next node and make sure it's a row node (and not an alien node)
+	var rowNode = this.sectionNode.children[this.rowIndex];
+	this.rowIndex++;
+	this.cellIndex = 0;
+	if ( rowNode instanceof ve.dm.TableRowNode ) {
+		this.rowNode = rowNode;
+		this.cellCount = this.rowNode.children.length;
 		this.emit( 'newRow', this.rowNode );
+	} else {
+		this.nextRow();
+		return;
 	}
 };
 
@@ -186,13 +216,24 @@ ve.dm.TableNodeCellIterator.prototype.nextRow = function () {
  * Move to the next table cell
  */
 ve.dm.TableNodeCellIterator.prototype.nextCell = function () {
-	if ( this.cellNode ) {
-		this.cellIndex++;
-		this.cellNode = this.rowNode.children[this.cellIndex];
+	// For the first read, sectionNode and rowNode will be empty
+	if ( !this.sectionNode ) {
+		this.nextSection();
 	}
-	// Step into the next row if there is no next cell or if the column is
-	// beyond the rectangle boundaries
-	while ( !this.cellNode && !this.finished ) {
+	if ( !this.rowNode ) {
 		this.nextRow();
 	}
+	// If there are no cells left, go to the next row
+	if ( this.cellIndex >= this.cellCount ) {
+		this.nextRow();
+		// If calling next row finished the iterator, clear and return
+		if ( this.isFinished() ) {
+			this.cellNode = undefined;
+			return;
+		}
+	}
+	// Get the next node and make sure it's a cell node (and not an alien node)
+	var cellNode = this.rowNode.children[this.cellIndex];
+	this.cellNode = cellNode instanceof ve.dm.TableCellNode ? cellNode : null;
+	this.cellIndex++;
 };

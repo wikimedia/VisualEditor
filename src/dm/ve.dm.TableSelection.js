@@ -291,16 +291,20 @@ ve.dm.TableSelection.prototype.newFromAdjustment = function ( fromColOffset, fro
 		while ( offset !== 0 ) {
 			if ( mode === 'col' ) {
 				col += dir;
+				if ( col >= matrix.getColCount( row ) || col < 0 ) {
+					// Out of bounds
+					break;
+				}
 			} else {
 				row += dir;
+				if ( row >= matrix.getRowCount() || row < 0 ) {
+					// Out of bounds
+					break;
+				}
 			}
 			nextCell = matrix.getCell( row, col );
-			// Out of bounds
-			if ( !nextCell ) {
-				break;
-			}
-			// Skip if same as current cell (i.e. merged cells)
-			if ( nextCell.equals( cell ) ) {
+			// Skip if same as current cell (i.e. merged cells), or null
+			if ( !nextCell || nextCell.equals( cell ) ) {
 				continue;
 			}
 			offset -= dir;

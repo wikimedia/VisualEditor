@@ -316,6 +316,9 @@ ve.ui.TableAction.prototype.insertRowOrCol = function ( tableNode, mode, index, 
 
 	for ( i = 0, l = cells.length; i < l; i++ ) {
 		cell = cells[i];
+		if ( !cell ) {
+			continue;
+		}
 		refCell = refCells[i];
 		// Detect if span update is necessary
 		if ( refCell && ( cell.isPlaceholder() || refCell.isPlaceholder() ) ) {
@@ -355,6 +358,9 @@ ve.ui.TableAction.prototype.insertRowOrCol = function ( tableNode, mode, index, 
 		// which we can use to get a proper insertion offset.
 		for ( i = 0; i < inserts.length; i++ ) {
 			cell = inserts[i];
+			if ( !cell ) {
+				continue;
+			}
 			// If the cell is a placeholder this will find a close cell node in the same row
 			refCell = matrix.findClosestCell( cell );
 			if ( refCell ) {
@@ -466,7 +472,9 @@ ve.ui.TableAction.prototype.deleteRowsOrColumns = function ( matrix, mode, minIn
 
 	for ( i = 0, l = cells.length; i < l; i++ ) {
 		cell = cells[i];
-
+		if ( !cell ) {
+			continue;
+		}
 		if ( cell.isPlaceholder() ) {
 			key = cell.owner.key;
 			if ( !adapted[key] ) {
