@@ -27,15 +27,6 @@ OO.inheritClass( ve.ui.Tool, OO.ui.Tool );
 /* Static Properties */
 
 /**
- * Selection types this tool requires.
- *
- * If the tool doesn't require a specific selection type, use null.
- *
- * @type {string[]|null}
- */
-ve.ui.Tool.static.requiresSelection = null;
-
-/**
  * Command to execute when tool is selected.
  *
  * @static
@@ -75,10 +66,8 @@ ve.ui.Tool.static.getCommandName = function () {
  * @param {Object} direction Context direction with 'inline' & 'block' properties
  */
 ve.ui.Tool.prototype.onUpdateState = function ( fragment ) {
-	this.setDisabled(
-		this.constructor.static.requiresSelection &&
-		ve.indexOf( fragment.getSelection().constructor.static.name, this.constructor.static.requiresSelection ) === -1
-	);
+	var command = this.getCommand();
+	this.setDisabled( fragment && command && !command.supportsSelection( fragment.getSelection() ) );
 };
 
 /**
@@ -97,7 +86,7 @@ ve.ui.Tool.prototype.onSelect = function () {
 /**
  * Get the command for this tool.
  *
- * @return {ve.ui.Command}
+ * @return {ve.ui.Command|undefined}
  */
 ve.ui.Tool.prototype.getCommand = function () {
 	return ve.ui.commandRegistry.lookup( this.constructor.static.commandName );
