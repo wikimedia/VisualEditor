@@ -124,7 +124,8 @@
 					"ve.ui.DebugBar",
 					"ve.ui.Action",
 					"ve.ui.Trigger",
-					"ve.ui.Command"
+					"ve.ui.Command",
+					"ve.ui.*FileDropHandler"
 				]
 			},
 			{

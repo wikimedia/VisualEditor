@@ -888,6 +888,8 @@ ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
 	var selectionJSON, dragSelection, dragRange, originFragment, originData,
 		targetRange, targetOffset, targetFragment, dragHtml, dragText,
 		htmlDoc, doc, data, pasteRules,
+		i, l, name, insert,
+		fileHandlers = [],
 		dataTransfer = e.originalEvent.dataTransfer,
 		$dropTarget = this.$lastDropTarget,
 		dropPosition = this.lastDropPosition;
@@ -913,6 +915,15 @@ ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
 		if ( dragSelection instanceof ve.dm.LinearSelection ) {
 			dragRange = dragSelection.getRange();
 		}
+	} else if ( dataTransfer.files.length ) {
+		for ( i = 0, l = dataTransfer.files.length; i < l; i++ ) {
+			name = ve.ui.fileDropHandlerFactory.getHandlerNameForType( dataTransfer.files[i].type );
+			if ( name ) {
+				fileHandlers.push(
+					ve.ui.fileDropHandlerFactory.create( name, this.surface, dataTransfer.files[i] )
+				);
+			}
+		}
 	} else {
 		try {
 			dragHtml = dataTransfer.getData( 'text/html' );
@@ -924,7 +935,7 @@ ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
 		}
 	}
 
-	if ( ( dragRange && !dragRange.isCollapsed() ) || dragHtml || dragText ) {
+	if ( ( dragRange && !dragRange.isCollapsed() ) || fileHandlers.length || dragHtml || dragText  ) {
 		if ( this.relocatingNode && !this.relocatingNode.getModel().isContent() ) {
 			// Block level drag and drop: use the lastDropTarget to get the targetOffset
 			if ( $dropTarget ) {
@@ -959,6 +970,13 @@ ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
 
 			// Re-insert data at new location
 			targetFragment.insertContent( originData );
+		} else if ( fileHandlers.length ) {
+			insert = function ( data ) {
+				targetFragment.collapseToEnd().insertContent( data );
+			};
+			for ( i = 0, l = fileHandlers.length; i < l; i++ ) {
+				fileHandlers[i].getInsertableData().done( insert );
+			}
 		} else if ( dragHtml ) {
 			pasteRules = this.getSurface().getPasteRules();
 			htmlDoc = ve.createDocumentFromHtml( dragHtml );
