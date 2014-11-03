@@ -156,6 +156,9 @@ ve.ce.FocusableNode.prototype.onFocusableMouseDown = function ( e ) {
 		selection = surfaceModel.getSelection(),
 		nodeRange = this.model.getOuterRange();
 
+	if ( !this.isInContentEditable() ) {
+		return;
+	}
 	// Wait for native selection to change before correcting
 	setTimeout( function () {
 		range = selection instanceof ve.dm.LinearSelection && selection.getRange();
@@ -176,6 +179,9 @@ ve.ce.FocusableNode.prototype.onFocusableMouseDown = function ( e ) {
  * @param {jQuery.Event} e Double click event
  */
 ve.ce.FocusableNode.prototype.onFocusableDblClick = function () {
+	if ( !this.isInContentEditable() ) {
+		return;
+	}
 	this.executeCommand();
 };
 
@@ -232,7 +238,7 @@ ve.ce.FocusableNode.prototype.onFocusableDragEnd = function () {
  * @param {jQuery.Event} e Mouse enter event
  */
 ve.ce.FocusableNode.prototype.onFocusableMouseEnter = function () {
-	if ( !this.root.getSurface().dragging && !this.root.getSurface().resizing ) {
+	if ( !this.root.getSurface().dragging && !this.root.getSurface().resizing && this.isInContentEditable() ) {
 		this.createHighlights();
 	}
 };
