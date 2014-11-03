@@ -62,6 +62,10 @@ body {
 	margin-right: 1em;
 }
 
+.ve-demo-menu-commands > .oo-ui-dropdownWidget {
+	width: 9em;
+}
+
 .ve-demo-menu .oo-ui-textInputWidget {
 	width: 4em;
 }
