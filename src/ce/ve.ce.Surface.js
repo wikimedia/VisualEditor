@@ -2905,7 +2905,13 @@ ve.ce.Surface.prototype.showSelection = function ( selection ) {
 			endRange = nativeRange.cloneRange();
 			endRange.collapse( false );
 			this.nativeSelection.addRange( endRange );
-			this.nativeSelection.extend( nativeRange.startContainer, nativeRange.startOffset );
+			try {
+				this.nativeSelection.extend( nativeRange.startContainer, nativeRange.startOffset );
+			} catch ( e ) {
+				// Firefox sometimes fails when nodes are different,
+				// see https://bugzilla.mozilla.org/show_bug.cgi?id=921444
+				this.nativeSelection.addRange( nativeRange );
+			}
 		} else {
 			this.nativeSelection.addRange( nativeRange );
 		}
