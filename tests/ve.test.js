@@ -22,8 +22,6 @@ QUnit.module( 've' );
 
 // ve.isEmptyObject: Tested upstream (jQuery)
 
-// ve.bind: Tested upstream (jQuery)
-
 // ve.indexOf: Tested upstream (jQuery)
 
 // ve.extendObject: Tested upstream (jQuery)

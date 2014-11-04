@@ -31,22 +31,14 @@ ve.ui.Toolbar = function VeUiToolbar( surface, options ) {
 	this.$surfaceView = null;
 	this.elementOffset = null;
 	this.windowEvents = {
-		// jQuery puts a guid on our prototype function when we use ve.bind,
-		// we don't want that because that means calling $window.off( toolbarB.windowEvents )
-		// will effectively also unbind toolbarA.windowEvents as they would share a guid.
-		// Though jQuery does not share the reference (both A and B have the correct context
-		// bound), it does unbind them. Use a regular closure instead.
-		resize: function () {
-			return toolbar.onWindowResize.apply( toolbar, arguments );
-		},
-		scroll: function () {
-			return toolbar.onWindowScroll.apply( toolbar, arguments );
-		}
+		// Must use Fuction#bind (or a closure) instead of direct reference
+		// because we need a unique function references for each Toolbar instance
+		// to avoid $window.off() from unbinding other toolbars' event handlers.
+		resize: toolbar.onWindowResize.bind( toolbar ),
+		scroll: toolbar.onWindowScroll.bind( toolbar )
 	};
 	this.surfaceViewEvents = {
-		keyup: function () {
-			return toolbar.onSurfaceViewKeyUp.apply( toolbar, arguments );
-		}
+		keyup: toolbar.onSurfaceViewKeyUp.bind( toolbar )
 	};
 	// Default directions
 	this.contextDirection = { inline: 'ltr', block: 'ltr' };

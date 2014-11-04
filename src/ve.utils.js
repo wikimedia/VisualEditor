@@ -91,27 +91,6 @@ ve.isPlainObject = $.isPlainObject;
 ve.isEmptyObject = $.isEmptyObject;
 
 /**
- * Wrapper for Function#bind.
- *
- * Create a function that calls the given function in a certain context.
- * If a function does not have an explicit context, it is determined at
- * execution time based on how it is invoked (e.g. object member, call/apply,
- * global scope, etc.).
- *
- * Performance optimization: <http://jsperf.com/function-bind-shim-perf>
- *
- * @method
- * @source <http://api.jquery.com/jQuery.proxy/>
- * @until ES5: Function#bind
- * @param {Function} func Function to bind
- * @param {Object} context Context for the function
- * @param {Mixed...} [args] Variadic list of arguments to prepend to arguments
- *  to the bound function
- * @returns {Function} The bound
- */
-ve.bind = $.proxy;
-
-/**
  * Wrapper for Array#indexOf.
  *
  * Values are compared without type coercion.
