@@ -89,6 +89,12 @@ ve.init.Target.static.toolbarGroups = [
 		promote: [ 'paragraph' ],
 		demote: [ 'preformatted' ]
 	},
+	// Basic style
+	{
+		header: OO.ui.deferMsg( 'visualeditor-toolbar-text-style' ),
+		title: OO.ui.deferMsg( 'visualeditor-toolbar-style-tooltip' ),
+		include: [ 'bold', 'italic' ]
+	},
 	// Style
 	{
 		header: OO.ui.deferMsg( 'visualeditor-toolbar-text-style' ),
@@ -97,7 +103,6 @@ ve.init.Target.static.toolbarGroups = [
 		icon: 'text-style',
 		title: OO.ui.deferMsg( 'visualeditor-toolbar-style-tooltip' ),
 		include: [ { group: 'textStyle' }, 'language', 'clear' ],
-		promote: [ 'bold', 'italic' ],
 		demote: [ 'strikethrough', 'code', 'underline', 'language', 'clear' ]
 	},
 	// Link
