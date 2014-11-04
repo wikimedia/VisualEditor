@@ -134,7 +134,7 @@ ve.ui.Toolbar.prototype.onSurfaceViewKeyUp = function () {
 		return null;
 	}
 
-	clientRect = surfaceView.getNativeRangeBoundingClientRect( nativeRange );
+	clientRect = RangeFix.getBoundingClientRect( nativeRange );
 	if ( !clientRect ) {
 		return;
 	}
