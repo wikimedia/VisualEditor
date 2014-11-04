@@ -262,7 +262,7 @@ ve.dm.TableSelection.prototype.getTableNode = function () {
 /**
  * Clone this selection with adjusted row and column positions
  *
- * Placholder cells are skipped over so this method can be used for cursoring.
+ * Placeholder cells are skipped over so this method can be used for cursoring.
  *
  * @param {number} fromColOffset Starting column offset
  * @param {number} fromRowOffset Starting row offset
