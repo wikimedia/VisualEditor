@@ -731,8 +731,10 @@ ve.dm.SurfaceFragment.prototype.insertContent = function ( content, annotate ) {
 	if ( content.length ) {
 		if ( annotate ) {
 			// TODO: Don't reach into properties of document
+			// FIXME: the logic we actually need for annotating inserted content correctly
+			// is MUCH more complicated
 			annotations = this.document.data
-				.getAnnotationsFromOffset( offset - 1 );
+				.getAnnotationsFromOffset( offset === 0 ? 0 : offset - 1 );
 			if ( annotations.getLength() > 0 ) {
 				ve.dm.Document.static.addAnnotationsToData( content, annotations );
 			}
