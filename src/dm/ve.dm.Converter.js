@@ -1475,7 +1475,11 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 
 				dataElementOrSlice = getDataElementOrSlice();
 				childDomElements = this.getDomElementsFromDataElement( dataElementOrSlice, doc );
-				if ( childDomElements ) {
+				if ( childDomElements && !childDomElements.length ) {
+					// Support toDomElements returning an empty array
+					i = findEndOfNode( i ) - 1;
+					continue;
+				} else if ( childDomElements ) {
 					// Add clone of internal data; we use a clone rather than a reference because
 					// we modify .veInternal.whitespace[1] in some cases
 					childDomElements[0].veInternal = ve.extendObject(
