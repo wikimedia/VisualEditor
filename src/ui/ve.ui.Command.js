@@ -13,13 +13,17 @@
  * @param {string} name Symbolic name for the command
  * @param {string} action Action to execute when command is triggered
  * @param {string} method Method to call on action when executing
- * @param {Mixed...} [data] Additional data to pass to the action when executing
+ * @param {Object} [options] Command options
+ * @param {string[]|null} [options.supportedSelections] List of supported selection types, or null for all
+ * @param {Array} [options.args] Additional arguments to pass to the action when executing
  */
-ve.ui.Command = function VeUiCommand( name, action, method ) {
+ve.ui.Command = function VeUiCommand( name, action, method, options ) {
+	options = options || {};
 	this.name = name;
 	this.action = action;
 	this.method = method;
-	this.data = Array.prototype.slice.call( arguments, 3 );
+	this.supportedSelections = options.supportedSelections || null;
+	this.args = options.args || [];
 };
 
 /* Methods */
@@ -31,7 +35,20 @@ ve.ui.Command = function VeUiCommand( name, action, method ) {
  * @returns {Mixed} Result of command execution.
  */
 ve.ui.Command.prototype.execute = function ( surface ) {
-	return surface.execute.apply( surface, [ this.action, this.method ].concat( this.data ) );
+	if ( this.supportsSelection( surface.getModel().getSelection() ) ) {
+		return surface.execute.apply( surface, [ this.action, this.method ].concat( this.args ) );
+	}
+};
+
+/**
+ * Check if this command supports a given selection
+ *
+ * @param {ve.dm.Selection} selection Selection
+ * @return {boolean} The command can execute on this selection
+ */
+ve.ui.Command.prototype.supportsSelection = function ( selection ) {
+	return !this.supportedSelections ||
+		ve.indexOf( selection.constructor.static.name, this.supportedSelections ) !== -1;
 };
 
 /**
@@ -62,10 +79,10 @@ ve.ui.Command.prototype.getName = function () {
 };
 
 /**
- * Get command data.
+ * Get command arguments.
  *
- * @returns {Array} data Additional data to pass to the action when executing
+ * @returns {Array} args Additional arguments to pass to the action when executing
  */
-ve.ui.Command.prototype.getData = function () {
-	return this.data;
+ve.ui.Command.prototype.getArgs = function () {
+	return this.args;
 };

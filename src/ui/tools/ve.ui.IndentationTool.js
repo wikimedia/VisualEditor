@@ -23,10 +23,6 @@ ve.ui.IndentationTool = function VeUiIndentationTool( toolGroup, config ) {
 
 OO.inheritClass( ve.ui.IndentationTool, ve.ui.Tool );
 
-/* Static Properties */
-
-ve.ui.IndentationTool.static.requiresSelection = [ 'linear' ];
-
 /* Methods */
 
 /**

@@ -40,8 +40,6 @@ OO.inheritClass( ve.ui.FormatTool, ve.ui.Tool );
  */
 ve.ui.FormatTool.static.format = null;
 
-ve.ui.FormatTool.static.requiresSelection = [ 'linear' ];
-
 /* Methods */
 
 /**
@@ -274,7 +272,6 @@ ve.ui.TableCellHeaderFormatTool.static.title =
 	OO.ui.deferMsg( 'visualeditor-table-format-header' );
 ve.ui.TableCellHeaderFormatTool.static.format = { type: 'tableCell', attributes: { style: 'header' } };
 ve.ui.TableCellHeaderFormatTool.static.commandName = 'tableCellHeader';
-ve.ui.TableCellHeaderFormatTool.static.requiresSelection = [ 'table' ];
 ve.ui.toolFactory.register( ve.ui.TableCellHeaderFormatTool );
 
 /**
@@ -296,5 +293,4 @@ ve.ui.TableCellDataFormatTool.static.title =
 	OO.ui.deferMsg( 'visualeditor-table-format-data' );
 ve.ui.TableCellDataFormatTool.static.format = { type: 'tableCell', attributes: { style: 'data' } };
 ve.ui.TableCellDataFormatTool.static.commandName = 'tableCellData';
-ve.ui.TableCellDataFormatTool.static.requiresSelection = [ 'table' ];
 ve.ui.toolFactory.register( ve.ui.TableCellDataFormatTool );

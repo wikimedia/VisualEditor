@@ -63,126 +63,241 @@ ve.ui.commandRegistry.register(
 	new ve.ui.Command( 'redo', 'history', 'redo' )
 );
 ve.ui.commandRegistry.register(
-	new ve.ui.Command( 'bold', 'annotation', 'toggle', 'textStyle/bold' )
+	new ve.ui.Command(
+		'bold', 'annotation', 'toggle',
+		{ args: ['textStyle/bold'], supportedSelections: ['linear', 'table'] }
+	)
 );
 ve.ui.commandRegistry.register(
-	new ve.ui.Command( 'italic', 'annotation', 'toggle', 'textStyle/italic' )
+	new ve.ui.Command(
+		'italic', 'annotation', 'toggle',
+		{ args: ['textStyle/italic'], supportedSelections: ['linear', 'table'] }
+	)
 );
 ve.ui.commandRegistry.register(
-	new ve.ui.Command( 'code', 'annotation', 'toggle', 'textStyle/code' )
+	new ve.ui.Command(
+		'code', 'annotation', 'toggle',
+		{ args: ['textStyle/code'], supportedSelections: ['linear', 'table'] }
+	)
 );
 ve.ui.commandRegistry.register(
-	new ve.ui.Command( 'strikethrough', 'annotation', 'toggle', 'textStyle/strikethrough' )
+	new ve.ui.Command(
+		'strikethrough', 'annotation', 'toggle',
+		{ args: ['textStyle/strikethrough'], supportedSelections: ['linear', 'table'] }
+	)
 );
 ve.ui.commandRegistry.register(
-	new ve.ui.Command( 'underline', 'annotation', 'toggle', 'textStyle/underline' )
+	new ve.ui.Command(
+		'underline', 'annotation', 'toggle',
+		{ args: ['textStyle/underline'], supportedSelections: ['linear', 'table'] }
+	)
 );
 ve.ui.commandRegistry.register(
-	new ve.ui.Command( 'subscript', 'annotation', 'toggle', 'textStyle/subscript' )
+	new ve.ui.Command(
+		'subscript', 'annotation', 'toggle',
+		{ args: ['textStyle/subscript'], supportedSelections: ['linear', 'table'] }
+	)
 );
 ve.ui.commandRegistry.register(
-	new ve.ui.Command( 'superscript', 'annotation', 'toggle', 'textStyle/superscript' )
+	new ve.ui.Command(
+		'superscript', 'annotation', 'toggle',
+		{ args: ['textStyle/superscript'], supportedSelections: ['linear', 'table'] }
+	)
 );
 ve.ui.commandRegistry.register(
-	new ve.ui.Command( 'link', 'window', 'open', 'link' )
+	new ve.ui.Command(
+		'link', 'window', 'open',
+		{ args: ['link'], supportedSelections: ['linear'] }
+	)
 );
 ve.ui.commandRegistry.register(
-	new ve.ui.Command( 'specialcharacter', 'window', 'open', 'specialcharacter' )
+	new ve.ui.Command(
+		'specialcharacter', 'window', 'open',
+		{ args: ['specialcharacter'], supportedSelections: ['linear'] }
+	)
 );
 ve.ui.commandRegistry.register(
-	new ve.ui.Command( 'clear', 'annotation', 'clearAll' )
+	new ve.ui.Command(
+		'clear', 'annotation', 'clearAll',
+		{ supportedSelections: ['linear', 'table'] }
+	)
 );
 ve.ui.commandRegistry.register(
-	new ve.ui.Command( 'indent', 'indentation', 'increase' )
+	new ve.ui.Command(
+		'indent', 'indentation', 'increase',
+		{ supportedSelections: ['linear'] }
+	)
 );
 ve.ui.commandRegistry.register(
-	new ve.ui.Command( 'outdent', 'indentation', 'decrease' )
+	new ve.ui.Command(
+		'outdent', 'indentation', 'decrease',
+		{ supportedSelections: ['linear'] }
+	)
 );
 ve.ui.commandRegistry.register(
-	new ve.ui.Command( 'number', 'list', 'toggle', 'number' )
+	new ve.ui.Command(
+		'number', 'list', 'toggle',
+		{ args: ['number'], supportedSelections: ['linear'] }
+	)
 );
 ve.ui.commandRegistry.register(
-	new ve.ui.Command( 'bullet', 'list', 'toggle', 'bullet' )
+	new ve.ui.Command(
+		'bullet', 'list', 'toggle',
+		{ args: ['bullet'], supportedSelections: ['linear'] }
+	)
 );
 ve.ui.commandRegistry.register(
-	new ve.ui.Command( 'commandHelp', 'window', 'open', 'commandHelp' )
+	new ve.ui.Command(
+		'commandHelp', 'window', 'open', { args: ['commandHelp'] }
+	)
 );
 ve.ui.commandRegistry.register(
-	new ve.ui.Command( 'code', 'annotation', 'toggle', 'textStyle/code' )
+	new ve.ui.Command(
+		'code', 'annotation', 'toggle',
+		{ args: ['textStyle/code'], supportedSelections: ['linear', 'table'] }
+	)
 );
 ve.ui.commandRegistry.register(
-	new ve.ui.Command( 'strikethrough', 'annotation', 'toggle', 'textStyle/strikethrough' )
+	new ve.ui.Command(
+		'strikethrough', 'annotation', 'toggle',
+		{ args: ['textStyle/strikethrough'], supportedSelections: ['linear', 'table'] }
+	)
 );
 ve.ui.commandRegistry.register(
-	new ve.ui.Command( 'language', 'window', 'open', 'language' )
+	new ve.ui.Command(
+		'language', 'window', 'open',
+		{ args: ['language'], supportedSelections: ['linear'] }
+	)
 );
 ve.ui.commandRegistry.register(
-	new ve.ui.Command( 'paragraph', 'format', 'convert', 'paragraph' )
+	new ve.ui.Command(
+		'paragraph', 'format', 'convert',
+		{ args: ['paragraph'], supportedSelections: ['linear'] }
+	)
 );
 ve.ui.commandRegistry.register(
-	new ve.ui.Command( 'heading1', 'format', 'convert', 'heading', { level: 1 } )
+	new ve.ui.Command(
+		'heading1', 'format', 'convert',
+		{ args: ['heading', { level: 1 } ], supportedSelections: ['linear'] }
+	)
 );
 ve.ui.commandRegistry.register(
-	new ve.ui.Command( 'heading2', 'format', 'convert', 'heading', { level: 2 } )
+	new ve.ui.Command(
+		'heading2', 'format', 'convert',
+		{ args: ['heading', { level: 2 } ], supportedSelections: ['linear'] }
+	)
 );
 ve.ui.commandRegistry.register(
-	new ve.ui.Command( 'heading3', 'format', 'convert', 'heading', { level: 3 } )
+	new ve.ui.Command(
+		'heading3', 'format', 'convert',
+		{ args: ['heading', { level: 3 } ], supportedSelections: ['linear'] }
+	)
 );
 ve.ui.commandRegistry.register(
-	new ve.ui.Command( 'heading4', 'format', 'convert', 'heading', { level: 4 } )
+	new ve.ui.Command(
+		'heading4', 'format', 'convert',
+		{ args: ['heading', { level: 4 } ], supportedSelections: ['linear'] }
+	)
 );
 ve.ui.commandRegistry.register(
-	new ve.ui.Command( 'heading5', 'format', 'convert', 'heading', { level: 5 } )
+	new ve.ui.Command(
+		'heading5', 'format', 'convert',
+		{ args: ['heading', { level: 5 } ], supportedSelections: ['linear'] }
+	)
 );
 ve.ui.commandRegistry.register(
-	new ve.ui.Command( 'heading6', 'format', 'convert', 'heading', { level: 6 } )
+	new ve.ui.Command(
+		'heading6', 'format', 'convert',
+		{ args: ['heading', { level: 6 } ], supportedSelections: ['linear'] }
+	)
 );
 ve.ui.commandRegistry.register(
-	new ve.ui.Command( 'preformatted', 'format', 'convert', 'preformatted' )
+	new ve.ui.Command(
+		'preformatted', 'format', 'convert',
+		{ args: ['preformatted'], supportedSelections: ['linear'] }
+	)
 );
 ve.ui.commandRegistry.register(
-	new ve.ui.Command( 'pasteSpecial', 'content', 'pasteSpecial' )
+	new ve.ui.Command(
+		'pasteSpecial', 'content',
+		{ args: ['pasteSpecial'], supportedSelections: ['linear', 'table'] }
+	)
 );
 ve.ui.commandRegistry.register(
-	new ve.ui.Command( 'comment', 'window', 'open', 'comment' )
+	new ve.ui.Command(
+		'comment', 'window', 'open',
+		{ args: ['comment'], supportedSelections: ['linear'] }
+	)
 );
 ve.ui.commandRegistry.register(
-	new ve.ui.Command( 'insertTable', 'table', 'create', {
-		header: true,
-		rows: 3,
-		cols: 4
-	} )
+	new ve.ui.Command(
+		'insertTable', 'table', 'create',
+		{
+			args: [ {
+				header: true,
+				rows: 3,
+				cols: 4
+			} ],
+			supportedSelections: ['linear']
+		}
+	)
 );
 ve.ui.commandRegistry.register(
-	new ve.ui.Command( 'deleteTable', 'table', 'delete', 'table' )
+	new ve.ui.Command(
+		'deleteTable', 'table', 'delete',
+		{ args: ['table'], supportedSelections: ['table'] }
+	)
 );
 ve.ui.commandRegistry.register(
-	new ve.ui.Command( 'insertRowBefore', 'table', 'insert', 'row', 'before' )
+	new ve.ui.Command(
+		'insertRowBefore', 'table', 'insert',
+		{ args: ['row', 'before'], supportedSelections: ['table'] }
+	)
 );
 ve.ui.commandRegistry.register(
-	new ve.ui.Command( 'insertRowAfter', 'table', 'insert', 'row', 'after' )
+	new ve.ui.Command(
+		'insertRowAfter', 'table', 'insert',
+		{ args: ['row', 'after'], supportedSelections: ['table'] }
+	)
 );
 ve.ui.commandRegistry.register(
-	new ve.ui.Command( 'deleteRow', 'table', 'delete', 'row' )
+	new ve.ui.Command(
+		'deleteRow', 'table', 'delete',
+		{ args: ['row'], supportedSelections: ['table'] }
+	)
 );
 ve.ui.commandRegistry.register(
-	new ve.ui.Command( 'insertColumnBefore', 'table', 'insert', 'col', 'before' )
+	new ve.ui.Command(
+		'insertColumnBefore', 'table', 'insert',
+		{ args: ['col', 'before'], supportedSelections: ['table'] }
+	)
 );
 ve.ui.commandRegistry.register(
-	new ve.ui.Command( 'insertColumnAfter', 'table', 'insert', 'col', 'after' )
+	new ve.ui.Command(
+		'insertColumnAfter', 'table', 'insert',
+		{ args: ['col', 'after'], supportedSelections: ['table'] }
+	)
 );
 ve.ui.commandRegistry.register(
-	new ve.ui.Command( 'deleteColumn', 'table', 'delete', 'col' )
+	new ve.ui.Command( 'deleteColumn', 'table', 'delete',
+		{  args: ['col'], supportedSelections: ['table'] }
+	)
 );
 ve.ui.commandRegistry.register(
-	new ve.ui.Command( 'tableCellHeader', 'table', 'changeCellStyle', 'header' )
+	new ve.ui.Command(
+		'tableCellHeader', 'table', 'changeCellStyle',
+		{ args: ['header'], supportedSelections: ['table'] }
+	)
 );
 ve.ui.commandRegistry.register(
-	new ve.ui.Command( 'tableCellData', 'table', 'changeCellStyle', 'data' )
+	new ve.ui.Command(
+		'tableCellData', 'table', 'changeCellStyle',
+		{ args: ['data'], supportedSelections: ['table'] }
+	)
 );
 ve.ui.commandRegistry.register(
-	new ve.ui.Command( 'mergeCells', 'table', 'mergeCells' )
+	new ve.ui.Command( 'mergeCells', 'table', 'mergeCells', { supportedSelections: ['table'] } )
 );
 ve.ui.commandRegistry.register(
-	new ve.ui.Command( 'tableCaption', 'table', 'caption' )
+	new ve.ui.Command( 'tableCaption', 'table', 'caption', { supportedSelections: ['table'] } )
 );

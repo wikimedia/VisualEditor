@@ -36,8 +36,6 @@ ve.ui.ClearAnnotationTool.static.icon = 'clear';
 ve.ui.ClearAnnotationTool.static.title =
 	OO.ui.deferMsg( 'visualeditor-clearbutton-tooltip' );
 
-ve.ui.ClearAnnotationTool.static.requiresSelection = [ 'linear', 'table' ];
-
 ve.ui.ClearAnnotationTool.static.commandName = 'clear';
 
 /* Methods */

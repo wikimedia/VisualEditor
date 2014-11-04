@@ -38,8 +38,6 @@ OO.inheritClass( ve.ui.ListTool, ve.ui.Tool );
  */
 ve.ui.ListTool.static.style = '';
 
-ve.ui.ListTool.static.requiresSelection = [ 'linear' ];
-
 ve.ui.ListTool.static.deactivateOnSelect = false;
 
 /* Methods */
