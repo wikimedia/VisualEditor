@@ -229,9 +229,13 @@ ve.ui.Context.prototype.hasInspector = function () {
  */
 ve.ui.Context.prototype.getAvailableTools = function () {
 	if ( !this.availableTools ) {
-		this.availableTools = ve.ui.toolFactory.getToolsForFragment(
-			this.surface.getModel().getFragment()
-		);
+		if ( this.surface.getModel().getSelection() instanceof ve.dm.LinearSelection ) {
+			this.availableTools = ve.ui.toolFactory.getToolsForFragment(
+				this.surface.getModel().getFragment()
+			);
+		} else {
+			this.availableTools = [];
+		}
 	}
 	return this.availableTools;
 };
