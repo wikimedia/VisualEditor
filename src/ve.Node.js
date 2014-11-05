@@ -63,6 +63,28 @@ ve.Node.prototype.getParentNodeTypes = function () {
 };
 
 /**
+ * Check if the specified type is an allowed child node type
+ *
+ * @param {string} type Node type
+ * @return {boolean} The type is allowed
+ */
+ve.Node.prototype.isAllowedChildNodeType = function ( type ) {
+	var childTypes = this.getChildNodeTypes();
+	return childTypes === null || ve.indexOf( type, childTypes ) !== -1;
+};
+
+/**
+ * Check if the specified type is an allowed child node type
+ *
+ * @param {string} type Node type
+ * @return {boolean} The type is allowed
+ */
+ve.Node.prototype.isAllowedParentNodeType = function ( type ) {
+	var parentTypes = this.getParentNodeTypes();
+	return parentTypes === null || ve.indexOf( type, parentTypes ) !== -1;
+};
+
+/**
  * Get suggested parent node types.
  *
  * @method
