@@ -100,7 +100,7 @@ ve.dm.TableCellNode.static.createData = function ( options ) {
 				style: options.style || 'data'
 			}
 		},
-		{ type: 'paragraph' },
+		{ type: 'paragraph', internal: { generated: 'wrapper' } },
 		{ type: '/paragraph' },
 		{ type: '/tableCell' }
 	];
