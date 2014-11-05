@@ -154,9 +154,7 @@ $( function () {
 						sourceTextInput.setValue( html ).adjustSize();
 						sourceTextInput.$element.hide();
 
-						sourceTextInput.$element.slideDown().promise().done( function () {
-							sourceTextInput.focus();
-						} );
+						sourceTextInput.$element.slideDown();
 						if ( ve.debug ) {
 							currentTarget.debugBar.$element.remove();
 						}
