@@ -817,14 +817,16 @@ ve.ce.Surface.prototype.onDocumentDragOver = function ( e ) {
 	if ( !this.relocatingNode ) {
 		return;
 	}
-	var $target, $dropTarget, node, dropPosition;
-	if ( !this.relocatingNode.getModel().isContent() ) {
+	var $target, $dropTarget, node, dropPosition, nodeType;
+
+	if ( !this.relocatingNode.isContent() ) {
 		e.preventDefault();
 		$target = $( e.target ).closest( '.ve-ce-branchNode, .ve-ce-leafNode' );
 		if ( $target.length ) {
-			// Find the nearest non-content, non-document node
+			// Find the nearest node which will accept this node type
+			nodeType = this.relocatingNode.getType();
 			node = $target.data( 'view' );
-			while ( node.parent !== null && node.getModel().isContent() ) {
+			while ( node.parent && !node.parent.isAllowedChildNodeType( nodeType ) ) {
 				node = node.parent;
 			}
 			if ( node.parent ) {
