@@ -287,50 +287,35 @@ ve.dm.Node.prototype.getClonedElement = function () {
 };
 
 /**
- * Get allowed child node types.
- *
- * @method
- * @returns {string[]|null} List of node types allowed as children or null if any type is allowed
+ * @inheritdoc ve.Node
  */
 ve.dm.Node.prototype.getChildNodeTypes = function () {
 	return this.constructor.static.childNodeTypes;
 };
 
 /**
- * Get allowed parent node types.
- *
- * @method
- * @returns {string[]|null} List of node types allowed as parents or null if any type is allowed
+ * @inheritdoc ve.Node
  */
 ve.dm.Node.prototype.getParentNodeTypes = function () {
 	return this.constructor.static.parentNodeTypes;
 };
 
 /**
- * Get suggested parent node types.
- *
- * @method
- * @returns {string[]|null} List of node types suggested as parents or null if any type is suggested
+ * @inheritdoc ve.Node
  */
 ve.dm.Node.prototype.getSuggestedParentNodeTypes = function () {
 	return this.constructor.static.suggestedParentNodeTypes;
 };
 
 /**
- * Check if the node can have children.
- *
- * @method
- * @returns {boolean} Node can have children
+ * @inheritdoc ve.Node
  */
 ve.dm.Node.prototype.canHaveChildren = function () {
 	return ve.dm.nodeFactory.canNodeHaveChildren( this.type );
 };
 
 /**
- * Check if the node can have children but not content nor be content.
- *
- * @method
- * @returns {boolean} Node can have children but not content nor be content
+ * @inheritdoc ve.Node
  */
 ve.dm.Node.prototype.canHaveChildrenNotContent = function () {
 	return ve.dm.nodeFactory.canNodeHaveChildrenNotContent( this.type );
@@ -347,40 +332,28 @@ ve.dm.Node.prototype.isInternal = function () {
 };
 
 /**
- * Check if the node has a wrapped element in the document data.
- *
- * @method
- * @returns {boolean} Node represents a wrapped element
+ * @inheritdoc ve.Node
  */
 ve.dm.Node.prototype.isWrapped = function () {
 	return this.constructor.static.isWrapped;
 };
 
 /**
- * Check if the node can contain content.
- *
- * @method
- * @returns {boolean} Node can contain content
+ * @inheritdoc ve.Node
  */
 ve.dm.Node.prototype.canContainContent = function () {
 	return this.constructor.static.canContainContent;
 };
 
 /**
- * Check if the node is content.
- *
- * @method
- * @returns {boolean} Node is content
+ * @inheritdoc ve.Node
  */
 ve.dm.Node.prototype.isContent = function () {
 	return this.constructor.static.isContent;
 };
 
 /**
- * Check if the node is focusable.
- *
- * @method
- * @returns {boolean} Node is focusable
+ * @inheritdoc ve.Node
  */
 ve.dm.Node.prototype.isFocusable = function () {
 	return this.constructor.static.isFocusable;
@@ -469,37 +442,10 @@ ve.dm.Node.prototype.matches = function ( type, attributes ) {
 };
 
 /**
- * Get the length of the node.
- *
- * @method
- * @returns {number} Length of the node's contents
+ * @inheritdoc ve.Node
  */
 ve.dm.Node.prototype.getLength = function () {
 	return this.length;
-};
-
-/**
- * Get the outer length of the node, which includes wrappers if present.
- *
- * @method
- * @returns {number} Length of the entire node
- */
-ve.dm.Node.prototype.getOuterLength = function () {
-	return this.length + ( this.isWrapped() ? 2 : 0 );
-};
-
-/**
- * Get the range inside the node.
- *
- * @method
- * @returns {ve.Range} Inner node range
- */
-ve.dm.Node.prototype.getRange = function () {
-	var offset = this.getOffset();
-	if ( this.isWrapped() ) {
-		offset++;
-	}
-	return new ve.Range( offset, offset + this.length );
 };
 
 /**
@@ -548,13 +494,7 @@ ve.dm.Node.prototype.adjustLength = function ( adjustment ) {
 };
 
 /**
- * Get the offset of the node within the document.
- *
- * If the node has no parent than the result will always be 0.
- *
- * @method
- * @returns {number} Offset of node
- * @throws {Error} Node not found in parent's children array
+ * @inheritdoc ve.Node
  */
 ve.dm.Node.prototype.getOffset = function () {
 	var i, len, siblings, offset;

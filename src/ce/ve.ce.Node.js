@@ -72,77 +72,56 @@ ve.ce.Node.static.getDescription = function () {
 /* Methods */
 
 /**
- * Get allowed child node types.
- *
- * This method passes through to the model.
- *
- * @returns {string[]|null} List of node types allowed as children or null if any type is allowed
+ * @inheritdoc ve.Node
  */
 ve.ce.Node.prototype.getChildNodeTypes = function () {
 	return this.model.getChildNodeTypes();
 };
 
 /**
- * Get allowed parent node types.
- *
- * This method passes through to the model.
- *
- * @returns {string[]|null} List of node types allowed as parents or null if any type is allowed
+ * @inheritdoc ve.Node
  */
 ve.ce.Node.prototype.getParentNodeTypes = function () {
 	return this.model.getParentNodeTypes();
 };
 
 /**
- * Check if the node can have children.
- *
- * This method passes through to the model.
- *
- * @returns {boolean} Model node can have children
+ * @inheritdoc ve.Node
+ */
+ve.ce.Node.prototype.getSuggestedParentNodeTypes = function () {
+	return this.model.getSuggestedParentNodeTypes();
+};
+
+/**
+ * @inheritdoc ve.Node
  */
 ve.ce.Node.prototype.canHaveChildren = function () {
 	return this.model.canHaveChildren();
 };
 
 /**
- * Check if the node can have children but not content nor be content.
- *
- * This method passes through to the model.
- *
- * @returns {boolean} Model node can have children but not content nor be content
+ * @inheritdoc ve.Node
  */
 ve.ce.Node.prototype.canHaveChildrenNotContent = function () {
 	return this.model.canHaveChildrenNotContent();
 };
 
 /**
- * Check if the node has a wrapped element in the document data.
- *
- * This method passes through to the model.
- *
- * @returns {boolean} Model node is a wrapped element
+ * @inheritdoc ve.Node
  */
 ve.ce.Node.prototype.isWrapped = function () {
 	return this.model.isWrapped();
 };
 
 /**
- * Check if the node can contain content.
- *
- * This method passes through to the model.
- *
- * @returns {boolean} Node can contain content
+ * @inheritdoc ve.Node
  */
 ve.ce.Node.prototype.canContainContent = function () {
 	return this.model.canContainContent();
 };
 
 /**
- * Check if the node is content.
- *
- * This method passes through to the model.
- *
- * @returns {boolean} Node is content
+ * @inheritdoc ve.Node
  */
 ve.ce.Node.prototype.isContent = function () {
 	return this.model.isContent();
@@ -160,48 +139,33 @@ ve.ce.Node.prototype.handlesOwnChildren = function () {
 };
 
 /**
- * Check if the node is focusable
+ * @inheritdoc ve.Node
  *
- * This method passes through to the model.
- *
- * If this is set to true on a node, it should implement:
+ * If this is set to true it should implement:
  *
  *     setFocused( boolean val )
  *     boolean isFocused()
- *
- * @returns {boolean} Node is focusable
  */
 ve.ce.Node.prototype.isFocusable = function () {
 	return this.model.isFocusable();
 };
 
 /**
- * Get the length of the node.
- *
- * This method passes through to the model.
- *
- * @returns {number} Model length
+ * @inheritdoc ve.Node
  */
 ve.ce.Node.prototype.getLength = function () {
 	return this.model.getLength();
 };
 
 /**
- * Get the outer length of the node, which includes wrappers if present.
- *
- * This method passes through to the model.
- *
- * @returns {number} Model outer length
+ * @inheritdoc ve.Node
  */
 ve.ce.Node.prototype.getOuterLength = function () {
 	return this.model.getOuterLength();
 };
 
 /**
- * Get the offset of the node.
- *
- * @see ve.dm.Node#getOffset
- * @returns {number} Offset
+ * @inheritdoc ve.Node
  */
 ve.ce.Node.prototype.getOffset = function () {
 	return this.model.getOffset();
