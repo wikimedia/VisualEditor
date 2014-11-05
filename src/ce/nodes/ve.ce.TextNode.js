@@ -93,7 +93,7 @@ ve.ce.TextNode.prototype.getAnnotatedHtml = function () {
 			}
 
 			// Show meaningful whitespace characters
-			if ( chr in whitespaceHtmlChars ) {
+			if ( Object.prototype.hasOwnProperty.call( whitespaceHtmlChars, chr ) ) {
 				setChar( whitespaceHtmlChars[chr], i, data );
 			}
 		}

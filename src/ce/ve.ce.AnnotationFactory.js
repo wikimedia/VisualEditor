@@ -31,7 +31,7 @@ OO.inheritClass( ve.ce.AnnotationFactory, OO.Factory );
  */
 ve.ce.AnnotationFactory.prototype.getDescription = function ( annotation ) {
 	var type = annotation.constructor.static.name;
-	if ( type in this.registry ) {
+	if ( Object.prototype.hasOwnProperty.call( this.registry, type ) ) {
 		return this.registry[type].static.getDescription( annotation );
 	}
 	throw new Error( 'Unknown annotation type: ' + type );
@@ -43,7 +43,7 @@ ve.ce.AnnotationFactory.prototype.getDescription = function ( annotation ) {
  * @returns {boolean} Whether the annotation needs to force continuation
  */
 ve.ce.AnnotationFactory.prototype.isAnnotationContinuationForced = function ( type ) {
-	if ( type in this.registry ) {
+	if ( Object.prototype.hasOwnProperty.call( this.registry, type ) ) {
 		return this.registry[type].static.forceContinuation;
 	}
 	return false;

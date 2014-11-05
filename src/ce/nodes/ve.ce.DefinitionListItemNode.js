@@ -45,7 +45,7 @@ ve.ce.DefinitionListItemNode.prototype.getTagName = function () {
 	var style = this.model.getAttribute( 'style' ),
 		types = { definition: 'dd', term: 'dt' };
 
-	if ( !( style in types ) ) {
+	if ( !Object.prototype.hasOwnProperty.call( types, style ) ) {
 		throw new Error( 'Invalid style' );
 	}
 	return types[style];

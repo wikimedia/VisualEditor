@@ -60,7 +60,7 @@ ve.dm.TransactionProcessor.prototype.nextOperation = function () {
  * @throws {Error} Operation type is not supported
  */
 ve.dm.TransactionProcessor.prototype.executeOperation = function ( op ) {
-	if ( op.type in ve.dm.TransactionProcessor.processors ) {
+	if ( Object.prototype.hasOwnProperty.call( ve.dm.TransactionProcessor.processors, op.type ) ) {
 		ve.dm.TransactionProcessor.processors[op.type].call( this, op );
 	} else {
 		throw new Error( 'Invalid operation error. Operation type is not supported: ' + op.type );

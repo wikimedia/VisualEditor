@@ -52,7 +52,7 @@ ve.dm.ClassAttributeNode.static.setClassAttributes = function ( attributes, clas
 
 	for ( i = 0, l = classNames.length; i < l; i++ ) {
 		className = classNames[i];
-		if ( className in this.classAttributes ) {
+		if ( Object.prototype.hasOwnProperty.call( this.classAttributes, className ) ) {
 			attributes = ve.extendObject( attributes, this.classAttributes[className] );
 		} else {
 			unrecognizedClasses.push( className );

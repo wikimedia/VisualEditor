@@ -143,7 +143,7 @@ ve.dm.IndexValueStore.prototype.clone = function () {
 ve.dm.IndexValueStore.prototype.merge = function ( other ) {
 	var key, index, mapping = {};
 	for ( key in other.hashStore ) {
-		if ( !( key in this.hashStore ) ) {
+		if ( !Object.prototype.hasOwnProperty.call( this.hashStore, key ) ) {
 			index = this.valueStore.push( other.valueStore[other.hashStore[key]] ) - 1;
 			this.hashStore[key] = index;
 		}

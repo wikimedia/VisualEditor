@@ -70,7 +70,7 @@ ve.ce.TableCellNode.prototype.getTagName = function () {
 	var style = this.model.getAttribute( 'style' ),
 		types = { data: 'td', header: 'th' };
 
-	if ( !( style in types ) ) {
+	if ( !Object.prototype.hasOwnProperty.call( types, style ) ) {
 		throw new Error( 'Invalid style' );
 	}
 	return types[style];
