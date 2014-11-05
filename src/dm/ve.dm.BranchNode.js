@@ -156,13 +156,11 @@ ve.dm.BranchNode.prototype.splice = function () {
  */
 ve.dm.BranchNode.prototype.setupSlugs = function () {
 	var i, len,
-		isBlock = this.canHaveChildrenNotContent(),
-		childTypes = this.getChildNodeTypes(),
-		canContainParagraph = childTypes === null || ve.indexOf( 'paragraph', childTypes ) !== -1;
+		isBlock = this.canHaveChildrenNotContent();
 
 	this.slugPositions = {};
 
-	if ( isBlock && !canContainParagraph ) {
+	if ( isBlock && !this.isAllowedChildNodeType( 'paragraph' ) ) {
 		// Don't put slugs in nodes which can't contain paragraphs
 		return;
 	}
