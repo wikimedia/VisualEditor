@@ -48,6 +48,8 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 	this.pasteRules = {};
 	this.enabled = true;
 	this.context = this.createContext();
+	this.progresses = [];
+	this.showProgressDebounced = ve.debounce( this.showProgress.bind( this ) );
 	this.filibuster = null;
 
 	// Events
@@ -378,6 +380,35 @@ ve.ui.Surface.prototype.addCommands = function ( names ) {
 		this.triggers[names[i]] = triggers;
 		this.emit( 'addCommand', names[i], command, triggers );
 	}
+};
+
+/**
+ * Create a progress bar in the progres dialog
+ *
+ * @param {jQuery.Promise} progressCompletePromise Promise which resolves when the progress action is complete
+ * @param {jQuery|string|Function} label Progress bar label
+ * @return {jQuery.Promise} Promise which resolves with a progress bar widget and a promise which fails if cancelled
+ */
+ve.ui.Surface.prototype.createProgress = function ( progressCompletePromise, label ) {
+	var progressBarDeferred = $.Deferred();
+
+	this.progresses.push( {
+		label: label,
+		progressCompletePromise: progressCompletePromise,
+		progressBarDeferred: progressBarDeferred
+	} );
+
+	this.showProgressDebounced();
+
+	return progressBarDeferred.promise();
+};
+
+ve.ui.Surface.prototype.showProgress = function () {
+	var dialogs = this.dialogs,
+		progresses = this.progresses;
+
+	dialogs.openWindow( 'progress', { progresses: progresses } );
+	this.progresses = [];
 };
 
 /**

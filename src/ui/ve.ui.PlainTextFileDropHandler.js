@@ -35,7 +35,19 @@ ve.ui.PlainTextFileDropHandler.static.types = ['text/plain'];
  * @inheritdoc
  */
 ve.ui.PlainTextFileDropHandler.prototype.process = function () {
+	this.createProgress( this.insertableDataDeferred.promise() );
 	this.reader.readAsText( this.file );
+};
+
+/**
+ * @inheritdoc
+ */
+ve.ui.PlainTextFileDropHandler.prototype.onFileProgress = function ( e ) {
+	if ( e.lengthComputable ) {
+		this.setProgress( 100 * e.loaded / e.total );
+	} else {
+		this.setProgress( false );
+	}
 };
 
 /**
@@ -54,6 +66,7 @@ ve.ui.PlainTextFileDropHandler.prototype.onFileLoad = function () {
 		}
 	}
 	this.insertableDataDeferred.resolve( data );
+	this.setProgress( 100 );
 };
 
 /**
@@ -63,6 +76,16 @@ ve.ui.PlainTextFileDropHandler.prototype.onFileLoadEnd = function () {
 	// 'loadend' fires after 'load'/'abort'/'error'.
 	// Reject the deferred if it hasn't already resolved.
 	this.insertableDataDeferred.reject();
+};
+
+/**
+ * @inheritdoc
+ */
+ve.ui.PlainTextFileDropHandler.prototype.abort = function () {
+	// Parent method
+	ve.ui.PlainTextFileDropHandler.super.prototype.abort.call( this );
+
+	this.reader.abort();
 };
 
 /* Registration */
