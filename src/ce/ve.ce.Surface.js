@@ -80,6 +80,7 @@ ve.ce.Surface = function VeCeSurface( model, ui, options ) {
 	this.surfaceObserver.connect( this, {
 		contentChange: 'onSurfaceObserverContentChange',
 		rangeChange: 'onSurfaceObserverRangeChange',
+		branchNodeChange: 'onSurfaceObserverBranchNodeChange',
 		slugEnter: 'onSurfaceObserverSlugEnter'
 	} );
 	this.model.connect( this, {
@@ -2010,6 +2011,21 @@ ve.ce.Surface.prototype.renderSelectedContentBranchNode = function () {
 		return false;
 	}
 	return ceNode.renderContents();
+};
+
+/**
+ * Handle branch node change events.
+ *
+ * @see ve.ce.SurfaceObserver#pollOnce
+ *
+ * @method
+ * @param {ve.ce.BranchNode} oldBranchNode Node from which the range anchor has just moved
+ * @param {ve.ce.BranchNode} newBranchNode Node into which the range anchor has just moved
+ */
+ve.ce.Surface.prototype.onSurfaceObserverBranchNodeChange = function ( oldBranchNode ) {
+	if ( oldBranchNode instanceof ve.ce.ContentBranchNode ) {
+		oldBranchNode.renderContents();
+	}
 };
 
 /**
