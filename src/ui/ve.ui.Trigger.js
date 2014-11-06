@@ -40,11 +40,11 @@ ve.ui.Trigger = function VeUiTrigger( e, allowInvalidPrimary ) {
 		for ( i = 0, len = parts.length; i < len; i++ ) {
 			key = parts[i];
 			// Resolve key aliases
-			if ( key in keyAliases ) {
+			if ( Object.prototype.hasOwnProperty.call( keyAliases, key ) ) {
 				key = keyAliases[key];
 			}
 			// Apply key to trigger
-			if ( key in this.modifiers ) {
+			if ( Object.prototype.hasOwnProperty.call( this.modifiers, key ) ) {
 				// Modifier key
 				this.modifiers[key] = true;
 			} else if ( primaryKeys.indexOf( key ) !== -1 || allowInvalidPrimary ) {
@@ -388,7 +388,7 @@ ve.ui.Trigger.prototype.getMessage = function () {
 		platform = ve.getSystemPlatform();
 
 	keys = this.toString().split( '+' );
-	if ( platform in platformFilters ) {
+	if ( Object.prototype.hasOwnProperty.call( platformFilters, platform ) ) {
 		return platformFilters[platform]( keys );
 	}
 	return keys.map( function ( key ) {

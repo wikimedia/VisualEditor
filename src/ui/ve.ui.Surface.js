@@ -325,7 +325,7 @@ ve.ui.Surface.prototype.execute = function ( action, method ) {
 	if ( action instanceof ve.ui.Trigger ) {
 		// Lookup command by trigger
 		trigger = action.toString();
-		if ( trigger in this.commands ) {
+		if ( Object.prototype.hasOwnProperty.call( this.commands, trigger ) ) {
 			// Have command call execute with action arguments
 			return this.commands[trigger].execute( this );
 		}

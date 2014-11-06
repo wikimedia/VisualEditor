@@ -40,7 +40,7 @@ ve.ui.TriggerRegistry.prototype.register = function ( name, triggers ) {
 		platformKey = platform === 'mac' ? 'mac' : 'pc';
 
 	if ( ve.isPlainObject( triggers ) ) {
-		if ( platformKey in triggers ) {
+		if ( Object.prototype.hasOwnProperty.call( triggers, platformKey ) ) {
 			triggerList = Array.isArray( triggers[platformKey] ) ? triggers[platformKey] : [ triggers[platformKey] ];
 		} else {
 			return;

@@ -282,7 +282,7 @@ ve.dm.DocumentSynchronizer.prototype.synchronize = function () {
 	// Execute the actions in the queue
 	for ( i = 0; i < this.actionQueue.length; i++ ) {
 		action = this.actionQueue[i];
-		if ( action.type in ve.dm.DocumentSynchronizer.synchronizers ) {
+		if ( Object.prototype.hasOwnProperty.call( ve.dm.DocumentSynchronizer.synchronizers, action.type ) ) {
 			ve.dm.DocumentSynchronizer.synchronizers[action.type].call( this, action );
 		} else {
 			throw new Error( 'Invalid action type ' + action.type );

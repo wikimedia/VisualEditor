@@ -43,7 +43,7 @@ ve.ce.ListNode.prototype.getTagName = function () {
 	var style = this.model.getAttribute( 'style' ),
 		types = { bullet: 'ul', number: 'ol' };
 
-	if ( !( style in types ) ) {
+	if ( !Object.prototype.hasOwnProperty.call( types, style ) ) {
 		throw new Error( 'Invalid style' );
 	}
 	return types[style];

@@ -756,7 +756,7 @@ ve.dm.ElementLinearData.prototype.getUsedStoreValuesFromRange = function ( range
 		j = indexes.length;
 		while ( j-- ) {
 			index = indexes[j];
-			if ( !( index in valueStore ) ) {
+			if ( !Object.prototype.hasOwnProperty.call( valueStore, index ) ) {
 				valueStore[index] = this.getStore().value( index );
 			}
 		}
