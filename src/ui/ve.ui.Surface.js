@@ -50,9 +50,6 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 	this.context = this.createContext();
 	this.filibuster = null;
 
-	// Events
-	this.dialogs.connect( this, { closing: 'onDialogClosing' } );
-
 	// Initialization
 	this.$menus.append( this.context.$element );
 	this.$element
@@ -118,21 +115,6 @@ ve.ui.Surface.prototype.destroy = function () {
 
 	// Let others know we have been destroyed
 	this.emit( 'destroy' );
-};
-
-/**
- * Handle dialog teardown events
- */
-ve.ui.Surface.prototype.onDialogClosing = function ( win, closing ) {
-	var surface = this;
-	closing.progress( function ( data ) {
-		if ( data.state === 'teardown' ) {
-			// Return focus to view
-			surface.getView().focus();
-			// Re-assert selection
-			surface.getModel().getFragment().select();
-		}
-	} );
 };
 
 /**

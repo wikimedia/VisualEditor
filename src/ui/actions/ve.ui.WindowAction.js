@@ -45,19 +45,32 @@ ve.ui.WindowAction.static.methods = [ 'open' ];
 ve.ui.WindowAction.prototype.open = function ( name, data ) {
 	var windowManager,
 		windowClass = ve.ui.windowFactory.lookup( name ),
-		fragment = this.surface.getModel().getFragment( undefined, true ),
-		dir = this.surface.getView().getDocument().getDirectionFromSelection( fragment.getSelection() ) ||
-			this.surface.getModel().getDocument().getDir();
+		surface = this.surface,
+		fragment = surface.getModel().getFragment( undefined, true ),
+		dir = surface.getView().getDocument().getDirectionFromSelection( fragment.getSelection() ) ||
+			surface.getModel().getDocument().getDir();
 
 	data = ve.extendObject( { dir: dir }, data, { fragment: fragment } );
 
 	if ( windowClass ) {
 		if ( windowClass.prototype instanceof ve.ui.FragmentInspector ) {
-			windowManager = this.surface.getContext().getInspectors();
+			windowManager = surface.getContext().getInspectors();
+			windowManager.openWindow( name, data );
 		} else if ( windowClass.prototype instanceof OO.ui.Dialog ) {
-			windowManager = this.surface.getDialogs();
+			// For non-isolated dialogs, remove the selection and re-apply on close
+			surface.getView().nativeSelection.removeAllRanges();
+			windowManager = surface.getDialogs();
+			windowManager.openWindow( name, data ).then( function ( opened ) {
+				opened.then( function ( closing ) {
+					closing.then( function () {
+						// Check the dialog didn't modify the selection before restoring from fragment
+						if ( surface.getModel().getSelection().isNull() ) {
+							fragment.select();
+						}
+					} );
+				} );
+			} );
 		}
-		windowManager.openWindow( name, data );
 	}
 };
 
