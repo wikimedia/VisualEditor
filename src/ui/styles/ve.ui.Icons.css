@@ -40,6 +40,11 @@
 	background-image: url(images/icons/bold-arab-dad.svg);
 }
 
+.oo-ui-icon-bold-armn-to {
+	/* @embed */
+	background-image: url(images/icons/bold-armn-to.svg);
+}
+
 .oo-ui-icon-bold-cyrl-be {
 	/* @embed */
 	background-image: url(images/icons/bold-cyrl-be.svg);
@@ -157,6 +162,11 @@
 .oo-ui-icon-italic-arab-keheh-jeem {
 	/* @embed */
 	background-image: url(images/icons/italic-arab-keheh-jeem.svg);
+}
+
+.oo-ui-icon-italic-armn-sha {
+	/* @embed */
+	background-image: url(images/icons/italic-armn-sha.svg);
 }
 
 .oo-ui-icon-italic-geor-kan {
