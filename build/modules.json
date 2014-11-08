@@ -121,6 +121,7 @@
 	"visualEditor.base.build": {
 		"scripts": [
 			"src/ve.js",
+			"src/ve.utils.js",
 			{ "file": "src/ve.debug.js", "debug": true },
 			"src/ve.track.js",
 			"src/init/ve.init.js",
