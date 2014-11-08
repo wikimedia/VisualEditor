@@ -1758,6 +1758,37 @@ ve.ce.Surface.prototype.afterPaste = function () {
 };
 
 /**
+ * Select all the contents within the current context
+ */
+ve.ce.Surface.prototype.selectAll = function () {
+	var internalListRange, range, matrix,
+		selection = this.getModel().getSelection();
+
+	if ( selection instanceof ve.dm.LinearSelection ) {
+		if ( this.getActiveTableNode() && this.getActiveTableNode().getEditingFragment() ) {
+			range = this.getActiveTableNode().getEditingRange();
+			range = new ve.Range( range.from + 1, range.to - 1 );
+		} else {
+			internalListRange = this.getModel().getDocument().getInternalList().getListNode().getOuterRange();
+			range = new ve.Range(
+				this.getNearestCorrectOffset( 0, 1 ),
+				this.getNearestCorrectOffset( internalListRange.start, -1 )
+			);
+		}
+		this.getModel().setLinearSelection( range );
+	} else if ( selection instanceof ve.dm.TableSelection ) {
+		matrix = selection.getTableNode().getMatrix();
+		this.getModel().setSelection(
+			new ve.dm.TableSelection(
+				selection.getDocument(), selection.tableRange,
+				0, 0, matrix.getColCount() - 1, matrix.getRowCount() - 1
+			)
+		);
+
+	}
+};
+
+/**
  * Handle document composition end events.
  *
  * @method
@@ -2348,6 +2379,7 @@ ve.ce.Surface.prototype.storeKeyDownState = function ( e ) {
 
 /**
  * Move the DM surface cursor
+ *
  * @param {number} offset Distance to move (negative = toward document start)
  */
 ve.ce.Surface.prototype.moveModelCursor = function ( offset ) {
