@@ -92,6 +92,7 @@
 	"visualeditor-specialcharacter-button-tooltip": "特殊字元",
 	"visualeditor-specialcharacterinspector-title": "特殊字元",
 	"visualeditor-table-caption": "說明",
+	"visualeditor-table-delete-col": "刪除行",
 	"visualeditor-table-format-data": "內容儲存格",
 	"visualeditor-table-format-header": "行首儲存格",
 	"visualeditor-table-insert-col-before": "前面插入",
