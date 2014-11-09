@@ -2407,11 +2407,21 @@ ve.ce.Surface.prototype.handleLinearUpOrDownArrowKey = function ( e ) {
 	this.surfaceObserver.pollOnce();
 
 	if ( this.focusedNode ) {
-		$cursorHolder = this.$( '<span class="ve-ce-surface-cursorHolder"> </span>' ).hide();
-		if ( direction === -1 ) {
-			$cursorHolder.insertBefore( this.focusedNode.$element.first() );
+		if ( !this.focusedNode.isContent() ) {
+			// Block focusable node, just move back/forward in the model
+			e.preventDefault();
+			range = this.model.getDocument().getRelativeRange(
+				range,
+				direction,
+				'character',
+				e.shiftKey,
+				this.getActiveTableNode() ? this.getActiveTableNode().getEditingRange() : null
+			);
+			this.model.setLinearSelection( range );
+			return;
 		} else {
-			$cursorHolder.insertAfter( this.focusedNode.$element.last() );
+			// Inline focusable node, move to end of node in model, then let up/down happen natively
+			this.model.setLinearSelection( new ve.Range( direction === 1 ? range.end : range.start ) );
 		}
 	} else if ( !range.isCollapsed() ) {
 		// Perform programatic handling for a selection that is expanded because CE
