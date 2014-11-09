@@ -27,11 +27,11 @@ body {
 	padding: 0.75em 1.5em;
 }
 
-.ve-demo-menu .oo-ui-inlineMenuWidget {
+.ve-demo-menu .oo-ui-dropdownWidget {
 	min-width: 10em;
 }
 
-.ve-demo-menu .oo-ui-inlineMenuWidget .oo-ui-labelElement-label {
+.ve-demo-menu .oo-ui-dropdownWidget .oo-ui-labelElement-label {
 	text-transform: capitalize;
 }
 
@@ -60,10 +60,6 @@ body {
 	display: inline-block;
 	vertical-align: middle;
 	margin-right: 1em;
-}
-
-.ve-demo-menu-commands > .oo-ui-dropdownWidget {
-	width: 9em;
 }
 
 .ve-demo-menu .oo-ui-textInputWidget {
