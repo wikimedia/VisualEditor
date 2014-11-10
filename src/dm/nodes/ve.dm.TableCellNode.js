@@ -88,22 +88,29 @@ ve.dm.TableCellNode.static.toDomElements = function ( dataElement, doc ) {
 /**
  * Creates data that can be inserted into the model to create a new table cell.
  *
- * @param {Object} [options] An object with property 'style' which can be either 'header' or 'data'.
+ * @param {Object} [options]
+ * @param {string} [options.style='data'] Either 'header' or 'data'
+ * @param {number} [options.rowspan=1] Number of rows the cell spans
+ * @param {number} [options.colspan=1] Number of columns the cell spans
+ * @param {Array} [options.content] Linear model data, defaults to empty wrapper paragraph
  * @return {Array} Model data for a new table cell
  */
 ve.dm.TableCellNode.static.createData = function ( options ) {
+	var opening, content;
 	options = options || {};
-	return [
-		{
-			type: 'tableCell',
-			attributes: {
-				style: options.style || 'data'
-			}
-		},
+	opening = {
+		type: 'tableCell',
+		attributes: {
+			style: options.style || 'data',
+			rowspan: options.rowspan || 1,
+			colspan: options.colspan || 1
+		}
+	};
+	content = options.content || [
 		{ type: 'paragraph', internal: { generated: 'wrapper' } },
-		{ type: '/paragraph' },
-		{ type: '/tableCell' }
+		{ type: '/paragraph' }
 	];
+	return [ opening ].concat( content ).concat( [ { type: '/tableCell' } ] );
 };
 
 /* Methods */
