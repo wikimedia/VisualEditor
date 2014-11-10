@@ -122,15 +122,17 @@
 					"ve.ui.Toolbar",
 					"ve.ui.TargetToolbar",
 					"ve.ui.DebugBar",
-					"ve.ui.Action",
 					"ve.ui.Trigger",
-					"ve.ui.Command",
 					"ve.ui.*FileDropHandler"
 				]
 			},
 			{
 				"name": "Actions",
 				"classes": ["ve.ui.*Action"]
+			},
+			{
+				"name": "Commands",
+				"classes": ["ve.ui.*Command"]
 			},
 			{
 				"name": "Factories",

@@ -23,29 +23,6 @@ ve.ui.IndentationTool = function VeUiIndentationTool( toolGroup, config ) {
 
 OO.inheritClass( ve.ui.IndentationTool, ve.ui.Tool );
 
-/* Methods */
-
-/**
- * @inheritdoc
- */
-ve.ui.IndentationTool.prototype.onUpdateState = function ( fragment ) {
-	// Parent method
-	ve.ui.Tool.prototype.onUpdateState.apply( this, arguments );
-
-	if ( !this.isDisabled() ) {
-		var i, len,
-			nodes = fragment.getSelectedLeafNodes(),
-			any = false;
-		for ( i = 0, len = nodes.length; i < len; i++ ) {
-			if ( nodes[i].hasMatchingAncestor( 'listItem' ) ) {
-				any = true;
-				break;
-			}
-		}
-		this.setDisabled( !any );
-	}
-};
-
 /**
  * UserInterface indent tool.
  *

@@ -57,12 +57,6 @@ ve.ui.commandRegistry = new ve.ui.CommandRegistry();
 /* Registrations */
 
 ve.ui.commandRegistry.register(
-	new ve.ui.Command( 'undo', 'history', 'undo' )
-);
-ve.ui.commandRegistry.register(
-	new ve.ui.Command( 'redo', 'history', 'redo' )
-);
-ve.ui.commandRegistry.register(
 	new ve.ui.Command(
 		'bold', 'annotation', 'toggle',
 		{ args: ['textStyle/bold'], supportedSelections: ['linear', 'table'] }
@@ -114,24 +108,6 @@ ve.ui.commandRegistry.register(
 	new ve.ui.Command(
 		'specialcharacter', 'window', 'open',
 		{ args: ['specialcharacter'], supportedSelections: ['linear'] }
-	)
-);
-ve.ui.commandRegistry.register(
-	new ve.ui.Command(
-		'clear', 'annotation', 'clearAll',
-		{ supportedSelections: ['linear', 'table'] }
-	)
-);
-ve.ui.commandRegistry.register(
-	new ve.ui.Command(
-		'indent', 'indentation', 'increase',
-		{ supportedSelections: ['linear'] }
-	)
-);
-ve.ui.commandRegistry.register(
-	new ve.ui.Command(
-		'outdent', 'indentation', 'decrease',
-		{ supportedSelections: ['linear'] }
 	)
 );
 ve.ui.commandRegistry.register(
@@ -294,10 +270,4 @@ ve.ui.commandRegistry.register(
 		'tableCellData', 'table', 'changeCellStyle',
 		{ args: ['data'], supportedSelections: ['table'] }
 	)
-);
-ve.ui.commandRegistry.register(
-	new ve.ui.Command( 'mergeCells', 'table', 'mergeCells', { supportedSelections: ['table'] } )
-);
-ve.ui.commandRegistry.register(
-	new ve.ui.Command( 'tableCaption', 'table', 'caption', { supportedSelections: ['linear', 'table'] } )
 );

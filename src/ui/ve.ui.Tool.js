@@ -67,7 +67,7 @@ ve.ui.Tool.static.getCommandName = function () {
  */
 ve.ui.Tool.prototype.onUpdateState = function ( fragment ) {
 	var command = this.getCommand();
-	this.setDisabled( fragment && command && !command.supportsSelection( fragment.getSelection() ) );
+	this.setDisabled( fragment && command && !command.isExecutable( fragment ) );
 };
 
 /**

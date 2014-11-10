@@ -18,7 +18,7 @@ ve.ui.HistoryTool = function VeUiHistoryTool( toolGroup, config ) {
 	ve.ui.Tool.call( this, toolGroup, config );
 
 	// Events
-	this.toolbar.getSurface().getModel().connect( this, { history: 'onUpdateState' } );
+	this.toolbar.getSurface().getModel().connect( this, { history: 'onHistory' } );
 
 	// Initialization
 	this.setDisabled( true );
@@ -28,28 +28,13 @@ ve.ui.HistoryTool = function VeUiHistoryTool( toolGroup, config ) {
 
 OO.inheritClass( ve.ui.HistoryTool, ve.ui.Tool );
 
-/* Static Properties */
-
-/**
- * Surface model method to check state with.
- *
- * @abstract
- * @static
- * @property {string}
- * @inheritable
- */
-ve.ui.HistoryTool.static.check = '';
-
 /* Methods */
 
 /**
- * @inheritdoc
+ * Handle history events on the surface model
  */
-ve.ui.HistoryTool.prototype.onUpdateState = function () {
-	// Parent method
-	ve.ui.Tool.prototype.onUpdateState.apply( this, arguments );
-
-	this.setDisabled( !this.toolbar.getSurface().getModel()[this.constructor.static.check]() );
+ve.ui.HistoryTool.prototype.onHistory = function () {
+	this.onUpdateState( this.toolbar.getSurface().getModel().getFragment() );
 };
 
 /**
@@ -78,7 +63,6 @@ ve.ui.UndoHistoryTool.static.group = 'history';
 ve.ui.UndoHistoryTool.static.icon = 'undo';
 ve.ui.UndoHistoryTool.static.title =
 	OO.ui.deferMsg( 'visualeditor-historybutton-undo-tooltip' );
-ve.ui.UndoHistoryTool.static.check = 'canUndo';
 ve.ui.UndoHistoryTool.static.commandName = 'undo';
 ve.ui.toolFactory.register( ve.ui.UndoHistoryTool );
 
@@ -100,6 +84,5 @@ ve.ui.RedoHistoryTool.static.group = 'history';
 ve.ui.RedoHistoryTool.static.icon = 'redo';
 ve.ui.RedoHistoryTool.static.title =
 	OO.ui.deferMsg( 'visualeditor-historybutton-redo-tooltip' );
-ve.ui.RedoHistoryTool.static.check = 'canRedo';
 ve.ui.RedoHistoryTool.static.commandName = 'redo';
 ve.ui.toolFactory.register( ve.ui.RedoHistoryTool );

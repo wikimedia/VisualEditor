@@ -35,20 +35,20 @@ ve.ui.Command = function VeUiCommand( name, action, method, options ) {
  * @returns {Mixed} Result of command execution.
  */
 ve.ui.Command.prototype.execute = function ( surface ) {
-	if ( this.supportsSelection( surface.getModel().getSelection() ) ) {
+	if ( this.isExecutable( surface.getModel().getFragment() ) ) {
 		return surface.execute.apply( surface, [ this.action, this.method ].concat( this.args ) );
 	}
 };
 
 /**
- * Check if this command supports a given selection
+ * Check if this command is executable on a given surface fragment
  *
- * @param {ve.dm.Selection} selection Selection
- * @return {boolean} The command can execute on this selection
+ * @param {ve.dm.SurfaceFragment} fragment Surface fragment
+ * @return {boolean} The command can execute on this fragmnet
  */
-ve.ui.Command.prototype.supportsSelection = function ( selection ) {
+ve.ui.Command.prototype.isExecutable = function ( fragment ) {
 	return !this.supportedSelections ||
-		ve.indexOf( selection.constructor.static.name, this.supportedSelections ) !== -1;
+		ve.indexOf( fragment.getSelection().constructor.static.name, this.supportedSelections ) !== -1;
 };
 
 /**
