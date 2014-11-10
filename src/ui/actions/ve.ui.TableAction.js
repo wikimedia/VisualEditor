@@ -233,19 +233,42 @@ ve.ui.TableAction.prototype.mergeCells = function () {
  * Toggle the existence of a caption node on the table
  */
 ve.ui.TableAction.prototype.caption = function () {
-	var fragment, captionNode,
+	var fragment, captionNode, nodes, node, tableFragment,
 		surfaceModel = this.surface.getModel(),
 		selection = surfaceModel.getSelection();
 
-	if ( !( selection instanceof ve.dm.TableSelection ) ) {
+	if ( selection instanceof ve.dm.TableSelection ) {
+		captionNode = selection.getTableNode().getCaptionNode();
+	} else if ( selection instanceof ve.dm.LinearSelection ) {
+		nodes = surfaceModel.getFragment().getSelectedLeafNodes();
+
+		node = nodes[0];
+		while ( node ) {
+			if ( node instanceof ve.dm.TableCaptionNode ) {
+				captionNode = node;
+				break;
+			}
+			node = node.getParent();
+		}
+		if ( !captionNode ) {
+			return;
+		}
+		tableFragment = surfaceModel.getFragment( new ve.dm.TableSelection(
+			surfaceModel.getDocument(),
+			captionNode.getParent().getOuterRange(),
+			0, 0, 0, 0,
+			true
+		) );
+	} else {
 		return;
 	}
-
-	captionNode = selection.getTableNode().getCaptionNode();
 
 	if ( captionNode ) {
 		fragment = surfaceModel.getLinearFragment( captionNode.getOuterRange(), true );
 		fragment.removeContent();
+		if ( tableFragment ) {
+			tableFragment.select();
+		}
 	} else {
 		fragment = surfaceModel.getLinearFragment( new ve.Range( selection.tableRange.start + 1 ), true );
 

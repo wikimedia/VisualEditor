@@ -299,5 +299,5 @@ ve.ui.commandRegistry.register(
 	new ve.ui.Command( 'mergeCells', 'table', 'mergeCells', { supportedSelections: ['table'] } )
 );
 ve.ui.commandRegistry.register(
-	new ve.ui.Command( 'tableCaption', 'table', 'caption', { supportedSelections: ['table'] } )
+	new ve.ui.Command( 'tableCaption', 'table', 'caption', { supportedSelections: ['linear', 'table'] } )
 );

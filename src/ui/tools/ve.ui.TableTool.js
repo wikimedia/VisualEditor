@@ -157,10 +157,23 @@ ve.ui.TableCaptionTool.prototype.onUpdateState = function ( fragment ) {
 	// Parent method
 	ve.ui.TableCaptionTool.super.prototype.onUpdateState.apply( this, arguments );
 
-	var selection = fragment.getSelection();
+	var i, len, nodes, hasCaptionNode,
+		selection = fragment.getSelection();
 
 	if ( selection instanceof ve.dm.TableSelection ) {
-		this.setActive( !!selection.getTableNode().getCaptionNode() );
+		hasCaptionNode = !!selection.getTableNode().getCaptionNode();
+	} else {
+		nodes = fragment.getSelectedLeafNodes();
+		hasCaptionNode = !!nodes.length;
+
+		for ( i = 0, len = nodes.length; i < len; i++ ) {
+			if ( !nodes[i].hasMatchingAncestor( 'tableCaption' ) ) {
+				hasCaptionNode = false;
+				break;
+			}
+		}
+		this.setDisabled( !hasCaptionNode );
 	}
+	this.setActive( hasCaptionNode );
 };
 ve.ui.toolFactory.register( ve.ui.TableCaptionTool );
