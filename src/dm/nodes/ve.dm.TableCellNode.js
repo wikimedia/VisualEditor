@@ -72,11 +72,11 @@ ve.dm.TableCellNode.static.toDomElements = function ( dataElement, doc ) {
 		attributes = dataElement.attributes;
 
 	// Ignore spans of 1 unless they were in the original HTML
-	if ( attributes.colspan === 1 && !attributes.originalColspan ) {
+	if ( attributes.colspan === 1 && attributes.originalColspan !== 1 ) {
 		attributes.colspan = null;
 	}
 
-	if ( attributes.rowspan === 1 && !attributes.originalRowspan ) {
+	if ( attributes.rowspan === 1 && attributes.originalRowspan !== 1 ) {
 		attributes.rowspan = null;
 	}
 
