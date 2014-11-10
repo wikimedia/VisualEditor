@@ -31,7 +31,7 @@ ve.ui.ContentAction.static.name = 'content';
  * @static
  * @property
  */
-ve.ui.ContentAction.static.methods = [ 'insert', 'remove', 'select', 'pasteSpecial' ];
+ve.ui.ContentAction.static.methods = [ 'insert', 'remove', 'select', 'pasteSpecial', 'selectAll' ];
 
 /* Methods */
 
@@ -63,6 +63,15 @@ ve.ui.ContentAction.prototype.remove = function () {
  */
 ve.ui.ContentAction.prototype.select = function ( selection ) {
 	this.surface.getModel().setSelection( selection );
+};
+
+/**
+ * Select all content.
+ *
+ * @method
+ */
+ve.ui.ContentAction.prototype.selectAll = function () {
+	this.surface.getView().selectAll();
 };
 
 /**

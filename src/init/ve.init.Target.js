@@ -164,6 +164,7 @@ ve.init.Target.static.surfaceCommands = [
 	'heading5',
 	'heading6',
 	'preformatted',
+	'selectAll',
 	'pasteSpecial'
 ];
 

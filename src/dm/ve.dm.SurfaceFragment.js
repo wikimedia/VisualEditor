@@ -791,7 +791,7 @@ ve.dm.SurfaceFragment.prototype.delete = function ( directionAfterDelete ) {
 		return this;
 	}
 
-	// If selection spans entire document (e.g. CTRL+A in Firefox) then
+	// If selection spans entire document (selectAll) then
 	// replace with an empty paragraph
 	internalListRange = this.document.getInternalList().getListNode().getOuterRange();
 	if ( rangeToRemove.start === 0 && rangeToRemove.end >= internalListRange.start ) {
