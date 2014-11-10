@@ -342,7 +342,7 @@ ve.ce.TableNode.prototype.updateOverlay = function () {
 			this.surface.getModel().getSelection(),
 		// getBoundingClientRect is more accurate but must be used consistently
 		// due to the iOS7 bug where it is relative to the document.
-		tableOffset = this.$element[0].getBoundingClientRect(),
+		tableOffset = this.getFirstSectionNode().$element[0].getBoundingClientRect(),
 		surfaceOffset = this.surface.getSurface().$element[0].getBoundingClientRect();
 
 	if ( !tableOffset ) {
@@ -415,6 +415,19 @@ ve.ce.TableNode.prototype.updateOverlay = function () {
 	this.$selectionBox
 		.toggleClass( 've-ce-tableNodeOverlay-selection-box-fullRow', selection.isFullRow() )
 		.toggleClass( 've-ce-tableNodeOverlay-selection-box-fullCol', selection.isFullCol() );
+};
+
+/**
+ * Get the first section node of the table, skipping over any caption nodes
+ *
+ * @return {ve.ce.TableSectionNode} First table section node
+ */
+ve.ce.TableNode.prototype.getFirstSectionNode = function () {
+	var i = 0;
+	while ( !( this.children[i] instanceof ve.ce.TableSectionNode ) ) {
+		i++;
+	}
+	return this.children[i];
 };
 
 /**

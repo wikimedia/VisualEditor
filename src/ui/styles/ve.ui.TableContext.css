@@ -30,7 +30,7 @@
 }
 
 .ve-ui-tableContext-rowContext {
-	/* Gap + half context width (for centering), 0.2 + 0.8/2 */
+	/* Gap + half context width (for centering the popup anchor), 0.2 + 0.8/2 */
 	left: -0.6em;
 }
 
@@ -40,7 +40,7 @@
 
 .ve-ui-tableContext-rowContext .ve-ui-tableContext-indicator {
 	width: 0.8em;
-	/* Half context width (for centering) */
+	/* Half context width (for centering the popup anchor) */
 	margin-left: -0.4em;
 	border-right: 0;
 }
