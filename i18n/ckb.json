@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Calak",
-			"Muhammed taha"
+			"Muhammed taha",
+			"Kurdboydm"
 		]
 	},
 	"visualeditor": "دەستکاریکەری دیداری",
@@ -10,6 +11,7 @@
 	"visualeditor-annotationbutton-bold-tooltip": "تۆخ",
 	"visualeditor-annotationbutton-italic-tooltip": "لار",
 	"visualeditor-annotationbutton-link-tooltip": "بەستەر",
+	"visualeditor-content-select-all": "هەڵبژاردنی گشت",
 	"visualeditor-dialog-action-apply": "گۆڕانکارییەکان بەکاربەرە",
 	"visualeditor-dialog-action-cancel": "ھەڵیوەشێنەوە",
 	"visualeditor-formatdropdown-format-heading1": "سەردێڕ ١",
