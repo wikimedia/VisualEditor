@@ -125,18 +125,13 @@ ve.ui.MergeCellsTool.prototype.onUpdateState = function ( fragment ) {
 	// Parent method
 	ve.ui.MergeCellsTool.super.prototype.onUpdateState.apply( this, arguments );
 
-	var splittable, selection = fragment.getSelection();
-
-	if ( selection instanceof ve.dm.TableSelection ) {
-		if ( selection.isSingleCell() ) {
-			splittable = selection.getMatrixCells( true ).length > 1;
-			this.setActive( splittable );
-			this.setDisabled( !splittable );
-		} else {
-			this.setActive( false );
-			this.setDisabled( false );
-		}
+	if ( this.isDisabled() ) {
+		this.setActive( false );
+		return;
 	}
+
+	// If not disabled, selection must be table and spanning multiple matrix cells
+	this.setActive( fragment.getSelection().isSingleCell() );
 };
 ve.ui.toolFactory.register( ve.ui.MergeCellsTool );
 
@@ -157,22 +152,19 @@ ve.ui.TableCaptionTool.prototype.onUpdateState = function ( fragment ) {
 	// Parent method
 	ve.ui.TableCaptionTool.super.prototype.onUpdateState.apply( this, arguments );
 
-	var i, len, nodes, hasCaptionNode,
+	if ( this.isDisabled() ) {
+		this.setActive( false );
+		return;
+	}
+
+	var hasCaptionNode,
 		selection = fragment.getSelection();
 
 	if ( selection instanceof ve.dm.TableSelection ) {
 		hasCaptionNode = !!selection.getTableNode().getCaptionNode();
 	} else {
-		nodes = fragment.getSelectedLeafNodes();
-		hasCaptionNode = !!nodes.length;
-
-		for ( i = 0, len = nodes.length; i < len; i++ ) {
-			if ( !nodes[i].hasMatchingAncestor( 'tableCaption' ) ) {
-				hasCaptionNode = false;
-				break;
-			}
-		}
-		this.setDisabled( !hasCaptionNode );
+		// If not disabled, linear selection must have a caption
+		hasCaptionNode = true;
 	}
 	this.setActive( hasCaptionNode );
 };

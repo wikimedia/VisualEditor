@@ -5,7 +5,7 @@
  */
 
 /**
- * UserInterface clear tool.
+ * UserInterface clear all annotations tool.
  *
  * @class
  * @extends ve.ui.Tool
@@ -37,20 +37,6 @@ ve.ui.ClearAnnotationTool.static.title =
 	OO.ui.deferMsg( 'visualeditor-clearbutton-tooltip' );
 
 ve.ui.ClearAnnotationTool.static.commandName = 'clear';
-
-/* Methods */
-
-/**
- * @inheritdoc
- */
-ve.ui.ClearAnnotationTool.prototype.onUpdateState = function ( fragment ) {
-	// Parent method
-	ve.ui.Tool.prototype.onUpdateState.apply( this, arguments );
-
-	if ( !this.isDisabled() ) {
-		this.setDisabled( !fragment.hasAnnotations() );
-	}
-};
 
 /* Registration */
 
