@@ -108,10 +108,12 @@ ve.ce.GeneratedContentNode.prototype.getRenderedDomElements = function ( domElem
 	}
 
 	// Copy domElements so we can modify the elements
-	// Filter out link, meta and style tags for bug 50043
-	$rendering = this.$( domElements ).not( 'link, meta, style' );
-	// Also remove link, meta and style tags nested inside other tags
-	$rendering.find( 'link, meta, style' ).remove();
+	// Filter out link and style tags for bug 50043
+	// Previously filtered out meta tags, but restore these as they
+	// can be made visible.
+	$rendering = this.$( domElements ).not( 'link, style' );
+	// Also remove link and style tags nested inside other tags
+	$rendering.find( 'link, style' ).remove();
 
 	if ( $rendering.length ) {
 		// Span wrap root text nodes so they can be measured
