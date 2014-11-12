@@ -333,6 +333,7 @@
 			"src/ui/dialogs/ve.ui.NodeDialog.js",
 			"src/ui/dialogs/ve.ui.ProgressDialog.js",
 			"src/ui/filedrophandlers/ve.ui.PlainTextFileDropHandler.js",
+			"src/ui/filedrophandlers/ve.ui.HTMLFileDropHandler.js",
 			"src/ui/widgets/ve.ui.LanguageSearchWidget.js",
 			"src/ui/widgets/ve.ui.LanguageResultWidget.js",
 			"src/ui/dialogs/ve.ui.LanguageSearchDialog.js",
