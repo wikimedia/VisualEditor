@@ -707,11 +707,12 @@ ve.dm.SurfaceFragment.prototype.insertContent = function ( content, annotate ) {
 		return this;
 	}
 
-	var annotations, tx, offset, newRange;
-
 	if ( !this.getSelection( true ).isCollapsed() ) {
 		this.removeContent();
 	}
+
+	var annotations, tx, offset, newRange;
+
 	offset = this.getSelection( true ).getRange().start;
 	// Auto-convert content to array of plain text characters
 	if ( typeof content === 'string' ) {
@@ -738,6 +739,44 @@ ve.dm.SurfaceFragment.prototype.insertContent = function ( content, annotate ) {
 		newRange = tx.getModifiedRange();
 		this.change( tx, new ve.dm.LinearSelection( this.getDocument(), newRange ) );
 	}
+
+	return this;
+};
+
+/**
+ * Insert HTML in the fragment.
+ *
+ * @method
+ * @param {string} html HTML to insert
+ * @param {Object} importRules The import rules for the target surface
+ * @chainable
+ */
+ve.dm.SurfaceFragment.prototype.insertHtml = function ( html, importRules ) {
+	this.insertDocument( this.getDocument().newFromHtml( html, importRules ) );
+	return this;
+};
+
+/**
+ * Insert a ve.dm.Document in the fragment.
+ *
+ * @method
+ * @param {ve.dm.Document} doc Document to insert
+ * @chainable
+ */
+ve.dm.SurfaceFragment.prototype.insertDocument = function ( doc ) {
+	if ( !( this.selection instanceof ve.dm.LinearSelection ) ) {
+		return this;
+	}
+
+	if ( !this.getSelection( true ).isCollapsed() ) {
+		this.removeContent();
+	}
+
+	this.change( new ve.dm.Transaction.newFromDocumentInsertion(
+		this.getDocument(),
+		this.getSelection().getRange().start,
+		doc
+	) );
 
 	return this;
 };

@@ -104,6 +104,7 @@ OO.inheritClass( ve.dm.Document, ve.Document );
 /**
  * Split data into element data and meta data.
  *
+ * @static
  * @param {ve.dm.FlatLinearData} fullData Full data from converter
  * @returns {Object} Object containing element linear data and meta linear data (if processed)
  */
@@ -161,7 +162,7 @@ ve.dm.Document.static.splitData = function ( fullData ) {
  *
  * This method modifies data in place.
  *
- * @method
+ * @static
  * @param {Array} data Data to apply annotations to
  * @param {ve.dm.AnnotationSet} annotationSet Annotations to apply
  */
@@ -1205,6 +1206,39 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 		insertedDataOffset: insertedDataOffset,
 		insertedDataLength: insertedDataLength
 	};
+};
+
+/**
+ * Create a document given an HTML string.
+ *
+ * @method
+ * @param {string} html HTML to insert
+ * @param {Object} importRules The import rules with which to sanitize the HTML
+ * @return {ve.dm.Document} New document
+ */
+ve.dm.Document.prototype.newFromHtml = function ( html, importRules ) {
+	var htmlDoc = ve.createDocumentFromHtml( html ),
+		doc = ve.dm.converter.getModelFromDom( htmlDoc, this.getHtmlDocument() ),
+		data = doc.data;
+
+	// FIXME: This is a paste-specific thing and possibly should not be in the generic newFromHtml()
+	// function. Maybe make this be triggered by a pasteRules property?
+	// Clear metadata
+	doc.metadata = new ve.dm.MetaLinearData( doc.getStore(), new Array( 1 + data.getLength() ) );
+
+	if ( importRules ) {
+		data.sanitize( importRules.external );
+		if ( importRules.all ) {
+			data.sanitize( importRules.all );
+		}
+	}
+
+	data.remapInternalListKeys( this.getInternalList() );
+	// Initialize node tree
+	// BUG T75569: This shouldn't be needed
+	doc.buildNodeTree();
+
+	return doc;
 };
 
 /**
