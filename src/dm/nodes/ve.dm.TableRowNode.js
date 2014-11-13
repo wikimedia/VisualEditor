@@ -16,7 +16,7 @@
  */
 ve.dm.TableRowNode = function VeDmTableRowNode() {
 	// Parent constructor
-	ve.dm.BranchNode.apply( this, arguments );
+	ve.dm.TableRowNode.super.apply( this, arguments );
 
 	// Events
 	this.connect( this, { splice: 'onSplice' } );

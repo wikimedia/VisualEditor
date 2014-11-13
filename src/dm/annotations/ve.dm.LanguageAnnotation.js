@@ -14,9 +14,9 @@
  * @constructor
  * @param {Object} element
  */
-ve.dm.LanguageAnnotation = function VeDmLanguageAnnotation( element ) {
+ve.dm.LanguageAnnotation = function VeDmLanguageAnnotation() {
 	// Parent constructor
-	ve.dm.Annotation.call( this, element );
+	ve.dm.LanguageAnnotation.super.apply( this, arguments );
 };
 
 /* Inheritance */

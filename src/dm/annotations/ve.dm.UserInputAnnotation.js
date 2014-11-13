@@ -14,9 +14,9 @@
  * @constructor
  * @param {Object} element
  */
-ve.dm.UserInputAnnotation = function VeDmUserInputAnnotation( element ) {
+ve.dm.UserInputAnnotation = function VeDmUserInputAnnotation() {
 	// Parent constructor
-	ve.dm.TextStyleAnnotation.call( this, element );
+	ve.dm.UserInputAnnotation.super.apply( this, arguments );
 };
 
 /* Inheritance */

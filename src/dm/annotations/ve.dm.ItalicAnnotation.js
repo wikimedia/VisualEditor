@@ -14,9 +14,9 @@
  * @constructor
  * @param {Object} element
  */
-ve.dm.ItalicAnnotation = function VeDmItalicAnnotation( element ) {
+ve.dm.ItalicAnnotation = function VeDmItalicAnnotation() {
 	// Parent constructor
-	ve.dm.TextStyleAnnotation.call( this, element );
+	ve.dm.ItalicAnnotation.super.apply( this, arguments );
 };
 
 /* Inheritance */

@@ -15,8 +15,9 @@
  * @param {ve.dm.IndexValueStore} store Index-value store
  * @param {Array} [data] Linear data
  */
-ve.dm.ElementLinearData = function VeDmElementLinearData( store, data ) {
-	ve.dm.FlatLinearData.call( this, store, data );
+ve.dm.ElementLinearData = function VeDmElementLinearData() {
+	// Parent constructor
+	ve.dm.ElementLinearData.super.apply( this, arguments );
 };
 
 /* Inheritance */

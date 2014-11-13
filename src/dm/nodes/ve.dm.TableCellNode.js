@@ -16,7 +16,7 @@
  */
 ve.dm.TableCellNode = function VeDmTableCellNode() {
 	// Parent constructor
-	ve.dm.BranchNode.apply( this, arguments );
+	ve.dm.TableCellNode.super.apply( this, arguments );
 
 	// Events
 	this.connect( this, {

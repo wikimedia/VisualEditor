@@ -13,9 +13,9 @@
  * @param {ve.dm.DivNode} model Model to observe
  * @param {Object} [config] Configuration options
  */
-ve.ce.DivNode = function VeCeDivNode( model, config ) {
+ve.ce.DivNode = function VeCeDivNode() {
 	// Parent constructor
-	ve.ce.BranchNode.call( this, model, config );
+	ve.ce.DivNode.super.apply( this, arguments );
 };
 
 /* Inheritance */

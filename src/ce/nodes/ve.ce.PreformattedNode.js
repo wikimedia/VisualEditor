@@ -13,9 +13,9 @@
  * @param {ve.dm.PreformattedNode} model Model to observe
  * @param {Object} [config] Configuration options
  */
-ve.ce.PreformattedNode = function VeCePreformattedNode( model, config ) {
+ve.ce.PreformattedNode = function VeCePreformattedNode() {
 	// Parent constructor
-	ve.ce.ContentBranchNode.call( this, model, config );
+	ve.ce.PreformattedNode.super.apply( this, arguments );
 };
 
 /* Inheritance */

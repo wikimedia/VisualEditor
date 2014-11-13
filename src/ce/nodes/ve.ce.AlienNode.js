@@ -19,7 +19,7 @@
  */
 ve.ce.AlienNode = function VeCeAlienNode() {
 	// Parent constructor
-	ve.ce.LeafNode.apply( this, arguments );
+	ve.ce.AlienNode.super.apply( this, arguments );
 
 	// Mixin constructors
 	ve.ce.FocusableNode.call( this );
@@ -76,7 +76,7 @@ ve.ce.AlienNode.prototype.generateContents = function ( config )  {
  */
 ve.ce.AlienBlockNode = function VeCeAlienBlockNode() {
 	// Parent constructor
-	ve.ce.AlienNode.apply( this, arguments );
+	ve.ce.AlienBlockNode.super.apply( this, arguments );
 };
 
 /* Inheritance */
@@ -99,7 +99,7 @@ ve.ce.AlienBlockNode.static.name = 'alienBlock';
  */
 ve.ce.AlienInlineNode = function VeCeAlienInlineNode() {
 	// Parent constructor
-	ve.ce.AlienNode.apply( this, arguments );
+	ve.ce.AlienInlineNode.super.apply( this, arguments );
 };
 
 /* Inheritance */

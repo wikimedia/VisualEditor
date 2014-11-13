@@ -16,7 +16,7 @@
  */
 ve.dm.InlineImageNode = function VeDmImageNode() {
 	// Parent constructor
-	ve.dm.LeafNode.apply( this, arguments );
+	ve.dm.InlineImageNode.super.apply( this, arguments );
 
 	// Mixin constructor
 	ve.dm.ImageNode.call( this );

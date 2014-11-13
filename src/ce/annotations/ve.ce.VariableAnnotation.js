@@ -14,9 +14,9 @@
  * @param {ve.ce.ContentBranchNode} [parentNode] Node rendering this annotation
  * @param {Object} [config] Configuration options
  */
-ve.ce.VariableAnnotation = function VeCeVariableAnnotation( model, parentNode, config ) {
+ve.ce.VariableAnnotation = function VeCeVariableAnnotation() {
 	// Parent constructor
-	ve.ce.TextStyleAnnotation.call( this, model, parentNode, config );
+	ve.ce.VariableAnnotation.super.apply( this, arguments );
 
 	// DOM changes
 	this.$element.addClass( 've-ce-variableAnnotation' );

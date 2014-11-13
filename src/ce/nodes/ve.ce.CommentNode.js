@@ -18,19 +18,19 @@
  */
 ve.ce.CommentNode = function VeCeCommentNode( model, config ) {
 	// Parent constructor
-	ve.ce.LeafNode.call( this, model, config );
-
-	// DOM changes
-	this.$element
-		.addClass( 've-ce-commentNode' )
-		// Add em space for selection highlighting
-		.text( '\u2003' );
+	ve.ce.CommentNode.super.call( this, model, config );
 
 	// Mixin constructors
 	ve.ce.FocusableNode.call( this, this.$element, config );
 	OO.ui.IndicatorElement.call( this, $.extend( {}, config, {
 		$indicator: this.$element, indicator: 'alert'
 	} ) );
+
+	// DOM changes
+	this.$element
+		.addClass( 've-ce-commentNode' )
+		// Add em space for selection highlighting
+		.text( '\u2003' );
 };
 
 /* Inheritance */

@@ -13,9 +13,9 @@
  * @param {ve.dm.BlockImageCaptionNode} model Model to observe
  * @param {Object} [config] Configuration options
  */
-ve.ce.BlockImageCaptionNode = function VeCeBlockImageCaptionNode( model, config ) {
+ve.ce.BlockImageCaptionNode = function VeCeBlockImageCaptionNode() {
 	// Parent constructor
-	ve.ce.BranchNode.call( this, model, config );
+	ve.ce.BlockImageCaptionNode.super.apply( this, arguments );
 };
 
 /* Inheritance */

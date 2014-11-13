@@ -16,7 +16,7 @@
  */
 ve.dm.DivNode = function VeDmDivNode() {
 	// Parent constructor
-	ve.dm.BranchNode.apply( this, arguments );
+	ve.dm.DivNode.super.apply( this, arguments );
 };
 
 /* Inheritance */

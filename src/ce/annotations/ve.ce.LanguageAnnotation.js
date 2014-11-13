@@ -14,20 +14,17 @@
  * @param {ve.ce.ContentBranchNode} [parentNode] Node rendering this annotation
  * @param {Object} [config] Configuration options
  */
-ve.ce.LanguageAnnotation = function VeCeLanguageAnnotation( model, parentNode, config ) {
-	var lang = model.getAttribute( 'lang' ),
-		dir = model.getAttribute( 'dir' );
-
+ve.ce.LanguageAnnotation = function VeCeLanguageAnnotation() {
 	// Parent constructor
-	ve.ce.Annotation.call( this, model, parentNode, config );
+	ve.ce.LanguageAnnotation.super.apply( this, arguments );
 
 	// DOM changes
 	this.$element
 		.addClass( 've-ce-languageAnnotation' )
 		.addClass( 've-ce-bidi-isolate' )
 		.attr( {
-			lang: lang,
-			dir: dir,
+			lang: this.model.getAttribute( 'lang' ),
+			dir: this.model.getAttribute( 'dir' ),
 			title: this.constructor.static.getDescription( this.model )
 		} );
 };

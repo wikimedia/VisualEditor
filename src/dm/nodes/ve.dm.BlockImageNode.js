@@ -17,7 +17,7 @@
  */
 ve.dm.BlockImageNode = function VeDmBlockImageNode() {
 	// Parent constructor
-	ve.dm.BranchNode.apply( this, arguments );
+	ve.dm.BlockImageNode.super.apply( this, arguments );
 
 	// Mixin constructor
 	ve.dm.ImageNode.call( this );

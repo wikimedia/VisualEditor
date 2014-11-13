@@ -15,7 +15,7 @@
  */
 ve.dm.BreakNode = function VeDmBreakNode() {
 	// Parent constructor
-	ve.dm.LeafNode.apply( this, arguments );
+	ve.dm.BreakNode.super.apply( this, arguments );
 };
 
 /* Inheritance */

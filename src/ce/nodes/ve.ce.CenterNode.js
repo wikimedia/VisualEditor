@@ -13,9 +13,9 @@
  * @param {ve.dm.CenterNode} model Model to observe
  * @param {Object} [config] Configuration options
  */
-ve.ce.CenterNode = function VeCeCenterNode( model, config ) {
+ve.ce.CenterNode = function VeCeCenterNode() {
 	// Parent constructor
-	ve.ce.BranchNode.call( this, model, config );
+	ve.ce.CenterNode.super.apply( this, arguments );
 };
 
 /* Inheritance */

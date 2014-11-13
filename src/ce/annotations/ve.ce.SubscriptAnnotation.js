@@ -14,9 +14,9 @@
  * @param {ve.ce.ContentBranchNode} [parentNode] Node rendering this annotation
  * @param {Object} [config] Configuration options
  */
-ve.ce.SubscriptAnnotation = function VeCeSubscriptAnnotation( model, parentNode, config ) {
+ve.ce.SubscriptAnnotation = function VeCeSubscriptAnnotation() {
 	// Parent constructor
-	ve.ce.TextStyleAnnotation.call( this, model, parentNode, config );
+	ve.ce.SubscriptAnnotation.super.apply( this, arguments );
 
 	// DOM changes
 	this.$element.addClass( 've-ce-subscriptAnnotation' );

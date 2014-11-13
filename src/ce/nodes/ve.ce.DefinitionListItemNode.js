@@ -13,9 +13,9 @@
  * @param {ve.dm.DefinitionListItemNode} model Model to observe
  * @param {Object} [config] Configuration options
  */
-ve.ce.DefinitionListItemNode = function VeCeDefinitionListItemNode( model, config ) {
+ve.ce.DefinitionListItemNode = function VeCeDefinitionListItemNode() {
 	// Parent constructor
-	ve.ce.BranchNode.call( this, model, config );
+	ve.ce.DefinitionListItemNode.super.apply( this, arguments );
 
 	// Events
 	this.model.connect( this, { update: 'onUpdate' } );

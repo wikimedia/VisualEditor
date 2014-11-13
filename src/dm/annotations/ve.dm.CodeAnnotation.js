@@ -14,9 +14,9 @@
  * @constructor
  * @param {Object} element
  */
-ve.dm.CodeAnnotation = function VeDmCodeAnnotation( element ) {
+ve.dm.CodeAnnotation = function VeDmCodeAnnotation() {
 	// Parent constructor
-	ve.dm.TextStyleAnnotation.call( this, element );
+	ve.dm.CodeAnnotation.super.apply( this, arguments );
 };
 
 /* Inheritance */

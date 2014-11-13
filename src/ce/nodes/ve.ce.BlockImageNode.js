@@ -21,7 +21,7 @@ ve.ce.BlockImageNode = function VeCeBlockImageNode( model, config ) {
 	}, config );
 
 	// Parent constructor
-	ve.ce.BranchNode.call( this, model, config );
+	ve.ce.BlockImageNode.super.call( this, model, config );
 
 	// Build DOM
 	this.$image = this.$( '<img>' )

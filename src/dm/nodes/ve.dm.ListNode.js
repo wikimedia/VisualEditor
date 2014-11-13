@@ -16,7 +16,7 @@
  */
 ve.dm.ListNode = function VeDmListNode() {
 	// Parent constructor
-	ve.dm.BranchNode.apply( this, arguments );
+	ve.dm.ListNode.super.apply( this, arguments );
 };
 
 /* Inheritance */

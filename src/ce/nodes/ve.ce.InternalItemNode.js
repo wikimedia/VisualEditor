@@ -13,9 +13,9 @@
  * @param {ve.dm.InternalItemNode} model Model to observe
  * @param {Object} [config] Configuration options
  */
-ve.ce.InternalItemNode = function VeCeInternalItemNode( model, config ) {
+ve.ce.InternalItemNode = function VeCeInternalItemNode() {
 	// Parent constructor
-	ve.ce.BranchNode.call( this, model, config );
+	ve.ce.InternalItemNode.super.apply( this, arguments );
 
 	this.$element.addClass( 've-ce-internalItemNode' );
 };

@@ -14,9 +14,9 @@
  * @constructor
  * @param {Object} element
  */
-ve.dm.SubscriptAnnotation = function VeDmSubscriptAnnotation( element ) {
+ve.dm.SubscriptAnnotation = function VeDmSubscriptAnnotation() {
 	// Parent constructor
-	ve.dm.TextStyleAnnotation.call( this, element );
+	ve.dm.SubscriptAnnotation.super.apply( this, arguments );
 };
 
 /* Inheritance */

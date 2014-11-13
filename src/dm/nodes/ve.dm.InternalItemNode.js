@@ -16,7 +16,7 @@
  */
 ve.dm.InternalItemNode = function VeDmInternalItemNode() {
 	// Parent constructor
-	ve.dm.BranchNode.apply( this, arguments );
+	ve.dm.InternalItemNode.super.apply( this, arguments );
 };
 
 /* Inheritance */

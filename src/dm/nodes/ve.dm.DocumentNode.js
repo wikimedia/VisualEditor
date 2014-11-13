@@ -15,7 +15,7 @@
  */
 ve.dm.DocumentNode = function VeDmDocumentNode( children ) {
 	// Parent constructor
-	ve.dm.BranchNode.call( this, null, children );
+	ve.dm.DocumentNode.super.call( this, null, children );
 
 	// Properties
 	this.root = this;

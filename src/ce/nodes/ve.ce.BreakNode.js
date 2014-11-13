@@ -13,9 +13,9 @@
  * @param {ve.dm.BreakNode} model Model to observe
  * @param {Object} [config] Configuration options
  */
-ve.ce.BreakNode = function VeCeBreakNode( model, config ) {
+ve.ce.BreakNode = function VeCeBreakNode() {
 	// Parent constructor
-	ve.ce.LeafNode.call( this, model, config );
+	ve.ce.BreakNode.super.apply( this, arguments );
 
 	// DOM changes
 	this.$element.addClass( 've-ce-breakNode' );

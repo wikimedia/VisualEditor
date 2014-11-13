@@ -13,9 +13,9 @@
  * @param {ve.dm.TableCellNode} model Model to observe
  * @param {Object} [config] Configuration options
  */
-ve.ce.TableCellNode = function VeCeTableCellNode( model, config ) {
+ve.ce.TableCellNode = function VeCeTableCellNode() {
 	// Parent constructor
-	ve.ce.BranchNode.call( this, model, config );
+	ve.ce.TableCellNode.super.apply( this, arguments );
 
 	// Events
 	this.model.connect( this, {

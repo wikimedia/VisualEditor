@@ -12,9 +12,9 @@
  * @constructor
  * @param {Object} element Reference to element in meta-linmod
  */
-ve.dm.AlienMetaItem = function VeDmAlienMetaItem( element ) {
+ve.dm.AlienMetaItem = function VeDmAlienMetaItem() {
 	// Parent constructor
-	ve.dm.MetaItem.call( this, element );
+	ve.dm.AlienMetaItem.super.apply( this, arguments );
 };
 
 /* Inheritance */
