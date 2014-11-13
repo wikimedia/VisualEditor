@@ -241,18 +241,21 @@ ve.ce.Surface.static.unsafeAttributes = [
  * When pasting, browsers normalize HTML to varying degrees.
  * This hash creates a comparable string for validating clipboard contents.
  *
- * @param {jQuery} $elements Clipboard HTML elements
+ * @param {Node[]} nodes Clipboard HTML nodes
  * @returns {string} Hash
  */
-ve.ce.Surface.static.getClipboardHash = function ( $elements ) {
-	var hash = '';
+ve.ce.Surface.static.getClipboardHash = function ( nodes ) {
+	var i, l, node, hash = '';
 	// Collect text contents, or just node name for content-less nodes.
-	$elements.each( function () {
+	for ( i = 0, l = nodes.length; i < l; i++ ) {
+		node = nodes[i];
 		// Only use node types which are know to copy (e.g. not comment nodes)
-		if ( this.nodeType === Node.TEXT_NODE || this.nodeType === Node.ELEMENT_NODE ) {
-			hash += this.textContent || '<' + this.nodeName + '>';
+		if ( node.nodeType === Node.TEXT_NODE ) {
+			hash += node.textContent;
+		} else if ( node.nodeType === Node.ELEMENT_NODE ) {
+			hash += '<' + node.nodeName + '>' + this.getClipboardHash( node.childNodes );
 		}
-	} );
+	}
 	// Whitespace may be added/removed, so strip it all
 	return hash.replace( /\s/gm, '' );
 };
@@ -1340,7 +1343,7 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 	} else {
 		clipboardItem.hash = this.constructor.static.getClipboardHash( this.$pasteTarget.contents() );
 		this.$pasteTarget.prepend(
-			this.$( '<span>' ).attr( 'data-ve-clipboard-key', this.clipboardId + '-' + clipboardIndex )
+			this.$( '<span>' ).attr( 'data-ve-clipboard-key', this.clipboardId + '-' + clipboardIndex ).html( '&nbsp;' )
 		);
 
 		// If direct clipboard editing is not allowed, we must use the pasteTarget to
@@ -1566,18 +1569,25 @@ ve.ce.Surface.prototype.afterPaste = function () {
 	if ( beforePasteData.custom ) {
 		clipboardKey = beforePasteData.custom;
 	} else {
-		$elements = beforePasteData.html ? this.$( $.parseHTML( beforePasteData.html ) ) : this.$pasteTarget.contents();
+		if ( beforePasteData.html ) {
+			$elements = this.$( $.parseHTML( beforePasteData.html ) );
 
-		// Try to find the clipboard key hidden in the HTML
-		$elements = $elements.filter( function () {
-			var val = this.getAttribute && this.getAttribute( 'data-ve-clipboard-key' );
-			if ( val ) {
-				clipboardKey = val;
-				// Remove the clipboard key span once read
-				return false;
-			}
-			return true;
-		} );
+			// Try to find the clipboard key hidden in the HTML
+			$elements = $elements.filter( function () {
+				var val = this.getAttribute && this.getAttribute( 'data-ve-clipboard-key' );
+				if ( val ) {
+					clipboardKey = val;
+					// Remove the clipboard key span once read
+					return false;
+				}
+				return true;
+			} );
+		} else {
+			// HTML in pasteTarget my get wrapped, so use the recursive $.find to looke for the clipboard key
+			clipboardKey = this.$pasteTarget.find( 'span[data-ve-clipboard-key]' ).data( 've-clipboard-key' );
+			// $elements is used by getClipboardHash so generate it too
+			$elements = this.$pasteTarget.contents();
+		}
 	}
 
 	// If we have a clipboard key, validate it and fetch data
@@ -1591,7 +1601,7 @@ ve.ce.Surface.prototype.afterPaste = function () {
 			// hasn't been modified in another editor before being pasted back.
 			if ( beforePasteData.custom ||
 				this.clipboard[clipboardIndex].hash ===
-					this.constructor.static.getClipboardHash( $elements )
+					this.constructor.static.getClipboardHash( $elements.toArray() )
 			) {
 				slice = this.clipboard[clipboardIndex].slice;
 			}
