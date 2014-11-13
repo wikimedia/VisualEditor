@@ -16,7 +16,7 @@
  */
 ve.dm.ParagraphNode = function VeDmParagraphNode() {
 	// Parent constructor
-	ve.dm.BranchNode.apply( this, arguments );
+	ve.dm.ParagraphNode.super.apply( this, arguments );
 };
 
 /* Inheritance */

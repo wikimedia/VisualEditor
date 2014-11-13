@@ -16,7 +16,7 @@
  */
 ve.dm.BlockImageCaptionNode = function VeDmBlockImageCaptionNode() {
 	// Parent constructor
-	ve.dm.BranchNode.apply( this, arguments );
+	ve.dm.BlockImageCaptionNode.super.apply( this, arguments );
 };
 
 OO.inheritClass( ve.dm.BlockImageCaptionNode, ve.dm.BranchNode );

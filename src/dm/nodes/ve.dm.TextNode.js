@@ -15,7 +15,7 @@
  */
 ve.dm.TextNode = function VeDmTextNode( length ) {
 	// Parent constructor
-	ve.dm.LeafNode.call( this );
+	ve.dm.TextNode.super.call( this );
 
 	// TODO: length is only set on construction in tests
 	this.length = length || 0;

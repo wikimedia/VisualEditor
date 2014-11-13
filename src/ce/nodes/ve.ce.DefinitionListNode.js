@@ -13,9 +13,9 @@
  * @param {ve.dm.DefinitionListNode} model Model to observe
  * @param {Object} [config] Configuration options
  */
-ve.ce.DefinitionListNode = function VeCeDefinitionListNode( model, config ) {
+ve.ce.DefinitionListNode = function VeCeDefinitionListNode() {
 	// Parent constructor
-	ve.ce.BranchNode.call( this, model, config );
+	ve.ce.DefinitionListNode.super.apply( this, arguments );
 };
 
 /* Inheritance */

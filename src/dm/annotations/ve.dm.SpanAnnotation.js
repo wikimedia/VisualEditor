@@ -14,9 +14,9 @@
  * @constructor
  * @param {Object} element
  */
-ve.dm.SpanAnnotation = function VeDmSpanAnnotation( element ) {
+ve.dm.SpanAnnotation = function VeDmSpanAnnotation() {
 	// Parent constructor
-	ve.dm.TextStyleAnnotation.call( this, element );
+	ve.dm.SpanAnnotation.super.apply( this, arguments );
 };
 
 /* Inheritance */

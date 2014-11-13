@@ -13,9 +13,9 @@
  * @param {ve.dm.ParagraphNode} model Model to observe
  * @param {Object} [config] Configuration options
  */
-ve.ce.ParagraphNode = function VeCeParagraphNode( model, config ) {
+ve.ce.ParagraphNode = function VeCeParagraphNode() {
 	// Parent constructor
-	ve.ce.ContentBranchNode.call( this, model, config );
+	ve.ce.ParagraphNode.super.apply( this, arguments );
 
 	// DOM changes
 	this.$element.addClass( 've-ce-paragraphNode' );

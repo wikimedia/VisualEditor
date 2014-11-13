@@ -14,9 +14,9 @@
  * @param {ve.ce.ContentBranchNode} [parentNode] Node rendering this annotation
  * @param {Object} [config] Configuration options
  */
-ve.ce.SuperscriptAnnotation = function VeCeSuperscriptAnnotation( model, parentNode, config ) {
+ve.ce.SuperscriptAnnotation = function VeCeSuperscriptAnnotation() {
 	// Parent constructor
-	ve.ce.TextStyleAnnotation.call( this, model, parentNode, config );
+	ve.ce.SuperscriptAnnotation.super.apply( this, arguments );
 
 	// DOM changes
 	this.$element.addClass( 've-ce-superscriptAnnotation' );

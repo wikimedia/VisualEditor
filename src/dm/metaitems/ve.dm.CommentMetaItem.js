@@ -11,8 +11,9 @@
  * @constructor
  * @param {Object} element Reference to element in meta-linmod
  */
-ve.dm.CommentMetaItem = function VeDmCommentMetaItem( element ) {
-	ve.dm.CommentMetaItem.super.call( this, element );
+ve.dm.CommentMetaItem = function VeDmCommentMetaItem() {
+	// Parent constructor
+	ve.dm.CommentMetaItem.super.apply( this, arguments );
 };
 
 /* Inheritance */

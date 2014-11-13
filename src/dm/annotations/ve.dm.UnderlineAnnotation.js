@@ -14,9 +14,9 @@
  * @constructor
  * @param {Object} element
  */
-ve.dm.UnderlineAnnotation = function VeDmUnderlineAnnotation( element ) {
+ve.dm.UnderlineAnnotation = function VeDmUnderlineAnnotation() {
 	// Parent constructor
-	ve.dm.TextStyleAnnotation.call( this, element );
+	ve.dm.UnderlineAnnotation.super.apply( this, arguments );
 };
 
 /* Inheritance */

@@ -13,9 +13,9 @@
  * @param {ve.dm.InternalListNode} model Model to observe
  * @param {Object} [config] Configuration options
  */
-ve.ce.InternalListNode = function VeCeInternalListNode( model, config ) {
+ve.ce.InternalListNode = function VeCeInternalListNode() {
 	// Parent constructor
-	ve.ce.BranchNode.call( this, model, config );
+	ve.ce.InternalListNode.super.apply( this, arguments );
 
 	// An internal list has no rendering
 	this.$element = this.$( [] );

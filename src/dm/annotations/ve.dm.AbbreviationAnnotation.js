@@ -14,9 +14,9 @@
  * @constructor
  * @param {Object} element
  */
-ve.dm.AbbreviationAnnotation = function VeDmAbbreviationAnnotation( element ) {
+ve.dm.AbbreviationAnnotation = function VeDmAbbreviationAnnotation() {
 	// Parent constructor
-	ve.dm.TextStyleAnnotation.call( this, element );
+	ve.dm.AbbreviationAnnotation.super.apply( this, arguments );
 };
 
 /* Inheritance */

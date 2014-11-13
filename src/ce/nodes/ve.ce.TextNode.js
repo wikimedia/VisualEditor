@@ -13,9 +13,9 @@
  * @param {ve.dm.TextNode} model Model to observe
  * @param {Object} [config] Configuration options
  */
-ve.ce.TextNode = function VeCeTextNode( model, config ) {
+ve.ce.TextNode = function VeCeTextNode() {
 	// Parent constructor
-	ve.ce.LeafNode.call( this, model, config );
+	ve.ce.TextNode.super.apply( this, arguments );
 };
 
 /* Inheritance */

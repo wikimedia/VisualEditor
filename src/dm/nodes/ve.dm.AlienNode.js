@@ -18,7 +18,7 @@
  */
 ve.dm.AlienNode = function VeDmAlienNode() {
 	// Parent constructor
-	ve.dm.LeafNode.apply( this, arguments );
+	ve.dm.AlienNode.super.apply( this, arguments );
 
 	// Mixin constructors
 	ve.dm.GeneratedContentNode.call( this );
@@ -84,7 +84,7 @@ ve.dm.AlienNode.static.getHashObject = function ( dataElement ) {
  */
 ve.dm.AlienBlockNode = function VeDmAlienBlockNode() {
 	// Parent constructor
-	ve.dm.AlienNode.apply( this, arguments );
+	ve.dm.AlienBlockNode.super.apply( this, arguments );
 };
 
 OO.inheritClass( ve.dm.AlienBlockNode, ve.dm.AlienNode );
@@ -102,7 +102,7 @@ ve.dm.AlienBlockNode.static.name = 'alienBlock';
  */
 ve.dm.AlienInlineNode = function VeDmAlienInlineNode() {
 	// Parent constructor
-	ve.dm.AlienNode.apply( this, arguments );
+	ve.dm.AlienInlineNode.super.apply( this, arguments );
 };
 
 OO.inheritClass( ve.dm.AlienInlineNode, ve.dm.AlienNode );

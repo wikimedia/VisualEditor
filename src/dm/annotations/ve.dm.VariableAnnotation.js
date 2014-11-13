@@ -14,9 +14,9 @@
  * @constructor
  * @param {Object} element
  */
-ve.dm.VariableAnnotation = function VeDmVariableAnnotation( element ) {
+ve.dm.VariableAnnotation = function VeDmVariableAnnotation() {
 	// Parent constructor
-	ve.dm.TextStyleAnnotation.call( this, element );
+	ve.dm.VariableAnnotation.super.apply( this, arguments );
 };
 
 /* Inheritance */

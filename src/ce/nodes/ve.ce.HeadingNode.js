@@ -13,9 +13,9 @@
  * @param {ve.dm.HeadingNode} model Model to observe
  * @param {Object} [config] Configuration options
  */
-ve.ce.HeadingNode = function VeCeHeadingNode( model, config ) {
+ve.ce.HeadingNode = function VeCeHeadingNode() {
 	// Parent constructor
-	ve.ce.ContentBranchNode.call( this, model, config );
+	ve.ce.HeadingNode.super.apply( this, arguments );
 
 	// Events
 	this.model.connect( this, { update: 'onUpdate' } );

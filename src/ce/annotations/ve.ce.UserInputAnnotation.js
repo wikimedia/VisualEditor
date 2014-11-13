@@ -14,9 +14,9 @@
  * @param {ve.ce.ContentBranchNode} [parentNode] Node rendering this annotation
  * @param {Object} [config] Configuration options
  */
-ve.ce.UserInputAnnotation = function VeCeUserInputAnnotation( model, parentNode, config ) {
+ve.ce.UserInputAnnotation = function VeCeUserInputAnnotation() {
 	// Parent constructor
-	ve.ce.TextStyleAnnotation.call( this, model, parentNode, config );
+	ve.ce.UserInputAnnotation.super.apply( this, arguments );
 
 	// DOM changes
 	this.$element.addClass( 've-ce-userInputAnnotation' );

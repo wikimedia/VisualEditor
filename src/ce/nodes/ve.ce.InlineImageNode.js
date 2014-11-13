@@ -22,7 +22,7 @@ ve.ce.InlineImageNode = function VeCeInlineImageNode( model, config ) {
 	}, config );
 
 	// Parent constructor
-	ve.ce.LeafNode.call( this, model, config );
+	ve.ce.InlineImageNode.super.call( this, model, config );
 
 	// Mixin constructors
 	ve.ce.ImageNode.call( this, this.$element, null, config );

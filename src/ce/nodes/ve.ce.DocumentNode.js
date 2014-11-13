@@ -16,7 +16,7 @@
  */
 ve.ce.DocumentNode = function VeCeDocumentNode( model, surface, config ) {
 	// Parent constructor
-	ve.ce.BranchNode.call( this, model, config );
+	ve.ce.DocumentNode.super.call( this, model, config );
 
 	// Properties
 	this.surface = surface;

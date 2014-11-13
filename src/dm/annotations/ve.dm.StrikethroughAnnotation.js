@@ -14,9 +14,9 @@
  * @constructor
  * @param {Object} element
  */
-ve.dm.StrikethroughAnnotation = function VeDmStrikethroughAnnotation( element ) {
+ve.dm.StrikethroughAnnotation = function VeDmStrikethroughAnnotation() {
 	// Parent constructor
-	ve.dm.TextStyleAnnotation.call( this, element );
+	ve.dm.StrikethroughAnnotation.super.apply( this, arguments );
 };
 
 /* Inheritance */

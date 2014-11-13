@@ -16,7 +16,7 @@
  */
 ve.dm.CenterNode = function VeDmCenterNode() {
 	// Parent constructor
-	ve.dm.BranchNode.apply( this, arguments );
+	ve.dm.CenterNode.super.apply( this, arguments );
 };
 
 /* Inheritance */

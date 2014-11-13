@@ -14,9 +14,9 @@
  * @param {ve.ce.ContentBranchNode} [parentNode] Node rendering this annotation
  * @param {Object} [config] Configuration options
  */
-ve.ce.StrikethroughAnnotation = function VeCeStrikethroughAnnotation( model, parentNode, config ) {
+ve.ce.StrikethroughAnnotation = function VeCeStrikethroughAnnotation() {
 	// Parent constructor
-	ve.ce.TextStyleAnnotation.call( this, model, parentNode, config );
+	ve.ce.StrikethroughAnnotation.super.apply( this, arguments );
 
 	// DOM changes
 	this.$element.addClass( 've-ce-strikethroughAnnotation' );

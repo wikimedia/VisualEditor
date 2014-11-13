@@ -16,7 +16,7 @@
  */
 ve.dm.TableCaptionNode = function VeDmTableCaptionNode() {
 	// Parent constructor
-	ve.dm.BranchNode.apply( this, arguments );
+	ve.dm.TableCaptionNode.super.apply( this, arguments );
 };
 
 /* Inheritance */

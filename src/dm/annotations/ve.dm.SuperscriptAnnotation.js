@@ -14,9 +14,9 @@
  * @constructor
  * @param {Object} element
  */
-ve.dm.SuperscriptAnnotation = function VeDmSuperscriptAnnotation( element ) {
+ve.dm.SuperscriptAnnotation = function VeDmSuperscriptAnnotation() {
 	// Parent constructor
-	ve.dm.TextStyleAnnotation.call( this, element );
+	ve.dm.SuperscriptAnnotation.super.apply( this, arguments );
 };
 
 /* Inheritance */

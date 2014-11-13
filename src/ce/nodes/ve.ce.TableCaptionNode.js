@@ -13,9 +13,9 @@
  * @param {ve.dm.TableCaptionNode} model Model to observe
  * @param {Object} [config] Configuration options
  */
-ve.ce.TableCaptionNode = function VeCeTableCaptionNode( model, config ) {
+ve.ce.TableCaptionNode = function VeCeTableCaptionNode() {
 	// Parent constructor
-	ve.ce.BranchNode.call( this, model, config );
+	ve.ce.TableCaptionNode.super.apply( this, arguments );
 };
 
 /* Inheritance */

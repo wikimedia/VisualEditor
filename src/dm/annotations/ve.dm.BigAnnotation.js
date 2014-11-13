@@ -14,9 +14,9 @@
  * @constructor
  * @param {Object} element
  */
-ve.dm.BigAnnotation = function VeDmBigAnnotation( element ) {
+ve.dm.BigAnnotation = function VeDmBigAnnotation() {
 	// Parent constructor
-	ve.dm.TextStyleAnnotation.call( this, element );
+	ve.dm.BigAnnotation.super.apply( this, arguments );
 };
 
 /* Inheritance */

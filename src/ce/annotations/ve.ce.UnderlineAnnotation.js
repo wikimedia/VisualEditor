@@ -14,9 +14,9 @@
  * @param {ve.ce.ContentBranchNode} [parentNode] Node rendering this annotation
  * @param {Object} [config] Configuration options
  */
-ve.ce.UnderlineAnnotation = function VeCeUnderlineAnnotation( model, parentNode, config ) {
+ve.ce.UnderlineAnnotation = function VeCeUnderlineAnnotation() {
 	// Parent constructor
-	ve.ce.TextStyleAnnotation.call( this, model, parentNode, config );
+	ve.ce.UnderlineAnnotation.super.apply( this, arguments );
 
 	// DOM changes
 	this.$element.addClass( 've-ce-underlineAnnotation' );

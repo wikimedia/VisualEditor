@@ -13,9 +13,9 @@
  * @param {ve.dm.TableRowNode} model Model to observe
  * @param {Object} [config] Configuration options
  */
-ve.ce.TableRowNode = function VeCeTableRowNode( model, config ) {
+ve.ce.TableRowNode = function VeCeTableRowNode() {
 	// Parent constructor
-	ve.ce.BranchNode.call( this, model, config );
+	ve.ce.TableRowNode.super.apply( this, arguments );
 };
 
 /* Inheritance */

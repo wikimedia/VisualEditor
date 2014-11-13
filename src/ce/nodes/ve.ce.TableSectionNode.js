@@ -13,9 +13,9 @@
  * @param {ve.dm.TableSectionNode} model Model to observe
  * @param {Object} [config] Configuration options
  */
-ve.ce.TableSectionNode = function VeCeTableSectionNode( model, config ) {
+ve.ce.TableSectionNode = function VeCeTableSectionNode() {
 	// Parent constructor
-	ve.ce.BranchNode.call( this, model, config );
+	ve.ce.TableSectionNode.super.apply( this, arguments );
 
 	// Events
 	this.model.connect( this, { update: 'onUpdate' } );

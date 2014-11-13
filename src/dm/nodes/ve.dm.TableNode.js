@@ -14,12 +14,12 @@
  * @param {ve.dm.Node[]} [children]
  */
 ve.dm.TableNode = function VeDmTableNode() {
+	// Parent constructor
+	ve.dm.TableNode.super.apply( this, arguments );
+
 	// A dense representation of the sparse model to make manipulations
 	// in presence of spanning cells feasible.
 	this.matrix = new ve.dm.TableMatrix( this );
-
-	// Parent constructor
-	ve.dm.BranchNode.apply( this, arguments );
 
 	// Events
 	this.connect( this, { splice: 'onSplice' } );

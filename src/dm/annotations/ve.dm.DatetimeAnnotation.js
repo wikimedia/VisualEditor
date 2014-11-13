@@ -14,9 +14,9 @@
  * @constructor
  * @param {Object} element
  */
-ve.dm.DatetimeAnnotation = function VeDmDatetimeAnnotation( element ) {
+ve.dm.DatetimeAnnotation = function VeDmDatetimeAnnotation() {
 	// Parent constructor
-	ve.dm.TextStyleAnnotation.call( this, element );
+	ve.dm.DatetimeAnnotation.super.apply( this, arguments );
 };
 
 /* Inheritance */

@@ -15,8 +15,9 @@
  * @param {ve.dm.IndexValueStore} store Index-value store
  * @param {Array} [data] Linear data
  */
-ve.dm.MetaLinearData = function VeDmMetaLinearData( store, data ) {
-	ve.dm.LinearData.call( this, store, data );
+ve.dm.MetaLinearData = function VeDmMetaLinearData() {
+	// Parent constructor
+	ve.dm.MetaLinearData.super.apply( this, arguments );
 };
 
 /* Inheritance */

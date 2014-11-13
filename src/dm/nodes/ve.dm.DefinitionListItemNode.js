@@ -16,7 +16,7 @@
  */
 ve.dm.DefinitionListItemNode = function VeDmDefinitionListItemNode() {
 	// Parent constructor
-	ve.dm.BranchNode.apply( this, arguments );
+	ve.dm.DefinitionListItemNode.super.apply( this, arguments );
 };
 
 /* Inheritance */
