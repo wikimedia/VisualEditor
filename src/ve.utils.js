@@ -28,6 +28,18 @@ ve.isInstanceOfAny = function ( subject, classes ) {
 
 /**
  * @method
+ * @inheritdoc OO#getProp
+ */
+ve.getProp = OO.getProp;
+
+/**
+ * @method
+ * @inheritdoc OO#setProp
+ */
+ve.setProp = OO.setProp;
+
+/**
+ * @method
  * @inheritdoc OO#cloneObject
  */
 ve.cloneObject = OO.cloneObject;
@@ -242,62 +254,6 @@ ve.batchPush = function ( arr, data ) {
  */
 ve.insertIntoArray = function ( dst, offset, src ) {
 	ve.batchSplice( dst, offset, 0, src );
-};
-
-/**
- * Get a deeply nested property of an object using variadic arguments, protecting against
- * undefined property errors.
- *
- * `quux = getProp( obj, 'foo', 'bar', 'baz' );` is equivalent to `quux = obj.foo.bar.baz;`
- * except that the former protects against JS errors if one of the intermediate properties
- * is undefined. Instead of throwing an error, this function will return undefined in
- * that case.
- *
- * @param {Object} obj
- * @param {Mixed...} [keys]
- * @returns obj[arguments[1]][arguments[2]].... or undefined
- */
-ve.getProp = function ( obj ) {
-	var i, retval = obj;
-	for ( i = 1; i < arguments.length; i++ ) {
-		if ( retval === undefined || retval === null ) {
-			// Trying to access a property of undefined or null causes an error
-			return undefined;
-		}
-		retval = retval[arguments[i]];
-	}
-	return retval;
-};
-
-/**
- * Set a deeply nested property of an object using variadic arguments, protecting against
- * undefined property errors.
- *
- * `ve.setProp( obj, 'foo', 'bar', 'baz' );` is equivalent to `obj.foo.bar = baz;` except that
- * the former protects against JS errors if one of the intermediate properties is
- * undefined. Instead of throwing an error, undefined intermediate properties will be
- * initialized to an empty object. If an intermediate property is null, or if obj itself
- * is undefined or null, this function will silently abort.
- *
- * @param {Object} obj
- * @param {Mixed...} [keys]
- * @param {Mixed} [value]
- */
-ve.setProp = function ( obj ) {
-	var i, prop = obj;
-	if ( Object( obj ) !== obj ) {
-		return;
-	}
-	for ( i = 1; i < arguments.length - 2; i++ ) {
-		if ( prop[arguments[i]] === undefined ) {
-			prop[arguments[i]] = {};
-		}
-		if ( prop[arguments[i]] === null || typeof prop[arguments[i]] !== 'object' ) {
-			return;
-		}
-		prop = prop[arguments[i]];
-	}
-	prop[arguments[arguments.length - 2]] = arguments[arguments.length - 1];
 };
 
 /**
