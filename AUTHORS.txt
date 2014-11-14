@@ -69,6 +69,11 @@ OOjs UI
  – MIT license
  – OOjs UI Team and other contributors
 
+PapaParse
+ – http://papaparse.com
+ – MIT license
+ – Matthew Holt and other contributors
+
 RangeFix
  – https://github.com/edg2s/rangefix
  – MIT license

@@ -22,6 +22,7 @@
 		"QUnit": false,
 		"unicodeJS": false,
 		"RangeFix": false,
+		"Papa": false,
 		"ve": false
 	}
 }

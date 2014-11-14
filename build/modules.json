@@ -103,13 +103,22 @@
 			"jquery"
 		]
 	},
+	"papaparse": {
+		"scripts": [
+			"lib/papaparse/papaparse.js"
+		],
+		"dependencies": [
+			"jquery"
+		]
+	},
 	"baselibs": {
 		"dependencies": [
 			"jquery",
 			"oojs",
 			"oojs-ui",
 			"jquery.i18n",
-			"jquery.uls.data"
+			"jquery.uls.data",
+			"papaparse"
 		]
 	},
 	"visualEditor.base": {
@@ -332,6 +341,7 @@
 			"src/ui/dialogs/ve.ui.FragmentDialog.js",
 			"src/ui/dialogs/ve.ui.NodeDialog.js",
 			"src/ui/dialogs/ve.ui.ProgressDialog.js",
+			"src/ui/filedrophandlers/ve.ui.DSVFileDropHandler.js",
 			"src/ui/filedrophandlers/ve.ui.PlainTextFileDropHandler.js",
 			"src/ui/filedrophandlers/ve.ui.HTMLFileDropHandler.js",
 			"src/ui/widgets/ve.ui.LanguageSearchWidget.js",
