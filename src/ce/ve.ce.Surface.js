@@ -822,7 +822,7 @@ ve.ce.Surface.prototype.onDocumentDragOver = function ( e ) {
 	if ( !this.relocatingNode ) {
 		return;
 	}
-	var $target, $dropTarget, node, dropPosition, nodeType;
+	var $target, $dropTarget, node, dropPosition, nodeType, inHandlesOwnChildren;
 
 	if ( !this.relocatingNode.isContent() ) {
 		e.preventDefault();
@@ -835,6 +835,15 @@ ve.ce.Surface.prototype.onDocumentDragOver = function ( e ) {
 				node = node.parent;
 			}
 			if ( node.parent ) {
+				inHandlesOwnChildren = false;
+				node.parent.traverseUpstream( function ( n ) {
+					if ( n.handlesOwnChildren() ) {
+						inHandlesOwnChildren = true;
+						return false;
+					}
+				} );
+			}
+			if ( node.parent && !inHandlesOwnChildren ) {
 				$dropTarget = node.$element;
 				dropPosition = e.originalEvent.pageY - $dropTarget.offset().top > $dropTarget.outerHeight() / 2 ? 'bottom' : 'top';
 			} else {
