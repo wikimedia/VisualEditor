@@ -10,7 +10,8 @@
 			"Mormegil",
 			"Polda18",
 			"Tchoř",
-			"ශ්වෙත"
+			"ශ්වෙත",
+			"Vojtěch Dostál"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -32,6 +33,7 @@
 	"visualeditor-commentinspector-edit": "Editovat komentář",
 	"visualeditor-commentinspector-title": "Komentář",
 	"visualeditor-commentinspector-tooltip": "Komentář",
+	"visualeditor-content-select-all": "Vybrat vše",
 	"visualeditor-contextitemwidget-label-secondary": "Editovat",
 	"visualeditor-dialog-action-apply": "Použít změny",
 	"visualeditor-dialog-action-cancel": "Storno",
