@@ -593,7 +593,7 @@ ve.ce.Surface.prototype.onDocumentFocusInOut = function ( e ) {
 ve.ce.Surface.prototype.onFocusChange = function () {
 	var hasFocus = false;
 
-	hasFocus = ve.contains(
+	hasFocus = OO.ui.contains(
 		[
 			this.$documentNode[0],
 			this.$pasteTarget[0]
@@ -3013,7 +3013,7 @@ ve.ce.Surface.prototype.showSelection = function ( selection ) {
 	}
 	// Setting a range doesn't give focus in all browsers so make sure this happens
 	// Also set focus after range to prevent scrolling to top
-	if ( !ve.contains( this.getElementDocument().activeElement, rangeSelection.start.node, true ) ) {
+	if ( !OO.ui.contains( this.getElementDocument().activeElement, rangeSelection.start.node, true ) ) {
 		$( rangeSelection.start.node ).closest( '[contenteditable=true]' )[0].focus();
 	}
 };
