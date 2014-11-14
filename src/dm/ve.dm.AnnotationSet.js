@@ -333,6 +333,29 @@ ve.dm.AnnotationSet.prototype.compareTo = function ( annotationSet ) {
 };
 
 /**
+ * Strictly compare two annotation sets for equality.
+ *
+ * This method only considers two annotation sets to be equal if they contain exactly the same
+ * annotations (not just comparable, but with the same index in the IndexValueStore)
+ * in exactly the same order.
+ *
+ * @param {ve.dm.AnnotationSet} set The annotation set to compare this one to
+ * @returns {boolean} The annotation sets are equal
+ */
+ve.dm.AnnotationSet.prototype.equalsInOrder = function ( set ) {
+	var i, len, ourIndexes = this.getIndexes(), theirIndexes = set.getIndexes();
+	if ( ourIndexes.length !== theirIndexes.length ) {
+		return false;
+	}
+	for ( i = 0, len = ourIndexes.length; i < len; i++ ) {
+		if ( ourIndexes[i] !== theirIndexes[i] ) {
+			return false;
+		}
+	}
+	return true;
+};
+
+/**
  * Add an annotation to the set.
  *
  * If the annotation is already present in the set, nothing happens.
