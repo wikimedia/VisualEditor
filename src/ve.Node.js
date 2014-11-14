@@ -162,6 +162,30 @@ ve.Node.prototype.isFocusable = function () {
 };
 
 /**
+ * Check if the node has significant whitespace.
+ *
+ * Can only be true if canContainContent is also true.
+ *
+ * @method
+ * @abstract
+ * @returns {boolean} Node has significant whitespace
+ */
+ve.Node.prototype.hasSignificantWhitespace = function () {
+	throw new Error( 've.Node.hasSignificantWhitespace must be overridden in subclass' );
+};
+
+/**
+ * Check if the node handles its own children
+ *
+ * @method
+ * @abstract
+ * @returns {boolean} Node handles its own children
+ */
+ve.Node.prototype.handlesOwnChildren = function () {
+	throw new Error( 've.Node.handlesOwnChildren must be overridden in subclass' );
+};
+
+/**
  * Get the length of the node.
  *
  * @method

@@ -378,21 +378,14 @@ ve.dm.Node.prototype.canHaveSlugBefore = function () {
 ve.dm.Node.prototype.canHaveSlugAfter = ve.dm.Node.prototype.canHaveSlugBefore;
 
 /**
- * Check if the node has significant whitespace.
- *
- * Can only be true if canContainContent is also true.
- *
- * @method
- * @returns {boolean} Node has significant whitespace
+ * @inheritdoc ve.Node
  */
 ve.dm.Node.prototype.hasSignificantWhitespace = function () {
 	return this.constructor.static.hasSignificantWhitespace;
 };
 
 /**
- * Check if the node handles its own children
- *
- * @returns {boolean} Node handles its own children
+ * @inheritdoc ve.Node
  */
 ve.dm.Node.prototype.handlesOwnChildren = function () {
 	return this.constructor.static.handlesOwnChildren;
