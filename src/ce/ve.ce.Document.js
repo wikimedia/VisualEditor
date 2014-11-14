@@ -209,12 +209,17 @@ ve.ce.Document.prototype.getNodeAndOffsetUnadjustedForUnicorn = function ( offse
  * @returns {string|null} 'rtl', 'ltr' or null if unknown
  */
 ve.ce.Document.prototype.getDirectionFromSelection = function ( selection ) {
-	if ( !( selection instanceof ve.dm.LinearSelection ) ) {
+	var effectiveNode, range, selectedNodes;
+
+	if ( selection instanceof ve.dm.LinearSelection ) {
+		range = selection.getRange();
+	} else if ( selection instanceof ve.dm.TableSelection ) {
+		range = selection.tableRange;
+	} else {
 		return null;
 	}
-	var effectiveNode,
-		range = selection.getRange(),
-		selectedNodes = this.selectNodes( range, 'covered' );
+
+	selectedNodes = this.selectNodes( range, 'covered' );
 
 	if ( selectedNodes.length > 1 ) {
 		// Selection of multiple nodes
