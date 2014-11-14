@@ -116,13 +116,20 @@ ve.ui.TableContext.prototype.onDocumentMouseDown = function ( e ) {
  * @param {boolean} [show] Show the context menu
  */
 ve.ui.TableContext.prototype.toggle = function ( show ) {
+	var dir,
+		surfaceModel = this.surface.getModel(),
+		surfaceView = this.surface.getView();
 	this.popup.toggle( show );
 	if ( this.popup.isVisible() ) {
 		this.tableNode.setEditing( false );
-		this.surface.getModel().connect( this, { select: 'toggle' } );
-		this.surface.getView().$document.on( 'mousedown', this.onDocumentMouseDownHandler );
+		surfaceModel.connect( this, { select: 'toggle' } );
+		surfaceView.$document.on( 'mousedown', this.onDocumentMouseDownHandler );
+		dir = surfaceView.getDocument().getDirectionFromSelection( surfaceModel.getSelection() ) || surfaceModel.getDocument().getDir();
+		this.$element
+			.removeClass( 've-ui-dir-block-rtl ve-ui-dir-block-ltr' )
+			.addClass( 've-ui-dir-block-' + dir );
 	} else {
-		this.surface.getModel().disconnect( this );
-		this.surface.getView().$document.off( 'mousedown', this.onDocumentMouseDownHandler );
+		surfaceModel.disconnect( this );
+		surfaceView.$document.off( 'mousedown', this.onDocumentMouseDownHandler );
 	}
 };
