@@ -650,8 +650,9 @@ ve.dm.Surface.prototype.setSelection = function ( selection ) {
 			}
 		}
 
-		// Only emit an annotations change event if there's a meaningful difference
-		if ( !insertionAnnotations.compareTo( this.insertionAnnotations ) ) {
+		// Only emit an annotations change event if there's a difference
+		// Note that ANY difference matters here, even order
+		if ( !insertionAnnotations.equalsInOrder( this.insertionAnnotations ) ) {
 			this.setInsertionAnnotations( insertionAnnotations );
 		}
 	}
