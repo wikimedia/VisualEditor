@@ -390,7 +390,8 @@ ve.ce.TableNode.prototype.updateOverlay = function () {
 	// Position controls
 	this.$overlay.css( {
 		top: tableOffset.top - surfaceOffset.top,
-		left: tableOffset.left - surfaceOffset.left
+		left: tableOffset.left - surfaceOffset.left,
+		width: tableOffset.width
 	} );
 	this.colContext.$element.css( {
 		left: selectionOffset.left
