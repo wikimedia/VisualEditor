@@ -52,12 +52,12 @@ ve.dm.TableCellNode.static.toDataElement = function ( domElements ) {
 
 	if ( colspan !== null && colspan !== '' ) {
 		attributes.colspan = Number( colspan );
-		attributes.originalColspan = attributes.colspan;
+		attributes.originalColspan = colspan;
 	}
 
 	if ( rowspan !== null && rowspan !== '' ) {
 		attributes.rowspan = Number( rowspan );
-		attributes.originalRowspan = attributes.rowspan;
+		attributes.originalRowspan = rowspan;
 	}
 
 	return {
@@ -69,18 +69,31 @@ ve.dm.TableCellNode.static.toDataElement = function ( domElements ) {
 ve.dm.TableCellNode.static.toDomElements = function ( dataElement, doc ) {
 	var tag = dataElement.attributes && dataElement.attributes.style === 'header' ? 'th' : 'td',
 		domElement = doc.createElement( tag ),
-		attributes = dataElement.attributes;
+		attributes = dataElement.attributes,
+		spans = {
+			colspan: attributes.colspan,
+			rowspan: attributes.rowspan
+		};
 
 	// Ignore spans of 1 unless they were in the original HTML
-	if ( attributes.colspan === 1 && attributes.originalColspan !== 1 ) {
-		attributes.colspan = null;
+	if ( attributes.colspan === 1 && Number( attributes.originalColspan ) !== 1 ) {
+		spans.colspan = null;
 	}
 
-	if ( attributes.rowspan === 1 && attributes.originalRowspan !== 1 ) {
-		attributes.rowspan = null;
+	if ( attributes.rowspan === 1 && Number( attributes.originalRowspan ) !== 1 ) {
+		spans.rowspan = null;
 	}
 
-	ve.setDomAttributes( domElement, dataElement.attributes, [ 'colspan', 'rowspan' ] );
+	// Use original value if the numerical value didn't change, or if the numerical value is NaN
+	if ( attributes.colspan === Number( attributes.originalColspan ) || isNaN( attributes.colspan ) ) {
+		spans.colspan = attributes.originalColspan;
+	}
+
+	if ( attributes.rowspan === Number( attributes.originalRowspan ) || isNaN( attributes.rowspan ) ) {
+		spans.rowspan = attributes.originalRowspan;
+	}
+
+	ve.setDomAttributes( domElement, spans );
 
 	return [ domElement ];
 };

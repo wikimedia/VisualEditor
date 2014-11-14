@@ -776,7 +776,7 @@ ve.dm.example.listWithMeta = [
 ];
 
 ve.dm.example.complexTableHtml = '<table><caption>Foo</caption><thead><tr><th>Bar</th></tr></thead>' +
-	'<tfoot><tr><td>Baz</td></tr></tfoot><tbody><tr><td>Quux</td><td>Whee</td></tr></tbody></table>';
+	'<tfoot><tr><td colspan=2>Baz</td></tr></tfoot><tbody><tr><td rowspan="02">Quux</td><td colspan="2 garbage">Whee</td></tr></tbody></table>';
 
 ve.dm.example.complexTable = [
 	{ type: 'table' },
@@ -800,7 +800,14 @@ ve.dm.example.complexTable = [
 	{ type: '/tableSection' },
 	{ type: 'tableSection', attributes: { style: 'footer' } },
 	{ type: 'tableRow' },
-	{ type: 'tableCell', attributes: { style: 'data' } },
+	{
+		type: 'tableCell',
+		attributes: {
+			style: 'data',
+			colspan: 2,
+			originalColspan: '2'
+		}
+	},
 	{ type: 'paragraph', internal: { generated: 'wrapper' } },
 	'B',
 	'a',
@@ -811,7 +818,14 @@ ve.dm.example.complexTable = [
 	{ type: '/tableSection' },
 	{ type: 'tableSection', attributes: { style: 'body' } },
 	{ type: 'tableRow' },
-	{ type: 'tableCell', attributes: { style: 'data' } },
+	{
+		type: 'tableCell',
+		attributes: {
+			style: 'data',
+			rowspan: 2,
+			originalRowspan: '02'
+		}
+	},
 	{ type: 'paragraph', internal: { generated: 'wrapper' } },
 	'Q',
 	'u',
@@ -819,7 +833,14 @@ ve.dm.example.complexTable = [
 	'x',
 	{ type: '/paragraph' },
 	{ type: '/tableCell' },
-	{ type: 'tableCell', attributes: { style: 'data' } },
+	{
+		type: 'tableCell',
+		attributes: {
+			style: 'data',
+			colspan: NaN,
+			originalColspan: '2 garbage'
+		}
+	},
 	{ type: 'paragraph', internal: { generated: 'wrapper' } },
 	'W',
 	'h',
