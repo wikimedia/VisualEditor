@@ -178,7 +178,8 @@ ve.ui.DesktopContext.prototype.toggle = function ( show ) {
 		if ( this.inspector ) {
 			this.inspectors.updateWindowSize( this.inspector );
 		}
-		this.updateDimensionsDebounced();
+		// updateDimensionsDebounced is not necessary here and causes a movement flicker
+		this.updateDimensions();
 	} else if ( this.inspector ) {
 		this.inspector.close();
 	}
