@@ -30,6 +30,62 @@ QUnit.module( 've' );
 
 // ve.extendObject: Tested upstream (jQuery)
 
+QUnit.test( 'isInstanceOfAny', 7, function ( assert ) {
+	function Foo() {}
+	OO.initClass( Foo );
+
+	function Bar() {}
+	OO.initClass( Bar );
+
+	function SpecialFoo() {}
+	OO.inheritClass( SpecialFoo, Foo );
+
+	function VerySpecialFoo() {}
+	OO.inheritClass( VerySpecialFoo, SpecialFoo );
+
+	assert.strictEqual(
+		ve.isInstanceOfAny( new Foo(), [ Foo ] ),
+		true,
+		'Foo is an instance of Foo'
+	);
+
+	assert.strictEqual(
+		ve.isInstanceOfAny( new SpecialFoo(), [ Foo ] ),
+		true,
+		'SpecialFoo is an instance of Foo'
+	);
+
+	assert.strictEqual(
+		ve.isInstanceOfAny( new SpecialFoo(), [ Bar ] ),
+		false,
+		'SpecialFoo is not an instance of Bar'
+	);
+
+	assert.strictEqual(
+		ve.isInstanceOfAny( new SpecialFoo(), [ Bar, Foo ] ),
+		true,
+		'SpecialFoo is an instance of Bar or Foo'
+	);
+
+	assert.strictEqual(
+		ve.isInstanceOfAny( new VerySpecialFoo(), [ Bar, Foo ] ),
+		true,
+		'VerySpecialFoo is an instance of Bar or Foo'
+	);
+
+	assert.strictEqual(
+		ve.isInstanceOfAny( new VerySpecialFoo(), [ Foo, SpecialFoo ] ),
+		true,
+		'VerySpecialFoo is an instance of Foo or SpecialFoo'
+	);
+
+	assert.strictEqual(
+		ve.isInstanceOfAny( new VerySpecialFoo(), [] ),
+		false,
+		'VerySpecialFoo is not an instance of nothing'
+	);
+} );
+
 QUnit.test( 'getDomAttributes', 1, function ( assert ) {
 	assert.deepEqual(
 		ve.getDomAttributes( $( '<div foo="bar" baz quux=3></div>' ).get( 0 ) ),
