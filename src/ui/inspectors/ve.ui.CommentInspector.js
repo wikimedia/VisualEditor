@@ -159,13 +159,7 @@ ve.ui.CommentInspector.prototype.getTeardownProcess = function ( data ) {
 				this.getFragment().removeContent();
 			} else {
 				// Edit comment node
-				surfaceModel.change(
-					ve.dm.Transaction.newFromAttributeChanges(
-						surfaceModel.getDocument(),
-						this.commentNode.getOffset(),
-						{ text: text }
-					)
-				);
+				this.getFragment().changeAttributes( { text: text } );
 				surfaceModel.applyStaging();
 			}
 
