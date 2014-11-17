@@ -30,7 +30,9 @@ ve.ui.MobileContext = function VeUiMobileContext( surface, config ) {
 	// Initialization
 	this.$element
 		.addClass( 've-ui-mobileContext' )
-		.append( this.menu.$element );
+		.append( this.menu.$element )
+		// Mobile context uses a class to toggle visibility
+		.show();
 	this.menu.$element.addClass( 've-ui-mobileContext-menu' );
 	this.inspectors.$element.addClass( 've-ui-mobileContext-inspectors' );
 	this.surface.getGlobalOverlay().$element.append( this.inspectors.$element );
