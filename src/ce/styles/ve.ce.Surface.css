@@ -26,14 +26,13 @@
 	position: fixed;
 	top: 1em; /* Hack: Stop the viewport scrolling when the paste target is typed into */
 	left: 0;
-	width: 1px;
+	/* Try to avoid wrapping by not setting a width because of https://code.google.com/p/chromium/issues/detail?id=318925 */
 	height: 1px;
 	opacity: 0;
 	overflow: hidden;
 }
 
 .ve-ce-surface-paste * {
-	width: 1px !important;
 	height: 1px !important;
 }
 
