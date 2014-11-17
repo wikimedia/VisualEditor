@@ -1,0 +1,22 @@
+/*!
+ * VisualEditor UserInterface MobileContextItemWidget styles.
+ *
+ * @copyright 2011-2014 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+.ve-ui-mobileContextItemWidget .oo-ui-labelElement-label {
+	max-width: none;
+	text-overflow: clip;
+}
+
+.ve-ui-mobileContextItemWidget-label-primary {
+	display: block;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+
+.ve-ui-mobileContextItemWidget-label-secondary {
+	float: right;
+	margin-left: 1em;
+	color: #347bff;
+}

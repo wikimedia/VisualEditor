@@ -511,11 +511,12 @@
 		"scripts": [
 			"src/ui/ve.ui.MobileSurface.js",
 			"src/ui/ve.ui.MobileContext.js",
-			"src/ui/ve.ui.MobileWindowManager.js"
+			"src/ui/ve.ui.MobileWindowManager.js",
+			"src/ui/widgets/ve.ui.MobileContextItemWidget.js"
 		],
 		"styles": [
 			"src/ui/styles/ve.ui.MobileSurface.css",
-			"src/ui/styles/ve.ui.MobileContext.css"
+			"src/ui/styles/widgets/ve.ui.MobileContextItemWidget.css"
 		],
 		"dependencies": [
 			"visualEditor.core.build"
