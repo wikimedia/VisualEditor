@@ -158,7 +158,6 @@ ve.ui.CommentInspector.prototype.getTeardownProcess = function ( data ) {
 				// If popStaging removed the node then this will be a no-op
 				this.getFragment().removeContent();
 			} else {
-				surfaceModel.applyStaging();
 				// Edit comment node
 				surfaceModel.change(
 					ve.dm.Transaction.newFromAttributeChanges(
@@ -167,6 +166,7 @@ ve.ui.CommentInspector.prototype.getTeardownProcess = function ( data ) {
 						{ text: text }
 					)
 				);
+				surfaceModel.applyStaging();
 			}
 
 			// Reset inspector
