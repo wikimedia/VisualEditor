@@ -58,6 +58,15 @@ ve.ui.MobileContext.prototype.createInspectorWindowManager = function () {
 /**
  * @inheritdoc
  */
+ve.ui.Context.prototype.createItem = function ( tool ) {
+	return new ve.ui.MobileContextItemWidget(
+		tool.tool.static.name, tool.tool, tool.model, { $: this.$ }
+	);
+};
+
+/**
+ * @inheritdoc
+ */
 ve.ui.MobileContext.prototype.toggle = function ( show ) {
 	var deferred = $.Deferred();
 

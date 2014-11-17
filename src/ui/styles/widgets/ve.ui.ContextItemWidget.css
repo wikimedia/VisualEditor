@@ -29,7 +29,3 @@
 .ve-ui-contextItemWidget.oo-ui-optionWidget-highlighted .oo-ui-iconElement-icon {
 	opacity: 1;
 }
-
-.ve-ui-contextItemWidget .ve-ui-contextItemWidget-label-secondary {
-	display: none;
-}

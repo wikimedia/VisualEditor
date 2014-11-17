@@ -282,22 +282,31 @@ ve.ui.Context.prototype.createInspectorWindowManager = function () {
 };
 
 /**
+ * Create a context item widget
+ *
+ * @param {Object} tool Object containing tool and model properties.
+ * @return {ve.ui.ContextItemWidget} Context item widget
+ */
+ve.ui.Context.prototype.createItem = function ( tool ) {
+	return new ve.ui.ContextItemWidget(
+		tool.tool.static.name, tool.tool, tool.model, { $: this.$ }
+	);
+};
+
+/**
  * Update the contents of the menu.
  *
  * @chainable
  */
 ve.ui.Context.prototype.populateMenu = function () {
-	var i, len, tool,
-        items = [],
-        tools = this.getAvailableTools();
+	var i, len,
+		items = [],
+		tools = this.getAvailableTools();
 
 	this.menu.clearItems();
 	if ( tools.length ) {
 		for ( i = 0, len = tools.length; i < len; i++ ) {
-			tool = tools[i];
-			items.push( new ve.ui.ContextItemWidget(
-				tool.tool.static.name, tool.tool, tool.model, { $: this.$ }
-			) );
+			items.push( this.createItem( tools[i] ) );
 		}
 		this.menu.addItems( items );
 	}
