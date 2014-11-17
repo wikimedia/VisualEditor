@@ -168,6 +168,22 @@ QUnit.test( 'getClonedElement', function ( assert ) {
 					}
 				},
 				clone: {
+					type: 'foo',
+					internal: {
+						generated: 'wrapper'
+					}
+				},
+				preserveGenerated: true,
+				msg: 'internal.generated not removed if preserveGenerated set'
+			},
+			{
+				original: {
+					type: 'foo',
+					internal: {
+						generated: 'wrapper'
+					}
+				},
+				clone: {
 					type: 'foo'
 				},
 				msg: 'internal property is removed if it only contained .generated'
@@ -217,6 +233,6 @@ QUnit.test( 'getClonedElement', function ( assert ) {
 
 	for ( i = 0; i < cases.length; i++ ) {
 		node = new ve.dm.NodeStub( cases[i].original );
-		assert.deepEqual( node.getClonedElement(), cases[i].clone, cases[i].msg );
+		assert.deepEqual( node.getClonedElement( cases[i].preserveGenerated ), cases[i].clone, cases[i].msg );
 	}
 } );

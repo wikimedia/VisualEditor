@@ -1287,7 +1287,7 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 	pasteData = slice.data.clone();
 
 	// Clone the elements in the slice
-	slice.data.cloneElements();
+	slice.data.cloneElements( true );
 
 	ve.dm.converter.getDomSubtreeFromModel( slice, this.$pasteTarget[0], true );
 
