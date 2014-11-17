@@ -128,17 +128,6 @@ ve.ce.Node.prototype.isContent = function () {
 };
 
 /**
- * Check if the node handles its own children
- *
- * This method passes through to the model.
- *
- * @returns {boolean} Node handles its own children
- */
-ve.ce.Node.prototype.handlesOwnChildren = function () {
-	return this.model.handlesOwnChildren();
-};
-
-/**
  * @inheritdoc ve.Node
  *
  * If this is set to true it should implement:
@@ -148,6 +137,20 @@ ve.ce.Node.prototype.handlesOwnChildren = function () {
  */
 ve.ce.Node.prototype.isFocusable = function () {
 	return this.model.isFocusable();
+};
+
+/**
+ * @inheritdoc ve.Node
+ */
+ve.ce.Node.prototype.hasSignificantWhitespace = function () {
+	return this.model.hasSignificantWhitespace();
+};
+
+/**
+ * @inheritdoc ve.Node
+ */
+ve.ce.Node.prototype.handlesOwnChildren = function () {
+	return this.model.handlesOwnChildren();
 };
 
 /**
