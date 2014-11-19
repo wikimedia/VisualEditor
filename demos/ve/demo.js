@@ -63,8 +63,8 @@ $( function () {
 		// Initialization
 		pageMenu.on( 'select', function ( item ) {
 			var page = item.getData();
-			if ( window.history.replaceState ) {
-				window.history.replaceState( null, document.title, '#!/src/' + page );
+			if ( history.replaceState ) {
+				history.replaceState( null, document.title, '#!/src/' + page );
 			}
 			switchPage( 've', page );
 		} );
