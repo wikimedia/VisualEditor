@@ -7,7 +7,7 @@
 /**
  * List of context items, displaying information about the current context.
  *
- * Use with ve.ui.ContextItemWidget.
+ * Use with ve.ui.ContextOptionWidget.
  *
  * @class
  * @extends OO.ui.SelectWidget

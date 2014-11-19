@@ -11,7 +11,7 @@ $( function () {
 			var name, items = [];
 			for ( name in ve.demoPages ) {
 				items.push(
-					new OO.ui.MenuItemWidget( ve.demoPages[name],  { label: name } )
+					new OO.ui.MenuOptionWidget( ve.demoPages[name],  { label: name } )
 				);
 			}
 			return items;

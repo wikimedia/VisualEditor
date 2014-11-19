@@ -339,8 +339,8 @@
 			"src/ui/widgets/ve.ui.LanguageInputWidget.js",
 			"src/ui/widgets/ve.ui.SurfaceWidget.js",
 			"src/ui/widgets/ve.ui.LinkTargetInputWidget.js",
-			"src/ui/widgets/ve.ui.ContextMenuWidget.js",
-			"src/ui/widgets/ve.ui.ContextItemWidget.js",
+			"src/ui/widgets/ve.ui.ContextSelectWidget.js",
+			"src/ui/widgets/ve.ui.ContextOptionWidget.js",
 			"src/ui/widgets/ve.ui.DimensionsWidget.js",
 			"src/ui/widgets/ve.ui.MediaSizeWidget.js",
 			"src/ui/widgets/ve.ui.WhitespacePreservingTextInputWidget.js",
@@ -380,8 +380,8 @@
 			"src/ui/styles/tools/ve.ui.FormatTool.css",
 			"src/ui/styles/widgets/ve.ui.LanguageInputWidget.css",
 			"src/ui/styles/widgets/ve.ui.LanguageSearchWidget.css",
-			"src/ui/styles/widgets/ve.ui.ContextItemWidget.css",
-			"src/ui/styles/widgets/ve.ui.ContextMenuWidget.css",
+			"src/ui/styles/widgets/ve.ui.ContextOptionWidget.css",
+			"src/ui/styles/widgets/ve.ui.ContextSelectWidget.css",
 			"src/ui/styles/widgets/ve.ui.DimensionsWidget.css",
 			"src/ui/styles/widgets/ve.ui.MediaSizeWidget.css",
 			"src/ui/styles/inspectors/ve.ui.CommentInspector.css",
@@ -512,11 +512,11 @@
 			"src/ui/ve.ui.MobileSurface.js",
 			"src/ui/ve.ui.MobileContext.js",
 			"src/ui/ve.ui.MobileWindowManager.js",
-			"src/ui/widgets/ve.ui.MobileContextItemWidget.js"
+			"src/ui/widgets/ve.ui.MobileContextOptionWidget.js"
 		],
 		"styles": [
 			"src/ui/styles/ve.ui.MobileSurface.css",
-			"src/ui/styles/widgets/ve.ui.MobileContextItemWidget.css"
+			"src/ui/styles/widgets/ve.ui.MobileContextOptionWidget.css"
 		],
 		"dependencies": [
 			"visualEditor.core.build"

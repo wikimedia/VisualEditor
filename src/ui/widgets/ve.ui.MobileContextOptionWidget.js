@@ -8,7 +8,7 @@
  * Mobile version of context item widget
  *
  * @class
- * @extends ve.ui.ContextItemWidget
+ * @extends ve.ui.ContextOptionWidget
  *
  * @constructor
  * @param {Object} data
@@ -16,16 +16,16 @@
  * @param {ve.dm.Node|ve.dm.Annotation} model
  * @param {Object} [config]
  */
-ve.ui.MobileContextItemWidget = function VeUiContextItemWidget() {
+ve.ui.MobileContextOptionWidget = function VeUiContextOptionWidget() {
 	// Parent constructor
-	ve.ui.MobileContextItemWidget.super.apply( this, arguments );
+	ve.ui.MobileContextOptionWidget.super.apply( this, arguments );
 
-	this.$element.addClass( 've-ui-mobileContextItemWidget' );
+	this.$element.addClass( 've-ui-mobileContextOptionWidget' );
 	this.setLabel(
-		this.$( '<span>' ).addClass( 've-ui-mobileContextItemWidget-label-secondary' )
+		this.$( '<span>' ).addClass( 've-ui-mobileContextOptionWidget-label-secondary' )
 			.text( ve.msg( 'visualeditor-contextitemwidget-label-secondary' ) )
 			.add(
-				this.$( '<span>' ).addClass( 've-ui-mobileContextItemWidget-label-primary' )
+				this.$( '<span>' ).addClass( 've-ui-mobileContextOptionWidget-label-primary' )
 					.text( this.getDescription() )
 			)
 	);
@@ -33,4 +33,4 @@ ve.ui.MobileContextItemWidget = function VeUiContextItemWidget() {
 
 /* Setup */
 
-OO.inheritClass( ve.ui.MobileContextItemWidget, ve.ui.ContextItemWidget );
+OO.inheritClass( ve.ui.MobileContextOptionWidget, ve.ui.ContextOptionWidget );

@@ -4,11 +4,11 @@
  * @copyright 2011-2014 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
-.ve-ui-contextItemWidget {
+.ve-ui-contextOptionWidget {
 	padding: 0.5em 1em 0.5em 3em;
 }
 
-.ve-ui-contextItemWidget .oo-ui-labelElement-label {
+.ve-ui-contextOptionWidget .oo-ui-labelElement-label {
 	color: #666;
 	/* Size required to match menu and inspector widths */
 	max-width: 19.4em;
@@ -16,16 +16,16 @@
 	overflow: hidden;
 }
 
-.ve-ui-contextItemWidget .oo-ui-iconElement-icon {
+.ve-ui-contextOptionWidget .oo-ui-iconElement-icon {
 	opacity: 0.8;
 }
 
-.ve-ui-contextItemWidget.oo-ui-optionWidget-highlighted,
-.ve-ui-contextItemWidget.oo-ui-optionWidget-selected,
-.ve-ui-contextItemWidget.oo-ui-optionWidget-pressed {
+.ve-ui-contextOptionWidget.oo-ui-optionWidget-highlighted,
+.ve-ui-contextOptionWidget.oo-ui-optionWidget-selected,
+.ve-ui-contextOptionWidget.oo-ui-optionWidget-pressed {
 	background-color: transparent;
 }
 
-.ve-ui-contextItemWidget.oo-ui-optionWidget-highlighted .oo-ui-iconElement-icon {
+.ve-ui-contextOptionWidget.oo-ui-optionWidget-highlighted .oo-ui-iconElement-icon {
 	opacity: 1;
 }

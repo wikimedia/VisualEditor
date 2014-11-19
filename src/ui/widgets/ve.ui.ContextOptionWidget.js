@@ -7,7 +7,7 @@
 /**
  * Proxy for a tool, displaying information about the current context.
  *
- * Use with ve.ui.ContextMenuWidget.
+ * Use with ve.ui.ContextSelectWidget.
  *
  * @class
  * @extends OO.ui.DecoratedOptionWidget
@@ -18,19 +18,19 @@
  * @param {ve.dm.Node|ve.dm.Annotation} model Node or annotation item is related to
  * @param {Object} [config] Configuration options
  */
-ve.ui.ContextItemWidget = function VeUiContextItemWidget( data, tool, model, config ) {
+ve.ui.ContextOptionWidget = function VeUiContextOptionWidget( data, tool, model, config ) {
 	// Config intialization
 	config = config || {};
 
 	// Parent constructor
-	ve.ui.ContextItemWidget.super.call( this, data, config );
+	ve.ui.ContextOptionWidget.super.call( this, data, config );
 
 	// Properties
 	this.tool = tool;
 	this.model = model;
 
 	// Initialization
-	this.$element.addClass( 've-ui-contextItemWidget' );
+	this.$element.addClass( 've-ui-contextOptionWidget' );
 	this.setIcon( this.tool.static.icon );
 
 	this.setLabel( this.getDescription() );
@@ -38,7 +38,7 @@ ve.ui.ContextItemWidget = function VeUiContextItemWidget( data, tool, model, con
 
 /* Setup */
 
-OO.inheritClass( ve.ui.ContextItemWidget, OO.ui.DecoratedOptionWidget );
+OO.inheritClass( ve.ui.ContextOptionWidget, OO.ui.DecoratedOptionWidget );
 
 /* Methods */
 
@@ -47,7 +47,7 @@ OO.inheritClass( ve.ui.ContextItemWidget, OO.ui.DecoratedOptionWidget );
  *
  * @return {string} Description of model
  */
-ve.ui.ContextItemWidget.prototype.getDescription = function () {
+ve.ui.ContextOptionWidget.prototype.getDescription = function () {
 	var description;
 
 	if ( this.model instanceof ve.dm.Annotation ) {
@@ -67,6 +67,6 @@ ve.ui.ContextItemWidget.prototype.getDescription = function () {
  *
  * @return {ve.ui.Command} Command
  */
-ve.ui.ContextItemWidget.prototype.getCommand = function () {
+ve.ui.ContextOptionWidget.prototype.getCommand = function () {
 	return ve.ui.commandRegistry.lookup( this.tool.static.commandName );
 };

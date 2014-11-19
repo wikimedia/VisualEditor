@@ -24,7 +24,7 @@ ve.ui.Context = function VeUiContext( surface, config ) {
 	this.visible = false;
 	this.inspector = null;
 	this.inspectors = this.createInspectorWindowManager();
-	this.menu = new ve.ui.ContextMenuWidget( { $: this.$ } );
+	this.menu = new ve.ui.ContextSelectWidget( { $: this.$ } );
 	this.lastSelectedNode = null;
 	this.afterContextChangeTimeout = null;
 	this.afterContextChangeHandler = this.afterContextChange.bind( this );
@@ -180,7 +180,7 @@ ve.ui.Context.prototype.onInspectorOpening = function ( win, opening ) {
 /**
  * Handle context item choose events.
  *
- * @param {ve.ui.ContextItemWidget} item Chosen item
+ * @param {ve.ui.ContextOptionWidget} item Chosen item
  */
 ve.ui.Context.prototype.onContextItemChoose = function ( item ) {
 	if ( item ) {
@@ -263,7 +263,7 @@ ve.ui.Context.prototype.getInspectors = function () {
 /**
  * Get context menu.
  *
- * @return {ve.ui.ContextMenuWidget}
+ * @return {ve.ui.ContextSelectWidget}
  */
 ve.ui.Context.prototype.getMenu = function () {
 	return this.menu;
@@ -285,10 +285,10 @@ ve.ui.Context.prototype.createInspectorWindowManager = function () {
  * Create a context item widget
  *
  * @param {Object} tool Object containing tool and model properties.
- * @return {ve.ui.ContextItemWidget} Context item widget
+ * @return {ve.ui.ContextOptionWidget} Context item widget
  */
 ve.ui.Context.prototype.createItem = function ( tool ) {
-	return new ve.ui.ContextItemWidget(
+	return new ve.ui.ContextOptionWidget(
 		tool.tool.static.name, tool.tool, tool.model, { $: this.$ }
 	);
 };

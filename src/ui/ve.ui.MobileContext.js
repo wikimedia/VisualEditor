@@ -59,7 +59,7 @@ ve.ui.MobileContext.prototype.createInspectorWindowManager = function () {
  * @inheritdoc
  */
 ve.ui.Context.prototype.createItem = function ( tool ) {
-	return new ve.ui.MobileContextItemWidget(
+	return new ve.ui.MobileContextOptionWidget(
 		tool.tool.static.name, tool.tool, tool.model, { $: this.$ }
 	);
 };
