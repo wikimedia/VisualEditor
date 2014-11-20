@@ -183,6 +183,7 @@ ve.ui.CommandHelpDialog.static.getCommandGroups = function () {
 		other: {
 			title: 'visualeditor-shortcuts-other',
 			commands: [
+				{ trigger: 'findAndReplace', msg: 'visualeditor-find-and-replace-title' },
 				{ trigger: 'selectAll', msg: 'visualeditor-content-select-all' },
 				{ trigger: 'commandHelp', msg: 'visualeditor-dialog-command-help-title' }
 			]

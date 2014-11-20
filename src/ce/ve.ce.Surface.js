@@ -57,6 +57,7 @@ ve.ce.Surface = function VeCeSurface( model, ui, options ) {
 	this.$highlights = this.$( '<div>' ).append(
 		this.$highlightsFocused, this.$highlightsBlurred
 	);
+	this.$findResults = this.$( '<div>' );
 	this.$dropMarker = this.$( '<div>' ).addClass( 've-ce-focusableNode-dropMarker' );
 	this.$lastDropTarget = null;
 	this.lastDropPosition = null;

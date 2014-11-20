@@ -14,7 +14,7 @@
 	 * Hack 1.1: The height isn't calculated correctly with the inline-block
 	 * hack so fix it to prevent unnecessary scroll bars.
 	 */
-	height: 37em;
+	height: 39em;
 }
 
 .ve-ui-commandHelpDialog-section {

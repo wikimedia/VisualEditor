@@ -58,7 +58,9 @@ ve.ui.WindowAction.prototype.open = function ( name, data ) {
 
 	data = ve.extendObject( { dir: dir }, data, { fragment: fragment } );
 
-	if ( windowType === 'dialog' ) {
+	if ( windowType === 'toolbar' ) {
+		data = ve.extendObject( data, { surface: surface } );
+	} else if ( windowType === 'dialog' ) {
 		// For non-isolated dialogs, remove the selection and re-apply on close
 		surface.getView().nativeSelection.removeAllRanges();
 		onOpen = function ( opened ) {
@@ -131,12 +133,14 @@ ve.ui.WindowAction.prototype.toggle = function ( name, data ) {
  * Get the type of a window class
  *
  * @param {string} name Window name
- * @return {string|null} Window type: 'inspector' or 'dialog'
+ * @return {string|null} Window type: 'inspector', 'toolbar' or 'dialog'
  */
 ve.ui.WindowAction.prototype.getWindowType = function ( name ) {
 	var windowClass = ve.ui.windowFactory.lookup( name );
 	if ( windowClass.prototype instanceof ve.ui.FragmentInspector ) {
 		return 'inspector';
+	} else if ( windowClass.prototype instanceof ve.ui.ToolbarDialog ) {
+		return 'toolbar';
 	} else if ( windowClass.prototype instanceof OO.ui.Dialog ) {
 		return 'dialog';
 	}
@@ -153,6 +157,8 @@ ve.ui.WindowAction.prototype.getWindowManager = function ( windowType ) {
 	switch ( windowType ) {
 		case 'inspector':
 			return this.surface.getContext().getInspectors();
+		case 'toolbar':
+			return this.surface.toolbarDialogs;
 		case 'dialog':
 			return this.surface.getDialogs();
 	}

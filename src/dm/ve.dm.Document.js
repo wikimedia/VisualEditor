@@ -1242,6 +1242,35 @@ ve.dm.Document.prototype.newFromHtml = function ( html, importRules ) {
 };
 
 /**
+ * Find a text string within the document
+ *
+ * @param {string} query Text to find
+ * @param {boolean} [caseSensitive] Case sensitive search
+ * @param {boolean} [noOverlaps] Avoid overlapping matches
+ * @return {number[]} List of offsets where the string was found
+ */
+ve.dm.Document.prototype.findText = function ( query, caseSensitive, noOverlaps ) {
+	var offset = -1,
+		offsets = [],
+		len = query.length,
+		text = this.data.getText(
+			true,
+			new ve.Range( 0, this.getInternalList().getListNode().getOuterRange().start )
+		);
+
+	if ( !caseSensitive ) {
+		text = text.toLowerCase();
+		query = query.toLowerCase();
+	}
+
+	while ( ( offset = text.indexOf( query, offset ) ) !== -1 ) {
+		offsets.push( offset );
+		offset += noOverlaps ? len : 1;
+	}
+	return offsets;
+};
+
+/**
  * Get the length of the complete history stack. This is also the current pointer.
  * @returns {number} Length of the complete history stack
  */
