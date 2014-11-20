@@ -32,6 +32,10 @@ ve.init.Target = function VeInitTarget( $container ) {
 	// Initialization
 	this.$element.addClass( 've-init-target' );
 
+	if ( ve.init.platform.constructor.static.isInternetExplorer() ) {
+		this.$element.addClass( 've-init-target-ie' );
+	}
+
 	// Register
 	ve.init.target = this;
 };
