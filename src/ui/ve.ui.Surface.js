@@ -216,7 +216,7 @@ ve.ui.Surface.prototype.getContext = function () {
  * Get dialogs window set.
  *
  * @method
- * @returns {OO.ui.WindowManager} Dialogs window set
+ * @returns {ve.ui.WindowManager} Dialogs window set
  */
 ve.ui.Surface.prototype.getDialogs = function () {
 	return this.dialogs;
