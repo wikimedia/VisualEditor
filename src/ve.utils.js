@@ -450,7 +450,7 @@ ve.escapeHtml = function ( value ) {
  * @method escapeHtml_escapeHtmlCharacter
  * @private
  * @param {string} key Property name of value being replaced
- * @returns {string} Escaped charcater
+ * @returns {string} Escaped character
  */
 ve.escapeHtml.escapeHtmlCharacter = function ( value ) {
 	switch ( value ) {
@@ -1136,8 +1136,8 @@ ve.getOffsetPath = function ( ancestor, node, nodeOffset ) {
 	var path = [ nodeOffset ];
 	while ( node !== ancestor ) {
 		if ( node.parentNode === null ) {
-			ve.log( node, 'is not a descendent of', ancestor );
-			throw new Error( 'Not a descendent' );
+			ve.log( node, 'is not a descendant of', ancestor );
+			throw new Error( 'Not a descendant' );
 		}
 		path.unshift(
 			Array.prototype.indexOf.call( node.parentNode.childNodes, node )

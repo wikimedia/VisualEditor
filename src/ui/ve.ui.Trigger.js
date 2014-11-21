@@ -23,7 +23,7 @@ ve.ui.Trigger = function VeUiTrigger( e, allowInvalidPrimary ) {
 	};
 	this.primary = false;
 
-	// Initialiation
+	// Initialization
 	var i, len, key, parts,
 		keyAliases = ve.ui.Trigger.static.keyAliases,
 		primaryKeys = ve.ui.Trigger.static.primaryKeys,

@@ -315,7 +315,7 @@ ve.dm.Transaction.newFromAnnotation = function ( doc, range, method, annotation 
 			// Text is always annotatable
 			annotatable = true;
 		}
-		// No annotations if we're inside a hanldesOwnChildren
+		// No annotations if we're inside a handlesOwnChildren
 		annotatable = annotatable && !handlesOwnChildrenDepth;
 		if (
 			!annotatable ||
@@ -1004,7 +1004,7 @@ ve.dm.Transaction.prototype.getModifiedRange = function () {
  * @method
  * @param {ve.dm.Document} doc Document to finish off.
  * @param {number} Final offset edited by the transaction up to this point.
- * @param {number} [metaOffset=0] Final metadata offset edited, if nonzero.
+ * @param {number} [metaOffset=0] Final metadata offset edited, if non-zero.
  */
 ve.dm.Transaction.prototype.pushFinalRetain = function ( doc, offset, metaOffset ) {
 	var data = doc.data,

@@ -44,7 +44,7 @@ ve.ui.Command.prototype.execute = function ( surface ) {
  * Check if this command is executable on a given surface fragment
  *
  * @param {ve.dm.SurfaceFragment} fragment Surface fragment
- * @return {boolean} The command can execute on this fragmnet
+ * @return {boolean} The command can execute on this fragment
  */
 ve.ui.Command.prototype.isExecutable = function ( fragment ) {
 	return !this.supportedSelections ||

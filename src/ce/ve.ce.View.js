@@ -16,7 +16,7 @@
  * @param {Object} [config] Configuration options
  */
 ve.ce.View = function VeCeView( model, config ) {
-	// Setting this property before calling the parent constructor allows overriden #getTagName
+	// Setting this property before calling the parent constructor allows overridden #getTagName
 	// methods in view classes to have access to the model when they are called for the first time
 	// inside of OO.ui.Element
 	this.model = model;

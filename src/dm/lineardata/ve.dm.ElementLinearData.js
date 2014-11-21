@@ -137,7 +137,7 @@ ve.dm.ElementLinearData.prototype.isContentOffset = function ( offset ) {
  *
  * If the {unrestricted} param is true than only offsets where any kind of element can be inserted
  * will return true. This can be used to detect the difference between a location that a paragraph
- * can be inserted, such as between two tables but not direclty inside a table.
+ * can be inserted, such as between two tables but not directly inside a table.
  *
  * This method assumes that any value that has a type property that's a string is an element object.
  *

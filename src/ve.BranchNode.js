@@ -11,7 +11,7 @@
  *
  * Branch nodes are immutable, which is why there are no methods for adding or removing children.
  * DataModel classes will add this functionality, and other subclasses will implement behavior that
- * mimcs changes made to DataModel nodes.
+ * mimics changes made to DataModel nodes.
  *
  * @class
  * @abstract

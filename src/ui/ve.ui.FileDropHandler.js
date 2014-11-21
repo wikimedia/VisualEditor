@@ -24,7 +24,7 @@ ve.ui.FileDropHandler = function VeUiFileDropHandler( surface, file ) {
 	this.reader = new FileReader();
 
 	this.progress = false;
-	this.progessBar = null;
+	this.progressBar = null;
 
 	// Events
 	this.reader.addEventListener( 'progress', this.onFileProgress.bind( this ) );
@@ -115,10 +115,10 @@ ve.ui.FileDropHandler.prototype.abort = function () {
 ve.ui.FileDropHandler.prototype.createProgress = function ( progressCompletePromise, label ) {
 	var handler = this;
 
-	this.surface.createProgress( progressCompletePromise, label || this.file.name ).done( function ( progessBar, cancelPromise ) {
+	this.surface.createProgress( progressCompletePromise, label || this.file.name ).done( function ( progressBar, cancelPromise ) {
 		// Set any progress that was achieved before this resolved
-		progessBar.setProgress( handler.progress );
-		handler.progressBar = progessBar;
+		progressBar.setProgress( handler.progress );
+		handler.progressBar = progressBar;
 		cancelPromise.fail( handler.abort.bind( handler ) );
 	} );
 };
@@ -128,7 +128,7 @@ ve.ui.FileDropHandler.prototype.createProgress = function ( progressCompleteProm
  *
  * Progress is stored in a property in case the progress bar doesn't exist yet.
  *
- * @param {number} progress Progess percent
+ * @param {number} progress Progress percent
  */
 ve.ui.FileDropHandler.prototype.setProgress = function ( progress ) {
 	this.progress = progress;

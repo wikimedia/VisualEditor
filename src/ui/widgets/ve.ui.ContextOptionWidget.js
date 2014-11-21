@@ -19,7 +19,7 @@
  * @param {Object} [config] Configuration options
  */
 ve.ui.ContextOptionWidget = function VeUiContextOptionWidget( data, tool, model, config ) {
-	// Config intialization
+	// Config initialization
 	config = config || {};
 
 	// Parent constructor

@@ -5,7 +5,7 @@
  */
 
 /**
- * Menu of items, each an inspectablec attribute of the current context.
+ * Menu of items, each an inspectable attribute of the current context.
  *
  * Use with ve.ui.ContextOptionWidget.
  *
@@ -16,7 +16,7 @@
  * @param {Object} [config] Configuration options
  */
 ve.ui.ContextSelectWidget = function VeUiContextSelectWidget( config ) {
-	// Config intialization
+	// Config initialization
 	config = config || {};
 
 	// Parent constructor

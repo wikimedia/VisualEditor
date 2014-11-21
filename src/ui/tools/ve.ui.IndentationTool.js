@@ -5,7 +5,7 @@
  */
 
 /**
- * UserInterface intentation tool.
+ * UserInterface indentation tool.
  *
  * @abstract
  * @class

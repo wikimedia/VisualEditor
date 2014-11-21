@@ -365,7 +365,7 @@ ve.ui.Surface.prototype.addCommands = function ( names ) {
 };
 
 /**
- * Create a progress bar in the progres dialog
+ * Create a progress bar in the progress dialog
  *
  * @param {jQuery.Promise} progressCompletePromise Promise which resolves when the progress action is complete
  * @param {jQuery|string|Function} label Progress bar label

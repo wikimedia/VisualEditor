@@ -117,7 +117,7 @@ ve.ui.CommandHelpDialog.prototype.initialize = function () {
  * Get the list of commands, grouped by type
  *
  * @static
- * @returns {Object} Object containing command groups, consiste of a title message and array of commands
+ * @returns {Object} Object containing command groups, consist of a title message and array of commands
  */
 ve.ui.CommandHelpDialog.static.getCommandGroups = function () {
 	return {

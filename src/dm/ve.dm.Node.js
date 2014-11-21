@@ -517,7 +517,7 @@ ve.dm.Node.prototype.getOffset = function () {
  * For two nodes to be mergeable, the two nodes must either be the same node or:
  *  - Have the same type
  *  - Have the same depth
- *  - Have similar ancestory (each node upstream must have the same type)
+ *  - Have similar ancestry (each node upstream must have the same type)
  *
  * @method
  * @param {ve.dm.Node} node Node to consider merging with
@@ -530,7 +530,7 @@ ve.dm.Node.prototype.canBeMergedWith = function ( node ) {
 	// Content node can be merged with node that can contain content, for instance: TextNode
 	// and ParagraphNode. When this method is called for such case (one node is a content node and
 	// the other one can contain content) make sure to start traversal from node that can contain
-	// content (insteaf of content node itself).
+	// content (instead of content node itself).
 	if ( n1.canContainContent() && n2.isContent() ) {
 		n2 = n2.getParent();
 	} else if ( n2.canContainContent() && n1.isContent() ) {

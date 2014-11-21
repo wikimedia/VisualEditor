@@ -438,7 +438,7 @@ ve.ui.TableAction.prototype.incrementSpan = function ( cell, mode ) {
  * Decreases the span of a cell so that the given interval is removed.
  *
  * @param {ve.dm.TableMatrixCell} cell Table matrix cell
- * @param {String} mode Span to decrement'row' or 'col'
+ * @param {String} mode Span to decrement 'row' or 'col'
  * @param {Number} minIndex Smallest row or column index (inclusive)
  * @param {Number} maxIndex Largest row or column index (inclusive)
  * @return {ve.dm.Transaction} Transaction

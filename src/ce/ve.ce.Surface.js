@@ -68,7 +68,7 @@ ve.ce.Surface = function VeCeSurface( model, ui, options ) {
 	// This is set on entering changeModel, then unset when leaving.
 	// It is used to test whether a reflected change event is emitted.
 	this.newModelSelection = null;
-	// These are set during cursor moves (but not text addions/deletions at the cursor)
+	// These are set during cursor moves (but not text additions/deletions at the cursor)
 	this.cursorEvent = null;
 	this.cursorStartRange = null;
 	this.unicorningNode = null;
@@ -1592,7 +1592,7 @@ ve.ce.Surface.prototype.afterPaste = function () {
 				return true;
 			} );
 		} else {
-			// HTML in pasteTarget my get wrapped, so use the recursive $.find to looke for the clipboard key
+			// HTML in pasteTarget my get wrapped, so use the recursive $.find to look for the clipboard key
 			clipboardKey = this.$pasteTarget.find( 'span[data-ve-clipboard-key]' ).data( 've-clipboard-key' );
 			// $elements is used by getClipboardHash so generate it too
 			$elements = this.$pasteTarget.contents();
@@ -1620,7 +1620,7 @@ ve.ce.Surface.prototype.afterPaste = function () {
 	if ( slice ) {
 		// Internal paste
 		try {
-			// Try to paste in the orignal data
+			// Try to paste in the original data
 			// Take a copy to prevent the data being annotated a second time in the catch block
 			// and to prevent actions in the data model affecting view.clipboard
 			pasteData = new ve.dm.ElementLinearData(
@@ -1687,7 +1687,7 @@ ve.ce.Surface.prototype.afterPaste = function () {
 		if ( !htmlDoc ) {
 			// If there were no problems, let CE do its sanitizing as it may
 			// contain all sorts of horrible metadata (head tags etc.)
-			// TODO: IE will always take this path, and so may have bugs with span unwapping
+			// TODO: IE will always take this path, and so may have bugs with span unwrapping
 			// in edge cases (e.g. pasting a single MWReference)
 			htmlDoc = ve.createDocumentFromHtml( this.$pasteTarget.html() );
 		}
@@ -2045,7 +2045,7 @@ ve.ce.Surface.prototype.onSurfaceObserverSlugEnter = function () {
 	// Fake a slug transition on the new paragraph
 	// Clear wrappers from previous former slugs
 	this.$element.find( '.ve-ce-branchNode-blockSlugWrapper-former' ).remove();
-	// Style paragraph as an unfocused slug, then remove unfocused class to trigger transtion
+	// Style paragraph as an unfocused slug, then remove unfocused class to trigger transition
 	// The order is important: if we set -former before -former-unfocused, we'll get two transitions
 	$paragraph = this.getDocument().getBranchNodeFromOffset( offset + 1 ).$element;
 	$paragraph.wrap( this.$( '<div>' ).addClass( 've-ce-branchNode-blockSlugWrapper-former-unfocused' ) );
@@ -2128,7 +2128,7 @@ ve.ce.Surface.prototype.updateSlug = function () {
  * @see ve.ce.SurfaceObserver#pollOnce
  *
  * @method
- * @param {ve.ce.Node} node CE node the change occured in
+ * @param {ve.ce.Node} node CE node the change occurred in
  * @param {Object} previous Old data
  * @param {Object} previous.text Old plain text content
  * @param {Object} previous.hash Old DOM hash
@@ -2493,13 +2493,13 @@ ve.ce.Surface.prototype.handleLinearUpOrDownArrowKey = function ( e ) {
 			this.model.setLinearSelection( new ve.Range( direction === 1 ? range.end : range.start ) );
 		}
 	} else if ( !range.isCollapsed() ) {
-		// Perform programatic handling for a selection that is expanded because CE
+		// Perform programmatic handling for a selection that is expanded because CE
 		// behaviour is inconsistent
 		slug = this.documentView.getSlugAtOffset( range.to );
 		if ( !slug ) {
 			if ( !this.nativeSelection.extend && range.isBackwards() ) {
 				// If the browser doesn't support backwards selections, but the dm range
-				// is backwards, then use anchorNode/Offset to copmensate
+				// is backwards, then use anchorNode/Offset to compensate
 				endNode = this.nativeSelection.anchorNode;
 				endOffset = this.nativeSelection.anchorOffset;
 			} else {

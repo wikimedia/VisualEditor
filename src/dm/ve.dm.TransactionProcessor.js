@@ -244,7 +244,7 @@ ve.dm.TransactionProcessor.processors.retainMetadata = function ( op ) {
  *
  * This method is called within the context of a transaction processor instance.
  *
- * This will add an annotation to or remove an annotation from `this.set`or `this.clear`.
+ * This will add an annotation to or remove an annotation from `this.set` or `this.clear`.
  *
  * @method
  * @param {Object} op Operation object

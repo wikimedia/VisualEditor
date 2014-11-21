@@ -671,7 +671,7 @@ ve.dm.Document.prototype.getRelativeOffset = function ( offset, direction, unit 
 			) {
 				return relativeStructuralOffset;
 			}
-			// There's a slug neaby, go into it if it's closer
+			// There's a slug nearby, go into it if it's closer
 			return direction > 0 ?
 				Math.min( relativeContentOffset, relativeStructuralOffset ) :
 				Math.max( relativeContentOffset, relativeStructuralOffset );
@@ -918,7 +918,7 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 		// and popped off when balanced out by an opening in data
 		closingStack = [],
 
-		// Track the position of the orignal data in the fixed up data for range adjustments
+		// Track the position of the original data in the fixed up data for range adjustments
 		insertedDataOffset = 0,
 		insertedDataLength = data.length,
 

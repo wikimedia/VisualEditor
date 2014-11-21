@@ -41,7 +41,7 @@ OO.mixinClass( ve.ce.SurfaceObserver, OO.EventEmitter );
  * properties are updated).
  *
  * @event contentChange
- * @param {HTMLElement} node DOM node the change occured in
+ * @param {HTMLElement} node DOM node the change occurred in
  * @param {Object} previous Old data
  * @param {Object} previous.text Old plain text content
  * @param {Object} previous.hash Old DOM hash

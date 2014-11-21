@@ -810,8 +810,8 @@ ve.dm.SurfaceFragment.prototype.delete = function ( directionAfterDelete ) {
 		// If after processing removal transaction range is not collapsed it means that not
 		// everything got merged nicely (at this moment transaction processor is capable of merging
 		// nodes of the same type and at the same depth level only), so we process with another
-		// merging that takes remaing data from endNode and inserts it at the end of startNode,
-		// endNode or recrusivly its parent (if have only one child) gets removed.
+		// merging that takes remaining data from endNode and inserts it at the end of startNode,
+		// endNode or recursively its parent (if have only one child) gets removed.
 		//
 		// If startNode has no content then we just delete that node instead of merging.
 		// This prevents content being inserted into empty structure which, e.g. and empty heading
