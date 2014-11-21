@@ -1,5 +1,5 @@
 /*!
- * VisualEditor ContentEditable TableRowNodw class.
+ * VisualEditor ContentEditable TableRowNode class.
  *
  * @copyright 2011-2014 VisualEditor Team and others; see http://ve.mit-license.org
  */

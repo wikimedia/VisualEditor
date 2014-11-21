@@ -68,7 +68,7 @@ ve.dm.IndexValueStore.prototype.indexOfHash = function ( hash ) {
 /**
  * Get the indexes of values in the store
  *
- * Sames as index but with arrays.
+ * Same as index but with arrays.
  *
  * @method
  * @param {Object[]} values Values to lookup or store

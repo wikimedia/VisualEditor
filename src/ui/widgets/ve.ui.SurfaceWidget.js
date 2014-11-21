@@ -19,7 +19,7 @@
  * @cfg {Object} [pasteRules] Paste rules
  */
 ve.ui.SurfaceWidget = function VeUiSurfaceWidget( doc, config ) {
-	// Config intialization
+	// Config initialization
 	config = config || {};
 
 	// Parent constructor

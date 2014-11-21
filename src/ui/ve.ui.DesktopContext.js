@@ -76,7 +76,7 @@ ve.ui.DesktopContext.prototype.afterContextChange = function () {
 };
 
 /**
- * Handle context supression event.
+ * Handle context suppression event.
  */
 ve.ui.DesktopContext.prototype.onSuppress = function () {
 	this.suppressed = true;
@@ -94,7 +94,7 @@ ve.ui.DesktopContext.prototype.onSuppress = function () {
 };
 
 /**
- * Handle context unsupression event.
+ * Handle context unsuppression event.
  */
 ve.ui.DesktopContext.prototype.onUnsuppress = function () {
 	var inspectable = !!this.getAvailableTools().length;

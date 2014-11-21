@@ -523,7 +523,7 @@ ve.ce.FocusableNode.prototype.getRects = function () {
 };
 
 /**
- * Get the bounding rectangle of the focusable node highight relative to the surface
+ * Get the bounding rectangle of the focusable node highlight relative to the surface
  *
  * @return {Object|null} Top, left, bottom & right positions of the focusable node relative to the surface
  */

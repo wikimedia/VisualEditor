@@ -31,7 +31,7 @@ ve.ui.Toolbar = function VeUiToolbar( surface, options ) {
 	this.$surfaceView = null;
 	this.elementOffset = null;
 	this.windowEvents = {
-		// Must use Fuction#bind (or a closure) instead of direct reference
+		// Must use Function#bind (or a closure) instead of direct reference
 		// because we need a unique function references for each Toolbar instance
 		// to avoid $window.off() from unbinding other toolbars' event handlers.
 		resize: toolbar.onWindowResize.bind( toolbar ),

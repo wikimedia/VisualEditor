@@ -15,7 +15,7 @@ function setTrigger( trigger ) {
 	}
 }
 
-// Initialiation
+// Initialization
 
 var i, len, key,
 	$primary = $( '#primary' ),

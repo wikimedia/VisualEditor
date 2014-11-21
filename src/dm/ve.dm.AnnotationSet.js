@@ -269,7 +269,7 @@ ve.dm.AnnotationSet.prototype.filter = function ( callback, returnBool ) {
  * true if an annotation is found which is mergeable with the specified one.
  *
  * @param {ve.dm.Annotation} annotation Annotation to compare to
- * @returns {boolean} At least one comprable annotation found
+ * @returns {boolean} At least one comparable annotation found
  */
 ve.dm.AnnotationSet.prototype.containsComparable = function ( annotation ) {
 	return this.filter( function ( a ) {
@@ -285,7 +285,7 @@ ve.dm.AnnotationSet.prototype.containsComparable = function ( annotation ) {
  * HTML attributes.
  *
  * @param {ve.dm.Annotation} annotation Annotation to compare to
- * @returns {boolean} At least one comprable annotation found
+ * @returns {boolean} At least one comparable annotation found
  */
 ve.dm.AnnotationSet.prototype.containsComparableForSerialization = function ( annotation ) {
 	return this.filter( function ( a ) {

@@ -84,7 +84,7 @@ ve.init.Platform.prototype.addMessages = function () {
  * @method
  * @abstract
  * @param {string} key Message key
- * @param {Mixed...} [args] List of arguments which will be injected at $1, $2, etc. in the messaage
+ * @param {Mixed...} [args] List of arguments which will be injected at $1, $2, etc. in the message
  * @returns {string} Localized message, or key or '<' + key + '>' if message not found
  */
 ve.init.Platform.prototype.getMessage = function () {

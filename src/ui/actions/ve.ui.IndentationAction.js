@@ -41,7 +41,7 @@ ve.ui.IndentationAction.static.methods = [ 'increase', 'decrease' ];
  * TODO: Refactor functionality into {ve.dm.SurfaceFragment}.
  *
  * @method
- * @returns {boolean} Indentation increase occured
+ * @returns {boolean} Indentation increase occurred
  */
 ve.ui.IndentationAction.prototype.increase = function () {
 	var i, group, groups,
@@ -84,7 +84,7 @@ ve.ui.IndentationAction.prototype.increase = function () {
  * TODO: Refactor functionality into {ve.dm.SurfaceFragment}.
  *
  * @method
- * @returns {boolean} Indentation decrease occured
+ * @returns {boolean} Indentation decrease occurred
  */
 ve.ui.IndentationAction.prototype.decrease = function () {
 	var i, group, groups,

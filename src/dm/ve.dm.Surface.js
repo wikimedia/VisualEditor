@@ -306,7 +306,7 @@ ve.dm.Surface.prototype.applyAllStaging = function () {
  * Get annotations that will be used upon insertion.
  *
  * @method
- * @returns {ve.dm.AnnotationSet} Insertion anotations
+ * @returns {ve.dm.AnnotationSet} Insertion annotations
  */
 ve.dm.Surface.prototype.getInsertionAnnotations = function () {
 	return this.insertionAnnotations.clone();
@@ -548,7 +548,7 @@ ve.dm.Surface.prototype.stopQueueingContextChanges = function () {
 };
 
 /**
- * Set a linear selection at a specificed range on the model
+ * Set a linear selection at a specified range on the model
  *
  * @param {ve.Range} range Range to create linear selection at
  */

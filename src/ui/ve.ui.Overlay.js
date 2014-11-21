@@ -5,7 +5,7 @@
  */
 
 /**
- * Continer for content that should appear in front of everything else.
+ * Container for content that should appear in front of everything else.
  *
  * @class
  * @abstract

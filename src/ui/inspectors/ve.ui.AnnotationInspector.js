@@ -103,7 +103,7 @@ ve.ui.AnnotationInspector.prototype.getAnnotation = function () {
  * @abstract
  * @param {ve.dm.SurfaceFragment} fragment Surface fragment
  * @returns {ve.dm.Annotation} Annotation
- * @throws {Error} If not overriden in a subclass
+ * @throws {Error} If not overridden in a subclass
  */
 ve.ui.AnnotationInspector.prototype.getAnnotationFromFragment = function () {
 	throw new Error(
@@ -122,8 +122,8 @@ ve.ui.AnnotationInspector.prototype.getAnnotationFromFragment = function () {
 ve.ui.AnnotationInspector.prototype.getMatchingAnnotations = function ( fragment, all ) {
 	var modelClasses = this.constructor.static.modelClasses;
 
-	return fragment.getAnnotations( all ).filter( function ( annnotation ) {
-		return ve.isInstanceOfAny( annnotation, modelClasses );
+	return fragment.getAnnotations( all ).filter( function ( annotation ) {
+		return ve.isInstanceOfAny( annotation, modelClasses );
 	} );
 };
 

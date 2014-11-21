@@ -14,7 +14,7 @@
  * @param {Object} [config] Configuration options
  */
 ve.ui.LanguageSearchWidget = function VeUiLanguageSearchWidget( config ) {
-	// Configuration intialization
+	// Configuration initialization
 	config = ve.extendObject( {
 		placeholder: ve.msg( 'visualeditor-language-search-input-placeholder' )
 	}, config );
