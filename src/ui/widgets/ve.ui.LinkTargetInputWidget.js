@@ -76,7 +76,7 @@ ve.ui.LinkTargetInputWidget.prototype.onEdit = function () {
  */
 ve.ui.LinkTargetInputWidget.prototype.setValue = function ( value ) {
 	// Keep annotation in sync with value
-	value = this.sanitizeValue( value );
+	value = this.cleanUpValue( value );
 	if ( value === '' ) {
 		this.annotation = null;
 	} else {
