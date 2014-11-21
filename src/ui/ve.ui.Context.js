@@ -254,7 +254,7 @@ ve.ui.Context.prototype.getSurface = function () {
 /**
  * Get inspector window set.
  *
- * @return {OO.ui.WindowManager}
+ * @return {ve.ui.WindowManager}
  */
 ve.ui.Context.prototype.getInspectors = function () {
 	return this.inspectors;
