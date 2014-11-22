@@ -78,11 +78,15 @@
 	"visualeditor-shortcuts-text-style": "Йозан хатӀ",
 	"visualeditor-specialcharacter-button-tooltip": "Леррина символ",
 	"visualeditor-specialcharacterinspector-title": "Леррина символ",
+	"visualeditor-table-delete-col": "ДӀаяккха бӀогӀамалг",
+	"visualeditor-table-insert-row-before": "Чуйилла лакхо",
+	"visualeditor-table-insert-table": "Таблица",
 	"visualeditor-toolbar-format-tooltip": "Формат йе могӀа юьххьера юхаозаран",
 	"visualeditor-toolbar-history": "Истори",
 	"visualeditor-toolbar-insert": "Чуйилла",
 	"visualeditor-toolbar-paragraph-format": "БáрамхӀоттор",
 	"visualeditor-toolbar-structure": "ДӀахӀоттам",
 	"visualeditor-toolbar-style-tooltip": "Йозан хатӀ",
+	"visualeditor-toolbar-table": "Таблица",
 	"visualeditor-toolbar-text-style": "ХатӀ"
 }
