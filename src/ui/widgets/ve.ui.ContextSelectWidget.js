@@ -25,7 +25,7 @@ ve.ui.ContextSelectWidget = function VeUiContextSelectWidget( config ) {
 	this.connect( this, { choose: 'onChooseItem' } );
 
 	// Initialization
-	this.$element.addClass( 've-ui-contextMenuSelectWidget' );
+	this.$element.addClass( 've-ui-contextSelectWidget' );
 };
 
 /* Setup */
