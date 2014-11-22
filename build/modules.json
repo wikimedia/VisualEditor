@@ -365,6 +365,7 @@
 			"src/ui/tools/ve.ui.AnnotationTool.js",
 			"src/ui/tools/ve.ui.ClearAnnotationTool.js",
 			"src/ui/tools/ve.ui.DialogTool.js",
+			"src/ui/tools/ve.ui.FindAndReplaceTool.js",
 			"src/ui/tools/ve.ui.FormatTool.js",
 			"src/ui/tools/ve.ui.HistoryTool.js",
 			"src/ui/tools/ve.ui.IndentationTool.js",
