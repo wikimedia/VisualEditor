@@ -31,14 +31,14 @@ ve.ui.LanguageSearchWidget = function VeUiLanguageSearchWidget( config ) {
 	for ( i = 0, l = languageCodes.length; i < l; i++ ) {
 		languageCode = languageCodes[i];
 		this.languageResultWidgets.push(
-			new ve.ui.LanguageResultWidget(
-				{
+			new ve.ui.LanguageResultWidget( {
+				$: this.$,
+				data: {
 					code: languageCode,
 					name: ve.init.platform.getLanguageName( languageCode ),
 					autonym: ve.init.platform.getLanguageAutonym( languageCode )
-				},
-				{ $: this.$ }
-			)
+				}
+			} )
 		);
 	}
 

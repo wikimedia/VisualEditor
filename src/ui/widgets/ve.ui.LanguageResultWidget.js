@@ -11,12 +11,11 @@
  * @extends OO.ui.OptionWidget
  *
  * @constructor
- * @param {Mixed} data Item data
  * @param {Object} [config] Configuration options
  */
-ve.ui.LanguageResultWidget = function VeUiLanguageResultWidget( data, config ) {
+ve.ui.LanguageResultWidget = function VeUiLanguageResultWidget( config ) {
 	// Parent constructor
-	OO.ui.OptionWidget.call( this, data, config );
+	OO.ui.OptionWidget.call( this, config );
 
 	// Initialization
 	this.$element.addClass( 've-ui-languageResultWidget' );

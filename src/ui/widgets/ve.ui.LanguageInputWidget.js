@@ -64,19 +64,22 @@ ve.ui.LanguageInputWidget = function VeUiLanguageInputWidget( config ) {
 
 	// Initialization
 	var dirItems = [
-		new OO.ui.ButtonOptionWidget( 'rtl', {
+		new OO.ui.ButtonOptionWidget( {
 			$: this.$,
+			data: 'rtl',
 			icon: 'text-dir-rtl'
 		} ),
-		new OO.ui.ButtonOptionWidget( 'ltr', {
+		new OO.ui.ButtonOptionWidget( {
 			$: this.$,
+			data: 'ltr',
 			icon: 'text-dir-ltr'
 		} )
 	];
 	if ( !config.requireDir ) {
 		dirItems.splice(
-			1, 0, new OO.ui.ButtonOptionWidget( null, {
+			1, 0, new OO.ui.ButtonOptionWidget( {
 				$: this.$,
+				data: null,
 				label: ve.msg( 'visualeditor-dialog-language-auto-direction' )
 			} )
 		);

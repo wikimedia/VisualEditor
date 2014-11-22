@@ -38,17 +38,20 @@ ve.ui.MediaSizeWidget = function VeUiMediaSizeWidget( scalable, config ) {
 		classes: [ 've-ui-mediaSizeWidget-section-sizetype' ]
 	} );
 	this.sizeTypeSelectWidget.addItems( [
-		new OO.ui.ButtonOptionWidget( 'default', {
+		new OO.ui.ButtonOptionWidget( {
 			$: this.$,
+			data: 'default',
 			label: ve.msg( 'visualeditor-mediasizewidget-sizeoptions-default' )
 		} ),
 		// TODO: when upright is supported by Parsoid
-		// new OO.ui.ButtonOptionWidget( 'scale', {
+		// new OO.ui.ButtonOptionWidget( {
 		// $: this.$,
+		// data: 'scale',
 		// label: ve.msg( 'visualeditor-mediasizewidget-sizeoptions-scale' )
 		// } ),
-		new OO.ui.ButtonOptionWidget( 'custom', {
+		new OO.ui.ButtonOptionWidget( {
 			$: this.$,
+			data: 'custom',
 			label: ve.msg( 'visualeditor-mediasizewidget-sizeoptions-custom' )
 		} )
 	] );

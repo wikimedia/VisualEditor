@@ -11,7 +11,6 @@
  * @extends ve.ui.ContextOptionWidget
  *
  * @constructor
- * @param {Object} data
  * @param {Function} tool
  * @param {ve.dm.Node|ve.dm.Annotation} model
  * @param {Object} [config]

@@ -13,17 +13,16 @@
  * @extends OO.ui.DecoratedOptionWidget
  *
  * @constructor
- * @param {Object} data Item data
  * @param {Function} tool Tool item is a proxy for
  * @param {ve.dm.Node|ve.dm.Annotation} model Node or annotation item is related to
  * @param {Object} [config] Configuration options
  */
-ve.ui.ContextOptionWidget = function VeUiContextOptionWidget( data, tool, model, config ) {
+ve.ui.ContextOptionWidget = function VeUiContextOptionWidget( tool, model, config ) {
 	// Config initialization
 	config = config || {};
 
 	// Parent constructor
-	ve.ui.ContextOptionWidget.super.call( this, data, config );
+	ve.ui.ContextOptionWidget.super.call( this, config );
 
 	// Properties
 	this.tool = tool;

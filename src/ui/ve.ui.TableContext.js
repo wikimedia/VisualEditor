@@ -71,7 +71,7 @@ ve.ui.TableContext.prototype.populateMenu = function () {
 	for ( i = 0, l = toolList.length; i < l; i++ ) {
 		tool = ve.ui.toolFactory.lookup( toolList[i] );
 		items.push( new ve.ui.ContextOptionWidget(
-			tool.static.name, tool, this.tableNode.getModel(), { $: this.$ }
+			tool, this.tableNode.getModel(), { $: this.$, data: tool.static.name }
 		) );
 	}
 	this.menu.addItems( items );

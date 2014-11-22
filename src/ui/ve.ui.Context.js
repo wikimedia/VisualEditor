@@ -289,7 +289,7 @@ ve.ui.Context.prototype.createInspectorWindowManager = function () {
  */
 ve.ui.Context.prototype.createItem = function ( tool ) {
 	return new ve.ui.ContextOptionWidget(
-		tool.tool.static.name, tool.tool, tool.model, { $: this.$ }
+		tool.tool, tool.model, { $: this.$, data: tool.tool.static.name }
 	);
 };
 

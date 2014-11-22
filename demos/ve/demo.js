@@ -11,7 +11,10 @@ $( function () {
 			var name, items = [];
 			for ( name in ve.demoPages ) {
 				items.push(
-					new OO.ui.MenuOptionWidget( ve.demoPages[name],  { label: name } )
+					new OO.ui.MenuOptionWidget( {
+						data: ve.demoPages[name],
+						label: name
+					} )
 				);
 			}
 			return items;
@@ -43,9 +46,9 @@ $( function () {
 			pageMenu = pageDropdown.getMenu(),
 
 			modeSelect = new OO.ui.ButtonSelectWidget().addItems( [
-				new OO.ui.ButtonOptionWidget( 've', { label: 'VE' } ),
-				new OO.ui.ButtonOptionWidget( 'edit', { label: 'Edit HTML' } ),
-				new OO.ui.ButtonOptionWidget( 'read', { label: 'Read' } )
+				new OO.ui.ButtonOptionWidget( { data: 've', label: 'VE' } ),
+				new OO.ui.ButtonOptionWidget( { data: 'edit', label: 'Edit HTML' } ),
+				new OO.ui.ButtonOptionWidget( { data: 'read', label: 'Read' } )
 			] ),
 			languageInput = new ve.ui.LanguageInputWidget( {
 				requireDir: true,
