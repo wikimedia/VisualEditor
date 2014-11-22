@@ -1239,6 +1239,24 @@ ve.ce.Surface.prototype.onDocumentKeyUp = function ( e ) {
 		this.selecting = false;
 		this.emit( 'selectionEnd' );
 	}
+
+	var nativeRange, clientRect, scrollTo;
+
+	if ( !this.surface.toolbarHeight ) {
+		return;
+	}
+
+	nativeRange = this.getNativeRange();
+	if ( !nativeRange ) {
+		return null;
+	}
+
+	clientRect = RangeFix.getBoundingClientRect( nativeRange );
+
+	if ( clientRect && clientRect.top < this.surface.toolbarHeight ) {
+		scrollTo = this.$window.scrollTop() + clientRect.top - this.surface.toolbarHeight;
+		this.$window.scrollTop( scrollTo );
+	}
 };
 
 /**

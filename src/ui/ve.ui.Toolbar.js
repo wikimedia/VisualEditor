@@ -28,7 +28,6 @@ ve.ui.Toolbar = function VeUiToolbar( surface, options ) {
 	this.floating = false;
 	this.floatable = false;
 	this.$window = null;
-	this.$surfaceView = null;
 	this.elementOffset = null;
 	this.windowEvents = {
 		// Must use Function#bind (or a closure) instead of direct reference
@@ -36,9 +35,6 @@ ve.ui.Toolbar = function VeUiToolbar( surface, options ) {
 		// to avoid $window.off() from unbinding other toolbars' event handlers.
 		resize: toolbar.onWindowResize.bind( toolbar ),
 		scroll: toolbar.onWindowScroll.bind( toolbar )
-	};
-	this.surfaceViewEvents = {
-		keyup: toolbar.onSurfaceViewKeyUp.bind( toolbar )
 	};
 	// Default directions
 	this.contextDirection = { inline: 'ltr', block: 'ltr' };
@@ -113,42 +109,6 @@ ve.ui.Toolbar.prototype.onWindowResize = function () {
 			left: this.elementOffset.left,
 			right: this.elementOffset.right
 		} );
-	}
-};
-
-/**
- * Method to scroll the content editable surface to the cursor position.
- *
- * This is for when the cursor is obscured by a floating toolbar.
- *
- * FIXME: this code should be in a target class or something
- */
-ve.ui.Toolbar.prototype.onSurfaceViewKeyUp = function () {
-	var surfaceView, nativeRange, clientRect, barHeight, scrollTo, obscured;
-
-	if ( !this.floating ) {
-		return;
-	}
-
-	surfaceView = this.getSurface().getView();
-
-	nativeRange = surfaceView.getNativeRange();
-	if ( !nativeRange ) {
-		return null;
-	}
-
-	clientRect = RangeFix.getBoundingClientRect( nativeRange );
-	if ( !clientRect ) {
-		return;
-	}
-
-	barHeight = this.$bar.height();
-	obscured = clientRect.top < barHeight;
-
-	// If toolbar is floating and cursor is obscured, scroll cursor into view
-	if ( obscured ) {
-		scrollTo = this.$window.scrollTop() + clientRect.top - barHeight;
-		this.$window.scrollTop( scrollTo );
 	}
 };
 
@@ -235,7 +195,6 @@ ve.ui.Toolbar.prototype.initialize = function () {
 
 	// Properties
 	this.$window = this.$( this.getElementWindow() );
-	this.$surfaceView = this.surface.getView().$element;
 	this.calculateOffset();
 
 	// Initial state
@@ -243,7 +202,6 @@ ve.ui.Toolbar.prototype.initialize = function () {
 
 	if ( this.floatable ) {
 		this.$window.on( this.windowEvents );
-		this.$surfaceView.on( this.surfaceViewEvents );
 		// The page may start with a non-zero scroll position
 		this.onWindowScroll();
 	}
@@ -275,16 +233,18 @@ ve.ui.Toolbar.prototype.destroy = function () {
  */
 ve.ui.Toolbar.prototype.float = function () {
 	if ( !this.floating ) {
+		var height = this.$element.height();
 		// When switching into floating mode, set the height of the wrapper and
 		// move the bar to the same offset as the in-flow element
 		this.$element
-			.css( 'height', this.$element.height() )
+			.css( 'height', height )
 			.addClass( 've-ui-toolbar-floating' );
 		this.$bar.css( {
 			left: this.elementOffset.left,
 			right: this.elementOffset.right
 		} );
 		this.floating = true;
+		this.surface.setToolbarHeight( height );
 	}
 };
 
@@ -298,6 +258,7 @@ ve.ui.Toolbar.prototype.unfloat = function () {
 			.removeClass( 've-ui-toolbar-floating' );
 		this.$bar.css( { left: '', right: '' } );
 		this.floating = false;
+		this.surface.setToolbarHeight( 0 );
 	}
 };
 
@@ -313,7 +274,6 @@ ve.ui.Toolbar.prototype.enableFloatable = function () {
 
 	if ( this.initialized ) {
 		this.$window.on( this.windowEvents );
-		this.$surfaceView.on( this.surfaceViewEvents );
 	}
 };
 
@@ -323,10 +283,6 @@ ve.ui.Toolbar.prototype.enableFloatable = function () {
 ve.ui.Toolbar.prototype.disableFloatable = function () {
 	if ( this.$window ) {
 		this.$window.off( this.windowEvents );
-	}
-
-	if ( this.$surfaceView ) {
-		this.$surfaceView.off( this.surfaceViewEvents );
 	}
 
 	if ( this.floating ) {

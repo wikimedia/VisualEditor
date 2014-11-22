@@ -56,6 +56,8 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 	this.showProgressDebounced = ve.debounce( this.showProgress.bind( this ) );
 	this.filibuster = null;
 
+	this.toolbarHeight = 0;
+
 	// Initialization
 	this.setupCommands( config.excludeCommands );
 	this.$menus.append( this.context.$element );
@@ -347,6 +349,17 @@ ve.ui.Surface.prototype.setupCommands = function ( excludeCommands ) {
 			}
 		}
 	}
+};
+
+/**
+ * Set the current height of the toolbar.
+ *
+ * Used for scroll-into-view calculations.
+ *
+ * @param {number} toolbarHeight Toolbar height
+ */
+ve.ui.Surface.prototype.setToolbarHeight = function ( toolbarHeight ) {
+	this.toolbarHeight = toolbarHeight;
 };
 
 /**
