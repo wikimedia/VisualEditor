@@ -301,13 +301,11 @@ ve.dm.SurfaceFragment.prototype.trimLinearSelection = function () {
 	var oldRange = this.getSelection( true ).getRange(),
 		newRange = oldRange;
 
-	if ( oldRange ) {
-		if ( this.document.getText( oldRange ).trim().length === 0 ) {
-			// oldRange is only whitespace
-			newRange = new ve.Range( oldRange.start );
-		} else {
-			newRange = this.document.data.trimOuterSpaceFromRange( oldRange );
-		}
+	if ( this.getText().trim().length === 0 ) {
+		// oldRange is only whitespace
+		newRange = new ve.Range( oldRange.start );
+	} else {
+		newRange = this.document.data.trimOuterSpaceFromRange( oldRange );
 	}
 
 	return this.clone( new ve.dm.LinearSelection( this.getDocument(), newRange ) );
@@ -429,16 +427,7 @@ ve.dm.SurfaceFragment.prototype.getText = function () {
 	if ( !( this.selection instanceof ve.dm.LinearSelection ) ) {
 		return '';
 	}
-	var i, length,
-		text = '',
-		data = this.document.getData( this.getSelection( true ).getRange() );
-	for ( i = 0, length = data.length; i < length; i++ ) {
-		if ( data[i].type === undefined ) {
-			// Annotated characters have a string at index 0, plain characters are 1-char strings
-			text += typeof data[i] === 'string' ? data[i] : data[i][0];
-		}
-	}
-	return text;
+	return this.document.data.getText( false, this.getSelection( true ).getRange() );
 };
 
 /**

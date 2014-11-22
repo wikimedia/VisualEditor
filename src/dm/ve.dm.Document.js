@@ -820,27 +820,6 @@ ve.dm.Document.prototype.getDataFromNode = function ( node ) {
 };
 
 /**
- * Get plain text of a range.
- *
- * @method
- * @param {ve.Range} [range] Range of data to get the text of
- * @returns {string|''} Selected text or an empty string
- */
-ve.dm.Document.prototype.getText = function ( range ) {
-	var data = this.getData( range ),
-		str = '',
-		i;
-	for ( i = 0; i < data.length; i++ ) {
-		if ( typeof data[i] === 'string' ) {
-			str += data[i];
-		} else if ( Array.isArray( data[i] ) ) {
-			str += data[i][0];
-		}
-	}
-	return str;
-};
-
-/**
  * Rebuild one or more nodes following a change in document data.
  *
  * The data provided to this method may contain either one node or multiple sibling nodes, but it
