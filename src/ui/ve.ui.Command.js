@@ -32,11 +32,13 @@ ve.ui.Command = function VeUiCommand( name, action, method, options ) {
  * Execute command on a surface.
  *
  * @param {ve.ui.Surface} surface Surface to execute command on
- * @returns {Mixed} Result of command execution.
+ * @return {boolean} Command was executed
  */
 ve.ui.Command.prototype.execute = function ( surface ) {
 	if ( this.isExecutable( surface.getModel().getFragment() ) ) {
 		return surface.execute.apply( surface, [ this.action, this.method ].concat( this.args ) );
+	} else {
+		return false;
 	}
 };
 

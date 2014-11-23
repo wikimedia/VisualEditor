@@ -10,6 +10,7 @@
  *
  * @class
  * @extends ve.ui.Action
+ *
  * @constructor
  * @param {ve.ui.Surface} surface Surface to act on
  */
@@ -45,6 +46,7 @@ ve.ui.TableAction.static.methods = [ 'create', 'insert', 'delete', 'changeCellSt
  * @param {boolean} [options.header] Make the first row a header row
  * @param {Object} [options.type='table'] Table node type, must inherit from table
  * @param {Object} [options.attributes] Attributes to give the table
+ * @return {boolean} Action was executed
  */
 ve.ui.TableAction.prototype.create = function ( options ) {
 	options = options || {};
@@ -58,7 +60,7 @@ ve.ui.TableAction.prototype.create = function ( options ) {
 		numberOfRows = options.rows || 3;
 
 	if ( !( fragment.getSelection() instanceof ve.dm.LinearSelection ) ) {
-		return;
+		return false;
 	}
 
 	if ( options.attributes ) {
@@ -80,6 +82,7 @@ ve.ui.TableAction.prototype.create = function ( options ) {
 	surfaceModel.setSelection( new ve.dm.TableSelection(
 		fragment.getDocument(), fragment.getSelection().getRange(), 0, 0, 0, 0
 	) );
+	return true;
 };
 
 /**
@@ -88,6 +91,7 @@ ve.ui.TableAction.prototype.create = function ( options ) {
  * @param {String} mode Insertion mode; 'row' to insert a new row, 'col' for a new column
  * @param {String} position Insertion position; 'before' to insert before the current selection,
  *   'after' to insert after it
+ * @return {boolean} Action was executed
  */
 ve.ui.TableAction.prototype.insert = function ( mode, position ) {
 	var index,
@@ -95,7 +99,7 @@ ve.ui.TableAction.prototype.insert = function ( mode, position ) {
 		selection = surfaceModel.getSelection();
 
 	if ( !( selection instanceof ve.dm.TableSelection ) ) {
-		return;
+		return false;
 	}
 	if ( mode === 'col' ) {
 		index = position === 'before' ? selection.startCol : selection.endCol;
@@ -111,19 +115,21 @@ ve.ui.TableAction.prototype.insert = function ( mode, position ) {
 		surfaceModel.setSelection( selection );
 	}
 	this.insertRowOrCol( selection.getTableNode(), mode, index, position, selection );
+	return true;
 };
 
 /**
  * Deletes selected rows, columns, or the whole table.
  *
  * @param {String} mode Deletion mode; 'row' to delete rows, 'col' for columns, 'table' to remove the whole table
+ * @return {boolean} Action was executed
  */
 ve.ui.TableAction.prototype.delete = function ( mode ) {
 	var tableNode, minIndex, maxIndex, isFull,
 		selection = this.surface.getModel().getSelection();
 
 	if ( !( selection instanceof ve.dm.TableSelection ) ) {
-		return;
+		return false;
 	}
 
 	tableNode = selection.getTableNode();
@@ -147,12 +153,14 @@ ve.ui.TableAction.prototype.delete = function ( mode ) {
 			this.deleteRowsOrColumns( tableNode.matrix, mode, minIndex, maxIndex );
 		}
 	}
+	return true;
 };
 
 /**
  * Change cell style
  *
  * @param {string} style Cell style; 'header' or 'data'
+ * @return {boolean} Action was executed
  */
 ve.ui.TableAction.prototype.changeCellStyle = function ( style ) {
 	var i, ranges,
@@ -161,7 +169,7 @@ ve.ui.TableAction.prototype.changeCellStyle = function ( style ) {
 		selection = surfaceModel.getSelection();
 
 	if ( !( selection instanceof ve.dm.TableSelection ) ) {
-		return;
+		return false;
 	}
 
 	ranges = selection.getOuterRanges();
@@ -173,10 +181,13 @@ ve.ui.TableAction.prototype.changeCellStyle = function ( style ) {
 		);
 	}
 	surfaceModel.change( txs );
+	return true;
 };
 
 /**
  * Merge multiple cells into one, or split a merged cell.
+ *
+ * @return {boolean} Action was executed
  */
 ve.ui.TableAction.prototype.mergeCells = function () {
 	var i, cells,
@@ -185,7 +196,7 @@ ve.ui.TableAction.prototype.mergeCells = function () {
 		selection = surfaceModel.getSelection();
 
 	if ( !( selection instanceof ve.dm.TableSelection ) ) {
-		return;
+		return false;
 	}
 
 	if ( selection.isSingleCell() ) {
@@ -227,10 +238,13 @@ ve.ui.TableAction.prototype.mergeCells = function () {
 		}
 	}
 	surfaceModel.change( txs );
+	return true;
 };
 
 /**
  * Toggle the existence of a caption node on the table
+ *
+ * @return {boolean} Action was executed
  */
 ve.ui.TableAction.prototype.caption = function () {
 	var fragment, captionNode, nodes, node, tableFragment,
@@ -260,7 +274,7 @@ ve.ui.TableAction.prototype.caption = function () {
 			true
 		) );
 	} else {
-		return;
+		return false;
 	}
 
 	if ( captionNode ) {
@@ -281,6 +295,7 @@ ve.ui.TableAction.prototype.caption = function () {
 
 		fragment.collapseToStart().adjustLinearSelection( 2, 2 ).select();
 	}
+	return true;
 };
 
 /* Low-level API */

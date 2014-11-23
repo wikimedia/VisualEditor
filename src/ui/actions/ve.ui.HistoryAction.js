@@ -9,6 +9,7 @@
  *
  * @class
  * @extends ve.ui.Action
+ *
  * @constructor
  * @param {ve.ui.Surface} surface Surface to act on
  */
@@ -39,18 +40,22 @@ ve.ui.HistoryAction.static.methods = [ 'undo', 'redo' ];
  * Step backwards in time.
  *
  * @method
+ * @return {boolean} Action was executed
  */
 ve.ui.HistoryAction.prototype.undo = function () {
 	this.surface.getModel().undo();
+	return true;
 };
 
 /**
  * Step forwards in time.
  *
  * @method
+ * @return {boolean} Action was executed
  */
 ve.ui.HistoryAction.prototype.redo = function () {
 	this.surface.getModel().redo();
+	return true;
 };
 
 /* Registration */

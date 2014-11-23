@@ -9,6 +9,7 @@
  *
  * @class
  * @extends ve.ui.Action
+ *
  * @constructor
  * @param {ve.ui.Surface} surface Surface to act on
  */
@@ -41,18 +42,22 @@ ve.ui.ContentAction.static.methods = [ 'insert', 'remove', 'select', 'pasteSpeci
  * @method
  * @param {string|Array} content Content to insert, can be either a string or array of data
  * @param {boolean} annotate Content should be automatically annotated to match surrounding content
+ * @return {boolean} Action was executed
  */
 ve.ui.ContentAction.prototype.insert = function ( content, annotate ) {
 	this.surface.getModel().getFragment().insertContent( content, annotate );
+	return true;
 };
 
 /**
  * Remove content.
  *
  * @method
+ * @return {boolean} Action was executed
  */
 ve.ui.ContentAction.prototype.remove = function () {
 	this.surface.getModel().getFragment().removeContent();
+	return true;
 };
 
 /**
@@ -60,24 +65,29 @@ ve.ui.ContentAction.prototype.remove = function () {
  *
  * @method
  * @param {ve.dm.Selection} selection Selection
+ * @return {boolean} Action was executed
  */
 ve.ui.ContentAction.prototype.select = function ( selection ) {
 	this.surface.getModel().setSelection( selection );
+	return true;
 };
 
 /**
  * Select all content.
  *
  * @method
+ * @return {boolean} Action was executed
  */
 ve.ui.ContentAction.prototype.selectAll = function () {
 	this.surface.getView().selectAll();
+	return true;
 };
 
 /**
  * Paste special.
  *
  * @method
+ * @return {boolean} Action was executed
  */
 ve.ui.ContentAction.prototype.pasteSpecial = function () {
 	this.surface.getView().pasteSpecial = true;
