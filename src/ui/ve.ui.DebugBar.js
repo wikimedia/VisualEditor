@@ -127,7 +127,10 @@ ve.ui.DebugBar.prototype.onSurfaceSelect = function ( selection ) {
 	} else if ( selection instanceof ve.dm.NullSelection ) {
 		this.selectionLabel.setLabel( 'Null' );
 	}
-	this.logRangeButton.setDisabled( !( selection instanceof ve.dm.LinearSelection ) );
+	this.logRangeButton.setDisabled( !(
+		( selection instanceof ve.dm.LinearSelection && !selection.isCollapsed() ) ||
+		selection instanceof ve.dm.TableSelection
+	) );
 };
 
 /**
@@ -136,10 +139,12 @@ ve.ui.DebugBar.prototype.onSurfaceSelect = function ( selection ) {
  * @param {jQuery.Event} e Event
  */
 ve.ui.DebugBar.prototype.onLogRangeButtonClick = function () {
-	var range, selection = this.getSurface().getModel().getSelection();
-	if ( selection instanceof ve.dm.LinearSelection ) {
-		range = selection.getRange();
-		ve.dir( this.getSurface().view.documentView.model.data.slice( range.start, range.end ) );
+	var i, ranges, selection = this.getSurface().getModel().getSelection();
+	if ( selection instanceof ve.dm.LinearSelection || selection instanceof ve.dm.TableSelection ) {
+		ranges = selection.getRanges();
+		for ( i = 0; i < ranges.length; i++ ) {
+			ve.dir( this.getSurface().view.documentView.model.data.slice( ranges[i].start, ranges[i].end ) );
+		}
 	}
 };
 
