@@ -31,32 +31,61 @@ ve.ui.ListAction.static.name = 'list';
  * @static
  * @property
  */
-ve.ui.ListAction.static.methods = [ 'wrap', 'unwrap', 'toggle' ];
+ve.ui.ListAction.static.methods = [ 'wrap', 'unwrap', 'toggle', 'wrapOnce' ];
 
 /* Methods */
 
 /**
- * Toggle a list around content.
+ * Check if the current selection is wrapped in a list of a given style
  *
  * @method
- * @param {string} style List style, e.g. 'number' or 'bullet'
- * @return {boolean} Action was executed
+ * @param {string|null} style List style, e.g. 'number' or 'bullet', or null for any style
+ * @return {boolean} Current selection is all wrapped in a list
  */
-ve.ui.ListAction.prototype.toggle = function ( style ) {
+ve.ui.ListAction.prototype.allWrapped = function ( style ) {
 	var i, len,
+		attributes = style ? { style: style } : undefined,
 		nodes = this.surface.getModel().getFragment().getLeafNodes(),
 		all = !!nodes.length;
 
 	for ( i = 0, len = nodes.length; i < len; i++ ) {
 		if (
 			( len === 1 || !nodes[i].range || nodes[i].range.getLength() ) &&
-			!nodes[i].node.hasMatchingAncestor( 'list', { style: style } )
+			!nodes[i].node.hasMatchingAncestor( 'list', attributes )
 		) {
 			all = false;
 			break;
 		}
 	}
-	return this[all ? 'unwrap' : 'wrap']( style );
+	return all;
+};
+
+/**
+ * Toggle a list around content.
+ *
+ * @method
+ * @param {string} style List style, e.g. 'number' or 'bullet'
+ * @param {boolean} noBreakpoints Don't create breakpoints
+ * @return {boolean} Action was executed
+ */
+ve.ui.ListAction.prototype.toggle = function ( style, noBreakpoints ) {
+	return this[this.allWrapped( style ) ? 'unwrap' : 'wrap']( style, noBreakpoints );
+};
+
+/**
+ * Add a list around content only if it has no list already.
+ *
+ * @method
+ * @param {string} style List style, e.g. 'number' or 'bullet'
+ * @param {boolean} noBreakpoints Don't create breakpoints
+ * @return {boolean} Action was executed
+ */
+ve.ui.ListAction.prototype.wrapOnce = function ( style, noBreakpoints ) {
+	// Check for a list of any style
+	if ( !this.allWrapped() ) {
+		return this.wrap( style, noBreakpoints );
+	}
+	return false;
 };
 
 /**
@@ -66,9 +95,10 @@ ve.ui.ListAction.prototype.toggle = function ( style ) {
  *
  * @method
  * @param {string} style List style, e.g. 'number' or 'bullet'
+ * @param {boolean} noBreakpoints Don't create breakpoints
  * @return {boolean} Action was executed
  */
-ve.ui.ListAction.prototype.wrap = function ( style ) {
+ve.ui.ListAction.prototype.wrap = function ( style, noBreakpoints ) {
 	var tx, i, previousList, groupRange, group, range,
 		surfaceModel = this.surface.getModel(),
 		documentModel = surfaceModel.getDocument(),
@@ -81,7 +111,9 @@ ve.ui.ListAction.prototype.wrap = function ( style ) {
 
 	range = selection.getRange();
 
-	surfaceModel.breakpoint();
+	if ( !noBreakpoints ) {
+		surfaceModel.breakpoint();
+	}
 
 	// TODO: Would be good to refactor at some point and avoid/abstract path split for block slug
 	// and not block slug.
@@ -153,7 +185,9 @@ ve.ui.ListAction.prototype.wrap = function ( style ) {
 			}
 		}
 	}
-	surfaceModel.breakpoint();
+	if ( !noBreakpoints ) {
+		surfaceModel.breakpoint();
+	}
 	this.surface.getView().focus();
 	return true;
 };
@@ -164,9 +198,10 @@ ve.ui.ListAction.prototype.wrap = function ( style ) {
  * TODO: Refactor functionality into {ve.dm.SurfaceFragment}.
  *
  * @method
+ * @param {boolean} noBreakpoints Don't create breakpoints
  * @return {boolean} Action was executed
  */
-ve.ui.ListAction.prototype.unwrap = function () {
+ve.ui.ListAction.prototype.unwrap = function ( noBreakpoints ) {
 	var node,
 		surfaceModel = this.surface.getModel(),
 		documentModel = surfaceModel.getDocument();
@@ -175,13 +210,18 @@ ve.ui.ListAction.prototype.unwrap = function () {
 		return false;
 	}
 
-	surfaceModel.breakpoint();
+	if ( !noBreakpoints ) {
+		surfaceModel.breakpoint();
+	}
 
 	do {
 		node = documentModel.getBranchNodeFromOffset( surfaceModel.getSelection().getRange().start );
 	} while ( node.hasMatchingAncestor( 'list' ) && this.surface.execute( 'indentation', 'decrease' ) );
 
-	surfaceModel.breakpoint();
+	if ( !noBreakpoints ) {
+		surfaceModel.breakpoint();
+	}
+
 	this.surface.getView().focus();
 	return true;
 };

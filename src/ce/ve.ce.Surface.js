@@ -2245,6 +2245,9 @@ ve.ce.Surface.prototype.onSurfaceObserverContentChange = function ( node, previo
 			} finally {
 				this.decRenderLock();
 			}
+			setTimeout( function () {
+				surface.checkSequences();
+			} );
 			return;
 		}
 
@@ -2311,6 +2314,31 @@ ve.ce.Surface.prototype.onSurfaceObserverContentChange = function ( node, previo
 		ve.dm.Transaction.newFromReplacement( this.documentView.model, replacementRange, data ),
 		new ve.dm.LinearSelection( this.documentView.model, newRange )
 	);
+	this.queueCheckSequences = true;
+	setTimeout( function () {
+		surface.checkSequences();
+	} );
+};
+
+/**
+ * Check the current surface offset for sequence matches
+ */
+ve.ce.Surface.prototype.checkSequences = function () {
+	var i, sequences,
+		surfaceModel = this.surface.getModel(),
+		selection = surfaceModel.getSelection();
+
+	if ( !( selection instanceof ve.dm.LinearSelection ) ) {
+		return;
+	}
+
+	sequences = ve.ui.sequenceRegistry.findMatching( surfaceModel.getDocument().data, selection.getRange().end );
+
+	// sequences.length will likely be 0 or 1 so don't cache
+	for ( i = 0; i < sequences.length; i++ ) {
+		sequences[i].execute( this.surface );
+	}
+	this.showSelection( this.surface.getModel().getSelection() );
 };
 
 /**
@@ -3033,7 +3061,7 @@ ve.ce.Surface.prototype.showSelection = function ( selection ) {
 	// Setting a range doesn't give focus in all browsers so make sure this happens
 	// Also set focus after range to prevent scrolling to top
 	if ( !OO.ui.contains( this.getElementDocument().activeElement, rangeSelection.start.node, true ) ) {
-		$( rangeSelection.start.node ).closest( '[contenteditable=true]' )[0].focus();
+		$( rangeSelection.start.node ).closest( '[contenteditable=true]' ).focus();
 	}
 };
 
