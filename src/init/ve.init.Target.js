@@ -145,32 +145,7 @@ ve.init.Target.static.toolbarGroups = [
 	}
 ];
 
-ve.init.Target.static.surfaceCommands = [
-	'undo',
-	'redo',
-	'bold',
-	'italic',
-	'link',
-	'clear',
-	'underline',
-	'subscript',
-	'superscript',
-	'code',
-	'strikethrough',
-	'indent',
-	'outdent',
-	'commandHelp',
-	'paragraph',
-	'heading1',
-	'heading2',
-	'heading3',
-	'heading4',
-	'heading5',
-	'heading6',
-	'preformatted',
-	'selectAll',
-	'pasteSpecial'
-];
+ve.init.Target.static.excludeCommands = [];
 
 /**
  * Surface paste rules
@@ -247,7 +222,6 @@ ve.init.Target.prototype.setupToolbar = function ( config ) {
 	}
 	this.toolbar = new ve.ui.TargetToolbar( this, this.surface, config );
 	this.toolbar.setup( this.constructor.static.toolbarGroups );
-	this.surface.addCommands( this.constructor.static.surfaceCommands );
 	this.toolbar.$element.insertBefore( this.surface.$element );
 };
 

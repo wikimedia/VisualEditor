@@ -14,8 +14,11 @@
  * @constructor
  * @param {HTMLDocument|Array|ve.dm.LinearData|ve.dm.Document} dataOrDoc Document data to edit
  * @param {Object} [config] Configuration options
+ * @cfg {string[]} [excludeCommands] List of commands to exclude
  */
 ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
+	config = config || {};
+
 	var documentModel;
 
 	// Parent constructor
@@ -43,7 +46,8 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 	this.model = new ve.dm.Surface( documentModel );
 	this.view = new ve.ce.Surface( this.model, this, { $: this.$ } );
 	this.dialogs = this.createDialogWindowManager();
-	this.commands = {};
+	this.commands = [];
+	this.commandsByTrigger = {};
 	this.triggers = {};
 	this.pasteRules = {};
 	this.enabled = true;
@@ -53,6 +57,7 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 	this.filibuster = null;
 
 	// Initialization
+	this.setupCommands( config.excludeCommands );
 	this.$menus.append( this.context.$element );
 	this.$element
 		.addClass( 've-ui-surface' )
@@ -71,15 +76,6 @@ OO.inheritClass( ve.ui.Surface, OO.ui.Element );
 OO.mixinClass( ve.ui.Surface, OO.EventEmitter );
 
 /* Events */
-
-/**
- * When a command is added to the surface.
- *
- * @event addCommand
- * @param {string} name Symbolic name of command and trigger
- * @param {ve.ui.Command} command Command that's been registered
- * @param {ve.ui.Trigger[]} triggers Triggers to associate with command
- */
 
 /**
  * When a surface is destroyed.
@@ -253,8 +249,8 @@ ve.ui.Surface.prototype.getGlobalOverlay = function () {
  * @param {string} trigger Trigger string
  * @returns {ve.ui.Command|undefined} Command
  */
-ve.ui.Surface.prototype.getCommand = function ( trigger ) {
-	return this.commands[trigger];
+ve.ui.Surface.prototype.getCommandByTrigger = function ( trigger ) {
+	return this.commandsByTrigger[trigger];
 };
 
 /**
@@ -300,7 +296,7 @@ ve.ui.Surface.prototype.enable = function () {
  * @returns {boolean} Action or command was executed
  */
 ve.ui.Surface.prototype.execute = function ( action, method ) {
-	var trigger, obj, ret;
+	var trigger, command, obj, ret;
 
 	if ( !this.enabled ) {
 		return;
@@ -309,9 +305,10 @@ ve.ui.Surface.prototype.execute = function ( action, method ) {
 	if ( action instanceof ve.ui.Trigger ) {
 		// Lookup command by trigger
 		trigger = action.toString();
-		if ( Object.prototype.hasOwnProperty.call( this.commands, trigger ) ) {
+		command = this.getCommandByTrigger( trigger );
+		if ( command ) {
 			// Have command call execute with action arguments
-			return this.commands[trigger].execute( this );
+			return command.execute( this );
 		}
 	} else if ( typeof action === 'string' && typeof method === 'string' ) {
 		// Validate method
@@ -326,41 +323,31 @@ ve.ui.Surface.prototype.execute = function ( action, method ) {
 };
 
 /**
- * Add all commands from initialization options.
- *
- * Commands and triggers must be registered under the same name prior to adding them to the surface.
+ * Setup command and trigger list based on rules.
  *
  * @method
- * @param {string[]} names List of symbolic names of commands in the command registry
- * @throws {Error} If command has not been registered
- * @throws {Error} If trigger has not been registered
+ * @param {string[]} [excludeCommands] List of commands to exclude
  * @throws {Error} If trigger is not complete
- * @fires addCommand
  */
-ve.ui.Surface.prototype.addCommands = function ( names ) {
-	var i, j, len, key, command, triggers, trigger;
-
-	for ( i = 0, len = names.length; i < len; i++ ) {
-		command = ve.ui.commandRegistry.lookup( names[i] );
-		if ( !command ) {
-			throw new Error( 'No command registered by that name: ' + names[i] );
-		}
-		// Normalize trigger key
-		triggers = ve.ui.triggerRegistry.lookup( names[i] );
-		if ( !triggers ) {
-			throw new Error( 'No triggers registered by that name: ' + names[i] );
-		}
-		for ( j = triggers.length - 1; j >= 0; j-- ) {
-			trigger = triggers[j];
-			key = trigger.toString();
-			// Validate trigger
-			if ( key.length === 0 ) {
-				throw new Error( 'Incomplete trigger: ' + trigger );
+ve.ui.Surface.prototype.setupCommands = function ( excludeCommands ) {
+	var i, name, triggers, trigger, key;
+	for ( name in ve.ui.commandRegistry.registry ) {
+		if ( !excludeCommands || ve.indexOf( name, excludeCommands ) === -1 ) {
+			this.commands.push( name );
+			triggers = ve.ui.triggerRegistry.lookup( name );
+			if ( triggers ) {
+				for ( i = triggers.length - 1; i >= 0; i-- ) {
+					trigger = triggers[i];
+					key = trigger.toString();
+					// Validate trigger
+					if ( key.length === 0 ) {
+						throw new Error( 'Incomplete trigger: ' + trigger );
+					}
+					this.commandsByTrigger[key] = ve.ui.commandRegistry.registry[name];
+				}
+				this.triggers[name] = triggers;
 			}
-			this.commands[key] = command;
 		}
-		this.triggers[names[i]] = triggers;
-		this.emit( 'addCommand', names[i], command, triggers );
 	}
 };
 
