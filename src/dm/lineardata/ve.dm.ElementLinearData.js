@@ -503,6 +503,27 @@ ve.dm.ElementLinearData.prototype.trimOuterSpaceFromRange = function ( range ) {
 };
 
 /**
+ * Get the data as plain text
+ *
+ * @param {boolean} maintainIndices Maintain data offset to string index alignment by replacing elements with line breaks
+ * @param {ve.Range} [range] Range to get the data for. The whole data set if not specified.
+ * @return {string} Data as plain text
+ */
+ve.dm.ElementLinearData.prototype.getText = function ( maintainIndices, range ) {
+	var i, text = '';
+	range = range || new ve.Range( 0, this.getLength() );
+
+	for ( i = range.start; i < range.end; i++ ) {
+		if ( !this.isElementData( i ) ) {
+			text += this.getCharacterData( i );
+		} else if ( maintainIndices ) {
+			text += '\n';
+		}
+	}
+	return text;
+};
+
+/**
  * Get an offset at a distance to an offset that passes a validity test.
  *
  * - If {offset} is not already valid, one step will be used to move it to a valid one.
