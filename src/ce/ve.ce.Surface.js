@@ -894,7 +894,7 @@ ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
 	// Properties may be nullified by other events, so cache before setTimeout
 	var selectionJSON, dragSelection, dragRange, originFragment, originData,
 		targetRange, targetOffset, targetFragment, dragHtml, dragText,
-		htmlDoc, doc, data, pasteRules,
+		htmlDoc, doc, data, importRules,
 		i, l, name, insert,
 		fileHandlers = [],
 		dataTransfer = e.originalEvent.dataTransfer,
@@ -985,15 +985,15 @@ ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
 				fileHandlers[i].getInsertableData().done( insert );
 			}
 		} else if ( dragHtml ) {
-			pasteRules = this.getSurface().getPasteRules();
+			importRules = this.getSurface().getImportRules();
 			htmlDoc = ve.createDocumentFromHtml( dragHtml );
 			doc = ve.dm.converter.getModelFromDom( htmlDoc, this.getModel().getDocument().getHtmlDocument() );
 			data = doc.data;
 			// Clear metadata
 			doc.metadata = new ve.dm.MetaLinearData( doc.getStore(), new Array( 1 + data.getLength() ) );
-			data.sanitize( pasteRules.external, this.pasteSpecial );
-			if ( pasteRules.all ) {
-				data.sanitize( pasteRules.all );
+			data.sanitize( importRules.external, this.pasteSpecial );
+			if ( importRules.all ) {
+				data.sanitize( importRules.all );
 			}
 			data.remapInternalListKeys( this.model.getDocument().getInternalList() );
 			// Initialize node tree
@@ -1537,7 +1537,7 @@ ve.ce.Surface.prototype.afterPaste = function () {
 		$elements, parts, pasteData, slice, tx, internalListRange,
 		data, doc, htmlDoc,
 		context, left, right, contextRange,
-		pasteRules = this.getSurface().getPasteRules(),
+		importRules = this.getSurface().getImportRules(),
 		beforePasteData = this.beforePasteData || {},
 		selection = this.model.getSelection(),
 		view = this;
@@ -1628,8 +1628,8 @@ ve.ce.Surface.prototype.afterPaste = function () {
 				ve.copy( slice.getOriginalData() )
 			);
 
-			if ( pasteRules.all || this.pasteSpecial ) {
-				pasteData.sanitize( pasteRules.all || {}, this.pasteSpecial );
+			if ( importRules.all || this.pasteSpecial ) {
+				pasteData.sanitize( importRules.all || {}, this.pasteSpecial );
 			}
 
 			// Annotate
@@ -1649,8 +1649,8 @@ ve.ce.Surface.prototype.afterPaste = function () {
 				ve.copy( slice.getBalancedData() )
 			);
 
-			if ( pasteRules.all || this.pasteSpecial ) {
-				pasteData.sanitize( pasteRules.all || {}, this.pasteSpecial );
+			if ( importRules.all || this.pasteSpecial ) {
+				pasteData.sanitize( importRules.all || {}, this.pasteSpecial );
 			}
 
 			// Annotate
@@ -1696,14 +1696,14 @@ ve.ce.Surface.prototype.afterPaste = function () {
 		data = doc.data;
 		// Clear metadata
 		doc.metadata = new ve.dm.MetaLinearData( doc.getStore(), new Array( 1 + data.getLength() ) );
-		// If the clipboardKey isn't set (paste from non-VE instance) use external paste rules
+		// If the clipboardKey isn't set (paste from non-VE instance) use external import rules
 		if ( !clipboardKey ) {
-			data.sanitize( pasteRules.external, this.pasteSpecial );
-			if ( pasteRules.all ) {
-				data.sanitize( pasteRules.all );
+			data.sanitize( importRules.external, this.pasteSpecial );
+			if ( importRules.all ) {
+				data.sanitize( importRules.all );
 			}
-		} else if ( pasteRules.all || this.pasteSpecial ) {
-			data.sanitize( pasteRules.all || {}, this.pasteSpecial );
+		} else if ( importRules.all || this.pasteSpecial ) {
+			data.sanitize( importRules.all || {}, this.pasteSpecial );
 		}
 		data.remapInternalListKeys( this.model.getDocument().getInternalList() );
 
@@ -1719,7 +1719,7 @@ ve.ce.Surface.prototype.afterPaste = function () {
 			);
 			if ( this.pasteSpecial ) {
 				// The context may have been sanitized, so sanitize here as well for comparison
-				context.sanitize( pasteRules, this.pasteSpecial, true );
+				context.sanitize( importRules, this.pasteSpecial, true );
 			}
 
 			// Remove matching context from the left

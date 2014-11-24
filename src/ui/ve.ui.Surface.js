@@ -49,7 +49,7 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 	this.commands = [];
 	this.commandsByTrigger = {};
 	this.triggers = {};
-	this.pasteRules = {};
+	this.importRules = {};
 	this.enabled = true;
 	this.context = this.createContext();
 	this.progresses = [];
@@ -383,20 +383,20 @@ ve.ui.Surface.prototype.showProgress = function () {
 /**
  * Get sanitization rules for rich paste
  *
- * @returns {Object} Paste rules
+ * @returns {Object} Import rules
  */
-ve.ui.Surface.prototype.getPasteRules = function () {
-	return this.pasteRules;
+ve.ui.Surface.prototype.getImportRules = function () {
+	return this.importRules;
 };
 
 /**
  * Set sanitization rules for rich paste
  *
  * @see ve.dm.ElementLinearData#sanitize
- * @param {Object} pasteRules Paste rules
+ * @param {Object} importRules Import rules
  */
-ve.ui.Surface.prototype.setPasteRules = function ( pasteRules ) {
-	this.pasteRules = pasteRules;
+ve.ui.Surface.prototype.setImportRules = function ( importRules ) {
+	this.importRules = importRules;
 };
 
 /**

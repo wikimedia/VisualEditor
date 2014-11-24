@@ -84,7 +84,7 @@ ve.init.sa.Target.prototype.setup = function ( dmDoc ) {
 	this.toolbar.enableFloatable();
 
 	this.toolbar.initialize();
-	this.surface.setPasteRules( this.constructor.static.pasteRules );
+	this.surface.setImportRules( this.constructor.static.importRules );
 	this.surface.initialize();
 
 	// HACK: On mobile place the context inside toolbar.$bar which floats

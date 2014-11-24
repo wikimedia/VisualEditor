@@ -855,7 +855,7 @@ ve.dm.ElementLinearData.prototype.remapInternalListKeys = function ( internalLis
  * @param {Object} [rules.conversions] Model type conversions to apply, e.g. { heading: 'paragraph' }
  * @param {boolean} [rules.removeHtmlAttributes] Remove all left over HTML attributes
  * @param {boolean} [rules.removeStyles] Remove HTML style attributes
- * @param {boolean} [plainText=false] Remove all formatting for plain text paste
+ * @param {boolean} [plainText=false] Remove all formatting for plain text import
  * @param {boolean} [keepEmptyContentBranches=false] Preserve empty content branch nodes
  */
 ve.dm.ElementLinearData.prototype.sanitize = function ( rules, plainText, keepEmptyContentBranches ) {

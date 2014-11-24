@@ -148,14 +148,14 @@ ve.init.Target.static.toolbarGroups = [
 ve.init.Target.static.excludeCommands = [];
 
 /**
- * Surface paste rules
+ * Surface import rules
  *
  * One set for external (non-VE) paste sources and one for all paste sources.
  *
  * @see ve.dm.ElementLinearData#sanitize
  * @type {Object}
  */
-ve.init.Target.static.pasteRules = {
+ve.init.Target.static.importRules = {
 	external: {
 		blacklist: [
 			// Annotations
