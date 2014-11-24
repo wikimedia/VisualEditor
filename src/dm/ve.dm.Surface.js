@@ -458,10 +458,11 @@ ve.dm.Surface.prototype.getTranslatedSelection = function () {
  * @method
  * @param {ve.dm.Selection} [selection] Selection within target document, current selection used by default
  * @param {boolean} [noAutoSelect] Don't update the surface's selection when making changes
+ * @param {boolean} [excludeInsertions] Exclude inserted content at the boundaries when updating range
  * @returns {ve.dm.SurfaceFragment} Surface fragment
  */
-ve.dm.Surface.prototype.getFragment = function ( selection, noAutoSelect ) {
-	return new ve.dm.SurfaceFragment( this, selection || this.selection, noAutoSelect );
+ve.dm.Surface.prototype.getFragment = function ( selection, noAutoSelect, excludeInsertions ) {
+	return new ve.dm.SurfaceFragment( this, selection || this.selection, noAutoSelect, excludeInsertions );
 };
 
 /**
@@ -470,10 +471,11 @@ ve.dm.Surface.prototype.getFragment = function ( selection, noAutoSelect ) {
  * @method
  * @param {ve.Range} range Selection's range
  * @param {boolean} [noAutoSelect] Don't update the surface's selection when making changes
+ * @param {boolean} [excludeInsertions] Exclude inserted content at the boundaries when updating range
  * @returns {ve.dm.SurfaceFragment} Surface fragment
  */
-ve.dm.Surface.prototype.getLinearFragment = function ( range, noAutoSelect ) {
-	return new ve.dm.SurfaceFragment( this, new ve.dm.LinearSelection( this.getDocument(), range ), noAutoSelect );
+ve.dm.Surface.prototype.getLinearFragment = function ( range, noAutoSelect, excludeInsertions ) {
+	return new ve.dm.SurfaceFragment( this, new ve.dm.LinearSelection( this.getDocument(), range ), noAutoSelect, excludeInsertions );
 };
 
 /**
