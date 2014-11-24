@@ -187,7 +187,7 @@ ve.init.Target.static.pasteRules = {
 			// TODO: allow spans
 			'textStyle/span',
 			// Nodes
-			'alienInline', 'alienBlock'
+			'alienInline', 'alienBlock', 'comment'
 		]
 	},
 	all: null
