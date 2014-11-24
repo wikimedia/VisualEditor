@@ -1942,13 +1942,17 @@ ve.ce.Surface.prototype.findFocusedNode = function ( range ) {
  * Handle documentUpdate events on the surface model.
  */
 ve.ce.Surface.prototype.onModelDocumentUpdate = function () {
+	var surface = this;
 	if ( this.contentBranchNodeChanged ) {
 		// Update the selection state from model
 		this.onModelSelect( this.surface.getModel().selection );
 	}
 	// Update the state of the SurfaceObserver
 	this.surfaceObserver.pollOnceNoEmit();
-	this.emit( 'position' );
+	// Wait for other documentUpdate listeners to run before emitting
+	setTimeout( function () {
+		surface.emit( 'position' );
+	} );
 };
 
 /**
