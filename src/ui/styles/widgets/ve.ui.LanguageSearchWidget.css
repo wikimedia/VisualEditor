@@ -6,10 +6,6 @@
 
 /* ve.ui.LanguageResultWidget */
 
-.ve-ui-languageResultWidget {
-	padding: 0.5em;
-}
-
 .ve-ui-languageResultWidget-highlight {
 	font-weight: bold;
 }
