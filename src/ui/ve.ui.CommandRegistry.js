@@ -124,6 +124,18 @@ ve.ui.commandRegistry.register(
 );
 ve.ui.commandRegistry.register(
 	new ve.ui.Command(
+		'numberWrapOnce', 'list', 'wrapOnce',
+		{ args: ['number', true], supportedSelections: ['linear'] }
+	)
+);
+ve.ui.commandRegistry.register(
+	new ve.ui.Command(
+		'bulletWrapOnce', 'list', 'wrapOnce',
+		{ args: ['bullet', true], supportedSelections: ['linear'] }
+	)
+);
+ve.ui.commandRegistry.register(
+	new ve.ui.Command(
 		'commandHelp', 'window', 'open', { args: ['commandHelp'] }
 	)
 );

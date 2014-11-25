@@ -143,6 +143,10 @@
 				"classes": ["ve.ui.*Registry"]
 			},
 			{
+				"name": "Sequences",
+				"classes": ["ve.ui.*Sequence"]
+			},
+			{
 				"name": "Tools",
 				"classes": ["ve.ui.*Tool"]
 			},
