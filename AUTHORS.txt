@@ -72,7 +72,7 @@ OOjs UI
 PapaParse
  – http://papaparse.com
  – MIT license
- – Matthew Holt and other contributors
+ – Matthew Holt and other contributors; fork by Ed Sanders
 
 RangeFix
  – https://github.com/edg2s/rangefix
