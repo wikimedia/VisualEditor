@@ -269,8 +269,8 @@ ve.dm.Node.static.isHybridInline = function ( domElements, converter ) {
 /**
  * Get a clone of the node's document data element.
  *
- * The attributes object will be deep-copied, and the .htmlAttributes and .internal.generated
- * properties will be removed if present.
+ * The attributes object will be deep-copied and the .internal.generated
+ * property will be removed if present.
  *
  * @returns {Object} Cloned element object
  */
@@ -282,7 +282,6 @@ ve.dm.Node.prototype.getClonedElement = function () {
 			delete clone.internal;
 		}
 	}
-	this.constructor.static.removeHtmlAttribute( clone, 'data-parsoid' );
 	return clone;
 };
 
