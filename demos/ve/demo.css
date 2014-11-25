@@ -73,7 +73,7 @@ body {
 }
 
 .ve-demo-source {
-	width: 100%;
+	max-width: none;
 }
 
 .ve-demo-source textarea {
