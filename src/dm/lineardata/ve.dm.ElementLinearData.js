@@ -959,13 +959,14 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules, plainText, keepEm
  * Run all elements through getClonedElement(). This should be done if
  * you intend to insert the sliced data back into the document as a copy
  * of the original data (e.g. for copy and paste).
+ *
+ * @param {boolean} preserveGenerated Preserve internal.generated properties of elements
  */
-ve.dm.ElementLinearData.prototype.cloneElements = function () {
-	var i, len, node;
+ve.dm.ElementLinearData.prototype.cloneElements = function ( preserveGenerated ) {
+	var i, len;
 	for ( i = 0, len = this.getLength(); i < len; i++ ) {
 		if ( this.isOpenElementData( i ) ) {
-			node = ve.dm.nodeFactory.create( this.getType( i ), this.getData( i ) );
-			this.data[i] = node.getClonedElement();
+			this.setData( i, ve.dm.Node.static.cloneElement( this.getData( i ), preserveGenerated ) );
 		}
 	}
 };

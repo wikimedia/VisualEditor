@@ -242,6 +242,7 @@ ve.dm.Node.static.remapInternalListKeys = function () {
  * tags; unless we're in a content location, in which case we have no choice
  * but to generate an inline element.
  *
+ * @static
  * @param {HTMLElement[]} domElements DOM elements being converted
  * @param {ve.dm.Converter} converter Converter object
  * @returns {boolean} The element is inline
@@ -264,25 +265,37 @@ ve.dm.Node.static.isHybridInline = function ( domElements, converter ) {
 		allTagsInline;
 };
 
-/* Methods */
-
 /**
  * Get a clone of the node's document data element.
  *
  * The attributes object will be deep-copied and the .internal.generated
  * property will be removed if present.
  *
+ * @static
+ * @param {Object} element Element object
+ * @param {boolean} preserveGenerated Preserve internal.generated property of element
  * @returns {Object} Cloned element object
  */
-ve.dm.Node.prototype.getClonedElement = function () {
-	var clone = ve.copy( this.element );
-	if ( clone.internal ) {
+ve.dm.Node.static.cloneElement = function ( element, preserveGenerated ) {
+	var clone = ve.copy( element );
+	if ( !preserveGenerated && clone.internal ) {
 		delete clone.internal.generated;
 		if ( ve.isEmptyObject( clone.internal ) ) {
 			delete clone.internal;
 		}
 	}
 	return clone;
+};
+
+/* Methods */
+
+/**
+ * @see #static-cloneElement
+ * @param {boolean} preserveGenerated Preserve internal.generated property of element
+ * @returns {Object} Cloned element object
+ */
+ve.dm.Node.prototype.getClonedElement = function ( preserveGenerated ) {
+	return this.constructor.static.cloneElement( this.element, preserveGenerated );
 };
 
 /**
