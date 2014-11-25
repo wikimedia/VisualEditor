@@ -162,7 +162,7 @@ ve.init.Target.static.importRules = {
 			// TODO: allow spans
 			'textStyle/span',
 			// Nodes
-			'alienInline', 'alienBlock'
+			'alienInline', 'alienBlock', 'comment'
 		]
 	},
 	all: null
