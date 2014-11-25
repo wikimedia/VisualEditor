@@ -775,7 +775,7 @@ ve.dm.example.listWithMeta = [
 	{ type: '/alienMeta' }
 ];
 
-ve.dm.example.complexTableHtml = '<table><caption>Foo</caption><thead><tr><th>Bar</th></tr></thead>' +
+ve.dm.example.complexTableHtml = '<table><caption>Foo</caption><thead><tr><th rowspan="">Bar</th></tr></thead>' +
 	'<tfoot><tr><td colspan=2>Baz</td></tr></tfoot><tbody><tr><td rowspan="02">Quux</td><td colspan="2 garbage">Whee</td></tr></tbody></table>';
 
 ve.dm.example.complexTable = [
@@ -789,7 +789,13 @@ ve.dm.example.complexTable = [
 	{ type: '/tableCaption' },
 	{ type: 'tableSection', attributes: { style: 'header' } },
 	{ type: 'tableRow' },
-	{ type: 'tableCell', attributes: { style: 'header' } },
+	{
+		type: 'tableCell',
+		attributes: {
+			style: 'header',
+			originalRowspan: ''
+		}
+	},
 	{ type: 'paragraph', internal: { generated: 'wrapper' } },
 	'B',
 	'a',
@@ -837,7 +843,6 @@ ve.dm.example.complexTable = [
 		type: 'tableCell',
 		attributes: {
 			style: 'data',
-			colspan: NaN,
 			originalColspan: '2 garbage'
 		}
 	},

@@ -50,14 +50,18 @@ ve.dm.TableCellNode.static.toDataElement = function ( domElements ) {
 		colspan = domElements[0].getAttribute( 'colspan' ),
 		rowspan = domElements[0].getAttribute( 'rowspan' );
 
-	if ( colspan !== null && colspan !== '' ) {
-		attributes.colspan = Number( colspan );
+	if ( colspan !== null ) {
 		attributes.originalColspan = colspan;
+		if ( colspan !== '' && !isNaN( Number( colspan ) ) ) {
+			attributes.colspan = Number( colspan );
+		}
 	}
 
-	if ( rowspan !== null && rowspan !== '' ) {
-		attributes.rowspan = Number( rowspan );
+	if ( rowspan !== null ) {
 		attributes.originalRowspan = rowspan;
+		if ( rowspan !== '' && !isNaN( Number( rowspan ) ) ) {
+			attributes.rowspan = Number( rowspan );
+		}
 	}
 
 	return {
@@ -84,12 +88,12 @@ ve.dm.TableCellNode.static.toDomElements = function ( dataElement, doc ) {
 		spans.rowspan = null;
 	}
 
-	// Use original value if the numerical value didn't change, or if the numerical value is NaN
-	if ( attributes.colspan === Number( attributes.originalColspan ) || isNaN( attributes.colspan ) ) {
+	// Use original value if the numerical value didn't change, or if we didn't set one
+	if ( attributes.colspan === undefined || attributes.colspan === Number( attributes.originalColspan ) ) {
 		spans.colspan = attributes.originalColspan;
 	}
 
-	if ( attributes.rowspan === Number( attributes.originalRowspan ) || isNaN( attributes.rowspan ) ) {
+	if ( attributes.rowspan === undefined || attributes.rowspan === Number( attributes.originalRowspan ) ) {
 		spans.rowspan = attributes.originalRowspan;
 	}
 
