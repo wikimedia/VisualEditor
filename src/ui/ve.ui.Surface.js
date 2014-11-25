@@ -290,31 +290,29 @@ ve.ui.Surface.prototype.enable = function () {
  * Execute an action or command.
  *
  * @method
- * @param {ve.ui.Trigger|string} action Trigger or symbolic name of action
+ * @param {ve.ui.Trigger|string} triggerOrAction Trigger or symbolic name of action
  * @param {string} [method] Action method name
  * @param {Mixed...} [args] Additional arguments for action
  * @returns {boolean} Action or command was executed
  */
-ve.ui.Surface.prototype.execute = function ( action, method ) {
-	var trigger, command, obj, ret;
+ve.ui.Surface.prototype.execute = function ( triggerOrAction, method ) {
+	var command, obj, ret;
 
 	if ( !this.enabled ) {
 		return;
 	}
 
-	if ( action instanceof ve.ui.Trigger ) {
-		// Lookup command by trigger
-		trigger = action.toString();
-		command = this.getCommandByTrigger( trigger );
+	if ( triggerOrAction instanceof ve.ui.Trigger ) {
+		command = this.getCommandByTrigger( triggerOrAction.toString() );
 		if ( command ) {
 			// Have command call execute with action arguments
 			return command.execute( this );
 		}
-	} else if ( typeof action === 'string' && typeof method === 'string' ) {
+	} else if ( typeof triggerOrAction === 'string' && typeof method === 'string' ) {
 		// Validate method
-		if ( ve.ui.actionFactory.doesActionSupportMethod( action, method ) ) {
+		if ( ve.ui.actionFactory.doesActionSupportMethod( triggerOrAction, method ) ) {
 			// Create an action object and execute the method on it
-			obj = ve.ui.actionFactory.create( action, this );
+			obj = ve.ui.actionFactory.create( triggerOrAction, this );
 			ret = obj[method].apply( obj, Array.prototype.slice.call( arguments, 2 ) );
 			return ret === undefined || !!ret;
 		}
