@@ -31,12 +31,12 @@ ve.ui.WindowAction.static.name = 'window';
  * @static
  * @property
  */
-ve.ui.WindowAction.static.methods = [ 'open' ];
+ve.ui.WindowAction.static.methods = [ 'open', 'close', 'toggle' ];
 
 /* Methods */
 
 /**
- * Open a window.
+ * Open or toggle a window.
  *
  * @method
  * @param {string} name Symbolic name of window to open
@@ -44,35 +44,100 @@ ve.ui.WindowAction.static.methods = [ 'open' ];
  * @return {boolean} Action was executed
  */
 ve.ui.WindowAction.prototype.open = function ( name, data ) {
-	var windowManager,
+	var onOpen, openingPromise,
 		windowClass = ve.ui.windowFactory.lookup( name ),
+		windowManager = windowClass && this.getWindowManager( windowClass ),
 		surface = this.surface,
 		fragment = surface.getModel().getFragment( undefined, true ),
 		dir = surface.getView().getDocument().getDirectionFromSelection( fragment.getSelection() ) ||
 			surface.getModel().getDocument().getDir();
 
+	if ( !windowManager ) {
+		return false;
+	}
+
 	data = ve.extendObject( { dir: dir }, data, { fragment: fragment } );
 
-	if ( windowClass ) {
-		if ( windowClass.prototype instanceof ve.ui.FragmentInspector ) {
-			windowManager = surface.getContext().getInspectors();
-			windowManager.openWindow( name, data );
-		} else if ( windowClass.prototype instanceof OO.ui.Dialog ) {
-			// For non-isolated dialogs, remove the selection and re-apply on close
-			surface.getView().nativeSelection.removeAllRanges();
-			windowManager = surface.getDialogs();
-			windowManager.openWindow( name, data ).then( function ( opened ) {
-				opened.then( function ( closing ) {
-					closing.then( function () {
-						// Check the dialog didn't modify the selection before restoring from fragment
-						if ( surface.getModel().getSelection().isNull() ) {
-							fragment.select();
-						}
-					} );
+	if ( windowClass.prototype instanceof OO.ui.Dialog ) {
+		// For non-isolated dialogs, remove the selection and re-apply on close
+		surface.getView().nativeSelection.removeAllRanges();
+		onOpen = function ( opened ) {
+			opened.then( function ( closing ) {
+				closing.then( function () {
+					// Check the dialog didn't modify the selection before restoring from fragment
+					if ( surface.getModel().getSelection().isNull() ) {
+						fragment.select();
+					}
 				} );
 			} );
-		}
-		return true;
+		};
+	}
+
+	openingPromise = windowManager.openWindow( name, data );
+
+	if ( onOpen ) {
+		openingPromise.then( onOpen );
+	}
+	return true;
+};
+
+/**
+ * Close a window
+ *
+ * @method
+ * @param {string} name Symbolic name of window to open
+ * @param {Object} [data] Window closing data
+ * @return {boolean} Action was executed
+ */
+ve.ui.WindowAction.prototype.close = function ( name, data ) {
+	var windowClass = ve.ui.windowFactory.lookup( name ),
+		windowManager = windowClass && this.getWindowManager( windowClass );
+
+	if ( !windowManager ) {
+		return false;
+	}
+
+	windowManager.closeWindow( name, data );
+	return true;
+};
+
+/**
+ * Toggle a window between open and close
+ *
+ * @method
+ * @param {string} name Symbolic name of window to open or close
+ * @param {Object} [data] Window opening or closing data
+ * @return {boolean} Action was executed
+ */
+ve.ui.WindowAction.prototype.toggle = function ( name, data ) {
+	var win,
+		windowClass = ve.ui.windowFactory.lookup( name ),
+		windowManager = windowClass && this.getWindowManager( windowClass );
+
+	if ( !windowManager ) {
+		return false;
+	}
+
+	win = windowManager.getCurrentWindow();
+	if ( !win || win.constructor.static.name !== name ) {
+		this.open( name, data );
+	} else {
+		this.close( name, data );
+	}
+	return true;
+};
+
+/**
+ * Get the window manager for a specified window class
+ *
+ * @param {Function} windowClass Window class
+ * @return {ve.ui.WindowManager|undefined} Window manager
+ */
+ve.ui.WindowAction.prototype.getWindowManager = function ( windowClass ) {
+	if ( windowClass.prototype instanceof ve.ui.FragmentInspector ) {
+		return this.surface.getContext().getInspectors();
+	} else if ( windowClass.prototype instanceof OO.ui.Dialog ) {
+		return this.surface.getDialogs();
 	}
 	return false;
 };
