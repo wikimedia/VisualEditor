@@ -40,6 +40,7 @@ ve.ui.ListAction.static.methods = [ 'wrap', 'unwrap', 'toggle' ];
  *
  * @method
  * @param {string} style List style, e.g. 'number' or 'bullet'
+ * @return {boolean} Action was executed
  */
 ve.ui.ListAction.prototype.toggle = function ( style ) {
 	var i, len,
@@ -55,7 +56,7 @@ ve.ui.ListAction.prototype.toggle = function ( style ) {
 			break;
 		}
 	}
-	this[all ? 'unwrap' : 'wrap']( style );
+	return this[all ? 'unwrap' : 'wrap']( style );
 };
 
 /**
@@ -65,6 +66,7 @@ ve.ui.ListAction.prototype.toggle = function ( style ) {
  *
  * @method
  * @param {string} style List style, e.g. 'number' or 'bullet'
+ * @return {boolean} Action was executed
  */
 ve.ui.ListAction.prototype.wrap = function ( style ) {
 	var tx, i, previousList, groupRange, group, range,
@@ -74,7 +76,7 @@ ve.ui.ListAction.prototype.wrap = function ( style ) {
 		groups;
 
 	if ( !( selection instanceof ve.dm.LinearSelection ) ) {
-		return;
+		return false;
 	}
 
 	range = selection.getRange();
@@ -153,6 +155,7 @@ ve.ui.ListAction.prototype.wrap = function ( style ) {
 	}
 	surfaceModel.breakpoint();
 	this.surface.getView().focus();
+	return true;
 };
 
 /**
@@ -161,6 +164,7 @@ ve.ui.ListAction.prototype.wrap = function ( style ) {
  * TODO: Refactor functionality into {ve.dm.SurfaceFragment}.
  *
  * @method
+ * @return {boolean} Action was executed
  */
 ve.ui.ListAction.prototype.unwrap = function () {
 	var node,
@@ -168,7 +172,7 @@ ve.ui.ListAction.prototype.unwrap = function () {
 		documentModel = surfaceModel.getDocument();
 
 	if ( !( surfaceModel.getSelection() instanceof ve.dm.LinearSelection ) ) {
-		return;
+		return false;
 	}
 
 	surfaceModel.breakpoint();
@@ -179,6 +183,7 @@ ve.ui.ListAction.prototype.unwrap = function () {
 
 	surfaceModel.breakpoint();
 	this.surface.getView().focus();
+	return true;
 };
 
 /* Registration */

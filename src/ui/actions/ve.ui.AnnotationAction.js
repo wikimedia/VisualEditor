@@ -9,6 +9,7 @@
  *
  * @class
  * @extends ve.ui.Action
+ *
  * @constructor
  * @param {ve.ui.Surface} surface Surface to act on
  */
@@ -41,6 +42,7 @@ ve.ui.AnnotationAction.static.methods = [ 'set', 'clear', 'toggle', 'clearAll' ]
  * @method
  * @param {string} name Annotation name, for example: 'textStyle/bold'
  * @param {Object} [data] Additional annotation data
+ * @return {boolean} Action was executed
  */
 ve.ui.AnnotationAction.prototype.set = function ( name, data ) {
 	var i,
@@ -52,6 +54,7 @@ ve.ui.AnnotationAction.prototype.set = function ( name, data ) {
 		fragment.annotateContent( 'clear', removes[i] );
 	}
 	fragment.annotateContent( 'set', name, data );
+	return true;
 };
 
 /**
@@ -60,9 +63,11 @@ ve.ui.AnnotationAction.prototype.set = function ( name, data ) {
  * @method
  * @param {string} name Annotation name, for example: 'textStyle/bold'
  * @param {Object} [data] Additional annotation data
+ * @return {boolean} Action was executed
  */
 ve.ui.AnnotationAction.prototype.clear = function ( name, data ) {
 	this.surface.getModel().getFragment().annotateContent( 'clear', name, data );
+	return true;
 };
 
 /**
@@ -74,6 +79,7 @@ ve.ui.AnnotationAction.prototype.clear = function ( name, data ) {
  * @method
  * @param {string} name Annotation name, for example: 'textStyle/bold'
  * @param {Object} [data] Additional annotation data
+ * @return {boolean} Action was executed
  */
 ve.ui.AnnotationAction.prototype.toggle = function ( name, data ) {
 	var i, existingAnnotations, insertionAnnotations, removesAnnotations,
@@ -104,12 +110,14 @@ ve.ui.AnnotationAction.prototype.toggle = function ( name, data ) {
 			surfaceModel.removeInsertionAnnotations( existingAnnotations );
 		}
 	}
+	return true;
 };
 
 /**
  * Clear all annotations.
  *
  * @method
+ * @return {boolean} Action was executed
  */
 ve.ui.AnnotationAction.prototype.clearAll = function () {
 	var i, len, arr,
@@ -124,6 +132,7 @@ ve.ui.AnnotationAction.prototype.clearAll = function () {
 		fragment.annotateContent( 'clear', arr[i].name, arr[i].data );
 	}
 	surfaceModel.setInsertionAnnotations( null );
+	return true;
 };
 
 /* Registration */

@@ -139,29 +139,29 @@ ve.ui.triggerRegistry.register(
 	'paragraph', new ve.ui.Trigger( 'ctrl+0' )
 );
 ve.ui.triggerRegistry.register(
-	'heading1', new ve.ui.Trigger ( 'ctrl+1' )
+	'heading1', new ve.ui.Trigger( 'ctrl+1' )
 );
 ve.ui.triggerRegistry.register(
-	'heading2', new ve.ui.Trigger ( 'ctrl+2' )
+	'heading2', new ve.ui.Trigger( 'ctrl+2' )
 );
 ve.ui.triggerRegistry.register(
-	'heading3', new ve.ui.Trigger ( 'ctrl+3' )
+	'heading3', new ve.ui.Trigger( 'ctrl+3' )
 );
 ve.ui.triggerRegistry.register(
-	'heading4', new ve.ui.Trigger ( 'ctrl+4' )
+	'heading4', new ve.ui.Trigger( 'ctrl+4' )
 );
 ve.ui.triggerRegistry.register(
-	'heading5', new ve.ui.Trigger ( 'ctrl+5' )
+	'heading5', new ve.ui.Trigger( 'ctrl+5' )
 );
 ve.ui.triggerRegistry.register(
-	'heading6', new ve.ui.Trigger ( 'ctrl+6' )
+	'heading6', new ve.ui.Trigger( 'ctrl+6' )
 );
 ve.ui.triggerRegistry.register(
-	'preformatted', new ve.ui.Trigger ( 'ctrl+7' )
+	'preformatted', new ve.ui.Trigger( 'ctrl+7' )
 );
 ve.ui.triggerRegistry.register(
 	'selectAll', { mac: new ve.ui.Trigger( 'cmd+a' ), pc: new ve.ui.Trigger( 'ctrl+a' ) }
 );
 ve.ui.triggerRegistry.register(
-	'pasteSpecial', { mac: new ve.ui.Trigger( 'cmd+shift+v' ), pc: new ve.ui.Trigger ( 'ctrl+shift+v' ) }
+	'pasteSpecial', { mac: new ve.ui.Trigger( 'cmd+shift+v' ), pc: new ve.ui.Trigger( 'ctrl+shift+v' ) }
 );

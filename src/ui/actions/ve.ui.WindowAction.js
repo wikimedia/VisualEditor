@@ -41,6 +41,7 @@ ve.ui.WindowAction.static.methods = [ 'open' ];
  * @method
  * @param {string} name Symbolic name of window to open
  * @param {Object} [data] Window opening data
+ * @return {boolean} Action was executed
  */
 ve.ui.WindowAction.prototype.open = function ( name, data ) {
 	var windowManager,
@@ -71,7 +72,9 @@ ve.ui.WindowAction.prototype.open = function ( name, data ) {
 				} );
 			} );
 		}
+		return true;
 	}
+	return false;
 };
 
 /* Registration */

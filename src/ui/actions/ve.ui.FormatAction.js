@@ -9,6 +9,7 @@
  *
  * @class
  * @extends ve.ui.Action
+ *
  * @constructor
  * @param {ve.ui.Surface} surface Surface to act on
  */
@@ -44,6 +45,7 @@ ve.ui.FormatAction.static.methods = [ 'convert' ];
  *
  * @param {string} type
  * @param {Object} attributes
+ * @return {boolean} Action was executed
  */
 ve.ui.FormatAction.prototype.convert = function ( type, attributes ) {
 	var selected, i, length, contentBranch, txs,
@@ -76,6 +78,7 @@ ve.ui.FormatAction.prototype.convert = function ( type, attributes ) {
 	txs = ve.dm.Transaction.newFromContentBranchConversion( doc, selection.getRange(), type, attributes );
 	surfaceModel.change( txs, selection );
 	this.surface.getView().focus();
+	return true;
 };
 
 /* Registration */

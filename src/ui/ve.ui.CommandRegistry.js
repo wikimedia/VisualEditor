@@ -23,7 +23,7 @@ OO.inheritClass( ve.ui.CommandRegistry, OO.Registry );
 /* Methods */
 
 /**
- * Register a constructor with the factory.
+ * Register a command with the factory.
  *
  * @method
  * @param {ve.ui.Command} command Command object
