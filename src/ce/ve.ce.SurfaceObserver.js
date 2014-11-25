@@ -25,9 +25,7 @@ ve.ce.SurfaceObserver = function VeCeSurfaceObserver( surface ) {
 	this.disabled = false;
 	this.timeoutId = null;
 	this.pollInterval = 250; // ms
-
-	// Initialization
-	this.clear();
+	this.rangeState = null;
 };
 
 /* Inheritance */
@@ -74,15 +72,9 @@ OO.mixinClass( ve.ce.SurfaceObserver, OO.EventEmitter );
  * Clear polling data.
  *
  * @method
- * @param {ve.Range} range Initial range to use
  */
-ve.ce.SurfaceObserver.prototype.clear = function ( range ) {
-	this.domRange = null;
-	this.range = range || null;
-	this.node = null;
-	this.text = null;
-	this.hash = null;
-	this.$slugWrapper = null;
+ve.ce.SurfaceObserver.prototype.clear = function () {
+	this.rangeState = null;
 };
 
 /**
@@ -209,113 +201,61 @@ ve.ce.SurfaceObserver.prototype.pollOnceSelection = function () {
  * @fires slugEnter
  */
 ve.ce.SurfaceObserver.prototype.pollOnceInternal = function ( emitChanges, selectionOnly ) {
-	var $nodeOrSlug, node, text, hash, range, domRange, $slugWrapper,
-		anchorNodeChange = false,
-		enteredSlug = false,
-		leftSlug = false,
+	var oldState, newState,
 		observer = this;
 
 	if ( !this.domDocument || this.disabled ) {
 		return;
 	}
 
-	range = this.range;
-	node = this.node;
-	domRange = ve.ce.DomRange.newFromDocument( this.domDocument );
+	oldState = this.rangeState;
+	newState = new ve.ce.RangeState(
+		oldState,
+		this.documentView.getDocumentNode(),
+		selectionOnly
+	);
 
-	if ( !domRange.equals( this.domRange ) ) {
-		if ( !this.domRange || this.domRange.anchorNode !== domRange.anchorNode ) {
-			anchorNodeChange = true;
-		}
-		range = domRange.getRange();
-		this.domRange = domRange;
+	if ( newState.leftBlockSlug ) {
+		oldState.$slugWrapper
+			.addClass( 've-ce-branchNode-blockSlugWrapper-unfocused' )
+			.removeClass( 've-ce-branceNode-blockSlugWrapper-focused' );
 	}
 
-	if ( anchorNodeChange ) {
-		node = null;
-		$nodeOrSlug = $( domRange.anchorNode ).closest( '.ve-ce-branchNode, .ve-ce-branchNode-blockSlugWrapper' );
-		if ( $nodeOrSlug.length ) {
-			if ( $nodeOrSlug.hasClass( 've-ce-branchNode-blockSlugWrapper' ) ) {
-				$slugWrapper = $nodeOrSlug;
-			} else {
-				node = $nodeOrSlug.data( 'view' );
-				// Check this node belongs to our document
-				if ( node && node.root !== this.documentView.getDocumentNode() ) {
-					node = null;
-					range = null;
-				}
+	if ( newState.enteredBlockSlug ) {
+		newState.$slugWrapper
+			.addClass( 've-ce-branchNode-blockSlugWrapper-focused' )
+			.removeClass( 've-ce-branchNode-blockSlugWrapper-unfocused' );
+	}
+
+	this.rangeState = newState;
+
+	if ( newState.enteredBlockSlug || newState.leftBlockSlug ) {
+		// Emit 'position' on the surface view after the animation completes
+		this.setTimeout( function () {
+			if ( observer.surface ) {
+				observer.surface.emit( 'position' );
 			}
-		}
-
-		if ( this.$slugWrapper && !this.$slugWrapper.is( $slugWrapper ) ) {
-			this.$slugWrapper
-				.addClass( 've-ce-branchNode-blockSlugWrapper-unfocused' )
-				.removeClass( 've-ce-branchNode-blockSlugWrapper-focused' );
-			this.$slugWrapper = null;
-			leftSlug = true;
-		}
-
-		if ( $slugWrapper && $slugWrapper.length && !$slugWrapper.is( this.$slugWrapper ) ) {
-			this.$slugWrapper = $slugWrapper
-				.addClass( 've-ce-branchNode-blockSlugWrapper-focused' )
-				.removeClass( 've-ce-branchNode-blockSlugWrapper-unfocused' );
-			enteredSlug = true;
-		}
-
-		if ( enteredSlug || leftSlug ) {
-			// Emit 'position' on the surface view after the animation completes
-			this.setTimeout( function () {
-				if ( observer.surface ) {
-					observer.surface.emit( 'position' );
-				}
-			}, 200 );
-		}
+		}, 200 );
 	}
 
-	if ( this.node !== node ) {
-		if ( node === null ) {
-			this.text = null;
-			this.hash = null;
-			this.node = null;
-		} else {
-			this.text = ve.ce.getDomText( node.$element[0] );
-			this.hash = ve.ce.getDomHash( node.$element[0] );
-			this.node = node;
-		}
-	} else if ( !selectionOnly && node !== null ) {
-		text = ve.ce.getDomText( node.$element[0] );
-		hash = ve.ce.getDomHash( node.$element[0] );
-		if ( this.text !== text || this.hash !== hash ) {
-			if ( emitChanges ) {
-				this.emit(
-					'contentChange',
-					node,
-					{
-						text: this.text,
-						hash: this.hash,
-						range: this.range
-					},
-					{ text: text, hash: hash, range: range }
-				);
-			}
-			this.text = text;
-			this.hash = hash;
-		}
+	if ( !selectionOnly && newState.node !== null && newState.contentChanged && emitChanges ) {
+		this.emit(
+			'contentChange',
+			newState.node,
+			{ text: oldState.text, hash: oldState.hash, range: oldState.veRange },
+			{ text: newState.text, hash: newState.hash, range: newState.veRange }
+		);
 	}
 
-	// Only emit rangeChange event if there's a meaningful range difference
-	if ( ( this.range && range ) ? !this.range.equals( range ) : ( this.range !== range ) ) {
-		if ( emitChanges ) {
-			this.emit(
-				'rangeChange',
-				this.range,
-				range
-			);
-		}
-		this.range = range;
+	if ( newState.selectionChanged && emitChanges ) {
+		this.emit(
+			'rangeChange',
+			( oldState ? oldState.veRange : null ),
+			newState.veRange
+		);
 	}
 
-	if ( emitChanges && enteredSlug ) {
+	if ( newState.enteredBlockSlug && emitChanges ) {
 		this.emit( 'slugEnter' );
 	}
 };
@@ -338,5 +278,8 @@ ve.ce.SurfaceObserver.prototype.setTimeout = function ( callback, timeout ) {
  * @return {ve.Range} Range
  */
 ve.ce.SurfaceObserver.prototype.getRange = function () {
-	return this.range;
+	if ( !this.rangeState ) {
+		return null;
+	}
+	return this.rangeState.veRange;
 };

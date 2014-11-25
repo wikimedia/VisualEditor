@@ -96,7 +96,7 @@
 					"ve.ce.NodeFactory",
 					"ve.ce.Surface",
 					"ve.ce.SurfaceObserver",
-					"ve.ce.DomRange"
+					"ve.ce.RangeState"
 				]
 			},
 			{
