@@ -9,13 +9,13 @@ then
 	exit 1
 fi
 
-REPO_DIR=$(cd "$(dirname $0)/../.."; pwd) # Root dir of the git repo working tree
+REPO_DIR=$(cd "$(dirname $0)/.."; pwd) # Root dir of the git repo working tree
 TARGET_DIR="lib/oojs-ui" # Destination relative to the root of the repo
 NPM_DIR=$(mktemp -d 2>/dev/null || mktemp -d -t 'update-oojs-ui') # e.g. /tmp/update-oojs-ui.rI0I5Vir
 
 # Prepare working tree
 cd "$REPO_DIR" &&
-git reset $TARGET_DIR && git checkout $TARGET_DIR && git fetch origin &&
+git reset -- $TARGET_DIR && git checkout -- $TARGET_DIR && git fetch origin &&
 git checkout -B upstream-oojs-ui origin/master || exit 1
 
 # Fetch upstream version
