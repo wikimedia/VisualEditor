@@ -53,7 +53,6 @@ ve.ui.Toolbar = function VeUiToolbar( surface, options ) {
 		.addClass( 've-ui-dir-block-' + this.contextDirection.block );
 	// Events
 	this.surface.getModel().connect( this, { contextChange: 'onContextChange' } );
-	this.surface.connect( this, { addCommand: 'onSurfaceAddCommand' } );
 };
 
 /* Inheritance */
@@ -69,6 +68,18 @@ OO.inheritClass( ve.ui.Toolbar, OO.ui.Toolbar );
  */
 
 /* Methods */
+
+/**
+ * inheritdoc
+ */
+ve.ui.Toolbar.prototype.isToolAvailable = function ( name ) {
+	if ( !ve.ui.Toolbar.super.prototype.isToolAvailable.apply( this, arguments ) ) {
+		return false;
+	}
+	// Check the tools command is available on the surface
+	var tool = this.getToolFactory().lookup( name );
+	return tool && ve.indexOf( tool.static.commandName, this.getSurface().commands ) !== -1;
+};
 
 /**
  * Handle window resize events while toolbar floating is enabled.
@@ -187,21 +198,6 @@ ve.ui.Toolbar.prototype.updateToolState = function () {
 		this.contextDirection.block = dirBlock;
 	}
 	this.emit( 'updateState', fragment, this.contextDirection );
-};
-
-/**
- * Handle command being added to surface.
- *
- * If a matching tool is present, it's label will be updated.
- *
- * @param {string} name Symbolic name of command and trigger
- * @param {ve.ui.Command} command Command that's been registered
- * @param {ve.ui.Trigger} trigger Trigger to associate with command
- */
-ve.ui.Toolbar.prototype.onSurfaceAddCommand = function ( name ) {
-	if ( this.tools[name] ) {
-		this.tools[name].updateTitle();
-	}
 };
 
 /**

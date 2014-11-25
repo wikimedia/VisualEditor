@@ -15,7 +15,7 @@
  * @param {ve.dm.Document} doc Document model
  * @param {Object} [config] Configuration options
  * @cfg {Object[]} [tools] Toolbar configuration
- * @cfg {string[]} [commands] List of supported commands
+ * @cfg {string[]} [excludeCommands] List of commands to exclude
  * @cfg {Object} [pasteRules] Paste rules
  */
 ve.ui.SurfaceWidget = function VeUiSurfaceWidget( doc, config ) {
@@ -26,7 +26,7 @@ ve.ui.SurfaceWidget = function VeUiSurfaceWidget( doc, config ) {
 	OO.ui.Widget.call( this, config );
 
 	// Properties
-	this.surface = ve.init.target.createSurface( doc, { $: this.$ } );
+	this.surface = ve.init.target.createSurface( doc, { $: this.$, excludeCommands: config.excludeCommands } );
 	this.toolbar = new ve.ui.Toolbar( this.surface, { $: this.$ } );
 
 	// Initialization
@@ -37,9 +37,6 @@ ve.ui.SurfaceWidget = function VeUiSurfaceWidget( doc, config ) {
 		.append( this.toolbar.$element, this.surface.$element );
 	if ( config.tools ) {
 		this.toolbar.setup( config.tools );
-	}
-	if ( config.commands ) {
-		this.surface.addCommands( config.commands );
 	}
 	if ( config.pasteRules ) {
 		this.surface.setPasteRules( config.pasteRules );

@@ -67,8 +67,7 @@ ve.init.sa.Target.prototype.setup = function ( dmDoc ) {
 
 	// Properties
 	this.setupDone = true;
-	this.surface = this.createSurface( dmDoc );
-	this.surface.addCommands( this.constructor.static.surfaceCommands );
+	this.surface = this.createSurface( dmDoc, { excludeCommands: this.constructor.static.excludeCommands } );
 	this.$element.append( this.surface.$element );
 
 	this.setupToolbar();
