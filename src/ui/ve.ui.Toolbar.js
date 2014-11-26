@@ -72,9 +72,15 @@ ve.ui.Toolbar.prototype.isToolAvailable = function ( name ) {
 	if ( !ve.ui.Toolbar.super.prototype.isToolAvailable.apply( this, arguments ) ) {
 		return false;
 	}
-	// Check the tools command is available on the surface
-	var tool = this.getToolFactory().lookup( name );
-	return tool && ve.indexOf( tool.static.commandName, this.getSurface().commands ) !== -1;
+	// Check the tool's command is available on the surface
+	var commandName,
+		tool = this.getToolFactory().lookup( name );
+	if ( !tool ) {
+		return false;
+	}
+	// FIXME should use .static.getCommandName(), but we have tools that aren't ve.ui.Tool subclasses :(
+	commandName = tool.static.commandName;
+	return !commandName || ve.indexOf( commandName, this.getSurface().commands ) !== -1;
 };
 
 /**
