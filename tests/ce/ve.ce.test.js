@@ -351,9 +351,6 @@ QUnit.test( 'fakeImes', function ( assert ) {
 			}
 		}
 	}
-	if ( !count ) {
-		throw new Error( 'No IME tests found' );
-	}
 	QUnit.expect( count );
 
 	// TODO: make this function actually affect the events triggered
