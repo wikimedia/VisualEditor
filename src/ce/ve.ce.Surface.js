@@ -2346,7 +2346,9 @@ ve.ce.Surface.prototype.checkSequences = function () {
 	for ( i = 0; i < sequences.length; i++ ) {
 		sequences[i].execute( this.surface );
 	}
-	this.showSelection( this.surface.getModel().getSelection() );
+	if ( sequences.length > 0 ) {
+		this.showSelection( this.surface.getModel().getSelection() );
+	}
 };
 
 /**
