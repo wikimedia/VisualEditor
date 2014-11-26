@@ -1,5 +1,5 @@
 /*!
- * VisualEditor UserInterface DesktopInspectorManager class.
+ * VisualEditor UserInterface DesktopInspectorWindowManager class.
  *
  * @copyright 2011-2014 VisualEditor Team and others; see http://ve.mit-license.org
  */
@@ -14,18 +14,18 @@
  * @param {Object} [config] Configuration options
  * @cfg {ve.ui.Overlay} [overlay] Overlay to use for menus
  */
-ve.ui.DesktopInspectorManager = function VeUiDesktopInspectorManager( config ) {
+ve.ui.DesktopInspectorWindowManager = function VeUiDesktopInspectorWindowManager( config ) {
 	// Parent constructor
-	ve.ui.DesktopInspectorManager.super.call( this, config );
+	ve.ui.DesktopInspectorWindowManager.super.call( this, config );
 };
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.DesktopInspectorManager, ve.ui.WindowManager );
+OO.inheritClass( ve.ui.DesktopInspectorWindowManager, ve.ui.WindowManager );
 
 /* Static Properties */
 
-ve.ui.DesktopInspectorManager.static.sizes = {
+ve.ui.DesktopInspectorWindowManager.static.sizes = {
 	small: {
 		width: 200,
 		maxHeight: '100%'
@@ -50,27 +50,27 @@ ve.ui.DesktopInspectorManager.static.sizes = {
 /**
  * @inheritdoc
  */
-ve.ui.DesktopInspectorManager.prototype.getSetupDelay = function () {
+ve.ui.DesktopInspectorWindowManager.prototype.getSetupDelay = function () {
 	return 0;
 };
 
 /**
  * @inheritdoc
  */
-ve.ui.DesktopInspectorManager.prototype.getReadyDelay = function () {
+ve.ui.DesktopInspectorWindowManager.prototype.getReadyDelay = function () {
 	return 0;
 };
 
 /**
  * @inheritdoc
  */
-ve.ui.DesktopInspectorManager.prototype.getHoldDelay = function () {
+ve.ui.DesktopInspectorWindowManager.prototype.getHoldDelay = function () {
 	return 0;
 };
 
 /**
  * @inheritdoc
  */
-ve.ui.DesktopInspectorManager.prototype.getTeardownDelay = function () {
+ve.ui.DesktopInspectorWindowManager.prototype.getTeardownDelay = function () {
 	return 0;
 };
