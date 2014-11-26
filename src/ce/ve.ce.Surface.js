@@ -2214,8 +2214,6 @@ ve.ce.Surface.prototype.onSurfaceObserverContentChange = function ( node, previo
 		previousStart = previous.range.start - nodeOffset - 1;
 		nextStart = next.range.start - nodeOffset - 1;
 		sameLeadingAndTrailing = offsetDiff !== null && (
-			// TODO: rewrite to static method with tests
-			// TODO: actually start using the result again, or a modified version thereof
 			(
 				lengthDiff > 0 &&
 				previous.text.slice( 0, previousStart ) ===
@@ -2233,7 +2231,7 @@ ve.ce.Surface.prototype.onSurfaceObserverContentChange = function ( node, previo
 		);
 
 		// Simple insertion
-		if ( lengthDiff > 0 && offsetDiff === lengthDiff /* && sameLeadingAndTrailing */) {
+		if ( lengthDiff > 0 && offsetDiff === lengthDiff && sameLeadingAndTrailing ) {
 			data = nextData.slice( previousStart, nextStart );
 			// Apply insertion annotations
 			annotations = node.unicornAnnotations || this.model.getInsertionAnnotations();
