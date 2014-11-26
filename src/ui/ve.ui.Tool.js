@@ -67,7 +67,9 @@ ve.ui.Tool.static.getCommandName = function () {
  */
 ve.ui.Tool.prototype.onUpdateState = function ( fragment ) {
 	var command = this.getCommand();
-	this.setDisabled( !command || ( fragment && !command.isExecutable( fragment ) ) );
+	if ( command !== null ) {
+		this.setDisabled( !command || ( fragment && !command.isExecutable( fragment ) ) );
+	}
 };
 
 /**
@@ -86,8 +88,11 @@ ve.ui.Tool.prototype.onSelect = function () {
 /**
  * Get the command for this tool.
  *
- * @return {ve.ui.Command|undefined}
+ * @return {ve.ui.Command|null|undefined} Undefined means command not found, null means no command set
  */
 ve.ui.Tool.prototype.getCommand = function () {
+	if ( this.constructor.static.commandName === null ) {
+		return null;
+	}
 	return ve.ui.commandRegistry.lookup( this.constructor.static.commandName );
 };
