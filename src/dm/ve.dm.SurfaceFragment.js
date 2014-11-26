@@ -707,11 +707,14 @@ ve.dm.SurfaceFragment.prototype.insertContent = function ( content, annotate ) {
 		return this;
 	}
 
+	var annotations, tx, offset, newRange;
+
 	if ( !this.getSelection( true ).isCollapsed() ) {
+		// If we're replacing content, use the annotations selected
+		// instead of continuing from the left
+		annotations = this.getAnnotations();
 		this.removeContent();
 	}
-
-	var annotations, tx, offset, newRange;
 
 	offset = this.getSelection( true ).getRange().start;
 	// Auto-convert content to array of plain text characters
@@ -719,15 +722,15 @@ ve.dm.SurfaceFragment.prototype.insertContent = function ( content, annotate ) {
 		content = content.split( '' );
 	}
 	if ( content.length ) {
-		if ( annotate ) {
+		if ( annotate && !annotations ) {
 			// TODO: Don't reach into properties of document
 			// FIXME: the logic we actually need for annotating inserted content correctly
 			// is MUCH more complicated
 			annotations = this.document.data
 				.getAnnotationsFromOffset( offset === 0 ? 0 : offset - 1 );
-			if ( annotations.getLength() > 0 ) {
-				ve.dm.Document.static.addAnnotationsToData( content, annotations );
-			}
+		}
+		if ( annotations && annotations.getLength() > 0 ) {
+			ve.dm.Document.static.addAnnotationsToData( content, annotations );
 		}
 		tx = ve.dm.Transaction.newFromInsertion(
 			this.document,
