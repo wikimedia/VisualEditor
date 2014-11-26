@@ -254,6 +254,27 @@ ve.ui.PreformattedFormatTool.static.commandName = 'preformatted';
 ve.ui.toolFactory.register( ve.ui.PreformattedFormatTool );
 
 /**
+ * UserInterface blockquote tool.
+ *
+ * @class
+ * @extends ve.ui.FormatTool
+ * @constructor
+ * @param {OO.ui.ToolGroup} toolGroup
+ * @param {Object} [config] Configuration options
+ */
+ve.ui.BlockquoteFormatTool = function VeUiBlockquoteFormatTool( toolGroup, config ) {
+	ve.ui.FormatTool.call( this, toolGroup, config );
+};
+OO.inheritClass( ve.ui.BlockquoteFormatTool, ve.ui.FormatTool );
+ve.ui.BlockquoteFormatTool.static.name = 'blockquote';
+ve.ui.BlockquoteFormatTool.static.group = 'format';
+ve.ui.BlockquoteFormatTool.static.title =
+	OO.ui.deferMsg( 'visualeditor-formatdropdown-format-blockquote' );
+ve.ui.BlockquoteFormatTool.static.format = { type: 'blockquote' };
+ve.ui.BlockquoteFormatTool.static.commandName = 'blockquote';
+ve.ui.toolFactory.register( ve.ui.BlockquoteFormatTool );
+
+/**
  * UserInterface table cell header tool.
  *
  * @class

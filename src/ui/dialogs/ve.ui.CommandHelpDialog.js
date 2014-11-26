@@ -148,6 +148,7 @@ ve.ui.CommandHelpDialog.static.getCommandGroups = function () {
 				{ trigger: 'paragraph', msg: 'visualeditor-formatdropdown-format-paragraph' },
 				{ shortcuts: ['ctrl+(1-6)'], msg: 'visualeditor-formatdropdown-format-heading-label' },
 				{ trigger: 'preformatted', msg: 'visualeditor-formatdropdown-format-preformatted' },
+				{ trigger: 'blockquote', msg: 'visualeditor-formatdropdown-format-blockquote' },
 				{ trigger: 'indent', msg: 'visualeditor-indentationbutton-indent-tooltip' },
 				{ trigger: 'outdent', msg: 'visualeditor-indentationbutton-outdent-tooltip' }
 			]

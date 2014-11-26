@@ -55,6 +55,7 @@
 	"visualeditor-dialog-language-search-title": "Title for language search dialog\n{{Identical|Select language}}",
 	"visualeditor-dimensionswidget-px": "{{optional}}\nLabel for the dimensions properties denoting pixel units.",
 	"visualeditor-dimensionswidget-times": "{{optional}}\nLabel for the dimensions properties denoting 'by', as in width x height.",
+	"visualeditor-formatdropdown-format-blockquote": "Item in the formatting dropdown for block quote text",
 	"visualeditor-formatdropdown-format-heading-label": "Label for heading level commands.\n{{Identical|Heading}}",
 	"visualeditor-formatdropdown-format-heading1": "Item in the generic formatting dropdown for a level 1 heading.\n{{Identical|Heading}}",
 	"visualeditor-formatdropdown-format-heading2": "Item in the generic formatting dropdown for a level 2 heading.\n{{Identical|Heading}}",
