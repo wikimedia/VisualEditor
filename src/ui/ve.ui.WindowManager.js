@@ -5,7 +5,7 @@
  */
 
 /**
- * Window manager for  windows.
+ * Window manager.
  *
  * @class
  * @extends OO.ui.WindowManager

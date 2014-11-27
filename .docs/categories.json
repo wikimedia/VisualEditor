@@ -151,10 +151,6 @@
 				"classes": ["ve.ui.*Tool"]
 			},
 			{
-				"name": "Inspectors",
-				"classes": ["ve.ui.*Inspector"]
-			},
-			{
 				"name": "Widgets",
 				"classes": ["ve.ui.*Widget"]
 			},
@@ -162,8 +158,8 @@
 				"name": "Windows",
 				"classes": [
 					"ve.ui.*WindowManager",
-					"ve.ui.*InspectorManager",
-					"ve.ui.*Dialog"
+					"ve.ui.*Dialog",
+					"ve.ui.*Inspector"
 				]
 			}
 		]

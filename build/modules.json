@@ -506,7 +506,7 @@
 		"scripts": [
 			"src/ui/ve.ui.DesktopSurface.js",
 			"src/ui/ve.ui.DesktopContext.js",
-			"src/ui/ve.ui.DesktopInspectorManager.js"
+			"src/ui/windowmanagers/ve.ui.DesktopInspectorWindowManager.js"
 		],
 		"styles": [
 			"src/ui/styles/ve.ui.DesktopContext.css"
@@ -526,7 +526,7 @@
 		"scripts": [
 			"src/ui/ve.ui.MobileSurface.js",
 			"src/ui/ve.ui.MobileContext.js",
-			"src/ui/ve.ui.MobileWindowManager.js",
+			"src/ui/windowmanagers/ve.ui.MobileWindowManager.js",
 			"src/ui/widgets/ve.ui.MobileContextOptionWidget.js"
 		],
 		"styles": [
