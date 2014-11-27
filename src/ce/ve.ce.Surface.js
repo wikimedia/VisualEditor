@@ -2331,6 +2331,7 @@ ve.ce.Surface.prototype.onSurfaceObserverContentChange = function ( node, previo
  */
 ve.ce.Surface.prototype.checkSequences = function () {
 	var i, sequences,
+		executed = false,
 		surfaceModel = this.surface.getModel(),
 		selection = surfaceModel.getSelection();
 
@@ -2342,9 +2343,9 @@ ve.ce.Surface.prototype.checkSequences = function () {
 
 	// sequences.length will likely be 0 or 1 so don't cache
 	for ( i = 0; i < sequences.length; i++ ) {
-		sequences[i].execute( this.surface );
+		executed = sequences[i].execute( this.surface ) || executed;
 	}
-	if ( sequences.length > 0 ) {
+	if ( executed ) {
 		this.showSelection( this.surface.getModel().getSelection() );
 	}
 };
