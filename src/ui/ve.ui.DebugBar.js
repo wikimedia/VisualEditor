@@ -292,3 +292,11 @@ ve.ui.DebugBar.prototype.onFilibusterToggleClick = function () {
 		this.filibusterToggle.setLabel( 'Start Filibuster' );
 	}
 };
+
+/**
+ * Destroy the debug bar
+ */
+ve.ui.DebugBar.prototype.destroy = function () {
+	this.getSurface().getModel().disconnect();
+	this.$element.remove();
+};

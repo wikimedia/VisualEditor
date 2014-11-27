@@ -10,11 +10,13 @@
  * @class
  * @abstract
  * @extends OO.ui.Element
+ * @mixins OO.EventEmitter
  *
  * @constructor
  * @param {HTMLDocument|Array|ve.dm.LinearData|ve.dm.Document} dataOrDoc Document data to edit
  * @param {Object} [config] Configuration options
  * @cfg {string[]} [excludeCommands] List of commands to exclude
+ * @cfg {Object} [importRules] Import rules
  */
 ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 	config = config || {};
@@ -49,12 +51,13 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 	this.commands = [];
 	this.commandsByTrigger = {};
 	this.triggers = {};
-	this.importRules = {};
+	this.importRules = config.importRules || {};
 	this.enabled = true;
 	this.context = this.createContext();
 	this.progresses = [];
 	this.showProgressDebounced = ve.debounce( this.showProgress.bind( this ) );
 	this.filibuster = null;
+	this.debugBar = null;
 
 	this.toolbarHeight = 0;
 	this.toolbarDialogs = new ve.ui.ToolbarDialogWindowManager( {
@@ -107,6 +110,9 @@ ve.ui.Surface.prototype.destroy = function () {
 	this.view.destroy();
 	this.context.destroy();
 	this.dialogs.destroy();
+	if ( this.debugBar ) {
+		this.debugBar.destroy();
+	}
 
 	// Remove DOM elements
 	this.$element.remove();
@@ -126,6 +132,10 @@ ve.ui.Surface.prototype.initialize = function () {
 	this.getView().$element.after( this.localOverlay.$element );
 	// Attach globalOverlay to the global <body>, not the local frame's <body>
 	$( 'body' ).append( this.globalOverlay.$element );
+
+	if ( ve.debug ) {
+		this.setupDebugBar();
+	}
 
 	// The following classes can be used here:
 	// ve-ui-surface-dir-ltr
@@ -158,6 +168,14 @@ ve.ui.Surface.prototype.createContext = function () {
  */
 ve.ui.Surface.prototype.createDialogWindowManager = function () {
 	throw new Error( 've.ui.Surface.createDialogWindowManager must be overridden in subclass' );
+};
+
+/**
+ * Set up the debug bar and insert it into the DOM.
+ */
+ve.ui.Surface.prototype.setupDebugBar = function () {
+	this.debugBar = new ve.ui.DebugBar( this );
+	this.debugBar.$element.insertAfter( this.$element );
 };
 
 /**
@@ -398,16 +416,6 @@ ve.ui.Surface.prototype.showProgress = function () {
  */
 ve.ui.Surface.prototype.getImportRules = function () {
 	return this.importRules;
-};
-
-/**
- * Set sanitization rules for rich paste
- *
- * @see ve.dm.ElementLinearData#sanitize
- * @param {Object} importRules Import rules
- */
-ve.ui.Surface.prototype.setImportRules = function ( importRules ) {
-	this.importRules = importRules;
 };
 
 /**

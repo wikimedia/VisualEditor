@@ -26,7 +26,11 @@ ve.ui.SurfaceWidget = function VeUiSurfaceWidget( doc, config ) {
 	OO.ui.Widget.call( this, config );
 
 	// Properties
-	this.surface = ve.init.target.createSurface( doc, { $: this.$, excludeCommands: config.excludeCommands } );
+	this.surface = ve.init.target.createSurface( doc, {
+		$: this.$,
+		excludeCommands: config.excludeCommands,
+		importRules: config.importRules
+	} );
 	this.toolbar = new ve.ui.Toolbar( this.surface, { $: this.$ } );
 
 	// Initialization
@@ -37,14 +41,6 @@ ve.ui.SurfaceWidget = function VeUiSurfaceWidget( doc, config ) {
 		.append( this.toolbar.$element, this.surface.$element );
 	if ( config.tools ) {
 		this.toolbar.setup( config.tools );
-	}
-	if ( config.importRules ) {
-		this.surface.setImportRules( config.importRules );
-	}
-
-	if ( ve.debug ) {
-		var debugBar = new ve.ui.DebugBar( this.surface, { $: this.$ } );
-		this.$element.append( debugBar.$element );
 	}
 };
 
