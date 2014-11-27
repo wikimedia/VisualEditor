@@ -25,9 +25,12 @@ ve.init.Target = function VeInitTarget( $container ) {
 
 	// Properties
 	this.$element = $container;
+	this.elementDocument = this.$element[0].ownerDocument;
 	this.surfaces = [];
 	this.surface = null;
 	this.toolbar = null;
+	this.documentTriggerListener = new ve.TriggerListener( this.constructor.static.documentCommands );
+	this.targetTriggerListener = new ve.TriggerListener( this.constructor.static.targetCommands );
 
 	// Initialization
 	this.$element.addClass( 've-init-target' );
@@ -35,6 +38,11 @@ ve.init.Target = function VeInitTarget( $container ) {
 	if ( ve.init.platform.constructor.static.isInternetExplorer() ) {
 		this.$element.addClass( 've-init-target-ie' );
 	}
+
+	// Events
+	this.onDocumentKeyDownHandler = this.onDocumentKeyDown.bind( this );
+	$( this.elementDocument ).on( 'keydown', this.onDocumentKeyDownHandler );
+	this.$element.on( 'keydown', this.onTargetKeyDown.bind( this ) );
 
 	// Register
 	ve.init.target = this;
@@ -53,6 +61,7 @@ ve.init.Target.prototype.destroy = function () {
 		this.$element.remove();
 		this.$element = null;
 	}
+	$( this.elementDocument ).off( 'keydown', this.onDocumentKeyDownHandler );
 	ve.init.target = null;
 };
 
@@ -142,6 +151,25 @@ ve.init.Target.static.toolbarGroups = [
 	}
 ];
 
+/**
+ * List of commands which can be triggered anywhere from within the document
+ *
+ * @type {string[]} List of command names
+ */
+ve.init.Target.static.documentCommands = ['commandHelp'];
+
+/**
+ * List of commands which can be triggered from within the target element
+ *
+ * @type {string[]} List of command names
+ */
+ve.init.Target.static.targetCommands = ['findAndReplace'];
+
+/**
+ * List of commands to exclude from the target entirely
+ *
+ * @type {string[]} List of command names
+ */
 ve.init.Target.static.excludeCommands = [];
 
 /**
@@ -168,6 +196,36 @@ ve.init.Target.static.importRules = {
 /* Methods */
 
 /**
+ * Handle key down events on the document
+ *
+ * @param {jQuery.Event} e Key down event
+ */
+ve.init.Target.prototype.onDocumentKeyDown = function ( e ) {
+	var command, trigger = new ve.ui.Trigger( e );
+	if ( trigger.isComplete() ) {
+		command = this.documentTriggerListener.getCommandByTrigger( trigger.toString() );
+		if ( command && command.execute( this.getSurface() ) ) {
+			e.preventDefault();
+		}
+	}
+};
+
+/**
+ * Handle key down events on the target
+ *
+ * @param {jQuery.Event} e Key down event
+ */
+ve.init.Target.prototype.onTargetKeyDown = function ( e ) {
+	var command, trigger = new ve.ui.Trigger( e );
+	if ( trigger.isComplete() ) {
+		command = this.targetTriggerListener.getCommandByTrigger( trigger.toString() );
+		if ( command && command.execute( this.getSurface() ) ) {
+			e.preventDefault();
+		}
+	}
+};
+
+/**
  * Create a surface.
  *
  * @method
@@ -177,7 +235,11 @@ ve.init.Target.static.importRules = {
  */
 ve.init.Target.prototype.createSurface = function ( dmDoc, config ) {
 	config = ve.extendObject( {
-		excludeCommands: this.constructor.static.excludeCommands,
+		excludeCommands: OO.simpleArrayUnion(
+			this.constructor.static.excludeCommands,
+			this.constructor.static.documentCommands,
+			this.constructor.static.targetCommands
+		),
 		importRules: this.constructor.static.importRules
 	}, config );
 	return new ve.ui.DesktopSurface( dmDoc, config );

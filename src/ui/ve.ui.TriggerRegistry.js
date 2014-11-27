@@ -33,6 +33,7 @@ OO.inheritClass( ve.ui.TriggerRegistry, OO.Registry );
  * @param {ve.ui.Trigger[]|Object} triggers Trigger object(s) or map of trigger object(s) keyed by
  * platform name e.g. 'mac' or 'pc'
  * @throws {Error} Trigger must be an instance of ve.ui.Trigger
+ * @throws {Error} Incomplete trigger
  */
 ve.ui.TriggerRegistry.prototype.register = function ( name, triggers ) {
 	var i, l, triggerList,
@@ -53,6 +54,9 @@ ve.ui.TriggerRegistry.prototype.register = function ( name, triggers ) {
 	for ( i = 0, l = triggerList.length; i < l; i++ ) {
 		if ( !( triggerList[i] instanceof ve.ui.Trigger ) ) {
 			throw new Error( 'Trigger must be an instance of ve.ui.Trigger' );
+		}
+		if ( !triggerList[i].isComplete() ) {
+			throw new Error( 'Incomplete trigger' );
 		}
 	}
 

@@ -73,6 +73,9 @@ ve.ui.FragmentInspector.prototype.initialize = function () {
 
 	// Events
 	this.form.connect( this, { submit: 'onFormSubmit' } );
+	// Hack: required for keystrokes from isolated windows to make it back to the target
+	this.$content.on( 'keydown', ve.init.target.onDocumentKeyDown.bind( ve.init.target ) );
+	this.$content.on( 'keydown', ve.init.target.onTargetKeyDown.bind( ve.init.target ) );
 
 	// Initialization
 	this.$element.addClass( 've-ui-fragmentInspector' );

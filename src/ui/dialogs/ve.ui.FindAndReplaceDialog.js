@@ -127,7 +127,6 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 	this.previousButton.connect( this, { click: 'onPreviousButtonClick' } );
 	this.replaceButton.connect( this, { click: 'onReplaceButtonClick' } );
 	this.replaceAllButton.connect( this, { click: 'onReplaceAllButtonClick' } );
-	this.$content.on( 'keydown', this.onContentKeyDown.bind( this ) );
 
 	// Initialization
 	this.findText.$input.attr( 'tabIndex', 1 );
@@ -194,20 +193,6 @@ ve.ui.FindAndReplaceDialog.prototype.getTeardownProcess = function ( data ) {
 			this.fragment = [];
 			this.surface = null;
 		}, this );
-};
-
-/**
- * Handle keydown events inside the dialog
- */
-ve.ui.FindAndReplaceDialog.prototype.onContentKeyDown = function ( e ) {
-	var command, trigger = new ve.ui.Trigger( e );
-	if ( trigger.isComplete() ) {
-		command = this.surface.getCommandByTrigger( trigger.toString() );
-		if ( command && command.getName() === 'findAndReplace' ) {
-			e.preventDefault();
-			this.close();
-		}
-	}
 };
 
 /**

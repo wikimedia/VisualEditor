@@ -84,7 +84,7 @@ ve.ui.Toolbar.prototype.isToolAvailable = function ( name ) {
 	}
 	// FIXME should use .static.getCommandName(), but we have tools that aren't ve.ui.Tool subclasses :(
 	commandName = tool.static.commandName;
-	return !commandName || ve.indexOf( commandName, this.getSurface().commands ) !== -1;
+	return !commandName || ve.indexOf( commandName, this.getCommands() ) !== -1;
 };
 
 /**
@@ -192,10 +192,29 @@ ve.ui.Toolbar.prototype.updateToolState = function () {
 };
 
 /**
+ * Get triggers for a specified name.
+ *
+ * @param {string} name Trigger name
+ * @returns {ve.ui.Trigger[]|undefined} Triggers
+ */
+ve.ui.Toolbar.prototype.getTriggers = function ( name ) {
+	return this.getSurface().triggerListener.getTriggers( name );
+};
+
+/**
+ * Get a list of commands available to this toolbar's surface
+ *
+ * @return {string[]} Command names
+ */
+ve.ui.Toolbar.prototype.getCommands = function () {
+	return this.getSurface().triggerListener.getCommands();
+};
+
+/**
  * @inheritdoc
  */
 ve.ui.Toolbar.prototype.getToolAccelerator = function ( name ) {
-	var i, l, triggers = this.surface.getTriggers( name ), shortcuts = [];
+	var i, l, triggers = this.getTriggers( name ), shortcuts = [];
 
 	if ( triggers ) {
 		for ( i = 0, l = triggers.length; i < l; i++ ) {

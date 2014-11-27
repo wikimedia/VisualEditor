@@ -64,8 +64,6 @@ ve.init.sa.Target.prototype.setup = function ( dmDoc ) {
 	if ( this.setupDone ) {
 		return;
 	}
-
-	// Properties
 	this.setupDone = true;
 	surface = this.addSurface( dmDoc );
 	this.$element.append( surface.$element );
@@ -100,7 +98,11 @@ ve.init.sa.Target.prototype.setup = function ( dmDoc ) {
  */
 ve.init.sa.Target.prototype.createSurface = function ( dmDoc, config ) {
 	config = ve.extendObject( {
-		excludeCommands: this.constructor.static.excludeCommands,
+		excludeCommands: OO.simpleArrayUnion(
+			this.constructor.static.excludeCommands,
+			this.constructor.static.documentCommands,
+			this.constructor.static.targetCommands
+		),
 		importRules: this.constructor.static.importRules
 	}, config );
 	return new this.surfaceClass( dmDoc, config );

@@ -131,6 +131,7 @@
 		"scripts": [
 			"src/ve.js",
 			"src/ve.utils.js",
+			"src/ve.TriggerListener.js",
 			{ "file": "src/ve.debug.js", "debug": true },
 			"src/ve.track.js",
 			"src/init/ve.init.js",

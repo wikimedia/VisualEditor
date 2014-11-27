@@ -29,4 +29,19 @@ ve.ui.ToolbarDialog = function VeUiToolbarDialog( config ) {
 
 OO.inheritClass( ve.ui.ToolbarDialog, OO.ui.Dialog );
 
+/* Methods */
+
+/**
+ * @inheritdoc
+ */
+ve.ui.ToolbarDialog.prototype.initialize = function () {
+	// Parent method
+	ve.ui.ToolbarDialog.super.prototype.initialize.call( this );
+
+	// Events
+	// Hack: required for keystrokes from isolated windows to make it back to the target
+	this.$content.on( 'keydown', ve.init.target.onDocumentKeyDown.bind( ve.init.target ) );
+	this.$content.on( 'keydown', ve.init.target.onTargetKeyDown.bind( ve.init.target ) );
+};
+
 ve.ui.ToolbarDialog.static.size = 'full';
