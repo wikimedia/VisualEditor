@@ -193,7 +193,7 @@ ve.dm.Node.static.defaultAttributes = {};
  * Remap the store indexes stored in a linear model data element.
  *
  * The default implementation is empty. Nodes should override this if they store store indexes in
-.* attributes. To remap, do something like
+ * attributes. To remap, do something like
  * dataElement.attributes.foo = mapping[dataElement.attributes.foo];
  *
  * @static
