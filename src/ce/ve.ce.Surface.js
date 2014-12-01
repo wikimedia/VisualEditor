@@ -341,40 +341,57 @@ ve.ce.Surface.prototype.getOffsetFromCoords = function ( x, y ) {
  *
  * This function is used internally by getSelectionRects and
  * getSelectionBoundingRect as a fallback when Range.getClientRects
- * fails.
+ * fails. The width is hard-coded to 0 as the function is used to
+ * locate the selection focus position.
  *
  * @private
  * @return {Object} ClientRect-like object
  */
 ve.ce.Surface.prototype.getClientRectFromNode = function () {
-	var rect, rtl, x,
+	var rect, side, x, range, adjacentNode, unicornRect,
 		node = this.nativeSelection.focusNode;
 
 	while ( node && node.nodeType !== Node.ELEMENT_NODE ) {
 		node = node.parentNode;
 	}
+
+	if ( !node ) {
+		return null;
+	}
+
 	// When possible, pretend the cursor is the left/right border of the node
 	// (depending on directionality) as a fallback.
-	if ( node ) {
-		// We would use getBoundingClientRect(), but in iOS7 that's relative to the
-		// document rather than to the viewport
-		rect = node.getClientRects()[0];
-		if ( !rect ) {
-			// FF can return null when focusNode is invisible
+
+	// We would use getBoundingClientRect(), but in iOS7 that's relative to the
+	// document rather than to the viewport
+	rect = node.getClientRects()[0];
+	if ( !rect ) {
+		// FF can return null when focusNode is invisible
+		return null;
+	}
+
+	side = this.getModel().getDocument().getDir() === 'rtl' ? 'right' : 'left';
+	range = this.nativeSelection.getRangeAt( 0 );
+	adjacentNode = range.endContainer.childNodes[ range.endOffset ];
+	if ( range.collapsed && $( adjacentNode ).hasClass( 've-ce-unicorn' ) ) {
+		// We're next to a unicorn; use its left/right position
+		unicornRect = adjacentNode.getClientRects()[0];
+		if ( !unicornRect ) {
 			return null;
 		}
-		rtl = this.getModel().getDocument().getDir() === 'rtl';
-		x = rtl ? rect.right : rect.left;
-		return {
-			top: rect.top,
-			bottom: rect.bottom,
-			left: x,
-			right: x,
-			width: 0,
-			height: rect.height
-		};
+		x = unicornRect[ side ];
+	} else {
+		x = rect[ side ];
 	}
-	return null;
+
+	return {
+		top: rect.top,
+		bottom: rect.bottom,
+		left: x,
+		right: x,
+		width: 0,
+		height: rect.height
+	};
 };
 
 /**
