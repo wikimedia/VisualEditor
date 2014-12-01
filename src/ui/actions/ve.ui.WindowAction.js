@@ -45,8 +45,8 @@ ve.ui.WindowAction.static.methods = [ 'open', 'close', 'toggle' ];
  */
 ve.ui.WindowAction.prototype.open = function ( name, data ) {
 	var onOpen, openingPromise,
-		windowClass = ve.ui.windowFactory.lookup( name ),
-		windowManager = windowClass && this.getWindowManager( windowClass ),
+		windowType = this.getWindowType( name ),
+		windowManager = windowType && this.getWindowManager( windowType ),
 		surface = this.surface,
 		fragment = surface.getModel().getFragment( undefined, true ),
 		dir = surface.getView().getDocument().getDirectionFromSelection( fragment.getSelection() ) ||
@@ -58,7 +58,7 @@ ve.ui.WindowAction.prototype.open = function ( name, data ) {
 
 	data = ve.extendObject( { dir: dir }, data, { fragment: fragment } );
 
-	if ( windowClass.prototype instanceof OO.ui.Dialog ) {
+	if ( windowType === 'dialog' ) {
 		// For non-isolated dialogs, remove the selection and re-apply on close
 		surface.getView().nativeSelection.removeAllRanges();
 		onOpen = function ( opened ) {
@@ -90,8 +90,8 @@ ve.ui.WindowAction.prototype.open = function ( name, data ) {
  * @return {boolean} Action was executed
  */
 ve.ui.WindowAction.prototype.close = function ( name, data ) {
-	var windowClass = ve.ui.windowFactory.lookup( name ),
-		windowManager = windowClass && this.getWindowManager( windowClass );
+	var windowType = this.getWindowType( name ),
+		windowManager = windowType && this.getWindowManager( windowType );
 
 	if ( !windowManager ) {
 		return false;
@@ -111,8 +111,8 @@ ve.ui.WindowAction.prototype.close = function ( name, data ) {
  */
 ve.ui.WindowAction.prototype.toggle = function ( name, data ) {
 	var win,
-		windowClass = ve.ui.windowFactory.lookup( name ),
-		windowManager = windowClass && this.getWindowManager( windowClass );
+		windowType = this.getWindowType( name ),
+		windowManager = windowType && this.getWindowManager( windowType );
 
 	if ( !windowManager ) {
 		return false;
@@ -128,18 +128,35 @@ ve.ui.WindowAction.prototype.toggle = function ( name, data ) {
 };
 
 /**
+ * Get the type of a window class
+ *
+ * @param {string} name Window name
+ * @return {string|null} Window type: 'inspector' or 'dialog'
+ */
+ve.ui.WindowAction.prototype.getWindowType = function ( name ) {
+	var windowClass = ve.ui.windowFactory.lookup( name );
+	if ( windowClass.prototype instanceof ve.ui.FragmentInspector ) {
+		return 'inspector';
+	} else if ( windowClass.prototype instanceof OO.ui.Dialog ) {
+		return 'dialog';
+	}
+	return null;
+};
+
+/**
  * Get the window manager for a specified window class
  *
  * @param {Function} windowClass Window class
- * @return {ve.ui.WindowManager|undefined} Window manager
+ * @return {ve.ui.WindowManager|null} Window manager
  */
-ve.ui.WindowAction.prototype.getWindowManager = function ( windowClass ) {
-	if ( windowClass.prototype instanceof ve.ui.FragmentInspector ) {
-		return this.surface.getContext().getInspectors();
-	} else if ( windowClass.prototype instanceof OO.ui.Dialog ) {
-		return this.surface.getDialogs();
+ve.ui.WindowAction.prototype.getWindowManager = function ( windowType ) {
+	switch ( windowType ) {
+		case 'inspector':
+			return this.surface.getContext().getInspectors();
+		case 'dialog':
+			return this.surface.getDialogs();
 	}
-	return false;
+	return null;
 };
 
 /* Registration */
