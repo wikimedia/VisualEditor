@@ -47,7 +47,7 @@ ve.ui.AnnotationTool.prototype.onUpdateState = function ( fragment ) {
 	ve.ui.Tool.prototype.onUpdateState.apply( this, arguments );
 
 	this.setActive(
-		fragment.getAnnotations().hasAnnotationWithName( this.constructor.static.annotation.name )
+		fragment && fragment.getAnnotations().hasAnnotationWithName( this.constructor.static.annotation.name )
 	);
 };
 

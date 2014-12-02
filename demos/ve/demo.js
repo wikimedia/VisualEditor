@@ -20,19 +20,18 @@ $( function () {
 			return items;
 		}
 
-		var currentTarget,
-			initialPage,
+		var initialPage,
 
 			lastMode = null,
 
 			$menu = $( '.ve-demo-menu' ),
 			$editor = $( '.ve-demo-editor' ),
-			$targetContainer = $( '<div>' ),
+			target = new ve.init.sa.Target( $( '<div>' ).appendTo( $editor ) ),
 
 			switching = false,
 
 			currentLang = $.i18n().locale,
-			currentDir = $targetContainer.css( 'direction' ) || 'ltr',
+			currentDir = target.$element.css( 'direction' ) || 'ltr',
 
 			// Menu widgets
 			pageDropdown = new OO.ui.DropdownWidget( {
@@ -44,6 +43,7 @@ $( function () {
 				{ label: 'Page', input: pageDropdown }
 			),
 			pageMenu = pageDropdown.getMenu(),
+			addSurfaceButton = new OO.ui.ButtonWidget( { icon: 'add' } ),
 
 			modeSelect = new OO.ui.ButtonSelectWidget().addItems( [
 				new OO.ui.ButtonOptionWidget( { data: 've', label: 'VE' } ),
@@ -74,6 +74,10 @@ $( function () {
 				history.replaceState( null, document.title, '#!/src/' + page );
 			}
 			switchPage( 've', page );
+		} );
+
+		addSurfaceButton.on( 'click', function () {
+			addSurface( '' );
 		} );
 
 		messageKeyButton.on( 'click', function () {
@@ -124,9 +128,9 @@ $( function () {
 
 			switch ( lastMode ) {
 				case 've':
-					closePromise = $targetContainer.slideUp().promise();
+					closePromise = target.$element.slideUp().promise();
 					if ( !page ) {
-						model = currentTarget.getSurface().getModel().getDocument() ;
+						model = target.getSurface().getModel().getDocument() ;
 						doc = ve.dm.converter.getDomFromModel( model );
 						html = ve.properInnerHtml( doc.body );
 						currentDir = model.getDir();
@@ -155,6 +159,7 @@ $( function () {
 			closePromise.done( function () {
 				switch ( mode ) {
 					case 've':
+						target.$element.slideDown();
 						if ( page ) {
 							loadPage( page );
 						} else if ( html ) {
@@ -165,9 +170,7 @@ $( function () {
 					case 'edit':
 						sourceTextInput.$element.show();
 						sourceTextInput.setValue( html ).adjustSize();
-						sourceTextInput.$element.hide();
-
-						sourceTextInput.$element.slideDown();
+						sourceTextInput.$element.hide().slideDown();
 						break;
 
 					case 'read':
@@ -184,6 +187,7 @@ $( function () {
 			$( '<div>' ).addClass( 've-demo-menu-commands' ).append(
 				pageLabel.$element,
 				pageDropdown.$element,
+				addSurfaceButton.$element,
 				$( '<span class="ve-demo-menu-divider">&nbsp;</span>' ),
 				modeSelect.$element,
 				$( '<span class="ve-demo-menu-divider">&nbsp;</span>' ),
@@ -192,7 +196,7 @@ $( function () {
 			)
 		);
 
-		$editor.append( $targetContainer, sourceTextInput.$element.hide(), $readView );
+		$editor.append( target.$element, sourceTextInput.$element.hide(), $readView );
 
 		/**
 		 * Load a page into the editor
@@ -206,69 +210,54 @@ $( function () {
 				currentDir = src.match( /rtl\.html$/ ) ? 'rtl' : 'ltr';
 			}
 
-			$targetContainer.slideUp().promise().done( function () {
-				$.ajax( {
-					url: src,
-					dataType: 'text'
-				} ).always( function ( result, status ) {
-					var pageHtml;
+			ve.init.platform.getInitializedPromise().done( function () {
+				var promise = target.getSurface() ?
+					target.getSurface().$element.slideUp().promise() :
+					$.Deferred().resolve().promise();
 
-					if ( status === 'error' ) {
-						pageHtml = '<p><i>Failed loading page ' + $( '<span>' ).text( src ).html() + '</i></p>';
-					} else {
-						pageHtml = result;
-					}
+				promise.done( function () {
+					$.ajax( {
+						url: src,
+						dataType: 'text'
+					} ).always( function ( result, status ) {
+						var pageHtml;
 
-					loadTarget( pageHtml );
+						if ( status === 'error' ) {
+							pageHtml = '<p><i>Failed loading page ' + $( '<span>' ).text( src ).html() + '</i></p>';
+						} else {
+							pageHtml = result;
+						}
+
+						loadTarget( pageHtml );
+					} );
 				} );
 			} );
 		}
 
 		function loadTarget( pageHtml ) {
-			if ( currentTarget ) {
-				currentTarget.destroy();
-			}
+			target.clearSurfaces();
 
-			var $container = $( '<div>' ),
-				oldDir = currentDir === 'ltr' ? 'rtl' : 'ltr';
+			var oldDir = currentDir === 'ltr' ? 'rtl' : 'ltr';
 
 			$( '.stylesheet-' + currentDir ).prop( 'disabled', false );
 			$( '.stylesheet-' + oldDir ).prop( 'disabled', true );
 
-			// Container needs to be visually hidden, but not display:none
-			// so that the toolbar can be measured
-			$targetContainer.empty().show().css( {
-				height: 0,
-				overflow: 'hidden'
-			} );
+			target.$element.css( 'direction', currentDir );
 
-			$targetContainer.css( 'direction', currentDir );
+			addSurface( pageHtml );
+		}
 
-			// The container must be attached to the DOM before
-			// the target is initialised
-			$targetContainer.append( $container );
-
-			$targetContainer.show();
-			currentTarget = new ve.init.sa.Target(
-				$container,
+		function addSurface( html ) {
+			var surface = target.addSurface(
 				ve.dm.converter.getModelFromDom(
-					ve.createDocumentFromHtml( pageHtml ),
-					$targetContainer.ownerDocument,
+					ve.createDocumentFromHtml( html ),
+					target.$element.ownerDocument,
 					currentLang,
 					currentDir
 				)
 			);
-
-			currentTarget.on( 'surfaceReady', function () {
-				var surfaceView = currentTarget.getSurface().getView();
-				// Container must be properly hidden before slideDown animation
-				$targetContainer.removeAttr( 'style' ).hide()
-					// Restore directionality
-					.css( 'direction', currentDir );
-
-				$targetContainer.slideDown().promise().done( function () {
-					surfaceView.focus();
-				} );
+			surface.$element.hide().slideDown().promise().done( function () {
+				surface.getView().focus();
 			} );
 		}
 

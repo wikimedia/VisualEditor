@@ -7,25 +7,20 @@
 /**
  * Initialization Standalone target.
  *
- *     @example
- *     new ve.init.sa.Target(
- *         $( '<div>' ).appendTo( 'body' ), ve.createDocumentFromHtml( '<p>Hello world.</p>' )
- *     );
- *
  * @class
  * @extends ve.init.Target
  *
  * @constructor
  * @param {jQuery} $container Container to render target into
- * @param {ve.dm.Document} dmDoc Document model
  * @param {string} [surfaceType] Type of surface to use, 'desktop' or 'mobile'
  * @throws {Error} Unknown surfaceType
  */
-ve.init.sa.Target = function VeInitSaTarget( $container, dmDoc, surfaceType ) {
+ve.init.sa.Target = function VeInitSaTarget( $container, surfaceType ) {
 	// Parent constructor
-	ve.init.Target.call( this, $container );
+	ve.init.Target.call( this, $container, { shadow: true, actions: true, floatable: true } );
 
 	this.surfaceType = surfaceType || this.constructor.static.defaultSurfaceType;
+	this.actions = null;
 
 	switch ( this.surfaceType ) {
 		case 'desktop':
@@ -37,9 +32,11 @@ ve.init.sa.Target = function VeInitSaTarget( $container, dmDoc, surfaceType ) {
 		default:
 			throw new Error( 'Unknown surfaceType: ' + this.surfaceType );
 	}
-	this.setupDone = false;
 
-	ve.init.platform.getInitializedPromise().done( this.setup.bind( this, dmDoc ) );
+	// The following classes can be used here:
+	// ve-init-sa-target-mobile
+	// ve-init-sa-target-desktop
+	this.$element.addClass( 've-init-sa-target ve-init-sa-target-' + this.surfaceType );
 };
 
 /* Inheritance */
@@ -53,44 +50,16 @@ ve.init.sa.Target.static.defaultSurfaceType = 'desktop';
 /* Methods */
 
 /**
- * Setup the target
- *
- * @param {ve.dm.Document} dmDoc Document model
- * @fires surfaceReady
+ * @inheritdoc
  */
-ve.init.sa.Target.prototype.setup = function ( dmDoc ) {
-	var surface, target = this;
-
-	if ( this.setupDone ) {
-		return;
-	}
-	this.setupDone = true;
-	surface = this.addSurface( dmDoc );
+ve.init.sa.Target.prototype.addSurface = function () {
+	var surface = ve.init.sa.Target.super.prototype.addSurface.apply( this, arguments );
 	this.$element.append( surface.$element );
-
-	this.setupToolbar( { classes: ['ve-init-sa-target-toolbar'] } );
-
-	// Initialization
-	// The following classes can be used here:
-	// ve-init-sa-target-mobile
-	// ve-init-sa-target-desktop
-	this.$element.addClass( 've-init-sa-target ve-init-sa-target-' + this.surfaceType );
-	this.getToolbar().enableFloatable();
-	this.getToolbar().initialize();
-	surface.initialize();
-
-	// HACK: On mobile place the context inside toolbar.$bar which floats
-	if ( this.surfaceType === 'mobile' ) {
-		this.getToolbar().$bar.append( surface.context.$element );
+	if ( !this.getSurface() ) {
+		this.setSurface( surface );
 	}
-
-	// This must be emitted asynchronously because ve.init.Platform#initialize
-	// is synchronous, and if we emit it right away, then users will be
-	// unable to listen to this event as it will have been emitted before the
-	// constructor returns.
-	setTimeout( function () {
-		target.emit( 'surfaceReady' );
-	} );
+	surface.initialize();
+	return surface;
 };
 
 /**
@@ -111,22 +80,28 @@ ve.init.sa.Target.prototype.createSurface = function ( dmDoc, config ) {
 /**
  * @inheritdoc
  */
-ve.init.sa.Target.prototype.setupToolbar = function ( config ) {
-	config = ve.extendObject( { shadow: true, actions: true }, config );
-
+ve.init.sa.Target.prototype.setupToolbar = function ( surface ) {
 	// Parent method
-	ve.init.sa.Target.super.prototype.setupToolbar.call( this, config );
+	ve.init.sa.Target.super.prototype.setupToolbar.call( this, surface );
 
-	var actions = new ve.ui.TargetToolbar( this, this.getSurface() );
+	if ( !this.getToolbar().initialized ) {
+		this.getToolbar().$element.addClass( 've-init-sa-target-toolbar' );
+		this.actions = new ve.ui.TargetToolbar( this );
+		this.getToolbar().$actions.append( this.actions.$element );
+	}
+	this.getToolbar().initialize();
 
-	actions.setup( [
+	this.actions.setup( [
 		{
 			type: 'list',
 			icon: 'menu',
 			title: ve.msg( 'visualeditor-pagemenu-tooltip' ),
 			include: [ 'findAndReplace', 'commandHelp' ]
 		}
-	] );
+	], this.getSurface() );
 
-	this.toolbar.$actions.append( actions.$element );
+	// HACK: On mobile place the context inside toolbar.$bar which floats
+	if ( this.surfaceType === 'mobile' ) {
+		this.getToolbar().$bar.append( surface.context.$element );
+	}
 };

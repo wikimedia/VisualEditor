@@ -62,13 +62,13 @@ ve.ui.Tool.static.getCommandName = function () {
  * Handle the toolbar state being updated.
  *
  * @method
- * @param {ve.dm.SurfaceFragment} fragment Surface fragment
- * @param {Object} direction Context direction with 'inline' & 'block' properties
+ * @param {ve.dm.SurfaceFragment|null} fragment Surface fragment
+ * @param {Object|null} direction Context direction with 'inline' & 'block' properties
  */
 ve.ui.Tool.prototype.onUpdateState = function ( fragment ) {
 	var command = this.getCommand();
 	if ( command !== null ) {
-		this.setDisabled( !command || ( fragment && !command.isExecutable( fragment ) ) );
+		this.setDisabled( !command || !fragment || !command.isExecutable( fragment ) );
 	}
 };
 

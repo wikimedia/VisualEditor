@@ -57,7 +57,7 @@ ve.ui.InspectorTool.prototype.onUpdateState = function ( fragment ) {
 	// Parent method
 	ve.ui.Tool.prototype.onUpdateState.apply( this, arguments );
 
-	models = fragment.getSelectedModels();
+	models = fragment ? fragment.getSelectedModels() : [];
 	for ( i = 0, len = models.length; i < len; i++ ) {
 		if ( this.constructor.static.isCompatibleWith( models[i] ) ) {
 			active = true;

@@ -13,9 +13,10 @@
  *
  * @constructor
  * @param {jQuery} $container Container to render target into, must be attached to the DOM
+ * @param {Object} toolbarConfig Configuration options for the toolbar
  * @throws {Error} Container must be attached to the DOM
  */
-ve.init.Target = function VeInitTarget( $container ) {
+ve.init.Target = function VeInitTarget( $container, toolbarConfig ) {
 	if ( !$.contains( $container[0].ownerDocument, $container[0] ) ) {
 		throw new Error( 'Container must be attached to the DOM' );
 	}
@@ -29,6 +30,7 @@ ve.init.Target = function VeInitTarget( $container ) {
 	this.surfaces = [];
 	this.surface = null;
 	this.toolbar = null;
+	this.toolbarConfig = toolbarConfig;
 	this.documentTriggerListener = new ve.TriggerListener( this.constructor.static.documentCommands );
 	this.targetTriggerListener = new ve.TriggerListener( this.constructor.static.targetCommands );
 
@@ -64,18 +66,6 @@ ve.init.Target.prototype.destroy = function () {
 	$( this.elementDocument ).off( 'keydown', this.onDocumentKeyDownHandler );
 	ve.init.target = null;
 };
-
-/* Events */
-
-/**
- * Fired when the #surface is ready.
- *
- * By default the surface's document is not focused. If the target wants
- * the browsers' focus to be in the surface (ready for typing and cursoring)
- * call `surface.getView().focus()` in a handler for this event.
- *
- * @event surfaceReady
- */
 
 /* Inheritance */
 
@@ -255,9 +245,6 @@ ve.init.Target.prototype.createSurface = function ( dmDoc, config ) {
 ve.init.Target.prototype.addSurface = function ( dmDoc, config ) {
 	var surface = this.createSurface( dmDoc, config );
 	this.surfaces.push( surface );
-	if ( !this.getSurface() ) {
-		this.setSurface( surface );
-	}
 	surface.getView().connect( this, { focus: this.onSurfaceViewFocus.bind( this, surface ) } );
 	return surface;
 };
@@ -288,6 +275,7 @@ ve.init.Target.prototype.onSurfaceViewFocus = function ( surface ) {
 ve.init.Target.prototype.setSurface = function ( surface ) {
 	if ( surface !== this.surface ) {
 		this.surface = surface;
+		this.setupToolbar( surface );
 	}
 };
 
@@ -306,22 +294,19 @@ ve.init.Target.prototype.getSurface = function () {
  * @return {ve.ui.TargetToolbar} Toolbar
  */
 ve.init.Target.prototype.getToolbar = function () {
+	if ( !this.toolbar ) {
+		this.toolbar = new ve.ui.TargetToolbar( this, this.toolbarConfig );
+	}
 	return this.toolbar;
 };
 
 /**
- * Set up the toolbar and insert it into the DOM.
+ * Set up the toolbar, attaching it to a surface.
  *
- * The default implementation inserts it before the surface, but subclasses can override this.
- *
- * @param {Object} [config] Configuration options
+ * @param {ve.ui.Surface} surface Surface
  */
-ve.init.Target.prototype.setupToolbar = function ( config ) {
-	if ( !this.surfaces.length ) {
-		throw new Error( 'Surface must be setup before Toolbar' );
-	}
-	this.toolbar = new ve.ui.TargetToolbar( this, this.getSurface(), config );
-	this.toolbar.setup( this.constructor.static.toolbarGroups );
-	this.toolbar.$element.insertBefore( this.getSurface().$element );
-	this.toolbar.$bar.append( this.getSurface().toolbarDialogs.$element );
+ve.init.Target.prototype.setupToolbar = function ( surface ) {
+	this.getToolbar().setup( this.constructor.static.toolbarGroups, surface );
+	this.getToolbar().$element.insertBefore( surface.$element );
+	this.getToolbar().$bar.append( surface.toolbarDialogs.$element );
 };
