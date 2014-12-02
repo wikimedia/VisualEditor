@@ -45,6 +45,13 @@ ve.dm.NullSelection.prototype.toJSON = function () {
 /**
  * @inheritdoc
  */
+ve.dm.NullSelection.prototype.getDescription = function () {
+	return 'Null';
+};
+
+/**
+ * @inheritdoc
+ */
 ve.dm.NullSelection.prototype.clone = function () {
 	return new this.constructor( this.getDocument() );
 };

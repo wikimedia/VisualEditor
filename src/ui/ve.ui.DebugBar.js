@@ -106,27 +106,7 @@ ve.ui.DebugBar.prototype.getSurface = function () {
  * @param {ve.dm.Selection} selection
  */
 ve.ui.DebugBar.prototype.onSurfaceSelect = function ( selection ) {
-	if ( selection instanceof ve.dm.LinearSelection ) {
-		this.selectionLabel.setLabel(
-			'Linear: ' +
-			selection.getRange().from +
-			' - ' +
-			selection.getRange().to
-		);
-	} else if ( selection instanceof ve.dm.TableSelection ) {
-		this.selectionLabel.setLabel(
-			'Table: ' +
-			selection.tableRange.from +
-			' - ' +
-			selection.tableRange.to +
-			', ' +
-			'c' + selection.fromCol + ' r' + selection.fromRow +
-			' - ' +
-			'c' + selection.toCol + ' r' + selection.toRow
-		);
-	} else if ( selection instanceof ve.dm.NullSelection ) {
-		this.selectionLabel.setLabel( 'Null' );
-	}
+	this.selectionLabel.setLabel( selection.getDescription() );
 	this.logRangeButton.setDisabled( !(
 		( selection instanceof ve.dm.LinearSelection && !selection.isCollapsed() ) ||
 		selection instanceof ve.dm.TableSelection

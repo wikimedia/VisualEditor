@@ -66,6 +66,15 @@ ve.dm.Selection.prototype.toJSON = function () {
 };
 
 /**
+ * Get a textual description of this selection, for debugging purposes
+ *
+ * @returns {string} Textual description
+ */
+ve.dm.Selection.prototype.getDescription = function () {
+	throw new Error( 've.dm.Selection subclass must implement getDescription' );
+};
+
+/**
  * Create a copy of this selection
  *
  * @returns {ve.dm.Selection} Cloned selection

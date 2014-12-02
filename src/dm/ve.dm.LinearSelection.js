@@ -50,6 +50,13 @@ ve.dm.LinearSelection.prototype.toJSON = function () {
 /**
  * @inheritdoc
  */
+ve.dm.LinearSelection.prototype.getDescription = function () {
+	return 'Linear: ' + this.range.from + ' - ' + this.range.to;
+};
+
+/**
+ * @inheritdoc
+ */
 ve.dm.LinearSelection.prototype.clone = function () {
 	return new this.constructor( this.getDocument(), this.getRange() );
 };

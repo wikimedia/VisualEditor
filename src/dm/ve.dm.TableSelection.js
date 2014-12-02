@@ -129,6 +129,20 @@ ve.dm.TableSelection.prototype.toJSON = function () {
 /**
  * @inheritdoc
  */
+ve.dm.TableSelection.prototype.getDescription = function () {
+	return (
+		'Table: ' +
+		this.tableRange.from + ' - ' + this.tableRange.to +
+		', ' +
+		'c' + this.fromCol + ' r' + this.fromRow +
+		' - ' +
+		'c' + this.toCol + ' r' + this.toRow
+	);
+};
+
+/**
+ * @inheritdoc
+ */
 ve.dm.TableSelection.prototype.collapseToStart = function () {
 	return new this.constructor( this.getDocument(), this.tableRange, this.startCol, this.startRow, this.startCol, this.startRow );
 };
