@@ -96,6 +96,15 @@ module.exports = function ( grunt ) {
 			for ( i = 0, len = i18n.length; i < len; i++ ) {
 				i18nScript += indent + '\tve.init.platform.addMessagePath( \'' + pathPrefix + i18n[i] + '\' );\n';
 			}
+			i18nScript += indent + '\tve.availableLanguages = ' +
+				JSON.stringify(
+					grunt.file.expand(
+						i18n.map( function ( path ) { return path + '*.json'; } )
+					).map( function ( file ) {
+						return file.split( '/' ).pop().slice( 0, -5 );
+					} )
+				) +
+				';\n';
 			i18nScript += indent + '</script>';
 			scripts.push( i18nScript );
 		}

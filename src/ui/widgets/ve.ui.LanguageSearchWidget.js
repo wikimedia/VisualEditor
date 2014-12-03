@@ -24,6 +24,7 @@ ve.ui.LanguageSearchWidget = function VeUiLanguageSearchWidget( config ) {
 
 	// Properties
 	this.languageResultWidgets = [];
+	this.filteredLanguageResultWidgets = [];
 
 	var i, l, languageCode,
 		languageCodes = ve.init.platform.getLanguageCodes().sort();
@@ -41,6 +42,7 @@ ve.ui.LanguageSearchWidget = function VeUiLanguageSearchWidget( config ) {
 			} )
 		);
 	}
+	this.setAvailableLanguages();
 
 	// Initialization
 	this.$element.addClass( 've-ui-languageSearchWidget' );
@@ -64,6 +66,29 @@ ve.ui.LanguageSearchWidget.prototype.onQueryChange = function () {
 };
 
 /**
+ * Set available languages to show
+ *
+ * @param {string[]} Available language codes to show, all if undefined
+ */
+ve.ui.LanguageSearchWidget.prototype.setAvailableLanguages = function ( availableLanguages ) {
+	if ( !availableLanguages ) {
+		this.filteredLanguageResultWidgets = this.languageResultWidgets.slice();
+		return;
+	}
+	var i, iLen, languageResult, data;
+
+	this.filteredLanguageResultWidgets = [];
+
+	for ( i = 0, iLen = this.languageResultWidgets.length; i < iLen; i++ ) {
+		languageResult = this.languageResultWidgets[i];
+		data = languageResult.getData();
+		if ( ve.indexOf( data.code, availableLanguages ) !== -1 ) {
+			this.filteredLanguageResultWidgets.push( languageResult );
+		}
+	}
+};
+
+/**
  * Update search results from current query
  */
 ve.ui.LanguageSearchWidget.prototype.addResults = function () {
@@ -76,8 +101,8 @@ ve.ui.LanguageSearchWidget.prototype.addResults = function () {
 
 	this.results.clearItems();
 
-	for ( i = 0, iLen = this.languageResultWidgets.length; i < iLen; i++ ) {
-		languageResult = this.languageResultWidgets[i];
+	for ( i = 0, iLen = this.filteredLanguageResultWidgets.length; i < iLen; i++ ) {
+		languageResult = this.filteredLanguageResultWidgets[i];
 		data = languageResult.getData();
 		matchedProperty = null;
 

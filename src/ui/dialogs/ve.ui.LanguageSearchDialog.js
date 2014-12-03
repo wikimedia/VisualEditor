@@ -79,6 +79,7 @@ ve.ui.LanguageSearchDialog.prototype.onSearchWidgetSelect = function ( data ) {
 ve.ui.LanguageSearchDialog.prototype.getSetupProcess = function ( data ) {
 	return ve.ui.LanguageSearchDialog.super.prototype.getSetupProcess.call( this, data )
 		.next( function () {
+			this.searchWidget.setAvailableLanguages( data.availableLanguages );
 			this.searchWidget.addResults();
 		}, this );
 };

@@ -50,8 +50,12 @@ $( function () {
 				new OO.ui.ButtonOptionWidget( { data: 'edit', label: 'Edit HTML' } ),
 				new OO.ui.ButtonOptionWidget( { data: 'read', label: 'Read' } )
 			] ),
+			messageKeyButton = new OO.ui.ButtonWidget( {
+				label: 'Lang keys'
+			} ),
 			languageInput = new ve.ui.LanguageInputWidget( {
 				requireDir: true,
+				availableLanguages: ve.availableLanguages,
 				dialogManager: new OO.ui.WindowManager( { factory: ve.ui.windowFactory, classes: ['ve-demo-languageSearchDialogManager'] } )
 			} ),
 			sourceTextInput = new OO.ui.TextInputWidget( {
@@ -72,10 +76,16 @@ $( function () {
 			switchPage( 've', page );
 		} );
 
+		messageKeyButton.on( 'click', function () {
+			languageInput.setLangAndDir( 'qqx', currentDir );
+		} );
+
+		languageInput.languageCodeField.$element.hide();
+
 		languageInput.setLangAndDir( currentLang, currentDir );
 
 		languageInput.on( 'change', function ( lang, dir ) {
-			if ( dir === currentDir && ve.indexOf( lang, ve.init.platform.getLanguageCodes() ) === -1 ) {
+			if ( dir === currentDir && lang !== 'qqx' && ve.indexOf( lang, ve.availableLanguages ) === -1 ) {
 				return;
 			}
 
@@ -180,6 +190,7 @@ $( function () {
 				$( '<span class="ve-demo-menu-divider">&nbsp;</span>' ),
 				modeSelect.$element,
 				$( '<span class="ve-demo-menu-divider">&nbsp;</span>' ),
+				messageKeyButton.$element,
 				languageInput.$element
 			)
 		);

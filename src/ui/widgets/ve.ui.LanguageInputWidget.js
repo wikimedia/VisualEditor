@@ -14,6 +14,7 @@
  * @param {Object} [config] Configuration options
  * @cfg {boolean} [requireDir] Require directionality to be set (no 'auto' value)
  * @cfg {ve.ui.WindowManager} [dialogManager] Window manager to launch the language search dialog in
+ * @cfg {string[]} [availableLanguages] Available language codes to show in search dialog
  */
 ve.ui.LanguageInputWidget = function VeUiLanguageInputWidget( config ) {
 	// Configuration initialization
@@ -27,6 +28,7 @@ ve.ui.LanguageInputWidget = function VeUiLanguageInputWidget( config ) {
 	this.dir = null;
 	this.overlay = new ve.ui.Overlay( { classes: ['ve-ui-overlay-global'] } );
 	this.dialogs = config.dialogManager || new ve.ui.WindowManager( { factory: ve.ui.windowFactory, isolate: true } );
+	this.availableLanguages = config.availableLanguages;
 	this.findLanguageButton = new OO.ui.ButtonWidget( {
 		$: this.$,
 		classes: [ 've-ui-languageInputWidget-findLanguageButton' ],
@@ -116,7 +118,7 @@ OO.inheritClass( ve.ui.LanguageInputWidget, OO.ui.Widget );
  */
 ve.ui.LanguageInputWidget.prototype.onFindLanguageButtonClick = function () {
 	var widget = this;
-	this.dialogs.openWindow( 'languageSearch' )
+	this.dialogs.openWindow( 'languageSearch', { availableLanguages: this.availableLanguages } )
 		.then( function ( opened ) {
 			opened.then( function ( closing ) {
 				closing.then( function ( data ) {
