@@ -16,6 +16,8 @@
 ve.ce.TextNode = function VeCeTextNode() {
 	// Parent constructor
 	ve.ce.TextNode.super.apply( this, arguments );
+
+	this.$element = $( [] );
 };
 
 /* Inheritance */

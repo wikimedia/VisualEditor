@@ -65,12 +65,12 @@ QUnit.test( 'getOffset', function ( assert ) {
 				msg: 'Empty paragraph',
 				html: '<p></p>',
 				// CE HTML summary:
-				// <p><span [inlineSlug]>&#xFEFF;</span></p>
+				// <p><span [inlineSlug]><img /></span></p>
 				// Linmod:
 				// [<p>, </p>]
 				expected: [
 					0,
-					1, 1, 1, 1, 1, 1,
+					1, 1, 1, 1, 1,
 					2
 				]
 			},
@@ -181,18 +181,18 @@ QUnit.test( 'getOffset', function ( assert ) {
 				msg: 'Paragraph with inline slugs',
 				html: '<p><span rel="ve:Alien">Foo</span><span rel="ve:Alien">Bar</span><br></p>',
 				// CE HTML summary:
-				// <p><span [inlineSlug]>&#xFEFF;</span><span [alien]>Foo</span>
-				// <span [inlineSlug]>&#xFEFF;</span><span [alien]>Bar</span>
-				// <span [inlineSlug]>&#xFEFF;</span><br></br><span [inlineSlug]>&#xFEFF;</span></p>
+				// <p><span [inlineSlug]><img /></span><span [alien]>Foo</span>
+				// <span [inlineSlug]><img /></span><span [alien]>Bar</span>
+				// <span [inlineSlug]><img /></span><br></br><span [inlineSlug]><img /></span></p>
 				// Linmod:
 				// [<p>, <alineinline>, </alineinline>, <alineinline>, </alineinline>, <break>, </break>, </p>]
 				expected: [
 					0,
-					1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-					3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-					5, 5, 5, 5, 5, 5,
+					1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+					3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+					5, 5, 5, 5, 5,
 					6,
-					7, 7, 7, 7, 7, 7,
+					7, 7, 7, 7, 7,
 					8
 				]
 			}

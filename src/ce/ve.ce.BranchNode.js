@@ -26,7 +26,7 @@ ve.ce.BranchNode = function VeCeBranchNode( model, config ) {
 
 	// Properties
 	this.tagName = this.$element.get( 0 ).nodeName.toLowerCase();
-	this.slugNodes = {};
+	this.slugNodes = [];
 
 	// Events
 	this.model.connect( this, { splice: 'onSplice' } );
@@ -61,7 +61,28 @@ OO.mixinClass( ve.ce.BranchNode, ve.BranchNode );
  */
 ve.ce.BranchNode.inlineSlugTemplate = $( '<span>' )
 	.addClass( 've-ce-branchNode-slug ve-ce-branchNode-inlineSlug' )
-	.html( '&#xFEFF;' )
+	.append(
+		$( '<img>' )
+			.attr( 'src', ve.minImgDataUri )
+			.addClass( 've-ce-chimera' )
+	)
+	.get( 0 );
+
+/**
+ * Inline slug template for input debugging.
+ *
+ * TODO: Make iframe safe
+ *
+ * @static
+ * @property {HTMLElement}
+ */
+ve.ce.BranchNode.inputDebugInlineSlugTemplate = $( '<span>' )
+	.addClass( 've-ce-branchNode-slug ve-ce-branchNode-inlineSlug' )
+	.append(
+		$( '<img>' )
+			.attr( 'src', ve.ce.chimeraImgDataUri )
+			.addClass( 've-ce-chimera' )
+	)
 	.get( 0 );
 
 /**
@@ -222,13 +243,19 @@ ve.ce.BranchNode.prototype.setupSlugs = function () {
 
 	// Remove all slugs in this branch
 	for ( i in this.slugNodes ) {
-		if ( this.slugNodes[i].parentNode ) {
+		if ( this.slugNodes[i] !== undefined && this.slugNodes[i].parentNode ) {
 			this.slugNodes[i].parentNode.removeChild( this.slugNodes[i] );
 		}
 		delete this.slugNodes[i];
 	}
 
-	slugTemplate = isBlock ? ve.ce.BranchNode.blockSlugTemplate : ve.ce.BranchNode.inlineSlugTemplate;
+	if ( isBlock ) {
+		slugTemplate = ve.ce.BranchNode.blockSlugTemplate;
+	} else if ( ve.inputDebug ) {
+		slugTemplate = ve.ce.BranchNode.inputDebugInlineSlugTemplate;
+	} else {
+		slugTemplate = ve.ce.BranchNode.inlineSlugTemplate;
+	}
 
 	for ( i in this.getModel().slugPositions ) {
 		slugNode = doc.importNode( slugTemplate, true );

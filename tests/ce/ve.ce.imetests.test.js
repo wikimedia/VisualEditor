@@ -11,7 +11,6 @@
 ve.ce.imetests = [];
 
 ve.ce.imetestsFailAt = {
-	'backspace-firefox-ubuntu-none': 17,
 	'input-ie-win-chinese-traditional-handwriting': 4,
 	'input-ie-win-korean': 4
 };
@@ -23,9 +22,6 @@ ve.ce.imetestsPhantomFailAt = {
 	'input-firefox-ubuntu-ibus-japanese-anthy--hiraganaonly': 8,
 	'input-firefox-ubuntu-ibus-korean-korean': 7,
 	'input-firefox-ubuntu-ibus-malayalam-swanalekha': 8,
-	'backspace-chromium-ubuntu-none': 3,
-	'backspace-firefox-ubuntu-none': 17,
 	'input-ie-win-chinese-traditional-handwriting': 4,
-	'input-ie-win-korean': 4,
-	'leftarrow-chromium-ubuntu-none': 3
+	'input-ie-win-korean': 4
 };
