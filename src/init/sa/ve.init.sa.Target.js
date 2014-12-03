@@ -117,7 +117,12 @@ ve.init.sa.Target.prototype.setupToolbar = function () {
 	var actions = new ve.ui.TargetToolbar( this, this.surface );
 
 	actions.setup( [
-		{ include: [ 'commandHelp' ] }
+		{
+			type: 'list',
+			icon: 'menu',
+			title: ve.msg( 'visualeditor-pagemenu-tooltip' ),
+			include: [ 'findAndReplace', 'commandHelp' ]
+		}
 	] );
 
 	this.toolbar.$actions.append( actions.$element );

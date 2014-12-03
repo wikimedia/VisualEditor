@@ -107,6 +107,11 @@
 	background-image: url(images/icons/bullet-list-ltr.svg);
 }
 
+.oo-ui-icon-find {
+	/* @embed */
+	background-image: url(images/icons/find-ltr.svg);
+}
+
 .oo-ui-icon-indent-list {
 	/* @embed */
 	background-image: url(images/icons/indent-list-ltr.svg);
