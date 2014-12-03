@@ -57,6 +57,12 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 	this.filibuster = null;
 
 	this.toolbarHeight = 0;
+	this.toolbarDialogs = new ve.ui.ToolbarDialogWindowManager( {
+		$: this.$,
+		factory: ve.ui.windowFactory,
+		modal: false,
+		isolate: true
+	} );
 
 	// Initialization
 	this.setupCommands( config.excludeCommands );

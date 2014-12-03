@@ -223,6 +223,7 @@ ve.init.Target.prototype.setupToolbar = function ( config ) {
 	this.toolbar = new ve.ui.TargetToolbar( this, this.surface, config );
 	this.toolbar.setup( this.constructor.static.toolbarGroups );
 	this.toolbar.$element.insertBefore( this.surface.$element );
+	this.toolbar.$bar.append( this.surface.toolbarDialogs.$element );
 };
 
 /**

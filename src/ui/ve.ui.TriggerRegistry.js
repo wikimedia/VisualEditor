@@ -168,3 +168,6 @@ ve.ui.triggerRegistry.register(
 ve.ui.triggerRegistry.register(
 	'pasteSpecial', { mac: new ve.ui.Trigger( 'cmd+shift+v' ), pc: new ve.ui.Trigger( 'ctrl+shift+v' ) }
 );
+ve.ui.triggerRegistry.register(
+	'findAndReplace', { mac: new ve.ui.Trigger( 'cmd+f' ), pc: new ve.ui.Trigger( 'ctrl+f' ) }
+);

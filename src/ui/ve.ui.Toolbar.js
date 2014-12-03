@@ -49,6 +49,10 @@ ve.ui.Toolbar = function VeUiToolbar( surface, options ) {
 		.addClass( 've-ui-dir-block-' + this.contextDirection.block );
 	// Events
 	this.surface.getModel().connect( this, { contextChange: 'onContextChange' } );
+	this.surface.toolbarDialogs.connect( this, {
+		opening: 'onToolbarWindowOpeningOrClosing',
+		closing: 'onToolbarWindowOpeningOrClosing'
+	} );
 };
 
 /* Inheritance */
@@ -116,6 +120,27 @@ ve.ui.Toolbar.prototype.onWindowResize = function () {
 			right: this.elementOffset.right
 		} );
 	}
+};
+
+/**
+ * Handle windows opening or closing in the toolbar window manager.
+ *
+ * @param {OO.ui.Window} win
+ * @param {jQuery.Promise} openingOrClosing
+ * @param {Object} data
+ */
+ve.ui.Toolbar.prototype.onToolbarWindowOpeningOrClosing = function ( win, openingOrClosing ) {
+	var toolbar = this;
+	openingOrClosing.then( function () {
+		// Wait for window transition
+		setTimeout( function () {
+			if ( toolbar.floating ) {
+				// Re-calculate height
+				toolbar.unfloat();
+				toolbar.float();
+			}
+		}, 250 );
+	} );
 };
 
 /**
