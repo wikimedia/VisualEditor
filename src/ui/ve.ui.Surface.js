@@ -72,9 +72,6 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 		.append( this.view.$element );
 	this.localOverlay.$element.append( this.$blockers, this.$controls, this.$menus );
 	this.globalOverlay.$element.append( this.dialogs.$element );
-
-	// Make instance globally accessible for debugging
-	ve.instances.push( this );
 };
 
 /* Inheritance */
@@ -100,9 +97,6 @@ OO.mixinClass( ve.ui.Surface, OO.EventEmitter );
  * @fires destroy
  */
 ve.ui.Surface.prototype.destroy = function () {
-	// Remove instance from global array
-	ve.instances.splice( ve.instances.indexOf( this ), 1 );
-
 	// Stop periodic history tracking in model
 	this.model.stopHistoryTracking();
 
