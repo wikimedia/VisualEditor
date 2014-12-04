@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# This script generates a commit that updates our copy of UnicodeJS
+
 if [ -n "$2" ]
 then
 	# Too many parameters
@@ -7,25 +9,25 @@ then
 	exit 1
 fi
 
-REPO_DIR=$(cd $(dirname $0)/..; pwd) # Root dir of the git repo working tree
-TARGET_DIR=lib/unicodejs # Destination relative to the root of the repo
-NPM_DIR=`mktemp -d 2>/dev/null || mktemp -d -t 'update-unicodejs'` # e.g. /tmp/update-unicodejs.rI0I5Vir
+REPO_DIR=$(cd "$(dirname $0)/.."; pwd) # Root dir of the git repo working tree
+TARGET_DIR="lib/unicodejs" # Destination relative to the root of the repo
+NPM_DIR=$(mktemp -d 2>/dev/null || mktemp -d -t 'update-unicodejs') # e.g. /tmp/update-unicodejs.rI0I5Vir
 
 # Prepare working tree
-cd $REPO_DIR &&
-git reset $TARGET_DIR && git checkout $TARGET_DIR && git fetch origin &&
+cd "$REPO_DIR" &&
+git reset -- $TARGET_DIR && git checkout -- $TARGET_DIR && git fetch origin &&
 git checkout -B upstream-unicodejs origin/master || exit 1
 
 # Fetch upstream version
 cd $NPM_DIR
 if [ -n "$1" ]
 then
-	npm install unicodejs@$1 || exit 1
+	npm install "unicodejs@$1" || exit 1
 else
 	npm install unicodejs || exit 1
 fi
 
-UNICODEJS_VERSION=$(node -e 'console.log(JSON.parse(require("fs").readFileSync("./node_modules/unicodejs/package.json")).version);')
+UNICODEJS_VERSION=$(node -e 'console.log(require("./node_modules/unicodejs/package.json").version);')
 if [ "$UNICODEJS_VERSION" == "" ]
 then
 	echo 'Could not find UnicodeJS version'
@@ -33,10 +35,10 @@ then
 fi
 
 # Copy file(s)
-rsync --recursive --delete --force ./node_modules/unicodejs/dist $REPO_DIR/$TARGET_DIR || exit 1
+rsync --force ./node_modules/unicodejs/dist/unicodejs.js "$REPO_DIR/$TARGET_DIR" || exit 1
 
 # Clean up temporary area
-rm -rf $NPM_DIR
+rm -rf "$NPM_DIR"
 
 # Generate commit
 cd $REPO_DIR || exit 1
