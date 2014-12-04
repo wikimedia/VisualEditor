@@ -24,7 +24,7 @@ function runAnnotationActionTest( assert, html, method, args, range, expectedDat
 
 QUnit.test( 'toggle', function ( assert ) {
 	var i,
-		html = '<p>Foo<b>bar</b><strong>baz</strong><i>quux</i></p>',
+		html = '<p>Foo<b>bar</b><strong>baz</strong><i>quux</i> white\u3000space</p>',
 		cases = [
 			{
 				html: html,
@@ -79,6 +79,22 @@ QUnit.test( 'toggle', function ( assert ) {
 					);
 				},
 				msg: 'toggle bold on plain, bold, strong then underlined text'
+			},
+			{
+				html: html,
+				range: new ve.Range( 14, 21 ),
+				method: 'toggle',
+				args: ['textStyle/bold'],
+				expectedData: function ( data ) {
+					data.splice( 15, 5,
+						['w', [3]],
+						['h', [3]],
+						['i', [3]],
+						['t', [3]],
+						['e', [3]]
+					);
+				},
+				msg: 'trailing whitespace is not annotated'
 			}
 		];
 

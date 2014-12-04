@@ -715,6 +715,32 @@ QUnit.test( 'isStructuralOffset', function ( assert ) {
 	}
 } );
 
+QUnit.test( 'getCharacterData', function ( assert ) {
+	var i,
+		data = [{ type: 'paragraph' }, 'a', ['b', [0]], { type: '/paragraph' }],
+		expected = ['', 'a', 'b', ''],
+		linearData = new ve.dm.ElementLinearData( new ve.dm.IndexValueStore(), data );
+
+	QUnit.expect( data.length );
+	for ( i = 0; i < data.length; i++ ) {
+		assert.strictEqual(
+			linearData.getCharacterData( i ), expected[i]
+		);
+	}
+} );
+
+QUnit.test( 'getText', 4, function ( assert ) {
+	var doc = ve.dm.example.createExampleDocument();
+
+	assert.strictEqual( doc.data.getText( false, new ve.Range( 2, 11 ) ), 'bcd' );
+	assert.strictEqual( doc.data.getText( true, new ve.Range( 2, 11 ) ), 'bc      d'.replace( / /g, '\n' ) );
+	assert.strictEqual( doc.data.getText( false ), 'abcdefghijklm' );
+	assert.strictEqual(
+		doc.data.getText( true ),
+		' abc      d    e    f        g        h  i    j    k    l  m   '.replace( / /g, '\n' )
+	);
+} );
+
 QUnit.test( 'isContentData', 1, function ( assert ) {
 	var i, data,
 		cases = [

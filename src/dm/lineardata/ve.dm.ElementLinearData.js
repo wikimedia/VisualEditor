@@ -359,10 +359,16 @@ ve.dm.ElementLinearData.prototype.setAnnotationIndexesAtOffset = function ( offs
 	}
 };
 
-/** */
+/**
+ * Get character data at a specified offset
+ *
+ * @param {number} offset Offset to get character data from
+ * @return {string} Character data
+ */
 ve.dm.ElementLinearData.prototype.getCharacterData = function ( offset ) {
-	var item = this.getData( offset );
-	return Array.isArray( item ) ? item[0] : item;
+	var item = this.getData( offset ),
+		data = Array.isArray( item ) ? item[0] : item;
+	return typeof data === 'string' ? data : '';
 };
 
 /**
@@ -487,16 +493,16 @@ ve.dm.ElementLinearData.prototype.hasAnnotationsInRange = function ( range ) {
  * Get a range without any whitespace content at the beginning and end.
  *
  * @method
- * @param {ve.Range} [range] Range of data to get, all data will be given by default
- * @returns {Object} A new range if modified, otherwise returns passed range
+ * @param {ve.Range} range Range to trim
+ * @returns {Object} Trimmed range
  */
 ve.dm.ElementLinearData.prototype.trimOuterSpaceFromRange = function ( range ) {
 	var start = range.start,
 		end = range.end;
-	while ( this.getCharacterData( end - 1 ) === ' ' ) {
+	while ( this.getCharacterData( end - 1 ).match( /\s/ ) ) {
 		end--;
 	}
-	while ( start < end && this.getCharacterData( start ) === ' ' ) {
+	while ( start < end && this.getCharacterData( start ).match( /\s/ ) ) {
 		start++;
 	}
 	return range.to < range.end ? new ve.Range( end, start ) : new ve.Range( start, end );
