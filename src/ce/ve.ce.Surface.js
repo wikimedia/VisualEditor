@@ -104,10 +104,8 @@ ve.ce.Surface = function VeCeSurface( model, ui, options ) {
 	this.onWindowResizeHandler = this.onWindowResize.bind( this );
 	this.$window.on( 'resize', this.onWindowResizeHandler );
 
-	// Use onDOMEvent to get jQuery focusin/focusout events to work in iframes
 	this.onDocumentFocusInOutHandler = this.onDocumentFocusInOut.bind( this );
-	OO.ui.Element.onDOMEvent( this.getElementDocument(), 'focusin', this.onDocumentFocusInOutHandler );
-	OO.ui.Element.onDOMEvent( this.getElementDocument(), 'focusout', this.onDocumentFocusInOutHandler );
+	this.$document.on( 'focusin focusout', this.onDocumentFocusInOutHandler );
 	// It is possible for a mousedown to clear the selection
 	// without triggering a focus change event (e.g. if the
 	// document has been programmatically blurred) so trigger
@@ -284,8 +282,7 @@ ve.ce.Surface.prototype.destroy = function () {
 	this.model.disconnect( this );
 
 	// Disconnect DOM events on the document
-	OO.ui.Element.offDOMEvent( this.getElementDocument(), 'focusin', this.onDocumentFocusInOutHandler );
-	OO.ui.Element.offDOMEvent( this.getElementDocument(), 'focusout', this.onDocumentFocusInOutHandler );
+	this.$document.off( 'focusin focusout', this.onDocumentFocusInOutHandler );
 	this.$document.off( 'mousedown', this.documentFocusChangeHandler );
 
 	// Disconnect DOM events on the window
