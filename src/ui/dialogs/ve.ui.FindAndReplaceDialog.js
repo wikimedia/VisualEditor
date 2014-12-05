@@ -215,6 +215,9 @@ ve.ui.FindAndReplaceDialog.prototype.onFindChange = function () {
  * @param {jQuery.Event} e
  */
 ve.ui.FindAndReplaceDialog.prototype.onFindTextEnter = function ( e ) {
+	if ( !this.fragments.length ) {
+		return;
+	}
 	if ( e.shiftKey ) {
 		this.onPreviousButtonClick();
 	} else {
