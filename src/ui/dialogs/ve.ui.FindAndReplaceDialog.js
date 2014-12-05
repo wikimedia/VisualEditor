@@ -270,7 +270,12 @@ ve.ui.FindAndReplaceDialog.prototype.positionResults = function () {
 		top = Infinity;
 		for ( j in rects ) {
 			top = Math.min( top, rects[j].top );
-			$result.append( this.$( '<div>' ).css( rects[j] ) );
+			$result.append( this.$( '<div>' ).css( {
+				top: rects[j].top,
+				left: rects[j].left,
+				width: rects[j].width,
+				height: rects[j].height
+			} ) );
 		}
 		$result.data( 'top', top );
 		this.$findResults.append( $result );

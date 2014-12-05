@@ -36,6 +36,7 @@
 	color: #888;
 }
 
+/* @noflip */
 .ve-ui-findAndReplaceDialog-findResults {
 	position: absolute;
 	top: 0;
