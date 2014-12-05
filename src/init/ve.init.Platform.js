@@ -51,7 +51,7 @@ ve.init.Platform.static.getSystemPlatform = function () {
  * @returns {boolean} Whether we are in IE
  */
 ve.init.Platform.static.isInternetExplorer = function () {
-	return navigator.appVersion.indexOf( 'Trident' ) !== -1;
+	return navigator.appVersion.indexOf( 'Trident' ) !== -1 || navigator.appVersion.indexOf( 'Edge' ) !== -1;
 };
 
 /* Methods */
