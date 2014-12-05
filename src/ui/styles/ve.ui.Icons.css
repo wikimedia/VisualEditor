@@ -107,6 +107,11 @@
 	background-image: url(images/icons/bullet-list-ltr.svg);
 }
 
+.oo-ui-icon-case-sensitive {
+	/* @embed */
+	background-image: url(images/icons/case-sensitive.svg);
+}
+
 .oo-ui-icon-find {
 	/* @embed */
 	background-image: url(images/icons/find-ltr.svg);
@@ -227,6 +232,11 @@
 .ve-ui-dir-block-ltr .oo-ui-icon-outdent-list {
 	/* @embed */
 	background-image: url(images/icons/outdent-list-ltr.svg);
+}
+
+.oo-ui-icon-regular-expression {
+	/* @embed */
+	background-image: url(images/icons/regular-expression.svg);
 }
 
 .oo-ui-icon-special-character {

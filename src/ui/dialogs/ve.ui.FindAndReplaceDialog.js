@@ -45,12 +45,22 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 	this.fragments = [];
 	this.replacing = false;
 	this.focusedIndex = 0;
+	this.query = null;
 	this.findText = new OO.ui.TextInputWidget( {
 		$: this.$,
 		classes: ['ve-ui-findAndReplaceDialog-cell', 've-ui-findAndReplaceDialog-findText'],
 		placeholder: ve.msg( 'visualeditor-find-and-replace-find-text' )
 	} );
-	this.matchCaseToggle = new OO.ui.ToggleSwitchWidget( { $: this.$ } );
+	this.matchCaseToggle = new OO.ui.ToggleButtonWidget( {
+		$: this.$,
+		icon: 'case-sensitive',
+		iconTitle: ve.msg( 'visualeditor-find-and-replace-match-case' )
+	} );
+	this.regexToggle = new OO.ui.ToggleButtonWidget( {
+		$: this.$,
+		icon: 'regular-expression',
+		iconTitle: ve.msg( 'visualeditor-find-and-replace-regular-expression' )
+	} );
 	this.focusedIndexLabel = new OO.ui.LabelWidget( {
 		$: this.$,
 		classes: ['ve-ui-findAndReplaceDialog-focusedIndexLabel']
@@ -77,15 +87,14 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 		label: ve.msg( 'visualeditor-find-and-replace-replace-all-button' )
 	} );
 
-	var checkboxField = new OO.ui.FieldLayout(
-			this.matchCaseToggle,
-			{
-				$: this.$,
-				classes: ['ve-ui-findAndReplaceDialog-cell'],
-				align: 'inline',
-				label: ve.msg( 'visualeditor-find-and-replace-match-case' )
-			}
-		),
+	var optionsGroup = new OO.ui.ButtonGroupWidget( {
+			$: this.$,
+			classes: ['ve-ui-findAndReplaceDialog-cell'],
+			items: [
+				this.matchCaseToggle,
+				this.regexToggle
+			]
+		} ),
 		navigateGroup = new OO.ui.ButtonGroupWidget( {
 			$: this.$,
 			classes: ['ve-ui-findAndReplaceDialog-cell'],
@@ -113,6 +122,7 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 		enter: 'onFindTextEnter'
 	} );
 	this.matchCaseToggle.connect( this, { change: 'onFindChange' } );
+	this.regexToggle.connect( this, { change: 'onFindChange' } );
 	this.nextButton.connect( this, { click: 'onNextButtonClick' } );
 	this.previousButton.connect( this, { click: 'onPreviousButtonClick' } );
 	this.replaceButton.connect( this, { click: 'onReplaceButtonClick' } );
@@ -130,7 +140,7 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 					this.focusedIndexLabel.$element
 				),
 				navigateGroup.$element,
-				checkboxField.$element
+				optionsGroup.$element
 			),
 			$replaceRow.append(
 				this.replaceText.$element,
@@ -226,21 +236,31 @@ ve.ui.FindAndReplaceDialog.prototype.onFindTextEnter = function ( e ) {
  * Update search result fragments
  */
 ve.ui.FindAndReplaceDialog.prototype.updateFragments = function () {
-	var i, l, findLen,
-		endOffset = 0,
+	var i, l,
+		hasError = false,
 		surfaceModel = this.surface.getModel(),
 		documentModel = surfaceModel.getDocument(),
-		offsets = [],
+		ranges = [],
 		matchCase = this.matchCaseToggle.getValue(),
+		isRegex = this.regexToggle.getValue(),
 		find = this.findText.getValue();
 
+	if ( isRegex && find ) {
+		try {
+			this.query = new RegExp( find );
+		} catch ( e ) {
+			hasError = true;
+		}
+	} else {
+		this.query = find;
+	}
+	this.findText.$element.toggleClass( 've-ui-findAndReplaceDialog-findText-error', hasError );
+
 	this.fragments = [];
-	if ( find ) {
-		offsets = documentModel.findText( find, matchCase, true );
-		findLen = find.length;
-		for ( i = 0, l = offsets.length; i < l; i++ ) {
-			endOffset = offsets[i] + findLen;
-			this.fragments.push( surfaceModel.getLinearFragment( new ve.Range( offsets[i], endOffset ), true, true ) );
+	if ( this.query ) {
+		ranges = documentModel.findText( this.query, matchCase, true );
+		for ( i = 0, l = ranges.length; i < l; i++ ) {
+			this.fragments.push( surfaceModel.getLinearFragment( ranges[i], true, true ) );
 		}
 	}
 	this.focusedIndex = Math.min( this.focusedIndex, this.fragments.length );
@@ -328,13 +348,13 @@ ve.ui.FindAndReplaceDialog.prototype.onPreviousButtonClick = function () {
  * Handle click events on the replace button
  */
 ve.ui.FindAndReplaceDialog.prototype.onReplaceButtonClick = function () {
-	var end, replace = this.replaceText.getValue();
+	var end;
 
 	if ( !this.fragments.length ) {
 		return;
 	}
 
-	this.fragments[this.focusedIndex].insertContent( replace, true );
+	this.replace( this.focusedIndex );
 
 	// Find the next fragment after this one ends. Ensures that if we replace
 	// 'foo' with 'foofoo' we don't select the just-inserted text.
@@ -357,11 +377,28 @@ ve.ui.FindAndReplaceDialog.prototype.onReplaceButtonClick = function () {
  * Handle click events on the previous all button
  */
 ve.ui.FindAndReplaceDialog.prototype.onReplaceAllButtonClick = function () {
-	var i, l,
-		replace = this.replaceText.getValue();
+	var i, l;
 
 	for ( i = 0, l = this.fragments.length; i < l; i++ ) {
-		this.fragments[i].insertContent( replace, true );
+		this.replace( i );
+	}
+};
+
+/**
+ * Replace the result at a specified index
+ *
+ * @param {number} index Index to replace
+ */
+ve.ui.FindAndReplaceDialog.prototype.replace = function ( index ) {
+	var replace = this.replaceText.getValue();
+
+	if ( this.query instanceof RegExp ) {
+		this.fragments[index].insertContent(
+			this.fragments[index].getText().replace( this.query, replace ),
+			true
+		);
+	} else {
+		this.fragments[index].insertContent( replace, true );
 	}
 };
 
