@@ -13,7 +13,8 @@
 			"WTM",
 			"Woytecr",
 			"Wpedzich",
-			"Matik7"
+			"Matik7",
+			"Rezonansowy"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -54,6 +55,7 @@
 	"visualeditor-find-and-replace-replace-text": "Zamień",
 	"visualeditor-find-and-replace-results": "$1 z $2",
 	"visualeditor-find-and-replace-title": "Znajdź i zamień",
+	"visualeditor-formatdropdown-format-blockquote": "Cytat blokowy",
 	"visualeditor-formatdropdown-format-heading-label": "Nagłówek (1-6)",
 	"visualeditor-formatdropdown-format-heading1": "Nagłówek 1",
 	"visualeditor-formatdropdown-format-heading2": "Nagłówek 2",

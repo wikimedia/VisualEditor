@@ -10,7 +10,8 @@
 			"Luckas",
 			"OTAVIO1981",
 			555,
-			"He7d3r"
+			"He7d3r",
+			"Mordecool"
 		]
 	},
 	"visualeditor": "Editor Visual",
@@ -33,6 +34,7 @@
 	"visualeditor-dialog-action-cancel": "Cancelar",
 	"visualeditor-dialog-action-goback": "Voltar",
 	"visualeditor-dialog-command-help-title": "Atalhos de Teclado",
+	"visualeditor-find-and-replace-replace-text": "Substituir",
 	"visualeditor-formatdropdown-format-heading-label": "Nível (1-6)",
 	"visualeditor-formatdropdown-format-heading1": "Nível 1",
 	"visualeditor-formatdropdown-format-heading2": "Nível 2",
