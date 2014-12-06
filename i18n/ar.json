@@ -12,7 +12,8 @@
 			"Asaifm",
 			"Tarawneh",
 			"Test Create account",
-			"محمد عصام"
+			"محمد عصام",
+			"سامي الرحيلي"
 		]
 	},
 	"visualeditor": "المحرر المرئي",
@@ -43,6 +44,13 @@
 	"visualeditor-dialog-error-dismiss": "رجوع",
 	"visualeditor-dialog-language-auto-direction": "تلقائي",
 	"visualeditor-dialog-language-search-title": "اختر اللغة",
+	"visualeditor-find-and-replace-find-text": "إبحث",
+	"visualeditor-find-and-replace-match-case": "مطابقة حالة الأحرف",
+	"visualeditor-find-and-replace-replace-all-button": "استبدل الكل",
+	"visualeditor-find-and-replace-replace-button": "استبدال",
+	"visualeditor-find-and-replace-replace-text": "استبدل",
+	"visualeditor-find-and-replace-results": "$1 من $2",
+	"visualeditor-find-and-replace-title": "أبحث واستبدل",
 	"visualeditor-formatdropdown-format-heading-label": "عنوان (1-6)",
 	"visualeditor-formatdropdown-format-heading1": "عنوان 1",
 	"visualeditor-formatdropdown-format-heading2": "عنوان 2",
