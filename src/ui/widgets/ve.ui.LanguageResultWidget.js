@@ -75,7 +75,7 @@ ve.ui.LanguageResultWidget.prototype.highlightQuery = function ( text, query ) {
 		document.createTextNode( text.slice( 0, offset ) ),
 		this.$( '<span>' )
 			.addClass( 've-ui-languageResultWidget-highlight' )
-			.text( text.substr( offset, query.length ) ),
+			.text( text.slice( offset, offset + query.length ) ),
 		document.createTextNode( text.slice( offset + query.length ) )
 	);
 	return $result.contents();

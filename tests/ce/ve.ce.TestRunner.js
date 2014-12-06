@@ -58,8 +58,8 @@ ve.ce.TestOffset.static.findTextOffset = function ( node, n, reversed ) {
 		// test >= n because one more boundaries than code units
 		if ( node.textContent.length >= n ) {
 			offset = reversed ? node.textContent.length - n : n;
-			slice = node.textContent.substring( 0, offset ) + '|' +
-				node.textContent.substring( offset );
+			slice = node.textContent.slice( 0, offset ) + '|' +
+				node.textContent.slice( offset );
 			return { node: node, offset: offset, slice: slice };
 		} else {
 			return { consumed: node.textContent.length + 1 };
@@ -204,7 +204,8 @@ ve.ce.TestRunner.prototype.changeText = function ( text ) {
 	// FIXME: renaming startNode to startContainer revealed failing tests
 	if ( false && nativeRange && nativeRange.startContainer && text.indexOf( nativeRange.startContainer.textContent ) === 0 ) {
 		// We're just appending
-		extra = nativeRange.startContainer.textContent.substring( nativeRange.startContainer.textContent.length );
+		// FIXME: str.slice( tr.length ) always produces an empty string...
+		extra = nativeRange.startContainer.textContent.slice( nativeRange.startContainer.textContent.length );
 		// This is fine IF startContainer is a TextNode
 		nativeRange.startContainer.textContent += extra;
 	} else {
