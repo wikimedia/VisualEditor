@@ -121,14 +121,7 @@ ve.ce.RangeState.prototype.saveState = function ( old, $surfaceElement, docNode,
 		this.enteredBlockSlug = false;
 	} else {
 		this.selectionChanged = true;
-		try {
-			this.veRange = new ve.Range(
-				ve.ce.getOffset( selection.anchorNode, selection.anchorOffset ),
-				ve.ce.getOffset( selection.focusNode, selection.focusOffset )
-			);
-		} catch ( e ) {
-			this.veRange = null;
-		}
+		this.veRange = ve.ce.veRangeFromSelection( selection );
 	}
 
 	anchorNodeChanged = !old || old.compareAnchorNode( selection );
