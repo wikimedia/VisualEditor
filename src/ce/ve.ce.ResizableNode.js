@@ -92,7 +92,7 @@ OO.initClass( ve.ce.ResizableNode );
  */
 ve.ce.ResizableNode.prototype.getResizableOffset = function () {
 	if ( !this.resizableOffset ) {
-		this.resizableOffset = OO.ui.Element.getRelativePosition(
+		this.resizableOffset = OO.ui.Element.static.getRelativePosition(
 			this.$resizable, this.getRoot().getSurface().getSurface().$element
 		);
 	}

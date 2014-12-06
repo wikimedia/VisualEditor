@@ -327,8 +327,8 @@ ve.debounce = function ( func, wait, immediate ) {
  * @param {HTMLElement} element Element
  */
 ve.selectElement = function ( element ) {
-	var nativeRange = OO.ui.Element.getDocument( element ).createRange(),
-		nativeSelection = OO.ui.Element.getWindow( element ).getSelection();
+	var nativeRange = OO.ui.Element.static.getDocument( element ).createRange(),
+		nativeSelection = OO.ui.Element.static.getWindow( element ).getSelection();
 	nativeRange.setStart( element, 0 );
 	nativeRange.setEnd( element, element.childNodes.length );
 	nativeSelection.removeAllRanges();
