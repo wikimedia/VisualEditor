@@ -14,7 +14,8 @@
 			"Armin1392",
 			"Calak",
 			"Oldstoneage",
-			"Alirezaaa"
+			"Alirezaaa",
+			"Saeidpourbabak"
 		]
 	},
 	"visualeditor": "ویرایشگر دیداری",
@@ -47,6 +48,12 @@
 	"visualeditor-dialog-error-dismiss": "بازگشت به عقب",
 	"visualeditor-dialog-language-auto-direction": "خودکار",
 	"visualeditor-dialog-language-search-title": "انتخاب زبان",
+	"visualeditor-find-and-replace-find-text": "بیاب",
+	"visualeditor-find-and-replace-match-case": "تطبیق بزرگی و کوچکی حروف",
+	"visualeditor-find-and-replace-replace-all-button": "همهٔ موارد را جایگزین کن",
+	"visualeditor-find-and-replace-replace-button": "جایگزینی",
+	"visualeditor-find-and-replace-replace-text": "جایگزین کن",
+	"visualeditor-find-and-replace-title": "بیاب و جایگزین کن",
 	"visualeditor-formatdropdown-format-heading-label": "سرفصل (1-6)",
 	"visualeditor-formatdropdown-format-heading1": "سرعنوان ۱",
 	"visualeditor-formatdropdown-format-heading2": "سرعنوان ۲",
