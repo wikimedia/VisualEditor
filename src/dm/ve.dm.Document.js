@@ -1244,30 +1244,48 @@ ve.dm.Document.prototype.newFromHtml = function ( html, importRules ) {
 /**
  * Find a text string within the document
  *
- * @param {string} query Text to find
+ * @param {string|RegExp} query Text to find, string or regex with no flags
  * @param {boolean} [caseSensitive] Case sensitive search
  * @param {boolean} [noOverlaps] Avoid overlapping matches
- * @return {number[]} List of offsets where the string was found
+ * @return {ve.Range[]} List of ranges where the string was found
  */
 ve.dm.Document.prototype.findText = function ( query, caseSensitive, noOverlaps ) {
-	var offset = -1,
-		offsets = [],
-		len = query.length,
+	var len, match, offset,
+		ranges = [],
 		text = this.data.getText(
 			true,
 			new ve.Range( 0, this.getInternalList().getListNode().getOuterRange().start )
 		);
 
-	if ( !caseSensitive ) {
-		text = text.toLowerCase();
-		query = query.toLowerCase();
+	if ( query instanceof RegExp ) {
+		if ( !caseSensitive ) {
+			query = new RegExp( query.source, 'i' );
+		}
+		offset = 0;
+		while ( ( match = query.exec( text.substr( offset ) ) ) !== null ) {
+			offset = offset + match.index;
+			len = match[0].length;
+			// Newlines may match some expressions, but are not allowed
+			// as they represent elements
+			if ( match[0].indexOf( '\n' ) === -1 ) {
+				ranges.push( new ve.Range( offset, offset + len ) );
+			}
+			offset += noOverlaps ? len : 1;
+		}
+	} else {
+		if ( !caseSensitive ) {
+			text = text.toLowerCase();
+			query = query.toLowerCase();
+		}
+		len = query.length;
+		offset = -1;
+		while ( ( offset = text.indexOf( query, offset ) ) !== -1 ) {
+			ranges.push( new ve.Range( offset, offset + len ) );
+			offset += noOverlaps ? len : 1;
+		}
 	}
 
-	while ( ( offset = text.indexOf( query, offset ) ) !== -1 ) {
-		offsets.push( offset );
-		offset += noOverlaps ? len : 1;
-	}
-	return offsets;
+	return ranges;
 };
 
 /**
