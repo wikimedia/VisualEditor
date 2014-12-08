@@ -1,5 +1,5 @@
 /*!
- * VisualEditor DataModel Node class.
+ * VisualEditor IME-like testing
  *
  * @copyright 2011-2014 VisualEditor Team and others; see http://ve.mit-license.org
  */
