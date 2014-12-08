@@ -256,29 +256,24 @@ ve.EventSequencer.prototype.onEvent = function ( eventName, ev ) {
 		onListener = onListeners[i];
 		this.callListener( 'on', eventName, i, onListener, ev );
 	}
-	// Queue a call to afterEvent only if there are some
-	// afterListeners/afterOneListeners/afterLoopListeners
-	if ( ( this.afterListenersForEvent[eventName] || [] ).length > 0 ||
-		( this.afterOneListenersForEvent[eventName] || [] ).length > 0 ||
-		this.afterLoopListeners.length > 0 ) {
-		// Create a cancellable pending call
-		// - Create the pendingCall object first
-		// - then create the setTimeout invocation to modify pendingCall.id
-		// - then set pendingCall.id to the setTimeout id, so the call can cancel itself
-		pendingCall = { id: null, ev: ev, eventName: eventName };
-		eventSequencer = this;
-		id = this.postpone( function () {
-			if ( pendingCall.id === null ) {
-				// clearTimeout seems not always to work immediately
-				return;
-			}
-			eventSequencer.resetAfterLoopTimeout();
-			pendingCall.id = null;
-			eventSequencer.afterEvent( eventName, ev );
-		} );
-		pendingCall.id = id;
-		this.pendingCalls.push( pendingCall );
-	}
+	// Create a cancellable pending call. We need one even if there are no after*Listeners, to
+	// call resetAfterLoopTimeout which resets doneOneLoop to false.
+	// - Create the pendingCall object first
+	// - then create the setTimeout invocation to modify pendingCall.id
+	// - then set pendingCall.id to the setTimeout id, so the call can cancel itself
+	pendingCall = { id: null, ev: ev, eventName: eventName };
+	eventSequencer = this;
+	id = this.postpone( function () {
+		if ( pendingCall.id === null ) {
+			// clearTimeout seems not always to work immediately
+			return;
+		}
+		eventSequencer.resetAfterLoopTimeout();
+		pendingCall.id = null;
+		eventSequencer.afterEvent( eventName, ev );
+	} );
+	pendingCall.id = id;
+	this.pendingCalls.push( pendingCall );
 };
 
 /**
