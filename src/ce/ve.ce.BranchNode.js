@@ -63,7 +63,8 @@ ve.ce.BranchNode.inlineSlugTemplate = $( '<span>' )
 	.addClass( 've-ce-branchNode-slug ve-ce-branchNode-inlineSlug' )
 	.append(
 		$( '<img>' )
-			.attr( 'src', ve.minImgDataUri )
+			.attr( 'src', ve.ce.minImgDataUri )
+			.css( { width: '0px', height: '0px' } )
 			.addClass( 've-ce-chimera' )
 	)
 	.get( 0 );
