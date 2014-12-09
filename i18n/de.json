@@ -46,6 +46,7 @@
 	"visualeditor-dialog-language-search-title": "Sprache auswählen",
 	"visualeditor-find-and-replace-find-text": "Finden",
 	"visualeditor-find-and-replace-match-case": "Groß-/Kleinschreibung beachten",
+	"visualeditor-find-and-replace-regular-expression": "Regulärer Ausdruck",
 	"visualeditor-find-and-replace-replace-all-button": "Alle ersetzen",
 	"visualeditor-find-and-replace-replace-button": "Ersetzen",
 	"visualeditor-find-and-replace-replace-text": "Ersetzen",
