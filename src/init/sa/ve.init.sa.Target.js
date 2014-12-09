@@ -11,13 +11,12 @@
  * @extends ve.init.Target
  *
  * @constructor
- * @param {jQuery} $container Container to render target into
  * @param {string} [surfaceType] Type of surface to use, 'desktop' or 'mobile'
  * @throws {Error} Unknown surfaceType
  */
-ve.init.sa.Target = function VeInitSaTarget( $container, surfaceType ) {
+ve.init.sa.Target = function VeInitSaTarget( surfaceType ) {
 	// Parent constructor
-	ve.init.Target.call( this, $container, { shadow: true, actions: true, floatable: true } );
+	ve.init.Target.call( this, { shadow: true, actions: true, floatable: true } );
 
 	this.surfaceType = surfaceType || this.constructor.static.defaultSurfaceType;
 	this.actions = null;

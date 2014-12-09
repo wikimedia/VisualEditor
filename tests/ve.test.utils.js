@@ -165,7 +165,8 @@
 	 * @returns {ve.ui.Surface} UI surface
 	 */
 	ve.test.utils.createSurfaceFromDocument = function ( doc ) {
-		var target = new ve.init.sa.Target( $( '#qunit-fixture' ) );
+		var target = new ve.init.sa.Target();
+		$( '#qunit-fixture' ).append( target.$element );
 		target.addSurface( doc );
 		return target.surface;
 	};

@@ -9,24 +9,20 @@
  *
  * @class
  * @abstract
+ * @extends OO.ui.Element
  * @mixins OO.EventEmitter
  *
  * @constructor
- * @param {jQuery} $container Container to render target into, must be attached to the DOM
  * @param {Object} toolbarConfig Configuration options for the toolbar
- * @throws {Error} Container must be attached to the DOM
  */
-ve.init.Target = function VeInitTarget( $container, toolbarConfig ) {
-	if ( !$.contains( $container[0].ownerDocument, $container[0] ) ) {
-		throw new Error( 'Container must be attached to the DOM' );
-	}
+ve.init.Target = function VeInitTarget( toolbarConfig ) {
+	// Parent constructor
+	OO.ui.Element.call( this );
 
 	// Mixin constructors
 	OO.EventEmitter.call( this );
 
 	// Properties
-	this.$element = $container;
-	this.elementDocument = this.$element[0].ownerDocument;
 	this.surfaces = [];
 	this.surface = null;
 	this.toolbar = null;
@@ -43,7 +39,7 @@ ve.init.Target = function VeInitTarget( $container, toolbarConfig ) {
 
 	// Events
 	this.onDocumentKeyDownHandler = this.onDocumentKeyDown.bind( this );
-	$( this.elementDocument ).on( 'keydown', this.onDocumentKeyDownHandler );
+	$( this.getElementDocument() ).on( 'keydown', this.onDocumentKeyDownHandler );
 	this.$element.on( 'keydown', this.onTargetKeyDown.bind( this ) );
 
 	// Register
@@ -63,11 +59,13 @@ ve.init.Target.prototype.destroy = function () {
 		this.$element.remove();
 		this.$element = null;
 	}
-	$( this.elementDocument ).off( 'keydown', this.onDocumentKeyDownHandler );
+	$( this.getElementDocument() ).off( 'keydown', this.onDocumentKeyDownHandler );
 	ve.init.target = null;
 };
 
 /* Inheritance */
+
+OO.inheritClass( ve.init.Target, OO.ui.Element );
 
 OO.mixinClass( ve.init.Target, OO.EventEmitter );
 
