@@ -45,10 +45,17 @@ ve.ui.AnnotationAction.static.methods = [ 'set', 'clear', 'toggle', 'clearAll' ]
  * @return {boolean} Action was executed
  */
 ve.ui.AnnotationAction.prototype.set = function ( name, data ) {
-	var i,
+	var i, trimmedFragment,
 		fragment = this.surface.getModel().getFragment(),
 		annotationClass = ve.dm.annotationFactory.lookup( name ),
 		removes = annotationClass.static.removes;
+
+	if ( fragment.getSelection() instanceof ve.dm.LinearSelection ) {
+		trimmedFragment = fragment.trimLinearSelection();
+		if ( !trimmedFragment.getSelection().isCollapsed() ) {
+			fragment = trimmedFragment;
+		}
+	}
 
 	for ( i = removes.length - 1; i >= 0; i-- ) {
 		fragment.annotateContent( 'clear', removes[i] );
@@ -82,7 +89,7 @@ ve.ui.AnnotationAction.prototype.clear = function ( name, data ) {
  * @return {boolean} Action was executed
  */
 ve.ui.AnnotationAction.prototype.toggle = function ( name, data ) {
-	var i, existingAnnotations, insertionAnnotations, removesAnnotations,
+	var existingAnnotations, insertionAnnotations, removesAnnotations,
 		surfaceModel = this.surface.getModel(),
 		fragment = surfaceModel.getFragment(),
 		annotation = ve.dm.annotationFactory.create( name, data ),
@@ -90,10 +97,7 @@ ve.ui.AnnotationAction.prototype.toggle = function ( name, data ) {
 
 	if ( !fragment.getSelection().isCollapsed() ) {
 		if ( !fragment.getAnnotations().containsComparable( annotation ) ) {
-			for ( i = removes.length - 1; i >= 0; i-- ) {
-				fragment.annotateContent( 'clear', removes[i] );
-			}
-			fragment.annotateContent( 'set', name, data );
+			this.set( name, data );
 		} else {
 			fragment.annotateContent( 'clear', name );
 		}
