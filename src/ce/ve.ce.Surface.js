@@ -2598,7 +2598,7 @@ ve.ce.Surface.prototype.handleLinearUpOrDownArrowKey = function ( e ) {
 	}
 	// If we did text node splitting, try and patch things up
 	if ( endNode && endNode.nodeType === Node.TEXT_NODE ) {
-		ve.normalizeNode( endNode );
+		ve.normalizeNode( endNode.parentNode );
 	}
 	setTimeout( function () {
 		var viewNode, newRange;
