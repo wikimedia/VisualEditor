@@ -53,7 +53,7 @@ ve.init.sa.Target.static.defaultSurfaceType = 'desktop';
  */
 ve.init.sa.Target.prototype.addSurface = function () {
 	var surface = ve.init.sa.Target.super.prototype.addSurface.apply( this, arguments );
-	this.$element.append( surface.$element );
+	this.$element.append( $( '<div>' ).append( surface.$element ) );
 	if ( !this.getSurface() ) {
 		this.setSurface( surface );
 	}

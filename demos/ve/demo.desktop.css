@@ -6,8 +6,12 @@
 
 /* Demo */
 
-.ve-demo-menu {
-	margin: 0 2em;
+.ve-demo-targetToolbar {
+	padding-left: 2em;
+	padding-right: 2em;
+}
+
+.ve-demo-surfaceToolbar {
 	padding-left: 0;
 	padding-right: 0;
 }

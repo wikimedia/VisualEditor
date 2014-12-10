@@ -4,80 +4,40 @@
  * @copyright 2011-2014 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
+ve.demo = {
+	surfaceContainers: []
+};
+
 $( function () {
 	ve.init.platform.initialize().done( function () {
 
-		function getDemoPageItems() {
-			var name, items = [];
-			for ( name in ve.demoPages ) {
-				items.push(
-					new OO.ui.MenuOptionWidget( {
-						data: ve.demoPages[name],
-						label: name
-					} )
-				);
-			}
-			return items;
-		}
-
-		var initialPage,
-
-			lastMode = null,
-
-			$menu = $( '.ve-demo-menu' ),
+		var $toolbar = $( '.ve-demo-targetToolbar' ),
 			$editor = $( '.ve-demo-editor' ),
 			target = new ve.init.sa.Target(),
-
-			switching = false,
 
 			currentLang = $.i18n().locale,
 			currentDir = target.$element.css( 'direction' ) || 'ltr',
 
 			// Menu widgets
-			pageDropdown = new OO.ui.DropdownWidget( {
-				menu: {
-					items: getDemoPageItems()
-				}
+			addSurfaceContainerButton = new OO.ui.ButtonWidget( {
+				icon: 'add',
+				label: 'Add surface'
 			} ),
-			pageLabel = new OO.ui.LabelWidget(
-				{ label: 'Page', input: pageDropdown }
-			),
-			pageMenu = pageDropdown.getMenu(),
-			addSurfaceButton = new OO.ui.ButtonWidget( { icon: 'add' } ),
 
-			modeSelect = new OO.ui.ButtonSelectWidget().addItems( [
-				new OO.ui.ButtonOptionWidget( { data: 've', label: 'VE' } ),
-				new OO.ui.ButtonOptionWidget( { data: 'edit', label: 'Edit HTML' } ),
-				new OO.ui.ButtonOptionWidget( { data: 'read', label: 'Read' } )
-			] ),
 			messageKeyButton = new OO.ui.ButtonWidget( {
+				icon: 'language',
 				label: 'Lang keys'
 			} ),
 			languageInput = new ve.ui.LanguageInputWidget( {
 				requireDir: true,
 				availableLanguages: ve.availableLanguages,
 				dialogManager: new OO.ui.WindowManager( { factory: ve.ui.windowFactory, classes: ['ve-demo-languageSearchDialogManager'] } )
-			} ),
-			sourceTextInput = new OO.ui.TextInputWidget( {
-				$: this.$,
-				multiline: true,
-				autosize: true,
-				maxRows: 999,
-				classes: ['ve-demo-source']
-			} ),
-			$readView = $( '<div>' ).addClass( 've-demo-read' ).hide();
+			} );
 
 		// Initialization
-		pageMenu.on( 'select', function ( item ) {
-			var page = item.getData();
-			if ( history.replaceState ) {
-				history.replaceState( null, document.title, '#!/src/' + page );
-			}
-			switchPage( 've', page );
-		} );
 
-		addSurfaceButton.on( 'click', function () {
-			addSurface( '' );
+		addSurfaceContainerButton.on( 'click', function () {
+			addSurfaceContainer();
 		} );
 
 		messageKeyButton.on( 'click', function () {
@@ -96,6 +56,15 @@ $( function () {
 			$.i18n().locale = currentLang = lang;
 			currentDir = dir;
 
+			var oldDir = currentDir === 'ltr' ? 'rtl' : 'ltr';
+
+			$( '.stylesheet-' + currentDir ).prop( 'disabled', false );
+			$( '.stylesheet-' + oldDir ).prop( 'disabled', true );
+
+			$( 'body' ).css( 'direction', currentDir )
+				.addClass( 've-demo-dir-' + currentDir )
+				.removeClass( 've-demo-dir-' + oldDir );
+
 			// HACK: Override/restore message functions for qqx mode
 			if ( lang === 'qqx' ) {
 				ve.init.platform.getMessage = function ( key ) { return key; };
@@ -108,173 +77,342 @@ $( function () {
 
 			// HACK: Re-initialize page to load message files
 			ve.init.platform.initialize().done( function () {
-				loadPage( location.hash.slice( 7 ), true );
-			} );
-		} );
-
-		modeSelect.on( 'select', function ( item ) {
-			if ( !switching ) {
-				switchPage( item.getData() );
-			}
-		} );
-
-		function switchPage( mode, page ) {
-			var model, doc, html, closePromise,
-				currentDir = 'ltr';
-
-			switching = true;
-			modeSelect.selectItem( modeSelect.getItemFromData( mode ) );
-			switching = false;
-
-			switch ( lastMode ) {
-				case 've':
-					closePromise = target.$element.slideUp().promise();
-					if ( !page ) {
-						model = target.getSurface().getModel().getDocument() ;
-						doc = ve.dm.converter.getDomFromModel( model );
-						html = ve.properInnerHtml( doc.body );
-						currentDir = model.getDir();
-					}
-					break;
-
-				case 'edit':
-					closePromise = sourceTextInput.$element.slideUp().promise();
-					if ( !page ) {
-						html = sourceTextInput.getValue();
-					}
-					break;
-
-				case 'read':
-					closePromise = $readView.slideUp().promise();
-					if ( !page ) {
-						html = ve.properInnerHtml( $readView[0] );
-					}
-					break;
-
-				default:
-					closePromise = $.Deferred().resolve().promise();
-					break;
-			}
-
-			closePromise.done( function () {
-				switch ( mode ) {
-					case 've':
-						target.$element.slideDown();
-						if ( page ) {
-							loadPage( page );
-						} else if ( html ) {
-							loadTarget( html );
-						}
-						break;
-
-					case 'edit':
-						sourceTextInput.$element.show();
-						sourceTextInput.setValue( html ).adjustSize();
-						sourceTextInput.$element.hide().slideDown();
-						break;
-
-					case 'read':
-						$readView.html( html ).css( 'direction', currentDir ).slideDown();
-						break;
+				var i;
+				for ( i = 0; i < ve.demo.surfaceContainers.length; i++ ) {
+					ve.demo.surfaceContainers[i].reload( currentLang, currentDir );
 				}
-				lastMode = mode;
 			} );
-		}
+		} );
 
 		languageInput.setLangAndDir( currentLang, currentDir );
 
-		$menu.append(
-			$( '<div>' ).addClass( 've-demo-menu-commands' ).append(
-				pageLabel.$element,
-				pageDropdown.$element,
-				addSurfaceButton.$element,
-				$( '<span class="ve-demo-menu-divider">&nbsp;</span>' ),
-				modeSelect.$element,
-				$( '<span class="ve-demo-menu-divider">&nbsp;</span>' ),
+		$toolbar.append(
+			$( '<div>' ).addClass( 've-demo-toolbar-commands' ).append(
+				addSurfaceContainerButton.$element,
+				$( '<span class="ve-demo-toolbar-divider">&nbsp;</span>' ),
 				messageKeyButton.$element,
 				languageInput.$element
 			)
 		);
 
-		$editor.append( target.$element, sourceTextInput.$element.hide(), $readView );
+		$editor.append( target.$element );
 
-		/**
-		 * Load a page into the editor
-		 *
-		 * @private
-		 * @param {string} src Path of html to load
-		 * @param {boolean} [forceDir] Force directionality to its current value, otherwise guess from src
-		 */
-		function loadPage( src, forceDir ) {
-			if ( !forceDir ) {
-				currentDir = src.match( /rtl\.html$/ ) ? 'rtl' : 'ltr';
+		function updateHash() {
+			var i, pages = [];
+			if ( history.replaceState ) {
+				for ( i = 0; i < ve.demo.surfaceContainers.length; i++ ) {
+					pages.push( ve.demo.surfaceContainers[i].pageMenu.getSelectedItem().getData() );
+				}
+				history.replaceState( null, document.title, '#!' + pages.join( ',' ) );
+			}
+		}
+
+		function addSurfaceContainer( page ) {
+			var surfaceContainer;
+
+			if ( !page && ve.demo.surfaceContainers.length ) {
+				page = ve.demo.surfaceContainers[ve.demo.surfaceContainers.length - 1].pageMenu.getSelectedItem().getData();
 			}
 
-			ve.init.platform.getInitializedPromise().done( function () {
-				var promise = target.getSurface() ?
-					target.getSurface().$element.slideUp().promise() :
-					$.Deferred().resolve().promise();
-
-				promise.done( function () {
-					$.ajax( {
-						url: src,
-						dataType: 'text'
-					} ).always( function ( result, status ) {
-						var pageHtml;
-
-						if ( status === 'error' ) {
-							pageHtml = '<p><i>Failed loading page ' + $( '<span>' ).text( src ).html() + '</i></p>';
-						} else {
-							pageHtml = result;
-						}
-
-						loadTarget( pageHtml );
-					} );
-				} );
-			} );
+			surfaceContainer = new ve.demo.SurfaceContainer( target, page, currentLang, currentDir );
+			surfaceContainer.on( 'changePage', updateHash );
+			updateHash();
+			target.$element.append( surfaceContainer.$element );
 		}
 
-		function loadTarget( pageHtml ) {
-			target.clearSurfaces();
-
-			var oldDir = currentDir === 'ltr' ? 'rtl' : 'ltr';
-
-			$( '.stylesheet-' + currentDir ).prop( 'disabled', false );
-			$( '.stylesheet-' + oldDir ).prop( 'disabled', true );
-
-			target.$element.css( 'direction', currentDir );
-
-			addSurface( pageHtml );
-		}
-
-		function addSurface( html ) {
-			var surface = target.addSurface(
-				ve.dm.converter.getModelFromDom(
-					ve.createDocumentFromHtml( html ),
-					target.$element.ownerDocument,
-					currentLang,
-					currentDir
-				)
-			);
-			surface.$element.hide().slideDown().promise().done( function () {
-				surface.getView().focus();
-			} );
-		}
-
-		// Open initial page
-		if ( /^#!\/src\/.+$/.test( location.hash ) ) {
-			initialPage = location.hash.slice( 7 );
-		} else {
-			initialPage = pageMenu.getFirstSelectableItem().getData();
-			// Per W3 spec, history.replaceState does not fire hashchange
-		}
-		pageMenu.selectItem( pageMenu.getItemFromData( initialPage ) );
-
-		window.addEventListener( 'hashchange', function () {
-			if ( /^#!\/src\/.+$/.test( location.hash ) ) {
-				pageMenu.selectItem( pageMenu.getItemFromData( location.hash.slice( 7 ) ) );
+		function createSurfacesFromHash( hash ) {
+			var i, pages = [];
+			if ( /^#!pages\/.+$/.test( hash ) ) {
+				pages = hash.slice( 2 ).split( ',' );
 			}
-		} );
+			if ( pages.length ) {
+				for ( i = 0; i < pages.length; i++ ) {
+					addSurfaceContainer( pages[i] );
+				}
+			} else {
+				addSurfaceContainer();
+			}
+		}
 
+		createSurfacesFromHash( location.hash );
+
+		// TODO: hashchange handler?
 	} );
 } );
+
+/**
+ * Demo surface container
+ *
+ * @class
+ * @extends OO.ui.Element
+ * @mixins OO.EventEmitter
+ *
+ * @constructor
+ * @param {ve.init.Target} target Target
+ * @param {string} page Page to load
+ * @param {string} lang Language
+ * @param {string} dir Directionality
+ */
+ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, dir ) {
+	// Parent constructor
+	ve.demo.SurfaceContainer.super.call( this );
+
+	// Mixin constructors
+	OO.EventEmitter.call( this );
+
+	ve.demo.surfaceContainers.push( this );
+
+	var container = this,
+		pageDropdown = new OO.ui.DropdownWidget( {
+			$: this.$,
+			menu: {
+				items: this.getPageMenuItems()
+			}
+		} ),
+		pageLabel = new OO.ui.LabelWidget( {
+			$: this.$,
+			label: 'Page',
+			input: pageDropdown
+		} ),
+		modeSelect = new OO.ui.ButtonSelectWidget().addItems( [
+			new OO.ui.ButtonOptionWidget( { data: 've', label: 'VE' } ),
+			new OO.ui.ButtonOptionWidget( { data: 'edit', label: 'Edit HTML' } ),
+			new OO.ui.ButtonOptionWidget( { data: 'read', label: 'Read' } )
+		] ),
+		removeButton = new OO.ui.ButtonWidget( {
+			$: this.$,
+			icon: 'remove',
+			label: 'Remove surface'
+		} );
+
+	modeSelect.selectItem( modeSelect.getItemFromData( 've' ) );
+
+	this.target = target;
+	this.surface = null;
+	this.lang = lang;
+	this.dir = dir;
+	this.$surfaceWrapper = this.$( '<div>' );
+	this.lastMode = null;
+	this.pageMenu = pageDropdown.getMenu();
+	this.sourceTextInput = new OO.ui.TextInputWidget( {
+		$: this.$,
+		multiline: true,
+		autosize: true,
+		maxRows: 999,
+		classes: ['ve-demo-source']
+	} );
+	this.$readView = this.$( '<div>' ).addClass( 've-demo-read' ).hide();
+
+	// Events
+	this.pageMenu.on( 'select', function ( item ) {
+		var page = item.getData();
+		container.change( 've', page );
+	} );
+	modeSelect.on( 'select', function ( item ) {
+		container.change( item.getData() );
+	} );
+	removeButton.on( 'click', this.destroy.bind( this ) );
+
+	this.$element.append(
+		this.$( '<div>' ).addClass( 've-demo-toolbar ve-demo-surfaceToolbar' ).append(
+			this.$( '<div>' ).addClass( 've-demo-toolbar-commands' ).append(
+				pageLabel.$element,
+				pageDropdown.$element,
+				this.$( '<span class="ve-demo-toolbar-divider">&nbsp;</span>' ),
+				modeSelect.$element,
+				this.$( '<span class="ve-demo-toolbar-divider">&nbsp;</span>' ),
+				removeButton.$element
+			)
+		),
+		this.$surfaceWrapper,
+		this.sourceTextInput.$element.hide(),
+		this.$readView
+	);
+
+	this.pageMenu.selectItem( this.pageMenu.getItemFromData(
+		page || this.pageMenu.getFirstSelectableItem().getData()
+	) );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.demo.SurfaceContainer, OO.ui.Element );
+
+OO.mixinClass( ve.demo.SurfaceContainer, OO.EventEmitter );
+
+/* Methods */
+
+/**
+ * Get menu items for the page menu
+ *
+ * @return {OO.ui.MenuOptionWidget[]} Menu items
+ */
+ve.demo.SurfaceContainer.prototype.getPageMenuItems = function () {
+	var name, items = [];
+	for ( name in ve.demo.pages ) {
+		items.push(
+			new OO.ui.MenuOptionWidget( {
+				$: this.$,
+				data: ve.demo.pages[name],
+				label: name
+			} )
+		);
+	}
+	return items;
+};
+
+/**
+ * Change mode or page
+ *
+ * @param {string} mode Mode to switch to: 've', 'edit or 'read'
+ * @param {string} [page] Page to load
+ */
+ve.demo.SurfaceContainer.prototype.change = function ( mode, page ) {
+	var model, doc, html, closePromise,
+		container = this,
+		currentDir = 'ltr';
+
+	switch ( this.lastMode ) {
+		case 've':
+			closePromise = this.$surfaceWrapper.slideUp().promise();
+			if ( !page ) {
+				model = this.surface.getModel().getDocument() ;
+				doc = ve.dm.converter.getDomFromModel( model );
+				html = ve.properInnerHtml( doc.body );
+				currentDir = model.getDir();
+			}
+			break;
+
+		case 'edit':
+			closePromise = this.sourceTextInput.$element.slideUp().promise();
+			if ( !page ) {
+				html = this.sourceTextInput.getValue();
+			}
+			break;
+
+		case 'read':
+			closePromise = this.$readView.slideUp().promise();
+			if ( !page ) {
+				html = ve.properInnerHtml( this.$readView[0] );
+			}
+			break;
+
+		default:
+			closePromise = $.Deferred().resolve().promise();
+			break;
+	}
+
+	closePromise.done( function () {
+		switch ( mode ) {
+			case 've':
+				if ( page ) {
+					container.loadPage( page );
+				} else if ( html !== undefined ) {
+					container.loadHtml( html );
+				}
+				break;
+
+			case 'edit':
+				container.sourceTextInput.$element.show();
+				container.sourceTextInput.setValue( html ).adjustSize();
+				container.sourceTextInput.$element.hide().slideDown();
+				break;
+
+			case 'read':
+				container.$readView.html( html ).css( 'direction', currentDir ).slideDown();
+				break;
+		}
+		container.lastMode = mode;
+	} );
+};
+
+/**
+ * Load a page into the editor
+ *
+ * @param {string} src Path of html to load
+ */
+ve.demo.SurfaceContainer.prototype.loadPage = function ( src ) {
+	var container = this;
+
+	container.emit( 'changePage' );
+
+	ve.init.platform.getInitializedPromise().done( function () {
+		container.$surfaceWrapper.slideUp().promise().done( function () {
+			$.ajax( {
+				url: src,
+				dataType: 'text'
+			} ).always( function ( result, status ) {
+				var pageHtml;
+
+				if ( status === 'error' ) {
+					pageHtml = '<p><i>Failed loading page ' + this.$( '<span>' ).text( src ).html() + '</i></p>';
+				} else {
+					pageHtml = result;
+				}
+
+				container.loadHtml( pageHtml );
+			} );
+		} );
+	} );
+};
+
+/**
+ * Load HTML into the editor
+ *
+ * @param {string} pageHtml HTML string
+ */
+ve.demo.SurfaceContainer.prototype.loadHtml = function ( pageHtml ) {
+	var container = this;
+
+	if ( this.surface ) {
+		this.surface.destroy();
+	}
+
+	this.surface = this.target.addSurface(
+		ve.dm.converter.getModelFromDom(
+			ve.createDocumentFromHtml( pageHtml ),
+			this.target.$element.ownerDocument,
+			this.lang,
+			this.dir
+		)
+	);
+
+	this.target.setSurface( this.surface );
+
+	this.$surfaceWrapper.empty().append( this.surface.$element.parent() )
+		.hide().slideDown().promise().done( function () {
+			container.surface.getView().focus();
+		} );
+};
+
+/**
+ * Reload the container
+ *
+ * @param {string} lang Language
+ * @param {string} dir Directionality
+ */
+ve.demo.SurfaceContainer.prototype.reload = function ( lang, dir ) {
+	this.lang = lang;
+	this.dir = dir;
+
+	this.loadHtml( ve.properInnerHtml(
+		ve.dm.converter.getDomFromModel(
+			this.surface.getModel().getDocument()
+		).body
+	) );
+};
+
+/**
+ * Destroy the container
+ */
+ve.demo.SurfaceContainer.prototype.destroy = function () {
+	var container = this;
+	this.$element.slideUp().promise().done( function () {
+		if ( container.surface ) {
+			container.surface.destroy();
+		}
+		container.$element.remove();
+	} );
+	ve.demo.surfaceContainers.splice( ve.demo.surfaceContainers.indexOf( container ), 1 );
+	this.emit( 'changePage' );
+};

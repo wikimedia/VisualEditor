@@ -23,38 +23,44 @@ body {
 	height: 3em;
 }
 
-.ve-demo-menu {
+/* Hack: should generate demo.rtl.css */
+.ve-demo-dir-rtl .ve-demo-logo {
+	float: left;
+	margin: -0.4em 0 0 -0.3em;
+}
+
+.ve-demo-toolbar {
 	padding: 0.75em 1.5em;
 }
 
-.ve-demo-menu .oo-ui-dropdownWidget {
+.ve-demo-toolbar .oo-ui-dropdownWidget {
 	min-width: 10em;
 }
 
-.ve-demo-menu .oo-ui-dropdownWidget .oo-ui-labelElement-label {
+.ve-demo-toolbar .oo-ui-dropdownWidget .oo-ui-labelElement-label {
 	text-transform: capitalize;
 }
 
-.ve-demo-menu .ve-ui-languageInputWidget .oo-ui-fieldLayout-body > .oo-ui-labelElement-label {
+.ve-demo-toolbar .ve-ui-languageInputWidget .oo-ui-fieldLayout-body > .oo-ui-labelElement-label {
 	display: none;
 }
 
-.ve-demo-menu .ve-ui-languageInputWidget-directionSelect {
+.ve-demo-toolbar .ve-ui-languageInputWidget-directionSelect {
 	margin: 0;
 }
 
-.ve-demo-menu-commands > .oo-ui-widget > .oo-ui-fieldLayout {
+.ve-demo-toolbar-commands > .oo-ui-widget > .oo-ui-fieldLayout {
 	display: inline-block;
 	margin: 0;
 }
 
-.ve-demo-menu-commands {
+.ve-demo-toolbar-commands {
 	font-size: 0.8em;
 }
 
-.ve-demo-menu-commands > .oo-ui-widget,
-.ve-demo-menu-commands > .oo-ui-widget > .oo-ui-fieldLayout > .oo-ui-fieldLayout-body > .oo-ui-fieldLayout-field,
-.ve-demo-menu-divider {
+.ve-demo-toolbar-commands > .oo-ui-widget,
+.ve-demo-toolbar-commands > .oo-ui-widget > .oo-ui-fieldLayout > .oo-ui-fieldLayout-body > .oo-ui-fieldLayout-field,
+.ve-demo-toolbar-divider {
 	width: auto;
 	float: none;
 	display: inline-block;
@@ -62,14 +68,18 @@ body {
 	margin-right: 1em;
 }
 
-.ve-demo-menu .oo-ui-textInputWidget {
+.ve-demo-toolbar .oo-ui-textInputWidget {
 	width: 4em;
 }
 
-.ve-demo-menu-divider {
+.ve-demo-toolbar-divider {
 	border-right: 1px solid #ddd;
 	padding-left: 0.2em;
 	width: 0;
+}
+
+.ve-demo-surfaceToolbar {
+	margin: 0;
 }
 
 .ve-demo-source {
@@ -93,7 +103,6 @@ body {
 
 .ve-ui-debugBar {
 	padding: 1.5em;
-	margin-bottom: 1em;
 }
 
 .ve-ui-debugBar-filibuster {
