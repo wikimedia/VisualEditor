@@ -415,7 +415,7 @@ ve.Filibuster.prototype.getObservationsHtml = function ( branchPath ) {
 			if ( expanded ) {
 				html.push( showCallOpen( frame ) );
 				html.push.apply( html, getFragments(
-					frame.children,
+					frame.children || [],
 					observation.children,
 					path.concat( i )
 				) );
