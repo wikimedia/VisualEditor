@@ -16,6 +16,28 @@
 }
 
 /* @noflip */
+.ve-ce-surface-deactivatedSelection {
+	position: absolute;
+	top: 0;
+	left: 0;
+	opacity: 0.5;
+	pointer-events: none;
+}
+
+.ve-ce-surface-deactivatedSelection > div {
+	position: absolute;
+	background: #6da9f7;
+	margin-top: -0.15em;
+	padding: 0.15em 0;
+}
+
+/* Set opacity directly on the highlights, rather than their containers,
+   otherwise the opacity isn't applied at all */
+.ve-init-target-ie .ve-ce-surface-deactivatedSelection > div {
+	opacity: 0.5;
+}
+
+/* @noflip */
 .ve-ce-surface-highlights {
 	position: absolute;
 	top: 0;
