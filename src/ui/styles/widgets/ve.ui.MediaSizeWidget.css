@@ -8,7 +8,7 @@
 	background: #ffc2c2;
 }
 
-.ve-ui-mediaSizeWidget .oo-ui-fieldLayout > .oo-ui-labelElement-label {
+.ve-ui-mediaSizeWidget .oo-ui-fieldLayout > .oo-ui-fieldLayout-body > .oo-ui-labelElement-label {
 	width: 6em;
 }
 
@@ -16,7 +16,7 @@
 	margin-bottom: 1em;
 }
 
-.ve-ui-mediaSizeWidget-section-scale  .oo-ui-fieldLayout-field > .oo-ui-textInputWidget input {
+.ve-ui-mediaSizeWidget-section-scale .oo-ui-fieldLayout-field > .oo-ui-textInputWidget input {
 	width: 5em;
 	margin-right: 0.5em;
 }

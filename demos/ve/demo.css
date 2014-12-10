@@ -53,7 +53,7 @@ body {
 }
 
 .ve-demo-menu-commands > .oo-ui-widget,
-.ve-demo-menu-commands > .oo-ui-widget > .oo-ui-fieldLayout > .oo-ui-fieldLayout-field,
+.ve-demo-menu-commands > .oo-ui-widget > .oo-ui-fieldLayout > .oo-ui-fieldLayout-body > .oo-ui-fieldLayout-field,
 .ve-demo-menu-divider {
 	width: auto;
 	float: none;
