@@ -43,6 +43,7 @@
 	"visualeditor-dialog-language-auto-direction": "ავტო",
 	"visualeditor-dialog-language-search-title": "ენის არჩევა",
 	"visualeditor-find-and-replace-find-text": "ძიება",
+	"visualeditor-find-and-replace-match-case": "რეგისტრის გათვალისწინება",
 	"visualeditor-find-and-replace-replace-all-button": "ყველას ჩანაცვლება",
 	"visualeditor-find-and-replace-replace-button": "ჩანაცვლება",
 	"visualeditor-find-and-replace-replace-text": "ჩანაცვლება",
