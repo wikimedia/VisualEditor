@@ -168,9 +168,6 @@ $( function () {
 						sourceTextInput.$element.hide();
 
 						sourceTextInput.$element.slideDown();
-						if ( ve.debug ) {
-							currentTarget.debugBar.$element.remove();
-						}
 						break;
 
 					case 'read':
