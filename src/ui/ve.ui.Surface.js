@@ -402,7 +402,7 @@ ve.ui.Surface.prototype.initFilibuster = function () {
 			return selection.getDescription();
 		} )
 		.setObserver( 'DOM doc', function () {
-			return surface.view.$element.html();
+			return ve.serializeNodeDebug( surface.view.$element[0] );
 		} )
 		.setObserver( 'DOM selection', function () {
 			var nativeRange,
@@ -412,9 +412,13 @@ ve.ui.Surface.prototype.initFilibuster = function () {
 			}
 			nativeRange = nativeSelection.getRangeAt( 0 );
 			return JSON.stringify( {
-				startContainer: nativeRange.startContainer.outerHTML,
+				startContainer: ve.serializeNodeDebug( nativeRange.startContainer ),
 				startOffset: nativeRange.startOffset,
-				endContainer: nativeRange.endContainer.outerHTML,
+				endContainer: (
+					nativeRange.startContainer === nativeRange.endContainer ?
+					'(=startContainer)' :
+					ve.serializeNodeDebug( nativeRange.endContainer )
+				),
 				endOffset: nativeRange.endOffset
 			} );
 		} );
