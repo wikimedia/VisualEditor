@@ -39,7 +39,7 @@ ve.ui.CommentInspector.static.actions = [
 	{
 		action: 'done',
 		label: OO.ui.deferMsg( 'visualeditor-dialog-action-done' ),
-		flags: 'primary',
+		flags: [ 'progressive', 'primary' ],
 		modes: 'edit'
 	},
 	{

@@ -31,7 +31,7 @@ ve.ui.FragmentInspector.static.actions = ve.ui.FragmentInspector.super.static.ac
 	{
 		action: 'done',
 		label: OO.ui.deferMsg( 'visualeditor-dialog-action-done' ),
-		flags: 'primary'
+		flags: [ 'progressive', 'primary' ]
 	}
 ] );
 
