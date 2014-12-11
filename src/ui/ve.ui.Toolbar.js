@@ -303,10 +303,11 @@ ve.ui.Toolbar.prototype.detach = function () {
  * Call this whenever you are done using a toolbar.
  */
 ve.ui.Toolbar.prototype.destroy = function () {
-	this.detach();
-
 	// Parent method
 	OO.ui.Toolbar.prototype.destroy.call( this );
+
+	// Detach surface last, because tool destructors need getSurface()
+	this.detach();
 };
 
 /**
