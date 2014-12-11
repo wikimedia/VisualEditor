@@ -1174,11 +1174,13 @@ ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
 			break;
 		case OO.ui.Keys.BACKSPACE:
 		case OO.ui.Keys.DELETE:
-			e.preventDefault();
 			if ( selection instanceof ve.dm.LinearSelection ) {
-				this.handleLinearDelete( e );
+				if ( this.handleLinearDelete( e ) ) {
+					e.preventDefault();
+				}
 				updateFromModel = true;
 			} else if ( selection instanceof ve.dm.TableSelection ) {
+				e.preventDefault();
 				this.handleTableDelete( e );
 			}
 			break;
@@ -3227,7 +3229,15 @@ ve.ce.Surface.prototype.handleTableEnter = function ( e ) {
 /**
  * Handle delete and backspace key down events with a linear selection.
  *
+ * The handler just schedules a poll to observe the native content removal, unless
+ * one of the following is true:
+ * - The ctrlKey is down; or
+ * - The selection is expanded; or
+ * - We are directly adjacent to an element node in the deletion direction.
+ * In these cases, it will perform the content removal itself.
+ *
  * @param {jQuery.Event} e Delete key down event
+ * @return {boolean} Whether the content was removed by this method
  */
 ve.ce.Surface.prototype.handleLinearDelete = function ( e ) {
 	var docLength, startNode, tableEditingRange,
@@ -3239,12 +3249,26 @@ ve.ce.Surface.prototype.handleLinearDelete = function ( e ) {
 		data = documentModel.data;
 
 	if ( rangeToRemove.isCollapsed() ) {
+		// Use native behaviour then poll, unless we are adjacent to some element (or CTRL
+		// is down, in which case we can't reliably predict whether the native behaviour
+		// would delete far enough to remove some element)
+		offset = rangeToRemove.start;
+		if ( !e.ctrlKey && (
+			( direction === -1 && !data.isElementData( offset - 1 ) ) ||
+			( direction === 1 && !data.isElementData( offset ) )
+		) ) {
+			this.eventSequencer.afterOne( {
+				keydown: this.surfaceObserver.pollOnce.bind( this.surfaceObserver )
+			} );
+			return false;
+		}
+
 		// In case when the range is collapsed use the same logic that is used for cursor left and
 		// right movement in order to figure out range to remove.
 		rangeToRemove = documentModel.getRelativeRange( rangeToRemove, direction, unit, true );
 		tableEditingRange = this.getActiveTableNode() ? this.getActiveTableNode().getEditingRange() : null;
 		if ( tableEditingRange && !tableEditingRange.containsRange( rangeToRemove ) ) {
-			return;
+			return true;
 		}
 		offset = rangeToRemove.start;
 		docLength = data.getLength();
@@ -3257,12 +3281,12 @@ ve.ce.Surface.prototype.handleLinearDelete = function ( e ) {
 			startNode = documentModel.getDocumentNode().getNodeFromOffset( offset + 1 );
 			if ( startNode.isFocusable() ) {
 				this.getModel().setLinearSelection( startNode.getOuterRange() );
-				return;
+				return true;
 			}
 		}
 		if ( rangeToRemove.isCollapsed() ) {
 			// For instance beginning or end of the document.
-			return;
+			return true;
 		}
 	}
 
@@ -3271,6 +3295,7 @@ ve.ce.Surface.prototype.handleLinearDelete = function ( e ) {
 	// TODO: is any of this necessary?
 	this.focus();
 	this.surfaceObserver.clear();
+	return false;
 };
 
 /**

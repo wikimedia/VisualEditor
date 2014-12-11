@@ -49,24 +49,6 @@ QUnit.test( 'handleLinearDelete', function ( assert ) {
 	var i,
 		cases = [
 			{
-				range: new ve.Range( 2 ),
-				operations: ['backspace'],
-				expectedData: function ( data ) {
-					data.splice( 1, 1 );
-				},
-				expectedRange: new ve.Range( 1 ),
-				msg: 'Character deleted by backspace'
-			},
-			{
-				range: new ve.Range( 2 ),
-				operations: ['delete'],
-				expectedData: function ( data ) {
-					data.splice( 2, 1 );
-				},
-				expectedRange: new ve.Range( 2 ),
-				msg: 'Character deleted by delete'
-			},
-			{
 				range: new ve.Range( 1, 4 ),
 				operations: ['backspace'],
 				expectedData: function ( data ) {
