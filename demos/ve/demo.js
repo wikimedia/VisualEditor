@@ -26,7 +26,7 @@ $( function () {
 
 			$menu = $( '.ve-demo-menu' ),
 			$editor = $( '.ve-demo-editor' ),
-			target = new ve.init.sa.Target( $( '<div>' ).appendTo( $editor ) ),
+			target = new ve.init.sa.Target(),
 
 			switching = false,
 
