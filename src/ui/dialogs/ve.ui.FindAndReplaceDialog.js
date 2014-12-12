@@ -156,7 +156,7 @@ ve.ui.FindAndReplaceDialog.prototype.getSetupProcess = function ( data ) {
 	return ve.ui.FindAndReplaceDialog.super.prototype.getSetupProcess.call( this, data )
 		.first( function () {
 			this.surface = data.surface;
-			this.surface.$controls.append( this.$findResults );
+			this.surface.$selections.append( this.$findResults );
 			this.surface.getModel().connect( this, { documentUpdate: this.updateFragmentsDebounced } );
 			this.surface.getView().connect( this, { position: this.positionResultsDebounced } );
 
@@ -266,14 +266,14 @@ ve.ui.FindAndReplaceDialog.prototype.positionResults = function () {
 		return;
 	}
 
-	var i, l, j, rects, $result, top;
+	var i, ilen, j, jlen, rects, $result, top;
 
 	this.$findResults.empty();
-	for ( i = 0, l = this.fragments.length; i < l; i++ ) {
+	for ( i = 0, ilen = this.fragments.length; i < ilen; i++ ) {
 		rects = this.surface.getView().getSelectionRects( this.fragments[i].getSelection() );
 		$result = this.$( '<div>' ).addClass( 've-ui-findAndReplaceDialog-findResult' );
 		top = Infinity;
-		for ( j in rects ) {
+		for ( j = 0, jlen = rects.length; j < jlen; j++ ) {
 			top = Math.min( top, rects[j].top );
 			$result.append( this.$( '<div>' ).css( {
 				top: rects[j].top,

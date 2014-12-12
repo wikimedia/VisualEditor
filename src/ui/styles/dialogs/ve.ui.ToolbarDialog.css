@@ -20,6 +20,11 @@
 	max-height: 150px;
 }
 
+/* TODO: fix this upstream */
+.ve-ui-toolbar .oo-ui-window-frame {
+	position: relative;
+}
+
 .ve-ui-toolbarDialog-content > .oo-ui-window-body {
 	bottom: auto;
 	box-shadow: none;

@@ -52,7 +52,7 @@
 	opacity: 0.2;
 }
 
-.ve-ui-findAndReplaceDialog-findResult div {
+.ve-ui-findAndReplaceDialog-findResult > div {
 	background: #28bb0b;
 	position: absolute;
 	margin-top: -0.15em;
@@ -64,6 +64,16 @@
 	opacity: 0.4;
 }
 
-.ve-ui-findAndReplaceDialog-findResult-focused div {
+.ve-ui-findAndReplaceDialog-findResult-focused > div {
 	background: #1f850b;
+}
+
+/* Set opacity directly on the highlights, rather than their containers,
+   otherwise the opacity isn't applied at all */
+.ve-init-target-ie .ve-ui-findAndReplaceDialog-findResult > div {
+	opacity: 0.2;
+}
+
+.ve-init-target-ie .ve-ui-findAndReplaceDialog-findResult-focused > div {
+	opacity: 0.4;
 }

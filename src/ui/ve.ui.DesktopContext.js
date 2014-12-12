@@ -40,7 +40,6 @@ ve.ui.DesktopContext = function VeUiDesktopContext( surface, config ) {
 		resize: 'setPopupSize'
 	} );
 	this.$window.on( 'resize', this.onWindowResizeHandler );
-	this.$element.on( 'mousedown', false );
 
 	// Initialization
 	this.$element
@@ -138,9 +137,17 @@ ve.ui.DesktopContext.prototype.createInspectorWindowManager = function () {
 		$: this.$,
 		factory: ve.ui.windowFactory,
 		overlay: this.surface.getLocalOverlay(),
-		modal: false,
-		isolate: true
+		modal: false
 	} );
+};
+
+/**
+ * @inheritdoc
+ */
+ve.ui.DesktopContext.prototype.onInspectorOpening = function () {
+	ve.ui.DesktopContext.super.prototype.onInspectorOpening.apply( this, arguments );
+	// Resize the popup before opening so the body height of the window is measured correctly
+	this.setPopupSize();
 };
 
 /**

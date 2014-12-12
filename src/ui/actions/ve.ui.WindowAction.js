@@ -44,8 +44,7 @@ ve.ui.WindowAction.static.methods = [ 'open', 'close', 'toggle' ];
  * @return {boolean} Action was executed
  */
 ve.ui.WindowAction.prototype.open = function ( name, data ) {
-	var onOpen, openingPromise,
-		windowType = this.getWindowType( name ),
+	var windowType = this.getWindowType( name ),
 		windowManager = windowType && this.getWindowManager( windowType ),
 		surface = this.surface,
 		fragment = surface.getModel().getFragment( undefined, true ),
@@ -58,28 +57,17 @@ ve.ui.WindowAction.prototype.open = function ( name, data ) {
 
 	data = ve.extendObject( { dir: dir }, data, { fragment: fragment } );
 
+	surface.getView().deactivate();
 	if ( windowType === 'toolbar' ) {
 		data = ve.extendObject( data, { surface: surface } );
-	} else if ( windowType === 'dialog' ) {
-		// For non-isolated dialogs, remove the selection and re-apply on close
-		surface.getView().nativeSelection.removeAllRanges();
-		onOpen = function ( opened ) {
-			opened.then( function ( closing ) {
-				closing.then( function () {
-					// Check the dialog didn't modify the selection before restoring from fragment
-					if ( surface.getModel().getSelection().isNull() ) {
-						fragment.select();
-					}
-				} );
-			} );
-		};
 	}
 
-	openingPromise = windowManager.openWindow( name, data );
+	windowManager.openWindow( name, data ).then( function ( closing ) {
+		closing.then( function () {
+			surface.getView().activate();
+		} );
+	} );
 
-	if ( onOpen ) {
-		openingPromise.then( onOpen );
-	}
 	return true;
 };
 
