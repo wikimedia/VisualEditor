@@ -2528,7 +2528,7 @@ ve.ce.Surface.prototype.handleLinearLeftOrRightArrowKey = function ( e ) {
  * @param {jQuery.Event} e Up or down key down event
  */
 ve.ce.Surface.prototype.handleLinearUpOrDownArrowKey = function ( e ) {
-	var nativeRange, slug, $cursorHolder, endNode, endOffset,
+	var nativeRange, endNode, endOffset,
 		range = this.model.getSelection().getRange(),
 		tableEditingRange = this.getActiveTableNode() ? this.getActiveTableNode().getEditingRange() : null,
 		direction = e.keyCode === OO.ui.Keys.DOWN ? 1 : -1,
@@ -2559,41 +2559,24 @@ ve.ce.Surface.prototype.handleLinearUpOrDownArrowKey = function ( e ) {
 	} else if ( !range.isCollapsed() ) {
 		// Perform programmatic handling for a selection that is expanded because CE
 		// behaviour is inconsistent
-		slug = this.documentView.getSlugAtOffset( range.to );
-		if ( !slug ) {
-			if ( !this.nativeSelection.extend && range.isBackwards() ) {
-				// If the browser doesn't support backwards selections, but the dm range
-				// is backwards, then use anchorNode/Offset to compensate
-				endNode = this.nativeSelection.anchorNode;
-				endOffset = this.nativeSelection.anchorOffset;
-			} else {
-				endNode = this.nativeSelection.focusNode;
-				endOffset = this.nativeSelection.focusOffset;
-			}
-			$cursorHolder = this.$( '<span class="ve-ce-surface-cursorHolder"> </span>' ).hide();
-			if ( endNode.nodeType === Node.TEXT_NODE ) {
-				endNode.splitText( endOffset );
-			}
-			endNode.parentNode.insertBefore(
-				$cursorHolder[0],
-				endNode.nextSibling
-			);
+		if ( !this.nativeSelection.extend && range.isBackwards() ) {
+			// If the browser doesn't support backwards selections, but the dm range
+			// is backwards, then use anchorNode/Offset to compensate
+			endNode = this.nativeSelection.anchorNode;
+			endOffset = this.nativeSelection.anchorOffset;
+		} else {
+			endNode = this.nativeSelection.focusNode;
+			endOffset = this.nativeSelection.focusOffset;
 		}
 	}
-	if ( $cursorHolder || slug ) {
+	if ( endNode ) {
 		nativeRange = this.getElementDocument().createRange();
-		nativeRange.selectNode( $cursorHolder ? $cursorHolder[0] : slug );
+		nativeRange.setStart( endNode, endOffset );
+		nativeRange.setEnd( endNode, endOffset );
 		this.nativeSelection.removeAllRanges();
 		this.nativeSelection.addRange( nativeRange );
 	}
-	if ( $cursorHolder ) {
-		$cursorHolder.remove();
-		this.surfaceObserver.clear();
-	}
-	// If we did text node splitting, try and patch things up
-	if ( endNode && endNode.nodeType === Node.TEXT_NODE ) {
-		ve.normalizeNode( endNode.parentNode );
-	}
+
 	setTimeout( function () {
 		var viewNode, newRange;
 		// Chrome bug lets you cursor into a multi-line contentEditable=false with up/down...
