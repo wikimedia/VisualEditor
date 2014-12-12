@@ -46,23 +46,6 @@ ve.init.Target = function VeInitTarget( toolbarConfig ) {
 	ve.init.target = this;
 };
 
-/**
- * Destroy the target
- */
-ve.init.Target.prototype.destroy = function () {
-	this.clearSurfaces();
-	if ( this.toolbar ) {
-		this.toolbar.destroy();
-		this.toolbar = null;
-	}
-	if ( this.$element ) {
-		this.$element.remove();
-		this.$element = null;
-	}
-	$( this.getElementDocument() ).off( 'keydown', this.onDocumentKeyDownHandler );
-	ve.init.target = null;
-};
-
 /* Inheritance */
 
 OO.inheritClass( ve.init.Target, OO.ui.Element );
@@ -182,6 +165,23 @@ ve.init.Target.static.importRules = {
 };
 
 /* Methods */
+
+/**
+ * Destroy the target
+ */
+ve.init.Target.prototype.destroy = function () {
+	this.clearSurfaces();
+	if ( this.toolbar ) {
+		this.toolbar.destroy();
+		this.toolbar = null;
+	}
+	if ( this.$element ) {
+		this.$element.remove();
+		this.$element = null;
+	}
+	$( this.getElementDocument() ).off( 'keydown', this.onDocumentKeyDownHandler );
+	ve.init.target = null;
+};
 
 /**
  * Handle key down events on the document
