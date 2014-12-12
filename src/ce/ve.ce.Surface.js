@@ -1181,8 +1181,7 @@ ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
  * @param {boolean} fixupCursor If destroying unicorns, fix the cursor position for expected movement
  */
 ve.ce.Surface.prototype.checkUnicorns = function ( fixupCursor ) {
-	var preUnicorn, postUnicorn, range, node, fixup, ancestor,
-		endCursorPos, preUnicornPos;
+	var preUnicorn, postUnicorn, range, node, fixup;
 	if ( !this.unicorningNode || !this.unicorningNode.unicorns ) {
 		return;
 	}
@@ -1210,18 +1209,12 @@ ve.ce.Surface.prototype.checkUnicorns = function ( fixupCursor ) {
 
 	// Selection endpoint is not between unicorns.
 	// Test whether it is before or after the pre-unicorn (i.e. before/after both unicorns)
-	ancestor = ve.getCommonAncestor( range.endContainer, preUnicorn );
-	if ( ancestor === null ) {
-		throw new Error( 'No common ancestor' );
-	}
-	endCursorPos = ve.getOffsetPath( ancestor, range.endContainer, range.endOffset );
-	preUnicornPos = ve.getOffsetPath(
-		ancestor,
+	if ( ve.compareDocumentOrder(
+		range.endContainer,
+		range.endOffset,
 		preUnicorn.parentNode,
 		Array.prototype.indexOf.call( preUnicorn.parentNode.childNodes, preUnicorn )
-	);
-
-	if ( ve.compareOffsetPaths( endCursorPos, preUnicornPos ) < 0 ) {
+	) < 0 ) {
 		// before the pre-unicorn
 		fixup = -1;
 	} else {

@@ -1165,6 +1165,27 @@ ve.compareOffsetPaths = function ( path1, path2 ) {
 };
 
 /**
+ * Compare two nodes for position in document
+ *
+ * @param {Node} node1 First node
+ * @param {number} offset1 First offset
+ * @param {Node} node2 Second node
+ * @param {number} offset2 Second offset
+ * @return {number} negative, zero or positive number
+ */
+ve.compareDocumentOrder = function ( node1, offset1, node2, offset2 ) {
+
+	var commonAncestor = ve.getCommonAncestor( node1, node2 );
+	if ( commonAncestor === null ) {
+		throw new Error( 'No common ancestor' );
+	}
+	return ve.compareOffsetPaths(
+		ve.getOffsetPath( commonAncestor, node1, offset1 ),
+		ve.getOffsetPath( commonAncestor, node2, offset2 )
+	);
+};
+
+/**
  * Get the client platform string from the browser.
  *
  * HACK: This is a wrapper for calling getSystemPlatform() on the current platform
