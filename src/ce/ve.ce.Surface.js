@@ -1221,7 +1221,7 @@ ve.ce.Surface.prototype.checkUnicorns = function ( fixupCursor ) {
 		Array.prototype.indexOf.call( preUnicorn.parentNode.childNodes, preUnicorn )
 	);
 
-	if ( ve.cmpOffsetPaths( endCursorPos, preUnicornPos ) < 0 ) {
+	if ( ve.compareOffsetPaths( endCursorPos, preUnicornPos ) < 0 ) {
 		// before the pre-unicorn
 		fixup = -1;
 	} else {

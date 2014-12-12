@@ -1154,7 +1154,7 @@ ve.getOffsetPath = function ( ancestor, node, nodeOffset ) {
  * @param {number[]} path2 Second offset path
  * @return {number} negative, zero or positive number
  */
-ve.cmpOffsetPaths = function ( path1, path2 ) {
+ve.compareOffsetPaths = function ( path1, path2 ) {
 	var i, len;
 	for ( i = 0, len = Math.min( path1.length, path2.length ); i < len; i++ ) {
 		if ( path1[ i ] !== path2[ i ] ) {
