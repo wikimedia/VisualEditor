@@ -1104,6 +1104,7 @@ ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
 			trigger = new ve.ui.Trigger( e );
 			if ( trigger.isComplete() && this.surface.execute( trigger ) ) {
 				e.preventDefault();
+				e.stopPropagation();
 				updateFromModel = true;
 			}
 			break;
@@ -3023,6 +3024,7 @@ ve.ce.Surface.prototype.handleTableDelete = function () {
  */
 ve.ce.Surface.prototype.handleTableEditingEscape = function ( e ) {
 	e.preventDefault();
+	e.stopPropagation();
 	this.getActiveTableNode().setEditing( false );
 };
 
