@@ -72,7 +72,7 @@ ve.ui.Toolbar.prototype.setup = function ( groups, surface ) {
 
 	// Events
 	this.getSurface().getModel().connect( this, { contextChange: 'onContextChange' } );
-	this.getSurface().toolbarDialogs.connect( this, {
+	this.getSurface().getToolbarDialogs().connect( this, {
 		opening: 'onToolbarWindowOpeningOrClosing',
 		closing: 'onToolbarWindowOpeningOrClosing'
 	} );
@@ -291,8 +291,8 @@ ve.ui.Toolbar.prototype.detach = function () {
 	}
 	if ( this.getSurface() ) {
 		this.getSurface().getModel().disconnect( this );
-		this.getSurface().toolbarDialogs.disconnect( this );
-		this.getSurface().toolbarDialogs.clearWindows();
+		this.getSurface().getToolbarDialogs().disconnect( this );
+		this.getSurface().getToolbarDialogs().clearWindows();
 		this.surface = null;
 	}
 };

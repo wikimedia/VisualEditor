@@ -238,6 +238,14 @@ ve.ui.Surface.prototype.getDialogs = function () {
 };
 
 /**
+ * Get toolbar dialogs window set.
+ * @returns {ve.ui.WindowManager} Toolbar dialogs window set
+ */
+ve.ui.Surface.prototype.getToolbarDialogs = function () {
+	return this.toolbarDialogs;
+};
+
+/**
  * Get the local overlay.
  *
  * Local overlays are attached to the same frame as the surface.

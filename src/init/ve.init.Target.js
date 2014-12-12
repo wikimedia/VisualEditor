@@ -306,5 +306,5 @@ ve.init.Target.prototype.getToolbar = function () {
 ve.init.Target.prototype.setupToolbar = function ( surface ) {
 	this.getToolbar().setup( this.constructor.static.toolbarGroups, surface );
 	this.getToolbar().$element.insertBefore( surface.$element );
-	this.getToolbar().$bar.append( surface.toolbarDialogs.$element );
+	this.getToolbar().$bar.append( surface.getToolbarDialogs().$element );
 };
