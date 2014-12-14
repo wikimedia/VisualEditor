@@ -18,7 +18,7 @@
 			"Piramidion"
 		]
 	},
-	"visualeditor": "VisualEditor",
+	"visualeditor": "Візуальний редактор",
 	"visualeditor-aliennode-tooltip": "Вибачте, цей елемент наразі можна редагувати лише у режимі вихідного тексту.",
 	"visualeditor-annotationbutton-bold-tooltip": "Жирний",
 	"visualeditor-annotationbutton-code-tooltip": "Комп'ютерний код",
@@ -51,6 +51,7 @@
 	"visualeditor-dialog-language-search-title": "Вибір мови",
 	"visualeditor-find-and-replace-find-text": "Пошук",
 	"visualeditor-find-and-replace-match-case": "Враховувати регістр",
+	"visualeditor-find-and-replace-regular-expression": "Регулярний вираз",
 	"visualeditor-find-and-replace-replace-all-button": "Замінити все",
 	"visualeditor-find-and-replace-replace-button": "Заміна",
 	"visualeditor-find-and-replace-replace-text": "Заміна",
