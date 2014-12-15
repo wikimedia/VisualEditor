@@ -2512,12 +2512,16 @@ ve.dm.example.domToDataCases = {
 			'B',
 			{ type: '/paragraph' },
 			{ type: '/listItem' },
+			{ type: 'listItem', internal: { whitespace: [ undefined, ' ', '\n' ] } },
+			{ type: 'paragraph', internal: { generated: 'empty' } },
+			{ type: '/paragraph' },
+			{ type: '/listItem' },
 			{ type: '/list' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
 		],
 		innerWhitespace: [ '\t', '\n' ],
-		normalizedBody: '<ul><li><p>\tA\n</p>  <p>B</p></li></ul>'
+		normalizedBody: '<ul><li><p>\tA\n</p>  <p>B</p></li><li></li></ul>'
 	},
 	'order of nested annotations is preserved': {
 		body: '<p><b><u><i>Foo</i></u></b></p>',

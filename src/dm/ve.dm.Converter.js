@@ -1467,12 +1467,15 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 				}
 			} else {
 				// Create node from data
-				if ( !this.metaItemFactory.lookup( data[i].type ) ) {
+				if ( this.metaItemFactory.lookup( data[i].type ) ) {
+					isContentNode = canContainContentStack[canContainContentStack.length - 1];
+				} else {
 					canContainContentStack.push(
 						// if the last item was true then this item must inherit it
 						canContainContentStack[canContainContentStack.length - 1] ||
 						this.nodeFactory.canNodeContainContent( data[i].type )
 					);
+					isContentNode = this.nodeFactory.isNodeContent( data[i].type );
 				}
 
 				dataElementOrSlice = getDataElementOrSlice();
@@ -1522,7 +1525,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 								parentDomElement.veInternal.whitespace
 							) {
 								theirs = parentDomElement.veInternal.whitespace[1];
-								// Clear after use so it's not used twice
+								// Clear parent's innerPre so it's not used again
 								parentDomElement.veInternal.whitespace[1] = undefined;
 							}
 							// else theirs=undefined
@@ -1536,6 +1539,17 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 								domElement
 							);
 						}
+					} else if (
+						!isContentNode &&
+						!domElement.previousSibling &&
+						parentDomElement.veInternal &&
+						parentDomElement.veInternal.whitespace
+					) {
+						// The parent's innerPre should not be used, because it doesn't match
+						// outerPre (since we didn't have any whitespace set at all).
+						// Except if this is a content node, because content nodes
+						// don't have whitespace annotated on them *sigh*
+						parentDomElement.veInternal.whitespace[1] = undefined;
 					}
 				}
 
