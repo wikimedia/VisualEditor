@@ -608,7 +608,7 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 
 	var i, childNode, childNodes, childDataElements, text, childTypes, matches,
 		wrappingParagraph, prevElement, childAnnotations, modelName, modelClass,
-		annotation, childIsContent, aboutGroup, htmlAttributes,
+		annotation, childIsContent, aboutGroup, htmlAttributes, emptyParagraph,
 		modelRegistry = this.modelRegistry,
 		data = [],
 		nextWhitespace = '',
@@ -963,7 +963,9 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 		!this.nodeFactory.isNodeContent( context.branchType ) &&
 		( childTypes === null || ve.indexOf( 'paragraph', childTypes ) !== -1 )
 	) {
-		data.push( { type: 'paragraph', internal: { generated: 'empty' } } );
+		emptyParagraph = { type: 'paragraph', internal: { generated: 'empty' } };
+		processNextWhitespace( emptyParagraph );
+		data.push( emptyParagraph );
 		data.push( { type: '/paragraph' } );
 	}
 
@@ -980,10 +982,10 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 	}
 	// Don't return an empty document
 	if ( context.branchType === 'document' && isAllInstanceOf( data, ve.dm.MetaItem ) && !annotationSet ) {
-		return data.concat( [
-			{ type: 'paragraph', internal: { generated: 'empty' } },
-			{ type: '/paragraph' }
-		] );
+		emptyParagraph = { type: 'paragraph', internal: { generated: 'empty' } };
+		processNextWhitespace( emptyParagraph );
+		data.push( emptyParagraph );
+		data.push( { type: '/paragraph' } );
 	}
 
 	this.contextStack.pop();

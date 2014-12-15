@@ -2467,6 +2467,40 @@ ve.dm.example.domToDataCases = {
 			{ type: '/internalList' }
 		]
 	},
+	'whitespace preservation in empty list item': {
+		body: '<ul><li>\n\t</li></ul>',
+		data: [
+			{ type: 'list', attributes: { style: 'bullet' } },
+			{ type: 'listItem', internal: { whitespace: [ undefined, '\n\t' ] } },
+			{ type: 'paragraph', internal: { generated: 'empty', whitespace: [ '\n\t' ] } },
+			{ type: '/paragraph' },
+			{ type: '/listItem' },
+			{ type: '/list' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
+		]
+	},
+	'whitespace preservation in body with only plain text': {
+		body: '  Hello\n\t',
+		data: [
+			{ type: 'paragraph', internal: { generated: 'wrapper', whitespace: [ '  ', undefined, undefined, '\n\t' ] } },
+			'H', 'e', 'l', 'l', 'o',
+			{ type: '/paragraph' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
+		],
+		innerWhitespace: [ '  ', '\n\t' ]
+	},
+	'whitespace preservation in empty body': {
+		body: '\n\t',
+		data: [
+			{ type: 'paragraph', internal: { generated: 'empty', whitespace: [ '\n\t' ] } },
+			{ type: '/paragraph' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
+		],
+		innerWhitespace: [ '\n\t', undefined ]
+	},
 	'mismatching whitespace data is ignored': {
 		data: [
 			{ type: 'list', attributes: { style: 'bullet' }, internal: { whitespace: [ ' ', '  ', '   ', '    ' ] } },
