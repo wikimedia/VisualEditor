@@ -28,15 +28,23 @@
 }
 
 .ve-ui-debugBar-dump {
-	font-size: 0.7em;
 	margin-top: 2em;
-	display: none;
+	font-size: 0.8em;
+}
+
+.ve-ui-debugBar-dump > table {
+	font-size: 0.85em;
 	background-color: #f3f3f3;
 	width: 100%;
 	border: 1px solid #ddd;
 	border-radius: 0;
 	border-top-right-radius: 0.25em;
 	border-top-left-radius: 0.25em;
+}
+
+.ve-ui-debugBar-dump > .oo-ui-buttonWidget {
+	float: right;
+	margin-bottom: 0.25em;
 }
 
 .ve-ui-debugBar-dump td {
