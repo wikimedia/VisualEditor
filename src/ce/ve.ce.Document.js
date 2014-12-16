@@ -106,9 +106,9 @@ ve.ce.Document.prototype.getNodeAndOffset = function ( offset ) {
 		// At text offset or slug just before the pre unicorn; return the point just after it
 		return ve.ce.nextCursorOffset( nextNode );
 	} else if ( currentNode.nodeType === Node.ELEMENT_NODE &&
-		currentNode.children.length > nao.offset &&
-		currentNode.children[nao.offset].nodeType === Node.ELEMENT_NODE &&
-		currentNode.children[nao.offset].classList.contains( 've-ce-pre-unicorn' )
+		currentNode.childNodes.length > nao.offset &&
+		currentNode.childNodes[nao.offset].nodeType === Node.ELEMENT_NODE &&
+		currentNode.childNodes[nao.offset].classList.contains( 've-ce-pre-unicorn' )
 	) {
 		// At element offset just before the pre unicorn; return the point just after it
 		return { node: nao.node, offset: nao.offset + 1 };
@@ -128,8 +128,8 @@ ve.ce.Document.prototype.getNodeAndOffset = function ( offset ) {
 		return ve.ce.previousCursorOffset( previousNode );
 	} else if ( currentNode.nodeType === Node.ELEMENT_NODE &&
 		nao.offset > 0 &&
-		currentNode.children[nao.offset - 1].nodeType === Node.ELEMENT_NODE &&
-		currentNode.children[nao.offset - 1].classList.contains( 've-ce-post-unicorn' )
+		currentNode.childNodes[nao.offset - 1].nodeType === Node.ELEMENT_NODE &&
+		currentNode.childNodes[nao.offset - 1].classList.contains( 've-ce-post-unicorn' )
 	) {
 		// At element offset just after the post unicorn; return the point just before it
 		return { node: nao.node, offset: nao.offset - 1 };
@@ -174,11 +174,21 @@ ve.ce.Document.prototype.getNodeAndOffsetUnadjustedForUnicorn = function ( offse
 			$item = current[0].eq( current[1] );
 			if ( $item.hasClass( 've-ce-unicorn' ) ) {
 				if ( offset === startOffset ) {
-					return {
-						node: $item[0].parentNode,
-						offset: offset - startOffset
-					};
+					// Return if empty unicorn pair at the correct offset
+					if ( $( $item[0].previousSibling ).hasClass( 've-ce-unicorn' ) ) {
+						return {
+							node: $item[0].parentNode,
+							offset: current[1] - 1
+						};
+					} else if ( $( $item[0].nextSibling ).hasClass( 've-ce-unicorn' ) ) {
+						return {
+							node: $item[0].parentNode,
+							offset: current[1] + 1
+						};
+					}
+					// Else algorithm will/did descend into unicorned range
 				}
+				// Else algorithm will skip this unicorn
 			} else if ( $item.is( '.ve-ce-branchNode, .ve-ce-leafNode' ) ) {
 				model = $item.data( 'view' ).model;
 				// DM nodes can render as multiple elements in the view, so check
