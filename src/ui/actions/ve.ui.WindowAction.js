@@ -146,7 +146,7 @@ ve.ui.WindowAction.prototype.getWindowManager = function ( windowType ) {
 		case 'inspector':
 			return this.surface.getContext().getInspectors();
 		case 'toolbar':
-			return this.surface.toolbarDialogs;
+			return this.surface.getToolbarDialogs();
 		case 'dialog':
 			return this.surface.getDialogs();
 	}
