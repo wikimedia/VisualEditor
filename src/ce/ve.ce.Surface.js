@@ -3071,6 +3071,50 @@ ve.ce.Surface.prototype.handleTableEditingEscape = function ( e ) {
 };
 
 /**
+ * Get an approximate range covering data visible in the viewport
+ *
+ * It is assumed that vertical offset increases as you progress through the DM.
+ * Items with custom positioning may throw off results given by this method, so
+ * it should only be treated as an approximation.
+ *
+ * @return {ve.Range} Range covering data visible in the viewport
+ */
+ve.ce.Surface.prototype.getViewportRange = function () {
+	var surface = this,
+		documentModel = this.getModel().getDocument(),
+		data = documentModel.data,
+		surfaceRect = this.getSurface().getBoundingClientRect(),
+		padding = 50,
+		top = Math.max( this.surface.toolbarHeight - surfaceRect.top - padding, 0 ),
+		bottom = top + this.$window.height() - this.surface.toolbarHeight + ( padding * 2 ),
+		documentRange = new ve.Range( 0, this.getModel().getDocument().getInternalList().getListNode().getOuterRange().start );
+
+	function binarySearch( offset, range, side ) {
+		var mid, rect, start = range.start, end = range.end, lastLength = Infinity;
+		while ( range.getLength() < lastLength ) {
+			lastLength = range.getLength();
+			mid = data.getNearestContentOffset(
+				Math.round( ( range.start + range.end ) / 2 )
+			);
+			rect = surface.getSelectionBoundingRect( new ve.dm.LinearSelection( documentModel, new ve.Range( mid ) ) );
+			if ( rect[side] > offset ) {
+				end = mid;
+				range = new ve.Range( range.start, end );
+			} else {
+				start = mid;
+				range = new ve.Range( start, range.end );
+			}
+		}
+		return side === 'bottom' ? start : end;
+	}
+
+	return new ve.Range(
+		binarySearch( top, documentRange, 'bottom' ),
+		binarySearch( bottom, documentRange, 'top' )
+	);
+};
+
+/**
  * Show selection
  *
  * @method
