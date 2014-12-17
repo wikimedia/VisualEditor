@@ -9,10 +9,7 @@
  * @class ve
  * @singleton
  */
-window.ve = {
-	// List of instances of ve.ui.Surface
-	instances: []
-};
+window.ve = {};
 
 /**
  * Get the current time, measured in milliseconds since January 1, 1970 (UTC).
