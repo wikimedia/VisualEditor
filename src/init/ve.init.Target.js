@@ -191,10 +191,7 @@ ve.init.Target.prototype.destroy = function () {
 		this.toolbar.destroy();
 		this.toolbar = null;
 	}
-	if ( this.$element ) {
-		this.$element.remove();
-		this.$element = null;
-	}
+	this.$element.remove();
 	this.unbindHandlers();
 	ve.init.target = null;
 };
