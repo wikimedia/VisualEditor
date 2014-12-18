@@ -44,6 +44,12 @@ module.exports = function ( grunt ) {
 		clean: {
 			dist: [ 'dist/*', 'test-coverage/*' ]
 		},
+		cssUrlEmbed: {
+			dist: {
+				dest: 'dist/visualEditor.css',
+				src: coreBuildFiles.styles
+			}
+		},
 		concat: {
 			options: {
 				banner: grunt.file.read( 'build/banner.txt' )
@@ -54,23 +60,13 @@ module.exports = function ( grunt ) {
 			},
 			css: {
 				dest: 'dist/visualEditor.css',
-				src: coreBuildFiles.styles
+				src: ['dist/visualEditor.css']
 			}
 		},
 		cssjanus: {
 			dist: {
 				src: 'dist/visualEditor.css',
 				dest: 'dist/visualEditor.rtl.css'
-			}
-		},
-		cssUrlEmbed: {
-			dist: {
-				dest: 'dist/visualEditor.css',
-				src: coreBuildFiles.styles
-			},
-			distRtl: {
-				dest: 'dist/visualEditor.rtl.css',
-				src: coreBuildFiles.styles
 			}
 		},
 		copy: {
@@ -209,7 +205,7 @@ module.exports = function ( grunt ) {
 		}
 	} );
 
-	grunt.registerTask( 'build', [ 'clean', 'concat', 'cssjanus', 'cssUrlEmbed', 'copy', 'buildloader' ] );
+	grunt.registerTask( 'build', [ 'clean', 'cssUrlEmbed', 'concat', 'cssjanus', 'copy', 'buildloader' ] );
 	grunt.registerTask( 'lint', [ 'jshint', 'jscs', 'csslint', 'banana' ] );
 	grunt.registerTask( 'unit', [ 'karma:main' ] );
 	grunt.registerTask( 'test', [ 'git-build', 'build', 'lint', 'unit' ] );
