@@ -36,7 +36,7 @@ module.exports = function ( grunt ) {
 
 			if ( grunt.file.exists( rtlFilepath ) ) {
 				return indent + '<link rel=stylesheet href="' + pathPrefix + src.file + '" class="stylesheet-ltr">\n' +
-					indent + '<link rel=stylesheet href="' + pathPrefix + rtlFilepath + '" class="stylesheet-rtl" disabled>';
+					indent + '<link rel=stylesheet href="' + pathPrefix + rtlFilepath + '" class="stylesheet-rtl">';
 			}
 			return indent + '<link rel=stylesheet href="' + pathPrefix + src.file + '">';
 		}
