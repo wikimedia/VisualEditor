@@ -106,10 +106,11 @@ ve.ui.Surface.prototype.destroy = function () {
 	// Disconnect events
 	this.dialogs.disconnect( this );
 
-	// Destroy the ce.Surface, the ui.Context and the dialogs WindowManager
+	// Destroy the ce.Surface, the ui.Context and window managers
 	this.view.destroy();
 	this.context.destroy();
 	this.dialogs.destroy();
+	this.toolbarDialogs.destroy();
 	if ( this.debugBar ) {
 		this.debugBar.destroy();
 	}
