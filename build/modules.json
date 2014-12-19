@@ -476,6 +476,7 @@
 			"tests/ce/imetests/backspace-ie-win-none.js",
 			"tests/ce/imetests/input-chrome-win-chinese-traditional-handwriting.js",
 			"tests/ce/imetests/input-chrome-win-greek.js",
+			"tests/ce/imetests/input-chrome-win-polish.js",
 			"tests/ce/imetests/input-chrome-win-welsh.js",
 			"tests/ce/imetests/input-chromium-ubuntu-ibus-chinese-cantonese.js",
 			"tests/ce/imetests/input-chromium-ubuntu-ibus-japanese-anthy--hiraganaonly.js",
