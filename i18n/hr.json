@@ -39,6 +39,8 @@
 	"visualeditor-dialog-language-auto-direction": "Automatski",
 	"visualeditor-dialog-language-search-title": "Odaberite jezik",
 	"visualeditor-find-and-replace-find-text": "Traži",
+	"visualeditor-find-and-replace-match-case": "Razlikuj velika/mala slova",
+	"visualeditor-find-and-replace-regular-expression": "Regularni izrazi",
 	"visualeditor-find-and-replace-replace-all-button": "Zamijeni sve",
 	"visualeditor-find-and-replace-replace-button": "Zamijeni",
 	"visualeditor-find-and-replace-replace-text": "Zamijeni",
