@@ -8,7 +8,7 @@
  * ContentEditable preformatted node.
  *
  * @class
- * @extends ve.ce.BranchNode
+ * @extends ve.ce.ContentBranchNode
  * @constructor
  * @param {ve.dm.PreformattedNode} model Model to observe
  * @param {Object} [config] Configuration options

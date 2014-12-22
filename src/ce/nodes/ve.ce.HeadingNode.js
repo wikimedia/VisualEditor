@@ -8,7 +8,7 @@
  * ContentEditable heading node.
  *
  * @class
- * @extends ve.ce.BranchNode
+ * @extends ve.ce.ContentBranchNode
  * @constructor
  * @param {ve.dm.HeadingNode} model Model to observe
  * @param {Object} [config] Configuration options

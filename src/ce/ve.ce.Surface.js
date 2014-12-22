@@ -292,7 +292,8 @@ ve.ce.Surface.prototype.destroy = function () {
 	// Disconnect DOM events on the window
 	this.$window.off( 'resize', this.onWindowResizeHandler );
 
-	// HACK: Blur to make selection/cursor disappear (needed in Firefox in some cases)
+	// HACK: Blur to make selection/cursor disappear (needed in Firefox
+	// in some cases, and in iOS to hide the keyboard)
 	this.$documentNode[0].blur();
 
 	// Remove DOM elements (also disconnects their events)
