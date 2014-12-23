@@ -122,6 +122,9 @@ ve.ce.TestRunner = function VeCeTestRunner( surface ) {
 	this.nativeSelection = surface.getElementWindow().getSelection();
 	this.postponedCalls = {};
 
+	// TODO: The code assumes that the document consists of exactly one paragraph
+	this.lastText = this.getParagraph().textContent;
+
 	// Turn off SurfaceObserver setTimeouts
 	surface.view.surfaceObserver.pollInterval = null;
 
