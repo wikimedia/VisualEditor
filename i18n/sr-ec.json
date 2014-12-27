@@ -38,6 +38,8 @@
 	"visualeditor-dialog-language-auto-direction": "Аутоматски",
 	"visualeditor-dialog-language-search-title": "Изабери језик",
 	"visualeditor-find-and-replace-find-text": "Тражи",
+	"visualeditor-find-and-replace-match-case": "Пази на величину слова",
+	"visualeditor-find-and-replace-regular-expression": "Регуларни израз",
 	"visualeditor-find-and-replace-replace-all-button": "Замени све",
 	"visualeditor-find-and-replace-replace-button": "Замени",
 	"visualeditor-find-and-replace-replace-text": "Замени",
