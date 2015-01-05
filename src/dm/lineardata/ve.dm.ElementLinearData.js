@@ -27,13 +27,16 @@ OO.inheritClass( ve.dm.ElementLinearData, ve.dm.FlatLinearData );
 /* Static Methods */
 
 /**
- * Compare two elements ignoring any annotations
+ * Compare two elements' basic properties
+ *
+ * Elements are comparable if they have the same type and attributes, or
+ * have the same text data.
  *
  * @param {Object|Array|string} a First element
  * @param {Object|Array|string} b Second element
  * @returns {boolean} Elements are comparable
  */
-ve.dm.ElementLinearData.static.compareUnannotated = function ( a, b ) {
+ve.dm.ElementLinearData.static.compareElements = function ( a, b ) {
 	if ( a === undefined || b === undefined ) {
 		return false;
 	}
@@ -47,14 +50,16 @@ ve.dm.ElementLinearData.static.compareUnannotated = function ( a, b ) {
 		bPlain = b[0];
 	}
 	if ( a && a.type ) {
-		aPlain = ve.copy( a );
-		delete aPlain.annotations;
-		delete aPlain.internal;
+		aPlain = {
+			type: a.type,
+			attributes: a.attributes
+		};
 	}
 	if ( b && b.type ) {
-		bPlain = ve.copy( b );
-		delete bPlain.annotations;
-		delete bPlain.internal;
+		bPlain = {
+			type: b.type,
+			attributes: b.attributes
+		};
 	}
 	return ve.compare( aPlain, bPlain );
 };
