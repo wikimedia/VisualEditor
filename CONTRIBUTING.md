@@ -8,10 +8,8 @@ conventions we use in the project.
 
 ## Bug reports
 
-Please report bugs to [bugzilla.wikimedia.org](https://bugzilla.wikimedia.org/enter_bug.cgi?product=VisualEditor&component=General)
-using the `VisualEditor` product.  Feel free to use the `General`
-component if you don't know where else your bug might belong. Don't
-worry about specifying version, severity, hardware, or OS.
+Please report bugs to [phabricator.wikimedia.org](https://phabricator.wikimedia.org/maniphest/task/create/?projects=VisualEditor)
+using the `VisualEditor` project.
 
 ## Running tests
 
