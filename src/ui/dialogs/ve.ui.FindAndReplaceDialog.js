@@ -32,6 +32,13 @@ ve.ui.FindAndReplaceDialog.static.name = 'findAndReplace';
 
 ve.ui.FindAndReplaceDialog.static.title = OO.ui.deferMsg( 'visualeditor-find-and-replace-title' );
 
+/**
+ * Maximum number of results to render
+ *
+ * @property {number}
+ */
+ve.ui.FindAndReplaceDialog.static.maxRenderedResults = 200;
+
 /* Methods */
 
 /**
@@ -43,6 +50,8 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 
 	this.$findResults = this.$( '<div>' ).addClass( 've-ui-findAndReplaceDialog-findResults' );
 	this.fragments = [];
+	this.results = 0;
+	this.renderedResults = 0;
 	this.replacing = false;
 	this.focusedIndex = 0;
 	this.query = null;
@@ -217,7 +226,7 @@ ve.ui.FindAndReplaceDialog.prototype.onFindChange = function () {
  * @param {jQuery.Event} e
  */
 ve.ui.FindAndReplaceDialog.prototype.onFindTextEnter = function ( e ) {
-	if ( !this.fragments.length ) {
+	if ( !this.results ) {
 		return;
 	}
 	if ( e.shiftKey ) {
@@ -258,11 +267,13 @@ ve.ui.FindAndReplaceDialog.prototype.updateFragments = function () {
 			this.fragments.push( surfaceModel.getLinearFragment( ranges[i], true, true ) );
 		}
 	}
-	this.focusedIndex = Math.min( this.focusedIndex, this.fragments.length );
-	this.nextButton.setDisabled( !this.fragments.length );
-	this.previousButton.setDisabled( !this.fragments.length );
-	this.replaceButton.setDisabled( !this.fragments.length );
-	this.replaceAllButton.setDisabled( !this.fragments.length );
+	this.results = this.fragments.length;
+	this.renderedResults = Math.min( this.results, this.constructor.static.maxRenderedResults );
+	this.focusedIndex = Math.min( this.focusedIndex, this.results ? this.results - 1 : 0 );
+	this.nextButton.setDisabled( !this.results );
+	this.previousButton.setDisabled( !this.results );
+	this.replaceButton.setDisabled( !this.results );
+	this.replaceAllButton.setDisabled( !this.results );
 };
 
 /**
@@ -273,10 +284,11 @@ ve.ui.FindAndReplaceDialog.prototype.positionResults = function () {
 		return;
 	}
 
-	var i, ilen, j, jlen, rects, $result, top;
+	var i, j, jlen, rects, $result, top;
 
 	this.$findResults.empty();
-	for ( i = 0, ilen = this.fragments.length; i < ilen; i++ ) {
+	// Limit number of results rendered to stop the browser exploding
+	for ( i = 0; i < this.renderedResults; i++ ) {
 		rects = this.surface.getView().getSelectionRects( this.fragments[i].getSelection() );
 		$result = this.$( '<div>' ).addClass( 've-ui-findAndReplaceDialog-findResult' );
 		top = Infinity;
@@ -310,9 +322,9 @@ ve.ui.FindAndReplaceDialog.prototype.highlightFocused = function ( scrollIntoVie
 		.removeClass( 've-ui-findAndReplaceDialog-findResult-focused' );
 	$result.addClass( 've-ui-findAndReplaceDialog-findResult-focused' );
 
-	if ( this.fragments.length ) {
+	if ( this.results ) {
 		this.focusedIndexLabel.setLabel(
-			ve.msg( 'visualeditor-find-and-replace-results', this.focusedIndex + 1, this.fragments.length )
+			ve.msg( 'visualeditor-find-and-replace-results', this.focusedIndex + 1, this.results )
 		);
 	} else {
 		this.focusedIndexLabel.setLabel( '' );
@@ -332,7 +344,7 @@ ve.ui.FindAndReplaceDialog.prototype.highlightFocused = function ( scrollIntoVie
  * Handle click events on the next button
  */
 ve.ui.FindAndReplaceDialog.prototype.onNextButtonClick = function () {
-	this.focusedIndex = ( this.focusedIndex + 1 ) % this.fragments.length;
+	this.focusedIndex = ( this.focusedIndex + 1 ) % this.renderedResults;
 	this.highlightFocused( true );
 };
 
@@ -340,7 +352,7 @@ ve.ui.FindAndReplaceDialog.prototype.onNextButtonClick = function () {
  * Handle click events on the previous button
  */
 ve.ui.FindAndReplaceDialog.prototype.onPreviousButtonClick = function () {
-	this.focusedIndex = ( this.focusedIndex + this.fragments.length - 1 ) % this.fragments.length;
+	this.focusedIndex = ( this.focusedIndex + this.renderedResults - 1 ) % this.renderedResults;
 	this.highlightFocused( true );
 };
 
@@ -350,7 +362,7 @@ ve.ui.FindAndReplaceDialog.prototype.onPreviousButtonClick = function () {
 ve.ui.FindAndReplaceDialog.prototype.onReplaceButtonClick = function () {
 	var end;
 
-	if ( !this.fragments.length ) {
+	if ( !this.results ) {
 		return;
 	}
 
@@ -362,7 +374,7 @@ ve.ui.FindAndReplaceDialog.prototype.onReplaceButtonClick = function () {
 	// updateFragmentsDebounced is triggered by insertContent, but call it immediately
 	// so we can find the next fragment to select.
 	this.updateFragments();
-	if ( !this.fragments.length ) {
+	if ( !this.results ) {
 		this.focusedIndex = 0;
 		return;
 	}
@@ -370,7 +382,7 @@ ve.ui.FindAndReplaceDialog.prototype.onReplaceButtonClick = function () {
 		this.focusedIndex++;
 	}
 	// We may have iterated off the end
-	this.focusedIndex = this.focusedIndex % this.fragments.length;
+	this.focusedIndex = this.focusedIndex % this.renderedResults;
 };
 
 /**
@@ -379,7 +391,7 @@ ve.ui.FindAndReplaceDialog.prototype.onReplaceButtonClick = function () {
 ve.ui.FindAndReplaceDialog.prototype.onReplaceAllButtonClick = function () {
 	var i, l;
 
-	for ( i = 0, l = this.fragments.length; i < l; i++ ) {
+	for ( i = 0, l = this.results; i < l; i++ ) {
 		this.replace( i );
 	}
 };
