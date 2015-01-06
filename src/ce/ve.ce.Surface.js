@@ -691,7 +691,11 @@ ve.ce.Surface.prototype.updateDeactivatedSelection = function () {
 
 	this.$deactivatedSelection.empty();
 
-	if ( !this.deactivated || this.focusedNode || !( selection instanceof ve.dm.LinearSelection ) ) {
+	if (
+		!this.deactivated || this.focusedNode ||
+		!( selection instanceof ve.dm.LinearSelection ) ||
+		selection.isCollapsed()
+	) {
 		return;
 	}
 	rects = this.getSelectionRects( selection );
