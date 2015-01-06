@@ -32,6 +32,13 @@ ve.ui.FindAndReplaceDialog.static.name = 'findAndReplace';
 
 ve.ui.FindAndReplaceDialog.static.title = OO.ui.deferMsg( 'visualeditor-find-and-replace-title' );
 
+/**
+ * Maximum number of results to render
+ *
+ * @property {number}
+ */
+ve.ui.FindAndReplaceDialog.static.maxRenderedResults = 100;
+
 /* Methods */
 
 /**
@@ -126,7 +133,7 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 	// Events
 	this.onWindowScrollDebounced = ve.debounce( this.onWindowScroll.bind( this ), 250 );
 	this.updateFragmentsDebounced = ve.debounce( this.updateFragments.bind( this ) );
-	this.positionResultsDebounced = ve.debounce( this.positionResults.bind( this ) );
+	this.renderFragmentsDebounced = ve.debounce( this.renderFragments.bind( this ) );
 	this.findText.connect( this, {
 		change: 'onFindChange',
 		enter: 'onFindTextEnter'
@@ -172,14 +179,14 @@ ve.ui.FindAndReplaceDialog.prototype.getSetupProcess = function ( data ) {
 
 			// Events
 			this.surface.getModel().connect( this, { documentUpdate: this.updateFragmentsDebounced } );
-			this.surface.getView().connect( this, { position: this.positionResultsDebounced } );
+			this.surface.getView().connect( this, { position: this.renderFragmentsDebounced } );
 			this.surface.getView().$window.on( 'scroll', this.onWindowScrollDebounced );
 
 			var text = data.fragment.getText();
-			if ( text ) {
+			if ( text && text !== this.findText.getValue() ) {
 				this.findText.setValue( text );
 			} else {
-				this.updateFragments();
+				this.onFindChange();
 			}
 		}, this );
 };
@@ -220,7 +227,7 @@ ve.ui.FindAndReplaceDialog.prototype.getTeardownProcess = function ( data ) {
 ve.ui.FindAndReplaceDialog.prototype.onWindowScroll = function () {
 	if ( this.renderedFragments.getLength() < this.results ) {
 		// If viewport clipping is being used, reposition results based on the current viewport
-		this.positionResults();
+		this.renderFragments();
 	}
 };
 
@@ -229,7 +236,7 @@ ve.ui.FindAndReplaceDialog.prototype.onWindowScroll = function () {
  */
 ve.ui.FindAndReplaceDialog.prototype.onFindChange = function () {
 	this.updateFragments();
-	this.positionResults();
+	this.renderFragments();
 	this.highlightFocused( true );
 };
 
@@ -291,30 +298,47 @@ ve.ui.FindAndReplaceDialog.prototype.updateFragments = function () {
 /**
  * Position results markers
  */
-ve.ui.FindAndReplaceDialog.prototype.positionResults = function () {
+ve.ui.FindAndReplaceDialog.prototype.renderFragments = function () {
 	if ( this.replacing ) {
 		return;
 	}
 
-	var i, j, jlen, rects, $result, top, selection, viewportRange,
+	var i, selection, viewportRange,
 		start = 0, end = this.results;
 
 	// When there are a large number of results, calculate the viewport range for clipping
-	if ( this.results > 100 ) {
+	if ( this.results > 50 ) {
 		viewportRange = this.surface.getView().getViewportRange();
+		for ( i = 0; i < this.results; i++ ) {
+			selection = this.fragments[i].getSelection();
+			if ( viewportRange && selection.getRange().start < viewportRange.start ) {
+				start = i + 1;
+				continue;
+			}
+			if ( viewportRange && selection.getRange().end > viewportRange.end ) {
+				end = i;
+				break;
+			}
+		}
 	}
 
+	// When there are too many results to render, just render the current one
+	if ( end - start <= this.constructor.static.maxRenderedResults ) {
+		this.renderRangeOfFragments( new ve.Range( start, end ) );
+	} else {
+		this.renderRangeOfFragments( new ve.Range( this.focusedIndex, this.focusedIndex + 1 ) );
+	}
+};
+
+/**
+ * Render subset of search result fragments
+ *
+ * @param {ve.Range} range Range of fragments to render
+ */
+ve.ui.FindAndReplaceDialog.prototype.renderRangeOfFragments = function ( range ) {
+	var i, j, jlen, rects, $result, top;
 	this.$findResults.empty();
-	for ( i = 0; i < this.results; i++ ) {
-		selection = this.fragments[i].getSelection();
-		if ( viewportRange && selection.getRange().start < viewportRange.start ) {
-			start = i + 1;
-			continue;
-		}
-		if ( viewportRange && selection.getRange().end > viewportRange.end ) {
-			end = i;
-			break;
-		}
+	for ( i = range.start; i < range.end; i++ ) {
 		rects = this.surface.getView().getSelectionRects( this.fragments[i].getSelection() );
 		$result = this.$( '<div>' ).addClass( 've-ui-findAndReplaceDialog-findResult' );
 		top = Infinity;
@@ -330,7 +354,7 @@ ve.ui.FindAndReplaceDialog.prototype.positionResults = function () {
 		$result.data( 'top', top );
 		this.$findResults.append( $result );
 	}
-	this.renderedFragments = new ve.Range( start, end );
+	this.renderedFragments = range;
 	this.highlightFocused();
 };
 
@@ -366,6 +390,7 @@ ve.ui.FindAndReplaceDialog.prototype.highlightFocused = function ( scrollIntoVie
 		// Focused result hasn't been rendered yet so find its offset manually
 		rect = surfaceView.getSelectionBoundingRect( this.fragments[this.focusedIndex].getSelection() );
 		top = rect.top;
+		this.renderRangeOfFragments( new ve.Range( this.focusedIndex, this.focusedIndex + 1 ) );
 	}
 
 	if ( scrollIntoView ) {
