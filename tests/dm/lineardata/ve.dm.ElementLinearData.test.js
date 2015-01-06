@@ -1744,7 +1744,7 @@ QUnit.test( 'remapStoreIndexes', function ( assert ) {
 	}
 } );
 
-// TODO: ve.dm.ElementLinearData.static.compareUnannotated
+// TODO: ve.dm.ElementLinearData.static.compareElements
 // TODO: ve.dm.ElementLinearData#getAnnotationIndexesFromOffset
 // TODO: ve.dm.ElementLinearData#setAnnotationsAtOffset
 // TODO: ve.dm.ElementLinearData#getCharacterData
