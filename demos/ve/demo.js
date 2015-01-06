@@ -287,6 +287,8 @@ ve.demo.SurfaceContainer.prototype.change = function ( mode, page ) {
 				html = ve.properInnerHtml( doc.body );
 				currentDir = model.getDir();
 			}
+			this.surface.destroy();
+			this.surface = null;
 			break;
 
 		case 'edit':
