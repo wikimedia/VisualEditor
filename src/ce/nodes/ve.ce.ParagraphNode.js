@@ -8,7 +8,7 @@
  * ContentEditable paragraph node.
  *
  * @class
- * @extends ve.ce.BranchNode
+ * @extends ve.ce.ContentBranchNode
  * @constructor
  * @param {ve.dm.ParagraphNode} model Model to observe
  * @param {Object} [config] Configuration options
