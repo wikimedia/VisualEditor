@@ -504,11 +504,24 @@
 			"visualEditor.desktop.standalone"
 		]
 	},
+	"visualEditor.theme.apex": {
+		"styles": [
+			"src/themes/apex/dialogs.css",
+			"src/themes/apex/widgets.css"
+		]
+	},
+	"visualEditor.theme.mediawiki": {
+		"styles": [
+			"src/themes/mediawiki/dialogs.css",
+			"src/themes/mediawiki/widgets.css"
+		]
+	},
 	"visualEditor.desktop": {
 		"dependencies": [
 			"oojs-ui-apex",
 			"visualEditor.core",
-			"visualEditor.desktop.build"
+			"visualEditor.desktop.build",
+			"visualEditor.theme.apex"
 		]
 	},
 	"visualEditor.desktop.build": {
@@ -528,7 +541,8 @@
 		"dependencies": [
 			"oojs-ui-mediawiki",
 			"visualEditor.core",
-			"visualEditor.mobile.build"
+			"visualEditor.mobile.build",
+			"visualEditor.theme.mediawiki"
 		]
 	},
 	"visualEditor.mobile.build": {
