@@ -1,7 +1,7 @@
 /*!
  * VisualEditor Initialization Platform class.
  *
- * @copyright 2011-2014 VisualEditor Team and others; see http://ve.mit-license.org
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
 /**
@@ -43,7 +43,7 @@ ve.init.Platform.static.getSystemPlatform = function () {
  * Check whether we are running in Internet Explorer.
  *
  * HACK: This should not be needed, and it should eventually be removed. If this hasn't died
- * in a fire by the end of September 2014, Roan has failed.
+ * in a fire by the end of September 2015, Roan has failed.
  *
  * @static
  * @method
