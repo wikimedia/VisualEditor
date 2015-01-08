@@ -190,10 +190,11 @@ ve.ui.TableAction.prototype.changeCellStyle = function ( style ) {
  * @return {boolean} Action was executed
  */
 ve.ui.TableAction.prototype.mergeCells = function () {
-	var i, cells,
+	var i, r, c, cell, cells, hasNonPlaceholders,
 		txs = [],
 		surfaceModel = this.surface.getModel(),
-		selection = surfaceModel.getSelection();
+		selection = surfaceModel.getSelection(),
+		matrix = selection.getTableNode().getMatrix();
 
 	if ( !( selection instanceof ve.dm.TableSelection ) ) {
 		return false;
@@ -211,12 +212,13 @@ ve.ui.TableAction.prototype.mergeCells = function () {
 		for ( i = cells.length - 1; i >= 1; i-- ) {
 			txs.push(
 				this.replacePlaceholder(
-					selection.getTableNode().getMatrix(),
+					matrix,
 					cells[i],
 					{ style: cells[0].node.getStyle() }
 				)
 			);
 		}
+		surfaceModel.change( txs );
 	} else {
 		// Merge
 		cells = selection.getMatrixCells();
@@ -236,8 +238,36 @@ ve.ui.TableAction.prototype.mergeCells = function () {
 				)
 			);
 		}
+		surfaceModel.change( txs );
+
+		// Check for rows filled with entirely placeholders. If such a row exists, delete it.
+		for ( r = selection.endRow; r >= selection.startRow; r-- ) {
+			hasNonPlaceholders = false;
+			for ( c = 0; ( cell = matrix.getCell( r, c ) ) !== undefined; c++ ) {
+				if ( cell && !cell.isPlaceholder() ) {
+					hasNonPlaceholders = true;
+					break;
+				}
+			}
+			if ( !hasNonPlaceholders ) {
+				this.deleteRowsOrColumns( matrix, 'row', r, r );
+			}
+		}
+
+		// Check for columns filled with entirely placeholders. If such a column exists, delete it.
+		for ( c = selection.endCol; c >= selection.startCol; c-- ) {
+			hasNonPlaceholders = false;
+			for ( r = 0; ( cell = matrix.getCell( r, c ) ) !== undefined; r++ ) {
+				if ( cell && !cell.isPlaceholder() ) {
+					hasNonPlaceholders = true;
+					break;
+				}
+			}
+			if ( !hasNonPlaceholders ) {
+				this.deleteRowsOrColumns( matrix, 'col', c, c );
+			}
+		}
 	}
-	surfaceModel.change( txs );
 	return true;
 };
 
