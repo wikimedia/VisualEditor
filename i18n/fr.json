@@ -66,6 +66,7 @@
 	"visualeditor-dialog-language-search-title": "Sélectionner la langue",
 	"visualeditor-find-and-replace-find-text": "Rechercher",
 	"visualeditor-find-and-replace-match-case": "Respecter la casse",
+	"visualeditor-find-and-replace-regular-expression": "Expression régulière",
 	"visualeditor-find-and-replace-replace-all-button": "Remplacer tout",
 	"visualeditor-find-and-replace-replace-button": "Remplacer",
 	"visualeditor-find-and-replace-replace-text": "Remplacer",
