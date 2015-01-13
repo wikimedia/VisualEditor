@@ -125,7 +125,7 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 		doneButton = new OO.ui.ButtonWidget( {
 			$: this.$,
 			classes: ['ve-ui-findAndReplaceDialog-cell'],
-			label: ve.msg( 'visualeditor-dialog-action-done' )
+			label: ve.msg( 'visualeditor-find-and-replace-done' )
 		} ),
 		$findRow = this.$( '<div>' ).addClass( 've-ui-findAndReplaceDialog-row' ),
 		$replaceRow = this.$( '<div>' ).addClass( 've-ui-findAndReplaceDialog-row' );
