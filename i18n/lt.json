@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Audriusa",
-			"Eitvys200"
+			"Eitvys200",
+			"Aswanas"
 		]
 	},
 	"visualeditor-aliennode-tooltip": "Atsiprašome, VisualEditor kol kas negali keisti šio elemento. Norėdami redaguoti, keiskite išeities kodą.",
@@ -17,6 +18,7 @@
 	"visualeditor-clearbutton-tooltip": "Pašalinti formatavimą",
 	"visualeditor-dialog-action-apply": "Taikyti pakeitimus",
 	"visualeditor-dialog-action-goback": "Grįžti",
+	"visualeditor-find-and-replace-done": "Atlikta",
 	"visualeditor-formatdropdown-format-heading1": "Antraštė 1",
 	"visualeditor-formatdropdown-format-paragraph": "Pastraipa",
 	"visualeditor-formatdropdown-format-preformatted": "Suformatuotos",
