@@ -1,7 +1,7 @@
 /*!
  * VisualEditor IME left arrow test for Internet Explorer on Windows.
  *
- * @copyright 2011-2014 VisualEditor Team and others; see http://ve.mit-license.org
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
 ve.ce.imetests.push( [ 'leftarrow-ie-win-none', [
