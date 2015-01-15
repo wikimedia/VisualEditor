@@ -72,6 +72,10 @@ body {
 	width: 4em;
 }
 
+.ve-demo-toolbar .oo-ui-dropdownWidget .oo-ui-menuSelectWidget {
+	z-index: 3;
+}
+
 .ve-demo-toolbar-divider {
 	border-right: 1px solid #ddd;
 	padding-left: 0.2em;
