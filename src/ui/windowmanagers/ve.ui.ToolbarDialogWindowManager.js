@@ -25,6 +25,9 @@ OO.inheritClass( ve.ui.ToolbarDialogWindowManager, ve.ui.WindowManager );
 
 /* Static Properties */
 
+ve.ui.ToolbarDialogWindowManager.static.sizes = ve.copy(
+	ve.ui.ToolbarDialogWindowManager.super.static.sizes
+);
 ve.ui.ToolbarDialogWindowManager.static.sizes.full = {
 	width: '100%',
 	maxHeight: '100%'
