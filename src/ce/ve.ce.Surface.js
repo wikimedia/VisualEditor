@@ -2213,6 +2213,11 @@ ve.ce.Surface.prototype.updateSlug = function () {
 				this.slugFragment = null;
 			}
 		} else {
+			// Unwrap the ve-ce-branchNode-blockSlugWrapper wrapper from the paragraph
+			this.getDocument().getBranchNodeFromOffset( slugFragmentRange.start + 1 ).$element.unwrap();
+			// Modifying the DOM above breaks cursor position, so restore
+			this.showSelection( this.getModel().getSelection() );
+
 			model.applyStaging();
 			this.slugFragment = null;
 		}
