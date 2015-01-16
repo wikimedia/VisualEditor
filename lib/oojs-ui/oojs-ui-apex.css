@@ -1,12 +1,12 @@
 /*!
- * OOjs UI v0.6.2
+ * OOjs UI v0.6.3
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2015 OOjs Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2015-01-10T01:25:31Z
+ * Date: 2015-01-16T00:05:16Z
  */
 .oo-ui-progressBarWidget-slide-frames from {
 	margin-left: -40%;
@@ -324,6 +324,10 @@
 	display: block;
 	background: rgba(0, 0, 0, 0.4);
 }
+.oo-ui-lookupElement > .oo-ui-menuSelectWidget {
+	z-index: 1;
+	width: 100%;
+}
 .oo-ui-bookletLayout-stackLayout.oo-ui-stackLayout-continuous > .oo-ui-panelLayout-scrollable {
 	overflow-y: hidden;
 }
@@ -432,6 +436,22 @@
 }
 .oo-ui-fieldLayout-disabled .oo-ui-labelElement-label {
 	color: #cccccc;
+}
+.oo-ui-actionFieldLayout-field {
+	display: table;
+	table-layout: fixed;
+	width: 100%;
+}
+.oo-ui-actionFieldLayout-input,
+.oo-ui-actionFieldLayout-button {
+	display: table-cell;
+	vertical-align: middle;
+}
+.oo-ui-actionFieldLayout-input {
+	padding-right: 1em;
+}
+.oo-ui-actionFieldLayout-button {
+	width: 1%;
 }
 .oo-ui-fieldsetLayout {
 	position: relative;
@@ -1483,8 +1503,8 @@
 	color: #888888;
 }
 .oo-ui-dropdownWidget {
-	position: relative;
 	display: inline-block;
+	position: relative;
 	margin: 0.25em 0;
 	width: 100%;
 	max-width: 50em;
@@ -1508,7 +1528,7 @@
 	background-position: center center;
 	background-repeat: no-repeat;
 }
-.oo-ui-dropdownWidget .oo-ui-menuSelectWidget {
+.oo-ui-dropdownWidget > .oo-ui-menuSelectWidget {
 	z-index: 1;
 	width: 100%;
 }
@@ -1652,9 +1672,9 @@
 	width: 100%;
 	max-width: 50em;
 }
-.oo-ui-comboBoxWidget > .oo-ui-selectWidget {
-	width: 100%;
+.oo-ui-comboBoxWidget > .oo-ui-menuSelectWidget {
 	z-index: 1;
+	width: 100%;
 }
 .oo-ui-comboBoxWidget-handle {
 	border: solid 1px rgba(0, 0, 0, 0.1);
