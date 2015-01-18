@@ -13,7 +13,7 @@
  */
 ve.ui.TriggerRegistry = function VeUiTriggerRegistry() {
 	// Parent constructor
-	OO.Registry.call( this );
+	ve.ui.TriggerRegistry.super.call( this );
 };
 
 /* Inheritance */
@@ -60,7 +60,17 @@ ve.ui.TriggerRegistry.prototype.register = function ( name, triggers ) {
 		}
 	}
 
-	OO.Registry.prototype.register.call( this, name, triggerList );
+	ve.ui.TriggerRegistry.super.prototype.register.call( this, name, triggerList );
+};
+
+/**
+ * Get trigger messages for a trigger by name
+ *
+ * @param {string} name Symbolic name
+ * @return {string[]} List of trigger messages
+ */
+ve.ui.TriggerRegistry.prototype.getMessages = function ( name ) {
+	return ( this.lookup( name ) || [] ).map( function ( trigger ) { return trigger.getMessage(); } );
 };
 
 /* Initialization */
@@ -174,4 +184,22 @@ ve.ui.triggerRegistry.register(
 );
 ve.ui.triggerRegistry.register(
 	'findAndReplace', { mac: new ve.ui.Trigger( 'cmd+f' ), pc: new ve.ui.Trigger( 'ctrl+f' ) }
+);
+ve.ui.triggerRegistry.register(
+	'findNext', {
+		mac: new ve.ui.Trigger( 'cmd+g' ),
+		pc: [
+			new ve.ui.Trigger( 'ctrl+g' ),
+			new ve.ui.Trigger( 'f3' )
+		]
+	}
+);
+ve.ui.triggerRegistry.register(
+	'findPrevious', {
+		mac: new ve.ui.Trigger( 'cmd+shift+g' ),
+		pc: [
+			new ve.ui.Trigger( 'shift+ctrl+g' ),
+			new ve.ui.Trigger( 'shift+f3' )
+		]
+	}
 );

@@ -228,16 +228,9 @@ ve.ui.Toolbar.prototype.getCommands = function () {
  * @inheritdoc
  */
 ve.ui.Toolbar.prototype.getToolAccelerator = function ( name ) {
-	var i, l, triggers = this.getTriggers( name ), shortcuts = [];
+	var messages = ve.ui.triggerRegistry.getMessages( name );
 
-	if ( triggers ) {
-		for ( i = 0, l = triggers.length; i < l; i++ ) {
-			shortcuts.push( triggers[i].getMessage() );
-		}
-		return shortcuts.join( ', ' );
-	} else {
-		return undefined;
-	}
+	return messages ? messages.join( ', ' ) : undefined;
 };
 
 /**

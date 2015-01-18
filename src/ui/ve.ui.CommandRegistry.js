@@ -146,6 +146,16 @@ ve.ui.commandRegistry.register(
 );
 ve.ui.commandRegistry.register(
 	new ve.ui.Command(
+		'findNext', 'window', 'open', { args: ['findAndReplace', null, 'findNext'] }
+	)
+);
+ve.ui.commandRegistry.register(
+	new ve.ui.Command(
+		'findPrevious', 'window', 'open', { args: ['findAndReplace', null, 'findPrevious'] }
+	)
+);
+ve.ui.commandRegistry.register(
+	new ve.ui.Command(
 		'code', 'annotation', 'toggle',
 		{ args: ['textStyle/code'], supportedSelections: ['linear', 'table'] }
 	)

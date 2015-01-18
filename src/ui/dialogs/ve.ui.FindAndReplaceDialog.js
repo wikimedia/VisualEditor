@@ -76,13 +76,18 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 		$: this.$,
 		classes: ['ve-ui-findAndReplaceDialog-focusedIndexLabel']
 	} );
+
 	this.previousButton = new OO.ui.ButtonWidget( {
 		$: this.$,
-		icon: 'previous'
+		icon: 'previous',
+		iconTitle: ve.msg( 'visualeditor-find-and-replace-previous-button' ) + ' ' +
+			ve.ui.triggerRegistry.getMessages( 'findPrevious' ).join( ', ' )
 	} );
 	this.nextButton = new OO.ui.ButtonWidget( {
 		$: this.$,
-		icon: 'next'
+		icon: 'next',
+		iconTitle: ve.msg( 'visualeditor-find-and-replace-next-button' ) + ' ' +
+			ve.ui.triggerRegistry.getMessages( 'findNext' ).join( ', ' )
 	} );
 	this.replaceText = new OO.ui.TextInputWidget( {
 		$: this.$,
@@ -140,8 +145,8 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 	} );
 	this.matchCaseToggle.connect( this, { change: 'onFindChange' } );
 	this.regexToggle.connect( this, { change: 'onFindChange' } );
-	this.nextButton.connect( this, { click: 'onNextButtonClick' } );
-	this.previousButton.connect( this, { click: 'onPreviousButtonClick' } );
+	this.nextButton.connect( this, { click: 'findNext' } );
+	this.previousButton.connect( this, { click: 'findPrevious' } );
 	this.replaceButton.connect( this, { click: 'onReplaceButtonClick' } );
 	this.replaceAllButton.connect( this, { click: 'onReplaceAllButtonClick' } );
 	doneButton.connect( this, { click: 'close' } );
@@ -250,9 +255,9 @@ ve.ui.FindAndReplaceDialog.prototype.onFindTextEnter = function ( e ) {
 		return;
 	}
 	if ( e.shiftKey ) {
-		this.onPreviousButtonClick();
+		this.findPrevious();
 	} else {
-		this.onNextButtonClick();
+		this.findNext();
 	}
 };
 
@@ -406,17 +411,17 @@ ve.ui.FindAndReplaceDialog.prototype.highlightFocused = function ( scrollIntoVie
 };
 
 /**
- * Handle click events on the next button
+ * Find the next result
  */
-ve.ui.FindAndReplaceDialog.prototype.onNextButtonClick = function () {
+ve.ui.FindAndReplaceDialog.prototype.findNext = function () {
 	this.focusedIndex = ( this.focusedIndex + 1 ) % this.results;
 	this.highlightFocused( true );
 };
 
 /**
- * Handle click events on the previous button
+ * Find the previous result
  */
-ve.ui.FindAndReplaceDialog.prototype.onPreviousButtonClick = function () {
+ve.ui.FindAndReplaceDialog.prototype.findPrevious = function () {
 	this.focusedIndex = ( this.focusedIndex + this.results - 1 ) % this.results;
 	this.highlightFocused( true );
 };
@@ -477,6 +482,16 @@ ve.ui.FindAndReplaceDialog.prototype.replace = function ( index ) {
 	} else {
 		this.fragments[index].insertContent( replace, true );
 	}
+};
+
+/**
+ * @inheritdoc
+ */
+ve.ui.FindAndReplaceDialog.prototype.getActionProcess = function ( action ) {
+	if ( action === 'findNext' || action === 'findPrevious' ) {
+		return new OO.ui.Process( this[action], this );
+	}
+	return ve.ui.FindAndReplaceDialog.super.prototype.getActionProcess.call( this, action );
 };
 
 /* Registration */
