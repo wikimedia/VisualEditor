@@ -8,7 +8,8 @@
 			"MIKHEIL",
 			"NoiX180",
 			"Pras",
-			"Tokoko"
+			"Tokoko",
+			"Chavch"
 		]
 	},
 	"visualeditor": "ვიზუალური რედაქტორი",
@@ -42,7 +43,7 @@
 	"visualeditor-dialog-error-dismiss": "უკან დაბრუნება",
 	"visualeditor-dialog-language-auto-direction": "ავტო",
 	"visualeditor-dialog-language-search-title": "ენის არჩევა",
-	"visualeditor-find-and-replace-done": "გაკეთდა",
+	"visualeditor-find-and-replace-done": "შესრულებულია",
 	"visualeditor-find-and-replace-find-text": "ძიება",
 	"visualeditor-find-and-replace-match-case": "რეგისტრის გათვალისწინება",
 	"visualeditor-find-and-replace-replace-all-button": "ყველას ჩანაცვლება",
