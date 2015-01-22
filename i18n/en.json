@@ -54,6 +54,7 @@
     "visualeditor-dimensionswidget-times": "×",
     "visualeditor-find-and-replace-done": "Done",
     "visualeditor-find-and-replace-find-text": "Find",
+    "visualeditor-find-and-replace-invalid-regex": "Invalid regular expression",
     "visualeditor-find-and-replace-match-case": "Match case",
     "visualeditor-find-and-replace-next-button": "Find next",
     "visualeditor-find-and-replace-previous-button": "Find previous",
