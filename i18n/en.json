@@ -52,6 +52,8 @@
     "visualeditor-find-and-replace-done": "Done",
     "visualeditor-find-and-replace-find-text": "Find",
     "visualeditor-find-and-replace-match-case": "Match case",
+    "visualeditor-find-and-replace-next-button": "Find next",
+    "visualeditor-find-and-replace-previous-button": "Find previous",
     "visualeditor-find-and-replace-regular-expression": "Regular expression",
     "visualeditor-find-and-replace-replace-all-button": "Replace all",
     "visualeditor-find-and-replace-replace-button": "Replace",

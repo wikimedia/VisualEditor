@@ -36,14 +36,15 @@ ve.ui.WindowAction.static.methods = [ 'open', 'close', 'toggle' ];
 /* Methods */
 
 /**
- * Open or toggle a window.
+ * Open a window.
  *
  * @method
  * @param {string} name Symbolic name of window to open
  * @param {Object} [data] Window opening data
+ * @param {string} [action] Action to execute after opening, or immediately if the window is already open
  * @return {boolean} Action was executed
  */
-ve.ui.WindowAction.prototype.open = function ( name, data ) {
+ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 	var windowType = this.getWindowType( name ),
 		windowManager = windowType && this.getWindowManager( windowType ),
 		surface = this.surface,
@@ -62,13 +63,19 @@ ve.ui.WindowAction.prototype.open = function ( name, data ) {
 		data = ve.extendObject( data, { surface: surface } );
 	}
 
-	windowManager.openWindow( name, data ).then( function ( closing ) {
-		surface.getView().emit( 'position' );
-		closing.then( function ( closed ) {
-			surface.getView().activate();
-			closed.then( function () {
-				surface.getView().emit( 'position' );
+	windowManager.getWindow( name ).then( function ( win ) {
+		windowManager.openWindow( win, data ).then( function ( closing ) {
+			surface.getView().emit( 'position' );
+			closing.then( function ( closed ) {
+				surface.getView().activate();
+				closed.then( function () {
+					surface.getView().emit( 'position' );
+				} );
 			} );
+		} ).always( function () {
+			if ( action ) {
+				win.executeAction( action );
+			}
 		} );
 	} );
 

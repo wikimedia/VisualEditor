@@ -134,7 +134,7 @@ ve.init.Target.static.documentCommands = ['commandHelp'];
  *
  * @type {string[]} List of command names
  */
-ve.init.Target.static.targetCommands = ['findAndReplace'];
+ve.init.Target.static.targetCommands = ['findAndReplace', 'findNext', 'findPrevious'];
 
 /**
  * List of commands to exclude from the target entirely
