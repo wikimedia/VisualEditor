@@ -209,11 +209,10 @@ ve.ce.ResizableNode.prototype.showHandles = function ( handles ) {
 ve.ce.ResizableNode.prototype.onResizableFocus = function () {
 	var surface = this.getRoot().getSurface();
 
+	this.$resizeHandles.appendTo( surface.getSurface().$controls );
 	if ( this.$sizeLabel ) {
-		// Attach the size label first so it doesn't mask the resize handles
 		this.$sizeLabel.appendTo( surface.getSurface().$controls );
 	}
-	this.$resizeHandles.appendTo( surface.getSurface().$controls );
 
 	// Call getScalable to pre-fetch the extended data
 	this.model.getScalable();
