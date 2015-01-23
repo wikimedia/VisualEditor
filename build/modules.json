@@ -410,6 +410,7 @@
 			"src/ui/styles/inspectors/ve.ui.FragmentInspector.css",
 			"src/ui/styles/inspectors/ve.ui.LinkInspector.css",
 			"src/ui/styles/inspectors/ve.ui.SpecialCharacterInspector.css",
+			"src/ui/styles/ve.ui.Context.css",
 			"src/ui/styles/ve.ui.Overlay.css",
 			"src/ui/styles/ve.ui.Surface.css",
 			"src/ui/styles/widgets/ve.ui.SurfaceWidget.css",

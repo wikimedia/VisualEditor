@@ -1,0 +1,10 @@
+/*!
+ * VisualEditor UserInterface Context styles.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/* Hide context by default, only show programmatically */
+.ve-ui-context {
+	visibility: hidden;
+}

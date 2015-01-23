@@ -173,7 +173,7 @@ ve.ui.DesktopContext.prototype.toggle = function ( show ) {
 	// they contain inspector iframes, and applying display: none; to those causes them to
 	// not load in Firefox
 	this.$element.add( this.popup.$element ).css( {
-		visibility: show ? '' : 'hidden',
+		visibility: show ? 'visible' : 'hidden',
 		display: ''
 	} );
 
