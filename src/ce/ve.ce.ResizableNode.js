@@ -46,6 +46,9 @@ ve.ce.ResizableNode = function VeCeResizableNode( $resizable, config ) {
 		resizeEnd: 'onResizableFocus',
 		rerender: 'onResizableFocus'
 	} );
+	this.model.connect( this, {
+		attributeChange: 'onResizableAttributeChange'
+	} );
 
 	// Initialization
 	this.$resizeHandles
@@ -290,6 +293,20 @@ ve.ce.ResizableNode.prototype.onResizableResizing = function ( dimensions ) {
 		this.setResizableHandlesPosition();
 	}
 	this.updateSizeLabel();
+};
+
+/**
+ * Handle attribute change events from the model.
+ *
+ * @method
+ * @param {string} key Attribute key
+ * @param {string} from Old value
+ * @param {string} to New value
+ */
+ve.ce.ResizableNode.prototype.onResizableAttributeChange = function ( key, from, to ) {
+	if ( key === 'width' || key === 'height' ) {
+		this.$resizable.css( key, to );
+	}
 };
 
 /**
