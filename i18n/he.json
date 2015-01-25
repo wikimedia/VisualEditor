@@ -49,6 +49,8 @@
 	"visualeditor-find-and-replace-done": "סיום",
 	"visualeditor-find-and-replace-find-text": "חיפוש",
 	"visualeditor-find-and-replace-match-case": "התאמת רישיות",
+	"visualeditor-find-and-replace-next-button": "חיפוש הבא",
+	"visualeditor-find-and-replace-previous-button": "חיפוש הקודם",
 	"visualeditor-find-and-replace-regular-expression": "ביטוי רגולרי",
 	"visualeditor-find-and-replace-replace-all-button": "החלפת הכול",
 	"visualeditor-find-and-replace-replace-button": "החלפה",

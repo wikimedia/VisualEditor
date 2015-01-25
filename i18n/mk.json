@@ -41,6 +41,8 @@
 	"visualeditor-find-and-replace-done": "Готово",
 	"visualeditor-find-and-replace-find-text": "Најди",
 	"visualeditor-find-and-replace-match-case": "Разликувај големи/мали букви",
+	"visualeditor-find-and-replace-next-button": "Најди следно",
+	"visualeditor-find-and-replace-previous-button": "Најди претходно",
 	"visualeditor-find-and-replace-regular-expression": "Регуларен израз",
 	"visualeditor-find-and-replace-replace-all-button": "Замени сè",
 	"visualeditor-find-and-replace-replace-button": "Замени",

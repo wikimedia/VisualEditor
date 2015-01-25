@@ -51,6 +51,8 @@
 	"visualeditor-find-and-replace-done": "Gotowe",
 	"visualeditor-find-and-replace-find-text": "Znajdź",
 	"visualeditor-find-and-replace-match-case": "Uwzględnij wielkość liter",
+	"visualeditor-find-and-replace-next-button": "Znajdź następny",
+	"visualeditor-find-and-replace-previous-button": "Znajdź poprzedni",
 	"visualeditor-find-and-replace-regular-expression": "Wyrażenie regularne",
 	"visualeditor-find-and-replace-replace-all-button": "Zamień wszystkie",
 	"visualeditor-find-and-replace-replace-button": "Zamień",

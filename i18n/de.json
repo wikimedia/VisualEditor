@@ -47,6 +47,8 @@
 	"visualeditor-find-and-replace-done": "Fertig",
 	"visualeditor-find-and-replace-find-text": "Finden",
 	"visualeditor-find-and-replace-match-case": "Groß-/Kleinschreibung beachten",
+	"visualeditor-find-and-replace-next-button": "Nächste finden",
+	"visualeditor-find-and-replace-previous-button": "Vorherige finden",
 	"visualeditor-find-and-replace-regular-expression": "Regulärer Ausdruck",
 	"visualeditor-find-and-replace-replace-all-button": "Alle ersetzen",
 	"visualeditor-find-and-replace-replace-button": "Ersetzen",

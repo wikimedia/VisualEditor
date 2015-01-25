@@ -53,6 +53,8 @@
 	"visualeditor-find-and-replace-done": "完成",
 	"visualeditor-find-and-replace-find-text": "尋找",
 	"visualeditor-find-and-replace-match-case": "比對大小寫",
+	"visualeditor-find-and-replace-next-button": "尋找下一筆",
+	"visualeditor-find-and-replace-previous-button": "尋找上一筆",
 	"visualeditor-find-and-replace-regular-expression": "正規表示法",
 	"visualeditor-find-and-replace-replace-all-button": "全部取代",
 	"visualeditor-find-and-replace-replace-button": "取代",

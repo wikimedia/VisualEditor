@@ -28,6 +28,8 @@
 	"visualeditor-dialog-error-dismiss": "Retorn",
 	"visualeditor-dialog-language-auto-direction": "Auto",
 	"visualeditor-dialog-language-search-title": "Seleccionar la lenga",
+	"visualeditor-find-and-replace-next-button": "Recercar lo seguent",
+	"visualeditor-find-and-replace-previous-button": "Recercar lo precedent",
 	"visualeditor-formatdropdown-format-heading-label": "Títol (1-6)",
 	"visualeditor-formatdropdown-format-heading1": "Títol 1",
 	"visualeditor-formatdropdown-format-heading2": "Títol 2",

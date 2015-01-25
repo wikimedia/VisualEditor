@@ -3,7 +3,8 @@
 		"authors": [
 			"An13sa",
 			"Unai Fdz. de Betoño",
-			"Xabier Armendaritz"
+			"Xabier Armendaritz",
+			"Subi"
 		]
 	},
 	"visualeditor": "Ikusizko editorea",
@@ -21,6 +22,8 @@
 	"visualeditor-dialog-action-apply": "Aldaketak gauzatu",
 	"visualeditor-dialog-action-cancel": "Bertan behera utzi",
 	"visualeditor-dialog-action-goback": "Atzera jo",
+	"visualeditor-find-and-replace-next-button": "Aurkitu hurrengoa",
+	"visualeditor-find-and-replace-previous-button": "Aurkitu aurrekoa",
 	"visualeditor-formatdropdown-format-heading1": "1. izenburua",
 	"visualeditor-formatdropdown-format-heading2": "2. izenburua",
 	"visualeditor-formatdropdown-format-heading3": "3. izenburua",

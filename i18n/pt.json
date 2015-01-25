@@ -50,6 +50,8 @@
 	"visualeditor-find-and-replace-done": "Concluído",
 	"visualeditor-find-and-replace-find-text": "Localizar",
 	"visualeditor-find-and-replace-match-case": "Distinguir maiúsculas de minúsculas",
+	"visualeditor-find-and-replace-next-button": "Localizar próxima",
+	"visualeditor-find-and-replace-previous-button": "Localizar anterior",
 	"visualeditor-find-and-replace-regular-expression": "Expressão regular",
 	"visualeditor-find-and-replace-replace-all-button": "Substituir todos",
 	"visualeditor-find-and-replace-replace-button": "Substituir",
