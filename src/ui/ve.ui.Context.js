@@ -36,9 +36,9 @@ ve.ui.Context = function VeUiContext( surface, config ) {
 	this.menu.connect( this, { choose: 'onContextItemChoose' } );
 
 	// Initialization
-	// Hide element using $.hide() not this.toggle as child implementations
+	// Hide element using a class, not this.toggle, as child implementations
 	// of toggle may require the instance to be fully constructed before running.
-	this.$element.addClass( 've-ui-context' ).hide();
+	this.$element.addClass( 've-ui-context' );
 	this.menu.toggle( false );
 	this.inspectors.$element.addClass( 've-ui-context-inspectors' );
 };
