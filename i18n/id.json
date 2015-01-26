@@ -9,7 +9,8 @@
 			"McDutchie",
 			"Rv77ax",
 			"William Surya Permana",
-			"Bennylin"
+			"Bennylin",
+			"BaconSenpai"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -46,6 +47,8 @@
 	"visualeditor-find-and-replace-done": "Selesai",
 	"visualeditor-find-and-replace-find-text": "Temukan",
 	"visualeditor-find-and-replace-match-case": "Cocokan kapitalisasi",
+	"visualeditor-find-and-replace-next-button": "Cari berikutnya",
+	"visualeditor-find-and-replace-previous-button": "Cari sebelumnya",
 	"visualeditor-find-and-replace-regular-expression": "Regular expression",
 	"visualeditor-find-and-replace-replace-all-button": "Ganti semua",
 	"visualeditor-find-and-replace-replace-button": "Ganti",
