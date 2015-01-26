@@ -181,24 +181,22 @@ ve.ce.ResizableNode.prototype.updateSizeLabel = function () {
  * @param {string[]} [handles] List of handles to show: 'nw', 'ne', 'sw', 'se'. Show all if undefined.
  */
 ve.ce.ResizableNode.prototype.showHandles = function ( handles ) {
-	var i, selectors;
+	var i, len,
+		add = [],
+		remove = [],
+		allDirections = [ 'nw', 'ne', 'sw', 'se' ];
 
-	if ( handles === undefined ) {
-		this.$resizeHandles.find( 'div' ).show();
-	} else {
-		this.$resizeHandles.find( 'div' ).hide();
-		i = handles.length;
-		selectors = [];
-		while ( i-- ) {
-			// The following classes can be used here:
-			// ve-ce-resizableNode-nwHandle
-			// ve-ce-resizableNode-neHandle
-			// ve-ce-resizableNode-swHandle
-			// ve-ce-resizableNode-seHandle
-			selectors.push( '.ve-ce-resizableNode-' + handles[i] + 'Handle' );
+	for ( i = 0, len = allDirections.length; i < len; i++ ) {
+		if ( handles === undefined || handles.indexOf( allDirections[i] ) !== -1 ) {
+			remove.push( 've-ce-resizableNode-hide-' + allDirections[i] );
+		} else {
+			add.push( 've-ce-resizableNode-hide-' + allDirections[i] );
 		}
-		this.$resizeHandles.find( selectors.join( ',' ) ).show();
 	}
+
+	this.$resizeHandles
+		.addClass( add.join( ' ' ) )
+		.removeClass( remove.join( ' ' ) );
 };
 
 /**
