@@ -107,11 +107,13 @@ ve.ce.GeneratedContentNode.prototype.getRenderedDomElements = function ( domElem
 		this.setAttribute( attr, this[attr] );
 	}
 
-	// Copy domElements so we can modify the elements
+	// Clone the elements into the target document
+	$rendering = $( ve.copyDomElements( domElements, doc ) );
+
 	// Filter out link and style tags for bug 50043
 	// Previously filtered out meta tags, but restore these as they
 	// can be made visible.
-	$rendering = this.$( domElements ).not( 'link, style' );
+	$rendering = $rendering.not( 'link, style' );
 	// Also remove link and style tags nested inside other tags
 	$rendering.find( 'link, style' ).remove();
 
@@ -134,8 +136,7 @@ ve.ce.GeneratedContentNode.prototype.getRenderedDomElements = function ( domElem
 			.each( resolveAttribute );
 	}
 
-	// Clone the elements into the target document
-	return ve.copyDomElements( $rendering.toArray(), doc );
+	return $rendering.toArray();
 };
 
 /**
