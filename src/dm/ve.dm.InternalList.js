@@ -211,13 +211,15 @@ ve.dm.InternalList.prototype.getNextUniqueNumber = function () {
  * @returns {Array} Linear model data
  */
 ve.dm.InternalList.prototype.convertToData = function ( converter, doc ) {
-	var i, length, itemData,
+	var i, length, itemData, div,
 		itemHtmlQueue = this.getItemHtmlQueue(), list = [];
 
 	list.push( { type: 'internalList' } );
 	for ( i = 0, length = itemHtmlQueue.length; i < length; i++ ) {
 		if ( itemHtmlQueue[i] !== '' ) {
-			itemData = converter.getDataFromDomSubtree( $( '<div>', doc ).html( itemHtmlQueue[i] )[0] );
+			div = doc.createElement( 'div' );
+			div.innerHTML = itemHtmlQueue[i];
+			itemData = converter.getDataFromDomSubtree( div );
 			list = list.concat(
 				[{ type: 'internalItem' }],
 				itemData,
