@@ -42,6 +42,8 @@
 	"visualeditor-find-and-replace-done": "Realizat",
 	"visualeditor-find-and-replace-find-text": "Găsește",
 	"visualeditor-find-and-replace-match-case": "Potrivește literele",
+	"visualeditor-find-and-replace-next-button": "Găsește următorul",
+	"visualeditor-find-and-replace-previous-button": "Găsește precedentul",
 	"visualeditor-find-and-replace-regular-expression": "Expresie regulată",
 	"visualeditor-find-and-replace-replace-all-button": "Înlocuiește peste tot",
 	"visualeditor-find-and-replace-replace-button": "Înlocuiește",
