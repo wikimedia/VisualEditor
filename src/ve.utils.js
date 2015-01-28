@@ -356,11 +356,24 @@ ve.selectEnd = function ( element ) {
  *
  * @param {string} key Message key
  * @param {Mixed...} [params] Message parameters
+ * @returns {string} Localized message
  */
 ve.msg = function () {
 	// Avoid using bind because ve.init.platform doesn't exist yet.
 	// TODO: Fix dependency issues between ve.js and ve.init.platform
 	return ve.init.platform.getMessage.apply( ve.init.platform, arguments );
+};
+
+/**
+ * Get a config value.
+ *
+ * @param {string|string[]} key Config key, or list of keys
+ * @returns {Mixed|Object} Config value, or keyed object of config values if list of keys provided
+ */
+ve.config = function () {
+	// Avoid using bind because ve.init.platform doesn't exist yet.
+	// TODO: Fix dependency issues between ve.js and ve.init.platform
+	return ve.init.platform.getConfig.apply( ve.init.platform, arguments );
 };
 
 /**
