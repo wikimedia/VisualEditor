@@ -30,11 +30,15 @@
 			"Jdforrester",
 			"Fram",
 			"Orikrin1998",
-			"Windes"
+			"Windes",
+			"Weft"
 		]
 	},
 	"visualeditor": "ÉditeurVisuel",
 	"visualeditor-aliennode-tooltip": "Désolé, cet élément ne peut être modifié qu’en mode source pour le moment.",
+	"visualeditor-align-widget-center": "Centré",
+	"visualeditor-align-widget-left": "Gauche",
+	"visualeditor-align-widget-right": "Droite",
 	"visualeditor-annotationbutton-bold-tooltip": "Gras",
 	"visualeditor-annotationbutton-code-tooltip": "Code informatique",
 	"visualeditor-annotationbutton-italic-tooltip": "Italique",
