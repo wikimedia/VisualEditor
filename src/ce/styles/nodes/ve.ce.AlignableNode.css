@@ -1,0 +1,19 @@
+/*!
+ * VisualEditor ContentEditable AlignableNode styles.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+.ve-align-right {
+	float: right;
+	margin: 0.5em 0 1em 1em;
+}
+
+.ve-align-left {
+	float: left;
+	margin: 0.5em 1em 1em 0;
+}
+
+.ve-align-center {
+	margin: 0.5em auto 1em auto;
+}
