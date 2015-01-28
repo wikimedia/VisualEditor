@@ -50,7 +50,7 @@ ve.ce.AlienNode.prototype.createHighlight = function () {
 	// Mixin method
 	return ve.ce.FocusableNode.prototype.createHighlight.call( this )
 		.addClass( 've-ce-alienNode-highlight' )
-		.attr( 'title', ve.msg( 'visualeditor-aliennode-tooltip' ) );
+		.prop( 'title', ve.msg( 'visualeditor-aliennode-tooltip' ) );
 };
 
 /**

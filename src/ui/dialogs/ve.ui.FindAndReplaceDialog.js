@@ -152,8 +152,8 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 	doneButton.connect( this, { click: 'close' } );
 
 	// Initialization
-	this.findText.$input.attr( 'tabIndex', 1 );
-	this.replaceText.$input.attr( 'tabIndex', 2 );
+	this.findText.$input.prop( 'tabIndex', 1 );
+	this.replaceText.$input.prop( 'tabIndex', 2 );
 	this.$content.addClass( 've-ui-findAndReplaceDialog-content' );
 	this.$body
 		.append(

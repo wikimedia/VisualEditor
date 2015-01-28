@@ -289,7 +289,7 @@ ve.ui.MediaSizeWidget.prototype.onSizeTypeChoose = function ( item ) {
  * @param {number} value Placeholder value
  */
 ve.ui.MediaSizeWidget.prototype.setScalePlaceholder = function ( value ) {
-	this.scaleInput.$element.attr( 'placeholder', value );
+	this.scaleInput.$element.prop( 'placeholder', value );
 };
 
 /**
@@ -297,7 +297,7 @@ ve.ui.MediaSizeWidget.prototype.setScalePlaceholder = function ( value ) {
  * @returns {string} Placeholder value
  */
 ve.ui.MediaSizeWidget.prototype.getScalePlaceholder = function () {
-	return this.scaleInput.$element.attr( 'placeholder' );
+	return this.scaleInput.$element.prop( 'placeholder' );
 };
 
 /**
