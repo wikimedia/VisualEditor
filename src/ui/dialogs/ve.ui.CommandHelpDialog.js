@@ -135,24 +135,6 @@ ve.ui.CommandHelpDialog.static.getCommandGroups = function () {
 				{ trigger: 'clear', msg: 'visualeditor-clearbutton-tooltip' }
 			]
 		},
-		history: {
-			title: 'visualeditor-shortcuts-history',
-			commands: [
-				{ trigger: 'undo', msg: 'visualeditor-historybutton-undo-tooltip' },
-				{ trigger: 'redo', msg: 'visualeditor-historybutton-redo-tooltip' }
-			]
-		},
-		formatting: {
-			title: 'visualeditor-shortcuts-formatting',
-			commands: [
-				{ trigger: 'paragraph', msg: 'visualeditor-formatdropdown-format-paragraph' },
-				{ shortcuts: ['ctrl+(1-6)'], msg: 'visualeditor-formatdropdown-format-heading-label' },
-				{ trigger: 'preformatted', msg: 'visualeditor-formatdropdown-format-preformatted' },
-				{ trigger: 'blockquote', msg: 'visualeditor-formatdropdown-format-blockquote' },
-				{ trigger: 'indent', msg: 'visualeditor-indentationbutton-indent-tooltip' },
-				{ trigger: 'outdent', msg: 'visualeditor-indentationbutton-outdent-tooltip' }
-			]
-		},
 		clipboard: {
 			title: 'visualeditor-shortcuts-clipboard',
 			commands: [
@@ -180,10 +162,30 @@ ve.ui.CommandHelpDialog.static.getCommandGroups = function () {
 				{ trigger: 'pasteSpecial', msg: 'visualeditor-clipboard-paste-special' }
 			]
 		},
+		formatting: {
+			title: 'visualeditor-shortcuts-formatting',
+			commands: [
+				{ trigger: 'paragraph', msg: 'visualeditor-formatdropdown-format-paragraph' },
+				{ shortcuts: ['ctrl+(1-6)'], msg: 'visualeditor-formatdropdown-format-heading-label' },
+				{ trigger: 'preformatted', msg: 'visualeditor-formatdropdown-format-preformatted' },
+				{ trigger: 'blockquote', msg: 'visualeditor-formatdropdown-format-blockquote' },
+				{ trigger: 'indent', msg: 'visualeditor-indentationbutton-indent-tooltip' },
+				{ trigger: 'outdent', msg: 'visualeditor-indentationbutton-outdent-tooltip' }
+			]
+		},
+		history: {
+			title: 'visualeditor-shortcuts-history',
+			commands: [
+				{ trigger: 'undo', msg: 'visualeditor-historybutton-undo-tooltip' },
+				{ trigger: 'redo', msg: 'visualeditor-historybutton-redo-tooltip' }
+			]
+		},
 		other: {
 			title: 'visualeditor-shortcuts-other',
 			commands: [
 				{ trigger: 'findAndReplace', msg: 'visualeditor-find-and-replace-title' },
+				{ trigger: 'findNext', msg: 'visualeditor-find-and-replace-next-button' },
+				{ trigger: 'findPrevious', msg: 'visualeditor-find-and-replace-previous-button' },
 				{ trigger: 'selectAll', msg: 'visualeditor-content-select-all' },
 				{ trigger: 'commandHelp', msg: 'visualeditor-dialog-command-help-title' }
 			]
