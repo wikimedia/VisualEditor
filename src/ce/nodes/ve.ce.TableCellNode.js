@@ -38,6 +38,8 @@ ve.ce.TableCellNode.static.name = 'tableCell';
  * @inheritdoc
  */
 ve.ce.TableCellNode.prototype.onSetup = function () {
+	var rowspan = this.model.getRowspan(), colspan = this.model.getColspan();
+
 	// Parent method
 	ve.ce.TableCellNode.super.prototype.onSetup.call( this );
 
@@ -51,11 +53,14 @@ ve.ce.TableCellNode.prototype.onSetup = function () {
 		// The following classes can be used here:
 		// ve-ce-tableCellNode-data
 		// ve-ce-tableCellNode-header
-		.addClass( 've-ce-tableCellNode ve-ce-tableCellNode-' + this.model.getAttribute( 'style' ) )
-		.attr( {
-			rowspan: this.model.getRowspan(),
-			colspan: this.model.getColspan()
-		} );
+		.addClass( 've-ce-tableCellNode ve-ce-tableCellNode-' + this.model.getAttribute( 'style' ) );
+
+	if ( rowspan > 1 ) {
+		this.$element.attr( 'rowspan', rowspan );
+	}
+	if ( colspan > 1 ) {
+		this.$element.attr( 'colspan', colspan );
+	}
 };
 
 /**
