@@ -19,6 +19,7 @@ ve.ui.FindAndReplaceDialog = function VeUiFindAndReplaceDialog( config ) {
 
 	// Properties
 	this.surface = null;
+	this.invalidRegex = false;
 
 	// Pre-initialization
 	this.$element.addClass( 've-ui-findAndReplaceDialog' );
@@ -266,7 +267,6 @@ ve.ui.FindAndReplaceDialog.prototype.onFindTextEnter = function ( e ) {
  */
 ve.ui.FindAndReplaceDialog.prototype.updateFragments = function () {
 	var i, l,
-		hasError = false,
 		surfaceModel = this.surface.getModel(),
 		documentModel = surfaceModel.getDocument(),
 		ranges = [],
@@ -274,16 +274,18 @@ ve.ui.FindAndReplaceDialog.prototype.updateFragments = function () {
 		isRegex = this.regexToggle.getValue(),
 		find = this.findText.getValue();
 
+	this.invalidRegex = false;
+
 	if ( isRegex && find ) {
 		try {
 			this.query = new RegExp( find );
 		} catch ( e ) {
-			hasError = true;
+			this.invalidRegex = true;
 		}
 	} else {
 		this.query = find;
 	}
-	this.findText.$element.toggleClass( 've-ui-findAndReplaceDialog-findText-error', hasError );
+	this.findText.$element.toggleClass( 've-ui-findAndReplaceDialog-findText-error', this.invalidRegex );
 
 	this.fragments = [];
 	if ( this.query ) {
@@ -378,7 +380,9 @@ ve.ui.FindAndReplaceDialog.prototype.highlightFocused = function ( scrollIntoVie
 			ve.msg( 'visualeditor-find-and-replace-results', this.focusedIndex + 1, this.results )
 		);
 	} else {
-		this.focusedIndexLabel.setLabel( '' );
+		this.focusedIndexLabel.setLabel(
+			this.invalidRegex ? ve.msg( 'visualeditor-find-and-replace-invalid-regex' ) : ''
+		);
 		return;
 	}
 
