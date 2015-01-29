@@ -58,5 +58,8 @@
 	"visualeditor-linkinspector-title": "Hiperesteka",
 	"visualeditor-listbutton-bullet-tooltip": "Buletdun zerrenda",
 	"visualeditor-listbutton-number-tooltip": "Zenbakidun zerrenda",
-	"visualeditor-shortcuts-history": "Historia"
+	"visualeditor-shortcuts-history": "Historia",
+	"visualeditor-toolbar-history": "Historia",
+	"visualeditor-toolbar-structure": "Egitura",
+	"visualeditor-toolbar-table": "Taula"
 }
