@@ -126,7 +126,7 @@ ve.ce.ResizableNode.prototype.hideSizeLabel = function () {
 	} );
 	// Actually hide the size label after it's done animating
 	setTimeout( function () {
-		node.$sizeLabel.hide();
+		node.$sizeLabel.addClass( 'oo-ui-element-hidden' );
 	}, 200 );
 };
 
@@ -153,7 +153,7 @@ ve.ce.ResizableNode.prototype.updateSizeLabel = function () {
 		height = dimensions.height;
 	}
 	this.$sizeLabel
-		.show()
+		.removeClass( 'oo-ui-element-hidden' )
 		.addClass( 've-ce-resizableNode-sizeLabel-resizing' )
 		.css( {
 			top: top,

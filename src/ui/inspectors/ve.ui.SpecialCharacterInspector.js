@@ -75,7 +75,7 @@ ve.ui.SpecialCharacterInspector.prototype.getSetupProcess = function ( data ) {
 			this.getFragment().insertContent( ' ' );
 			// Don't request the character list again if we already have it
 			if ( !this.characters ) {
-				this.$spinner.show();
+				this.$spinner.removeClass( 'oo-ui-element-hidden' );
 				this.fetchCharList()
 					.done( function () {
 						inspector.buildButtonList();
@@ -83,7 +83,7 @@ ve.ui.SpecialCharacterInspector.prototype.getSetupProcess = function ( data ) {
 					// TODO: show error message on fetchCharList().fail
 					.always( function () {
 						// TODO: generalize push/pop pending, like we do in Dialog
-						inspector.$spinner.hide();
+						inspector.$spinner.addClass( 'oo-ui-element-hidden' );
 					} );
 			}
 		}, this );
