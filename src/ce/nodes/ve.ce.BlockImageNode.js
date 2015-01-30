@@ -10,6 +10,7 @@
  * @class
  * @extends ve.ce.BranchNode
  * @mixins ve.ce.ImageNode
+ * @mixins ve.ce.AlignableNode
  *
  * @constructor
  * @param {ve.dm.BlockImageNode} model Model to observe
@@ -30,6 +31,7 @@ ve.ce.BlockImageNode = function VeCeBlockImageNode( model, config ) {
 
 	// Mixin constructors
 	ve.ce.ImageNode.call( this, this.$element, this.$image, config );
+	ve.ce.AlignableNode.call( this, this.$element, config );
 
 	// Initialization
 	this.$element.addClass( 've-ce-blockImageNode' );
@@ -49,6 +51,8 @@ ve.ce.BlockImageNode = function VeCeBlockImageNode( model, config ) {
 OO.inheritClass( ve.ce.BlockImageNode, ve.ce.BranchNode );
 
 OO.mixinClass( ve.ce.BlockImageNode, ve.ce.ImageNode );
+
+OO.mixinClass( ve.ce.BlockImageNode, ve.ce.AlignableNode );
 
 /* Static Properties */
 

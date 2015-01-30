@@ -10,6 +10,7 @@
  * @class
  * @extends ve.dm.BranchNode
  * @mixins ve.dm.ImageNode
+ * @mixins ve.dm.AlignableNode
  *
  * @constructor
  * @param {Object} [element] Reference to element in linear model
@@ -19,8 +20,9 @@ ve.dm.BlockImageNode = function VeDmBlockImageNode() {
 	// Parent constructor
 	ve.dm.BlockImageNode.super.apply( this, arguments );
 
-	// Mixin constructor
+	// Mixin constructors
 	ve.dm.ImageNode.call( this );
+	ve.dm.AlignableNode.call( this );
 };
 
 /* Inheritance */
@@ -29,12 +31,14 @@ OO.inheritClass( ve.dm.BlockImageNode, ve.dm.BranchNode );
 
 OO.mixinClass( ve.dm.BlockImageNode, ve.dm.ImageNode );
 
+OO.mixinClass( ve.dm.BlockImageNode, ve.dm.AlignableNode );
+
 /* Static Properties */
 
 ve.dm.BlockImageNode.static.name = 'blockImage';
 
 ve.dm.BlockImageNode.static.storeHtmlAttributes = {
-	blacklist: [ 'typeof', 'class', 'src', 'resource', 'width', 'height', 'href', 'rel' ]
+	blacklist: [ 'src', 'width', 'height', 'href' ]
 };
 
 ve.dm.BlockImageNode.static.handlesOwnChildren = true;
@@ -64,7 +68,10 @@ ve.dm.BlockImageNode.static.toDataElement = function ( domElements, converter ) 
 	attributes.width = width !== undefined && width !== '' ? Number( width ) : null;
 	attributes.height = height !== undefined && height !== '' ? Number( height ) : null;
 
-	dataElement = { type: this.name, attributes: attributes };
+	dataElement = {
+		type: this.name,
+		attributes: ve.extendObject( ve.dm.AlignableNode.static.toDataElementAttributes( domElements, converter ), attributes )
+	};
 
 	if ( $caption.length === 0 ) {
 		return [
@@ -108,6 +115,9 @@ ve.dm.BlockImageNode.static.toDomElements = function ( data, doc, converter ) {
 			figure.appendChild( wrapper.firstChild );
 		}
 	}
+
+	ve.dm.AlignableNode.static.modifyDomElement( figure, dataElement );
+
 	return [ figure ];
 };
 
