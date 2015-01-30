@@ -4,7 +4,8 @@
 			"EugeneZelenko",
 			"Wizardist",
 			"Чаховіч Уладзіслаў",
-			"Red Winged Duck"
+			"Red Winged Duck",
+			"Jim-by"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -22,6 +23,7 @@
 	"visualeditor-dialog-action-apply": "Ужыць зьмены",
 	"visualeditor-dialog-action-cancel": "Скасаваць",
 	"visualeditor-dialog-action-goback": "Вярнуцца",
+	"visualeditor-find-and-replace-invalid-regex": "Няслушны рэгулярны выраз",
 	"visualeditor-formatdropdown-format-heading1": "Загаловак 1",
 	"visualeditor-formatdropdown-format-heading2": "Загаловак 2",
 	"visualeditor-formatdropdown-format-heading3": "Загаловак 3",

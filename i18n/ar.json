@@ -14,7 +14,8 @@
 			"Test Create account",
 			"محمد عصام",
 			"سامي الرحيلي",
-			"Abanima"
+			"Abanima",
+			"Fatz"
 		]
 	},
 	"visualeditor": "المحرر المرئي",
@@ -49,6 +50,7 @@
 	"visualeditor-dialog-language-auto-direction": "تلقائي",
 	"visualeditor-dialog-language-search-title": "اختر اللغة",
 	"visualeditor-find-and-replace-find-text": "إبحث",
+	"visualeditor-find-and-replace-invalid-regex": "تعبير منتظم غير صالح",
 	"visualeditor-find-and-replace-match-case": "مطابقة حالة الأحرف",
 	"visualeditor-find-and-replace-regular-expression": "تعبير منتظم",
 	"visualeditor-find-and-replace-replace-all-button": "استبدل الكل",

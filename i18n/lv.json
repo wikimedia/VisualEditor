@@ -38,6 +38,7 @@
 	"visualeditor-dialog-error-dismiss": "Atpakaļ",
 	"visualeditor-dialog-language-search-title": "Izvēlieties valodu",
 	"visualeditor-find-and-replace-find-text": "Atrast",
+	"visualeditor-find-and-replace-invalid-regex": "Nederīga regulārā izteiksme",
 	"visualeditor-find-and-replace-regular-expression": "Regulārā izteiksme",
 	"visualeditor-find-and-replace-replace-all-button": "Aizvietot visu",
 	"visualeditor-find-and-replace-replace-button": "Aizvietot",
