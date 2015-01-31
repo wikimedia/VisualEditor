@@ -1,12 +1,12 @@
 /*!
- * OOjs UI v0.6.3
+ * OOjs UI v0.6.4
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2015 OOjs Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2015-01-16T00:05:16Z
+ * Date: 2015-01-31T01:16:05Z
  */
 .oo-ui-progressBarWidget-slide-frames from {
 	margin-right: -40%;
@@ -431,6 +431,12 @@
 .oo-ui-fieldLayout.oo-ui-fieldLayout-align-top.oo-ui-labelElement > .oo-ui-fieldLayout-body > .oo-ui-labelElement-label {
 	padding: 0.5em 0;
 }
+.oo-ui-fieldLayout > .oo-ui-popupButtonWidget {
+	margin-left: 0;
+}
+.oo-ui-fieldLayout > .oo-ui-popupButtonWidget:last-child {
+	margin-left: 0;
+}
 .oo-ui-fieldLayout > .oo-ui-popupButtonWidget > .oo-ui-buttonElement-button > .oo-ui-iconElement-icon {
 	margin-top: 0.25em;
 }
@@ -452,6 +458,7 @@
 }
 .oo-ui-actionFieldLayout-button {
 	width: 1%;
+	white-space: nowrap;
 }
 .oo-ui-fieldsetLayout {
 	position: relative;
@@ -467,6 +474,16 @@
 }
 .oo-ui-fieldsetLayout.oo-ui-labelElement > .oo-ui-labelElement-label {
 	display: inline-block;
+}
+.oo-ui-fieldsetLayout > .oo-ui-fieldsetLayout-help {
+	float: left;
+}
+.oo-ui-fieldsetLayout > .oo-ui-fieldsetLayout-help > .oo-ui-popupWidget > .oo-ui-popupWidget-popup {
+	z-index: 1;
+}
+.oo-ui-fieldsetLayout > .oo-ui-fieldsetLayout-help .oo-ui-fieldsetLayout-help-content {
+	padding: 0.5em 0.75em;
+	line-height: 1.5em;
 }
 .oo-ui-fieldsetLayout + .oo-ui-fieldsetLayout {
 	margin-top: 2em;
@@ -493,6 +510,48 @@
 	right: 0;
 	left: 0;
 	bottom: 0;
+}
+.oo-ui-menuLayout {
+	position: absolute;
+	top: 0;
+	right: 0;
+	left: 0;
+	bottom: 0;
+}
+.oo-ui-menuLayout-menu,
+.oo-ui-menuLayout-content {
+	position: absolute;
+	-webkit-transition: all ease-in-out 200ms;
+	   -moz-transition: all ease-in-out 200ms;
+	    -ms-transition: all ease-in-out 200ms;
+	     -o-transition: all ease-in-out 200ms;
+	        transition: all ease-in-out 200ms;
+}
+.oo-ui-menuLayout-content {
+	top: 0;
+	right: 0;
+	left: 0;
+	bottom: 0;
+}
+.oo-ui-menuLayout-top .oo-ui-menuLayout-menu {
+	right: 0;
+	top: 0;
+	left: 0;
+}
+.oo-ui-menuLayout-after .oo-ui-menuLayout-menu {
+	top: 0;
+	left: 0;
+	bottom: 0;
+}
+.oo-ui-menuLayout-bottom .oo-ui-menuLayout-menu {
+	left: 0;
+	bottom: 0;
+	right: 0;
+}
+.oo-ui-menuLayout-before .oo-ui-menuLayout-menu {
+	bottom: 0;
+	right: 0;
+	top: 0;
 }
 .oo-ui-panelLayout {
 	position: relative;
@@ -958,7 +1017,9 @@
 .oo-ui-selectWidget-depressed .oo-ui-optionWidget-selected {
 	background-color: #a7dcff;
 }
-.oo-ui-selectWidget-pressed .oo-ui-optionWidget-pressed {
+.oo-ui-selectWidget-pressed .oo-ui-optionWidget-pressed,
+.oo-ui-selectWidget-pressed .oo-ui-optionWidget-pressed.oo-ui-optionWidget-highlighted,
+.oo-ui-selectWidget-pressed .oo-ui-optionWidget-pressed.oo-ui-optionWidget-highlighted.oo-ui-optionWidget-selected {
 	background-color: #a7dcff;
 }
 .oo-ui-optionWidget.oo-ui-widget-disabled {
@@ -990,6 +1051,10 @@
 	display: inline-block;
 	white-space: nowrap;
 	border-radius: 0.3em;
+	margin-left: 0.5em;
+}
+.oo-ui-buttonSelectWidget:last-child {
+	margin-left: 0;
 }
 .oo-ui-buttonSelectWidget .oo-ui-buttonOptionWidget .oo-ui-buttonElement-button {
 	border-radius: 0;
@@ -1049,9 +1114,6 @@
 .oo-ui-radioOptionWidget.oo-ui-optionWidget-highlighted {
 	background-color: transparent;
 }
-.oo-ui-radioOptionWidget > .oo-ui-labelElement-label {
-	padding: 0 0.5em;
-}
 .oo-ui-labelWidget {
 	display: inline-block;
 	padding: 0.5em 0;
@@ -1085,11 +1147,25 @@
 .oo-ui-buttonWidget {
 	display: inline-block;
 	vertical-align: middle;
+	margin-left: 0.5em;
+}
+.oo-ui-buttonWidget:last-child {
+	margin-left: 0;
 }
 .oo-ui-buttonGroupWidget {
 	display: inline-block;
 	white-space: nowrap;
 	border-radius: 0.3em;
+	margin-left: 0.5em;
+}
+.oo-ui-buttonGroupWidget:last-child {
+	margin-left: 0;
+}
+.oo-ui-buttonGroupWidget .oo-ui-buttonWidget {
+	margin-left: 0;
+}
+.oo-ui-buttonGroupWidget .oo-ui-buttonWidget:last-child {
+	margin-left: 0;
 }
 .oo-ui-buttonGroupWidget .oo-ui-buttonElement-framed .oo-ui-buttonElement-button {
 	border-radius: 0;
@@ -1123,6 +1199,7 @@
 	border-radius: 1em;
 	box-shadow: 0 0 0 white, inset 0 0.1em 0.2em #dddddd;
 	border: solid 1px #cccccc;
+	margin-left: 0.5em;
 	background: #eeeeee;
 	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#dddddd', endColorstr='#ffffff');
 	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #dddddd), color-stop(100%, #ffffff));
@@ -1156,6 +1233,9 @@
 }
 .oo-ui-toggleWidget-off .oo-ui-toggleSwitchWidget-glow {
 	display: none;
+}
+.oo-ui-toggleSwitchWidget:last-child {
+	margin-left: 0;
 }
 .oo-ui-toggleSwitchWidget.oo-ui-widget-disabled {
 	opacity: 0.5;
@@ -1361,6 +1441,47 @@
 .oo-ui-popupButtonWidget.oo-ui-buttonElement-framed > .oo-ui-popupWidget {
 	right: 1.25em;
 }
+.oo-ui-inputWidget {
+	margin-left: 0.5em;
+}
+.oo-ui-inputWidget:last-child {
+	margin-left: 0;
+}
+.oo-ui-dropdownInputWidget {
+	position: relative;
+	vertical-align: middle;
+	-webkit-box-sizing: border-box;
+	   -moz-box-sizing: border-box;
+	        box-sizing: border-box;
+	width: 100%;
+	max-width: 50em;
+}
+.oo-ui-dropdownInputWidget select {
+	display: inline-block;
+	width: 100%;
+	resize: none;
+	-webkit-box-sizing: border-box;
+	   -moz-box-sizing: border-box;
+	        box-sizing: border-box;
+}
+.oo-ui-dropdownInputWidget select {
+	height: 2.5em;
+	padding: 0.5em;
+	font-size: 1em;
+	font-family: sans-serif;
+	border: solid 1px rgba(0, 0, 0, 0.1);
+	border-radius: 0.25em;
+}
+.oo-ui-dropdownInputWidget.oo-ui-widget-enabled select:hover,
+.oo-ui-dropdownInputWidget.oo-ui-widget-enabled select:focus {
+	border-color: rgba(0, 0, 0, 0.2);
+	outline: none;
+}
+.oo-ui-dropdownInputWidget.oo-ui-widget-disabled select {
+	color: #cccccc;
+	border-color: #dddddd;
+	background-color: #f3f3f3;
+}
 .oo-ui-textInputWidget {
 	position: relative;
 	vertical-align: middle;
@@ -1397,6 +1518,16 @@
 }
 .oo-ui-textInputWidget > .oo-ui-indicatorElement-indicator {
 	left: 0;
+}
+.oo-ui-textInputWidget > .oo-ui-labelElement-label {
+	position: absolute;
+	top: 0;
+}
+.oo-ui-textInputWidget-labelPosition-after > .oo-ui-labelElement-label {
+	left: 0;
+}
+.oo-ui-textInputWidget-labelPosition-before > .oo-ui-labelElement-label {
+	right: 0;
 }
 .oo-ui-textInputWidget input,
 .oo-ui-textInputWidget textarea {
@@ -1463,6 +1594,17 @@
 	width: 1.5em;
 	background-position: right center;
 }
+.oo-ui-textInputWidget > .oo-ui-labelElement-label {
+	padding: 0.4em;
+	line-height: 1.5em;
+	color: #888888;
+}
+.oo-ui-textInputWidget-labelPosition-after.oo-ui-indicatorElement > .oo-ui-labelElement-label {
+	padding-left: 2em;
+}
+.oo-ui-textInputWidget-labelPosition-before.oo-ui-iconElement > .oo-ui-labelElement-label {
+	padding-right: 2.5em;
+}
 .oo-ui-menuSelectWidget {
 	position: absolute;
 	background: #ffffff;
@@ -1508,6 +1650,7 @@
 	margin: 0.25em 0;
 	width: 100%;
 	max-width: 50em;
+	margin-left: 0.5em;
 }
 .oo-ui-dropdownWidget-handle {
 	width: 100%;
@@ -1534,6 +1677,9 @@
 }
 .oo-ui-dropdownWidget.oo-ui-widget-disabled .oo-ui-dropdownWidget-handle {
 	cursor: default;
+}
+.oo-ui-dropdownWidget:last-child {
+	margin-left: 0;
 }
 .oo-ui-dropdownWidget-handle {
 	height: 2.5em;
@@ -1671,10 +1817,14 @@
 	position: relative;
 	width: 100%;
 	max-width: 50em;
+	margin-left: 0.5em;
 }
 .oo-ui-comboBoxWidget > .oo-ui-menuSelectWidget {
 	z-index: 1;
 	width: 100%;
+}
+.oo-ui-comboBoxWidget:last-child {
+	margin-left: 0;
 }
 .oo-ui-comboBoxWidget-handle {
 	border: solid 1px rgba(0, 0, 0, 0.1);
@@ -2120,7 +2270,7 @@
 .oo-ui-windowManager-modal > .oo-ui-dialog.oo-ui-window-load {
 	opacity: 1;
 }
-.oo-ui-windowManager-modal > .oo-ui-dialog.oo-ui-window-setup > .oo-ui-window-frame {
+.oo-ui-windowManager-modal > .oo-ui-dialog.oo-ui-window-ready > .oo-ui-window-frame {
 	-webkit-transform: scale(1);
 	   -moz-transform: scale(1);
 	    -ms-transform: scale(1);
