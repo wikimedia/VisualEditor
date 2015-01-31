@@ -1208,8 +1208,26 @@ ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
 
 /**
  * Handle document key press events.
+ *
+ * @method
+ * @param {jQuery.Event} e Key press event
  */
-ve.ce.Surface.prototype.onDocumentKeyPress = function () {
+ve.ce.Surface.prototype.onDocumentKeyPress = function ( e ) {
+	// Filter out non-character keys. Doing this prevents:
+	// * Unexpected content deletion when selection is not collapsed and the user presses, for
+	//   example, the Home key (Firefox fires 'keypress' for it)
+	// TODO: Should be covered with Selenium tests.
+	if (
+		// Catches most keys that don't produce output (charCode === 0, thus no character)
+		e.which === 0 || e.charCode === 0 ||
+		// Opera 12 doesn't always adhere to that convention
+		e.keyCode === OO.ui.Keys.TAB || e.keyCode === OO.ui.Keys.ESCAPE ||
+		// Ignore all keypresses with Ctrl / Cmd modifier keys
+		ve.ce.isShortcutKey( e )
+	) {
+		return;
+	}
+
 	this.handleInsertion();
 };
 
