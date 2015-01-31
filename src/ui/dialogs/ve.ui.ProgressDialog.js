@@ -129,7 +129,7 @@ ve.ui.ProgressDialog.prototype.progressComplete = function ( $row, failed ) {
 	}
 	if ( failed ) {
 		$row.remove();
-		this.manager.updateWindowSize( this );
+		this.updateSize();
 	}
 };
 
