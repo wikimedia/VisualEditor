@@ -1,5 +1,5 @@
 /*!
- * VisualEditor FileDropHandlerFactory class.
+ * VisualEditor DataTransferHandlerFactory class.
  *
  * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
  */
@@ -11,25 +11,25 @@
  * @extends OO.Factory
  * @constructor
  */
-ve.ui.FileDropHandlerFactory = function VeUiFileDropHandlerFactory() {
+ve.ui.DataTransferHandlerFactory = function VeUiDataTransferHandlerFactory() {
 	// Parent constructor
-	ve.ui.FileDropHandlerFactory.super.apply( this, arguments );
+	ve.ui.DataTransferHandlerFactory.super.apply( this, arguments );
 
 	this.handlerNamesByType = {};
 };
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.FileDropHandlerFactory, OO.Factory );
+OO.inheritClass( ve.ui.DataTransferHandlerFactory, OO.Factory );
 
 /* Methods */
 
 /**
  * @inheritdoc
  */
-ve.ui.FileDropHandlerFactory.prototype.register = function ( constructor ) {
+ve.ui.DataTransferHandlerFactory.prototype.register = function ( constructor ) {
 	// Parent method
-	ve.ui.FileDropHandlerFactory.super.prototype.register.call( this, constructor );
+	ve.ui.DataTransferHandlerFactory.super.prototype.register.call( this, constructor );
 
 	var i, l, types = constructor.static.types;
 	for ( i = 0, l = types.length; i < l; i++ ) {
@@ -43,10 +43,10 @@ ve.ui.FileDropHandlerFactory.prototype.register = function ( constructor ) {
  * @param {string} type File type
  * @returns {string|undefined} Handler name, or undefined if not found
  */
-ve.ui.FileDropHandlerFactory.prototype.getHandlerNameForType = function ( type ) {
+ve.ui.DataTransferHandlerFactory.prototype.getHandlerNameForType = function ( type ) {
 	return this.handlerNamesByType[type];
 };
 
 /* Initialization */
 
-ve.ui.fileDropHandlerFactory = new ve.ui.FileDropHandlerFactory();
+ve.ui.dataTransferHandlerFactory = new ve.ui.DataTransferHandlerFactory();

@@ -1023,10 +1023,10 @@ ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
 		}
 	} else if ( dataTransfer.files.length ) {
 		for ( i = 0, l = dataTransfer.files.length; i < l; i++ ) {
-			name = ve.ui.fileDropHandlerFactory.getHandlerNameForType( dataTransfer.files[i].type );
+			name = ve.ui.dataTransferHandlerFactory.getHandlerNameForType( dataTransfer.files[i].type );
 			if ( name ) {
 				fileHandlers.push(
-					ve.ui.fileDropHandlerFactory.create( name, this.surface, dataTransfer.files[i] )
+					ve.ui.dataTransferHandlerFactory.create( name, this.surface, dataTransfer.files[i] )
 				);
 			}
 		}

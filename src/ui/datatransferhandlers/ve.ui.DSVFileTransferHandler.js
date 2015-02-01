@@ -1,40 +1,40 @@
 /*!
- * VisualEditor UserInterface delimiter-separated values file drop handler class.
+ * VisualEditor UserInterface delimiter-separated values file transfer handler class.
  *
  * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
 /**
- * Delimiter-separated values file drop handler.
+ * Delimiter-separated values file transfer handler.
  *
  * @class
- * @extends ve.ui.FileDropHandler
+ * @extends ve.ui.DataTransferHandler
  *
  * @constructor
  * @param {ve.ui.Surface} surface
  * @param {File} file
  */
-ve.ui.DSVFileDropHandler = function VeUiDSVFileDropHandler() {
+ve.ui.DSVFileTransferHandler = function VeUiDSVFileTransferHandler() {
 	// Parent constructor
-	ve.ui.DSVFileDropHandler.super.apply( this, arguments );
+	ve.ui.DSVFileTransferHandler.super.apply( this, arguments );
 };
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.DSVFileDropHandler, ve.ui.FileDropHandler );
+OO.inheritClass( ve.ui.DSVFileTransferHandler, ve.ui.DataTransferHandler );
 
 /* Static properties */
 
-ve.ui.DSVFileDropHandler.static.name = 'dsv';
+ve.ui.DSVFileTransferHandler.static.name = 'dsv';
 
-ve.ui.DSVFileDropHandler.static.types = [ 'text/csv', 'text/tab-separated-values' ];
+ve.ui.DSVFileTransferHandler.static.types = [ 'text/csv', 'text/tab-separated-values' ];
 
 /* Methods */
 
 /**
  * @inheritdoc
  */
-ve.ui.DSVFileDropHandler.prototype.process = function () {
+ve.ui.DSVFileTransferHandler.prototype.process = function () {
 	this.createProgress( this.insertableDataDeferred.promise() );
 	this.reader.readAsText( this.file );
 };
@@ -42,7 +42,7 @@ ve.ui.DSVFileDropHandler.prototype.process = function () {
 /**
  * @inheritdoc
  */
-ve.ui.DSVFileDropHandler.prototype.onFileProgress = function ( e ) {
+ve.ui.DSVFileTransferHandler.prototype.onFileProgress = function ( e ) {
 	if ( e.lengthComputable ) {
 		this.setProgress( 100 * e.loaded / e.total );
 	} else {
@@ -53,7 +53,7 @@ ve.ui.DSVFileDropHandler.prototype.onFileProgress = function ( e ) {
 /**
  * @inheritdoc
  */
-ve.ui.DSVFileDropHandler.prototype.onFileLoad = function () {
+ve.ui.DSVFileTransferHandler.prototype.onFileLoad = function () {
 	var i, j, line,
 		data = [],
 		input = Papa.parse( this.reader.result );
@@ -89,7 +89,7 @@ ve.ui.DSVFileDropHandler.prototype.onFileLoad = function () {
 /**
  * @inheritdoc
  */
-ve.ui.DSVFileDropHandler.prototype.onFileLoadEnd = function () {
+ve.ui.DSVFileTransferHandler.prototype.onFileLoadEnd = function () {
 	// 'loadend' fires after 'load'/'abort'/'error'.
 	// Reject the deferred if it hasn't already resolved.
 	this.insertableDataDeferred.reject();
@@ -98,13 +98,13 @@ ve.ui.DSVFileDropHandler.prototype.onFileLoadEnd = function () {
 /**
  * @inheritdoc
  */
-ve.ui.DSVFileDropHandler.prototype.abort = function () {
+ve.ui.DSVFileTransferHandler.prototype.abort = function () {
 	// Parent method
-	ve.ui.DSVFileDropHandler.super.prototype.abort.call( this );
+	ve.ui.DSVFileTransferHandler.super.prototype.abort.call( this );
 
 	this.reader.abort();
 };
 
 /* Registration */
 
-ve.ui.fileDropHandlerFactory.register( ve.ui.DSVFileDropHandler );
+ve.ui.dataTransferHandlerFactory.register( ve.ui.DSVFileTransferHandler );

@@ -1,11 +1,11 @@
 /*!
- * VisualEditor UserInterface file drop handler class.
+ * VisualEditor UserInterface data transfer handler class.
  *
  * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
 /**
- * File drop handler.
+ * Data transfer handler.
  *
  * @class
  * @abstract
@@ -14,7 +14,7 @@
  * @param {ve.ui.Surface} surface Surface
  * @param {File} file File to handle
  */
-ve.ui.FileDropHandler = function VeUiFileDropHandler( surface, file ) {
+ve.ui.DataTransferHandler = function VeUiDataTransferHandler( surface, file ) {
 	// Properties
 	this.surface = surface;
 	this.file = file;
@@ -34,7 +34,7 @@ ve.ui.FileDropHandler = function VeUiFileDropHandler( surface, file ) {
 
 /* Inheritance */
 
-OO.initClass( ve.ui.FileDropHandler );
+OO.initClass( ve.ui.DataTransferHandler );
 
 /* Static properties */
 
@@ -45,7 +45,7 @@ OO.initClass( ve.ui.FileDropHandler );
  * @property {string}
  * @inheritable
  */
-ve.ui.FileDropHandler.static.name = null;
+ve.ui.DataTransferHandler.static.name = null;
 
 /**
  * List of mime types supported by this handler
@@ -54,7 +54,7 @@ ve.ui.FileDropHandler.static.name = null;
  * @property {string[]}
  * @inheritable
  */
-ve.ui.FileDropHandler.static.types = [];
+ve.ui.DataTransferHandler.static.types = [];
 
 /* Methods */
 
@@ -63,8 +63,8 @@ ve.ui.FileDropHandler.static.types = [];
  *
  * Implementations should aim to resolve this.insertableDataDeferred.
  */
-ve.ui.FileDropHandler.prototype.process = function () {
-	throw new Error( 've.ui.FileDropHandler subclass must implement process' );
+ve.ui.DataTransferHandler.prototype.process = function () {
+	throw new Error( 've.ui.DataTransferHandler subclass must implement process' );
 };
 
 /**
@@ -72,7 +72,7 @@ ve.ui.FileDropHandler.prototype.process = function () {
  *
  * @return {jQuery.Promise} Promise which resolves with data to insert
  */
-ve.ui.FileDropHandler.prototype.getInsertableData = function () {
+ve.ui.DataTransferHandler.prototype.getInsertableData = function () {
 	this.process();
 
 	return this.insertableDataDeferred.promise();
@@ -83,26 +83,26 @@ ve.ui.FileDropHandler.prototype.getInsertableData = function () {
  *
  * @param {Event} e Progress event
  */
-ve.ui.FileDropHandler.prototype.onFileProgress = function () {};
+ve.ui.DataTransferHandler.prototype.onFileProgress = function () {};
 
 /**
  * Handle load events from the file reader
  *
  * @param {Event} e Load event
  */
-ve.ui.FileDropHandler.prototype.onFileLoad = function () {};
+ve.ui.DataTransferHandler.prototype.onFileLoad = function () {};
 
 /**
  * Handle load end events from the file reader
  *
  * @param {Event} e Load end event
  */
-ve.ui.FileDropHandler.prototype.onFileLoadEnd = function () {};
+ve.ui.DataTransferHandler.prototype.onFileLoadEnd = function () {};
 
 /**
- * Abort the file drop handler
+ * Abort the data transfer handler
  */
-ve.ui.FileDropHandler.prototype.abort = function () {
+ve.ui.DataTransferHandler.prototype.abort = function () {
 	this.insertableDataDeferred.reject();
 };
 
@@ -112,7 +112,7 @@ ve.ui.FileDropHandler.prototype.abort = function () {
  * @param {jQuery.Promise} progressCompletePromise Promise which resolves when the progress action is complete
  * @param {jQuery|string|Function} [label] Progress bar label, defaults to file name
  */
-ve.ui.FileDropHandler.prototype.createProgress = function ( progressCompletePromise, label ) {
+ve.ui.DataTransferHandler.prototype.createProgress = function ( progressCompletePromise, label ) {
 	var handler = this;
 
 	this.surface.createProgress( progressCompletePromise, label || this.file.name ).done( function ( progressBar, cancelPromise ) {
@@ -130,7 +130,7 @@ ve.ui.FileDropHandler.prototype.createProgress = function ( progressCompleteProm
  *
  * @param {number} progress Progress percent
  */
-ve.ui.FileDropHandler.prototype.setProgress = function ( progress ) {
+ve.ui.DataTransferHandler.prototype.setProgress = function ( progress ) {
 	this.progress = progress;
 	if ( this.progressBar ) {
 		this.progressBar.setProgress( this.progress );

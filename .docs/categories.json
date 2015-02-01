@@ -123,7 +123,7 @@
 					"ve.ui.TargetToolbar",
 					"ve.ui.DebugBar",
 					"ve.ui.Trigger",
-					"ve.ui.*FileDropHandler"
+					"ve.ui.*TransferHandler"
 				]
 			},
 			{
