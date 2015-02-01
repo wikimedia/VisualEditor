@@ -212,10 +212,34 @@ module.exports = function ( grunt ) {
 		}
 	} );
 
+	grunt.registerTask( 'git-status', function () {
+		var done = this.async();
+		// Are there unstaged changes?
+		require( 'child_process' ).exec( 'git ls-files --modified', function ( err, stdout, stderr ) {
+			var ret = err || stderr || stdout;
+			if ( ret ) {
+				grunt.log.write( ret );
+				grunt.log.error( 'Unstaged changes.' );
+				done( false );
+			} else {
+				grunt.log.ok( 'No unstaged changes.' );
+				done();
+			}
+		} );
+	} );
+
 	grunt.registerTask( 'build', [ 'clean', 'concat', 'cssjanus', 'cssUrlEmbed', 'copy', 'buildloader' ] );
 	grunt.registerTask( 'lint', [ 'jshint', 'jscs', 'csslint', 'banana' ] );
 	grunt.registerTask( 'unit', [ 'karma:main' ] );
-	grunt.registerTask( 'test', [ 'git-build', 'build', 'lint', 'unit' ] );
+	grunt.registerTask( '_test', [ 'git-build', 'build', 'lint', 'unit' ] );
+	grunt.registerTask( 'ci', [ '_test', 'git-status' ] );
 	grunt.registerTask( 'watch', [ 'karma:bg:start', 'runwatch' ] );
+
+	if ( process.env.JENKINS_HOME ) {
+		grunt.registerTask( 'test', 'ci' );
+	} else {
+		grunt.registerTask( 'test', '_test' );
+	}
+
 	grunt.registerTask( 'default', 'test' );
 };
