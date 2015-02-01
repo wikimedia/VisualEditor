@@ -13,7 +13,7 @@
  *
  * @constructor
  * @param {ve.ui.Surface} surface
- * @param {DataTransferItem|ve.ui.DataTransferItem} item
+ * @param {ve.ui.DataTransferItem} item
  */
 ve.ui.FileTransferHandler = function VeUiFileTransferHandler() {
 	// Parent constructor

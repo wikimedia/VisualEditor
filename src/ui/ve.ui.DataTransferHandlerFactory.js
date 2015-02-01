@@ -55,36 +55,32 @@ ve.ui.DataTransferHandlerFactory.prototype.register = function ( constructor ) {
 /**
  * Returns the primary command for for node.
  *
- * @param {DataTransferItem} item Data transfer item
+ * @param {ve.ui.DataTransferItem} item Data transfer item
+ * @param {boolean} isPaste Handler being used for paste
  * @returns {string|undefined} Handler name, or undefined if not found
  */
-ve.ui.DataTransferHandlerFactory.prototype.getHandlerNameForItem = function ( item ) {
-	return ( this.handlerNamesByKindAndType[item.kind] && this.handlerNamesByKindAndType[item.kind][item.type] ) ||
+ve.ui.DataTransferHandlerFactory.prototype.getHandlerNameForItem = function ( item, isPaste ) {
+	var constructor,
+		name = ( this.handlerNamesByKindAndType[item.kind] && this.handlerNamesByKindAndType[item.kind][item.type] ) ||
 		this.handlerNamesByType[item.type];
+
+	if ( !name ) {
+		return;
+	}
+
+	constructor = this.registry[name];
+
+	if ( isPaste && !constructor.static.handlesPaste ) {
+		return;
+	}
+
+	if ( constructor.static.matchFunction && !constructor.static.matchFunction( item ) ) {
+		return;
+	}
+
+	return name;
 };
 
 /* Initialization */
 
 ve.ui.dataTransferHandlerFactory = new ve.ui.DataTransferHandlerFactory();
-
-/**
- * Fake data transfer item from a file
- *
- * @class
- * @constructor
- * @param {File} file Data transfer file
- */
-ve.ui.DataTransferItem = function VeUiDataTransferItem( file ) {
-	this.kind = 'file';
-	this.type = file.type;
-	this.file = file;
-};
-
-/**
- * Get file object
- *
- * @return {File} File object
- */
-ve.ui.DataTransferItem.prototype.getAsFile = function () {
-	return this.file;
-};

@@ -12,7 +12,7 @@
  *
  * @constructor
  * @param {ve.ui.Surface} surface Surface
- * @param {DataTransferItem|ve.ui.DataTransferItem} item Data transfer item to handle
+ * @param {ve.ui.DataTransferItem} item Data transfer item to handle
  */
 ve.ui.DataTransferHandler = function VeUiDataTransferHandler( surface, item ) {
 	// Properties
@@ -56,6 +56,27 @@ ve.ui.DataTransferHandler.static.kinds = null;
  * @inheritable
  */
 ve.ui.DataTransferHandler.static.types = [];
+
+/**
+ * Use handler when data transfer source is a paste
+ *
+ * @static
+ * @type {boolean}
+ * @inheritable
+ */
+ve.ui.DataTransferHandler.static.handlesPaste = true;
+
+/**
+ * Custom match function which is given the data transfer item as its only argument
+ * and returns a boolean indicating if the handler matches
+ *
+ * Null means the handler always matches
+ *
+ * @static
+ * @type {Function}
+ * @inheritable
+ */
+ve.ui.DataTransferHandler.static.matchFunction = null;
 
 /* Methods */
 
