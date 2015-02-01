@@ -1001,9 +1001,10 @@ ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
 	// Properties may be nullified by other events, so cache before setTimeout
 	var selectionJSON, dragSelection, dragRange, originFragment, originData,
 		targetRange, targetOffset, targetFragment, dragHtml, dragText,
-		i, l, name, insert,
+		i, l, name, insert, item,
 		fileHandlers = [],
 		dataTransfer = e.originalEvent.dataTransfer,
+		items = dataTransfer && ( dataTransfer.items || dataTransfer.files ),
 		$dropTarget = this.$lastDropTarget,
 		dropPosition = this.lastDropPosition;
 
@@ -1028,12 +1029,18 @@ ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
 		if ( dragSelection instanceof ve.dm.LinearSelection ) {
 			dragRange = dragSelection.getRange();
 		}
-	} else if ( dataTransfer.files.length ) {
-		for ( i = 0, l = dataTransfer.files.length; i < l; i++ ) {
-			name = ve.ui.dataTransferHandlerFactory.getHandlerNameForType( dataTransfer.files[i].type );
+	} else if ( items && items.length ) {
+		for ( i = 0, l = items.length; i < l; i++ ) {
+			if ( items[i].kind ) {
+				item = items[i];
+			} else {
+				// Create fake DataTransferItem from file
+				item = new ve.ui.DataTransferItem( items[i] );
+			}
+			name = ve.ui.dataTransferHandlerFactory.getHandlerNameForItem( item );
 			if ( name ) {
 				fileHandlers.push(
-					ve.ui.dataTransferHandlerFactory.create( name, this.surface, dataTransfer.files[i] )
+					ve.ui.dataTransferHandlerFactory.create( name, this.surface, item )
 				);
 			}
 		}

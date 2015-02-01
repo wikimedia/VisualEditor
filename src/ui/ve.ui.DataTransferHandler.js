@@ -12,24 +12,14 @@
  *
  * @constructor
  * @param {ve.ui.Surface} surface Surface
- * @param {File} file File to handle
+ * @param {DataTransferItem|ve.ui.DataTransferItem} item Data transfer item to handle
  */
-ve.ui.DataTransferHandler = function VeUiDataTransferHandler( surface, file ) {
+ve.ui.DataTransferHandler = function VeUiDataTransferHandler( surface, item ) {
 	// Properties
 	this.surface = surface;
-	this.file = file;
+	this.item = item;
 
 	this.insertableDataDeferred = $.Deferred();
-
-	this.reader = new FileReader();
-
-	this.progress = false;
-	this.progressBar = null;
-
-	// Events
-	this.reader.addEventListener( 'progress', this.onFileProgress.bind( this ) );
-	this.reader.addEventListener( 'load', this.onFileLoad.bind( this ) );
-	this.reader.addEventListener( 'loadend', this.onFileLoadEnd.bind( this ) );
 };
 
 /* Inheritance */
@@ -46,6 +36,17 @@ OO.initClass( ve.ui.DataTransferHandler );
  * @inheritable
  */
 ve.ui.DataTransferHandler.static.name = null;
+
+/**
+ * List of transfer kinds supported by this handler
+ *
+ * Null means all kinds are supported.
+ *
+ * @static
+ * @property {string[]|null}
+ * @inheritable
+ */
+ve.ui.DataTransferHandler.static.kinds = null;
 
 /**
  * List of mime types supported by this handler
@@ -79,60 +80,8 @@ ve.ui.DataTransferHandler.prototype.getInsertableData = function () {
 };
 
 /**
- * Handle progress events from the file reader
- *
- * @param {Event} e Progress event
- */
-ve.ui.DataTransferHandler.prototype.onFileProgress = function () {};
-
-/**
- * Handle load events from the file reader
- *
- * @param {Event} e Load event
- */
-ve.ui.DataTransferHandler.prototype.onFileLoad = function () {};
-
-/**
- * Handle load end events from the file reader
- *
- * @param {Event} e Load end event
- */
-ve.ui.DataTransferHandler.prototype.onFileLoadEnd = function () {};
-
-/**
  * Abort the data transfer handler
  */
 ve.ui.DataTransferHandler.prototype.abort = function () {
 	this.insertableDataDeferred.reject();
-};
-
-/**
- * Create a progress bar with a specified label
- *
- * @param {jQuery.Promise} progressCompletePromise Promise which resolves when the progress action is complete
- * @param {jQuery|string|Function} [label] Progress bar label, defaults to file name
- */
-ve.ui.DataTransferHandler.prototype.createProgress = function ( progressCompletePromise, label ) {
-	var handler = this;
-
-	this.surface.createProgress( progressCompletePromise, label || this.file.name ).done( function ( progressBar, cancelPromise ) {
-		// Set any progress that was achieved before this resolved
-		progressBar.setProgress( handler.progress );
-		handler.progressBar = progressBar;
-		cancelPromise.fail( handler.abort.bind( handler ) );
-	} );
-};
-
-/**
- * Set progress bar progress
- *
- * Progress is stored in a property in case the progress bar doesn't exist yet.
- *
- * @param {number} progress Progress percent
- */
-ve.ui.DataTransferHandler.prototype.setProgress = function ( progress ) {
-	this.progress = progress;
-	if ( this.progressBar ) {
-		this.progressBar.setProgress( this.progress );
-	}
 };

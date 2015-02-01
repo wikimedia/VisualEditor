@@ -8,11 +8,11 @@
  * Plain text data transfer filetransfer handler.
  *
  * @class
- * @extends ve.ui.DataTransferHandler
+ * @extends ve.ui.FileTransferHandler
  *
  * @constructor
  * @param {ve.ui.Surface} surface
- * @param {File} file
+ * @param {DataTransferItem|ve.ui.DataTransferItem} item
  */
 ve.ui.PlainTextFileTransferHandler = function VeUiPlainTextFileTransferHandler() {
 	// Parent constructor
@@ -21,7 +21,7 @@ ve.ui.PlainTextFileTransferHandler = function VeUiPlainTextFileTransferHandler()
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.PlainTextFileTransferHandler, ve.ui.DataTransferHandler );
+OO.inheritClass( ve.ui.PlainTextFileTransferHandler, ve.ui.FileTransferHandler );
 
 /* Static properties */
 
