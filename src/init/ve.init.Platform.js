@@ -68,6 +68,18 @@ ve.init.Platform.prototype.getExternalLinkUrlProtocolsRegExp = function () {
 };
 
 /**
+ * Get a config value from the platform.
+ *
+ * @method
+ * @abstract
+ * @param {string|string[]} key Config key, or list of keys
+ * @returns {Mixed|Object} Config value, or keyed object of config values if list of keys provided
+ */
+ve.init.Platform.prototype.getConfig = function () {
+	throw new Error( 've.init.Platform.getConfig must be overridden in subclass' );
+};
+
+/**
  * Add multiple messages to the localization system.
  *
  * @method
