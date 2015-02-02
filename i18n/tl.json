@@ -3,7 +3,8 @@
 		"authors": [
 			"AnakngAraw",
 			"Sky Harbor",
-			"Jewel457"
+			"Jewel457",
+			"Leeheonjin"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -30,6 +31,7 @@
 	"visualeditor-dialog-error-dismiss": "Bumalik",
 	"visualeditor-dialog-language-auto-direction": "Automatiko",
 	"visualeditor-dialog-language-search-title": "Pumili ng wika",
+	"visualeditor-find-and-replace-invalid-regex": "Hindi wastong regular na ekspresyon",
 	"visualeditor-formatdropdown-format-heading-label": "Pamuhatan (1-6)",
 	"visualeditor-formatdropdown-format-heading1": "Pamuhatan 1",
 	"visualeditor-formatdropdown-format-heading2": "Pamuhatan 2",

@@ -14,7 +14,8 @@
 			"Una giornata uggiosa '94",
 			"Lucas2",
 			"Jdforrester",
-			"Ricordisamoa"
+			"Ricordisamoa",
+			"Nivit"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -48,6 +49,7 @@
 	"visualeditor-dialog-language-auto-direction": "Automatico",
 	"visualeditor-dialog-language-search-title": "Seleziona lingua",
 	"visualeditor-find-and-replace-done": "Fatto",
+	"visualeditor-find-and-replace-invalid-regex": "Espressione regolare non valida",
 	"visualeditor-formatdropdown-format-heading-label": "Intestazione (1-6)",
 	"visualeditor-formatdropdown-format-heading1": "Titolo 1",
 	"visualeditor-formatdropdown-format-heading2": "Titolo 2",

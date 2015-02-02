@@ -4,7 +4,8 @@
 			"Alison",
 			"Kscanne",
 			"Toliño",
-			"Elisardojm"
+			"Elisardojm",
+			"Breogan2008"
 		]
 	},
 	"visualeditor": "Editor visual",
@@ -40,6 +41,7 @@
 	"visualeditor-dialog-language-search-title": "Seleccionar a lingua",
 	"visualeditor-find-and-replace-done": "Feito",
 	"visualeditor-find-and-replace-find-text": "Buscar",
+	"visualeditor-find-and-replace-invalid-regex": "Expresión regular inválida",
 	"visualeditor-find-and-replace-match-case": "Facer coincidir as maiúsculas e as minúsculas",
 	"visualeditor-find-and-replace-next-button": "Atopar o seguinte",
 	"visualeditor-find-and-replace-previous-button": "Atopar o anterior",

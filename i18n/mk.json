@@ -43,6 +43,7 @@
 	"visualeditor-dimensionswidget-px": "пиксели",
 	"visualeditor-find-and-replace-done": "Готово",
 	"visualeditor-find-and-replace-find-text": "Најди",
+	"visualeditor-find-and-replace-invalid-regex": "Неважечки регуларен израз",
 	"visualeditor-find-and-replace-match-case": "Разликувај големи/мали букви",
 	"visualeditor-find-and-replace-next-button": "Најди следно",
 	"visualeditor-find-and-replace-previous-button": "Најди претходно",
