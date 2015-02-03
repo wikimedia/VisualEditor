@@ -379,7 +379,7 @@ ve.demo.SurfaceContainer.prototype.loadHtml = function ( pageHtml ) {
 	this.surface = this.target.addSurface(
 		ve.dm.converter.getModelFromDom(
 			ve.createDocumentFromHtml( pageHtml ),
-			this.target.$element.ownerDocument,
+			null,
 			this.lang,
 			this.dir
 		)
