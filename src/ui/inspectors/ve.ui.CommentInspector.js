@@ -84,7 +84,7 @@ ve.ui.CommentInspector.prototype.initialize = function () {
 ve.ui.CommentInspector.prototype.onTextInputWidgetChange = function () {
 	var height = this.textWidget.$element.height();
 	if ( height !== this.previousTextWidgetHeight ) {
-		this.getManager().updateWindowSize( this );
+		this.updateSize();
 		this.previousTextWidgetHeight = height;
 	}
 };
