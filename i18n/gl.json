@@ -5,11 +5,15 @@
 			"Kscanne",
 			"Toliño",
 			"Elisardojm",
-			"Breogan2008"
+			"Breogan2008",
+			"Beninho"
 		]
 	},
 	"visualeditor": "Editor visual",
 	"visualeditor-aliennode-tooltip": "Sentímolo, polo de agora este elemento só se pode editar no modo fonte.",
+	"visualeditor-align-widget-center": "Centro",
+	"visualeditor-align-widget-left": "Esquerda",
+	"visualeditor-align-widget-right": "Dereita",
 	"visualeditor-annotationbutton-bold-tooltip": "Negra",
 	"visualeditor-annotationbutton-code-tooltip": "Código máquina",
 	"visualeditor-annotationbutton-italic-tooltip": "Cursiva",
