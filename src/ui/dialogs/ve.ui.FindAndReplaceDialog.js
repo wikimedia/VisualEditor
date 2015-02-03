@@ -60,7 +60,6 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 	this.query = null;
 	this.findText = new OO.ui.TextInputWidget( {
 		$: this.$,
-		classes: ['ve-ui-findAndReplaceDialog-cell', 've-ui-findAndReplaceDialog-findText'],
 		placeholder: ve.msg( 'visualeditor-find-and-replace-find-text' )
 	} );
 	this.matchCaseToggle = new OO.ui.ToggleButtonWidget( {
@@ -72,10 +71,6 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 		$: this.$,
 		icon: 'regular-expression',
 		iconTitle: ve.msg( 'visualeditor-find-and-replace-regular-expression' )
-	} );
-	this.focusedIndexLabel = new OO.ui.LabelWidget( {
-		$: this.$,
-		classes: ['ve-ui-findAndReplaceDialog-focusedIndexLabel']
 	} );
 
 	this.previousButton = new OO.ui.ButtonWidget( {
@@ -92,7 +87,6 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 	} );
 	this.replaceText = new OO.ui.TextInputWidget( {
 		$: this.$,
-		classes: ['ve-ui-findAndReplaceDialog-cell'],
 		placeholder: ve.msg( 'visualeditor-find-and-replace-replace-text' )
 	} );
 	this.replaceButton = new OO.ui.ButtonWidget( {
@@ -159,14 +153,16 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 	this.$body
 		.append(
 			$findRow.append(
-				this.findText.$element.append(
-					this.focusedIndexLabel.$element
+				this.$( '<div>' ).addClass( 've-ui-findAndReplaceDialog-cell ve-ui-findAndReplaceDialog-cell-input' ).append(
+					this.findText.$element
 				),
 				navigateGroup.$element,
 				optionsGroup.$element
 			),
 			$replaceRow.append(
-				this.replaceText.$element,
+				this.$( '<div>' ).addClass( 've-ui-findAndReplaceDialog-cell ve-ui-findAndReplaceDialog-cell-input' ).append(
+					this.replaceText.$element
+				),
 				replaceGroup.$element,
 				doneButton.$element
 			)
@@ -376,11 +372,11 @@ ve.ui.FindAndReplaceDialog.prototype.highlightFocused = function ( scrollIntoVie
 		surfaceView = this.surface.getView();
 
 	if ( this.results ) {
-		this.focusedIndexLabel.setLabel(
+		this.findText.setLabel(
 			ve.msg( 'visualeditor-find-and-replace-results', this.focusedIndex + 1, this.results )
 		);
 	} else {
-		this.focusedIndexLabel.setLabel(
+		this.findText.setLabel(
 			this.invalidRegex ? ve.msg( 'visualeditor-find-and-replace-invalid-regex' ) : ''
 		);
 		return;

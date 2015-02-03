@@ -9,11 +9,3 @@
 .ve-ui-toolbarDialog .oo-ui-dialog-content > .oo-ui-window-body {
 	outline: none;
 }
-
-/* ve.ui.FindAndReplaceDialog */
-
-.ve-ui-findAndReplaceDialog-focusedIndexLabel {
-	padding: 0.7em 0;
-	right: 1.4em;
-	color: #888;
-}
