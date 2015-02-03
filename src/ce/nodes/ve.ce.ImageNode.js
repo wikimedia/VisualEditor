@@ -67,7 +67,7 @@ ve.ce.ImageNode.static.getDescription = function ( model ) {
 ve.ce.ImageNode.prototype.onAttributeChange = function ( key, from, to ) {
 	switch ( key ) {
 		case 'src':
-			this.$image.attr( 'src', this.getResolvedAttribute( 'src' ) );
+			this.$image.prop( 'src', this.getResolvedAttribute( 'src' ) );
 			break;
 
 		case 'width':

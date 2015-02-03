@@ -30,7 +30,7 @@ ve.ce.InlineImageNode = function VeCeInlineImageNode( model, config ) {
 	// Initialization
 	this.$element
 		.addClass( 've-ce-inlineImageNode' )
-		.attr( {
+		.prop( {
 			alt: this.model.getAttribute( 'alt' ),
 			src: this.getResolvedAttribute( 'src' )
 		} )

@@ -111,8 +111,8 @@ ve.ui.DimensionsWidget.prototype.setDefaults = function ( dimensions ) {
  * Render the default dimensions as input placeholders
  */
 ve.ui.DimensionsWidget.prototype.renderDefaults = function () {
-	this.widthInput.$input.attr( 'placeholder', this.getDefaults().width );
-	this.heightInput.$input.attr( 'placeholder', this.getDefaults().height );
+	this.widthInput.$input.prop( 'placeholder', this.getDefaults().width );
+	this.heightInput.$input.prop( 'placeholder', this.getDefaults().height );
 };
 
 /**

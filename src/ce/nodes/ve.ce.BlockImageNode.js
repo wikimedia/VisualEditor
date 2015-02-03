@@ -25,7 +25,7 @@ ve.ce.BlockImageNode = function VeCeBlockImageNode( model, config ) {
 
 	// Build DOM
 	this.$image = this.$( '<img>' )
-		.attr( 'src', this.getResolvedAttribute( 'src' ) )
+		.prop( 'src', this.getResolvedAttribute( 'src' ) )
 		.prependTo( this.$element );
 
 	// Mixin constructors
@@ -34,7 +34,7 @@ ve.ce.BlockImageNode = function VeCeBlockImageNode( model, config ) {
 	// Initialization
 	this.$element.addClass( 've-ce-blockImageNode' );
 	this.$image
-		.attr( {
+		.prop( {
 			alt: this.model.getAttribute( 'alt' ),
 			src: this.getResolvedAttribute( 'src' )
 		} )

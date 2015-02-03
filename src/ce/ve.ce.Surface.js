@@ -159,9 +159,12 @@ ve.ce.Surface = function VeCeSurface( model, ui, options ) {
 	this.$highlightsFocused.addClass( 've-ce-surface-highlights-focused' );
 	this.$highlightsBlurred.addClass( 've-ce-surface-highlights-blurred' );
 	this.$deactivatedSelection.addClass( 've-ce-surface-deactivatedSelection' );
-	this.$pasteTarget.addClass( 've-ce-surface-paste' )
-		.attr( 'tabIndex', -1 )
-		.prop( 'contentEditable', 'true' );
+	this.$pasteTarget
+		.addClass( 've-ce-surface-paste' )
+		.prop( {
+			tabIndex: -1,
+			contentEditable: 'true'
+		} );
 
 	// Add elements to the DOM
 	this.$element.append( this.$documentNode, this.$pasteTarget );

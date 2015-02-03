@@ -21,8 +21,10 @@ ve.ce.LinkAnnotation = function VeCeLinkAnnotation() {
 	// DOM changes
 	this.$element
 		.addClass( 've-ce-linkAnnotation' )
-		.attr( 'href', ve.resolveUrl( this.model.getHref(), this.getModelHtmlDocument() ) )
-		.attr( 'title', this.constructor.static.getDescription( this.model ) )
+		.prop( {
+			href: ve.resolveUrl( this.model.getHref(), this.getModelHtmlDocument() ),
+			title: this.constructor.static.getDescription( this.model )
+		} )
 		// Some browsers will try to let links do their thing
 		// (e.g. iOS Safari when the keyboard is closed)
 		.on( 'click', function ( e ) {

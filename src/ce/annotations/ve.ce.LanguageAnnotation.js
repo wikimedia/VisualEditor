@@ -22,7 +22,7 @@ ve.ce.LanguageAnnotation = function VeCeLanguageAnnotation() {
 	this.$element
 		.addClass( 've-ce-languageAnnotation' )
 		.addClass( 've-ce-bidi-isolate' )
-		.attr( {
+		.prop( {
 			lang: this.model.getAttribute( 'lang' ),
 			dir: this.model.getAttribute( 'dir' ),
 			title: this.constructor.static.getDescription( this.model )
@@ -51,9 +51,9 @@ ve.ce.LanguageAnnotation.static.getDescription = function ( model ) {
 
 	if ( !dir || dir === ve.init.platform.getLanguageDirection( lang ).toUpperCase() ) {
 		return ve.msg( 'visualeditor-languageannotation-description', name );
-	} else {
-		return ve.msg( 'visualeditor-languageannotation-description-with-dir', name, dir );
 	}
+
+	return ve.msg( 'visualeditor-languageannotation-description-with-dir', name, dir );
 };
 
 /* Registration */
