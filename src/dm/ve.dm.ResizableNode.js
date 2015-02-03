@@ -15,6 +15,8 @@
  */
 ve.dm.ResizableNode = function VeDmResizableNode() {
 	this.scalable = null;
+
+	this.connect( this, { attributeChange: 'onResizableAttributeChange' } );
 };
 
 /* Inheritance */
@@ -43,4 +45,21 @@ ve.dm.ResizableNode.prototype.getScalable = function () {
  */
 ve.dm.ResizableNode.prototype.createScalable = function () {
 	throw new Error( 've.dm.ResizableNode subclass must implement createScalable' );
+};
+
+/**
+ * Handle attribute change events from the model.
+ *
+ * @method
+ * @param {string} key Attribute key
+ * @param {string} from Old value
+ * @param {string} to New value
+ */
+ve.dm.ResizableNode.prototype.onResizableAttributeChange = function ( key ) {
+	if ( key === 'width' || key === 'height' ) {
+		this.getScalable().setCurrentDimensions( {
+			width: this.getAttribute( 'width' ),
+			height: this.getAttribute( 'height' )
+		} );
+	}
 };

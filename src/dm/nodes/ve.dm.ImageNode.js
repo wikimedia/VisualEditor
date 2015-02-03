@@ -15,11 +15,9 @@
  * @constructor
  */
 ve.dm.ImageNode = function VeDmImageNode() {
-	// Mixin constructor
-	ve.dm.ResizableNode.call( this );
-
 	// Mixin constructors
 	ve.dm.FocusableNode.call( this );
+	ve.dm.ResizableNode.call( this );
 };
 
 /* Inheritance */
