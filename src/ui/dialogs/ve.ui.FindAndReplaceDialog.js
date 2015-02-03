@@ -222,7 +222,7 @@ ve.ui.FindAndReplaceDialog.prototype.getTeardownProcess = function ( data ) {
 
 			surfaceView.focus();
 			this.$findResults.empty().detach();
-			this.fragment = [];
+			this.fragments = [];
 			this.surface = null;
 		}, this );
 };
