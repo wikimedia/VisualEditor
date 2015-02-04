@@ -104,7 +104,10 @@ ve.ce.GeneratedContentNode.prototype.getRenderedDomElements = function ( domElem
 	 * @private
 	 */
 	function resolveAttribute() {
-		this.setAttribute( attr, this[attr] );
+		var origDoc = domElements[0].ownerDocument,
+			nodeInOrigDoc = origDoc.createElement( this.nodeName );
+		nodeInOrigDoc.setAttribute( attr, this.getAttribute( attr ) );
+		this.setAttribute( attr, nodeInOrigDoc[attr] );
 	}
 
 	// Clone the elements into the target document
