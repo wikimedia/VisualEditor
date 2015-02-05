@@ -189,7 +189,8 @@
 					"unicodeJS",
 					"unicodeJS.TextString",
 					"unicodeJS.wordbreak",
-					"unicodeJS.graphemebreak"
+					"unicodeJS.graphemebreak",
+					"unicodeJS.characterclass"
 				]
 			}
 		]
