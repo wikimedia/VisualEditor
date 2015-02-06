@@ -109,6 +109,9 @@ ve.Range.prototype.clone = function () {
 /**
  * Check if an offset is within the range.
  *
+ * Specifically we mean the whole element at a specific offset, so in effect
+ * this is the same as #containsRange( new ve.Range( offset, offset + 1 ) ).
+ *
  * @param {number} offset Offset to check
  * @returns {boolean} If offset is within the range
  */
@@ -123,7 +126,7 @@ ve.Range.prototype.containsOffset = function ( offset ) {
  * @returns {boolean} If other range is within the range
  */
 ve.Range.prototype.containsRange = function ( range ) {
-	return range.start >= this.start && range.end < this.end;
+	return range.start >= this.start && range.end <= this.end;
 };
 
 /**
