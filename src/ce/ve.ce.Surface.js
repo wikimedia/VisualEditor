@@ -2790,7 +2790,7 @@ ve.ce.Surface.prototype.handleInsertion = function () {
 		annotations = documentModel.data.getAnnotationsFromRange(
 			new ve.Range( range.start, range.start + 1 )
 		);
-		if ( !this.rangeInsideOneLeafNode( range ) ) {
+		if ( !this.documentView.rangeInsideOneLeafNode( range ) ) {
 			this.model.change(
 				ve.dm.Transaction.newFromRemoval(
 					this.documentView.model,
@@ -2809,17 +2809,6 @@ ve.ce.Surface.prototype.handleInsertion = function () {
 		this.surfaceObserver.stopTimerLoop();
 		this.surfaceObserver.pollOnce();
 	}
-};
-
-/**
- * Test whether a range lies within a single leaf node.
- *
- * @param {ve.Range} range The range to test
- * @returns {boolean} Whether the range lies within a single node
- */
-ve.ce.Surface.prototype.rangeInsideOneLeafNode = function ( range ) {
-	var selected = this.documentView.selectNodes( range, 'leaves' );
-	return selected.length === 1;
 };
 
 /**

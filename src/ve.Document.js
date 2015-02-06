@@ -552,3 +552,14 @@ ve.Document.prototype.getCoveredSiblingGroups = function ( range ) {
 	}
 	return groups;
 };
+
+/**
+ * Test whether a range lies within a single leaf node.
+ *
+ * @param {ve.Range} range The range to test
+ * @returns {boolean} Whether the range lies within a single node
+ */
+ve.Document.prototype.rangeInsideOneLeafNode = function ( range ) {
+	var selected = this.selectNodes( range, 'leaves' );
+	return selected.length === 1 && selected[0].nodeRange.containsRange( range ) && selected[0].indexInNode === undefined;
+};

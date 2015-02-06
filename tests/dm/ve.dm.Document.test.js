@@ -563,6 +563,58 @@ QUnit.test( 'selectNodes', function ( assert ) {
 	}
 } );
 
+QUnit.test( 'rangeInsideOneLeafNode', function ( assert ) {
+	var i,
+		doc = ve.dm.example.createExampleDocument(),
+		cases = [
+			{
+				range: new ve.Range( 1, 4 ),
+				result: true
+			},
+			{
+				range: new ve.Range( 4, 1 ),
+				result: true
+			},
+			{
+				range: new ve.Range( 0, 5 ),
+				result: false
+			},
+			{
+				range: new ve.Range( 0, 4 ),
+				result: false
+			},
+			{
+				range: new ve.Range( 0 ),
+				result: false
+			},
+			{
+				range: new ve.Range( 5 ),
+				result: false
+			},
+			{
+				range: new ve.Range( 1 ),
+				result: true
+			},
+			{
+				range: new ve.Range( 5, 1 ),
+				result: false
+			},
+			{
+				range: new ve.Range( 4, 6 ),
+				result: false
+			}
+		];
+
+	QUnit.expect( cases.length );
+	for ( i = 0; i < cases.length; i++ ) {
+		assert.strictEqual(
+			doc.rangeInsideOneLeafNode( cases[i].range ),
+			cases[i].result,
+			'Range ' + cases[i].range.from + ', ' + cases[i].range.to + ' ' +
+			( cases[i].result ? 'is' : 'isn\'t' ) + ' inside one leaf node'
+		);
+	}
+} );
 QUnit.test( 'cloneSliceFromRange', function ( assert ) {
 	var i, expectedData, slice, range, doc,
 		cases = [
