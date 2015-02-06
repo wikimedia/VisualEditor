@@ -516,7 +516,7 @@ ve.ui.MediaSizeWidget.prototype.validateDimensions = function () {
 
 	if ( this.valid !== isValid ) {
 		this.valid = isValid;
-		this.errorLabel.$element.toggle( !isValid );
+		this.errorLabel.toggle( !isValid );
 		this.$element.toggleClass( 've-ui-mediaSizeWidget-input-hasError', !isValid );
 		// Emit change event
 		this.emit( 'valid', this.valid );
