@@ -221,7 +221,7 @@ ve.dm.InternalList.prototype.convertToData = function ( converter, doc ) {
 			div.innerHTML = itemHtmlQueue[i];
 			itemData = converter.getDataFromDomSubtree( div );
 			list = list.concat(
-				[{ type: 'internalItem' }],
+				[{ type: 'internalItem', attributes: { originalHtml: itemHtmlQueue[i] } }],
 				itemData,
 				[{ type: '/internalItem' }]
 			);
