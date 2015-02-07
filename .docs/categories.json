@@ -41,6 +41,8 @@
 					"ve.dm.DocumentSynchronizer",
 					"ve.dm.IndexValueStore",
 					"ve.dm.Scalable",
+					"ve.dm.APIResultsProvider",
+					"ve.dm.APIResultsQueue",
 					"ve.dm.NodeFactory",
 					"ve.dm.Surface",
 					"ve.dm.SurfaceFragment",
