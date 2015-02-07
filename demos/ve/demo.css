@@ -74,6 +74,7 @@ body {
 
 .ve-demo-toolbar .oo-ui-dropdownWidget .oo-ui-menuSelectWidget {
 	z-index: 3;
+	font-size: 0.9em;
 }
 
 .ve-demo-toolbar-divider {
@@ -103,6 +104,7 @@ body {
 
 .ve-ce-documentNode {
 	padding: 0.75em 1.5em;
+	font-size: 0.8em;
 }
 
 .ve-ui-debugBar {
