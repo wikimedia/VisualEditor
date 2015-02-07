@@ -26,6 +26,13 @@ ve.ce.AlignableNode = function VeCeAlignableNode( $alignable, config ) {
 
 OO.initClass( ve.ce.AlignableNode );
 
+/* Events */
+
+/**
+ * @event align
+ * @param {string} align New alignment
+ */
+
 /**
  * Handle attribute change events
  *
@@ -43,6 +50,7 @@ ve.ce.AlignableNode.prototype.onAlignableAttributeChange = function ( key, from,
 		if ( to && cssClasses[to] ) {
 			this.$alignable.addClass( cssClasses[to] );
 		}
+		this.emit( 'align', to );
 	}
 };
 
@@ -54,5 +62,6 @@ ve.ce.AlignableNode.prototype.onAlignableSetup = function () {
 		cssClasses = this.model.constructor.static.cssClasses;
 	if ( align && cssClasses[align] ) {
 		this.$alignable.addClass( cssClasses[align] );
+		this.emit( 'align', align );
 	}
 };
