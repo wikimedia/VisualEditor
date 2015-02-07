@@ -18,6 +18,21 @@ ve.dm.AlignableNode = function VeDmAlignableNode() {
 
 OO.initClass( ve.dm.AlignableNode );
 
+/* Static properties */
+
+/**
+ * CSS class to use for each alignment
+ *
+ * @static
+ * @property {Object}
+ * @inheritable
+ */
+ve.dm.AlignableNode.static.cssClasses = {
+	left: 've-align-left',
+	right: 've-align-right',
+	center: 've-align-center'
+};
+
 /**
  * Creates attributes for the data element from DOM elements
  *
@@ -27,12 +42,21 @@ OO.initClass( ve.dm.AlignableNode );
  * @return {Object} Attributes for data element
  */
 ve.dm.AlignableNode.static.toDataElementAttributes = function ( domElements ) {
-	var matches = domElements[0].className.match( /ve-align-([A-Za-z]+)/ );
+	var a, align,
+		classList = domElements[0].classList,
+		cssClasses = this.cssClasses;
 
-	if ( matches ) {
+	for ( a in cssClasses ) {
+		if ( classList.contains( cssClasses[a] ) ) {
+			align = a;
+			break;
+		}
+	}
+
+	if ( align ) {
 		return {
-			align: matches[1],
-			originalAlign: matches[1]
+			align: align,
+			originalAlign: align
 		};
 	} else {
 		return {};
