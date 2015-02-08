@@ -180,25 +180,25 @@ ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, 
 			label: 'Page',
 			input: pageDropdown
 		} ),
-		modeSelect = new OO.ui.ButtonSelectWidget().addItems( [
-			new OO.ui.ButtonOptionWidget( { data: 've', label: 'VE' } ),
-			new OO.ui.ButtonOptionWidget( { data: 'edit', label: 'Edit HTML' } ),
-			new OO.ui.ButtonOptionWidget( { data: 'read', label: 'Read' } )
-		] ),
 		removeButton = new OO.ui.ButtonWidget( {
 			$: this.$,
 			icon: 'remove',
 			label: 'Remove surface'
 		} );
 
-	modeSelect.selectItem( modeSelect.getItemFromData( 've' ) );
+	this.modeSelect = new OO.ui.ButtonSelectWidget().addItems( [
+		new OO.ui.ButtonOptionWidget( { data: 've', label: 'VE' } ),
+		new OO.ui.ButtonOptionWidget( { data: 'edit', label: 'Edit HTML' } ),
+		new OO.ui.ButtonOptionWidget( { data: 'read', label: 'Read' } )
+	] );
+	this.modeSelect.selectItem( this.modeSelect.getItemFromData( 've' ) );
 
 	this.target = target;
 	this.surface = null;
 	this.lang = lang;
 	this.dir = dir;
 	this.$surfaceWrapper = this.$( '<div>' );
-	this.lastMode = null;
+	this.mode = null;
 	this.pageMenu = pageDropdown.getMenu();
 	this.sourceTextInput = new OO.ui.TextInputWidget( {
 		$: this.$,
@@ -213,9 +213,9 @@ ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, 
 	this.pageMenu.on( 'select', function ( item ) {
 		var page = item.getData();
 		container.change( 've', page );
-		modeSelect.selectItem( modeSelect.getItemFromData( 've' ) );
+		container.modeSelect.selectItem( container.modeSelect.getItemFromData( 've' ) );
 	} );
-	modeSelect.on( 'select', function ( item ) {
+	this.modeSelect.on( 'select', function ( item ) {
 		container.change( item.getData() );
 	} );
 	removeButton.on( 'click', this.destroy.bind( this ) );
@@ -226,7 +226,7 @@ ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, 
 				pageLabel.$element,
 				pageDropdown.$element,
 				this.$( '<span class="ve-demo-toolbar-divider">&nbsp;</span>' ),
-				modeSelect.$element,
+				this.modeSelect.$element,
 				this.$( '<span class="ve-demo-toolbar-divider">&nbsp;</span>' ),
 				removeButton.$element
 			)
@@ -273,13 +273,20 @@ ve.demo.SurfaceContainer.prototype.getPageMenuItems = function () {
  *
  * @param {string} mode Mode to switch to: 've', 'edit or 'read'
  * @param {string} [page] Page to load
+ * @return {jQuery.Promise} Promise which resolves when change is complete
  */
 ve.demo.SurfaceContainer.prototype.change = function ( mode, page ) {
 	var model, doc, html, closePromise,
 		container = this,
 		currentDir = 'ltr';
 
-	switch ( this.lastMode ) {
+	if ( mode === this.mode && !page ) {
+		return $.Deferred().resolve().promise();
+	}
+
+	this.modeSelect.selectItem( this.modeSelect.getItemFromData( mode ) );
+
+	switch ( this.mode ) {
 		case 've':
 			closePromise = this.$surfaceWrapper.slideUp().promise();
 			if ( !page ) {
@@ -311,7 +318,7 @@ ve.demo.SurfaceContainer.prototype.change = function ( mode, page ) {
 			break;
 	}
 
-	closePromise.done( function () {
+	return closePromise.done( function () {
 		switch ( mode ) {
 			case 've':
 				if ( page ) {
@@ -331,7 +338,7 @@ ve.demo.SurfaceContainer.prototype.change = function ( mode, page ) {
 				container.$readView.html( html ).css( 'direction', currentDir ).slideDown();
 				break;
 		}
-		container.lastMode = mode;
+		container.mode = mode;
 	} );
 };
 
@@ -401,14 +408,18 @@ ve.demo.SurfaceContainer.prototype.loadHtml = function ( pageHtml ) {
  * @param {string} dir Directionality
  */
 ve.demo.SurfaceContainer.prototype.reload = function ( lang, dir ) {
+	var container = this;
+
 	this.lang = lang;
 	this.dir = dir;
 
-	this.loadHtml( ve.properInnerHtml(
-		ve.dm.converter.getDomFromModel(
-			this.surface.getModel().getDocument()
-		).body
-	) );
+	this.change( 've' ).done( function () {
+		container.loadHtml( ve.properInnerHtml(
+			ve.dm.converter.getDomFromModel(
+				container.surface.getModel().getDocument()
+			).body
+		) );
+	} );
 };
 
 /**
