@@ -247,6 +247,10 @@ QUnit.test( 'insertIntoArray', 3, function ( assert ) {
 	assert.deepEqual( target, [ 'a', 'b', 'c', 'x', 'y' ], 'insert beyond end' );
 } );
 
+QUnit.test( 'escapeHtml', 1, function ( assert ) {
+	assert.strictEqual( ve.escapeHtml( ' "script\' <foo & bar> ' ), ' &quot;script&#039; &lt;foo &amp; bar&gt; ' );
+} );
+
 QUnit.test( 'createDocumentFromHtml', function ( assert ) {
 	var key, doc, expectedHead, expectedBody,
 		cases = [

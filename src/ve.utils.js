@@ -455,40 +455,29 @@ ve.graphemeSafeSubstring = function ( text, start, end, outer ) {
  *
  * This method is basically a copy of `mw.html.escape`.
  *
- * @see #escapeHtml_escapeHtmlCharacter
  * @param {string} value Attribute value to escape
  * @returns {string} Escaped attribute value
  */
-ve.escapeHtml = function ( value ) {
-	return value.replace( /['"<>&]/g, ve.escapeHtml.escapeHtmlCharacter );
-};
-
-/**
- * Helper function for #escapeHtml to escape a character for use in HTML.
- *
- * This is a callback intended to be passed to String#replace.
- *
- * @method escapeHtml_escapeHtmlCharacter
- * @private
- * @param {string} key Property name of value being replaced
- * @returns {string} Escaped character
- */
-ve.escapeHtml.escapeHtmlCharacter = function ( value ) {
-	switch ( value ) {
-		case '\'':
-			return '&#039;';
-		case '"':
-			return '&quot;';
-		case '<':
-			return '&lt;';
-		case '>':
-			return '&gt;';
-		case '&':
-			return '&amp;';
-		default:
-			return value;
+ve.escapeHtml = ( function () {
+	function escape( value ) {
+		switch ( value ) {
+			case '\'':
+				return '&#039;';
+			case '"':
+				return '&quot;';
+			case '<':
+				return '&lt;';
+			case '>':
+				return '&gt;';
+			case '&':
+				return '&amp;';
+		}
 	}
-};
+
+	return function ( value ) {
+		return value.replace( /['"<>&]/g, escape );
+	};
+}() );
 
 /**
  * Generate HTML attributes.
