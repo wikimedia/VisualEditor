@@ -64,8 +64,11 @@ ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 	}
 
 	windowManager.getWindow( name ).then( function ( win ) {
-		windowManager.openWindow( win, data ).then( function ( closing ) {
-			surface.getView().emit( 'position' );
+		var opening = windowManager.openWindow( win, data );
+
+		surface.getView().emit( 'position' );
+
+		opening.then( function ( closing ) {
 			closing.then( function ( closed ) {
 				surface.getView().activate();
 				closed.then( function () {
