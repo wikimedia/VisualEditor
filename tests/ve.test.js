@@ -231,6 +231,22 @@ QUnit.test( 'batchSplice', 8, function ( assert ) {
 	assert.deepEqual( expected, actual, 'replacing 3 elements with 2100 elements (array)' );
 } );
 
+QUnit.test( 'insertIntoArray', 3, function ( assert ) {
+	var target;
+
+	target = [ 'a', 'b', 'c' ];
+	ve.insertIntoArray( target, 0, [ 'x', 'y' ] );
+	assert.deepEqual( target, [ 'x', 'y', 'a', 'b', 'c' ], 'insert at start' );
+
+	target = [ 'a', 'b', 'c' ];
+	ve.insertIntoArray( target, 2, [ 'x', 'y' ] );
+	assert.deepEqual( target, [ 'a', 'b', 'x', 'y', 'c' ], 'insert into the middle' );
+
+	target = [ 'a', 'b', 'c' ];
+	ve.insertIntoArray( target, 10, [ 'x', 'y' ] );
+	assert.deepEqual( target, [ 'a', 'b', 'c', 'x', 'y' ], 'insert beyond end' );
+} );
+
 QUnit.test( 'createDocumentFromHtml', function ( assert ) {
 	var key, doc, expectedHead, expectedBody,
 		cases = [

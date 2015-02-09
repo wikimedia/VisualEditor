@@ -148,28 +148,26 @@ ve.extendObject = $.extend;
  *
  * Includes a replacement for broken implementation of Array.prototype.splice() found in Opera 12.
  *
- * @param {Array|ve.dm.BranchNode} arr Object supporting .splice() to remove from and insert into. Will be modified
+ * @param {Array|ve.dm.BranchNode} arr Target object (must have `splice` method, object will be modified)
  * @param {number} offset Offset in arr to splice at. This may NOT be negative, unlike the
- *  'index' parameter in Array#splice
+ *  'index' parameter in Array#splice.
  * @param {number} remove Number of elements to remove at the offset. May be zero
- * @param {Array} data Array of items to insert at the offset. May not be empty if remove=0
- * @returns {Array} Array of items removed
+ * @param {Array} data Array of items to insert at the offset. Must be non-empty if remove=0
+ * @return {Array} Array of items removed
  */
 ve.batchSplice = ( function () {
 	var arraySplice;
 
-	// This yields 'true' on Opera 12.15.
-	function isSpliceBroken() {
+	// This yields 'false' on Opera 12.15.
+	function spliceWorks() {
 		var n = 256,
 			a = [];
 		a[n] = 'a';
-
 		a.splice( n + 1, 0, 'b' );
-
-		return a[n] !== 'a';
+		return a[n] === 'a';
 	}
 
-	if ( !isSpliceBroken() ) {
+	if ( spliceWorks() ) {
 		arraySplice = Array.prototype.splice;
 	} else {
 		// Standard Array.prototype.splice() function implemented using .slice() and .push().
@@ -227,6 +225,20 @@ ve.batchSplice = ( function () {
 }() );
 
 /**
+ * Insert one array into another.
+ *
+ * Shortcut for `ve.batchSplice( dst, offset, 0, src )`.
+ *
+ * @see #batchSplice
+ * @param {Array|ve.dm.BranchNode} arr Target object (must have `splice` method)
+ * @param {number} offset Offset in arr where items will be inserted
+ * @param {Array} data Items to insert at offset
+ */
+ve.insertIntoArray = function ( dst, offset, src ) {
+	ve.batchSplice( dst, offset, 0, src );
+};
+
+/**
  * Push one array into another.
  *
  * This is the equivalent of arr.push( d1, d2, d3, ... ) except that arguments are
@@ -250,17 +262,6 @@ ve.batchPush = function ( arr, data ) {
 		index += batchSize;
 	}
 	return length;
-};
-
-/**
- * Insert one array into another.
- *
- * This just a shortcut for `ve.batchSplice( dst, offset, 0, src )`.
- *
- * @see #batchSplice
- */
-ve.insertIntoArray = function ( dst, offset, src ) {
-	ve.batchSplice( dst, offset, 0, src );
 };
 
 /**
