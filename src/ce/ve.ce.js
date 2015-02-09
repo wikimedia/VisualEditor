@@ -370,3 +370,24 @@ ve.ce.getOffsetOfSlug = function ( $node ) {
 ve.ce.isShortcutKey = function ( e ) {
 	return !!( e.ctrlKey || e.metaKey );
 };
+
+/**
+ * Find the DM range of a DOM selection
+ *
+ * @param {Object} selection DOM-selection-like object
+ * @param {Node} selection.anchorNode
+ * @param {number} selection.anchorOffset
+ * @param {Node} selection.focusNode
+ * @param {number} selection.focusOffset
+ * @returns {ve.Range|null} DM range, or null if nothing in the CE document is selected
+ */
+ve.ce.veRangeFromSelection = function ( selection ) {
+	try {
+		return new ve.Range(
+			ve.ce.getOffset( selection.anchorNode, selection.anchorOffset ),
+			ve.ce.getOffset( selection.focusNode, selection.focusOffset )
+		);
+	} catch ( e ) {
+		return null;
+	}
+};
