@@ -213,6 +213,7 @@ ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, 
 	this.pageMenu.on( 'select', function ( item ) {
 		var page = item.getData();
 		container.change( 've', page );
+		modeSelect.selectItem( modeSelect.getItemFromData( 've' ) );
 	} );
 	modeSelect.on( 'select', function ( item ) {
 		container.change( item.getData() );
