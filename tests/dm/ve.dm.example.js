@@ -197,7 +197,7 @@ ve.dm.example.image = {
 };
 
 ve.dm.example.blockImage = {
-	html: '<figure><img src="' + ve.dm.example.imgSrc + '" alt="Example" width="100" height="50"><figcaption>caption</figcaption></figure>',
+	html: '<figure class="ve-align-right"><img src="' + ve.dm.example.imgSrc + '" alt="Example" width="100" height="50"><figcaption>caption</figcaption></figure>',
 	data: [
 		{
 			type: 'blockImage',
@@ -205,11 +205,15 @@ ve.dm.example.blockImage = {
 				src: ve.dm.example.imgSrc,
 				alt: 'Example',
 				width: 100,
-				height: 50
+				height: 50,
+				originalAlign: 'right',
+				align: 'right'
 			},
 			htmlAttributes: [
 				{
-					values: {},
+					values: {
+						class: 've-align-right'
+					},
 					children: [
 						{
 							values: {
