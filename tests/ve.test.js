@@ -88,28 +88,60 @@ QUnit.test( 'isInstanceOfAny', 7, function ( assert ) {
 
 QUnit.test( 'getDomAttributes', 1, function ( assert ) {
 	assert.deepEqual(
-		ve.getDomAttributes( $( '<div foo="bar" baz quux=3></div>' ).get( 0 ) ),
-		{ foo: 'bar', baz: '', quux: '3' },
+		ve.getDomAttributes( $.parseHTML( '<div string="foo" empty number="0"></div>' )[ 0 ] ),
+		{ string: 'foo', empty: '', number: '0' },
 		'getDomAttributes() returns object with correct attributes'
 	);
 } );
 
-QUnit.test( 'setDomAttributes', 3, function ( assert ) {
-	var element = document.createElement( 'div' );
-	ve.setDomAttributes( element, { foo: 'bar', baz: '', quux: 3 } );
+QUnit.test( 'setDomAttributes', 7, function ( assert ) {
+	var target,
+		sample = $.parseHTML( '<div foo="one" bar="two" baz="three"></div>' )[ 0 ];
+
+	target = {};
+	ve.setDomAttributes( target, { add: 'foo' } );
+	assert.deepEqual( target, {}, 'ignore incompatible target object' );
+
+	target = document.createElement( 'div' );
+	ve.setDomAttributes( target, { string: 'foo', empty: '', number: 0 } );
 	assert.deepEqual(
-		ve.getDomAttributes( element ),
-		{ foo: 'bar', baz: '', quux: '3' },
-		'setDomAttributes() sets attributes correctly'
+		ve.getDomAttributes( target ),
+		{ string: 'foo', empty: '', number: '0' },
+		'add attributes'
 	);
-	ve.setDomAttributes( element, { foo: null, bar: 1, baz: undefined, quux: 5, whee: 'yay' } );
+
+	target = sample.cloneNode();
+	ve.setDomAttributes( target, { foo: null, bar: 'update', baz: undefined, add: 'yay' } );
 	assert.deepEqual(
-		ve.getDomAttributes( element ),
-		{ bar: '1', quux: '5', whee: 'yay' },
-		'setDomAttributes() overwrites attributes, removes attributes, and sets new attributes'
+		ve.getDomAttributes( target ),
+		{ bar: 'update', add: 'yay' },
+		'add, update, and remove attributes'
 	);
-	ve.setDomAttributes( element, { onclick: 'alert(1);' }, ['foo', 'bar', 'baz', 'quux', 'whee'] );
-	assert.ok( !element.hasAttribute( 'onclick' ), 'event attributes are blocked when sanitizing' );
+
+	target = sample.cloneNode();
+	ve.setDomAttributes( target, { onclick: 'alert(1);', foo: 'update', add: 'whee' }, ['foo', 'add'] );
+	assert.ok( !target.hasAttribute( 'onclick' ), 'whitelist affects creating attributes' );
+	assert.deepEqual(
+		ve.getDomAttributes( target ),
+		{ foo: 'update', bar: 'two', baz: 'three', add: 'whee' },
+		'whitelist does not affect pre-existing attributes'
+	);
+
+	target = document.createElement( 'div' );
+	ve.setDomAttributes( target, { Foo: 'add', Bar: 'add' }, ['bar'] );
+	assert.deepEqual(
+		ve.getDomAttributes( target ),
+		{ bar: 'add' },
+		'whitelist is case-insensitive'
+	);
+
+	target = sample.cloneNode();
+	ve.setDomAttributes( target, { foo: 'update', bar: null }, ['bar', 'baz'] );
+	assert.propEqual(
+		ve.getDomAttributes( target ),
+		{ foo: 'one', baz: 'three' },
+		'whitelist affects removal/updating of attributes'
+	);
 } );
 
 QUnit.test( 'getHtmlAttributes', 7, function ( assert ) {

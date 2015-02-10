@@ -562,9 +562,11 @@ ve.getDomAttributes = function ( element ) {
 /**
  * Set the attributes of a DOM element as an object with key/value pairs.
  *
+ * Use the `null` or `undefined` value to ensure an attribute's absence.
+ *
  * @param {HTMLElement} element DOM element to apply attributes to
  * @param {Object} attributes Attributes to apply
- * @param {string[]} [whitelist] List of attributes to exclusively allow (all lower case names)
+ * @param {string[]} [whitelist] List of attributes to exclusively allow (all lowercase names)
  */
 ve.setDomAttributes = function ( element, attributes, whitelist ) {
 	var key;
@@ -573,12 +575,12 @@ ve.setDomAttributes = function ( element, attributes, whitelist ) {
 		return;
 	}
 	for ( key in attributes ) {
+		if ( whitelist && whitelist.indexOf( key.toLowerCase() ) === -1 ) {
+			continue;
+		}
 		if ( attributes[key] === undefined || attributes[key] === null ) {
 			element.removeAttribute( key );
 		} else {
-			if ( whitelist && whitelist.indexOf( key.toLowerCase() ) === -1 ) {
-				continue;
-			}
 			element.setAttribute( key, attributes[key] );
 		}
 	}
