@@ -96,7 +96,10 @@ module.exports = function ( grunt ) {
 				targetFile: 'demos/ve/desktop.html',
 				template: 'demos/ve/demo.html.template',
 				modules: modules,
-				load: [ 'visualEditor.desktop.standalone.demo' ],
+				load: [
+					'visualEditor.standalone.read',
+					'visualEditor.desktop.standalone.demo'
+				],
 				env: {
 					debug: true
 				},
@@ -109,7 +112,10 @@ module.exports = function ( grunt ) {
 				targetFile: 'demos/ve/desktop-dist.html',
 				template: 'demos/ve/demo.html.template',
 				modules: modules,
-				load: [ 'visualEditor.desktop.standalone.demo.dist' ],
+				load: [
+					'visualEditor.standalone.read',
+					'visualEditor.desktop.standalone.demo.dist'
+				],
 				pathPrefix: '../../',
 				i18n: [ 'dist/i18n/', 'lib/oojs-ui/i18n/' ],
 				indent: '\t\t',
@@ -119,7 +125,10 @@ module.exports = function ( grunt ) {
 				targetFile: 'demos/ve/mobile.html',
 				template: 'demos/ve/demo.html.template',
 				modules: modules,
-				load: [ 'visualEditor.mobile.standalone.demo' ],
+				load: [
+					'visualEditor.standalone.read',
+					'visualEditor.mobile.standalone.demo'
+				],
 				env: {
 					debug: true
 				},
@@ -132,7 +141,10 @@ module.exports = function ( grunt ) {
 				targetFile: 'demos/ve/mobile-dist.html',
 				template: 'demos/ve/demo.html.template',
 				modules: modules,
-				load: [ 'visualEditor.mobile.standalone.demo.dist' ],
+				load: [
+					'visualEditor.standalone.read',
+					'visualEditor.mobile.standalone.demo.dist'
+				],
 				pathPrefix: '../../',
 				i18n: [ 'dist/i18n/', 'lib/oojs-ui/i18n/' ],
 				indent: '\t\t',

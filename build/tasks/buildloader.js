@@ -31,14 +31,17 @@ module.exports = function ( grunt ) {
 			return indent + '<script src="' + pathPrefix + src.file + '"></script>';
 		}
 
-		function styleTag( src ) {
+		function styleTag( group, src ) {
 			var rtlFilepath = src.file.replace( /\.css$/, '.rtl.css' );
 
 			if ( grunt.file.exists( rtlFilepath ) ) {
-				return indent + '<link rel=stylesheet href="' + pathPrefix + src.file + '" class="stylesheet-ltr">\n' +
-					indent + '<link rel=stylesheet href="' + pathPrefix + rtlFilepath + '" class="stylesheet-rtl">';
+				return indent + '<link rel=stylesheet href="' + pathPrefix + src.file + '" class="stylesheet-ltr' +
+					( group ? ' stylesheet-' + group : '' ) + '">\n' +
+					indent + '<link rel=stylesheet href="' + pathPrefix + rtlFilepath + '" class="stylesheet-rtl' +
+					( group ? ' stylesheet-' + group : '' ) + '">';
 			}
-			return indent + '<link rel=stylesheet href="' + pathPrefix + src.file + '">';
+			return indent + '<link rel=stylesheet href="' + pathPrefix + src.file + '"' +
+				( group ? ' class="stylesheet-' + group + '"' : '' ) + '>';
 		}
 
 		function expand( src ) {
@@ -83,7 +86,7 @@ module.exports = function ( grunt ) {
 			}
 			if ( modules[module].styles ) {
 				moduleStyles = modules[module].styles
-					.map( expand ).filter( filter.bind( this, 'styles' ) ).map( styleTag )
+					.map( expand ).filter( filter.bind( this, 'styles' ) ).map( styleTag.bind( styleTag, modules[module].styleGroup ) )
 					.join( '\n' );
 				if ( moduleStyles ) {
 					styles.push( indent + '<!-- ' + module + ' -->\n' + moduleStyles );

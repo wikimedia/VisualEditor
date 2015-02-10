@@ -319,6 +319,7 @@ ve.demo.SurfaceContainer.prototype.change = function ( mode, page ) {
 	}
 
 	return closePromise.done( function () {
+		$( '.stylesheet-ve' ).prop( 'disabled', mode !== 've' );
 		switch ( mode ) {
 			case 've':
 				if ( page ) {
