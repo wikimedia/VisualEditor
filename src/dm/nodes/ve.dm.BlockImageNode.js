@@ -51,16 +51,24 @@ ve.dm.BlockImageNode.static.matchTagNames = [ 'figure' ];
 // ve.dm.BlockImageNode.static.blacklistedAnnotationTypes = [ 'link' ];
 
 ve.dm.BlockImageNode.static.toDataElement = function ( domElements, converter ) {
+	// Workaround for jQuery's .children() being expensive due to
+	// https://github.com/jquery/sizzle/issues/311
+	function findChildren( parent, nodeNames ) {
+		return Array.prototype.filter.call( parent.childNodes, function ( element ) {
+			return nodeNames.indexOf( element.nodeName.toLowerCase() ) !== -1;
+		} );
+	}
+
 	var dataElement,
-		$figure = $( domElements[0] ),
-		$img = $figure.children( 'img' ).eq( 0 ),
-		$caption = $figure.children( 'figcaption' ).eq( 0 ),
+		figure = domElements[0],
+		img = findChildren( figure, 'img' )[0] || null,
+		caption = findChildren( figure, 'figcaption' )[0] || null,
 		attributes = {
-			src: $img.attr( 'src' )
+			src: img && img.getAttribute( 'src' )
 		},
-		width = $img.attr( 'width' ),
-		height = $img.attr( 'height' ),
-		altText = $img.attr( 'alt' );
+		width = img && img.getAttribute( 'width' ),
+		height = img && img.getAttribute( 'height' ),
+		altText = img && img.getAttribute( 'alt' );
 
 	if ( altText !== undefined ) {
 		attributes.alt = altText;
@@ -74,7 +82,7 @@ ve.dm.BlockImageNode.static.toDataElement = function ( domElements, converter ) 
 		attributes: ve.extendObject( ve.dm.AlignableNode.static.toDataElementAttributes( domElements, converter ), attributes )
 	};
 
-	if ( $caption.length === 0 ) {
+	if ( !caption ) {
 		return [
 			dataElement,
 			{ type: 'imageCaption' },
@@ -83,7 +91,7 @@ ve.dm.BlockImageNode.static.toDataElement = function ( domElements, converter ) 
 		];
 	} else {
 		return [ dataElement ]
-			.concat( converter.getDataFromDomClean( $caption[0], { type: 'imageCaption' } ) )
+			.concat( converter.getDataFromDomClean( caption, { type: 'imageCaption' } ) )
 			.concat( [ { type: '/' + this.name } ] );
 	}
 };
