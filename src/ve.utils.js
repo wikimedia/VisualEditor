@@ -897,7 +897,8 @@ ve.transformStyleAttributes = function ( html, unmask ) {
 	var xmlDoc, fromAttr, toAttr, i, len,
 		maskAttrs = [
 			'style', // IE normalizes 'color:#ffd' to 'color: rgb(255, 255, 221);'
-			'bgcolor' // IE normalizes '#FFDEAD' to '#ffdead'
+			'bgcolor', // IE normalizes '#FFDEAD' to '#ffdead'
+			'color' // IE normalized 'Red' to 'red'
 		];
 
 	// Parse the HTML into an XML DOM
