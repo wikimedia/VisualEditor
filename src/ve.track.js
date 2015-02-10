@@ -5,7 +5,8 @@
  */
 
 ( function () {
-	var callbacks = $.Callbacks( 'memory' ), queue = [];
+	var callbacks = $.Callbacks( 'memory' ),
+		queue = [];
 
 	/**
 	 * Track an analytic event.

@@ -101,8 +101,9 @@ ve.dm.StubRegExpNode.static.matchRdfaTypes = [ /^ext:/ ];
 /* Tests */
 
 QUnit.test( 'matchElement', 23, function ( assert ) {
-	var registry = new ve.dm.ModelRegistry(), element;
-	element = document.createElement( 'a' );
+	var registry = new ve.dm.ModelRegistry(),
+		element = document.createElement( 'a' );
+
 	assert.deepEqual( registry.matchElement( element ), null, 'matchElement() returns null if registry empty' );
 
 	registry.register( ve.dm.StubNothingSetAnnotation );

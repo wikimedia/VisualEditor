@@ -510,7 +510,9 @@ ve.dm.SurfaceFragment.prototype.getLeafNodes = function () {
  * @returns {Array} List of nodes and related information
  */
 ve.dm.SurfaceFragment.prototype.getSelectedLeafNodes = function () {
-	var i, len, selectedLeafNodes = [], leafNodes = this.getLeafNodes();
+	var i, len,
+		selectedLeafNodes = [],
+		leafNodes = this.getLeafNodes();
 	for ( i = 0, len = leafNodes.length; i < len; i++ ) {
 		if ( len === 1 || !leafNodes[i].range || leafNodes[i].range.getLength() ) {
 			selectedLeafNodes.push( leafNodes[i].node );
@@ -1157,7 +1159,8 @@ ve.dm.SurfaceFragment.prototype.isolateAndUnwrap = function ( isolateForType ) {
 
 	function createSplits( splitNodes, insertBefore ) {
 		var i, length, tx,
-			adjustment = 0, data = [];
+			adjustment = 0,
+			data = [];
 		for ( i = 0, length = splitNodes.length; i < length; i++ ) {
 			data.unshift( { type: '/' + splitNodes[i].type } );
 			data.push( splitNodes[i].getClonedElement() );

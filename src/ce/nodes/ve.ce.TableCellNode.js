@@ -38,7 +38,8 @@ ve.ce.TableCellNode.static.name = 'tableCell';
  * @inheritdoc
  */
 ve.ce.TableCellNode.prototype.onSetup = function () {
-	var rowspan = this.model.getRowspan(), colspan = this.model.getColspan();
+	var rowspan = this.model.getRowspan(),
+		colspan = this.model.getColspan();
 
 	// Parent method
 	ve.ce.TableCellNode.super.prototype.onSetup.call( this );

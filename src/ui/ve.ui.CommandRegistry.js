@@ -295,7 +295,7 @@ ve.ui.commandRegistry.register(
 );
 ve.ui.commandRegistry.register(
 	new ve.ui.Command( 'deleteColumn', 'table', 'delete',
-		{  args: ['col'], supportedSelections: ['table'] }
+		{ args: ['col'], supportedSelections: ['table'] }
 	)
 );
 ve.ui.commandRegistry.register(

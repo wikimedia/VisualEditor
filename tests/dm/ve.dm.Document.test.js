@@ -203,12 +203,12 @@ QUnit.test( 'getRelativeRange', function ( assert ) {
 		tests = [
 			{
 				data: [
-					/* 0 */ { type: 'paragraph' },
-					/* 1 */ 'a',
-					/* 2 */ { type: 'alienInline' },
-					/* 3 */ { type: '/alienInline' },
-					/* 4 */ 'b',
-					/* 5 */ { type: '/paragraph' }
+					{ type: 'paragraph' }, // 0
+					'a', // 1
+					{ type: 'alienInline' }, // 2
+					{ type: '/alienInline' }, // 3
+					'b', // 4
+					{ type: '/paragraph' } // 5
 				],
 				cases: [
 					{
@@ -249,12 +249,12 @@ QUnit.test( 'getRelativeRange', function ( assert ) {
 			},
 			{
 				data: [
-					/* 0 */ { type: 'paragraph' },
-					/* 1 */ { type: 'alienInline' },
-					/* 2 */ { type: '/alienInline' },
-					/* 3 */ { type: 'alienInline' },
-					/* 4 */ { type: '/alienInline' },
-					/* 5 */ { type: '/paragraph' }
+					{ type: 'paragraph' }, // 0
+					{ type: 'alienInline' }, // 1
+					{ type: '/alienInline' }, // 2
+					{ type: 'alienInline' }, // 3
+					{ type: '/alienInline' }, // 4
+					{ type: '/paragraph' } // 5
 				],
 				cases: [
 					{
@@ -851,7 +851,8 @@ QUnit.test( 'cloneSliceFromRange', function ( assert ) {
 } );
 
 QUnit.test( 'protection against double application of transactions', 1, function ( assert ) {
-	var tx = new ve.dm.Transaction(), testDocument = ve.dm.example.createExampleDocument();
+	var tx = new ve.dm.Transaction(),
+		testDocument = ve.dm.example.createExampleDocument();
 	tx.pushRetain( 1 );
 	tx.pushReplace( testDocument, 1, 0, ['H', 'e', 'l', 'l', 'o' ] );
 	testDocument.commit( tx );

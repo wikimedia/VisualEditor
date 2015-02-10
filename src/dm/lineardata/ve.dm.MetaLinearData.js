@@ -50,7 +50,9 @@ OO.inheritClass( ve.dm.MetaLinearData, ve.dm.LinearData );
  * @returns {Array} Merged data
  */
 ve.dm.MetaLinearData.static.merge = function ( data ) {
-	var i, merged = [], allUndefined = true;
+	var i,
+		merged = [],
+		allUndefined = true;
 	for ( i = 0; i < data.length; i++ ) {
 		if ( data[i] !== undefined ) {
 			allUndefined = false;
@@ -100,7 +102,8 @@ ve.dm.MetaLinearData.prototype.getDataLength = function ( offset ) {
  * @returns {number} Number of metadata elements in the entire object
  */
 ve.dm.MetaLinearData.prototype.getTotalDataLength = function () {
-	var n = 0, i = this.getLength();
+	var n = 0,
+		i = this.getLength();
 	while ( i-- ) {
 		n += this.getDataLength( i );
 	}

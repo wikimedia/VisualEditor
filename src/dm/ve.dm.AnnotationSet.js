@@ -180,7 +180,9 @@ ve.dm.AnnotationSet.prototype.containsIndex = function ( storeIndex ) {
  * @returns {boolean} There is at least one annotation in set that is also in the set
  */
 ve.dm.AnnotationSet.prototype.containsAnyOf = function ( set ) {
-	var i, length, setIndexes = set.getIndexes(), thisIndexes = this.getIndexes();
+	var i, length,
+		setIndexes = set.getIndexes(),
+		thisIndexes = this.getIndexes();
 	for ( i = 0, length = setIndexes.length; i < length; i++ ) {
 		if ( ve.indexOf( setIndexes[i], thisIndexes ) !== -1 ) {
 			return true;
@@ -197,7 +199,9 @@ ve.dm.AnnotationSet.prototype.containsAnyOf = function ( set ) {
  * @returns {boolean} All annotations in set are also in the set
  */
 ve.dm.AnnotationSet.prototype.containsAllOf = function ( set ) {
-	var i, length, setIndexes = set.getIndexes(), thisIndexes = this.getIndexes();
+	var i, length,
+		setIndexes = set.getIndexes(),
+		thisIndexes = this.getIndexes();
 	for ( i = 0, length = setIndexes.length; i < length; i++ ) {
 		if ( ve.indexOf( setIndexes[i], thisIndexes ) === -1 ) {
 			return false;
@@ -343,7 +347,9 @@ ve.dm.AnnotationSet.prototype.compareTo = function ( annotationSet ) {
  * @returns {boolean} The annotation sets are equal
  */
 ve.dm.AnnotationSet.prototype.equalsInOrder = function ( set ) {
-	var i, len, ourIndexes = this.getIndexes(), theirIndexes = set.getIndexes();
+	var i, len,
+		ourIndexes = this.getIndexes(),
+		theirIndexes = set.getIndexes();
 	if ( ourIndexes.length !== theirIndexes.length ) {
 		return false;
 	}

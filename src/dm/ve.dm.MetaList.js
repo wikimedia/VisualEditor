@@ -276,8 +276,11 @@ ve.dm.MetaList.prototype.onTransact = function ( tx ) {
  */
 ve.dm.MetaList.prototype.findItem = function ( offset, index, group, forInsertion ) {
 	// Binary search for the item
-	var mid, items = typeof group === 'string' ? ( this.groups[group] || [] ) : this.items,
-		left = 0, right = items.length;
+	var mid,
+		items = typeof group === 'string' ? ( this.groups[group] || [] ) : this.items,
+		left = 0,
+		right = items.length;
+
 	while ( left < right ) {
 		// Equivalent to Math.floor( ( left + right ) / 2 ) but much faster in V8
 		/*jshint bitwise:false */
@@ -384,7 +387,8 @@ ve.dm.MetaList.prototype.removeMeta = function ( item ) {
  * @fires insert
  */
 ve.dm.MetaList.prototype.addInsertedItem = function ( offset, index, item ) {
-	var group = item.getGroup(), at = this.findItem( offset, index, null, true );
+	var group = item.getGroup(),
+		at = this.findItem( offset, index, null, true );
 	this.items.splice( at, 0, item );
 	if ( this.groups[group] ) {
 		at = this.findItem( offset, index, group, true );

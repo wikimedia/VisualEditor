@@ -11,11 +11,11 @@
  * @singleton
  */
 ve.ui = {
-	//'actionFactory' instantiated in ve.ui.ActionFactory.js
-	//'commandRegistry' instantiated in ve.ui.CommandRegistry.js
-	//'triggerRegistry' instantiated in ve.ui.TriggerRegistry.js
-	//'toolFactory' instantiated in ve.ui.ToolFactory.js
-	//'dataTransferHandlerFactory' instantiated in ve.ui.DataTransferHandlerFactory.js
+	// 'actionFactory' instantiated in ve.ui.ActionFactory.js
+	// 'commandRegistry' instantiated in ve.ui.CommandRegistry.js
+	// 'triggerRegistry' instantiated in ve.ui.TriggerRegistry.js
+	// 'toolFactory' instantiated in ve.ui.ToolFactory.js
+	// 'dataTransferHandlerFactory' instantiated in ve.ui.DataTransferHandlerFactory.js
 	windowFactory: new OO.Factory()
 };
 

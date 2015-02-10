@@ -47,7 +47,8 @@ ve.dm.BlockImageNode.static.childNodeTypes = [ 'imageCaption' ];
 
 ve.dm.BlockImageNode.static.matchTagNames = [ 'figure' ];
 
-//ve.dm.BlockImageNode.static.blacklistedAnnotationTypes = [ 'link' ];
+// FIXME: This commented code has been here since the file was created. Explain or remove.
+// ve.dm.BlockImageNode.static.blacklistedAnnotationTypes = [ 'link' ];
 
 ve.dm.BlockImageNode.static.toDataElement = function ( domElements, converter ) {
 	var dataElement,
@@ -81,9 +82,9 @@ ve.dm.BlockImageNode.static.toDataElement = function ( domElements, converter ) 
 			{ type: '/' + this.name }
 		];
 	} else {
-		return [ dataElement ].
-			concat( converter.getDataFromDomClean( $caption[0], { type: 'imageCaption' } ) ).
-			concat( [ { type: '/' + this.name } ] );
+		return [ dataElement ]
+			.concat( converter.getDataFromDomClean( $caption[0], { type: 'imageCaption' } ) )
+			.concat( [ { type: '/' + this.name } ] );
 	}
 };
 

@@ -44,8 +44,8 @@ ve.Filibuster = function VeFilibuster() {
 	// Path (index offsets) to current call frame
 	this.callPath = [];
 	// Index offset tree: {
-	//	changes: {enter: xxx, exit: xxx }
-	//	children: { index offset tree }
+	//   changes: {enter: xxx, exit: xxx }
+	//   children: { index offset tree }
 	// }
 	this.observationTree = { children: {} };
 	this.active = false;

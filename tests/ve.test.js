@@ -8,19 +8,19 @@ QUnit.module( 've' );
 
 /* Tests */
 
-// ve.getProp: Tested upstream (OOJS)
+// ve.getProp: Tested upstream (OOjs)
 
-// ve.setProp: Tested upstream (OOJS)
+// ve.setProp: Tested upstream (OOjs)
 
-// ve.cloneObject: Tested upstream (OOJS)
+// ve.cloneObject: Tested upstream (OOjs)
 
-// ve.getObjectValues: Tested upstream (OOJS)
+// ve.getObjectValues: Tested upstream (OOjs)
 
 // ve.getObjectKeys: Tested upstream (JavaScript)
 
-// ve.compare: Tested upstream (OOJS)
+// ve.compare: Tested upstream (OOjs)
 
-// ve.copy: Tested upstream (OOJS)
+// ve.copy: Tested upstream (OOjs)
 
 // ve.isPlainObject: Tested upstream (jQuery)
 
@@ -169,8 +169,10 @@ QUnit.test( 'getOpeningHtmlTag', 3, function ( assert ) {
 } );
 
 QUnit.test( 'batchSplice', 8, function ( assert ) {
-	var actual = [ 'a', 'b', 'c', 'd', 'e' ], expected = actual.slice( 0 ), bigArr = [],
-		actualRet, expectedRet, i;
+	var actualRet, expectedRet, i,
+		actual = [ 'a', 'b', 'c', 'd', 'e' ],
+		expected = actual.slice( 0 ),
+		bigArr = [];
 
 	actualRet = ve.batchSplice( actual, 1, 1, [] );
 	expectedRet = expected.splice( 1, 1 );

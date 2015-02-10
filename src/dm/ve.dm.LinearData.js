@@ -220,7 +220,8 @@ ve.dm.LinearData.prototype.batchSpliceObject = function ( offset, remove, data )
  */
 ve.dm.LinearData.prototype.getDataSlice = function ( range, deep ) {
 	var end, data,
-		start = 0, length = this.getLength();
+		start = 0,
+		length = this.getLength();
 	if ( range !== undefined ) {
 		start = Math.max( 0, Math.min( length, range.start ) );
 		end = Math.max( 0, Math.min( length, range.end ) );

@@ -94,7 +94,7 @@ ve.ce.RangeState.prototype.saveState = function ( old, $surfaceElement, docNode,
 			anchorNode: liveSelection.anchorNode,
 			anchorOffset: liveSelection.anchorOffset
 		};
-	} ( docNode.getElementDocument().getSelection() ) );
+	}( docNode.getElementDocument().getSelection() ) );
 
 	// Use a blank selection if the selection is outside this surface
 	// (or if the selection is inside another surface inside this one)

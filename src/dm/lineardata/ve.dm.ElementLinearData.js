@@ -41,7 +41,8 @@ ve.dm.ElementLinearData.static.compareElements = function ( a, b ) {
 		return false;
 	}
 
-	var aPlain = a, bPlain = b;
+	var aPlain = a,
+		bPlain = b;
 
 	if ( Array.isArray( a ) ) {
 		aPlain = a[0];
@@ -342,7 +343,9 @@ ve.dm.ElementLinearData.prototype.setAnnotationsAtOffset = function ( offset, an
  * @param {number[]} indexes Annotations' store indexes
  */
 ve.dm.ElementLinearData.prototype.setAnnotationIndexesAtOffset = function ( offset, indexes ) {
-	var character, item = this.getData( offset ), isElement = this.isElementData( offset );
+	var character,
+		item = this.getData( offset ),
+		isElement = this.isElementData( offset );
 	if ( indexes.length > 0 ) {
 		if ( isElement ) {
 			// New element annotation
@@ -988,7 +991,9 @@ ve.dm.ElementLinearData.prototype.cloneElements = function ( preserveGenerated )
  * @returns {number} Number of elements that aren't in an internalList
  */
 ve.dm.ElementLinearData.prototype.countNonInternalElements = function () {
-	var i, l, type, internalDepth = 0, count = 0;
+	var i, l, type,
+		internalDepth = 0,
+		count = 0;
 	for ( i = 0, l = this.getLength(); i < l; i++ ) {
 		type = this.getType( i );
 		if ( type && ve.dm.nodeFactory.isNodeInternal( type ) ) {

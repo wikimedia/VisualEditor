@@ -30,7 +30,8 @@ ve.dm.Transaction = function VeDmTransaction() {
  * @throws {Error} Invalid range
  */
 ve.dm.Transaction.newFromReplacement = function ( doc, range, data, removeMetadata ) {
-	var endOffset, tx = new ve.dm.Transaction();
+	var endOffset,
+		tx = new ve.dm.Transaction();
 	endOffset = tx.pushRemoval( doc, 0, range, removeMetadata );
 	endOffset = tx.pushInsertion( doc, endOffset, endOffset, data );
 	tx.pushFinalRetain( doc, endOffset );
@@ -597,7 +598,9 @@ ve.dm.Transaction.newFromWrap = function ( doc, range, unwrapOuter, wrapOuter, u
 
 	// Function to generate arrays of closing elements in reverse order
 	function closingArray( openings ) {
-		var closings = [], i, len = openings.length;
+		var i,
+			closings = [],
+			len = openings.length;
 		for ( i = 0; i < len; i++ ) {
 			closings[closings.length] = { type: '/' + openings[len - i - 1].type };
 		}
@@ -886,7 +889,10 @@ ve.dm.Transaction.prototype.markAsApplied = function () {
  * @returns {number} Translated offset, as it will be after processing transaction
  */
 ve.dm.Transaction.prototype.translateOffset = function ( offset, excludeInsertion ) {
-	var i, op, insertLength, removeLength, prevAdjustment, cursor = 0, adjustment = 0;
+	var i, op, insertLength, removeLength, prevAdjustment,
+		cursor = 0,
+		adjustment = 0;
+
 	for ( i = 0; i < this.operations.length; i++ ) {
 		op = this.operations[i];
 		if ( op.type === 'replace' ) {

@@ -128,7 +128,7 @@ OO.mixinClass( ve.dm.Scalable, OO.EventEmitter );
  * @returns {Object} Dimensions object with width and height
  */
 ve.dm.Scalable.static.getDimensionsFromValue = function ( dimensions, ratio ) {
-	dimensions = ve.copy ( dimensions );
+	dimensions = ve.copy( dimensions );
 
 	// Normalize for 'empty' values that are specifically given
 	// so if '' is explicitly given, it should be translated to 0

@@ -10,7 +10,7 @@
  * @singleton
  */
 ve.ce = {
-	//nodeFactory: Initialized in ve.ce.NodeFactory.js
+	// nodeFactory: Initialized in ve.ce.NodeFactory.js
 };
 
 /* Static Properties */

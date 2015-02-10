@@ -55,7 +55,8 @@
 	 * @param {Mixed} value
 	 */
 	function addType( obj ) {
-		var i, len, o = obj;
+		var i, len,
+			o = obj;
 		for ( i = 1, len = arguments.length - 2; i < len; i++ ) {
 			if ( o[arguments[i]] === undefined ) {
 				o[arguments[i]] = {};
@@ -78,7 +79,8 @@
 	 * @throws No factory associated with this ve.dm.Model subclass
 	 */
 	ve.dm.ModelRegistry.prototype.register = function ( constructor ) {
-		var i, j, tags, types, name = constructor.static && constructor.static.name;
+		var i, j, tags, types,
+			name = constructor.static && constructor.static.name;
 		if ( typeof name !== 'string' || name === '' ) {
 			throw new Error( 'Model names must be strings and must not be empty' );
 		}
@@ -246,7 +248,9 @@
 		}
 
 		function matchWithFunc( types, tag, mustMatchAll ) {
-			var i, queue = [], queue2 = [];
+			var i,
+				queue = [],
+				queue2 = [];
 			for ( i = 0; i < types.length; i++ ) {
 				// Queue string matches and regexp matches separately
 				queue = queue.concat( ve.getProp( reg.modelsByTypeAndTag, 1, types[i], tag ) || [] );
@@ -286,7 +290,10 @@
 		}
 
 		function matchWithoutFunc( types, tag, mustMatchAll ) {
-			var i, queue = [], queue2 = [], winningName = null;
+			var i,
+				queue = [],
+				queue2 = [],
+				winningName = null;
 			for ( i = 0; i < types.length; i++ ) {
 				// Queue string and regexp matches separately
 				queue = queue.concat( ve.getProp( reg.modelsByTypeAndTag, 0, types[i], tag ) || [] );

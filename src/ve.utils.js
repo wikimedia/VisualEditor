@@ -160,7 +160,8 @@ ve.batchSplice = ( function () {
 
 	// This yields 'true' on Opera 12.15.
 	function isSpliceBroken() {
-		var n = 256, a = [];
+		var n = 256,
+			a = [];
 		a[n] = 'a';
 
 		a.splice( n + 1, 0, 'b' );
@@ -195,7 +196,11 @@ ve.batchSplice = ( function () {
 	return function ( arr, offset, remove, data ) {
 		// We need to splice insertion in in batches, because of parameter list length limits which vary
 		// cross-browser - 1024 seems to be a safe batch size on all browsers
-		var splice, index = 0, batchSize = 1024, toRemove = remove, spliced, removed = [];
+		var splice, spliced,
+			index = 0,
+			batchSize = 1024,
+			toRemove = remove,
+			removed = [];
 
 		splice = Array.isArray( arr ) ? arraySplice : arr.splice;
 
@@ -234,7 +239,9 @@ ve.batchSplice = ( function () {
 ve.batchPush = function ( arr, data ) {
 	// We need to push insertion in batches, because of parameter list length limits which vary
 	// cross-browser - 1024 seems to be a safe batch size on all browsers
-	var length, index = 0, batchSize = 1024;
+	var length,
+		index = 0,
+		batchSize = 1024;
 	while ( index < data.length ) {
 		// Call arr.push( i0, i1, i2, ..., i1023 );
 		length = arr.push.apply(
@@ -544,7 +551,8 @@ ve.getOpeningHtmlTag = function ( tagName, attributes ) {
  * @returns {Object}
  */
 ve.getDomAttributes = function ( element ) {
-	var result = {}, i;
+	var i,
+		result = {};
 	for ( i = 0; i < element.attributes.length; i++ ) {
 		result[element.attributes[i].name] = element.attributes[i].value;
 	}

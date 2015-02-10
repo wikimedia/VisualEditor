@@ -212,7 +212,8 @@ ve.dm.InternalList.prototype.getNextUniqueNumber = function () {
  */
 ve.dm.InternalList.prototype.convertToData = function ( converter, doc ) {
 	var i, length, itemData, div,
-		itemHtmlQueue = this.getItemHtmlQueue(), list = [];
+		itemHtmlQueue = this.getItemHtmlQueue(),
+		list = [];
 
 	list.push( { type: 'internalList' } );
 	for ( i = 0, length = itemHtmlQueue.length; i < length; i++ ) {

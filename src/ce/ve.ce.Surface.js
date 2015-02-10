@@ -1567,7 +1567,8 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 	unsafeSelector = '[' + ve.ce.Surface.static.unsafeAttributes.join( '],[') + ']';
 	this.$pasteTarget.find( unsafeSelector ).each( function () {
 		var i, val,
-			attrs = {}, ua = ve.ce.Surface.static.unsafeAttributes;
+			attrs = {},
+			ua = ve.ce.Surface.static.unsafeAttributes;
 
 		i = ua.length;
 		while ( i-- ) {
@@ -3330,7 +3331,10 @@ ve.ce.Surface.prototype.getViewportRange = function () {
 		documentRange = new ve.Range( 0, this.getModel().getDocument().getInternalList().getListNode().getOuterRange().start );
 
 	function binarySearch( offset, range, side ) {
-		var mid, rect, start = range.start, end = range.end, lastLength = Infinity;
+		var mid, rect,
+			start = range.start,
+			end = range.end,
+			lastLength = Infinity;
 		while ( range.getLength() < lastLength ) {
 			lastLength = range.getLength();
 			mid = data.getNearestContentOffset(

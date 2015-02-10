@@ -56,7 +56,7 @@ ve.ce.AlienNode.prototype.createHighlight = function () {
 /**
  * @inheritdoc
  */
-ve.ce.AlienNode.prototype.generateContents = function ( config )  {
+ve.ce.AlienNode.prototype.generateContents = function ( config ) {
 	var deferred = $.Deferred();
 	deferred.resolve( ( config && config.domElements ) || this.model.getAttribute( 'domElements' ) || [] );
 	return deferred.promise();

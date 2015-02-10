@@ -9,7 +9,9 @@ QUnit.module( 've.dm.MetaList' );
 /* Tests */
 
 function assertItemsMatchMetadata( assert, metadata, list, msg, full ) {
-	var i, j, k = 0, items = list.getAllItems();
+	var i, j,
+		k = 0,
+		items = list.getAllItems();
 	for ( i in metadata.getData() ) {
 		if ( Array.isArray( metadata.getData( i ) ) ) {
 			for ( j = 0; j < metadata.getData( i ).length; j++ ) {
