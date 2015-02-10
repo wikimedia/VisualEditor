@@ -235,7 +235,6 @@ ve.dm.example.image = {
 
 ve.dm.example.blockImage = {
 	html: '<figure class="ve-align-right"><img src="' + ve.dm.example.imgSrc + '" alt="Example" width="100" height="50"><figcaption>caption</figcaption></figure>',
-	fromDataHtml: '<figure><img src="' + ve.dm.example.imgSrc + '" alt="Example" width="100" height="50"><figcaption>caption</figcaption></figure>',
 	data: [
 		{
 			type: 'blockImage',
@@ -244,7 +243,8 @@ ve.dm.example.blockImage = {
 				alt: 'Example',
 				width: 100,
 				height: 50,
-				originalAlign: 'right',
+				originalClasses: 've-align-right',
+				unrecognizedClasses: [],
 				align: 'right'
 			}
 		},
@@ -1096,7 +1096,6 @@ ve.dm.example.domToDataCases = {
 	},
 	'block image': {
 		body: ve.dm.example.blockImage.html,
-		fromDataBody: ve.dm.example.blockImage.fromDataHtml,
 		data: ve.dm.example.blockImage.data.concat( [
 			{ type: 'internalList' },
 			{ type: '/internalList' }
