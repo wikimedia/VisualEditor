@@ -44,7 +44,8 @@ ve.ce.ResizableNode = function VeCeResizableNode( $resizable, config ) {
 		teardown: 'onResizableTeardown',
 		resizing: 'onResizableResizing',
 		resizeEnd: 'onResizableFocus',
-		rerender: 'onResizableFocus'
+		rerender: 'onResizableFocus',
+		align: 'onResizableAlign'
 	} );
 	this.model.connect( this, {
 		attributeChange: 'onResizableAttributeChange'
@@ -264,6 +265,28 @@ ve.ce.ResizableNode.prototype.onResizableBlur = function () {
 
 	surface.disconnect( this, { position: 'setResizableHandlesSizeAndPosition' } );
 
+};
+
+/**
+ * Respond to AlignableNodes changing their alignment by hiding useless resize handles.
+ *
+ * @param {string} align Alignment
+ */
+ve.ce.ResizableNode.prototype.onResizableAlign = function ( align ) {
+	switch ( align ) {
+		case 'right':
+			this.showHandles( ['sw'] );
+			break;
+		case 'left':
+			this.showHandles( ['se'] );
+			break;
+		case 'center':
+			this.showHandles( ['sw', 'se'] );
+			break;
+		default:
+			this.showHandles();
+			break;
+	}
 };
 
 /**
