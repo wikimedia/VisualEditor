@@ -4,11 +4,15 @@
 			"Vacio",
 			"Xelgen",
 			"GeoO",
-			"Դավիթ Սարոյան"
+			"Դավիթ Սարոյան",
+			"Աշոտ1997"
 		]
 	},
 	"visualeditor": "ՎիզուալԽմբագրիչ",
 	"visualeditor-aliennode-tooltip": "Ցավում եմ, սակայն այս տարրը կարելի է խմբագրել միայն ելատեքստում։",
+	"visualeditor-align-widget-center": "Կենտրոն",
+	"visualeditor-align-widget-left": "Ձախ",
+	"visualeditor-align-widget-right": "Աջ",
 	"visualeditor-annotationbutton-bold-tooltip": "Թավատառ",
 	"visualeditor-annotationbutton-code-tooltip": "Ծրագրային կոդ",
 	"visualeditor-annotationbutton-italic-tooltip": "Շեղատառ",
