@@ -698,11 +698,8 @@ ve.dm.Surface.prototype.selectFirstContentOffset = function () {
 	if ( firstOffset !== -1 ) {
 		// Found a content offset
 		this.setLinearSelection( new ve.Range( firstOffset ) );
-	} else if ( this.getDocument().hasSlugAtOffset( 0 ) ) {
-		// Found a slug at 0
-		this.setLinearSelection( new ve.Range( 0 ) );
 	} else {
-		// Document is full of slugless structural nodes, just give up
+		// Document is full of structural nodes, just give up
 		this.setNullSelection();
 	}
 };

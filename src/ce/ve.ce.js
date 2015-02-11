@@ -58,7 +58,7 @@ ve.ce.getDomText = function ( element ) {
 			nodeType === Node.DOCUMENT_NODE ||
 			nodeType === Node.DOCUMENT_FRAGMENT_NODE
 		) {
-			if ( $element.hasClass( 've-ce-branchNode-blockSlugWrapper' ) ) {
+			if ( $element.hasClass( 've-ce-branchNode-blockSlug' ) ) {
 				// Block slugs are not represented in the model at all, but they do
 				// contain a single nbsp/FEFF character in the DOM, so make sure
 				// that character isn't counted
@@ -112,7 +112,7 @@ ve.ce.getDomHash = function ( element ) {
 		return '#';
 	} else if ( nodeType === Node.ELEMENT_NODE || nodeType === Node.DOCUMENT_NODE ) {
 		hash += '<' + nodeName + '>';
-		if ( !$( element ).hasClass( 've-ce-branchNode-blockSlugWrapper' ) ) {
+		if ( !$( element ).hasClass( 've-ce-branchNode-blockSlug' ) ) {
 			// Traverse its children
 			for ( element = element.firstChild; element; element = element.nextSibling ) {
 				hash += ve.ce.getDomHash( element );
@@ -345,17 +345,17 @@ ve.ce.getOffset = function ( domNode, domOffset ) {
  * Gets the linear offset of a given slug
  *
  * @method
- * @param {jQuery} $node jQuery slug selection
+ * @param {HTMLElement} element Slug DOM element
  * @returns {number} Linear model offset
  * @throws {Error}
  */
-ve.ce.getOffsetOfSlug = function ( $node ) {
-	var model;
-	if ( $node.index() === 0 ) {
-		model = $node.parent().data( 'view' ).getModel();
+ve.ce.getOffsetOfSlug = function ( element ) {
+	var model, $element = $( element );
+	if ( $element.index() === 0 ) {
+		model = $element.parent().data( 'view' ).getModel();
 		return model.getOffset() + ( model.isWrapped() ? 1 : 0 );
-	} else if ( $node.prev().length ) {
-		model = $node.prev().data( 'view' ).getModel();
+	} else if ( $element.prev().length ) {
+		model = $element.prev().data( 'view' ).getModel();
 		return model.getOffset() + model.getOuterLength();
 	} else {
 		throw new Error( 'Incorrect slug location' );

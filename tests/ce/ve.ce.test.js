@@ -153,15 +153,15 @@ QUnit.test( 'getOffset', function ( assert ) {
 				msg: 'Table with block slugs',
 				html: '<table><tr><td>Foo</td></tr></table>',
 				// CE HTML summary;
-				// <div [slugWrapper]><p [blockSlug]></p></div>
+				// <div [slug]>(ignored)</div>
 				// <table><tbody><tr><td>
 				//  <p>Foo</p>
 				// </td></tr></tbody></table>
-				// <div [slugWrapper]><p [blockSlug]></p></div>
+				// <div [slug]>(ignored)</div>
 				// Linmod:
 				// [<table>, <tbody>, <tr>, <td>, <p>, F, o, o, </p>, </td>, </tr>, </tbody>, </table>]
 				expected: [
-					0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0,
 					1,
 					2,
 					3,
@@ -174,7 +174,7 @@ QUnit.test( 'getOffset', function ( assert ) {
 					10,
 					11,
 					12,
-					13, 13, 13, 13, 13, 13, 13, 13
+					13, 13
 				]
 			},
 			{
@@ -215,7 +215,7 @@ QUnit.test( 'getOffset', function ( assert ) {
 						testCase.expected[expectedIndex],
 						testCase.msg + ': offset ' + i + ' in <' + parent.nodeName.toLowerCase() + '>'
 					);
-					if ( parent.childNodes[i] ) {
+					if ( parent.childNodes[i] && !$( parent.childNodes[i] ).hasClass( 've-ce-branchNode-blockSlug' ) ) {
 						expectedIndex = testOffsets( parent.childNodes[i], testCase, expectedIndex );
 					}
 				}

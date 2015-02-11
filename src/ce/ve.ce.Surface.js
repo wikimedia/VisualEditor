@@ -87,8 +87,7 @@ ve.ce.Surface = function VeCeSurface( model, ui, options ) {
 	this.surfaceObserver.connect( this, {
 		contentChange: 'onSurfaceObserverContentChange',
 		rangeChange: 'onSurfaceObserverRangeChange',
-		branchNodeChange: 'onSurfaceObserverBranchNodeChange',
-		slugEnter: 'onSurfaceObserverSlugEnter'
+		branchNodeChange: 'onSurfaceObserverBranchNodeChange'
 	} );
 	this.model.connect( this, {
 		select: 'onModelSelect',
@@ -2149,8 +2148,6 @@ ve.ce.Surface.prototype.onModelSelect = function () {
 	}
 	// Update the selection state in the SurfaceObserver
 	this.surfaceObserver.pollOnceNoEmit();
-	// Check if we moved out of a slug
-	this.updateSlug();
 };
 
 /**
@@ -2270,6 +2267,37 @@ ve.ce.Surface.prototype.onSurfaceObserverBranchNodeChange = function ( oldBranch
 };
 
 /**
+ * Create a slug out of a DOM element
+ *
+ * @param {HTMLElement} element Slug element
+ */
+ve.ce.Surface.prototype.createSlug = function ( element ) {
+	var $slug,
+		surface = this,
+		offset = ve.ce.getOffsetOfSlug( element ),
+		doc = this.getModel().getDocument();
+
+	this.changeModel( ve.dm.Transaction.newFromInsertion(
+		doc, offset, [
+			{ type: 'paragraph', internal: { generated: 'slug' } },
+			{ type: '/paragraph' }
+		]
+	), new ve.dm.LinearSelection( doc, new ve.Range( offset + 1 ) ) );
+
+	// Animate the slug open
+	$slug = this.getDocument().getDocumentNode().getNodeFromOffset( offset + 1 ).$element;
+	$slug.addClass( 've-ce-branchNode-newSlug' );
+	setTimeout( function () {
+		$slug.addClass( 've-ce-branchNode-newSlug-open' );
+		setTimeout( function () {
+			surface.emit( 'position' );
+		}, 200 );
+	} );
+
+	this.onModelSelect();
+};
+
+/**
  * Handle selection change events.
  *
  * @see ve.ce.SurfaceObserver#pollOnce
@@ -2295,118 +2323,6 @@ ve.ce.Surface.prototype.onSurfaceObserverRangeChange = function ( oldRange, newR
 		this.decRenderLock();
 	}
 	this.checkUnicorns( false );
-};
-
-/**
- * Handle slug enter events.
- *
- * @see ve.ce.SurfaceObserver#pollOnce
- */
-ve.ce.Surface.prototype.onSurfaceObserverSlugEnter = function () {
-	var fragment, offset, $paragraph,
-		model = this.getModel(),
-		doc = model.getDocument();
-
-	this.updateSlug();
-	// Wait until after updateSlug() to get selection
-	fragment = model.getFragment();
-	if ( !( fragment.getSelection() instanceof ve.dm.LinearSelection ) ) {
-		// This shouldn't happen
-		return;
-	}
-	offset = fragment.getSelection().getRange().start;
-	model.pushStaging( true );
-	this.changeModel( ve.dm.Transaction.newFromInsertion(
-		doc, offset, [
-			{ type: 'paragraph', internal: { generated: 'slug' } },
-			{ type: '/paragraph' }
-		]
-	), new ve.dm.LinearSelection( doc, new ve.Range( offset + 1 ) ) );
-	this.slugFragment = fragment;
-
-	// Fake a slug transition on the new paragraph
-	// Clear wrappers from previous former slugs
-	this.$element.find( '.ve-ce-branchNode-blockSlugWrapper-former' ).remove();
-	// Style paragraph as an unfocused slug, then remove unfocused class to trigger transition
-	// The order is important: if we set -former before -former-unfocused, we'll get two transitions
-	$paragraph = this.getDocument().getBranchNodeFromOffset( offset + 1 ).$element;
-	$paragraph.wrap( this.$( '<div>' ).addClass( 've-ce-branchNode-blockSlugWrapper-former-unfocused' ) );
-	// Restore selection now that we've wrapped the node the selection was in
-	this.onModelSelect();
-	$paragraph.parent()
-		// Enable transitions
-		.addClass( 've-ce-branchNode-blockSlugWrapper-former' )
-		// Remove unfocused again to trigger transition
-		.removeClass( 've-ce-branchNode-blockSlugWrapper-former-unfocused' );
-};
-
-/**
- * Unslug if needed.
- *
- * If the slug is no longer empty, commit the staged changes.
- * If the slug is still empty and the cursor has moved out of it,
- * clear the staged changes.
- * If the slug is still empty and the cursor is still inside it,
- * or if there is no active slug, do nothing.
- */
-ve.ce.Surface.prototype.updateSlug = function () {
-	// Prevent recursion
-	if ( this.updatingSlug ) {
-		return;
-	}
-	this.updatingSlug = true;
-
-	if ( this.slugFragment ) {
-		var range, $slug, anchor,
-			slugFragmentRange = this.slugFragment.getSelection().getRange(),
-			model = this.getModel();
-
-		if ( model.getSelection() instanceof ve.dm.LinearSelection ) {
-			range = model.getSelection().getRange();
-		}
-
-		if ( slugFragmentRange.getLength() === 2 ) {
-			if ( !range || !slugFragmentRange.containsOffset( range.start ) ) {
-				model.popStaging();
-				// After popStaging we may have removed a paragraph before our current
-				// cursor position. Polling with the SurfaceObserver won't notice a change
-				// in the rangy range as our cursor doesn't move within its node so we
-				// need to clear it first.
-				this.surfaceObserver.clear();
-				this.surfaceObserver.pollOnceNoEmit();
-
-				// Fake a transition on the slug that came back
-				$slug = $( this.documentView.getSlugAtOffset( slugFragmentRange.start ) );
-				anchor = $slug[0].previousSibling;
-				$slug
-					// Remove from the DOM temporarily (needed for Firefox)
-					.detach()
-					// Switch from unfocused to focused (no transition)
-					.removeClass( 've-ce-branchNode-blockSlugWrapper-unfocused' )
-					.addClass( 've-ce-branchNode-blockSlugWrapper-focused' )
-					// Reattach to the DOM
-					.insertAfter( anchor )
-					// Force reflow (needed for Chrome)
-					.height();
-				$slug
-					// Switch from focused to unfocused (with transition)
-					.removeClass( 've-ce-branchNode-blockSlugWrapper-focused' )
-					.addClass( 've-ce-branchNode-blockSlugWrapper-unfocused' );
-
-				this.slugFragment = null;
-			}
-		} else {
-			// Unwrap the ve-ce-branchNode-blockSlugWrapper wrapper from the paragraph
-			this.getDocument().getBranchNodeFromOffset( slugFragmentRange.start + 1 ).$element.unwrap();
-			// Modifying the DOM above breaks cursor position, so restore
-			this.showSelection( this.getModel().getSelection() );
-
-			model.applyStaging();
-			this.slugFragment = null;
-		}
-	}
-
-	this.updatingSlug = false;
 };
 
 /**

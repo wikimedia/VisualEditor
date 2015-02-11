@@ -95,14 +95,9 @@ ve.ce.BranchNode.inputDebugInlineSlugTemplate = $( '<span>' )
  * @property {HTMLElement}
  */
 ve.ce.BranchNode.blockSlugTemplate = $( '<div>' )
-	.addClass( 've-ce-branchNode-blockSlugWrapper ve-ce-branchNode-blockSlugWrapper-unfocused' )
-	.append(
-		$( '<p>' )
-			// TODO: work around ce=false IE9 bug
-			.prop( 'contentEditable', 'false' )
-			.addClass( 've-ce-branchNode-slug ve-ce-branchNode-blockSlug' )
-			.html( '&#xFEFF;' )
-	)
+	.addClass( 've-ce-branchNode-slug ve-ce-branchNode-blockSlug' )
+	// TODO: work around ce=false IE9 bug
+	.prop( 'contentEditable', 'false' )
 	.get( 0 );
 
 /* Methods */
@@ -242,7 +237,7 @@ ve.ce.BranchNode.prototype.onSplice = function ( index ) {
  * @method
  */
 ve.ce.BranchNode.prototype.setupSlugs = function () {
-	var i, slugTemplate, slugNode, child,
+	var i, slugTemplate, slugNode, child, slugButton,
 		isBlock = this.canHaveChildrenNotContent(),
 		doc = this.getElementDocument();
 
@@ -274,7 +269,24 @@ ve.ce.BranchNode.prototype.setupSlugs = function () {
 			this.$element[0].appendChild( slugNode );
 		}
 		this.slugNodes[i] = slugNode;
+		if ( isBlock ) {
+			slugButton = new OO.ui.ButtonWidget( {
+				label: ve.msg( 'visualeditor-slug-insert' ),
+				icon: 'add',
+				framed: false
+			} ).on( 'click', this.onSlugClick.bind( this, slugNode ) );
+			$( slugNode ).append( slugButton.$element );
+		}
 	}
+};
+
+/**
+ * Handle slug click events
+ *
+ * @param {HTMLElement} slugNode Slug node clicked
+ */
+ve.ce.BranchNode.prototype.onSlugClick = function ( slugNode ) {
+	this.getRoot().getSurface().createSlug( slugNode );
 };
 
 /**
