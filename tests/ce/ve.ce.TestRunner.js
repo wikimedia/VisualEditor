@@ -197,23 +197,33 @@ ve.ce.TestRunner.prototype.sendEvent = function ( eventName, ev ) {
  * @param {string} text The new text
  */
 ve.ce.TestRunner.prototype.changeText = function ( text ) {
-	var extra,
-		nativeRange = null;
-	if ( this.nativeSelection.rangeCount > 0 ) {
-		nativeRange = this.nativeSelection.getRangeAt( 0 );
-	}
+	var focusNode, focusOffset;
+	// TODO: This method doesn't handle arbitrary text changes in a paragraph
+	// with non-text nodes. It just works for the main cases that are important
+	// in the existing IME tests.
 
-	// TODO: Enable multi-paragraph testing. For now, assuming one paragraph.
-	// FIXME: renaming startNode to startContainer revealed failing tests
-	if ( false && nativeRange && nativeRange.startContainer && text.indexOf( nativeRange.startContainer.textContent ) === 0 ) {
-		// We're just appending
-		// FIXME: str.slice( tr.length ) always produces an empty string...
-		extra = nativeRange.startContainer.textContent.slice( nativeRange.startContainer.textContent.length );
-		// This is fine IF startContainer is a TextNode
-		nativeRange.startContainer.textContent += extra;
+	// Store the focus before the selection gets clobbered
+	focusNode = this.nativeSelection.focusNode;
+	focusOffset = this.nativeSelection.focusOffset;
+
+	// Empty all descendent text nodes
+	// This may clobber the selection, so the test had better call changeSel next.
+	$( this.getParagraph() ).find( '*' ).addBack().contents().each( function () {
+		if ( this.nodeType === Node.TEXT_NODE ) {
+			this.textContent = '';
+		}
+	} );
+
+	// Insert text at the focus
+	if ( focusNode === null ) {
+		throw new Error( 'No focus node' );
+	} else if ( focusNode.nodeType === Node.TEXT_NODE ) {
+		focusNode.textContent = text;
 	} else {
-		// Wipe out the node
-		this.getParagraph().textContent = text;
+		focusNode.insertBefore(
+			document.createTextNode( text ),
+			focusNode.childNodes[focusOffset]
+		);
 	}
 	this.lastText = text;
 };
