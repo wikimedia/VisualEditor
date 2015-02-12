@@ -144,7 +144,7 @@ ve.ce.BranchNode.prototype.updateTagName = function () {
 
 	if ( tagName !== this.tagName ) {
 		this.emit( 'teardown' );
-		$wrapper = this.$( this.$.context.createElement( tagName ) );
+		$wrapper = this.$( document.createElement( tagName ) );
 		// Move contents
 		$wrapper.append( this.$element.contents() );
 		// Swap elements
