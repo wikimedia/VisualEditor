@@ -58,7 +58,7 @@ ve.ce.getDomText = function ( element ) {
 			nodeType === Node.DOCUMENT_NODE ||
 			nodeType === Node.DOCUMENT_FRAGMENT_NODE
 		) {
-			if ( $element.hasClass( 've-ce-branchNode-blockSlug' ) ) {
+			if ( $element.hasClass( 've-ce-branchNode-blockSlugWrapper' ) ) {
 				// Block slugs are not represented in the model at all, but they do
 				// contain a single nbsp/FEFF character in the DOM, so make sure
 				// that character isn't counted
@@ -112,9 +112,11 @@ ve.ce.getDomHash = function ( element ) {
 		return '#';
 	} else if ( nodeType === Node.ELEMENT_NODE || nodeType === Node.DOCUMENT_NODE ) {
 		hash += '<' + nodeName + '>';
-		// Traverse its children
-		for ( element = element.firstChild; element; element = element.nextSibling ) {
-			hash += ve.ce.getDomHash( element );
+		if ( !$( element ).hasClass( 've-ce-branchNode-blockSlugWrapper' ) ) {
+			// Traverse its children
+			for ( element = element.firstChild; element; element = element.nextSibling ) {
+				hash += ve.ce.getDomHash( element );
+			}
 		}
 		hash += '</' + nodeName + '>';
 		// Merge adjacent text node representations

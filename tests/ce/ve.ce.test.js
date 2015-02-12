@@ -40,9 +40,9 @@ QUnit.test( 'getDomHash/getDomText', function ( assert ) {
 				text: 'Foo ☃☃ bar'
 			},
 			{
-				msg: 'Branch slugs are ignored',
+				msg: 'Block slugs are ignored',
 				html: '<table><tr><td>Foo</td></tr></table>',
-				hash: '<DIV><DIV><P>#</P></DIV><TABLE><TBODY><TR><TD><P>#</P></TD></TR></TBODY></TABLE><DIV><P>#</P></DIV></DIV>',
+				hash: '<DIV><DIV></DIV><TABLE><TBODY><TR><TD><P>#</P></TD></TR></TBODY></TABLE><DIV></DIV></DIV>',
 				text: 'Foo'
 			}
 		];
