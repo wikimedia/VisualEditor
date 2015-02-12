@@ -108,9 +108,9 @@ ve.ce.getDomHash = function ( element ) {
 		nodeName = element.nodeName,
 		hash = '';
 
-	if ( nodeType === 3 || nodeType === 4 ) {
+	if ( nodeType === Node.TEXT_NODE || nodeType === Node.CDATA_SECTION_NODE ) {
 		return '#';
-	} else if ( nodeType === 1 || nodeType === 9 ) {
+	} else if ( nodeType === Node.ELEMENT_NODE || nodeType === Node.DOCUMENT_NODE ) {
 		hash += '<' + nodeName + '>';
 		// Traverse its children
 		for ( element = element.firstChild; element; element = element.nextSibling ) {
