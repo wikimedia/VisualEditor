@@ -4,7 +4,7 @@
  * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
-// QUnit.module( 've.ce' );
+QUnit.module( 've.ce' );
 
 /* Stubs */
 
