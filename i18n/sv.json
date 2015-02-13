@@ -14,11 +14,15 @@
 			"Lokal Profil",
 			"Josve05a",
 			"NH",
-			"Platinawolf"
+			"Platinawolf",
+			"Jenniesarina"
 		]
 	},
 	"visualeditor": "VisualEditor",
 	"visualeditor-aliennode-tooltip": "Tyvärr, detta objekt kan endast redigeras med wikitext just nu.",
+	"visualeditor-align-widget-center": "Center",
+	"visualeditor-align-widget-left": "Vänster",
+	"visualeditor-align-widget-right": "Höger",
 	"visualeditor-annotationbutton-bold-tooltip": "Fet",
 	"visualeditor-annotationbutton-code-tooltip": "Datorkod",
 	"visualeditor-annotationbutton-italic-tooltip": "Kursiv",
@@ -51,6 +55,8 @@
 	"visualeditor-find-and-replace-done": "Klart",
 	"visualeditor-find-and-replace-find-text": "Sök",
 	"visualeditor-find-and-replace-match-case": "Matcha skiftläge",
+	"visualeditor-find-and-replace-next-button": "Hitta nästa",
+	"visualeditor-find-and-replace-previous-button": "Sök föregående",
 	"visualeditor-find-and-replace-regular-expression": "Reguljärt uttryck",
 	"visualeditor-find-and-replace-replace-all-button": "Ersätt alla",
 	"visualeditor-find-and-replace-replace-button": "Ersätt",

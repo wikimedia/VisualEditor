@@ -53,6 +53,7 @@
 	"visualeditor-dialog-language-search-title": "Wybierz język",
 	"visualeditor-find-and-replace-done": "Gotowe",
 	"visualeditor-find-and-replace-find-text": "Znajdź",
+	"visualeditor-find-and-replace-invalid-regex": "Nieprawidłowe wyrażenie regularne",
 	"visualeditor-find-and-replace-match-case": "Uwzględnij wielkość liter",
 	"visualeditor-find-and-replace-next-button": "Znajdź następny",
 	"visualeditor-find-and-replace-previous-button": "Znajdź poprzedni",
