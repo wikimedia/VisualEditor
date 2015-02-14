@@ -90,7 +90,7 @@
 		var msg, n = 0;
 		for ( msg in cases ) {
 			if ( cases[msg].head !== undefined || cases[msg].body !== undefined ) {
-				n += 2;
+				n += 3;
 				if ( cases[msg].storeItems ) {
 					n += cases[msg].storeItems.length;
 				}
@@ -100,15 +100,25 @@
 	};
 
 	ve.test.utils.runGetModelFromDomTest = function ( assert, caseItem, msg ) {
-		var model, i, length, hash, html,
+		var model, i, length, hash, html, htmlDoc, actualData, actualRtDoc, expectedRtDoc,
 			// Make sure we've always got a <base> tag
 			defaultHead = '<base href="' + ve.dm.example.base + '">';
 
 		if ( caseItem.head !== undefined || caseItem.body !== undefined ) {
 			html = '<head>' + ( caseItem.head || defaultHead ) + '</head><body>' + caseItem.body + '</body>';
-			model = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( html ) );
-			ve.dm.example.preprocessAnnotations( caseItem.data, model.getStore() );
-			assert.deepEqualWithDomElements( model.getFullData(), caseItem.data, msg + ': data' );
+			htmlDoc = ve.createDocumentFromHtml( html );
+			model = ve.dm.converter.getModelFromDom( htmlDoc );
+			actualData = model.getFullData();
+			// Round-trip here, check round-trip later
+			if ( caseItem.modify ) {
+				actualData = ve.copy( actualData );
+				caseItem.modify( model );
+			}
+			actualRtDoc = ve.dm.converter.getDomFromModel( model );
+
+			// Normalize and verify data
+			ve.dm.example.postprocessAnnotations( actualData, model.getStore() );
+			assert.deepEqualWithDomElements( actualData, caseItem.data, msg + ': data' );
 			assert.deepEqual( model.getInnerWhitespace(), caseItem.innerWhitespace || new Array( 2 ), msg + ': inner whitespace' );
 			// check storeItems have been added to store
 			if ( caseItem.storeItems ) {
@@ -121,6 +131,11 @@
 					);
 				}
 			}
+			// Check round-trip
+			expectedRtDoc = caseItem.normalizedBody ?
+				ve.createDocumentFromHtml( caseItem.normalizedBody ) :
+				htmlDoc;
+			assert.equalDomElement( actualRtDoc.body, expectedRtDoc.body, msg + ': round-trip' );
 		}
 	};
 
