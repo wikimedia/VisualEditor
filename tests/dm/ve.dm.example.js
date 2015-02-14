@@ -1130,7 +1130,7 @@ ve.dm.example.domToDataCases = {
 			{ type: '/internalList' }
 		]
 	},
-	'strip leading whitepsace in paragraphs': {
+	'strip leading whitespace in paragraphs': {
 		data: [
 			{ type: 'paragraph' },
 			' ', 'f', 'o', 'o',
@@ -2848,7 +2848,7 @@ ve.dm.example.domToDataCases = {
 		data: ve.dm.example.complexTable
 	},
 	'div set to RTL with paragraph inside': {
-		body: '<div style="direction: rtl;"><p>a<b>b</b>c<i>d</i>e</p>',
+		body: '<div style="direction: rtl;"><p>a<b>b</b>c<i>d</i>e</p></div>',
 		data: [
 			{
 				type: 'div',
