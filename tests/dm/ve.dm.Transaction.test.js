@@ -1074,260 +1074,270 @@ QUnit.test( 'newFromAttributeChanges', function ( assert ) {
 } );
 
 QUnit.test( 'newFromAnnotation', function ( assert ) {
-	var bold = ve.dm.example.createAnnotation( ve.dm.example.bold ),
-		strong = ve.dm.example.createAnnotation(
-			{ type: 'textStyle/bold', attributes: { nodeName: 'strong' } }
-		),
+	var boldAnnotation = ve.dm.example.createAnnotation( ve.dm.example.bold ),
+		strong = { type: 'textStyle/bold', attributes: { nodeName: 'strong' } },
+		strongAnnotation = ve.dm.example.createAnnotation( strong ),
 		doc = ve.dm.example.createExampleDocument(),
-		doc2 = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( '<b>Foo</b><strong>Bar</strong>' ) ),
+		doc2 = ve.dm.example.createExampleDocumentFromData( [
+			{ type: 'paragraph' },
+			[ 'F', [ve.dm.example.bold] ],
+			[ 'o', [ve.dm.example.bold] ],
+			[ 'o', [ve.dm.example.bold] ],
+			[ 'B', [strong] ],
+			[ 'a', [strong] ],
+			[ 'r', [strong] ],
+			{ type: '/paragraph' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
+		] ),
 		annotationDoc = ve.dm.example.createExampleDocument( 'annotationData' ),
 		cases = {
 			'over plain text': {
-				args: [doc, new ve.Range( 1, 2 ), 'set', bold],
+				args: [doc, new ve.Range( 1, 2 ), 'set', boldAnnotation],
 				ops: [
 					{ type: 'retain', length: 1 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'start',
-						annotation: bold
+						annotation: boldAnnotation
 					},
 					{ type: 'retain', length: 1 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'stop',
-						annotation: bold
+						annotation: boldAnnotation
 					},
 					{ type: 'retain', length: 61 }
 				]
 			},
 			'over partially annotated text': {
-				args: [doc, new ve.Range( 1, 4 ), 'set', bold],
+				args: [doc, new ve.Range( 1, 4 ), 'set', boldAnnotation],
 				ops: [
 					{ type: 'retain', length: 1 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'start',
-						annotation: bold
+						annotation: boldAnnotation
 					},
 					{ type: 'retain', length: 1 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'stop',
-						annotation: bold
+						annotation: boldAnnotation
 					},
 					{ type: 'retain', length: 1 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'start',
-						annotation: bold
+						annotation: boldAnnotation
 					},
 					{ type: 'retain', length: 1 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'stop',
-						annotation: bold
+						annotation: boldAnnotation
 					},
 					{ type: 'retain', length: 59 }
 				]
 			},
 			'comparable annotation over partially annotated text': {
-				args: [doc, new ve.Range( 1, 4 ), 'set', strong],
+				args: [doc, new ve.Range( 1, 4 ), 'set', strongAnnotation],
 				ops: [
 					{ type: 'retain', length: 1 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'start',
-						annotation: strong
+						annotation: strongAnnotation
 					},
 					{ type: 'retain', length: 1 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'stop',
-						annotation: strong
+						annotation: strongAnnotation
 					},
 					{ type: 'retain', length: 1 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'start',
-						annotation: strong
+						annotation: strongAnnotation
 					},
 					{ type: 'retain', length: 1 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'stop',
-						annotation: strong
+						annotation: strongAnnotation
 					},
 					{ type: 'retain', length: 59 }
 				]
 			},
 			'adjacent comparable annotations not cleared together': {
-				args: [doc2, new ve.Range( 1, 7 ), 'clear', strong],
+				args: [doc2, new ve.Range( 1, 7 ), 'clear', strongAnnotation],
 				ops: [
 					{ type: 'retain', length: 4 },
 					{
 						type: 'annotate',
 						method: 'clear',
 						bias: 'start',
-						annotation: strong
+						annotation: strongAnnotation
 					},
 					{ type: 'retain', length: 3 },
 					{
 						type: 'annotate',
 						method: 'clear',
 						bias: 'stop',
-						annotation: strong
+						annotation: strongAnnotation
 					},
 					{ type: 'retain', length: 3 }
 				]
 			},
 			'over elements': {
-				args: [doc, new ve.Range( 4, 9 ), 'set', bold],
+				args: [doc, new ve.Range( 4, 9 ), 'set', boldAnnotation],
 				ops: [
 					{ type: 'retain', length: 63 }
 				]
 			},
 			'over elements and content': {
-				args: [doc, new ve.Range( 3, 11 ), 'set', bold],
+				args: [doc, new ve.Range( 3, 11 ), 'set', boldAnnotation],
 				ops: [
 					{ type: 'retain', length: 3 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'start',
-						annotation: bold
+						annotation: boldAnnotation
 					},
 					{ type: 'retain', length: 1 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'stop',
-						annotation: bold
+						annotation: boldAnnotation
 					},
 					{ type: 'retain', length: 6 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'start',
-						annotation: bold
+						annotation: boldAnnotation
 					},
 					{ type: 'retain', length: 1 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'stop',
-						annotation: bold
+						annotation: boldAnnotation
 					},
 					{ type: 'retain', length: 52 }
 				]
 			},
 			'over content and content element (image)': {
-				args: [doc, new ve.Range( 38, 42 ), 'set', bold],
+				args: [doc, new ve.Range( 38, 42 ), 'set', boldAnnotation],
 				ops: [
 					{ type: 'retain', length: 38 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'start',
-						annotation: bold
+						annotation: boldAnnotation
 					},
 					{ type: 'retain', length: 4 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'stop',
-						annotation: bold
+						annotation: boldAnnotation
 					},
 					{ type: 'retain', length: 21 }
 				]
 			},
 			'over content and unannotatable content element (unboldable node)': {
-				args: [annotationDoc, new ve.Range( 1, 9 ), 'set', bold],
+				args: [annotationDoc, new ve.Range( 1, 9 ), 'set', boldAnnotation],
 				ops: [
 					{ type: 'retain', length: 1 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'start',
-						annotation: bold
+						annotation: boldAnnotation
 					},
 					{ type: 'retain', length: 3 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'stop',
-						annotation: bold
+						annotation: boldAnnotation
 					},
 					{ type: 'retain', length: 2 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'start',
-						annotation: bold
+						annotation: boldAnnotation
 					},
 					{ type: 'retain', length: 3 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'stop',
-						annotation: bold
+						annotation: boldAnnotation
 					},
 					{ type: 'retain', length: 21 }
 				]
 			},
 			'over handles own children nodes': {
-				args: [annotationDoc, new ve.Range( 1, 27 ), 'set', bold],
+				args: [annotationDoc, new ve.Range( 1, 27 ), 'set', boldAnnotation],
 				ops: [
 					{ type: 'retain', length: 1 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'start',
-						annotation: bold
+						annotation: boldAnnotation
 					},
 					{ type: 'retain', length: 3 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'stop',
-						annotation: bold
+						annotation: boldAnnotation
 					},
 					{ type: 'retain', length: 2 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'start',
-						annotation: bold
+						annotation: boldAnnotation
 					},
 					{ type: 'retain', length: 3 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'stop',
-						annotation: bold
+						annotation: boldAnnotation
 					},
 					{ type: 'retain', length: 15 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'start',
-						annotation: bold
+						annotation: boldAnnotation
 					},
 					{ type: 'retain', length: 3 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'stop',
-						annotation: bold
+						annotation: boldAnnotation
 					},
 					{ type: 'retain', length: 3 }
 				]
