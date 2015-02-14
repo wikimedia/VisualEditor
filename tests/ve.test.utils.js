@@ -125,7 +125,7 @@
 	};
 
 	ve.test.utils.runGetDomFromModelTest = function ( assert, caseItem, msg ) {
-		var originalData, doc, store, i, length, html;
+		var originalData, model, store, i, length, html;
 
 		store = new ve.dm.IndexValueStore();
 		// Load storeItems into store
@@ -134,19 +134,19 @@
 				store.index( caseItem.storeItems[i].value, caseItem.storeItems[i].hash );
 			}
 		}
+		model = new ve.dm.Document( ve.dm.example.preprocessAnnotations( caseItem.data, store ) );
+		model.innerWhitespace = caseItem.innerWhitespace ? ve.copy( caseItem.innerWhitespace ) : new Array( 2 );
 		if ( caseItem.modify ) {
-			caseItem.modify( caseItem.data );
+			caseItem.modify( model );
 		}
-		doc = new ve.dm.Document( ve.dm.example.preprocessAnnotations( caseItem.data, store ) );
-		doc.innerWhitespace = caseItem.innerWhitespace ? ve.copy( caseItem.innerWhitespace ) : new Array( 2 );
-		originalData = ve.copy( doc.getFullData() );
+		originalData = ve.copy( model.getFullData() );
 		html = '<body>' + ( caseItem.normalizedBody || caseItem.body ) + '</body>';
 		assert.equalDomElement(
-			ve.dm.converter.getDomFromModel( doc ),
+			ve.dm.converter.getDomFromModel( model ),
 			ve.createDocumentFromHtml( html ),
 			msg
 		);
-		assert.deepEqualWithDomElements( doc.getFullData(), originalData, msg + ' (data hasn\'t changed)' );
+		assert.deepEqualWithDomElements( model.getFullData(), originalData, msg + ' (data hasn\'t changed)' );
 	};
 
 	/**
