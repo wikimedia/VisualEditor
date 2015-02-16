@@ -36,8 +36,14 @@ ve.ce.View = function VeCeView( model, config ) {
 		teardown: 'onTeardown'
 	} );
 
-	// Initialization
-	this.renderAttributes();
+	// Render attributes from original DOM elements
+	ve.dm.Converter.renderHtmlAttributeList(
+		this.model.getHtmlAttributes(),
+		this.$element,
+		this.constructor.static.renderHtmlAttributes,
+		// computed attributes
+		true
+	);
 };
 
 /* Inheritance */
@@ -163,22 +169,6 @@ ve.ce.View.prototype.isInContentEditable = function () {
 		node = node.parentNode;
 	}
 	return !!( node && node.contentEditable === 'true' );
-};
-
-/**
- * Render an HTML attribute list onto this.$element
- *
- * If no attributeList is given, the attribute list stored in the linear model will be used.
- *
- * @param {Object[]} [attributeList] HTML attribute list, see ve.dm.Converter#buildHtmlAttributeList
- */
-ve.ce.View.prototype.renderAttributes = function ( attributeList ) {
-	ve.dm.Converter.renderHtmlAttributeList(
-		attributeList || this.model.getHtmlAttributes(),
-		this.$element,
-		this.constructor.static.renderHtmlAttributes,
-		true // computed attributes
-	);
 };
 
 /**
