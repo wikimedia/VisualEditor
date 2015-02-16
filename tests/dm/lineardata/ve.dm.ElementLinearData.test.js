@@ -1376,9 +1376,9 @@ QUnit.test( 'getNearestWordRange', function ( assert ) {
 } );
 
 QUnit.test( 'sanitize', function ( assert ) {
-	var i, model, data,
+	var i, model, data, actualStore,
 		count = 0,
-		bold = new ve.dm.BoldAnnotation( { type: 'textStyle/bold', attributes: { nodeName: 'b' } } ),
+		bold = { type: 'textStyle/bold', attributes: { nodeName: 'b' } },
 		cases = [
 			{
 				html: '<p style="text-shadow: 0 0 1px #000;">F<b style="color:blue;">o</b>o</p>',
@@ -1477,7 +1477,11 @@ QUnit.test( 'sanitize', function ( assert ) {
 		data.sanitize( cases[i].rules || {}, cases[i].plainText );
 		assert.deepEqualWithDomElements( data.data, cases[i].data, cases[i].msg + ': data' );
 		if ( cases[i].store ) {
-			assert.deepEqualWithDomElements( data.getStore().valueStore, cases[i].store, cases[i].msg + ': store' );
+			/*jshint loopfunc:true */
+			actualStore = data.getStore().valueStore.map( function ( ann ) {
+				return ann.element;
+			} );
+			assert.deepEqualWithDomElements( actualStore, cases[i].store, cases[i].msg + ': store' );
 		}
 	}
 } );
