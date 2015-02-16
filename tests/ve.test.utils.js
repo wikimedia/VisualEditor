@@ -155,7 +155,7 @@
 			caseItem.modify( model );
 		}
 		originalData = ve.copy( model.getFullData() );
-		html = '<body>' + ( caseItem.normalizedBody || caseItem.body ) + '</body>';
+		html = '<body>' + ( caseItem.fromDataBody || caseItem.normalizedBody || caseItem.body ) + '</body>';
 		assert.equalDomElement(
 			ve.dm.converter.getDomFromModel( model ),
 			ve.createDocumentFromHtml( html ),
