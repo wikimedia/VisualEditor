@@ -107,32 +107,36 @@ ve.dm.example.createExampleDocument = function ( name, store ) {
  *
  * @param {string} [name='data'] Named element of ve.dm.example
  * @param {ve.dm.IndexValueStore} [store] A specific index-value store to use, optionally.
- * @param {Object} [object] Collection of test documents, keyed by name
+ * @param {Object} object Collection of test documents, keyed by name
  * @returns {ve.dm.Document} Document
  * @throws {Error} Example data not found
  */
 ve.dm.example.createExampleDocumentFromObject = function ( name, store, object ) {
-	var doc, i;
 	name = name || 'data';
-	store = store || new ve.dm.IndexValueStore();
 	if ( object[name] === undefined ) {
 		throw new Error( 'Example data \'' + name + '\' not found' );
 	}
+	return ve.dm.example.createExampleDocumentFromData( object[name], store );
+};
+
+ve.dm.example.createExampleDocumentFromData = function ( data, store ) {
+	var doc, i;
+	store = store || new ve.dm.IndexValueStore();
 	doc = new ve.dm.Document(
-		ve.dm.example.preprocessAnnotations( ve.copy( object[name] ), store )
+		ve.dm.example.preprocessAnnotations( ve.copy( data ), store )
 	);
 	// HACK internalList isn't populated when creating a document from data
-	if ( object[name].internalItems ) {
-		for ( i = 0; i < object[name].internalItems.length; i++ ) {
+	if ( data.internalItems ) {
+		for ( i = 0; i < data.internalItems.length; i++ ) {
 			doc.internalList.queueItemHtml(
-				object[name].internalItems[i].group,
-				object[name].internalItems[i].key,
-				object[name].internalItems[i].body
+				data.internalItems[i].group,
+				data.internalItems[i].key,
+				data.internalItems[i].body
 			);
 		}
 	}
-	if ( object[name].internalListNextUniqueNumber ) {
-		doc.internalList.nextUniqueNumber = object[name].internalListNextUniqueNumber;
+	if ( data.internalListNextUniqueNumber ) {
+		doc.internalList.nextUniqueNumber = data.internalListNextUniqueNumber;
 	}
 	doc.buildNodeTree();
 	return doc;
