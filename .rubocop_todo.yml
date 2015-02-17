@@ -29,9 +29,3 @@ Style/HashSyntax:
 # Cop supports --auto-correct.
 Style/PerlBackrefs:
   Enabled: false
-
-# Offense count: 5
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-Style/StringLiterals:
-  Enabled: false
