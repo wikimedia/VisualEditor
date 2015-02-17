@@ -52,6 +52,27 @@ ve.dm.example.preprocessAnnotations = function ( data, store ) {
 };
 
 /**
+ * Convert real data back to shorthand notation. See #preprocessAnnotations
+ *
+ * @param {Array} data Linear model data. Will be modified.
+ * @param {ve.dm.IndexValueStore} store Index-value store to resolve annotations in
+ */
+ve.dm.example.postprocessAnnotations = function ( data, store ) {
+	var i, j, key;
+
+	for ( i = 0; i < data.length; i++ ) {
+		key = data[i].annotations ? 'annotations' : 1;
+		if ( Array.isArray( data[i][key] ) ) {
+			data[i] = $.extend( Array.isArray( data[i] ) ? [] : {}, data[i] );
+			data[i][key] = new ve.dm.AnnotationSet( store, data[i][key] ).get();
+			for ( j = 0; j < data[i][key].length; j++ ) {
+				data[i][key][j] = data[i][key][j].element;
+			}
+		}
+	}
+};
+
+/**
  * Create an annotation object from shorthand notation.
  * @method
  * @param {Object} annotation Plain object with type and attributes properties
