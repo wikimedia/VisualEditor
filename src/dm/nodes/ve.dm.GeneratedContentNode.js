@@ -15,9 +15,11 @@
 ve.dm.GeneratedContentNode = function VeDmGeneratedContentNode() {
 };
 
-/* Static methods */
+/* Inheritance */
 
-ve.dm.GeneratedContentNode.static = {};
+OO.initClass( ve.dm.GeneratedContentNode );
+
+/* Static methods */
 
 /**
  * Store HTML of DOM elements, hashed on data element

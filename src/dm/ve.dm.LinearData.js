@@ -19,9 +19,11 @@ ve.dm.LinearData = function VeDmLinearData( store, data ) {
 	this.data = data || [];
 };
 
-/* Static Methods */
+/* Inheritance */
 
-ve.dm.LinearData.static = {};
+OO.initClass( ve.dm.LinearData );
+
+/* Static Methods */
 
 /**
  * Get the type of an element

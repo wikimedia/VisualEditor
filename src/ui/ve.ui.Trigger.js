@@ -55,9 +55,11 @@ ve.ui.Trigger = function VeUiTrigger( e, allowInvalidPrimary ) {
 	}
 };
 
-/* Static Properties */
+/* Inheritance */
 
-ve.ui.Trigger.static = {};
+OO.initClass( ve.ui.Trigger );
+
+/* Static Properties */
 
 /**
  * Symbolic modifier key names.
