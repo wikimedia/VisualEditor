@@ -94,7 +94,10 @@ ve.dm.ClassAttributeNode.static.getClassAttrFromAttributes = function ( attribut
 	// If no meaningful change in classes, preserve order
 	if (
 		attributes.originalClasses &&
-		ve.compare( attributes.originalClasses.trim().split( /\s+/ ).sort(), classNames.sort() )
+		ve.compare(
+			$.unique( attributes.originalClasses.trim().split( /\s+/ ) ).sort(),
+			$.unique( classNames ).sort()
+		)
 	) {
 		return attributes.originalClasses;
 	} else if ( classNames.length > 0 ) {
