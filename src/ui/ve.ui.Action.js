@@ -20,9 +20,11 @@ ve.ui.Action = function VeUiAction( surface ) {
 	this.surface = surface;
 };
 
-/* Static Properties */
+/* Inheritance */
 
-ve.ui.Action.static = {};
+OO.initClass( ve.ui.Action );
+
+/* Static Properties */
 
 /**
  * List of allowed methods for the action.

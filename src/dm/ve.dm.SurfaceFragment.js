@@ -33,9 +33,9 @@ ve.dm.SurfaceFragment = function VeDmSurfaceFragment( surface, selection, noAuto
 	this.historyPointer = this.document.getCompleteHistoryLength();
 };
 
-/* Static Properties */
+/* Inheritance */
 
-ve.dm.SurfaceFragment.static = {};
+OO.initClass( ve.dm.SurfaceFragment );
 
 /* Methods */
 

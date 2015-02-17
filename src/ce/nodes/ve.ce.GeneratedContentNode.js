@@ -24,6 +24,10 @@ ve.ce.GeneratedContentNode = function VeCeGeneratedContentNode() {
 	this.update();
 };
 
+/* Inheritance */
+
+OO.initClass( ve.ce.GeneratedContentNode );
+
 /* Events */
 
 /**
@@ -39,8 +43,6 @@ ve.ce.GeneratedContentNode = function VeCeGeneratedContentNode() {
  */
 
 /* Static members */
-
-ve.ce.GeneratedContentNode.static = {};
 
 // this.$element is just a wrapper for the real content, so don't duplicate attributes on it
 ve.ce.GeneratedContentNode.static.renderHtmlAttributes = false;

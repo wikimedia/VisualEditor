@@ -18,9 +18,11 @@ ve.dm.Model = function VeDmModel( element ) {
 	this.element = element || { type: this.constructor.static.name };
 };
 
-/* Static Properties */
+/* Inheritance */
 
-ve.dm.Model.static = {};
+OO.initClass( ve.dm.Model );
+
+/* Static Properties */
 
 /**
  * Symbolic name for this model class. Must be set to a unique string by every subclass.
