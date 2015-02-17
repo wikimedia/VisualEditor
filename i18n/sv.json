@@ -54,6 +54,7 @@
 	"visualeditor-dialog-language-search-title": "Välj språk",
 	"visualeditor-find-and-replace-done": "Klart",
 	"visualeditor-find-and-replace-find-text": "Sök",
+	"visualeditor-find-and-replace-invalid-regex": "Ogiltigt reguljärt uttryck",
 	"visualeditor-find-and-replace-match-case": "Matcha skiftläge",
 	"visualeditor-find-and-replace-next-button": "Hitta nästa",
 	"visualeditor-find-and-replace-previous-button": "Sök föregående",
