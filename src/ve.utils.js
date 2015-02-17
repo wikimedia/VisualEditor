@@ -473,8 +473,6 @@ ve.graphemeSafeSubstring = function ( text, start, end, outer ) {
 /**
  * Escape non-word characters so they can be safely used as HTML attribute values.
  *
- * This method is basically a copy of `mw.html.escape`.
- *
  * @param {string} value Attribute value to escape
  * @returns {string} Escaped attribute value
  */
@@ -501,8 +499,6 @@ ve.escapeHtml = ( function () {
 
 /**
  * Generate HTML attributes.
- *
- * This method copies part of `mw.html.element` from MediaWiki.
  *
  * NOTE: While the values of attributes are escaped, the names of attributes (i.e. the keys in
  * the attributes objects) are NOT ESCAPED. The caller is responsible for making sure these are
@@ -537,8 +533,6 @@ ve.getHtmlAttributes = function ( attributes ) {
 
 /**
  * Generate an opening HTML tag.
- *
- * This method copies part of `mw.html.element` from MediaWiki.
  *
  * NOTE: While the values of attributes are escaped, the tag name and the names of
  * attributes (i.e. the keys in the attributes objects) are NOT ESCAPED. The caller is
@@ -859,7 +853,7 @@ ve.fixupPreBug = function ( element ) {
 	// screw up and stringify it with one fewer newline. Work around this by adding a newline.
 	// If we don't see a leading newline, we still don't know if the original HTML was
 	// `<pre>Foo</pre>` or `<pre>\nFoo</pre>`, but that's a syntactic difference, not a
-	// semantic one, and handling that is Parsoid's job.
+	// semantic one, and handling that is the integration target's job.
 	$element = $( element ).clone();
 	$element.find( 'pre, textarea, listing' ).each( function () {
 		var matches;
