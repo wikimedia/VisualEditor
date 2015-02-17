@@ -868,7 +868,6 @@ ve.dm.ElementLinearData.prototype.remapInternalListKeys = function ( internalLis
  * @param {string[]} [rules.blacklist] Blacklist of model types which aren't allowed
  * @param {Object} [rules.conversions] Model type conversions to apply, e.g. { heading: 'paragraph' }
  * @param {boolean} [rules.removeHtmlAttributes] Remove all left over HTML attributes
- * @param {boolean} [rules.removeStyles] Remove HTML style attributes
  * @param {boolean} [plainText=false] Remove all formatting for plain text import
  * @param {boolean} [keepEmptyContentBranches=false] Preserve empty content branch nodes
  */
@@ -885,19 +884,12 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules, plainText, keepEm
 				delete allAnnotations.get( i ).element.htmlAttributes;
 			}
 		}
-		if ( rules.removeStyles ) {
-			for ( i = 0, len = allAnnotations.getLength(); i < len; i++ ) {
-				// Remove inline style attributes from annotations
-				ve.dm.Model.static.removeHtmlAttribute( allAnnotations.get( i ).element, 'style' );
-			}
-		}
 
 		// Create annotation set to remove from blacklist
 		setToRemove = allAnnotations.filter( function ( annotation ) {
 			return ve.indexOf( annotation.name, rules.blacklist ) !== -1 || (
-					// If HTML attributes or styles are stripped and you are left with an empty span, remove it
-					annotation.name === 'textStyle/span' && !annotation.element.htmlAttributes &&
-					( rules.removeHtmlAttributes || rules.removeStyles )
+					// If HTML attributes are stripped, remove spans
+					annotation.name === 'textStyle/span' && rules.removeHtmlAttributes
 				);
 		} );
 	}
@@ -956,15 +948,9 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules, plainText, keepEm
 				this.setAnnotationsAtOffset( i, annotations );
 			}
 		}
-		if ( this.isOpenElementData( i ) ) {
-			if ( rules.removeHtmlAttributes ) {
-				// Remove HTML attributes from nodes
-				delete this.getData( i ).htmlAttributes;
-			}
-			if ( rules.removeStyles ) {
-				// Remove inline style attributes from nodes
-				ve.dm.Model.static.removeHtmlAttribute( this.getData( i ), 'style' );
-			}
+		if ( this.isOpenElementData( i ) && rules.removeHtmlAttributes ) {
+			// Remove HTML attributes from nodes
+			delete this.getData( i ).htmlAttributes;
 		}
 	}
 };
