@@ -23,7 +23,7 @@ Style/Documentation:
 # Cop supports --auto-correct.
 # Configuration parameters: SupportedStyles.
 Style/HashSyntax:
-  EnforcedStyle: hash_rockets
+  Enabled: false
 
 # Offense count: 4
 # Cop supports --auto-correct.
