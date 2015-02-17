@@ -180,12 +180,16 @@ ve.ce.BranchNode.prototype.onModelUpdate = function ( transaction ) {
 ve.ce.BranchNode.prototype.onSplice = function ( index ) {
 	var i, j,
 		length,
-		args = Array.prototype.slice.call( arguments ),
+		args = [],
 		$anchor,
 		afterAnchor,
 		node,
 		parentNode,
 		removals;
+
+	for ( i = 0, length = arguments.length; i < length; i++ ) {
+		args.push( arguments[i] );
+	}
 	// Convert models to views and attach them to this node
 	if ( args.length >= 3 ) {
 		for ( i = 2, length = args.length; i < length; i++ ) {
