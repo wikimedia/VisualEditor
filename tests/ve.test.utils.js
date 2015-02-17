@@ -75,12 +75,12 @@
 		surface.getModel().setLinearSelection( range );
 		formatAction.convert( type, attributes );
 
-		assert.deepEqual( surface.getModel().getDocument().getFullData(), data, msg + ': data models match' );
+		assert.equalLinearData( surface.getModel().getDocument().getFullData(), data, msg + ': data models match' );
 		assert.equalRange( surface.getModel().getSelection().getRange(), expectedRange, msg + ': ranges match' );
 
 		surface.getModel().undo();
 
-		assert.deepEqual( surface.getModel().getDocument().getFullData(), originalData, msg + ' (undo): data models match' );
+		assert.equalLinearData( surface.getModel().getDocument().getFullData(), originalData, msg + ' (undo): data models match' );
 		assert.equalRange( surface.getModel().getSelection().getRange(), range, msg + ' (undo): ranges match' );
 
 		surface.destroy();
@@ -118,7 +118,7 @@
 
 			// Normalize and verify data
 			ve.dm.example.postprocessAnnotations( actualData, model.getStore() );
-			assert.deepEqualWithDomElements( actualData, caseItem.data, msg + ': data' );
+			assert.equalLinearData( actualData, caseItem.data, msg + ': data' );
 			assert.deepEqual( model.getInnerWhitespace(), caseItem.innerWhitespace || new Array( 2 ), msg + ': inner whitespace' );
 			// check storeItems have been added to store
 			if ( caseItem.storeItems ) {

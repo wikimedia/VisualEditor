@@ -21,12 +21,12 @@ function runListConverterTest( assert, html, method, style, range, expectedRange
 	surface.getModel().setLinearSelection( range );
 	listAction[method]( style );
 
-	assert.deepEqual( surface.getModel().getDocument().getFullData(), data, msg + ': data models match' );
+	assert.equalLinearData( surface.getModel().getDocument().getFullData(), data, msg + ': data models match' );
 	assert.equalRange( surface.getModel().getSelection().getRange(), expectedRange, msg + ': ranges match' );
 
 	surface.getModel().undo();
 
-	assert.deepEqual( surface.getModel().getDocument().getFullData(), originalData, msg + ' (undo): data models match' );
+	assert.equalLinearData( surface.getModel().getDocument().getFullData(), originalData, msg + ' (undo): data models match' );
 	assert.equalRange( surface.getModel().getSelection().getRange(), range, msg + ' (undo): ranges match' );
 
 	surface.destroy();

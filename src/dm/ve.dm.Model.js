@@ -171,12 +171,8 @@ ve.dm.Model.static.toDomElements = function ( dataElement, doc ) {
 ve.dm.Model.static.enableAboutGrouping = false;
 
 /**
- * Which HTML attributes should be preserved for this model type. HTML attributes on the DOM
- * elements that match this specification will be stored as attributes in the linear model. The
- * attributes will be stored in the .htmlAttributes property of the linear model element.
- *
- * When converting back to DOM, these HTML attributes will be restored except for attributes that
- * were already set by #toDomElements.
+ * Which HTML attributes should be preserved for this model type. When converting back to DOM,
+ * these HTML attributes will be restored except for attributes that were already set by #toDomElements.
  *
  * The value of this property can be one of the following:
  *
@@ -198,7 +194,7 @@ ve.dm.Model.static.enableAboutGrouping = false;
  * @property {boolean|string|RegExp|Array|Object}
  * @inheritable
  */
-ve.dm.Model.static.storeHtmlAttributes = true;
+ve.dm.Model.static.preserveHtmlAttributes = true;
 
 /* Static methods */
 
@@ -206,7 +202,7 @@ ve.dm.Model.static.storeHtmlAttributes = true;
  * Determine whether an attribute name matches an attribute specification.
  *
  * @param {string} attribute Attribute name
- * @param {boolean|string|RegExp|Array|Object} spec Attribute specification, see #storeHtmlAttributes
+ * @param {boolean|string|RegExp|Array|Object} spec Attribute specification, see #preserveHtmlAttributes
  * @returns {boolean} Attribute matches spec
  */
 ve.dm.Model.matchesAttributeSpec = function ( attribute, spec ) {
@@ -251,7 +247,10 @@ ve.dm.Model.static.getHashObject = function ( dataElement ) {
 	return {
 		type: dataElement.type,
 		attributes: dataElement.attributes,
-		htmlAttributes: dataElement.htmlAttributes
+		originalDomElements: dataElement.originalDomElements &&
+			dataElement.originalDomElements.map( function ( el ) {
+				return el.outerHTML;
+			} ).join( '' )
 	};
 };
 
@@ -263,44 +262,6 @@ ve.dm.Model.static.getHashObject = function ( dataElement ) {
  */
 ve.dm.Model.static.getMatchRdfaTypes = function () {
 	return this.matchRdfaTypes;
-};
-
-/**
- * Remove a specified HTML attribute from all DOM elements in the model.
- *
- * @static
- * @param {Object} dataElement Data element
- * @param {string} attribute Attribute name
- */
-ve.dm.Model.static.removeHtmlAttribute = function ( dataElement, attribute ) {
-	function removeAttributeRecursive( children ) {
-		var i;
-		for ( i = 0; i < children.length; i++ ) {
-			if ( children[i].values ) {
-				delete children[i].values[attribute];
-				if ( ve.isEmptyObject( children[i].values ) ) {
-					delete children[i].values;
-				}
-			}
-			if ( children[i].children ) {
-				removeAttributeRecursive( children[i].children );
-				if ( !children[i].children.length ) {
-					delete children[i].children;
-				}
-			}
-			if ( ve.isEmptyObject( children[i] ) ) {
-				children.splice( i, 1 );
-				i--;
-			}
-		}
-	}
-
-	if ( dataElement.htmlAttributes ) {
-		removeAttributeRecursive( dataElement.htmlAttributes );
-		if ( !dataElement.htmlAttributes.length ) {
-			delete dataElement.htmlAttributes;
-		}
-	}
 };
 
 /* Methods */
@@ -375,11 +336,11 @@ ve.dm.Model.prototype.getAttributes = function ( prefix ) {
 };
 
 /**
- * Get the preserved HTML attributes.
- * @returns {Object[]} HTML attribute list, or empty array
+ * Get the DOM element(s) this model was originally converted from, if any.
+ * @return {HTMLElement[]} DOM elements this model was converted from, empty if not applicable
  */
-ve.dm.Model.prototype.getHtmlAttributes = function () {
-	return ( this.element && this.element.htmlAttributes ) || [];
+ve.dm.Model.prototype.getOriginalDomElements = function () {
+	return ( this.element && this.element.originalDomElements ) || [];
 };
 
 /**

@@ -52,7 +52,10 @@ ve.dm.example.preprocessAnnotations = function ( data, store ) {
 };
 
 /**
- * Convert real data back to shorthand notation. See #preprocessAnnotations
+ * Convert real data back to shorthand notation. See #preprocessAnnotations.
+ *
+ * Any annotation that has .originalDomElements will be shallow-cloned and have
+ * .originalDomElements removed.
  *
  * @param {Array} data Linear model data. Will be modified.
  * @param {ve.dm.IndexValueStore} store Index-value store to resolve annotations in
@@ -67,9 +70,29 @@ ve.dm.example.postprocessAnnotations = function ( data, store ) {
 			data[i][key] = new ve.dm.AnnotationSet( store, data[i][key] ).get();
 			for ( j = 0; j < data[i][key].length; j++ ) {
 				data[i][key][j] = data[i][key][j].element;
+				if ( data[i][key][j].originalDomElements ) {
+					// Make a shallow clone and remove .originalDomElements from it
+					data[i][key][j] = $.extend( {}, data[i][key][j] );
+					delete data[i][key][j].originalDomElements;
+				}
 			}
 		}
 	}
+};
+
+/**
+ * Remove originalDomElements from linear model data.
+ * @param {Array} data Linear model data. Will be modified.
+ * @return {Array} data parameter
+ */
+ve.dm.example.removeOriginalDomElements = function ( data ) {
+	var i, len;
+	for ( i = 0, len = data.length; i < len; i++ ) {
+		if ( data[i].originalDomElements ) {
+			delete data[i].originalDomElements;
+		}
+	}
+	return data;
 };
 
 /**
@@ -206,23 +229,13 @@ ve.dm.example.image = {
 			alt: 'Example',
 			width: 100,
 			height: 50
-		},
-		htmlAttributes: [
-			{
-				values: {
-					src: ve.dm.example.imgSrc,
-					alt: 'Example',
-					width: '100',
-					height: '50'
-				},
-				computed: { src: ve.dm.example.fullImgSrc }
-			}
-		]
+		}
 	}
 };
 
 ve.dm.example.blockImage = {
 	html: '<figure class="ve-align-right"><img src="' + ve.dm.example.imgSrc + '" alt="Example" width="100" height="50"><figcaption>caption</figcaption></figure>',
+	fromDataHtml: '<figure><img src="' + ve.dm.example.imgSrc + '" alt="Example" width="100" height="50"><figcaption>caption</figcaption></figure>',
 	data: [
 		{
 			type: 'blockImage',
@@ -233,22 +246,7 @@ ve.dm.example.blockImage = {
 				height: 50,
 				originalAlign: 'right',
 				align: 'right'
-			},
-			htmlAttributes: [
-				{
-					values: {
-						class: 've-align-right'
-					},
-					children: [
-						{
-							values: {
-								alt: 'Example'
-							}
-						},
-						{ values: {} }
-					]
-				}
-			]
+			}
 		},
 		{ type: 'imageCaption' },
 		{ type: 'paragraph', internal: { generated: 'wrapper' } },
@@ -1037,7 +1035,7 @@ ve.dm.example.domToDataCases = {
 			{ type: 'internalList' },
 			{ type: '/internalList' }
 		],
-		normalizedBody: '<p><code>a</code>b<tt>c</tt>d<code>ef</code>'
+		fromDataBody: '<p><code>a</code>b<tt>c</tt>d<code>ef</code>'
 	},
 	'additive annotations': {
 		body: '<p><big>a<big>b</big>c</big><b>d<b>e</b>f</b></p>',
@@ -1098,6 +1096,7 @@ ve.dm.example.domToDataCases = {
 	},
 	'block image': {
 		body: ve.dm.example.blockImage.html,
+		fromDataBody: ve.dm.example.blockImage.fromDataHtml,
 		data: ve.dm.example.blockImage.data.concat( [
 			{ type: 'internalList' },
 			{ type: '/internalList' }
@@ -1619,11 +1618,7 @@ ve.dm.example.domToDataCases = {
 					type: 'link',
 					attributes: {
 						href: 'Foobar'
-					},
-					htmlAttributes: [ {
-						values: { href: 'Foobar' },
-						computed: { href: 'http://example.com/Foobar' }
-					} ]
+					}
 				} ]
 			],
 			[
@@ -1632,11 +1627,7 @@ ve.dm.example.domToDataCases = {
 					type: 'link',
 					attributes: {
 						href: 'Foobar'
-					},
-					htmlAttributes: [ {
-						values: { href: 'Foobar' },
-						computed: { href: 'http://example.com/Foobar' }
-					} ]
+					}
 				} ]
 			],
 			[
@@ -1645,11 +1636,7 @@ ve.dm.example.domToDataCases = {
 					type: 'link',
 					attributes: {
 						href: 'Foobar'
-					},
-					htmlAttributes: [ {
-						values: { href: 'Foobar' },
-						computed: { href: 'http://example.com/Foobar' }
-					} ]
+					}
 				} ]
 			],
 			{ type: '/paragraph' },
@@ -2510,11 +2497,7 @@ ve.dm.example.domToDataCases = {
 						type: 'link',
 						attributes: {
 							href: 'Foo'
-						},
-						htmlAttributes: [ {
-							values: { href: 'Foo' },
-							computed: { href: 'http://example.com/Bar/Foo' }
-						} ]
+						}
 					}
 				]
 			],
@@ -2525,11 +2508,7 @@ ve.dm.example.domToDataCases = {
 						type: 'link',
 						attributes: {
 							href: 'Foo'
-						},
-						htmlAttributes: [ {
-							values: { href: 'Foo' },
-							computed: { href: 'http://example.com/Bar/Foo' }
-						} ]
+						}
 					},
 					ve.dm.example.bold
 				]
@@ -2541,11 +2520,7 @@ ve.dm.example.domToDataCases = {
 						type: 'link',
 						attributes: {
 							href: 'Foo'
-						},
-						htmlAttributes: [ {
-							values: { href: 'Foo' },
-							computed: { href: 'http://example.com/Bar/Foo' }
-						} ]
+						}
 					},
 					ve.dm.example.bold,
 					ve.dm.example.italic
@@ -2558,11 +2533,7 @@ ve.dm.example.domToDataCases = {
 						type: 'link',
 						attributes: {
 							href: 'Foo'
-						},
-						htmlAttributes: [ {
-							values: { href: 'Foo' },
-							computed: { href: 'http://example.com/Bar/Foo' }
-						} ]
+						}
 					},
 					ve.dm.example.italic
 				]
@@ -2786,10 +2757,7 @@ ve.dm.example.domToDataCases = {
 	'div set to RTL with paragraph inside': {
 		body: '<div style="direction: rtl;"><p>a<b>b</b>c<i>d</i>e</p></div>',
 		data: [
-			{
-				type: 'div',
-				htmlAttributes: [ { values: { style: 'direction: rtl;' } } ]
-			},
+			{ type: 'div' },
 			{ type: 'paragraph' },
 			'a',
 			['b', [ ve.dm.example.bold ]],
@@ -2800,7 +2768,8 @@ ve.dm.example.domToDataCases = {
 			{ type: '/div' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
-		]
+		],
+		fromDataBody: '<div><p>a<b>b</b>c<i>d</i>e</p></div>'
 	}
 };
 
@@ -2971,29 +2940,12 @@ ve.dm.example.isolationData = [
 	// 246
 ];
 
-ve.dm.example.RDFa = [
-	{
-		type: 'paragraph',
-		htmlAttributes: [ {
-			values: {
-				about: 'a',
-				content: 'b',
-				datatype: 'c',
-				property: 'd',
-				rel: 'e',
-				resource: 'f',
-				rev: 'g',
-				typeof: 'h',
-				// Non-RDFa attribute
-				class: 'i'
-			}
-		} ]
-	},
-	'F', 'o', 'o',
-	{ type: '/paragraph' },
-	{ type: 'internalList' },
-	{ type: '/internalList' }
-];
+ve.dm.example.RDFaDoc = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml(
+	'<p about="a" content="b" datatype="c" property="d" rel="e" resource="f" rev="g" typeof="h" ' +
+	// Non-RDFa attribute
+	'class="i">' +
+	'Foo</p>'
+) );
 
 ve.dm.example.UnboldableNode = function () {
 	// Parent constructor

@@ -17,7 +17,7 @@ function runAnnotationActionTest( assert, html, method, args, range, expectedDat
 	surface.getModel().setLinearSelection( range );
 	AnnotationAction[method].apply( AnnotationAction, args );
 
-	assert.deepEqual( surface.getModel().getDocument().getFullData(), data, msg + ': data models match' );
+	assert.equalLinearData( surface.getModel().getDocument().getFullData(), data, msg + ': data models match' );
 
 	surface.destroy();
 }

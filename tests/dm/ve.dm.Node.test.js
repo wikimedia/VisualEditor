@@ -187,46 +187,6 @@ QUnit.test( 'getClonedElement', function ( assert ) {
 					type: 'foo'
 				},
 				msg: 'internal property is removed if it only contained .generated'
-			},
-			{
-				original: {
-					type: 'foo',
-					internal: {
-						generated: 'wrapper',
-						whitespace: [ undefined, ' ' ]
-					},
-					attributes: {
-						bar: 'baz'
-					},
-					htmlAttributes: [
-						{
-							keys: [ 'typeof', 'href' ],
-							values: {
-								typeof: 'Foo',
-								href: 'Bar'
-							}
-						}
-					]
-				},
-				clone: {
-					type: 'foo',
-					internal: {
-						whitespace: [ undefined, ' ' ]
-					},
-					attributes: {
-						bar: 'baz'
-					},
-					htmlAttributes: [
-						{
-							keys: [ 'typeof', 'href' ],
-							values: {
-								typeof: 'Foo',
-								href: 'Bar'
-							}
-						}
-					]
-				},
-				msg: 'internal.generated is removed but not htmlAttributes'
 			}
 		];
 	QUnit.expect( cases.length );

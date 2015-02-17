@@ -83,6 +83,26 @@ ve.copyDomElements = function ( domElements, doc ) {
 };
 
 /**
+ * Check if two arrays of DOM elements are equal (according to .isEqualNode())
+ * @param {HTMLElement[]} domElements1 First array of DOM elements
+ * @param {HTMLElement[]} domElements2 Second array of DOM elements
+ * @return {boolean} All elements are pairwise equal
+ */
+ve.isEqualDomElements = function ( domElements1, domElements2 ) {
+	var i = 0,
+		len = domElements1.length;
+	if ( len !== domElements2.length ) {
+		return false;
+	}
+	for ( ; i < len; i++ ) {
+		if ( !domElements1[i].isEqualNode( domElements2[i] ) ) {
+			return false;
+		}
+	}
+	return true;
+};
+
+/**
  * Check to see if an object is a plain object (created using "{}" or "new Object").
  *
  * @method

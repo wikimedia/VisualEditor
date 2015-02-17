@@ -37,7 +37,7 @@ OO.mixinClass( ve.dm.AlienNode, ve.dm.GeneratedContentNode );
 
 ve.dm.AlienNode.static.name = 'alien';
 
-ve.dm.AlienNode.static.storeHtmlAttributes = false;
+ve.dm.AlienNode.static.preserveHtmlAttributes = false;
 
 ve.dm.AlienNode.static.enableAboutGrouping = true;
 

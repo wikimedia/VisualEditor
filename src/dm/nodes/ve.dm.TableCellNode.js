@@ -39,7 +39,7 @@ ve.dm.TableCellNode.static.defaultAttributes = { style: 'data' };
 ve.dm.TableCellNode.static.matchTagNames = [ 'td', 'th' ];
 
 // Blacklisting 'colspan' and 'rowspan' as they are managed explicitly
-ve.dm.TableCellNode.static.storeHtmlAttributes = {
+ve.dm.TableCellNode.static.preserveHtmlAttributes = {
 	blacklist: ['colspan', 'rowspan']
 };
 

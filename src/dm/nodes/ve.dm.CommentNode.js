@@ -31,7 +31,7 @@ OO.mixinClass( ve.dm.CommentNode, ve.dm.FocusableNode );
 
 ve.dm.CommentNode.static.isContent = true;
 
-ve.dm.CommentNode.static.storeHtmlAttributes = false;
+ve.dm.CommentNode.static.preserveHtmlAttributes = false;
 
 ve.dm.CommentNode.static.toDataElement = function ( domElements, converter ) {
 	var text = domElements[0].nodeType === Node.COMMENT_NODE ?
