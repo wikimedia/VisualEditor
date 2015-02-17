@@ -95,7 +95,7 @@ class SeeTag < CommonTag
       doc = $2 ? ': ' + $2 : ''
       return formatter.format("{@link #{name}} #{doc}")
     else
-      JsDuck::Logger.warn(nil, 'Unexpected @see argument: "'+tag+'"', position)
+      JsDuck::Logger.warn(nil, 'Unexpected @see argument: "' + tag + '"', position)
       return tag
     end
   end
@@ -127,7 +127,7 @@ class ContextTag < CommonTag
       name = $1
       return formatter.format("`this` : {@link #{name}}")
     else
-      JsDuck::Logger.warn(nil, 'Unexpected @this argument: "'+tag+'"', position)
+      JsDuck::Logger.warn(nil, 'Unexpected @this argument: "' + tag + '"', position)
       return tag
     end
   end
