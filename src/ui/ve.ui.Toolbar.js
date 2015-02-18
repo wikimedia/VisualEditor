@@ -254,9 +254,6 @@ ve.ui.Toolbar.prototype.initialize = function () {
 	this.$window = this.$( this.getElementWindow() );
 	this.calculateOffset();
 
-	// Initial state
-	this.updateToolState();
-
 	if ( this.floatable ) {
 		this.$window.on( this.windowEvents );
 		// The page may start with a non-zero scroll position
