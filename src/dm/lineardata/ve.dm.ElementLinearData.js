@@ -867,7 +867,7 @@ ve.dm.ElementLinearData.prototype.remapInternalListKeys = function ( internalLis
  * @param {Object} rules Sanitization rules
  * @param {string[]} [rules.blacklist] Blacklist of model types which aren't allowed
  * @param {Object} [rules.conversions] Model type conversions to apply, e.g. { heading: 'paragraph' }
- * @param {boolean} [rules.removeHtmlAttributes] Remove all left over HTML attributes
+ * @param {boolean} [rules.removeOriginalDomElements] Remove references to DOM elements data was converted from
  * @param {boolean} [plainText=false] Remove all formatting for plain text import
  * @param {boolean} [keepEmptyContentBranches=false] Preserve empty content branch nodes
  */
@@ -878,18 +878,18 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules, plainText, keepEm
 	if ( plainText ) {
 		emptySet = new ve.dm.AnnotationSet( this.getStore() );
 	} else {
-		if ( rules.removeHtmlAttributes ) {
-			// Remove HTML attributes from annotations
+		if ( rules.removeOriginalDomElements ) {
+			// Remove originalDomElements from annotations
 			for ( i = 0, len = allAnnotations.getLength(); i < len; i++ ) {
-				delete allAnnotations.get( i ).element.htmlAttributes;
+				delete allAnnotations.get( i ).element.originalDomElements;
 			}
 		}
 
 		// Create annotation set to remove from blacklist
 		setToRemove = allAnnotations.filter( function ( annotation ) {
 			return ve.indexOf( annotation.name, rules.blacklist ) !== -1 || (
-					// If HTML attributes are stripped, remove spans
-					annotation.name === 'textStyle/span' && rules.removeHtmlAttributes
+					// If original DOM element references are being removed, remove spans
+					annotation.name === 'textStyle/span' && rules.removeOriginalDomElements
 				);
 		} );
 	}
@@ -948,9 +948,9 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules, plainText, keepEm
 				this.setAnnotationsAtOffset( i, annotations );
 			}
 		}
-		if ( this.isOpenElementData( i ) && rules.removeHtmlAttributes ) {
-			// Remove HTML attributes from nodes
-			delete this.getData( i ).htmlAttributes;
+		if ( this.isOpenElementData( i ) && rules.removeOriginalDomElements ) {
+			// Remove originalDomElements from nodes
+			delete this.getData( i ).originalDomElements;
 		}
 	}
 };

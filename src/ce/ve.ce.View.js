@@ -38,11 +38,15 @@ ve.ce.View = function VeCeView( model, config ) {
 
 	// Render attributes from original DOM elements
 	ve.dm.Converter.renderHtmlAttributeList(
-		this.model.getHtmlAttributes(),
+		this.model.getOriginalDomElements(),
 		this.$element,
 		this.constructor.static.renderHtmlAttributes,
 		// computed attributes
-		true
+		true,
+		// deep
+		!ve.dm.nodeFactory.lookup( this.model.getType() ) ||
+			!ve.dm.nodeFactory.canNodeHaveChildren( this.model.getType() ) ||
+			ve.dm.nodeFactory.doesNodeHandleOwnChildren( this.model.getType() )
 	);
 };
 
@@ -65,7 +69,7 @@ OO.mixinClass( ve.ce.View, OO.EventEmitter );
 /* Static members */
 
 /**
- * Allowed attributes for DOM elements, in the same format as ve.dm.Model#storeHtmlAttributes
+ * Allowed attributes for DOM elements, in the same format as ve.dm.Model#preserveHtmlAttributes
  *
  * This list includes attributes that are generally safe to include in HTML loaded from a
  * foreign source and displaying it inside the browser. It doesn't include any event attributes,

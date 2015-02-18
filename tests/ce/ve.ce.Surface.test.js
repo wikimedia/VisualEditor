@@ -9,8 +9,7 @@ QUnit.module( 've.ce.Surface' );
 /* Tests */
 
 ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, html, range, operations, expectedData, expectedRange, msg ) {
-	var i, method, args,
-		selection,
+	var i, method, args, selection,
 		actions = {
 			backspace: [ 'handleLinearDelete', { keyCode: OO.ui.Keys.BACKSPACE } ],
 			delete: [ 'handleLinearDelete', { keyCode: OO.ui.Keys.DELETE } ],
@@ -40,7 +39,7 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, html, range, o
 	}
 	expectedData( data );
 
-	assert.deepEqualWithDomElements( model.getDocument().getFullData(), data, msg + ': data' );
+	assert.equalLinearData( model.getDocument().getFullData(), data, msg + ': data' );
 	assert.equalRange( selection.getRange(), expectedRange, msg + ': range' );
 	surface.destroy();
 };
@@ -481,9 +480,9 @@ QUnit.test( 'onCopy', function ( assert ) {
 				msg: 'Copy list item'
 			},
 			{
-				doc: 'RDFa',
+				doc: ve.dm.example.RDFaDoc,
 				range: new ve.Range( 0, 5 ),
-				expectedData: ve.dm.example.RDFa,
+				expectedData: ve.dm.example.RDFaDoc.data.data.slice(),
 				expectedOriginalRange: new ve.Range( 0, 5 ),
 				expectedBalancedRange: new ve.Range( 0, 5 ),
 				expectedHtml:
@@ -502,7 +501,7 @@ QUnit.test( 'onCopy', function ( assert ) {
 	function testRunner( doc, range, expectedData, expectedOriginalRange, expectedBalancedRange, expectedHtml, msg ) {
 		var clipboardKey, parts, clipboardIndex, slice,
 			surface = ve.test.utils.createSurfaceFromDocument(
-				ve.dm.example.createExampleDocument( doc )
+				doc instanceof ve.dm.Document ? doc : ve.dm.example.createExampleDocument( doc )
 			),
 			view = surface.getView(),
 			model = surface.getModel();
@@ -520,7 +519,7 @@ QUnit.test( 'onCopy', function ( assert ) {
 		clipboardIndex = parts[1];
 		slice = view.clipboard[clipboardIndex].slice;
 
-		assert.deepEqual( slice.data.data, expectedData, msg + ': data' );
+		assert.equalLinearData( slice.data.data, expectedData, msg + ': data' );
 		assert.equalRange( slice.originalRange, expectedOriginalRange, msg + ': originalRange' );
 		assert.equalRange( slice.balancedRange, expectedBalancedRange, msg + ': balancedRange' );
 		assert.deepEqual( view.$pasteTarget.html(), expectedHtml, msg + ': html' );
@@ -805,7 +804,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 					[
 						{
 							type: 'replace',
-							insert: ve.dm.example.RDFa.slice( 0, 5 ),
+							insert: ve.dm.example.removeOriginalDomElements( ve.dm.example.RDFaDoc.data.data.slice( 0, 5 ) ),
 							remove: []
 						},
 						{ type: 'retain', length: docLen }
@@ -839,24 +838,12 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 	QUnit.expect( cases.length * 2 );
 
 	function testRunner( documentHtml, pasteHtml, fromVe, useClipboardData, range, expectedOps, pasteSpecial, expectedRange, msg ) {
-		var i, j, txs, ops,
+		var i, j, txs, ops, txops,
 			e = {},
 			surface = ve.test.utils.createSurfaceFromHtml( documentHtml || exampleDoc ),
 			view = surface.getView(),
 			model = surface.getModel(),
 			doc = model.getDocument();
-
-		// Preprocess annotations inside expectedOps
-		for ( i = 0; i < expectedOps.length; i++ ) {
-			for ( j = 0; j < expectedOps[i].length; j++ ) {
-				if ( expectedOps[i][j].remove ) {
-					ve.dm.example.preprocessAnnotations( expectedOps[i][j].remove, doc.getStore() );
-				}
-				if ( expectedOps[i][j].insert ) {
-					ve.dm.example.preprocessAnnotations( expectedOps[i][j].insert, doc.getStore() );
-				}
-			}
-		}
 
 		// Paste sequence
 		model.setLinearSelection( range );
@@ -874,7 +861,19 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 		txs = model.getHistory()[0].transactions;
 		ops = [];
 		for ( i = 0; i < txs.length; i++ ) {
-			ops.push( txs[i].getOperations() );
+			txops = txs[i].getOperations();
+			for ( j = 0; j < txops.length; j++ ) {
+				if ( txops[j].remove ) {
+					ve.dm.example.postprocessAnnotations( txops[j].remove, doc.getStore() );
+					ve.dm.example.removeOriginalDomElements( txops[j].remove );
+				}
+				if ( txops[j].insert ) {
+					ve.dm.example.postprocessAnnotations( txops[j].insert, doc.getStore() );
+					ve.dm.example.removeOriginalDomElements( txops[j].insert );
+				}
+			}
+			ops.push( txops );
+
 		}
 		assert.deepEqual( ops, expectedOps, msg + ': operations' );
 		assert.equalRange( model.getSelection().getRange(), expectedRange, msg +  ': range' );

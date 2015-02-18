@@ -27,7 +27,7 @@ ve.dm.AlienMetaItem.static.name = 'alienMeta';
 
 ve.dm.AlienMetaItem.static.matchTagNames = [ 'meta', 'link' ];
 
-ve.dm.AlienMetaItem.static.storeHtmlAttributes = false;
+ve.dm.AlienMetaItem.static.preserveHtmlAttributes = false;
 
 ve.dm.AlienMetaItem.static.toDataElement = function ( domElements ) {
 	return {

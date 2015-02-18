@@ -178,6 +178,33 @@
 		);
 	};
 
+	QUnit.assert.equalLinearData = function ( actual, expected, message ) {
+		function removeOriginalDomElements( arr ) {
+			var i = 0,
+				len = arr.length;
+			for ( ; i < len; i++ ) {
+				if ( arr[i].originalDomElements ) {
+					delete arr[i].originalDomElements;
+				}
+			}
+		}
+
+		if ( Array.isArray( actual ) ) {
+			actual = actual.slice();
+			removeOriginalDomElements( actual );
+		}
+		if ( Array.isArray( expected ) ) {
+			expected = expected.slice();
+			removeOriginalDomElements( expected );
+		}
+
+		// FIXME domElements handling here shouldn't be necessary, but it is because of AlienNode
+		actual = ve.copy( actual, ve.convertDomElements );
+		expected = ve.copy( expected, ve.convertDomElements );
+
+		QUnit.push( QUnit.equiv( actual, expected ), actual, expected, message );
+	};
+
 	/**
 	 * Assert that two objects which may contain dom elements are equal.
 	 * @method

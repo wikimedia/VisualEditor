@@ -22,12 +22,12 @@ function runIndentationChangeTest( assert, range, method, expectedRange, expecte
 	surface.getModel().setLinearSelection( range );
 	indentationAction[method]();
 
-	assert.deepEqual( surface.getModel().getDocument().getFullData(), data, msg + ': data models match' );
+	assert.equalLinearData( surface.getModel().getDocument().getFullData(), data, msg + ': data models match' );
 	assert.equalRange( surface.getModel().getSelection().getRange(), expectedRange, msg + ': ranges match' );
 
 	surface.getModel().undo();
 
-	assert.deepEqual( surface.getModel().getDocument().getFullData(), originalData, msg + ' (undo): data models match' );
+	assert.equalLinearData( surface.getModel().getDocument().getFullData(), originalData, msg + ' (undo): data models match' );
 	assert.equalRange( surface.getModel().getSelection().getRange(), range, msg + ' (undo): ranges match' );
 
 	surface.destroy();

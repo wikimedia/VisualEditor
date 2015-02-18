@@ -1390,8 +1390,8 @@ QUnit.test( 'sanitize', function ( assert ) {
 					{ type: '/internalList' }
 				],
 				store: [ bold ],
-				rules: { removeHtmlAttributes: true },
-				msg: 'HTML attributes removed'
+				rules: { removeOriginalDomElements: true },
+				msg: 'Original DOM elements removed'
 			},
 			{
 				html: '<p>B<span rel="ve:Alien">a</span>r<img src="//upload.wikimedia.org/wikipedia/commons/b/b3/Wikipedia-logo-v2-en.svg"/></p>',
@@ -1458,8 +1458,8 @@ QUnit.test( 'sanitize', function ( assert ) {
 					{ type: 'internalList' },
 					{ type: '/internalList' }
 				],
-				rules: { removeHtmlAttributes: true },
-				msg: 'Span empty after HTML attributes removed is stripped'
+				rules: { removeOriginalDomElements: true },
+				msg: 'Span stripped when removing original DOM elements'
 			}
 		];
 
@@ -1475,13 +1475,13 @@ QUnit.test( 'sanitize', function ( assert ) {
 		model = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( cases[i].html ) );
 		data = model.data;
 		data.sanitize( cases[i].rules || {}, cases[i].plainText );
-		assert.deepEqualWithDomElements( data.data, cases[i].data, cases[i].msg + ': data' );
+		assert.equalLinearData( data.data, cases[i].data, cases[i].msg + ': data' );
 		if ( cases[i].store ) {
 			/*jshint loopfunc:true */
 			actualStore = data.getStore().valueStore.map( function ( ann ) {
 				return ann.element;
 			} );
-			assert.deepEqualWithDomElements( actualStore, cases[i].store, cases[i].msg + ': store' );
+			assert.equalLinearData( actualStore, cases[i].store, cases[i].msg + ': store' );
 		}
 	}
 } );

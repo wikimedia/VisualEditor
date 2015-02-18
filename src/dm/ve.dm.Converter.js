@@ -32,7 +32,7 @@ ve.dm.Converter = function VeDmConverter( modelRegistry, nodeFactory, annotation
 /* Static Properties */
 
 /**
- * List of HTML attribute names that {#buildHtmlAttributeList} should store computed values for.
+ * List of HTML attribute names that {#renderHtmlAttributeList} should use computed values for.
  * @type {string[]}
  */
 ve.dm.Converter.computedAttributes = [ 'href', 'src' ];
@@ -129,97 +129,60 @@ ve.dm.Converter.openAndCloseAnnotations = function ( currentSet, targetSet, open
 };
 
 /**
- * Build an HTML attribute list for attribute preservation.
- *
- * The attribute list is an array of objects, one for each DOM element. Each object contains a
- * map with attribute keys and values in .values, a map with a subset of the attribute keys and
- * their computed values in .computed (see {#computedAttributes}), and an array of attribute lists
- * for the child nodes in .children .
+ * Copy attributes from one set of DOM elements to another.
  *
  * @static
- * @param {HTMLElement[]} domElements Array of DOM elements to build attribute list for
- * @param {boolean|string|RegExp|Array|Object} spec Attribute specification, see ve.dm.Model
- * @param {boolean} [deep=false] If true, recurse into children. If false, .children will be empty
- * @param {Object[]} [attributeList] Existing attribute list to populate; used for recursion
- * @returns {Object[]|undefined} Attribute list, or undefined if empty
- */
-ve.dm.Converter.buildHtmlAttributeList = function ( domElements, spec, deep, attributeList ) {
-	var i, ilen, j, jlen, domAttributes, childList, attrName,
-		empty = true;
-	attributeList = attributeList || [];
-	for ( i = 0, ilen = domElements.length; i < ilen; i++ ) {
-		domAttributes = domElements[i].attributes || [];
-		attributeList[i] = { values: {} };
-		for ( j = 0, jlen = domAttributes.length; j < jlen; j++ ) {
-			attrName = domAttributes[j].name;
-			if ( ve.dm.Model.matchesAttributeSpec( attrName, spec ) ) {
-				attributeList[i].values[attrName] = domAttributes[j].value;
-				if ( ve.indexOf( attrName, this.computedAttributes ) !== -1 ) {
-					if ( !attributeList[i].computed ) {
-						attributeList[i].computed = {};
-					}
-					attributeList[i].computed[attrName] = domElements[i][attrName];
-				}
-				empty = false;
-			}
-		}
-		if ( deep ) {
-			attributeList[i].children = [];
-			childList = ve.dm.Converter.buildHtmlAttributeList(
-				// Use .children rather than .childNodes so we don't mess around with things that
-				// can't have attributes anyway. Unfortunately, non-element nodes have .children
-				// set to undefined so we have to coerce it to an array in that case.
-				domElements[i].children || [], spec, deep, attributeList[i].children
-			);
-			if ( childList ) {
-				empty = false;
-			} else {
-				delete attributeList[i].children;
-			}
-		}
-	}
-	return empty ? undefined : attributeList;
-};
-
-/**
- * Render an attribute list onto a set of DOM elements.
- *
- * Attributes set to undefined will be removed. The attribute specification restricts which
- * attributes are rendered.
- *
- * @static
- * @param {Object[]} attributeList Attribute list, see buildHtmlAttributeList()
- * @param {HTMLElement[]} domElements Array of DOM elements to render onto
+ * @param {HTMLElement[]} originalDomElements Array of DOM elements to render from
+ * @param {HTMLElement[]} targetDomElements Array of DOM elements to render onto
  * @param {boolean|string|RegExp|Array|Object} [spec=true] Attribute specification, see ve.dm.Model
  * @param {boolean} [computed=false] If true, use the computed values of attributes where available
- * @param {boolean} [overwrite=false] If true, overwrite attributes that are already set
+ * @param {boolean} [deep=false] Recurse into child nodes
  */
-ve.dm.Converter.renderHtmlAttributeList = function ( attributeList, domElements, spec, computed, overwrite ) {
-	var i, ilen, key, values, value;
+ve.dm.Converter.renderHtmlAttributeList = function ( originalDomElements, targetDomElements, spec, computed, deep ) {
+	var i, ilen, j, jlen, attrs, value;
 	if ( spec === undefined ) {
 		spec = true;
 	}
 	if ( spec === false ) {
 		return;
 	}
-	for ( i = 0, ilen = attributeList.length; i < ilen; i++ ) {
-		if ( !domElements[i] ) {
+
+	for ( i = 0, ilen = originalDomElements.length; i < ilen; i++ ) {
+		if ( !targetDomElements[i] ) {
 			continue;
 		}
-		values = attributeList[i].values;
-		for ( key in values ) {
-			if ( ve.dm.Model.matchesAttributeSpec( key, spec ) ) {
-				value = computed && attributeList[i].computed && attributeList[i].computed[key] || values[key];
-				if ( value === undefined ) {
-					domElements[i].removeAttribute( key );
-				} else if ( overwrite || !domElements[i].hasAttribute( key ) ) {
-					domElements[i].setAttribute( key, value );
+		attrs = originalDomElements[i].attributes;
+		if ( !attrs ) {
+			continue;
+		}
+		for ( j = 0, jlen = attrs.length; j < jlen; j++ ) {
+			if (
+				!targetDomElements[i].hasAttribute( attrs[j].name ) &&
+				( spec === true || ve.dm.Model.matchesAttributeSpec( attrs[j].name, spec ) )
+			) {
+				if ( computed && ve.dm.Converter.computedAttributes.indexOf( attrs[j].name ) !== -1 ) {
+					value = originalDomElements[i][attrs[j].name];
+				} else {
+					value = attrs[j].value;
 				}
+				targetDomElements[i].setAttribute( attrs[j].name, value );
+			}
+
+			if ( spec === true || ve.dm.Model.matchesAttributeSpec( attrs[j].name, spec ) ) {
+				value = computed && ve.dm.Converter.computedAttributes.indexOf( attrs[j].name ) !== -1 ?
+					originalDomElements[i][attrs[j].name] :
+					attrs[j].value;
 			}
 		}
-		if ( attributeList[i].children ) {
+
+		// Descend into element children only (skipping text nodes and comment nodes)
+		if ( deep && originalDomElements[i].children.length > 0 ) {
 			ve.dm.Converter.renderHtmlAttributeList(
-				attributeList[i].children, domElements[i].children, spec, computed, overwrite
+				originalDomElements[i].children,
+				targetDomElements[i].children,
+				spec,
+				computed,
+				true
 			);
 		}
 	}
@@ -361,8 +324,19 @@ ve.dm.Converter.prototype.getDomElementsFromDataElement = function ( dataElement
 	if ( !Array.isArray( domElements ) && !( nodeClass.prototype instanceof ve.dm.Annotation ) ) {
 		throw new Error( 'toDomElements() failed to return an array when converting element of type ' + dataElement.type );
 	}
-	if ( dataElement.htmlAttributes ) {
-		ve.dm.Converter.renderHtmlAttributeList( dataElement.htmlAttributes, domElements );
+	// Optimization: don't call renderHtmlAttributeList if returned domElements are equal to the originals
+	if ( dataElement.originalDomElements && !ve.isEqualDomElements( domElements, dataElement.originalDomElements ) ) {
+		ve.dm.Converter.renderHtmlAttributeList(
+			dataElement.originalDomElements,
+			domElements,
+			nodeClass.static.preserveHtmlAttributes,
+			// computed
+			false,
+			// deep
+			!( nodeClass instanceof ve.dm.Node ) ||
+				!this.nodeFactory.canNodeHaveChildren( dataElement.type ) ||
+				this.nodeFactory.doesNodeHandleOwnChildren( dataElement.type )
+		);
 	}
 	return domElements;
 };
@@ -608,7 +582,7 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 
 	var i, childNode, childNodes, childDataElements, text, childTypes, matches,
 		wrappingParagraph, prevElement, childAnnotations, modelName, modelClass,
-		annotation, childIsContent, aboutGroup, htmlAttributes, emptyParagraph,
+		annotation, childIsContent, aboutGroup, emptyParagraph,
 		modelRegistry = this.modelRegistry,
 		data = [],
 		nextWhitespace = '',
@@ -671,14 +645,12 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 					modelClass = this.modelRegistry.lookup( childDataElements[0].type );
 				}
 
+				if ( childDataElements && childDataElements[0] ) {
+					childDataElements[0].originalDomElements = childNodes;
+				}
+
 				// Now take the appropriate action based on that
 				if ( modelClass.prototype instanceof ve.dm.Annotation ) {
-					htmlAttributes = ve.dm.Converter.buildHtmlAttributeList(
-						childNodes, modelClass.static.storeHtmlAttributes
-					);
-					if ( htmlAttributes ) {
-						childDataElements[0].htmlAttributes = htmlAttributes;
-					}
 					annotation = this.annotationFactory.create( modelName, childDataElements[0] );
 					// Start wrapping if needed
 					if ( !context.inWrapper && !context.expectingContent ) {
@@ -706,12 +678,6 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 				} else {
 					// Node or meta item
 					if ( modelClass.prototype instanceof ve.dm.MetaItem ) {
-						htmlAttributes = ve.dm.Converter.buildHtmlAttributeList(
-							childNodes, modelClass.static.storeHtmlAttributes, true
-						);
-						if ( htmlAttributes ) {
-							childDataElements[0].htmlAttributes = htmlAttributes;
-						}
 						// No additional processing needed
 						// Write to data and continue
 						if ( childDataElements.length === 1 ) {
@@ -782,12 +748,6 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 						this.nodeFactory.canNodeHaveChildren( childDataElements[0].type ) &&
 						!this.nodeFactory.doesNodeHandleOwnChildren( childDataElements[0].type )
 					) {
-						htmlAttributes = ve.dm.Converter.buildHtmlAttributeList(
-							childNodes, modelClass.static.storeHtmlAttributes
-						);
-						if ( htmlAttributes ) {
-							childDataElements[0].htmlAttributes = htmlAttributes;
-						}
 						// Recursion
 						// Opening and closing elements are added by the recursion too
 						outputWrappedMetaItems( 'restore' );
@@ -799,12 +759,6 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 					} else {
 						if ( childDataElements.length === 1 ) {
 							childDataElements.push( { type: '/' + childDataElements[0].type } );
-						}
-						htmlAttributes = ve.dm.Converter.buildHtmlAttributeList(
-							childNodes, modelClass.static.storeHtmlAttributes, true
-						);
-						if ( htmlAttributes ) {
-							childDataElements[0].htmlAttributes = htmlAttributes;
 						}
 						// Write childDataElements directly
 						outputWrappedMetaItems( 'restore' );
