@@ -178,63 +178,15 @@ ve.dm.Model.static.enableAboutGrouping = false;
  *
  * - true, to preserve all attributes (default)
  * - false, to preserve none
- * - a string, to preserve only that attribute
- * - a regular expression matching attributes that should be preserved
- * - an array of strings or regular expressions
- * - an object with the following keys:
- *   - blacklist: specification of attributes not to preserve (boolean|string|RegExp|Array)
- *   - whitelist: specification of attributes to preserve
- *
- * If only a blacklist is specified, all attributes will be preserved except the ones matching
- * the blacklist. If only a whitelist is specified, only those attributes matching the whitelist
- * will be preserved. If both are specified, only attributes that both match the whitelist and
- * do not match the blacklist will be preserved.
+ * - a function that takes an attribute name and returns true or false
  *
  * @static
- * @property {boolean|string|RegExp|Array|Object}
+ * @property {boolean|Function}
  * @inheritable
  */
 ve.dm.Model.static.preserveHtmlAttributes = true;
 
 /* Static methods */
-
-/**
- * Determine whether an attribute name matches an attribute specification.
- *
- * @param {string} attribute Attribute name
- * @param {boolean|string|RegExp|Array|Object} spec Attribute specification, see #preserveHtmlAttributes
- * @returns {boolean} Attribute matches spec
- */
-ve.dm.Model.matchesAttributeSpec = function ( attribute, spec ) {
-	function matches( subspec ) {
-		if ( subspec instanceof RegExp ) {
-			return !!subspec.exec( attribute );
-		}
-		if ( typeof subspec === 'boolean' ) {
-			return subspec;
-		}
-		return attribute === subspec;
-	}
-
-	function matchesArray( specArray ) {
-		var i, len;
-		if ( !Array.isArray( specArray ) ) {
-			specArray = [ specArray ];
-		}
-		for ( i = 0, len = specArray.length; i < len; i++ ) {
-			if ( matches( specArray[i] ) ) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	if ( spec.whitelist === undefined && spec.blacklist === undefined ) {
-		// Not an object, treat spec as a whitelist
-		return matchesArray( spec );
-	}
-	return matchesArray( spec.whitelist || true ) && !matchesArray( spec.blacklist || false );
-};
 
 /**
  * Get hash object of a linear model data element.

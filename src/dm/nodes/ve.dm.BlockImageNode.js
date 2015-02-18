@@ -37,8 +37,8 @@ OO.mixinClass( ve.dm.BlockImageNode, ve.dm.AlignableNode );
 
 ve.dm.BlockImageNode.static.name = 'blockImage';
 
-ve.dm.BlockImageNode.static.preserveHtmlAttributes = {
-	blacklist: [ 'src', 'width', 'height', 'href' ]
+ve.dm.BlockImageNode.static.preserveHtmlAttributes = function ( attribute ) {
+	return ve.indexOf( attribute, [ 'src', 'width', 'height', 'href' ] ) === -1;
 };
 
 ve.dm.BlockImageNode.static.handlesOwnChildren = true;

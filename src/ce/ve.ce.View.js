@@ -83,14 +83,16 @@ OO.mixinClass( ve.ce.View, OO.EventEmitter );
  * @property {boolean|string|RegExp|Array|Object}
  * @inheritable
  */
-ve.ce.View.static.renderHtmlAttributes = [
-	'abbr', 'about', 'align', 'alt', 'axis', 'bgcolor', 'border', 'cellpadding', 'cellspacing',
-	'char', 'charoff', 'cite', 'class', 'clear', 'color', 'colspan', 'datatype', 'datetime',
-	'dir', 'face', 'frame', 'headers', 'height', 'href', 'id', 'itemid', 'itemprop', 'itemref',
-	'itemscope', 'itemtype', 'lang', 'noshade', 'nowrap', 'property', 'rbspan', 'rel',
-	'resource', 'rev', 'rowspan', 'rules', 'scope', 'size', 'span', 'src', 'start', 'style',
-	'summary', 'title', 'type', 'typeof', 'valign', 'value', 'width'
-];
+ve.ce.View.static.renderHtmlAttributes = function ( attribute ) {
+	return ve.indexOf( attribute, [
+		'abbr', 'about', 'align', 'alt', 'axis', 'bgcolor', 'border', 'cellpadding', 'cellspacing',
+		'char', 'charoff', 'cite', 'class', 'clear', 'color', 'colspan', 'datatype', 'datetime',
+		'dir', 'face', 'frame', 'headers', 'height', 'href', 'id', 'itemid', 'itemprop', 'itemref',
+		'itemscope', 'itemtype', 'lang', 'noshade', 'nowrap', 'property', 'rbspan', 'rel',
+		'resource', 'rev', 'rowspan', 'rules', 'scope', 'size', 'span', 'src', 'start', 'style',
+		'summary', 'title', 'type', 'typeof', 'valign', 'value', 'width'
+	] ) !== -1;
+};
 
 /* Methods */
 
