@@ -458,7 +458,6 @@
 			"tests/dm/ve.dm.SurfaceFragment.test.js",
 			"tests/dm/ve.dm.ModelRegistry.test.js",
 			"tests/dm/ve.dm.MetaList.test.js",
-			"tests/dm/ve.dm.Model.test.js",
 			"tests/dm/lineardata/ve.dm.FlatLinearData.test.js",
 			"tests/dm/lineardata/ve.dm.ElementLinearData.test.js",
 			"tests/dm/lineardata/ve.dm.MetaLinearData.test.js",

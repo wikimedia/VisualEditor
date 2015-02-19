@@ -134,16 +134,16 @@ ve.dm.Converter.openAndCloseAnnotations = function ( currentSet, targetSet, open
  * @static
  * @param {HTMLElement[]} originalDomElements Array of DOM elements to render from
  * @param {HTMLElement[]} targetDomElements Array of DOM elements to render onto
- * @param {boolean|string|RegExp|Array|Object} [spec=true] Attribute specification, see ve.dm.Model
+ * @param {boolean|Function} [filter=true] Attribute filter
  * @param {boolean} [computed=false] If true, use the computed values of attributes where available
  * @param {boolean} [deep=false] Recurse into child nodes
  */
-ve.dm.Converter.renderHtmlAttributeList = function ( originalDomElements, targetDomElements, spec, computed, deep ) {
+ve.dm.Converter.renderHtmlAttributeList = function ( originalDomElements, targetDomElements, filter, computed, deep ) {
 	var i, ilen, j, jlen, attrs, value;
-	if ( spec === undefined ) {
-		spec = true;
+	if ( filter === undefined ) {
+		filter = true;
 	}
-	if ( spec === false ) {
+	if ( filter === false ) {
 		return;
 	}
 
@@ -158,7 +158,7 @@ ve.dm.Converter.renderHtmlAttributeList = function ( originalDomElements, target
 		for ( j = 0, jlen = attrs.length; j < jlen; j++ ) {
 			if (
 				!targetDomElements[i].hasAttribute( attrs[j].name ) &&
-				( spec === true || ve.dm.Model.matchesAttributeSpec( attrs[j].name, spec ) )
+				( filter === true || filter( attrs[j].name ) )
 			) {
 				if ( computed && ve.dm.Converter.computedAttributes.indexOf( attrs[j].name ) !== -1 ) {
 					value = originalDomElements[i][attrs[j].name];
@@ -168,7 +168,7 @@ ve.dm.Converter.renderHtmlAttributeList = function ( originalDomElements, target
 				targetDomElements[i].setAttribute( attrs[j].name, value );
 			}
 
-			if ( spec === true || ve.dm.Model.matchesAttributeSpec( attrs[j].name, spec ) ) {
+			if ( filter === true || filter( attrs[j].name ) ) {
 				value = computed && ve.dm.Converter.computedAttributes.indexOf( attrs[j].name ) !== -1 ?
 					originalDomElements[i][attrs[j].name] :
 					attrs[j].value;
@@ -180,7 +180,7 @@ ve.dm.Converter.renderHtmlAttributeList = function ( originalDomElements, target
 			ve.dm.Converter.renderHtmlAttributeList(
 				originalDomElements[i].children,
 				targetDomElements[i].children,
-				spec,
+				filter,
 				computed,
 				true
 			);
