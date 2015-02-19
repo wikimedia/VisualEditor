@@ -104,8 +104,8 @@ ve.dm.Transaction.newFromRemoval = function ( doc, range, removeMetadata ) {
  * @returns {ve.dm.Transaction} Transaction that inserts the nodes and updates the internal list
  */
 ve.dm.Transaction.newFromDocumentInsertion = function ( doc, offset, newDoc, newDocRange ) {
-	var i, len, merge, data, metadata, listData, listMetadata, oldEndOffset, newEndOffset, tx,
-		insertion, spliceItemRange, spliceListNodeRange,
+	var i, len, storeMerge, listMerge, data, metadata, listData, listMetadata, linearData,
+		oldEndOffset, newEndOffset, tx, insertion, spliceItemRange, spliceListNodeRange,
 		listNode = doc.internalList.getListNode(),
 		listNodeRange = listNode.getRange(),
 		newListNode = newDoc.internalList.getListNode(),
@@ -133,13 +133,13 @@ ve.dm.Transaction.newFromDocumentInsertion = function ( doc, offset, newDoc, new
 	}
 
 	// Merge the stores
-	merge = doc.getStore().merge( newDoc.getStore() );
+	storeMerge = doc.getStore().merge( newDoc.getStore() );
 	// Remap the store indexes in the data
-	data.remapStoreIndexes( merge );
+	data.remapStoreIndexes( storeMerge );
 
-	merge = doc.internalList.merge( newDoc.internalList, newDoc.origInternalListLength || 0 );
+	listMerge = doc.internalList.merge( newDoc.internalList, newDoc.origInternalListLength || 0 );
 	// Remap the indexes in the data
-	data.remapInternalListIndexes( merge.mapping, doc.internalList );
+	data.remapInternalListIndexes( listMerge.mapping, doc.internalList );
 	// Get data for the new internal list
 	if ( newDoc.origDoc === doc ) {
 		// newDoc is a document slice based on doc, so all the internal list items present in doc
@@ -152,7 +152,13 @@ ve.dm.Transaction.newFromDocumentInsertion = function ( doc, offset, newDoc, new
 			oldEndOffset = listNodeRange.start;
 			newEndOffset = newListNodeRange.start;
 		}
-		listData = newDoc.getData( new ve.Range( newListNodeRange.start, newEndOffset ), true )
+		linearData = new ve.dm.ElementLinearData(
+			doc.getStore(),
+			newDoc.getData( new ve.Range( newListNodeRange.start, newEndOffset ), true )
+		);
+		// Remap indexes in data coming from newDoc
+		linearData.remapStoreIndexes( storeMerge );
+		listData = linearData.data
 			.concat( doc.getData( new ve.Range( oldEndOffset, listNodeRange.end ), true ) );
 		listMetadata = newDoc.getMetadata( new ve.Range( newListNodeRange.start, newEndOffset ), true )
 			.concat( doc.getMetadata( new ve.Range( oldEndOffset, listNodeRange.end ), true ) );
@@ -161,11 +167,17 @@ ve.dm.Transaction.newFromDocumentInsertion = function ( doc, offset, newDoc, new
 		listData = doc.getData( listNodeRange, true );
 		listMetadata = doc.getMetadata( listNodeRange, true );
 	}
-	for ( i = 0, len = merge.newItemRanges.length; i < len; i++ ) {
-		listData = listData.concat( newDoc.getData( merge.newItemRanges[i], true ) );
+	for ( i = 0, len = listMerge.newItemRanges.length; i < len; i++ ) {
+		linearData = new ve.dm.ElementLinearData(
+			doc.getStore(),
+			newDoc.getData( listMerge.newItemRanges[i], true )
+		);
+		// Remap indexes in data coming from newDoc
+		linearData.remapStoreIndexes( storeMerge );
+		listData = listData.concat( linearData.data );
 		// We don't have to worry about merging metadata at the edges, because there can't be
 		// metadata between internal list items
-		listMetadata = listMetadata.concat( newDoc.getMetadata( merge.newItemRanges[i], true ) );
+		listMetadata = listMetadata.concat( newDoc.getMetadata( listMerge.newItemRanges[i], true ) );
 	}
 
 	tx = new ve.dm.Transaction();
