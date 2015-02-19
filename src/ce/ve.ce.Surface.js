@@ -3305,7 +3305,7 @@ ve.ce.Surface.prototype.handleLinearDelete = function ( e ) {
 	// TODO: is any of this necessary?
 	this.focus();
 	this.surfaceObserver.clear();
-	return false;
+	return true;
 };
 
 /**
