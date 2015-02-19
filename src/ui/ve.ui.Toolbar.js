@@ -60,7 +60,10 @@ OO.inheritClass( ve.ui.Toolbar, OO.ui.Toolbar );
 /* Methods */
 
 /**
- * inheritdoc
+ * Setup toolbar
+ *
+ * @param {Object} groups List of tool group configurations
+ * @param {ve.ui.Surface} [surface] Surface to attach to
  */
 ve.ui.Toolbar.prototype.setup = function ( groups, surface ) {
 	this.detach();
@@ -79,7 +82,7 @@ ve.ui.Toolbar.prototype.setup = function ( groups, surface ) {
 };
 
 /**
- * inheritdoc
+ * @inheritdoc
  */
 ve.ui.Toolbar.prototype.isToolAvailable = function ( name ) {
 	if ( !ve.ui.Toolbar.super.prototype.isToolAvailable.apply( this, arguments ) ) {
