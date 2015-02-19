@@ -3405,27 +3405,27 @@ ve.ce.Surface.prototype.showSelection = function ( selection ) {
 		rangeSelection = this.getRangeSelection( range ),
 		nativeRange = this.getElementDocument().createRange();
 
-	this.nativeSelection.removeAllRanges();
+	nativeRange.setStart( rangeSelection.start.node, rangeSelection.start.offset );
 	if ( rangeSelection.end ) {
-		nativeRange.setStart( rangeSelection.start.node, rangeSelection.start.offset );
 		nativeRange.setEnd( rangeSelection.end.node, rangeSelection.end.offset );
-		if ( rangeSelection.isBackwards && this.nativeSelection.extend ) {
-			endRange = nativeRange.cloneRange();
-			endRange.collapse( false );
-			this.nativeSelection.addRange( endRange );
-			try {
-				this.nativeSelection.extend( nativeRange.startContainer, nativeRange.startOffset );
-			} catch ( e ) {
-				// Firefox sometimes fails when nodes are different,
-				// see https://bugzilla.mozilla.org/show_bug.cgi?id=921444
-				this.nativeSelection.addRange( nativeRange );
-			}
-		} else {
+	}
+	if ( rangeSelection.end && rangeSelection.isBackwards && this.nativeSelection.extend ) {
+		endRange = nativeRange.cloneRange();
+		endRange.collapse( false );
+		this.nativeSelection.removeAllRanges();
+		this.nativeSelection.addRange( endRange );
+		try {
+			this.nativeSelection.extend( nativeRange.startContainer, nativeRange.startOffset );
+		} catch ( e ) {
+			// Firefox sometimes fails when nodes are different,
+			// see https://bugzilla.mozilla.org/show_bug.cgi?id=921444
 			this.nativeSelection.addRange( nativeRange );
 		}
 	} else {
-		nativeRange.setStart( rangeSelection.start.node, rangeSelection.start.offset );
-		this.nativeSelection.addRange( nativeRange );
+		if ( !this.nativeSelection.rangeCount || !ve.compare( nativeRange, this.nativeSelection.getRangeAt( 0 ) ) ) {
+			this.nativeSelection.removeAllRanges();
+			this.nativeSelection.addRange( nativeRange );
+		}
 	}
 	// Setting a range doesn't give focus in all browsers so make sure this happens
 	// Also set focus after range to prevent scrolling to top
