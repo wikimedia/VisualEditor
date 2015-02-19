@@ -934,10 +934,7 @@
 	background-image: none;
 }
 .oo-ui-menuToolGroup .oo-ui-tool-active .oo-ui-tool-link .oo-ui-iconElement-icon {
-	background-image: url("themes/apex/images/icons/check.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/check.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/check.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/check.png");
+	background-image: /* @embed */ url(themes/apex/images/icons/check.png);
 }
 .oo-ui-menuToolGroup .oo-ui-tool.oo-ui-widget-enabled:hover {
 	background-color: #e1f3ff;
@@ -2311,200 +2308,101 @@
 }
 
 .oo-ui-icon-add {
-	background-image: url("themes/apex/images/icons/add.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/add.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/add.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/add.png");
+	background-image: /* @embed */ url(themes/apex/images/icons/add.png);
 }
 .oo-ui-icon-advanced {
-	background-image: url("themes/apex/images/icons/advanced.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/advanced.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/advanced.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/advanced.png");
+	background-image: /* @embed */ url(themes/apex/images/icons/advanced.png);
 }
 .oo-ui-icon-alert {
-	background-image: url("themes/apex/images/icons/alert.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/alert.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/alert.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/alert.png");
+	background-image: /* @embed */ url(themes/apex/images/icons/alert.png);
 }
 .oo-ui-icon-check {
-	background-image: url("themes/apex/images/icons/check.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/check.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/check.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/check.png");
+	background-image: /* @embed */ url(themes/apex/images/icons/check.png);
 }
 .oo-ui-icon-clear {
-	background-image: url("themes/apex/images/icons/clear.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/clear.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/clear.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/clear.png");
+	background-image: /* @embed */ url(themes/apex/images/icons/clear.png);
 }
 .oo-ui-icon-close {
-	background-image: url("themes/apex/images/icons/close.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/close.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/close.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/close.png");
+	background-image: /* @embed */ url(themes/apex/images/icons/close.png);
 }
 .oo-ui-icon-code {
-	background-image: url("themes/apex/images/icons/code.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/code.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/code.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/code.png");
+	background-image: /* @embed */ url(themes/apex/images/icons/code.png);
 }
 .oo-ui-icon-collapse {
-	background-image: url("themes/apex/images/icons/collapse.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/collapse.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/collapse.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/collapse.png");
+	background-image: /* @embed */ url(themes/apex/images/icons/collapse.png);
 }
 .oo-ui-icon-comment {
-	background-image: url("themes/apex/images/icons/comment.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/comment.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/comment.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/comment.png");
+	background-image: /* @embed */ url(themes/apex/images/icons/comment.png);
 }
 .oo-ui-icon-expand {
-	background-image: url("themes/apex/images/icons/expand.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/expand.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/expand.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/expand.png");
+	background-image: /* @embed */ url(themes/apex/images/icons/expand.png);
 }
 .oo-ui-icon-help {
-	background-image: url("themes/apex/images/icons/help.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/help.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/help.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/help.png");
+	background-image: /* @embed */ url(themes/apex/images/icons/help.png);
 }
 .oo-ui-icon-info {
-	background-image: url("themes/apex/images/icons/info.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/info.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/info.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/info.png");
+	background-image: /* @embed */ url(themes/apex/images/icons/info.png);
 }
 .oo-ui-icon-link {
-	background-image: url("themes/apex/images/icons/link.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/link.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/link.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/link.png");
+	background-image: /* @embed */ url(themes/apex/images/icons/link.png);
 }
 .oo-ui-icon-lock {
-	background-image: url("themes/apex/images/icons/lock.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/lock.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/lock.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/lock.png");
+	background-image: /* @embed */ url(themes/apex/images/icons/lock.png);
 }
 .oo-ui-icon-menu {
-	background-image: url("themes/apex/images/icons/menu.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/menu.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/menu.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/menu.png");
+	background-image: /* @embed */ url(themes/apex/images/icons/menu.png);
 }
 .oo-ui-icon-next {
-	background-image: url("themes/apex/images/icons/move-ltr.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/move-ltr.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/move-ltr.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/move-ltr.png");
+	background-image: /* @embed */ url(themes/apex/images/icons/move-ltr.png);
 }
 .oo-ui-icon-picture {
-	background-image: url("themes/apex/images/icons/picture.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/picture.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/picture.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/picture.png");
+	background-image: /* @embed */ url(themes/apex/images/icons/picture.png);
 }
 .oo-ui-icon-previous {
-	background-image: url("themes/apex/images/icons/move-rtl.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/move-rtl.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/move-rtl.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/move-rtl.png");
+	background-image: /* @embed */ url(themes/apex/images/icons/move-rtl.png);
 }
 .oo-ui-icon-redo {
-	background-image: url("themes/apex/images/icons/arched-arrow-ltr.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/arched-arrow-ltr.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/arched-arrow-ltr.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/arched-arrow-ltr.png");
+	background-image: /* @embed */ url(themes/apex/images/icons/arched-arrow-ltr.png);
 }
 .oo-ui-icon-remove {
-	background-image: url("themes/apex/images/icons/remove.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/remove.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/remove.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/remove.png");
+	background-image: /* @embed */ url(themes/apex/images/icons/remove.png);
 }
 .oo-ui-icon-search {
-	background-image: url("themes/apex/images/icons/search.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/search.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/search.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/search.png");
+	background-image: /* @embed */ url(themes/apex/images/icons/search.png);
 }
 .oo-ui-icon-settings {
-	background-image: url("themes/apex/images/icons/settings.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/settings.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/settings.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/settings.png");
+	background-image: /* @embed */ url(themes/apex/images/icons/settings.png);
 }
 .oo-ui-icon-tag {
-	background-image: url("themes/apex/images/icons/tag.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/tag.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/tag.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/tag.png");
+	background-image: /* @embed */ url(themes/apex/images/icons/tag.png);
 }
 .oo-ui-icon-undo {
-	background-image: url("themes/apex/images/icons/arched-arrow-rtl.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/arched-arrow-rtl.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/arched-arrow-rtl.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/arched-arrow-rtl.png");
+	background-image: /* @embed */ url(themes/apex/images/icons/arched-arrow-rtl.png);
 }
 .oo-ui-icon-window {
-	background-image: url("themes/apex/images/icons/window.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/window.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/window.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/window.png");
+	background-image: /* @embed */ url(themes/apex/images/icons/window.png);
 }
 .oo-ui-indicator-alert {
-	background-image: url("themes/apex/images/indicators/alert.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/indicators/alert.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/indicators/alert.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/indicators/alert.png");
+	background-image: /* @embed */ url(themes/apex/images/indicators/alert.png);
 }
 .oo-ui-indicator-up {
-	background-image: url("themes/apex/images/indicators/arrow-up.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/indicators/arrow-up.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/indicators/arrow-up.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/indicators/arrow-up.png");
+	background-image: /* @embed */ url(themes/apex/images/indicators/arrow-up.png);
 }
 .oo-ui-indicator-down {
-	background-image: url("themes/apex/images/indicators/arrow-down.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/indicators/arrow-down.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/indicators/arrow-down.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/indicators/arrow-down.png");
+	background-image: /* @embed */ url(themes/apex/images/indicators/arrow-down.png);
 }
 .oo-ui-indicator-next {
-	background-image: url("themes/apex/images/indicators/arrow-ltr.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/indicators/arrow-ltr.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/indicators/arrow-ltr.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/indicators/arrow-ltr.png");
+	background-image: /* @embed */ url(themes/apex/images/indicators/arrow-ltr.png);
 }
 .oo-ui-indicator-previous {
-	background-image: url("themes/apex/images/indicators/arrow-rtl.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/indicators/arrow-rtl.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/indicators/arrow-rtl.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/indicators/arrow-rtl.png");
+	background-image: /* @embed */ url(themes/apex/images/indicators/arrow-rtl.png);
 }
 .oo-ui-indicator-required {
-	background-image: url("themes/apex/images/indicators/required.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/indicators/required.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/indicators/required.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/indicators/required.png");
+	background-image: /* @embed */ url(themes/apex/images/indicators/required.png);
 }
 .oo-ui-texture-pending {
-	background-image: url("themes/apex/images/textures/pending.gif");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/textures/pending.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/textures/pending.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/textures/pending.gif");
+	background-image: /* @embed */ url(themes/apex/images/textures/pending.gif);
 }
 .oo-ui-texture-transparency {
-	background-image: url("themes/apex/images/textures/transparency.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/textures/transparency.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/textures/transparency.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/textures/transparency.png");
+	background-image: /* @embed */ url(themes/apex/images/textures/transparency.png);
 }

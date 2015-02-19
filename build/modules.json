@@ -40,7 +40,7 @@
 			"lib/oojs-ui/oojs-ui-apex.js"
 		],
 		"styles": [
-			"lib/oojs-ui/oojs-ui-apex.svg.css"
+			"lib/oojs-ui/oojs-ui-apex.vector.css"
 		],
 		"dependencies": [
 			"oojs-ui"
@@ -51,7 +51,7 @@
 			"lib/oojs-ui/oojs-ui-mediawiki.js"
 		],
 		"styles": [
-			"lib/oojs-ui/oojs-ui-mediawiki.svg.css"
+			"lib/oojs-ui/oojs-ui-mediawiki.vector.css"
 		],
 		"dependencies": [
 			"oojs-ui"
