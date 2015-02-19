@@ -125,7 +125,8 @@
 					"ve.ui.TargetToolbar",
 					"ve.ui.DebugBar",
 					"ve.ui.Trigger",
-					"ve.ui.*TransferHandler"
+					"ve.ui.*TransferHandler",
+					"ve.ui.DataTransferItem"
 				]
 			},
 			{
