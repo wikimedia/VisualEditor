@@ -808,9 +808,10 @@ QUnit.test( 'newFromReplacement', function ( assert ) {
 } );
 
 QUnit.test( 'newFromDocumentInsertion', function ( assert ) {
-	var i, j, doc2, tx, actualStoreItems, expectedStoreItems, removalOps,
+	var i, j, doc2, store2, tx, actualStoreItems, expectedStoreItems, removalOps,
 		doc = ve.dm.example.createExampleDocument( 'internalData' ),
 		nextIndex = doc.store.valueStore.length,
+		bold = ve.dm.example.createAnnotation( ve.dm.example.bold ),
 		whee = [ { type: 'paragraph' }, 'W', 'h', 'e', 'e', { type: '/paragraph' } ],
 		wheeItem = [ { type: 'internalItem' } ].concat( whee ).concat( [ { type: '/internalItem' } ] ),
 		cases = [
@@ -855,7 +856,7 @@ QUnit.test( 'newFromDocumentInsertion', function ( assert ) {
 				modify: function ( newDoc ) {
 					// Bold the first two characters
 					newDoc.commit( ve.dm.Transaction.newFromAnnotation(
-						newDoc, new ve.Range( 1, 3 ), 'set', ve.dm.example.bold
+						newDoc, new ve.Range( 1, 3 ), 'set', bold
 					) );
 				},
 				removalOps: [
@@ -880,9 +881,7 @@ QUnit.test( 'newFromDocumentInsertion', function ( assert ) {
 					},
 					{ type: 'retain', length: 7 }
 				],
-				expectedStoreItems: [
-					ve.dm.example.bold
-				]
+				expectedStoreItems: [ bold ]
 			},
 			{
 				msg: 'insertion into internal list',
@@ -979,6 +978,57 @@ QUnit.test( 'newFromDocumentInsertion', function ( assert ) {
 					},
 					{ type: 'retain', length: 7 }
 				]
+			},
+			{
+				msg: 'insertion from unrelated document',
+				doc: 'internalData',
+				offset: 0,
+				newDocData: [
+					{ type: 'paragraph' }, 'F', 'o', 'o', { type: '/paragraph' },
+					{ type: 'internalList' }, { type: '/internalList' }
+				],
+				removalOps: [],
+				expectedOps: [
+					{
+						type: 'replace',
+						remove: [],
+						insert: [ { type: 'paragraph' }, 'F', 'o', 'o', { type: '/paragraph' } ]
+					},
+					{ type: 'retain', length: 6 },
+					{
+						type: 'replace',
+						remove: doc.getData( new ve.Range( 6, 20 ) ),
+						insert: doc.getData( new ve.Range( 6, 20 ) )
+					},
+					{ type: 'retain', length: 7 }
+				]
+			},
+			{
+				msg: 'insertion from unrelated document with annotation',
+				doc: 'internalData',
+				offset: 0,
+				newDocData: [
+					{ type: 'paragraph' }, 'F',
+					[ 'o', [ ve.dm.example.bold ] ],
+					'o', { type: '/paragraph' },
+					{ type: 'internalList' }, { type: '/internalList' }
+				],
+				removalOps: [],
+				expectedOps: [
+					{
+						type: 'replace',
+						remove: [],
+						insert: [ { type: 'paragraph' }, 'F', ['o', [nextIndex]], 'o', { type: '/paragraph' } ]
+					},
+					{ type: 'retain', length: 6 },
+					{
+						type: 'replace',
+						remove: doc.getData( new ve.Range( 6, 20 ) ),
+						insert: doc.getData( new ve.Range( 6, 20 ) )
+					},
+					{ type: 'retain', length: 7 }
+				],
+				expectedStoreItems: [ bold ]
 			}
 		];
 
@@ -987,7 +1037,8 @@ QUnit.test( 'newFromDocumentInsertion', function ( assert ) {
 	for ( i = 0; i < cases.length; i++ ) {
 		doc = ve.dm.example.createExampleDocument( cases[i].doc );
 		if ( cases[i].newDocData ) {
-			doc2 = new ve.dm.Document( cases[i].newDocData );
+			store2 = new ve.dm.IndexValueStore();
+			doc2 = new ve.dm.Document( ve.dm.example.preprocessAnnotations( cases[i].newDocData, store2 ) );
 			removalOps = [];
 		} else if ( cases[i].range ) {
 			doc2 = doc.cloneFromRange( cases[i].range );
