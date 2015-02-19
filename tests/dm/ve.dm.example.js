@@ -1392,13 +1392,13 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'wrapping of bare content with about group': {
-		body: '1<foobar about="#mwt1">foo</foobar><foobar about="#mwt1">bar</foobar>2',
+		body: '1<foobar about="#vet1">foo</foobar><foobar about="#vet1">bar</foobar>2',
 		data: [
 			{ type: 'paragraph', internal: { generated: 'wrapper' } },
 			'1',
 			{
 				type: 'alienInline',
-				attributes: { domElements: $( '<foobar about="#mwt1">foo</foobar><foobar about="#mwt1">bar</foobar>' ).toArray() }
+				attributes: { domElements: $( '<foobar about="#vet1">foo</foobar><foobar about="#vet1">bar</foobar>' ).toArray() }
 			},
 			{ type: '/alienInline' },
 			'2',
@@ -2576,28 +2576,28 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'about grouping': {
-		body: '<div rel="ve:Alien" about="#mwt1">Foo</div>' +
-			'<div rel="ve:Alien" about="#mwt1">Bar</div>' +
-			'<div rel="ve:Alien" about="#mwt2">Baz</div>' +
-			'<foobar about="#mwt2">Quux</foobar>' +
+		body: '<div rel="ve:Alien" about="#vet1">Foo</div>' +
+			'<div rel="ve:Alien" about="#vet1">Bar</div>' +
+			'<div rel="ve:Alien" about="#vet2">Baz</div>' +
+			'<foobar about="#vet2">Quux</foobar>' +
 			'<p>Whee</p>' +
-			'<foobar about="#mwt2">Yay</foobar>' +
-			'<div rel="ve:Alien" about="#mwt2">Blah</div>' +
-			'<foobar about="#mwt3">Meh</foobar>',
+			'<foobar about="#vet2">Yay</foobar>' +
+			'<div rel="ve:Alien" about="#vet2">Blah</div>' +
+			'<foobar about="#vet3">Meh</foobar>',
 		data: [
 			{
 				type: 'alienBlock',
 				attributes: {
-					domElements: $( '<div rel="ve:Alien" about="#mwt1">Foo</div>' +
-						'<div rel="ve:Alien" about="#mwt1">Bar</div>' ).toArray()
+					domElements: $( '<div rel="ve:Alien" about="#vet1">Foo</div>' +
+						'<div rel="ve:Alien" about="#vet1">Bar</div>' ).toArray()
 				}
 			},
 			{ type: '/alienBlock' },
 			{
 				type: 'alienBlock',
 				attributes: {
-					domElements: $( '<div rel="ve:Alien" about="#mwt2">Baz</div>' +
-						'<foobar about="#mwt2">Quux</foobar>' ).toArray()
+					domElements: $( '<div rel="ve:Alien" about="#vet2">Baz</div>' +
+						'<foobar about="#vet2">Quux</foobar>' ).toArray()
 				}
 			},
 			{ type: '/alienBlock' },
@@ -2610,8 +2610,8 @@ ve.dm.example.domToDataCases = {
 			{
 				type: 'alienBlock',
 				attributes: {
-					domElements: $( '<foobar about="#mwt2">Yay</foobar>' +
-						'<div rel="ve:Alien" about="#mwt2">Blah</div>' ).toArray()
+					domElements: $( '<foobar about="#vet2">Yay</foobar>' +
+						'<div rel="ve:Alien" about="#vet2">Blah</div>' ).toArray()
 				}
 			},
 			{ type: '/alienBlock' },
@@ -2619,7 +2619,7 @@ ve.dm.example.domToDataCases = {
 			{
 				type: 'alienInline',
 				attributes: {
-					domElements: $( '<foobar about="#mwt3">Meh</foobar>' ).toArray()
+					domElements: $( '<foobar about="#vet3">Meh</foobar>' ).toArray()
 				}
 			},
 			{ type: '/alienInline' },
@@ -2629,14 +2629,14 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'whitespace preservation with an about group': {
-		body: ' <div rel="ve:Alien" about="#mwt1">\tFoo\t\t</div>\t\t\t' +
-			'<div rel="ve:Alien" about="#mwt1">  Bar   </div>    ',
+		body: ' <div rel="ve:Alien" about="#vet1">\tFoo\t\t</div>\t\t\t' +
+			'<div rel="ve:Alien" about="#vet1">  Bar   </div>    ',
 		data: [
 			{
 				type: 'alienBlock',
 				attributes: {
-					domElements: $( '<div rel="ve:Alien" about="#mwt1">\tFoo\t\t</div>\t\t\t' +
-						'<div rel="ve:Alien" about="#mwt1">  Bar   </div>' ).toArray()
+					domElements: $( '<div rel="ve:Alien" about="#vet1">\tFoo\t\t</div>\t\t\t' +
+						'<div rel="ve:Alien" about="#vet1">  Bar   </div>' ).toArray()
 				},
 				internal: {
 					whitespace: [ ' ', undefined, undefined, '    ' ]
