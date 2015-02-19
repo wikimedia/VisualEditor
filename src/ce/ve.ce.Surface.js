@@ -1029,29 +1029,32 @@ ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
 		if ( dragSelection instanceof ve.dm.LinearSelection ) {
 			dragRange = dragSelection.getRange();
 		}
-	} else if ( items && items.length ) {
-		for ( i = 0, l = items.length; i < l; i++ ) {
-			if ( items[i].kind ) {
-				item = items[i];
-			} else {
-				// Create fake DataTransferItem from file
-				item = new ve.ui.DataTransferItem( items[i] );
-			}
-			name = ve.ui.dataTransferHandlerFactory.getHandlerNameForItem( item );
-			if ( name ) {
-				fileHandlers.push(
-					ve.ui.dataTransferHandlerFactory.create( name, this.surface, item )
-				);
+	} else {
+		if ( items && items.length ) {
+			for ( i = 0, l = items.length; i < l; i++ ) {
+				if ( items[i].kind ) {
+					item = items[i];
+				} else {
+					// Create fake DataTransferItem from file
+					item = new ve.ui.DataTransferItem( items[i] );
+				}
+				name = ve.ui.dataTransferHandlerFactory.getHandlerNameForItem( item );
+				if ( name ) {
+					fileHandlers.push(
+						ve.ui.dataTransferHandlerFactory.create( name, this.surface, item )
+					);
+				}
 			}
 		}
-	} else {
-		try {
-			dragHtml = dataTransfer.getData( 'text/html' );
-			if ( !dragHtml ) {
-				dragText = dataTransfer.getData( 'text/plain' );
+		if ( !fileHandlers.length ) {
+			try {
+				dragHtml = dataTransfer.getData( 'text/html' );
+				if ( !dragHtml ) {
+					dragText = dataTransfer.getData( 'text/plain' );
+				}
+			} catch ( err ) {
+				dragText = dataTransfer.getData( 'text' );
 			}
-		} catch ( err ) {
-			dragText = dataTransfer.getData( 'text' );
 		}
 	}
 
