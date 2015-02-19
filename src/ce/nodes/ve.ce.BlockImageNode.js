@@ -52,6 +52,9 @@ OO.inheritClass( ve.ce.BlockImageNode, ve.ce.BranchNode );
 
 OO.mixinClass( ve.ce.BlockImageNode, ve.ce.ImageNode );
 
+// Mixin Alignable's parent class
+OO.mixinClass( ve.ce.BlockImageNode, ve.ce.ClassAttributeNode );
+
 OO.mixinClass( ve.ce.BlockImageNode, ve.ce.AlignableNode );
 
 /* Static Properties */

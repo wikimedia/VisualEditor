@@ -31,6 +31,9 @@ OO.inheritClass( ve.dm.BlockImageNode, ve.dm.BranchNode );
 
 OO.mixinClass( ve.dm.BlockImageNode, ve.dm.ImageNode );
 
+// Mixin Alignable's parent class
+OO.mixinClass( ve.dm.BlockImageNode, ve.dm.ClassAttributeNode );
+
 OO.mixinClass( ve.dm.BlockImageNode, ve.dm.AlignableNode );
 
 /* Static Properties */
@@ -61,6 +64,7 @@ ve.dm.BlockImageNode.static.toDataElement = function ( domElements, converter ) 
 
 	var dataElement,
 		figure = domElements[0],
+		classAttr = figure.getAttribute( 'class' ),
 		img = findChildren( figure, 'img' )[0] || null,
 		caption = findChildren( figure, 'figcaption' )[0] || null,
 		attributes = {
@@ -74,12 +78,14 @@ ve.dm.BlockImageNode.static.toDataElement = function ( domElements, converter ) 
 		attributes.alt = altText;
 	}
 
+	this.setClassAttributes( attributes, classAttr );
+
 	attributes.width = width !== undefined && width !== '' ? Number( width ) : null;
 	attributes.height = height !== undefined && height !== '' ? Number( height ) : null;
 
 	dataElement = {
 		type: this.name,
-		attributes: ve.extendObject( ve.dm.AlignableNode.static.toDataElementAttributes( domElements, converter ), attributes )
+		attributes: attributes
 	};
 
 	if ( !caption ) {
@@ -103,6 +109,7 @@ ve.dm.BlockImageNode.static.toDomElements = function ( data, doc, converter ) {
 	var dataElement = data[0],
 		width = dataElement.attributes.width,
 		height = dataElement.attributes.height,
+		classAttr = this.getClassAttrFromAttributes( dataElement.attributes ),
 		figure = doc.createElement( 'figure' ),
 		img = doc.createElement( 'img' ),
 		wrapper = doc.createElement( 'div' ),
@@ -116,6 +123,10 @@ ve.dm.BlockImageNode.static.toDomElements = function ( data, doc, converter ) {
 	}
 	figure.appendChild( img );
 
+	if ( classAttr ) {
+		figure.className = classAttr;
+	}
+
 	// If length of captionData is smaller or equal to 2 it means that there is no caption or that
 	// it is empty - in both cases we are going to skip appending <figcaption>.
 	if ( captionData.length > 2 ) {
@@ -124,8 +135,6 @@ ve.dm.BlockImageNode.static.toDomElements = function ( data, doc, converter ) {
 			figure.appendChild( wrapper.firstChild );
 		}
 	}
-
-	ve.dm.AlignableNode.static.modifyDomElement( figure, dataElement );
 
 	return [ figure ];
 };

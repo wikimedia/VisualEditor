@@ -9,22 +9,20 @@
  *
  * @class
  * @abstract
+ * @extends ve.ce.ClassAttributeNode
  *
  * @constructor
  */
-ve.ce.AlignableNode = function VeCeAlignableNode( $alignable, config ) {
-	config = config || {};
+ve.ce.AlignableNode = function VeCeAlignableNode() {
+	// Parent constructor
+	ve.ce.AlignableNode.super.apply( this, arguments );
 
-	this.$alignable = $alignable || this.$element;
-
-	// Events
-	this.connect( this, { setup: 'onAlignableSetup' } );
-	this.model.connect( this, { attributeChange: 'onAlignableAttributeChange' } );
+	this.align = null;
 };
 
 /* Inheritance */
 
-OO.initClass( ve.ce.AlignableNode );
+OO.inheritClass( ve.ce.AlignableNode, ve.ce.ClassAttributeNode );
 
 /* Events */
 
@@ -34,34 +32,13 @@ OO.initClass( ve.ce.AlignableNode );
  */
 
 /**
- * Handle attribute change events
- *
- * @param {string} key Key
- * @param {string} from Old value
- * @param {string} to New value
+ * @inheritdoc
  */
-ve.ce.AlignableNode.prototype.onAlignableAttributeChange = function ( key, from, to ) {
-	var cssClasses;
-	if ( key === 'align' ) {
-		cssClasses = this.model.constructor.static.cssClasses;
-		if ( from && cssClasses[from] ) {
-			this.$alignable.removeClass( cssClasses[from] );
-		}
-		if ( to && cssClasses[to] ) {
-			this.$alignable.addClass( cssClasses[to] );
-		}
-		this.emit( 'align', to );
-	}
-};
-
-/**
- * Handle node setup
- */
-ve.ce.AlignableNode.prototype.onAlignableSetup = function () {
-	var align = this.model.getAttribute( 'align' ),
-		cssClasses = this.model.constructor.static.cssClasses;
-	if ( align && cssClasses[align] ) {
-		this.$alignable.addClass( cssClasses[align] );
+ve.ce.AlignableNode.prototype.updateAttributeClasses = function () {
+	ve.ce.AlignableNode.super.prototype.updateAttributeClasses.apply( this, arguments );
+	var align = this.model.getAttribute( 'align' );
+	if ( align && align !== this.align ) {
 		this.emit( 'align', align );
+		this.align = align;
 	}
 };
