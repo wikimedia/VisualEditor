@@ -872,8 +872,9 @@ ve.fixupPreBug = function ( element ) {
  * Helper function for #transformStyleAttributes.
  *
  * Normalize an attribute value. In compliant browsers, this should be
- * a no-op, but in IE style attributes are normalized on all elements and
- * bgcolor attributes are normalized on some elements (like `<tr>`).
+ * a no-op, but in IE style attributes are normalized on all elements,
+ * color and bgcolor attributes are normalized on some elements (like `<tr>`),
+ * and width and height attributes are normalized on some elements( like `<table>`).
  *
  * @param {string} name Attribute name
  * @param {string} value Attribute value
@@ -904,7 +905,9 @@ ve.transformStyleAttributes = function ( html, unmask ) {
 		maskAttrs = [
 			'style', // IE normalizes 'color:#ffd' to 'color: rgb(255, 255, 221);'
 			'bgcolor', // IE normalizes '#FFDEAD' to '#ffdead'
-			'color' // IE normalized 'Red' to 'red'
+			'color', // IE normalizes 'Red' to 'red'
+			'width', // IE normalizes '240px' to '240'
+			'height' // Same as width
 		];
 
 	// Parse the HTML into an XML DOM
