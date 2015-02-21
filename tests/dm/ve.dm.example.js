@@ -1192,7 +1192,8 @@ ve.dm.example.domToDataCases = {
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
-		]
+		],
+		clipboardBody: '<p><b><span rel="ve:Comment" data-ve-comment="foo"></span>bar<span rel="ve:Comment" data-ve-comment="baz"></span></b></p>'
 	},
 	'annotated metadata': {
 		body: '<p><b><meta />bar<meta /></b></p>',
@@ -1521,7 +1522,8 @@ ve.dm.example.domToDataCases = {
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
-		]
+		],
+		clipboardBody: '<span rel="ve:Comment" data-ve-comment=" comment "></span>'
 	},
 	'empty document with content added by the editor': {
 		data: [
@@ -1646,7 +1648,8 @@ ve.dm.example.domToDataCases = {
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
-		]
+		],
+		clipboardBody: '<p>Foo<b><span rel="ve:Comment" data-ve-comment=" Bar "></span></b>Baz</p>'
 	},
 	'empty annotation with metadata': {
 		body: '<p>Foo<b><meta /></b>Baz</p>',
@@ -2240,7 +2243,8 @@ ve.dm.example.domToDataCases = {
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
-		]
+		],
+		clipboardBody: '<span rel="ve:Comment" data-ve-comment=" Foo "></span> <span rel="ve:Comment" data-ve-comment=" Bar "></span>\nFoo'
 	},
 	'whitespace preservation with comments at end of wrapper paragraph': {
 		body: '<ul><li> bar<!-- baz -->quux </li></ul>',
@@ -2282,7 +2286,8 @@ ve.dm.example.domToDataCases = {
 			{ type: '/list' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
-		]
+		],
+		clipboardBody: '<ul><li> bar<span rel="ve:Comment" data-ve-comment=" baz "></span>quux </li></ul>'
 	},
 	'whitespace preservation with metadata and space at end of wrapper paragraph': {
 		body: '<ul><li> bar<meta />quux </li></ul>',
@@ -2467,7 +2472,8 @@ ve.dm.example.domToDataCases = {
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
-		]
+		],
+		clipboardBody: '<p> <span rel="ve:Comment" data-ve-comment=" foo "></span>bar<span rel="ve:Comment" data-ve-comment=" baz "></span> </p>'
 	},
 	'whitespace surrounding metadata in a wrapper': {
 		body: '<b>Foo</b> <meta />\n<i>Bar</i>',
