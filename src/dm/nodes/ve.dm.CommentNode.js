@@ -38,9 +38,8 @@ ve.dm.CommentNode.static.toDataElement = function ( domElements, converter ) {
 		domElements[0].data :
 		domElements[0].getAttribute( 'data-ve-comment' );
 	return {
-		// Only use CommentNode for comments in ContentBranchNodes; otherwise use
-		// CommentMetaItem
-		type: converter.isExpectingContent() && text !== '' ? 'comment' : 'commentMeta',
+		// Disallows comment nodes between table rows and such
+		type: converter.isValidChildNodeType( 'comment' ) && text !== '' ? 'comment' : 'commentMeta',
 		attributes: {
 			text: text
 		}
