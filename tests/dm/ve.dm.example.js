@@ -1166,7 +1166,7 @@ ve.dm.example.domToDataCases = {
 			{ type: '/internalList' }
 		]
 	},
-	'annotated metadata': {
+	'annotated comments': {
 		body: '<p><b><!--foo-->bar<!--baz--></b></p>',
 		data: [
 			{ type: 'paragraph' },
@@ -1194,41 +1194,69 @@ ve.dm.example.domToDataCases = {
 			{ type: '/internalList' }
 		]
 	},
-	'annotated comment metadata in a wrapper': {
-		body: '<b><!--foo-->bar<!--baz-->quux<!--whee--></b>',
+	'annotated metadata': {
+		body: '<p><b><meta />bar<meta /></b></p>',
 		data: [
-			{ type: 'paragraph', internal: { generated: 'wrapper' } },
+			{ type: 'paragraph' },
 			{
-				type: 'comment',
+				type: 'alienMeta',
 				annotations: [ ve.dm.example.bold ],
 				attributes: {
-					text: 'foo'
+					domElements: $( '<meta />' ).toArray()
 				}
 			},
-			{ type: '/comment' },
+			{ type: '/alienMeta' },
 			[ 'b', [ ve.dm.example.bold ] ],
 			[ 'a', [ ve.dm.example.bold ] ],
 			[ 'r', [ ve.dm.example.bold ] ],
 			{
-				type: 'comment',
+				type: 'alienMeta',
 				annotations: [ ve.dm.example.bold ],
 				attributes: {
-					text: 'baz'
+					domElements: $( '<meta />' ).toArray()
 				}
 			},
-			{ type: '/comment' },
+			{ type: '/alienMeta' },
+			{ type: '/paragraph' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
+		]
+	},
+	'annotated metadata in a wrapper': {
+		body: '<b><meta />bar<meta />quux<meta /></b>',
+		data: [
+			{ type: 'paragraph', internal: { generated: 'wrapper' } },
+			{
+				type: 'alienMeta',
+				annotations: [ ve.dm.example.bold ],
+				attributes: {
+					domElements: $( '<meta />' ).toArray()
+				}
+			},
+			{ type: '/alienMeta' },
+			[ 'b', [ ve.dm.example.bold ] ],
+			[ 'a', [ ve.dm.example.bold ] ],
+			[ 'r', [ ve.dm.example.bold ] ],
+			{
+				type: 'alienMeta',
+				annotations: [ ve.dm.example.bold ],
+				attributes: {
+					domElements: $( '<meta />' ).toArray()
+				}
+			},
+			{ type: '/alienMeta' },
 			[ 'q', [ ve.dm.example.bold ] ],
 			[ 'u', [ ve.dm.example.bold ] ],
 			[ 'u', [ ve.dm.example.bold ] ],
 			[ 'x', [ ve.dm.example.bold ] ],
 			{
-				type: 'comment',
+				type: 'alienMeta',
 				annotations: [ ve.dm.example.bold ],
 				attributes: {
-					text: 'whee'
+					domElements: $( '<meta />' ).toArray()
 				}
 			},
-			{ type: '/comment' },
+			{ type: '/alienMeta' },
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
@@ -1262,20 +1290,20 @@ ve.dm.example.domToDataCases = {
 			{ type: '/internalList' }
 		]
 	},
-	'comment metadata in a wrapper followed by annotated text': {
-		body: 'Foo<!--bar--><b>Baz</b>',
+	'metadata in a wrapper followed by annotated text': {
+		body: 'Foo<meta /><b>Baz</b>',
 		data: [
 			{ type: 'paragraph', internal: { generated: 'wrapper' } },
 			'F',
 			'o',
 			'o',
 			{
-				type: 'comment',
+				type: 'alienMeta',
 				attributes: {
-					text: 'bar'
+					domElements: $( '<meta />' ).toArray()
 				}
 			},
-			{ type: '/comment' },
+			{ type: '/alienMeta' },
 			[ 'B', [ ve.dm.example.bold ] ],
 			[ 'a', [ ve.dm.example.bold ] ],
 			[ 'z', [ ve.dm.example.bold ] ],
@@ -1614,6 +1642,24 @@ ve.dm.example.domToDataCases = {
 				}
 			},
 			{ type: '/comment' },
+			'B', 'a', 'z',
+			{ type: '/paragraph' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
+		]
+	},
+	'empty annotation with metadata': {
+		body: '<p>Foo<b><meta /></b>Baz</p>',
+		data: [
+			{ type: 'paragraph' },
+			'F', 'o', 'o',
+			{
+				type: 'alienMeta',
+				attributes: {
+					domElements: $( '<b><meta /></b>' ).toArray()
+				}
+			},
+			{ type: '/alienMeta' },
 			'B', 'a', 'z',
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
@@ -2230,6 +2276,48 @@ ve.dm.example.domToDataCases = {
 				}
 			},
 			{ type: '/comment' },
+			'q', 'u', 'u', 'x',
+			{ type: '/paragraph' },
+			{ type: '/listItem' },
+			{ type: '/list' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
+		]
+	},
+	'whitespace preservation with metadata and space at end of wrapper paragraph': {
+		body: '<ul><li> bar<meta />quux </li></ul>',
+		data: [
+			{ type: 'list', attributes: { style: 'bullet' } },
+			{
+				type: 'listItem',
+				internal: {
+					whitespace: [
+						undefined,
+						' ',
+						' '
+					]
+				}
+			},
+			{
+				type: 'paragraph',
+				internal: {
+					generated: 'wrapper',
+					whitespace: [
+						' ',
+						undefined,
+						undefined,
+						' '
+					]
+				}
+			},
+			'b', 'a', 'r',
+			{
+				type: 'alienMeta',
+				attributes: {
+					domElements: $( '<meta />' ).toArray()
+				}
+			},
+			{ type: '/alienMeta' },
 			'q', 'u', 'u', 'x',
 			{ type: '/paragraph' },
 			{ type: '/listItem' },
