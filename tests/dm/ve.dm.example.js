@@ -1464,16 +1464,32 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'empty document with meta': {
-		body: '<!-- comment -->',
+		body: '<meta />',
 		data: [
 			{
-				type: 'commentMeta',
+				type: 'alienMeta',
+				attributes: {
+					domElements: $( '<meta />' ).toArray()
+				}
+			},
+			{ type: '/alienMeta' },
+			{ type: 'paragraph', internal: { generated: 'empty' } },
+			{ type: '/paragraph' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
+		]
+	},
+	'empty document with comment': {
+		body: '<!-- comment -->',
+		data: [
+			{ type: 'paragraph', internal: { generated: 'wrapper' } },
+			{
+				type: 'comment',
 				attributes: {
 					text: ' comment '
 				}
 			},
-			{ type: '/commentMeta' },
-			{ type: 'paragraph', internal: { generated: 'empty' } },
+			{ type: '/comment' },
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
@@ -2097,11 +2113,11 @@ ve.dm.example.domToDataCases = {
 			{ type: '/internalList' }
 		]
 	},
-	'whitespace preservation with wrapped text and comments': {
-		body: '<!-- Foo --> <!-- Bar -->\nFoo',
+	'whitespace preservation with wrapped text and metas': {
+		body: '<meta /> <meta />\nFoo',
 		data: [
 			{
-				type: 'commentMeta',
+				type: 'alienMeta',
 				internal: {
 					whitespace: [
 						undefined,
@@ -2111,12 +2127,12 @@ ve.dm.example.domToDataCases = {
 					]
 				},
 				attributes: {
-					text: ' Foo '
+					domElements: $( '<meta />' ).toArray()
 				}
 			},
-			{ type: '/commentMeta' },
+			{ type: '/alienMeta' },
 			{
-				type: 'commentMeta',
+				type: 'alienMeta',
 				internal: {
 					whitespace: [
 						' ',
@@ -2126,10 +2142,10 @@ ve.dm.example.domToDataCases = {
 					]
 				},
 				attributes: {
-					text: ' Bar '
+					domElements: $( '<meta />' ).toArray()
 				}
 			},
-			{ type: '/commentMeta' },
+			{ type: '/alienMeta' },
 			{
 				type: 'paragraph',
 				internal: {
@@ -2139,6 +2155,39 @@ ve.dm.example.domToDataCases = {
 					generated: 'wrapper'
 				}
 			},
+			'F',
+			'o',
+			'o',
+			{ type: '/paragraph' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
+		]
+	},
+	'whitespace preservation with wrapped text and comments': {
+		body: '<!-- Foo --> <!-- Bar -->\nFoo',
+		data: [
+			{
+				type: 'paragraph',
+				internal: {
+					generated: 'wrapper'
+				}
+			},
+			{
+				type: 'comment',
+				attributes: {
+					text: ' Foo '
+				}
+			},
+			{ type: '/comment' },
+			' ',
+			{
+				type: 'comment',
+				attributes: {
+					text: ' Bar '
+				}
+			},
+			{ type: '/comment' },
+			'\n',
 			'F',
 			'o',
 			'o',
