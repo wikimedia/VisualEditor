@@ -3410,7 +3410,7 @@ ve.ce.Surface.prototype.showSelection = function ( selection ) {
 		return;
 	}
 
-	var endRange,
+	var endRange, oldRange,
 		range = selection.getRange(),
 		rangeSelection = this.getRangeSelection( range ),
 		nativeRange = this.getElementDocument().createRange();
@@ -3431,12 +3431,24 @@ ve.ce.Surface.prototype.showSelection = function ( selection ) {
 			// see https://bugzilla.mozilla.org/show_bug.cgi?id=921444
 			this.nativeSelection.addRange( nativeRange );
 		}
+	} else if ( !(
+		this.nativeSelection.rangeCount > 0 &&
+		( oldRange = this.nativeSelection.getRangeAt( 0 ) ) &&
+		oldRange.startContainer === nativeRange.startContainer &&
+		oldRange.startOffset === nativeRange.startOffset &&
+		oldRange.endContainer === nativeRange.endContainer &&
+		oldRange.endOffset === nativeRange.endOffset
+	) ) {
+		// Genuine selection change: apply it.
+		// TODO: this is slightly too zealous, because a cursor position at a node edge
+		// can have more than one (container,offset) representation
+		this.nativeSelection.removeAllRanges();
+		this.nativeSelection.addRange( nativeRange );
 	} else {
-		if ( !this.nativeSelection.rangeCount || !ve.compare( nativeRange, this.nativeSelection.getRangeAt( 0 ) ) ) {
-			this.nativeSelection.removeAllRanges();
-			this.nativeSelection.addRange( nativeRange );
-		}
+		// Not a selection change: don't needlessly reapply the same selection.
+		return;
 	}
+
 	// Setting a range doesn't give focus in all browsers so make sure this happens
 	// Also set focus after range to prevent scrolling to top
 	if ( !OO.ui.contains( this.getElementDocument().activeElement, rangeSelection.start.node, true ) ) {
