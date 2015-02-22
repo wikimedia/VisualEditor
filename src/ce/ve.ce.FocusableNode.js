@@ -401,9 +401,10 @@ ve.ce.FocusableNode.prototype.redrawHighlights = function () {
  * Calculate position of highlights
  */
 ve.ce.FocusableNode.prototype.calculateHighlights = function () {
-	var i, l,
+	var i, l, $set,
 		rects = [],
 		filteredRects = [],
+		webkitColumns = 'webkitColumnCount' in document.createElement( 'div' ).style,
 		surfaceOffset = this.surface.getSurface().getBoundingClientRect();
 
 	function contains( rect1, rect2 ) {
@@ -413,14 +414,38 @@ ve.ce.FocusableNode.prototype.calculateHighlights = function () {
 			rect2.bottom <= rect1.bottom;
 	}
 
-	this.$focusable.find( '*' ).addBack().each( function () {
-		var i, j, il, jl, contained, clientRects;
+	function process( el ) {
+		var i, j, il, jl, contained, clientRects,
+			$el = $( el );
 
-		if ( $( this ).hasClass( 've-ce-noHighlight' ) ) {
+		if ( $el.hasClass( 've-ce-noHighlight' ) ) {
 			return;
 		}
 
-		clientRects = this.getClientRects();
+		if (
+			webkitColumns &&
+			( $el.css( '-webkit-column-count' ) || $el.css( '-webkit-column-size' ) )
+		) {
+			// Chrome incorrectly measures children of nodes with columns [1], let's
+			// just ignore them rather than render a possibly bizarre highlight. They
+			// will usually not be positioned, because Chrome also doesn't position
+			// them correctly [2] and so people avoid doing it.
+			//
+			// Of course there are other ways to render a node outside the bounding
+			// box of its parent, like negative margin. We do not handle these cases,
+			// and the highlight may not correctly cover the entire node if that
+			// happens. This can't be worked around without implementing CSS
+			// layouting logic ourselves, which is not worth it.
+			//
+			// [1] http://code.google.com/p/chromium/issues/detail?id=391271
+			// [2] https://code.google.com/p/chromium/issues/detail?id=291616
+
+			// jQuery keeps nodes in its collections in document order, so the
+			// children have not been processed yet and can be safely removed.
+			$set = $set.not( $el.find( '*' ) );
+		}
+
+		clientRects = el.getClientRects();
 
 		for ( i = 0, il = clientRects.length; i < il; i++ ) {
 			contained = false;
@@ -441,7 +466,13 @@ ve.ce.FocusableNode.prototype.calculateHighlights = function () {
 				rects.push( clientRects[i] );
 			}
 		}
-	} );
+	}
+
+	$set = this.$focusable.find( '*' ).addBack();
+	// Calling process() may change $set.length
+	for ( i = 0; i < $set.length; i++ ) {
+		process( $set[i] );
+	}
 
 	// Elements with a width/height of 0 return a clientRect with a width/height of 1
 	// As elements with an actual width/height of 1 aren't that useful anyway, just
