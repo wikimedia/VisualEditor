@@ -102,7 +102,7 @@
 	ve.test.utils.runGetModelFromDomTest = function ( assert, caseItem, msg ) {
 		var model, i, length, hash, html, htmlDoc, actualData, actualRtDoc, expectedRtDoc,
 			// Make sure we've always got a <base> tag
-			defaultHead = '<base href="' + ve.dm.example.base + '">';
+			defaultHead = '<base href="' + ve.dm.example.baseUri + '">';
 
 		if ( caseItem.head !== undefined || caseItem.body !== undefined ) {
 			html = '<head>' + ( caseItem.head || defaultHead ) + '</head><body>' + caseItem.body + '</body>';

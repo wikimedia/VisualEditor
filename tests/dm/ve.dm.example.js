@@ -216,7 +216,15 @@ ve.dm.example.testDir = window.VE_TESTDIR || '.';
 
 ve.dm.example.imgSrc = '//upload.wikimedia.org/wikipedia/commons/b/b3/Wikipedia-logo-v2-en.svg';
 
-ve.dm.example.base = 'http://example.org';
+ve.dm.example.baseUri = 'http://example.org';
+
+ve.dm.example.base = ( function () {
+	var doc = ve.createDocumentFromHtml( '' ),
+		node = doc.createElement( 'base' );
+	node.setAttribute( 'href', ve.dm.example.baseUri );
+	doc.head.appendChild( node );
+	return doc;
+}() );
 
 ve.dm.example.fullImgSrc = ve.resolveUrl( ve.dm.example.imgSrc, ve.dm.example.base );
 

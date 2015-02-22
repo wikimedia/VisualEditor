@@ -773,27 +773,14 @@ ve.createDocumentFromHtml = function ( html ) {
 };
 
 /**
- * Resolve a URL according to a given base.
- *
- * Passing a string for the base parameter causes a throwaway document to be created, which is
- * slow.
+ * Resolve a URL relative to a given base.
  *
  * @param {string} url URL to resolve
- * @param {HTMLDocument|string} base Document whose base URL to use, or base URL as a string
+ * @param {HTMLDocument} base Document whose base URL to use
  * @returns {string} Resolved URL
  */
 ve.resolveUrl = function ( url, base ) {
-	var doc, node;
-	if ( typeof base === 'string' ) {
-		doc = ve.createDocumentFromHtml( '' );
-		node = doc.createElement( 'base' );
-		node.setAttribute( 'href', base );
-		doc.head.appendChild( node );
-	} else {
-		doc = base;
-	}
-
-	node = doc.createElement( 'a' );
+	var node = base.createElement( 'a' );
 	node.setAttribute( 'href', url );
 	// If doc.baseURI isn't set, node.href will be an empty string
 	// This is crazy, returning the original URL is better
