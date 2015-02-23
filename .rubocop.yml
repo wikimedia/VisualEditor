@@ -4,3 +4,6 @@ AllCops:
   Include:
     - 'Gemfile'
     - '.docs/**/*.rb'
+
+Metrics/LineLength:
+  Max: 100
