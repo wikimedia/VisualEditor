@@ -114,6 +114,7 @@
 	"visualeditor-shortcuts-history": "Heading for history shortcuts.\n\nSee also:\n* {{msg-mw|Visualeditor-historybutton-redo-tooltip}}\n* {{msg-mw|Visualeditor-historybutton-undo-tooltip}}\n{{Identical|History}}",
 	"visualeditor-shortcuts-other": "Heading for other shortcuts.\n{{Identical|Other}}",
 	"visualeditor-shortcuts-text-style": "Heading for text formatting shortcuts",
+	"visualeditor-slug-insert": "Label for slug to insert paragraph on an otherwise unreachable line",
 	"visualeditor-specialcharacter-button-tooltip": "Tooltip text for the insert character button.\n{{Identical|Special character}}",
 	"visualeditor-specialcharacterinspector-title": "Used as title for special character inspector.\n{{Identical|Special character}}",
 	"visualeditor-specialcharinspector-characterlist-insert": "This is a JSON string defining the special characters that can be inserted using the special character insertion tool.\n{{doc-important|Please make sure it is a valid JSON string.}}\n{{Optional}}",

@@ -32,16 +32,6 @@ ve.ce.RangeState = function VeCeRangeState( old, $surfaceElement, docNode, selec
 	this.contentChanged = null;
 
 	/**
-	 * @property {boolean} leftBlockSlug Whether the range left a block slug
-	 */
-	this.leftBlockSlug = null;
-
-	/**
-	 * @property {boolean} enteredBlockSlug Whether the range entered a block slug
-	 */
-	this.enteredBlockSlug = null;
-
-	/**
 	 * @property {ve.Range|null} veRange The current selection range
 	 */
 	this.veRange = null;
@@ -50,11 +40,6 @@ ve.ce.RangeState = function VeCeRangeState( old, $surfaceElement, docNode, selec
 	 * @property {ve.ce.BranchNode|null} node The current branch node
 	 */
 	this.node = null;
-
-	/**
-	 * @property {jQuery|null} $slugWrapper The current slug wrapper
-	 */
-	this.$slugWrapper = null;
 
 	/**
 	 * @property {string} text Plain text of current branch node
@@ -84,7 +69,7 @@ OO.initClass( ve.ce.RangeState );
  * @param {boolean} selectionOnly The caller promises the content has not changed from old
  */
 ve.ce.RangeState.prototype.saveState = function ( old, $surfaceElement, docNode, selectionOnly ) {
-	var $nodeOrSlug, selection, anchorNodeChanged;
+	var $node, selection, anchorNodeChanged;
 
 	// Freeze selection out of live object.
 	selection = ( function ( liveSelection ) {
@@ -116,9 +101,6 @@ ve.ce.RangeState.prototype.saveState = function ( old, $surfaceElement, docNode,
 		// No change; use old values for speed
 		this.selectionChanged = false;
 		this.veRange = old.veRange;
-		this.$slugWrapper = old.$slugWrapper;
-		this.leftBlockSlug = false;
-		this.enteredBlockSlug = false;
 	} else {
 		this.selectionChanged = true;
 		this.veRange = ve.ce.veRangeFromSelection( selection );
@@ -128,20 +110,12 @@ ve.ce.RangeState.prototype.saveState = function ( old, $surfaceElement, docNode,
 
 	if ( !anchorNodeChanged ) {
 		this.node = old.node;
-		this.$slugWrapper = old.$slugWrapper;
 	} else {
-		$nodeOrSlug = $( selection.anchorNode ).closest(
-			'.ve-ce-branchNode, .ve-ce-branchNode-blockSlugWrapper'
-		);
-		if ( $nodeOrSlug.length === 0 ) {
+		$node = $( selection.anchorNode ).closest( '.ve-ce-branchNode' );
+		if ( $node.length === 0 ) {
 			this.node = null;
-			this.$slugWrapper = null;
-		} else if ( $nodeOrSlug.hasClass( 've-ce-branchNode-blockSlugWrapper' ) ) {
-			this.node = null;
-			this.$slugWrapper = $nodeOrSlug;
 		} else {
-			this.node = $nodeOrSlug.data( 'view' );
-			this.$slugWrapper = null;
+			this.node = $node.data( 'view' );
 			// Check this node belongs to our document
 			if ( this.node && this.node.root !== docNode ) {
 				this.node = null;
@@ -164,19 +138,7 @@ ve.ce.RangeState.prototype.saveState = function ( old, $surfaceElement, docNode,
 		this.hash = ve.ce.getDomHash( this.node.$element[0] );
 	}
 
-	this.leftBlockSlug = (
-		old &&
-		old.$slugWrapper &&
-		!old.$slugWrapper.is( this.$slugWrapper )
-	);
-	this.enteredBlockSlug = (
-		old &&
-		this.$slugWrapper &&
-		this.$slugWrapper.length > 0 &&
-		!this.$slugWrapper.is( old.$slugWrapper )
-	);
-
-	// Only set contentChanged if we're still in the same branch node/block slug
+	// Only set contentChanged if we're still in the same branch node
 	this.contentChanged = (
 		!selectionOnly &&
 		old &&

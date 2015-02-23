@@ -252,7 +252,7 @@ ve.ce.TableNode.prototype.setEditing = function ( isEditing, noSelect ) {
 		cell = this.getCellNodesFromSelection( selection )[0];
 		cell.setEditing( true );
 		if ( !noSelect ) {
-		// TODO: Find content offset/slug offset within cell
+			// TODO: Find content offset within cell
 			this.surface.getModel().setLinearSelection( new ve.Range( cell.getModel().getRange().end - 1 ) );
 		}
 	} else if ( this.editingFragment ) {

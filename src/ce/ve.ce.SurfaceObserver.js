@@ -69,12 +69,6 @@ OO.mixinClass( ve.ce.SurfaceObserver, OO.EventEmitter );
  * @param {ve.Range|null} newRange New range
  */
 
-/**
- * When #poll observes that the cursor was moved into a block slug
- *
- * @event slugEnter
- */
-
 /* Methods */
 
 /**
@@ -162,9 +156,6 @@ ve.ce.SurfaceObserver.prototype.enable = function () {
  *
  * TODO: fixing selection in certain cases, handling selection across multiple nodes in Firefox
  *
- * FIXME: Does not work well (rangeChange is not emitted) when cursor is placed inside a block slug
- * with a mouse.
- *
  * @method
  * @fires contentChange
  * @fires rangeChange
@@ -198,20 +189,15 @@ ve.ce.SurfaceObserver.prototype.pollOnceSelection = function () {
  *
  * TODO: fixing selection in certain cases, handling selection across multiple nodes in Firefox
  *
- * FIXME: Does not work well (rangeChange is not emitted) when cursor is placed inside a block slug
- * with a mouse.
- *
  * @method
  * @private
  * @param {boolean} emitChanges Emit change events if selection changed
  * @param {boolean} selectionOnly Check for selection changes only
  * @fires contentChange
  * @fires rangeChange
- * @fires slugEnter
  */
 ve.ce.SurfaceObserver.prototype.pollOnceInternal = function ( emitChanges, selectionOnly ) {
-	var oldState, newState,
-		observer = this;
+	var oldState, newState;
 
 	if ( !this.domDocument || this.disabled ) {
 		return;
@@ -225,28 +211,7 @@ ve.ce.SurfaceObserver.prototype.pollOnceInternal = function ( emitChanges, selec
 		selectionOnly
 	);
 
-	if ( newState.leftBlockSlug ) {
-		oldState.$slugWrapper
-			.addClass( 've-ce-branchNode-blockSlugWrapper-unfocused' )
-			.removeClass( 've-ce-branceNode-blockSlugWrapper-focused' );
-	}
-
-	if ( newState.enteredBlockSlug ) {
-		newState.$slugWrapper
-			.addClass( 've-ce-branchNode-blockSlugWrapper-focused' )
-			.removeClass( 've-ce-branchNode-blockSlugWrapper-unfocused' );
-	}
-
 	this.rangeState = newState;
-
-	if ( newState.enteredBlockSlug || newState.leftBlockSlug ) {
-		// Emit 'position' on the surface view after the animation completes
-		this.setTimeout( function () {
-			if ( observer.surface ) {
-				observer.surface.emit( 'position' );
-			}
-		}, 200 );
-	}
 
 	if ( !selectionOnly && newState.node !== null && newState.contentChanged && emitChanges ) {
 		this.emit(
@@ -271,10 +236,6 @@ ve.ce.SurfaceObserver.prototype.pollOnceInternal = function ( emitChanges, selec
 			( oldState ? oldState.veRange : null ),
 			newState.veRange
 		);
-	}
-
-	if ( newState.enteredBlockSlug && emitChanges ) {
-		this.emit( 'slugEnter' );
 	}
 };
 
