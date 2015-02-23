@@ -12,7 +12,7 @@
  *
  * @constructor
  * @param {ve.ui.Surface} surface
- * @param {DataTransferItem|ve.ui.DataTransferItem} item
+ * @param {ve.ui.DataTransferItem} item
  */
 ve.ui.HTMLFileTransferHandler = function VeUiHTMLFileTransferHandler() {
 	// Parent constructor
@@ -25,7 +25,7 @@ OO.inheritClass( ve.ui.HTMLFileTransferHandler, ve.ui.FileTransferHandler );
 
 /* Static properties */
 
-ve.ui.HTMLFileTransferHandler.static.name = 'html';
+ve.ui.HTMLFileTransferHandler.static.name = 'htmlFile';
 
 ve.ui.HTMLFileTransferHandler.static.types = [ 'text/html', 'application/xhtml+xml' ];
 
@@ -55,7 +55,7 @@ ve.ui.HTMLFileTransferHandler.prototype.onFileProgress = function ( e ) {
  */
 ve.ui.HTMLFileTransferHandler.prototype.onFileLoad = function () {
 	this.insertableDataDeferred.resolve(
-		this.surface.getModel().getDocument().newFromHtml( this.reader.result )
+		this.surface.getModel().getDocument().newFromHtml( this.reader.result, this.surface.getImportRules() )
 	);
 	this.setProgress( 100 );
 };

@@ -1,18 +1,18 @@
 /*!
- * VisualEditor UserInterface plain text file data transfer handler class.
+ * VisualEditor UserInterface plain text file transfer handler class.
  *
  * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
 /**
- * Plain text data transfer filetransfer handler.
+ * Plain text file transfer handler.
  *
  * @class
  * @extends ve.ui.FileTransferHandler
  *
  * @constructor
  * @param {ve.ui.Surface} surface
- * @param {DataTransferItem|ve.ui.DataTransferItem} item
+ * @param {ve.ui.DataTransferItem} item
  */
 ve.ui.PlainTextFileTransferHandler = function VeUiPlainTextFileTransferHandler() {
 	// Parent constructor
@@ -25,7 +25,7 @@ OO.inheritClass( ve.ui.PlainTextFileTransferHandler, ve.ui.FileTransferHandler )
 
 /* Static properties */
 
-ve.ui.PlainTextFileTransferHandler.static.name = 'plainText';
+ve.ui.PlainTextFileTransferHandler.static.name = 'plainTextFile';
 
 ve.ui.PlainTextFileTransferHandler.static.types = ['text/plain'];
 
@@ -54,18 +54,7 @@ ve.ui.PlainTextFileTransferHandler.prototype.onFileProgress = function ( e ) {
  * @inheritdoc
  */
 ve.ui.PlainTextFileTransferHandler.prototype.onFileLoad = function () {
-	var i, l,
-		data = [],
-		lines = this.reader.result.split( /[\r\n]+/ );
-
-	for ( i = 0, l = lines.length; i < l; i++ ) {
-		if ( lines[i].length ) {
-			data.push( { type: 'paragraph' } );
-			data = data.concat( lines[i].split( '' ) );
-			data.push( { type: '/paragraph' } );
-		}
-	}
-	this.insertableDataDeferred.resolve( data );
+	this.insertableDataDeferred.resolve( this.reader.result );
 	this.setProgress( 100 );
 };
 

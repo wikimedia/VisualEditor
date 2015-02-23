@@ -699,6 +699,9 @@ ve.dm.SurfaceFragment.prototype.annotateContent = function ( method, nameOrAnnot
  * different from what a normal range translation would do: the insertion might occur
  * at a different offset if that is needed to make the document balanced.
  *
+ * If the content is a plain text string containing linebreaks, each line will be wrapped
+ * in a paragraph.
+ *
  * @method
  * @param {string|Array} content Content to insert, can be either a string or array of data
  * @param {boolean} annotate Content should be automatically annotated to match surrounding content
@@ -709,7 +712,7 @@ ve.dm.SurfaceFragment.prototype.insertContent = function ( content, annotate ) {
 		return this;
 	}
 
-	var annotations, tx, offset, newRange;
+	var i, l, lines, annotations, tx, offset, newRange;
 
 	if ( !this.getSelection( true ).isCollapsed() ) {
 		// If we're replacing content, use the annotations selected
@@ -721,7 +724,20 @@ ve.dm.SurfaceFragment.prototype.insertContent = function ( content, annotate ) {
 	offset = this.getSelection( true ).getRange().start;
 	// Auto-convert content to array of plain text characters
 	if ( typeof content === 'string' ) {
-		content = content.split( '' );
+		lines = content.split( /[\r\n]+/ );
+
+		if ( lines.length > 1 ) {
+			content = [];
+			for ( i = 0, l = lines.length; i < l; i++ ) {
+				if ( lines[i].length ) {
+					content.push( { type: 'paragraph' } );
+					content = content.concat( lines[i].split( '' ) );
+					content.push( { type: '/paragraph' } );
+				}
+			}
+		} else {
+			content = content.split( '' );
+		}
 	}
 	if ( content.length ) {
 		if ( annotate && !annotations ) {
