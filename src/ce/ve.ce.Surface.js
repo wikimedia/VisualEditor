@@ -294,7 +294,7 @@ ve.ce.Surface.prototype.destroy = function () {
 
 	// Disconnect DOM events on the document
 	this.$document.off( 'focusin focusout', this.onDocumentFocusInOutHandler );
-	this.$document.off( 'mousedown', this.documentFocusChangeHandler );
+	this.$document.off( 'mousedown', this.debounceFocusChange );
 
 	// Disconnect DOM events on the window
 	this.$window.off( 'resize', this.onWindowResizeHandler );
