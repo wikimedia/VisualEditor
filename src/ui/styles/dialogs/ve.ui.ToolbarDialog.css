@@ -5,14 +5,19 @@
  */
 
 .ve-ui-toolbarDialog {
-	padding: 0.375em; /* 0.3em / 0.8 */
-	padding-top: 0;
 	overflow-y: hidden;
 	max-height: 0;
+	border-top: 1px solid #ddd;
 	-webkit-transition: max-height 250ms;
 	-moz-transition: max-height 250ms;
 	-o-transition: max-height 250ms;
 	transition: max-height 250ms;
+}
+
+.ve-ui-toolbarDialog-padded {
+	padding: 0.375em; /* 0.3em / 0.8 */
+	padding-top: 0;
+	border-top: 0;
 }
 
 .ve-ui-toolbarDialog.oo-ui-window-ready {
@@ -23,9 +28,4 @@
 /* TODO: fix this upstream */
 .ve-ui-toolbar .oo-ui-window-frame {
 	position: relative;
-}
-
-.ve-ui-toolbarDialog-content > .oo-ui-window-body {
-	bottom: auto;
-	box-shadow: none;
 }
