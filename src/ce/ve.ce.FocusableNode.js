@@ -330,6 +330,7 @@ ve.ce.FocusableNode.prototype.setFocused = function ( value ) {
 			this.emit( 'focus' );
 			this.$element.addClass( 've-ce-focusableNode-focused' );
 			this.createHighlights();
+			this.surface.appendHighlights( this.$highlights, this.focused );
 			this.surface.$element.off( '.ve-ce-focusableNode' );
 		} else {
 			this.emit( 'blur' );
