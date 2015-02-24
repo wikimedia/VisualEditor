@@ -679,6 +679,7 @@ ve.ce.Surface.prototype.activate = function () {
 		if ( OO.ui.contains( this.$documentNode[0], this.nativeSelection.anchorNode, true ) ) {
 			// The selection has been placed back in the document, either by the user clicking
 			// or by the closing window updating the model. Poll in case it was the user clicking.
+			this.surfaceObserver.clear();
 			this.surfaceObserver.pollOnce();
 		} else {
 			// Clear focused node so onModelSelect re-selects it if necessary
