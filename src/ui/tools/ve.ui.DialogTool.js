@@ -14,9 +14,9 @@
  * @param {OO.ui.ToolGroup} toolGroup
  * @param {Object} [config] Configuration options
  */
-ve.ui.DialogTool = function VeUiDialogTool( toolGroup, config ) {
+ve.ui.DialogTool = function VeUiDialogTool() {
 	// Parent constructor
-	ve.ui.Tool.call( this, toolGroup, config );
+	ve.ui.DialogTool.super.apply( this, arguments );
 };
 
 /* Inheritance */
@@ -56,14 +56,16 @@ ve.ui.DialogTool.prototype.onUpdateState = function () {
 };
 
 /**
+ * Command help tool.
+ *
  * @class
  * @extends ve.ui.DialogTool
  * @constructor
  * @param {OO.ui.ToolGroup} toolGroup
  * @param {Object} [config] Configuration options
  */
-ve.ui.CommandHelpDialogTool = function VeUiCommandHelpDialogTool( toolGroup, config ) {
-	ve.ui.DialogTool.call( this, toolGroup, config );
+ve.ui.CommandHelpDialogTool = function VeUiCommandHelpDialogTool() {
+	ve.ui.CommandHelpDialogTool.super.apply( this, arguments );
 };
 OO.inheritClass( ve.ui.CommandHelpDialogTool, ve.ui.DialogTool );
 ve.ui.CommandHelpDialogTool.static.name = 'commandHelp';

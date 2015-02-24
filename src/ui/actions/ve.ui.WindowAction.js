@@ -47,6 +47,7 @@ ve.ui.WindowAction.static.methods = [ 'open', 'close', 'toggle' ];
 ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 	var windowType = this.getWindowType( name ),
 		windowManager = windowType && this.getWindowManager( windowType ),
+		autoClosePromise = $.Deferred().resolve().promise(),
 		surface = this.surface,
 		fragment = surface.getModel().getFragment( undefined, true ),
 		dir = surface.getView().getDocument().getDirectionFromSelection( fragment.getSelection() ) ||
@@ -57,28 +58,36 @@ ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 	}
 
 	data = ve.extendObject( { dir: dir }, data, { fragment: fragment } );
-
-	surface.getView().deactivate();
 	if ( windowType === 'toolbar' ) {
 		data = ve.extendObject( data, { surface: surface } );
+		// TODO: Make auto-close a window manager setting
+		autoClosePromise = windowManager.closeWindow( windowManager.getCurrentWindow() );
 	}
 
-	windowManager.getWindow( name ).then( function ( win ) {
-		var opening = windowManager.openWindow( win, data );
+	autoClosePromise.always( function () {
+		windowManager.getWindow( name ).then( function ( win ) {
+			var opening = windowManager.openWindow( win, data );
 
-		surface.getView().emit( 'position' );
+			surface.getView().emit( 'position' );
 
-		opening.then( function ( closing ) {
-			closing.then( function ( closed ) {
-				surface.getView().activate();
-				closed.then( function () {
-					surface.getView().emit( 'position' );
-				} );
-			} );
-		} ).always( function () {
-			if ( action ) {
-				win.executeAction( action );
+			if ( !win.constructor.static.activeSurface ) {
+				surface.getView().deactivate();
 			}
+
+			opening.then( function ( closing ) {
+				closing.then( function ( closed ) {
+					if ( !win.constructor.static.activeSurface ) {
+						surface.getView().activate();
+					}
+					closed.then( function () {
+						surface.getView().emit( 'position' );
+					} );
+				} );
+			} ).always( function () {
+				if ( action ) {
+					win.executeAction( action );
+				}
+			} );
 		} );
 	} );
 

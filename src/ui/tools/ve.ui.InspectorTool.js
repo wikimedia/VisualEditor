@@ -90,28 +90,6 @@ ve.ui.LinkInspectorTool.static.commandName = 'link';
 ve.ui.toolFactory.register( ve.ui.LinkInspectorTool );
 
 /**
- * Insert characters tool.
- *
- * @class
- * @extends ve.ui.InspectorTool
- * @constructor
- * @param {OO.ui.ToolGroup} toolGroup
- * @param {Object} [config] Configuration options
- */
-ve.ui.InsertCharacterInspectorTool = function VeUiInsertCharacterInspectorTool( toolGroup, config ) {
-	ve.ui.InspectorTool.call( this, toolGroup, config );
-};
-OO.inheritClass( ve.ui.InsertCharacterInspectorTool, ve.ui.InspectorTool );
-ve.ui.InsertCharacterInspectorTool.static.name = 'specialcharacter';
-ve.ui.InsertCharacterInspectorTool.static.group = 'insert';
-ve.ui.InsertCharacterInspectorTool.static.icon = 'special-character';
-ve.ui.InsertCharacterInspectorTool.static.title =
-	OO.ui.deferMsg( 'visualeditor-specialcharacter-button-tooltip' );
-ve.ui.InsertCharacterInspectorTool.static.commandName = 'specialcharacter';
-ve.ui.InsertCharacterInspectorTool.static.deactivateOnSelect = true;
-ve.ui.toolFactory.register( ve.ui.InsertCharacterInspectorTool );
-
-/**
  * UserInterface comment tool.
  *
  * @class

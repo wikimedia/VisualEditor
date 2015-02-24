@@ -65,3 +65,27 @@ ve.ui.FindAndReplaceTool.static.autoAddToGroup = false;
 ve.ui.FindAndReplaceTool.static.commandName = 'findAndReplace';
 ve.ui.FindAndReplaceTool.static.activeWindow = 'findAndReplace';
 ve.ui.toolFactory.register( ve.ui.FindAndReplaceTool );
+
+/**
+ * Special character tool.
+ *
+ * @class
+ * @extends ve.ui.ToolbarDialogTool
+ * @constructor
+ * @param {OO.ui.ToolGroup} toolGroup
+ * @param {Object} [config] Configuration options
+ */
+ve.ui.SpecialCharacterDialogTool = function VeUiSpecialCharacterDialogTool() {
+	ve.ui.SpecialCharacterDialogTool.super.apply( this, arguments );
+};
+OO.inheritClass( ve.ui.SpecialCharacterDialogTool, ve.ui.ToolbarDialogTool );
+ve.ui.SpecialCharacterDialogTool.static.name = 'specialCharacter';
+ve.ui.SpecialCharacterDialogTool.static.group = 'dialog';
+ve.ui.SpecialCharacterDialogTool.static.icon = 'special-character';
+ve.ui.SpecialCharacterDialogTool.static.title =
+	OO.ui.deferMsg( 'visualeditor-specialcharacter-button-tooltip' );
+ve.ui.SpecialCharacterDialogTool.static.autoAddToCatchall = false;
+ve.ui.SpecialCharacterDialogTool.static.autoAddToGroup = false;
+ve.ui.SpecialCharacterDialogTool.static.commandName = 'specialCharacter';
+ve.ui.SpecialCharacterDialogTool.static.activeWindow = 'specialCharacter';
+ve.ui.toolFactory.register( ve.ui.SpecialCharacterDialogTool );

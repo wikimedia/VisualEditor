@@ -146,6 +146,10 @@
 				"classes": ["ve.ui.*Factory"]
 			},
 			{
+				"name": "Pages",
+				"classes": ["ve.ui.*Page"]
+			},
+			{
 				"name": "Registries",
 				"classes": ["ve.ui.*Registry"]
 			},

@@ -106,8 +106,8 @@ ve.ui.commandRegistry.register(
 );
 ve.ui.commandRegistry.register(
 	new ve.ui.Command(
-		'specialcharacter', 'window', 'open',
-		{ args: ['specialcharacter'], supportedSelections: ['linear'] }
+		'specialCharacter', 'window', 'toggle',
+		{ args: ['specialCharacter'], supportedSelections: ['linear'] }
 	)
 );
 ve.ui.commandRegistry.register(
