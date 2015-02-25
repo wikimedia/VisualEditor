@@ -8,9 +8,14 @@
 	position: absolute;
 }
 
+.ve-ui-desktopContext .ve-ui-contextItem-description {
+	display: none;
+}
+
 .ve-ui-desktopContext-menu {
 	position: absolute;
 	font-size: 0.8em;
+	width: 300px;
 }
 
 .ve-ui-desktopContext-menu .oo-ui-toolbar-bar {

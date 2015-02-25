@@ -1,0 +1,84 @@
+/*!
+ * VisualEditor UserInterface ContextItem styles.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+.ve-ui-contextItem {
+	/* Disable selection to avoid stealing focus from the surface */
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+
+.ve-ui-contextItem-head {
+	display: table;
+	width: 100%;
+}
+
+.ve-ui-contextItem-title {
+	display: table-cell;
+	width: 1%;
+	text-align: left;
+	padding: 0.5em 1em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.ve-ui-contextItem-icon {
+	display: inline-block;
+	vertical-align: middle;
+	width: 2em;
+	height: 2em;
+	background-position: center center;
+	background-repeat: no-repeat;
+}
+
+.ve-ui-contextItem-label {
+	min-width: 4em;
+	display: inline-block;
+	vertical-align: middle;
+	margin-left: 0.5em;
+}
+
+.ve-ui-contextItem-info {
+	display: table-cell;
+	position: relative;
+	width: 99%;
+}
+
+.ve-ui-contextItem-description {
+	position: absolute;
+	top: 0;
+	right: 0;
+	left: 0;
+	bottom: 0;
+	line-height: 3.6em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	color: #888;
+}
+
+.ve-ui-contextItem-actions {
+	display: table-cell;
+	width: 1%;
+	text-align: right;
+	padding: 0.5em;
+}
+
+.ve-ui-contextItem-editButton {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.ve-ui-contextItem-body {
+	padding: 0 1em 0.5em 1em;
+}
+
+.ve-ui-contextItem + .ve-ui-contextItem {
+	border-top: 1px solid #eee;
+}

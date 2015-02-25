@@ -138,6 +138,10 @@
 				"classes": ["ve.ui.*Command"]
 			},
 			{
+				"name": "Context items",
+				"classes": ["ve.ui.*ContextItem"]
+			},
+			{
 				"name": "Factories",
 				"classes": ["ve.ui.*Factory"]
 			},

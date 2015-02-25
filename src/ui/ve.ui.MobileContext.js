@@ -28,11 +28,8 @@ ve.ui.MobileContext = function VeUiMobileContext( surface, config ) {
 	} );
 
 	// Initialization
-	this.$element
-		.addClass( 've-ui-mobileContext' )
-		.append( this.menu.$element );
-	this.toggle( true );
-	this.menu.$element.addClass( 've-ui-mobileContext-menu' );
+	this.$element.addClass( 've-ui-mobileContext' );
+	this.$group.addClass( 've-ui-mobileContext-menu' );
 	this.inspectors.$element.addClass( 've-ui-mobileContext-inspectors' );
 	this.surface.getGlobalOverlay().$element.append( this.inspectors.$element );
 };
@@ -40,6 +37,10 @@ ve.ui.MobileContext = function VeUiMobileContext( surface, config ) {
 /* Inheritance */
 
 OO.inheritClass( ve.ui.MobileContext, ve.ui.Context );
+
+/* Static Properties */
+
+ve.ui.MobileContext.static.basicRendering = true;
 
 /* Methods */
 
@@ -51,34 +52,4 @@ ve.ui.MobileContext.prototype.createInspectorWindowManager = function () {
 		factory: ve.ui.windowFactory,
 		overlay: this.surface.getGlobalOverlay()
 	} );
-};
-
-/**
- * @inheritdoc
- */
-ve.ui.MobileContext.prototype.createItem = function ( tool ) {
-	return new ve.ui.MobileContextOptionWidget(
-		tool.tool, tool.model, { $: this.$, data: tool.tool.static.name }
-	);
-};
-
-/**
- * @inheritdoc
- */
-ve.ui.MobileContext.prototype.toggle = function ( show ) {
-	var deferred = $.Deferred();
-
-	show = show === undefined ? !this.visible : !!show;
-	if ( show !== this.visible ) {
-		this.visible = show;
-		this.$element
-			.toggleClass( 'oo-ui-element-hidden', !show );
-		setTimeout( function () {
-			deferred.resolve();
-		}, 300 );
-	} else {
-		deferred.resolve();
-	}
-
-	return deferred.promise();
 };

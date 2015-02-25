@@ -317,6 +317,13 @@
 			"src/ui/ve.ui.Overlay.js",
 			"src/ui/ve.ui.Surface.js",
 			"src/ui/ve.ui.Context.js",
+			"src/ui/ve.ui.ModeledFactory.js",
+			"src/ui/ve.ui.ContextItem.js",
+			"src/ui/ve.ui.ContextItemFactory.js",
+			"src/ui/contextitems/ve.ui.CommentContextItem.js",
+			"src/ui/contextitems/ve.ui.LanguageContextItem.js",
+			"src/ui/contextitems/ve.ui.LinkContextItem.js",
+			"src/ui/contextitems/ve.ui.ToolContextItem.js",
 			"src/ui/ve.ui.TableContext.js",
 			"src/ui/ve.ui.Tool.js",
 			"src/ui/ve.ui.Toolbar.js",
@@ -420,7 +427,11 @@
 			"src/ui/styles/inspectors/ve.ui.FragmentInspector.css",
 			"src/ui/styles/inspectors/ve.ui.LinkInspector.css",
 			"src/ui/styles/inspectors/ve.ui.SpecialCharacterInspector.css",
-			"src/ui/styles/ve.ui.Context.css",
+			"src/ui/styles/ve.ui.ContextItem.css",
+			"src/ui/styles/contextitems/ve.ui.CommentContextItem.css",
+			"src/ui/styles/contextitems/ve.ui.LanguageContextItem.css",
+			"src/ui/styles/contextitems/ve.ui.LinkContextItem.css",
+			"src/ui/styles/contextitems/ve.ui.ToolContextItem.css",
 			"src/ui/styles/ve.ui.Overlay.css",
 			"src/ui/styles/ve.ui.Surface.css",
 			"src/ui/styles/widgets/ve.ui.SurfaceWidget.css",
@@ -561,12 +572,11 @@
 		"scripts": [
 			"src/ui/ve.ui.MobileSurface.js",
 			"src/ui/ve.ui.MobileContext.js",
-			"src/ui/windowmanagers/ve.ui.MobileWindowManager.js",
-			"src/ui/widgets/ve.ui.MobileContextOptionWidget.js"
+			"src/ui/windowmanagers/ve.ui.MobileWindowManager.js"
 		],
 		"styles": [
-			"src/ui/styles/ve.ui.MobileSurface.css",
-			"src/ui/styles/widgets/ve.ui.MobileContextOptionWidget.css"
+			"src/ui/styles/ve.ui.MobileContext.css",
+			"src/ui/styles/ve.ui.MobileSurface.css"
 		],
 		"dependencies": [
 			"visualEditor.core.build"

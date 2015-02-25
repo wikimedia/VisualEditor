@@ -10,6 +10,7 @@
  * @class
  * @abstract
  * @extends OO.ui.Element
+ * @mixins OO.ui.GroupElement
  *
  * @constructor
  * @param {ve.ui.Surface} surface
@@ -17,14 +18,17 @@
  */
 ve.ui.Context = function VeUiContext( surface, config ) {
 	// Parent constructor
-	OO.ui.Element.call( this, config );
+	ve.ui.Context.super.call( this, config );
+
+	// Mixin constructors
+	OO.ui.GroupElement.call( this, config );
 
 	// Properties
 	this.surface = surface;
 	this.visible = false;
+	this.choosing = false;
 	this.inspector = null;
 	this.inspectors = this.createInspectorWindowManager();
-	this.menu = new ve.ui.ContextSelectWidget( { $: this.$ } );
 	this.lastSelectedNode = null;
 	this.afterContextChangeTimeout = null;
 	this.afterContextChangeHandler = this.afterContextChange.bind( this );
@@ -33,22 +37,38 @@ ve.ui.Context = function VeUiContext( surface, config ) {
 	// Events
 	this.surface.getModel().connect( this, { contextChange: 'onContextChange' } );
 	this.inspectors.connect( this, { opening: 'onInspectorOpening' } );
-	this.menu.connect( this, { choose: 'onContextItemChoose' } );
 
 	// Initialization
 	// Hide element using a class, not this.toggle, as child implementations
 	// of toggle may require the instance to be fully constructed before running.
+	this.$group.addClass( 've-ui-context-menu' );
 	this.$element
-		.addClass( 've-ui-context oo-ui-element-hidden' );
-	this.menu.toggle( false );
+		.addClass( 've-ui-context oo-ui-element-hidden' )
+		.append( this.$group );
 	this.inspectors.$element.addClass( 've-ui-context-inspectors' );
 };
 
 /* Inheritance */
 
 OO.inheritClass( ve.ui.Context, OO.ui.Element );
+OO.mixinClass( ve.ui.Context, OO.ui.GroupElement );
+
+/* Static Property */
+
+/**
+ * Instruct items to provide only a basic rendering.
+ *
+ * @static
+ * @inheritable
+ * @property {boolean}
+ */
+ve.ui.Context.static.basicRendering = false;
 
 /* Methods */
+
+ve.ui.Context.prototype.shouldUseBasicRendering = function () {
+	return this.constructor.static.basicRendering;
+};
 
 /**
  * Handle context change event.
@@ -75,8 +95,8 @@ ve.ui.Context.prototype.onContextChange = function () {
 			this.afterContextChangeTimeout = setTimeout( this.afterContextChangeHandler );
 		}
 	}
-	// Purge available tools cache
-	this.availableTools = null;
+	// Purge related items cache
+	this.relatedSources = null;
 };
 
 /**
@@ -89,17 +109,21 @@ ve.ui.Context.prototype.afterContextChange = function () {
 	this.afterContextChangeTimeout = null;
 
 	if ( this.isVisible() ) {
-		if ( this.menu.isVisible() ) {
+		if ( !this.isEmpty() ) {
 			if ( this.isInspectable() ) {
 				// Change state: menu -> menu
-				this.populateMenu();
+				this.teardownMenuItems();
+				this.setupMenuItems();
 				this.updateDimensionsDebounced();
 			} else {
 				// Change state: menu -> closed
-				this.menu.toggle( false );
+				this.toggleMenu( false );
 				this.toggle( false );
 			}
-		} else if ( this.inspector && ( !selectedNode || ( selectedNode !== this.lastSelectedNode ) ) ) {
+		} else if (
+			this.inspector &&
+			( !selectedNode || ( selectedNode !== this.lastSelectedNode ) )
+		) {
 			// Change state: inspector -> (closed|menu)
 			// Unless there is a selectedNode that hasn't changed (e.g. your inspector is editing a node)
 			this.inspector.close();
@@ -107,8 +131,7 @@ ve.ui.Context.prototype.afterContextChange = function () {
 	} else {
 		if ( this.isInspectable() ) {
 			// Change state: closed -> menu
-			this.menu.toggle( true );
-			this.populateMenu();
+			this.toggleMenu( true );
 			this.toggle( true );
 		}
 	}
@@ -139,9 +162,9 @@ ve.ui.Context.prototype.onInspectorOpening = function ( win, opening ) {
 	opening
 		.progress( function ( data ) {
 			if ( data.state === 'setup' ) {
-				if ( context.menu.isVisible() ) {
+				if ( !context.isEmpty() ) {
 					// Change state: menu -> inspector
-					context.menu.toggle( false );
+					context.toggleMenu( false );
 				} else if ( !context.isVisible() ) {
 					// Change state: closed -> inspector
 					context.toggle( true );
@@ -152,7 +175,7 @@ ve.ui.Context.prototype.onInspectorOpening = function ( win, opening ) {
 		.always( function ( opened ) {
 			opened.always( function ( closed ) {
 				closed.always( function () {
-					var inspectable = !!context.getAvailableTools().length;
+					var inspectable = context.isInspectable();
 
 					context.inspector = null;
 
@@ -161,8 +184,7 @@ ve.ui.Context.prototype.onInspectorOpening = function ( win, opening ) {
 
 					if ( inspectable ) {
 						// Change state: inspector -> menu
-						context.menu.toggle( true );
-						context.populateMenu();
+						context.toggleMenu( true );
 						context.updateDimensionsDebounced();
 					} else {
 						// Change state: inspector -> closed
@@ -176,17 +198,6 @@ ve.ui.Context.prototype.onInspectorOpening = function ( win, opening ) {
 				} );
 			} );
 		} );
-};
-
-/**
- * Handle context item choose events.
- *
- * @param {ve.ui.ContextOptionWidget} item Chosen item
- */
-ve.ui.Context.prototype.onContextItemChoose = function ( item ) {
-	if ( item ) {
-		item.getCommand().execute( this.surface );
-	}
 };
 
 /**
@@ -204,7 +215,7 @@ ve.ui.Context.prototype.isVisible = function () {
  * @return {boolean} Content is inspectable
  */
 ve.ui.Context.prototype.isInspectable = function () {
-	return !!this.getAvailableTools().length;
+	return !!this.getRelatedSources().length;
 };
 
 /**
@@ -212,35 +223,63 @@ ve.ui.Context.prototype.isInspectable = function () {
  *
  * @return {boolean} Content is inspectable
  */
-ve.ui.Context.prototype.hasInspector = function () {
-	var i, availableTools = this.getAvailableTools();
-	for ( i = availableTools.length - 1; i >= 0; i-- ) {
-		if ( availableTools[i].tool.prototype instanceof ve.ui.InspectorTool ) {
-			return true;
+ve.ui.Context.prototype.isEmbeddable = function () {
+	var i, len,
+		sources = this.getRelatedSources();
+
+	for ( i = 0, len = sources.length; i < len; i++ ) {
+		if ( !sources[i].embedable ) {
+			return false;
 		}
 	}
-	return false;
+
+	return true;
 };
 
 /**
- * Get available tools.
+ * Get related item sources.
  *
  * Result is cached, and cleared when the model or selection changes.
  *
- * @returns {Object[]} List of objects containing `tool` and `model` properties, representing each
- *   compatible tool and the node or annotation it is compatible with
+ * @returns {Object[]} List of objects containing `type`, `name` and `model` properties,
+ *   representing each compatible type (either `item` or `tool`), symbolic name of the item or tool
+ *   and the model the item or tool is compatible with
  */
-ve.ui.Context.prototype.getAvailableTools = function () {
-	if ( !this.availableTools ) {
+ve.ui.Context.prototype.getRelatedSources = function () {
+	var i, len, toolClass, items, tools, models,
+		selectedModels = this.surface.getModel().getFragment().getSelectedModels();
+
+	if ( !this.relatedSources ) {
+		this.relatedSources = [];
 		if ( this.surface.getModel().getSelection() instanceof ve.dm.LinearSelection ) {
-			this.availableTools = ve.ui.toolFactory.getToolsForFragment(
-				this.surface.getModel().getFragment()
-			);
-		} else {
-			this.availableTools = [];
+			models = [];
+			items = ve.ui.contextItemFactory.getRelatedItems( selectedModels );
+			for ( i = 0, len = items.length; i < len; i++ ) {
+				models.push( items[i].model );
+				this.relatedSources.push( {
+					type: 'item',
+					embedable: ve.ui.contextItemFactory.isEmbeddable( items[i].name ),
+					name: items[i].name,
+					model: items[i].model
+				} );
+			}
+			tools = ve.ui.toolFactory.getRelatedItems( selectedModels );
+			for ( i = 0, len = tools.length; i < len; i++ ) {
+				if ( models.indexOf( tools[i].model ) === -1 ) {
+					toolClass = ve.ui.toolFactory.lookup( tools[i].name );
+					this.relatedSources.push( {
+						type: 'tool',
+						embedable: !toolClass ||
+							!( toolClass.prototype instanceof ve.ui.InspectorTool ),
+						name: tools[i].name,
+						model: tools[i].model
+					} );
+				}
+			}
 		}
 	}
-	return this.availableTools;
+
+	return this.relatedSources;
 };
 
 /**
@@ -262,15 +301,6 @@ ve.ui.Context.prototype.getInspectors = function () {
 };
 
 /**
- * Get context menu.
- *
- * @return {ve.ui.ContextSelectWidget}
- */
-ve.ui.Context.prototype.getMenu = function () {
-	return this.menu;
-};
-
-/**
  * Create a inspector window manager.
  *
  * @method
@@ -283,34 +313,72 @@ ve.ui.Context.prototype.createInspectorWindowManager = function () {
 };
 
 /**
- * Create a context item widget
+ * Toggle the menu.
  *
- * @param {Object} tool Object containing tool and model properties.
- * @return {ve.ui.ContextOptionWidget} Context item widget
+ * @param {boolean} [show] Show the menu, omit to toggle
+ * @chainable
  */
-ve.ui.Context.prototype.createItem = function ( tool ) {
-	return new ve.ui.ContextOptionWidget(
-		tool.tool, tool.model, { $: this.$, data: tool.tool.static.name }
-	);
+ve.ui.Context.prototype.toggleMenu = function ( show ) {
+	show = show === undefined ? !this.choosing : !!show;
+
+	if ( show !== this.choosing ) {
+		this.choosing = show;
+		this.$element.toggleClass( 've-ui-context-choosing', show );
+		if ( show ) {
+			this.setupMenuItems();
+		} else {
+			this.teardownMenuItems();
+		}
+	}
+
+	return this;
 };
 
 /**
- * Update the contents of the menu.
+ * Setup menu items.
  *
+ * @protected
  * @chainable
  */
-ve.ui.Context.prototype.populateMenu = function () {
-	var i, len,
-		items = [],
-		tools = this.getAvailableTools();
+ve.ui.Context.prototype.setupMenuItems = function () {
+	var i, len, source,
+		sources = this.getRelatedSources(),
+		items = [];
 
-	this.menu.clearItems();
-	if ( tools.length ) {
-		for ( i = 0, len = tools.length; i < len; i++ ) {
-			items.push( this.createItem( tools[i] ) );
+	for ( i = 0, len = sources.length; i < len; i++ ) {
+		source = sources[i];
+		if ( source.type === 'item' ) {
+			items.push( ve.ui.contextItemFactory.create(
+				sources[i].name, this, sources[i].model, { $: this.$ }
+			) );
+		} else if ( source.type === 'tool' ) {
+			items.push( new ve.ui.ToolContextItem(
+				this, sources[i].model, ve.ui.toolFactory.lookup( sources[i].name ), { $: this.$ }
+			) );
 		}
-		this.menu.addItems( items );
 	}
+
+	this.addItems( items );
+	for ( i = 0, len = items.length; i < len; i++ ) {
+		items[i].setup();
+	}
+
+	return this;
+};
+
+/**
+ * Teardown menu items.
+ *
+ * @protected
+ * @chainable
+ */
+ve.ui.Context.prototype.teardownMenuItems = function () {
+	var i, len;
+
+	for ( i = 0, len = this.items.length; i < len; i++ ) {
+		this.items[i].teardown();
+	}
+	this.clearItems();
 
 	return this;
 };
@@ -347,7 +415,6 @@ ve.ui.Context.prototype.destroy = function () {
 	// Disconnect events
 	this.surface.getModel().disconnect( this );
 	this.inspectors.disconnect( this );
-	this.menu.disconnect( this );
 
 	// Destroy inspectors WindowManager
 	this.inspectors.destroy();

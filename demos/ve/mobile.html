@@ -50,7 +50,11 @@
 		<link rel=stylesheet href="../../src/ui/styles/inspectors/ve.ui.FragmentInspector.css" class="stylesheet-ve">
 		<link rel=stylesheet href="../../src/ui/styles/inspectors/ve.ui.LinkInspector.css" class="stylesheet-ve">
 		<link rel=stylesheet href="../../src/ui/styles/inspectors/ve.ui.SpecialCharacterInspector.css" class="stylesheet-ve">
-		<link rel=stylesheet href="../../src/ui/styles/ve.ui.Context.css" class="stylesheet-ve">
+		<link rel=stylesheet href="../../src/ui/styles/ve.ui.ContextItem.css" class="stylesheet-ve">
+		<link rel=stylesheet href="../../src/ui/styles/contextitems/ve.ui.CommentContextItem.css" class="stylesheet-ve">
+		<link rel=stylesheet href="../../src/ui/styles/contextitems/ve.ui.LanguageContextItem.css" class="stylesheet-ve">
+		<link rel=stylesheet href="../../src/ui/styles/contextitems/ve.ui.LinkContextItem.css" class="stylesheet-ve">
+		<link rel=stylesheet href="../../src/ui/styles/contextitems/ve.ui.ToolContextItem.css" class="stylesheet-ve">
 		<link rel=stylesheet href="../../src/ui/styles/ve.ui.Overlay.css" class="stylesheet-ve">
 		<link rel=stylesheet href="../../src/ui/styles/ve.ui.Surface.css" class="stylesheet-ve">
 		<link rel=stylesheet href="../../src/ui/styles/widgets/ve.ui.SurfaceWidget.css" class="stylesheet-ve">
@@ -59,8 +63,8 @@
 		<link rel=stylesheet href="../../src/ui/styles/ve.ui.Icons.css" class="stylesheet-ve">
 
 		<!-- visualEditor.mobile.build -->
+		<link rel=stylesheet href="../../src/ui/styles/ve.ui.MobileContext.css">
 		<link rel=stylesheet href="../../src/ui/styles/ve.ui.MobileSurface.css">
-		<link rel=stylesheet href="../../src/ui/styles/widgets/ve.ui.MobileContextOptionWidget.css">
 
 		<!-- visualEditor.theme.mediawiki -->
 		<link rel=stylesheet href="../../src/themes/mediawiki/dialogs.css">
@@ -308,6 +312,13 @@
 		<script src="../../src/ui/ve.ui.Overlay.js"></script>
 		<script src="../../src/ui/ve.ui.Surface.js"></script>
 		<script src="../../src/ui/ve.ui.Context.js"></script>
+		<script src="../../src/ui/ve.ui.ModeledFactory.js"></script>
+		<script src="../../src/ui/ve.ui.ContextItem.js"></script>
+		<script src="../../src/ui/ve.ui.ContextItemFactory.js"></script>
+		<script src="../../src/ui/contextitems/ve.ui.CommentContextItem.js"></script>
+		<script src="../../src/ui/contextitems/ve.ui.LanguageContextItem.js"></script>
+		<script src="../../src/ui/contextitems/ve.ui.LinkContextItem.js"></script>
+		<script src="../../src/ui/contextitems/ve.ui.ToolContextItem.js"></script>
 		<script src="../../src/ui/ve.ui.TableContext.js"></script>
 		<script src="../../src/ui/ve.ui.Tool.js"></script>
 		<script src="../../src/ui/ve.ui.Toolbar.js"></script>
@@ -387,7 +398,6 @@
 		<script src="../../src/ui/ve.ui.MobileSurface.js"></script>
 		<script src="../../src/ui/ve.ui.MobileContext.js"></script>
 		<script src="../../src/ui/windowmanagers/ve.ui.MobileWindowManager.js"></script>
-		<script src="../../src/ui/widgets/ve.ui.MobileContextOptionWidget.js"></script>
 
 		<!-- visualEditor.standalone.demo -->
 		<script src="../../demos/ve/demo.js"></script>

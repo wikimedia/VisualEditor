@@ -45,16 +45,9 @@ ve.ui.DesktopContext = function VeUiDesktopContext( surface, config ) {
 	this.$element
 		.addClass( 've-ui-desktopContext' )
 		.append( this.popup.$element );
-	this.menu.$element.addClass( 've-ui-desktopContext-menu' );
+	this.$group.addClass( 've-ui-desktopContext-menu' );
 	this.inspectors.$element.addClass( 've-ui-desktopContext-inspectors' );
-	this.popup.$body.append( this.menu.$element, this.inspectors.$element );
-
-	// HACK: hide the popup with visibility: hidden; rather than display: none;, because
-	// the popup contains inspector iframes, and applying display: none; to those causes them to
-	// not load in Firefox
-	this.popup.$element
-		.css( { visibility: 'hidden' } )
-		.removeClass( 'oo-ui-element-hidden' );
+	this.popup.$body.append( this.$group, this.inspectors.$element );
 };
 
 /* Inheritance */
@@ -81,11 +74,10 @@ ve.ui.DesktopContext.prototype.afterContextChange = function () {
  */
 ve.ui.DesktopContext.prototype.onSuppress = function () {
 	this.suppressed = true;
-
 	if ( this.isVisible() ) {
-		if ( this.menu.isVisible() ) {
+		if ( !this.isEmpty() ) {
 			// Change state: menu -> closed
-			this.menu.toggle( false );
+			this.toggleMenu( false );
 			this.toggle( false );
 		} else if ( this.inspector ) {
 			// Change state: inspector -> closed
@@ -98,14 +90,11 @@ ve.ui.DesktopContext.prototype.onSuppress = function () {
  * Handle context unsuppression event.
  */
 ve.ui.DesktopContext.prototype.onUnsuppress = function () {
-	var inspectable = !!this.getAvailableTools().length;
-
 	this.suppressed = false;
 
-	if ( inspectable ) {
+	if ( this.isInspectable() ) {
 		// Change state: closed -> menu
-		this.menu.toggle( true );
-		this.populateMenu();
+		this.toggleMenu( true );
 		this.toggle( true );
 	}
 };
@@ -166,19 +155,13 @@ ve.ui.DesktopContext.prototype.toggle = function ( show ) {
 		return $.Deferred().resolve().promise();
 	}
 
-	this.visible = show;
 	this.transitioning = $.Deferred();
 	promise = this.transitioning.promise();
 
 	this.popup.toggle( show );
-	// HACK: make the context and popup visibility: hidden; instead of display: none; because
-	// they contain inspector iframes, and applying display: none; to those causes them to
-	// not load in Firefox
-	this.$element.add( this.popup.$element )
-		.removeClass( 'oo-ui-element-hidden' )
-		.css( {
-			visibility: show ? 'visible' : 'hidden'
-		} );
+
+	// Parent method
+	ve.ui.DesktopContext.super.prototype.toggle.call( this, show );
 
 	this.transitioning.resolve();
 	this.transitioning = null;
@@ -216,9 +199,9 @@ ve.ui.DesktopContext.prototype.updateDimensions = function () {
 		this.popup.toggleAnchor( true );
 		this.popup.align = 'center';
 	} else if ( focusedNode && !focusedNode.isContent() ) {
-		embeddable = !this.hasInspector() &&
-			boundingRect.height > this.menu.$element.outerHeight() + 5 &&
-			boundingRect.width > this.menu.$element.outerWidth() + 10;
+		embeddable = this.isEmbeddable() &&
+			boundingRect.height > this.$group.outerHeight() + 5 &&
+			boundingRect.width > this.$group.outerWidth() + 10;
 		this.popup.toggleAnchor( !embeddable );
 		if ( embeddable ) {
 			// Embedded context position depends on directionality
@@ -278,7 +261,7 @@ ve.ui.DesktopContext.prototype.updateDimensions = function () {
  * Resize the popup to match the size of its contents (menu or inspector).
  */
 ve.ui.DesktopContext.prototype.setPopupSize = function () {
-	var $container = this.inspector ? this.inspector.$frame : this.menu.$element;
+	var $container = this.inspector ? this.inspector.$frame : this.$group;
 
 	// PopupWidget normally is clippable, suppress that to be able to resize and scroll it into view.
 	// Needs to be repeated before every call, as it resets itself when the popup is shown or hidden.
