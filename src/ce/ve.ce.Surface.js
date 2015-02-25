@@ -2395,6 +2395,7 @@ ve.ce.Surface.prototype.onSurfaceObserverContentChange = function ( node, previo
 		nodeOffset = node.getModel().getOffset(),
 		previousData = previous.text.split( '' ),
 		nextData = next.text.split( '' ),
+		modelData = this.model.getDocument().data,
 		lengthDiff = next.text.length - previous.text.length,
 		nextDataString = new ve.dm.DataString( nextData ),
 		surface = this;
@@ -2424,8 +2425,8 @@ ve.ce.Surface.prototype.onSurfaceObserverContentChange = function ( node, previo
 			return;
 		}
 
-		annotationsLeft = surface.getModel().getDocument().data.getAnnotationsFromOffset( left - 1 );
-		annotationsRight = surface.getModel().getDocument().data.getAnnotationsFromOffset( right );
+		annotationsLeft = modelData.getAnnotationsFromOffset( left - 1 );
+		annotationsRight = modelData.getAnnotationsFromOffset( right );
 
 		for ( i = 0, length = annotations.getLength(); i < length; i++ ) {
 			annotation = annotations.get( i );
@@ -2519,14 +2520,20 @@ ve.ce.Surface.prototype.onSurfaceObserverContentChange = function ( node, previo
 		}
 	}
 
-	// Complex change
+	// Complex change:
+	// 1. Count unchanged characters from left and right;
+	// 2. Assume that the minimal changed region indicates the replacement made by the user;
+	// 3. Hence guess how to map annotations.
+	// N.B. this logic can go wrong; e.g. this code will see slice->slide and
+	// assume that the user changed 'c' to 'd', but the user could instead have changed 'ic'
+	// to 'id', which would map annotations differently.
 
 	len = Math.min( previousData.length, nextData.length );
-	// Count same characters from left
+
 	while ( fromLeft < len && previousData[fromLeft] === nextData[fromLeft] ) {
 		++fromLeft;
 	}
-	// Count same characters from right
+
 	while (
 		fromRight < len - fromLeft &&
 		previousData[previousData.length - 1 - fromRight] ===
@@ -2543,10 +2550,15 @@ ve.ce.Surface.prototype.onSurfaceObserverContentChange = function ( node, previo
 	if ( node.unicornAnnotations ) {
 		// This CBN is unicorned. Use the stored annotations.
 		annotations = node.unicornAnnotations;
+	} else if ( fromLeft + fromRight < previousData.length ) {
+		// Content is being removed, so guess that we want to use the annotations from the
+		// start of the removed content.
+		annotations = modelData.getAnnotationsFromOffset( replacementRange.start );
 	} else {
-		// Guess that we want to use the annotations from the first changed character
-		// This could be wrong, e.g. slice->slide could happen by changing 'ic' to 'id'
-		annotations = this.model.getDocument().data.getAnnotationsFromOffset( replacementRange.start );
+		// No content is being removed, so guess that we want to use the annotations from
+		// just before the insertion (which means none at all if the insertion is at the
+		// start of a CBN).
+		annotations = modelData.getAnnotationsFromOffset( replacementRange.start - 1 );
 	}
 	if ( annotations.getLength() ) {
 		filterForWordbreak( annotations, replacementRange );
