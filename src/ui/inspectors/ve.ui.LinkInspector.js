@@ -35,7 +35,8 @@ ve.ui.LinkInspector.static.modelClasses = [ ve.dm.LinkAnnotation ];
 ve.ui.LinkInspector.static.actions = ve.ui.LinkInspector.super.static.actions.concat( [
 	{
 		action: 'open',
-		label: OO.ui.deferMsg( 'visualeditor-linkinspector-open' )
+		label: OO.ui.deferMsg( 'visualeditor-linkinspector-open' ),
+		modes: [ 'edit', 'insert' ]
 	}
 ] );
 

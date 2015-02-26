@@ -37,24 +37,12 @@ ve.ui.CommentInspector.static.size = 'large';
 
 ve.ui.CommentInspector.static.actions = [
 	{
-		action: 'done',
-		label: OO.ui.deferMsg( 'visualeditor-dialog-action-done' ),
-		flags: [ 'progressive', 'primary' ],
-		modes: 'edit'
-	},
-	{
-		action: 'insert',
-		label: OO.ui.deferMsg( 'visualeditor-dialog-action-insert' ),
-		flags: [ 'constructive', 'primary' ],
-		modes: 'insert'
-	},
-	{
 		action: 'remove',
 		label: OO.ui.deferMsg( 'visualeditor-inspector-remove-tooltip' ),
 		flags: 'destructive',
 		modes: 'edit'
 	}
-];
+].concat( ve.ui.FragmentInspector.static.actions );
 
 /**
  * Handle frame ready events.
@@ -115,10 +103,8 @@ ve.ui.CommentInspector.prototype.getSetupProcess = function ( data ) {
 			this.commentNode = this.getSelectedNode();
 			if ( this.commentNode ) {
 				this.textWidget.setValueAndWhitespace( this.commentNode.getAttribute( 'text' ) || '' );
-				this.actions.setMode( 'edit' );
 			} else {
 				this.textWidget.setWhitespace( [ ' ', ' ' ] );
-				this.actions.setMode( 'insert' );
 				this.getFragment().insertContent( [
 					{
 						type: 'comment',

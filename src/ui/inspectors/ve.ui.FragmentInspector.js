@@ -31,7 +31,14 @@ ve.ui.FragmentInspector.static.actions = ve.ui.FragmentInspector.super.static.ac
 	{
 		action: 'done',
 		label: OO.ui.deferMsg( 'visualeditor-dialog-action-done' ),
-		flags: [ 'progressive', 'primary' ]
+		flags: [ 'progressive', 'primary' ],
+		modes: 'edit'
+	},
+	{
+		action: 'done',
+		label: OO.ui.deferMsg( 'visualeditor-dialog-action-insert' ),
+		flags: [ 'constructive', 'primary' ],
+		modes: 'insert'
 	}
 ] );
 
@@ -105,7 +112,27 @@ ve.ui.FragmentInspector.prototype.getSetupProcess = function ( data ) {
 				throw new Error( 'Cannot open inspector: opening data must contain a fragment' );
 			}
 			this.fragment = data.fragment;
+		}, this )
+		.next( function () {
+			this.actions.setMode( this.getMode() );
 		}, this );
+};
+
+/**
+ * Get a symbolic mode name.
+ *
+ * If the fragment being inspected selects at least one model the mode will be `edit`, otherwise
+ *   the mode will be `insert`.
+ *
+ * @return {string} Symbolic mode name
+ */
+ve.ui.FragmentInspector.prototype.getMode = function () {
+	if ( this.fragment ) {
+		// TODO: Filter out incompatible models before checking the length, in practice this works
+		// but theoretically you could have models selected that are not being inspected
+		return this.fragment.getSelectedModels().length ? 'edit' : 'insert';
+	}
+	return '';
 };
 
 /**

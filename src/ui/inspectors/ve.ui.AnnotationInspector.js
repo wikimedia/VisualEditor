@@ -42,7 +42,8 @@ ve.ui.AnnotationInspector.static.actions = [
 	{
 		action: 'remove',
 		label: OO.ui.deferMsg( 'visualeditor-inspector-remove-tooltip' ),
-		flags: 'destructive'
+		flags: 'destructive',
+		modes: 'edit'
 	}
 ].concat( ve.ui.FragmentInspector.static.actions );
 
@@ -208,6 +209,10 @@ ve.ui.AnnotationInspector.prototype.getSetupProcess = function ( data ) {
 				// to forcefully apply it to the rest of the fragment later
 				this.initialAnnotationIsCovering = true;
 			}
+
+			// Set the mode - this was done already in FragmentInspector but now that we may have
+			// changed what the fragment is covering we need to run it again
+			this.actions.setMode( this.getMode() );
 		}, this );
 };
 
@@ -234,6 +239,9 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 
 			if ( !remove ) {
 				if ( this.initialSelection.isCollapsed() ) {
+					if ( data.action !== 'done' ) {
+						return;
+					}
 					insertText = true;
 				}
 				if ( annotation ) {
