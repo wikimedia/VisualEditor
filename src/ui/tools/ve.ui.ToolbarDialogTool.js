@@ -1,0 +1,67 @@
+/*!
+ * VisualEditor UserInterface ToolbarDialogTool class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * UserInterface toolbar dialog tool.
+ *
+ * @abstract
+ * @class
+ * @extends ve.ui.DialogTool
+ * @constructor
+ * @param {OO.ui.ToolGroup} toolGroup
+ * @param {Object} [config] Configuration options
+ */
+ve.ui.ToolbarDialogTool = function VeUiToolbarDialogTool() {
+	// Parent constructor
+	ve.ui.ToolbarDialogTool.super.apply( this, arguments );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.ui.ToolbarDialogTool, ve.ui.DialogTool );
+
+/* Static Properties */
+
+ve.ui.ToolbarDialogTool.static.deactivateOnSelect = false;
+
+ve.ui.ToolbarDialogTool.static.activeWindow = null;
+
+/* Methods */
+
+/**
+ * @inheritdoc
+ */
+ve.ui.ToolbarDialogTool.prototype.onUpdateState = function () {
+	// Parent method
+	ve.ui.ToolbarDialogTool.super.prototype.onUpdateState.apply( this, arguments );
+	// Never show the tool as active
+	var currentWindow = this.toolbar.getSurface().getToolbarDialogs().currentWindow;
+	this.setActive( currentWindow && currentWindow.constructor.static.name === this.constructor.static.activeWindow );
+};
+
+/**
+ * Find and replace tool.
+ *
+ * @class
+ * @extends ve.ui.ToolbarDialogTool
+ * @constructor
+ * @param {OO.ui.ToolGroup} toolGroup
+ * @param {Object} [config] Configuration options
+ */
+ve.ui.FindAndReplaceTool = function VeUiFindAndReplaceTool() {
+	ve.ui.FindAndReplaceTool.super.apply( this, arguments );
+};
+OO.inheritClass( ve.ui.FindAndReplaceTool, ve.ui.ToolbarDialogTool );
+ve.ui.FindAndReplaceTool.static.name = 'findAndReplace';
+ve.ui.FindAndReplaceTool.static.group = 'dialog';
+ve.ui.FindAndReplaceTool.static.icon = 'find';
+ve.ui.FindAndReplaceTool.static.title =
+	OO.ui.deferMsg( 'visualeditor-find-and-replace-title' );
+ve.ui.FindAndReplaceTool.static.autoAddToCatchall = false;
+ve.ui.FindAndReplaceTool.static.autoAddToGroup = false;
+ve.ui.FindAndReplaceTool.static.commandName = 'findAndReplace';
+ve.ui.FindAndReplaceTool.static.activeWindow = 'findAndReplace';
+ve.ui.toolFactory.register( ve.ui.FindAndReplaceTool );
