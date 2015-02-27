@@ -22,6 +22,7 @@ ve.ui.DesktopContext = function VeUiDesktopContext( surface, config ) {
 	this.popup = new OO.ui.PopupWidget( { $: this.$, $container: this.surface.$element } );
 	this.transitioning = null;
 	this.suppressed = false;
+	this.lastClosedSelection = null;
 	this.onWindowResizeHandler = this.onPosition.bind( this );
 	this.$window = this.$( this.getElementWindow() );
 
@@ -184,11 +185,15 @@ ve.ui.DesktopContext.prototype.toggle = function ( show ) {
  * @inheritdoc
  */
 ve.ui.DesktopContext.prototype.updateDimensions = function () {
-	var startAndEndRects, position, embeddable, middle,
+	var startAndEndRects, position, embeddable, middle, boundingRect,
 		rtl = this.surface.getModel().getDocument().getDir() === 'rtl',
 		surface = this.surface.getView(),
-		focusedNode = surface.getFocusedNode(),
-		boundingRect = surface.getSelectionBoundingRect();
+		focusedNode = surface.getFocusedNode();
+
+	if ( !this.inspector || ( !this.inspector.isOpening() && !this.inspector.isOpened() ) ) {
+		this.lastClosedSelection = surface.getModel().getSelection().clone();
+	}
+	boundingRect = surface.getSelectionBoundingRect( this.lastClosedSelection );
 
 	if ( !boundingRect ) {
 		// If !boundingRect, the surface apparently isn't selected.
@@ -221,7 +226,7 @@ ve.ui.DesktopContext.prototype.updateDimensions = function () {
 		}
 	} else {
 		// The selection is text or an inline focused node
-		startAndEndRects = surface.getSelectionStartAndEndRects();
+		startAndEndRects = surface.getSelectionStartAndEndRects( this.lastClosedSelection );
 		if ( startAndEndRects ) {
 			middle = ( boundingRect.left + boundingRect.right ) / 2;
 			if (
