@@ -85,7 +85,7 @@ ve.ui.MobileSurface.prototype.createDialogWindowManager = function () {
 /**
  * Show or hide global overlay.
  *
- * @param {boolean} show If true, show global overlay, otherwise hide it.
+ * @param {boolean} show Show the global overlay.
  */
 ve.ui.MobileSurface.prototype.toggleGlobalOverlay = function ( show ) {
 	var $body = $( 'body' );
@@ -108,6 +108,10 @@ ve.ui.MobileSurface.prototype.toggleGlobalOverlay = function ( show ) {
  * @inheritdoc
  */
 ve.ui.MobileSurface.prototype.destroy = function () {
+	// Disconnect events
+	this.dialogs.disconnect( this );
+	this.context.getInspectors().disconnect( this );
+
 	// Parent method
 	ve.ui.MobileSurface.super.prototype.destroy.call( this );
 

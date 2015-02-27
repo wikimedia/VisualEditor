@@ -103,9 +103,6 @@ ve.ui.Surface.prototype.destroy = function () {
 	// Stop periodic history tracking in model
 	this.model.stopHistoryTracking();
 
-	// Disconnect events
-	this.dialogs.disconnect( this );
-
 	// Destroy the ce.Surface, the ui.Context and window managers
 	this.view.destroy();
 	this.context.destroy();
