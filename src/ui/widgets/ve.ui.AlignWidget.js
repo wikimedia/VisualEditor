@@ -15,6 +15,8 @@
  * @cfg {string} [dir='ltr'] Interface directionality
  */
 ve.ui.AlignWidget = function VeUiAlignWidget( config ) {
+	config = config || {};
+
 	// Parent constructor
 	ve.ui.AlignWidget.super.call( this, config );
 
