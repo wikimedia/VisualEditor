@@ -42,6 +42,7 @@ ve.ui.ContextItem = function ( context, model, config ) {
 		flags: [ 'progressive' ],
 		classes: [ 've-ui-contextItem-editButton' ]
 	} );
+	this.fragment = null;
 
 	// Events
 	this.editButton.connect( this, { click: 'onEditButtonClick' } );
@@ -82,6 +83,15 @@ OO.mixinClass( ve.ui.ContextItem, OO.ui.PendingElement );
 ve.ui.ContextItem.static.editable = true;
 
 ve.ui.ContextItem.static.embeddable = true;
+
+/**
+ * Whether this item exclusively handles any model class
+ *
+ * @static
+ * @property {boolean}
+ * @inheritable
+ */
+ve.ui.ContextItem.static.exclusive = true;
 
 ve.ui.ContextItem.static.commandName = null;
 
@@ -141,6 +151,18 @@ ve.ui.ContextItem.prototype.isEditable = function () {
  */
 ve.ui.ContextItem.prototype.getCommand = function () {
 	return ve.ui.commandRegistry.lookup( this.constructor.static.commandName );
+};
+
+/**
+ * Get a surface fragment covering the related model item
+ *
+ * @return {ve.dm.SurfaceFragment} Surface fragment
+ */
+ve.ui.ContextItem.prototype.getFragment = function () {
+	if ( !this.fragment ) {
+		this.fragment = this.context.getSurface().getModel().getLinearFragment( this.model.getOuterRange() );
+	}
+	return this.fragment;
 };
 
 /**
