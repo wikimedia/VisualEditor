@@ -217,7 +217,8 @@
 							"OO.ui.Dialog",
 						"OO.ui.WindowManager",
 					"OO.ui.Error",
-					"OO.ui.Process"
+					"OO.ui.Process",
+					"OO.ui.HtmlSnippet"
 				]
 			},
 			{

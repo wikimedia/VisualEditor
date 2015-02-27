@@ -1,12 +1,12 @@
 /*!
- * OOjs UI v0.8.0
+ * OOjs UI v0.8.2
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2015 OOjs Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2015-02-19T01:33:21Z
+ * Date: 2015-02-27T18:02:41Z
  */
 .oo-ui-progressBarWidget-slide-frames from {
 	margin-left: -40%;
@@ -484,7 +484,8 @@
 	padding: 0.5em 0.75em;
 	line-height: 1.5em;
 }
-.oo-ui-fieldsetLayout + .oo-ui-fieldsetLayout {
+.oo-ui-fieldsetLayout + .oo-ui-fieldsetLayout,
+.oo-ui-fieldsetLayout + .oo-ui-formLayout {
 	margin-top: 2em;
 }
 .oo-ui-fieldsetLayout > .oo-ui-labelElement-label {
@@ -508,6 +509,10 @@
 }
 .oo-ui-fieldsetLayout > .oo-ui-popupButtonWidget:last-child {
 	margin-right: 0;
+}
+.oo-ui-formLayout + .oo-ui-fieldsetLayout,
+.oo-ui-formLayout + .oo-ui-formLayout {
+	margin-top: 2em;
 }
 .oo-ui-gridLayout {
 	position: absolute;
@@ -1139,6 +1144,12 @@
 .oo-ui-radioOptionWidget.oo-ui-optionWidget-highlighted {
 	background-color: transparent;
 }
+.oo-ui-radioOptionWidget.oo-ui-labelElement .oo-ui-labelElement-label {
+	padding-left: 0.5em;
+}
+.oo-ui-radioOptionWidget .oo-ui-radioInputWidget {
+	margin-right: 0;
+}
 .oo-ui-labelWidget {
 	display: inline-block;
 	padding: 0.5em 0;
@@ -1541,12 +1552,15 @@
 	top: 0;
 	height: 100%;
 	background-repeat: no-repeat;
-	cursor: pointer;
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
 	   -moz-user-select: none;
 	    -ms-user-select: none;
 	        user-select: none;
+}
+.oo-ui-textInputWidget.oo-ui-widget-enabled > .oo-ui-iconElement-icon,
+.oo-ui-textInputWidget.oo-ui-widget-enabled > .oo-ui-indicatorElement-indicator {
+	cursor: pointer;
 }
 .oo-ui-textInputWidget.oo-ui-labelElement > .oo-ui-labelElement-label {
 	display: block;
@@ -1606,6 +1620,14 @@
 	text-shadow: 0 1px 1px #ffffff;
 	border-color: #dddddd;
 	background-color: #f3f3f3;
+}
+.oo-ui-textInputWidget.oo-ui-widget-disabled .oo-ui-iconElement-icon,
+.oo-ui-textInputWidget.oo-ui-widget-disabled .oo-ui-indicatorElement-indicator {
+	opacity: 0.2;
+}
+.oo-ui-textInputWidget.oo-ui-widget-disabled .oo-ui-labelElement-label {
+	color: #dddddd;
+	text-shadow: 0 1px 1px #ffffff;
 }
 .oo-ui-textInputWidget.oo-ui-pendingElement-pending input,
 .oo-ui-textInputWidget.oo-ui-pendingElement-pending textarea {
