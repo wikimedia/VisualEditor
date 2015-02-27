@@ -76,8 +76,8 @@ ve.ui.Toolbar.prototype.setup = function ( groups, surface ) {
 	// Events
 	this.getSurface().getModel().connect( this, { contextChange: 'onContextChange' } );
 	this.getSurface().getToolbarDialogs().connect( this, {
-		opening: 'onToolbarWindowOpeningOrClosing',
-		closing: 'onToolbarWindowOpeningOrClosing'
+		opening: 'onToolbarDialogsOpeningOrClosing',
+		closing: 'onToolbarDialogsOpeningOrClosing'
 	} );
 };
 
@@ -141,9 +141,10 @@ ve.ui.Toolbar.prototype.onWindowResize = function () {
  * @param {jQuery.Promise} openingOrClosing
  * @param {Object} data
  */
-ve.ui.Toolbar.prototype.onToolbarWindowOpeningOrClosing = function ( win, openingOrClosing ) {
+ve.ui.Toolbar.prototype.onToolbarDialogsOpeningOrClosing = function ( win, openingOrClosing ) {
 	var toolbar = this;
 	openingOrClosing.then( function () {
+		toolbar.updateToolState();
 		// Wait for window transition
 		setTimeout( function () {
 			if ( toolbar.floating ) {
