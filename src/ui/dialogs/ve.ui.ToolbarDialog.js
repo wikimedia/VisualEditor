@@ -33,6 +33,8 @@ OO.inheritClass( ve.ui.ToolbarDialog, OO.ui.Dialog );
 
 ve.ui.ToolbarDialog.static.size = 'full';
 
+ve.ui.ToolbarDialog.static.padded = true;
+
 /* Methods */
 
 /**
@@ -43,4 +45,7 @@ ve.ui.ToolbarDialog.prototype.initialize = function () {
 	ve.ui.ToolbarDialog.super.prototype.initialize.call( this );
 
 	this.$content.addClass( 've-ui-toolbarDialog-content' );
+	if ( this.constructor.static.padded ) {
+		this.$element.addClass( 've-ui-toolbarDialog-padded' );
+	}
 };
