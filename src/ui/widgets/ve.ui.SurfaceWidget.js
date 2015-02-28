@@ -31,7 +31,7 @@ ve.ui.SurfaceWidget = function VeUiSurfaceWidget( doc, config ) {
 		excludeCommands: config.excludeCommands,
 		importRules: config.importRules
 	} );
-	this.toolbar = new ve.ui.Toolbar( this.surface, { $: this.$ } );
+	this.toolbar = new ve.ui.Toolbar();
 
 	// Initialization
 	this.surface.$element.addClass( 've-ui-surfaceWidget-surface' );
