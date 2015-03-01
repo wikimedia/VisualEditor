@@ -136,9 +136,8 @@ ve.ce.GeneratedContentNode.prototype.getRenderedDomElements = function ( domElem
 	// Render the computed values of some attributes
 	for ( i = 0, len = ve.dm.Converter.computedAttributes.length; i < len; i++ ) {
 		attr = ve.dm.Converter.computedAttributes[i];
-		$rendering.find( '[' + attr + ']' )
-			.add( $rendering.filter( '[' + attr + ']' ) )
-			.each( resolveAttribute );
+		$rendering.find( '[' + attr + ']' ).each( resolveAttribute );
+		$rendering.filter( '[' + attr + ']' ).each( resolveAttribute );
 	}
 
 	return $rendering.toArray();
