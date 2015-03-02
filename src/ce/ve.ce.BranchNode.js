@@ -41,14 +41,6 @@ OO.inheritClass( ve.ce.BranchNode, ve.ce.Node );
 
 OO.mixinClass( ve.ce.BranchNode, ve.BranchNode );
 
-/* Events */
-
-/**
- * @event rewrap
- * @param {jQuery} $old
- * @param {jQuery} $new
- */
-
 /* Static Properties */
 
 /**
@@ -128,10 +120,11 @@ ve.ce.BranchNode.prototype.onTeardown = function () {
  * WARNING: The contents, .data( 'view' ) and any classes the wrapper already has will be moved to
  * the new wrapper, but other attributes and any other information added using $.data() will be
  * lost upon updating the wrapper. To retain information added to the wrapper, subscribe to the
- * 'rewrap' event and copy information from the {$old} wrapper the {$new} wrapper.
+ * 'teardown' and 'setup' events.
  *
  * @method
- * @fires rewrap
+ * @fires teardown
+ * @fires setup
  */
 ve.ce.BranchNode.prototype.updateTagName = function () {
 	var $wrapper,
