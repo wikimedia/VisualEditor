@@ -65,6 +65,16 @@ ve.ce.TableCellNode.prototype.onSetup = function () {
 };
 
 /**
+ * @inheritdoc
+ */
+ve.ce.TableCellNode.prototype.onTeardown = function () {
+	// Parent method
+	ve.ce.TableCellNode.super.prototype.onTeardown.call( this );
+
+	this.$element.removeClass( 've-ce-tableCellNode ve-ce-tableCellNode-data ve-ce-tableCellNode-header' );
+};
+
+/**
  * Get the HTML tag name.
  *
  * Tag name is selected based on the model's style attribute.
