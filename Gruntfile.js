@@ -192,6 +192,8 @@ module.exports = function ( grunt ) {
 				frameworks: [ 'qunit' ],
 				reporters: [ 'dots' ],
 				singleRun: true,
+				browserDisconnectTimeout: 5000,
+				browserDisconnectTolerance: 2,
 				autoWatch: false
 			},
 			main: {
