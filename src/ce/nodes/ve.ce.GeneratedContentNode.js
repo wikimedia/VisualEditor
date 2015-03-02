@@ -44,7 +44,7 @@ OO.initClass( ve.ce.GeneratedContentNode );
 
 /* Static members */
 
-// this.$element is just a wrapper for the real content, so don't duplicate attributes on it
+// We handle rendering ourselves, no need to render attributes from originalDomElements
 ve.ce.GeneratedContentNode.static.renderHtmlAttributes = false;
 
 /* Abstract methods */
