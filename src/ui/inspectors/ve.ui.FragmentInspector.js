@@ -65,6 +65,21 @@ ve.ui.FragmentInspector.prototype.getFragment = function () {
 };
 
 /**
+ * Get a symbolic mode name.
+ *
+ * @localdoc If the fragment being inspected selects at least one model the mode will be `edit`,
+ *   otherwise the mode will be `insert`
+ *
+ * @return {string} Symbolic mode name
+ */
+ve.ui.FragmentInspector.prototype.getMode = function () {
+	if ( this.fragment ) {
+		return this.fragment.getSelectedModels().length ? 'edit' : 'insert';
+	}
+	return '';
+};
+
+/**
  * @inheritdoc
  */
 ve.ui.FragmentInspector.prototype.initialize = function () {
@@ -116,23 +131,6 @@ ve.ui.FragmentInspector.prototype.getSetupProcess = function ( data ) {
 		.next( function () {
 			this.actions.setMode( this.getMode() );
 		}, this );
-};
-
-/**
- * Get a symbolic mode name.
- *
- * If the fragment being inspected selects at least one model the mode will be `edit`, otherwise
- *   the mode will be `insert`.
- *
- * @return {string} Symbolic mode name
- */
-ve.ui.FragmentInspector.prototype.getMode = function () {
-	if ( this.fragment ) {
-		// TODO: Filter out incompatible models before checking the length, in practice this works
-		// but theoretically you could have models selected that are not being inspected
-		return this.fragment.getSelectedModels().length ? 'edit' : 'insert';
-	}
-	return '';
 };
 
 /**
