@@ -107,6 +107,15 @@ ve.dm.Node.static.isContent = false;
 ve.dm.Node.static.isFocusable = false;
 
 /**
+ * Whether this node type is alignable.
+ *
+ * @static
+ * @property {boolean}
+ * @inheritable
+ */
+ve.dm.Node.static.isAlignable = false;
+
+/**
  * Whether this node type can contain content. The children of content container nodes must be
  * content nodes.
  *
@@ -369,6 +378,13 @@ ve.dm.Node.prototype.isContent = function () {
  */
 ve.dm.Node.prototype.isFocusable = function () {
 	return this.constructor.static.isFocusable;
+};
+
+/**
+ * @inheritdoc ve.Node
+ */
+ve.dm.Node.prototype.isAlignable = function () {
+	return this.constructor.static.isAlignable;
 };
 
 /**

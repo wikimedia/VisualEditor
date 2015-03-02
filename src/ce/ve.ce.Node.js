@@ -142,6 +142,13 @@ ve.ce.Node.prototype.isFocusable = function () {
 /**
  * @inheritdoc ve.Node
  */
+ve.ce.Node.prototype.isAlignable = function () {
+	return this.model.isAlignable();
+};
+
+/**
+ * @inheritdoc ve.Node
+ */
 ve.ce.Node.prototype.hasSignificantWhitespace = function () {
 	return this.model.hasSignificantWhitespace();
 };

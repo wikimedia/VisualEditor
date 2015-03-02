@@ -162,6 +162,17 @@ ve.Node.prototype.isFocusable = function () {
 };
 
 /**
+ * Check if the node is alignable
+ *
+ * @method
+ * @abstract
+ * @returns {boolean} Node is alignable
+ */
+ve.Node.prototype.isAlignable = function () {
+	throw new Error( 've.Node.isAlignable must be overridden in subclass' );
+};
+
+/**
  * Check if the node has significant whitespace.
  *
  * Can only be true if canContainContent is also true.
