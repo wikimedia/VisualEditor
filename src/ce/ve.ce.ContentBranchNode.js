@@ -21,6 +21,7 @@ ve.ce.ContentBranchNode = function VeCeContentBranchNode( model, config ) {
 
 	// Properties
 	this.lastTransaction = null;
+	this.rendered = false;
 	this.unicornAnnotations = null;
 	this.unicorns = null;
 
@@ -343,18 +344,22 @@ ve.ce.ContentBranchNode.prototype.renderContents = function () {
 
 	// Return if unchanged. Test by building the new version and checking DOM-equality.
 	// However we have to normalize to cope with consecutive text nodes. We can't normalize
-	// the attached version, because that would close IMEs.
-
-	oldWrapper = this.$element[0].cloneNode( true );
-	newWrapper = this.$element[0].cloneNode( false );
-	while ( rendered.firstChild ) {
-		newWrapper.appendChild( rendered.firstChild );
+	// the attached version, because that would close IMEs. As an optimization, don't perform
+	// this checking if this node has never rendered before.
+	if ( this.rendered ) {
+		oldWrapper = this.$element[0].cloneNode( true );
+		newWrapper = this.$element[0].cloneNode( false );
+		while ( rendered.firstChild ) {
+			newWrapper.appendChild( rendered.firstChild );
+		}
+		ve.normalizeNode( oldWrapper );
+		ve.normalizeNode( newWrapper );
+		if ( newWrapper.isEqualNode( oldWrapper ) ) {
+			return false;
+		}
+		rendered = newWrapper;
 	}
-	ve.normalizeNode( oldWrapper );
-	ve.normalizeNode( newWrapper );
-	if ( newWrapper.isEqualNode( oldWrapper ) ) {
-		return false;
-	}
+	this.rendered = true;
 
 	this.unicornAnnotations = unicornInfo.annotations || null;
 	this.unicorns = unicornInfo.unicorns || null;
@@ -368,7 +373,7 @@ ve.ce.ContentBranchNode.prototype.renderContents = function () {
 	}
 
 	// Reattach nodes
-	this.constructor.static.appendRenderedContents( this.$element[0], newWrapper );
+	this.constructor.static.appendRenderedContents( this.$element[0], rendered );
 
 	// Set unicorning status
 	if ( this.getRoot() ) {
