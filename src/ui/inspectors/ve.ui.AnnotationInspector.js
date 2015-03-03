@@ -131,6 +131,18 @@ ve.ui.AnnotationInspector.prototype.getMatchingAnnotations = function ( fragment
 /**
  * @inheritdoc
  */
+ve.ui.AnnotationInspector.prototype.getMode = function () {
+	if ( this.fragment ) {
+		// Trim the fragment before getting selected models to match the behavior of
+		// #getSetupProcess
+		return this.fragment.trimLinearSelection().getSelectedModels().length ? 'edit' : 'insert';
+	}
+	return '';
+};
+
+/**
+ * @inheritdoc
+ */
 ve.ui.AnnotationInspector.prototype.getActionProcess = function ( action ) {
 	if ( action === 'remove' ) {
 		return new OO.ui.Process( function () {
