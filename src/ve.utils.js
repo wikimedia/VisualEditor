@@ -178,16 +178,24 @@ ve.extendObject = $.extend;
 ve.batchSplice = ( function () {
 	var arraySplice;
 
-	// This yields 'false' on Opera 12.15.
-	function spliceWorks() {
+	// This returns true in Opera 12.15
+	function spliceBrokenOpera() {
 		var n = 256,
 			a = [];
 		a[n] = 'a';
 		a.splice( n + 1, 0, 'b' );
-		return a[n] === 'a';
+		return a[n] !== 'a';
 	}
 
-	if ( spliceWorks() ) {
+	// This returns true in Safari 8
+	function spliceBrokenSafari() {
+		var a = new Array( 100000 );
+		a.splice( 30, 0, 'x' );
+		a.splice( 20, 1 );
+		return a.indexOf( 'x' ) !== 29;
+	}
+
+	if ( !spliceBrokenOpera() && !spliceBrokenSafari() ) {
 		arraySplice = Array.prototype.splice;
 	} else {
 		// Standard Array.prototype.splice() function implemented using .slice() and .push().
@@ -201,11 +209,9 @@ ve.batchSplice = ( function () {
 			end = this.slice( offset + remove );
 
 			this.length = 0;
-			// This polyfill only been discovered to be necessary on Opera
-			// and it seems to handle up to 1048575 function parameters.
-			this.push.apply( this, begin );
-			this.push.apply( this, data );
-			this.push.apply( this, end );
+			ve.batchPush( this, begin );
+			ve.batchPush( this, data );
+			ve.batchPush( this, end );
 
 			return removed;
 		};
