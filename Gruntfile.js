@@ -84,8 +84,8 @@ module.exports = function ( grunt ) {
 		},
 		buildloader: {
 			iframe: {
-				targetFile: '.docs/eg-iframe.html',
-				template: '.docs/eg-iframe.html.template',
+				targetFile: '.jsduck/eg-iframe.html',
+				template: '.jsduck/eg-iframe.html.template',
 				modules: modules,
 				load: [ 'visualEditor.desktop.standalone' ],
 				pathPrefix: '../',
@@ -168,7 +168,7 @@ module.exports = function ( grunt ) {
 			},
 			all: [
 				'*.js',
-				'{.docs,build,demos,src,tests}/**/*.js'
+				'{.jsduck,build,demos,src,tests}/**/*.js'
 			]
 		},
 		jscs: {
@@ -181,7 +181,7 @@ module.exports = function ( grunt ) {
 			options: {
 				csslintrc: '.csslintrc'
 			},
-			all: '{.docs,build,demos,src,tests}/**/*.css'
+			all: '{.jsduck,build,demos,src,tests}/**/*.css'
 		},
 		banana: {
 			all: 'i18n/'

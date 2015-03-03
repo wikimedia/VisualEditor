@@ -118,6 +118,6 @@ Test files:
 * src/tests/index.html.template
 
 Regular files:
-* .docs/categories.json in General->Utilities (or somewhere more specific)
+* .jsduck/categories.json in General->Utilities (or somewhere more specific)
 * modules.json in visualEditor.core (or somewhere more specific)
 * Run `grunt build`
