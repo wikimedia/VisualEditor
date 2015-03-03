@@ -2874,7 +2874,7 @@ ve.ce.Surface.prototype.handleLinearArrowKey = function ( e ) {
 				// Observe which way the cursor moved
 				afterDirection = ve.compareDocumentOrder(
 					startFocusNode,
-					startFocusNode,
+					startFocusOffset,
 					surface.nativeSelection.focusNode,
 					surface.nativeSelection.focusOffset
 				);
