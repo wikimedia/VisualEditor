@@ -38,7 +38,8 @@ ve.ui.DesktopContext = function VeUiDesktopContext( surface, config ) {
 		select: 'onModelSelect'
 	} );
 	this.inspectors.connect( this, {
-		resize: 'setPopupSize'
+		resize: 'setPopupSize',
+		closing: 'onInspectorClosing'
 	} );
 	this.$window.on( 'resize', this.onWindowResizeHandler );
 
@@ -143,6 +144,13 @@ ve.ui.DesktopContext.prototype.onInspectorOpening = function () {
 };
 
 /**
+ * Handle inspector closing events.
+ */
+ve.ui.DesktopContext.prototype.onInspectorClosing = function () {
+	this.lastClosedSelection = null;
+};
+
+/**
  * @inheritdoc
  */
 ve.ui.DesktopContext.prototype.toggle = function ( show ) {
@@ -185,15 +193,20 @@ ve.ui.DesktopContext.prototype.toggle = function ( show ) {
  * @inheritdoc
  */
 ve.ui.DesktopContext.prototype.updateDimensions = function () {
-	var startAndEndRects, position, embeddable, middle, boundingRect,
+	var startAndEndRects, position, embeddable, middle, boundingRect, selection,
 		rtl = this.surface.getModel().getDocument().getDir() === 'rtl',
 		surface = this.surface.getView(),
 		focusedNode = surface.getFocusedNode();
 
+	// If the inspector is closed use the current selection, otherwise try and use
+	// the last selection before it was opened.
 	if ( !this.inspector || ( !this.inspector.isOpening() && !this.inspector.isOpened() ) ) {
-		this.lastClosedSelection = surface.getModel().getSelection().clone();
+		selection = surface.getModel().getSelection();
+	} else {
+		selection = this.lastClosedSelection || surface.getModel().getSelection();
 	}
-	boundingRect = surface.getSelectionBoundingRect( this.lastClosedSelection );
+
+	boundingRect = surface.getSelectionBoundingRect( selection );
 
 	if ( !boundingRect ) {
 		// If !boundingRect, the surface apparently isn't selected.
@@ -226,7 +239,7 @@ ve.ui.DesktopContext.prototype.updateDimensions = function () {
 		}
 	} else {
 		// The selection is text or an inline focused node
-		startAndEndRects = surface.getSelectionStartAndEndRects( this.lastClosedSelection );
+		startAndEndRects = surface.getSelectionStartAndEndRects( selection );
 		if ( startAndEndRects ) {
 			middle = ( boundingRect.left + boundingRect.right ) / 2;
 			if (
@@ -253,6 +266,8 @@ ve.ui.DesktopContext.prototype.updateDimensions = function () {
 
 	if ( position ) {
 		this.$element.css( { left: position.x, top: position.y } );
+		// The selection yielded a valid position, so store it.
+		this.lastClosedSelection = selection.clone();
 	}
 
 	// HACK: setPopupSize() has to be called at the end because it reads this.popup.align,
