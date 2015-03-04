@@ -23,10 +23,13 @@ ve.dm.TableSelection = function VeDmTableSelection( doc, tableRange, fromCol, fr
 	this.tableRange = tableRange;
 	this.tableNode = null;
 
+	toCol = toCol === undefined ? fromCol : toCol;
+	toRow = toRow === undefined ? fromRow : toRow;
+
 	this.fromCol = fromCol;
 	this.fromRow = fromRow;
-	this.toCol = toCol === undefined ? this.fromCol : toCol;
-	this.toRow = toRow === undefined ? this.fromRow : toRow;
+	this.toCol = toCol;
+	this.toRow = toRow;
 	this.startCol = fromCol < toCol ? fromCol : toCol;
 	this.startRow = fromRow < toRow ? fromRow : toRow;
 	this.endCol = fromCol < toCol ? toCol : fromCol;
