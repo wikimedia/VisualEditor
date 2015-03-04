@@ -52,11 +52,12 @@ ve.ui.LinkContextItem.prototype.getDescription = function () {
  * @inheritdoc
  */
 ve.ui.LinkContextItem.prototype.renderBody = function () {
+	var htmlDoc = this.context.getSurface().getModel().getDocument().getHtmlDocument();
 	this.$body.empty().append(
 		$( '<a>' )
 			.text( this.getDescription() )
 			.attr( {
-				href: this.model.getHref(),
+				href: ve.resolveUrl( this.model.getHref(), htmlDoc ),
 				target: '_blank'
 			} )
 	);
