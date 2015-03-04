@@ -1385,7 +1385,7 @@ ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
 	 * Furthermore, the keydown selection nodes may have become detached since keydown (e.g.
 	 * if ve.ce.ContentBranchNode#renderContents has run).
 	 *
-	 * @return {number|null} -1 for startwards, 1 for endwards, null for none/unknown
+	 * @return {number|null} negative for startwards, positive for endwards, null for none
 	 */
 	function getDirection() {
 		return (
@@ -1454,6 +1454,7 @@ ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
 		}
 		this.removeCursorHolders();
 	} else if (
+		// If we arrowed a collapsed cursor into/across a focusable node, select the node instead
 		isArrow &&
 		!e.ctrlKey &&
 		!e.altKey &&
@@ -3258,15 +3259,15 @@ ve.ce.Surface.prototype.handleLinearArrowKey = function ( e ) {
 			}
 			// Else keep going with the cursor in the new place
 		}
-		// Else keep DM range and DOM selection as-is
 	}
+	// Else keep DM range and DOM selection as-is
 
-	if ( !this.nativeSelection.extend && range.isBackwards() ) {
+	if ( e.shiftKey && !this.nativeSelection.extend && range.isBackwards() ) {
 		// If the browser doesn't support backwards selections, but the dm range
 		// is backwards, then use "collapse to anchor - observe - expand".
 		collapseNode = this.nativeSelection.anchorNode;
 		collapseOffset = this.nativeSelection.anchorOffset;
-	} else if ( !range.isCollapsed() && upOrDown ) {
+	} else if ( e.shiftKey && !range.isCollapsed() && upOrDown ) {
 		// If selection is expanded and cursoring is up/down, use
 		// "collapse to focus - observe - expand" to work round quirks.
 		collapseNode = this.nativeSelection.focusNode;
@@ -3305,10 +3306,10 @@ ve.ce.Surface.prototype.handleLinearArrowKey = function ( e ) {
 			} else {
 				// Observe which way the cursor moved
 				afterDirection = ve.compareDocumentOrder(
-					startFocusNode,
-					startFocusOffset,
 					surface.nativeSelection.focusNode,
-					surface.nativeSelection.focusOffset
+					surface.nativeSelection.focusOffset,
+					startFocusNode,
+					startFocusOffset
 				);
 			}
 			newRange = (
