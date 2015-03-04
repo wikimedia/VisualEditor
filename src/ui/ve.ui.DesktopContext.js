@@ -38,8 +38,7 @@ ve.ui.DesktopContext = function VeUiDesktopContext( surface, config ) {
 		select: 'onModelSelect'
 	} );
 	this.inspectors.connect( this, {
-		resize: 'setPopupSize',
-		closing: 'onInspectorClosing'
+		resize: 'setPopupSize'
 	} );
 	this.$window.on( 'resize', this.onWindowResizeHandler );
 
@@ -144,13 +143,6 @@ ve.ui.DesktopContext.prototype.onInspectorOpening = function () {
 };
 
 /**
- * Handle inspector closing events.
- */
-ve.ui.DesktopContext.prototype.onInspectorClosing = function () {
-	this.lastClosedSelection = null;
-};
-
-/**
  * @inheritdoc
  */
 ve.ui.DesktopContext.prototype.toggle = function ( show ) {
@@ -182,8 +174,11 @@ ve.ui.DesktopContext.prototype.toggle = function ( show ) {
 		}
 		// updateDimensionsDebounced is not necessary here and causes a movement flicker
 		this.updateDimensions();
-	} else if ( this.inspector ) {
-		this.inspector.close();
+	} else {
+		this.lastClosedSelection = null;
+		if ( this.inspector ) {
+			this.inspector.close();
+		}
 	}
 
 	return promise;
@@ -193,6 +188,10 @@ ve.ui.DesktopContext.prototype.toggle = function ( show ) {
  * @inheritdoc
  */
 ve.ui.DesktopContext.prototype.updateDimensions = function () {
+	if ( !this.isVisible() ) {
+		return;
+	}
+
 	var startAndEndRects, position, embeddable, middle, boundingRect, selection,
 		rtl = this.surface.getModel().getDocument().getDir() === 'rtl',
 		surface = this.surface.getView(),
