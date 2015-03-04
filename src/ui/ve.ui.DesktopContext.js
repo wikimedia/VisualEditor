@@ -22,7 +22,6 @@ ve.ui.DesktopContext = function VeUiDesktopContext( surface, config ) {
 	this.popup = new OO.ui.PopupWidget( { $: this.$, $container: this.surface.$element } );
 	this.transitioning = null;
 	this.suppressed = false;
-	this.lastClosedSelection = null;
 	this.onWindowResizeHandler = this.onPosition.bind( this );
 	this.$window = this.$( this.getElementWindow() );
 
@@ -174,11 +173,8 @@ ve.ui.DesktopContext.prototype.toggle = function ( show ) {
 		}
 		// updateDimensionsDebounced is not necessary here and causes a movement flicker
 		this.updateDimensions();
-	} else {
-		this.lastClosedSelection = null;
-		if ( this.inspector ) {
-			this.inspector.close();
-		}
+	} else if ( this.inspector ) {
+		this.inspector.close();
 	}
 
 	return promise;
@@ -192,18 +188,11 @@ ve.ui.DesktopContext.prototype.updateDimensions = function () {
 		return;
 	}
 
-	var startAndEndRects, position, embeddable, middle, boundingRect, selection,
+	var startAndEndRects, position, embeddable, middle, boundingRect,
 		rtl = this.surface.getModel().getDocument().getDir() === 'rtl',
 		surface = this.surface.getView(),
+		selection = this.inspector && this.inspector.previousSelection,
 		focusedNode = surface.getFocusedNode();
-
-	// If the inspector is closed use the current selection, otherwise try and use
-	// the last selection before it was opened.
-	if ( !this.inspector || ( !this.inspector.isOpening() && !this.inspector.isOpened() ) ) {
-		selection = surface.getModel().getSelection();
-	} else {
-		selection = this.lastClosedSelection || surface.getModel().getSelection();
-	}
 
 	boundingRect = surface.getSelectionBoundingRect( selection );
 
@@ -265,8 +254,6 @@ ve.ui.DesktopContext.prototype.updateDimensions = function () {
 
 	if ( position ) {
 		this.$element.css( { left: position.x, top: position.y } );
-		// The selection yielded a valid position, so store it.
-		this.lastClosedSelection = selection.clone();
 	}
 
 	// HACK: setPopupSize() has to be called at the end because it reads this.popup.align,

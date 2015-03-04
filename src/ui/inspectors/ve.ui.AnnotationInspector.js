@@ -19,7 +19,6 @@ ve.ui.AnnotationInspector = function VeUiAnnotationInspector( config ) {
 	ve.ui.FragmentInspector.call( this, config );
 
 	// Properties
-	this.previousSelection = null;
 	this.initialSelection = null;
 	this.initialAnnotation = null;
 	this.initialAnnotationIsCovering = false;
@@ -173,7 +172,6 @@ ve.ui.AnnotationInspector.prototype.getSetupProcess = function ( data ) {
 				surfaceModel = fragment.getSurface(),
 				annotation = this.getMatchingAnnotations( fragment, true ).get( 0 );
 
-			this.previousSelection = fragment.getSelection();
 			surfaceModel.pushStaging();
 
 			// Initialize range
@@ -315,7 +313,6 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 		}, this )
 		.next( function () {
 			// Reset state
-			this.previousSelection = null;
 			this.initialSelection = null;
 			this.initialAnnotation = null;
 			this.initialAnnotationIsCovering = false;

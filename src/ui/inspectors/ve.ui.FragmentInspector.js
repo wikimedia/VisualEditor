@@ -19,6 +19,7 @@ ve.ui.FragmentInspector = function VeUiFragmentInspector( config ) {
 
 	// Properties
 	this.fragment = null;
+	this.previousSelection = null;
 };
 
 /* Inheritance */
@@ -127,6 +128,7 @@ ve.ui.FragmentInspector.prototype.getSetupProcess = function ( data ) {
 				throw new Error( 'Cannot open inspector: opening data must contain a fragment' );
 			}
 			this.fragment = data.fragment;
+			this.previousSelection = this.fragment.getSelection();
 		}, this )
 		.next( function () {
 			this.actions.setMode( this.getMode() );
@@ -140,6 +142,7 @@ ve.ui.FragmentInspector.prototype.getTeardownProcess = function ( data ) {
 	return ve.ui.FragmentDialog.super.prototype.getTeardownProcess.apply( this, data )
 		.next( function () {
 			this.fragment = null;
+			this.previousSelection = null;
 		}, this );
 };
 
