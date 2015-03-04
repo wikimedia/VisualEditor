@@ -1210,7 +1210,7 @@ ve.ce.Surface.prototype.onDocumentKeyPress = function ( e ) {
  */
 ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
 	var direction, focusableNode, startOffset, endOffset, offsetDiff,
-		range, fixupCursorForUnicorn,
+		range, fixupCursorForUnicorn, matrix,
 		surface = this,
 		isArrow = (
 			e.keyCode === OO.ui.Keys.UP ||
@@ -1237,7 +1237,7 @@ ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
 	 * @returns {ve.ce.Node|null} node, or null if not in a focusable node
 	 */
 	function getSurroundingFocusableNode( node, offset, direction ) {
-		var focusNode, $ceNode, focusableNode;
+		var focusNode;
 		if ( node.nodeType === Node.TEXT_NODE ) {
 			focusNode = node;
 		} else if ( direction > 0 && offset < node.childNodes.length ) {
@@ -1247,19 +1247,7 @@ ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
 		} else {
 			focusNode = node;
 		}
-		$ceNode = $( focusNode ).closest(
-			'[contenteditable], .ve-ce-branchNode'
-		);
-		if ( $ceNode.prop( 'contenteditable' ) !== 'false' ) {
-			return null;
-		}
-		focusableNode = $ceNode.closest(
-			'.ve-ce-branchNode, .ve-ce-leafNode'
-		).data( 'view' );
-		if ( !focusableNode || !focusableNode.isFocusable() ) {
-			return null;
-		}
-		return focusableNode;
+		return $( focusNode ).closest( '.ve-ce-focusableNode, .ve-ce-tableNode' ).data( 'view' ) || null;
 	}
 
 	/**
@@ -1350,7 +1338,20 @@ ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
 					range = range.flip();
 				}
 			}
-			this.model.setLinearSelection( range );
+			if ( focusableNode instanceof ve.ce.TableNode ) {
+				if ( direction > 0 ) {
+					this.model.setSelection( new ve.dm.TableSelection(
+						this.model.documentModel, range, 0, 0
+					) );
+				} else {
+					matrix = focusableNode.getModel().getMatrix();
+					this.model.setSelection( new ve.dm.TableSelection(
+						this.model.documentModel, range, matrix.getColCount() - 1, matrix.getRowCount() - 1
+					) );
+				}
+			} else {
+				this.model.setLinearSelection( range );
+			}
 			if ( e.keyCode === OO.ui.Keys.LEFT ) {
 				this.cursorDirectionality = direction > 0 ? 'rtl' : 'ltr';
 			} else if ( e.keyCode === OO.ui.Keys.RIGHT ) {

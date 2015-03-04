@@ -300,7 +300,7 @@ ve.ce.TableNode.prototype.onSurfaceModelSelect = function ( selection ) {
 		) ||
 		(
 			selection instanceof ve.dm.TableSelection &&
-			selection.tableRange.equals( this.getModel().getOuterRange() )
+			selection.tableRange.equalsSelection( this.getModel().getOuterRange() )
 		);
 
 	if ( active ) {
