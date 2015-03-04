@@ -35,6 +35,11 @@ ve.ce.FocusableNode = function VeCeFocusableNode( $focusable ) {
 	this.boundingRect = null;
 	this.startAndEndRects = null;
 
+	// DOM changes
+	this.$element
+		.addClass( 've-ce-focusableNode' )
+		.prop( 'contentEditable', 'false' );
+
 	// Events
 	this.connect( this, {
 		setup: 'onFocusableSetup',
@@ -96,7 +101,7 @@ ve.ce.FocusableNode.prototype.onFocusableSetup = function () {
 
 	this.surface = this.getRoot().getSurface();
 
-	// DOM changes
+	// DOM changes (duplicated from constructor in case this.$element is replaced)
 	this.$element
 		.addClass( 've-ce-focusableNode' )
 		.prop( 'contentEditable', 'false' );

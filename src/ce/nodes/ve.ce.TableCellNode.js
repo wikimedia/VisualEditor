@@ -17,6 +17,22 @@ ve.ce.TableCellNode = function VeCeTableCellNode() {
 	// Parent constructor
 	ve.ce.TableCellNode.super.apply( this, arguments );
 
+	var rowspan = this.model.getRowspan(),
+		colspan = this.model.getColspan();
+
+	// DOM changes
+	this.$element
+		// The following classes can be used here:
+		// ve-ce-tableCellNode-data
+		// ve-ce-tableCellNode-header
+		.addClass( 've-ce-tableCellNode ve-ce-tableCellNode-' + this.model.getAttribute( 'style' ) );
+	if ( rowspan > 1 ) {
+		this.$element.attr( 'rowspan', rowspan );
+	}
+	if ( colspan > 1 ) {
+		this.$element.attr( 'colspan', colspan );
+	}
+
 	// Events
 	this.model.connect( this, {
 		update: 'onUpdate',
@@ -33,46 +49,6 @@ OO.inheritClass( ve.ce.TableCellNode, ve.ce.BranchNode );
 ve.ce.TableCellNode.static.name = 'tableCell';
 
 /* Methods */
-
-/**
- * @inheritdoc
- */
-ve.ce.TableCellNode.prototype.onSetup = function () {
-	var rowspan = this.model.getRowspan(),
-		colspan = this.model.getColspan();
-
-	// Parent method
-	ve.ce.TableCellNode.super.prototype.onSetup.call( this );
-
-	// Exit if already setup or not attached
-	if ( this.isSetup || !this.root ) {
-		return;
-	}
-
-	// DOM changes
-	this.$element
-		// The following classes can be used here:
-		// ve-ce-tableCellNode-data
-		// ve-ce-tableCellNode-header
-		.addClass( 've-ce-tableCellNode ve-ce-tableCellNode-' + this.model.getAttribute( 'style' ) );
-
-	if ( rowspan > 1 ) {
-		this.$element.attr( 'rowspan', rowspan );
-	}
-	if ( colspan > 1 ) {
-		this.$element.attr( 'colspan', colspan );
-	}
-};
-
-/**
- * @inheritdoc
- */
-ve.ce.TableCellNode.prototype.onTeardown = function () {
-	// Parent method
-	ve.ce.TableCellNode.super.prototype.onTeardown.call( this );
-
-	this.$element.removeClass( 've-ce-tableCellNode ve-ce-tableCellNode-data ve-ce-tableCellNode-header' );
-};
 
 /**
  * Get the HTML tag name.
@@ -128,6 +104,9 @@ ve.ce.TableCellNode.prototype.onAttributeChange = function ( key, from, to ) {
 			}
 			break;
 		case 'style':
+			this.$element
+				.removeClass( 've-ce-tableCellNode-' + from )
+				.addClass( 've-ce-tableCellNode-' + to );
 			this.updateTagName();
 			break;
 	}

@@ -17,10 +17,16 @@ ve.ce.TableNode = function VeCeTableNode() {
 	// Parent constructor
 	ve.ce.TableNode.super.apply( this, arguments );
 
+	// Properties
 	this.surface = null;
 	this.active = false;
 	this.startCell = null;
 	this.editingFragment = null;
+
+	// DOM changes
+	this.$element
+		.addClass( 've-ce-tableNode' )
+		.prop( 'contentEditable', 'false' );
 };
 
 /* Inheritance */
@@ -41,11 +47,6 @@ ve.ce.TableNode.prototype.onSetup = function () {
 		return;
 	}
 	this.surface = this.getRoot().getSurface();
-
-	// DOM changes
-	this.$element
-		.addClass( 've-ce-tableNode' )
-		.prop( 'contentEditable', 'false' );
 
 	// Overlay
 	this.$selectionBox = this.$( '<div>' ).addClass( 've-ce-tableNodeOverlay-selection-box' );

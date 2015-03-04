@@ -24,7 +24,7 @@ ve.ce.LeafNode = function VeCeLeafNode( model ) {
 	// Parent constructor
 	ve.ce.Node.apply( this, arguments );
 
-	// DOM changes
+	// DOM changes (keep in sync with #onSetup)
 	if ( model.isWrapped() ) {
 		this.$element.addClass( 've-ce-leafNode' );
 	}
@@ -42,16 +42,17 @@ ve.ce.LeafNode.static.tagName = 'span';
 
 /* Methods */
 
-/** */
+/**
+ * @inheritdoc
+ */
 ve.ce.LeafNode.prototype.onSetup = function () {
+	// Parent method
 	ve.ce.Node.prototype.onSetup.call( this );
-	this.$element.addClass( 've-ce-leafNode' );
-};
 
-/** */
-ve.ce.LeafNode.prototype.onTeardown = function () {
-	ve.ce.Node.prototype.onTeardown.call( this );
-	this.$element.removeClass( 've-ce-leafNode' );
+	// DOM changes (duplicated from constructor in case this.$element is replaced)
+	if ( this.model.isWrapped() ) {
+		this.$element.addClass( 've-ce-leafNode' );
+	}
 };
 
 /**
