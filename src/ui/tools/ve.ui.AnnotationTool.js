@@ -286,7 +286,7 @@ ve.ui.MoreTextStyleTool = function VeUiMoreTextStyleTool( toolGroup, config ) {
 };
 OO.inheritClass( ve.ui.MoreTextStyleTool, OO.ui.ToolGroupTool );
 ve.ui.MoreTextStyleTool.static.name = 'moreTextStyle';
-ve.ui.MoreTextStyleTool.static.group = 'textStyle';
+ve.ui.MoreTextStyleTool.static.group = 'textStyleExpansion';
 ve.ui.MoreTextStyleTool.static.title =
 	OO.ui.deferMsg( 'visualeditor-toolbar-style-tooltip' );
 ve.ui.MoreTextStyleTool.static.groupConfig = {
