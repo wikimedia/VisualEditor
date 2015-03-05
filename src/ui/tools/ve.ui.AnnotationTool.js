@@ -271,3 +271,30 @@ ve.ui.SubscriptAnnotationTool.static.title =
 ve.ui.SubscriptAnnotationTool.static.annotation = { name: 'textStyle/subscript' };
 ve.ui.SubscriptAnnotationTool.static.commandName = 'subscript';
 ve.ui.toolFactory.register( ve.ui.SubscriptAnnotationTool );
+
+/**
+ * UserInterface more text styles tool.
+ *
+ * @class
+ * @extends OO.ui.ToolGroupTool
+ * @constructor
+ * @param {OO.ui.ToolGroup} toolGroup
+ * @param {Object} [config] Configuration options
+ */
+ve.ui.MoreTextStyleTool = function VeUiMoreTextStyleTool( toolGroup, config ) {
+	OO.ui.ToolGroupTool.call( this, toolGroup, config );
+};
+OO.inheritClass( ve.ui.MoreTextStyleTool, OO.ui.ToolGroupTool );
+ve.ui.MoreTextStyleTool.static.name = 'moreTextStyle';
+ve.ui.MoreTextStyleTool.static.group = 'textStyle';
+ve.ui.MoreTextStyleTool.static.title =
+	OO.ui.deferMsg( 'visualeditor-toolbar-style-tooltip' );
+ve.ui.MoreTextStyleTool.static.groupConfig = {
+	header: OO.ui.deferMsg( 'visualeditor-toolbar-text-style' ),
+	icon: 'text-style',
+	indicator: 'down',
+	title: OO.ui.deferMsg( 'visualeditor-toolbar-style-tooltip' ),
+	include: [ { group: 'textStyle' }, 'language', 'clear' ],
+	demote: [ 'strikethrough', 'code', 'underline', 'language', 'clear' ]
+};
+ve.ui.toolFactory.register( ve.ui.MoreTextStyleTool );
