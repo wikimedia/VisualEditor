@@ -70,21 +70,11 @@ ve.init.Target.static.toolbarGroups = [
 		promote: [ 'paragraph' ],
 		demote: [ 'preformatted', 'blockquote' ]
 	},
-	// Basic style
+	// Text style
 	{
 		header: OO.ui.deferMsg( 'visualeditor-toolbar-text-style' ),
 		title: OO.ui.deferMsg( 'visualeditor-toolbar-style-tooltip' ),
-		include: [ 'bold', 'italic' ]
-	},
-	// Style
-	{
-		header: OO.ui.deferMsg( 'visualeditor-toolbar-text-style' ),
-		type: 'list',
-		indicator: 'down',
-		icon: 'text-style',
-		title: OO.ui.deferMsg( 'visualeditor-toolbar-style-tooltip' ),
-		include: [ { group: 'textStyle' }, 'language', 'clear' ],
-		demote: [ 'strikethrough', 'code', 'underline', 'language', 'clear' ]
+		include: [ 'bold', 'italic', 'moreTextStyle' ]
 	},
 	// Link
 	{
