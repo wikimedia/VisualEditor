@@ -345,7 +345,6 @@ ve.dm.TransactionProcessor.processors.replace = function ( op ) {
 		} else {
 			this.document.metadata.batchSplice( this.cursor, remove.length, new Array( insert.length ) );
 		}
-		this.applyAnnotations( this.cursor + insert.length );
 		// Get the node containing the replaced content
 		selection = this.document.selectNodes(
 			new ve.Range(
