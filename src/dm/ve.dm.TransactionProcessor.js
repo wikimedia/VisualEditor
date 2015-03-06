@@ -22,13 +22,15 @@ ve.dm.TransactionProcessor = function VeDmTransactionProcessor( doc, transaction
 	this.document = doc;
 	this.transaction = transaction;
 	this.operations = transaction.getOperations();
+	this.modificationQueue = [];
 	this.synchronizer = new ve.dm.DocumentSynchronizer( doc, transaction );
 	// Linear model offset that we're currently at. Operations in the transaction are ordered, so
 	// the cursor only ever moves forward.
 	this.cursor = 0;
 	this.metadataCursor = 0;
-	// Adjustment used to convert between linear model offsets in the original linear model and
-	// in the half-updated linear model.
+	// Adjustment that needs to be added to linear model offsets in the original linear model
+	// to get offsets in the half-updated linear model. This is needed when queueing modifications
+	// after other modifications that will cause offsets to shift.
 	this.adjustment = 0;
 	// Set and clear are sets of annotations which should be added or removed to content being
 	// inserted or retained.
@@ -68,17 +70,6 @@ ve.dm.TransactionProcessor.prototype.executeOperation = function ( op ) {
 };
 
 /**
- * Advance the main data cursor.
- *
- * @method
- * @param {number} increment Number of positions to increment the cursor by
- */
-ve.dm.TransactionProcessor.prototype.advanceCursor = function ( increment ) {
-	this.cursor += increment;
-	this.metadataCursor = 0;
-};
-
-/**
  * Process all operations.
  *
  * When all operations are done being processed, the document will be synchronized.
@@ -88,13 +79,13 @@ ve.dm.TransactionProcessor.prototype.advanceCursor = function ( increment ) {
  */
 ve.dm.TransactionProcessor.prototype.process = function ( presynchronizeHandler ) {
 	var op;
-
 	// This loop is factored this way to allow operations to be skipped over or executed
 	// from within other operations
 	this.operationIndex = 0;
 	while ( ( op = this.nextOperation() ) ) {
 		this.executeOperation( op );
 	}
+	this.applyModifications();
 	if ( presynchronizeHandler ) {
 		presynchronizeHandler();
 	}
@@ -102,6 +93,51 @@ ve.dm.TransactionProcessor.prototype.process = function ( presynchronizeHandler 
 
 	// Mark the transaction as committed or rolled back, as appropriate
 	this.transaction.markAsApplied();
+};
+
+/**
+ * Queue a modification.
+ *
+ * For available method names, see ve.dm.ElementLinearData and ve.dm.MetaLinearData.
+ *
+ * @param {Object} modification Object describing the modification
+ * @param {string} modification.type 'data' or 'metadata'
+ * @param {string} modification.method Method name to call on this.document.data or this.document.metadata
+ * @param {Array} [modification.args] Arguments to pass to this method
+ * @throws {Error} Unrecognized modification type
+ * @throws {Error} Unrecognized modification method
+ */
+ve.dm.TransactionProcessor.prototype.queueModification = function ( modification ) {
+	if ( modification.type !== 'data' && modification.type !== 'metadata' ) {
+		throw new Error( 'Unrecognized modification type ' + modification.type );
+	}
+	if ( typeof this.document[modification.type][modification.method] !== 'function' ) {
+		throw new Error( 'Unrecognized modification method ' + modification.method );
+	}
+	this.modificationQueue.push( modification );
+};
+
+/**
+ * Apply all modifications queued through #queueModification.
+ */
+ve.dm.TransactionProcessor.prototype.applyModifications = function () {
+	var i, len, dataObj, modifications = this.modificationQueue;
+	this.modificationQueue = [];
+	for ( i = 0, len = modifications.length; i < len; i++ ) {
+		dataObj = this.document[modifications[i].type];
+		dataObj[modifications[i].method].apply( dataObj, modifications[i].args || [] );
+	}
+};
+
+/**
+ * Advance the main data cursor.
+ *
+ * @method
+ * @param {number} increment Number of positions to increment the cursor by
+ */
+ve.dm.TransactionProcessor.prototype.advanceCursor = function ( increment ) {
+	this.cursor += increment;
+	this.metadataCursor = 0;
 };
 
 /**
@@ -130,9 +166,7 @@ ve.dm.TransactionProcessor.prototype.applyAnnotations = function ( to ) {
 		}
 	}
 
-	var isElement, annotations, i, iLen, j, jlen,
-		dataQueue = [],
-		metadataQueue = [];
+	var isElement, annotations, i, j, jlen;
 	if ( this.set.isEmpty() && this.clear.isEmpty() ) {
 		return;
 	}
@@ -151,9 +185,10 @@ ve.dm.TransactionProcessor.prototype.applyAnnotations = function ( to ) {
 		annotations = this.document.data.getAnnotationsFromOffset( i );
 		setAndClear( annotations, this.set, this.clear );
 		// Store annotation indexes in linear model
-		dataQueue.push( {
-			offset: i,
-			annotations: annotations
+		this.queueModification( {
+			type: 'data',
+			method: 'setAnnotationsAtOffset',
+			args: [ i + this.adjustment, annotations ]
 		} );
 	}
 	// Set/clear annotations on metadata, but not on the edges of the range
@@ -161,31 +196,16 @@ ve.dm.TransactionProcessor.prototype.applyAnnotations = function ( to ) {
 		for ( j = 0, jlen = this.document.metadata.getDataLength( i ); j < jlen; j++ ) {
 			annotations = this.document.metadata.getAnnotationsFromOffsetAndIndex( i, j );
 			setAndClear( annotations, this.set, this.clear );
-			metadataQueue.push( {
-				offset: i,
-				index: j,
-				annotations: annotations
+			this.queueModification( {
+				type: 'metadata',
+				method: 'setAnnotationsAtOffsetAndIndex',
+				args: [ i + this.adjustment, j, annotations ]
 			} );
 		}
 	}
 	// Notify the synchronizer
 	if ( this.cursor < to ) {
-		this.synchronizer.pushAnnotation( new ve.Range( this.cursor, to ) );
-	}
-	// Ensure document modification happens last so that exceptions
-	// don't leave the operation partially applied
-	for ( i = 0, iLen = dataQueue.length; i < iLen; i++ ) {
-		this.document.data.setAnnotationsAtOffset(
-			dataQueue[i].offset,
-			dataQueue[i].annotations
-		);
-	}
-	for ( i = 0, iLen = metadataQueue.length; i < iLen; i++ ) {
-		this.document.metadata.setAnnotationsAtOffsetAndIndex(
-			metadataQueue[i].offset,
-			metadataQueue[i].index,
-			metadataQueue[i].annotations
-		);
+		this.synchronizer.pushAnnotation( new ve.Range( this.cursor + this.adjustment, to + this.adjustment ) );
 	}
 };
 
@@ -282,7 +302,12 @@ ve.dm.TransactionProcessor.processors.attribute = function ( op ) {
 	if ( !this.document.data.isElementData( this.cursor ) ) {
 		throw new Error( 'Invalid element error, cannot set attributes on non-element data' );
 	}
-	this.document.data.setAttributeAtOffset( this.cursor, op.key, op.to );
+	this.queueModification( {
+		type: 'data',
+		method: 'setAttributeAtOffset',
+		args: [ this.cursor + this.adjustment, op.key, op.to ]
+	} );
+
 	this.synchronizer.pushAttributeChange(
 		this.document.getDocumentNode().getNodeFromOffset( this.cursor + 1 ),
 		op.key,
@@ -338,18 +363,30 @@ ve.dm.TransactionProcessor.processors.replace = function ( op ) {
 	if ( removeIsContent && insertIsContent ) {
 		// Content replacement
 		// Update the linear model
-		this.document.data.batchSplice( this.cursor, remove.length, insert );
+		this.queueModification( {
+			type: 'data',
+			method: 'batchSplice',
+			args: [ this.cursor + this.adjustment, remove.length, insert ]
+		} );
 		// Keep the meta linear model in sync
 		if ( removeMetadata !== undefined ) {
-			this.document.metadata.batchSplice( this.cursor, removeMetadata.length, insertMetadata );
+			this.queueModification( {
+				type: 'metadata',
+				method: 'batchSplice',
+				args: [ this.cursor + this.adjustment, removeMetadata.length, insertMetadata ]
+			} );
 		} else {
-			this.document.metadata.batchSplice( this.cursor, remove.length, new Array( insert.length ) );
+			this.queueModification( {
+				type: 'metadata',
+				method: 'batchSplice',
+				args: [ this.cursor + this.adjustment, remove.length, new Array( insert.length ) ]
+			} );
 		}
 		// Get the node containing the replaced content
 		selection = this.document.selectNodes(
 			new ve.Range(
-				this.cursor - this.adjustment,
-				this.cursor - this.adjustment + remove.length
+				this.cursor,
+				this.cursor + remove.length
 			),
 			'leaves'
 		);
@@ -381,8 +418,9 @@ ve.dm.TransactionProcessor.processors.replace = function ( op ) {
 					range.end + this.adjustment + insert.length - remove.length )
 			);
 		}
+
 		// Advance the cursor
-		this.advanceCursor( insert.length );
+		this.advanceCursor( remove.length );
 		this.adjustment += insert.length - remove.length;
 	} else {
 		// Structural replacement
@@ -398,25 +436,38 @@ ve.dm.TransactionProcessor.processors.replace = function ( op ) {
 				opRemoveMetadata = operation.removeMetadata;
 				opInsertMetadata = operation.insertMetadata;
 				// Update the linear model
-				this.document.data.batchSplice( this.cursor, opRemove.length, opInsert );
+				this.queueModification( {
+					type: 'data',
+					method: 'batchSplice',
+					args: [ this.cursor + this.adjustment, opRemove.length, opInsert ]
+				} );
 				// Keep the meta linear model in sync
 				if ( opRemoveMetadata !== undefined ) {
-					this.document.metadata.batchSplice( this.cursor, opRemoveMetadata.length, opInsertMetadata );
+					this.queueModification( {
+						type: 'metadata',
+						method: 'batchSplice',
+						args: [ this.cursor + this.adjustment, opRemoveMetadata.length, opInsertMetadata ]
+					} );
 				} else {
-					this.document.metadata.batchSplice( this.cursor, opRemove.length, new Array( opInsert.length ) );
+					this.queueModification( {
+						type: 'metadata',
+						method: 'batchSplice',
+						args: [ this.cursor + this.adjustment, opRemove.length, new Array( opInsert.length ) ]
+					} );
 				}
 				affectedRanges.push( new ve.Range(
-					this.cursor - this.adjustment,
-					this.cursor - this.adjustment + opRemove.length
+					this.cursor,
+					this.cursor + opRemove.length
 				) );
 				prevCursor = this.cursor;
-				this.advanceCursor( opInsert.length );
+				this.advanceCursor( opRemove.length );
+
 				// Paint the removed selection, figure out which nodes were
 				// covered, and add their ranges to the affected ranges list
 				if ( opRemove.length > 0 ) {
 					selection = this.document.selectNodes( new ve.Range(
-						prevCursor - this.adjustment,
-						prevCursor + opRemove.length - this.adjustment
+						prevCursor,
+						prevCursor + opRemove.length
 					), 'siblings' );
 					for ( i = 0; i < selection.length; i++ ) {
 						affectedRanges.push( selection[i].nodeOuterRange );
@@ -485,6 +536,7 @@ ve.dm.TransactionProcessor.processors.replace = function ( op ) {
 				throw new Error( 'Unbalanced set of replace operations found' );
 			}
 		}
+
 		// From all the affected ranges we have gathered, compute a range that covers all
 		// of them, and rebuild that
 		coveringRange = ve.Range.static.newCoveringRange( affectedRanges );
@@ -509,9 +561,10 @@ ve.dm.TransactionProcessor.processors.replace = function ( op ) {
  * @param {Array} op.insert Metadata to insert
  */
 ve.dm.TransactionProcessor.processors.replaceMetadata = function ( op ) {
-	var remove = op.remove,
-		insert = op.insert;
-
-	this.document.metadata.spliceMetadataAtOffset( this.cursor, this.metadataCursor, remove.length, insert );
-	this.metadataCursor += insert.length;
+	this.queueModification( {
+		type: 'metadata',
+		method: 'spliceMetadataAtOffset',
+		args: [ this.cursor + this.adjustment, this.metadataCursor, op.remove.length, op.insert ]
+	} );
+	this.metadataCursor += op.insert.length;
 };
