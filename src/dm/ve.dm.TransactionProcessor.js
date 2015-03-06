@@ -287,30 +287,15 @@ ve.dm.TransactionProcessor.processors.annotate = function ( op ) {
  * @param {Mixed} op.to New attribute value, or undefined to unset
  */
 ve.dm.TransactionProcessor.processors.attribute = function ( op ) {
-	var element = this.document.data.getData( this.cursor ),
-		to = op.to,
-		from = op.from;
-	if ( element.type === undefined ) {
+	if ( !this.document.data.isElementData( this.cursor ) ) {
 		throw new Error( 'Invalid element error, cannot set attributes on non-element data' );
 	}
-	if ( to === undefined ) {
-		// Clear
-		if ( element.attributes ) {
-			delete element.attributes[op.key];
-		}
-	} else {
-		// Automatically initialize attributes object
-		if ( !element.attributes ) {
-			element.attributes = {};
-		}
-		// Set
-		element.attributes[op.key] = to;
-	}
-
+	this.document.data.setAttributeAtOffset( this.cursor, op.key, op.to );
 	this.synchronizer.pushAttributeChange(
 		this.document.getDocumentNode().getNodeFromOffset( this.cursor + 1 ),
 		op.key,
-		from, to
+		op.from,
+		op.to
 	);
 };
 
