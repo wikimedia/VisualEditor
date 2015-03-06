@@ -130,7 +130,7 @@ ve.dm.TransactionProcessor.prototype.applyAnnotations = function ( to ) {
 		}
 	}
 
-	var isElement, annotations, i, iLen, j, jlen, range, selection,
+	var isElement, annotations, i, iLen, j, jlen,
 		dataQueue = [],
 		metadataQueue = [];
 	if ( this.set.isEmpty() && this.clear.isEmpty() ) {
@@ -170,14 +170,6 @@ ve.dm.TransactionProcessor.prototype.applyAnnotations = function ( to ) {
 	}
 	// Notify the synchronizer
 	if ( this.cursor < to ) {
-		range = new ve.Range( this.cursor, to );
-		selection = this.document.selectNodes(
-			new ve.Range(
-				this.cursor - this.adjustment,
-				to - this.adjustment
-			),
-			'leaves'
-		);
 		this.synchronizer.pushAnnotation( new ve.Range( this.cursor, to ) );
 	}
 	// Ensure document modification happens last so that exceptions
