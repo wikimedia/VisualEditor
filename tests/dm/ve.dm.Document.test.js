@@ -8,7 +8,7 @@ QUnit.module( 've.dm.Document' );
 
 /* Tests */
 
-QUnit.test( 'constructor', 11, function ( assert ) {
+QUnit.test( 'constructor', 12, function ( assert ) {
 	var data, htmlDoc,
 		doc = ve.dm.example.createExampleDocument();
 	assert.equalNodeTree( doc.getDocumentNode(), ve.dm.example.tree, 'node tree matches example data' );
@@ -22,6 +22,18 @@ QUnit.test( 'constructor', 11, function ( assert ) {
 		},
 		Error,
 		'unbalanced input causes exception'
+	);
+	assert.throws(
+		function () {
+			doc = new ve.dm.Document( [
+				{ type: 'paragraph' },
+				{ type: 'inlineImage' },
+				{ type: '/paragraph' }
+			] );
+			doc.buildNodeTree();
+		},
+		Error,
+		'unclosed inline node causes exception'
 	);
 
 	doc = new ve.dm.Document( [ 'a', 'b', 'c', 'd' ] );
