@@ -49,7 +49,7 @@
 					"ve.dm.*Selection",
 					"ve.dm.Transaction",
 					"ve.dm.TransactionProcessor",
-					"ve.dm.TransactionProcessor.processors"
+					"ve.dm.TransactionProcessor.*"
 				]
 			},
 			{

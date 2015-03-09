@@ -40,6 +40,9 @@ ve.dm.TransactionProcessor = function VeDmTransactionProcessor( doc, transaction
 
 /* Static members */
 
+/* See ve.dm.TransactionProcessor.modifiers */
+ve.dm.TransactionProcessor.modifiers = {};
+
 /* See ve.dm.TransactionProcessor.processors */
 ve.dm.TransactionProcessor.processors = {};
 
@@ -101,18 +104,13 @@ ve.dm.TransactionProcessor.prototype.process = function ( presynchronizeHandler 
  * For available method names, see ve.dm.ElementLinearData and ve.dm.MetaLinearData.
  *
  * @param {Object} modification Object describing the modification
- * @param {string} modification.type 'data' or 'metadata'
- * @param {string} modification.method Method name to call on this.document.data or this.document.metadata
+ * @param {string} modification.type Name of a method in ve.dm.TransactionProcessor.modifiers
  * @param {Array} [modification.args] Arguments to pass to this method
  * @throws {Error} Unrecognized modification type
- * @throws {Error} Unrecognized modification method
  */
 ve.dm.TransactionProcessor.prototype.queueModification = function ( modification ) {
-	if ( modification.type !== 'data' && modification.type !== 'metadata' ) {
+	if ( typeof ve.dm.TransactionProcessor.modifiers[modification.type] !== 'function' ) {
 		throw new Error( 'Unrecognized modification type ' + modification.type );
-	}
-	if ( typeof this.document[modification.type][modification.method] !== 'function' ) {
-		throw new Error( 'Unrecognized modification method ' + modification.method );
 	}
 	this.modificationQueue.push( modification );
 };
@@ -121,11 +119,13 @@ ve.dm.TransactionProcessor.prototype.queueModification = function ( modification
  * Apply all modifications queued through #queueModification.
  */
 ve.dm.TransactionProcessor.prototype.applyModifications = function () {
-	var i, len, dataObj, modifications = this.modificationQueue;
+	var i, len, modifications = this.modificationQueue;
 	this.modificationQueue = [];
 	for ( i = 0, len = modifications.length; i < len; i++ ) {
-		dataObj = this.document[modifications[i].type];
-		dataObj[modifications[i].method].apply( dataObj, modifications[i].args || [] );
+		ve.dm.TransactionProcessor.modifiers[modifications[i].type].apply(
+			this,
+			modifications[i].args || []
+		);
 	}
 };
 
@@ -186,8 +186,7 @@ ve.dm.TransactionProcessor.prototype.applyAnnotations = function ( to ) {
 		setAndClear( annotations, this.set, this.clear );
 		// Store annotation indexes in linear model
 		this.queueModification( {
-			type: 'data',
-			method: 'setAnnotationsAtOffset',
+			type: 'annotateData',
 			args: [ i + this.adjustment, annotations ]
 		} );
 	}
@@ -197,8 +196,7 @@ ve.dm.TransactionProcessor.prototype.applyAnnotations = function ( to ) {
 			annotations = this.document.metadata.getAnnotationsFromOffsetAndIndex( i, j );
 			setAndClear( annotations, this.set, this.clear );
 			this.queueModification( {
-				type: 'metadata',
-				method: 'setAnnotationsAtOffsetAndIndex',
+				type: 'annotateMetadata',
 				args: [ i + this.adjustment, j, annotations ]
 			} );
 		}
@@ -207,6 +205,73 @@ ve.dm.TransactionProcessor.prototype.applyAnnotations = function ( to ) {
 	if ( this.cursor < to ) {
 		this.synchronizer.pushAnnotation( new ve.Range( this.cursor + this.adjustment, to + this.adjustment ) );
 	}
+};
+
+/**
+ * Modifier methods.
+ *
+ * Each method executes a specific type of linear model modification. Methods are called in the
+ * context of a transaction processor, so they work similar to normal methods on the object.
+ *
+ * @class ve.dm.TransactionProcessor.modifiers
+ * @singleton
+ */
+
+/**
+ * Splice data into / out of the data or metadata array.
+ * @param {string} type 'data' or 'metadata'
+ * @param {number} offset Offset to remove/insert at
+ * @param {number} remove Number of elements to remove
+ * @param {Array} [insert] Elements to insert
+ */
+ve.dm.TransactionProcessor.modifiers.splice = function ( type, offset, remove, insert ) {
+	insert = insert || [];
+	var obj = type === 'metadata' ? this.document.metadata : this.document.data;
+	obj.batchSplice( offset, remove, insert );
+};
+
+/**
+ * Splice metadata into / out of the metadata array at a given offset.
+ *
+ * @param {number} offset Offset whose metadata array to modify
+ * @param {number} index Index in that offset's metadata array to remove/insert at
+ * @param {number} remove Number of elements to remove
+ * @param {Array} [insert] Elements to insert
+ */
+ve.dm.TransactionProcessor.modifiers.spliceMetadataAtOffset = function ( offset, index, remove, insert ) {
+	insert = insert || [];
+	this.document.metadata.spliceMetadataAtOffset( offset, index, remove, insert );
+};
+
+/**
+ * Set annotations at a given data offset.
+ *
+ * @param {number} offset Offset in data array
+ * @param {ve.dm.AnnotationSet} annotations New set of annotations; overwrites old set
+ */
+ve.dm.TransactionProcessor.modifiers.annotateData = function ( offset, annotations ) {
+	this.document.data.setAnnotationsAtOffset( offset, annotations );
+};
+
+/**
+ * Set annotations at a given metadata offset and index.
+ *
+ * @param {number} offset Offset to annotate at
+ * @param {number} index Index in that offset's metadata array
+ * @param {ve.dm.AnnotationSet} annotations New set of annotations; overwrites old set
+ */
+ve.dm.TransactionProcessor.modifiers.annotateMetadata = function ( offset, index, annotations ) {
+	this.document.metadata.setAnnotationsAtOffsetAndIndex( offset, index, annotations );
+};
+
+/**
+ * Set an attribute at a given offset.
+ * @param {number} offset Offset in data array
+ * @param {string} key Attribute name
+ * @param {Mixed} to New attribute value
+ */
+ve.dm.TransactionProcessor.modifiers.setAttribute = function ( offset, key, to ) {
+	this.document.data.setAttributeAtOffset( offset, key, to );
 };
 
 /**
@@ -303,8 +368,7 @@ ve.dm.TransactionProcessor.processors.attribute = function ( op ) {
 		throw new Error( 'Invalid element error, cannot set attributes on non-element data' );
 	}
 	this.queueModification( {
-		type: 'data',
-		method: 'setAttributeAtOffset',
+		type: 'setAttribute',
 		args: [ this.cursor + this.adjustment, op.key, op.to ]
 	} );
 
@@ -364,22 +428,28 @@ ve.dm.TransactionProcessor.processors.replace = function ( op ) {
 		// Content replacement
 		// Update the linear model
 		this.queueModification( {
-			type: 'data',
-			method: 'batchSplice',
-			args: [ this.cursor + this.adjustment, remove.length, insert ]
+			type: 'splice',
+			args: [ 'data', this.cursor + this.adjustment, remove.length, insert ]
 		} );
 		// Keep the meta linear model in sync
 		if ( removeMetadata !== undefined ) {
 			this.queueModification( {
-				type: 'metadata',
-				method: 'batchSplice',
-				args: [ this.cursor + this.adjustment, removeMetadata.length, insertMetadata ]
+				type: 'splice',
+				args: [
+					'metadata',
+					this.cursor + this.adjustment,
+					removeMetadata.length,
+					insertMetadata
+				]
 			} );
 		} else {
 			this.queueModification( {
-				type: 'metadata',
-				method: 'batchSplice',
-				args: [ this.cursor + this.adjustment, remove.length, new Array( insert.length ) ]
+				type: 'splice',
+				args: [
+					'metadata',
+					this.cursor + this.adjustment,
+					remove.length, new Array( insert.length )
+				]
 			} );
 		}
 		// Get the node containing the replaced content
@@ -437,22 +507,29 @@ ve.dm.TransactionProcessor.processors.replace = function ( op ) {
 				opInsertMetadata = operation.insertMetadata;
 				// Update the linear model
 				this.queueModification( {
-					type: 'data',
-					method: 'batchSplice',
-					args: [ this.cursor + this.adjustment, opRemove.length, opInsert ]
+					type: 'splice',
+					args: [ 'data', this.cursor + this.adjustment, opRemove.length, opInsert ]
 				} );
 				// Keep the meta linear model in sync
 				if ( opRemoveMetadata !== undefined ) {
 					this.queueModification( {
-						type: 'metadata',
-						method: 'batchSplice',
-						args: [ this.cursor + this.adjustment, opRemoveMetadata.length, opInsertMetadata ]
+						type: 'splice',
+						args: [
+							'metadata',
+							this.cursor + this.adjustment,
+							opRemoveMetadata.length,
+							opInsertMetadata
+						]
 					} );
 				} else {
 					this.queueModification( {
-						type: 'metadata',
-						method: 'batchSplice',
-						args: [ this.cursor + this.adjustment, opRemove.length, new Array( opInsert.length ) ]
+						type: 'splice',
+						args: [
+							'metadata',
+							this.cursor + this.adjustment,
+							opRemove.length,
+							new Array( opInsert.length )
+						]
 					} );
 				}
 				affectedRanges.push( new ve.Range(
@@ -562,8 +639,7 @@ ve.dm.TransactionProcessor.processors.replace = function ( op ) {
  */
 ve.dm.TransactionProcessor.processors.replaceMetadata = function ( op ) {
 	this.queueModification( {
-		type: 'metadata',
-		method: 'spliceMetadataAtOffset',
+		type: 'spliceMetadataAtOffset',
 		args: [ this.cursor + this.adjustment, this.metadataCursor, op.remove.length, op.insert ]
 	} );
 	this.metadataCursor += op.insert.length;
