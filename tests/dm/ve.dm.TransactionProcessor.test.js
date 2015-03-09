@@ -292,6 +292,14 @@ QUnit.test( 'commit', function ( assert ) {
 					data[4].type = '/paragraph';
 				}
 			},
+			'conversion with wrong closing': {
+				calls: [
+					['pushReplace', 0, 1, [{ type: 'paragraph' }]],
+					['pushRetain', 3],
+					['pushReplace', 4, 1, [{ type: '/paragraph' }, { type: 'paragraph' }]]
+				],
+				exception: /Unbalanced set of replace operations found/
+			},
 			'splitting an element': {
 				calls: [
 					['pushRetain', 2],
@@ -659,7 +667,7 @@ QUnit.test( 'commit', function ( assert ) {
 		};
 
 	for ( msg in cases ) {
-		n += ( 'expected' in cases[msg] ) ? 4 : 1;
+		n += ( 'expected' in cases[msg] ) ? 4 : 3;
 	}
 	QUnit.expect( n );
 
@@ -721,7 +729,13 @@ QUnit.test( 'commit', function ( assert ) {
 					testDoc.commit( tx );
 				},
 				cases[msg].exception,
-				'commit: ' + msg
+				'exception thrown: ' + msg
+			);
+			assert.deepEqualWithDomElements( testDoc.getFullData(), originalDoc.getFullData(), 'data unmodified: ' + msg );
+			assert.equalNodeTree(
+				testDoc.getDocumentNode(),
+				originalDoc.getDocumentNode(),
+				'tree unmodified: ' + msg
 			);
 		}
 	}

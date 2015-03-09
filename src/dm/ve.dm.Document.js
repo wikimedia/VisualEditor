@@ -853,6 +853,20 @@ ve.dm.Document.prototype.rebuildNodes = function ( parent, index, numNodes, offs
 };
 
 /**
+ * Rebuild the entire node tree from linear model data.
+ */
+ve.dm.Document.prototype.rebuildTree = function () {
+	var documentNode = this.getDocumentNode();
+	this.rebuildNodes(
+		documentNode,
+		0,
+		documentNode.getChildren().length,
+		0,
+		this.data.getLength()
+	);
+};
+
+/**
  * Fix up data so it can safely be inserted into the document data at an offset.
  *
  * TODO: this function needs more work but it seems to work, mostly
