@@ -368,6 +368,33 @@ ve.dm.ElementLinearData.prototype.setAnnotationIndexesAtOffset = function ( offs
 };
 
 /**
+ * Set or unset an attribute at a specified offset.
+ *
+ * @param {number} offset Offset to set/unset attribute at
+ * @param {string} key Attribute name
+ * @param {Mixed} value Value to set, or undefined to unset
+ */
+ve.dm.ElementLinearData.prototype.setAttributeAtOffset = function ( offset, key, value ) {
+	var item = this.getData( offset );
+	if ( !this.isElementData( offset ) ) {
+		return;
+	}
+	if ( value === undefined ) {
+		// Clear
+		if ( item.attributes ) {
+			delete item.attributes[key];
+		}
+	} else {
+		// Automatically initialize attributes object
+		if ( !item.attributes ) {
+			item.attributes = {};
+		}
+		// Set
+		item.attributes[key] = value;
+	}
+};
+
+/**
  * Get character data at a specified offset
  *
  * @param {number} offset Offset to get character data from
