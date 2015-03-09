@@ -262,23 +262,31 @@ ve.dm.Document.prototype.buildNodeTree = function () {
 					parentStack = currentStack;
 					currentStack = [];
 					nodeStack.push( currentStack );
+					currentNode = node;
+				} else {
+					// Assert that the next element is a closing element for this node,
+					// and skip over it.
+					if (
+						!this.data.isCloseElementData( i + 1 ) ||
+						this.data.getType( i + 1 ) !== this.data.getType( i )
+					) {
+						throw new Error( 'Opening element for node that cannot have children must be followed by closing element' );
+					}
+					i++;
 				}
-				currentNode = node;
 			} else {
 				// Branch or leaf node closing
-				if ( ve.dm.nodeFactory.canNodeHaveChildren( currentNode.getType() ) ) {
-					// Pop this node's inner stack from the outer stack. It'll have all of the
-					// node's child nodes fully constructed
-					children = nodeStack.pop();
-					currentStack = parentStack;
-					parentStack = nodeStack[nodeStack.length - 2];
-					if ( !parentStack ) {
-						// This can only happen if we got unbalanced data
-						throw new Error( 'Unbalanced input passed to document' );
-					}
-					// Attach the children to the node
-					ve.batchSplice( currentNode, 0, 0, children );
+				// Pop this node's inner stack from the outer stack. It'll have all of the
+				// node's child nodes fully constructed
+				children = nodeStack.pop();
+				currentStack = parentStack;
+				parentStack = nodeStack[nodeStack.length - 2];
+				if ( !parentStack ) {
+					// This can only happen if we got unbalanced data
+					throw new Error( 'Unbalanced input passed to document' );
 				}
+				// Attach the children to the node
+				ve.batchSplice( currentNode, 0, 0, children );
 				currentNode = parentStack[parentStack.length - 1];
 			}
 		}

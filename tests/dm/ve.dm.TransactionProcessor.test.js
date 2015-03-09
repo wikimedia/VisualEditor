@@ -273,6 +273,13 @@ QUnit.test( 'commit', function ( assert ) {
 				],
 				exception: /Unbalanced set of replace operations found/
 			},
+			'inserting unclosed inline node': {
+				calls: [
+					['pushRetain', 1],
+					['pushReplace', 1, 1, ['F', { type: 'inlineImage' }, 'O', 'O']]
+				],
+				exception: /Opening element for node that cannot have children must be followed by closing element/
+			},
 			'converting an element': {
 				calls: [
 					['pushReplace', 0, 1, [{ type: 'paragraph' }]],
