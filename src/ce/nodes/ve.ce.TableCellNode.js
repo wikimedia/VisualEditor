@@ -26,6 +26,8 @@ ve.ce.TableCellNode = function VeCeTableCellNode() {
 		// ve-ce-tableCellNode-data
 		// ve-ce-tableCellNode-header
 		.addClass( 've-ce-tableCellNode ve-ce-tableCellNode-' + this.model.getAttribute( 'style' ) );
+
+	// Set attributes (keep in sync with #onSetup)
 	if ( rowspan > 1 ) {
 		this.$element.attr( 'rowspan', rowspan );
 	}
@@ -88,6 +90,24 @@ ve.ce.TableCellNode.prototype.setEditing = function ( enable ) {
  */
 ve.ce.TableCellNode.prototype.onUpdate = function () {
 	this.updateTagName();
+};
+
+/**
+ * @inheritdoc
+ */
+ve.ce.TableCellNode.prototype.onSetup = function () {
+	// Parent method
+	ve.ce.TableCellNode.super.prototype.onSetup.call( this );
+
+	var rowspan = this.model.getRowspan(),
+		colspan = this.model.getColspan();
+	// Set attributes (duplicated from constructor in case this.$element is replaced)
+	if ( rowspan > 1 ) {
+		this.$element.attr( 'rowspan', rowspan );
+	}
+	if ( colspan > 1 ) {
+		this.$element.attr( 'colspan', colspan );
+	}
 };
 
 /**
