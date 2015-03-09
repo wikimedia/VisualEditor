@@ -1425,17 +1425,12 @@ QUnit.test( 'newFromContentBranchConversion', function ( assert ) {
 				args: [doc, new ve.Range( 1, 2 ), 'heading', { level: 2 }],
 				ops: [
 					{
-						type: 'replace',
-						remove: [{ type: 'heading', attributes: { level: 1 } }],
-						insert: [{ type: 'heading', attributes: { level: 2 } }]
+						type: 'attribute',
+						key: 'level',
+						from: 1,
+						to: 2
 					},
-					{ type: 'retain', length: 3 },
-					{
-						type: 'replace',
-						remove: [{ type: '/heading' }],
-						insert: [{ type: '/heading' }]
-					},
-					{ type: 'retain', length: 58 }
+					{ type: 'retain', length: 63 }
 				]
 			},
 			'range around 2 paragraphs, convert to preformatted': {

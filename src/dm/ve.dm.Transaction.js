@@ -257,9 +257,7 @@ ve.dm.Transaction.newFromDocumentInsertion = function ( doc, offset, newDoc, new
  * @throws {Error} Cannot set attributes on closing element
  */
 ve.dm.Transaction.newFromAttributeChanges = function ( doc, offset, attr ) {
-	var key,
-		oldValue,
-		tx = new ve.dm.Transaction(),
+	var tx = new ve.dm.Transaction(),
 		data = doc.getData();
 	// Verify element exists at offset
 	if ( data[offset].type === undefined ) {
@@ -271,13 +269,8 @@ ve.dm.Transaction.newFromAttributeChanges = function ( doc, offset, attr ) {
 	}
 	// Retain up to element
 	tx.pushRetain( offset );
-	// Change attribute
-	for ( key in attr ) {
-		oldValue = 'attributes' in data[offset] ? data[offset].attributes[key] : undefined;
-		if ( oldValue !== attr[key] ) {
-			tx.pushReplaceElementAttribute( key, oldValue, attr[key] );
-		}
-	}
+	// Change attributes
+	tx.pushAttributeChanges( attr, data[offset].attributes || {} );
 	// Retain to end of document
 	tx.pushFinalRetain( doc, offset );
 	return tx;
@@ -541,8 +534,9 @@ ve.dm.Transaction.newFromContentBranchConversion = function ( doc, range, type, 
 		selected = selection[i];
 		branch = selected.node.isContent() ? selected.node.getParent() : selected.node;
 		if ( branch.canContainContent() ) {
-			// Skip branches that are already of the target type and have identical attributes
-			if ( branch.getType() === type && ve.compare( branch.getAttributes(), attr ) ) {
+			// Skip branches that are already of the target type and have all attributes in attr
+			// set already.
+			if ( branch.getType() === type && ve.compare( attr, branch.getAttributes(), true ) ) {
 				continue;
 			}
 			branchOuterRange = branch.getOuterRange();
@@ -550,16 +544,25 @@ ve.dm.Transaction.newFromContentBranchConversion = function ( doc, range, type, 
 			if ( branch === previousBranch ) {
 				continue;
 			}
+
 			// Retain up to this branch, considering where the previous one left off
 			tx.pushRetain(
 				branchOuterRange.start - ( previousBranch ? previousBranchOuterRange.end : 0 )
 			);
-			// Replace the opening
-			tx.pushReplace( doc, branchOuterRange.start, 1, [ ve.copy( opening ) ] );
-			// Retain the contents
-			tx.pushRetain( branch.getLength() );
-			// Replace the closing
-			tx.pushReplace( doc, branchOuterRange.end - 1, 1, [ ve.copy( closing ) ] );
+			if ( branch.getType() === type ) {
+				// Same type, different attributes, so we only need an attribute change
+				tx.pushAttributeChanges( attr, branch.getAttributes() );
+				// Retain the branch, including its opening and closing
+				tx.pushRetain( branch.getOuterLength() );
+			} else {
+				// Types differ, so we need to replace the opening and closing
+				// Replace the opening
+				tx.pushReplace( doc, branchOuterRange.start, 1, [ ve.copy( opening ) ] );
+				// Retain the contents
+				tx.pushRetain( branch.getLength() );
+				// Replace the closing
+				tx.pushReplace( doc, branchOuterRange.end - 1, 1, [ ve.copy( closing ) ] );
+			}
 			// Remember this branch and its range for next time
 			previousBranch = branch;
 			previousBranchOuterRange = branchOuterRange;
@@ -1327,6 +1330,21 @@ ve.dm.Transaction.prototype.pushReplaceElementAttribute = function ( key, from, 
 		from: from,
 		to: to
 	} );
+};
+
+/**
+ * Add a series of element attribute change operations.
+ *
+ * @param {Object} changes Object mapping attribute names to new values
+ * @param {Object} oldAttrs Object mapping attribute names to old values
+ */
+ve.dm.Transaction.prototype.pushAttributeChanges = function ( changes, oldAttrs ) {
+	var key;
+	for ( key in changes ) {
+		if ( oldAttrs[key] !== changes[key] ) {
+			this.pushReplaceElementAttribute( key, oldAttrs[key], changes[key] );
+		}
+	}
 };
 
 /**
