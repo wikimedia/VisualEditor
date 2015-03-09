@@ -162,7 +162,7 @@ QUnit.test( 'commit', function ( assert ) {
 					['pushRetain', 1],
 					['pushStopAnnotating', 'invalid-method', bold]
 				],
-				exception: Error
+				exception: /Invalid annotation method/
 			},
 			'annotating branch opening element throws an exception': {
 				calls: [
@@ -170,7 +170,7 @@ QUnit.test( 'commit', function ( assert ) {
 					['pushRetain', 1],
 					['pushStopAnnotating', 'set', bold]
 				],
-				exception: Error
+				exception: /Invalid transaction, cannot annotate a non-content element/
 			},
 			'annotating branch closing element throws an exception': {
 				calls: [
@@ -179,7 +179,7 @@ QUnit.test( 'commit', function ( assert ) {
 					['pushRetain', 1],
 					['pushStopAnnotating', 'set', bold]
 				],
-				exception: Error
+				exception: /Invalid transaction, cannot annotate a non-content element/
 			},
 			'setting duplicate annotations throws an exception': {
 				calls: [
@@ -188,7 +188,7 @@ QUnit.test( 'commit', function ( assert ) {
 					['pushRetain', 1],
 					['pushStopAnnotating', 'set', bold]
 				],
-				exception: Error
+				exception: /Invalid transaction, annotation to be set is already set/
 			},
 			'removing non-existent annotations throws an exception': {
 				calls: [
@@ -197,7 +197,7 @@ QUnit.test( 'commit', function ( assert ) {
 					['pushRetain', 1],
 					['pushStopAnnotating', 'clear', bold]
 				],
-				exception: Error
+				exception: /Invalid transaction, annotation to be cleared is not set/
 			},
 			'changing, removing and adding attributes': {
 				calls: [
@@ -220,7 +220,7 @@ QUnit.test( 'commit', function ( assert ) {
 					['pushRetain', 1],
 					['pushReplaceElementAttribute', 'foo', 23, 42]
 				],
-				exception: Error
+				exception: /Invalid element error, cannot set attributes on non-element data/
 			},
 			'inserting text': {
 				calls: [
@@ -266,6 +266,12 @@ QUnit.test( 'commit', function ( assert ) {
 				expected: function ( data ) {
 					data.splice( 1, 1, 'F', 'O', 'O', { type: 'inlineImage' }, { type: '/inlineImage' }, 'B', 'A', 'R' );
 				}
+			},
+			'inserting unbalanced data': {
+				calls: [
+					['pushReplace', 0, 0, [{ type: 'table' }]]
+				],
+				exception: /Unbalanced set of replace operations found/
 			},
 			'converting an element': {
 				calls: [
