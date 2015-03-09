@@ -17,17 +17,12 @@
  * @param {ve.dm.LeafNode} model
  * @param {Object} [config]
  */
-ve.ce.LeafNode = function VeCeLeafNode( model ) {
+ve.ce.LeafNode = function VeCeLeafNode() {
 	// Mixin constructor
 	ve.LeafNode.call( this );
 
 	// Parent constructor
 	ve.ce.LeafNode.super.apply( this, arguments );
-
-	// DOM changes (keep in sync with #onSetup)
-	if ( model.isWrapped() ) {
-		this.$element.addClass( 've-ce-leafNode' );
-	}
 };
 
 /* Inheritance */
@@ -45,11 +40,10 @@ ve.ce.LeafNode.static.tagName = 'span';
 /**
  * @inheritdoc
  */
-ve.ce.LeafNode.prototype.onSetup = function () {
+ve.ce.LeafNode.prototype.initialize = function () {
 	// Parent method
-	ve.ce.LeafNode.super.prototype.onSetup.call( this );
+	ve.ce.LeafNode.super.prototype.initialize.call( this );
 
-	// DOM changes (duplicated from constructor in case this.$element is replaced)
 	if ( this.model.isWrapped() ) {
 		this.$element.addClass( 've-ce-leafNode' );
 	}

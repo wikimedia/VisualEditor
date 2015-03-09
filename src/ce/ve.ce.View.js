@@ -50,6 +50,9 @@ ve.ce.View = function VeCeView( model, config ) {
 			this.model.handlesOwnChildren()
 		);
 	}
+
+	// Initialize
+	this.initialize();
 };
 
 /* Inheritance */
@@ -111,6 +114,13 @@ ve.ce.View.static.renderHtmlAttributes = function ( attribute ) {
  */
 ve.ce.View.prototype.getModelHtmlDocument = function () {
 	return null;
+};
+
+/**
+ * Initialize this.$element. This is called by the constructor and should be called every time
+ * this.$element is replaced.
+ */
+ve.ce.View.prototype.initialize = function () {
 };
 
 /**

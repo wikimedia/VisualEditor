@@ -171,6 +171,7 @@ ve.ce.GeneratedContentNode.prototype.render = function ( generatedContents, stag
 		this.$resizable = this.getResizableElement();
 	}
 
+	this.initialize();
 	if ( this.live ) {
 		this.emit( 'setup' );
 	}

@@ -28,6 +28,9 @@ ve.ce.AlienNode = function VeCeAlienNode() {
 	ve.ce.FocusableNode.call( this, this.$element, {
 		classes: [ 've-ce-alienNode-highlights' ]
 	} );
+
+	// Re-initialize after $element changes
+	this.initialize();
 };
 
 /* Inheritance */

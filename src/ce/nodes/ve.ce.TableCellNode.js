@@ -15,35 +15,12 @@
  * @param {Object} [config] Configuration options
  */
 ve.ce.TableCellNode = function VeCeTableCellNode() {
-	var rowspan, colspan;
-
 	// Parent constructor
 	ve.ce.TableCellNode.super.apply( this, arguments );
 
 	// Mixin constructors
 	ve.ce.TableCellableNode.call( this );
 	ve.ce.ContentEditableNode.call( this );
-
-	rowspan = this.model.getRowspan();
-	colspan = this.model.getColspan();
-
-	// DOM changes
-	this.$element
-		// The following classes can be used here:
-		// ve-ce-tableCellNode-data
-		// ve-ce-tableCellNode-header
-		.addClass( 've-ce-tableCellNode ve-ce-tableCellNode-' + this.model.getAttribute( 'style' ) );
-
-	// Set attributes (keep in sync with #onSetup)
-	if ( rowspan > 1 ) {
-		this.$element.attr( 'rowspan', rowspan );
-	}
-	if ( colspan > 1 ) {
-		this.$element.attr( 'colspan', colspan );
-	}
-
-	// Add tooltip
-	this.$element.attr( 'title', ve.msg( 'visualeditor-tablecell-tooltip' ) );
 
 	// Events
 	this.model.connect( this, {
@@ -66,6 +43,37 @@ ve.ce.TableCellNode.static.name = 'tableCell';
 /* Methods */
 
 /**
+ * @inheritdoc
+ */
+ve.ce.TableCellNode.prototype.initialize = function () {
+	var rowspan, colspan;
+
+	// Parent method
+	ve.ce.TableCellNode.super.prototype.initialize.call( this );
+
+	rowspan = this.model.getRowspan();
+	colspan = this.model.getColspan();
+
+	// DOM changes
+	this.$element
+		// The following classes can be used here:
+		// ve-ce-tableCellNode-data
+		// ve-ce-tableCellNode-header
+		.addClass( 've-ce-tableCellNode ve-ce-tableCellNode-' + this.model.getAttribute( 'style' ) );
+
+	// Set attributes (keep in sync with #onSetup)
+	if ( rowspan > 1 ) {
+		this.$element.attr( 'rowspan', rowspan );
+	}
+	if ( colspan > 1 ) {
+		this.$element.attr( 'colspan', colspan );
+	}
+
+	// Add tooltip
+	this.$element.attr( 'title', ve.msg( 'visualeditor-tablecell-tooltip' ) );
+};
+
+/**
  * Set the editing mode of a table cell node
  *
  * @param {boolean} enable Enable editing
@@ -85,29 +93,6 @@ ve.ce.TableCellNode.prototype.setEditing = function ( enable ) {
  */
 ve.ce.TableCellNode.prototype.onUpdate = function () {
 	this.updateTagName();
-};
-
-/**
- * @inheritdoc
- */
-ve.ce.TableCellNode.prototype.onSetup = function () {
-	var rowspan, colspan;
-	// Parent method
-	ve.ce.TableCellNode.super.prototype.onSetup.call( this );
-
-	rowspan = this.model.getRowspan();
-	colspan = this.model.getColspan();
-	// Set attributes (duplicated from constructor in case this.$element is replaced)
-	if ( rowspan > 1 ) {
-		this.$element.attr( 'rowspan', rowspan );
-	} else {
-		this.$element.removeAttr( 'rowspan' );
-	}
-	if ( colspan > 1 ) {
-		this.$element.attr( 'colspan', colspan );
-	} else {
-		this.$element.removeAttr( 'colspan' );
-	}
 };
 
 /**
