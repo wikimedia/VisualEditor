@@ -19,6 +19,7 @@
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 	cursor: pointer;
+	margin: 0;
 }
 
 .ve-ui-tableContext-colContext .ve-ui-tableContext-indicator {
