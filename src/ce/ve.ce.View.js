@@ -36,21 +36,6 @@ ve.ce.View = function VeCeView( model, config ) {
 		teardown: 'onTeardown'
 	} );
 
-	if ( this.model.element && this.model.element.originalDomElementsIndex !== undefined ) {
-		// Render attributes from original DOM elements
-		ve.dm.Converter.static.renderHtmlAttributeList(
-			this.model.getOriginalDomElements( this.model.getStore() ),
-			this.$element,
-			this.constructor.static.renderHtmlAttributes,
-			// computed attributes
-			true,
-			// deep
-			!( this.model instanceof ve.dm.Node ) ||
-			!this.model.canHaveChildren() ||
-			this.model.handlesOwnChildren()
-		);
-	}
-
 	// Initialize
 	this.initialize();
 };
@@ -121,6 +106,20 @@ ve.ce.View.prototype.getModelHtmlDocument = function () {
  * this.$element is replaced.
  */
 ve.ce.View.prototype.initialize = function () {
+	if ( this.model.element && this.model.element.originalDomElementsIndex !== undefined ) {
+		// Render attributes from original DOM elements
+		ve.dm.Converter.static.renderHtmlAttributeList(
+			this.model.getOriginalDomElements( this.model.getStore() ),
+			this.$element,
+			this.constructor.static.renderHtmlAttributes,
+			// computed attributes
+			true,
+			// deep
+			!( this.model instanceof ve.dm.Node ) ||
+			!this.model.canHaveChildren() ||
+			this.model.handlesOwnChildren()
+		);
+	}
 };
 
 /**
