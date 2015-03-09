@@ -549,29 +549,6 @@ ve.dm.Document.prototype.cloneFromRange = function ( range ) {
 };
 
 /**
- * Splice metadata into and/or out of the linear model.
- *
- * `this.metadata` will be updated accordingly.
- *
- * @method
- * @see ve#batchSplice
- * @param offset
- * @param index
- * @param remove
- * @param insert
- * @returns {Array}
- */
-ve.dm.Document.prototype.spliceMetadata = function ( offset, index, remove, insert ) {
-	var elements = this.metadata.getData( offset );
-	if ( !elements ) {
-		elements = [];
-		this.metadata.setData( offset, elements );
-	}
-	insert = insert || [];
-	return ve.batchSplice( elements, index, remove, insert );
-};
-
-/**
  * Get the full document data including metadata.
  *
  * Metadata will be into the document data to produce the "full data" result. If a range is passed,

@@ -111,6 +111,27 @@ ve.dm.MetaLinearData.prototype.getTotalDataLength = function () {
 };
 
 /**
+ * Splice into the metadata array at a specific offset.
+ *
+ * @method
+ * @see ve#batchSplice
+ * @param offset {number} Splice into the metadata array for this offset
+ * @param index {number} Index in the metadata array to insert/remove at
+ * @param remove {number} Number of items to remove
+ * @param insert {Array} Items to insert
+ * @returns {Array} Removed items
+ */
+ve.dm.MetaLinearData.prototype.spliceMetadataAtOffset = function ( offset, index, remove, insert ) {
+	var items = this.getData( offset );
+	if ( !items ) {
+		items = [];
+		this.setData( offset, items );
+	}
+	insert = insert || [];
+	return ve.batchSplice( items, index, remove, insert );
+};
+
+/**
  * Get annotations' store indexes covered by an offset and index.
  *
  * @method

@@ -521,6 +521,6 @@ ve.dm.TransactionProcessor.processors.replaceMetadata = function ( op ) {
 	var remove = op.remove,
 		insert = op.insert;
 
-	this.document.spliceMetadata( this.cursor, this.metadataCursor, remove.length, insert );
+	this.document.metadata.spliceMetadataAtOffset( this.cursor, this.metadataCursor, remove.length, insert );
 	this.metadataCursor += insert.length;
 };
