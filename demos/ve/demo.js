@@ -62,7 +62,7 @@ $( function () {
 		updateStylesFromDir();
 
 		languageInput.on( 'change', function ( lang, dir ) {
-			if ( dir === currentDir && lang !== 'qqx' && ve.indexOf( lang, ve.availableLanguages ) === -1 ) {
+			if ( dir === currentDir && lang !== 'qqx' && ve.availableLanguages.indexOf( lang ) === -1 ) {
 				return;
 			}
 

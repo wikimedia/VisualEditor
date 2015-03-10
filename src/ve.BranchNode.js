@@ -52,7 +52,7 @@ ve.BranchNode.prototype.getChildren = function () {
  * @returns {number} Index of child node or -1 if node was not found
  */
 ve.BranchNode.prototype.indexOf = function ( node ) {
-	return ve.indexOf( node, this.children );
+	return this.children.indexOf( node );
 };
 
 /**

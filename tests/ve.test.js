@@ -24,8 +24,6 @@ QUnit.module( 've' );
 
 // ve.isEmptyObject: Tested upstream (jQuery)
 
-// ve.indexOf: Tested upstream (jQuery)
-
 // ve.extendObject: Tested upstream (jQuery)
 
 QUnit.test( 'isInstanceOfAny', 7, function ( assert ) {

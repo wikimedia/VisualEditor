@@ -169,7 +169,7 @@ ve.dm.AnnotationSet.prototype.contains = function ( annotation ) {
  * @returns {boolean} There is an annotation in the set with this store index
  */
 ve.dm.AnnotationSet.prototype.containsIndex = function ( storeIndex ) {
-	return ve.indexOf( storeIndex, this.getIndexes() ) !== -1;
+	return this.getIndexes().indexOf( storeIndex ) !== -1;
 };
 
 /**
@@ -184,7 +184,7 @@ ve.dm.AnnotationSet.prototype.containsAnyOf = function ( set ) {
 		setIndexes = set.getIndexes(),
 		thisIndexes = this.getIndexes();
 	for ( i = 0, length = setIndexes.length; i < length; i++ ) {
-		if ( ve.indexOf( setIndexes[i], thisIndexes ) !== -1 ) {
+		if ( thisIndexes.indexOf( setIndexes[i] ) !== -1 ) {
 			return true;
 		}
 	}
@@ -203,7 +203,7 @@ ve.dm.AnnotationSet.prototype.containsAllOf = function ( set ) {
 		setIndexes = set.getIndexes(),
 		thisIndexes = this.getIndexes();
 	for ( i = 0, length = setIndexes.length; i < length; i++ ) {
-		if ( ve.indexOf( setIndexes[i], thisIndexes ) === -1 ) {
+		if ( thisIndexes.indexOf( setIndexes[i] ) === -1 ) {
 			return false;
 		}
 	}
@@ -229,7 +229,7 @@ ve.dm.AnnotationSet.prototype.offsetOf = function ( annotation ) {
  * @returns {number} Offset of annotation in the set, or -1 if annotation is not in the set.
  */
 ve.dm.AnnotationSet.prototype.offsetOfIndex = function ( storeIndex ) {
-	return ve.indexOf( storeIndex, this.getIndexes() );
+	return this.getIndexes().indexOf( storeIndex );
 };
 
 /**

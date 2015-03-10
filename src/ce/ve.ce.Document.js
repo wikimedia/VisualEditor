@@ -193,7 +193,7 @@ ve.ce.Document.prototype.getNodeAndOffsetUnadjustedForUnicorn = function ( offse
 				model = $item.data( 'view' ).model;
 				// DM nodes can render as multiple elements in the view, so check
 				// we haven't already counted it.
-				if ( ve.indexOf( model, countedNodes ) === -1 ) {
+				if ( countedNodes.indexOf( model ) === -1 ) {
 					length = model.getOuterLength();
 					countedNodes.push( model );
 					if ( offset >= startOffset && offset < startOffset + length ) {

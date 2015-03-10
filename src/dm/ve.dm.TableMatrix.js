@@ -223,7 +223,7 @@ ve.dm.TableMatrix.prototype.lookupCell = function ( cellNode ) {
 		matrix = this.getMatrix(),
 		rowNodes = this.getRowNodes();
 
-	row = ve.indexOf( cellNode.getParent(), rowNodes );
+	row = rowNodes.indexOf( cellNode.getParent() );
 	if ( row < 0 ) {
 		return null;
 	}

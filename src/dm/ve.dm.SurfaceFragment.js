@@ -1198,7 +1198,7 @@ ve.dm.SurfaceFragment.prototype.isolateAndUnwrap = function ( isolateForType ) {
 	// Find start split point, if required
 	startSplitNode = nodes[0].node;
 	startOffset = startSplitNode.getOuterRange().start;
-	while ( allowedParents !== null && ve.indexOf( startSplitNode.getParent().type, allowedParents ) === -1 ) {
+	while ( allowedParents !== null && allowedParents.indexOf( startSplitNode.getParent().type ) === -1 ) {
 		if ( startSplitNode.getParent().indexOf( startSplitNode ) > 0 ) {
 			startSplitRequired = true;
 		}
@@ -1214,7 +1214,7 @@ ve.dm.SurfaceFragment.prototype.isolateAndUnwrap = function ( isolateForType ) {
 	// Find end split point, if required
 	endSplitNode = nodes[nodes.length - 1].node;
 	endOffset = endSplitNode.getOuterRange().end;
-	while ( allowedParents !== null && ve.indexOf( endSplitNode.getParent().type, allowedParents ) === -1 ) {
+	while ( allowedParents !== null && allowedParents.indexOf( endSplitNode.getParent().type ) === -1 ) {
 		if ( endSplitNode.getParent().indexOf( endSplitNode ) < endSplitNode.getParent().getChildren().length - 1 ) {
 			endSplitRequired = true;
 		}

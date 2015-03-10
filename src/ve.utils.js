@@ -651,7 +651,7 @@ ve.convertDomElements = function ( value ) {
  */
 ve.isBlockElement = function ( element ) {
 	var elementName = typeof element === 'string' ? element : element.nodeName;
-	return ve.indexOf( elementName.toLowerCase(), ve.elementTypes.block ) !== -1;
+	return ve.elementTypes.block.indexOf( elementName.toLowerCase() ) !== -1;
 };
 
 /**
@@ -662,7 +662,7 @@ ve.isBlockElement = function ( element ) {
  */
 ve.isVoidElement = function ( element ) {
 	var elementName = typeof element === 'string' ? element : element.nodeName;
-	return ve.indexOf( elementName.toLowerCase(), ve.elementTypes.void ) !== -1;
+	return ve.elementTypes.void.indexOf( elementName.toLowerCase() ) !== -1;
 };
 
 ve.elementTypes = {

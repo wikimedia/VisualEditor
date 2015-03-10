@@ -275,7 +275,7 @@ ve.dm.InternalList.prototype.getItemInsertion = function ( groupName, key, data 
  * @returns {number} Position within the key ordering for that group
  */
 ve.dm.InternalList.prototype.getIndexPosition = function ( groupName, index ) {
-	return ve.indexOf( index, this.nodes[groupName].indexOrder );
+	return this.nodes[groupName].indexOrder.indexOf( index );
 };
 
 /**
@@ -336,7 +336,7 @@ ve.dm.InternalList.prototype.addNode = function ( groupName, key, index, node ) 
 			group.firstNodes[index] = node;
 		}
 	}
-	if ( ve.indexOf( index, group.indexOrder ) === -1 ) {
+	if ( group.indexOrder.indexOf( index ) === -1 ) {
 		group.indexOrder.push( index );
 	}
 	this.markGroupAsChanged( groupName );
@@ -347,7 +347,7 @@ ve.dm.InternalList.prototype.addNode = function ( groupName, key, index, node ) 
  * @param {string} groupName Name of group which has changed
  */
 ve.dm.InternalList.prototype.markGroupAsChanged = function ( groupName ) {
-	if ( ve.indexOf( groupName, this.groupsChanged ) === -1 ) {
+	if ( this.groupsChanged.indexOf( groupName ) === -1 ) {
 		this.groupsChanged.push( groupName );
 	}
 };
@@ -395,7 +395,7 @@ ve.dm.InternalList.prototype.removeNode = function ( groupName, key, index, node
 	if ( keyedNodes.length === 0 ) {
 		delete group.keyedNodes[key];
 		delete group.firstNodes[index];
-		j = ve.indexOf( index, group.indexOrder );
+		j = group.indexOrder.indexOf( index );
 		group.indexOrder.splice( j, 1 );
 	}
 	this.markGroupAsChanged( groupName );
