@@ -1247,7 +1247,7 @@ ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
 		} else {
 			focusNode = node;
 		}
-		return $( focusNode ).closest( '.ve-ce-focusableNode, .ve-ce-tableNode' ).data( 'view' ) || null;
+		return $( focusNode ).closest( '.ve-ce-focusableNode, .ve-ce-tableNode:not(.ve-ce-tableNode-editing)' ).data( 'view' ) || null;
 	}
 
 	/**
