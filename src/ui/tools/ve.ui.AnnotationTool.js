@@ -285,6 +285,7 @@ ve.ui.MoreTextStyleTool = function VeUiMoreTextStyleTool( toolGroup, config ) {
 	OO.ui.ToolGroupTool.call( this, toolGroup, config );
 };
 OO.inheritClass( ve.ui.MoreTextStyleTool, OO.ui.ToolGroupTool );
+ve.ui.MoreTextStyleTool.static.autoAddToCatchall = false;
 ve.ui.MoreTextStyleTool.static.name = 'moreTextStyle';
 ve.ui.MoreTextStyleTool.static.group = 'textStyleExpansion';
 ve.ui.MoreTextStyleTool.static.title =
