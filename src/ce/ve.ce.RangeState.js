@@ -130,7 +130,7 @@ ve.ce.RangeState.prototype.saveState = function ( old, $surfaceElement, docNode,
 	if ( selectionOnly && !anchorNodeChanged ) {
 		this.text = old.text;
 		this.hash = old.hash;
-	} else if ( this.node === null ) {
+	} else if ( !this.node ) {
 		this.text = null;
 		this.hash = null;
 	} else {
