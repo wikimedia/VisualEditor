@@ -23,6 +23,7 @@ ve.dm.TransactionProcessor = function VeDmTransactionProcessor( doc, transaction
 	this.transaction = transaction;
 	this.operations = transaction.getOperations();
 	this.modificationQueue = [];
+	this.rollbackQueue = [];
 	this.synchronizer = new ve.dm.DocumentSynchronizer( doc, transaction );
 	// Linear model offset that we're currently at. Operations in the transaction are ordered, so
 	// the cursor only ever moves forward.
@@ -82,20 +83,45 @@ ve.dm.TransactionProcessor.prototype.executeOperation = function ( op ) {
  */
 ve.dm.TransactionProcessor.prototype.process = function ( presynchronizeHandler ) {
 	var op;
+
+	// First process each operation to gather modifications in the modification queue.
+	// If an exception occurs during this stage, we don't need to do anything to recover,
+	// because no modifications were made yet.
+	this.operationIndex = 0;
 	// This loop is factored this way to allow operations to be skipped over or executed
 	// from within other operations
-	this.operationIndex = 0;
 	while ( ( op = this.nextOperation() ) ) {
 		this.executeOperation( op );
 	}
-	this.applyModifications();
-	if ( presynchronizeHandler ) {
-		presynchronizeHandler();
-	}
-	this.synchronizer.synchronize( this.transaction );
 
-	// Mark the transaction as committed or rolled back, as appropriate
+	// Apply the queued modifications
+	try {
+		this.applyModifications();
+	} catch ( e ) {
+		// Restore the linear model to its original state
+		this.rollbackModifications();
+		// Rethrow the exception
+		throw e;
+	}
+	// Mark the transaction as committed
 	this.transaction.markAsApplied();
+
+	// Synchronize the node tree for the modifications we just made
+	try {
+		if ( presynchronizeHandler ) {
+			presynchronizeHandler();
+		}
+		this.synchronizer.synchronize( this.transaction );
+	} catch ( e ) {
+		// Restore the linear model to its original state
+		this.rollbackModifications();
+		// The synchronizer may have left the tree in some sort of weird half-baked state,
+		// so rebuild it from scratch
+		this.document.rebuildTree();
+		// Rethrow the exception
+		throw e;
+	}
+
 };
 
 /**
@@ -116,16 +142,29 @@ ve.dm.TransactionProcessor.prototype.queueModification = function ( modification
 };
 
 /**
- * Apply all modifications queued through #queueModification.
+ * Apply all modifications queued through #queueModification, and add their rollback functions
+ * to this.rollbackQueue.
  */
 ve.dm.TransactionProcessor.prototype.applyModifications = function () {
-	var i, len, modifications = this.modificationQueue;
+	var i, len, modifier, modifications = this.modificationQueue;
 	this.modificationQueue = [];
 	for ( i = 0, len = modifications.length; i < len; i++ ) {
-		ve.dm.TransactionProcessor.modifiers[modifications[i].type].apply(
-			this,
-			modifications[i].args || []
-		);
+		modifier = ve.dm.TransactionProcessor.modifiers[modifications[i].type];
+		// Add to the beginning of rollbackQueue, because the most recent change needs to
+		// be undone first
+		this.rollbackQueue.unshift( modifier.apply( this, modifications[i].args || [] ) );
+	}
+};
+
+/**
+ * Roll back all modifications that have been applied so far. This invokes the callbacks returned
+ * by the modifier functions.
+ */
+ve.dm.TransactionProcessor.prototype.rollbackModifications = function () {
+	var i, len, rollbacks = this.rollbackQueue;
+	this.rollbackQueue = [];
+	for ( i = 0, len = rollbacks.length; i < len; i++ ) {
+		rollbacks[i]();
 	}
 };
 
@@ -210,8 +249,10 @@ ve.dm.TransactionProcessor.prototype.applyAnnotations = function ( to ) {
 /**
  * Modifier methods.
  *
- * Each method executes a specific type of linear model modification. Methods are called in the
- * context of a transaction processor, so they work similar to normal methods on the object.
+ * Each method executes a specific type of linear model modification and returns a function that
+ * undoes the modification, in case we need to recover the previous linear model state.
+ * Methods are called in the context of a transaction processor, so they work similar to normal
+ * methods on the object.
  *
  * @class ve.dm.TransactionProcessor.modifiers
  * @singleton
@@ -223,11 +264,15 @@ ve.dm.TransactionProcessor.prototype.applyAnnotations = function ( to ) {
  * @param {number} offset Offset to remove/insert at
  * @param {number} remove Number of elements to remove
  * @param {Array} [insert] Elements to insert
+ * @return {Function} Function that undoes the modification
  */
 ve.dm.TransactionProcessor.modifiers.splice = function ( type, offset, remove, insert ) {
 	insert = insert || [];
-	var obj = type === 'metadata' ? this.document.metadata : this.document.data;
-	obj.batchSplice( offset, remove, insert );
+	var data = type === 'metadata' ? this.document.metadata : this.document.data,
+		removed = data.batchSplice( offset, remove, insert );
+	return function () {
+		data.batchSplice( offset, insert.length, removed );
+	};
 };
 
 /**
@@ -237,10 +282,15 @@ ve.dm.TransactionProcessor.modifiers.splice = function ( type, offset, remove, i
  * @param {number} index Index in that offset's metadata array to remove/insert at
  * @param {number} remove Number of elements to remove
  * @param {Array} [insert] Elements to insert
+ * @return {Function} Function that undoes the modification
  */
 ve.dm.TransactionProcessor.modifiers.spliceMetadataAtOffset = function ( offset, index, remove, insert ) {
 	insert = insert || [];
-	this.document.metadata.spliceMetadataAtOffset( offset, index, remove, insert );
+	var metadata = this.document.metadata,
+		removed = metadata.spliceMetadataAtOffset( offset, index, remove, insert );
+	return function () {
+		metadata.spliceMetadataAtOffset( offset, index, insert.length, removed );
+	};
 };
 
 /**
@@ -248,9 +298,15 @@ ve.dm.TransactionProcessor.modifiers.spliceMetadataAtOffset = function ( offset,
  *
  * @param {number} offset Offset in data array
  * @param {ve.dm.AnnotationSet} annotations New set of annotations; overwrites old set
+ * @return {Function} Function that undoes the modification
  */
 ve.dm.TransactionProcessor.modifiers.annotateData = function ( offset, annotations ) {
-	this.document.data.setAnnotationsAtOffset( offset, annotations );
+	var data = this.document.data,
+		oldAnnotations = data.getAnnotationsFromOffset( offset );
+	data.setAnnotationsAtOffset( offset, annotations );
+	return function () {
+		data.setAnnotationsAtOffset( offset, oldAnnotations );
+	};
 };
 
 /**
@@ -259,19 +315,32 @@ ve.dm.TransactionProcessor.modifiers.annotateData = function ( offset, annotatio
  * @param {number} offset Offset to annotate at
  * @param {number} index Index in that offset's metadata array
  * @param {ve.dm.AnnotationSet} annotations New set of annotations; overwrites old set
+ * @return {Function} Function that undoes the modification
  */
 ve.dm.TransactionProcessor.modifiers.annotateMetadata = function ( offset, index, annotations ) {
-	this.document.metadata.setAnnotationsAtOffsetAndIndex( offset, index, annotations );
+	var metadata = this.document.metadata,
+		oldAnnotations = metadata.getAnnotationsFromOffsetAndIndex( offset, index );
+	metadata.setAnnotationsAtOffsetAndIndex( offset, index, annotations );
+	return function () {
+		metadata.setAnnotationsAtOffsetAndIndex( offset, index, oldAnnotations );
+	};
 };
 
 /**
  * Set an attribute at a given offset.
  * @param {number} offset Offset in data array
  * @param {string} key Attribute name
- * @param {Mixed} to New attribute value
+ * @param {Mixed} value New attribute value
+ * @return {Function} Function that undoes the modification
  */
-ve.dm.TransactionProcessor.modifiers.setAttribute = function ( offset, key, to ) {
-	this.document.data.setAttributeAtOffset( offset, key, to );
+ve.dm.TransactionProcessor.modifiers.setAttribute = function ( offset, key, value ) {
+	var data = this.document.data,
+		item = data.getData( offset ),
+		oldValue = item.attributes && item.attributes[key];
+	data.setAttributeAtOffset( offset, key, value );
+	return function () {
+		data.setAttributeAtOffset( offset, key, oldValue );
+	};
 };
 
 /**
