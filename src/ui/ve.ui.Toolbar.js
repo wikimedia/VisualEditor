@@ -280,9 +280,6 @@ ve.ui.Toolbar.prototype.detach = function () {
 	this.unfloat();
 
 	// Events
-	if ( this.$window ) {
-		this.$window.off( this.windowEvents );
-	}
 	if ( this.getSurface() ) {
 		this.getSurface().getModel().disconnect( this );
 		this.getSurface().getToolbarDialogs().disconnect( this );
@@ -299,6 +296,11 @@ ve.ui.Toolbar.prototype.detach = function () {
 ve.ui.Toolbar.prototype.destroy = function () {
 	// Parent method
 	OO.ui.Toolbar.prototype.destroy.call( this );
+
+	// Events
+	if ( this.$window ) {
+		this.$window.off( this.windowEvents );
+	}
 
 	// Detach surface last, because tool destructors need getSurface()
 	this.detach();
