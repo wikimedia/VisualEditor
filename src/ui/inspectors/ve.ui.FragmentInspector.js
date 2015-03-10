@@ -40,11 +40,10 @@ ve.ui.FragmentInspector.static.actions = ve.ui.FragmentInspector.super.static.ac
 /**
  * Handle form submit events.
  *
- * @param {jQuery.Event} e Submit event
+ * @method
  */
-ve.ui.FragmentInspector.prototype.onFormSubmit = function ( e ) {
+ve.ui.FragmentInspector.prototype.onFormSubmit = function () {
 	this.close( { action: 'done' } );
-	e.preventDefault();
 };
 
 /**
