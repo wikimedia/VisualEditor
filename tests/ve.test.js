@@ -16,8 +16,6 @@ QUnit.module( 've' );
 
 // ve.getObjectValues: Tested upstream (OOjs)
 
-// ve.getObjectKeys: Tested upstream (JavaScript)
-
 // ve.compare: Tested upstream (OOjs)
 
 // ve.copy: Tested upstream (OOjs)

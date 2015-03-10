@@ -52,13 +52,6 @@ ve.getObjectValues = OO.getObjectValues;
 
 /**
  * @method
- * @until ES5: Object#keys
- * @inheritdoc Object#keys
- */
-ve.getObjectKeys = Object.keys;
-
-/**
- * @method
  * @inheritdoc OO#compare
  */
 ve.compare = OO.compare;
