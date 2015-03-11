@@ -203,7 +203,7 @@
 				matches = [],
 				models = reg.modelsWithTypeRegExps[ +withFunc ];
 			for ( i = 0; i < models.length; i++ ) {
-				if ( excludeTypes && ve.indexOf( models[i], excludeTypes ) !== -1 ) {
+				if ( excludeTypes && excludeTypes.indexOf( models[i] ) !== -1 ) {
 					continue;
 				}
 				types = reg.registry[models[i]].static.getMatchRdfaTypes();
@@ -213,7 +213,7 @@
 						type.match( types[j] ) &&
 						(
 							( tag === '' && reg.registry[models[i]].static.matchTagNames === null ) ||
-							ve.indexOf( tag, reg.registry[models[i]].static.matchTagNames ) !== -1
+							reg.registry[models[i]].static.matchTagNames.indexOf( tag ) !== -1
 						)
 					) {
 						matches.push( models[i] );

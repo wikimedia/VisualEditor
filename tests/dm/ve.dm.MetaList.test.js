@@ -161,7 +161,7 @@ QUnit.test( 'findItem', function ( assert ) {
 	for ( i = 0; i < metadata.getLength(); i++ ) {
 		for ( j = 0; j < metadata.getDataLength( i ); j++ ) {
 			group = ve.dm.metaItemFactory.getGroup( metadata.getData( i, j ).type );
-			if ( ve.indexOf( group, groups ) === -1 ) {
+			if ( groups.indexOf( group ) === -1 ) {
 				groups.push( group );
 			}
 		}

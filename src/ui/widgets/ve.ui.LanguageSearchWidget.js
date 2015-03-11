@@ -82,7 +82,7 @@ ve.ui.LanguageSearchWidget.prototype.setAvailableLanguages = function ( availabl
 	for ( i = 0, iLen = this.languageResultWidgets.length; i < iLen; i++ ) {
 		languageResult = this.languageResultWidgets[i];
 		data = languageResult.getData();
-		if ( ve.indexOf( data.code, availableLanguages ) !== -1 ) {
+		if ( availableLanguages.indexOf( data.code ) !== -1 ) {
 			this.filteredLanguageResultWidgets.push( languageResult );
 		}
 	}

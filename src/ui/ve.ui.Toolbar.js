@@ -96,7 +96,7 @@ ve.ui.Toolbar.prototype.isToolAvailable = function ( name ) {
 	}
 	// FIXME should use .static.getCommandName(), but we have tools that aren't ve.ui.Tool subclasses :(
 	commandName = tool.static.commandName;
-	return !commandName || ve.indexOf( commandName, this.getCommands() ) !== -1;
+	return !commandName || this.getCommands().indexOf( commandName ) !== -1;
 };
 
 /**

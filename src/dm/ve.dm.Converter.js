@@ -288,7 +288,7 @@ ve.dm.Converter.prototype.isValidChildNodeType = function ( nodeType ) {
 		return null;
 	}
 	childTypes = this.nodeFactory.getChildNodeTypes( context.branchType );
-	return ( childTypes === null || ve.indexOf( nodeType, childTypes ) !== -1 );
+	return ( childTypes === null || childTypes.indexOf( nodeType ) !== -1 );
 };
 
 /**
