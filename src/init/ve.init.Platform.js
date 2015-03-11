@@ -32,11 +32,7 @@ OO.mixinClass( ve.init.Platform, OO.EventEmitter );
  * @returns {string} Client platform string
  */
 ve.init.Platform.static.getSystemPlatform = function () {
-	var platforms = ['win', 'mac', 'linux', 'sunos', 'solaris', 'iphone'],
-		match = new RegExp( '(' + platforms.join( '|' ) + ')' ).exec( window.navigator.platform.toLowerCase() );
-	if ( match ) {
-		return match[1];
-	}
+	return $.client.profile().platform;
 };
 
 /**
@@ -51,7 +47,7 @@ ve.init.Platform.static.getSystemPlatform = function () {
  * @returns {boolean} Whether we are in IE
  */
 ve.init.Platform.static.isInternetExplorer = function () {
-	return navigator.userAgent.indexOf( 'Trident' ) !== -1 || navigator.userAgent.indexOf( 'Edge' ) !== -1;
+	return $.client.profile().name === 'msie';
 };
 
 /* Methods */
