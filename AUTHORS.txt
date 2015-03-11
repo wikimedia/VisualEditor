@@ -50,7 +50,7 @@ jQuery i18n
  – Wikimedia Language Engineering Team and other contributors
 
 jQuery Client
- – https://github.com/wikimedia/jquery.client
+ – https://github.com/wikimedia/jquery-client
  – MIT license
  – jquery-client maintainers and other contributors
 
