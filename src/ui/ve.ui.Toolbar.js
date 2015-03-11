@@ -11,7 +11,7 @@
  * @extends OO.ui.Toolbar
  *
  * @constructor
- * @param {Object} [options] Configuration options
+ * @param {Object} [config] Configuration options
  * @cfg {boolean} [floatable] Toolbar floats when scrolled off the page
  */
 ve.ui.Toolbar = function VeUiToolbar( config ) {

@@ -12,11 +12,14 @@
  *
  * @constructor
  * @param {string} [surfaceType] Type of surface to use, 'desktop' or 'mobile'
+ * @param {Object} [config] Configuration options.  Will override default config
  * @throws {Error} Unknown surfaceType
  */
-ve.init.sa.Target = function VeInitSaTarget( surfaceType ) {
+ve.init.sa.Target = function VeInitSaTarget( surfaceType, config ) {
+	config = $.extend( { shadow: true, actions: true, floatable: true }, config );
+
 	// Parent constructor
-	ve.init.Target.call( this, { shadow: true, actions: true, floatable: true } );
+	ve.init.Target.call( this, config );
 
 	this.surfaceType = surfaceType || this.constructor.static.defaultSurfaceType;
 	this.actions = null;
