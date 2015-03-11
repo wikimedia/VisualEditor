@@ -111,6 +111,14 @@
 			"jquery"
 		]
 	},
+	"jquery.client": {
+		"scripts": [
+			"lib/jquery.client/jquery.client.js"
+		],
+		"dependencies": [
+			"jquery"
+		]
+	},
 	"baselibs": {
 		"dependencies": [
 			"jquery",
