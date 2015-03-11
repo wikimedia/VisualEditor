@@ -49,25 +49,27 @@ OO.mixinClass( ve.ce.BranchNode, ve.BranchNode );
 /**
  * Inline slug template.
  *
- * TODO: Make iframe safe
- *
  * @static
  * @property {HTMLElement}
  */
-ve.ce.BranchNode.inlineSlugTemplate = $( '<span>' )
-	.addClass( 've-ce-branchNode-slug ve-ce-branchNode-inlineSlug' )
-	.append(
-		$( '<img>' )
-			.prop( 'src', ve.ce.minImgDataUri )
-			.css( { width: '0', height: '0' } )
+ve.ce.BranchNode.inlineSlugTemplate = ( function () {
+	var $img = $( '<img>' )
 			.addClass( 've-ce-chimera' )
-	)
-	.get( 0 );
+			.css( { width: '0', height: '0' } ),
+		$span = $( '<span>' )
+			.addClass( 've-ce-branchNode-slug ve-ce-branchNode-inlineSlug' )
+			.append( $img );
+
+	// Firefox misbehaves if we don't set an src: https://bugzilla.mozilla.org/show_bug.cgi?id=989012
+	// But setting an src in Chrome is very slow, so only set it in Firefox
+	if ( $.client.profile().layout === 'gecko' ) {
+		$img.prop( 'src', ve.ce.minImgDataUri );
+	}
+	return $span.get( 0 );
+}() );
 
 /**
  * Inline slug template for input debugging.
- *
- * TODO: Make iframe safe
  *
  * @static
  * @property {HTMLElement}
@@ -83,8 +85,6 @@ ve.ce.BranchNode.inputDebugInlineSlugTemplate = $( '<span>' )
 
 /**
  * Block slug template.
- *
- * TODO: Make iframe safe
  *
  * @static
  * @property {HTMLElement}
