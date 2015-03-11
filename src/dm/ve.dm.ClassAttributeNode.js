@@ -94,8 +94,9 @@ ve.dm.ClassAttributeNode.static.getClassAttrFromAttributes = function ( attribut
 	if (
 		attributes.originalClasses &&
 		ve.compare(
-			$.unique( attributes.originalClasses.trim().split( /\s+/ ) ).sort(),
-			$.unique( classNames ).sort()
+			// OO.simpleArrayUnion( x, [] ) makes 'x' a unique array
+			OO.simpleArrayUnion( attributes.originalClasses.trim().split( /\s+/ ), [] ).sort(),
+			OO.simpleArrayUnion( classNames, [] ).sort()
 		)
 	) {
 		return attributes.originalClasses;
