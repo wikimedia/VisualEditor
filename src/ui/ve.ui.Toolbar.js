@@ -29,7 +29,6 @@ ve.ui.Toolbar = function VeUiToolbar( config ) {
 		// Must use Function#bind (or a closure) instead of direct reference
 		// because we need a unique function references for each Toolbar instance
 		// to avoid $window.off() from unbinding other toolbars' event handlers.
-		resize: this.onWindowResize.bind( this ),
 		scroll: this.onWindowScroll.bind( this )
 	};
 	// Default directions
@@ -100,9 +99,9 @@ ve.ui.Toolbar.prototype.isToolAvailable = function ( name ) {
 };
 
 /**
- * Handle window resize events while toolbar floating is enabled.
+ * Handle window scroll events.
  *
- * @param {jQuery.Event} e Window resize event
+ * @param {jQuery.Event} e Window scroll event
  */
 ve.ui.Toolbar.prototype.onWindowScroll = function () {
 	var scrollTop = this.$window.scrollTop();
@@ -115,14 +114,15 @@ ve.ui.Toolbar.prototype.onWindowScroll = function () {
 };
 
 /**
- * Handle window resize events while toolbar floating is enabled.
+ * @inheritdoc
  *
- * Toolbar will stick to the top of the screen unless it would be over or under the last visible
+ * While toolbar floating is enabled,
+ * the toolbar will stick to the top of the screen unless it would be over or under the last visible
  * branch node in the root of the document being edited, at which point it will stop just above it.
- *
- * @param {jQuery.Event} e Window scroll event
  */
 ve.ui.Toolbar.prototype.onWindowResize = function () {
+	ve.ui.Toolbar.super.prototype.onWindowResize.call( this );
+
 	// Update offsets after resize (see #float)
 	this.calculateOffset();
 
@@ -247,16 +247,16 @@ ve.ui.Toolbar.prototype.getSurface = function () {
 };
 
 /**
- * Sets up handles and preloads required information for the toolbar to work.
- * This must be called immediately after it is attached to a visible document.
+ * @inheritdoc
  */
 ve.ui.Toolbar.prototype.initialize = function () {
+	// Properties
+	this.$window = this.$( this.getElementWindow() );
+
 	// Parent method
 	OO.ui.Toolbar.prototype.initialize.call( this );
 
-	// Properties
-	this.$window = this.$( this.getElementWindow() );
-	this.calculateOffset();
+	// #calculateOffset was called by parent method via #onWindowResize
 
 	if ( this.floatable ) {
 		this.$window.on( this.windowEvents );
