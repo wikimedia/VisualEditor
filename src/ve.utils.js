@@ -893,7 +893,9 @@ ve.transformStyleAttributes = function ( html, unmask ) {
 			'bgcolor', // IE normalizes '#FFDEAD' to '#ffdead'
 			'color', // IE normalizes 'Red' to 'red'
 			'width', // IE normalizes '240px' to '240'
-			'height' // Same as width
+			'height', // Same as width
+			'rowspan', // IE and Firefox normalize rowspan="02" to rowspan="2"
+			'colspan' // Same as rowspan
 		];
 
 	// Parse the HTML into an XML DOM
