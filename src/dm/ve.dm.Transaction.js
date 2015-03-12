@@ -1441,9 +1441,17 @@ ve.dm.Transaction.prototype.pushRemoval = function ( doc, currentOffset, range, 
 			removeEnd = last.nodeOuterRange.end;
 		} else {
 			// Either the first node or the last node is partially covered, so remove
-			// the selected content
-			removeStart = ( first.range || first.nodeRange ).start;
-			removeEnd = ( last.range || last.nodeRange ).end;
+			// the selected content. The other node might be fully covered, in which case
+			// we remove its contents (nodeRange). For fully covered content nodes, we must
+			// remove the entire node (nodeOuterRange).
+			removeStart = (
+				first.range ||
+				( first.node.isContent() ? first.nodeOuterRange : first.nodeRange )
+			).start;
+			removeEnd = (
+				last.range ||
+				( last.node.isContent() ? last.nodeOuterRange : last.nodeRange )
+			).end;
 		}
 		this.pushRetain( removeStart - currentOffset );
 		this.addSafeRemoveOps( doc, removeStart, removeEnd, removeMetadata );
