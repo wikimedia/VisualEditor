@@ -1,12 +1,12 @@
 /*!
- * OOjs UI v0.9.0
+ * OOjs UI v0.9.1
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2015 OOjs Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2015-03-04T23:55:44Z
+ * Date: 2015-03-12T19:09:07Z
  */
 .oo-ui-progressBarWidget-slide-frames from {
 	margin-right: -40%;
@@ -611,6 +611,11 @@
 .oo-ui-panelLayout-padded {
 	padding: 1.25em;
 }
+.oo-ui-panelLayout-framed {
+	border: 1px solid #cccccc;
+	border-radius: 0.5em;
+	box-shadow: 0 0.2em 1em rgba(0, 0, 0, 0.3);
+}
 .oo-ui-stackLayout-continuous > .oo-ui-panelLayout {
 	display: block;
 	position: relative;
@@ -666,6 +671,9 @@
 .oo-ui-toolGroup .oo-ui-tool-link .oo-ui-iconElement-icon {
 	background-position: center center;
 	background-repeat: no-repeat;
+}
+.oo-ui-toolbar-narrow .oo-ui-toolGroup + .oo-ui-toolGroup {
+	margin-right: 0;
 }
 .oo-ui-toolGroup.oo-ui-widget-enabled:hover {
 	border-color: rgba(0, 0, 0, 0.1);
@@ -805,36 +813,60 @@
 .oo-ui-popupToolGroup .oo-ui-tool-link .oo-ui-tool-accel:not(:empty) {
 	padding-right: 3em;
 }
+.oo-ui-toolbar-narrow .oo-ui-popupToolGroup {
+	min-width: 1.5em;
+}
 .oo-ui-popupToolGroup.oo-ui-iconElement {
 	min-width: 2.5em;
 }
+.oo-ui-toolbar-narrow .oo-ui-popupToolGroup.oo-ui-iconElement {
+	min-width: 2em;
+}
 .oo-ui-popupToolGroup.oo-ui-indicatorElement.oo-ui-iconElement {
 	min-width: 3.5em;
+}
+.oo-ui-toolbar-narrow .oo-ui-popupToolGroup.oo-ui-indicatorElement.oo-ui-iconElement {
+	min-width: 3em;
 }
 .oo-ui-popupToolGroup.oo-ui-labelElement .oo-ui-popupToolGroup-handle .oo-ui-labelElement-label {
 	line-height: 2.6em;
 	font-size: 0.8em;
 	margin: 0 1em;
 }
+.oo-ui-toolbar-narrow .oo-ui-popupToolGroup.oo-ui-labelElement .oo-ui-popupToolGroup-handle .oo-ui-labelElement-label {
+	margin: 0 0.5em;
+}
 .oo-ui-popupToolGroup.oo-ui-labelElement.oo-ui-iconElement .oo-ui-popupToolGroup-handle .oo-ui-labelElement-label {
 	margin-right: 3em;
+}
+.oo-ui-toolbar-narrow .oo-ui-popupToolGroup.oo-ui-labelElement.oo-ui-iconElement .oo-ui-popupToolGroup-handle .oo-ui-labelElement-label {
+	margin-right: 2.5em;
 }
 .oo-ui-popupToolGroup.oo-ui-labelElement.oo-ui-indicatorElement .oo-ui-popupToolGroup-handle .oo-ui-labelElement-label {
 	margin-left: 2.25em;
 }
+.oo-ui-toolbar-narrow .oo-ui-popupToolGroup.oo-ui-labelElement.oo-ui-indicatorElement .oo-ui-popupToolGroup-handle .oo-ui-labelElement-label {
+	margin-left: 1.75em;
+}
 .oo-ui-popupToolGroup-handle .oo-ui-indicatorElement-indicator {
-	top: 0;
-	left: 0;
 	width: 0.75em;
 	height: 0.75em;
 	margin: 0.625em;
+	top: 0;
+	left: 0;
+}
+.oo-ui-toolbar-narrow .oo-ui-popupToolGroup-handle .oo-ui-indicatorElement-indicator {
+	left: -0.25em;
 }
 .oo-ui-popupToolGroup-handle .oo-ui-iconElement-icon {
-	top: 0;
-	right: 0.25em;
 	width: 1.5em;
 	height: 1.5em;
 	margin: 0.25em;
+	top: 0;
+	right: 0.25em;
+}
+.oo-ui-toolbar-narrow .oo-ui-popupToolGroup-handle .oo-ui-iconElement-icon {
+	right: 0;
 }
 .oo-ui-popupToolGroup-header {
 	line-height: 2.6em;
@@ -959,6 +991,9 @@
 .oo-ui-menuToolGroup .oo-ui-popupToolGroup-handle {
 	min-width: 8em;
 }
+.oo-ui-toolbar-narrow .oo-ui-menuToolGroup .oo-ui-popupToolGroup-handle {
+	min-width: 6.5em;
+}
 .oo-ui-menuToolGroup .oo-ui-toolGroup-tools {
 	padding: 0.25em 0 0.25em 0;
 }
@@ -1005,6 +1040,10 @@
 }
 .oo-ui-toolbar-tools {
 	display: inline;
+	white-space: nowrap;
+}
+.oo-ui-toolbar-narrow .oo-ui-toolbar-tools {
+	white-space: normal;
 }
 .oo-ui-toolbar-tools,
 .oo-ui-toolbar-actions,
@@ -1097,19 +1136,16 @@
 	background-repeat: no-repeat;
 	background-position: center center;
 }
-.oo-ui-decoratedOptionWidget .oo-ui-iconElement-icon,
-.oo-ui-decoratedOptionWidget .oo-ui-indicatorElement-indicator {
+.oo-ui-decoratedOptionWidget.oo-ui-iconElement .oo-ui-iconElement-icon,
+.oo-ui-decoratedOptionWidget.oo-ui-indicatorElement .oo-ui-indicatorElement-indicator {
 	top: 0;
 	height: 100%;
 }
-.oo-ui-decoratedOptionWidget .oo-ui-indicatorElement-indicator {
-	width: 0.9375em;
-}
-.oo-ui-decoratedOptionWidget .oo-ui-iconElement-icon {
+.oo-ui-decoratedOptionWidget.oo-ui-iconElement .oo-ui-iconElement-icon {
 	width: 1.875em;
 	right: 0.5em;
 }
-.oo-ui-decoratedOptionWidget .oo-ui-indicatorElement-indicator {
+.oo-ui-decoratedOptionWidget.oo-ui-indicatorElement .oo-ui-indicatorElement-indicator {
 	width: 0.9375em;
 	left: 0.5em;
 }
@@ -1967,6 +2003,10 @@
 }
 .oo-ui-window {
 	line-height: 1em;
+	background-color: transparent;
+	background-image: none;
+	font-family: sans-serif;
+	font-size: 0.8em;
 }
 .oo-ui-window-frame {
 	-webkit-box-sizing: border-box;
@@ -1994,13 +2034,6 @@
 	top: 0;
 	/* @noflip */
 	left: 0;
-}
-.oo-ui-window,
-.oo-ui-window-isolated {
-	background-color: transparent;
-	background-image: none;
-	font-family: sans-serif;
-	font-size: 0.8em;
 }
 .oo-ui-dialog-content > .oo-ui-window-head,
 .oo-ui-dialog-content > .oo-ui-window-body,
@@ -2356,12 +2389,15 @@
 	     -o-transform: scale(1);
 	        transform: scale(1);
 }
-.oo-ui-windowManager-modal.oo-ui-windowManager-floating > .oo-ui-dialog > .oo-ui-window-frame {
-	border: 1px solid #cccccc;
-	border-radius: 0.5em;
-	box-shadow: 0 0.2em 1em rgba(0, 0, 0, 0.3);
+.oo-ui-windowManager-fullscreen.oo-ui-windowManager-modal > .oo-ui-dialog > .oo-ui-window-frame {
+	border: 0;
+	border-radius: 0;
+	box-shadow: none;
 }
 
+.oo-ui-icon-circle {
+	background-image: /* @embed */ url(themes/apex/images/icons/circle.png);
+}
 .oo-ui-icon-add {
 	background-image: /* @embed */ url(themes/apex/images/icons/add.png);
 }
@@ -2389,6 +2425,9 @@
 .oo-ui-icon-comment {
 	background-image: /* @embed */ url(themes/apex/images/icons/comment.png);
 }
+.oo-ui-icon-ellipsis {
+	background-image: /* @embed */ url(themes/apex/images/icons/ellipsis.png);
+}
 .oo-ui-icon-expand {
 	background-image: /* @embed */ url(themes/apex/images/icons/expand.png);
 }
@@ -2397,12 +2436,6 @@
 }
 .oo-ui-icon-info {
 	background-image: /* @embed */ url(themes/apex/images/icons/info.png);
-}
-.oo-ui-icon-link {
-	background-image: /* @embed */ url(themes/apex/images/icons/link.png);
-}
-.oo-ui-icon-lock {
-	background-image: /* @embed */ url(themes/apex/images/icons/lock.png);
 }
 .oo-ui-icon-menu {
 	background-image: /* @embed */ url(themes/apex/images/icons/menu.png);
