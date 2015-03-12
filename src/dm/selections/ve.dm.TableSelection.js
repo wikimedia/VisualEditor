@@ -254,14 +254,10 @@ ve.dm.TableSelection.prototype.translateByTransaction = function ( tx, excludeIn
  * @return {boolean} The selection spans a single cell
  */
 ve.dm.TableSelection.prototype.isSingleCell = function () {
-	if (
-		// Quick check for single non-merged cell
-		( this.fromRow === this.toRow && this.fromCol === this.toCol ) ||
+	// Quick check for single non-merged cell
+	return ( this.fromRow === this.toRow && this.fromCol === this.toCol ) ||
 		// Check for a merged single cell by ignoring placeholders
-		this.getMatrixCells().length === 1
-	) {
-		return true;
-	}
+		this.getMatrixCells().length === 1;
 };
 
 /**
