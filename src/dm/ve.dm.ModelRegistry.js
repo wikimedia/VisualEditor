@@ -213,7 +213,7 @@
 						type.match( types[j] ) &&
 						(
 							( tag === '' && reg.registry[models[i]].static.matchTagNames === null ) ||
-							reg.registry[models[i]].static.matchTagNames.indexOf( tag ) !== -1
+							( reg.registry[models[i]].static.matchTagNames || [] ).indexOf( tag ) !== -1
 						)
 					) {
 						matches.push( models[i] );
