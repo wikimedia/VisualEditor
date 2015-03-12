@@ -1,5 +1,5 @@
 /*!
- * VisualEditor Text Selection class.
+ * VisualEditor Linear Selection class.
  *
  * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
  */
