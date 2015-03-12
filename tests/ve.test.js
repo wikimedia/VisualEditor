@@ -420,7 +420,9 @@ QUnit.test( 'transformStyleAttributes', function ( assert ) {
 		}
 		if ( cases[i].before ) {
 			assert.strictEqual(
-				ve.transformStyleAttributes( cases[i].before, false ),
+				ve.transformStyleAttributes( cases[i].before, false )
+					// Firefox adds linebreaks after <!DOCTYPE>s
+					.replace( '<!DOCTYPE html>\n', '<!DOCTYPE html>' ),
 				cases[i].masked || cases[i].before,
 				cases[i].msg + ' (masking)'
 			);
@@ -428,7 +430,9 @@ QUnit.test( 'transformStyleAttributes', function ( assert ) {
 			assert.ok( true, cases[i].msg + ' (no masking test)' );
 		}
 		assert.strictEqual(
-			ve.transformStyleAttributes( cases[i].masked || cases[i].before, true ),
+			ve.transformStyleAttributes( cases[i].masked || cases[i].before, true )
+				// Firefox adds a linebreak after <!DOCTYPE>s
+				.replace( '<!DOCTYPE html>\n', '<!DOCTYPE html>' ),
 			cases[i].after || cases[i].before,
 			cases[i].msg + ' (unmasking)'
 		);
