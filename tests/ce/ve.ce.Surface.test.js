@@ -522,7 +522,11 @@ QUnit.test( 'onCopy', function ( assert ) {
 		assert.equalLinearData( slice.data.data, expectedData, msg + ': data' );
 		assert.equalRange( slice.originalRange, expectedOriginalRange, msg + ': originalRange' );
 		assert.equalRange( slice.balancedRange, expectedBalancedRange, msg + ': balancedRange' );
-		assert.deepEqual( view.$pasteTarget.html(), expectedHtml, msg + ': html' );
+		assert.equalDomElement(
+			$( '<div>' ).html( view.$pasteTarget.html() )[0],
+			$( '<div>' ).html( expectedHtml )[0],
+			msg + ': html'
+		);
 
 		surface.destroy();
 	}
