@@ -3275,7 +3275,7 @@ ve.ce.Surface.prototype.handleLinearDelete = function ( e ) {
 		}
 	}
 
-	this.getModel().getLinearFragment( rangeToRemove ).delete( direction );
+	this.getModel().getLinearFragment( rangeToRemove, true ).delete( direction ).select();
 	// Rerender selection even if it didn't change
 	// TODO: is any of this necessary?
 	this.focus();
