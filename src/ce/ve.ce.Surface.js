@@ -540,11 +540,15 @@ ve.ce.Surface.prototype.getSelectionBoundingRect = function ( selection ) {
  */
 ve.ce.Surface.prototype.initialize = function () {
 	this.documentView.getDocumentNode().setLive( true );
-	// Turn off native object editing. This must be tried after the surface has been added to DOM.
-	try {
-		this.$document[0].execCommand( 'enableObjectResizing', false, false );
-		this.$document[0].execCommand( 'enableInlineTableEditing', false, false );
-	} catch ( e ) { /* Silently ignore */ }
+	if ( $.client.profile().layout === 'gecko' ) {
+		// Turn off native object editing. This must be tried after the surface has been added to DOM.
+		// This is only needed in Gecko. In other engines, these properties are off by default,
+		// and turning them off again is expensive; see https://phabricator.wikimedia.org/T89928
+		try {
+			this.$document[0].execCommand( 'enableObjectResizing', false, false );
+			this.$document[0].execCommand( 'enableInlineTableEditing', false, false );
+		} catch ( e ) { /* Silently ignore */ }
+	}
 };
 
 /**
