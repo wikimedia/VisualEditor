@@ -810,6 +810,226 @@ ve.dm.example.listWithMeta = [
 	{ type: '/alienMeta' }
 ];
 
+ve.dm.example.mergedCellsHtml =
+'<table>' +
+		'<tr>' +
+			'<td>1</td><td>2</td><td>3</td><td rowspan="3">4</td><td>5</td><td>6</td>' +
+		'</tr>' +
+		'<tr>' +
+			'<td>7</td><td colspan="2">8</td><td rowspan="4">9</td><td>10</td>' +
+		'</tr>' +
+		'<tr>' +
+			'<td>11</td><td>12</td><td>13</td><td>14</td>' +
+		'</tr>' +
+		'<tr>' +
+			'<td>15</td><td rowspan="3" colspan="3">16</td><td>17</td>' +
+		'</tr>' +
+		'<tr>' +
+			'<td>18</td><td>19</td>' +
+		'</tr>' +
+		'<tr>' +
+			'<td>20</td><td colspan="2">21</td>' +
+		'</tr>' +
+		'<tr>' +
+			'<td>22</td><td>23</td><td>24</td><td>25</td><td>26</td><td>27</td>' +
+		'</tr>' +
+	'</table>';
+
+ve.dm.example.mergedCells = [
+	{ type: 'table' },
+	{ type: 'tableSection', attributes: { style: 'body' } },
+	{ type: 'tableRow' },
+	{ type: 'tableCell', attributes: { style: 'data' } },
+	{ type: 'paragraph', internal: { generated: 'wrapper' } },
+	'1',
+	{ type: '/paragraph' },
+	{ type: '/tableCell' },
+	{ type: 'tableCell', attributes: { style: 'data' } },
+	{ type: 'paragraph', internal: { generated: 'wrapper' } },
+	'2',
+	{ type: '/paragraph' },
+	{ type: '/tableCell' },
+	{ type: 'tableCell', attributes: { style: 'data' } },
+	{ type: 'paragraph', internal: { generated: 'wrapper' } },
+	'3',
+	{ type: '/paragraph' },
+	{ type: '/tableCell' },
+	{
+		type: 'tableCell',
+		attributes: {
+			style: 'data',
+			originalRowspan: '3',
+			rowspan: 3
+		}
+	},
+	{ type: 'paragraph', internal: { generated: 'wrapper' } },
+	'4',
+	{ type: '/paragraph' },
+	{ type: '/tableCell' },
+	{ type: 'tableCell', attributes: { style: 'data' } },
+	{ type: 'paragraph', internal: { generated: 'wrapper' } },
+	'5',
+	{ type: '/paragraph' },
+	{ type: '/tableCell' },
+	{ type: 'tableCell', attributes: { style: 'data' } },
+	{ type: 'paragraph', internal: { generated: 'wrapper' } },
+	'6',
+	{ type: '/paragraph' },
+	{ type: '/tableCell' },
+	{ type: '/tableRow' },
+	{ type: 'tableRow' },
+	{ type: 'tableCell', attributes: { style: 'data' } },
+	{ type: 'paragraph', internal: { generated: 'wrapper' } },
+	'7',
+	{ type: '/paragraph' },
+	{ type: '/tableCell' },
+	{
+		type: 'tableCell',
+		attributes: {
+			style: 'data',
+			colspan: 2,
+			originalColspan: '2'
+		}
+	},
+	{ type: 'paragraph', internal: { generated: 'wrapper' } },
+	'8',
+	{ type: '/paragraph' },
+	{ type: '/tableCell' },
+	{
+		type: 'tableCell',
+		attributes: {
+			style: 'data',
+			originalRowspan: '4',
+			rowspan: 4
+		}
+	},
+	{ type: 'paragraph', internal: { generated: 'wrapper' } },
+	'9',
+	{ type: '/paragraph' },
+	{ type: '/tableCell' },
+	{ type: 'tableCell', attributes: { style: 'data' } },
+	{ type: 'paragraph', internal: { generated: 'wrapper' } },
+	'1', '0',
+	{ type: '/paragraph' },
+	{ type: '/tableCell' },
+	{ type: '/tableRow' },
+	{ type: 'tableRow' },
+	{ type: 'tableCell', attributes: { style: 'data' } },
+	{ type: 'paragraph', internal: { generated: 'wrapper' } },
+	'1', '1',
+	{ type: '/paragraph' },
+	{ type: '/tableCell' },
+	{ type: 'tableCell', attributes: { style: 'data' } },
+	{ type: 'paragraph', internal: { generated: 'wrapper' } },
+	'1', '2',
+	{ type: '/paragraph' },
+	{ type: '/tableCell' },
+	{ type: 'tableCell', attributes: { style: 'data' } },
+	{ type: 'paragraph', internal: { generated: 'wrapper' } },
+	'1', '3',
+	{ type: '/paragraph' },
+	{ type: '/tableCell' },
+	{ type: 'tableCell', attributes: { style: 'data' } },
+	{ type: 'paragraph', internal: { generated: 'wrapper' } },
+	'1', '4',
+	{ type: '/paragraph' },
+	{ type: '/tableCell' },
+	{ type: '/tableRow' },
+	{ type: 'tableRow' },
+	{ type: 'tableCell', attributes: { style: 'data' } },
+	{ type: 'paragraph', internal: { generated: 'wrapper' } },
+	'1', '5',
+	{ type: '/paragraph' },
+	{ type: '/tableCell' },
+	{
+		type: 'tableCell',
+		attributes: {
+			style: 'data',
+			colspan: 3,
+			originalColspan: '3',
+			originalRowspan: '3',
+			rowspan: 3
+		}
+	},
+	{ type: 'paragraph', internal: { generated: 'wrapper' } },
+	'1', '6',
+	{ type: '/paragraph' },
+	{ type: '/tableCell' },
+	{ type: 'tableCell', attributes: { style: 'data' } },
+	{ type: 'paragraph', internal: { generated: 'wrapper' } },
+	'1', '7',
+	{ type: '/paragraph' },
+	{ type: '/tableCell' },
+	{ type: '/tableRow' },
+	{ type: 'tableRow' },
+	{ type: 'tableCell', attributes: { style: 'data' } },
+	{ type: 'paragraph', internal: { generated: 'wrapper' } },
+	'1', '8',
+	{ type: '/paragraph' },
+	{ type: '/tableCell' },
+	{ type: 'tableCell', attributes: { style: 'data' } },
+	{ type: 'paragraph', internal: { generated: 'wrapper' } },
+	'1', '9',
+	{ type: '/paragraph' },
+	{ type: '/tableCell' },
+	{ type: '/tableRow' },
+	{ type: 'tableRow' },
+	{ type: 'tableCell', attributes: { style: 'data' } },
+	{ type: 'paragraph', internal: { generated: 'wrapper' } },
+	'2', '0',
+	{ type: '/paragraph' },
+	{ type: '/tableCell' },
+	{
+		type: 'tableCell',
+		attributes: {
+			style: 'data',
+			colspan: 2,
+			originalColspan: '2'
+		}
+	},
+	{ type: 'paragraph', internal: { generated: 'wrapper' } },
+	'2', '1',
+	{ type: '/paragraph' },
+	{ type: '/tableCell' },
+	{ type: '/tableRow' },
+	{ type: 'tableRow' },
+	{ type: 'tableCell', attributes: { style: 'data' } },
+	{ type: 'paragraph', internal: { generated: 'wrapper' } },
+	'2', '2',
+	{ type: '/paragraph' },
+	{ type: '/tableCell' },
+	{ type: 'tableCell', attributes: { style: 'data' } },
+	{ type: 'paragraph', internal: { generated: 'wrapper' } },
+	'2', '3',
+	{ type: '/paragraph' },
+	{ type: '/tableCell' },
+	{ type: 'tableCell', attributes: { style: 'data' } },
+	{ type: 'paragraph', internal: { generated: 'wrapper' } },
+	'2', '4',
+	{ type: '/paragraph' },
+	{ type: '/tableCell' },
+	{ type: 'tableCell', attributes: { style: 'data' } },
+	{ type: 'paragraph', internal: { generated: 'wrapper' } },
+	'2', '5',
+	{ type: '/paragraph' },
+	{ type: '/tableCell' },
+	{ type: 'tableCell', attributes: { style: 'data' } },
+	{ type: 'paragraph', internal: { generated: 'wrapper' } },
+	'2', '6',
+	{ type: '/paragraph' },
+	{ type: '/tableCell' },
+	{ type: 'tableCell', attributes: { style: 'data' } },
+	{ type: 'paragraph', internal: { generated: 'wrapper' } },
+	'2', '7',
+	{ type: '/paragraph' },
+	{ type: '/tableCell' },
+	{ type: '/tableRow' },
+	{ type: '/tableSection' },
+	{ type: '/table' },
+	{ type: 'internalList' },
+	{ type: '/internalList' }
+];
+
 ve.dm.example.complexTableHtml = '<table><caption>Foo</caption><thead><tr><th rowspan="">Bar</th></tr></thead>' +
 	'<tfoot><tr><td colspan=2>Baz</td></tr></tfoot><tbody><tr><td rowspan="02">Quux</td><td colspan="2 garbage">Whee</td></tr></tbody></table>';
 
@@ -2899,6 +3119,10 @@ ve.dm.example.domToDataCases = {
 			{ type: 'internalList' },
 			{ type: '/internalList' }
 		]
+	},
+	'table with merged cells': {
+		body: ve.dm.example.mergedCellsHtml,
+		data: ve.dm.example.mergedCells
 	},
 	'table with caption, head, foot and body': {
 		body: ve.dm.example.complexTableHtml,
