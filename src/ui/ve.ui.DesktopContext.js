@@ -124,7 +124,7 @@ ve.ui.DesktopContext.prototype.onPosition = function () {
  * @inheritdoc
  */
 ve.ui.DesktopContext.prototype.createInspectorWindowManager = function () {
-	return new ve.ui.DesktopInspectorWindowManager( {
+	return new ve.ui.DesktopInspectorWindowManager( this.surface, {
 		$: this.$,
 		factory: ve.ui.windowFactory,
 		overlay: this.surface.getLocalOverlay(),

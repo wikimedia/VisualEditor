@@ -48,7 +48,7 @@ ve.ui.MobileContext.static.basicRendering = true;
  * @inheritdoc
  */
 ve.ui.MobileContext.prototype.createInspectorWindowManager = function () {
-	return new ve.ui.MobileWindowManager( {
+	return new ve.ui.MobileWindowManager( this.surface, {
 		factory: ve.ui.windowFactory,
 		overlay: this.surface.getGlobalOverlay()
 	} );
