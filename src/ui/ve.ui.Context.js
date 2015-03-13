@@ -219,16 +219,16 @@ ve.ui.Context.prototype.isInspectable = function () {
 };
 
 /**
- * Check if current content is inspectable.
+ * Check if the context menu for current content is embeddable.
  *
- * @return {boolean} Content is inspectable
+ * @return {boolean} Context menu is embeddable
  */
 ve.ui.Context.prototype.isEmbeddable = function () {
 	var i, len,
 		sources = this.getRelatedSources();
 
 	for ( i = 0, len = sources.length; i < len; i++ ) {
-		if ( !sources[i].embedable ) {
+		if ( !sources[i].embeddable ) {
 			return false;
 		}
 	}
@@ -258,7 +258,7 @@ ve.ui.Context.prototype.getRelatedSources = function () {
 				models.push( items[i].model );
 				this.relatedSources.push( {
 					type: 'item',
-					embedable: ve.ui.contextItemFactory.isEmbeddable( items[i].name ),
+					embeddable: ve.ui.contextItemFactory.isEmbeddable( items[i].name ),
 					name: items[i].name,
 					model: items[i].model
 				} );
@@ -269,7 +269,7 @@ ve.ui.Context.prototype.getRelatedSources = function () {
 					toolClass = ve.ui.toolFactory.lookup( tools[i].name );
 					this.relatedSources.push( {
 						type: 'tool',
-						embedable: !toolClass ||
+						embeddable: !toolClass ||
 							!( toolClass.prototype instanceof ve.ui.InspectorTool ),
 						name: tools[i].name,
 						model: tools[i].model
