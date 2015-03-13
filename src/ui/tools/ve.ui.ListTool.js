@@ -78,7 +78,7 @@ ve.ui.BulletListTool = function VeUiBulletListTool( toolGroup, config ) {
 OO.inheritClass( ve.ui.BulletListTool, ve.ui.ListTool );
 ve.ui.BulletListTool.static.name = 'bullet';
 ve.ui.BulletListTool.static.group = 'structure';
-ve.ui.BulletListTool.static.icon = 'bullet-list';
+ve.ui.BulletListTool.static.icon = 'listBullet';
 ve.ui.BulletListTool.static.title =
 	OO.ui.deferMsg( 'visualeditor-listbutton-bullet-tooltip' );
 ve.ui.BulletListTool.static.style = 'bullet';
@@ -100,7 +100,7 @@ ve.ui.NumberListTool = function VeUiNumberListTool( toolGroup, config ) {
 OO.inheritClass( ve.ui.NumberListTool, ve.ui.ListTool );
 ve.ui.NumberListTool.static.name = 'number';
 ve.ui.NumberListTool.static.group = 'structure';
-ve.ui.NumberListTool.static.icon = 'number-list';
+ve.ui.NumberListTool.static.icon = 'listNumbered';
 ve.ui.NumberListTool.static.title =
 	OO.ui.deferMsg( 'visualeditor-listbutton-number-tooltip' );
 ve.ui.NumberListTool.static.style = 'number';

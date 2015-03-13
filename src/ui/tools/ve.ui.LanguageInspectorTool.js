@@ -19,9 +19,9 @@ ve.ui.LanguageInspectorTool = function VeUiLanguageInspectorTool( toolGroup, con
 OO.inheritClass( ve.ui.LanguageInspectorTool, ve.ui.InspectorTool );
 ve.ui.LanguageInspectorTool.static.name = 'language';
 ve.ui.LanguageInspectorTool.static.group = 'meta';
-ve.ui.LanguageInspectorTool.static.icon = 'language';
+ve.ui.LanguageInspectorTool.static.icon = 'textLanguage';
 ve.ui.LanguageInspectorTool.static.title =
 	OO.ui.deferMsg( 'visualeditor-annotationbutton-language-tooltip' );
 ve.ui.LanguageInspectorTool.static.modelClasses = [ ve.dm.LanguageAnnotation ];
-ve.ui.LanguageInspectorTool.static.commandName = 'language';
+ve.ui.LanguageInspectorTool.static.commandName = 'textLanguage';
 ve.ui.toolFactory.register( ve.ui.LanguageInspectorTool );

@@ -62,11 +62,11 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 		placeholder: ve.msg( 'visualeditor-find-and-replace-find-text' )
 	} );
 	this.matchCaseToggle = new OO.ui.ToggleButtonWidget( {
-		icon: 'case-sensitive',
+		icon: 'searchCaseSensitive',
 		iconTitle: ve.msg( 'visualeditor-find-and-replace-match-case' )
 	} );
 	this.regexToggle = new OO.ui.ToggleButtonWidget( {
-		icon: 'regular-expression',
+		icon: 'searchRegularExpression',
 		iconTitle: ve.msg( 'visualeditor-find-and-replace-regular-expression' )
 	} );
 

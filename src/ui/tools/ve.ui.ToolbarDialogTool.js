@@ -91,7 +91,7 @@ ve.ui.SpecialCharacterDialogTool = function VeUiSpecialCharacterDialogTool() {
 OO.inheritClass( ve.ui.SpecialCharacterDialogTool, ve.ui.ToolbarDialogTool );
 ve.ui.SpecialCharacterDialogTool.static.name = 'specialCharacter';
 ve.ui.SpecialCharacterDialogTool.static.group = 'dialog';
-ve.ui.SpecialCharacterDialogTool.static.icon = 'special-character';
+ve.ui.SpecialCharacterDialogTool.static.icon = 'specialCharacter';
 ve.ui.SpecialCharacterDialogTool.static.title =
 	OO.ui.deferMsg( 'visualeditor-specialcharacter-button-tooltip' );
 ve.ui.SpecialCharacterDialogTool.static.autoAddToCatchall = false;

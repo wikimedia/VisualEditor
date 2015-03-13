@@ -13,7 +13,7 @@ ve.ui.InsertTableTool = function VeUiInsertTableTool( toolGroup, config ) {
 OO.inheritClass( ve.ui.InsertTableTool, ve.ui.Tool );
 ve.ui.InsertTableTool.static.name = 'insertTable';
 ve.ui.InsertTableTool.static.group = 'insert';
-ve.ui.InsertTableTool.static.icon = 'table-insert';
+ve.ui.InsertTableTool.static.icon = 'table';
 ve.ui.InsertTableTool.static.title = OO.ui.deferMsg( 'visualeditor-table-insert-table' );
 ve.ui.InsertTableTool.static.commandName = 'insertTable';
 ve.ui.toolFactory.register( ve.ui.InsertTableTool );
@@ -37,7 +37,7 @@ OO.inheritClass( ve.ui.InsertRowBeforeTool, ve.ui.Tool );
 ve.ui.InsertRowBeforeTool.static.name = 'insertRowBefore';
 ve.ui.InsertRowBeforeTool.static.group = 'table-row';
 ve.ui.InsertRowBeforeTool.static.autoAddToCatchall = false;
-ve.ui.InsertRowBeforeTool.static.icon = 'table-insert-row-before';
+ve.ui.InsertRowBeforeTool.static.icon = 'tableAddRowBefore';
 ve.ui.InsertRowBeforeTool.static.title =
 	OO.ui.deferMsg( 'visualeditor-table-insert-row-before' );
 ve.ui.InsertRowBeforeTool.static.commandName = 'insertRowBefore';
@@ -50,7 +50,7 @@ OO.inheritClass( ve.ui.InsertRowAfterTool, ve.ui.Tool );
 ve.ui.InsertRowAfterTool.static.name = 'insertRowAfter';
 ve.ui.InsertRowAfterTool.static.group = 'table-row';
 ve.ui.InsertRowAfterTool.static.autoAddToCatchall = false;
-ve.ui.InsertRowAfterTool.static.icon = 'table-insert-row-after';
+ve.ui.InsertRowAfterTool.static.icon = 'tableAddRowAfter';
 ve.ui.InsertRowAfterTool.static.title =
 	OO.ui.deferMsg( 'visualeditor-table-insert-row-after' );
 ve.ui.InsertRowAfterTool.static.commandName = 'insertRowAfter';
@@ -76,7 +76,7 @@ OO.inheritClass( ve.ui.InsertColumnBeforeTool, ve.ui.Tool );
 ve.ui.InsertColumnBeforeTool.static.name = 'insertColumnBefore';
 ve.ui.InsertColumnBeforeTool.static.group = 'table-col';
 ve.ui.InsertColumnBeforeTool.static.autoAddToCatchall = false;
-ve.ui.InsertColumnBeforeTool.static.icon = 'table-insert-column-before';
+ve.ui.InsertColumnBeforeTool.static.icon = 'tableAddColumnBefore';
 ve.ui.InsertColumnBeforeTool.static.title =
 	OO.ui.deferMsg( 'visualeditor-table-insert-col-before' );
 ve.ui.InsertColumnBeforeTool.static.commandName = 'insertColumnBefore';
@@ -89,7 +89,7 @@ OO.inheritClass( ve.ui.InsertColumnAfterTool, ve.ui.Tool );
 ve.ui.InsertColumnAfterTool.static.name = 'insertColumnAfter';
 ve.ui.InsertColumnAfterTool.static.group = 'table-col';
 ve.ui.InsertColumnAfterTool.static.autoAddToCatchall = false;
-ve.ui.InsertColumnAfterTool.static.icon = 'table-insert-column-after';
+ve.ui.InsertColumnAfterTool.static.icon = 'tableAddColumnAfter';
 ve.ui.InsertColumnAfterTool.static.title =
 	OO.ui.deferMsg( 'visualeditor-table-insert-col-after' );
 ve.ui.InsertColumnAfterTool.static.commandName = 'insertColumnAfter';
@@ -115,7 +115,7 @@ OO.inheritClass( ve.ui.MergeCellsTool, ve.ui.Tool );
 ve.ui.MergeCellsTool.static.name = 'mergeCells';
 ve.ui.MergeCellsTool.static.group = 'table';
 ve.ui.MergeCellsTool.static.autoAddToCatchall = false;
-ve.ui.MergeCellsTool.static.icon = 'table-merge-cells';
+ve.ui.MergeCellsTool.static.icon = 'tableMergeCells';
 ve.ui.MergeCellsTool.static.title =
 	OO.ui.deferMsg( 'visualeditor-table-merge-cells' );
 ve.ui.MergeCellsTool.static.commandName = 'mergeCells';
@@ -142,7 +142,7 @@ OO.inheritClass( ve.ui.TableCaptionTool, ve.ui.Tool );
 ve.ui.TableCaptionTool.static.name = 'tableCaption';
 ve.ui.TableCaptionTool.static.group = 'table';
 ve.ui.TableCaptionTool.static.autoAddToCatchall = false;
-ve.ui.TableCaptionTool.static.icon = 'table-caption';
+ve.ui.TableCaptionTool.static.icon = 'tableCaption';
 ve.ui.TableCaptionTool.static.title =
 	OO.ui.deferMsg( 'visualeditor-table-caption' );
 ve.ui.TableCaptionTool.static.commandName = 'tableCaption';

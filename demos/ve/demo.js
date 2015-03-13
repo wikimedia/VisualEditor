@@ -24,7 +24,7 @@ new ve.init.sa.Platform( ve.messagePaths ).initialize().done( function () {
 		} ),
 
 		messageKeyButton = new OO.ui.ButtonWidget( {
-			icon: 'language',
+			icon: 'textLanguage',
 			label: 'Lang keys'
 		} ),
 		languageInput = new ve.ui.LanguageInputWidget( {

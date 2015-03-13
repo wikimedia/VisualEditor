@@ -38,7 +38,7 @@ ve.ui.IncreaseIndentationTool = function VeUiIncreaseIndentationTool( toolGroup,
 OO.inheritClass( ve.ui.IncreaseIndentationTool, ve.ui.IndentationTool );
 ve.ui.IncreaseIndentationTool.static.name = 'indent';
 ve.ui.IncreaseIndentationTool.static.group = 'structure';
-ve.ui.IncreaseIndentationTool.static.icon = 'indent-list';
+ve.ui.IncreaseIndentationTool.static.icon = 'indent';
 ve.ui.IncreaseIndentationTool.static.title =
 	OO.ui.deferMsg( 'visualeditor-indentationbutton-indent-tooltip' );
 ve.ui.IncreaseIndentationTool.static.commandName = 'indent';
@@ -61,7 +61,7 @@ ve.ui.DecreaseIndentationTool = function VeUiDecreaseIndentationTool( toolGroup,
 OO.inheritClass( ve.ui.DecreaseIndentationTool, ve.ui.IndentationTool );
 ve.ui.DecreaseIndentationTool.static.name = 'outdent';
 ve.ui.DecreaseIndentationTool.static.group = 'structure';
-ve.ui.DecreaseIndentationTool.static.icon = 'outdent-list';
+ve.ui.DecreaseIndentationTool.static.icon = 'outdent';
 ve.ui.DecreaseIndentationTool.static.title =
 	OO.ui.deferMsg( 'visualeditor-indentationbutton-outdent-tooltip' );
 ve.ui.DecreaseIndentationTool.static.commandName = 'outdent';

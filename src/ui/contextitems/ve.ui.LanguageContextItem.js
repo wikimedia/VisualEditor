@@ -29,7 +29,7 @@ OO.inheritClass( ve.ui.LanguageContextItem, ve.ui.ContextItem );
 
 ve.ui.LanguageContextItem.static.name = 'language';
 
-ve.ui.LanguageContextItem.static.icon = 'language';
+ve.ui.LanguageContextItem.static.icon = 'textLanguage';
 
 ve.ui.LanguageContextItem.static.label = OO.ui.deferMsg( 'visualeditor-languageinspector-title' );
 
