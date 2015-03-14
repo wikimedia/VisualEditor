@@ -168,6 +168,58 @@ QUnit.test( 'handleLinearDelete', function ( assert ) {
 				msg: 'Table cell selected but not deleted by delete'
 			},
 			{
+				html: '<p>a</p><ul><li><p></p></li></ul><p>b</p>',
+				range: new ve.Range( 6 ),
+				operations: ['delete'],
+				expectedData: function ( data ) {
+					data.splice( 3, 6 );
+				},
+				expectedSelection: {
+					type: 'linear',
+					range: new ve.Range( 4 )
+				},
+				msg: 'Empty list node deleted by delete from inside'
+			},
+			{
+				html: '<p>a</p><ul><li><p></p></li></ul><p>b</p>',
+				range: new ve.Range( 6 ),
+				operations: ['backspace'],
+				expectedData: function ( data ) {
+					data.splice( 3, 6 );
+				},
+				expectedSelection: {
+					type: 'linear',
+					range: new ve.Range( 2 )
+				},
+				msg: 'Empty list node deleted by backspace from inside'
+			},
+			{
+				html: '<p>a</p><ul><li><p></p></li></ul><p>b</p>',
+				range: new ve.Range( 2 ),
+				operations: ['delete'],
+				expectedData: function ( data ) {
+					data.splice( 3, 6 );
+				},
+				expectedSelection: {
+					type: 'linear',
+					range: new ve.Range( 2 )
+				},
+				msg: 'Empty list node deleted by delete from before'
+			},
+			{
+				html: '<p>a</p><ul><li><p></p></li></ul><p>b</p>',
+				range: new ve.Range( 10 ),
+				operations: ['backspace'],
+				expectedData: function ( data ) {
+					data.splice( 3, 6 );
+				},
+				expectedSelection: {
+					type: 'linear',
+					range: new ve.Range( 2 )
+				},
+				msg: 'Empty list node deleted by backspace from after'
+			},
+			{
 				range: new ve.Range( 0, 63 ),
 				operations: ['backspace'],
 				expectedData: function ( data ) {
