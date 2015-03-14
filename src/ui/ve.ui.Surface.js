@@ -61,7 +61,7 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 	this.debugBar = null;
 
 	this.toolbarHeight = 0;
-	this.toolbarDialogs = new ve.ui.ToolbarDialogWindowManager( {
+	this.toolbarDialogs = new ve.ui.ToolbarDialogWindowManager( this, {
 		$: this.$,
 		factory: ve.ui.windowFactory,
 		modal: false

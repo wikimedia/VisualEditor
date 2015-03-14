@@ -354,6 +354,7 @@
 			"src/ui/ve.ui.DataTransferHandlerFactory.js",
 			"src/ui/ve.ui.DataTransferItem.js",
 			"src/ui/ve.ui.WindowManager.js",
+			"src/ui/windowmanagers/ve.ui.SurfaceWindowManager.js",
 			"src/ui/actions/ve.ui.AnnotationAction.js",
 			"src/ui/actions/ve.ui.ContentAction.js",
 			"src/ui/actions/ve.ui.FormatAction.js",
