@@ -11,7 +11,7 @@ QUnit.module( 've.dm.Transaction' );
 function runBuilderTests( assert, cases ) {
 	var msg, tx, i;
 	for ( msg in cases ) {
-		tx = new ve.dm.Transaction();
+		tx = new ve.dm.Transaction( {} );
 		for ( i = 0; i < cases[msg].calls.length; i++ ) {
 			tx[cases[msg].calls[i][0]].apply( tx, cases[msg].calls[i].slice( 1 ) );
 		}
@@ -1782,7 +1782,7 @@ QUnit.test( 'newFromWrap', function ( assert ) {
 QUnit.test( 'translateOffset', function ( assert ) {
 	var mapping, offset, expected,
 		doc = new ve.dm.Document( '-----defg---h--'.split( '' ) ),
-		tx = new ve.dm.Transaction();
+		tx = new ve.dm.Transaction( doc );
 
 	tx.pushReplace( doc, 0, 0, ['a', 'b', 'c'] );
 	tx.pushRetain( 5 );
@@ -1824,7 +1824,7 @@ QUnit.test( 'translateOffset', function ( assert ) {
 QUnit.test( 'translateRange', function ( assert ) {
 	var i, cases,
 		doc = ve.dm.example.createExampleDocument(),
-		tx = new ve.dm.Transaction();
+		tx = new ve.dm.Transaction( doc );
 	tx.pushRetain( 55 );
 	tx.pushReplace( doc, 55, 0, [ { type: 'list', attributes: { style: 'number' } } ] );
 	tx.pushReplace( doc, 55, 0, [ { type: 'listItem' } ] );
@@ -1957,7 +1957,7 @@ QUnit.test( 'getModifiedRange', function ( assert ) {
 
 	QUnit.expect( cases.length );
 	for ( i = 0, len = cases.length; i < len; i++ ) {
-		tx = new ve.dm.Transaction();
+		tx = new ve.dm.Transaction( doc );
 		for ( j = 0; j < cases[i].calls.length; j++ ) {
 			tx[cases[i].calls[j][0]].apply( tx, cases[i].calls[j].slice( 1 ) );
 		}

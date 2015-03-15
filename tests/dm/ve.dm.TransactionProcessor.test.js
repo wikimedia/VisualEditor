@@ -684,7 +684,7 @@ QUnit.test( 'commit', function ( assert ) {
 		);
 		testDoc.buildNodeTree();
 
-		tx = new ve.dm.Transaction();
+		tx = new ve.dm.Transaction( testDoc );
 		for ( i = 0; i < cases[msg].calls.length; i++ ) {
 			// some calls need the document as its first argument
 			if ( /^(pushReplace$|new)/.test( cases[msg].calls[i][0] ) ) {
