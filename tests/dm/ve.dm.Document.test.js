@@ -803,7 +803,7 @@ QUnit.test( 'cloneSliceFromRange', function ( assert ) {
 				msg: 'inline node at end',
 				range: new ve.Range( 6, 8 ),
 				expected: [
-					{ type: 'alienInline', attributes: { domElements: $( '<foobar />' ).toArray() } },
+					{ type: 'alienInline', originalDomElements: $( '<foobar />' ).toArray() },
 					{ type: '/alienInline' }
 				],
 				originalRange: new ve.Range( 0, 2 ),
@@ -827,7 +827,7 @@ QUnit.test( 'cloneSliceFromRange', function ( assert ) {
 				range: new ve.Range( 4, 8 ),
 				expected: [
 					'o', 'o',
-					{ type: 'alienInline', attributes: { domElements: $( '<foobar />' ).toArray() } },
+					{ type: 'alienInline', originalDomElements: $( '<foobar />' ).toArray() },
 					{ type: '/alienInline' }
 				],
 				originalRange: new ve.Range( 0, 4 ),
