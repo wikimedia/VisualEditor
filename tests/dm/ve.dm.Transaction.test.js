@@ -1164,14 +1164,14 @@ QUnit.test( 'newFromAnnotation', function ( assert ) {
 						type: 'annotate',
 						method: 'set',
 						bias: 'start',
-						annotation: boldAnnotation
+						index: 0
 					},
 					{ type: 'retain', length: 1 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'stop',
-						annotation: boldAnnotation
+						index: 0
 					},
 					{ type: 'retain', length: 61 }
 				]
@@ -1184,28 +1184,28 @@ QUnit.test( 'newFromAnnotation', function ( assert ) {
 						type: 'annotate',
 						method: 'set',
 						bias: 'start',
-						annotation: boldAnnotation
+						index: 0
 					},
 					{ type: 'retain', length: 1 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'stop',
-						annotation: boldAnnotation
+						index: 0
 					},
 					{ type: 'retain', length: 1 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'start',
-						annotation: boldAnnotation
+						index: 0
 					},
 					{ type: 'retain', length: 1 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'stop',
-						annotation: boldAnnotation
+						index: 0
 					},
 					{ type: 'retain', length: 59 }
 				]
@@ -1218,28 +1218,28 @@ QUnit.test( 'newFromAnnotation', function ( assert ) {
 						type: 'annotate',
 						method: 'set',
 						bias: 'start',
-						annotation: strongAnnotation
+						index: 2
 					},
 					{ type: 'retain', length: 1 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'stop',
-						annotation: strongAnnotation
+						index: 2
 					},
 					{ type: 'retain', length: 1 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'start',
-						annotation: strongAnnotation
+						index: 2
 					},
 					{ type: 'retain', length: 1 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'stop',
-						annotation: strongAnnotation
+						index: 2
 					},
 					{ type: 'retain', length: 59 }
 				]
@@ -1252,14 +1252,14 @@ QUnit.test( 'newFromAnnotation', function ( assert ) {
 						type: 'annotate',
 						method: 'clear',
 						bias: 'start',
-						annotation: strongAnnotation
+						index: 1
 					},
 					{ type: 'retain', length: 3 },
 					{
 						type: 'annotate',
 						method: 'clear',
 						bias: 'stop',
-						annotation: strongAnnotation
+						index: 1
 					},
 					{ type: 'retain', length: 3 }
 				]
@@ -1278,28 +1278,28 @@ QUnit.test( 'newFromAnnotation', function ( assert ) {
 						type: 'annotate',
 						method: 'set',
 						bias: 'start',
-						annotation: boldAnnotation
+						index: 0
 					},
 					{ type: 'retain', length: 1 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'stop',
-						annotation: boldAnnotation
+						index: 0
 					},
 					{ type: 'retain', length: 6 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'start',
-						annotation: boldAnnotation
+						index: 0
 					},
 					{ type: 'retain', length: 1 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'stop',
-						annotation: boldAnnotation
+						index: 0
 					},
 					{ type: 'retain', length: 52 }
 				]
@@ -1312,14 +1312,14 @@ QUnit.test( 'newFromAnnotation', function ( assert ) {
 						type: 'annotate',
 						method: 'set',
 						bias: 'start',
-						annotation: boldAnnotation
+						index: 0
 					},
 					{ type: 'retain', length: 4 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'stop',
-						annotation: boldAnnotation
+						index: 0
 					},
 					{ type: 'retain', length: 21 }
 				]
@@ -1332,28 +1332,28 @@ QUnit.test( 'newFromAnnotation', function ( assert ) {
 						type: 'annotate',
 						method: 'set',
 						bias: 'start',
-						annotation: boldAnnotation
+						index: 0
 					},
 					{ type: 'retain', length: 3 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'stop',
-						annotation: boldAnnotation
+						index: 0
 					},
 					{ type: 'retain', length: 2 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'start',
-						annotation: boldAnnotation
+						index: 0
 					},
 					{ type: 'retain', length: 3 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'stop',
-						annotation: boldAnnotation
+						index: 0
 					},
 					{ type: 'retain', length: 21 }
 				]
@@ -1366,42 +1366,42 @@ QUnit.test( 'newFromAnnotation', function ( assert ) {
 						type: 'annotate',
 						method: 'set',
 						bias: 'start',
-						annotation: boldAnnotation
+						index: 0
 					},
 					{ type: 'retain', length: 3 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'stop',
-						annotation: boldAnnotation
+						index: 0
 					},
 					{ type: 'retain', length: 2 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'start',
-						annotation: boldAnnotation
+						index: 0
 					},
 					{ type: 'retain', length: 3 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'stop',
-						annotation: boldAnnotation
+						index: 0
 					},
 					{ type: 'retain', length: 15 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'start',
-						annotation: boldAnnotation
+						index: 0
 					},
 					{ type: 'retain', length: 3 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'stop',
-						annotation: boldAnnotation
+						index: 0
 					},
 					{ type: 'retain', length: 3 }
 				]
@@ -2139,70 +2139,70 @@ QUnit.test( 'push*Annotating', function ( assert ) {
 	var cases = {
 		'start annotating': {
 			calls: [
-				['pushStartAnnotating', 'set', { type: 'textStyle/bold' }]
+				['pushStartAnnotating', 'set', 0]
 			],
 			ops: [
 				{
 					type: 'annotate',
 					method: 'set',
 					bias: 'start',
-					annotation: { type: 'textStyle/bold' }
+					index: 0
 				}
 			],
 			diff: 0
 		},
 		'stop annotating': {
 			calls: [
-				['pushStopAnnotating', 'set', { type: 'textStyle/bold' }]
+				['pushStopAnnotating', 'set', 0]
 			],
 			ops: [
 				{
 					type: 'annotate',
 					method: 'set',
 					bias: 'stop',
-					annotation: { type: 'textStyle/bold' }
+					index: 0
 				}
 			],
 			diff: 0
 		},
 		'start multiple annotations': {
 			calls: [
-				['pushStartAnnotating', 'set', { type: 'textStyle/bold' }],
-				['pushStartAnnotating', 'set', { type: 'textStyle/italic' }]
+				['pushStartAnnotating', 'set', 0],
+				['pushStartAnnotating', 'set', 1]
 			],
 			ops: [
 				{
 					type: 'annotate',
 					method: 'set',
 					bias: 'start',
-					annotation: { type: 'textStyle/bold' }
+					index: 0
 				},
 				{
 					type: 'annotate',
 					method: 'set',
 					bias: 'start',
-					annotation: { type: 'textStyle/italic' }
+					index: 1
 				}
 			],
 			diff: 0
 		},
 		'stop multiple annotations': {
 			calls: [
-				['pushStopAnnotating', 'set', { type: 'textStyle/bold' }],
-				['pushStopAnnotating', 'set', { type: 'textStyle/italic' }]
+				['pushStopAnnotating', 'set', 0],
+				['pushStopAnnotating', 'set', 1]
 			],
 			ops: [
 				{
 					type: 'annotate',
 					method: 'set',
 					bias: 'stop',
-					annotation: { type: 'textStyle/bold' }
+					index: 0
 				},
 				{
 					type: 'annotate',
 					method: 'set',
 					bias: 'stop',
-					annotation: { type: 'textStyle/italic' }
+					index: 1
 				}
 			],
 			diff: 0
