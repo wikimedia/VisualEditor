@@ -805,12 +805,14 @@ ve.dm.ElementLinearData.prototype.getNearestWordRange = function ( offset ) {
  * Currently this is just all annotations still in use.
  *
  * @method
- * @param {ve.Range} range Range to get store values for
+ * @param {ve.Range} [range] Optional range to get store values for
  * @returns {Object} Object containing all store values, indexed by store index
  */
-ve.dm.ElementLinearData.prototype.getUsedStoreValuesFromRange = function ( range ) {
+ve.dm.ElementLinearData.prototype.getUsedStoreValues = function ( range ) {
 	var i, index, indexes, j,
 		valueStore = {};
+
+	range = range || new ve.Range( 0, this.data.length );
 
 	for ( i = range.start; i < range.end; i++ ) {
 		// Annotations
