@@ -149,9 +149,16 @@ ve.ui.SpecialCharacterDialog.prototype.fetchCharList = function () {
  * Builds the button DOM list based on the character list
  */
 ve.ui.SpecialCharacterDialog.prototype.buildButtonList = function () {
-	var category;
+	var category,
+		// HACK: When displaying this inside a dialog, menu would tend to be wider than content
+		isInsideDialog = !!this.manager.$element.closest( '.oo-ui-dialog' ).length;
 
-	this.bookletLayout = new OO.ui.BookletLayout( { $: this.$, outlined: true, continuous: true } );
+	this.bookletLayout = new OO.ui.BookletLayout( {
+		$: this.$,
+		outlined: true,
+		menuSize: isInsideDialog ? '10em' : '18em',
+		continuous: true
+	} );
 	this.pages = [];
 	for ( category in this.characters ) {
 		this.pages.push(

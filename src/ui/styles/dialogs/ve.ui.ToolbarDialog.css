@@ -42,6 +42,15 @@
 	right: 0;
 }
 
+/* Override ProcessDialog styles */
+.ve-ui-toolbarDialog .oo-ui-window-head {
+	height: 0;
+}
+
+.ve-ui-toolbarDialog .oo-ui-window-body {
+	top: 0;
+}
+
 /* TODO: fix this upstream */
 .ve-ui-toolbar .oo-ui-window-frame {
 	position: relative;
