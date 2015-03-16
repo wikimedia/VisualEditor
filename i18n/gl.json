@@ -6,7 +6,8 @@
 			"Toliño",
 			"Elisardojm",
 			"Breogan2008",
-			"Beninho"
+			"Beninho",
+			"Banjo"
 		]
 	},
 	"visualeditor": "Editor visual",
@@ -96,6 +97,7 @@
 	"visualeditor-shortcuts-history": "Historial",
 	"visualeditor-shortcuts-other": "Outros",
 	"visualeditor-shortcuts-text-style": "Estilo do texto",
+	"visualeditor-slug-insert": "Inserir parágrafo",
 	"visualeditor-specialcharacter-button-tooltip": "Carácter especial",
 	"visualeditor-specialcharacterinspector-title": "Carácter especial",
 	"visualeditor-table-caption": "Pé de foto",
