@@ -243,7 +243,10 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 				fragment = surfaceModel.getFragment( this.initialSelection, false ),
 				selection = this.getFragment().getSelection();
 
-			if ( !( selection instanceof ve.dm.LinearSelection ) ) {
+			if (
+				!( selection instanceof ve.dm.LinearSelection ) ||
+				( remove && selection.getRange().isCollapsed() )
+			) {
 				return;
 			}
 
