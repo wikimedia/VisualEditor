@@ -77,6 +77,8 @@
 
 .ve-ui-contextItem-body {
 	padding: 0 1em 0.5em 1em;
+	max-height: 15em;
+	overflow: auto;
 }
 
 .ve-ui-contextItem + .ve-ui-contextItem {
