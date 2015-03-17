@@ -84,6 +84,19 @@ ve.dm.Annotation.static.toDomElements = function () {
 	throw new Error( 've.dm.Annotation subclass must implement toDomElements' );
 };
 
+/**
+ * @inheritdoc
+ */
+ve.dm.Annotation.static.getHashObject = function ( dataElement ) {
+	return {
+		type: dataElement.type,
+		attributes: dataElement.attributes,
+		// For uniqueness we are only concerned with the first node
+		originalDomElements: dataElement.originalDomElements &&
+			dataElement.originalDomElements[0].cloneNode( false ).outerHTML
+	};
+};
+
 /* Methods */
 
 /**

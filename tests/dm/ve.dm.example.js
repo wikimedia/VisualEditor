@@ -1273,6 +1273,7 @@ ve.dm.example.domToDataCases = {
 			{ type: 'internalList' },
 			{ type: '/internalList' }
 		],
+		storeLength: 2,
 		fromDataBody: '<p><code>a</code>b<tt>c</tt>d<code>ef</code>'
 	},
 	'additive annotations': {
@@ -1288,7 +1289,8 @@ ve.dm.example.domToDataCases = {
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
-		]
+		],
+		storeLength: 2
 	},
 	'additive annotations overlapping other annotations': {
 		body: '<p><i><big>a<big><b>b</b></big><b>c</b></big></i></p>',
@@ -1300,7 +1302,8 @@ ve.dm.example.domToDataCases = {
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
-		]
+		],
+		storeLength: 3
 	},
 	'strip leading whitespace in paragraphs': {
 		data: [
@@ -1793,7 +1796,8 @@ ve.dm.example.domToDataCases = {
 	},
 	'example document': {
 		body: ve.dm.example.html,
-		data: ve.dm.example.data
+		data: ve.dm.example.data,
+		storeLength: 2
 	},
 	'empty annotation': {
 		body: '<p>Foo<span id="anchorTarget"></span>Bar</p>',
