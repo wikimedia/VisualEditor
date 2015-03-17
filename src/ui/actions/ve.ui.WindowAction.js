@@ -58,7 +58,7 @@ ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 	}
 
 	data = ve.extendObject( { dir: dir }, data, { fragment: fragment } );
-	if ( windowType === 'toolbar' ) {
+	if ( windowType === 'toolbar' || windowType === 'inspector' ) {
 		data = ve.extendObject( data, { surface: surface } );
 		// TODO: Make auto-close a window manager setting
 		autoClosePromise = windowManager.closeWindow( windowManager.getCurrentWindow() );
