@@ -168,6 +168,8 @@ ve.ui.AnnotationInspector.prototype.getSetupProcess = function ( data ) {
 	return ve.ui.AnnotationInspector.super.prototype.getSetupProcess.call( this, data )
 		.next( function () {
 			var expandedFragment, trimmedFragment, initialCoveringAnnotation,
+				inspector = this,
+				annotationSet, annotations,
 				fragment = this.getFragment(),
 				surfaceModel = fragment.getSurface(),
 				annotation = this.getMatchingAnnotations( fragment, true ).get( 0 );
@@ -183,19 +185,36 @@ ve.ui.AnnotationInspector.prototype.getSetupProcess = function ( data ) {
 					// Expand to nearest word
 					expandedFragment = fragment.expandLinearSelection( 'word' );
 					fragment = expandedFragment;
+
+					// TODO: We should review how getMatchingAnnotation works in light of the fact
+					// that in the case of a collapsed range, the method falls back to retrieving
+					// insertion annotations.
+
+					// Check if we're inside a relevant annotation and if so, define it
+					annotationSet = fragment.document.data.getAnnotationsFromRange( fragment.selection.range );
+					annotations = annotationSet.filter( function ( existingAnnotation ) {
+						return ve.isInstanceOfAny( existingAnnotation, inspector.constructor.static.modelClasses );
+					} );
+					if ( annotations.getLength() > 0 ) {
+						// We're in the middle of an annotation, let's make sure we expand
+						// our selection to include the entire existing annotation
+						annotation = annotations.get( 0 );
+					}
 				} else {
 					// Trim whitespace
 					trimmedFragment = fragment.trimLinearSelection();
 					fragment = trimmedFragment;
 				}
-				if ( !fragment.getSelection().isCollapsed() ) {
+
+				if ( !fragment.getSelection().isCollapsed() && !annotation ) {
 					// Create annotation from selection
 					annotation = this.getAnnotationFromFragment( fragment );
 					if ( annotation ) {
 						fragment.annotateContent( 'set', annotation );
 					}
 				}
-			} else {
+			}
+			if ( annotation ) {
 				// Expand range to cover annotation
 				expandedFragment = fragment.expandLinearSelection( 'annotation', annotation );
 				fragment = expandedFragment;
