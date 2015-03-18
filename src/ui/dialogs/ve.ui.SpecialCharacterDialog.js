@@ -65,8 +65,9 @@ ve.ui.SpecialCharacterDialog.prototype.getSetupProcess = function ( data ) {
 			var inspector = this;
 			if ( !this.characters ) {
 				this.$spinner.show();
-				this.fetchCharList()
-					.done( function () {
+				ve.init.platform.fetchSpecialCharList()
+					.done( function ( specialChars ) {
+						inspector.characters = specialChars;
 						inspector.buildButtonList();
 					} )
 					// TODO: show error message on fetchCharList().fail
@@ -115,34 +116,6 @@ ve.ui.SpecialCharacterDialog.prototype.getActionProcess = function ( action ) {
  */
 ve.ui.SpecialCharacterDialog.prototype.onContextChange = function () {
 	this.setDisabled( !( this.surface.getModel().getSelection() instanceof ve.dm.LinearSelection ) );
-};
-
-/**
- * Fetch the special character list object
- *
- * Returns a promise which resolves when this.characters has been populated
- *
- * @returns {jQuery.Promise}
- */
-ve.ui.SpecialCharacterDialog.prototype.fetchCharList = function () {
-	var charsList,
-		charsObj = {};
-
-	// Get the character list
-	charsList = ve.msg( 'visualeditor-specialcharinspector-characterlist-insert' );
-	try {
-		charsObj = JSON.parse( charsList );
-	} catch ( err ) {
-		// There was no character list found, or the character list message is
-		// invalid json string. Force a fallback to the minimal character list
-		ve.log( 've.ui.SpecialCharacterDialog: Could not parse the Special Character list.');
-		ve.log( err.message );
-	} finally {
-		this.characters = charsObj;
-	}
-
-	// This implementation always resolves instantly
-	return $.Deferred().resolve().promise();
 };
 
 /**
