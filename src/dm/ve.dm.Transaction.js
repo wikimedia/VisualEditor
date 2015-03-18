@@ -10,10 +10,11 @@
  * @class
  * @constructor
  */
-ve.dm.Transaction = function VeDmTransaction() {
+ve.dm.Transaction = function VeDmTransaction( doc ) {
 	this.operations = [];
 	this.lengthDifference = 0;
 	this.applied = false;
+	this.doc = doc;
 };
 
 /* Static Methods */
@@ -31,7 +32,7 @@ ve.dm.Transaction = function VeDmTransaction() {
  */
 ve.dm.Transaction.newFromReplacement = function ( doc, range, data, removeMetadata ) {
 	var endOffset,
-		tx = new ve.dm.Transaction();
+		tx = new ve.dm.Transaction( doc );
 	endOffset = tx.pushRemoval( doc, 0, range, removeMetadata );
 	endOffset = tx.pushInsertion( doc, endOffset, endOffset, data );
 	tx.pushFinalRetain( doc, endOffset );
@@ -49,7 +50,7 @@ ve.dm.Transaction.newFromReplacement = function ( doc, range, data, removeMetada
  * @returns {ve.dm.Transaction} Transaction that inserts data
  */
 ve.dm.Transaction.newFromInsertion = function ( doc, offset, data ) {
-	var tx = new ve.dm.Transaction(),
+	var tx = new ve.dm.Transaction( doc ),
 		endOffset = tx.pushInsertion( doc, 0, offset, data );
 	// Retain to end of document, if needed (for completeness)
 	tx.pushFinalRetain( doc, endOffset );
@@ -82,7 +83,7 @@ ve.dm.Transaction.newFromInsertion = function ( doc, offset, data ) {
  * @throws {Error} Invalid range
  */
 ve.dm.Transaction.newFromRemoval = function ( doc, range, removeMetadata ) {
-	var tx = new ve.dm.Transaction(),
+	var tx = new ve.dm.Transaction( doc ),
 		endOffset = tx.pushRemoval( doc, 0, range, removeMetadata );
 	// Retain to end of document, if needed (for completeness)
 	tx.pushFinalRetain( doc, endOffset );
@@ -180,7 +181,7 @@ ve.dm.Transaction.newFromDocumentInsertion = function ( doc, offset, newDoc, new
 		listMetadata = listMetadata.concat( newDoc.getMetadata( listMerge.newItemRanges[i], true ) );
 	}
 
-	tx = new ve.dm.Transaction();
+	tx = new ve.dm.Transaction( doc );
 
 	if ( offset <= listNodeRange.start ) {
 		// offset is before listNodeRange
@@ -257,7 +258,7 @@ ve.dm.Transaction.newFromDocumentInsertion = function ( doc, offset, newDoc, new
  * @throws {Error} Cannot set attributes on closing element
  */
 ve.dm.Transaction.newFromAttributeChanges = function ( doc, offset, attr ) {
-	var tx = new ve.dm.Transaction(),
+	var tx = new ve.dm.Transaction( doc ),
 		data = doc.getData();
 	// Verify element exists at offset
 	if ( data[offset].type === undefined ) {
@@ -291,7 +292,7 @@ ve.dm.Transaction.newFromAttributeChanges = function ( doc, offset, attr ) {
  */
 ve.dm.Transaction.newFromAnnotation = function ( doc, range, method, annotation ) {
 	var covered, type, annotatable,
-		tx = new ve.dm.Transaction(),
+		tx = new ve.dm.Transaction( doc ),
 		data = doc.data,
 		index = doc.getStore().index( annotation ),
 		i = range.start,
@@ -396,7 +397,7 @@ ve.dm.Transaction.newFromAnnotation = function ( doc, range, method, annotation 
  * @returns {ve.dm.Transaction} Transaction that inserts the metadata elements
  */
 ve.dm.Transaction.newFromMetadataInsertion = function ( doc, offset, index, newElements ) {
-	var tx = new ve.dm.Transaction(),
+	var tx = new ve.dm.Transaction( doc ),
 		data = doc.metadata,
 		elements = data.getData( offset ) || [];
 
@@ -433,7 +434,7 @@ ve.dm.Transaction.newFromMetadataInsertion = function ( doc, offset, index, newE
  */
 ve.dm.Transaction.newFromMetadataRemoval = function ( doc, offset, range ) {
 	var selection,
-		tx = new ve.dm.Transaction(),
+		tx = new ve.dm.Transaction( doc ),
 		data = doc.metadata,
 		elements = data.getData( offset ) || [];
 
@@ -480,7 +481,7 @@ ve.dm.Transaction.newFromMetadataRemoval = function ( doc, offset, range ) {
  */
 ve.dm.Transaction.newFromMetadataElementReplacement = function ( doc, offset, index, newElement ) {
 	var oldElement,
-		tx = new ve.dm.Transaction(),
+		tx = new ve.dm.Transaction( doc ),
 		data = doc.getMetadata(),
 		elements = data[offset] || [];
 
@@ -518,7 +519,7 @@ ve.dm.Transaction.newFromMetadataElementReplacement = function ( doc, offset, in
  */
 ve.dm.Transaction.newFromContentBranchConversion = function ( doc, range, type, attr ) {
 	var i, selected, branch, branchOuterRange,
-		tx = new ve.dm.Transaction(),
+		tx = new ve.dm.Transaction( doc ),
 		selection = doc.selectNodes( range, 'leaves' ),
 		opening = { type: type },
 		closing = { type: '/' + type },
@@ -609,7 +610,7 @@ ve.dm.Transaction.newFromContentBranchConversion = function ( doc, range, type, 
  */
 ve.dm.Transaction.newFromWrap = function ( doc, range, unwrapOuter, wrapOuter, unwrapEach, wrapEach ) {
 	var i, j, unwrapOuterData, startOffset, unwrapEachData, closingUnwrapEach, closingWrapEach,
-		tx = new ve.dm.Transaction(),
+		tx = new ve.dm.Transaction( doc ),
 		depth = 0;
 
 	// Function to generate arrays of closing elements in reverse order
@@ -813,6 +814,16 @@ ve.dm.Transaction.prototype.isNoOp = function () {
  */
 ve.dm.Transaction.prototype.getOperations = function () {
 	return this.operations;
+};
+
+/**
+ * Get the document the transaction was created for.
+ *
+ * @method
+ * @returns {ve.dm.Document} Document
+ */
+ve.dm.Transaction.prototype.getDocument = function () {
+	return this.doc;
 };
 
 /**
