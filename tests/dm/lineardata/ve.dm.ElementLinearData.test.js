@@ -1526,13 +1526,20 @@ QUnit.test( 'countNonInternalElements', function ( assert ) {
 	}
 } );
 
-QUnit.test( 'getUsedStoreValuesFromRange', function ( assert ) {
+QUnit.test( 'getUsedStoreValues', function ( assert ) {
 	var i,
 		bold = new ve.dm.BoldAnnotation( { type: 'textStyle/bold', attributes: { nodeName: 'b' } } ),
 		italic = new ve.dm.ItalicAnnotation( { type: 'textStyle/italic', attributes: { nodeName: 'i' } } ),
 		linearData = ve.dm.example.preprocessAnnotations( ve.copy( ve.dm.example.data ) ),
 		elementData = new ve.dm.ElementLinearData( linearData.getStore(), linearData.getData() ),
 		cases = [
+			{
+				msg: 'no range (whole document) contains everything',
+				expected: {
+					0: bold,
+					1: italic
+				}
+			},
 			{
 				msg: '2-4 contains bold and italic',
 				range: new ve.Range( 2, 4 ),
@@ -1565,7 +1572,7 @@ QUnit.test( 'getUsedStoreValuesFromRange', function ( assert ) {
 	QUnit.expect( cases.length );
 	for ( i = 0; i < cases.length; i++ ) {
 		assert.deepEqual(
-			elementData.getUsedStoreValuesFromRange( cases[i].range ),
+			elementData.getUsedStoreValues( cases[i].range ),
 			cases[i].expected,
 			cases[i].msg
 		);
