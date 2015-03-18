@@ -27,6 +27,15 @@ OO.inheritClass( ve.ui.ToolbarDialogTool, ve.ui.DialogTool );
 
 ve.ui.ToolbarDialogTool.static.deactivateOnSelect = false;
 
+/**
+ * Name of the associated window
+ *
+ * The tool will display as active only if this window is open
+ *
+ * @static
+ * @property {string}
+ * @inheritable
+ */
 ve.ui.ToolbarDialogTool.static.activeWindow = null;
 
 /* Methods */
@@ -37,7 +46,8 @@ ve.ui.ToolbarDialogTool.static.activeWindow = null;
 ve.ui.ToolbarDialogTool.prototype.onUpdateState = function () {
 	// Parent method
 	ve.ui.ToolbarDialogTool.super.prototype.onUpdateState.apply( this, arguments );
-	// Never show the tool as active
+
+	// Show the tool as active if its associated window is open
 	var currentWindow = this.toolbar.getSurface().getToolbarDialogs().currentWindow;
 	this.setActive( currentWindow && currentWindow.constructor.static.name === this.constructor.static.activeWindow );
 };
