@@ -35,7 +35,7 @@
 		]
 	},
 	"visualeditor": "ÉditeurVisuel",
-	"visualeditor-aliennode-tooltip": "Désolé, cet élément ne peut être modifié qu’en mode source pour le moment.",
+	"visualeditor-aliennode-tooltip": "Désolé, cet élément ne peut être modifié qu’avec l’éditeur de wikicode pour le moment.",
 	"visualeditor-align-widget-center": "Centré",
 	"visualeditor-align-widget-left": "Gauche",
 	"visualeditor-align-widget-right": "Droite",
