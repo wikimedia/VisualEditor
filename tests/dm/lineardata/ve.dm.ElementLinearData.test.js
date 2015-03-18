@@ -1230,8 +1230,8 @@ QUnit.test( 'getNearestStructuralOffset', function ( assert ) {
 	}
 } );
 
-QUnit.test( 'getNearestWordRange', function ( assert ) {
-	var i, data, range, word,
+QUnit.test( 'getWordRange', function ( assert ) {
+	var i, data, elementLinearData, range, word,
 		store = new ve.dm.IndexValueStore(),
 		cases = [
 			{
@@ -1340,12 +1340,48 @@ QUnit.test( 'getNearestWordRange', function ( assert ) {
 				phrase: '维基百科',
 				msg: 'Hanzi characters (cursor in middle)',
 				offset: 2,
-				expected: ''
+				expected: '基'
 			},
 			{
 				phrase: '维基百科',
 				msg: 'Hanzi characters (cursor at end)',
 				offset: 4,
+				expected: '科'
+			},
+			{
+				phrase: 'a b',
+				msg: 'Single-char word before cursor',
+				offset: 1,
+				expected: 'a'
+			},
+			{
+				phrase: 'a b',
+				msg: 'Single-char word after cursor',
+				offset: 2,
+				expected: 'b'
+			},
+			{
+				phrase: '佢地嘅𨋢壞咗',
+				msg: 'Surrogate-pair word character before cursor',
+				offset: 5,
+				expected: '𨋢'
+			},
+			{
+				phrase: '"𨋢"=lip1',
+				msg: 'Surrogate-pair word character after cursor',
+				offset: 1,
+				expected: '𨋢'
+			},
+			{
+				phrase: '"\uD83D\uDE00"=GRINNING_FACE',
+				msg: 'Surrogate-pair non-word character before cursor',
+				offset: 3,
+				expected: ''
+			},
+			{
+				phrase: '"\uD83D\uDE00"=GRINNING_FACE',
+				msg: 'Surrogate-pair non-word character after cursor',
+				offset: 1,
 				expected: ''
 			},
 			{
@@ -1363,9 +1399,15 @@ QUnit.test( 'getNearestWordRange', function ( assert ) {
 		];
 	QUnit.expect( cases.length );
 	for ( i = 0; i < cases.length; i++ ) {
-		data = new ve.dm.ElementLinearData( store, cases[i].phrase.split( '' ) );
-		range = data.getNearestWordRange( cases[i].offset );
-		word = cases[i].phrase.substring( range.start, range.end );
+		// Construct the text (inside a paragraph, because getNearestContentOffset assumes
+		// text cannot be at the very start or end of the data).
+		data = cases[i].phrase.split( '' );
+		data.unshift( { type: 'paragraph' } );
+		data.push( { type: '/paragraph' } );
+		elementLinearData = new ve.dm.ElementLinearData( store, data );
+		// Adjust offsets to account for the paragraph tag
+		range = elementLinearData.getWordRange( cases[i].offset + 1 );
+		word = cases[i].phrase.substring( range.start - 1, range.end - 1 );
 		assert.strictEqual( word, cases[i].expected,
 			cases[i].msg + ': ' +
 			cases[i].phrase.substring( 0, cases[i].offset ) + '│' +
