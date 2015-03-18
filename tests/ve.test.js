@@ -26,6 +26,76 @@ QUnit.module( 've' );
 
 // ve.extendObject: Tested upstream (jQuery)
 
+QUnit.test( 'compareClassLists', 1, function ( assert ) {
+	var i, cases = [
+		{
+			args: ['', ''],
+			expected: true
+		},
+		{
+			args: ['', []],
+			expected: true
+		},
+		{
+			args: [[], []],
+			expected: true
+		},
+		{
+			args: ['', ['']],
+			expected: true
+		},
+		{
+			args: [[], ['']],
+			expected: true
+		},
+		{
+			args: ['foo', ''],
+			expected: false
+		},
+		{
+			args: ['foo', 'foo'],
+			expected: true
+		},
+		{
+			args: ['foo', 'bar'],
+			expected: false
+		},
+		{
+			args: ['foo', 'foo bar'],
+			expected: false
+		},
+		{
+			args: ['foo', ['foo']],
+			expected: true
+		},
+		{
+			args: [['foo'], 'bar'],
+			expected: false
+		},
+		{
+			args: ['foo', ['foo', 'bar']],
+			expected: false
+		},
+		{
+			args: ['foo', ['foo', 'foo']],
+			expected: true
+		},
+		{
+			args: [['foo'], 'foo foo'],
+			expected: true
+		},
+		{
+			args: ['foo bar foo', 'foo foo'],
+			expected: false
+		}
+	];
+
+	QUnit.expect( cases.length );
+	for ( i = 0; i < cases.length; i++ ) {
+		assert.strictEqual( ve.compareClassLists.apply( ve, cases[i].args ), cases[i].expected );
+	}
+} );
+
 QUnit.test( 'isInstanceOfAny', 7, function ( assert ) {
 	function Foo() {}
 	OO.initClass( Foo );

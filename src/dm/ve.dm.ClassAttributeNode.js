@@ -93,11 +93,7 @@ ve.dm.ClassAttributeNode.static.getClassAttrFromAttributes = function ( attribut
 	// If no meaningful change in classes, preserve order
 	if (
 		attributes.originalClasses &&
-		ve.compare(
-			// OO.simpleArrayUnion( x, [] ) makes 'x' a unique array
-			OO.simpleArrayUnion( attributes.originalClasses.trim().split( /\s+/ ), [] ).sort(),
-			OO.simpleArrayUnion( classNames, [] ).sort()
-		)
+		ve.compareClassLists( attributes.originalClasses, classNames )
 	) {
 		return attributes.originalClasses;
 	} else if ( classNames.length > 0 ) {

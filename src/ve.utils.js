@@ -96,6 +96,30 @@ ve.isEqualDomElements = function ( domElements1, domElements2 ) {
 };
 
 /**
+ * Compare two class lists, either whitespace separated strings or arrays
+ *
+ * Class lists are equivalent if they contain the same members,
+ * excluding duplicates and ignoring order.
+ *
+ * @param {string[]|string} classList1 First class list
+ * @param {string[]|string} classList2 Second class list
+ * @return {boolean} Class lists are equivalent
+ */
+ve.compareClassLists = function ( classList1, classList2 ) {
+	var removeEmpty = function ( c ) {
+		return c !== '';
+	};
+
+	classList1 = Array.isArray( classList1 ) ? classList1 : classList1.trim().split( /\s+/ );
+	classList2 = Array.isArray( classList2 ) ? classList2 : classList2.trim().split( /\s+/ );
+
+	classList1 = classList1.filter( removeEmpty );
+	classList2 = classList2.filter( removeEmpty );
+
+	return ve.compare( OO.unique( classList1 ).sort(), OO.unique( classList2 ).sort() );
+};
+
+/**
  * Check to see if an object is a plain object (created using "{}" or "new Object").
  *
  * @method
