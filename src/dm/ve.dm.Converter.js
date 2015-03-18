@@ -373,6 +373,7 @@ ve.dm.Converter.prototype.createDataElements = function ( modelClass, domElement
 	if ( !Array.isArray( dataElements ) ) {
 		dataElements = [ dataElements ];
 	}
+	dataElements[0].originalDomElements = domElements;
 	return dataElements;
 };
 
@@ -660,10 +661,6 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 				} else {
 					// Update modelClass to reflect the type we got back
 					modelClass = this.modelRegistry.lookup( childDataElements[0].type );
-				}
-
-				if ( childDataElements && childDataElements[0] ) {
-					childDataElements[0].originalDomElements = childNodes;
 				}
 
 				// Now take the appropriate action based on that
