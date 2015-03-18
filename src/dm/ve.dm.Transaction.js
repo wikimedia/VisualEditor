@@ -293,6 +293,7 @@ ve.dm.Transaction.newFromAnnotation = function ( doc, range, method, annotation 
 	var covered, type, annotatable,
 		tx = new ve.dm.Transaction(),
 		data = doc.data,
+		index = doc.getStore().index( annotation ),
 		i = range.start,
 		span = i,
 		on = false,
@@ -330,7 +331,7 @@ ve.dm.Transaction.newFromAnnotation = function ( doc, range, method, annotation 
 			// Structural element opening or closing, or entering a content node
 			if ( on ) {
 				tx.pushRetain( span );
-				tx.pushStopAnnotating( method, annotation );
+				tx.pushStopAnnotating( method, index );
 				span = 0;
 				on = false;
 			}
@@ -355,7 +356,7 @@ ve.dm.Transaction.newFromAnnotation = function ( doc, range, method, annotation 
 				// Skip annotated content
 				if ( on ) {
 					tx.pushRetain( span );
-					tx.pushStopAnnotating( method, annotation );
+					tx.pushStopAnnotating( method, index );
 					span = 0;
 					on = false;
 				}
@@ -363,7 +364,7 @@ ve.dm.Transaction.newFromAnnotation = function ( doc, range, method, annotation 
 				// Cover non-annotated content
 				if ( !on ) {
 					tx.pushRetain( span );
-					tx.pushStartAnnotating( method, annotation );
+					tx.pushStartAnnotating( method, index );
 					span = 0;
 					on = true;
 				}
@@ -377,7 +378,7 @@ ve.dm.Transaction.newFromAnnotation = function ( doc, range, method, annotation 
 	}
 	tx.pushRetain( span );
 	if ( on ) {
-		tx.pushStopAnnotating( method, annotation );
+		tx.pushStopAnnotating( method, index );
 	}
 	tx.pushFinalRetain( doc, range.end );
 	return tx;
@@ -1352,14 +1353,14 @@ ve.dm.Transaction.prototype.pushAttributeChanges = function ( changes, oldAttrs 
  *
  * @method
  * @param {string} method Method to use, either "set" or "clear"
- * @param {Object} annotation Annotation object to start setting or clearing from content data
+ * @param {Object} index Store index of annotation object to start setting or clearing from content data
  */
-ve.dm.Transaction.prototype.pushStartAnnotating = function ( method, annotation ) {
+ve.dm.Transaction.prototype.pushStartAnnotating = function ( method, index ) {
 	this.operations.push( {
 		type: 'annotate',
 		method: method,
 		bias: 'start',
-		annotation: annotation
+		index: index
 	} );
 };
 
@@ -1368,14 +1369,14 @@ ve.dm.Transaction.prototype.pushStartAnnotating = function ( method, annotation 
  *
  * @method
  * @param {string} method Method to use, either "set" or "clear"
- * @param {Object} annotation Annotation object to stop setting or clearing from content data
+ * @param {Object} index Store index of annotation object to stop setting or clearing from content data
  */
-ve.dm.Transaction.prototype.pushStopAnnotating = function ( method, annotation ) {
+ve.dm.Transaction.prototype.pushStopAnnotating = function ( method, index ) {
 	this.operations.push( {
 		type: 'annotate',
 		method: method,
 		bias: 'stop',
-		annotation: annotation
+		index: index
 	} );
 };
 

@@ -400,7 +400,7 @@ ve.dm.TransactionProcessor.processors.retainMetadata = function ( op ) {
  * @throws {Error} Invalid annotation method
  */
 ve.dm.TransactionProcessor.processors.annotate = function ( op ) {
-	var target;
+	var target, annotation;
 	if ( op.method === 'set' ) {
 		target = this.set;
 	} else if ( op.method === 'clear' ) {
@@ -408,10 +408,11 @@ ve.dm.TransactionProcessor.processors.annotate = function ( op ) {
 	} else {
 		throw new Error( 'Invalid annotation method ' + op.method );
 	}
+	annotation = this.document.getStore().value( op.index );
 	if ( op.bias === 'start' ) {
-		target.push( op.annotation );
+		target.push( annotation );
 	} else {
-		target.remove( op.annotation );
+		target.remove( annotation );
 	}
 	// Tree sync is done by applyAnnotations()
 };

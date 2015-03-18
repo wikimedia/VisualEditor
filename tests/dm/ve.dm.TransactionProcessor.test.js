@@ -65,17 +65,17 @@ QUnit.test( 'commit', function ( assert ) {
 			'annotating content': {
 				calls: [
 					['pushRetain', 1],
-					['pushStartAnnotating', 'set', bold],
+					['pushStartAnnotating', 'set', store.index( bold )],
 					['pushRetain', 1],
-					['pushStopAnnotating', 'set', bold],
+					['pushStopAnnotating', 'set', store.index( bold )],
 					['pushRetain', 1],
-					['pushStartAnnotating', 'clear', italic],
-					['pushStartAnnotating', 'set', bold],
-					['pushStartAnnotating', 'set', underline],
+					['pushStartAnnotating', 'clear', store.index( italic )],
+					['pushStartAnnotating', 'set', store.index( bold )],
+					['pushStartAnnotating', 'set', store.index( underline )],
 					['pushRetain', 1],
-					['pushStopAnnotating', 'clear', italic],
-					['pushStopAnnotating', 'set', bold],
-					['pushStopAnnotating', 'set', underline]
+					['pushStopAnnotating', 'clear', store.index( italic )],
+					['pushStopAnnotating', 'set', store.index( bold )],
+					['pushStopAnnotating', 'set', store.index( underline )]
 				],
 				expected: function ( data ) {
 					data[1] = ['a', store.indexes( [ bold ] )];
@@ -86,9 +86,9 @@ QUnit.test( 'commit', function ( assert ) {
 			'annotating content and leaf elements': {
 				calls: [
 					['pushRetain', 38],
-					['pushStartAnnotating', 'set', bold],
+					['pushStartAnnotating', 'set', store.index( bold )],
 					['pushRetain', 4],
-					['pushStopAnnotating', 'set', bold]
+					['pushStopAnnotating', 'set', store.index( bold )]
 				],
 				expected: function ( data ) {
 					data[38] = ['h', store.indexes( [ bold ] )];
@@ -100,9 +100,9 @@ QUnit.test( 'commit', function ( assert ) {
 				data: metadataExample,
 				calls: [
 					['pushRetain', 2],
-					['pushStartAnnotating', 'set', bold],
+					['pushStartAnnotating', 'set', store.index( bold )],
 					['pushRetain', 2],
-					['pushStopAnnotating', 'set', bold],
+					['pushStopAnnotating', 'set', store.index( bold )],
 					['pushRetain', 6]
 				],
 				expected: function ( data ) {
@@ -115,9 +115,9 @@ QUnit.test( 'commit', function ( assert ) {
 				data: metadataExample,
 				calls: [
 					['pushRetain', 3],
-					['pushStartAnnotating', 'set', bold],
+					['pushStartAnnotating', 'set', store.index( bold )],
 					['pushRetain', 4],
-					['pushStopAnnotating', 'set', bold],
+					['pushStopAnnotating', 'set', store.index( bold )],
 					['pushRetain', 3]
 				],
 				expected: function ( data ) {
@@ -145,9 +145,9 @@ QUnit.test( 'commit', function ( assert ) {
 				],
 				calls: [
 					['pushRetain', 2],
-					['pushStartAnnotating', 'clear', bold],
+					['pushStartAnnotating', 'clear', store.index( bold )],
 					['pushRetain', 2],
-					['pushStopAnnotating', 'clear', bold],
+					['pushStopAnnotating', 'clear', store.index( bold )],
 					['pushRetain', 6]
 				],
 				expected: function ( data ) {
@@ -158,44 +158,44 @@ QUnit.test( 'commit', function ( assert ) {
 			},
 			'using an annotation method other than set or clear throws an exception': {
 				calls: [
-					['pushStartAnnotating', 'invalid-method', bold],
+					['pushStartAnnotating', 'invalid-method', store.index( bold )],
 					['pushRetain', 1],
-					['pushStopAnnotating', 'invalid-method', bold]
+					['pushStopAnnotating', 'invalid-method', store.index( bold )]
 				],
 				exception: /Invalid annotation method/
 			},
 			'annotating branch opening element throws an exception': {
 				calls: [
-					['pushStartAnnotating', 'set', bold],
+					['pushStartAnnotating', 'set', store.index( bold )],
 					['pushRetain', 1],
-					['pushStopAnnotating', 'set', bold]
+					['pushStopAnnotating', 'set', store.index( bold )]
 				],
 				exception: /Invalid transaction, cannot annotate a non-content element/
 			},
 			'annotating branch closing element throws an exception': {
 				calls: [
 					['pushRetain', 4],
-					['pushStartAnnotating', 'set', bold],
+					['pushStartAnnotating', 'set', store.index( bold )],
 					['pushRetain', 1],
-					['pushStopAnnotating', 'set', bold]
+					['pushStopAnnotating', 'set', store.index( bold )]
 				],
 				exception: /Invalid transaction, cannot annotate a non-content element/
 			},
 			'setting duplicate annotations throws an exception': {
 				calls: [
 					['pushRetain', 2],
-					['pushStartAnnotating', 'set', bold],
+					['pushStartAnnotating', 'set', store.index( bold )],
 					['pushRetain', 1],
-					['pushStopAnnotating', 'set', bold]
+					['pushStopAnnotating', 'set', store.index( bold )]
 				],
 				exception: /Invalid transaction, annotation to be set is already set/
 			},
 			'removing non-existent annotations throws an exception': {
 				calls: [
 					['pushRetain', 1],
-					['pushStartAnnotating', 'clear', bold],
+					['pushStartAnnotating', 'clear', store.index( bold )],
 					['pushRetain', 1],
-					['pushStopAnnotating', 'clear', bold]
+					['pushStopAnnotating', 'clear', store.index( bold )]
 				],
 				exception: /Invalid transaction, annotation to be cleared is not set/
 			},
