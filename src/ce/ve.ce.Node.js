@@ -195,7 +195,11 @@ ve.ce.Node.prototype.splitOnEnter = function () {
  */
 ve.ce.Node.prototype.destroy = function () {
 	this.parent = null;
-	this.model.disconnect( this );
+	this.root = null;
+	this.doc = null;
+
+	// Parent method
+	ve.ce.View.prototype.destroy.call( this );
 };
 
 /** */

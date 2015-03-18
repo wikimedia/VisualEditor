@@ -76,3 +76,13 @@ ve.ce.Annotation.prototype.getParentNode = function () {
 ve.ce.Annotation.prototype.getModelHtmlDocument = function () {
 	return this.parentNode && this.parentNode.getModelHtmlDocument();
 };
+
+/**
+ * Release all memory.
+ */
+ve.ce.Annotation.prototype.destroy = function () {
+	this.parentNode = null;
+
+	// Parent method
+	ve.ce.View.prototype.destroy.call( this );
+};

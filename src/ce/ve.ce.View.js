@@ -191,3 +191,12 @@ ve.ce.View.prototype.getResolvedAttribute = function ( key ) {
 		doc = this.getModelHtmlDocument();
 	return doc && typeof plainValue === 'string' ? ve.resolveUrl( plainValue, doc ) : plainValue;
 };
+
+/**
+ * Release all memory.
+ */
+ve.ce.View.prototype.destroy = function () {
+	this.disconnect( this );
+	this.model.disconnect( this );
+	this.model = null;
+};
