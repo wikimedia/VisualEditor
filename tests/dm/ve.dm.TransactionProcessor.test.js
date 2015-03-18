@@ -29,25 +29,19 @@ QUnit.test( 'commit', function ( assert ) {
 			'a', 'b',
 			{
 				type: 'alienMeta',
-				attributes: {
-					domElements: $( '<!-- comment -->' ).toArray()
-				}
+				originalDomElements: $( '<!-- comment -->' ).toArray()
 			},
 			{ type: '/alienMeta' },
 			'c', 'd',
 			{
 				type: 'alienMeta',
-				attributes: {
-					domElements: $( '<!-- comment -->' ).toArray()
-				}
+				originalDomElements: $( '<!-- comment -->' ).toArray()
 			},
 			{ type: '/alienMeta' },
 			'e', 'f',
 			{
 				type: 'alienMeta',
-				attributes: {
-					domElements: $( '<!-- comment -->' ).toArray()
-				}
+				originalDomElements: $( '<!-- comment -->' ).toArray()
 			},
 			{ type: '/alienMeta' },
 			'g', 'h',
@@ -134,9 +128,7 @@ QUnit.test( 'commit', function ( assert ) {
 					'a', ['b', store.indexes( [ bold ] )],
 					{
 						type: 'alienMeta',
-						attributes: {
-							domElements: $( '<!-- comment -->' ).toArray()
-						},
+						originalDomElements: $( '<!-- comment -->' ).toArray(),
 						annotations: store.indexes( [ bold ] )
 					},
 					{ type: '/alienMeta' },
@@ -446,9 +438,7 @@ QUnit.test( 'commit', function ( assert ) {
 					'F',
 					{
 						type: 'alienMeta',
-						attributes: {
-							domElements: $( '<!-- foo -->' ).toArray()
-						}
+						originalDomElements: $( '<!-- foo -->' ).toArray()
 					},
 					{ type: '/alienMeta' },
 					'o', 'o',
@@ -466,9 +456,7 @@ QUnit.test( 'commit', function ( assert ) {
 				data: [
 					{
 						type: 'alienMeta',
-						attributes: {
-							domElements: $( '<!-- foo -->' ).toArray()
-						}
+						originalDomElements: $( '<!-- foo -->' ).toArray()
 					},
 					{ type: '/alienMeta' },
 					{ type: 'paragraph' },
@@ -497,9 +485,7 @@ QUnit.test( 'commit', function ( assert ) {
 				data: [
 					{
 						type: 'alienMeta',
-						attributes: {
-							domElements: $( '<!-- foo -->' ).toArray()
-						}
+						originalDomElements: $( '<!-- foo -->' ).toArray()
 					},
 					{ type: '/alienMeta' },
 					{ type: 'paragraph' },
@@ -516,9 +502,7 @@ QUnit.test( 'commit', function ( assert ) {
 					{ type: '/paragraph' },
 					{
 						type: 'alienMeta',
-						attributes: {
-							domElements: $( '<!-- bar -->' ).toArray()
-						}
+						originalDomElements: $( '<!-- bar -->' ).toArray()
 					},
 					{ type: '/alienMeta' },
 					{ type: 'paragraph' },
@@ -539,9 +523,7 @@ QUnit.test( 'commit', function ( assert ) {
 				data: [
 					{
 						type: 'alienMeta',
-						attributes: {
-							domElements: $( '<!-- foo -->' ).toArray()
-						}
+						originalDomElements: $( '<!-- foo -->' ).toArray()
 					},
 					{ type: '/alienMeta' },
 					{ type: 'paragraph' },
@@ -558,9 +540,7 @@ QUnit.test( 'commit', function ( assert ) {
 					{ type: '/paragraph' },
 					{
 						type: 'alienMeta',
-						attributes: {
-							domElements: $( '<!-- bar -->' ).toArray()
-						}
+						originalDomElements: $( '<!-- bar -->' ).toArray()
 					},
 					{ type: '/alienMeta' },
 					{ type: 'paragraph' },
@@ -600,9 +580,7 @@ QUnit.test( 'commit', function ( assert ) {
 					[ 'newFromMetadataInsertion', 12, 0, [
 						{
 							type: 'alienMeta',
-							attributes: {
-								domElements: $( '<meta property="fourteen" />' ).toArray()
-							}
+							originalDomElements: $( '<meta property="fourteen" />' ).toArray()
 						}
 					] ]
 				],
@@ -610,9 +588,7 @@ QUnit.test( 'commit', function ( assert ) {
 					ve.batchSplice( data, data.length - 2, 0, [
 						{
 							type: 'alienMeta',
-							attributes: {
-								domElements: $( '<meta property="fourteen" />' ).toArray()
-							}
+							originalDomElements: $( '<meta property="fourteen" />' ).toArray()
 						},
 						{
 							type: '/alienMeta'
@@ -626,9 +602,7 @@ QUnit.test( 'commit', function ( assert ) {
 					[ 'newFromMetadataInsertion', 12, 1, [
 						{
 							type: 'alienMeta',
-							attributes: {
-								domElements: $( '<meta property="fourteen" />' ).toArray()
-							}
+							originalDomElements: $( '<meta property="fourteen" />' ).toArray()
 						}
 					] ]
 				],
@@ -636,9 +610,7 @@ QUnit.test( 'commit', function ( assert ) {
 					ve.batchSplice( data, data.length, 0, [
 						{
 							type: 'alienMeta',
-							attributes: {
-								domElements: $( '<meta property="fourteen" />' ).toArray()
-							}
+							originalDomElements: $( '<meta property="fourteen" />' ).toArray()
 						},
 						{
 							type: '/alienMeta'

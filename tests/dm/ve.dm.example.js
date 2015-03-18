@@ -457,19 +457,19 @@ ve.dm.example.data = [
 
 ve.dm.example.alienData = [
 	// 0
-	{ type: 'alienBlock' },
+	{ type: 'alienBlock', originalDomElements: $( '<foobar />' ).toArray() },
 	{ type: '/alienBlock' },
 	// 2
 	{ type: 'paragraph' },
 	'a',
 	// 4
-	{ type: 'alienInline' },
+	{ type: 'alienInline', originalDomElements: $( '<foobar />' ).toArray() },
 	{ type: '/alienInline' },
 	// 6
 	'b',
 	{ type: '/paragraph' },
 	// 8
-	{ type: 'alienBlock' },
+	{ type: 'alienBlock', originalDomElements: $( '<foobar />' ).toArray() },
 	{ type: '/alienBlock' },
 	// 10
 	{ type: 'internalList' },
@@ -484,7 +484,7 @@ ve.dm.example.alienWithEmptyData = [
 	{ type: 'paragraph' },
 	'a',
 	// 4
-	{ type: 'alienInline' },
+	{ type: 'alienInline', originalDomElements: $( '<foobar />' ).toArray() },
 	{ type: '/alienInline' },
 	// 6
 	{ type: '/paragraph' },
@@ -533,16 +533,12 @@ ve.dm.example.internalData.internalItems = [
 ve.dm.example.withMeta = [
 	{
 		type: 'alienMeta',
-		attributes: {
-			domElements: $( '<!-- No content conversion -->' ).toArray()
-		}
+		originalDomElements: $( '<!-- No content conversion -->' ).toArray()
 	},
 	{ type: '/alienMeta' },
 	{
 		type: 'alienMeta',
-		attributes: {
-			domElements: $( '<meta property="foo" />' ).toArray()
-		}
+		originalDomElements: $( '<meta property="foo" />' ).toArray()
 	},
 	{ type: '/alienMeta' },
 	{ type: 'paragraph' },
@@ -551,9 +547,7 @@ ve.dm.example.withMeta = [
 	'o',
 	{
 		type: 'alienMeta',
-		attributes: {
-			domElements: $( '<link rel="bar" href="baz" />' ).toArray()
-		}
+		originalDomElements: $( '<link rel="bar" href="baz" />' ).toArray()
 	},
 	{ type: '/alienMeta' },
 	'B',
@@ -561,48 +555,36 @@ ve.dm.example.withMeta = [
 	'r',
 	{
 		type: 'alienMeta',
-		attributes: {
-			domElements: $( '<meta property="foo" content="bar" />' ).toArray()
-		}
+		originalDomElements: $( '<meta property="foo" content="bar" />' ).toArray()
 	},
 	{ type: '/alienMeta' },
 	'B',
 	'a',
 	{
 		type: 'alienMeta',
-		attributes: {
-			domElements: $( '<!-- inline -->' ).toArray()
-		}
+		originalDomElements: $( '<!-- inline -->' ).toArray()
 	},
 	{ type: '/alienMeta' },
 	'z',
 	{ type: '/paragraph' },
 	{
 		type: 'alienMeta',
-		attributes: {
-			domElements: $( '<meta property="bar" content="baz" />' ).toArray()
-		}
+		originalDomElements: $( '<meta property="bar" content="baz" />' ).toArray()
 	},
 	{ type: '/alienMeta' },
 	{
 		type: 'alienMeta',
-		attributes: {
-			domElements: $( '<!--barbaz-->' ).toArray()
-		}
+		originalDomElements: $( '<!--barbaz-->' ).toArray()
 	},
 	{ type: '/alienMeta' },
 	{
 		type: 'alienMeta',
-		attributes: {
-			domElements: $( '<link rel="foofoo" href="barbar" />' ).toArray()
-		}
+		originalDomElements: $( '<link rel="foofoo" href="barbar" />' ).toArray()
 	},
 	{ type: '/alienMeta' },
 	{
 		type: 'alienMeta',
-		attributes: {
-			domElements: $( '<meta typeof=bazquux" data-foo="foobar" />' ).toArray()
-		}
+		originalDomElements: $( '<meta typeof=bazquux" data-foo="foobar" />' ).toArray()
 	},
 	{ type: '/alienMeta' },
 	{ type: 'internalList' },
@@ -629,15 +611,11 @@ ve.dm.example.withMetaMetaData = [
 	[
 		{
 			type: 'alienMeta',
-			attributes: {
-				domElements: $( '<!-- No content conversion -->' ).toArray()
-			}
+			originalDomElements: $( '<!-- No content conversion -->' ).toArray()
 		},
 		{
 			type: 'alienMeta',
-			attributes: {
-				domElements: $( '<meta property="foo" />' ).toArray()
-			}
+			originalDomElements: $( '<meta property="foo" />' ).toArray()
 		}
 	],
 	undefined,
@@ -646,9 +624,7 @@ ve.dm.example.withMetaMetaData = [
 	[
 		{
 			type: 'alienMeta',
-			attributes: {
-				domElements: $( '<link rel="bar" href="baz" />' ).toArray()
-			}
+			originalDomElements: $( '<link rel="bar" href="baz" />' ).toArray()
 		}
 	],
 	undefined,
@@ -656,45 +632,33 @@ ve.dm.example.withMetaMetaData = [
 	[
 		{
 			type: 'alienMeta',
-			attributes: {
-				domElements: $( '<meta property="foo" content="bar" />' ).toArray()
-			}
+			originalDomElements: $( '<meta property="foo" content="bar" />' ).toArray()
 		}
 	],
 	undefined,
 	[
 		{
 			type: 'alienMeta',
-			attributes: {
-				domElements: $( '<!-- inline -->' ).toArray()
-			}
+			originalDomElements: $( '<!-- inline -->' ).toArray()
 		}
 	],
 	undefined,
 	[
 		{
 			type: 'alienMeta',
-			attributes: {
-				domElements: $( '<meta property="bar" content="baz" />' ).toArray()
-			}
+			originalDomElements: $( '<meta property="bar" content="baz" />' ).toArray()
 		},
 		{
 			type: 'alienMeta',
-			attributes: {
-				domElements: $( '<!--barbaz-->' ).toArray()
-			}
+			originalDomElements: $( '<!--barbaz-->' ).toArray()
 		},
 		{
 			type: 'alienMeta',
-			attributes: {
-				domElements: $( '<link rel="foofoo" href="barbar" />' ).toArray()
-			}
+			originalDomElements: $( '<link rel="foofoo" href="barbar" />' ).toArray()
 		},
 		{
 			type: 'alienMeta',
-			attributes: {
-				domElements: $( '<meta typeof=bazquux" data-foo="foobar" />' ).toArray()
-			}
+			originalDomElements: $( '<meta typeof=bazquux" data-foo="foobar" />' ).toArray()
 		}
 	],
 	undefined,
@@ -705,117 +669,91 @@ ve.dm.example.listWithMeta = [
 	//  0 - Beginning of list
 	{
 		type: 'alienMeta',
-		attributes: {
-			domElements: $( '<meta property="one" />' ).toArray()
-		}
+		originalDomElements: $( '<meta property="one" />' ).toArray()
 	},
 	{ type: '/alienMeta' },
 	{ type: 'list' },
 	//  1 - Beginning of first list item
 	{
 		type: 'alienMeta',
-		attributes: {
-			domElements: $( '<meta property="two" />' ).toArray()
-		}
+		originalDomElements: $( '<meta property="two" />' ).toArray()
 	},
 	{ type: '/alienMeta' },
 	{ type: 'listItem', attributes: { styles: ['bullet'] } },
 	//  2 - Beginning of paragraph
 	{
 		type: 'alienMeta',
-		attributes: {
-			domElements: $( '<meta property="three" />' ).toArray()
-		}
+		originalDomElements: $( '<meta property="three" />' ).toArray()
 	},
 	{ type: '/alienMeta' },
 	{ type: 'paragraph' },
 	//  3 - Plain "a"
 	{
 		type: 'alienMeta',
-		attributes: {
-			domElements: $( '<meta property="four" />' ).toArray()
-		}
+		originalDomElements: $( '<meta property="four" />' ).toArray()
 	},
 	{ type: '/alienMeta' },
 	'a',
 	//  4 - End of paragraph
 	{
 		type: 'alienMeta',
-		attributes: {
-			domElements: $( '<meta property="five" />' ).toArray()
-		}
+		originalDomElements: $( '<meta property="five" />' ).toArray()
 	},
 	{ type: '/alienMeta' },
 	{ type: '/paragraph' },
 	//  5 - End of first list item
 	{
 		type: 'alienMeta',
-		attributes: {
-			domElements: $( '<meta property="six" />' ).toArray()
-		}
+		originalDomElements: $( '<meta property="six" />' ).toArray()
 	},
 	{ type: '/alienMeta' },
 	{ type: '/listItem' },
 	//  6 - Beginning of second list item
 	{
 		type: 'alienMeta',
-		attributes: {
-			domElements: $( '<meta property="seven" />' ).toArray()
-		}
+		originalDomElements: $( '<meta property="seven" />' ).toArray()
 	},
 	{ type: '/alienMeta' },
 	{ type: 'listItem', attributes: { styles: ['bullet'] } },
 	//  7 - Beginning of paragraph
 	{
 		type: 'alienMeta',
-		attributes: {
-			domElements: $( '<meta property="eight" />' ).toArray()
-		}
+		originalDomElements: $( '<meta property="eight" />' ).toArray()
 	},
 	{ type: '/alienMeta' },
 	{ type: 'paragraph' },
 	//  8 - Plain "b"
 	{
 		type: 'alienMeta',
-		attributes: {
-			domElements: $( '<meta property="nine" />' ).toArray()
-		}
+		originalDomElements: $( '<meta property="nine" />' ).toArray()
 	},
 	{ type: '/alienMeta' },
 	'b',
 	//  9 - End of paragraph
 	{
 		type: 'alienMeta',
-		attributes: {
-			domElements: $( '<meta property="ten" />' ).toArray()
-		}
+		originalDomElements: $( '<meta property="ten" />' ).toArray()
 	},
 	{ type: '/alienMeta' },
 	{ type: '/paragraph' },
 	// 10 - End of second list item
 	{
 		type: 'alienMeta',
-		attributes: {
-			domElements: $( '<meta property="eleven" />' ).toArray()
-		}
+		originalDomElements: $( '<meta property="eleven" />' ).toArray()
 	},
 	{ type: '/alienMeta' },
 	{ type: '/listItem' },
 	// 11 - End of list
 	{
 		type: 'alienMeta',
-		attributes: {
-			domElements: $( '<meta property="twelve" />' ).toArray()
-		}
+		originalDomElements: $( '<meta property="twelve" />' ).toArray()
 	},
 	{ type: '/alienMeta' },
 	{ type: '/list' },
 	// 12 - Trailing metadata
 	{
 		type: 'alienMeta',
-		attributes: {
-			domElements: $( '<meta property="thirteen" />' ).toArray()
-		}
+		originalDomElements: $( '<meta property="thirteen" />' ).toArray()
 	},
 	{ type: '/alienMeta' }
 ];
@@ -1135,7 +1073,7 @@ ve.dm.example.inlineAtEdges = [
 	// 3
 	'F', 'o', 'o',
 	// 6
-	{ type: 'alienInline', attributes: { domElements: $( '<foobar />' ).toArray() } },
+	{ type: 'alienInline', originalDomElements: $( '<foobar />' ).toArray() },
 	// 7
 	{ type: '/alienInline' },
 	// 8
@@ -1349,7 +1287,7 @@ ve.dm.example.domToDataCases = {
 			'a',
 			{
 				type: 'alienInline',
-				attributes: { domElements: $( '<foobar class="foo">b</foobar>' ).toArray() }
+				originalDomElements: $( '<foobar class="foo">b</foobar>' ).toArray()
 			},
 			{ type: '/alienInline' },
 			'c',
@@ -1366,7 +1304,7 @@ ve.dm.example.domToDataCases = {
 			'b',
 			'c',
 			{ type: '/paragraph' },
-			{ type: 'alienBlock', attributes: { domElements: $( '<div rel="ve:Alien">abc</div>' ).toArray() } },
+			{ type: 'alienBlock', originalDomElements: $( '<div rel="ve:Alien">abc</div>' ).toArray() },
 			{ type: '/alienBlock' },
 			{ type: 'paragraph' },
 			'd',
@@ -1385,13 +1323,13 @@ ve.dm.example.domToDataCases = {
 			'a',
 			{
 				type: 'alienInline',
-				attributes: { domElements: $( '<foobar class="foo">b</foobar>' ).toArray() },
+				originalDomElements: $( '<foobar class="foo">b</foobar>' ).toArray(),
 				annotations: [ ve.dm.example.bold ]
 			},
 			{ type: '/alienInline' },
 			{
 				type: 'alienInline',
-				attributes: { domElements: $( '<foobar class="bar">c</foobar>' ).toArray() },
+				originalDomElements: $( '<foobar class="bar">c</foobar>' ).toArray(),
 				annotations: [ ve.dm.example.bold, ve.dm.example.italic ]
 			},
 			{ type: '/alienInline' },
@@ -1443,9 +1381,7 @@ ve.dm.example.domToDataCases = {
 			{
 				type: 'alienMeta',
 				annotations: [ ve.dm.example.bold ],
-				attributes: {
-					domElements: $( '<meta />' ).toArray()
-				}
+				originalDomElements: $( '<meta />' ).toArray()
 			},
 			{ type: '/alienMeta' },
 			[ 'b', [ ve.dm.example.bold ] ],
@@ -1454,9 +1390,7 @@ ve.dm.example.domToDataCases = {
 			{
 				type: 'alienMeta',
 				annotations: [ ve.dm.example.bold ],
-				attributes: {
-					domElements: $( '<meta />' ).toArray()
-				}
+				originalDomElements: $( '<meta />' ).toArray()
 			},
 			{ type: '/alienMeta' },
 			{ type: '/paragraph' },
@@ -1471,9 +1405,7 @@ ve.dm.example.domToDataCases = {
 			{
 				type: 'alienMeta',
 				annotations: [ ve.dm.example.bold ],
-				attributes: {
-					domElements: $( '<meta />' ).toArray()
-				}
+				originalDomElements: $( '<meta />' ).toArray()
 			},
 			{ type: '/alienMeta' },
 			[ 'b', [ ve.dm.example.bold ] ],
@@ -1482,9 +1414,7 @@ ve.dm.example.domToDataCases = {
 			{
 				type: 'alienMeta',
 				annotations: [ ve.dm.example.bold ],
-				attributes: {
-					domElements: $( '<meta />' ).toArray()
-				}
+				originalDomElements: $( '<meta />' ).toArray()
 			},
 			{ type: '/alienMeta' },
 			[ 'q', [ ve.dm.example.bold ] ],
@@ -1494,9 +1424,7 @@ ve.dm.example.domToDataCases = {
 			{
 				type: 'alienMeta',
 				annotations: [ ve.dm.example.bold ],
-				attributes: {
-					domElements: $( '<meta />' ).toArray()
-				}
+				originalDomElements: $( '<meta />' ).toArray()
 			},
 			{ type: '/alienMeta' },
 			{ type: '/paragraph' },
@@ -1511,9 +1439,7 @@ ve.dm.example.domToDataCases = {
 			{
 				type: 'alienMeta',
 				annotations: [ ve.dm.example.bold ],
-				attributes: {
-					domElements: $( '<link />' ).toArray()
-				}
+				originalDomElements: $( '<link />' ).toArray()
 			},
 			{ type: '/alienMeta' },
 			[ 'f', [ ve.dm.example.bold ] ],
@@ -1522,9 +1448,7 @@ ve.dm.example.domToDataCases = {
 			{
 				type: 'alienMeta',
 				annotations: [ ve.dm.example.bold ],
-				attributes: {
-					domElements: $( '<link />' ).toArray()
-				}
+				originalDomElements: $( '<link />' ).toArray()
 			},
 			{ type: '/alienMeta' },
 			{ type: '/paragraph' },
@@ -1541,9 +1465,7 @@ ve.dm.example.domToDataCases = {
 			'o',
 			{
 				type: 'alienMeta',
-				attributes: {
-					domElements: $( '<meta />' ).toArray()
-				}
+				originalDomElements: $( '<meta />' ).toArray()
 			},
 			{ type: '/alienMeta' },
 			[ 'B', [ ve.dm.example.bold ] ],
@@ -1599,7 +1521,7 @@ ve.dm.example.domToDataCases = {
 			'1',
 			{
 				type: 'alienInline',
-				attributes: { domElements: $( '<foobar class="bar">baz</foobar>' ).toArray() }
+				originalDomElements: $( '<foobar class="bar">baz</foobar>' ).toArray()
 			},
 			{ type: '/alienInline' },
 			'2',
@@ -1616,7 +1538,7 @@ ve.dm.example.domToDataCases = {
 			{ type: '/paragraph' },
 			{
 				type: 'alienBlock',
-				attributes: { domElements: $( '<div rel="ve:Alien" class="bar">baz</div>' ).toArray() }
+				originalDomElements: $( '<div rel="ve:Alien" class="bar">baz</div>' ).toArray()
 			},
 			{ type: '/alienBlock' },
 			{ type: 'paragraph', internal: { generated: 'wrapper' } },
@@ -1632,7 +1554,7 @@ ve.dm.example.domToDataCases = {
 			{ type: 'paragraph', internal: { generated: 'wrapper' } },
 			{
 				type: 'alienInline',
-				attributes: { domElements: $( '<foobar class="bar">Foo</foobar>' ).toArray() }
+				originalDomElements: $( '<foobar class="bar">Foo</foobar>' ).toArray()
 			},
 			{ type: '/alienInline' },
 			'B',
@@ -1652,7 +1574,7 @@ ve.dm.example.domToDataCases = {
 			'o',
 			{
 				type: 'alienInline',
-				attributes: { domElements: $( '<foobar class="bar">Bar</foobar>' ).toArray() }
+				originalDomElements: $( '<foobar class="bar">Bar</foobar>' ).toArray()
 			},
 			{ type: '/alienInline' },
 			{ type: '/paragraph' },
@@ -1667,7 +1589,7 @@ ve.dm.example.domToDataCases = {
 			'1',
 			{
 				type: 'alienInline',
-				attributes: { domElements: $( '<foobar about="#vet1">foo</foobar><foobar about="#vet1">bar</foobar>' ).toArray() }
+				originalDomElements: $( '<foobar about="#vet1">foo</foobar><foobar about="#vet1">bar</foobar>' ).toArray()
 			},
 			{ type: '/alienInline' },
 			'2',
@@ -1738,9 +1660,7 @@ ve.dm.example.domToDataCases = {
 		data: [
 			{
 				type: 'alienMeta',
-				attributes: {
-					domElements: $( '<meta />' ).toArray()
-				}
+				originalDomElements: $( '<meta />' ).toArray()
 			},
 			{ type: '/alienMeta' },
 			{ type: 'paragraph', internal: { generated: 'empty' } },
@@ -1806,9 +1726,7 @@ ve.dm.example.domToDataCases = {
 			'F', 'o', 'o',
 			{
 				type: 'alienMeta',
-				attributes: {
-					domElements: $( '<span id="anchorTarget"></span>' ).toArray()
-				}
+				originalDomElements: $( '<span id="anchorTarget"></span>' ).toArray()
 			},
 			{ type: '/alienMeta' },
 			'B', 'a', 'r',
@@ -1824,9 +1742,7 @@ ve.dm.example.domToDataCases = {
 			'F', 'o', 'o',
 			{
 				type: 'alienMeta',
-				attributes: {
-					domElements: $( '<span id="anchorTarget"></span>' ).toArray()
-				}
+				originalDomElements: $( '<span id="anchorTarget"></span>' ).toArray()
 			},
 			{ type: '/alienMeta' },
 			'B', 'a', 'r',
@@ -1842,9 +1758,7 @@ ve.dm.example.domToDataCases = {
 			'F', 'o', 'o',
 			{
 				type: 'alienMeta',
-				attributes: {
-					domElements: $( '<i><b><u></u></b></i>' ).toArray()
-				}
+				originalDomElements: $( '<i><b><u></u></b></i>' ).toArray()
 			},
 			{ type: '/alienMeta' },
 			'B', 'a', 'r',
@@ -1862,9 +1776,7 @@ ve.dm.example.domToDataCases = {
 			[ 'o', [ ve.dm.example.italic ] ],
 			{
 				type: 'alienMeta',
-				attributes: {
-					domElements: $( '<b></b>' ).toArray()
-				},
+				originalDomElements: $( '<b></b>' ).toArray(),
 				annotations: [ ve.dm.example.italic ]
 			},
 			{ type: '/alienMeta' },
@@ -1900,9 +1812,7 @@ ve.dm.example.domToDataCases = {
 			'F', 'o', 'o',
 			{
 				type: 'alienMeta',
-				attributes: {
-					domElements: $( '<b><meta /></b>' ).toArray()
-				}
+				originalDomElements: $( '<b><meta /></b>' ).toArray()
 			},
 			{ type: '/alienMeta' },
 			'B', 'a', 'z',
@@ -1963,25 +1873,19 @@ ve.dm.example.domToDataCases = {
 			},
 			{
 				type: 'alienInline',
-				attributes: {
-					domElements: $( '<foobar>c</foobar>' ).toArray()
-				}
+				originalDomElements: $( '<foobar>c</foobar>' ).toArray()
 			},
 			{ type: '/alienInline' },
 			' ',
 			{
 				type: 'alienInline',
-				attributes: {
-					domElements: $( '<foobar>d</foobar>' ).toArray()
-				}
+				originalDomElements: $( '<foobar>d</foobar>' ).toArray()
 			},
 			{ type: '/alienInline' },
 			'\n',
 			{
 				type: 'alienInline',
-				attributes: {
-					domElements: $( '<foobar>e</foobar>' ).toArray()
-				}
+				originalDomElements: $( '<foobar>e</foobar>' ).toArray()
 			},
 			{ type: '/alienInline' },
 			{ type: '/paragraph' },
@@ -2304,9 +2208,7 @@ ve.dm.example.domToDataCases = {
 		data: [
 			{
 				type: 'alienBlock',
-				attributes: {
-					domElements: $( '<div rel="ve:Alien">  <br>   </div>' ).toArray()
-				},
+				originalDomElements: $( '<div rel="ve:Alien">  <br>   </div>' ).toArray(),
 				internal: {
 					whitespace: [ ' ', undefined, undefined, '    ' ]
 				}
@@ -2318,7 +2220,7 @@ ve.dm.example.domToDataCases = {
 			'o',
 			'\t',
 			'\t',
-			{ type: 'alienInline', attributes: { domElements: $( '<foobar>\t\t\tBar\t\t\t\t</foobar>' ).toArray() } },
+			{ type: 'alienInline', originalDomElements: $( '<foobar>\t\t\tBar\t\t\t\t</foobar>' ).toArray() },
 			{ type: '/alienInline' },
 			'\n',
 			'B',
@@ -2328,9 +2230,7 @@ ve.dm.example.domToDataCases = {
 			'\n',
 			{
 				type: 'alienInline',
-				attributes: {
-					domElements: $( '<foobar>\n\n\nQuux\n\n\n\n</foobar>' ).toArray()
-				}
+				originalDomElements: $( '<foobar>\n\n\nQuux\n\n\n\n</foobar>' ).toArray()
 			},
 			{ type: '/alienInline' },
 			' ',
@@ -2342,9 +2242,7 @@ ve.dm.example.domToDataCases = {
 			{ type: '/paragraph' },
 			{
 				type: 'alienBlock',
-				attributes: {
-					domElements: $( '<div rel="ve:Alien">\n\tYay \t </div>' ).toArray()
-				},
+				originalDomElements: $( '<div rel="ve:Alien">\n\tYay \t </div>' ).toArray(),
 				internal: {
 					whitespace: [ '\t\n', undefined, undefined, ' \n ' ]
 				}
@@ -2417,9 +2315,7 @@ ve.dm.example.domToDataCases = {
 						' '
 					]
 				},
-				attributes: {
-					domElements: $( '<meta />' ).toArray()
-				}
+				originalDomElements: $( '<meta />' ).toArray()
 			},
 			{ type: '/alienMeta' },
 			{
@@ -2432,9 +2328,7 @@ ve.dm.example.domToDataCases = {
 						'\n'
 					]
 				},
-				attributes: {
-					domElements: $( '<meta />' ).toArray()
-				}
+				originalDomElements: $( '<meta />' ).toArray()
 			},
 			{ type: '/alienMeta' },
 			{
@@ -2560,9 +2454,7 @@ ve.dm.example.domToDataCases = {
 			'b', 'a', 'r',
 			{
 				type: 'alienMeta',
-				attributes: {
-					domElements: $( '<meta />' ).toArray()
-				}
+				originalDomElements: $( '<meta />' ).toArray()
 			},
 			{ type: '/alienMeta' },
 			'q', 'u', 'u', 'x',
@@ -2600,9 +2492,7 @@ ve.dm.example.domToDataCases = {
 			{ type: '/paragraph' },
 			{
 				type: 'alienMeta',
-				attributes: {
-					domElements: $( '<meta />' ).toArray()
-				},
+				originalDomElements: $( '<meta />' ).toArray(),
 				internal: {
 					whitespace: [
 						undefined,
@@ -2649,9 +2539,7 @@ ve.dm.example.domToDataCases = {
 			{ type: '/paragraph' },
 			{
 				type: 'alienMeta',
-				attributes: {
-					domElements: $( '<meta />' ).toArray()
-				},
+				originalDomElements: $( '<meta />' ).toArray(),
 				internal: {
 					whitespace: [
 						' ',
@@ -2664,9 +2552,7 @@ ve.dm.example.domToDataCases = {
 			{ type: '/alienMeta' },
 			{
 				type: 'alienMeta',
-				attributes: {
-					domElements: $( '<meta />' ).toArray()
-				},
+				originalDomElements: $( '<meta />' ).toArray(),
 				internal: {
 					whitespace: [
 						' ',
@@ -2727,9 +2613,7 @@ ve.dm.example.domToDataCases = {
 			' ',
 			{
 				type: 'alienMeta',
-				attributes: {
-					domElements: $( '<meta />' ).toArray()
-				}
+				originalDomElements: $( '<meta />' ).toArray()
 			},
 			{ type: '/alienMeta' },
 			'\n',
@@ -2751,17 +2635,13 @@ ve.dm.example.domToDataCases = {
 			' ',
 			{
 				type: 'alienMeta',
-				attributes: {
-					domElements: $( '<meta />' ).toArray()
-				}
+				originalDomElements: $( '<meta />' ).toArray()
 			},
 			{ type: '/alienMeta' },
 			'\n',
 			{
 				type: 'alienInline',
-				attributes: {
-					domElements: $( '<span rel="ve:Alien"></span>' ).toArray()
-				}
+				originalDomElements: $( '<span rel="ve:Alien"></span>' ).toArray()
 			},
 			{ type: '/alienInline' },
 			{ type: '/paragraph' },
@@ -2971,18 +2851,14 @@ ve.dm.example.domToDataCases = {
 		data: [
 			{
 				type: 'alienBlock',
-				attributes: {
-					domElements: $( '<div rel="ve:Alien" about="#vet1">Foo</div>' +
+				originalDomElements: $( '<div rel="ve:Alien" about="#vet1">Foo</div>' +
 						'<div rel="ve:Alien" about="#vet1">Bar</div>' ).toArray()
-				}
 			},
 			{ type: '/alienBlock' },
 			{
 				type: 'alienBlock',
-				attributes: {
-					domElements: $( '<div rel="ve:Alien" about="#vet2">Baz</div>' +
+				originalDomElements: $( '<div rel="ve:Alien" about="#vet2">Baz</div>' +
 						'<foobar about="#vet2">Quux</foobar>' ).toArray()
-				}
 			},
 			{ type: '/alienBlock' },
 			{ type: 'paragraph' },
@@ -2993,18 +2869,14 @@ ve.dm.example.domToDataCases = {
 			{ type: '/paragraph' },
 			{
 				type: 'alienBlock',
-				attributes: {
-					domElements: $( '<foobar about="#vet2">Yay</foobar>' +
+				originalDomElements: $( '<foobar about="#vet2">Yay</foobar>' +
 						'<div rel="ve:Alien" about="#vet2">Blah</div>' ).toArray()
-				}
 			},
 			{ type: '/alienBlock' },
 			{ type: 'paragraph', internal: { generated: 'wrapper' } },
 			{
 				type: 'alienInline',
-				attributes: {
-					domElements: $( '<foobar about="#vet3">Meh</foobar>' ).toArray()
-				}
+				originalDomElements: $( '<foobar about="#vet3">Meh</foobar>' ).toArray()
 			},
 			{ type: '/alienInline' },
 			{ type: '/paragraph' },
@@ -3018,10 +2890,8 @@ ve.dm.example.domToDataCases = {
 		data: [
 			{
 				type: 'alienBlock',
-				attributes: {
-					domElements: $( '<div rel="ve:Alien" about="#vet1">\tFoo\t\t</div>\t\t\t' +
-						'<div rel="ve:Alien" about="#vet1">  Bar   </div>' ).toArray()
-				},
+				originalDomElements: $( '<div rel="ve:Alien" about="#vet1">\tFoo\t\t</div>\t\t\t' +
+						'<div rel="ve:Alien" about="#vet1">  Bar   </div>' ).toArray(),
 				internal: {
 					whitespace: [ ' ', undefined, undefined, '    ' ]
 				}
@@ -3039,9 +2909,7 @@ ve.dm.example.domToDataCases = {
 			[ '\n', [ ve.dm.example.span ] ],
 			{
 				type: 'alienInline',
-				attributes: {
-					domElements: $( '<p>Bar</p>' ).toArray()
-				},
+				originalDomElements: $( '<p>Bar</p>' ).toArray(),
 				annotations: [ ve.dm.example.span ]
 			},
 			{ type: '/alienInline' },
@@ -3059,9 +2927,7 @@ ve.dm.example.domToDataCases = {
 			[ '\n', [ ve.dm.example.span ] ],
 			{
 				type: 'alienInline',
-				attributes: {
-					domElements: $( '<p>Bar</p>' ).toArray()
-				},
+				originalDomElements: $( '<p>Bar</p>' ).toArray(),
 				annotations: [ ve.dm.example.span ]
 			},
 			{ type: '/alienInline' },
@@ -3082,9 +2948,7 @@ ve.dm.example.domToDataCases = {
 			[ '\n', [ ve.dm.example.span ] ],
 			{
 				type: 'alienInline',
-				attributes: {
-					domElements: $( '<p>Bar</p>' ).toArray()
-				},
+				originalDomElements: $( '<p>Bar</p>' ).toArray(),
 				annotations: [ ve.dm.example.span ]
 			},
 			{ type: '/alienInline' },
@@ -3121,9 +2985,7 @@ ve.dm.example.domToDataCases = {
 			{
 				type: 'alienMeta',
 				internal: { whitespace: [ '\n' ] },
-				attributes: {
-					domElements: $( '<meta content="bar" />' ).toArray()
-				}
+				originalDomElements: $( '<meta content="bar" />' ).toArray()
 			},
 			{ type: '/alienMeta' },
 			{ type: '/tableCell' },

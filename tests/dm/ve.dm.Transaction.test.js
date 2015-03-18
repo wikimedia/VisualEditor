@@ -565,7 +565,7 @@ QUnit.test( 'newFromRemoval', function ( assert ) {
 				ops: [
 					{
 						type: 'replace',
-						remove: [{ type: 'alienBlock' }, { type: '/alienBlock' }],
+						remove: [{ type: 'alienBlock', originalDomElements: $( '<foobar />' ).toArray() }, { type: '/alienBlock' }],
 						insert: []
 					},
 					{ type: 'retain', length: 1 },
@@ -589,7 +589,7 @@ QUnit.test( 'newFromRemoval', function ( assert ) {
 					{ type: 'retain', length: 1 },
 					{
 						type: 'replace',
-						remove: [{ type: 'alienBlock' }, { type: '/alienBlock' }],
+						remove: [{ type: 'alienBlock', originalDomElements: $( '<foobar />' ).toArray() }, { type: '/alienBlock' }],
 						insert: []
 					},
 					{ type: 'retain', length: alienDoc.data.getLength() - 10 }
@@ -601,7 +601,7 @@ QUnit.test( 'newFromRemoval', function ( assert ) {
 					{ type: 'retain', length: 1 },
 					{
 						type: 'replace',
-						remove: [{ type: '/paragraph' }, { type: 'paragraph' }, 'a', { type: 'alienInline' }, { type: '/alienInline' }],
+						remove: [{ type: '/paragraph' }, { type: 'paragraph' }, 'a', { type: 'alienInline', originalDomElements: $( '<foobar />' ).toArray() }, { type: '/alienInline' }],
 						insert: []
 					},
 					{ type: 'retain', length: alienWithEmptyDoc.data.getLength() - 6 }
@@ -2319,9 +2319,7 @@ QUnit.test( 'newFromMetadataRemoval', function ( assert ) {
 						remove: [
 							{
 								type: 'alienMeta',
-								attributes: {
-									domElements: $( '<meta property="thirteen" />' ).toArray()
-								}
+								originalDomElements: $( '<meta property="thirteen" />' ).toArray()
 							}
 						],
 						insert: []
