@@ -150,7 +150,7 @@ ve.init.Target.static.importRules = {
 		blacklist: [
 			// Annotations
 			// TODO: allow spans
-			'textStyle/span',
+			'textStyle/span', 'textStyle/font',
 			// Nodes
 			'alienInline', 'alienBlock', 'comment'
 		]

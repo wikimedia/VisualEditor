@@ -594,6 +594,23 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 			},
 			{
 				range: new ve.Range( 4 ),
+				pasteHtml: '<span style="color:red;">Foo</span><font style="color:blue;">bar</font>',
+				expectedRange: new ve.Range( 10 ),
+				expectedOps: [
+					[
+						{ type: 'retain', length: 4 },
+						{
+							type: 'replace',
+							insert: [ 'F', 'o', 'o', 'b', 'a', 'r' ],
+							remove: []
+						},
+						{ type: 'retain', length: docLen - 4 }
+					]
+				],
+				msg: 'Span and font tags stripped'
+			},
+			{
+				range: new ve.Range( 4 ),
 				pasteHtml: '<span rel="ve:Alien">Foo</span><b>B</b>a<!-- comment --><b>r</b>',
 				expectedRange: new ve.Range( 7 ),
 				expectedOps: [
