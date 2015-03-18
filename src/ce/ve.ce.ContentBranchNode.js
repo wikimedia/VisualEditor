@@ -24,9 +24,13 @@ ve.ce.ContentBranchNode = function VeCeContentBranchNode( model, config ) {
 	this.rendered = false;
 	this.unicornAnnotations = null;
 	this.unicorns = null;
+	this.onClickHandler = this.onClick.bind( this );
 
 	// Events
 	this.connect( this, { childUpdate: 'onChildUpdate' } );
+	// Some browsers allow clicking links inside contenteditable, such as in iOS Safari when the
+	// keyboard is closed
+	this.$element.on( 'click', this.onClickHandler );
 };
 
 /* Inheritance */
@@ -75,6 +79,22 @@ ve.ce.ContentBranchNode.static.appendRenderedContents = function ( container, wr
 };
 
 /* Methods */
+
+/**
+ * Handle click events.
+ *
+ * @param {jQuery.Event} e Click event
+ */
+ve.ce.ContentBranchNode.prototype.onClick = function ( e ) {
+	if (
+		// Only block clicks on links
+		( e.target !== this.$element[0] && e.target.nodeName.toUpperCase() === 'A' ) &&
+		// Don't prevent a modified click, which in some browsers deliberately opens the link
+		( !e.altKey && !e.ctrlKey && !e.metaKey && !e.shiftKey )
+	) {
+		e.preventDefault();
+	}
+};
 
 /**
  * Handle splice events.
@@ -413,4 +433,11 @@ ve.ce.ContentBranchNode.prototype.onTeardown = function () {
 	ve.ce.BranchNode.prototype.onTeardown.call( this );
 
 	ceSurface.setNotUnicorning( this );
+};
+
+/**
+ * @inheritdoc
+ */
+ve.ce.ContentBranchNode.prototype.destroy = function () {
+	this.$element.off( 'click', this.onClickHandler );
 };
