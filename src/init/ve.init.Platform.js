@@ -223,3 +223,28 @@ ve.init.Platform.prototype.getInitializedPromise = function () {
 	}
 	return this.initialized;
 };
+
+/**
+ * Fetch the special character list object
+ *
+ * Returns a promise which resolves with the character list
+ *
+ * @returns {jQuery.Promise}
+ */
+ve.init.Platform.prototype.fetchSpecialCharList = function () {
+	var charsObj = {};
+
+	try {
+		charsObj = JSON.parse(
+			ve.msg( 'visualeditor-specialcharinspector-characterlist-insert' )
+		);
+	} catch ( err ) {
+		// There was no character list found, or the character list message is
+		// invalid json string. Force a fallback to the minimal character list
+		ve.log( 've.init.Platform: Could not parse the Special Character list.');
+		ve.log( err.message );
+	}
+
+	// This implementation always resolves instantly
+	return $.Deferred().resolve( charsObj ).promise();
+};
