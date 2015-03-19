@@ -95,17 +95,24 @@ QUnit.test( 'collapseToStart/End', 6, function ( assert ) {
 	assert.equalRange( collapsedFragment.getSelection().getRange(), new ve.Range( 21 ), 'range is at end when collapseToEnd is set' );
 } );
 
-QUnit.test( 'expandLinearSelection (closest)', 1, function ( assert ) {
-	var doc = ve.dm.example.createExampleDocument(),
+QUnit.test( 'expandLinearSelection (closest)', function ( assert ) {
+	var i, fragment,
+		doc = ve.dm.example.createExampleDocument(),
 		surface = new ve.dm.Surface( doc ),
-		fragment = surface.getLinearFragment( new ve.Range( 20, 21 ) ),
-		expandedFragment = fragment.expandLinearSelection( 'closest', function () {} );
+		cases = [
+			{
+				msg: 'closest with invalid type results in null fragment',
+				range: new ve.Range( 20, 21 ),
+				type: function () {},
+				expected: new ve.dm.NullSelection( doc )
+			}
+		];
 
-	assert.equalHash(
-		expandedFragment.getSelection(),
-		new ve.dm.NullSelection( doc ),
-		'closest with invalid type results in null fragment'
-	);
+	QUnit.expect( cases.length );
+	for ( i = 0; i < cases.length; i++ ) {
+		fragment = surface.getLinearFragment( cases[i].range ).expandLinearSelection( 'closest', cases[i].type );
+		assert.equalHash( fragment.getSelection(), cases[i].expected, cases[i].msg );
+	}
 } );
 
 QUnit.test( 'expandLinearSelection (word)', 1, function ( assert ) {
