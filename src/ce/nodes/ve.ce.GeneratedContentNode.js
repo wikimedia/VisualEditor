@@ -295,13 +295,22 @@ ve.ce.GeneratedContentNode.prototype.doneGenerating = function ( generatedConten
 };
 
 /**
- * Called when the has failed to generate new content.
+ * Called when the GeneratedContentNode has failed to generate new content.
  *
  * @method
  */
 ve.ce.GeneratedContentNode.prototype.failGenerating = function () {
 	this.$element.removeClass( 've-ce-generatedContentNode-generating' );
 	this.generatingPromise = null;
+};
+
+/**
+ * Check whether this GeneratedContentNode is currently generating new content.
+ *
+ * @return {boolean} Whether we're generating
+ */
+ve.ce.GeneratedContentNode.prototype.isGenerating = function () {
+	return !!this.generatingPromise;
 };
 
 /**
