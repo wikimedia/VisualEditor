@@ -337,12 +337,12 @@ ve.dm.SurfaceFragment.prototype.expandLinearSelection = function ( scope, type )
 		case 'word':
 			if ( !oldRange.isCollapsed() ) {
 				newRange = ve.Range.static.newCoveringRange( [
-					this.document.data.getNearestWordRange( oldRange.start ),
-					this.document.data.getNearestWordRange( oldRange.end )
+					this.document.data.getWordRange( oldRange.start ),
+					this.document.data.getWordRange( oldRange.end )
 				], oldRange.isBackwards() );
 			} else {
 				// optimisation for zero-length ranges
-				newRange = this.document.data.getNearestWordRange( oldRange.start );
+				newRange = this.document.data.getWordRange( oldRange.start );
 			}
 			break;
 		case 'annotation':

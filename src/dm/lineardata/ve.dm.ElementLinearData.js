@@ -24,6 +24,16 @@ ve.dm.ElementLinearData = function VeDmElementLinearData() {
 
 OO.inheritClass( ve.dm.ElementLinearData, ve.dm.FlatLinearData );
 
+/* Static Members */
+
+ve.dm.ElementLinearData.static.startWordRegExp = new RegExp(
+	'^(' + unicodeJS.characterclass.patterns.word + ')'
+);
+
+ve.dm.ElementLinearData.static.endWordRegExp = new RegExp(
+	'(' + unicodeJS.characterclass.patterns.word + ')$'
+);
+
 /* Static Methods */
 
 /**
@@ -765,38 +775,58 @@ ve.dm.ElementLinearData.prototype.getNearestStructuralOffset = function ( offset
 };
 
 /**
- * Get the nearest word boundaries as a range.
+ * Get the range of the word at offset (else a collapsed range)
  *
- * The offset will first be moved to the nearest content offset if it's not at one already.
- * Elements are always word boundaries.
+ * First, if the offset is not a content offset then it will be moved to the nearest one.
+ * Then, if the offset is inside a word, it will be expanded to that word;
+ * else if the offset is at the end of a word, it will be expanded to that word;
+ * else if the offset is at the start of a word, it will be expanded to that word;
+ * else the offset is not adjacent to any word and is returned as a collapsed range.
  *
  * @method
- * @param {number} offset Offset to start from
- * @returns {ve.Range} Range around nearest word boundaries
+ * @param {number} offset Offset to start from; must not be inside a surrogate pair
+ * @returns {ve.Range} Boundaries of the adjacent word (else offset as collapsed range)
  */
-ve.dm.ElementLinearData.prototype.getNearestWordRange = function ( offset ) {
-	var offsetLeft, offsetRight,
-		dataString = new ve.dm.DataString( this.getData() );
+ve.dm.ElementLinearData.prototype.getWordRange = function ( offset ) {
+	var dataString = new ve.dm.DataString( this.getData() );
 
 	offset = this.getNearestContentOffset( offset );
 
-	// If the cursor offset is a break (i.e. the start/end of word) we should
-	// check one position either side to see if there is a non-break
-	// and if so, move the offset accordingly
 	if ( unicodeJS.wordbreak.isBreak( dataString, offset ) ) {
-		if ( !unicodeJS.wordbreak.isBreak( dataString, offset + 1 ) ) {
-			offset++;
-		} else if ( !unicodeJS.wordbreak.isBreak( dataString, offset - 1 ) ) {
-			offset--;
+		// The cursor offset is not inside a word. See if there is an adjacent word
+		// codepoint (checking two chars to allow surrogate pairs). If so, expand in that
+		// direction only (preferring backwards if there are word codepoints on both
+		// sides).
+
+		if ( this.constructor.static.endWordRegExp.exec(
+			( dataString.read( offset - 2 ) || ' ' ) +
+			( dataString.read( offset - 1 ) || ' ' )
+		) ) {
+			// Cursor is immediately after a word codepoint: expand backwards
+			return new ve.Range(
+				unicodeJS.wordbreak.prevBreakOffset( dataString, offset ),
+				offset
+			);
+		} else if ( this.constructor.static.startWordRegExp.exec(
+			( dataString.read( offset ) || ' ' ) +
+			( dataString.read( offset + 1 ) || ' ' )
+		) ) {
+			// Cursor is immediately before a word codepoint: expand forwards
+			return new ve.Range(
+				offset,
+				unicodeJS.wordbreak.nextBreakOffset( dataString, offset )
+			);
 		} else {
+			// Cursor is not adjacent to a word codepoint: do not expand
 			return new ve.Range( offset );
 		}
+	} else {
+		// Cursor is inside a word: expand both backwards and forwards
+		return new ve.Range(
+			unicodeJS.wordbreak.prevBreakOffset( dataString, offset ),
+			unicodeJS.wordbreak.nextBreakOffset( dataString, offset )
+		);
 	}
-
-	offsetRight = unicodeJS.wordbreak.nextBreakOffset( dataString, offset );
-	offsetLeft = unicodeJS.wordbreak.prevBreakOffset( dataString, offset );
-
-	return new ve.Range( offsetLeft, offsetRight );
 };
 
 /**
