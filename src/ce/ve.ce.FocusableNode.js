@@ -27,10 +27,10 @@ ve.ce.FocusableNode = function VeCeFocusableNode( $focusable ) {
 	// Properties
 	this.focused = false;
 	this.highlighted = false;
-	this.isSetup = false;
+	this.isFocusableSetup = false;
 	this.$highlights = this.$( '<div>' ).addClass( 've-ce-focusableNode-highlights' );
 	this.$focusable = $focusable || this.$element;
-	this.surface = null;
+	this.focusableSurface = null;
 	this.rects = null;
 	this.boundingRect = null;
 	this.startAndEndRects = null;
@@ -95,11 +95,11 @@ ve.ce.FocusableNode.prototype.createHighlight = function () {
  */
 ve.ce.FocusableNode.prototype.onFocusableSetup = function () {
 	// Exit if already setup or not attached
-	if ( this.isSetup || !this.root ) {
+	if ( this.isFocusableSetup || !this.root ) {
 		return;
 	}
 
-	this.surface = this.getRoot().getSurface();
+	this.focusableSurface = this.root.getSurface();
 
 	// DOM changes (duplicated from constructor in case this.$element is replaced)
 	this.$element
@@ -121,7 +121,7 @@ ve.ce.FocusableNode.prototype.onFocusableSetup = function () {
 		} );
 	}
 
-	this.isSetup = true;
+	this.isFocusableSetup = true;
 };
 
 /**
@@ -131,7 +131,7 @@ ve.ce.FocusableNode.prototype.onFocusableSetup = function () {
  */
 ve.ce.FocusableNode.prototype.onFocusableTeardown = function () {
 	// Exit if not setup or not attached
-	if ( !this.isSetup || !this.root ) {
+	if ( !this.isFocusableSetup || !this.root ) {
 		return;
 	}
 
@@ -147,8 +147,8 @@ ve.ce.FocusableNode.prototype.onFocusableTeardown = function () {
 		.removeClass( 've-ce-focusableNode' )
 		.removeProp( 'contentEditable' );
 
-	this.isSetup = false;
-	this.surface = null;
+	this.focusableSurface = null;
+	this.isFocusableSetup = false;
 };
 
 /**
@@ -159,7 +159,7 @@ ve.ce.FocusableNode.prototype.onFocusableTeardown = function () {
  */
 ve.ce.FocusableNode.prototype.onFocusableMouseDown = function ( e ) {
 	var range,
-		surfaceModel = this.surface.getModel(),
+		surfaceModel = this.focusableSurface.getModel(),
 		selection = surfaceModel.getSelection(),
 		nodeRange = this.model.getOuterRange();
 
@@ -203,7 +203,7 @@ ve.ce.FocusableNode.prototype.executeCommand = function () {
 	}
 	var command = ve.ui.commandRegistry.getCommandForNode( this );
 	if ( command ) {
-		command.execute( this.surface.getSurface() );
+		command.execute( this.focusableSurface.getSurface() );
 	}
 };
 
@@ -214,9 +214,9 @@ ve.ce.FocusableNode.prototype.executeCommand = function () {
  * @param {jQuery.Event} e Drag start event
  */
 ve.ce.FocusableNode.prototype.onFocusableDragStart = function () {
-	if ( this.surface ) {
+	if ( this.focusableSurface ) {
 		// Allow dragging this node in the surface
-		this.surface.startRelocation( this );
+		this.focusableSurface.startRelocation( this );
 	}
 	this.$highlights.addClass( 've-ce-focusableNode-highlights-relocating' );
 };
@@ -232,8 +232,8 @@ ve.ce.FocusableNode.prototype.onFocusableDragStart = function () {
 ve.ce.FocusableNode.prototype.onFocusableDragEnd = function () {
 	// endRelocation is usually triggered by onDocumentDrop in the surface, but if it isn't
 	// trigger it here instead
-	if ( this.surface ) {
-		this.surface.endRelocation();
+	if ( this.focusableSurface ) {
+		this.focusableSurface.endRelocation();
 	}
 	this.$highlights.removeClass( 've-ce-focusableNode-highlights-relocating' );
 };
@@ -302,10 +302,10 @@ ve.ce.FocusableNode.prototype.onFocusableResizeEnd = function () {
  * @method
  */
 ve.ce.FocusableNode.prototype.onFocusableRerender = function () {
-	if ( this.focused ) {
+	if ( this.focused && this.focusableSurface ) {
 		this.redrawHighlights();
 		// reposition menu
-		this.surface.getSurface().getContext().updateDimensions( true );
+		this.focusableSurface.getSurface().getContext().updateDimensions( true );
 	}
 };
 
@@ -335,8 +335,8 @@ ve.ce.FocusableNode.prototype.setFocused = function ( value ) {
 			this.emit( 'focus' );
 			this.$element.addClass( 've-ce-focusableNode-focused' );
 			this.createHighlights();
-			this.surface.appendHighlights( this.$highlights, this.focused );
-			this.surface.$element.off( '.ve-ce-focusableNode' );
+			this.focusableSurface.appendHighlights( this.$highlights, this.focused );
+			this.focusableSurface.$element.off( '.ve-ce-focusableNode' );
 		} else {
 			this.emit( 'blur' );
 			this.$element.removeClass( 've-ce-focusableNode-focused' );
@@ -364,16 +364,16 @@ ve.ce.FocusableNode.prototype.createHighlights = function () {
 
 	this.positionHighlights();
 
-	this.surface.appendHighlights( this.$highlights, this.focused );
+	this.focusableSurface.appendHighlights( this.$highlights, this.focused );
 
 	// Events
 	if ( !this.focused ) {
-		this.surface.$element.on( {
+		this.focusableSurface.$element.on( {
 			'mousemove.ve-ce-focusableNode': this.onSurfaceMouseMove.bind( this ),
 			'mouseout.ve-ce-focusableNode': this.onSurfaceMouseOut.bind( this )
 		} );
 	}
-	this.surface.connect( this, { position: 'positionHighlights' } );
+	this.focusableSurface.connect( this, { position: 'positionHighlights' } );
 };
 
 /**
@@ -386,8 +386,8 @@ ve.ce.FocusableNode.prototype.clearHighlights = function () {
 		return;
 	}
 	this.$highlights.remove().empty();
-	this.surface.$element.off( '.ve-ce-focusableNode' );
-	this.surface.disconnect( this, { position: 'positionHighlights' } );
+	this.focusableSurface.$element.off( '.ve-ce-focusableNode' );
+	this.focusableSurface.disconnect( this, { position: 'positionHighlights' } );
 	this.highlighted = false;
 	this.boundingRect = null;
 };
@@ -410,7 +410,7 @@ ve.ce.FocusableNode.prototype.calculateHighlights = function () {
 		rects = [],
 		filteredRects = [],
 		webkitColumns = 'webkitColumnCount' in document.createElement( 'div' ).style,
-		surfaceOffset = this.surface.getSurface().getBoundingClientRect();
+		surfaceOffset = this.focusableSurface.getSurface().getBoundingClientRect();
 
 	function contains( rect1, rect2 ) {
 		return rect2.left >= rect1.left &&

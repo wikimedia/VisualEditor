@@ -175,8 +175,9 @@ ve.ce.GeneratedContentNode.prototype.render = function ( generatedContents ) {
 
 	if ( this.live ) {
 		this.emit( 'setup' );
-		this.afterRender();
 	}
+
+	this.afterRender();
 };
 
 /**

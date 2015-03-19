@@ -36,11 +36,13 @@ ve.ce.ResizableNode = function VeCeResizableNode( $resizable, config ) {
 		this.$sizeLabel = this.$( '<div>' ).addClass( 've-ce-resizableNode-sizeLabel' ).append( this.$sizeText );
 	}
 	this.resizableOffset = null;
+	this.resizableSurface = null;
 
 	// Events
 	this.connect( this, {
 		focus: 'onResizableFocus',
 		blur: 'onResizableBlur',
+		setup: 'onResizableSetup',
 		teardown: 'onResizableTeardown',
 		resizing: 'onResizableResizing',
 		resizeEnd: 'onResizableFocus',
@@ -97,7 +99,7 @@ OO.initClass( ve.ce.ResizableNode );
 ve.ce.ResizableNode.prototype.getResizableOffset = function () {
 	if ( !this.resizableOffset ) {
 		this.resizableOffset = OO.ui.Element.static.getRelativePosition(
-			this.$resizable, this.getRoot().getSurface().getSurface().$element
+			this.$resizable, this.resizableSurface.getSurface().$element
 		);
 	}
 	return this.resizableOffset;
@@ -209,11 +211,9 @@ ve.ce.ResizableNode.prototype.showHandles = function ( handles ) {
  * @method
  */
 ve.ce.ResizableNode.prototype.onResizableFocus = function () {
-	var surface = this.getRoot().getSurface();
-
-	this.$resizeHandles.appendTo( surface.getSurface().$controls );
+	this.$resizeHandles.appendTo( this.resizableSurface.getSurface().$controls );
 	if ( this.$sizeLabel ) {
-		this.$sizeLabel.appendTo( surface.getSurface().$controls );
+		this.$sizeLabel.appendTo( this.resizableSurface.getSurface().$controls );
 	}
 
 	// Call getScalable to pre-fetch the extended data
@@ -241,7 +241,7 @@ ve.ce.ResizableNode.prototype.onResizableFocus = function () {
 			this.onResizeHandlesCornerMouseDown.bind( this )
 		);
 
-	surface.connect( this, { position: 'setResizableHandlesSizeAndPosition' } );
+	this.resizableSurface.connect( this, { position: 'setResizableHandlesSizeAndPosition' } );
 
 };
 
@@ -252,18 +252,16 @@ ve.ce.ResizableNode.prototype.onResizableFocus = function () {
  */
 ve.ce.ResizableNode.prototype.onResizableBlur = function () {
 	// Node may have already been torn down, e.g. after delete
-	if ( !this.getRoot() ) {
+	if ( !this.root ) {
 		return;
 	}
-
-	var surface = this.getRoot().getSurface();
 
 	this.$resizeHandles.detach();
 	if ( this.$sizeLabel ) {
 		this.$sizeLabel.detach();
 	}
 
-	surface.disconnect( this, { position: 'setResizableHandlesSizeAndPosition' } );
+	this.resizableSurface.disconnect( this, { position: 'setResizableHandlesSizeAndPosition' } );
 
 };
 
@@ -290,12 +288,34 @@ ve.ce.ResizableNode.prototype.onResizableAlign = function ( align ) {
 };
 
 /**
+ * Handle setup event.
+ *
+ * @method
+ */
+ve.ce.ResizableNode.prototype.onResizableSetup = function () {
+	// Exit if already setup or not attached
+	if ( this.isResizableSetup || !this.root ) {
+		return;
+	}
+
+	this.resizableSurface = this.root.getSurface();
+	this.isResizableSetup = true;
+};
+
+/**
  * Handle teardown event.
  *
  * @method
  */
 ve.ce.ResizableNode.prototype.onResizableTeardown = function () {
+	// Exit if not setup or not attached
+	if ( !this.isResizableSetup || !this.root ) {
+		return;
+	}
+
 	this.onResizableBlur();
+	this.resizableSurface = null;
+	this.isResizableSetup = false;
 };
 
 /**
@@ -507,7 +527,7 @@ ve.ce.ResizableNode.prototype.onDocumentMouseUp = function () {
 		offset = this.model.getOffset(),
 		width = this.$resizeHandles.outerWidth(),
 		height = this.$resizeHandles.outerHeight(),
-		surfaceModel = this.getRoot().getSurface().getModel(),
+		surfaceModel = this.resizableSurface.getModel(),
 		documentModel = surfaceModel.getDocument(),
 		selection = surfaceModel.getSelection();
 
