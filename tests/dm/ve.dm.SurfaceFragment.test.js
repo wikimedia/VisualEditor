@@ -96,12 +96,30 @@ QUnit.test( 'collapseToStart/End', 6, function ( assert ) {
 } );
 
 QUnit.test( 'expandLinearSelection (closest)', function ( assert ) {
-	var i, fragment,
+	var i, fragment, surface,
 		doc = ve.dm.example.createExampleDocument(),
-		surface = new ve.dm.Surface( doc ),
 		cases = [
 			{
-				msg: 'closest with invalid type results in null fragment',
+				msg: 've.dm.BranchNode selects surrounding paragraph',
+				range: new ve.Range( 1 ),
+				type: ve.dm.BranchNode,
+				expected: new ve.dm.LinearSelection( doc, new ve.Range( 0, 5 ) )
+			},
+			{
+				msg: 've.dm.BranchNode selects surrounding paragraph in empty paragraph',
+				doc: 'alienWithEmptyData',
+				range: new ve.Range( 1 ),
+				type: ve.dm.BranchNode,
+				expected: new ve.dm.LinearSelection( doc, new ve.Range( 0, 2 ) )
+			},
+			{
+				msg: 've.dm.BranchNode selects surrounding paragraph when entire paragrpah selected',
+				range: new ve.Range( 1, 4 ),
+				type: ve.dm.BranchNode,
+				expected: new ve.dm.LinearSelection( doc, new ve.Range( 0, 5 ) )
+			},
+			{
+				msg: 'invalid type results in null fragment',
 				range: new ve.Range( 20, 21 ),
 				type: function () {},
 				expected: new ve.dm.NullSelection( doc )
@@ -110,6 +128,7 @@ QUnit.test( 'expandLinearSelection (closest)', function ( assert ) {
 
 	QUnit.expect( cases.length );
 	for ( i = 0; i < cases.length; i++ ) {
+		surface = new ve.dm.Surface( ve.dm.example.createExampleDocument( cases[i].doc ) );
 		fragment = surface.getLinearFragment( cases[i].range ).expandLinearSelection( 'closest', cases[i].type );
 		assert.equalHash( fragment.getSelection(), cases[i].expected, cases[i].msg );
 	}

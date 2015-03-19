@@ -375,8 +375,13 @@ ve.dm.SurfaceFragment.prototype.expandLinearSelection = function ( scope, type )
 			break;
 		case 'closest':
 			// Grow range to cover closest common ancestor node of given type
-			node = this.document.selectNodes( oldRange, 'siblings' )[0].node;
-			parent = node.getParent();
+			nodes = this.document.selectNodes( oldRange, 'siblings' );
+			// If the range covered the entire node check that node
+			if ( nodes[0].nodeRange.equalsSelection( oldRange ) && nodes[0].node instanceof type ) {
+				newRange = nodes[0].nodeOuterRange;
+				break;
+			}
+			parent = nodes[0].node.getParent();
 			while ( parent && !( parent instanceof type ) ) {
 				node = parent;
 				parent = parent.getParent();
