@@ -9,3 +9,9 @@
 .ve-ui-surfaceWidget {
 	border: 1px solid #ccc;
 }
+
+/* Context item */
+
+.ve-ui-contextItem-body {
+	min-height: 0.2em;
+}
