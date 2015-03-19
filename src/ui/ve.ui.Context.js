@@ -246,12 +246,12 @@ ve.ui.Context.prototype.isEmbeddable = function () {
  *   and the model the item or tool is compatible with
  */
 ve.ui.Context.prototype.getRelatedSources = function () {
-	var i, len, toolClass, items, tools, models,
-		selectedModels = this.surface.getModel().getFragment().getSelectedModels();
+	var i, len, toolClass, items, tools, models, selectedModels;
 
 	if ( !this.relatedSources ) {
 		this.relatedSources = [];
 		if ( this.surface.getModel().getSelection() instanceof ve.dm.LinearSelection ) {
+			selectedModels = this.surface.getModel().getFragment().getSelectedModels();
 			models = [];
 			items = ve.ui.contextItemFactory.getRelatedItems( selectedModels );
 			for ( i = 0, len = items.length; i < len; i++ ) {
