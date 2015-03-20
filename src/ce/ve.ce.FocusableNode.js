@@ -406,7 +406,7 @@ ve.ce.FocusableNode.prototype.redrawHighlights = function () {
  * Calculate position of highlights
  */
 ve.ce.FocusableNode.prototype.calculateHighlights = function () {
-	var i, l, $set,
+	var i, l, $set, columnCount, columnWidth,
 		rects = [],
 		filteredRects = [],
 		webkitColumns = 'webkitColumnCount' in document.createElement( 'div' ).style,
@@ -427,27 +427,28 @@ ve.ce.FocusableNode.prototype.calculateHighlights = function () {
 			return;
 		}
 
-		if (
-			webkitColumns &&
-			( $el.css( '-webkit-column-count' ) || $el.css( '-webkit-column-size' ) )
-		) {
-			// Chrome incorrectly measures children of nodes with columns [1], let's
-			// just ignore them rather than render a possibly bizarre highlight. They
-			// will usually not be positioned, because Chrome also doesn't position
-			// them correctly [2] and so people avoid doing it.
-			//
-			// Of course there are other ways to render a node outside the bounding
-			// box of its parent, like negative margin. We do not handle these cases,
-			// and the highlight may not correctly cover the entire node if that
-			// happens. This can't be worked around without implementing CSS
-			// layouting logic ourselves, which is not worth it.
-			//
-			// [1] http://code.google.com/p/chromium/issues/detail?id=391271
-			// [2] https://code.google.com/p/chromium/issues/detail?id=291616
+		if ( webkitColumns ) {
+			columnCount = $el.css( '-webkit-column-count' );
+			columnWidth = $el.css( '-webkit-column-width' );
+			if ( ( columnCount && columnCount !== 'auto' ) || ( columnWidth && columnWidth !== 'auto' ) ) {
+				// Chrome incorrectly measures children of nodes with columns [1], let's
+				// just ignore them rather than render a possibly bizarre highlight. They
+				// will usually not be positioned, because Chrome also doesn't position
+				// them correctly [2] and so people avoid doing it.
+				//
+				// Of course there are other ways to render a node outside the bounding
+				// box of its parent, like negative margin. We do not handle these cases,
+				// and the highlight may not correctly cover the entire node if that
+				// happens. This can't be worked around without implementing CSS
+				// layouting logic ourselves, which is not worth it.
+				//
+				// [1] https://code.google.com/p/chromium/issues/detail?id=391271
+				// [2] https://code.google.com/p/chromium/issues/detail?id=291616
 
-			// jQuery keeps nodes in its collections in document order, so the
-			// children have not been processed yet and can be safely removed.
-			$set = $set.not( $el.find( '*' ) );
+				// jQuery keeps nodes in its collections in document order, so the
+				// children have not been processed yet and can be safely removed.
+				$set = $set.not( $el.find( '*' ) );
+			}
 		}
 
 		clientRects = el.getClientRects();
