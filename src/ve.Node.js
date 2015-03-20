@@ -197,6 +197,17 @@ ve.Node.prototype.handlesOwnChildren = function () {
 };
 
 /**
+ * Check if the node's children should be ignored.
+ *
+ * @method
+ * @abstract
+ * @returns {boolean} Node's children should be ignored
+ */
+ve.Node.prototype.shouldIgnoreChildren = function () {
+	throw new Error( 've.Node.ignoreChildren must be overridden in subclass' );
+};
+
+/**
  * Get the length of the node.
  *
  * @method

@@ -163,6 +163,13 @@ ve.ce.Node.prototype.handlesOwnChildren = function () {
 /**
  * @inheritdoc ve.Node
  */
+ve.ce.Node.prototype.shouldIgnoreChildren = function () {
+	return this.model.shouldIgnoreChildren();
+};
+
+/**
+ * @inheritdoc ve.Node
+ */
 ve.ce.Node.prototype.getLength = function () {
 	return this.model.getLength();
 };

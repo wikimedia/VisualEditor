@@ -132,4 +132,5 @@ QUnit.test( 'initialization', 1, function ( assert ) {
 // TODO: isNodeContent
 // TODO: doesNodeHaveSignificantWhitespace
 // TODO: doesNodeHandleOwnChildren
+// TODO: shouldIgnoreChildren
 // TODO: isNodeInternal

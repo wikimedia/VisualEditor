@@ -299,14 +299,14 @@ ve.dm.Transaction.newFromAnnotation = function ( doc, range, method, annotation 
 		span = i,
 		on = false,
 		insideContentNode = false,
-		handlesOwnChildrenDepth = 0;
+		ignoreChildrenDepth = 0;
 
 	// Iterate over all data in range, annotating where appropriate
 	while ( i < range.end ) {
 		if ( data.isElementData( i ) ) {
 			type = data.getType( i );
-			if ( ve.dm.nodeFactory.doesNodeHandleOwnChildren( type ) ) {
-				handlesOwnChildrenDepth += data.isOpenElementData( i ) ? 1 : -1;
+			if ( ve.dm.nodeFactory.shouldIgnoreChildren( type ) ) {
+				ignoreChildrenDepth += data.isOpenElementData( i ) ? 1 : -1;
 			}
 			if ( ve.dm.nodeFactory.isNodeContent( type ) ) {
 				if ( method === 'set' && !ve.dm.nodeFactory.canNodeTakeAnnotationType( type, annotation ) ) {
@@ -323,8 +323,8 @@ ve.dm.Transaction.newFromAnnotation = function ( doc, range, method, annotation 
 			// Text is always annotatable
 			annotatable = true;
 		}
-		// No annotations if we're inside a handlesOwnChildren
-		annotatable = annotatable && !handlesOwnChildrenDepth;
+		// No annotations if we're inside an ignoreChildren node
+		annotatable = annotatable && !ignoreChildrenDepth;
 		if (
 			!annotatable ||
 			( insideContentNode && !data.isCloseElementData( i ) )

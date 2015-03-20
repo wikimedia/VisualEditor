@@ -587,8 +587,9 @@ ve.dm.ElementLinearData.prototype.getText = function ( maintainIndices, range ) 
  *   valid offset in the opposite direction.
  * - If the data does not contain a single valid offset the result will be -1
  *
- * Nodes which handle their own children are ignored. Giving a starting offset inside a
- * handlesOwnChildren node will give unpredictable results.
+ * Nodes that want their children to be ignored (see ve.dm.Node#static-ignoreChildren) are not
+ * descended into. Giving a starting offset inside an ignoreChildren node will give unpredictable
+ * results.
  *
  * @method
  * @param {number} offset Offset to start from
@@ -597,7 +598,7 @@ ve.dm.ElementLinearData.prototype.getText = function ( maintainIndices, range ) 
  * given initial argument of offset
  * @param {Mixed...} [args] Additional arguments to pass to the callback
  * @returns {number} Relative valid offset or -1 if there are no valid offsets in data
- * @throws {Error} offset was inside a handlesOwnChildren node
+ * @throws {Error} offset was inside an ignoreChildren node
  */
 ve.dm.ElementLinearData.prototype.getRelativeOffset = function ( offset, distance, callback ) {
 	var i, direction,
@@ -606,7 +607,7 @@ ve.dm.ElementLinearData.prototype.getRelativeOffset = function ( offset, distanc
 		start = offset,
 		steps = 0,
 		turnedAround = false,
-		handlesOwnChildrenDepth = 0;
+		ignoreChildrenDepth = 0;
 	// If offset is already a structural offset and distance is zero than no further work is needed,
 	// otherwise distance should be 1 so that we can get out of the invalid starting offset
 	if ( distance === 0 ) {
@@ -629,28 +630,28 @@ ve.dm.ElementLinearData.prototype.getRelativeOffset = function ( offset, distanc
 	offset = -1;
 	// Iteration
 	while ( i >= 0 && i <= this.getLength() ) {
-		// Detect when the search for a valid offset enters a node which handles its own
-		// children, and don't return an offset inside such a node. This clearly won't work
+		// Detect when the search for a valid offset enters a node whose children should be
+		// ignored, and don't return an offset inside such a node. This clearly won't work
 		// if you start inside such a node, but you shouldn't be doing that to being with
 		dataOffset = i + ( direction > 0 ? -1 : 0 );
 		if (
 			this.isElementData( dataOffset ) &&
-			ve.dm.nodeFactory.doesNodeHandleOwnChildren( this.getType( dataOffset ) )
+			ve.dm.nodeFactory.shouldIgnoreChildren( this.getType( dataOffset ) )
 		) {
 			isOpen = this.isOpenElementData( dataOffset );
 			// We have entered a node if we step right over an open, or left over a close.
 			// Otherwise we have left a node
 			if ( ( direction > 0 && isOpen ) || ( direction < 0 && !isOpen ) ) {
-				handlesOwnChildrenDepth++;
+				ignoreChildrenDepth++;
 			} else {
-				handlesOwnChildrenDepth--;
-				if ( handlesOwnChildrenDepth < 0 ) {
-					throw new Error( 'offset was inside a handlesOwnChildren node' );
+				ignoreChildrenDepth--;
+				if ( ignoreChildrenDepth < 0 ) {
+					throw new Error( 'offset was inside an ignoreChildren node' );
 				}
 			}
 		}
 		if ( callback.apply( this, [i].concat( args ) ) ) {
-			if ( !handlesOwnChildrenDepth ) {
+			if ( !ignoreChildrenDepth ) {
 				steps++;
 				offset = i;
 				if ( distance === steps ) {
@@ -675,7 +676,7 @@ ve.dm.ElementLinearData.prototype.getRelativeOffset = function ( offset, distanc
 			i = start;
 			distance = 1;
 			turnedAround = true;
-			handlesOwnChildrenDepth = 0;
+			ignoreChildrenDepth = 0;
 		}
 		i += direction;
 	}

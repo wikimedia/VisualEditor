@@ -240,6 +240,21 @@ ve.dm.NodeFactory.prototype.doesNodeHandleOwnChildren = function ( type ) {
 };
 
 /**
+ * Check if the node's children should be ignored.
+ *
+ * @method
+ * @param {string} type Node type
+ * @returns {boolean} Whether the node's children should be ignored
+ * @throws {Error} Unknown node type
+ */
+ve.dm.NodeFactory.prototype.shouldIgnoreChildren = function ( type ) {
+	if ( Object.prototype.hasOwnProperty.call( this.registry, type ) ) {
+		return this.registry[type].static.ignoreChildren;
+	}
+	throw new Error( 'Unknown node type: ' + type );
+};
+
+/**
  * Check if the node is internal.
  *
  * @method
