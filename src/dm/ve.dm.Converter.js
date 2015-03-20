@@ -1089,7 +1089,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromModel = function ( model, container, 
  * @throws Unbalanced data: looking for closing /type
  */
 ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, innerWhitespace ) {
-	var text, i, j, isStart, annotations, dataElement, dataElementOrSlice,
+	var text, i, j, isStart, annotations, dataElement, dataElementOrSlice, oldLastOuterPost,
 		childDomElements, pre, ours, theirs, parentDomElement, lastChild, isContentNode, sibling,
 		previousSiblings, doUnwrap, textNode, type, annotatedDomElementStack, annotatedDomElements,
 		dataLen = data.length,
@@ -1304,6 +1304,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 				}
 				// Process whitespace
 				// whitespace = [ outerPre, innerPre, innerPost, outerPost ]
+				oldLastOuterPost = parentDomElement.lastOuterPost;
 				if (
 					!isContentNode &&
 					domElement.veInternal &&
@@ -1416,11 +1417,19 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 					}
 				}
 				if ( doUnwrap ) {
-					while ( domElement.firstChild ) {
-						parentDomElement.insertBefore(
-							domElement.firstChild,
-							domElement
-						);
+					if ( domElement.childNodes.length ) {
+						// If domElement has children, append them to parentDomElement
+						while ( domElement.firstChild ) {
+							parentDomElement.insertBefore(
+								domElement.firstChild,
+								domElement
+							);
+						}
+					} else {
+						// If domElement has no children, it's as if it was never there at all,
+						// so set lastOuterPost back to what it was, except that we need to
+						// change undefined to '' , since undefined means there were no children.
+						parentDomElement.lastOuterPost = oldLastOuterPost || '';
 					}
 					parentDomElement.removeChild( domElement );
 				}
