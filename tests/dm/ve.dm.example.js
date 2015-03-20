@@ -1714,6 +1714,19 @@ ve.dm.example.domToDataCases = {
 		],
 		normalizedBody: '<ul><li><p>Foo</p></li></ul>'
 	},
+	'slug paragraph added between two nodes that had whitespace': {
+		data: [
+			{ type: 'table', internal: { whitespace: [ undefined, undefined, undefined, '\n' ] } },
+			{ type: '/table' },
+			{ type: 'paragraph', internal: { generated: 'slug' } },
+			{ type: '/paragraph' },
+			{ type: 'table', internal: { whitespace: [ '\n' ] } },
+			{ type: '/table' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
+		],
+		normalizedBody: '<table></table>\n<table></table>'
+	},
 	'example document': {
 		body: ve.dm.example.html,
 		data: ve.dm.example.data,
