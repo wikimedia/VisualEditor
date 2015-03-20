@@ -269,7 +269,9 @@ ve.ui.Context.prototype.getRelatedSources = function () {
 			models = [];
 			items = ve.ui.contextItemFactory.getRelatedItems( selectedModels );
 			for ( i = 0, len = items.length; i < len; i++ ) {
-				models.push( items[i].model );
+				if ( ve.ui.contextItemFactory.isExclusive( items[i].name ) ) {
+					models.push( items[i].model );
+				}
 				this.relatedSources.push( {
 					type: 'item',
 					embeddable: ve.ui.contextItemFactory.isEmbeddable( items[i].name ),
