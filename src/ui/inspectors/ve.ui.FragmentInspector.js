@@ -48,10 +48,12 @@ ve.ui.FragmentInspector.static.actions = ve.ui.FragmentInspector.super.static.ac
 /**
  * Handle form submit events.
  *
+ * Executes the 'done' action when the user presses enter in the form.
+ *
  * @method
  */
 ve.ui.FragmentInspector.prototype.onFormSubmit = function () {
-	this.close( { action: 'done' } );
+	this.executeAction( 'done' );
 };
 
 /**
