@@ -42,6 +42,7 @@
 	"visualeditor-find-and-replace-done": "Búið",
 	"visualeditor-find-and-replace-find-text": "Finna",
 	"visualeditor-find-and-replace-invalid-regex": "Ógild regluleg segð",
+	"visualeditor-find-and-replace-match-case": "Skilja á milli stórra/litla bókstafa",
 	"visualeditor-find-and-replace-next-button": "Finna næsta",
 	"visualeditor-find-and-replace-previous-button": "Finna fyrra",
 	"visualeditor-find-and-replace-regular-expression": "Regluleg segð",
