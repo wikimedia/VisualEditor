@@ -29,7 +29,7 @@ ve.dm.InternalItemNode.static.name = 'internalItem';
 
 ve.dm.InternalItemNode.static.matchTagNames = [];
 
-ve.dm.InternalItemNode.static.handlesOwnChildren = true;
+ve.dm.InternalItemNode.static.ignoreChildren = true;
 
 ve.dm.InternalItemNode.static.isInternal = true;
 

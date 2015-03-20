@@ -3208,15 +3208,15 @@ ve.dm.example.UnboldableNode.static.blacklistedAnnotationTypes = [ 'textStyle/bo
 ve.dm.example.UnboldableNode.static.matchTagNames = [];
 ve.dm.modelRegistry.register( ve.dm.example.UnboldableNode );
 
-ve.dm.example.HandlesOwnChildrenNode = function ( children, element ) {
+ve.dm.example.IgnoreChildrenNode = function ( children, element ) {
 	// Parent constructor
 	ve.dm.BranchNode.call( this, children, element );
 };
-OO.inheritClass( ve.dm.example.HandlesOwnChildrenNode, ve.dm.BranchNode );
-ve.dm.example.HandlesOwnChildrenNode.static.name = 'exampleHandlesOwnChildren';
-ve.dm.example.HandlesOwnChildrenNode.static.handlesOwnChildren = true;
-ve.dm.example.HandlesOwnChildrenNode.static.matchTagNames = [];
-ve.dm.modelRegistry.register( ve.dm.example.HandlesOwnChildrenNode );
+OO.inheritClass( ve.dm.example.IgnoreChildrenNode, ve.dm.BranchNode );
+ve.dm.example.IgnoreChildrenNode.static.name = 'exampleIgnoreChildren';
+ve.dm.example.IgnoreChildrenNode.static.ignoreChildren = true;
+ve.dm.example.IgnoreChildrenNode.static.matchTagNames = [];
+ve.dm.modelRegistry.register( ve.dm.example.IgnoreChildrenNode );
 
 ve.dm.example.annotationData = [
 	{ type: 'paragraph' },
@@ -3231,21 +3231,21 @@ ve.dm.example.annotationData = [
 	'r',
 	{ type: '/paragraph' },
 	// 10
-	{ type: 'exampleHandlesOwnChildren' },
+	{ type: 'exampleIgnoreChildren' },
 	{ type: 'paragraph' },
 	'B',
 	{ type: '/paragraph' },
-	{ type: 'exampleHandlesOwnChildren' },
+	{ type: 'exampleIgnoreChildren' },
 	// 15
 	{ type: 'paragraph' },
 	'a',
 	{ type: '/paragraph' },
-	{ type: '/exampleHandlesOwnChildren' },
+	{ type: '/exampleIgnoreChildren' },
 	{ type: 'paragraph' },
 	// 20
 	'r',
 	{ type: '/paragraph' },
-	{ type: '/exampleHandlesOwnChildren' },
+	{ type: '/exampleIgnoreChildren' },
 	{ type: 'paragraph' },
 	'B',
 	// 25
@@ -3767,6 +3767,6 @@ ve.dm.example.selectNodesCases = [
 				parentOuterRange: new ve.Range( 5, 21 )
 			}
 		],
-		msg: 'range covering handlesOwnChildren node doesn\'t descend'
+		msg: 'range covering ignoreChildren node doesn\'t descend'
 	}
 ];

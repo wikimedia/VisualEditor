@@ -68,6 +68,16 @@ OO.mixinClass( ve.dm.Node, OO.EventEmitter );
 ve.dm.Node.static.handlesOwnChildren = false;
 
 /**
+ * Whether this node's children should be ignored. If true, this node will be treated as a leaf
+ * node even if it has children. Often used in combination with handlesOwnChildren.
+ *
+ * @static
+ * @property {boolean}
+ * @inheritable
+ */
+ve.dm.Node.static.ignoreChildren = false;
+
+/**
  * Whether this node type is internal. Internal node types are ignored by the converter.
  *
  * @static
@@ -417,6 +427,13 @@ ve.dm.Node.prototype.hasSignificantWhitespace = function () {
  */
 ve.dm.Node.prototype.handlesOwnChildren = function () {
 	return this.constructor.static.handlesOwnChildren;
+};
+
+/**
+ * @inheritdoc ve.Node
+ */
+ve.dm.Node.prototype.shouldIgnoreChildren = function () {
+	return this.constructor.static.ignoreChildren;
 };
 
 /**

@@ -148,7 +148,7 @@ ve.Document.prototype.selectNodes = function ( range, mode ) {
 		// Is there an unwrapped node right after this node?
 		isNextUnwrapped = nextNode ? !nextNode.isWrapped() : false;
 		// Is this node an empty non-content branch node?
-		isEmptyBranch = ( node.getLength() === 0 || node.handlesOwnChildren() ) &&
+		isEmptyBranch = ( node.getLength() === 0 || node.shouldIgnoreChildren() ) &&
 			!node.isContent() && !node.canContainContent();
 		// Is the start between prevNode's closing and node or between the parent's opening and node?
 		startBetween = ( isWrapped ? start === left - 1 : start === left ) && !isPrevUnwrapped;
@@ -209,7 +209,7 @@ ve.Document.prototype.selectNodes = function ( range, mode ) {
 			if ( ( mode === 'leaves' ||
 					( mode === 'covered' && endInside ) ||
 					( mode === 'branches' && node.canHaveChildrenNotContent() ) ) &&
-				node.children && node.children.length && !node.handlesOwnChildren()
+				node.children && node.children.length && !node.shouldIgnoreChildren()
 			) {
 				// Descend into node
 				currentFrame = {

@@ -920,14 +920,14 @@ QUnit.test( 'getRelativeContentOffset', function ( assert ) {
 				expected: 3
 			},
 			{
-				msg: 'Skips over nested handlesOwnChildren nodes',
+				msg: 'Skips over nested ignoreChildren nodes',
 				doc: annDoc,
 				offset: 10,
 				distance: 1,
 				expected: 24
 			},
 			{
-				msg: 'Skips over nested handlesOwnChildren nodes (reverse)',
+				msg: 'Skips over nested ignoreChildren nodes (reverse)',
 				doc: annDoc,
 				offset: 23,
 				distance: -1,
