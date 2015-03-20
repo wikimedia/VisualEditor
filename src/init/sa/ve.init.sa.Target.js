@@ -49,6 +49,15 @@ OO.inheritClass( ve.init.sa.Target, ve.init.Target );
 
 ve.init.sa.Target.static.defaultSurfaceType = 'desktop';
 
+ve.init.sa.Target.static.actionGroups = [
+	{
+		type: 'list',
+		icon: 'menu',
+		title: OO.ui.deferMsg( 'visualeditor-pagemenu-tooltip' ),
+		include: [ 'findAndReplace', 'commandHelp' ]
+	}
+];
+
 /* Methods */
 
 /**
@@ -93,14 +102,7 @@ ve.init.sa.Target.prototype.setupToolbar = function ( surface ) {
 	}
 	this.getToolbar().initialize();
 
-	this.actions.setup( [
-		{
-			type: 'list',
-			icon: 'menu',
-			title: ve.msg( 'visualeditor-pagemenu-tooltip' ),
-			include: [ 'findAndReplace', 'commandHelp' ]
-		}
-	], this.getSurface() );
+	this.actions.setup( this.constructor.static.actionGroups, this.getSurface() );
 
 	// HACK: On mobile place the context inside toolbar.$bar which floats
 	if ( this.surfaceType === 'mobile' ) {
