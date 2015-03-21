@@ -239,6 +239,8 @@ ve.ui.AnnotationInspector.prototype.getSetupProcess = function ( data ) {
 				this.initialAnnotationIsCovering = true;
 			}
 
+			this.fragment = fragment;
+
 			// Set the mode - this was done already in FragmentInspector but now that we may have
 			// changed what the fragment is covering we need to run it again
 			this.actions.setMode( this.getMode() );
@@ -258,20 +260,24 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 				replace = false,
 				annotation = this.getAnnotation(),
 				remove = this.shouldRemoveAnnotation() || data.action === 'remove',
-				surfaceModel = this.getFragment().getSurface(),
+				surfaceModel = this.fragment.getSurface(),
 				fragment = surfaceModel.getFragment( this.initialSelection, false ),
-				selection = this.getFragment().getSelection();
+				selection = this.fragment.getSelection();
 
 			if (
 				!( selection instanceof ve.dm.LinearSelection ) ||
 				( remove && selection.getRange().isCollapsed() )
 			) {
+				// Since we pushStaging on SetupProcess we need to make sure
+				// all terminations pop
+				surfaceModel.popStaging();
 				return;
 			}
 
 			if ( !remove ) {
 				if ( this.initialSelection.isCollapsed() ) {
 					if ( data.action !== 'done' ) {
+						surfaceModel.popStaging();
 						return;
 					}
 					insertText = true;
