@@ -2166,9 +2166,11 @@ ve.ce.Surface.prototype.onModelSelect = function () {
 				// If dragging, we already have a native selection, so don't mess with it
 				if ( !this.dragging ) {
 					// As FF won't fire a copy event with nothing selected, make
-					// a dummy selection of one space in the pasteTarget.
+					// a dummy selection of one character in the pasteTarget.
+					// Previously this was a single space but this isn't selected programmatically
+					// properly, and in Safari results in a collapsed selection.
 					// onCopy will ignore this native selection and use the DM selection
-					this.$pasteTarget.text( ' ' );
+					this.$pasteTarget.text( '☢' );
 					ve.selectElement( this.$pasteTarget[0] );
 					this.$pasteTarget[0].focus();
 					// Since the selection is no longer in the documentNode, clear the SurfaceObserver's
@@ -2180,7 +2182,7 @@ ve.ce.Surface.prototype.onModelSelect = function () {
 		}
 	} else {
 		if ( selection instanceof ve.dm.TableSelection ) {
-			this.$pasteTarget.text( ' ' );
+			this.$pasteTarget.text( '☢' );
 			ve.selectElement( this.$pasteTarget[0] );
 			this.$pasteTarget[0].focus();
 		}
