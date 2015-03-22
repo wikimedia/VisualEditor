@@ -251,9 +251,7 @@ ve.dm.Document.prototype.buildNodeTree = function () {
 			if ( this.data.isOpenElementData( i ) ) {
 				// Branch or leaf node opening
 				// Create a childless node
-				node = ve.dm.nodeFactory.create(
-					this.data.getType( i ), this.data.getData( i )
-				);
+				node = ve.dm.nodeFactory.createFromElement( this.data.getData( i ) );
 				node.setDocument( doc );
 				// Put the childless node on the current inner stack
 				currentStack.push( node );
