@@ -25,6 +25,7 @@
 	},
 	"visualeditor": "Editor visual",
 	"visualeditor-aliennode-tooltip": "Este elemento puede editarse solo en el modo de código por ahora.",
+	"visualeditor-alignablecontextitem-title": "Alineación",
 	"visualeditor-annotationbutton-bold-tooltip": "Negrita",
 	"visualeditor-annotationbutton-code-tooltip": "Código de computadora",
 	"visualeditor-annotationbutton-italic-tooltip": "Cursiva",
