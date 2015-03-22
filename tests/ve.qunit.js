@@ -255,9 +255,9 @@
 		var oLines = difflib.stringAsLines( unescapeText( o ) ),
 			nLines = difflib.stringAsLines( unescapeText( n ) ),
 			sm = new difflib.SequenceMatcher( oLines, nLines ),
-			// XXX: Sorry... https://github.com/mdevils/node-jscs/issues/20
-			method = 'get_opcodes',
-			opcodes = sm[ method ](),
+			// jscs:disable requireCamelCaseOrUpperCaseIdentifiers
+			opcodes = sm.get_opcodes(),
+			// jscs:enable requireCamelCaseOrUpperCaseIdentifiers
 			$div = $( '<div>' );
 
 		$div.append( diffview.buildView( {
