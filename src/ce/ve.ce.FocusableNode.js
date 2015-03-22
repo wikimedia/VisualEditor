@@ -22,8 +22,12 @@
  *
  * @constructor
  * @param {jQuery} [$focusable=this.$element] Primary element user is focusing on
+ * @param {Object} [config] Configuration options
+ * @cfg {string[]} [classes] CSS classes to be added to the highlight container
  */
-ve.ce.FocusableNode = function VeCeFocusableNode( $focusable ) {
+ve.ce.FocusableNode = function VeCeFocusableNode( $focusable, config ) {
+	config = config || {};
+
 	// Properties
 	this.focused = false;
 	this.highlighted = false;
@@ -34,6 +38,10 @@ ve.ce.FocusableNode = function VeCeFocusableNode( $focusable ) {
 	this.rects = null;
 	this.boundingRect = null;
 	this.startAndEndRects = null;
+
+	if ( Array.isArray( config.classes ) ) {
+		this.$highlights.addClass( config.classes.join( ' ' ) );
+	}
 
 	// DOM changes
 	this.$element
