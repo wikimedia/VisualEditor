@@ -102,7 +102,7 @@ ve.dm.example.removeOriginalDomElements = function ( data ) {
  * @returns {ve.dm.Annotation} Instance of the right ve.dm.Annotation subclass
  */
 ve.dm.example.createAnnotation = function ( annotation ) {
-	return ve.dm.annotationFactory.create( annotation.type, annotation );
+	return ve.dm.annotationFactory.createFromElement( annotation );
 };
 
 /**

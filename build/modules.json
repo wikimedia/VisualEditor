@@ -171,6 +171,7 @@
 			{ "file": "src/ve.Filibuster.js", "debug": true },
 			"src/dm/ve.dm.js",
 			"src/dm/ve.dm.Model.js",
+			"src/dm/ve.dm.ModelFactory.js",
 			"src/dm/ve.dm.ModelRegistry.js",
 			"src/dm/ve.dm.NodeFactory.js",
 			"src/dm/ve.dm.AnnotationFactory.js",
