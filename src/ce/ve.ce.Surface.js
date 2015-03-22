@@ -60,7 +60,7 @@ ve.ce.Surface = function VeCeSurface( model, ui, options ) {
 		this.$highlightsFocused, this.$highlightsBlurred
 	);
 	this.$findResults = this.$( '<div>' );
-	this.$dropMarker = this.$( '<div>' ).addClass( 've-ce-focusableNode-dropMarker' );
+	this.$dropMarker = this.$( '<div>' ).addClass( 've-ce-surface-dropMarker oo-ui-element-hidden' );
 	this.$lastDropTarget = null;
 	this.lastDropPosition = null;
 	this.$pasteTarget = this.$( '<div>' );
@@ -170,6 +170,7 @@ ve.ce.Surface = function VeCeSurface( model, ui, options ) {
 		} );
 
 	// Add elements to the DOM
+	this.$highlights.append( this.$dropMarker );
 	this.$element.append( this.$documentNode, this.$pasteTarget );
 	this.surface.$blockers.append( this.$highlights );
 	this.surface.$selections.append( this.$deactivatedSelection );
@@ -936,7 +937,8 @@ ve.ce.Surface.prototype.onDocumentDragOver = function ( e ) {
 	if ( !this.relocatingNode ) {
 		return;
 	}
-	var $target, $dropTarget, node, dropPosition, nodeType, inIgnoreChildren;
+	var $target, $dropTarget, node, dropPosition, targetPosition, top, left,
+		nodeType, inIgnoreChildren;
 
 	if ( !this.relocatingNode.isContent() ) {
 		e.preventDefault();
@@ -968,18 +970,26 @@ ve.ce.Surface.prototype.onDocumentDragOver = function ( e ) {
 		if ( this.$lastDropTarget && (
 			!this.$lastDropTarget.is( $dropTarget ) || dropPosition !== this.lastDropPosition
 		) ) {
-			this.$dropMarker.detach();
+			this.$dropMarker.addClass( 'oo-ui-element-hidden' );
 			$dropTarget = null;
 		}
 		if ( $dropTarget && (
 			!$dropTarget.is( this.$lastDropTarget ) || dropPosition !== this.lastDropPosition
 		) ) {
-			this.$dropMarker.width( $dropTarget.width() );
-			if ( dropPosition === 'top' ) {
-				this.$dropMarker.insertBefore( $dropTarget );
-			} else {
-				this.$dropMarker.insertAfter( $dropTarget );
+			targetPosition = $dropTarget.position();
+			// Go beyond margins as they can overlap
+			top = targetPosition.top + parseFloat( $dropTarget.css( 'margin-top' ) );
+			left = targetPosition.left + parseFloat( $dropTarget.css( 'margin-left' ) );
+			if ( dropPosition === 'bottom' ) {
+				top += $dropTarget.outerHeight();
 			}
+			this.$dropMarker
+				.css( {
+					top: top,
+					left: left
+				} )
+				.width( $dropTarget.outerWidth() )
+				.removeClass( 'oo-ui-element-hidden' );
 		}
 		if ( $dropTarget !== undefined ) {
 			this.$lastDropTarget = $dropTarget;
@@ -2647,7 +2657,7 @@ ve.ce.Surface.prototype.endRelocation = function () {
 		this.emit( 'relocationEnd', this.relocatingNode );
 		this.relocatingNode = null;
 		if ( this.$lastDropTarget ) {
-			this.$dropMarker.detach();
+			this.$dropMarker.addClass( 'oo-ui-element-hidden' );
 			this.$lastDropTarget = null;
 			this.lastDropPosition = null;
 		}
