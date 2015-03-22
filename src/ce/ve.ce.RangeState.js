@@ -71,22 +71,23 @@ ve.ce.RangeState.prototype.saveState = function ( old, documentNode, selectionOn
 		nativeSelection = documentNode.getElementDocument().getSelection();
 
 	if (
-		nativeSelection.rangeCount && !OO.ui.contains( documentNode.$element[0], nativeSelection.anchorNode, true )
+		nativeSelection.rangeCount &&
+		OO.ui.contains( documentNode.$element[0], nativeSelection.anchorNode, true )
 	) {
-		// Use a blank selection if the selection is outside the document
-		selection = {
-			focusNode: null,
-			focusOffset: null,
-			anchorNode: null,
-			anchorOffset: null
-		};
-	} else {
 		// Freeze selection out of live object.
 		selection = {
 			focusNode: nativeSelection.focusNode,
 			focusOffset: nativeSelection.focusOffset,
 			anchorNode: nativeSelection.anchorNode,
 			anchorOffset: nativeSelection.anchorOffset
+		};
+	} else {
+		// Use a blank selection if the selection is outside the document
+		selection = {
+			focusNode: null,
+			focusOffset: null,
+			anchorNode: null,
+			anchorOffset: null
 		};
 	}
 
