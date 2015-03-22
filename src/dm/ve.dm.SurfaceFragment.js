@@ -925,16 +925,17 @@ ve.dm.SurfaceFragment.prototype.delete = function ( directionAfterDelete ) {
 				] );
 			}
 		}
-		rangeAfterRemove = new ve.Range( rangeAfterRemove.start );
 	}
+
 	// rangeAfterRemove is now guaranteed to be collapsed so make sure that it is a content offset
-	if ( !this.document.data.isContentOffset( rangeAfterRemove.start ) ) {
-		rangeAfterRemove = this.document.getRelativeRange(
-			rangeAfterRemove,
+	rangeAfterRemove = new ve.Range(
+		this.document.data.getNearestContentOffset(
+			rangeAfterRemove.start,
 			// If undefined (e.g. cut), default to backwards movement
 			directionAfterDelete || -1
-		);
-	}
+		)
+	);
+
 	this.change( [], new ve.dm.LinearSelection( this.getDocument(), rangeAfterRemove ) );
 
 	return this;
