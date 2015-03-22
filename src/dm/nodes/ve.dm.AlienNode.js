@@ -61,6 +61,20 @@ ve.dm.AlienNode.static.toDomElements = function ( dataElement, doc ) {
 	return ve.copyDomElements( dataElement.originalDomElements, doc );
 };
 
+/**
+ * @inheritdoc
+ */
+ve.dm.AlienNode.static.getHashObject = function ( dataElement ) {
+	return {
+		type: dataElement.type,
+		attributes: dataElement.attributes,
+		originalDomElements: dataElement.originalDomElements &&
+			dataElement.originalDomElements.map( function ( el ) {
+				return el.outerHTML;
+			} ).join( '' )
+	};
+};
+
 /* Methods */
 
 ve.dm.AlienNode.prototype.isCellable = function () {

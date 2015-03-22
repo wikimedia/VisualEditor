@@ -213,10 +213,9 @@ ve.dm.Model.static.getHashObject = function ( dataElement ) {
 	return {
 		type: dataElement.type,
 		attributes: dataElement.attributes,
+		// For uniqueness we are only concerned with the first node
 		originalDomElements: dataElement.originalDomElements &&
-			dataElement.originalDomElements.map( function ( el ) {
-				return el.outerHTML;
-			} ).join( '' )
+			dataElement.originalDomElements[0].cloneNode( false ).outerHTML
 	};
 };
 
