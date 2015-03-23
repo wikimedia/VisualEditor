@@ -1213,8 +1213,8 @@ ve.ce.Surface.prototype.onDocumentKeyPress = function ( e ) {
  * @param {jQuery.Event} e keydown event
  */
 ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
-	var direction, focusableNode, startOffset, endOffset, offsetDiff,
-		range, fixupCursorForUnicorn, matrix,
+	var direction, focusableNode, startOffset, endOffset, offsetDiff, dmFocus, dmSelection,
+		ceNode, range, fixupCursorForUnicorn, matrix,
 		surface = this,
 		isArrow = (
 			e.keyCode === OO.ui.Keys.UP ||
@@ -1274,6 +1274,31 @@ ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
 				surface.misleadingCursorStartSelection.focusOffset
 			)
 		) || null;
+	}
+
+	if (
+		( e.keyCode === OO.ui.Keys.BACKSPACE || e.keyCode === OO.ui.Keys.DELETE ) &&
+		this.nativeSelection.focusNode &&
+		this.nativeSelection.focusNode.nodeType === Node.ELEMENT_NODE &&
+		!this.nativeSelection.focusNode.classList.contains( 've-ce-branchNode-inlineSlug' )
+	) {
+		// In a non-slug element. Sync the DM, then see if we need a slug.
+		this.incRenderLock();
+		try {
+			this.surfaceObserver.pollOnce();
+		} finally {
+			this.decRenderLock();
+		}
+
+		dmSelection = surface.model.getSelection();
+		if ( dmSelection instanceof ve.dm.LinearSelection ) {
+			dmFocus = dmSelection.getRange().end;
+			ceNode = this.documentView.getBranchNodeFromOffset( dmFocus );
+			if ( ceNode && ceNode.getModel().hasSlugAtOffset( dmFocus ) ) {
+				ceNode.setupSlugs();
+			}
+		}
+		return;
 	}
 
 	if ( e !== this.cursorEvent ) {
