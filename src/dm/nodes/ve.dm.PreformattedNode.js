@@ -8,7 +8,7 @@
  * DataModel preformatted node.
  *
  * @class
- * @extends ve.dm.BranchNode
+ * @extends ve.dm.ContentBranchNode
  *
  * @constructor
  * @param {Object} [element] Reference to element in linear model
@@ -21,7 +21,7 @@ ve.dm.PreformattedNode = function VeDmPreformattedNode() {
 
 /* Inheritance */
 
-OO.inheritClass( ve.dm.PreformattedNode, ve.dm.BranchNode );
+OO.inheritClass( ve.dm.PreformattedNode, ve.dm.ContentBranchNode );
 
 /* Static Properties */
 

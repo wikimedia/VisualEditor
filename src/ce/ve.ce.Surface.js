@@ -783,6 +783,7 @@ ve.ce.Surface.prototype.isFocused = function () {
  * @param {jQuery.Event} e Mouse down event
  */
 ve.ce.Surface.prototype.onDocumentMouseDown = function ( e ) {
+	var newFragment;
 	if ( e.which !== 1 ) {
 		return;
 	}
@@ -804,7 +805,23 @@ ve.ce.Surface.prototype.onDocumentMouseDown = function ( e ) {
 		// Browser default behaviour for triple click won't behave as we want
 		e.preventDefault();
 
-		this.getModel().getFragment().expandLinearSelection( 'closest', ve.dm.BranchNode ).adjustLinearSelection( 1, -1 ).select();
+		newFragment = this.getModel().getFragment()
+			// After double-clicking in an inline slug, we'll get a selection like
+			// <p><span><img />|</span></p><p>|Foo</p>. This selection spans a CBN boundary,
+			// so we can't expand to the nearest CBN. To handle this case and other possible
+			// cases where the selection spans a CBN boundary, collapse the selection before
+			// expanding it. If the selection is entirely within the same CBN as it should be,
+			// this won't change the result.
+			.collapseToStart()
+			// Cover the CBN we're in
+			.expandLinearSelection( 'closest', ve.dm.ContentBranchNode )
+			// ...but that covered the entire CBN, we only want the contents
+			.adjustLinearSelection( 1, -1 );
+		// If something weird happened (e.g. no CBN found), newFragment will be null.
+		// Don't select it in that case, because that'll blur the surface.
+		if ( !newFragment.isNull() ) {
+			newFragment.select();
+		}
 	}
 };
 

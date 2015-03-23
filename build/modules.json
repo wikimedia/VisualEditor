@@ -185,6 +185,7 @@
 			"src/dm/ve.dm.ResizableNode.js",
 			"src/dm/ve.dm.Node.js",
 			"src/dm/ve.dm.BranchNode.js",
+			"src/dm/ve.dm.ContentBranchNode.js",
 			"src/dm/ve.dm.LeafNode.js",
 			"src/dm/ve.dm.Annotation.js",
 			"src/dm/ve.dm.InternalList.js",
