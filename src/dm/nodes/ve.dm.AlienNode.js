@@ -11,7 +11,6 @@
  * @abstract
  * @extends ve.dm.LeafNode
  * @mixins ve.dm.FocusableNode
- * @mixins ve.dm.GeneratedContentNode
  *
  * @constructor
  * @param {Object} [element] Reference to element in linear model
@@ -21,7 +20,6 @@ ve.dm.AlienNode = function VeDmAlienNode() {
 	ve.dm.AlienNode.super.apply( this, arguments );
 
 	// Mixin constructors
-	ve.dm.GeneratedContentNode.call( this );
 	ve.dm.FocusableNode.call( this );
 };
 
@@ -30,8 +28,6 @@ ve.dm.AlienNode = function VeDmAlienNode() {
 OO.inheritClass( ve.dm.AlienNode, ve.dm.LeafNode );
 
 OO.mixinClass( ve.dm.AlienNode, ve.dm.FocusableNode );
-
-OO.mixinClass( ve.dm.AlienNode, ve.dm.GeneratedContentNode );
 
 /* Static members */
 
