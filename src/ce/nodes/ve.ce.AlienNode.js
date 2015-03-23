@@ -112,6 +112,5 @@ ve.ce.AlienInlineNode.static.name = 'alienInline';
 
 /* Registration */
 
-ve.ce.nodeFactory.register( ve.ce.AlienNode );
 ve.ce.nodeFactory.register( ve.ce.AlienBlockNode );
 ve.ce.nodeFactory.register( ve.ce.AlienInlineNode );

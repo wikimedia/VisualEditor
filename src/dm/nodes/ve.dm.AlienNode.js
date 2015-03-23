@@ -96,6 +96,5 @@ ve.dm.AlienInlineNode.static.isContent = true;
 
 /* Registration */
 
-ve.dm.modelRegistry.register( ve.dm.AlienNode );
 ve.dm.modelRegistry.register( ve.dm.AlienBlockNode );
 ve.dm.modelRegistry.register( ve.dm.AlienInlineNode );
