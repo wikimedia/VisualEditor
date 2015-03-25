@@ -96,14 +96,14 @@ QUnit.test( 'handleLinearDelete', function ( assert ) {
 				msg: 'Whole word deleted by modified delete'
 			},
 			{
-				range: new ve.Range( 1, 4 ),
+				range: new ve.Range( 56, 57 ),
 				operations: ['delete', 'delete'],
 				expectedData: function ( data ) {
-					data.splice( 0, 5 );
+					data.splice( 55, 3 );
 				},
 				expectedSelection: {
 					type: 'linear',
-					range: new ve.Range( 5 )
+					range: new ve.Range( 56 )
 				},
 				msg: 'Empty node deleted by delete; selection goes to nearest content offset'
 			},
@@ -138,6 +138,34 @@ QUnit.test( 'handleLinearDelete', function ( assert ) {
 					range: new ve.Range( 39 )
 				},
 				msg: 'Focusable node deleted if selected first'
+			},
+			{
+				range: new ve.Range( 38 ),
+				operations: ['backspace'],
+				expectedData: function () {},
+				expectedSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 5, 37 ),
+					fromCol: 0,
+					fromRow: 0,
+					toCol: 0,
+					toRow: 0
+				},
+				msg: 'Table cell selected but not deleted by backspace'
+			},
+			{
+				range: new ve.Range( 4 ),
+				operations: ['delete'],
+				expectedData: function () {},
+				expectedSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 5, 37 ),
+					fromCol: 0,
+					fromRow: 0,
+					toCol: 0,
+					toRow: 0
+				},
+				msg: 'Table cell selected but not deleted by delete'
 			},
 			{
 				range: new ve.Range( 0, 63 ),
