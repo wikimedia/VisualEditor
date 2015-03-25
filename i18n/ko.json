@@ -13,11 +13,13 @@
 			"Ryuch",
 			"Naturehead",
 			"Revi",
-			"Infinity"
+			"Infinity",
+			"SeoJeongHo"
 		]
 	},
 	"visualeditor": "시각편집기",
 	"visualeditor-aliennode-tooltip": "죄송합니다, 이 요소는 지금은 원본 모드에서만 편집할 수 있습니다.",
+	"visualeditor-alignablecontextitem-title": "조정",
 	"visualeditor-annotationbutton-bold-tooltip": "굵은 글씨",
 	"visualeditor-annotationbutton-code-tooltip": "컴퓨터 코드",
 	"visualeditor-annotationbutton-italic-tooltip": "기울인 글씨",

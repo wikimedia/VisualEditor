@@ -15,7 +15,8 @@
 			"Lucas2",
 			"Jdforrester",
 			"Ricordisamoa",
-			"Nivit"
+			"Nivit",
+			"Giuseppe Forte"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -23,6 +24,7 @@
 	"visualeditor-align-widget-center": "Centro",
 	"visualeditor-align-widget-left": "Sinistra",
 	"visualeditor-align-widget-right": "Destra",
+	"visualeditor-alignablecontextitem-title": "Allineamento",
 	"visualeditor-annotationbutton-bold-tooltip": "Grassetto",
 	"visualeditor-annotationbutton-code-tooltip": "Codice di computer",
 	"visualeditor-annotationbutton-italic-tooltip": "Corsivo",
