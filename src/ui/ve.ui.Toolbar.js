@@ -23,7 +23,7 @@ ve.ui.Toolbar = function VeUiToolbar( config ) {
 	// Properties
 	this.floating = false;
 	this.floatable = !!config.floatable;
-	this.$window = null;
+	this.$window = this.$( this.getElementWindow() );
 	this.elementOffset = null;
 	this.windowEvents = {
 		// Must use Function#bind (or a closure) instead of direct reference
@@ -250,9 +250,6 @@ ve.ui.Toolbar.prototype.getSurface = function () {
  * @inheritdoc
  */
 ve.ui.Toolbar.prototype.initialize = function () {
-	// Properties
-	this.$window = this.$( this.getElementWindow() );
-
 	// Parent method
 	OO.ui.Toolbar.prototype.initialize.call( this );
 
