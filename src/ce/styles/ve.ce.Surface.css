@@ -44,6 +44,13 @@
 	left: 0;
 }
 
+.ve-ce-surface-dropMarker {
+	height: 1px;
+	background: #999;
+	pointer-events: none;
+	position: absolute;
+}
+
 .ve-ce-surface-paste {
 	position: fixed;
 	top: 1em; /* Hack: Stop the viewport scrolling when the paste target is typed into */
