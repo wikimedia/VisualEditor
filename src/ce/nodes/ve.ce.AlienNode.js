@@ -24,10 +24,9 @@ ve.ce.AlienNode = function VeCeAlienNode() {
 	this.$element = $( this.model.getOriginalDomElements() );
 
 	// Mixin constructors
-	ve.ce.FocusableNode.call( this );
-
-	// Alien nodes have styled highlights
-	this.$highlights.addClass( 've-ce-alienNode-highlights' );
+	ve.ce.FocusableNode.call( this, this.$element, {
+		classes: [ 've-ce-alienNode-highlights' ]
+	} );
 };
 
 /* Inheritance */
@@ -45,11 +44,8 @@ ve.ce.AlienNode.static.name = 'alien';
 /**
  * @inheritdoc
  */
-ve.ce.AlienNode.prototype.createHighlight = function () {
-	// Mixin method
-	return ve.ce.FocusableNode.prototype.createHighlight.call( this )
-		.addClass( 've-ce-alienNode-highlight' )
-		.prop( 'title', ve.msg( 'visualeditor-aliennode-tooltip' ) );
+ve.ce.AlienNode.static.getDescription = function () {
+	return ve.msg( 'visualeditor-aliennode-tooltip' );
 };
 
 /* Concrete subclasses */
