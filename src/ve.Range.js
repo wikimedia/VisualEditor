@@ -8,8 +8,8 @@
  * @class
  *
  * @constructor
- * @param {number} from Starting offset
- * @param {number} [to=from] Ending offset
+ * @param {number} from Anchor offset
+ * @param {number} [to=from] Focus offset
  */
 ve.Range = function VeRange( from, to ) {
 	this.from = from || 0;
