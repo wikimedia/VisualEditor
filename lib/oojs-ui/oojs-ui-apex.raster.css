@@ -1,12 +1,12 @@
 /*!
- * OOjs UI v0.9.3
+ * OOjs UI v0.9.4
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2015 OOjs Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2015-03-19T23:19:18Z
+ * Date: 2015-03-25T22:24:23Z
  */
 .oo-ui-progressBarWidget-slide-frames from {
 	margin-left: -40%;
@@ -70,6 +70,7 @@
 	display: inline-block;
 	vertical-align: middle;
 	font: inherit;
+	white-space: nowrap;
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
 	   -moz-user-select: none;
@@ -560,35 +561,35 @@
 	top: 0;
 	right: 0;
 }
-.oo-ui-menuLayout-after .oo-ui-menuLayout-menu {
-	top: 0;
-	right: 0;
-	bottom: 0;
-}
-.oo-ui-menuLayout-bottom .oo-ui-menuLayout-menu {
-	right: 0;
-	bottom: 0;
-	left: 0;
-}
-.oo-ui-menuLayout-before .oo-ui-menuLayout-menu {
-	bottom: 0;
-	left: 0;
-	top: 0;
-}
 .oo-ui-menuLayout-top .oo-ui-menuLayout-content {
 	right: 0 !important;
 	bottom: 0 !important;
 	left: 0 !important;
+}
+.oo-ui-menuLayout-after .oo-ui-menuLayout-menu {
+	top: 0;
+	right: 0;
+	bottom: 0;
 }
 .oo-ui-menuLayout-after .oo-ui-menuLayout-content {
 	bottom: 0 !important;
 	left: 0 !important;
 	top: 0 !important;
 }
+.oo-ui-menuLayout-bottom .oo-ui-menuLayout-menu {
+	right: 0;
+	bottom: 0;
+	left: 0;
+}
 .oo-ui-menuLayout-bottom .oo-ui-menuLayout-content {
 	left: 0 !important;
 	top: 0 !important;
 	right: 0 !important;
+}
+.oo-ui-menuLayout-before .oo-ui-menuLayout-menu {
+	bottom: 0;
+	left: 0;
+	top: 0;
 }
 .oo-ui-menuLayout-before .oo-ui-menuLayout-content {
 	top: 0 !important;
