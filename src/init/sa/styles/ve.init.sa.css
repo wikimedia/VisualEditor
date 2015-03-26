@@ -13,15 +13,17 @@ figcaption {
 	caption-side: bottom;
 }
 
+/* @noflip */
 .ve-align-right {
-	/* @noflip */
 	float: right;
+	clear: right;
 	margin: 0.5em 0 1em 1em;
 }
 
+/* @noflip */
 .ve-align-left {
-	/* @noflip */
 	float: left;
+	clear: left;
 	margin: 0.5em 1em 1em 0;
 }
 
