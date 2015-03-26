@@ -36,6 +36,7 @@ ve.ui.SurfaceWidget = function VeUiSurfaceWidget( doc, config ) {
 	// Initialization
 	this.surface.$element.addClass( 've-ui-surfaceWidget-surface' );
 	this.toolbar.$element.addClass( 've-ui-surfaceWidget-toolbar' );
+	this.toolbar.$bar.append( this.surface.getToolbarDialogs().$element );
 	this.$element
 		.addClass( 've-ui-surfaceWidget' )
 		.append( this.toolbar.$element, this.surface.$element );
