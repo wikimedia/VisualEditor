@@ -8,7 +8,7 @@
  * DataModel heading node.
  *
  * @class
- * @extends ve.dm.BranchNode
+ * @extends ve.dm.ContentBranchNode
  *
  * @constructor
  * @param {Object} [element] Reference to element in linear model
@@ -21,7 +21,7 @@ ve.dm.HeadingNode = function VeDmHeadingNode() {
 
 /* Inheritance */
 
-OO.inheritClass( ve.dm.HeadingNode, ve.dm.BranchNode );
+OO.inheritClass( ve.dm.HeadingNode, ve.dm.ContentBranchNode );
 
 /* Static Properties */
 
