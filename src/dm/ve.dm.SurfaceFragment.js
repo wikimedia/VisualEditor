@@ -837,7 +837,7 @@ ve.dm.SurfaceFragment.prototype.delete = function ( directionAfterDelete ) {
 		return this;
 	}
 
-	var rangeAfterRemove, internalListRange,
+	var rangeAfterRemove, internalListRange, parentNode,
 		tx, startNode, endNode, endNodeData, nodeToDelete,
 		rangeToRemove = this.getSelection( true ).getRange();
 
@@ -876,13 +876,32 @@ ve.dm.SurfaceFragment.prototype.delete = function ( directionAfterDelete ) {
 		// If endNode is within our rangeAfterRemove, then we shouldn't delete it
 		if ( endNode.getRange().start >= rangeAfterRemove.end ) {
 			startNode = this.document.getBranchNodeFromOffset( rangeAfterRemove.start, false );
+
 			if ( startNode.getRange().isCollapsed() ) {
-				// Remove startNode
-				this.change( [
-					ve.dm.Transaction.newFromRemoval(
-						this.document, startNode.getOuterRange()
-					)
-				] );
+				parentNode = startNode.getParent();
+
+				do {
+					// Remove startNode
+					tx = ve.dm.Transaction.newFromRemoval( this.document, startNode.getOuterRange() );
+					this.change( tx );
+					rangeAfterRemove = tx.translateRange( rangeAfterRemove );
+
+					startNode = parentNode;
+					parentNode = startNode.getParent();
+
+					// If the removal resulted in a block slug appearing in an empty node (e.g. when startNode
+					// was a paragraph or heading inside a list item), delete the empty node too.
+				} while (
+					startNode &&
+					startNode.children.length === 0 &&
+					(
+						startNode.hasSlugAtOffset( startNode.getRange().start ) ||
+						// These may not have slugs, but also must not be left empty (and thus uneditable) :(
+						startNode instanceof ve.dm.DefinitionListNode || startNode instanceof ve.dm.ListNode
+					) &&
+					startNode.canHaveChildrenNotContent()
+				);
+
 			} else {
 				endNodeData = this.document.getData( endNode.getRange() );
 				nodeToDelete = endNode;
