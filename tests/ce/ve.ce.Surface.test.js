@@ -220,6 +220,19 @@ QUnit.test( 'handleLinearDelete', function ( assert ) {
 				msg: 'Empty list node deleted by backspace from after'
 			},
 			{
+				html: '<ul><li><p></p><ul><li><p></p></li></ul></li></ul>',
+				range: new ve.Range( 7 ),
+				operations: ['backspace'],
+				expectedData: function ( data ) {
+					data.splice( 2, 2 );
+				},
+				expectedSelection: {
+					type: 'linear',
+					range: new ve.Range( 5 )
+				},
+				msg: 'Selection is not lost inside block slug after backspace'
+			},
+			{
 				range: new ve.Range( 0, 63 ),
 				operations: ['backspace'],
 				expectedData: function ( data ) {
