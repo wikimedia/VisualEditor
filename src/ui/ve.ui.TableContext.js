@@ -83,10 +83,8 @@ ve.ui.TableContext.prototype.populateMenu = function () {
  * @param {ve.ui.ContextOptionWidget} item Chosen item
  */
 ve.ui.TableContext.prototype.onContextItemChoose = function ( item ) {
-	if ( item ) {
-		item.getCommand().execute( this.surface );
-		this.toggle( false );
-	}
+	item.getCommand().execute( this.surface );
+	this.toggle( false );
 };
 
 /**

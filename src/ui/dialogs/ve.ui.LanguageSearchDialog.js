@@ -56,16 +56,18 @@ ve.ui.LanguageSearchDialog.prototype.initialize = function () {
 
 	this.searchWidget = new this.constructor.static.languageSearchWidget( {
 		$: this.$
-	} ).on( 'select', this.onSearchWidgetSelect.bind( this ) );
+	} );
+	this.searchWidget.getResults().connect( this, { choose: 'onSearchResultsChoose' } );
 	this.$body.append( this.searchWidget.$element );
 };
 
 /**
  * Handle the search widget being selected
  *
- * @param {Object} data Data from the selected option widget
+ * @param {ve.ui.LanguageResultWidget} item Chosen item
  */
-ve.ui.LanguageSearchDialog.prototype.onSearchWidgetSelect = function ( data ) {
+ve.ui.LanguageSearchDialog.prototype.onSearchResultsChoose = function ( item ) {
+	var data = item.getData();
 	this.close( {
 		action: 'apply',
 		lang: data.code,
