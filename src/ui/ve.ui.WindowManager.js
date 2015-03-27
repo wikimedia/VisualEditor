@@ -50,11 +50,3 @@ ve.ui.WindowManager.prototype.getDir = function () {
 ve.ui.WindowManager.prototype.getOverlay = function () {
 	return this.overlay;
 };
-
-/**
- * @inheritdoc
- */
-ve.ui.WindowManager.prototype.getReadyDelay = function () {
-	// HACK: Really this should be measured by OOjs UI so it can vary by theme
-	return 250;
-};
