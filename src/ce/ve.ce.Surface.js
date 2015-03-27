@@ -2230,6 +2230,8 @@ ve.ce.Surface.prototype.onModelSelect = function () {
 					// in exactly the same place where it was before, the observer won't consider that a change.
 					this.surfaceObserver.clear();
 				}
+				// If the node is outside the view, scroll to it
+				OO.ui.Element.static.scrollIntoView( this.focusedNode.$element.get( 0 ) );
 			}
 		}
 	} else {
@@ -3465,7 +3467,7 @@ ve.ce.Surface.prototype.showSelection = function ( selection ) {
 		return;
 	}
 
-	var endRange, oldRange,
+	var endRange, oldRange, $node,
 		range = selection.getRange(),
 		rangeSelection = this.getRangeSelection( range ),
 		nativeRange = this.getElementDocument().createRange();
@@ -3508,6 +3510,10 @@ ve.ce.Surface.prototype.showSelection = function ( selection ) {
 	// Also set focus after range to prevent scrolling to top
 	if ( !OO.ui.contains( this.getElementDocument().activeElement, rangeSelection.start.node, true ) ) {
 		$( rangeSelection.start.node ).closest( '[contenteditable=true]' ).focus();
+	} else {
+		$node = $( rangeSelection.start.node ).closest( '*' );
+		// Scroll the node into view
+		OO.ui.Element.static.scrollIntoView( $node.get( 0 ) );
 	}
 };
 
