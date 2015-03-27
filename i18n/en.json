@@ -125,6 +125,7 @@
 	"visualeditor-table-insert-row-before": "Insert above",
 	"visualeditor-table-insert-table": "Table",
 	"visualeditor-table-merge-cells": "Merge cells",
+	"visualeditor-tablecell-tooltip": "Double click to edit cell",
 	"visualeditor-toolbar-format-tooltip": "Format paragraph",
 	"visualeditor-toolbar-history": "History",
 	"visualeditor-toolbar-insert": "Insert",
