@@ -601,9 +601,9 @@ QUnit.test( 'onSurfaceObserverContentChange', function ( assert ) {
 QUnit.test( 'getClipboardHash', 1, function ( assert ) {
 	assert.strictEqual(
 		ve.ce.Surface.static.getClipboardHash(
-			$( $.parseHTML( '  <p class="foo"> B<b>a</b>r </p>\n\t<span class="baz"></span> Quux <h1><span></span>Whee</h1>' ) ).toArray()
+			$( '  <p class="foo"> B<b>a</b>r </p>\n\t<span class="baz"></span> Quux <h1><span></span>Whee</h1>' )
 		),
-		'<P>B<B>ar<SPAN>Quux<H1><SPAN>Whee',
+		'BarQuuxWhee',
 		'Simple usage'
 	);
 } );
