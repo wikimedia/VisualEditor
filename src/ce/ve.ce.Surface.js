@@ -1833,11 +1833,21 @@ ve.ce.Surface.prototype.afterPaste = function () {
 		return;
 	}
 
-	// Remove the pasteProtect class. See #onCopy.
-	this.$pasteTarget.find( 'span' ).removeClass( 've-pasteProtect' );
-
 	// Remove style attributes. Any valid styles will be restored by data-ve-attributes.
 	this.$pasteTarget.find( '[style]' ).removeAttr( 'style' );
+
+	// Remove the pasteProtect class (see #onCopy) and unwrap empty spans.
+	this.$pasteTarget.find( 'span' ).each( function () {
+		var $this = $( this );
+		$this.removeClass( 've-pasteProtect' );
+		if ( $this.attr( 'class' ) === '' ) {
+			$this.removeAttr( 'class' );
+		}
+		// Unwrap empty spans
+		if ( !this.attributes.length ) {
+			$this.replaceWith( this.childNodes );
+		}
+	} );
 
 	// Restore attributes. See #onCopy.
 	this.$pasteTarget.find( '[data-ve-attributes]' ).each( function () {
