@@ -18,17 +18,17 @@ ve.ce.RangeState = function VeCeRangeState( old, documentNode, selectionOnly ) {
 	/**
 	 * @property {boolean} branchNodeChanged Whether the CE branch node changed
 	 */
-	this.branchNodeChanged = null;
+	this.branchNodeChanged = false;
 
 	/**
 	 * @property {boolean} selectionChanged Whether the DOM range changed
 	 */
-	this.selectionChanged = null;
+	this.selectionChanged = false;
 
 	/**
 	 * @property {boolean} contentChanged Whether the content changed
 	 */
-	this.contentChanged = null;
+	this.contentChanged = false;
 
 	/**
 	 * @property {ve.Range|null} veRange The current selection range
@@ -41,12 +41,12 @@ ve.ce.RangeState = function VeCeRangeState( old, documentNode, selectionOnly ) {
 	this.node = null;
 
 	/**
-	 * @property {string} text Plain text of current branch node
+	 * @property {string|null} text Plain text of current branch node
 	 */
 	this.text = null;
 
 	/**
-	 * @property {string} DOM Hash of current branch node
+	 * @property {string|null} DOM Hash of current branch node
 	 */
 	this.hash = null;
 
@@ -56,6 +56,37 @@ ve.ce.RangeState = function VeCeRangeState( old, documentNode, selectionOnly ) {
 /* Inheritance */
 
 OO.initClass( ve.ce.RangeState );
+
+/* Static methods */
+
+/**
+ * Create a plain selection object equivalent to no selection
+ *
+ * @return {Object} Plain selection object
+ */
+ve.ce.RangeState.static.createNullSelection = function () {
+	return {
+		focusNode: null,
+		focusOffset: 0,
+		anchorNode: null,
+		anchorOffset: 0
+	};
+};
+
+/**
+ * Compare two plain selection objects, checking that all values are equal
+ * and all nodes are reference-equal.
+ *
+ * @param {Object} a First plain selection object
+ * @param {Object} b First plain selection object
+ * @return {boolean} Selections are identical
+ */
+ve.ce.RangeState.static.compareSelections = function ( a, b ) {
+	return a.focusNode === b.focusNode &&
+		a.focusOffset === b.focusOffset &&
+		a.anchorNode === b.anchorNode &&
+		a.anchorOffset === a.anchorOffset;
+};
 
 /* Methods */
 
@@ -68,6 +99,7 @@ OO.initClass( ve.ce.RangeState );
  */
 ve.ce.RangeState.prototype.saveState = function ( old, documentNode, selectionOnly ) {
 	var $node, selection, anchorNodeChanged,
+		oldSelection = old ? old.misleadingSelection : this.constructor.static.createNullSelection(),
 		nativeSelection = documentNode.getElementDocument().getSelection();
 
 	if (
@@ -83,28 +115,23 @@ ve.ce.RangeState.prototype.saveState = function ( old, documentNode, selectionOn
 		};
 	} else {
 		// Use a blank selection if the selection is outside the document
-		selection = {
-			focusNode: null,
-			focusOffset: null,
-			anchorNode: null,
-			anchorOffset: null
-		};
+		selection = this.constructor.static.createNullSelection();
 	}
 
 	// Get new range information
-	if ( old && !old.compareSelection( selection ) ) {
+	if ( this.constructor.static.compareSelections( oldSelection, selection ) ) {
 		// No change; use old values for speed
 		this.selectionChanged = false;
-		this.veRange = old.veRange;
+		this.veRange = old && old.veRange;
 	} else {
 		this.selectionChanged = true;
 		this.veRange = ve.ce.veRangeFromSelection( selection );
 	}
 
-	anchorNodeChanged = !old || old.compareAnchorNode( selection );
+	anchorNodeChanged = oldSelection.anchorNode !== selection.anchorNode;
 
 	if ( !anchorNodeChanged ) {
-		this.node = old.node;
+		this.node = old && old.node;
 	} else {
 		$node = $( selection.anchorNode ).closest( '.ve-ce-branchNode' );
 		if ( $node.length === 0 ) {
@@ -119,7 +146,7 @@ ve.ce.RangeState.prototype.saveState = function ( old, documentNode, selectionOn
 		}
 	}
 
-	this.branchNodeChanged = ( !old || this.node !== old.node );
+	this.branchNodeChanged = ( old && old.node ) !== this.node;
 
 	// Compute text/hash, for change comparison
 	if ( selectionOnly && !anchorNodeChanged ) {
@@ -134,48 +161,15 @@ ve.ce.RangeState.prototype.saveState = function ( old, documentNode, selectionOn
 	}
 
 	// Only set contentChanged if we're still in the same branch node
-	this.contentChanged = (
+	this.contentChanged =
 		!selectionOnly &&
-		old &&
-		old.node === this.node && (
-			old.hash === null ||
-			old.text === null ||
-			old.hash !== this.hash ||
-			old.text !== this.text
-		)
-	);
+		!this.branchNodeChanged && (
+			( old && old.hash ) !== this.hash ||
+			( old && old.text ) !== this.text
+		);
 
 	// Save selection for future comparisons. (But it is not properly frozen, because the nodes
 	// are live and mutable, and therefore the offsets may come to point to places that are
 	// misleadingly different from when the selection was saved).
 	this.misleadingSelection = selection;
-};
-
-/**
- * Compare a selection object for changes from the snapshotted state.
- *
- * The meaning of "changes" is slightly misleading, because the offsets were taken
- * at two different instants, between which content outside of the selection may
- * have changed. This can in theory cause false negatives (unnoticed changes).
- *
- * @param {Object} selection Selection to compare
- * @returns {boolean} Whether there is a change
- */
-ve.ce.RangeState.prototype.compareSelection = function ( selection ) {
-	return (
-		this.misleadingSelection.focusNode !== selection.focusNode ||
-		this.misleadingSelection.focusOffset !== selection.focusOffset ||
-		this.misleadingSelection.anchorNode !== selection.anchorNode ||
-		this.misleadingSelection.anchorOffset !== selection.anchorOffset
-	);
-};
-
-/**
- * Compare a selection object for a change of anchor node from the snapshotted state.
- *
- * @param {Object} selection Selection to compare
- * @returns {boolean} Whether the anchor node has changed
- */
-ve.ce.RangeState.prototype.compareAnchorNode = function ( selection ) {
-	return this.misleadingSelection.anchorNode !== selection.anchorNode;
 };

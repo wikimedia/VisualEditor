@@ -503,6 +503,7 @@
 			"tests/ce/ve.ce.test.js",
 			"tests/ce/ve.ce.Document.test.js",
 			"tests/ce/ve.ce.Surface.test.js",
+			"tests/ce/ve.ce.RangeState.test.js",
 			"tests/ce/ve.ce.NodeFactory.test.js",
 			"tests/ce/ve.ce.Node.test.js",
 			"tests/ce/ve.ce.BranchNode.test.js",
