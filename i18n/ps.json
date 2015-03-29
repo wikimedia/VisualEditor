@@ -15,9 +15,12 @@
 	"visualeditor-annotationbutton-subscript-tooltip": "ووړليک",
 	"visualeditor-annotationbutton-superscript-tooltip": "لوی ليک",
 	"visualeditor-clearbutton-tooltip": "بڼه جوړېدنه سپينول",
+	"visualeditor-commentinspector-title": "تبصره",
+	"visualeditor-commentinspector-tooltip": "تبصره",
 	"visualeditor-dialog-action-apply": "بدلونونه پلي کول",
 	"visualeditor-dialog-action-cancel": "ناگارل",
 	"visualeditor-dialog-action-goback": "پر شا تلل",
+	"visualeditor-dialog-action-insert": "ورټومبل",
 	"visualeditor-formatdropdown-format-heading1": "سرليک 1",
 	"visualeditor-formatdropdown-format-heading2": "سرليک 2",
 	"visualeditor-formatdropdown-format-heading3": "سرليک 3",
@@ -36,7 +39,14 @@
 	"visualeditor-languageinspector-widget-label-direction": "لوری",
 	"visualeditor-languageinspector-widget-label-langcode": "د ژبې کوډ",
 	"visualeditor-languageinspector-widget-label-language": "ژبه",
+	"visualeditor-linkinspector-open": "پرانيستل",
 	"visualeditor-linkinspector-title": "تړنه",
 	"visualeditor-listbutton-bullet-tooltip": "گولۍ داره لړليک",
-	"visualeditor-listbutton-number-tooltip": "شمېرن لړليک"
+	"visualeditor-listbutton-number-tooltip": "شمېرن لړليک",
+	"visualeditor-slug-insert": "پاراگراف ورټومبل",
+	"visualeditor-table-insert-col-after": "وروسته ورټومبل",
+	"visualeditor-table-insert-col-before": "مخکې ورټومبل",
+	"visualeditor-table-insert-row-after": "لاندې ورټومبل",
+	"visualeditor-table-insert-table": "لښتيال",
+	"visualeditor-toolbar-insert": "ورټومبل"
 }

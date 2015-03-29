@@ -11,7 +11,8 @@
 			"Meelo",
 			"Trncmvsr",
 			"Sayginer",
-			"Violetanka"
+			"Violetanka",
+			"Mavrikant"
 		]
 	},
 	"visualeditor": "Görsel Düzenleyici",
@@ -50,7 +51,7 @@
 	"visualeditor-dialog-language-search-title": "Dil seç",
 	"visualeditor-find-and-replace-done": "Bitti",
 	"visualeditor-find-and-replace-find-text": "Bul",
-	"visualeditor-find-and-replace-invalid-regex": "Geçersiz kurallı ifade",
+	"visualeditor-find-and-replace-invalid-regex": "Geçersiz düzenli ifade(Regex)",
 	"visualeditor-find-and-replace-match-case": "Büyük/küçük harf duyarlı",
 	"visualeditor-find-and-replace-next-button": "Sonrakini bul",
 	"visualeditor-find-and-replace-previous-button": "Öncekini bul",
