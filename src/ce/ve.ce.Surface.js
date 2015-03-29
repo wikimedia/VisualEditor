@@ -1994,7 +1994,7 @@ ve.ce.Surface.prototype.afterPaste = function () {
 			if ( importRules.all ) {
 				data.sanitize( importRules.all );
 			}
-		} else if ( importRules.all || this.pasteSpecial ) {
+		} else {
 			data.sanitize( importRules.all || {}, this.pasteSpecial );
 		}
 		data.remapInternalListKeys( this.model.getDocument().getInternalList() );
