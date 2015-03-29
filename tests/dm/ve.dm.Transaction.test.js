@@ -16,7 +16,6 @@ function runBuilderTests( assert, cases ) {
 			tx[cases[msg].calls[i][0]].apply( tx, cases[msg].calls[i].slice( 1 ) );
 		}
 		assert.deepEqualWithDomElements( tx.getOperations(), cases[msg].ops, msg + ': operations match' );
-		assert.deepEqual( tx.getLengthDifference(), cases[msg].diff, msg + ': length differences match' );
 	}
 }
 
@@ -1965,7 +1964,7 @@ QUnit.test( 'getModifiedRange', function ( assert ) {
 	}
 } );
 
-QUnit.test( 'pushRetain', 4, function ( assert ) {
+QUnit.test( 'pushRetain', 2, function ( assert ) {
 	var cases = {
 		retain: {
 			calls: [['pushRetain', 5]],
@@ -2089,7 +2088,7 @@ QUnit.test( 'pushReplace', function ( assert ) {
 				diff: 0
 			}
 		};
-	QUnit.expect( 2 * Object.keys( cases ).length );
+	QUnit.expect( Object.keys( cases ).length );
 	runBuilderTests( assert, cases );
 } );
 
@@ -2131,7 +2130,7 @@ QUnit.test( 'pushReplaceElementAttribute', function ( assert ) {
 			diff: 0
 		}
 	};
-	QUnit.expect( 2 * Object.keys( cases ).length );
+	QUnit.expect( Object.keys( cases ).length );
 	runBuilderTests( assert, cases );
 } );
 
@@ -2208,7 +2207,7 @@ QUnit.test( 'push*Annotating', function ( assert ) {
 			diff: 0
 		}
 	};
-	QUnit.expect( 2 * Object.keys( cases ).length );
+	QUnit.expect( Object.keys( cases ).length );
 	runBuilderTests( assert, cases );
 } );
 
