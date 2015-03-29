@@ -13,7 +13,8 @@
 	transition: opacity 200ms ease-out;
 }
 
-.ve-ce-branchNode-blockSlug:hover {
+.ve-ce-branchNode-blockSlug:hover,
+.ve-ce-branchNode-blockSlug.ve-ce-branchNode-blockSlug-focused {
 	opacity: 1;
 }
 

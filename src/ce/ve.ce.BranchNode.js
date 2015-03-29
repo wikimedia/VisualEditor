@@ -91,8 +91,6 @@ ve.ce.BranchNode.inputDebugInlineSlugTemplate = $( '<span>' )
  */
 ve.ce.BranchNode.blockSlugTemplate = $( '<div>' )
 	.addClass( 've-ce-branchNode-slug ve-ce-branchNode-blockSlug' )
-	// TODO: work around ce=false IE9 bug
-	.prop( 'contentEditable', 'false' )
 	.get( 0 );
 
 /* Methods */
@@ -289,7 +287,7 @@ ve.ce.BranchNode.prototype.onSlugClick = function ( slugNode ) {
  *
  * @method
  * @param {number} offset Offset to get slug at
- * @returns {HTMLElement}
+ * @returns {HTMLElement|null}
  */
 ve.ce.BranchNode.prototype.getSlugAtOffset = function ( offset ) {
 	var i,
