@@ -1552,6 +1552,8 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 		htmlDoc = this.getModel().getDocument().getHtmlDocument(),
 		clipboardData = e.originalEvent.clipboardData;
 
+	this.$pasteTarget.empty();
+
 	if ( selection instanceof ve.dm.LinearSelection ||
 		( selection instanceof ve.dm.TableSelection && selection.isSingleCell() )
 	) {
@@ -1561,8 +1563,6 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 	}
 
 	slice = this.model.documentModel.cloneSliceFromRange( range );
-
-	this.$pasteTarget.empty();
 
 	pasteData = slice.data.clone();
 
