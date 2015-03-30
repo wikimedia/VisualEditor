@@ -35,31 +35,3 @@ ve.ui.MobileWindowManager.static.sizes = {
 ve.ui.MobileWindowManager.static.defaultSize = 'full';
 
 /* Methods */
-
-/**
- * @inheritdoc
- */
-ve.ui.MobileWindowManager.prototype.getSetupDelay = function () {
-	return 0;
-};
-
-/**
- * @inheritdoc
- */
-ve.ui.MobileWindowManager.prototype.getReadyDelay = function () {
-	return 0;
-};
-
-/**
- * @inheritdoc
- */
-ve.ui.MobileWindowManager.prototype.getHoldDelay = function () {
-	return 0;
-};
-
-/**
- * @inheritdoc
- */
-ve.ui.MobileWindowManager.prototype.getTeardownDelay = function () {
-	return 300;
-};

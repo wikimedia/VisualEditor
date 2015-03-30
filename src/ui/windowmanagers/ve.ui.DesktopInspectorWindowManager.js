@@ -45,33 +45,3 @@ ve.ui.DesktopInspectorWindowManager.static.sizes = {
 		height: '100%'
 	}
 };
-
-/* Methods */
-
-/**
- * @inheritdoc
- */
-ve.ui.DesktopInspectorWindowManager.prototype.getSetupDelay = function () {
-	return 0;
-};
-
-/**
- * @inheritdoc
- */
-ve.ui.DesktopInspectorWindowManager.prototype.getReadyDelay = function () {
-	return 0;
-};
-
-/**
- * @inheritdoc
- */
-ve.ui.DesktopInspectorWindowManager.prototype.getHoldDelay = function () {
-	return 0;
-};
-
-/**
- * @inheritdoc
- */
-ve.ui.DesktopInspectorWindowManager.prototype.getTeardownDelay = function () {
-	return 0;
-};
