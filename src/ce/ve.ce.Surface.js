@@ -157,7 +157,9 @@ ve.ce.Surface = function VeCeSurface( model, ui, options ) {
 	} );
 
 	// Initialization
-	this.$element.addClass( 've-ce-surface' );
+	// Add 'notranslate' class to prevent Chrome's translate feature from
+	// completely messing up the CE DOM (T59124)
+	this.$element.addClass( 've-ce-surface notranslate' );
 	this.$highlights.addClass( 've-ce-surface-highlights' );
 	this.$highlightsFocused.addClass( 've-ce-surface-highlights-focused' );
 	this.$highlightsBlurred.addClass( 've-ce-surface-highlights-blurred' );
