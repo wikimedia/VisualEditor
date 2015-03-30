@@ -1092,17 +1092,17 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 						// The opening was on openingStack, so we're closing a node that was opened
 						// within data. Don't track that on closingStack
 					} else {
+						if ( !parentNode.getParent() ) {
+							throw new Error( 'Cannot insert ' + childType + ' even ' +
+								' after closing all containing nodes ' +
+								'(at index ' + i + ')' );
+						}
 						// openingStack is empty, so we're closing a node that was already in the
 						// document. This means we have to reopen it later, so track this on
 						// closingStack
 						closingStack.push( parentNode );
 						reopenElements.push( parentNode.getClonedElement() );
 						parentNode = parentNode.getParent();
-						if ( !parentNode ) {
-							throw new Error( 'Cannot insert ' + childType + ' even ' +
-								' after closing all containing nodes ' +
-								'(at index ' + i + ')' );
-						}
 						parentType = parentNode.getType();
 					}
 				}
