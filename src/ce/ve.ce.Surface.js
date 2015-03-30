@@ -2043,6 +2043,7 @@ ve.ce.Surface.prototype.afterPaste = function () {
 			// Remove matching context from the right
 			right = internalListRange.start;
 			while (
+				right > 0 &&
 				context.getLength() &&
 				ve.dm.ElementLinearData.static.compareElements(
 					data.getData( right - 1 ),
@@ -2053,7 +2054,7 @@ ve.ce.Surface.prototype.afterPaste = function () {
 				context.splice( context.getLength() - 1, 1 );
 			}
 			// HACK: Strip trailing linebreaks probably introduced by Chrome bug
-			while ( data.getType( right - 1 ) === 'break' ) {
+			while ( right > 0 && data.getType( right - 1 ) === 'break' ) {
 				right--;
 			}
 			contextRange = new ve.Range( left, right );
