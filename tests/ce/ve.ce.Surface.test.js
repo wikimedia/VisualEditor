@@ -705,6 +705,7 @@ QUnit.test( 'onCopy', function ( assert ) {
 
 QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 	var i,
+		expected = 0,
 		exampleDoc = '<p></p><p>Foo</p><h2> Baz </h2><table><tbody><tr><td></td></tbody></table>',
 		docLen = 24,
 		TestEvent = function ( data ) {
@@ -996,6 +997,38 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 				msg: 'RDFa attributes restored/overwritten from data-ve-attributes'
 			},
 			{
+				range: new ve.Range( 1 ),
+				documentHtml: '<p></p>',
+				pasteHtml:
+					'<span class="ve-pasteProtect" id="meaningful">F</span>' +
+					'<span class="ve-pasteProtect" style="color: red;">o</span>' +
+					'<span class="ve-pasteProtect meaningful">o</span>',
+				fromVe: true,
+				expectedRange: new ve.Range( 4 ),
+				expectedOps: [
+					[
+						{ type: 'retain', length: 1 },
+						{
+							type: 'replace',
+							insert: [
+								['F', [ { type: 'textStyle/span', attributes: { nodeName: 'span' } } ]],
+								'o',
+								['o', [ { type: 'textStyle/span', attributes: { nodeName: 'span' } } ]]
+							],
+							remove: []
+						},
+						{ type: 'retain', length: 3 }
+					]
+				],
+				expectedHtml:
+					'<p>' +
+						'<span id="meaningful">F</span>' +
+						'o' +
+						'<span class="meaningful">o</span>' +
+					'</p>',
+				msg: 'Span cleanups: only meaningful attributes kept'
+			},
+			{
 				range: new ve.Range( 0 ),
 				pasteHtml: 'foo\n<!-- StartFragment --><p>Bar</p><!--EndFragment-->baz',
 				useClipboardData: true,
@@ -1018,10 +1051,21 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 			}
 		];
 
-	QUnit.expect( cases.length * 2 );
+	for ( i = 0; i < cases.length; i++ ) {
+		if ( cases[i].expectedRange ) {
+			expected++;
+		}
+		if ( cases[i].expectedOps ) {
+			expected++;
+		}
+		if ( cases[i].expectedHtml ) {
+			expected++;
+		}
+	}
+	QUnit.expect( expected );
 
-	function testRunner( documentHtml, pasteHtml, fromVe, useClipboardData, range, expectedOps, pasteSpecial, expectedRange, msg ) {
-		var i, j, txs, ops, txops,
+	function testRunner( documentHtml, pasteHtml, fromVe, useClipboardData, range, pasteSpecial, expectedOps, expectedRange, expectedHtml, msg ) {
+		var i, j, txs, ops, txops, htmlDoc,
 			e = {},
 			surface = ve.test.utils.createSurfaceFromHtml( documentHtml || exampleDoc ),
 			view = surface.getView(),
@@ -1041,33 +1085,42 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 		document.execCommand( 'insertHTML', false, pasteHtml );
 		view.afterPaste();
 
-		txs = model.getHistory()[0].transactions;
-		ops = [];
-		for ( i = 0; i < txs.length; i++ ) {
-			txops = txs[i].getOperations();
-			for ( j = 0; j < txops.length; j++ ) {
-				if ( txops[j].remove ) {
-					ve.dm.example.postprocessAnnotations( txops[j].remove, doc.getStore() );
-					ve.dm.example.removeOriginalDomElements( txops[j].remove );
+		if ( expectedOps ) {
+			txs = model.getHistory()[0].transactions;
+			ops = [];
+			for ( i = 0; i < txs.length; i++ ) {
+				txops = txs[i].getOperations();
+				for ( j = 0; j < txops.length; j++ ) {
+					if ( txops[j].remove ) {
+						ve.dm.example.postprocessAnnotations( txops[j].remove, doc.getStore() );
+						ve.dm.example.removeOriginalDomElements( txops[j].remove );
+					}
+					if ( txops[j].insert ) {
+						ve.dm.example.postprocessAnnotations( txops[j].insert, doc.getStore() );
+						ve.dm.example.removeOriginalDomElements( txops[j].insert );
+					}
 				}
-				if ( txops[j].insert ) {
-					ve.dm.example.postprocessAnnotations( txops[j].insert, doc.getStore() );
-					ve.dm.example.removeOriginalDomElements( txops[j].insert );
-				}
+				ops.push( txops );
+
 			}
-			ops.push( txops );
-
+			assert.deepEqual( ops, expectedOps, msg + ': operations' );
 		}
-		assert.deepEqual( ops, expectedOps, msg + ': operations' );
-		assert.equalRange( model.getSelection().getRange(), expectedRange, msg +  ': range' );
-
+		if ( expectedRange ) {
+			assert.equalRange( model.getSelection().getRange(), expectedRange, msg +  ': range' );
+		}
+		if ( expectedHtml ) {
+			htmlDoc = ve.dm.converter.getDomFromModel( doc );
+			assert.strictEqual( htmlDoc.body.innerHTML, expectedHtml, msg + ': HTML' );
+		}
 		surface.destroy();
 	}
 
 	for ( i = 0; i < cases.length; i++ ) {
 		testRunner(
 			cases[i].documentHtml, cases[i].pasteHtml, cases[i].fromVe, cases[i].useClipboardData,
-			cases[i].range, cases[i].expectedOps, cases[i].pasteSpecial, cases[i].expectedRange, cases[i].msg
+			cases[i].range, cases[i].pasteSpecial,
+			cases[i].expectedOps, cases[i].expectedRange, cases[i].expectedHtml,
+			cases[i].msg
 		);
 	}
 
