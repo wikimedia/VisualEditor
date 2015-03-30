@@ -1670,20 +1670,23 @@ ve.ce.Surface.prototype.onPaste = function ( e ) {
 	if ( this.pasting ) {
 		return false;
 	}
+	this.beforePaste( e );
 	this.surfaceObserver.disable();
 	this.pasting = true;
-	this.beforePaste( e );
 	setTimeout( function () {
-		if ( !e.isDefaultPrevented() ) {
-			surface.afterPaste( e );
-		}
-		surface.surfaceObserver.clear();
-		surface.surfaceObserver.enable();
+		try {
+			if ( !e.isDefaultPrevented() ) {
+				surface.afterPaste( e );
+			}
+		} finally {
+			surface.surfaceObserver.clear();
+			surface.surfaceObserver.enable();
 
-		// Allow pasting again
-		surface.pasting = false;
-		surface.pasteSpecial = false;
-		surface.beforePasteData = null;
+			// Allow pasting again
+			surface.pasting = false;
+			surface.pasteSpecial = false;
+			surface.beforePasteData = null;
+		}
 	} );
 };
 
