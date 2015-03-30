@@ -65,6 +65,12 @@
 	height: 1px !important;
 }
 
+/* Prevent IE from wrapping link text in <u> and <font color> tags */
+.ve-init-target-ie .ve-ce-surface-paste a {
+	text-decoration: underline !important;
+	color: #0066cc;
+}
+
 /* MediaWiki PHP Parser does not wrap text inside image captions in <p> but we do (cause we have to).
  * Let's make those <p> looks like they are not there by proper CSS styling.
  */
