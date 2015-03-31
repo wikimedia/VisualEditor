@@ -116,6 +116,7 @@
 	"visualeditor-table-insert-row-before": "Oben einfügen",
 	"visualeditor-table-insert-table": "Tabelle",
 	"visualeditor-table-merge-cells": "Zellen zusammenführen",
+	"visualeditor-tablecell-tooltip": "Doppelklick zum Bearbeiten der Zelle",
 	"visualeditor-toolbar-format-tooltip": "Absatz formatieren",
 	"visualeditor-toolbar-history": "Verlauf",
 	"visualeditor-toolbar-insert": "Einfügen",

@@ -108,6 +108,7 @@
 	"visualeditor-table-format-header": "Celda de encabezado",
 	"visualeditor-table-insert-col-after": "Insertar después",
 	"visualeditor-table-insert-table": "Tabla",
+	"visualeditor-tablecell-tooltip": "Doble clic para editar la celda",
 	"visualeditor-toolbar-format-tooltip": "Formato de párrafo",
 	"visualeditor-toolbar-history": "Historial",
 	"visualeditor-toolbar-insert": "Insertar",
