@@ -252,7 +252,7 @@ ve.ui.MediaSizeWidget.prototype.onScaleChange = function () {
  * @fires changeSizeType
  */
 ve.ui.MediaSizeWidget.prototype.onSizeTypeChoose = function ( item ) {
-	var selectedType = item && item.getData(),
+	var selectedType = item.getData(),
 		wasDefault = this.scalable.isDefault();
 
 	this.scalable.toggleDefault( selectedType === 'default' );
