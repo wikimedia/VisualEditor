@@ -811,6 +811,40 @@ ve.resolveUrl = function ( url, base ) {
 };
 
 /**
+ * Check if a string is a valid URI component.
+ *
+ * A URI component is considered invalid if decodeURIComponent() throws an exception.
+ *
+ * @param {string} s String to test
+ * @return {boolean} decodeURIComponent( s ) did not throw an exception
+ * @see #safeDecodeURIComponent
+ */
+ve.isUriComponentValid = function ( s ) {
+	try {
+		decodeURIComponent( s );
+	} catch ( e ) {
+		return false;
+	}
+	return true;
+};
+
+/**
+ * Safe version of decodeURIComponent() that doesn't throw exceptions.
+ *
+ * If the native decodeURIComponent() call threw an exception, the original string
+ * will be returned
+ * @param {string} s String to decode
+ * @return {string} Decoded string, or same string if decoding failed
+ * @see #isUriComponentValid
+ */
+ve.safeDecodeURIComponent = function ( s ) {
+	try {
+		s = decodeURIComponent( s );
+	} catch ( e ) {}
+	return s;
+};
+
+/**
  * Get the actual inner HTML of a DOM node.
  *
  * In most browsers, .innerHTML is broken and eats newlines in `<pre>` elements, see
