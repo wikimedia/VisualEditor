@@ -1053,13 +1053,16 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 				range: new ve.Range( 1 ),
 				documentHtml: '<p></p>',
 				pasteHtml: '<blockquote><div rel="ve:Alien"><p>Foo</p><div><br></div></div></blockquote>',
+				expectedOps: [],
 				expectedRange: new ve.Range( 1 ),
-				msg: 'Pasting block content that is fully stripped does not crash'
+				msg: 'Pasting block content that is fully stripped does nothing'
 			}
 		];
 
 	for ( i = 0; i < cases.length; i++ ) {
-		expected++;
+		if ( cases[i].expectedOps ) {
+			expected++;
+		}
 		if ( cases[i].expectedRange ) {
 			expected++;
 		}
@@ -1091,26 +1094,25 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 		view.afterPaste();
 
 		if ( expectedOps ) {
-			txs = model.getHistory()[0].transactions;
 			ops = [];
-			for ( i = 0; i < txs.length; i++ ) {
-				txops = txs[i].getOperations();
-				for ( j = 0; j < txops.length; j++ ) {
-					if ( txops[j].remove ) {
-						ve.dm.example.postprocessAnnotations( txops[j].remove, doc.getStore() );
-						ve.dm.example.removeOriginalDomElements( txops[j].remove );
+			if ( model.getHistory().length ) {
+				txs = model.getHistory()[0].transactions;
+				for ( i = 0; i < txs.length; i++ ) {
+					txops = txs[i].getOperations();
+					for ( j = 0; j < txops.length; j++ ) {
+						if ( txops[j].remove ) {
+							ve.dm.example.postprocessAnnotations( txops[j].remove, doc.getStore() );
+							ve.dm.example.removeOriginalDomElements( txops[j].remove );
+						}
+						if ( txops[j].insert ) {
+							ve.dm.example.postprocessAnnotations( txops[j].insert, doc.getStore() );
+							ve.dm.example.removeOriginalDomElements( txops[j].insert );
+						}
 					}
-					if ( txops[j].insert ) {
-						ve.dm.example.postprocessAnnotations( txops[j].insert, doc.getStore() );
-						ve.dm.example.removeOriginalDomElements( txops[j].insert );
-					}
+					ops.push( txops );
 				}
-				ops.push( txops );
-
 			}
 			assert.deepEqual( ops, expectedOps, msg + ': operations' );
-		} else {
-			assert.strictEqual( model.getHistory().length, 0, msg + ': no operations' );
 		}
 		if ( expectedRange ) {
 			assert.equalRange( model.getSelection().getRange(), expectedRange, msg +  ': range' );
