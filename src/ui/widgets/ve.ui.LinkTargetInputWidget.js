@@ -16,7 +16,10 @@
 ve.ui.LinkTargetInputWidget = function VeUiLinkTargetInputWidget( config ) {
 	// Parent constructor
 	OO.ui.TextInputWidget.call( this, $.extend( {
-		validate: /^(https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?/gi
+		validate: /^(https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?/gi,
+		inputFilter: function ( target ) {
+			return target.trim();
+		}
 	}, config ) );
 
 	// Properties
