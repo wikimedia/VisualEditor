@@ -12,7 +12,6 @@
  */
 ve.dm.Transaction = function VeDmTransaction( doc ) {
 	this.operations = [];
-	this.lengthDifference = 0;
 	this.applied = false;
 	this.doc = doc;
 };
@@ -752,7 +751,6 @@ ve.dm.Transaction.reversers = {
 ve.dm.Transaction.prototype.clone = function () {
 	var tx = new this.constructor();
 	tx.operations = ve.copy( this.operations );
-	tx.lengthDifference = this.lengthDifference;
 	return tx;
 };
 
@@ -780,7 +778,6 @@ ve.dm.Transaction.prototype.reversed = function () {
 		}
 		tx.operations.push( newOp );
 	}
-	tx.lengthDifference = -this.lengthDifference;
 	return tx;
 };
 
@@ -870,16 +867,6 @@ ve.dm.Transaction.prototype.hasElementAttributeOperations = function () {
  */
 ve.dm.Transaction.prototype.hasAnnotationOperations = function () {
 	return this.hasOperationWithType( 'annotate' );
-};
-
-/**
- * Get the difference in content length the transaction will cause if applied.
- *
- * @method
- * @returns {number} Difference in content length
- */
-ve.dm.Transaction.prototype.getLengthDifference = function () {
-	return this.lengthDifference;
 };
 
 /**
@@ -1167,7 +1154,6 @@ ve.dm.Transaction.prototype.pushReplaceInternal = function ( remove, insert, rem
 		op.insertedDataLength = insertedDataLength;
 	}
 	this.operations.push( op );
-	this.lengthDifference += insert.length - remove.length;
 };
 
 /**
@@ -1256,7 +1242,6 @@ ve.dm.Transaction.prototype.pushReplace = function ( doc, offset, removeLength, 
 		!( mergedMetadata.length > 0 && insertMetadata !== undefined && !isInsertEmpty )
 	) {
 		lastOp = this.operations.pop();
-		this.lengthDifference -= lastOp.insert.length - lastOp.remove.length;
 		this.pushReplace(
 			doc,
 			offset - lastOp.remove.length,
@@ -1284,7 +1269,6 @@ ve.dm.Transaction.prototype.pushReplace = function ( doc, offset, removeLength, 
 		( insertMetadata === undefined || extraMetadata )
 	) {
 		lastOp = this.operations.pop();
-		this.lengthDifference -= lastOp.insert.length - lastOp.remove.length;
 		this.pushReplace(
 			doc,
 			offset - lastOp.remove.length,
