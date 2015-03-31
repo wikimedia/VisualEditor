@@ -1048,14 +1048,19 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 					]
 				],
 				msg: 'Start/EndFragment comments trimmed from clipboardData'
+			},
+			{
+				range: new ve.Range( 1 ),
+				documentHtml: '<p></p>',
+				pasteHtml: '<blockquote><div rel="ve:Alien"><p>Foo</p><div><br></div></div></blockquote>',
+				expectedRange: new ve.Range( 1 ),
+				msg: 'Pasting block content that is fully stripped does not crash'
 			}
 		];
 
 	for ( i = 0; i < cases.length; i++ ) {
+		expected++;
 		if ( cases[i].expectedRange ) {
-			expected++;
-		}
-		if ( cases[i].expectedOps ) {
 			expected++;
 		}
 		if ( cases[i].expectedHtml ) {
@@ -1104,6 +1109,8 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 
 			}
 			assert.deepEqual( ops, expectedOps, msg + ': operations' );
+		} else {
+			assert.strictEqual( model.getHistory().length, 0, msg + ': no operations' );
 		}
 		if ( expectedRange ) {
 			assert.equalRange( model.getSelection().getRange(), expectedRange, msg +  ': range' );
