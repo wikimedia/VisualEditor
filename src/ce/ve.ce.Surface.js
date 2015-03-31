@@ -67,6 +67,7 @@ ve.ce.Surface = function VeCeSurface( model, ui, options ) {
 	this.pasting = false;
 	this.copying = false;
 	this.pasteSpecial = false;
+	this.focusedBlockSlug = null;
 	this.focusedNode = null;
 	// This is set on entering changeModel, then unset when leaving.
 	// It is used to test whether a reflected change event is emitted.
@@ -2207,13 +2208,31 @@ ve.ce.Surface.prototype.onDocumentInput = function () {
  * @see ve.dm.Surface#method-change
  */
 ve.ce.Surface.prototype.onModelSelect = function () {
-	var focusedNode,
+	var focusedNode, blockSlug,
 		selection = this.getModel().getSelection();
 
 	this.cursorDirectionality = null;
 	this.contentBranchNodeChanged = false;
 
 	if ( selection instanceof ve.dm.LinearSelection ) {
+		blockSlug = this.findBlockSlug( selection.getRange() );
+		if ( blockSlug !== this.focusedBlockSlug ) {
+			if ( this.focusedBlockSlug ) {
+				this.focusedBlockSlug.classList.remove(
+					've-ce-branchNode-blockSlug-focused'
+				);
+				this.focusedBlockSlug = null;
+			}
+
+			if ( blockSlug ) {
+				blockSlug.classList.add( 've-ce-branchNode-blockSlug-focused' );
+				this.focusedBlockSlug = blockSlug;
+				this.$pasteTarget.text( '☢' );
+				ve.selectElement( this.$pasteTarget[0] );
+				this.$pasteTarget[0].focus();
+			}
+		}
+
 		focusedNode = this.findFocusedNode( selection.getRange() );
 
 		// If focus has changed, update nodes and this.focusedNode
@@ -2286,6 +2305,18 @@ ve.ce.Surface.prototype.getFocusedNode = function ( range ) {
 		return this.focusedNode;
 	}
 	return this.findFocusedNode( range );
+};
+
+/**
+ * Find the block slug a given range is in.
+ * @param {ve.Range} range Range to check
+ * @return {HTMLElement|null} Slug, or null if no slug or if range is not collapsed
+ */
+ve.ce.Surface.prototype.findBlockSlug = function ( range ) {
+	if ( !range.isCollapsed() ) {
+		return null;
+	}
+	return this.documentView.getDocumentNode().getSlugAtOffset( range.end );
 };
 
 /**
@@ -2846,6 +2877,33 @@ ve.ce.Surface.prototype.handleLinearArrowKey = function ( e ) {
 	this.surfaceObserver.pollOnce();
 
 	upOrDown = e.keyCode === OO.ui.Keys.UP || e.keyCode === OO.ui.Keys.DOWN;
+
+	if ( this.focusedBlockSlug ) {
+		// Block level selection, so directionality is just css directionality
+		if ( upOrDown ) {
+			direction = e.keyCode === OO.ui.Keys.DOWN ? 1 : -1;
+		} else {
+			directionality = $( this.focusedBlockSlug ).css( 'direction' );
+			/*jshint bitwise:false */
+			if ( e.keyCode === OO.ui.Keys.LEFT ^ directionality === 'rtl' ) {
+				// leftarrow in ltr, or rightarrow in rtl
+				direction = -1;
+			} else {
+				// leftarrow in rtl, or rightarrow in ltr
+				direction = 1;
+			}
+		}
+		range = this.model.getDocument().getRelativeRange(
+			range,
+			direction,
+			'character',
+			e.shiftKey,
+			this.getActiveTableNode() ? this.getActiveTableNode().getEditingRange() : null
+		);
+		this.model.setLinearSelection( range );
+		e.preventDefault();
+		return;
+	}
 
 	if ( this.focusedNode ) {
 		if ( upOrDown ) {
@@ -3474,7 +3532,11 @@ ve.ce.Surface.prototype.showSelection = function ( selection ) {
 		return;
 	}
 
-	if ( !( selection instanceof ve.dm.LinearSelection ) || this.focusedNode ) {
+	if (
+		!( selection instanceof ve.dm.LinearSelection ) ||
+		this.focusedNode ||
+		this.focusedBlockSlug
+	) {
 		return;
 	}
 
