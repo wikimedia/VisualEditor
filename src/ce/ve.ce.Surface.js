@@ -2413,6 +2413,9 @@ ve.ce.Surface.prototype.onSurfaceObserverBranchNodeChange = function ( oldBranch
 	if ( oldBranchNode instanceof ve.ce.ContentBranchNode ) {
 		oldBranchNode.renderContents();
 	}
+	// Re-apply selection in case the branch node change left us at an invalid offset
+	// e.g. in the document node.
+	this.showSelection( this.getModel().getSelection() );
 };
 
 /**
