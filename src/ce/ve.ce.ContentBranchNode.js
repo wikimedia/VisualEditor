@@ -145,7 +145,7 @@ ve.ce.ContentBranchNode.prototype.onSplice = function ( index, howmany ) {
 };
 
 /** @inheritdoc */
-ve.ce.ContentBranchNode.prototype.setupSlugs = function () {
+ve.ce.ContentBranchNode.prototype.setupBlockSlugs = function () {
 	// Respect render lock
 	if (
 		this.root instanceof ve.ce.DocumentNode &&
@@ -153,7 +153,7 @@ ve.ce.ContentBranchNode.prototype.setupSlugs = function () {
 	) {
 		return;
 	}
-	ve.ce.BranchNode.prototype.setupSlugs.apply( this, arguments );
+	ve.ce.BranchNode.prototype.setupBlockSlugs.apply( this, arguments );
 };
 
 /**
@@ -408,7 +408,7 @@ ve.ce.ContentBranchNode.prototype.renderContents = function () {
 	this.hasCursor = null;
 
 	// Add slugs
-	this.setupSlugs();
+	this.setupInlineSlugs();
 
 	// Highlight the node in debug mode
 	if ( ve.debug ) {
