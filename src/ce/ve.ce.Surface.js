@@ -1320,7 +1320,7 @@ ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
 			dmFocus = dmSelection.getRange().end;
 			ceNode = this.documentView.getBranchNodeFromOffset( dmFocus );
 			if ( ceNode && ceNode.getModel().hasSlugAtOffset( dmFocus ) ) {
-				ceNode.setupSlugs();
+				ceNode.setupBlockSlugs();
 			}
 		}
 		return;

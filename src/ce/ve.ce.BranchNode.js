@@ -219,7 +219,27 @@ ve.ce.BranchNode.prototype.onSplice = function ( index ) {
 		}
 	}
 
-	this.setupSlugs();
+	this.setupBlockSlugs();
+};
+
+/**
+ * Setup block slugs
+ */
+ve.ce.BranchNode.prototype.setupBlockSlugs = function () {
+	// Only proceed if we are in a non-content node
+	if ( this.canHaveChildrenNotContent() ) {
+		this.setupSlugs( true );
+	}
+};
+
+/**
+ * Setup inline slugs
+ */
+ve.ce.BranchNode.prototype.setupInlineSlugs = function () {
+	// Only proceed if we are in a content node
+	if ( !this.canHaveChildrenNotContent() ) {
+		this.setupSlugs( false );
+	}
 };
 
 /**
@@ -227,11 +247,10 @@ ve.ce.BranchNode.prototype.onSplice = function ( index ) {
  *
  * Existing slugs will be removed before new ones are added.
  *
- * @method
+ * @param {boolean} isBlock Set up block slugs, otherwise setup inline slugs
  */
-ve.ce.BranchNode.prototype.setupSlugs = function () {
+ve.ce.BranchNode.prototype.setupSlugs = function ( isBlock ) {
 	var i, slugTemplate, slugNode, child, slugButton,
-		isBlock = this.canHaveChildrenNotContent(),
 		doc = this.getElementDocument();
 
 	// Remove all slugs in this branch

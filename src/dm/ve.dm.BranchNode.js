@@ -145,7 +145,7 @@ ve.dm.BranchNode.prototype.splice = function () {
 	}
 
 	this.adjustLength( diff, true );
-	this.setupSlugs();
+	this.setupBlockSlugs();
 	this.emit.apply( this, ['splice'].concat( args ) );
 
 	return removals;
@@ -154,7 +154,7 @@ ve.dm.BranchNode.prototype.splice = function () {
 /**
  * Setup a sparse array of booleans indicating where to place slugs
  */
-ve.dm.BranchNode.prototype.setupSlugs = function () {
+ve.dm.BranchNode.prototype.setupBlockSlugs = function () {
 	var i, len,
 		isBlock = this.canHaveChildrenNotContent();
 
