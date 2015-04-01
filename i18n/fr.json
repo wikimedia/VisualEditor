@@ -141,6 +141,7 @@
 	"visualeditor-table-insert-row-before": "Insérer au-dessus",
 	"visualeditor-table-insert-table": "Tableau",
 	"visualeditor-table-merge-cells": "Fusionner les cellules",
+	"visualeditor-tablecell-tooltip": "Double-cliquez pour modifier la cellule",
 	"visualeditor-toolbar-format-tooltip": "Mise en forme du paragraphe",
 	"visualeditor-toolbar-history": "Historique",
 	"visualeditor-toolbar-insert": "Insérer",
