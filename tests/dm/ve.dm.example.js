@@ -2039,7 +2039,8 @@ ve.dm.example.domToDataCases = {
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
-		]
+		],
+		fromDataBody: '<p>   <i>Foo</i>       </p>'
 	},
 	'outer whitespace preservation in a list with bare text and a wrapper paragraph': {
 		body: '\n<ul>\n\n<li>\n\n\nBa re\n\n\n\n</li>\n\n\n\n\n<li>\t<p>\t\tP\t\t\t</p>\t\t\t\t</li>\t\n</ul>\t\n\t\n',
@@ -2132,7 +2133,8 @@ ve.dm.example.domToDataCases = {
 			{ type: 'internalList' },
 			{ type: '/internalList' }
 		],
-		innerWhitespace: [ undefined, '   ' ]
+		innerWhitespace: [ undefined, '   ' ],
+		fromDataBody: '<p> A  B       <b>C</b>\t\t\tD\t\t\t</p>\nE\n\nF\n\n\n\n\n\n\n<b>G</b>   H   '
 	},
 	'whitespace preservation with non-edge content whitespace with nested annotations': {
 		body: '<p> A  B   <b>    C\t<i>\t\tD\t\t\t</i>\t\t\t\tE\n</b>\n\nF\n\n\n</p>',
@@ -2169,7 +2171,8 @@ ve.dm.example.domToDataCases = {
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
-		]
+		],
+		fromDataBody: '<p> A  B       <b>C\t\t\t<i>D</i>\t\t\t\t\t\t\tE</b>\n\n\nF\n\n\n</p>'
 	},
 	'whitespace preservation with tightly nested annotations': {
 		body: '<p> A  B   <b><i>\t\tC\t\t\t</i></b>\n\nD\n\n\n</p>',
@@ -2194,7 +2197,8 @@ ve.dm.example.domToDataCases = {
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
-		]
+		],
+		fromDataBody: '<p> A  B   \t\t<b><i>C</i></b>\t\t\t\n\nD\n\n\n</p>'
 	},
 	'whitespace preservation with nested annotations with whitespace on the left side': {
 		body: '<p> A  B   <b>\n\t<i>\t\tC\t\t\t</i></b>\n\nD\n\n\n</p>',
@@ -2221,7 +2225,8 @@ ve.dm.example.domToDataCases = {
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
-		]
+		],
+		fromDataBody: '<p> A  B   \n\t\t\t<b><i>C</i></b>\t\t\t\n\nD\n\n\n</p>'
 	},
 	'whitespace preservation with nested annotations with whitespace on the right side': {
 		body: '<p> A  B   <b><i>\t\tC\t\t\t</i>\n\t</b>\n\nD\n\n\n</p>',
@@ -2248,7 +2253,8 @@ ve.dm.example.domToDataCases = {
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
-		]
+		],
+		fromDataBody: '<p> A  B   \t\t<b><i>C</i></b>\t\t\t\n\t\n\nD\n\n\n</p>'
 	},
 	'whitespace preservation with aliens': {
 		body: ' <div rel="ve:Alien">  <br>   </div>    <p>\tFoo\t\t<foobar>\t\t\tBar\t\t\t\t</foobar>\nBaz\n\n<foobar>\n\n\nQuux\n\n\n\n</foobar> \tWhee \n</p>\t\n<div rel="ve:Alien">\n\tYay \t </div> \n ',
@@ -2761,6 +2767,28 @@ ve.dm.example.domToDataCases = {
 		innerWhitespace: [ '\t', '\n' ],
 		normalizedBody: '<ul><li><p>\tA\n</p>  <p>B</p></li><li></li></ul>'
 	},
+	'whitespace is trimmed from the edges of annotations when serializing': {
+		body: '<p>A <b> B <i> C\t</i> </b><u>\nD\t</u></p>',
+		data: [
+			{ type: 'paragraph' },
+			'A',
+			' ',
+			[ ' ', [ve.dm.example.bold] ],
+			[ 'B', [ve.dm.example.bold] ],
+			[ ' ', [ve.dm.example.bold] ],
+			[ ' ', [ve.dm.example.bold, ve.dm.example.italic] ],
+			[ 'C', [ve.dm.example.bold, ve.dm.example.italic] ],
+			[ '\t', [ve.dm.example.bold, ve.dm.example.italic] ],
+			[ ' ', [ve.dm.example.bold] ],
+			[ '\n', [ve.dm.example.underline] ],
+			[ 'D', [ve.dm.example.underline] ],
+			[ '\t', [ve.dm.example.underline] ],
+			{ type: '/paragraph' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
+		],
+		fromDataBody: '<p>A  <b>B  <i>C</i></b>\t \n<u>D</u>\t</p>'
+	},
 	'order of nested annotations is preserved': {
 		body: '<p><b><u><i>Foo</i></u></b></p>',
 		data: [
@@ -2892,7 +2920,8 @@ ve.dm.example.domToDataCases = {
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
-		]
+		],
+		fromDataBody: '\n<span><p>Bar</p></span>'
 	},
 	'block node inside annotation node surrounded by tables': {
 		body: '<table></table><span>\n<p>Bar</p></span><table></table>',
@@ -2912,7 +2941,8 @@ ve.dm.example.domToDataCases = {
 			{ type: '/table' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
-		]
+		],
+		fromDataBody: '<table></table>\n<span><p>Bar</p></span><table></table>'
 	},
 	'block node inside annotation node is alienated and continues wrapping': {
 		body: 'Foo<span>\n<p>Bar</p></span>Baz',
@@ -2934,7 +2964,8 @@ ve.dm.example.domToDataCases = {
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
-		]
+		],
+		fromDataBody: 'Foo\n<span><p>Bar</p></span>Baz'
 	},
 	'whitespace before meta node in wrapping mode': {
 		body: '<table><tbody><tr><td>Foo\n<meta content="bar" /></td></tr></tbody></table>',
