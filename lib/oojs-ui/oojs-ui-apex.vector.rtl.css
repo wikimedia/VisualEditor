@@ -1,12 +1,12 @@
 /*!
- * OOjs UI v0.9.4
+ * OOjs UI v0.9.7
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2015 OOjs Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2015-03-25T22:24:23Z
+ * Date: 2015-04-03T21:01:34Z
  */
 .oo-ui-progressBarWidget-slide-frames from {
 	margin-right: -40%;
@@ -116,10 +116,10 @@
 .oo-ui-buttonElement > .oo-ui-buttonElement-button {
 	color: #333333;
 }
-.oo-ui-buttonElement > .oo-ui-buttonElement-button > .oo-ui-iconElement-icon {
+.oo-ui-buttonElement.oo-ui-iconElement > .oo-ui-buttonElement-button > .oo-ui-iconElement-icon {
 	margin-right: 0;
 }
-.oo-ui-buttonElement > .oo-ui-buttonElement-button > .oo-ui-indicatorElement-indicator {
+.oo-ui-buttonElement.oo-ui-indicatorElement > .oo-ui-buttonElement-button > .oo-ui-indicatorElement-indicator {
 	width: 0.9375em;
 	height: 0.9375em;
 	margin: 0.46875em;
@@ -1152,6 +1152,10 @@
 	width: 0.9375em;
 	left: 0.5em;
 }
+.oo-ui-decoratedOptionWidget.oo-ui-widget-disabled .oo-ui-iconElement-icon,
+.oo-ui-decoratedOptionWidget.oo-ui-widget-disabled .oo-ui-indicatorElement-indicator {
+	opacity: 0.2;
+}
 .oo-ui-buttonSelectWidget {
 	display: inline-block;
 	white-space: nowrap;
@@ -1579,8 +1583,8 @@
 .oo-ui-dropdownInputWidget select {
 	height: 2.5em;
 	padding: 0.5em;
-	font-size: 1em;
-	font-family: sans-serif;
+	font-size: inherit;
+	font-family: inherit;
 	border: 1px solid rgba(0, 0, 0, 0.1);
 	border-radius: 0.25em;
 }
@@ -1656,8 +1660,8 @@
 .oo-ui-textInputWidget input,
 .oo-ui-textInputWidget textarea {
 	padding: 0.5em;
-	font-size: 1em;
-	font-family: sans-serif;
+	font-size: inherit;
+	font-family: inherit;
 	background-color: #ffffff;
 	color: black;
 	border: 1px solid #cccccc;
@@ -2005,10 +2009,8 @@
 	line-height: 0;
 }
 .oo-ui-window {
-	line-height: 1em;
 	background-color: transparent;
 	background-image: none;
-	font-family: sans-serif;
 	font-size: 0.8em;
 }
 .oo-ui-window-frame {
@@ -2435,7 +2437,13 @@
 	background-image: /* @embed */ url(themes/apex/images/icons/expand.svg);
 }
 .oo-ui-icon-help {
-	background-image: /* @embed */ url(themes/apex/images/icons/help.svg);
+	background-image: /* @embed */ url(themes/apex/images/icons/help-rtl.svg);
+}
+.oo-ui-icon-help:lang(he) {
+	background-image: /* @embed */ url(themes/apex/images/icons/help-ltr.svg);
+}
+.oo-ui-icon-help:lang(yi) {
+	background-image: /* @embed */ url(themes/apex/images/icons/help-ltr.svg);
 }
 .oo-ui-icon-info {
 	background-image: /* @embed */ url(themes/apex/images/icons/info.svg);
@@ -2473,6 +2481,7 @@
 .oo-ui-icon-window {
 	background-image: /* @embed */ url(themes/apex/images/icons/window.svg);
 }
+
 .oo-ui-indicator-alert {
 	background-image: /* @embed */ url(themes/apex/images/indicators/alert.svg);
 }
@@ -2491,8 +2500,9 @@
 .oo-ui-indicator-required {
 	background-image: /* @embed */ url(themes/apex/images/indicators/required.svg);
 }
+
 .oo-ui-texture-pending {
-	background-image: /* @embed */ url(themes/apex/images/textures/pending.svg);
+	background-image: /* @embed */ url(themes/apex/images/textures/pending.gif);
 }
 .oo-ui-texture-transparency {
 	background-image: /* @embed */ url(themes/apex/images/textures/transparency.svg);

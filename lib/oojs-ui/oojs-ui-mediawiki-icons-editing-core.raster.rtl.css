@@ -1,12 +1,12 @@
 /*!
- * OOjs UI v0.9.4
+ * OOjs UI v0.9.7
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2015 OOjs Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2015-03-25T22:24:23Z
+ * Date: 2015-04-03T21:01:34Z
  */
 .oo-ui-icon-edit {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/edit-rtl.png);
@@ -19,4 +19,10 @@
 }
 .oo-ui-icon-link {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/link-rtl.png);
+}
+.oo-ui-icon-linkExternal {
+	background-image: /* @embed */ url(themes/mediawiki/images/icons/external-link-rtl.png);
+}
+.oo-ui-icon-linkSecure {
+	background-image: /* @embed */ url(themes/mediawiki/images/icons/secure-link.png);
 }
