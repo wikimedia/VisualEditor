@@ -14,7 +14,8 @@
 			"Woytecr",
 			"Wpedzich",
 			"Matik7",
-			"Rezonansowy"
+			"Rezonansowy",
+			"Openbk"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -121,7 +122,7 @@
 	"visualeditor-table-insert-row-before": "Wstaw powyżej",
 	"visualeditor-table-insert-table": "Tabela",
 	"visualeditor-table-merge-cells": "Scal komórki",
-	"visualeditor-tablecell-tooltip": "Kliknij dwukrotnie, alby edytować komórkę tabeli",
+	"visualeditor-tablecell-tooltip": "Kliknij dwukrotnie, aby edytować komórkę tabeli",
 	"visualeditor-toolbar-format-tooltip": "Formatowanie akapitu",
 	"visualeditor-toolbar-history": "Historia",
 	"visualeditor-toolbar-insert": "Wstaw",
