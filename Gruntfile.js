@@ -9,6 +9,7 @@ module.exports = function ( grunt ) {
 	grunt.loadNpmTasks( 'grunt-banana-checker' );
 	grunt.loadNpmTasks( 'grunt-contrib-clean' );
 	grunt.loadNpmTasks( 'grunt-contrib-concat' );
+	grunt.loadNpmTasks( 'grunt-contrib-copy' );
 	grunt.loadNpmTasks( 'grunt-contrib-csslint' );
 	grunt.loadNpmTasks( 'grunt-contrib-jshint' );
 	grunt.loadNpmTasks( 'grunt-contrib-watch' );
@@ -79,7 +80,8 @@ module.exports = function ( grunt ) {
 		copy: {
 			i18n: {
 				src: 'i18n/*.json',
-				dest: 'dist/'
+				dest: 'dist/',
+				expand: true
 			}
 		},
 		buildloader: {
