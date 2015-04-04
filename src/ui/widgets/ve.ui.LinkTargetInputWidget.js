@@ -16,10 +16,7 @@
 ve.ui.LinkTargetInputWidget = function VeUiLinkTargetInputWidget( config ) {
 	// Parent constructor
 	OO.ui.TextInputWidget.call( this, $.extend( {
-		validate: /^(https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?/gi,
-		inputFilter: function ( target ) {
-			return target.trim();
-		}
+		validate: /^(https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?/gi
 	}, config ) );
 
 	// Properties
@@ -64,7 +61,7 @@ ve.ui.LinkTargetInputWidget.prototype.onEdit = function () {
 				// If URL is external, flip to LTR. Otherwise, set back to RTL
 				widget.setRTL( !isExt );
 			}
-			widget.setValue( widget.$input.val() );
+			widget.setValue( widget.$input.val(), true );
 		} );
 	}
 };
@@ -76,8 +73,9 @@ ve.ui.LinkTargetInputWidget.prototype.onEdit = function () {
  *
  * @method
  * @param {string} value New value
+ * @param {boolean} [fromInput] Value was generated from input element
  */
-ve.ui.LinkTargetInputWidget.prototype.setValue = function ( value ) {
+ve.ui.LinkTargetInputWidget.prototype.setValue = function ( value, fromInput ) {
 	// Keep annotation in sync with value
 	value = this.cleanUpValue( value );
 	if ( value === '' ) {
@@ -86,9 +84,9 @@ ve.ui.LinkTargetInputWidget.prototype.setValue = function ( value ) {
 		this.setAnnotation( new ve.dm.LinkAnnotation( {
 			type: 'link',
 			attributes: {
-				href: value
+				href: value.trim()
 			}
-		} ) );
+		} ), fromInput );
 	}
 
 	// Parent method
@@ -102,15 +100,20 @@ ve.ui.LinkTargetInputWidget.prototype.setValue = function ( value ) {
  *
  * @method
  * @param {ve.dm.LinkAnnotation} annotation Link annotation
+ * @param {boolean} [fromInput] Annotation was generated from input element value
  * @chainable
  */
-ve.ui.LinkTargetInputWidget.prototype.setAnnotation = function ( annotation ) {
+ve.ui.LinkTargetInputWidget.prototype.setAnnotation = function ( annotation, fromInput ) {
 	this.annotation = annotation;
 
-	// Parent method
-	OO.ui.TextInputWidget.prototype.setValue.call(
-		this, this.getTargetFromAnnotation( annotation )
-	);
+	// If this method was triggered by the user typing into the input, don't update
+	// the input element to avoid the cursor jumping as the user types
+	if ( !fromInput ) {
+		// Parent method
+		OO.ui.TextInputWidget.prototype.setValue.call(
+			this, this.getTargetFromAnnotation( annotation )
+		);
+	}
 
 	return this;
 };
