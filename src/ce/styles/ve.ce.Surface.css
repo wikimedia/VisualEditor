@@ -84,3 +84,14 @@
 .ve-ce-surface .thumbcaption .ve-ce-branchNode-slug {
 	display: none;
 }
+
+.ve-ce-cursorHolder {
+	position: absolute;
+	width: 0;
+	height: 0;
+}
+
+.ve-ce-cursorHolder-img {
+	width: 0;
+	height: 0;
+}
