@@ -205,8 +205,8 @@ module.exports = function ( grunt ) {
 				},
 				reporters: [ 'dots', 'coverage' ],
 				coverageReporter: { reporters: [
-					{ type: 'html', dir: 'test-coverage/visualeditor' },
-					{ type: 'text-summary', dir: 'test-coverage/visualeditor' }
+					{ type: 'html', dir: 'coverage/' },
+					{ type: 'text-summary', dir: 'coverage/' }
 				] }
 			},
 			others: {
