@@ -8,11 +8,13 @@
 			"Palnatoke",
 			"Simeondahl",
 			"Tehnix",
-			"Sarrus"
+			"Sarrus",
+			"Jhertel"
 		]
 	},
 	"visualeditor": "VisualEditor",
 	"visualeditor-aliennode-tooltip": "Desværre, kan dette element kun redigeres i kildetilstand lige nu.",
+	"visualeditor-align-widget-center": "Centreret",
 	"visualeditor-annotationbutton-bold-tooltip": "Fed",
 	"visualeditor-annotationbutton-code-tooltip": "Computer kode",
 	"visualeditor-annotationbutton-italic-tooltip": "Kursiv",
@@ -81,7 +83,7 @@
 	"visualeditor-shortcuts-text-style": "Tekststil",
 	"visualeditor-specialcharacter-button-tooltip": "Specialtegn",
 	"visualeditor-specialcharacterinspector-title": "Specialtegn",
-	"visualeditor-toolbar-format-tooltip": "Formater afsnit",
+	"visualeditor-toolbar-format-tooltip": "Formatér afsnit",
 	"visualeditor-toolbar-history": "Historik",
 	"visualeditor-toolbar-insert": "Indsæt",
 	"visualeditor-toolbar-paragraph-format": "Formatering",
