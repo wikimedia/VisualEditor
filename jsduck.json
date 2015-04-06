@@ -1,5 +1,6 @@
 {
-	"--title": "VisualEditor Code Documentation",
+	"--title": "VisualEditor - Documentation",
+	"--output": "docs",
 	"--categories": ".jsduck/categories.json",
 	"--eg-iframe": ".jsduck/eg-iframe.html",
 	"--tags": ".jsduck/CustomTags.rb",
@@ -8,7 +9,6 @@
 	"--processes": "0",
 	"--warnings-exit-nonzero": true,
 	"--external": "HTMLDocument,Window,Node,Set,Range,Selection,ClientRect,File,Blob,DataTransfer,DataTransferItem,KeyboardEvent,MouseEvent",
-	"--output": "docs",
 	"--": [
 		".jsduck/external.js",
 		"lib/oojs",

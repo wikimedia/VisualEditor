@@ -4,7 +4,8 @@
   "description": "Stand-alone contentEditable-based rich Web editor.",
   "scripts": {
     "test": "grunt test",
-    "prepublish": "grunt build"
+    "prepublish": "grunt build",
+    "doc": "jsduck"
   },
   "homepage": "https://www.mediawiki.org/wiki/VisualEditor",
   "repository": {
