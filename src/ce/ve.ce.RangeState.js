@@ -85,7 +85,7 @@ ve.ce.RangeState.static.compareSelections = function ( a, b ) {
 	return a.focusNode === b.focusNode &&
 		a.focusOffset === b.focusOffset &&
 		a.anchorNode === b.anchorNode &&
-		a.anchorOffset === a.anchorOffset;
+		a.anchorOffset === b.anchorOffset;
 };
 
 /* Methods */

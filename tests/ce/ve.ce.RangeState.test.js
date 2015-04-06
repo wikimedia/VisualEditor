@@ -65,6 +65,24 @@ QUnit.test( 'Basic tests', function ( assert ) {
 				}
 			},
 			{
+				msg: 'Selection changing anchor node only',
+				range: {
+					startNode: doc.children[4].$element[0],
+					startOffset: 1,
+					endNode: doc.children[4].$element[0],
+					endOffset: 1
+				},
+				expected: {
+					branchNodeChanged: false,
+					contentChanged: false,
+					hash: '<P>#</P>',
+					node: doc.children[4],
+					selectionChanged: true,
+					text: 'l',
+					veRange: new ve.Range( 57, 57 )
+				}
+			},
+			{
 				msg: 'From paragraph back to null state',
 				expected: {
 					branchNodeChanged: true,
