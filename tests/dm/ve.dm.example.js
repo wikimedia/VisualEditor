@@ -131,6 +131,10 @@ ve.dm.example.span = { type: 'textStyle/span', attributes: { nodeName: 'span' } 
 ve.dm.example.big = { type: 'textStyle/big', attributes: { nodeName: 'big' } };
 ve.dm.example.code = { type: 'textStyle/code', attributes: { nodeName: 'code' } };
 ve.dm.example.tt = { type: 'textStyle/code', attributes: { nodeName: 'tt' } };
+ve.dm.example.strong = { type: 'textStyle/bold', attributes: { nodeName: 'strong' } };
+ve.dm.example.link = function ( href ) {
+	return { type: 'link', attributes: { href: href } };
+};
 
 /**
  * Creates a document from example data.
@@ -1834,6 +1838,43 @@ ve.dm.example.domToDataCases = {
 			{ type: '/internalList' }
 		]
 	},
+	'adjacent identical annotations': {
+		body:
+			'<p><b>Foo</b><b>bar</b><strong>baz</strong></p>' +
+			'<p><a href="quux">Foo</a><a href="quux">bar</a><a href="whee">baz</a></p>',
+		data: [
+			{ type: 'paragraph' },
+			[ 'F', [ ve.dm.example.bold ] ],
+			[ 'o', [ ve.dm.example.bold ] ],
+			[ 'o', [ ve.dm.example.bold ] ],
+			[ 'b', [ ve.dm.example.bold ] ],
+			[ 'a', [ ve.dm.example.bold ] ],
+			[ 'r', [ ve.dm.example.bold ] ],
+			[ 'b', [ ve.dm.example.strong ] ],
+			[ 'a', [ ve.dm.example.strong ] ],
+			[ 'z', [ ve.dm.example.strong ] ],
+			{ type: '/paragraph' },
+			{ type: 'paragraph' },
+			[ 'F', [ ve.dm.example.link( 'quux' ) ] ],
+			[ 'o', [ ve.dm.example.link( 'quux' ) ] ],
+			[ 'o', [ ve.dm.example.link( 'quux' ) ] ],
+			[ 'b', [ ve.dm.example.link( 'quux' ) ] ],
+			[ 'a', [ ve.dm.example.link( 'quux' ) ] ],
+			[ 'r', [ ve.dm.example.link( 'quux' ) ] ],
+			[ 'b', [ ve.dm.example.link( 'whee' ) ] ],
+			[ 'a', [ ve.dm.example.link( 'whee' ) ] ],
+			[ 'z', [ ve.dm.example.link( 'whee' ) ] ],
+			{ type: '/paragraph' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
+		],
+		normalizedBody:
+			'<p><b>Foobar</b><strong>baz</strong></p>' +
+			'<p><a href="quux">Foobar</a><a href="whee">baz</a></p>',
+		fromDataBody:
+			'<p><b>Foobarbaz</b></p>' +
+			'<p><a href="quux">Foobar</a><a href="whee">baz</a></p>'
+	},
 	'list item with space followed by link': {
 		body: '<ul><li><p> <a href="Foobar">bar</a></p></li></ul>',
 		head: '<base href="http://example.com/Foo" />',
@@ -1841,33 +1882,9 @@ ve.dm.example.domToDataCases = {
 			{ type: 'list', attributes: { style: 'bullet' } },
 			{ type: 'listItem' },
 			{ type: 'paragraph', internal: { whitespace: [ undefined, ' ' ] } },
-			[
-				'b',
-				[ {
-					type: 'link',
-					attributes: {
-						href: 'Foobar'
-					}
-				} ]
-			],
-			[
-				'a',
-				[ {
-					type: 'link',
-					attributes: {
-						href: 'Foobar'
-					}
-				} ]
-			],
-			[
-				'r',
-				[ {
-					type: 'link',
-					attributes: {
-						href: 'Foobar'
-					}
-				} ]
-			],
+			[ 'b', [ ve.dm.example.link( 'Foobar' ) ] ],
+			[ 'a', [ ve.dm.example.link( 'Foobar' ) ] ],
+			[ 'r', [ ve.dm.example.link( 'Foobar' ) ] ],
 			{ type: '/paragraph' },
 			{ type: '/listItem' },
 			{ type: '/list' },
@@ -2767,86 +2784,15 @@ ve.dm.example.domToDataCases = {
 		head: '<base href="http://example.com/Bar/Baz" />',
 		data: [
 			{ type: 'paragraph' },
-			[
-				'F',
-				[
-					{
-						type: 'link',
-						attributes: {
-							href: 'Foo'
-						}
-					}
-				]
-			],
-			[
-				'o',
-				[
-					{
-						type: 'link',
-						attributes: {
-							href: 'Foo'
-						}
-					},
-					ve.dm.example.bold
-				]
-			],
-			[
-				'o',
-				[
-					{
-						type: 'link',
-						attributes: {
-							href: 'Foo'
-						}
-					},
-					ve.dm.example.bold,
-					ve.dm.example.italic
-				]
-			],
-			[
-				'b',
-				[
-					{
-						type: 'link',
-						attributes: {
-							href: 'Foo'
-						}
-					},
-					ve.dm.example.italic
-				]
-			],
-			[
-				'a',
-				[
-					ve.dm.example.italic
-				]
-			],
-			[
-				'r',
-				[
-					ve.dm.example.italic,
-					ve.dm.example.bold
-				]
-			],
-			[
-				'b',
-				[
-					ve.dm.example.italic
-				]
-			],
-			[
-				'a',
-				[
-					ve.dm.example.italic,
-					ve.dm.example.underline
-				]
-			],
-			[
-				'z',
-				[
-					ve.dm.example.italic
-				]
-			],
+			[ 'F', [ ve.dm.example.link( 'Foo' ) ] ],
+			[ 'o', [ ve.dm.example.link( 'Foo' ), ve.dm.example.bold ] ],
+			[ 'o', [ ve.dm.example.link( 'Foo' ), ve.dm.example.bold, ve.dm.example.italic ] ],
+			[ 'b', [ ve.dm.example.link( 'Foo' ), ve.dm.example.italic ] ],
+			[ 'a', [ ve.dm.example.italic ] ],
+			[ 'r', [ ve.dm.example.italic, ve.dm.example.bold ] ],
+			[ 'b', [ ve.dm.example.italic ] ],
+			[ 'a', [ ve.dm.example.italic, ve.dm.example.underline ] ],
+			[ 'z', [ ve.dm.example.italic ] ],
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
