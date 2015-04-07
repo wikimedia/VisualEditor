@@ -17,6 +17,7 @@
  * @cfg {Object[]} [tools] Toolbar configuration
  * @cfg {string[]} [excludeCommands] List of commands to exclude
  * @cfg {Object} [importRules] Import rules
+ * @cfg {string} [inDialog] The name of the dialog this surface widget is in
  */
 ve.ui.SurfaceWidget = function VeUiSurfaceWidget( doc, config ) {
 	// Config initialization
@@ -29,7 +30,8 @@ ve.ui.SurfaceWidget = function VeUiSurfaceWidget( doc, config ) {
 	this.surface = ve.init.target.createSurface( doc, {
 		$: this.$,
 		excludeCommands: config.excludeCommands,
-		importRules: config.importRules
+		importRules: config.importRules,
+		inDialog: config.inDialog
 	} );
 	this.toolbar = new ve.ui.Toolbar();
 

@@ -17,6 +17,7 @@
  * @param {Object} [config] Configuration options
  * @cfg {string[]} [excludeCommands] List of commands to exclude
  * @cfg {Object} [importRules] Import rules
+ * @cfg {string} [inDialog] The name of the dialog this surface is in
  */
 ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 	config = config || {};
@@ -30,6 +31,7 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 	OO.EventEmitter.call( this, config );
 
 	// Properties
+	this.inDialog = config.inDialog || '';
 	this.globalOverlay = new ve.ui.Overlay( { classes: ['ve-ui-overlay-global'] } );
 	this.localOverlay = new ve.ui.Overlay( { $: this.$, classes: ['ve-ui-overlay-local'] } );
 	this.$selections = this.$( '<div>' );
@@ -440,4 +442,12 @@ ve.ui.Surface.prototype.startFilibuster = function () {
 
 ve.ui.Surface.prototype.stopFilibuster = function () {
 	this.filibuster.stop();
+};
+
+/**
+ * Get the name of the dialog this surface is in
+ * @return {string} The name of the dialog this surface is in
+ */
+ve.ui.Surface.prototype.getInDialog = function () {
+	return this.inDialog;
 };
