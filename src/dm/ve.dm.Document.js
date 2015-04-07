@@ -1210,12 +1210,12 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
  *
  * @method
  * @param {string} html HTML to insert
- * @param {Object} importRules The import rules with which to sanitize the HTML
+ * @param {Object} [importRules] The import rules with which to sanitize the HTML, if importing
  * @return {ve.dm.Document} New document
  */
 ve.dm.Document.prototype.newFromHtml = function ( html, importRules ) {
 	var htmlDoc = ve.createDocumentFromHtml( html ),
-		doc = ve.dm.converter.getModelFromDom( htmlDoc, this.getHtmlDocument() ),
+		doc = ve.dm.converter.getModelFromDom( htmlDoc, this.getHtmlDocument(), !!importRules ),
 		data = doc.data;
 
 	// FIXME: This is a paste-specific thing and possibly should not be in the generic newFromHtml()

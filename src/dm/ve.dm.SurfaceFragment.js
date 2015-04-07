@@ -774,7 +774,7 @@ ve.dm.SurfaceFragment.prototype.insertContent = function ( content, annotate ) {
  *
  * @method
  * @param {string} html HTML to insert
- * @param {Object} importRules The import rules for the target surface
+ * @param {Object} [importRules] The import rules for the target surface, if importing
  * @chainable
  */
 ve.dm.SurfaceFragment.prototype.insertHtml = function ( html, importRules ) {
