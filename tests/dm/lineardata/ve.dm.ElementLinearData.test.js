@@ -337,13 +337,34 @@ QUnit.test( 'getAnnotationsFromRange', 1, function ( assert ) {
 			{
 				msg: 'no common coverage from all plain characters',
 				data: ['a', 'b'],
-				expected: {}
+				expected: []
 			},
 			{
 				msg: 'no common coverage using all from all plain characters',
 				data: ['a', 'b'],
 				all: true,
-				expected: {}
+				expected: []
+			},
+			{
+				msg: 'contents of ignoreChildren nodes are skipped',
+				data: [
+					{ type: 'exampleIgnoreChildren' },
+					['a', [ { type: 'textStyle/bold' } ] ],
+					['b', [ { type: 'textStyle/bold' } ] ],
+					{ type: '/exampleIgnoreChildren' }
+				],
+				expected: []
+			},
+			{
+				msg: 'contents of ignoreChildren nodes are skipped in all mode too',
+				data: [
+					{ type: 'exampleIgnoreChildren' },
+					['a', [ { type: 'textStyle/bold' } ] ],
+					['b', [ { type: 'textStyle/italic' } ] ],
+					{ type: '/exampleIgnoreChildren' }
+				],
+				all: true,
+				expected: []
 			}
 		];
 
