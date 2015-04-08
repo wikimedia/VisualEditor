@@ -482,11 +482,20 @@ ve.dm.ElementLinearData.prototype.getAnnotatedRangeFromSelection = function ( ra
  * @returns {ve.dm.AnnotationSet} All annotation objects range is covered by
  */
 ve.dm.ElementLinearData.prototype.getAnnotationsFromRange = function ( range, all ) {
-	var i, left, right;
+	var i, left, right, ignoreChildrenDepth = 0;
 	// Iterator over the range, looking for annotations, starting at the 2nd character
 	for ( i = range.start; i < range.end; i++ ) {
-		// Skip non-content data
-		if ( this.isElementData( i ) && !ve.dm.nodeFactory.isNodeContent( this.getType( i ) ) ) {
+		if ( this.isElementData( i ) ) {
+			if ( ve.dm.nodeFactory.shouldIgnoreChildren( this.getType( i ) ) ) {
+				ignoreChildrenDepth += this.isOpenElementData( i ) ? 1 : -1;
+			}
+			// Skip non-content data
+			if ( !ve.dm.nodeFactory.isNodeContent( this.getType( i ) ) ) {
+				continue;
+			}
+		}
+		// Ignore things inside ignoreChildren nodes
+		if ( ignoreChildrenDepth > 0 ) {
 			continue;
 		}
 		if ( !left ) {
