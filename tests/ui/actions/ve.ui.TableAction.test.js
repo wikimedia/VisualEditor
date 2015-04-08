@@ -25,7 +25,7 @@ function runTableActionTest( assert, html, method, args, selection, expectedData
 	surface.destroy();
 }
 
-QUnit.test( 'create / insert / mergeCells', function ( assert ) {
+QUnit.test( 'create / insert / mergeCells / delete', function ( assert ) {
 	var i,
 		expected = 0,
 		tableCellTail = [
@@ -332,6 +332,80 @@ QUnit.test( 'create / insert / mergeCells', function ( assert ) {
 					data.splice( 8, 15 );
 				},
 				msg: 'merge full columns'
+			},
+			{
+				html: ve.dm.example.mergedCellsHtml,
+				selection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 171 ),
+					fromCol: 0,
+					fromRow: 0,
+					toCol: 0,
+					toRow: 0
+				},
+				method: 'delete',
+				args: [ 'table' ],
+				expectedData: function ( data ) {
+					data.splice( 0, 171,
+						{ type: 'paragraph' },
+						{ type: '/paragraph' }
+					);
+				},
+				msg: 'delete whole table'
+			},
+			{
+				html: ve.dm.example.mergedCellsHtml,
+				selection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 171 ),
+					fromCol: 0,
+					fromRow: 3,
+					toCol: 0,
+					toRow: 3
+				},
+				method: 'delete',
+				args: [ 'row' ],
+				expectedData: function ( data ) {
+					data[90].attributes.rowspan = 2;
+					data[45].attributes.rowspan = 3;
+					data.splice( 110, 0,
+						{
+							type: 'tableCell',
+							attributes: {
+								colspan: 3,
+								rowspan: 2,
+								style: 'data'
+							}
+						},
+						{ type: 'paragraph', internal: { generated: 'wrapper' } },
+						'1', '6',
+						{ type: '/paragraph' },
+						{ type: '/tableCell' }
+					);
+					data.splice( 83, 20 );
+				},
+				expectedSelection: { type: 'null' },
+				msg: 'delete row'
+			},
+			{
+				html: ve.dm.example.mergedCellsHtml,
+				selection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 171 ),
+					fromCol: 3,
+					fromRow: 0,
+					toCol: 3,
+					toRow: 0
+				},
+				method: 'delete',
+				args: [ 'col' ],
+				expectedData: function ( data ) {
+					data[90].attributes.colspan = 2;
+					data.splice( 150, 6 );
+					data.splice( 18, 5 );
+				},
+				expectedSelection: { type: 'null' },
+				msg: 'delete column'
 			}
 		];
 
