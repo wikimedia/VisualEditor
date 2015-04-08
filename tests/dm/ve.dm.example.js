@@ -3021,6 +3021,21 @@ ve.dm.example.domToDataCases = {
 		],
 		normalizedBody: '<p><!--Foo&#45;&#45;&#62;b&#38;r--></p>',
 		clipboardBody: '<p><span rel="ve:Comment" data-ve-comment="Foo-->b&amp;r"></span></p>'
+	},
+	'other branch nodes': {
+		body: '<center>Foo</center><blockquote>Bar</blockquote>',
+		data: [
+			{ type: 'center' },
+			{ type: 'paragraph', internal: { generated: 'wrapper' } },
+			'F', 'o', 'o',
+			{ type: '/paragraph' },
+			{ type: '/center' },
+			{ type: 'blockquote' },
+			'B', 'a', 'r',
+			{ type: '/blockquote' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
+		]
 	}
 };
 
