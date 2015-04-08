@@ -2409,13 +2409,21 @@ ve.ce.Surface.prototype.renderSelectedContentBranchNode = function () {
  * @param {ve.ce.BranchNode} oldBranchNode Node from which the range anchor has just moved
  * @param {ve.ce.BranchNode} newBranchNode Node into which the range anchor has just moved
  */
-ve.ce.Surface.prototype.onSurfaceObserverBranchNodeChange = function ( oldBranchNode ) {
+ve.ce.Surface.prototype.onSurfaceObserverBranchNodeChange = function ( oldBranchNode, newBranchNode ) {
 	if ( oldBranchNode instanceof ve.ce.ContentBranchNode ) {
 		oldBranchNode.renderContents();
 	}
-	// Re-apply selection in case the branch node change left us at an invalid offset
-	// e.g. in the document node.
-	this.showSelection( this.getModel().getSelection() );
+	// Optimisation: if newBranchNode is null there will be nothing to fix.
+	if ( newBranchNode ) {
+		var surface = this;
+		// branchNodeChange happens before rangeChange. Deferring makes sure
+		// we don't apply the wrong selection.
+		setTimeout( function () {
+			// Re-apply selection in case the branch node change left us at an invalid offset
+			// e.g. in the document node.
+			surface.showSelection( surface.getModel().getSelection() );
+		} );
+	}
 };
 
 /**
