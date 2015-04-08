@@ -25,7 +25,7 @@ function runTableActionTest( assert, html, method, args, selection, expectedData
 	surface.destroy();
 }
 
-QUnit.test( 'create', function ( assert ) {
+QUnit.test( 'create / insert', function ( assert ) {
 	var i,
 		expected = 0,
 		tableCellTail = [
@@ -71,13 +71,13 @@ QUnit.test( 'create', function ( assert ) {
 							{ type: 'table', attributes: { sortable: true } },
 							{ type: 'tableSection', attributes: { style: 'body' } },
 							{ type: 'tableRow' }
-						]
-						.concat( tableData )
-						.concat( [
+						],
+						tableData,
+						[
 							{ type: '/tableRow' },
 							{ type: '/tableSection' },
 							{ type: '/table' }
-						] )
+						]
 					) );
 				},
 				expectedSelection: {
@@ -107,32 +107,144 @@ QUnit.test( 'create', function ( assert ) {
 							{ type: 'table' },
 							{ type: 'tableSection', attributes: { style: 'body' } },
 							{ type: 'tableRow' }
-						]
-						.concat( tableHeader )
-						.concat( tableHeader )
-						.concat( tableHeader )
-						.concat( [
+						],
+						tableHeader,
+						tableHeader,
+						tableHeader,
+						[
 							{ type: '/tableRow' },
 							{ type: 'tableRow' }
-						] )
-						.concat( tableData )
-						.concat( tableData )
-						.concat( tableData )
-						.concat( [
+						],
+						tableData,
+						tableData,
+						tableData,
+						[
 							{ type: '/tableRow' },
 							{ type: 'tableRow' }
-						] )
-						.concat( tableData )
-						.concat( tableData )
-						.concat( tableData )
-						.concat( [
+						],
+						tableData,
+						tableData,
+						tableData,
+						[
 							{ type: '/tableRow' },
 							{ type: '/tableSection' },
 							{ type: '/table' }
-						] )
+						]
 					) );
 				},
 				msg: 'create small table with header'
+			},
+			{
+				html: ve.dm.example.mergedCellsHtml,
+				selection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 171 ),
+					fromCol: 5,
+					fromRow: 1,
+					toCol: 5,
+					toRow: 1
+				},
+				method: 'insert',
+				args: [ 'col', 'after' ],
+				expectedData: function ( data ) {
+					data.splice.apply( data, [ 168, 0 ].concat( tableData ) );
+					data.splice.apply( data, [ 130, 0 ].concat( tableData ) );
+					data.splice.apply( data, [ 116, 0 ].concat( tableData ) );
+					data.splice.apply( data, [ 102, 0 ].concat( tableData ) );
+					data.splice.apply( data, [ 82, 0 ].concat( tableData ) );
+					data.splice.apply( data, [ 56, 0 ].concat( tableData ) );
+					data.splice.apply( data, [ 33, 0 ].concat( tableData ) );
+				},
+				expectedSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 199 ),
+					fromCol: 5,
+					fromRow: 1,
+					toCol: 5,
+					toRow: 1
+				},
+				msg: 'insert column at end of table'
+			},
+			{
+				html: ve.dm.example.mergedCellsHtml,
+				selection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 171 ),
+					fromCol: 3,
+					fromRow: 0,
+					toCol: 3,
+					toRow: 0
+				},
+				method: 'insert',
+				args: [ 'col', 'before' ],
+				expectedData: function ( data ) {
+					data.splice.apply( data, [ 150, 0 ].concat( tableData ) );
+					data[90].attributes.colspan = 4;
+					data.splice.apply( data, [ 76, 0 ].concat( tableData ) );
+					data.splice.apply( data, [ 45, 0 ].concat( tableData ) );
+					data.splice.apply( data, [ 18, 0 ].concat( tableData ) );
+				},
+				msg: 'insert column in middle of table'
+			},
+			{
+				html: ve.dm.example.mergedCellsHtml,
+				selection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 171 ),
+					fromCol: 0,
+					fromRow: 6,
+					toCol: 0,
+					toRow: 6
+				},
+				method: 'insert',
+				args: [ 'row', 'after' ],
+				expectedData: function ( data ) {
+					data.splice.apply( data, [ 169, 0 ].concat(
+						[
+							{ type: 'tableRow' }
+						],
+						tableData,
+						tableData,
+						tableData,
+						tableData,
+						tableData,
+						tableData,
+						[
+							{ type: '/tableRow' }
+						] )
+					);
+				},
+				msg: 'insert row at end of table'
+			},
+			{
+				html: ve.dm.example.mergedCellsHtml,
+				selection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 171 ),
+					fromCol: 0,
+					fromRow: 3,
+					toCol: 0,
+					toRow: 3
+				},
+				method: 'insert',
+				args: [ 'row', 'before' ],
+				expectedData: function ( data ) {
+					data[45].attributes.rowspan = 5;
+					data.splice.apply( data, [ 83, 0 ].concat(
+						[
+							{ type: 'tableRow' }
+						],
+						tableData,
+						tableData,
+						tableData,
+						tableData,
+						tableData,
+						[
+							{ type: '/tableRow' }
+						] )
+					);
+				},
+				msg: 'insert row in middle of table'
 			}
 		];
 
