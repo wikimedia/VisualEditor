@@ -2998,29 +2998,29 @@ ve.dm.example.domToDataCases = {
 		fromDataBody: '<div><p>a<b>b</b>c<i>d</i>e</p></div>'
 	},
 	'comment escaping': {
-		body: '<p><!--Foo&#45;&#45;&#62;b&#38;r--></p>',
+		body: '<p><!--&#45;Foo-bar-&#45;>b&#38;r&#45;--></p>',
 		data: [
 			{ type: 'paragraph' },
-			{ type: 'comment', attributes: { text: 'Foo-->b&r' } },
+			{ type: 'comment', attributes: { text: '-Foo-bar-->b&r-' } },
 			{ type: '/comment' },
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
 		],
-		clipboardBody: '<p><span rel="ve:Comment" data-ve-comment="Foo-->b&amp;r"></span></p>'
+		clipboardBody: '<p><span rel="ve:Comment" data-ve-comment="-Foo-bar-->b&amp;r-"></span></p>'
 	},
 	'comment escaping is normalized': {
-		body: '<p><!--Foo--&gt;b&amp;r--></p>',
+		body: '<p><!--&gt;Foo-bar--&gt;b&amp;r---></p>',
 		data: [
 			{ type: 'paragraph' },
-			{ type: 'comment', attributes: { text: 'Foo-->b&r' } },
+			{ type: 'comment', attributes: { text: '>Foo-bar-->b&r-' } },
 			{ type: '/comment' },
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
 		],
-		normalizedBody: '<p><!--Foo&#45;&#45;&#62;b&#38;r--></p>',
-		clipboardBody: '<p><span rel="ve:Comment" data-ve-comment="Foo-->b&amp;r"></span></p>'
+		normalizedBody: '<p><!--&#62;Foo-bar-&#45;>b&#38;r&#45;--></p>',
+		clipboardBody: '<p><span rel="ve:Comment" data-ve-comment=">Foo-bar-->b&amp;r-"></span></p>'
 	},
 	'other branch nodes': {
 		body: '<center>Foo</center><blockquote>Bar</blockquote>',

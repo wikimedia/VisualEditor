@@ -60,9 +60,10 @@ ve.dm.CommentNode.static.toDomElements = function ( dataElement, doc, converter 
 		return [ span ];
 	} else {
 		// Real comment node
-		// Encode & - > (see T95040)
-		data = dataElement.attributes.text.replace( /[-&>]/g, function ( c ) {
-			return '&#' + c.charCodeAt(0) + ';';
+		// Encode '&', and certain '-' and '>' characters (see T95040)
+		data = dataElement.attributes.text.replace( /^[->]|--|-$|&/g, function ( m ) {
+			return m.slice( 0, m.length - 1 ) +
+				'&#' + m.charCodeAt( m.length - 1 ) + ';';
 		} );
 		return [ doc.createComment( data ) ];
 	}
