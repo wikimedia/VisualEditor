@@ -41,9 +41,9 @@ ve.ui.TableAction.static.methods = [ 'create', 'insert', 'delete', 'changeCellSt
  * Creates a new table.
  *
  * @param {Object} [options] Table creation options
- * @param {number} [options.cols=4] Number of rows
- * @param {number} [options.rows=3] Number of columns
- * @param {boolean} [options.header] Make the first row a header row
+ * @param {boolean} [options.header] Include a header row
+ * @param {number} [options.cols=4] Number of columns
+ * @param {number} [options.rows=3] Number of rows (not including optional header row)
  * @param {Object} [options.type='table'] Table node type, must inherit from table
  * @param {Object} [options.attributes] Attributes to give the table
  * @return {boolean} Action was executed

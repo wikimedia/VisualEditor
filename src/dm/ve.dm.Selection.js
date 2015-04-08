@@ -28,12 +28,12 @@ ve.dm.Selection.static.type = null;
  * Create a new selection from a JSON serialization
  *
  * @param {ve.dm.Document} doc Document to create the selection on
- * @param {string} json JSON serialization
+ * @param {string|Object} json JSON serialization or hash object
  * @returns {ve.dm.Selection} New selection
  * @throws {Error} Unknown selection type
  */
 ve.dm.Selection.static.newFromJSON = function ( doc, json ) {
-	var hash = JSON.parse( json ),
+	var hash = typeof json === 'string' ? JSON.parse( json ) : json,
 		constructor = ve.dm.selectionFactory.lookup( hash.type );
 
 	if ( !constructor ) {

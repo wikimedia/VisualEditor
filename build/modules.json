@@ -516,6 +516,7 @@
 			"tests/ui/actions/ve.ui.FormatAction.test.js",
 			"tests/ui/actions/ve.ui.IndentationAction.test.js",
 			"tests/ui/actions/ve.ui.ListAction.test.js",
+			"tests/ui/actions/ve.ui.TableAction.test.js",
 			"tests/ce/ve.ce.TestRunner.js",
 			"tests/ce/ve.ce.imetests.test.js",
 			"tests/ce/imetests/backspace-chromium-ubuntu-none.js",
