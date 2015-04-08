@@ -2000,7 +2000,7 @@ ve.ce.Surface.prototype.afterPaste = function () {
 			}
 		}
 		// External paste
-		doc = ve.dm.converter.getModelFromDom( htmlDoc, this.getModel().getDocument().getHtmlDocument() );
+		doc = ve.dm.converter.getModelFromDom( htmlDoc, this.getModel().getDocument().getHtmlDocument(), true );
 		data = doc.data;
 		// Clear metadata
 		doc.metadata = new ve.dm.MetaLinearData( doc.getStore(), new Array( 1 + data.getLength() ) );

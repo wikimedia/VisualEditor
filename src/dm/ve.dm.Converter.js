@@ -26,6 +26,7 @@ ve.dm.Converter = function VeDmConverter( modelRegistry, nodeFactory, annotation
 	this.store = null;
 	this.internalList = null;
 	this.forClipboard = null;
+	this.fromClipboard = null;
 	this.contextStack = null;
 };
 
@@ -241,6 +242,16 @@ ve.dm.Converter.prototype.isForClipboard = function () {
 };
 
 /**
+ * Is the current conversion from the clipboard
+ *
+ * @method
+ * @returns {boolean|null} The conversion is from the clipboard, or null if not converting
+ */
+ve.dm.Converter.prototype.isFromClipboard = function () {
+	return this.fromClipboard;
+};
+
+/**
  * Get the current conversion context. This is the recursion state of getDataFromDomSubtree().
  *
  * @method
@@ -396,11 +407,12 @@ ve.dm.Converter.prototype.getDomElementFromDataAnnotation = function ( dataAnnot
  * Convert an HTML document to a document model.
  * @param {HTMLDocument} doc HTML document to convert
  * @param {HTMLDocument} [targetDoc=doc] Target HTML document we are converting for, if different from doc
+ * @param {boolean} [fromClipboard=false] Conversion is from clipboard
  * @param {string} [lang] Document language code
  * @param {string} [dir] Document directionality (ltr/rtl)
  * @returns {ve.dm.Document} Document model
  */
-ve.dm.Converter.prototype.getModelFromDom = function ( doc, targetDoc, lang, dir ) {
+ve.dm.Converter.prototype.getModelFromDom = function ( doc, targetDoc, fromClipboard, lang, dir ) {
 	var linearData, refData, innerWhitespace,
 		store = new ve.dm.IndexValueStore(),
 		internalList = new ve.dm.InternalList();
@@ -410,6 +422,7 @@ ve.dm.Converter.prototype.getModelFromDom = function ( doc, targetDoc, lang, dir
 	// Set up the converter state
 	this.doc = doc;
 	this.targetDoc = targetDoc;
+	this.fromClipboard = fromClipboard;
 	this.store = store;
 	this.internalList = internalList;
 	this.contextStack = [];
@@ -427,6 +440,7 @@ ve.dm.Converter.prototype.getModelFromDom = function ( doc, targetDoc, lang, dir
 	// Clear the state
 	this.doc = null;
 	this.targetDoc = null;
+	this.fromClipboard = null;
 	this.store = null;
 	this.internalList = null;
 	this.contextStack = null;

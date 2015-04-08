@@ -1247,6 +1247,23 @@ ve.dm.example.domToDataCases = {
 		],
 		storeLength: 3
 	},
+	'annotations normalised on import': {
+		body: '<p><em>Foo</em><strong>bar</strong></p>',
+		fromClipboard: true,
+		data: [
+			{ type: 'paragraph' },
+			['F', [ ve.dm.example.italic ]],
+			['o', [ ve.dm.example.italic ]],
+			['o', [ ve.dm.example.italic ]],
+			['b', [ ve.dm.example.bold ]],
+			['a', [ ve.dm.example.bold ]],
+			['r', [ ve.dm.example.bold ]],
+			{ type: '/paragraph' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
+		],
+		normalizedBody: '<p><i>Foo</i><b>bar</b></p>'
+	},
 	'strip leading whitespace in paragraphs': {
 		data: [
 			{ type: 'paragraph' },
