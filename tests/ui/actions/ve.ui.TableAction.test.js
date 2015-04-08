@@ -25,7 +25,7 @@ function runTableActionTest( assert, html, method, args, selection, expectedData
 	surface.destroy();
 }
 
-QUnit.test( 'create / insert', function ( assert ) {
+QUnit.test( 'create / insert / mergeCells', function ( assert ) {
 	var i,
 		expected = 0,
 		tableCellTail = [
@@ -245,6 +245,49 @@ QUnit.test( 'create / insert', function ( assert ) {
 					);
 				},
 				msg: 'insert row in middle of table'
+			},
+			{
+				html: ve.dm.example.mergedCellsHtml,
+				selection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 171 ),
+					fromCol: 0,
+					fromRow: 0,
+					toCol: 2,
+					toRow: 1
+				},
+				method: 'mergeCells',
+				args: [],
+				expectedData: function ( data ) {
+					data[3].attributes.colspan = 3;
+					data[3].attributes.rowspan = 2;
+					data.splice( 40, 5 );
+					data.splice( 35, 5 );
+					data.splice( 13, 5 );
+					data.splice( 8, 5 );
+				},
+				msg: 'merge cells'
+			},
+			{
+				html: ve.dm.example.mergedCellsHtml,
+				selection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 171 ),
+					fromCol: 1,
+					fromRow: 3,
+					toCol: 3,
+					toRow: 5
+				},
+				method: 'mergeCells',
+				args: [],
+				expectedData: function ( data ) {
+					data[90].attributes.colspan = 1;
+					data[90].attributes.rowspan = 1;
+					data.splice.apply( data, [ 124, 0 ].concat( tableData, tableData, tableData ) );
+					data.splice.apply( data, [ 110, 0 ].concat( tableData, tableData, tableData ) );
+					data.splice.apply( data, [ 96, 0 ].concat( tableData, tableData ) );
+				},
+				msg: 'unmerge cells'
 			}
 		];
 
