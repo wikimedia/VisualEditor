@@ -167,11 +167,8 @@ ve.ui.Surface.prototype.getHtml = function () {
  * @method
  * @abstract
  * @return {ve.ui.Context} Context
- * @throws {Error} If this method is not overridden in a concrete subclass
  */
-ve.ui.Surface.prototype.createContext = function () {
-	throw new Error( 've.ui.Surface.createContext must be overridden in subclass' );
-};
+ve.ui.Surface.prototype.createContext = null;
 
 /**
  * Create a dialog window manager.
@@ -179,11 +176,8 @@ ve.ui.Surface.prototype.createContext = function () {
  * @method
  * @abstract
  * @return {ve.ui.WindowManager} Dialog window manager
- * @throws {Error} If this method is not overridden in a concrete subclass
  */
-ve.ui.Surface.prototype.createDialogWindowManager = function () {
-	throw new Error( 've.ui.Surface.createDialogWindowManager must be overridden in subclass' );
-};
+ve.ui.Surface.prototype.createDialogWindowManager = null;
 
 /**
  * Set up the debug bar and insert it into the DOM.

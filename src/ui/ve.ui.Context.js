@@ -322,11 +322,8 @@ ve.ui.Context.prototype.getInspectors = function () {
  * @method
  * @abstract
  * @return {ve.ui.WindowManager} Inspector window manager
- * @throws {Error} If this method is not overridden in a concrete subclass
  */
-ve.ui.Context.prototype.createInspectorWindowManager = function () {
-	throw new Error( 've.ui.Context.createInspectorWindowManager must be overridden in subclass' );
-};
+ve.ui.Context.prototype.createInspectorWindowManager = null;
 
 /**
  * Toggle the menu.

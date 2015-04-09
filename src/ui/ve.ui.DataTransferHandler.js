@@ -84,10 +84,11 @@ ve.ui.DataTransferHandler.static.matchFunction = null;
  * Process the file
  *
  * Implementations should aim to resolve this.insertableDataDeferred.
+ *
+ * @abstract
+ * @method
  */
-ve.ui.DataTransferHandler.prototype.process = function () {
-	throw new Error( 've.ui.DataTransferHandler subclass must implement process' );
-};
+ve.ui.DataTransferHandler.prototype.process = null;
 
 /**
  * Insert the file at a specified fragment

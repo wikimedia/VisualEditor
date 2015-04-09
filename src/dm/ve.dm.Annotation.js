@@ -80,9 +80,7 @@ ve.dm.Annotation.static.removes = [];
  * @param {Node[]} childDomElements Children that will be appended to the returned element
  * @returns {HTMLElement[]} Array of DOM elements; only the first element is used; may be empty
  */
-ve.dm.Annotation.static.toDomElements = function () {
-	throw new Error( 've.dm.Annotation subclass must implement toDomElements' );
-};
+ve.dm.Annotation.static.toDomElements = null;
 
 /**
  * @inheritdoc
@@ -101,6 +99,7 @@ ve.dm.Annotation.static.getHashObject = function ( dataElement ) {
 
 /**
  * Convenience wrapper for .toDomElements() on the current annotation
+ *
  * @method
  * @param {HTMLDocument} [doc] HTML document to use to create elements
  * @see ve.dm.Model#toDomElements

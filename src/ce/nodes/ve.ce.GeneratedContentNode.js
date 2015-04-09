@@ -67,12 +67,11 @@ ve.ce.GeneratedContentNode.static.renderHtmlAttributes = false;
  * by forceUpdate().
  *
  * @abstract
+ * @method
  * @param {Object} [config] Optional additional data
  * @returns {jQuery.Promise} Promise object, may be abortable
  */
-ve.ce.GeneratedContentNode.prototype.generateContents = function () {
-	throw new Error( 've.ce.GeneratedContentNode subclass must implement generateContents' );
-};
+ve.ce.GeneratedContentNode.prototype.generateContents = null;
 
 /* Methods */
 

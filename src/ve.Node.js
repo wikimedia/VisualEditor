@@ -47,9 +47,7 @@ ve.Node = function VeNode() {
  * @abstract
  * @returns {string[]|null} List of node types allowed as children or null if any type is allowed
  */
-ve.Node.prototype.getChildNodeTypes = function () {
-	throw new Error( 've.Node.getChildNodeTypes must be overridden in subclass' );
-};
+ve.Node.prototype.getChildNodeTypes = null;
 
 /**
  * Get allowed parent node types.
@@ -58,9 +56,7 @@ ve.Node.prototype.getChildNodeTypes = function () {
  * @abstract
  * @returns {string[]|null} List of node types allowed as parents or null if any type is allowed
  */
-ve.Node.prototype.getParentNodeTypes = function () {
-	throw new Error( 've.Node.getParentNodeTypes must be overridden in subclass' );
-};
+ve.Node.prototype.getParentNodeTypes = null;
 
 /**
  * Check if the specified type is an allowed child node type
@@ -91,9 +87,7 @@ ve.Node.prototype.isAllowedParentNodeType = function ( type ) {
  * @abstract
  * @returns {string[]|null} List of node types suggested as parents or null if any type is suggested
  */
-ve.Node.prototype.getSuggestedParentNodeTypes = function () {
-	throw new Error( 've.Node.getSuggestedParentNodeTypes must be overridden in subclass' );
-};
+ve.Node.prototype.getSuggestedParentNodeTypes = null;
 
 /**
  * Check if the node can have children.
@@ -102,9 +96,7 @@ ve.Node.prototype.getSuggestedParentNodeTypes = function () {
  * @abstract
  * @returns {boolean} Node can have children
  */
-ve.Node.prototype.canHaveChildren = function () {
-	throw new Error( 've.Node.canHaveChildren must be overridden in subclass' );
-};
+ve.Node.prototype.canHaveChildren = null;
 
 /**
  * Check if the node can have children but not content nor be content.
@@ -113,9 +105,7 @@ ve.Node.prototype.canHaveChildren = function () {
  * @abstract
  * @returns {boolean} Node can have children but not content nor be content
  */
-ve.Node.prototype.canHaveChildrenNotContent = function () {
-	throw new Error( 've.Node.canHaveChildrenNotContent must be overridden in subclass' );
-};
+ve.Node.prototype.canHaveChildrenNotContent = null;
 
 /**
  * Check if the node can contain content.
@@ -124,9 +114,7 @@ ve.Node.prototype.canHaveChildrenNotContent = function () {
  * @abstract
  * @returns {boolean} Node can contain content
  */
-ve.Node.prototype.canContainContent = function () {
-	throw new Error( 've.Node.canContainContent must be overridden in subclass' );
-};
+ve.Node.prototype.canContainContent = null;
 
 /**
  * Check if the node is content.
@@ -135,9 +123,7 @@ ve.Node.prototype.canContainContent = function () {
  * @abstract
  * @returns {boolean} Node is content
  */
-ve.Node.prototype.isContent = function () {
-	throw new Error( 've.Node.isContent must be overridden in subclass' );
-};
+ve.Node.prototype.isContent = null;
 
 /**
  * Check if the node has a wrapped element in the document data.
@@ -146,9 +132,7 @@ ve.Node.prototype.isContent = function () {
  * @abstract
  * @returns {boolean} Node represents a wrapped element
  */
-ve.Node.prototype.isWrapped = function () {
-	throw new Error( 've.Node.isWrapped must be overridden in subclass' );
-};
+ve.Node.prototype.isWrapped = null;
 
 /**
  * Check if the node is focusable
@@ -157,9 +141,7 @@ ve.Node.prototype.isWrapped = function () {
  * @abstract
  * @returns {boolean} Node is focusable
  */
-ve.Node.prototype.isFocusable = function () {
-	throw new Error( 've.Node.isFocusable must be overridden in subclass' );
-};
+ve.Node.prototype.isFocusable = null;
 
 /**
  * Check if the node is alignable
@@ -168,9 +150,7 @@ ve.Node.prototype.isFocusable = function () {
  * @abstract
  * @returns {boolean} Node is alignable
  */
-ve.Node.prototype.isAlignable = function () {
-	throw new Error( 've.Node.isAlignable must be overridden in subclass' );
-};
+ve.Node.prototype.isAlignable = null;
 
 /**
  * Check if the node has significant whitespace.
@@ -181,9 +161,7 @@ ve.Node.prototype.isAlignable = function () {
  * @abstract
  * @returns {boolean} Node has significant whitespace
  */
-ve.Node.prototype.hasSignificantWhitespace = function () {
-	throw new Error( 've.Node.hasSignificantWhitespace must be overridden in subclass' );
-};
+ve.Node.prototype.hasSignificantWhitespace = null;
 
 /**
  * Check if the node handles its own children
@@ -192,9 +170,7 @@ ve.Node.prototype.hasSignificantWhitespace = function () {
  * @abstract
  * @returns {boolean} Node handles its own children
  */
-ve.Node.prototype.handlesOwnChildren = function () {
-	throw new Error( 've.Node.handlesOwnChildren must be overridden in subclass' );
-};
+ve.Node.prototype.handlesOwnChildren = null;
 
 /**
  * Check if the node's children should be ignored.
@@ -203,9 +179,7 @@ ve.Node.prototype.handlesOwnChildren = function () {
  * @abstract
  * @returns {boolean} Node's children should be ignored
  */
-ve.Node.prototype.shouldIgnoreChildren = function () {
-	throw new Error( 've.Node.ignoreChildren must be overridden in subclass' );
-};
+ve.Node.prototype.shouldIgnoreChildren = null;
 
 /**
  * Get the length of the node.
@@ -214,9 +188,7 @@ ve.Node.prototype.shouldIgnoreChildren = function () {
  * @abstract
  * @returns {number} Node length
  */
-ve.Node.prototype.getLength = function () {
-	throw new Error( 've.Node.getLength must be overridden in subclass' );
-};
+ve.Node.prototype.getLength = null;
 
 /**
  * Get the offset of the node within the document.
@@ -228,9 +200,7 @@ ve.Node.prototype.getLength = function () {
  * @returns {number} Offset of node
  * @throws {Error} Node not found in parent's children array
  */
-ve.Node.prototype.getOffset = function () {
-	throw new Error( 've.Node.getOffset must be overridden in subclass' );
-};
+ve.Node.prototype.getOffset = null;
 
 /**
  * Get the range inside the node.
