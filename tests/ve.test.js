@@ -266,35 +266,53 @@ QUnit.test( 'getOpeningHtmlTag', 3, function ( assert ) {
 	);
 } );
 
-QUnit.test( 'batchSplice', 8, function ( assert ) {
-	var actualRet, expectedRet, i,
-		actual = [ 'a', 'b', 'c', 'd', 'e' ],
-		expected = actual.slice( 0 ),
-		bigArr = [];
+QUnit.test( 'batchSplice', function ( assert ) {
+	var spliceWasSupported = ve.supportSplice;
 
-	actualRet = ve.batchSplice( actual, 1, 1, [] );
-	expectedRet = expected.splice( 1, 1 );
-	assert.deepEqual( expectedRet, actualRet, 'removing 1 element (return value)' );
-	assert.deepEqual( expected, actual, 'removing 1 element (array)' );
+	function assertBatchSplice() {
+		var actualRet, expectedRet, msg, i,
+			actual = [ 'a', 'b', 'c', 'd', 'e' ],
+			expected = actual.slice( 0 ),
+			bigArr = [];
 
-	actualRet = ve.batchSplice( actual, 3, 2, [ 'w', 'x', 'y', 'z' ] );
-	expectedRet = expected.splice( 3, 2, 'w', 'x', 'y', 'z' );
-	assert.deepEqual( expectedRet, actualRet, 'replacing 2 elements with 4 elements (return value)' );
-	assert.deepEqual( expected, actual, 'replacing 2 elements with 4 elements (array)' );
+		msg = ve.supportSplice ? 'Array#splice native' : 'Array#splice polyfill';
 
-	actualRet = ve.batchSplice( actual, 0, 0, [ 'f', 'o', 'o' ] );
-	expectedRet = expected.splice( 0, 0, 'f', 'o', 'o' );
-	assert.deepEqual( expectedRet, actualRet, 'inserting 3 elements (return value)' );
-	assert.deepEqual( expected, actual, 'inserting 3 elements (array)' );
+		actualRet = ve.batchSplice( actual, 1, 1, [] );
+		expectedRet = expected.splice( 1, 1 );
+		assert.deepEqual( expectedRet, actualRet, msg + ': removing 1 element (return value)' );
+		assert.deepEqual( expected, actual, msg + ': removing 1 element (array)' );
 
-	for ( i = 0; i < 2100; i++ ) {
-		bigArr[i] = i;
+		actualRet = ve.batchSplice( actual, 3, 2, [ 'w', 'x', 'y', 'z' ] );
+		expectedRet = expected.splice( 3, 2, 'w', 'x', 'y', 'z' );
+		assert.deepEqual( expectedRet, actualRet, msg + ': replacing 2 elements with 4 elements (return value)' );
+		assert.deepEqual( expected, actual, msg + ': replacing 2 elements with 4 elements (array)' );
+
+		actualRet = ve.batchSplice( actual, 0, 0, [ 'f', 'o', 'o' ] );
+		expectedRet = expected.splice( 0, 0, 'f', 'o', 'o' );
+		assert.deepEqual( expectedRet, actualRet, msg + ': inserting 3 elements (return value)' );
+		assert.deepEqual( expected, actual, msg + ': inserting 3 elements (array)' );
+
+		for ( i = 0; i < 2100; i++ ) {
+			bigArr[i] = i;
+		}
+		actualRet = ve.batchSplice( actual, 2, 3, bigArr );
+		expectedRet = expected.splice.apply( expected, [2, 3].concat( bigArr.slice( 0, 1050 ) ) );
+		expected.splice.apply( expected, [1052, 0].concat( bigArr.slice( 1050 ) ) );
+		assert.deepEqual( expectedRet, actualRet, msg + ': replacing 3 elements with 2100 elements (return value)' );
+		assert.deepEqual( expected, actual, msg + ': replacing 3 elements with 2100 elements (array)' );
 	}
-	actualRet = ve.batchSplice( actual, 2, 3, bigArr );
-	expectedRet = expected.splice.apply( expected, [2, 3].concat( bigArr.slice( 0, 1050 ) ) );
-	expected.splice.apply( expected, [1052, 0].concat( bigArr.slice( 1050 ) ) );
-	assert.deepEqual( expectedRet, actualRet, 'replacing 3 elements with 2100 elements (return value)' );
-	assert.deepEqual( expected, actual, 'replacing 3 elements with 2100 elements (array)' );
+
+	QUnit.expect( 8 * ( spliceWasSupported ? 2 : 1 ) );
+
+	assertBatchSplice();
+
+	// If the current browser supported native splice,
+	// test again without the native splice.
+	if ( spliceWasSupported ) {
+		ve.supportSplice = false;
+		assertBatchSplice();
+		ve.supportSplice = true;
+	}
 } );
 
 QUnit.test( 'insertIntoArray', 3, function ( assert ) {

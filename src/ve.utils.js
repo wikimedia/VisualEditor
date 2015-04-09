@@ -174,6 +174,34 @@ ve.indexOf = $.inArray;
 ve.extendObject = $.extend;
 
 /**
+ * @private
+ * @property {boolean}
+ */
+ve.supportSplice = ( function () {
+	var a, n;
+
+	// This returns false in Safari 8
+	a = new Array( 100000 );
+	a.splice( 30, 0, 'x' );
+	a.splice( 20, 1 );
+	if ( a.indexOf( 'x' ) !== 29 ) {
+		return false;
+	}
+
+	// This returns false in Opera 12.15
+	a = [];
+	n = 256;
+	a[n] = 'a';
+	a.splice( n + 1, 0, 'b' );
+	if ( a[n] !== 'a' ) {
+		return false;
+	}
+
+	// Splice is supported
+	return true;
+} )();
+
+/**
  * Splice one array into another.
  *
  * This is the equivalent of arr.splice( offset, remove, d1, d2, d3, ... ) except that arguments are
@@ -183,7 +211,7 @@ ve.extendObject = $.extend;
  * performance tests should be conducted on each use of this method to verify this is true for the
  * particular use. Also, browsers change fast, never assume anything, always test everything.
  *
- * Includes a replacement for broken implementation of Array.prototype.splice() found in Opera 12.
+ * Includes a replacement for broken implementations of Array.prototype.splice().
  *
  * @param {Array|ve.dm.BranchNode} arr Target object (must have `splice` method, object will be modified)
  * @param {number} offset Offset in arr to splice at. This may NOT be negative, unlike the
@@ -192,80 +220,61 @@ ve.extendObject = $.extend;
  * @param {Array} data Array of items to insert at the offset. Must be non-empty if remove=0
  * @return {Array} Array of items removed
  */
-ve.batchSplice = ( function () {
-	var arraySplice;
+ve.batchSplice = function ( arr, offset, remove, data ) {
+	// We need to splice insertion in in batches, because of parameter list length limits which vary
+	// cross-browser - 1024 seems to be a safe batch size on all browsers
+	var splice, spliced,
+		index = 0,
+		batchSize = 1024,
+		toRemove = remove,
+		removed = [];
 
-	// This returns true in Opera 12.15
-	function spliceBrokenOpera() {
-		var n = 256,
-			a = [];
-		a[n] = 'a';
-		a.splice( n + 1, 0, 'b' );
-		return a[n] !== 'a';
-	}
-
-	// This returns true in Safari 8
-	function spliceBrokenSafari() {
-		var a = new Array( 100000 );
-		a.splice( 30, 0, 'x' );
-		a.splice( 20, 1 );
-		return a.indexOf( 'x' ) !== 29;
-	}
-
-	if ( !spliceBrokenOpera() && !spliceBrokenSafari() ) {
-		arraySplice = Array.prototype.splice;
+	if ( !Array.isArray( arr ) ) {
+		splice = arr.splice;
 	} else {
-		// Standard Array.prototype.splice() function implemented using .slice() and .push().
-		arraySplice = function ( offset, remove/*, data... */ ) {
-			var data, begin, removed, end;
+		if ( ve.supportSplice ) {
+			splice = Array.prototype.splice;
+		} else {
+			// Standard Array.prototype.splice() function implemented using .slice() and .push().
+			splice = function ( offset, remove/*, data... */ ) {
+				var data, begin, removed, end;
 
-			data = Array.prototype.slice.call( arguments, 2 );
+				data = Array.prototype.slice.call( arguments, 2 );
 
-			begin = this.slice( 0, offset );
-			removed = this.slice( offset, remove );
-			end = this.slice( offset + remove );
+				begin = this.slice( 0, offset );
+				removed = this.slice( offset, offset + remove );
+				end = this.slice( offset + remove );
 
-			this.length = 0;
-			ve.batchPush( this, begin );
-			ve.batchPush( this, data );
-			ve.batchPush( this, end );
+				this.length = 0;
+				ve.batchPush( this, begin );
+				ve.batchPush( this, data );
+				ve.batchPush( this, end );
 
-			return removed;
-		};
+				return removed;
+			};
+		}
 	}
 
-	return function ( arr, offset, remove, data ) {
-		// We need to splice insertion in in batches, because of parameter list length limits which vary
-		// cross-browser - 1024 seems to be a safe batch size on all browsers
-		var splice, spliced,
-			index = 0,
-			batchSize = 1024,
-			toRemove = remove,
-			removed = [];
+	if ( data.length === 0 ) {
+		// Special case: data is empty, so we're just doing a removal
+		// The code below won't handle that properly, so we do it here
+		return splice.call( arr, offset, remove );
+	}
 
-		splice = Array.isArray( arr ) ? arraySplice : arr.splice;
-
-		if ( data.length === 0 ) {
-			// Special case: data is empty, so we're just doing a removal
-			// The code below won't handle that properly, so we do it here
-			return splice.call( arr, offset, remove );
+	while ( index < data.length ) {
+		// Call arr.splice( offset, remove, i0, i1, i2, ..., i1023 );
+		// Only set remove on the first call, and set it to zero on subsequent calls
+		spliced = splice.apply(
+			arr, [index + offset, toRemove].concat( data.slice( index, index + batchSize ) )
+		);
+		if ( toRemove > 0 ) {
+			removed = spliced;
 		}
-
-		while ( index < data.length ) {
-			// Call arr.splice( offset, remove, i0, i1, i2, ..., i1023 );
-			// Only set remove on the first call, and set it to zero on subsequent calls
-			spliced = splice.apply(
-				arr, [index + offset, toRemove].concat( data.slice( index, index + batchSize ) )
-			);
-			if ( toRemove > 0 ) {
-				removed = spliced;
-			}
-			index += batchSize;
-			toRemove = 0;
-		}
-		return removed;
-	};
-}() );
+		index += batchSize;
+		toRemove = 0;
+	}
+	return removed;
+};
 
 /**
  * Insert one array into another.
