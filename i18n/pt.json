@@ -119,6 +119,7 @@
 	"visualeditor-table-insert-row-before": "Inserir acima",
 	"visualeditor-table-insert-table": "Tabela",
 	"visualeditor-table-merge-cells": "Unir células",
+	"visualeditor-tablecell-tooltip": "Clique duas vezes para editar a célula",
 	"visualeditor-toolbar-format-tooltip": "Formatar parágrafo",
 	"visualeditor-toolbar-history": "Histórico",
 	"visualeditor-toolbar-insert": "Inserir",
