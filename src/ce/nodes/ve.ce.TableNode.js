@@ -331,7 +331,7 @@ ve.ce.TableNode.prototype.onSurfaceModelSelect = function ( selection ) {
  * Update the overlay positions
  */
 ve.ce.TableNode.prototype.updateOverlay = function () {
-	if ( !this.active ) {
+	if ( !this.active || !this.root ) {
 		return;
 	}
 
