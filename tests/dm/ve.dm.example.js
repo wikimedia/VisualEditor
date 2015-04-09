@@ -135,6 +135,9 @@ ve.dm.example.strong = { type: 'textStyle/bold', attributes: { nodeName: 'strong
 ve.dm.example.link = function ( href ) {
 	return { type: 'link', attributes: { href: href } };
 };
+ve.dm.example.language = function ( lang, dir ) {
+	return { type: 'meta/language', attributes: { lang: lang, dir: dir } };
+};
 
 /**
  * Creates a document from example data.
@@ -1263,6 +1266,21 @@ ve.dm.example.domToDataCases = {
 			{ type: '/internalList' }
 		],
 		normalizedBody: '<p><i>Foo</i><b>bar</b></p>'
+	},
+	'language annotation': {
+		body: '<p><span lang="fr" dir="ltr">dix</span><span lang="cy" dir="ltr">deg</span></p>',
+		data: [
+			{ type: 'paragraph' },
+			['d', [ ve.dm.example.language( 'fr', 'ltr' ) ]],
+			['i', [ ve.dm.example.language( 'fr', 'ltr' ) ]],
+			['x', [ ve.dm.example.language( 'fr', 'ltr' ) ]],
+			['d', [ ve.dm.example.language( 'cy', 'ltr' ) ]],
+			['e', [ ve.dm.example.language( 'cy', 'ltr' ) ]],
+			['g', [ ve.dm.example.language( 'cy', 'ltr' ) ]],
+			{ type: '/paragraph' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
+		]
 	},
 	'strip leading whitespace in paragraphs': {
 		data: [
