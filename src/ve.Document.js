@@ -19,6 +19,7 @@ ve.Document = function VeDocument( documentNode ) {
 
 	// Properties
 	this.documentNode = documentNode;
+	this.documentNode.setDocument( this );
 };
 
 /* Inheritance */
