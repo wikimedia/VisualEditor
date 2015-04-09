@@ -95,6 +95,71 @@ QUnit.test( 'collapseToStart/End', 6, function ( assert ) {
 	assert.equalRange( collapsedFragment.getSelection().getRange(), new ve.Range( 21 ), 'range is at end when collapseToEnd is set' );
 } );
 
+QUnit.test( 'expandLinearSelection (annotation)', function ( assert ) {
+	var i, fragment,
+		doc = ve.dm.example.createExampleDocumentFromData( [
+			{ type: 'paragraph' },
+			'F', 'o', 'o',
+			['b', [ ve.dm.example.bold ]],
+			['a', [ ve.dm.example.bold ]],
+			['r', [ ve.dm.example.bold ]],
+			['b', [ ve.dm.example.bold, ve.dm.example.italic ]],
+			['a', [ ve.dm.example.bold, ve.dm.example.italic ]],
+			['z', [ ve.dm.example.bold, ve.dm.example.italic ]],
+			{ type: '/paragraph' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
+		] ),
+		surface = new ve.dm.Surface( doc ),
+		cases = [
+			{
+				msg: 'expands to bold annotation',
+				annotation: ve.dm.example.bold,
+				range: new ve.Range( 5, 6 ),
+				expected: new ve.Range( 4, 10 )
+			},
+			{
+				msg: 'direction preserved',
+				annotation: ve.dm.example.bold,
+				range: new ve.Range( 6, 5 ),
+				expected: new ve.Range( 10, 4 )
+			},
+			{
+				msg: 'overlaps existing selection',
+				annotation: ve.dm.example.bold,
+				range: new ve.Range( 2, 7 ),
+				expected: new ve.Range( 2, 10 )
+			},
+			{
+				msg: 'no change when annotation not present',
+				annotation: ve.dm.example.italic,
+				range: new ve.Range( 5, 6 ),
+				expected: new ve.Range( 5, 6 )
+			},
+			{
+				msg: 'no change when no annotations present',
+				annotation: ve.dm.example.bold,
+				range: new ve.Range( 1, 2 ),
+				expected: new ve.Range( 1, 2 )
+			},
+			{
+				msg: 'matches nested annotation',
+				annotation: ve.dm.example.italic,
+				range: new ve.Range( 9, 10 ),
+				expected: new ve.Range( 7, 10 )
+			}
+		];
+
+	QUnit.expect( cases.length );
+	for ( i = 0; i < cases.length; i++ ) {
+		fragment = surface.getLinearFragment( cases[i].range ).expandLinearSelection(
+			'annotation',
+			ve.dm.example.createAnnotation( cases[i].annotation )
+		);
+		assert.equalHash( fragment.getSelection().getRange(), cases[i].expected, cases[i].msg );
+	}
+} );
+
 QUnit.test( 'expandLinearSelection (closest)', function ( assert ) {
 	var i, fragment, surface,
 		doc = ve.dm.example.createExampleDocument(),
