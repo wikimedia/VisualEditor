@@ -1009,52 +1009,6 @@ ve.dm.Converter.prototype.getInnerWhitespace = function ( data ) {
 };
 
 /**
- * Check if all the domElements provided are metadata or whitespace.
- *
- * A list of model names to exclude when matching can optionally be passed.
- *
- * @param {Node[]} domElements DOM elements to check
- * @param {string[]} [excludeTypes] Model names to exclude when matching DOM elements
- * @returns {boolean} All the elements are metadata or whitespace
- */
-ve.dm.Converter.prototype.isDomAllMetaOrWhitespace = function ( domElements, excludeTypes ) {
-	var i, childNode, modelName, modelClass;
-
-	for ( i = 0; i < domElements.length; i++ ) {
-		childNode = domElements[i];
-		switch ( childNode.nodeType ) {
-			case Node.ELEMENT_NODE:
-			case Node.COMMENT_NODE:
-				modelName = this.modelRegistry.matchElement( childNode, false, excludeTypes );
-				modelClass = this.modelRegistry.lookup( modelName ) || ve.dm.AlienNode;
-				if (
-					!( modelClass.prototype instanceof ve.dm.Annotation ) &&
-					!( modelClass.prototype instanceof ve.dm.MetaItem )
-				) {
-					// If the element not meta or an annotation, then we must have content
-					return false;
-				}
-				// Recursively check children
-				if (
-					childNode.childNodes.length &&
-					!this.isDomAllMetaOrWhitespace( childNode.childNodes, excludeTypes )
-				) {
-					return false;
-				}
-				continue;
-			case Node.TEXT_NODE:
-				// Check for whitespace-only
-				if ( !childNode.data.match( /\S/ ) ) {
-					continue;
-				}
-				break;
-		}
-		return false;
-	}
-	return true;
-};
-
-/**
  * Convert document model to an HTML DOM
  *
  * @method
