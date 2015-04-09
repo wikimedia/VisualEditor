@@ -30,7 +30,7 @@ OO.inheritClass( ve.ui.DesktopSurface, ve.ui.Surface );
  * @inheritdoc
  */
 ve.ui.DesktopSurface.prototype.createContext = function () {
-	return new ve.ui.DesktopContext( this, { $: this.$ } );
+	return new ve.ui.DesktopContext( this );
 };
 
 /**

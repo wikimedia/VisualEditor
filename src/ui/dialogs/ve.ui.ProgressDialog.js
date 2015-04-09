@@ -68,18 +68,16 @@ ve.ui.ProgressDialog.prototype.getSetupProcess = function ( data ) {
 
 			for ( i = 0, l = progresses.length; i < l; i++ ) {
 				cancelDeferred = $.Deferred();
-				$row = this.$( '<div>' ).addClass( 've-ui-progressDialog-row' );
-				progressBar = new OO.ui.ProgressBarWidget( { $: this.$ } );
+				$row = $( '<div>' ).addClass( 've-ui-progressDialog-row' );
+				progressBar = new OO.ui.ProgressBarWidget();
 				fieldLayout = new OO.ui.FieldLayout(
 					progressBar,
 					{
-						$: this.$,
 						label: progresses[i].label,
 						align: 'top'
 					}
 				);
 				cancelButton = new OO.ui.ButtonWidget( {
-					$: this.$,
 					framed: false,
 					icon: 'clear',
 					iconTitle: OO.ui.deferMsg( 'visualeditor-dialog-action-cancel' )

@@ -61,16 +61,15 @@ ve.ui.CommandHelpDialog.prototype.initialize = function () {
 		commandGroups = this.constructor.static.getCommandGroups();
 
 	this.contentLayout = new OO.ui.PanelLayout( {
-		$: this.$,
 		scrollable: true,
 		padded: true,
 		expanded: false
 	} );
-	this.$container = this.$( '<div>' ).addClass( 've-ui-commandHelpDialog-container' );
+	this.$container = $( '<div>' ).addClass( 've-ui-commandHelpDialog-container' );
 
 	for ( i in commandGroups ) {
 		commands = commandGroups[i].commands;
-		$list = this.$( '<dl>' ).addClass( 've-ui-commandHelpDialog-list' );
+		$list = $( '<dl>' ).addClass( 've-ui-commandHelpDialog-list' );
 		for ( j = 0, jLen = commands.length; j < jLen; j++ ) {
 			if ( commands[j].trigger ) {
 				triggerList = ve.ui.triggerRegistry.lookup( commands[j].trigger );
@@ -86,22 +85,22 @@ ve.ui.CommandHelpDialog.prototype.initialize = function () {
 					);
 				}
 			}
-			$shortcut = this.$( '<dt>' );
+			$shortcut = $( '<dt>' );
 			for ( k = 0, kLen = triggerList.length; k < kLen; k++ ) {
-				$shortcut.append( this.$( '<kbd>' ).text(
+				$shortcut.append( $( '<kbd>' ).text(
 					triggerList[k].getMessage().replace( /\+/g, ' + ' )
 				) );
 			}
 			$list.append(
 				$shortcut,
-				this.$( '<dd>' ).text( ve.msg( commands[j].msg ) )
+				$( '<dd>' ).text( ve.msg( commands[j].msg ) )
 			);
 		}
 		this.$container.append(
-			this.$( '<div>' )
+			$( '<div>' )
 				.addClass( 've-ui-commandHelpDialog-section' )
 				.append(
-					this.$( '<h3>' ).text( ve.msg( commandGroups[i].title ) ),
+					$( '<h3>' ).text( ve.msg( commandGroups[i].title ) ),
 					$list
 				)
 		);

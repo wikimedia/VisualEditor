@@ -24,22 +24,16 @@ ve.ui.DimensionsWidget = function VeUiDimensionsWidget( config ) {
 	// Parent constructor
 	OO.ui.Widget.call( this, config );
 
-	this.widthInput = new OO.ui.TextInputWidget( {
-		$: this.$
-	} );
-	this.heightInput = new OO.ui.TextInputWidget( {
-		$: this.$
-	} );
+	this.widthInput = new OO.ui.TextInputWidget();
+	this.heightInput = new OO.ui.TextInputWidget();
 
 	this.defaults = config.defaults || { width: '', height: '' };
 	this.renderDefaults();
 
 	labelTimes = new OO.ui.LabelWidget( {
-		$: this.$,
 		label: ve.msg( 'visualeditor-dimensionswidget-times' )
 	} );
 	labelPx = new OO.ui.LabelWidget( {
-		$: this.$,
 		label: ve.msg( 'visualeditor-dimensionswidget-px' )
 	} );
 

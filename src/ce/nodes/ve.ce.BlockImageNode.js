@@ -25,7 +25,7 @@ ve.ce.BlockImageNode = function VeCeBlockImageNode( model, config ) {
 	ve.ce.BlockImageNode.super.call( this, model, config );
 
 	// Build DOM
-	this.$image = this.$( '<img>' )
+	this.$image = $( '<img>' )
 		.prop( 'src', this.getResolvedAttribute( 'src' ) )
 		.prependTo( this.$element );
 

@@ -126,11 +126,11 @@ ve.ce.GeneratedContentNode.prototype.getRenderedDomElements = function ( domElem
 		// Span wrap root text nodes so they can be measured
 		for ( i = 0, len = $rendering.length; i < len; i++ ) {
 			if ( $rendering[i].nodeType === Node.TEXT_NODE ) {
-				$rendering[i] = this.$( '<span>' ).append( $rendering[i] )[0];
+				$rendering[i] = $( '<span>' ).append( $rendering[i] )[0];
 			}
 		}
 	} else {
-		$rendering = this.$( '<span>' );
+		$rendering = $( '<span>' );
 	}
 
 	// Render the computed values of some attributes
@@ -154,7 +154,7 @@ ve.ce.GeneratedContentNode.prototype.render = function ( generatedContents ) {
 	if ( this.live ) {
 		this.emit( 'teardown' );
 	}
-	var $newElements = this.$( this.getRenderedDomElements( ve.copyDomElements( generatedContents ) ) );
+	var $newElements = $( this.getRenderedDomElements( ve.copyDomElements( generatedContents ) ) );
 	if ( !this.$element[0].parentNode ) {
 		// this.$element hasn't been attached yet, so just overwrite it
 		this.$element = $newElements;

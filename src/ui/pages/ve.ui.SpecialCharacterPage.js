@@ -24,11 +24,11 @@ ve.ui.SpecialCharacterPage = function VeUiSpecialCharacterPage( name, config ) {
 
 	var character,
 		characters = config.characters,
-		$characters = this.$( '<div>' ).addClass( 've-ui-specialCharacterPage-characters' );
+		$characters = $( '<div>' ).addClass( 've-ui-specialCharacterPage-characters' );
 
 	for ( character in characters ) {
 		$characters.append(
-			this.$( '<div>' )
+			$( '<div>' )
 				.addClass( 've-ui-specialCharacterPage-character' )
 				.data( 'character', characters[character] )
 				.text( character )
@@ -37,7 +37,7 @@ ve.ui.SpecialCharacterPage = function VeUiSpecialCharacterPage( name, config ) {
 
 	this.$element
 		.addClass( 've-ui-specialCharacterPage')
-		.append( this.$( '<h3>' ).text( name ), $characters );
+		.append( $( '<h3>' ).text( name ), $characters );
 };
 
 /* Inheritance */

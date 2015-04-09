@@ -28,7 +28,6 @@ ve.ui.SurfaceWidget = function VeUiSurfaceWidget( doc, config ) {
 
 	// Properties
 	this.surface = ve.init.target.createSurface( doc, {
-		$: this.$,
 		excludeCommands: config.excludeCommands,
 		importRules: config.importRules,
 		inDialog: config.inDialog

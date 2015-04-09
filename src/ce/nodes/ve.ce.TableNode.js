@@ -49,20 +49,18 @@ ve.ce.TableNode.prototype.onSetup = function () {
 	this.surface = this.getRoot().getSurface();
 
 	// Overlay
-	this.$selectionBox = this.$( '<div>' ).addClass( 've-ce-tableNodeOverlay-selection-box' );
-	this.$selectionBoxAnchor = this.$( '<div>' ).addClass( 've-ce-tableNodeOverlay-selection-box-anchor' );
+	this.$selectionBox = $( '<div>' ).addClass( 've-ce-tableNodeOverlay-selection-box' );
+	this.$selectionBoxAnchor = $( '<div>' ).addClass( 've-ce-tableNodeOverlay-selection-box-anchor' );
 	this.colContext = new ve.ui.TableContext( this, 'table-col', {
-		$: this.$,
 		classes: ['ve-ui-tableContext-colContext'],
 		indicator: 'down'
 	} );
 	this.rowContext = new ve.ui.TableContext( this, 'table-row', {
-		$: this.$,
 		classes: ['ve-ui-tableContext-rowContext'],
 		indicator: 'next'
 	} );
 
-	this.$overlay = this.$( '<div>' )
+	this.$overlay = $( '<div>' )
 		.addClass( 've-ce-tableNodeOverlay oo-ui-element-hidden' )
 		.append( [
 			this.$selectionBox,

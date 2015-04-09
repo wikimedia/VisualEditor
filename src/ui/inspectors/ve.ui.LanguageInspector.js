@@ -73,7 +73,6 @@ ve.ui.LanguageInspector.prototype.initialize = function () {
 
 	// Properties
 	this.languageInput = new ve.ui.LanguageInputWidget( {
-		$: this.$,
 		dialogManager: this.manager.getSurface().getDialogs()
 	} );
 

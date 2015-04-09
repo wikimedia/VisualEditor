@@ -19,8 +19,8 @@ ve.ui.LanguageResultWidget = function VeUiLanguageResultWidget( config ) {
 
 	// Initialization
 	this.$element.addClass( 've-ui-languageResultWidget' );
-	this.$name = this.$( '<div>' ).addClass( 've-ui-languageResultWidget-name' );
-	this.$otherMatch = this.$( '<div>' ).addClass( 've-ui-languageResultWidget-otherMatch' );
+	this.$name = $( '<div>' ).addClass( 've-ui-languageResultWidget-name' );
+	this.$otherMatch = $( '<div>' ).addClass( 've-ui-languageResultWidget-otherMatch' );
 	this.setLabel( this.$otherMatch.add( this.$name ) );
 };
 
@@ -65,7 +65,7 @@ ve.ui.LanguageResultWidget.prototype.updateLabel = function ( query, matchedProp
  * @returns {jQuery} Text with query substring wrapped in highlighted span
  */
 ve.ui.LanguageResultWidget.prototype.highlightQuery = function ( text, query ) {
-	var $result = this.$( '<span>' ),
+	var $result = $( '<span>' ),
 		offset = text.toLowerCase().indexOf( query.toLowerCase() );
 
 	if ( !query.length || offset === -1 ) {
@@ -73,7 +73,7 @@ ve.ui.LanguageResultWidget.prototype.highlightQuery = function ( text, query ) {
 	}
 	$result.append(
 		document.createTextNode( text.slice( 0, offset ) ),
-		this.$( '<span>' )
+		$( '<span>' )
 			.addClass( 've-ui-languageResultWidget-highlight' )
 			.text( text.slice( offset, offset + query.length ) ),
 		document.createTextNode( text.slice( offset + query.length ) )

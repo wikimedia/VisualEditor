@@ -90,10 +90,10 @@ ve.ui.FragmentInspector.prototype.initialize = function () {
 
 	// Properties
 	this.container = new OO.ui.PanelLayout( {
-		$: this.$, scrollable: true, classes: [ 've-ui-fragmentInspector-container' ]
+		scrollable: true, classes: [ 've-ui-fragmentInspector-container' ]
 	} );
 	this.form = new OO.ui.FormLayout( {
-		$: this.$, classes: [ 've-ui-fragmentInspector-form' ]
+		classes: [ 've-ui-fragmentInspector-form' ]
 	} );
 
 	// Events

@@ -48,7 +48,7 @@ ve.ui.SpecialCharacterDialog.prototype.initialize = function () {
 	// Parent method
 	ve.ui.SpecialCharacterDialog.super.prototype.initialize.call( this );
 
-	this.$spinner = this.$( '<div>' ).addClass( 've-ui-specialCharacterDialog-spinner' );
+	this.$spinner = $( '<div>' ).addClass( 've-ui-specialCharacterDialog-spinner' );
 	this.$content.append( this.$spinner );
 };
 
@@ -127,7 +127,6 @@ ve.ui.SpecialCharacterDialog.prototype.buildButtonList = function () {
 		isInsideDialog = !!this.manager.$element.closest( '.oo-ui-dialog' ).length;
 
 	this.bookletLayout = new OO.ui.BookletLayout( {
-		$: this.$,
 		outlined: true,
 		menuSize: isInsideDialog ? '10em' : '18em',
 		continuous: true
@@ -136,7 +135,6 @@ ve.ui.SpecialCharacterDialog.prototype.buildButtonList = function () {
 	for ( category in this.characters ) {
 		this.pages.push(
 			new ve.ui.SpecialCharacterPage( category, {
-				$: this.$,
 				label: category,
 				characters: this.characters[category]
 			} )

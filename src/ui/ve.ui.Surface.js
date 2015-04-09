@@ -33,11 +33,11 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 	// Properties
 	this.inDialog = config.inDialog || '';
 	this.globalOverlay = new ve.ui.Overlay( { classes: ['ve-ui-overlay-global'] } );
-	this.localOverlay = new ve.ui.Overlay( { $: this.$, classes: ['ve-ui-overlay-local'] } );
-	this.$selections = this.$( '<div>' );
-	this.$blockers = this.$( '<div>' );
-	this.$controls = this.$( '<div>' );
-	this.$menus = this.$( '<div>' );
+	this.localOverlay = new ve.ui.Overlay( { classes: ['ve-ui-overlay-local'] } );
+	this.$selections = $( '<div>' );
+	this.$blockers = $( '<div>' );
+	this.$controls = $( '<div>' );
+	this.$menus = $( '<div>' );
 	this.triggerListener = new ve.TriggerListener( OO.simpleArrayDifference(
 		Object.keys( ve.ui.commandRegistry.registry ), config.excludeCommands || []
 	) );
@@ -52,7 +52,7 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 		documentModel = ve.dm.converter.getModelFromDom( dataOrDoc );
 	}
 	this.model = new ve.dm.Surface( documentModel );
-	this.view = new ve.ce.Surface( this.model, this, { $: this.$ } );
+	this.view = new ve.ce.Surface( this.model, this );
 	this.dialogs = this.createDialogWindowManager();
 	this.importRules = config.importRules || {};
 	this.enabled = true;
@@ -64,7 +64,6 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 
 	this.toolbarHeight = 0;
 	this.toolbarDialogs = new ve.ui.ToolbarDialogWindowManager( this, {
-		$: this.$,
 		factory: ve.ui.windowFactory,
 		modal: false
 	} );

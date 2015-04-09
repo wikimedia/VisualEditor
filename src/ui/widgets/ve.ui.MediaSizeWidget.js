@@ -34,53 +34,42 @@ ve.ui.MediaSizeWidget = function VeUiMediaSizeWidget( scalable, config ) {
 
 	// Define button select widget
 	this.sizeTypeSelectWidget = new OO.ui.ButtonSelectWidget( {
-		$: this.$,
 		classes: [ 've-ui-mediaSizeWidget-section-sizetype' ]
 	} );
 	this.sizeTypeSelectWidget.addItems( [
 		new OO.ui.ButtonOptionWidget( {
-			$: this.$,
 			data: 'default',
 			label: ve.msg( 'visualeditor-mediasizewidget-sizeoptions-default' )
 		} ),
 		// TODO: when upright is supported by Parsoid
 		// new OO.ui.ButtonOptionWidget( {
-		// $: this.$,
 		// data: 'scale',
 		// label: ve.msg( 'visualeditor-mediasizewidget-sizeoptions-scale' )
 		// } ),
 		new OO.ui.ButtonOptionWidget( {
-			$: this.$,
 			data: 'custom',
 			label: ve.msg( 'visualeditor-mediasizewidget-sizeoptions-custom' )
 		} )
 	] );
 
 	// Define scale
-	this.scaleInput = new OO.ui.TextInputWidget( {
-		$: this.$
-	} );
+	this.scaleInput = new OO.ui.TextInputWidget();
 	scalePercentLabel = new OO.ui.LabelWidget( {
-		$: this.$,
 		input: this.scaleInput,
 		label: ve.msg( 'visualeditor-mediasizewidget-label-scale-percent' )
 	} );
 
-	this.dimensionsWidget = new ve.ui.DimensionsWidget( {
-		$: this.$
-	} );
+	this.dimensionsWidget = new ve.ui.DimensionsWidget();
 
 	// Error label is available globally so it can be displayed and
 	// hidden as needed
 	this.errorLabel = new OO.ui.LabelWidget( {
-		$: this.$,
 		label: ve.msg( 'visualeditor-mediasizewidget-label-defaulterror' )
 	} );
 
 	// Field layouts
 	fieldScale = new OO.ui.FieldLayout(
 		this.scaleInput, {
-			$: this.$,
 			align: 'right',
 			// TODO: when upright is supported by Parsoid
 			// classes: ['ve-ui-mediaSizeWidget-section-scale'],
@@ -91,7 +80,6 @@ ve.ui.MediaSizeWidget = function VeUiMediaSizeWidget( scalable, config ) {
 	// this.scaleInput.$element.append( scalePercentLabel.$element );
 	fieldCustom = new OO.ui.FieldLayout(
 		this.dimensionsWidget, {
-			$: this.$,
 			align: 'right',
 			label: ve.msg( 'visualeditor-mediasizewidget-label-custom' ),
 			classes: ['ve-ui-mediaSizeWidget-section-custom']
@@ -100,7 +88,6 @@ ve.ui.MediaSizeWidget = function VeUiMediaSizeWidget( scalable, config ) {
 
 	// Buttons
 	this.fullSizeButton = new OO.ui.ButtonWidget( {
-		$: this.$,
 		label: ve.msg( 'visualeditor-mediasizewidget-button-originaldimensions' ),
 		classes: ['ve-ui-mediaSizeWidget-button-fullsize']
 	} );
@@ -114,7 +101,7 @@ ve.ui.MediaSizeWidget = function VeUiMediaSizeWidget( scalable, config ) {
 			// fieldScale.$element,
 			fieldCustom.$element,
 			this.fullSizeButton.$element,
-			this.$( '<div>' )
+			$( '<div>' )
 				.addClass( 've-ui-mediaSizeWidget-label-error' )
 				.append( this.errorLabel.$element )
 		);

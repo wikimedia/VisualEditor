@@ -33,7 +33,6 @@ ve.ui.LanguageSearchWidget = function VeUiLanguageSearchWidget( config ) {
 		languageCode = languageCodes[i];
 		this.languageResultWidgets.push(
 			new ve.ui.LanguageResultWidget( {
-				$: this.$,
 				data: {
 					code: languageCode,
 					name: ve.init.platform.getLanguageName( languageCode ),

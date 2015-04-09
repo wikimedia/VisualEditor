@@ -32,8 +32,8 @@ ve.ce.Surface = function VeCeSurface( model, ui, options ) {
 	this.documentView = new ve.ce.Document( model.getDocument(), this );
 	this.surfaceObserver = new ve.ce.SurfaceObserver( this );
 	this.selectionTimeout = null;
-	this.$window = this.$( this.getElementWindow() );
-	this.$document = this.$( this.getElementDocument() );
+	this.$window = $( this.getElementWindow() );
+	this.$document = $( this.getElementDocument() );
 	this.$documentNode = this.getDocument().getDocumentNode().$element;
 	// Window.getSelection returns a live singleton representing the document's selection
 	this.nativeSelection = this.getElementWindow().getSelection();
@@ -51,19 +51,19 @@ ve.ce.Surface = function VeCeSurface( model, ui, options ) {
 	this.resizing = false;
 	this.focused = false;
 	this.deactivated = false;
-	this.$deactivatedSelection = this.$( '<div>' );
+	this.$deactivatedSelection = $( '<div>' );
 	this.activeTableNode = null;
 	this.contentBranchNodeChanged = false;
-	this.$highlightsFocused = this.$( '<div>' );
-	this.$highlightsBlurred = this.$( '<div>' );
-	this.$highlights = this.$( '<div>' ).append(
+	this.$highlightsFocused = $( '<div>' );
+	this.$highlightsBlurred = $( '<div>' );
+	this.$highlights = $( '<div>' ).append(
 		this.$highlightsFocused, this.$highlightsBlurred
 	);
-	this.$findResults = this.$( '<div>' );
-	this.$dropMarker = this.$( '<div>' ).addClass( 've-ce-surface-dropMarker oo-ui-element-hidden' );
+	this.$findResults = $( '<div>' );
+	this.$dropMarker = $( '<div>' ).addClass( 've-ce-surface-dropMarker oo-ui-element-hidden' );
 	this.$lastDropTarget = null;
 	this.lastDropPosition = null;
-	this.$pasteTarget = this.$( '<div>' );
+	this.$pasteTarget = $( '<div>' );
 	this.pasting = false;
 	this.copying = false;
 	this.pasteSpecial = false;
@@ -334,7 +334,7 @@ ve.ce.Surface.prototype.getOffsetFromCoords = function ( x, y ) {
 			textRange = document.body.createTextRange();
 			textRange.moveToPoint( x, y );
 			textRange.pasteHTML( '<span class="ve-ce-textRange-drop-marker">&nbsp;</span>' );
-			$marker = this.$( '.ve-ce-textRange-drop-marker' );
+			$marker = $( '.ve-ce-textRange-drop-marker' );
 			offset = ve.ce.getOffset( $marker.get( 0 ), 0 );
 			$marker.remove();
 		}
@@ -712,7 +712,7 @@ ve.ce.Surface.prototype.updateDeactivatedSelection = function () {
 	rects = this.getSelectionRects( selection );
 	if ( rects ) {
 		for ( i = 0, l = rects.length; i < l; i++ ) {
-			this.$deactivatedSelection.append( this.$( '<div>' ).css( {
+			this.$deactivatedSelection.append( $( '<div>' ).css( {
 				top: rects[i].top,
 				left: rects[i].left,
 				width: rects[i].width,
@@ -1629,7 +1629,7 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 	} else {
 		clipboardItem.hash = this.constructor.static.getClipboardHash( this.$pasteTarget.contents() );
 		this.$pasteTarget.prepend(
-			this.$( '<span>' ).attr( 'data-ve-clipboard-key', this.clipboardId + '-' + clipboardIndex ).html( '&nbsp;' )
+			$( '<span>' ).attr( 'data-ve-clipboard-key', this.clipboardId + '-' + clipboardIndex ).html( '&nbsp;' )
 		);
 
 		// If direct clipboard editing is not allowed, we must use the pasteTarget to
@@ -1878,7 +1878,7 @@ ve.ce.Surface.prototype.afterPaste = function () {
 		clipboardKey = beforePasteData.custom;
 	} else {
 		if ( beforePasteData.html ) {
-			$elements = this.$( $.parseHTML( beforePasteData.html ) );
+			$elements = $( $.parseHTML( beforePasteData.html ) );
 
 			// Try to find the clipboard key hidden in the HTML
 			$elements = $elements.filter( function () {
@@ -1970,7 +1970,7 @@ ve.ce.Surface.prototype.afterPaste = function () {
 			// If the clipboardKey is set (paste from other VE instance), and clipboard
 			// data is available, then make sure important spans haven't been dropped
 			if ( !$elements ) {
-				$elements = this.$( $.parseHTML( beforePasteData.html ) );
+				$elements = $( $.parseHTML( beforePasteData.html ) );
 			}
 			if (
 				// HACK: Allow the test runner to force the use of clipboardData
@@ -2853,7 +2853,7 @@ ve.ce.Surface.prototype.getFocusedNodeDirectionality = function () {
 	if ( cursorNode.nodeType === Node.TEXT_NODE ) {
 		cursorNode = cursorNode.parentNode;
 	}
-	return this.$( cursorNode ).css( 'direction' );
+	return $( cursorNode ).css( 'direction' );
 };
 
 /**

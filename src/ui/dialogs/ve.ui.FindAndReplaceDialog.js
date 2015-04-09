@@ -49,7 +49,7 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 	// Parent method
 	ve.ui.FindAndReplaceDialog.super.prototype.initialize.call( this );
 
-	this.$findResults = this.$( '<div>' ).addClass( 've-ui-findAndReplaceDialog-findResults' );
+	this.$findResults = $( '<div>' ).addClass( 've-ui-findAndReplaceDialog-findResults' );
 	this.fragments = [];
 	this.results = 0;
 	// Range over the list of fragments indicating which ones where rendered,
@@ -59,47 +59,38 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 	this.focusedIndex = 0;
 	this.query = null;
 	this.findText = new OO.ui.TextInputWidget( {
-		$: this.$,
 		placeholder: ve.msg( 'visualeditor-find-and-replace-find-text' )
 	} );
 	this.matchCaseToggle = new OO.ui.ToggleButtonWidget( {
-		$: this.$,
 		icon: 'case-sensitive',
 		iconTitle: ve.msg( 'visualeditor-find-and-replace-match-case' )
 	} );
 	this.regexToggle = new OO.ui.ToggleButtonWidget( {
-		$: this.$,
 		icon: 'regular-expression',
 		iconTitle: ve.msg( 'visualeditor-find-and-replace-regular-expression' )
 	} );
 
 	this.previousButton = new OO.ui.ButtonWidget( {
-		$: this.$,
 		icon: 'previous',
 		iconTitle: ve.msg( 'visualeditor-find-and-replace-previous-button' ) + ' ' +
 			ve.ui.triggerRegistry.getMessages( 'findPrevious' ).join( ', ' )
 	} );
 	this.nextButton = new OO.ui.ButtonWidget( {
-		$: this.$,
 		icon: 'next',
 		iconTitle: ve.msg( 'visualeditor-find-and-replace-next-button' ) + ' ' +
 			ve.ui.triggerRegistry.getMessages( 'findNext' ).join( ', ' )
 	} );
 	this.replaceText = new OO.ui.TextInputWidget( {
-		$: this.$,
 		placeholder: ve.msg( 'visualeditor-find-and-replace-replace-text' )
 	} );
 	this.replaceButton = new OO.ui.ButtonWidget( {
-		$: this.$,
 		label: ve.msg( 'visualeditor-find-and-replace-replace-button' )
 	} );
 	this.replaceAllButton = new OO.ui.ButtonWidget( {
-		$: this.$,
 		label: ve.msg( 'visualeditor-find-and-replace-replace-all-button' )
 	} );
 
 	var optionsGroup = new OO.ui.ButtonGroupWidget( {
-			$: this.$,
 			classes: ['ve-ui-findAndReplaceDialog-cell'],
 			items: [
 				this.matchCaseToggle,
@@ -107,7 +98,6 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 			]
 		} ),
 		navigateGroup = new OO.ui.ButtonGroupWidget( {
-			$: this.$,
 			classes: ['ve-ui-findAndReplaceDialog-cell'],
 			items: [
 				this.previousButton,
@@ -115,7 +105,6 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 			]
 		} ),
 		replaceGroup = new OO.ui.ButtonGroupWidget( {
-			$: this.$,
 			classes: ['ve-ui-findAndReplaceDialog-cell'],
 			items: [
 				this.replaceButton,
@@ -123,12 +112,11 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 			]
 		} ),
 		doneButton = new OO.ui.ButtonWidget( {
-			$: this.$,
 			classes: ['ve-ui-findAndReplaceDialog-cell'],
 			label: ve.msg( 'visualeditor-find-and-replace-done' )
 		} ),
-		$findRow = this.$( '<div>' ).addClass( 've-ui-findAndReplaceDialog-row' ),
-		$replaceRow = this.$( '<div>' ).addClass( 've-ui-findAndReplaceDialog-row' );
+		$findRow = $( '<div>' ).addClass( 've-ui-findAndReplaceDialog-row' ),
+		$replaceRow = $( '<div>' ).addClass( 've-ui-findAndReplaceDialog-row' );
 
 	// Events
 	this.onWindowScrollDebounced = ve.debounce( this.onWindowScroll.bind( this ), 250 );
@@ -153,14 +141,14 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 	this.$body
 		.append(
 			$findRow.append(
-				this.$( '<div>' ).addClass( 've-ui-findAndReplaceDialog-cell ve-ui-findAndReplaceDialog-cell-input' ).append(
+				$( '<div>' ).addClass( 've-ui-findAndReplaceDialog-cell ve-ui-findAndReplaceDialog-cell-input' ).append(
 					this.findText.$element
 				),
 				navigateGroup.$element,
 				optionsGroup.$element
 			),
 			$replaceRow.append(
-				this.$( '<div>' ).addClass( 've-ui-findAndReplaceDialog-cell ve-ui-findAndReplaceDialog-cell-input' ).append(
+				$( '<div>' ).addClass( 've-ui-findAndReplaceDialog-cell ve-ui-findAndReplaceDialog-cell-input' ).append(
 					this.replaceText.$element
 				),
 				replaceGroup.$element,
@@ -344,11 +332,11 @@ ve.ui.FindAndReplaceDialog.prototype.renderRangeOfFragments = function ( range )
 	this.$findResults.empty();
 	for ( i = range.start; i < range.end; i++ ) {
 		rects = this.surface.getView().getSelectionRects( this.fragments[i].getSelection() );
-		$result = this.$( '<div>' ).addClass( 've-ui-findAndReplaceDialog-findResult' );
+		$result = $( '<div>' ).addClass( 've-ui-findAndReplaceDialog-findResult' );
 		top = Infinity;
 		for ( j = 0, jlen = rects.length; j < jlen; j++ ) {
 			top = Math.min( top, rects[j].top );
-			$result.append( this.$( '<div>' ).css( {
+			$result.append( $( '<div>' ).css( {
 				top: rects[j].top,
 				left: rects[j].left,
 				width: rects[j].width,
@@ -406,7 +394,7 @@ ve.ui.FindAndReplaceDialog.prototype.highlightFocused = function ( scrollIntoVie
 		windowScrollHeight = surfaceView.$window.height() - this.surface.toolbarHeight;
 
 		if ( offset < windowScrollTop || offset > windowScrollTop + windowScrollHeight ) {
-			surfaceView.$( 'body, html' ).animate( { scrollTop: offset - ( windowScrollHeight / 2  ) }, 'fast' );
+			$( 'body, html' ).animate( { scrollTop: offset - ( windowScrollHeight / 2  ) }, 'fast' );
 		}
 	}
 };

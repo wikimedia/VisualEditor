@@ -22,31 +22,30 @@ ve.ui.DebugBar = function VeUiDebugBar( surface, config ) {
 
 	this.surface = surface;
 
-	this.$commands = this.$( '<div>' ).addClass( 've-ui-debugBar-commands' );
-	this.$dumpLinmodData = this.$( '<td>' ).addClass( 've-ui-debugBar-dump-linmod-data' );
-	this.$dumpLinmodMetadata = this.$( '<td>' ).addClass( 've-ui-debugBar-dump-linmod-metadata' );
-	this.$dumpView = this.$( '<td>' ).addClass( 've-ui-debugBar-dump-view' );
-	this.$dumpModel = this.$( '<td>' ).addClass( 've-ui-debugBar-dump-model' );
+	this.$commands = $( '<div>' ).addClass( 've-ui-debugBar-commands' );
+	this.$dumpLinmodData = $( '<td>' ).addClass( 've-ui-debugBar-dump-linmod-data' );
+	this.$dumpLinmodMetadata = $( '<td>' ).addClass( 've-ui-debugBar-dump-linmod-metadata' );
+	this.$dumpView = $( '<td>' ).addClass( 've-ui-debugBar-dump-view' );
+	this.$dumpModel = $( '<td>' ).addClass( 've-ui-debugBar-dump-model' );
 
 	hideDumpButton = new OO.ui.ButtonWidget( {
-		$: this.$,
 		label: 'Hide'
 	} );
 
 	this.$dump =
-		this.$( '<div class="ve-ui-debugBar-dump">' ).append(
+		$( '<div class="ve-ui-debugBar-dump">' ).append(
 			hideDumpButton.$element,
-			this.$( '<table></table>' ).append(
-				this.$( '<thead><th>Linear model data</th><th>Linear model metadata</th><th>View tree</th><th>Model tree</th></thead>' ),
-				this.$( '<tbody>' ).append(
-					this.$( '<tr>' ).append(
+			$( '<table></table>' ).append(
+				$( '<thead><th>Linear model data</th><th>Linear model metadata</th><th>View tree</th><th>Model tree</th></thead>' ),
+				$( '<tbody>' ).append(
+					$( '<tr>' ).append(
 						this.$dumpLinmodData, this.$dumpLinmodMetadata, this.$dumpView, this.$dumpModel
 					)
 				)
 			)
 		).hide();
 
-	this.$filibuster = this.$( '<div class="ve-ui-debugBar-filibuster"></div>' );
+	this.$filibuster = $( '<div class="ve-ui-debugBar-filibuster"></div>' );
 
 	// Widgets
 	this.selectionLabel = new OO.ui.LabelWidget( { classes: ['ve-ui-debugBar-selectionLabel'] } );
@@ -79,7 +78,7 @@ ve.ui.DebugBar = function VeUiDebugBar( surface, config ) {
 		this.$commands.append(
 			this.selectionLabel.$element,
 			this.logRangeButton.$element,
-			this.$( this.constructor.static.dividerTemplate ),
+			$( this.constructor.static.dividerTemplate ),
 			dumpModelButtonGroup.$element,
 			this.inputDebuggingToggle.$element,
 			this.filibusterToggle.$element
@@ -170,20 +169,20 @@ ve.ui.DebugBar.prototype.onDumpModelButtonClick = function () {
  */
 ve.ui.DebugBar.prototype.generateListFromLinearData = function ( linearData ) {
 	var i, $li, $label, element, text, annotations, data,
-		$ol = this.$( '<ol start="0"></ol>' );
+		$ol = $( '<ol start="0"></ol>' );
 
 	data = linearData instanceof ve.dm.LinearData ? linearData.data : linearData;
 
 	for ( i = 0; i < data.length; i++ ) {
-		$li = this.$( '<li>' );
-		$label = this.$( '<span>' );
+		$li = $( '<li>' );
+		$label = $( '<span>' );
 		element = data[i];
 		annotations = null;
 		if ( linearData instanceof ve.dm.MetaLinearData ) {
 			if ( element && element.length ) {
 				$li.append( this.generateListFromLinearData( element ) );
 			} else {
-				$li.append( this.$( '<span>undefined</span>' ).addClass( 've-ui-debugBar-dump-undefined' ) );
+				$li.append( $( '<span>undefined</span>' ).addClass( 've-ui-debugBar-dump-undefined' ) );
 			}
 		} else {
 			if ( element.type ) {
@@ -202,7 +201,7 @@ ve.ui.DebugBar.prototype.generateListFromLinearData = function ( linearData ) {
 			if ( annotations ) {
 				$label.append(
 					/*jshint loopfunc:true */
-					this.$( '<span>' ).text(
+					$( '<span>' ).text(
 						'[' + this.getSurface().getModel().getDocument().getStore().values( annotations ).map( function ( ann ) {
 							return JSON.stringify( ann.getComparableObject() );
 						} ).join( ', ' ) + ']'
@@ -225,17 +224,17 @@ ve.ui.DebugBar.prototype.generateListFromLinearData = function ( linearData ) {
  */
 ve.ui.DebugBar.prototype.generateListFromNode = function ( node ) {
 	var $li, i, $label,
-		$ol = this.$( '<ol start="0"></ol>' );
+		$ol = $( '<ol start="0"></ol>' );
 
 	for ( i = 0; i < node.children.length; i++ ) {
-		$li = this.$( '<li>' );
-		$label = this.$( '<span>' ).addClass( 've-ui-debugBar-dump-element' );
+		$li = $( '<li>' );
+		$label = $( '<span>' ).addClass( 've-ui-debugBar-dump-element' );
 		if ( node.children[i].length !== undefined ) {
 			$li.append(
 				$label
 					.text( node.children[i].type )
 					.append(
-						this.$( '<span>' ).text( ' (' + node.children[i].length + ')' )
+						$( '<span>' ).text( ' (' + node.children[i].length + ')' )
 					)
 			);
 		} else {

@@ -32,7 +32,7 @@ ve.ce.FocusableNode = function VeCeFocusableNode( $focusable, config ) {
 	this.focused = false;
 	this.highlighted = false;
 	this.isFocusableSetup = false;
-	this.$highlights = this.$( '<div>' ).addClass( 've-ce-focusableNode-highlights' );
+	this.$highlights = $( '<div>' ).addClass( 've-ce-focusableNode-highlights' );
 	this.$focusable = $focusable || this.$element;
 	this.focusableSurface = null;
 	this.rects = null;
@@ -80,13 +80,13 @@ OO.initClass( ve.ce.FocusableNode );
  * @returns {jQuery} A highlight element
  */
 ve.ce.FocusableNode.prototype.createHighlight = function () {
-	return this.$( '<div>' )
+	return $( '<div>' )
 		.addClass( 've-ce-focusableNode-highlight' )
 		.prop( {
 			title: this.constructor.static.getDescription( this.model ),
 			draggable: false
 		} )
-		.append( this.$( '<img>' )
+		.append( $( '<img>' )
 			.addClass( 've-ce-focusableNode-highlight-relocatable-marker' )
 			.attr( 'src', 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==' )
 			.on( {
@@ -265,7 +265,7 @@ ve.ce.FocusableNode.prototype.onFocusableMouseEnter = function () {
  * @param {jQuery.Event} e Mouse move event
  */
 ve.ce.FocusableNode.prototype.onSurfaceMouseMove = function ( e ) {
-	var $target = this.$( e.target );
+	var $target = $( e.target );
 	if (
 		!$target.hasClass( 've-ce-focusableNode-highlight' ) &&
 		$target.closest( '.ve-ce-focusableNode' ).length === 0

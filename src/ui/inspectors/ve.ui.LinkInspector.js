@@ -105,7 +105,6 @@ ve.ui.LinkInspector.prototype.initialize = function () {
 
 	// Properties
 	this.targetInput = new this.constructor.static.linkTargetInputWidget( {
-		$: this.$,
 		$overlay: overlay ? overlay.$element : this.$frame,
 		disabled: true,
 		classes: [ 've-ui-linkInspector-target' ]

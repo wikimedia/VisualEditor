@@ -30,31 +30,25 @@ ve.ui.LanguageInputWidget = function VeUiLanguageInputWidget( config ) {
 	this.dialogs = config.dialogManager || new ve.ui.WindowManager( { factory: ve.ui.windowFactory, isolate: true } );
 	this.availableLanguages = config.availableLanguages;
 	this.findLanguageButton = new OO.ui.ButtonWidget( {
-		$: this.$,
 		classes: [ 've-ui-languageInputWidget-findLanguageButton' ],
 		label: ve.msg( 'visualeditor-languageinspector-widget-changelang' ),
 		indicator: 'next'
 	} );
 	this.languageCodeTextInput = new OO.ui.TextInputWidget( {
-		$: this.$,
 		classes: [ 've-ui-languageInputWidget-languageCodeTextInput' ]
 	} );
 	this.directionSelect = new OO.ui.ButtonSelectWidget( {
-		$: this.$,
 		classes: [ 've-ui-languageInputWidget-directionSelect' ]
 	} );
 	this.findLanguageField = new OO.ui.FieldLayout( this.findLanguageButton, {
-		$: this.$,
 		align: 'left',
 		label: ve.msg( 'visualeditor-languageinspector-widget-label-language' )
 	} );
 	this.languageCodeField = new OO.ui.FieldLayout( this.languageCodeTextInput, {
-		$: this.$,
 		align: 'left',
 		label: ve.msg( 'visualeditor-languageinspector-widget-label-langcode' )
 	} );
 	this.directionField = new OO.ui.FieldLayout( this.directionSelect, {
-		$: this.$,
 		align: 'left',
 		label: ve.msg( 'visualeditor-languageinspector-widget-label-direction' )
 	} );
@@ -67,12 +61,10 @@ ve.ui.LanguageInputWidget = function VeUiLanguageInputWidget( config ) {
 	// Initialization
 	var dirItems = [
 		new OO.ui.ButtonOptionWidget( {
-			$: this.$,
 			data: 'rtl',
 			icon: 'text-dir-rtl'
 		} ),
 		new OO.ui.ButtonOptionWidget( {
-			$: this.$,
 			data: 'ltr',
 			icon: 'text-dir-ltr'
 		} )
@@ -80,7 +72,6 @@ ve.ui.LanguageInputWidget = function VeUiLanguageInputWidget( config ) {
 	if ( !config.requireDir ) {
 		dirItems.splice(
 			1, 0, new OO.ui.ButtonOptionWidget( {
-				$: this.$,
 				data: null,
 				label: ve.msg( 'visualeditor-dialog-language-auto-direction' )
 			} )

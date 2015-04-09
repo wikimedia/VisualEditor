@@ -24,7 +24,7 @@ ve.ce.ResizableNode = function VeCeResizableNode( $resizable, config ) {
 	// Properties
 	this.$resizable = $resizable || this.$element;
 	this.resizing = false;
-	this.$resizeHandles = this.$( '<div>' );
+	this.$resizeHandles = $( '<div>' );
 	this.snapToGrid = config.snapToGrid !== undefined ? config.snapToGrid : 10;
 	this.outline = !!config.outline;
 	this.showSizeLabel = config.showSizeLabel !== false;
@@ -32,8 +32,8 @@ ve.ce.ResizableNode = function VeCeResizableNode( $resizable, config ) {
 	// Only gets enabled when the original dimensions are provided
 	this.canShowScaleLabel = false;
 	if ( this.showSizeLabel || this.showScaleLabel ) {
-		this.$sizeText = this.$( '<span>' ).addClass( 've-ce-resizableNode-sizeText' );
-		this.$sizeLabel = this.$( '<div>' ).addClass( 've-ce-resizableNode-sizeLabel' ).append( this.$sizeText );
+		this.$sizeText = $( '<span>' ).addClass( 've-ce-resizableNode-sizeText' );
+		this.$sizeLabel = $( '<div>' ).addClass( 've-ce-resizableNode-sizeLabel' ).append( this.$sizeText );
 	}
 	this.resizableOffset = null;
 	this.resizableSurface = null;
@@ -56,16 +56,16 @@ ve.ce.ResizableNode = function VeCeResizableNode( $resizable, config ) {
 	// Initialization
 	this.$resizeHandles
 		.addClass( 've-ce-resizableNode-handles' )
-		.append( this.$( '<div>' )
+		.append( $( '<div>' )
 			.addClass( 've-ce-resizableNode-nwHandle' )
 			.data( 'handle', 'nw' ) )
-		.append( this.$( '<div>' )
+		.append( $( '<div>' )
 			.addClass( 've-ce-resizableNode-neHandle' )
 			.data( 'handle', 'ne' ) )
-		.append( this.$( '<div>' )
+		.append( $( '<div>' )
 			.addClass( 've-ce-resizableNode-seHandle' )
 			.data( 'handle', 'se' ) )
-		.append( this.$( '<div>' )
+		.append( $( '<div>' )
 			.addClass( 've-ce-resizableNode-swHandle' )
 			.data( 'handle', 'sw' ) );
 };
@@ -167,13 +167,13 @@ ve.ce.ResizableNode.prototype.updateSizeLabel = function () {
 		} );
 	this.$sizeText.empty();
 	if ( this.showSizeLabel ) {
-		this.$sizeText.append( this.$( '<span>' )
+		this.$sizeText.append( $( '<span>' )
 			.addClass( 've-ce-resizableNode-sizeText-size' )
 			.text( Math.round( dimensions.width ) + ' × ' + Math.round( dimensions.height ) )
 		);
 	}
 	if ( this.canShowScaleLabel ) {
-		this.$sizeText.append( this.$( '<span>' )
+		this.$sizeText.append( $( '<span>' )
 			.addClass( 've-ce-resizableNode-sizeText-scale' )
 			.text( Math.round( 100 * scalable.getCurrentScale() ) + '%' )
 		);
@@ -392,7 +392,7 @@ ve.ce.ResizableNode.prototype.onResizeHandlesCornerMouseDown = function ( e ) {
 		height: this.resizeInfo.height
 	} );
 	this.updateSizeLabel();
-	this.$( this.getElementDocument() ).on( {
+	$( this.getElementDocument() ).on( {
 		'mousemove.ve-ce-resizableNode': this.onDocumentMouseMove.bind( this ),
 		'mouseup.ve-ce-resizableNode': this.onDocumentMouseUp.bind( this )
 	} );
@@ -532,7 +532,7 @@ ve.ce.ResizableNode.prototype.onDocumentMouseUp = function () {
 		selection = surfaceModel.getSelection();
 
 	this.$resizeHandles.removeClass( 've-ce-resizableNode-handles-resizing' );
-	this.$( this.getElementDocument() ).off( '.ve-ce-resizableNode' );
+	$( this.getElementDocument() ).off( '.ve-ce-resizableNode' );
 	this.resizing = false;
 	this.root.getSurface().resizing = false;
 	this.hideSizeLabel();

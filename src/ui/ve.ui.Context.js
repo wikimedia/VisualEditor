@@ -365,11 +365,11 @@ ve.ui.Context.prototype.setupMenuItems = function () {
 		source = sources[i];
 		if ( source.type === 'item' ) {
 			items.push( ve.ui.contextItemFactory.create(
-				sources[i].name, this, sources[i].model, { $: this.$ }
+				sources[i].name, this, sources[i].model
 			) );
 		} else if ( source.type === 'tool' ) {
 			items.push( new ve.ui.ToolContextItem(
-				this, sources[i].model, ve.ui.toolFactory.lookup( sources[i].name ), { $: this.$ }
+				this, sources[i].model, ve.ui.toolFactory.lookup( sources[i].name )
 			) );
 		}
 	}

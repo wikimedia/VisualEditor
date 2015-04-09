@@ -23,7 +23,7 @@ ve.ui.Toolbar = function VeUiToolbar( config ) {
 	// Properties
 	this.floating = false;
 	this.floatable = !!config.floatable;
-	this.$window = this.$( this.getElementWindow() );
+	this.$window = $( this.getElementWindow() );
 	this.elementOffset = null;
 	this.windowEvents = {
 		// Must use Function#bind (or a closure) instead of direct reference

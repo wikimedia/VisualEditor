@@ -170,18 +170,15 @@ ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, 
 
 	var container = this,
 		pageDropdown = new OO.ui.DropdownWidget( {
-			$: this.$,
 			menu: {
 				items: this.getPageMenuItems()
 			}
 		} ),
 		pageLabel = new OO.ui.LabelWidget( {
-			$: this.$,
 			label: 'Page',
 			input: pageDropdown
 		} ),
 		removeButton = new OO.ui.ButtonWidget( {
-			$: this.$,
 			icon: 'remove',
 			label: 'Remove surface'
 		} );
@@ -197,17 +194,16 @@ ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, 
 	this.surface = null;
 	this.lang = lang;
 	this.dir = dir;
-	this.$surfaceWrapper = this.$( '<div>' );
+	this.$surfaceWrapper = $( '<div>' );
 	this.mode = null;
 	this.pageMenu = pageDropdown.getMenu();
 	this.sourceTextInput = new OO.ui.TextInputWidget( {
-		$: this.$,
 		multiline: true,
 		autosize: true,
 		maxRows: 999,
 		classes: ['ve-demo-source']
 	} );
-	this.$readView = this.$( '<div>' ).addClass( 've-demo-read' ).hide();
+	this.$readView = $( '<div>' ).addClass( 've-demo-read' ).hide();
 
 	// Events
 	this.pageMenu.on( 'select', function ( item ) {
@@ -221,13 +217,13 @@ ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, 
 	removeButton.on( 'click', this.destroy.bind( this ) );
 
 	this.$element.append(
-		this.$( '<div>' ).addClass( 've-demo-toolbar ve-demo-surfaceToolbar' ).append(
-			this.$( '<div>' ).addClass( 've-demo-toolbar-commands' ).append(
+		$( '<div>' ).addClass( 've-demo-toolbar ve-demo-surfaceToolbar' ).append(
+			$( '<div>' ).addClass( 've-demo-toolbar-commands' ).append(
 				pageLabel.$element,
 				pageDropdown.$element,
-				this.$( '<span class="ve-demo-toolbar-divider">&nbsp;</span>' ),
+				$( '<span class="ve-demo-toolbar-divider">&nbsp;</span>' ),
 				this.modeSelect.$element,
-				this.$( '<span class="ve-demo-toolbar-divider">&nbsp;</span>' ),
+				$( '<span class="ve-demo-toolbar-divider">&nbsp;</span>' ),
 				removeButton.$element
 			)
 		),
@@ -259,7 +255,6 @@ ve.demo.SurfaceContainer.prototype.getPageMenuItems = function () {
 	for ( name in ve.demo.pages ) {
 		items.push(
 			new OO.ui.MenuOptionWidget( {
-				$: this.$,
 				data: ve.demo.pages[name],
 				label: name
 			} )
@@ -362,7 +357,7 @@ ve.demo.SurfaceContainer.prototype.loadPage = function ( src ) {
 				var pageHtml;
 
 				if ( status === 'error' ) {
-					pageHtml = '<p><i>Failed loading page ' + this.$( '<span>' ).text( src ).html() + '</i></p>';
+					pageHtml = '<p><i>Failed loading page ' + $( '<span>' ).text( src ).html() + '</i></p>';
 				} else {
 					pageHtml = result;
 				}

@@ -69,7 +69,7 @@ ve.ui.MobileSurface.prototype.onWindowOpening = function ( win, opening ) {
  * @inheritdoc
  */
 ve.ui.MobileSurface.prototype.createContext = function () {
-	return new ve.ui.MobileContext( this, { $: this.$ } );
+	return new ve.ui.MobileContext( this );
 };
 
 /**

@@ -19,11 +19,11 @@ ve.ui.DesktopContext = function VeUiDesktopContext( surface, config ) {
 	ve.ui.DesktopContext.super.call( this, surface, config );
 
 	// Properties
-	this.popup = new OO.ui.PopupWidget( { $: this.$, $container: this.surface.$element } );
+	this.popup = new OO.ui.PopupWidget( { $container: this.surface.$element } );
 	this.transitioning = null;
 	this.suppressed = false;
 	this.onWindowResizeHandler = this.onPosition.bind( this );
-	this.$window = this.$( this.getElementWindow() );
+	this.$window = $( this.getElementWindow() );
 
 	// Events
 	this.surface.getView().connect( this, {
@@ -125,7 +125,6 @@ ve.ui.DesktopContext.prototype.onPosition = function () {
  */
 ve.ui.DesktopContext.prototype.createInspectorWindowManager = function () {
 	return new ve.ui.DesktopInspectorWindowManager( this.surface, {
-		$: this.$,
 		factory: ve.ui.windowFactory,
 		overlay: this.surface.getLocalOverlay(),
 		modal: false

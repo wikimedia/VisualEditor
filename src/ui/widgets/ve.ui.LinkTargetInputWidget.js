@@ -26,8 +26,6 @@ ve.ui.LinkTargetInputWidget = function VeUiLinkTargetInputWidget( config ) {
 	this.$element.addClass( 've-ui-linkTargetInputWidget' );
 
 	// Default RTL/LTR check
-	// Has to use global $() instead of this.$() because only the main document's <body> has
-	// the 'rtl' class; inspectors and dialogs have oo-ui-rtl instead.
 	if ( $( 'body' ).hasClass( 'rtl' ) ) {
 		this.$input.addClass( 'oo-ui-rtl' );
 	}
@@ -53,8 +51,6 @@ ve.ui.LinkTargetInputWidget.prototype.onEdit = function () {
 		// Allow the stack to clear so the value will be updated
 		setTimeout( function () {
 			// RTL/LTR check
-			// Has to use global $() instead of this.$() because only the main document's <body> has
-			// the 'rtl' class; inspectors and dialogs have oo-ui-rtl instead.
 			if ( $( 'body' ).hasClass( 'rtl' ) ) {
 				var isExt = ve.init.platform.getExternalLinkUrlProtocolsRegExp()
 					.test( widget.$input.val() );

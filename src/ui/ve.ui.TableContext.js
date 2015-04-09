@@ -30,13 +30,11 @@ ve.ui.TableContext = function VeUiTableContext( tableNode, toolGroup, config ) {
 	this.surface = tableNode.surface.getSurface();
 	this.visible = false;
 	this.indicator = new OO.ui.IndicatorWidget( {
-		$: this.$,
 		classes: ['ve-ui-tableContext-indicator'],
 		indicator: config.indicator
 	} );
-	this.menu = new ve.ui.ContextSelectWidget( { $: this.$ } );
+	this.menu = new ve.ui.ContextSelectWidget();
 	this.popup = new OO.ui.PopupWidget( {
-		$: this.$,
 		$container: this.surface.$element,
 		width: 150
 	} );
@@ -71,7 +69,7 @@ ve.ui.TableContext.prototype.populateMenu = function () {
 	for ( i = 0, l = toolList.length; i < l; i++ ) {
 		tool = ve.ui.toolFactory.lookup( toolList[i] );
 		items.push( new ve.ui.ContextOptionWidget(
-			tool, this.tableNode.getModel(), { $: this.$, data: tool.static.name }
+			tool, this.tableNode.getModel(), { data: tool.static.name }
 		) );
 	}
 	this.menu.addItems( items );

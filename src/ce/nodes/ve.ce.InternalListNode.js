@@ -18,7 +18,7 @@ ve.ce.InternalListNode = function VeCeInternalListNode() {
 	ve.ce.InternalListNode.super.apply( this, arguments );
 
 	// An internal list has no rendering
-	this.$element = this.$( [] );
+	this.$element = $( [] );
 };
 
 /* Inheritance */

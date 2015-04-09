@@ -181,7 +181,7 @@ ve.ce.BranchNode.prototype.onSplice = function ( index ) {
 	// Convert models to views and attach them to this node
 	if ( args.length >= 3 ) {
 		for ( i = 2, length = args.length; i < length; i++ ) {
-			args[i] = ve.ce.nodeFactory.create( args[i].getType(), args[i], { $: this.$ } );
+			args[i] = ve.ce.nodeFactory.create( args[i].getType(), args[i] );
 			args[i].model.connect( this, { update: 'onModelUpdate' } );
 		}
 	}
