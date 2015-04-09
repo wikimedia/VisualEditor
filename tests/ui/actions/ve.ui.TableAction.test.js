@@ -288,6 +288,50 @@ QUnit.test( 'create / insert / mergeCells', function ( assert ) {
 					data.splice.apply( data, [ 96, 0 ].concat( tableData, tableData ) );
 				},
 				msg: 'unmerge cells'
+			},
+			{
+				html: ve.dm.example.mergedCellsHtml,
+				selection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 171 ),
+					fromCol: 0,
+					fromRow: 0,
+					toCol: 5,
+					toRow: 5
+				},
+				method: 'mergeCells',
+				args: [],
+				expectedData: function ( data ) {
+					data[3].attributes.colspan = 6;
+					data[3].attributes.rowspan = 1;
+					data.splice( 8, 122 );
+				},
+				msg: 'merge full rows'
+			},
+			{
+				html: ve.dm.example.mergedCellsHtml,
+				selection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 171 ),
+					fromCol: 0,
+					fromRow: 0,
+					toCol: 3,
+					toRow: 6
+				},
+				method: 'mergeCells',
+				args: [],
+				expectedData: function ( data ) {
+					data[3].attributes.colspan = 1;
+					data[3].attributes.rowspan = 7;
+					data.splice( 132, 24 );
+					data.splice( 118, 6 );
+					data.splice( 104, 6 );
+					data.splice( 84, 12 );
+					data.splice( 58, 18 );
+					data.splice( 35, 10 );
+					data.splice( 8, 15 );
+				},
+				msg: 'merge full columns'
 			}
 		];
 
