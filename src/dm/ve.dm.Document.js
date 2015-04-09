@@ -308,6 +308,15 @@ ve.dm.Document.prototype.buildNodeTree = function () {
 };
 
 /**
+ * Get the length of the document. This is also the highest valid offset in the document.
+ *
+ * @return {number} Length of the document
+ */
+ve.dm.Document.prototype.getLength = function () {
+	return this.data.getLength();
+};
+
+/**
  * Apply a transaction's effects on the content data.
  *
  * @method
