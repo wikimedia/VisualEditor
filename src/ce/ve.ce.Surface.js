@@ -3021,7 +3021,7 @@ ve.ce.Surface.prototype.handleLinearArrowKey = function ( e ) {
 				);
 			}
 			newRange = (
-				afterDirection === 1 ?
+				afterDirection > 0 ?
 				viewNode.getOuterRange() :
 				viewNode.getOuterRange().flip()
 			);
