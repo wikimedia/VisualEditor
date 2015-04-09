@@ -1548,7 +1548,7 @@ ve.ce.Surface.prototype.onCut = function ( e ) {
  */
 ve.ce.Surface.prototype.onCopy = function ( e ) {
 	var originalRange,
-		clipboardIndex, clipboardItem, pasteData,
+		clipboardIndex, clipboardItem,
 		scrollTop, unsafeSelector, range, slice,
 		selection = this.getModel().getSelection(),
 		view = this,
@@ -1566,8 +1566,6 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 	}
 
 	slice = this.model.documentModel.cloneSliceFromRange( range );
-
-	pasteData = slice.data.clone();
 
 	// Clone the elements in the slice
 	slice.data.cloneElements( true );
