@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+	<!--
+	/*!
+	 * VisualEditor minimal demo
+	 *
+	 * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+	 */
+	-->
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+		<title>VisualEditor Standalone Demo</title>
+
+		<!-- oojs-ui-apex -->
+		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-apex.vector.css">
+		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-apex-icons-editing-core.vector.css">
+
+		<!-- visualEditor.dist -->
+		<link rel=stylesheet href="../../dist/visualEditor.css" class="stylesheet-ve">
+
+		<!-- visualEditor.minimal.standalone.demo -->
+		<link rel=stylesheet href="../../demos/ve/demo.minimal.css">
+
+	</head>
+	<body>
+		<div class="ve-instance"></div>
+		<div class="ve-demo-output">
+			<input type="button" class="ve-demo-convert" value="&darr; Convert to HTML">
+			<textarea class="ve-demo-html"></textarea>
+		</div>
+
+		<!-- jquery -->
+		<script src="../../lib/jquery/jquery.js"></script>
+
+		<!-- oojs -->
+		<script src="../../lib/oojs/oojs.jquery.js"></script>
+
+		<!-- oojs-ui -->
+		<script src="../../lib/oojs-ui/oojs-ui.js"></script>
+
+		<!-- jquery.i18n.dist -->
+		<script src="../../dist/lib/jquery.i18n.js"></script>
+
+		<!-- jquery.uls.data.dist -->
+		<script src="../../dist/lib/jquery.uls.data.js"></script>
+
+		<!-- jquery.client -->
+		<script src="../../lib/jquery.client/jquery.client.js"></script>
+
+		<!-- papaparse -->
+		<script src="../../lib/papaparse/papaparse.js"></script>
+
+		<!-- oojs-ui-apex -->
+		<script src="../../lib/oojs-ui/oojs-ui-apex.js"></script>
+
+		<!-- visualEditor.dist -->
+		<script src="../../dist/visualEditor.js"></script>
+
+		<script>
+			ve.init.platform.addMessagePath( '../../dist/i18n/' );
+			ve.init.platform.addMessagePath( '../../lib/oojs-ui/i18n/' );
+		</script>
+
+		<!-- visualEditor.minimal.standalone.demo -->
+		<script src="../../demos/ve/demo.minimal.js"></script>
+
+	</body>
+</html>

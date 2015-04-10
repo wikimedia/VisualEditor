@@ -690,13 +690,6 @@
 			"visualEditor.standalone.demo"
 		]
 	},
-	"visualEditor.desktop.standalone.dist": {
-		"dependencies": [
-			"baselibs.dist",
-			"oojs-ui-apex",
-			"visualEditor.dist"
-		]
-	},
 	"visualEditor.mobile.standalone.demo": {
 		"scripts": [
 			"demos/ve/demo.mobile.js"
@@ -708,11 +701,12 @@
 			"visualEditor.standalone.demo"
 		]
 	},
-	"visualEditor.mobile.standalone.dist": {
-		"dependencies": [
-			"baselibs.dist",
-			"oojs-ui-mediawiki",
-			"visualEditor.dist"
+	"visualEditor.minimal.standalone.demo": {
+		"scripts": [
+			"demos/ve/demo.minimal.js"
+		],
+		"styles": [
+			"demos/ve/demo.minimal.css"
 		]
 	},
 	"visualEditor.build": {
@@ -730,5 +724,19 @@
 			"dist/visualEditor.css"
 		],
 		"styleGroup": "ve"
+	},
+	"visualEditor.standalone.apex.dist": {
+		"dependencies": [
+			"baselibs.dist",
+			"oojs-ui-apex",
+			"visualEditor.dist"
+		]
+	},
+	"visualEditor.standalone.mediawiki.dist": {
+		"dependencies": [
+			"baselibs.dist",
+			"oojs-ui-mediawiki",
+			"visualEditor.dist"
+		]
 	}
 }

@@ -20,6 +20,8 @@ module.exports = function ( grunt ) {
 			run = this.data.run || [],
 			env = this.data.env || {},
 			placeholders = this.data.placeholders || {},
+			bidi = this.data.bidi !== undefined ? this.data.bidi : true,
+			langList = this.data.langList !== undefined ? this.data.langList : true,
 			text = grunt.file.read( this.data.template ),
 			done = this.async(),
 			moduleUtils = require( '../moduleUtils' );
@@ -31,7 +33,7 @@ module.exports = function ( grunt ) {
 		function styleTag( group, src ) {
 			var rtlFilepath = src.file.replace( /\.css$/, '.rtl.css' );
 
-			if ( grunt.file.exists( rtlFilepath ) ) {
+			if ( bidi && grunt.file.exists( rtlFilepath ) ) {
 				return indent + '<link rel=stylesheet href="' + pathPrefix + src.file + '" class="stylesheet-ltr' +
 					( group ? ' stylesheet-' + group : '' ) + '">\n' +
 					indent + '<link rel=stylesheet href="' + pathPrefix + rtlFilepath + '" class="stylesheet-rtl' +
@@ -105,15 +107,17 @@ module.exports = function ( grunt ) {
 			for ( i = 0, len = i18n.length; i < len; i++ ) {
 				i18nScript += indent + '\tve.init.platform.addMessagePath( \'' + pathPrefix + i18n[i] + '\' );\n';
 			}
-			i18nScript += indent + '\tve.availableLanguages = ' +
-				JSON.stringify(
-					grunt.file.expand(
-						i18n.map( function ( path ) { return path + '*.json'; } )
-					).map( function ( file ) {
-						return file.split( '/' ).pop().slice( 0, -5 );
-					} )
-				) +
-				';\n';
+			if ( langList ) {
+				i18nScript += indent + '\tve.availableLanguages = ' +
+					JSON.stringify(
+						grunt.file.expand(
+							i18n.map( function ( path ) { return path + '*.json'; } )
+						).map( function ( file ) {
+							return file.split( '/' ).pop().slice( 0, -5 );
+						} )
+					) +
+					';\n';
+			}
 			i18nScript += indent + '</script>';
 			scripts.push( i18nScript );
 		}
