@@ -46,16 +46,28 @@ module.exports = function ( grunt ) {
 			dist: [ 'dist/*', 'coverage/*' ]
 		},
 		concat: {
-			options: {
-				banner: grunt.file.read( 'build/banner.txt' )
-			},
 			js: {
+				options: {
+					banner: grunt.file.read( 'build/banner.txt' )
+				},
 				dest: 'dist/visualEditor.js',
 				src: coreBuildFiles.scripts
 			},
 			css: {
+				options: {
+					banner: grunt.file.read( 'build/banner.txt' )
+				},
 				dest: 'dist/visualEditor.css',
 				src: coreBuildFiles.styles
+			},
+			// HACK: Ideally these libraries would provide their own distribution files (T95667)
+			'jquery.i18n': {
+				dest: 'dist/lib/jquery.i18n.js',
+				src: modules['jquery.i18n'].scripts
+			},
+			'jquery.uls.data': {
+				dest: 'dist/lib/jquery.uls.data.js',
+				src: modules['jquery.uls.data'].scripts
 			}
 		},
 		cssjanus: {
@@ -82,6 +94,11 @@ module.exports = function ( grunt ) {
 				src: 'i18n/*.json',
 				dest: 'dist/',
 				expand: true
+			},
+			lib: {
+				src: ['lib/**', '!lib/jquery.i18n/**', '!lib/jquery.uls/**'],
+				dest: 'dist/',
+				expand: true
 			}
 		},
 		buildloader: {
@@ -98,10 +115,7 @@ module.exports = function ( grunt ) {
 				targetFile: 'demos/ve/desktop.html',
 				template: 'demos/ve/demo.html.template',
 				modules: modules,
-				load: [
-					'visualEditor.standalone.read',
-					'visualEditor.desktop.standalone'
-				],
+				load: [ 'visualEditor.desktop.standalone' ],
 				run: [ 'visualEditor.desktop.standalone.demo' ],
 				env: {
 					debug: true
@@ -115,10 +129,7 @@ module.exports = function ( grunt ) {
 				targetFile: 'demos/ve/desktop-dist.html',
 				template: 'demos/ve/demo.html.template',
 				modules: modules,
-				load: [
-					'visualEditor.standalone.read',
-					'visualEditor.desktop.standalone.dist'
-				],
+				load: [ 'visualEditor.desktop.standalone.dist' ],
 				run: [ 'visualEditor.desktop.standalone.demo' ],
 				pathPrefix: '../../',
 				i18n: [ 'dist/i18n/', 'lib/oojs-ui/i18n/' ],
@@ -129,10 +140,7 @@ module.exports = function ( grunt ) {
 				targetFile: 'demos/ve/mobile.html',
 				template: 'demos/ve/demo.html.template',
 				modules: modules,
-				load: [
-					'visualEditor.standalone.read',
-					'visualEditor.mobile.standalone'
-				],
+				load: [ 'visualEditor.mobile.standalone' ],
 				run: [ 'visualEditor.mobile.standalone.demo' ],
 				env: {
 					debug: true
@@ -146,10 +154,7 @@ module.exports = function ( grunt ) {
 				targetFile: 'demos/ve/mobile-dist.html',
 				template: 'demos/ve/demo.html.template',
 				modules: modules,
-				load: [
-					'visualEditor.standalone.read',
-					'visualEditor.mobile.standalone.dist'
-				],
+				load: [ 'visualEditor.mobile.standalone.dist' ],
 				run: [ 'visualEditor.mobile.standalone.demo' ],
 				pathPrefix: '../../',
 				i18n: [ 'dist/i18n/', 'lib/oojs-ui/i18n/' ],
