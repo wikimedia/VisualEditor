@@ -45,9 +45,10 @@ ve.ui.WindowAction.static.methods = [ 'open', 'close', 'toggle' ];
  * @return {boolean} Action was executed
  */
 ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
-	var windowType = this.getWindowType( name ),
+	var currentInspector, inspectorWindowManager,
+		windowType = this.getWindowType( name ),
 		windowManager = windowType && this.getWindowManager( windowType ),
-		autoClosePromise = $.Deferred().resolve().promise(),
+		autoClosePromises = [],
 		surface = this.surface,
 		fragment = surface.getModel().getFragment( undefined, true ),
 		dir = surface.getView().getDocument().getDirectionFromSelection( fragment.getSelection() ) ||
@@ -61,10 +62,19 @@ ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 	if ( windowType === 'toolbar' || windowType === 'inspector' ) {
 		data = ve.extendObject( data, { surface: surface } );
 		// TODO: Make auto-close a window manager setting
-		autoClosePromise = windowManager.closeWindow( windowManager.getCurrentWindow() );
+		autoClosePromises.push( windowManager.closeWindow( windowManager.getCurrentWindow() ) );
 	}
 
-	autoClosePromise.always( function () {
+	// If we're opening a dialog, close all inspectors first
+	if ( windowType === 'dialog' ) {
+		inspectorWindowManager = this.getWindowManager( 'inspector' );
+		currentInspector = inspectorWindowManager.getCurrentWindow();
+		if ( currentInspector ) {
+			autoClosePromises.push( inspectorWindowManager.closeWindow( currentInspector ) );
+		}
+	}
+
+	$.when.apply( $, autoClosePromises ).always( function () {
 		windowManager.getWindow( name ).then( function ( win ) {
 			var opening = windowManager.openWindow( win, data );
 
