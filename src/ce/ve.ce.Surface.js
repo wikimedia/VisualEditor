@@ -1266,7 +1266,7 @@ ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
 	 * @returns {ve.ce.Node|null} node, or null if not in a focusable node
 	 */
 	function getSurroundingFocusableNode( node, offset, direction ) {
-		var focusNode;
+		var focusNode, $focusableNode;
 		if ( node.nodeType === Node.TEXT_NODE ) {
 			focusNode = node;
 		} else if ( direction > 0 && offset < node.childNodes.length ) {
@@ -1276,7 +1276,12 @@ ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
 		} else {
 			focusNode = node;
 		}
-		return $( focusNode ).closest( '.ve-ce-focusableNode, .ve-ce-tableNode:not(.ve-ce-tableNode-editing)' ).data( 'view' ) || null;
+		$focusableNode = $( focusNode ).closest( '.ve-ce-focusableNode, .ve-ce-tableNode' );
+		// If the first thing we found was a table node in editing mode, ignore it.
+		if ( $focusableNode.hasClass( 've-ce-tableNode-editing' ) ) {
+			return null;
+		}
+		return $focusableNode.data( 'view' ) || null;
 	}
 
 	/**
