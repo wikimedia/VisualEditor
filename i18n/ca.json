@@ -11,7 +11,8 @@
 			"Fitoschido",
 			"Toniher",
 			"Edustus",
-			"Davidpar"
+			"Davidpar",
+			"Gerardduenas"
 		]
 	},
 	"visualeditor": "Editor visual",
@@ -19,6 +20,7 @@
 	"visualeditor-align-widget-center": "Centre",
 	"visualeditor-align-widget-left": "Esquerra",
 	"visualeditor-align-widget-right": "Dreta",
+	"visualeditor-alignablecontextitem-title": "Alineament",
 	"visualeditor-annotationbutton-bold-tooltip": "Negreta",
 	"visualeditor-annotationbutton-code-tooltip": "Codi d'ordinador",
 	"visualeditor-annotationbutton-italic-tooltip": "Cursiva",
@@ -101,6 +103,7 @@
 	"visualeditor-shortcuts-history": "Historial",
 	"visualeditor-shortcuts-other": "Altres",
 	"visualeditor-shortcuts-text-style": "Estil del text",
+	"visualeditor-slug-insert": "Inserta paràgraf",
 	"visualeditor-specialcharacter-button-tooltip": "Caràcter especial",
 	"visualeditor-specialcharacterinspector-title": "Caràcter especial",
 	"visualeditor-table-caption": "Llegenda",
@@ -115,6 +118,7 @@
 	"visualeditor-table-insert-row-before": "Insereix a dalt",
 	"visualeditor-table-insert-table": "Taula",
 	"visualeditor-table-merge-cells": "Fusiona les cel·les",
+	"visualeditor-tablecell-tooltip": "Feu doble clic per editar la cel·la",
 	"visualeditor-toolbar-format-tooltip": "Format de paràgraf",
 	"visualeditor-toolbar-history": "Historial",
 	"visualeditor-toolbar-insert": "Insereix",
