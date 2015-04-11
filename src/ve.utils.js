@@ -1234,20 +1234,34 @@ ve.getOffsetPath = function ( ancestor, node, nodeOffset ) {
 };
 
 /**
- * Compare two offset paths for position in document
+ * Compare two tuples in lexicographical order.
  *
- * @param {number[]} path1 First offset path
- * @param {number[]} path2 Second offset path
- * @return {number} negative, zero or positive number
+ * This function first compares `a[0]` with `b[0]`, then `a[1]` with `b[1]`, etc.
+ * until it encounters a pair where `a[k] != b[k]`; then returns `a[k] - b[k]`.
+ *
+ * If `a[k] == b[k]` for every `k`, this function returns 0.
+ *
+ * If a and b are of unequal length, but `a[k] == b[k]` for all `k` that exist in both a and b, then
+ * this function returns `Infinity` (if a is longer) or `-Infinity` (if b is longer).
+ *
+ * @param {number[]} a First tuple
+ * @param {number[]} b Second tuple
+ * @return {number} `a[k] - b[k]` where k is the lowest k such that `a[k] != b[k]`
  */
-ve.compareOffsetPaths = function ( path1, path2 ) {
+ve.compareTuples = function ( a, b ) {
 	var i, len;
-	for ( i = 0, len = Math.min( path1.length, path2.length ); i < len; i++ ) {
-		if ( path1[ i ] !== path2[ i ] ) {
-			return path1[ i ] - path2[ i ];
+	for ( i = 0, len = Math.min( a.length, b.length ); i < len; i++ ) {
+		if ( a[i] !== b[i] ) {
+			return a[i] - b[i];
 		}
 	}
-	return path1.length - path2.length;
+	if ( a.length > b.length ) {
+		return Infinity;
+	}
+	if ( a.length < b.length ) {
+		return -Infinity;
+	}
+	return 0;
 };
 
 /**
@@ -1260,12 +1274,11 @@ ve.compareOffsetPaths = function ( path1, path2 ) {
  * @return {number} negative, zero or positive number
  */
 ve.compareDocumentOrder = function ( node1, offset1, node2, offset2 ) {
-
 	var commonAncestor = ve.getCommonAncestor( node1, node2 );
 	if ( commonAncestor === null ) {
 		throw new Error( 'No common ancestor' );
 	}
-	return ve.compareOffsetPaths(
+	return ve.compareTuples(
 		ve.getOffsetPath( commonAncestor, node1, offset1 ),
 		ve.getOffsetPath( commonAncestor, node2, offset2 )
 	);
