@@ -7,20 +7,17 @@ module.exports = function ( grunt ) {
 
 	grunt.registerMultiTask( 'buildloader', function () {
 		var i, len,
-			module,
-			dependency,
-			dependencies,
-			moduleStyles,
-			moduleScripts,
 			i18nScript,
 			styles = [],
 			scripts = [],
+			loadedModules = [],
 			targetFile = this.data.targetFile,
 			pathPrefix = this.data.pathPrefix || '',
 			i18n = this.data.i18n || [],
 			indent = this.data.indent || '',
 			modules = this.data.modules,
 			load = this.data.load,
+			run = this.data.run || [],
 			env = this.data.env || {},
 			placeholders = this.data.placeholders || {},
 			text = grunt.file.read( this.data.template ),
@@ -73,26 +70,35 @@ module.exports = function ( grunt ) {
 			}
 		}
 
-		dependencies = moduleUtils.buildDependencyList( modules, load );
-		for ( dependency in dependencies ) {
-			module = dependencies[dependency];
-			if ( modules[module].scripts ) {
-				moduleScripts = modules[module].scripts
-					.map( expand ).filter( filter.bind( this, 'scripts' ) ).map( scriptTag )
-					.join( '\n' );
-				if ( moduleScripts ) {
-					scripts.push( indent + '<!-- ' + module + ' -->\n' + moduleScripts );
+		function addModules( load ) {
+			var module, moduleStyles, moduleScripts, dependency, dependencies;
+			dependencies = moduleUtils.buildDependencyList( modules, load );
+			for ( dependency in dependencies ) {
+				module = dependencies[dependency];
+				if ( loadedModules.indexOf( module ) > -1 ) {
+					continue;
 				}
-			}
-			if ( modules[module].styles ) {
-				moduleStyles = modules[module].styles
-					.map( expand ).filter( filter.bind( this, 'styles' ) ).map( styleTag.bind( styleTag, modules[module].styleGroup ) )
-					.join( '\n' );
-				if ( moduleStyles ) {
-					styles.push( indent + '<!-- ' + module + ' -->\n' + moduleStyles );
+				loadedModules.push( module );
+				if ( modules[module].scripts ) {
+					moduleScripts = modules[module].scripts
+						.map( expand ).filter( filter.bind( this, 'scripts' ) ).map( scriptTag )
+						.join( '\n' );
+					if ( moduleScripts ) {
+						scripts.push( indent + '<!-- ' + module + ' -->\n' + moduleScripts );
+					}
+				}
+				if ( modules[module].styles ) {
+					moduleStyles = modules[module].styles
+						.map( expand ).filter( filter.bind( this, 'styles' ) ).map( styleTag.bind( styleTag, modules[module].styleGroup ) )
+						.join( '\n' );
+					if ( moduleStyles ) {
+						styles.push( indent + '<!-- ' + module + ' -->\n' + moduleStyles );
+					}
 				}
 			}
 		}
+
+		addModules( load );
 
 		if ( i18n.length ) {
 			i18nScript = indent + '<script>\n';
@@ -111,6 +117,8 @@ module.exports = function ( grunt ) {
 			i18nScript += indent + '</script>';
 			scripts.push( i18nScript );
 		}
+
+		addModules( run );
 
 		placeholders.styles = styles.join( '\n\n' );
 		placeholders.scripts = scripts.join( '\n\n' );

@@ -100,8 +100,9 @@ module.exports = function ( grunt ) {
 				modules: modules,
 				load: [
 					'visualEditor.standalone.read',
-					'visualEditor.desktop.standalone.demo'
+					'visualEditor.desktop.standalone'
 				],
+				run: [ 'visualEditor.desktop.standalone.demo' ],
 				env: {
 					debug: true
 				},
@@ -116,8 +117,9 @@ module.exports = function ( grunt ) {
 				modules: modules,
 				load: [
 					'visualEditor.standalone.read',
-					'visualEditor.desktop.standalone.demo.dist'
+					'visualEditor.desktop.standalone.dist'
 				],
+				run: [ 'visualEditor.desktop.standalone.demo' ],
 				pathPrefix: '../../',
 				i18n: [ 'dist/i18n/', 'lib/oojs-ui/i18n/' ],
 				indent: '\t\t',
@@ -129,8 +131,9 @@ module.exports = function ( grunt ) {
 				modules: modules,
 				load: [
 					'visualEditor.standalone.read',
-					'visualEditor.mobile.standalone.demo'
+					'visualEditor.mobile.standalone'
 				],
+				run: [ 'visualEditor.mobile.standalone.demo' ],
 				env: {
 					debug: true
 				},
@@ -145,8 +148,9 @@ module.exports = function ( grunt ) {
 				modules: modules,
 				load: [
 					'visualEditor.standalone.read',
-					'visualEditor.mobile.standalone.demo.dist'
+					'visualEditor.mobile.standalone.dist'
 				],
+				run: [ 'visualEditor.mobile.standalone.demo' ],
 				pathPrefix: '../../',
 				i18n: [ 'dist/i18n/', 'lib/oojs-ui/i18n/' ],
 				indent: '\t\t',

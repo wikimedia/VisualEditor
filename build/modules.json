@@ -659,22 +659,14 @@
 			"demos/ve/demo.desktop.css"
 		],
 		"dependencies": [
-			"visualEditor.desktop.standalone",
 			"visualEditor.standalone.demo"
 		]
 	},
-	"visualEditor.desktop.standalone.demo.dist": {
-		"scripts": [
-			"demos/ve/demo.desktop.js"
-		],
-		"styles": [
-			"demos/ve/demo.desktop.css"
-		],
+	"visualEditor.desktop.standalone.dist": {
 		"dependencies": [
 			"baselibs",
 			"oojs-ui-apex",
-			"visualEditor.dist",
-			"visualEditor.standalone.demo"
+			"visualEditor.dist"
 		]
 	},
 	"visualEditor.mobile.standalone.demo": {
@@ -685,22 +677,14 @@
 			"demos/ve/demo.mobile.css"
 		],
 		"dependencies": [
-			"visualEditor.mobile.standalone",
 			"visualEditor.standalone.demo"
 		]
 	},
-	"visualEditor.mobile.standalone.demo.dist": {
-		"scripts": [
-			"demos/ve/demo.mobile.js"
-		],
-		"styles": [
-			"demos/ve/demo.mobile.css"
-		],
+	"visualEditor.mobile.standalone.dist": {
 		"dependencies": [
 			"baselibs",
 			"oojs-ui-mediawiki",
-			"visualEditor.dist",
-			"visualEditor.standalone.demo"
+			"visualEditor.dist"
 		]
 	},
 	"visualEditor.build": {
