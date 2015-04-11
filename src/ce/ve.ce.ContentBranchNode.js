@@ -97,7 +97,7 @@ ve.ce.ContentBranchNode.prototype.onClick = function ( e ) {
 };
 
 /**
- * Handle splice events.
+ * Handle childUpdate events.
  *
  * Rendering is only done once per transaction. If a paragraph has multiple nodes in it then it's
  * possible to receive multiple `childUpdate` events for a single transaction such as annotating
@@ -105,7 +105,6 @@ ve.ce.ContentBranchNode.prototype.onClick = function ( e ) {
  * history.
  *
  * This is used to automatically render contents.
- * @see ve.ce.BranchNode#onSplice
  *
  * @method
  */
@@ -118,12 +117,7 @@ ve.ce.ContentBranchNode.prototype.onChildUpdate = function ( transaction ) {
 };
 
 /**
- * Handle splice events.
- *
- * This is used to automatically render contents.
- * @see ve.ce.BranchNode#onSplice
- *
- * @method
+ * @inheritdoc
  */
 ve.ce.ContentBranchNode.prototype.onSplice = function ( index, howmany ) {
 	// Parent method
