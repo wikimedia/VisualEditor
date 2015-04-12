@@ -234,9 +234,13 @@ module.exports = function ( grunt ) {
 		require( 'child_process' ).exec( 'git ls-files --modified', function ( err, stdout, stderr ) {
 			var ret = err || stderr || stdout;
 			if ( ret ) {
-				grunt.log.write( ret );
-				grunt.log.error( 'Unstaged changes.' );
-				done( false );
+				grunt.log.error( 'Unstaged changes in these files:' );
+				grunt.log.error( ret );
+				// Show a condensed diff
+				require( 'child_process' ).exec( 'git diff -U1 | tail -n +3', function ( err, stdout, stderr ) {
+					grunt.log.write( err || stderr || stdout );
+					done( false );
+				} );
 			} else {
 				grunt.log.ok( 'No unstaged changes.' );
 				done();
