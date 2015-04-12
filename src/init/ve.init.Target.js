@@ -285,9 +285,9 @@ ve.init.Target.prototype.setSurface = function ( surface ) {
 };
 
 /**
- * Get the target's active surface
+ * Get the target's active surface, if it exists
  *
- * @return {ve.ui.Surface} Surface
+ * @return {ve.ui.Surface|null} Surface
  */
 ve.init.Target.prototype.getSurface = function () {
 	return this.surface;

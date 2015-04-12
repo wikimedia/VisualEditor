@@ -144,6 +144,24 @@ ve.ui.Surface.prototype.initialize = function () {
 };
 
 /**
+ * Get the DOM representation of the surface's current state.
+ *
+ * @return {HTMLDocument} HTML document
+ */
+ve.ui.Surface.prototype.getDom = function () {
+	return ve.dm.converter.getDomFromModel( this.getModel().getDocument() );
+};
+
+/**
+ * Get the HTML representation of the surface's current state.
+ *
+ * @return {string} HTML
+ */
+ve.ui.Surface.prototype.getHtml = function () {
+	return ve.properInnerHtml( this.getDom().body );
+};
+
+/**
  * Create a context.
  *
  * @method
