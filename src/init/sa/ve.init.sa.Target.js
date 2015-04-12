@@ -7,15 +7,6 @@
 /**
  * Initialization Standalone target.
  *
- *     @example
- *     var target = new ve.init.sa.Target();
- *     target.addSurface(
- *         ve.dm.converter.getModelFromDom(
- *             ve.createDocumentFromHtml( '<p>Hello, World!</p>' )
- *         )
- *     );
- *     $( 'body' ).append( target.$element );
- *
  * @class
  * @extends ve.init.Target
  *
