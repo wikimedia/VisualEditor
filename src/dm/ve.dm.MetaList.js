@@ -275,28 +275,13 @@ ve.dm.MetaList.prototype.onTransact = function ( tx ) {
  *  null if not found
  */
 ve.dm.MetaList.prototype.findItem = function ( offset, index, group, forInsertion ) {
-	// Binary search for the item
-	var mid,
-		items = typeof group === 'string' ? ( this.groups[group] || [] ) : this.items,
-		left = 0,
-		right = items.length;
-
-	while ( left < right ) {
-		// Equivalent to Math.floor( ( left + right ) / 2 ) but much faster in V8
-		/*jshint bitwise:false */
-		mid = ( left + right ) >> 1;
-		if ( items[mid].getOffset() === offset && items[mid].getIndex() === index ) {
-			return mid;
-		}
-		if ( items[mid].getOffset() < offset || (
-			items[mid].getOffset() === offset && items[mid].getIndex() < index
-		) ) {
-			left = mid + 1;
-		} else {
-			right = mid;
-		}
-	}
-	return forInsertion ? left : null;
+	var items = typeof group === 'string' ? ( this.groups[group] || [] ) : this.items;
+	return ve.binarySearch( items, function ( item ) {
+		return ve.compareTuples(
+			[ offset, index ],
+			[ item.getOffset(), item.getIndex() ]
+		);
+	}, forInsertion );
 };
 
 /**
