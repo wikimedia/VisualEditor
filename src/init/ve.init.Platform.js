@@ -15,6 +15,13 @@
 ve.init.Platform = function VeInitPlatform() {
 	// Mixin constructors
 	OO.EventEmitter.call( this );
+
+	// Register
+	ve.init.platform = this;
+
+	// Provide messages to OOUI
+	OO.ui.getUserLanguages = this.getUserLanguages.bind( this );
+	OO.ui.msg = this.getMessage.bind( this );
 };
 
 /* Inheritance */

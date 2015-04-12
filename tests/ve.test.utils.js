@@ -7,6 +7,11 @@
 ( function () {
 	/*jshint browser:true */
 
+	// Create a standalone platform so ve.init.platform is available
+	/*jshint nonew:false */
+	new ve.init.sa.Platform();
+	/*jshint nonew:true */
+
 	// Configure QUnit
 	QUnit.config.requireExpects = true;
 
