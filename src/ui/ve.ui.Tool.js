@@ -5,7 +5,7 @@
  */
 
 /**
- * UserInterface annotation tool.
+ * UserInterface tool.
  *
  * @class
  * @abstract
