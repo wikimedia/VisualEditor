@@ -1,19 +1,13 @@
 /*!
- * OOjs UI v0.9.7
+ * OOjs UI v0.9.8
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2015 OOjs Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2015-04-03T21:01:34Z
+ * Date: 2015-04-12T17:19:13Z
  */
-.oo-ui-progressBarWidget-slide-frames from {
-	margin-left: -40%;
-}
-.oo-ui-progressBarWidget-slide-frames to {
-	margin-left: 100%;
-}
 @-webkit-keyframes oo-ui-progressBarWidget-slide {
 	from {
 		margin-left: -40%;
@@ -1548,9 +1542,11 @@
 	cursor: auto;
 }
 .oo-ui-popupButtonWidget.oo-ui-buttonElement-frameless > .oo-ui-popupWidget {
+	/* @noflip */
 	left: 1em;
 }
 .oo-ui-popupButtonWidget.oo-ui-buttonElement-framed > .oo-ui-popupWidget {
+	/* @noflip */
 	left: 1.25em;
 }
 .oo-ui-inputWidget {
@@ -2438,6 +2434,17 @@
 }
 .oo-ui-icon-help {
 	background-image: /* @embed */ url(themes/apex/images/icons/help-ltr.png);
+}
+/* @noflip */
+.oo-ui-icon-help:lang(he) {
+	background-image: /* @embed */ url(themes/apex/images/icons/help-ltr.png);
+}
+/* @noflip */
+.oo-ui-icon-help:lang(yi) {
+	background-image: /* @embed */ url(themes/apex/images/icons/help-ltr.png);
+}
+.oo-ui-icon-history {
+	background-image: /* @embed */ url(themes/apex/images/icons/history.png);
 }
 .oo-ui-icon-info {
 	background-image: /* @embed */ url(themes/apex/images/icons/info.png);

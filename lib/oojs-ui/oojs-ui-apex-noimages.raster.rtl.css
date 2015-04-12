@@ -1,19 +1,13 @@
 /*!
- * OOjs UI v0.9.7
+ * OOjs UI v0.9.8
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2015 OOjs Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2015-04-03T21:01:34Z
+ * Date: 2015-04-12T17:19:13Z
  */
-.oo-ui-progressBarWidget-slide-frames from {
-	margin-right: -40%;
-}
-.oo-ui-progressBarWidget-slide-frames to {
-	margin-right: 100%;
-}
 @-webkit-keyframes oo-ui-progressBarWidget-slide {
 	from {
 		margin-right: -40%;
@@ -1548,10 +1542,12 @@
 	cursor: auto;
 }
 .oo-ui-popupButtonWidget.oo-ui-buttonElement-frameless > .oo-ui-popupWidget {
-	right: 1em;
+	/* @noflip */
+	left: 1em;
 }
 .oo-ui-popupButtonWidget.oo-ui-buttonElement-framed > .oo-ui-popupWidget {
-	right: 1.25em;
+	/* @noflip */
+	left: 1.25em;
 }
 .oo-ui-inputWidget {
 	margin-left: 0.5em;
