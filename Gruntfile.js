@@ -106,10 +106,11 @@ module.exports = function ( grunt ) {
 				targetFile: '.jsduck/eg-iframe.html',
 				template: '.jsduck/eg-iframe.html.template',
 				modules: modules,
-				load: [ 'visualEditor.desktop.standalone' ],
+				load: [ 'visualEditor.standalone.apex.dist' ],
 				pathPrefix: '../',
 				i18n: [ 'i18n/', 'lib/oojs-ui/i18n/' ],
-				indent: '\t\t'
+				indent: '\t\t',
+				bidi: false
 			},
 			desktopDemo: {
 				targetFile: 'demos/ve/desktop.html',
