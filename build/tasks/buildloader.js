@@ -6,8 +6,7 @@
 module.exports = function ( grunt ) {
 
 	grunt.registerMultiTask( 'buildloader', function () {
-		var i, len,
-			i18nScript,
+		var i18nScript,
 			styles = [],
 			scripts = [],
 			loadedModules = [],
@@ -104,9 +103,12 @@ module.exports = function ( grunt ) {
 
 		if ( i18n.length ) {
 			i18nScript = indent + '<script>\n';
-			for ( i = 0, len = i18n.length; i < len; i++ ) {
-				i18nScript += indent + '\tve.init.platform.addMessagePath( \'' + pathPrefix + i18n[i] + '\' );\n';
-			}
+
+			i18nScript += indent + '\tve.messagePaths = ' +
+				JSON.stringify(
+					i18n.map( function ( path ) { return pathPrefix + path; } )
+				) + ';\n';
+
 			if ( langList ) {
 				i18nScript += indent + '\tve.availableLanguages = ' +
 					JSON.stringify(
@@ -118,6 +120,7 @@ module.exports = function ( grunt ) {
 					) +
 					';\n';
 			}
+
 			i18nScript += indent + '</script>';
 			scripts.push( i18nScript );
 		}

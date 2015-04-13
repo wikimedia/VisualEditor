@@ -4,8 +4,8 @@
  * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
-// Wait for i18n messages to load
-ve.init.platform.initialize().done( function () {
+// Set up the platform and wait for i18n messages to load
+new ve.init.sa.Platform( ve.messagePaths ).initialize().done( function () {
 
 	// Create the target
 	var target = new ve.init.sa.Target();

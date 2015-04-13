@@ -8,7 +8,7 @@ ve.demo = {
 	surfaceContainers: []
 };
 
-ve.init.platform.initialize().done( function () {
+new ve.init.sa.Platform( ve.messagePaths ).initialize().done( function () {
 
 	var $toolbar = $( '.ve-demo-targetToolbar' ),
 		$editor = $( '.ve-demo-editor' ),

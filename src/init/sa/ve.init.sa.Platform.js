@@ -22,14 +22,15 @@
  * @extends ve.init.Platform
  *
  * @constructor
+ * @param {string[]} [messagePaths] Message folder paths
  */
-ve.init.sa.Platform = function VeInitSaPlatform() {
+ve.init.sa.Platform = function VeInitSaPlatform( messagePaths ) {
 	// Parent constructor
 	ve.init.Platform.call( this );
 
 	// Properties
 	this.externalLinkUrlProtocolsRegExp = /^https?\:\/\//;
-	this.messagePaths = [];
+	this.messagePaths = messagePaths || [];
 	this.parsedMessages = {};
 	this.userLanguages = ['en'];
 };
@@ -43,15 +44,6 @@ OO.inheritClass( ve.init.sa.Platform, ve.init.Platform );
 /** @inheritdoc */
 ve.init.sa.Platform.prototype.getExternalLinkUrlProtocolsRegExp = function () {
 	return this.externalLinkUrlProtocolsRegExp;
-};
-
-/**
- * Add an i18n message folder path
- *
- * @param {string} path Message folder path
- */
-ve.init.sa.Platform.prototype.addMessagePath = function ( path ) {
-	this.messagePaths.push( path );
 };
 
 /**
@@ -180,13 +172,3 @@ ve.init.sa.Platform.prototype.initialize = function () {
 	}
 	return $.when.apply( $, promises );
 };
-
-/* Initialization */
-
-ve.init.platform = new ve.init.sa.Platform();
-
-/* Extension */
-
-OO.ui.getUserLanguages = ve.init.platform.getUserLanguages.bind( ve.init.platform );
-
-OO.ui.msg = ve.init.platform.getMessage.bind( ve.init.platform );
