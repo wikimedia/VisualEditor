@@ -2230,9 +2230,7 @@ ve.ce.Surface.prototype.onModelSelect = function () {
 			if ( blockSlug ) {
 				blockSlug.classList.add( 've-ce-branchNode-blockSlug-focused' );
 				this.focusedBlockSlug = blockSlug;
-				this.$pasteTarget.text( '☢' );
-				ve.selectElement( this.$pasteTarget[0] );
-				this.$pasteTarget[0].focus();
+				this.preparePasteTargetForCopy();
 			}
 		}
 
@@ -2250,14 +2248,7 @@ ve.ce.Surface.prototype.onModelSelect = function () {
 
 				// If dragging, we already have a native selection, so don't mess with it
 				if ( !this.dragging ) {
-					// As FF won't fire a copy event with nothing selected, make
-					// a dummy selection of one character in the pasteTarget.
-					// Previously this was a single space but this isn't selected programmatically
-					// properly, and in Safari results in a collapsed selection.
-					// onCopy will ignore this native selection and use the DM selection
-					this.$pasteTarget.text( '☢' );
-					ve.selectElement( this.$pasteTarget[0] );
-					this.$pasteTarget[0].focus();
+					this.preparePasteTargetForCopy();
 					// Since the selection is no longer in the documentNode, clear the SurfaceObserver's
 					// selection state. Otherwise, if the user places the selection back into the documentNode
 					// in exactly the same place where it was before, the observer won't consider that a change.
@@ -2269,9 +2260,7 @@ ve.ce.Surface.prototype.onModelSelect = function () {
 		}
 	} else {
 		if ( selection instanceof ve.dm.TableSelection ) {
-			this.$pasteTarget.text( '☢' );
-			ve.selectElement( this.$pasteTarget[0] );
-			this.$pasteTarget[0].focus();
+			this.preparePasteTargetForCopy();
 		}
 		if ( this.focusedNode ) {
 			this.focusedNode.setFocused( false );
@@ -2288,6 +2277,20 @@ ve.ce.Surface.prototype.onModelSelect = function () {
 	}
 	// Update the selection state in the SurfaceObserver
 	this.surfaceObserver.pollOnceNoEmit();
+};
+
+/**
+ * Prepare the paste target for a copy event by selecting some dummy text
+ */
+ve.ce.Surface.prototype.preparePasteTargetForCopy = function () {
+	// As FF won't fire a copy event with nothing selected, make
+	// a dummy selection of one character in the pasteTarget.
+	// Previously this was a single space but this isn't selected programmatically
+	// properly, and in Safari results in a collapsed selection.
+	// onCopy will ignore this native selection and use the DM selection
+	this.$pasteTarget.text( '☢' );
+	ve.selectElement( this.$pasteTarget[0] );
+	this.$pasteTarget[0].focus();
 };
 
 /**
