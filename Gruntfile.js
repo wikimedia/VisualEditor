@@ -106,7 +106,10 @@ module.exports = function ( grunt ) {
 				targetFile: '.jsduck/eg-iframe.html',
 				template: '.jsduck/eg-iframe.html.template',
 				modules: modules,
-				load: [ 'visualEditor.standalone.apex.dist' ],
+				load: [
+					'visualEditor.standalone.apex.dist',
+					'visualEditor.standalone.read'
+				],
 				pathPrefix: '../',
 				i18n: [ 'i18n/', 'lib/oojs-ui/i18n/' ],
 				indent: '\t\t',
@@ -116,7 +119,10 @@ module.exports = function ( grunt ) {
 				targetFile: 'demos/ve/desktop.html',
 				template: 'demos/ve/demo.html.template',
 				modules: modules,
-				load: [ 'visualEditor.desktop.standalone' ],
+				load: [
+					'visualEditor.desktop.standalone',
+					'visualEditor.standalone.read'
+				],
 				run: [ 'visualEditor.desktop.standalone.demo' ],
 				env: {
 					debug: true
@@ -130,7 +136,10 @@ module.exports = function ( grunt ) {
 				targetFile: 'demos/ve/desktop-dist.html',
 				template: 'demos/ve/demo.html.template',
 				modules: modules,
-				load: [ 'visualEditor.standalone.apex.dist' ],
+				load: [
+					'visualEditor.standalone.apex.dist',
+					'visualEditor.standalone.read'
+				],
 				run: [ 'visualEditor.desktop.standalone.demo' ],
 				pathPrefix: '../../',
 				i18n: [ 'dist/i18n/', 'lib/oojs-ui/i18n/' ],
@@ -141,7 +150,10 @@ module.exports = function ( grunt ) {
 				targetFile: 'demos/ve/mobile.html',
 				template: 'demos/ve/demo.html.template',
 				modules: modules,
-				load: [ 'visualEditor.mobile.standalone' ],
+				load: [
+					'visualEditor.mobile.standalone',
+					'visualEditor.standalone.read'
+				],
 				run: [ 'visualEditor.mobile.standalone.demo' ],
 				env: {
 					debug: true
@@ -155,7 +167,10 @@ module.exports = function ( grunt ) {
 				targetFile: 'demos/ve/mobile-dist.html',
 				template: 'demos/ve/demo.html.template',
 				modules: modules,
-				load: [ 'visualEditor.standalone.mediawiki.dist' ],
+				load: [
+					'visualEditor.standalone.mediawiki.dist',
+					'visualEditor.standalone.read'
+				],
 				run: [ 'visualEditor.mobile.standalone.demo' ],
 				pathPrefix: '../../',
 				i18n: [ 'dist/i18n/', 'lib/oojs-ui/i18n/' ],
@@ -166,7 +181,10 @@ module.exports = function ( grunt ) {
 				targetFile: 'demos/ve/minimal.html',
 				template: 'demos/ve/minimal.html.template',
 				modules: modules,
-				load: [ 'visualEditor.standalone.apex.dist' ],
+				load: [
+					'visualEditor.standalone.apex.dist',
+					'visualEditor.standalone.read'
+				],
 				run: [ 'visualEditor.minimal.standalone.demo' ],
 				pathPrefix: '../../',
 				i18n: [ 'dist/i18n/', 'lib/oojs-ui/i18n/' ],

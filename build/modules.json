@@ -643,7 +643,8 @@
 	"visualEditor.standalone.read": {
 		"styles": [
 			"src/init/sa/styles/ve.init.sa.css"
-		]
+		],
+		"styleGroup": "read"
 	},
 	"visualEditor.standalone.build": {
 		"scripts": [
@@ -655,8 +656,7 @@
 			{ "file": "src/ui/styles/ve.ui.DebugBar.css", "debug": true }
 		],
 		"dependencies": [
-			"visualEditor.base.build",
-			"visualEditor.standalone.read"
+			"visualEditor.base.build"
 		]
 	},
 	"visualEditor.desktop.standalone": {
@@ -677,7 +677,8 @@
 		],
 		"styles": [
 			"demos/ve/demo.css"
-		]
+		],
+		"styleGroup": "read"
 	},
 	"visualEditor.desktop.standalone.demo": {
 		"scripts": [
@@ -686,6 +687,7 @@
 		"styles": [
 			"demos/ve/demo.desktop.css"
 		],
+		"styleGroup": "read",
 		"dependencies": [
 			"visualEditor.standalone.demo"
 		]
@@ -697,6 +699,7 @@
 		"styles": [
 			"demos/ve/demo.mobile.css"
 		],
+		"styleGroup": "read",
 		"dependencies": [
 			"visualEditor.standalone.demo"
 		]

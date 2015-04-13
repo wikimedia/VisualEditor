@@ -179,6 +179,10 @@ ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, 
 		removeButton = new OO.ui.ButtonWidget( {
 			icon: 'remove',
 			label: 'Remove surface'
+		} ),
+		$exitReadButton = $( '<a href="#">' ).text( 'Back to editor' ).on( 'click', function () {
+			container.change( 've' );
+			return false;
 		} );
 
 	this.modeSelect = new OO.ui.ButtonSelectWidget().addItems( [
@@ -216,13 +220,16 @@ ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, 
 
 	this.$element.append(
 		$( '<div>' ).addClass( 've-demo-toolbar ve-demo-surfaceToolbar' ).append(
-			$( '<div>' ).addClass( 've-demo-toolbar-commands' ).append(
+			$( '<div>' ).addClass( 've-demo-toolbar-commands ve-demo-surfaceToolbar-edit' ).append(
 				pageLabel.$element,
 				pageDropdown.$element,
 				$( '<span class="ve-demo-toolbar-divider">&nbsp;</span>' ),
 				this.modeSelect.$element,
 				$( '<span class="ve-demo-toolbar-divider">&nbsp;</span>' ),
 				removeButton.$element
+			),
+			$( '<div>' ).addClass( 've-demo-toolbar-commands ve-demo-surfaceToolbar-read' ).append(
+				$exitReadButton
 			)
 		),
 		this.$surfaceWrapper,
@@ -310,7 +317,15 @@ ve.demo.SurfaceContainer.prototype.change = function ( mode, page ) {
 	}
 
 	return closePromise.done( function () {
-		$( '.stylesheet-ve.stylesheet-' + currentDir ).prop( 'disabled', mode !== 've' );
+		var isRead = mode === 'read',
+			otherDir = currentDir === 'ltr' ? 'rtl' : 'ltr',
+			$editStylesheets = $( 'link[rel=stylesheet]:not(.stylesheet-read):not(.stylesheet-' + otherDir + ')' );
+
+		$( '.ve-demo-targetToolbar' ).toggle( !isRead );
+		container.$element.find( '.ve-demo-surfaceToolbar-edit' ).toggle( !isRead );
+		container.$element.find( '.ve-demo-surfaceToolbar-read' ).toggle( isRead );
+		$editStylesheets.prop( 'disabled', isRead );
+
 		switch ( mode ) {
 			case 've':
 				if ( page ) {

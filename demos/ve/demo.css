@@ -16,7 +16,7 @@ body {
 
 .ve-demo-logo {
 	float: right;
-	margin: -0.4em -0.3em 0 0;
+	margin: 0.35em 1.7em 0 0;
 	background: url('VisualEditor-logo.svg') no-repeat;
 	background-size: contain;
 	width: 8.6em;
@@ -96,6 +96,7 @@ body {
 }
 
 .ve-demo-read {
+	clear: right;
 	padding: 0.75em 1.5em;
 	font-size: 0.8em;
 }
