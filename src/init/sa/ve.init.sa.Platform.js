@@ -8,14 +8,11 @@
  * Initialization Standalone platform.
  *
  *     @example
- *     ve.init.platform.initialize().done( function () {
- *         var target = new ve.init.sa.Target();
- *         target.addSurface(
- *             ve.dm.converter.getModelFromDom(
- *                 ve.createDocumentFromHtml( '<p>Hello, World!</p>' )
- *             )
- *         );
- *         $( 'body' ).append( target.$element );
+ *     var platform = new ve.init.sa.Platform( ve.messagePaths );
+ *     platform.initialize().done( function () {
+ *         $( 'body' ).append( $( '<p>' ).text(
+ *             platform.getMessage( 'visualeditor' )
+ *         ) );
  *     } );
  *
  * @class
