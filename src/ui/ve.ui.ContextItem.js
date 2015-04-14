@@ -82,6 +82,14 @@ OO.mixinClass( ve.ui.ContextItem, OO.ui.PendingElement );
 
 ve.ui.ContextItem.static.editable = true;
 
+/**
+ * Whether the context item should try (if space permits) to go inside the node,
+ * rather than below with an arrow
+ *
+ * @static
+ * @property {boolean}
+ * @inheritable
+ */
 ve.ui.ContextItem.static.embeddable = true;
 
 /**
