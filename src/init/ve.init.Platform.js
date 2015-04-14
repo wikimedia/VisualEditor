@@ -51,10 +51,22 @@ ve.init.Platform.static.getSystemPlatform = function () {
  * @static
  * @method
  * @inheritable
- * @returns {boolean} Whether we are in IE
+ * @returns {boolean} We are in IE
  */
 ve.init.Platform.static.isInternetExplorer = function () {
 	return $.client.profile().name === 'msie';
+};
+
+/**
+ * Check whether we are running on iOS
+ *
+ * @static
+ * @method
+ * @inheritable
+ * @return {boolean} We are running on iOS
+ */
+ve.init.Platform.static.isIos = function () {
+	return /ipad|iphone|ipod/i.test( navigator.userAgent );
 };
 
 /* Methods */

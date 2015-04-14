@@ -2288,9 +2288,19 @@ ve.ce.Surface.prototype.preparePasteTargetForCopy = function () {
 	// Previously this was a single space but this isn't selected programmatically
 	// properly, and in Safari results in a collapsed selection.
 	// onCopy will ignore this native selection and use the DM selection
-	this.$pasteTarget.text( '☢' );
-	ve.selectElement( this.$pasteTarget[0] );
-	this.$pasteTarget[0].focus();
+	if ( !ve.init.platform.constructor.static.isIos() ) {
+		this.$pasteTarget.text( '☢' );
+		ve.selectElement( this.$pasteTarget[0] );
+		this.$pasteTarget[0].focus();
+	} else {
+		// Selecting the paste target fails on iOS:
+		// * The selection stays visible and causes scrolling
+		// * The user is unlikely to be able to trigger a keyboard copy anyway
+		// Instead just deactivate the surface so the native cursor doesn't
+		// get in the way.
+		// TODO: Provide a copy tool in the context menu
+		this.deactivate();
+	}
 };
 
 /**
