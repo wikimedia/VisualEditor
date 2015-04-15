@@ -8,15 +8,15 @@
  * Context menu and inspectors.
  *
  * @class
- * @extends ve.ui.Context
+ * @extends ve.ui.LinearContext
  *
  * @constructor
  * @param {ve.ui.Surface} surface
  * @param {Object} [config] Configuration options
  */
-ve.ui.DesktopContext = function VeUiDesktopContext( surface, config ) {
+ve.ui.DesktopContext = function VeUiDesktopContext() {
 	// Parent constructor
-	ve.ui.DesktopContext.super.call( this, surface, config );
+	ve.ui.DesktopContext.super.apply( this, arguments );
 
 	// Properties
 	this.popup = new OO.ui.PopupWidget( { $container: this.surface.$element } );
@@ -46,13 +46,12 @@ ve.ui.DesktopContext = function VeUiDesktopContext( surface, config ) {
 		.addClass( 've-ui-desktopContext' )
 		.append( this.popup.$element );
 	this.$group.addClass( 've-ui-desktopContext-menu' );
-	this.inspectors.$element.addClass( 've-ui-desktopContext-inspectors' );
 	this.popup.$body.append( this.$group, this.inspectors.$element );
 };
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.DesktopContext, ve.ui.Context );
+OO.inheritClass( ve.ui.DesktopContext, ve.ui.LinearContext );
 
 /* Methods */
 
@@ -260,6 +259,24 @@ ve.ui.DesktopContext.prototype.updateDimensions = function () {
 	this.setPopupSize();
 
 	return this;
+};
+
+/**
+ * Check if the context menu for current content is embeddable.
+ *
+ * @return {boolean} Context menu is embeddable
+ */
+ve.ui.DesktopContext.prototype.isEmbeddable = function () {
+	var i, len,
+		sources = this.getRelatedSources();
+
+	for ( i = 0, len = sources.length; i < len; i++ ) {
+		if ( !sources[i].embeddable ) {
+			return false;
+		}
+	}
+
+	return true;
 };
 
 /**

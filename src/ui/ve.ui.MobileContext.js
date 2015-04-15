@@ -8,15 +8,15 @@
  * UserInterface context that displays inspector full screen.
  *
  * @class
- * @extends ve.ui.Context
+ * @extends ve.ui.LinearContext
  *
  * @constructor
  * @param {ve.ui.Surface} surface
  * @param {Object} [config] Configuration options
  */
-ve.ui.MobileContext = function VeUiMobileContext( surface, config ) {
+ve.ui.MobileContext = function VeUiMobileContext() {
 	// Parent constructor
-	ve.ui.MobileContext.super.call( this, surface, config );
+	ve.ui.MobileContext.super.apply( this, arguments );
 
 	// Properties
 	this.transitioning = null;
@@ -30,13 +30,12 @@ ve.ui.MobileContext = function VeUiMobileContext( surface, config ) {
 	// Initialization
 	this.$element.addClass( 've-ui-mobileContext' );
 	this.$group.addClass( 've-ui-mobileContext-menu' );
-	this.inspectors.$element.addClass( 've-ui-mobileContext-inspectors' );
 	this.surface.getGlobalOverlay().$element.append( this.inspectors.$element );
 };
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.MobileContext, ve.ui.Context );
+OO.inheritClass( ve.ui.MobileContext, ve.ui.LinearContext );
 
 /* Static Properties */
 

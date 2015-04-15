@@ -359,6 +359,7 @@
 			"src/ui/ve.ui.Overlay.js",
 			"src/ui/ve.ui.Surface.js",
 			"src/ui/ve.ui.Context.js",
+			"src/ui/ve.ui.LinearContext.js",
 			"src/ui/ve.ui.ModeledFactory.js",
 			"src/ui/ve.ui.ContextItem.js",
 			"src/ui/ve.ui.ContextItemFactory.js",
