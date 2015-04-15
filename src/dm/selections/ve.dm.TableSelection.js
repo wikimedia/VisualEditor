@@ -367,13 +367,31 @@ ve.dm.TableSelection.prototype.equals = function ( other ) {
 };
 
 /**
+ * Get the number of rows covered by the selection
+ *
+ * @return {number} Number of rows covered
+ */
+ve.dm.TableSelection.prototype.getRowCount = function () {
+	return this.endRow - this.startRow + 1;
+};
+
+/**
+ * Get the number of columns covered by the selection
+ *
+ * @return {number} Number of columns covered
+ */
+ve.dm.TableSelection.prototype.getColCount = function () {
+	return this.endCol - this.startCol + 1;
+};
+
+/**
  * Check if the table selection covers one or more full rows
  *
  * @return {boolean} The table selection covers one or more full rows
  */
 ve.dm.TableSelection.prototype.isFullRow = function () {
 	var matrix = this.getTableNode().getMatrix();
-	return this.endCol - this.startCol === matrix.getColCount() - 1;
+	return this.getColCount() === matrix.getColCount();
 };
 
 /**
@@ -383,7 +401,7 @@ ve.dm.TableSelection.prototype.isFullRow = function () {
  */
 ve.dm.TableSelection.prototype.isFullCol = function () {
 	var matrix = this.getTableNode().getMatrix();
-	return this.endRow - this.startRow === matrix.getRowCount() - 1;
+	return this.getRowCount() === matrix.getRowCount();
 };
 
 /* Registration */

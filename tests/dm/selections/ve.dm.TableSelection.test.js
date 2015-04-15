@@ -8,7 +8,7 @@ QUnit.module( 've.dm.TableSelection' );
 
 /* Tests */
 
-QUnit.test( 'Construction and getters (getDocument, getRanges, getOuterRanges, getTableNode', 28, function ( assert ) {
+QUnit.test( 'Construction and getters (getDocument, getRanges, getOuterRanges, getTableNode)', 28, function ( assert ) {
 	var i, selection,
 		doc = ve.dm.example.createExampleDocument( 'mergedCells' ),
 		tableNode = doc.getBranchNodeFromOffset( 1 ),
@@ -104,7 +104,7 @@ QUnit.test( 'Construction and getters (getDocument, getRanges, getOuterRanges, g
 
 } );
 
-QUnit.test( 'Basic methods (clone, expand, collapse*, getRange(s), isCollased, isSingleCell, equals, isNull)', 13, function ( assert ) {
+QUnit.test( 'Basic methods (clone, expand, collapse*, getRange(s), isCollased, isSingleCell, equals, isNull, isFullRow/Col, getRow/ColCount)', 17, function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument( 'mergedCells' ),
 		doc2 = ve.dm.example.createExampleDocument( 'mergedCells' ),
 		tableRange = doc.getBranchNodeFromOffset( 1 ).getOuterRange(),
@@ -113,7 +113,8 @@ QUnit.test( 'Basic methods (clone, expand, collapse*, getRange(s), isCollased, i
 		selection2 = new ve.dm.TableSelection( doc2, tableRange, 1, 2, 0, 1, true ),
 		startSelection = new ve.dm.TableSelection( doc, tableRange, 0, 1 ),
 		endSelection = new ve.dm.TableSelection( doc, tableRange, 2, 2 ),
-		mergedSingleCell = new ve.dm.TableSelection( doc, tableRange, 1, 3, 3, 5, true );
+		mergedSingleCell = new ve.dm.TableSelection( doc, tableRange, 1, 3, 3, 5, true ),
+		largeSelection = new ve.dm.TableSelection( doc, tableRange, 0, 0, 3, 6 );
 
 	assert.deepEqual( selection.clone(), expandedSelection, 'clone' );
 	assert.deepEqual( selection.collapseToStart(), startSelection, 'collapseToStart' );
@@ -128,6 +129,10 @@ QUnit.test( 'Basic methods (clone, expand, collapse*, getRange(s), isCollased, i
 	assert.strictEqual( selection.equals( selection ), true, 'equals' );
 	assert.strictEqual( selection.equals( selection2 ), false, 'not equal when docs are not reference equal' );
 	assert.strictEqual( selection.isNull(), false, 'not null' );
+	assert.strictEqual( largeSelection.getColCount(), 4, 'getColCount' );
+	assert.strictEqual( largeSelection.getRowCount(), 7, 'getRowCount' );
+	assert.strictEqual( largeSelection.isFullCol(), true, 'isFullCol' );
+	assert.strictEqual( largeSelection.isFullRow(), false, 'isFullRow' );
 } );
 
 QUnit.test( 'Factory methods & serialization (newFromJSON, toJSON, getDescription)', 3, function ( assert ) {
