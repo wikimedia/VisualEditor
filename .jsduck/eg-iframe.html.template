@@ -22,14 +22,19 @@
 
 		<!-- example scripts -->
 		<script>
+			// Ensure ve.init.platform exists for use in examples
+			var platform = new ve.init.sa.Platform( ve.messagePaths ).initialize();
+
 			function loadInlineExample( code, options, callback ) {
-				try {
-					eval( code );
-					callback && callback( true );
-				} catch (e) {
-					document.body.appendChild( document.createTextNode( e ) );
-					callback && callback( false, e );
-				}
+				platform.done( function () {
+					try {
+						eval( code );
+						callback && callback( true );
+					} catch (e) {
+						document.body.appendChild( document.createTextNode( e ) );
+						callback && callback( false, e );
+					}
+				} );
 			}
 		</script>
 	</body>
