@@ -78,6 +78,12 @@ OO.mixinClass( ve.ui.ContextItem, OO.ui.IconElement );
 OO.mixinClass( ve.ui.ContextItem, OO.ui.LabelElement );
 OO.mixinClass( ve.ui.ContextItem, OO.ui.PendingElement );
 
+/* Events */
+
+/**
+ * @event command
+ */
+
 /* Static Properties */
 
 ve.ui.ContextItem.static.editable = true;
@@ -128,6 +134,7 @@ ve.ui.ContextItem.prototype.onEditButtonClick = function () {
 
 	if ( command ) {
 		command.execute( this.context.getSurface() );
+		this.emit( 'command' );
 	}
 };
 

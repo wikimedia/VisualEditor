@@ -1,0 +1,20 @@
+/*!
+ * VisualEditor UserInterface ToolContextItem styles.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+.ve-ui-tableContextItem .ve-ui-contextItem-actions {
+	text-align: left;
+	width: auto;
+	padding: 0;
+}
+
+.ve-ui-tableContextItem .ve-ui-contextItem-editButton {
+	display: block;
+}
+
+.ve-ui-tableContextItem .ve-ui-contextItem-editButton .oo-ui-buttonElement-button {
+	display: block;
+	padding: 0.5em;
+}
