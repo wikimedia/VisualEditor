@@ -12,14 +12,14 @@
  *
  * @constructor
  * @param {string} [surfaceType] Type of surface to use, 'desktop' or 'mobile'
- * @param {Object} [config] Configuration options.  Will override default config
+ * @param {Object} [toolbarConfig] Configuration options for the toolbar
  * @throws {Error} Unknown surfaceType
  */
-ve.init.sa.Target = function VeInitSaTarget( surfaceType, config ) {
-	config = $.extend( { shadow: true, actions: true, floatable: true }, config );
+ve.init.sa.Target = function VeInitSaTarget( surfaceType, toolbarConfig ) {
+	toolbarConfig = $.extend( { shadow: true, actions: true, floatable: true }, toolbarConfig );
 
 	// Parent constructor
-	ve.init.Target.call( this, config );
+	ve.init.Target.call( this, toolbarConfig );
 
 	this.surfaceType = surfaceType || this.constructor.static.defaultSurfaceType;
 	this.actions = null;
