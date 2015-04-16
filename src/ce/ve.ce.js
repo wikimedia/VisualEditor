@@ -63,6 +63,9 @@ ve.ce.getDomText = function ( element ) {
 				// contain a single nbsp/FEFF character in the DOM, so make sure
 				// that character isn't counted
 				return '';
+			} else if ( $element.hasClass( 've-ce-cursorHolder' ) ) {
+				// Cursor holders do not exist in the model
+				return '';
 			} else if ( $element.hasClass( 've-ce-leafNode' ) ) {
 				// For leaf nodes, don't return the content, but return
 				// the right number of placeholder characters so the offsets match up.
@@ -111,14 +114,17 @@ ve.ce.getDomHash = function ( element ) {
 	if ( nodeType === Node.TEXT_NODE || nodeType === Node.CDATA_SECTION_NODE ) {
 		return '#';
 	} else if ( nodeType === Node.ELEMENT_NODE || nodeType === Node.DOCUMENT_NODE ) {
-		hash += '<' + nodeName + '>';
-		if ( !$( element ).hasClass( 've-ce-branchNode-blockSlug' ) ) {
+		if ( !(
+			$( element ).hasClass( 've-ce-branchNode-blockSlug' ) ||
+			$( element ).hasClass( 've-ce-cursorHolder' )
+		) ) {
+			hash += '<' + nodeName + '>';
 			// Traverse its children
 			for ( element = element.firstChild; element; element = element.nextSibling ) {
 				hash += ve.ce.getDomHash( element );
 			}
+			hash += '</' + nodeName + '>';
 		}
-		hash += '</' + nodeName + '>';
 		// Merge adjacent text node representations
 		hash = hash.replace( /##+/g, '#' );
 	}
@@ -283,7 +289,10 @@ ve.ce.getOffset = function ( domNode, domOffset ) {
 		}
 	} else {
 		// Text inside of a block slug doesn't count
-		if ( !$( domNode.parentNode ).hasClass( 've-ce-branchNode-blockSlug' ) ) {
+		if ( !(
+			$( domNode.parentNode ).hasClass( 've-ce-branchNode-blockSlug' ) ||
+			$( domNode.parentNode ).hasClass( 've-ce-cursorHolder' )
+		) ) {
 			lengthSum += domOffset;
 		}
 		startNode = domNode;
@@ -304,7 +313,11 @@ ve.ce.getOffset = function ( domNode, domOffset ) {
 		}
 
 		// Text inside of a block slug doesn't count
-		if ( node.nodeType === Node.TEXT_NODE && !$( node.parentNode ).hasClass( 've-ce-branchNode-blockSlug' ) ) {
+		if (
+			node.nodeType === Node.TEXT_NODE &&
+			!$( node.parentNode ).hasClass( 've-ce-branchNode-blockSlug' ) &&
+			!$( node.parentNode ).hasClass( 've-ce-cursorHolder' )
+		) {
 			lengthSum += node.data.length;
 		}
 		// else: non-text nodes that don't have a .data( 'view' ) don't exist in the DM

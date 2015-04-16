@@ -15,7 +15,7 @@ QUnit.test( 'whitespacePattern', 4, function ( assert ) {
 	assert.strictEqual( 'ab'.match( ve.ce.whitespacePattern ), null, 'does not match non-whitespace' );
 } );
 
-QUnit.test( 'getDomHash/getDomText', function ( assert ) {
+QUnit.test( 'getDomHash/getDomText (with ve.dm.Converter)', function ( assert ) {
 	var i, surface, documentView,
 		cases = [
 			{
@@ -42,7 +42,7 @@ QUnit.test( 'getDomHash/getDomText', function ( assert ) {
 			{
 				msg: 'Block slugs are ignored',
 				html: '<table><tr><td>Foo</td></tr></table>',
-				hash: '<DIV><DIV></DIV><TABLE><TBODY><TR><TD><P>#</P></TD></TR></TBODY></TABLE><DIV></DIV></DIV>',
+				hash: '<DIV><TABLE><TBODY><TR><TD><P>#</P></TD></TR></TBODY></TABLE></DIV>',
 				text: 'Foo'
 			}
 		];
@@ -54,6 +54,33 @@ QUnit.test( 'getDomHash/getDomText', function ( assert ) {
 		documentView = surface.getView().getDocument();
 		assert.strictEqual( ve.ce.getDomHash( documentView.getDocumentNode().$element[0] ), cases[i].hash, 'getDomHash: ' + cases[i].msg );
 		assert.strictEqual( ve.ce.getDomText( documentView.getDocumentNode().$element[0] ), cases[i].text, 'getDomText: ' + cases[i].msg );
+	}
+} );
+
+QUnit.test( 'getDomHash/getDomText (without ve.dm.Converter)', function ( assert ) {
+	var i, element,
+		cases = [
+			{
+				msg: 'Block slugs are ignored',
+				html: '<div><p>foo</p><div class="ve-ce-branchNode-blockSlug">x</div><p>bar</p></div>',
+				hash: '<DIV><P>#</P><P>#</P></DIV>',
+				text: 'foobar'
+			},
+			{
+				msg: 'Cursor holders are ignored',
+				html: '<div><p>foo</p><div class="ve-ce-cursorHolder">x</div><p>bar</p></div>',
+				hash: '<DIV><P>#</P><P>#</P></DIV>',
+				text: 'foobar'
+			}
+		];
+
+	QUnit.expect( cases.length * 2 );
+	element = ve.test.utils.createSurfaceFromHtml( '' ).getView().getDocument().getDocumentNode().$element[0];
+
+	for ( i = 0; i < cases.length; i++ ) {
+		element.innerHTML = cases[i].html;
+		assert.strictEqual( ve.ce.getDomHash( element.firstChild ), cases[i].hash, 'getDomHash: ' + cases[i].msg );
+		assert.strictEqual( ve.ce.getDomText( element.firstChild ), cases[i].text, 'getDomText: ' + cases[i].msg );
 	}
 } );
 
