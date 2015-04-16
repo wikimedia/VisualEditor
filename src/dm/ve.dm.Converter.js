@@ -1103,6 +1103,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 		// annotation didn't originally have leading/trailing whitespace
 		first = annotatedChildDomElements[0];
 		while (
+			first &&
 			first.nodeType === Node.TEXT_NODE &&
 			( matches = first.data.match( /^\s+/ ) ) &&
 			!origElementText.match( /^\s/ )
@@ -1119,6 +1120,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 		}
 		last = annotatedChildDomElements[annotatedChildDomElements.length - 1];
 		while (
+			last &&
 			last.nodeType === Node.TEXT_NODE &&
 			( matches = last.data.match( /\s+$/ ) ) &&
 			!origElementText.match( /\s$/ )
