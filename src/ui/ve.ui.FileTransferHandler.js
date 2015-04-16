@@ -41,6 +41,17 @@ OO.inheritClass( ve.ui.FileTransferHandler, ve.ui.DataTransferHandler );
 
 ve.ui.FileTransferHandler.static.kinds = [ 'file' ];
 
+/**
+ * List of file extensions supported by this handler
+ *
+ * This is used as a fallback if no types were matched.
+ *
+ * @static
+ * @property {string[]}
+ * @inheritable
+ */
+ve.ui.FileTransferHandler.static.extensions = [];
+
 /* Methods */
 
 /**

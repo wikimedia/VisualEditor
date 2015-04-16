@@ -10,13 +10,15 @@
  * @param {Blob} [data.blob] File blob
  * @param {string} [data.stringData] String data
  * @param {DataTransferItem} [data.item] Native data transfer item
+ * @param {string} [name] Item's name, for types which support it, e.g. File
  */
-ve.ui.DataTransferItem = function VeUiDataTransferItem( kind, type, data ) {
+ve.ui.DataTransferItem = function VeUiDataTransferItem( kind, type, data, name ) {
 	this.kind = kind;
 	this.type = type;
 	this.data = data;
 	this.blob = this.data.blob || null;
 	this.stringData = this.data.stringData || ve.getProp( this.blob, 'name' ) || null;
+	this.name = name;
 };
 
 /* Inheritance */
@@ -32,7 +34,7 @@ OO.initClass( ve.ui.DataTransferItem );
  * @return {ve.ui.DataTransferItem} New data transfer item
  */
 ve.ui.DataTransferItem.static.newFromBlob = function ( blob ) {
-	return new ve.ui.DataTransferItem( 'file', blob.type, { blob: blob } );
+	return new ve.ui.DataTransferItem( 'file', blob.type, { blob: blob }, blob.name );
 };
 
 /**
@@ -64,7 +66,7 @@ ve.ui.DataTransferItem.static.newFromString = function ( stringData, type ) {
  * @return {ve.ui.DataTransferItem} New data transfer item
  */
 ve.ui.DataTransferItem.static.newFromItem = function ( item ) {
-	return new ve.ui.DataTransferItem( item.kind, item.type, { item: item } );
+	return new ve.ui.DataTransferItem( item.kind, item.type, { item: item }, item.getAsFile().name );
 };
 
 /**
@@ -94,6 +96,15 @@ ve.ui.DataTransferItem.prototype.getAsFile = function () {
 		);
 	}
 	return this.blob;
+};
+
+/**
+ * Get the extension of the item's name
+ *
+ * @return {string|null} The extension of the item's name, or null if not present
+ */
+ve.ui.DataTransferItem.prototype.getExtension = function () {
+	return this.name ? this.name.split( '.' ).pop() : null;
 };
 
 /**
