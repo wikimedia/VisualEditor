@@ -29,6 +29,8 @@ ve.ui.DSVFileTransferHandler.static.name = 'dsv';
 
 ve.ui.DSVFileTransferHandler.static.types = [ 'text/csv', 'text/tab-separated-values' ];
 
+ve.ui.DSVFileTransferHandler.static.extensions = [ 'csv', 'tsv' ];
+
 /* Methods */
 
 /**

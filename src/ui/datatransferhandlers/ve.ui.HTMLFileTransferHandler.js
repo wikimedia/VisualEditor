@@ -29,6 +29,8 @@ ve.ui.HTMLFileTransferHandler.static.name = 'htmlFile';
 
 ve.ui.HTMLFileTransferHandler.static.types = [ 'text/html', 'application/xhtml+xml' ];
 
+ve.ui.HTMLFileTransferHandler.static.extensions = [ 'html', 'htm', 'xhtml' ];
+
 /* Methods */
 
 /**

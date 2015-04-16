@@ -27,7 +27,9 @@ OO.inheritClass( ve.ui.PlainTextFileTransferHandler, ve.ui.FileTransferHandler )
 
 ve.ui.PlainTextFileTransferHandler.static.name = 'plainTextFile';
 
-ve.ui.PlainTextFileTransferHandler.static.types = ['text/plain'];
+ve.ui.PlainTextFileTransferHandler.static.types = [ 'text/plain' ];
+
+ve.ui.PlainTextFileTransferHandler.static.extension = [ 'txt' ];
 
 /* Methods */
 
