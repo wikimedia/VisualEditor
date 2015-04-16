@@ -1082,7 +1082,13 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 	}
 
 	function closeAnnotation( annotation ) {
-		var i, len, annotationElement, annotatedChildDomElements;
+		var i, len, annotationElement, annotatedChildDomElements,
+			matches, first, last,
+			leading = '',
+			trailing = '',
+			origElementText = annotation.getOriginalDomElements()[0] &&
+				annotation.getOriginalDomElements()[0].textContent ||
+				'';
 
 		// Add text if needed
 		if ( text.length > 0 ) {
@@ -1092,9 +1098,49 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 
 		annotatedChildDomElements = annotatedDomElementStack.pop();
 		annotatedDomElements = annotatedDomElementStack[annotatedDomElementStack.length - 1];
+
+		// HACK: Move any leading and trailing whitespace out of the annotation, but only if the
+		// annotation didn't originally have leading/trailing whitespace
+		first = annotatedChildDomElements[0];
+		while (
+			first.nodeType === Node.TEXT_NODE &&
+			( matches = first.data.match( /^\s+/ ) ) &&
+			!origElementText.match( /^\s/ )
+		) {
+			leading += matches[0];
+			first.deleteData( 0, matches[0].length );
+			if ( first.data.length !== 0 ) {
+				break;
+			}
+			// Remove empty text node
+			annotatedChildDomElements.shift();
+			// Process next text node to see if it also has whitespace
+			first = annotatedChildDomElements[0];
+		}
+		last = annotatedChildDomElements[annotatedChildDomElements.length - 1];
+		while (
+			last.nodeType === Node.TEXT_NODE &&
+			( matches = last.data.match( /\s+$/ ) ) &&
+			!origElementText.match( /\s$/ )
+		) {
+			trailing = matches[0] + trailing;
+			last.deleteData( last.data.length - matches[0].length, matches[0].length );
+			if ( last.data.length !== 0 ) {
+				break;
+			}
+			// Remove empty text node
+			annotatedChildDomElements.pop();
+			// Process next text node to see if it also has whitespace
+			last = annotatedChildDomElements[annotatedChildDomElements.length - 1];
+		}
+
 		annotationElement = conv.getDomElementsFromDataElement(
 			annotation.getElement(), doc, annotatedChildDomElements
 		)[0];
+
+		if ( leading ) {
+			annotatedDomElements.push( doc.createTextNode( leading ) );
+		}
 		if ( annotationElement ) {
 			for ( i = 0, len = annotatedChildDomElements.length; i < len; i++ ) {
 				annotationElement.appendChild( annotatedChildDomElements[i] );
@@ -1104,6 +1150,9 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 			for ( i = 0, len = annotatedChildDomElements.length; i < len; i++ ) {
 				annotatedDomElements.push( annotatedChildDomElements[i] );
 			}
+		}
+		if ( trailing ) {
+			annotatedDomElements.push( doc.createTextNode( trailing ) );
 		}
 	}
 
