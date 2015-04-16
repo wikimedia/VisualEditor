@@ -59,6 +59,7 @@ new ve.init.sa.Platform( ve.messagePaths ).initialize().done( function () {
 	languageInput.setLangAndDir( currentLang, currentDir );
 	// Dir doesn't change on init but styles need to be set
 	updateStylesFromDir();
+	target.$element.attr( 'lang', currentLang );
 
 	languageInput.on( 'change', function ( lang, dir ) {
 		if ( dir === currentDir && lang !== 'qqx' && ve.availableLanguages.indexOf( lang ) === -1 ) {
@@ -69,6 +70,7 @@ new ve.init.sa.Platform( ve.messagePaths ).initialize().done( function () {
 		currentDir = dir;
 
 		updateStylesFromDir();
+		target.$element.attr( 'lang', currentLang );
 
 		// HACK: Override/restore message functions for qqx mode
 		if ( lang === 'qqx' ) {
