@@ -18,6 +18,9 @@
 ve.ui.Tool = function VeUiTool( toolGroup, config ) {
 	// Parent constructor
 	OO.ui.Tool.call( this, toolGroup, config );
+
+	// Disable initially
+	this.setDisabled( true );
 };
 
 /* Inheritance */
