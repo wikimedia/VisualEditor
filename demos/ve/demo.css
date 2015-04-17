@@ -96,15 +96,15 @@ body {
 }
 
 .ve-demo-read {
-	clear: right;
+	/* Match document padding and surface font size */
 	padding: 0.75em 1.5em;
 	font-size: 0.8em;
+	clear: right;
 }
 
 /* Editor */
 
-.ve-ce-documentNode {
-	padding: 0.75em 1.5em;
+.ve-ce-surface {
 	font-size: 0.8em;
 }
 

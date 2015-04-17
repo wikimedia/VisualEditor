@@ -20,7 +20,7 @@
 	margin: 0 2em 2em 2em;
 }
 
-.ve-demo-editor > div > div:last-child {
+.ve-init-sa-target-surfaceWrapper > :last-child {
 	border-radius: 0 0 0.25em 0.25em;
 }
 
@@ -31,7 +31,7 @@
 
 /* Editor */
 
-.ve-ui-surface {
+.ve-init-sa-target-surfaceWrapper > .ve-ui-surface {
 	/* surface is used for positioning so use an inset-shadow border */
 	box-shadow: 0 0.25em 1.5em 0 #ddd, inset 0 0 0 1px #ccc;
 }
@@ -48,7 +48,7 @@
 	border-bottom-width: 1px;
 }
 
-.ve-ui-debugBar {
+.ve-init-sa-target-surfaceWrapper > .ve-ui-debugBar {
 	border: 1px solid #ccc;
 	border-top: 0;
 	box-shadow: 0 0.25em 1.5em 0 #ddd;
