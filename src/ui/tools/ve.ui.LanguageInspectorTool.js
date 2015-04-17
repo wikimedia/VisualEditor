@@ -23,5 +23,5 @@ ve.ui.LanguageInspectorTool.static.icon = 'textLanguage';
 ve.ui.LanguageInspectorTool.static.title =
 	OO.ui.deferMsg( 'visualeditor-annotationbutton-language-tooltip' );
 ve.ui.LanguageInspectorTool.static.modelClasses = [ ve.dm.LanguageAnnotation ];
-ve.ui.LanguageInspectorTool.static.commandName = 'textLanguage';
+ve.ui.LanguageInspectorTool.static.commandName = 'language';
 ve.ui.toolFactory.register( ve.ui.LanguageInspectorTool );
