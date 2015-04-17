@@ -25,6 +25,8 @@ module.exports = function ( grunt ) {
 	var modules = grunt.file.readJSON( 'build/modules.json' ),
 		moduleUtils = require( './build/moduleUtils' ),
 		coreBuildFiles = moduleUtils.makeBuildList( modules, [ 'visualEditor.build' ] ),
+		coreBuildFilesApex = moduleUtils.makeBuildList( modules, [ 'visualEditor.build.apex' ] ),
+		coreBuildFilesMediaWiki = moduleUtils.makeBuildList( modules, [ 'visualEditor.build.mediawiki' ] ),
 		testFiles = moduleUtils.makeBuildList( modules, [ 'visualEditor.test' ] ).scripts;
 
 	function demoMenu( callback ) {
@@ -53,12 +55,19 @@ module.exports = function ( grunt ) {
 				dest: 'dist/visualEditor.js',
 				src: coreBuildFiles.scripts
 			},
-			css: {
+			'css-apex': {
 				options: {
 					banner: grunt.file.read( 'build/banner.txt' )
 				},
-				dest: 'dist/visualEditor.css',
-				src: coreBuildFiles.styles
+				dest: 'dist/visualEditor-apex.css',
+				src: coreBuildFilesApex.styles
+			},
+			'css-mediawiki': {
+				options: {
+					banner: grunt.file.read( 'build/banner.txt' )
+				},
+				dest: 'dist/visualEditor-mediawiki.css',
+				src: coreBuildFilesMediaWiki.styles
 			},
 			// HACK: Ideally these libraries would provide their own distribution files (T95667)
 			'jquery.i18n': {
@@ -71,9 +80,13 @@ module.exports = function ( grunt ) {
 			}
 		},
 		cssjanus: {
-			dist: {
-				dest: 'dist/visualEditor.rtl.css',
-				src: 'dist/visualEditor.css'
+			apex: {
+				dest: 'dist/visualEditor-apex.rtl.css',
+				src: 'dist/visualEditor-apex.css'
+			},
+			mediawiki: {
+				dest: 'dist/visualEditor-mediawiki.rtl.css',
+				src: 'dist/visualEditor-mediawiki.css'
 			}
 		},
 		cssUrlEmbed: {
@@ -84,8 +97,10 @@ module.exports = function ( grunt ) {
 			},
 			dist: {
 				files: {
-					'dist/visualEditor.css': 'dist/visualEditor.css',
-					'dist/visualEditor.rtl.css': 'dist/visualEditor.rtl.css'
+					'dist/visualEditor-apex.css': 'dist/visualEditor-apex.css',
+					'dist/visualEditor-apex.rtl.css': 'dist/visualEditor-apex.rtl.css',
+					'dist/visualEditor-mediawiki.css': 'dist/visualEditor-mediawiki.css',
+					'dist/visualEditor-mediawiki.rtl.css': 'dist/visualEditor-mediawiki.rtl.css'
 				}
 			}
 		},

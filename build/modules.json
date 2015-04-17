@@ -728,27 +728,53 @@
 			"visualEditor.mobile.build"
 		]
 	},
+	"visualEditor.build.apex": {
+		"dependencies": [
+			"visualEditor.build",
+			"visualEditor.theme.apex"
+		]
+	},
+	"visualEditor.build.mediawiki": {
+		"dependencies": [
+			"visualEditor.build",
+			"visualEditor.theme.mediawiki"
+		]
+	},
+	"visualEditor.dist.apex": {
+		"styles": [
+			"dist/visualEditor-apex.css"
+		],
+		"styleGroup": "ve",
+		"dependencies": [
+			"visualEditor.dist"
+		]
+	},
+	"visualEditor.dist.mediawiki": {
+		"styles": [
+			"dist/visualEditor-mediawiki.css"
+		],
+		"styleGroup": "ve",
+		"dependencies": [
+			"visualEditor.dist"
+		]
+	},
 	"visualEditor.dist": {
 		"scripts": [
 			"dist/visualEditor.js"
-		],
-		"styles": [
-			"dist/visualEditor.css"
-		],
-		"styleGroup": "ve"
+		]
 	},
 	"visualEditor.standalone.apex.dist": {
 		"dependencies": [
 			"baselibs.dist",
 			"oojs-ui-apex",
-			"visualEditor.dist"
+			"visualEditor.dist.apex"
 		]
 	},
 	"visualEditor.standalone.mediawiki.dist": {
 		"dependencies": [
 			"baselibs.dist",
 			"oojs-ui-mediawiki",
-			"visualEditor.dist"
+			"visualEditor.dist.mediawiki"
 		]
 	}
 }
