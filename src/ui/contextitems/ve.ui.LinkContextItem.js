@@ -7,6 +7,7 @@
 /**
  * Context item for a link.
  *
+ * @class
  * @extends ve.ui.ContextItem
  *
  * @param {ve.ui.Context} context Context item is in
