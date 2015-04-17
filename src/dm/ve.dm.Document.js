@@ -1224,7 +1224,10 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
  */
 ve.dm.Document.prototype.newFromHtml = function ( html, importRules ) {
 	var htmlDoc = ve.createDocumentFromHtml( html ),
-		doc = ve.dm.converter.getModelFromDom( htmlDoc, this.getHtmlDocument(), !!importRules ),
+		doc = ve.dm.converter.getModelFromDom( htmlDoc, {
+			targetDoc: this.getHtmlDocument(),
+			fromClipboard: !!importRules
+		} ),
 		data = doc.data;
 
 	// FIXME: This is a paste-specific thing and possibly should not be in the generic newFromHtml()
