@@ -139,6 +139,7 @@ ve.ui.Context.prototype.setupMenuItems = function () {
 
 	this.addItems( items );
 	for ( i = 0, len = items.length; i < len; i++ ) {
+		items[i].connect( this, { command: 'onContextItemCommand' } );
 		items[i].setup();
 	}
 
@@ -161,6 +162,11 @@ ve.ui.Context.prototype.teardownMenuItems = function () {
 
 	return this;
 };
+
+/**
+ * Handle command events from context items
+ */
+ve.ui.Context.prototype.onContextItemCommand = function () {};
 
 /**
  * Toggle the visibility of the context.

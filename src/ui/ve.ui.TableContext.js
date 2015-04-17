@@ -10,79 +10,84 @@
  * Two are usually generated for column and row actions separately.
  *
  * @class
- * @extends OO.ui.Element
+ * @extends ve.ui.Context
  *
  * @constructor
  * @param {ve.ce.TableNode} tableNode
- * @param {string} toolGroup Tool group to use, 'table-col' or 'table-row'
+ * @param {string} itemGroup Tool group to use, 'col' or 'row'
  * @param {Object} [config] Configuration options
  * @cfg {string} [indicator] Indicator to use on button
  */
-ve.ui.TableContext = function VeUiTableContext( tableNode, toolGroup, config ) {
+ve.ui.TableContext = function VeUiTableContext( tableNode, itemGroup, config ) {
 	config = config || {};
 
 	// Parent constructor
-	ve.ui.TableContext.super.call( this, config );
+	ve.ui.TableContext.super.call( this, tableNode.surface.getSurface(), config );
 
 	// Properties
 	this.tableNode = tableNode;
-	this.toolGroup = toolGroup;
-	this.surface = tableNode.surface.getSurface();
-	this.visible = false;
+	this.itemGroup = itemGroup;
 	this.indicator = new OO.ui.IndicatorWidget( {
 		classes: ['ve-ui-tableContext-indicator'],
 		indicator: config.indicator
 	} );
-	this.menu = new ve.ui.ContextSelectWidget();
 	this.popup = new OO.ui.PopupWidget( {
+		classes: ['ve-ui-tableContext-menu'],
 		$container: this.surface.$element,
 		width: 150
 	} );
 
 	// Events
 	this.indicator.$element.on( 'mousedown', this.onIndicatorMouseDown.bind( this ) );
-	this.menu.connect( this, { choose: 'onContextItemChoose' } );
 	this.onDocumentMouseDownHandler = this.onDocumentMouseDown.bind( this );
 
 	// Initialization
-	this.populateMenu();
-	this.menu.$element.addClass( 've-ui-tableContext-menu' );
-	this.popup.$body.append( this.menu.$element );
+	this.popup.$body.append( this.$group );
 	this.$element.addClass( 've-ui-tableContext' ).append( this.indicator.$element, this.popup.$element );
+	// Visibility is handled by the table overlay
+	this.toggle( true );
 };
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.TableContext, OO.ui.Element );
+OO.inheritClass( ve.ui.TableContext, ve.ui.Context );
+
+/* Static Properties */
+
+ve.ui.TableContext.static.basicRendering = true;
+
+ve.ui.TableContext.static.groups = {
+	col: [ 'insertColumnBefore', 'insertColumnAfter', 'deleteColumn' ],
+	row: [ 'insertRowBefore', 'insertRowAfter', 'deleteRow' ]
+};
 
 /* Methods */
 
 /**
- * Populate menu items.
+ * @inheritdoc
  */
-ve.ui.TableContext.prototype.populateMenu = function () {
-	var i, l, tool,
-		items = [],
-		toolList = ve.ui.toolFactory.getTools( [ { group: this.toolGroup } ] );
+ve.ui.TableContext.prototype.getRelatedSources = function () {
+	var i, l,
+		items = this.constructor.static.groups[this.itemGroup];
 
-	this.menu.clearItems();
-	for ( i = 0, l = toolList.length; i < l; i++ ) {
-		tool = ve.ui.toolFactory.lookup( toolList[i] );
-		items.push( new ve.ui.ContextOptionWidget(
-			tool, this.tableNode.getModel(), { data: tool.static.name }
-		) );
+	if ( !this.relatedSources ) {
+		this.relatedSources = [];
+
+		for ( i = 0, l = items.length; i < l; i++ ) {
+			this.relatedSources.push( {
+				type: 'item',
+				name: items[i]
+			} );
+		}
 	}
-	this.menu.addItems( items );
+	return this.relatedSources;
 };
 
 /**
- * Handle context item choose events.
- *
- * @param {ve.ui.ContextOptionWidget} item Chosen item
+ * @inheritdoc
  */
-ve.ui.TableContext.prototype.onContextItemChoose = function ( item ) {
-	item.getCommand().execute( this.surface );
-	this.toggle( false );
+ve.ui.TableContext.prototype.onContextItemCommand = function () {
+	this.toggleMenu( false );
 };
 
 /**
@@ -92,7 +97,7 @@ ve.ui.TableContext.prototype.onContextItemChoose = function ( item ) {
  */
 ve.ui.TableContext.prototype.onIndicatorMouseDown = function ( e ) {
 	e.preventDefault();
-	this.toggle();
+	this.toggleMenu();
 };
 
 /**
@@ -102,23 +107,25 @@ ve.ui.TableContext.prototype.onIndicatorMouseDown = function ( e ) {
  */
 ve.ui.TableContext.prototype.onDocumentMouseDown = function ( e ) {
 	if ( !$( e.target ).closest( this.$element ).length ) {
-		this.toggle( false );
+		this.toggleMenu( false );
 	}
 };
 
 /**
- * Toggle visibility
- *
- * @param {boolean} [show] Show the context menu
+ * @inheritdoc
  */
-ve.ui.TableContext.prototype.toggle = function ( show ) {
+ve.ui.TableContext.prototype.toggleMenu = function ( show ) {
+	// Parent method
+	ve.ui.TableContext.super.prototype.toggleMenu.call( this, show );
+
 	var dir,
 		surfaceModel = this.surface.getModel(),
 		surfaceView = this.surface.getView();
+
 	this.popup.toggle( show );
 	if ( this.popup.isVisible() ) {
 		this.tableNode.setEditing( false );
-		surfaceModel.connect( this, { select: 'toggle' } );
+		surfaceModel.connect( this, { select: 'toggleMenu' } );
 		surfaceView.$document.on( 'mousedown', this.onDocumentMouseDownHandler );
 		dir = surfaceView.getDocument().getDirectionFromSelection( surfaceModel.getSelection() ) || surfaceModel.getDocument().getDir();
 		this.$element
