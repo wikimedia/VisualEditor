@@ -140,7 +140,7 @@ ve.ui.Surface.prototype.initialize = function () {
 	this.$element.addClass( 've-ui-surface-dir-' + this.getDir() );
 
 	this.getView().initialize();
-	this.getModel().startHistoryTracking();
+	this.getModel().initialize();
 };
 
 /**
