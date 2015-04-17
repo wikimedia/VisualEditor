@@ -100,9 +100,13 @@ OO.inheritClass( ve.ui.DeleteColumnContextItem, ve.ui.TableContextItem );
 ve.ui.DeleteColumnContextItem.static.name = 'deleteColumn';
 ve.ui.DeleteColumnContextItem.static.group = 'table-col';
 ve.ui.DeleteColumnContextItem.static.icon = 'remove';
-ve.ui.DeleteColumnContextItem.static.title =
-	OO.ui.deferMsg( 'visualeditor-table-delete-col' );
 ve.ui.DeleteColumnContextItem.static.commandName = 'deleteColumn';
+ve.ui.DeleteColumnContextItem.prototype.getTitle = function () {
+	var selection = this.context.getSurface().getModel().getSelection(),
+		colCount = selection instanceof ve.dm.TableSelection ? selection.getColCount() : 0;
+
+	return ve.msg( 'visualeditor-table-delete-col', colCount );
+};
 ve.ui.contextItemFactory.register( ve.ui.DeleteColumnContextItem );
 
 ve.ui.InsertRowBeforeContextItem = function VeUiInsertRowBeforeContextItem() {
@@ -136,7 +140,11 @@ OO.inheritClass( ve.ui.DeleteRowContextItem, ve.ui.TableContextItem );
 ve.ui.DeleteRowContextItem.static.name = 'deleteRow';
 ve.ui.DeleteRowContextItem.static.group = 'table-row';
 ve.ui.DeleteRowContextItem.static.icon = 'remove';
-ve.ui.DeleteRowContextItem.static.title =
-	OO.ui.deferMsg( 'visualeditor-table-delete-row' );
 ve.ui.DeleteRowContextItem.static.commandName = 'deleteRow';
+ve.ui.DeleteRowContextItem.prototype.getTitle = function () {
+	var selection = this.context.getSurface().getModel().getSelection(),
+		rowCount = selection instanceof ve.dm.TableSelection ? selection.getRowCount() : 0;
+
+	return ve.msg( 'visualeditor-table-delete-row', rowCount );
+};
 ve.ui.contextItemFactory.register( ve.ui.DeleteRowContextItem );
