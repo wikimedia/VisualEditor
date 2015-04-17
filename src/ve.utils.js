@@ -773,7 +773,7 @@ ve.elementTypes = {
 ve.createDocumentFromHtml = function ( html ) {
 	// Try using DOMParser if available. This only works in Firefox 12+ and very modern
 	// versions of other browsers (Chrome 30+, Opera 17+, IE10+)
-	var newDocument, $iframe, iframe;
+	var newDocument, $iframe, iframe, xmlDoc, i;
 	try {
 		if ( html === '' ) {
 			// IE doesn't like empty strings
@@ -831,10 +831,21 @@ ve.createDocumentFromHtml = function ( html ) {
 		// *is* a document. This only happens when debugging with Dragonfly.)
 		newDocument = document.implementation.createHTMLDocument( '' );
 		// Carefully unwrap the HTML out of the root node (and doctype, if any).
-		// <html> might have some arguments here, but they're apparently not important.
-		html = html.replace(/^\s*(?:<!doctype[^>]*>)?\s*<html[^>]*>/i, '' );
-		html = html.replace(/<\/html>\s*$/i, '' );
-		newDocument.documentElement.innerHTML = html;
+		newDocument.documentElement.innerHTML = html
+			.replace(/^\s*(?:<!doctype[^>]*>)?\s*<html[^>]*>/i, '' )
+			.replace(/<\/html>\s*$/i, '' );
+		// Preserve <html> attributes, if any
+		try {
+			xmlDoc = new DOMParser().parseFromString( html, 'text/xml' );
+			if ( xmlDoc.documentElement.tagName.toLowerCase() === 'html' ) {
+				for ( i = 0; i < xmlDoc.documentElement.attributes.length; i++ ) {
+					newDocument.documentElement.setAttribute(
+						xmlDoc.documentElement.attributes[i].name,
+						xmlDoc.documentElement.attributes[i].value
+					);
+				}
+			}
+		} catch ( e ) { }
 	}
 
 	return newDocument;
