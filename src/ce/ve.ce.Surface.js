@@ -1856,7 +1856,7 @@ ve.ce.Surface.prototype.afterPaste = function () {
 		data, doc, htmlDoc, $images, i,
 		context, left, right, contextRange,
 		items = [],
-		importantSpan = 'span[id],span[typeof],span[rel]',
+		importantElement = '[id],[typeof],[rel]',
 		importRules = this.getSurface().getImportRules(),
 		beforePasteData = this.beforePasteData || {},
 		selection = this.model.getSelection(),
@@ -2006,11 +2006,11 @@ ve.ce.Surface.prototype.afterPaste = function () {
 			if (
 				// HACK: Allow the test runner to force the use of clipboardData
 				clipboardKey === 'useClipboardData-0' || (
-					$elements.find( importantSpan ).andSelf().filter( importantSpan ).length > 0 &&
-					this.$pasteTarget.find( importantSpan ).length === 0
+					$elements.find( importantElement ).andSelf().filter( importantElement ).length > 0 &&
+					this.$pasteTarget.find( importantElement ).length === 0
 				)
 			) {
-				// CE destroyed an important span, so revert to using clipboard data
+				// CE destroyed an important element, so revert to using clipboard data
 				htmlDoc = ve.createDocumentFromHtml( beforePasteData.html );
 				// Remove the pasteProtect class. See #onCopy.
 				$( htmlDoc ).find( 'span' ).removeClass( 've-pasteProtect' );
