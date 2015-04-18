@@ -44,6 +44,8 @@
 	"visualeditor-listbutton-bullet-tooltip": "گولۍ داره لړليک",
 	"visualeditor-listbutton-number-tooltip": "شمېرن لړليک",
 	"visualeditor-slug-insert": "پاراگراف ورټومبل",
+	"visualeditor-table-delete-col": "{{PLURAL:$1|ستنه|ستنې}} ړنگول",
+	"visualeditor-table-delete-row": "{{PLURAL:$1|ليکه|ليکې}} ړنگول",
 	"visualeditor-table-insert-col-after": "وروسته ورټومبل",
 	"visualeditor-table-insert-col-before": "مخکې ورټومبل",
 	"visualeditor-table-insert-row-after": "لاندې ورټومبل",
