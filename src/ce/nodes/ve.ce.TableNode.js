@@ -241,8 +241,10 @@ ve.ce.TableNode.prototype.onTableMouseUp = function () {
  * @param {boolean} noSelect Don't change the selection
  */
 ve.ce.TableNode.prototype.setEditing = function ( isEditing, noSelect ) {
+	var cell, offset, cellRange,
+		surfaceModel = this.surface.getModel(),
+		selection = surfaceModel.getSelection();
 	if ( isEditing ) {
-		var cell, selection = this.surface.getModel().getSelection();
 		if ( !selection.isSingleCell() ) {
 			selection = selection.collapseToFrom();
 			this.surface.getModel().setSelection( selection );
@@ -251,13 +253,16 @@ ve.ce.TableNode.prototype.setEditing = function ( isEditing, noSelect ) {
 		cell = this.getCellNodesFromSelection( selection )[0];
 		cell.setEditing( true );
 		if ( !noSelect ) {
-			// TODO: Find content offset within cell
-			this.surface.getModel().setLinearSelection( new ve.Range( cell.getModel().getRange().end - 1 ) );
+			cellRange = cell.getModel().getRange();
+			offset = surfaceModel.getDocument().data.getNearestContentOffset( cellRange.end, -1 );
+			if ( offset > cellRange.start ) {
+				surfaceModel.setLinearSelection( new ve.Range( offset ) );
+			}
 		}
 	} else if ( this.editingFragment ) {
 		this.getCellNodesFromSelection( this.editingFragment.getSelection() )[0].setEditing( false );
 		if ( !noSelect ) {
-			this.surface.getModel().setSelection( this.editingFragment.getSelection() );
+			surfaceModel.setSelection( this.editingFragment.getSelection() );
 		}
 		this.editingFragment = null;
 	}
