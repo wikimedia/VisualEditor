@@ -16,6 +16,7 @@ new ve.init.sa.Platform( ve.messagePaths ).initialize().done( function () {
 
 		currentLang = $.i18n().locale,
 		currentDir = target.$element.css( 'direction' ) || 'ltr',
+		device = ve.init.sa.Target.static.defaultSurfaceType,
 
 		// Menu widgets
 		addSurfaceContainerButton = new OO.ui.ButtonWidget( {
@@ -31,7 +32,11 @@ new ve.init.sa.Platform( ve.messagePaths ).initialize().done( function () {
 			requireDir: true,
 			availableLanguages: ve.availableLanguages,
 			dialogManager: new OO.ui.WindowManager( { factory: ve.ui.windowFactory, classes: ['ve-demo-languageSearchDialogManager'] } )
-		} );
+		} ),
+		deviceSelect = new OO.ui.ButtonSelectWidget().addItems( [
+			new OO.ui.ButtonOptionWidget( { data: 'desktop', label: 'Desktop' } ),
+			new OO.ui.ButtonOptionWidget( { data: 'mobile', label: 'Mobile' } )
+		] );
 
 	function updateStylesFromDir() {
 		var oldDir = currentDir === 'ltr' ? 'rtl' : 'ltr';
@@ -45,6 +50,12 @@ new ve.init.sa.Platform( ve.messagePaths ).initialize().done( function () {
 	}
 
 	// Initialization
+
+	deviceSelect.selectItem( deviceSelect.getItemFromData( device ) );
+
+	deviceSelect.on( 'select', function ( item ) {
+		location.href = location.href.replace( device, item.getData() );
+	} );
 
 	addSurfaceContainerButton.on( 'click', function () {
 		addSurfaceContainer();
@@ -98,7 +109,9 @@ new ve.init.sa.Platform( ve.messagePaths ).initialize().done( function () {
 			addSurfaceContainerButton.$element,
 			$( '<span class="ve-demo-toolbar-divider">&nbsp;</span>' ),
 			messageKeyButton.$element,
-			languageInput.$element
+			languageInput.$element,
+			$( '<span class="ve-demo-toolbar-divider">&nbsp;</span>' ),
+			deviceSelect.$element
 		)
 	);
 
