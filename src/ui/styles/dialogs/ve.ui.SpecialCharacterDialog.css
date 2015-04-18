@@ -47,10 +47,10 @@
 	display: inline-block;
 	margin: 0 3px 3px 0;
 	border: 1px solid #e6e6e6;
-	-webkit-transition: all 200ms;
-	-moz-transition: all 200ms;
-	-o-transition: all 200ms;
-	transition: all 200ms;
+	-webkit-transition: border-color 200ms;
+	-moz-transition: border-color 200ms;
+	-o-transition: border-color 200ms;
+	transition: border-color 200ms;
 }
 
 .ve-ui-specialCharacterPage-character:hover {
