@@ -6,13 +6,14 @@
 module.exports = function ( grunt ) {
 
 	grunt.registerMultiTask( 'buildloader', function () {
-		var i18nScript,
+		var configScript,
 			styles = [],
 			scripts = [],
 			loadedModules = [],
 			targetFile = this.data.targetFile,
 			pathPrefix = this.data.pathPrefix || '',
 			i18n = this.data.i18n || [],
+			demoPages = this.data.demoPages,
 			indent = this.data.indent || '',
 			modules = this.data.modules,
 			load = this.data.load,
@@ -101,28 +102,33 @@ module.exports = function ( grunt ) {
 
 		addModules( load );
 
-		if ( i18n.length ) {
-			i18nScript = indent + '<script>\n';
+		if ( i18n.length || demoPages ) {
+			configScript = indent + '<script>\n';
 
-			i18nScript += indent + '\tve.messagePaths = ' +
-				JSON.stringify(
-					i18n.map( function ( path ) { return pathPrefix + path; } )
-				) + ';\n';
-
-			if ( langList ) {
-				i18nScript += indent + '\tve.availableLanguages = ' +
+			if ( i18n.length ) {
+				configScript += indent + '\tve.messagePaths = ' +
 					JSON.stringify(
-						grunt.file.expand(
-							i18n.map( function ( path ) { return path + '*.json'; } )
-						).map( function ( file ) {
-							return file.split( '/' ).pop().slice( 0, -5 );
-						} )
-					) +
-					';\n';
+						i18n.map( function ( path ) { return pathPrefix + path; } )
+					) + ';\n';
+
+				if ( langList ) {
+					configScript += indent + '\tve.availableLanguages = ' +
+						JSON.stringify(
+							grunt.file.expand(
+								i18n.map( function ( path ) { return path + '*.json'; } )
+							).map( function ( file ) {
+								return file.split( '/' ).pop().slice( 0, -5 );
+							} )
+						) +
+						';\n';
+				}
+			}
+			if ( demoPages ) {
+				configScript += indent + '\tve.demoPages = ' + JSON.stringify( demoPages ) + ';\n';
 			}
 
-			i18nScript += indent + '</script>';
-			scripts.push( i18nScript );
+			configScript += indent + '</script>';
+			scripts.push( configScript );
 		}
 
 		addModules( run );

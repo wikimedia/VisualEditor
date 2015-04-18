@@ -27,20 +27,19 @@ module.exports = function ( grunt ) {
 		coreBuildFiles = moduleUtils.makeBuildList( modules, [ 'visualEditor.build' ] ),
 		coreBuildFilesApex = moduleUtils.makeBuildList( modules, [ 'visualEditor.build.apex' ] ),
 		coreBuildFilesMediaWiki = moduleUtils.makeBuildList( modules, [ 'visualEditor.build.mediawiki' ] ),
-		testFiles = moduleUtils.makeBuildList( modules, [ 'visualEditor.test' ] ).scripts;
+		testFiles = moduleUtils.makeBuildList( modules, [ 'visualEditor.test' ] ).scripts,
+		demoPages = ( function () {
+			var pages = {},
+				files = grunt.file.expand( 'demos/ve/pages/*.html' );
+			files.forEach( function ( file ) {
+				var matches = file.match( /^.*(pages\/(.+).html)$/ ),
+					path = matches[1],
+					name = matches[2];
 
-	function demoMenu( callback ) {
-		var pages = {},
-			files = grunt.file.expand( 'demos/ve/pages/*.html' );
-		files.forEach( function ( file ) {
-			var matches = file.match( /^.*(pages\/(.+).html)$/ ),
-				path = matches[1],
-				name = matches[2];
-
-			pages[name] = path;
-		} );
-		callback( JSON.stringify( pages, null, '\t' ).split( '\n' ).join( '\n\t\t' ) );
-	}
+				pages[name] = path;
+			} );
+			return pages;
+		} )();
 
 	grunt.initConfig( {
 		pkg: grunt.file.readJSON( 'package.json' ),
@@ -145,7 +144,7 @@ module.exports = function ( grunt ) {
 				pathPrefix: '../../',
 				i18n: [ 'i18n/', 'lib/oojs-ui/i18n/' ],
 				indent: '\t\t',
-				placeholders: { menu: demoMenu }
+				demoPages: demoPages
 			},
 			desktopDemoDist: {
 				targetFile: 'demos/ve/desktop-dist.html',
@@ -159,7 +158,7 @@ module.exports = function ( grunt ) {
 				pathPrefix: '../../',
 				i18n: [ 'dist/i18n/', 'lib/oojs-ui/i18n/' ],
 				indent: '\t\t',
-				placeholders: { menu: demoMenu }
+				demoPages: demoPages
 			},
 			mobileDemo: {
 				targetFile: 'demos/ve/mobile.html',
@@ -176,7 +175,7 @@ module.exports = function ( grunt ) {
 				pathPrefix: '../../',
 				i18n: [ 'i18n/', 'lib/oojs-ui/i18n/' ],
 				indent: '\t\t',
-				placeholders: { menu: demoMenu }
+				demoPages: demoPages
 			},
 			mobileDemoDist: {
 				targetFile: 'demos/ve/mobile-dist.html',
@@ -190,7 +189,7 @@ module.exports = function ( grunt ) {
 				pathPrefix: '../../',
 				i18n: [ 'dist/i18n/', 'lib/oojs-ui/i18n/' ],
 				indent: '\t\t',
-				placeholders: { menu: demoMenu }
+				demoPages: demoPages
 			},
 			minimalDemo: {
 				targetFile: 'demos/ve/minimal.html',

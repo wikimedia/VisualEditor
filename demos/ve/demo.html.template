@@ -22,9 +22,5 @@
 
 <!-- SCRIPTS -->
 
-		<script>
-		ve.demo.pages = <!-- MENU -->;
-		</script>
-
 	</body>
 </html>
