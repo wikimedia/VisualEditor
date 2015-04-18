@@ -115,7 +115,7 @@
 		if ( caseItem.head !== undefined || caseItem.body !== undefined ) {
 			html = '<head>' + ( caseItem.head || defaultHead ) + '</head><body>' + caseItem.body + '</body>';
 			htmlDoc = ve.createDocumentFromHtml( html );
-			model = ve.dm.converter.getModelFromDom( htmlDoc, null, !!caseItem.fromClipboard );
+			model = ve.dm.converter.getModelFromDom( htmlDoc, { fromClipboard: !!caseItem.fromClipboard } );
 			actualData = model.getFullData();
 			// Round-trip here, check round-trip later
 			if ( caseItem.modify ) {

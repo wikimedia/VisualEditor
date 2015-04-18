@@ -406,23 +406,24 @@ ve.dm.Converter.prototype.getDomElementFromDataAnnotation = function ( dataAnnot
 /**
  * Convert an HTML document to a document model.
  * @param {HTMLDocument} doc HTML document to convert
- * @param {HTMLDocument} [targetDoc=doc] Target HTML document we are converting for, if different from doc
- * @param {boolean} [fromClipboard=false] Conversion is from clipboard
- * @param {string} [lang] Document language code
- * @param {string} [dir] Document directionality (ltr/rtl)
+ * @param {Object} options Conversion options
+ * @param {HTMLDocument} [options.targetDoc=doc] Target HTML document we are converting for, if different from doc
+ * @param {boolean} [options.fromClipboard=false] Conversion is from clipboard
+ * @param {string} [options.lang] Document language code
+ * @param {string} [options.dir] Document directionality (ltr/rtl)
  * @returns {ve.dm.Document} Document model
  */
-ve.dm.Converter.prototype.getModelFromDom = function ( doc, targetDoc, fromClipboard, lang, dir ) {
+ve.dm.Converter.prototype.getModelFromDom = function ( doc, options ) {
 	var linearData, refData, innerWhitespace,
 		store = new ve.dm.IndexValueStore(),
 		internalList = new ve.dm.InternalList();
 
-	targetDoc = targetDoc || doc;
+	options = options || {};
 
 	// Set up the converter state
 	this.doc = doc;
-	this.targetDoc = targetDoc;
-	this.fromClipboard = fromClipboard;
+	this.targetDoc = options.targetDoc || doc;
+	this.fromClipboard = options.fromClipboard;
 	this.store = store;
 	this.internalList = internalList;
 	this.contextStack = [];
@@ -445,7 +446,7 @@ ve.dm.Converter.prototype.getModelFromDom = function ( doc, targetDoc, fromClipb
 	this.internalList = null;
 	this.contextStack = null;
 
-	return new ve.dm.Document( linearData, doc, undefined, internalList, innerWhitespace, lang, dir );
+	return new ve.dm.Document( linearData, doc, undefined, internalList, innerWhitespace, options.lang, options.dir );
 };
 
 /**
