@@ -22,17 +22,19 @@ ve.ui.SpecialCharacterPage = function VeUiSpecialCharacterPage( name, config ) {
 	this.label = config.label;
 	this.icon = config.icon;
 
-	var character,
+	var character, characterNode,
 		characters = config.characters,
-		$characters = $( '<div>' ).addClass( 've-ui-specialCharacterPage-characters' );
+		$characters = $( '<div>' ).addClass( 've-ui-specialCharacterPage-characters' ),
+		charactersNode = $characters[0];
 
+	// The body of this loop is executed a few thousand times when opening
+	// ve.ui.SpecialCharacterDialog, avoid jQuery wrappers.
 	for ( character in characters ) {
-		$characters.append(
-			$( '<div>' )
-				.addClass( 've-ui-specialCharacterPage-character' )
-				.data( 'character', characters[character] )
-				.text( character )
-		);
+		characterNode = document.createElement( 'div' );
+		characterNode.className = 've-ui-specialCharacterPage-character';
+		characterNode.textContent = character;
+		$.data( characterNode, 'character', characters[character] );
+		charactersNode.appendChild( characterNode );
 	}
 
 	this.$element
