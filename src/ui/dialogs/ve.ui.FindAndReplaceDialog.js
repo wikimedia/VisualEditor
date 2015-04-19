@@ -380,11 +380,10 @@ ve.ui.FindAndReplaceDialog.prototype.highlightFocused = function ( scrollIntoVie
 			.addClass( 've-ui-findAndReplaceDialog-findResult-focused' );
 
 		top = $result.data( 'top' );
-	} else {
-		// Focused result hasn't been rendered yet so find its offset manually
+	} else if ( scrollIntoView ) {
+		// If we're about to scroll into view and the result isn't rendered, compute the offset manually.
 		rect = surfaceView.getSelectionBoundingRect( this.fragments[this.focusedIndex].getSelection() );
 		top = rect.top;
-		this.renderRangeOfFragments( new ve.Range( this.focusedIndex, this.focusedIndex + 1 ) );
 	}
 
 	if ( scrollIntoView ) {
