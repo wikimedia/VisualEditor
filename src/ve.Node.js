@@ -347,13 +347,15 @@ ve.Node.prototype.detach = function () {
  *
  * @method
  * @param {Function} callback Callback method to be called for every traversed node. Returning false stops the traversal.
+ * @returns {ve.Node|null} Node which caused the traversal to stop, or null if it didn't
  */
 ve.Node.prototype.traverseUpstream = function ( callback ) {
 	var node = this;
 	while ( node ) {
 		if ( callback( node ) === false ) {
-			break;
+			return node;
 		}
 		node = node.getParent();
 	}
+	return null;
 };

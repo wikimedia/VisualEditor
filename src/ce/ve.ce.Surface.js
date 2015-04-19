@@ -3691,16 +3691,34 @@ ve.ce.Surface.prototype.getViewportRange = function () {
 		bottom = top + this.$window.height() - this.surface.toolbarHeight + ( padding * 2 ),
 		documentRange = new ve.Range( 0, this.getModel().getDocument().getInternalList().getListNode().getOuterRange().start );
 
+	function highestIgnoreChildrenNode( childNode ) {
+		var ignoreChildrenNode = null;
+		childNode.traverseUpstream( function ( node ) {
+			if ( node.shouldIgnoreChildren() ) {
+				ignoreChildrenNode = node;
+			}
+		} );
+		return ignoreChildrenNode;
+	}
+
 	function binarySearch( offset, range, side ) {
-		var mid, rect,
+		var mid, rect, midNode, ignoreChildrenNode, nodeRange,
 			start = range.start,
 			end = range.end,
 			lastLength = Infinity;
 		while ( range.getLength() < lastLength ) {
 			lastLength = range.getLength();
-			mid = data.getNearestContentOffset(
-				Math.round( ( range.start + range.end ) / 2 )
-			);
+			mid = Math.round( ( range.start + range.end ) / 2 );
+			midNode = documentModel.documentNode.getNodeFromOffset( mid );
+			ignoreChildrenNode = highestIgnoreChildrenNode( midNode );
+
+			if ( ignoreChildrenNode ) {
+				nodeRange = ignoreChildrenNode.getOuterRange();
+				mid = side === 'top' ? nodeRange.end : nodeRange.start;
+			} else {
+				mid = data.getNearestContentOffset( mid );
+			}
+
 			rect = surface.getSelectionBoundingRect( new ve.dm.LinearSelection( documentModel, new ve.Range( mid ) ) );
 			if ( rect[side] > offset ) {
 				end = mid;
