@@ -68,6 +68,11 @@ body {
 	margin-right: 1em;
 }
 
+.ve-demo-toolbar-commands > .oo-ui-widget:last-child,
+.ve-demo-toolbar-commands > .oo-ui-widget > .oo-ui-fieldLayout:last-child > .oo-ui-fieldLayout-body > .oo-ui-fieldLayout-field {
+	margin-right: 0;
+}
+
 .ve-demo-toolbar .oo-ui-textInputWidget {
 	width: 4em;
 }
