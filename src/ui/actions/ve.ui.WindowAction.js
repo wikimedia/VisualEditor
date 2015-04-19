@@ -48,6 +48,7 @@ ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 	var currentInspector, inspectorWindowManager,
 		windowType = this.getWindowType( name ),
 		windowManager = windowType && this.getWindowManager( windowType ),
+		currentWindow = windowManager.getCurrentWindow(),
 		autoClosePromises = [],
 		surface = this.surface,
 		fragment = surface.getModel().getFragment( undefined, true ),
@@ -61,8 +62,12 @@ ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 	data = ve.extendObject( { dir: dir }, data, { fragment: fragment } );
 	if ( windowType === 'toolbar' || windowType === 'inspector' ) {
 		data = ve.extendObject( data, { surface: surface } );
+		// Auto-close the current window if it is different to the one we are
+		// trying to open.
 		// TODO: Make auto-close a window manager setting
-		autoClosePromises.push( windowManager.closeWindow( windowManager.getCurrentWindow() ) );
+		if ( currentWindow && currentWindow.constructor.static.name !== name ) {
+			autoClosePromises.push( windowManager.closeWindow( currentWindow ) );
+		}
 	}
 
 	// If we're opening a dialog, close all inspectors first
