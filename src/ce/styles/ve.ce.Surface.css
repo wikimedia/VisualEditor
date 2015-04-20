@@ -5,7 +5,6 @@
  */
 
 .ve-ce-surface {
-	overflow: hidden;
 	/* Create a new stacking context for elements inside the surface */
 	position: relative;
 	z-index: 0;
