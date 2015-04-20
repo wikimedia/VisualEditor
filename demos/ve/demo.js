@@ -252,9 +252,10 @@ ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, 
 		this.$readView
 	);
 
-	this.pageMenu.selectItem( this.pageMenu.getItemFromData(
-		page || this.pageMenu.getFirstSelectableItem().getData()
-	) );
+	this.pageMenu.selectItem(
+		this.pageMenu.getItemFromData( page ) ||
+		this.pageMenu.getFirstSelectableItem()
+	);
 };
 
 /* Inheritance */
@@ -272,10 +273,10 @@ OO.mixinClass( ve.demo.SurfaceContainer, OO.EventEmitter );
  */
 ve.demo.SurfaceContainer.prototype.getPageMenuItems = function () {
 	var name, items = [];
-	for ( name in ve.demo.pages ) {
+	for ( name in ve.demoPages ) {
 		items.push(
 			new OO.ui.MenuOptionWidget( {
-				data: ve.demo.pages[name],
+				data: ve.demoPages[name],
 				label: name
 			} )
 		);
