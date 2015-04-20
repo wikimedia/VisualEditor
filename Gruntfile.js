@@ -128,7 +128,7 @@ module.exports = function ( grunt ) {
 				pathPrefix: '../',
 				i18n: [ 'i18n/', 'lib/oojs-ui/i18n/' ],
 				indent: '\t\t',
-				bidi: false
+				dir: 'ltr'
 			},
 			desktopDemo: {
 				targetFile: 'demos/ve/desktop.html',
@@ -204,7 +204,22 @@ module.exports = function ( grunt ) {
 				pathPrefix: '../../',
 				i18n: [ 'dist/i18n/', 'lib/oojs-ui/i18n/' ],
 				indent: '\t\t',
-				bidi: false,
+				dir: 'ltr',
+				langList: false
+			},
+			minimalDemoRtl: {
+				targetFile: 'demos/ve/minimal-rtl.html',
+				template: 'demos/ve/minimal.html.template',
+				modules: modules,
+				load: [
+					'visualEditor.standalone.apex.dist',
+					'visualEditor.standalone.read'
+				],
+				run: [ 'visualEditor.minimal.standalone.demo' ],
+				pathPrefix: '../../',
+				i18n: [ 'dist/i18n/', 'lib/oojs-ui/i18n/' ],
+				indent: '\t\t',
+				dir: 'rtl',
 				langList: false
 			},
 			test: {

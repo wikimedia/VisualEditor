@@ -13,8 +13,9 @@ new ve.init.sa.Platform( ve.messagePaths ).initialize().done( function () {
 	// Create a document model for a new surface
 	target.addSurface(
 		ve.dm.converter.getModelFromDom(
-			ve.createDocumentFromHtml( '<p><b>Hello,</b> <i>World!</i></p>' )
+			ve.createDocumentFromHtml( '<p><b>Hello,</b> <i>World!</i></p>' ),
 			// Optional: Document language, directionality (ltr/rtl)
+			{ lang: $.i18n().locale, dir: $( 'body' ).css( 'direction' ) }
 		)
 	);
 

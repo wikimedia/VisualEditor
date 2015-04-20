@@ -15,7 +15,7 @@
 <!-- STYLES -->
 
 	</head>
-	<body>
+	<body dir="<!-- DIR -->">
 		<div class="ve-instance"></div>
 		<div class="ve-demo-output">
 			<input type="button" class="ve-demo-convert" value="&darr; Convert to HTML">

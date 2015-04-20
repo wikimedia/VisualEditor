@@ -19,7 +19,7 @@ module.exports = function ( grunt ) {
 			run = this.data.run || [],
 			env = this.data.env || {},
 			placeholders = this.data.placeholders || {},
-			bidi = this.data.bidi !== undefined ? this.data.bidi : true,
+			dir = this.data.dir,
 			langList = this.data.langList !== undefined ? this.data.langList : true,
 			text = grunt.file.read( this.data.template ),
 			done = this.async(),
@@ -32,11 +32,16 @@ module.exports = function ( grunt ) {
 		function styleTag( group, src ) {
 			var rtlFilepath = src.file.replace( /\.css$/, '.rtl.css' );
 
-			if ( bidi && grunt.file.exists( rtlFilepath ) ) {
-				return indent + '<link rel=stylesheet href="' + pathPrefix + src.file + '" class="stylesheet-ltr' +
-					( group ? ' stylesheet-' + group : '' ) + '">\n' +
-					indent + '<link rel=stylesheet href="' + pathPrefix + rtlFilepath + '" class="stylesheet-rtl' +
-					( group ? ' stylesheet-' + group : '' ) + '">';
+			if ( grunt.file.exists( rtlFilepath ) ) {
+				if ( !dir ) {
+					return indent + '<link rel=stylesheet href="' + pathPrefix + src.file + '" class="stylesheet-ltr' +
+						( group ? ' stylesheet-' + group : '' ) + '">\n' +
+						indent + '<link rel=stylesheet href="' + pathPrefix + rtlFilepath + '" class="stylesheet-rtl' +
+						( group ? ' stylesheet-' + group : '' ) + '">';
+				} else if ( dir === 'rtl' ) {
+					return indent + '<link rel=stylesheet href="' + pathPrefix + rtlFilepath + '"' +
+						( group ? ' class="stylesheet-' + group + '"' : '' ) + '>';
+				}
 			}
 			return indent + '<link rel=stylesheet href="' + pathPrefix + src.file + '"' +
 				( group ? ' class="stylesheet-' + group + '"' : '' ) + '>';
@@ -129,6 +134,7 @@ module.exports = function ( grunt ) {
 
 		placeholders.styles = styles.join( '\n\n' );
 		placeholders.scripts = scripts.join( '\n\n' );
+		placeholders.dir = dir;
 
 		grunt.util.async.forEachSeries(
 			Object.keys( placeholders ),
