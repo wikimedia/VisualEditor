@@ -30,6 +30,11 @@ OO.inheritClass( ve.ui.FragmentInspector, OO.ui.ProcessDialog );
 
 ve.ui.FragmentInspector.static.actions = ve.ui.FragmentInspector.super.static.actions.concat( [
 	{
+		label: OO.ui.deferMsg( 'visualeditor-dialog-action-cancel' ),
+		flags: 'safe',
+		modes: [ 'edit', 'insert' ]
+	},
+	{
 		action: 'done',
 		label: OO.ui.deferMsg( 'visualeditor-dialog-action-done' ),
 		flags: [ 'progressive', 'primary' ],
