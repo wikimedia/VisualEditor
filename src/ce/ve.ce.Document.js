@@ -46,16 +46,22 @@ ve.ce.Document.prototype.getSlugAtOffset = function ( offset ) {
 };
 
 /**
- * Get a DOM node and DOM element offset for a document offset.
+ * Calculate the DOM location corresponding to a DM offset
  *
- * @method
  * @param {number} offset Linear model offset
- * @returns {Object} Object containing a node and offset property where node is an HTML element and
- * offset is the byte position within the element
+ * @returns {Object} DOM location
+ * @returns.node {Node} location node
+ * @returns.offset {number} location offset within the node
  * @throws {Error} Offset could not be translated to a DOM element and offset
  */
 ve.ce.Document.prototype.getNodeAndOffset = function ( offset ) {
 	var nao, currentNode, nextNode, previousNode;
+
+	// Get the un-unicorn-adjusted result. If it is:
+	// - just before pre unicorn, then return the cursor location just after it
+	// - just after the post unicorn, then return the cursor location just before it
+	// - anywhere else, then return the result unmodified
+
 	function getNext( node ) {
 		while ( node.nextSibling === null ) {
 			node = node.parentNode;
@@ -137,13 +143,27 @@ ve.ce.Document.prototype.getNodeAndOffset = function ( offset ) {
 };
 
 /**
+ * Calculate the DOM location corresponding to a DM offset (without unicorn adjustments)
+ *
  * @private
+ * @param {number} offset Linear model offset
+ * @returns {Object} location
+ * @returns.node {Node} location node
+ * @returns.offset {number} location offset within the node
  */
 ve.ce.Document.prototype.getNodeAndOffsetUnadjustedForUnicorn = function ( offset ) {
 	var node, startOffset, current, stack, item, $item, length, model,
 		countedNodes = [],
 		slug = this.getSlugAtOffset( offset );
-	// Check for a slug that is empty (apart from a chimera)
+
+	// If we're a slug that is empty (apart from a chimera), return its location
+	// Start at the current branch node; get its start offset
+	// Walk the tree, summing offsets until the sum reaches the desired offset value
+	// - If a whole branch is entirely before the offset, then don't descend into it
+	// - If the desired offset is in a text node, return that node and the correct remainder offset
+	// - If the desired offset is between an empty unicorn pair, return inter-unicorn location
+	// - Assume no other outcome is possible (because we would be inside a slug)
+
 	if ( slug && ( !slug.firstChild || $( slug.firstChild ).hasClass( 've-ce-chimera' ) ) ) {
 		return { node: slug, offset: 0 };
 	}
