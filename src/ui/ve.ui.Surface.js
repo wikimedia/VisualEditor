@@ -410,7 +410,9 @@ ve.ui.Surface.prototype.initFilibuster = function () {
 			ve.ui.Surface.prototype.stopFilibuster
 		] )
 		.setObserver( 'dm doc', function () {
-			return JSON.stringify( surface.model.documentModel.data.data );
+			return JSON.stringify( ve.Filibuster.static.clonePlain(
+				surface.model.documentModel.data.data
+			) );
 		} )
 		.setObserver( 'dm selection', function () {
 			var selection = surface.model.selection;
