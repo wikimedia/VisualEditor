@@ -32,6 +32,9 @@ ve.ui.SpecialCharacterPage = function VeUiSpecialCharacterPage( name, config ) {
 	for ( character in characters ) {
 		characterNode = document.createElement( 'div' );
 		characterNode.className = 've-ui-specialCharacterPage-character';
+		if ( characters[character].titleMsg ) {
+			characterNode.setAttribute( 'title', ve.msg( characters[character].titleMsg ) );
+		}
 		characterNode.textContent = character;
 		$.data( characterNode, 'character', characters[character] );
 		charactersNode.appendChild( characterNode );
