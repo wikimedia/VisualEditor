@@ -156,7 +156,7 @@ ve.ce.Document.prototype.getNodeAndOffsetUnadjustedForUnicorn = function ( offse
 		countedNodes = [],
 		slug = this.getSlugAtOffset( offset );
 
-	// If we're a slug that is empty (apart from a chimera), return its location
+	// If we're a block slug, or an empty inline slug, return its location
 	// Start at the current branch node; get its start offset
 	// Walk the tree, summing offsets until the sum reaches the desired offset value
 	// - If a whole branch is entirely before the offset, then don't descend into it
@@ -164,7 +164,12 @@ ve.ce.Document.prototype.getNodeAndOffsetUnadjustedForUnicorn = function ( offse
 	// - If the desired offset is between an empty unicorn pair, return inter-unicorn location
 	// - Assume no other outcome is possible (because we would be inside a slug)
 
-	if ( slug && ( !slug.firstChild || $( slug.firstChild ).hasClass( 've-ce-chimera' ) ) ) {
+	// Check for a slug that is empty (apart from a chimera) or a block slug
+	if ( slug && (
+		!slug.firstChild ||
+		$( slug ).hasClass( 've-ce-branchNode-blockSlug' ) ||
+		$( slug.firstChild ).hasClass( 've-ce-chimera' )
+	) ) {
 		return { node: slug, offset: 0 };
 	}
 	node = this.getBranchNodeFromOffset( offset );
@@ -223,8 +228,11 @@ ve.ce.Document.prototype.getNodeAndOffsetUnadjustedForUnicorn = function ( offse
 						startOffset += length;
 					}
 				}
+			} else if ( $item.hasClass( 've-ce-branchNode-slug' ) ) {
+				// Skip contents without incrementing offset
+				current[1]++;
+				continue;
 			} else {
-				// Maybe ve-ce-branchNode-slug
 				stack.push( [$item.contents(), 0] );
 				current[1]++;
 				current = stack[stack.length - 1];
