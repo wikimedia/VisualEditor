@@ -72,7 +72,7 @@ ve.ui.WhitespacePreservingTextInputWidget.prototype.getValue = function () {
 		// In case getValue() is called from a parent constructor
 		return this.value;
 	}
-	return this.whitespace[0] + this.value + this.whitespace[1];
+	return this.whitespace[0] + this.getInnerValue() + this.whitespace[1];
 };
 
 /**
@@ -81,5 +81,5 @@ ve.ui.WhitespacePreservingTextInputWidget.prototype.getValue = function () {
  * @return {string} Inner/displayed value
  */
 ve.ui.WhitespacePreservingTextInputWidget.prototype.getInnerValue = function () {
-	return this.value;
+	return $.trim( this.value );
 };
