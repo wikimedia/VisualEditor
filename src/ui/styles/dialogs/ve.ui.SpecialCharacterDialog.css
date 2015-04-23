@@ -22,6 +22,15 @@
 	height: 150px;
 }
 
+/* When displaying inside another dialog, make the menu narrower */
+.oo-ui-dialog .ve-ui-specialCharacterDialog .oo-ui-bookletLayout .oo-ui-menuLayout-menu {
+	width: 10em;
+}
+
+.oo-ui-dialog .ve-ui-specialCharacterDialog .oo-ui-bookletLayout .oo-ui-menuLayout-content {
+	left: 10em;
+}
+
 .oo-ui-bookletLayout-stackLayout > .ve-ui-specialCharacterPage {
 	padding: 0.5em;
 }
