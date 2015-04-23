@@ -9,18 +9,18 @@ body {
 	padding: 0;
 	overflow-y: scroll;
 	background: #fff;
-	font: normal 1em/1.5 sans-serif;
+	font: normal 0.8em/1.5 sans-serif;
 }
 
 /* Demo */
 
 .ve-demo-logo {
 	float: right;
-	margin: 0.35em 1.7em 0 0;
+	margin: 0.5em 2em 0 0;
 	background: url('VisualEditor-logo.svg') no-repeat;
 	background-size: contain;
-	width: 8.6em;
-	height: 3em;
+	width: 10.75em;
+	height: 3.75em;
 }
 
 /* Hack: should generate demo.rtl.css */
@@ -54,10 +54,6 @@ body {
 	margin: 0;
 }
 
-.ve-demo-toolbar-commands {
-	font-size: 0.8em;
-}
-
 .ve-demo-toolbar-commands > .oo-ui-widget,
 .ve-demo-toolbar-commands > .oo-ui-widget > .oo-ui-fieldLayout > .oo-ui-fieldLayout-body > .oo-ui-fieldLayout-field,
 .ve-demo-toolbar-divider {
@@ -79,7 +75,6 @@ body {
 
 .ve-demo-toolbar .oo-ui-dropdownWidget .oo-ui-menuSelectWidget {
 	z-index: 3;
-	font-size: 0.9em;
 }
 
 .ve-demo-toolbar-divider {
@@ -97,21 +92,16 @@ body {
 }
 
 .ve-demo-source textarea {
-	font-family: monospace;
+	font-family: monospace, monospace;
 }
 
 .ve-demo-read {
 	/* Match document padding and surface font size */
 	padding: 0.75em 1.5em;
-	font-size: 0.8em;
 	clear: right;
 }
 
 /* Editor */
-
-.ve-ce-surface {
-	font-size: 0.8em;
-}
 
 .ve-ui-debugBar {
 	padding: 1.5em;

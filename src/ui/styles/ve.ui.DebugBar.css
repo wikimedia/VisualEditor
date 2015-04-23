@@ -4,10 +4,6 @@
  * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
-.ve-ui-debugBar-commands {
-	font-size: 0.8em;
-}
-
 .ve-ui-debugBar-commands > .oo-ui-widget,
 .ve-ui-debugBar-commands-divider {
 	display: inline-block;
@@ -29,7 +25,6 @@
 
 .ve-ui-debugBar-dump {
 	margin-top: 2em;
-	font-size: 0.8em;
 }
 
 .ve-ui-debugBar-dump > table {
@@ -101,7 +96,7 @@
 }
 
 .ve-ui-debugBar-filibuster {
-	font-size: 0.7em;
+	font-size: 0.875em;
 	margin-top: 2em;
 	display: none;
 	background-color: #f3f3f3;

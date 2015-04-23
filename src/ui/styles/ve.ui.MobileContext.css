@@ -4,10 +4,6 @@
  * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
-.ve-ui-mobileContext {
-	font-size: 0.8em;
-}
-
 .ve-ui-mobileContext .ve-ui-contextItem-body {
 	display: none;
 }

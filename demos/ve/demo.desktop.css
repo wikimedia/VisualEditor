@@ -7,8 +7,8 @@
 /* Demo */
 
 .ve-demo-targetToolbar {
-	padding-left: 2em;
-	padding-right: 2em;
+	padding-left: 2.5em;
+	padding-right: 2.5em;
 }
 
 .ve-demo-surfaceToolbar {
@@ -17,7 +17,7 @@
 }
 
 .ve-demo-editor {
-	margin: 0 2em 2em 2em;
+	margin: 0 2.5em 2.5em 2.5em;
 }
 
 .ve-init-sa-target-surfaceWrapper > :last-child {
