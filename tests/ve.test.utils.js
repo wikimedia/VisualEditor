@@ -229,4 +229,68 @@
 		}
 		return node;
 	};
+
+	/**
+	 * Like a reduced outerHTML serialization, but with a position marker '|'.
+	 *
+	 * For clarity, also wraps each text node in a fake tag, and omits non-class attributes.
+	 *
+	 * @param {Node} rootNode The node to serialize
+	 * @param {Object} position
+	 * @param {Node} position.node The node at which the position marker lies
+	 * @param {number} position.offset The offset at which the position marker lies
+	 * @param {Object} [options]
+	 * @param {Function|string} options.ignore Selector for nodes to omit from output
+	 * @returns {string} Serialization of the node and position
+	 */
+	ve.test.utils.serializePosition = function ( rootNode, position, options ) {
+		var html = [];
+		function add( node ) {
+			var i, len;
+
+			if ( options && options.ignore && $( node ).is( options.ignore ) ) {
+				return;
+			} else if ( node.nodeType === Node.TEXT_NODE ) {
+				html.push( '<#text>' );
+				if ( node === position.node ) {
+					html.push( ve.escapeHtml(
+						node.textContent.substring( 0, position.offset ) +
+						'|' +
+						node.textContent.substring( position.offset )
+					) );
+				} else {
+					html.push( ve.escapeHtml( node.textContent ) );
+				}
+				html.push( '</#text>' );
+				return;
+			} else if ( node.nodeType !== Node.ELEMENT_NODE ) {
+				html.push( '<#unknown type=\'' + node.nodeType + '\'/>' );
+				return;
+			}
+			// else node.nodeType === Node.ELEMENT_NODE
+
+			html.push( '<', ve.escapeHtml( node.nodeName.toLowerCase() ) );
+			if ( node.hasAttribute( 'class' ) ) {
+				// Single quotes are less annoying for JSON escaping
+				html.push(
+					' class=\'',
+					ve.escapeHtml( node.getAttribute( 'class' ) ),
+					'\''
+				);
+			}
+			html.push( '>' );
+			for ( i = 0, len = node.childNodes.length; i < len; i++ ) {
+				if ( node === position.node && i === position.offset ) {
+					html.push( '|' );
+				}
+				add( node.childNodes[i] );
+			}
+			if ( node === position.node && node.childNodes.length === position.offset ) {
+				html.push( '|' );
+			}
+			html.push( '</', ve.escapeHtml( node.nodeName.toLowerCase() ), '>' );
+		}
+		add( rootNode );
+		return html.join( '' );
+	};
 }() );
