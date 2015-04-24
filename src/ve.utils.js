@@ -867,6 +867,38 @@ ve.resolveUrl = function ( url, base ) {
 };
 
 /**
+ * Take a target document with a possibly relative base URL, and modify it to be absolute.
+ * The base URL of the target document is resolved using the base URL of the source document.
+ *
+ * Note that the the fallbackBase parameter will be used if there is no <base> tag, even if
+ * the document does have a valid base URL: this is to work around Firefox's behavior of having
+ * documents created by DOMParser inherit the base URL of the main document.
+ *
+ * @param {HTMLDocument} targetDoc Document whose base URL should be resolved
+ * @param {HTMLDocument} sourceDoc Document whose base URL should be used for resolution
+ * @param {string} [fallbackBase] Base URL to use if resolving the base URL fails or there is no <base> tag
+ */
+ve.fixBase = function ( targetDoc, sourceDoc, fallbackBase ) {
+	var baseNode = targetDoc.getElementsByTagName( 'base' )[0];
+	if ( baseNode ) {
+		if ( !targetDoc.baseURI ) {
+			// <base> tag present but not valid, try resolving its URL
+			baseNode.setAttribute( 'href', ve.resolveUrl( baseNode.getAttribute( 'href' ), sourceDoc ) );
+			if ( !targetDoc.baseURI && fallbackBase ) {
+				// That didn't work, use the fallback
+				baseNode.setAttribute( 'href', fallbackBase );
+			}
+		}
+		// else: <base> tag present and valid, do nothing
+	} else if ( fallbackBase ) {
+		// No <base> tag, add one
+		baseNode = targetDoc.createElement( 'base' );
+		baseNode.setAttribute( 'href', fallbackBase );
+		targetDoc.head.appendChild( baseNode );
+	}
+};
+
+/**
  * Check if a string is a valid URI component.
  *
  * A URI component is considered invalid if decodeURIComponent() throws an exception.

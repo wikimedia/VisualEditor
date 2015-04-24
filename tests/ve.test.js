@@ -420,6 +420,104 @@ QUnit.test( 'createDocumentFromHtml', function ( assert ) {
 	}
 } );
 
+QUnit.test( 'resolveUrl', function ( assert ) {
+	var i, doc,
+		cases = [
+			{
+				base: 'http://example.com',
+				href: 'foo',
+				resolved: 'http://example.com/foo',
+				msg: 'Simple href with domain as base'
+			},
+			{
+				base: 'http://example.com/bar',
+				href: 'foo',
+				resolved: 'http://example.com/foo',
+				msg: 'Simple href with page as base'
+			},
+			{
+				base: 'http://example.com/bar/',
+				href: 'foo',
+				resolved: 'http://example.com/bar/foo',
+				msg: 'Simple href with directory as base'
+			},
+			{
+				base: 'http://example.com/bar/',
+				href: './foo',
+				resolved: 'http://example.com/bar/foo',
+				msg: './ in href'
+			},
+			{
+				base: 'http://example.com/bar/',
+				href: '../foo',
+				resolved: 'http://example.com/foo',
+				msg: '../ in href'
+			},
+			{
+				base: 'http://example.com/bar/',
+				href: '/foo',
+				resolved: 'http://example.com/foo',
+				msg: 'href starting with /'
+			},
+			{
+				base: 'http://example.com/bar/',
+				href: '//example.org/foo',
+				resolved: 'http://example.org/foo',
+				msg: 'protocol-relative href'
+			},
+			{
+				base: 'http://example.com/bar/',
+				href: 'https://example.org/foo',
+				resolved: 'https://example.org/foo',
+				msg: 'href with protocol'
+			}
+		];
+	QUnit.expect( cases.length );
+	for ( i = 0; i < cases.length; i++ ) {
+		doc = ve.createDocumentFromHtml( '' );
+		doc.head.appendChild( $( '<base>', doc ).attr( 'href', cases[i].base )[0] );
+		assert.strictEqual( ve.resolveUrl( cases[i].href, doc ), cases[i].resolved, cases[i].msg );
+	}
+} );
+
+QUnit.test( 'fixBase', function ( assert ) {
+	var i, targetDoc, sourceDoc,
+		cases = [
+			{
+				targetBase: '//example.org/foo',
+				sourceBase: 'https://example.com',
+				fixedBase: 'https://example.org/foo',
+				msg: 'Protocol-relative base is made absolute'
+			},
+			{
+				targetBase: 'http://example.org/foo',
+				sourceBase: 'https://example.com',
+				fixedBase: 'http://example.org/foo',
+				msg: 'Fully specified base is left alone'
+			},
+			{
+				// No targetBase
+				sourceBase: 'https://example.com',
+				fallbackBase: 'https://example.org/foo',
+				fixedBase: 'https://example.org/foo',
+				msg: 'When base is missing, fallback base is used'
+			}
+		];
+	QUnit.expect( cases.length );
+	for ( i = 0; i < cases.length; i++ ) {
+		targetDoc = ve.createDocumentFromHtml( '' );
+		sourceDoc = ve.createDocumentFromHtml( '' );
+		if ( cases[i].targetBase ) {
+			targetDoc.head.appendChild( $( '<base>', targetDoc ).attr( 'href', cases[i].targetBase )[0] );
+		}
+		if ( cases[i].sourceBase ) {
+			sourceDoc.head.appendChild( $( '<base>', sourceDoc ).attr( 'href', cases[i].sourceBase )[0] );
+		}
+		ve.fixBase( targetDoc, sourceDoc, cases[i].fallbackBase );
+		assert.strictEqual( targetDoc.baseURI, cases[i].fixedBase, cases[i].msg );
+	}
+} );
+
 QUnit.test( 'isBlockElement/isVoidElement', 10, function ( assert ) {
 	assert.strictEqual( ve.isBlockElement( 'div' ), true, '"div" is a block element' );
 	assert.strictEqual( ve.isBlockElement( 'SPAN' ), false, '"SPAN" is not a block element' );
