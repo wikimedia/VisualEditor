@@ -56,31 +56,59 @@
 	 */
 	function addType( obj ) {
 		var i, len,
+			keys = Array.prototype.slice.call( arguments, 1, -1 ),
+			value = arguments[arguments.length - 1],
 			o = obj;
-		for ( i = 1, len = arguments.length - 2; i < len; i++ ) {
-			if ( o[arguments[i]] === undefined ) {
-				o[arguments[i]] = {};
+
+		for ( i = 0, len = keys.length - 1; i < len; i++ ) {
+			if ( o[keys[i]] === undefined ) {
+				o[keys[i]] = {};
 			}
-			o = o[arguments[i]];
+			o = o[keys[i]];
 		}
-		if ( o[arguments[i]] === undefined ) {
-			o[arguments[i]] = [];
+		o[keys[i]] = o[keys[i]] || [];
+		o[keys[i]].unshift( value );
+	}
+
+	/**
+	 * Helper function for unregister().
+	 *
+	 * Same arguments as addType, except removes the type from the list.
+	 *
+	 * @private
+	 * @param {Object} obj Object the array resides in
+	 * @param {string...} keys
+	 * @param {Mixed} value to remove
+	 */
+	function removeType( obj ) {
+		var index,
+			keys = Array.prototype.slice.call( arguments, 1, -1 ),
+			value = arguments[arguments.length - 1],
+			arr = ve.getProp.apply( obj, [ obj ].concat( keys ) );
+
+		if ( arr ) {
+			index = arr.indexOf( value );
+			if ( index !== -1 ) {
+				arr.splice( index, 1 );
+			}
+			// TODO: Prune empty array and empty containing objects
 		}
-		o[arguments[i]].unshift( arguments[i + 1] );
 	}
 
 	/* Public methods */
 
 	/**
 	 * Register a model type.
-	 * @param {string} name Symbolic name for the model
+	 *
 	 * @param {ve.dm.Model} constructor Subclass of ve.dm.Model
+	 * @throws Model names must be strings and must not be empty
 	 * @throws Models must be subclasses of ve.dm.Model
 	 * @throws No factory associated with this ve.dm.Model subclass
 	 */
 	ve.dm.ModelRegistry.prototype.register = function ( constructor ) {
 		var i, j, tags, types,
 			name = constructor.static && constructor.static.name;
+
 		if ( typeof name !== 'string' || name === '' ) {
 			throw new Error( 'Model names must be strings and must not be empty' );
 		}
@@ -98,8 +126,9 @@
 		} else {
 			throw new Error( 'No factory associated with this ve.dm.Model subclass' );
 		}
+
 		// Parent method
-		OO.Registry.prototype.register.call( this, name, constructor );
+		ve.dm.ModelRegistry.super.prototype.register.call( this, name, constructor );
 
 		tags = constructor.static.matchTagNames === null ?
 			[ '' ] :
@@ -116,6 +145,8 @@
 		}
 		for ( i = 0; i < types.length; i++ ) {
 			if ( types[i] instanceof RegExp ) {
+				// TODO: Guard against running this again during subsequent
+				// iterations of the for loop
 				addType( this.modelsWithTypeRegExps, +!!constructor.static.matchFunction, name );
 			} else {
 				for ( j = 0; j < tags.length; j++ ) {
@@ -127,6 +158,69 @@
 		}
 
 		this.registrationOrder[name] = this.nextNumber++;
+	};
+
+	/**
+	 * Unregister a model type.
+	 *
+	 * @param {ve.dm.Model} constructor Subclass of ve.dm.Model
+	 * @throws Model names must be strings and must not be empty
+	 * @throws Models must be subclasses of ve.dm.Model
+	 * @throws No factory associated with this ve.dm.Model subclass
+	 */
+	ve.dm.ModelRegistry.prototype.unregister = function ( constructor ) {
+		var i, j, tags, types,
+			name = constructor.static && constructor.static.name;
+
+		if ( typeof name !== 'string' || name === '' ) {
+			throw new Error( 'Model names must be strings and must not be empty' );
+		}
+		if ( !( constructor.prototype instanceof ve.dm.Model ) ) {
+			throw new Error( 'Models must be subclasses of ve.dm.Model' );
+		}
+
+		// Unregister the model from the right factory
+		if ( constructor.prototype instanceof ve.dm.Annotation ) {
+			ve.dm.annotationFactory.unregister( constructor );
+		} else if ( constructor.prototype instanceof ve.dm.Node ) {
+			ve.dm.nodeFactory.unregister( constructor );
+		} else if ( constructor.prototype instanceof ve.dm.MetaItem ) {
+			ve.dm.metaItemFactory.unregister( constructor );
+		} else {
+			throw new Error( 'No factory associated with this ve.dm.Model subclass' );
+		}
+
+		// Parent method
+		ve.dm.ModelRegistry.super.prototype.unregister.call( this, name );
+
+		tags = constructor.static.matchTagNames === null ?
+			[ '' ] :
+			constructor.static.matchTagNames;
+		types = constructor.static.getMatchRdfaTypes() === null ?
+			[ '' ] :
+			constructor.static.getMatchRdfaTypes();
+
+		for ( i = 0; i < tags.length; i++ ) {
+			// +!!foo is a shorter equivalent of Number( Boolean( foo ) ) or foo ? 1 : 0
+			removeType( this.modelsByTag, +!!constructor.static.matchFunction,
+				tags[i], name
+			);
+		}
+		for ( i = 0; i < types.length; i++ ) {
+			if ( types[i] instanceof RegExp ) {
+				// TODO: Guard against running this again during subsequent
+				// iterations of the for loop
+				removeType( this.modelsWithTypeRegExps, +!!constructor.static.matchFunction, name );
+			} else {
+				for ( j = 0; j < tags.length; j++ ) {
+					removeType( this.modelsByTypeAndTag,
+						+!!constructor.static.matchFunction, types[i], tags[j], name
+					);
+				}
+			}
+		}
+
+		delete this.registrationOrder[name];
 	};
 
 	/**

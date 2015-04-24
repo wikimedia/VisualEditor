@@ -100,7 +100,7 @@ ve.dm.StubRegExpNode.static.matchRdfaTypes = [ /^ext:/ ];
 
 /* Tests */
 
-QUnit.test( 'matchElement', 23, function ( assert ) {
+QUnit.test( 'matchElement', 24, function ( assert ) {
 	var registry = new ve.dm.ModelRegistry(),
 		element = document.createElement( 'a' );
 
@@ -170,4 +170,10 @@ QUnit.test( 'matchElement', 23, function ( assert ) {
 	element.setAttribute( 'rel', 'ext:abbr' );
 	element.setAttribute( 'typeof', 'foo' );
 	assert.deepEqual( registry.matchElement( element ), null, 'Types split over two attributes still breaks match' );
+
+	registry.unregister( ve.dm.StubAbbrNode );
+	element.removeAttribute( 'typeof' );
+	element.setAttribute( 'rel', 'ext:abbr' );
+	assert.deepEqual( registry.matchElement( element ), 'stub-regexp', 'RegExp type match after string match is unregistered' );
+
 } );
