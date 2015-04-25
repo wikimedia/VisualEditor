@@ -1,8 +1,26 @@
 {
 	"@metadata": {
 		"authors": [
-			"Bikarhêner"
+			"Bikarhêner",
+			"George Animal"
 		]
 	},
-	"visualeditor-alignablecontextitem-title": "Bicîbûn"
+	"visualeditor-alignablecontextitem-title": "Bicîbûn",
+	"visualeditor-annotationbutton-language-tooltip": "Ziman",
+	"visualeditor-annotationbutton-link-tooltip": "Girêdan",
+	"visualeditor-contextitemwidget-label-secondary": "Biguherîne",
+	"visualeditor-dialog-action-cancel": "Betal bike",
+	"visualeditor-dialog-action-done": "Çêbû",
+	"visualeditor-dialog-action-goback": "Vegere",
+	"visualeditor-help-tool": "Alîkarî",
+	"visualeditor-inspector-close-tooltip": "Bigre",
+	"visualeditor-inspector-remove-tooltip": "Jê bibe",
+	"visualeditor-languageinspector-title": "Ziman",
+	"visualeditor-languageinspector-widget-changelang": "Zimanekî bibîne",
+	"visualeditor-languageinspector-widget-label-language": "Ziman",
+	"visualeditor-linkinspector-open": "Veke",
+	"visualeditor-linkinspector-title": "Girêdan",
+	"visualeditor-table-delete-table": "Tabloyê jê bibe",
+	"visualeditor-table-insert-table": "Tablo",
+	"visualeditor-toolbar-table": "Tablo"
 }
