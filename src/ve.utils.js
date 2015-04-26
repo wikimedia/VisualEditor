@@ -874,7 +874,7 @@ ve.createDocumentFromHtmlUsingIframe = function ( html ) {
  * @returns {HTMLDocument} Document constructed from the HTML string
  */
 ve.createDocumentFromHtmlUsingInnerHtml = function ( html ) {
-	var i, xmlDoc,
+	var i, htmlAttributes, wrapper, attributes,
 		newDocument = document.implementation.createHTMLDocument( '' );
 
 	html = html || '<body></body>';
@@ -883,18 +883,21 @@ ve.createDocumentFromHtmlUsingInnerHtml = function ( html ) {
 	newDocument.documentElement.innerHTML = html
 		.replace(/^\s*(?:<!doctype[^>]*>)?\s*<html[^>]*>/i, '' )
 		.replace(/<\/html>\s*$/i, '' );
+
 	// Preserve <html> attributes, if any
-	try {
-		xmlDoc = new DOMParser().parseFromString( html, 'text/xml' );
-		if ( xmlDoc.documentElement.tagName.toLowerCase() === 'html' ) {
-			for ( i = 0; i < xmlDoc.documentElement.attributes.length; i++ ) {
-				newDocument.documentElement.setAttribute(
-					xmlDoc.documentElement.attributes[i].name,
-					xmlDoc.documentElement.attributes[i].value
-				);
-			}
+	htmlAttributes = html.match( /<html([^>]*>)/i );
+	if ( htmlAttributes && htmlAttributes[1] ) {
+		wrapper = document.createElement( 'div' );
+		wrapper.innerHTML = '<div ' + htmlAttributes[1] + '></div>';
+		attributes = wrapper.firstChild.attributes;
+		for ( i = 0; i < attributes.length; i++ ) {
+			newDocument.documentElement.setAttribute(
+				attributes[i].name,
+				attributes[i].value
+			);
 		}
-	} catch ( e ) { }
+	}
+
 	return newDocument;
 };
 

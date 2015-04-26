@@ -389,40 +389,54 @@ QUnit.test( 'createDocumentFromHtml', function ( assert ) {
 		cases = [
 			{
 				msg: 'simple document with doctype, head and body',
-				html: '<!doctype html><html><head><title>Foo</title></head><body><p>Bar</p></body></html>',
+				html: '<!doctype html><html lang="en"><head><title>Foo</title></head><body><p>Bar</p></body></html>',
 				head: '<title>Foo</title>',
-				body: '<p>Bar</p>'
+				body: '<p>Bar</p>',
+				htmlAttributes: {
+					lang: 'en'
+				}
 			},
 			{
 				msg: 'simple document without doctype',
-				html: '<html><head><title>Foo</title></head><body><p>Bar</p></body></html>',
+				html: '<html lang="en"><head><title>Foo</title></head><body><p>Bar</p></body></html>',
 				head: '<title>Foo</title>',
-				body: '<p>Bar</p>'
+				body: '<p>Bar</p>',
+				htmlAttributes: {
+					lang: 'en'
+				}
 			},
 			{
 				msg: 'document with missing closing tags and missing <html> tag',
 				html: '<!doctype html><head><title>Foo</title><base href="yay"><body><p>Bar<b>Baz',
 				head: '<title>Foo</title><base href="yay" />',
-				body: '<p>Bar<b>Baz</b></p>'
+				body: '<p>Bar<b>Baz</b></p>',
+				htmlAttributes: {}
 			},
 			{
 				msg: 'empty string results in empty document',
 				html: '',
 				head: '',
-				body: ''
+				body: '',
+				htmlAttributes: {}
 			}
 		];
 
-	QUnit.expect( cases.length * 2 * ( 2 + ( supportsDomParser ? 1 : 0 ) + ( supportsIframe ? 1 : 0 ) ) );
+	QUnit.expect( cases.length * 3 * ( 2 + ( supportsDomParser ? 1 : 0 ) + ( supportsIframe ? 1 : 0 ) ) );
 
 	function assertCreateDocument( createDocument, msg ) {
-		var key;
+		var i, key, attributes, attributesObject;
 		for ( key in cases ) {
 			doc = createDocument( cases[key].html );
+			attributes = $( 'html', doc ).get( 0 ).attributes;
+			attributesObject = {};
+			for ( i = 0; i < attributes.length; i++ ) {
+				attributesObject[attributes[i].name] = attributes[i].value;
+			}
 			expectedHead = $( '<head>' ).html( cases[key].head ).get( 0 );
 			expectedBody = $( '<body>' ).html( cases[key].body ).get( 0 );
 			assert.equalDomElement( $( 'head', doc ).get( 0 ), expectedHead, msg + ': ' + cases[key].msg + ' (head)' );
 			assert.equalDomElement( $( 'body', doc ).get( 0 ), expectedBody, msg + ': ' + cases[key].msg + ' (body)' );
+			assert.deepEqual( attributesObject, cases[key].htmlAttributes, msg + ': ' + cases[key].msg + ' (html attributes)' );
 		}
 	}
 
