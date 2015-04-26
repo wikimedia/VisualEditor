@@ -177,7 +177,7 @@ ve.extendObject = $.extend;
  * @private
  * @property {boolean}
  */
-ve.supportSplice = ( function () {
+ve.supportsSplice = ( function () {
 	var a, n;
 
 	// This returns false in Safari 8
@@ -232,7 +232,7 @@ ve.batchSplice = function ( arr, offset, remove, data ) {
 	if ( !Array.isArray( arr ) ) {
 		splice = arr.splice;
 	} else {
-		if ( ve.supportSplice ) {
+		if ( ve.supportsSplice ) {
 			splice = Array.prototype.splice;
 		} else {
 			// Standard Array.prototype.splice() function implemented using .slice() and .push().
