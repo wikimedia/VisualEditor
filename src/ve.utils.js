@@ -771,20 +771,49 @@ ve.elementTypes = {
  * @returns {HTMLDocument} Document constructed from the HTML string
  */
 ve.createDocumentFromHtml = function ( html ) {
-	// Try using DOMParser if available. This only works in Firefox 12+ and very modern
-	// versions of other browsers (Chrome 30+, Opera 17+, IE10+)
-	var newDocument, $iframe, iframe, xmlDoc, i;
+	var newDocument;
+
+	newDocument = ve.createDocumentFromHtmlUsingDomParser( html );
+	if ( newDocument ) {
+		return newDocument;
+	}
+
+	newDocument = ve.createDocumentFromHtmlUsingIframe( html );
+	if ( newDocument ) {
+		return newDocument;
+	}
+
+	return ve.createDocumentFromHtmlUsingInnerHtml( html );
+};
+
+/**
+ * Private method for creating an HTMLDocument using the DOMParser
+ *
+ * @private
+ * @param {string} html HTML string
+ * @returns {HTMLDocument|undefined} Document constructed from the HTML string or undefined if it failed
+ */
+ve.createDocumentFromHtmlUsingDomParser = function ( html ) {
+	// IE doesn't like empty strings
+	html = html || '<body></body>';
+
 	try {
-		if ( html === '' ) {
-			// IE doesn't like empty strings
-			html = '<body></body>';
-		}
-		newDocument = new DOMParser().parseFromString( html, 'text/html' );
+		var newDocument = new DOMParser().parseFromString( html, 'text/html' );
 		if ( newDocument ) {
 			return newDocument;
 		}
 	} catch ( e ) { }
+};
 
+/**
+ * Private fallback for browsers which don't support DOMParser
+ *
+ * @private
+ * @param {string} html HTML string
+ * @returns {HTMLDocument|undefined} Document constructed from the HTML string or undefined if it failed
+ */
+ve.createDocumentFromHtmlUsingIframe = function ( html ) {
+	var newDocument, $iframe, iframe;
 	// Here's what this fallback code should look like:
 	//
 	//     var newDocument = document.implementation.createHtmlDocument( '' );
@@ -811,6 +840,8 @@ ve.createDocumentFromHtml = function ( html ) {
 	// value is not actually a Document, but something which behaves just like an empty regular
 	// object...), so we're detecting that and using the innerHTML hack described above.
 
+	html = html || '<body></body>';
+
 	// Create an invisible iframe
 	$iframe = $( '<iframe frameborder="0" width="0" height="0" />' );
 	iframe = $iframe.get( 0 );
@@ -829,25 +860,41 @@ ve.createDocumentFromHtml = function ( html ) {
 		// Surprise! The document is not a document! Only happens on Opera.
 		// (Or its nodes are not actually nodes, while the document
 		// *is* a document. This only happens when debugging with Dragonfly.)
-		newDocument = document.implementation.createHTMLDocument( '' );
-		// Carefully unwrap the HTML out of the root node (and doctype, if any).
-		newDocument.documentElement.innerHTML = html
-			.replace(/^\s*(?:<!doctype[^>]*>)?\s*<html[^>]*>/i, '' )
-			.replace(/<\/html>\s*$/i, '' );
-		// Preserve <html> attributes, if any
-		try {
-			xmlDoc = new DOMParser().parseFromString( html, 'text/xml' );
-			if ( xmlDoc.documentElement.tagName.toLowerCase() === 'html' ) {
-				for ( i = 0; i < xmlDoc.documentElement.attributes.length; i++ ) {
-					newDocument.documentElement.setAttribute(
-						xmlDoc.documentElement.attributes[i].name,
-						xmlDoc.documentElement.attributes[i].value
-					);
-				}
-			}
-		} catch ( e ) { }
+		return;
 	}
 
+	return newDocument;
+};
+
+/**
+ * Private fallback for browsers which don't support iframe technique
+ *
+ * @private
+ * @param {string} html HTML string
+ * @returns {HTMLDocument} Document constructed from the HTML string
+ */
+ve.createDocumentFromHtmlUsingInnerHtml = function ( html ) {
+	var i, xmlDoc,
+		newDocument = document.implementation.createHTMLDocument( '' );
+
+	html = html || '<body></body>';
+
+	// Carefully unwrap the HTML out of the root node (and doctype, if any).
+	newDocument.documentElement.innerHTML = html
+		.replace(/^\s*(?:<!doctype[^>]*>)?\s*<html[^>]*>/i, '' )
+		.replace(/<\/html>\s*$/i, '' );
+	// Preserve <html> attributes, if any
+	try {
+		xmlDoc = new DOMParser().parseFromString( html, 'text/xml' );
+		if ( xmlDoc.documentElement.tagName.toLowerCase() === 'html' ) {
+			for ( i = 0; i < xmlDoc.documentElement.attributes.length; i++ ) {
+				newDocument.documentElement.setAttribute(
+					xmlDoc.documentElement.attributes[i].name,
+					xmlDoc.documentElement.attributes[i].value
+				);
+			}
+		}
+	} catch ( e ) { }
 	return newDocument;
 };
 

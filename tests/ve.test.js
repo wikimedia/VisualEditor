@@ -383,7 +383,9 @@ QUnit.test( 'escapeHtml', 1, function ( assert ) {
 } );
 
 QUnit.test( 'createDocumentFromHtml', function ( assert ) {
-	var key, doc, expectedHead, expectedBody,
+	var doc, expectedHead, expectedBody,
+		supportsDomParser = !!ve.createDocumentFromHtmlUsingDomParser( '' ),
+		supportsIframe = !!ve.createDocumentFromHtmlUsingIframe( '' ),
 		cases = [
 			{
 				msg: 'simple document with doctype, head and body',
@@ -410,14 +412,28 @@ QUnit.test( 'createDocumentFromHtml', function ( assert ) {
 				body: ''
 			}
 		];
-	QUnit.expect( cases.length * 2 );
-	for ( key in cases ) {
-		doc = ve.createDocumentFromHtml( cases[key].html );
-		expectedHead = $( '<head>' ).html( cases[key].head ).get( 0 );
-		expectedBody = $( '<body>' ).html( cases[key].body ).get( 0 );
-		assert.equalDomElement( $( 'head', doc ).get( 0 ), expectedHead, cases[key].msg + ' (head)' );
-		assert.equalDomElement( $( 'body', doc ).get( 0 ), expectedBody, cases[key].msg + ' (body)' );
+
+	QUnit.expect( cases.length * 2 * ( 2 + ( supportsDomParser ? 1 : 0 ) + ( supportsIframe ? 1 : 0 ) ) );
+
+	function assertCreateDocument( createDocument, msg ) {
+		var key;
+		for ( key in cases ) {
+			doc = createDocument( cases[key].html );
+			expectedHead = $( '<head>' ).html( cases[key].head ).get( 0 );
+			expectedBody = $( '<body>' ).html( cases[key].body ).get( 0 );
+			assert.equalDomElement( $( 'head', doc ).get( 0 ), expectedHead, msg + ': ' + cases[key].msg + ' (head)' );
+			assert.equalDomElement( $( 'body', doc ).get( 0 ), expectedBody, msg + ': ' + cases[key].msg + ' (body)' );
+		}
 	}
+
+	if ( supportsDomParser ) {
+		assertCreateDocument( ve.createDocumentFromHtmlUsingDomParser, 'DOMParser' );
+	}
+	if ( supportsIframe ) {
+		assertCreateDocument( ve.createDocumentFromHtmlUsingIframe, 'IFrame' );
+	}
+	assertCreateDocument( ve.createDocumentFromHtmlUsingInnerHtml, 'innerHTML' );
+	assertCreateDocument( ve.createDocumentFromHtml, 'wrapper' );
 } );
 
 QUnit.test( 'isBlockElement/isVoidElement', 10, function ( assert ) {
