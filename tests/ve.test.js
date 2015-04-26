@@ -267,7 +267,7 @@ QUnit.test( 'getOpeningHtmlTag', 3, function ( assert ) {
 } );
 
 QUnit.test( 'batchSplice', function ( assert ) {
-	var spliceWasSupported = ve.supportSplice;
+	var spliceWasSupported = ve.supportsSplice;
 
 	function assertBatchSplice() {
 		var actualRet, expectedRet, msg, i,
@@ -275,7 +275,7 @@ QUnit.test( 'batchSplice', function ( assert ) {
 			expected = actual.slice( 0 ),
 			bigArr = [];
 
-		msg = ve.supportSplice ? 'Array#splice native' : 'Array#splice polyfill';
+		msg = ve.supportsSplice ? 'Array#splice native' : 'Array#splice polyfill';
 
 		actualRet = ve.batchSplice( actual, 1, 1, [] );
 		expectedRet = expected.splice( 1, 1 );
@@ -309,9 +309,9 @@ QUnit.test( 'batchSplice', function ( assert ) {
 	// If the current browser supported native splice,
 	// test again without the native splice.
 	if ( spliceWasSupported ) {
-		ve.supportSplice = false;
+		ve.supportsSplice = false;
 		assertBatchSplice();
-		ve.supportSplice = true;
+		ve.supportsSplice = true;
 	}
 } );
 
