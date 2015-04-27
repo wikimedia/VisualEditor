@@ -1212,6 +1212,17 @@ ve.dm.example.domToDataCases = {
 			'<u class="ve-ce-textStyleAnnotation ve-ce-underlineAnnotation">c</u>' +
 		'</p>'
 	},
+	'annotation from data': {
+		data: [
+			{ type: 'paragraph' },
+			// Annotation without nodeName
+			[ 'a', [ { type: 'textStyle/bold' } ] ],
+			{ type: '/paragraph' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
+		],
+		fromDataBody: '<p><b>a</b></p>'
+	},
 	'equivalent annotations': {
 		body: '<p><code>a</code>b<tt>c</tt>d<code>e</code><tt>f</tt></p>',
 		data: [
