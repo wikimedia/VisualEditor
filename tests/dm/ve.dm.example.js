@@ -1205,7 +1205,7 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'equivalent annotations': {
-		body: '<p><code>a</code>b<tt>c</tt>d<code>e</code><tt>f</tt>',
+		body: '<p><code>a</code>b<tt>c</tt>d<code>e</code><tt>f</tt></p>',
 		data: [
 			{ type: 'paragraph' },
 			['a', [ ve.dm.example.code ]],
@@ -1219,7 +1219,7 @@ ve.dm.example.domToDataCases = {
 			{ type: '/internalList' }
 		],
 		storeLength: 2,
-		fromDataBody: '<p><code>a</code>b<tt>c</tt>d<code>ef</code>'
+		fromDataBody: '<p><code>a</code>b<tt>c</tt>d<code>ef</code></p>'
 	},
 	'additive annotations': {
 		body: '<p><big>a<big>b</big>c</big><b>d<b>e</b>f</b></p>',
