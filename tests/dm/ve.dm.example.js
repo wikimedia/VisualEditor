@@ -1282,6 +1282,32 @@ ve.dm.example.domToDataCases = {
 			{ type: '/internalList' }
 		]
 	},
+	'other textStyle annotations': {
+		body: '<p>' +
+			'<abbr>a</abbr>' +
+			'<var>b</var>' +
+			'<kbd>c</kbd>' +
+			'<q>d</q>' +
+			'<samp>e</samp>' +
+			'<time>f</time>' +
+			'<dfn>g</dfn>' +
+			'<mark>h</mark>' +
+		'</p>',
+		data: [
+			{ type: 'paragraph' },
+			['a', [ { type: 'textStyle/abbreviation', attributes: { nodeName: 'abbr' } } ]],
+			['b', [ { type: 'textStyle/variable', attributes: { nodeName: 'var' } } ]],
+			['c', [ { type: 'textStyle/userInput', attributes: { nodeName: 'kbd' } } ]],
+			['d', [ { type: 'textStyle/quotation', attributes: { nodeName: 'q' } } ]],
+			['e', [ { type: 'textStyle/codeSample', attributes: { nodeName: 'samp' } } ]],
+			['f', [ { type: 'textStyle/datetime', attributes: { nodeName: 'time' } } ]],
+			['g', [ { type: 'textStyle/definition', attributes: { nodeName: 'dfn' } } ]],
+			['h', [ { type: 'textStyle/highlight', attributes: { nodeName: 'mark' } } ]],
+			{ type: '/paragraph' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
+		]
+	},
 	'strip leading whitespace in paragraphs': {
 		data: [
 			{ type: 'paragraph' },
