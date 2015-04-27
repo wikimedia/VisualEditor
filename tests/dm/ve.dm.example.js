@@ -139,6 +139,9 @@ ve.dm.example.language = function ( lang, dir ) {
 	return { type: 'meta/language', attributes: { lang: lang, dir: dir } };
 };
 
+ve.dm.example.inlineSlug = '<span class="ve-ce-branchNode-slug ve-ce-branchNode-inlineSlug"></span>';
+ve.dm.example.blockSlug = '<div class="ve-ce-branchNode-slug ve-ce-branchNode-blockSlug"></div>';
+
 /**
  * Creates a document from example data.
  *
@@ -1202,7 +1205,12 @@ ve.dm.example.domToDataCases = {
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
-		]
+		],
+		ceHtml: '<p class="ve-ce-branchNode ve-ce-paragraphNode">' +
+			'<b class="ve-ce-textStyleAnnotation ve-ce-boldAnnotation">a</b>' +
+			'<i class="ve-ce-textStyleAnnotation ve-ce-italicAnnotation">b</i>' +
+			'<u class="ve-ce-textStyleAnnotation ve-ce-underlineAnnotation">c</u>' +
+		'</p>'
 	},
 	'equivalent annotations': {
 		body: '<p><code>a</code>b<tt>c</tt>d<code>e</code><tt>f</tt></p>',
@@ -1280,7 +1288,11 @@ ve.dm.example.domToDataCases = {
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
-		]
+		],
+		ceHtml: '<p class="ve-ce-branchNode ve-ce-paragraphNode">' +
+			'<span class="ve-ce-languageAnnotation ve-ce-bidi-isolate" lang="fr" dir="ltr" title="visualeditor-languageannotation-description">dix</span>' +
+			'<span class="ve-ce-languageAnnotation ve-ce-bidi-isolate" lang="cy" dir="ltr" title="visualeditor-languageannotation-description">deg</span>' +
+		'</p>'
 	},
 	'other textStyle annotations': {
 		body: '<p>' +
@@ -1292,6 +1304,7 @@ ve.dm.example.domToDataCases = {
 			'<time>f</time>' +
 			'<dfn>g</dfn>' +
 			'<mark>h</mark>' +
+			'<font>i</font>' +
 		'</p>',
 		data: [
 			{ type: 'paragraph' },
@@ -1303,10 +1316,22 @@ ve.dm.example.domToDataCases = {
 			['f', [ { type: 'textStyle/datetime', attributes: { nodeName: 'time' } } ]],
 			['g', [ { type: 'textStyle/definition', attributes: { nodeName: 'dfn' } } ]],
 			['h', [ { type: 'textStyle/highlight', attributes: { nodeName: 'mark' } } ]],
+			['i', [ { type: 'textStyle/font', attributes: { nodeName: 'font' } } ]],
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
-		]
+		],
+		ceHtml: '<p class="ve-ce-branchNode ve-ce-paragraphNode">' +
+			'<abbr class="ve-ce-textStyleAnnotation ve-ce-abbreviationAnnotation">a</abbr>' +
+			'<var class="ve-ce-textStyleAnnotation ve-ce-variableAnnotation">b</var>' +
+			'<kbd class="ve-ce-textStyleAnnotation ve-ce-userInputAnnotation">c</kbd>' +
+			'<q class="ve-ce-textStyleAnnotation ve-ce-quotationAnnotation">d</q>' +
+			'<samp class="ve-ce-textStyleAnnotation ve-ce-codeSampleAnnotation">e</samp>' +
+			'<time class="ve-ce-textStyleAnnotation ve-ce-datetimeAnnotation">f</time>' +
+			'<dfn class="ve-ce-textStyleAnnotation ve-ce-definitionAnnotation">g</dfn>' +
+			'<mark class="ve-ce-textStyleAnnotation ve-ce-highlightAnnotation">h</mark>' +
+			'<font class="ve-ce-textStyleAnnotation ve-ce-fontAnnotation">i</font>' +
+		'</p>'
 	},
 	'strip leading whitespace in paragraphs': {
 		data: [
@@ -1336,14 +1361,28 @@ ve.dm.example.domToDataCases = {
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
-		]
+		],
+		ceHtml: '<p class="ve-ce-branchNode ve-ce-paragraphNode ve-ce-generated-wrapper">' +
+			ve.dm.example.inlineSlug +
+			'<img class="ve-ce-leafNode ve-ce-focusableNode ve-ce-imageNode ve-ce-inlineImageNode" contenteditable="false" alt="Example"' +
+				' src="//upload.wikimedia.org/wikipedia/commons/b/b3/Wikipedia-logo-v2-en.svg" style="width: 100px; height: 50px;">' +
+			ve.dm.example.inlineSlug +
+			'</p>'
 	},
 	'block image': {
 		body: ve.dm.example.blockImage.html,
 		data: ve.dm.example.blockImage.data.concat( [
 			{ type: 'internalList' },
 			{ type: '/internalList' }
-		] )
+		] ),
+		ceHtml: ve.dm.example.blockSlug +
+			'<figure class="ve-ce-branchNode ve-ce-focusableNode ve-ce-imageNode ve-ce-blockImageNode" contenteditable="false">' +
+				'<img src="//upload.wikimedia.org/wikipedia/commons/b/b3/Wikipedia-logo-v2-en.svg" alt="Example" style="width: 100px; height: 50px;">' +
+				'<figcaption class="ve-ce-branchNode">' +
+					'<p class="ve-ce-branchNode ve-ce-paragraphNode ve-ce-generated-wrapper">caption</p>' +
+				'</figcaption>' +
+			'</figure>' +
+			ve.dm.example.blockSlug
 	},
 	'paragraph with alienInline inside': {
 		body: '<p>a<foobar class="foo">b</foobar>c</p>',
@@ -1437,7 +1476,16 @@ ve.dm.example.domToDataCases = {
 			{ type: 'internalList' },
 			{ type: '/internalList' }
 		],
-		clipboardBody: '<p><b><span rel="ve:Comment" data-ve-comment="foo"></span>bar<span rel="ve:Comment" data-ve-comment="baz"></span></b></p>'
+		clipboardBody: '<p><b><span rel="ve:Comment" data-ve-comment="foo"></span>bar<span rel="ve:Comment" data-ve-comment="baz"></span></b></p>',
+		ceHtml: '<p class="ve-ce-branchNode ve-ce-paragraphNode">' +
+			'<b class="ve-ce-textStyleAnnotation ve-ce-boldAnnotation">' +
+				ve.dm.example.inlineSlug +
+				'<span class="ve-ce-leafNode ve-ce-focusableNode oo-ui-indicatorElement oo-ui-indicatorElement-indicator oo-ui-indicator-alert ve-ce-commentNode" contenteditable="false"> </span>' +
+				'bar' +
+				'<span class="ve-ce-leafNode ve-ce-focusableNode oo-ui-indicatorElement oo-ui-indicatorElement-indicator oo-ui-indicator-alert ve-ce-commentNode" contenteditable="false"> </span>' +
+			'</b>' +
+			ve.dm.example.inlineSlug +
+		'</p>'
 	},
 	'annotated metadata': {
 		body: '<p><b><meta />bar<meta /></b></p>',

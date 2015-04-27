@@ -8,6 +8,32 @@ QUnit.module( 've.ce.Document' );
 
 /* Tests */
 
+QUnit.test( 'Converter tests', function ( assert ) {
+	var msg, model, view, caseItem, $documentElement,
+		expected = 0,
+		cases = ve.dm.example.domToDataCases;
+
+	for ( msg in cases ) {
+		if ( cases[msg].ceHtml ) {
+			expected++;
+		}
+	}
+
+	QUnit.expect( expected );
+
+	for ( msg in cases ) {
+		if ( cases[msg].ceHtml ) {
+			caseItem = ve.copy( cases[msg] );
+			model = ve.test.utils.getModelFromTestCase( caseItem );
+			view = new ve.ce.Document( model );
+			$documentElement = view.getDocumentNode().$element;
+			// Simplify slugs
+			$documentElement.find( '.ve-ce-branchNode-slug' ).children().remove();
+			assert.strictEqual( $documentElement.html(), caseItem.ceHtml, msg );
+		}
+	}
+} );
+
 // TODO: getNodeFromOffset
 // TODO: getSlugAtOffset
 // TODO: getDirectionFromSelection

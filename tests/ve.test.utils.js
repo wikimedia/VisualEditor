@@ -150,10 +150,10 @@
 		}
 	};
 
-	ve.test.utils.runGetDomFromModelTest = function ( assert, caseItem, msg ) {
-		var originalData, model, store, i, length, html, fromDataBody, clipboardHtml;
+	ve.test.utils.getModelFromTestCase = function ( caseItem ) {
+		var i, length, model,
+			store = new ve.dm.IndexValueStore();
 
-		store = new ve.dm.IndexValueStore();
 		// Load storeItems into store
 		if ( caseItem.storeItems ) {
 			for ( i = 0, length = caseItem.storeItems.length; i < length; i++ ) {
@@ -165,6 +165,13 @@
 		if ( caseItem.modify ) {
 			caseItem.modify( model );
 		}
+		return model;
+	};
+
+	ve.test.utils.runGetDomFromModelTest = function ( assert, caseItem, msg ) {
+		var originalData, model, html, fromDataBody, clipboardHtml;
+
+		model = ve.test.utils.getModelFromTestCase( caseItem );
 		originalData = ve.copy( model.getFullData() );
 		fromDataBody = caseItem.fromDataBody || caseItem.normalizedBody || caseItem.body;
 		html = '<body>' + fromDataBody + '</body>';
