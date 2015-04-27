@@ -61,7 +61,7 @@ ve.ui.DSVFileTransferHandler.prototype.onFileLoad = function () {
 		input = Papa.parse( this.reader.result );
 
 	if ( input.meta.aborted || ( input.data.length <= 0 ) ) {
-		this.insertableDataDeffered.reject();
+		this.insertableDataDeferred.reject();
 		return;
 	}
 
