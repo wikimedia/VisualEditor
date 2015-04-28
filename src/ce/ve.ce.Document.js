@@ -228,11 +228,18 @@ ve.ce.Document.prototype.getNodeAndOffsetUnadjustedForUnicorn = function ( offse
 						startOffset += length;
 					}
 				}
-			} else if ( $item.hasClass( 've-ce-branchNode-slug' ) ) {
-				// Skip contents without incrementing offset
+			} else if ( $item.hasClass( 've-ce-branchNode-blockSlug' ) ) {
+				// This is unusual: generated wrappers usually mean that the return
+				// value of getBranchNodeFromOffset will not have block slugs or
+				// block slug ancestors before the offset position. However, there
+				// are some counterexamples; e.g., if the DM offset is just before
+				// the internalList then the start node will be the document node.
+				//
+				// Skip contents without incrementing offset.
 				current[1]++;
 				continue;
 			} else {
+				// Any other type of node (e.g. b, inline slug, img): descend
 				stack.push( [$item.contents(), 0] );
 				current[1]++;
 				current = stack[stack.length - 1];
