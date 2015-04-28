@@ -75,7 +75,7 @@ ve.ui.InsertColumnBeforeContextItem = function VeUiInsertColumnBeforeContextItem
 OO.inheritClass( ve.ui.InsertColumnBeforeContextItem, ve.ui.TableContextItem );
 ve.ui.InsertColumnBeforeContextItem.static.name = 'insertColumnBefore';
 ve.ui.InsertColumnBeforeContextItem.static.group = 'table-col';
-ve.ui.InsertColumnBeforeContextItem.static.icon = 'table-insert-column-before';
+ve.ui.InsertColumnBeforeContextItem.static.icon = 'tableAddColumnBefore';
 ve.ui.InsertColumnBeforeContextItem.static.title =
 	OO.ui.deferMsg( 'visualeditor-table-insert-col-before' );
 ve.ui.InsertColumnBeforeContextItem.static.commandName = 'insertColumnBefore';
@@ -87,7 +87,7 @@ ve.ui.InsertColumnAfterContextItem = function VeUiInsertColumnAfterContextItem()
 OO.inheritClass( ve.ui.InsertColumnAfterContextItem, ve.ui.TableContextItem );
 ve.ui.InsertColumnAfterContextItem.static.name = 'insertColumnAfter';
 ve.ui.InsertColumnAfterContextItem.static.group = 'table-col';
-ve.ui.InsertColumnAfterContextItem.static.icon = 'table-insert-column-after';
+ve.ui.InsertColumnAfterContextItem.static.icon = 'tableAddColumnAfter';
 ve.ui.InsertColumnAfterContextItem.static.title =
 	OO.ui.deferMsg( 'visualeditor-table-insert-col-after' );
 ve.ui.InsertColumnAfterContextItem.static.commandName = 'insertColumnAfter';
@@ -115,7 +115,7 @@ ve.ui.InsertRowBeforeContextItem = function VeUiInsertRowBeforeContextItem() {
 OO.inheritClass( ve.ui.InsertRowBeforeContextItem, ve.ui.TableContextItem );
 ve.ui.InsertRowBeforeContextItem.static.name = 'insertRowBefore';
 ve.ui.InsertRowBeforeContextItem.static.group = 'table-row';
-ve.ui.InsertRowBeforeContextItem.static.icon = 'table-insert-row-before';
+ve.ui.InsertRowBeforeContextItem.static.icon = 'tableAddRowBefore';
 ve.ui.InsertRowBeforeContextItem.static.title =
 	OO.ui.deferMsg( 'visualeditor-table-insert-row-before' );
 ve.ui.InsertRowBeforeContextItem.static.commandName = 'insertRowBefore';
@@ -127,7 +127,7 @@ ve.ui.InsertRowAfterContextItem = function VeUiInsertRowAfterContextItem() {
 OO.inheritClass( ve.ui.InsertRowAfterContextItem, ve.ui.TableContextItem );
 ve.ui.InsertRowAfterContextItem.static.name = 'insertRowAfter';
 ve.ui.InsertRowAfterContextItem.static.group = 'table-row';
-ve.ui.InsertRowAfterContextItem.static.icon = 'table-insert-row-after';
+ve.ui.InsertRowAfterContextItem.static.icon = 'tableAddRowAfter';
 ve.ui.InsertRowAfterContextItem.static.title =
 	OO.ui.deferMsg( 'visualeditor-table-insert-row-after' );
 ve.ui.InsertRowAfterContextItem.static.commandName = 'insertRowAfter';
