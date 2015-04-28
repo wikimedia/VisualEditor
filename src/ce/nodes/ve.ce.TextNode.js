@@ -68,6 +68,14 @@ ve.ce.TextNode.prototype.getAnnotatedHtml = function () {
 	}
 
 	if ( !significantWhitespace ) {
+		for ( i = 0; i < data.length; i++ ) {
+			chr = getChar( i, data );
+			// Show meaningful whitespace characters
+			if ( Object.prototype.hasOwnProperty.call( whitespaceHtmlChars, chr ) ) {
+				setChar( whitespaceHtmlChars[chr], i, data );
+			}
+		}
+
 		// Replace spaces with &nbsp; where needed
 		// \u00a0 == &#160; == &nbsp;
 		if ( data.length > 0 ) {
@@ -83,20 +91,13 @@ ve.ce.TextNode.prototype.getAnnotatedHtml = function () {
 			}
 		}
 
-		for ( i = 0; i < data.length; i++ ) {
-			chr = getChar( i, data );
-
+		for ( i = 0; i < data.length - 1; i++ ) {
 			// Replace any sequence of 2+ spaces with an alternating pattern
 			// (space-nbsp-space-nbsp-...).
 			// The leading and trailing space, if present, have already been converted
 			// to nbsp, so we know that i is between 1 and data.length - 2.
-			if ( chr === ' ' && getChar( i + 1, data ) === ' ' ) {
+			if ( getChar( i, data ) === ' ' && getChar( i + 1, data ) === ' ' ) {
 				setChar( '\u00a0', i + 1, data );
-			}
-
-			// Show meaningful whitespace characters
-			if ( Object.prototype.hasOwnProperty.call( whitespaceHtmlChars, chr ) ) {
-				setChar( whitespaceHtmlChars[chr], i, data );
 			}
 		}
 	}
