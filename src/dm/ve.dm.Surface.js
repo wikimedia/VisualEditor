@@ -84,7 +84,6 @@ OO.mixinClass( ve.dm.Surface, OO.EventEmitter );
 /**
  * Disable changes.
  *
- * @method
  * @fires history
  */
 ve.dm.Surface.prototype.disable = function () {
@@ -96,7 +95,6 @@ ve.dm.Surface.prototype.disable = function () {
 /**
  * Enable changes.
  *
- * @method
  * @fires history
  */
 ve.dm.Surface.prototype.enable = function () {
@@ -116,8 +114,6 @@ ve.dm.Surface.prototype.initialize = function () {
 
 /**
  * Start tracking state changes in history.
- *
- * @method
  */
 ve.dm.Surface.prototype.startHistoryTracking = function () {
 	if ( !this.enabled ) {
@@ -130,8 +126,6 @@ ve.dm.Surface.prototype.startHistoryTracking = function () {
 
 /**
  * Stop tracking state changes in history.
- *
- * @method
  */
 ve.dm.Surface.prototype.stopHistoryTracking = function () {
 	if ( !this.enabled ) {
@@ -146,8 +140,7 @@ ve.dm.Surface.prototype.stopHistoryTracking = function () {
 /**
  * Get a list of all history states.
  *
- * @method
- * @returns {Object[]} List of transaction stacks
+ * @return {Object[]} List of transaction stacks
  */
 ve.dm.Surface.prototype.getHistory = function () {
 	if ( this.newTransactions.length > 0 ) {
@@ -160,7 +153,7 @@ ve.dm.Surface.prototype.getHistory = function () {
 /**
  * If the surface in staging mode.
  *
- * @returns {boolean} The surface in staging mode
+ * @return {boolean} The surface in staging mode
  */
 ve.dm.Surface.prototype.isStaging = function () {
 	return this.stagingStack.length > 0;
@@ -169,10 +162,10 @@ ve.dm.Surface.prototype.isStaging = function () {
 /**
  * Get the staging state at the current staging stack depth
  *
- * @returns {Object|undefined} staging Staging state object, or undefined if not staging
- * @returns {ve.dm.Transaction[]} staging.transactions Staging transactions
- * @returns {ve.dm.Selection} staging.selectionBefore Selection before transactions were applied
- * @returns {boolean} staging.allowUndo Allow undo while staging
+ * @return {Object|undefined} staging Staging state object, or undefined if not staging
+ * @return {ve.dm.Transaction[]} staging.transactions Staging transactions
+ * @return {ve.dm.Selection} staging.selectionBefore Selection before transactions were applied
+ * @return {boolean} staging.allowUndo Allow undo while staging
  */
 ve.dm.Surface.prototype.getStaging = function () {
 	return this.stagingStack[this.stagingStack.length - 1];
@@ -181,7 +174,7 @@ ve.dm.Surface.prototype.getStaging = function () {
 /**
  * Undo is allowed at the current staging stack depth
  *
- * @returns {boolean|undefined} Undo is allowed, or undefined if not staging
+ * @return {boolean|undefined} Undo is allowed, or undefined if not staging
  */
 ve.dm.Surface.prototype.doesStagingAllowUndo = function () {
 	var staging = this.getStaging();
@@ -193,7 +186,7 @@ ve.dm.Surface.prototype.doesStagingAllowUndo = function () {
  *
  * The array is returned by reference so it can be pushed to.
  *
- * @returns {ve.dm.Transaction[]|undefined} Staging transactions, or undefined if not staging
+ * @return {ve.dm.Transaction[]|undefined} Staging transactions, or undefined if not staging
  */
 ve.dm.Surface.prototype.getStagingTransactions = function () {
 	var staging = this.getStaging();
@@ -225,7 +218,7 @@ ve.dm.Surface.prototype.pushStaging = function ( allowUndo ) {
  * Pop a level of staging from the staging stack
  *
  * @fires history
- * @returns {ve.dm.Transaction[]|undefined} Staging transactions, or undefined if not staging
+ * @return {ve.dm.Transaction[]|undefined} Staging transactions, or undefined if not staging
  */
 ve.dm.Surface.prototype.popStaging = function () {
 	if ( !this.isStaging() ) {
@@ -288,7 +281,7 @@ ve.dm.Surface.prototype.applyStaging = function () {
 /**
  * Pop the staging stack until empty
  *
- * @returns {ve.dm.Transaction[]|undefined} Staging transactions, or undefined if not staging
+ * @return {ve.dm.Transaction[]|undefined} Staging transactions, or undefined if not staging
  */
 ve.dm.Surface.prototype.popAllStaging = function () {
 	if ( !this.isStaging() ) {
@@ -314,8 +307,7 @@ ve.dm.Surface.prototype.applyAllStaging = function () {
 /**
  * Get annotations that will be used upon insertion.
  *
- * @method
- * @returns {ve.dm.AnnotationSet} Insertion annotations
+ * @return {ve.dm.AnnotationSet} Insertion annotations
  */
 ve.dm.Surface.prototype.getInsertionAnnotations = function () {
 	return this.insertionAnnotations.clone();
@@ -324,7 +316,6 @@ ve.dm.Surface.prototype.getInsertionAnnotations = function () {
 /**
  * Set annotations that will be used upon insertion.
  *
- * @method
  * @param {ve.dm.AnnotationSet|null} Insertion annotations to use or null to disable them
  * @fires insertionAnnotationsChange
  * @fires contextChange
@@ -344,7 +335,6 @@ ve.dm.Surface.prototype.setInsertionAnnotations = function ( annotations ) {
 /**
  * Add an annotation to be used upon insertion.
  *
- * @method
  * @param {ve.dm.Annotation|ve.dm.AnnotationSet} annotations Insertion annotation to add
  * @fires insertionAnnotationsChange
  * @fires contextChange
@@ -368,7 +358,6 @@ ve.dm.Surface.prototype.addInsertionAnnotations = function ( annotations ) {
 /**
  * Remove an annotation from those that will be used upon insertion.
  *
- * @method
  * @param {ve.dm.Annotation|ve.dm.AnnotationSet} annotations Insertion annotation to remove
  * @fires insertionAnnotationsChange
  * @fires contextChange
@@ -392,8 +381,7 @@ ve.dm.Surface.prototype.removeInsertionAnnotations = function ( annotations ) {
 /**
  * Check if redo is allowed in the current state.
  *
- * @method
- * @returns {boolean} Redo is allowed
+ * @return {boolean} Redo is allowed
  */
 ve.dm.Surface.prototype.canRedo = function () {
 	return this.undoIndex > 0 && this.enabled;
@@ -402,8 +390,7 @@ ve.dm.Surface.prototype.canRedo = function () {
 /**
  * Check if undo is allowed in the current state.
  *
- * @method
- * @returns {boolean} Undo is allowed
+ * @return {boolean} Undo is allowed
  */
 ve.dm.Surface.prototype.canUndo = function () {
 	return this.hasBeenModified() && this.enabled && ( !this.isStaging() || this.doesStagingAllowUndo() );
@@ -414,8 +401,7 @@ ve.dm.Surface.prototype.canUndo = function () {
  *
  * This only checks if there are transactions which haven't been undone.
  *
- * @method
- * @returns {boolean} The surface has been modified
+ * @return {boolean} The surface has been modified
  */
 ve.dm.Surface.prototype.hasBeenModified = function () {
 	return this.undoStack.length - this.undoIndex > 0 || !!this.newTransactions.length;
@@ -424,8 +410,7 @@ ve.dm.Surface.prototype.hasBeenModified = function () {
 /**
  * Get the document model.
  *
- * @method
- * @returns {ve.dm.Document} Document model of the surface
+ * @return {ve.dm.Document} Document model of the surface
  */
 ve.dm.Surface.prototype.getDocument = function () {
 	return this.documentModel;
@@ -434,8 +419,7 @@ ve.dm.Surface.prototype.getDocument = function () {
 /**
  * Get the meta list.
  *
- * @method
- * @returns {ve.dm.MetaList} Meta list of the surface
+ * @return {ve.dm.MetaList} Meta list of the surface
  */
 ve.dm.Surface.prototype.getMetaList = function () {
 	return this.metaList;
@@ -444,8 +428,7 @@ ve.dm.Surface.prototype.getMetaList = function () {
 /**
  * Get the selection.
  *
- * @method
- * @returns {ve.dm.Selection} Current selection
+ * @return {ve.dm.Selection} Current selection
  */
 ve.dm.Surface.prototype.getSelection = function () {
 	return this.selection;
@@ -454,8 +437,7 @@ ve.dm.Surface.prototype.getSelection = function () {
 /**
  * Get the selection translated for the transaction that's being committed, if any.
  *
- * @method
- * @returns {ve.dm.Selection} Current selection translated for new transaction
+ * @return {ve.dm.Selection} Current selection translated for new transaction
  */
 ve.dm.Surface.prototype.getTranslatedSelection = function () {
 	return this.translatedSelection || this.selection;
@@ -464,11 +446,10 @@ ve.dm.Surface.prototype.getTranslatedSelection = function () {
 /**
  * Get a fragment for a selection.
  *
- * @method
  * @param {ve.dm.Selection} [selection] Selection within target document, current selection used by default
  * @param {boolean} [noAutoSelect] Don't update the surface's selection when making changes
  * @param {boolean} [excludeInsertions] Exclude inserted content at the boundaries when updating range
- * @returns {ve.dm.SurfaceFragment} Surface fragment
+ * @return {ve.dm.SurfaceFragment} Surface fragment
  */
 ve.dm.Surface.prototype.getFragment = function ( selection, noAutoSelect, excludeInsertions ) {
 	return new ve.dm.SurfaceFragment( this, selection || this.selection, noAutoSelect, excludeInsertions );
@@ -477,11 +458,10 @@ ve.dm.Surface.prototype.getFragment = function ( selection, noAutoSelect, exclud
 /**
  * Get a fragment for a linear selection's range.
  *
- * @method
  * @param {ve.Range} range Selection's range
  * @param {boolean} [noAutoSelect] Don't update the surface's selection when making changes
  * @param {boolean} [excludeInsertions] Exclude inserted content at the boundaries when updating range
- * @returns {ve.dm.SurfaceFragment} Surface fragment
+ * @return {ve.dm.SurfaceFragment} Surface fragment
  */
 ve.dm.Surface.prototype.getLinearFragment = function ( range, noAutoSelect, excludeInsertions ) {
 	return new ve.dm.SurfaceFragment( this, new ve.dm.LinearSelection( this.getDocument(), range ), noAutoSelect, excludeInsertions );
@@ -490,7 +470,6 @@ ve.dm.Surface.prototype.getLinearFragment = function ( range, noAutoSelect, excl
 /**
  * Prevent future states from being redone.
  *
- * @method
  * @fires history
  */
 ve.dm.Surface.prototype.truncateUndoStack = function () {
@@ -502,18 +481,16 @@ ve.dm.Surface.prototype.truncateUndoStack = function () {
 };
 
 /**
- * Start queueing up calls to {#emitContextChange} until {#stopQueueingContextChanges} is called.
- * While queueing is active, contextChanges are also collapsed, so if {#emitContextChange} is called
- * multiple times, only one contextChange event will be emitted by {#stopQueueingContextChanges}.
+ * Start queueing up calls to #emitContextChange until #stopQueueingContextChanges is called.
+ * While queueing is active, contextChanges are also collapsed, so if #emitContextChange is called
+ * multiple times, only one contextChange event will be emitted by #stopQueueingContextChanges.
  *
- *     @example
  *     this.emitContextChange(); // emits immediately
  *     this.startQueueingContextChanges();
  *     this.emitContextChange(); // doesn't emit
  *     this.emitContextChange(); // doesn't emit
  *     this.stopQueueingContextChanges(); // emits one contextChange event
  *
- * @method
  * @private
  */
 ve.dm.Surface.prototype.startQueueingContextChanges = function () {
@@ -524,10 +501,9 @@ ve.dm.Surface.prototype.startQueueingContextChanges = function () {
 };
 
 /**
- * Emit a contextChange event. If {#startQueueingContextChanges} has been called, then the event
- * is deferred until {#stopQueueingContextChanges} is called.
+ * Emit a contextChange event. If #startQueueingContextChanges has been called, then the event
+ * is deferred until #stopQueueingContextChanges is called.
  *
- * @method
  * @private
  * @fires contextChange
  */
@@ -540,11 +516,10 @@ ve.dm.Surface.prototype.emitContextChange = function () {
 };
 
 /**
- * Stop queueing contextChange events. If {#emitContextChange} was called previously, a contextChange
- * event will now be emitted. Any future calls to {#emitContextChange} will once again emit the
+ * Stop queueing contextChange events. If #emitContextChange was called previously, a contextChange
+ * event will now be emitted. Any future calls to #emitContextChange will once again emit the
  * event immediately.
  *
- * @method
  * @private
  * @fires contextChange
  */
@@ -716,7 +691,6 @@ ve.dm.Surface.prototype.selectFirstContentOffset = function () {
 /**
  * Apply a transactions and selection changes to the document.
  *
- * @method
  * @param {ve.dm.Transaction|ve.dm.Transaction[]|null} transactions One or more transactions to
  *  process, or null to process none
  * @param {ve.dm.Selection} [selection] Selection to apply
@@ -730,7 +704,6 @@ ve.dm.Surface.prototype.change = function ( transactions, selection ) {
  * Internal implementation of change(). Do not use this, use change() instead.
  *
  * @private
- * @method
  * @param {ve.dm.Transaction|ve.dm.Transaction[]|null} transactions
  * @param {ve.dm.Selection} [selection] [selection]
  * @param {boolean} [skipUndoStack=false] If true, do not modify the undo stack. Used by undo/redo
@@ -809,9 +782,8 @@ ve.dm.Surface.prototype.changeInternal = function ( transactions, selection, ski
 /**
  * Set a history state breakpoint.
  *
- * @method
  * @fires history
- * @returns {boolean} A breakpoint was added
+ * @return {boolean} A breakpoint was added
  */
 ve.dm.Surface.prototype.breakpoint = function () {
 	if ( !this.enabled ) {
@@ -835,7 +807,6 @@ ve.dm.Surface.prototype.breakpoint = function () {
 /**
  * Step backwards in history.
  *
- * @method
  * @fires history
  */
 ve.dm.Surface.prototype.undo = function () {
@@ -866,7 +837,6 @@ ve.dm.Surface.prototype.undo = function () {
 /**
  * Step forwards in history.
  *
- * @method
  * @fires history
  */
 ve.dm.Surface.prototype.redo = function () {
