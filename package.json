@@ -25,18 +25,18 @@
     "grunt-contrib-concat": "0.5.1",
     "grunt-contrib-copy": "0.8.0",
     "grunt-contrib-csslint": "0.4.0",
-    "grunt-contrib-jshint": "0.11.0",
+    "grunt-contrib-jshint": "0.11.2",
     "grunt-contrib-watch": "0.6.1",
-    "grunt-css-url-embed": "1.5.1",
+    "grunt-css-url-embed": "1.5.2",
     "grunt-cssjanus": "0.2.4",
-    "grunt-jscs": "1.5.0",
+    "grunt-jscs": "1.8.0",
     "grunt-karma": "0.10.1",
     "karma": "0.12.31",
-    "karma-chrome-launcher": "0.1.7",
-    "karma-coverage": "0.2.7",
+    "karma-chrome-launcher": "0.1.8",
+    "karma-coverage": "0.3.1",
     "karma-firefox-launcher": "0.1.4",
     "karma-qunit": "0.1.4",
     "karma-sauce-launcher": "0.2.10",
-    "qunitjs": "1.17.1"
+    "qunitjs": "1.18.0"
   }
 }
