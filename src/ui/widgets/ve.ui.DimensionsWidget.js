@@ -14,6 +14,7 @@
  * @constructor
  * @param {Object} [config] Configuration options
  * @cfg {Object} [defaults] Default dimensions
+ * @cfg {Object} [validate] Validation pattern passed to TextInputWidgets
  */
 ve.ui.DimensionsWidget = function VeUiDimensionsWidget( config ) {
 	var labelTimes, labelPx;
@@ -24,8 +25,8 @@ ve.ui.DimensionsWidget = function VeUiDimensionsWidget( config ) {
 	// Parent constructor
 	OO.ui.Widget.call( this, config );
 
-	this.widthInput = new OO.ui.TextInputWidget();
-	this.heightInput = new OO.ui.TextInputWidget();
+	this.widthInput = new OO.ui.TextInputWidget( { validate: config.validate } );
+	this.heightInput = new OO.ui.TextInputWidget( { validate: config.validate } );
 
 	this.defaults = config.defaults || { width: '', height: '' };
 	this.renderDefaults();
@@ -225,4 +226,12 @@ ve.ui.DimensionsWidget.prototype.setWidth = function ( value ) {
  */
 ve.ui.DimensionsWidget.prototype.setHeight = function ( value ) {
 	this.heightInput.setValue( value );
+};
+
+/**
+ * Sets the 'invalid' flag appropriately on both text inputs.
+ */
+ve.ui.DimensionsWidget.prototype.setValidityFlag = function () {
+	this.widthInput.setValidityFlag();
+	this.heightInput.setValidityFlag();
 };

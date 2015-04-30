@@ -59,7 +59,7 @@ ve.ui.MediaSizeWidget = function VeUiMediaSizeWidget( scalable, config ) {
 		label: ve.msg( 'visualeditor-mediasizewidget-label-scale-percent' )
 	} );
 
-	this.dimensionsWidget = new ve.ui.DimensionsWidget();
+	this.dimensionsWidget = new ve.ui.DimensionsWidget( { validate: this.isValid.bind( this ) } );
 
 	// Error label is available globally so it can be displayed and
 	// hidden as needed
@@ -504,7 +504,7 @@ ve.ui.MediaSizeWidget.prototype.validateDimensions = function () {
 	if ( this.valid !== isValid ) {
 		this.valid = isValid;
 		this.errorLabel.toggle( !isValid );
-		this.$element.toggleClass( 've-ui-mediaSizeWidget-input-hasError', !isValid );
+		this.dimensionsWidget.setValidityFlag();
 		// Emit change event
 		this.emit( 'valid', this.valid );
 	}

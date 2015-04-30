@@ -59,7 +59,12 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 	this.focusedIndex = 0;
 	this.query = null;
 	this.findText = new OO.ui.TextInputWidget( {
-		placeholder: ve.msg( 'visualeditor-find-and-replace-find-text' )
+		placeholder: ve.msg( 'visualeditor-find-and-replace-find-text' ),
+		validate: ( function ( dialog ) {
+			return function () {
+				return !dialog.invalidRegex;
+			};
+		} )( this )
 	} );
 	this.matchCaseToggle = new OO.ui.ToggleButtonWidget( {
 		icon: 'searchCaseSensitive',
@@ -269,7 +274,7 @@ ve.ui.FindAndReplaceDialog.prototype.updateFragments = function () {
 	} else {
 		this.query = find;
 	}
-	this.findText.$element.toggleClass( 've-ui-findAndReplaceDialog-findText-error', this.invalidRegex );
+	this.findText.setValidityFlag();
 
 	this.fragments = [];
 	if ( this.query ) {
