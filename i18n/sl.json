@@ -5,7 +5,8 @@
 			"Eleassar",
 			"Pinky sl",
 			"Yerpo",
-			"Gloria sah"
+			"Gloria sah",
+			"Skalcaa"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -89,8 +90,8 @@
 	"visualeditor-specialcharacter-button-tooltip": "Posebni znak",
 	"visualeditor-specialcharacterinspector-title": "Posebni znak",
 	"visualeditor-table-caption": "Napis",
-	"visualeditor-table-delete-col": "Izbriši {{PLURAL:$1|stolpec|stolpca|stolpce}}",
-	"visualeditor-table-delete-row": "Izbriši {{PLURAL:$1|vrstico|vrstici|vrstice}}",
+	"visualeditor-table-delete-col": "Izbriši {{PLURAL:$1|stolpec|2=stolpca|3=stolpce|4=stolpce|stolpcev}}",
+	"visualeditor-table-delete-row": "Izbriši {{PLURAL:$1|vrstico|2=vrstici|3=vrstice|4=vrstice|vrstic}}",
 	"visualeditor-table-delete-table": "Izbriši tabelo",
 	"visualeditor-table-format-data": "Vsebina celice",
 	"visualeditor-table-format-header": "Glava celice",
