@@ -34,10 +34,6 @@
 	max-width: none;
 }
 
-.ve-ui-findAndReplaceDialog-findText-error input {
-	background-color: #edd;
-}
-
 /* @noflip */
 .ve-ui-findAndReplaceDialog-findResults {
 	position: absolute;
