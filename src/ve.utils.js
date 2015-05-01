@@ -1427,3 +1427,27 @@ ve.compareDocumentOrder = function ( node1, offset1, node2, offset2 ) {
 ve.getSystemPlatform = function () {
 	return ( ve.init.platform && ve.init.platform.constructor || ve.init.Platform ).static.getSystemPlatform();
 };
+
+/**
+ * Highlight text where a substring query matches
+ *
+ * @param {string} text Text
+ * @param {string} query Query to find
+ * @returns {jQuery} Text with query substring wrapped in highlighted span
+ */
+ve.highlightQuery = function ( text, query ) {
+	var $result = $( '<span>' ),
+		offset = text.toLowerCase().indexOf( query.toLowerCase() );
+
+	if ( !query.length || offset === -1 ) {
+		return $result.text( text );
+	}
+	$result.append(
+		document.createTextNode( text.slice( 0, offset ) ),
+		$( '<span>' )
+			.addClass( 've-ui-query-highlight' )
+			.text( text.slice( offset, offset + query.length ) ),
+		document.createTextNode( text.slice( offset + query.length ) )
+	);
+	return $result.contents();
+};
