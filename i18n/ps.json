@@ -21,6 +21,7 @@
 	"visualeditor-dialog-action-cancel": "ناگارل",
 	"visualeditor-dialog-action-goback": "پر شا تلل",
 	"visualeditor-dialog-action-insert": "ورټومبل",
+	"visualeditor-dialog-command-help-title": "د ليکدړې لنډلارې",
 	"visualeditor-formatdropdown-format-heading1": "سرليک 1",
 	"visualeditor-formatdropdown-format-heading2": "سرليک 2",
 	"visualeditor-formatdropdown-format-heading3": "سرليک 3",
@@ -43,6 +44,7 @@
 	"visualeditor-linkinspector-title": "تړنه",
 	"visualeditor-listbutton-bullet-tooltip": "گولۍ داره لړليک",
 	"visualeditor-listbutton-number-tooltip": "شمېرن لړليک",
+	"visualeditor-shortcuts-history": "پېښليک",
 	"visualeditor-slug-insert": "پاراگراف ورټومبل",
 	"visualeditor-table-delete-col": "{{PLURAL:$1|ستنه|ستنې}} ړنگول",
 	"visualeditor-table-delete-row": "{{PLURAL:$1|ليکه|ليکې}} ړنگول",
@@ -50,5 +52,6 @@
 	"visualeditor-table-insert-col-before": "مخکې ورټومبل",
 	"visualeditor-table-insert-row-after": "لاندې ورټومبل",
 	"visualeditor-table-insert-table": "لښتيال",
+	"visualeditor-toolbar-history": "پېښليک",
 	"visualeditor-toolbar-insert": "ورټومبل"
 }
