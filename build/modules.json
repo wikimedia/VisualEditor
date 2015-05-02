@@ -427,7 +427,7 @@
 			"src/ui/dialogs/ve.ui.LanguageSearchDialog.js",
 			"src/ui/widgets/ve.ui.LanguageInputWidget.js",
 			"src/ui/widgets/ve.ui.SurfaceWidget.js",
-			"src/ui/widgets/ve.ui.LinkTargetInputWidget.js",
+			"src/ui/widgets/ve.ui.LinkAnnotationWidget.js",
 			"src/ui/widgets/ve.ui.ContextSelectWidget.js",
 			"src/ui/widgets/ve.ui.ContextOptionWidget.js",
 			"src/ui/widgets/ve.ui.DimensionsWidget.js",

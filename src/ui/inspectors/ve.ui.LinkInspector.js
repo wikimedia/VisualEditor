@@ -28,8 +28,6 @@ ve.ui.LinkInspector.static.name = 'link';
 
 ve.ui.LinkInspector.static.title = OO.ui.deferMsg( 'visualeditor-linkinspector-title' );
 
-ve.ui.LinkInspector.static.linkTargetInputWidget = ve.ui.LinkTargetInputWidget;
-
 ve.ui.LinkInspector.static.modelClasses = [ ve.dm.LinkAnnotation ];
 
 ve.ui.LinkInspector.static.actions = ve.ui.LinkInspector.super.static.actions.concat( [
@@ -43,23 +41,27 @@ ve.ui.LinkInspector.static.actions = ve.ui.LinkInspector.super.static.actions.co
 /* Methods */
 
 /**
- * Handle target input change events.
+ * Handle annotation input change events
  *
- * Updates the open button's hyperlink location.
- *
- * @param {string} value New target input value
+ * @param {ve.dm.LinkAnnotation} annotation New link annotation value
  */
-ve.ui.LinkInspector.prototype.onTargetInputChange = function () {
-	var href = this.targetInput.getHref(),
-		inspector = this;
-	this.targetInput.isValid().done( function ( valid ) {
-		inspector.actions.forEach( { actions: 'open' }, function ( action ) {
-			action.setHref( href ).setTarget( '_blank' ).setDisabled( !valid );
-			// HACK: Chrome renders a dark outline around the action when it's a link, but causing it to
-			// re-render makes it magically go away; this is incredibly evil and needs further
-			// investigation
-			action.$element.hide().fadeIn( 0 );
-		} );
+ve.ui.LinkInspector.prototype.onAnnotationInputChange = function () {
+	this.updateActions();
+};
+
+/**
+ * Update the actions based on the annotation state
+ */
+ve.ui.LinkInspector.prototype.updateActions = function () {
+	var annotation = this.annotationInput.getAnnotation(),
+		href = this.annotationInput.getHref();
+
+	this.actions.forEach( { actions: 'open' }, function ( action ) {
+		action.setHref( href ).setTarget( '_blank' ).setDisabled( !annotation );
+		// HACK: Chrome renders a dark outline around the action when it's a link, but causing it to
+		// re-render makes it magically go away; this is incredibly evil and needs further
+		// investigation
+		action.$element.hide().fadeIn( 0 );
 	} );
 };
 
@@ -67,55 +69,59 @@ ve.ui.LinkInspector.prototype.onTargetInputChange = function () {
  * @inheritdoc
  */
 ve.ui.LinkInspector.prototype.shouldRemoveAnnotation = function () {
-	return !this.targetInput.getValue().length;
+	return !this.annotationInput.getAnnotation();
 };
 
 /**
  * @inheritdoc
  */
 ve.ui.LinkInspector.prototype.getInsertionText = function () {
-	return this.targetInput.getValue();
+	return this.annotationInput.getHref();
 };
 
 /**
  * @inheritdoc
  */
 ve.ui.LinkInspector.prototype.getAnnotation = function () {
-	return this.targetInput.getAnnotation();
+	return this.annotationInput.getAnnotation();
 };
 
 /**
  * @inheritdoc
  */
 ve.ui.LinkInspector.prototype.getAnnotationFromFragment = function ( fragment ) {
-	return new ve.dm.LinkAnnotation( {
+	var text = fragment.getText();
+
+	return text ? new ve.dm.LinkAnnotation( {
 		type: 'link',
 		attributes: { href: fragment.getText() }
-	} );
+	} ) : null;
 };
 
 /**
  * @inheritdoc
  */
 ve.ui.LinkInspector.prototype.initialize = function () {
-	var overlay = this.manager.getOverlay();
-
 	// Parent method
 	ve.ui.LinkInspector.super.prototype.initialize.call( this );
 
 	// Properties
-	this.targetInput = new this.constructor.static.linkTargetInputWidget( {
-		$overlay: overlay ? overlay.$element : this.$frame,
-		disabled: true,
-		classes: [ 've-ui-linkInspector-target' ]
-	} );
+	this.annotationInput = this.createAnnotationInput();
 
 	// Events
-	this.targetInput.connect( this, { change: 'onTargetInputChange' } );
+	this.annotationInput.connect( this, { change: 'onAnnotationInputChange' } );
 
 	// Initialization
-	this.$content.addClass( 've-ui-linkInspector-content' );
-	this.form.$element.append( this.targetInput.$element );
+	this.form.$element.append( this.annotationInput.$element );
+};
+
+/**
+ * Create a link annotation widget
+ *
+ * @return {ve.ui.LinkAnnotationWidget} Link annotation widget
+ */
+ve.ui.LinkInspector.prototype.createAnnotationInput = function () {
+	return new ve.ui.LinkAnnotationWidget();
 };
 
 /**
@@ -126,7 +132,7 @@ ve.ui.LinkInspector.prototype.getSetupProcess = function ( data ) {
 		.next( function () {
 			// Disable surface until animation is complete; will be reenabled in ready()
 			this.getFragment().getSurface().disable();
-			this.targetInput.setAnnotation( this.initialAnnotation );
+			this.annotationInput.setAnnotation( this.initialAnnotation );
 		}, this );
 };
 
@@ -136,14 +142,14 @@ ve.ui.LinkInspector.prototype.getSetupProcess = function ( data ) {
 ve.ui.LinkInspector.prototype.getReadyProcess = function ( data ) {
 	return ve.ui.LinkInspector.super.prototype.getReadyProcess.call( this, data )
 		.next( function () {
-			this.targetInput.setDisabled( false ).focus().select();
+			this.annotationInput.text.focus().select();
 			this.getFragment().getSurface().enable();
-			this.onTargetInputChange();
+
 			// Clear validation state, so that we don't get "invalid" state immediately on focus
-			this.targetInput.$input.removeAttr( 'aria-invalid' );
-			this.targetInput.setFlags( { invalid: false } );
+			this.annotationInput.text.$input.removeAttr( 'aria-invalid' );
+			this.annotationInput.text.setFlags( { invalid: false } );
 			// TODO Replace the above with this after OOjs UI v0.11.2:
-			// this.targetInput.setValidityFlag( true );
+			// this.annotationInput.text.setValidityFlag( true );
 		}, this );
 };
 
@@ -153,7 +159,7 @@ ve.ui.LinkInspector.prototype.getReadyProcess = function ( data ) {
 ve.ui.LinkInspector.prototype.getHoldProcess = function ( data ) {
 	return ve.ui.LinkInspector.super.prototype.getHoldProcess.call( this, data )
 		.next( function () {
-			this.targetInput.setDisabled( true ).blur();
+			this.annotationInput.text.blur();
 		}, this );
 };
 
@@ -163,7 +169,7 @@ ve.ui.LinkInspector.prototype.getHoldProcess = function ( data ) {
 ve.ui.LinkInspector.prototype.getTeardownProcess = function ( data ) {
 	return ve.ui.LinkInspector.super.prototype.getTeardownProcess.call( this, data )
 		.next( function () {
-			this.targetInput.setAnnotation( null );
+			this.annotationInput.setAnnotation( null );
 		}, this );
 };
 
