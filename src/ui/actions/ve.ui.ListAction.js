@@ -188,7 +188,6 @@ ve.ui.ListAction.prototype.wrap = function ( style, noBreakpoints ) {
 	if ( !noBreakpoints ) {
 		surfaceModel.breakpoint();
 	}
-	this.surface.getView().focus();
 	return true;
 };
 
@@ -222,7 +221,6 @@ ve.ui.ListAction.prototype.unwrap = function ( noBreakpoints ) {
 		surfaceModel.breakpoint();
 	}
 
-	this.surface.getView().focus();
 	return true;
 };
 
