@@ -31,7 +31,7 @@ ve.ui.ClearAnnotationTool.static.name = 'clear';
 
 ve.ui.ClearAnnotationTool.static.group = 'utility';
 
-ve.ui.ClearAnnotationTool.static.icon = 'clear';
+ve.ui.ClearAnnotationTool.static.icon = 'cancel';
 
 ve.ui.ClearAnnotationTool.static.title =
 	OO.ui.deferMsg( 'visualeditor-clearbutton-tooltip' );
