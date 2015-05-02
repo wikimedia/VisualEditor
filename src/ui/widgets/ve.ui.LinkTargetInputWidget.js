@@ -13,11 +13,9 @@
  * @constructor
  * @param {Object} [config] Configuration options
  */
-ve.ui.LinkTargetInputWidget = function VeUiLinkTargetInputWidget( config ) {
+ve.ui.LinkTargetInputWidget = function VeUiLinkTargetInputWidget() {
 	// Parent constructor
-	OO.ui.TextInputWidget.call( this, $.extend( {
-		validate: /^(https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?/gi
-	}, config ) );
+	ve.ui.LinkTargetInputWidget.super.apply( this, arguments );
 
 	// Properties
 	this.annotation = null;
