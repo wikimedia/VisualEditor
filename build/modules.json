@@ -466,6 +466,7 @@
 			"src/ce/styles/nodes/ve.ce.TableNode.css",
 			"src/ce/styles/ve.ce.css",
 			"src/ce/styles/ve.ce.Surface.css",
+			"src/ui/styles/ve.ui.css",
 			"src/ui/styles/dialogs/ve.ui.ToolbarDialog.css",
 			"src/ui/styles/dialogs/ve.ui.CommandHelpDialog.css",
 			"src/ui/styles/dialogs/ve.ui.FindAndReplaceDialog.css",
