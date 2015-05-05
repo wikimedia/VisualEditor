@@ -213,7 +213,7 @@ ve.ui.DesktopContext.prototype.updateDimensions = function () {
 				x: rtl ? boundingRect.left : boundingRect.right,
 				y: boundingRect.top
 			};
-			this.popup.align = rtl ? 'left' : 'right';
+			this.popup.align = 'backwards';
 		} else {
 			// Position the context underneath the center of the node
 			middle = ( boundingRect.left + boundingRect.right ) / 2;
