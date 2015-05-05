@@ -234,7 +234,7 @@ ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, 
 	removeButton.on( 'click', this.destroy.bind( this ) );
 
 	this.$element.addClass( 've-demo-surfaceContainer' ).append(
-		$( '<div>' ).addClass( 've-demo-toolbar ve-demo-surfaceToolbar' ).append(
+		$( '<div>' ).addClass( 've-demo-toolbar ve-demo-surfaceToolbar-edit' ).append(
 			$( '<div>' ).addClass( 've-demo-toolbar-commands' ).append(
 				pageLabel.$element,
 				pageDropdown.$element,
