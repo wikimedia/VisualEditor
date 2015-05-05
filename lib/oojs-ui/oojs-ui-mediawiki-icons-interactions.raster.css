@@ -1,12 +1,12 @@
 /*!
- * OOjs UI v0.11.0
+ * OOjs UI v0.11.1
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2015 OOjs Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2015-04-30T01:42:35Z
+ * Date: 2015-05-05T00:40:57Z
  */
 .oo-ui-icon-beta {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/beta.png);
@@ -20,11 +20,11 @@
 .oo-ui-icon-browser {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/browser-ltr.png);
 }
+.oo-ui-icon-clear {
+	background-image: /* @embed */ url(themes/mediawiki/images/icons/clear.png);
+}
 .oo-ui-icon-clock {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/clock.png);
-}
-.oo-ui-icon-closeInput {
-	background-image: /* @embed */ url(themes/mediawiki/images/icons/closeInput.png);
 }
 .oo-ui-icon-funnel {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/funnel-ltr.png);
@@ -40,9 +40,6 @@
 }
 .oo-ui-icon-logOut {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/logOut-ltr.png);
-}
-.oo-ui-icon-magnifyingGlass {
-	background-image: /* @embed */ url(themes/mediawiki/images/icons/magnifyingGlass-ltr.png);
 }
 .oo-ui-icon-newWindow {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/newWindow-ltr.png);

@@ -1,15 +1,18 @@
 /*!
- * OOjs UI v0.11.0
+ * OOjs UI v0.11.1
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2015 OOjs Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2015-04-30T01:42:35Z
+ * Date: 2015-05-05T00:40:57Z
  */
 .oo-ui-icon-block {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/block.svg);
+}
+.oo-ui-icon-block-destructive {
+	background-image: /* @embed */ url(themes/mediawiki/images/icons/block-destructive.svg);
 }
 .oo-ui-icon-block-invert {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/block-invert.svg);

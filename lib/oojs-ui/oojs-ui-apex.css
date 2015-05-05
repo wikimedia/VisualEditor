@@ -1,12 +1,12 @@
 /*!
- * OOjs UI v0.11.0
+ * OOjs UI v0.11.1
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2015 OOjs Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2015-04-30T01:42:35Z
+ * Date: 2015-05-05T00:40:57Z
  */
 @-webkit-keyframes oo-ui-progressBarWidget-slide {
 	from {
@@ -380,6 +380,15 @@
 }
 .oo-ui-bookletLayout-outlinePanel > .oo-ui-outlineControlsWidget {
 	box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.25);
+}
+.oo-ui-indexLayout > .oo-ui-menuLayout-menu {
+	height: 3em;
+}
+.oo-ui-indexLayout > .oo-ui-menuLayout-content {
+	top: 3em;
+}
+.oo-ui-indexLayout-stackLayout > .oo-ui-panelLayout {
+	padding: 1.5em;
 }
 .oo-ui-fieldLayout {
 	display: block;
@@ -1978,6 +1987,37 @@
 	margin: 0.5em 0 0.5em 0.5em;
 	opacity: 0.2;
 }
+.oo-ui-tabSelectWidget {
+	text-align: left;
+	white-space: nowrap;
+	overflow: hidden;
+	background-color: #eeeeee;
+	box-shadow: inset 0 -0.015em 0.1em rgba(0, 0, 0, 0.1);
+}
+.oo-ui-tabOptionWidget {
+	display: inline-block;
+	vertical-align: bottom;
+	padding: 0.5em 1em;
+	margin: 0.5em 0 0 0.75em;
+	border: 1px solid transparent;
+	border-bottom: none;
+	border-top-left-radius: 0.5em;
+	border-top-right-radius: 0.5em;
+}
+.oo-ui-tabOptionWidget.oo-ui-indicatorElement .oo-ui-labelElement-label {
+	padding-right: 1.5em;
+}
+.oo-ui-tabOptionWidget.oo-ui-indicatorElement .oo-ui-indicatorElement-indicator {
+	opacity: 0.5;
+}
+.oo-ui-selectWidget-pressed .oo-ui-tabOptionWidget.oo-ui-optionWidget-pressed {
+	background-color: transparent;
+}
+.oo-ui-selectWidget-pressed .oo-ui-tabOptionWidget.oo-ui-optionWidget-selected,
+.oo-ui-selectWidget-depressed .oo-ui-tabOptionWidget.oo-ui-optionWidget-selected {
+	background-color: #ffffff;
+	border-color: #dddddd;
+}
 .oo-ui-comboBoxWidget {
 	display: inline-block;
 	position: relative;
@@ -2446,6 +2486,12 @@
 	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/advanced.svg");
 	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/advanced.png");
 }
+.oo-ui-icon-cancel {
+	background-image: url("themes/apex/images/icons/cancel.png");
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/cancel.svg");
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/cancel.svg");
+	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/cancel.png");
+}
 .oo-ui-icon-alert {
 	background-image: url("themes/apex/images/icons/alert.png");
 	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/alert.svg");
@@ -2457,12 +2503,6 @@
 	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/check.svg");
 	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/check.svg");
 	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/check.png");
-}
-.oo-ui-icon-clear {
-	background-image: url("themes/apex/images/icons/clear.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/clear.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/clear.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/clear.png");
 }
 .oo-ui-icon-close {
 	background-image: url("themes/apex/images/icons/close.png");
@@ -2634,6 +2674,12 @@
 	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/indicators/required.svg");
 	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/indicators/required.svg");
 	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/indicators/required.png");
+}
+.oo-ui-indicator-search {
+	background-image: url("themes/apex/images/indicators/search-ltr.png");
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/indicators/search-ltr.svg");
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/indicators/search-ltr.svg");
+	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/indicators/search-ltr.png");
 }
 
 .oo-ui-texture-pending {
