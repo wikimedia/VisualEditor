@@ -56,7 +56,7 @@ ve.ui.PreviewWidget = function VeUiPreviewWidget( nodeModel, config ) {
 		} );
 
 	// Initialize
-	this.$element.addClass( 've-ui-ReferencePreviewWidget' );
+	this.$element.addClass( 've-ui-previewWidget' );
 };
 
 /* Inheritance */
