@@ -139,6 +139,11 @@ ve.ui.LinkInspector.prototype.getReadyProcess = function ( data ) {
 			this.targetInput.setDisabled( false ).focus().select();
 			this.getFragment().getSurface().enable();
 			this.onTargetInputChange();
+			// Clear validation state, so that we don't get "invalid" state immediately on focus
+			this.targetInput.$input.removeAttr( 'aria-invalid' );
+			this.targetInput.setFlags( { invalid: false } );
+			// TODO Replace the above with this after OOjs UI v0.11.2:
+			// this.targetInput.setValidityFlag( true );
 		}, this );
 };
 
