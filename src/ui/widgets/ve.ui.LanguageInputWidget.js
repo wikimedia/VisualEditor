@@ -161,15 +161,13 @@ ve.ui.LanguageInputWidget.prototype.setLangAndDir = function ( lang, dir ) {
 			ve.init.platform.getLanguageName( lang.toLowerCase() ) ||
 			ve.msg( 'visualeditor-languageinspector-widget-changelang' )
 		);
-		this.directionSelect.selectItem(
-			this.directionSelect.getItemFromData( dir || null )
-		);
+		this.directionSelect.selectItemByData( dir );
 	} else {
 		this.languageCodeTextInput.setValue( '' );
 		this.findLanguageButton.setLabel(
 			ve.msg( 'visualeditor-languageinspector-widget-changelang' )
 		);
-		this.directionSelect.selectItem( this.directionSelect.getItemFromData( null ) );
+		this.directionSelect.selectItem( null );
 	}
 	this.updating = false;
 

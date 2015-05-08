@@ -51,7 +51,7 @@ new ve.init.sa.Platform( ve.messagePaths ).initialize().done( function () {
 
 	// Initialization
 
-	deviceSelect.selectItem( deviceSelect.getItemFromData( device ) );
+	deviceSelect.selectItemByData( device );
 
 	deviceSelect.on( 'select', function ( item ) {
 		location.href = location.href.replace( device, item.getData() );
@@ -205,7 +205,7 @@ ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, 
 		new OO.ui.ButtonOptionWidget( { data: 'edit', label: 'Edit HTML' } ),
 		new OO.ui.ButtonOptionWidget( { data: 'read', label: 'Read' } )
 	] );
-	this.modeSelect.selectItem( this.modeSelect.getItemFromData( 've' ) );
+	this.modeSelect.selectItemByData( 've' );
 
 	this.target = target;
 	this.surface = null;
@@ -226,7 +226,7 @@ ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, 
 	this.pageMenu.on( 'select', function ( item ) {
 		var page = item.getData();
 		container.change( 've', page );
-		container.modeSelect.selectItem( container.modeSelect.getItemFromData( 've' ) );
+		container.modeSelect.selectItemByData( 've' );
 	} );
 	this.modeSelect.on( 'select', function ( item ) {
 		container.change( item.getData() );
@@ -300,7 +300,7 @@ ve.demo.SurfaceContainer.prototype.change = function ( mode, page ) {
 		return $.Deferred().resolve().promise();
 	}
 
-	this.modeSelect.selectItem( this.modeSelect.getItemFromData( mode ) );
+	this.modeSelect.selectItemByData( mode );
 
 	switch ( this.mode ) {
 		case 've':

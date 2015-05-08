@@ -223,13 +223,9 @@ ve.ui.MediaSizeWidget.prototype.onScaleChange = function () {
 	// If the input changed (and not empty), set to 'custom'
 	// Otherwise, set to 'default'
 	if ( !this.dimensionsWidget.isEmpty() ) {
-		this.sizeTypeSelectWidget.selectItem(
-			this.sizeTypeSelectWidget.getItemFromData( 'scale' )
-		);
+		this.sizeTypeSelectWidget.selectItemByData( 'scale' );
 	} else {
-		this.sizeTypeSelectWidget.selectItem(
-			this.sizeTypeSelectWidget.getItemFromData( 'default' )
-		);
+		this.sizeTypeSelectWidget.selectItemByData( 'default' );
 	}
 };
 
