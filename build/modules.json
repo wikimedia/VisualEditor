@@ -448,7 +448,7 @@
 			"src/ui/inspectors/ve.ui.FragmentInspector.js",
 			"src/ui/inspectors/ve.ui.AnnotationInspector.js",
 			"src/ui/inspectors/ve.ui.NodeInspector.js",
-			"src/ui/inspectors/ve.ui.LinkInspector.js",
+			"src/ui/inspectors/ve.ui.LinkAnnotationInspector.js",
 			"src/ui/inspectors/ve.ui.CommentInspector.js",
 			"src/ui/inspectors/ve.ui.LanguageInspector.js",
 			"src/ui/pages/ve.ui.SpecialCharacterPage.js"
@@ -481,7 +481,6 @@
 			"src/ui/styles/widgets/ve.ui.MediaSizeWidget.css",
 			"src/ui/styles/inspectors/ve.ui.CommentInspector.css",
 			"src/ui/styles/inspectors/ve.ui.FragmentInspector.css",
-			"src/ui/styles/inspectors/ve.ui.LinkInspector.css",
 			"src/ui/styles/ve.ui.ContextItem.css",
 			"src/ui/styles/contextitems/ve.ui.AlignableContextItem.css",
 			"src/ui/styles/contextitems/ve.ui.CommentContextItem.css",
