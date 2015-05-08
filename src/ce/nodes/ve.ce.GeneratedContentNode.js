@@ -96,20 +96,8 @@ ve.ce.GeneratedContentNode.prototype.onGeneratedContentNodeUpdate = function () 
  * @returns {HTMLElement[]} Clones of the DOM elements in the right document, with modifications
  */
 ve.ce.GeneratedContentNode.prototype.getRenderedDomElements = function ( domElements ) {
-	var i, len, attr, $rendering,
+	var i, len, $rendering,
 		doc = this.getElementDocument();
-
-	/**
-	 * Callback for jQuery.fn.each that resolves the value of attr to the computed
-	 * property value. Called in the context of an HTMLElement.
-	 * @private
-	 */
-	function resolveAttribute() {
-		var origDoc = domElements[0].ownerDocument,
-			nodeInOrigDoc = origDoc.createElement( this.nodeName );
-		nodeInOrigDoc.setAttribute( attr, this.getAttribute( attr ) );
-		this.setAttribute( attr, nodeInOrigDoc[attr] );
-	}
 
 	// Clone the elements into the target document
 	$rendering = $( ve.copyDomElements( domElements, doc ) );
@@ -133,11 +121,11 @@ ve.ce.GeneratedContentNode.prototype.getRenderedDomElements = function ( domElem
 	}
 
 	// Render the computed values of some attributes
-	for ( i = 0, len = ve.dm.Converter.computedAttributes.length; i < len; i++ ) {
-		attr = ve.dm.Converter.computedAttributes[i];
-		$rendering.find( '[' + attr + ']' ).each( resolveAttribute );
-		$rendering.filter( '[' + attr + ']' ).each( resolveAttribute );
-	}
+	ve.resolveAttributes(
+		$rendering,
+		domElements[0].ownerDocument,
+		ve.dm.Converter.computedAttributes
+	);
 
 	return $rendering.toArray();
 };
