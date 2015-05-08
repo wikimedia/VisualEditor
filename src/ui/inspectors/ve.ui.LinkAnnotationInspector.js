@@ -146,10 +146,7 @@ ve.ui.LinkAnnotationInspector.prototype.getReadyProcess = function ( data ) {
 			this.getFragment().getSurface().enable();
 
 			// Clear validation state, so that we don't get "invalid" state immediately on focus
-			this.annotationInput.text.$input.removeAttr( 'aria-invalid' );
-			this.annotationInput.text.setFlags( { invalid: false } );
-			// TODO Replace the above with this after OOjs UI v0.11.2:
-			// this.annotationInput.text.setValidityFlag( true );
+			this.annotationInput.text.setValidityFlag( true );
 		}, this );
 };
 
