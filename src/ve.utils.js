@@ -891,6 +891,38 @@ ve.resolveUrl = function ( url, base ) {
 };
 
 /**
+ * Modify a set of DOM elements to resolve attributes in the context of another document.
+ *
+ * This performs node.setAttribute( 'attr', nodeInDoc[attr] ); for every node.
+ *
+ * @param {jQuery} $elements Set of DOM elements to modify
+ * @param {HTMLDocument} doc Document to resolve against (different from $elements' .ownerDocument)
+ * @param {string[]} attr Attributes to resolve
+ */
+ve.resolveAttributes = function ( $elements, doc, attrs ) {
+	var i, len, attr;
+
+	/**
+	 * Callback for jQuery.fn.each that resolves the value of attr to the computed
+	 * property value. Called in the context of an HTMLElement.
+	 * @private
+	 */
+	function resolveAttribute() {
+		var nodeInDoc = doc.createElement( this.nodeName );
+		nodeInDoc.setAttribute( attr, this.getAttribute( attr ) );
+		if ( nodeInDoc[attr] ) {
+			this.setAttribute( attr, nodeInDoc[attr] );
+		}
+	}
+
+	for ( i = 0, len = attrs.length; i < len; i++ ) {
+		attr = attrs[i];
+		$elements.find( '[' + attr + ']' ).each( resolveAttribute );
+		$elements.filter( '[' + attr + ']' ).each( resolveAttribute );
+	}
+};
+
+/**
  * Take a target document with a possibly relative base URL, and modify it to be absolute.
  * The base URL of the target document is resolved using the base URL of the source document.
  *

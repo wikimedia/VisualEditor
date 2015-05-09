@@ -81,6 +81,13 @@ ve.ui.PreviewWidget.prototype.replaceWithModelDom = function () {
 	var preview = ve.dm.converter.getDomFromModel( this.model.getDocument(), true ),
 		$preview = $( preview.body );
 
+	// Resolve attributes
+	ve.resolveAttributes(
+		$preview,
+		this.model.getDocument().getHtmlDocument(),
+		ve.dm.Converter.computedAttributes
+	);
+
 	// Make all links open in a new window (sync rendering)
 	$preview.find( 'a' ).attr( 'target', '_blank' );
 
