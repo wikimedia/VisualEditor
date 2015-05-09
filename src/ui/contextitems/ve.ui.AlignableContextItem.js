@@ -23,9 +23,7 @@ ve.ui.AlignableContextItem = function VeAlignable( context, model, config ) {
 	this.align = new ve.ui.AlignWidget( {
 		dir: this.context.getSurface().getDir()
 	} );
-	if ( align ) {
-		this.align.selectItemByData( align );
-	}
+	this.align.selectItemByData( align );
 	this.align.connect( this, { choose: 'onAlignChoose' } );
 
 	// Initialization
