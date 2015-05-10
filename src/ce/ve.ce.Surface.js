@@ -120,7 +120,7 @@ ve.ce.Surface = function VeCeSurface( model, ui, options ) {
 	this.debounceFocusChange = ve.debounce( this.onFocusChange ).bind( this );
 	this.$document.on( 'mousedown', this.debounceFocusChange );
 
-	this.$pasteTarget.on( {
+	this.$pasteTarget.add( this.$highlights ).on( {
 		cut: this.onCut.bind( this ),
 		copy: this.onCopy.bind( this ),
 		paste: this.onPaste.bind( this )
@@ -653,7 +653,8 @@ ve.ce.Surface.prototype.onFocusChange = function () {
 	hasFocus = OO.ui.contains(
 		[
 			this.$documentNode[0],
-			this.$pasteTarget[0]
+			this.$pasteTarget[0],
+			this.$highlights[0]
 		],
 		this.nativeSelection.anchorNode,
 		true
@@ -1681,12 +1682,15 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 			this.$window.scrollTop( scrollTop );
 
 			setTimeout( function () {
-				// Change focus back
-				view.$documentNode[0].focus();
-				view.nativeSelection.removeAllRanges();
-				view.nativeSelection.addRange( originalRange.cloneRange() );
-				// Restore scroll position
-				view.$window.scrollTop( scrollTop );
+				// If the range was in $highlights (right-click copy), don't restore it
+				if ( !OO.ui.contains( view.$highlights[0], originalRange.startContainer, true ) ) {
+					// Change focus back
+					view.$documentNode[0].focus();
+					view.nativeSelection.removeAllRanges();
+					view.nativeSelection.addRange( originalRange.cloneRange() );
+					// Restore scroll position
+					view.$window.scrollTop( scrollTop );
+				}
 				view.surfaceObserver.clear();
 				view.surfaceObserver.enable();
 			} );
@@ -2803,7 +2807,6 @@ ve.ce.Surface.prototype.onWindowResize = ve.debounce( function () {
  *
  * @see ve.ce.FocusableNode
  *
- * @method
  * @param {ve.ce.Node} node Node being relocated
  */
 ve.ce.Surface.prototype.startRelocation = function ( node ) {
@@ -2815,9 +2818,6 @@ ve.ce.Surface.prototype.startRelocation = function ( node ) {
  * Complete a relocation action.
  *
  * @see ve.ce.FocusableNode
- *
- * @method
- * @param {ve.ce.Node} node Node being relocated
  */
 ve.ce.Surface.prototype.endRelocation = function () {
 	if ( this.relocatingNode ) {
