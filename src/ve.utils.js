@@ -397,8 +397,9 @@ ve.dir = ve.dir || function () {
  * @param {HTMLElement} element Element
  */
 ve.selectElement = function ( element ) {
-	var nativeRange = document.createRange(),
-		nativeSelection = window.getSelection();
+	var win = OO.ui.Element.static.getWindow( element ),
+		nativeRange = win.document.createRange(),
+		nativeSelection = win.getSelection();
 	nativeRange.setStart( element, 0 );
 	nativeRange.setEnd( element, element.childNodes.length );
 	nativeSelection.removeAllRanges();
