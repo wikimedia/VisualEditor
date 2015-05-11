@@ -1,12 +1,12 @@
 /*!
- * OOjs UI v0.11.1
+ * OOjs UI v0.11.2
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2015 OOjs Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2015-05-05T00:40:57Z
+ * Date: 2015-05-11T17:24:34Z
  */
 @-webkit-keyframes oo-ui-progressBarWidget-slide {
 	from {
@@ -1058,9 +1058,13 @@
 }
 .oo-ui-toolbar-bar {
 	line-height: 1em;
+	position: relative;
 }
 .oo-ui-toolbar-actions {
 	float: left;
+}
+.oo-ui-toolbar-actions .oo-ui-toolbar {
+	display: inline-block;
 }
 .oo-ui-toolbar-tools {
 	display: inline;
@@ -1110,11 +1114,18 @@
 	border: none;
 	background: none;
 }
+.oo-ui-toolbar-actions > .oo-ui-buttonElement {
+	margin-top: 0.4em;
+	margin-bottom: 0.4em;
+}
+.oo-ui-toolbar-actions > .oo-ui-buttonElement:last-child {
+	margin-left: 0.5em;
+}
 .oo-ui-toolbar-shadow {
 	background-image: /* @embed */ url(themes/apex/images/toolbar-shadow.png);
 	bottom: -9px;
 	height: 9px;
-	opacity: 0.125;
+	opacity: 0.5;
 	-webkit-transition: opacity 500ms ease-in-out;
 	   -moz-transition: opacity 500ms ease-in-out;
 	    -ms-transition: opacity 500ms ease-in-out;
@@ -2013,8 +2024,17 @@
 .oo-ui-selectWidget-pressed .oo-ui-tabOptionWidget.oo-ui-optionWidget-pressed {
 	background-color: transparent;
 }
+.oo-ui-tabOptionWidget.oo-ui-widget-enabled:hover {
+	background-color: rgba(255, 255, 255, 0.2);
+	border-color: #dddddd;
+}
+.oo-ui-tabOptionWidget.oo-ui-widget-enabled:active {
+	background-color: #ffffff;
+	border-color: #dddddd;
+}
 .oo-ui-selectWidget-pressed .oo-ui-tabOptionWidget.oo-ui-optionWidget-selected,
-.oo-ui-selectWidget-depressed .oo-ui-tabOptionWidget.oo-ui-optionWidget-selected {
+.oo-ui-selectWidget-depressed .oo-ui-tabOptionWidget.oo-ui-optionWidget-selected,
+.oo-ui-tabOptionWidget.oo-ui-optionWidget-selected:hover {
 	background-color: #ffffff;
 	border-color: #dddddd;
 }
