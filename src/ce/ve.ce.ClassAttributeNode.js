@@ -20,6 +20,12 @@ ve.ce.ClassAttributeNode = function VeCeClassAttributeNode( $classedElement, con
 	this.$classedElement = $classedElement || this.$element;
 	this.currentAttributeClasses = '';
 
+	this.$classedElement
+		// Clear all but unrecognized classes. Attributes classes will be applied
+		// correctly on setup.
+		.removeClass( this.getModel().getAttribute( 'originalClasses' ) )
+		.addClass( this.getModel().getAttribute( 'unrecognizedClasses' ) );
+
 	// Events
 	this.connect( this, { setup: 'updateAttributeClasses' } );
 	this.model.connect( this, { attributeChange: 'updateAttributeClasses' } );
