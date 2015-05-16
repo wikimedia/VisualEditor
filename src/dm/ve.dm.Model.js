@@ -44,6 +44,7 @@ ve.dm.Model.static.matchTagNames = null;
 
 /**
  * Array of RDFa types that this model should be a match candidate for.
+ * Any other types the element might have must be specified in allowedRdfaTypes.
  * Empty array means none, null means any.
  * For more information about element matching, see ve.dm.ModelRegistry.
  * @static
@@ -51,6 +52,17 @@ ve.dm.Model.static.matchTagNames = null;
  * @inheritable
  */
 ve.dm.Model.static.matchRdfaTypes = null;
+
+/**
+ * Extra RDFa types that the element is allowed to have (but don't by
+ * themselves trigger a match).
+ * Empty array means none, null means any.
+ * For more information about element matching, see ve.dm.ModelRegistry.
+ * @static
+ * @property {Array}
+ * @inheritable
+ */
+ve.dm.Model.static.allowedRdfaTypes = [];
 
 /**
  * Optional function to determine whether this model should match a given element.
@@ -216,6 +228,16 @@ ve.dm.Model.static.getHashObject = function ( dataElement ) {
  */
 ve.dm.Model.static.getMatchRdfaTypes = function () {
 	return this.matchRdfaTypes;
+};
+
+/**
+ * Extra RDFa types that the element is allowed to have.
+ *
+ * @static
+ * @returns {Array} Array of strings or regular expressions
+ */
+ve.dm.Model.static.getAllowedRdfaTypes = function () {
+	return this.allowedRdfaTypes;
 };
 
 /* Methods */
