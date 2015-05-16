@@ -43,7 +43,7 @@
 	"visualeditor-clipboard-cut": "Label for cut command.\n{{Identical|Cut}}",
 	"visualeditor-clipboard-paste": "Label for paste command.\n{{Identical|Paste}}",
 	"visualeditor-clipboard-paste-special": "Label for paste as plain text command",
-	"visualeditor-commentinspector-edit": "Label for the edit button in the comment inspector.",
+	"visualeditor-commentinspector-edit": "Label for the edit button in the comment inspector.\nSee [https://i.imgur.com/OFQvrZo.png screenshot].",
 	"visualeditor-commentinspector-title": "{{Identical|Comment}}",
 	"visualeditor-commentinspector-tooltip": "Tooltip text for comment button.\n{{Related|Visualeditor-annotationbutton}}\n{{Identical|Comment}}",
 	"visualeditor-content-select-all": "Label for select all command.\n{{Identical|Select all}}",
