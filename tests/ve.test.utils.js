@@ -50,12 +50,6 @@
 	 */
 	ve.test = { utils: {} };
 
-	// TODO: this is a hack to make normal heading/preformatted/table
-	// nodes the most recently registered, instead of any integration versions
-	ve.dm.modelRegistry.register( ve.dm.HeadingNode );
-	ve.dm.modelRegistry.register( ve.dm.PreformattedNode );
-	ve.dm.modelRegistry.register( ve.dm.TableNode );
-
 	ve.test.utils.runIsolateTest = function ( assert, type, range, expected, label ) {
 		var doc = ve.dm.example.createExampleDocument( 'isolationData' ),
 			surface = new ve.dm.Surface( doc ),
