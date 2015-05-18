@@ -224,38 +224,6 @@
 	};
 
 	/**
-	 * Register an extension-specific RDFa type or set of types. Unrecognized extension-specific types
-	 * skip non-type matches and are alienated.
-	 *
-	 * If a DOM node has RDFa types that are extension-specific, any matches that do not involve one of
-	 * those extension-specific types will be ignored. This means that if 'bar' is an
-	 * extension-specific type, and there are no models specifying 'bar' in their .matchRdfaTypes, then
-	 * `<foo typeof="bar baz">` will not match anything, not even a model with .matchTagNames=['foo']
-	 * or one with .matchRdfaTypes=['baz'] .
-	 *
-	 * @param {string|RegExp} type Type, or regex matching types, to designate as extension-specifics
-	 */
-	ve.dm.ModelRegistry.prototype.registerExtensionSpecificType = function ( type ) {
-		this.extSpecificTypes.push( type );
-	};
-
-	/**
-	 * Checks whether a given type matches one of the registered extension-specific types.
-	 * @param {string} type Type to check
-	 * @returns {boolean} Whether type is extension-specific
-	 */
-	ve.dm.ModelRegistry.prototype.isExtensionSpecificType = function ( type ) {
-		var i, len, t;
-		for ( i = 0, len = this.extSpecificTypes.length; i < len; i++ ) {
-			t = this.extSpecificTypes[i];
-			if ( t === type || ( t instanceof RegExp && type.match( t ) ) ) {
-				return true;
-			}
-		}
-		return false;
-	};
-
-	/**
 	 * Determine which model best matches the given node
 	 *
 	 * Model matching works as follows:
@@ -283,8 +251,7 @@
 	 * @returns {string|null} Model type, or null if none found
 	 */
 	ve.dm.ModelRegistry.prototype.matchElement = function ( node, forceAboutGrouping, excludeTypes ) {
-		var i, name, model, matches, winner, types, elementExtSpecificTypes, matchTypes,
-			hasExtSpecificTypes,
+		var i, name, model, matches, winner, types,
 			tag = node.nodeName.toLowerCase(),
 			reg = this;
 
@@ -317,31 +284,39 @@
 			return matches;
 		}
 
-		function matchesAllTypes( types, name ) {
-			var i, j, haveMatch, matchTypes = reg.registry[name].static.getMatchRdfaTypes();
+		function allTypesAllowed( types, name ) {
+			var i, j, typeAllowed,
+				model = reg.lookup( name ),
+				allowedTypes = model.static.getAllowedRdfaTypes(),
+				matchTypes = model.static.getMatchRdfaTypes();
+
+			// All types allowed
+			if ( allowedTypes === null || matchTypes === null ) {
+				return true;
+			}
+
+			allowedTypes = allowedTypes.concat( matchTypes );
+
+			function checkType( rule, type ) {
+				return rule instanceof RegExp ? !!type.match( rule ) : rule === type;
+			}
+
 			for ( i = 0; i < types.length; i++ ) {
-				haveMatch = false;
-				for ( j = 0; j < matchTypes.length; j++ ) {
-					if ( matchTypes[j] instanceof RegExp ) {
-						if ( types[i].match( matchTypes[j] ) ) {
-							haveMatch = true;
-							break;
-						}
-					} else {
-						if ( types[i] === matchTypes[j] ) {
-							haveMatch = true;
-							break;
-						}
+				typeAllowed = false;
+				for ( j = 0; j < allowedTypes.length; j++ ) {
+					if ( checkType( allowedTypes[j], types[i] ) ) {
+						typeAllowed = true;
+						break;
 					}
 				}
-				if ( !haveMatch ) {
+				if ( !typeAllowed ) {
 					return false;
 				}
 			}
 			return true;
 		}
 
-		function matchWithFunc( types, tag, mustMatchAll ) {
+		function matchWithFunc( types, tag ) {
 			var i,
 				queue = [],
 				queue2 = [];
@@ -353,15 +328,13 @@
 				}
 				queue2 = queue2.concat( matchTypeRegExps( types[i], tag, true ) );
 			}
-			if ( mustMatchAll ) {
-				// Filter out matches that don't match all types
-				queue = queue.filter( function ( name ) {
-					return matchesAllTypes( types, name );
-				} );
-				queue2 = queue2.filter( function ( name ) {
-					return matchesAllTypes( types, name );
-				} );
-			}
+			// Filter out matches which contain types which aren't allowed
+			queue = queue.filter( function ( name ) {
+				return allTypesAllowed( types, name );
+			} );
+			queue2 = queue2.filter( function ( name ) {
+				return allTypesAllowed( types, name );
+			} );
 			if ( forceAboutGrouping ) {
 				// Filter out matches that don't support about grouping
 				queue = queue.filter( function ( name ) {
@@ -383,7 +356,7 @@
 			return null;
 		}
 
-		function matchWithoutFunc( types, tag, mustMatchAll ) {
+		function matchWithoutFunc( types, tag ) {
 			var i,
 				queue = [],
 				queue2 = [],
@@ -396,15 +369,13 @@
 				}
 				queue2 = queue2.concat( matchTypeRegExps( types[i], tag, false ) );
 			}
-			if ( mustMatchAll ) {
-				// Filter out matches that don't match all types
-				queue = queue.filter( function ( name ) {
-					return matchesAllTypes( types, name );
-				} );
-				queue2 = queue2.filter( function ( name ) {
-					return matchesAllTypes( types, name );
-				} );
-			}
+			// Filter out matches which contain types which aren't allowed
+			queue = queue.filter( function ( name ) {
+				return allTypesAllowed( types, name );
+			} );
+			queue2 = queue2.filter( function ( name ) {
+				return allTypesAllowed( types, name );
+			} );
 			if ( forceAboutGrouping ) {
 				// Filter out matches that don't support about grouping
 				queue = queue.filter( function ( name ) {
@@ -416,6 +387,7 @@
 			}
 			// Only try regexp matches if there are no string matches
 			queue = queue.length > 0 ? queue : queue2;
+			// Find most recently registered
 			for ( i = 0; i < queue.length; i++ ) {
 				if (
 					winningName === null ||
@@ -439,14 +411,10 @@
 				types = types.concat( node.getAttribute( 'property' ).split( ' ' ) );
 			}
 		}
-		elementExtSpecificTypes = types.filter( this.isExtensionSpecificType.bind( this ) );
-		hasExtSpecificTypes = elementExtSpecificTypes.length !== 0;
-		// If the element has extension-specific types, only use those for matching and ignore its
-		// other types. If it has no extension-specific types, use all of its types.
-		matchTypes = hasExtSpecificTypes ? elementExtSpecificTypes : types;
+
 		if ( types.length ) {
 			// func+tag+type match
-			winner = matchWithFunc( matchTypes, tag, hasExtSpecificTypes );
+			winner = matchWithFunc( types, tag );
 			if ( winner !== null ) {
 				return winner;
 			}
@@ -454,45 +422,42 @@
 			// func+type match
 			// Only look at rules with no tag specified; if a rule does specify a tag, we've
 			// either already processed it above, or the tag doesn't match
-			winner = matchWithFunc( matchTypes, '', hasExtSpecificTypes );
+			winner = matchWithFunc( types, '' );
 			if ( winner !== null ) {
 				return winner;
 			}
 		}
 
-		// Do not check for type-less matches if the element has extension-specific types
-		if ( !hasExtSpecificTypes ) {
-			// func+tag match
-			matches = ve.getProp( this.modelsByTag, 1, tag ) || [];
-			// No need to sort because individual arrays in modelsByTag are already sorted
-			// correctly
-			for ( i = 0; i < matches.length; i++ ) {
-				name = matches[i];
-				model = this.registry[name];
-				// Only process this one if it doesn't specify types
-				// If it does specify types, then we've either already processed it in the
-				// func+tag+type step above, or its type rule doesn't match
-				if ( model.static.getMatchRdfaTypes() === null && model.static.matchFunction( node ) ) {
-					return matches[i];
-				}
+		// func+tag match
+		matches = ve.getProp( this.modelsByTag, 1, tag ) || [];
+		// No need to sort because individual arrays in modelsByTag are already sorted
+		// correctly
+		for ( i = 0; i < matches.length; i++ ) {
+			name = matches[i];
+			model = this.registry[name];
+			// Only process this one if it doesn't specify types
+			// If it does specify types, then we've either already processed it in the
+			// func+tag+type step above, or its type rule doesn't match
+			if ( model.static.getMatchRdfaTypes() === null && model.static.matchFunction( node ) ) {
+				return matches[i];
 			}
+		}
 
-			// func only
-			// We only need to get the [''][''] array because the other arrays were either
-			// already processed during the steps above, or have a type or tag rule that doesn't
-			// match this node.
-			// No need to sort because individual arrays in modelsByTypeAndTag are already sorted
-			// correctly
-			matches = ve.getProp( this.modelsByTypeAndTag, 1, '', '' ) || [];
-			for ( i = 0; i < matches.length; i++ ) {
-				if ( this.registry[matches[i]].static.matchFunction( node ) ) {
-					return matches[i];
-				}
+		// func only
+		// We only need to get the [''][''] array because the other arrays were either
+		// already processed during the steps above, or have a type or tag rule that doesn't
+		// match this node.
+		// No need to sort because individual arrays in modelsByTypeAndTag are already sorted
+		// correctly
+		matches = ve.getProp( this.modelsByTypeAndTag, 1, '', '' ) || [];
+		for ( i = 0; i < matches.length; i++ ) {
+			if ( this.registry[matches[i]].static.matchFunction( node ) ) {
+				return matches[i];
 			}
 		}
 
 		// tag+type
-		winner = matchWithoutFunc( matchTypes, tag, hasExtSpecificTypes );
+		winner = matchWithoutFunc( types, tag );
 		if ( winner !== null ) {
 			return winner;
 		}
@@ -500,15 +465,9 @@
 		// type only
 		// Only look at rules with no tag specified; if a rule does specify a tag, we've
 		// either already processed it above, or the tag doesn't match
-		winner = matchWithoutFunc( matchTypes, '', hasExtSpecificTypes );
+		winner = matchWithoutFunc( types, '' );
 		if ( winner !== null ) {
 			return winner;
-		}
-
-		if ( elementExtSpecificTypes.length > 0 ) {
-			// There are only type-less matches beyond this point, so if we have any
-			// extension-specific types, we give up now.
-			return null;
 		}
 
 		// tag only
