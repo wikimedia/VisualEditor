@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Bikarhêner",
-			"George Animal"
+			"George Animal",
+			"Ghybu"
 		]
 	},
 	"visualeditor-alignablecontextitem-title": "Bicîbûn",
@@ -12,6 +13,7 @@
 	"visualeditor-dialog-action-cancel": "Betal bike",
 	"visualeditor-dialog-action-done": "Çêbû",
 	"visualeditor-dialog-action-goback": "Vegere",
+	"visualeditor-dialog-action-insert": "Tevlî bike",
 	"visualeditor-help-tool": "Alîkarî",
 	"visualeditor-inspector-close-tooltip": "Bigre",
 	"visualeditor-inspector-remove-tooltip": "Jê bibe",
@@ -22,5 +24,6 @@
 	"visualeditor-linkinspector-title": "Girêdan",
 	"visualeditor-table-delete-table": "Tabloyê jê bibe",
 	"visualeditor-table-insert-table": "Tablo",
+	"visualeditor-toolbar-insert": "Tevlî bike",
 	"visualeditor-toolbar-table": "Tablo"
 }
