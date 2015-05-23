@@ -682,7 +682,9 @@
 	},
 	"visualEditor.standalone.demo": {
 		"scripts": [
-			"demos/ve/demo.js"
+			"demos/ve/ve.demo.js",
+			"demos/ve/ve.demo.SurfaceContainer.js",
+			"demos/ve/ve.demo.init.js"
 		],
 		"styles": [
 			"demos/ve/demo.css"
