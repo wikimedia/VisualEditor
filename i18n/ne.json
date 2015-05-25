@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"RajeshPandey",
-			"सरोज कुमार ढकाल"
+			"सरोज कुमार ढकाल",
+			"NehalDaveND"
 		]
 	},
 	"visualeditor": "दृष्टि सम्पादक",
@@ -59,7 +60,18 @@
 	"visualeditor-languageinspector-widget-label-direction": "दिशा",
 	"visualeditor-languageinspector-widget-label-langcode": "भाषा कोड",
 	"visualeditor-languageinspector-widget-label-language": "भाषा",
+	"visualeditor-linkinspector-open": "खोल्ने",
 	"visualeditor-linkinspector-title": "लिङ्क",
 	"visualeditor-listbutton-bullet-tooltip": "थोप्ला सुची",
-	"visualeditor-listbutton-number-tooltip": "संख्या सुची"
+	"visualeditor-listbutton-number-tooltip": "संख्या सुची",
+	"visualeditor-mediasizewidget-label-scale": "स्केल",
+	"visualeditor-mediasizewidget-sizeoptions-default": "पूर्वनिर्धारित",
+	"visualeditor-mediasizewidget-sizeoptions-scale": "स्केल",
+	"visualeditor-shortcuts-history": "इतिहास",
+	"visualeditor-shortcuts-other": "अन्य",
+	"visualeditor-table-delete-table": "सूची मेट्ने",
+	"visualeditor-table-insert-table": "सूची",
+	"visualeditor-toolbar-history": "इतिहास",
+	"visualeditor-toolbar-insert": "थप्ने",
+	"visualeditor-toolbar-table": "सूची"
 }

@@ -127,6 +127,7 @@
 	"visualeditor-table-insert-row-before": "Hierboven invoegen",
 	"visualeditor-table-insert-table": "Tabel",
 	"visualeditor-table-merge-cells": "Cellen samenvoegen",
+	"visualeditor-tablecell-tooltip": "Dubbelklik om de cel te bewerken",
 	"visualeditor-toolbar-format-tooltip": "Paragraaf maken",
 	"visualeditor-toolbar-history": "Geschiedenis",
 	"visualeditor-toolbar-insert": "Invoegen",
