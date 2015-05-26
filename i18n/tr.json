@@ -12,7 +12,8 @@
 			"Trncmvsr",
 			"Sayginer",
 			"Violetanka",
-			"Mavrikant"
+			"Mavrikant",
+			"Arystanbek"
 		]
 	},
 	"visualeditor": "Görsel Düzenleyici",
@@ -20,6 +21,7 @@
 	"visualeditor-align-widget-center": "Orta",
 	"visualeditor-align-widget-left": "Sol",
 	"visualeditor-align-widget-right": "Sağ",
+	"visualeditor-alignablecontextitem-title": "Hizalama",
 	"visualeditor-annotationbutton-bold-tooltip": "Kalın",
 	"visualeditor-annotationbutton-code-tooltip": "Bilgisayar kodu",
 	"visualeditor-annotationbutton-italic-tooltip": "Eğik",
@@ -59,7 +61,9 @@
 	"visualeditor-find-and-replace-replace-all-button": "Hepsini değiştir",
 	"visualeditor-find-and-replace-replace-button": "Değiştir",
 	"visualeditor-find-and-replace-replace-text": "Değiştir",
+	"visualeditor-find-and-replace-results": "$1, $2'de",
 	"visualeditor-find-and-replace-title": "Bul ve değiştir",
+	"visualeditor-formatdropdown-format-blockquote": "Blok alıntıs",
 	"visualeditor-formatdropdown-format-heading-label": "Başlık (1-6)",
 	"visualeditor-formatdropdown-format-heading1": "Başlık 1",
 	"visualeditor-formatdropdown-format-heading2": "Başlık 2",
@@ -91,6 +95,7 @@
 	"visualeditor-mediasizewidget-label-custom": "Özel",
 	"visualeditor-mediasizewidget-label-defaulterror": "Boyut değerleri geçersiz.",
 	"visualeditor-mediasizewidget-label-scale": "Ölçek",
+	"visualeditor-mediasizewidget-label-scale-percent": "küçük resim % boyutu",
 	"visualeditor-mediasizewidget-sizeoptions-custom": "Özel",
 	"visualeditor-mediasizewidget-sizeoptions-default": "Varsayılan",
 	"visualeditor-mediasizewidget-sizeoptions-scale": "Ölçek",
@@ -111,12 +116,15 @@
 	"visualeditor-table-insert-col-after": "Sonrasına ekle",
 	"visualeditor-table-insert-col-before": "Öncesine ekle",
 	"visualeditor-table-insert-row-after": "Öncesine ekle",
+	"visualeditor-table-insert-row-before": "Tablo ekle",
 	"visualeditor-table-insert-table": "Tablo",
 	"visualeditor-table-merge-cells": "Hücreleri birleştir",
 	"visualeditor-toolbar-format-tooltip": "Paragraf biçimi",
 	"visualeditor-toolbar-history": "Geçmiş",
 	"visualeditor-toolbar-insert": "Ekle",
 	"visualeditor-toolbar-paragraph-format": "Biçimlendirme",
+	"visualeditor-toolbar-structure": "Yapısal",
 	"visualeditor-toolbar-style-tooltip": "Metin biçimi",
-	"visualeditor-toolbar-table": "Tablo"
+	"visualeditor-toolbar-table": "Tablo",
+	"visualeditor-toolbar-text-style": "Stil"
 }
