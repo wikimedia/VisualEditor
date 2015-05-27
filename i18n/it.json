@@ -17,7 +17,8 @@
 			"Ricordisamoa",
 			"Nivit",
 			"Giuseppe Forte",
-			"Macofe"
+			"Macofe",
+			"Mpiva"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -123,6 +124,7 @@
 	"visualeditor-table-insert-row-before": "Inserisci sopra",
 	"visualeditor-table-insert-table": "Tabella",
 	"visualeditor-table-merge-cells": "Unisci celle",
+	"visualeditor-tablecell-tooltip": "Doppio click per modificare la cella",
 	"visualeditor-toolbar-format-tooltip": "Formato del paragrafo",
 	"visualeditor-toolbar-history": "Cronologia",
 	"visualeditor-toolbar-insert": "Inserisci",
