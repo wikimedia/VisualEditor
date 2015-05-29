@@ -53,16 +53,24 @@ ve.ui.LinkAnnotationInspector.prototype.onAnnotationInputChange = function () {
  * Update the actions based on the annotation state
  */
 ve.ui.LinkAnnotationInspector.prototype.updateActions = function () {
-	var annotation = this.annotationInput.getAnnotation(),
+	var inspector = this,
+		annotation = this.annotationInput.getAnnotation(),
 		href = this.annotationInput.getHref();
 
 	this.actions.forEach( { actions: 'open' }, function ( action ) {
-		action.setHref( href ).setTarget( '_blank' ).setDisabled( !annotation );
+		action.setHref( href ).setTarget( '_blank' );
 		// HACK: Chrome renders a dark outline around the action when it's a link, but causing it to
 		// re-render makes it magically go away; this is incredibly evil and needs further
 		// investigation
 		action.$element.hide().fadeIn( 0 );
 	} );
+	this.annotationInput.text.isValid().done( function ( isValid ) {
+		isValid = isValid && !!annotation;
+		inspector.actions.forEach( { actions: [ 'open', 'done', 'insert' ] }, function ( action ) {
+			action.setDisabled( !isValid );
+		} );
+	} );
+
 };
 
 /**
@@ -133,6 +141,7 @@ ve.ui.LinkAnnotationInspector.prototype.getSetupProcess = function ( data ) {
 			// Disable surface until animation is complete; will be reenabled in ready()
 			this.getFragment().getSurface().disable();
 			this.annotationInput.setAnnotation( this.initialAnnotation );
+			this.updateActions();
 		}, this );
 };
 
