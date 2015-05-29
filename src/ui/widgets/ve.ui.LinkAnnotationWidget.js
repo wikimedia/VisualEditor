@@ -45,6 +45,41 @@ OO.inheritClass( ve.ui.LinkAnnotationWidget, OO.ui.Widget );
  * @param {ve.dm.LinkAnnotation|null} annotation
  */
 
+/* Static Methods */
+
+/**
+ * Get an annotation from the current text value
+ *
+ * @static
+ * @param {string} value Text value
+ * @return {ve.dm.LinkAnnotation|null} Link annotation
+ */
+ve.ui.LinkAnnotationWidget.static.getAnnotationFromText = function ( value ) {
+	var href = value.trim();
+
+	// Keep annotation in sync with value
+	if ( href === '' ) {
+		return null;
+	} else {
+		return new ve.dm.LinkAnnotation( {
+			type: 'link',
+			attributes: {
+				href: href
+			}
+		} );
+	}
+};
+
+/**
+ * Get a text value for the current annotation
+ *
+ * @static
+ * @param {ve.dm.LinkAnnotation|null} annotation Link annotation
+ */
+ve.ui.LinkAnnotationWidget.static.getTextFromAnnotation = function ( annotation ) {
+	return annotation ? annotation.getHref() : '';
+};
+
 /* Methods */
 
 /**
@@ -86,39 +121,8 @@ ve.ui.LinkAnnotationWidget.prototype.onTextChange = function ( value ) {
 
 	this.text.isValid().done( function ( valid ) {
 		// Keep annotation in sync with value
-		widget.setAnnotation( valid ? widget.getAnnotationFromText( value ) : null, true );
+		widget.setAnnotation( valid ? widget.constructor.static.getAnnotationFromText( value ) : null, true );
 	} );
-};
-
-/**
- * Get an annotation from the current text value
- *
- * @param {string} value Text value
- * @return {ve.dm.LinkAnnotation|null} Link annotation
- */
-ve.ui.LinkAnnotationWidget.prototype.getAnnotationFromText = function ( value ) {
-	var href = value.trim();
-
-	// Keep annotation in sync with value
-	if ( href === '' ) {
-		return null;
-	} else {
-		return new ve.dm.LinkAnnotation( {
-			type: 'link',
-			attributes: {
-				href: href
-			}
-		} );
-	}
-};
-
-/**
- * Get a text value for the current annotation
- *
- * @param {ve.dm.LinkAnnotation|null} annotation Link annotation
- */
-ve.ui.LinkAnnotationWidget.prototype.getTextFromAnnotation = function ( annotation ) {
-	return annotation ? annotation.getHref() : '';
 };
 
 /**
@@ -144,7 +148,7 @@ ve.ui.LinkAnnotationWidget.prototype.setAnnotation = function ( annotation, from
 
 	// If this method was triggered by a change to the text input, leave it alone.
 	if ( !fromText ) {
-		this.text.setValue( this.getTextFromAnnotation( annotation ) );
+		this.text.setValue( this.constructor.static.getTextFromAnnotation( annotation ) );
 	}
 
 	this.emit( 'change', this.annotation );
@@ -168,5 +172,5 @@ ve.ui.LinkAnnotationWidget.prototype.getAnnotation = function () {
  * @return {string} Hyperlink location
  */
 ve.ui.LinkAnnotationWidget.prototype.getHref = function () {
-	return this.getTextFromAnnotation( this.annotation );
+	return this.constructor.static.getTextFromAnnotation( this.annotation );
 };
