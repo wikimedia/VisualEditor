@@ -58,7 +58,7 @@ ve.ui.AnnotationInspector.static.actions = [
 	{
 		label: OO.ui.deferMsg( 'visualeditor-dialog-action-cancel' ),
 		flags: 'safe',
-		modes: 'insert'
+		modes: [ 'edit', 'insert' ]
 	},
 	{
 		action: 'done',
