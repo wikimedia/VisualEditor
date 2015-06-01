@@ -54,7 +54,7 @@ OO.inheritClass( ve.ui.LinkAnnotationWidget, OO.ui.Widget );
  * @return {OO.ui.TextInputWidget} Text input widget
  */
 ve.ui.LinkAnnotationWidget.prototype.createInputWidget = function () {
-	return new OO.ui.TextInputWidget();
+	return new OO.ui.TextInputWidget( { validate: 'non-empty' } );
 };
 
 /**
@@ -73,7 +73,8 @@ ve.ui.LinkAnnotationWidget.prototype.setDisabled = function () {
  * @method
  */
 ve.ui.LinkAnnotationWidget.prototype.onTextChange = function ( value ) {
-	var isExt;
+	var isExt,
+		widget = this;
 
 	// RTL/LTR check
 	// TODO: Make this work properly
@@ -83,8 +84,10 @@ ve.ui.LinkAnnotationWidget.prototype.onTextChange = function ( value ) {
 		this.text.setRTL( !isExt );
 	}
 
-	// Keep annotation in sync with value
-	this.setAnnotation( this.getAnnotationFromText( value ), true );
+	this.text.isValid().done( function ( valid ) {
+		// Keep annotation in sync with value
+		widget.setAnnotation( valid ? widget.getAnnotationFromText( value ) : null, true );
+	} );
 };
 
 /**
