@@ -273,7 +273,7 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 				insertText = false,
 				replace = false,
 				annotation = this.getAnnotation(),
-				remove = this.shouldRemoveAnnotation() || data.action === 'remove',
+				remove = data.action === 'remove' || ( data.action === 'done' && this.shouldRemoveAnnotation() ),
 				surfaceModel = this.fragment.getSurface(),
 				fragment = surfaceModel.getFragment( this.initialSelection, false ),
 				selection = this.fragment.getSelection();
@@ -289,11 +289,11 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 			}
 
 			if ( !remove ) {
+				if ( data.action !== 'done' ) {
+					surfaceModel.popStaging();
+					return;
+				}
 				if ( this.initialSelection.isCollapsed() ) {
-					if ( data.action !== 'done' ) {
-						surfaceModel.popStaging();
-						return;
-					}
 					insertText = true;
 				}
 				if ( annotation ) {
