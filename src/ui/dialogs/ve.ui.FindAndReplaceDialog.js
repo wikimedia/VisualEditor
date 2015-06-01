@@ -17,10 +17,6 @@ ve.ui.FindAndReplaceDialog = function VeUiFindAndReplaceDialog( config ) {
 	// Parent constructor
 	ve.ui.FindAndReplaceDialog.super.call( this, config );
 
-	// Properties
-	this.surface = null;
-	this.invalidRegex = false;
-
 	// Pre-initialization
 	this.$element.addClass( 've-ui-findAndReplaceDialog' );
 };
@@ -49,7 +45,11 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 	// Parent method
 	ve.ui.FindAndReplaceDialog.super.prototype.initialize.call( this );
 
+	// Properties
+	this.surface = null;
+	this.invalidRegex = false;
 	this.$findResults = $( '<div>' ).addClass( 've-ui-findAndReplaceDialog-findResults' );
+	this.initialFragment = null;
 	this.fragments = [];
 	this.results = 0;
 	// Range over the list of fragments indicating which ones where rendered,
@@ -169,6 +169,8 @@ ve.ui.FindAndReplaceDialog.prototype.getSetupProcess = function ( data ) {
 	data = data || {};
 	return ve.ui.FindAndReplaceDialog.super.prototype.getSetupProcess.call( this, data )
 		.first( function () {
+			var text, fragment = data.fragment;
+
 			this.surface = data.surface;
 			this.surface.$selections.append( this.$findResults );
 
@@ -177,12 +179,14 @@ ve.ui.FindAndReplaceDialog.prototype.getSetupProcess = function ( data ) {
 			this.surface.getView().connect( this, { position: this.renderFragmentsDebounced } );
 			this.surface.getView().$window.on( 'scroll', this.onWindowScrollDebounced );
 
-			var text = data.fragment.getText();
+			text = fragment.getText();
 			if ( text && text !== this.findText.getValue() ) {
 				this.findText.setValue( text );
 			} else {
 				this.onFindChange();
 			}
+
+			this.initialFragment = fragment;
 		}, this );
 };
 
@@ -202,14 +206,31 @@ ve.ui.FindAndReplaceDialog.prototype.getReadyProcess = function ( data ) {
 ve.ui.FindAndReplaceDialog.prototype.getTeardownProcess = function ( data ) {
 	return ve.ui.FindAndReplaceDialog.super.prototype.getTeardownProcess.call( this, data )
 		.next( function () {
-			var surfaceView = this.surface.getView();
+			var selection,
+				surfaceView = this.surface.getView(),
+				surfaceModel = this.surface.getModel();
 
 			// Events
 			this.surface.getModel().disconnect( this );
 			surfaceView.disconnect( this );
 			this.surface.getView().$window.off( 'scroll', this.onWindowScrollDebounced );
 
-			surfaceView.focus();
+			// If the surface isn't selected, put the selection back in a sensible place
+			if ( surfaceModel.getSelection() instanceof ve.dm.NullSelection ) {
+				if ( this.fragments.length ) {
+					// Either the active search result...
+					selection = this.fragments[this.focusedIndex].getSelection();
+				} else if ( !( this.initialFragment.getSelection() instanceof ve.dm.NullSelection ) ) {
+					// ... or the initial selection
+					selection = this.initialFragment.getSelection();
+				}
+			}
+			if ( selection ) {
+				surfaceModel.setSelection( selection );
+			} else {
+				// If the selection wasn't changed, focus anyway
+				surfaceView.focus();
+			}
 			this.$findResults.empty().detach();
 			this.fragments = [];
 			this.surface = null;
