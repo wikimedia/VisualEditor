@@ -315,7 +315,7 @@ ve.ce.TableNode.prototype.onSurfaceModelSelect = function ( selection ) {
 			this.$element.on( 'touchstart.ve-ce-tableNode', this.onTableMouseDown.bind( this ) );
 		}
 		this.surface.setActiveTableNode( this );
-		this.updateOverlayDebounced();
+		this.updateOverlayDebounced( true );
 	} else if ( !active && this.active ) {
 		this.$overlay.addClass( 'oo-ui-element-hidden' );
 		if ( this.editingFragment ) {
@@ -332,8 +332,10 @@ ve.ce.TableNode.prototype.onSurfaceModelSelect = function ( selection ) {
 
 /**
  * Update the overlay positions
+ *
+ * @param {boolean} selectionChanged The update was triggered by a selection change
  */
-ve.ce.TableNode.prototype.updateOverlay = function () {
+ve.ce.TableNode.prototype.updateOverlay = function ( selectionChanged ) {
 	if ( !this.active || !this.root ) {
 		return;
 	}
@@ -419,6 +421,10 @@ ve.ce.TableNode.prototype.updateOverlay = function () {
 	this.$selectionBox
 		.toggleClass( 've-ce-tableNodeOverlay-selection-box-fullRow', selection.isFullRow() )
 		.toggleClass( 've-ce-tableNodeOverlay-selection-box-fullCol', selection.isFullCol() );
+
+	if ( selectionChanged ) {
+		OO.ui.Element.static.scrollIntoView( this.$selectionBox.get( 0 ) );
+	}
 };
 
 /**
