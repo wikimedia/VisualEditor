@@ -81,10 +81,10 @@ ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, 
 				this.modeSelect.$element,
 				$( '<span class="ve-demo-toolbar-divider">&nbsp;</span>' ),
 				removeButton.$element
-			),
-			$( '<div>' ).addClass( 've-demo-toolbar-commands ve-demo-surfaceToolbar-read' ).append(
-				$exitReadButton
 			)
+		),
+		$( '<div>' ).addClass( 've-demo-toolbar-commands ve-demo-surfaceToolbar-read' ).append(
+			$exitReadButton
 		),
 		this.$surfaceWrapper,
 		this.sourceTextInput.$element.hide(),
