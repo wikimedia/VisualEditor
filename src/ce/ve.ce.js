@@ -376,6 +376,48 @@ ve.ce.getOffsetOfSlug = function ( element ) {
 };
 
 /**
+ * Test whether the DOM position lies straight after annotation boundaries
+ *
+ * "Straight after" means that in document order, there are annotation open/close tags
+ * immediately before the position, and there are none immediately after.
+ *
+ * This is important for cursors: the DM position is ambiguous with respect to annotation
+ * boundaries, and the browser does not fully distinguish this position from the preceding
+ * position immediately before the annotation boundaries (e.g. 'a|&lt;b&gt;c' and 'a&lt;b&gt;|c'),
+ * but the two positions behave differently for insertions (in this case, whether the text
+ * appears bolded or not).
+ *
+ * In Chromium, cursor focus normalizes to the earliest (in document order) of equivalent
+ * positions, at least in reasonably-styled non-BIDI text. But in Firefox, the user can
+ * cursor/click into either the earliest or the latest equivalent position: the cursor lands in
+ * the closest (in document order) to the click location (for mouse actions) or cursor start
+ * location (for cursoring).
+ *
+ * @param {Node} node Position node
+ * @param {number} offset Position offset
+ * @return {boolean} Whether this is the end-most of multiple cursor-equivalent positions
+ */
+ve.ce.isAfterAnnotationBoundaries = function ( node, offset ) {
+	var previousNode, nextNode;
+	if ( node.nodeType === Node.TEXT_NODE ) {
+		if ( offset > 0 ) {
+			return false;
+		}
+		offset = Array.prototype.indexOf.call( node.parentNode.childNodes, node );
+		node = node.parentNode;
+	}
+	if ( offset === 0 ) {
+		return ve.dm.modelRegistry.isAnnotation( node );
+	}
+	previousNode = node.childNodes[ offset - 1 ];
+	if ( !previousNode || !ve.dm.modelRegistry.isAnnotation( previousNode ) ) {
+		return false;
+	}
+	nextNode = node.childNodes[ offset ];
+	return !nextNode || !ve.dm.modelRegistry.isAnnotation( nextNode );
+};
+
+/**
  * Check if keyboard shortcut modifier key is pressed.
  *
  * @method

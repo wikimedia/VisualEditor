@@ -184,3 +184,35 @@ QUnit.test( 'matchElement', 14, function ( assert ) {
 	assert.deepEqual( registry.matchElement( element ), 'stub-regexp', 'RegExp type match after string match is unregistered' );
 
 } );
+
+QUnit.test( 'isAnnotation', function ( assert ) {
+	var i, len, node,
+		allAnnotationTags = [ 'a', 'abbr', 'b', 'big', 'code', 'dfn', 'font', 'i', 'kbd', 'mark', 'q', 's', 'samp', 'small', 'span', 'sub', 'sup', 'time', 'u', 'var' ],
+		nonAnnotationTags = [ 'h1', 'p', 'ul', 'li', 'table', 'tr', 'td' ];
+
+	QUnit.expect( allAnnotationTags.length + nonAnnotationTags.length + 2 );
+
+	for ( i = 0, len = allAnnotationTags.length; i < len; i++ ) {
+		node = document.createElement( allAnnotationTags[i] );
+		assert.deepEqual(
+			ve.dm.modelRegistry.isAnnotation( node ),
+			true,
+			allAnnotationTags[i] + ' annotation'
+		);
+	}
+
+	for ( i = 0, len = nonAnnotationTags.length; i < len; i++ ) {
+		node = document.createElement( nonAnnotationTags[i] );
+		assert.deepEqual(
+			ve.dm.modelRegistry.isAnnotation( node ),
+			false,
+			allAnnotationTags[i] + ' non-annotation'
+		);
+	}
+
+	node = document.createElement( 'span' );
+	node.setAttribute( 'rel', 've:Alien' );
+	assert.deepEqual( ve.dm.modelRegistry.isAnnotation( node ), false, 'alien span' );
+	node.setAttribute( 'rel', 've:Dummy' );
+	assert.deepEqual( ve.dm.modelRegistry.isAnnotation( node ), true, 'non-alien rel span' );
+} );
