@@ -16,11 +16,15 @@ body {
 
 .ve-demo-logo {
 	float: right;
-	margin: 0.5em 2em 0 0;
+	margin: 0.5em -0.4em 0 0;
 	background: url('VisualEditor-logo.svg') no-repeat;
 	background-size: contain;
 	width: 10.75em;
 	height: 3.75em;
+}
+
+.ve-demo-surfaceToolbar-read {
+	line-height: 4.25em;
 }
 
 /* Hack: should generate demo.rtl.css */

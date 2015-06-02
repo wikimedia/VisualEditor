@@ -6,6 +6,10 @@
 
 /* Demo */
 
+.ve-demo-logo {
+	padding-right: 2.5em;
+}
+
 .ve-demo-targetToolbar {
 	padding-left: 2.5em;
 	padding-right: 2.5em;
