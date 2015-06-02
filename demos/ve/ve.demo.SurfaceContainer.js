@@ -257,7 +257,10 @@ ve.demo.SurfaceContainer.prototype.loadHtml = function ( pageHtml ) {
 
 	this.$surfaceWrapper.empty().append( this.surface.$element.parent() )
 		.hide().slideDown().promise().done( function () {
-			container.surface.getView().focus();
+			// Check surface still exists
+			if ( container.surface ) {
+				container.surface.getView().focus();
+			}
 		} );
 };
 
