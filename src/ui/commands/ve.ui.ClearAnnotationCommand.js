@@ -16,7 +16,7 @@ ve.ui.ClearAnnotationCommand = function VeUiClearAnnotationCommand() {
 	// Parent constructor
 	ve.ui.ClearAnnotationCommand.super.call(
 		this, 'clear', 'annotation', 'clearAll',
-		{ supportedSelections: ['linear', 'table'] }
+		{ supportedSelections: [ 'linear', 'table' ] }
 	);
 };
 

@@ -57,7 +57,7 @@ QUnit.test( 'Basic usage', 32, function ( assert ) {
 	assert.strictEqual( annotationSet2.isEmpty(), true, 'set2 is empty after removeSet' );
 	annotationSet2.push( bold );
 	annotationSet2.push( italic );
-	assert.deepEqual( annotationSet2.get(), [bold, italic], 'set2 contains bold then italic after two pushes' );
+	assert.deepEqual( annotationSet2.get(), [ bold, italic ], 'set2 contains bold then italic after two pushes' );
 
 	annotationSet2 = new ve.dm.AnnotationSet( store, store.indexes( [ italic, underline ] ) );
 	annotationSet2.removeNotInSet( annotationSet );

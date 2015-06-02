@@ -29,7 +29,7 @@ ve.dm.SuperscriptAnnotation.static.name = 'textStyle/superscript';
 
 ve.dm.SuperscriptAnnotation.static.matchTagNames = [ 'sup' ];
 
-ve.dm.SuperscriptAnnotation.static.removes = ['textStyle/subscript'];
+ve.dm.SuperscriptAnnotation.static.removes = [ 'textStyle/subscript' ];
 
 /* Registration */
 

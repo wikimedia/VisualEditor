@@ -263,7 +263,7 @@ ve.ce.TestRunner.prototype.changeSel = function ( start, end ) {
 	this.nativeSelection.removeAllRanges();
 	this.getParagraph().focus();
 	this.nativeSelection.addRange( nativeRange, false );
-	this.lastSel = [start, end];
+	this.lastSel = [ start, end ];
 
 	return {
 		startNode: foundStart.node,

@@ -57,7 +57,7 @@ ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, 
 		multiline: true,
 		autosize: true,
 		maxRows: 999,
-		classes: ['ve-demo-source']
+		classes: [ 've-demo-source' ]
 	} );
 	this.$readView = $( '<div>' ).addClass( 've-demo-read' ).hide();
 

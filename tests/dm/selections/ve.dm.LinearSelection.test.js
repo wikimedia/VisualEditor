@@ -15,7 +15,7 @@ QUnit.test( 'Construction and getters (getDocument, getRange(s))', 3, function (
 
 	assert.strictEqual( selection.getDocument(), dummyDoc, 'getDocument' );
 	assert.deepEqual( selection.getRange(), range, 'getRange' );
-	assert.deepEqual( selection.getRanges(), [range], 'getRanges' );
+	assert.deepEqual( selection.getRanges(), [ range ], 'getRanges' );
 } );
 
 QUnit.test( 'Basic methods (clone, collapse*, isCollased, equals, isNull)', 10, function ( assert ) {

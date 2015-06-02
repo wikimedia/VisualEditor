@@ -16,7 +16,7 @@ ve.ui.TableCaptionCommand = function VeUiTableCaptionCommand() {
 	// Parent constructor
 	ve.ui.TableCaptionCommand.super.call(
 		this, 'tableCaption', 'table', 'caption',
-		{ supportedSelections: ['linear', 'table'] }
+		{ supportedSelections: [ 'linear', 'table' ] }
 	);
 };
 

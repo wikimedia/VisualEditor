@@ -24,7 +24,7 @@ ve.dm.StubSingleTagAnnotation = function VeDmStubSingleTagAnnotation() {
 };
 OO.inheritClass( ve.dm.StubSingleTagAnnotation, ve.dm.Annotation );
 ve.dm.StubSingleTagAnnotation.static.name = 'stubsingletag';
-ve.dm.StubSingleTagAnnotation.static.matchTagNames = ['a'];
+ve.dm.StubSingleTagAnnotation.static.matchTagNames = [ 'a' ];
 
 /* Single type with any allowed */
 ve.dm.StubSingleTypeWithAnyAllowedAnnotation = function VeDmStubSingleTypeWithAnyAnnotation() {
@@ -32,7 +32,7 @@ ve.dm.StubSingleTypeWithAnyAllowedAnnotation = function VeDmStubSingleTypeWithAn
 };
 OO.inheritClass( ve.dm.StubSingleTypeWithAnyAllowedAnnotation, ve.dm.Annotation );
 ve.dm.StubSingleTypeWithAnyAllowedAnnotation.static.name = 'stubsingletypewithanyallowed';
-ve.dm.StubSingleTypeWithAnyAllowedAnnotation.static.matchRdfaTypes = ['ext:foo'];
+ve.dm.StubSingleTypeWithAnyAllowedAnnotation.static.matchRdfaTypes = [ 'ext:foo' ];
 ve.dm.StubSingleTypeWithAnyAllowedAnnotation.static.allowedRdfaTypes = null;
 
 /* Single type with single allowed */
@@ -41,8 +41,8 @@ ve.dm.StubSingleTypeWithAllowedAnnotation = function VeDmStubSingleTypeWithAllow
 };
 OO.inheritClass( ve.dm.StubSingleTypeWithAllowedAnnotation, ve.dm.Annotation );
 ve.dm.StubSingleTypeWithAllowedAnnotation.static.name = 'stubsingletypewithallowed';
-ve.dm.StubSingleTypeWithAllowedAnnotation.static.matchRdfaTypes = ['ext:foo'];
-ve.dm.StubSingleTypeWithAllowedAnnotation.static.allowedRdfaTypes = ['bar'];
+ve.dm.StubSingleTypeWithAllowedAnnotation.static.matchRdfaTypes = [ 'ext:foo' ];
+ve.dm.StubSingleTypeWithAllowedAnnotation.static.allowedRdfaTypes = [ 'bar' ];
 
 /* Single type */
 ve.dm.StubSingleTypeAnnotation = function VeDmStubSingleTypeAnnotation() {
@@ -50,7 +50,7 @@ ve.dm.StubSingleTypeAnnotation = function VeDmStubSingleTypeAnnotation() {
 };
 OO.inheritClass( ve.dm.StubSingleTypeAnnotation, ve.dm.Annotation );
 ve.dm.StubSingleTypeAnnotation.static.name = 'stubsingletype';
-ve.dm.StubSingleTypeAnnotation.static.matchRdfaTypes = ['ext:foo'];
+ve.dm.StubSingleTypeAnnotation.static.matchRdfaTypes = [ 'ext:foo' ];
 
 /* Single tag and type */
 ve.dm.StubSingleTagAndTypeAnnotation = function VeDmStubSingleTagAndTypeAnnotation() {
@@ -58,8 +58,8 @@ ve.dm.StubSingleTagAndTypeAnnotation = function VeDmStubSingleTagAndTypeAnnotati
 };
 OO.inheritClass( ve.dm.StubSingleTagAndTypeAnnotation, ve.dm.Annotation );
 ve.dm.StubSingleTagAndTypeAnnotation.static.name = 'stubsingletagandtype';
-ve.dm.StubSingleTagAndTypeAnnotation.static.matchTagNames = ['a'];
-ve.dm.StubSingleTagAndTypeAnnotation.static.matchRdfaTypes = ['ext:foo'];
+ve.dm.StubSingleTagAndTypeAnnotation.static.matchTagNames = [ 'a' ];
+ve.dm.StubSingleTagAndTypeAnnotation.static.matchRdfaTypes = [ 'ext:foo' ];
 
 /* Function */
 ve.dm.StubFuncAnnotation = function VeDmStubFuncAnnotation() {
@@ -75,7 +75,7 @@ ve.dm.StubSingleTagAndFuncAnnotation = function VeDmStubSingleTagAndFuncAnnotati
 };
 OO.inheritClass( ve.dm.StubSingleTagAndFuncAnnotation, ve.dm.Annotation );
 ve.dm.StubSingleTagAndFuncAnnotation.static.name = 'stubsingletagandfunc';
-ve.dm.StubSingleTagAndFuncAnnotation.static.matchTagNames = ['a'];
+ve.dm.StubSingleTagAndFuncAnnotation.static.matchTagNames = [ 'a' ];
 ve.dm.StubSingleTagAndFuncAnnotation.static.matchFunction = checkForPickMe;
 
 /* Type and function */
@@ -84,7 +84,7 @@ ve.dm.StubSingleTypeAndFuncAnnotation = function VeDmStubSingleTypeAndFuncAnnota
 };
 OO.inheritClass( ve.dm.StubSingleTypeAndFuncAnnotation, ve.dm.Annotation );
 ve.dm.StubSingleTypeAndFuncAnnotation.static.name = 'stubsingletypeandfunc';
-ve.dm.StubSingleTypeAndFuncAnnotation.static.matchRdfaTypes = ['ext:foo'];
+ve.dm.StubSingleTypeAndFuncAnnotation.static.matchRdfaTypes = [ 'ext:foo' ];
 ve.dm.StubSingleTypeAndFuncAnnotation.static.matchFunction = checkForPickMe;
 
 /* Tag, type and function */
@@ -93,8 +93,8 @@ ve.dm.StubSingleTagAndTypeAndFuncAnnotation = function VeDmStubSingleTagAndTypeA
 };
 OO.inheritClass( ve.dm.StubSingleTagAndTypeAndFuncAnnotation, ve.dm.Annotation );
 ve.dm.StubSingleTagAndTypeAndFuncAnnotation.static.name = 'stubsingletagandtypeandfunc';
-ve.dm.StubSingleTagAndTypeAndFuncAnnotation.static.matchTagNames = ['a'];
-ve.dm.StubSingleTagAndTypeAndFuncAnnotation.static.matchRdfaTypes = ['ext:foo'];
+ve.dm.StubSingleTagAndTypeAndFuncAnnotation.static.matchTagNames = [ 'a' ];
+ve.dm.StubSingleTagAndTypeAndFuncAnnotation.static.matchRdfaTypes = [ 'ext:foo' ];
 ve.dm.StubSingleTagAndTypeAndFuncAnnotation.static.matchFunction = checkForPickMe;
 
 /* Type 'bar' */
@@ -103,7 +103,7 @@ ve.dm.StubBarNode = function VeDmStubBarNode() {
 };
 OO.inheritClass( ve.dm.StubBarNode, ve.dm.BranchNode );
 ve.dm.StubBarNode.static.name = 'stub-bar';
-ve.dm.StubBarNode.static.matchRdfaTypes = ['bar'];
+ve.dm.StubBarNode.static.matchRdfaTypes = [ 'bar' ];
 // HACK keep ve.dm.Converter happy for now
 // TODO once ve.dm.Converter is rewritten, this can be removed
 ve.dm.StubBarNode.static.toDataElement = function () {};
@@ -115,8 +115,8 @@ ve.dm.StubAbbrNode = function VeDmStubAbbrNode() {
 };
 OO.inheritClass( ve.dm.StubAbbrNode, ve.dm.BranchNode );
 ve.dm.StubAbbrNode.static.name = 'stub-abbr';
-ve.dm.StubAbbrNode.static.matchTagNames = ['abbr'];
-ve.dm.StubAbbrNode.static.matchRdfaTypes = ['ext:abbr'];
+ve.dm.StubAbbrNode.static.matchTagNames = [ 'abbr' ];
+ve.dm.StubAbbrNode.static.matchRdfaTypes = [ 'ext:abbr' ];
 
 /* Tag 'abbr', type /^ext:/ */
 ve.dm.StubRegExpNode = function VeDmStubRegExpNode() {
@@ -124,7 +124,7 @@ ve.dm.StubRegExpNode = function VeDmStubRegExpNode() {
 };
 OO.inheritClass( ve.dm.StubRegExpNode, ve.dm.BranchNode );
 ve.dm.StubRegExpNode.static.name = 'stub-regexp';
-ve.dm.StubRegExpNode.static.matchTagNames = ['abbr'];
+ve.dm.StubRegExpNode.static.matchTagNames = [ 'abbr' ];
 ve.dm.StubRegExpNode.static.matchRdfaTypes = [
 	/^ext:/
 ];

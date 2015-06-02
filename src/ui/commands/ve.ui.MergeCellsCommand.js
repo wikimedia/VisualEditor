@@ -16,7 +16,7 @@ ve.ui.MergeCellsCommand = function VeUiMergeCellsCommand() {
 	// Parent constructor
 	ve.ui.MergeCellsCommand.super.call(
 		this, 'mergeCells', 'table', 'mergeCells',
-		{ supportedSelections: ['table'] }
+		{ supportedSelections: [ 'table' ] }
 	);
 };
 

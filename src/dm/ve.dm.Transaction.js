@@ -1137,7 +1137,7 @@ ve.dm.Transaction.prototype.addSafeRemoveOps = function ( doc, removeStart, remo
  * @param {Array} insertMetadata Metadata to insert.
  */
 ve.dm.Transaction.prototype.pushReplaceInternal = function ( remove, insert, removeMetadata, insertMetadata, insertedDataOffset, insertedDataLength ) {
-	if ( remove.length === 0 && insert.length === 0) {
+	if ( remove.length === 0 && insert.length === 0 ) {
 		return; // no-op
 	}
 	var op = {
@@ -1227,7 +1227,7 @@ ve.dm.Transaction.prototype.pushReplace = function ( doc, offset, removeLength, 
 		penultOp && penultOp.type === 'replace' &&
 		penultOp.insert.length === 0 /* this is always true */
 	) {
-		mergedMetadata = [lastOp.insert];
+		mergedMetadata = [ lastOp.insert ];
 		this.operations.pop();
 		lastOp = penultOp;
 		/* fall through */

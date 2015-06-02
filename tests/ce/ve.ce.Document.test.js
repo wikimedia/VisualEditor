@@ -131,7 +131,7 @@ QUnit.test( 'getNodeAndOffset', function ( assert ) {
 				),
 				[].concat(
 					parts.slice( 0, offset + 1 ),
-					['|'],
+					[ '|' ],
 					parts.slice( offset + 1 )
 				).join( '' ),
 				test.title + ' (' + offset + ')'

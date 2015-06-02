@@ -82,7 +82,7 @@ $( '#primary .key, #modifiers .key' ).on( {
 			}
 			$target.removeClass( 'activating' );
 			$( '.active' ).each( function () {
-				parts.push( $(this).attr( 'rel' ) );
+				parts.push( $( this ).attr( 'rel' ) );
 			} );
 			setTrigger( new ve.ui.Trigger( parts.join( '+' ) ) );
 		}

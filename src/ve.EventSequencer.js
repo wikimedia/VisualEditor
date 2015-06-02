@@ -214,7 +214,7 @@ ve.EventSequencer.prototype.afterOne = function ( listeners ) {
  */
 ve.EventSequencer.prototype.afterLoop = function ( listeners ) {
 	if ( !Array.isArray( listeners ) ) {
-		listeners = [listeners];
+		listeners = [ listeners ];
 	}
 	ve.batchPush( this.afterLoopListeners, listeners );
 	return this;
@@ -228,7 +228,7 @@ ve.EventSequencer.prototype.afterLoop = function ( listeners ) {
  */
 ve.EventSequencer.prototype.afterLoopOne = function ( listeners ) {
 	if ( !Array.isArray( listeners ) ) {
-		listeners = [listeners];
+		listeners = [ listeners ];
 	}
 	ve.batchPush( this.afterLoopOneListeners, listeners );
 	return this;

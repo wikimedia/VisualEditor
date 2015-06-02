@@ -65,7 +65,7 @@ QUnit.test( 'getInsertableData', 1, function ( assert ) {
 			{ type: '/tableRow' },
 			{ type: '/tableSection' },
 			{ type: '/table' }
-		], 'DSV data');
+		], 'DSV data' );
 		done();
 	} );
 } );

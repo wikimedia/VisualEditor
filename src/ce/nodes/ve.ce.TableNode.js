@@ -52,11 +52,11 @@ ve.ce.TableNode.prototype.onSetup = function () {
 	this.$selectionBox = $( '<div>' ).addClass( 've-ce-tableNodeOverlay-selection-box' );
 	this.$selectionBoxAnchor = $( '<div>' ).addClass( 've-ce-tableNodeOverlay-selection-box-anchor' );
 	this.colContext = new ve.ui.TableContext( this, 'col', {
-		classes: ['ve-ui-tableContext-colContext'],
+		classes: [ 've-ui-tableContext-colContext' ],
 		indicator: 'down'
 	} );
 	this.rowContext = new ve.ui.TableContext( this, 'row', {
-		classes: ['ve-ui-tableContext-rowContext'],
+		classes: [ 've-ui-tableContext-rowContext' ],
 		indicator: 'next'
 	} );
 
@@ -364,7 +364,7 @@ ve.ce.TableNode.prototype.updateOverlay = function ( selectionChanged ) {
 	right = -Infinity;
 
 	// Compute a bounding box for the given cell elements
-	for ( i = 0, l = nodes.length; i < l; i++) {
+	for ( i = 0, l = nodes.length; i < l; i++ ) {
 		cellOffset = nodes[i].$element[0].getBoundingClientRect();
 
 		top = Math.min( top, cellOffset.top );

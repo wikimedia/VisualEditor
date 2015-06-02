@@ -30,12 +30,12 @@ QUnit.test( 'toggle', function ( assert ) {
 				html: html,
 				range: new ve.Range( 1, 4 ),
 				method: 'toggle',
-				args: ['textStyle/bold'],
+				args: [ 'textStyle/bold' ],
 				expectedData: function ( data ) {
 					data.splice( 1, 3,
-						['F', [3]],
-						['o', [3]],
-						['o', [3]]
+						[ 'F', [ 3 ] ],
+						[ 'o', [ 3 ] ],
+						[ 'o', [ 3 ] ]
 					);
 				},
 				msg: 'toggle bold on plain text'
@@ -44,7 +44,7 @@ QUnit.test( 'toggle', function ( assert ) {
 				html: html,
 				range: new ve.Range( 7, 10 ),
 				method: 'toggle',
-				args: ['textStyle/bold'],
+				args: [ 'textStyle/bold' ],
 				expectedData: function ( data ) {
 					data.splice( 7, 3, 'b', 'a', 'z' );
 				},
@@ -54,7 +54,7 @@ QUnit.test( 'toggle', function ( assert ) {
 				html: html,
 				range: new ve.Range( 4, 10 ),
 				method: 'toggle',
-				args: ['textStyle/bold'],
+				args: [ 'textStyle/bold' ],
 				expectedData: function ( data ) {
 					data.splice( 4, 6, 'b', 'a', 'r', 'b', 'a', 'z' );
 				},
@@ -64,18 +64,18 @@ QUnit.test( 'toggle', function ( assert ) {
 				html: html,
 				range: new ve.Range( 1, 14 ),
 				method: 'toggle',
-				args: ['textStyle/bold'],
+				args: [ 'textStyle/bold' ],
 				expectedData: function ( data ) {
 					data.splice( 1, 3,
-						['F', [3]],
-						['o', [3]],
-						['o', [3]]
+						[ 'F', [ 3 ] ],
+						[ 'o', [ 3 ] ],
+						[ 'o', [ 3 ] ]
 					);
 					data.splice( 10, 4,
-						['q', [2, 3]],
-						['u', [2, 3]],
-						['u', [2, 3]],
-						['x', [2, 3]]
+						[ 'q', [ 2, 3 ] ],
+						[ 'u', [ 2, 3 ] ],
+						[ 'u', [ 2, 3 ] ],
+						[ 'x', [ 2, 3 ] ]
 					);
 				},
 				msg: 'toggle bold on plain, bold, strong then underlined text'
@@ -84,14 +84,14 @@ QUnit.test( 'toggle', function ( assert ) {
 				html: html,
 				range: new ve.Range( 14, 21 ),
 				method: 'toggle',
-				args: ['textStyle/bold'],
+				args: [ 'textStyle/bold' ],
 				expectedData: function ( data ) {
 					data.splice( 15, 5,
-						['w', [3]],
-						['h', [3]],
-						['i', [3]],
-						['t', [3]],
-						['e', [3]]
+						[ 'w', [ 3 ] ],
+						[ 'h', [ 3 ] ],
+						[ 'i', [ 3 ] ],
+						[ 't', [ 3 ] ],
+						[ 'e', [ 3 ] ]
 					);
 				},
 				msg: 'trailing whitespace is not annotated'

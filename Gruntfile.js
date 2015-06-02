@@ -110,7 +110,7 @@ module.exports = function ( grunt ) {
 				expand: true
 			},
 			lib: {
-				src: ['lib/**', '!lib/jquery.i18n/**', '!lib/jquery.uls/**'],
+				src: [ 'lib/**', '!lib/jquery.i18n/**', '!lib/jquery.uls/**' ],
 				dest: 'dist/',
 				expand: true
 			}

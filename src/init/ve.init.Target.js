@@ -121,14 +121,14 @@ ve.init.Target.static.toolbarGroups = [
  *
  * @type {string[]} List of command names
  */
-ve.init.Target.static.documentCommands = ['commandHelp'];
+ve.init.Target.static.documentCommands = [ 'commandHelp' ];
 
 /**
  * List of commands which can be triggered from within the target element
  *
  * @type {string[]} List of command names
  */
-ve.init.Target.static.targetCommands = ['findAndReplace', 'findNext', 'findPrevious'];
+ve.init.Target.static.targetCommands = [ 'findAndReplace', 'findNext', 'findPrevious' ];
 
 /**
  * List of commands to exclude from the target entirely

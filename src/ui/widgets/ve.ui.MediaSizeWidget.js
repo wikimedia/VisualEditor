@@ -82,14 +82,14 @@ ve.ui.MediaSizeWidget = function VeUiMediaSizeWidget( scalable, config ) {
 		this.dimensionsWidget, {
 			align: 'right',
 			label: ve.msg( 'visualeditor-mediasizewidget-label-custom' ),
-			classes: ['ve-ui-mediaSizeWidget-section-custom']
+			classes: [ 've-ui-mediaSizeWidget-section-custom' ]
 		}
 	);
 
 	// Buttons
 	this.fullSizeButton = new OO.ui.ButtonWidget( {
 		label: ve.msg( 'visualeditor-mediasizewidget-button-originaldimensions' ),
-		classes: ['ve-ui-mediaSizeWidget-button-fullsize']
+		classes: [ 've-ui-mediaSizeWidget-button-fullsize' ]
 	} );
 
 	// Build GUI
@@ -108,8 +108,8 @@ ve.ui.MediaSizeWidget = function VeUiMediaSizeWidget( scalable, config ) {
 
 	// Events
 	this.dimensionsWidget.connect( this, {
-		widthChange: ['onDimensionsChange', 'width'],
-		heightChange: ['onDimensionsChange', 'height']
+		widthChange: [ 'onDimensionsChange', 'width' ],
+		heightChange: [ 'onDimensionsChange', 'height' ]
 	} );
 	// TODO: when upright is supported by Parsoid
 	// this.scaleInput.connect( this, { change: 'onScaleChange' } );

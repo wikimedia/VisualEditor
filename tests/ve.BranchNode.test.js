@@ -19,16 +19,16 @@ OO.mixinClass( ve.BranchNodeStub, ve.BranchNode );
 
 QUnit.test( 'getChildren', 2, function ( assert ) {
 	var node1 = new ve.BranchNodeStub(),
-		node2 = new ve.BranchNodeStub( [node1] );
+		node2 = new ve.BranchNodeStub( [ node1 ] );
 	assert.deepEqual( node1.getChildren(), [] );
-	assert.deepEqual( node2.getChildren(), [node1] );
+	assert.deepEqual( node2.getChildren(), [ node1 ] );
 } );
 
 QUnit.test( 'indexOf', 4, function ( assert ) {
 	var node1 = new ve.BranchNodeStub(),
 		node2 = new ve.BranchNodeStub(),
 		node3 = new ve.BranchNodeStub(),
-		node4 = new ve.BranchNodeStub( [node1, node2, node3] );
+		node4 = new ve.BranchNodeStub( [ node1, node2, node3 ] );
 	assert.strictEqual( node4.indexOf( null ), -1 );
 	assert.strictEqual( node4.indexOf( node1 ), 0 );
 	assert.strictEqual( node4.indexOf( node2 ), 1 );

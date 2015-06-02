@@ -18,7 +18,7 @@ ve.ui.IndentationCommand = function VeUiIndentationCommand( name, method ) {
 	// Parent constructor
 	ve.ui.IndentationCommand.super.call(
 		this, name, 'indentation', method,
-		{ supportedSelections: ['linear'] }
+		{ supportedSelections: [ 'linear' ] }
 	);
 };
 

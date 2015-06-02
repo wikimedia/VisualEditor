@@ -92,7 +92,7 @@ ve.ui.LanguageSearchWidget.prototype.setAvailableLanguages = function ( availabl
  */
 ve.ui.LanguageSearchWidget.prototype.addResults = function () {
 	var i, iLen, j, jLen, languageResult, data, matchedProperty,
-		matchProperties = ['name', 'autonym', 'code'],
+		matchProperties = [ 'name', 'autonym', 'code' ],
 		query = this.query.getValue().trim(),
 		matcher = new RegExp( '^' + this.constructor.static.escapeRegex( query ), 'i' ),
 		hasQuery = !!query.length,

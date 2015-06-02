@@ -202,7 +202,7 @@ ve.Range.prototype.truncate = function ( length ) {
  * @return {ve.Range} Range covering this range and other
  */
 ve.Range.prototype.expand = function ( other ) {
-	return ve.Range.static.newCoveringRange( [this, other], this.isBackwards() );
+	return ve.Range.static.newCoveringRange( [ this, other ], this.isBackwards() );
 };
 
 /**

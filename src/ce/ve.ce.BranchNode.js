@@ -35,7 +35,7 @@ ve.ce.BranchNode = function VeCeBranchNode( model, config ) {
 	this.model.connect( this, { splice: 'onSplice' } );
 
 	// Initialization
-	this.onSplice.apply( this, [0, 0].concat( model.getChildren() ) );
+	this.onSplice.apply( this, [ 0, 0 ].concat( model.getChildren() ) );
 };
 
 /* Inheritance */

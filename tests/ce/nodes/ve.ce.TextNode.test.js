@@ -26,109 +26,109 @@ QUnit.test( 'getAnnotatedHtml', function ( assert ) {
 		{
 			data: [
 				{ type: 'paragraph' },
-				['a', [ { type: 'textStyle/bold' } ]],
-				['b', [ { type: 'textStyle/bold' } ]],
-				['c', [ { type: 'textStyle/bold' } ]],
+				[ 'a', [ { type: 'textStyle/bold' } ] ],
+				[ 'b', [ { type: 'textStyle/bold' } ] ],
+				[ 'c', [ { type: 'textStyle/bold' } ] ],
 				{ type: '/paragraph' }
 			],
 			html: [
-				['a', [ { type: 'textStyle/bold' } ]],
-				['b', [ { type: 'textStyle/bold' } ]],
-				['c', [ { type: 'textStyle/bold' } ]]
+				[ 'a', [ { type: 'textStyle/bold' } ] ],
+				[ 'b', [ { type: 'textStyle/bold' } ] ],
+				[ 'c', [ { type: 'textStyle/bold' } ] ]
 			]
 		},
 		{
 			data: [
 				{ type: 'paragraph' },
-				['a', [ { type: 'textStyle/bold' } ]],
+				[ 'a', [ { type: 'textStyle/bold' } ] ],
 				'b',
-				['c', [ { type: 'textStyle/italic' } ]],
+				[ 'c', [ { type: 'textStyle/italic' } ] ],
 				{ type: '/paragraph' }
 			],
 			html: [
-				['a', [ { type: 'textStyle/bold' } ]],
+				[ 'a', [ { type: 'textStyle/bold' } ] ],
 				'b',
-				['c', [ { type: 'textStyle/italic' } ]]
+				[ 'c', [ { type: 'textStyle/italic' } ] ]
 			]
 		},
 		{
 			// [ ]
-			data: [{ type: 'paragraph' }, ' ', { type: '/paragraph' }],
+			data: [ { type: 'paragraph' }, ' ', { type: '/paragraph' } ],
 			html: [ '\u00a0' ]
 		},
 		{
 			// [ ][ ]
-			data: [{ type: 'paragraph' }, ' ', ' ', { type: '/paragraph' }],
+			data: [ { type: 'paragraph' }, ' ', ' ', { type: '/paragraph' } ],
 			html: [ '\u00a0', '\u00a0' ]
 		},
 		{
 			// [ ][ ][ ]
-			data: [{ type: 'paragraph' }, ' ', ' ', ' ', { type: '/paragraph' }],
+			data: [ { type: 'paragraph' }, ' ', ' ', ' ', { type: '/paragraph' } ],
 			html: [ '\u00a0', ' ', '\u00a0' ]
 		},
 		{
 			// [ ][ ][ ][ ]
-			data: [{ type: 'paragraph' }, ' ', ' ', ' ', ' ', { type: '/paragraph' }],
+			data: [ { type: 'paragraph' }, ' ', ' ', ' ', ' ', { type: '/paragraph' } ],
 			html: [ '\u00a0', ' ', '\u00a0', '\u00a0' ]
 		},
 		{
 			// [ ][ ][ ][ ][ ]
-			data: [{ type: 'paragraph' }, ' ', ' ', ' ', ' ', ' ', { type: '/paragraph' }],
+			data: [ { type: 'paragraph' }, ' ', ' ', ' ', ' ', ' ', { type: '/paragraph' } ],
 			html: [ '\u00a0', ' ', '\u00a0', ' ', '\u00a0' ]
 		},
 		{
 			// [ ][ ][ ][ ][ ][ ]
-			data: [{ type: 'paragraph' }, ' ', ' ', ' ', ' ', ' ', ' ', { type: '/paragraph' }],
+			data: [ { type: 'paragraph' }, ' ', ' ', ' ', ' ', ' ', ' ', { type: '/paragraph' } ],
 			html: [ '\u00a0', ' ', '\u00a0', ' ', '\u00a0', '\u00a0' ]
 		},
 		{
 			// [ ][A][ ][ ][ ][ ]
-			data: [{ type: 'paragraph' }, ' ', 'A', ' ', ' ', ' ', ' ', { type: '/paragraph' }],
+			data: [ { type: 'paragraph' }, ' ', 'A', ' ', ' ', ' ', ' ', { type: '/paragraph' } ],
 			html: [ '\u00a0', 'A', ' ', '\u00a0', ' ', '\u00a0' ]
 		},
 		{
 			// [ ][ ][A][ ][ ][ ]
-			data: [{ type: 'paragraph' }, ' ', ' ', 'A', ' ', ' ', ' ', { type: '/paragraph' }],
+			data: [ { type: 'paragraph' }, ' ', ' ', 'A', ' ', ' ', ' ', { type: '/paragraph' } ],
 			html: [ '\u00a0', ' ', 'A', ' ', '\u00a0', '\u00a0' ]
 		},
 		{
 			// [ ][ ][ ][A][ ][ ]
-			data: [{ type: 'paragraph' }, ' ', ' ', ' ', 'A', ' ', ' ', { type: '/paragraph' }],
+			data: [ { type: 'paragraph' }, ' ', ' ', ' ', 'A', ' ', ' ', { type: '/paragraph' } ],
 			html: [ '\u00a0', ' ', '\u00a0', 'A', ' ', '\u00a0' ]
 		},
 		{
 			// [ ][ ][ ][ ][A][ ]
-			data: [{ type: 'paragraph' }, ' ', ' ', ' ', ' ', 'A', ' ', { type: '/paragraph' }],
+			data: [ { type: 'paragraph' }, ' ', ' ', ' ', ' ', 'A', ' ', { type: '/paragraph' } ],
 			html: [ '\u00a0', ' ', '\u00a0', ' ', 'A', '\u00a0' ]
 		},
 		{
 			// [ ][ ][ ][ ][ ][A]
-			data: [{ type: 'paragraph' }, ' ', ' ', ' ', ' ', ' ', 'A', { type: '/paragraph' }],
+			data: [ { type: 'paragraph' }, ' ', ' ', ' ', ' ', ' ', 'A', { type: '/paragraph' } ],
 			html: [ '\u00a0', ' ', '\u00a0', ' ', '\u00a0', 'A' ]
 		},
 		{
-			data: [{ type: 'paragraph' }, '\n', 'A', '\n', 'B', '\n', { type: '/paragraph' }],
+			data: [ { type: 'paragraph' }, '\n', 'A', '\n', 'B', '\n', { type: '/paragraph' } ],
 			html: [ '\u21b5', 'A', '\u21b5', 'B', '\u21b5' ]
 		},
 		{
-			data: [{ type: 'paragraph' }, '\t', 'A', '\t', 'B', '\t', { type: '/paragraph' }],
+			data: [ { type: 'paragraph' }, '\t', 'A', '\t', 'B', '\t', { type: '/paragraph' } ],
 			html: [ '\u279e', 'A', '\u279e', 'B', '\u279e' ]
 		},
 		{
-			data: [{ type: 'preformatted' }, '\n', 'A', '\n', 'B', '\n', { type: '/preformatted' }],
+			data: [ { type: 'preformatted' }, '\n', 'A', '\n', 'B', '\n', { type: '/preformatted' } ],
 			html: [ '\n', 'A', '\n', 'B', '\n' ]
 		},
 		{
-			data: [{ type: 'preformatted' }, '\t', 'A', '\t', 'B', '\t', { type: '/preformatted' }],
+			data: [ { type: 'preformatted' }, '\t', 'A', '\t', 'B', '\t', { type: '/preformatted' } ],
 			html: [ '\t', 'A', '\t', 'B', '\t' ]
 		},
 		{
 			// [ ][ ][ ][A][ ][ ]
-			data: [{ type: 'preformatted' }, ' ', ' ', ' ', 'A', ' ', ' ', { type: '/preformatted' }],
+			data: [ { type: 'preformatted' }, ' ', ' ', ' ', 'A', ' ', ' ', { type: '/preformatted' } ],
 			html: [ ' ', ' ', ' ', 'A', ' ', ' ' ]
 		},
 		{
-			data: [{ type: 'paragraph' }, '&', '<', '>', '\'', '"', { type: '/paragraph' }],
+			data: [ { type: 'paragraph' }, '&', '<', '>', '\'', '"', { type: '/paragraph' } ],
 			html: [ '&', '<', '>', '\'', '"' ]
 		}
 	];

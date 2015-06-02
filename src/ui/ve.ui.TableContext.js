@@ -28,11 +28,11 @@ ve.ui.TableContext = function VeUiTableContext( tableNode, itemGroup, config ) {
 	this.tableNode = tableNode;
 	this.itemGroup = itemGroup;
 	this.indicator = new OO.ui.IndicatorWidget( {
-		classes: ['ve-ui-tableContext-indicator'],
+		classes: [ 've-ui-tableContext-indicator' ],
 		indicator: config.indicator
 	} );
 	this.popup = new OO.ui.PopupWidget( {
-		classes: ['ve-ui-tableContext-menu'],
+		classes: [ 've-ui-tableContext-menu' ],
 		$container: this.surface.$element,
 		width: 150
 	} );

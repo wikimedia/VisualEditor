@@ -363,7 +363,7 @@ ve.dm.ElementLinearData.prototype.setAnnotationIndexesAtOffset = function ( offs
 		} else {
 			// New character annotation
 			character = this.getCharacterData( offset );
-			this.setData( offset, [character, indexes] );
+			this.setData( offset, [ character, indexes ] );
 		}
 	} else {
 		if ( isElement ) {
@@ -620,7 +620,7 @@ ve.dm.ElementLinearData.prototype.getRelativeOffset = function ( offset, distanc
 	// If offset is already a structural offset and distance is zero than no further work is needed,
 	// otherwise distance should be 1 so that we can get out of the invalid starting offset
 	if ( distance === 0 ) {
-		if ( callback.apply( this, [offset].concat( args ) ) ) {
+		if ( callback.apply( this, [ offset ].concat( args ) ) ) {
 			return offset;
 		} else {
 			distance = 1;
@@ -659,7 +659,7 @@ ve.dm.ElementLinearData.prototype.getRelativeOffset = function ( offset, distanc
 				}
 			}
 		}
-		if ( callback.apply( this, [i].concat( args ) ) ) {
+		if ( callback.apply( this, [ i ].concat( args ) ) ) {
 			if ( !ignoreChildrenDepth ) {
 				steps++;
 				offset = i;
@@ -676,7 +676,7 @@ ve.dm.ElementLinearData.prototype.getRelativeOffset = function ( offset, distanc
 			( ( direction < 0 && i === 0 ) || ( direction > 0 && i === this.getLength() ) )
 		) {
 			// Before we turn around, let's see if we are at a valid position
-			if ( callback.apply( this, [start].concat( args ) ) ) {
+			if ( callback.apply( this, [ start ].concat( args ) ) ) {
 				// Stay where we are
 				return start;
 			}

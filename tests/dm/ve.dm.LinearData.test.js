@@ -73,8 +73,8 @@ QUnit.test( 'slice(Object)/splice(Object)/batchSplice', 12, function ( assert ) 
 	expectedData = ve.copy( ve.dm.example.data );
 
 	assert.deepEqual(
-		data.batchSplice( 1, 3, ['x', 'y', 'z'] ),
-		ve.batchSplice( expectedData, 1, 3, ['x', 'y', 'z'] ),
+		data.batchSplice( 1, 3, [ 'x', 'y', 'z' ] ),
+		ve.batchSplice( expectedData, 1, 3, [ 'x', 'y', 'z' ] ),
 		'batchSplice: result matches ve.batchSplice'
 	);
 	assert.deepEqual( data.getData(), expectedData, 'batchSplice: array matches after batch splice' );

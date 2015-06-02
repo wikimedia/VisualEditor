@@ -48,7 +48,7 @@ ve.ui.DebugBar = function VeUiDebugBar( surface, config ) {
 	this.$filibuster = $( '<div class="ve-ui-debugBar-filibuster"></div>' );
 
 	// Widgets
-	this.selectionLabel = new OO.ui.LabelWidget( { classes: ['ve-ui-debugBar-selectionLabel'] } );
+	this.selectionLabel = new OO.ui.LabelWidget( { classes: [ 've-ui-debugBar-selectionLabel' ] } );
 
 	this.logRangeButton = new OO.ui.ButtonWidget( { label: 'Log', disabled: true } );
 	this.dumpModelButton = new OO.ui.ButtonWidget( { label: 'Dump model' } );
@@ -295,7 +295,7 @@ ve.ui.DebugBar.prototype.onFilibusterToggleClick = function () {
 				if ( !path ) {
 					return;
 				}
-				$li.children( 'span').replaceWith(
+				$li.children( 'span' ).replaceWith(
 					$( debugBar.getSurface().filibuster.getObservationsHtml( path ) )
 				);
 				$li.toggleClass( 've-filibuster-frame-expanded' );

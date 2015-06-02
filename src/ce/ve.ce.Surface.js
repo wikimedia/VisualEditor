@@ -1626,7 +1626,7 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 	} );
 
 	// Some attributes (e.g RDFa attributes in Firefox) aren't preserved by copy
-	unsafeSelector = '[' + ve.ce.Surface.static.unsafeAttributes.join( '],[') + ']';
+	unsafeSelector = '[' + ve.ce.Surface.static.unsafeAttributes.join( '],[' ) + ']';
 	this.$pasteTarget.find( unsafeSelector ).each( function () {
 		var i, val,
 			attrs = {},
@@ -2140,7 +2140,7 @@ ve.ce.Surface.prototype.afterPaste = function () {
 ve.ce.Surface.prototype.handleDataTransfer = function ( dataTransfer, isPaste, targetFragment ) {
 	var i, l, stringData,
 		items = [],
-		stringTypes = ['text/html', 'text/plain'];
+		stringTypes = [ 'text/html', 'text/plain' ];
 
 	if ( dataTransfer.items ) {
 		for ( i = 0, l = dataTransfer.items.length; i < l; i++ ) {
@@ -3371,7 +3371,7 @@ ve.ce.Surface.prototype.handleLinearEnter = function ( e ) {
 		range = this.model.getSelection().getRange(),
 		cursor = range.from,
 		documentModel = this.model.getDocument(),
-		emptyParagraph = [{ type: 'paragraph' }, { type: '/paragraph' }],
+		emptyParagraph = [ { type: 'paragraph' }, { type: '/paragraph' } ],
 		advanceCursor = true,
 		stack = [],
 		outermostNode = null,

@@ -58,7 +58,7 @@ ve.dm.Converter.getDataContentFromText = function ( text, annotations ) {
 	// Apply annotations to characters
 	for ( i = 0, len = characters.length; i < len; i++ ) {
 		// Just store the annotations' indexes from the index-value store
-		characters[i] = [characters[i], annotations.getIndexes().slice()];
+		characters[i] = [ characters[i], annotations.getIndexes().slice() ];
 	}
 	return characters;
 };

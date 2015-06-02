@@ -27,7 +27,7 @@ new ve.init.sa.Platform( ve.messagePaths ).initialize().done( function () {
 		languageInput = new ve.ui.LanguageInputWidget( {
 			requireDir: true,
 			availableLanguages: ve.availableLanguages,
-			dialogManager: new OO.ui.WindowManager( { factory: ve.ui.windowFactory, classes: ['ve-demo-languageSearchDialogManager'] } )
+			dialogManager: new OO.ui.WindowManager( { factory: ve.ui.windowFactory, classes: [ 've-demo-languageSearchDialogManager' ] } )
 		} ),
 		deviceSelect = new OO.ui.ButtonSelectWidget().addItems( [
 			new OO.ui.ButtonOptionWidget( { data: 'desktop', label: 'Desktop' } ),

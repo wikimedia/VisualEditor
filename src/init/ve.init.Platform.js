@@ -236,7 +236,7 @@ ve.init.Platform.prototype.fetchSpecialCharList = function () {
 	} catch ( err ) {
 		// There was no character list found, or the character list message is
 		// invalid json string. Force a fallback to the minimal character list
-		ve.log( 've.init.Platform: Could not parse the Special Character list.');
+		ve.log( 've.init.Platform: Could not parse the Special Character list.' );
 		ve.log( err.message );
 	}
 

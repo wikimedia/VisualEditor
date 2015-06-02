@@ -49,7 +49,7 @@ QUnit.test( 'handleLinearDelete', function ( assert ) {
 		cases = [
 			{
 				range: new ve.Range( 1, 4 ),
-				operations: ['backspace'],
+				operations: [ 'backspace' ],
 				expectedData: function ( data ) {
 					data.splice( 1, 3 );
 				},
@@ -61,7 +61,7 @@ QUnit.test( 'handleLinearDelete', function ( assert ) {
 			},
 			{
 				range: new ve.Range( 1, 4 ),
-				operations: ['delete'],
+				operations: [ 'delete' ],
 				expectedData: function ( data ) {
 					data.splice( 1, 3 );
 				},
@@ -73,7 +73,7 @@ QUnit.test( 'handleLinearDelete', function ( assert ) {
 			},
 			{
 				range: new ve.Range( 4 ),
-				operations: ['modifiedBackspace'],
+				operations: [ 'modifiedBackspace' ],
 				expectedData: function ( data ) {
 					data.splice( 1, 3 );
 				},
@@ -85,7 +85,7 @@ QUnit.test( 'handleLinearDelete', function ( assert ) {
 			},
 			{
 				range: new ve.Range( 1 ),
-				operations: ['modifiedDelete'],
+				operations: [ 'modifiedDelete' ],
 				expectedData: function ( data ) {
 					data.splice( 1, 3 );
 				},
@@ -97,7 +97,7 @@ QUnit.test( 'handleLinearDelete', function ( assert ) {
 			},
 			{
 				range: new ve.Range( 56, 57 ),
-				operations: ['delete', 'delete'],
+				operations: [ 'delete', 'delete' ],
 				expectedData: function ( data ) {
 					data.splice( 55, 3 );
 				},
@@ -109,7 +109,7 @@ QUnit.test( 'handleLinearDelete', function ( assert ) {
 			},
 			{
 				range: new ve.Range( 41 ),
-				operations: ['backspace'],
+				operations: [ 'backspace' ],
 				expectedData: function () {},
 				expectedSelection: {
 					type: 'linear',
@@ -119,7 +119,7 @@ QUnit.test( 'handleLinearDelete', function ( assert ) {
 			},
 			{
 				range: new ve.Range( 39 ),
-				operations: ['delete'],
+				operations: [ 'delete' ],
 				expectedData: function () {},
 				expectedSelection: {
 					type: 'linear',
@@ -129,7 +129,7 @@ QUnit.test( 'handleLinearDelete', function ( assert ) {
 			},
 			{
 				range: new ve.Range( 39, 41 ),
-				operations: ['delete'],
+				operations: [ 'delete' ],
 				expectedData: function ( data ) {
 					data.splice( 39, 2 );
 				},
@@ -141,7 +141,7 @@ QUnit.test( 'handleLinearDelete', function ( assert ) {
 			},
 			{
 				range: new ve.Range( 38 ),
-				operations: ['backspace'],
+				operations: [ 'backspace' ],
 				expectedData: function () {},
 				expectedSelection: {
 					type: 'table',
@@ -155,7 +155,7 @@ QUnit.test( 'handleLinearDelete', function ( assert ) {
 			},
 			{
 				range: new ve.Range( 4 ),
-				operations: ['delete'],
+				operations: [ 'delete' ],
 				expectedData: function () {},
 				expectedSelection: {
 					type: 'table',
@@ -170,7 +170,7 @@ QUnit.test( 'handleLinearDelete', function ( assert ) {
 			{
 				html: '<p>a</p><ul><li><p></p></li></ul><p>b</p>',
 				range: new ve.Range( 6 ),
-				operations: ['delete'],
+				operations: [ 'delete' ],
 				expectedData: function ( data ) {
 					data.splice( 3, 6 );
 				},
@@ -183,7 +183,7 @@ QUnit.test( 'handleLinearDelete', function ( assert ) {
 			{
 				html: '<p>a</p><ul><li><p></p></li></ul><p>b</p>',
 				range: new ve.Range( 6 ),
-				operations: ['backspace'],
+				operations: [ 'backspace' ],
 				expectedData: function ( data ) {
 					data.splice( 3, 6 );
 				},
@@ -196,7 +196,7 @@ QUnit.test( 'handleLinearDelete', function ( assert ) {
 			{
 				html: '<p>a</p><ul><li><p></p></li></ul><p>b</p>',
 				range: new ve.Range( 2 ),
-				operations: ['delete'],
+				operations: [ 'delete' ],
 				expectedData: function ( data ) {
 					data.splice( 3, 6 );
 				},
@@ -209,7 +209,7 @@ QUnit.test( 'handleLinearDelete', function ( assert ) {
 			{
 				html: '<p>a</p><ul><li><p></p></li></ul><p>b</p>',
 				range: new ve.Range( 10 ),
-				operations: ['backspace'],
+				operations: [ 'backspace' ],
 				expectedData: function ( data ) {
 					data.splice( 3, 6 );
 				},
@@ -222,7 +222,7 @@ QUnit.test( 'handleLinearDelete', function ( assert ) {
 			{
 				html: '<ul><li><p></p><ul><li><p></p></li></ul></li></ul>',
 				range: new ve.Range( 7 ),
-				operations: ['backspace'],
+				operations: [ 'backspace' ],
 				expectedData: function ( data ) {
 					data.splice( 2, 2 );
 				},
@@ -234,7 +234,7 @@ QUnit.test( 'handleLinearDelete', function ( assert ) {
 			},
 			{
 				range: new ve.Range( 0, 63 ),
-				operations: ['backspace'],
+				operations: [ 'backspace' ],
 				expectedData: function ( data ) {
 					data.splice( 0, 61,
 							{ type: 'paragraph' },
@@ -265,7 +265,7 @@ QUnit.test( 'handleLinearEnter', function ( assert ) {
 		cases = [
 			{
 				range: new ve.Range( 57 ),
-				operations: ['enter'],
+				operations: [ 'enter' ],
 				expectedData: function ( data ) {
 					data.splice(
 						57, 0,
@@ -281,7 +281,7 @@ QUnit.test( 'handleLinearEnter', function ( assert ) {
 			},
 			{
 				range: new ve.Range( 57 ),
-				operations: ['modifiedEnter'],
+				operations: [ 'modifiedEnter' ],
 				expectedData: function ( data ) {
 					data.splice(
 						57, 0,
@@ -297,7 +297,7 @@ QUnit.test( 'handleLinearEnter', function ( assert ) {
 			},
 			{
 				range: new ve.Range( 56 ),
-				operations: ['enter'],
+				operations: [ 'enter' ],
 				expectedData: function ( data ) {
 					data.splice(
 						56, 0,
@@ -313,7 +313,7 @@ QUnit.test( 'handleLinearEnter', function ( assert ) {
 			},
 			{
 				range: new ve.Range( 3 ),
-				operations: ['enter'],
+				operations: [ 'enter' ],
 				expectedData: function ( data ) {
 					data.splice(
 						3, 0,
@@ -329,7 +329,7 @@ QUnit.test( 'handleLinearEnter', function ( assert ) {
 			},
 			{
 				range: new ve.Range( 2, 3 ),
-				operations: ['enter'],
+				operations: [ 'enter' ],
 				expectedData: function ( data ) {
 					data.splice(
 						2, 1,
@@ -345,7 +345,7 @@ QUnit.test( 'handleLinearEnter', function ( assert ) {
 			},
 			{
 				range: new ve.Range( 1 ),
-				operations: ['enter'],
+				operations: [ 'enter' ],
 				expectedData: function ( data ) {
 					data.splice(
 						0, 0,
@@ -361,7 +361,7 @@ QUnit.test( 'handleLinearEnter', function ( assert ) {
 			},
 			{
 				range: new ve.Range( 4 ),
-				operations: ['enter'],
+				operations: [ 'enter' ],
 				expectedData: function ( data ) {
 					data.splice(
 						5, 0,
@@ -377,7 +377,7 @@ QUnit.test( 'handleLinearEnter', function ( assert ) {
 			},
 			{
 				range: new ve.Range( 16 ),
-				operations: ['enter'],
+				operations: [ 'enter' ],
 				expectedData: function ( data ) {
 					data.splice(
 						16, 0,
@@ -395,7 +395,7 @@ QUnit.test( 'handleLinearEnter', function ( assert ) {
 			},
 			{
 				range: new ve.Range( 16 ),
-				operations: ['modifiedEnter'],
+				operations: [ 'modifiedEnter' ],
 				expectedData: function ( data ) {
 					data.splice(
 						16, 0,
@@ -411,7 +411,7 @@ QUnit.test( 'handleLinearEnter', function ( assert ) {
 			},
 			{
 				range: new ve.Range( 21 ),
-				operations: ['enter', 'enter'],
+				operations: [ 'enter', 'enter' ],
 				expectedData: function ( data ) {
 					data.splice(
 						24, 0,
@@ -428,7 +428,7 @@ QUnit.test( 'handleLinearEnter', function ( assert ) {
 			{
 				html: '<p>foo</p>' + emptyList + '<p>bar</p>',
 				range: new ve.Range( 8 ),
-				operations: ['enter'],
+				operations: [ 'enter' ],
 				expectedData: function ( data ) {
 					data.splice( 5, 6 );
 				},
@@ -441,7 +441,7 @@ QUnit.test( 'handleLinearEnter', function ( assert ) {
 			{
 				html: '<p>foo</p>' + emptyList,
 				range: new ve.Range( 8 ),
-				operations: ['enter'],
+				operations: [ 'enter' ],
 				expectedData: function ( data ) {
 					data.splice( 5, 6 );
 				},
@@ -454,7 +454,7 @@ QUnit.test( 'handleLinearEnter', function ( assert ) {
 			{
 				html: emptyList + '<p>bar</p>',
 				range: new ve.Range( 3 ),
-				operations: ['enter'],
+				operations: [ 'enter' ],
 				expectedData: function ( data ) {
 					data.splice( 0, 6 );
 				},
@@ -467,7 +467,7 @@ QUnit.test( 'handleLinearEnter', function ( assert ) {
 			{
 				html: emptyList,
 				range: new ve.Range( 3 ),
-				operations: ['enter'],
+				operations: [ 'enter' ],
 				expectedData: function ( data ) {
 					data.splice(
 						0, 6,
@@ -546,8 +546,8 @@ QUnit.test( 'onSurfaceObserverContentChange', function ( assert ) {
 						{ type: 'retain', length: 5 },
 						{
 							type: 'replace',
-							insert: [ ['B', [1]] ],
-							remove: [ ['X', [1]] ],
+							insert: [ [ 'B', [ 1 ] ] ],
+							remove: [ [ 'X', [ 1 ] ] ],
 							insertedDataLength: 1,
 							insertedDataOffset: 0
 						},
@@ -782,9 +782,9 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 						{
 							type: 'replace',
 							insert: [
-								['B', [ { type: 'textStyle/bold', attributes: { nodeName: 'b' } } ]],
+								[ 'B', [ { type: 'textStyle/bold', attributes: { nodeName: 'b' } } ] ],
 								'a',
-								['r', [ { type: 'textStyle/bold', attributes: { nodeName: 'b' } } ]]
+								[ 'r', [ { type: 'textStyle/bold', attributes: { nodeName: 'b' } } ] ]
 							],
 							remove: []
 						},
@@ -1011,9 +1011,9 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 						{
 							type: 'replace',
 							insert: [
-								['F', [ { type: 'textStyle/span', attributes: { nodeName: 'span' } } ]],
+								[ 'F', [ { type: 'textStyle/span', attributes: { nodeName: 'span' } } ] ],
 								'o',
-								['o', [ { type: 'textStyle/span', attributes: { nodeName: 'span' } } ]]
+								[ 'o', [ { type: 'textStyle/span', attributes: { nodeName: 'span' } } ] ]
 							],
 							remove: []
 						},

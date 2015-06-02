@@ -41,7 +41,7 @@ ve.ui.SpecialCharacterPage = function VeUiSpecialCharacterPage( name, config ) {
 	}
 
 	this.$element
-		.addClass( 've-ui-specialCharacterPage')
+		.addClass( 've-ui-specialCharacterPage' )
 		.append( $( '<h3>' ).text( name ), $characters );
 };
 

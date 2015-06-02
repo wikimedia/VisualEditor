@@ -244,7 +244,7 @@ ve.ce.getOffset = function ( domNode, domOffset ) {
 	} else {
 		maxOffset = domNode.data.length;
 	}
-	if ( domOffset < 0 || domOffset > maxOffset) {
+	if ( domOffset < 0 || domOffset > maxOffset ) {
 		throw new Error( 'domOffset is out of bounds' );
 	}
 

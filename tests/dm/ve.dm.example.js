@@ -341,9 +341,9 @@ ve.dm.example.data = [
 	//  1 - Plain "a"
 	'a',
 	//  2 - Bold "b"
-	['b', [ ve.dm.example.bold ]],
+	[ 'b', [ ve.dm.example.bold ] ],
 	//  3 - Italic "c"
-	['c', [ ve.dm.example.italic ]],
+	[ 'c', [ ve.dm.example.italic ] ],
 	//  4 - End of heading
 	{ type: '/heading' },
 	//  5 - Beginning of table
@@ -689,7 +689,7 @@ ve.dm.example.listWithMeta = [
 		originalDomElements: $( '<meta property="two" />' ).toArray()
 	},
 	{ type: '/alienMeta' },
-	{ type: 'listItem', attributes: { styles: ['bullet'] } },
+	{ type: 'listItem', attributes: { styles: [ 'bullet' ] } },
 	//  2 - Beginning of paragraph
 	{
 		type: 'alienMeta',
@@ -724,7 +724,7 @@ ve.dm.example.listWithMeta = [
 		originalDomElements: $( '<meta property="seven" />' ).toArray()
 	},
 	{ type: '/alienMeta' },
-	{ type: 'listItem', attributes: { styles: ['bullet'] } },
+	{ type: 'listItem', attributes: { styles: [ 'bullet' ] } },
 	//  7 - Beginning of paragraph
 	{
 		type: 'alienMeta',
@@ -1123,26 +1123,26 @@ ve.dm.example.emptyBranch = [
  */
 ve.dm.example.tree = new ve.dm.DocumentNode( [
 	// Heading with "abc"
-	new ve.dm.HeadingNode( ve.dm.example.data[0], [new ve.dm.TextNode( 3 )] ),
+	new ve.dm.HeadingNode( ve.dm.example.data[0], [ new ve.dm.TextNode( 3 ) ] ),
 	new ve.dm.TableNode( ve.dm.example.data[5], [
 		new ve.dm.TableSectionNode( ve.dm.example.data[6], [
 			new ve.dm.TableRowNode( ve.dm.example.data[7], [
 				new ve.dm.TableCellNode( ve.dm.example.data[8], [
 					// Paragraph with "d"
-					new ve.dm.ParagraphNode( ve.dm.example.data[9], [new ve.dm.TextNode( 1 )] ),
+					new ve.dm.ParagraphNode( ve.dm.example.data[9], [ new ve.dm.TextNode( 1 ) ] ),
 					new ve.dm.ListNode( ve.dm.example.data[12], [
 						// 1st level bullet list item with "e"
 						new ve.dm.ListItemNode( ve.dm.example.data[13], [
 							new ve.dm.ParagraphNode(
 								ve.dm.example.data[14],
-								[new ve.dm.TextNode( 1 )]
+								[ new ve.dm.TextNode( 1 ) ]
 							),
 							new ve.dm.ListNode( ve.dm.example.data[17], [
 								// 2nd level bullet list item with "f"
 								new ve.dm.ListItemNode( ve.dm.example.data[18], [
 									new ve.dm.ParagraphNode(
 										ve.dm.example.data[19],
-										[new ve.dm.TextNode( 1 )]
+										[ new ve.dm.TextNode( 1 ) ]
 									)
 								] )
 							] )
@@ -1153,7 +1153,7 @@ ve.dm.example.tree = new ve.dm.DocumentNode( [
 						new ve.dm.ListItemNode( ve.dm.example.data[27], [
 							new ve.dm.ParagraphNode(
 								ve.dm.example.data[28],
-								[new ve.dm.TextNode( 1 )]
+								[ new ve.dm.TextNode( 1 ) ]
 							)
 						] )
 					] )
@@ -1170,15 +1170,15 @@ ve.dm.example.tree = new ve.dm.DocumentNode( [
 	new ve.dm.DefinitionListNode( ve.dm.example.data[43], [
 		// Definition list term item with "j"
 		new ve.dm.DefinitionListItemNode( ve.dm.example.data[44], [
-			new ve.dm.ParagraphNode( ve.dm.example.data[45], [new ve.dm.TextNode( 1 )] )
+			new ve.dm.ParagraphNode( ve.dm.example.data[45], [ new ve.dm.TextNode( 1 ) ] )
 		] ),
 		// Definition list definition item with "k"
 		new ve.dm.DefinitionListItemNode( ve.dm.example.data[49], [
-			new ve.dm.ParagraphNode( ve.dm.example.data[50], [new ve.dm.TextNode( 1 )] )
+			new ve.dm.ParagraphNode( ve.dm.example.data[50], [ new ve.dm.TextNode( 1 ) ] )
 		] )
 	] ),
-	new ve.dm.ParagraphNode( ve.dm.example.data[55], [new ve.dm.TextNode( 1 )] ),
-	new ve.dm.ParagraphNode( ve.dm.example.data[58], [new ve.dm.TextNode( 1 )] ),
+	new ve.dm.ParagraphNode( ve.dm.example.data[55], [ new ve.dm.TextNode( 1 ) ] ),
+	new ve.dm.ParagraphNode( ve.dm.example.data[58], [ new ve.dm.TextNode( 1 ) ] ),
 	new ve.dm.InternalListNode( ve.dm.example.data[61] )
 ] );
 
@@ -1199,9 +1199,9 @@ ve.dm.example.domToDataCases = {
 		body: '<p><b>a</b><i>b</i><u>c</u></p>',
 		data: [
 			{ type: 'paragraph' },
-			['a', [ ve.dm.example.bold ]],
-			['b', [ ve.dm.example.italic ]],
-			['c', [ ve.dm.example.underline ]],
+			[ 'a', [ ve.dm.example.bold ] ],
+			[ 'b', [ ve.dm.example.italic ] ],
+			[ 'c', [ ve.dm.example.underline ] ],
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
@@ -1227,12 +1227,12 @@ ve.dm.example.domToDataCases = {
 		body: '<p><code>a</code>b<tt>c</tt>d<code>e</code><tt>f</tt></p>',
 		data: [
 			{ type: 'paragraph' },
-			['a', [ ve.dm.example.code ]],
+			[ 'a', [ ve.dm.example.code ] ],
 			'b',
-			['c', [ ve.dm.example.tt ]],
+			[ 'c', [ ve.dm.example.tt ] ],
 			'd',
-			['e', [ ve.dm.example.code ]],
-			['f', [ ve.dm.example.tt ]],
+			[ 'e', [ ve.dm.example.code ] ],
+			[ 'f', [ ve.dm.example.tt ] ],
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
@@ -1244,12 +1244,12 @@ ve.dm.example.domToDataCases = {
 		body: '<p><big>a<big>b</big>c</big><b>d<b>e</b>f</b></p>',
 		data: [
 			{ type: 'paragraph' },
-			['a', [ ve.dm.example.big ]],
-			['b', [ ve.dm.example.big, ve.dm.example.big ]],
-			['c', [ ve.dm.example.big ]],
-			['d', [ ve.dm.example.bold ]],
-			['e', [ ve.dm.example.bold, ve.dm.example.bold ]],
-			['f', [ ve.dm.example.bold ]],
+			[ 'a', [ ve.dm.example.big ] ],
+			[ 'b', [ ve.dm.example.big, ve.dm.example.big ] ],
+			[ 'c', [ ve.dm.example.big ] ],
+			[ 'd', [ ve.dm.example.bold ] ],
+			[ 'e', [ ve.dm.example.bold, ve.dm.example.bold ] ],
+			[ 'f', [ ve.dm.example.bold ] ],
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
@@ -1260,9 +1260,9 @@ ve.dm.example.domToDataCases = {
 		body: '<p><i><big>a<big><b>b</b></big><b>c</b></big></i></p>',
 		data: [
 			{ type: 'paragraph' },
-			['a', [ ve.dm.example.italic, ve.dm.example.big ]],
-			['b', [ ve.dm.example.italic, ve.dm.example.big, ve.dm.example.big, ve.dm.example.bold ]],
-			['c', [ ve.dm.example.italic, ve.dm.example.big, ve.dm.example.bold ]],
+			[ 'a', [ ve.dm.example.italic, ve.dm.example.big ] ],
+			[ 'b', [ ve.dm.example.italic, ve.dm.example.big, ve.dm.example.big, ve.dm.example.bold ] ],
+			[ 'c', [ ve.dm.example.italic, ve.dm.example.big, ve.dm.example.bold ] ],
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
@@ -1274,12 +1274,12 @@ ve.dm.example.domToDataCases = {
 		fromClipboard: true,
 		data: [
 			{ type: 'paragraph' },
-			['F', [ ve.dm.example.italic ]],
-			['o', [ ve.dm.example.italic ]],
-			['o', [ ve.dm.example.italic ]],
-			['b', [ ve.dm.example.bold ]],
-			['a', [ ve.dm.example.bold ]],
-			['r', [ ve.dm.example.bold ]],
+			[ 'F', [ ve.dm.example.italic ] ],
+			[ 'o', [ ve.dm.example.italic ] ],
+			[ 'o', [ ve.dm.example.italic ] ],
+			[ 'b', [ ve.dm.example.bold ] ],
+			[ 'a', [ ve.dm.example.bold ] ],
+			[ 'r', [ ve.dm.example.bold ] ],
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
@@ -1290,17 +1290,17 @@ ve.dm.example.domToDataCases = {
 		body: '<p><span lang="en">ten</span><span lang="fr" dir="ltr">dix</span><span lang="cy" dir="ltr">deg</span><span dir="rtl">10</span></p>',
 		data: [
 			{ type: 'paragraph' },
-			['t', [ ve.dm.example.language( 'en', null ) ]],
-			['e', [ ve.dm.example.language( 'en', null ) ]],
-			['n', [ ve.dm.example.language( 'en', null ) ]],
-			['d', [ ve.dm.example.language( 'fr', 'ltr' ) ]],
-			['i', [ ve.dm.example.language( 'fr', 'ltr' ) ]],
-			['x', [ ve.dm.example.language( 'fr', 'ltr' ) ]],
-			['d', [ ve.dm.example.language( 'cy', 'ltr' ) ]],
-			['e', [ ve.dm.example.language( 'cy', 'ltr' ) ]],
-			['g', [ ve.dm.example.language( 'cy', 'ltr' ) ]],
-			['1', [ ve.dm.example.language( null, 'rtl' ) ]],
-			['0', [ ve.dm.example.language( null, 'rtl' ) ]],
+			[ 't', [ ve.dm.example.language( 'en', null ) ] ],
+			[ 'e', [ ve.dm.example.language( 'en', null ) ] ],
+			[ 'n', [ ve.dm.example.language( 'en', null ) ] ],
+			[ 'd', [ ve.dm.example.language( 'fr', 'ltr' ) ] ],
+			[ 'i', [ ve.dm.example.language( 'fr', 'ltr' ) ] ],
+			[ 'x', [ ve.dm.example.language( 'fr', 'ltr' ) ] ],
+			[ 'd', [ ve.dm.example.language( 'cy', 'ltr' ) ] ],
+			[ 'e', [ ve.dm.example.language( 'cy', 'ltr' ) ] ],
+			[ 'g', [ ve.dm.example.language( 'cy', 'ltr' ) ] ],
+			[ '1', [ ve.dm.example.language( null, 'rtl' ) ] ],
+			[ '0', [ ve.dm.example.language( null, 'rtl' ) ] ],
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
@@ -1326,15 +1326,15 @@ ve.dm.example.domToDataCases = {
 		'</p>',
 		data: [
 			{ type: 'paragraph' },
-			['a', [ { type: 'textStyle/abbreviation', attributes: { nodeName: 'abbr' } } ]],
-			['b', [ { type: 'textStyle/variable', attributes: { nodeName: 'var' } } ]],
-			['c', [ { type: 'textStyle/userInput', attributes: { nodeName: 'kbd' } } ]],
-			['d', [ { type: 'textStyle/quotation', attributes: { nodeName: 'q' } } ]],
-			['e', [ { type: 'textStyle/codeSample', attributes: { nodeName: 'samp' } } ]],
-			['f', [ { type: 'textStyle/datetime', attributes: { nodeName: 'time' } } ]],
-			['g', [ { type: 'textStyle/definition', attributes: { nodeName: 'dfn' } } ]],
-			['h', [ { type: 'textStyle/highlight', attributes: { nodeName: 'mark' } } ]],
-			['i', [ { type: 'textStyle/font', attributes: { nodeName: 'font' } } ]],
+			[ 'a', [ { type: 'textStyle/abbreviation', attributes: { nodeName: 'abbr' } } ] ],
+			[ 'b', [ { type: 'textStyle/variable', attributes: { nodeName: 'var' } } ] ],
+			[ 'c', [ { type: 'textStyle/userInput', attributes: { nodeName: 'kbd' } } ] ],
+			[ 'd', [ { type: 'textStyle/quotation', attributes: { nodeName: 'q' } } ] ],
+			[ 'e', [ { type: 'textStyle/codeSample', attributes: { nodeName: 'samp' } } ] ],
+			[ 'f', [ { type: 'textStyle/datetime', attributes: { nodeName: 'time' } } ] ],
+			[ 'g', [ { type: 'textStyle/definition', attributes: { nodeName: 'dfn' } } ] ],
+			[ 'h', [ { type: 'textStyle/highlight', attributes: { nodeName: 'mark' } } ] ],
+			[ 'i', [ { type: 'textStyle/font', attributes: { nodeName: 'font' } } ] ],
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
@@ -1460,7 +1460,7 @@ ve.dm.example.domToDataCases = {
 				annotations: [ ve.dm.example.italic ]
 			},
 			{ type: '/break' },
-			['d', [ ve.dm.example.italic ]],
+			[ 'd', [ ve.dm.example.italic ] ],
 			'e',
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
@@ -2115,7 +2115,7 @@ ve.dm.example.domToDataCases = {
 			'z',
 			{ type: '/paragraph' },
 			{ type: '/listItem' },
-			{ type: 'listItem', internal: { whitespace: [ undefined, '  ', '   '] } },
+			{ type: 'listItem', internal: { whitespace: [ undefined, '  ', '   ' ] } },
 			{
 				type: 'paragraph',
 				internal: { whitespace: [ '  ', undefined, undefined, '   ' ], generated: 'wrapper' }
@@ -2190,7 +2190,7 @@ ve.dm.example.domToDataCases = {
 			{ type: '/paragraph' },
 			{ type: 'list', attributes: { style: 'bullet' }, internal: { whitespace: [ '\n\n\n', '\n\n\n\n', '\t', '\t\t' ] } },
 			{ type: 'listItem', internal: { whitespace: [ '\n\n\n\n', ' ', '    ', '\t' ] } },
-			{ type: 'paragraph', internal: { whitespace: [ ' ', '  ', '   ', '    '] } },
+			{ type: 'paragraph', internal: { whitespace: [ ' ', '  ', '   ', '    ' ] } },
 			'P',
 			{ type: '/paragraph' },
 			{ type: '/listItem' },
@@ -2419,7 +2419,7 @@ ve.dm.example.domToDataCases = {
 	'whitespace preservation not triggered inside <pre>': {
 		body: '\n<pre>\n\n\nFoo\n\n\nBar\n\n\n\n</pre>\n\n\n\n\n',
 		data: [
-			{ type: 'preformatted', internal: { whitespace: ['\n', undefined, undefined, '\n\n\n\n\n' ] } },
+			{ type: 'preformatted', internal: { whitespace: [ '\n', undefined, undefined, '\n\n\n\n\n' ] } },
 			'\n',
 			'\n',
 			'F',
@@ -2883,16 +2883,16 @@ ve.dm.example.domToDataCases = {
 			{ type: 'paragraph' },
 			'A',
 			' ',
-			[ ' ', [ve.dm.example.bold] ],
-			[ 'B', [ve.dm.example.bold] ],
-			[ ' ', [ve.dm.example.bold] ],
-			[ ' ', [ve.dm.example.bold, ve.dm.example.italic] ],
-			[ 'C', [ve.dm.example.bold, ve.dm.example.italic] ],
-			[ '\t', [ve.dm.example.bold, ve.dm.example.italic] ],
-			[ ' ', [ve.dm.example.bold] ],
-			[ '\n', [ve.dm.example.underline] ],
-			[ 'D', [ve.dm.example.underline] ],
-			[ '\t', [ve.dm.example.underline] ],
+			[ ' ', [ ve.dm.example.bold ] ],
+			[ 'B', [ ve.dm.example.bold ] ],
+			[ ' ', [ ve.dm.example.bold ] ],
+			[ ' ', [ ve.dm.example.bold, ve.dm.example.italic ] ],
+			[ 'C', [ ve.dm.example.bold, ve.dm.example.italic ] ],
+			[ '\t', [ ve.dm.example.bold, ve.dm.example.italic ] ],
+			[ ' ', [ ve.dm.example.bold ] ],
+			[ '\n', [ ve.dm.example.underline ] ],
+			[ 'D', [ ve.dm.example.underline ] ],
+			[ '\t', [ ve.dm.example.underline ] ],
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
@@ -3127,9 +3127,9 @@ ve.dm.example.domToDataCases = {
 			{ type: 'div' },
 			{ type: 'paragraph' },
 			'a',
-			['b', [ ve.dm.example.bold ]],
+			[ 'b', [ ve.dm.example.bold ] ],
 			'c',
-			['d', [ ve.dm.example.italic ]],
+			[ 'd', [ ve.dm.example.italic ] ],
 			'e',
 			{ type: '/paragraph' },
 			{ type: '/div' },

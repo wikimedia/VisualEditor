@@ -181,7 +181,7 @@ ve.dm.Document.static.addAnnotationsToData = function ( data, annotationSet ) {
 			continue;
 		} else if ( !Array.isArray( data[i] ) ) {
 			// Wrap in array
-			data[i] = [data[i]];
+			data[i] = [ data[i] ];
 			newAnnotationSet = annotationSet.clone();
 		} else {
 			// Add to existing array
@@ -217,9 +217,9 @@ ve.dm.Document.prototype.buildNodeTree = function () {
 	// then from the bottom up add nodes to their potential parents. This avoids massive length
 	// updates being broadcast upstream constantly while building is underway.
 	currentStack = [];
-	parentStack = [this.documentNode];
+	parentStack = [ this.documentNode ];
 	// Stack of stacks
-	nodeStack = [parentStack, currentStack];
+	nodeStack = [ parentStack, currentStack ];
 	currentNode = this.documentNode;
 	doc = this.documentNode.getDocument();
 

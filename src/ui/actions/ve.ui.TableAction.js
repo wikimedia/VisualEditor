@@ -586,7 +586,7 @@ ve.ui.TableAction.prototype.deleteRowsOrColumns = function ( matrix, mode, minIn
 
 		// Cell nodes only get deleted when deleting columns (otherwise row nodes)
 		if ( mode === 'col' ) {
-			actions.push( { action: 'delete', cell: cell });
+			actions.push( { action: 'delete', cell: cell } );
 		}
 	}
 

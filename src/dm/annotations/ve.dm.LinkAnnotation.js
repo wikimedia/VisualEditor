@@ -27,7 +27,7 @@ OO.inheritClass( ve.dm.LinkAnnotation, ve.dm.Annotation );
 
 ve.dm.LinkAnnotation.static.name = 'link';
 
-ve.dm.LinkAnnotation.static.matchTagNames = ['a'];
+ve.dm.LinkAnnotation.static.matchTagNames = [ 'a' ];
 
 ve.dm.LinkAnnotation.static.splitOnWordbreak = true;
 

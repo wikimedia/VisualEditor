@@ -12,12 +12,12 @@ QUnit.test( 'getType/isOpenElementData/isCloseElementData', function ( assert ) 
 	var i,
 		data = new ve.dm.FlatLinearData( new ve.dm.IndexValueStore(), [
 			{ type: 'paragraph' },
-			'a', ['b', [0]],
+			'a', [ 'b', [ 0 ] ],
 			{ type: '/paragraph' }
 		] ),
-		types = ['paragraph', undefined, undefined, 'paragraph'],
-		isOpen = [0],
-		isClose = [3];
+		types = [ 'paragraph', undefined, undefined, 'paragraph' ],
+		isOpen = [ 0 ],
+		isClose = [ 3 ];
 
 	QUnit.expect( data.getLength() * 3 );
 	for ( i = 0; i < data.getLength(); i++ ) {
@@ -83,22 +83,22 @@ QUnit.test( 'containsElementData', 1, function ( assert ) {
 		cases = [
 			{
 				msg: 'simple paragraph',
-				data: [{ type: 'paragraph' }, 'a', { type: '/paragraph' }],
+				data: [ { type: 'paragraph' }, 'a', { type: '/paragraph' } ],
 				expected: true
 			},
 			{
 				msg: 'plain text',
-				data: ['a', 'b', 'c'],
+				data: [ 'a', 'b', 'c' ],
 				expected: false
 			},
 			{
 				msg: 'annotated text',
-				data: [['a', { '{"type:"bold"}': { type: 'bold' } } ]],
+				data: [ [ 'a', { '{"type:"bold"}': { type: 'bold' } } ] ],
 				expected: false
 			},
 			{
 				msg: 'non-text leaf',
-				data: ['a', { type: 'inlineImage' }, { type: '/inlineImage' }, 'c'],
+				data: [ 'a', { type: 'inlineImage' }, { type: '/inlineImage' }, 'c' ],
 				expected: true
 			}
 		];

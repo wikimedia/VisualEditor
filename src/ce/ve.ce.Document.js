@@ -174,8 +174,8 @@ ve.ce.Document.prototype.getNodeAndOffsetUnadjustedForUnicorn = function ( offse
 	}
 	node = this.getBranchNodeFromOffset( offset );
 	startOffset = node.getOffset() + ( ( node.isWrapped() ) ? 1 : 0 );
-	current = [node.$element.contents(), 0];
-	stack = [current];
+	current = [ node.$element.contents(), 0 ];
+	stack = [ current ];
 	while ( stack.length > 0 ) {
 		if ( current[1] >= current[0].length ) {
 			stack.pop();
@@ -220,7 +220,7 @@ ve.ce.Document.prototype.getNodeAndOffsetUnadjustedForUnicorn = function ( offse
 					length = model.getOuterLength();
 					countedNodes.push( model );
 					if ( offset >= startOffset && offset < startOffset + length ) {
-						stack.push( [$item.contents(), 0] );
+						stack.push( [ $item.contents(), 0 ] );
 						current[1]++;
 						current = stack[stack.length - 1];
 						continue;
@@ -240,7 +240,7 @@ ve.ce.Document.prototype.getNodeAndOffsetUnadjustedForUnicorn = function ( offse
 				continue;
 			} else {
 				// Any other type of node (e.g. b, inline slug, img): descend
-				stack.push( [$item.contents(), 0] );
+				stack.push( [ $item.contents(), 0 ] );
 				current[1]++;
 				current = stack[stack.length - 1];
 				continue;

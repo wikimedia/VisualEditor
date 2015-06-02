@@ -144,7 +144,7 @@ ve.dm.Surface.prototype.stopHistoryTracking = function () {
  */
 ve.dm.Surface.prototype.getHistory = function () {
 	if ( this.newTransactions.length > 0 ) {
-		return this.undoStack.slice( 0 ).concat( [{ transactions: this.newTransactions.slice( 0 ) }] );
+		return this.undoStack.slice( 0 ).concat( [ { transactions: this.newTransactions.slice( 0 ) } ] );
 	} else {
 		return this.undoStack.slice( 0 );
 	}
@@ -724,7 +724,7 @@ ve.dm.Surface.prototype.changeInternal = function ( transactions, selection, ski
 	// Process transactions
 	if ( transactions ) {
 		if ( transactions instanceof ve.dm.Transaction ) {
-			transactions = [transactions];
+			transactions = [ transactions ];
 		}
 		this.transacting = true;
 		for ( i = 0, len = transactions.length; i < len; i++ ) {

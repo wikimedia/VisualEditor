@@ -25,7 +25,7 @@ QUnit.test( 'synchronize', 6, function ( assert ) {
 		secondTextNodeLengthChanges = [];
 
 	// Annotate "a" with bold formatting
-	doc.data[1] = ['a', new ve.dm.AnnotationSet( doc.getStore(),
+	doc.data[1] = [ 'a', new ve.dm.AnnotationSet( doc.getStore(),
 		doc.getStore().index( new ve.dm.BoldAnnotation() ) )
 	];
 	ds.pushAnnotation( new ve.Range( 1, 2 ) );
@@ -33,7 +33,7 @@ QUnit.test( 'synchronize', 6, function ( assert ) {
 	doc.data.batchSplice( 2, 0, [ 'x', 'y', 'z' ] );
 	ds.pushResize( doc.getDocumentNode().getNodeFromOffset( 2 ), 3 );
 	// Annotate "d" with italic formatting (was at 10, now at 13)
-	doc.data[13] = ['d', new ve.dm.AnnotationSet( doc.getStore(),
+	doc.data[13] = [ 'd', new ve.dm.AnnotationSet( doc.getStore(),
 		doc.getStore().index( new ve.dm.ItalicAnnotation() ) )
 	];
 	ds.pushAnnotation( new ve.Range( 10, 11 ) );

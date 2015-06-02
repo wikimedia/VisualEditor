@@ -174,9 +174,9 @@ ve.ui.ListAction.prototype.wrap = function ( style, noBreakpoints ) {
 					documentModel,
 					groupRange,
 					[],
-					[{ type: 'list', attributes: { style: style } }],
+					[ { type: 'list', attributes: { style: style } } ],
 					[],
-					[{ type: 'listItem' }]
+					[ { type: 'listItem' } ]
 				);
 				surfaceModel.change(
 					tx,

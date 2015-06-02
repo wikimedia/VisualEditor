@@ -271,7 +271,7 @@ ve.batchSplice = function ( arr, offset, remove, data ) {
 		// Call arr.splice( offset, remove, i0, i1, i2, ..., i1023 );
 		// Only set remove on the first call, and set it to zero on subsequent calls
 		spliced = splice.apply(
-			arr, [index + offset, toRemove].concat( data.slice( index, index + batchSize ) )
+			arr, [ index + offset, toRemove ].concat( data.slice( index, index + batchSize ) )
 		);
 		if ( toRemove > 0 ) {
 			removed = spliced;
@@ -856,8 +856,8 @@ ve.createDocumentFromHtmlUsingInnerHtml = function ( html ) {
 
 	// Carefully unwrap the HTML out of the root node (and doctype, if any).
 	newDocument.documentElement.innerHTML = html
-		.replace(/^\s*(?:<!doctype[^>]*>)?\s*<html[^>]*>/i, '' )
-		.replace(/<\/html>\s*$/i, '' );
+		.replace( /^\s*(?:<!doctype[^>]*>)?\s*<html[^>]*>/i, '' )
+		.replace( /<\/html>\s*$/i, '' );
 
 	// Preserve <html> attributes, if any
 	htmlAttributes = html.match( /<html([^>]*>)/i );

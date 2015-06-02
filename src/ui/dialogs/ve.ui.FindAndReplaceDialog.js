@@ -96,28 +96,28 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 	} );
 
 	var optionsGroup = new OO.ui.ButtonGroupWidget( {
-			classes: ['ve-ui-findAndReplaceDialog-cell'],
+			classes: [ 've-ui-findAndReplaceDialog-cell' ],
 			items: [
 				this.matchCaseToggle,
 				this.regexToggle
 			]
 		} ),
 		navigateGroup = new OO.ui.ButtonGroupWidget( {
-			classes: ['ve-ui-findAndReplaceDialog-cell'],
+			classes: [ 've-ui-findAndReplaceDialog-cell' ],
 			items: [
 				this.previousButton,
 				this.nextButton
 			]
 		} ),
 		replaceGroup = new OO.ui.ButtonGroupWidget( {
-			classes: ['ve-ui-findAndReplaceDialog-cell'],
+			classes: [ 've-ui-findAndReplaceDialog-cell' ],
 			items: [
 				this.replaceButton,
 				this.replaceAllButton
 			]
 		} ),
 		doneButton = new OO.ui.ButtonWidget( {
-			classes: ['ve-ui-findAndReplaceDialog-cell'],
+			classes: [ 've-ui-findAndReplaceDialog-cell' ],
 			label: ve.msg( 'visualeditor-find-and-replace-done' )
 		} ),
 		$findRow = $( '<div>' ).addClass( 've-ui-findAndReplaceDialog-row' ),

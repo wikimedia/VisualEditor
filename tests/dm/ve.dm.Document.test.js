@@ -319,7 +319,7 @@ QUnit.test( 'getRelativeRange', function ( assert ) {
 					},
 					{
 						direction: 1,
-						given: new ve.Range( 4, 6),
+						given: new ve.Range( 4, 6 ),
 						expected: new ve.Range( 6 )
 					},
 					{
@@ -407,66 +407,66 @@ QUnit.test( 'getBranchNodeFromOffset', function ( assert ) {
 		root = doc.getDocumentNode().getRoot(),
 		expected = [
 			[], // 0 - document
-			[0], // 1 - heading
-			[0], // 2 - heading
-			[0], // 3 - heading
-			[0], // 4 - heading
+			[ 0 ], // 1 - heading
+			[ 0 ], // 2 - heading
+			[ 0 ], // 3 - heading
+			[ 0 ], // 4 - heading
 			[], // 5 - document
-			[1], // 6 - table
-			[1, 0], // 7 - tableSection
-			[1, 0, 0], // 7 - tableRow
-			[1, 0, 0, 0], // 8 - tableCell
-			[1, 0, 0, 0, 0], // 9 - paragraph
-			[1, 0, 0, 0, 0], // 10 - paragraph
-			[1, 0, 0, 0], // 11 - tableCell
-			[1, 0, 0, 0, 1], // 12 - list
-			[1, 0, 0, 0, 1, 0], // 13 - listItem
-			[1, 0, 0, 0, 1, 0, 0], // 14 - paragraph
-			[1, 0, 0, 0, 1, 0, 0], // 15 - paragraph
-			[1, 0, 0, 0, 1, 0], // 16 - listItem
-			[1, 0, 0, 0, 1, 0, 1], // 17 - list
-			[1, 0, 0, 0, 1, 0, 1, 0], // 18 - listItem
-			[1, 0, 0, 0, 1, 0, 1, 0, 0], // 19 - paragraph
-			[1, 0, 0, 0, 1, 0, 1, 0, 0], // 20 - paragraph
-			[1, 0, 0, 0, 1, 0, 1, 0], // 21 - listItem
-			[1, 0, 0, 0, 1, 0, 1], // 22 - list
-			[1, 0, 0, 0, 1, 0], // 23 - listItem
-			[1, 0, 0, 0, 1], // 24 - list
-			[1, 0, 0, 0], // 25 - tableCell
-			[1, 0, 0, 0, 2], // 26 - list
-			[1, 0, 0, 0, 2, 0], // 27 - listItem
-			[1, 0, 0, 0, 2, 0, 0], // 28 - paragraph
-			[1, 0, 0, 0, 2, 0, 0], // 29 - paragraph
-			[1, 0, 0, 0, 2, 0], // 30 - listItem
-			[1, 0, 0, 0, 2], // 31 - list
-			[1, 0, 0, 0], // 32 - tableCell
-			[1, 0, 0], // 33 - tableRow
-			[1, 0], // 33 - tableSection
-			[1], // 34 - table
+			[ 1 ], // 6 - table
+			[ 1, 0 ], // 7 - tableSection
+			[ 1, 0, 0 ], // 7 - tableRow
+			[ 1, 0, 0, 0 ], // 8 - tableCell
+			[ 1, 0, 0, 0, 0 ], // 9 - paragraph
+			[ 1, 0, 0, 0, 0 ], // 10 - paragraph
+			[ 1, 0, 0, 0 ], // 11 - tableCell
+			[ 1, 0, 0, 0, 1 ], // 12 - list
+			[ 1, 0, 0, 0, 1, 0 ], // 13 - listItem
+			[ 1, 0, 0, 0, 1, 0, 0 ], // 14 - paragraph
+			[ 1, 0, 0, 0, 1, 0, 0 ], // 15 - paragraph
+			[ 1, 0, 0, 0, 1, 0 ], // 16 - listItem
+			[ 1, 0, 0, 0, 1, 0, 1 ], // 17 - list
+			[ 1, 0, 0, 0, 1, 0, 1, 0 ], // 18 - listItem
+			[ 1, 0, 0, 0, 1, 0, 1, 0, 0 ], // 19 - paragraph
+			[ 1, 0, 0, 0, 1, 0, 1, 0, 0 ], // 20 - paragraph
+			[ 1, 0, 0, 0, 1, 0, 1, 0 ], // 21 - listItem
+			[ 1, 0, 0, 0, 1, 0, 1 ], // 22 - list
+			[ 1, 0, 0, 0, 1, 0 ], // 23 - listItem
+			[ 1, 0, 0, 0, 1 ], // 24 - list
+			[ 1, 0, 0, 0 ], // 25 - tableCell
+			[ 1, 0, 0, 0, 2 ], // 26 - list
+			[ 1, 0, 0, 0, 2, 0 ], // 27 - listItem
+			[ 1, 0, 0, 0, 2, 0, 0 ], // 28 - paragraph
+			[ 1, 0, 0, 0, 2, 0, 0 ], // 29 - paragraph
+			[ 1, 0, 0, 0, 2, 0 ], // 30 - listItem
+			[ 1, 0, 0, 0, 2 ], // 31 - list
+			[ 1, 0, 0, 0 ], // 32 - tableCell
+			[ 1, 0, 0 ], // 33 - tableRow
+			[ 1, 0 ], // 33 - tableSection
+			[ 1 ], // 34 - table
 			[], // 35- document
-			[2], // 36 - preformatted
-			[2], // 37 - preformatted
-			[2], // 38 - preformatted
-			[2], // 39 - preformatted
-			[2], // 40 - preformatted
+			[ 2 ], // 36 - preformatted
+			[ 2 ], // 37 - preformatted
+			[ 2 ], // 38 - preformatted
+			[ 2 ], // 39 - preformatted
+			[ 2 ], // 40 - preformatted
 			[], // 41 - document
-			[3], // 42 - definitionList
-			[3, 0], // 43 - definitionListItem
-			[3, 0, 0], // 44 - paragraph
-			[3, 0, 0], // 45 - paragraph
-			[3, 0], // 46 - definitionListItem
-			[3], // 47 - definitionList
-			[3, 1], // 48 - definitionListItem
-			[3, 1, 0], // 49 - paragraph
-			[3, 1, 0], // 50 - paragraph
-			[3, 1], // 51 - definitionListItem
-			[3], // 52 - definitionList
+			[ 3 ], // 42 - definitionList
+			[ 3, 0 ], // 43 - definitionListItem
+			[ 3, 0, 0 ], // 44 - paragraph
+			[ 3, 0, 0 ], // 45 - paragraph
+			[ 3, 0 ], // 46 - definitionListItem
+			[ 3 ], // 47 - definitionList
+			[ 3, 1 ], // 48 - definitionListItem
+			[ 3, 1, 0 ], // 49 - paragraph
+			[ 3, 1, 0 ], // 50 - paragraph
+			[ 3, 1 ], // 51 - definitionListItem
+			[ 3 ], // 52 - definitionList
 			[], // 53 - document
-			[4], // 54 - paragraph
-			[4], // 55 - paragraph
+			[ 4 ], // 54 - paragraph
+			[ 4 ], // 55 - paragraph
 			[], // 56 - document
-			[5], // 57 - paragraph
-			[5], // 58 - paragraph
+			[ 5 ], // 57 - paragraph
+			[ 5 ], // 58 - paragraph
 			[] // 59 - document
 		];
 	QUnit.expect( expected.length );
@@ -541,7 +541,7 @@ QUnit.test( 'rebuildNodes', 2, function ( assert ) {
 	// Replace table with paragraph
 	doc.data.batchSplice( 5, 32, [ { type: 'paragraph' }, 'a', 'b', 'c', { type: '/paragraph' } ] );
 	tree.splice( 1, 1, new ve.dm.ParagraphNode(
-		doc.data.getData( 5 ), [new ve.dm.TextNode( 3 )]
+		doc.data.getData( 5 ), [ new ve.dm.TextNode( 3 ) ]
 	) );
 	// Rebuild with changes
 	doc.rebuildNodes( documentNode, 1, 1, 5, 5 );
@@ -639,15 +639,15 @@ QUnit.test( 'cloneSliceFromRange', function ( assert ) {
 				msg: 'range with one character',
 				range: new ve.Range( 2, 3 ),
 				expected: [
-					['b', [ ve.dm.example.bold ]]
+					[ 'b', [ ve.dm.example.bold ] ]
 				]
 			},
 			{
 				msg: 'range with two characters',
 				range: new ve.Range( 2, 4 ),
 				expected: [
-					['b', [ ve.dm.example.bold ]],
-					['c', [ ve.dm.example.italic ]]
+					[ 'b', [ ve.dm.example.bold ] ],
+					[ 'c', [ ve.dm.example.italic ] ]
 				]
 			},
 			{
@@ -655,8 +655,8 @@ QUnit.test( 'cloneSliceFromRange', function ( assert ) {
 				range: new ve.Range( 2, 5 ),
 				expected: [
 					{ type: 'heading', attributes: { level: 1 } },
-					['b', [ ve.dm.example.bold ]],
-					['c', [ ve.dm.example.italic ]],
+					[ 'b', [ ve.dm.example.bold ] ],
+					[ 'c', [ ve.dm.example.italic ] ],
 					{ type: '/heading' }
 				],
 				originalRange: new ve.Range( 1, 4 )
@@ -666,7 +666,7 @@ QUnit.test( 'cloneSliceFromRange', function ( assert ) {
 				range: new ve.Range( 3, 6 ),
 				expected: [
 					{ type: 'heading', attributes: { level: 1 } },
-					['c', [ ve.dm.example.italic ]],
+					[ 'c', [ ve.dm.example.italic ] ],
 					{ type: '/heading' },
 					{ type: 'table' },
 					{ type: '/table' }
@@ -866,7 +866,7 @@ QUnit.test( 'protection against double application of transactions', 1, function
 	var testDocument = ve.dm.example.createExampleDocument(),
 		tx = new ve.dm.Transaction( testDocument );
 	tx.pushRetain( 1 );
-	tx.pushReplace( testDocument, 1, 0, ['H', 'e', 'l', 'l', 'o' ] );
+	tx.pushReplace( testDocument, 1, 0, [ 'H', 'e', 'l', 'l', 'o' ] );
 	testDocument.commit( tx );
 	assert.throws(
 		function () {

@@ -70,7 +70,7 @@ OO.initClass( ve.ui.Trigger );
  * @property
  * @inheritable
  */
-ve.ui.Trigger.static.modifierKeys = ['meta', 'ctrl', 'alt', 'shift'];
+ve.ui.Trigger.static.modifierKeys = [ 'meta', 'ctrl', 'alt', 'shift' ];
 
 /**
  * Symbolic primary key names.

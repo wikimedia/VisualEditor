@@ -273,13 +273,13 @@ ve.ce.ResizableNode.prototype.onResizableBlur = function () {
 ve.ce.ResizableNode.prototype.onResizableAlign = function ( align ) {
 	switch ( align ) {
 		case 'right':
-			this.showHandles( ['sw'] );
+			this.showHandles( [ 'sw' ] );
 			break;
 		case 'left':
-			this.showHandles( ['se'] );
+			this.showHandles( [ 'se' ] );
 			break;
 		case 'center':
-			this.showHandles( ['sw', 'se'] );
+			this.showHandles( [ 'sw', 'se' ] );
 			break;
 		default:
 			this.showHandles();

@@ -9,8 +9,8 @@ QUnit.module( 've.ce' );
 /* Tests */
 
 QUnit.test( 'whitespacePattern', 4, function ( assert ) {
-	assert.deepEqual( 'a b'.match( ve.ce.whitespacePattern ), [' '], 'matches spaces' );
-	assert.deepEqual( 'a\u00A0b'.match( ve.ce.whitespacePattern ), ['\u00A0'], 'matches non-breaking spaces' );
+	assert.deepEqual( 'a b'.match( ve.ce.whitespacePattern ), [ ' ' ], 'matches spaces' );
+	assert.deepEqual( 'a\u00A0b'.match( ve.ce.whitespacePattern ), [ '\u00A0' ], 'matches non-breaking spaces' );
 	assert.strictEqual( 'a\tb'.match( ve.ce.whitespacePattern ), null, 'does not match tab' );
 	assert.strictEqual( 'ab'.match( ve.ce.whitespacePattern ), null, 'does not match non-whitespace' );
 } );
@@ -291,13 +291,13 @@ QUnit.test( 'nextCursorOffset', function ( assert ) {
 	}
 
 	tests = [
-		{ html: '<p>foo<img>bar</p>', expected: ['#bar', 0] },
-		{ html: '<p>foo<b><i><img></i></b></p>', expected: ['i', 1] },
-		{ html: '<p><b>foo</b><img>bar</p>', expected: ['#bar', 0] },
-		{ html: '<p>foo<b><i><img></i></b></p>', expected: ['i', 1] },
-		{ html: '<p><b>foo</b><img></p>', expected: ['p', 2] },
-		{ html: '<p><img><b>foo</b></p>', expected: ['p', 1] },
-		{ html: '<p><b>foo</b><img><b>bar</b></p>', expected: ['p', 2] }
+		{ html: '<p>foo<img>bar</p>', expected: [ '#bar', 0 ] },
+		{ html: '<p>foo<b><i><img></i></b></p>', expected: [ 'i', 1 ] },
+		{ html: '<p><b>foo</b><img>bar</p>', expected: [ '#bar', 0 ] },
+		{ html: '<p>foo<b><i><img></i></b></p>', expected: [ 'i', 1 ] },
+		{ html: '<p><b>foo</b><img></p>', expected: [ 'p', 2 ] },
+		{ html: '<p><img><b>foo</b></p>', expected: [ 'p', 1 ] },
+		{ html: '<p><b>foo</b><img><b>bar</b></p>', expected: [ 'p', 2 ] }
 	];
 	QUnit.expect( tests.length );
 	elt = ve.createDocumentFromHtml( '' ).createElement( 'div' );
@@ -307,7 +307,7 @@ QUnit.test( 'nextCursorOffset', function ( assert ) {
 		img = elt.getElementsByTagName( 'img' )[0];
 		nextOffset = ve.ce.nextCursorOffset( img );
 		assert.deepEqual(
-			[dumpnode( nextOffset.node ), nextOffset.offset],
+			[ dumpnode( nextOffset.node ), nextOffset.offset ],
 			test.expected,
 			test.html
 		);
@@ -317,11 +317,11 @@ QUnit.test( 'nextCursorOffset', function ( assert ) {
 QUnit.test( 'resolveTestOffset', function ( assert ) {
 	var i, ilen, j, jlen, tests, test, testOffset, elt, pre, post, count, dom;
 	tests = [
-		['o', 'k'],
+		[ 'o', 'k' ],
 		// TODO: doesn't handle tags correctly yet!
 		// ['w', '<b>', 'x', 'y', '</b>', 'z'],
 		// ['q', '<b>', 'r', '<b>', 's', 't', '</b>', 'u', '</b>', 'v']
-		['h', 'e', 'l', 'l', 'o']
+		[ 'h', 'e', 'l', 'l', 'o' ]
 	];
 	count = 0;
 	for ( i = 0, ilen = tests.length; i < ilen; i++ ) {

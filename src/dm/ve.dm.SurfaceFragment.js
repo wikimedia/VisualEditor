@@ -986,7 +986,7 @@ ve.dm.SurfaceFragment.prototype.wrapNodes = function ( wrapper ) {
 	}
 
 	if ( !Array.isArray( wrapper ) ) {
-		wrapper = [wrapper];
+		wrapper = [ wrapper ];
 	}
 	this.change(
 		ve.dm.Transaction.newFromWrap( this.document, this.getSelection().getRange(), [], [], [], wrapper )
@@ -1067,7 +1067,7 @@ ve.dm.SurfaceFragment.prototype.rewrapNodes = function ( depth, wrapper ) {
 		unwrapper = [];
 
 	if ( !Array.isArray( wrapper ) ) {
-		wrapper = [wrapper];
+		wrapper = [ wrapper ];
 	}
 
 	if ( range.getLength() < depth * 2 ) {
@@ -1110,7 +1110,7 @@ ve.dm.SurfaceFragment.prototype.wrapAllNodes = function ( wrapper ) {
 	}
 
 	if ( !Array.isArray( wrapper ) ) {
-		wrapper = [wrapper];
+		wrapper = [ wrapper ];
 	}
 
 	this.change(
@@ -1152,7 +1152,7 @@ ve.dm.SurfaceFragment.prototype.rewrapAllNodes = function ( depth, wrapper ) {
 		);
 
 	if ( !Array.isArray( wrapper ) ) {
-		wrapper = [wrapper];
+		wrapper = [ wrapper ];
 	}
 
 	if ( range.getLength() < depth * 2 ) {

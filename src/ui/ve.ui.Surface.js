@@ -32,8 +32,8 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 
 	// Properties
 	this.inDialog = config.inDialog || '';
-	this.globalOverlay = new ve.ui.Overlay( { classes: ['ve-ui-overlay-global'] } );
-	this.localOverlay = new ve.ui.Overlay( { classes: ['ve-ui-overlay-local'] } );
+	this.globalOverlay = new ve.ui.Overlay( { classes: [ 've-ui-overlay-global' ] } );
+	this.localOverlay = new ve.ui.Overlay( { classes: [ 've-ui-overlay-local' ] } );
 	this.$selections = $( '<div>' );
 	this.$blockers = $( '<div>' );
 	this.$controls = $( '<div>' );

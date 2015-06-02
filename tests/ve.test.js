@@ -29,63 +29,63 @@ QUnit.module( 've' );
 QUnit.test( 'compareClassLists', 1, function ( assert ) {
 	var i, cases = [
 		{
-			args: ['', ''],
+			args: [ '', '' ],
 			expected: true
 		},
 		{
-			args: ['', []],
+			args: [ '', [] ],
 			expected: true
 		},
 		{
-			args: [[], []],
+			args: [ [], [] ],
 			expected: true
 		},
 		{
-			args: ['', ['']],
+			args: [ '', [ '' ] ],
 			expected: true
 		},
 		{
-			args: [[], ['']],
+			args: [ [], [ '' ] ],
 			expected: true
 		},
 		{
-			args: ['foo', ''],
+			args: [ 'foo', '' ],
 			expected: false
 		},
 		{
-			args: ['foo', 'foo'],
+			args: [ 'foo', 'foo' ],
 			expected: true
 		},
 		{
-			args: ['foo', 'bar'],
+			args: [ 'foo', 'bar' ],
 			expected: false
 		},
 		{
-			args: ['foo', 'foo bar'],
+			args: [ 'foo', 'foo bar' ],
 			expected: false
 		},
 		{
-			args: ['foo', ['foo']],
+			args: [ 'foo', [ 'foo' ] ],
 			expected: true
 		},
 		{
-			args: [['foo'], 'bar'],
+			args: [ [ 'foo' ], 'bar' ],
 			expected: false
 		},
 		{
-			args: ['foo', ['foo', 'bar']],
+			args: [ 'foo', [ 'foo', 'bar' ] ],
 			expected: false
 		},
 		{
-			args: ['foo', ['foo', 'foo']],
+			args: [ 'foo', [ 'foo', 'foo' ] ],
 			expected: true
 		},
 		{
-			args: [['foo'], 'foo foo'],
+			args: [ [ 'foo' ], 'foo foo' ],
 			expected: true
 		},
 		{
-			args: ['foo bar foo', 'foo foo'],
+			args: [ 'foo bar foo', 'foo foo' ],
 			expected: false
 		}
 	];
@@ -185,7 +185,7 @@ QUnit.test( 'setDomAttributes', 7, function ( assert ) {
 	);
 
 	target = sample.cloneNode();
-	ve.setDomAttributes( target, { onclick: 'alert(1);', foo: 'update', add: 'whee' }, ['foo', 'add'] );
+	ve.setDomAttributes( target, { onclick: 'alert(1);', foo: 'update', add: 'whee' }, [ 'foo', 'add' ] );
 	assert.ok( !target.hasAttribute( 'onclick' ), 'whitelist affects creating attributes' );
 	assert.deepEqual(
 		ve.getDomAttributes( target ),
@@ -194,7 +194,7 @@ QUnit.test( 'setDomAttributes', 7, function ( assert ) {
 	);
 
 	target = document.createElement( 'div' );
-	ve.setDomAttributes( target, { Foo: 'add', Bar: 'add' }, ['bar'] );
+	ve.setDomAttributes( target, { Foo: 'add', Bar: 'add' }, [ 'bar' ] );
 	assert.deepEqual(
 		ve.getDomAttributes( target ),
 		{ bar: 'add' },
@@ -202,7 +202,7 @@ QUnit.test( 'setDomAttributes', 7, function ( assert ) {
 	);
 
 	target = sample.cloneNode();
-	ve.setDomAttributes( target, { foo: 'update', bar: null }, ['bar', 'baz'] );
+	ve.setDomAttributes( target, { foo: 'update', bar: null }, [ 'bar', 'baz' ] );
 	assert.propEqual(
 		ve.getDomAttributes( target ),
 		{ foo: 'one', baz: 'three' },
@@ -296,8 +296,8 @@ QUnit.test( 'batchSplice', function ( assert ) {
 			bigArr[i] = i;
 		}
 		actualRet = ve.batchSplice( actual, 2, 3, bigArr );
-		expectedRet = expected.splice.apply( expected, [2, 3].concat( bigArr.slice( 0, 1050 ) ) );
-		expected.splice.apply( expected, [1052, 0].concat( bigArr.slice( 1050 ) ) );
+		expectedRet = expected.splice.apply( expected, [ 2, 3 ].concat( bigArr.slice( 0, 1050 ) ) );
+		expected.splice.apply( expected, [ 1052, 0 ].concat( bigArr.slice( 1050 ) ) );
 		assert.deepEqual( expectedRet, actualRet, msg + ': replacing 3 elements with 2100 elements (return value)' );
 		assert.deepEqual( expected, actual, msg + ': replacing 3 elements with 2100 elements (array)' );
 	}

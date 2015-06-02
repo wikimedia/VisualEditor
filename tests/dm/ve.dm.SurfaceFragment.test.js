@@ -33,7 +33,7 @@ QUnit.test( 'update', 3, function ( assert ) {
 		fragment2 = surface.getLinearFragment( new ve.Range( 55, 61 ) ),
 		fragment3 = surface.getLinearFragment( new ve.Range( 55, 61 ) );
 	fragment1.wrapNodes(
-		[{ type: 'list', attributes: { style: 'bullet' } }, { type: 'listItem' }]
+		[ { type: 'list', attributes: { style: 'bullet' } }, { type: 'listItem' } ]
 	);
 	assert.equalRange(
 		fragment2.getSelection().getRange(),
@@ -100,12 +100,12 @@ QUnit.test( 'expandLinearSelection (annotation)', function ( assert ) {
 		doc = ve.dm.example.createExampleDocumentFromData( [
 			{ type: 'paragraph' },
 			'F', 'o', 'o',
-			['b', [ ve.dm.example.bold ]],
-			['a', [ ve.dm.example.bold ]],
-			['r', [ ve.dm.example.bold ]],
-			['b', [ ve.dm.example.bold, ve.dm.example.italic ]],
-			['a', [ ve.dm.example.bold, ve.dm.example.italic ]],
-			['z', [ ve.dm.example.bold, ve.dm.example.italic ]],
+			[ 'b', [ ve.dm.example.bold ] ],
+			[ 'a', [ ve.dm.example.bold ] ],
+			[ 'r', [ ve.dm.example.bold ] ],
+			[ 'b', [ ve.dm.example.bold, ve.dm.example.italic ] ],
+			[ 'a', [ ve.dm.example.bold, ve.dm.example.italic ] ],
+			[ 'z', [ ve.dm.example.bold, ve.dm.example.italic ] ],
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
@@ -370,10 +370,10 @@ QUnit.test( 'insertContent', 8, function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument(),
 		surface = new ve.dm.Surface( doc ),
 		fragment = surface.getLinearFragment( new ve.Range( 1, 4 ) );
-	fragment.insertContent( ['1', '2', '3'] );
+	fragment.insertContent( [ '1', '2', '3' ] );
 	assert.deepEqual(
 		doc.getData( new ve.Range( 1, 4 ) ),
-		['1', '2', '3'],
+		[ '1', '2', '3' ],
 		'inserting content replaces selection with new content'
 	);
 	assert.equalRange(
@@ -387,7 +387,7 @@ QUnit.test( 'insertContent', 8, function ( assert ) {
 	fragment.insertContent( '321' );
 	assert.deepEqual(
 		doc.getData( new ve.Range( 4, 7 ) ),
-		['3', '2', '1'],
+		[ '3', '2', '1' ],
 		'strings get converted into data when inserting content'
 	);
 
@@ -449,7 +449,7 @@ QUnit.test( 'wrapNodes/unwrapNodes', 10, function ( assert ) {
 
 	// Make 2 paragraphs into 2 lists of 1 item each
 	fragment.wrapNodes(
-		[{ type: 'list', attributes: { style: 'bullet' } }, { type: 'listItem' }]
+		[ { type: 'list', attributes: { style: 'bullet' } }, { type: 'listItem' } ]
 	);
 	assert.deepEqual(
 		doc.getData( new ve.Range( 55, 69 ) ),
@@ -486,7 +486,7 @@ QUnit.test( 'wrapNodes/unwrapNodes', 10, function ( assert ) {
 	// Make a 1 paragraph into 1 list with 1 item
 	fragment = surface.getLinearFragment( new ve.Range( 9, 12 ) );
 	fragment.wrapNodes(
-		[{ type: 'list', attributes: { style: 'bullet' } }, { type: 'listItem' }]
+		[ { type: 'list', attributes: { style: 'bullet' } }, { type: 'listItem' } ]
 	);
 	assert.deepEqual(
 		doc.getData( new ve.Range( 9, 16 ) ),
@@ -527,10 +527,10 @@ QUnit.test( 'rewrapNodes', 4, function ( assert ) {
 
 	// set up wrapped nodes in example document
 	fragment.wrapNodes(
-		[{ type: 'list', attributes: { style: 'bullet' } }, { type: 'listItem' }]
+		[ { type: 'list', attributes: { style: 'bullet' } }, { type: 'listItem' } ]
 	);
 	expectedFragment.wrapNodes(
-		[{ type: 'list', attributes: { style: 'bullet' } }, { type: 'listItem' }]
+		[ { type: 'list', attributes: { style: 'bullet' } }, { type: 'listItem' } ]
 	);
 	// range is now 43, 59
 
@@ -538,11 +538,11 @@ QUnit.test( 'rewrapNodes', 4, function ( assert ) {
 	// This type of test can only exist if the intermediate state is valid
 	fragment.rewrapNodes(
 		2,
-		[{ type: 'definitionList' }, { type: 'definitionListItem', attributes: { style: 'term' } }]
+		[ { type: 'definitionList' }, { type: 'definitionListItem', attributes: { style: 'term' } } ]
 	);
 	expectedFragment.unwrapNodes( 0, 2 );
 	expectedFragment.wrapNodes(
-		[{ type: 'definitionList' }, { type: 'definitionListItem', attributes: { style: 'term' } }]
+		[ { type: 'definitionList' }, { type: 'definitionListItem', attributes: { style: 'term' } } ]
 	);
 
 	assert.deepEqual(
@@ -578,7 +578,7 @@ QUnit.test( 'wrapAllNodes', 10, function ( assert ) {
 
 	// Make 2 paragraphs into 1 lists of 1 item with 2 paragraphs
 	fragment.wrapAllNodes(
-		[{ type: 'list', attributes: { style: 'bullet' } }, { type: 'listItem' }]
+		[ { type: 'list', attributes: { style: 'bullet' } }, { type: 'listItem' } ]
 	);
 	assert.deepEqual(
 		doc.getData( new ve.Range( 55, 65 ) ),
@@ -608,7 +608,7 @@ QUnit.test( 'wrapAllNodes', 10, function ( assert ) {
 	// Make a 1 paragraph into 1 list with 1 item
 	fragment = surface.getLinearFragment( new ve.Range( 9, 12 ) );
 	fragment.wrapAllNodes(
-		[{ type: 'list', attributes: { style: 'bullet' } }, { type: 'listItem' }]
+		[ { type: 'list', attributes: { style: 'bullet' } }, { type: 'listItem' } ]
 	);
 	assert.deepEqual(
 		doc.getData( new ve.Range( 9, 16 ) ),
@@ -662,11 +662,11 @@ QUnit.test( 'rewrapAllNodes', 6, function ( assert ) {
 	// This type of test can only exist if the intermediate state is valid
 	fragment.rewrapAllNodes(
 		4,
-		[{ type: 'list', attributes: { style: 'bullet' } }, { type: 'listItem' }]
+		[ { type: 'list', attributes: { style: 'bullet' } }, { type: 'listItem' } ]
 	);
 	expectedFragment.unwrapNodes( 0, 4 );
 	expectedFragment.wrapAllNodes(
-		[{ type: 'list', attributes: { style: 'bullet' } }, { type: 'listItem' }]
+		[ { type: 'list', attributes: { style: 'bullet' } }, { type: 'listItem' } ]
 	);
 	assert.deepEqual(
 		doc.getData(),

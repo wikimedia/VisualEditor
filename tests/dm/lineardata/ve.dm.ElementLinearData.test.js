@@ -16,10 +16,10 @@ QUnit.test( 'getAnnotationsFromOffset', 1, function ( assert ) {
 		expectCount = 0,
 		cases = [
 			{
-				msg: ['bold #1', 'bold #2'],
+				msg: [ 'bold #1', 'bold #2' ],
 				data: [
-					['a', [ { type: 'textStyle/bold' } ]],
-					['b', [ { type: 'textStyle/bold' } ]]
+					[ 'a', [ { type: 'textStyle/bold' } ] ],
+					[ 'b', [ { type: 'textStyle/bold' } ] ]
 				],
 				expected: [
 					[ { type: 'textStyle/bold' } ],
@@ -27,10 +27,10 @@ QUnit.test( 'getAnnotationsFromOffset', 1, function ( assert ) {
 				]
 			},
 			{
-				msg: ['bold #3', 'italic #1'],
+				msg: [ 'bold #3', 'italic #1' ],
 				data: [
-					['a', [ { type: 'textStyle/bold' } ]],
-					['b', [ { type: 'textStyle/italic' } ]]
+					[ 'a', [ { type: 'textStyle/bold' } ] ],
+					[ 'b', [ { type: 'textStyle/italic' } ] ]
 				],
 				expected: [
 					[ { type: 'textStyle/bold' } ],
@@ -38,7 +38,7 @@ QUnit.test( 'getAnnotationsFromOffset', 1, function ( assert ) {
 				]
 			},
 			{
-				msg: ['bold, italic & underline'],
+				msg: [ 'bold, italic & underline' ],
 				data: [
 					[
 						'a',
@@ -58,7 +58,7 @@ QUnit.test( 'getAnnotationsFromOffset', 1, function ( assert ) {
 				]
 			},
 			{
-				msg: ['unannotated element', 'annotated element', 'annotated close element', 'unannotated element'],
+				msg: [ 'unannotated element', 'annotated element', 'annotated close element', 'unannotated element' ],
 				data: [
 					{ type: 'paragraph' },
 					{ type: 'break', annotations: [ { type: 'textStyle/bold' } ] },
@@ -77,7 +77,7 @@ QUnit.test( 'getAnnotationsFromOffset', 1, function ( assert ) {
 				]
 			},
 			{
-				msg: ['unannotated element', 'annotated element', 'annotated close element (ignored)', 'unannotated element'],
+				msg: [ 'unannotated element', 'annotated element', 'annotated close element (ignored)', 'unannotated element' ],
 				ignoreClose: true,
 				data: [
 					{ type: 'paragraph' },
@@ -129,8 +129,8 @@ QUnit.test( 'getAnnotationsFromRange', 1, function ( assert ) {
 			{
 				msg: 'single annotations',
 				data: [
-					['a', [ { type: 'textStyle/bold' } ] ],
-					['b', [ { type: 'textStyle/bold' } ] ]
+					[ 'a', [ { type: 'textStyle/bold' } ] ],
+					[ 'b', [ { type: 'textStyle/bold' } ] ]
 				],
 				expected: [ { type: 'textStyle/bold' } ]
 			},
@@ -138,8 +138,8 @@ QUnit.test( 'getAnnotationsFromRange', 1, function ( assert ) {
 				msg: 'single annotation with non-content data',
 				data: [
 					{ type: 'paragraph' },
-					['a', [ { type: 'textStyle/bold' } ] ],
-					['b', [ { type: 'textStyle/bold' } ] ],
+					[ 'a', [ { type: 'textStyle/bold' } ] ],
+					[ 'b', [ { type: 'textStyle/bold' } ] ],
 					{ type: '/paragraph' }
 				],
 				expected: [ { type: 'textStyle/bold' } ]
@@ -224,7 +224,7 @@ QUnit.test( 'getAnnotationsFromRange', 1, function ( assert ) {
 							{ type: 'textStyle/underline' }
 						]
 					],
-					['b'],
+					[ 'b' ],
 					[
 						'c',
 						[
@@ -253,22 +253,22 @@ QUnit.test( 'getAnnotationsFromRange', 1, function ( assert ) {
 							{ type: 'textStyle/underline' }
 						]
 					],
-					['c']
+					[ 'c' ]
 				],
 				expected: []
 			},
 			{
 				msg: 'no common coverage due to mismatched annotations',
 				data: [
-					['a', [ { type: 'textStyle/bold' } ] ],
-					['b', [ { type: 'textStyle/italic' } ] ]
+					[ 'a', [ { type: 'textStyle/bold' } ] ],
+					[ 'b', [ { type: 'textStyle/italic' } ] ]
 				],
 				expected: []
 			},
 			{
 				msg: 'no common coverage due to un-annotated content node',
 				data: [
-					['a', [ { type: 'textStyle/bold' } ] ],
+					[ 'a', [ { type: 'textStyle/bold' } ] ],
 					{ type: 'inlineImage' },
 					{ type: '/inlineImage' }
 				],
@@ -277,7 +277,7 @@ QUnit.test( 'getAnnotationsFromRange', 1, function ( assert ) {
 			{
 				msg: 'branch node is ignored',
 				data: [
-					['a', [ { type: 'textStyle/bold' } ] ],
+					[ 'a', [ { type: 'textStyle/bold' } ] ],
 					{ type: 'paragraph' },
 					{ type: '/paragraph' }
 				],
@@ -286,8 +286,8 @@ QUnit.test( 'getAnnotationsFromRange', 1, function ( assert ) {
 			{
 				msg: 'annotations are collected using all with mismatched annotations',
 				data: [
-					['a', [ { type: 'textStyle/bold' } ] ],
-					['b', [ { type: 'textStyle/italic' } ] ]
+					[ 'a', [ { type: 'textStyle/bold' } ] ],
+					[ 'b', [ { type: 'textStyle/italic' } ] ]
 				],
 				all: true,
 				expected: [
@@ -299,8 +299,8 @@ QUnit.test( 'getAnnotationsFromRange', 1, function ( assert ) {
 				msg: 'annotations are collected using all, even with a plain character at the start',
 				data: [
 					'a',
-					['b', [ { type: 'textStyle/bold' } ] ],
-					['c', [ { type: 'textStyle/italic' } ] ]
+					[ 'b', [ { type: 'textStyle/bold' } ] ],
+					[ 'c', [ { type: 'textStyle/italic' } ] ]
 				],
 				all: true,
 				expected: [
@@ -311,9 +311,9 @@ QUnit.test( 'getAnnotationsFromRange', 1, function ( assert ) {
 			{
 				msg: 'annotations are collected using all, even with a plain character in the middle',
 				data: [
-					['a', [ { type: 'textStyle/bold' } ] ],
+					[ 'a', [ { type: 'textStyle/bold' } ] ],
 					'b',
-					['c', [ { type: 'textStyle/italic' } ] ]
+					[ 'c', [ { type: 'textStyle/italic' } ] ]
 				],
 				all: true,
 				expected: [
@@ -324,8 +324,8 @@ QUnit.test( 'getAnnotationsFromRange', 1, function ( assert ) {
 			{
 				msg: 'annotations are collected using all, even with a plain character at the end',
 				data: [
-					['a', [ { type: 'textStyle/bold' } ] ],
-					['b', [ { type: 'textStyle/italic' } ] ],
+					[ 'a', [ { type: 'textStyle/bold' } ] ],
+					[ 'b', [ { type: 'textStyle/italic' } ] ],
 					'c'
 				],
 				all: true,
@@ -336,12 +336,12 @@ QUnit.test( 'getAnnotationsFromRange', 1, function ( assert ) {
 			},
 			{
 				msg: 'no common coverage from all plain characters',
-				data: ['a', 'b'],
+				data: [ 'a', 'b' ],
 				expected: []
 			},
 			{
 				msg: 'no common coverage using all from all plain characters',
-				data: ['a', 'b'],
+				data: [ 'a', 'b' ],
 				all: true,
 				expected: []
 			},
@@ -349,8 +349,8 @@ QUnit.test( 'getAnnotationsFromRange', 1, function ( assert ) {
 				msg: 'contents of ignoreChildren nodes are skipped',
 				data: [
 					{ type: 'exampleIgnoreChildren' },
-					['a', [ { type: 'textStyle/bold' } ] ],
-					['b', [ { type: 'textStyle/bold' } ] ],
+					[ 'a', [ { type: 'textStyle/bold' } ] ],
+					[ 'b', [ { type: 'textStyle/bold' } ] ],
 					{ type: '/exampleIgnoreChildren' }
 				],
 				expected: []
@@ -359,8 +359,8 @@ QUnit.test( 'getAnnotationsFromRange', 1, function ( assert ) {
 				msg: 'contents of ignoreChildren nodes are skipped in all mode too',
 				data: [
 					{ type: 'exampleIgnoreChildren' },
-					['a', [ { type: 'textStyle/bold' } ] ],
-					['b', [ { type: 'textStyle/italic' } ] ],
+					[ 'a', [ { type: 'textStyle/bold' } ] ],
+					[ 'b', [ { type: 'textStyle/italic' } ] ],
 					{ type: '/exampleIgnoreChildren' }
 				],
 				all: true,
@@ -390,13 +390,13 @@ QUnit.test( 'getAnnotatedRangeFromOffset', 1, function ( assert ) {
 					// 0
 					'a',
 					// 1
-					['b', [ { type: 'textStyle/bold' } ]],
+					[ 'b', [ { type: 'textStyle/bold' } ] ],
 					// 2
-					['o', [ { type: 'textStyle/bold' } ]],
+					[ 'o', [ { type: 'textStyle/bold' } ] ],
 					// 3
-					['l', [ { type: 'textStyle/bold' } ]],
+					[ 'l', [ { type: 'textStyle/bold' } ] ],
 					// 4
-					['d', [ { type: 'textStyle/bold' } ]],
+					[ 'd', [ { type: 'textStyle/bold' } ] ],
 					// 5
 					'w',
 					// 6
@@ -420,13 +420,13 @@ QUnit.test( 'getAnnotatedRangeFromOffset', 1, function ( assert ) {
 					// 2
 					'x',
 					// 3
-					['l', [ { type: 'link' } ]],
+					[ 'l', [ { type: 'link' } ] ],
 					// 4
-					['i', [ { type: 'link' } ]],
+					[ 'i', [ { type: 'link' } ] ],
 					// 5
-					['n', [ { type: 'link' } ]],
+					[ 'n', [ { type: 'link' } ] ],
 					// 6
-					['k', [ { type: 'link' } ]],
+					[ 'k', [ { type: 'link' } ] ],
 					// 7
 					'x',
 					// 8
@@ -444,21 +444,21 @@ QUnit.test( 'getAnnotatedRangeFromOffset', 1, function ( assert ) {
 					// 0
 					'h',
 					// 1
-					['b', [ { type: 'textStyle/bold' } ]],
+					[ 'b', [ { type: 'textStyle/bold' } ] ],
 					// 2
-					['o', [ { type: 'textStyle/bold' } ]],
+					[ 'o', [ { type: 'textStyle/bold' } ] ],
 					// 3
 					{
 						type: 'inlineImage',
 						attributes: { src: ve.dm.example.imgSrc },
-						annotations: [ { type: 'textStyle/bold' }]
+						annotations: [ { type: 'textStyle/bold' } ]
 					},
 					// 4
 					{ type: '/inlineImage' },
 					// 5
-					['l', [ { type: 'textStyle/bold' } ]],
+					[ 'l', [ { type: 'textStyle/bold' } ] ],
 					// 6
-					['d', [ { type: 'textStyle/bold' } ]],
+					[ 'd', [ { type: 'textStyle/bold' } ] ],
 					// 7
 					'i'
 				],
@@ -690,34 +690,34 @@ QUnit.test( 'isStructuralOffset', function ( assert ) {
 			{ type: '/table' }
 		] ),
 		cases = [
-			{ msg: 'left of document', expected: [true, true] },
-			{ msg: 'begining of content branch', expected: [false, false] },
-			{ msg: 'left of non-text inline leaf', expected: [false, false] },
-			{ msg: 'inside non-text inline leaf', expected: [false, false] },
-			{ msg: 'right of non-text inline leaf', expected: [false, false] },
-			{ msg: 'between characters', expected: [false, false] },
-			{ msg: 'end of content branch', expected: [false, false] },
-			{ msg: 'between content branches', expected: [true, true] },
-			{ msg: 'inside emtpy content branch', expected: [false, false] },
-			{ msg: 'between content branches', expected: [true, true] },
-			{ msg: 'begining of content branch, left of inline leaf', expected: [false, false] },
-			{ msg: 'inside content branch with non-text inline leaf', expected: [false, false] },
-			{ msg: 'end of content branch, right of inline leaf', expected: [false, false] },
-			{ msg: 'between content, non-content branches', expected: [true, true] },
-			{ msg: 'between parent, child branches, descending', expected: [true, false] },
-			{ msg: 'inside empty non-content branch', expected: [true, true] },
-			{ msg: 'between parent, child branches, ascending', expected: [true, false] },
-			{ msg: 'between non-content branch, non-content leaf', expected: [true, true] },
-			{ msg: 'inside non-content leaf', expected: [false, false] },
-			{ msg: 'between non-content branches', expected: [true, true] },
-			{ msg: 'between non-content branches', expected: [true, false] },
-			{ msg: 'between non-content branches', expected: [true, false] },
-			{ msg: 'inside non-content branch before non-content leaf', expected: [true, true] },
-			{ msg: 'inside non-content leaf', expected: [false, false] },
-			{ msg: 'inside non-content branch after non-content leaf', expected: [true, true] },
-			{ msg: 'between non-content branches', expected: [true, false] },
-			{ msg: 'between non-content branches', expected: [true, false] },
-			{ msg: 'right of document', expected: [true, true] }
+			{ msg: 'left of document', expected: [ true, true ] },
+			{ msg: 'begining of content branch', expected: [ false, false ] },
+			{ msg: 'left of non-text inline leaf', expected: [ false, false ] },
+			{ msg: 'inside non-text inline leaf', expected: [ false, false ] },
+			{ msg: 'right of non-text inline leaf', expected: [ false, false ] },
+			{ msg: 'between characters', expected: [ false, false ] },
+			{ msg: 'end of content branch', expected: [ false, false ] },
+			{ msg: 'between content branches', expected: [ true, true ] },
+			{ msg: 'inside emtpy content branch', expected: [ false, false ] },
+			{ msg: 'between content branches', expected: [ true, true ] },
+			{ msg: 'begining of content branch, left of inline leaf', expected: [ false, false ] },
+			{ msg: 'inside content branch with non-text inline leaf', expected: [ false, false ] },
+			{ msg: 'end of content branch, right of inline leaf', expected: [ false, false ] },
+			{ msg: 'between content, non-content branches', expected: [ true, true ] },
+			{ msg: 'between parent, child branches, descending', expected: [ true, false ] },
+			{ msg: 'inside empty non-content branch', expected: [ true, true ] },
+			{ msg: 'between parent, child branches, ascending', expected: [ true, false ] },
+			{ msg: 'between non-content branch, non-content leaf', expected: [ true, true ] },
+			{ msg: 'inside non-content leaf', expected: [ false, false ] },
+			{ msg: 'between non-content branches', expected: [ true, true ] },
+			{ msg: 'between non-content branches', expected: [ true, false ] },
+			{ msg: 'between non-content branches', expected: [ true, false ] },
+			{ msg: 'inside non-content branch before non-content leaf', expected: [ true, true ] },
+			{ msg: 'inside non-content leaf', expected: [ false, false ] },
+			{ msg: 'inside non-content branch after non-content leaf', expected: [ true, true ] },
+			{ msg: 'between non-content branches', expected: [ true, false ] },
+			{ msg: 'between non-content branches', expected: [ true, false ] },
+			{ msg: 'right of document', expected: [ true, true ] }
 		];
 	QUnit.expect( ( data.getLength() + 1 ) * 2 );
 	for ( i = 0; i < cases.length; i++ ) {
@@ -738,8 +738,8 @@ QUnit.test( 'isStructuralOffset', function ( assert ) {
 
 QUnit.test( 'getCharacterData', function ( assert ) {
 	var i,
-		data = [{ type: 'paragraph' }, 'a', ['b', [0]], { type: '/paragraph' }],
-		expected = ['', 'a', 'b', ''],
+		data = [ { type: 'paragraph' }, 'a', [ 'b', [ 0 ] ], { type: '/paragraph' } ],
+		expected = [ '', 'a', 'b', '' ],
 		linearData = new ve.dm.ElementLinearData( new ve.dm.IndexValueStore(), data );
 
 	QUnit.expect( data.length );
@@ -767,22 +767,22 @@ QUnit.test( 'isContentData', 1, function ( assert ) {
 		cases = [
 			{
 				msg: 'simple paragraph',
-				data: [{ type: 'paragraph' }, 'a', { type: '/paragraph' }],
+				data: [ { type: 'paragraph' }, 'a', { type: '/paragraph' } ],
 				expected: false
 			},
 			{
 				msg: 'plain text',
-				data: ['a', 'b', 'c'],
+				data: [ 'a', 'b', 'c' ],
 				expected: true
 			},
 			{
 				msg: 'annotated text',
-				data: [['a', { '{"type:"bold"}': { type: 'bold' } } ]],
+				data: [ [ 'a', { '{"type:"bold"}': { type: 'bold' } } ] ],
 				expected: true
 			},
 			{
 				msg: 'non-text leaf',
-				data: ['a', { type: 'inlineImage' }, { type: '/inlineImage' }, 'c'],
+				data: [ 'a', { type: 'inlineImage' }, { type: '/inlineImage' }, 'c' ],
 				expected: true
 			}
 		];
@@ -811,7 +811,7 @@ QUnit.test( 'getRelativeOffset', function ( assert ) {
 			msg: 'document with all valid offsets returns offset + distance',
 			offset: 0,
 			distance: 2,
-			data: ['a', 'b'],
+			data: [ 'a', 'b' ],
 			callback: function () {
 				return true;
 			},
@@ -1447,7 +1447,7 @@ QUnit.test( 'sanitize', function ( assert ) {
 				html: '<p style="text-shadow: 0 0 1px #000;">F<b style="color:blue;">o</b>o</p>',
 				data: [
 					{ type: 'paragraph' },
-					'F', ['o', [0]], 'o',
+					'F', [ 'o', [ 0 ] ], 'o',
 					{ type: '/paragraph' },
 					{ type: 'internalList' },
 					{ type: '/internalList' }
@@ -1465,7 +1465,7 @@ QUnit.test( 'sanitize', function ( assert ) {
 					{ type: 'internalList' },
 					{ type: '/internalList' }
 				],
-				rules: { blacklist: ['alienInline', 'inlineImage'] },
+				rules: { blacklist: [ 'alienInline', 'inlineImage' ] },
 				msg: 'Blacklisted nodes removed'
 			},
 			{
@@ -1555,7 +1555,7 @@ QUnit.test( 'countNonInternalElements', function ( assert ) {
 			{
 				data: [
 					{ type: 'paragraph' },
-					'F', ['o', [0]], 'o',
+					'F', [ 'o', [ 0 ] ], 'o',
 					{ type: '/paragraph' },
 					{ type: 'internalList' },
 					{ type: '/internalList' }
@@ -1648,9 +1648,9 @@ QUnit.test( 'remapStoreIndexes', function ( assert ) {
 		cases = [
 			{
 				before: [
-					['F', [0]],
-					['o', [1]],
-					['o', [2]]
+					[ 'F', [ 0 ] ],
+					[ 'o', [ 1 ] ],
+					[ 'o', [ 2 ] ]
 				],
 				mapping: {
 					0: 1,
@@ -1658,17 +1658,17 @@ QUnit.test( 'remapStoreIndexes', function ( assert ) {
 					2: 3
 				},
 				after: [
-					['F', [1]],
-					['o', [2]],
-					['o', [3]]
+					[ 'F', [ 1 ] ],
+					[ 'o', [ 2 ] ],
+					[ 'o', [ 3 ] ]
 				],
 				msg: 'Annotated text: increment indexes'
 			},
 			{
 				before: [
-					['F', [0]],
-					['o', [1]],
-					['o', [2]]
+					[ 'F', [ 0 ] ],
+					[ 'o', [ 1 ] ],
+					[ 'o', [ 2 ] ]
 				],
 				mapping: {
 					0: 1,
@@ -1676,17 +1676,17 @@ QUnit.test( 'remapStoreIndexes', function ( assert ) {
 					2: 2
 				},
 				after: [
-					['F', [1]],
-					['o', [0]],
-					['o', [2]]
+					[ 'F', [ 1 ] ],
+					[ 'o', [ 0 ] ],
+					[ 'o', [ 2 ] ]
 				],
 				msg: 'Annotated text: swap 0 and 1'
 			},
 			{
 				before: [
-					['F', [0, 1]],
-					['o', [1, 2]],
-					['o', [2, 3]]
+					[ 'F', [ 0, 1 ] ],
+					[ 'o', [ 1, 2 ] ],
+					[ 'o', [ 2, 3 ] ]
 				],
 				mapping: {
 					0: 3,
@@ -1695,15 +1695,15 @@ QUnit.test( 'remapStoreIndexes', function ( assert ) {
 					3: 0
 				},
 				after: [
-					['F', [3, 2]],
-					['o', [2, 1]],
-					['o', [1, 0]]
+					[ 'F', [ 3, 2 ] ],
+					[ 'o', [ 2, 1 ] ],
+					[ 'o', [ 1, 0 ] ]
 				],
 				msg: 'Annotated text: multiple annotations mapped, order preserved'
 			},
 			{
 				before: [
-					{ type: 'alienInline', annotations: [0] },
+					{ type: 'alienInline', annotations: [ 0 ] },
 					{ type: '/alienInline' }
 				],
 				mapping: {
@@ -1711,7 +1711,7 @@ QUnit.test( 'remapStoreIndexes', function ( assert ) {
 					1: 0
 				},
 				after: [
-					{ type: 'alienInline', annotations: [1] },
+					{ type: 'alienInline', annotations: [ 1 ] },
 					{ type: '/alienInline' }
 				],
 				msg: 'Annotated node'
@@ -1720,14 +1720,14 @@ QUnit.test( 'remapStoreIndexes', function ( assert ) {
 				before: [
 					{ type: 'paragraph' },
 					'F',
-					['o', [2, 1, 3]],
-					['o', [4]],
-					{ type: 'alienInline', annotations: [5, 0] },
+					[ 'o', [ 2, 1, 3 ] ],
+					[ 'o', [ 4 ] ],
+					{ type: 'alienInline', annotations: [ 5, 0 ] },
 					{ type: '/alienInline' },
-					['B', [5, 0]],
-					['a', [7]],
+					[ 'B', [ 5, 0 ] ],
+					[ 'a', [ 7 ] ],
 					'r',
-					{ type: 'alienInline', annotations: [6] },
+					{ type: 'alienInline', annotations: [ 6 ] },
 					{ type: '/alienInline' },
 					{ type: '/paragraph' }
 				],
@@ -1745,14 +1745,14 @@ QUnit.test( 'remapStoreIndexes', function ( assert ) {
 				after: [
 					{ type: 'paragraph' },
 					'F',
-					['o', [2, 4, 8]],
-					['o', [5]],
-					{ type: 'alienInline', annotations: [7, 1] },
+					[ 'o', [ 2, 4, 8 ] ],
+					[ 'o', [ 5 ] ],
+					{ type: 'alienInline', annotations: [ 7, 1 ] },
 					{ type: '/alienInline' },
-					['B', [7, 1]],
-					['a', [6]],
+					[ 'B', [ 7, 1 ] ],
+					[ 'a', [ 6 ] ],
 					'r',
-					{ type: 'alienInline', annotations: [3] },
+					{ type: 'alienInline', annotations: [ 3 ] },
 					{ type: '/alienInline' },
 					{ type: '/paragraph' }
 				],

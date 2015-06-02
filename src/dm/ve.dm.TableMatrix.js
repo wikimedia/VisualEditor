@@ -252,7 +252,7 @@ ve.dm.TableMatrix.prototype.findClosestCell = function ( cell ) {
 			return rowCells[col];
 		}
 	}
-	for ( col = cell.col + 1, cols = rowCells.length; col < cols; col++) {
+	for ( col = cell.col + 1, cols = rowCells.length; col < cols; col++ ) {
 		if ( !rowCells[col].isPlaceholder() ) {
 			return rowCells[col];
 		}

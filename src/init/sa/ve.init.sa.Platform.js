@@ -29,7 +29,7 @@ ve.init.sa.Platform = function VeInitSaPlatform( messagePaths ) {
 	this.externalLinkUrlProtocolsRegExp = /^https?\:\/\//;
 	this.messagePaths = messagePaths || [];
 	this.parsedMessages = {};
-	this.userLanguages = ['en'];
+	this.userLanguages = [ 'en' ];
 };
 
 /* Inheritance */
