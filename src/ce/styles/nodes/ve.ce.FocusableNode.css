@@ -39,6 +39,8 @@
 	background: #6da9f7;
 	box-shadow: inset 0 0 0 1px #4C76ac;
 	position: absolute;
+	/* Clip extra span added for selectability */
+	overflow: hidden;
 }
 
 .ve-ce-focusableNode-highlight-relocatable-marker {
@@ -49,4 +51,14 @@
 .ve-ce-focusableNode-highlights-relocating .ve-ce-focusableNode-highlight-relocatable-marker {
 	background: #000;
 	background: rgba(0, 0, 0, 1);
+}
+
+/* Prevent 'copy image' appearing in context menu */
+.ve-ce-focusableNode-highlights-contextOpen .ve-ce-focusableNode-highlight-relocatable-marker {
+	display: none;
+}
+
+.ve-ce-focusableNode-highlight-selectable {
+	position: absolute;
+	top: -1000px;
 }
