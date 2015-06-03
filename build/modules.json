@@ -554,6 +554,7 @@
 			"tests/ui/actions/ve.ui.ListAction.test.js",
 			"tests/ui/actions/ve.ui.TableAction.test.js",
 			"tests/ui/datatransferhandlers/ve.ui.DSVFileTransferHandler.test.js",
+			"tests/ui/dialogs/ve.ui.FindAndReplaceDialog.test.js",
 			"tests/ce/ve.ce.TestRunner.js",
 			"tests/ce/ve.ce.imetests.test.js",
 			"tests/ce/imetests/backspace-chromium-ubuntu-none.js",
