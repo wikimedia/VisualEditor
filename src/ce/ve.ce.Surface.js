@@ -31,7 +31,6 @@ ve.ce.Surface = function VeCeSurface( model, ui, options ) {
 	this.model = model;
 	this.documentView = new ve.ce.Document( model.getDocument(), this );
 	this.surfaceObserver = new ve.ce.SurfaceObserver( this );
-	this.selectionTimeout = null;
 	this.$window = $( this.getElementWindow() );
 	this.$document = $( this.getElementDocument() );
 	this.$documentNode = this.getDocument().getDocumentNode().$element;
