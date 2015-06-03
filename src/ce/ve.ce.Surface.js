@@ -71,12 +71,13 @@ ve.ce.Surface = function VeCeSurface( model, ui, options ) {
 	// This is set on entering changeModel, then unset when leaving.
 	// It is used to test whether a reflected change event is emitted.
 	this.newModelSelection = null;
-	// These are set during cursor moves (but not text additions/deletions at the cursor)
-	this.cursorEvent = null;
-	// A frozen selection from the start of a cursor keydown. The nodes are live and mutable,
-	// and therefore the offsets may come to point to places that are misleadingly different
-	// from when the selection was saved.
-	this.misleadingCursorStartSelection = null;
+
+	// Snapshot updated at keyDown. See storeKeyDownState.
+	this.keyDownState = {
+		event: null,
+		selection: null
+	};
+
 	this.cursorDirectionality = null;
 	this.unicorningNode = null;
 	this.setUnicorningRecursionGuard = false;
@@ -1316,13 +1317,13 @@ ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
 	function getDirection() {
 		return (
 			isArrow &&
-			surface.misleadingCursorStartSelection.focusNode &&
+			surface.keyDownState.selection.focusNode &&
 			surface.nativeSelection.focusNode &&
 			ve.compareDocumentOrder(
 				surface.nativeSelection.focusNode,
 				surface.nativeSelection.focusOffset,
-				surface.misleadingCursorStartSelection.focusNode,
-				surface.misleadingCursorStartSelection.focusOffset
+				surface.keyDownState.selection.focusNode,
+				surface.keyDownState.selection.focusOffset
 			)
 		) || null;
 	}
@@ -1352,7 +1353,7 @@ ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
 		return;
 	}
 
-	if ( e !== this.cursorEvent ) {
+	if ( e !== this.keyDownState.event ) {
 		return;
 	}
 
@@ -1381,7 +1382,7 @@ ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
 		!e.ctrlKey &&
 		!e.altKey &&
 		!e.metaKey &&
-		this.misleadingCursorStartSelection.isCollapsed &&
+		this.keyDownState.selection.isCollapsed &&
 		this.nativeSelection.isCollapsed &&
 		( direction = getDirection() ) !== null
 	) {
@@ -1395,8 +1396,8 @@ ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
 			// Calculate the DM offsets of our motion
 			try {
 				startOffset = ve.ce.getOffset(
-					this.misleadingCursorStartSelection.focusNode,
-					this.misleadingCursorStartSelection.focusOffset
+					this.keyDownState.selection.focusNode,
+					this.keyDownState.selection.focusOffset
 				);
 				endOffset = ve.ce.getOffset(
 					this.nativeSelection.focusNode,
@@ -2851,25 +2852,29 @@ ve.ce.Surface.prototype.getActiveTableNode = function () {
 /*! Utilities */
 
 /**
- * Store the current selection range, and a key down event if relevant
+ * Store a state snapshot at a keydown event, to be used in an after-keydown handler
  *
- * @param {jQuery.Event|null} e Key down event
+ * A selection object is stored, but only when the key event is a cursor key. It contains
+ * anchorNode/anchorOffset/focusNode/focusOffset/isCollapsed like a nativeSelection.
+ *
+ * (It would be misleading to save selection properties for key events where the DOM might get
+ * modified, because anchorNode/focusNode are live and mutable, and so the offsets may come to
+ * point confusingly to different places than they did when the selection was saved).
+ *
+ * @param {jQuery.Event|null} e Key down event; must be active when this call is made
  */
 ve.ce.Surface.prototype.storeKeyDownState = function ( e ) {
-	if ( this.nativeSelection.rangeCount === 0 ) {
-		this.cursorEvent = null;
-		this.misleadingCursorStartSelection = null;
-		return;
-	}
-	this.cursorEvent = e;
-	this.misleadingCursorStartSelection = null;
+	this.keyDownState.event = e;
+	this.keyDownState.selection = null;
 	if (
-		e.keyCode === OO.ui.Keys.UP ||
-		e.keyCode === OO.ui.Keys.DOWN ||
-		e.keyCode === OO.ui.Keys.LEFT ||
-		e.keyCode === OO.ui.Keys.RIGHT
+		this.nativeSelection.rangeCount > 0 && (
+			e.keyCode === OO.ui.Keys.UP ||
+			e.keyCode === OO.ui.Keys.DOWN ||
+			e.keyCode === OO.ui.Keys.LEFT ||
+			e.keyCode === OO.ui.Keys.RIGHT
+		)
 	) {
-		this.misleadingCursorStartSelection = {
+		this.keyDownState.selection = {
 			isCollapsed: this.nativeSelection.isCollapsed,
 			anchorNode: this.nativeSelection.anchorNode,
 			anchorOffset: this.nativeSelection.anchorOffset,
@@ -2877,6 +2882,14 @@ ve.ce.Surface.prototype.storeKeyDownState = function ( e ) {
 			focusOffset: this.nativeSelection.focusOffset
 		};
 	}
+};
+
+/**
+ * Clear a stored state snapshot from a key down event
+ */
+ve.ce.Surface.prototype.clearKeyDownState = function () {
+	this.keyDownState.event = null;
+	this.keyDownState.selection = null;
 };
 
 /**
@@ -4032,8 +4045,7 @@ ve.ce.Surface.prototype.changeModel = function ( transaction, selection ) {
  */
 ve.ce.Surface.prototype.setContentBranchNodeChanged = function () {
 	this.contentBranchNodeChanged = true;
-	this.cursorEvent = null;
-	this.cursorStartRange = null;
+	this.clearKeyDownState();
 };
 
 /**
