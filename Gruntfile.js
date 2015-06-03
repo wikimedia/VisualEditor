@@ -243,10 +243,21 @@ module.exports = function ( grunt ) {
 			]
 		},
 		jscs: {
-			src: [
-				'<%= jshint.all %>',
-				'!tests/ce/imetests/*.js'
-			]
+			fix: {
+				options: {
+					fix: true
+				},
+				src: [
+					'<%= jshint.all %>',
+					'!tests/ce/imetests/*.js'
+				]
+			},
+			main: {
+				src: [
+					'<%= jshint.all %>',
+					'!tests/ce/imetests/*.js'
+				]
+			}
 		},
 		csslint: {
 			options: {
@@ -318,8 +329,9 @@ module.exports = function ( grunt ) {
 	} );
 
 	grunt.registerTask( 'build', [ 'clean', 'concat', 'cssjanus', 'cssUrlEmbed', 'copy', 'buildloader' ] );
-	grunt.registerTask( 'lint', [ 'jshint', 'jscs', 'csslint', 'banana' ] );
+	grunt.registerTask( 'lint', [ 'jshint', 'jscs:main', 'csslint', 'banana' ] );
 	grunt.registerTask( 'unit', [ 'karma:main' ] );
+	grunt.registerTask( 'fix', [ 'jscs:fix' ] );
 	grunt.registerTask( '_test', [ 'lint', 'git-build', 'build', 'unit' ] );
 	grunt.registerTask( 'ci', [ '_test', 'git-status' ] );
 	grunt.registerTask( 'watch', [ 'karma:bg:start', 'runwatch' ] );
