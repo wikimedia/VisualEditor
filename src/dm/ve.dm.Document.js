@@ -1261,7 +1261,7 @@ ve.dm.Document.prototype.newFromHtml = function ( html, importRules ) {
  * @return {ve.Range[]} List of ranges where the string was found
  */
 ve.dm.Document.prototype.findText = function ( query, caseSensitive, noOverlaps ) {
-	var len, match, offset,
+	var i, l, len, match, offset, lines,
 		ranges = [],
 		text = this.data.getText(
 			true,
@@ -1269,19 +1269,25 @@ ve.dm.Document.prototype.findText = function ( query, caseSensitive, noOverlaps 
 		);
 
 	if ( query instanceof RegExp ) {
-		if ( !caseSensitive ) {
-			query = new RegExp( query.source, 'i' );
-		}
+		query = new RegExp( query.source, caseSensitive ? 'g' : 'gi' );
 		offset = 0;
-		while ( ( match = query.exec( text.substr( offset ) ) ) !== null ) {
-			offset = offset + match.index;
-			len = match[0].length;
-			// Newlines may match some expressions, but are not allowed
-			// as they represent elements
-			if ( match[0].indexOf( '\n' ) === -1 ) {
-				ranges.push( new ve.Range( offset, offset + len ) );
+		// Avoid multi-line matching by only matching within newlines
+		lines = text.split( '\n' );
+		for ( i = 0, l = lines.length; i < l; i++ ) {
+			while ( lines[i] && ( match = query.exec( lines[i] ) ) !== null ) {
+				// Skip empty string matches (e.g. with .*)
+				if ( query.lastIndex === match.index ) {
+					// Increment to avoid infinite loop
+					query.lastIndex++;
+					continue;
+				}
+				ranges.push( new ve.Range( offset + match.index, offset + query.lastIndex ) );
+				if ( !noOverlaps ) {
+					query.lastIndex = match.index + 1;
+				}
 			}
-			offset += noOverlaps ? len : 1;
+			offset += lines[i].length + 1;
+			query.lastIndex = 0;
 		}
 	} else {
 		if ( !caseSensitive ) {
