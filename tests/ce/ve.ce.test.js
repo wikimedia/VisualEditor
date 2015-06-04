@@ -439,3 +439,62 @@ QUnit.test( 'fakeImes', function ( assert ) {
 		surface.destroy();
 	}
 } );
+
+QUnit.test( 'isAfterAnnotationBoundaries', function ( assert ) {
+	var tests, i, iLen, test, node, j, jLen,
+		div = ve.createDocumentFromHtml( '' ).createElement( 'div' );
+
+	div.innerHTML = 'Q<b>R<i>S</i>T</b><s>U</s>V<u>W</u>';
+
+	// In the following tests, the 'path' properties are a list of descent offsets to find a
+	// particular descendant node from the top-level div. E.g. a path of [ 5, 7 ] refers to
+	// the node div.childNodes[ 5 ].childNodes[ 7 ] .
+	tests = [
+		{ path: [], offset: 0, expected: false },
+		{ path: [ 0 ], offset: 0, expected: false },
+		{ path: [ 0 ], offset: 1, expected: false },
+		{ path: [], offset: 1, expected: false },
+		{ path: [ 1 ], offset: 0, expected: true },
+		{ path: [ 1, 0 ], offset: 0, expected: true },
+		{ path: [ 1, 0 ], offset: 1, expected: false },
+		{ path: [ 1 ], offset: 1, expected: false },
+		{ path: [ 1, 1 ], offset: 0, expected: true },
+		{ path: [ 1, 1, 0 ], offset: 0, expected: true },
+		{ path: [ 1, 1, 0 ], offset: 1, expected: false },
+		{ path: [ 1, 1 ], offset: 1, expected: false },
+		{ path: [ 1 ], offset: 2, expected: true },
+		{ path: [ 1, 2 ], offset: 0, expected: true },
+		{ path: [ 1, 2 ], offset: 1, expected: false },
+		{ path: [ 1 ], offset: 3, expected: false },
+		// The next one has middle bias, which we don't currently detect
+		{ path: [], offset: 2, expected: false },
+		{ path: [ 2 ], offset: 0, expected: true },
+		{ path: [ 2, 0 ], offset: 0, expected: true },
+		{ path: [ 2, 0 ], offset: 1, expected: false },
+		{ path: [ 2 ], offset: 1, expected: false },
+		{ path: [], offset: 3, expected: true },
+		{ path: [ 3 ], offset: 0, expected: true },
+		{ path: [ 3 ], offset: 1, expected: false },
+		{ path: [], offset: 4, expected: false },
+		{ path: [ 4 ], offset: 0, expected: true },
+		{ path: [ 4, 0 ], offset: 0, expected: true },
+		{ path: [ 4, 0 ], offset: 1, expected: false },
+		{ path: [ 4 ], offset: 1, expected: false },
+		{ path: [], offset: 5, expected: true }
+	];
+
+	QUnit.expect( tests.length );
+
+	for ( i = 0, iLen = tests.length; i < iLen; i++ ) {
+		test = tests[i];
+		node = div;
+		for ( j = 0, jLen = test.path.length; j < jLen; j++ ) {
+			node = node.childNodes[ test.path[j] ];
+		}
+		assert.strictEqual(
+			ve.ce.isAfterAnnotationBoundaries( node, test.offset ),
+			test.expected,
+			'node=' + test.path.join( ',' ) + ' offset=' + test.offset
+		);
+	}
+} );

@@ -497,6 +497,16 @@
 		return null;
 	};
 
+	/**
+	 * Tests whether a node will be modelled as an annotation
+	 * @param {Node} node The node
+	 * @returns {boolean} Whether the element will be modelled as an annotation
+	 */
+	ve.dm.ModelRegistry.prototype.isAnnotation = function ( node ) {
+		var modelClass = this.lookup( this.matchElement( node ) );
+		return ( modelClass && modelClass.prototype ) instanceof ve.dm.Annotation;
+	};
+
 	/* Initialization */
 
 	ve.dm.modelRegistry = new ve.dm.ModelRegistry();

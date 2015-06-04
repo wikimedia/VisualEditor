@@ -75,7 +75,8 @@ ve.ce.Surface = function VeCeSurface( model, ui, options ) {
 	// Snapshot updated at keyDown. See storeKeyDownState.
 	this.keyDownState = {
 		event: null,
-		selection: null
+		selection: null,
+		focusIsAfterAnnotationBoundaries: null
 	};
 
 	this.cursorDirectionality = null;
@@ -2664,7 +2665,16 @@ ve.ce.Surface.prototype.onSurfaceObserverContentChange = function ( node, previo
 		if ( lengthDiff > 0 && offsetDiff === lengthDiff && sameLeadingAndTrailing ) {
 			data = nextData.slice( previousStart, nextStart );
 			// Apply insertion annotations
-			annotations = node.unicornAnnotations || this.model.getInsertionAnnotations();
+			if ( node.unicornAnnotations ) {
+				annotations = node.unicornAnnotations;
+			} else if ( this.keyDownState.focusIsAfterAnnotationBoundaries ) {
+				annotations = modelData.getAnnotationsFromOffset(
+					nodeOffset + previousStart + 1
+				);
+			} else {
+				annotations = this.model.getInsertionAnnotations();
+			}
+
 			if ( annotations.getLength() ) {
 				filterForWordbreak( annotations, new ve.Range( previous.range.start ) );
 				ve.dm.Document.static.addAnnotationsToData( data, annotations );
@@ -2856,31 +2866,38 @@ ve.ce.Surface.prototype.getActiveTableNode = function () {
  *
  * A selection object is stored, but only when the key event is a cursor key. It contains
  * anchorNode/anchorOffset/focusNode/focusOffset/isCollapsed like a nativeSelection.
- *
  * (It would be misleading to save selection properties for key events where the DOM might get
  * modified, because anchorNode/focusNode are live and mutable, and so the offsets may come to
  * point confusingly to different places than they did when the selection was saved).
+ *
+ * Annotation changes before the cursor focus are detected: see ve.ce.isAfterAnnotationBoundaries .
  *
  * @param {jQuery.Event|null} e Key down event; must be active when this call is made
  */
 ve.ce.Surface.prototype.storeKeyDownState = function ( e ) {
 	this.keyDownState.event = e;
 	this.keyDownState.selection = null;
-	if (
-		this.nativeSelection.rangeCount > 0 && (
+	this.keyDownState.focusIsAfterAnnotationBoundaries = null;
+
+	if ( this.nativeSelection.rangeCount > 0 ) {
+		this.keyDownState.focusIsAfterAnnotationBoundaries = ve.ce.isAfterAnnotationBoundaries(
+			this.nativeSelection.focusNode,
+			this.nativeSelection.focusOffset
+		);
+		if (
 			e.keyCode === OO.ui.Keys.UP ||
 			e.keyCode === OO.ui.Keys.DOWN ||
 			e.keyCode === OO.ui.Keys.LEFT ||
 			e.keyCode === OO.ui.Keys.RIGHT
-		)
-	) {
-		this.keyDownState.selection = {
-			isCollapsed: this.nativeSelection.isCollapsed,
-			anchorNode: this.nativeSelection.anchorNode,
-			anchorOffset: this.nativeSelection.anchorOffset,
-			focusNode: this.nativeSelection.focusNode,
-			focusOffset: this.nativeSelection.focusOffset
-		};
+		) {
+			this.keyDownState.selection = {
+				isCollapsed: this.nativeSelection.isCollapsed,
+				anchorNode: this.nativeSelection.anchorNode,
+				anchorOffset: this.nativeSelection.anchorOffset,
+				focusNode: this.nativeSelection.focusNode,
+				focusOffset: this.nativeSelection.focusOffset
+			};
+		}
 	}
 };
 
