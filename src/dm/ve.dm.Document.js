@@ -1276,12 +1276,18 @@ ve.dm.Document.prototype.findText = function ( query, caseSensitive, noOverlaps 
 		for ( i = 0, l = lines.length; i < l; i++ ) {
 			while ( lines[i] && ( match = query.exec( lines[i] ) ) !== null ) {
 				// Skip empty string matches (e.g. with .*)
-				if ( query.lastIndex === match.index ) {
-					// Increment to avoid infinite loop
-					query.lastIndex++;
+				if ( match[0].length === 0 ) {
+					// Set lastIndex to the next character to avoid an infinite
+					// loop. Browsers differ in whether they do this for you
+					// for empty matches; see
+					// http://blog.stevenlevithan.com/archives/exec-bugs
+					query.lastIndex = match.index + 1;
 					continue;
 				}
-				ranges.push( new ve.Range( offset + match.index, offset + query.lastIndex ) );
+				ranges.push( new ve.Range(
+					offset + match.index,
+					offset + match.index + match[0].length
+				) );
 				if ( !noOverlaps ) {
 					query.lastIndex = match.index + 1;
 				}
