@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Naudefj"
+			"Naudefj",
+			"Fwolff"
 		]
 	},
 	"visualeditor": "Vereenvoudigde teksverwerker",
@@ -34,19 +35,23 @@
 	"visualeditor-dialog-action-done": "Gedoen",
 	"visualeditor-dialog-action-goback": "Gaan terug",
 	"visualeditor-dialog-action-insert": "Invoeg",
+	"visualeditor-dialog-command-help-title": "Sleutelbordkortpaaie",
 	"visualeditor-dialog-error": "Iets het verkeerd gegaan...",
 	"visualeditor-dialog-error-dismiss": "Gaan terug",
 	"visualeditor-dialog-language-auto-direction": "Outomaties",
 	"visualeditor-dialog-language-search-title": "Kies taal",
 	"visualeditor-find-and-replace-done": "Gedoen",
 	"visualeditor-find-and-replace-find-text": "Vind",
+	"visualeditor-find-and-replace-invalid-regex": "Ongeldige reguliere uitdrukking",
 	"visualeditor-find-and-replace-next-button": "Vind volgende",
 	"visualeditor-find-and-replace-previous-button": "Vind vorige",
+	"visualeditor-find-and-replace-regular-expression": "Reguliere uitdrukking",
 	"visualeditor-find-and-replace-replace-all-button": "Vervang alles",
 	"visualeditor-find-and-replace-replace-button": "Vervang",
 	"visualeditor-find-and-replace-replace-text": "Vervang",
 	"visualeditor-find-and-replace-results": "$1 of $2",
 	"visualeditor-find-and-replace-title": "Soek & vervang",
+	"visualeditor-formatdropdown-format-blockquote": "Blokaanhaling",
 	"visualeditor-formatdropdown-format-heading-label": "Opskrif (1-6)",
 	"visualeditor-formatdropdown-format-heading1": "Opskrif 1",
 	"visualeditor-formatdropdown-format-heading2": "Opskrif 2",
@@ -82,13 +87,17 @@
 	"visualeditor-mediasizewidget-sizeoptions-custom": "Aangepas",
 	"visualeditor-mediasizewidget-sizeoptions-default": "Standaard",
 	"visualeditor-mediasizewidget-sizeoptions-scale": "Skaal",
+	"visualeditor-shortcuts-clipboard": "Knipbord",
+	"visualeditor-shortcuts-formatting": "Paragraafformatering",
 	"visualeditor-shortcuts-history": "Geskiedenis",
 	"visualeditor-shortcuts-other": "Ander",
+	"visualeditor-shortcuts-text-style": "Teksstilering",
+	"visualeditor-slug-insert": "Voeg paragraaf in",
 	"visualeditor-specialcharacter-button-tooltip": "Spesiale karakter",
 	"visualeditor-specialcharacterinspector-title": "Spesiale karakter",
 	"visualeditor-table-caption": "Byskrif",
-	"visualeditor-table-delete-col": "Verwyder kolom",
-	"visualeditor-table-delete-row": "Verwyder ry",
+	"visualeditor-table-delete-col": "Verwyder {{PLURAL:$1|kolom|kolomme}}",
+	"visualeditor-table-delete-row": "Verwyder {{PLURAL:$1|ry|rye}}",
 	"visualeditor-table-delete-table": "Skrap tabel",
 	"visualeditor-table-format-data": "Inhoudsel",
 	"visualeditor-table-format-header": "Opskrifsel",
@@ -98,10 +107,13 @@
 	"visualeditor-table-insert-row-before": "Hierbo invoeg",
 	"visualeditor-table-insert-table": "Tabel",
 	"visualeditor-table-merge-cells": "Versmelt selle",
+	"visualeditor-tablecell-tooltip": "Klik dubbel om sel te wysig",
 	"visualeditor-toolbar-format-tooltip": "Formatteer paragraaf",
 	"visualeditor-toolbar-history": "Geskiedenis",
 	"visualeditor-toolbar-insert": "Invoeg",
 	"visualeditor-toolbar-paragraph-format": "Formatering",
 	"visualeditor-toolbar-structure": "Struktuur",
-	"visualeditor-toolbar-table": "Tabel"
+	"visualeditor-toolbar-style-tooltip": "Stileer teks",
+	"visualeditor-toolbar-table": "Tabel",
+	"visualeditor-toolbar-text-style": "Stilering"
 }
