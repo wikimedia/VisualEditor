@@ -159,12 +159,13 @@ ve.ui.LinearContext.prototype.onInspectorOpening = function ( win, opening ) {
 	opening
 		.progress( function ( data ) {
 			if ( data.state === 'setup' ) {
+				if ( !context.isVisible() ) {
+					// Change state: closed -> inspector
+					context.toggle( true );
+				}
 				if ( !context.isEmpty() ) {
 					// Change state: menu -> inspector
 					context.toggleMenu( false );
-				} else if ( !context.isVisible() ) {
-					// Change state: closed -> inspector
-					context.toggle( true );
 				}
 			}
 			context.updateDimensionsDebounced();
