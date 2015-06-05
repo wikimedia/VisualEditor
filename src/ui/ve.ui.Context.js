@@ -10,7 +10,7 @@
  * @class
  * @abstract
  * @extends OO.ui.Element
- * @mixins OO.ui.GroupElement
+ * @mixins OO.ui.mixin.GroupElement
  *
  * @constructor
  * @param {ve.ui.Surface} surface
@@ -21,7 +21,7 @@ ve.ui.Context = function VeUiContext( surface, config ) {
 	ve.ui.Context.super.call( this, config );
 
 	// Mixin constructors
-	OO.ui.GroupElement.call( this, config );
+	OO.ui.mixin.GroupElement.call( this, config );
 
 	// Properties
 	this.surface = surface;
@@ -41,7 +41,7 @@ ve.ui.Context = function VeUiContext( surface, config ) {
 
 OO.inheritClass( ve.ui.Context, OO.ui.Element );
 
-OO.mixinClass( ve.ui.Context, OO.ui.GroupElement );
+OO.mixinClass( ve.ui.Context, OO.ui.mixin.GroupElement );
 
 /* Static Property */
 

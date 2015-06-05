@@ -208,54 +208,50 @@
 		]
 	},
 	{
-		"name": "OOJS UI",
+		"name": "OOjs UI",
 		"groups": [
 			{
 				"name": "General",
 				"classes": [
 					"OO.ui",
-					"OO.ui.ActionSet",
 					"OO.ui.Element",
-						"OO.ui.Layout",
-						"OO.ui.Widget",
-						"OO.ui.Window",
-							"OO.ui.Dialog",
-						"OO.ui.WindowManager",
-					"OO.ui.Error",
-					"OO.ui.Process",
 					"OO.ui.HtmlSnippet",
-					"OO.ui.mixin"
+					"OO.ui.Toolbar",
+					"OO.ui.Window",
+					"OO.ui.Dialog",
+					"OO.ui.WindowManager",
+					"OO.ui.Process",
+					"OO.ui.Error",
+					"OO.ui.ActionSet"
 				]
 			},
 			{
-				"name": "Elements",
-				"classes": ["OO.ui.*Element"]
+				"name": "Factories",
+				"classes": ["OO.ui.*Factory"]
 			},
 			{
 				"name": "Tools",
-				"classes": [
-					"OO.ui.*Tool",
-					"OO.ui.Tool*Factory"
-				]
+				"classes": ["OO.ui.*Tool"]
 			},
 			{
-				"name": "Toolbar and tool groups",
-				"classes": [
-					"OO.ui.Toolbar",
-					"OO.ui.*ToolGroup"
-				]
-			},
-			{
-				"name": "Dialogs",
-				"classes": ["OO.ui.*Dialog"]
+				"name": "Mixins",
+				"classes": ["OO.ui.mixin", "OO.ui.mixin.*"]
 			},
 			{
 				"name": "Layouts",
 				"classes": ["OO.ui.*Layout"]
 			},
 			{
+				"name": "Tool groups",
+				"classes": ["OO.ui.*ToolGroup"]
+			},
+			{
 				"name": "Widgets",
 				"classes": ["OO.ui.*Widget"]
+			},
+			{
+				"name": "Dialogs",
+				"classes": ["OO.ui.*Dialog"]
 			},
 			{
 				"name": "Themes",
@@ -267,7 +263,7 @@
 		"name": "Upstream",
 		"groups": [
 			{
-				"name": "OOJS",
+				"name": "OOjs",
 				"classes": ["OO", "OO.EventEmitter", "OO.Factory", "OO.Registry"]
 			},
 			{

@@ -9,9 +9,9 @@
  *
  * @class
  * @extends OO.ui.Widget
- * @mixins OO.ui.IconElement
- * @mixins OO.ui.LabelElement
- * @mixins OO.ui.PendingElement
+ * @mixins OO.ui.mixin.IconElement
+ * @mixins OO.ui.mixin.LabelElement
+ * @mixins OO.ui.mixin.PendingElement
  *
  * @constructor
  * @param {ve.ui.Context} context Context item is in
@@ -24,9 +24,9 @@ ve.ui.ContextItem = function ( context, model, config ) {
 	ve.ui.ContextItem.super.call( this, config );
 
 	// Mixin constructors
-	OO.ui.IconElement.call( this, config );
-	OO.ui.LabelElement.call( this, config );
-	OO.ui.PendingElement.call( this, config );
+	OO.ui.mixin.IconElement.call( this, config );
+	OO.ui.mixin.LabelElement.call( this, config );
+	OO.ui.mixin.PendingElement.call( this, config );
 
 	// Properties
 	this.context = context;
@@ -74,9 +74,9 @@ ve.ui.ContextItem = function ( context, model, config ) {
 /* Inheritance */
 
 OO.inheritClass( ve.ui.ContextItem, OO.ui.Widget );
-OO.mixinClass( ve.ui.ContextItem, OO.ui.IconElement );
-OO.mixinClass( ve.ui.ContextItem, OO.ui.LabelElement );
-OO.mixinClass( ve.ui.ContextItem, OO.ui.PendingElement );
+OO.mixinClass( ve.ui.ContextItem, OO.ui.mixin.IconElement );
+OO.mixinClass( ve.ui.ContextItem, OO.ui.mixin.LabelElement );
+OO.mixinClass( ve.ui.ContextItem, OO.ui.mixin.PendingElement );
 
 /* Events */
 
