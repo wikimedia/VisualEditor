@@ -54,16 +54,8 @@ ve.ui.LinkAnnotationInspector.prototype.onAnnotationInputChange = function () {
  */
 ve.ui.LinkAnnotationInspector.prototype.updateActions = function () {
 	var inspector = this,
-		annotation = this.annotationInput.getAnnotation(),
-		href = this.annotationInput.getHref();
+		annotation = this.annotationInput.getAnnotation();
 
-	this.actions.forEach( { actions: 'open' }, function ( action ) {
-		action.setHref( href ).setTarget( '_blank' );
-		// HACK: Chrome renders a dark outline around the action when it's a link, but causing it to
-		// re-render makes it magically go away; this is incredibly evil and needs further
-		// investigation
-		action.$element.hide().fadeIn( 0 );
-	} );
 	this.annotationInput.text.isValid().done( function ( isValid ) {
 		isValid = isValid && !!annotation;
 		inspector.actions.forEach( { actions: [ 'open', 'done', 'insert' ] }, function ( action ) {
@@ -177,6 +169,17 @@ ve.ui.LinkAnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 		.next( function () {
 			this.annotationInput.setAnnotation( null );
 		}, this );
+};
+
+/**
+ * @inheritdoc
+ */
+ve.ui.LinkAnnotationInspector.prototype.getActionProcess = function ( action ) {
+	if ( action === 'open' ) {
+		window.open( this.annotationInput.getHref() );
+	}
+
+	return ve.ui.LinkAnnotationInspector.super.prototype.getActionProcess.call( this, action );
 };
 
 /* Registration */
