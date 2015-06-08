@@ -1135,6 +1135,107 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 
 } );
 
+QUnit.test( 'onDocumentDragStart/onDocumentDrop', function ( assert ) {
+
+	var i,
+		selection = new ve.dm.LinearSelection( {}, new ve.Range( 1, 4 ) ),
+		expectedSelection = new ve.dm.LinearSelection( {}, new ve.Range( 7, 10 ) ),
+		cases = [
+			{
+				msg: 'Simple drag and drop',
+				range: selection.getRange(),
+				targetOffset: 10,
+				expectedTransfer: { 'application-x/VisualEditor': JSON.stringify( selection ) },
+				expectedData: function ( data ) {
+					var removed = data.splice( 1, 3 );
+					data.splice.apply( data, [ 7, 0 ].concat( removed ) );
+				},
+				expectedSelection: expectedSelection
+			},
+			{
+				msg: 'Simple drag and drop in IE',
+				range: new ve.Range( 1, 4 ),
+				targetOffset: 10,
+				isIE: true,
+				expectedTransfer: { text: '__ve__' + JSON.stringify( selection ) },
+				expectedData: function ( data ) {
+					var removed = data.splice( 1, 3 );
+					data.splice.apply( data, [ 7, 0 ].concat( removed ) );
+				},
+				expectedSelection: expectedSelection
+			},
+			{
+				msg: 'Invalid target offset',
+				range: selection.getRange(),
+				targetOffset: -1,
+				expectedTransfer: { 'application-x/VisualEditor': JSON.stringify( selection ) },
+				expectedData: function () {},
+				expectedSelection: selection
+			}
+		];
+
+	QUnit.expect( cases.length * 3 );
+
+	function testRunner( range, targetOffset, expectedTransfer, expectedData, expectedSelection, isIE, msg ) {
+		var selection,
+			surface = ve.test.utils.createSurfaceFromHtml( ve.dm.example.html ),
+			view = surface.getView(),
+			model = surface.getModel(),
+			data = ve.copy( model.getDocument().getFullData() ),
+			dataTransfer = {},
+			mockEvent = {
+				originalEvent: {
+					dataTransfer: {
+						setData: function ( key, value ) {
+							if ( isIE && key !== 'text' ) {
+								throw new Error( 'IE FAIL' );
+							}
+							dataTransfer[key] = value;
+						},
+						getData: function ( key ) {
+							if ( isIE && key !== 'text' ) {
+								throw new Error( 'IE FAIL' );
+							}
+							return dataTransfer[key];
+						}
+					}
+				},
+				preventDefault: function () {}
+			};
+
+		// Mock drop coords
+		view.getOffsetFromCoords = function () {
+			return targetOffset;
+		};
+
+		expectedData( data );
+
+		selection = new ve.dm.LinearSelection( model.getDocument(), new ve.Range( 1, 4 ) );
+		model.setSelection( selection );
+
+		view.onDocumentDragStart( mockEvent );
+		assert.deepEqual(
+			dataTransfer,
+			expectedTransfer,
+			'dataTransfer data set after drag start'
+		);
+
+		view.onDocumentDrop( mockEvent );
+
+		assert.equalLinearData( model.getDocument().getFullData(), data, msg + ': data' );
+		assert.equalHash( model.getSelection(), expectedSelection, msg + ': selection' );
+		surface.destroy();
+	}
+
+	for ( i = 0; i < cases.length; i++ ) {
+		testRunner(
+			cases[i].range, cases[i].targetOffset, cases[i].expectedTransfer, cases[i].expectedData,
+			cases[i].expectedSelection, cases[i].isIE, cases[i].msg
+		);
+	}
+
+} );
+
 QUnit.test( 'getNearestCorrectOffset', function ( assert ) {
 	var i, dir,
 		surface = ve.test.utils.createSurfaceFromHtml( ve.dm.example.html ),
