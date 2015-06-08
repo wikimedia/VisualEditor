@@ -9,7 +9,7 @@ QUnit.module( 've.ui.AnnotationAction' );
 /* Tests */
 
 function runAnnotationActionTest( assert, html, method, args, range, expectedData, msg ) {
-	var surface = ve.test.utils.createSurfaceFromHtml( html || ve.dm.example.html ),
+	var surface = ve.test.utils.createModelOnlySurfaceFromHtml( html || ve.dm.example.html ),
 		AnnotationAction = new ve.ui.AnnotationAction( surface ),
 		data = ve.copy( surface.getModel().getDocument().getFullData() );
 
@@ -18,8 +18,6 @@ function runAnnotationActionTest( assert, html, method, args, range, expectedDat
 	AnnotationAction[method].apply( AnnotationAction, args );
 
 	assert.equalLinearData( surface.getModel().getDocument().getFullData(), data, msg + ': data models match' );
-
-	surface.destroy();
 }
 
 QUnit.test( 'toggle', function ( assert ) {

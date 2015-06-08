@@ -9,7 +9,7 @@ QUnit.module( 've.ui.IndentationAction' );
 /* Tests */
 
 function runIndentationChangeTest( assert, range, method, expectedRange, expectedData, expectedOriginalData, msg ) {
-	var surface = ve.test.utils.createSurfaceFromHtml( ve.dm.example.isolationHtml ),
+	var surface = ve.test.utils.createModelOnlySurfaceFromHtml( ve.dm.example.isolationHtml ),
 		indentationAction = new ve.ui.IndentationAction( surface ),
 		data = ve.copy( surface.getModel().getDocument().getFullData() ),
 		originalData = ve.copy( data );
@@ -29,8 +29,6 @@ function runIndentationChangeTest( assert, range, method, expectedRange, expecte
 
 	assert.equalLinearData( surface.getModel().getDocument().getFullData(), originalData, msg + ' (undo): data models match' );
 	assert.equalRange( surface.getModel().getSelection().getRange(), range, msg + ' (undo): ranges match' );
-
-	surface.destroy();
 }
 
 QUnit.test( 'increase/decrease', 2, function ( assert ) {

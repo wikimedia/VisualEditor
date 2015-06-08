@@ -9,7 +9,7 @@ QUnit.module( 've.ui.TableAction' );
 /* Tests */
 
 function runTableActionTest( assert, html, method, args, selection, expectedData, expectedSelection, msg ) {
-	var surface = ve.test.utils.createSurfaceFromHtml( html || ve.dm.example.html ),
+	var surface = ve.test.utils.createModelOnlySurfaceFromHtml( html || ve.dm.example.html ),
 		tableAction = new ve.ui.TableAction( surface ),
 		data = ve.copy( surface.getModel().getDocument().getFullData() );
 
@@ -21,8 +21,6 @@ function runTableActionTest( assert, html, method, args, selection, expectedData
 	if ( expectedSelection ) {
 		assert.deepEqual( surface.getModel().getSelection().toJSON(), expectedSelection, msg + ': selections match' );
 	}
-
-	surface.destroy();
 }
 
 QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle / caption', function ( assert ) {
