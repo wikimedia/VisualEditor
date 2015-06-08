@@ -365,7 +365,8 @@
 			"src/ui/ve.ui.Overlay.js",
 			"src/ui/ve.ui.Surface.js",
 			"src/ui/ve.ui.Context.js",
-			"src/ui/ve.ui.LinearContext.js",
+			"src/ui/contexts/ve.ui.LinearContext.js",
+			"src/ui/contexts/ve.ui.TableContext.js",
 			"src/ui/ve.ui.ModeledFactory.js",
 			"src/ui/ve.ui.ContextItem.js",
 			"src/ui/ve.ui.ContextItemFactory.js",
@@ -375,7 +376,6 @@
 			"src/ui/contextitems/ve.ui.LinkContextItem.js",
 			"src/ui/contextitems/ve.ui.ToolContextItem.js",
 			"src/ui/contextitems/ve.ui.TableContextItem.js",
-			"src/ui/ve.ui.TableContext.js",
 			"src/ui/ve.ui.Tool.js",
 			"src/ui/ve.ui.Toolbar.js",
 			"src/ui/ve.ui.TargetToolbar.js",
@@ -614,7 +614,7 @@
 	"visualEditor.desktop.build": {
 		"scripts": [
 			"src/ui/ve.ui.DesktopSurface.js",
-			"src/ui/ve.ui.DesktopContext.js",
+			"src/ui/contexts/ve.ui.DesktopContext.js",
 			"src/ui/windowmanagers/ve.ui.DesktopInspectorWindowManager.js"
 		],
 		"styles": [
@@ -635,7 +635,7 @@
 	"visualEditor.mobile.build": {
 		"scripts": [
 			"src/ui/ve.ui.MobileSurface.js",
-			"src/ui/ve.ui.MobileContext.js",
+			"src/ui/contexts/ve.ui.MobileContext.js",
 			"src/ui/windowmanagers/ve.ui.MobileWindowManager.js"
 		],
 		"styles": [
