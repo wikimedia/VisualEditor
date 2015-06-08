@@ -16,7 +16,7 @@ QUnit.test( 'whitespacePattern', 4, function ( assert ) {
 } );
 
 QUnit.test( 'getDomHash/getDomText (with ve.dm.Converter)', function ( assert ) {
-	var i, surface, documentView,
+	var i, view, documentView,
 		cases = [
 			{
 				msg: 'Nested annotations',
@@ -50,15 +50,16 @@ QUnit.test( 'getDomHash/getDomText (with ve.dm.Converter)', function ( assert ) 
 	QUnit.expect( cases.length * 2 );
 
 	for ( i = 0; i < cases.length; i++ ) {
-		surface = ve.test.utils.createSurfaceFromHtml( cases[i].html );
-		documentView = surface.getView().getDocument();
+		view = ve.test.utils.createSurfaceViewFromHtml( cases[i].html );
+		documentView = view.getDocument();
 		assert.strictEqual( ve.ce.getDomHash( documentView.getDocumentNode().$element[0] ), cases[i].hash, 'getDomHash: ' + cases[i].msg );
 		assert.strictEqual( ve.ce.getDomText( documentView.getDocumentNode().$element[0] ), cases[i].text, 'getDomText: ' + cases[i].msg );
+		view.destroy();
 	}
 } );
 
 QUnit.test( 'getDomHash/getDomText (without ve.dm.Converter)', function ( assert ) {
-	var i, element,
+	var i, view, element,
 		cases = [
 			{
 				msg: 'Block slugs are ignored',
@@ -75,17 +76,20 @@ QUnit.test( 'getDomHash/getDomText (without ve.dm.Converter)', function ( assert
 		];
 
 	QUnit.expect( cases.length * 2 );
-	element = ve.test.utils.createSurfaceFromHtml( '' ).getView().getDocument().getDocumentNode().$element[0];
+	view = ve.test.utils.createSurfaceViewFromHtml( '' );
+	element = view.getDocument().getDocumentNode().$element[0];
 
 	for ( i = 0; i < cases.length; i++ ) {
 		element.innerHTML = cases[i].html;
 		assert.strictEqual( ve.ce.getDomHash( element.firstChild ), cases[i].hash, 'getDomHash: ' + cases[i].msg );
 		assert.strictEqual( ve.ce.getDomText( element.firstChild ), cases[i].text, 'getDomText: ' + cases[i].msg );
 	}
+
+	view.destroy();
 } );
 
 QUnit.test( 'getOffset', function ( assert ) {
-	var i, surface, documentModel, documentView,
+	var i, view, documentModel, documentView,
 		expected = 0,
 		testCases = [
 			{
@@ -262,12 +266,12 @@ QUnit.test( 'getOffset', function ( assert ) {
 	}
 
 	for ( i = 0; i < testCases.length; i++ ) {
-		surface = ve.test.utils.createSurfaceFromHtml( testCases[i].html );
-		documentModel = surface.getModel().getDocument();
-		documentView = surface.getView().getDocument();
+		view = ve.test.utils.createSurfaceViewFromHtml( testCases[i].html );
+		documentModel = view.getModel().getDocument();
+		documentView = view.getDocument();
 
 		testOffsets( documentView.getDocumentNode().$element[0], testCases[i], -1 );
-		surface.destroy();
+		view.destroy();
 	}
 } );
 
@@ -353,7 +357,7 @@ QUnit.test( 'resolveTestOffset', function ( assert ) {
 } );
 
 QUnit.test( 'fakeImes', function ( assert ) {
-	var i, ilen, j, jlen, surface, testRunner, testName, testActions, seq, testInfo,
+	var i, ilen, j, jlen, view, testRunner, testName, testActions, seq, testInfo,
 		action, args, count, foundEndLoop, testsFailAt, failAt, died, fakePreventDefault;
 
 	if ( Function.prototype.bind === undefined ) {
@@ -390,9 +394,9 @@ QUnit.test( 'fakeImes', function ( assert ) {
 		foundEndLoop = false;
 		// First element is the testInfo
 		testInfo = testActions[0];
-		surface = ve.test.utils.createSurfaceFromHtml( testInfo.startDom || '' );
-		surface.getModel().setLinearSelection( new ve.Range( 1 ) );
-		testRunner = new ve.ce.TestRunner( surface );
+		view = ve.test.utils.createSurfaceViewFromHtml( testInfo.startDom || '' );
+		view.getModel().setLinearSelection( new ve.Range( 1 ) );
+		testRunner = new ve.ce.TestRunner( view );
 		// start at 1 to omit the testInfo
 		died = false;
 		for ( j = 1, jlen = testActions.length; j < jlen; j++ ) {
@@ -436,7 +440,7 @@ QUnit.test( 'fakeImes', function ( assert ) {
 		}
 		// Test that there is at least one endLoop
 		assert.strictEqual( foundEndLoop, true, testName + ' found at least one endLoop' );
-		surface.destroy();
+		view.destroy();
 	}
 } );
 
