@@ -18,7 +18,9 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, html, range, o
 			enter: [ 'handleLinearEnter', {} ],
 			modifiedEnter: [ 'handleLinearEnter', { shiftKey: true } ]
 		},
-		view = ve.test.utils.createSurfaceViewFromHtml( html || ve.dm.example.html ),
+		view = html ?
+			ve.test.utils.createSurfaceViewFromHtml( html ) :
+			ve.test.utils.createSurfaceViewFromDocument( ve.dm.example.createExampleDocument() ),
 		model = view.getModel(),
 		data = ve.copy( model.getDocument().getFullData() );
 
@@ -1174,7 +1176,7 @@ QUnit.test( 'onDocumentDragStart/onDocumentDrop', function ( assert ) {
 
 	function testRunner( range, targetOffset, expectedTransfer, expectedData, expectedSelection, isIE, msg ) {
 		var selection,
-			view = ve.test.utils.createSurfaceViewFromHtml( ve.dm.example.html ),
+			view = ve.test.utils.createSurfaceViewFromDocument( ve.dm.example.createExampleDocument() ),
 			model = view.getModel(),
 			data = ve.copy( model.getDocument().getFullData() ),
 			dataTransfer = {},

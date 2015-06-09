@@ -64,7 +64,7 @@
 	};
 
 	ve.test.utils.runFormatConverterTest = function ( assert, range, type, attributes, expectedRange, expectedData, msg ) {
-		var surface = ve.test.utils.createSurfaceFromHtml( ve.dm.example.isolationHtml ),
+		var surface = ve.test.utils.createModelOnlySurfaceFromHtml( ve.dm.example.isolationHtml ),
 			formatAction = new ve.ui.FormatAction( surface ),
 			data = ve.copy( surface.getModel().getDocument().getFullData() ),
 			originalData = ve.copy( data );
@@ -81,8 +81,6 @@
 
 		assert.equalLinearData( surface.getModel().getDocument().getFullData(), originalData, msg + ' (undo): data models match' );
 		assert.equalRange( surface.getModel().getSelection().getRange(), range, msg + ' (undo): ranges match' );
-
-		surface.destroy();
 	};
 
 	ve.test.utils.countGetModelFromDomTests = function ( cases ) {
@@ -247,6 +245,29 @@
 		model.initialize();
 
 		return view;
+	};
+
+	/**
+	 * Create a model-only UI surface from some HTML
+	 *
+	 * @param {string} html Document HTML
+	 * @returns {Object} Mock UI surface which only returns a real model
+	 */
+	ve.test.utils.createModelOnlySurfaceFromHtml = function ( html ) {
+		var model = new ve.dm.Surface(
+			ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( html ) )
+		);
+		return {
+			getModel: function () {
+				return model;
+			},
+			getView: function () {
+				// Mock view
+				return {
+					focus: function () {}
+				};
+			}
+		};
 	};
 
 	/**
