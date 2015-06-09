@@ -7,7 +7,7 @@
 QUnit.module( 've.dm.APIResultsQueue' );
 
 var itemCounter = 0,
-	responseDelay = 1000,
+	responseDelay = 1,
 	FullResourceProvider = function VeDmFullResourceProvider( config ) {
 		this.timer = null;
 		// Inheritance
@@ -166,7 +166,7 @@ QUnit.test( 'Abort providers', function ( assert ) {
 	assert.expect( 1 );
 
 	// Make the delay higher
-	responseDelay = 3000;
+	responseDelay = 3;
 
 	// Add providers to queue
 	biggerQueue.setProviders( providers2 );
@@ -179,7 +179,7 @@ QUnit.test( 'Abort providers', function ( assert ) {
 		} );
 
 	// Make the delay higher
-	responseDelay = 5000;
+	responseDelay = 5;
 
 	biggerQueue.setParams( { foo: 'baz' } );
 	biggerQueue.get( 10 )
