@@ -39,7 +39,7 @@ QUnit.test( 'Converter tests', function ( assert ) {
 // TODO: getDirectionFromSelection
 
 QUnit.test( 'getNodeAndOffset', function ( assert ) {
-	var tests, i, len, test, parts, surface, data, ceDoc, rootNode, offsetCount, offset, position;
+	var tests, i, len, test, parts, view, data, ceDoc, rootNode, offsetCount, offset, position;
 
 	// Each test below has the following:
 	// html: an input document
@@ -91,11 +91,11 @@ QUnit.test( 'getNodeAndOffset', function ( assert ) {
 	for ( i = 0, len = tests.length; i < len; i++ ) {
 		test = tests[i];
 		parts = test.positions.split( /[|]/ );
-		surface = ve.test.utils.createSurfaceFromHtml( test.html );
-		data = surface.getModel().getDocument().data.data
+		view = ve.test.utils.createSurfaceViewFromHtml( test.html );
+		data = view.getModel().getDocument().data.data
 			.slice( 0, -2 )
 			.map( showModelItem );
-		ceDoc = surface.getView().documentView;
+		ceDoc = view.documentView;
 		rootNode = ceDoc.getDocumentNode().$element.get( 0 );
 
 		assert.deepEqual( data, test.data, test.title + ' (data)' );
@@ -137,5 +137,6 @@ QUnit.test( 'getNodeAndOffset', function ( assert ) {
 				test.title + ' (' + offset + ')'
 			);
 		}
+		view.destroy();
 	}
 } );

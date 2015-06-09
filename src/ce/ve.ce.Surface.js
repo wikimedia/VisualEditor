@@ -2436,7 +2436,7 @@ ve.ce.Surface.prototype.onInsertionAnnotationsChange = function () {
 		return;
 	}
 	// Must re-apply the selection after re-rendering
-	this.showSelection( this.surface.getModel().getSelection() );
+	this.showSelection( this.getModel().getSelection() );
 	this.surfaceObserver.pollOnceNoEmit();
 };
 
@@ -2783,21 +2783,21 @@ ve.ce.Surface.prototype.onSurfaceObserverContentChange = function ( node, previo
 ve.ce.Surface.prototype.checkSequences = function () {
 	var i, sequences,
 		executed = false,
-		surfaceModel = this.surface.getModel(),
-		selection = surfaceModel.getSelection();
+		model = this.getModel(),
+		selection = model.getSelection();
 
 	if ( !( selection instanceof ve.dm.LinearSelection ) ) {
 		return;
 	}
 
-	sequences = ve.ui.sequenceRegistry.findMatching( surfaceModel.getDocument().data, selection.getRange().end );
+	sequences = ve.ui.sequenceRegistry.findMatching( model.getDocument().data, selection.getRange().end );
 
 	// sequences.length will likely be 0 or 1 so don't cache
 	for ( i = 0; i < sequences.length; i++ ) {
 		executed = sequences[i].execute( this.surface ) || executed;
 	}
 	if ( executed ) {
-		this.showSelection( this.surface.getModel().getSelection() );
+		this.showSelection( model.getSelection() );
 	}
 };
 

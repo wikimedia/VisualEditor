@@ -10,13 +10,14 @@ QUnit.module( 've.ce.TableNode' );
 
 QUnit.test( 'getCellNodeFromTarget', function ( assert ) {
 	var i,
-		documentNode = ve.test.utils.createSurfaceFromHtml(
-				'<table>' +
-					'<tr><td>Foo' +
-						'<table><tr><td>Bar</td></tr></table>' +
-					'</td><td>Baz</td></tr>' +
-				'</table>'
-			).getView().getDocument().getDocumentNode(),
+		view = ve.test.utils.createSurfaceViewFromHtml(
+			'<table>' +
+				'<tr><td>Foo' +
+					'<table><tr><td>Bar</td></tr></table>' +
+				'</td><td>Baz</td></tr>' +
+			'</table>'
+		),
+		documentNode = view.getDocument().getDocumentNode(),
 		tableNode = documentNode.children[0],
 		$tableNode = tableNode.$element,
 		cases = [
@@ -41,13 +42,15 @@ QUnit.test( 'getCellNodeFromTarget', function ( assert ) {
 	for ( i = 0; i < cases.length; i++ ) {
 		assert.strictEqual( tableNode.getCellNodeFromTarget( cases[i].target ), cases[i].node, cases[i].msg );
 	}
+	view.destroy();
 } );
 
 QUnit.test( 'onTableMouseDown', function ( assert ) {
 	var i,
-		documentNode = ve.test.utils.createSurfaceFromHtml(
-				'<table><tr><td>Foo</td><td>Bar</td></tr></table>'
-			).getView().getDocument().getDocumentNode(),
+		view = ve.test.utils.createSurfaceViewFromHtml(
+			'<table><tr><td>Foo</td><td>Bar</td></tr></table>'
+		),
+		documentNode = view.getDocument().getDocumentNode(),
 		tableNode = documentNode.children[0],
 		$tableNode = tableNode.$element,
 		mockEvent = {
@@ -96,4 +99,5 @@ QUnit.test( 'onTableMouseDown', function ( assert ) {
 		// Clear document mouse up handlers
 		tableNode.onTableMouseUp();
 	}
+	view.destroy();
 } );

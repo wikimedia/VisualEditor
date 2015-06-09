@@ -18,9 +18,8 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, html, range, o
 			enter: [ 'handleLinearEnter', {} ],
 			modifiedEnter: [ 'handleLinearEnter', { shiftKey: true } ]
 		},
-		surface = ve.test.utils.createSurfaceFromHtml( html || ve.dm.example.html ),
-		view = surface.getView(),
-		model = surface.getModel(),
+		view = ve.test.utils.createSurfaceViewFromHtml( html || ve.dm.example.html ),
+		model = view.getModel(),
 		data = ve.copy( model.getDocument().getFullData() );
 
 	// TODO: model.getSelection() should be consistent after it has been
@@ -41,7 +40,7 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, html, range, o
 
 	assert.equalLinearData( model.getDocument().getFullData(), data, msg + ': data' );
 	assert.deepEqual( selection.toJSON(), expectedSelection, msg + ': selection' );
-	surface.destroy();
+	view.destroy();
 };
 
 QUnit.test( 'handleLinearDelete', function ( assert ) {
@@ -562,8 +561,9 @@ QUnit.test( 'onSurfaceObserverContentChange', function ( assert ) {
 
 	function testRunner( prevHtml, prevRange, nextHtml, nextRange, expectedOps, expectedRange, msg ) {
 		var txs, i, ops,
-			surface = ve.test.utils.createSurfaceFromHtml( prevHtml ),
-			view = surface.getView().getDocument().getDocumentNode().children[0],
+			view = ve.test.utils.createSurfaceViewFromHtml( prevHtml ),
+			model = view.getModel(),
+			node = view.getDocument().getDocumentNode().children[0],
 			prevNode = $( prevHtml )[0],
 			nextNode = $( nextHtml )[0],
 			prev = {
@@ -577,16 +577,16 @@ QUnit.test( 'onSurfaceObserverContentChange', function ( assert ) {
 				range: nextRange
 			};
 
-		surface.getView().onSurfaceObserverContentChange( view, prev, next );
-		txs = surface.getModel().getHistory()[0].transactions;
+		view.onSurfaceObserverContentChange( node, prev, next );
+		txs = model.getHistory()[0].transactions;
 		ops = [];
 		for ( i = 0; i < txs.length; i++ ) {
 			ops.push( txs[i].getOperations() );
 		}
 		assert.deepEqual( ops, expectedOps, msg + ': operations' );
-		assert.equalRange( surface.getModel().getSelection().getRange(), expectedRange, msg + ': range' );
+		assert.equalRange( model.getSelection().getRange(), expectedRange, msg + ': range' );
 
-		surface.destroy();
+		view.destroy();
 	}
 
 	for ( i = 0; i < cases.length; i++ ) {
@@ -662,11 +662,8 @@ QUnit.test( 'onCopy', function ( assert ) {
 
 	function testRunner( doc, range, expectedData, expectedOriginalRange, expectedBalancedRange, expectedHtml, msg ) {
 		var clipboardKey, parts, clipboardIndex, slice,
-			surface = ve.test.utils.createSurfaceFromDocument(
-				doc instanceof ve.dm.Document ? doc : ve.dm.example.createExampleDocument( doc )
-			),
-			view = surface.getView(),
-			model = surface.getModel();
+			view = ve.test.utils.createSurfaceViewFromDocument( doc || ve.dm.example.createExampleDocument() ),
+			model = view.getModel();
 
 		// Paste sequence
 		model.setSelection( new ve.dm.LinearSelection( model.getDocument(), range ) );
@@ -690,7 +687,7 @@ QUnit.test( 'onCopy', function ( assert ) {
 			msg + ': html'
 		);
 
-		surface.destroy();
+		view.destroy();
 	}
 
 	for ( i = 0; i < cases.length; i++ ) {
@@ -1075,9 +1072,8 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 	function testRunner( documentHtml, pasteHtml, fromVe, useClipboardData, range, pasteSpecial, expectedOps, expectedRange, expectedHtml, msg ) {
 		var i, j, txs, ops, txops, htmlDoc,
 			e = {},
-			surface = ve.test.utils.createSurfaceFromHtml( documentHtml || exampleDoc ),
-			view = surface.getView(),
-			model = surface.getModel(),
+			view = ve.test.utils.createSurfaceViewFromHtml( documentHtml || exampleDoc ),
+			model = view.getModel(),
 			doc = model.getDocument();
 
 		// Paste sequence
@@ -1121,7 +1117,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 			htmlDoc = ve.dm.converter.getDomFromModel( doc );
 			assert.strictEqual( htmlDoc.body.innerHTML, expectedHtml, msg + ': HTML' );
 		}
-		surface.destroy();
+		view.destroy();
 	}
 
 	for ( i = 0; i < cases.length; i++ ) {
@@ -1178,9 +1174,8 @@ QUnit.test( 'onDocumentDragStart/onDocumentDrop', function ( assert ) {
 
 	function testRunner( range, targetOffset, expectedTransfer, expectedData, expectedSelection, isIE, msg ) {
 		var selection,
-			surface = ve.test.utils.createSurfaceFromHtml( ve.dm.example.html ),
-			view = surface.getView(),
-			model = surface.getModel(),
+			view = ve.test.utils.createSurfaceViewFromHtml( ve.dm.example.html ),
+			model = view.getModel(),
 			data = ve.copy( model.getDocument().getFullData() ),
 			dataTransfer = {},
 			mockEvent = {
@@ -1224,7 +1219,7 @@ QUnit.test( 'onDocumentDragStart/onDocumentDrop', function ( assert ) {
 
 		assert.equalLinearData( model.getDocument().getFullData(), data, msg + ': data' );
 		assert.equalHash( model.getSelection(), expectedSelection, msg + ': selection' );
-		surface.destroy();
+		view.destroy();
 	}
 
 	for ( i = 0; i < cases.length; i++ ) {
@@ -1238,9 +1233,8 @@ QUnit.test( 'onDocumentDragStart/onDocumentDrop', function ( assert ) {
 
 QUnit.test( 'getNearestCorrectOffset', function ( assert ) {
 	var i, dir,
-		surface = ve.test.utils.createSurfaceFromHtml( ve.dm.example.html ),
-		view = surface.getView(),
-		data = surface.getModel().getDocument().data,
+		view = ve.test.utils.createSurfaceViewFromHtml( ve.dm.example.html ),
+		data = view.getModel().getDocument().data,
 		expected = {
 			// 10 offsets per row
 			'-1': [
@@ -1270,10 +1264,11 @@ QUnit.test( 'getNearestCorrectOffset', function ( assert ) {
 			assert.strictEqual( view.getNearestCorrectOffset( i, dir ), expected[dir][i], 'Direction: ' + dir + ' Offset: ' + i );
 		}
 	}
+	view.destroy();
 } );
 
 QUnit.test( 'getRangeSelection', function ( assert ) {
-	var i, j, l, surface, selection, expectedNode, internlListNode, node, msg,
+	var i, j, l, view, selection, expectedNode, internlListNode, node, msg,
 		expect = 0,
 		cases = [
 			{
@@ -1391,15 +1386,15 @@ QUnit.test( 'getRangeSelection', function ( assert ) {
 	QUnit.expect( expect );
 
 	for ( i = 0; i < cases.length; i++ ) {
-		surface = ve.test.utils.createSurfaceFromHtml( cases[i].html );
-		internlListNode = surface.getModel().getDocument().getInternalList().getListNode();
+		view = ve.test.utils.createSurfaceViewFromHtml( cases[i].html );
+		internlListNode = view.getModel().getDocument().getInternalList().getListNode();
 		for ( j = 0, l = internlListNode.getOuterRange().start; j < l; j++ ) {
 			msg = ' at ' + j + ' in ' + cases[i].msg;
-			node = surface.getView().getDocument().getDocumentNode().getNodeFromOffset( j );
+			node = view.getDocument().getDocumentNode().getNodeFromOffset( j );
 			if ( node.isFocusable() ) {
 				assert.strictEqual( null, cases[i].expected[j], 'Focusable node at ' + j );
 			} else {
-				selection = surface.getView().getRangeSelection( new ve.Range( j ) );
+				selection = view.getRangeSelection( new ve.Range( j ) );
 				if ( selection.end ) {
 					expectedNode = $( '<div>' ).html( cases[i].expected[j].startNode )[0].childNodes[0];
 					assert.equalDomElement( selection.start.node, expectedNode, 'Start node ' + msg );
@@ -1414,6 +1409,7 @@ QUnit.test( 'getRangeSelection', function ( assert ) {
 				}
 			}
 		}
+		view.destroy();
 	}
 
 } );

@@ -11,9 +11,9 @@ QUnit.module( 've.ce.RangeState' );
 QUnit.test( 'Basic tests', function ( assert ) {
 	var i, rangeState, nativeRange,
 		oldState = null,
-		surface = ve.test.utils.createSurfaceFromHtml( ve.dm.example.html ).getView(),
-		nativeSelection = surface.nativeSelection,
-		doc = surface.getDocument().getDocumentNode(),
+		view = ve.test.utils.createSurfaceViewFromHtml( ve.dm.example.html ),
+		nativeSelection = view.nativeSelection,
+		doc = view.getDocument().getDocumentNode(),
 		cases = [
 			{
 				msg: 'From null to null state',
@@ -139,4 +139,5 @@ QUnit.test( 'Basic tests', function ( assert ) {
 		assert.deepEqual( getSummary( rangeState ), cases[i].expected, cases[i].msg );
 		oldState = rangeState;
 	}
+	view.destroy();
 } );

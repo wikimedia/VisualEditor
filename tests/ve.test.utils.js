@@ -195,6 +195,7 @@
 
 	/**
 	 * Create a UI surface from a document
+	 *
 	 * @param {ve.dm.Document} doc Document
 	 * @returns {ve.ui.Surface} UI surface
 	 */
@@ -203,6 +204,49 @@
 		$( '#qunit-fixture' ).append( target.$element );
 		target.addSurface( doc );
 		return target.surface;
+	};
+
+	/**
+	 * Create a CE surface from some HTML
+	 *
+	 * @param {string} html Document HTML
+	 * @returns {ve.ce.Surface} CE surface
+	 */
+	ve.test.utils.createSurfaceViewFromHtml = function ( html ) {
+		return this.createSurfaceViewFromDocument(
+			ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( html ) )
+		);
+	};
+
+	/**
+	 * Create a CE surface from a document
+	 *
+	 * @param {ve.dm.Document} doc Document
+	 * @returns {ve.ce.Surface} CE surface
+	 */
+	ve.test.utils.createSurfaceViewFromDocument = function ( doc ) {
+		var mockSurface = {
+				$blockers: $( '<div>' ),
+				$selections: $( '<div>' ),
+				$element: $( '<div>' ),
+				getBoundingClientRect: function () {
+					return {};
+				},
+				getImportRules: function () {
+					return ve.init.sa.Target.static.importRules;
+				}
+			},
+			model = new ve.dm.Surface( doc ),
+			view = new ve.ce.Surface( model, mockSurface );
+
+		view.surface = mockSurface;
+		mockSurface.$element.append( view.$element );
+		$( '#qunit-fixture' ).append( mockSurface.$element );
+
+		view.initialize();
+		model.initialize();
+
+		return view;
 	};
 
 	/**
