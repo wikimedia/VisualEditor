@@ -223,7 +223,8 @@
 						"OO.ui.WindowManager",
 					"OO.ui.Error",
 					"OO.ui.Process",
-					"OO.ui.HtmlSnippet"
+					"OO.ui.HtmlSnippet",
+					"OO.ui.mixin"
 				]
 			},
 			{
