@@ -2532,7 +2532,7 @@ ve.ce.Surface.prototype.createSlug = function ( element ) {
  * @param {ve.Range|null} newRange
  */
 ve.ce.Surface.prototype.onSurfaceObserverRangeChange = function ( oldRange, newRange ) {
-	if ( oldRange && oldRange.equalsSelection( newRange ) ) {
+	if ( !newRange.isCollapsed() && oldRange && oldRange.equalsSelection( newRange ) ) {
 		// Ignore when the newRange is just a flipped oldRange
 		return;
 	}

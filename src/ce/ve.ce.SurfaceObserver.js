@@ -230,6 +230,9 @@ ve.ce.SurfaceObserver.prototype.pollOnceInternal = function ( emitChanges, selec
 	}
 
 	if ( newState.selectionChanged && emitChanges ) {
+		// Caution: selectionChanged is true if the CE selection is different, which can
+		// be the case even if the DM selection is unchanged. So the following line can
+		// emit a rangeChange event with identical oldState and newState.
 		this.emit(
 			'rangeChange',
 			( oldState ? oldState.veRange : null ),
