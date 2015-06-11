@@ -23,8 +23,8 @@ ve.ce.LanguageAnnotation = function VeCeLanguageAnnotation() {
 		.addClass( 've-ce-languageAnnotation' )
 		.addClass( 've-ce-bidi-isolate' )
 		.prop( {
-			lang: this.model.getAttribute( 'lang' ),
-			dir: this.model.getAttribute( 'dir' ),
+			lang: this.model.getAttribute( 'lang' ) || undefined,
+			dir: this.model.getAttribute( 'dir' ) || undefined,
 			title: this.constructor.static.getDescription( this.model )
 		} );
 };
