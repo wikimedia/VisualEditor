@@ -6,6 +6,7 @@
 
 /*jshint node:true */
 module.exports = function ( grunt ) {
+	grunt.loadNpmTasks( 'grunt-jsonlint' );
 	grunt.loadNpmTasks( 'grunt-banana-checker' );
 	grunt.loadNpmTasks( 'grunt-contrib-clean' );
 	grunt.loadNpmTasks( 'grunt-contrib-concat' );
@@ -265,6 +266,12 @@ module.exports = function ( grunt ) {
 			},
 			all: '{.jsduck,build,demos,src,tests}/**/*.css'
 		},
+		jsonlint: {
+			all: [
+				'**/*.json',
+				'!node_modules/**'
+			]
+		},
 		banana: {
 			all: 'i18n/'
 		},
@@ -329,7 +336,7 @@ module.exports = function ( grunt ) {
 	} );
 
 	grunt.registerTask( 'build', [ 'clean', 'concat', 'cssjanus', 'cssUrlEmbed', 'copy', 'buildloader' ] );
-	grunt.registerTask( 'lint', [ 'jshint', 'jscs:main', 'csslint', 'banana' ] );
+	grunt.registerTask( 'lint', [ 'jshint', 'jscs:main', 'csslint', 'jsonlint', 'banana' ] );
 	grunt.registerTask( 'unit', [ 'karma:main' ] );
 	grunt.registerTask( 'fix', [ 'jscs:fix' ] );
 	grunt.registerTask( '_test', [ 'lint', 'git-build', 'build', 'unit' ] );
