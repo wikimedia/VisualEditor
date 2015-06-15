@@ -31,7 +31,7 @@ ve.dm.LanguageAnnotation.static.matchTagNames = [ 'span' ];
 
 ve.dm.LanguageAnnotation.static.matchFunction = function ( domElement ) {
 	var lang = domElement.getAttribute( 'lang' ),
-		dir = domElement.getAttribute( 'dir' );
+		dir = ( domElement.getAttribute( 'dir' ) || '' ).toLowerCase();
 	return lang || dir === 'ltr' || dir === 'rtl';
 };
 
