@@ -2908,6 +2908,20 @@ ve.dm.example.domToDataCases = {
 		],
 		fromDataBody: '<p>A  <b>B  <i>C</i></b>\t \n<u>D</u>\t</p>'
 	},
+	'annotation whitespace trimming does not create empty annotations': {
+		body: '<p>A<b> </b> <b>B</b></p>',
+		data: [
+			{ type: 'paragraph' },
+			'A',
+			[ ' ', [ ve.dm.example.bold ] ],
+			' ',
+			[ 'B', [ ve.dm.example.bold ] ],
+			{ type: '/paragraph' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
+		],
+		fromDataBody: '<p>A  <b>B</b></p>'
+	},
 	'order of nested annotations is preserved': {
 		body: '<p><b><u><i>Foo</i></u></b></p>',
 		data: [

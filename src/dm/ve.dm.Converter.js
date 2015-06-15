@@ -1137,9 +1137,11 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 			last = annotatedChildDomElements[annotatedChildDomElements.length - 1];
 		}
 
-		annotationElement = conv.getDomElementsFromDataElement(
-			annotation.getElement(), doc, annotatedChildDomElements
-		)[0];
+		if ( annotatedChildDomElements.length ) {
+			annotationElement = conv.getDomElementsFromDataElement(
+				annotation.getElement(), doc, annotatedChildDomElements
+			)[0];
+		}
 
 		if ( leading ) {
 			annotatedDomElements.push( doc.createTextNode( leading ) );
