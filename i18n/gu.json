@@ -8,7 +8,7 @@
 		]
 	},
 	"visualeditor": "વિઝ્યુલએડિટર",
-	"visualeditor-aliennode-tooltip": "માફ કરશો, આ ભાગ હાલમાં માત્ર સ્ત્રોત સ્થિતિ વડે જ ફેરફાર કરી શકાય છે.",
+	"visualeditor-aliennode-tooltip": "માફ કરશો, આ ભાગ હાલમાં માત્ર સ્રોત સ્થિતિ વડે જ ફેરફાર કરી શકાય છે.",
 	"visualeditor-align-widget-center": "મધ્ય",
 	"visualeditor-align-widget-left": "ડાબે",
 	"visualeditor-align-widget-right": "જમણે",
@@ -80,7 +80,7 @@
 	"visualeditor-shortcuts-formatting": "ફકરાનું બંધારણ",
 	"visualeditor-shortcuts-history": "ઇતિહાસ",
 	"visualeditor-shortcuts-other": "અન્ય",
-	"visualeditor-shortcuts-text-style": "લખાણનું બંધારણ",
+	"visualeditor-shortcuts-text-style": "લખાણની શૈલી",
 	"visualeditor-specialcharacter-button-tooltip": "ખાસ અક્ષરો",
 	"visualeditor-specialcharacterinspector-title": "ખાસ અક્ષરો",
 	"visualeditor-table-insert-table": "કોષ્ટક",
