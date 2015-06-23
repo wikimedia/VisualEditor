@@ -1,12 +1,12 @@
 /*!
- * OOjs UI v0.11.5
+ * OOjs UI v0.11.6
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2015 OOjs Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2015-06-17T00:59:03Z
+ * Date: 2015-06-23T21:49:41Z
  */
 .oo-ui-icon-block {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/block.svg);
@@ -47,11 +47,17 @@
 .oo-ui-icon-ongoingConversation {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/ongoingConversation-rtl.svg);
 }
+.oo-ui-icon-ongoingConversation-progressive {
+	background-image: /* @embed */ url(themes/mediawiki/images/icons/ongoingConversation-rtl-progressive.svg);
+}
 .oo-ui-icon-ongoingConversation-invert {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/ongoingConversation-rtl-invert.svg);
 }
 .oo-ui-icon-star {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/star.svg);
+}
+.oo-ui-icon-star-constructive {
+	background-image: /* @embed */ url(themes/mediawiki/images/icons/star-constructive.svg);
 }
 .oo-ui-icon-star-invert {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/star-invert.svg);
@@ -79,6 +85,9 @@
 }
 .oo-ui-icon-unStar {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/unStar.svg);
+}
+.oo-ui-icon-unStar-constructive {
+	background-image: /* @embed */ url(themes/mediawiki/images/icons/unStar-constructive.svg);
 }
 .oo-ui-icon-unStar-invert {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/unStar-invert.svg);

@@ -1,12 +1,12 @@
 /*!
- * OOjs UI v0.11.5
+ * OOjs UI v0.11.6
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2015 OOjs Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2015-06-17T00:59:03Z
+ * Date: 2015-06-23T21:49:41Z
  */
 .oo-ui-icon-block {
 	background-image: url("themes/mediawiki/images/icons/block.png");
@@ -86,6 +86,12 @@
 	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/ongoingConversation-ltr.svg");
 	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/ongoingConversation-ltr.png");
 }
+.oo-ui-icon-ongoingConversation-progressive {
+	background-image: url("themes/mediawiki/images/icons/ongoingConversation-ltr-progressive.png");
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/ongoingConversation-ltr-progressive.svg");
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/ongoingConversation-ltr-progressive.svg");
+	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/ongoingConversation-ltr-progressive.png");
+}
 .oo-ui-icon-ongoingConversation-invert {
 	background-image: url("themes/mediawiki/images/icons/ongoingConversation-ltr-invert.png");
 	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/ongoingConversation-ltr-invert.svg");
@@ -97,6 +103,12 @@
 	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/star.svg");
 	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/star.svg");
 	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/star.png");
+}
+.oo-ui-icon-star-constructive {
+	background-image: url("themes/mediawiki/images/icons/star-constructive.png");
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/star-constructive.svg");
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/star-constructive.svg");
+	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/star-constructive.png");
 }
 .oo-ui-icon-star-invert {
 	background-image: url("themes/mediawiki/images/icons/star-invert.png");
@@ -151,6 +163,12 @@
 	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/unStar.svg");
 	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/unStar.svg");
 	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/unStar.png");
+}
+.oo-ui-icon-unStar-constructive {
+	background-image: url("themes/mediawiki/images/icons/unStar-constructive.png");
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/unStar-constructive.svg");
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/unStar-constructive.svg");
+	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/unStar-constructive.png");
 }
 .oo-ui-icon-unStar-invert {
 	background-image: url("themes/mediawiki/images/icons/unStar-invert.png");
