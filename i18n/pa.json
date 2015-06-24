@@ -24,6 +24,7 @@
 	"visualeditor-clipboard-copy": "ਕਾਪੀ ਕਰੋ",
 	"visualeditor-clipboard-cut": "ਕੱਟ",
 	"visualeditor-clipboard-paste": "ਪੇਸਟ",
+	"visualeditor-commentinspector-edit": "ਟਿੱਪਣੀ ਸੋਧੋ",
 	"visualeditor-commentinspector-title": "ਟਿੱਪਣੀ",
 	"visualeditor-commentinspector-tooltip": "ਟਿੱਪਣੀ",
 	"visualeditor-content-select-all": "ਸਾਰਾ ਚੁਣੋ",
@@ -74,5 +75,11 @@
 	"visualeditor-slug-insert": "ਪੈਰਾ ਜੋੜੋ",
 	"visualeditor-specialcharacter-button-tooltip": "ਖ਼ਾਸ ਚਿੰਨ੍ਹ",
 	"visualeditor-specialcharacterinspector-title": "ਖ਼ਾਸ ਚਿੰਨ੍ਹ",
-	"visualeditor-table-caption": "ਸਿਰਲੇਖ"
+	"visualeditor-table-caption": "ਸਿਰਲੇਖ",
+	"visualeditor-table-delete-table": "ਟੇਬਲ ਹਟਾਓ",
+	"visualeditor-table-insert-table": "ਟੇਬਲ",
+	"visualeditor-toolbar-history": "ਅਤੀਤ",
+	"visualeditor-toolbar-insert": "ਜੋੜੋ",
+	"visualeditor-toolbar-structure": "ਸੰਰਚਨਾ",
+	"visualeditor-toolbar-table": "ਟੇਬਲ"
 }
