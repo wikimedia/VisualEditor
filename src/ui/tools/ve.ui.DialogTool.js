@@ -37,6 +37,16 @@ OO.inheritClass( ve.ui.DialogTool, ve.ui.Tool );
 ve.ui.DialogTool.static.modelClasses = [];
 
 /**
+ * Name of the associated windows, if there is more than one possible value, or if it can't be
+ * deduced from the tool's command.
+ *
+ * @static
+ * @property {string[]}
+ * @inheritable
+ */
+ve.ui.DialogTool.static.associatedWindows = null;
+
+/**
  * @inheritdoc
  */
 ve.ui.DialogTool.static.isCompatibleWith = function ( model ) {
@@ -48,11 +58,20 @@ ve.ui.DialogTool.static.isCompatibleWith = function ( model ) {
 /**
  * @inheritdoc
  */
-ve.ui.DialogTool.prototype.onUpdateState = function () {
+ve.ui.DialogTool.prototype.onUpdateState = function ( fragment, contextDirection, activeDialogs ) {
+	var myWindowNames = [];
+
 	// Parent method
 	ve.ui.DialogTool.super.prototype.onUpdateState.apply( this, arguments );
-	// Never show the tool as active
-	this.setActive( false );
+
+	if ( this.constructor.static.associatedWindows !== null ) {
+		myWindowNames = this.constructor.static.associatedWindows;
+	} else if ( this.getCommand().getAction() === 'window' ) {
+		myWindowNames = [ this.getCommand().getArgs()[0] ];
+	}
+
+	// Show the tool as active if any of its associated windows is open
+	this.setActive( $( activeDialogs ).filter( myWindowNames ).length !== 0 );
 };
 
 /**

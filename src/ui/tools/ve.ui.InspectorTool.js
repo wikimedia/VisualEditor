@@ -9,41 +9,23 @@
  *
  * @abstract
  * @class
- * @extends ve.ui.Tool
+ * @extends ve.ui.DialogTool
  * @constructor
  * @param {OO.ui.ToolGroup} toolGroup
  * @param {Object} [config] Configuration options
  */
 ve.ui.InspectorTool = function VeUiInspectorTool( toolGroup, config ) {
 	// Parent constructor
-	ve.ui.Tool.call( this, toolGroup, config );
+	ve.ui.InspectorTool.super.call( this, toolGroup, config );
 };
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.InspectorTool, ve.ui.Tool );
+OO.inheritClass( ve.ui.InspectorTool, ve.ui.DialogTool );
 
 /* Static Properties */
 
-/**
- * Annotation or node models this tool is related to.
- *
- * Used by #isCompatibleWith.
- *
- * @static
- * @property {Function[]}
- * @inheritable
- */
-ve.ui.InspectorTool.static.modelClasses = [];
-
 ve.ui.InspectorTool.static.deactivateOnSelect = false;
-
-/**
- * @inheritdoc
- */
-ve.ui.InspectorTool.static.isCompatibleWith = function ( model ) {
-	return ve.isInstanceOfAny( model, this.modelClasses );
-};
 
 /* Methods */
 
@@ -51,20 +33,20 @@ ve.ui.InspectorTool.static.isCompatibleWith = function ( model ) {
  * @inheritdoc
  */
 ve.ui.InspectorTool.prototype.onUpdateState = function ( fragment ) {
-	var i, len, models,
-		active = false;
+	var i, len, models;
+
+	this.setActive( false );
 
 	// Parent method
-	ve.ui.Tool.prototype.onUpdateState.apply( this, arguments );
+	ve.ui.InspectorTool.super.prototype.onUpdateState.apply( this, arguments );
 
 	models = fragment ? fragment.getSelectedModels() : [];
 	for ( i = 0, len = models.length; i < len; i++ ) {
 		if ( this.constructor.static.isCompatibleWith( models[i] ) ) {
-			active = true;
+			this.setActive( true );
 			break;
 		}
 	}
-	this.setActive( active );
 };
 
 /**
