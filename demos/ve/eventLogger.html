@@ -150,7 +150,7 @@
 					for ( i = 0, len = log.length; i < len; i++ ) {
 						jsons.push( JSON.stringify( log[i] ) );
 					}
-					$log.val( '[\n\t/*jshint quotmark:double */\n\t' + jsons.join(',\n\t') + '\n]' );
+					$log.val( '[\n\t' + jsons.join(',\n\t') + '\n]' );
 					$log[0].scrollTop = $log[0].scrollHeight;
 				}
 

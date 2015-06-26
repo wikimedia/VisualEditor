@@ -249,14 +249,12 @@ module.exports = function ( grunt ) {
 					fix: true
 				},
 				src: [
-					'<%= jshint.all %>',
-					'!tests/ce/imetests/*.js'
+					'<%= jshint.all %>'
 				]
 			},
 			main: {
 				src: [
-					'<%= jshint.all %>',
-					'!tests/ce/imetests/*.js'
+					'<%= jshint.all %>'
 				]
 			}
 		},
