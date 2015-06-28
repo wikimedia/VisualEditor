@@ -5,7 +5,8 @@
 			"VASANTH S.N.",
 			"Nayvik",
 			"Omshivaprakash",
-			"Pavanaja"
+			"Pavanaja",
+			"Yogesh"
 		]
 	},
 	"visualeditor": "ದೃಶ್ಯ ಸಂಪಾದಕ",
@@ -13,6 +14,7 @@
 	"visualeditor-align-widget-center": "ಮಧ್ಯೆ",
 	"visualeditor-align-widget-left": "ಎಡ",
 	"visualeditor-align-widget-right": "ಬಲ",
+	"visualeditor-alignablecontextitem-title": "ಸಾಲು ಹೊಂದಿಕೆ",
 	"visualeditor-annotationbutton-bold-tooltip": "ದಪ್ಪ",
 	"visualeditor-annotationbutton-code-tooltip": "ಗಣಕಯಂತ್ರದ ಸಂಕೇತ",
 	"visualeditor-annotationbutton-italic-tooltip": "ಓರೆಯಾದ",
