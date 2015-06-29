@@ -56,6 +56,7 @@ OO.inheritClass( ve.ui.Toolbar, OO.ui.Toolbar );
  * @event updateState
  * @param {ve.dm.SurfaceFragment|null} fragment Surface fragment. Null if no surface is active.
  * @param {Object|null} direction Context direction with 'inline' & 'block' properties if a surface exists. Null if no surface is active.
+ * @param {string[]} activeDialogs List of names of currently open dialogs.
  */
 
 /* Methods */
@@ -79,6 +80,14 @@ ve.ui.Toolbar.prototype.setup = function ( groups, surface ) {
 	this.getSurface().getToolbarDialogs().connect( this, {
 		opening: 'onToolbarDialogsOpeningOrClosing',
 		closing: 'onToolbarDialogsOpeningOrClosing'
+	} );
+	this.getSurface().getDialogs().connect( this, {
+		opening: 'onInspectorOrDialogOpeningOrClosing',
+		closing: 'onInspectorOrDialogOpeningOrClosing'
+	} );
+	this.getSurface().getContext().getInspectors().connect( this, {
+		opening: 'onInspectorOrDialogOpeningOrClosing',
+		closing: 'onInspectorOrDialogOpeningOrClosing'
 	} );
 };
 
@@ -159,6 +168,20 @@ ve.ui.Toolbar.prototype.onToolbarDialogsOpeningOrClosing = function ( win, openi
 };
 
 /**
+ * Handle windows opening or closing in the dialogs' or inspectors' window manager.
+ *
+ * @param {OO.ui.Window} win
+ * @param {jQuery.Promise} openingOrClosing
+ * @param {Object} data
+ */
+ve.ui.Toolbar.prototype.onInspectorOrDialogOpeningOrClosing = function ( win, openingOrClosing ) {
+	var toolbar = this;
+	openingOrClosing.then( function () {
+		toolbar.updateToolState();
+	} );
+};
+
+/**
  * Handle context changes on the surface.
  *
  * @fires updateState
@@ -176,7 +199,7 @@ ve.ui.Toolbar.prototype.updateToolState = function () {
 		return;
 	}
 
-	var dirInline, dirBlock, fragmentAnnotation,
+	var dirInline, dirBlock, fragmentAnnotation, activeDialogs,
 		fragment = this.getSurface().getModel().getFragment();
 
 	// Update context direction for button icons UI.
@@ -208,7 +231,22 @@ ve.ui.Toolbar.prototype.updateToolState = function () {
 		this.$element.addClass( 've-ui-dir-block-' + dirBlock );
 		this.contextDirection.block = dirBlock;
 	}
-	this.emit( 'updateState', fragment, this.contextDirection );
+
+	activeDialogs = $.map(
+		[
+			this.surface.getDialogs(),
+			this.surface.getContext().getInspectors(),
+			this.surface.getToolbarDialogs()
+		],
+		function ( windowManager ) {
+			if ( windowManager.getCurrentWindow() ) {
+				return windowManager.getCurrentWindow().constructor.static.name;
+			}
+			return null;
+		}
+	);
+
+	this.emit( 'updateState', fragment, this.contextDirection, activeDialogs );
 };
 
 /**
