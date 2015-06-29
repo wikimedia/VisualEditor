@@ -17,6 +17,7 @@
  * @param {Object} [config] Configuration options
  * @cfg {string[]} [excludeCommands] List of commands to exclude
  * @cfg {Object} [importRules] Import rules
+ * @cfg {string} [placeholder] Placeholder text to display when the surface is empty
  * @cfg {string} [inDialog] The name of the dialog this surface is in
  */
 ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
@@ -38,6 +39,7 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 	this.$blockers = $( '<div>' );
 	this.$controls = $( '<div>' );
 	this.$menus = $( '<div>' );
+	this.$placeholder = $( '<div>' ).addClass( 've-ui-surface-placeholder' );
 	this.triggerListener = new ve.TriggerListener( OO.simpleArrayDifference(
 		Object.keys( ve.ui.commandRegistry.registry ), config.excludeCommands || []
 	) );
@@ -61,12 +63,16 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 	this.showProgressDebounced = ve.debounce( this.showProgress.bind( this ) );
 	this.filibuster = null;
 	this.debugBar = null;
+	this.setPlaceholder( config.placeholder );
 
 	this.toolbarHeight = 0;
 	this.toolbarDialogs = new ve.ui.ToolbarDialogWindowManager( this, {
 		factory: ve.ui.windowFactory,
 		modal: false
 	} );
+
+	// Events
+	this.getModel().getDocument().connect( this, { transact: 'onDocumentTransact' } );
 
 	// Initialization
 	this.$menus.append( this.context.$element );
@@ -299,6 +305,35 @@ ve.ui.Surface.prototype.enable = function () {
 	this.enabled = true;
 	this.view.enable();
 	this.model.enable();
+};
+
+/**
+ * Handle transact events from the document model
+ *
+ * @param {ve.dm.Transaction} Transaction
+ */
+ve.ui.Surface.prototype.onDocumentTransact = function () {
+	if ( this.placeholder ) {
+		this.$placeholder.toggleClass( 'oo-ui-element-hidden', this.getModel().getDocument().data.hasContent() );
+	}
+};
+
+/**
+ * Set placeholder text
+ *
+ * @param {string} [placeholder] Placeholder text, clears placeholder if not set
+ */
+ve.ui.Surface.prototype.setPlaceholder = function ( placeholder ) {
+	this.placeholder = placeholder;
+	if ( this.placeholder ) {
+		this.$placeholder
+			.toggleClass( 'oo-ui-element-hidden', this.getModel().getDocument().data.hasContent() )
+			// Requires a paragraph to match margins
+			.empty().append( $( '<p>' ).text( this.placeholder ) )
+			.prependTo( this.$element );
+	} else {
+		this.$placeholder.detach();
+	}
 };
 
 /**
