@@ -1550,7 +1550,7 @@ QUnit.test( 'sanitize', function ( assert ) {
 } );
 
 QUnit.test( 'countNonInternalElements', function ( assert ) {
-	var i, d,
+	var i, data,
 		cases = [
 			{
 				data: [
@@ -1584,8 +1584,62 @@ QUnit.test( 'countNonInternalElements', function ( assert ) {
 	QUnit.expect( cases.length );
 
 	for ( i = 0; i < cases.length; i++ ) {
-		d = new ve.dm.ElementLinearData( new ve.dm.IndexValueStore(), cases[i].data );
-		assert.strictEqual( d.countNonInternalElements(), cases[i].expected, cases[i].msg );
+		data = new ve.dm.ElementLinearData( new ve.dm.IndexValueStore(), cases[i].data );
+		assert.strictEqual( data.countNonInternalElements(), cases[i].expected, cases[i].msg );
+	}
+} );
+
+QUnit.test( 'hasContent', function ( assert ) {
+	var i, data,
+		cases = [
+			{
+				data: [],
+				expected: false,
+				msg: 'Completely empty document has no content'
+			},
+			{
+				data: [
+					{ type: 'paragraph' },
+					{ type: '/paragraph' },
+					{ type: 'internalList' },
+					{ type: '/internalList' }
+				],
+				expected: false,
+				msg: 'Real world empty document has no content'
+			},
+			{
+				data: [
+					{ type: 'paragraph' },
+					'F', [ 'o', [ 0 ] ], 'o',
+					{ type: '/paragraph' },
+					{ type: 'internalList' },
+					{ type: '/internalList' }
+				],
+				expected: true,
+				msg: 'Document with text has content'
+			},
+			{
+				data: [
+					{ type: 'paragraph' },
+					{ type: '/paragraph' },
+					{ type: 'internalList' },
+					{ type: 'internalItem' },
+					{ type: 'paragraph' },
+					'a',
+					{ type: '/paragraph' },
+					{ type: '/internalItem' },
+					{ type: '/internalList' }
+				],
+				expected: false,
+				msg: 'Empty document with internal data has no content'
+			}
+		];
+
+	QUnit.expect( cases.length );
+
+	for ( i = 0; i < cases.length; i++ ) {
+		data = new ve.dm.ElementLinearData( new ve.dm.IndexValueStore(), cases[i].data );
+		assert.strictEqual( data.hasContent(), cases[i].expected, cases[i].msg );
 	}
 } );
 
