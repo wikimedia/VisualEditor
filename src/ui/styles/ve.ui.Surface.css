@@ -16,3 +16,10 @@
 	line-height: 0;
 	height: 0;
 }
+
+.ve-ui-surface-placeholder {
+	color: #aaa;
+	position: absolute;
+	/* Match .ve-ce-documentNode */
+	padding: 0.9375em 1.875em;
+}

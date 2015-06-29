@@ -250,7 +250,8 @@ ve.demo.SurfaceContainer.prototype.loadHtml = function ( pageHtml ) {
 		ve.dm.converter.getModelFromDom(
 			ve.createDocumentFromHtml( pageHtml ),
 			{ lang: this.lang, dir: this.dir }
-		)
+		),
+		{ placeholder: 'Start your document' }
 	);
 
 	this.target.setSurface( this.surface );
