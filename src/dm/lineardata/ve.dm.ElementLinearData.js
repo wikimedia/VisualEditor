@@ -1043,9 +1043,10 @@ ve.dm.ElementLinearData.prototype.cloneElements = function ( preserveGenerated )
 /**
  * Counts all elements that aren't between internalList and /internalList
  *
+ * @param {number} [limit] Number of elements after which to stop counting
  * @returns {number} Number of elements that aren't in an internalList
  */
-ve.dm.ElementLinearData.prototype.countNonInternalElements = function () {
+ve.dm.ElementLinearData.prototype.countNonInternalElements = function ( limit ) {
 	var i, l, type,
 		internalDepth = 0,
 		count = 0;
@@ -1059,7 +1060,21 @@ ve.dm.ElementLinearData.prototype.countNonInternalElements = function () {
 			}
 		} else if ( !internalDepth ) {
 			count++;
+			if ( limit && count >= limit ) {
+				return count;
+			}
 		}
 	}
 	return count;
+};
+
+/**
+ * Counts all elements that aren't between internalList and /internalList
+ *
+ * @returns {number} Number of elements that aren't in an internalList
+ */
+ve.dm.ElementLinearData.prototype.hasContent = function () {
+	// Two or less elements (<p>, </p>) is considered an empty document
+	// For performance, abort the count when we reach 3.
+	return this.countNonInternalElements( 3 ) > 2;
 };
