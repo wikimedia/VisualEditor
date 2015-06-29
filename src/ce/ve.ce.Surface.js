@@ -2326,16 +2326,17 @@ ve.ce.Surface.prototype.onModelSelect = function () {
 };
 
 /**
- * Prepare the paste target for a copy event by selecting some dummy text
+ * Prepare the paste target for a copy event by selecting some text
  */
 ve.ce.Surface.prototype.preparePasteTargetForCopy = function () {
-	// As FF won't fire a copy event with nothing selected, make
-	// a dummy selection of one character in the pasteTarget.
-	// Previously this was a single space but this isn't selected programmatically
-	// properly, and in Safari results in a collapsed selection.
-	// onCopy will ignore this native selection and use the DM selection
+	// As FF won't fire a copy event with nothing selected, create a native selection.
+	// If there is a focusedNode available, use its text content so that context menu
+	// items such as "Search for [SELECTED TEXT]" make sense. If the text is empty or
+	// whitespace, use a single unicode character as this is required for programmatic
+	// selection to work correctly in all browsers (e.g. Safari won't select a single space).
+	// #onCopy will ignore this native selection and use the DM selection
 	if ( !ve.init.platform.constructor.static.isIos() ) {
-		this.$pasteTarget.text( '☢' );
+		this.$pasteTarget.text( ( this.focusedNode && this.focusedNode.$element.text().trim() ) || '☢' );
 		ve.selectElement( this.$pasteTarget[0] );
 		this.$pasteTarget[0].focus();
 	} else {
