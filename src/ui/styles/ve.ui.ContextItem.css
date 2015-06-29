@@ -11,6 +11,7 @@
 	-ms-user-select: none;
 	-o-user-select: none;
 	user-select: none;
+	cursor: default;
 }
 
 .ve-ui-contextItem-head {
