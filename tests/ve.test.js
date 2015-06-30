@@ -883,3 +883,118 @@ QUnit.test( 'getCommonAncestor', function ( assert ) {
 		);
 	}
 } );
+
+QUnit.test( 'adjacentDomPosition', function ( assert ) {
+	var tests, direction, i, len, test, offsetPaths, position, div;
+
+	// In the following tests, the html is put inside the top-level div as innerHTML. Then
+	// ve.adjacentDomNode is called with the position just inside the div (i.e.
+	// { node: div, offset: 0 } for forward direction tests, and
+	// { node: div, offset: div.childNodes.length } for reverse direction tests). The result
+	// of the first call is passed into the function again, and so on iteratively until the
+	// function returns null. The 'path' properties are a list of descent offsets to find a
+	// particular position node from the top-level div. E.g. a path of [ 5, 7 ] refers to the
+	// node div.childNodes[ 5 ].childNodes[ 7 ] .
+	tests = [
+		{
+			title: 'Simple p node',
+			html: '<p>x</p>',
+			options: { skipSoft: false },
+			expectedOffsetPaths: [
+				[ 0 ],
+				[ 0, 0 ],
+				[ 0, 0, 0 ],
+				[ 0, 0, 1 ],
+				[ 0, 1 ],
+				[ 1 ]
+			]
+		},
+		{
+			title: 'Filtered descent',
+			html: '<div class="x">foo</div><div class="y">bar</div>',
+			options: { skipSoft: false, noDescend: '.x' },
+			expectedOffsetPaths: [
+				[ 0 ],
+				[ 1 ],
+				[ 1, 0 ],
+				[ 1, 0, 0 ],
+				[ 1, 0, 1 ],
+				[ 1, 0, 2 ],
+				[ 1, 0, 3 ],
+				[ 1, 1 ],
+				[ 2 ]
+			]
+		},
+		{
+			title: 'Empty tags and heavy nesting',
+			html: '<div><br/><p>foo <b>bar <i>baz</i></b></p></div>',
+			options: { skipSoft: false },
+			expectedOffsetPaths: [
+				[ 0 ],
+				[ 0, 0 ],
+				// The <br/> tag is void, so should get skipped
+				[ 0, 1 ],
+				[ 0, 1, 0 ],
+				[ 0, 1, 0, 0 ],
+				[ 0, 1, 0, 1 ],
+				[ 0, 1, 0, 2 ],
+				[ 0, 1, 0, 3 ],
+				[ 0, 1, 0, 4 ],
+				[ 0, 1, 1 ],
+				[ 0, 1, 1, 0 ],
+				[ 0, 1, 1, 0, 0 ],
+				[ 0, 1, 1, 0, 1 ],
+				[ 0, 1, 1, 0, 2 ],
+				[ 0, 1, 1, 0, 3 ],
+				[ 0, 1, 1, 0, 4 ],
+				[ 0, 1, 1, 1 ],
+				[ 0, 1, 1, 1, 0 ],
+				[ 0, 1, 1, 1, 0, 0 ],
+				[ 0, 1, 1, 1, 0, 1 ],
+				[ 0, 1, 1, 1, 0, 2 ],
+				[ 0, 1, 1, 1, 0, 3 ],
+				[ 0, 1, 1, 1, 1 ],
+				[ 0, 1, 1, 2 ],
+				[ 0, 1, 2 ],
+				[ 0, 2 ],
+				[ 1 ]
+			]
+		}
+	];
+
+	QUnit.expect( 2 * tests.length );
+
+	div = document.createElement( 'div' );
+	div.contentEditable = true;
+
+	for ( direction in { forward: undefined, backward: undefined } ) {
+		for ( i = 0, len = tests.length; i < len; i++ ) {
+			test = tests[i];
+			div.innerHTML = test.html;
+			offsetPaths = [];
+			position = {
+				node: div,
+				offset: direction === 'backward' ? div.childNodes.length : 0
+			};
+			while ( position.node !== null ) {
+				offsetPaths.push(
+					ve.getOffsetPath( div, position.node, position.offset )
+				);
+				position = ve.adjacentDomPosition(
+					position,
+					direction === 'backward' ? -1 : 1,
+					test.options
+				);
+			}
+			assert.deepEqual(
+				offsetPaths,
+				(
+					direction === 'backward' ?
+					test.expectedOffsetPaths.slice().reverse() :
+					test.expectedOffsetPaths
+				),
+				test.title + ' (' + direction + ')'
+			);
+		}
+	}
+} );
