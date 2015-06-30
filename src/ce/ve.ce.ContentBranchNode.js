@@ -16,14 +16,16 @@
  * @param {Object} [config] Configuration options
  */
 ve.ce.ContentBranchNode = function VeCeContentBranchNode( model, config ) {
+	// Properties
+	this.lastTransaction = null;
+	// Parent constructor calls renderContents, so this must be set first
+	this.rendered = this.rendered;
+	this.unicornAnnotations = null;
+	this.unicorns = null;
+
 	// Parent constructor
 	ve.ce.BranchNode.call( this, model, config );
 
-	// Properties
-	this.lastTransaction = null;
-	this.rendered = false;
-	this.unicornAnnotations = null;
-	this.unicorns = null;
 	this.onClickHandler = this.onClick.bind( this );
 
 	// Events
@@ -358,6 +360,7 @@ ve.ce.ContentBranchNode.prototype.renderContents = function () {
 	// However we have to normalize to cope with consecutive text nodes. We can't normalize
 	// the attached version, because that would close IMEs. As an optimization, don't perform
 	// this checking if this node has never rendered before.
+
 	if ( this.rendered ) {
 		oldWrapper = this.$element[0].cloneNode( true );
 		newWrapper = this.$element[0].cloneNode( false );
