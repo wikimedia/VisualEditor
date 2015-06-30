@@ -164,39 +164,55 @@ ve.ce.ContentBranchNode.prototype.setupBlockSlugs = function () {
  * @return {Object} return.unicornInfo Unicorn information
  */
 ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
-	var i, ilen, j, jlen, item, itemAnnotations, ann, clone, dmSurface, dmSelection, relCursor,
+	var i, ilen, j, jlen, item, itemAnnotations, clone, dmSurface, dmSelection, relCursor,
 		unicorn, img1, img2, annotationsChanged, childLength, offset, htmlItem, ceSurface,
 		nextItemAnnotations, linkAnnotations,
 		store = this.model.doc.getStore(),
-		annotationStack = new ve.dm.AnnotationSet( store ),
+		annotationSet = new ve.dm.AnnotationSet( store ),
 		annotatedHtml = [],
 		doc = this.getElementDocument(),
 		wrapper = doc.createElement( 'div' ),
 		current = wrapper,
+		annotationStack = [],
+		nodeStack = [],
 		unicornInfo = {},
 		buffer = '',
 		node = this;
 
 	function openAnnotation( annotation ) {
+		var ann;
 		annotationsChanged = true;
 		if ( buffer !== '' ) {
-			current.appendChild( doc.createTextNode( buffer ) );
+			if ( current.nodeType === Node.TEXT_NODE ) {
+				current.textContent += buffer;
+			} else {
+				current.appendChild( doc.createTextNode( buffer ) );
+			}
 			buffer = '';
 		}
 		// Create a new DOM node and descend into it
-		ann = ve.ce.annotationFactory.create( annotation.getType(), annotation, node ).$element[ 0 ];
-		current.appendChild( ann );
-		current = ann;
+		ann = ve.ce.annotationFactory.create( annotation.getType(), annotation, node );
+		ann.appendTo( current );
+		annotationStack.push( ann );
+		nodeStack.push( current );
+		current = ann.getContentContainer();
 	}
 
 	function closeAnnotation() {
+		var ann;
 		annotationsChanged = true;
 		if ( buffer !== '' ) {
-			current.appendChild( doc.createTextNode( buffer ) );
+			if ( current.nodeType === Node.TEXT_NODE ) {
+				current.textContent += buffer;
+			} else {
+				current.appendChild( doc.createTextNode( buffer ) );
+			}
 			buffer = '';
 		}
 		// Traverse up
-		current = current.parentNode;
+		ann = annotationStack.pop();
+		ann.attachContents();
+		current = nodeStack.pop();
 	}
 
 	// Gather annotated HTML from the child nodes
@@ -271,7 +287,7 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 
 		// annotationsChanged gets set to true by openAnnotation and closeAnnotation
 		annotationsChanged = false;
-		ve.dm.Converter.static.openAndCloseAnnotations( annotationStack, itemAnnotations,
+		ve.dm.Converter.static.openAndCloseAnnotations( annotationSet, itemAnnotations,
 			openAnnotation, closeAnnotation
 		);
 
@@ -328,6 +344,9 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 		current.appendChild( doc.createTextNode( buffer ) );
 		buffer = '';
 	}
+	while ( annotationStack.length > 0 ) {
+		closeAnnotation();
+	}
 	wrapper.unicornInfo = unicornInfo;
 	return wrapper;
 };
@@ -363,6 +382,9 @@ ve.ce.ContentBranchNode.prototype.renderContents = function () {
 
 	if ( this.rendered ) {
 		oldWrapper = this.$element[ 0 ].cloneNode( true );
+		$( oldWrapper )
+			.find( '.ve-ce-linkAnnotation-active' )
+			.removeClass( 've-ce-linkAnnotation-active' );
 		newWrapper = this.$element[ 0 ].cloneNode( false );
 		while ( rendered.firstChild ) {
 			newWrapper.appendChild( rendered.firstChild );

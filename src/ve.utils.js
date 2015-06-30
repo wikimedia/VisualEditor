@@ -1464,7 +1464,7 @@ ve.highlightQuery = function ( text, query ) {
  * A DOM position is represented as an object with "node" and "offset" properties. The noDescend
  * option can be used to exclude the positions inside certain element nodes; it is a jQuery
  * selector/function ( used as a test by $node.is() - see http://api.jquery.com/is/ ); it defaults
- * to ve.rejectsCursor. Void elements (those matching ve.isVoidElement) are always excluded.
+ * to ve.rejectsCursor . Void elements (those matching ve.isVoidElement) are always excluded.
  *
  * If the skipSoft option is true (default), positions cursor-equivalent to the start position are
  * stepped over and the nearest non-equivalent position is returned. Cursor-equivalent positions

@@ -238,6 +238,10 @@ ve.ce.Document.prototype.getNodeAndOffsetUnadjustedForUnicorn = function ( offse
 				// Skip contents without incrementing offset.
 				current[ 1 ]++;
 				continue;
+			} else if ( $item.hasClass( 've-ce-nail' ) ) {
+				// Skip contents without incrementing offset.
+				current[ 1 ]++;
+				continue;
 			} else {
 				// Any other type of node (e.g. b, inline slug, img): descend
 				stack.push( [ $item.contents(), 0 ] );

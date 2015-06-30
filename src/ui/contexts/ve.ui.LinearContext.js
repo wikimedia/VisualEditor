@@ -233,7 +233,7 @@ ve.ui.LinearContext.prototype.getRelatedSources = function () {
 	if ( !this.relatedSources ) {
 		this.relatedSources = [];
 		if ( selection instanceof ve.dm.LinearSelection ) {
-			selectedModels = surfaceModel.getFragment().getSelectedModels();
+			selectedModels = this.surface.getView().getSelectedModels();
 		} else if ( selection instanceof ve.dm.TableSelection ) {
 			selectedModels = [ surfaceModel.getSelectedNode() ];
 		}

@@ -48,13 +48,6 @@ ve.dm.Annotation.static.enableAboutGrouping = false;
 ve.dm.Annotation.static.applyToAppendedContent = true;
 
 /**
- * Abandon continuation when a wordbreak is generated
- *
- * @type {boolean}
- */
-ve.dm.Annotation.static.splitOnWordbreak = false;
-
-/**
  * Annotations which are removed when this one is applied
  *
  * @type {string[]}

@@ -33,14 +33,28 @@ ve.ui.InspectorTool.static.deactivateOnSelect = false;
  * @inheritdoc
  */
 ve.ui.InspectorTool.prototype.onUpdateState = function ( fragment ) {
-	var i, len, models;
+	var i, len, models, ceSurface;
 
 	this.setActive( false );
 
 	// Parent method
 	ve.ui.InspectorTool.super.prototype.onUpdateState.apply( this, arguments );
 
-	models = fragment ? fragment.getSelectedModels() : [];
+	if ( !fragment ) {
+		models = [];
+	} else if (
+		this instanceof ve.ui.LinkInspectorTool &&
+		fragment.selection instanceof ve.dm.LinearSelection &&
+		( ceSurface = this.toolbar.getSurface().getView() ) &&
+		ceSurface.model.selection.range === fragment.selection.range
+	) {
+		// Ask the CE surface about selected models, so it can give the right
+		// answer about links based on the CE selection.
+		models = ceSurface.getSelectedModels();
+	} else {
+		models = fragment.getSelectedModels();
+	}
+
 	for ( i = 0, len = models.length; i < len; i++ ) {
 		if ( this.constructor.static.isCompatibleWith( models[ i ] ) ) {
 			this.setActive( true );

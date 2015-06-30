@@ -275,7 +275,7 @@ ve.ce.BranchNode.prototype.setupSlugs = function ( isBlock ) {
 		// end instead. This is a hack and the internal list needs to die in a fire.
 		if ( this.children[ i ] && this.children[ i ].$element[ 0 ] ) {
 			child = this.children[ i ].$element[ 0 ];
-			// child.parentNode might not be equal to this.$element[0]: e.g. annotated inline nodes
+			// child.parentNode might not be equal to this.$element[ 0 ]: e.g. annotated inline nodes
 			child.parentNode.insertBefore( slugNode, child );
 		} else {
 			this.$element[ 0 ].appendChild( slugNode );

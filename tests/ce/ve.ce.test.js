@@ -444,7 +444,7 @@ QUnit.test( 'fakeImes', function ( assert ) {
 	}
 } );
 
-QUnit.test( 'isAfterAnnotationBoundaries', function ( assert ) {
+QUnit.test( 'isAfterAnnotationBoundary', function ( assert ) {
 	var tests, i, iLen, test, node, j, jLen,
 		div = ve.createDocumentFromHtml( '' ).createElement( 'div' );
 
@@ -470,8 +470,8 @@ QUnit.test( 'isAfterAnnotationBoundaries', function ( assert ) {
 		{ path: [ 1, 2 ], offset: 0, expected: true },
 		{ path: [ 1, 2 ], offset: 1, expected: false },
 		{ path: [ 1 ], offset: 3, expected: false },
-		// The next one has middle bias, which we don't currently detect
-		{ path: [], offset: 2, expected: false },
+		// The next position *is* a after a boundary (though also before one)
+		{ path: [], offset: 2, expected: true },
 		{ path: [ 2 ], offset: 0, expected: true },
 		{ path: [ 2, 0 ], offset: 0, expected: true },
 		{ path: [ 2, 0 ], offset: 1, expected: false },
@@ -496,7 +496,7 @@ QUnit.test( 'isAfterAnnotationBoundaries', function ( assert ) {
 			node = node.childNodes[ test.path[ j ] ];
 		}
 		assert.strictEqual(
-			ve.ce.isAfterAnnotationBoundaries( node, test.offset ),
+			ve.ce.isAfterAnnotationBoundary( node, test.offset ),
 			test.expected,
 			'node=' + test.path.join( ',' ) + ' offset=' + test.offset
 		);
