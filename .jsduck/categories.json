@@ -4,7 +4,14 @@
 		"groups": [
 			{
 				"name": "Utilities",
-				"classes": ["ve", "ve.Range", "ve.EventSequencer", "ve.Filibuster", "ve.TriggerListener"]
+				"classes": [
+					"ve",
+					"ve.Range",
+					"ve.SelectionState",
+					"ve.EventSequencer",
+					"ve.Filibuster",
+					"ve.TriggerListener"
+				]
 			},
 			{
 				"name": "Nodes",

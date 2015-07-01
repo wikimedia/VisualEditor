@@ -196,6 +196,7 @@
 	"visualEditor.core.build": {
 		"scripts": [
 			"src/ve.Range.js",
+			"src/ve.SelectionState.js",
 			"src/ve.Node.js",
 			"src/ve.BranchNode.js",
 			"src/ve.LeafNode.js",

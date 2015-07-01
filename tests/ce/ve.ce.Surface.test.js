@@ -1408,8 +1408,8 @@ QUnit.test( 'getNearestCorrectOffset', function ( assert ) {
 	view.destroy();
 } );
 
-QUnit.test( 'getRangeSelection', function ( assert ) {
-	var i, j, l, view, selection, expectedNode, internlListNode, node, msg,
+QUnit.test( 'getSelectionState', function ( assert ) {
+	var i, j, l, view, selection, expectedNode, internalListNode, node, msg,
 		expect = 0,
 		cases = [
 			{
@@ -1425,102 +1425,102 @@ QUnit.test( 'getRangeSelection', function ( assert ) {
 					'2<b>n</b>d' +
 				'</p>',
 				expected: [
-					{ startNode: 'Foo', startOffset: 0 },
-					{ startNode: 'Foo', startOffset: 0 },
-					{ startNode: 'Foo', startOffset: 1 },
-					{ startNode: 'Foo', startOffset: 2 },
-					{ startNode: 'Foo', startOffset: 3 },
+					{ anchorNode: 'Foo', anchorOffset: 0 },
+					{ anchorNode: 'Foo', anchorOffset: 0 },
+					{ anchorNode: 'Foo', anchorOffset: 1 },
+					{ anchorNode: 'Foo', anchorOffset: 2 },
+					{ anchorNode: 'Foo', anchorOffset: 3 },
 					null, // Focusable
-					{ startNode: 'Whee', startOffset: 0 },
-					{ startNode: 'Whee', startOffset: 1 },
-					{ startNode: 'Whee', startOffset: 2 },
-					{ startNode: 'Whee', startOffset: 3 },
-					{ startNode: 'Whee', startOffset: 4 },
-					{ startNode: 'Whee', startOffset: 4, endNode: '2', endOffset: 0 },
-					{ startNode: '2', startOffset: 0 },
-					{ startNode: '2', startOffset: 1 },
-					{ startNode: 'n', startOffset: 1 },
-					{ startNode: 'd', startOffset: 1 }
+					{ anchorNode: 'Whee', anchorOffset: 0 },
+					{ anchorNode: 'Whee', anchorOffset: 1 },
+					{ anchorNode: 'Whee', anchorOffset: 2 },
+					{ anchorNode: 'Whee', anchorOffset: 3 },
+					{ anchorNode: 'Whee', anchorOffset: 4 },
+					{ anchorNode: 'Whee', anchorOffset: 4, focusNode: '2', focusOffset: 0 },
+					{ anchorNode: '2', anchorOffset: 0 },
+					{ anchorNode: '2', anchorOffset: 1 },
+					{ anchorNode: 'n', anchorOffset: 1 },
+					{ anchorNode: 'd', anchorOffset: 1 }
 				]
 			},
 			{
 				msg: 'Simple example doc',
 				html: ve.dm.example.html,
 				expected: [
-					{ startNode: 'a', startOffset: 0 },
-					{ startNode: 'a', startOffset: 0 },
-					{ startNode: 'a', startOffset: 1 },
-					{ startNode: 'b', startOffset: 1 },
-					{ startNode: 'c', startOffset: 1 },
-					{ startNode: 'c', startOffset: 1, endNode: 'd', endOffset: 0 },
-					{ startNode: 'c', startOffset: 1, endNode: 'd', endOffset: 0 },
-					{ startNode: 'c', startOffset: 1, endNode: 'd', endOffset: 0 },
-					{ startNode: 'c', startOffset: 1, endNode: 'd', endOffset: 0 },
-					{ startNode: 'c', startOffset: 1, endNode: 'd', endOffset: 0 },
+					{ anchorNode: 'a', anchorOffset: 0 },
+					{ anchorNode: 'a', anchorOffset: 0 },
+					{ anchorNode: 'a', anchorOffset: 1 },
+					{ anchorNode: 'b', anchorOffset: 1 },
+					{ anchorNode: 'c', anchorOffset: 1 },
+					{ anchorNode: 'c', anchorOffset: 1, focusNode: 'd', focusOffset: 0 },
+					{ anchorNode: 'c', anchorOffset: 1, focusNode: 'd', focusOffset: 0 },
+					{ anchorNode: 'c', anchorOffset: 1, focusNode: 'd', focusOffset: 0 },
+					{ anchorNode: 'c', anchorOffset: 1, focusNode: 'd', focusOffset: 0 },
+					{ anchorNode: 'c', anchorOffset: 1, focusNode: 'd', focusOffset: 0 },
 					// 10
-					{ startNode: 'd', startOffset: 0 },
-					{ startNode: 'd', startOffset: 1 },
-					{ startNode: 'd', startOffset: 1, endNode: 'e', endOffset: 0 },
-					{ startNode: 'd', startOffset: 1, endNode: 'e', endOffset: 0 },
-					{ startNode: 'd', startOffset: 1, endNode: 'e', endOffset: 0 },
-					{ startNode: 'e', startOffset: 0 },
-					{ startNode: 'e', startOffset: 1 },
-					{ startNode: 'e', startOffset: 1, endNode: 'f', endOffset: 0 },
-					{ startNode: 'e', startOffset: 1, endNode: 'f', endOffset: 0 },
-					{ startNode: 'e', startOffset: 1, endNode: 'f', endOffset: 0 },
+					{ anchorNode: 'd', anchorOffset: 0 },
+					{ anchorNode: 'd', anchorOffset: 1 },
+					{ anchorNode: 'd', anchorOffset: 1, focusNode: 'e', focusOffset: 0 },
+					{ anchorNode: 'd', anchorOffset: 1, focusNode: 'e', focusOffset: 0 },
+					{ anchorNode: 'd', anchorOffset: 1, focusNode: 'e', focusOffset: 0 },
+					{ anchorNode: 'e', anchorOffset: 0 },
+					{ anchorNode: 'e', anchorOffset: 1 },
+					{ anchorNode: 'e', anchorOffset: 1, focusNode: 'f', focusOffset: 0 },
+					{ anchorNode: 'e', anchorOffset: 1, focusNode: 'f', focusOffset: 0 },
+					{ anchorNode: 'e', anchorOffset: 1, focusNode: 'f', focusOffset: 0 },
 					// 20
-					{ startNode: 'f', startOffset: 0 },
-					{ startNode: 'f', startOffset: 1 },
-					{ startNode: 'f', startOffset: 1, endNode: 'g', endOffset: 0 },
-					{ startNode: 'f', startOffset: 1, endNode: 'g', endOffset: 0 },
-					{ startNode: 'f', startOffset: 1, endNode: 'g', endOffset: 0 },
-					{ startNode: 'f', startOffset: 1, endNode: 'g', endOffset: 0 },
-					{ startNode: 'f', startOffset: 1, endNode: 'g', endOffset: 0 },
-					{ startNode: 'f', startOffset: 1, endNode: 'g', endOffset: 0 },
-					{ startNode: 'f', startOffset: 1, endNode: 'g', endOffset: 0 },
-					{ startNode: 'g', startOffset: 0 },
+					{ anchorNode: 'f', anchorOffset: 0 },
+					{ anchorNode: 'f', anchorOffset: 1 },
+					{ anchorNode: 'f', anchorOffset: 1, focusNode: 'g', focusOffset: 0 },
+					{ anchorNode: 'f', anchorOffset: 1, focusNode: 'g', focusOffset: 0 },
+					{ anchorNode: 'f', anchorOffset: 1, focusNode: 'g', focusOffset: 0 },
+					{ anchorNode: 'f', anchorOffset: 1, focusNode: 'g', focusOffset: 0 },
+					{ anchorNode: 'f', anchorOffset: 1, focusNode: 'g', focusOffset: 0 },
+					{ anchorNode: 'f', anchorOffset: 1, focusNode: 'g', focusOffset: 0 },
+					{ anchorNode: 'f', anchorOffset: 1, focusNode: 'g', focusOffset: 0 },
+					{ anchorNode: 'g', anchorOffset: 0 },
 					// 30
-					{ startNode: 'g', startOffset: 1 },
-					{ startNode: 'g', startOffset: 1, endNode: 'h', endOffset: 0 },
-					{ startNode: 'g', startOffset: 1, endNode: 'h', endOffset: 0 },
-					{ startNode: 'g', startOffset: 1, endNode: 'h', endOffset: 0 },
-					{ startNode: 'g', startOffset: 1, endNode: 'h', endOffset: 0 },
-					{ startNode: 'g', startOffset: 1, endNode: 'h', endOffset: 0 },
-					{ startNode: 'g', startOffset: 1, endNode: 'h', endOffset: 0 },
-					{ startNode: 'g', startOffset: 1, endNode: 'h', endOffset: 0 },
-					{ startNode: 'h', startOffset: 0 },
-					{ startNode: 'h', startOffset: 1 },
+					{ anchorNode: 'g', anchorOffset: 1 },
+					{ anchorNode: 'g', anchorOffset: 1, focusNode: 'h', focusOffset: 0 },
+					{ anchorNode: 'g', anchorOffset: 1, focusNode: 'h', focusOffset: 0 },
+					{ anchorNode: 'g', anchorOffset: 1, focusNode: 'h', focusOffset: 0 },
+					{ anchorNode: 'g', anchorOffset: 1, focusNode: 'h', focusOffset: 0 },
+					{ anchorNode: 'g', anchorOffset: 1, focusNode: 'h', focusOffset: 0 },
+					{ anchorNode: 'g', anchorOffset: 1, focusNode: 'h', focusOffset: 0 },
+					{ anchorNode: 'g', anchorOffset: 1, focusNode: 'h', focusOffset: 0 },
+					{ anchorNode: 'h', anchorOffset: 0 },
+					{ anchorNode: 'h', anchorOffset: 1 },
 					// 40
 					null, // Focusable
-					{ startNode: 'i', startOffset: 0 },
-					{ startNode: 'i', startOffset: 1 },
-					{ startNode: 'i', startOffset: 1, endNode: 'j', endOffset: 0 },
-					{ startNode: 'i', startOffset: 1, endNode: 'j', endOffset: 0 },
-					{ startNode: 'i', startOffset: 1, endNode: 'j', endOffset: 0 },
-					{ startNode: 'j', startOffset: 0 },
-					{ startNode: 'j', startOffset: 1 },
-					{ startNode: 'j', startOffset: 1, endNode: 'k', endOffset: 0 },
-					{ startNode: 'j', startOffset: 1, endNode: 'k', endOffset: 0 },
+					{ anchorNode: 'i', anchorOffset: 0 },
+					{ anchorNode: 'i', anchorOffset: 1 },
+					{ anchorNode: 'i', anchorOffset: 1, focusNode: 'j', focusOffset: 0 },
+					{ anchorNode: 'i', anchorOffset: 1, focusNode: 'j', focusOffset: 0 },
+					{ anchorNode: 'i', anchorOffset: 1, focusNode: 'j', focusOffset: 0 },
+					{ anchorNode: 'j', anchorOffset: 0 },
+					{ anchorNode: 'j', anchorOffset: 1 },
+					{ anchorNode: 'j', anchorOffset: 1, focusNode: 'k', focusOffset: 0 },
+					{ anchorNode: 'j', anchorOffset: 1, focusNode: 'k', focusOffset: 0 },
 					// 50
-					{ startNode: 'j', startOffset: 1, endNode: 'k', endOffset: 0 },
-					{ startNode: 'k', startOffset: 0 },
-					{ startNode: 'k', startOffset: 1 },
-					{ startNode: 'k', startOffset: 1, endNode: 'l', endOffset: 0 },
-					{ startNode: 'k', startOffset: 1, endNode: 'l', endOffset: 0 },
-					{ startNode: 'k', startOffset: 1, endNode: 'l', endOffset: 0 },
-					{ startNode: 'l', startOffset: 0 },
-					{ startNode: 'l', startOffset: 1 },
-					{ startNode: 'l', startOffset: 1, endNode: 'm', endOffset: 0 },
-					{ startNode: 'm', startOffset: 0 },
+					{ anchorNode: 'j', anchorOffset: 1, focusNode: 'k', focusOffset: 0 },
+					{ anchorNode: 'k', anchorOffset: 0 },
+					{ anchorNode: 'k', anchorOffset: 1 },
+					{ anchorNode: 'k', anchorOffset: 1, focusNode: 'l', focusOffset: 0 },
+					{ anchorNode: 'k', anchorOffset: 1, focusNode: 'l', focusOffset: 0 },
+					{ anchorNode: 'k', anchorOffset: 1, focusNode: 'l', focusOffset: 0 },
+					{ anchorNode: 'l', anchorOffset: 0 },
+					{ anchorNode: 'l', anchorOffset: 1 },
+					{ anchorNode: 'l', anchorOffset: 1, focusNode: 'm', focusOffset: 0 },
+					{ anchorNode: 'm', anchorOffset: 0 },
 					// 60
-					{ startNode: 'm', startOffset: 1 }
+					{ anchorNode: 'm', anchorOffset: 1 }
 				]
 			}
 		];
 
 	for ( i = 0; i < cases.length; i++ ) {
 		for ( j = 0; j < cases[i].expected.length; j++ ) {
-			expect += cases[i].expected[j] ? ( cases[i].expected[j].endNode ? 4 : 2 ) : 1;
+			expect += cases[i].expected[j] ? ( cases[i].expected[j].focusNode === undefined ? 2 : 4 ) : 1;
 		}
 	}
 
@@ -1528,25 +1528,25 @@ QUnit.test( 'getRangeSelection', function ( assert ) {
 
 	for ( i = 0; i < cases.length; i++ ) {
 		view = ve.test.utils.createSurfaceViewFromHtml( cases[i].html );
-		internlListNode = view.getModel().getDocument().getInternalList().getListNode();
-		for ( j = 0, l = internlListNode.getOuterRange().start; j < l; j++ ) {
+		internalListNode = view.getModel().getDocument().getInternalList().getListNode();
+		for ( j = 0, l = internalListNode.getOuterRange().start; j < l; j++ ) {
 			msg = ' at ' + j + ' in ' + cases[i].msg;
 			node = view.getDocument().getDocumentNode().getNodeFromOffset( j );
 			if ( node.isFocusable() ) {
 				assert.strictEqual( null, cases[i].expected[j], 'Focusable node at ' + j );
 			} else {
-				selection = view.getRangeSelection( new ve.Range( j ) );
-				if ( selection.end ) {
-					expectedNode = $( '<div>' ).html( cases[i].expected[j].startNode )[0].childNodes[0];
-					assert.equalDomElement( selection.start.node, expectedNode, 'Start node ' + msg );
-					assert.strictEqual( selection.start.offset, cases[i].expected[j].startOffset, 'Start offfset ' + msg );
-					expectedNode = $( '<div>' ).html( cases[i].expected[j].endNode )[0].childNodes[0];
-					assert.equalDomElement( selection.end.node, expectedNode, 'End node ' + msg );
-					assert.strictEqual( selection.end.offset, cases[i].expected[j].endOffset, 'End offfset ' + msg );
+				selection = view.getSelectionState( new ve.Range( j ) );
+				if ( selection.isCollapsed ) {
+					expectedNode = $( '<div>' ).html( cases[i].expected[j].anchorNode )[0].childNodes[0];
+					assert.equalDomElement( selection.anchorNode, expectedNode, 'Node ' + msg );
+					assert.strictEqual( selection.anchorOffset, cases[i].expected[j].anchorOffset, 'Offset ' + msg );
 				} else {
-					expectedNode = $( '<div>' ).html( cases[i].expected[j].startNode )[0].childNodes[0];
-					assert.equalDomElement( selection.start.node, expectedNode, 'Node ' + msg );
-					assert.strictEqual( selection.start.offset, cases[i].expected[j].startOffset, 'Offset ' + msg );
+					expectedNode = $( '<div>' ).html( cases[i].expected[j].anchorNode )[0].childNodes[0];
+					assert.equalDomElement( selection.anchorNode, expectedNode, 'Anchor node ' + msg );
+					assert.strictEqual( selection.anchorOffset, cases[i].expected[j].anchorOffset, 'Anchor offset ' + msg );
+					expectedNode = $( '<div>' ).html( cases[i].expected[j].focusNode )[0].childNodes[0];
+					assert.equalDomElement( selection.focusNode, expectedNode, 'End node ' + msg );
+					assert.strictEqual( selection.focusOffset, cases[i].expected[j].focusOffset, 'Focus offset ' + msg );
 				}
 			}
 		}
@@ -1599,7 +1599,7 @@ QUnit.test( 'getRangeSelection', function ( assert ) {
 // TODO: ve.ce.Surface#handleTableDelete
 // TODO: ve.ce.Surface#handleTableEditingEscape
 // TODO: ve.ce.Surface#handleTableEnter
-// TODO: ve.ce.Surface#showSelection
+// TODO: ve.ce.Surface#showModelSelection
 // TODO: ve.ce.Surface#appendHighlights
 // TODO: ve.ce.Surface#incRenderLock
 // TODO: ve.ce.Surface#decRenderLock
