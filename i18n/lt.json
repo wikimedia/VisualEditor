@@ -3,7 +3,8 @@
 		"authors": [
 			"Audriusa",
 			"Eitvys200",
-			"Aswanas"
+			"Aswanas",
+			"Albertas"
 		]
 	},
 	"visualeditor-aliennode-tooltip": "Atsiprašome, VisualEditor kol kas negali keisti šio elemento. Norėdami redaguoti, keiskite išeities kodą.",
@@ -16,6 +17,9 @@
 	"visualeditor-annotationbutton-superscript-tooltip": "Pakelti",
 	"visualeditor-annotationbutton-underline-tooltip": "Pabraukti",
 	"visualeditor-clearbutton-tooltip": "Pašalinti formatavimą",
+	"visualeditor-clipboard-copy": "Kopijuoti",
+	"visualeditor-clipboard-cut": "Iškirpti",
+	"visualeditor-clipboard-paste": "Įklijuoti",
 	"visualeditor-dialog-action-apply": "Taikyti pakeitimus",
 	"visualeditor-dialog-action-goback": "Grįžti",
 	"visualeditor-find-and-replace-done": "Atlikta",

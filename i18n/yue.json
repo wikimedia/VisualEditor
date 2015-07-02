@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Deryck Chan",
-			"William915"
+			"William915",
+			"Shinjiman"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -88,7 +89,7 @@
 	"visualeditor-shortcuts-clipboard": "剪貼板",
 	"visualeditor-shortcuts-formatting": "分段格式",
 	"visualeditor-shortcuts-history": "歷史",
-	"visualeditor-shortcuts-other": "其他",
+	"visualeditor-shortcuts-other": "其它",
 	"visualeditor-shortcuts-text-style": "字體樣式",
 	"visualeditor-slug-insert": "加新段",
 	"visualeditor-specialcharacter-button-tooltip": "特別字元",
