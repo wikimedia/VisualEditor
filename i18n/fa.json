@@ -15,7 +15,8 @@
 			"Calak",
 			"Oldstoneage",
 			"Alirezaaa",
-			"Saeidpourbabak"
+			"Saeidpourbabak",
+			"Leyth"
 		]
 	},
 	"visualeditor": "ویرایشگر دیداری",
@@ -111,8 +112,8 @@
 	"visualeditor-specialcharacter-button-tooltip": "مشخصهٔ ویژه",
 	"visualeditor-specialcharacterinspector-title": "مشخصهٔ ویژه",
 	"visualeditor-table-caption": "عنوان",
-	"visualeditor-table-delete-col": "حذف ستون",
-	"visualeditor-table-delete-row": "حذف سطر",
+	"visualeditor-table-delete-col": "حذف {{PLURAL:$1|ستون|ستون‌های}}",
+	"visualeditor-table-delete-row": "حذف {{PLURAL:$1|سطر|سطرهای}}",
 	"visualeditor-table-delete-table": "حذف جدول",
 	"visualeditor-table-format-data": "سلول محتویات",
 	"visualeditor-table-format-header": "بالای سلول",

@@ -103,6 +103,8 @@
 	"visualeditor-table-insert-row-after": "لاندې ورټومبل",
 	"visualeditor-table-insert-row-before": "پورته ورټومبل",
 	"visualeditor-table-insert-table": "لښتيال",
+	"visualeditor-table-merge-cells": "خونې اخږل",
+	"visualeditor-tablecell-tooltip": "د خونې سمولو لپاره دوه ځله کېښکاږئ",
 	"visualeditor-toolbar-format-tooltip": "د پاراگراف بڼه",
 	"visualeditor-toolbar-history": "پېښليک",
 	"visualeditor-toolbar-insert": "ورټومبل",
