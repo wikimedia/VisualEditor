@@ -505,6 +505,7 @@
 			"tests/ve.qunit.js",
 			"tests/ve.test.utils.js",
 			"tests/ve.test.js",
+			"tests/ve.EventSequencer.test.js",
 			"tests/ve.Range.test.js",
 			"tests/ve.Document.test.js",
 			"tests/ve.Node.test.js",
