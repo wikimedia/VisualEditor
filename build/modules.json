@@ -81,6 +81,7 @@
 			"lib/jquery.i18n/src/jquery.i18n.messagestore.js",
 			"lib/jquery.i18n/src/jquery.i18n.parser.js",
 			"lib/jquery.i18n/src/jquery.i18n.emitter.js",
+			"lib/jquery.i18n/src/jquery.i18n.emitter.bidi.js",
 			"lib/jquery.i18n/src/jquery.i18n.language.js",
 			"lib/jquery.i18n/src/jquery.i18n.fallbacks.js",
 			"lib/jquery.i18n/src/languages/bs.js",
