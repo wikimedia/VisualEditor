@@ -146,7 +146,7 @@ new ve.init.sa.Platform( ve.messagePaths ).initialize().done( function () {
 				addSurfaceContainer( pages[i] );
 			}
 		} else {
-			addSurfaceContainer();
+			addSurfaceContainer( 'pages/simple.html' );
 		}
 	}
 
