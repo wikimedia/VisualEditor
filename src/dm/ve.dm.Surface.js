@@ -31,7 +31,7 @@ ve.dm.Surface = function VeDmSurface( doc ) {
 	this.undoIndex = 0;
 	this.historyTrackingInterval = null;
 	this.insertionAnnotations = new ve.dm.AnnotationSet( this.getDocument().getStore() );
-	this.coveredAnnotations = new ve.dm.AnnotationSet( this.getDocument().getStore() );
+	this.selectedAnnotations = new ve.dm.AnnotationSet( this.getDocument().getStore() );
 	this.enabled = true;
 	this.transacting = false;
 	this.queueingContextChanges = false;
@@ -559,7 +559,7 @@ ve.dm.Surface.prototype.setNullSelection = function () {
  */
 ve.dm.Surface.prototype.setSelection = function ( selection ) {
 	var left, right, leftAnnotations, rightAnnotations, insertionAnnotations,
-		startNode, selectedNode, range, coveredAnnotations,
+		startNode, selectedNode, range, selectedAnnotations,
 		branchNodes = {},
 		selectionChange = false,
 		contextChange = false,
@@ -611,12 +611,12 @@ ve.dm.Surface.prototype.setSelection = function ( selection ) {
 			if ( !linearData.isContentOffset( right ) ) {
 				right = -1;
 			}
-			coveredAnnotations = linearData.getAnnotationsFromOffset( range.start );
+			selectedAnnotations = linearData.getAnnotationsFromOffset( range.start );
 		} else {
 			// Get annotations from the first character of the range
 			left = linearData.getNearestContentOffset( range.start );
 			right = linearData.getNearestContentOffset( range.end );
-			coveredAnnotations = linearData.getAnnotationsFromRange( range );
+			selectedAnnotations = linearData.getAnnotationsFromRange( range, true );
 		}
 		if ( left === -1 ) {
 			// No content offset to our left, use empty set
@@ -647,8 +647,8 @@ ve.dm.Surface.prototype.setSelection = function ( selection ) {
 		contextChange = true;
 	}
 
-	if ( coveredAnnotations && !coveredAnnotations.compareTo( this.coveredAnnotations ) ) {
-		this.coveredAnnotations = coveredAnnotations;
+	if ( selectedAnnotations && !selectedAnnotations.compareTo( this.selectedAnnotations ) ) {
+		this.selectedAnnotations = selectedAnnotations;
 		contextChange = true;
 	}
 
