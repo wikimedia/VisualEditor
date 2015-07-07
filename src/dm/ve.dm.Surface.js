@@ -32,6 +32,7 @@ ve.dm.Surface = function VeDmSurface( doc ) {
 	this.historyTrackingInterval = null;
 	this.insertionAnnotations = new ve.dm.AnnotationSet( this.getDocument().getStore() );
 	this.selectedAnnotations = new ve.dm.AnnotationSet( this.getDocument().getStore() );
+	this.isCollapsed = null;
 	this.enabled = true;
 	this.transacting = false;
 	this.queueingContextChanges = false;
@@ -559,7 +560,7 @@ ve.dm.Surface.prototype.setNullSelection = function () {
  */
 ve.dm.Surface.prototype.setSelection = function ( selection ) {
 	var left, right, leftAnnotations, rightAnnotations, insertionAnnotations,
-		startNode, selectedNode, range, selectedAnnotations,
+		startNode, selectedNode, range, selectedAnnotations, isCollapsed,
 		branchNodes = {},
 		selectionChange = false,
 		contextChange = false,
@@ -612,11 +613,13 @@ ve.dm.Surface.prototype.setSelection = function ( selection ) {
 				right = -1;
 			}
 			selectedAnnotations = linearData.getAnnotationsFromOffset( range.start );
+			isCollapsed = true;
 		} else {
 			// Get annotations from the first character of the range
 			left = linearData.getNearestContentOffset( range.start );
 			right = linearData.getNearestContentOffset( range.end );
 			selectedAnnotations = linearData.getAnnotationsFromRange( range, true );
+			isCollapsed = false;
 		}
 		if ( left === -1 ) {
 			// No content offset to our left, use empty set
@@ -649,6 +652,14 @@ ve.dm.Surface.prototype.setSelection = function ( selection ) {
 
 	if ( selectedAnnotations && !selectedAnnotations.compareTo( this.selectedAnnotations ) ) {
 		this.selectedAnnotations = selectedAnnotations;
+		contextChange = true;
+	}
+
+	if ( isCollapsed !== this.isCollapsed ) {
+		// selectedAnnotations won't have changed if going from insertion annotations to
+		// selection of the same annotations, but some tools will consider that a context change
+		// (e.g. ClearAnnotationTool).
+		this.isCollapsed = isCollapsed;
 		contextChange = true;
 	}
 
