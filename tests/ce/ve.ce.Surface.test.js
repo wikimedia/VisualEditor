@@ -705,7 +705,7 @@ QUnit.test( 'onCopy', function ( assert ) {
 QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 	var i,
 		expected = 0,
-		exampleDoc = '<p></p><p>Foo</p><h2> Baz </h2><table><tbody><tr><td></td></tbody></table>',
+		exampleDoc = '<p id="foo"></p><p>Foo</p><h2> Baz </h2><table><tbody><tr><td></td></tbody></table>',
 		docLen = 24,
 		TestEvent = function ( data ) {
 			this.originalEvent = {
@@ -1055,6 +1055,50 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 				expectedOps: [],
 				expectedRange: new ve.Range( 1 ),
 				msg: 'Pasting block content that is fully stripped does nothing'
+			},
+			{
+				range: new ve.Range( 1 ),
+				pasteHtml: '<b>Foo</b>',
+				pasteTargetHtml: 'Foo',
+				fromVe: true,
+				expectedOps: [
+					[
+						{ type: 'retain', length: 1 },
+						{
+							type: 'replace',
+							insert: [
+								'F', 'o', 'o'
+							],
+							remove: []
+						},
+						{ type: 'retain', length: docLen - 1 }
+					]
+				],
+				expectedRange: new ve.Range( 4 ),
+				msg: 'Paste target HTML used if nothing important dropped'
+			},
+			{
+				range: new ve.Range( 1 ),
+				pasteHtml: '<span rel="ve:Alien">Alien</span>',
+				pasteTargetHtml: '<span>Alien</span>',
+				fromVe: true,
+				expectedOps: [
+					[
+						{
+							type: 'replace',
+							insert: [
+								{ type: 'paragraph', internal: { generated: 'wrapper' } },
+								{ type: 'alienInline' },
+								{ type: '/alienInline' },
+								{ type: '/paragraph' }
+							],
+							remove: []
+						},
+						{ type: 'retain', length: docLen }
+					]
+				],
+				expectedRange: new ve.Range( 5 ),
+				msg: 'Paste API HTML used if important attributes dropped'
 			}
 		];
 
@@ -1071,7 +1115,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 	}
 	QUnit.expect( expected );
 
-	function testRunner( documentHtml, pasteHtml, fromVe, useClipboardData, range, pasteSpecial, expectedOps, expectedRange, expectedHtml, msg ) {
+	function testRunner( documentHtml, pasteHtml, fromVe, useClipboardData, pasteTargetHtml, range, pasteSpecial, expectedOps, expectedRange, expectedHtml, msg ) {
 		var i, j, txs, ops, txops, htmlDoc,
 			e = {},
 			view = ve.test.utils.createSurfaceViewFromHtml( documentHtml || exampleDoc ),
@@ -1085,10 +1129,15 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 			e['text/html'] = pasteHtml;
 			e['text/xcustom'] = 'useClipboardData-0';
 		} else if ( fromVe ) {
+			e['text/html'] = pasteHtml;
 			e['text/xcustom'] = '0.123-0';
 		}
 		view.beforePaste( new TestEvent( e ) );
-		document.execCommand( 'insertHTML', false, pasteHtml );
+		if ( pasteTargetHtml ) {
+			view.$pasteTarget.find( 'p' ).html( pasteTargetHtml );
+		} else {
+			document.execCommand( 'insertHTML', false, pasteHtml );
+		}
 		view.afterPaste();
 
 		if ( expectedOps ) {
@@ -1125,7 +1174,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 	for ( i = 0; i < cases.length; i++ ) {
 		testRunner(
 			cases[i].documentHtml, cases[i].pasteHtml, cases[i].fromVe, cases[i].useClipboardData,
-			cases[i].range, cases[i].pasteSpecial,
+			cases[i].pasteTargetHtml, cases[i].range, cases[i].pasteSpecial,
 			cases[i].expectedOps, cases[i].expectedRange, cases[i].expectedHtml,
 			cases[i].msg
 		);
