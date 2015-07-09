@@ -169,13 +169,16 @@ ve.ui.ContextItem.prototype.getCommand = function () {
 };
 
 /**
- * Get a surface fragment covering the related model item
+ * Get a surface fragment covering the related model node, or the current selection otherwise
  *
  * @return {ve.dm.SurfaceFragment} Surface fragment
  */
 ve.ui.ContextItem.prototype.getFragment = function () {
 	if ( !this.fragment ) {
-		this.fragment = this.context.getSurface().getModel().getLinearFragment( this.model.getOuterRange() );
+		var surfaceModel = this.context.getSurface().getModel();
+		this.fragment = this.model instanceof ve.dm.Node ?
+			surfaceModel.getLinearFragment( this.model.getOuterRange() ) :
+			surfaceModel.getFragment();
 	}
 	return this.fragment;
 };
