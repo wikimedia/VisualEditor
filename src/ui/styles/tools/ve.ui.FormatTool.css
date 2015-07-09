@@ -38,12 +38,22 @@
 	font-weight: bold;
 }
 
+.oo-ui-menuToolGroup .oo-ui-tool-name-heading1 .oo-ui-tool-title,
+.oo-ui-menuToolGroup .oo-ui-tool-name-heading2 .oo-ui-tool-title,
+.oo-ui-menuToolGroup .oo-ui-tool-name-heading3 .oo-ui-tool-title,
+.oo-ui-menuToolGroup .oo-ui-tool-name-heading4 .oo-ui-tool-title,
+.oo-ui-menuToolGroup .oo-ui-tool-name-heading5 .oo-ui-tool-title,
+.oo-ui-menuToolGroup .oo-ui-tool-name-heading6 .oo-ui-tool-title {
+	/* HACK: Use px so padding is not changed by font size */
+	padding-left: 6.4px;
+}
+
 .oo-ui-menuToolGroup .oo-ui-tool-name-preformatted .oo-ui-tool-title {
 	font-family: monospace, "Courier New";
 }
 
 .oo-ui-menuToolGroup .oo-ui-tool-name-blockquote .oo-ui-tool-title {
-	padding-left: 1em;
+	padding-left: 1.5em;
 }
 
 .oo-ui-menuToolGroup .oo-ui-tool-name-tableCellHeader .oo-ui-tool-title {
