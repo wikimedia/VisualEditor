@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"DzWiki",
-			"KWiki"
+			"KWiki",
+			"Semso98"
 		]
 	},
 	"visualeditor": "Vizualni uređivač",
@@ -89,8 +90,8 @@
 	"visualeditor-specialcharacter-button-tooltip": "Posebni znak",
 	"visualeditor-specialcharacterinspector-title": "Posebni znak",
 	"visualeditor-table-caption": "Opis slike",
-	"visualeditor-table-delete-col": "Obriši kolonu",
-	"visualeditor-table-delete-row": "Obriši red",
+	"visualeditor-table-delete-col": "Izbriši {{PLURAL:$1|kolonu|kolone}}",
+	"visualeditor-table-delete-row": "Izbriši {{PLURAL:$1|red|redove}}",
 	"visualeditor-table-delete-table": "Obriši tabelu",
 	"visualeditor-table-format-data": "Polje sa sadržajem",
 	"visualeditor-table-insert-col-after": "Ubaci iza",
