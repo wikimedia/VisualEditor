@@ -4,7 +4,7 @@
  * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
-.ve-ce-commentNode.oo-ui-indicatorElement.oo-ui-indicatorElement-indicator {
+.ve-ce-commentNode.oo-ui-iconElement.oo-ui-iconElement-icon {
 	display: inline-block;
 	vertical-align: middle;
 	padding: 0.2em;
@@ -13,6 +13,6 @@
 	height: 1em;
 	background-repeat: no-repeat;
 	background-position: center center;
-	background-size: 12px 12px;
+	background-size: 24px 24px;
 	opacity: 0.5;
 }
