@@ -241,7 +241,7 @@ ve.ce.TableNode.prototype.onTableMouseUp = function () {
  * @param {boolean} noSelect Don't change the selection
  */
 ve.ce.TableNode.prototype.setEditing = function ( isEditing, noSelect ) {
-	var cell, offset, cellRange,
+	var cell, offset, cellRange, profile,
 		surfaceModel = this.surface.getModel(),
 		selection = surfaceModel.getSelection();
 	if ( isEditing ) {
@@ -267,6 +267,15 @@ ve.ce.TableNode.prototype.setEditing = function ( isEditing, noSelect ) {
 		this.editingFragment = null;
 	}
 	this.$element.toggleClass( 've-ce-tableNode-editing', isEditing );
+	// HACK T103035: Firefox 39 has a regression which clicking on a ce=false table
+	// always selects the entire table, even if you click in a ce=true child.
+	// Making the table ce=true does allow the user to make selections across cells
+	// and corrupt the table in some circumstance, so restrict this hack as much
+	// as possible.
+	profile = $.client.profile();
+	if ( profile.layout === 'gecko' && profile.versionBase === '39' ) {
+		this.$element.prop( 'contentEditable', isEditing.toString() );
+	}
 	this.$overlay.toggleClass( 've-ce-tableNodeOverlay-editing', isEditing );
 };
 
