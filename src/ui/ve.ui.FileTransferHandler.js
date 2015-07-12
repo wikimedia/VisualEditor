@@ -55,25 +55,55 @@ ve.ui.FileTransferHandler.static.extensions = [];
 /* Methods */
 
 /**
+ * @inheritdoc
+ */
+ve.ui.FileTransferHandler.prototype.process = function () {
+	this.createProgress( this.insertableDataDeferred.promise() );
+	this.reader.readAsText( this.file );
+};
+
+/**
  * Handle progress events from the file reader
  *
  * @param {Event} e Progress event
  */
-ve.ui.FileTransferHandler.prototype.onFileProgress = function () {};
+ve.ui.FileTransferHandler.prototype.onFileProgress = function ( e ) {
+	if ( e.lengthComputable ) {
+		this.setProgress( 100 * e.loaded / e.total );
+	} else {
+		this.setProgress( false );
+	}
+};
 
 /**
  * Handle load events from the file reader
  *
  * @param {Event} e Load event
  */
-ve.ui.FileTransferHandler.prototype.onFileLoad = function () {};
+ve.ui.FileTransferHandler.prototype.onFileLoad = function () {
+	this.setProgress( 100 );
+};
 
 /**
  * Handle load end events from the file reader
  *
  * @param {Event} e Load end event
  */
-ve.ui.FileTransferHandler.prototype.onFileLoadEnd = function () {};
+ve.ui.FileTransferHandler.prototype.onFileLoadEnd = function () {
+	// 'loadend' fires after 'load'/'abort'/'error'.
+	// Reject the deferred if it hasn't already resolved.
+	this.insertableDataDeferred.reject();
+};
+
+/**
+ * @inheritdoc
+ */
+ve.ui.FileTransferHandler.prototype.abort = function () {
+	// Parent method
+	ve.ui.FileTransferHandler.super.prototype.abort.apply( this, arguments );
+
+	this.reader.abort();
+};
 
 /**
  * Create a progress bar with a specified label
