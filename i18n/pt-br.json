@@ -11,7 +11,8 @@
 			"OTAVIO1981",
 			555,
 			"He7d3r",
-			"Mordecool"
+			"Mordecool",
+			"TheGabrielZaum"
 		]
 	},
 	"visualeditor": "Editor Visual",
@@ -29,7 +30,7 @@
 	"visualeditor-clipboard-copy": "Copiar",
 	"visualeditor-clipboard-cut": "Cortar",
 	"visualeditor-clipboard-paste": "Colar",
-	"visualeditor-clipboard-paste-special": "Colar como texto puro",
+	"visualeditor-clipboard-paste-special": "Colar como texto sem formatação",
 	"visualeditor-dialog-action-apply": "Aplicar mudanças",
 	"visualeditor-dialog-action-cancel": "Cancelar",
 	"visualeditor-dialog-action-goback": "Voltar",

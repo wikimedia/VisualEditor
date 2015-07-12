@@ -3,7 +3,8 @@
 		"authors": [
 			"Avjoska",
 			"Pikne",
-			"Tormi"
+			"Tormi",
+			"Suwa"
 		]
 	},
 	"visualeditor": "Visuaaltoimetaja",
@@ -39,6 +40,7 @@
 	"visualeditor-dialog-command-help-title": "Kiirklahvid",
 	"visualeditor-dialog-error": "Midagi läks valesti...",
 	"visualeditor-dialog-error-dismiss": "Mine tagasi",
+	"visualeditor-dialog-language-auto-direction": "Automaatne",
 	"visualeditor-dialog-language-search-title": "Keele valimine",
 	"visualeditor-find-and-replace-done": "Valmis",
 	"visualeditor-find-and-replace-find-text": "Otsitav",

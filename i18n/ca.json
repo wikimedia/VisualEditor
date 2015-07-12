@@ -12,7 +12,8 @@
 			"Toniher",
 			"Edustus",
 			"Davidpar",
-			"Gerardduenas"
+			"Gerardduenas",
+			"Maceleiro"
 		]
 	},
 	"visualeditor": "Editor visual",
@@ -107,8 +108,8 @@
 	"visualeditor-specialcharacter-button-tooltip": "Caràcter especial",
 	"visualeditor-specialcharacterinspector-title": "Caràcter especial",
 	"visualeditor-table-caption": "Llegenda",
-	"visualeditor-table-delete-col": "Suprimeix la columna",
-	"visualeditor-table-delete-row": "Suprimeix la fila",
+	"visualeditor-table-delete-col": "Suprimeix {{PLURAL:$1|column|columns}}",
+	"visualeditor-table-delete-row": "Suprimeix {{PLURAL:$1|row|rows}}",
 	"visualeditor-table-delete-table": "Suprimeix la taula",
 	"visualeditor-table-format-data": "Cel·la de contingut",
 	"visualeditor-table-format-header": "Cel·la de capçalera",

@@ -19,7 +19,7 @@
 			"LNDDYL"
 		]
 	},
-	"visualeditor": "VisualEditor",
+	"visualeditor": "視覺化編輯器",
 	"visualeditor-aliennode-tooltip": "抱歉，此元素目前只能透過原始碼模式編輯。",
 	"visualeditor-align-widget-center": "置中",
 	"visualeditor-align-widget-left": "置左",
