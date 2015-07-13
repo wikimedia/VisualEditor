@@ -1,12 +1,12 @@
 /*!
- * OOjs UI v0.11.8
+ * OOjs UI v0.12.0
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2015 OOjs Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2015-07-08T01:31:46Z
+ * Date: 2015-07-13T23:47:11Z
  */
 .oo-ui-icon-bigger {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/bigger-ltr.png);
@@ -61,6 +61,10 @@
 }
 /* @noflip */
 .oo-ui-icon-bold:lang(pl) {
+	background-image: /* @embed */ url(themes/mediawiki/images/icons/bold-b.png);
+}
+/* @noflip */
+.oo-ui-icon-bold:lang(sco) {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/bold-b.png);
 }
 /* @noflip */
@@ -176,6 +180,10 @@
 }
 /* @noflip */
 .oo-ui-icon-bold-invert:lang(pl) {
+	background-image: /* @embed */ url(themes/mediawiki/images/icons/bold-b-invert.png);
+}
+/* @noflip */
+.oo-ui-icon-bold-invert:lang(sco) {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/bold-b-invert.png);
 }
 /* @noflip */
@@ -298,6 +306,10 @@
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/italic-i.png);
 }
 /* @noflip */
+.oo-ui-icon-italic:lang(sco) {
+	background-image: /* @embed */ url(themes/mediawiki/images/icons/italic-i.png);
+}
+/* @noflip */
 .oo-ui-icon-italic:lang(be) {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/italic-k.png);
 }
@@ -410,6 +422,10 @@
 }
 /* @noflip */
 .oo-ui-icon-italic-invert:lang(pt) {
+	background-image: /* @embed */ url(themes/mediawiki/images/icons/italic-i-invert.png);
+}
+/* @noflip */
+.oo-ui-icon-italic-invert:lang(sco) {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/italic-i-invert.png);
 }
 /* @noflip */
