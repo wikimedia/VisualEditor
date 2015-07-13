@@ -57,6 +57,22 @@
 	background-size: auto;
 }
 
+.ve-ce-chimera {
+	width: 0;
+	height: 0;
+}
+
+.ve-ce-chimera-webkit {
+	/* Cursor positioning tweak */
+	width: 1px;
+	height: 1em;
+}
+
+.ve-ce-chimera-debug {
+	width: auto;
+	height: auto;
+}
+
 /* Pre-formatted node styling */
 
 pre.ve-ce-branchNode {

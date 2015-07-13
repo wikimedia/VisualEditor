@@ -53,16 +53,16 @@ OO.mixinClass( ve.ce.BranchNode, ve.BranchNode );
  * @property {HTMLElement}
  */
 ve.ce.BranchNode.inlineSlugTemplate = ( function () {
-	var $img = $( '<img>' )
-			.addClass( 've-ce-chimera' )
-			.css( { width: '0', height: '0' } ),
+	var layout = $.client.profile().layout,
+		$img = $( '<img>' )
+			.addClass( 've-ce-chimera ve-ce-chimera-' + layout ),
 		$span = $( '<span>' )
 			.addClass( 've-ce-branchNode-slug ve-ce-branchNode-inlineSlug' )
 			.append( $img );
 
 	// Firefox misbehaves if we don't set an src: https://bugzilla.mozilla.org/show_bug.cgi?id=989012
 	// But setting an src in Chrome is very slow, so only set it in Firefox
-	if ( $.client.profile().layout === 'gecko' ) {
+	if ( layout === 'gecko' ) {
 		$img.prop( 'src', ve.ce.minImgDataUri );
 	}
 	return $span.get( 0 );
@@ -79,7 +79,7 @@ ve.ce.BranchNode.inputDebugInlineSlugTemplate = $( '<span>' )
 	.append(
 		$( '<img>' )
 			.prop( 'src', ve.ce.chimeraImgDataUri )
-			.addClass( 've-ce-chimera' )
+			.addClass( 've-ce-chimera ve-ce-chimera-debug' )
 	)
 	.get( 0 );
 
