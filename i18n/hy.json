@@ -5,7 +5,8 @@
 			"Xelgen",
 			"GeoO",
 			"Դավիթ Սարոյան",
-			"Աշոտ1997"
+			"Աշոտ1997",
+			"Vahe Gharakhanyan"
 		]
 	},
 	"visualeditor": "ՎիզուալԽմբագրիչ",
@@ -45,9 +46,11 @@
 	"visualeditor-dialog-language-search-title": "Ընտրեք լեզուն",
 	"visualeditor-find-and-replace-done": "Արված է",
 	"visualeditor-find-and-replace-find-text": "Գտնել",
+	"visualeditor-find-and-replace-invalid-regex": "Անթույլատրելի կանոնավոր արտահայտություն",
 	"visualeditor-find-and-replace-match-case": "Համընկում ըստ տառաշարի (մեծատառ/փոքրատառ)",
 	"visualeditor-find-and-replace-next-button": "Գտնել հաջորդը",
 	"visualeditor-find-and-replace-previous-button": "Գտնել նախորդը",
+	"visualeditor-find-and-replace-regular-expression": "Կանոնավոր արտահայտություն",
 	"visualeditor-find-and-replace-replace-all-button": "Փոխարինել բոլորը",
 	"visualeditor-find-and-replace-replace-button": "Փոխարինել",
 	"visualeditor-find-and-replace-replace-text": "Փոխարինել",
@@ -97,8 +100,8 @@
 	"visualeditor-specialcharacter-button-tooltip": "Հատուկ նշաններ",
 	"visualeditor-specialcharacterinspector-title": "Հատուկ նշան",
 	"visualeditor-table-caption": "Վերնագիր",
-	"visualeditor-table-delete-col": "Ջնջել սյունակը",
-	"visualeditor-table-delete-row": "Ջնջել տողը",
+	"visualeditor-table-delete-col": "Ջնջել {{PLURAL:$1|սյունակ|սյունակները}}",
+	"visualeditor-table-delete-row": "Ջնջել {{PLURAL:$1|տող|տողերը}}",
 	"visualeditor-table-delete-table": "Ջնջել աղյուսակը",
 	"visualeditor-table-format-data": "Լրացված վանդակ",
 	"visualeditor-table-format-header": "Վերնագրի վանդակ",

@@ -4,7 +4,8 @@
 			"An13sa",
 			"Unai Fdz. de Betoño",
 			"Xabier Armendaritz",
-			"Subi"
+			"Subi",
+			"Sator"
 		]
 	},
 	"visualeditor": "Ikusizko editorea",
@@ -14,7 +15,7 @@
 	"visualeditor-align-widget-right": "Eskuinera",
 	"visualeditor-alignablecontextitem-title": "Lerrokatzea",
 	"visualeditor-annotationbutton-bold-tooltip": "Lodia",
-	"visualeditor-annotationbutton-code-tooltip": "Ordenagailu-kodea",
+	"visualeditor-annotationbutton-code-tooltip": "Kode informatikoa",
 	"visualeditor-annotationbutton-italic-tooltip": "Etzana",
 	"visualeditor-annotationbutton-language-tooltip": "Hizkuntza",
 	"visualeditor-annotationbutton-link-tooltip": "Lotura",
@@ -54,7 +55,7 @@
 	"visualeditor-find-and-replace-replace-text": "Ordezkatu",
 	"visualeditor-find-and-replace-results": "$1/$2",
 	"visualeditor-find-and-replace-title": "Bilatu eta ordeztu",
-	"visualeditor-formatdropdown-format-blockquote": "Bloke aipamena",
+	"visualeditor-formatdropdown-format-blockquote": "Aipamen blokea",
 	"visualeditor-formatdropdown-format-heading-label": "Idazpurua (1-6)",
 	"visualeditor-formatdropdown-format-heading1": "1. izenburua",
 	"visualeditor-formatdropdown-format-heading2": "2. izenburua",
