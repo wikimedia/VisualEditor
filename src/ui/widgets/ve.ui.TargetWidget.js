@@ -15,6 +15,7 @@
  * @param {ve.dm.Document} doc Document model
  * @param {Object} [config] Configuration options
  * @cfg {Object[]} [tools] Toolbar configuration
+ * @cfg {string[]|null} [includeCommands] List of commands to include, null for all registered commands
  * @cfg {string[]} [excludeCommands] List of commands to exclude
  * @cfg {Object} [importRules] Import rules
  * @cfg {string} [inDialog] The name of the dialog this surface widget is in
@@ -28,6 +29,7 @@ ve.ui.TargetWidget = function VeUiTargetWidget( doc, config ) {
 
 	// Properties
 	this.surface = ve.init.target.createSurface( doc, {
+		includeCommands: config.includeCommands,
 		excludeCommands: config.excludeCommands,
 		importRules: config.importRules,
 		inDialog: config.inDialog

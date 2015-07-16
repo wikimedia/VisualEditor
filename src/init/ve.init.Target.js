@@ -131,6 +131,15 @@ ve.init.Target.static.documentCommands = [ 'commandHelp' ];
 ve.init.Target.static.targetCommands = [ 'findAndReplace', 'findNext', 'findPrevious' ];
 
 /**
+ * List of commands to include in the target
+ *
+ * Null means all commands in the registry are used (excluding excludeCommands)
+ *
+ * @type {string[]|null} List of command names
+ */
+ve.init.Target.static.includeCommands = null;
+
+/**
  * List of commands to exclude from the target entirely
  *
  * @type {string[]} List of command names
@@ -230,6 +239,7 @@ ve.init.Target.prototype.onTargetKeyDown = function ( e ) {
  */
 ve.init.Target.prototype.createSurface = function ( dmDoc, config ) {
 	config = ve.extendObject( {
+		includeCommands: this.constructor.static.includeCommands,
 		excludeCommands: OO.simpleArrayUnion(
 			this.constructor.static.excludeCommands,
 			this.constructor.static.documentCommands,

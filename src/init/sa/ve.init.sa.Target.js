@@ -91,6 +91,7 @@ ve.init.sa.Target.prototype.addSurface = function () {
  */
 ve.init.sa.Target.prototype.createSurface = function ( dmDoc, config ) {
 	config = ve.extendObject( {
+		includeCommands: this.constructor.static.includeCommands,
 		excludeCommands: OO.simpleArrayUnion(
 			this.constructor.static.excludeCommands,
 			this.constructor.static.documentCommands,

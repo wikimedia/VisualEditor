@@ -15,6 +15,7 @@
  * @constructor
  * @param {HTMLDocument|Array|ve.dm.LinearData|ve.dm.Document} dataOrDoc Document data to edit
  * @param {Object} [config] Configuration options
+ * @cfg {string[]|null} [includeCommands] List of commands to include, null for all registered commands
  * @cfg {string[]} [excludeCommands] List of commands to exclude
  * @cfg {Object} [importRules] Import rules
  * @cfg {string} [placeholder] Placeholder text to display when the surface is empty
@@ -41,7 +42,7 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 	this.$menus = $( '<div>' );
 	this.$placeholder = $( '<div>' ).addClass( 've-ui-surface-placeholder' );
 	this.triggerListener = new ve.TriggerListener( OO.simpleArrayDifference(
-		Object.keys( ve.ui.commandRegistry.registry ), config.excludeCommands || []
+		config.includeCommands || Object.keys( ve.ui.commandRegistry.registry ), config.excludeCommands || []
 	) );
 	if ( dataOrDoc instanceof ve.dm.Document ) {
 		// ve.dm.Document
