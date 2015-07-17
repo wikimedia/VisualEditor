@@ -4,6 +4,7 @@
 			"जनक राज भट्ट"
 		]
 	},
+	"visualeditor": "दृष्टि सम्पादक",
 	"visualeditor-align-widget-center": "केन्द्रीकृत",
 	"visualeditor-align-widget-left": "बायाँ",
 	"visualeditor-align-widget-right": "दायाँ",
@@ -35,6 +36,11 @@
 	"visualeditor-dialog-language-search-title": "भाषा छान",
 	"visualeditor-find-and-replace-done": "सकियो",
 	"visualeditor-find-and-replace-find-text": "खोज्ने",
+	"visualeditor-find-and-replace-replace-button": "बदेल",
+	"visualeditor-find-and-replace-replace-text": "बदेल",
+	"visualeditor-find-and-replace-results": "$2 मध्ये $1",
+	"visualeditor-find-and-replace-title": "खोजिबर बदेल्या",
+	"visualeditor-formatdropdown-format-heading-label": "शीर्षक(१-६)",
 	"visualeditor-formatdropdown-format-heading1": "शीर्षक १",
 	"visualeditor-formatdropdown-format-heading2": "शीर्षक २",
 	"visualeditor-formatdropdown-format-heading3": "शीर्षक १",
@@ -62,5 +68,18 @@
 	"visualeditor-listbutton-bullet-tooltip": "थोप्ला सुची",
 	"visualeditor-listbutton-number-tooltip": "संख्या सुची",
 	"visualeditor-mediasizewidget-button-originaldimensions": "पूरा आकारको बनाउन्या",
-	"visualeditor-mediasizewidget-label-custom": "अनुकुल"
+	"visualeditor-mediasizewidget-label-custom": "अनुकुल",
+	"visualeditor-mediasizewidget-label-scale": "स्केल",
+	"visualeditor-mediasizewidget-sizeoptions-custom": "अनुकुल",
+	"visualeditor-mediasizewidget-sizeoptions-default": "पूर्वनिर्धारित",
+	"visualeditor-mediasizewidget-sizeoptions-scale": "स्केल",
+	"visualeditor-shortcuts-clipboard": "क्लिपबोर्ड",
+	"visualeditor-shortcuts-history": "इतिहास",
+	"visualeditor-shortcuts-other": "और",
+	"visualeditor-table-delete-table": "सूची मेट्या",
+	"visualeditor-table-insert-table": "सूची",
+	"visualeditor-toolbar-history": "इतिहास",
+	"visualeditor-toolbar-insert": "थप्दे",
+	"visualeditor-toolbar-structure": "बनोट",
+	"visualeditor-toolbar-table": "सूची"
 }
