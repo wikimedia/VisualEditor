@@ -1,11 +1,11 @@
 /*!
- * VisualEditor UserInterface SurfaceWidget class.
+ * VisualEditor UserInterface TargetWidget class.
  *
  * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
 /**
- * Creates an ve.ui.SurfaceWidget object.
+ * Creates an ve.ui.TargetWidget object.
  *
  * @class
  * @abstract
@@ -19,7 +19,7 @@
  * @cfg {Object} [importRules] Import rules
  * @cfg {string} [inDialog] The name of the dialog this surface widget is in
  */
-ve.ui.SurfaceWidget = function VeUiSurfaceWidget( doc, config ) {
+ve.ui.TargetWidget = function VeUiTargetWidget( doc, config ) {
 	// Config initialization
 	config = config || {};
 
@@ -35,11 +35,11 @@ ve.ui.SurfaceWidget = function VeUiSurfaceWidget( doc, config ) {
 	this.toolbar = new ve.ui.Toolbar();
 
 	// Initialization
-	this.surface.$element.addClass( 've-ui-surfaceWidget-surface' );
-	this.toolbar.$element.addClass( 've-ui-surfaceWidget-toolbar' );
+	this.surface.$element.addClass( 've-ui-targetWidget-surface' );
+	this.toolbar.$element.addClass( 've-ui-targetWidget-toolbar' );
 	this.toolbar.$bar.append( this.surface.getToolbarDialogs().$element );
 	this.$element
-		.addClass( 've-ui-surfaceWidget' )
+		.addClass( 've-ui-targetWidget' )
 		.append( this.toolbar.$element, this.surface.$element );
 	if ( config.tools ) {
 		this.toolbar.setup( config.tools, this.surface );
@@ -48,7 +48,7 @@ ve.ui.SurfaceWidget = function VeUiSurfaceWidget( doc, config ) {
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.SurfaceWidget, OO.ui.Widget );
+OO.inheritClass( ve.ui.TargetWidget, OO.ui.Widget );
 
 /* Methods */
 
@@ -58,7 +58,7 @@ OO.inheritClass( ve.ui.SurfaceWidget, OO.ui.Widget );
  * @method
  * @returns {ve.ui.Surface} Surface
  */
-ve.ui.SurfaceWidget.prototype.getSurface = function () {
+ve.ui.TargetWidget.prototype.getSurface = function () {
 	return this.surface;
 };
 
@@ -68,7 +68,7 @@ ve.ui.SurfaceWidget.prototype.getSurface = function () {
  * @method
  * @returns {OO.ui.Toolbar} Toolbar
  */
-ve.ui.SurfaceWidget.prototype.getToolbar = function () {
+ve.ui.TargetWidget.prototype.getToolbar = function () {
 	return this.toolbar;
 };
 
@@ -78,7 +78,7 @@ ve.ui.SurfaceWidget.prototype.getToolbar = function () {
  * @method
  * @returns {ve.dm.ElementLinearData} Content data
  */
-ve.ui.SurfaceWidget.prototype.getContent = function () {
+ve.ui.TargetWidget.prototype.getContent = function () {
 	return this.surface.getModel().getDocument().getData();
 };
 
@@ -89,7 +89,7 @@ ve.ui.SurfaceWidget.prototype.getContent = function () {
  *
  * @method
  */
-ve.ui.SurfaceWidget.prototype.initialize = function () {
+ve.ui.TargetWidget.prototype.initialize = function () {
 	this.toolbar.initialize();
 	this.surface.initialize();
 };
@@ -99,7 +99,7 @@ ve.ui.SurfaceWidget.prototype.initialize = function () {
  *
  * @method
  */
-ve.ui.SurfaceWidget.prototype.destroy = function () {
+ve.ui.TargetWidget.prototype.destroy = function () {
 	if ( this.surface ) {
 		this.surface.destroy();
 	}
@@ -112,6 +112,6 @@ ve.ui.SurfaceWidget.prototype.destroy = function () {
 /**
  * Focus the surface.
  */
-ve.ui.SurfaceWidget.prototype.focus = function () {
+ve.ui.TargetWidget.prototype.focus = function () {
 	this.surface.getView().focus();
 };
