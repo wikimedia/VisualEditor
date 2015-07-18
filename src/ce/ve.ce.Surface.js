@@ -1130,7 +1130,7 @@ ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
  * @fires selectionStart
  */
 ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
-	var trigger, focusedNode,
+	var trigger, focusedNode, executed,
 		selection = this.getModel().getSelection(),
 		updateFromModel = false;
 
@@ -1210,10 +1210,13 @@ ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
 			break;
 		default:
 			trigger = new ve.ui.Trigger( e );
-			if ( trigger.isComplete() && this.surface.execute( trigger ) ) {
-				e.preventDefault();
-				e.stopPropagation();
-				updateFromModel = true;
+			if ( trigger.isComplete() ) {
+				executed = this.surface.execute( trigger );
+				if ( executed || this.isBlockedTrigger( trigger ) ) {
+					e.preventDefault();
+					e.stopPropagation();
+					updateFromModel = true;
+				}
 			}
 			break;
 	}
@@ -1228,6 +1231,27 @@ ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
 		}
 	}
 	this.surfaceObserver.startTimerLoop();
+};
+
+/**
+ * Check if a trigger event is blocked from performing its default behaviour
+ *
+ * If any of these triggers can't execute on the surface, (e.g. the underline
+ * command has been blacklisted), we should still preventDefault so ContentEditable
+ * native commands don't occur, leving the view out of sync with the model.
+ *
+ * @method
+ * @param {ve.ui.Trigger} trigger Trigger to check
+ * @return {boolean} Trigger should preventDefault
+ */
+ve.ce.Surface.prototype.isBlockedTrigger = function ( trigger ) {
+	var platformKey = ve.getSystemPlatform() === 'mac' ? 'mac' : 'pc',
+		blocked = {
+			mac: [ 'cmd+b', 'cmd+i', 'cmd+u', 'cmd+z', 'cmd+y', 'cmd+shift+z' ],
+			pc: [ 'ctrl+b', 'ctrl+i', 'ctrl+u', 'ctrl+z', 'ctrl+y', 'ctrl+shift+z' ]
+		};
+
+	return blocked[platformKey].indexOf( trigger.toString() ) !== -1;
 };
 
 /**
