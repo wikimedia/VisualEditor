@@ -428,7 +428,7 @@
 			"src/ui/widgets/ve.ui.LanguageResultWidget.js",
 			"src/ui/dialogs/ve.ui.LanguageSearchDialog.js",
 			"src/ui/widgets/ve.ui.LanguageInputWidget.js",
-			"src/ui/widgets/ve.ui.SurfaceWidget.js",
+			"src/ui/widgets/ve.ui.TargetWidget.js",
 			"src/ui/widgets/ve.ui.LinkAnnotationWidget.js",
 			"src/ui/widgets/ve.ui.ContextSelectWidget.js",
 			"src/ui/widgets/ve.ui.ContextOptionWidget.js",
@@ -492,7 +492,7 @@
 			"src/ui/styles/contextitems/ve.ui.TableContextItem.css",
 			"src/ui/styles/ve.ui.Overlay.css",
 			"src/ui/styles/ve.ui.Surface.css",
-			"src/ui/styles/widgets/ve.ui.SurfaceWidget.css",
+			"src/ui/styles/widgets/ve.ui.TargetWidget.css",
 			"src/ui/styles/ve.ui.TableContext.css",
 			"src/ui/styles/ve.ui.Toolbar.css"
 		],
