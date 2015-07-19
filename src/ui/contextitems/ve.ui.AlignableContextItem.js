@@ -38,7 +38,7 @@ OO.inheritClass( ve.ui.AlignableContextItem, ve.ui.ContextItem );
 
 ve.ui.AlignableContextItem.static.name = 'alignable';
 
-ve.ui.AlignableContextItem.static.icon = 'align-float-left';
+ve.ui.AlignableContextItem.static.icon = 'alignLeft';
 
 ve.ui.AlignableContextItem.static.label = OO.ui.deferMsg( 'visualeditor-alignablecontextitem-title' );
 
