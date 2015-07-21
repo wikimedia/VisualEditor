@@ -70,20 +70,20 @@ ve.SelectionState.static.newNullSelection = function () {
 /**
  * Returns the selection with the anchor and focus swapped
  *
- * @returns {Object} selection with anchor/focus swapped. Object-identical to this if isCollapsed
+ * @returns {ve.SelectionState} selection with anchor/focus swapped. Object-identical to this if isCollapsed
  */
 ve.SelectionState.prototype.flip = function () {
 	if ( this.isCollapsed ) {
 		return this;
 	}
-	return {
+	return new ve.SelectionState( {
 		anchorNode: this.focusNode,
 		anchorOffset: this.focusOffset,
 		focusNode: this.anchorNode,
 		focusOffset: this.anchorOffset,
 		isCollapsed: false,
 		isBackwards: !this.isBackwards
-	};
+	} );
 };
 
 /**
