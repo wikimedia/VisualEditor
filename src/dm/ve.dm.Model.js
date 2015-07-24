@@ -243,7 +243,7 @@ ve.dm.Model.static.getAllowedRdfaTypes = function () {
 /* Methods */
 
 /**
- * Check whether this node can be inspected by a tool.
+ * Check whether this node can be inspected by a context item.
  *
  * The default implementation always returns true. If your node type is uninspectable in certain
  * cases, you should override this function.
@@ -251,6 +251,18 @@ ve.dm.Model.static.getAllowedRdfaTypes = function () {
  * @returns {boolean} Whether this node is inspectable
  */
 ve.dm.Model.prototype.isInspectable = function () {
+	return true;
+};
+
+/**
+ * Check whether this node can be edited by a context item
+ *
+ * The default implementation always returns true. If your node type is uneditable in certain
+ * cases, you should override this function.
+ *
+ * @returns {boolean} Whether this node is editable
+ */
+ve.dm.Model.prototype.isEditable = function () {
 	return true;
 };
 

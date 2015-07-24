@@ -229,6 +229,9 @@ ve.ui.LinearContext.prototype.getRelatedSources = function () {
 			models = [];
 			items = ve.ui.contextItemFactory.getRelatedItems( selectedModels );
 			for ( i = 0, len = items.length; i < len; i++ ) {
+				if ( !items[i].model.isInspectable() ) {
+					continue;
+				}
 				if ( ve.ui.contextItemFactory.isExclusive( items[i].name ) ) {
 					models.push( items[i].model );
 				}
@@ -241,6 +244,9 @@ ve.ui.LinearContext.prototype.getRelatedSources = function () {
 			}
 			tools = ve.ui.toolFactory.getRelatedItems( selectedModels );
 			for ( i = 0, len = tools.length; i < len; i++ ) {
+				if ( !tools[i].model.isInspectable() ) {
+					continue;
+				}
 				if ( models.indexOf( tools[i].model ) === -1 ) {
 					toolClass = ve.ui.toolFactory.lookup( tools[i].name );
 					this.relatedSources.push( {
