@@ -156,7 +156,7 @@ ve.ui.ContextItem.static.isCompatibleWith = function ( model ) {
  * @return {boolean} Item is editable
  */
 ve.ui.ContextItem.prototype.isEditable = function () {
-	return this.constructor.static.editable;
+	return this.constructor.static.editable && this.model.isEditable();
 };
 
 /**
