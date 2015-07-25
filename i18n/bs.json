@@ -3,7 +3,8 @@
 		"authors": [
 			"DzWiki",
 			"KWiki",
-			"Semso98"
+			"Semso98",
+			"Srdjan m"
 		]
 	},
 	"visualeditor": "Vizualni uređivač",
@@ -62,7 +63,7 @@
 	"visualeditor-formatdropdown-title": "Promijenite format",
 	"visualeditor-help-tool": "Pomoć",
 	"visualeditor-historybutton-redo-tooltip": "Ponovi",
-	"visualeditor-historybutton-undo-tooltip": "Povrati",
+	"visualeditor-historybutton-undo-tooltip": "Vrati",
 	"visualeditor-indentationbutton-indent-tooltip": "Povećaj uvlačenje",
 	"visualeditor-indentationbutton-outdent-tooltip": "Smanji uvlačenje",
 	"visualeditor-inspector-close-tooltip": "Zatvori",
