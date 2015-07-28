@@ -3,7 +3,8 @@
 		"authors": [
 			"Deryck Chan",
 			"William915",
-			"Shinjiman"
+			"Shinjiman",
+			"CRCHF"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -50,6 +51,7 @@
 	"visualeditor-find-and-replace-regular-expression": "正則表達式",
 	"visualeditor-find-and-replace-replace-all-button": "換嗮",
 	"visualeditor-find-and-replace-replace-button": "換",
+	"visualeditor-find-and-replace-replace-text": "換",
 	"visualeditor-formatdropdown-format-blockquote": "大段引用",
 	"visualeditor-formatdropdown-format-heading-label": "標題 (1-6)",
 	"visualeditor-formatdropdown-format-heading1": "標題1",
