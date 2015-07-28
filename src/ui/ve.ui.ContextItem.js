@@ -15,7 +15,7 @@
  *
  * @constructor
  * @param {ve.ui.Context} context Context item is in
- * @param {ve.dm.Model} model Model item is related to
+ * @param {ve.dm.Model} [model] Model item is related to
  * @param {Object} [config] Configuration options
  * @cfg {boolean} [basic] Render only basic information
  */
@@ -156,7 +156,7 @@ ve.ui.ContextItem.static.isCompatibleWith = function ( model ) {
  * @return {boolean} Item is editable
  */
 ve.ui.ContextItem.prototype.isEditable = function () {
-	return this.constructor.static.editable && this.model.isEditable();
+	return this.constructor.static.editable && ( !this.model || this.model.isEditable() );
 };
 
 /**
@@ -176,7 +176,7 @@ ve.ui.ContextItem.prototype.getCommand = function () {
 ve.ui.ContextItem.prototype.getFragment = function () {
 	if ( !this.fragment ) {
 		var surfaceModel = this.context.getSurface().getModel();
-		this.fragment = this.model instanceof ve.dm.Node ?
+		this.fragment = this.model && this.model instanceof ve.dm.Node ?
 			surfaceModel.getLinearFragment( this.model.getOuterRange() ) :
 			surfaceModel.getFragment();
 	}
