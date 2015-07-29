@@ -2327,7 +2327,7 @@ ve.ce.Surface.prototype.onModelSelect = function () {
 					this.surfaceObserver.clear();
 				}
 				// If the node is outside the view, scroll to it
-				OO.ui.Element.static.scrollIntoView( this.focusedNode.$element.get( 0 ) );
+				ve.scrollIntoView( this.focusedNode.$element.get( 0 ) );
 			}
 		}
 	} else {
@@ -3865,7 +3865,7 @@ ve.ce.Surface.prototype.showSelectionState = function ( selection ) {
 		$( newSel.focusNode ).closest( '[contenteditable=true]' ).focus();
 	} else {
 		// Scroll the node into view
-		OO.ui.Element.static.scrollIntoView(
+		ve.scrollIntoView(
 			$( newSel.focusNode ).closest( '*' ).get( 0 )
 		);
 	}
