@@ -315,7 +315,7 @@ ve.ui.Surface.prototype.enable = function () {
  */
 ve.ui.Surface.prototype.onDocumentTransact = function () {
 	if ( this.placeholder ) {
-		this.$placeholder.toggleClass( 'oo-ui-element-hidden', this.getModel().getDocument().data.hasContent() );
+		this.updatePlaceholder();
 	}
 };
 
@@ -327,13 +327,32 @@ ve.ui.Surface.prototype.onDocumentTransact = function () {
 ve.ui.Surface.prototype.setPlaceholder = function ( placeholder ) {
 	this.placeholder = placeholder;
 	if ( this.placeholder ) {
-		this.$placeholder
-			.toggleClass( 'oo-ui-element-hidden', this.getModel().getDocument().data.hasContent() )
-			// Requires a paragraph to match margins
-			.empty().append( $( '<p>' ).text( this.placeholder ) )
-			.prependTo( this.$element );
+		this.$placeholder.prependTo( this.$element );
+		this.updatePlaceholder();
 	} else {
 		this.$placeholder.detach();
+	}
+};
+
+/**
+ * Update placeholder rendering
+ */
+ve.ui.Surface.prototype.updatePlaceholder = function () {
+	var firstNode, $wrapper,
+		hasContent = this.getModel().getDocument().data.hasContent();
+
+	this.$placeholder.toggleClass( 'oo-ui-element-hidden', hasContent );
+	if ( !hasContent ) {
+		firstNode = this.getView().documentView.documentNode.getNodeFromOffset( 1 );
+		if ( firstNode ) {
+			$wrapper = firstNode.$element.clone();
+			if ( ve.debug ) {
+				$wrapper.removeAttr( 'style' );
+			}
+		} else {
+			$wrapper = $( '<p>' );
+		}
+		this.$placeholder.empty().append( $wrapper.text( this.placeholder ) );
 	}
 };
 
