@@ -146,21 +146,6 @@ ve.isPlainObject = $.isPlainObject;
 ve.isEmptyObject = $.isEmptyObject;
 
 /**
- * Wrapper for Array#indexOf.
- *
- * Values are compared without type coercion.
- *
- * @method
- * @source <http://api.jquery.com/jQuery.inArray/>
- * @until ES5: Array#indexOf
- * @param {Mixed} value Element to search for
- * @param {Array} array Array to search in
- * @param {number} [fromIndex=0] Index to being searching from
- * @returns {number} Index of value in array, or -1 if not found
- */
-ve.indexOf = $.inArray;
-
-/**
  * Merge properties of one or more objects into another.
  * Preserves original object's inheritance (e.g. Array, Object, whatever).
  * In case of array or array-like objects only the indexed properties

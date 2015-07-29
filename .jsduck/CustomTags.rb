@@ -48,24 +48,6 @@ class SourceTag < CommonTag
   end
 end
 
-class UntilTag < CommonTag
-  def initialize
-    @tagname = :until
-    @pattern = 'until'
-    super
-  end
-
-  def to_html(context)
-    <<-EOHTML
-      <h3>Until</h3>
-      <div class="signature-box"><p>
-      This method provides <strong>browser compatibility</strong> for:
-      #{ context[@tagname].map { |tag| tag[:doc] }.join("\n") }
-      </p></div>
-    EOHTML
-  end
-end
-
 class SeeTag < CommonTag
   def initialize
     @tagname = :see
